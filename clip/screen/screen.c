@@ -1,6 +1,12 @@
 
 /*
    $Log: screen.c,v $
+   Revision 1.106  2005/02/22 08:09:43  clip
+   uri: small fix
+
+   Revision 1.105  2005/02/22 08:05:49  clip
+   uri: small fix
+
    Revision 1.104  2004/12/15 07:05:37  clip
    uri: add KSET*()
 
@@ -3377,7 +3383,7 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 				newMatch_Key(base);
 				return key;
 			}
-			 again1:
+			 /* again1: */
 			gettimeofday(&tv, 0);
 
 		}
@@ -3711,7 +3717,8 @@ syncLine(Screen * scr, int y, int utf8term)
 
 		for (p = w32_screen + y * w32_size.X + x; i <= e; i++, p++)
 		{
-			int ch, pg;
+			int ch;
+			/* int pg;*/
 
 			ch = chars[i];
 			p->Attributes = colors[i];

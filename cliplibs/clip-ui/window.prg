@@ -412,7 +412,6 @@ return NIL
 
 /* Set default pushbutton */
 static function ui_setDefault(self, obj)
-	// TODO: setDefault() doesn't work
 	driver:setDefault(self, obj)
 return NIL
 

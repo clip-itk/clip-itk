@@ -75,7 +75,7 @@ static stopXPM := { ;
 //		ret := iif(valtype(aReturn[1])=="N", 0, .f.)
 //	endif
 
-	gtk_BoxPackStart(hbox, gtk_PixmapCreateFromXPMd(, stopXPM))
+	gtk_BoxPackStart(hbox, gdk_PixmapCreateFromXPMd(, stopXPM))
 
 	/*
 	pos := at(';',cMsg)

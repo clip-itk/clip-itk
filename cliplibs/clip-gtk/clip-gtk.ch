@@ -2329,7 +2329,21 @@ GTK_FILL the widget should fill the space allocated to it.
 #define CLIP_GTK_TYPE_MENU		1
 #define CLIP_GTK_TYPE_OPTION_MENU	2
 
+#ifndef GDK_TYPE_BITMAP
+#define GDK_TYPE_BITMAP		HASH___GDK_TYPE_BITMAP
+#endif
 
+#ifndef GDK_TYPE_PIXMAP
+#define GDK_TYPE_PIXMAP		HASH___GDK_TYPE_PIXMAP
+#endif
+
+#ifndef GDK_TYPE_WINDOW
+#define GDK_TYPE_WINDOW		HASH___GDK_TYPE_WINDOW
+#endif
+
+#ifndef GDK_TYPE_COLORMAP
+#define GDK_TYPE_COLORMAP	HASH___GDK_TYPE_COLORMAP
+#endif
 
 #endif
 

@@ -49,6 +49,10 @@ CLIP_DLLEXPORT GtkType _gtk_type_tearoff_menu_item() { return GTK_TYPE_TEAROFF_M
 long _clip_type_tearoff_menu_item() { return GTK_WIDGET_TEAROFF_MENU_ITEM; }
 const char * _clip_type_name_tearoff_menu_item() { return "GTK_WIDGET_TEAROFF_MENU_ITEM"; }
 
+CLIP_DLLEXPORT GtkType _gtk_type_separator_menu_item() { return GTK_TYPE_SEPARATOR_MENU_ITEM; }
+long _clip_type_separator_menu_item() { return GTK_WIDGET_SEPARATOR_MENU_ITEM; }
+const char * _clip_type_name_separator_menu_item() { return "GTK_WIDGET_SEPARATOR_MENU_ITEM"; }
+
 int
 clip_INIT___MENU_ITEM(ClipMachine *cm)
 {
@@ -60,6 +64,13 @@ int
 clip_INIT___TEAROFF_MENU_ITEM(ClipMachine *cm)
 {
 	_wtype_table_put(_clip_type_tearoff_menu_item, _clip_type_name_tearoff_menu_item, _gtk_type_tearoff_menu_item, _gtk_type_menu_item, NULL);
+	return 0;
+}
+
+int
+clip_INIT___SEPARATOR_MENU_ITEM(ClipMachine *cm)
+{
+	_wtype_table_put(_clip_type_separator_menu_item, _clip_type_name_separator_menu_item, _gtk_type_tearoff_menu_item, _gtk_type_menu_item, NULL);
 	return 0;
 }
 /**********************************************************/
@@ -330,6 +341,23 @@ clip_GTK_MENUITEMSETSTYLE(ClipMachine * cm)
         //gtk_style_unref(wid->style);
 	_map_to_style(cm, mstyle, style);
 	gtk_widget_set_style (wid, style);
+	return 0;
+err:
+	return 1;
+}
+// ************************************************************************* //
+int
+clip_GTK_SEPARATORMENUITEMNEW(ClipMachine * cm)
+{
+	ClipVar * cv   = _clip_spar(cm, 1);
+	GtkWidget *wid = NULL;
+        C_widget *cwid;
+	CHECKOPT(1,MAP_t);
+
+	wid = gtk_separator_menu_item_new();
+        if (!wid) goto err;
+	cwid = _register_widget(cm, wid, cv);
+	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
 	return 0;
 err:
 	return 1;

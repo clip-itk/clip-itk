@@ -500,6 +500,13 @@ static function _dep__GetValue(self,objId,nLocks)
 	else
 		ret := oExt:getValue(objId,nLocks,idxData:version)
 	endif
+	if valtype(ret) != "O"
+		ret := map()
+		ret:id := objId
+		ret:class_id := idxData:class_id
+		class_desc := self:oDict:getValue(ret:class_id)
+		ret := self:checkObjBody(ret,class_desc)
+	endif
 	if !empty(ret)
 		class_desc := self:oDict:getValue(ret:class_id)
 		if !empty(class_desc) .and. class_desc:unstable

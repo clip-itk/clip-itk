@@ -27,9 +27,9 @@
 /**********************************************************/
 
 /* Register pixmap in global table */
-CLIP_DLLEXPORT GtkType _gtk_type_pixmap() { return GTK_TYPE_LABEL; }
-long _clip_type_pixmap() { return GTK_WIDGET_LABEL; }
-const char * _clip_type_name_pixmap() { return "GTK_WIDGET_LABEL"; }
+CLIP_DLLEXPORT GtkType _gtk_type_pixmap() { return GTK_TYPE_PIXMAP; }
+long _clip_type_pixmap() { return GTK_WIDGET_PIXMAP; }
+const char * _clip_type_name_pixmap() { return "GTK_WIDGET_PIXMAP"; }
 
 int
 clip_INIT___PIXMAP(ClipMachine *cm)
@@ -42,6 +42,93 @@ clip_INIT___PIXMAP(ClipMachine *cm)
 /**** PIXMAP constructor ****/
 int
 clip_GTK_PIXMAPNEW(ClipMachine * cm)
+{
+	ClipVar     *cv = _clip_spar(cm, 1);
+	C_object  *cpxm = _fetch_cobject(cm, _clip_spar(cm, 2));
+	C_object *cmask = _fetch_cobject(cm, _clip_spar(cm, 3));
+	C_widget  *cwid ;
+	GtkWidget  *wid ;
+
+	CHECKCOBJ(cpxm, GDK_IS_PIXMAP(cpxm));
+	//CHECKCOBJ(cmask, GDK_IS_BITMAP(cmask->object));
+	wid = gtk_pixmap_new(GDK_PIXMAP(cpxm->object), (GdkBitmap*)(cmask->object));
+
+	if (wid)
+	{
+		cwid = _list_get_cwidget(cm, wid);
+		if (!cwid) cwid = _register_widget(cm, wid, cv);
+		if (cwid) _clip_mclone(cm, RETPTR(cm), &cwid->obj);
+	}
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_PIXMAPSET(ClipMachine * cm)
+{
+	C_widget  *cpxm = _fetch_cw_arg(cm);
+	C_object  *cval = _fetch_cobject(cm, _clip_spar(cm, 2));
+	C_object *cmask = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+	CHECKCWID(cpxm, GTK_IS_PIXMAP);
+	CHECKCOBJ(cval, GDK_IS_PIXMAP(cval));
+	//CHECKCOBJ(cmask, GDK_IS_BITMAP(cmask->object));
+	gtk_pixmap_set(GTK_PIXMAP(cpxm->widget), GDK_PIXMAP(cval->object), (GdkBitmap*)(cmask->object));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_PIXMAPGET(ClipMachine * cm)
+{
+	C_widget  *cpxm = _fetch_cw_arg(cm);
+	ClipVar      *c1= _clip_spar(cm, 2);
+	ClipVar     *c2 = _clip_spar(cm, 3);
+	C_object  *cval ;
+	C_object *cmask ;
+	GdkPixmap  *val ;
+	GdkBitmap *mask ;
+
+	CHECKCWID(cpxm, GDK_IS_PIXMAP);
+	gtk_pixmap_get(GTK_PIXMAP(cpxm->widget), &val, &mask);
+
+	if (val)
+	{
+		cval = _list_get_cobject(cm, val);
+		if (!cval) cval = _register_object(cm, val, GDK_TYPE_PIXMAP, NULL, NULL);
+		if (cval)  _clip_mclone(cm, c1, &cval->obj);
+	}
+
+	if (mask)
+	{
+		cmask = _list_get_cobject(cm, mask);
+		if (!cmask) cmask = _register_object(cm, mask, GDK_TYPE_BITMAP, NULL, NULL);
+		if (cmask)  _clip_mclone(cm, c2, &cmask->obj);
+	}
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_PIXMAPSETBUILDINSENSITIVE(ClipMachine * cm)
+{
+	C_widget *cpxm = _fetch_cw_arg(cm);
+	gboolean build = _clip_parl(cm, 2);
+	CHECKCWID(cpxm,GTK_IS_PIXMAP);
+	CHECKOPT(2,LOGICAL_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t) build = TRUE;
+	gtk_pixmap_set_build_insensitive(GTK_PIXMAP(cpxm->widget), build);
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GDK_PIXMAPNEW(ClipMachine * cm)
 {
 	ClipVar *cv = _clip_spar(cm, 1);
 	C_widget *cwin   = _fetch_cwidget(cm,_clip_spar(cm, 2));
@@ -79,7 +166,7 @@ err:
 
 /**** PIXMAP constructor ****/
 int
-clip_GTK_PIXMAPFROMXPMNEW(ClipMachine * cm)
+clip_GDK_PIXMAPFROMXPMNEW(ClipMachine * cm)
 {
 	ClipVar   * cv   = _clip_spar(cm, 1);
 	char *filename   = _clip_parc(cm, 2);
@@ -128,7 +215,7 @@ err:
 
 /**** PIXMAP from data constructor ****/
 int
-clip_GTK_PIXMAPCREATEFROMXPMD(ClipMachine * cm)
+clip_GDK_PIXMAPCREATEFROMXPMD(ClipMachine * cm)
 {
 	ClipVar   * cv   = _clip_spar(cm, 1);
 	ClipVar  * cxpmd = _clip_par(cm, 2);
@@ -199,7 +286,7 @@ static void _free_xpm_data(char * * xpm_data, unsigned long ncolors, unsigned lo
 
 /**** PIXMAP from BMP constructor ****/
 int
-clip_GTK_PIXMAPFROMBMPNEW(ClipMachine * cm)
+clip_GDK_PIXMAPFROMBMPNEW(ClipMachine * cm)
 {
 	ClipVar   * cv   = _clip_spar(cm, 1);
 	char *filename   = _clip_parc(cm, 2);
@@ -244,24 +331,6 @@ clip_GTK_PIXMAPFROMBMPNEW(ClipMachine * cm)
 err:
 	return 1;
 }
-/**** ------------------ ****/
-
-/* build : set to TRUE if an extra pixmap should be automatically
- * created to use when the pixmap is insensitive.  */
-int
-clip_GTK_PIXMAPSETBUILDINSENSITIVE(ClipMachine * cm)
-{
-	C_widget *cpxm = _fetch_cw_arg(cm);
-	gboolean build = _clip_parl(cm, 2);
-	CHECKCWID(cpxm,GTK_IS_PIXMAP);
-	CHECKOPT(2,LOGICAL_t);
-	if (_clip_parinfo(cm,2)==UNDEF_t) build = TRUE;
-	gtk_pixmap_set_build_insensitive(GTK_PIXMAP(cpxm->widget), build);
-	return 0;
-err:
-	return 1;
-}
-
 static gchar **
 _load_xpm_from_bmp(ClipMachine *cm,char *filename, int *colors, unsigned long *nrows, unsigned long *ncols)
 {
@@ -413,6 +482,65 @@ _free_xpm_data(char * * xpm_data, unsigned long ncolors, unsigned long rows)
 		if (xpm_data[i])
 			free(xpm_data[i]);
 	free(xpm_data);
+}
+
+/* gtk_PixmapColorMapFromXpmNew(obj, gdkWin/NIL, gdkColormap/NIL,
+	@bitmask, colorArray/NIL, filename) --> pixmapObj*/
+int
+clip_GDK_PIXMAPCOLORMAPCREATEFROMXPM(ClipMachine * cm)
+{
+	C_object    *cwin = _fetch_co_arg(cm);
+	C_object *cclrmap = _fetch_cobject(cm,_clip_spar(cm, 2));
+	ClipVar    *cmask = _clip_spar(cm, 3);
+	ClipVar   *ctrclr = _clip_spar(cm, 4);
+	char *filename   = _clip_parc(cm, 5);
+	C_object *cbitmap;
+	char buf[PATH_MAX];
+	C_object *cobj;
+	GdkBitmap *mask;
+	GdkPixmap *pixmap;
+	GdkWindow *win = NULL;
+	GdkColor *color = NULL;
+	GdkColormap *colormap = NULL;
+
+	CHECKOPT2(1,MAP_t,NUMERIC_t); CHECKCOBJOPT(cwin,GDK_IS_WINDOW(cwin));
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cclrmap,GDK_IS_COLORMAP(cclrmap));
+	CHECKOPT(4,ARRAY_t);
+	CHECKOPT(5,CHARACTER_t);
+
+	LOCALE_TO_UTF(filename);
+	#ifdef OS_CYGWIN
+	cygwin_conv_to_win32_path(filename, buf);
+	#else
+	_clip_path(cm, filename, buf, sizeof(buf), 0 );
+	#endif
+	FREE_TEXT(filename);
+
+	if (cwin)
+		win = GDK_WINDOW(cwin->object);
+	if (cclrmap)
+		colormap = GDK_COLORMAP(cclrmap->object);
+	if (ctrclr)
+		_map_colors_to_gdk(cm, ctrclr, color);
+
+	pixmap = gdk_pixmap_colormap_create_from_xpm(win, colormap,
+		&mask, color, buf);
+
+	cobj = _list_get_cobject(cm, pixmap);
+	if (!cobj) cobj = _register_object(cm, pixmap, GDK_TYPE_PIXMAP, NULL, NULL);
+	//cobj->data = pixmap;
+	_clip_mclone(cm,RETPTR(cm),&cobj->obj);
+	if (mask && cmask!=NULL)
+	{
+		cbitmap = _list_get_cobject(cm, mask);
+		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_TYPE_BITMAP, cmask, NULL);
+		if (cbitmap) _clip_mclone(cm, cmask, &cbitmap->obj);
+	}
+
+
+	return 0;
+err:
+	return 1;
 }
 
 

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="koi8-r" ?>
+<!-- Test interface form -->
+<!-- Web: http://eas.lrn.ru -->
+
+<form>
+        <head>
+		<call widget="mainWindow" method="setCaption">
+			<param><call method="getClipUIVersion" /></param>
+		</call>
+        </head>
+        <interface>
+        <widget class="mainWindow" name="mainWindow" label="clip-ui test form">
+
+            <!-- Menu -->
+            <widget class="menuBar">
+                <widget class="popupMenu" name="journal_menu" label="&amp;Journal">
+			<widget class="menuItem" label="&amp;Payment orders" name="Menu.Bank.PaymentOrder.List">
+				<property name="icon" value="icons/journal_bank_pp.xpm"/>
+			</widget>
+			<widget class="menuItem" label="&amp;Create payment order" name="Menu.Bank.PaymentOrder.Create">
+				<property name="icon" value="icons/doc_bank_pp.xpm"/>
+			</widget>
+			<widget class="menuSeparator"/>
+			<widget class="menuItem" label="&amp;Exit" name="Menu.Quit"/>
+                </widget>
+                <widget class="popupMenu" name="cfg_menu" label="&amp;Settings">
+			<widget class="menuCheckedItem" name="showTB" label="Show &amp;toolbar" />
+			<widget class="menuCheckedItem" name="showSB" label="Show &amp;statusbar" />
+			<widget class="menuSeparator"/>
+			<widget name="Settings" class="menuItem" label="&amp;Configure..."/>
+                </widget>
+            </widget>
+
+            <!-- Toolbar -->
+            <widget class="toolBar" name="main_toolBar">
+                <widget name="TB.Bank.PaymentOrder.List" class="toolButton" label="Payment orders">
+                        <property name="icon" value="icons/journal_bank_pp.xpm"/>
+                </widget>
+                <widget name="TB.Bank.PaymentOrder.Create" class="toolButton" label="Create payment order">
+                        <property name="icon" value="icons/doc_bank_pp.xpm"/>
+                </widget>
+                <widget name="TB.Partner.List" class="toolButton" label="Partners">
+                        <property name="icon" value="icons/reference_partner.xpm"/>
+                </widget>
+            </widget>
+
+	    <widget class="vsplitter">
+		    <widget class="hsplitter">
+			<widget class="tree" >
+				<column name="n1" title="N1"/>
+				<column name="n2" title="N2"/>
+				<property name="row" element="node1" value="'Node1', 'node1111'" />
+				<property name="row" element="node11" value="'Node2'" />
+				<property name="row" element="node2.node1" value="'Leaf1'" />
+				<property name="row" element="node3.node1" value="'Leaf2'" />
+				<property name="row" element="node5.node1" value="'Leaf5', 'Leaf5'" />
+				<property name="row" element="node4.node1.node3" value="'Leaf3'" />
+				<property name="row" element="node44.node11" value="'Leaf3333'" />
+				<property name="row" element="node55.node44" value="'Leaf333'" />
+				<property name="row" element=".node55" value="'Leaf33'" />
+			</widget>
+			<widget class="table">
+				<column name="num" title="#"/>
+				<column name="date" title="Date"/>
+				<column name="payee" title="Payee"/>
+				<column name="sum" title="Sum"/>
+				<property name="altColor" value="#cbe8ff" />
+				<property name="row" element="1" value="'1','20.10.03','JSC &quot;Lighthouse&quot;','20000.00'" />
+				<property name="row" element="2" value="'2','20.10.03','JSC &quot;Phoenix&quot;','5689.20'" />
+				<property name="row" element="3" value="'3','21.10.03','JSC &quot;Phoenix&quot;','1500.00'" />
+				<property name="row" element="4" value="'4','25.10.03','JSC &quot;Phoenix&quot;','99.00'" />
+			</widget>
+		    </widget>
+		    <widget class="vbox">
+			<property name="spacing" value="3" />
+			<property name="padding" value="3" />
+			<widget name="tax" class="checkbox" label="Use &amp;tax">
+			    	<property name="value" value="false" />
+			</widget>
+		        <widget class="hbox">
+				<property name="padding" value="3" />
+				<widget class="label" label="Payment order N ">
+			    		<property name="font.style" value="bold" />
+			    		<property name="font.size" value="16" />
+			    		<property name="color.fg" value="#FF1790" />
+				</widget>
+				<widget name="number" class="edit" label="">
+			    		<property name="geometry.width" value="50" />
+			    		<property name="value" value="11" />
+				</widget>
+				<widget class="label" label=" from " />
+				<widget name="date" class="edit" label="">
+			    		<property name="geometry.width" value="60" />
+			    		<property name="value" value="20.10.03" />
+				</widget>
+				
+			</widget>
+			
+			<!-- Payer -->
+			<widget class="frame" label="Payer">
+				<property name="color.bg" value="darkblue" />
+				<property name="type" value="raised" />
+				<widget class="vbox">
+					<property name="padding" value="3" />
+					<widget class="combobox" name="payer">
+						<property name="values" value="'JSC &quot;Brown and son&quot;'" />
+					</widget>
+					<widget class="label" label="Payer bank: JSC &quot;MENATEP&quot; in Krasnoyarsk">
+					</widget>
+					<widget class="label" label="Acc.: 7683187443445276">
+					</widget>
+				</widget>
+			</widget>
+
+			<!-- Payee -->
+			<widget class="frame" label="Payee">
+				<property name="type" value="sunken" />
+				<widget class="vbox">
+					<property name="padding" value="3" />
+					<widget class="combobox" name="payee">
+						<property name="values" value="'JSC &quot;Lighthouse&quot;','JSC &quot;Ronal&quot;','JSC &quot;Porechnoye&quot;'" />
+						<property name="selection" value="2" />
+					</widget>
+					<widget class="label" label="Payee bank: JSC &quot;MENATEP&quot; in Moscow">
+					</widget>
+					<widget class="label" label="Acc.: 7683187443445276">
+					</widget>
+				</widget>
+			</widget>
+
+		        <!-- Sum -->
+			<widget class="hbox">
+				<widget class="label" label="&amp;Sum: " />
+				<widget class="edit" name="sum">
+					<property name="value" value="20000.00" />
+					<property name="color.base" value="#C2D2FF" />
+					<property name="color.bg" value="red" />
+				</widget>
+			</widget>
+			<widget class="label" label="Description:" />
+			<widget class="edittext" name="reason" >
+				<property name="value" value="For delivered goods." />
+			</widget>
+
+			<!-- Bottom panel -->
+			<widget class="hbox">
+				<widget class="button" name="save"  label="Save" />
+				<widget class="button" name="print" label="Print" />
+				<widget class="button" name="close" label="Close" />
+			</widget>
+		    
+		    </widget>
+	    </widget>
+            
+	    <!-- Statusbar -->
+            <widget class="statusBar" name="main_statusBar" label="Ready." />
+	
+	</widget>
+        </interface>
+
+        <!-- Widget properties -->
+        <style>
+                <property widget="mainWindow" name="geometry" value="600,450,35,15" />
+                <property widget="mainWindow" name="position" value="center" />
+                <property widget="mainWindow" name="icon" value="icons/reference_partner.xpm" />
+        </style>
+
+        <!-- Actions -->
+        <actions>
+                <!-- System actions -->
+		<rule>
+			<event widget="Menu.Quit" signal="activate"/>
+			<event widget="close" signal="activate"/>
+			<action><call widget="mainWindow" method="close"/></action>
+		</rule>
+		
+		<rule>
+			<event widget="showTB" signal="activate"/>
+			<action><call widget="main_toolBar" method="show">
+				<param><call widget="showTB" method="isChecked" /></param>
+			</call>
+			</action>
+		</rule>
+		
+		<rule>
+			<event widget="showSB" signal="activate"/>
+			<action>
+			<call widget="main_statusBar" method="show">
+				<param><call widget="showSB" method="isChecked" /></param>
+			</call>
+			</action>
+		</rule>
+
+		<rule>
+			<event widget="TB.Bank.PaymentOrder.List" signal="clicked"/>
+			<action><call method="qout">
+			<param value="List of payment orders" /></call>
+			</action>
+		</rule>
+		
+		<rule>
+			<event widget="TB.Bank.PaymentOrder.Create" signal="clicked"/>
+			<action><call method="qout">
+			<param value="Create payment order" /></call>
+			</action>
+		</rule>
+		
+		<rule>
+			<event widget="Settings" signal="activate"/>
+			<action><call method="Configuration"/></action>
+		</rule>
+		
+	</actions>
+</form>
+

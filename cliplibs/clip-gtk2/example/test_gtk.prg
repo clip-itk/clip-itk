@@ -39,7 +39,6 @@ gtk_ToolBarAppendItem(tb,NIL, "Button 2", NIL, pic1, @action())
 
 gtk_BoxPackStart( vbox, tb )
 
-
 gtk_SignalConnect( window, "delete-event", {|wid,e|gtk_Quit()} )
 gtk_WidgetShowAll( window )
 
@@ -49,4 +48,5 @@ return
 static function action()
     ? "Button clicked!"
 return 0
+
 

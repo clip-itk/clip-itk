@@ -1,0 +1,241 @@
+<chapter id="installation">
+<title>_(Clip installation)_</title>
+
+<sect1 id="preface">
+<title>_(Before install)_</title>
+
+<para>_(Clip is distributing in a source and binaries variants from the main ftp
+server and mirrors.)_</para>
+<para>_(Binaries variant (except Cygwin) depends on a distributive
+and not available from ftp servers.)_</para>
+
+<para>_(Source distributions present in two variants: splitted by packages and
+all-in-one variant.)_</para>
+
+<para>_(You can download all that you need from the main ftp server
+ftp://ftp.itk.ru/pub/clip or from mirrors:)_</para>
+<itemizedlist>
+<listitem><para>_(very fast, every night updated ftp://ftp.linux.ru.net/mirrors/clip)_</para></listitem>
+<listitem><para>_(another good server ftp://ftp.lastik.ru/clip)_</para></listitem>
+<listitem><para>_(or from sourceforge.net server http://sourceforge.net/projects/x-clip)_</para></listitem>
+</itemizedlist>
+
+<para>_(There you can find many files:)_</para>
+
+<simplelist type='horiz' columns='2'>
+<member>_(clip-prg-&lt;version&gt;.tgz)_</member>
+<member>_(SRC: all source packages and documentation)_</member>
+<member>_(clip_dev.tgz)_</member>
+<member>_(SRC: base package, == CA-Clipper 5.3)_</member>
+<member>_(clip_docs.tgz)_</member>
+<member>_(HTML: base documentation, all packages including private documentation of private functions.)_</member>
+<member>_(clip_mysql.tgz)_</member>
+<member>_(SRC: MySQL client)_</member>
+<member>_(clip_oracle.tgz)_</member>
+<member>_(SRC: Oracle client)_</member>
+<member>_(clip_odbc.tgz)_</member>
+<member>_(SRC: ODBC client)_</member>
+<member>_(clip_postgres.tgz)_</member>
+<member>_(SRC: Postgres client)_</member>
+<member>_(clip_interbase.tgz)_</member>
+<member>_(SRC: Interbase & FireBird client)_</member>
+<member>_(clip_gtk.tgz)_</member>
+<member>_(SRC: GUI library over GTK)_</member>
+<member>_(clip_gtkextra.tgz)_</member>
+<member>_(SRC: GUI library over GTKextra)_</member>
+<member>_(clip_fw.tgz)_</member>
+<member>_(SRC: FiveWin-like classes & commands)_</member>
+<member>_(clip_gd.tgz)_</member>
+<member>_(SRC: library for PNG (and more) files and business histograms)_</member>
+<member>_(clip_gzip.tgz)_</member>
+<member>_(SRC: library for supprt gz files)_</member>
+<member>_(clip_bzip2.tgz)_</member>
+<member>_(SRC: library for supprt bz2 files)_</member>
+<member>_(clip_com.tgz)_</member>
+<member>_(SRC: COM_*() functions from Tools)_</member>
+<member>_(clip_crypto.tgz)_</member>
+<member>_(SRC: Simmetric block ciphers encrypt/decrypt functions)_</member>
+<member>_(clip_rtf.tgz)_</member>
+<member>_(SRC: Rich text format library by Thomas Marchione)_</member>
+<member>_(clip_cti.tgz)_</member>
+<member>_(SRC: Clip text interface library, base for text FiveWin and FoxPro-like windows)_</member>
+<member>_(clip_udb.tgz)_</member>
+<member>_(SRC: Clip universal (object) data base, the object orientired data base)_</member>
+<member>_(clip_oasis.tgz)_</member>
+<member>_(SRC: libraries from the-oasis.net)_</member>
+<member>_(clip_prg.tgz)_</member>
+<member>_(SRC: base utils - debugger, text editor, ... include preprocessor (PP) by Ron Pinkas, bdbf by Yevgen Bondar, ....)_</member>
+<member>_(clip_dbu.tgz)_</member>
+<member>_(SRC: CA_DBU & CA_DBU53 adapted for Clip)_</member>
+<member>_(clip_fcgi.tgz)_</member>
+<member>_(SRC: FastCGI Clip library)_</member>
+<member>_(dbc.tgz)_</member>
+<member>_(SRC: DBU (C) Aleksandr Kresin)_</member>
+<member>_(cygwin_trunc.rar)_</member>
+<member>_(BIN: Cygwin developer tools for migration from unix to win32 platforms (trunc - it`s truncated by ITK distribution))_</member>
+<member>_(clip_win32_bin.rar)_</member>
+<member>_(BIN: Clip and base libraries for Win32+Cygwin)_</member>
+<member>_(gtk_std_win32.rar)_</member>
+<member>_(BIN: GTK+ standart libraries for Windows, installing after Cygwin and before Clip)_</member>
+<member>_(gtkextra_std_win32.rar)_</member>
+<member>_(BIN: extension for GTK+ libraries for Windows, installing after Cygwin and GTK+, and before Clip)_</member>
+<member>_(clip_gtk_win32.rar)_</member>
+<member>_(BIN: Clip library over GTK+, generated from clip_gtk package)_</member>
+<member>_(clip_gtkextra_win32.rar)_</member>
+<member>_(BIN: Clip library over GTK+ extra, generated from clip_gtkextra package)_</member>
+<member>_(cygwin_patch.rar)_</member>
+<member>_(BIN: fixing some problems with Cygwin)_</member>
+<member>_(patch.tgz)_</member>
+<member>_(SRC: latest fixes and addons for Clip base packages (dev & doc))_</member>
+</simplelist>
+
+<para>_(The easiest way to install the whole Clip is getting all-in-one package
+clip-prg-&lt;version&gt;.tgz unpack it and compile.)_</para>
+
+<itemizedlist>
+<title>_(To download and unpack:)_</title>
+<listitem><para>_(Download file(s) from ITK's ftp server or it mirrors and save it in a safe place.)_</para></listitem>
+<listitem><para>_(Untar it with the command #tar xzf clip-prg-&lt;version&gt;.tgz Now you have directory clip-prg-&lt;version&gt;.)_</para></listitem>
+<listitem><para>_(#cd clip-prg-&lt;version&gt; Now you are in your new directory)_</para></listitem>
+</itemizedlist>
+
+<para>_(You have two choices for the next step: you may install in local or system
+variant. What is that means?)_</para>
+
+<itemizedlist>
+<listitem><para>_(in local installation the all Clip-related files will be in your own home  directory, binaries will be linked into $HOME/bin, CLIPROOT defaults to ../cliproot, shared libraries would be with the full path in executable. This variant is easier and not need to act as root.)_</para></listitem>
+<listitem><para>_(in system-wide installation by default binaries linked into /usr/local/bin,  CLIPROOT points to /usr/local/clip, shared libraries without path in executable are linked into /usr/lib. This type of installation requires is action with superuser rights.)_</para></listitem>
+</itemizedlist>
+
+<para>_(Clip local variant may be best for you (especially due to frequently patches
+and new versions) if you make a test or working on your system as a single person.)_</para>
+</sect1>
+
+<sect1 id="local-inst">
+<title>_(Local installation.)_</title>
+
+<para>_(Firstly you must set up CLIPROOT environment variable.)_ _(Also you must add
+$CLIPROOT/bin to your path.)_ _(You can do this (if your command interpreter is bash) by
+adding following lines at the end of your local bash_profile:)_</para>
+<simplelist>
+<member>_(export CLIPROOT=$HOME/cliproot)_</member>
+<member>_(export PATH=$CLIPROOT/bin:$PATH)_</member>
+</simplelist>
+<para>_(and relogin to make this settings actual.)_</para>
+
+<para>_(You may not want to set CLIPROOT environment variable. In this case CLIPROOT
+will be in the same level as your clip-prg-&lt;version&gt; directory ("make local"
+will make ../cliproot directory). Binaries from the clip_dev package will be
+soft-linked in your $HOME/bin.)_</para>
+
+<itemizedlist>
+<title>_(Some notes:)_</title>
+<listitem><para>_(In OS Solaris must be installed "GNU bin utils" and path for it must be in  first: export PATH=/usr/local/bin;...)_</para></listitem>
+<listitem><para>_(If GNU maker in your system have name "gmake", add to environment variable MAKE=gmake)_</para></listitem>
+</itemizedlist>
+
+<para>_(Now you can go in your clip-prg-&lt;version&gt; and)_</para>
+
+<para>_(#make local)_</para>
+
+<para>_(If your PATH is setted, you can start working with Clip immediately.)_</para>
+</sect1>
+
+<sect1 id="sys-inst">
+<title>_(System-wide installation)_</title>
+
+<para>_(Just go in your clip-prg-&lt;version&gt; and)_</para>
+
+<para>_(#make system)_</para>
+
+<para>_(Remember, that CLIPROOT points to /usr/local/clip by default.)_ _(Don't forget
+to set CLIPROOT variable in your .profile)_</para>
+
+<para>_(Now you can use your Clip.)_</para>
+</sect1>
+
+<sect1 id="select-inst">
+<title>_(Selective installation)_</title>
+
+<para>_(You can install only needed packages. In this case you must download and
+install clip_dev.tgz  It contains Clip compiler itself, some utils and
+standard debugger. For installing this package you need to download it from
+ftp server and unpack in convenient directory.)_</para>
+
+<para>_(Now, if you want a local installation, you needing to set CLIPROOT
+environment variable (for example: export CLIPROOT=~/cliproot) and start
+./configure from where you unpack your file.)_</para>
+
+<para>_(If you want to make system-wide installation start ./configure -r (that key
+means "release"; other keys you can get by ./configure -h).)_</para>
+
+<para>_(After this run "make" and (with appropriate rights) "make install".)_</para>
+
+<para>_(For correct working you are still needing to add CLIPROOT in your .profile as
+described above.)_</para>
+
+<para>_(Each other clip_* package can be installed by the same way.)_</para>
+</sect1>
+
+<sect1 id="patching">
+<title>_(Patching your distribution)_</title>
+
+<para>_(On ftp server you can find patch.tgz)_ _(That file contains the last cumulative
+patch for clip_dev package.)_ _(Just unpack it (this will overwrite some file)
+and remake (by the same way as described in "Selective installation" section).)_</para>
+
+<para>_(Other libraries and packages some time updating also.)_ _(Their installation not
+different from described in "Selective installation".)_</para>
+</sect1>
+
+<sect1 id="cyg-inst">
+<title>_(Cygwin installation)_</title>
+
+<para>_(Firstly you have need to install a Cygwin package. Better way is taking the
+full version from Cygwin main site (cygwin.com).)_ _(But it has a very big size.
+Alternative way has taken cygwin_trunc.tgz from ITK's ftp site or from the
+mirrors.)_ _(It's truncated version, but this is quite enough for using Clip (even
+for building Clip from sources).)_</para>
+
+<para>_(You must unpack cygwin_trunc.tgz in C:\ (root directory of disk C:), unpack
+cygwin_patch.tgz to the same place (this file contains some fixes for correct
+work), add c:\cygwin\bin in your PATH and add cygwin.reg in your system
+registry. After rebooting you can use Cygwin.)_</para>
+
+<para>_(In addition you may install GTK+ packages (gtk_std_win32.rar and
+gtkextra_std_win32.rar) if you planing to work with GUI.)_</para>
+
+<para>_(More information about working with Cygwin you can find in "Beginner's guide".)_</para>
+</sect1>
+
+
+<sect1 id="cyg-bin">
+<title>_(Clip Cygwin binaries)_</title>
+
+<para>_(For introduction to Clip you can just install bineries win32 version of Clip.
+Needed file named clip_win32_bin.rar and it be precompiled equivalent of
+current release (clip-prg-&lt;version&gt;.tgz))_</para>
+
+<para>_(Just go by the same way as Cygwin installation and set some variables through
+c:\autoexec.bat:)_</para>
+<simplelist>
+<member>_(set CLIPROOT=/clip)_</member>
+<member>_(set LANG=ru_RU.CP1251)_</member>
+<member>_(#or)_</member>
+<member>_(set CLIP_LANG=ru_RU.CP1251)_</member>
+<member>_(If you use truncated CygWin from ftp.itk.ru - add to autoexec.bat:)_</member>
+<member>_(set PATH= c:\cygwin\bin;c:\cygwin\clip\bin;)_</member>
+</simplelist>
+</sect1>
+
+
+<sect1 id="cyg-sources">
+<title>_(Building Clip for Cygwin from the sources)_</title>
+
+<para>_(If you have planning to work with Clip on win32 you will compile it from
+sources. Mostly this process will be flows as describe above in local or
+system-wide installation sections.)_</para>
+</sect1>
+
+</chapter>
+

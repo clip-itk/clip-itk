@@ -15,7 +15,7 @@ all: pam-auth
 	 #./make_mod.sh; if [ $? != 0 ] ; then rm -f pam-auth ; fi
 
 pam-auth: pam-auth.c
-	$(CC) $(CFLAGS) -o pam-auth pam-auth.c $(LIBS)
+	$(CC) $(CFLAGS) -o pam-auth pam-auth.c $(LIBS) || exit 0
 
 clean:
 	rm -f pam-auth *.bak *.o

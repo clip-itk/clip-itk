@@ -1,6 +1,9 @@
 
  /*
  * $Log: node.c,v $
+ * Revision 1.141  2005/02/21 11:07:24  clip
+ * uri: small fix about "12->fieldname := value"
+ *
  * Revision 1.140  2004/04/14 10:37:59  clip
  * rust: small fix to work OK with GCC 3.3.3
  *
@@ -4216,7 +4219,7 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 			{
 				if (np->area)
 					fprintf(out, "0x%lx /* %s */))) goto _trap_%d;\n",
-						hashstr(np->area), np->area, np->node.seqNo);
+						n_hashstr(np->area), np->area, np->node.seqNo);
 				else if (np->nameExpr && np->nameExpr->isMacro )
 					;
 				else

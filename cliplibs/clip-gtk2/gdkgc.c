@@ -17,7 +17,7 @@
 
 /**********************************************************/
 
-GtkType _gdk_type_gc() { return GDK_OBJECT_GC; }
+GtkType _gdk_type_gc() { return GDK_TYPE_GC; }
 long _clip_type_gc() { return GDK_OBJECT_GC; }
 const char * _clip_type_name_gc() { return "GDK_OBJECT_GC"; }
 
@@ -32,8 +32,8 @@ clip_INIT___GC(ClipMachine *cm)
 CLIP_DLLEXPORT int
 gdk_object_gc_destructor(ClipMachine *cm, C_object *cgc)
 {
-	if (cgc && GDK_IS_GC(cgc) && cgc->ref_count>=0)
-		gdk_gc_unref(GDK_GC(cgc->object));
+	if (cgc && GDK_IS_GC(cgc->object) && cgc->ref_count>=0)
+		g_object_unref(GDK_GC(cgc->object));
 	return 0;
 }
 
@@ -49,8 +49,8 @@ clip_GDK_GCNEW(ClipMachine * cm)
 	gc = gdk_gc_new(cwid->widget->window);
 	if (gc)
 	{
-//		gdk_gc_ref(gc);
-		cgc = _register_object(cm,gc,GDK_OBJECT_GC,cv,
+		g_object_ref(gc);
+		cgc = _register_object(cm,gc,GDK_TYPE_GC,cv,
 			(coDestructor)gdk_object_gc_destructor);
 		if (cgc)
 		{
@@ -219,7 +219,7 @@ int
 clip_GDK_GCREF(ClipMachine * cm)
 {
 	C_object      *cgc = _fetch_co_arg(cm);
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	gdk_gc_ref(GDK_GC(cgc->object));
 	cgc->ref_count++;
 	return 0;
@@ -233,7 +233,7 @@ int
 clip_GDK_GCUNREF(ClipMachine * cm)
 {
 	C_object      *cgc = _fetch_co_arg(cm);
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 
 	cgc->ref_count--;
 	if (cgc->ref_count > 0)
@@ -259,7 +259,7 @@ clip_GDK_GCGETVALUES(ClipMachine * cm)
 	ClipVar *c = NEW(ClipVar);
 	C_widget *cw;
 
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 
 	gdk_gc_get_values(GDK_GC(cgc->object), &gcv);
 
@@ -349,7 +349,7 @@ clip_GDK_GCSETFOREGROUND(ClipMachine * cm)
 	C_object      *cgc = _fetch_co_arg(cm);
 	ClipVar    *mcolor = _clip_spar  ( cm, 2);
 	GdkColor color;
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKARG(2,MAP_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKARG(2,MAP_t);
 	_map_colors_to_gdk(cm, mcolor, &color);
 	gdk_gc_set_foreground(GDK_GC(cgc->object), &color);
 	return 0;
@@ -364,10 +364,39 @@ clip_GDK_GCSETBACKGROUND(ClipMachine * cm)
 	C_object      *cgc = _fetch_co_arg(cm);
 	ClipVar    *mcolor = _clip_spar  ( cm, 2);
 	GdkColor color;
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKARG(2,MAP_t);
 	_map_colors_to_gdk(cm, mcolor, &color);
 	gdk_gc_set_background(GDK_GC(cgc->object), &color);
+	return 0;
+err:
+	return 1;
+}
+/*Set the foreground color of a GC using an unallocated color.*/
+int
+clip_GDK_GCSETRGBFGCOLOR(ClipMachine * cm)
+{
+	C_object      *cgc = _fetch_co_arg(cm);
+	ClipVar    *mcolor = _clip_spar  ( cm, 2);
+	GdkColor color;
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKARG(2,MAP_t);
+	_map_colors_to_gdk(cm, mcolor, &color);
+	gdk_gc_set_rgb_fg_color(GDK_GC(cgc->object), &color);
+	return 0;
+err:
+	return 1;
+}
+/*Set the background color of a GC using an unallocated color.*/
+int
+clip_GDK_GCSETRGBBGCOLOR(ClipMachine * cm)
+{
+	C_object      *cgc = _fetch_co_arg(cm);
+	ClipVar    *mcolor = _clip_spar  ( cm, 2);
+	GdkColor color;
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
+	CHECKARG(2,MAP_t);
+	_map_colors_to_gdk(cm, mcolor, &color);
+	gdk_gc_set_rgb_bg_color(GDK_GC(cgc->object), &color);
 	return 0;
 err:
 	return 1;
@@ -383,7 +412,7 @@ clip_GDK_GCSETFONT(ClipMachine * cm)
 	ClipVar *c;
 	GdkFont *font; C_object *cfont;
 
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKARG3(2,CHARACTER_t,MAP_t,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKARG3(2,CHARACTER_t,MAP_t,NUMERIC_t);
 	switch ( _clip_parinfo(cm,2) )
 	{
 		case CHARACTER_t:
@@ -417,7 +446,7 @@ clip_GDK_GCSETFUNCTION(ClipMachine * cm)
 {
 	C_object        *cgc = _fetch_co_arg(cm);
 	GdkFunction function = _clip_parni(cm,2);
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKOPT(2,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKOPT(2,NUMERIC_t);
 	gdk_gc_set_function(GDK_GC(cgc->object), function);
 	return 0;
 err:
@@ -430,7 +459,7 @@ clip_GDK_GCSETFILL(ClipMachine * cm)
 {
 	C_object *cgc = _fetch_co_arg(cm);
 	GdkFill  fill = _clip_parni(cm,2);
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKOPT(2,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKOPT(2,NUMERIC_t);
 	gdk_gc_set_fill(GDK_GC(cgc->object), fill);
 	return 0;
 err:
@@ -444,7 +473,7 @@ clip_GDK_GCSETTILE(ClipMachine * cm)
 {
 	C_object  *cgc = _fetch_co_arg(cm);
 	C_widget *cxpm = _fetch_cwidget(cm,_clip_spar(cm,2));
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cxpm,GTK_IS_PIXMAP);
 	gdk_gc_set_tile(GDK_GC(cgc->object), GTK_PIXMAP(cxpm->widget)->pixmap);
 	return 0;
@@ -459,7 +488,7 @@ clip_GDK_GCSETSTIPPLE(ClipMachine * cm)
 {
 	C_object  *cgc = _fetch_co_arg(cm);
 	C_widget *cxpm = _fetch_cwidget(cm,_clip_spar(cm,2));
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cxpm,GTK_IS_PIXMAP);
 	gdk_gc_set_stipple(GDK_GC(cgc->object), GTK_PIXMAP(cxpm->widget)->pixmap);
 	return 0;
@@ -476,7 +505,7 @@ clip_GDK_GCSETTSORIGIN(ClipMachine * cm)
 	C_object *cgc = _fetch_co_arg(cm);
 	gint        x = _clip_parni(cm,2);
 	gint        y = _clip_parni(cm,3);
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
 	gdk_gc_set_ts_origin(GDK_GC(cgc->object), x, y);
 	return 0;
 err:
@@ -491,7 +520,7 @@ clip_GDK_GCSETCLIPORIGIN(ClipMachine * cm)
 	C_object *cgc = _fetch_co_arg(cm);
 	gint        x = _clip_parni(cm,2);
 	gint        y = _clip_parni(cm,3);
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
 	gdk_gc_set_clip_origin(GDK_GC(cgc->object), x, y);
 	return 0;
 err:
@@ -506,7 +535,7 @@ clip_GDK_GCSETCLIPMASK(ClipMachine * cm)
 {
 	C_object  *cgc = _fetch_co_arg(cm);
 	C_widget *cxpm = _fetch_cwidget(cm,_clip_spar(cm,2));
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cxpm,GTK_IS_PIXMAP);
 	gdk_gc_set_clip_mask(GDK_GC(cgc->object), GTK_PIXMAP(cxpm->widget)->pixmap);
 	return 0;
@@ -527,7 +556,7 @@ clip_GDK_GCSETCLIPRECTANGLE(ClipMachine * cm)
 	guint16 height = _clip_parni(cm,5);
 	double d;
 	GdkRectangle rect;
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKARG2(2,MAP_t,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKARG2(2,MAP_t,NUMERIC_t);
 	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);
 	if (_clip_parinfo(cm,2)==MAP_t)
 	{
@@ -556,7 +585,7 @@ clip_GDK_GCSETCLIPREGION(ClipMachine * cm)
 	C_object   *cgc = _fetch_co_arg(cm);
 	C_object  *creg = _fetch_cobject(cm,_clip_spar(cm,2));
 
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCOBJ(creg,GDK_IS_REGION(creg));
 	gdk_gc_set_clip_region(GDK_GC(cgc->object), (GdkRegion*)(creg->object));
 	return 0;
@@ -573,7 +602,7 @@ clip_GDK_GCSETSUBWINDOW(ClipMachine * cm)
 	C_object         *cgc = _fetch_co_arg(cm);
 	GdkSubwindowMode mode = _clip_parni (cm, 2);
 
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKARG(2,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKARG(2,NUMERIC_t);
 	gdk_gc_set_subwindow(GDK_GC(cgc->object), mode);
 	return 0;
 err:
@@ -589,7 +618,7 @@ clip_GDK_GCSETEXPOSURES(ClipMachine * cm)
 	C_object  *cgc = _fetch_co_arg(cm);
 	gint exposures = _clip_parni (cm, 2);
 
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc)); CHECKARG(2,NUMERIC_t);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKARG(2,NUMERIC_t);
 	gdk_gc_set_exposures(GDK_GC(cgc->object), exposures);
 	return 0;
 err:
@@ -607,7 +636,7 @@ clip_GDK_GCSETLINEATTRIBUTES(ClipMachine * cm)
 	GdkCapStyle   cap_style = _clip_parni (cm, 4);
 	GdkJoinStyle join_style = _clip_parni (cm, 5);
 
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
 	CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);
 	gdk_gc_set_line_attributes(GDK_GC(cgc->object),
@@ -629,7 +658,7 @@ clip_GDK_GCSETDASHES(ClipMachine * cm)
 	gchar   *dash_list = _clip_parc  (cm, 3);
 	gint             n = _clip_parni (cm, 4);
 
-	CHECKCOBJ(cgc,GDK_IS_GC(cgc));
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKOPT(2,NUMERIC_t); CHECKARG(3,CHARACTER_t); CHECKOPT(4,NUMERIC_t);
 	if (_clip_parinfo(cm,4)==UNDEF_t) n = strlen(dash_list);
 
@@ -647,7 +676,7 @@ clip_GDK_GCCOPY(ClipMachine * cm)
 	C_object *cdst_gc = _fetch_co_arg(cm);
 	C_object *csrc_gc = _fetch_cobject(cm,_clip_spar(cm,2));
 
-	CHECKCOBJ(cdst_gc,GDK_IS_GC(cdst_gc));
+	CHECKCOBJ(cdst_gc,GDK_IS_GC(cdst_gc->object));
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCOBJ(csrc_gc,GDK_IS_GC(csrc_gc));
 
 	gdk_gc_copy(GDK_GC(cdst_gc->object), GDK_GC(csrc_gc->object));

@@ -775,14 +775,16 @@ function sdtod(s,d1,d2)
 return .f.
 
 ********************
-function cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,Serr,includeAll,lOwnerTree)
+function cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,Serr,includeAll,lOwnerTree,fullList)
 	local s_obj, aRefs, idList, refList
 	local sDict,sDep,oDep02,oDict02,oDict, children
 	local i,j,k,l,obj
-	local isExpr:=.f.
+	local isExpr
 	s_obj := cgi_make_select_string(columns,_query,find_wrap,@Serr)
 	//outlog(__FILE__,__LINE__,"columns=", columns)
 	//outlog(__FILE__,__LINE__,"s_obj=", s_obj)
+	isExpr:= iif(isExpr==NIL,.f.,isExpr)
+	fullList:= iif(fullList==NIL,.f.,fullList)
 	for i=1 to len(columns)
 		j := upper(columns[i]:name)
 		if j $ _query
@@ -826,7 +828,7 @@ function cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,Serr,includeAll,lOwne
 	if refList != NIL .and. empty(refList)
 		return {}
 	endif
-	if empty(s_obj:expr) .and. empty(refList)
+	if empty(s_obj:expr) .and. empty(refList) .and. !fullList
 		if isExpr
 			return {}
 		else

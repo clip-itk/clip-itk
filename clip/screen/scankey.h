@@ -1,5 +1,8 @@
 /*
   $Log: scankey.h,v $
+  Revision 1.7  2005/02/03 17:21:29  clip
+  uri: kbdstat(), bit #18, for En/Ru detection. Only for scan mode keyboard.
+
   Revision 1.6  2004/12/15 07:05:37  clip
   uri: add KSET*()
 
@@ -52,6 +55,8 @@ void scan_reset(void);
 #define SCAN_NUMLOCK	10
 #define SCAN_CAPSLOCK	11
 #define SCAN_INSERT	12
+/* CLIP extention, nation keyboard actived */
+#define SCAN_NATKBD	17
 
 /* from keymap.c */
 int load_keymap(FILE *file, char *errbuf, int errbuflen);

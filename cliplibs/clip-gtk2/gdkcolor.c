@@ -15,7 +15,7 @@
 #include "clip-gtk2.h"
 #include "clip-gdk2.h"
 
-GtkType _gdk_type_colormap() { return GDK_OBJECT_COLORMAP; }
+GtkType _gdk_type_colormap() { return GDK_TYPE_COLORMAP; }
 long _clip_type_colormap() { return GDK_OBJECT_COLORMAP; }
 const char * _clip_type_name_colormap() { return "GDK_OBJECT_COLORMAP"; }
 
@@ -65,7 +65,7 @@ clip_GDK_COLORRGB(ClipMachine * cm)
 	}
 	return 0;
 err:
-	return 1;
+     	return 1;
 }
 
 /* Gets a map with fields RED, GREEN and BLUE */
@@ -99,7 +99,7 @@ clip_GDK_COLORALLOC(ClipMachine * cm)
 	C_object *ccmap = _fetch_co_arg(cm);
 	ClipVar *mcolor = _clip_spar(cm,2);
 	GdkColor color;
-	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap)); CHECKARG(2,MAP_t);
+	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap->object)); CHECKARG(2,MAP_t);
 	_map_colors_to_gdk(cm, mcolor, &color);
 	if (gdk_color_alloc(GDK_COLORMAP(ccmap), &color))
 	{
@@ -116,7 +116,7 @@ err:
 CLIP_DLLEXPORT int
 gdk_object_colormap_destructor(ClipMachine *cm, C_object *ccmap)
 {
-	if (ccmap && GDK_IS_COLORMAP(ccmap))
+	if (ccmap && GDK_IS_COLORMAP(ccmap->object))
 		gdk_colormap_unref(GDK_COLORMAP(ccmap->object));
 	return 0;
 }
@@ -154,7 +154,7 @@ int
 clip_GDK_COLORMAPREF(ClipMachine * cm)
 {
 	C_object *ccmap = _fetch_co_arg(cm);
-	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap));
+	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap->object));
 	gdk_colormap_ref(GDK_COLORMAP(ccmap->object));
 	ccmap->ref_count++;
 	return 0;
@@ -168,7 +168,7 @@ int
 clip_GDK_COLORMAPUNREF(ClipMachine * cm)
 {
 	C_object *ccmap = _fetch_co_arg(cm);
-	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap));
+	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap->object));
 	ccmap->ref_count--;
 	if (ccmap->ref_count > 0)
 		gdk_colormap_unref(GDK_COLORMAP(ccmap->object));
@@ -199,7 +199,7 @@ clip_GDK_COLORMAPALLOCCOLOR(ClipMachine * cm)
 	gboolean best_match = BOOL_OPTION(cm,4,TRUE);
 
 	GdkColor color;
-	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap)); CHECKARG(2,MAP_t);
+	CHECKCOBJ(ccmap,GDK_IS_COLORMAP(ccmap->object)); CHECKARG(2,MAP_t);
 	CHECKOPT(3,LOGICAL_t); CHECKOPT(4,LOGICAL_t);
 	_map_colors_to_gdk(cm, mcolor, &color);
 	if (gdk_colormap_alloc_color(GDK_COLORMAP(ccmap->object), &color, writable, best_match))

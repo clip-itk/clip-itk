@@ -87,7 +87,16 @@ clip_GTK_INIT(ClipMachine * cm)
 int
 clip_GTK_INITCHECK(ClipMachine * cm)
 {
-	_clip_retl(cm,gtk_init_check(0, NULL));
+	int n, i;
+        char *par[20], **apar;
+	memset(par, 0, sizeof(par));
+        n = _clip_parinfo(cm, 0);
+        par[0] = "";
+        for (i=1; i<=n; i++)
+        	par[i] = _clip_parc(cm, i);
+	apar = (char **)&par;
+        n++;
+	_clip_retl(cm,gtk_init_check(&n, &apar));
 	return 0;
 }
 

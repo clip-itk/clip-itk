@@ -5,6 +5,18 @@
  */
 /*
    $Log: _ctools_s.c,v $
+   Revision 1.73  2005/02/22 08:04:39  clip
+   uri: small fix
+
+   Revision 1.72  2005/02/21 10:56:56  clip
+   uri: small fix in *token()
+
+   Revision 1.71  2005/02/15 10:46:40  clip
+   uri: small fix in attoken()
+
+   Revision 1.70  2005/02/13 06:52:42  clip
+   uri: small fix in attoken()
+
    Revision 1.69  2004/11/29 06:57:07  clip
    uri: small fix in tokennext()
 
@@ -2710,7 +2722,7 @@ clip_WORDTOCHAR(ClipMachine * mp)
 unsigned char *
 _clip_attoken(unsigned char *str, int l1, unsigned char *str2, int l2, int count)
 {
-	unsigned char *e1, *e2, *s, *dstr, *end, *send, *ret;
+	unsigned char *e1, *e2, *s, *dstr, *end, *send, *ret, *ret1;
 	int sovp = 1;
 
 	if (str2 == NULL)
@@ -2722,42 +2734,99 @@ _clip_attoken(unsigned char *str, int l1, unsigned char *str2, int l2, int count
 		dstr = str2;
 	end = str + l1;
 	send = dstr + l2;
-	ret = end;
-	for (e1 = str; e1 < end; e1++)
+	ret = str; ret1 = NULL;
+	for (e1 = str; e1 <= end-l2; e1++)
 	{
-		for (e2 = e1, s = dstr; s < send && e2 < end && *s != *e2; s++, e2++);
+		for (e2 = e1, s = dstr; s <= send && e2 <= end && *s != *e2; s++, e2++);
 		if (*e2 != *s)
 			continue;
-		sovp++;
-		ret = e1 + 1;
-		if (count != 0 && sovp == count)
+		if ( sovp == count)
 			break;
+		if (e1 != str)
+			sovp++;
+		ret = e1+l2;
+		if ( e2 >= end-l2 )
+			break;
+		if ( ret < end )
+			ret1 = ret;
+	/*
+	printf("\ncount=%d,l1=%d,e2=%d,ret1=%d,ret=%d",count,l1,e2-end,ret1-str,ret-str);
+	*/
 
 	}
-	if (count != 0 && sovp < count)
-		ret = end;
+	/*
+	printf("\ncount=%d,ret1=%d,ret=%d\n",count,ret1-str,ret-str);
+	*/
+	if ( count == 0xFFFF)
+		ret = ret1;
+	else
+		if ( sovp != count)
+			ret = NULL;
 	return ret;
 }
 
 int
 clip_ATTOKEN(ClipMachine * mp)
 {
-	int l1, l2;
+	int l1, l2, ret;
+	/*int lflag = 0 ;*/
 	unsigned char *beg;
 	unsigned char *str = _clip_parcl(mp, 1, &l1);
 	unsigned char *dstr = _clip_parcl(mp, 2, &l2);
-	int count = _clip_parni(mp, 3);
+	int count = 0xffff;
 
-	if (str == NULL)
+	if ( _clip_parinfo(mp,2) == NUMERIC_t )
+		count = _clip_parni(mp, 2);
+	if ( _clip_parinfo(mp,3) == NUMERIC_t )
+		count = _clip_parni(mp, 3);
+
+	if ( str == NULL )
 	{
 		_clip_retni(mp, 0);
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "ATTOKEN");
 	}
+	if ( dstr == NULL )
+	{
+		dstr = "\\ \t\n\r,.;:!?/<<>>()^#&%+-*" ;
+		l2 = strlen(dstr);
+	}
+
+	if ( count <= 0 )
+		{
+		_clip_retni(mp,0);
+		return 0;
+		}
+
+		/*
+	if ( count != 0xFFFF )
+	{
+		if ( l2 == 1 && dstr[0] == 10 )
+		{
+			count --;
+			lflag = 1;
+		}
+		if ( l2 == 2 && dstr[0] == 13 && dstr[1] == 10 )
+		{
+			count --;
+			lflag = 1;
+		}
+		//count --;
+	}
+		*/
 	beg = _clip_attoken(str, l1, dstr, l2, count);
-	if (beg < str + l1)
-		_clip_retni(mp, beg - str + 1);
-	else
-		_clip_retni(mp, 0);
+	/*
+	printf("\ncount=%d,l1=%d,beg=%s,n=%d\n",count,l1,beg,beg +l2 - (str + l1));
+	*/
+	ret = 0;
+	if (beg != NULL )
+		ret = beg - str+1;
+	/*
+		if ( beg + l2 + (count==0xFFFF ? -1: 0) < str + l1)
+			ret = beg - str + l2+1;
+	*/
+	if ( ret > l1 )
+		ret = l1;
+	_clip_retni(mp, ret);
 	return 0;
 }
 
@@ -2797,7 +2866,8 @@ clip_NUMTOKEN(ClipMachine * mp)
 	for (e = dstr; e < send; e++)
 		buf[(int) (*e)] = 1;
 
-	for (e = str; e < end;)
+	for (e=str; e < end && buf[(int) (*e)]; e++);
+	for (; e < end;)
 	{
 		for (; e < end && !buf[(int) (*e)]; e++);
 		for (nt = 0; nt < tlen && e < end && buf[(int) (*e)]; e++, nt++);

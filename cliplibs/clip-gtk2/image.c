@@ -122,8 +122,8 @@ int
 clip_GTK_IMAGEGETIMAGE(ClipMachine * cm)
 {
 	C_widget *cimg = _fetch_cw_arg(cm);
-	ClipVar *cvgdkimg = _clip_par(cm, 2);
-	ClipVar *cvbitmap = _clip_par(cm, 3);
+	ClipVar *cvgdkimg = _clip_spar(cm, 2);
+	ClipVar *cvbitmap = _clip_spar(cm, 3);
         C_object *cgdkimg;
         C_object *cbitmap;
         GdkImage *gdkimg;

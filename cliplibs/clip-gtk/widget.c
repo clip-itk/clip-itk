@@ -1232,7 +1232,7 @@ clip_GTK_WIDGETGETCOLORMAP(ClipMachine * cm)
 
 	if (colormap)
 	{
-		ccmap = _register_object(cm,colormap,GDK_OBJECT_COLORMAP,NULL,
+		ccmap = _register_object(cm,colormap,GDK_TYPE_COLORMAP,NULL,
 			(coDestructor)gdk_object_colormap_destructor);
 		if (ccmap)
 		{
@@ -1262,7 +1262,7 @@ clip_GTK_WIDGETGETPARENTWINDOW (ClipMachine *cm)
 	win = gtk_widget_get_parent_window(cwid->widget);
 	if (win)
 	{
-		cwin = _get_cobject(cm, win, GDK_OBJECT_WINDOW,
+		cwin = _get_cobject(cm, win, GDK_TYPE_WINDOW,
 			(coDestructor)gdk_object_window_destructor);
 		_clip_retni(cm, cwin->handle);
 	}

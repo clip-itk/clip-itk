@@ -162,7 +162,7 @@ clip_GTK_CONTAINERCHECKRESIZE(ClipMachine * cm)
 err:
 	return 1;
 }
-
+/*
 static void
 _container_children_func(GtkWidget *wid, gpointer data)
 {
@@ -173,11 +173,45 @@ _container_children_func(GtkWidget *wid, gpointer data)
 	if (c_wid)
 		_clip_aadd(c->cm, c->cv, &c_wid->obj);
 }
+*/
+int
+clip_GTK_CONTAINERGETCHILDREN (ClipMachine *cm)
+{
+	C_widget *ccon = _fetch_cw_arg(cm);
+        GList    *list ;
+        ClipVar    *cv = RETPTR(cm);
+        long         l ;
+
+	CHECKCWID(ccon,GTK_IS_CONTAINER);
+
+	list = gtk_container_get_children(GTK_CONTAINER(ccon->widget));
+	l = g_list_length(list);
+        _clip_array(cm, cv, 1, &l);
+        //memset(cv, 0, sizeof(cv));
+        for (l=0; list; list = g_list_next(list), l++)
+        {
+        	C_widget *cwid;
+                GtkWidget *wid;
+                wid = (GtkWidget *)list->data;
+                if (wid)
+                {
+                	cwid = _list_get_cwidget(cm, cwid);
+                	if (!cwid) cwid = _register_widget(cm, wid, NULL);
+                        if (cwid) _clip_aset(cm, cv, &cwid->obj, 1, &l);
+                }
+        }
+        free(list);
+	return 0;
+err:
+	return 1;
+}
 
 // Returns a list of container children
 int
 clip_GTK_CONTAINERCHILDREN (ClipMachine *cm)
 {
+	return clip_GTK_CONTAINERGETCHILDREN(cm);
+/*
 	C_widget *ccon = _fetch_cw_arg(cm);
 	long n=0;
 	ClipVar *a = RETPTR(cm);
@@ -192,6 +226,7 @@ clip_GTK_CONTAINERCHILDREN (ClipMachine *cm)
 	return 0;
 err:
 	return 1;
+*/
 }
 
 static void
@@ -232,36 +267,6 @@ clip_GTK_CONTAINERFOREACH (ClipMachine *cm)
 	_clip_mclone(cm, &c->cfunc, cfunc);
 	gtk_container_foreach(GTK_CONTAINER(ccon->widget),
 		(GtkCallback)_container_for_each_func,c);
-	return 0;
-err:
-	return 1;
-}
-
-int
-clip_GTK_CONTAINERGETCHILDREN (ClipMachine *cm)
-{
-	C_widget *ccon = _fetch_cw_arg(cm);
-        GList    *list ;
-        ClipVar    *cv = RETPTR(cm);
-        long         l ;
-
-	CHECKCWID(ccon,GTK_IS_CONTAINER);
-
-	list = gtk_container_get_children(GTK_CONTAINER(ccon->widget));
-	l = g_list_length(list);
-        _clip_array(cm, cv, 1, &l);
-        memset(cv, 0, sizeof(cv));
-        for (l=0; list; list = g_list_next(list), l++)
-        {
-        	C_widget *cwid;
-                GtkWidget *wid;
-                wid = (GtkWidget *)list->data;
-                if (wid)
-                {
-                	cwid = _register_widget(cm, wid, NULL);
-                        if (cwid) _clip_aset(cm, cv, &cwid->obj, 1, &l);
-                }
-        }
 	return 0;
 err:
 	return 1;

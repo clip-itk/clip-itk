@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
-/*   Copyright (C) 2003, 2004 by E/AS Software Foundation 	           */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 27 Aug 2004						   */
+/*   Last change: 16 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -15,7 +15,6 @@
 function UIColor( color, opacity )
         local r, g, b, o
 	local obj := map()
-	obj:className := "UIColor"
 	color := iif(empty(color),"#000000",color)
 	
 	if left(color,1) != '#'
@@ -30,4 +29,5 @@ function UIColor( color, opacity )
 		obj:blue  := iif(b==0,0,(b+1)*256-1)
 		obj:opacity := iif(o==0,0,(o+1)*256-1)
 	endif
+	obj:className := "UIColor"
 return obj

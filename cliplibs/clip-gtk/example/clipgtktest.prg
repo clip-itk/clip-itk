@@ -606,12 +606,12 @@ function Main()
 	gtk_ContainerAdd(PxmFrame,PxmFx)
 
 	D_MSG("Pixmap")
-	pix:=gtk_PixmapFromXPMNew(,"clip.xpm",w)
+	pix:=gdk_PixmapFromXPMNew(,"clip.xpm",w)
 	gtk_WidgetSetPosition(pix,5,5)
 	gtk_FixedPut(PxmFx, pix)
 
 	D_MSG("Pixmap from BMP")
-	bmppix:=gtk_PixmapFromBMPNew(,"basket.bmp",w)
+	bmppix:=gdk_PixmapFromBMPNew(,"basket.bmp",w)
 	gtk_WidgetSetPosition(bmppix,80,5)
 	gtk_FixedPut(PxmFx, bmppix)
 

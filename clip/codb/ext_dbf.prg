@@ -93,6 +93,9 @@ static function _ext_getValue(cID,nLocks,version)
 			tmp := rddRead(::hDbData)
 			if tmp:object_id == cID
 				ret := tmp:body
+				if valtype(ret) != "O"
+					outlog(__FILE__,__LINE__,"error in FPT","file=",::path,"recno=",rddRecno(::hDbData),"value=",ret)
+				endif
 			endif
 		else
 			::error := codb_error(1253)+":"+cId+"-"+alltrim(str(version,3,0))

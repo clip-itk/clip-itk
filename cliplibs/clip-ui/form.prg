@@ -3,7 +3,7 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 19 Jan 2005						   */
+/*   Last change: 06 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -354,6 +354,8 @@ static function ui_createWidget(self, tag, parent )
 			ui_setProperty(self, c, o)
 		elseif c:name == "RULE"
 			ui_setAction(self, c, o)
+		elseif c:name == "FIELD"
+			// TODO: process <field> tag...
 		elseif ascan({"COLUMN"},{|ev| ev==c:name}) != 0
 			// Nothing do
 		else
@@ -559,7 +561,7 @@ static function ui_setAction(self, tag, lObj)
 		return .F.
 	endif
 
-	// TODO: labelled rule support on menu
+	// TODO: labelled form rule support on menu
         labelRule := self:i18n(mapget(t:attr,"LABEL",NIL))
 	if .not. empty(labelRule)
 //		?? "Action:",labelRule,chr(10)
@@ -593,7 +595,7 @@ static function ui_setAction(self, tag, lObj)
 				aadd(actions, j)
 			next
 		else
-			?? "WARNING: unknown tag "+e:name+". Ignored&\n"
+			?? "WARNING: unknown tag "+e:name+" in '"+self:fileName+"'. Ignored&\n"
 		endif
 	next
 
@@ -694,7 +696,7 @@ static function ui_subActionHandler(self, tag, addVal)
 				endif
 //				?? "case value:",condVal,"?",chkVal,chr(10)
 				if chkVal == condVal
-					?? "CASE:",chkVal,"executing...&\n"
+//					?? "CASE:",chkVal,"executing...&\n"
 					return self:actionHandler(e,addVal)
 				endif
 			endif

@@ -12,14 +12,16 @@
 #define ACCESS_DENIED  0
 #define ACCESS_GRANTED 1
 
+int allow_severity, deny_severity;
+
 /*---------------------------------------------------
  *  example: tcp-wrap cobra-serv 192.168.170.1  -> 0 - OK | 1 - Error
  * --------------------------------------------------*/
 main(int argc, char *argv[])
 {
     int retval = ACCESS_DENIED;
-	char *daemon, *ipaddr;
-	char buf[BUFSIZE];
+    char *daemon, *ipaddr;
+    char buf[BUFSIZE];
 
 	/* make standard output line buffered */
 	setvbuf(stdout, NULL, _IOLBF, 0);

@@ -1,0 +1,36 @@
+$FUNCNAME$
+	_clip_parni()
+$CATEGORY$
+	C-API
+$SUMMARY$
+	Retrieve a numeric parameter as an integer.
+$LANG_RU$
+	Принимает числовой параметр как int.
+$SYNTAX$
+	int _clip_parni(ClipMachine * cm,int num)
+$ARGUMENTS$
+	<num> - position of the parameter in parameters list
+$LANG_RU$
+	<num> - позиция параметра в списке параметров
+$RETURNS$
+	_clip_parni() returns the value of the specified parameter as an int type.
+$LANG_RU$
+	_clip_parni() возващает значение указанного параметр как int.
+$DESCRIPTION$
+	_clip_parni() retrieves a numeric value passed as a parameter from CLIP
+	and converts it to an int type.
+$LANG_RU$
+	_clip_parni() принимает числовое значение переданное в качестве параметра
+	из CLIP и преобразует его в int.
+$EXAMPLES$
+	#include "clip.h"
+
+	int clip_MYFUNCTION(ClipMachine * cm)
+	{
+		int num = _clip_parni(cm,1);
+		/* ... */
+		return 0;
+	}
+$SEEALSO$
+	_clip_parnd(),_clip_parnl(),_clip_retni(),_clip_storni()
+$END$

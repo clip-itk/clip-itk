@@ -1,0 +1,42 @@
+$FUNCNAME$
+	_clip_retnl()
+$CATEGORY$
+	C-API
+$SUMMARY$
+	Post a numeric return value using a long type.
+$LANG_RU$
+	Возвращает значение арифметического выражения типа long.
+$SYNTAX$
+	void _clip_retnl(ClipMachine * cm,long n)
+$ARGUMENTS$
+	<n> - a numeric expression of long type
+$LANG_RU$
+	<n> - числовое выражение типа long
+$RETURNS$
+	_clip_retnl() has no return value.
+$LANG_RU$
+	_clip_retnl() не имеет возвращаемого значения.
+$DESCRIPTION$
+	_clip_retnl() posts a numeric value into CLIP's return value area.
+	When your exported function returns control to the calling CLIP
+	program, the posted value becomes the CLIP return value of your
+	exported function.
+$LANG_RU$
+	_clip_retnl() используется для переноса числового значения в область
+	возвращаемых значений CLIP. Позднее, когда экспортируемая функция,
+	написанная на C, возвратит управление в вызвавшую ее CLIP программу,
+	перенесенное арифметическое	значение будет доступным точно так же,
+	как если бы оно было непосредственно возвращено из CLIP-функции.
+$EXAMPLES$
+	#include "clip.h"
+
+	int clip_MYFUNCTION(ClipMachine * cm)
+	{
+		long n;
+		/* ... */
+		_clip_retnl(cm,n);
+		return 0;
+	}
+$SEEALSO$
+	_clip_parnl(),_clip_retni(),_clip_retnd(),_clip_stornl()
+$END$

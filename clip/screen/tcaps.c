@@ -1,6 +1,9 @@
 
 /*
    $Log: tcaps.c,v $
+   Revision 1.8  2005/02/22 08:09:43  clip
+   uri: small fix
+
    Revision 1.7  2004/05/21 11:22:19  clip
    rust: minor fix for 'configure -m'
 
@@ -38,19 +41,16 @@
 #include "../clip.h"
 
 #ifdef unix
-
-#include <unistd.h>
-
-#define DELIM '/'
-#define DELIMSTR "/"
-
+	#ifndef _WIN32
+		#include <unistd.h>
+		#define DELIM '/'
+		#define DELIMSTR "/"
+	#endif
 #endif
 
 #ifdef _WIN32
-
-#define DELIM '\\'
-#define DELIMSTR "\\"
-
+	#define DELIM '\\'
+	#define DELIMSTR "\\"
 #endif
 
 #ifndef DELIMSTR

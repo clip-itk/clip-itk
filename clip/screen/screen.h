@@ -1,5 +1,8 @@
 /*
 $Log: screen.h,v $
+Revision 1.23  2005/02/03 17:21:29  clip
+uri: kbdstat(), bit #18, for En/Ru detection. Only for scan mode keyboard.
+
 Revision 1.22  2004/12/15 07:05:37  clip
 uri: add KSET*()
 
@@ -188,6 +191,7 @@ extern int esc_delay_Screen;
 #define KEY_NUMLOCK	10
 #define KEY_CAPSLOCK	11
 #define KEY_INSLOCK	12
+#define KEY_NATKBD	17
 
 /* colors */
 #define COLOR_BLACK   		0x0

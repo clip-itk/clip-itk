@@ -404,5 +404,24 @@ GtkType _gtk_type_window();
 #define GTK_ACCEL_GROUP(obj)           ((GtkAccelGroup *)(obj))
 #define GTK_IS_ACCEL_GROUP(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_ACCEL_GROUP)
 
+#ifndef GDK_BITMAP
+#define GDK_BITMAP(obj)           ((GdkBitmap *)(obj))
+#define GDK_IS_BITMAP(obj)        (obj && ((C_object*)obj)->type == GDK_TYPE_BITMAP)
+#endif
+
+#ifndef GDK_PIXMAP
+#define GDK_PIXMAP(obj)           ((GdkPixmap *)(obj))
+#define GDK_IS_PIXMAP(obj)        (obj && ((C_object*)obj)->type == GDK_TYPE_PIXMAP)
+#endif
+
+#ifndef GDK_WINDOW
+#define GDK_WINDOW(obj)           ((GdkWindow *)(obj))
+#define GDK_IS_WINDOW(obj)        (obj && ((C_object*)obj)->type == GDK_TYPE_WINDOW)
+#endif
+
+#ifndef GDK_COLORMAP
+#define GDK_COLORMAP(obj)           ((GdkColormap *)(obj))
+#define GDK_IS_COLORMAP(obj)        (obj && ((C_object*)obj)->type == GDK_TYPE_COLORMAP)
+#endif
 
 #endif

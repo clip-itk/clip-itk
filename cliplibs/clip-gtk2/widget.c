@@ -1246,16 +1246,25 @@ int clip_GTK_WIDGETGETSTYLE (ClipMachine *cm)
 	/////////alena*
 
 	style->white_gc = cwid->widget->style->white_gc;
+        g_object_ref(style->white_gc);
 	style->black_gc = cwid->widget->style->black_gc;
+        g_object_ref(style->black_gc);
 	for (i = 0; i < 5; i++)
 	{
 		style->fg_gc[i] = cwid->widget->style->fg_gc[i];
+                g_object_ref(style->fg_gc[i]);
 		style->bg_gc[i] = cwid->widget->style->bg_gc[i];
+                g_object_ref(style->bg_gc[i]);
 		style->light_gc[i] = cwid->widget->style->light_gc[i];
+                g_object_ref(style->light_gc[i]);
 		style->dark_gc[i] = cwid->widget->style->dark_gc[i];
+                g_object_ref(style->dark_gc[i]);
 		style->mid_gc[i] = cwid->widget->style->mid_gc[i];
+                g_object_ref(style->mid_gc[i]);
 		style->text_gc[i] = cwid->widget->style->text_gc[i];
+                g_object_ref(style->text_gc[i]);
 		style->base_gc[i] = cwid->widget->style->base_gc[i];
+                g_object_ref(style->base_gc[i]);
 	}
 
 
@@ -1543,13 +1552,14 @@ clip_GTK_WIDGETGETCOLORMAP(ClipMachine * cm)
 			(coDestructor)gdk_object_colormap_destructor);
 		if (ccmap)
 		{
-		    	ccmap->ref_count = 1;
+		    	//ccmap->ref_count = 1;
 			//ccmap->ref_count ++;
 			//gdk_colormap_ref(colormap);
+			//g_object_ref(ccmap);
 			_clip_mclone(cm,RETPTR(cm),&ccmap->obj);
 		}
-		else
-			gdk_colormap_unref(colormap);
+		//else
+		//	gdk_colormap_unref(colormap);
 	}
 
 	return 0;
@@ -1617,6 +1627,25 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_WIDGETSIZEREQUEST (ClipMachine *cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+	gint     width = _clip_parni(cm, 2);
+	gint    height = _clip_parni(cm, 3);
+        GtkRequisition sreq;
+
+	CHECKARG(2,NUMERIC_t); CHECKARG(3, NUMERIC_t);
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	sreq.width = width;
+        sreq.height = height;
+	gtk_widget_size_request(cwid->widget, &sreq);
+
+	return 0;
+err:
+	return 1;
+}
 int
 clip_GTK_WIDGETSHAPECOMBINEMASK (ClipMachine *cm)
 {

@@ -5,6 +5,15 @@
 */
 /*
    $Log: _io.c,v $
+   Revision 1.280  2005/02/21 10:56:56  clip
+   uri: small fix in *token()
+
+   Revision 1.279  2005/02/09 09:10:08  clip
+   uri: small fix
+
+   Revision 1.278  2005/02/03 17:21:28  clip
+   uri: kbdstat(), bit #18, for En/Ru detection. Only for scan mode keyboard.
+
    Revision 1.277  2005/01/05 11:22:01  clip
    uri: small fix
 
@@ -2638,7 +2647,7 @@ clip_VAL(ClipMachine * mp)
 		}
 		else
 			sp = s + dec;
-		for (; *sp && (isdigit(*sp) || *sp == '.' || *sp == ',' || *sp == '-'); ++sp)
+		for (; *sp && (isdigit(*sp) || *sp == '.' || *sp == ',' || *sp == '-' || *sp==' '); ++sp)
 			;
 		len = sp - s;
 		if (dec)
@@ -4332,6 +4341,9 @@ clip___KEYBOARD(ClipMachine * mp)
 	/* second parameters as "not clear keyboard buffer" */
 	ClipVar *vp = _clip_par(mp, 1);
 
+	if (!mp->fullscreen)
+		return 0;
+
 	if (!_clip_parl(mp, 2) || _clip_parinfo(mp, 0) == 0)
 	{
 		int tmp = mp->lastkey;
@@ -4592,9 +4604,10 @@ clip_KBDSTAT(ClipMachine * mp)
 		r |= 0x4;
 	if (flags & ((1 << KEY_ALT) | (1 << KEY_ALTGR)))
 		r |= 0x8;
-
 	if (flags & (1 << KEY_SLOCK))
 		r |= 0x10;
+	if (flags & (1 << KEY_NATKBD))
+		r |= 0x20000;
 	if (flags & (1 << KEY_NUMLOCK))
 		r |= 0x20;
 	if (flags & (1 << KEY_CAPSLOCK))

@@ -5,13 +5,21 @@ static cls
 function Main()
 	local w,vb,hb,sw,f,CLFrame
 	local clst,clst1,sizes:={}, cols:={},clf:={}
-	local wX,wY
+	local wX,wY, mask
 	gtk_Init()
 
 	w:= gtk_WindowNew(,"CLIP-GTK test")
 	gtk_WidgetSetPosition(w,50,50)
 	gtk_WidgetSetSize(w,750,550)
+	/* set user icon */
 	gtk_WidgetRealize(w)
+	_pix := gdk_PixmapColormapCreateFromXpm(NIL, ;
+		      gtk_WidgetGetColormap (w), ;
+		@mask, ;
+		NIL, "gnome-foot.xpm")
+	pix := gtk_PixmapNew( , _pix, mask)
+	gtk_WindowSetIconPixmap(w, pix)
+
 //	gtk_WindowGetSize(w,wX,wY)
 //qout(wX,wY)
 	gtk_WindowSetPolicy(w,.f.,.t.,.t.)

@@ -33,8 +33,11 @@ char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 #else
 
 #include "gdcache.h"
-#include "freetype/freetype.h"
-#include "freetype/ftglyph.h"
+/*#include "freetype/freetype.h"*/
+/*#include "freetype/ftglyph.h"*/
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
 
 /* number of fonts cached before least recently used is replaced */
 #define FONTCACHESIZE 6
@@ -43,8 +46,8 @@ char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 #define TWEENCOLORCACHESIZE 32
 
 /*
- * Line separation as a factor of font height.  
- *	No space between if LINESPACE = 1.00 
+ * Line separation as a factor of font height.
+ *	No space between if LINESPACE = 1.00
  *	Line separation will be rounded up to next pixel row.
  */
 #define LINESPACE 1.05
@@ -92,7 +95,7 @@ typedef struct {
 	FT_Library	*library;
 } fontkey_t;
 
-typedef struct { 
+typedef struct {
     unsigned char       pixel;		/* key */
     unsigned char       bgcolor;	/* key */
     int			fgcolor;	/* key */ /* -ve means no antialias */
@@ -105,7 +108,7 @@ typedef struct {
     unsigned char       bgcolor;	/* key */
     int			fgcolor;	/* key */ /* -ve means no antialias */
     gdImagePtr          im;		/* key */
-} tweencolorkey_t;  
+} tweencolorkey_t;
 
 /********************************************************************
  * gdTcl_UtfToUniChar is borrowed from Tcl ...
@@ -152,7 +155,7 @@ typedef struct {
 #ifdef JISX0208
 #include "jisx0208.h"
 #endif
- 
+
 #define Tcl_UniChar int
 #define TCL_UTF_MAX 3
 static int
@@ -161,7 +164,7 @@ gdTcl_UtfToUniChar(char *str, Tcl_UniChar *chPtr)
 /* chPtr is the int for the result */
 {
 	int byte;
-    
+
 	/* HTML4.0 entities in decimal form, e.g. &#197; */
 	byte = *((unsigned char *) str);
 	if (byte == '&') {
@@ -173,7 +176,7 @@ gdTcl_UtfToUniChar(char *str, Tcl_UniChar *chPtr)
 				byte = *((unsigned char *) (str+i));
 				if (byte >= '0' && byte <= '9') {
 					n = (n * 10) + (byte - '0');
-				} 
+				}
 				else
 					break;
 			}
@@ -183,7 +186,7 @@ gdTcl_UtfToUniChar(char *str, Tcl_UniChar *chPtr)
 			}
 		}
 	}
-	 
+
 	/*
 	 * Unroll 1 to 3 byte UTF-8 sequences, use loop to handle longer ones.
 	 */
@@ -221,37 +224,37 @@ gdTcl_UtfToUniChar(char *str, Tcl_UniChar *chPtr)
 			 * Two-byte-character lead-byte followed
 			 * by a trail-byte.
 			 */
-	     
+
 			*chPtr = (Tcl_UniChar) (((byte & 0x1F) << 6)
 				| (str[1] & 0x3F));
 			return 2;
 		}
 		/*
-	 	 * A two-byte-character lead-byte not followed by trail-byte
-	 	 * represents itself.
-	 	 */
-	 	
+		 * A two-byte-character lead-byte not followed by trail-byte
+		 * represents itself.
+		 */
+
 		*chPtr = (Tcl_UniChar) byte;
 		return 1;
-    	} else if (byte < 0xF0) {
+	} else if (byte < 0xF0) {
 		if (((str[1] & 0xC0) == 0x80) && ((str[2] & 0xC0) == 0x80)) {
 			/*
 			 * Three-byte-character lead byte followed by
 			 * two trail bytes.
 			 */
-	
-	    		*chPtr = (Tcl_UniChar) (((byte & 0x0F) << 12) 
-		    		| ((str[1] & 0x3F) << 6) | (str[2] & 0x3F));
-	    		return 3;
+
+			*chPtr = (Tcl_UniChar) (((byte & 0x0F) << 12)
+				| ((str[1] & 0x3F) << 6) | (str[2] & 0x3F));
+			return 3;
 		}
 		/*
 		 * A three-byte-character lead-byte not followed by
 		 * two trail-bytes represents itself.
 		 */
-	
+
 		*chPtr = (Tcl_UniChar) byte;
 		return 1;
-    	}
+	}
 #if TCL_UTF_MAX > 3
 	else {
 		int ch, total, trail;
@@ -317,7 +320,7 @@ fontFetch ( char **error, void *key )
 	 */
 	fontsearchpath = getenv("GDFONTPATH");
 	if (! fontsearchpath ) fontsearchpath = DEFAULT_FONTPATH;
-        path = strdup(fontsearchpath);
+	path = strdup(fontsearchpath);
 	fontlist = strdup(a->fontlist);
 
 	/*
@@ -326,7 +329,7 @@ fontFetch ( char **error, void *key )
 	for (name = gd_strtok_r(fontlist,LISTSEPARATOR,&strtok_ptr); name;
 			name = gd_strtok_r(0,LISTSEPARATOR,&strtok_ptr)) {
 
-        	/*
+		/*
 		 * Allocate an oversized buffer that is guaranteed to be
 		 * big enough for all paths to be tested.
 		 */
@@ -334,30 +337,30 @@ fontFetch ( char **error, void *key )
 			strlen(fontsearchpath) + strlen(name) + 6);
 		/* if name is an absolute filename then test directly */
 		if (*name == '/') {
-                	sprintf(fullname,"%s",name);
-                	if (access(fullname,R_OK) == 0) {font_found++; break;}
+			sprintf(fullname,"%s",name);
+			if (access(fullname,R_OK) == 0) {font_found++; break;}
 		}
-        	for (dir = strtok(path,PATHSEPARATOR); dir;
+		for (dir = strtok(path,PATHSEPARATOR); dir;
 				dir = strtok(0,PATHSEPARATOR)) {
-                	sprintf(fullname,"%s/%s.ttf",dir,name);
-                	if (access(fullname,R_OK) == 0) {font_found++; break;}
-        	}
+			sprintf(fullname,"%s/%s.ttf",dir,name);
+			if (access(fullname,R_OK) == 0) {font_found++; break;}
+		}
 		if (font_found) break;
 	}
-       	gdFree(path);
-        gdFree(fontlist);
-        if (! font_found) {
-                *error = "Could not find/open font";
+	gdFree(path);
+	gdFree(fontlist);
+	if (! font_found) {
+		*error = "Could not find/open font";
 		return NULL;
-        }
+	}
 
 	err = FT_New_Face(*b->library, fullname, 0, &a->face);
 	if (err) {
 		*error = "Could not read font";
 		return NULL;
 	}
-       	gdFree(fullname);
-	
+	gdFree(fullname);
+
 /* FIXME - This mapping stuff is imcomplete - where is the spec? */
 
 	a->have_char_map_unicode = 0;
@@ -412,15 +415,15 @@ fontRelease( void *element )
 
 static int
 tweenColorTest (void *element, void *key)
-{ 
+{
     tweencolor_t *a=(tweencolor_t *)element;
     tweencolorkey_t *b=(tweencolorkey_t *)key;
-    
-    return (a->pixel == b->pixel    
-         && a->bgcolor == b->bgcolor
-         && a->fgcolor == b->fgcolor
-         && a->im == b->im);
-} 
+
+    return (a->pixel == b->pixel
+	 && a->bgcolor == b->bgcolor
+	 && a->fgcolor == b->fgcolor
+	 && a->im == b->im);
+}
 
 /*
  * Computes a color in im's color table that is part way between
@@ -435,7 +438,7 @@ tweenColorFetch (char **error, void *key)
 	tweencolorkey_t *b=(tweencolorkey_t *)key;
 	int pixel, npixel, bg, fg;
 	gdImagePtr im;
-   
+
 	a = (tweencolor_t *)gdMalloc(sizeof(tweencolor_t));
 	pixel = a->pixel = b->pixel;
 	bg = a->bgcolor = b->bgcolor;
@@ -453,13 +456,13 @@ tweenColorFetch (char **error, void *key)
 			(pixel * im->blue[fg] + npixel * im->blue[bg]) / NUMCOLORS);
 	}
 	return (void *)a;
-}   
-        
+}
+
 static void
 tweenColorRelease(void *element)
-{   
+{
     gdFree((char *)element);
-}   
+}
 
 /* draw_bitmap - transfers glyph bitmap to GD image */
 static char *
@@ -485,7 +488,7 @@ gdft_draw_bitmap(gdImage *im, int fg, FT_Bitmap bitmap, int pen_x, int pen_y) {
 		pc = row * bitmap.pitch;
 		y = pen_y + row;
 
- 		/* clip if out of bounds */
+		/* clip if out of bounds */
 		if (y >= im->sy || y < 0) continue;
 
 		for (col = 0; col < bitmap.width; col++, pc++) {
@@ -533,7 +536,7 @@ gdft_draw_bitmap(gdImage *im, int fg, FT_Bitmap bitmap, int pen_x, int pen_y) {
 extern int any2eucjp(char *, char *, unsigned int);
 
 /********************************************************************/
-/* gdImageStringFT -  render a utf8 string onto a gd image          */ 
+/* gdImageStringFT -  render a utf8 string onto a gd image          */
 
 char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 		double ptsize, double angle, int x, int y, char *string)
@@ -612,7 +615,7 @@ char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 		next=string;
 	}
 #endif
-	while (*next) {	  
+	while (*next) {
 		ch = *next;
 
 		/* carriage returns */
@@ -644,22 +647,22 @@ char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 		} else if (font->have_char_map_sjis) {
 			unsigned char c;
 			int jiscode;
-	
+
 			c = *next;
 			if ( 0xA1 <= c && c <= 0xFE ) {
 				next++;
 				jiscode = 0x100 * (c & 0x7F) + ((*next) & 0x7F);
-	
+
 				ch = (jiscode >> 8) & 0xFF;
 				jiscode &= 0xFF;
-	
+
 				if (ch & 1) jiscode += 0x40 - 0x21;
 				else        jiscode += 0x9E - 0x21;
-	
+
 				if (jiscode >= 0x7F) jiscode++;
 				ch = (ch - 0x21) / 2 + 0x81;
 				if (ch >= 0xA0) ch += 0x40;
-	
+
 				ch = (ch << 8) + jiscode;
 			} else {
 				ch = c & 0xFF; /* don't extend sign */
@@ -667,28 +670,28 @@ char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 			next++;
 		} else {
 			/*
-		 	 * Big 5 mapping:
-		 	 * use "JIS-8 half-width katakana" coding from 8-bit characters. Ref:
-		 	 * ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/japan.inf-032092.sjs
-		 	 */
+			 * Big 5 mapping:
+			 * use "JIS-8 half-width katakana" coding from 8-bit characters. Ref:
+			 * ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/japan.inf-032092.sjs
+			 */
 			ch = (*next) & 0xFF;	/* don't extend sign */
 			next++;
 			if (ch >= 161		/* first code of JIS-8 pair */
-		 	    && *next) {		/* don't advance past '\0' */
+			    && *next) {		/* don't advance past '\0' */
 				/* TBB: Fix from Kwok Wah On: & 255 needed */
 				ch = (ch * 256) + ((*next) & 255);
 				next++;
 			}
 		}
-	
+
 		FT_Set_Transform(face, &matrix, &pen);
-	
+
 		/* Convert character code to glyph index */
 		glyph_index = FT_Get_Char_Index( face, ch );
 
 		/* retieve kerning distance and move pen position */
 		if ( use_kerning && previous && glyph_index ) {
-			FT_Get_Kerning( face, previous, glyph_index, 
+			FT_Get_Kerning( face, previous, glyph_index,
 				ft_kerning_default, &delta );
 			pen.x += delta.x >> 6;
 		}
@@ -703,32 +706,32 @@ char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 			 then assume user just wants brect */
 		if (im && fg <= 255 && fg >= -255) {
 
-        		/* now, draw to our target surface */
+			/* now, draw to our target surface */
 			gdft_draw_bitmap(im, fg, slot->bitmap,
 				x + x1 + pen.x + slot->bitmap_left,
 				y - y1 + pen.y - slot->bitmap_top);
 		}
 
-       		/* increment pen position */
+		/* increment pen position */
 		pen.x += slot->advance.x >> 6;
 		pen.y -= slot->advance.y >> 6;
 
 		/* record current glyph index for kerning */
 		previous = glyph_index;
-	
+
 		if (brect) { /* only if need brect */
 			if (! i++) { /* if first character, init BB corner values */
-                                ll_x = slot->metrics.horiBearingX;
-                                ll_y = slot->metrics.horiBearingY - slot->metrics.height;
-                                ur_x = slot->metrics.horiBearingX + slot->metrics.width;
-                                ur_y = slot->metrics.horiBearingY;
-                        }
-                        else {
-                                if (! advance_x) ll_x = MIN(slot->metrics.horiBearingX, ll_x);
-                                ll_y = MIN(advance_y + slot->metrics.horiBearingY - slot->metrics.height, ll_y);
-                                ur_x = MAX(advance_x + slot->metrics.horiBearingX + slot->metrics.width, ur_x);
-                                if (! advance_y) ur_y = MAX(slot->metrics.horiBearingY, ur_y);
-                        }
+				ll_x = slot->metrics.horiBearingX;
+				ll_y = slot->metrics.horiBearingY - slot->metrics.height;
+				ur_x = slot->metrics.horiBearingX + slot->metrics.width;
+				ur_y = slot->metrics.horiBearingY;
+			}
+			else {
+				if (! advance_x) ll_x = MIN(slot->metrics.horiBearingX, ll_x);
+				ll_y = MIN(advance_y + slot->metrics.horiBearingY - slot->metrics.height, ll_y);
+				ur_x = MAX(advance_x + slot->metrics.horiBearingX + slot->metrics.width, ur_x);
+				if (! advance_y) ur_y = MAX(slot->metrics.horiBearingY, ur_y);
+			}
 		}
 
 		advance_x += slot->metrics.horiAdvance;
@@ -744,7 +747,7 @@ char * gdImageStringFT(gdImage *im, int *brect, int fg, char *fontlist,
 		brect[5] = (int)(ur_x * sin_a + ur_y * cos_a);
 		brect[6] = (int)(ll_x * cos_a - ur_y * sin_a);
 		brect[7] = (int)(ll_x * sin_a + ur_y * cos_a);
-	
+
 		/* scale, round and offset brect */
 		i = 0;
 		while (i<8) {

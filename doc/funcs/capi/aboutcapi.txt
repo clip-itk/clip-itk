@@ -1,0 +1,96 @@
+$ABOUTCATEG$
+  C-API
+$DESCRIPTION$
+	CLIP's C-API is a set of C-functions that allows using C-language
+	along with CLIP. It could be necessary for writing some speed critical
+	functions of your project; for writing "wrappers" for existing 3rd party
+	functions or whole libraries, etc. Besides, learning C-API will help you
+	understand internal structure of CLIP.
+
+	C-functions aimed to be used with CLIP (that is, which can be called
+	from some CLIP function, 'exported functions' in further) are in
+	separate C source file(s). This file must include "clip.h", which
+	contains declarations of C-API functions and structures.
+
+	Each exported function's name must have prefix 'clip_' and the name itself
+	must be in capital letters. Type of function must be 'int' and it
+	must get one and only parameter of type 'ClipMachine *', which is a pointer
+	to the structure containing context of the current CLIP Virtual Machine.
+
+	Exported function should return 0 (zero) if successful, or appropriate
+	error code (those described in error.ch, with 'EG_' prefix).
+
+	Example:
+	/* my.c */
+	#include <stdio.h>
+	#include "clip.h"
+
+	int clip_MYFUNCTION(ClipMachine *cm)
+	{
+		printf("Hello from MyFunction()\n");
+		return 0;
+	}
+	/* end of my.c */
+
+	/* test.prg */
+	MyFunction()
+	/* end of test.prg */
+
+	Compilation:
+
+	gcc -c -I${CLIPROOT}/include my.c
+	clip -eM test.prg my.o
+
+	Running:
+	#./test
+	Hello from MyFunction
+	#
+
+$LANG_RU$
+	C-API языка CLIP представляет собой набор C-функций, позволяющих
+	использовать C вместе с CLIP. Это может понадобиться, например, для
+	написания функций, критичных по скорости выполнения; для написания
+	функций-оболочек для существующих функций или библиотек, и т.д.
+	Знание C-API даст вам более полное представление о внутренней структуре
+	CLIP.
+
+	C-функции, которые предполагается использовать с CLIP (т.е. те которые
+	можно вызывать из CLIP-функций, в дальнейшем 'экспортируемые функции'),
+	располагаются в отдельном исходном файле C, или нескольких файлах. В этих
+	файлах должно быть включение заголовочного файла "clip.h", в котором
+	находятся прототипы функций C-API и описания структур.
+
+	Имя экспортируемой функции должно иметь префикс 'clip_', а само имя
+	функции должно быть написано заглавными буквами. Она должна возвращать
+	значение типа 'int', а получать один единственный параметр типа
+	'ClipMachine *' - указательна структуру, содержащую контекст текущей
+	Виртуальной Машины CLIP.
+
+	Экспортируемая функция должна возвращать 0 (ноль) в случае успеха,
+	или соответствующий код ошибки (описанные в error.ch, имеющие префикс 'EG_').
+
+	Пример:
+	/* my.c */
+	#include <stdio.h>
+	#include "clip.h"
+
+	int clip_MYFUNCTION(ClipMachine *cm)
+	{
+		printf("Hello from MyFunction()\n");
+		return 0;
+	}
+	/* end of my.c */
+
+	/* test.prg */
+	MyFunction()
+	/* end of test.prg */
+
+	Compilation:
+
+	gcc -c -I${CLIPROOT}/include my.c
+	clip -eM test.prg my.o
+
+	Running:
+	#./test
+	Hello from MyFunction
+	#

@@ -51,6 +51,13 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 			endif
 			anb_list[obj:an_value] := obj:an_value
 		next
+	else
+		if an_level>0 .and. an_level<=len(an_values) ;
+			.and. !empty(an_values[an_level])
+
+			anb_list[an_values[an_level]] := an_values[an_level]
+		endif
+
 	endif
 	//outlog("anb_list=",anb_list)
 	//outlog("an_values=",an_values)
@@ -241,6 +248,7 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 		return ret
 	endif
 
+	//outlog(__FILE__,__LINE__,anb_list)
 	for i in anb_list
 		x := {}
 		asize(x,len(an_values))
@@ -252,10 +260,12 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 		next
 		aadd(ret,x)
 	next
+	//outlog(__FILE__,__LINE__,"ret=",len(ret),ret)
 	if an_level <= 1
 		return ret
 	endif
 	i := 0
+	//outlog(__FILE__,__LINE__,"ret=",len(ret),ret)
 	if empty(ret)
 		x := {}
 		asize(x,len(an_values))
@@ -267,7 +277,6 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 		next
 		aadd(ret,x)
 	endif
-	//outlog(__FILE__,__LINE__,"ret=",len(ret),ret)
 	if empty(ret) //.or. i==0
 		return ret
 	endif

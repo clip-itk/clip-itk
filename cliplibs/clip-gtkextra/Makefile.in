@@ -15,7 +15,7 @@ SRCS  = sheet.c fontcombo.c bordercombo.c colorcombo.c togglecombo.c \
 OBJS  = sheet.o fontcombo.o bordercombo.o colorcombo.o togglecombo.o \
 	combobox.o itementry.o
 
-HDRS	= clip-gtkextra.ch clip-gtkextra.h $(CLIPROOT)/include/clip-gtk.ch
+HDRS	= clip-gtkextra.ch clip-gtkextra.h ../clip-gtk/clip-gtk.ch
 
 OBJDIR	= .
 EXTOBJS =
@@ -35,7 +35,7 @@ DEFS	=
 # -DSYSTEM=\"$(SYSTEM_NAME)\"
 
 CC = $(COMPILER)
-CFLAGS  = $(C_FLAGS) $(DEFS) $(MEMDBGFLAGS)
+CFLAGS  = $(C_FLAGS) $(DEFS) $(MEMDBGFLAGS) -I../clip-gtk
 #  $(WARNFLAGS) $(DBGFLAGS) $(OPTFLAGS) -I$(INCLUDE)
 
 export CC CFLAGS

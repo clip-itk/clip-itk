@@ -2,7 +2,7 @@ LIBS= -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangox-1.0 -l
 
 SRC =clipgtktest tbrow simple  test_stock test_image accel test_tree test_image \
 	test_gtk test_text winpic test note fonttest text container test_dnd drag_and_drop \
-        colorbtn pango entrytempl combobox
+        colorbtn pango entrytempl combobox ifactory lines draw
 all: $(SRC)
 
 clean:
@@ -79,4 +79,15 @@ entrytempl: entrytempl.prg
 
 combobox: combobox.prg
 	clip -es combobox.prg -lclip-gtk2
+
+ifactory: ifactory.prg
+	clip -es ifactory.prg -lclip-gtk2
+
+
+lines: lines.prg
+	clip -es lines.prg -lclip-gtk2
+
+draw: draw.prg
+	clip -es draw.prg -lclip-gtk2
+
 

@@ -3,7 +3,7 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 31 Jan 2005						   */
+/*   Last change: 18 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -66,6 +66,12 @@ static function ui_addButton(self, pic, tooltip, action, isEnabled)
 	elem:className	:= "UIToolButton"
 	elem:setIcon 	:= @ui_setToolbarItemIcon()
 	elem:setAction 	:= @ui_setToolbarItemAction()
+	elem:pic 	:= pic
+	elem:tooltip 	:= tooltip
+	elem:action	:= action
+	elem:isEnabled 	:= isEnabled
+	elem:pos	:= len( self:elem )+1
+	elem:toolBar	:= self
 	aadd( self:elem, elem )
 	pos := len( self:elem )
 return pos
@@ -146,5 +152,6 @@ return .T.
 /* Set action for toolbar item */
 static function ui_setToolbarItemAction(self, action)
 	driver:setAction( self, "clicked", action)
+	self:action := action
 	driver:enableWidget( self, .T. )
 return .T.

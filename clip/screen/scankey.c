@@ -1,6 +1,9 @@
 
 /*
    $Log: scankey.c,v $
+   Revision 1.34  2005/02/03 17:21:29  clip
+   uri: kbdstat(), bit #18, for En/Ru detection. Only for scan mode keyboard.
+
    Revision 1.33  2004/12/15 07:05:37  clip
    uri: add KSET*()
 
@@ -542,6 +545,8 @@ scan_state(void)
 		r |= ( 1 << SCAN_INSERT );
 	if (slockstate)
 		r |= ( 1 << SCAN_SLOCK );
+	if (lockstate)
+		r |= ( 1 << SCAN_NATKBD );
 
 #ifdef DBG
 	printf("compute scan_state=%d\r\n", r);
@@ -1057,6 +1062,8 @@ do_self(unsigned char value, char up_flag)
 #ifdef DBG2
 	printf("do_self: %d\r\n", value);
 #endif
+
+	//printf("\nr=%d\n",r);
 
 	if (up_flag)
 		return;		/* no action, if this is a key release */

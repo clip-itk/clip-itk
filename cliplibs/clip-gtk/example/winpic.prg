@@ -40,8 +40,8 @@ local win, drawingarea, layout, btn, box
 
 	gtk_layoutput(layout, drawingarea, 0, 0)
 
-	//pixmap = gtk_pixmapcreatefromxpmd(, x)
-	pixmap = gtk_pixmapfromxpmnew(, "x.xpm", drawingarea)
+	//pixmap = gdk_pixmapcreatefromxpmd(, x)
+	pixmap = gdk_pixmapfromxpmnew(, "x.xpm", drawingarea)
 
 //	btn = gtk_buttonnew(,"Press me!")
 	btn = gtk_buttonnew()

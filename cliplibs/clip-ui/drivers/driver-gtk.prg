@@ -5,7 +5,7 @@
 /*   Authors: 								   */
 /*  	     Andrey Cherepanov <sibskull@mail.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   Last change: 31 Jan 2005						   */
+/*   Last change: 17 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -17,10 +17,13 @@
 
 static drv := NIL
 
+/* GTK+ 1.x driver. */
+
 function initGTKDriver()
 	drv := map()
 	drv:className  := "UIDriver"
 	drv:driverName := "GTK+ 1.x driver"
+	drv:driver     := "gtk"
 	
 	/* WorkSpace */
 	drv:createInstance 	:= @ui_createInstance()
@@ -185,7 +188,7 @@ static function ui_createWindow( self, title, parent, resizeable )
 		gtk_WindowSetPolicy(wnd, .F., .F., .T.)
 	endif
 	if empty(parent)
-		gtk_SignalConnect( wnd, "delete-event", @ui_quit() )
+		gtk_SignalConnectAfter( wnd, "delete-event", @ui_quit() )
 	endif
 return wnd
 
@@ -345,10 +348,10 @@ return NIL
 static function ui_setDefault(self, window, widget)
 	local action, s:=map()
 	gtk_WindowSetDefault(window, widget)
-	s:BASE_color := UIColor("green")
-	gtk_WidgetSetStyle(widget, s)
-	//TODO: setDefault() doesn't work - no border for default button
-	self:setAction( window, "key-press-event", {|w,e| iif(e:keyval==13,gtk_SignalEmit(widget,"clicked"),NIL) } )
+//	s:FG_color := UIColor("green")
+//	gtk_WidgetSetStyle(widget, s)
+	window:setFocus( widget )
+	//TODO: setDefault(): no border for default button
 return NIL
 
 /** Menu **/
@@ -404,7 +407,7 @@ static function ui_addMenuItem( self, menu, pic, name, action, isEnabled )
 	/* Check popup or finction in 'action' */
 	if valtype(action) == 'B'
 		/* Regular item */
-		gtk_SignalConnect( o, "activate", action )
+		gtk_SignalConnectAfter( o, "activate", action )
 	else
  		if .not. empty(action) .and. action:className == 'UIPopupMenu'
 			/* Popup menu */
@@ -441,7 +444,7 @@ static function ui_addMenuCheckedItem( self, menu, isChecked, name, action, isEn
 		gtk_MenuAppend( menu, o )
 	endif
 	if .not. empty(action)
-		gtk_SignalConnect( o, "toggled", action )
+		gtk_SignalConnectAfter( o, "toggled", action )
 	endif
 	if isEnabled == .F. .or. empty(action)
 		self:enableWidget( o, .F. )
@@ -486,12 +489,9 @@ static function ui_addToolBarButton(self, toolBar, pic, tooltip, action, isEnabl
 	endif
 
         if empty(pic)
-		w := gtk_HBoxNew()
-		pic := gtk_PixmapNew( , toolBar, 16, 16, 1)
-		// o := gtk_ToolBarAppendItem( id, NIL, tooltip, NIL, pic, action )
-	else
-		o := gtk_ToolBarAppendItem( toolBar, NIL, tooltip, NIL, pic, action )
+		pic := UIImage()
 	endif
+	o := gtk_ToolBarAppendItem( toolBar, NIL, tooltip, NIL, pic, action )
 	if isEnabled == .F.
 		self:enableWidget( o, .F. )
 	endif
@@ -568,8 +568,8 @@ static function ui_showWidget( self, obj, flag )
 	endif
 return flag
 
-static function ui_emptyFunction()
-return 0
+function ui_emptyFunction()
+return .F.
 
 static function ui_setPixmap(self, obj, icon)
         local o
@@ -586,6 +586,7 @@ static function ui_setPixmap(self, obj, icon)
 			gtk_ContainerRemove(obj:pic,o[1])
 			gtk_ContainerRemove(obj:pic,o[2])
 			gtk_BoxPackStart(obj:pic, icon)
+			obj:label := strtran( obj:label, "_", "__" )
 			gtk_BoxPackStart(obj:pic, gtk_LabelNew(,obj:label,"&"))
 		otherwise
 			?? "Warning: Unknown class ("+obj:className+") for set pixmap&\n"
@@ -887,9 +888,10 @@ static function ui_createButton(self, label, action)
 	if valtype(label) != "C"
 		label:=""
 	endif
+	label := strtran( label, "_", "__" )
 	o := gtk_ButtonNew(, " "+label+" ", "&")
 	if .not. empty(action)
-		gtk_SignalConnect(o, GTK_CLICKED_SIGNAL, action)
+		gtk_SignalConnectAfter(o, GTK_CLICKED_SIGNAL, action)
 	else
 		ui_enableWidget( self, o, .F.)
 	endif
@@ -981,6 +983,9 @@ return NIL
 /** Label **/
 static function ui_createLabel(self, defValue)
 	local o
+	if valtype(defValue) != "U"
+		defValue := strtran( defValue, "_", "__" )
+	endif
 	o := gtk_LabelNew(, defValue, "&")
 	gtk_LabelSetJustify( o, GTK_JUSTIFY_LEFT)
 	gtk_MiscSetAlignment( o, 0, 0)
@@ -1030,6 +1035,7 @@ return o
 /** CheckBox **/
 static function ui_createCheckBox(self, value, label)
 	local o
+	label := strtran( label, "_", "__" )
 	o := gtk_CheckButtonNew(, label, "&" )
 	if valtype(value) == 'L'
 		gtk_ToggleButtonSetActive( o, value)
@@ -1138,7 +1144,6 @@ struct GtkStyle
 	if left(style,6) == "color."
 		style := substr(style,7)
 		st[upper(style+"_color")] := UIColor( value )
-		u := UIColor( value )
 		// ?? upper(style)+"_color", value, UIColor( value ), chr(10)
 		gtk_WidgetSetStyle(o, st)
 		return .T.
@@ -1181,7 +1186,7 @@ static function ui_getValue(self, o)
 return val
 
 static function ui_setAction(self, o, signal, action)
-	gtk_signalConnect(o,signal,action)
+	gtk_signalConnectAfter(o,signal,action)
 return NIL
 
 static function ui_getChildren(self, o)

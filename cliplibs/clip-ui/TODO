@@ -1,7 +1,17 @@
 
 TODO
 ====
-Last change: 03 Feb 2005
+
+Last change: 22 Feb 2005
+
+
+NEW WIDGET:
+	- UIFixedBox
+	- UIRadioButton
+	- UIProgressBar
+	- UISlider
+	- UIChoice (for date, number, file, color, form)
+	- UIIconView
 
 ------------------------------------------------------------------------------
 INLINE TODOs
@@ -19,7 +29,7 @@ drivers/driver-gtk.prg:1214:	need to append key to menu item
 drivers/driver-gtk.prg:1234:	need to remove key from menu item
 
 clip-ui.ch:42:	ALIGN_JUSTIFY need really justify
-form.prg:562:	labelled rule support on menu
+form.prg:562:	labelled form rule support on menu
 form.prg:664:	UIForm:subActionHandler(): several values can be returned
 form.prg:786:	show untranslated string in debug mode
 image.prg:1035:	ok pixmap
@@ -29,7 +39,6 @@ table.prg:90:	redraw rows on alternate color changes
 tree.prg:18:	nice expand/collapse icons, possible remove lines, ignore 
 		expand/collapse as node activation on single LMB click, 
 		fill tree from object 
-utils.prg:29	Driver name by default need autodetect
 utils.prg:124:	value type transformation
 window.prg:353:	Set window icon
 window.prg:413:	setDefault() doesn't work - no border for default button

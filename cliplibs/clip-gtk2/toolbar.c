@@ -131,7 +131,7 @@ clip_GTK_TOOLBARAPPENDITEM(ClipMachine * cm)
 	if (child)
         {
         	C_widget *cchild = _register_widget(cm,child,NULL);
-                cchild->destroy = _toolbar_child_destroy;
+   //             cchild->destroy = _toolbar_child_destroy;
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }
@@ -172,7 +172,7 @@ clip_GTK_TOOLBARPREPENDITEM(ClipMachine * cm)
 	if (child)
         {
         	C_widget *cchild = _register_widget(cm,child,NULL);
-                cchild->destroy = _toolbar_child_destroy;
+                //cchild->destroy = _toolbar_child_destroy;
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }
@@ -214,7 +214,7 @@ clip_GTK_TOOLBARINSERTITEM(ClipMachine * cm)
 	if (child)
         {
         	C_widget *cchild = _register_widget(cm,child,NULL);
-                cchild->destroy = _toolbar_child_destroy;
+                //cchild->destroy = _toolbar_child_destroy;
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }
@@ -296,7 +296,7 @@ clip_GTK_TOOLBARAPPENDELEMENT(ClipMachine * cm)
 	if (child)
         {
         	C_widget *cchild = _register_widget(cm,child,NULL);
-                cchild->destroy = _toolbar_child_destroy;
+                //cchild->destroy = _toolbar_child_destroy;
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }
@@ -340,7 +340,7 @@ clip_GTK_TOOLBARPREPENDELEMENT(ClipMachine * cm)
 	if (child)
         {
         	C_widget *cchild = _register_widget(cm,child,NULL);
-                cchild->destroy = _toolbar_child_destroy;
+                //cchild->destroy = _toolbar_child_destroy;
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }
@@ -390,7 +390,7 @@ clip_GTK_TOOLBARINSERTELEMENT(ClipMachine * cm)
 	if (child)
         {
         	C_widget *cchild = _register_widget(cm,child,NULL);
-                cchild->destroy = _toolbar_child_destroy;
+                //cchild->destroy = _toolbar_child_destroy;
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }
@@ -547,7 +547,7 @@ clip_GTK_TOOLBARINSERTSTOCK(ClipMachine * cm)
 	if (child)
         {
         	C_widget *cchild = _register_widget(cm,child,NULL);
-                cchild->destroy = _toolbar_child_destroy;
+                //cchild->destroy = _toolbar_child_destroy;
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }

@@ -19,6 +19,8 @@
 #define KST_NUM 	 8192	// num	 -lock	 pressed (only MF-2)
 #define KST_CAPS	16384	// caps  -lock	 pressed (only MF-2)
 #define KST_SYSRQ	32768	// sysrequest	 pressed (only MF-2)
+// CLIP extention
+#define KST_NATKBD	131072  // nation keyboard actived
 
 
 /******************* KBDSPEED() ******************

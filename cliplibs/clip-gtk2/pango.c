@@ -832,6 +832,7 @@ clip_PANGOLAYOUTGETLINE(ClipMachine * cm)
 	CHECKCOBJ(clayout, GTK_IS_PANGO_LAYOUT(clayout));
 	CHECKARG(2, NUMERIC_t);
 													
+	line_n --;
 	line = pango_layout_get_line(PANGO_LAYOUT(clayout->object), line_n);
 	
 	if (line)

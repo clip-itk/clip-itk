@@ -1,21 +1,27 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
-/*   Copyright (C) 2003,2004 by E/AS Software Foundation 	           */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 15 Dec 2004						   */
+/*   Last change: 09 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
 /*   License, or (at your option) any later version.                       */
 /*-------------------------------------------------------------------------*/
-#include <clip-ui.ch>
+#include "clip-ui.ch"
 #include "var.ch"
 
-static currentDriver:=NIL
+static currentDriver := NIL
+static currentDriverName := DEFAULT_DRIVER
 
 /* Useful functions */
+
+/* Driver choose */
+function useDriver( name )
+	currentDriverName := name
+return
 
 /* Connect driver */
 function getDriver( name, params )
@@ -26,8 +32,9 @@ function getDriver( name, params )
 	endif
 	
 	if empty(name)
-		name := 'gtk' // Driver name by default. TODO: need autodetect
+		name := currentDriverName
 	endif
+	
 	drv_file := DRIVERSDIR + '/driver-' + name + '.po'
 	//?? "Loading",drv_file,"...&\n"
 	if file( drv_file )

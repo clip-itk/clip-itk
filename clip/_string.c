@@ -5,6 +5,9 @@
 */
 /*
    $Log: _string.c,v $
+   Revision 1.115  2005/02/15 11:04:02  clip
+   uri: small fix in descend()
+
    Revision 1.114  2005/01/10 10:33:59  clip
    uri: small fix for RIGHT(NIL,n) and LEFT(NIL,n)
 
@@ -2063,21 +2066,21 @@ clip_DESCEND(ClipMachine * mp)
 		str = _clip_parcl(mp, 1, &l);
 		buf = calloc(l + 1, 1); buf[l] = 0 ;
 		for (i = 0; i < l; i++)
-				{
-					ch = str[i];
+		{
+			ch = str[i];
 			ch = 256 - _clip_cmptbl[ch];
-						for ( j=0; j < 256; j++)
-								if ( _clip_cmptbl[j] == ch )
+			for ( j=0; j < 256; j++)
+				if ( _clip_cmptbl[j] == ch )
 										break;
-						if ( j < 256 )
+			if ( j < 256 )
 				buf[i] = j;
-						else
+			else
 				buf[i] = ch;
-				}
+		}
 		_clip_retcn_m(mp, buf, l);
 		break;
 	case DATE_t:
-		_clip_retdj(mp, 5231808 - _clip_pardj(mp, 1));
+		_clip_retnl(mp, 5231808 - _clip_pardj(mp, 1));
 		break;
 	case NUMERIC_t:
 		if (vp->t.memo)

@@ -1,18 +1,16 @@
 # This is a part of CLIP-UI library
 #
-# Copyright (C) 2003 by E/AS Software Foundation
+# Copyright (C) 2003-2005 by E/AS Software Foundation
 # Author: Andrey Cherepanov <sibskull@mail.ru>
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../../; pwd)/cliproot
+endif
 
 include $(CLIPROOT)/include/Makefile.inc
 CLIPINCLUDE = -I$(CLIPROOT)/include
 CLIP = $(CLIPROOT)/bin/clip
 
-.SUFFIXES: .prg .o .po
-
-# Here you can define appropriate compile settings
-#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
-#CC=gcc
-OBJS    = driver-gtk.po
+OBJS    = driver-gtk.po driver-gtk2.po
 
 .PHONY: all clean uninstall distclean
 
@@ -32,5 +30,8 @@ distclean: clean
 
 dist: distclean
 
-.prg.po:
-	$(CLIP) $(CLIPFLAGS) -n -p $<
+driver-gtk.po: driver-gtk.prg
+	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk -n -p driver-gtk.prg || exit 0
+
+driver-gtk2.po: driver-gtk2.prg
+	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk2 -n -p driver-gtk2.prg || exit 0

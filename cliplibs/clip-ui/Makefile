@@ -2,12 +2,14 @@
 #
 # Copyright (C) 2003 by E/AS Software Foundation
 # Author: Andrey Cherepanov <sibskull@mail.ru>
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
+endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
 DRIVERSDIR = $(DESTDIR)$(CLIPROOT)/lib/drivers
-CLIPINCLUDE =
-#-I$(CLIPROOT)/include
+CLIPINCLUDE = -I$(CLIPROOT)/include
 CLIP = $(CLIPROOT)/bin/clip
 
 .SUFFIXES: .prg .o .po
@@ -30,35 +32,34 @@ var.ch:
 	echo "#define DRIVERSDIR \"$(DRIVERSDIR)\"" >var.ch
 
 driver:
-	cd drivers; make all
+	cd drivers && $(MAKE) all
 
 $(TARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS)
 
 clean:
-	cd drivers; make clean
-	cd examples; make clean
+	cd drivers && $(MAKE) clean
+	cd example && $(MAKE) clean
 	rm -f $(OBJS) $(TARGET) var.ch *.bak *.nm *.ex *.ppo *.dll.a *.log *.dll
 
 
 install: all
-	cd drivers; make install
+	cd drivers && $(MAKE) install
 	mkdir -p $(DESTDIR)$(CLIPROOT)/lib
 	mkdir -p $(DESTDIR)$(CLIPROOT)/include
 	$(CLIPROOT)/bin/clip_cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
 	$(CLIPROOT)/bin/clip_cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
 	$(CLIPROOT)/bin/clip_cp clip-ui.ch $(DESTDIR)$(CLIPROOT)/include
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui
-	cp -RL examples/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui/
+	cp -RL example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui/
 
 uninstall:
-	cd drivers; make uninstall
+	cd drivers && $(MAKE) uninstall
 	rm -rf $(CLIPROOT)/lib/$(TARGET) $(CLIPROOT)/lib/$(RTARGET) $(CLIPROOT)/doc/example/clip-ui/
 	rm -f  $(CLIPROOT)/include/clip-ui.ch
 
 distclean: clean
-	cd examples; make clean
-	rm -f Makefile
+	cd example && $(MAKE) clean
 
 dist: distclean
 

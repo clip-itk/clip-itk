@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: ntx.c,v $
+	Revision 1.119  2005/02/05 11:52:43  clip
+	rust: minor fix in ntx_seek()
+	
 	Revision 1.118  2004/09/20 14:23:57  clip
 	rust: minor fix in dbseek()
-	
+
 	Revision 1.117  2004/09/10 09:21:37  clip
 	rust: minor fix in SCOPES
 
@@ -2350,7 +2353,7 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 
 	_ntx_page(ro,ro->stack[ro->level].page,&page);
 	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-	if(!_rdd_uint(buck->recno) && (ro->level > 0)){
+	while(!_rdd_uint(buck->recno) && (ro->level > 0)){
 		ro->level--;
 		_ntx_page(ro,ro->stack[ro->level].page,&page);
 		buck = _ntx_buck(&page,ro->stack[ro->level].pos);

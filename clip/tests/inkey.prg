@@ -8,7 +8,7 @@ showtime(0,maxcol()-8,.f.,"0/w")
 nkey:=0
 while nkey !=27
 	nkey:=inkey(0,255)
-	? nkey,'"'+chr(nkey)+'"'
+	? nkey,'"'+chr(nkey)+'"', kbdstat(), isbit(kbdstat(),18), isbit(kbdstat(),17)
 end
 ?
 return

@@ -11,7 +11,7 @@ vbox := gtk_VBoxNew()
 ebox := gtk_EventBoxNew()
 gtk_WidgetSetEvents (ebox, GDK_BUTTON_PRESS_MASK)
 gtk_SignalConnect(ebox, "button-press-event", {|wid, ev| qout("ok"),action(wid, ev)})
-image:=gtk_PixmapFromXPMNew(,"clip.xpm",window)
+image:=gdk_PixmapFromXPMNew(,"clip.xpm",window)
 
 gtk_ContainerAdd(ebox, image)
 

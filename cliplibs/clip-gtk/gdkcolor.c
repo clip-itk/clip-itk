@@ -15,7 +15,7 @@
 #include "clip-gtk.h"
 #include "clip-gdk.h"
 
-GtkType _gdk_type_colormap() { return GDK_OBJECT_COLORMAP; }
+GtkType _gdk_type_colormap() { return GDK_TYPE_COLORMAP; }
 long _clip_type_colormap() { return GDK_OBJECT_COLORMAP; }
 const char * _clip_type_name_colormap() { return "GDK_OBJECT_COLORMAP"; }
 

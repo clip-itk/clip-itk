@@ -414,11 +414,11 @@
 #ifndef GTK_TYPE_PANGO_LAYOUT_LINE
 #define GTK_TYPE_PANGO_LAYOUT_LINE        HASH___GTK_TYPE_PANGO_LAYOUT_LINE
 #endif
-		
+
 #ifndef GTK_TYPE_PANGO_LAYOUT_ITER
 #define GTK_TYPE_PANGO_LAYOUT_ITER        HASH___GTK_TYPE_PANGO_LAYOUT_ITER
 #endif
-						
+
 #ifndef GTK_TYPE_PANGO_LAYOUT_RUN
 #define GTK_TYPE_PANGO_LAYOUT_RUN        HASH___GTK_TYPE_PANGO_LAYOUT_RUN
 #endif
@@ -524,6 +524,7 @@
 #define GTK_WIDGET_RADIO_MENU_ITEM	HASH___GTK_WIDGET_RADIO_MENU_ITEM
 #define GTK_WIDGET_RADIO_MENU_GROUP	HASH___GTK_WIDGET_RADIO_MENU_GROUP
 #define GTK_WIDGET_TEAROFF_MENU_ITEM	HASH___GTK_WIDGET_TEAROFF_MENU_ITEM
+#define GTK_WIDGET_SEPARATOR_MENU_ITEM	HASH___GTK_WIDGET_SEPARATOR_MENU_ITEM
 #define GTK_WIDGET_IMAGE_MENU_ITEM	HASH___GTK_WIDGET_IMAGE_MENU_ITEM
 /* Data Entry Widgets */
 #define GTK_WIDGET_TEXT			HASH___GTK_WIDGET_TEXT
@@ -2969,16 +2970,16 @@ that will be taken on behalf of the user for a drag destination site. */
 
 /* Pango wrap mode */
 
-#define PANGO_WRAP_WORD		0	// wrap lines at word boundaries. 
-#define PANGO_WRAP_CHAR		1	// wrap lines at character boundaries. 
-#define PANGO_WRAP_WORD_CHAR	2	// wrap lines at word boundaries, but fall back to character boundaries if there is not enough space for a full word. 
+#define PANGO_WRAP_WORD		0	// wrap lines at word boundaries.
+#define PANGO_WRAP_CHAR		1	// wrap lines at character boundaries.
+#define PANGO_WRAP_WORD_CHAR	2	// wrap lines at word boundaries, but fall back to character boundaries if there is not enough space for a full word.
 
 
 /* Pango align */
 
-#define PANGO_ALIGN_LEFT	0 	// Put all available space on the right 
-#define PANGO_ALIGN_CENTER	1	// Center the line within the available space 
-#define PANGO_ALIGN_RIGHT	2	// Put all available space on the left 
+#define PANGO_ALIGN_LEFT	0 	// Put all available space on the right
+#define PANGO_ALIGN_CENTER	1	// Center the line within the available space
+#define PANGO_ALIGN_RIGHT	2	// Put all available space on the left
 
 #endif
 

@@ -39,15 +39,30 @@ clip_GTK_CHECKBUTTONNEW(ClipMachine * cm)
 {
 	ClipVar * cv   = _clip_spar(cm, 1);
 	char * title   = _clip_parc(cm, 2);
-	GtkWidget *wid = NULL;
+	char * pchar   = _clip_parc(cm, 3);
+	GtkWidget *wid = NULL, *label = NULL;
         C_widget *cwid;
+	guint accel_key = 0;
 	CHECKOPT(1,MAP_t);
 	CHECKOPT(2,CHARACTER_t);
+        CHECKOPT(3,CHARACTER_t);
 
+	if (pchar)
+	{
+		char *pc;
+		for (pc = title;pc && *pc; pc++)
+			if (*pc == *pchar)
+			*pc='_';
+	}
+        else
+        	*pchar = '_';
 	if (_clip_parinfo(cm,2) == CHARACTER_t)
                 {
                 LOCALE_TO_UTF(title);
 		wid = gtk_check_button_new_with_label(title);
+		label = GTK_BIN(&(GTK_BUTTON(wid)->bin))->child;
+		if (pchar)
+			accel_key = gtk_label_parse_uline(GTK_LABEL(label), title);
 		FREE_TEXT(title);
 		}
         else
@@ -56,6 +71,7 @@ clip_GTK_CHECKBUTTONNEW(ClipMachine * cm)
 
 	cwid = _register_widget(cm, wid, cv);
         _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+	_clip_mputn(cm,&cwid->obj,HASH_ACCELKEY,accel_key);
 
 	return 0;
 err:

@@ -1,0 +1,42 @@
+$FUNCNAME$
+	_clip_retnd()
+$CATEGORY$
+	C-API
+$SUMMARY$
+	Post a numeric return value using a double type.
+$LANG_RU$
+	Возвращает значение арифметического выражения типа double.
+$SYNTAX$
+	void _clip_retnd(ClipMachine * cm,double n)
+$ARGUMENTS$
+	<n> - a numeric expression of double type
+$LANG_RU$
+	<n> - числовое выражение типа double
+$RETURNS$
+	_clip_retnd() has no return value.
+$LANG_RU$
+	_clip_retnd() не имеет возвращаемого значения.
+$DESCRIPTION$
+	_clip_retnd() posts a numeric value into CLIP's return value area.
+	When your exported function returns control to the calling CLIP
+	program, the posted value becomes the CLIP return value of your
+	exported function.
+$LANG_RU$
+	_clip_retnd() используется для переноса числового значения в область
+	возвращаемых значений CLIP. Позднее, когда экспортируемая функция,
+	написанная на C, возвратит управление в вызвавшую ее CLIP программу,
+	перенесенное арифметическое	значение будет доступным точно так же,
+	как если бы оно было непосредственно возвращено из CLIP-функции.
+$EXAMPLES$
+	#include "clip.h"
+
+	int clip_MYFUNCTION(ClipMachine * cm)
+	{
+		double n;
+		/* ... */
+		_clip_retnd(cm,n);
+		return 0;
+	}
+$SEEALSO$
+	_clip_parnd(),_clip_retni(),_clip_retnl(),_clip_stornd()
+$END$

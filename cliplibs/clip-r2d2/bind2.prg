@@ -133,7 +133,7 @@ errorblock({|err|error2html(err)})
 	if sprname == "os_balance"
 		aRefs := osb_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.)
 	elseif empty(id)
-		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.,.f.)
+		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.,.f.,.t.)
 	else
 		aRefs := {}
 		if empty(path_obj)
