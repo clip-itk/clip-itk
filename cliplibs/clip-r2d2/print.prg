@@ -304,7 +304,7 @@ static function calc_objs(id_list)
 			outlog("Object not readable:",id_list[i])
 			loop
 		endif
-		if obj:class_id == sprID
+		if !("CLASS_ID" $ obj) .or. obj:class_id == sprID
 			loop
 		endif
 		classDesc := codb_getValue(obj:class_id)

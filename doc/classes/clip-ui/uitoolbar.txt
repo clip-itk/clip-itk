@@ -1,0 +1,185 @@
+$CLASSNAME$
+	UIToolBar
+$SUMMARY$
+	Class UIToolBar
+$LANG_RU$
+	Класс UIToolBar
+$ABOUT$
+	Class of toolbar.
+$LANG_RU$
+	Класс панели инструментов.
+$SYNTAX$
+	UIToolBar()	--> UIToolBar object
+$LANG_RU$
+	UIToolBar()	--> Объект UIToolBar
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIToolBar".
+	<elem>		- Array of buttons on toolbar.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIToolBar".
+	<elem>		- Массив кнопок на панели инструментов.
+
+$METHODNAME$
+	UIToolBar()
+$SUMMARY$
+	Constructor. Create toolbar.
+$LANG_RU$
+	Конструктор. Создать панель инструментов.
+$SYNTAX$
+	UIToolBar()	--> UIToolBar object
+$ENDMETHOD$
+
+$METHODNAME$
+	addButton()
+$SUMMARY$
+	Add button to toolbar.
+$LANG_RU$
+	Добавить кнопку на панель инструментов.
+$SYNTAX$
+	addButton([<pic>],<tooltip>,[<action>],[<isEnabled>])	--> <nItem>
+$ARGUMENTS$
+	<pic>		- Object <link linkend="classuiimage">UIImage</link>. Icon on the button.
+	<tooltip>	- String. Text of tool tip for the button.
+	<action>	- Code block. Code block that will be executed if button pressed.
+	<isEnabled>	- Boolean. Flag of button activity.
+$LANG_RU$
+	<pic>		- Объект <link linkend="classuiimage">UIImage</link>. Значок на кнопке.
+	<tooltip>	- Строка. Надпись во всплывающей подсказке.
+	<action>	- Блок кода. Блок кода, выполняемый при нажатии на кнопку.
+	<isEnabled>	- Логическое значение. Флаг активности кнопки.
+$RETURNS$
+	Index of added object <link linkend="classuitoolbutton">UIToolButton</link> in array <elem>.
+$LANG_RU$
+	Индекс добавленного объекта <link linkend="classuitoolbutton">UIToolButton</link> в массиве <elem>.
+$DESCRIPTION$
+	In this method the object <link linkend="classuitoolbutton">UIToolButton</link> is placed in the <elem> array. Method returns index of added object in this array.
+$LANG_RU$
+	При добавлении пункта меню в массив <elem> помещается объект <link linkend="classuitoolbutton">UIToolButton</link>. Метод возвращает индекс добавленного элемента в этом массиве.
+$ENDMETHOD$
+
+$METHODNAME$
+	addSeparator()
+$SUMMARY$
+	Add separator to the toolbar.
+$LANG_RU$
+	Вставить разделитель на панель инструментов.
+$SYNTAX$
+	addSeparator()
+$ENDMETHOD$
+
+$METHODNAME$
+	show()
+$SUMMARY$
+	Show/hide toolbar.
+$LANG_RU$
+	Показать/скрыть панель инструментов.
+$SYNTAX$show([<f>])
+$ARGUMENTS$
+	<f>		- Boolean. Flag of toolbar visibility. Default value is true.
+$LANG_RU$
+	<f>		- Логическое значение. Флаг показа панели инструментов. Значение по умолчанию: истина.
+$ENDMETHOD$
+
+$METHODNAME$
+	hide()
+$SUMMARY$
+	Hide toolbar.
+$LANG_RU$
+	Скрыть панель инструментов.
+$SYNTAX$
+	hide()
+$ENDMETHOD$
+
+$METHODNAME$
+	enable()
+$SUMMARY$
+	Make button active (enabled).
+$LANG_RU$
+	Сделать кнопку активной (доступной).
+$SYNTAX$
+	enable(<pos>)
+$ARGUMENTS$
+	<pos>		- Number. Index of button on toolbar.
+$LANG_RU$
+	<pos>		- Число. Позиция кнопки на панели инструментов.
+$ENDMETHOD$
+
+$METHODNAME$
+	disable()
+$SUMMARY$
+	Disable button on toolbar.
+$LANG_RU$
+	Сделать кнопку неактивной (недоступной).
+$SYNTAX$
+	disable(<pos>)
+$ARGUMENTS$
+	<pos>		- Number. Index of button on toolbar.
+$LANG_RU$
+	<pos>		- Число. Позиция кнопки на панели инструментов.
+$ENDMETHOD$
+
+$METHODNAME$
+	remove()
+$SUMMARY$
+	Remove button from toolbar.
+$LANG_RU$
+	Удалить кнопку с панели инструментов.
+$SYNTAX$
+	remove(<pos>)
+$ARGUMENTS$
+	<pos>		- Number. Index of button on toolbar.
+$LANG_RU$
+	<pos>		- Число. Позиция кнопки на панели инструментов.
+$ENDMETHOD$
+
+$METHODNAME$
+	getElement()
+$SUMMARY$
+	Get button object.
+$LANG_RU$
+	Вернуть объект кнопки.
+$SYNTAX$
+	getElement(<pos>)	--> <oItem>
+$ARGUMENTS$
+	<pos>		- Number. Index of button on toolbar.
+$LANG_RU$
+	<pos>		- Число. Позиция кнопки на панели инструментов.
+$RETURNS$
+	<link linkend="classuitoolbutton">UIToolButton</link> object. Button object.
+$LANG_RU$
+	Объект <link linkend="classuitoolbutton">UIToolButton</link>. Объект кнопки.
+$ENDMETHOD$
+
+$METHODNAME$
+	isEnabled()
+$SUMMARY$
+	Get flag of button activity.
+$LANG_RU$
+	Вернуть флаг активности кнопки.
+$SYNTAX$
+	isEnabled(<pos>)	--> <bEnabled>
+$ARGUMENTS$
+	<pos>		- Number. Index of button on toolbar.
+$LANG_RU$
+	<pos>		- Число. Позиция кнопки на панели инструментов.
+$RETURNS$
+	Flag of button activity.
+$LANG_RU$
+	Флаг активности кнопки.
+$ENDMETHOD$
+
+$EXAMPLES$
+	main_tbar := UIToolBar()
+	main_tbar:addButton( UIImage("icons/journal_bank_pp.xpm"), "Payment orders", {|| BankRefReq(win) } )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+

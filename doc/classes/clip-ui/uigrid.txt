@@ -1,0 +1,155 @@
+$CLASSNAME$
+	UIGrid
+$SUMMARY$
+	Class UIGrid
+$LANG_RU$
+	Класс UIGrid
+$ABOUT$
+	Class of table for placement widgets.
+$LANG_RU$
+	Класс таблицы размещения виджетов.
+$SYNTAX$
+	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> UIGrid object
+$LANG_RU$
+	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> Объект UIGrid
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIGrid".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIGrid".
+
+$METHODNAME$
+	UIGrid()
+$SUMMARY$
+	Constructor. Create table for placement widgets.
+$LANG_RU$
+	Конструктор. Создать таблицу размещения виджетов.
+$SYNTAX$
+	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> UIGrid object
+$ARGUMENTS$
+	<o>		- Widget objecеt. Widget in which table is inserted.
+	<grow>		- Number. Number of rows in table.
+	<gcol>		- Number. Number of columns in table.
+	<spacing>	- Number. Space between table cells in pixels (default is 0).
+	<padding>	- Number. Space between widget and cell border in pixels (default is 2).
+$LANG_RU$
+	<o>		- Объект виджета. Виджет, в который вставляется таблица.
+	<grow>		- Число. Количество строк в таблице.
+	<gcol>		- Число. Количество столбцов в таблице.
+	<spacing>	- Число. Расстояние в точках между ячейками в таблице (по умолчанию 0).
+	<padding>	- Число. Расстояние в точках между краем виджета и границей ячейки (по умолчанию 2).
+$ENDMETHOD$
+
+$METHODNAME$
+	add()
+$SUMMARY$
+	Add widget to table.
+$LANG_RU$
+	Добавить виджет в таблицу.
+$SYNTAX$
+	add(<o>,<pos>,[<h_expand>],[<v_expand>])
+$ARGUMENTS$
+	<o>		- Widget object. Widget inserted in table.
+	<pos>		- String. Address of cell or cell range for inserted widget. Number of row (row range) is separated from number of column (column range) by comma. Range is defined through hyphen. Numbering of rows and columns is begun from 1 (top and left side respectively). For example, widget place in first row and columns 2..4 is defined as string: "1,2-4".
+	<h_expand>	- Boolean. Possibility of expand widget horizontally on window size changed.
+	<v_expand>	- Boolean. Possibility of expand widget vertically on window size changed.
+$LANG_RU$
+	<o>		- Объект виджета. Виджет, вставляемый в таблицу.
+	<pos>		- Cтрока. Адрес ячейки или диапазона ячеек для вставки виджета. Номер строки/диапазона строк разделяется от номера столбца/диапазона столбцов запятой. Диапазоны указываются через дефис. Нумерация строк начинается c 1 и осуществляется сверху, а нумерация столбцов тоже начинается с 1 и осуществляется слева. Например, размещение виджета в первой строке и столбцах 2..4 задаётся строкой: "1,2-4".
+	<h_expand>	- Логическое значение. Возможность растягивания виджета по горизонтали при изменении размеров окна.
+	<v_expand>	- Логическое значение. Возможность растягивания виджета по вертикали при изменении размеров окна.
+$ENDMETHOD$
+
+$METHODNAME$
+	setSpacing()
+$SUMMARY$
+	Set space between widget in table.
+$LANG_RU$
+	Установить расстояние между виджетами в таблице.
+$SYNTAX$
+	setSpacing(<space>)
+$ARGUMENTS$
+	<space>		- Number. Space between widget in pixels.
+$LANG_RU$
+	<space>		- Число. Расстояние в точках между виджетами в таблице.
+$ENDMETHOD$
+
+$METHODNAME$
+	setPadding()
+$SUMMARY$
+	Set table border width.
+$LANG_RU$
+	Установить ширину границы таблицы.
+$SYNTAX$
+	setPadding(<space>)
+$ARGUMENTS$
+	<space>		- Number. Width of table border in pixels.
+$LANG_RU$
+	<space>		- Число. Ширина границы таблицы в точках.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAlignment()
+$SUMMARY$
+	Set alignment of widgets in table.
+$LANG_RU$
+	Установить выравнивание элементов в таблице.
+$SYNTAX$
+	setAlignment(<align>,<valign>)
+	<align>		- Number. Horizontal alignment of widgets. Possible values:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_LEFT</constant> &mdash; aligns with the left edge (default)</para></listitem>
+				<listitem><para><constant>ALIGN_CENTER</constant> &mdash; centers horizontally</para></listitem>
+				<listitem><para><constant>ALIGN_RIGHT</constant> &mdash; aligns with the right edge</para></listitem>
+			  </itemizedlist>
+	<valign>	- Number. Vertical alignment of widgets. Possible values:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_TOP</constant> &mdash; aligns with the top (default)</para></listitem>
+				<listitem><para><constant>ALIGN_MIDDLE</constant> &mdash; centers vertically</para></listitem>
+				<listitem><para><constant>ALIGN_BOTTOM</constant> &mdash; aligns with the bottom</para></listitem>
+			  </itemizedlist>
+$LANG_RU$
+	<align>		- Число. Горизонтальное выравнивание элементов. Значения:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_LEFT</constant> &mdash; выравнивание по левому краю (значение по умолчанию)</para></listitem>
+				<listitem><para><constant>ALIGN_CENTER</constant> &mdash; выравнивание по центру</para></listitem>
+				<listitem><para><constant>ALIGN_RIGHT</constant> &mdash; выравнивание по правому краю</para></listitem>
+			  </itemizedlist>
+	<valign>	- Число. Вертикальное выравнивание элементов. Значения:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_TOP</constant> &mdash; выравнивание по верхнему краю (значение по умолчанию)</para></listitem>
+				<listitem><para><constant>ALIGN_MIDDLE</constant> &mdash; выравнивание по середине</para></listitem>
+				<listitem><para><constant>ALIGN_BOTTOM</constant> &mdash; выравнивание по нижнему краю</para></listitem>
+			  </itemizedlist>
+$ENDMETHOD$
+
+$METHODNAME$
+	setEqualSize(isEqual)
+$SUMMARY$
+	Set equals cells size for widget placement.
+$LANG_RU$
+	Установить равными размеры мест для размещения элементов в таблице.
+$SYNTAX$
+	setEqualSize(<isEqual>)
+$ARGUMENTS$
+	<isEqual>	- Boolean. Flag for equal cells size in table.
+$LANG_RU$
+	<isEqual>	- Логическое значение. Флаг установки равных размеров для элементов в таблице.
+$ENDMETHOD$
+
+$EXAMPLES$
+	table  := UIGrid( , 2, 2 )
+	label  := UILabel( "Label:" )
+	ed_box := UIEdit()
+	table:add( label, "1,1" )
+	table:add( ed_box, "1,2", .T. )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

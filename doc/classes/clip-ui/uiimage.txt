@@ -1,0 +1,48 @@
+$CLASSNAME$
+	UIImage
+$SUMMARY$
+	Class UIImage
+$LANG_RU$
+	Класс UIImage
+$ABOUT$
+	Class of image.
+$LANG_RU$
+	Класс изображения.
+$SYNTAX$
+	UIImage(<file>,[<isString>])	--> UIImage object.
+$LANG_RU$
+	UIImage(<file>,[<isString>])	--> Объект UIImage.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIImage".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIImage".
+
+$METHODNAME$
+	UIImage()
+$SUMMARY$
+	Constructor. Create image widget.
+$LANG_RU$
+	Конструктор. Создать объект показа изображения.
+$SYNTAX$
+	UIImage(<file>,[<isString>])	--> UIImage object.
+$ARGUMENTS$
+	<file>		- String or number. File name, identifier of system image or content of image file. Identifiers are described in function <link linkend="functiongetsysimage">getSysImage()</link>.
+	<isString>	- Boolean. Flag to interpret file parameter as image content.
+$LANG_RU$
+	<file>		- Строка или число. Имя файла, идентификатор системного изображения или содержимое файла изображения. Значения идентификаторов даны в описании функции <link linkend="functiongetsysimage">getSysImage()</link>.
+	<isString>	- Логическое значение. Флаг указания обрабатывать <file> как содержимое изображения.
+$ENDMETHOD$
+
+$EXAMPLES$
+	img  := UIImage("icon.xpm")
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

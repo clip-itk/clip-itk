@@ -58,6 +58,7 @@ case "$uname" in
 		;;
 esac
 
+
 if [ -f $CLIPROOT/include/clipcfg.sh ]
 then
 	. $CLIPROOT/include/clipcfg.sh
@@ -91,7 +92,8 @@ echo "COMPILER='$CC'" >&3
 echo "INSTALL_LIB='$stdlibpath'" >&3
 echo "INSTALL_INCLUDE='$stdincpath'" >&3
 echo "LIBDIRS='-L. -L$stdlibpath -L/usr/lib/X11 -L/usr/X11R6/lib'" >&3
-echo "INCLUDEDIRS='-I. -I/usr/include/freetype2 -I/usr/include/X11 -I/usr/X11R6/include -I/usr/X11R6/include/X11 -I$stdincpath'" >&3
+#echo "INCLUDEDIRS='-I. -I/usr/include/freetype2 -I/usr/include/X11 -I/usr/X11R6/include -I/usr/X11R6/include/X11 -I$stdincpath'" >&3
+echo "INCLUDEDIRS='-I. -I/usr/include/freetype2 -I/usr/include/freetype2/freetype -I/usr/include/X11 -I/usr/X11R6/include -I/usr/X11R6/include/X11 -I$stdincpath'" >&3
 
 if [ -f $stdlibpath/libpng${DLLSUFF} ]
 then
@@ -178,19 +180,19 @@ then
 	echo '#define HAVE_LIBXPM'  >&3
 fi
 
-if [ -f $stdincpath/freetype2/freetype.h ]
+if [ -f $stdincpath/freetype2/freetype/freetype.h ]
 then
 	echo '#define HAVE_LIBFREETYPE' >&3
 else
 	echo 'Warning: system do not have installed FREETYPE development'
 fi
 
-if [ -f $stdincpath/freetype2/freetype.h ]
-then
-	echo '#define HAVE_LIBTTF' >&3
-else
-	echo 'Warning: system do not have installed TTF development'
-fi
+#if [ -f $stdincpath/freetype2/freetype.h ]
+#then
+#	echo '#define HAVE_LIBTTF' >&3
+#else
+#	echo 'Warning: system do not have installed TTF development'
+#fi
 
 echo "#endif" >&3
 exec 3>&-

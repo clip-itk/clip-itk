@@ -1,0 +1,94 @@
+$CLASSNAME$
+	UIComboBox
+$SUMMARY$
+	Class UIComboBox.
+$LANG_RU$
+	Класс UIComboBox.
+$ABOUT$
+	Class of combo box.
+$LANG_RU$
+	Класс поля с выпадающим списком.
+$SYNTAX$
+	UIComboBox([<values>],[<defaultItem>])	--> UIComboBox object
+$LANG_RU$
+	UIComboBox([<values>],[<defaultItem>])	--> Объект UIComboBox
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIComboBox".
+	<list>		- List of values. Type: array of strings.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIComboBox".
+	<list>		- Список значений. Тип: массив строк.
+
+$METHODNAME$
+	UIComboBox()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UIComboBox([<values>],[<defaultItem>])
+$ARGUMENTS$
+	<values>		- Array of strings. Array of strings as elements of value list.
+	<defaultItem>		- String|Number. Select value by default from list. Element may be defined by its content (parameter as string ) or by its serial number (numbering begins from 1).
+$LANG_RU$
+	<values>		- Массив строк. Массив строк-элементов выпадающего списка.
+	<defaultItem>		- Строка|число. Выбрать элемент по умолчанию из массива элементов по строке или номеру в списке (нумерация начинается с 1).
+
+$METHODNAME$
+	setList()
+$SUMMARY$
+	Fill list of values.
+$LANG_RU$
+	Заполнить список значений элементами.
+$SYNTAX$
+	setList(<values>)
+$ARGUMENTS$
+	<values>		- Array of strings. Array of strings as elements of combo box.
+$LANG_RU$
+	<values>		- Массив строк. Массив строк-элементов выпадающего списка.
+$ENDMETHOD$
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Select element by default from list.
+$LANG_RU$
+	Выбрать элемент по умолчанию из массива элементов.
+$SYNTAX$
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- String|Number. String as element of list or serial number of list element (numbering begins from 1).
+$LANG_RU$
+	<value>		- Строка|Число. Строка текста элемента или его номер в списке значений (нумерация начинается с 1).
+$ENDMETHOD$
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get selected string from combo box.
+$LANG_RU$
+	Вернуть выбранную строку из списка значений.
+$SYNTAX$
+	getValue()	--> <sValue>
+$RETURNS$
+	Selected string from combo box. Returned value is string.
+$LANG_RU$
+	Выбранная строка из списка значений. Возвращаемое значение: строка.
+$ENDMETHOD$
+
+$EXAMPLES$
+	   cb1 := UIComboBox({"cat","dog"},"dog")
+	   cb2 := UIComboBox()
+	   cb2:setList({"apple", "banana"})
+	   cb2:setValue(1)
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

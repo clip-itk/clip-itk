@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rushmore.c,v $
+	Revision 1.61  2005/01/19 13:32:03  clip
+	rust: minor fix in string comparison
+	
 	Revision 1.60  2004/12/10 09:16:43  clip
 	rust: minor fix for hs_* functions
-	
+
 	Revision 1.59  2004/08/09 15:06:44  clip
 	rust: small fix in previous fix
 
@@ -638,9 +641,16 @@ static int rm_cmp(ClipMachine* cm,int oper,ClipVar* vp1,ClipVar* vp2,int ic){
 
 	if(ic && (vp1->t.type == CHARACTER_t) && (vp2->t.type == CHARACTER_t)){
 		if(oper == RM_EEQU)
-			r = _clip_strnncasecmp(vp1->s.str.buf,vp2->s.str.buf,vp1->s.str.len,vp2->s.str.len);
+		{
+			if(vp1->s.str.len != vp2->s.str.len)
+				r = vp1->s.str.len - vp2->s.str.len;
+			else
+				r = _clip_strnncasecmp(vp1->s.str.buf,vp2->s.str.buf,vp1->s.str.len,vp2->s.str.len);
+		}
 		else
+		{
 			r = _clip_strncasecmp(vp1->s.str.buf,vp2->s.str.buf,min(vp1->s.str.len,vp2->s.str.len));
+		}
 	} else {
 		_clip_cmp(cm,vp1,vp2,&r,1);
 	}

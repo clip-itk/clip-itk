@@ -186,7 +186,7 @@ clip_GTK_COMBOBOXSETACTIVE(ClipMachine * cm)
 	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
         CHECKARG(2, NUMERIC_t);
 
-	index --;
+	index -- ;
 
 	gtk_combo_box_set_active(GTK_COMBO_BOX(ccmb->widget), index);
 

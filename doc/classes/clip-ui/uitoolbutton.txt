@@ -1,0 +1,53 @@
+$CLASSNAME$
+	UIToolButton
+$SUMMARY$
+	Class UIToolButton
+$LANG_RU$
+	Класс UIToolButton
+$ABOUT$
+	Class of menu item. Object of this class was created by method addButton() of class <link linkend="classuitoolbar">UIToolBar</link>.
+$LANG_RU$
+	Класс кнопки на панели инструментов. Объект создаётся при в методе addButton() класса <link linkend="classuitoolbar">UIToolBar</link>.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIToolButton".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIToolButton".
+
+$METHODNAME$
+	setIcon()
+$SUMMARY$
+	Set icon for button on toolbar.
+$LANG_RU$
+	Установить значок, отображаемый на кнопке панели инструментов.
+$SYNTAX$
+	setAction(<icon>)
+$ARGUMENTS$
+	<icon>		- Object of class <link linkend="classuiimage">UIImage</link>. Icon on the button.
+$LANG_RU$
+	<icon>		- Объект <link linkend="classuiimage">UIImage</link>. Значок на кнопке.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action that will be executed if button pressed.
+$LANG_RU$
+	Установить действие, выполняемое по нажатию кнопки на панель инструментов.
+$SYNTAX$
+	setAction(<action>)
+$ARGUMENTS$
+	<action>	- Code block. Code block that will be executed if button pressed.
+$LANG_RU$
+	<action>	- Блок кода. Блок кода, выполняемый при нажатии на кнопку.
+$ENDMETHOD$
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

@@ -1,0 +1,78 @@
+$CLASSNAME$
+	UIDocument
+$SUMMARY$
+	Class UIDocument
+$LANG_RU$
+	Класс UIDocument
+$ABOUT$
+	Class for document window. It inherits properties and methods of class <ulink linkend="classuichildwindow">UIChildWindow</link>.
+$LANG_RU$
+	Класс окна документа. Наследует свойства и методы класса <ulink linkend="classuichildwindow">UIChildWindow</link>.
+$SYNTAX$
+	UIDocument([<caption>],<parent>,[<name>])	--> UIDocument object
+$LANG_RU$
+	UIDocument([<caption>],<parent>,[<name>])	--> Объект UIDocument
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIDocument".
+	<actions>	- Button bar. Type is <ulink linkend="classuibuttonbar">UIButtonBar</link>.
+	<userSpace>	- Scrolled region for widget placement. Type is <ulink linkend="classuivbox">UIVBox</link>.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIDocument".
+	<actions>	- Панель кнопок. Тип: <ulink linkend="classuibuttonbar">UIButtonBar</link>.
+	<userSpace>	- Прокручивающаяся область размещения виджетов. Тип: <ulink linkend="classuivbox">UIVBox</link>.
+
+$METHODNAME$
+	UIDocument()
+$SUMMARY$
+	Constructor. Create child window with button bar at bottom and scrolled region for widget placement.
+$LANG_RU$
+	Конструктор. Создать дочернее окно с панелью кнопок и областью прокрутки для размещения полей.
+$SYNTAX$
+	UIDocument([<caption>],<parent>,[<name>])	--> UIDocument object
+$ARGUMENTS$
+	<caption>	- String. Caption of child window.
+	<parent>	- Window object. Parent window which should be contains child window. Before create first child window for this parent window must be called method setMDI().
+	<name>		- String. Window name.
+$LANG_RU$
+	<caption>	- Строка. Заголовок дочернего окна.
+	<parent>	- Объект окна. Окно, в котором показывается дочернее окно. Перед созданием первого дочернего окна в родительском окне должен быть выполнен метод setMDI().
+	<name>		- Строка. Имя окна для его поиска.
+$ENDMETHOD$
+
+$EXAMPLES$
+	  /* Create main window and document window */
+	  win := UIMainWindow("Main window")
+	  win:setMDI()
+	  docWindow := UIDocument("Document", win, "doc")
+
+	  /* Add edit field and button for close document window */
+	  docWindow:userSpace:add(UIEdit())
+	  docWindow:actions:add(UIButton(, "&Close", {|| docWindow:close() } )))
+
+	  /* Show these windows */
+	  docWindow:show()
+	  win:show()
+$LANG_RU$
+	  /* Создать главное окно и окно документа */
+	  win := UIMainWindow("Main window")
+	  win:setMDI()
+	  docWindow := UIDocument("Document", win, "doc")
+
+	  /* Добавить поле и кнопку закрытия окна документа */
+	  docWindow:userSpace:add(UIEdit())
+	  docWindow:actions:add(UIButton(, "&Close", {|| docWindow:close() } )))
+
+	  /* Показать окна */
+	  docWindow:show()
+	  win:show()
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

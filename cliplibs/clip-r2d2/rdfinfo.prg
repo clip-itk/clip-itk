@@ -8,7 +8,7 @@ local aRefs, aTree :={}
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
-local urn, sprname:=""
+local urn, sprname:="", values := "", attr := ""
 
 	errorblock({|err|error2html(err)})
 
@@ -26,6 +26,15 @@ local urn, sprname:=""
 	endif
 	if "URN" $ _query
 		URN := _query:URN
+	endif
+	if "ATTR" $ _query
+		attr := _query:attr
+	endif
+	if "VALUES" $ _query
+		values := _query:values
+	endif
+	if !empty(values)
+		values := split(values,"[,]")
 	endif
 
 	lang := cgi_choice_lang(lang)
@@ -78,7 +87,7 @@ local urn, sprname:=""
 		return
 	endif
 
-	if empty(id)
+	if empty(id) .and. empty(values)
 		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,,@Serr,.f.,.t.)
 		if !empty(serr)
 			cgi_xml_error("Error in parameters:"+Serr)
@@ -87,9 +96,18 @@ local urn, sprname:=""
 
 	if aRefs == NIL
 		aRefs := {}
+		idList := {}
 		if !empty(id)
 			idList := split(id,"[,]")
-		else
+		elseif !empty(values) .and. !empty(attr)
+			for i=1 to len(values)
+				s_select := attr+'=="'+values[i]+'"'
+				tmp:=oDep:select(classDesc:id,,,s_select)
+				for j=1 to len(tmp)
+					aadd(idList,tmp[j])
+				next
+			next
+		else // if !empty(s_select)
 			iDlist:=oDep:select(classDesc:id,,,s_select)
 		endif
 

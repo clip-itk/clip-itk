@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.315  2005/01/19 13:32:03  clip
+	rust: minor fix in string comparison
+	
 	Revision 1.314  2004/11/23 13:25:30  clip
 	rust: ORDLISTADD() compatiblity issue
-	
+
 	Revision 1.313  2004/10/08 10:07:48  clip
 	rust: minor fix in _rdd_parsepath() (no drive letter with non DOS-style paths)
 
@@ -2796,6 +2799,7 @@ int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _blo
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	fp->fps = calloc(1,sizeof(RDD_FPS));
 	fp->rd = rd;
+	rd->filter = fp;
 	if(str){
 		fp->sfilter = strdup(str);
 	}

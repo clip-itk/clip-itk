@@ -1,18 +1,20 @@
+set date format to "dd/mm/yyyy"
 set optimize on
 set optimize level to 2
 set exclusive off
 
-oDep01 := coDepository():new("GBL0101","sdfsd")
+oDep01 := coDepository():new("ACC0101","sdfsd")
 oDep01:open()
 oDict := oDep01:dictionary()
-country:=oDict:classBodyByName("taxcode2")
-? country
-//tmp:= oDep01:select(country:id,,,'(code="Ò" .or.  unit="Ò" .or.  name="Ò" .or.  smallname="Ò")')
-tmp:= oDep01:select(country:id)
-? len(tmp)
+class:=oDict:classBodyByName("an_info2")
+? class
+//tmp:= oDep01:select(class:id,,,'account=="GBL02010008F" .and. an_level==1  .and. beg_date<=stod("20050119") .and. end_date>=stod("20050101")  .and. an_value1=="GBL0201015AS"')
+tmp:= oDep01:select(class:id,,,'account=="GBL02010008F" .and. beg_date<=stod("20050119") .and. end_date>=stod("20050101")  .and. an_value1=="GBL0201015AS"')
+//tmp:= oDep01:select(class:id)
+? len(tmp),tmp
 for i=1 to len(tmp)
 	obj:=oDep01:getValue(tmp[i])
-	? obj:fullcode,":",obj:fullname
+	? obj
 next
 ?
 return

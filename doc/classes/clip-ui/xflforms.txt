@@ -1,0 +1,27 @@
+$CLASSNAME$
+	XFL_FORMS
+$SUMMARY$
+	Class underconstruction
+$LANG_RU$
+	Class underconstruction
+$ABOUT$
+$SYNTAX$
+$ATTRIBUTES$
+$METHODNAME$
+$SUMMARY$
+$SYNTAX$
+$ARGUMENTS$
+
+$RETURNS$
+$DESCRIPTION$
+$ENDMETHOD$
+
+$EXAMPLES$
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+

@@ -1,0 +1,108 @@
+$CLASSNAME$
+	UIButton
+$SUMMARY$
+	Class UIButton.
+$LANG_RU$
+	Класс UIButton.
+$ABOUT$
+	Class of button.
+$LANG_RU$
+	Класс кнопки.
+$SYNTAX$
+	UIButton(<label>,<action>,[<val>])	--> UIButton object
+$LANG_RU$
+	UIButton(<label>,<action>,[<val>])	--> Объект UIButton
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIButton".
+	<val>		- Value by default which is stored in widget.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIButton".
+	<val>		- Значение по умолчанию, которое будет хранится в элементе интерфейса.
+
+$METHODNAME$
+	UIButton()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UIButton(<label>,<action>,[<val>])
+$ARGUMENTS$
+	<label>		- String. Button label. You can define accel key for widget activation. Just place symbol "&" before accel letter. This letter will be underlined and widget will be activated with key Alt-letter.
+	<action>	- Codeblock. Code block which is executed when button is pressed.
+	<val>		- String, number or boolean. Value which is stored in widget.
+$LANG_RU$
+	<label>		- Строка. Надпись на кнопке. В надписи можно задать акселератор для активации элемента интерфейса, указав символ "&" перед необходимой буквой. Эта буква будет подчёркнута и элемент можно активировать нажатием комбинации клавиш Alt-буква.
+	<action>	- Блок кода. Блок кода, которые будет запущен при нажатии на кнопку.
+	<val>		- Строка, число или логическое значение. Значение, которое будет хранится в элементе интерфейса.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Redefine action which executed when button is pressed.
+$LANG_RU$
+	Переназначить действие, выполняемое при нажатии кнопки.
+$SYNTAX$
+	setAction(<action>)
+$ARGUMENTS$
+	<action>	- Codeblock. Code block which is executed when button is pressed.
+$LANG_RU$
+	<action>	- Блок кода. Блок кода, которые будет запущен при нажатии на кнопку.
+$ENDMETHOD$
+
+$METHODNAME$
+	setPadding()
+$SUMMARY$
+	Set indent of label text to button margin.
+$LANG_RU$
+	Установить отступ от текста надписи до края кнопки.
+$SYNTAX$
+	setPadding(<padding>)
+$ARGUMENTS$
+	<padding>	- Number. Indent of label text to button margin in pixels.
+$LANG_RU$
+	<padding>	- Число. Отступ от текста надписи до края кнопки в точках.
+$ENDMETHOD$
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Set new value which will be stored in widget.
+$LANG_RU$
+	Установить новое значение, которое хранится в элементе интерфейса.
+$SYNTAX$
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- String, number or boolean. Value which will be stored in widget.
+$LANG_RU$
+	<value>		- Строка, число или логическое значение. Значение, которое будет хранится в элементе интерфейса.
+$ENDMETHOD$
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get value which is stored in widget.
+$LANG_RU$
+	Возвращает значение, которое хранится в элементе интерфейса.
+$SYNTAX$
+	getValue() 	--> <value>
+$RETURNS$
+	Get value which is stored in widget.
+$LANG_RU$
+	Возвращает значение, которое хранится в элементе интерфейса.
+$ENDMETHOD$
+
+$EXAMPLES$
+	button := UIButton( "&Ok", {|o,e| ok_function() } ) )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

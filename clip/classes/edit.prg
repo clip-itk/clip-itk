@@ -21,6 +21,8 @@
 #define FA_DIRECTORY    16
 #define FA_ARCHIVE      32
 
+#define ME_VERSION      5
+
 static __CurrentDir
 
 function medit(par, ntop, nleft, nbot, nright, user_func,;
@@ -362,9 +364,9 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 
 	if ::curwin > 0 .and. ::curwin<=::nWins
 		dispbegin()
-		wselect(::curwin)
+		wselect(::tobjinfo[::curwin]:curwin)
 		::__setFocus(::curwin)
-		::drawhead()
+		//::drawhead()
 		percent := int(::tobj[nWin]:line*100/::tobj[nWin]:lines)
 		str:=padr("<"+alltrim(str(::tobj[nWin]:line))+"><"+alltrim(str(::tobj[nWin]:pos))+"><"+alltrim(str(percent))+"%>", ::tobj[nWin]:__leninfo, translate_charset( __CHARSET__,host_charset(), substr(B_SINGLE, 6, 1)))
 		@ -1, 1 say str color set("edit_colors_window")
@@ -437,7 +439,7 @@ local m
        /* match backward structure */
 	m[HASH_MatchStructBackward]     := {|oMe, hKey| oMe:matchStructure(, .f. ), ME_CONTINUE }
        /* copy block to Clipboard */
-	m[HASH_CopyClipboard]           := {|oMe, hKey| oMe:copyToClipboard(), ME_CONTINUE }
+	m[HASH_CopyClipboard]           := {|oMe, hKey| oMe:copyToClipboard(oMe:curwin), ME_CONTINUE }
        /* save block to file */
 	m[HASH_SaveBlock]               := {|oMe, hKey| oMe:saveBlock(), ME_CONTINUE }
        /* read only options on/off */
@@ -547,7 +549,11 @@ do while .t.
 
 
 	if mLeftDown() .and. (mRow() == ::nBot .or. mRow() == ::nTop)
-		hKey := HASH_CallMenu
+		hKey := ::CallMenu(@nChoice)
+
+		if hKey == -1
+			loop
+		endif
 	endif
 	if !::__l_tobj .and. (hKey != HASH_CallMenu .and. ;
 		hKey != HASH_OpenFile .and. ;
@@ -557,6 +563,12 @@ do while .t.
 		hKey != HASH_HelpEdit)
 
 		loop
+	endif
+	if ::__l_tobj .and. mLeftDown()
+		if between(mRow(), ::nBot+1, ::nTop-1) .and. between(mCol(), ::nLeft+1, ::nRight-1)
+			::tobj[::curwin]:mGoto(mRow(), mCol())
+			loop
+		endif
 	endif
 	/* run menu */
 	if hKey == HASH_CallMenu
@@ -623,7 +635,7 @@ local k, i, ret := .t.
 	if ::tobj[i] == NIL
 		loop
 	endif
-	wselect(i)
+	wselect(::tobjinfo[i]:curwin)
 	if ::tobj[i]:updated
 		k := alert([File;]+::tobjinfo[i]:name+[;not saved. Save it?],{[Yes],[No],[Cancel] })
 		if k==1
@@ -741,7 +753,7 @@ local fd, sh, i, oldwin, shnum
 				::nWins --
 				wclose()
 				::__setFocus(oldwin)
-				wselect(::curwin)
+				wselect(::tobjinfo[::curwin]:curwin)
 				::drawhead()
 			endif
 	else
@@ -1012,21 +1024,22 @@ local k, r, s
 	k := int(3*maxcol()/4)
 	r := int(3*maxrow()/4)
 	s := setcolor("15/7")//set("edit_colors_list"))
-	obj := ::tobj[::curwin]
+	//obj := ::tobj[::curwin]
 	wopen(int((maxrow()-r)/2), int((maxcol()-k)/2), int((maxrow()-r)/2)+r, int((maxcol()-k)/2)+k)
 	wbox()
 	@ -1, (k-len([ Windows list ]))/2 say [ Windows list ]
 	nWin := ::listfiles()
-	::__setFocus(nWin)
 	wclose()
+	::__setFocus(nWin)
 	setcolor(s)
 	if ::nWins == 0
 		::__l_tobj := .f.
 		::curwin := 0
 	else
-		wselect(::tobjinfo[nWin]:curwin)
+		obj := ::tobj[::curwin]
+		wselect(::tobjinfo[::curwin]:curwin)
 		::drawhead()
-		if ::tobjinfo[nWin]:share
+		if ::tobjinfo[::curwin]:share
 			obj:lines := len(obj:edbuffer)
 			obj:refresh()
 		endif
@@ -1045,16 +1058,17 @@ local i
 			::saveFile()
 		endif
 	endif
-	::tobj[::curwin]:setFocus(.f.)
+	//::tobj[::curwin]:setFocus(.f.)
+	obj:setFocus(.f.)
 	wclose()
 
 	::removeWindow(@nWin)
 	do while ::nWins>0
 		if ::tobj[nWin]!=NIL
-			::curwin := ::__setFocus(nWin)
+			::__setFocus(nWin)
 			wselect(::tobjinfo[::curwin]:curwin)
 			::drawhead()
-			::tobj[::curwin]:refresh()
+			//::tobj[::curwin]:refresh()
 			exit
 		endif
 		nWin --
@@ -1261,7 +1275,7 @@ local i, oldrow, oldcol, hKey
 	::enableBlockMenu()
 	hKey := MenuModal(::oMenu,nChoice,maxrow(),0,maxcol(),"r/w")
 	wclose()
-	wselect(::curwin)
+	wselect(::tobjinfo[::curwin]:curwin)
 	setpos(oldrow, oldcol)
 	setcursor(i)
 	nChoice := ::oMenu:current
@@ -2034,7 +2048,7 @@ local w, color
 	@ 1, 2 say padc("TEXT EDITOR", 56)
 	@ 2, 2 say padc("Copyright (C) 2001-2004  ITK", 56)
 	@ 3, 2 say padc("----------", 56)
-	@ 4, 2 say padc("written by CLIP version "+CLIP_VERSION, 56)
+	@ 4, 2 say padc("written by CLIP version "+CLIP_VERSION+"-"+alltrim(str(ME_VERSION)), 56)
 	@ 6, 2 say padc("Licence : (GPL) http://www.itk.ru/clipper/licence.html", 56)
 	@ 7, 2 say padc("Author  : Elena Kornilova <alena@itk.ru>              ", 56)
 	@ 8, 2 say padc("< OK >", 56)
@@ -2126,6 +2140,9 @@ return .t.
 *********************
 static function me_removeWindow(nWin)
    nWin := iif(nWin == NIL, ::curwin, nWin)
+   if !between(nWin, 1, ::nWins)
+	return
+   endif
    adel(::tobj, nWin)
    asize(::tobj, ::nWins-1)
    adel(::tobjinfo, nWin)

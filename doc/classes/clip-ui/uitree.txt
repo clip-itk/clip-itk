@@ -1,0 +1,136 @@
+$CLASSNAME$
+	UITree
+$SUMMARY$
+	Class UITree
+$LANG_RU$
+	Класс UITree
+$ABOUT$
+	Class of hierarchical multi-column lists (tree view).
+$LANG_RU$
+	Класс иерархического многоколоночного списка (дерева).
+$SYNTAX$
+	UITree([<nTreeColumn>],<acNameColumns>)	--> UITree object
+$LANG_RU$
+	UITree([<nTreeColumn>],<acNameColumns>)	--> Объект UITree
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UITree".
+	<nodes>		- Array of arrays. Array of values. Each records contains array of strings of values by columns.
+	<nodesId>	- Array of strings. Array of tree node identifiers.
+	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UITree".
+	<nodes>		- Массив массивов. Массив значений. Каждая запись содержит массив строк значений по столбцам соответственно.
+	<nodesId>	- Массив строк. Массив идентификаторов элементов дерева.
+	<onSelect>	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
+
+$METHODNAME$
+	UITree()
+$SUMMARY$
+	Constructor. Create tree view.
+$LANG_RU$
+	Конструктор. Создать дерево.
+$SYNTAX$
+	UITree([<nTreeColumn>],<acNameColumns>)	--> UITree object
+$ARGUMENTS$
+	<nTreeColumn>	- Number. Column for show hierarchy. Column numbering is begun from 1.
+	<acNameColumns>	- Array of strings. Column titles.
+$LANG_RU$
+	<nTreeColumn>	- Число. Номер столбца для размещения линий иерархии. Нумерация столбцов начинается с 1.
+	<acNameColumns>	- Массив строк. Заголовки столбцов списка.
+$ENDMETHOD$
+
+$METHODNAME$
+	addNode()
+$SUMMARY$
+	Add node to tree view.
+$LANG_RU$
+	Добавить элемент в дерево.
+$SYNTAX$
+	addNode(<columns>,[<id>],[<parent>],[<sibling>],[<expanded>])	--> <oNode>
+$ARGUMENTS$
+	<columns>	- Array of strings. Array of values by columns.
+	<id>		- String. Node identifier.
+	<parent>	- Object. Parent node.
+	<sibling>	- Object. Put node before specified node on such level.
+	<expanded>	- Boolean. Expand child nodes.
+$LANG_RU$
+	<columns>	- Массив строк. Массив значений по столбцам соответственно.
+	<id>		- Строка. Идентификатор элемента.
+	<parent>	- Объект. Родительский объект. Указывается объект, , возвращённый при предыдущем вызове этой функции.
+	<sibling>	- Объект. Поместить перед элементом того же уровня.
+	<expanded>	- Логическое значение. Сразу показывать дочерние элементы.
+$RETURNS$
+	Object of tree node, that may be used as parent node.
+$LANG_RU$
+	Объект элемента, который можно далее использовать как родительский.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action that will be executed if tree node selected by double click or 'Enter' key pressed.
+$LANG_RU$
+	Указать действие, вызываемое при выборе элемента одним щелчком мыши или нажатием клавиши 'Enter'.
+$SYNTAX$
+	setAction(<action>)
+$ARGUMENTS$
+	<action>	- Code block. Action.
+$LANG_RU$
+	<action>	- Блок кода. Действие.
+$ENDMETHOD$
+
+$METHODNAME$
+	clear()
+$SUMMARY$
+	Clear tree: remove all nodes.
+$LANG_RU$
+	Очистить дерево: удалить все элементы.
+$SYNTAX$
+	clear()
+$ENDMETHOD$
+
+$METHODNAME$
+	getSelection()
+$SUMMARY$
+	Get index of selected node. Numbering is begun from 1.
+$LANG_RU$
+	Возвращает номер выделенного элемента. Нумерация начинается с 1.
+$SYNTAX$
+	getSelection()	--> <nNode>
+$RETURNS$
+	Selected node. Numbering is begun from 1.
+$LANG_RU$
+	Номер выделенного элемента. Нумерация начинается с 1.
+$ENDMETHOD$
+
+$METHODNAME$
+	getSelectionId()
+$SUMMARY$
+	Get identifier of selected node.
+$LANG_RU$
+	Возвращает идентификатор выделенного элемента.
+$SYNTAX$
+	getSelectionId()	--> <id>
+$RETURNS$
+	Identifier of selected node.
+$LANG_RU$
+	Идентификатор выделенного элемента.
+$ENDMETHOD$
+
+$EXAMPLES$
+	tree := UITree(1, {"N1","N2"})
+
+	node1  := tree:addNode({"Node1", "node1111"})
+	node11 := tree:addNode({"Node2"})
+	node2  := tree:addNode({"Leaf1"},, node1)
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

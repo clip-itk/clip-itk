@@ -1,0 +1,50 @@
+$CLASSNAME$
+	UIMainWindow
+$SUMMARY$
+	Class UIMainWindow
+$LANG_RU$
+	Класс UIMainWindow
+$ABOUT$
+	Class of main application window. It is inherited from class <link linkend="classuiwindow">UIWindow</link>. On main application window close application will be exited.
+$LANG_RU$
+	Класс главного окна приложения. Наследуется от класса <link linkend="classuiwindow">UIWindow</link>. Может изменять размеры и при его закрытии завершается работа программы.
+$SYNTAX$
+	UIMainWindow([<caption>],[<name>])	--> UIMainWindow object
+$LANG_RU$
+	UIMainWindow([<caption>],[<name>])	--> Объект UIMainWindow
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIMainWindow".
+	<sysMenus>	- Associated array of system menus.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIMainWindow".
+	<sysMenus>	- Ассоциативный массив системных меню.
+
+$METHODNAME$
+	UIMainWindow()
+$SUMMARY$
+	Constructor. Create main application window.
+$LANG_RU$
+	Конструктор. Создать главное окно программы.
+$SYNTAX$
+	UIMainWindow([<caption>],[<name>])	--> UIMainWindowText object
+$ARGUMENTS$
+	<caption>	- String. Window title.
+	<name>		- String. Window name.
+$LANG_RU$
+	<caption>	- Строка. Заголовок окна.
+	<name>		- Строка. Имя окна для его поиска.
+$ENDMETHOD$
+
+$EXAMPLES$
+	win  := UIMainWindow("Main window")
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

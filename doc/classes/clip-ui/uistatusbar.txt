@@ -1,0 +1,81 @@
+$CLASSNAME$
+	UIStatusBar
+$SUMMARY$
+	Class UIStatusBar
+$LANG_RU$
+	Класс UIStatusBar
+$ABOUT$
+	Class of statusbar.
+$LANG_RU$
+	Класс строки состояния.
+$SYNTAX$
+	UIStatusBar()	--> UIStatusBar object
+$LANG_RU$
+	UIStatusBar()	--> Объект UIStatusBar
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIStatusBar".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIStatusBar".
+
+$METHODNAME$
+	UIStatusBar()
+$SUMMARY$
+	Constructor. Create statusbar.
+$LANG_RU$
+	Конструктор. Создать строку состояния.
+$SYNTAX$
+	UIStatusBar()	--> UIStatusBar object
+$ENDMETHOD$
+
+$METHODNAME$
+	setText()
+$SUMMARY$
+	Change text on statusbar.
+$LANG_RU$
+	Изменить текст в строке состояния.
+$SYNTAX$
+	setText(<text>)
+$ARGUMENTS$
+	<text>		- String. New text on statusbar.
+$LANG_RU$
+	<text>		- Строка. Новый текст в строке состояния.
+$ENDMETHOD$
+
+$METHODNAME$
+	show()
+$SUMMARY$
+	Show/hide statusbar.
+$LANG_RU$
+	Показать/скрыть строку состояния.
+$SYNTAX$
+	show([<f>])
+$ARGUMENTS$
+	<f>		- Boolean. Flag of statusbar visibility. Default value is true.
+$LANG_RU$
+	<f>		- Логическое значение. Флаг показа строки состояния. Значение по умолчанию: истина.
+$ENDMETHOD$
+
+$METHODNAME$
+	hide()
+$SUMMARY$
+	Hide statusbar.
+$LANG_RU$
+	Скрыть строку состояния.
+$SYNTAX$
+	hide()
+$ENDMETHOD$
+
+$EXAMPLES$
+	sbar := UIStatusBar()
+	sbar:setText("Ready.")
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

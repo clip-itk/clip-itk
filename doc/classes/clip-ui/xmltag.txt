@@ -1,0 +1,58 @@
+$CLASSNAME$
+	XMLTag
+$SUMMARY$
+	Class XMLTag
+$LANG_RU$
+	Класс XMLTag
+$ABOUT$
+	Class of XML tag. This class is used in XML parsing.
+$LANG_RU$
+	Класс описания тега XML. Служит для обработки файлов XML.
+$SYNTAX$
+	XMLTag(<name>)	--> XMLTag object
+$LANG_RU$
+	XMLTag(<name>)	--> Объект XMLTag
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "XMLTag".
+	<name>		- String. Tag name.
+	<attrName>	- Array of strings. List of tag attributes.
+	<attr>		- Associated array. Tag attributes.
+	<parent>	- XMLTag object or NIL. Parent object.
+	<childs>	- Array of XMLTag objects. Child nodes.
+	<o>		- Any object. Linked object. Mainly it is widget.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "XMLTag".
+	<name>		- Строка. Имя тега.
+	<attrName>	- Массив строк. Список имён атрибутов.
+	<attr>		- Ассоциативный массив. Атрибуты тега.
+	<parent>	- Объект XMLTag или NIL. Родительский объект.
+	<childs>	- Массив объектов XMLTag. Дочерние элементы.
+	<o>		- Любой объект. Привязанный объект. Как правило, виджет.
+
+$METHODNAME$
+	XMLTag()
+$SUMMARY$
+	Constructor. Create edit field with choice button.
+$LANG_RU$
+	Конструктор. Создать поле ввода с кнопкой выбора элемента.
+$SYNTAX$
+	XMLTag(<name>)	--> XMLTag object
+$ARGUMENTS$
+	<name>		- String. Name of tag.
+$LANG_RU$
+	<name>		- Строка. Имя тега.
+$ENDMETHOD$
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

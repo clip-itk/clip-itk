@@ -273,13 +273,13 @@ static function badDate()
 	::typeOut := .f.
 	s := alltrim(s)
 	d := ctod(s,::__dateFormat)
-	ret := ( !( s==dtoc(d,::__dateFormat) ) )
+	ret := ( !( s== alltrim(dtoc(d,::__dateFormat)) ) )
 	if !ret
 		  return ret
 	endif
 	s4 := strtran(upper(::__dateFormat),"YYYY","YY")
 	d := ctod(s,s4)
-	ret := ( !( s==dtoc(d,s4) ) )
+	ret := ( !( s== alltrim(dtoc(d,s4)) ) )
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"baddate",::name,"return",ret)
 #endif

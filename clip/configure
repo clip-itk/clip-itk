@@ -443,6 +443,9 @@ then
 	FREEBSD*)
 		READLINE_LIBS='-lreadline -lncurses'
 		;;
+	NETBSD*)
+		READLINE_LIBS=''
+		;;
 	LINUX*)
 		READLINE_LIBS='-lreadline -lncurses'
 		;;

@@ -65,6 +65,36 @@
   <!ENTITY fncsect28 SYSTEM "clip-funcs/fncsect28.sgml">
   <!ENTITY fncsect29 SYSTEM "clip-funcs/fncsect29.sgml">
   <!ENTITY fncsect30 SYSTEM "clip-funcs/fncsect30.sgml">
+  <!ENTITY fncsect31 SYSTEM "clip-funcs/fncsect31.sgml">
+  <!ENTITY fncsect32 SYSTEM "clip-funcs/fncsect32.sgml">
+  <!ENTITY fncsect33 SYSTEM "clip-funcs/fncsect33.sgml">
+  <!ENTITY fncsect34 SYSTEM "clip-funcs/fncsect34.sgml">
+  <!ENTITY fncsect35 SYSTEM "clip-funcs/fncsect35.sgml">
+  <!ENTITY fncsect36 SYSTEM "clip-funcs/fncsect36.sgml">
+  <!ENTITY fncsect37 SYSTEM "clip-funcs/fncsect37.sgml">
+  <!ENTITY fncsect38 SYSTEM "clip-funcs/fncsect38.sgml">
+  <!ENTITY fncsect39 SYSTEM "clip-funcs/fncsect39.sgml">
+  <!ENTITY fncsect40 SYSTEM "clip-funcs/fncsect40.sgml">
+  <!ENTITY fncsect41 SYSTEM "clip-funcs/fncsect41.sgml">
+  <!ENTITY fncsect42 SYSTEM "clip-funcs/fncsect42.sgml">
+  <!ENTITY fncsect43 SYSTEM "clip-funcs/fncsect43.sgml">
+  <!ENTITY fncsect44 SYSTEM "clip-funcs/fncsect44.sgml">
+  <!ENTITY fncsect45 SYSTEM "clip-funcs/fncsect45.sgml">
+  <!ENTITY fncsect46 SYSTEM "clip-funcs/fncsect46.sgml">
+  <!ENTITY fncsect47 SYSTEM "clip-funcs/fncsect47.sgml">
+  <!ENTITY fncsect48 SYSTEM "clip-funcs/fncsect48.sgml">
+  <!ENTITY fncsect49 SYSTEM "clip-funcs/fncsect49.sgml">
+  <!ENTITY fncsect50 SYSTEM "clip-funcs/fncsect50.sgml">
+  <!ENTITY fncsect51 SYSTEM "clip-funcs/fncsect51.sgml">
+  <!ENTITY fncsect52 SYSTEM "clip-funcs/fncsect52.sgml">
+  <!ENTITY fncsect53 SYSTEM "clip-funcs/fncsect53.sgml">
+  <!ENTITY fncsect54 SYSTEM "clip-funcs/fncsect54.sgml">
+  <!ENTITY fncsect55 SYSTEM "clip-funcs/fncsect55.sgml">
+  <!ENTITY fncsect56 SYSTEM "clip-funcs/fncsect56.sgml">
+  <!ENTITY fncsect57 SYSTEM "clip-funcs/fncsect57.sgml">
+  <!ENTITY fncsect58 SYSTEM "clip-funcs/fncsect58.sgml">
+  <!ENTITY fncsect59 SYSTEM "clip-funcs/fncsect59.sgml">
+  <!ENTITY fncsect60 SYSTEM "clip-funcs/fncsect60.sgml">
 
   <!ENTITY classes SYSTEM "clip-classes/classes.sgml">
   <!ENTITY class1  SYSTEM "clip-classes/class1.sgml">
@@ -87,6 +117,46 @@
   <!ENTITY class18 SYSTEM "clip-classes/class18.sgml">
   <!ENTITY class19 SYSTEM "clip-classes/class19.sgml">
   <!ENTITY class20 SYSTEM "clip-classes/class20.sgml">
+  <!ENTITY class21 SYSTEM "clip-classes/class21.sgml">
+  <!ENTITY class22 SYSTEM "clip-classes/class22.sgml">
+  <!ENTITY class23 SYSTEM "clip-classes/class23.sgml">
+  <!ENTITY class24 SYSTEM "clip-classes/class24.sgml">
+  <!ENTITY class25 SYSTEM "clip-classes/class25.sgml">
+  <!ENTITY class26 SYSTEM "clip-classes/class26.sgml">
+  <!ENTITY class27 SYSTEM "clip-classes/class27.sgml">
+  <!ENTITY class28 SYSTEM "clip-classes/class28.sgml">
+  <!ENTITY class29 SYSTEM "clip-classes/class29.sgml">
+  <!ENTITY class30 SYSTEM "clip-classes/class30.sgml">
+  <!ENTITY class31 SYSTEM "clip-classes/class31.sgml">
+  <!ENTITY class32 SYSTEM "clip-classes/class32.sgml">
+  <!ENTITY class33 SYSTEM "clip-classes/class33.sgml">
+  <!ENTITY class34 SYSTEM "clip-classes/class34.sgml">
+  <!ENTITY class35 SYSTEM "clip-classes/class35.sgml">
+  <!ENTITY class36 SYSTEM "clip-classes/class36.sgml">
+  <!ENTITY class37 SYSTEM "clip-classes/class37.sgml">
+  <!ENTITY class38 SYSTEM "clip-classes/class38.sgml">
+  <!ENTITY class39 SYSTEM "clip-classes/class39.sgml">
+  <!ENTITY class40 SYSTEM "clip-classes/class40.sgml">
+  <!ENTITY class41 SYSTEM "clip-classes/class41.sgml">
+  <!ENTITY class42 SYSTEM "clip-classes/class42.sgml">
+  <!ENTITY class43 SYSTEM "clip-classes/class43.sgml">
+  <!ENTITY class44 SYSTEM "clip-classes/class44.sgml">
+  <!ENTITY class45 SYSTEM "clip-classes/class45.sgml">
+  <!ENTITY class46 SYSTEM "clip-classes/class46.sgml">
+  <!ENTITY class47 SYSTEM "clip-classes/class47.sgml">
+  <!ENTITY class48 SYSTEM "clip-classes/class48.sgml">
+  <!ENTITY class49 SYSTEM "clip-classes/class49.sgml">
+  <!ENTITY class50 SYSTEM "clip-classes/class50.sgml">
+  <!ENTITY class51 SYSTEM "clip-classes/class51.sgml">
+  <!ENTITY class52 SYSTEM "clip-classes/class52.sgml">
+  <!ENTITY class53 SYSTEM "clip-classes/class53.sgml">
+  <!ENTITY class54 SYSTEM "clip-classes/class54.sgml">
+  <!ENTITY class55 SYSTEM "clip-classes/class55.sgml">
+  <!ENTITY class56 SYSTEM "clip-classes/class56.sgml">
+  <!ENTITY class57 SYSTEM "clip-classes/class57.sgml">
+  <!ENTITY class58 SYSTEM "clip-classes/class58.sgml">
+  <!ENTITY class59 SYSTEM "clip-classes/class59.sgml">
+  <!ENTITY class60 SYSTEM "clip-classes/class60.sgml">
 
   <!ENTITY utilites SYSTEM "doc/utilites.sgml">
   <!ENTITY sockets SYSTEM "doc/sockets.sgml">

@@ -1,0 +1,87 @@
+$CLASSNAME$
+	UITimer
+$SUMMARY$
+	Class UITimer
+$LANG_RU$
+	Класс UITimer
+$ABOUT$
+	Timer.
+$LANG_RU$
+	Таймер.
+$SYNTAX$
+	UITimer(<period>,<action>,[<data>])	--> UITimer object
+$LANG_RU$
+	UITimer(<period>,<action>,[<data>])	--> Объект UITimer
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UITimer".
+	<period>	- Number. Period in milliseconds (1/1000 second) between <action> call.
+	<action>	- Code block. Called code block.
+	<data>		- Any type. Data connected to timer.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UITimer".
+	<period>	- Число. Период в миллисекундах (1/1000 секунды) между вызовами блока кода <action>.
+	<action>	- Блок кода. Вызываемый блок кода.
+	<data>		- Любой тип. Данные, связанные с таймером.
+
+$METHODNAME$
+	UITimer()
+$SUMMARY$
+	Constructor. Run timer.
+$LANG_RU$
+	Конструктор. Запустить таймер.
+$SYNTAX$
+	UITimer(<period>,<action>,[<data>])	--> UITimer object
+$ARGUMENTS$
+	<period>	- Number. Period in milliseconds (1/1000 second) between <action> call.
+	<action>	- Code block. Called code block.
+	<data>		- Any type. Data connected to timer.
+$LANG_RU$
+	<period>	- Число. Период в миллисекундах (1/1000 секунды) между вызовами блока кода <action>.
+	<action>	- Блок кода. Вызываемый блок кода.
+	<data>		- Любой тип. Данные, связанные с таймером.
+$ENDMETHOD$
+
+$METHODNAME$
+	start()
+$SUMMARY$
+	Restart timer with new parameters.
+$LANG_RU$
+	Перехапустить таймер с новыми параметрами.
+$SYNTAX$
+	start([<period>],[<action>],[<data>])
+	<period>	- Number. New period in milliseconds (1/1000 second) between <action> call.
+	<action>	- Code block. New called code block.
+	<data>		- Any type. New data connected to timer.
+$LANG_RU$
+	<period>	- Число. Новый период в миллисекундах (1/1000 секунды) между вызовами блока кода <action>.
+	<action>	- Блок кода. Новый вызываемый блок кода.
+	<data>		- Любой тип. Новые данные, связанные с таймером.
+$ENDMETHOD$
+
+$METHODNAME$
+	stop()
+$SUMMARY$
+	Stop running timer.
+$LANG_RU$
+	Остановить запущенный таймер.
+$SYNTAX$
+	stop()
+$ENDMETHOD$
+
+$EXAMPLES$
+	// Run showTime() each second.
+	t := UITimer( 1000, {|data| showTime() } )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

@@ -1,0 +1,63 @@
+$CLASSNAME$
+	UIWorkSpace
+$SUMMARY$
+	Class UIWorkSpace
+$LANG_RU$
+	Класс UIWorkSpace
+$ABOUT$
+	Class of application instance.
+$LANG_RU$
+	Класс экземпляра приложения.
+$SYNTAX$
+	UIWorkSpace()	--> UIWorkSpace object
+$LANG_RU$
+	UIWorkSpace()	--> Объект UIWorkSpace
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIWorkSpace".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIWorkSpace".
+
+$METHODNAME$
+	UIWorkSpace()
+$SUMMARY$
+	Constructor. Create application instance.
+$LANG_RU$
+	Конструктор. Создать экземпляр приложения.
+$SYNTAX$
+	UIWorkSpace()	--> UIWorkSpace object
+$ENDMETHOD$
+
+$METHODNAME$
+	run()
+$SUMMARY$
+	Run application instance.
+$LANG_RU$
+	Запустить экземпляр приложения.
+$SYNTAX$
+	run()
+$ENDMETHOD$
+
+$METHODNAME$
+	quit()
+$SUMMARY$
+	Quit application instance work.
+$LANG_RU$
+	Завершить работу экземпляра приложения.
+$SYNTAX$
+	quit()
+$ENDMETHOD$
+
+$EXAMPLES$
+	app  := UIWorkSpace()
+	app:run()
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

@@ -1,0 +1,55 @@
+$CLASSNAME$
+	UIMenuItem
+$SUMMARY$
+	Class UIMenuItem
+$LANG_RU$
+	Класс UIMenuItem
+$ABOUT$
+	Class of menu item. Object of this class was created by method add() of class <link linkend="classuimenu">UIMenu</link>.
+$LANG_RU$
+	Класс пункта меню. Объект создаётся при в методе add() класса <link linkend="classuimenu">UIMenu</link>.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIMenuItem".
+	<label>		- Label.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIMenuItem".
+	<label>		- Надпись.
+
+$METHODNAME$
+	setIcon()
+$SUMMARY$
+	Set icon for menu item.
+$LANG_RU$
+	Установить пиктограмму пункта меню.
+$SYNTAX$
+	setAction(<icon>)
+$ARGUMENTS$
+	<icon>		- Object of class <link linkend="classuiimage">UIImage</link>. Icon of menu item.
+$LANG_RU$
+	<icon>		- Объект <link linkend="classuiimage">UIImage</link>. Пиктограмма пункта меню.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action executed on menu item activation.
+$LANG_RU$
+	Установить действие, выполняемое при выборе пункта меню.
+$SYNTAX$
+	setAction(<action>)
+$ARGUMENTS$
+	<action>	- Code block. Code block executed on menu item activation.
+$LANG_RU$
+	<action>	- Блок кода. Блок кода, выполняемый при выборе пункта меню.
+$ENDMETHOD$
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

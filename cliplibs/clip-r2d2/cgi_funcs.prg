@@ -1258,7 +1258,7 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 			for j=1 to len(columns)
 				col := columns[j]
 				sTmp := mapEval(tmp,col:block)
-				sTmp3 := ""
+				sTmp3 := "Ñ"
 				if "DATATYPE" $ col .and.  col:datatype == "S"
 					//sData += s+ ' <DOCUM:ref_'+col:name+'>'+ stmp + '</DOCUM:ref_'+col:name+'>'
 					? s+'    DOCUM:ref_'+col:name+'="'+ stmp + '"'

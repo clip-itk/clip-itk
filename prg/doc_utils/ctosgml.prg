@@ -233,6 +233,8 @@ local newstr, l, i, j
 				endif
 			elseif s== ">"
 				newstr += '<![CDATA['+s+']]>'
+			elseif s== "&"
+				newstr += '<![CDATA['+s+']]>'
 			else
 				newstr += s
 			endif
@@ -254,7 +256,7 @@ return newstr
 
 *******************************************************************************
 static function writeClassDesc(fname, fsgml, fs, lang, ab_met)
-local i, j, a, str, lStr, arr
+local i, j, a, str, lStr, arr, lf
 
 	qout( "Write to: "+fname+" function:"+fs:CLASSNAME)
 
@@ -390,12 +392,16 @@ local i, j, a, str, lStr, arr
 		if empty(a[j])
 			loop
 		endif
+		lf := .f.
+		if atr("(",a[j])>0
+			lf := .t.
+		endif
 		i := strtran(a[j], "(", "")
 		i := strtran(i, ")", "")
 		i := strtran(i, "_", "")
 		i := strtran(i, "*", "")
 		i := alltrim(i)
-		str += '<link linkend="class'+i+'">'+a[j]+'</link> '
+		str += '<link linkend="'+iif(lf,'function', 'class')+i+'">'+a[j]+'</link> '
 	next
 	str += '&\n</para>&\n'
 	str += '</section><!-- SEEALSO for '+fs:CLASSNAME+' -->&\n'

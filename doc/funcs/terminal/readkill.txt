@@ -1,0 +1,28 @@
+$FUNCNAME$
+  READKILL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return, and optionally set, whether the current READ should be exited
+$SYNTAX$
+     READKILL([<lKillRead>]) --> lCurrentSetting
+$ARGUMENTS$
+     <lKillRead> sets the READKILL() flag.  A value of true (.T.)
+     indicates that the current read should be terminated, and a value of
+     false (.F.) indicates that it should not.
+$RETURNS$
+     READKILL() returns the current setting as a logical value.
+$DESCRIPTION$
+     READKILL() is a Get system function that lets you control whether or not
+     to terminate the current READ.
+
+     Unless directly manipulated, READKILL() returns true (.T.) after you
+     issue a CLEAR GETS (see the CLEAR GETS entry ) for the current READ;
+     otherwise, it returns false (.F.).
+
+     By accessing the function directly, however, you can control the
+     READKILL() flag with its function argument and use it to create new READ
+     layers.
+$SEEALSO$
+  READFORMAT(),READUPDATED(),READMODAL(),READVAR()
+$END$

@@ -1,0 +1,55 @@
+$CLASSNAME$
+	UIMenuCheckedItem
+$SUMMARY$
+	Class UIMenuCheckedItem
+$LANG_RU$
+	Класс UIMenuCheckedItem
+$ABOUT$
+	Class of checked menu item. Object of this class was created by method addChecked() of class <link linkend="classuimenu">UIMenu</link>.
+$LANG_RU$
+	Класс пункта меню-переключатель. Объект создаётся при в методе addChecked() класса <link linkend="classuimenu">UIMenu</link>.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIMenuCheckedItem".
+	<label>		- Label.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIMenuCheckedItem".
+	<label>		- Надпись.
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action executed on menu item activation.
+$LANG_RU$
+	Установить действие, выполняемое при выборе пункта меню.
+$SYNTAX$
+	setAction(<action>)
+$ARGUMENTS$
+	<action>	- Code block. Code block executed on menu item activation.
+$LANG_RU$
+	<action>	- Блок кода. Блок кода, выполняемый при выборе пункта меню.
+$ENDMETHOD$
+
+$METHODNAME$
+	isChecked()
+$SUMMARY$
+	Get checked status of checked menu item.
+$LANG_RU$
+	Вернуть статус пункта меню-переключателя.
+$SYNTAX$
+	isChecked()	--> <bChecked>
+$RETURNS$
+	Checked status of checked menu item.
+$LANG_RU$
+	Статус пункта меню-переключателя.
+$ENDMETHOD$
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

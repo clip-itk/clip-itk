@@ -1,0 +1,253 @@
+$CLASSNAME$
+	UIForm
+$SUMMARY$
+	Class UIForm
+$LANG_RU$
+	Класс UIForm
+$ABOUT$
+	Class for manipulate form in XFL format. This format is described is section <link linkend="classxflforms">XFL forms</link>.
+$LANG_RU$
+	Класс работы с формами в формате XFL. Формат файлов описан в разделе <link linkend="classxflforms">Формы XFL</link>.
+$SYNTAX$
+	UIForm(<fileName>,<parent>)	--> UIForm object
+$LANG_RU$
+	UIForm(<fileName>,<parent>)	--> Объект UIForm
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIForm".
+	<parent>	- Window object. Parent window.
+	<fileName>	- String. Form file name.
+	<root>		- <link linkend="classxmltag">XMLTag</link> object. Root element of form.
+	<widgets>	- Associated array. Array of named widgets.
+	<names>		- Array. Array of widget names.
+	<actions>	- Array. Array of form actions.
+	<src>		- Object. Object of class htmlParser.
+	<locale>	- Associated array. Array of localization strings.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIForm".
+	<parent>	- Объект окна. Родительское окно.
+	<fileName>	- Строка. Имя файла формы.
+	<root>		- Объект <link linkend="classxmltag">XMLTag</link>. Корневой элемент формы.
+	<widgets>	- Ассоциативный массив. Массив поименованных виджетов.
+	<names>		- Массив. Массив имён виджетов.
+	<actions>	- Массив. Массив действий формы.
+	<src>		- Объект. Объект класса htmlParser.
+	<locale>	- Ассоциативный массив. Массив строк для локализации.
+
+$METHODNAME$
+	UIForm()
+$SUMMARY$
+	Constructor. Init form object.
+$LANG_RU$
+	Конструктор. Инициализировать объект формы.
+$SYNTAX$
+	UIForm(<fileName>,<parent>)	--> UIForm object
+$ARGUMENTS$
+	<fileName>	- String. Name of form file.
+	<parent>	- Window object. Parent window.
+$LANG_RU$
+	<fileName>	- Строка. Имя файла формы.
+	<parent>	- Объект окна. Родительское окно.
+$ENDMETHOD$
+
+$METHODNAME$
+	parseFile()
+$SUMMARY$
+	Parse form from file.
+$LANG_RU$
+	Обработать файл формы.
+$SYNTAX$
+	parseFile()	--> <oWin>
+$RETURNS$
+	Returns created object as window object filled by widgets.
+$LANG_RU$
+	Возвращает созданный объект описанного в форме окна со всеми виджетами.
+$ENDMETHOD$
+
+$METHODNAME$
+	parseString()
+$SUMMARY$
+	Parse form from string.
+$LANG_RU$
+	Обработать форму, заданную в строке.
+$SYNTAX$
+	parseString(<str>)	--> <oWin>
+$ARGUMENTS$
+	<str>		- String. String contained form in XFL format.
+$LANG_RU$
+	<str>		- Строка. Строка, содержащая форму в формате XFL.
+$RETURNS$
+	Returns created object as window object filled by widgets.
+$LANG_RU$
+	Возвращает созданный объект описанного в форме окна со всеми виджетами.
+$ENDMETHOD$
+
+$METHODNAME$
+	parse()
+$SUMMARY$
+	Parse htmlParser object. This method is internal and called from methods parseFile() or parseString().
+$LANG_RU$
+	Обработать объект htmlParser. Метод является внутренним и вызывается из метода parseFile() или parseString().
+$SYNTAX$
+	parse()	--> <oWin>
+$RETURNS$
+	Returns created object as window object filled by widgets.
+$LANG_RU$
+	Возвращает созданный объект описанного в форме окна со всеми виджетами.
+$ENDMETHOD$
+
+$METHODNAME$
+	createWidget()
+$SUMMARY$
+	Create widget from the tag.
+$LANG_RU$
+	Создать виджет, описанный в теге.
+$SYNTAX$
+	createWidget(<tag>,[<parent>])	--> <oWidget>
+$ARGUMENTS$
+	<tag>		- Object <link linkend="classxmltag">XMLTag</link>. Tag described widget.
+	<parent>	- Object. Widget, which contains this widget (parent widget).
+$LANG_RU$
+	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий виджет.
+	<parent>	- Объект. Виджет-контейнер, содержащий этот виджет.
+$RETURNS$
+	Object of created widget.
+$LANG_RU$
+	Объект созданного виджета.
+$ENDMETHOD$
+
+$METHODNAME$
+	setProperty()
+$SUMMARY$
+	Set widget property described in given tag.
+$LANG_RU$
+	Изменить свойство виджета, описанное в теге.
+$SYNTAX$
+	setProperty(<tag>,[<obj>],[<value>])
+$ARGUMENTS$
+	<tag>		- Object <link linkend="classxmltag">XMLTag</link>. Property tag.
+	<obj>		- Object. By default object is defined by its name given in the tag .
+	<value>		- Any type. Property value. By default value is taken from the tag.
+$LANG_RU$
+	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий свойство.
+	<obj>		- Объект. По умолчанию определяется по имени, заданному в теге.
+	<value>		- Любой тип. Значение свойства. По умолчанию определяется из тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	getPropertyValue()
+$SUMMARY$
+	Get the property from the widget.
+$LANG_RU$
+	Получить значение свойства виджета.
+$SYNTAX$
+	getPropertyValue(<tagObj>)	--> <oVal>
+$ARGUMENTS$
+	<tagObj>	- Object <link linkend="classxmltag">XMLTag</link>. Tag &lt;property&gt; contained widget name and property name.
+$LANG_RU$
+	<tagObj>	- Объект <link linkend="classxmltag">XMLTag</link>. Тег &lt;property&gt;, содержащий имя виджета и название свойства.
+$RETURNS$
+	Property value.
+$LANG_RU$
+	Значение свойства.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action described in tag &lt;rule&gt;.
+$LANG_RU$
+	Установить действие, описанное в теге &lt;rule&gt;.
+$SYNTAX$
+	setAction(<tag>,[<lObj>])
+$ARGUMENTS$
+	<tag>		- Object <link linkend="classxmltag">XMLTag</link>. Tag described action (&lt;rule&gt;).
+	<lObj>		- Widget object. Widget received signal.
+$LANG_RU$
+	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий действие (&lt;rule&gt;).
+	<lObj>		- Объект виджета. Виджет, принимающий сигнал.
+$ENDMETHOD$
+
+$METHODNAME$
+	setPreAction()
+$SUMMARY$
+	Set pre-action described in form header and run it.
+$LANG_RU$
+	Установить предварительное действие, описанное в заголовке формы и запустить его.
+$SYNTAX$
+	setPreAction(<tag>,[<lObj>])
+$ARGUMENTS$
+	<tag>		- Object <link linkend="classxmltag">XMLTag</link>. Header tag (&lt;head&gt;).
+	<lObj>		- Widget object. Widget received signal.
+$LANG_RU$
+	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег заголовка формы (&lt;head&gt;).
+	<lObj>		- Объект виджета. Виджет, принимающий сигнал.
+$ENDMETHOD$
+
+$METHODNAME$
+	actionHandler()
+$SUMMARY$
+	Run actions rule.
+$LANG_RU$
+	Выполнить правило.
+$SYNTAX$
+	actionHandler(<id>,[<addVal>])
+$ARGUMENTS$
+	<id>		- Number or object <link linkend="classxmltag">XMLTag</link>. Index of rule in <actions> array or rule tag contained several actions.
+	<addVal>	- Any type. Returned value.
+$LANG_RU$
+	<id>		- Число или объект <link linkend="classxmltag">XMLTag</link>. Индекс правила в массиве <actions> или тег правила, содержащий описание нескольких действий.
+	<addVal>	- Любой тип. Возвращаемое значение.
+$ENDMETHOD$
+
+$METHODNAME$
+	subActionHandler()
+$SUMMARY$
+	Run one action.
+$LANG_RU$
+	Выполнить одно действие
+$SYNTAX$
+	subActionHandler(<tag>,[<addVal>])
+$ARGUMENTS$
+	<tag>		- <link linkend="classxmltag">XMLTag</link> object. Tag described one action.
+	<addVal>	- Any type. Returned value.
+$LANG_RU$
+	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий действие.
+	<addVal>	- Любой тип. Возвращаемое значение.
+$ENDMETHOD$
+
+$METHODNAME$
+	i18n()
+$SUMMARY$
+	Returns localized string.
+$LANG_RU$
+	Возвращает локализованную строку.
+$SYNTAX$
+	i18n(<str>)	--> <sLocalString>
+$ARGUMENTS$
+	<str>		- String. Original form string.
+$LANG_RU$
+	<str>		- Строка. Оригинальная строка формы.
+$RETURNS$
+	Localized string.
+$LANG_RU$
+	Локализованная строка.
+$ENDMETHOD$
+
+$EXAMPLES$
+	form := UIForm( fileName )
+	win  := form:parseFile()
+	if win == NIL
+		CANCEL
+	endif
+	win:show()
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

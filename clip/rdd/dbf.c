@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: dbf.c,v $
+	Revision 1.183  2005/01/12 13:52:09  clip
+	rust: major fix in dbf_ulock()
+	
 	Revision 1.182  2004/11/17 14:08:20  clip
 	rust: "Duplicate field name" error message added
-	
+
 	Revision 1.181  2004/07/12 11:04:43  clip
 	rust: unlink(filename) before creat() (fixes file permissions)
 
@@ -857,8 +860,6 @@ static int dbf_flock(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__){
 }
 
 static int dbf_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char* __PROC__){
-	int er;
-
 	if(rd->shared){
 		int i;
 
@@ -896,8 +897,14 @@ static int dbf_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,con
 				}
 			} else {
 				for(i=0;i<rd->nlocks;i++){
-					if((er = dbf_ulock(cm,rd,rd->locks[i],0,__PROC__))) return er;
+					if(_clip_unlock(cm,rd->file.filehash,rd->file.fd,
+						(rd->lockstyle?0x10000000:1000000000)+rd->locks[i],0))
+
+						return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,
+							er_unlock);
 				}
+				rd->locks = realloc(rd->locks,0);
+				rd->nlocks = 0;
 			}
 		}
 	}

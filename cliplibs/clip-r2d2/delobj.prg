@@ -81,7 +81,7 @@ local i,j,k,x,tcol,rname,ind_list
 			loop
 		endif
 
-
+/*
 		? '<vbox id="'+obj_id+'" class="'+classDesc:name+'">'
 		ind_list:={}
 		for i=1 to len(classDesc:idx_list)
@@ -167,6 +167,7 @@ local i,j,k,x,tcol,rname,ind_list
 			? '    </hbox>'
 		next
 		? '</vbox>'
+*/		
 	next
 	? '</window>'
 ?

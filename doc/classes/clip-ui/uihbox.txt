@@ -1,0 +1,172 @@
+$CLASSNAME$
+	UIHBox
+$SUMMARY$
+	Class UIHBox
+$LANG_RU$
+	Класс UIHBox
+$ABOUT$
+	Class of horizontal placement panel.
+$LANG_RU$
+	Класс горизонтальной полосы размещения виджетов.
+$SYNTAX$
+	UIHBox([<o>],[<spacing>],[<padding>])	--> UIHBox object
+$LANG_RU$
+	UIHBox([<o>],[<spacing>],[<padding>])	--> Объект UIHBox
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIHBox".
+	<elem>		- Widgets on the panel.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIHBox".
+	<elem>		- Массив виджетов на полосе.
+
+$METHODNAME$
+	UIHBox()
+$SUMMARY$
+	Constructor. Create horizontal placement panel.
+$LANG_RU$
+	Конструктор. Создать горизонтальную полосу размещения виджетов.
+$SYNTAX$
+	UIHBox([<o>],[<spacing>],[<padding>])	--> UIHBox object
+$ARGUMENTS$
+       <o>		- Widget object. Widget in which panel is inserted.
+       <spacing> 	- Number. Space between cells on panel in pixels.
+       <padding>	- Number. Space between widget and cell border on panel in pixels.
+$LANG_RU$
+       <o>		- Объект виджета. Виджет, в который вставляется полоса.
+       <spacing> 	- Число. Расстояние в точках между ячейками на полосе.
+       <padding>	- Число. Расстояние в точках между краем виджета и границей полосы.
+$ENDMETHOD$
+
+$METHODNAME$
+	add()
+$SUMMARY$
+	Append widget to panel from right side.
+$LANG_RU$
+	Добавить виджет на полосу справа.
+$SYNTAX$
+	add(<o>,[<expand>],[<fill>],[<padding>])
+$ARGUMENTS$
+	<o>		- Widget object. Widget inserted on the panel.
+	<expand>	- Boolean. Possibility of expand widget horizontally on window size changed.
+	<fill>   	- Boolean. Ability of fill by widget all free space on panel.
+	<padding>	- Number. Space between widget and cell border in pixels.
+$LANG_RU$
+	<o>		- Объект виджета. Виджет, вставляемый на полосу.
+	<expand>	- Логическое значение. Возможность растягивания виджета по горизонтали при изменении размеров окна.
+	<fill>   	- Логическое значение. Возможность заполнения виджетом всего доступного пространства.
+	<padding>	- Число. Расстояние в точках между краем вставляемого виджета и границей полосы.
+$ENDMETHOD$
+
+$METHODNAME$
+	addEnd()
+$SUMMARY$
+	Append widget to panel from left side.
+$LANG_RU$
+	Добавить виджет на полосу слева.
+$SYNTAX$
+	addEnd(<o>,[<expand>],[<fill>],[<padding>])
+$ARGUMENTS$
+	<o>		- Widget object. Widget inserted on the panel.
+	<expand>	- Boolean. Possibility of expand widget horizontally on window size changed.
+	<fill>   	- Boolean. Ability of fill by widget all free space on panel.
+	<padding>	- Number. Space between widget and cell border in pixels.
+$LANG_RU$
+	<o>		- Объект виджета. Виджет, вставляемый на полосу.
+	<expand>	- Логическое значение. Возможность растягивания виджета по горизонтали при изменении размеров окна.
+	<fill>   	- Логическое значение. Возможность заполнения виджетом всего доступного пространства.
+	<padding>	- Число. Расстояние в точках между краем вставляемого виджета и границей полосы.
+$ENDMETHOD$
+
+$METHODNAME$
+	setSpacing()
+$SUMMARY$
+	Set space between widgets on the panel.
+$LANG_RU$
+	Установить расстояние между виджетами на полосе.
+$SYNTAX$
+	setSpacing(<space>)
+$ARGUMENTS$
+	<space>		- Number. Space between widgets on the panel in pixels.
+$LANG_RU$
+	<space>		- Число. Расстояние в точках между виджетами на полосе.
+$ENDMETHOD$
+
+$METHODNAME$
+	setPadding()
+$SUMMARY$
+	Set width of panel border.
+$LANG_RU$
+	Установить ширину границы полосы.
+$SYNTAX$
+	setPadding(<space>)
+$ARGUMENTS$
+	<space>		- Number. Width of panel border.
+$LANG_RU$
+	<space>		- Число. Ширина границы полосы в точках.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAlignment()
+$SUMMARY$
+	Set alignment of widget on the panel.
+$LANG_RU$
+	Установить выравнивание элементов на полосе.
+$SYNTAX$
+	setAlignment(<align>,<valign>)
+$ARGUMENTS$
+	<align>		- Number. Horizontal alignment of widgets. Possible values:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_LEFT</constant> &mdash; aligns with the left edge (default)</para></listitem>
+				<listitem><para><constant>ALIGN_CENTER</constant> &mdash; centers horizontally</para></listitem>
+				<listitem><para><constant>ALIGN_RIGHT</constant> &mdash; aligns with the right edge</para></listitem>
+			  </itemizedlist>
+	<valign>	- Number. Vertical alignment of widgets. Possible values:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_TOP</constant> &mdash; aligns with the top (default)</para></listitem>
+				<listitem><para><constant>ALIGN_MIDDLE</constant> &mdash; centers vertically</para></listitem>
+				<listitem><para><constant>ALIGN_BOTTOM</constant> &mdash; aligns with the bottom</para></listitem>
+			  </itemizedlist>
+$LANG_RU$
+	<align>		- Число. Горизонтальное выравнивание элементов. Значения:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_LEFT</constant> &mdash; выравнивание по левому краю (значение по умолчанию)</para></listitem>
+				<listitem><para><constant>ALIGN_CENTER</constant> &mdash; выравнивание по центру</para></listitem>
+				<listitem><para><constant>ALIGN_RIGHT</constant> &mdash; выравнивание по правому краю</para></listitem>
+			  </itemizedlist>
+	<valign>	- Число. Вертикальное выравнивание элементов. Значения:
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>ALIGN_TOP</constant> &mdash; выравнивание по верхнему краю (значение по умолчанию)</para></listitem>
+				<listitem><para><constant>ALIGN_MIDDLE</constant> &mdash; выравнивание по середине</para></listitem>
+				<listitem><para><constant>ALIGN_BOTTOM</constant> &mdash; выравнивание по нижнему краю</para></listitem>
+			  </itemizedlist>
+$ENDMETHOD$
+
+$METHODNAME$
+	setEqualSize()
+$SUMMARY$
+	Set equal cells size for any widget on the panel.
+$LANG_RU$
+	Установить равными размеры мест для размещения элементов на полосе.
+$SYNTAX$
+	setEqualSize(<isEqual>)
+$ARGUMENTS$
+	<isEqual>		- Boolean. Flag for equal size of cells on the panel.
+$LANG_RU$
+	<isEqual>		- Логическое значение. Флаг установки равных размеров для элементов на полосе.
+$ENDMETHOD$
+
+
+$EXAMPLES$
+	box  := UIHBox()
+	box:add( UILabel( "Label" ) )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

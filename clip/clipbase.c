@@ -5,9 +5,12 @@
 */
 /*
 	$Log: clipbase.c,v $
+	Revision 1.371  2005/01/19 13:32:02  clip
+	rust: minor fix in string comparison
+	
 	Revision 1.370  2005/01/10 11:50:10  clip
 	rust: DBSETFILTER() without parameters -> DBCLEARFILTER()
-	
+
 	Revision 1.369  2004/11/25 11:53:21  clip
 	rust: error message changed for DBUSEAREA("nosuchfile")
 
@@ -3758,7 +3761,6 @@ clip_DBSETFILTER(ClipMachine * cm)
 	if((er = rdd_createfilter(cm,wa->rd,&fp,block,str,NULL,lNoOptimize,__PROC__)))
 		goto err_unlock;
 	fp->active = 1;
-	wa->rd->filter = fp;
 	if((er = _rdd_calcfiltlist(cm,wa->rd,__PROC__)))
 		goto err_unlock;
 	UNLOCK;

@@ -1,0 +1,95 @@
+$CLASSNAME$
+	UIFont
+$SUMMARY$
+	Class UIFont
+$LANG_RU$
+	Класс UIFont
+$ABOUT$
+	Font class.
+$LANG_RU$
+	Класс шрифта.
+$SYNTAX$
+	UIFont(<family>,<style>,<size>,<encoding>)	--> UIFont object
+$LANG_RU$
+	UIFont(<family>,<style>,<size>,<encoding>)	--> Объект UIFont
+$ATTRIBUTES$
+	<font>		- String of X Window System font description.
+	<family>	- Font family.
+	<style>		- Font style.
+	<size>		- Font size in points.
+	<encoding>	- Codepage of the font.
+$LANG_RU$
+	<font>		- Строка описания шрифта X Window System.
+	<family>	- Семейство шрифта.
+	<style>		- Стиль шрифта.
+	<size>		- Размер шрифта в пунктах.
+	<encoding>	- Кодировка шрифта.
+
+$METHODNAME$
+	UIFont()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UIFont([<family>],[<style>],[<size>],[<encoding>])	--> UIFont object
+$ARGUMENTS$
+	<family>	- String. Font family or string of X Window System font description like "-monotype-arial-medium-r-normal--12-120-0-0-p-0-iso8859-1".
+	<style>		- String. Font style. Available values: normal, bold, italic, bolditalic.
+	<size>		- String. Font size in points.
+	<encoding>	- String. Codepage of the font.
+$LANG_RU$
+	<family>	- Строка. Семейство шрифта или строка описания шрифта X Window System в виде "-monotype-arial-medium-r-normal--12-120-0-0-p-0-koi8-r".
+	<style>		- Строка. Стиль шрифта. "normal" - обычный, "bold" - полужирный, "italic" - курсив,  "bolditalic" - полужирный курсив.
+	<size>		- Строка. Размер шрифта в пунктах.
+	<encoding>	- Строка. Кодировка шрифта.
+$ENDMETHOD$
+
+$METHODNAME$
+	setProperty()
+$SUMMARY$
+	Change font property.
+$LANG_RU$
+	Изменить параметр шрифта.
+$SYNTAX$
+	setProperty(<property>,<value>)
+$ARGUMENTS$
+	<property>	- String. Property name. Possible values: 'family' (font family), 'style' (font style: normal, bold, italic, bolditalic), 'size' (font size in points) and 'encoding' (codepage of the font).
+	<value>		- String. Value of property.
+$LANG_RU$
+	<property>	- String. Property name. Possible values: 'family' (font family), 'style' (font style: normal, bold, italic, bolditalic), 'size' (font size in points) and 'encoding' (codepage of the font).
+	<value>		- String. Value of property.
+$ENDMETHOD$
+
+$METHODNAME$
+	parseFont()
+$SUMMARY$
+	Generate X Window System font description and put it in object field 'font'.
+$LANG_RU$
+	Генерация строки описания шрифта X Window System в атрибуте объекта 'font'.
+$SYNTAX$
+	parseFont([<string>])
+$ARGUMENTS$
+	<string>	- String. String of X Window System font description.
+$LANG_RU$
+	<string>	- Строка. Строка описания шрифта X Window System.
+$ENDMETHOD$
+
+$EXAMPLES$
+	// Set font Herlvetica-BoldItalic, 12 pt for widget obj
+	wfont := UIFont( "Helvetica", "bolditalic", 12 )
+	style:font := wfont:font
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

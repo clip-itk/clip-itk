@@ -118,6 +118,7 @@ function _recover_textedit(obj)
 
        obj:gotoLine     := @te_gotoLine()
        obj:gotoPos      := @te_gotoPos()
+       obj:mgoto        := @te_mgoto()
        obj:find         := @te_find()
        obj:findNext     := @te_findNext()
        obj:findPrev     := @te_findPrev()
@@ -701,8 +702,8 @@ static function te_end( undo )
    endif
    //::gotoPos(len(::edBuffer[::line])+1, .f.)
    if ::line<=::lines
-	::pos := len(::edBuffer[::line])+1
-	::colWin := len(::edBuffer[::line])+1
+	::pos := len(rtrim(::edBuffer[::line]))+1
+	::colWin := len(rtrim(::edBuffer[::line]))+1
    else
 	::pos := 1
 	::colWin := 1
@@ -760,7 +761,7 @@ static function te_wordLeft()
 RETURN
 
 *********** переход на строку
-static function te_gotoLine(ln, undo)
+static function te_gotoLine(ln, rw, undo)
   if ln==NIL .or. ln < 1 .or. ln > ::lines
 	return .f.
   endif
@@ -771,14 +772,18 @@ static function te_gotoLine(ln, undo)
 	::writeundo(HASH_GOLINE)
   endif
   ::line := ln
-  ::rowWin := int((::nBottom-::nTop)*2/3)
+  if rw == NIL
+	::rowWin := int((::nBottom-::nTop)*2/3)
+  else
+	::rowWin := rw
+  endif
   if undo
 	::refresh()
   endif
 return .t.
 
 *********** переход на позицию
-static function te_gotoPos(pos, undo)
+static function te_gotoPos(pos, cw, undo)
 local len
 
   if pos==NIL .or. pos < 1
@@ -799,7 +804,40 @@ local len
    endif
    */
    ::pos:=pos
-   ::colWin:=pos
+   if cw == NIL
+	::colWin:=pos
+   else
+	::colWin:=cw
+   endif
+   if undo
+	::refresh()
+   endif
+return .t.
+
+*********** переход на новую строку и новую колонку по заданным координатам в окне
+static function te_mgoto(nRow, nCol, undo)
+local len
+
+  if nRow==NIL .or. nRow < 1
+	return .f.
+  endif
+
+  if nCol==NIL .or. nCol < 1
+	return .f.
+  endif
+
+   undo := iif(undo==NIL, .t., undo)
+   if undo
+	::writeundo(HASH_MGOTO)
+   endif
+   if ::line>::lines
+	::line := ::lines
+   endif
+   len := len(::edbuffer[::line])
+   ::pos += nCol - ::colWin
+   ::colWin:=nCol
+   ::line += nRow - ::rowWin
+   ::rowWin:=nRow
    if undo
 	::refresh()
    endif
@@ -1286,7 +1324,7 @@ local i, p, f, found:=.f., rr, st, en, _step
 				::__findR[3] := ::__regSearch[1][2]-::__regSearch[1][1]//length
 				::rowWin += i-(::line*_step)
 				::line := i
-				::gotoPos(::__regSearch[1][1], .f.)
+				::gotoPos(::__regSearch[1][1], ,.f.)
 				found := .t.
 				exit
 			endif
@@ -1304,7 +1342,7 @@ local i, p, f, found:=.f., rr, st, en, _step
 				::__findR[3] := len(str)        //length
 				::rowWin += i-(::line*_step)
 				::line := i
-				::gotoPos(p+f-1, .f.)
+				::gotoPos(p+f-1, ,.f.)
 				found := .t.
 				exit
 			endif
@@ -1361,7 +1399,7 @@ local found:=.t., cstr:="", nkey, i, ret:=-1
 			::refresh()
 		endif
 		::updated := .t.
-		::gotoPos(::pos + len(cstr), .f. )
+		::gotoPos(::pos + len(cstr), ,.f. )
 	endif
 RETURN ret
 
@@ -1375,7 +1413,7 @@ local ret:=.f., oldDirect
 	oldDirect := Find:direct
 	Find:direct := 1
 	if !empty(Find:fstring)
-		::gotoPos(::pos+1, .f.)
+		::gotoPos(::pos+1, ,.f.)
 		ret := ::find(Find, .f.)
 	endif
 
@@ -1396,7 +1434,7 @@ local ret:=.f., oldDirect
 	oldDirect := Find:direct
 	Find:direct := 2
 	if !empty(Find:fstring)
-		::gotoPos(::pos-1, .f.)
+		::gotoPos(::pos-1, ,.f.)
 		ret := ::find(Find)
 	endif
 
@@ -1889,8 +1927,8 @@ local i, j:=0, x, str1, str2, cnt:=0, ipos, iline, char, invchar, c
 		::__findR[1] := iline   //line
 		::__findR[2] := ipos    //start pos
 		::__findR[3] := 1               //length
-		::gotoPos(ipos, .f.)
-		::gotoLine(iline, .f.)
+		::gotoPos(ipos, ,.f.)
+		::gotoLine(iline, ,.f.)
 		if undo
 			::refresh()
 		endif
@@ -2139,7 +2177,7 @@ local i, j, p, target, start, en, spl
 			ains(::edbuffer, ::line+j-1)
 			::edbuffer[::line+j-1] := replicate(" ", start-1) + spl[j]
 		next
-		::gotoPos(len(::edbuffer[::line])+1, .f.)
+		::gotoPos(len(::edbuffer[::line])+1, ,.f.)
 		::refresh()
 	endif
 RETURN
@@ -2179,7 +2217,7 @@ local i, j, p, target, start, en
 			endif
 			::edbuffer[::line] := left(::edbuffer[::line], start-1);
 			    + ToString(&(targ[target])) + substr(::edbuffer[::line], en)
-			::gotoPos(start+len(ToString(&(targ[target])))+1, .f.)
+			::gotoPos(start+len(ToString(&(targ[target])))+1, ,.f.)
 			::refresh()
 	endif
 RETURN
@@ -2745,34 +2783,34 @@ local i, j, cmd, len, line, p
 		case cmd == HASH_PGDOWN
 			::pageUp(.f.)
 		case cmd == HASH_HOME
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_END
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_BOTOP
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_GOPOS
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_GOLINE
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
 		case cmd == HASH_INS
 			for j=1 to len(::__undobuffer[::__curundo][U_VALUE])
 				::backspace(.f.)
 			next
 			//::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
 		case cmd == HASH_OVR
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			::overStrike(::__undobuffer[::__curundo][U_VALUE],.f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_INSTAB
 			::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			//::overStrike(::__undobuffer[::__curundo][U_VALUE],.f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_OVRTAB
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_BS
 			if ::__undobuffer[::__curundo][U_VALUE] == chr(K_ENTER)
 				::insertLine(.f.)
@@ -2782,15 +2820,15 @@ local i, j, cmd, len, line, p
 		case cmd == HASH_DEL
 			if ::__undobuffer[::__curundo][U_VALUE] == chr(K_ENTER)
 				::insertLine(.f.)
-				::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+				::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+				::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			else
 				::insert(::__undobuffer[::__curundo][U_VALUE], .f.)
-				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+				::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			endif
 		case cmd == HASH_DELEND
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			::edbuffer[::line] += ::__undobuffer[::__curundo][U_VALUE]
 		case cmd == HASH_DELHOME
 			::line := ::__undobuffer[::__curundo][U_LINE]
@@ -2798,19 +2836,19 @@ local i, j, cmd, len, line, p
 			::edbuffer[::line] := ::__undobuffer[::__curundo][U_VALUE]+::edbuffer[::line]
 		case cmd == HASH_DELINE
 			::insertLine(.f.)
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
 		case cmd == HASH_INSLINE
 			if len(::edbuffer) > 0
 				::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
 				::deleteLine(.f.)
-				::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+				::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+				::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			endif
 		case cmd == HASH_NEWLINE
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_BEGBLOCK
 			::cancelBlock(.f.)
 		case cmd == HASH_DELBL .or. cmd == HASH_MVBL .or. cmd == HASH_CPBL
@@ -2819,7 +2857,7 @@ local i, j, cmd, len, line, p
 			endif
 			len := len(::__undobuffer[::__curundo][U_VALUE])
 			line := min(::__undobuffer[::__curundo][U_BLOCK][2], ::__undobuffer[::__curundo][U_BLOCK][4])
-			::gotoLine(line, .f.)
+			::gotoLine(line, ,.f.)
 			if ::__undobuffer[::__curundo][U_BLOCK][1] == 1
 				for j=1 to len
 					::insertLine(.f.)
@@ -2832,8 +2870,8 @@ local i, j, cmd, len, line, p
 								::__undobuffer[::__curundo][U_VALUE][j] + substr(::edbuffer[line+j-1], ::__undobuffer[::__curundo][U_BLOCK][3])
 				next
 			endif
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			::lines := ::__undobuffer[::__curundo][U_LINES]
 			asize(::edbuffer, ::__undobuffer[::__curundo][U_LINES])
 		case cmd == HASH_PASTCLB
@@ -2841,23 +2879,23 @@ local i, j, cmd, len, line, p
 			::lines := ::__undobuffer[::__curundo][U_LINES]
 			asize(::edbuffer, ::__undobuffer[::__curundo][U_LINES])
 		case cmd == HASH_FIND
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_REPLACE
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			p := ::__undobuffer[::__curundo][U_VALUE]:fstring
 			::__undobuffer[::__curundo][U_VALUE]:fstring := ::__undobuffer[::__curundo][U_VALUE]:rstring
 			::__undobuffer[::__curundo][U_VALUE]:rstring := p
 			::replace(::__undobuffer[::__curundo][U_VALUE], .f.)
 		case cmd == HASH_CHECKLINE
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			asize(::edbuffer, ::__undobuffer[::__curundo][U_VALUE])
 			::lines := ::__undobuffer[::__curundo][U_VALUE]
 		case cmd == HASH_LOADBLOCK
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			for j=::__undobuffer[::__curundo][U_VALUE][1] to ::__undobuffer[::__curundo][U_VALUE][2]
 				adel(::edbuffer, j)
 			next
@@ -2869,8 +2907,8 @@ local i, j, cmd, len, line, p
 			::lines -= 1
 			::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
 			adel(::edbuffer, ::__undobuffer[::__curundo][U_LINE]+1)
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			asize(::edbuffer, ::lines)
 		case cmd == HASH_FRPART
 			p := 0
@@ -2885,11 +2923,11 @@ local i, j, cmd, len, line, p
 				ains(::edbuffer, ::__undobuffer[::__curundo][U_LINE]+j-1)
 				::edbuffer[::__undobuffer[::__curundo][U_LINE]+j-1] := ::__undobuffer[::__curundo][U_VALUE][j]
 			next
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_DRAW
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos+1, 1, ::__undobuffer[::__curundo][U_VALUE][1])
 			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos-1, 1, ::__undobuffer[::__curundo][U_VALUE][2])
 			::edbuffer[::line-1] := stuff(::edbuffer[::line-1], ::pos, 1, ::__undobuffer[::__curundo][U_VALUE][3])
@@ -2898,27 +2936,29 @@ local i, j, cmd, len, line, p
 			::rowWin := ::__undobuffer[::__curundo][U_ROW]
 			::colWin := ::__undobuffer[::__curundo][U_COL]
 		case cmd == HASH_INSMACRO
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
 			::edbuffer[::line] := ::__undobuffer[::__curundo][U_VALUE]
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_INSTEMPL
 			for j=2 to ::__undobuffer[::__curundo][U_VALUE][2]
-				::gotoLine(::__undobuffer[::__curundo][U_LINE]+1, .f.)
+				::gotoLine(::__undobuffer[::__curundo][U_LINE]+1,, .f.)
 				::deleteLine(.f.)
 			next
-			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
 			::edbuffer[::line] := ::__undobuffer[::__curundo][U_VALUE][1]
-			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_INSAUTOWRAP .or. cmd == HASH_OVRAUTOWRAP
 			if len(::edbuffer) > 0
-				::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+				::gotoLine(::__undobuffer[::__curundo][U_LINE],, .f.)
 				for j=1 to ::__undobuffer[::__curundo][U_VALUE][1]
 					::deleteLine(.f.)
 				next
 				::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE][2]
-				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+				::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 			endif
 
+		case cmd == HASH_MGOTO
+			::mGoto(::__undobuffer[::__curundo][U_ROW], ::__undobuffer[::__curundo][U_COL],.f.)
 		endcase
 		//::rowWin := ::__undobuffer[::__curundo][U_ROW]
 		//::colWin := ::__undobuffer[::__curundo][U_COL]

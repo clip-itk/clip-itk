@@ -1,0 +1,85 @@
+$CLASSNAME$
+	UIChoice
+$SUMMARY$
+	Class UIChoice
+$LANG_RU$
+	Класс UIChoice
+$ABOUT$
+	Edit field with choice button. Inherits fields and method from class <link linkend="classuihbox">UIButton</link>.
+$LANG_RU$
+	Поле ввода с кнопкой выбора элемента. Унаследуетс свойства класса <link linkend="classuihbox">UIButton</link>.
+$SYNTAX$
+	UIChoice(<action>,[<value>],[<text>])	--> UIChoice object
+$LANG_RU$
+	UIChoice(<action>,[<value>],[<text>])	--> Объект UIChoice
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIChoice".
+	<layout>	- <link linkend="classuihbox">UIHBox</link> object. Container for edit field and button.
+	<edit>		- <link linkend="classuiedit">UIEdit</link> object. Edit field (read only).
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIChoice".
+	<layout>	- Объект <link linkend="classuihbox">UIHBox</link>. Контейнер, содержащий поле ввода и кнопку.
+	<edit>		- Объект <link linkend="classuiedit">UIEdit</link>. Поле ввода (только для чтения).
+
+$METHODNAME$
+	UIChoice()
+$SUMMARY$
+	Constructor. Create edit field with choice button.
+$LANG_RU$
+	Конструктор. Создать поле ввода с кнопкой выбора элемента.
+$SYNTAX$
+	UIChoice(<action>,[<value>],[<text>])	--> UIChoice object
+$ARGUMENTS$
+	<action>	- Code block. Action called on button press.
+	<value>		- Any type. Value stored in widget.
+	<text>		- String. Text in edit field.
+$LANG_RU$
+	<action>	- Блок кода. Действие, вызываемое при нажатии на кнопку.
+	<value>		- Любой тип. Значение, хранимое в виджете.
+	<text>		- Строка. Текст в поле ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	setText()
+$SUMMARY$
+	Set text to edit field.
+$LANG_RU$
+	Поместить текст в поле ввода.
+$SYNTAX$
+	setText(<text>)
+$ARGUMENTS$
+	<text>		- String. Text to edit field.
+$LANG_RU$
+	<text>		- Строка. Текст, помещаемый в поле ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	getText()
+$SUMMARY$
+	Get text from edit field.
+$LANG_RU$
+	Получить текст из поля ввода.
+$SYNTAX$
+	getText()	--> <sText>
+$RETURNS$
+	Text from edit field.
+$LANG_RU$
+	Текст из поля ввода.
+$ENDMETHOD$
+
+$EXAMPLES$
+	choice := UIChoice({|| openForm("form.xfl") })
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rddclip.c,v $
+	Revision 1.96  2005/01/19 13:32:03  clip
+	rust: minor fix in string comparison
+	
 	Revision 1.95  2004/08/03 12:08:47  clip
 	rust: RDDFLOCK() added
-	
+
 	Revision 1.94  2004/02/05 13:34:12  clip
 	*** empty log message ***
 
@@ -908,7 +911,6 @@ int clip_RDDSETFILTER(ClipMachine* cm){
 	READLOCK;
 	if((er = rdd_createfilter(cm,rd,&fp,NULL,str,a,lNoOptimize,__PROC__))) goto err_unlock;
 	fp->active = 1;
-	rd->filter = fp;
 	if((er = _rdd_calcfiltlist(cm,rd,__PROC__))) goto err_unlock;
 	UNLOCK;
 	return 0;

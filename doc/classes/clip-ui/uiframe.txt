@@ -1,0 +1,120 @@
+$CLASSNAME$
+	UIFrame
+$SUMMARY$
+	Class UIFrame
+$LANG_RU$
+	Класс UIFrame
+$ABOUT$
+	Class of frame.
+$LANG_RU$
+	Класс рамки.
+$SYNTAX$
+	UIFrame([<caption>],[<type>])	--> UIFrame object
+$LANG_RU$
+	UIFrame([<caption>],[<type>])	--> Объект UIFrame
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIFrame".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIFrame".
+
+$METHODNAME$
+	UIFrame()
+$SUMMARY$
+	Constructor. Create frame with label.
+$LANG_RU$
+	Конструктор. Создать рамку с надписью.
+$SYNTAX$
+	UIFrame([<caption>],[<type>])	--> UIFrame object
+$ARGUMENTS$
+	<caption>	- String. Label at top of the frame.
+	<type>		- Number. Frame type.
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; no border</para></listitem>
+				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; all frame is sunken</para></listitem>
+				<listitem><para><constant>FRAME_RAISED</constant> &mdash; all frame is raised like a button</para></listitem>
+				<listitem><para><constant>FRAME_IN</constant> &mdash; only sunken border (default)</para></listitem>
+				<listitem><para><constant>FRAME_OUT</constant> &mdash; only raised border</para></listitem>
+			  </itemizedlist>
+$LANG_RU$
+	<caption>	- Строка. Надпись на рамке.
+	<type>		- Число. Тип рамки.
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; без рамки</para></listitem>
+				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; вдавленная панель</para></listitem>
+				<listitem><para><constant>FRAME_RAISED</constant> &mdash; приподнятая панель </para></listitem>
+				<listitem><para><constant>FRAME_IN</constant> &mdash; вдавленная рамка (значение по умолчанию)</para></listitem>
+				<listitem><para><constant>FRAME_OUT</constant> &mdash; выпуклая рамка</para></listitem>
+			  </itemizedlist>
+$ENDMETHOD$
+
+$METHODNAME$
+	add()
+$SUMMARY$
+	Set placement widget inside frame.
+$LANG_RU$
+	Установить размещение в рамке.
+$SYNTAX$
+	add(<grid>)
+$ARGUMENTS$
+	<grid>		- Placement object. Set placement widget inside frame. Possible classes for placement object: <link linkend="classuigrid">UIGrid</link>, <link linkend="classuihbox">UIHBox</link>, <link linkend="classuivbox">UIVBox</link>.
+$LANG_RU$
+	<grid>		- Объект размещения. Установить объект размещение в рамке. Возможно использование объектов следующих типов: <link linkend="classuigrid">UIGrid</link>, <link linkend="classuihbox">UIHBox</link>, <link linkend="classuivbox">UIVBox</link>.
+$ENDMETHOD$
+
+$METHODNAME$
+	setLabel()
+$SUMMARY$
+	Set frame label.
+$LANG_RU$
+	Установить надпись на рамке.
+$SYNTAX$
+	setLabel(<label>)
+$ARGUMENTS$
+	<label>		- String. Label at top of the frame.
+$LANG_RU$
+	<label>		- Строка. Надпись на рамке.
+$ENDMETHOD$
+
+$METHODNAME$
+	setType()
+$SUMMARY$
+	Set frame type.
+$LANG_RU$
+	Установить тип рамки.
+$SYNTAX$
+	setType(<type>)
+$ARGUMENTS$
+	<type>		- Number. Frame type.
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; no border</para></listitem>
+				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; all frame is sunken</para></listitem>
+				<listitem><para><constant>FRAME_RAISED</constant> &mdash; all frame is raised like a button</para></listitem>
+				<listitem><para><constant>FRAME_IN</constant> &mdash; only sunken border (default)</para></listitem>
+				<listitem><para><constant>FRAME_OUT</constant> &mdash; only raised border</para></listitem>
+			  </itemizedlist>
+$LANG_RU$
+	<type>		- Число. Тип рамки.
+			  <itemizedlist mark="bullet">
+				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; без рамки</para></listitem>
+				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; вдавленная панель</para></listitem>
+				<listitem><para><constant>FRAME_RAISED</constant> &mdash; приподнятая панель </para></listitem>
+				<listitem><para><constant>FRAME_IN</constant> &mdash; вдавленная рамка (значение по умолчанию)</para></listitem>
+				<listitem><para><constant>FRAME_OUT</constant> &mdash; выпуклая рамка</para></listitem>
+			  </itemizedlist>
+$ENDMETHOD$
+
+$EXAMPLES$
+	box := UIVBox()
+	frame := UIFrame("Section", FRAME_RAISED)
+	frame:setGrid(box)
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

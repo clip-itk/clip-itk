@@ -1,0 +1,116 @@
+$CLASSNAME$
+	UIEditText
+$SUMMARY$
+	Class UIEditText
+$LANG_RU$
+	Класс UIEditText
+$ABOUT$
+	Class for multi-line text editor.
+$LANG_RU$
+	Класс многострочного поля ввода.
+$SYNTAX$
+	UIEditText(<value>)	--> UIEditText object
+$LANG_RU$
+	UIEditText(<value>)	--> Объект UIEditText
+$ATTRIBUTES$
+	<className>	Class name. Value should be "UIEditText".
+$LANG_RU$
+	<className>	Имя класса. Значение: "UIEditText".
+
+$METHODNAME$
+	UIEditText()
+$SUMMARY$
+	Constructor. Create multi-line text editor.
+$LANG_RU$
+	Конструктор. Создать многострочное поле ввода.
+$SYNTAX$
+	UIEditText(<value>)	--> UIEditText object
+$ARGUMENTS$
+	<value>		- String. Text in multi-line text editor.
+$LANG_RU$
+	<value>		- Строка. Строка текста в многострочном поле ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	getGeometry()
+$SUMMARY$
+	Get size and position of multi-line text editor.
+$LANG_RU$
+	Вернуть размеры и координаты поля ввода.
+$SYNTAX$
+	getGeometry()	--> <aRect>
+$RETURNS$
+	Array of elements: width, height, x, y in pixels respectively.
+$LANG_RU$
+	Массив с элементами: ширина, высота, x, y.
+$ENDMETHOD$
+
+$METHODNAME$
+	setGeometry()
+$SUMMARY$
+	Change size and/or position of multi-line text editor.
+$LANG_RU$
+	Изменить размеры и/или координаты поля ввода.
+$SYNTAX$
+	setGeometry(<geom>)
+$ARGUMENTS$
+	<geom>		- Array of number or number. Size and position as array of elements: width, height, x, y in pixels respectively. If parameter type is number it is mean widget width in pixels.
+$LANG_RU$
+	<geom>		- Массив чисел или число. Размеры и положение поля в виде массива элементов: ширина, высота, x, y. При указании параметра в виде числа подразумевается ширина в точках.
+$ENDMETHOD$
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Put text in edit field.
+$LANG_RU$
+	Поместить текст в поле ввода.
+$SYNTAX$
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- String. Text in multi-line text editor.
+$LANG_RU$
+	<value>		- Строка. Строка текста в многострочном поле ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get text from edit field.
+$LANG_RU$
+	Вернуть текст из поля ввода.
+$SYNTAX$
+	getValue()	--> <sText>
+$RETURNS$
+	Text from edit field. Type of returned value is string.
+$LANG_RU$
+	Текст из поля ввода. Возвращаемое значение: строка.
+$ENDMETHOD$
+
+$METHODNAME$
+	readOnly()
+$SUMMARY$
+	Set flag of protection against change content in edit field.
+$LANG_RU$
+	Установить флаг запрета изменения содержимого поля ввода.
+$SYNTAX$
+	readOnly(<flag>)
+$ARGUMENTS$
+	<flag> 		- Boolean. Flag of protection against change content in edit field.
+$LANG_RU$
+	<flag>		- Логическое значение. Флаг запрета изменения содержимого поля ввода.
+$ENDMETHOD$
+
+$EXAMPLES$
+	editBox := UIEditText()
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

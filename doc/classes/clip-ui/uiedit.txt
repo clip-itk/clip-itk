@@ -1,0 +1,130 @@
+$CLASSNAME$
+	UIEdit
+$SUMMARY$
+	Class UIEdit
+$LANG_RU$
+	Класс UIEdit
+$ABOUT$
+	Class of single line text entry.
+$LANG_RU$
+	Класс однострочного поля ввода.
+$SYNTAX$
+	UIEdit(<value>)	--> UIEdit object
+$LANG_RU$
+	UIEdit(<value>)	--> Объект UIEdit
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIEdit".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIEdit".
+
+$METHODNAME$
+	UIEdit()
+$SUMMARY$
+	Constructor. Create single line text entry.
+$LANG_RU$
+	Конструктор. Создать однострочное поле ввода.
+$SYNTAX$
+	UIEdit(<value>)	--> UIEditText object
+$ARGUMENTS$
+	<value>		- String. Text in single line text entry.
+$LANG_RU$
+	<value>		- Строка. Строка текста в однострочном поле ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	getGeometry()
+$SUMMARY$
+	Get size and position of single line text entry.
+$LANG_RU$
+	Вернуть размеры и координаты однострочного поля ввода.
+$SYNTAX$
+	getGeometry()	--> <aRect>
+$RETURNS$
+	Array of elements: width, height, x, y in pixels respectively.
+$LANG_RU$
+	Массив с элементами: ширина, высота, x, y.
+$ENDMETHOD$
+
+$METHODNAME$
+	setGeometry()
+$SUMMARY$
+	Change size and/or position of single line text entry.
+$LANG_RU$
+	Изменить размеры и/или координаты однострочного поля ввода.
+$SYNTAX$
+	setGeometry(<geom>)
+$ARGUMENTS$
+	<geom>		- Array of number or number. Size and position as array of elements: width, height, x, y in pixels respectively. If parameter type is number it is mean widget width in pixels.
+$LANG_RU$
+	<geom>		- Массив чисел или число. Размеры и положение поля в виде массива элементов: ширина, высота, x, y. При указании параметра в виде числа подразумевается ширина в точках.
+$ENDMETHOD$
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Put text in edit field.
+$LANG_RU$
+	Поместить текст в поле ввода.
+$SYNTAX$
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- String. Text in single line text entry.
+$LANG_RU$
+	<value>		- Строка. Строка текста в однострочном поле ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get text from edit field.
+$LANG_RU$
+	Вернуть текст из поля ввода.
+$SYNTAX$
+	getValue()	--> <sText>
+$RETURNS$
+	Text from edit field. Type of returned value is string.
+$LANG_RU$
+	Текст из поля ввода. Возвращаемое значение: строка.
+$ENDMETHOD$
+
+$METHODNAME$
+	readOnly()
+$SUMMARY$
+	Set flag of protection against change content in edit field.
+$LANG_RU$
+	Установить флаг запрета изменения содержимого поля ввода.
+$SYNTAX$
+	readOnly(<flag>)
+$ARGUMENTS$
+	<flag> 		- Boolean. Flag of protection against change content in edit field.
+$LANG_RU$
+	<flag>		- Логическое значение. Флаг запрета изменения содержимого поля ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	setPassword()
+$SUMMARY$
+	Set flag of suppression normal echo characters while typing. Typed characters is shown as asterisk (for password define).
+$LANG_RU$
+	Установить флаг показа значений звёздочками (для ввода паролей).
+$SYNTAX$
+	setPassword(<flag>)
+$ARGUMENTS$
+	<flag> 		- Boolean. Flag of show text in entry as asterisks.
+$LANG_RU$
+	<flag>		- Логическое значение. Флаг показа значений звёздочками.
+$ENDMETHOD$
+
+$EXAMPLES$
+	edit := UIEdit("Text...")
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

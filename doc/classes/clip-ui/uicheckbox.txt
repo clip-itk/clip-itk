@@ -1,0 +1,79 @@
+$CLASSNAME$
+	UICheckBox
+$SUMMARY$
+	Class UICheckBox.
+$LANG_RU$
+	Класс UICheckBox.
+$ABOUT$
+	Checkbox class.
+$LANG_RU$
+	Класс переключателя.
+$SYNTAX$
+	UICheckBox([<value>],<label>)	--> UICheckBox object.
+$LANG_RU$
+	UICheckBox([<value>],<label>)	--> Объект UICheckBox.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UICheckBox".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UICheckBox".
+
+$METHODNAME$
+	UICheckBox()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UICheckBox([<value>],<label>)
+$ARGUMENTS$
+	<value>		- Boolean. Set check box state: .T. - check box is checked, .F. - check box is unchecked.
+	<label>		- String. Check box label. You can define accel key for widget activation. Just place symbol "&" before accel letter. This letter will be underlined and widget will be activated with key Alt-letter.
+$LANG_RU$
+	<value>		- Логическое значение. Установить статус переключателя: .T. - переключатель включен, .F. - переключатель выключен.
+	<label>		- Строка. Надпись переключателя. В надписи можно задать акселератор для активации элемента интерфейса, указав символ "&" перед необходимой буквой. Эта буква будет подчёркнута и элемент можно активировать нажатием комбинации клавиш Alt-буква.
+$ENDMETHOD$
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Check/Uncheck check box.
+$LANG_RU$
+	Включить/выключить переключатель.
+$SYNTAX$
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- Boolean. Set check box state: .T. - check box is checked, .F. - check box is unchecked.
+$LANG_RU$
+	<value>		- Логическое значение. Установить статус переключателя: .T. - переключатель включен, .F. - переключатель выключен.
+$ENDMETHOD$
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get check box state.
+$LANG_RU$
+	Возвратить статус переключателя.
+$SYNTAX$
+	getValue() 	--> <value>
+$RETURNS$
+	Returns value of checkbox.
+$LANG_RU$
+	Возвращает статус переключателя.
+$ENDMETHOD$
+
+$EXAMPLES$
+	checkbox := UICheckBox(.T., "&Use log")
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

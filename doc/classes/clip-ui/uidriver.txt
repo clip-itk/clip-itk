@@ -1,0 +1,32 @@
+$CLASSNAME$
+	UIDRIVER
+$SUMMARY$
+	Class underconstruction
+$LANG_RU$
+	Class underconstruction
+$ABOUT$
+$SYNTAX$
+	UIDriver()
+$ATTRIBUTES$
+$METHODNAME$
+	UIDriver()
+$SUMMARY$
+	UIDRIVER object constructor.
+$SYNTAX$
+$ARGUMENTS$
+
+$RETURNS$
+	UIDRIVER object constructor.
+$DESCRIPTION$
+	UIDRIVER object constructor.
+$ENDMETHOD$
+
+$EXAMPLES$
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+

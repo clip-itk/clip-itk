@@ -133,6 +133,7 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 	endif
 	for i=1 to len(bal_data)
 		tmp:=bal_data[i]
+
 		if !(tmp:unit_num=="EMPTY") ;
 		   .and. tmp:bd_summa == 0 .and. tmp:bk_summa==0;
 		   .and. tmp:od_summa == 0 .and. tmp:ok_summa==0;
@@ -141,6 +142,7 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 		   .and. tmp:out_num == 0 .and. tmp:end_num==0
 			loop
 		endif
+
 	/*
 		if tmp:an_value == 'total'
 			loop
@@ -197,6 +199,7 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 	? '<RDF:Seq about="'+urn+'">'
 	for i=1 to len(bal_data)
 		tmp:=bal_data[i]
+
 		if !(tmp:unit_num=="EMPTY") ;
 		   .and. tmp:bd_summa == 0 .and. tmp:bk_summa==0;
 		   .and. tmp:od_summa == 0 .and. tmp:ok_summa==0;
@@ -205,6 +208,7 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 		   .and. tmp:out_num == 0 .and. tmp:end_num==0
 		    loop
 		endif
+
 
 		/*
 		if tmp:an_value == 'total'

@@ -1,0 +1,197 @@
+$FUNCNAME$
+	getDriver()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Get current <link linkend="classuidriver">UIDriver</link> object.
+$LANG_RU$
+	Получить объект драйвера <link linkend="classuidriver">UIDriver</link> по умолчанию.
+$SYNTAX$
+	getDriver([<name>],[<params>])	--> <oDriver>
+$ARGUMENTS$
+	<name>		- String. Driver name. By default driver 'gtk' is used.
+	<params>	- Array of strings. Optional parametrs to driver.
+$LANG_RU$
+	<name>		- Строка. Имя драйвера. По умолчанию используется драйвер 'gtk'.
+	<params>	- Массив строк. Параметры запуска драйвера.
+$RETURNS$
+	Current <link linkend="classuidriver">UIDriver</link> object.
+$LANG_RU$
+	Текущий объект драйвера <link linkend="classuidriver">UIDriver</link>.
+$EXAMPLES$
+	static driver := getDriver()
+$SEEALSO$
+	UIDRIVER
+$END$
+
+
+$FUNCNAME$
+	getSysImage()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Get content of predefined icons (XPM format).
+$LANG_RU$
+	Получить содержимое предопределённых значков в формате XPM.
+$SYNTAX$
+	getSysImage(<id>)	--> <sImage>
+$ARGUMENTS$
+	<id>		- Number. Identifier of predefined images.
+			<itemizedlist mark="bullet">
+			<listitem><para><constant>IMG_EMPTY</constant> &mdash; empty (transparent) pixmap (16x16)</para></listitem>
+			<listitem><para><constant>IMG_OK</constant> &mdash; symbol "i" in blue circle (32x32)</para></listitem>
+			<listitem><para><constant>IMG_INFO</constant> &mdash; symbol "i" in blue circle (32x32)</para></listitem>
+			<listitem><para><constant>IMG_ERROR</constant> &mdash; symbol "x" in red circle (32x32)</para></listitem>
+			<listitem><para><constant>IMG_QUESTION</constant> &mdash; symbol "i" in blue circle (32x32)</para></listitem>
+			</itemizedlist>
+$LANG_RU$
+	<id>		- Число. Идентификатор предопределённого изображения.
+			<itemizedlist mark="bullet">
+			<listitem><para><constant>IMG_EMPTY</constant> &mdash; пустой (прозрачный) рисунок (16х16)</para></listitem>
+			<listitem><para><constant>IMG_OK</constant> &mdash; символ "i" в синем кружочке (32х32)</para></listitem>
+			<listitem><para><constant>IMG_INFO</constant> &mdash; символ "i" в синем кружочке (32х32)</para></listitem>
+			<listitem><para><constant>IMG_ERROR</constant> &mdash; символ "х" в красном кружочке (32х32)</para></listitem>
+			<listitem><para><constant>IMG_QUESTION</constant> &mdash; символ "i" в синем кружочке (32х32)</para></listitem>
+			</itemizedlist>
+
+$RETURNS$
+	Content of specified predefined images.
+$LANG_RU$
+	Содержимое указанного предопределённого изображения.
+$EXAMPLES$
+	imgContent := getSysImage( IMG_INFO )
+$SEEALSO$
+	UIIMAGE
+$END$
+
+$FUNCNAME$
+	getClipUIVersion()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Get CLIP-UI library version.
+$LANG_RU$
+	Получить версию используемой библиотеки CLIP-UI.
+$SYNTAX$
+	getClipUIVersion()	--> <sVersion>
+$RETURNS$
+	CLIP-UI library version.
+$LANG_RU$
+	Версия используемой библиотеки CLIP-UI.
+$END$
+
+$FUNCNAME$
+	mapget()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Get value from associated array by its key. If specified key is not found, value <defVal> is returned.
+$LANG_RU$
+	Возвращает значение из ассоциативного массива по ключу. Если ключ не найден, возвращается значение <defVal>.
+$SYNTAX$
+	mapget(<m>,<key>,<defVal>)	--> <val>
+$ARGUMENTS$
+	<m>		- Associated array. Associated array.
+	<key>		- String. Key.
+	<defVal>	- Any type. Value by defult on failed key lookup.
+$LANG_RU$
+	<m>		- Ассоциативный массив. Ассоциативный массив.
+	<key>		- Строка. Ключ.
+	<defVal>	- Любой тип. Значение по умолчанию при неудачном поиске ключа.
+$RETURNS$
+	Value by specified key or <defVal>.
+$LANG_RU$
+	Значение по указанному ключу или <defVal>.
+$EXAMPLES$
+	m := mapget( tag:attr, "METHOD", "" )
+$END$
+
+$FUNCNAME$
+	splitGeom()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Extract array from string.
+$LANG_RU$
+	Выделяет из строки массив значений.
+$SYNTAX$
+	splitGeom(<str>,[<alen>])	--> <aGeometry>
+$ARGUMENTS$
+	<str>		- String. String of values delimited by commas.
+	<alen>		- Number. Required number of elements in array. If necessary array size is corrected.
+$LANG_RU$
+	<str>		- Строка. Строка значений, разделённых запятыми.
+	<alen>		- Число. Необходимое количество элементов в массиве. При необходимости размер массива корректируется для соответствия заданному количеству.
+$RETURNS$
+	Array of values.
+$LANG_RU$
+	Массив значений.
+$EXAMPLES$
+	a := splitGeom( "22", 2 ) 	// {22,NIL}
+$END$
+
+$FUNCNAME$
+	val2str()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Transform value to string.
+$LANG_RU$
+	Преобразовать значение в строку.
+$SYNTAX$
+	val2str(<value>,[<format>])	--> <sVal>
+$ARGUMENTS$
+	<value>		- Number|string|date|boolean|NIL. Transformed value.
+	<format>	- String. Format for translation to string.
+$LANG_RU$
+	<value>		- Число|строка|дата|логическое значение|пустое значение. Преобразуемое значение.
+	<format>	- Строка. Формат преобразования значения в строку.
+$RETURNS$
+	Value as string.
+$LANG_RU$
+	Значение в виде строки.
+$EXAMPLES$
+	s := val2str( 55 )	// "55"
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	XMLGetTag()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Get XML element by specified hierarchy.
+$LANG_RU$
+	Возвратить элемент XML по указанной иерархии.
+$SYNTAX$
+	XMLGetTag(<root>,<path>)	--> <oTag>
+$ARGUMENTS$
+	<root>		- <link linkend="functionxmlgettag">XMLGetTag</link> object. Element from which lookup is begun.
+	<path>		- String. Hierarchy as tag names (in upper case) delimited by dots. For example, if queried "HEAD.VALUE" will be lookup first child element with name 'head' and its child element with name 'value' will be returned. If tag not found in hierarchy NIL is returned.
+$LANG_RU$
+	<root>		- Объект <link linkend="functionxmlgettag">XMLGetTag</link>. Элемент, с которого начинается поиск.
+	<path>		- Строка. Иерархия в виде имён тегов (в верхнем регистре), разделённых точками. Например, при запросе "HEAD.VALUE" будет найден первый тег с именем 'head', а затем возвращён объект первого тега 'value' под ним. Если тег в такое иерархии не найден, возвращается NIL.
+$RETURNS$
+	Tag by specified hierarchy.
+$LANG_RU$
+	Тег по указанной иерархии.
+$EXAMPLES$
+	t := XMLGetTag( self:root, "INTERFACE.WIDGET" )	// Find <widget> tag under tag <interface> from element self:root.
+$SEEALSO$
+	XMLGETTAG()
+$END$
+
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

@@ -1,0 +1,56 @@
+$CLASSNAME$
+	UIColor
+$SUMMARY$
+	Class UIColor.
+$LANG_RU$
+	Класс UIColor.
+$ABOUT$
+	Color class.
+$LANG_RU$
+	Класс цвета.
+$SYNTAX$
+	UIColor(<color>,[<opacity>])	--> UIColor object
+$LANG_RU$
+	UIColor(<color>,[<opacity>])	--> Объект UIColor
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIColor".
+	<red>		- Red constituent of color. Value should be from 0 to 255.
+	<green>		- Green constituent of color. Value should be from 0 to 255.
+	<blue>		- Blue constituent of color. Value should be from 0 to 255.
+	<opacity>	- Opacity of color. Value should be from 0 to 255.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIColor".
+	<red>		- Красная составляющая указанного цвета. Значение от 0 до 255.
+	<green>		- Зелёная составляющая указанного цвета. Значение от 0 до 255.
+	<blue>		- Синяя составляющая указанного цвета. Значение от 0 до 255.
+	<opacity>	- Прозрачность указанного цвета. Значение от 0 до 255.
+
+$METHODNAME$
+	UIColor()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UIColor(<color>,[<opacity>])
+$ARGUMENTS$
+	<color>		- String. Color. Defined in format '#RRGGBB': hexadecimal value in two bytes of red, green and blue color constituents respectively. '00' - minimal value, 'FF' - maximum value of each constituent. For example, '#FFFF00' is value for yellow color.
+	<opacity>	- Number. Opacity. Value should be from 0 (full opacity color) to 1 (absolutely transparent color).
+$LANG_RU$
+	<color>		- Строка. Цвет. Указывается в формате '#RRGGBB': шестнадцатеричное представление в двух байтах соответственно красной, зелёной и синей составляющей цвета. '00' - минимальное значение, 'FF' - максимальное значение. Например, '#FFFF00' - жёлтый цвет.
+	<opacity>	- Число. Непрозрачность. Значение от 0 (совершенно непрозрачный цвет) до 1 (абсолютно прозрачный цвет).
+
+$EXAMPLES$
+	color := UIColor("#0000FF") /* Blue color */
+$ENDMETHOD$
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

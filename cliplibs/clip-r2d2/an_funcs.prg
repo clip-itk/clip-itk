@@ -1,9 +1,9 @@
 ***********************
 function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
-	local oDict,an_info,an_info2,an_balance,osb_class,anb_list:=map()
+	local oDict,an_info,an_balance,osb_class,anb_list:=map()
 	local as,as1,s:="",s0,s1,s2,obj,aObj,tObj,tmp,data:={}
 	local i,j,k,x,y,z,itogCel,aOst:={}
-	local max_date,min_date,variants
+	local max_date,min_date,variants:={}
 	local an_obj,class,cId,tmpDict,tcol,tcol_list,err
 	local classes:=map(), tCols := map()
 
@@ -11,11 +11,6 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	an_info := oDict:classBodyByName("an_info")
 	if empty(an_info)
 		outlog("Error: class AN_INFO not found in ACC01")
-		return data
-	endif
-	an_info2 := oDict:classBodyByName("an_info2")
-	if empty(an_info2)
-		outlog("Error: class AN_INFO2 not found in ACC01")
 		return data
 	endif
 	if an_level <= 1
@@ -31,27 +26,18 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 			return data
 		endif
 	endif
+	x := 0
+	for i=1 to len(an_values)
+		if !empty(an_values[i])
+			x ++
+		endif
+	next
 
-	s := 'account=="'+account+'"'
-	//s2:= '.and. beg_date>=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
-	s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
-	//s2:= '.and. beg_date>=stod("'+dtos(beg_date)+'") '
-	//outlog(__FILE__,__LINE__,an_level,an_values)
-	if an_level>1 .and. !empty(an_values[an_level-1])//.and. an_values[an_level-1] != NIL
-		s1:= '.and. an_level=='+alltrim(str(an_level-1,2,0))+' '
-		s1+= '.and. an_value1=="'+an_values[an_level-1]+'" '
-		tmp:=oDep:select(an_info2:id,,,s+s1+s2)
-		//outlog("an_values=",an_values,s)
-		//outlog("an_info",s+s1+s2,tmp)
-		for i=1 to len(tmp)
-			obj:=oDep:getValue(tmp[i])
-			if empty(obj)
-				outlog("Error: can`t load object:",tmp[i])
-				loop
-			endif
-			anb_list[obj:an_value2] := obj:an_value2
-		next
-	else
+	if x == 0 //if an_level>1 .and. empty(an_values[1])
+		s := 'account=="'+account+'"'
+		//s2:= '.and. beg_date>=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
+		s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
+		//s2:= '.and. beg_date>=stod("'+dtos(beg_date)+'") '
 		s1:= '.and. an_level=='+alltrim(str(an_level,2,0))+' '
 		tmp:=oDep:select(an_info:id,,,s+s1+s2)
 		//outlog("an_values=",an_values,s)
@@ -67,13 +53,23 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		next
 	endif
 	//outlog("anb_list=",anb_list)
+	//outlog("an_values=",an_values)
 
 	variants := calc_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
-	//outlog("variants =",variants)
+	/*
+	outlog("variants =",len(variants),variants)
+	for i=1 to len(variants)
+		outlog("variant",i,variants[i])
+	next
+	*/
 	for i=1 to len(variants)
 		j := calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,variants[i])
 		//outlog("summ=",j)
 		aadd(aOst,j)
+		tmp :=  variants[i][an_level]
+		if !empty(tmp)
+			anb_list[ tmp ] := tmp
+		endif
 	next
 
 	for i in anb_list KEYS
@@ -207,6 +203,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	aObj:end_num  := 0
 	aObj:unit_num := "all"
 	aObj:accpost_list := {}
+	//outlog(__FILE__,__LINE__,data)
 	if len(data) == 0
 		aObj:an_value := "EMPTY"
 		aObj:essence  := "πυστο"
@@ -231,28 +228,18 @@ return data
 
 **********************************
 static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
-	local ret :={},lExit := .f.,m1:={}
-	local oDict,an_info2
+	local ret :={},ret2:={},lExit := .f.,m1:={}
+	local oDict,an_info_full
 	local tmp,i,j,k,x,s,s1,s2,s3
 	local a,b,obj,an1,an2
 	local _used := map()
 
 	oDict := oDep:dictionary()
-	an_info2 := oDict:classBodyByName("an_info2")
-	if empty(an_info2)
-		outlog("Error: class AN_INFO2 not found in ACC01")
+	an_info_full := oDict:classBodyByName("an_info_full")
+	if empty(an_info_full)
+		outlog("Error: class AN_INFO_FULL not found in ACC01")
 		return ret
 	endif
-
-	//outlog(__FILE__,__LINE__,len(anb_list),anb_list)
-	if an_level <= 1
-		for i in anb_list
-			aadd(ret,{i})
-		next
-		return ret
-	endif
-	//outlog(__FILE__,__LINE__,len(ret),ret)
-	//outlog(__FILE__,__LINE__,len(anb_list),anb_list)
 
 	for i in anb_list
 		x := {}
@@ -265,159 +252,76 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 		next
 		aadd(ret,x)
 	next
-	if empty(ret)
+	if an_level <= 1
 		return ret
 	endif
-	//outlog(__FILE__,__LINE__,len(ret),ret)
-
-
-	s := 'account=="'+account+'"'
-	s2 := ''
-	s2:= ' .and. beg_date<=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
-	k :=1; a := ret[k]
-	while !lExit
-		m1:={}
-		for i=an_level to 2 step -1
-			an1:=a[i-1]
-			if an1 == NIL
-				exit
+	i := 0
+	if empty(ret)
+		x := {}
+		asize(x,len(an_values))
+		for j=1 to len(an_values)
+			if !empty(an_values[j])
+				x[j] := an_values[j]
+				i++
 			endif
 		next
-		if i > 1
-			an2:=a[i]
-			s1 := ' .and. an_level=='+alltrim(str(i-1,2,0))+' '
-			s3 := ' .and. an_value2=="'+an2+'"'
-			tmp:=oDep:select(an_info2:id,,,s+s1+s2+s3)
-			//outlog("an_info2",s+s1+s2+s3,tmp)
-			for j=1 to len(tmp)
-				obj := oDep:getValue(tmp[j])
-				if empty(obj)
-					loop
-				endif
-				aadd(m1,obj:an_value1)
-				b := aclone(a)
-				b[i-1] := obj:an_value1
-	//outlog(__FILE__,__LINE__,"aadd",b)
-				aadd(ret,b)
-			next
-			/*
-			for j=1 to len(m1)
-				b := aclone(a)
-				b[i-1] := m1[j]
-	//outlog(__FILE__,__LINE__,"aadd",b)
-				aadd(ret,b)
-			next
-			*/
-		else
-			for i=1 to len(an_values)-1
-				an1:=a[i]
-				an2:=a[i+1]
-				if an2 != NIL
-					loop
-				endif
-				//outlog("a2=",i,a)
-				s1 := ' .and. an_level=='+alltrim(str(i,2,0))+' '
-				s3 := ' .and. an_value1=="'+an1+'"'
-				tmp:=oDep:select(an_info2:id,,,s+s1+s2+s3)
-				//outlog("an_info2",s+s1+s2+s3,tmp)
-				for j=1 to len(tmp)
-					obj := oDep:getValue(tmp[j])
-					if empty(obj)
-						loop
-					endif
-					aadd(m1,obj:an_value2)
-					b := aclone(a)
-					b[i+1] := obj:an_value2
-	//outlog(__FILE__,__LINE__,"aadd",b)
-					aadd(ret,b)
-				next
-				/*
-				for j=1 to len(m1)
-					b := aclone(a)
-					b[i+1] := m1[j]
-	//outlog(__FILE__,__LINE__,"aadd",b)
-					aadd(ret,b)
-				next
-				*/
-				if len(m1)==0
-					b := aclone(a)
-					b[i+1] := ""
-	//outlog(__FILE__,__LINE__,"aadd",b)
-					aadd(ret,b)
-				endif
-				exit
-			next
-		endif
-		*****
-		adel(ret,k); asize(ret,len(ret)-1)
-	//outlog(__FILE__,__LINE__,ret)
-		*****
+		aadd(ret,x)
+	endif
+	//outlog(__FILE__,__LINE__,"ret=",len(ret),ret)
+	if empty(ret) //.or. i==0
+		return ret
+	endif
+	//return ret
 
-		_used := map()
-		b:={}
-		for i=len(ret) to 1 step -1 //len(ret)
-			a := ""
-			for j=len(ret[i]) to 1 step -1
-				a+=iif(ret[i][j]==NIL,"NIL",ret[i][j])
-			next
-		//outlog(__FILE__,__LINE__,a,_used)
-			if a $ _used
-				aadd(b,i)
+
+	s := 'account=="'+account+'"'+;
+		' .and. beg_date<=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
+	for k=1 to len(ret)
+		s2 := ""; a:= ret[k]
+		for i=1 to len(a)
+			if a[i] == NIL
 				loop
 			endif
-			_used[a] := a
+			s2 += ' .and. an_value'+alltrim(str(i,2,0))+;
+			      '=="'+a[i]+'"'
 		next
-		//outlog(__FILE__,__LINE__,b)
-		for i=len(b) to 1 step -1
-			adel(ret,b[i])
-		next
-		asize(ret,len(ret)-len(b))
-
-		lExit := .t.
-		for i=len(ret) to 1 step -1 //to len(ret)
-			for j=1 to len(ret[i])
-				if ret[i][j] == NIL
-					lExit := .f.
-					a := ret[i]
-					k := i
-					exit
-				endif
-			next
-			if !lExit
-				exit
+		tmp:=oDep:select(an_info_full:id,,,s+s2)
+		for i=1 to len(tmp)
+			obj := oDep:getValue(tmp[i])
+			if empty(obj)
+				loop
 			endif
+			b := aclone(a)
+			b[1] := obj:an_value1
+			b[2] := obj:an_value2
+			b[3] := obj:an_value3
+			b[4] := obj:an_value4
+			b[5] := obj:an_value5
+			b[6] := obj:an_value6
+			aadd(ret2,b)
 		next
-	enddo
-	//outlog(__FILE__,__LINE__,len(ret))
-	s := 'account=="'+account+'"'
-	s += ' .and. an_level=='+alltrim(str(an_level-1,2,0))+' '
+	next
 	b:={}
 	_used := map()
-	for i=1 to len(ret)
+	for i=1 to len(ret2)
 		a := ""
-		for j=1 to len(ret[i])
-			a+=ret[i][j]
+		for j=1 to len(ret2[i])
+			a+=ret2[i][j]
 		next
 		if a $ _used
 			aadd(b,i)
 			loop
 		endif
 		_used[a] := a
-		s2 := ' .and. an_value1=="'+ret[i][an_level-1]+'"'
-		s3 := ' .and. an_value2=="'+ret[i][an_level]+'"'
-		tmp:=oDep:select(an_info2:id,,,s+s2+s3)
-		//outlog(__FILE__,__LINE__,s+s2+s3,tmp)
-		if empty(tmp)
-		   aadd(b,i)
-		endif
 	next
+	//outlog(__FILE__,__LINE__,"after check",len(ret2))
 	//outlog(__FILE__,__LINE__,b)
 	for i=len(b) to 1 step -1
-		adel(ret,b[i])
+		adel(ret2,b[i])
 	next
-	asize(ret,len(ret)-len(b))
-	//outlog(__FILE__,__LINE__,len(ret),ret)
-return ret
+	asize(ret2,len(ret2)-len(b))
+	//outlog(__FILE__,__LINE__,len(ret2),ret2)
+return ret2
 ************************************
 static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,variant)
 	local ret:=map()

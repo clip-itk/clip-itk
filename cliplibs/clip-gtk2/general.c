@@ -573,3 +573,11 @@ err:
 }
 */
 
+int
+clip_GTK_VERSION(ClipMachine * cm)
+{
+	_clip_storni(cm, GTK2_VER_MAJOR, 1, 0);
+	_clip_storni(cm, GTK2_VER_MINOR, 2, 0);
+	return 0;
+}
+

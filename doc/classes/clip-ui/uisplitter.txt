@@ -1,0 +1,99 @@
+$CLASSNAME$
+	UISplitter
+$SUMMARY$
+	Class UISplitter
+$LANG_RU$
+	Класс UISplitter
+$ABOUT$
+	Line with two panes arranged vertically or horizontally.
+$LANG_RU$
+	Линия, разделяющая две панели вертикально или горизонтально.
+$SYNTAX$
+	UISplitter([<type>])	--> UISplitter object.
+$LANG_RU$
+	UISplitter([<type>])	--> Объект UISplitter.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UISplitter".
+	<first>		- Container object. Top/left pane.
+	<second> 	- Container object. Bottom/right pane.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UISplitter".
+	<first>		- Объект контейнера. Верхняя/левая панель.
+	<second> 	- Объект контейнера. Нижняя/правая панель.
+
+$METHODNAME$
+	UISplitter()
+$SUMMARY$
+	Constructor. Create splitter.
+$LANG_RU$
+	Конструктор. Создать разделитель.
+$SYNTAX$
+	UISplitter([<type>])	--> UISplitter object.
+$ARGUMENTS$
+	<type>		- Number. Splitter direction. <constant>SPLITTER_HORIZONTAL<constant> &mdash; horizontal splitter, <constant>SPLITTER_VERTICAL<constant> (default) &mdash; vertical splitter.
+$LANG_RU$
+	<type>		- Число. Направление разделителя. <constant>SPLITTER_HORIZONTAL<constant> &mdash; горизонтальный разделитель, <constant>SPLITTER_VERTICAL<constant> (значение по умолчанию) &mdash; вертикальный разделитель.
+$ENDMETHOD$
+
+	obj:add   	:= @ui_addSplitPane()
+	obj:addEnd   	:= @ui_addSplitPaneEnd()
+	obj:setPosition := @ui_setSplitterPosition()
+
+$METHODNAME$
+	add()
+$SUMMARY$
+	Place panel to top/left from splitter.
+$LANG_RU$
+	Поместить панель сверху/слева от разделителя.
+$SYNTAX$
+	add(<obj>)
+$ARGUMENTS$
+	<obj>		- Widget object. Widget placed to top/left from splitter.
+$LANG_RU$
+	<obj>		- Объект виджета. Виджет, добавляемый сверху/слева от разделителя.
+$ENDMETHOD$
+
+$METHODNAME$
+	addEnd()
+$SUMMARY$
+	Place panel to bottom/right from splitter.
+$LANG_RU$
+	Поместить панель снизу/справа от разделителя.
+$SYNTAX$
+	addEnd(<obj>)
+$ARGUMENTS$
+	<obj>		- Widget object. Widget placed to bottom/right from splitter.
+$LANG_RU$
+	<obj>		- Объект виджета. Виджет, добавляемый снизу/справа от разделителя.
+$ENDMETHOD$
+
+$METHODNAME$
+	setPosition()
+$SUMMARY$
+	Set splitter position.
+$LANG_RU$
+	Установить позицию разделителя.
+$SYNTAX$
+	setPosition(<pos>)
+$ARGUMENTS$
+	<pos>		- Number. Splitter position in pixels.
+$LANG_RU$
+	<pos>		- Число. Позиция разделителя в точках.
+$ENDMETHOD$
+
+$EXAMPLES$
+	splitter := UISplitter(SPLITTER_HORIZONTAL)
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+
