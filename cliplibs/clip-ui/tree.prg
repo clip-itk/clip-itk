@@ -14,11 +14,8 @@
 
 static driver := getDriver()
 
-/* TODO:
-	- implement class in XFL forms
-	- nice expand/collapse icons, possible remove lines
-	- ignore expand/collapse as node activation on single LMB click
-	- fill tree from object
+/* 
+TODO: id by data, not index, nice expand/collapse icons, possible remove lines, ignore expand/collapse as node activation on single LMB click, fill tree from object 
 */
 
 /* Tree class */

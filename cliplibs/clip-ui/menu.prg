@@ -5,7 +5,7 @@
 /*   Authors: 								   */
 /*  	     Andrey Cherepanov <sibskull@mail.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   Last change: 21 Jan 2005						   */
+/*   Last change: 31 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -14,8 +14,6 @@
 /*-------------------------------------------------------------------------*/
 
 static driver := getDriver()
-
-/* TODO: need methods: insert(), remove(), clear()  */
 
 /* Menu class */
 function UIMenu()
@@ -31,6 +29,7 @@ function _recover_UIMENU( obj )
 	obj:enable 	:= @ui_enable()
 	obj:disable 	:= @ui_disable()
 	obj:remove 	:= @ui_remove()
+	obj:clear 	:= @ui_clear()
 	obj:getElement	:= @ui_getElement()
 	obj:isEnabled	:= @ui_isEnabled()
 	obj:setKey	:= @ui_setKey()
@@ -119,8 +118,17 @@ return NIL
 
 /* Remove item from menu */
 static function ui_remove(self, pos)
-	driver:removeMenuItem( self, pos) // <- need check
-	// need array menu:elem will be updated
+	driver:removeMenuItem( self, self:getElement(pos) )
+	adel( self:elem, pos )
+	asize( self:elem, len(self:elem)-1 )
+return NIL
+
+/* Remove all items from menu */
+static function ui_clear(self)
+	local i, s:=len(self:elem)
+	for i=1 to s
+		self:remove( 1 )
+	next
 return NIL
 
 /* Return object by its number in the menu */

@@ -5,9 +5,12 @@
 */
 /*
 	$Log: clipbase.c,v $
+	Revision 1.372  2005/02/02 14:22:23  clip
+	rust: minor fix for SET OPTIMIZE LEVEL 2
+	
 	Revision 1.371  2005/01/19 13:32:02  clip
 	rust: minor fix in string comparison
-	
+
 	Revision 1.370  2005/01/10 11:50:10  clip
 	rust: DBSETFILTER() without parameters -> DBCLEARFILTER()
 
@@ -3760,8 +3763,9 @@ clip_DBSETFILTER(ClipMachine * cm)
 	READLOCK;
 	if((er = rdd_createfilter(cm,wa->rd,&fp,block,str,NULL,lNoOptimize,__PROC__)))
 		goto err_unlock;
+	wa->rd->filter = fp;
 	fp->active = 1;
-	if((er = _rdd_calcfiltlist(cm,wa->rd,__PROC__)))
+	if((er = _rdd_calcfiltlist(cm,wa->rd,fp,__PROC__)))
 		goto err_unlock;
 	UNLOCK;
 	return 0;

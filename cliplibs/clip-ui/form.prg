@@ -14,10 +14,6 @@
 
 static driver := getDriver()
 
-/* TODO: 
-	- support UITree and its nodes
-*/
-
 /* Interface form class */
 function UIForm( fileName, parent )
 	local obj	:= map()
@@ -356,8 +352,6 @@ static function ui_createWidget(self, tag, parent )
 			ui_createWidget(self, c, o)
 		elseif c:name == "PROPERTY"
 			ui_setProperty(self, c, o)
-		elseif c:name == "FIELD"
-			// TODO: process <field> tag
 		elseif c:name == "RULE"
 			ui_setAction(self, c, o)
 		elseif ascan({"COLUMN"},{|ev| ev==c:name}) != 0
@@ -565,7 +559,7 @@ static function ui_setAction(self, tag, lObj)
 		return .F.
 	endif
 
-	// TODO: labelled rule!!!
+	// TODO: labelled rule support on menu
         labelRule := self:i18n(mapget(t:attr,"LABEL",NIL))
 	if .not. empty(labelRule)
 //		?? "Action:",labelRule,chr(10)
@@ -675,7 +669,7 @@ static function ui_subActionHandler(self, tag, addVal)
 		if len(tag:childs) > 0
 //			?? "val ->",addVal,chr(10)
 			value := self:subActionHandler(tag:childs[1],addVal)
-//			?? "TODO: SET PROPERTY", valtype(value), chr(10)
+//			?? "SET PROPERTY", valtype(value), chr(10)
 			self:setProperty(tag, NIL, value)
 			return NIL
 		else
@@ -789,7 +783,7 @@ static function ui_form_i18n(self, str)
 	if valtype(self:locale)=="O" .and. str $ self:locale
 		lstr := self:locale[str]
 	elseif .not. empty(str)
-		// TODO: show untranslated string
+		// TODO: show untranslated string in debug mode
 		//?? self:fileName+": untranslated '"+str+"'&\n"
 		lstr := str
 	endif

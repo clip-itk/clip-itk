@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: dbf.c,v $
+	Revision 1.184  2005/02/02 14:22:24  clip
+	rust: minor fix for SET OPTIMIZE LEVEL 2
+	
 	Revision 1.183  2005/01/12 13:52:09  clip
 	rust: major fix in dbf_ulock()
-	
+
 	Revision 1.182  2004/11/17 14:08:20  clip
 	rust: "Duplicate field name" error message added
 
@@ -631,7 +634,7 @@ static int dbf_lupdate(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 static int dbf_info(ClipMachine* cm,RDD_DATA* rd,int cmd,const char* __PROC__);
 static int dbf_setstruct(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 
-static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const char* __PROC__);
 
 static int vfp_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT* rddstru,int nfields,const char* __PROC__);
 
@@ -2389,72 +2392,72 @@ static int _dbf_compare(void* op,void* lp,void* rp,int* uniq){
 	return 0;
 }
 
-static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
+static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const char* __PROC__){
 	BTREE* bt;
 	int i,j;
 	unsigned int recno;
 
-	if(rd->filter->list){
-		bt = bt_create(0,rd->filter->listlen,sizeof(unsigned int),
+	if(fp->list){
+		bt = bt_create(0,fp->listlen,sizeof(unsigned int),
 			_dbf_compare);
-		for(i=0;i<rd->filter->listlen;i++){
-			recno = rd->filter->list[i];
+		for(i=0;i<fp->listlen;i++){
+			recno = fp->list[i];
 			bt_add(bt,NULL,(void*)&recno);
 		}
-		free(rd->filter->list);
-		rd->filter->list = malloc(sizeof(unsigned int)*rd->filter->listlen);
+		free(fp->list);
+		fp->list = malloc(sizeof(unsigned int)*fp->listlen);
 		bt_first(bt);
 		i = 0;
-		rd->filter->list[i] = *(unsigned int*)bt_key(bt);
+		fp->list[i] = *(unsigned int*)bt_key(bt);
 		while(!bt_next(bt)){
 			i++;
-			rd->filter->list[i] = *(unsigned int*)bt_key(bt);
+			fp->list[i] = *(unsigned int*)bt_key(bt);
 		}
 		bt_destroy(bt);
 	} else {
 #if 1
-		unsigned int bytes = ((rd->filter->size+1) >> 5) + 1;
+		unsigned int bytes = ((fp->size+1) >> 5) + 1;
 		int i,b,bb,t,tt;
 
-		rd->filter->listlen = 0;
+		fp->listlen = 0;
 		for(i=0;i<bytes;i++){
-			if(rd->filter->rmap[i]){
+			if(fp->rmap[i]){
 				for(b=(i<<2),bb=0;bb<4;b++,bb++){
-					if(((char*)rd->filter->rmap)[b]){
+					if(((char*)fp->rmap)[b]){
 						for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
-							if(_rm_getbit(rd->filter->rmap,rd->filter->size,t))
-								rd->filter->listlen++;
+							if(_rm_getbit(fp->rmap,fp->size,t))
+								fp->listlen++;
 						}
 					}
 				}
 			}
 		}
-		if(rd->filter->listlen > 100)
+		if(fp->listlen > 100)
 			return 0;
 #else
-		rd->filter->listlen = 0;
-		for(i=1;i<=rd->filter->size;i++)
-			if(_rm_getbit(rd->filter->rmap,rd->filter->size,i))
-				rd->filter->listlen++;
+		fp->listlen = 0;
+		for(i=1;i<=fp->size;i++)
+			if(_rm_getbit(fp->rmap,fp->size,i))
+				fp->listlen++;
 #endif
-		rd->filter->list = malloc(sizeof(unsigned int)*(rd->filter->listlen+1));
+		fp->list = malloc(sizeof(unsigned int)*(fp->listlen+1));
 #if 1
 		for(i=0,j=0;i<bytes;i++){
-			if(rd->filter->rmap[i]){
+			if(fp->rmap[i]){
 				for(b=(i<<2),bb=0;bb<4;b++,bb++){
-					if(((char*)rd->filter->rmap)[b]){
+					if(((char*)fp->rmap)[b]){
 						for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
-							if(_rm_getbit(rd->filter->rmap,rd->filter->size,t))
-								rd->filter->list[j++] = t;
+							if(_rm_getbit(fp->rmap,fp->size,t))
+								fp->list[j++] = t;
 						}
 					}
 				}
 			}
 		}
 #else
-		for(i=1;i<=rd->filter->size;i++){
-			if(_rm_getbit(rd->filter->rmap,rd->filter->size,i))
-				rd->filter->list[j++] = i;
+		for(i=1;i<=fp->size;i++){
+			if(_rm_getbit(fp->rmap,fp->size,i))
+				fp->list[j++] = i;
 		}
 #endif
 	}

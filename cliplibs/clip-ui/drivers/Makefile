@@ -4,7 +4,6 @@
 # Author: Andrey Cherepanov <sibskull@mail.ru>
 
 include $(CLIPROOT)/include/Makefile.inc
-#include ../../Makefile.var
 CLIPINCLUDE = -I$(CLIPROOT)/include
 CLIP = $(CLIPROOT)/bin/clip
 

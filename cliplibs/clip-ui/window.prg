@@ -16,6 +16,8 @@
 
 static driver := getDriver()
 
+/* TODO: setAction() for UIWindow (close), UIChildWindow (close and changed focus) */
+
 /* Window class */
 function UIWindow( caption, parent, name, close, resizeable )
 	local obj	:= driver:createWindow( caption, parent, resizeable )
@@ -350,7 +352,7 @@ static function ui_setMDI( self )
 	endif
 return NIL
 
-/* Set window icon */
+/* TODO: Set window icon */
 static function ui_setIcon( self, pic )
 	if empty(pic)
         	pic := UIImage()

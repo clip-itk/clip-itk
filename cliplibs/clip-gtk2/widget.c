@@ -1543,7 +1543,7 @@ clip_GTK_WIDGETGETCOLORMAP(ClipMachine * cm)
 			(coDestructor)gdk_object_colormap_destructor);
 		if (ccmap)
 		{
-			ccmap->ref_count = 1;
+		    	ccmap->ref_count = 1;
 			//ccmap->ref_count ++;
 			//gdk_colormap_ref(colormap);
 			_clip_mclone(cm,RETPTR(cm),&ccmap->obj);

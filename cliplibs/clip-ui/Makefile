@@ -1,13 +1,9 @@
-# Makefile for clip-ui custom variables
-RBINDIR=/m6/uri/cliproot/bin
-RLIBDIR=/m6/uri/cliproot/lib
 # This is a part of CLIP-UI library
 #
 # Copyright (C) 2003 by E/AS Software Foundation
 # Author: Andrey Cherepanov <sibskull@mail.ru>
 
 include $(CLIPROOT)/include/Makefile.inc
-include Makefile.var
 
 DRIVERSDIR = $(DESTDIR)$(CLIPROOT)/lib/drivers
 CLIPINCLUDE =
@@ -28,10 +24,7 @@ OBJS    = button.o checkbox.o color.o combobox.o edit.o font.o form.o \
 
 .PHONY: all clean uninstall distclean
 
-all: configure var.ch driver $(TARGET)
-
-configure: Makefile Makefile.var
-	./configure
+all: var.ch driver $(TARGET)
 
 var.ch:
 	echo "#define DRIVERSDIR \"$(DRIVERSDIR)\"" >var.ch
@@ -53,18 +46,19 @@ install: all
 	mkdir -p $(DESTDIR)$(CLIPROOT)/lib
 	mkdir -p $(DESTDIR)$(CLIPROOT)/include
 	$(CLIPROOT)/bin/clip_cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
+	$(CLIPROOT)/bin/clip_cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
 	$(CLIPROOT)/bin/clip_cp clip-ui.ch $(DESTDIR)$(CLIPROOT)/include
-	mkdir -p $(CLIPROOT)/doc/example/clip-ui
-	cp -RL examples/* $(CLIPROOT)/doc/example/clip-ui/
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui
+	cp -RL examples/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui/
 
 uninstall:
 	cd drivers; make uninstall
-	rm -rf $(CLIPROOT)/lib/$(TARGET) $(CLIPROOT)/doc/example/clip-ui/
+	rm -rf $(CLIPROOT)/lib/$(TARGET) $(CLIPROOT)/lib/$(RTARGET) $(CLIPROOT)/doc/example/clip-ui/
 	rm -f  $(CLIPROOT)/include/clip-ui.ch
 
 distclean: clean
 	cd examples; make clean
-	rm -f Makefile Makefile.var
+	rm -f Makefile
 
 dist: distclean
 

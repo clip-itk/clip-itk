@@ -2697,6 +2697,7 @@ static function te_addToClipboard(Clipboard)
 	nB := max(::koordblock[1], ::koordblock[3])
 	nL := min(::koordblock[2], ::koordblock[4])
 	nR := max(::koordblock[2], ::koordblock[4])
+	nB := min(nB, ::lines)
 	asize(cb[2], nB-nT+1)
 	for i=nT to nB
 		j++
@@ -2779,9 +2780,11 @@ local i, j, cmd, len, line, p
 		case cmd == HASH_CRIGHT
 			::left(.f.)
 		case cmd == HASH_PGUP
-			::pageDown(.f.)
+			//::pageDown(.f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
 		case cmd == HASH_PGDOWN
-			::pageUp(.f.)
+			//::pageUp(.f.)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
 		case cmd == HASH_HOME
 			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
 		case cmd == HASH_END

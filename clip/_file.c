@@ -5,6 +5,9 @@
 */
 /*
    $Log: _file.c,v $
+   Revision 1.166  2005/02/03 14:13:39  clip
+   uri: small fix for fclose(NIL)
+
    Revision 1.165  2005/01/11 07:53:25  clip
    uri: small fix for CLIP_TASKS=no
 
@@ -1596,8 +1599,17 @@ int
 clip_FCLOSE(ClipMachine * mp)
 {
 	int fd = _clip_parni(mp, 1);
-	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-	int ret = -1, *err = _clip_fetch_item(mp, HASH_ferror);
+	int ret = -1, *err ;
+	C_FILE *cf;
+
+	_clip_retl(mp, 0);
+
+	if (_clip_parinfo(mp,1) != NUMERIC_t )
+		return 0;
+
+
+	cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	err = _clip_fetch_item(mp, HASH_ferror);
 
 	if (cf == NULL)
 	{

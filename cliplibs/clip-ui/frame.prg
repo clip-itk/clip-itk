@@ -3,7 +3,7 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 13 Jan 2005						   */
+/*   Last change: 30 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -12,8 +12,6 @@
 /*-------------------------------------------------------------------------*/
 
 static driver := getDriver()
-
-/* TODO: frame border, changing frame caption */
 
 /* Frame class */
 function UIFrame(caption, type)

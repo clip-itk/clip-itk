@@ -21,7 +21,7 @@
 #define FA_DIRECTORY    16
 #define FA_ARCHIVE      32
 
-#define ME_VERSION      5
+#define ME_VERSION      6
 
 static __CurrentDir
 
@@ -141,6 +141,7 @@ local obj:=map()
 	obj:undo                := @me_undo()
 	obj:savePos             := @me_savePos()
 	obj:callMenu            := @me_callMenu()
+	obj:callPopupMenu       := @me_callPopupMenu()
 	obj:newLine             := @me_NewLine()
 	obj:delete              := @me_delete()
 	obj:deleteEnd           := @me_deleteEnd()
@@ -285,7 +286,11 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 				wclose()
 			endif
 		next
-		oldwin := ::tobjinfo[1]:curwin
+		if ::nWins >0
+			oldwin := ::tobjinfo[1]:curwin
+		else
+			::__l_tobj := .f.
+		endif
 	else
 		::getstatus()
 		oldwin := ::curwin
@@ -547,13 +552,15 @@ do while .t.
 		hkey := ::__mapKeys[hKey]
 	endif
 
-
 	if mLeftDown() .and. (mRow() == ::nBot .or. mRow() == ::nTop)
 		hKey := ::CallMenu(@nChoice)
 
 		if hKey == -1
 			loop
 		endif
+	endif
+	if mRightDown()
+		hKey := ::CallPopupMenu()
 	endif
 	if !::__l_tobj .and. (hKey != HASH_CallMenu .and. ;
 		hKey != HASH_OpenFile .and. ;
@@ -564,8 +571,8 @@ do while .t.
 
 		loop
 	endif
-	if ::__l_tobj .and. mLeftDown()
-		if between(mRow(), ::nBot+1, ::nTop-1) .and. between(mCol(), ::nLeft+1, ::nRight-1)
+	if ::__l_tobj
+		if mLeftDown() .and. between(mRow(), ::nBot+1, ::nTop-1) .and. between(mCol(), ::nLeft+1, ::nRight-1)
 			::tobj[::curwin]:mGoto(mRow(), mCol())
 			loop
 		endif
@@ -630,6 +637,9 @@ return
 ************************************
 static function me_saveWins()
 local k, i, ret := .t.
+	if ::nWins < 1
+		return ret
+	endif
 	k := 0
 	for i=1 to ::nWins
 	if ::tobj[i] == NIL
@@ -699,73 +709,83 @@ return .t.
 ************************************
 static function me_openFile()
 local obj, nWin
-local fd, sh, i, oldwin, shnum
+local fd, sh, i, j, oldwin, shnum, afd, lCanReturnSelected := .t.
 
 	if  ::__l_tobj .and. (::Opt:OOPENFILES == 1)
 		i := atr('.', ::tobj[::curwin]:fileName)
 		sh := iif(i > 0, "*"+substr(::tobj[::curwin]:fileName, i), "*")
-		fd = fileDialog(::tobj[::curwin]:path, sh, ::__FileD)
+		afd = fileDialog(::tobj[::curwin]:path, sh, ::__FileD, lCanReturnSelected)
 	else
-		fd=filedialog(__CurrentDir, "*", ::__FileD)
+		afd=filedialog(__CurrentDir, "*", ::__FileD, lCanReturnSelected)
 	endif
-	if !empty(fd)
-		__CurrentDir := padr(fd, atr(PATH_DELIM, fd))
-	endif
-	sh := ::__check_share(fd, @shnum)
-	if sh < 2
-		return .f.
-	endif
-	if !empty(fd)
-		setcolor(set("edit_colors_window"))
-		oldwin := wselect()
-		i := wopen(::ntop, ::nleft, ::nbot-1, ::nright)
-		wbox()
-		aadd(::tobjinfo, map())
-		::nWins ++
 
-		nWin := ::nWins
-		::tobjinfo[nWin]:name := fd
-		::tobjinfo[nWin]:readOnly := .f.
-		::tobjinfo[nWin]:share := .f.
-		::tobjinfo[nWin]:curwin := i //number Window
+	if valtype(afd) != "A"
+		fd := afd
+		afd := {}
+		aadd(afd, fd)
+	endif
+	for j=1 to len(afd)
+		fd := afd[j]
 
-		aadd(::tobj, textEditNew(0, 0, maxrow(), maxcol(),set("edit_colors_edit")))
-		obj := ::tobj[nWin]
-		obj:modeFormat         := 2
-		obj:line               := iif(::bline!=NIL, ::bline, obj:line)
-		obj:pos                := iif(::bpos!=NIL,  ::bpos,  obj:pos)
-		obj:rowWin             := iif(::wline!=NIL, ::wline, obj:rowWin)
-		obj:colWin             := iif(::wpos!=NIL,  ::wpos,  obj:colWin)
-		obj:marginRight        := ::Opt:OMARGINRIGHT
-		obj:tabSize            := ::Opt:OTABSIZE
-		obj:maxStrings         := ::Opt:OMAXSTRINGS
-		obj:autoWrap           := ::Opt:OAUTOWRAP
-		obj:lEofString         := .t.
-		::__setFocus(nWin)
-		if sh == 2
-			::drawhead()
-			if obj:loadFile(fd)
-				::__l_tobj := .t.
-			else
-				alert([Can't open file;]+fd, "OK")
-				asize(::tobj, ::nWins-1)
-				asize(::tobjinfo, ::nWins-1)
-				::nWins --
-				wclose()
-				::__setFocus(oldwin)
-				wselect(::tobjinfo[::curwin]:curwin)
+		if !empty(fd)
+			__CurrentDir := padr(fd, atr(PATH_DELIM, fd))
+		endif
+		sh := ::__check_share(fd, @shnum)
+		if sh < 2
+			return .f.
+		endif
+		if !empty(fd)
+			setcolor(set("edit_colors_window"))
+			oldwin := wselect()
+			i := wopen(::ntop, ::nleft, ::nbot-1, ::nright)
+			wbox()
+			aadd(::tobjinfo, map())
+			::nWins ++
+
+			nWin := ::nWins
+			::tobjinfo[nWin]:name := fd
+			::tobjinfo[nWin]:readOnly := .f.
+			::tobjinfo[nWin]:share := .f.
+			::tobjinfo[nWin]:curwin := i //number Window
+
+			aadd(::tobj, textEditNew(0, 0, maxrow(), maxcol(),set("edit_colors_edit")))
+			obj := ::tobj[nWin]
+			obj:modeFormat         := 2
+			obj:line               := iif(::bline!=NIL, ::bline, obj:line)
+			obj:pos                := iif(::bpos!=NIL,  ::bpos,  obj:pos)
+			obj:rowWin             := iif(::wline!=NIL, ::wline, obj:rowWin)
+			obj:colWin             := iif(::wpos!=NIL,  ::wpos,  obj:colWin)
+			obj:marginRight        := ::Opt:OMARGINRIGHT
+			obj:tabSize            := ::Opt:OTABSIZE
+			obj:maxStrings         := ::Opt:OMAXSTRINGS
+			obj:autoWrap           := ::Opt:OAUTOWRAP
+			obj:lEofString         := .t.
+			::__setFocus(nWin)
+			if sh == 2
 				::drawhead()
+				if obj:loadFile(fd)
+					::__l_tobj := .t.
+				else
+					alert([Can't open file;]+fd, "OK")
+					asize(::tobj, ::nWins-1)
+					asize(::tobjinfo, ::nWins-1)
+					::nWins --
+					wclose()
+					::__setFocus(oldwin)
+					wselect(::tobjinfo[::curwin]:curwin)
+					::drawhead()
+				endif
+			else
+				::tobjinfo[::curwin]:share := .t.
+				::tobjinfo[shnum]:share := .t.
+				::drawhead()
+				::tobj[::curwin]:__nullInit()
+				::tobj[::curwin]:edbuffer := ::tobj[shnum]:edbuffer
+				::tobj[::curwin]:lines := len(::tobj[::curwin]:edbuffer)
+				::tobj[::curwin]:refresh()
 			endif
-	else
-		::tobjinfo[::curwin]:share := .t.
-		::tobjinfo[shnum]:share := .t.
-		::drawhead()
-		::tobj[::curwin]:__nullInit()
-		::tobj[::curwin]:edbuffer := ::tobj[shnum]:edbuffer
-		::tobj[::curwin]:lines := len(::tobj[::curwin]:edbuffer)
-		::tobj[::curwin]:refresh()
-	endif
-	endif
+		endif
+	next
 return
 ************************************
 static function me_findString(nWin)
@@ -1275,10 +1295,66 @@ local i, oldrow, oldcol, hKey
 	::enableBlockMenu()
 	hKey := MenuModal(::oMenu,nChoice,maxrow(),0,maxcol(),"r/w")
 	wclose()
-	wselect(::tobjinfo[::curwin]:curwin)
+	if ::nWins > 0
+		wselect(::tobjinfo[::curwin]:curwin)
+	endif
 	setpos(oldrow, oldcol)
 	setcursor(i)
 	nChoice := ::oMenu:current
+
+return hKey
+************************************
+static function me_CallPopupMenu(nWin)
+local obj
+local i,j, str, x1, x2, y1, y2, lb := .f., oPopup, oTopBar, oItem, hKey, a
+	// mouse clicked into block
+	if ::__l_tobj
+		obj := ::__checkWindow(@nWin)
+		if obj:strblock .or. obj:rectblock
+			y1 := min(obj:koordblock[1], obj:koordblock[3])
+			y2 := max(obj:koordblock[1], obj:koordblock[3])
+			x1 := min(obj:koordblock[2], obj:koordblock[4])
+			x2 := max(obj:koordblock[2], obj:koordblock[4])
+		endif
+
+		if obj:strblock .and. between(obj:line + mRow() - obj:rowWin, y1, y2 )
+			lb := .t.
+		elseif obj:rectblock  .and. between(obj:line + mRow() - obj:rowWin, y1, y2 );
+			.and. between(obj:pos + mCol() - obj:colWin, x1, x2 )
+			lb := .t.
+		endif
+	endif
+
+	wopen(::nTop, ::nLeft, ::nBot, ::nRight, .f.)
+	i := setcursor(0)
+	a := {}
+	if lb
+		aadd(a, {[Copy to clipboard],[Copy to clipboard], HASH_CopyClipboard, .t.})
+		aadd(a, {[Unmark],[Unmark block], HASH_CancelBlock, .t.})
+		aadd(a, {[Cut],[Cut block from text], HASH_DeleteBlock, .t.})
+	else
+		aadd(a, {[Save    ],[Save file], HASH_SaveFile, iif(::__l_tobj,.t., .f.)})
+		aadd(a, {[Open    ],[Open file], HASH_OpenFile, .t.})
+		aadd(a, {[Close   ],[Close], HASH_CloseWindow, iif(::__l_tobj,.t., .f.)})
+		aadd(a, {[List files],[List of opened files], HASH_ListFiles, .t.})
+		aadd(a, {[Exit with save],[Exit with save status], HASH_ExitSave, .t.})
+		aadd(a, {[Exit with out save],[Exit with out save status], HASH_ExitNoSave, .t.})
+	endif
+	oPopup := PopUp(mRow(), mCol())
+	oPopUp :ColorSpec:= set("edit_colors_menu")
+
+	for j=1 to len(a)
+		oItem :=MenuItem(a[j][1],{|| .t. }, ,a[j][2], a[j][3])
+		oPopup:AddItem( oItem)
+		oPopup:EnableStatus(a[j][3], a[j][4])
+	next
+	oPopUp:__resize(mRow()-1, mCol())
+	hKey := MenuModal(oPopup, 1)
+	wclose()
+	setcursor(i)
+	if ::nWins >0
+		wselect(::tobjinfo[::curwin]:curwin)
+	endif
 
 return hKey
 ************************************

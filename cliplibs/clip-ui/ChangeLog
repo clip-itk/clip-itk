@@ -1,0 +1,9 @@
+2005-02-03
+	- fix Makefile
+
+2005-02-01
+	- new method setAction() for UIEdit/UIEditText (on changed)
+
+2005-01-31
+	- new method clear() in UIMenuBar/UIPopupMenu/UIToolBar
+	

@@ -23,7 +23,7 @@
 
 #define HISTORY_COLORS	"15/3,15/7,0/7,0/3,0/2"
 #define DIALOG_COLORS	"0/7"
-#define LIST_COLORS	"0/3,0/2,15/3,0/3,0/2,15/2,15/2"
+#define LIST_COLORS	"0/3,0/2,15/3,0/3,14/3,14/2,15/2"
 #define CNT_COLUMNS	3
 /*#define DELIMITER	translate_charset(__CHARSET__, host_charset(), "Å")*/
 /*#define DELIMITER 	chr(PGCH_VLINE)*/
@@ -36,11 +36,13 @@
 /* History - history object        */
 /***********************************/
 static nLeft, nRight, nTop, nBottom, lItem, lenCol, pHistory, fdp:=map()
-function fileDialog(pDir, pMask, history)
+function fileDialog(pDir, pMask, history, lCanReturnSelected)
 static __ST_HIST
 local gi, retvalue, scr, k, r, f, s, nkey:=1, gfocus, i
 local drv, ll, curCol, old_dir := curDir()
+local asel, aret
 
+lCanReturnSelected := iif(lCanReturnSelected==NIL .or. valtype(lCanReturnSelected)!="L", .f., lCanReturnSelected)
 fdp:current := ""
 
 k := int(2*maxcol(.t.)/3)
@@ -100,6 +102,7 @@ fdp:getobj:varPut(fdp:current+fdp:mask+DOP)
 
 showview(fdp)
 dispbegin()
+@ -1, maxcol() - 1 say "X"
 @ fdp:nBottom, fdp:nLeft say "<" color "W+/W"
 @ fdp:nBottom, fdp:nRight say ">" color "W+/W"
 @ fdp:nTop-2, fdp:nRight say ">" color "W+/B"
@@ -115,10 +118,11 @@ for i:=1 to CNT_COLUMNS
 	aadd(lenCol, {ll, ll+lItem:LenCol[i]})
 	ll += lItem:LenCol[i]+1
 next
+fdp:lSelected := lCanReturnSelected
 
 while nkey!=0
 	nkey := Inkey(0, INKEY_ALL)
-	if mRightDown()
+	if mLeftDown() .and. (mRow() == nTop-3) .and. (mCol() == nLeft+maxcol()-1)
 		nKey := 0
 		loop
 	endif
@@ -127,6 +131,16 @@ enddo
 //restscreen(0, 0, maxrow(.t.), maxcol(.t.), scr)
 wclose()
 dirchange(PATH_DELIM+old_dir)
+
+if lCanReturnSelected .and. fdp:listobj:nSelected > 0
+	asel := fdp:listobj:getSelected()
+	aret := {}
+	if !empty(asel)
+		aeval(asel, {|x| aadd(aret, currDrive()+PATH_DELIM+curdir()+PATH_DELIM+x)})
+		return aret
+	endif
+endif
+
 return retvalue
 
 *******************************************************************************
@@ -316,6 +330,30 @@ local mCol, mRow, i, curCol, curRow, f, r, s, k, item, error
 			lItem:setItem(lItem:first + (curCol-1)*lItem:RowWin + curRow )
 		endcase
 	endif
+	if mRightDown()
+		mCol := mCol()
+		mRow := mRow()
+		if !(between(mCol, nLeft-1, nRight+1) .and.;
+		     between(mRow, nTop-2, nBottom+1))
+			return
+		endif
+
+		if between(mRow, nTop, nBottom)
+			curCol := lItem:Pos
+			for i:=1 to CNT_COLUMNS
+				if between(mCol, lenCol[i][1], lenCol[i][2])
+					curCol := i
+					exit
+				endif
+			next
+			curRow := mRow - nTop
+
+			lItem:setItem(lItem:first + (curCol-1)*lItem:RowWin + curRow )
+			lItem:select()
+			nKey := -1
+
+		endif
+	endif
 	do case
 		case nkey == K_LEFT
 			fdp:listobj:left()
@@ -341,6 +379,10 @@ local mCol, mRow, i, curCol, curRow, f, r, s, k, item, error
 		case nkey == K_PGDN
 			fdp:listobj:pagedown()
 			showview(fdp)
+		case nkey == K_INS
+			fdp:listobj:select()
+			fdp:listobj:down()
+			//showview(fdp)
 		case nkey == K_TAB
 			gfocus := !gfocus
 			fdp:listobj:killFocus()
@@ -348,6 +390,9 @@ local mCol, mRow, i, curCol, curRow, f, r, s, k, item, error
 			fdp:getobj:gotopos(len(alltrim(fdp:getobj:varGet()))+1)
 		case nkey == K_ESC
 			nkey := 0
+			fdp:listobj:nSelected := 0
+		case nkey == K_ENTER .and. fdp:listobj:nSelected > 0
+			nKey := 0
 		case nkey == K_ENTER
 			item = alltrim(fdp:listobj:getItem())
 			k=rat("/", item)

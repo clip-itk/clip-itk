@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.316  2005/02/02 14:22:24  clip
+	rust: minor fix for SET OPTIMIZE LEVEL 2
+	
 	Revision 1.315  2005/01/19 13:32:03  clip
 	rust: minor fix in string comparison
-	
+
 	Revision 1.314  2004/11/23 13:25:30  clip
 	rust: ORDLISTADD() compatiblity issue
 
@@ -2175,7 +2178,7 @@ int rdd_setorder(ClipMachine* cm,RDD_DATA*rd,int order,const char* __PROC__){
 	rd->curord = order-1;
 	if(rd->curord != -1)
 		rd->orders[rd->curord]->valid_stack = 0;
-	if((er = _rdd_calcfiltlist(cm,rd,__PROC__))) return er;
+	if((er = _rdd_calcfiltlist(cm,rd,rd->filter,__PROC__))) return er;
 	return 0;
 }
 
@@ -2673,21 +2676,18 @@ unlock:
 	return er;
 }
 
-int _rdd_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
+int _rdd_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const char* __PROC__){
 	int er;
 
-	if(rd->filter && rd->filter->optimize==2 && cm->optimizelevel>0){
+	if(fp && fp->optimize==2 && cm->optimizelevel>0){
 		if(rd->curord==-1){
-			if((er = rd->vtbl->calcfiltlist(cm,rd,__PROC__))) return er;
+			if((er = rd->vtbl->calcfiltlist(cm,rd,fp,__PROC__))) return er;
 		} else {
 			RDD_ORDER* ro = rd->orders[rd->curord];
 			if(ro->vtbl->calcfiltlist){
-				if((er = ro->vtbl->calcfiltlist(cm,rd,ro,__PROC__))) return er;
+				if((er = ro->vtbl->calcfiltlist(cm,rd,ro,fp,__PROC__))) return er;
 			}
 		}
-/*		if(rd->filter->rmap)
-			free(rd->filter->rmap);
-		rd->filter->rmap = NULL;*/
 		if((er = rdd_gotop(cm,rd,__PROC__))) return er;
 	}
 	return 0;
@@ -2748,7 +2748,7 @@ int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* a,int 
 		free(fp->rmap);
 		fp->rmap = NULL;
 	}
-	if((er = _rdd_calcfiltlist(cm,rd,__PROC__))) goto err;
+	if((er = _rdd_calcfiltlist(cm,rd,fp,__PROC__))) goto err;
 	free(str);
 	if(pseudo)
 		free(pseudo);
@@ -2799,7 +2799,6 @@ int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _blo
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	fp->fps = calloc(1,sizeof(RDD_FPS));
 	fp->rd = rd;
-	rd->filter = fp;
 	if(str){
 		fp->sfilter = strdup(str);
 	}

@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
-/*   Copyright (C) 2003 by E/AS Software Foundation 		           */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 01 May 2004						   */
+/*   Last change: 31 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -12,8 +12,6 @@
 /*-------------------------------------------------------------------------*/
 
 static driver := getDriver()
-
-/* TODO: порядок следования аргументов в конструкторе */
 
 /* Checkbox class */
 function UICheckBox( value, label )

@@ -3,7 +3,7 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 13 Jan 2005						   */
+/*   Last change: 31 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -12,8 +12,6 @@
 /*-------------------------------------------------------------------------*/
 
 static driver := getDriver()
-
-/* TODO: insert/remove element from toolbar */
 
 /* Toolbar class */
 function UIToolbar( )
@@ -32,6 +30,7 @@ function _recover_UITOOLBAR( obj )
 	obj:enable 	:= @ui_enable()
 	obj:disable 	:= @ui_disable()
 	obj:remove 	:= @ui_remove()
+	obj:clear 	:= @ui_clear()
 	obj:getElement	:= @ui_getElement()
 	obj:isEnabled	:= @ui_isEnabled()
 return obj
@@ -104,8 +103,18 @@ return NIL
 
 /* Remove item from toolbar */
 static function ui_remove(self, pos)
-	// driver:removeMenuItem( self, pos)
-	// need array menu:elem will be updated
+	driver:removeToolBarItem( self, self:getElement(pos) )
+	adel( self:elem, pos )
+	asize( self:elem, len(self:elem)-1 )
+return NIL
+
+/* Remove all items from toolbar */
+static function ui_clear(self)
+	local i, s:=len(self:elem)
+	for i=1 to s
+		self:remove( 1 )
+	next
+	?? self:elem, chr(10)
 return NIL
 
 /* Set text to statusbar */

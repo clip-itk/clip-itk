@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.h,v $
+	Revision 1.150  2005/02/02 14:22:23  clip
+	rust: minor fix for SET OPTIMIZE LEVEL 2
+	
 	Revision 1.149  2004/05/26 09:52:23  clip
 	rust: some cleanings
-	
+
 	Revision 1.148  2004/05/24 12:55:21  clip
 	rust: full FlexFile support
 
@@ -775,7 +778,7 @@ typedef struct _RDD_DATA_VTBL_ {
 	int (*info)     (ClipMachine* cm,RDD_DATA* rd,int cmd,const char* __PROC__);
 	int (*verify)   (ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
 	/* for filter optimization */
-	int (*calcfiltlist) (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*calcfiltlist) (ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const char* __PROC__);
 } RDD_DATA_VTBL;
 
 typedef struct _RDD_INDEX_VTBL_ {
@@ -828,7 +831,7 @@ typedef struct _RDD_INDEX_VTBL_ {
 	int (*ii_next)      (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 	int (*ii_prev)      (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 	/* for filter optimization */
-	int (*calcfiltlist) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*calcfiltlist) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,RDD_FILTER* fp,const char* __PROC__);
 	/* index locks */
 	int (*_rlock)   (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 	int (*_wlock)   (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
@@ -1043,7 +1046,7 @@ int rm_isfiltrec(ClipMachine* cm,RDD_FILTER* fp,unsigned int rec,int* r,const ch
 
 DbfLocale* dbf_get_locale(ClipMachine* cm);
 
-int _rdd_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+int _rdd_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const char* __PROC__);
 int rdd_tasklock(ClipMachine* cm,RDD_DATA* rd,int cmd,struct flock* fl);
 int rdd_flushbuffer(ClipMachine* cm, RDD_DATA* rd, const char* __PROC__);
 

@@ -14,7 +14,7 @@
 
 static driver := getDriver()
 
-/* TODO: column and row manipulation, get/set values */
+/* TODO: column and row manipulation, get/set values, id by data, not index */
 
 /* Table class */
 function UITable(columns)

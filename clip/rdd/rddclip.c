@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rddclip.c,v $
+	Revision 1.97  2005/02/02 14:22:24  clip
+	rust: minor fix for SET OPTIMIZE LEVEL 2
+	
 	Revision 1.96  2005/01/19 13:32:03  clip
 	rust: minor fix in string comparison
-	
+
 	Revision 1.95  2004/08/03 12:08:47  clip
 	rust: RDDFLOCK() added
 
@@ -910,8 +913,9 @@ int clip_RDDSETFILTER(ClipMachine* cm){
 	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_createfilter(cm,rd,&fp,NULL,str,a,lNoOptimize,__PROC__))) goto err_unlock;
+	rd->filter = fp;
 	fp->active = 1;
-	if((er = _rdd_calcfiltlist(cm,rd,__PROC__))) goto err_unlock;
+	if((er = _rdd_calcfiltlist(cm,rd,fp,__PROC__))) goto err_unlock;
 	UNLOCK;
 	return 0;
 err_unlock:

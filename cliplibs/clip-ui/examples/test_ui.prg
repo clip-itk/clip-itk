@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
-/*   Copyright (C) 2003,2004 by E/AS Software Foundation 	           */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 16 Dec 2004						   */
+/*   Last change: 31 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -47,16 +47,20 @@ menu:add(,"&Journal", journal_menu)
 i := journal_menu:add( UIImage("icons/journal_bank_pp.xpm"),"&Payment orders", {|| qout("Payment orders") } )
 journal_menu:disable(i)
 i := journal_menu:add( UIImage("icons/doc_bank_pp.xpm"),"&Create payment order", {|| qout("Create payment order") } )
+journal_menu:add(,"Submenu",help_menu)
+help_menu:add(UIImage("icons/journal_bank_pp.xpm"),"Item",{|| qout("Item") })
+help_menu:add(,"Item2",{|| qout("Item2") })
 journal_menu:setKey(i,"F5")
 journal_menu:addSeparator()
 journal_menu:add(,"&Exit", @quit())
 
 menu:add(,"&Settings", cfg_menu)
 cff := @cfg_menu
-win:widget["showTB"] := cfg_menu:addChecked(.T., "Show &toolbar", {|w,e| showToolBar(win, "showTB", cfg_menu) } )
+win:widget["showTB"] := cfg_menu:addChecked(.T., "_Show &toolbar", {|w,e| showToolBar(win, "showTB", cfg_menu) } )
 win:widget["showSB"] := cfg_menu:addChecked(.T., "Show &statusbar", {|w,e| showStatusBar(win, "showSB", cfg_menu) } )
 cfg_menu:addSeparator()
 cfg_menu:add(,"&Configure...", NIL)
+//journal_menu:clear()
 
 /* ToolBars */
 main_tbar := UIToolBar()
@@ -65,6 +69,7 @@ main_tbar:addButton( UIImage("icons/doc_bank_pp.xpm"), "Create payment order", {
 main_tbar:addSeparator()
 main_tbar:addButton( UIImage("icons/reference_partner.xpm"), "Partners", NIL )
 
+main_tbar:remove(1)
 statusbar   := UIStatusBar()
 statusbar:setText("Ready.")
 
@@ -83,7 +88,7 @@ BankDocReq( win, b )
 
 //-----------------------------------------------------------------------------
 // Assign icon to window. TODO: icon doesn't set up
-//win:setIcon( UIImage("icons/journal_bank_pp.xpm") )
+win:setIcon( UIImage(IMG_ERROR) ) //"icons/journal_bank_pp.xpm") )
 
 // Put window to screen center
 win:setPlacement( .T. )
@@ -194,7 +199,7 @@ static function BankDocReq(w,grid)
 	pol:account	:= "7683187443445276"
 	pol:INN		:= "1212145436"
 
-	w:setName("tax",grid:add(UICheckBox(.F.,"Use &tax")))
+	w:setName("usetax",grid:add(UICheckBox(.F.,"Use &tax")))
 
         // Title
 	top := UIHBox(,0,3)
@@ -256,7 +261,7 @@ static function BankDocReq(w,grid)
 	t2:add(UILabel("Acc.: "+pol:account))
 
 	// Sum
-	hbsum := UIHBox()
+	hbsum := UIHBox(,3)
         hbsum:add(UILabel("&Sum: "))
         sum := UIEdit(data:sum)
 	drv:setStyle(sum,"color.base","#C2D2FF")
@@ -264,7 +269,12 @@ static function BankDocReq(w,grid)
 	
 	w:setName("sum", sum)
 	hbsum:add(sum)
+	hbsum:add(w:setName("tax", UILabel("")))
 	grid:add(hbsum)
+	
+	// Fill tax calculation
+	sum:setAction({|| fieldChanged(w) })
+	fieldChanged(w)
 
 	grid:add(UILabel("Description:"))
         rs := UIEditText(data:reason)
@@ -281,6 +291,8 @@ static function BankDocReq(w,grid)
 	bottomLine:add(b1)
 	bottomLine:add(b2)
 	bottomLine:add(b3)
+
+	w:setDefault( b1 )
 return NIL
 
 /* Close specified window */
@@ -298,6 +310,20 @@ static function pp_save(wnd)
 	next
 return 0
 
-function listEventTree(tree, c)
+static function listEventTree(tree, c)
 	?? "Select in tree:",c,"(id =",tree:getSelectionId(),")",chr(10)
 return
+
+static function fieldChanged(win)
+	local s, tax, label, i
+	if valtype(win) != 'O'
+		return
+	endif
+	s := win:val("sum")
+	tax := round(val(s)*0.2,2)
+	label := iif("tax" $ win:value,win:value["tax"],NIL)
+	tax := alltrim(str(tax))
+	if valtype(label) == 'O'
+		label:setText("Tax: "+tax)
+	endif
+return 

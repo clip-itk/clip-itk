@@ -1,0 +1,92 @@
+
+TODO
+====
+Last change: 03 Feb 2005
+
+------------------------------------------------------------------------------
+INLINE TODOs
+
+drivers/driver-gtk.prg:350:     setDefault() doesn't work - no border for 
+				default button
+drivers/driver-gtk.prg:429:     add accel support
+drivers/driver-gtk.prg:909:     need more clever resizing
+drivers/driver-gtk.prg:959:     scroll by mouse only works only on scrollbar
+drivers/driver-gtk.prg:1211:	push accel to accel poll (see widget.c - bug in 
+				accel_group, window required)
+drivers/driver-gtk.prg:1213:	need to accel button and linked to label input 
+				fields
+drivers/driver-gtk.prg:1214:	need to append key to menu item
+drivers/driver-gtk.prg:1234:	need to remove key from menu item
+
+clip-ui.ch:42:	ALIGN_JUSTIFY need really justify
+form.prg:562:	labelled rule support on menu
+form.prg:664:	UIForm:subActionHandler(): several values can be returned
+form.prg:786:	show untranslated string in debug mode
+image.prg:1035:	ok pixmap
+image.prg:1037:	question pixmap
+table.prg:17:	column and row manipulation, get/set values
+table.prg:90:	redraw rows on alternate color changes
+tree.prg:18:	nice expand/collapse icons, possible remove lines, ignore 
+		expand/collapse as node activation on single LMB click, 
+		fill tree from object 
+utils.prg:29	Driver name by default need autodetect
+utils.prg:124:	value type transformation
+window.prg:353:	Set window icon
+window.prg:413:	setDefault() doesn't work - no border for default button
+window.prg:477:	compare mods too 
+------------------------------------------------------------------------------
+
+http://eas.lrn.ru/index.php?module=request (on Russian)
+
+clip-ui
+
+#194 	система отслеживания ошибок
+#195 	облегчить привязку к функциям драйвера
+#196 	визуальный конфигуратор базы данных и форм
+#197 	реализовать системное меню действий и окон
+#198 	предопределённые пиктограмы кнопок: использование PNG
+#199 	виджеты ввода чисел и дат, выбора из списка (тестирование)
+#200 	автоинтеграция модулей в меню
+#201 	кнопка в диалогах по умолчанию (выделение)
+#202 	очистка (удаление виджетов)
+#221 	очистить меню (UIMenu)
+#222 	вызов меню по Alt (UIMenu)
+#223 	пиктограммы в меню, содержащим CheckMenuItem сдвинуты вправо (UIMenu)
+#224 	шаблон ввода/ограничение длины поля ввода (UIEdit)
+#225 	пиктограмма окна UIWindow не работает (функция gtk_WindowSetIconPixmap)
+#226 	выделение кнопки по умолчанию (UIChildWindow)
+#227 	ошибка перехода по акселераторам-русским буквам (UIChildWindow)
+#228 	привязка к акселераторам надписей перевода фокуса полей ввода 
+	(UIChildWindow)
+#229 	изменение заголовка дочернего окна (UIChildWindow)
+#230 	заголовок дочернего окна должен показывается как часть заголовка 
+	основного окна (UIChildWindow)
+#231 	убрать обрамление у панели инструментов дочернего окна (UIChildWindow)
+#232 	реализовать описание в формах виджета дерева (UITree)
+#233 	пиктограммы раскрытия/сворачивания, возможность убирания линий (UITree)
+#234 	при одинарном щелчке мышью выделять элемент без его 
+	раскрытия/сворачивания (UITree)
+#235 	Создать класс UIFixedLayout (gtk_fixed_new, абсолютное 
+	позиционирование)
+#236 	создать собственный виджет электронной таблицы (UISheet)
+#237 	контекстное меню на строке (удаление/добавление строк) (UISheet)
+#238 	комбинация полей ввода/полей выбора/выпадающих списков в одной таблице 
+	(UISheet)
+#239 	переход между столбцами с клавиатуры (UISheet)
+#240 	при редактировании ячейки должно учитываться выравнивание (UISheet)
+#241 	объединение ячеек (gtk_SheetPut() ?) (UISheet)
+#242 	применение свойств при добавлении строк/столбцов (UISheet)
+#243 	получение свойств ячеек (UISheet)
+#244 	сохранение данных/форматирования в XML (UISheet)
+
+clip-ui/gtk
+#203 	передача параметров запуска у GtkInit()
+#204 	необходимо автоэкранирование символа акселератора по умолчанию "_"
+#205 	активировать привязки клавиш при win:show() для всех подменю
+#206 	автоматически добавлять комбинации клавиш в элементы меню 
+	(GtkAccelLabel)
+#207 	привязывать комбинации клавиш к элементу меню любой вложенности
+#208 	выравнивание комбинаций клавиш в элементах меню по правому краю 
+	(GtkAccelLabel)
+#209 	не удаётся изменить цвет фона (работает только изменение цвета 
+	текста и фона полей)

@@ -4,9 +4,12 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log: cdx.c,v $
+	Revision 1.154  2005/02/02 14:22:24  clip
+	rust: minor fix for SET OPTIMIZE LEVEL 2
+	
 	Revision 1.153  2004/11/22 12:56:13  clip
 	rust: reset stack validity flag in cdx_setscope()
-	
+
 	Revision 1.152  2004/09/10 09:21:37  clip
 	rust: minor fix in SCOPES
 
@@ -4596,17 +4599,17 @@ static int cdx_ii_prev(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__){
 	return 0;
 }
 
-int cdx_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
+int cdx_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,RDD_FILTER* fp,const char* __PROC__){
 	int i,er;
 	BTREE* bt;
 	void* key = malloc(sizeof(unsigned int)+ro->bufsize);
 	ClipVar vv,*vp;
 
-	if(rd->filter->list){
-		bt = bt_create(0,rd->filter->listlen,sizeof(unsigned int)+ro->bufsize,
+	if(fp->list){
+		bt = bt_create(0,fp->listlen,sizeof(unsigned int)+ro->bufsize,
 			_cdx_compare);
-		for(i=0;i<rd->filter->listlen;i++){
-			if((er = rd->vtbl->rawgo(cm,rd,rd->filter->list[i],0,__PROC__)))
+		for(i=0;i<fp->listlen;i++){
+			if((er = rd->vtbl->rawgo(cm,rd,fp->list[i],0,__PROC__)))
 				return er;
 			if(ro->simpexpr){
 				if((er = rd->vtbl->getvalue(cm,rd,ro->simpfno,&vv,__PROC__)))
@@ -4621,44 +4624,44 @@ int cdx_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 			_clip_destroy(cm,&vv);
 			bt_add(bt,ro,key);
 		}
-		free(rd->filter->list);
+		free(fp->list);
 	} else {
 #if 1
-		unsigned int bytes = ((rd->filter->size+1) >> 5) + 1;
+		unsigned int bytes = ((fp->size+1) >> 5) + 1;
 		int i,b,bb,t,tt;
 
-		rd->filter->listlen = 0;
+		fp->listlen = 0;
 		for(i=0;i<bytes;i++){
-			if(rd->filter->rmap[i]){
+			if(fp->rmap[i]){
 				for(b=(i<<2),bb=0;bb<4;b++,bb++){
-					if(((char*)rd->filter->rmap)[b]){
+					if(((char*)fp->rmap)[b]){
 						for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
-							if(_rm_getbit(rd->filter->rmap,rd->filter->size,t))
-								rd->filter->listlen++;
+							if(_rm_getbit(fp->rmap,fp->size,t))
+								fp->listlen++;
 						}
 					}
 				}
 			}
 		}
-		if(rd->filter->listlen > 100){
+		if(fp->listlen > 100){
 			free(key);
 			return 0;
 		}
 #else
-		rd->filter->listlen = 0;
-		for(i=1;i<=rd->filter->size;i++)
-			if(_rm_getbit(rd->filter->rmap,rd->filter->size,i))
-				rd->filter->listlen++;
+		fp->listlen = 0;
+		for(i=1;i<=fp->size;i++)
+			if(_rm_getbit(fp->rmap,fp->size,i))
+				fp->listlen++;
 #endif
-		bt = bt_create(0,rd->filter->listlen,sizeof(unsigned int)+ro->bufsize,
+		bt = bt_create(0,fp->listlen,sizeof(unsigned int)+ro->bufsize,
 			_cdx_compare);
 #if 1
 		for(i=0;i<bytes;i++){
-			if(rd->filter->rmap[i]){
+			if(fp->rmap[i]){
 				for(b=(i<<2),bb=0;bb<4;b++,bb++){
-					if(((char*)rd->filter->rmap)[b]){
+					if(((char*)fp->rmap)[b]){
 						for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
-							if(_rm_getbit(rd->filter->rmap,rd->filter->size,t)){
+							if(_rm_getbit(fp->rmap,fp->size,t)){
 								if((er = rd->vtbl->rawgo(cm,rd,t,0,__PROC__)))
 									return er;
 								if(ro->simpexpr){
@@ -4682,8 +4685,8 @@ int cdx_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 			}
 		}
 #else
-		for(i=1;i<=rd->filter->size;i++){
-			if(_rm_getbit(rd->filter->rmap,rd->filter->size,i)){
+		for(i=1;i<=fp->size;i++){
+			if(_rm_getbit(fp->rmap,fp->size,i)){
 				if((er = rd->vtbl->rawgo(cm,rd,i,0,__PROC__)))
 					return er;
 				if(ro->simpexpr){
@@ -4704,25 +4707,25 @@ int cdx_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 		}
 #endif
 	}
-	rd->filter->list = malloc(sizeof(unsigned int)*(rd->filter->listlen+1));
+	fp->list = malloc(sizeof(unsigned int)*(fp->listlen+1));
 	if(!ro->descend){
 		bt_first(bt);
 		if(bt_key(bt)){
 			i = 0;
-			rd->filter->list[i] = *(unsigned int*)bt_key(bt);
+			fp->list[i] = *(unsigned int*)bt_key(bt);
 			while(!bt_next(bt)){
 				i++;
-				rd->filter->list[i] = *(unsigned int*)bt_key(bt);
+				fp->list[i] = *(unsigned int*)bt_key(bt);
 			}
 		}
 	} else {
 		bt_last(bt);
 		if(bt_key(bt)){
 			i = 0;
-			rd->filter->list[i] = *(unsigned int*)bt_key(bt);
+			fp->list[i] = *(unsigned int*)bt_key(bt);
 			while(!bt_prev(bt)){
 				i++;
-				rd->filter->list[i] = *(unsigned int*)bt_key(bt);
+				fp->list[i] = *(unsigned int*)bt_key(bt);
 			}
 		}
 	}

@@ -401,12 +401,17 @@
 #command DIR [<(spec)>]                 => __Dir( <(spec)> )
 
 #command TYPE <(file)> [<print: TO PRINTER>] [TO FILE <(dest)>]         ;
-									;
+      => __TypeFile( <(file)>, <.print.> )                              ;
+      [; COPY FILE <(file)> TO <(dest)> ]
+
+#command TYPE <(file)> [<print: TO PRINT>] [TO FILE <(dest)>]         ;
       => __TypeFile( <(file)>, <.print.> )                              ;
       [; COPY FILE <(file)> TO <(dest)> ]
 
 #command TYPE <(file)> [<print: TO PRINTER>]                            ;
-									;
+      => __TypeFile( <(file)>, <.print.> )
+
+#command TYPE <(file)> [<print: TO PRINT>]                            ;
       => __TypeFile( <(file)>, <.print.> )
 
 

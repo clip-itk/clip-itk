@@ -5,7 +5,7 @@
 /*   Authors: 								   */
 /*  	     Andrey Cherepanov <sibskull@mail.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   Last change: 10 Jan 2005						   */
+/*   Last change: 31 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -59,6 +59,7 @@ function initGTKDriver()
 	drv:createToolBar	:= @ui_createToolBar()
 	drv:addToolBarButton	:= @ui_addToolBarButton()
 	drv:addToolBarSpace	:= @ui_addToolBarSpace()
+	drv:removeToolBarItem	:= @ui_removeToolBarItem()
 	drv:createImage		:= @ui_createImage()
 	drv:createStatusBar	:= @ui_createStatusBar()
 	drv:setStatusText	:= @ui_setStatusText()
@@ -67,7 +68,6 @@ function initGTKDriver()
 	drv:enableWidget	:= @ui_enableWidget()
 	drv:isEnabled		:= @ui_isEnabled()
 	drv:showWidget		:= @ui_showWidget()
-	drv:isWidgetVisible	:= @ui_isWidgetVisible()
 	drv:setPixmap		:= @ui_setPixmap()
 	drv:createScrolledRegion := @ui_createScrolledRegion()
 
@@ -158,7 +158,7 @@ return drv
 /** Application **/
 
 static function ui_createInstance( self )
-	load("libclip-gtk.so")
+	loadlib("libclip-gtk")
 	gtk_init()
 return map()
 
@@ -330,8 +330,7 @@ static function ui_setWindowPlacement( self, window, centered )
 return 0
 
 static function ui_setWindowIcon( self, window, pic )
-// TODO: set window icon
-// 	"ICON: ", gtk_WindowSetIconPixmap( window, pic )
+ 	gtk_WindowSetIconPixmap( window, pic )
 return 0
 
 static function ui_getCurrentChild(self, window)
@@ -344,8 +343,11 @@ static function ui_setFocus(self, window, widget)
 return NIL
 
 static function ui_setDefault(self, window, widget)
-	local action
+	local action, s:=map()
 	gtk_WindowSetDefault(window, widget)
+	s:BASE_color := UIColor("green")
+	gtk_WidgetSetStyle(widget, s)
+	//TODO: setDefault() doesn't work - no border for default button
 	self:setAction( window, "key-press-event", {|w,e| iif(e:keyval==13,gtk_SignalEmit(widget,"clicked"),NIL) } )
 return NIL
 
@@ -368,6 +370,7 @@ static function ui_addMenuItem( self, menu, pic, name, action, isEnabled )
         	pic := NIL
 	endif
 
+	name := strtran( name, "_", "__" )
 	if empty(pic)
 		o := gtk_MenuItemNew( , name, "&" )
 	else
@@ -425,6 +428,7 @@ return o
 static function ui_addMenuCheckedItem( self, menu, isChecked, name, action, isEnabled )
 	// TODO: add accel support
 	local o
+	name := strtran( name, "_", "__" )
 	o := gtk_CheckMenuItemNew( , name, "&" )
 	if valtype(isChecked) == 'L' .and. isChecked == .T.
 		gtk_CheckMenuItemSetActive( o, .T. )
@@ -455,12 +459,15 @@ static function ui_addSeparator( self, menu )
 	endif
 return o
 
-static function ui_removeMenuItem( self, id, item )
-// TODO: remove menu item
-return 0
-
 static function ui_isCheckedMenuItem( self, item )
 return gtk_CheckMenuItemGetActive(item)
+
+static function ui_removeMenuItem( self, id, item )
+	if valtype(id) != "O" .or. valtype(item) != "O"
+		return
+	endif
+	gtk_ContainerRemove( id, item )
+return 0
 
 /** ToolBar **/
 
@@ -498,6 +505,13 @@ static function ui_addToolBarSpace(self, toolBar)
 	local o
 	o := gtk_ToolBarAppendSpace( toolBar )
 return o
+
+static function ui_removeToolBarItem( self, id, item )
+	if valtype(id) != "O" .or. valtype(item) != "O"
+		return
+	endif
+	gtk_ContainerRemove( id, item )
+return 0
 
 /** StatusBar **/
 
@@ -552,11 +566,6 @@ static function ui_showWidget( self, obj, flag )
 	else
 		gtk_WidgetHide( widget )
 	endif
-return flag
-
-static function ui_isWidgetVisible( self, obj )
-	local flag
-	// TODO: Need to code 'visible' state
 return flag
 
 static function ui_emptyFunction()
@@ -947,20 +956,21 @@ static function ui_createEditText(self, defValue)
 //	o := gtk_TextNew()
 //	vScroll := gtk_VScrollBarNew(gtk_TextGetVAdjustment(o))
 	gtk_TextSetEditable(o, .T.)
-	// TODO: bug on scroll text in TextEdit by mouse (works only on sctollbar
+	// TODO: scroll by mouse only works only on scrollbar
 	o:stick := map()
 	o:stick:right := vScroll
 return o
 
 static function ui_editSetReadOnly(self, o, flag)
-	local st
+	local sd, st
 	if o:className == "UIEdit"
 		gtk_EntrySetEditable(o, .not. flag)
 	else
 		gtk_TextSetEditable(o, .not. flag)
 	endif
-	o:style := map() //gtk_WidgetGetDefaultStyle()
-	o:style:BASE_color := UIColor("#c0c0c0") // TODO: need to shade by _default_ background color
+	o:style := map() 
+	sd := gtk_WidgetGetDefaultStyle(o)
+	o:style:BASE_color := sd:BG_color
 	gtk_WidgetSetStyle(o, o:style)
 return NIL
 
@@ -1142,7 +1152,7 @@ struct GtkStyle
 	endif
 	
 	
-	?? "TODO: set style '"+style+"'='"+iif(valtype(value)=="C",value,"")+"'&\n"
+	?? "Style unsupported: '"+style+"'='"+iif(valtype(value)=="C",value,"")+"'&\n"
 return .F.
 
 static function ui_getValue(self, o)

@@ -59,8 +59,18 @@ __idle_task_yield(gpointer data)
 CLIP_DLLEXPORT int
 clip_GTK_INIT(ClipMachine * cm)
 {
+	int n, i;
+        char *par[20], **apar;
 	gtk_set_locale();
-	gtk_init(0, NULL);
+	memset(par, 0, sizeof(par));
+        n = _clip_parinfo(cm, 0);
+        par[0] = "";
+        for (i=1; i<=n; i++)
+        	par[i] = _clip_parc(cm, i);
+	apar = (char **)&par;
+	//gtk_init(0, NULL);
+        n++;
+	gtk_init(&n, &apar);
 #ifdef USE_TASKS
 	gtk_idle_add(__idle_task_yield,NULL);
 #endif

@@ -1,4 +1,5 @@
 #include <clip-gtk2.ch>
+local mask
 gtk_init()
 win := gtk_windowNew(, "Test accelerators")
 qout()
@@ -42,6 +43,22 @@ gtk_BoxPackStart(vbox, btn1)
 gtk_BoxPackEnd(vbox, lab1)
 gtk_BoxPackEnd(vbox, lab)
 gtk_containerAdd(win, vbox)
+
+********** set window icon *********************
+
+************** 1 variant ***********************
+_pix := gdk_PixmapColormapCreateFromXpm(NIL, ;
+       	      gtk_WidgetGetColormap (win), ;
+       	      @mask, ;
+       	      NIL, "gnome-foot.xpm")
+pix := gtk_PixmapNew( , _pix, mask)
+gtk_WidgetRealize(win)
+gtk_WindowSetIconPixmap(win, pix)
+
+/*
+************** 2 variant ***********************
+gtk_WindowSetIcon(win, gdk_PixbufNewFromFile("gnome-foot.xpm"))
+*/
 gtk_WidgetShowAll(win)
 
 gtk_main()

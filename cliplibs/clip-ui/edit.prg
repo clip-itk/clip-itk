@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
-/*   Copyright (C) 2003 by E/AS Software Foundation 		           */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 15 Feb 2004						   */
+/*   Last change: 01 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -38,6 +38,7 @@ function _recover_UIEDIT( obj )
 	obj:setValue	:= @ui_setValue()
 	obj:getValue	:= @ui_getValue()
 	obj:readOnly	:= @ui_setReadOnly()
+	obj:setAction 	:= @ui_setEditAction()
 return obj
 
 /* Get widget geometry: position and size */
@@ -70,4 +71,9 @@ static function ui_editSetPassword(self, flag)
         flag := iif(valtype(flag)=="U",.T.,flag)
 	driver:editSetPassword(self,flag)
 return
+
+/* Set action for edit entry */
+static function ui_setEditAction(self, action)
+	driver:setAction( self, "changed", action)
+return .T.
 
