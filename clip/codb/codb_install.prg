@@ -47,6 +47,11 @@ function codb_install(dict_id,xmlFile)
 			? "Dictionary ",dict_id, "don`t have default data loaders"
 		endif
 	endif
+	if "CODELOADER_MODULE" $ xmlData
+		ret:=install_default_data(xmlData:codeloader_module,dict)
+	else
+		? "Dictionary ",dict_id, "don`t have default code loaders"
+	endif
 
 	if valtype(ret) == "C" // error
 		? ret

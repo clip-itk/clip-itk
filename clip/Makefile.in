@@ -119,13 +119,13 @@ Makefile: Makefile.in configure
 	./configure -f
 
 clip_dbg:  clip_dbg.o
-	$(CC) $(CFLAGS) -o clip_dbg clip_dbg.o coll.o _win32.o $(READLINE_LIBS) $(ADDLIBS)
+	$(CC) $(CFLAGS) -o clip_dbg clip_dbg.o coll.o _win32.o $(READLINE_LIBS) $(ADDLIBS) $(MLIB)
 
 gen_tbl:  gen_tbl.o charset.o coll.o
-	$(CC) $(CFLAGS) -o gen_tbl  gen_tbl.o charset.o coll.o
+	$(CC) $(CFLAGS) -o gen_tbl  gen_tbl.o charset.o coll.o $(MLIB)
 
 clip_conv:  clip_conv.o charset.o
-	$(CC) $(CFLAGS) -o clip_conv clip_conv.o charset.o
+	$(CC) $(CFLAGS) -o clip_conv clip_conv.o charset.o $(MLIB)
 
 clip_trans:  clip_trans.o
 	$(CC) $(CFLAGS) -o clip_trans clip_trans.o
@@ -160,7 +160,7 @@ seq_no.txt:
 	./seq_no.sh > seq_no.txt
 
 clipar:	clipar.o coll.o #getopt.o
-	$(CC) $(CFLAGS) $(STATICLINK) -o clipar clipar.o coll.o #getopt.o
+	$(CC) $(CFLAGS) $(STATICLINK) -o clipar clipar.o coll.o $(MLIB) #getopt.o
 
 clip_hash.o: cliphash.c
 	$(CC) $(BCFLAGS) -DSTANDALONE -o clip_hash.o -c cliphash.c
@@ -172,10 +172,10 @@ calchash: calchash.o clip_hash.o
 	cd bin;	ln -s ../calchash$(EXESUFF) cliphash$(EXESUFF)
 
 po_extr$(EXESUFF): po_util.o coll.o po_extr.o
-	$(CC) $(CFLAGS) -o po_extr po_extr.o po_util.o coll.o
+	$(CC) $(CFLAGS) -o po_extr po_extr.o po_util.o coll.o $(MLIB)
 
 po_subst$(EXESUFF): po_util.o coll.o po_subst.o
-	$(CC) $(CFLAGS) -o po_subst po_subst.o po_util.o coll.o $(ICONV_LIB)
+	$(CC) $(CFLAGS) -o po_subst po_subst.o po_util.o coll.o $(ICONV_LIB) $(MLIB)
 
 po_compat$(EXESUFF): po_util.o po_compat.o
 	$(CC) $(CFLAGS) -o po_compat po_compat.o po_util.o
@@ -396,13 +396,13 @@ inst_codb:
 	cd codb && tar cf - codb.ch codbcfg.ch | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 
 inst_ch: $(INST_MEMDEBUG_H)
-	tar cf - clip.h _win32.h clipcfg.h clipbase.h hash.h Makefile.inc Makefile.tdoc clipcfg.sh \
+	tar cf - clip.h _win32.h clipcfg.h hash.h Makefile.inc Makefile.tdoc clipcfg.sh \
 		| (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 	cd rdd && tar cf - btree.h | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 	cd sql && tar cf - *.h | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 	cd task && tar cf - *.h | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 	cd include && tar cf - * | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
-#	cp clip.h clipcfg.h clipbase.h hash.h rdd/btree.h \
+#	cp clip.h clipcfg.h hash.h rdd/btree.h \
 #		Makefile.inc Makefile.tdoc clipcfg.sh include/*.ch sql/*.h task/*.h \
 #		$(DESTDIR)$(CLIPROOT)/include/
 ##	[ ! -d memdebug ] || cp  memdebug/malloc.h memdebug/malloc_str.h $(DESTDIR)$(CLIPROOT)/include/memdebug

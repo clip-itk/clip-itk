@@ -257,6 +257,28 @@ err:
 }
 
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_BUTTONBOXGETCHILDSECONDARY(ClipMachine * cm)
+{
+	C_widget *cbbox = _fetch_cw_arg(cm);
+        ClipVar     *cv = _clip_spar(cm, 2);
+        C_widget  *cwid ;
+        GtkWidget  *wid ;
 
+        CHECKCWID(cbbox,GTK_IS_BUTTON_BOX);
 
+        _clip_retl(cm, gtk_button_box_get_child_secondary(GTK_BUTTON_BOX(cbbox->widget),
+        	wid));
+	if (wid)
+        {
+        	cwid = _list_get_cwidget(cm, wid);
+                if (!cwid) cwid = _register_widget(cm, wid, NULL);
+                if (cwid) _clip_mclone(cm, cv, &cwid->obj);
+        }
+        return 0;
+err:
+        return 1;
+}
 
+#endif

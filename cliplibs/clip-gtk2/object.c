@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -324,7 +325,8 @@ handle_signals( GtkWidget *widget, C_signal *cs, ClipVar *cv )
 	if (!cs->cw->sigenabled) return FALSE;
 
 	if (cv && cv->t.type==MAP_t)
-		stack[1] = *cv;
+		_clip_mclone(cs->cw->cmachine, &stack[1], cv);
+	//	stack[1] = *cv;
 	else
 		_clip_map(cs->cw->cmachine,&stack[1]);
 
@@ -335,8 +337,8 @@ handle_signals( GtkWidget *widget, C_signal *cs, ClipVar *cv )
 		ret = res.t.type == LOGICAL_t ? res.l.val : ret;
 	_clip_destroy(cs->cw->cmachine, &res);
 
-	//_clip_destroy(cw->cmachine, &stack[0]);
-	//_clip_destroy(cw->cmachine, &stack[1]);
+	_clip_destroy(cs->cw->cmachine, &stack[0]);
+	_clip_destroy(cs->cw->cmachine, &stack[1]);
 	return TRUE;
 }
 /* Common object signal handlers. It called from signal handler in C and passes it to CLIP */
@@ -356,7 +358,8 @@ object_handle_signals( C_signal *cs, ClipVar *cv )
 	if (!cs->co->sigenabled) return FALSE;
 
 	if (cv && cv->t.type==MAP_t)
-		stack[1] = *cv;
+		_clip_mclone(cs->co->cmachine, &stack[1], cv);
+		//stack[1] = *cv;
 	else
 		_clip_map(cs->co->cmachine,&stack[1]);
 
@@ -368,8 +371,8 @@ object_handle_signals( C_signal *cs, ClipVar *cv )
 
 	_clip_destroy(cs->co->cmachine, &res);
 
-	//_clip_destroy(cw->cmachine, &stack[0]);
-	//_clip_destroy(cw->cmachine, &stack[1]);
+	_clip_destroy(cs->co->cmachine, &stack[0]);
+	_clip_destroy(cs->co->cmachine, &stack[1]);
 	return TRUE;
 }
 
@@ -406,7 +409,7 @@ handle_events(GtkWidget *widget, GdkEvent *event, C_signal *cs)
 	switch( event->type )
 	{
 		case GDK_CONFIGURE:
-/*printf("Widget name: %s, event: GDK_CONFIGURE \n",gtk_widget_get_name(widget));*/
+//printf("Widget name: %s, event: GDK_CONFIGURE \n",gtk_widget_get_name(widget));
 			_clip_mputn(cm, &stack[1], HASH_X, event->configure.x);
 			_clip_mputn(cm, &stack[1], HASH_Y, event->configure.y);
 			_clip_mputn(cm, &stack[1], HASH_WIDTH, event->configure.width);
@@ -425,11 +428,13 @@ handle_events(GtkWidget *widget, GdkEvent *event, C_signal *cs)
 			_clip_mputn(cm, &area, HASH_HEIGHT, event->expose.area.height);
 
 			_clip_madd(cm, &stack[1], HASH_AREA, &area);
+			//_clip_mclone(cm, &stack[1], &area);
 			_clip_mputn(cm, &stack[1], HASH_COUNT, event->expose.count);
 
 			cwin = _list_get_cobject(cm, event->expose.window);
 			if (!cwin) cwin = _register_object(cm, event->expose.window, GDK_TYPE_WINDOW, NULL, NULL);
                         if (cwin) _clip_madd(cm, &stack[1], HASH_WINDOW, &cwin->obj);
+                        _clip_destroy(cm, &area);
 			break;
 			}
 		case GDK_BUTTON_PRESS:
@@ -475,8 +480,8 @@ handle_events(GtkWidget *widget, GdkEvent *event, C_signal *cs)
 			ret = res.t.type == LOGICAL_t ? res.l.val : ret;
 		_clip_destroy(cs->cw->cmachine, &res);
 	}
-	//_clip_destroy(cw->cmachine, &stack[0]);
-	//_clip_destroy(cw->cmachine, &stack[1]);
+	_clip_destroy(cm, &stack[0]);
+	_clip_destroy(cm, &stack[1]);
 	//return TRUE;
 	return ret;
 }

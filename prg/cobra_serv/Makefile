@@ -7,7 +7,7 @@ CLIPFLAGS = -a -O -b -l -w
 CLIPLIBS  = -lclip-codb
 OBJS  = #cobra_conn.o
 CHS  = #corba_serv.ch
-MODULES = module1.po codbtview.po
+MODULES = module1.po codbtview.po codbdlist.po
 .SUFFIXES: .prg .o .po
 
 all: cobra_serv $(MODULES) #AUTH WRAP
@@ -15,11 +15,13 @@ all: cobra_serv $(MODULES) #AUTH WRAP
 clean:
 	rm -rf *.exe *.o *.c *.s *.a *.so *.po *.pa *.log *.uri *.b *.BAK *.bak *~ core* *core
 	rm -rf cobra_serv *.ex *.nm *.pro
+	cd mod-ini; make clean
 	cd auth; make clean
 	cd tcp-wrap; make clean
 
 cobra_serv:cobra_serv.prg $(CHS) $(OBJS)
 	$(CLIP) $(CLIPFLAGS) -esl cobra_serv.prg $(OBJS) $(CLIPLIBS)
+	cd mod-ini; clip -pw *.prg
 
 AUTH:
 	cd auth; make all
@@ -28,17 +30,19 @@ WRAP:
 	cd tcp-wrap; make all
 
 install:
-	cp cobra_serv$(EXESUFF) $(CLIPROOT)/bin
-	mkdir -p $(CLIPROOT)/cobra
-	#ln -sf $(CLIPROOT)/bin/cobra_serv$(EXESUFF)  $(CLIPROOT)/cobra/cobra_serv$(EXESUFF)
-	cp cobra_serv.ini $(CLIPROOT)/cobra
-	mkdir -p $(CLIPROOT)/cobra/auth
-	cp ./auth/Makefile ./auth/other ./auth/pam* $(CLIPROOT)/cobra/auth
-	mkdir -p $(CLIPROOT)/cobra/tcp-wrap
-	cp ./tcp-wrap/Makefile ./tcp-wrap/tcp-* $(CLIPROOT)/cobra/tcp-wrap
-	cp $(MODULES) $(CLIPROOT)/cobra/
-	mkdir -p $(CLIPROOT)/cobra/files
-	cp ./auth/pam-err-msg $(CLIPROOT)/cobra/files
+	cp cobra_serv$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra
+	#ln -sf $(DESTDIR)$(CLIPROOT)/bin/cobra_serv$(EXESUFF)  $(DESTDIR)$(CLIPROOT)/cobra/cobra_serv$(EXESUFF)
+	cp cobra_serv.ini $(DESTDIR)$(CLIPROOT)/cobra
+	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/mod-ini
+	cp ./mod-ini/Makefile ./mod-ini/*.po ./mod-ini/*.prg $(DESTDIR)$(CLIPROOT)/cobra/mod-ini
+	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/auth
+	cp ./auth/Makefile ./auth/other ./auth/pam* $(DESTDIR)$(CLIPROOT)/cobra/auth
+	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/tcp-wrap
+	cp ./tcp-wrap/Makefile ./tcp-wrap/tcp-* $(DESTDIR)$(CLIPROOT)/cobra/tcp-wrap
+	cp $(MODULES) $(DESTDIR)$(CLIPROOT)/cobra/
+	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/files
+	cp ./auth/pam-err-msg $(DESTDIR)$(CLIPROOT)/cobra/files
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) $<

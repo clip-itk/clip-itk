@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2001 - 2004  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
@@ -26,9 +26,9 @@ long _clip_type_box() { return GTK_WIDGET_BOX; }
 long _clip_type_hbox() { return GTK_WIDGET_HBOX; }
 long _clip_type_vbox() { return GTK_WIDGET_VBOX; }
 
-const char * _clip_type_name_box()  { return "GTK_TYPE_BOX"; }
-const char * _clip_type_name_hbox() { return "GTK_TYPE_HBOX"; }
-const char * _clip_type_name_vbox() { return "GTK_TYPE_VBOX"; }
+const char * _clip_type_name_box()  { return "GTK_OBJECT_BOX"; }
+const char * _clip_type_name_hbox() { return "GTK_OBJECT_HBOX"; }
+const char * _clip_type_name_vbox() { return "GTK_OBJECT_VBOX"; }
 
 /* Register boxes in global table */
 int
@@ -181,6 +181,17 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_BOXGETHOMOGENEOUS(ClipMachine * cm)
+{
+	C_widget *cbox  = _fetch_cw_arg(cm);
+        CHECKCWID(cbox,GTK_IS_BOX);
+        _clip_retl(cm, gtk_box_get_homogeneous(GTK_BOX(cbox->widget)));
+	return 0;
+err:
+	return 1;
+}
+
 /* Sets the spacing field of GtkBox, which is the number of pixels
  * to place between children of box. */
 int
@@ -242,4 +253,25 @@ clip_GTK_BOXQUERYCHILDPACKING(ClipMachine * cm)
 err:
 	return 1;
 }
+
+int
+clip_GTK_BOXSETCHILDPACKING(ClipMachine * cm)
+{
+	C_widget *cbox  = _fetch_cw_arg(cm);
+	C_widget *cwid  = _fetch_cwidget(cm,_clip_spar(cm,2));
+        gboolean expand = _clip_parl(cm, 3);
+        gboolean   fill = _clip_parl(cm, 4);
+        gint    padding = _clip_parni(cm, 5);
+        GtkPackType pack_type = _clip_parni(cm, 6);
+        CHECKCWID(cbox,GTK_IS_BOX);
+	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
+        CHECKARG(3, LOGICAL_t); CHECKARG(4, LOGICAL_t);
+        CHECKARG(5, NUMERIC_t); CHECKARG(6, NUMERIC_t);
+        gtk_box_set_child_packing(GTK_BOX(cbox->widget), cwid->widget,
+        	expand, fill, padding, pack_type);
+	return 0;
+err:
+	return 1;
+}
+
 

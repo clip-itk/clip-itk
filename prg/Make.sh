@@ -24,6 +24,10 @@ if [ -d utils ]
 then
 	cd utils; $MAKE; cd ..
 fi
+if [ -d kamache ]
+then
+	cd kamache; $MAKE; cd ..
+fi
 if [ -d debug ]
 then
 	cd debug; $MAKE; cd ..

@@ -53,7 +53,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_text_buffer() { return GTK_TYPE_TEXT_BUFFER; }
 
 long _clip_type_text_buffer() { return GTK_OBJECT_TEXT_BUFFER; }
 
-const char * _clip_type_name_text_buffer()  { return "GTK_TYPE_TEXT_BUFFER"; }
+const char * _clip_type_name_text_buffer()  { return "GTK_OBJECT_TEXT_BUFFER"; }
 
 int
 clip_INIT___TEXTBUFFER(ClipMachine *cm)
@@ -1634,3 +1634,37 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_TEXTBUFFERSELECTRANGE(ClipMachine * cm)
+{
+	C_object       *cbuffer = _fetch_co_arg(cm);
+        C_object          *cins ;
+        C_object        *cbound ;
+
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(cbuffer, GTK_IS_TEXT_BUFFER(cbuffer->object));
+
+	memset(Iter, 0, sizeof(Iter));
+	memset(Iter2, 0, sizeof(Iter2));
+	gtk_text_buffer_select_range(GTK_TEXT_BUFFER(cbuffer->object),
+		Iter2, Iter2);
+
+	if (Iter)
+        {
+        	cins = _list_get_cobject(cm, Iter);
+                if (!cins) cins = _register_object(cm, Iter, GTK_TYPE_TEXT_ITER, NULL, NULL);
+                if (cins) _clip_mclone(cm, ARGPTR(cm, 2), &cins->obj);
+        }
+	if (Iter2)
+        {
+        	cbound = _list_get_cobject(cm, Iter2);
+                if (!cbound) cbound = _register_object(cm, Iter2, GTK_TYPE_TEXT_ITER, NULL, NULL);
+                if (cbound) _clip_mclone(cm, ARGPTR(cm, 2), &cbound->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+#endif

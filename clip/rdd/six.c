@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: six.c,v $
+	Revision 1.103  2004/05/26 09:52:24  clip
+	rust: some cleanings
+	
 	Revision 1.102  2003/09/02 14:27:43  clip
 	changes for MINGW from
 	Mauricio Abre <maurifull@datafull.com>
@@ -366,7 +369,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <ctype.h>
-#include "clipbase.h"
 #include "rdd.h"
 #include "six.ch"
 #include "error.ch"

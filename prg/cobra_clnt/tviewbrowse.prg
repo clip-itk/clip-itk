@@ -34,7 +34,7 @@ function tViewBrowse
     down=min(down,maxrow())
     right=min(right,maxcol())
 
-    browse := TBrowseDB(Top, Left, Down, Right)
+    browse := TBrowseNew(Top, Left, Down, Right)
     browse:chop := .t.
     StockBrowseNew(browse, __columns )
     browse:skipBlock := { |x| Skipper(x, browse) }
@@ -57,7 +57,7 @@ function tViewBrowse
 
 return  NIL
 
-function get_a2_data(field, new_data)
+function __tw_get_a2_data(field, new_data)
        local ret:=NIL
        if curr_record<=0 .or. field<=0
 		return ret
@@ -84,7 +84,7 @@ STATIC FUNCTION StockBrowseNew( browse, __columns )
     LOCAL n, column, cType, strhead, strfoot
     local __cname
     FOR n := 1 TO len(__columns)
-	__cname:='{|_1| get_a2_data('+str(n)+',_1)}'
+	__cname:='{|_1| __tw_get_a2_data('+str(n)+',_1)}'
 	__cname:=&__cname
 	if valtype(__columns[n])=="O"
 		column := TBColumnNew(__columns[n]:header, __cname)
@@ -94,5 +94,11 @@ STATIC FUNCTION StockBrowseNew( browse, __columns )
 		browse:addColumn(column)
 	endif
     next
+    __cname:='{|_1| __tw_get_a2_data('+str(n)+',_1)}'
+    __cname:=&__cname
+    column := TBColumnNew("ID", __cname)
+    column:heading:="ID"
+    column:width  :=12
+    browse:addColumn(column)
 RETURN NIL
 

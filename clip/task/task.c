@@ -5,6 +5,12 @@
  */
 /*
  $Log: task.c,v $
+ Revision 1.21  2004/05/21 10:46:35  clip
+ rust: another memory leak fixed
+
+ Revision 1.20  2004/05/20 14:41:10  clip
+ rust: memory leak fixed
+
  Revision 1.19  2003/09/18 10:52:04  clip
  uri: small fix
 
@@ -244,7 +250,7 @@ static void removeFromList(Task * task);	/*  удаляет из списка, соответствующего
 
 #ifdef _WIN32
 static int t_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds,
-	    struct timeval *timeout);
+		struct timeval *timeout);
 #else
 #define t_select select
 #endif
@@ -302,9 +308,9 @@ FD_CLR_BY(fd_set * fds, fd_set * mask)
 	int i;
 
 	for (i = 0;
-	     i < sizeof(fd_set) / sizeof(unsigned);
+		 i < sizeof(fd_set) / sizeof(unsigned);
 
-	     i++, ((unsigned *) fds)++, ((unsigned *) mask)++
+		 i++, ((unsigned *) fds)++, ((unsigned *) mask)++
 		)
 		*((unsigned *) fds) &= ~(*((unsigned *) mask));
 }
@@ -315,9 +321,9 @@ FD_AND_BY(fd_set * fds, fd_set * mask)
 	int i;
 
 	for (i = 0;
-	     i < sizeof(fd_set) / sizeof(unsigned);
+		 i < sizeof(fd_set) / sizeof(unsigned);
 
-	     i++, ((unsigned *) fds)++, ((unsigned *) mask)++
+		 i++, ((unsigned *) fds)++, ((unsigned *) mask)++
 		)
 		*((unsigned *) fds) &= *((unsigned *) mask);
 }
@@ -328,9 +334,9 @@ FD_SET_BY(fd_set * fds, fd_set * mask)
 	int i;
 
 	for (i = 0;
-	     i < sizeof(fd_set) / sizeof(unsigned);
+		 i < sizeof(fd_set) / sizeof(unsigned);
 
-	     i++, ((unsigned *) fds)++, ((unsigned *) mask)++
+		 i++, ((unsigned *) fds)++, ((unsigned *) mask)++
 		)
 		*((unsigned *) fds) |= *((unsigned *) mask);
 }
@@ -341,9 +347,9 @@ FD_ISSET_BY(fd_set * fds, fd_set * mask)
 	int i;
 
 	for (i = 0;
-	     i < sizeof(fd_set) / sizeof(unsigned);
+		 i < sizeof(fd_set) / sizeof(unsigned);
 
-	     i++, ((unsigned *) fds)++, ((unsigned *) mask)++
+		 i++, ((unsigned *) fds)++, ((unsigned *) mask)++
 		)
 		if (*((unsigned *) fds) & *((unsigned *) mask))
 			return 1;
@@ -421,6 +427,9 @@ initStack(Task * task)
 TASK_DLLEXPORT void
 Task_delete(Task * task)
 {
+	HashTable_remove(hashs, task->id);
+	remove_Coll(&allTasks, task);
+
 	if (task->destroy)
 		task->destroy(task->data);
 
@@ -809,7 +818,7 @@ calc_wakeup(struct timeval *tv)
 
 TASK_DLLEXPORT int
 task_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds,
-	    struct timeval *timeout)
+		struct timeval *timeout)
 {
 	struct timeval tv;
 	int ret, r;
@@ -1611,7 +1620,7 @@ zero_fds(fd_set *fds)
 {
 	int i;
 	for (i = 0; i < sizeof(fd_set) / sizeof(unsigned);
-		     i++, ((unsigned *) fds)++)
+			 i++, ((unsigned *) fds)++)
 		if (*((unsigned *) fds) )
 			return 0;
 	return 1;
@@ -1619,7 +1628,7 @@ zero_fds(fd_set *fds)
 
 static int
 t_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds,
-	    struct timeval *timeout)
+		struct timeval *timeout)
 {
 	int r = 0;
 	long ms_timeout = 0;

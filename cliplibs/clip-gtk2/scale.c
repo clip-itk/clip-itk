@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001 - 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -132,7 +133,7 @@ clip_GTK_SCALEGETDIGITS(ClipMachine * cm)
 {
 	C_widget     *cscale = _fetch_cw_arg(cm);
         CHECKCWID(cscale,GTK_IS_SCALE);
-        _clip_retni(cm,GTK_SCALE(cscale->widget)->digits);
+        _clip_retni(cm,gtk_scale_get_digits(GTK_SCALE(cscale->widget)));
 	return 0;
 err:
 	return 1;
@@ -158,7 +159,7 @@ clip_GTK_SCALEGETDRAWVALUES(ClipMachine * cm)
 {
 	C_widget     *cscale = _fetch_cw_arg(cm);
         CHECKCWID(cscale,GTK_IS_SCALE);
-        _clip_retl(cm, GTK_SCALE(cscale->widget)->draw_value);
+        _clip_retl(cm, gtk_scale_get_draw_value(GTK_SCALE(cscale->widget)));
 	return 0;
 err:
 	return 1;
@@ -183,10 +184,47 @@ clip_GTK_SCALEGETVALUEPOS(ClipMachine * cm)
 {
 	C_widget     *cscale = _fetch_cw_arg(cm);
         CHECKCWID(cscale,GTK_IS_SCALE);
-        _clip_retni(cm, GTK_SCALE(cscale->widget)->value_pos);
+        _clip_retni(cm, (int)gtk_scale_get_value_pos(GTK_SCALE(cscale->widget)));
 	return 0;
 err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 
+int
+clip_GTK_SCALEGETLAYOUT(ClipMachine * cm)
+{
+	C_widget     *cscale = _fetch_cw_arg(cm);
+        PangoLayout  *layout ;
+        C_object    *clayout ;
+
+        CHECKCWID(cscale,GTK_IS_SCALE);
+        layout = gtk_scale_get_layout(GTK_SCALE(cscale->widget));
+        if (layout)
+        {
+        	clayout = _list_get_cobject(cm, layout);
+                if (!clayout) clayout = _register_object(cm, layout, GTK_TYPE_OBJECT, NULL, NULL);
+                if (clayout) _clip_mclone(cm, RETPTR(cm), &clayout->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_SCALEGETLAYOUTOFFSETS(ClipMachine * cm)
+{
+	C_widget     *cscale = _fetch_cw_arg(cm);
+        gint            x, y ;
+
+        CHECKCWID(cscale,GTK_IS_SCALE);
+        gtk_scale_get_layout_offsets(GTK_SCALE(cscale->widget), &x, &y);
+	_clip_storni(cm, x, 2, 0);
+	_clip_storni(cm, y, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+
+#endif

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003 -2004 ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -14,9 +14,20 @@
 #include "clip-gtk2.h"
 
 /*********************** SIGNALS **************************/
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 
-/*	CellRenderer has no own signals 		  */
-
+static gint
+handle_editing_canceled (GtkCellRenderer *cell, C_signal *cs)
+{
+	OBJECTPREPARECV(cs,cv);
+	OBJECTINVOKESIGHANDLER(cs,cv);
+}
+static SignalTable cell_renderer_signals[] =
+{
+	{"editing-canceled",	GSF( handle_editing_canceled ), ESF( object_emit_signal ), GTK_EDITING_CANCELED_SIGNAL},
+	{"", NULL, NULL, 0}
+};
+#endif
 /**********************************************************/
 /* Signals table  CellRendererText   */
 static gint
@@ -58,16 +69,20 @@ long _clip_type_cell_renderer_text() { return GTK_OBJECT_CELL_RENDERER_TEXT; }
 long _clip_type_cell_renderer_pixbuf() { return GTK_OBJECT_CELL_RENDERER_PIXBUF; }
 long _clip_type_cell_renderer_toggle() { return GTK_OBJECT_CELL_RENDERER_TOGGLE; }
 
-const char * _clip_type_name_cell_renderer()  { return "GTK_TYPE_CELL_RENDERER"; }
-const char * _clip_type_name_cell_renderer_text()  { return "GTK_TYPE_CELL_RENDERER_TEXT"; }
-const char * _clip_type_name_cell_renderer_pixbuf()  { return "GTK_TYPE_CELL_RENDERER_PIXBUF"; }
-const char * _clip_type_name_cell_renderer_toggle()  { return "GTK_TYPE_CELL_RENDERER_TOGGLE"; }
+const char * _clip_type_name_cell_renderer()  { return "GTK_OBJECT_CELL_RENDERER"; }
+const char * _clip_type_name_cell_renderer_text()  { return "GTK_OBJECT_CELL_RENDERER_TEXT"; }
+const char * _clip_type_name_cell_renderer_pixbuf()  { return "GTK_OBJECT_CELL_RENDERER_PIXBUF"; }
+const char * _clip_type_name_cell_renderer_toggle()  { return "GTK_OBJECT_CELL_RENDERER_TOGGLE"; }
 
 /* Register boxes in global table */
 int
 clip_INIT___CELLRENDERER(ClipMachine *cm)
 {
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+	_wtype_table_put(_clip_type_cell_renderer,  _clip_type_name_cell_renderer,  _gtk_type_cell_renderer,  NULL, cell_renderer_signals);
+#else
 	_wtype_table_put(_clip_type_cell_renderer,  _clip_type_name_cell_renderer,  _gtk_type_cell_renderer,  NULL, NULL);
+#endif
 	_wtype_table_put(_clip_type_cell_renderer_text,  _clip_type_name_cell_renderer_text,  _gtk_type_cell_renderer_text,  _gtk_type_cell_renderer, cell_renderer_text_signals);
 	_wtype_table_put(_clip_type_cell_renderer_toggle,  _clip_type_name_cell_renderer_toggle,  _gtk_type_cell_renderer_toggle,  _gtk_type_cell_renderer, cell_renderer_toggle_signals);
 	_wtype_table_put(_clip_type_cell_renderer_pixbuf,  _clip_type_name_cell_renderer_pixbuf,  _gtk_type_cell_renderer_pixbuf,  _gtk_type_cell_renderer, NULL);
@@ -143,4 +158,19 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_CELLRENDEREREDITINGCANCELED(ClipMachine * cm)
+{
+        C_object *ccell = _fetch_co_arg(cm);;
 
+	CHECKCOBJ(ccell, GTK_IS_CELL_RENDERER(ccell->object));
+
+	gtk_cell_renderer_editing_canceled(GTK_CELL_RENDERER(ccell->object));
+
+	return 0;
+err:
+	return 1;
+}
+
+#endif

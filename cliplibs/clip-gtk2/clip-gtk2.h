@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #ifndef __CLIP_GTK_H__
@@ -77,6 +78,7 @@ typedef struct _C_widget
 typedef struct
 {
 	ClipVar cfunc;
+	ClipVar cfunc2;
 	unsigned int id;
 	ClipMachine *cm;
 	ClipVar *cv;
@@ -308,6 +310,7 @@ void _map_colors_to_gdk (ClipMachine *cm, ClipVar *map, GdkColor *gdk_color);
 void _map_colors_to_gdk_array (ClipMachine *cm, ClipVar *map, GdkColor gdk_color[]);
 // Get color and store it to map
 void _gdk_color_to_map (ClipMachine *cm, GdkColor gdk_color, ClipVar *col);
+void _map_to_gdk_color (ClipMachine *cm, GdkColor *gdk_color, ClipVar *col);
 // Get array of colors and store it to array of maps
 void _gdk_array_to_map_colors (ClipMachine *cm, GdkColor gdk_colors[], ClipVar *a);
 void _style_to_map(ClipMachine *cm, GtkStyle *style, ClipVar *m_style);
@@ -335,7 +338,28 @@ int gdk_object_colormap_destructor(ClipMachine *cm, C_object *ccmap);
 int gdk_object_window_destructor(ClipMachine *cm, C_object *cwin);
 unsigned char * _clip_locale_to_utf8(unsigned char *);
 unsigned char * _clip_locale_from_utf8(unsigned char *);
+int _map_put_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region);
+int _map_get_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region);
+void _map_to_gtk_accel_key (ClipMachine *cm, ClipVar *cv, GtkAccelKey *key);
+void _array_to_target_entry (ClipMachine *cm, ClipVar *cv, GtkTargetEntry *target);
+void _map_to_stock_item (ClipMachine *cm, ClipVar *cv, GtkStockItem *item);
+void _stock_item_to_map(ClipMachine *cm, ClipVar *cv, GtkStockItem *item);
+void _file_filter_info_to_map (ClipMachine *cm, GtkFileFilterInfo *info, ClipVar *cv);
+void _map_to_file_filter_info(ClipMachine *cm, ClipVar *cv, GtkFileFilterInfo *info);
 
+
+void _list_put_action(ClipMachine * cm, void *pointer, ClipVar *cv);
+ClipVar * _list_get_action(ClipMachine * cm, void *pointer);
+void _list_remove_action(ClipMachine * cm, void *pointer);
+void _map_to_action_entry (ClipMachine *cm, ClipVar *cv, GtkActionEntry *act);
+void _map_to_toggle_action_entry (ClipMachine *cm, ClipVar *cv, GtkToggleActionEntry *act);
+void _map_to_radio_action_entry (ClipMachine *cm, ClipVar *cv, GtkRadioActionEntry *act);
+
+
+
+GtkType _gtk_type_action();
+GtkType _gtk_type_action_group();
+GtkType _gtk_type_toggle_action();
 GtkType _gtk_type_accel_label();
 GtkType _gtk_type_adjustment();
 GtkType _gtk_type_alignment();
@@ -353,6 +377,7 @@ GtkType _gtk_type_clist();
 GtkType _gtk_type_color_selection();
 GtkType _gtk_type_color_selection_dialog();
 GtkType _gtk_type_combo();
+GtkType _gtk_type_combo_box();
 GtkType _gtk_type_container();
 GtkType _gtk_type_ctree();
 GtkType _gtk_type_curve();
@@ -413,6 +438,7 @@ GtkType _gtk_type_text();
 GtkType _gtk_type_tips_query();
 GtkType _gtk_type_toggle_button();
 GtkType _gtk_type_toolbar();
+GtkType _gtk_type_tool_item();
 GtkType _gtk_type_tooltips();
 GtkType _gtk_type_tree();
 GtkType _gtk_type_tree_item();
@@ -471,6 +497,18 @@ struct _GtkNotebookPage
 
 #define GTK_IS_TREE_PATH(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_TREE_PATH)
 
+
+#ifndef GTK_CLIPBOARD
 #define GTK_CLIPBOARD(obj)           ((GtkClipboard *)(obj))
+#endif
+#ifndef GTK_IS_CLIPBOARD
 #define GTK_IS_CLIPBOARD(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_CLIPBOARD)
+
+#endif
+
+#define GDK_EVENT_KEY(obj)           ((GdkEventKey *)(obj))
+#define GDK_IS_EVENT_KEY(obj)        (obj && ((C_object*)obj)->type == GDK_TYPE_EVENT)
+
+#define GTK_ICON_SOURCE(obj)           ((GtkIconSource *)(obj))
+#define GTK_IS_ICON_SOURCE(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_ICON_SOURCE)
 

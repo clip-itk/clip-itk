@@ -1,14 +1,14 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "clip-gtk2.ch"
 
-function gtk_ErrorMsgBox(cMsg, aButton, cTitle)
+function gtk_ErrorMsgBox(cMsg, aButton, cTitle, activeWnd)
 local nWidth, nHeight
-local Button, Label, activeWnd
-local Dialog, inFocus, i, ret:=.f., pos, str
+local Button, Label
+local Dialog, inFocus, i, ret:=.f., pos, str, ames
 local BtnWidth:=40, BtnHeight:=25, hbox, vbox
 
 /* XPM stop */
@@ -75,8 +75,9 @@ static stopXPM := { ;
 //		ret := iif(valtype(aReturn[1])=="N", 0, .f.)
 //	endif
 
-	gtk_BoxPackStart(hbox, gtk_PixmapCreateFromXPMd(, stopXPM))
+	gtk_BoxPackStart(hbox, gdk_PixmapCreateFromXPMd(, stopXPM))
 
+	/*
 	pos := at(';',cMsg)
 
 	if pos==0; pos := len(cMsg)+1; endif
@@ -89,6 +90,13 @@ static stopXPM := { ;
 		pos := at(';',cMsg)
 		//if pos==0; pos := len(cMsg)+1; endif
 	enddo
+        */
+        ames := split(cMsg, ";")
+        for i=1 to len(ames)
+		label := gtk_LabelNew(, ames[i])
+		gtk_LabelSetLineWrap(Label, .T.)
+		gtk_BoxPackStart(vbox, Label)
+        next
 
 	gtk_BoxPackStart(hbox, vbox)
 	gtk_ContainerAdd(Dialog:VBox, hbox)
@@ -128,9 +136,10 @@ static stopXPM := { ;
 		next
 	endif
 
-//	gtk_WindowSetTransientFor(Dialog, activeWnd)
-
-	gtk_WindowSetPosition(Dialog, GTK_WIN_POS_CENTER_ON_PARENT)
+        if activeWnd != NIL
+		gtk_WindowSetTransientFor(Dialog, activeWnd)
+		gtk_WindowSetPosition(Dialog, GTK_WIN_POS_CENTER_ON_PARENT)
+        endif
 
 	gtk_WidgetSetFocus(inFocus)
 	gtk_WidgetRealize(Dialog)

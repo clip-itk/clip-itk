@@ -4,9 +4,13 @@ CLIPFLAGS = -l -a -w -O -n -I . -I .. -I ../include
 CLIPFLAGS2 =
 CFLAGS = -I.. -I../include -I$(CLIPROOT)
 CLIPLIBS  =
-OBJS  = codb_list.o dict_dbf.o dep_dbf.o ext_dbf.o list_id.o codb_funcs.o \
-	count_dbf.o codb_dep.o codb_dict.o codb.o codb_oql.o codb_install.o \
-	codb_err.o codb_cache.o
+OBJS  = codb_list.o codb.o codb_funcs.o codb_oql.o codb_install.o \
+	codb_err.o codb_cache.o codb_cobra.o codb_uni.o list_id.o\
+	codb_dep.o codb_dict.o \
+	dict_dbf.o dep_dbf.o ext_dbf.o count_dbf.o \
+	dict_all.o dep_all.o \
+	dict_cobra.o dep_cobra.o
+
 .SUFFIXES: .prg .o .po
 
 LIB = libclip-codb.a
@@ -26,41 +30,44 @@ clean:
 install: all
 	clip_cp libclip-codb $(CLIPROOT)/lib
 
-codb.o: codb.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb.prg
-
-codb_list.o: codb_list.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_list.prg
-
-codb_dep.o: codb_dep.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_dep.prg
-
-codb_dict.o: codb_dict.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_dict.prg
-
-codb_funcs.o: codb_funcs.prg
-	$(CLIP) $(CLIPFLAGS) codb_funcs.prg
-
-codb_err.o: codb_err.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_err.prg
-
-codb_cache.o: codb_cache.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_cache.prg
-
-dict_dbf.o: dict_dbf.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) dict_dbf.prg
-
-dep_dbf.o: dep_dbf.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) dep_dbf.prg
-
-ext_dbf.o: ext_dbf.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) ext_dbf.prg
-
-count_dbf.o: count_dbf.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) count_dbf.prg
-
-list_id.o: list_id.prg
-	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) list_id.prg
+#codb.o: codb.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb.prg
+#
+#codb_list.o: codb_list.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_list.prg
+#
+#codb_dep.o: codb_dep.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_dep.prg
+#
+#codb_dict.o: codb_dict.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_dict.prg
+#
+#codb_funcs.o: codb_funcs.prg
+#	$(CLIP) $(CLIPFLAGS) codb_funcs.prg
+#
+#codb_err.o: codb_err.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_err.prg
+#
+#codb_cache.o: codb_cache.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_cache.prg
+#
+#codb_cobra.o: codb_cobra.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb_cobra.prg
+#
+#dict_dbf.o: dict_dbf.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) dict_dbf.prg
+#
+#dep_dbf.o: dep_dbf.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) dep_dbf.prg
+#
+#ext_dbf.o: ext_dbf.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) ext_dbf.prg
+#
+#count_dbf.o: count_dbf.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) count_dbf.prg
+#
+#list_id.o: list_id.prg
+#	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) list_id.prg
 
 $(LIB): $(OBJS)
 	rm -f $(LIB)

@@ -5,6 +5,12 @@
 */
 /*
    $Log: _util.c,v $
+   Revision 1.132  2004/07/06 09:48:15  clip
+   uri: small fix in acopy()
+
+   Revision 1.131  2004/05/17 12:05:58  clip
+   uri: small fix: added DT_ISDT()
+
    Revision 1.130  2004/02/03 08:47:59  clip
    uri: some fix in "run <cmd> and setcursor() restoring"
 
@@ -691,7 +697,12 @@ clip_TYPE(ClipMachine * mp)
 	ClipVar var;
 	int r;
 
-	if (str)
+	if (!str)
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "TYPE");
+	}
+	else
 	{
 		char *s, *e;
 
@@ -1439,7 +1450,7 @@ clip_ACOPY(ClipMachine * mp)
 		if (count < 0 || count > (c - start))
 			count = c - start;
 		c = dp->a.count;
-		if (start >= c)
+		if (dstart >= c)
 			return 0;	/*EG_ARG; */
 		if (dstart < 0)
 			dstart = 0;

@@ -59,7 +59,8 @@ const char * _clip_type_name_window() { return "GTK_WIDGET_WINDOW"; }
 int
 clip_INIT___WINDOW(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_window, _clip_type_name_window, _gtk_type_window, _gtk_type_container, window_signals);
+	//_wtype_table_put(_clip_type_window, _clip_type_name_window, _gtk_type_window, _gtk_type_container, window_signals);
+	_wtype_table_put(_clip_type_window, _clip_type_name_window, _gtk_type_window, _gtk_type_bin, window_signals);
 	return 0;
 }
 /**********************************************************/
@@ -890,11 +891,50 @@ clip_GTK_WINDOWGETDEFAULTICONLIST(ClipMachine * cm)
 int
 clip_GTK_WINDOWLISTTOPLEVELS(ClipMachine * cm)
 {
-        C_widget *clist;
+        GList    *list;
 
-	clist = _get_cwidget(cm, GTK_WIDGET(gtk_window_list_toplevels()));
+	list = gtk_window_list_toplevels();
+        if (list)
+        {
+        	ClipVar *cv = RETPTR(cm);
+                long      l ;
+                l = g_list_length(list);
+                _clip_array(cm, cv, 1, &l);
+                for (l=0;list; list = g_list_next(list), l++)
+                {
+                	GtkWindow *win;
+                        C_widget  *cwin;
+                        win = (GtkWindow *)list->data;
+                        cwin = _list_get_cwidget(cm, win);
+                        if (!cwin) cwin = _register_widget(cm, GTK_WIDGET(win), NULL);
+                        if (cwin) _clip_aset(cm, cv, &cwin->obj, 1, &l);
+                }
+        }
+	return 0;
+}
 
-	_clip_mclone(cm, RETPTR(cm), &clist->obj);
+int
+clip_GTK_WINDOWGETACTIVE(ClipMachine * cm)
+{
+        GList    *list;
+
+	list = gtk_window_list_toplevels();
+        if (list)
+        {
+                for (;list; list = g_list_next(list))
+                {
+                	GtkWidget *win;
+                        C_widget  *cwin;
+                        win = (GtkWidget *)list->data;
+                        if (win->state == GTK_STATE_ACTIVE)
+                        {
+                        	cwin = _list_get_cwidget(cm, win);
+                        	if (!cwin) cwin = _register_widget(cm, win, NULL);
+                        	if (cwin) _clip_mclone(cm, RETPTR(cm),  &cwin->obj);
+                                break;
+                        }
+                }
+        }
 	return 0;
 }
 
@@ -1266,4 +1306,137 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_WINDOWISACTIVE(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+
+	_clip_retl(cm, gtk_window_is_active(GTK_WINDOW(cwin->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWHASTOPLEVELFOCUS(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+
+	_clip_retl(cm, gtk_window_has_toplevel_focus(GTK_WINDOW(cwin->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWFULLSCREEN(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+
+	gtk_window_fullscreen(GTK_WINDOW(cwin->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWUNFULLSCREEN(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+
+	gtk_window_unfullscreen(GTK_WINDOW(cwin->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWSETKEEPABOVE(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+        gboolean       set = _clip_parl(cm, 2);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_window_set_keep_above(GTK_WINDOW(cwin->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWSETKEEPBELOW(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+        gboolean       set = _clip_parl(cm, 2);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_window_set_keep_below(GTK_WINDOW(cwin->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWSETACCEPTFOCUS(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+        gboolean       set = _clip_parl(cm, 2);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_window_set_accept_focus(GTK_WINDOW(cwin->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWGETACCEPTFOCUS(ClipMachine * cm)
+{
+	C_widget     *cwin = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+
+	_clip_retl(cm, gtk_window_get_accept_focus(GTK_WINDOW(cwin->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWSETDEFAULTICON(ClipMachine * cm)
+{
+	C_object     *cobj = _fetch_co_arg(cm);
+
+	CHECKCOBJ(cobj,GDK_IS_PIXBUF(cobj->object));
+
+	gtk_window_set_default_icon(GDK_PIXBUF(cobj->object));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
 

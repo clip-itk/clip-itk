@@ -1,10 +1,13 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
    $Log: clip_dbg.c,v $
+   Revision 1.21  2004/05/19 08:32:18  clip
+   rust: fix for ./configure -m
+
    Revision 1.20  2003/09/09 14:36:14  clip
    uri: fixes for mingw from Mauricio and Uri
 
@@ -79,19 +82,19 @@
    Revision 1.1  2001/02/01 13:05:06  clip
    debug links
    paul
+*/
 
- */
-
-#include "clip.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
-#include <string.h>
 #include <errno.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <fcntl.h>
+
+
 #ifndef OS_MINGW
 #include <termios.h>
 #include <sys/wait.h>
@@ -107,6 +110,8 @@
 #include <readline/history.h>
 
 #undef select
+
+#include "clip.h"
 
 extern char *optarg;
 extern int optind, opterr, optopt;

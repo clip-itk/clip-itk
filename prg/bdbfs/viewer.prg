@@ -408,7 +408,8 @@ NEXT
 STATIC FUNC HighLight(_cLookText,nOffset,nRow,nCol)
 LOCAL nLength := LEN(ALLTRIM(_cLookText))
 nCol+=(nOffset-1)
-Shadow(nRow,nCol,nRow,nCol+nLength-1,CHR(7),nLength)
+dispattr(nRow,nCol,nRow,nCol+nLength-1,7)
+
 RETURN 0
 
 /*************************************************************************

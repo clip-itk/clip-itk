@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -406,4 +407,43 @@ clip_GTK_ENTRYSETSTYLE(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_ENTRYSETCOMPLETION(ClipMachine * cm)
+{
+	C_widget   *centry = _fetch_cw_arg(cm);
+        C_object *ccomplet = _fetch_cobject(cm, _clip_spar(cm, 2));
 
+        CHECKCWID(centry,GTK_IS_ENTRY);
+        CHECKCOBJ(ccomplet, GTK_IS_ENTRY_COMPLETION(ccomplet->object));
+
+	gtk_entry_set_completion(GTK_ENTRY(centry->widget),
+		GTK_ENTRY_COMPLETION(ccomplet->object));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ENTRYGETCOMPLETION(ClipMachine * cm)
+{
+	C_widget   *centry = _fetch_cw_arg(cm);
+        GtkEntryCompletion *complet ;
+        C_object *ccomplet ;
+
+        CHECKCWID(centry,GTK_IS_ENTRY);
+
+	complet = gtk_entry_get_completion(GTK_ENTRY(centry->widget));
+
+	if (complet)
+        {
+        	ccomplet = _list_get_cobject(cm, complet);
+                if (!ccomplet) ccomplet = _register_object(cm, complet, GTK_TYPE_ENTRY_COMPLETION, NULL, NULL);
+                if (ccomplet) _clip_mclone(cm, RETPTR(cm), &ccomplet->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+#endif

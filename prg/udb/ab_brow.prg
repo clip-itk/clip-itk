@@ -208,6 +208,12 @@ static function browse_handleKey(self,hkey)
 				self:refreshAll()
 			endif
 			ret:=0
+		case hkey==HASH_UnDelete
+			if ! self:oIdList:undelete()
+				alert(self:oIdList:error)
+			endif
+			self:refreshAll()
+			ret:=0
 		case hkey==HASH_Append
 			data:=self:oIdList:getInfo(.t.)
 			if self:mode != AB_BROWSE_MODE_CARD

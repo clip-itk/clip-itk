@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
               Elena V. Kornilova  <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
@@ -20,6 +20,9 @@
 /* This list associates pointer to a widget with pointer to it`s C_widget structure */
 static ClipVar _widget_list;
 static ClipVar *widget_list = &_widget_list;
+
+static ClipVar _action_list;
+static ClipVar *action_list = &_action_list;
 
 #ifdef OS_CYGWIN
 	#include <w32api/windows.h>
@@ -162,6 +165,33 @@ _list_remove_cwidget(ClipMachine * cm, void *pointer)
 	if (pointer && widget_list->t.type == MAP_t)
 		_clip_mdel(cm, widget_list, (long) pointer);
 }
+
+
+CLIP_DLLEXPORT void
+_list_put_action(ClipMachine * cm, void *pointer, ClipVar *cv)
+{
+	if (action_list->t.type != MAP_t)
+		_clip_map(cm, action_list);
+	if (pointer)
+		_clip_mputn(cm, action_list, (long) pointer, (long) cv);
+}
+
+CLIP_DLLEXPORT ClipVar *
+_list_get_action(ClipMachine * cm, void *pointer)
+{
+	double d;
+	if (pointer && action_list->t.type == MAP_t)
+		if (_clip_mgetn(cm, action_list, (long) pointer, &d) == 0)
+			return (ClipVar *) ((long) d);
+	return NULL;
+}
+CLIP_DLLEXPORT void
+_list_remove_action(ClipMachine * cm, void *pointer)
+{
+	if (pointer && action_list->t.type == MAP_t)
+		_clip_mdel(cm, action_list, (long) pointer);
+}
+
 
 /*****************************************************************/
 
@@ -580,7 +610,8 @@ _register_widget(ClipMachine * cm, GtkWidget * wid, ClipVar * cv)
 	cwid->destroy = NULL;
 
 	if (cv && cv->t.type == MAP_t)
-		cwid->obj = *cv;
+		_clip_mclone(cm, &cwid->obj, cv);
+		//cwid->obj = *cv;
 	else
 		_clip_map(cm, &cwid->obj);
 	/* Saving widget info into CLIP state machine
@@ -591,7 +622,7 @@ _register_widget(ClipMachine * cm, GtkWidget * wid, ClipVar * cv)
 	_clip_mputn(cm, &cwid->obj, HASH_TYPE, clip_wtype);
 	/* Store C_widget pointer in list of widgets */
 	_list_put_cwidget(cm, wid, cwid);
-	if (wid && GTK_IS_OBJECT(wid))
+     	if (wid && GTK_IS_OBJECT(wid))
 		g_object_set_data_full(G_OBJECT(wid),"destructor",cwid,
 			(GDestroyNotify)object_destructor);
 	return cwid;
@@ -620,7 +651,8 @@ _register_object(ClipMachine * cm, void * data, long clip_type, ClipVar * cv, co
 	if (wt_item && wt_item->fclip_type) clip_wtype = wt_item->fclip_type();
 	if (wt_item && wt_item->ftype_name) cobj->type_name = wt_item->ftype_name();
 	if (cv && cv->t.type == MAP_t)
-		cobj->obj = *cv;
+		_clip_mclone(cm, &cobj->obj, cv);
+		//cobj->obj = *cv;
 	else
 		_clip_map(cm, &cobj->obj);
 
@@ -786,6 +818,22 @@ _gdk_color_to_map (ClipMachine *cm, GdkColor gdk_color, ClipVar *col)
 	_clip_mputn(cm, col, HASH_GREEN, gdk_color.green);
 	_clip_mputn(cm, col, HASH_BLUE, gdk_color.blue);
 	_clip_mputn(cm, col, HASH_PIXEL, gdk_color.pixel);
+}
+
+/* Get color map and store it to GdkColor */
+CLIP_DLLEXPORT void
+_map_to_gdk_color (ClipMachine *cm, GdkColor *gdk_color, ClipVar *col)
+{
+	double r, g, b, p;
+	_clip_mgetn(cm, col, HASH_RED, &r);
+	_clip_mgetn(cm, col, HASH_GREEN, &g);
+	_clip_mgetn(cm, col, HASH_BLUE, &b);
+	_clip_mgetn(cm, col, HASH_PIXEL, &p);
+
+        gdk_color->red   = r;
+        gdk_color->green = g;
+        gdk_color->blue  = b;
+        gdk_color->pixel = p;
 }
 
 /* Get array of GCs and store it to array of maps */
@@ -1204,4 +1252,197 @@ _arr_to_valist(ClipMachine *cm, ClipVar *marg, va_list valist)
 */
 	return 0;
 }
+
+CLIP_DLLEXPORT void
+_map_to_gtk_accel_key (ClipMachine *cm, ClipVar *cv, GtkAccelKey *key)
+{
+	double accel_key, accel_mods, accel_flags;
+
+	_clip_mgetn(cm, cv, HASH_ACCEL_LEY, &accel_key);
+	_clip_mgetn(cm, cv, HASH_ACCEL_MODS, &accel_mods);
+	_clip_mgetn(cm, cv, HASH_ACCEL_FLAGS, &accel_flags);
+
+	key->accel_key = (guint)accel_key;
+        key->accel_mods = (GdkModifierType)accel_mods;
+        key->accel_flags = (guint)accel_flags;
+}
+
+CLIP_DLLEXPORT void
+_array_to_target_entry (ClipMachine *cm, ClipVar *cv, GtkTargetEntry *target)
+{
+	target->target = cv->a.items[0].s.str.buf;
+        target->flags  = (guint)cv->a.items[1].n.d;
+        target->info   = (guint)cv->a.items[2].n.d;
+}
+
+CLIP_DLLEXPORT void
+_map_to_stock_item (ClipMachine *cm, ClipVar *cv, GtkStockItem *item)
+{
+	ClipVar * c;
+
+	c = _clip_mget(cm, cv, HASH_STOCK_ID);
+	item->stock_id = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_LABEL);
+	item->label = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_MODIFIER);
+	item->modifier = (GdkModifierType)c->n.d;
+
+	c = _clip_mget(cm, cv, HASH_KEYVAL);
+	item->keyval = (guint)c->n.d;
+
+	c = _clip_mget(cm, cv, HASH_TRANSL_DOMAIN);
+	item->translation_domain = c->s.str.buf;
+
+}
+
+CLIP_DLLEXPORT void
+_stock_item_to_map(ClipMachine *cm, ClipVar *cv, GtkStockItem *item)
+{
+
+	_clip_map(cm, cv);
+
+	_clip_mputc(cm, cv, HASH_STOCK_ID, item->stock_id, strlen(item->stock_id));
+	_clip_mputc(cm, cv, HASH_LABEL, item->label, strlen(item->label));
+	_clip_mputn(cm, cv, HASH_MODIFIER, item->modifier);
+	_clip_mputn(cm, cv, HASH_KEYVAL, item->keyval);
+	_clip_mputc(cm, cv, HASH_TRANSL_DOMAIN,	item->translation_domain, strlen(item->translation_domain));
+
+}
+
+static void callback_action(GtkAction *action, gpointer data)
+{
+
+	C_var *c = (C_var *)data;
+	ClipVar *cfunc = _list_get_action(c->cm, action);
+	ClipVar stack[1];
+	ClipVar res;
+	if (cfunc)
+	{
+		memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
+		_clip_mclone(c->cm, &stack[0], &c->co->obj);
+		_clip_eval( c->cm, cfunc, 1, stack, &res );
+
+		_clip_destroy(c->cm, &res);
+
+		_clip_destroy(c->cm, &stack[0]);
+	}
+
+
+}
+
+CLIP_DLLEXPORT void
+_map_to_action_entry (ClipMachine *cm, ClipVar *cv, GtkActionEntry *act)
+{
+	ClipVar *c;
+
+	c = _clip_mget(cm, cv, HASH_NAME);
+	act->name = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_STOCK_ID);
+	act->stock_id = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_LABEL);
+	act->label = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_ACCELERATOR);
+	act->accelerator = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_TOOLTIP);
+	act->tooltip = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_CALLBACK);
+	act->callback = (GCallback)callback_action;
+	_list_put_action(cm, act, c);
+
+}
+
+CLIP_DLLEXPORT void
+_map_to_toggle_action_entry (ClipMachine *cm, ClipVar *cv, GtkToggleActionEntry *act)
+{
+	ClipVar *c;
+
+	c = _clip_mget(cm, cv, HASH_NAME);
+	act->name = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_STOCK_ID);
+	act->stock_id = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_LABEL);
+	act->label = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_ACCELERATOR);
+	act->accelerator = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_TOOLTIP);
+	act->tooltip = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_CALLBACK);
+	act->callback = (GCallback)callback_action;
+	_list_put_action(cm, act, c);
+
+	c = _clip_mget(cm, cv, HASH_IS_ACTIVE);
+	act->is_active = c->l.val;
+
+}
+
+CLIP_DLLEXPORT void
+_map_to_radio_action_entry (ClipMachine *cm, ClipVar *cv, GtkRadioActionEntry *act)
+{
+	ClipVar *c;
+
+	c = _clip_mget(cm, cv, HASH_NAME);
+	act->name = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_STOCK_ID);
+	act->stock_id = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_LABEL);
+	act->label = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_ACCELERATOR);
+	act->accelerator = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_TOOLTIP);
+	act->tooltip = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_VALUE);
+	act->value = c->n.d;
+
+}
+
+CLIP_DLLEXPORT void
+_file_filter_info_to_map (ClipMachine *cm, GtkFileFilterInfo *info, ClipVar *cv)
+{
+
+        _clip_mputn(cm, cv, HASH_CONTAINS, info->contains);
+        _clip_mputc(cm, cv, HASH_FILENAME, (gchar *)info->filename, strlen(info->filename));
+        _clip_mputc(cm, cv, HASH_URI, (gchar *)info->uri, strlen(info->uri));
+        _clip_mputc(cm, cv, HASH_DISPLAY_NAME, (gchar *)info->display_name, strlen(info->display_name));
+        _clip_mputc(cm, cv, HASH_MIME_TYPE, (gchar *)info->mime_type, strlen(info->mime_type));
+}
+
+CLIP_DLLEXPORT void
+_map_to_file_filter_info(ClipMachine *cm, ClipVar *cv, GtkFileFilterInfo *info)
+{
+
+	ClipVar *c;
+
+	c = _clip_mget(cm, cv, HASH_CONTAINS);
+	info->contains = c->n.d;
+
+	c = _clip_mget(cm, cv, HASH_FILENAME);
+	info->filename = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_URI);
+	info->uri = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_DISPLAY_NAME);
+	info->display_name = c->s.str.buf;
+
+	c = _clip_mget(cm, cv, HASH_MIME_TYPE);
+	info->mime_type = c->s.str.buf;
+}
+
 

@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: ntx.c,v $
+	Revision 1.116  2004/05/26 09:52:24  clip
+	rust: some cleanings
+	
 	Revision 1.115  2004/03/15 10:53:43  clip
 	rust: GO TOP before processing INDEX ... ALL
-	
+
 	Revision 1.114  2004/02/09 11:13:31  clip
 	rust: SKIP with conditional index
 
@@ -261,7 +264,6 @@
 #include "../rdd.h"
 #include "error.ch"
 #include "./btree.h"
-#include "../clipbase.h"
 #ifdef HAVE_MMAN_H
 #include <sys/mman.h>
 #endif

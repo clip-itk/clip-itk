@@ -29,8 +29,8 @@ CLIP_DLLEXPORT GtkType _gtk_type_text_attributes() { return GTK_TYPE_TEXT_ATTRIB
 long _clip_type_text_tag() { return GTK_OBJECT_TEXT_TAG; }
 long _clip_type_text_attributes() { return GTK_OBJECT_TEXT_ATTRIBUTES; }
 
-const char * _clip_type_name_text_tag()  { return "GTK_TYPE_TEXT_TAG"; }
-const char * _clip_type_name_text_attributes()  { return "GTK_TYPE_TEXT_ATTRIBUTES"; }
+const char * _clip_type_name_text_tag()  { return "GTK_OBJECT_TEXT_TAG"; }
+const char * _clip_type_name_text_attributes()  { return "GTK_OBJECT_TEXT_ATTRIBUTES"; }
 
 int
 clip_INIT___TEXTTAG(ClipMachine *cm)

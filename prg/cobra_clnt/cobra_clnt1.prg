@@ -23,7 +23,8 @@ function main(iniFile)
 		@ 10,1 prompt "Append object        "
 		@ 11,1 prompt "Delete object        "
 		@ 12,1 prompt "CODB GETTVIEW        "
-		@ 13,1 prompt "Random Load speed tst"
+		@ 13,1 prompt "Dictionary List      "
+		@ 14,1 prompt "Random Load speed tst"
 		menu to nMenu
 		clear screen
 		do switch nMenu
@@ -54,6 +55,8 @@ function main(iniFile)
 			case 12
 				clnt_codbGetTview()
 			case 13
+				clnt_dlist()
+			case 14
 				clnt_randomLoad()
 		endswitch
 		? "Press any key to continue"
@@ -97,6 +100,16 @@ static function clnt_codbSelect()
 		clnt_browseListID(cDepId,cClass,oQuery:answer:return)
 	endif
 
+return
+/*************************************/
+static function clnt_dList()
+	local oQuery:=oConnect:QueryNew()
+	? "Send query:", oConnect:querySend(oQuery:id,"CODBDLIST"), oQuery
+	? oConnect:error
+	? "Wait answer",oConnect:answerWait(oQuery:id)//, len(oQuery:answer)
+	? "return is=",oQuery:answer:return
+	? "error is=",oQuery:answer:error
+	oConnect:queryDelete(oQuery:id)
 return
 /*************************************/
 static function clnt_codbGetTView()
@@ -510,15 +523,16 @@ static function clnt_randomLoad()
 	    for i=1 to len(a)
 		b:= __call_query("CODBSELECT","GBL0101",a[i])
 		? "Found",len(b),"objects for",a[i]
-		/*
+
 		count++
 		for j=1 to len(b)
 			c:= __call_query("CODBGETOBJ",b[j])
 			count++
 		next
-		*/
+		/*
 		c:= __call_query("CODBGETNOBJ",b)
 		count+=len(b)
+		*/
 		? "Loaded",count,"objects,",seconds()-tm,"seconds"
 		if (nkey :=inkey())!=0
 			exit

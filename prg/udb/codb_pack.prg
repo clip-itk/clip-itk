@@ -64,14 +64,17 @@ local mFiles := {;
 		version := filegetstr(h)
 		fclose(h)
 		? all[i],"",version,codb_version(),""
+		/*
 		if version==codb_version()
 			loop
 		endif
+		*/
 		for l=1 to len(mFiles)
 			dFile1:= all[i]+PATH_DELIM+mfiles[l][1]
 			dFile2:= all[i]+PATH_DELIM+"_"+mfiles[l][1]
 			remake := .f.
-			if codb_version() > "0.5.1" .and. file(dFile1+".dbf")
+			//if codb_version() > "0.5.1" .and. file(dFile1+".dbf")
+			if file(dFile1+".dbf")
 				select 0
 				use (dFile1)
 				dStr1 := dbstruct()
@@ -79,13 +82,16 @@ local mFiles := {;
 				dStr2 := codb_info(mfiles[l][2])
 				for j=1 to len(dStr2)
 					k := ascan(dStr1,{|x|x[1]==dStr2[j][1]})
-					if k>0
-						loop
+					if k>0 .and. dstr2[j][3] > dStr1[k][3]
+						remake := .t.
+						dStr1[k] := aclone(dStr2[j])
 					endif
-					remake := .t.
-					aadd(dStr1,"")
-					ains(dStr1,j)
-					dStr1[j] := aclone(dStr2[j])
+					if k < 0
+						remake := .t.
+						aadd(dStr1,"")
+						ains(dStr1,j)
+						dStr1[j] := aclone(dStr2[j])
+					endif
 				next
 			endif
 			//?? version, codb_version(), codb_version() > "0.5.1", remake

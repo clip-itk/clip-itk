@@ -6,6 +6,8 @@
 #undef  OSNAME 
 #define OSNAME "LINUX"
 #define OS_LINUX
+#define GTK2_VER_MAJOR 2
+#define GTK2_VER_MINOR 4
 #undef  SYSTEM 
 #define SYSTEM "Linux"
 

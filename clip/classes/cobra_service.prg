@@ -7,29 +7,44 @@
      Licence : (GPL) http://www.itk.ru/clipper/licence.html
 */
 
+#include "set.ch"
 #include "cobra.ch"
+#include "tcp.ch"
 
-function cobraServiceNew()
-	local obj:=map()
+function cobraServiceNew(oIni)
+	local tmp,obj:=map()
 	obj:classname	:= "COBRASERVICE"
 	obj:cHost	:= COBRA_DEFHOST
 	obj:nPort	:= COBRA_DEFPORT
-	obj:nTimeOut	:= COBRA_CONNECT_TIMEOUT
-	obj:nIOtimeOut	:= COBRA_IO_TIMEOUT
+	obj:nTimeOut	:= TCP_ACCEPT_TIMEOUT
+	obj:nIOtimeOut	:= TCP_IO_TIMEOUT
 	obj:nVersion	:= COBRA_VERSION
 	obj:nConnect	:= -1
 	obj:cLine	:= ""
 	obj:buffer	:= ""
 	obj:error	:= ""
+	obj:warning	:= ""
 	obj:errno	:= 0
 	obj:nSended	:= 0
 	obj:nReceived	:= 0
+	obj:rootPath    := "./"
 
 	obj:__queries	:= map()
+
+	/* install values from ini-file */
+	if valtype(oIni)=="O" .and. oIni:className == "INIFILE"
+
+		tmp = oIni:getValue("COBRA","ROOTPATH")
+		if !empty(tmp)
+			tmp := strtran(tmp,"$CLIPROOT",cliproot())
+		endif
+		obj:rootPath := tmp
+	endif
 
 	obj:info	:= cobraInfoNew()
 	obj:oIni	:= iniFileNew()
 	obj:connect	:=@ COBRA_connect()
+	obj:setRootPath	:=@ COBRA_setRootPath()
 	obj:close	:=@ COBRA_close()
 	obj:send	:=@ COBRA_send()
 	obj:sendLine	:=@ COBRA_sendLine()
@@ -37,12 +52,19 @@ function cobraServiceNew()
 	obj:receiveLine	:=@ COBRA_receiveLine()
 	obj:queryNew	:=@ COBRA_queryNew()
 	obj:querySend	:=@ COBRA_querySend()
+	obj:queryASend	:=@ COBRA_queryASend()
 	obj:queryDelete	:=@ COBRA_queryDelete()
 	obj:queryRun	:=@ COBRA_queryRun()
 	obj:answerSend	:=@ COBRA_answerSend()
 	obj:answerWait	:=@ COBRA_answerWait()
+
+	obj:errorBlock	:=@ COBRA_errorBlock()
 return obj
 
+/******************************/
+static function COBRA_setRootPath(self)
+	set(_SET_ROOTPATH,self:rootPath)
+return
 /******************************/
 static function COBRA_connect()
 	local ret:=.t.
@@ -89,7 +111,7 @@ static function COBRA_receive(nBytes)
 	if ::nConnect < 0
 		return .f.
 	endif
-	nBytes := iif( valtype(nBytes)=="N",nBytes,COBRA_BUFLEN)
+	nBytes := iif( valtype(nBytes)=="N",nBytes,TCP_BUFLEN)
 	cBuf := space(nBytes,.t.)
 	nL := tcpRead( ::nConnect, @cbuf, nBytes, ::nIOtimeOut )
 	if nL > 0
@@ -147,7 +169,7 @@ static function __isAnswer(oAnswer)
 	endif
 return .t.
 /******************************/
-static function COBRA_querySend(nQuery,cCommand,arg1,arg2,arg3,arg4,arg5)
+static function COBRA_querySend(nQuery,cCommand,arg1,arg2,arg3,arg4)
 	local oQuery,i,ret := .t., str:=""
 	if valtype(nQuery) != "N"
 		ret := .f.
@@ -169,6 +191,30 @@ static function COBRA_querySend(nQuery,cCommand,arg1,arg2,arg3,arg4,arg5)
 	for i=4 to pcount()
 		aadd(oQuery:args,param(i))
 	next
+	str+="QUERY "+alltrim(str(oQuery:id))+" "
+	str+=var2Str(oQuery)
+return	::sendLine(str)
+/******************************/
+static function COBRA_queryASend(nQuery,cCommand,aParams)
+	local oQuery,i,ret := .t., str:=""
+	if valtype(nQuery) != "N"
+		ret := .f.
+	endif
+	if ret .and. ! (nQuery $ ::__queries)
+		ret := .f.
+	endif
+	if ret
+		oQuery := ::__queries[nQuery]
+	endif
+	if !ret .or. !__isQuery(oQuery)
+		::errno := COBRA_ERR_BADQUERY
+		::error := [Bad cobraQuery object]
+		return .f.
+	endif
+	if !empty(cCommand)
+		oQuery:command := cCommand
+	endif
+	oQuery:args:=aclone(aParams)
 	str+="QUERY "+alltrim(str(oQuery:id))+" "
 	str+=var2Str(oQuery)
 return	::sendLine(str)
@@ -286,6 +332,8 @@ static function COBRA_queryRun(self,oQuery,oIniData)
 	begin sequence
 	oAnswer:id := oQuery:id
 	do case
+		case oQuery:command == "CODBUNIFY"
+			__run_codbunify(oQuery:args,oAnswer)
 		case oQuery:command == "CODBSELECT"
 			__run_codbselect(oQuery:args,oAnswer)
 		case oQuery:command == "CODBDELOBJ"
@@ -354,6 +402,22 @@ static function __check_args(qArgs,nLen,aTypes)
 		endif
 	next
 return .t.
+/******************************/
+static function __run_codbUnify(qArgs,oAnswer)
+	local i,cCmd, args:={}
+	if valtype(qArgs) !="A" .or. len(qArgs)<1 .or. valtype(qArgs[1]) != "C"
+		oAnswer:errno := COBRA_ERR_BADARG
+		return
+	endif
+	cCmd := qArgs[1]
+	for i=2 to len(qArgs)
+		aadd(args,qArgs[i])
+	next
+	clip("codb_unify",cCmd,Args,oAnswer)
+	if !empty(oAnswer:error) .and. empty(oAnswer:errno)
+		oAnswer:errno := COBRA_ERR_CODB
+	endif
+return
 /******************************/
 static function __run_codbselect(qArgs,oAnswer)
 	local oDep,class_id,cExpr,index,numbers,tmp
@@ -655,7 +719,7 @@ static function __run_getmyfile(oConnect,qArgs,oAnswer)
 return
 /******************************/
 static function __check_clnt_info(sInfo,qArgs,oAnswer)
-	local i,j,x,ret := .t.
+	local i,j,x,a,ret := .t.
 	local cInfo
 	if ! __check_args(qArgs,1,{"O"})
 		oAnswer:errno := COBRA_ERR_BADARG
@@ -677,7 +741,7 @@ static function __check_clnt_info(sInfo,qArgs,oAnswer)
 	/* check langs */
 	x := .f.
 	for i=1 to len(cInfo:langs)
-		j := ascan(sInfo:langs,cInfo:langs[i])
+		j := ascan(sInfo:langs,{|a|upper(a)==upper(cInfo:langs[i])})
 		if j<=0
 			loop
 		endif
@@ -696,7 +760,7 @@ static function __check_clnt_info(sInfo,qArgs,oAnswer)
 	/* check charsets */
 	x := .f.
 	for i=1 to len(cInfo:charsets)
-		j := ascan(sInfo:charsets,cInfo:charsets[i])
+		j := ascan(sInfo:charsets,{|a|upper(a) == upper(cInfo:charsets[i])})
 		if j<=0
 			loop
 		endif
@@ -715,7 +779,7 @@ static function __check_clnt_info(sInfo,qArgs,oAnswer)
 	/* check crypts */
 	x := .f.
 	for i=1 to len(cInfo:crypts)
-		j := ascan(sInfo:crypts,cInfo:crypts[i])
+		j := ascan(sInfo:crypts,{|a|upper(a)==upper(cInfo:crypts[i])})
 		if j<=0
 			loop
 		endif
@@ -733,4 +797,8 @@ static function __check_clnt_info(sInfo,qArgs,oAnswer)
 	endif
 	oAnswer:return := cInfo
 return .t.
+/*****************************************/
+static function COBRA_ErrorBlock(self,err)
+	break(err)
+return
 

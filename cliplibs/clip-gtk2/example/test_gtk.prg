@@ -7,8 +7,8 @@ vbox := gtk_VBoxNew()
 gtk_ContainerAdd( window, vbox )
 
 tb := gtk_ToolBarNew()
-pic := gtk_PixmapFromXPMNew(, "x.xpm")
-pic1 = gtk_PixmapFromXPMNew(, "x.xpm")
+pic := gdk_PixmapFromXPMNew(, "x.xpm")
+pic1 = gdk_PixmapFromXPMNew(, "x.xpm")
 gtk_ToolBarAppendItem(tb,NIL, "Button 1", NIL, pic, @action())
 gtk_ToolBarAppendItem(tb,NIL, "Button 2", NIL, pic1, @action())
 

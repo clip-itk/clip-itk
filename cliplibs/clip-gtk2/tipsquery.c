@@ -72,7 +72,7 @@ static SignalTable tips_query_signals[] =
 /**********************************************************/
 CLIP_DLLEXPORT GtkType _gtk_type_tips_query() { return GTK_TYPE_TIPS_QUERY; }
 long _clip_type_tips_query() { return GTK_WIDGET_TIPS_QUERY; }
-const char * _clip_type_name_tips_query()  { return "GTK_TYPE_TIPS_QUERY"; }
+const char * _clip_type_name_tips_query()  { return "GTK_OBJECT_TIPS_QUERY"; }
 
 /* Register toolbar in global table */
 int

@@ -494,4 +494,68 @@ clip_GTK_MESSAGEDIALOGNEW(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_MESSAGEDIALOGNEWWITHMARKUP(ClipMachine * cm)
+{
+	ClipVar         * cv = _clip_spar(cm, 1);
+        C_widget     * cpwin = _fetch_cwidget(cm, _clip_spar(cm, 2));
+        GtkDialogFlags flags = INT_OPTION(cm, 3, 0);
+        GtkMessageType  msgs = INT_OPTION(cm, 4, 0);
+        GtkButtonsType  btns = INT_OPTION(cm, 5, 0);
+	GtkWidget       *wid = NULL;
+	C_widget *cwid;
 
+        gint            i, n = _clip_parinfo(cm, 0)-5;
+        gchar  *mfmt[n];
+
+	CHECKOPT(1,MAP_t);
+	CHECKOPT2(2,MAP_t, NUMERIC_t); CHECKCWIDOPT(cpwin, GTK_WINDOW);
+	CHECKOPT(3, NUMERIC_t);
+        CHECKARG(4, NUMERIC_t);
+        CHECKARG(5, NUMERIC_t);
+
+        memset(mfmt, 0, sizeof(mfmt));
+        for(i=0; i<n; i++)
+        {
+        	CHECKOPT(i+4, CHARACTER_t);
+        	if (_clip_parinfo(cm, i+4)== UNDEF_t)
+                	break;
+        	mfmt[i] = _clip_parc(cm, i+4);
+        }
+	wid = gtk_message_dialog_new_with_markup(
+		(cpwin != NULL)?GTK_WINDOW(cpwin->widget):NULL,
+		flags, msgs, btns,
+		mfmt[0],  mfmt[1],  mfmt[2],  mfmt[3],  mfmt[4],
+		mfmt[5],  mfmt[6],  mfmt[7],  mfmt[8],  mfmt[9],
+		mfmt[10], mfmt[11], mfmt[12], mfmt[13], mfmt[14],
+		mfmt[15], mfmt[16], mfmt[17], mfmt[18], mfmt[19]
+		);
+        if (!wid) goto err;
+	//cwid = (C_widget*)calloc( 1, sizeof(C_widget) );
+	cwid = _register_widget(cm, wid, cv);
+
+	cwid->accel_group = gtk_accel_group_new();
+	gtk_window_add_accel_group (GTK_WINDOW (wid), cwid->accel_group);
+
+	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_MESSAGEDIALOGSETMARKUP(ClipMachine * cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+        gchar  *markup = _clip_parc(cm, 2);
+
+        CHECKCWID(cwid, GTK_IS_MESSAGE_DIALOG);
+        CHECKARG(2, CHARACTER_t);
+
+	gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(cwid->widget), markup);
+	return 0;
+err:
+	return 1;
+}
+#endif

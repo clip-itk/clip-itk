@@ -26,6 +26,10 @@ function codb_error(num)
 			last_error := [Invalid arguments]
 		case 1008
 			last_error := [System error]
+/*
+		case 1009
+			last_error := [Can`t switch access mode to readwrite]
+*/
 /* dictionary errors */
 		case 1020
 			last_error := [Dictionary path not inizialized]
@@ -77,6 +81,8 @@ function codb_error(num)
 			last_error := [Meta name not defined]
 		case 1044
 			last_error := [Bad attribute name]
+		case 1045
+			last_error := [Bad method/attribute name]
 /* depository errors */
 		case 1100
 			last_error := [Depository identification not found]

@@ -4,9 +4,18 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.311  2004/05/28 13:47:20  clip
+	rust: minor fix in rdd_err() (showing OS error code)
+	
+	Revision 1.310  2004/05/26 09:52:24  clip
+	rust: some cleanings
+
+	Revision 1.309  2004/05/11 11:33:29  clip
+	rust: rdd_checkifnew() on rdd_createfilter(); minor fix in rdd_createfilter()
+
 	Revision 1.308  2004/04/29 09:27:18  clip
 	rust: recalculate filter's codeblock if expression is changed for any reason
-	
+
 	Revision 1.307  2004/04/08 13:04:49  clip
 	rust: fix in filter parsing; suppres generating error when expression is
 	not optimizable and contains syntax errors
@@ -772,7 +781,6 @@
 #include <string.h>
 #include <limits.h>
 #include <time.h>
-#include "../clipbase.h"
 #include "../rdd.h"
 #include "coll.h"
 #include "../screen/charset.h"
@@ -1115,6 +1123,7 @@ int _clip_rddfield(ClipMachine* cm,int h,int no){
 
 int rdd_err(ClipMachine* cm,int genCode,int osCode,const char* subSystem,
 			 int line,const char* operation,const char* desc){
+	ClipVar *vp;
 	char buf[256];
 	if(osCode){
 #ifndef OS_MINGW
@@ -1127,11 +1136,12 @@ int rdd_err(ClipMachine* cm,int genCode,int osCode,const char* subSystem,
 			cm->syserr,strlen(cm->syserr));
 #endif
 	}
-	_clip_logg(0,"RDD layer error: %s/%d: %s: %s",subSystem,line,desc,operation);
+	/*_clip_logg(0,"RDD layer error: %s/%d: %s: %s",subSystem,line,desc,operation);*/
 	snprintf(buf,sizeof(buf),"%s: %s",desc,operation);
-	_clip_trap_err(cm, genCode, osCode, 0, subSystem, line, buf);
-	/*return genCode;*/
-	return _clip_call_errblock(cm, genCode);
+	vp = _clip_new_error(cm, _clip_errname(genCode), 2, genCode, osCode,
+		0, 0, 0, 1, subSystem, line, buf);
+	_clip_trap_var(cm, cm->fp ? cm->fp->filename : "", cm->fp ? cm->fp->line : 0, vp);
+	return genCode;
 }
 
 void rdd_expandmacro(int area,int r,const char* key,char* expr){
@@ -2772,6 +2782,7 @@ int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _blo
 	int er;
 
 	*fpp = NULL;
+	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	fp->fps = calloc(1,sizeof(RDD_FPS));
 	fp->rd = rd;
 	if(str){
@@ -2779,10 +2790,12 @@ int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _blo
 	}
 	if((cm->flags1 & OPTIMIZE_FLAG) && !lNoOptimize && str){
 		er = rdd_initrushmore(cm,rd,fp,remap,0,__PROC__);
-		_clip_destroy(cm,_block);
+		if(fp->rmap)
+			_clip_destroy(cm,_block);
 	} else if(str && remap && remap->t.type == ARRAY_t){
 		er = rdd_initrushmore(cm,rd,fp,remap,1,__PROC__);
-		_clip_destroy(cm,_block);
+		if(fp->rmap)
+			_clip_destroy(cm,_block);
 	}
 	fp->nfps = 1;
 	if((!_block || _block->t.type == UNDEF_t) && str){

@@ -53,57 +53,57 @@ function a2edit
     FancyColors(browse)
     lMore := .T.
     DO WHILE lMore
-        IF browse:colPos <= browse:freeze
-            browse:colPos := browse:freeze + 1
-        ENDIF
+	IF browse:colPos <= browse:freeze
+	    browse:colPos := browse:freeze + 1
+	ENDIF
 
-        nKey := 0
-        DO WHILE nKey == 0 .AND. .NOT. browse:stable
-            browse:stabilize()
-            nKey := InKey()
-        ENDDO
+	nKey := 0
+	DO WHILE nKey == 0 .AND. .NOT. browse:stable
+	    browse:stabilize()
+	    nKey := InKey()
+	ENDDO
 
-        IF browse:stable
-                IF browse:hitTop .OR. browse:hitBottom
-                    TONE(125, 0)
-                ENDIF
-                browse:refreshCurrent()
-                browse:ForceStable()
-                nKey := InKey(0)
-        ENDIF
+	IF browse:stable
+		IF browse:hitTop .OR. browse:hitBottom
+		    TONE(125, 0)
+		ENDIF
+		browse:refreshCurrent()
+		browse:ForceStable()
+		nKey := InKey(0)
+	ENDIF
 
-        IF empty(user_func) .and. (nKey == K_ESC .or. nkey==K_ENTER)
-            lMore := .F.
-        ELSE
-            ApplyKey(browse, nKey)
+	IF empty(user_func) .and. (nKey == K_ESC .or. nkey==K_ENTER)
+	    lMore := .F.
+	ELSE
+	    ApplyKey(browse, nKey)
 
-            if empty(user_func)
-               loop
-            endif
-            status:=DE_IDLE
-            if lastrec()==0
-               status:=DE_EMPTY
-            endif
-            if browse:hitTop
-               status:=DE_HITTOP
-            endif
-            if browse:hitBottom
-               status:=DE_HITBOTTOM
-            endif
-            // DE_EXCEPT           4          // Клавиша не обрабатывается DBEDIT()
-            if "(" $ user_func
-                __userfunc:=user_func
-            else
-                __userfunc:=user_func+"("+alltrim(str(status))+","+alltrim(str(browse:colPos))+")"
-            endif
-            ret=&__userfunc
-            if ret==DE_ABORT
-               lmore:=.f.
-            endif
-            if ret==DE_REFRESH
-               browse:refreshAll()
-            endif
-        ENDIF
+	    if empty(user_func)
+	       loop
+	    endif
+	    status:=DE_IDLE
+	    if lastrec()==0
+	       status:=DE_EMPTY
+	    endif
+	    if browse:hitTop
+	       status:=DE_HITTOP
+	    endif
+	    if browse:hitBottom
+	       status:=DE_HITBOTTOM
+	    endif
+	    // DE_EXCEPT           4          // Клавиша не обрабатывается DBEDIT()
+	    if "(" $ user_func
+		__userfunc:=user_func
+	    else
+		__userfunc:=user_func+"("+alltrim(str(status))+","+alltrim(str(browse:colPos))+")"
+	    endif
+	    ret=&__userfunc
+	    if ret==DE_ABORT
+	       lmore:=.f.
+	    endif
+	    if ret==DE_REFRESH
+	       browse:refreshAll()
+	    endif
+	ENDIF
     ENDDO
 
     SETCURSOR(nCursSave)
@@ -111,13 +111,13 @@ function a2edit
 
 return  NIL
 
-function get_a2_data(n, new_data)
+function __a2_edit_get_a2_data(n, new_data)
        local ret:=NIL
        if n<=len(__a2_data) .and. curr_record<=len(__a2_data[n])
-          ret=__a2_data[n][curr_record]
-          if new_data!=NIL
-             __a2_data[n][curr_record]:=new_data
-          endif
+	  ret=__a2_data[n][curr_record]
+	  if new_data!=NIL
+	     __a2_data[n][curr_record]:=new_data
+	  endif
        endif
 return ret
 
@@ -135,33 +135,33 @@ STATIC PROCEDURE ApplyKey(browse, nKey)
     local status
     DO CASE
     CASE nKey == K_DOWN
-        browse:down()
+	browse:down()
     CASE nKey == K_PGDN
-        browse:pageDown()
+	browse:pageDown()
     CASE nKey == K_CTRL_PGDN
-        browse:goBottom()
+	browse:goBottom()
     CASE nKey == K_UP
-        browse:up()
+	browse:up()
     CASE nKey == K_PGUP
-        browse:pageUp()
+	browse:pageUp()
     CASE nKey == K_CTRL_PGUP
-        browse:goTop()
+	browse:goTop()
     CASE nKey == K_RIGHT
-        browse:right()
+	browse:right()
     CASE nKey == K_LEFT
-        browse:left()
+	browse:left()
     CASE nKey == K_HOME
-        browse:home()
+	browse:home()
     CASE nKey == K_END
-        browse:end()
+	browse:end()
     CASE nKey == K_CTRL_LEFT
-        browse:panLeft()
+	browse:panLeft()
     CASE nKey == K_CTRL_RIGHT
-        browse:panRight()
+	browse:panRight()
     CASE nKey == K_CTRL_HOME
-        browse:panHome()
+	browse:panHome()
     CASE nKey == K_CTRL_END
-        browse:panEnd()
+	browse:panEnd()
     OTHERWISE
     ENDCASE
 RETURN
@@ -171,20 +171,20 @@ STATIC PROCEDURE FancyColors(browse)
     LOCAL xValue
     browse:colorSpec := setcolor()
     if empty(browse:colorSpec)
-         browse:colorSpec := "N/W, N/BG, B/W, B/BG, B/W, B/BG, R/W, B/R"
+	 browse:colorSpec := "N/W, N/BG, B/W, B/BG, B/W, B/BG, R/W, B/R"
     else
-         browse:colorSpec := setcolor()+", N/W, N/BG, B/W, B/BG, B/W, B/BG, R/W, B/R"
+	 browse:colorSpec := setcolor()+", N/W, N/BG, B/W, B/BG, B/W, B/BG, R/W, B/R"
     endif
     FOR n := 1 TO browse:colCount
-        column := browse:getColumn(n)
-        xValue := EVAL(column:block)
+	column := browse:getColumn(n)
+	xValue := EVAL(column:block)
 
-        IF VALTYPE(xValue) != "N"
-            column:defColor := {3, 4}
-        ELSE
-            column:colorBlock := {|x| if( x < 0, {7, 8}, {5, 6} )}
-            column:defColor := {7, 8}
-        ENDIF
+	IF VALTYPE(xValue) != "N"
+	    column:defColor := {3, 4}
+	ELSE
+	    column:colorBlock := {|x| if( x < 0, {7, 8}, {5, 6} )}
+	    column:defColor := {7, 8}
+	ENDIF
     NEXT
 RETURN
 
@@ -192,10 +192,10 @@ STATIC FUNCTION StockBrowseNew( browse, len_data, headers, footers )
     LOCAL n, column, cType, strhead, strfoot
     local __cname
     if empty(headers)
-          headers:={}
+	  headers:={}
     endif
     if empty(footers)
-          footers:={}
+	  footers:={}
     endif
     if valtype(headers)=="C"
        strhead=headers
@@ -205,7 +205,7 @@ STATIC FUNCTION StockBrowseNew( browse, len_data, headers, footers )
     endif
     if valtype(headers)=="A"
        for n = len(headers)+1 to len_data
-           aadd(headers,str(n))
+	   aadd(headers,str(n))
        next
     endif
     if valtype(footers)=="C"
@@ -216,16 +216,16 @@ STATIC FUNCTION StockBrowseNew( browse, len_data, headers, footers )
     endif
     if valtype(footers)=="A"
        for n = len(footers)+1 to len_data
-           aadd(footers,"")
+	   aadd(footers,"")
        next
     endif
     FOR n := 1 TO len_data
-        __cname:="{|_1| get_a2_data("+alltrim(str(n))+",_1)}"
-        __cname:=&__cname
-        column := TBColumnNew("__a2_data["+alltrim(str(n))+"]", __cname)
-        column:heading:=headers[n]
-        column:footing:=footers[n]
-        browse:addColumn(column)
+	__cname:="{|_1| __a2_edit_get_a2_data("+alltrim(str(n))+",_1)}"
+	__cname:=&__cname
+	column := TBColumnNew("__a2_data["+alltrim(str(n))+"]", __cname)
+	column:heading:=headers[n]
+	column:footing:=footers[n]
+	browse:addColumn(column)
     next
 RETURN NIL
 

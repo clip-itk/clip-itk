@@ -27,7 +27,7 @@ function codb_IdList(oDbm,metaName,nIndex,sName,whereExpr,nCount,deleted)
 	obj:nIndex	:= iif(valtype(nIndex)=="A",NIL,nIndex)
 	obj:DbmClosing  := .f.
 
-	obj:__chacheBody:= NIL
+	obj:__cacheBody:= NIL
 	obj:__locateExpr:= NIL
 
 
@@ -40,6 +40,7 @@ function codb_IdList(oDbm,metaName,nIndex,sName,whereExpr,nCount,deleted)
 	obj:setIndex	:= @list_setIndex()
 
 	obj:delete	:= @list_delete()
+	obj:undelete	:= @list_undelete()
 	obj:add		:= @list_add()
 	obj:append	:= @list_add()
 	obj:update	:= @list_update()
@@ -164,6 +165,9 @@ static function list_getValue(fieldName)
 	local oBody,i,k, ret
 	if ::__cacheBody == NIL
 		oBody := ::oDbm:getValue(::currId)
+		if empty(::oDbm:error)
+			::__cacheBody := oBody
+		endif
 	else
 		oBody := ::__cacheBody
 	endif
@@ -215,6 +219,12 @@ return  oBody
 ************************************************************
 static function list_delete()
 	local ret := ::oDbm:delete(::currId)
+	::error := ::oDbm:error
+	::refresh()
+return ret
+************************************************************
+static function list_undelete()
+	local ret := ::oDbm:undelete(::currId)
 	::error := ::oDbm:error
 	::refresh()
 return ret

@@ -4,6 +4,9 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log: cdx.c,v $
+	Revision 1.151  2004/05/26 09:52:24  clip
+	rust: some cleanings
+	
 	Revision 1.150  2004/04/20 12:18:49  clip
 	rust: minor fix
 	
@@ -416,7 +419,6 @@
 #include "../rdd.h"
 #include "error.ch"
 #include "./btree.h"
-#include "../clipbase.h"
 #include "../clipcfg.h"
 #ifdef HAVE_REGEX_H
 	#include <regex.h>

@@ -53,6 +53,9 @@ Field operations:
   LowerCase		AltL		UpperCase		AltU
   QWERTY->NatKbd	AltQ		NatKbd->QWERTY		AltY
   Capitalize		AltK		Align			AltJ
+  Justify		AltJ
+  Move Col Left		CtrlShift<-	Move Col Right		CtrlShift->
+  Hide ‘ol		Ctrl+H		UnHide Col		Ctrl+Shift+H
 
 Clipboard:
   Copy To		CtrlGrey+	Show			CtrlEnter

@@ -9,6 +9,7 @@
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"

@@ -70,9 +70,12 @@ _text_tag_table_for_each_func(GtkTextTag *tag, gpointer data)
 	{
 		memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
 		_clip_mclone(c->co->cmachine, &stack[0], &c->co->obj);
-		stack[1] = c_obj->obj;
+		_clip_mclone(c->co->cmachine, &stack[1], &c_obj->obj);
+		//stack[1] = c_obj->obj;
 		_clip_eval( c->cm, &(c->cfunc), 2, stack, &res );
 		_clip_destroy(c->cm, &res);
+		_clip_destroy(c->cm, &stack[0]);
+		_clip_destroy(c->cm, &stack[1]);
 	}
 }
 
@@ -81,7 +84,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_text_tag_table() { return GTK_TYPE_TEXT_TAG_TAB
 
 long _clip_type_text_tag_table() { return GTK_OBJECT_TEXT_TAG_TABLE; }
 
-const char * _clip_type_name_text_tag_table()  { return "GTK_TYPE_TEXT_TAG_TABLE"; }
+const char * _clip_type_name_text_tag_table()  { return "GTK_OBJECT_TEXT_TAG_TABLE"; }
 
 int
 clip_INIT___TEXTTAGTABLE(ClipMachine *cm)

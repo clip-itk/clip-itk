@@ -56,7 +56,7 @@ function objBrowse
 
 return  NIL
 
-function get_a2_data(field, new_data)
+function __ob_get_a2_data(field, new_data)
        local ret:=NIL
        if curr_record<=len(__a2_data) .and. field $ __a2_data[curr_record]
 	  ret=__a2_data[curr_record][field]
@@ -80,7 +80,7 @@ STATIC FUNCTION StockBrowseNew( browse, len_data,fields, headers, footers )
     LOCAL n, column, cType, strhead, strfoot
     local __cname
     FOR n := 1 TO len_data
-	__cname:='{|_1| get_a2_data("'+upper(fields[n]:name)+'",_1)}'
+	__cname:='{|_1| __ob_get_a2_data("'+upper(fields[n]:name)+'",_1)}'
 	__cname:=&__cname
 	column := TBColumnNew(headers[n], __cname)
 	column:heading:=headers[n]

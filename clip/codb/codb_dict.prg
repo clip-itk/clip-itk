@@ -52,6 +52,7 @@ static function coDict_new(self,sDict,user,passwd)
 		return self
 	endif
 	o2self(self,oDict)
+	d:close()
 return self
 
 **************************************************

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003-2004  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -32,30 +32,78 @@ handle_move_cursor(GtkTreeView *tree, GtkMovementStep arg1, gint arg2, C_signal 
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_ARG2, arg2);
 	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
 }
-/*
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 static int
-handle_row_activated(GtkTreeView *tree, GtkTypeTreePath arg1, GtkTreeViewColumn *arg2, C_signal *cs)
+handle_row_activated(GtkTreeView *tree, GtkTreePath *arg1, GtkTreeViewColumn *arg2, C_signal *cs)
 {
+	C_object *cpath;
+	C_object *ccolumn;
 	PREPARECV(cs,cv);
 
+	if (arg1)
+	{
+		cpath = _list_get_cobject(cs->cw->cmachine, arg1);
+		if (!cpath) cpath = _register_object(cs->cw->cmachine,arg1,GTK_TYPE_TREE_PATH,NULL,NULL);
+		if (cpath) _clip_madd(cs->cw->cmachine, &cv, HASH_TREEPATH, &cpath->obj);
+	}
+
+	if (arg2)
+	{
+		ccolumn = _list_get_cobject(cs->cw->cmachine, arg2);
+		if (!ccolumn) ccolumn = _register_object(cs->cw->cmachine,arg2,GTK_TYPE_TREE_VIEW_COLUMN,NULL,NULL);
+		if (ccolumn) _clip_madd(cs->cw->cmachine, &cv, HASH_VIEWCOLUMN, &ccolumn->obj);
+	}
+	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
+}
+static int
+handle_row_collapsed(GtkTreeView *tree, GtkTreeIter *arg1, GtkTreePath *arg2, C_signal *cs)
+{
+	C_object *cpath;
+	C_object *citer;
+	PREPARECV(cs,cv);
+	if (arg1)
+	{
+		citer = _list_get_cobject(cs->cw->cmachine, arg1);
+		if (!citer) citer = _register_object(cs->cw->cmachine,arg1,GTK_TYPE_TREE_ITER,NULL,NULL);
+		if (citer) _clip_madd(cs->cw->cmachine, &cv, HASH_TREEITER, &citer->obj);
+	}
+
+
+	if (arg2)
+	{
+		cpath = _list_get_cobject(cs->cw->cmachine, arg2);
+		if (!cpath) cpath = _register_object(cs->cw->cmachine,arg2,GTK_TYPE_TREE_PATH,NULL,NULL);
+		if (cpath) _clip_madd(cs->cw->cmachine, &cv, HASH_TREEPATH, &cpath->obj);
+	}
 
 	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
 }
 static int
-handle_row_collapsed(GtkTreeView *tree, GtkTypeTreeIter arg1, GtkTypeTreePath arg2, C_signal *cs)
+handle_row_expanded(GtkTreeView *tree, GtkTreeIter *arg1, GtkTreePath *arg2, C_signal *cs)
 {
+	C_object *cpath;
+	C_object *citer;
 	PREPARECV(cs,cv);
+	if (arg1)
+	{
+		citer = _list_get_cobject(cs->cw->cmachine, arg1);
+		if (!citer) citer = _register_object(cs->cw->cmachine,arg1,GTK_TYPE_TREE_ITER,NULL,NULL);
+		if (citer) _clip_madd(cs->cw->cmachine, &cv, HASH_TREEITER, &citer->obj);
+	}
+
+
+	if (arg2)
+	{
+		cpath = _list_get_cobject(cs->cw->cmachine, arg2);
+		if (!cpath) cpath = _register_object(cs->cw->cmachine,arg2,GTK_TYPE_TREE_PATH,NULL,NULL);
+		if (cpath) _clip_madd(cs->cw->cmachine, &cv, HASH_TREEPATH, &cpath->obj);
+	}
+
 
 	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
 }
-static int
-handle_row_expanded(GtkTreeView *tree, GtkTypeTreeIter arg1, GtkTypeTreePath arg2, C_signal *cs)
-{
-	PREPARECV(cs,cv);
+#endif
 
-	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
-}
-*/
 static int
 handle_select_cursor_row(GtkTreeView *tree, gboolean arg1, C_signal *cs)
 {
@@ -80,21 +128,21 @@ handle_set_scroll_adjustments(GtkTreeView *tree, GtkAdjustment *arg1, GtkAdjustm
 
 	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
 }
+static int
+handle_test_collapse_row(GtkTreeView *tree,  C_signal *cs)
+{
+	PREPARECV(cs,cv);
+
+	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
+}
+static int
+handle_test_expand_row(GtkTreeView *tree, C_signal *cs)
+{
+	PREPARECV(cs,cv);
+
+	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
+}
 /*
-static int
-handle_test_collapse_row(GtkTreeView *tree, GtkTypeTreeIter arg1, GtkTypeTreePath arg2, C_signal *cs)
-{
-	PREPARECV(cs,cv);
-
-	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
-}
-static int
-handle_test_expand_row(GtkTreeView *tree, GtkTypeTreeIter arg1, GtkTypeTreePath arg2, C_signal *cs)
-{
-	PREPARECV(cs,cv);
-
-	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
-}
 */
 static SignalTable tree_view_signals[] =
 {
@@ -102,16 +150,18 @@ static SignalTable tree_view_signals[] =
 	{"cursor-changed",	GSF( widget_signal_handler ), ESF( object_emit_signal ), GTK_CURSOR_CHANGED_SIGNAL},
 	{"expand-collapse-cursor-row",	GSF( handle_expand_collapse_cursor_row ), ESF( object_emit_signal ), GTK_CURSOR_CHANGED_SIGNAL},
 	{"move-cursor",		GSF( handle_move_cursor ), ESF( object_emit_signal ), GTK_MOVE_CURSOR_SIGNAL},
-/*	{"row-activated",	GSF( handle_row_activated ), ESF( object_emit_signal ), GTK_ROW_ACTIVATED_SIGNAL}, */
-/*	{"row-collapsed",	GSF( handle_row_collapsed ), ESF( object_emit_signal ), GTK_ROW_COLLAPSED_SIGNAL}, */
-/* 	{"row-expanded",	GSF( handle_row_expanded ), ESF( object_emit_signal ), GTK_ROW_EXPANDED_SIGNAL}, */
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+	{"row-activated",	GSF( handle_row_activated ), ESF( object_emit_signal ), GTK_ROW_ACTIVATED_SIGNAL},
+	{"row-collapsed",	GSF( handle_row_collapsed ), ESF( object_emit_signal ), GTK_ROW_COLLAPSED_SIGNAL},
+ 	{"row-expanded",	GSF( handle_row_expanded ), ESF( object_emit_signal ), GTK_ROW_EXPANDED_SIGNAL},
+#endif
 	{"select-all",		GSF( widget_signal_handler ), ESF( object_emit_signal ), GTK_SELECT_ALL_SIGNAL},
 	{"select-cursor-parent",GSF( widget_signal_handler ), ESF( object_emit_signal ), GTK_SELECT_CURSOR_PARENT_SIGNAL},
 	{"select-cursor-row",	GSF( handle_select_cursor_row ), ESF( object_emit_signal ), GTK_SELECT_CURSOR_ROW_SIGNAL},
 	{"set-scroll-adjustments",	GSF( handle_set_scroll_adjustments ), ESF( object_emit_signal ), GTK_SET_SCROLL_ADJUSTMENTS_SIGNAL},
 	{"start-interactive-search",	GSF( widget_signal_handler ), ESF( object_emit_signal ), GTK_START_INTERACTIVE_SEARCH_SIGNAL},
-/*	{"test-collapse-row",	GSF( handle_test_collapse_row ), ESF( object_emit_signal ), GTK_TEST_COLLAPSE_ROW_SIGNAL}, */
-/*	{"test-expand-row",	GSF( handle_test_expand_row ), ESF( object_emit_signal ), GTK_TEST_EXPAND_ROW_SIGNAL}, */
+	{"test-collapse-row",	GSF( handle_test_collapse_row ), ESF( object_emit_signal ), GTK_TEST_COLLAPSE_ROW_SIGNAL},
+	{"test-expand-row",	GSF( handle_test_expand_row ), ESF( object_emit_signal ), GTK_TEST_EXPAND_ROW_SIGNAL},
 	{"toggle-cursor-row",	GSF( widget_signal_handler ), ESF( object_emit_signal ), GTK_TOGGLE_CURSOR_ROW_SIGNAL},
 	{"unselect-all",	GSF( widget_signal_handler ), ESF( object_emit_signal ), GTK_UNSELECT_ALL_SIGNAL},
 	{"", NULL, NULL, 0}
@@ -122,7 +172,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_tree_view() { return GTK_TYPE_TREE_VIEW; }
 
 long _clip_type_tree_view() { return GTK_WIDGET_TREE_VIEW; }
 
-const char * _clip_type_name_tree_view()  { return "GTK_TYPE_TREE_VIEW"; }
+const char * _clip_type_name_tree_view()  { return "GTK_OBJECT_TREE_VIEW"; }
 
 /* Register boxes in global table */
 int
@@ -1145,9 +1195,36 @@ int
 clip_GTK_TREEVIEWENABLEMODELDRAGDEST(ClipMachine * cm)
 {
 	C_widget *ctree = _fetch_cw_arg(cm);
+        ClipArrVar   *ctag = (ClipArrVar*)_clip_vptr(_clip_spar(cm, 2));
+	gint      ntargets = _clip_parni(cm, 3);
+	GdkDragAction actions = _clip_parni(cm, 4);
 
 	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
-        /* not realized */
+        CHECKARG(2, ARRAY_t);
+        CHECKARG(3, NUMERIC_t);
+        CHECKARG(4, NUMERIC_t);
+
+	if (ctag)
+        {
+        	GtkTargetEntry *tags;
+                gint i;
+
+                tags = malloc(ctag->count*sizeof(GtkTargetEntry));
+                memset(tags, 0, sizeof(GtkTargetEntry)*ctag->count);
+                for (i=0; i<ctag->count; i++)
+                	_array_to_target_entry(cm, &ctag->items[i], &tags[i]);
+        	gtk_tree_view_enable_model_drag_dest(GTK_TREE_VIEW(ctree->widget),
+        		tags,
+                	ntargets,
+        		actions);
+		free(tags);
+        }
+        else
+        	gtk_tree_view_enable_model_drag_dest(GTK_TREE_VIEW(ctree->widget),
+        		NULL,
+                	ntargets,
+        		actions);
+
 	return 0;
 err:
 	return 1;
@@ -1155,12 +1232,47 @@ err:
 
 
 int
-clip_GTK_TREEVIEWENABLEMODELDRAGSOURSE(ClipMachine * cm)
+clip_GTK_TREEVIEWENABLEMODELDRAGSOURCE(ClipMachine * cm)
 {
 	C_widget *ctree = _fetch_cw_arg(cm);
+        GdkModifierType start_button_mask = _clip_parni(cm, 2);
+        ClipArrVar   *ctag = (ClipArrVar*)_clip_vptr(_clip_spar(cm, 3));
+	gint      ntargets = _clip_parni(cm, 4);
+	GdkDragAction actions = _clip_parni(cm, 5);
 
 	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
-        /* not realized */
+        CHECKARG(2, NUMERIC_t);
+        CHECKARG(3, ARRAY_t);
+        CHECKARG(4, NUMERIC_t);
+        CHECKARG(5, NUMERIC_t);
+
+	if (ctag)
+        {
+        	GtkTargetEntry *tags;
+                gint i;
+
+                tags = malloc(ctag->count*sizeof(GtkTargetEntry));
+                memset(tags, 0, sizeof(GtkTargetEntry)*ctag->count);
+                for (i=0; i<ctag->count; i++)
+                {
+                	GtkTargetEntry t;
+                	_array_to_target_entry(cm, &ctag->items[i], &t);
+                        tags[i] = t;
+        	}
+        	gtk_tree_view_enable_model_drag_source(GTK_TREE_VIEW(ctree->widget),
+        		start_button_mask,
+        		tags,
+                	ntargets,
+        		actions);
+		free(tags);
+        }
+        else
+        	gtk_tree_view_enable_model_drag_source(GTK_TREE_VIEW(ctree->widget),
+        		start_button_mask,
+        		NULL,
+                	ntargets,
+        		actions);
+
 	return 0;
 err:
 	return 1;
@@ -1394,4 +1506,49 @@ clip_GTK_TREEVIEWSETSEARCHCOLUMN(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 2)
+int
+clip_GTK_TREEVIEWSETCURSORONCELL(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+        C_object *cpath    = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object *ccolumn  = _fetch_cobject(cm, _clip_spar(cm, 3));
+        C_object *crender  = _fetch_cobject(cm, _clip_spar(cm, 4));
+        gboolean start_edit= _clip_parni(cm, 5);
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+        CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+        CHECKCOBJOPT(ccolumn, GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
+        CHECKCOBJOPT(crender, GTK_IS_CELL_RENDERER(crender->object));
+        CHECKARG(5, LOGICAL_t);
+
+        gtk_tree_view_set_cursor_on_cell(GTK_TREE_VIEW(ctree->widget),
+        	GTK_TREE_PATH(cpath->object),
+        	(ccolumn)?GTK_TREE_VIEW_COLUMN(ccolumn->object):NULL,
+        	(crender)?GTK_CELL_RENDERER(crender->object):NULL,
+        	start_edit);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEVIEWEXPANDTOPATH(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+        C_object *cpath    = _fetch_cobject(cm, _clip_spar(cm, 2));
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+        CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+
+        gtk_tree_view_expand_to_path(GTK_TREE_VIEW(ctree->widget),
+        	GTK_TREE_PATH(cpath->object));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+
 

@@ -5,6 +5,16 @@
 */
 /*
    $Log: _mem.c,v $
+   Revision 1.24  2004/06/10 09:35:22  clip
+   rust: minor fix in MEMVARLIST()
+
+   Revision 1.23  2004/06/03 09:59:37  clip
+   rust: minor fix in MEMVARLIST()
+
+   Revision 1.22  2004/05/07 10:18:34  clip
+   rust: MEMVARLIST(<pattern>,[<lPublics>],[<lExcept>])
+   <lPublics>: .t. - publics, .f. - privates, nil - all memvars
+
    Revision 1.21  2003/08/19 11:49:18  clip
    fix #155
    paul
@@ -169,10 +179,10 @@ clip2dbf(ClipVar * vp, DbfData * dp)
 	{
 	case CHARACTER_t:
 		dp->type = 'C';
-                /*
+				/*
 		dp->u.c.str = strdup(vp->s.str.buf);
-                */
-                dp->u.c.str = malloc(vp->s.str.len+1);
+				*/
+				dp->u.c.str = malloc(vp->s.str.len+1);
 		memcpy(dp->u.c.str,vp->s.str.buf,vp->s.str.len+1);
 		dp->u.c.len = vp->s.str.len;
 
@@ -572,9 +582,9 @@ int
 clip___MRESTORE(ClipMachine * mp)
 {
 	char *path = _clip_parc(mp, 1);
-        /*
-        int l_add  = _clip_parl(mp, 2);
-        */
+		/*
+		int l_add  = _clip_parl(mp, 2);
+		*/
 
 	/*int isAdditive = _clip_parl(mp, 1); */
 	char buf[256], errbuf[256], p[256];
@@ -601,14 +611,14 @@ clip___MRESTORE(ClipMachine * mp)
 		for (i = 0; i < nvars; i++)
 		{
 			ClipVar *vp;
-                        char *s;
+						char *s;
 			long hash = _clip_casehashstr(names[i]);
 
 			s = strdup(names[i]);
 			HashTable_store(mp->hashnames, s, hash);
 
 			vp = _clip_ref_public_noadd(mp, hash);
-                        if (!vp)
+						if (!vp)
 				vp = _clip_ref_memvar(mp, hash);
 
 			if (!vp)
@@ -728,3 +738,86 @@ clip___MSAVE(ClipMachine * mp)
 
 	return 0;
 }
+
+int
+clip_MEMVARLIST(ClipMachine * mp)
+{
+	ClipVar* rp = RETPTR(mp);
+	char *pattern = _clip_parc(mp, 1);
+	int publ = _clip_parl(mp, 2);
+	int isLike = _clip_parl(mp, 3);
+	int all = _clip_parinfo(mp, 2) != LOGICAL_t;
+	ClipFrame *fp;
+	Coll snames;
+	int r,i;
+	int isPrivate,isPublic;
+	long dims[] = {0};
+	ClipVar vp;
+
+	if (!pattern)
+		pattern = "*";
+
+	init_Coll(&snames, 0, strcasecmp);
+
+	for (fp = mp->fp; fp; fp = fp->up)
+	{
+		if (fp->names)
+		{
+			ClipHashBucket *bp;
+
+			for (i = 0; i < fp->names->num; i++)
+			{
+				char *nm;
+				int ind;
+
+				bp = fp->names->buckets + i;
+				nm = fp->names->mem + bp->offs;
+				if (!search_Coll(&snames, nm, &ind))
+				{
+					int m = (_clip_glob_match(nm, pattern, 1) == -1 ? 0 : 1);
+
+					if ((m && !isLike) || (!m && isLike))
+						atInsert_Coll(&snames, nm, ind);
+				}
+			}
+		}
+	}
+
+	for(r = HashTable_first(mp->hashnames); r; r = HashTable_next(mp->hashnames))
+	{
+		char *nm = (char*) HashTable_current(mp->hashnames);
+		int ind;
+		if (!search_Coll(&snames, nm, &ind))
+		{
+			int m = (_clip_glob_match(nm, pattern, 1) == -1 ? 0 : 1);
+			if ((m && !isLike) || (!m && isLike))
+				atInsert_Coll(&snames, nm, ind);
+		}
+	}
+
+	_clip_array(mp, rp, 1, dims);
+
+	for (i = 0; i < snames.count; i++)
+	{
+		long hash = _clip_casehashstr(snames.items[i]);
+
+		isPublic  = !_clip_is_public(mp,hash);
+		isPrivate = !_clip_is_private(mp,hash);
+
+		if(all)
+			r = isPublic || isPrivate;
+		else if(publ)
+			r = isPublic;
+		else
+			r = isPrivate;
+		if(r)
+		{
+			_clip_var_str(snames.items[i],strlen(snames.items[i]),&vp);
+			_clip_aadd(mp,rp,&vp);
+			_clip_destroy(mp,&vp);
+		}
+	}
+	destroy_Coll(&snames);
+	return 0;
+}
+

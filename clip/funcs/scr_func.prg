@@ -1,7 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
-    Authors : Uri (uri@itk.ru)
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Authors : Uri (uri@itk.ru)
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #define NO_PGCH
 
@@ -26,7 +26,7 @@ return
 function __XRestScreen()
    local scr
    if len(__Xscreen)==0
-      return
+	  return
    endif
    scr:=atail(__Xscreen)
    restscreen(,,,,scr[1])
@@ -50,7 +50,7 @@ if pcount()==0
 endif
 
 while dispcount()>0
-      dispend()
+	  dispend()
 enddo
 
 
@@ -74,7 +74,7 @@ do while !empty(str)
    k=at(";",str)
    j=k
    if k==0
-      j:=len(str)+1
+	  j:=len(str)+1
    endif
    j=min(j,maxcol()-2)
    aadd(mas, substr(str,1,j-1) )
@@ -103,8 +103,8 @@ y=int((maxrow()-lenMas)/2) //-1
    m=int((j-n)/(lenmes+1))
    x+=m+1 //+(j-m*lenmes-n)/2
    for j=1 to lenmes
-      @ y,x PROMPT " "+mmes[j]+" "
-      x+=len(mmes[j])+m+2
+	  @ y,x PROMPT " "+mmes[j]+" "
+	  x+=len(mmes[j])+m+2
    next
 dispend()
    MENU TO __ret
@@ -127,13 +127,13 @@ local strmess:=LANG_ANYKEY_STRING
 oldCur=setCursor(0)
 parameters str,y,x,color
 if color!=NIL
-       s:=color
-       while len(s)>0
+	   s:=color
+	   while len(s)>0
 	   i:=at(",",s)
 	   i=iif(i==0,len(s)+1,i)
 	   aadd(__colors,substr(s,1,i-1) )
 	   s:=substr(s,i+1)
-       enddo
+	   enddo
 else
    aadd(__colors,"w/r")
    aadd(__colors,"w+/r")
@@ -142,16 +142,16 @@ if funcname("PROV_BLANK")
    return .t.
 endif
 if y==NIL
-    y=_maxRowN
+	y=_maxRowN
 endif
 do while .t.
    j=at(";",str)
    if j!=0
-     aadd(mas,substr(str,1,j-1))
-     str:=substr(str,j+1)
+	 aadd(mas,substr(str,1,j-1))
+	 str:=substr(str,j+1)
    else
-    aadd(mas,str)
-    exit
+	aadd(mas,str)
+	exit
    endif
 enddo
  row=row()
@@ -167,7 +167,7 @@ enddo
  @ y,x clear to y+1+len(mas), x+y+3
  Dbox(y,x,y+1+len(mas),x+j+3)
    for i=1 to len(mas)
-      dispOutAt( y+i,x+2, padr(mas[i],j), __colors[2] )
+	  dispOutAt( y+i,x+2, padr(mas[i],j), __colors[2] )
    next
    dispOutAt( y+1+len(mas),x+(j-len(strMess))/2+2, strMess, __colors[1] )
    inkey(0)
@@ -232,18 +232,18 @@ colDop:=y1+"/"+y2
 do while len<=lenStr
    chr=substr(str2,len,1)
    if chr==" " .and. !EndChoice
-      mass[i][3]:=Len+x-2
-      EndChoice:=.t.
+	  mass[i][3]:=Len+x-2
+	  EndChoice:=.t.
    endif
    if !(chr==" ") .and. EndChoice
-      aadd(mass,{0,0,0,0})
-      i++    // Счетчик эл-ов массива
-      mass[i][1]:=y
-      mass[i][2]:=Len+x-1
-      EndChoice:=.f.
+	  aadd(mass,{0,0,0,0})
+	  i++    // Счетчик эл-ов массива
+	  mass[i][1]:=y
+	  mass[i][2]:=Len+x-1
+	  EndChoice:=.f.
    endif
    if (chr>="A" .and. chr<="Z") .or. (chr>="a" .and. chr<="z") .or. (chr>="0" .and. chr<="9")
-      dispOutAt( y,x+len-1, chr, colDop )
+	  dispOutAt( y,x+len-1, chr, colDop )
    endif
    len++
 enddo
@@ -291,11 +291,11 @@ blN2:=setkey(asc(lower(LANG_NO_CHAR)) ,{|| in_key(__nm,.f.)})    // н || n
 do while .t.
    j=at(";",str)
    if j!=0
-     aadd(mas,substr(str,1,j-1))
-     str:=substr(str,j+1)
+	 aadd(mas,substr(str,1,j-1))
+	 str:=substr(str,j+1)
    else
-    aadd(mas,str)
-    exit
+	aadd(mas,str)
+	exit
    endif
 enddo
 row=row()
@@ -316,32 +316,32 @@ do while .t.
    IIF(colorP=NIL, setcolor("W/R"), setcolor(color) )
    Dbox(y,x,y+1+lenMas,x+j+3)
    if EscExit
-      colorMess ( y, x+3, " Esc - none " )
+	  colorMess ( y, x+3, " Esc - none " )
    endif
    IIF(colorP=NIL,setcolor("W+/R,N/W,,0,W+/R"), )
    for i=1 to lenMas
-     dispOutAt( y+i,x+2, mas[i] )
+	 dispOutAt( y+i,x+2, mas[i] )
    next
    i--
    @ y+i,x+2+LenLastStr+1 MPROMPT LANG_YES_STRING
    @ y+i,x+2+LenLastStr+5 MPROMPT LANG_NO_STRING
    MMENU TO __NM
    do case
-      case __nm=0 .and. EscExit
+	  case __nm=0 .and. EscExit
 	  keyboard chr(27)
 	  otv:=.f.
-      case __nm=1
+	  case __nm=1
 	  otv=.t.
-      case __nm=2
+	  case __nm=2
 	  otv=.f.
    endcase
    if lastkey()=13
-      exit
+	  exit
    endif
    if lastkey()=27 .and. EscExit
-      exit
+	  exit
    else
-      clearkey()
+	  clearkey()
    endif
 enddo
 setkey(asc("Y")       ,blD1)    // Д || Y
@@ -361,11 +361,11 @@ return otv
 static proc in_key(nm,otv)
 do case
 case (nm=1.and.otv) .or. (nm=2.and.!otv)
-     keyboard chr(13)
+	 keyboard chr(13)
 case nm=1.and.!otv
-     keyboard chr(4)+chr(13)
+	 keyboard chr(4)+chr(13)
 case nm=2.and.otv
-     keyboard chr(19)+chr(13)
+	 keyboard chr(19)+chr(13)
 endcase
 return
 *******************************************************************
@@ -403,23 +403,23 @@ endif
 if funcname("PROV_BLANK") .or. funcname("PRINTBLANK")
   dispOutAt( x1+2,x2+1, padc(var,lenstr) )
   if valtype(var2)!="U"
-     dispOutAt( x1+4,x2+1, padc(var2,lenstr) )
+	 dispOutAt( x1+4,x2+1, padc(var2,lenstr) )
   endif
 else
   _var=var
   lenvar=slen("_var")
   x=int(max(1,(lenstr-lenvar)/2+1))
   if valtype(var)=="C" .and. "->"$var
-    @ x1+2,x2+x get &var picture "@K@S"+alltrim(str(lenstr))
+	@ x1+2,x2+x get &var picture "@K@S"+alltrim(str(lenstr))
   else
-    @ x1+2,x2+x get var picture "@K@S"+alltrim(str(lenstr))
+	@ x1+2,x2+x get var picture "@K@S"+alltrim(str(lenstr))
   endif
   if valtype(var2)!="U"
-     _var=var2
-     lenvar=slen("_var")
+	 _var=var2
+	 lenvar=slen("_var")
 *     lenvar=slen(var2)
-     x=int(max(1,(lenstr-lenvar)/2+1))
-     @ x1+4,x2+x get var2 picture "@K@S"+alltrim(str(lenstr))
+	 x=int(max(1,(lenstr-lenvar)/2+1))
+	 @ x1+4,x2+x get var2 picture "@K@S"+alltrim(str(lenstr))
    endif
   read
 endif
@@ -472,34 +472,27 @@ function restcursor(m)
 	endif
 return
 ***********************************
-function screenstr(nRow,nCol,nCount)
-	nRow  :=iif(nRow  ==NIL,0,nRow)
-	nCol  :=iif(nCol  ==NIL,0,nCol)
-	nCount:=iif(nCount==NIL,0,maxcol()-nCol+1)
-return  savescreen(nRow,nCol,nRow,nCol+nCount )
-
-***********************************
 function __WAIT(xMsg)
-   local nKey, bBlock
-   if xMsg==NIL
-      ? "Press any key to continue..."
-   else
-      ? xMsg
-   endif
-   do while (.T.)
-      nKey:= InKey(0)
-      if ((bBlock:= SetKey(nKey)) != Nil)
-	 eval(bBlock, procname(1), procline(1), "")
-	 loop
-      endif
-      if (nKey >= 32 .AND. nKey <= 255)
-	 ?? Chr(nKey)
-      else
-	 nKey:= 0
-      endif
-      exit
-   enddo
-   return Chr(nKey)
+	local nKey, bBlock
+	if xMsg==NIL
+		? "Press any key to continue..."
+	else
+		? xMsg
+	endif
+	do while (.T.)
+		nKey:= InKey(0)
+		if ((bBlock:= SetKey(nKey)) != Nil)
+			eval(bBlock, procname(1), procline(1), "")
+			loop
+		endif
+		if (nKey >= 32 .AND. nKey <= 255)
+			?? Chr(nKey)
+		else
+			nKey:= 0
+		endif
+		exit
+	enddo
+return Chr(nKey)
 
 ***********************************
 

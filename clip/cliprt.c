@@ -5,6 +5,21 @@
  */
 /*
    $Log: cliprt.c,v $
+   Revision 1.424  2004/07/05 10:12:20  clip
+   alena: small bug in _storc()
+
+   Revision 1.423  2004/07/05 09:31:20  clip
+   uri: small fix in _storni()
+
+   Revision 1.422  2004/07/05 08:31:14  clip
+   uri: small fix in _storni()
+
+   Revision 1.421  2004/06/11 10:57:32  clip
+   rust: freeing MEMBUF on delete_ClipMachine()
+
+   Revision 1.420  2004/05/20 14:41:10  clip
+   rust: memory leak fixed
+
    Revision 1.419  2004/04/30 11:50:02  clip
    uri: add mimeTypesLoad(), mimeTypeGet(cType), mimeTypeSet(cType,cData)
 
@@ -2123,11 +2138,14 @@ new_ClipMachine(struct Screen *screen)
 		ret->aliases = all_aliases = new_HashTable();
 */
 	ret->aliases = new_HashTable();
-
+/*
 	if (all_fields)
 		ret->fields = all_fields;
 	else
 		ret->fields = all_fields = new_HashTable();
+*/
+	ret->fields = new_HashTable();
+
 	if (all_keys)
 		ret->keys = all_keys;
 	else
@@ -3186,17 +3204,22 @@ delete_ClipMachine(ClipMachine * mp)
 		fclose(out);
 	_clip_close_printer(mp);
 
-	delete_VarTable(mp, mp->privates);
+	if(mp->pbuf)
+	{
+		destroy_Buf(mp->pbuf);
+		free(mp->pbuf);
+	}
 
+	delete_VarTable(mp, mp->privates);
 	delete_spaces(mp, mp->spaces);
+	delete_HashTable(mp->aliases);
+	delete_HashTable(mp->fields);
 
 	if (machineCount == 1)
 	{
 		delete_VarTable(mp, mp->publics);
 		all_publics = 0;
-		delete_HashTable(mp->aliases);
 		all_aliases = 0;
-		delete_HashTable(mp->fields);
 		all_fields = 0;
 		for (r = HashTable_first(mp->store); r; r = HashTable_next(mp->store))
 			free(HashTable_current(mp->store));
@@ -9158,6 +9181,27 @@ _clip_retc(ClipMachine * mp, char *s)
 CLIP_DLLEXPORT int
 _clip_storclen(ClipMachine * mp, const char *str, int len, int num, int ind)
 {
+#if 1
+	ClipVar *vp = _clip_spar(mp, num);
+	ClipVar lp ;
+
+	if (!vp)
+		return 0;
+
+	if (vp->t.type == ARRAY_t)
+	{
+		if (ind < 0 || ind >= vp->a.count)
+			return 0;
+		vp = _clip_vptr(vp->a.items + ind);
+	}
+
+	if (vp->t.flags == F_MSTAT)
+		return 0;
+
+	_clip_var_str(str, len, &lp);
+	_clip_mclone(mp, vp, &lp);
+	_clip_destroy(mp,&lp);
+#else
 	ClipVar *vp = _clip_par(mp, num);
 
 	if (!vp)
@@ -9175,7 +9219,7 @@ _clip_storclen(ClipMachine * mp, const char *str, int len, int num, int ind)
 
 	_clip_destroy(mp, vp);
 	_clip_var_str(str, len, vp);
-
+#endif
 	return 1;
 }
 
@@ -9188,6 +9232,27 @@ _clip_storc(ClipMachine * mp, const char *str, int num, int ind)
 CLIP_DLLEXPORT int
 _clip_stornd(ClipMachine * mp, double d, int num, int ind)
 {
+#if 1
+	ClipVar *vp = _clip_spar(mp, num);
+	ClipVar lp ;
+
+	if (!vp)
+		return 0;
+
+	if (vp->t.type == ARRAY_t)
+	{
+		if (ind < 0 || ind >= vp->a.count)
+			return 0;
+		vp = _clip_vptr(vp->a.items + ind);
+	}
+
+	if (vp->t.flags == F_MSTAT)
+		return 0;
+
+	_clip_var_num(d,&lp);
+	_clip_mclone(mp, vp, &lp);
+	_clip_destroy(mp,&lp);
+#else
 	ClipVar *vp = _clip_par(mp, num);
 
 	if (!vp)
@@ -9205,7 +9270,7 @@ _clip_stornd(ClipMachine * mp, double d, int num, int ind)
 
 	_clip_destroy(mp, vp);
 	_clip_var_num(d, vp);
-
+#endif
 	return 1;
 }
 

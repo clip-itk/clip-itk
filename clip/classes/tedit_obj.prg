@@ -1,40 +1,40 @@
-/*   TEXTEDIT class						*/
-/*   								*/
-/*   Copyright (C) 2001-2204  ITK				*/
-/*   Author  : Elena Kornilova (alena@itk.ru)			*/
-/*   Licence : (GPL) http://www.itk.ru/clipper/licence.html	*/
+/*   TEXTEDIT class                                             */
+/*                                                              */
+/*   Copyright (C) 2001-2204  ITK                               */
+/*   Author  : Elena Kornilova (alena@itk.ru)                   */
+/*   Licence : (GPL) http://www.itk.ru/clipper/licence.html     */
 
 #include "edit.ch"
 #include "box.ch"
 #include "fileio.ch"
 
-#define U_CMD		1
-#define U_CYCLE		2
-#define U_POS		3
-#define U_LINE		4
-#define U_LINES		5
-#define U_COL		6
-#define U_ROW		7
-#define U_VALUE		8
-#define U_BLOCK		9  //{type_block[0-no_block|1-str_block|2-rect_block], nt, nl, nb, nr}
-#define U_MKBLOCK	10
-#define U_FIND		11
+#define U_CMD           1
+#define U_CYCLE         2
+#define U_POS           3
+#define U_LINE          4
+#define U_LINES         5
+#define U_COL           6
+#define U_ROW           7
+#define U_VALUE         8
+#define U_BLOCK         9  //{type_block[0-no_block|1-str_block|2-rect_block], nt, nl, nb, nr}
+#define U_MKBLOCK       10
+#define U_FIND          11
 
-#define FA_NORMAL	0
-#define FA_READONLY	1
-#define FA_HIDDEN	2
-#define FA_SYSTEM	4
-#define FA_VOLUME	8
-#define FA_DIRECTORY	16
-#define FA_ARCHIVE	32
+#define FA_NORMAL       0
+#define FA_READONLY     1
+#define FA_HIDDEN       2
+#define FA_SYSTEM       4
+#define FA_VOLUME       8
+#define FA_DIRECTORY    16
+#define FA_ARCHIVE      32
 
 function textEditNew(Lrow, Lcol, Rrow, Rcol, color)
 local obj
        obj:=map()
 
        obj:classname    := "TEXTEDIT"
-       obj:path		:= ""  // путь к файлу
-       obj:filename	:= ""  // имя файла
+       obj:path         := ""  // путь к файлу
+       obj:filename     := ""  // имя файла
        obj:lines        := 0
        obj:colorSpec    := iif(empty(color),setcolor(),color)
        obj:line         := 1
@@ -43,43 +43,43 @@ local obj
        obj:rowWin       := 1
        obj:nTop         := Lrow
        obj:nLeft        := Lcol
-       obj:nBottom 	:= Rrow
+       obj:nBottom      := Rrow
        obj:nRight       := Rcol
        obj:updated      := .f.
        obj:marginLeft   := TE_MARGIN_LEFT
        obj:marginRight  := TE_MARGIN_RIGHT
        obj:tabSize      := TE_TABSIZE
        obj:maxStrings   := TE_MAXSTRINGS
-       obj:Hyphen   	:= TE_HYPHEN
+       obj:Hyphen       := TE_HYPHEN
        obj:tabPack      := iif(lower(set("edit_tabpack"))=='yes',.t.,.f.)
-       obj:inFocus	:= .f.
-       obj:autoWrap	:= TE_AUTO_WRAP
+       obj:inFocus      := .f.
+       obj:autoWrap     := TE_AUTO_WRAP
 
-       obj:mkblock	:= .f.
-       obj:strblock	:= .f. 		// строчный блок
-       obj:rectblock	:= .f. 		// прямоугольный блок
-       obj:koordblock	:= {NIL, NIL, NIL, NIL}	// координаты блока
+       obj:mkblock      := .f.
+       obj:strblock     := .f.          // строчный блок
+       obj:rectblock    := .f.          // прямоугольный блок
+       obj:koordblock   := {NIL, NIL, NIL, NIL} // координаты блока
 
        obj:__findR      := {}
-       obj:__regSearch	:= {}
-       obj:__undobuffer	:= {}
-       obj:lenundo	:= 100
-       obj:__curundo	:= 0
-       obj:__startundo	:= 0
-       obj:charset	:= NIL
-       obj:lEofString	:= .f.      // show eof string
-       obj:eofString	:= [<EOF>]
+       obj:__regSearch  := {}
+       obj:__undobuffer := {}
+       obj:lenundo      := 100
+       obj:__curundo    := 0
+       obj:__startundo  := 0
+       obj:charset      := NIL
+       obj:lEofString   := .f.      // show eof string
+       obj:eofString    := [<EOF>]
        obj:__hostcharset:= host_charset()
-       obj:__keys	:= map()
+       obj:__keys       := map()
 
-       obj:highLightColor	:= map()
+       obj:highLightColor       := map()
 
-       obj:Nstyle	:= .f.
-       obj:__LNstyle	:= 0
+       obj:Nstyle       := .f.
+       obj:__LNstyle    := 0
 
-       obj:edbuffer 	:= {}
-       obj:__colors 	:= {}      // палитры цветов
-       obj:__leninfo	:= maxcol()-maxcol()*3/4 - 1
+       obj:edbuffer     := {}
+       obj:__colors     := {}      // палитры цветов
+       obj:__leninfo    := maxcol()-maxcol()*3/4 - 1
 
        _recover_textedit(obj)
 
@@ -90,7 +90,7 @@ local obj
 return obj
 *************************************
 function _recover_textedit(obj)
-       obj:__nullInit	:= @__te_nullInit()
+       obj:__nullInit   := @__te_nullInit()
 
        obj:down         := @te_down()
        obj:up           := @te_up()
@@ -125,8 +125,8 @@ function _recover_textedit(obj)
        obj:curWord      := @te_curWord()
        obj:prevWord     := @te_prevWord()
        obj:nextWord     := @te_nextWord()
-       obj:Identity 	:= @te_Identity()
-       obj:matchStruct 	:= @te_matchStruct()
+       obj:Identity     := @te_Identity()
+       obj:matchStruct  := @te_matchStruct()
 
        obj:clear        := @te_clear()
        obj:loadString   := @te_loadString()
@@ -143,13 +143,13 @@ function _recover_textedit(obj)
        obj:copyBlock    := @te_copyBlock()
        obj:moveBlock    := @te_moveBlock()
        obj:deleteBlock  := @te_deleteBlock()
-       obj:setTabSize	:= @te_setTabSize()
-       obj:setFocus	:= @te_setFocus()
+       obj:setTabSize   := @te_setTabSize()
+       obj:setFocus     := @te_setFocus()
 
-       obj:copyToClipboard	:= @te_copyToClipboard()
-       obj:addToClipboard	:= @te_addToClipboard()
-       obj:moveToClipboard	:= @te_moveToClipboard()
-       obj:pasteFromClipboard	:= @te_pasteFromClipboard()
+       obj:copyToClipboard      := @te_copyToClipboard()
+       obj:addToClipboard       := @te_addToClipboard()
+       obj:moveToClipboard      := @te_moveToClipboard()
+       obj:pasteFromClipboard   := @te_pasteFromClipboard()
 
        obj:refresh      := @te_refresh()
        //obj:refreshStr   := @te_refreshStr()
@@ -166,41 +166,41 @@ function _recover_textedit(obj)
 
        obj:Insert       := @te_Insert()
        obj:overStrike   := @te_overStrike()
-       obj:__autoWrap	:= @te___autoWrap()
+       obj:__autoWrap   := @te___autoWrap()
        obj:insertLine   := @te_insertLine()
        obj:newLine      := @te_newLine()
 
-       obj:draw		:= @te_draw()
-       obj:__Frmt 	:= @te_Frmt()
+       obj:draw         := @te_draw()
+       obj:__Frmt       := @te_Frmt()
        obj:formatLine   := @te_formatLine()
        obj:formatPart   := @te_formatPart()
        obj:centerLine   := @te_centerLine()
-       obj:insTempl    	:= @te_insTempl()
-       obj:insMacro    	:= @te_insMacro()
+       obj:insTempl     := @te_insTempl()
+       obj:insMacro     := @te_insMacro()
 
        obj:__check_line := @te_check_line()
 
-       obj:undo		:= @te_undo()
-       obj:writeundo	:= @te_writeundo()
+       obj:undo         := @te_undo()
+       obj:writeundo    := @te_writeundo()
 
-       obj:print	:= @te_print()
-       obj:printBlock	:= @te_printBlock()
+       obj:print        := @te_print()
+       obj:printBlock   := @te_printBlock()
 
-       obj:__around_check	:= @te_around_check()
-       obj:highLightAdd	:= @te_highLightAdd()
-       obj:highLightDel	:= @te_highLightDel()
+       obj:__around_check       := @te_around_check()
+       obj:highLightAdd := @te_highLightAdd()
+       obj:highLightDel := @te_highLightDel()
 
-       obj:setNumStyle 	:= @te_setNumStyle()
+       obj:setNumStyle  := @te_setNumStyle()
        obj:killNumStyle := @te_killNumStyle()
 
-       obj:setNewColor	:= @te_setNewColor()
-       obj:__setColor 	:= @__te_setcolor()
+       obj:setNewColor  := @te_setNewColor()
+       obj:__setColor   := @__te_setcolor()
 
-       obj:setCharset	:= @te_setCharset()
+       obj:setCharset   := @te_setCharset()
        obj:__check_clipchs := @te_check_clipchs()
-       obj:__setDefaultKey	:= @te___setDefaultKey()
-       obj:setKey	:= @te_setKey()
-       obj:applyKey	:= @te_applyKey()
+       obj:__setDefaultKey      := @te___setDefaultKey()
+       obj:setKey       := @te_setKey()
+       obj:applyKey     := @te_applyKey()
 return obj
 *************************************
 static function te___setDefaultKey()
@@ -208,22 +208,22 @@ local m
 	::__keys := map()
 	m := ::__keys
 
-	m[K_DOWN]	:= {|oTe, nkey| oTe:down(), TE_CONTINUE }
-	m[K_PGDN]	:= {|oTe, nkey| oTe:pageDown(), TE_CONTINUE }
-	m[K_CTRL_PGDN]	:= {|oTe, nkey| oTe:bottom(), TE_CONTINUE }
-	m[K_UP]		:= {|oTe, nkey| oTe:up(), TE_CONTINUE }
-	m[K_PGUP]	:= {|oTe, nkey| oTe:pageUp(), TE_CONTINUE }
-	m[K_CTRL_PGUP]	:= {|oTe, nkey| oTe:top(), TE_CONTINUE }
-	m[K_HOME]	:= {|oTe, nkey| oTe:home(), TE_CONTINUE }
-	m[K_END]	:= {|oTe, nkey| oTe:end(), TE_CONTINUE }
-	m[K_LEFT]	:= {|oTe, nkey| oTe:left(), TE_CONTINUE }
-	m[K_RIGHT]	:= {|oTe, nkey| oTe:right(), TE_CONTINUE }
-	m[K_CTRL_LEFT]	:= {|oTe, nkey| oTe:wordLeft(), TE_CONTINUE }
-	m[K_CTRL_RIGHT]	:= {|oTe, nkey| oTe:wordRight(), TE_CONTINUE }
+	m[K_DOWN]       := {|oTe, nkey| oTe:down(), TE_CONTINUE }
+	m[K_PGDN]       := {|oTe, nkey| oTe:pageDown(), TE_CONTINUE }
+	m[K_CTRL_PGDN]  := {|oTe, nkey| oTe:bottom(), TE_CONTINUE }
+	m[K_UP]         := {|oTe, nkey| oTe:up(), TE_CONTINUE }
+	m[K_PGUP]       := {|oTe, nkey| oTe:pageUp(), TE_CONTINUE }
+	m[K_CTRL_PGUP]  := {|oTe, nkey| oTe:top(), TE_CONTINUE }
+	m[K_HOME]       := {|oTe, nkey| oTe:home(), TE_CONTINUE }
+	m[K_END]        := {|oTe, nkey| oTe:end(), TE_CONTINUE }
+	m[K_LEFT]       := {|oTe, nkey| oTe:left(), TE_CONTINUE }
+	m[K_RIGHT]      := {|oTe, nkey| oTe:right(), TE_CONTINUE }
+	m[K_CTRL_LEFT]  := {|oTe, nkey| oTe:wordLeft(), TE_CONTINUE }
+	m[K_CTRL_RIGHT] := {|oTe, nkey| oTe:wordRight(), TE_CONTINUE }
 
-	m[K_BS]		:= {|oTe, nkey| oTe:backSpace(), TE_CONTINUE }
-	m[K_CTRL_BS]	:= {|oTe, nkey| oTe:delHome(), TE_CONTINUE }
-	m[K_DEL]	:= {|oTe, nkey| oTe:delRight(), TE_CONTINUE }
+	m[K_BS]         := {|oTe, nkey| oTe:backSpace(), TE_CONTINUE }
+	m[K_CTRL_BS]    := {|oTe, nkey| oTe:delHome(), TE_CONTINUE }
+	m[K_DEL]        := {|oTe, nkey| oTe:delRight(), TE_CONTINUE }
 return
 *************************************
 static function te_setKey(nKey, vData)
@@ -295,7 +295,7 @@ local i:=len(::edbuffer), oldLine
        aadd(::edbuffer,"")
 	if undo
 		::line := i+1
-	    //	::pos := 1
+	    //  ::pos := 1
 		::writeundo(HASH_INSLINE)
 	endif
    next
@@ -334,7 +334,7 @@ local nfile, scr, i
   endif
 
   *if !empty(fileseek(filename, FA_ARCHIVE+FA_VOLUME+FA_SYSTEM+FA_HIDDEN+FA_READONLY))
-  *	alert(fileattrs()+';'+tostring(fileattr()))
+  *     alert(fileattrs()+';'+tostring(fileattr()))
   *endif
   i:=atr(PATH_DELIM,filename)
   if i!=0
@@ -1281,8 +1281,8 @@ local i, p, f, found:=.f., rr, st, en, _step
 				if Find:wordonly .and. (isalpha(substr(::edbuffer[i], ::__regSearch[1][1]-1, 1)) .or. isalpha(substr(::edbuffer[i], ::__regSearch[1][2], 1)))
 					loop
 				endif
-				::__findR[1] := i		//line
-				::__findR[2] := ::__regSearch[1][1]	//start pos
+				::__findR[1] := i               //line
+				::__findR[2] := ::__regSearch[1][1]     //start pos
 				::__findR[3] := ::__regSearch[1][2]-::__regSearch[1][1]//length
 				::rowWin += i-(::line*_step)
 				::line := i
@@ -1299,9 +1299,9 @@ local i, p, f, found:=.f., rr, st, en, _step
 				if Find:wordonly .and. (isalpha(substr(::edbuffer[i], p+f-2, 1)) .or. isalpha(substr(::edbuffer[i], p+f+len(str)-1, 1)))
 					loop
 				endif
-				::__findR[1] := i	//line
-				::__findR[2] := p+f-1	//start pos
-				::__findR[3] := len(str)	//length
+				::__findR[1] := i       //line
+				::__findR[2] := p+f-1   //start pos
+				::__findR[3] := len(str)        //length
 				::rowWin += i-(::line*_step)
 				::line := i
 				::gotoPos(p+f-1, .f.)
@@ -1886,9 +1886,9 @@ local i, j:=0, x, str1, str2, cnt:=0, ipos, iline, char, invchar, c
 		endif
 	endif
 	if found
-		::__findR[1] := iline	//line
-		::__findR[2] := ipos	//start pos
-		::__findR[3] := 1		//length
+		::__findR[1] := iline   //line
+		::__findR[2] := ipos    //start pos
+		::__findR[3] := 1               //length
 		::gotoPos(ipos, .f.)
 		::gotoLine(iline, .f.)
 		if undo
@@ -2031,7 +2031,7 @@ local i, s1, s2, line, st, en, arr:={}, firstPos1, firstPos2, len
 
 	line := ::line
 	::__check_line(line+1)
-	len := nMarginRight	//length string
+	len := nMarginRight     //length string
 	/* start part */
 	st := ::line
 
@@ -2712,7 +2712,9 @@ local i, j
 		::koordblock[4] := ::pos + len(Clipboard[it][2][1]) - 1
 		for i=1 to len(Clipboard[it][2])
 			::__check_line(::line+i-1)
-			::edbuffer[::line+i-1] := padr(::edbuffer[::line+i-1], ::pos-1)+Clipboard[it][2][i]+substr(::edbuffer[::line+i+1], ::pos)
+			::edbuffer[::line+i-1] := padr(::edbuffer[::line+i-1], ::pos-1)+;
+					Clipboard[it][2][i]+;
+					substr(::edbuffer[::line+i-1], ::pos)
 		next
 	endif
 	::updated := .t.

@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -60,6 +61,37 @@ clip_GTK_MISCSETPADDING(ClipMachine * cm)
         CHECKCWID(cmisc,GTK_IS_MISC);
 	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
         gtk_misc_set_padding(GTK_MISC(cmisc->widget), xpad,ypad);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_MISCGETALIGNMENT(ClipMachine * cm)
+{
+	C_widget *cmisc = _fetch_cw_arg(cm);
+	gfloat   xalign ;
+	gfloat   yalign ;
+        CHECKCWID(cmisc,GTK_IS_MISC);
+        gtk_misc_get_alignment(GTK_MISC(cmisc->widget), &xalign, &yalign);
+        _clip_storni(cm, xalign, 2, 0);
+        _clip_storni(cm, yalign, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_MISCGETPADDING(ClipMachine * cm)
+{
+	C_widget *cmisc = _fetch_cw_arg(cm);
+	gint       xpad ;
+	gint       ypad ;
+        CHECKCWID(cmisc,GTK_IS_MISC);
+        gtk_misc_get_padding(GTK_MISC(cmisc->widget), &xpad, &ypad);
+
+	_clip_storni(cm, xpad, 2, 0);
+        _clip_storni(cm, ypad, 3, 0);
 	return 0;
 err:
 	return 1;

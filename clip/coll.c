@@ -1,10 +1,13 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
    $Log: coll.c,v $
+   Revision 1.7  2004/05/21 11:22:18  clip
+   rust: minor fix for 'configure -m'
+
    Revision 1.6  2001/04/03 09:17:00  clip
    license errors
    paul
@@ -28,6 +31,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "clip.h"
+
 #include "coll.h"
 
 #define FIRST_SIZE 4
@@ -41,7 +46,7 @@ init_Coll(Coll * coll, void (*Free) (void *),
 	coll->size = FIRST_SIZE;
 	coll->items = (void **) malloc(sizeof(void *) * FIRST_SIZE);
 
-	coll->free = Free;
+	coll->_free = Free;
 	coll->compare = compare;
 	coll->duplicates = 0;
 }
@@ -77,9 +82,9 @@ freeAll_Coll(Coll * coll)
 {
 	int i;
 
-	if (coll->free)
+	if (coll->_free)
 		for (i = coll->count - 1; i >= 0; i--)
-			coll->free(coll->items[i]);
+			coll->_free(coll->items[i]);
 	coll->count = 0;
 }
 
@@ -159,8 +164,8 @@ atRemove_Coll(Coll * coll, int index)
 void
 atFree_Coll(Coll * coll, int pos)
 {
-	if (coll->free)
-		coll->free(coll->items[pos]);
+	if (coll->_free)
+		coll->_free(coll->items[pos]);
 	atRemove_Coll(coll, pos);
 }
 

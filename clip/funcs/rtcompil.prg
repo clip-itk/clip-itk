@@ -54,8 +54,10 @@ function loadPlugIns(sFile)
 		// mini make
 		f1:=directory(sFile+".prg")
 		f2:=directory(sFile+".po")
-		if f1[1][3] > f2[1][3] .or. (f1[1][3] == f2[1][3] .and. f1[1][4] > f2[1][4] )
-			compile:=.t.
+		if len(f1) > 1 .and. len(f2) >0
+			if f1[1][3] > f2[1][3] .or. (f1[1][3] == f2[1][3] .and. f1[1][4] > f2[1][4] )
+				compile:=.t.
+			endif
 		endif
 	endif
 

@@ -1,10 +1,13 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
    $Log: hash.c,v $
+   Revision 1.8  2004/05/21 11:22:19  clip
+   rust: minor fix for 'configure -m'
+
    Revision 1.7  2001/04/03 09:17:01  clip
    license errors
    paul
@@ -32,6 +35,8 @@
  */
 
 #include <stdlib.h>
+
+#include "clip.h"
 #include "hash.h"
 
 struct _HashTable

@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -101,6 +102,250 @@ clip_GTK_COLORSELECTIONSETHASOPACITYCONTROL(ClipMachine *cm)
 err:
 	return 1;
 }
+int
+clip_GTK_COLORSELECTIONGETHASOPACITYCONTROL(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+	_clip_retl(cm, gtk_color_selection_get_has_opacity_control(GTK_COLOR_SELECTION(ccsel->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COLORSELECTIONSETHASPALETTE(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+	gboolean use_palette = _clip_parl(cm,2);
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+	CHECKOPT(2,LOGICAL_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t) use_palette = TRUE;
+	gtk_color_selection_set_has_palette(GTK_COLOR_SELECTION(ccsel->widget),use_palette);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COLORSELECTIONGETHASPALETTE(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+	_clip_retl(cm, gtk_color_selection_get_has_palette(GTK_COLOR_SELECTION(ccsel->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_COLORSELECTIONGETCURRENTALPHA(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+	_clip_retni(cm, (int)gtk_color_selection_get_current_alpha(GTK_COLOR_SELECTION(ccsel->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+
+int
+clip_GTK_COLORSELECTIONSETCURRENTALPHA(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+        guint16        alpha = _clip_parni(cm, 2);
+
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_color_selection_set_current_alpha(GTK_COLOR_SELECTION(ccsel->widget), alpha);
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_COLORSELECTIONGETCURRENTCOLOR(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+        GdkColor       color ;
+
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+
+	gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(ccsel->widget), &color);
+
+	memset(RETPTR(cm),0,sizeof(ClipVar)); _clip_map(cm,RETPTR(cm));
+	_gdk_color_to_map(cm,color,RETPTR(cm));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COLORSELECTIONSETCURRENTCOLOR(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+        ClipVar       *cvclr = _clip_spar(cm, 2);
+        GdkColor       color ;
+
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+        CHECKARG(2, MAP_t);
+
+	_map_to_gdk_color(cm,&color,cvclr);
+
+	gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(ccsel->widget), &color);
+
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_COLORSELECTIONGETPREVIOUSALPHA(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+	_clip_retni(cm, (int)gtk_color_selection_get_previous_alpha(GTK_COLOR_SELECTION(ccsel->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_COLORSELECTIONSETPREVIOUSALPHA(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+        guint16        alpha = _clip_parni(cm, 2);
+
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_color_selection_set_previous_alpha(GTK_COLOR_SELECTION(ccsel->widget), alpha);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COLORSELECTIONGETPREVIOUSCOLOR(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+        GdkColor       color ;
+
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+
+	gtk_color_selection_get_previous_color(GTK_COLOR_SELECTION(ccsel->widget), &color);
+
+	memset(RETPTR(cm),0,sizeof(ClipVar)); _clip_map(cm,RETPTR(cm));
+	_gdk_color_to_map(cm,color,RETPTR(cm));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COLORSELECTIONSETPREVIOUSCOLOR(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+        ClipVar       *cvclr = _clip_spar(cm, 2);
+        GdkColor       color ;
+
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+        CHECKARG(2, MAP_t);
+
+	_map_to_gdk_color(cm,&color,cvclr);
+
+	gtk_color_selection_set_previous_color(GTK_COLOR_SELECTION(ccsel->widget), &color);
+
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COLORSELECTIONISADJUSTING(ClipMachine *cm)
+{
+	C_widget      *ccsel = _fetch_cw_arg(cm);
+
+	CHECKCWID(ccsel,GTK_IS_COLOR_SELECTION);
+
+	_clip_retl(cm, gtk_color_selection_is_adjusting(GTK_COLOR_SELECTION(ccsel->widget)));
+
+
+	return 0;
+err:
+	return 1;
+}
+
+/* gtk_ColorSelectionPaletteFromString(sPalette, @aColor, @nLenColor)--> TRUE||FALSE */
+int
+clip_GTK_COLORSELECTIONPALETTEFROMSTRING(ClipMachine *cm)
+{
+        gchar       *palette = _clip_parc(cm, 1);
+        ClipVar     *cvcolor = _clip_spar(cm, 2);
+        GdkColor     *color ;
+        gint            len ;
+        gboolean         ret ;
+
+	CHECKARG(1, CHARACTER_t);
+
+	ret = gtk_color_selection_palette_from_string(palette, &color, &len);
+
+
+	if (ret)
+        {
+        	long i, d = len;
+        	_clip_array(cm, cvcolor, 1, &d);
+                for(i=0; i<len; i++)
+                {
+                	ClipVar  *cv;
+			memset(cv,0,sizeof(ClipVar)); _clip_map(cm, cv);
+			_gdk_color_to_map(cm,color[i],cv);
+                        _clip_aset(cm, cvcolor, cv, 1, &i);
+                }
+                _clip_storni(cm, len, 3, 0);
+        }
+
+	_clip_retl(cm, ret);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COLORSELECTIONPALETTETOSTRING(ClipMachine *cm)
+{
+        ClipVar     *cvcolor = _clip_spar(cm, 1);
+        gint             len = INT_OPTION(cm, 2, 0);
+        gchar       *palette ;
+
+	CHECKARG(1, ARRAY_t); CHECKARG(2, NUMERIC_t);
+
+        if (len>0)
+        {
+        	GdkColor color[len];
+                gint     i;
+        	for(i=0; i<len; i++)
+        	{
+			_map_to_gdk_color(cm, &color[i], &cvcolor->a.items[i]);
+        	}
+		palette = gtk_color_selection_palette_to_string(color, len);
+        }
+
+	_clip_retc(cm, palette);
+	return 0;
+err:
+	return 1;
+}
+
 
 /* Sets the color in the GtkColorSelection. The widgets are updated to
  * reflect the new color. */

@@ -1,32 +1,6 @@
 set optimize on
 set optimize level to 2
 set exclusive off
-? seconds()
-oDep01 := coDepository():new("ACC0101","sdfsd")
-oDep01:open()
-? oDep01:id
-oDict01 := oDep01:dictionary()
-tmp := oDict01:select("CLASS")
-for i=1 to len(tmp)
-	obj := oDict01:getValue(tmp[i])
-	? tmp[i],oDict01:error ,obj
-next
-?
-return
-
-
-currency := oDict01:classBodyByName("currency")
-tmp:= oDep01:select(currency:id,,,'name="Á"')
-? oDep01:error,tmp
-?
-return
-tmp2 := oDep01:getValue(tmp[1])
-? oDep01:error,tmp2
-tmp2:code := "234232"
-? oDep01:update(tmp2,currency:id)
-? oDep01:error
-?
-return
 
 oDep01 := coDepository():new("ACC0101","sdfsd")
 oDep01:open()
@@ -35,7 +9,12 @@ oDict01 := oDep01:dictionary()
 am_bal := oDict01:classBodyByName("os_balance")
 s:='odate==stod("'+dtos(date()-5)+'") .and. account=="GBL020100073"'
 tmp:= oDep01:select(am_bal:id,,,s)
+? oDep01:getValue("ACC010100TB6")
+? oDep01:undelete("ACC010100TB6")
+? oDep01:getValue("ACC010100TB6")
 ? seconds()
+?
+return
 /*
 for i=1 to 3000
 	//tmp:= oDep01:select(am_bal:id,,,s)

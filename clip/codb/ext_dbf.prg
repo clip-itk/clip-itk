@@ -23,6 +23,7 @@ function codb_extdbfNew(oDep,ext_id)
 	obj:append	:= @_ext_append()
 	obj:update	:= @_ext_update()
 	obj:changeVersion:= @_ext_changeVersion()
+	obj:maxVersion	:= @_ext_maxVersion()
 	obj:getValue	:= @_ext_getValue() // return body for ID
 	obj:open	:= @_ext_open()
 	obj:close	:= @_ext_close()
@@ -212,4 +213,20 @@ static function _ext_changeVersion(self,cId,old,new)
 	endif
 	taskStart()
 return .t.
+************************************************************
+static function _ext_maxVersion(self,cId)
+	local rec := map(),found:=.f.,ver,maxver:=-999
+	self:error := ""
+	taskStop()
+	rddSeek(self:hDbData,cId,.f.)
+	while !rddEof(self:hDbData)
+	      if ! (rddGetValue(self:hDbData,"object_id") == cId)
+			exit
+	      endif
+	      ver := rddGetValue(self:hDbData,"version")
+	      maxver := max(ver,maxver)
+	      rddSkip(self:hDbData)
+	enddo
+	taskStart()
+return max(maxver,-1)
 

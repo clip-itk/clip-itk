@@ -180,15 +180,11 @@ DO CASE
 		CH_TYPE(_a)
 
 	CASE _a=K_CTRL_UP .AND. recno()<>1
-		_a:=arAim[recno()]
-		arAim[recno()]:=arAim[recno()-1]
-		arAim[recno()-1]:=_a
+		SwapAItems(arAim,recno(),recno()-1)
 		SWAP(recNO(),recno()-1)
 
 	CASE _a=K_CTRL_DOWN .AND. recno()<>LastRec()
-		_a:=arAim[recno()]
-		arAim[recno()]:=arAim[recno()+1]
-		arAim[recno()+1]:=_a
+		SwapAItems(arAim,recno(),recno()+1)
 		SWAP(recNO(),recno()+1)
 
 	CASE (BETWEEN(_a,65,255) .AND.  (_ptr = 1)).OR.;

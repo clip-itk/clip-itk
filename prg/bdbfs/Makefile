@@ -29,8 +29,8 @@ clean:
 	rm -rf bdbf *.exe *~ core* *core *.nm *.ex test
 
 install:
-	cp bdbf$(EXESUFF) $(CLIPROOT)/bin/bdbf$(EXESUFF)
-	cp *.hlp $(CLIPROOT)/bin/
+	cp bdbf$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/bdbf$(EXESUFF)
+	cp *.hlp $(DESTDIR)$(CLIPROOT)/bin/
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) $<

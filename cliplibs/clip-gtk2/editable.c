@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001 - 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -310,19 +311,13 @@ err:
 	return 1;
 }
 
-/*
 int
 clip_GTK_EDITABLEGETEDITABLE(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-	GtkArg arg;
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
-	arg.type = GTK_TYPE_BOOL;
-	arg.name = "editable";
-  ???	gtk_widget_get(cedt->widget, &arg);
-	_clip_retl(cm,arg.d.bool_data);
+	_clip_retl(cm,gtk_editable_get_editable((GTK_EDITABLE(cedt->widget))));
 	return 0;
 err:
 	return 1;
 }
-*/

@@ -10,7 +10,7 @@
 #include <clip-gtk2.ch>
 
 static da, back, background, pixbuf, pixbuf1, offset:=1, lInc:=.f.
-static _width, _height, window
+static _width, _height, window, style
 
 function main ( )
 
@@ -41,8 +41,8 @@ function main ( )
 
 	da := gtk_drawingAreaNew()
 	gtk_DrawingAreaSize (da, _width, _height)
-	gtk_signalConnect( da, "configure-event", ;
-			    { | wid, ev | configure_cb(wid,ev)} )
+	//gtk_signalConnect( da, "configure-event", ;
+	//	    { | wid, ev | configure_cb(wid,ev)} )
 	gtk_signalConnect( da, "expose-event", ;
 			    { | wid, ev | expose_cb(wid,ev)} )
 
@@ -64,22 +64,33 @@ function main ( )
 
 return 0
 static function expose_cb( widget, event, data )
+local dest, style, width, height
 
-	local pixels, rowstride, style
+  //gdk_WindowSetBackPixmap (widget, NIL, .F.)
 
-	rowstride := gdk_pixbufGetRowstride (pixbuf1)
+  width = offset*gdk_PixbufGetWidth (pixbuf1)
+  height = offset*gdk_PixbufGetHeight (pixbuf1)
+  dest = gdk_PixbufNew (, .F., 8, width, height)
+  if style == NIL
+	style := gtk_widgetGetStyle( da )
+  endif
 
-	style := gtk_widgetGetStyle( widget )
-	pixels = gdk_pixbufGetPixels(pixbuf1)
+  offset := iif(offset<=0, _OFFSET_, offset)
+  lInc := .f.
+  gdk_PixbufCompositeColor (pixbuf1, dest, ;
+                            0, 0, gdk_PixbufGetWidth (dest), gdk_PixbufGetHeight (dest), ;
+                            0, 0, ;
+                            offset, ;
+                            offset, ;
+                            GDK_INTERP_BILINEAR, 255, ;
+                            0, 0, 16, 0xaaaaaa, 0x555555)
 
+  gdk_PixbufRenderToDrawable (dest, widget, style:fg_gc[CLIP_GTK_STATE_NORMAL], ;
+                              0, 0, 0, 0, ;
+                              width, height, ;
+                              GDK_RGB_DITHER_NORMAL, event:area:x, event:area:y)
 
-	gdk_drawRgbImageDithalign(widget, ;
-		style:black_gc, ;
-		0, 0, ;
-		gdk_PixbufGetWidth(pixbuf1), gdk_PixbufGetHeight(pixbuf1), ;
-		GDK_RGB_DITHER_NORMAL, ;
-		pixels, rowstride, ;
-		0, 0)
+  gdk_PixbufUnref (dest)
 
 return( .t. )	// expose_cb()
 

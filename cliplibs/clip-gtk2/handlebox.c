@@ -66,7 +66,8 @@ const char * _clip_type_name_handle_box() { return "GTK_WIDGET_HANDLE_BOX"; }
 int
 clip_INIT___HANDLEBOX(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_handle_box, _clip_type_name_handle_box, _gtk_type_handle_box, _gtk_type_container, handle_box_signals);
+//	_wtype_table_put(_clip_type_handle_box, _clip_type_name_handle_box, _gtk_type_handle_box, _gtk_type_container, handle_box_signals);
+	_wtype_table_put(_clip_type_handle_box, _clip_type_name_handle_box, _gtk_type_handle_box, _gtk_type_bin, handle_box_signals);
 	return 0;
 }
 int

@@ -343,7 +343,7 @@ if retVal!=0
 endif
 return 3
 
-function  __ach_color_block(x)
+static function  __ach_color_block(x)
   local t, nrow
   nrow:=iif(x==NIL,__ac_data:nRowMass,x)
   if nrow<1 .or. nrow>__ac_data:lenmass

@@ -1,6 +1,15 @@
 
 /*
    $Log: scankey.c,v $
+   Revision 1.32  2004/07/08 10:28:37  clip
+   uri: small fix
+
+   Revision 1.31  2004/07/08 09:15:35  clip
+   uri: small fix
+
+   Revision 1.30  2004/07/08 07:21:05  clip
+   uri: small fix for kbdstat()
+
    Revision 1.29  2003/09/02 14:27:43  clip
    changes for MINGW from
    Mauricio Abre <maurifull@datafull.com>
@@ -137,7 +146,7 @@
 #include "../clip.h"
 #include "scankey.h"
 
-/* #define DBG */
+/* #define DBG  */
 /* #define DBG0 */
 /* #define DBG1 */
 /* #define DBG2 */
@@ -575,11 +584,11 @@ scan_push(unsigned char scancode)
 	unsigned short *key_map;
 
 	if (!first_key)
-        {
-        	first_key = 1;
-                if (scancode & 0x80)
-                	return 0;
-        }
+	{
+		first_key = 1;
+		if (scancode & 0x80)
+			return 0;
+	}
 
 #ifdef DBG0
 	printf("scan_push: %d\r\n", scancode);
@@ -621,16 +630,23 @@ scan_push(unsigned char scancode)
 
 	/* the XOR below used to be an OR */
 	shift_final = shift_state ^ lockstate ^ slockstate;
-	key_map = key_maps[shift_final];
 	shift_local=(shift_final & (1 << KG_SHIFTL) ) | (shift_final & (1 << KG_SHIFTR) );
+	key_map = key_maps[shift_final];
 	if (shift_local==0 )
 		shift_local= (1 << KG_SHIFT);
+	if (key_map == NULL)
+	{
+		shift_final = shift_state ^ lockstate ^ slockstate;
+		shift_final = shift_final ^ shift_local;
+		shift_local = 0;
+		key_map = key_maps[shift_final];
+	}
 	if (key_map != NULL)
 	{
 		keysym = key_map[keycode];
 		type = KTYP(keysym);
 #ifdef DBG2
-	printf("\ntype=%x,shift=%d,keykode=%d,shift_local=%d\r\n",type,shift_final,keycode, shift_local);
+	printf("\ntype=%x,shift_state=%d,shift_final=%d,keykode=%d,shift_local=%d\r\n",type,shift_state,shift_final,keycode, shift_local);
 #endif
 
 		if (type >= 0xf0)
@@ -655,6 +671,9 @@ scan_push(unsigned char scancode)
 			printf("key_handler[%d] call: %s, keysym=0x%x, up_flag=0x%x\r\n", type, key_handler_names[type],
 			       keysym & 0xff, up_flag);
 #endif
+		/*
+		printf("\nA keysym=%d,type=%d,%d",keysym,type,KT_SHIFT);
+		*/
 			(*key_handler[type]) (keysym & 0xff, up_flag);
 			if (type != KT_SLOCK)
 				slockstate = 0;
@@ -670,7 +689,17 @@ scan_push(unsigned char scancode)
 	{
 		/* maybe beep? */
 		/* we have at least to update shift_state */
-		compute_shiftstate();
+		key_map = key_maps[0];
+		keysym = key_map[keycode];
+		type = KTYP(keysym);
+		/*
+		printf("\nB keysym=%d,type=%d,%d",keysym,type,KT_SHIFT);
+		*/
+		/*check CTRL,SHIFT,ALT keys status */
+		if (keysym>=63234 && keysym<=63237)
+			(*key_handler[KT_SHIFT]) (keysym & 0xff, up_flag);
+		else
+			compute_shiftstate();
 	}
 	return 1;
 }
@@ -996,41 +1025,41 @@ do_self(unsigned char value, char up_flag)
 		return;		/* no action, if this is a key release */
 
 	if  (shift_state & ( (1<<KG_ALT) | (1<<KG_ALTGR)) )
-        {
-        	switch (value)
-                {
-                case '/':
-                	break;
-                case '[':
-                case ']':
-                case ';':
-                case '\'':
-                case ',':
-                case '.':
-                	break;
-                case '-':
-                	value = '_';
-                        break;
-                case '=':
-                case '\\':
-                	break;
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                	break;
+	{
+		switch (value)
+		{
+		case '/':
+			break;
+		case '[':
+		case ']':
+		case ';':
+		case '\'':
+		case ',':
+		case '.':
+			break;
+		case '-':
+			value = '_';
+			break;
+		case '=':
+		case '\\':
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			break;
 		default:
-                	goto norm;
+			goto norm;
 		}
-        	do_meta(value, up_flag);
-                return;
-        }
+		do_meta(value, up_flag);
+		return;
+	}
 norm:
 	if (diacr)
 		value = handle_diacr(value);
@@ -1045,7 +1074,7 @@ norm:
 	switch (value)
 	{
 	case 0x7f:
-        case '2':
+	case '2':
 		put_acqueue(value);
 		break;
 	case 0x9:
@@ -1247,29 +1276,29 @@ do_pad(unsigned char value, char up_flag)
 	{
 	case KVAL(K_PPLUS):
 		put_acqueue('+');
-                return;
+		return;
 	case KVAL(K_PMINUS):
 		put_acqueue('-');
-                return;
+		return;
 	case KVAL(K_PSLASH):
 		put_acqueue('/');
-                return;
+		return;
 	case KVAL(K_PSTAR):
 		put_acqueue('*');
-                return;
+		return;
 	}
 
 
 	if ((!scan_numlock_state /*vc_kbd_led(kbd,VC_NUMLOCK) */
-        	&& !(shift_state & ( (1<<KG_SHIFT) | (1<<KG_SHIFTL) | (1<<KG_SHIFTR))))
+		&& !(shift_state & ( (1<<KG_SHIFT) | (1<<KG_SHIFTL) | (1<<KG_SHIFTR))))
 	    || (scan_numlock_state && (shift_state & ( (1<<KG_CTRL) | (1<<KG_CTRLL) | (1<<KG_CTRLR))))
 	   )
-        {
+	{
 		switch (value)
 		{
 		case KVAL(K_PCOMMA):
 		case KVAL(K_PDOT):
-		    	do_fn(KVAL(K_REMOVE), 0);
+			do_fn(KVAL(K_REMOVE), 0);
 			return;
 		case KVAL(K_P0):
 			do_fn(KVAL(K_INSERT), 0);
@@ -1521,11 +1550,13 @@ do_lock(unsigned char value, char up_flag)
 static void
 do_slock(unsigned char value, char up_flag)
 {
+	//printf("\nA up_flag=%d,rep=%d,state=%ld",up_flag,rep,slockstate);
 	if (up_flag || rep)
 		return;
 	if (value < BITS_PER_LONG)
 		chg_bit(value, &slockstate);
-	/*chg_vc_kbd_slock(kbd, value); */
+	//chg_vc_kbd_slock(kbd, value);
+	//printf("B up_flag=%d,rep=%d,state=%ld\n",up_flag,rep,slockstate);
 }
 
 static void
@@ -1617,7 +1648,7 @@ static void
 bare_num(void)
 {
 	if (!rep)
-        {
+	{
 		/*chg_vc_kbd_led(kbd,VC_NUMLOCK); */
 		scan_numlock_state = !scan_numlock_state;
 		set_kbd_led();
@@ -1712,12 +1743,12 @@ set_kbd_led(void)
 #ifdef OS_LINUX
 	int leds = 0;
 
-        if (scan_numlock_state)
-        	leds |= LED_NUM;
-        if (capslock_state)
-        	leds |= LED_CAP;
-        if (slockstate)
-        	leds |= LED_SCR;
+	if (scan_numlock_state)
+		leds |= LED_NUM;
+	if (capslock_state)
+		leds |= LED_CAP;
+	if (slockstate)
+		leds |= LED_SCR;
 
 	ioctl(0, KDSETLED, leds);
 #endif

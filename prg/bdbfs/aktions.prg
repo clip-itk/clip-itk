@@ -149,7 +149,7 @@ BEGIN SEQU
 		MGoTo(RECNO()+m->_nSm,.t.)
 	ENDIF
     OTHER	// _i==1 .OR. _i==3
-	IF GetName(REC_GO,'_Ngoto')
+	IF GetName(REC_GO,'_Ngoto',,,,,,,,.T.)
 		IF TYPE(m->_Ngoto)<>'N' THEN BreakMess(_ErTip)
 		IF _i==1
 			MGoTo(&_Ngoto,.T.)
@@ -214,7 +214,7 @@ PROC SeekInd
 LOCAL _ik:=Upper(IndexKey(0)),_tp,_tmp,_tps
 IF Empty(_ik)
 	Nfind(_noindex)
-ELSEIF GetName(I_SEARCH+_Iv+_ik,'_Fcondit',,,,,,,(_tp:=VALTYPE(&_ik)) )
+ELSEIF GetName(I_SEARCH+_Iv+_ik,'_Fcondit',,,,,,,(_tp:=VALTYPE(&_ik)), .T.)
 	BEGIN SEQUENCE
 		_tmp:=_Fcondit
 
@@ -247,7 +247,7 @@ ELSEIF !EMPTY(lContinue) .AND. EMPTY(cWild) .AND. EMPTY(cInit)
 ELSE
 	BEGIN SEQUENCE
 		IF EMPTY(lContinue)
-			IF GetName(I_SEARCH+_Iv+_ik,'_Fcondit',,,,,,,VALTYPE(&_ik))
+			IF GetName(I_SEARCH+_Iv+_ik,'_Fcondit',,,,,,,VALTYPE(&_ik), .T.)
 				cWild:=&_Fcondit
 			ELSE
 				BREAK
@@ -287,7 +287,9 @@ IF (lChoice .OR. GetName(_ze + F_SEARCH,'_SIMPLELOC')) .AND. TakeScope()
 		IF lChoice
 			_LCondit+='"'+_SimpleLoc+'"'
 		ELSE
-			_LCondit:='"'+TRIM(_SimpleLoc)+'" $ '+ _C_F
+			IF !EMPTY(_SimpleLoc) THEN;
+				 _SimpleLoc:=TRIM(_SimpleLoc)
+			_LCondit:='"'+_SimpleLoc+'" $ '+ _C_F
 			cSign:='='
 		ENDIF
 	ELSEIF m->__ContentType=='D'
@@ -406,7 +408,7 @@ BEGIN SEQUENCE
 
 	m->lCanFunc:=( __ContentType $ 'CM' )	// для возможности выбора
 	IF  !GetName(_ZE+REPL_EXPR+Alltrim(_Works[_ptr]),'_Repl',;
-		,,,,,,__ContentType) THEN Break
+		,,,,,,__ContentType, .T.) THEN Break
 
 	lCnv:=!(_CurType $ 'VX') .AND.;
 	   !(m->_CurRType=='M'.AND.m->_aCommon[5])	//Возможно преобразуем
@@ -592,13 +594,14 @@ ENDIF
 **********
 PROC IndexFor
 LOCAL _idx_ext:=RDD_INFO(1)[4], nRec:=0,_if,_ifb
+m->_lMayBeEmpty:=.T.
 BEGIN SEQU
 	IF EMPTY(_NewIndF) THEN _NewIndF:=ClearName()
 	_NewInd:=RealFldName(_C_F)		//скорее всего
 
 	IF !GetName(_ZIF+F_INDEXING,'_NewIndF').OR.;
 		!TestWriteFile(@_NewIndF,_Idx_ext).OR.;
-		!GetName(_GIVE+_Iv,'_NewInd').OR.;
+		!GetName(_GIVE+_Iv,'_NewInd',,,,,,,,.T.).OR.;
 		!GetName(_ZU+F_INDEXING,'_indexFor') THEN BREAK
 
 	_newIndF:=Rtrim(_newIndF)
@@ -720,6 +723,7 @@ BEGIN SEQUENCE
 	ELSE
 		_NewFile:=_BaseTo
 	ENDIF
+	m->_lMayBeEmpty:=.T.
 	IF TestWriteFile(@_NewFile,'.DBF',.T.) .AND.;
 	   ((i:=DefineTxtDrv(@cRdd,@cDelim))#0) .AND.;
 	   GetName(FLDS_COPYING,'_ckField',,,.T.).AND.;
@@ -889,7 +893,7 @@ PRIVATE _nCnt:=0
 BEGIN SEQUENCE
 	IF  GetName(_ZIF+F_SORTING,'_Sortfile') .AND.;
 		TestWriteFile(@_SortFile,'.DBF',.T.) .AND.;
-		GetName(_ZE+SORTING,'_cksort',,,.T.).AND.;
+		GetName(_ZE+SORTING,'_cksort',,,.T.,,,,,.T.).AND.;
 		TakeScopeFunc(SORTING,'_sortcond')
 
 		__dbSort( _Sortfile,;
@@ -908,7 +912,7 @@ ELSE
 	m->_TotalExpr:=Indexkey(0)
 	IF  GetName(PRV_ZIFN,'_TotalFile') .AND.;
 		TestWriteFile(@_TotalFile,'.DBF',.T.) .AND.;
-		GetName(EXPR_TOTAL,'_TotalExpr',,,.T.).AND.;
+		GetName(EXPR_TOTAL,'_TotalExpr',,,.T.,,,,,.T.).AND.;
 		GetName(FLDS_TOTAL,'_cksort',,,.T.).AND.;
 		TakeScopeFunc(SUMMING,'_TotalCond')
 
@@ -1113,10 +1117,11 @@ __tagNom:=oldNom
 PROC AddTag(cTagName,cOn,cFor,lUniq,lDescend)
 LOCAL nRec:=0, _if, _ifb, lUniqSave:=Set(_SET_UNIQUE)
 IsTags()
+m->_lMayBeEmpty:=.T.
 IF PCOUNT()=0
 	__tagname:=_NewInd:=RealFldName(_c_f)
-	IF !(GetName(_Give+TAG_NAME,'__tagName') .AND.;
-	   GetName(_Give+_Iv,'_newInd') .AND.;
+	IF !(GetName(_Give+TAG_NAME,'__tagName',,,,,,,,.T.) .AND.;
+	   GetName(_Give+_Iv,'_newInd',,,,,,,,.T.) .AND.;
 	   GetName(_ZU+F_INDEXING,'_indexFor') .AND.;
 	   GetName(_ZIF,'__cdxName'))
 		RETURN
@@ -1334,26 +1339,62 @@ LOCAL _i,nOldFz:=_BdbfBrow:Freeze,oTbc
 IF_NIL nFz IS IF(nOldFz>=_ptr,_ptr-1,_ptr)
 IF nFz<LEN(_bdbfbrow:ColCount)
 	m->__nFreeze:=nFz
-
 	_BdbfBrow:Freeze:=nFz
 
-	oTbc:=_BdbfBrow:GetColumn(nFz+1)
-	oTbc:ColSep:='  '
-	_BdbfBrow:SetColumn(nFz+1, oTbc)
-
-	oTbc:=_BdbfBrow:GetColumn(nOldFz+1)
-	oTbc:ColSep:=' │'
-	_BdbfBrow:SetColumn(nOldFz+1, oTbc)
+	SetColSep(nFz+1, '  ')
+	IF nFz==nOldFz
+		SetColSep(nOldFz, ' │')
+		SetColSep(nOldFz+2, ' │')
+	ELSE
+		SetColSep(nOldFz+1, ' │')
+	ENDIF
 
 	_BdbfBrow:Configure()
 ENDIF
+**********
+PROC SetColSep(nCol, cSep)
+LOCAL oTbc:=_BdbfBrow:GetColumn(nCol)
+oTbc:ColSep:=cSep
+_BdbfBrow:SetColumn(nCol, oTbc)
+**********
+PROC ChangeCol(nSm)	//Столбец обмена
+LOCAL oCol,_ptr:=_BdbfBrow:ColPos
+IF Between(nSm,1,m->_fc)
+	oCol:=_BdbfBrow:GetColumn(nSm)
+	_BdbfBrow:SetColumn(nSm, _BdbfBrow:GetColumn(_ptr) )
+	_BdbfBrow:SetColumn(_ptr, oCol )
+	IF m->__nFreeze > 0
+		FreezeFields(m->__nFreeze)
+	ELSE
+		_BdbfBrow:Configure()
+	ENDIF
+
+	SwapAItems(m->_pole,_ptr,nSm)
+	SwapAItems(m->_FType,_ptr,nSm)
+	SwapAItems(m->_FRType,_ptr,nSm)
+	SwapAItems(m->_FLen,_ptr,nSm)
+	SwapAItems(m->_FDr,_ptr,nSm)
+	SwapAItems(m->_Works,_ptr,nSm)
+	SwapAItems(m->_Pictures,_ptr,nSm)
+	SwapAItems(m->_Widths,_ptr,nSm)
+	Out(0,49,'SF')
+	m->_replay:=.T.
+ENDIF
+**********
+PROC ColWdt(_ptr,nLen)
+LOCAL oCol:=_BdbfBrow:GetColumn(_ptr)
+IF_NIL nLen IS 0
+oCol:Width:=nLen
+_BdbfBrow:SetColumn(_ptr, oCol)
+_BdbfBrow:Configure()	//in CLIP only
+m->_Widths[_ptr]:=nLen
 **********
 PROC NewColor(lClear)
 LOCAL cNew
 
 IF !EMPTY(lClear)
 	cNew:='{1,2})'
-ELSEIF GetName(COLOR_COND,'_cb') .AND. !EMPTY(_cb) .AND. TrueCond(_cb)
+ELSEIF GetName(COLOR_COND,'_cb',,,,,,,,.T.) .AND. !EMPTY(_cb) .AND. TrueCond(_cb)
 	cNew:='IF('+TRIM(_cb)+',{6,7},{1,2}))'
 ELSE
 	RETURN
@@ -1405,7 +1446,7 @@ STATIC cSrch,lCase:=.T.,cAddCond
 BEGIN SEQUENCE
 	IF IsShift().AND.!EMPTY(cSrch)	// С Shift- продолжение поиска
 		SKIP
-	ELSEIF GetName(_ZE+GLOB_FIND,'_GSearch',,,,,,@cSrch) ;
+	ELSEIF GetName(_ZE+GLOB_FIND,'_GSearch',,,,,,@cSrch, .T.) ;
 	       .AND. !EMPTY(cSrch)
 
 		cSrch:=IF( LASTKEY()==K_CTRL_W .OR. !EMPTY(lExp),;
@@ -1482,7 +1523,7 @@ RETU .F.
 **********
 PROC CalcExpr
 LOCAL xRes,cInp
-IF GetName(_ZE+CALC_EXPR,'_Econd', , , , , , @cInp)
+IF GetName(_ZE+CALC_EXPR,'_Econd', , , , , , @cInp, , .T.)
    BEGIN SEQUENCE
 	TimerOn()
 	xRes:=__Go:=Aktion(Compile(_Econd))	//in common.prg
@@ -1636,7 +1677,7 @@ LOCAL _res,cFile
 PRIVATE _MemoPrnt:=512
 IF !EMPTY(FileName)
 	m->_TxtFile:=FileName
-ELSEIF !GetName(TXT_NAME,'_TxtFile',FILE_MASK,,,.T.) .OR. EMPTY(m->_TxtFile)
+ELSEIF !GetName(TXT_NAME,'_TxtFile',FILE_MASK,,,.T.,,,,.T.)
 	RETURN .F.
 ENDIF
 _Res:=MemoRead(cFile:=ALLTRIM(m->_TxtFile))

@@ -38,44 +38,30 @@ RETU (OsVer()-INT(OsVer()))*100
 #define IS_NOT_CODE_BLOCK(x)	(VALTYPE(x) <> "B")
 #define IS_NOT_DATETIME(x)	(VALTYPE(x) <> "T")
 
-#define XTOC(x)	  CASE_AT(VALTYPE(x), "CNDLMT", ;
-			     { NULL, ;
-			       x, ;
-			       IF(IS_NUMERIC(x),;
-				  NTRIM(x), ;
-				  NULL), ;
-			       IF(IS_DATE(x),DTOC(x),NULL),;
-			       IF(IS_DATETIME(x),TTOC(x),NULL),;
-			       IF(IS_LOGICAL(x),;
-				  IF(x,".T.",".F."), ;
-				  NULL), ;
-			       x })
-
 **********
 FUNC Arr2Str(aX)
-LOCAL i,cT,cRes:='{',item
+LOCAL i,cRes:='{',item
 FOR i:=1 TO LEN(aX)
 	item:=aX[i]
-	cT:=VALTYPE(item)
 
-	DO CASE
-		CASE ct=='C'
+	DO SWITCH  VALTYPE(item)
+		CASE 'C'
 			item:=IF( FT_NOOCCUR('"',item)>1,;
 				"["+item+"]",;
 				'"'+item+'"')
-		CASE ct=='N'
+		CASE 'N', 'F'
 			item:=NTRIM(item)
-		CASE ct=='D'
+		CASE 'D'
 			item:='CTOD("'+DTOC(item)+'")'
-		CASE ct=='T'
+		CASE 'T'
 			item:='CTOT("'+TTOC(item)+'")'
-		CASE ct=='L'
+		CASE 'L'
 			item:=IF(item,'.T.','.F.')
-		CASE ct=='A'
+		CASE 'A'
 			item:=Arr2Str(item)
 		OTHER
 			item:='NIL'
-	ENDCASE
+	END
 	cRes+=item
 	IF i<LEN(aX) THEN cRes+=','
 NEXT
@@ -103,9 +89,20 @@ DO CASE
       CASE cTypeToConvertTo $ "CM" .AND.; // They Want a Character String
 	   IS_NOT_CHAR(xValueToConvert)
 
-	xValueToConvert:=IF( VALTYPE(xValueToConvert)=='A',;
-				Arr2Str(xValueToConvert),;
-				XTOC(xValueToConvert))
+	DO SWITCH  VALTYPE(xValueToConvert)
+		CASE "A"
+			xValueToConvert:=Arr2Str(xValueToConvert)
+		CASE "N", "F"
+			xValueToConvert:=NTRIM(xValueToConvert)
+		CASE "D"
+			xValueToConvert:=DTOC(xValueToConvert)
+		CASE "T"
+			xValueToConvert:=TTOC(xValueToConvert)
+		CASE "L"
+			xValueToConvert:=IF(xValueToConvert, ".T.",".F.")
+		OTHER
+			xValueToConvert:=""
+        END
 
       CASE cTypeToConvertTo == "D" .AND.; // They Want a Date
 	   IS_NOT_DATE(xValueToConvert)

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003-2004  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -33,7 +33,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_tree_view_column() { return GTK_TYPE_TREE_VIEW_
 
 long _clip_type_tree_view_column() { return GTK_OBJECT_TREE_VIEW_COLUMN; }
 
-const char * _clip_type_name_tree_view_column()  { return "GTK_TYPE_TREE_VIEW_COLUMN"; }
+const char * _clip_type_name_tree_view_column()  { return "GTK_OBJECT_TREE_VIEW_COLUMN"; }
 
 /* Register boxes in global table */
 int
@@ -882,4 +882,55 @@ clip_GTK_TREEVIEWCOLUMNCELLISVISIBLE(ClipMachine * cm)
 err:
 	return 1;
 }
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 2)
+int
+clip_GTK_TREEVIEWCOLUMNFOCUSCELL(ClipMachine * cm)
+{
+	C_object *ccolumn  = _fetch_co_arg(cm);
+        C_object *ccell    = _fetch_cobject(cm, _clip_spar(cm, 2));
+
+	CHECKCOBJ(ccolumn,GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
+	CHECKCOBJ(ccell,GTK_IS_CELL_RENDERER(ccell->object));
+
+        gtk_tree_view_column_focus_cell(GTK_TREE_VIEW_COLUMN(ccolumn->object),
+        	GTK_CELL_RENDERER(ccell->object));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_TREEVIEWCOLUMNSETEXPAND(ClipMachine * cm)
+{
+	C_object *ccolumn  = _fetch_co_arg(cm);
+        gboolean    set    = _clip_parl(cm, 2);
+
+	CHECKCOBJ(ccolumn,GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
+
+        gtk_tree_view_column_set_expand(GTK_TREE_VIEW_COLUMN(ccolumn->object),
+        	set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEVIEWCOLUMNGETEXPAND(ClipMachine * cm)
+{
+	C_object *ccolumn  = _fetch_co_arg(cm);
+
+	CHECKCOBJ(ccolumn,GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
+
+        _clip_retl(cm, gtk_tree_view_column_get_expand(GTK_TREE_VIEW_COLUMN(ccolumn->object)));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
 

@@ -22,7 +22,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_item_factory() { return GTK_TYPE_ITEM_FACTORY; 
 
 long _clip_type_item_factory() { return GTK_OBJECT_ITEM_FACTORY; }
 
-const char * _clip_type_name_item_factory()  { return "GTK_TYPE_ITEM_FACTORY"; }
+const char * _clip_type_name_item_factory()  { return "GTK_OBJECT_ITEM_FACTORY"; }
 
 int
 clip_INIT___ITEMFACTORY(ClipMachine *cm)
@@ -44,9 +44,12 @@ _item_factory_callback1(gpointer data, guint callback_action, GtkWidget *wid)
 	{
 		memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
 		_clip_mclone(c->co->cmachine, &stack[0], &c->co->obj);
-		stack[1] = c_wid->obj;
+		_clip_mclone(c->co->cmachine, &stack[1], &c_wid->obj);
+		//stack[1] = c_wid->obj;
 		_clip_eval( c->cm, &(c->cfunc), 2, stack, &res );
 		_clip_destroy(c->cm, &res);
+		_clip_destroy(c->cm, &stack[0]);
+		_clip_destroy(c->cm, &stack[1]);
 	}
 }
 
@@ -63,9 +66,12 @@ _item_factory_callback2(GtkWidget *wid, gpointer data, guint callback_action)
 	{
 		memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
 		_clip_mclone(c->co->cmachine, &stack[0], &c->co->obj);
-		stack[1] = c_wid->obj;
+		_clip_mclone(c->co->cmachine, &stack[1], &c_wid->obj);
+		//stack[1] = c_wid->obj;
 		_clip_eval( c->cm, &(c->cfunc), 2, stack, &res );
 		_clip_destroy(c->cm, &res);
+		_clip_destroy(c->cm, &stack[0]);
+		_clip_destroy(c->cm, &stack[1]);
 	}
 }
 

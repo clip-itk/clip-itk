@@ -20,13 +20,13 @@
 /**********************************************************/
 CLIP_DLLEXPORT GtkType _gtk_type_tooltips() { return GTK_TYPE_TOOLTIPS; }
 long _clip_type_tooltips() { return GTK_WIDGET_TOOLTIPS; }
-const char * _clip_type_name_tooltips()  { return "GTK_TYPE_TOOLTIPS"; }
+const char * _clip_type_name_tooltips()  { return "GTK_OBJECT_TOOLTIPS"; }
 
 /* Register toolbar in global table */
 int
 clip_INIT___TOOLTIPS(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_tooltips,  _clip_type_name_tooltips,  _gtk_type_tooltips,  _gtk_type_label, NULL);
+	_wtype_table_put(_clip_type_tooltips,  _clip_type_name_tooltips,  _gtk_type_tooltips,  _gtk_type_object, NULL);
 	return 0;
 }
 
@@ -70,6 +70,20 @@ clip_GTK_TOOLTIPSDISABLE(ClipMachine * cm)
 	C_widget  *ctt = _fetch_cw_arg(cm);
 	CHECKCWID(ctt,GTK_IS_TOOLTIPS);
 	gtk_tooltips_disable(GTK_TOOLTIPS(ctt->widget));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TOOLTIPSSETDELAY(ClipMachine * cm)
+{
+	C_widget  *ctt = _fetch_cw_arg(cm);
+        guint    delay = _clip_parni(cm, 2);
+
+	CHECKCWID(ctt,GTK_IS_TOOLTIPS);
+        CHECKARG(2, NUMERIC_t);
+	gtk_tooltips_set_delay(GTK_TOOLTIPS(ctt->widget), delay);
 	return 0;
 err:
 	return 1;
@@ -124,4 +138,19 @@ clip_GTK_TOOLTIPSDATAGET(ClipMachine * cm)
 err:
 	return 1;
 }
+
+int
+clip_GTK_TOOLTIPSFORCEWINDOW(ClipMachine * cm)
+{
+	C_widget  *ctt = _fetch_cw_arg(cm);
+
+	CHECKCWID(ctt,GTK_IS_TOOLTIPS);
+
+	gtk_tooltips_force_window(GTK_TOOLTIPS(ctt->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
 

@@ -22,7 +22,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_text_mark() { return GTK_TYPE_TEXT_MARK; }
 
 long _clip_type_text_mark() { return GTK_OBJECT_TEXT_MARK; }
 
-const char * _clip_type_name_text_mark()  { return "GTK_TYPE_TEXT_MARK"; }
+const char * _clip_type_name_text_mark()  { return "GTK_OBJECT_TEXT_MARK"; }
 
 int
 clip_INIT___TEXTMARK(ClipMachine *cm)

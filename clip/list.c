@@ -1,6 +1,9 @@
 
 /*
    $Log: list.c,v $
+   Revision 1.3  2004/05/21 11:22:19  clip
+   rust: minor fix for 'configure -m'
+
    Revision 1.2  2000/05/24 18:34:34  clip
    _clip_push_area
    indents all
@@ -14,6 +17,7 @@
    *
  */
 
+#include "clip.h"
 #include "list.h"
 
 #define PREV(el) ((ListEl *)(el))->prev

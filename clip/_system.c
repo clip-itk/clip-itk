@@ -1,11 +1,26 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
 /*
    $Log: _system.c,v $
+   Revision 1.15  2004/07/21 14:24:28  clip
+   rust: minor fix
+
+   Revision 1.14  2004/07/06 07:18:41  clip
+   alena: include file <string.h>
+
+   Revision 1.13  2004/05/12 10:37:13  clip
+   uri: small fix in system()
+
+   Revision 1.12  2004/05/06 11:25:23  clip
+   rust: minor fix
+
+   Revision 1.11  2004/05/06 10:25:09  clip
+   rust: SYSCMD(,,,,[{{"ENVVAR1","value1"},{"ENVVAR2","value2"}}],["/working/dir"])
+
    Revision 1.10  2003/09/09 14:36:14  clip
    uri: fixes for mingw from Mauricio and Uri
 
@@ -52,6 +67,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <limits.h>
+#include <string.h>
 #ifndef OS_MINGW
 	#include <sys/wait.h>
 #endif
@@ -70,8 +87,11 @@ clip_SYSCMD(ClipMachine * mp)
 	int lcmd;
 	char *in;
 	int lin;
-	ClipVar *out, *err;
+	ClipVar *out, *err, *cenv;
 	int have_err = 0;
+	char **env = 0;
+	int i;
+	char *pwd = 0;
 #ifndef OS_MINGW
 	OutBuf obuf, ebuf;
 	pid_t pid;
@@ -86,6 +106,8 @@ clip_SYSCMD(ClipMachine * mp)
 	in = _clip_parcl(mp, 2, &lin);
 	out = _clip_par(mp, 3);
 	err = _clip_par(mp, 4);
+	cenv = _clip_vptr(_clip_par(mp,5));
+	pwd = _clip_parc(mp, 6);
 
 	if (!cmd || !lcmd || !in || !out)
 		return EG_ARG;
@@ -99,6 +121,34 @@ clip_SYSCMD(ClipMachine * mp)
 	if (err)
 		have_err = 1;
 
+	if (cenv && cenv->t.type == ARRAY_t)
+	{
+		ClipVar l,r;
+		char* s;
+		long dims[2];
+		int e1,e2;
+
+		memset(&l,0,sizeof(ClipVar));
+		memset(&r,0,sizeof(ClipVar));
+		env = calloc(cenv->a.count+1,sizeof(char*));
+		for(i=0;i<cenv->a.count;i++)
+		{
+			dims[0] = i;
+			dims[1] = 0;
+			e1 = _clip_aget(mp, cenv, &l, 2, dims);
+			dims[1] = 1;
+			e2 = _clip_aget(mp, cenv, &r, 2, dims);
+			if(e1 || e2 || l.t.type != CHARACTER_t || r.t.type != CHARACTER_t)
+				continue;
+			s = calloc(1,l.s.str.len+r.s.str.len+2);
+			memcpy(s,l.s.str.buf,l.s.str.len);
+			s[l.s.str.len] = '=';
+			memcpy(s+l.s.str.len+1,r.s.str.buf,r.s.str.len);
+			env[i] = s;
+			_clip_destroy(mp, &l);
+			_clip_destroy(mp, &r);
+		}
+	}
 /* FIXME!! figure how to run a command in mingw */
 #ifdef OS_MINGW
 	execlp("command.com", "/c", cmd, 0);
@@ -136,7 +186,22 @@ clip_SYSCMD(ClipMachine * mp)
 		/*setsid(); */
 		setgid(getgid());
 		setuid(getuid());
-		execlp("/bin/sh", "/bin/sh", "-c", cmd, 0);
+		if(pwd)
+		{
+			if(chdir(pwd))
+				return EG_ARG;
+		}
+
+		if(env)
+		{
+			execle("/bin/sh", "/bin/sh", "-c", cmd, 0, env);
+			i = 0;
+			while(env[i])
+				free(env[i++]);
+			free(env);
+		}
+		else
+			execlp("/bin/sh", "/bin/sh", "-c", cmd, 0);
 		exit(111);
 	}
 
@@ -180,8 +245,8 @@ clip_SYSCMD(ClipMachine * mp)
 		fd_set rfds, wfds;
 
 		if ((infd < 0 || !FD_ISSET(infd, &w_fds))
-		    && (outfd < 0 || !FD_ISSET(outfd, &r_fds)) &&
-		    (!have_err || errfd < 0 || !FD_ISSET(errfd, &r_fds)))
+			&& (outfd < 0 || !FD_ISSET(outfd, &r_fds)) &&
+			(!have_err || errfd < 0 || !FD_ISSET(errfd, &r_fds)))
 		{
 			break;
 		}
@@ -207,7 +272,7 @@ clip_SYSCMD(ClipMachine * mp)
 					goto clear_in;
 			}
 			else
-			      clear_in:
+				  clear_in:
 			{
 				FD_CLR(infd, &w_fds);
 				close(infd);
@@ -285,6 +350,6 @@ int
 clip_PID(ClipMachine * mp)
 {
 	_clip_retnl(mp,getpid());
-        return 0;
+		return 0;
 }
 

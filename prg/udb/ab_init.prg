@@ -9,7 +9,8 @@
 init procedure ab_init
 	local k
 
-	set("ab_colors","0/1,0/2,r/7,g/rb,15/7,0/7")
+	//set("ab_colors","1/2,0/2,r/7,g/rb,15/7,0/7")
+	set("ab_colors","w+/b,0/b,r/7,g/rb,15/7,0/7")
 	set("ab_colors_menu","b/w,gr+/rb,r/w,g/rb,n+/w,w+/b")
 	set("ab_colors_browse","N/W, N/BG, B/W, B/BG, B/W, B/BG, R/W, B/R")
 	set("ab_colors_dialog","w+/bg,1/3,14/3,15/3,0/3,0/7")
@@ -28,6 +29,7 @@ init procedure ab_init
 	k[ K_F3 ] 	:=HASH_ViewCard
 	k[ K_F4 ] 	:=HASH_Edit
 	k[ K_F8 ] 	:=HASH_Delete
+	k[ K_CTRL_F8 ] 	:=HASH_UnDelete
 	k[ K_ALT_F8 ] 	:=HASH_DeleteAll
 	k[ K_F10] 	:=HASH_CloseWin
 	k[ K_ALT_X ]	:=HASH_Exit

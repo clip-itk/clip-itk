@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+              Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -13,7 +14,13 @@
 #include "clip-gtk2.h"
 
 /**********************************************************/
-/****          Option menu has no own signals          ****/
+/* Signals table */
+static SignalTable option_menu_signals[] =
+{
+	/* signals */
+	{"changed",GSF( widget_signal_handler ),	ESF( object_emit_signal ), GTK_CHANGED_SIGNAL},
+	{"", NULL, NULL, 0}
+};
 /**********************************************************/
 
 /* Register option menu in global table */
@@ -24,7 +31,7 @@ const char * _clip_type_name_option_menu() { return "GTK_WIDGET_OPTION_MENU"; }
 int
 clip_INIT___OPTION_MENU(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_option_menu, _clip_type_name_option_menu, _gtk_type_option_menu, _gtk_type_button, NULL);
+	_wtype_table_put(_clip_type_option_menu, _clip_type_name_option_menu, _gtk_type_option_menu, _gtk_type_button, option_menu_signals);
 	return 0;
 }
 /**********************************************************/
@@ -113,4 +120,19 @@ clip_GTK_OPTIONMENUSETHISTORY(ClipMachine * cm)
 err:
 	return 1;
 }
+
+int
+clip_GTK_OPTIONMENUGETHISTORY(ClipMachine * cm)
+{
+	C_widget *coptmenu = _fetch_cw_arg(cm);
+	guint        index ;
+        CHECKCWID(coptmenu,GTK_IS_OPTION_MENU);
+        if (_clip_parinfo(cm,2)==UNDEF_t) index = 1;
+        index = gtk_option_menu_get_history(GTK_OPTION_MENU(coptmenu->widget));
+        _clip_retni(cm, index + 1);
+	return 0;
+err:
+	return 1;
+}
+
 

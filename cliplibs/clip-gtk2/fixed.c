@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -85,4 +86,36 @@ clip_GTK_FIXEDMOVE(ClipMachine * cm)
 err:
 	return 1;
 }
+
+int
+clip_GTK_FIXEDGETHASWINDOW(ClipMachine * cm)
+{
+	C_widget *cfix = _fetch_cw_arg(cm);
+
+        CHECKCWID(cfix,GTK_IS_FIXED);
+
+        _clip_retl(cm, gtk_fixed_get_has_window(GTK_FIXED(cfix->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_FIXEDSETHASWINDOW(ClipMachine * cm)
+{
+	C_widget *cfix = _fetch_cw_arg(cm);
+        gboolean  hasw = _clip_parl(cm, 2);
+
+        CHECKCWID(cfix,GTK_IS_FIXED);
+        CHECKARG(2, LOGICAL_t);
+
+        gtk_fixed_set_has_window(GTK_FIXED(cfix->widget), hasw);
+
+	return 0;
+err:
+	return 1;
+}
+
 

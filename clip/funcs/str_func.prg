@@ -74,6 +74,9 @@ FUNCTION cgi_split(cgistr,aType)
 	else
 		arr:=map()
 	endif
+	if empty(cgistr)
+		return arr
+	endif
 
 	le := len(cgistr)
 	key := ""

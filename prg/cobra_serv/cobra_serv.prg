@@ -1,13 +1,14 @@
 // Stand for connection and simply make echo.
 #include "set.ch"
+#include "tcp.ch"
 #include "cobra.ch"
+#include "http.ch"
 
 //#define DEBUG
 
 function main( iniFile )
 
-	local tmp, serv_info := map(),oIni
-	local nCon
+	local tmp, oIni
 
 #ifdef DEBUG
 	clear screen
@@ -15,56 +16,71 @@ function main( iniFile )
 	errorBlock({|e|error2Log(e)})
 #endif
 	set macro_in_string off
+	set translate path off
 	begin sequence
-	oIni := serv_loadIni(iniFile,Serv_info)
-#ifdef DEBUG
-	outlog(__FILE__,__LINE__,oIni)
-#endif
-	serv_openCODB(oIni)
+		mimeTypesLoad()
+		oIni := tcpServerLoadIni(iniFile,"cobra_serv.ini")
+		//tmp  := serv_loadModules(oIni)
+		tcpServerLoadIniModules(oIni,"COBRA")
 	recover
 	end sequence
+#ifdef DEBUG
+	cobra_server(oIni)
+	http_server(oIni)
+#else
+	start(@cobra_server(),oIni)
+	start(@http_server(),oIni)
+#endif
+	while .t.
+#ifdef DEBUG
+		if inkey(10) !=0
+			exit
+		endif
+#else
+		sleep(1000)
+#endif
+	enddo
+	?
+return
 
-	? "COBRA_SERV: listen on port ", serv_info:nPort
-	serv_info:listen := tcpListen( serv_info:nPort, 100 )
-	if ( serv_info:listen ) == -1
-		? "COBRA_SERV: Error listen on port ", serv_info:nPort, ferrorStr()
+*********************************
+static function cobra_server(oIni)
+	local oServer := tcpServerNew("COBrA_SERV",COBRA_DEFPORT,"COBRA",oIni)
+	local tmp, nCon
+
+	errorBlock({|e|error2Log(e)})
+	? oServer:name+": listen on port ", oServer:nPort
+
+	if ! oServer:listen()
+		? oServer:name+":"+oServer:error
 		?
+		errorlevel(1)
 		return( 1 )
 	endif
 
 	? "wait client connection"
 	do while( .t. )
-		if (nCon := tcpAccept( serv_info:listen, 300 )) != -1
-#ifdef DEBUG
-			? "start",serv_info:listen,nCon,cobra_commander(nCon, oIni )
-#else
-//			? "start",serv_info:listen,nCon,cobra_commander(nCon, oIni )
-			? "start",serv_info:listen,nCon,start( @cobra_commander(), nCon, oIni )
-#endif
+		if (nCon := oServer:Accept()) != -1
+			? "start",nCon,start( @cobra_commander(), nCon, oIni )
 		endif
-#ifdef DEBUG
-		if inkey(1) !=0
-			exit
-		endif
-#else
-		sleep(1)
-#endif
+		sleep(0.01)
 	enddo
-	? "COBRA_SERV: listen close ", serv_info:nPort,serv_info:listen
-	tcpClose( serv_info:listen )
-
-	?
+	? oServer:name+": listen close "
+	oServer:close()
 return( 0 )
 
-
+*******************************************
 static function cobra_commander( nH, oInI )
 	local i,command,nQuery,oQuery,oAnswer
-	local oConnect := cobraServiceNew()
-	local cFile := "log_"+alltrim(str(nH))+"_"+alltrim(str(seconds()))+".log"
-	local err,oErr,rootPath
+	local oConnect, cFile, err,oErr
 	local cCmdWrapper, cDaemon, cIPAddr
 
 	? "Task started",seconds(),nH
+	errorBlock({|e|error2Log(e)})
+	//cFile := "log_"+alltrim(str(nH))+"_"+alltrim(str(seconds()))+".log"
+	oConnect := cobraServiceNew(oIni)
+	oConnect:setRootPath()
+	//errorBlock({|e|oConnect:errorBlock(e)})
 	set macro_in_string off
 	set translate path off
 	set deleted on
@@ -72,23 +88,13 @@ static function cobra_commander( nH, oInI )
 	set(_SET_LOGLEVEL,3)
 	outlog("start task for handle:", nH)
 
-	rootPath = oIni:getValue("SERVER","ROOTPATH")
-	if empty(rootpath)
-		rootPath := "./"
-	else
-		rootPath := strtran(rootPath,"$CLIPROOT",cliproot())
-	endif
-	set(_SET_ROOTPATH,rootPath)
-	outlog("Set ROOTPATH:", rootPath)
-
-
 	oConnect:nPort		:= -1
 	oConnect:nIOtimeOut	:= 60000
 	oConnect:nConnect	:= nH
 
 	oConnect:info:fromIni(oIni)
 
-	cCmdWrapper := oIni:getValue("TCP","WRAPPER")
+	cCmdWrapper := oIni:getValue("COBRA","WRAPPER")
 	cDaemon := parsefilename(startpath())
 	cIPAddr := ""
 	tcpGetPeerName(nH, @cIPAddr)
@@ -101,18 +107,12 @@ static function cobra_commander( nH, oInI )
 
 	oConnect:sendLine("COBrA (CLIP Object Broker & Application Server) ver:"+alltrim(str(COBRA_VERSION))+" (C) 2003, ITK, Izevsk,Russia.")
 
-#ifdef DEBUG
-	outlog(__FILE__,__LINE__,oIni)
-#endif
-	i := oIni:getValue("TCP","AUTH")
-#ifdef DEBUG
-	outlog(__FILE__,__LINE__,oIni)
-#endif
+	i := oIni:getValue("COBRA","AUTH")
+
 	if !empty(i)
 		oConnect:info:auth := i
 	endif
 	errorBlock({|err|break(err)})
-
 
 	do while( .t. )
 
@@ -197,221 +197,65 @@ static function cobra_commander( nH, oInI )
 
 return( 0 )
 
-/*************************************/
-static function serv_loadIni(iniFile,serv_info)
-	local oIni, val,i, modules,mfuncs:={}
-	local s,e,err,oErr,lExit:=.f.
-	local values:= {;
-		{"NPORT","TCP","port",COBRA_DEFPORT};
-		}
-	for i=1 to len(values)
-		serv_info[values[i][1]] := values[i][4]
-	next
-	if !empty(iniFile) .and. file(iniFile)
-		oIni := iniFileNew(iniFile)
-	endif
-	if empty(oIni) .and. !empty(iniFile)
-		? "Error: inifile not found:",iniFile
-		? "Usage: cobra_serv <inifile_name>"
-		?
-		quit
-	endif
-	if empty(oIni)
-		iniFile := cliproot()+PATH_DELIM+"etc"+PATH_DELIM+"cobra_serv.ini"
-		if file(iniFile)
-			oIni := iniFileNew(iniFile)
-		endif
+*********************************
+static function http_server(oIni)
+	local oServer,nCon
+	local oConnect,sConnect,tmpConnect
 
-	endif
-	if empty(oIni)
-		iniFile := "cobra_serv.ini"
-		if file(iniFile)
-			oIni := iniFileNew(iniFile)
-		endif
+	errorBlock({|e|error2Log(e)})
 
-	endif
-	if empty(oIni)
-		oIni := iniFileNew()
-		return oIni
-	endif
-	oIni:load()
-	if !empty(oIni:error)
-		s := [Error loading ini file:]+toString(iniFile)+":"+oIni:error
-		? s
-		outlog(s)
-	endif
-	for i=1 to len(values)
-		val := oIni:getValue(values[i][2],values[i][3])
-		if !empty(val)
-			serv_info[values[i][1]] := val
-		endif
-	next
-	/* load modules */
-	err := errorBlock({|e|break(e)})
-	modules := oIni:keys("MODULES")
-	? "Loading modules:",modules
-	for i=1 to len(modules)
-		val := oIni:getValue("MODULES",modules[i])
-		? modules[i],val,"...."
-		if empty(val) .or. valtype(val) !="C"
-			?? "bad definition"
-			lExit := .t.
-			loop
-		endif
-		if ! file(val)
-			?? "module not found:"
-			lExit := .t.
-			loop
-		endif
-		begin sequence
-			load(val,mFuncs)
-			?? "OK"
-			? "Export functions:",mFuncs
-		recover using oErr
-			?? errorMessage(oErr)
-			lExit := .t.
-		end sequence
-	next
-	errorBlock(err)
-	if lExit
-		quit
-	endif
-return  oIni
-
-/*************************************/
-static function serv_openCODB(oIni)
-
-	local dList,List
-	local dictId,dictList:={},oDicts:={}
-	local depId,depList:={}, oDeps:={}
-	local i,j,k,tmp,key
-	local use_all := .f.
-
-	i:=oIni:getValue("CODB","POLICY")
-	if empty(i) .or. "ALL" $ upper(i)
-		use_all := .t.
-	endif
-
-	i := oIni:sections()
-	j := ascan(i,"CODB")
-	if j<=0 /* not open CODB data */
-		return
-	endif
-	i := oIni:getValue("CODB","open_mode")
-	if !empty(i)
-		if left(upper(i),4)=="EXCL"
-			set exclusive on
-		else
-			set exclusive off
-		endif
-	endif
-
+	set macro_in_string off
 	set translate path off
-	set autopen on
-	set deleted on
-	rddsetdefault("DBFCDX")
 
-	dList:=codbList():new()
-	if val(dList:error)!=0
-		? [Error open dictionaries list:]+dList:error
+	oServer := tcpServerNew("KAMACHE",KAMACHE_DEFPORT,"HTTP",oIni)
+
+	oConnect := httpServiceNew(oIni)
+	oConnect:nPort	:= oServer:nPort
+	oConnect:defSetting()
+	sConnect:=var2str(oConnect)
+
+	? oServer:name+": listen on port ", oServer:nPort
+	if ! oServer:listen()
+		? oServer:name+":"+oServer:error
 		?
-		return
+		errorlevel(1)
+		return( 1 )
 	endif
 
-	list := dList:list()
-	for i=1 to len(list)
-		j := at(":",list[i])
-		aadd(dictList,left(list[i],j-1))
-	next
-	? "Detected dictionaries:",dictList
+	? "wait client connection"
+	do while( .t. )
 
-	for i=1 to len(dictList)
-		dictId := dictList[i]
-		aadd(oDicts,NIL)
-		? "Open dictionary:",dictId,""
-		key := oIni:getValue("CODB",dictId)
-		if use_all
-			if !empty(key) .and. left(upper(key),2)=="DI" /* disabled */
-				?? "disabled"
-				loop
-			endif
-		else
-			if empty(key) .or. !(left(upper(key),2)=="EN") /* enabled */
-				?? "disabled"
-				loop
-			endif
+		if (nCon := oServer:Accept()) != -1
+			tmpConnect:=str2var(sConnect)
+			tmpConnect:nConnect := nCon
+			? "start",nCon,start( @kamache_commander(),tmpConnect )
+			tmpConnect:=NIL
 		endif
-		?? "opening "
-		oDicts[i] := coDictionary():new(dictId)
-		if !empty(oDicts[i]:error)
-			?? oDicts[i]:error
-			loop
-		endif
-		tmp := oDicts[i]:select("DEPOSIT")
-		for j=1 to len(tmp)
-			key := oDicts[i]:getValue(tmp[j])
-			if empty(key)
-				loop
-			endif
-			aadd(depList,dictId+key:number)
-		next
-		?? "OK"
-	next
-	? "Detected depositories:",depList
-	for i=1 to len(depList)
-		depId := depList[i]
-		aadd(oDeps,NIL)
-		? "Open depository:",depId,""
-		key := oIni:getValue("CODB",depId)
-		if use_all
-			if !empty(key) .and. left(upper(key),2)=="DI" /* disabled */
-				?? "disabled"
-				loop
-			endif
-		else
-			if empty(key) .or. !(left(upper(key),2)=="EN") /* enabled */
-				loop
-			endif
-		endif
-		?? "opening "
-		oDeps[i] := coDepository():new(depId)
-		if !empty(oDeps[i]:error)
-			?? oDeps[i]:error
-			loop
-		endif
-		oDeps[i]:open()
-		if !empty(oDeps[i]:error)
-			?? oDeps[i]:error
-			loop
-		endif
-		oDeps[i]:extentOpenAll()
-		if !empty(oDeps[i]:error)
-			?? oDeps[i]:error
-			loop
-		endif
-		?? "OK"
-	next
-
-return
+	enddo
+	? oServer:name+": listen close "
+	oServer:close()
+return( 0 )
 
 
-/*****************************************/
-static function error2Log(err)
-	local i,s
-	i := 1
-	while ( !Empty(ProcName(i)) )
-		s := "Called from "+allTrim(ProcName(i)) + ;
-			"(" + str(ProcLine(i)) + ")"
+/*********************************/
+static function kamache_commander(oConnect)
+	local e
 
-		//? s
-		outlog(s)
-		i++
-	end
-	outlog("object error:",err)
-	s := errorMessage(err)
-	? s
-	outlog(s)
-return
+	? "Task started",seconds(),oConnect:nConnect
+	outlog("start task for handle:", oConnect:nConnect)
+
+	errorBlock({|e|oConnect:errorBlock(e)})
+
+	begin sequence
+		if ! oConnect:waitRequest()
+			return
+		endif
+		oConnect:runCommand()
+	recover
+		oConnect:close()
+	end sequence
+	outlog("close task for handle:", oConnect:nConnect,"sended=",oConnect:nSended,"received=",oConnect:nReceived)
+return( 0 )
 
 /***************************************/
 static function tcp_wrappers(cCmd, cDaemon, cIPAddr)

@@ -33,19 +33,19 @@ clip_run: clip_run.prg
 #	chmod +x test.po
 
 install:
-	cp clip_run$(EXESUFF) $(CLIPROOT)/bin
-	cp clip_prg$(EXESUFF) $(CLIPROOT)/bin
-	cp clip_bl$(EXESUFF) $(CLIPROOT)/bin
-	cp clip_we$(EXESUFF) $(CLIPROOT)/bin
-	cp .macro $(CLIPROOT)/etc
-	cp .templ $(CLIPROOT)/etc
-	cp clip_hv$(EXESUFF) $(CLIPROOT)/bin
-	cp clip_fl$(EXESUFF) $(CLIPROOT)/bin
-	cp clip_dbf2txt$(EXESUFF) $(CLIPROOT)/bin
-	cp clip_blank$(EXESUFF) $(CLIPROOT)/bin
-	cp www_clip$(EXESUFF) $(CLIPROOT)/bin
-	cp wcl2prg$(EXESUFF) $(CLIPROOT)/bin
-	cp sqlrun$(EXESUFF) $(CLIPROOT)/bin
+	cp clip_run$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp clip_prg$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp clip_bl$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp clip_we$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp .macro $(DESTDIR)$(CLIPROOT)/etc
+	cp .templ $(DESTDIR)$(CLIPROOT)/etc
+	cp clip_hv$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp clip_fl$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp clip_dbf2txt$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp clip_blank$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp www_clip$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp wcl2prg$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	cp sqlrun$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
 
 
 clip_prg: clip_prg.prg

@@ -28,7 +28,7 @@ META data may be: group,user,attr,class,extent,deposit
 #define CODB_DICTINDEX_STRUCTURE { ;
 		{"ID"       ,"C",CODB_ID_LEN  ,0},;
 		{"META"     ,"C",10           ,0},;
-		{"NAME"     ,"C",20           ,0},;
+		{"NAME"     ,"C",50           ,0},;
 		{"CLASS_ID" ,"C",CODB_ID_LEN  ,0},;
 		{"SUPER_ID" ,"C",CODB_ID_LEN  ,0},;
 		{"EXTENT_ID","C",CODB_ID_LEN  ,0},;
@@ -78,20 +78,20 @@ META data may be: group,user,attr,class,extent,deposit
 		/* extent description */
 #define CODB_EXTENT_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
 		{"HELP"      ,"M",10           ,0,CODB_LENTYPE_RTRIM,""};
 		}
 
 #define CODB_DEPOSIT_BODY { ;
 		{"ID"       ,"C",CODB_ID_LEN   ,0,CODB_LENTYPE_RTRIM,""}, ;
-		{"NAME"     ,"C",25            ,0,CODB_LENTYPE_RTRIM,""}, ;
+		{"NAME"     ,"C",50            ,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"NUMBER"   ,"C",DEPOSIT_ID_LEN,0,CODB_LENTYPE_NONE,""}, ;
 		{"MEMOSIZE" ,"N",4             ,0,CODB_LENTYPE_RTRIM,CODB_MEMOSIZE_DEFAULT} ;
 		}
 
 #define CODB_ATTR_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
 		{"TYPE"      ,"C",1            ,0,CODB_LENTYPE_RTRIM,"C"},;
 		{"LEN"       ,"N",5            ,0,CODB_LENTYPE_RTRIM,1},;
 		{"DEC"       ,"N",2            ,0,CODB_LENTYPE_RTRIM,0},;
@@ -113,7 +113,7 @@ META data may be: group,user,attr,class,extent,deposit
 		/* classes description */
 #define CODB_CLASS_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
 		{"SUPER_ID"  ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
 		{"EXTENT_ID" ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
 		{"EXPR_ESSENCE","C",200        ,0,CODB_LENTYPE_RTRIM,""},;
@@ -127,7 +127,7 @@ META data may be: group,user,attr,class,extent,deposit
 
 #define CODB_TVIEW_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
 		{"CLASS_ID"  ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
 		{"EXTENT_ID" ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
 		{"GROUP_ID"  ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
@@ -139,7 +139,7 @@ META data may be: group,user,attr,class,extent,deposit
 
 #define CODB_TCOLUMN_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM  ,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM  ,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM  ,""},;
 		{"HEADER"    ,"C",80           ,0,CODB_LENTYPE_RTRIM  ,""},;
 		{"FOOTER"    ,"C",80           ,0,CODB_LENTYPE_RTRIM  ,""},;
 		{"WIDTH"     ,"N",2            ,0,0                   ,0 },;
@@ -150,7 +150,7 @@ META data may be: group,user,attr,class,extent,deposit
 
 #define CODB_REPORT_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
 		{"TYPE"      ,"C",1            ,0,CODB_LENTYPE_RTRIM,"C"},;
 		{"FILENAME"  ,"C",256          ,0,CODB_LENTYPE_RTRIM,""},;
 		{"CLASS_ID"  ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
@@ -161,7 +161,7 @@ META data may be: group,user,attr,class,extent,deposit
 
 #define CODB_PLUGINS_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
 		{"TYPE"      ,"C",1            ,0,CODB_LENTYPE_RTRIM,"C"},;
 		{"FILENAME"  ,"C",256          ,0,CODB_LENTYPE_RTRIM,""},;
 		{"MAINFUNC"  ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
@@ -170,13 +170,13 @@ META data may be: group,user,attr,class,extent,deposit
 
 #define CODB_INDEX_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM ,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM ,""},;
 		{"EXPR"      ,"C",250          ,0,CODB_LENTYPE_RTRIM,"{|oData,oDeposit|}"};
 		}
 
 #define CODB_COUNTER_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
-		{"NAME"      ,"C",25           ,0,CODB_LENTYPE_RTRIM ,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM ,""},;
 		{"TYPE"      ,"C",4            ,0,CODB_LENTYPE_RTRIM ,"MAX"},;
 		{"DEPOSIT"   ,"C",DEPOSIT_ID_LEN,0,CODB_LENTYPE_NONE,""}, ;
 		{"MAX_VALUE" ,"N",6		,0,CODB_LENTYPE_NONE,0}, ;

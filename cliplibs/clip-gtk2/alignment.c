@@ -24,7 +24,8 @@ const char * _clip_type_name_alignment()  { return "GTK_WIDGET_ALIGNMENT"; }
 int
 clip_INIT___ALIGNMENT(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_alignment, _clip_type_name_alignment, _gtk_type_alignment, _gtk_type_container, NULL);
+//	_wtype_table_put(_clip_type_alignment, _clip_type_name_alignment, _gtk_type_alignment, _gtk_type_container, NULL);
+	_wtype_table_put(_clip_type_alignment, _clip_type_name_alignment, _gtk_type_alignment, _gtk_type_bin, NULL);
 	return 0;
 }
 /**********************************************************/
@@ -77,4 +78,50 @@ clip_GTK_ALIGNMENTSET(ClipMachine * cm)
 err:
 	return 1;
 }
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_ALIGNMENTGETPADDING(ClipMachine * cm)
+{
+	C_widget *cali = _fetch_cw_arg(cm);
+        guint top, bottom, left, right ;
+
+        CHECKCWID(cali,GTK_IS_ALIGNMENT);
+
+        gtk_alignment_get_padding(GTK_ALIGNMENT(cali->widget),
+        	&top, &bottom, &left, &right);
+
+	_clip_storni(cm, top, 2, 0);
+	_clip_storni(cm, bottom, 3, 0);
+	_clip_storni(cm, left, 4, 0);
+	_clip_storni(cm, right, 5, 0);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ALIGNMENTSETPADDING(ClipMachine * cm)
+{
+	C_widget *cali = _fetch_cw_arg(cm);
+        guint 	   top = _clip_parni(cm, 2);
+        guint   bottom = _clip_parni(cm, 3);
+        guint     left = _clip_parni(cm, 4);
+        guint    right = _clip_parni(cm, 5);
+
+        CHECKCWID(cali,GTK_IS_ALIGNMENT);
+        CHECKARG(2, NUMERIC_t);
+        CHECKARG(3, NUMERIC_t);
+        CHECKARG(4, NUMERIC_t);
+        CHECKARG(5, NUMERIC_t);
+
+        gtk_alignment_set_padding(GTK_ALIGNMENT(cali->widget),
+        	top, bottom, left, right);
+
+	return 0;
+err:
+	return 1;
+}
+#endif
 

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -30,7 +30,7 @@ const char * _clip_type_name_item() { return "GTK_WIDGET_ITEM"; }
 int
 clip_INIT___ITEM(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_item, _clip_type_name_item, _gtk_type_item, _gtk_type_container, item_signals);
+	_wtype_table_put(_clip_type_item, _clip_type_name_item, _gtk_type_item, _gtk_type_bin, item_signals);
 	return 0;
 }
 /**********************************************************/

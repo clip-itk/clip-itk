@@ -40,8 +40,6 @@ quit
         da = gtk_drawingAreaNew()
         gtk_signalConnect( da, "expose-event",;
                             { | wid, ev | event_expose_darea(wid,ev,pixbuf)} )
-        gtk_signalConnect( da, "configure-event",;
-                            { | wid, ev | event_config_darea(wid,ev,@pixbuf)} )
 
 	btn := gtk_buttonNew(, "Quit", "_Q" )
 	gtk_signalConnect( btn, GTK_CLICKED_SIGNAL, { || gtk_widgetDestroy(window), gtk_quit()} )
@@ -58,39 +56,29 @@ quit
 return 0
 
 
-static procedure event_config_darea( widget, event, pixb )
-
-	local pxbdst
-
-	pxbdst := gdk_pixbufScaleSimple( pixb, event:width, event:height,;
-		GDK_INTERP_BILINEAR )
-
-	if( pxbdst == nil )
-		? "Error scaling image"
-	else
-		pixb := pxbdst
-	endif
-
-return
-
-
-
 static procedure event_expose_darea( widget, event, pixb )
+local dest, style, width, height
 
-        local pixels, rowstride, style
+  gdk_WindowSetBackPixmap (widget, NIL, .F.)
 
-        rowstride := gdk_pixbufGetRowstride (pixb)
+  dest = gdk_PixbufNew (, .F., 8, event:area:width, event:area:height)
+  style := gtk_widgetGetStyle( widget )
 
-	style := gtk_widgetGetStyle( widget )
-   	pixels = gdk_pixbufGetPixels(pixb)
+  gtk_WidgetGetSize(widget, @width, @height)
+  gdk_PixbufCompositeColor (pixb, dest, ;
+                            0, 0, event:area:width, event:area:height, ;
+                            -event:area:x, -event:area:y, ;
+                            width / gdk_PixbufGetWidth (pixb), ;
+                            height / gdk_PixbufGetHeight (pixb), ;
+                            GDK_INTERP_BILINEAR, 255, ;
+                            event:area:x, event:area:y, 16, 0xaaaaaa, 0x555555)
 
-        gdk_drawRgbImageDithalign(widget, ;
-        	style:black_gc, ;
-                event:area:x, event:area:y, ;
-                event:area:width, event:area:height, ;
-                GDK_RGB_DITHER_NORMAL, ;
-                pixels, rowstride, ;
-                event:area:x, event:area:y)
+  gdk_PixbufRenderToDrawable (dest, widget, style:fg_gc[CLIP_GTK_STATE_NORMAL], ;
+                              0, 0, event:area:x, event:area:y, ;
+                              event:area:width, event:area:height, ;
+                              GDK_RGB_DITHER_NORMAL, event:area:x, event:area:y)
+
+  gdk_PixbufUnref (dest)
 
 return
 

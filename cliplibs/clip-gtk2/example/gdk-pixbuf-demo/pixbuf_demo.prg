@@ -115,7 +115,6 @@ static function expose_cb( widget, event, data )
                 GDK_RGB_DITHER_NORMAL, ;
                 pixels, rowstride, ;
                 event:area:x, event:area:y)
-
 return( TRUE )	// expose_cb()
 
 
@@ -184,8 +183,8 @@ static function task_time()
 
 	next
 	//gtk_widgetQueueDrawArea(da, 0, 0, back_width, back_height)
-	//gtk_widgetDraw(da);
-	gtk_widgetShow(da);
+	gtk_widgetDraw(da);
+	//gtk_widgetShow(da);
 
 	frame_num++
 	sleep( FRAME_DELAY )

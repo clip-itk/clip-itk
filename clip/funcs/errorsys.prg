@@ -1,7 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Uri (uri@itk.ru)
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Uri (uri@itk.ru)
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "error.ch"
 
@@ -64,13 +64,13 @@ local i, cMessage, aOptions, nChoice
 
 		else
 			if IsFunction("gtk_InitCheck") .and. clip("gtk_InitCheck")
-				nChoice := Alert( cMessage + ;
-							";(OS Error " + NTRIM(e:osCode) + ")", ;
-							aOptions )
-			else
 				nChoice := clip("gtk_ErrorMsgBox", cMessage + ;
 							";(OS Error " + NTRIM(e:osCode) + ")", ;
 							aOptions,[Error] )
+			else
+				nChoice := Alert( cMessage + ;
+							";(OS Error " + NTRIM(e:osCode) + ")", ;
+							aOptions )
 			endif
 		end
 
@@ -139,10 +139,6 @@ local cMessage,i
 		cMessage += (";"+e:syserr)
 	end
 
-	if ( !Empty(e:osCode) )
-		cMessage += "; (OS Error " + NTRIM(e:osCode) + ") "
-	end
-
 	outlog("error message",cMessage)
 	i := 1
 	while ( !Empty(ProcName(i)) )
@@ -171,4 +167,21 @@ local i
 	outlog("object error:",err)
 	errorMessage(err)
 quit
+
+/*****************************************/
+function error2Log(err)
+	local i,s
+	i := 1
+	while ( !Empty(ProcName(i)) )
+		s := "Called from "+allTrim(ProcName(i)) + ;
+			"(" + str(ProcLine(i)) + ")"
+
+		outlog(s)
+		i++
+	end
+	outlog("object error:",err)
+	s := errorMessage(err)
+	? s
+	outlog(s)
+return
 

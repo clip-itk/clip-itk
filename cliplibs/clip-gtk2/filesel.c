@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -8,6 +9,7 @@
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
@@ -157,3 +159,65 @@ clip_GTK_FILESELECTIONHIDEFILEOPBUTTONS(ClipMachine *cm)
 err:
 	return 1;
 }
+
+
+int
+clip_GTK_FILESELECTIONGETSELECTIONS(ClipMachine *cm)
+{
+	C_widget       *cfsel = _fetch_cw_arg(cm);
+	gchar           **sel ;
+        long                i ;
+        ClipVar           *cv = RETPTR(cm);
+
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+	sel = gtk_file_selection_get_selections(GTK_FILE_SELECTION(cfsel->widget));
+        for (i = 0; sel[i] != NULL; i++);
+        _clip_array(cm, cv, 1, &i);
+        for (i = 0; sel[i] != NULL; i++)
+        {
+        	ClipVar cstr ;
+                gchar   *str = sel[i];
+
+        	memset(&cstr, 0, sizeof(cstr));
+        	LOCALE_FROM_UTF(str);
+        	_clip_var_str(str, strlen(str), &cstr);
+                FREE_TEXT(str);
+        	_clip_aset(cm, cv, &cstr, 1, &i);
+                _clip_destroy(cm, &cstr);
+        }
+        g_strfreev(sel);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_FILESELECTIONSETSELECTMULTIPLE(ClipMachine *cm)
+{
+	C_widget       *cfsel = _fetch_cw_arg(cm);
+        gboolean     multiple = _clip_parl(cm, 2);
+
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_file_selection_set_select_multiple(GTK_FILE_SELECTION(cfsel->widget),
+		multiple);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_FILESELECTIONGETSELECTMULTIPLE(ClipMachine *cm)
+{
+	C_widget       *cfsel = _fetch_cw_arg(cm);
+
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+
+	_clip_retl(cm, gtk_file_selection_get_select_multiple(GTK_FILE_SELECTION(cfsel->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+

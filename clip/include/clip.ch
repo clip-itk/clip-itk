@@ -616,4 +616,6 @@
 		[<next:NEXT>]                                                   ;
 	=> clip_regexseek( <regexp>, <.next.> )
 
+#command SET PRINTER TO MEMBUF			=> Set( _SET_PRINTFILE, "MEMBUF" )
+
 #endif

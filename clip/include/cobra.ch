@@ -7,8 +7,6 @@
 #define COBRA_BUFLEN   32000
 #define COBRA_DEFPORT  3000
 #define COBRA_DEFHOST "localhost"
-#define COBRA_CONNECT_TIMEOUT 10000
-#define COBRA_IO_TIMEOUT 1000
 
 #define COBRA_CRYPTO "des"
 #define COBRA_AUTH_SCRIPT "./auth/pam-auth"

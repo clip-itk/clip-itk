@@ -5,6 +5,15 @@
 */
 /*
    $Log: _file.c,v $
+   Revision 1.157  2004/05/27 10:23:06  clip
+   rust: GETENVA() -> array of ENVVARs ({{"ENVVARNAME","value"},...})
+
+   Revision 1.156  2004/05/19 08:32:18  clip
+   rust: fix for ./configure -m
+
+   Revision 1.155  2004/05/05 08:38:38  clip
+   uri: setenv() added, putenv() some fixed
+
    Revision 1.154  2004/03/25 12:56:45  clip
    rust: no timeout on F_SETLKW in _clip_setlock()
 
@@ -491,12 +500,13 @@
 
    Revision 1.3  1999/10/26 19:11:08  paul
    start cvs logging
+*/
 
- */
+#include <string.h>
 #include "clip.h"
+
 #include <stdio.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
@@ -511,6 +521,7 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <limits.h>
+
 #include "hash.h"
 #include "hashcode.h"
 
@@ -2385,6 +2396,41 @@ clip_GETENV(ClipMachine * mp)
 }
 
 int
+clip_GETENVA(ClipMachine * mp)
+{
+	ClipVar *rp = RETPTR(mp);
+	int i = 0;
+	long dims[1] = {0};
+
+	rp = RETPTR(mp);
+	_clip_array(mp, rp, 1, dims);
+	while (_clip_envp[i])
+	{
+		int l;
+		char *s = _clip_envp[i];
+		ClipVar ap,s1,s2;
+		long adims[1] = {0};
+
+		_clip_array(mp, &ap, 1, adims);
+		l = strcspn(s, "=");
+		if(l)
+		{
+			_clip_var_str(s,l,&s1);
+			_clip_var_str(s+l+1,strlen(s+l+1),&s2);
+			_clip_aadd(mp,&ap,&s1);
+			_clip_aadd(mp,&ap,&s2);
+			_clip_aadd(mp,rp,&ap);
+
+			_clip_destroy(mp,&s1);
+			_clip_destroy(mp,&s2);
+			_clip_destroy(mp,&ap);
+		}
+		i++;
+	}
+	return 0;
+}
+
+int
 clip_GETE(ClipMachine * mp)
 {
 	return clip_GETENV(mp);
@@ -2393,11 +2439,32 @@ clip_GETE(ClipMachine * mp)
 int
 clip_PUTENV(ClipMachine * mp)
 {
-	char *str = _clip_parc(mp, 1);
+	char *name = _clip_parc(mp, 1);
+	char *val = _clip_parc(mp, 1);
 
-	if (str)
+	_clip_retl(mp,0);
+	if (name)
+		_clip_retl(mp, _clip_put_env(name,val) == 0 );
+	return 0;
+}
+
+int
+clip_SETENV(ClipMachine * mp)
+{
+	char *name = _clip_parc(mp, 1);
+	char *val = _clip_parc(mp, 1);
+
+	_clip_retl(mp,0);
+	if (!name)
+		return 0;
+
+	_clip_put_env(name,val);
+	if (val)
+		_clip_retl(mp, setenv(name,val,1) == 0 );
+	else
 	{
-		_clip_retni(mp, _clip_putenv(str));
+		_clip_retl(mp,1);
+		unsetenv(name);
 	}
 	return 0;
 }

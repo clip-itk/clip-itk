@@ -1,7 +1,7 @@
 LIBS= -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangox-1.0 -lpangoxft-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0
 
 SRC =clipgtktest tbrow simple  test_stock test_image accel test_tree test_image \
-	test_gtk test_text winpic test note fonttest text
+	test_gtk test_text winpic test note fonttest text container test_dnd drag_and_drop
 all: $(SRC)
 
 clean:
@@ -55,4 +55,15 @@ test_tree: test_tree.prg
 test_text: test_text.prg
 	clip -es test_text.prg -lclip-gtk2
 #	clip -esg test_text.prg ./libclip-gtk2.so $(LIBS)
+
+container: container.prg
+	clip -es container.prg -lclip-gtk2
+
+test_dnd: test_dnd.prg
+	clip -es test_dnd.prg -lclip-gtk2
+#	clip -esg test_dnd.prg ./libclip-gtk2.so $(LIBS)
+
+drag_and_drop: drag_and_drop.prg
+	clip -es drag_and_drop.prg -lclip-gtk2
+#	clip -esg drag_and_drop.prg ./libclip-gtk2.so $(LIBS)
 

@@ -22,7 +22,7 @@ function Main()
 	local BFrame, BFx, rg, en, trbtn
 	local EFrame, EFx, en2, cb
 	local TFrame, TFx, vscr, text, txt, edbtn, wwbtn
-	local DFrame, DFx, dialog, dbtn, btn6, btn10, btn11
+	local DFrame, DFx, dialog, dbtn, dbtn2, dbtn3, dhb, btn6, btn10, btn11
 	local MFrame, MFx, check1, opt_menu, optmenu, focbtn, cal
 	local CLFrame, CLFx, clscr, clist
 	local CTFrame, CTFx, ctree, node1, node2, node3, node4, ctscr
@@ -337,8 +337,18 @@ comment -because GTK_ENABLE_BROKEN */
 	dbtn:=map()
 	dbtn:=gtk_ButtonNew(,"Close")
 	gtk_SignalConnect(dbtn,"clicked",{|w,e|gtk_WidgetHide(dialog)})
-	gtk_ContainerAdd(dialog:ActionArea,dbtn)
 	gtk_TooltipsSetTip(tt,dbtn,'Click this button for close dialog')
+	dbtn2:=gtk_ButtonNew(,"List Toplevels Windows")
+	gtk_SignalConnect(dbtn2,"clicked",{|w, e| getToplevels(w)})
+	gtk_TooltipsSetTip(tt,dbtn2,'Click this button for get list toplevels windows')
+	dbtn3:=gtk_ButtonNew(,"Call Error Message")
+	gtk_SignalConnect(dbtn3,"clicked",{|w, e| gtk_ErrorMsgBox("Test!",,"Test error message box", dialog)})
+	gtk_TooltipsSetTip(tt,dbtn3,'Click this button for test error message dialog')
+	dhb := gtk_HboxNew()
+        gtk_BoxPackStart(dhb, dbtn2, .t., .t.)
+        gtk_BoxPackStart(dhb, dbtn3, .t., .t.)
+        gtk_BoxPackEnd(dhb, dbtn, .t., .t.)
+	gtk_ContainerAdd(dialog:ActionArea,dhb)
 
 	D_MSG("Create button 6")
 	btn6:=map()
@@ -579,6 +589,9 @@ comment -because GTK_ENABLE_BROKEN */
 	gtk_WidgetAddAccelerator( qbtn, "clicked", w, GDK_q, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE )
 	gtk_TooltipsSetTip(tt,qbtn,'Quit from application')
 
+	listbtn := gtk_ButtonNewWithMnemonic(, "List Toplevels")
+        gtk_SignalConnect(listbtn, "clicked", {|w,e | getToplevels(w)})
+        gtk_LayoutPut(f, listbtn, 215, 150)
 	// Show main window
 	/***************************************************/
 	D_MSG("Show main window")
@@ -596,11 +609,11 @@ comment -because GTK_ENABLE_BROKEN */
 	gtk_ContainerAdd(PxmFrame,PxmFx)
 
 	D_MSG("Pixmap")
-	pix:=gtk_PixmapFromXPMNew(,"clip.xpm",w)
+	pix:=gdk_PixmapFromXPMNew(,"clip.xpm",w)
 	gtk_FixedPut(PxmFx, pix, 5, 5)
 
 	D_MSG("Pixmap from BMP")
-	bmppix:=gtk_PixmapFromBMPNew(,"basket.bmp",w)
+	bmppix:=gdk_PixmapFromBMPNew(,"basket.bmp",w)
 	gtk_FixedPut(PxmFx, bmppix, 80, 5)
 
 	gtk_WidgetShowAll(PxmFrame)
@@ -694,7 +707,37 @@ return obj
 
 ////////////////////////////////////////////////////
 
+function getToplevels(w)
+local dialog, dvb, dbtn, dsv, list, i, str, toplevel
 
+        list := gtk_WindowListToplevels()
+        toplevel = gtk_WidgetGetToplevel(w)
+
+	dvb := gtk_VboxNew()
+        for i = 1 to len(list)
+        	str := str(list[i]:handle,3,0)+" : "+gtk_WindowGetTitle(list[i])+;
+                	" : " + gtk_WidgetGetTypeName(list[i])
+        	label := gtk_LabelNew(, str)
+                gtk_MiscSetAlignment(label, 0, 0)
+        	gtk_BoxPackStart(dvb, label)
+                if toplevel != NIL .and. toplevel:handle == list[i]:handle
+                	gtk_WidgetModifyFG(label, ColorNew(65535, 0, 0))
+                endif
+        next
+
+	dialog:=gtk_DialogNew(,"List Toplevels Windows")
+	gtk_WindowSetPosition(dialog,GTK_WIN_POS_CENTER_ON_PARENT,)
+	gtk_WidgetSetSizeRequest(dialog,400,500)
+	dsv := gtk_ScrolledWindowNew()
+	gtk_ScrolledWindowAddWithViewport (dsv, dvb)
+	gtk_ContainerAdd(dialog:VBox,dsv)
+	gtk_SignalConnect(dialog,"delete-event",{|w,e|gtk_WidgetHide(dialog)})
+
+	dbtn:=gtk_ButtonNew(,"Close")
+	gtk_SignalConnect(dbtn,"clicked",{|w,e|gtk_WidgetHide(dialog)})
+	gtk_ContainerAdd(dialog:ActionArea,dbtn)
+        gtk_WidgetShowAll(dialog)
+return .t.
 
 
 

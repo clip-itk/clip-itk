@@ -1,6 +1,9 @@
 
 /*
    $Log: kbd.c,v $
+   Revision 1.6  2004/07/08 07:21:05  clip
+   uri: small fix for kbdstat()
+
    Revision 1.5  2001/10/29 06:51:21  clip
    fix text fopen modes
    paul
@@ -100,8 +103,8 @@ main(int argc, char **argv)
 		long key;
 		int state;
 
-		/*state = scan_state(); */
-		/*printf("\r\nstate: %d\r\n", state ); */
+		state = scan_state();
+		printf("\r\nstate: %d\r\n", state );
 
 		if (!read(0, &b, 1))
 			break;

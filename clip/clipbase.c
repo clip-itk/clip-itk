@@ -5,9 +5,12 @@
 */
 /*
 	$Log: clipbase.c,v $
+	Revision 1.364  2004/05/26 09:52:23  clip
+	rust: some cleanings
+	
 	Revision 1.363  2004/04/26 10:09:44  clip
 	rust: clip_DBCLEARIND() == clip_DBCLEARINDEX()
-	
+
 	Revision 1.362  2004/02/16 13:19:53  clip
 	rust: sigsegv with RDD drivers fixed
 
@@ -1026,7 +1029,6 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <errno.h>
-#include "clipbase.h"
 #include "rdd.h"
 #include "hash.h"
 #include "error.ch"

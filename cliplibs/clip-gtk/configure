@@ -9,7 +9,7 @@ oldpwd=`pwd`
 DLLSUFF='.so'
 DLLREALSUFF='.so'
 
-rm Makefile _hashcode.h
+rm -f Makefile _hashcode.h
 if [ $? != 0 ]
 then
 	hname=`hostname 2>/dev/null`

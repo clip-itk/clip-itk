@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001 - 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
     	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
@@ -246,7 +246,6 @@ clip_GTK_PANEDGETPOSITION(ClipMachine * cm)
 err:
 	return 1;
 }
-/* Alena */
 /* Get size child1 (top or left)*/
 int
 clip_GTK_PANEDGETSIZECHILD1(ClipMachine * cm)
@@ -297,4 +296,51 @@ clip_GTK_PANEDGETSIZECHILD2(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_PANEDGETCHILD1(ClipMachine * cm)
+{
+	C_widget  *cpan = _fetch_cw_arg(cm);
+        GtkWidget  *wid ;
+        C_widget  *cwid ;
 
+	CHECKCWID(cpan,GTK_IS_PANED);
+
+	wid = gtk_paned_get_child1(GTK_PANED(cpan->widget));
+
+        if (wid)
+        {
+        	cwid = _list_get_cwidget(cm, wid);
+                if (!cwid) cwid = _register_widget(cm, wid, NULL);
+                if (cwid) _clip_mclone(cm, RETPTR(cm), &cwid->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_PANEDGETCHILD2(ClipMachine * cm)
+{
+	C_widget  *cpan = _fetch_cw_arg(cm);
+        GtkWidget  *wid ;
+        C_widget  *cwid ;
+
+	CHECKCWID(cpan,GTK_IS_PANED);
+
+	wid = gtk_paned_get_child2(GTK_PANED(cpan->widget));
+
+        if (wid)
+        {
+        	cwid = _list_get_cwidget(cm, wid);
+                if (!cwid) cwid = _register_widget(cm, wid, NULL);
+                if (cwid) _clip_mclone(cm, RETPTR(cm), &cwid->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+#endif

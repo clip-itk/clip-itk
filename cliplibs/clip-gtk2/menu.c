@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -301,4 +302,42 @@ clip_GTK_MENUSETTITLE(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 
+int
+clip_GTK_MENUATTACH(ClipMachine * cm)
+{
+	C_widget     *cmnu = _fetch_cw_arg(cm);
+        C_widget     *cwid = _fetch_cwidget(cm, _clip_spar(cm, 2));
+        guint  left_attach = _clip_parni(cm, 3);
+        guint right_attach = _clip_parni(cm, 4);
+        guint   top_attach = _clip_parni(cm, 5);
+        guint bottom_attach = _clip_parni(cm, 6);
+
+        CHECKCWID(cmnu, GTK_IS_MENU);
+        CHECKCWID(cwid, GTK_IS_WIDGET);
+        CHECKARG(3, NUMERIC_t); CHECKARG(4, NUMERIC_t);
+        CHECKARG(5, NUMERIC_t); CHECKARG(6, NUMERIC_t);
+
+        gtk_menu_attach(GTK_MENU(cmnu->widget), GTK_WIDGET(cwid->widget),
+        	left_attach, right_attach, top_attach, bottom_attach);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_MENUSETMONITOR(ClipMachine * cm)
+{
+	C_widget     *cmnu = _fetch_cw_arg(cm);
+        guint  monitor_num = _clip_parni(cm, 2);
+
+        CHECKCWID(cmnu, GTK_IS_MENU);
+        CHECKARG(2, NUMERIC_t);
+
+        gtk_menu_set_monitor(GTK_MENU(cmnu->widget), monitor_num);
+	return 0;
+err:
+	return 1;
+}
+#endif

@@ -5,6 +5,9 @@
  */
 /*
    $Log: _ctools_s.c,v $
+   Revision 1.66  2004/05/19 08:32:17  clip
+   rust: fix for ./configure -m
+
    Revision 1.65  2003/09/02 14:27:41  clip
    changes for MINGW from
    Mauricio Abre <maurifull@datafull.com>
@@ -192,12 +195,13 @@
 
    Revision 1.8  1999/11/27 20:28:49  uri
    test for logged _ctools_s.c
+*/
 
- */
+#include <string.h>
 #include "clip.h"
+
 #include <stdio.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdarg.h>
@@ -523,19 +527,19 @@ clip_ATREPL(ClipMachine * mp)
 		_clip_retc(mp, "");
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "ATREPL");
 	}
-        /* check recursively at */
-        for(s = rstr, end = rstr+l3; s<end; s++)
-        {
-        	sovp=0;
-        	for (cur = sstr, e1 = s, send=sstr+l1; cur<send && e1<end; cur++,e1++)
-                	if ( *e1 == *cur)
-                        	sovp++;
-                if ( sovp == l1)
-                {
-                	cset = 0;
-                        break;
-                }
-        }
+		/* check recursively at */
+		for(s = rstr, end = rstr+l3; s<end; s++)
+		{
+			sovp=0;
+			for (cur = sstr, e1 = s, send=sstr+l1; cur<send && e1<end; cur++,e1++)
+					if ( *e1 == *cur)
+							sovp++;
+				if ( sovp == l1)
+				{
+					cset = 0;
+						break;
+				}
+		}
 	if (count < 0)
 		count = 0;
 	buf = str;
@@ -3054,12 +3058,12 @@ clip_TOKEN(ClipMachine * mp)
 			tbeg = e;
 		}
 	}
-        if ( count < num )
-        {
-        	free(buf);
-        	_clip_retc(mp,"");
-                return 0;
-        }
+		if ( count < num )
+		{
+			free(buf);
+			_clip_retc(mp,"");
+				return 0;
+		}
 	tbeg = tbeg > tend ? tend : tbeg;
 	ret = malloc(tend - tbeg + 1);
 	memcpy(ret, tbeg, tend - tbeg);
@@ -3302,93 +3306,93 @@ clip_WEIGHTASC(ClipMachine * mp)
 int
 clip_CRYPT(ClipMachine * mp)
 {
-    /*
-    ULONG ulCryptLen;
-    ULONG ulStringLen;
-    */
-    int ulCryptLen, ulStringLen;
-    ULONG ulCryptPos = 0;
-    ULONG ulStringPos;
+	/*
+	ULONG ulCryptLen;
+	ULONG ulStringLen;
+	*/
+	int ulCryptLen, ulStringLen;
+	ULONG ulCryptPos = 0;
+	ULONG ulStringPos;
 
-    BYTE *pbyCrypt = (BYTE *) _clip_parcl(mp, 2, &ulCryptLen);
+	BYTE *pbyCrypt = (BYTE *) _clip_parcl(mp, 2, &ulCryptLen);
 
-    BYTE *pbyString = (BYTE *) _clip_parcl(mp, 1, &ulStringLen);
-    if(ulCryptLen>1)
-    {
+	BYTE *pbyString = (BYTE *) _clip_parcl(mp, 1, &ulStringLen);
+	if(ulCryptLen>1)
+	{
 
-        BYTE *pbyResult = (BYTE *) malloc(ulStringLen + 1);
+		BYTE *pbyResult = (BYTE *) malloc(ulStringLen + 1);
 
-        USHORT uiCount2 = (((USHORT) (pbyCrypt[ulCryptPos] +
-                            (USHORT) (pbyCrypt[ulCryptPos + 1] * 256)
-                           )) & 0xFFFF) ^ ((USHORT) ulCryptLen & 0xFFFF);
-        USHORT uiCount1 = 0xAAAA;
+		USHORT uiCount2 = (((USHORT) (pbyCrypt[ulCryptPos] +
+							(USHORT) (pbyCrypt[ulCryptPos + 1] * 256)
+						   )) & 0xFFFF) ^ ((USHORT) ulCryptLen & 0xFFFF);
+		USHORT uiCount1 = 0xAAAA;
 
-        for (ulStringPos = 0; ulStringPos < ulStringLen;)
-        {
-                USHORT uiTmpCount1 = uiCount1;
-                USHORT uiTmpCount2 = uiCount2;
-                BYTE byte = pbyString[ulStringPos] ^ pbyCrypt[ulCryptPos++];
-                USHORT tmp;
+		for (ulStringPos = 0; ulStringPos < ulStringLen;)
+		{
+				USHORT uiTmpCount1 = uiCount1;
+				USHORT uiTmpCount2 = uiCount2;
+				BYTE byte = pbyString[ulStringPos] ^ pbyCrypt[ulCryptPos++];
+				USHORT tmp;
 
-                uiTmpCount2 = HB_MKUSHORT( ( HB_LOBYTE( uiTmpCount2 ) ^
-                                             HB_HIBYTE( uiTmpCount2 ) ),
-                                           HB_HIBYTE( uiTmpCount2 )     );
+				uiTmpCount2 = HB_MKUSHORT( ( HB_LOBYTE( uiTmpCount2 ) ^
+											 HB_HIBYTE( uiTmpCount2 ) ),
+										   HB_HIBYTE( uiTmpCount2 )     );
 
-                for (tmp = HB_LOBYTE(uiTmpCount2); tmp; tmp--)
-                        uiTmpCount2 = (uiTmpCount2 >> 1) |
-                                      ((uiTmpCount2 & 1) << 15);
+				for (tmp = HB_LOBYTE(uiTmpCount2); tmp; tmp--)
+						uiTmpCount2 = (uiTmpCount2 >> 1) |
+									  ((uiTmpCount2 & 1) << 15);
 
-                uiTmpCount2 ^= uiTmpCount1;
-                uiTmpCount2 += 16;
+				uiTmpCount2 ^= uiTmpCount1;
+				uiTmpCount2 += 16;
 
-                uiCount2 = uiTmpCount2;
+				uiCount2 = uiTmpCount2;
 
-                uiTmpCount2 &= 0x1E;
-                uiTmpCount2 += 2;
+				uiTmpCount2 &= 0x1E;
+				uiTmpCount2 += 2;
 
-                do
-                {
-                        BYTE byTmp;
+				do
+				{
+						BYTE byTmp;
 
-                        uiTmpCount2--;
+						uiTmpCount2--;
 
-                        for (tmp = HB_LOBYTE(uiTmpCount2); tmp; tmp--)
-                                uiTmpCount1 = (uiTmpCount1 >> 1) |
-                                              ((uiTmpCount1 & 1) << 15);
+						for (tmp = HB_LOBYTE(uiTmpCount2); tmp; tmp--)
+								uiTmpCount1 = (uiTmpCount1 >> 1) |
+											  ((uiTmpCount1 & 1) << 15);
 
-                        uiTmpCount1 = HB_MKUSHORT(HB_HIBYTE(uiTmpCount1),
-                                                  HB_LOBYTE(uiTmpCount1));
-                        uiTmpCount1 = HB_MKUSHORT((HB_LOBYTE(uiTmpCount1) ^ 0xFF),
-                                                  HB_HIBYTE(uiTmpCount1));
-                        uiTmpCount1 = (uiTmpCount1 << 1) |
-                                      ((uiTmpCount1 & 0x8000) >> 15);
-                        uiTmpCount1 ^= 0xAAAA;
+						uiTmpCount1 = HB_MKUSHORT(HB_HIBYTE(uiTmpCount1),
+												  HB_LOBYTE(uiTmpCount1));
+						uiTmpCount1 = HB_MKUSHORT((HB_LOBYTE(uiTmpCount1) ^ 0xFF),
+												  HB_HIBYTE(uiTmpCount1));
+						uiTmpCount1 = (uiTmpCount1 << 1) |
+									  ((uiTmpCount1 & 0x8000) >> 15);
+						uiTmpCount1 ^= 0xAAAA;
 
-                        byTmp = HB_LOBYTE(uiTmpCount1);
-                        byTmp = (byTmp << 1) | ((byTmp & 0x80) >> 7);
+						byTmp = HB_LOBYTE(uiTmpCount1);
+						byTmp = (byTmp << 1) | ((byTmp & 0x80) >> 7);
 
-                        uiTmpCount1 = HB_MKUSHORT(byTmp,
-                                                  HB_HIBYTE(uiTmpCount1));
+						uiTmpCount1 = HB_MKUSHORT(byTmp,
+												  HB_HIBYTE(uiTmpCount1));
 
-                }
-                while (--uiTmpCount2);
+				}
+				while (--uiTmpCount2);
 
-                uiCount1 = uiTmpCount1;
+				uiCount1 = uiTmpCount1;
 
-                pbyResult[ulStringPos++] = byte ^ HB_LOBYTE(uiTmpCount1);
+				pbyResult[ulStringPos++] = byte ^ HB_LOBYTE(uiTmpCount1);
 
-                if (ulCryptPos == ulCryptLen)
-                        ulCryptPos = 0;
-        }
+				if (ulCryptPos == ulCryptLen)
+						ulCryptPos = 0;
+		}
 
-        _clip_retcn(mp, (char *) pbyResult, ulStringLen);
-        free(pbyResult);
-    }
-    else
-    {
-        _clip_retcn(mp, (char *) pbyString, ulStringLen);
-    }
-    return 0;
+		_clip_retcn(mp, (char *) pbyResult, ulStringLen);
+		free(pbyResult);
+	}
+	else
+	{
+		_clip_retcn(mp, (char *) pbyString, ulStringLen);
+	}
+	return 0;
 }
 
 #else
@@ -3416,7 +3420,7 @@ clip_CRYPT(ClipMachine * mp)
 	BYTE *pbyResult = (BYTE *) malloc(ulStringLen + 1);
 
 	USHORT uiCount2 = (((USHORT) (pbyCrypt[ulCryptPos] + (USHORT) (pbyCrypt[ulCryptPos + 1] * 256)
-			    )) & 0xFFFF) ^ ((USHORT) ulCryptLen & 0xFFFF);
+				)) & 0xFFFF) ^ ((USHORT) ulCryptLen & 0xFFFF);
 	USHORT uiCount1 = 0xAAAA;
 
 	for (ulStringPos = 0; ulStringPos < ulStringLen;)
@@ -3427,7 +3431,7 @@ clip_CRYPT(ClipMachine * mp)
 		USHORT tmp;
 
 		uiTmpCount2 = HB_MKUSHORT((HB_LOBYTE(uiTmpCount2) ^ HB_HIBYTE(uiTmpCount2)), HB_HIBYTE(
-													      uiTmpCount2));
+														  uiTmpCount2));
 
 		for (tmp = HB_LOBYTE(uiTmpCount2); tmp; tmp--)
 			uiTmpCount2 = (uiTmpCount2 >> 1) | ((uiTmpCount2 & 1) << 15);
@@ -3490,7 +3494,7 @@ take_permissions(ClipMachine *mp, int port)
 	{
 		if (plevel < 3)
 		{
-		      try_iopl:
+			  try_iopl:
 			if (iopl(3))
 			{
 				_clip_trap_printf(mp, __FILE__, __LINE__, "Cannot take io permissons: %s", strerror(errno));
@@ -3704,29 +3708,29 @@ clip_INWORD(ClipMachine * mp)
 int
 _clip_setxlat(ClipMachine * mp, unsigned char * data)
 {
-        int no = _clip_parni(mp,1) % 256;
-        unsigned char * s = _clip_parc(mp,1);
-        _clip_retl(mp,0);
-        if ( s!=NULL )
-        	no = *s;
+		int no = _clip_parni(mp,1) % 256;
+		unsigned char * s = _clip_parc(mp,1);
+		_clip_retl(mp,0);
+		if ( s!=NULL )
+			no = *s;
 	if ( _clip_parinfo(mp,0) == 0)
-        {
-        	int i;
-                for ( i = 0; i<256; i++)
-                	data[i] = i;
-        	_clip_retl(mp,1);
-        	return 0;
-        }
+		{
+			int i;
+				for ( i = 0; i<256; i++)
+					data[i] = i;
+			_clip_retl(mp,1);
+			return 0;
+		}
 	if ( _clip_parinfo(mp,0) >= 2)
-        {
-        	int len;
-                unsigned char * str = _clip_parcl(mp,2,&len);
-                if ( ( no + len) > 256 )
-                	len = 256 - no;
-                memcpy(data+no, str, len);
-        	_clip_retl(mp,1);
-        	return 0;
-        }
+		{
+			int len;
+				unsigned char * str = _clip_parcl(mp,2,&len);
+				if ( ( no + len) > 256 )
+					len = 256 - no;
+				memcpy(data+no, str, len);
+			_clip_retl(mp,1);
+			return 0;
+		}
 	return 0;
 }
 

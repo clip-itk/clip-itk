@@ -2,9 +2,24 @@
    Copyright (C) 2002  ITK
    Authors  : Uri Hnykin <uri@itk.ru>, Przemyslaw <druzus@acn.waw.pl>
    License : (GPL) http://www.itk.ru/clipper/license.html
- */
+*/
 /*
    $Log: _tcp.c,v $
+   Revision 1.34  2004/06/15 11:19:35  clip
+   uri: small fix for Kamache
+
+   Revision 1.33  2004/05/20 16:16:50  clip
+   uri: add "mod-clip" and some fix in tcpclose()
+
+   Revision 1.32  2004/05/19 08:32:18  clip
+   rust: fix for ./configure -m
+
+   Revision 1.31  2004/05/17 14:54:20  clip
+   rust: select() before close() on blocking sockets (avoid TIME_WAIT at server)
+
+   Revision 1.30  2004/05/12 10:31:44  clip
+   uri: perrPort in tcpgetpeername()
+
    Revision 1.29  2004/02/16 09:56:03  clip
    uri: small fix in codb, _tcp.c (from Igor Satsyuk <satsyuk@tut.by>)
 
@@ -59,13 +74,11 @@
 
    Revision 1.15  2002/10/24 10:39:10  clip
    uri: small fix for freebsd:
-
-
 */
 
-
-#include "clip.h"
 #include <string.h>
+#include "clip.h"
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -128,8 +141,8 @@ static int tcp_host_addr(const char *host, struct in_addr *ina)
 		{
 			struct hostent *hp = gethostbyname(host);
 			if (hp && hp->h_addrtype == AF_INET &&
-			    hp->h_addr_list != NULL &&
-			    hp->h_addr_list[0] != NULL)
+				hp->h_addr_list != NULL &&
+				hp->h_addr_list[0] != NULL)
 			{
 				memcpy(ina, hp->h_addr_list[0], hp->h_length);
 				ret = 0;
@@ -176,15 +189,15 @@ static int tcp_term_addr(struct in_addr *ina)
 	/* REMOTEHOST is set by telnetd */
 	if ((env_val = getenv( "REMOTEHOST" )) != NULL &&
 		tcp_host_addr(env_val, ina) == 0)
-	    ret = 0;
+		ret = 0;
 
 	/* SSH_CLIENT is set by sshd but some of
 	   implementation doesn't 'export' it */
 	if (ret == -1 && (env_val = getenv( "SSH_CLIENT" )) != NULL)
 	{
-	    if ((ptr = strchr(env_val, ' ')) != NULL)
+		if ((ptr = strchr(env_val, ' ')) != NULL)
 		*ptr = '\0';
-	    if (tcp_host_addr(env_val, ina) == 0)
+		if (tcp_host_addr(env_val, ina) == 0)
 		ret = 0;
 	}
 
@@ -193,20 +206,20 @@ static int tcp_term_addr(struct in_addr *ina)
 	   to check UTMP entries for our current terminal */
 	if (ret == -1)
 	{
-	    struct utmp entry, *ut;
-	    if ((ptr = ttyname( 0 ) ) != NULL)
-	    {
+		struct utmp entry, *ut;
+		if ((ptr = ttyname( 0 ) ) != NULL)
+		{
 		if (strncmp( ptr, "/dev/", 5 ) == 0)
-		    ptr += 5;
+			ptr += 5;
 		strcpy(entry.ut_line, ptr);
 		setutent();
 		if ((ut = getutline(&entry)) != NULL &&
-		     ut->ut_addr != 0 && ut->ut_addr != INADDR_NONE &&
-		     (ptr = inet_ntoa(*(struct in_addr*) &ut->ut_addr)) != NULL &&
-		     tcp_host_addr(ptr, ina) == 0)
-		    ret=0;
+			 ut->ut_addr != 0 && ut->ut_addr != INADDR_NONE &&
+			 (ptr = inet_ntoa(*(struct in_addr*) &ut->ut_addr)) != NULL &&
+			 tcp_host_addr(ptr, ina) == 0)
+			ret=0;
 		endutent();
-	    }
+		}
 	}
 #endif
 	if (ret == -1)
@@ -308,9 +321,9 @@ clip_GETTERMADDR(ClipMachine *mp)
 	struct in_addr ina;
 
 	if (tcp_term_addr(&ina) == 0)
-	    _clip_retc(mp, inet_ntoa(ina));
+		_clip_retc(mp, inet_ntoa(ina));
 	else
-	    _clip_retc(mp, "");
+		_clip_retc(mp, "");
 
 	return 0;
 }
@@ -321,9 +334,9 @@ clip_GETHOSTNAME(ClipMachine *mp)
 	/* return host name of process */
 	char buf[256];
 	if ( gethostname(buf,255) != 0 )
-	    _clip_retc(mp, "");
+		_clip_retc(mp, "");
 	else
-	    _clip_retc(mp, buf);
+		_clip_retc(mp, buf);
 	return 0;
 }
 /*****************************/
@@ -337,10 +350,10 @@ clip_GETDOMAINNAME(ClipMachine *mp)
 	GetComputerName(buf, &s);
 #else
 	if ( getdomainname(buf,255) != 0 )
-	    _clip_retc(mp, "");
+		_clip_retc(mp, "");
 	else
 #endif
-	    _clip_retc(mp, buf);
+		_clip_retc(mp, buf);
 	return 0;
 }
 
@@ -467,7 +480,7 @@ clip_TCPCONNECT(ClipMachine *mp)
 	cf->stat = 0; /* see FS_* flags */
 	ret = _clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
 
-    err:
+	err:
 	if (ret == -1)
 	{
 		if (*err !=0 )
@@ -570,12 +583,24 @@ _clip_sockclose(ClipMachine *mp)
 	int fd = _clip_parni(mp, 1);
 	C_FILE *cf = (C_FILE *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 	int ret = -1, *err = _clip_fetch_item(mp, HASH_ferror);
+	fd_set rfds;
+	struct timeval tv;
+	int arg;
 
 	if (cf == NULL || cf->type != FT_SOCKET)
 	{
 		*err = EBADF;
 	}
-	else if (_clip_destroy_c_item(mp, fd, _C_ITEM_TYPE_FILE))
+	arg = fcntl(cf->fileno, F_GETFL, 0);
+	if(!(arg & O_NONBLOCK))
+	{
+		FD_ZERO(&rfds);
+		FD_SET(cf->fileno,&rfds);
+		tv.tv_sec = 1; //timeout / 1000;
+		tv.tv_usec = 100; //(timeout % 1000) * 1000;
+		select(cf->fileno+1,&rfds,NULL,NULL,&tv);
+	}
+	if (_clip_destroy_c_item(mp, fd, _C_ITEM_TYPE_FILE))
 	{
 		*err = ret = 0;
 	}
@@ -621,7 +646,7 @@ clip_UDPSOCKET(ClipMachine *mp)
 	cf->stat = 0; /* see FS_* flags */
 	ret = _clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
 
-    err:
+	err:
 	if (ret == -1)
 	{
 		if ( *err != 0 )
@@ -814,39 +839,43 @@ int clip_TCPGETPEERNAME(ClipMachine *mp)
    using : tcpGetPeerName( sock, @cIPadr ) ->  0 - OK  | -1 == error
 */
 {
-    int ret     = -1, sln;
-    int *err    = _clip_fetch_item(mp, HASH_ferror);
-    int fd      = _clip_parni(mp, 1);
-    C_FILE *cf  = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-    char ipaddr[INET_ADDRSTRLEN];
-    struct sockaddr_in sin;
+	int ret     = -1, sln;
+	int *err    = _clip_fetch_item(mp, HASH_ferror);
+	int fd      = _clip_parni(mp, 1);
+	C_FILE *cf  = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	char ipaddr[INET_ADDRSTRLEN];
+	struct sockaddr_in sin;
 
-    _clip_retnl(mp, -1);
+	_clip_retnl(mp, -1);
 
-    if (cf == NULL || cf->type != FT_SOCKET)
-    {
-        *err = EBADF;
-    }
-    else
-    {
-        sln = sizeof(sin);
-        ret = getpeername(cf->fileno, (struct sockaddr *) &sin, &sln);
+	if (cf == NULL || cf->type != FT_SOCKET)
+	{
+	*err = EBADF;
+	}
+	else
+	{
+	sln = sizeof(sin);
+	ret = getpeername(cf->fileno, (struct sockaddr *) &sin, &sln);
 
-        *err = ret < 0 ? errno : 0;
+	*err = ret < 0 ? errno : 0;
 
-        if ( ret >= 0 )
-        {
+	if ( ret >= 0 )
+	{
 #ifdef _WIN32
-            _clip_storc(mp, inet_ntoa( *(struct in_addr*)ipaddr), 2, 0);
+		_clip_storc(mp, inet_ntoa( *(struct in_addr*)ipaddr), 2, 0);
 #else
-            if ( inet_ntop( PF_INET, &sin.sin_addr.s_addr, ipaddr, INET_ADDRSTRLEN ) == NULL )
-                ret = -1;
-            else
-                _clip_storc(mp, ipaddr, 2, 0);
+		if ( inet_ntop( PF_INET, &sin.sin_addr.s_addr, ipaddr, INET_ADDRSTRLEN ) == NULL )
+			ret = -1;
+		else
+			_clip_storc(mp, ipaddr, 2, 0);
 #endif
-        }
-    }
+		_clip_storni(mp,ntohs(sin.sin_port),3,0);
+	}
+	else
+		_clip_storni(mp,-1,3,0);
 
-    _clip_retnl(mp, ret);
-    return 0;
+	}
+
+	_clip_retnl(mp, ret);
+	return 0;
 }

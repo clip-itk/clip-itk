@@ -1,18 +1,21 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
 	$Log: _dbg.c,v $
+	Revision 1.18  2004/05/19 08:32:18  clip
+	rust: fix for ./configure -m
+	
 	Revision 1.17  2003/09/09 14:36:14  clip
 	uri: fixes for mingw from Mauricio and Uri
-	
+
 	Revision 1.16  2003/09/02 14:27:42  clip
 	changes for MINGW from
 	Mauricio Abre <maurifull@datafull.com>
 	paul
-	
+
 	Revision 1.15  2001/10/29 06:51:21  clip
 	fix text fopen modes
 	paul
@@ -71,15 +74,15 @@
 	Revision 1.1  2001/03/02 07:40:57  clip
 	initial
 	paul
-
 */
 
+#include <string.h>
 #include "clip.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
-#include <string.h>
 #include <errno.h>
 #include <signal.h>
 #include <stdarg.h>

@@ -354,7 +354,7 @@ if [ $? != 0 ]
 then
 	echo 'ERROR: FLEX package does not installed'
 	echo 'Warning: clip compilation may have a problems'
-	exit 1
+	exit 0
 fi
 
 bison -V >/dev/null 2>&1
@@ -362,7 +362,7 @@ if [ $? != 0 ]
 then
 	echo 'ERROR: BISON package does not installed'
 	echo 'Warning: clip compilation may have a problems'
-	exit 1
+	exit 0
 fi
 
 if [ "$USE_TASKS" = yes -a ! -f task/task.o ]

@@ -604,8 +604,8 @@ clip_GTK_CLISTMOVETO(ClipMachine * cm)
 	C_widget *clst = _fetch_cw_arg(cm);
 	gint       row = _clip_parni(cm,2);
 	gint    column = _clip_parni(cm,3);
-	gint    xalign = _clip_parni(cm,4);
-	gint    yalign = _clip_parni(cm,5);
+	gfloat  xalign = _clip_parnd(cm,4);
+	gfloat  yalign = _clip_parnd(cm,5);
 	CHECKCWID(clst,GTK_IS_CLIST);
 	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
 	CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);

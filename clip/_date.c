@@ -6,6 +6,15 @@
 
 /*
    $Log: _date.c,v $
+   Revision 1.57  2004/06/17 13:38:16  clip
+   uri: add dt_cmp()
+
+   Revision 1.56  2004/05/19 11:34:01  clip
+   uri: memory leak fixed
+
+   Revision 1.55  2004/05/19 08:32:17  clip
+   rust: fix for ./configure -m
+
    Revision 1.54  2004/04/29 10:40:05  clip
    uri: timezone(),ascDataTime() added
 
@@ -174,13 +183,13 @@
 
    Revision 1.2  1999/10/26 19:11:05  paul
    start cvs logging
+*/
 
- */
-
+#include <string.h>
 #include "clip.h"
+
 #include <stdio.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
@@ -1160,7 +1169,7 @@ clip_DT_NORMALIZE(ClipMachine * mp)
 
 	char * tmp=_clip_parcl(mp,1,&len);
 	if ( tmp==NULL || len!=sizeof(ClipDateTime)-1 || *tmp!=_C_ITEM_TYPE_DATETIME )
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_DATE");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_NORMALIZE");
 
 	dt=(ClipDateTime *)tmp;
 
@@ -1170,6 +1179,45 @@ clip_DT_NORMALIZE(ClipMachine * mp)
 	memcpy(dt2, dt, sizeof(ClipDateTime) );
 
 	_clip_retcn_m(mp,(char *)dt2,sizeof(ClipDateTime)-1);
+	return 0;
+}
+
+int
+clip_DT_CMP(ClipMachine * mp)
+{
+	int ret=0, len1,len2;
+	char * _dt1, * _dt2;
+	ClipDateTime * dt1, *dt2;
+
+
+	_dt1 =_clip_parcl(mp,1,&len1);
+	if ( _dt1==NULL || len1!=sizeof(ClipDateTime)-1 || *_dt1!=_C_ITEM_TYPE_DATETIME )
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_CMP");
+	_dt2 =_clip_parcl(mp,2,&len2);
+	if ( _dt2==NULL || len2!=sizeof(ClipDateTime)-1 || *_dt2!=_C_ITEM_TYPE_DATETIME )
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_CMP");
+
+	dt1=(ClipDateTime *)_dt1;
+	dt2=(ClipDateTime *)_dt2;
+	_clip_dt_normalize(dt1);
+	_clip_dt_normalize(dt2);
+
+	if (ret==0)
+		ret = dt1->year - dt2->year;
+	if (ret==0)
+		ret = dt1->month - dt2->month;
+	if (ret==0)
+		ret = dt1->day - dt2->day;
+	if (ret==0)
+		ret = dt1->hour - dt2->hour;
+	if (ret==0)
+		ret = dt1->min - dt2->min;
+	if (ret==0)
+		ret = dt1->sec - dt2->sec;
+	if (ret==0)
+		ret = dt1->msec - dt2->msec;
+
+	_clip_retnl(mp,ret);
 	return 0;
 }
 
@@ -1200,7 +1248,7 @@ clip_DT_TIME(ClipMachine * mp)
 	char buf[32];
 	char * tmp=_clip_parcl(mp,1,&len);
 	if ( tmp==NULL || len!=sizeof(ClipDateTime)-1 || *tmp!=_C_ITEM_TYPE_DATETIME )
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_DATE");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_TIME");
 
 	dt=(ClipDateTime *)tmp;
 	dt2=malloc( sizeof(ClipDateTime) );
@@ -1215,11 +1263,20 @@ clip_DT_TIME(ClipMachine * mp)
 int
 _clip_dt_info(ClipMachine * mp, int info)
 {
-	int len;
+	int len, is_dt = 1;
 	ClipDateTime * dt;
 	char * tmp=_clip_parcl(mp,1,&len);
+
 	if ( tmp==NULL || len!=sizeof(ClipDateTime)-1 || *tmp!=_C_ITEM_TYPE_DATETIME )
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_DATE");
+		is_dt = 0;
+
+	if (info == 0)
+	{
+		_clip_retl(mp,is_dt);
+		return 0;
+	}
+	if (!is_dt)
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_INFO");
 
 	dt=(ClipDateTime *)tmp;
 	switch ( info )
@@ -1252,6 +1309,12 @@ _clip_dt_info(ClipMachine * mp, int info)
 	return 0;
 }
 
+int
+clip_DT_ISDTDATA(ClipMachine * mp)
+{
+		_clip_dt_info(mp,0);
+		return 0;
+}
 int
 clip_DT_YEAR(ClipMachine * mp)
 {
@@ -1311,9 +1374,9 @@ clip_DT_ADD(ClipMachine * mp)
 	char * tmp1=_clip_parcl(mp,1,&len1);
 	char * tmp2=_clip_parcl(mp,2,&len2);
 	if ( tmp1==NULL || len1!=sizeof(ClipDateTime)-1 || *tmp1!=_C_ITEM_TYPE_DATETIME )
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_DATE");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_ADD");
 	if ( tmp2==NULL || len2!=sizeof(ClipDateTime)-1 || *tmp2!=_C_ITEM_TYPE_DATETIME )
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_DATE");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_ADD");
 
 	dt1=(ClipDateTime *)tmp1;
 	dt2=(ClipDateTime *)tmp2;
@@ -1344,9 +1407,9 @@ clip_DT_SUB(ClipMachine * mp)
 	char * tmp1=_clip_parcl(mp,1,&len1);
 	char * tmp2=_clip_parcl(mp,2,&len2);
 	if ( tmp1==NULL || len1!=sizeof(ClipDateTime)-1 || *tmp1!=_C_ITEM_TYPE_DATETIME )
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_DATE");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_SUB");
 	if ( tmp2==NULL || len2!=sizeof(ClipDateTime)-1 || *tmp2!=_C_ITEM_TYPE_DATETIME )
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_DATE");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "DT_SUB");
 
 	dt1=(ClipDateTime *)tmp1;
 	dt2=(ClipDateTime *)tmp2;

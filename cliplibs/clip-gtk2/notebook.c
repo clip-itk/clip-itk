@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -14,6 +15,27 @@
 #include "clip-gtk2.h"
 
 /*********************** SIGNALS **************************/
+gint handle_change_current_page_signal (GtkNotebook *notebook, gint page_num,C_signal *cs)
+{
+	PREPARECV(cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_PAGE_NUM, page_num);
+	INVOKESIGHANDLER(GTK_WIDGET(notebook),cs,cv);
+}
+
+gint handle_move_focus_out_signal (GtkNotebook *notebook, GtkDirectionType type,C_signal *cs)
+{
+	PREPARECV(cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTIONTYPE, type);
+	INVOKESIGHANDLER(GTK_WIDGET(notebook),cs,cv);
+}
+
+gint handle_select_page_signal (GtkNotebook *notebook, gboolean select,C_signal *cs)
+{
+	PREPARECV(cs,cv);
+	_clip_mputl(cs->cw->cmachine, &cv, HASH_SELECT, select);
+	INVOKESIGHANDLER(GTK_WIDGET(notebook),cs,cv);
+}
+
 gint handle_switch_page_signal (GtkNotebook *notebook,GtkNotebookPage *page,gint page_num,C_signal *cs)
 {
 	ClipVar cv, mpage, mreq, mallc;
@@ -55,6 +77,9 @@ gint handle_switch_page_signal (GtkNotebook *notebook,GtkNotebookPage *page,gint
 
 static SignalTable notebook_signals[] =
 {
+	{"change-current-page",	GSF( handle_change_current_page_signal ), ESF( object_emit_signal ), GTK_CHANGE_CURRENT_PAGE_SIGNAL},
+	{"move-focus-out",	GSF( handle_move_focus_out_signal ), ESF( object_emit_signal ), GTK_MOVE_FOCUS_OUT_SIGNAL},
+	{"select-page",		GSF( handle_select_page_signal ), ESF( object_emit_signal ), GTK_SELECT_PAGE_SIGNAL},
 	{"switch-page",		GSF( handle_switch_page_signal ), ESF( object_emit_signal ), GTK_SWITCH_PAGE_SIGNAL},
 	{"", NULL, NULL, 0}
 };
@@ -101,8 +126,6 @@ clip_GTK_NOTEBOOKAPPENDPAGE(ClipMachine * cm)
 	C_widget   *cntb = _fetch_cw_arg(cm);
 	C_widget *cchild = _fetch_cwidget(cm,_clip_spar(cm,2));
 	C_widget *clabel; GtkWidget *label;
-	char * pchar   = _clip_parc(cm, 4);
-	guint accel_key = 0;
 
 
 	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
@@ -113,49 +136,21 @@ clip_GTK_NOTEBOOKAPPENDPAGE(ClipMachine * cm)
 
 	if (_clip_parinfo(cm,3)==CHARACTER_t)
 	{
-		gchar * text;
 		char   * caption = _clip_parc(cm, 3);
 		LOCALE_TO_UTF(caption);
-		label = gtk_label_new(caption);
-		gtk_label_get(GTK_LABEL(label), &text);
-		if (pchar)
-		{
-			char *pc;
-			for (pc = text;pc && *pc; pc++)
-				if (*pc == *pchar)
-					*pc='_';
-		}
-
-		if (pchar)
-			accel_key = gtk_label_parse_uline(GTK_LABEL(label), text);
+		label = gtk_label_new_with_mnemonic(caption);
 		FREE_TEXT(caption);
 
 	}
 	else
 	{
-		gchar * text;
 		clabel = _fetch_cwidget(cm,_clip_spar(cm,3));
 		CHECKCWID(clabel,GTK_IS_WIDGET);
 
 		if (clabel) label = clabel->widget;
-		gtk_label_get(GTK_LABEL(label), &text);
-		if (pchar)
-		{
-			char *pc;
-			for (pc = text;pc && *pc; pc++)
-				if (*pc == *pchar)
-					*pc='_';
-		}
-
-		if (pchar)
-			accel_key = gtk_label_parse_uline(GTK_LABEL(label), text);
-
 	}
 	gtk_notebook_append_page(GTK_NOTEBOOK(cntb->widget), cchild->widget, label);
 
-//	cwid = _register_widget(cm, wid, cv);
-//	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
-	_clip_mputn(cm,&cntb->obj,HASH_ACCELKEY,accel_key);
 	return 0;
 err:
 	return 1;
@@ -177,7 +172,7 @@ clip_GTK_NOTEBOOKAPPENDPAGEMENU(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t) {
 		char   * caption = _clip_parc(cm, 3);
 		LOCALE_TO_UTF(caption);
-		tab_label = gtk_label_new(caption);
+		tab_label = gtk_label_new_with_mnemonic(caption);
 		FREE_TEXT(caption);
 	}
 	else
@@ -189,7 +184,7 @@ clip_GTK_NOTEBOOKAPPENDPAGEMENU(ClipMachine * cm)
 	if (_clip_parinfo(cm,4)==CHARACTER_t) {
 		char   * menu_text = _clip_parc(cm, 4);
 		LOCALE_TO_UTF(menu_text);
-		menu_label = gtk_label_new(menu_text);
+		menu_label = gtk_label_new_with_mnemonic(menu_text);
 		FREE_TEXT(menu_text);
 	}
 	else
@@ -218,7 +213,7 @@ clip_GTK_NOTEBOOKPREPENDPAGE(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t) {
 		char   * caption = _clip_parc(cm, 3);
 		LOCALE_TO_UTF(caption);
-		label = gtk_label_new(caption);
+		label = gtk_label_new_with_mnemonic(caption);
 		FREE_TEXT(caption);
 	}
 	else
@@ -249,7 +244,7 @@ clip_GTK_NOTEBOOKPREPENDPAGEMENU(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t) {
 		char   * caption = _clip_parc(cm, 3);
 		LOCALE_TO_UTF(caption);
-		tab_label = gtk_label_new(caption);
+		tab_label = gtk_label_new_with_mnemonic(caption);
 		FREE_TEXT(caption);
 	}
 	else
@@ -261,7 +256,7 @@ clip_GTK_NOTEBOOKPREPENDPAGEMENU(ClipMachine * cm)
 	if (_clip_parinfo(cm,4)==CHARACTER_t) {
 		char   * menu_text = _clip_parc(cm, 4);
 		LOCALE_TO_UTF(menu_text);
-		menu_label = gtk_label_new(menu_text);
+		menu_label = gtk_label_new_with_mnemonic(menu_text);
 		FREE_TEXT(menu_text);
 	}
 	else
@@ -294,7 +289,7 @@ clip_GTK_NOTEBOOKINSERTPAGE(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t) {
 		char   * caption = _clip_parc(cm, 3);
 		LOCALE_TO_UTF(caption);
-		label = gtk_label_new(caption);
+		label = gtk_label_new_with_mnemonic(caption);
 		FREE_TEXT(caption);
 	}
 	else
@@ -330,7 +325,7 @@ clip_GTK_NOTEBOOKINSERTPAGEMENU(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t) {
 		char   * caption = _clip_parc(cm, 3);
 		LOCALE_TO_UTF(caption);
-		tab_label = gtk_label_new(caption);
+		tab_label = gtk_label_new_with_mnemonic(caption);
 		FREE_TEXT(caption);
 	}
 	else
@@ -571,9 +566,12 @@ clip_GTK_NOTEBOOKGETMENULABEL(ClipMachine * cm)
 	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
 	wid = gtk_notebook_get_menu_label(GTK_NOTEBOOK(cntb->widget), cchild->widget);
-	cwid = _list_get_cwidget(cm,wid);
-	if (!cwid) cwid = _register_widget(cm,wid,NULL);
-	if (cwid) _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+	if (wid)
+        {
+		cwid = _list_get_cwidget(cm,wid);
+		if (!cwid) cwid = _register_widget(cm,wid,NULL);
+		if (cwid) _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+        }
 	return 0;
 err:
 	return 1;
@@ -754,6 +752,25 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_NOTEBOOKSETTABLABELTEXT(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+	C_widget   *cchild = _fetch_cwidget(cm,_clip_spar(cm,2));
+        gchar        *text = _clip_parc(cm, 3);
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
+	CHECKARG(3,CHARACTER_t);
+	LOCALE_TO_UTF(text);
+	gtk_notebook_set_tab_label_text(GTK_NOTEBOOK(cntb->widget),
+		cchild->widget, text);
+        FREE_TEXT(text);
+	return 0;
+err:
+	return 1;
+}
+
 /* Sets whether the tabs should have a vertical border. */
 int
 clip_GTK_NOTEBOOKSETTABVBORDER(ClipMachine * cm)
@@ -769,3 +786,123 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_NOTEBOOKGETMENULABELTEXT(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+	C_widget   *cchild = _fetch_cwidget(cm,_clip_spar(cm,2));
+        gchar        *text ;
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
+	text = (gchar *)gtk_notebook_get_menu_label_text(GTK_NOTEBOOK(cntb->widget),
+		GTK_WIDGET(cchild->widget));
+	LOCALE_TO_UTF(text);
+        _clip_retc(cm, text);
+        FREE_TEXT(text);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_NOTEBOOKGETSCROLLABLE(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+	_clip_retl(cm, gtk_notebook_get_scrollable(GTK_NOTEBOOK(cntb->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_NOTEBOOKGETSHOWBORDER(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+	_clip_retl(cm, gtk_notebook_get_show_border(GTK_NOTEBOOK(cntb->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+
+int
+clip_GTK_NOTEBOOKGETSHOWTABS(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+	_clip_retl(cm, gtk_notebook_get_show_tabs(GTK_NOTEBOOK(cntb->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_NOTEBOOKGETTABLABELTEXT(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+	C_widget   *cchild = _fetch_cwidget(cm,_clip_spar(cm,2));
+        gchar        *text ;
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
+	text = (gchar *)gtk_notebook_get_tab_label_text(GTK_NOTEBOOK(cntb->widget),
+		GTK_WIDGET(cchild->widget));
+	LOCALE_TO_UTF(text);
+        _clip_retc(cm, text);
+        FREE_TEXT(text);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_NOTEBOOKGETTABPOS(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+	_clip_retni(cm, (int)gtk_notebook_get_tab_pos(GTK_NOTEBOOK(cntb->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_NOTEBOOKSETCURRENTPAGE(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+        gint          page = _clip_parni(cm, 2);
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+        CHECKARG(2, NUMERIC_t);
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(cntb->widget), page-1);
+	return 0;
+err:
+	return 1;
+}
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 2)
+int
+clip_GTK_NOTEBOOKGETNPAGES(ClipMachine * cm)
+{
+	C_widget     *cntb = _fetch_cw_arg(cm);
+
+	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
+
+	_clip_retni(cm, gtk_notebook_get_n_pages(GTK_NOTEBOOK(cntb->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+#endif

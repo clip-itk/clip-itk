@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -105,6 +106,29 @@ clip_GTK_CHECKMENUITEMNEW(ClipMachine * cm)
 err:
 	return 1;
 }
+int
+clip_GTK_CHECKMENUITEMNEWWITHMNEMONIC(ClipMachine * cm)
+{
+	ClipVar * cv   = _clip_spar(cm, 1);
+	char * label   = _clip_parc(cm, 2);
+	GtkWidget *wid = NULL;
+	C_widget *cwid;
+
+	CHECKOPT(1,MAP_t);
+	CHECKARG(2,CHARACTER_t);
+
+	LOCALE_TO_UTF(label);
+	wid = gtk_check_menu_item_new_with_mnemonic(label);
+	FREE_TEXT(label);
+
+	if (!wid) goto err;
+	cwid = _register_widget(cm, wid, cv);
+	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
+
+	return 0;
+err:
+	return 1;
+}
 /****  ------------------ ****/
 
 int
@@ -158,6 +182,31 @@ err:
 }
 
 int
+clip_GTK_CHECKMENUITEMGETINCONSISTENT(ClipMachine * cm)
+{
+	C_widget *citm  = _fetch_cw_arg(cm);
+        CHECKCWID(citm,GTK_IS_CHECK_MENU_ITEM);
+        _clip_retl(cm, gtk_check_menu_item_get_inconsistent(GTK_CHECK_MENU_ITEM(citm->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CHECKMENUITEMSETINCONSISTENT(ClipMachine * cm)
+{
+	C_widget *citm  = _fetch_cw_arg(cm);
+        gboolean iconsistent = _clip_parl(cm, 2);
+        CHECKCWID(citm,GTK_IS_CHECK_MENU_ITEM);
+        CHECKARG(2, LOGICAL_t);
+        gtk_check_menu_item_set_inconsistent(GTK_CHECK_MENU_ITEM(citm->widget),
+        	iconsistent);
+	return 0;
+err:
+	return 1;
+}
+
+int
 clip_GTK_CHECKMENUITEMSETSTYLE(ClipMachine * cm)
 {
 	C_widget   *citm = _fetch_cw_arg(cm);
@@ -175,4 +224,34 @@ clip_GTK_CHECKMENUITEMSETSTYLE(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_CHECKMENUITEMSETDRAWASRADIO(ClipMachine * cm)
+{
+	C_widget   *citm = _fetch_cw_arg(cm);
+        gboolean draw_as_radio = _clip_parl(cm, 2);
 
+        CHECKCWID(citm,GTK_IS_ITEM);
+	CHECKARG(2,LOGICAL_t);
+
+        gtk_check_menu_item_set_draw_as_radio(GTK_CHECK_MENU_ITEM(citm->widget), draw_as_radio);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CHECKMENUITEMGETDRAWASRADIO(ClipMachine * cm)
+{
+	C_widget   *citm = _fetch_cw_arg(cm);
+
+        CHECKCWID(citm,GTK_IS_ITEM);
+
+        _clip_retl(cm, gtk_check_menu_item_get_draw_as_radio(GTK_CHECK_MENU_ITEM(citm->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+#endif

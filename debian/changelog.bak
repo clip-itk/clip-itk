@@ -2,7 +2,7 @@ clip (1.1.10-1) stable; urgency=low
 
   * new release, some bugs fixed, GTK2 new functions, CODB & COBRA new features.
 
- -- Uri Khnykin <uri@itk.ru>  Thu,  02 May 2004 01:00:00 +0500
+ -- Uri Khnykin <uri@itk.ru>  Thu,  02 May 2004 14:00:00 +0500
 
 clip (1.1.9-1) stable; urgency=low
 

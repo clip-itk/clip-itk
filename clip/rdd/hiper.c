@@ -5,7 +5,6 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "clipbase.h"
 #include "rdd.h"
 #include "error.ch"
 #ifdef HAVE_MMAN_H

@@ -1,18 +1,154 @@
 /*
-    Copyright (C) 2002  ITK
+    Copyright (C) 2002-2004  ITK
     Author   : Uri (uri@itk.ru)
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "codbcfg.ch"
 ************************************************************
+function codbListNew(lReadOnly)
+return codbList():new(lReadOnly)
+************************************************************
 function codbList()
+	local obj
+	if codb_cobraAvailable()
+		obj := codbList_cobra()
+	else
+		obj := codbList_dbf()
+	endif
+return obj
+
+
+************************************************************
+************************************************************
+************************************************************
+/* methods for all driver*/
+************************************************************
+static function codbList_all()
 	local obj	:= map()
 	obj:className	:= "CODBLIST"
-	obj:hDB		:= NIL
 	obj:error	:= ""
+	obj:driver	:= "ALL"
+	obj:__readOnly	:= .t.
+	obj:checkBody	:= @cdb_all_checkBody()
+	obj:padrBody	:= @cdb_all_padrBody()
+return obj
+************************************************************
+static function cdb_all_checkBody(self,data)
+return codb_checkBody(data,CODB_DICTLIST_BODY )
+************************************************************
+static function cdb_all_padrBody(self,data)
+return  codb_padrBody(data,CODB_DICTLIST_BODY )
+
+
+************************************************************
+************************************************************
+************************************************************
+/* methods for COBRA driver*/
+************************************************************
+static function codbList_cobra()
+	local obj	:= codbList_all()
+	obj:driver	:= "COBRA"
+	obj:new		:= @cdb_cbr_new()
+	obj:list	:= @cdb_cbr_list()
+	obj:existId	:= @cdb_cbr_existId()
+	obj:append	:= @cdb_cbr_append()
+	obj:update	:= @cdb_cbr_update()
+	obj:connect	:= @cdb_cbr_connect()
+	obj:getValue	:= @cdb_cbr_getValue()
+	obj:close	:= @cdb_cbr_close()
+	obj:destroy	:= @cdb_cbr_close()
+return obj
+
+************************************************************
+static function cdb_cbr_close(self)
+return
+
+************************************************************
+static function cdb_cbr_new(self,lReadOnly)
+return self
+
+************************************************************
+static function cdb_cbr_list(self)
+	local ret
+	self:error := ""
+	ret := codb_cobraQuery("CODBLIST_LIST")
+	if !empty(ret:errno)
+		self:error := codb_cobraError(ret)
+		return {}
+	endif
+return ret:return
+************************************************************
+static function cdb_cbr_existID(self,id)
+	local ret
+	self:error := ""
+	ret := codb_cobraQuery("CODBLIST_EXISTID",id)
+	if !empty(ret:errno)
+		self:error := codb_cobraError(ret)
+		return .f.
+	endif
+return ret:return
+************************************************************
+static function cdb_cbr_getValue(self,id)
+	local ret
+	self:error := ""
+	ret := codb_cobraQuery("CODBLIST_GETVALUE",id)
+	if !empty(ret:errno)
+		self:error := codb_cobraError(ret)
+		return .f.
+	endif
+return ret:return
+
+************************************************************
+static function cdb_cbr_append(self,data)
+	local ret
+	self:error := ""
+	ret := codb_cobraQuery("CODBLIST_APPEND",data)
+	if !empty(ret:errno)
+		self:error := codb_cobraError(ret)
+		return .f.
+	endif
+return ret:return
+************************************************************
+static function cdb_cbr_update(self,data)
+	local ret
+	self:error := ""
+	ret := codb_cobraQuery("CODBLIST_UPDATE",data)
+	if !empty(ret:errno)
+		self:error := codb_cobraError(ret)
+		return .f.
+	endif
+return ret:return
+************************************************************
+static function cdb_cbr_connect(ident,user,passwd)
+	local ret:=map()
+	local i,m,vfunc
+
+	ret:classname	:= "CODBDICTIONARY"
+	/* CODB user and password */
+	ret:id		:= iif(ident==NIL, "GBL01", ident)
+	user		:= iif(user==NIL, getenv("USER"), user)
+	ret:dbPass	:= iif(passwd==NIL, "", passwd)
+	ret:error	:= ""
+	codb_checkBodyCODB(ret)
+	vfunc:=codb_dictCobra_Methods("",ret:id,user,passwd)
+	/* add virtual methods */
+	m:=mapkeys(vfunc)
+	for i=1 to len(m)
+		ret[ m[i] ] := vfunc[ m[i] ]
+	next
+return ret
+
+
+************************************************************
+************************************************************
+************************************************************
+/* methods for DBF driver*/
+************************************************************
+static function codbList_dbf()
+	local obj	:= codbList_all()
+	obj:hDB		:= NIL
 	obj:driver	:= "DBF"
-	obj:checkBody	:= @cdb_checkBody()
-	obj:padrBody	:= @cdb_padrBody()
+	obj:__readOnly	:= .t.
 	obj:new		:= @cdb_new()
 	obj:list	:= @cdb_list()
 	obj:existId	:= @cdb_existId()
@@ -28,15 +164,6 @@ function codbList()
 return obj
 
 ************************************************************
-function codbListNew()
-return codbList():new()
-************************************************************
-static function cdb_checkBody(self,data)
-return  codb_checkBodyCODB(data)
-************************************************************
-static function cdb_padrBody(self,data)
-return  codb_padrBody(data,CODB_DICTLIST_BODY )
-************************************************************
 static function cdb_close(self)
 	if ::hDB!=NIL
 		rddCloseArea(::hdb)
@@ -45,10 +172,13 @@ static function cdb_close(self)
 return
 
 ************************************************************
-static function cdb_new(self)
+static function cdb_new(self,readOnly)
 	local path:=cliproot()
 	path:=path+PATH_DELIM+"etc"+PATH_DELIM+"codb"
 	self:error:=""
+	if valtype(readOnly)!="L"
+		readOnly := .t.
+	endif
 	if !file(path+".dbf")
 		dbcreate(path,codb_info("CODB_DICTLIST_STRUCTURE"))
 	endif
@@ -57,8 +187,9 @@ static function cdb_new(self)
 		self:error:=codb_error(1002)
 		return self
 	endif
-	self:hDB:=rddUseArea(self:driver,path,.t.,.f.)
+	self:hDB:=rddUseArea(self:driver,path,.t.,readOnly)
 	rddSetMemo(self:hDb,"FPT",path)
+	self:__readOnly := readOnly
 	if self:hDB<=0
 		self:error:=codb_error(1008)+":"+str(ferror())+":"+ferrorstr()
 	endif
@@ -116,6 +247,14 @@ return ret
 static function cdb_append(data)
 	local id,ret:=.f.,dict,rec
 	::error:=""
+	if ::__readOnly
+		::close()
+		::new(.f.)
+		//error := codb_error(1009)
+		if !empty(::error)
+			return ret
+		endif
+	endif
 	if ::hdb==NIL .or. valtype(data)!="O" .or. !("ID" $ data) .or. empty(data:id)
 		::error := codb_error(1007)
 	endif
@@ -137,8 +276,13 @@ static function cdb_append(data)
 		if alltrim(data:type)=="DBF"
 			data:path:=alltrim(data:path)
 			if empty(data:path)
-				data:path:=PATH_DELIM+"home"+PATH_DELIM+;
-				getenv("USER")+PATH_DELIM+"codb"+alltrim(data:id)
+				if empty(getenv("CODBROOT"))
+					data:path:=PATH_DELIM+"home"+PATH_DELIM+;
+					getenv("USER")+PATH_DELIM+"codb"+PATH_DELIM+alltrim(data:id)
+				else
+					data:path:=getenv("CODBROOT")+PATH_DELIM+alltrim(data:id)
+					data:path:=strtran(data:path,"//","/")
+				endif
 			endif
 		else // SQL default parameters
 		endif
@@ -172,6 +316,14 @@ return ret
 static function cdb_update(data)
 	local id,ret:=.f.,dict,rec
 	::error:=""
+	if ::__readOnly
+		::close()
+		::new(.f.)
+		//error := codb_error(1009)
+		if !empty(::error)
+			return ret
+		endif
+	endif
 	if ::hdb==NIL .or. valtype(data)!="O" .or. !("ID" $ data) .or. empty(data:id)
 		::error := codb_error(1007)
 	endif
@@ -250,18 +402,20 @@ static function cdb_connect(ident,user,passwd)
 	codb_checkBodyCODB(ret)
 	ret:type:=upper(alltrim(ret:type))
 	ret:dtype:=upper(alltrim(ret:dtype))
-	/* make virtual metods */
+	/* make virtual methods */
 	do case
-			case ret:type=="DBF"
-				vfunc:=codb_dictdbf_Metods(ret:path,ret:id,user,passwd)
-			otherwise
-				/*
-				vfunc:=codb_dictsql_Methods()
-				ret:server:=connectNew(ret:type,ret:host,ret:port,ret:user,,ret:dbname)
-				*/
+		case codb_cobraAvailable()
+			vfunc:=codb_dictCobra_Methods("",ret:id,user,passwd)
+		case ret:type=="DBF"
+			vfunc:=codb_dictdbf_Methods(ret:path,ret:id,user,passwd)
+		otherwise
+			/*
+			vfunc:=codb_dictsql_Methods()
+			ret:server:=connectNew(ret:type,ret:host,ret:port,ret:user,,ret:dbname)
+			*/
 	endcase
 
-	/* add virtual metods */
+	/* add virtual methods */
 	m:=mapkeys(vfunc)
 	for i=1 to len(m)
 		ret[ m[i] ] := vfunc[ m[i] ]
@@ -270,8 +424,7 @@ return ret
 ************************************************************
 ************************************************************
 ************************************************************
-************************************************************
-static function codb_checkBodyCODB(data )
+static function codb_checkBodyCODB(data)
 return codb_checkBody(data,CODB_DICTLIST_BODY )
 ************************************************************
 init procedure codb_init()

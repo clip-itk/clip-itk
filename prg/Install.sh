@@ -25,6 +25,10 @@ if [ -d utils ]
 then
 	cd utils; $MAKE install; cd ..
 fi
+if [ -d kamache ]
+then
+	cd kamache; $MAKE install; cd ..
+fi
 
 if [ -d doc_utils ]
 then
@@ -107,7 +111,7 @@ fi
 #
 if [ "$CLIPROOT" != "$WRKDIR" ]
 then
-	cp -R locale.po $CLIPROOT
+	cp -R locale.po $DESTDIR$CLIPROOT
 fi
 $CLIPROOT/bin/clip_msgmerge
 $CLIPROOT/bin/clip_msgfmt

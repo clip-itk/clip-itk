@@ -30,7 +30,7 @@ STATIC aPrint:={ "_NeedRec","_RecRight","_NeedCentr","_printZero",;
 		"_NeedMainHead","_NeedPrPage",;
 		"_NeedHeadPage","_lTitleAll",;
 		"_lDgtHdr","_lDHAll",;
-		"","",;		//В зависимости от места вызова
+		"_DefaultHBorder","_DefaultBorder",;//В зависимости от места вызова
 		"_NeedEject","_Printer","_NeedApFile"}
 
 STATIC aSet:={	"EXACT","FIXED","DECIMALS","DATEFORMAT","EPOCH","PATH",;

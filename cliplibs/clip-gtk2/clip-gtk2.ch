@@ -75,6 +75,28 @@
 
 
 /* signals */
+#define GTK_EDITING_CANCELED_SIGNAL	HASH___GTK_EDITING_CANCELED_SIGNAL
+#define GTK_ACTION_ACTIVATED_SIGNAL	HASH___GTK_ACTION_ACTIVATED_SIGNAL
+#define GTK_MATCH_SELECTED_SIGNAL	HASH___GTK_MATCH_SELECTED_SIGNAL
+#define GTK_CURRENT_FOLDER_CHANGED_SIGNAL	HASH___GTK_CURRENT_FOLDER_CHANGED_SIGNAL
+#define GTK_FILE_ACTIVATED_SIGNAL	HASH___GTK_FILE_ACTIVATED_SIGNAL
+#define GTK_UPDATE_PREVIEW_SIGNAL	HASH___GTK_UPDATE_PREVIEW_SIGNAL
+#define GTK_CREATE_MENU_PROXY_SIGNAL	HASH___GTK_CREATE_MENU_PROXY_SIGNAL
+#define GTK_SET_TOOLTIP_SIGNAL	HASH___GTK_SET_TOOLTIP_SIGNAL
+#define GTK_TOOLBAR_RECONFIGURED_SIGNAL	HASH___GTK_TOOLBAR_RECONFIGURED_SIGNAL
+#define GTK_FONT_SET_SIGNAL		HASH___GTK_FONT_SET_SIGNAL
+#define GTK_COLOR_SET_SIGNAL		HASH___GTK_COLOR_SET_SIGNAL
+#define GTK_ADD_WIDGET_SIGNAL		HASH___GTK_ADD_WIDGET_SIGNAL
+#define GTK_ACTIONS_CHANGED_SIGNAL	HASH___GTK_ACTIONS_CHANGED_SIGNAL
+#define GTK_CONNECT_PROXY_SIGNAL	HASH___GTK_CONNECT_PROXY_SIGNAL
+#define GTK_DISCONNECT_PROXY_SIGNAL	HASH___GTK_DISCONNECT_PROXY_SIGNAL
+#define GTK_POST_ACTIVATE_SIGNAL	HASH___GTK_POST_ACTIVATE_SIGNAL
+#define GTK_PRE_ACTIVATE_SIGNAL		HASH___GTK_PRE_ACTIVATE_SIGNAL
+#define GTK_EMBEDDED_SIGNAL		HASH___GTK_EMBEDDED_SIGNAL
+#define GTK_PLUG_REMOVED_SIGNAL		HASH___GTK_PLUG_REMOVED_SIGNAL
+#define GTK_PLUG_ADDED_SIGNAL		HASH___GTK_PLUG_ADDED_SIGNAL
+#define GTK_MOVE_SLIDER_SIGNAL		HASH___GTK_MOVE_SLIDER_SIGNAL
+#define GTK_ADJUST_BOUNDS_SIGNAL	HASH___GTK_ADJUST_BOUNDS_SIGNAL
 #define GTK_CYCLE_FOCUS_SIGNAL		HASH___GTK_CYCLE_FOCUS_SIGNAL
 #define GTK_SIZE_REQUEST_SIGNAL		HASH___GTK_SIZE_REQUEST_SIGNAL
 #define GTK_SIZE_ALLOCATE_SIGNAL	HASH___GTK_SIZE_ALLOCATE_SIGNAL
@@ -193,6 +215,10 @@
 #define GTK_TEXT_PUSHED_SIGNAL		HASH___TEXT_PUSHED_SIGNAL
 #define GTK_TEXT_POPPED_SIGNAL		HASH___TEXT_POPPED_SIGNAL
 #define GTK_SWITCH_PAGE_SIGNAL		HASH___SWITCH_PAGE_SIGNAL
+#define GTK_CHANGE_CURRENT_PAGE_SIGNAL	HASH___CHANGE_CURRENT_PAGE_SIGNAL
+#define GTK_MOVE_FOCUS_OUT_SIGNAL	HASH___MOVE_FOCUS_OUT_SIGNAL
+#define GTK_SELECT_PAGE_SIGNAL		HASH___SELECT_PAGE_SIGNAL
+#define GTK_SCROLL_CHILD_SIGNAL		HASH___SCROLL_CHILD_SIGNAL
 #define GTK_ADD_SIGNAL			HASH___ADD_PAGE_SIGNAL
 #define GTK_REMOVE_SIGNAL		HASH___REMOVE_SIGNAL
 #define GTK_CHECK_RESIZE_SIGNAL		HASH___CHECK_RESIZE_SIGNAL
@@ -290,6 +316,15 @@
 #define GTK_MARGIN_EXIT_SIGNAL          HASH___MARGIN_EXIT_SIGNAL
 #define GTK_MARGIN_CLICKED_SIGNAL       HASH___MARGIN_CLICKED_SIGNAL
 
+/* GtkImContext signals */
+#define GTK_COMMIT_SIGNAL		HASH___COMMIT_SIGNAL
+#define GTK_DELETE_SURROUNDING_SIGNAL	HASH___DELETE_SURROUNDING_SIGNAL
+#define GTK_PREEDIT_CHANGED_SIGNAL	HASH___PREEDIT_CHANGED_SIGNAL
+#define GTK_PREEDIT_END_SIGNAL		HASH___PREEDIT_END_SIGNAL
+#define GTK_PREEDIT_START_SIGNAL	HASH___PREEDIT_START_SIGNAL
+#define GTK_RETRIEVE_SURROUNDING_SIGNAL	HASH___RETRIEVE_SURROUNDING_SIGNAL
+
+#define GTK_MAX_COMPOSE_LEN		7	// The maximum length of sequences in compose tables.
 
 /* set window position */
 #define GTK_WIN_POS_NONE		0
@@ -339,6 +374,33 @@
 #define GDK_OBJECT_PIXBUF		HASH___GDK_OBJECT_PIXBUF
 #define GDK_OBJECT_PIXMAP		HASH___GDK_OBJECT_PIXMAP
 #define GDK_OBJECT_BITMAP		HASH___GDK_OBJECT_BITMAP
+#define GDK_TYPE_BITMAP			HASH___GDK_TYPE_BITMAP
+
+#define GDK_TYPE_ATOM			HASH___GDK_TYPE_ATOM
+#define GTK_TYPE_TARGET_PAIR		HASH___GTK_TYPE_TARGET_PAIR
+#define GTK_TYPE_TARGET_LIST		HASH___GTK_TYPE_TARGET_LIST
+#define GTK_TYPE_TARGET_ENTRY		HASH___GTK_TYPE_TARGET_ENTRY
+
+#ifndef GTK_TYPE_CLIPBOARD
+#define GTK_TYPE_CLIPBOARD		HASH___GTK_TYPE_CLIPBOARD
+#endif
+
+#define GTK_TYPE_STOCK_ITEM		HASH___GTK_TYPE_STOCK_ITEM
+#define GTK_OBJECT_STOCK_ITEM		HASH___GTK_OBJECT_STOCK_ITEM
+#define GTK_OBJECT_ACTION		HASH___GTK_OBJECT_ACTION
+#define GTK_OBJECT_TOGGLE_ACTION	HASH___GTK_OBJECT_TOGGLE_ACTION
+#define GTK_OBJECT_RADIO_ACTION		HASH___GTK_OBJECT_RADIO_ACTION
+#define GTK_OBJECT_ACTION_GROUP		HASH___GTK_OBJECT_ACTION_GROUP
+#define GTK_OBJECT_UI_MANAGER		HASH___GTK_OBJECT_UI_MANAGER
+#define GTK_OBJECT_ACCEL_MAP		HASH___GTK_OBJECT_ACCEL_MAP
+
+#define GTK_OBJECT_ICON_SOURCE		HASH___GTK_OBJECT_ICON_SOURCE
+
+#define GTK_OBJECT_IM_CONTEXT		HASH___GTK_OBJECT_IM_CONTEXT
+#define GTK_OBJECT_IM_CONTEXT_SIMPLE	HASH___GTK_OBJECT_IM_CONTEXT_SIMPLE
+#define GTK_OBJECT_IM_MULTICONTEXT	HASH___GTK_OBJECT_IM_MULTICONTEXT
+#define GTK_PANGO_ATTR_LIST_OBJECT	HASH___GTK_PANGO_ATTR_LIST_OBJECT
+#define GTK_OBJECT_SIZE_GROUP		HASH___GTK_OBJECT_SIZE_GROUP
 
 #define GTK_OBJECT_WINDOW_GROUP		HASH___GTK_OBJECT_WINDOW_GROUP
 #define GTK_OBJECT_ITEM_FACTORY		HASH___GTK_OBJECT_ITEM_FACTORY
@@ -346,6 +408,8 @@
 #define GTK_OBJECT_TREE_MODEL		HASH___GTK_OBJECT_TREE_MODEL
 #define GTK_OBJECT_TREE_PATH		HASH___GTK_OBJECT_TREE_PATH
 #define GTK_OBJECT_TREE_ITER		HASH___GTK_OBJECT_TREE_ITER
+#define GTK_OBJECT_TREE_MODEL_FILTER	HASH___GTK_OBJECT_TREE_MODEL_FILTER
+#define GTK_OBJECT_TREE_MODEL_SORT	HASH___GTK_OBJECT_TREE_MODEL_SORT
 
 #define GTK_OBJECT_CELL_RENDERER	HASH___GTK_OBJECT_CELL_RENDERER
 #define GTK_OBJECT_CELL_RENDERER_TEXT	HASH___GTK_OBJECT_CELL_RENDERER_TEXT
@@ -369,7 +433,12 @@
 #define GTK_WIDGET_DATA			HASH___GTK_WIDGET_DATA
 #define GTK_WIDGET_RANGE		HASH___GTK_WIDGET_RANGE
 #define GTK_WIDGET_MISC			HASH___GTK_WIDGET_MISC
+#define GTK_WIDGET_ARROW		HASH___GTK_WIDGET_ARROW
 #define GTK_WIDGET_RULER		HASH___GTK_WIDGET_RULER
+#define GTK_WIDGET_INVISIBLE		HASH___GTK_WIDGET_INVISIBLE
+#define GTK_OBJECT_ICON_THEME		HASH___GTK_OBJECT_ICON_THEME
+
+#define GTK_WIDGET_BIN			HASH___GTK_WIDGET_BIN
 /* Windows & Dialogs */
 #define GTK_WIDGET_WINDOW			HASH___GTK_WIDGET_WINDOW
 #define GTK_WIDGET_DIALOG			HASH___GTK_WIDGET_DIALOG
@@ -378,12 +447,19 @@
 #define GTK_WIDGET_FONT_SELECTION_DIALOG	HASH___GTK_WIDGET_FONT_SELECTION_DIALOG
 #define GTK_WIDGET_COLOR_SELECTION_DIALOG	HASH___GTK_WIDGET_COLOR_SELECTION_DIALOG
 #define GTK_WIDGET_FILE_SELECTION		HASH___GTK_WIDGET_FILE_SELECTION
+#define GTK_OBJECT_FILE_CHOOSER			HASH___GTK_OBJECT_FILE_CHOOSER
+#define GTK_WIDGET_FILE_CHOOSER_DIALOG		HASH___GTK_WIDGET_FILE_CHOOSER_DIALOG
+#define GTK_WIDGET_FILE_CHOOSER_WIDGET		HASH___GTK_WIDGET_FILE_CHOOSER_WIDGET
+#define GTK_OBJECT_FILE_FILTER			HASH___GTK_OBJECT_FILE_FILTER
 /* Accelerators group */
 #define GTK_WIDGET_ACCEL_GROUP		HASH___GTK_WIDGET_ACCEL_GROUP
+#define GTK_TYPE_ACCEL_GROUP_ENTRY	HASH___GTK_TYPE_ACCEL_GROUP_ENTRY
 /* Labels & Buttons */
 #define GTK_WIDGET_LABEL		HASH___GTK_WIDGET_LABEL
 #define GTK_WIDGET_ACCEL_LABEL		HASH___GTK_WIDGET_ACCEL_LABEL
 #define GTK_WIDGET_BUTTON		HASH___GTK_WIDGET_BUTTON
+#define GTK_WIDGET_COLOR_BUTTON		HASH___GTK_WIDGET_COLOR_BUTTON
+#define GTK_WIDGET_FONT_BUTTON		HASH___GTK_WIDGET_FONT_BUTTON
 #define GTK_WIDGET_TOGGLE_BUTTON	HASH___GTK_WIDGET_TOGGLE_BUTTON
 #define GTK_WIDGET_CHECK_BUTTON		HASH___GTK_WIDGET_CHECK_BUTTON
 #define GTK_WIDGET_SPIN_BUTTON		HASH___GTK_WIDGET_SPIN_BUTTON
@@ -399,10 +475,14 @@
 #define GTK_WIDGET_RADIO_MENU_ITEM	HASH___GTK_WIDGET_RADIO_MENU_ITEM
 #define GTK_WIDGET_RADIO_MENU_GROUP	HASH___GTK_WIDGET_RADIO_MENU_GROUP
 #define GTK_WIDGET_TEAROFF_MENU_ITEM	HASH___GTK_WIDGET_TEAROFF_MENU_ITEM
+#define GTK_WIDGET_IMAGE_MENU_ITEM	HASH___GTK_WIDGET_IMAGE_MENU_ITEM
 /* Data Entry Widgets */
 #define GTK_WIDGET_TEXT			HASH___GTK_WIDGET_TEXT
 #define GTK_WIDGET_ENTRY		HASH___GTK_WIDGET_ENTRY
+#define GTK_OBJECT_ENTRY_COMPLETION	HASH___GTK_OBJECT_ENTRY_COMPLETION
 #define GTK_WIDGET_COMBO		HASH___GTK_WIDGET_COMBO
+#define GTK_WIDGET_COMBO_BOX		HASH___GTK_WIDGET_COMBO_BOX
+#define GTK_WIDGET_COMBO_BOX_ENTRY	HASH___GTK_WIDGET_COMBO_BOX_ENTRY
 #define GTK_WIDGET_COMBO_SIMPLE		HASH___GTK_WIDGET_COMBO_SIMPLE
 #define GTK_WIDGET_OPTION_MENU		HASH___GTK_WIDGET_OPTION_MENU
 #define GTK_WIDGET_SCALE		HASH___GTK_WIDGET_SCALE
@@ -435,6 +515,11 @@
 #define GTK_WIDGET_HANDLE_BOX		HASH___GTK_WIDGET_HANDLE_BOX
 #define GTK_WIDGET_PANED		HASH___GTK_WIDGET_PANED
 #define GTK_WIDGET_TOOLBAR		HASH___GTK_WIDGET_TOOLBAR
+#define GTK_WIDGET_SEPARATOR_TOOL_ITEM	HASH___GTK_WIDGET_SEPARATOR_TOOL_ITEM
+#define GTK_WIDGET_TOOL_ITEM		HASH___GTK_WIDGET_TOOL_ITEM
+#define GTK_WIDGET_TOOL_BUTTON		HASH___GTK_WIDGET_TOOL_BUTTON
+#define GTK_WIDGET_TOGGLE_TOOL_BUTTON	HASH___GTK_WIDGET_TOGGLE_TOOL_BUTTON
+#define GTK_WIDGET_RADIO_TOOL_BUTTON	HASH___GTK_WIDGET_RADIO_TOOL_BUTTON
 #define GTK_WIDGET_PACKER		HASH___GTK_WIDGET_PACKER
 #define GTK_WIDGET_TABLE		HASH___GTK_WIDGET_TABLE
 #define GTK_WIDGET_VIEWPORT		HASH___GTK_WIDGET_VIEWPORT
@@ -481,7 +566,6 @@
 #define GTK_WIDGET_COLOR_SELECTION	HASH___GTK_WIDGET_COLOR_SELECTION
 #define GTK_WIDGET_PROGRESS		HASH___GTK_WIDGET_PROGRESS
 #define GTK_WIDGET_PROGRESS_BAR		HASH___GTK_WIDGET_PROGRESS_BAR
-#define GTK_WIDGET_ARROW		HASH___GTK_WIDGET_ARROW
 #define GTK_WIDGET_CALENDAR		HASH___GTK_WIDGET_CALENDAR
 #define GTK_WIDGET_HRULER		HASH___GTK_WIDGET_HRULER
 #define GTK_WIDGET_VRULER		HASH___GTK_WIDGET_VRULER
@@ -489,6 +573,9 @@
 /* extext widget */
 #define GTK_WIDGET_EXTEXT		HASH___GTK_WIDGET_EXTEXT
 
+/* socket */
+#define GTK_WIDGET_SOCKET		HASH___GTK_WIDGET_SOCKET
+#define GTK_WIDGET_PLUG			HASH___GTK_WIDGET_PLUG
 
 /* Justify constants */
 #define GTK_JUSTIFY_LEFT		0
@@ -603,6 +690,12 @@
 #define GTK_STATE_INSENSITIVE		4 // The state of the widget can not be altered by the user.
 					  // Its appearance will usually indicate this
 
+#define CLIP_GTK_STATE_NORMAL		1 // The state during normal operation
+#define CLIP_GTK_STATE_ACTIVE		2 // The widget is currently active
+#define CLIP_GTK_STATE_PRELIGHT		3 // The mouse pointer is over the widget
+#define CLIP_GTK_STATE_SELECTED		4
+#define CLIP_GTK_STATE_INSENSITIVE	5 // The state of the widget can not be altered by the user.
+					  // Its appearance will usually indicate this
 // Cell border style
 #define GTK_CELL_NO_BORDER		0
 #define GTK_CELL_LEFT_BORDER		1
@@ -659,6 +752,7 @@
 #define GTK_TOOLBAR_ICONS		 0 /* Buttons should display only icons in the toolbar. */
 #define GTK_TOOLBAR_TEXT		 1 /* Buttons should display only text labels in the toolbar. */
 #define GTK_TOOLBAR_BOTH		 2 /* Buttons should display text and icons in the toolbar. */
+#define GTK_TOOLBAR_BOTH_HORIZ		 3 /* Buttons display icons and text alongside each other, rather than vertically stacked */
 
 /* Styles of spaces in GtkToolbar. */
 #define GTK_TOOLBAR_SPACE_EMPTY		 0
@@ -666,8 +760,8 @@
 
 /* Window types */
 #define GTK_WINDOW_TOPLEVEL		0 /* A window for a typical application. */
-#define GTK_WINDOW_DIALOG		1 /* A window for transient messages and dialogs. */
-#define GTK_WINDOW_POPUP		3 /* A window for popups. */
+#define GTK_WINDOW_POPUP		1 /* A window for popups. */
+#define GTK_WINDOW_DIALOG		HASH___GTK_WINDOW_DIALOG /* A window for transient messages and dialogs. */
 
 /* Widget's flags */
 #define GTK_TOPLEVEL         		16
@@ -2629,9 +2723,6 @@ GTK_FILL the widget should fill the space allocated to it.
 /* #define SEARCH_REGEXP                        possible future  */
 
 
-#define GTK_TYPE_CLIPBOARD	HASH___GTK_TYPE_CLIPBOARD
-
-
 #define CLIP_GTK_TYPE_MENU_BAR		0
 #define CLIP_GTK_TYPE_MENU		1
 #define CLIP_GTK_TYPE_OPTION_MENU	2
@@ -2679,7 +2770,157 @@ GTK_FILL the widget should fill the space allocated to it.
 #define GTK_BUTTONS_YES_NO	4	// Yes and No buttons
 #define GTK_BUTTONS_OK_CANCEL	5	// OK and Cancel buttons
 
+/* GTK buttonbox styles */
+#define GTK_BUTTONBOX_DEFAULT_STYLE	0 // Default packing.
+#define GTK_BUTTONBOX_SPREAD		1 // Buttons are evenly spread across the ButtonBox.
+#define GTK_BUTTONBOX_EDGE		2 // Buttons are placed at the edges of the ButtonBox.
+#define GTK_BUTTONBOX_START		3 // Buttons are grouped towards the start of box, (on the left for a HBox, or the top for a VBox).
+#define GTK_BUTTONBOX_END		4 // Buttons are grouped towards the end of a box, (on the right for a HBox, or the bottom for a VBox).
+
+/* GTK icon size */
+#define GTK_ICON_SIZE_INVALID		0
+#define GTK_ICON_SIZE_MENU              1
+#define GTK_ICON_SIZE_SMALL_TOOLBAR     2
+#define GTK_ICON_SIZE_LARGE_TOOLBAR     3
+#define GTK_ICON_SIZE_BUTTON            4
+#define GTK_ICON_SIZE_DND               5
+#define GTK_ICON_SIZE_DIALOG            6
+
+/* GTK arrow type */
+#define GTK_ARROW_UP	0 // Represents an upward pointing arrow.
+#define GTK_ARROW_DOWN	1 // Represents a downward pointing arrow.
+#define GTK_ARROW_LEFT	2 // Represents a left pointing arrow.
+#define GTK_ARROW_RIGHT	3 // Represents a right pointing arrow.
+
+
+/* CLIP pango attributes type */
+#define CLIP_PANGO_ATTR_INVALID		0  /* 0 is an invalid attribute type */
+#define CLIP_PANGO_ATTR_LANGUAGE 	1  /* PangoAttrLanguage */
+#define CLIP_PANGO_ATTR_FAMILY		2  /* PangoAttrString */
+#define CLIP_PANGO_ATTR_STYLE		3  /* PangoAttrInt */
+#define CLIP_PANGO_ATTR_WEIGHT		4  /* PangoAttrInt */
+#define CLIP_PANGO_ATTR_VARIANT		5  /* PangoAttrInt */
+#define CLIP_PANGO_ATTR_STRETCH		6  /* PangoAttrInt */
+#define CLIP_PANGO_ATTR_SIZE		7  /* PangoAttrSize */
+#define CLIP_PANGO_ATTR_FONT_DESC	8  /* PangoAttrFontDesc */
+#define CLIP_PANGO_ATTR_FOREGROUND	9  /* PangoAttrColor */
+#define CLIP_PANGO_ATTR_BACKGROUND	10 /* PangoAttrColor */
+#define CLIP_PANGO_ATTR_UNDERLINE	11 /* PangoAttrInt */
+#define CLIP_PANGO_ATTR_STRIKETHROUGH	12 /* PangoAttrInt */
+#define CLIP_PANGO_ATTR_RISE		13 /* PangoAttrInt */
+#define CLIP_PANGO_ATTR_SHAPE		14 /* PangoAttrShape */
+#define CLIP_PANGO_ATTR_SCALE		15 /* PangoAttrFloat */
+
+
+/* Clip pango underline types */
+#define CLIP_PANGO_UNDERLINE_NONE	0
+#define CLIP_PANGO_UNDERLINE_SINGLE	1
+#define CLIP_PANGO_UNDERLINE_DOUBLE	2
+#define CLIP_PANGO_UNDERLINE_LOW	3
+
+/* GTK size group */
+#define GTK_SIZE_GROUP_NONE	 	0 // group has no effect
+#define GTK_SIZE_GROUP_HORIZONTAL	1 // group effects horizontal requisition
+#define GTK_SIZE_GROUP_VERTICAL		2 // group effects vertical requisition
+#define GTK_SIZE_GROUP_BOTH		3 // group effects both horizontal and vertical requisition
+
+
+/* The GtkDestDefaults enumeration specifies the various types of action
+that will be taken on behalf of the user for a drag destination site. */
+
+#define GTK_DEST_DEFAULT_MOTION 	1 // If set for a widget, GTK+, during a
+					  // drag over this widget will check if the drag matches this widget's list
+					  // of possible targets and actions. GTK+ will then call gtk_drag_status()
+					  // as appropriate.
+#define GTK_DEST_DEFAULT_HIGHLIGHT 	2 // If set for a widget, GTK+ will
+					  // draw a highlight on this widget as long as a drag is over this widget
+					  // and the widget drag format and action are acceptable.
+#define GTK_DEST_DEFAULT_DROP 		4 // If set for a widget, when a drop
+					  // occurs, GTK+ will will check if the drag matches this widget's list of
+					  // possible targets and actions. If so, GTK+ will call gtk_drag_data_get()
+					  // on behalf of the widget. Whether or not the drop is successful, GTK+
+					  // will call gtk_drag_finish(). If the action was a move, then if the drag
+					  // was successful, then TRUE will be passed for the delete parameter to
+					  // gtk_drag_finish().
+#define GTK_DEST_DEFAULT_ALL 		7 // If set, specifies that all default
+					  // actions should be taken.
+
+
+/* Gtk target flags */
+#define GTK_TARGET_SAME_APP 	0 // If this is set, the target will only be selected for
+				  // drags within a single application. GTK_TARGET_SAME_WIDGET: If this is
+				  // set, the target will only be selected for drags within a single widget.
+#define GTK_TARGET_SAME_WIDGET	2
+
+
+/* Gdk actions */
+#define GDK_ACTION_DEFAULT	1
+#define GDK_ACTION_COPY		2  //	Copy the data.
+#define GDK_ACTION_MOVE		4  //	Move the data, i.e. first copy it, then delete it from the source using the DELETE target of the X selection protocol.
+#define GDK_ACTION_LINK		8  //	Add a link to the data. Note that this is only useful if source and destination agree on what it means.
+#define GDK_ACTION_PRIVATE	16 //	Special action which tells the source that the destination will do something that the source doesn't understand.
+#define GDK_ACTION_ASK		32 //	Ask the user what to do with the data.
+
+
+/* GDK drag protocol */
+
+#define GDK_DRAG_PROTO_MOTIF		0 // The Motif DND protocol.
+#define GDK_DRAG_PROTO_XDND		1 // The Xdnd protocol.
+#define GDK_DRAG_PROTO_ROOTWIN		2 // An extension to the Xdnd protocol for unclaimed root window drops.
+#define GDK_DRAG_PROTO_NONE		3 // no protocol.
+#define GDK_DRAG_PROTO_WIN32_DROPFILES	4 // The simple WM_DROPFILES protocol.
+#define GDK_DRAG_PROTO_OLE2		5 // The complex OLE2 DND protocol (not implemented).
+#define GDK_DRAG_PROTO_LOCAL		6 // Intra-application DND.
+
+/* GDKColorspace
+ This enumeration defines the color spaces that are supported by the
+ gdk-pixbuf library. Currently only RGB is supported.
+*/
+#define GDK_COLORSPACE_RGB	0	// Indicates a red/green/blue additive color space.
+
+
+/* GTK UI Manager Item Type */
+
+#define GTK_UI_MANAGER_AUTO		0 //	Pick the type of the UI element according to context.
+#define GTK_UI_MANAGER_MENUBAR		1 //	Create a menubar.
+#define GTK_UI_MANAGER_MENU		2 //	Create a menu.
+#define GTK_UI_MANAGER_TOOLBAR		4 //	Create a toolbar.
+#define GTK_UI_MANAGER_PLACEHOLDER	8 //	Insert a placeholder.
+#define GTK_UI_MANAGER_POPUP		16 //	Create a popup menu.
+#define GTK_UI_MANAGER_MENUITEM		32 //	Create a menuitem.
+#define GTK_UI_MANAGER_TOOLITEM		64 //	Create a toolitem.
+#define GTK_UI_MANAGER_SEPARATOR	128 //	Create a separator.
+#define GTK_UI_MANAGER_ACCELERATOR	256 //	Install an accelerator.
+
+
+/* Gtk file chooser actions */
+#define GTK_FILE_CHOOSER_ACTION_OPEN 		0 // Indicates open mode. The file chooser will only let the user pick an existing file.
+#define GTK_FILE_CHOOSER_ACTION_SAVE 		1 // Indicates save mode. The file chooser will let the user pick an existing file, or type in a new filename.
+#define GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER 	2 // Indicates an Open mode for selecting folders. The file chooser will let the user pick an existing folder.
+#define GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER  	3 // Indicates a mode for creating a new folder. The file chooser will let the user name an existing or new folder.
+
+
+/* Gtk file filter flags */
+#define GTK_FILE_FILTER_FILENAME     	1
+#define GTK_FILE_FILTER_URI          	2
+#define GTK_FILE_FILTER_DISPLAY_NAME 	4
+#define GTK_FILE_FILTER_MIME_TYPE    	8
+
+/* Gtk icon lookup flags */
+#define GTK_ICON_LOOKUP_NO_SVG	 	1 // Never return SVG icons, even if
+					// gdk-pixbuf supports them. Cannot be
+					//  used together with GTK_ICON_LOOKUP_FORCE_SVG.
+#define GTK_ICON_LOOKUP_FORCE_SVG	2 // Return SVG icons, even if gdk-pixbuf
+					// doesn't support them. Cannot be used
+					// together with GTK_ICON_LOOKUP_NO_SVG.
+#define GTK_ICON_LOOKUP_USE_BUILTIN	4 // When passed to gtk_icon_theme_lookup_icon()
+					// includes builtin icons as well as
+					// files. For a builtin icon, gdk_icon_info_get_filename()
+					// returns NULL and you need to call gdk_icon_info_get_builtin_pixbuf().
+
+
 #endif
+
 
 
 

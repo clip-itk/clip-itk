@@ -62,11 +62,14 @@ static function codb_count_add(countId)
 	local s1,n2
 	countId := iif( countId==NIL, "METADATA", countId )
 	::error := ""
+	taskstop()
 	if !::seek(countId)
+		taskstart()
 		::error := codb_error(1201)+":"+toString(countID)
 		return -1
 	endif
 	if !::lock(10)
+		taskstart()
 		::error := codb_error(1202)+":"+toString(countID)
 		return -1
 	endif
@@ -79,18 +82,23 @@ static function codb_count_add(countId)
 		rddUnLock(::hDb)
 	else
 		::error := codb_error(1203)
+		taskstart()
 		return -1
 	endif
+	taskstart()
 return n2
 ************************************************************
 static function codb_count_append(countId,countName)
 	local s1,n2
 	::error := ""
+	taskstop()
 	if empty(countId)
+		taskstart()
 		::error := codb_error(1204)+":"+toString(countId)
 		return .f.
 	endif
 	if ::seek(countId)
+		taskstart()
 		::error := codb_error(1205)+":"+countId
 		return .f.
 	endif
@@ -101,6 +109,7 @@ static function codb_count_append(countId,countName)
 	rddSetValue(::hDB,"value",0)
 
 	rddUnLock(::hDb)
+	taskstart()
 return .t.
 
 ************************************************************

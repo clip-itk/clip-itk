@@ -8,6 +8,7 @@
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
@@ -42,7 +43,7 @@ static SignalTable spin_button_signals[] =
 /**********************************************************/
 CLIP_DLLEXPORT GtkType _gtk_type_spin_button() { return GTK_TYPE_SPIN_BUTTON; }
 long _clip_type_spin_button() { return GTK_WIDGET_SPIN_BUTTON; }
-const char * _clip_type_name_spin_button()  { return "GTK_TYPE_SPIN_BUTTON"; }
+const char * _clip_type_name_spin_button()  { return "GTK_OBJECT_SPIN_BUTTON"; }
 
 /* Register spin button in global table */
 int

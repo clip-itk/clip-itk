@@ -1,0 +1,41 @@
+***************
+*** 30,48 ****
+  	cd tcp-wrap; make all
+  
+  install:
+- 	cp cobra_serv$(EXESUFF) $(CLIPROOT)/bin
+- 	mkdir -p $(CLIPROOT)/cobra
+- 	#ln -sf $(CLIPROOT)/bin/cobra_serv$(EXESUFF)  $(CLIPROOT)/cobra/cobra_serv$(EXESUFF)
+- 	cp cobra_serv.ini $(CLIPROOT)/cobra
+- 	mkdir -p $(CLIPROOT)/cobra/mod-ini
+- 	cp ./mod-ini/Makefile ./mod-ini/*.po ./mod-ini/*.prg $(CLIPROOT)/cobra/mod-ini
+- 	mkdir -p $(CLIPROOT)/cobra/auth
+- 	cp ./auth/Makefile ./auth/other ./auth/pam* $(CLIPROOT)/cobra/auth
+- 	mkdir -p $(CLIPROOT)/cobra/tcp-wrap
+- 	cp ./tcp-wrap/Makefile ./tcp-wrap/tcp-* $(CLIPROOT)/cobra/tcp-wrap
+- 	cp $(MODULES) $(CLIPROOT)/cobra/
+- 	mkdir -p $(CLIPROOT)/cobra/files
+- 	cp ./auth/pam-err-msg $(CLIPROOT)/cobra/files
+  
+  .prg.o:
+  	$(CLIP) $(CLIPFLAGS) $<
+--- 30,48 ----
+  	cd tcp-wrap; make all
+  
+  install:
++ 	cp cobra_serv$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
++ 	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra
++ 	#ln -sf $(DESTDIR)$(CLIPROOT)/bin/cobra_serv$(EXESUFF)  $(DESTDIR)$(CLIPROOT)/cobra/cobra_serv$(EXESUFF)
++ 	cp cobra_serv.ini $(DESTDIR)$(CLIPROOT)/cobra
++ 	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/mod-ini
++ 	cp ./mod-ini/Makefile ./mod-ini/*.po ./mod-ini/*.prg $(DESTDIR)$(CLIPROOT)/cobra/mod-ini
++ 	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/auth
++ 	cp ./auth/Makefile ./auth/other ./auth/pam* $(DESTDIR)$(CLIPROOT)/cobra/auth
++ 	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/tcp-wrap
++ 	cp ./tcp-wrap/Makefile ./tcp-wrap/tcp-* $(DESTDIR)$(CLIPROOT)/cobra/tcp-wrap
++ 	cp $(MODULES) $(DESTDIR)$(CLIPROOT)/cobra/
++ 	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/files
++ 	cp ./auth/pam-err-msg $(DESTDIR)$(CLIPROOT)/cobra/files
+  
+  .prg.o:
+  	$(CLIP) $(CLIPFLAGS) $<

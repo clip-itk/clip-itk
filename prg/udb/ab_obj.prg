@@ -38,7 +38,7 @@ procedure abNew(par1,par2)
 
 	obj:menu	:= make_ab_menu(obj)
 
-	if valtype(par1)=="C"
+	if !empty(par1)
 		if len(par1)==codb_info("DICT_ID_LEN")
 			obj:dictionary := coDictionary():new(par1)
 			if !empty(obj:dictionary:error)
@@ -152,7 +152,7 @@ static function ab_openDict()
 	if ::dictArray==NIL
 		::dictArray:=codbList():new()
 		if val(::dictArray:error)>0
-			messagep([Error open dictionary list!]+";"+::dictArray:error)
+			alert([Error open dictionary list!]+";"+::dictArray:error)
 			::dictArray:close()
 			return
 		endif
@@ -192,8 +192,10 @@ static function ab_openDict()
 			endif
 			x1:=::dictArray:append(tmp)
 			if val(::dictArray:error)!=0
-				message(::dictArray:error)
+				alert(::dictArray:error)
+				x1 := ""
 			else
+				x1 := tmp:id
 				exit
 			endif
 		enddo
@@ -218,7 +220,7 @@ static function ab_openDict()
 	::menu:disableData()
 	::dictionary:=::dictArray:connect(x1)
 	if val(::dictionary:error)!=0
-		message(::dictionary:error)
+		alert(::dictionary:error)
 		::dictionary:=NIL
 		return .f.
 	endif
@@ -227,7 +229,7 @@ static function ab_openDict()
 	endif
 	::dictionary:open()
 	if val(::dictionary:error)!=0
-		message(::dictionary:error)
+		alert(::dictionary:error)
 		::dictionary:close()
 		return .f.
 	endif
@@ -315,7 +317,7 @@ static function ab_openDeposit()
 		::depository:open()
 	endif
 	if !empty(::depository:error)
-		message(::depository:error)
+		alert(::depository:error)
 		::depository:close()
 		::depository:=NIL
 		return .f.

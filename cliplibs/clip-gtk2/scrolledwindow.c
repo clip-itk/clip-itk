@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -8,13 +9,34 @@
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
-
+#include <string.h>
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
 
 /*********************** SIGNALS **************************/
+static gint handler_move_focus_out_signal (GtkScrolledWindow *swin, GtkDirectionType type, C_signal *cs)
+{
+	PREPARECV(cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTIONTYPE, type);
+	INVOKESIGHANDLER(GTK_WIDGET(swin),cs,cv);
+}
 
-/****      Scrolled window has no signals              ****/
+static gint handler_scroll_child_signal (GtkScrolledWindow *swin, GtkScrollType type, gboolean arg2, C_signal *cs)
+{
+	PREPARECV(cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_SCROLLTYPE, type);
+	_clip_mputl(cs->cw->cmachine, &cv, HASH_ARG2, arg2);
+	INVOKESIGHANDLER(GTK_WIDGET(swin),cs,cv);
+}
+
+/* Signals table */
+static SignalTable scrolled_window_signals[] =
+{
+	/* signals */
+	{"move-focus-out",GSF( handler_move_focus_out_signal ),	ESF( object_emit_signal ), GTK_MOVE_FOCUS_OUT_SIGNAL},
+	{"scroll-child",GSF( handler_scroll_child_signal ),	ESF( object_emit_signal ), GTK_SCROLL_CHILD_SIGNAL},
+	{"", NULL, NULL, 0}
+};
 
 /**********************************************************/
 
@@ -26,7 +48,8 @@ const char * _clip_type_name_scrolled_window() { return "GTK_WIDGET_SCROLLED_WIN
 int
 clip_INIT___SCROLLED_WINDOW(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_scrolled_window, _clip_type_name_scrolled_window, _gtk_type_scrolled_window, _gtk_type_container, NULL);
+//	_wtype_table_put(_clip_type_scrolled_window, _clip_type_name_scrolled_window, _gtk_type_scrolled_window, _gtk_type_container, scrolled_window_signals);
+	_wtype_table_put(_clip_type_scrolled_window, _clip_type_name_scrolled_window, _gtk_type_scrolled_window, _gtk_type_bin, scrolled_window_signals);
 	return 0;
 }
 
@@ -144,6 +167,19 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_SCROLLEDWINDOWSETSHADOWTYPE (ClipMachine *cm)
+{
+	C_widget *csw  = _fetch_cw_arg(cm);
+	GtkShadowType type = INT_OPTION(cm, 2, 0);
+
+        CHECKCWID(csw,GTK_IS_SCROLLED_WINDOW);
+	CHECKOPT(2,NUMERIC_t);
+        gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW(csw->widget), type);
+	return 0;
+err:
+	return 1;
+}
 /* Sets the Adjustment for the horizontal scrollbar. */
 int
 clip_GTK_SCROLLEDWINDOWSETHADJUSTMENT (ClipMachine *cm)
@@ -191,4 +227,44 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_SCROLLEDWINDOWGETPLACEMENT (ClipMachine *cm)
+{
+	C_widget *csw = _fetch_cw_arg(cm);
+
+	CHECKOPT(2,NUMERIC_t);
+        _clip_retni(cm, (int)gtk_scrolled_window_get_placement (GTK_SCROLLED_WINDOW(csw->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_SCROLLEDWINDOWGETPOLICY (ClipMachine *cm)
+{
+	C_widget *csw = _fetch_cw_arg(cm);
+        GtkPolicyType hpolicy, vpolicy ;
+
+	CHECKOPT(2,NUMERIC_t);
+        gtk_scrolled_window_get_policy (GTK_SCROLLED_WINDOW(csw->widget), &hpolicy, &vpolicy);
+
+	_clip_storni(cm, (int)hpolicy, 2, 0);
+	_clip_storni(cm, (int)vpolicy, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_SCROLLEDWINDOWGETSHADOWTYPE (ClipMachine *cm)
+{
+	C_widget *csw = _fetch_cw_arg(cm);
+
+	CHECKOPT(2,NUMERIC_t);
+        _clip_retni(cm, (int)gtk_scrolled_window_get_shadow_type (GTK_SCROLLED_WINDOW(csw->widget)));
+	return 0;
+err:
+	return 1;
+}
 

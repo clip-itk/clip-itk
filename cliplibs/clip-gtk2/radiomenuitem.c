@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+              Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -78,6 +79,40 @@ clip_GTK_RADIOMENUITEMNEW(ClipMachine * cm)
 err:
 	return 1;
 }
+int
+clip_GTK_RADIOMENUITEMNEWWITHMNEMONIC(ClipMachine * cm)
+{
+	ClipVar * cv   = _clip_spar(cm, 1);
+	C_widget *cgrp = _fetch_cwidget(cm,_clip_spar(cm, 2));
+	char *   label = _clip_parc(cm, 3);
+	GtkWidget *wid = NULL;
+        C_widget *cwid;
+        GSList  *group = NULL;
+	CHECKOPT(1,MAP_t);
+	CHECKOPT2(2,MAP_t,NUMERIC_t);
+	CHECKARG(3,CHARACTER_t);
+
+	if (cgrp && cgrp->type != GTK_WIDGET_RADIO_MENU_GROUP) goto err;
+
+	LOCALE_TO_UTF(label);
+	if (cgrp && cgrp->data)
+		group = gtk_radio_menu_item_get_group(
+			GTK_RADIO_MENU_ITEM(((GSList*)(cgrp->data))->data));
+	wid = gtk_radio_menu_item_new_with_mnemonic(group,label);
+        FREE_TEXT(label);
+
+	if (cgrp && !cgrp->data)
+		cgrp->data = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(wid));
+
+        if (!wid) goto err;
+
+	cwid = _register_widget(cm, wid, cv);
+        _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+
+	return 0;
+err:
+	return 1;
+}
 /**** ------------------ ****/
 
 /**** Radio menu group constructor ****/
@@ -139,6 +174,36 @@ err:
 }
 
 int
+clip_GTK_RADIOMENUITEMGETGROUP(ClipMachine * cm)
+{
+	C_widget *citm = _fetch_cw_arg(cm);
+        GSList * group = NULL;
+        ClipVar    *cv = RETPTR(cm);
+        long         l ;
+
+	CHECKARG2(1,MAP_t,NUMERIC_t);
+        CHECKCWID(citm,GTK_IS_RADIO_MENU_ITEM);
+
+	group = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(citm->widget));
+
+	l = g_slist_length(group);
+        _clip_array(cm, cv, 1, &l);
+	for (l=0; group; group=g_slist_next(group), l++)
+        {
+        	GtkRadioMenuItem *rmitem;
+                C_widget        *crmitem;
+
+        	rmitem = GTK_RADIO_MENU_ITEM(group->data);
+                crmitem = _register_widget(cm, GTK_WIDGET(rmitem), NULL);
+                _clip_aset(cm, cv, &crmitem->obj, 1, &l);
+        }
+
+        return 0;
+err:
+	return 1;
+}
+
+int
 clip_GTK_RADIOMENUITEMSETSTYLE(ClipMachine * cm)
 {
 	C_widget   *citm = _fetch_cw_arg(cm);
@@ -156,4 +221,78 @@ clip_GTK_RADIOMENUITEMSETSTYLE(ClipMachine * cm)
 err:
 	return 1;
 }
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_RADIOMENUITEMNEWFROMWIDGET(ClipMachine * cm)
+{
+	C_widget *citm = _fetch_cw_arg(cm);
+	GtkWidget *wid = NULL;
+        C_widget *cwid;
+
+	CHECKARG2(1,MAP_t,NUMERIC_t);
+        CHECKCWID(citm,GTK_IS_RADIO_MENU_ITEM);
+
+	wid = gtk_radio_menu_item_new_from_widget(GTK_RADIO_MENU_ITEM(citm->widget));
+
+
+        if (!wid) goto err;
+
+	cwid = _register_widget(cm, wid, NULL);
+        _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+        return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_RADIOMENUITEMNEWWITHLABELFROMWIDGET(ClipMachine * cm)
+{
+	C_widget *citm = _fetch_cw_arg(cm);
+        gchar   *label = _clip_parc(cm, 2);
+	GtkWidget *wid = NULL;
+        C_widget *cwid;
+
+	CHECKARG2(1,MAP_t,NUMERIC_t);
+        CHECKCWID(citm,GTK_IS_RADIO_MENU_ITEM);
+        CHECKARG(2, CHARACTER_t);
+
+	LOCALE_TO_UTF(label);
+	wid = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM(citm->widget), label);
+        FREE_TEXT(label);
+
+        if (!wid) goto err;
+
+	cwid = _register_widget(cm, wid, NULL);
+        _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+        return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_RADIOMENUITEMNEWWITHMNEMONICFROMWIDGET(ClipMachine * cm)
+{
+	C_widget *citm = _fetch_cw_arg(cm);
+        gchar   *label = _clip_parc(cm, 2);
+	GtkWidget *wid = NULL;
+        C_widget *cwid;
+
+	CHECKARG2(1,MAP_t,NUMERIC_t);
+        CHECKCWID(citm,GTK_IS_RADIO_MENU_ITEM);
+        CHECKARG(2, CHARACTER_t);
+
+	LOCALE_TO_UTF(label);
+	wid = gtk_radio_menu_item_new_with_mnemonic_from_widget(GTK_RADIO_MENU_ITEM(citm->widget), label);
+        FREE_TEXT(label);
+
+        if (!wid) goto err;
+
+	cwid = _register_widget(cm, wid, NULL);
+        _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+        return 0;
+err:
+	return 1;
+}
+#endif
 

@@ -5,6 +5,9 @@
  */
 /*
    $Log: file.c,v $
+   Revision 1.92  2004/05/26 09:52:23  clip
+   rust: some cleanings
+
    Revision 1.91  2003/09/08 15:06:03  clip
    uri: next step fixes for mingw from uri
 
@@ -445,7 +448,6 @@
 #include "nodepriv.h"
 #include "clipcfg.h"
 #include "clip.h"
-#include "clipbase.h"
 
 #if 0
 typedef struct
@@ -2537,7 +2539,6 @@ write_Cfunc(const char *name, int argc, char **argv, Coll * ex, Coll * nm)
 	if (!use_asm)
 	{
 		fprintf(out, "\n#include \"clip.h\"\n");
-		fprintf(out, "#include \"clipbase.h\"\n\n");
 	}
 	else
 	{

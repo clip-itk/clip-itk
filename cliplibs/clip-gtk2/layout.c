@@ -1,7 +1,7 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
-    Author  : Alexey M. Tkachenko <alexey@itk.ru>
+              Alexey M. Tkachenko <alexey@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -73,6 +73,27 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_LAYOUTMOVE(ClipMachine * cm)
+{
+	C_widget *ccon = _fetch_cw_arg(cm);
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	gint x = _clip_parni(cm,3);
+	gint y = _clip_parni(cm,4);
+
+	CHECKARG2(2,MAP_t,NUMERIC_t);
+	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t);
+	CHECKCWID(ccon,GTK_IS_LAYOUT); CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	if (_clip_parinfo(cm,3) == UNDEF_t) x = cwid->widget->allocation.x;
+	if (_clip_parinfo(cm,4) == UNDEF_t) y = cwid->widget->allocation.y;
+	gtk_layout_move(GTK_LAYOUT(ccon->widget), cwid->widget, x,y);
+
+	return 0;
+err:
+	return 1;
+}
+
 /* These disable and enable moving and repainting the scrolling window
  * of the GtkLayout, respectively.  If you want to update the layout's
  * offsets but do not want it to repaint itself, you should use these
@@ -118,6 +139,27 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_LAYOUTGETVADJUSTMENT(ClipMachine * cm)
+{
+	C_widget  *clay = _fetch_cw_arg(cm);
+	C_widget * cadj ;
+	GtkAdjustment *adj;
+	CHECKCWID(clay,GTK_IS_LAYOUT);
+
+	adj = gtk_layout_get_vadjustment(GTK_LAYOUT(clay->widget));
+        if (adj)
+        {
+        	cadj = _list_get_cwidget(cm, adj);
+                if (!cadj) cadj = _register_widget(cm, GTK_WIDGET(adj), NULL);
+                if (cadj) _clip_mclone(cm, RETPTR(cm), &cadj->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
 /* Alena: set horizontal adjustment for layout */
 int
 clip_GTK_LAYOUTSETHADJUSTMENT(ClipMachine * cm)
@@ -135,6 +177,28 @@ clip_GTK_LAYOUTSETHADJUSTMENT(ClipMachine * cm)
 err:
 	return 1;
 }
+
+int
+clip_GTK_LAYOUTGETHADJUSTMENT(ClipMachine * cm)
+{
+	C_widget  *clay = _fetch_cw_arg(cm);
+	C_widget * cadj ;
+	GtkAdjustment *adj;
+	CHECKCWID(clay,GTK_IS_LAYOUT);
+
+	adj = gtk_layout_get_hadjustment(GTK_LAYOUT(clay->widget));
+        if (adj)
+        {
+        	cadj = _list_get_cwidget(cm, adj);
+                if (!cadj) cadj = _register_widget(cm, GTK_WIDGET(adj), NULL);
+                if (cadj) _clip_mclone(cm, RETPTR(cm), &cadj->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
 
 int
 clip_GTK_LAYOUTSETSIZE(ClipMachine * cm)

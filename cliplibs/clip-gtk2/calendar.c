@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -180,4 +181,33 @@ clip_GTK_CALENDARTHAW(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 
+int
+clip_GTK_CALENDARGETDISPLAYOPTIONS(ClipMachine * cm)
+{
+	C_widget *ccal = _fetch_cw_arg(cm);
+
+        CHECKCWID(ccal,GTK_IS_CALENDAR);
+
+        _clip_retni(cm, gtk_calendar_get_display_options(GTK_CALENDAR(ccal->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CALENDARSETDISPLAYOPTIONS(ClipMachine * cm)
+{
+	C_widget *ccal = _fetch_cw_arg(cm);
+        GtkCalendarDisplayOptions opt = _clip_parni(cm, 2);
+
+        CHECKCWID(ccal,GTK_IS_CALENDAR);
+        CHECKARG(2, NUMERIC_t);
+
+        gtk_calendar_set_display_options(GTK_CALENDAR(ccal->widget), opt);
+	return 0;
+err:
+	return 1;
+}
+#endif

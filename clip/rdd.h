@@ -4,9 +4,15 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.h,v $
+	Revision 1.149  2004/05/26 09:52:23  clip
+	rust: some cleanings
+	
+	Revision 1.148  2004/05/24 12:55:21  clip
+	rust: full FlexFile support
+
 	Revision 1.147  2003/12/01 12:04:23  clip
 	rust: RDDCLOSEALL() closes only tables of current task
-	
+
 	Revision 1.146  2003/09/17 07:54:49  clip
 	uri: some fixes for Solaris and Ukraina cp1251
 
@@ -480,15 +486,15 @@ typedef struct _RDD_ORDER_ {
 	int orderno;
 	char* expr;
 	unsigned int header;
-	char simpexpr;	/* Simple expression (just a fieldname) */
+	int simpexpr;	/* Simple expression (just a fieldname) */
 	int simpfno;	/* No of key field (for simple expressions) */
 	ClipVar block;	/* Compiled key expression */
 
 	char type;
-	char unique;
-	char descend;
-	char custom;
-	char canadd;
+	int unique;
+	int descend;
+	int custom;
+	int canadd;
 	int keysize;
 	int bufsize;
 	int dec;
@@ -515,19 +521,21 @@ typedef struct _RDD_ORDER_ {
 	void* curpage;
 	unsigned int curoffs;
 	int level;
-	char valid_stack;
+	int valid_stack;
 	unsigned short cnt;
 	unsigned int cntcdx;
 
-	char binary;
-	char wlocked;
-	char ic; /* ignore case */
+	int binary;
+	int wlocked;
+	int ic; /* ignore case */
 	/* Independed indices */
 	char* iikey;
 	unsigned char id[12];
-	char bof;
-	char eof;
+	int bof;
+	int eof;
 	int c_item;
+	unsigned int rootoffs;
+	unsigned short newcnt;
 } RDD_ORDER;
 
 struct _RDD_DATA_;
@@ -555,6 +563,8 @@ typedef struct _RDD_MEMO_ {
 	DbfLocale* loc;
 	struct _RDD_MEMO_VTBL_* vtbl;
 	int updated;
+	int flex_nremoved;
+	unsigned int* flex_removed;
 } RDD_MEMO;
 
 typedef struct _RDD_FIELD_ {
@@ -769,7 +779,7 @@ typedef struct _RDD_DATA_VTBL_ {
 } RDD_DATA_VTBL;
 
 typedef struct _RDD_INDEX_VTBL_ {
-	char id[4];
+	char id[6];
 	char suff[5];
 	char sing_suff[5];
 	char desc[81];
@@ -850,6 +860,25 @@ typedef struct _RDD_PSEUDO_ {
 	char* alias;
 	char* name;
 } RDD_PSEUDO;
+
+typedef struct _DBWorkArea_
+{
+	int rd_item;
+	struct _RDD_DATA_ *rd;
+
+	char driver[9];
+	char idx_driver[6];
+	char memo_driver[6];
+	char *name;
+	char *alias;
+	long aliasHash;
+	int no;
+	int found;
+	int used;
+	long trighash;
+	char *trigger;
+	int trig_active;
+} DBWorkArea;
 
 void rdd_registerdatadriver(ClipMachine* cm,RDD_DATA_VTBL* vtbl);
 void rdd_registerindexdriver(ClipMachine* cm,RDD_INDEX_VTBL* vtbl);

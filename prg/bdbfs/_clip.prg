@@ -8,6 +8,20 @@ return ms[LLM_STATE_CLICKS_LEFT] + ms[LLM_STATE_CLICKS_RIGHT]*2
 function isShift()
 return (numand(kbdstat(),0x03)!=0)
 ****
+function IsCtrlShift()
+return Between(kbdstat(),5, 7)
+****
+function ALTF()
+local ret:=0,ks:=kbdstat()
+if numand(ks,0x8)!=0
+	ret:=1
+elseif numand(ks,0x4)!=0
+	ret:=2
+elseif numand(ks,0x3)!=0
+	ret:=3
+endif
+return ret
+****
 function chdisk(cDisk)
 local i,ret:=0
 for i=asc("C") to asc("Z")
@@ -21,17 +35,6 @@ return ret
 function ft_putkey(nKey)
 __keyboard(nKey, .t.)
 return .t.
-****
-function ALTF()
-local ret:=0,ks:=kbdstat()
-if numand(ks,0x8)!=0
-	ret:=1
-elseif numand(ks,0x4)!=0
-	ret:=2
-elseif numand(ks,0x3)!=0
-	ret:=3
-endif
-return ret
 ****
 func name_disk()
 local s,ret:=""

@@ -558,7 +558,7 @@ msgstr ""
 
 #: class.prg:41 class.prg:139
 msgid "CLASS parameters"
-msgstr "патаметры класса"
+msgstr "параметры класса"
 
 #: class.prg:57 class.prg:59 class.prg:160 report.prg:64 report.prg:66
 #: report.prg:155 tview.prg:53 tview.prg:55 tview.prg:146

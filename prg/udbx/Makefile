@@ -16,12 +16,12 @@ BIN = codb_abx
 all: $(BIN)
 
 install: all
-	mkdir -p $(CLIPROOT)/codb_abx/plugins
-	tar cf - plugins | (cd $(CLIPROOT)/codb_abx && tar xf -)
-	#cp plugins/*.prg $(CLIPROOT)/codb_abx/plugins
-	#cp plugins/*.po $(CLIPROOT)/codb_abx/plugins
-	[ ! -f codb_abx$(EXESUFF) ] || ( cp codb_abx$(EXESUFF) $(CLIPROOT)/bin/ )
-	#cp codb_abx$(EXESUFF) $(CLIPROOT)/bin/
+	mkdir -p $(DESTDIR)$(CLIPROOT)/codb_abx/plugins
+	tar cf - plugins | (cd $(DESTDIR)$(CLIPROOT)/codb_abx && tar xf -)
+	#cp plugins/*.prg $(DESTDIR)$(CLIPROOT)/codb_abx/plugins
+	#cp plugins/*.po $(DESTDIR)$(CLIPROOT)/codb_abx/plugins
+	[ ! -f codb_abx$(EXESUFF) ] || ( cp codb_abx$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/ )
+	#cp codb_abx$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 
 clean:
 	rm -rf *.exe *.o *.c *.s *.a *.so *.po *.pa *.log *.uri *.b *.BAK *.bak *~ core* *core $(BIN)

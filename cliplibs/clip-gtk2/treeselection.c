@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003-2004  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -30,7 +30,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_tree_selection() { return GTK_TYPE_TREE_SELECTI
 
 long _clip_type_tree_selection() { return GTK_OBJECT_TREE_SELECTION; }
 
-const char * _clip_type_name_tree_selection()  { return "GTK_TYPE_TREE_SELECTION"; }
+const char * _clip_type_name_tree_selection()  { return "GTK_OBJECT_TREE_SELECTION"; }
 
 /* Register boxes in global table */
 int
@@ -129,4 +129,92 @@ clip_GTK_TREESELECTIONGETSELECTED(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 2)
 
+int
+clip_GTK_TREESELECTIONGETSELECTEDROWS(ClipMachine * cm)
+{
+	C_object *ctreesel = _fetch_co_arg(cm);
+        ClipVar       *mod = ARGPTR(cm, 2);
+        GtkTreeModel *model;
+        C_object   *cmodel ;
+        GList        *list ;
+        long             l ;
+        ClipVar       *ret = RETPTR(cm);
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCOBJ(ctreesel,GTK_IS_TREE_SELECTION(ctreesel->object));
+
+	list = gtk_tree_selection_get_selected_rows(GTK_TREE_SELECTION(ctreesel->object),
+			&model);
+
+	l = g_list_length(list);
+        _clip_array(cm, ret, 1, &l);
+        for (l=0; list; list = g_list_next(list), l++)
+        {
+        	C_object   *cpath;
+                GtkTreePath *path;
+
+		path = GTK_TREE_PATH(list->data);
+                cpath = _list_get_cobject(cm, path);
+                if (!cpath) cpath = _register_object(cm, path, GTK_TYPE_TREE_PATH, NULL, NULL);
+                if (cpath) _clip_aset(cm, ret, &cpath->obj, 1, &l);
+        }
+
+	if (model)
+        {
+                cmodel = _list_get_cobject(cm, model);
+                if (!cmodel) cmodel = _register_object(cm, model, GTK_TYPE_TREE_MODEL, NULL, NULL);
+                if (cmodel) _clip_mclone(cm, mod, &cmodel->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREESELECTIONCOUNTSELECTEDROWS(ClipMachine * cm)
+{
+	C_object *ctreesel = _fetch_co_arg(cm);
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCOBJ(ctreesel,GTK_IS_TREE_SELECTION(ctreesel->object));
+
+	_clip_retni(cm, gtk_tree_selection_count_selected_rows(GTK_TREE_SELECTION(ctreesel->object)));
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREESELECTIONUNSELECTRANGE(ClipMachine * cm)
+{
+	C_object *ctreesel = _fetch_co_arg(cm);
+        C_object   *cpath1 = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object   *cpath2 = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCOBJ(ctreesel,GTK_IS_TREE_SELECTION(ctreesel->object));
+	CHECKCOBJ(cpath1,GTK_IS_TREE_PATH(cpath1->object)); CHECKCOBJ(cpath2,GTK_IS_TREE_PATH(cpath2->object));
+
+	gtk_tree_selection_unselect_range(GTK_TREE_SELECTION(ctreesel->object),
+		GTK_TREE_PATH(cpath1->object), GTK_TREE_PATH(cpath2->object));
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREESELECTIONSELECTRANGE(ClipMachine * cm)
+{
+	C_object *ctreesel = _fetch_co_arg(cm);
+        C_object   *cpath1 = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object   *cpath2 = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCOBJ(ctreesel,GTK_IS_TREE_SELECTION(ctreesel->object));
+	CHECKCOBJ(cpath1,GTK_IS_TREE_PATH(cpath1->object)); CHECKCOBJ(cpath2,GTK_IS_TREE_PATH(cpath2->object));
+
+	gtk_tree_selection_select_range(GTK_TREE_SELECTION(ctreesel->object),
+		GTK_TREE_PATH(cpath1->object), GTK_TREE_PATH(cpath2->object));
+
+	return 0;
+err:
+	return 1;
+}
+#endif

@@ -39,8 +39,7 @@ gdk_object_region_destructor(ClipMachine *cm, C_object *creg)
 
 
 /* Get GdkRectangle data from a map */
-int
-_map_get_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region)
+CLIP_DLLEXPORT int _map_get_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region)
 {
         if (map && map->t.type==MAP_t && region)
         {
@@ -59,8 +58,7 @@ _map_get_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region)
 }
 
 /* Set GdkRectangle data to a map */
-int
-_map_put_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region)
+CLIP_DLLEXPORT int _map_put_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region)
 {
         if (map && map->t.type==MAP_t && region)
         {

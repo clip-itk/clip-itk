@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001 - 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -95,15 +96,47 @@ err:
 int
 clip_GTK_RULERSETRANGE(ClipMachine * cm)
 {
-	C_widget  *crul = _fetch_cw_arg(cm);
-        gfloat    lower = _clip_parnd(cm,2);
-        gfloat    upper = _clip_parnd(cm,3);
-        gfloat position = _clip_parnd(cm,4);
-        gfloat max_size = _clip_parnd(cm,5);
+	C_widget   *crul = _fetch_cw_arg(cm);
+        gdouble    lower = _clip_parnd(cm,2);
+        gdouble    upper = _clip_parnd(cm,3);
+        gdouble position = _clip_parnd(cm,4);
+        gdouble max_size = _clip_parnd(cm,5);
         CHECKCWID(crul,GTK_IS_RULER);
 	CHECKARG(2,NUMERIC_t); CHECKARG(3,NUMERIC_t);
 	CHECKARG(4,NUMERIC_t); CHECKARG(5,NUMERIC_t);
         gtk_ruler_set_range(GTK_RULER(crul->widget), lower, upper, position, max_size);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_RULERGETMETRIC(ClipMachine * cm)
+{
+	C_widget       *crul = _fetch_cw_arg(cm);
+        CHECKCWID(crul,GTK_IS_RULER);
+        _clip_retni(cm, (int)gtk_ruler_get_metric(GTK_RULER(crul->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_RULERGETRANGE(ClipMachine * cm)
+{
+	C_widget   *crul = _fetch_cw_arg(cm);
+        gdouble    lower ;
+        gdouble    upper ;
+        gdouble position ;
+        gdouble max_size ;
+        CHECKCWID(crul,GTK_IS_RULER);
+        gtk_ruler_get_range(GTK_RULER(crul->widget), &lower, &upper,
+        	&position, &max_size);
+
+	_clip_stornd(cm, lower, 2, 0);
+        _clip_stornd(cm, upper, 3, 0);
+        _clip_stornd(cm, position, 4, 0);
+        _clip_stornd(cm, max_size, 5, 0);
 	return 0;
 err:
 	return 1;

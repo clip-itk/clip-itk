@@ -4,32 +4,21 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
-/* Virtual metods for CODB object over DBF files */
+/* Virtual metods for DBF/CODB driver */
 
 #include "codbcfg.ch"
 #include "codb_dbf.ch"
 
 ************************************************************
-function codb_dictdbf_Metods(path,dict_id,user,passwd)
+function codb_dictdbf_Methods(path,dict_id,user,passwd)
 
-	local obj	:= map()
+	local obj	:= codb_dictAll_methods(path,dict_id,user,passwd)
 
-	obj:classname	:= "CODBDICTIONARY"
-	obj:id		:= padl(alltrim(dict_id),codb_info("DICT_ID_LEN"),"0")
-	obj:path	:= alltrim(path)
-	obj:error	:= ""
-	obj:user	:= user
-	obj:counters	:= NIL
-	obj:hDbMeta	:= NIL
-	obj:hDbMetaIdx	:= NIL
-	obj:__objCache	:= map()
-	obj:__plugCache	:= map()
-	obj:__modCache	:= map()
 	obj:delete	:= @_dict_delete()
+	obj:undelete	:= @_dict_undelete()
 	obj:append	:= @_dict_append()
 	obj:update	:= @_dict_update()
 	obj:select	:= @_dict_select() // return array of selected metaData
-	obj:idList	:= @_dict_IdList() // return object "ID list"
 	obj:getValue	:= @_dict_getValue() // return body for ID
 	obj:metaBodyByName:= @_dict_metaBodyByName() // return class ID by name
 	obj:classBodyByName:= @_dict_classBodyByName() // return class ID by name
@@ -47,36 +36,25 @@ function codb_dictdbf_Metods(path,dict_id,user,passwd)
 	obj:getTriggers := @_dict_getTriggers()
 	obj:hashName	:= @_dict_hashName() // return string for hashcode
 	obj:checkBody	:= @_dict_checkBody()
-	obj:padrBody	:= @_dict_padrBody()
-	obj:objCRC	:= @_dict_objCRC()
 	obj:create	:= @_dict_create()
 	obj:open	:= @_dict_open()
 	obj:close	:= @_dict_close()
 	//obj:destroy	:= @_dict_close()
 
-	obj:depository	:= @_dict_depository()
-	obj:dictionary	:= @_dict_self()
-
 	obj:__check_haveCounters:= @__check_haveCounters()
 
 return obj
 ************************************************************
-static function _dict_self(self)
-return self
-************************************************************
 static function _dict_metaBodyByName(metaClass,metaName)
-	local ret:="", tmp
+	local ret:=map(), tmp
 	tmp := ::select(metaClass,,metaName)
 	if !empty(tmp)
 		ret:=::getValue(tmp[1])
 	endif
 return ret
 ************************************************************
-static function _dict_objCRC(self,obj)
-return ntoc(crc32(var2str(obj)),32,8,"0")
-************************************************************
 static function _dict_classBodyByName(className)
-	local ret:="", tmp
+	local ret:=map(), tmp
 	tmp := ::select("CLASS",,className)
 	if !empty(tmp)
 		ret:=::getValue(tmp[1])
@@ -84,7 +62,7 @@ static function _dict_classBodyByName(className)
 return ret
 ************************************************************
 static function _dict_classIdByName(className)
-	local ret:="", tmp
+	local ret:=map(), tmp
 	tmp := ::select("CLASS",,className)
 	if !empty(tmp)
 		ret:=tmp[1]
@@ -92,34 +70,12 @@ static function _dict_classIdByName(className)
 return ret
 ************************************************************
 static function _dict_attrBodyByName(attrName)
-	local ret:="", tmp
+	local ret:=map(), tmp
 	tmp := ::select("ATTR",,attrName)
 	if !empty(tmp)
 		ret:=::getValue(tmp[1])
 	endif
 return ret
-************************************************************
-static function _dict_depository(self,sDep)
-	local sDeposit:=sDep, depName :=""
-	local tmp,i,oTmp
-	if len(sdep)==codb_info("DEPOSIT_ID_LEN")+codb_info("DICT_ID_LEN")
-		sDep := substr(sDep,codb_info("DICT_ID_LEN")+1)
-	endif
-	if len(sdep)==codb_info("DEPOSIT_ID_LEN")
-		tmp:= self:select("DEPOSIT")
-		sDeposit := ""
-		for i=1 to len(tmp)
-			otmp:=self:getValue(tmp[i])
-			if oTmp:number == sDep
-				depName := oTmp:name
-				sDeposit:=tmp[i]
-			endif
-		next
-	endif
-	tmp :=	codb_depDbfNew(self,sDeposit)
-	tmp:name := depName
-return tmp
-
 ************************************************************
 static function _dict_close(self)
 	self:error:=""
@@ -147,7 +103,7 @@ static function _dict_close(self)
 	endif
 	codb_dict_unregister(self:id)
 	self:runTrigger(self:id,"AFTER_CLOSE_DICTIONARY")
-return
+return .t.
 ************************************************************
 static function _dict_open(self)
 	local ver,hf,dbfile,tmp,i,m
@@ -171,7 +127,7 @@ static function _dict_open(self)
 		return .t.
 	endif
 	if hf<0
-		self:error:=codb_error(1024)+":"+ferrorstr()+" "+dbFile
+		self:error:=codb_error(1024)+";"+ferrorstr()+" "+makepath(dbFile)
 		return .f.
 	endif
 	ver:=freadstr(hf,100)
@@ -215,9 +171,6 @@ static function _dict_open(self)
 	codb_dict_register(self:id,self)
 	self:runTrigger(self:id,"AFTER_OPEN_DICTIONARY")
 return .t.
-************************************************************
-static function _dict_IdList(self,metaName,nIndex,sName,sWhere,nCount,deleted)
-return coDb_IdList(self,metaName,nIndex,sName,sWhere,nCount,deleted)
 ************************************************************
 static function _dict_select(self,metaName,nIndex,sName,sWhere,nCount,deleted)
 	local ret:={},s:=""
@@ -291,11 +244,11 @@ static function _dict_getModule(filename)
 	endif
 return NIL
 ************************************************************
-static function _dict_loadPluginses(cID,nId)
+static function _dict_loadPluginses(cID)
 	local i,j,s,rec,tmp,body, m:={}
 	local bCode,file,bNames := {}
 	local cExt,eblock,lErr:=.f.
-	if nId $ ::__PlugCache
+	if cId $ ::__PlugCache
 		return .t.
 	endif
 	s:='META=="'+padr("PLUGINS",rddFieldSize(::hDbMetaIdx,rddFieldPos(::hDbMetaIdx,"META")))+'"'
@@ -325,7 +278,7 @@ static function _dict_loadPluginses(cID,nId)
 		endif
 	next
 	taskStart()
-	::__PlugCache[ nId ] := map()
+	::__PlugCache[ cId ] := map()
 	for i=1 to len(m)
 		body:=m[i]
 		if body:type $ "CS" .and. empty(body:filename)
@@ -386,11 +339,11 @@ static function _dict_loadPluginses(cID,nId)
 			exit
 		endif
 		for j=1 to len(bnames)
-			if bnames[j] $ ::__PlugCache[ nId ]
+			if bnames[j] $ ::__PlugCache[ cId ]
 			else
-				::__PlugCache[ nId ][ bNames[j] ] := {}
+				::__PlugCache[ cId ][ bNames[j] ] := {}
 			endif
-			aadd( ::__PlugCache[ nId ][ bNames[j] ], eval(bCode,bNames[j]) )
+			aadd( ::__PlugCache[ cId ][ bNames[j] ], eval(bCode,bNames[j]) )
 		next
 	next
 	if !empty(::error)
@@ -403,22 +356,14 @@ static function _dict_getTriggers(self,cId,cTrigger)
 	if self:counters == NIL .or. self:hDbMetaIdx == NIL .or. self:hDbMeta == NIL
 		return {}
 	endif
-	if len(cId) == CODB_ID_LEN
-		nId:=right(cId,OBJECT_ID_LEN)
-		nId:=cton(nId,32)
-	else
-		nId := cId
-	endif
-	if !(nId $ self:__objCache)
-		self:loadPluginses(cId,nId)
-	endif
-	if !(nId $ self:__PlugCache)
+	self:loadPluginses(cId)
+	if !(cId $ self:__PlugCache)
 		return {}
 	endif
-	if !(cTrigger $ self:__PlugCache[nId])
+	if !(cTrigger $ self:__PlugCache[cId])
 		return {}
 	endif
-return  self:__PlugCache[nId][cTrigger]
+return  self:__PlugCache[cId][cTrigger]
 ************************************************************
 static function _dict_runTrigger(self,cId,cTrigger,oldBody,NewBody)
 	local i,m,ret:=.t., tret
@@ -479,19 +424,14 @@ static function _dict_getValue(cID)
 		else
 			ret:_bEssence := bl
 		endif
-		ret:essence :=@ class_essence()
+		ret:essence :=@class_essence()
 	endif
 	ret:__version := rec:version
 	ret:__crc32 := rec:crc32
+	ret:__meta := alltrim(rec:meta)
 	::__objCache[ cId ] := ret
-	if len(cId) == CODB_ID_LEN
-		nId:=right(cId,OBJECT_ID_LEN)
-		nId:=cton(nId,32)
-	else
-		nId := cId
-	endif
 	if alltrim(rec:meta) == "CLASS"
-		::loadPluginses(cId,nId)
+		::loadPluginses(cId)
 	endif
 	taskstart()
 	//::runTrigger(cId,"AFTER_GETVALUE_CLASS",ret)
@@ -506,19 +446,14 @@ static function _dict_classDesc(cID,aRecursive)
 		aRecursive := {}
 	endif
 	taskStop()
-	if rddSeek(::hDbMeta,cID,.f.)
-		rec := rddRead(::hDbMeta)
-		if !(rec:id == cID .and. alltrim(rec:meta)=="CLASS" )
-			taskStart()
-			return map()
-		endif
-		//ret := ::checkBody(rec:body,alltrim(rec:meta))
-		ret := rec:body
-		if !empty( ret:super_id )
-			if ascan(aRecursive,ret:super_id) == 0
-				super := ::classDesc(ret:super_id,aRecursive)
-				aadd(aRecursive,ret:super_id)
-			endif
+	ret := ::getValue(cId)
+	if empty(ret)
+		return ret
+	endif
+	if !empty( ret:super_id )
+		if ascan(aRecursive,ret:super_id) == 0
+			super := ::classDesc(ret:super_id,aRecursive)
+			aadd(aRecursive,ret:super_id)
 		endif
 	endif
 	taskstart()
@@ -633,6 +568,54 @@ static function _dict_delete(self,cId)
 	self:runTrigger(cId,"AFTER_DELETE_CLASS",oData)
 return  .t.
 ************************************************************
+static function _dict_undelete(self,cId)
+	local rec,prevrec,oData,idxData,oldVer,found := .f.
+	self:error := ""
+	self:runTrigger(cId,"BEFORE_UNDELETE_CLASS")
+	adel(self:__objCache,cId)
+	taskStop()
+	rddSeek(self:hDbMeta,cID,.f.,.t.)
+	rddSkip(self:hDbMeta,-1)
+	prevrec := rddRead(self:hDbMeta)
+	if !(prevrec:id == cID)
+		prevRec:=nil
+	endif
+	rddSeek(self:hDbMeta,cID,.f.,.t.)
+	rec := rddRead(self:hDbMeta)
+	if rec:id == cID
+		rddRLock(self:hDbMeta)
+		oData := rec:body
+		rec := map()
+		if prevRec != NIL
+			rec:version := prevRec:version+1
+		else
+			rec:version := 0
+		endif
+		rddWrite(self:hDbMeta,rec)
+		rddUnLock(self:hDbMeta)
+	else
+		self:error := codb_error(1023)+":"+cId
+		taskstart()
+		return .f.
+	endif
+	rddSeek(self:hDbMetaIdx,cID,.f.)
+	idxData := rddRead(self:hDbMetaIdx)
+	if idxData:id == cId
+		idxData := map()
+		idxData:version := rec:version
+		rddRLock(self:hDbMetaIdx)
+		rddWrite(self:hDbMetaIdx,idxData)
+		rddUnLock(self:hDbMetaIdx)
+	else
+		self:error := codb_error(1023)+":"+cId
+		taskstart()
+		return .f.
+	endif
+	taskstart()
+	codb_outlog(self:user,"undelete",oData)
+	self:runTrigger(cId,"AFTER_UNDELETE_CLASS",oData)
+return  .t.
+************************************************************
 static function _dict_append(self,oData,metaName)
 	local ret := .t., dep_id:="00",id:="",rec:=map()
 	local oDep, list,i,tmp
@@ -711,6 +694,7 @@ static function _dict_append(self,oData,metaName)
 	endif
 	adel(oData,"__VERSION")
 	adel(oData,"__CRC32")
+	adel(oData,"__META")
 	rec:crc32 := self:objCRC(odata)
 
 	self:runTrigger(self:id,"BEFORE_APPEND_CLASS",oData)
@@ -827,6 +811,7 @@ static function _dict_update(self,oData,metaName,aRecursive)
 	oData := self:checkBody(oData,metaname)
 	adel(oData,"__VERSION")
 	adel(oData,"__CRC32")
+	adel(oData,"__META")
 	if metaName == "CLASS"
 			adel(oData,"_BESSENCE")
 			adel(oData,"ESSENCE")
@@ -837,7 +822,7 @@ static function _dict_update(self,oData,metaName,aRecursive)
 			if empty(super_desc)
 				oData:attr_list:={}
 			else
-				oData:attr_list := super_desc:attr_list
+				oData:attr_list := aclone(super_desc:attr_list)
 			endif
 			for i=1 to len(m)
 				if ascan(oData:attr_list, m[i]) == 0
@@ -848,7 +833,7 @@ static function _dict_update(self,oData,metaName,aRecursive)
 			if empty(super_desc)
 				oData:idx_list:={}
 			else
-				oData:idx_list:= super_desc:idx_list
+				oData:idx_list:= aclone(super_desc:idx_list)
 			endif
 			for i=1 to len(m)
 				if ascan(oData:idx_list, m[i]) == 0
@@ -1000,10 +985,6 @@ static function _dict_update(self,oData,metaName,aRecursive)
 return  ret
 
 ************************************************************
-static function _dict_padrBody(self,oData,metaName)
-return	self:checkBody(oData,metaName,.t.)
-
-************************************************************
 static function _dict_checkBody(self,oData,metaName,lPadr)
 	local tmp,i,body_stru, class_desc
 	metaname := alltrim(metaname)
@@ -1042,6 +1023,10 @@ static function _dict_checkBody(self,oData,metaName,lPadr)
 			for i=1 to len(class_desc:attr_list)
 				tmp:=class_desc:attr_list[i]
 				tmp:=self:getValue(tmp)
+				if empty(tmp)
+					outlog(__FILE__,__LINE__,[Internal error:],"oDict:getvalue("+toString(class_desc:attr_list[i])+")","in class",class_desc:name)
+					loop
+				endif
 				aadd(body_stru,{alltrim(upper(tmp:name)),tmp:type,tmp:len,tmp:dec,tmp:lentype,tmp:defValue})
 			next
 	endcase

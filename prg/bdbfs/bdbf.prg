@@ -378,7 +378,6 @@ LOCAL _i,_iloc:=__DBSetLoc(),_alias:=m->__CurBase, _Error,;
 STATIC lReplWasMemo:=.F.
 PRIVATE lWasMemo
 dbCloseAll()
-
 IF '.INI' $ m->_base THEN m->_base:='*'
 
 IF !IsFileExist(@_base,'.DBF') THEN RETURN !SelectBase()
@@ -543,6 +542,7 @@ SetColor(_bm)
 IF EMPTY(m->bAutoExec)
 	DevOut(IF(m->_replay,'SF','  '))
 	MainMenu(.T.)
+
 	cDbedit(3,1,__mrow-2,__mcol-1,m->_Pole,'XBrowse',m->_Works,m->_base,m->_Pictures,m->__nFreeze,m->_Widths)
 	IF !m->_Replay THEN MakeRealStruct(m->__CurBase)
 ELSE
@@ -586,10 +586,19 @@ BEGIN SEQU
 END
 **********
 PROC SaveAutoOpen
-LOCAL aSave
+LOCAL aSave,cItem,aVar,i
 PRIVATE Fields:=_pole, Heads:={}, Pictures:=m->_Pictures, Widths:=m->_Widths
 AEVAL(_Works,{|_1| AADD(m->Heads,ALLTRIM(_1))})
-aSave:={"Fields","Heads","Pictures","Widths","_IndexFile","__TagName","__nFreeze"}
+aSave:=	{"Fields","Heads","Pictures","Widths",;
+	"_IndexFile","__TagName","__nFreeze"}
+
+aVar:=MemVarList("_H*")
+
+FOR i:=1 TO LEN(aVar)
+	cItem:=aVar[i]
+	IF TYPE(cItem)=='A' THEN AADD(aSave,cItem)
+END
+
 SaveIni(ClearName()+'.AOP',aSave,_MSG_C_INI_HAOP)
 **********
 FUNC ShowVaried(vFld)
@@ -627,9 +636,13 @@ AchKeys(.F.)
 FUNC GetName
 #define Dialog() (m->_vars#'_SIMPLELOC' .AND. EMPTY(m->_cGetMask))
 
-PARAM  _Whead,_vars,cMask,_cGetMask,lCanSelect,_Return,lPsw,cOrig,cValType
+PARAM _Whead,_vars,cMask,_cGetMask,lCanSelect,_Return,lPsw,cOrig,cValType,;
+	_lNoEmpty
 /*заголовок, переменная(должна начинаться с _), маска файлов, маска GET, ;
-  возможность выбора полей, признак возврата в текущий каталог*/
+  возможность выбора полей, признак возврата в текущий каталог,признак
+  пароля,оригинал (без препроцессора, передается по ссылке),тип целевого
+  выражения (для текстовых возможно преобразование),возможность пустого ввода
+*/
 LOCAL	_c:=4,_c1:=__MCol-4,_lh:=Len(m->_Whead)/2+1,aF,;
 	cFld
 PRIVATE _aGetKeys	//Клавиши
@@ -714,7 +727,7 @@ END
 POP KEYS
 
 IF !EMPTY(m->_Return) THEN Cdd(m->_Return)
-RETU (Lastkey()#K_ESC)
+RETU (Lastkey()#K_ESC) .AND. (!EMPTY(_c) .OR. EMPTY(m->_lNoEmpty))
 **********
 static PROC ForGet(lPsw)
 LOCAL _wide:=__MCOL-11
@@ -1137,7 +1150,7 @@ DBSkip(-1)
 IF BOF() THEN RETU .T.
 DBSkip()
 
-IF (ProcName(1)<>cLastCall) .OR. (_scope==0) THEN _scope:=1
+IF (ProcName(1)<>cLastCall) .OR. (_scope==0) THEN _scope:=2
 cLastCall:=ProcName(1)
 
 IF (_Scope:=MENU_RECS(_txt))==1 ;

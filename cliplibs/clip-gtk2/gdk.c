@@ -124,7 +124,7 @@ clip_GDK_POINTERGRAB(ClipMachine * cm)
 {
 	C_widget    *cwin = _fetch_cw_arg(cm);
 	GdkWindow *win = NULL;
-	gint owner_events = _clip_parl(cm,2);
+	gboolean owner_events = _clip_parl(cm,2);
 	GdkEventMask event_mask = _clip_parnl(cm,3);
 	C_widget *cconfine_to = _fetch_cwidget(cm,_clip_spar(cm,4));
 	GdkWindow *confine_to = NULL;

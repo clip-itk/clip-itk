@@ -13,6 +13,8 @@
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
 
+static GtkTreeIter 	_Iter;
+static GtkTreeIter 	*Iter = &_Iter;
 /*********************** SIGNALS **************************/
 /*
 static gint
@@ -43,15 +45,24 @@ static SignalTable tree_model_signals[] =
 CLIP_DLLEXPORT GtkType _gtk_type_tree_model() { return GTK_TYPE_TREE_MODEL; }
 CLIP_DLLEXPORT GtkType _gtk_type_tree_path() { return GTK_TYPE_TREE_PATH; }
 CLIP_DLLEXPORT GtkType _gtk_type_tree_iter() { return GTK_TYPE_TREE_ITER; }
+CLIP_DLLEXPORT GtkType _gtk_type_tree_model_sort() { return GTK_TYPE_TREE_MODEL_SORT; }
 
 long _clip_type_tree_model() { return GTK_OBJECT_TREE_MODEL; }
 long _clip_type_tree_path() { return GTK_OBJECT_TREE_PATH; }
 long _clip_type_tree_iter() { return GTK_OBJECT_TREE_ITER; }
+long _clip_type_tree_model_sort() { return GTK_OBJECT_TREE_MODEL_SORT; }
 
-const char * _clip_type_name_tree_model()  { return "GTK_TYPE_TREE_MODEL"; }
-const char * _clip_type_name_tree_path()  { return "GTK_TYPE_TREE_PATH"; }
-const char * _clip_type_name_tree_iter()  { return "GTK_TYPE_TREE_ITER"; }
+const char * _clip_type_name_tree_model()  { return "GTK_OBJECT_TREE_MODEL"; }
+const char * _clip_type_name_tree_path()  { return "GTK_OBJECT_TREE_PATH"; }
+const char * _clip_type_name_tree_iter()  { return "GTK_OBJECT_TREE_ITER"; }
+const char * _clip_type_name_tree_model_sort()  { return "GTK_OBJECT_TREE_MODEL_SORT"; }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+CLIP_DLLEXPORT GtkType _gtk_type_tree_model_filter() { return GTK_TYPE_TREE_MODEL_FILTER; }
+long _clip_type_tree_model_filter() { return GTK_OBJECT_TREE_MODEL_FILTER; }
+const char * _clip_type_name_tree_model_filter()  { return "GTK_OBJECT_TREE_MODEL_FILTER"; }
+
+#endif
 /* Register boxes in global table */
 int
 clip_INIT___TREEMODEL(ClipMachine *cm)
@@ -59,6 +70,10 @@ clip_INIT___TREEMODEL(ClipMachine *cm)
 	_wtype_table_put(_clip_type_tree_model,  _clip_type_name_tree_model,  _gtk_type_tree_model,  NULL, tree_model_signals);
 	_wtype_table_put(_clip_type_tree_path,  _clip_type_name_tree_path,  _gtk_type_tree_path,  NULL, NULL);
 	_wtype_table_put(_clip_type_tree_iter,  _clip_type_name_tree_iter,  _gtk_type_tree_iter,  NULL, NULL);
+	_wtype_table_put(_clip_type_tree_model_sort,  _clip_type_name_tree_model_sort,  _gtk_type_tree_model_sort,  NULL, NULL);
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+	_wtype_table_put(_clip_type_tree_model_filter,  _clip_type_name_tree_model_filter,  _gtk_type_tree_model_filter,  NULL, NULL);
+#endif
 	return 0;
 }
 
@@ -377,14 +392,14 @@ clip_GTK_TREEITERCOPY(ClipMachine * cm)
 {
 	C_object *ctreeiter = _fetch_co_arg(cm);
         C_object *ctreeiter1;
-        GtkTreeIter *iter;
 
 	CHECKARG(1,MAP_t);
 
-        iter = gtk_tree_iter_copy(ctreeiter->object);
+        memset(Iter, 0, sizeof(GtkTreeIter));
+        Iter = gtk_tree_iter_copy(ctreeiter->object);
 
-        ctreeiter1 = _list_get_cobject(cm, iter);
-	if (!ctreeiter1) ctreeiter1 = _register_object(cm,iter,GTK_TYPE_TREE_ITER,NULL,NULL);
+        ctreeiter1 = _list_get_cobject(cm, Iter);
+	if (!ctreeiter1) ctreeiter1 = _register_object(cm,Iter,GTK_TYPE_TREE_ITER,NULL,NULL);
         if (ctreeiter1) _clip_mclone(cm, RETPTR(cm), &ctreeiter1->obj);
 
 	return 0;
@@ -494,19 +509,19 @@ clip_GTK_TREEMODELGETITER(ClipMachine * cm)
         //C_object *ctreeiter    = _fetch_cobject(cm,  _clip_spar(cm, 2));
         C_object *ctreepath  = _fetch_cobject(cm, _clip_spar(cm, 3));
         C_object *ctreeiter;
-        GtkTreeIter iter;
         gboolean ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
         //CHECKOPT(2, MAP_t);
         CHECKARG(3, MAP_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_get_iter(GTK_TREE_MODEL(ctreemodel->object),
-        			      &iter,
+        			      Iter,
         			      GTK_TREE_PATH(ctreepath->object));
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,NULL,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,NULL,NULL);
         if (ctreeiter)
         {
         _clip_mclone(cm, RETPTR(cm), &ctreeiter->obj);
@@ -527,20 +542,20 @@ clip_GTK_TREEMODELGETITERFROMSTRING(ClipMachine * cm)
         ClipVar *treeiter    = _clip_spar(cm, 2);
         const gchar *path_string  = _clip_parc(cm, 3);
         C_object *ctreeiter;
-        GtkTreeIter iter;
         gboolean ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
         CHECKARG(2, MAP_t);
         CHECKARG(3, CHARACTER_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_get_iter_from_string(
               GTK_TREE_MODEL(ctreemodel->object),
-	      &iter,
+	      Iter,
 	      path_string);
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,NULL,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,NULL,NULL);
         if (ctreeiter) _clip_mclone(cm, treeiter, &ctreeiter->obj);
 
 	_clip_retl(cm, ret);
@@ -555,18 +570,18 @@ clip_GTK_TREEMODELGETITERFIRST(ClipMachine * cm)
 	C_object *ctreemodel = _fetch_co_arg(cm);
         ClipVar   *treeiter  = _clip_spar(cm, 2);
         C_object *ctreeiter;
-        GtkTreeIter iter;
         gboolean ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
         CHECKARG(2, MAP_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_get_iter_first(
               GTK_TREE_MODEL(ctreemodel->object),
-	      &iter);
+	      Iter);
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,NULL,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,NULL,NULL);
         if (ctreeiter) _clip_mclone(cm, treeiter, &ctreeiter->obj);
 
 	_clip_retl(cm, ret);
@@ -581,18 +596,18 @@ clip_GTK_TREEMODELGETITERROOT(ClipMachine * cm)
 	C_object *ctreemodel = _fetch_co_arg(cm);
         ClipVar   *treeiter  = _clip_spar(cm, 2);
         C_object *ctreeiter;
-        GtkTreeIter iter;
         gboolean ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
         CHECKARG(2, MAP_t);
         CHECKARG(3, CHARACTER_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_get_iter_root(GTK_TREE_MODEL(ctreemodel->object),
-	      &iter);
+	      Iter);
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,NULL,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,NULL,NULL);
         if (ctreeiter) _clip_mclone(cm, treeiter, &ctreeiter->obj);
 
 	_clip_retl(cm, ret);
@@ -672,17 +687,17 @@ clip_GTK_TREEMODELITERNEXT(ClipMachine * cm)
 	C_object *ctreemodel = _fetch_co_arg(cm);
         ClipVar    *treeiter = _clip_spar(cm, 2);
         C_object  *ctreeiter;
-        GtkTreeIter     iter;
         gboolean         ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
         CHECKOPT(2, MAP_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_iter_next(GTK_TREE_MODEL(ctreemodel->object),
-	      &iter);
+	      Iter);
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
         if (ctreeiter) _clip_mclone(cm, treeiter, &ctreeiter->obj);
 
 	_clip_retl(cm, ret);
@@ -699,18 +714,18 @@ clip_GTK_TREEMODELITERCHILDREN(ClipMachine * cm)
         ClipVar    *treeiter = _clip_spar(cm, 2);
         C_object *ctreeparent = _fetch_cobject(cm, _clip_spar(cm, 3));
         C_object  *ctreeiter;
-        GtkTreeIter     iter;
         gboolean         ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
         CHECKOPT(2, MAP_t);
         CHECKOPT(3, MAP_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_iter_children(GTK_TREE_MODEL(ctreemodel->object),
-	      &iter, ctreeparent->object);
+	      Iter, ctreeparent->object);
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
         if (ctreeiter) _clip_mclone(cm, treeiter, &ctreeiter->obj);
 
 	_clip_retl(cm, ret);
@@ -768,7 +783,6 @@ clip_GTK_TREEMODELITERNTHCHILD(ClipMachine * cm)
         C_object *ctreeparent = _fetch_cobject(cm, _clip_spar(cm, 3));
         gint                n = _clip_parni(cm, 4);
         C_object  *ctreeiter;
-        GtkTreeIter     iter;
         gboolean         ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
@@ -776,11 +790,12 @@ clip_GTK_TREEMODELITERNTHCHILD(ClipMachine * cm)
         CHECKOPT(3, MAP_t);
         CHECKARG(4, NUMERIC_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_iter_nth_child(GTK_TREE_MODEL(ctreemodel->object),
-	      &iter, ctreeparent->object, n);
+	      Iter, ctreeparent->object, n);
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
         if (ctreeiter) _clip_mclone(cm, treeiter, &ctreeiter->obj);
 
 	_clip_retl(cm, ret);
@@ -796,18 +811,18 @@ clip_GTK_TREEMODELITERPARENT(ClipMachine * cm)
         ClipVar    *treeiter = _clip_spar(cm, 2);
         C_object *ctreechild = _fetch_cobject(cm, _clip_spar(cm, 3));
         C_object  *ctreeiter;
-        GtkTreeIter     iter;
         gboolean         ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
         CHECKOPT(2, MAP_t);
         CHECKOPT(3, MAP_t);
 
+        memset(Iter, 0, sizeof(GtkTreeIter));
         ret = gtk_tree_model_iter_parent(GTK_TREE_MODEL(ctreemodel->object),
-	      &iter, ctreechild->object);
+	      Iter, ctreechild->object);
 
-        ctreeiter = _list_get_cobject(cm, &iter);
-	if (!ctreeiter) ctreeiter = _register_object(cm,&iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
+        ctreeiter = _list_get_cobject(cm, Iter);
+	if (!ctreeiter) ctreeiter = _register_object(cm, Iter,GTK_TYPE_TREE_ITER,treeiter,NULL);
         if (ctreeiter) _clip_mclone(cm, treeiter, &ctreeiter->obj);
 
 	_clip_retl(cm, ret);
@@ -1081,4 +1096,439 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_TREEMODELFILTERNEW(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object  *ctreepath = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object  *cnewmodel ;
+        GtkTreeModel *newmod ;
 
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
+        CHECKCOBJ(ctreepath, GTK_IS_TREE_PATH(ctreepath->object));
+
+	newmod = gtk_tree_model_filter_new(GTK_TREE_MODEL(ctreemodel->object),
+		GTK_TREE_PATH(ctreepath->object));
+
+	if (newmod)
+        {
+        	cnewmodel = _list_get_cobject(cm, newmod);
+                if (!cnewmodel) cnewmodel = _register_object(cm, newmod, GTK_TYPE_TREE_MODEL, NULL, NULL);
+                if (cnewmodel) _clip_mclone(cm, RETPTR(cm), &cnewmodel->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+static
+gboolean _visible_func(GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+{
+	C_var *c = (C_var*)data;
+	C_object *cmodl = _list_get_cobject(c->cm, model);
+	C_object *citer = _list_get_cobject(c->cm, iter);
+	ClipVar stack[3];
+	ClipVar res;
+        gboolean ret = TRUE;
+	if (!cmodl)
+		cmodl = _register_object(c->cm,model,GTK_TYPE_TREE_MODEL, NULL, NULL);
+	if (!citer)
+		citer = _register_object(c->cm,iter,GTK_TYPE_TREE_ITER, NULL, NULL);
+
+	memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
+	_clip_mclone(c->cw->cmachine, &stack[0], &c->co->obj);
+	_clip_mclone(c->cw->cmachine, &stack[1], &cmodl->obj);
+	_clip_mclone(c->cw->cmachine, &stack[2], &citer->obj);
+
+	if ( _clip_eval( c->cm, &(c->cfunc), 3, stack, &res ) == 0 )
+        	ret = res.t.type == LOGICAL_t ? res.l.val : ret;
+
+	_clip_destroy(c->cm, &res);
+	_clip_destroy(c->cm, &stack[0]);
+	_clip_destroy(c->cm, &stack[1]);
+	_clip_destroy(c->cm, &stack[2]);
+	return ret;
+}
+
+int
+clip_GTK_TREEMODELFILTERSETVISIBLEFUNC(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        ClipVar        *func = _clip_spar(cm, 2);
+        C_var             *c ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+        CHECKARG2(2, PCODE_t, CCODE_t);
+
+	c->cm = cm; c->co = ctreemodel; _clip_mclone(cm, &c->cfunc, func);
+	gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(ctreemodel->object),
+		(GtkTreeModelFilterVisibleFunc)_visible_func, c, NULL);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELFILTERSETVISIBLECOLUMN(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        gint          column = _clip_parni(cm, 2);
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+        CHECKARG(2, NUMERIC_t);
+
+	column --;
+	gtk_tree_model_filter_set_visible_column(GTK_TREE_MODEL_FILTER(ctreemodel->object),
+		column);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELFILTERGETMODEL(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object  *cnewmodel ;
+        GtkTreeModel *newmod ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+
+	newmod = gtk_tree_model_filter_get_model(GTK_TREE_MODEL_FILTER(ctreemodel->object));
+
+	if (newmod)
+        {
+        	cnewmodel = _list_get_cobject(cm, newmod);
+                if (!cnewmodel) cnewmodel = _register_object(cm, newmod, GTK_TYPE_TREE_MODEL, NULL, NULL);
+                if (cnewmodel) _clip_mclone(cm, RETPTR(cm), &cnewmodel->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREEMODELFILTERCONVERTCHILDITERTOITER(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *citer ;
+        C_object     *cchild = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+        CHECKCOBJ(cchild, GTK_IS_TREE_ITER(cchild->object));
+
+	gtk_tree_model_filter_convert_child_iter_to_iter(
+		GTK_TREE_MODEL_FILTER(ctreemodel->object),
+		Iter,
+		GTK_TREE_ITER(cchild->object));
+
+	if (Iter)
+        {
+        	citer = _list_get_cobject(cm, Iter);
+                if (!citer) citer = _register_object(cm, Iter, GTK_TYPE_TREE_ITER, NULL, NULL);
+                if (citer) _clip_mclone(cm, ARGPTR(cm,2), &citer->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREEMODELFILTERCONVERTITERTOCHILDITER(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *citer ;
+        C_object     *cchild = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+        CHECKCOBJ(cchild, GTK_IS_TREE_ITER(cchild->object));
+
+	gtk_tree_model_filter_convert_iter_to_child_iter(
+		GTK_TREE_MODEL_FILTER(ctreemodel->object),
+		Iter,
+		GTK_TREE_ITER(cchild->object));
+
+	if (Iter)
+        {
+        	citer = _list_get_cobject(cm, Iter);
+                if (!citer) citer = _register_object(cm, Iter, GTK_TYPE_TREE_ITER, NULL, NULL);
+                if (citer) _clip_mclone(cm, ARGPTR(cm, 2), &citer->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREEMODELFILTERCONVERTCHILDPATHTOPATH(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *cpath = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object     *cnpath ;
+        GtkTreePath   *npath ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+        CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+
+	npath = gtk_tree_model_filter_convert_child_path_to_path(
+		GTK_TREE_MODEL_FILTER(ctreemodel->object),
+		GTK_TREE_PATH(cpath->object));
+
+	if (npath)
+        {
+        	cnpath = _list_get_cobject(cm, npath);
+                if (!cnpath) cnpath = _register_object(cm, npath, GTK_TYPE_TREE_PATH, NULL, NULL);
+                if (cnpath) _clip_mclone(cm, RETPTR(cm), &cnpath->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREEMODELFILTERCONVERTPATHTOCHILDPATH(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *cpath = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object     *cnpath ;
+        GtkTreePath   *npath ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+        CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+
+	npath = gtk_tree_model_filter_convert_path_to_child_path(
+		GTK_TREE_MODEL_FILTER(ctreemodel->object),
+		GTK_TREE_PATH(cpath->object));
+
+	if (npath)
+        {
+        	cnpath = _list_get_cobject(cm, npath);
+                if (!cnpath) cnpath = _register_object(cm, npath, GTK_TYPE_TREE_PATH, NULL, NULL);
+                if (cnpath) _clip_mclone(cm, RETPTR(cm), &cnpath->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREEMODELFILTERREFILTER(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+
+	gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(ctreemodel->object));
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREEMODELFILTERCLEARCACHE(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
+
+	gtk_tree_model_filter_clear_cache(GTK_TREE_MODEL_FILTER(ctreemodel->object));
+	return 0;
+err:
+	return 1;
+}
+#endif
+/******************************************************************************/
+/***************************** Gtk tree model SORT ****************************/
+/******************************************************************************/
+
+int
+clip_GTK_TREEMODELSORNEWWITHMODEL(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object  *cnewmodel ;
+        GtkTreeModel *newmod ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
+
+	newmod = gtk_tree_model_sort_new_with_model(GTK_TREE_MODEL(ctreemodel->object));
+
+	if (newmod)
+        {
+        	cnewmodel = _list_get_cobject(cm, newmod);
+                if (!cnewmodel) cnewmodel = _register_object(cm, newmod, GTK_TYPE_TREE_MODEL, NULL, NULL);
+                if (cnewmodel) _clip_mclone(cm, RETPTR(cm), &cnewmodel->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELSORTGETMODEL(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object  *cnewmodel ;
+        GtkTreeModel *newmod ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+
+	newmod = gtk_tree_model_sort_get_model(GTK_TREE_MODEL_SORT(ctreemodel->object));
+
+	if (newmod)
+        {
+        	cnewmodel = _list_get_cobject(cm, newmod);
+                if (!cnewmodel) cnewmodel = _register_object(cm, newmod, GTK_TYPE_TREE_MODEL, NULL, NULL);
+                if (cnewmodel) _clip_mclone(cm, RETPTR(cm), &cnewmodel->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELSORTCONVERTCHILDPATHTOPATH(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *cpath = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object     *cnpath ;
+        GtkTreePath   *npath ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+        CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+
+	npath = gtk_tree_model_sort_convert_child_path_to_path(
+		GTK_TREE_MODEL_SORT(ctreemodel->object),
+		GTK_TREE_PATH(cpath->object));
+
+	if (npath)
+        {
+        	cnpath = _list_get_cobject(cm, npath);
+                if (!cnpath) cnpath = _register_object(cm, npath, GTK_TYPE_TREE_PATH, NULL, NULL);
+                if (cnpath) _clip_mclone(cm, RETPTR(cm), &cnpath->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELSORTCONVERTPATHTOCHILDPATH(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *cpath = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object     *cnpath ;
+        GtkTreePath   *npath ;
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+        CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+
+	npath = gtk_tree_model_sort_convert_path_to_child_path(
+		GTK_TREE_MODEL_SORT(ctreemodel->object),
+		GTK_TREE_PATH(cpath->object));
+
+	if (npath)
+        {
+        	cnpath = _list_get_cobject(cm, npath);
+                if (!cnpath) cnpath = _register_object(cm, npath, GTK_TYPE_TREE_PATH, NULL, NULL);
+                if (cnpath) _clip_mclone(cm, RETPTR(cm), &cnpath->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELSORTCONVERTCHILDITERTOITER(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *citer ;
+        C_object     *cchild = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+        CHECKCOBJ(cchild, GTK_IS_TREE_ITER(cchild->object));
+
+	gtk_tree_model_sort_convert_child_iter_to_iter(
+		GTK_TREE_MODEL_SORT(ctreemodel->object),
+		Iter,
+		GTK_TREE_ITER(cchild->object));
+
+	if (Iter)
+        {
+        	citer = _list_get_cobject(cm, Iter);
+                if (!citer) citer = _register_object(cm, Iter, GTK_TYPE_TREE_ITER, NULL, NULL);
+                if (citer) _clip_mclone(cm, ARGPTR(cm,2), &citer->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREEMODELSORTCONVERTITERTOCHILDITER(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *citer ;
+        C_object     *cchild = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+        CHECKCOBJ(cchild, GTK_IS_TREE_ITER(cchild->object));
+
+	gtk_tree_model_sort_convert_iter_to_child_iter(
+		GTK_TREE_MODEL_SORT(ctreemodel->object),
+		Iter,
+		GTK_TREE_ITER(cchild->object));
+
+	if (Iter)
+        {
+        	citer = _list_get_cobject(cm, Iter);
+                if (!citer) citer = _register_object(cm, Iter, GTK_TYPE_TREE_ITER, NULL, NULL);
+                if (citer) _clip_mclone(cm, ARGPTR(cm, 2), &citer->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELSORTRESETDEFAULTSORTFUNC(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+
+	gtk_tree_model_sort_reset_default_sort_func(
+		GTK_TREE_MODEL_SORT(ctreemodel->object));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEMODELSORTCLEARCACHE(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+
+	gtk_tree_model_sort_clear_cache(
+		GTK_TREE_MODEL_SORT(ctreemodel->object));
+	return 0;
+err:
+	return 1;
+}
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 2)
+int
+clip_GTK_TREEMODELSORTITERISVALID(ClipMachine * cm)
+{
+	C_object *ctreemodel = _fetch_co_arg(cm);
+        C_object      *citer = _fetch_cobject(cm, _clip_spar(cm, 2));
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_SORT(ctreemodel->object));
+        CHECKCOBJ(citer, GTK_IS_TREE_ITER(citer->object));
+
+	gtk_tree_model_sort_iter_is_valid(
+		GTK_TREE_MODEL_SORT(ctreemodel->object),
+		GTK_TREE_ITER(citer->object));
+
+	return 0;
+err:
+	return 1;
+}
+#endif

@@ -3,11 +3,17 @@
    Authors  : Sergio Zayas
    License : (GPL) http://www.itk.ru/clipper/license.html
    mail : icaro.maneton@lycos.es
- */
+*/
+/*
+   $Log: _tcpserv.c,v $
+   Revision 1.6  2004/05/19 08:32:18  clip
+   rust: fix for ./configure -m
 
+*/
 
-#include "clip.h"
 #include <string.h>
+#include "clip.h"
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -49,6 +55,7 @@ int clip_TCPLISTEN(ClipMachine *mp)
 	int sock = -1, ret = -1;
 	int backlog = 5;
 	C_FILE *cf = NULL;
+	int arg;
 
 	*err=0;
 
@@ -86,6 +93,9 @@ int clip_TCPLISTEN(ClipMachine *mp)
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 		goto err;
 
+	if ((arg = fcntl(sock, F_GETFL, 0)) == -1)
+		goto err;
+	fcntl(sock, F_SETFL, arg | O_NONBLOCK);
 
 	memset( (void *) &sin, 0, sizeof(sin) );
 	sin.sin_family = AF_INET;  /* PF_INET ?? */
@@ -116,7 +126,7 @@ int clip_TCPLISTEN(ClipMachine *mp)
 	cf->stat = 0;     /* see FS_* flags */
 	ret = _clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
 
-    err:
+	err:
 	if (ret == -1)
 	{
 		if (*err !=0 )

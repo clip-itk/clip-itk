@@ -1,5 +1,8 @@
 /*
    $Log: coll.h,v $
+   Revision 1.5  2004/05/21 11:22:18  clip
+   rust: minor fix for 'configure -m'
+
    Revision 1.4  2000/11/23 06:50:23  clip
    load(name [,array])
    paul
@@ -28,15 +31,15 @@ typedef struct Coll
 	int size;
 	int duplicates;
 	void **items;
-	void (*free) (void *);
+	void (*_free) (void *);
 	int (*compare) (void *, void *);
 }
 Coll;
 
-Coll *new_Coll(void (*free) (void *), int (*compare) ());
+Coll *new_Coll(void (*_free) (void *), int (*compare) ());
 void delete_Coll(void *coll);
 
-void init_Coll(Coll * coll, void (*free) (void *), int (*compare) ());
+void init_Coll(Coll * coll, void (*_free) (void *), int (*compare) ());
 void destroy_Coll(Coll * coll);
 
 void freeAll_Coll(Coll * coll);

@@ -16,7 +16,7 @@ function run_blank(file,stdin)
 return _run_blank(s,stdin)
 
 **********************************************************
-function _run_blank(tex,stdin,tipv,sbros)
+static function _run_blank(tex,stdin,tipv,sbros)
 static pfile:=""
 local str,f1xx,str1,retstr:="",i:=0,n:=0,scr,nsel:=select()
 local ret

@@ -164,7 +164,7 @@ then
 	mkdir -p ${DESTDIR}/usr/lib
 
 	cd ${DESTDIR}${CLIPROOT}/lib
-	if [ $(ls *.so) ]
+	if [ -n "$(ls *.so)" ]
 	then
 		for n in *.so
 		do

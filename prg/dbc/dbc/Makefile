@@ -16,7 +16,7 @@ clean:
 	rm -rf *.so *.c *.s *.o *.po *.bak *.uri dbc dbc.exe *.log *.ntx *.ex *.nm
 
 install:
-	cp dbc$(EXESUFF) $(CLIPROOT)/bin/
+	cp dbc$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) $<

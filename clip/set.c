@@ -5,6 +5,15 @@
 */
 /*
    $Log: set.c,v $
+   Revision 1.88  2004/06/11 14:05:21  clip
+   uri: small fix
+
+   Revision 1.87  2004/06/11 11:47:27  clip
+   uri: small fix in "set printer to membuf"
+
+   Revision 1.86  2004/06/11 10:15:14  clip
+   rust: SET PRINTER TO MEMBUF
+
    Revision 1.85  2004/02/25 09:12:19  clip
    uri: SIGSEGV fixed in set(_SET_ROOTPATH)
 
@@ -1050,64 +1059,82 @@ clip_SET(ClipMachine * mp)
 		break;
 	case _SET_PRINTFILE:
 		_clip_retc(mp, mp->prfile);
-		if (argc > 1 && (sp = _clip_parc(mp, 2)))
+		if (argc <= 1)
+			break;
+
+		_clip_close_printer(mp);
+
+		if(_clip_parinfo(mp,2) != CHARACTER_t)
+			break;
+
+		sp = _clip_parc(mp, 2);
+		if ( !sp || !(*sp) )
+			break;
+
+		if(mp->pbuf)
 		{
-			_clip_close_printer(mp);
+			destroy_Buf(mp->pbuf);
+			free(mp->pbuf);
+			mp->pbuf = 0;
+		}
+		if( strncmp(sp,"MEMBUF",6) == 0)
+		{
+			mp->pbuf = calloc(1,sizeof(OutBuf));
+			init_Buf(mp->pbuf);
+		}
+		else
+		{
+			/* create file for printer output */
+			FILE *printer;
+			char *mode;
 
-			if (*sp)
+			if (_clip_parl(mp, 3))
+				mode = "a";
+			else
+				mode = "w";
+
+			if (!strcasecmp(sp, "prn") || !strcasecmp(sp, "prn:")
+				|| !strcasecmp(sp, "lpt1") || !strcasecmp(sp, "lpt1:")
+				|| !strcasecmp(sp, "lpt2") || !strcasecmp(sp, "lpt2:")
+				|| !strcasecmp(sp, "lpt3") || !strcasecmp(sp, "lpt3:"))
 			{
-				FILE *printer;
-				char *mode;
+				char buf[256];
 
-				if (_clip_parl(mp, 3))
-					mode = "a";
-				else
-					mode = "w";
-
-				if (!strcasecmp(sp, "prn") || !strcasecmp(sp, "prn:")
-					|| !strcasecmp(sp, "lpt1") || !strcasecmp(sp, "lpt1:")
-					|| !strcasecmp(sp, "lpt2") || !strcasecmp(sp, "lpt2:")
-					|| !strcasecmp(sp, "lpt3") || !strcasecmp(sp, "lpt3:"))
-				{
-					char buf[256];
-
-					snprintf(buf, sizeof(buf), "prn-%s-%lx%lx", _clip_progname,
-						 (long) getpid(), (long) random());
-					mp->real_prfile = strdup(buf);
-					mp->prfile = strdup(sp);
-				}
-				else
-				{
-					char buf[PATH_MAX];
-
-					_clip_translate_path(mp, sp, buf, sizeof(buf));
-										_clip_addExtToFile(buf,PATH_MAX,"prn");
-
-					mp->real_prfile = mp->prfile = strdup(buf);
-				}
-
-				if (access(mp->real_prfile, F_OK) != 0)
-					close(creat(mp->real_prfile, mp->fileCreateMode));
-				printer = fopen(mp->real_prfile, mode);
-				_clip_logg(2, "set print to:%s,%s", mp->real_prfile, mp->prfile);
-
-				if (!printer)
-				{
-					_clip_trap_printf(mp, __FILE__, __LINE__,
-							  "cannot open printer file '%s': %s", sp, strerror(errno));
-					if (mp->real_prfile != mp->prfile)
-						free(mp->real_prfile);
-					free(mp->prfile);
-					mp->real_prfile = 0;
-					mp->prfile = 0;
-					return 1;
-				}
-#ifdef _WIN32
-				setmode(fileno(printer),O_BINARY);
-#endif
-				mp->printer = printer;
-				set_printer_charset(mp);
+				snprintf(buf, sizeof(buf), "prn-%s-%lx%lx", _clip_progname,
+					 (long) getpid(), (long) random());
+				mp->real_prfile = strdup(buf);
+				mp->prfile = strdup(sp);
 			}
+			else
+			{
+				char buf[PATH_MAX];
+
+				_clip_translate_path(mp, sp, buf, sizeof(buf));
+				_clip_addExtToFile(buf,PATH_MAX,"prn");
+				mp->real_prfile = mp->prfile = strdup(buf);
+			}
+
+			if (access(mp->real_prfile, F_OK) != 0)
+				close(creat(mp->real_prfile, mp->fileCreateMode));
+			printer = fopen(mp->real_prfile, mode);
+			_clip_logg(2, "set print to:%s,%s", mp->real_prfile, mp->prfile);
+
+			if (!printer)
+			{
+				_clip_trap_printf(mp, __FILE__, __LINE__,
+				"cannot open printer file '%s': %s", sp, strerror(errno));
+				if (mp->real_prfile != mp->prfile)
+					free(mp->real_prfile);
+				free(mp->prfile);
+				mp->real_prfile = 0;
+				mp->prfile = 0;
+				return 1;
+			}
+#ifdef _WIN32
+			setmode(fileno(printer),O_BINARY);
+#endif
+			mp->printer = printer;
+			set_printer_charset(mp);
 		}
 		break;
 	case _SET_MARGIN:

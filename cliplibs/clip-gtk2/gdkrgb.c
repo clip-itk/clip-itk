@@ -15,7 +15,6 @@
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
-//#include "clip-gdk.h"
 
 
 int clip_GDK_RGBINIT( ClipMachine * cm )
@@ -87,5 +86,39 @@ return 1;
 
 
 
+int clip_GDK_PIXBUFRENDERTODRAWABLE( ClipMachine * cm )
+{
+	C_object     * cpxb = _fetch_co_arg( cm );
+        C_widget *cdrawable = _fetch_cwidget(cm, _clip_spar(cm, 2));
+	C_object      * cgc = _fetch_cobject( cm, _clip_spar( cm,3));
+        int           src_x = _clip_parni(cm, 4);
+        int           src_y = _clip_parni(cm, 5);
+        int          dest_x = _clip_parni(cm, 6);
+        int          dest_y = _clip_parni(cm, 7);
+	int           width = _clip_parni(cm, 8);
+	int          height = _clip_parni(cm, 9);
+        GdkRgbDither dither = _clip_parni(cm, 10);
+        int        x_dither = _clip_parnd(cm, 11);
+        int        y_dither = _clip_parnd(cm, 12);
+
+	CHECKCOBJ(cpxb,GDK_IS_PIXBUF(cpxb->object));
+	CHECKCWID(cdrawable,GTK_IS_DRAWING_AREA);
+	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
+	CHECKARG(4,NUMERIC_t); CHECKARG(5,NUMERIC_t);
+	CHECKARG(6,NUMERIC_t); CHECKARG(7,NUMERIC_t);
+	CHECKARG(8,NUMERIC_t); CHECKARG(9,NUMERIC_t);
+	CHECKARG(10,NUMERIC_t); CHECKARG(11,NUMERIC_t);
+	CHECKARG(12,NUMERIC_t);
+
+	gdk_pixbuf_render_to_drawable( GDK_PIXBUF(cpxb->object),
+			GDK_DRAWABLE(cdrawable->widget->window),
+                        GDK_GC(cgc->object),
+        		src_x, src_y, dest_x, dest_y, width, height,
+                        dither, x_dither, y_dither);
+
+return 0;
+err:
+return 1;
+}
 
 

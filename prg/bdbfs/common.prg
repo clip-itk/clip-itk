@@ -282,7 +282,7 @@ DO CASE
 	_s:='ARRAY['+NTRIM(LEN(_s))+']'
 
    CASE ValType(_s)='O'
-	_s1:=IF( TYPE('_s:ClassName')<>'C',[UKNOWN CLASS], _s:ClassName)
+	_s1:=IF( TYPE('_s:ClassName')<>'C',[UNKNOWN CLASS], _s:ClassName)
 	_s:='OBJECT:'+_s1+' SIZE='+NTRIM(LEN(_s))
 
    CASE ValType(_s)='B'
@@ -436,7 +436,7 @@ LOCAL i,xRes,cType
 
 xRes:=&_Fld
 xRes:={'','','','','','','',0,0,0,0,0,ctod(''),.f.,NIL};
- 	[AT(ValType(xRes),'CMVXGPTNFBIYDLU')]
+	[AT(ValType(xRes),'CMVXGPTNFBIYDLU')]
 IF m->_CurRType=='X' THEN xRes:=NIL
 IF Select()==1
 	_fld:=RealFldName(_fld)
@@ -555,15 +555,11 @@ DO CASE
 		RETU 1
 
 	CASE _a=K_CTRL_UP .AND. _numb<>1
-		_a:=m->_acItems[_numb]
-		m->_acItems[_numb]:=m->_acItems[_numb-1]
-		m->_acItems[_numb-1]:=_a
+		SwapAItems(m->_acItems,_numb,_numb-1)
 		KEYB _UP
 
 	CASE _a=K_CTRL_DOWN  .AND. _numb<>_la
-		_a:=m->_acItems[_numb]
-		m->_acItems[_numb]:=m->_acItems[_numb+1]
-		m->_acItems[_numb+1]:=_a
+		SwapAItems(m->_acItems,_numb,_numb+1)
 		KEYB _DOWN
 
 	CASE BETWEEN(_a,32,255) .OR. _a==299	//ALT+\
@@ -584,7 +580,7 @@ DO CASE
 		IF _nMoves==0
 			KEYB _a
 		ELSE
-	                Eval(oTb:SkipBlock, _nMoves)
+			Eval(oTb:SkipBlock, _nMoves)
 			oTb:RefreshAll()
 			@ _top+Int((_numb-1)*_Length/(_la-1)),m->_awr say SCROLL_FILL
 			KEYB _EMP
@@ -860,6 +856,11 @@ FOR i:=1 TO nMuch
 	ENDIF
 NEXT
 **********
+PROC SwapAItems(arr,i,j)
+LOCAL x:=arr[i]
+arr[i]:=arr[j]
+arr[j]:=x
+**********
 PROC File_Dial(cFile)
 LOCAL cMsg:=IF(EMPTY(cFile),READY,F_CREATE+cFile)
 SET PRINTER TO
@@ -1108,7 +1109,7 @@ ENDIF
 m->_ms:=0
 DO WHILE .T.
 	ShowMouse()
-	IF (key:=inkey(, 254))#0 .OR.  (Seconds()-_timeBegin > _time)
+	IF (key:=inkey(0.01, 254))#0 .OR.  (Seconds()-_timeBegin > _time)
 		DO CASE
 		CASE (key=K_F1)
 			key:=ProcName(2)
@@ -1152,7 +1153,7 @@ DO WHILE .T.
 		_TimeBegin:=Seconds()	// Что-то все-таки нажато
 	ENDIF
 
-	IF _time>0 .AND. NextKey(254)=0 .AND. ((key:=AltF()) # _OldAlt)
+	IF _time>0 .AND. NextKey()=0 .AND. ((key:=KbdStat()) # _OldAlt)
 		 Fkeys(_OldAlt:=key)
 	ENDIF
 ENDDO
@@ -1187,29 +1188,12 @@ _s:=LEFT(_s,_wide--)
 @ _x01,_y01+1+Centr(_s,_wide) say _s
 **********
 PROC BoxShadow(_x01,_y01,_x02,_y02,_ColorBorder,_box,_colorBox)
-LOCAL	_Ny1,_Nx1,_Ny2
-_Ny1:=_y01+2
-_Nx1:=_x02+1
-_Ny2:=_y02+1
 DispBegin()
 IF !Empty(_ColorBorder)
-	Shadow(_Nx1, _Ny1, _Nx1, _Ny2,;		&& последняя строка
-		_colorBorder, _Ny2-_Ny1+1 )
-	Shadow( _x01+1, _Ny2, _Nx1, _Ny2,;	&& последний столбец
-		_colorBorder, _Nx1-_x01 )
+	DbgShadow(_x01, _y01, _x02, _y02, _ColorBorder)
 ENDIF
 DispBox(_x01,_y01,_x02,_y02,_box,_ColorBox)
 DispEnd()
-**********
-PROC Shadow(nx1,ny1,nx2,ny2,_ColorBorder,nLength)
-IF  ValType(_ColorBorder)='N'
-	_ColorBorder=chr(_ColorBorder)
-ELSEIF ValType(_ColorBorder)<>'C'
-	_ColorBorder=CHR(7)
-ENDIF
-RestScreen(nx1, ny1, nx2, ny2,;
-	transform( SaveScreen(nx1, ny1, nx2, ny2),;
-		   REPL("X"+_colorBorder+"X", nLength) ) )
 **********
 PROC Rename(fSrc,fDst)
 FERASE(fDst)
@@ -1234,7 +1218,7 @@ CASE Empty(symbol)
 CASE ValType(symbol)=='B'
 	res:=Eval(symbol)
 CASE IsSuchProc(symbol) .AND. (Substr(symbol,-1) # ')')
-		res:=&symbol()
+	res:=&symbol()
 OTHER
 	res:= &symbol 	// any func
 ENDCASE
@@ -1292,6 +1276,7 @@ PROC Fkeys(_alt)
 LOCAL _i:=1,keys,_r,_c
 HideMouse()
 SavePos()
+_alt:=AltF()
 DO CASE
   CASE EMPTY(_alt)
 	keys:=m->Main_Keys
@@ -1583,10 +1568,10 @@ FUNC Rand (nStart)
  Если указан параметр nStart,то последовательность начинается заново.
  От каждого nStart всегда возвращается одинаковая последовательность.
  Пример:
- 	? Rand(seconds()) - первый элемент
- 	While !Waitkey(3)<>xbeK_ESC
+	? Rand(seconds()) - первый элемент
+	While !Waitkey(3)<>xbeK_ESC
 		? Rand()
- 	end
+	end
 */
 
 static r_iy:=100001

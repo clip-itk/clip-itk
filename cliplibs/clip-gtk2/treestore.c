@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003-2004  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -22,7 +22,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_tree_store() { return GTK_TYPE_TREE_STORE; }
 
 long _clip_type_tree_store() { return GTK_OBJECT_TREE_STORE; }
 
-const char * _clip_type_name_tree_store()  { return "GTK_TYPE_TREE_STORE"; }
+const char * _clip_type_name_tree_store()  { return "GTK_OBJECT_TREE_STORE"; }
 
 /* Register boxes in global table */
 int
@@ -608,4 +608,111 @@ err:
 }
 
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 2)
+int
+clip_GTK_TREESTOREITERISVALID(ClipMachine * cm)
+{
+	C_object *cstree = _fetch_co_arg(cm);
+        C_object  *citer = _fetch_cobject(cm, _clip_spar(cm, 2));
 
+        CHECKARG2(1, MAP_t, NUMERIC_t); CHECKCOBJ(cstree, GTK_IS_TREE_STORE(cstree->object));
+	CHECKCOBJ(citer, GTK_IS_TREE_ITER(citer->object));
+
+
+        gtk_tree_store_iter_is_valid(GTK_TREE_STORE(cstree->object), GTK_TREE_ITER(citer->object));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREESTOREREORDER(ClipMachine * cm)
+{
+	C_object *cstree = _fetch_co_arg(cm);
+        C_object  *citer = _fetch_cobject(cm, _clip_spar(cm, 2));
+        ClipArrVar  *arr = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 3));
+        gint           n ;
+
+        CHECKARG2(1, MAP_t, NUMERIC_t); CHECKCOBJ(cstree, GTK_IS_TREE_STORE(cstree->object));
+	CHECKCOBJ(citer, GTK_IS_TREE_ITER(citer->object));
+        CHECKARG(3, ARRAY_t);
+
+	n = arr->count;
+        if (arr)
+        {
+        	gint *order, i;
+
+        	order = malloc(n*sizeof(gint));
+        	for (i=0; i<n; i++)
+                	order[i] = arr->items[i].n.d;
+        	gtk_tree_store_reorder(GTK_TREE_STORE(cstree->object),
+                	GTK_TREE_ITER(citer->object),
+        		order);
+
+		free(order);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREESTORESWAP(ClipMachine * cm)
+{
+	C_object *cstree = _fetch_co_arg(cm);
+        C_object *citer1 = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object *citer2 = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+        CHECKARG2(1, MAP_t, NUMERIC_t); CHECKCOBJ(cstree, GTK_IS_TREE_STORE(cstree->object));
+	CHECKCOBJ(citer1, GTK_IS_TREE_ITER(citer1->object));
+	CHECKCOBJ(citer2, GTK_IS_TREE_ITER(citer2->object));
+
+        gtk_tree_store_swap(GTK_TREE_STORE(cstree->object),
+                	GTK_TREE_ITER(citer1->object),
+                	GTK_TREE_ITER(citer2->object));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREESTOREMOVEBEFORE(ClipMachine * cm)
+{
+	C_object *cstree = _fetch_co_arg(cm);
+        C_object *citer1 = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object *citer2 = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+        CHECKARG2(1, MAP_t, NUMERIC_t); CHECKCOBJ(cstree, GTK_IS_TREE_STORE(cstree->object));
+	CHECKCOBJ(citer1, GTK_IS_TREE_ITER(citer1->object));
+	CHECKCOBJOPT(citer2, GTK_IS_TREE_ITER(citer2->object));
+
+        gtk_tree_store_move_before(GTK_TREE_STORE(cstree->object),
+                	GTK_TREE_ITER(citer1->object),
+                	(citer2)?GTK_TREE_ITER(citer2->object):NULL);
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TREESTOREMOVEAFTER(ClipMachine * cm)
+{
+	C_object *cstree = _fetch_co_arg(cm);
+        C_object *citer1 = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_object *citer2 = _fetch_cobject(cm, _clip_spar(cm, 3));
+
+        CHECKARG2(1, MAP_t, NUMERIC_t); CHECKCOBJ(cstree, GTK_IS_TREE_STORE(cstree->object));
+	CHECKCOBJ(citer1, GTK_IS_TREE_ITER(citer1->object));
+	CHECKCOBJOPT(citer2, GTK_IS_TREE_ITER(citer2->object));
+
+        gtk_tree_store_move_after(GTK_TREE_STORE(cstree->object),
+                	GTK_TREE_ITER(citer1->object),
+                	(citer2)?GTK_TREE_ITER(citer2->object):NULL);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

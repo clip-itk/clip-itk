@@ -8,7 +8,7 @@
 function gtk_ErrorMsgBox(cMsg, aButton, cTitle)
 local nWidth, nHeight
 local Button, Label, activeWnd
-local Dialog, inFocus, i, ret:=.f., pos, str
+local Dialog, inFocus, i, ret:=.f., pos, str, ames
 local BtnWidth:=40, BtnHeight:=25, hbox, vbox
 
 /* XPM stop */
@@ -77,6 +77,7 @@ static stopXPM := { ;
 
 	gtk_BoxPackStart(hbox, gtk_PixmapCreateFromXPMd(, stopXPM))
 
+	/*
 	pos := at(';',cMsg)
 
 	if pos==0; pos := len(cMsg); endif
@@ -89,6 +90,13 @@ static stopXPM := { ;
 		pos := at(';',cMsg)
 		if pos==0; pos := len(cMsg); endif
 	enddo
+	*/
+	ames = split(cMsg, ";")
+	for i=1 to len(ames)
+		label := gtk_LabelNew(, ames[i])
+		gtk_LabelSetLineWrap(Label, .T.)
+		gtk_BoxPackStart(vbox, Label)
+	next
 
 	gtk_BoxPackStart(hbox, vbox)
 	gtk_ContainerAdd(Dialog:VBox, hbox)

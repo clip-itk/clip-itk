@@ -12,7 +12,7 @@
 *#define Stable() _bdbfbrow:ForceStable()
 #define ClearVScroll() FOR i:=_tp2+_h to bottom-1 ;  @ i,r_bord say SCROLL_FILL; NEXT
 #define ClearHScroll() @ b_Bord,l_1 Say _Sp
-#define ShowAlt()  IF _OldAlt#Altf() ; Fkeys(_OldAlt:=Altf()) ; ENDIF
+#define ShowAlt()  IF _OldAlt#(_nKey:=KbdStat()) ; Fkeys(_OldAlt:=_nkey) ; ENDIF
 
 **********
 PROC Cdbedit(top,left,bottom,right,columns,userfunc,;
@@ -103,14 +103,16 @@ WHILE .T.
    ShowMouse(); ShowMouse(); ShowMouse()
    WHILE .T.
 // Проверяем наличие управляющей клавиши в буфере:
-	_nKey := INKEY(, 254)
+	_nKey := INKEY(0.01, 254)
 	IF _nKey>1001
 		WaitMouse0()
 		GetMouseXY()
-		cScr:=SaveScreen(_tp1,left,_tp1,right)		//Для определения координат нажатия
-		cScr:=SUBSTR(StrTran(cScr,SUBSTR(cScr,2,2)),1,_mox)
-		nVs:=Ft_NoOccur("╤",cScr)
-		IF SUBSTR(cScr,-1)=="╤" THEN nVs--
+
+		cScr:=ScreenString(_tp1,left)		//Для определения координат нажатия
+		nVs:=0
+		FOR i:=1 TO _mox-1
+			IF SUBSTR(cScr, i, 1)=="╤" THEN nVs++
+		NEXT
 
 		IF (i:=_bdbfbrow:Freeze)>0
 			IF nVs>i-1
@@ -119,7 +121,6 @@ WHILE .T.
 		ELSE
 			nVs:=_bdbfbrow:LeftVisible+nVs-1
 		ENDIF
-
 		column:=_ptr-1
 		DO CASE
 			CASE ( _moy<=bottom ) .AND. _moy>=_Tp2
@@ -235,8 +236,21 @@ WHILE .T.
 		_lr:=KeyCount()
 		LOOP
 
-	CASE _nKey==K_CTRL_X .AND. ALTF()=2 .AND. IsShift() .AND. (VALTYPE(&_c_F) $ 'CM')
+	CASE _nKey==K_CTRL_X .AND. IsCtrlShift() .AND. (VALTYPE(&_c_F) $ 'CM')
 		__KeyBoard(_ENTER+_DOWN+_CTRLEND)
+
+	CASE _nKey==K_CTRL_LEFT .AND. IsCtrlShift() 
+		ChangeCol(_oldcol-1)
+		__KeyBoard(_LEFT)
+
+	CASE _nKey==K_CTRL_RIGHT .AND. IsCtrlShift()
+		ChangeCol(_oldcol+1)
+		__KeyBoard(_RIGHT)
+
+	CASE _nKey==K_CTRL_H
+		ColWdt( _oldCol, IF(IsCtrlShift(),;
+				    MAX(_Flen[_oldCol],LEN(_Works[_oldCol])),;
+				    1 ) )
 
 // Обработка стандартных клавиш навигации
 	CASE (baction:=Ascan(tbKey,{|elem|_nkey=elem[1]}))<>0
@@ -254,7 +268,7 @@ WHILE .T.
 		i:=m->Main_Keys
 		rc:=&userfunc.(_oldcol,_nkey)
 		m->Main_Keys:=i
-		FKeys(_OldAlt:=Altf())
+		FKeys(_OldAlt:=KbdStat())
 
 		IF rc == DE_ABORT
 			RETURN

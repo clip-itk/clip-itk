@@ -148,3 +148,22 @@ clip_GTK_MENUSHELLACTIVATETITEM(ClipMachine * cm)
 err:
 	return 1;
 }
+
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+
+int
+clip_GTK_MENUSHELLCANCEL(ClipMachine * cm)
+{
+	C_widget *cmns = _fetch_cw_arg(cm);
+
+        CHECKCWID(cmns,GTK_IS_MENU_SHELL);
+
+        gtk_menu_shell_cancel(GTK_MENU_SHELL(cmns->widget));
+	return 0;
+err:
+	return 1;
+}
+
+#endif
+

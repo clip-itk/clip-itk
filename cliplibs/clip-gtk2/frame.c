@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -32,7 +33,8 @@ const char * _clip_type_name_aspect_frame() { return "GTK_WIDGET_ASPECT_FRAME"; 
 int
 clip_INIT___FRAME(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_frame, _clip_type_name_frame, _gtk_type_frame, _gtk_type_container, NULL);
+	//_wtype_table_put(_clip_type_frame, _clip_type_name_frame, _gtk_type_frame, _gtk_type_container, NULL);
+	_wtype_table_put(_clip_type_frame, _clip_type_name_frame, _gtk_type_frame, _gtk_type_bin, NULL);
 	_wtype_table_put(_clip_type_aspect_frame, _clip_type_name_aspect_frame, _gtk_type_aspect_frame, _gtk_type_frame, NULL);
 	return 0;
 }
@@ -68,6 +70,22 @@ clip_GTK_FRAMESETLABEL(ClipMachine * cm)
         LOCALE_TO_UTF(label);
         gtk_frame_set_label(GTK_FRAME(cframe->widget), label);
 	FREE_TEXT(label);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_FRAMESETLABELWIDGET(ClipMachine * cm)
+{
+	C_widget *cframe = _fetch_cw_arg(cm);
+	C_widget   *cwid = _fetch_cwidget(cm, _clip_spar(cm, 2));
+
+	CHECKCWID(cframe,GTK_IS_FRAME);
+	CHECKCWID(cwid, GTK_IS_FRAME);
+
+        gtk_frame_set_label_widget(GTK_FRAME(cframe->widget), GTK_WIDGET(cwid->widget));
 
 	return 0;
 err:
@@ -112,6 +130,76 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_FRAMEGETLABEL(ClipMachine * cm)
+{
+	C_widget   *cframe = _fetch_cw_arg(cm);
+        gchar       *label ;
+
+	CHECKCWID(cframe,GTK_IS_FRAME);
+        label = (gchar *)gtk_frame_get_label(GTK_FRAME(cframe->widget));
+        LOCALE_FROM_UTF(label);
+        _clip_retc(cm, label);
+        FREE_TEXT(label);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_FRAMEGETLABELALIGN(ClipMachine * cm)
+{
+	C_widget   *cframe = _fetch_cw_arg(cm);
+        gfloat        x, y ;
+
+	CHECKCWID(cframe,GTK_IS_FRAME);
+
+        gtk_frame_get_label_align(GTK_FRAME(cframe->widget), &x, &y);
+
+	_clip_stornd(cm, x, 2, 0);
+        _clip_stornd(cm, y, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_FRAMEGETLABELWIDGET(ClipMachine * cm)
+{
+	C_widget   *cframe = _fetch_cw_arg(cm);
+        GtkWidget     *wid ;
+        C_widget     *cwid ;
+
+	CHECKCWID(cframe,GTK_IS_FRAME);
+
+        wid = gtk_frame_get_label_widget(GTK_FRAME(cframe->widget));
+
+	if (wid)
+        {
+        	cwid = _list_get_cwidget(cm, wid);
+                if (!cwid) cwid = _register_widget(cm, wid, NULL);
+                if (wid) _clip_mclone(cm, RETPTR(cm), &cwid->obj);
+        }
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_FRAMEGETSHADOWTYPE(ClipMachine * cm)
+{
+	C_widget   *cframe = _fetch_cw_arg(cm);
+
+	CHECKCWID(cframe,GTK_IS_FRAME);
+
+        _clip_retni(cm, (int)gtk_frame_get_shadow_type(GTK_FRAME(cframe->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
 /****************************************************************/
 /****************************************************************/
 /****************************************************************/
@@ -134,7 +222,7 @@ int
 clip_GTK_ASPECTFRAMENEW(ClipMachine * cm)
 {
 	ClipVar * cv       = _clip_spar(cm, 1);
-	const gchar *label = _clip_parc(cm, 2);
+	gchar *label       = _clip_parc(cm, 2);
         gfloat      xalign = _clip_parnd(cm, 3);
         gfloat      yalign = _clip_parnd(cm, 4);
         gfloat       ratio = _clip_parnd(cm, 5);
@@ -148,7 +236,9 @@ clip_GTK_ASPECTFRAMENEW(ClipMachine * cm)
         if (_clip_parinfo(cm,5)==UNDEF_t) ratio = 1;
         if (_clip_parinfo(cm,6)==UNDEF_t) obey_child = TRUE;
 
+	LOCALE_TO_UTF(label);
 	wid = gtk_aspect_frame_new(label,xalign,yalign,ratio,obey_child);
+        FREE_TEXT(label);
         if (!wid) goto err;
 	cwid = _register_widget(cm, wid, cv);
 	_clip_mclone(cm,RETPTR(cm),&cwid->obj);

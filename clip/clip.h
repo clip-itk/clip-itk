@@ -5,6 +5,15 @@
 */
 /*
    $Log: clip.h,v $
+   Revision 1.236  2004/07/05 08:31:14  clip
+   uri: small fix in _storni()
+
+   Revision 1.235  2004/06/11 10:15:14  clip
+   rust: SET PRINTER TO MEMBUF
+
+   Revision 1.234  2004/06/01 09:53:02  clip
+   uri: small fix
+
    Revision 1.233  2004/03/17 08:47:26  clip
    uri: bug in colowin() fixed. Reported by Stas
 
@@ -1607,8 +1616,11 @@ typedef struct ClipMachine
 	struct _HashTable *fields;
 
 	/* if not null, all output come here */
-	struct OutBuf *obuf;
+	//struct OutBuf *obuf;
 	struct OutBuf *ebuf;
+
+	/* output to membuf (SET PRINTER TO MEMBUF) */
+	struct OutBuf *pbuf;
 
 	ClipVar *obj;
 	struct _HashTable *profiler;
@@ -1617,7 +1629,7 @@ typedef struct ClipMachine
 ClipMachine;
 
 #define CLIP_MAX_ERRORBLOCK_DEEP 128
-#define CLIP_MAX_PRINT_DEEP 32
+#define CLIP_MAX_PRINT_DEEP 16
 
 
 #define CLIP_MAX_HISTORY 32

@@ -5,6 +5,9 @@
 */
 /*
    $Log: diskutils.c,v $
+   Revision 1.105  2004/07/12 13:45:39  clip
+   rust: use cm->fileCreateMode for creating file in STRFILE()
+
    Revision 1.104  2003/09/09 14:36:15  clip
    uri: fixes for mingw from Mauricio and Uri
 
@@ -2151,32 +2154,24 @@ clip_STRFILE(ClipMachine * cm)	/* Writes a string to a file */
 	long n = 0, noff = _clip_parnl(cm, 4);
 	int lcut = _clip_parl(cm, 5);
 	int fd = -1, flags = O_WRONLY | O_CREAT;
-#ifdef OS_MINGW
-	mode_t mode = S_IRUSR;
-#else
-	mode_t mode = S_IRUSR | S_IRGRP | S_IROTH;
-#endif
+	mode_t mode = cm->fileCreateMode;
 	int *fattr = _clip_fetch_item(cm, CLIP_CA_FCREATE_ATTR);
 
-	/*struct stat st; */
-
 	if (lowr == 0)		/* create new file */
-		flags |= O_TRUNC;
+	{
+		flags |= O_CREAT;
+		unlink(uname);
+	}
 	else if (cm->argc <= 3)
 	{			/* nOffset - undefined */
 		flags |= O_APPEND;
 		noff = 0;
 	}
 
-	if (fattr && !(*fattr & FA_READONLY))
-#ifdef OS_MINGW
-		mode |= S_IWUSR;
-#else
-		mode |= S_IWUSR | S_IWGRP | S_IWOTH;
-#endif
+	if (fattr && (*fattr & FA_READONLY))
+		mode &= ~(S_IWUSR | S_IWGRP | S_IWOTH);
 
-	if ((fd = open(uname, flags, mode)) < 0	/*|| fstat( fd, &st ) */
-		|| !_set_lock(fd, F_WRLCK))
+	if ((fd = open(uname, flags, mode)) < 0)
 		goto end;
 
 	if (cm->argc > 3)
@@ -2187,7 +2182,7 @@ clip_STRFILE(ClipMachine * cm)	/* Writes a string to a file */
 
 	n = write(fd, str, strlen(str));
 
-	  end:
+end:
 	_clip_retnl(cm, n);
 
 	if (lcut)

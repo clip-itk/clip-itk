@@ -19,7 +19,7 @@ clip_cld:$(OBJS)
 	$(CLIP) $(CLIPFLAGS) -s -e -M clip_cld.prg $(OBJS) $(CLIPLIBS)
 
 install:
-	cp clip_cld$(EXESUFF) $(CLIPROOT)/bin
+	cp clip_cld$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
 
 test:
 	$(CLIP) $(CLIPFLAGS) -s -e -M test.prg

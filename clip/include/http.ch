@@ -1,8 +1,12 @@
 #ifndef __HTTP_CH__
 #define __HTTP_CH__
 
-#define KAMACHE_VERSION  0.10
+#define KAMACHE_VERSION  0.40
 #define KAMACHE_DEFPORT  3001
+#define KAMACHE_DOCROOT   "/var/www/htdocs"
+#define KAMACHE_CGIBIN   "/usr/lib/cgi-bin/"
+#define KAMACHE_MODCLIP  cliproot()+"/kamache/mod-clip"
+#define HTTP_DEFHOST	 "localhost"
 #define HTTP_DEFPORT	 80
 #define HTTP_PROXYPORT   8080
 

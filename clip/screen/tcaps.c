@@ -1,6 +1,9 @@
 
 /*
    $Log: tcaps.c,v $
+   Revision 1.7  2004/05/21 11:22:19  clip
+   rust: minor fix for 'configure -m'
+
    Revision 1.6  2003/09/02 14:27:43  clip
    changes for MINGW from
    Mauricio Abre <maurifull@datafull.com>
@@ -31,6 +34,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
+
+#include "../clip.h"
 
 #ifdef unix
 
@@ -1479,7 +1484,7 @@ tgetent(char *bp, char *name, int beg)
 				return tnchktc(name, j);
 			}
 		}
-	      nextf:
+		  nextf:
 		close(tf);
 	}
 	return -1;
@@ -1596,7 +1601,7 @@ split_entry(Terminfo * info, char *entry)
 			continue;
 
 		fp = (TermcapBucket *) bsearch(name, termcapNames, TCAPNUM,
-					       sizeof(TermcapBucket), cmp_bucket);
+						   sizeof(TermcapBucket), cmp_bucket);
 
 		if (!fp)
 		{
@@ -1709,7 +1714,7 @@ tdecode(char *bp, Terminfo * info)
 		case '\\':
 			dp = "E\033^^\\\\::n\nr\rt\tb\bf\f";
 			c = *str++;
-		      nextc:
+			  nextc:
 			if (*dp++ == c)
 			{
 				c = *dp++;
@@ -1800,9 +1805,9 @@ read_info(Terminfo * info, char *filename)
 
 	if ((fd = open(filename, O_RDONLY
 #ifdef _WIN32
-		       | O_BINARY
+			   | O_BINARY
 #endif
-	     )) < 0)
+		 )) < 0)
 		return -1;
 
 	/* grab the header */
@@ -1811,7 +1816,7 @@ read_info(Terminfo * info, char *filename)
 
 	if (LOW_MSB(buf) != MAGIC)
 	{
-	      clret:
+		  clret:
 		close(fd);
 		return (0);
 	}

@@ -1,12 +1,15 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /* [ */
 %{
 /*
  * $Log: clic.y,v $
+ * Revision 1.81  2004/07/19 13:41:31  clip
+ * rust: DO proc WITH ... didn't respect () (pass by value)
+ *
  * Revision 1.80  2003/12/17 09:46:42  clip
  * uri: "f->fname" as "alias->fname" not as "field->fname"
  *
@@ -468,8 +471,8 @@ static Node *(*def_node)(VarColl *cp) = 0;
 */
 %type <node>	oper operlist name mname else step using otherwise iname
 %type <node>	constant expr nexpr nilexpr exprlist arg expr_list code mconstant
-%type <coll>	namelist arg_list elseif caselist casebeg
-%type <arglist> arglist with
+%type <coll>	namelist arg_list with_arg_list elseif caselist casebeg
+%type <arglist> arglist with_arglist
 %type <var>	var dim
 %type <varcoll> paramlist param_list vardef varlist bparam_list dimdef
 %type <string>	inalias
@@ -773,13 +776,13 @@ oper:                	{ $$=NULL; }
 			pop_operlist();
 		}
 
-	| DO NAME with { CM; $$ = new_OperExprNode(new_CallNode($2, $3.coll, $3.haveRest)); }
+	| DO NAME with_arglist { CM; $$ = new_OperExprNode(new_CallNode($2, $3.coll, $3.haveRest)); }
 
-	| DO mname with	{ CM; $$ = new_OperExprNode(new_CallNameNode($2, $3.coll)); }
+	| DO mname with_arglist	{ CM; $$ = new_OperExprNode(new_CallNameNode($2, $3.coll)); }
 
-	| CALL NAME with { CM; $$ = new_OperExprNode(new_CallNode($2, $3.coll, $3.haveRest)); }
+	| CALL NAME with_arglist { CM; $$ = new_OperExprNode(new_CallNode($2, $3.coll, $3.haveRest)); }
 
-	| CALL mname with	{ CM; $$ = new_OperExprNode(new_CallNameNode($2, $3.coll)); }
+	| CALL mname with_arglist	{ CM; $$ = new_OperExprNode(new_CallNameNode($2, $3.coll)); }
 
 	| EXIT  {
 			CM;
@@ -1437,8 +1440,14 @@ arglist: arg_list		{ $$.coll=$1; $$.haveRest=0; }
 	| PALL	{ $$.coll=new_Coll(NULL,NULL); $$.haveRest=1;  }
 	;
 
+with_arglist: { $$.coll=new_Coll(NULL,NULL); $$.haveRest=0; }
+	| WITH with_arg_list		{ $$.coll=$2; $$.haveRest=0; }
+	| WITH with_arg_list ',' PALL	{ $$.coll=$2; $$.haveRest=1; }
+	| WITH PALL	{ $$.coll=new_Coll(NULL,NULL); $$.haveRest=1;  }
+	;
+/*
 with:			{ $$.coll=new_Coll(NULL,NULL); $$.haveRest=0; }
-	| WITH arglist	{
+	| WITH with_arglist; 	{
 			Coll *cp;
 			int i;
 			Node *np;
@@ -1452,6 +1461,51 @@ with:			{ $$.coll=new_Coll(NULL,NULL); $$.haveRest=0; }
 					continue;
 				cp->items[i] = new_RefNode(np);
 			}
+		}
+	;
+*/
+with_arg_list: arg	{
+			$$=new_Coll(NULL,NULL);
+			if ($1) {
+				Coll *cp;
+				Node *np;
+
+				insert_Coll($$,$1);
+				cp = $$;
+				np = (Node*) cp->items[0];
+				if(!(np->isRef||np->isConst||(!np->isLval && !np->isField)))
+					cp->items[0] = new_RefNode(np);
+			}
+		}
+	| '(' arg ')' {
+			$$=new_Coll(NULL,NULL);
+			if ($2)
+				insert_Coll($$,$2);
+	}
+	| with_arg_list ',' arg 	{
+			$$=$1;
+			if (!$$->count)
+				insert_Coll($$,new_ArgNode(new_NilConstNode(),0));
+			if ($3) {
+				Coll *cp;
+				Node *np;
+				insert_Coll($$,$3);
+				cp = $$;
+				np = (Node*) cp->items[cp->count-1];
+				if(!(np->isRef||np->isConst||(!np->isLval && !np->isField)))
+					cp->items[cp->count-1] = new_RefNode(np);
+			}
+			else
+				insert_Coll($$,new_ArgNode(new_NilConstNode(),0));
+		}
+	| with_arg_list ',' '(' arg ')'	{
+			$$=$1;
+			if (!$$->count)
+				insert_Coll($$,new_ArgNode(new_NilConstNode(),0));
+			if ($4)
+				insert_Coll($$,$4);
+			else
+				insert_Coll($$,new_ArgNode(new_NilConstNode(),0));
 		}
 	;
 
@@ -1578,9 +1632,9 @@ clic_parse(const char *filename, FILE *stream)
   }
 
   if (stream)
-    file=stream;
+	file=stream;
   else
-    file=fopen(filename, "rt");
+	file=fopen(filename, "rt");
 
   if (file)
    {
@@ -1602,8 +1656,8 @@ clic_parse(const char *filename, FILE *stream)
    }
   else
    {
-     yyerror("cannot open file '%s'", filename);
-     ret=-1;
+	 yyerror("cannot open file '%s'", filename);
+	 ret=-1;
    }
 
   if (ret==0)
@@ -1611,7 +1665,7 @@ clic_parse(const char *filename, FILE *stream)
    }
 
   if (!stream && file)
-    fclose(file);
+	fclose(file);
   return ret;
 }
 

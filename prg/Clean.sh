@@ -34,6 +34,10 @@ if [ -d utils ]
 then
 	cd utils; $MAKE clean; cd ..
 fi
+if [ -d kamache ]
+then
+	cd kamache; $MAKE clean; cd ..
+fi
 if [ -d pp ]
 then
 	cd pp; $MAKE clean; cd ..

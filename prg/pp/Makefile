@@ -10,8 +10,8 @@ pp$(EXESUFF):	pp.prg
 	$(CLIP) $(CLIPFLAGS) -e -s pp.prg $(CLIPLIBS)
 
 install:
-	cp pp$(EXESUFF) $(CLIPROOT)/bin/pp_ron$(EXESUFF)
-	cp *.ch $(CLIPROOT)/include
+	cp pp$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/pp_ron$(EXESUFF)
+	cp *.ch $(DESTDIR)$(CLIPROOT)/include
 
 clean:
 	rm -f *.exe *.so *.c *.s *.o *.po *.bak *.uri *.log *.ntx *.pa pp *.pp?

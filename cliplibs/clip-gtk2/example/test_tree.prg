@@ -1,11 +1,19 @@
 
 #include <clip-gtk2.ch>
 
-static view, tview, list, tree
+#define TRUE	.T.
+#define FALSE	.F.
+
+static view, tview, list, tree, have_drag := FALSE
+static trashcan_open, trashcan_closed, trashcan_open_mask, trashcan_closed_mask, pixmap
+static traget_table, n_targets
 
 function Main()
 local win, layout, btn, iter, model, renderer
 local i
+
+	target_table = { { "GTK_TREE_MODEL_ROW", GTK_TARGET_SAME_APP, 0}}
+        n_targets = len(target_table)
 
 
 	gtk_Init()
@@ -152,7 +160,36 @@ local i
         gtk_ToolbarAppendItem(stbar, " Prepend ","Prepend new item", NIL, , @PrependListItem())
         gtk_ToolbarAppendSpace(stbar)
         gtk_ToolbarAppendItem(stbar, " Delete ","Delete item from list", NIL, , @deleteListItem())
+        gtk_ToolbarAppendSpace(stbar)
 
+  	/* drag and drop */
+  	gtk_TreeViewEnableModelDragSource (view, numor(GDK_BUTTON1_MASK , GDK_BUTTON3_MASK), ;
+		       target_table, n_targets, ;
+		       numor(GDK_ACTION_COPY, GDK_ACTION_MOVE))
+
+  	gtk_TreeViewEnableModelDragDest (view, ;
+		       target_table, n_targets, ;
+		       numor(GDK_ACTION_COPY, GDK_ACTION_MOVE))
+
+  	trashcan_open = gdk_PixmapColormapCreateFromXpm(NIL, ;
+					          gtk_WidgetGetColormap (win), ;
+						  @trashcan_open_mask, ;
+						  NIL, "trashcan_open.xpm")
+  	trashcan_closed = gdk_PixmapColormapCreateFromXpm(NIL, ;
+						    gtk_WidgetGetColormap (win), ;
+						    @trashcan_closed_mask, ;
+						    NIL, "trashcan_closed.xpm")
+  	pixmap = gtk_PixmapNew (,trashcan_closed, trashcan_closed_mask)
+  	gtk_DragDestSet (pixmap, 0, NIL, 0, 0)
+  	gtk_SignalConnect (pixmap, "drag-leave", {|w, e| target_drag_leave(w, e)})
+
+  	gtk_SignalConnect (pixmap, "drag-motion", {|w, e| target_drag_motion(w,e)})
+
+  	gtk_SignalConnect (pixmap, "drag-drop", {|w, e| target_drag_drop(w, e)})
+
+  	gtk_SignalConnect (pixmap, "drag-data-received", {|w, e| target_drag_data_received(w, e)})
+
+        gtk_ToolbarAppendWidget(stbar, pixmap, "removed items", "removed items")
 
         gtk_BoxPackStart(box, sw, .t., .t.)
 	gtk_BoxPackEnd(box, stbar)
@@ -229,6 +266,9 @@ local i
 
 
 	gtk_SignalConnect(tview, "cursor-changed", {|w, e| selectRow(w, e, tmodel)})
+        gtk_SignalConnect(tview, "row-collapsed", {|| qout("row collapsed")})
+        gtk_SignalConnect(tview, "row-expanded", {|| qout("row expanded")})
+        gtk_SignalConnect(tview, "row-activated", {|| qout("row activated")})
 
 	tbox := gtk_VBoxNew()
         tsw := gtk_ScrolledWindowNew()
@@ -370,5 +410,80 @@ local path
 	? path
         ?
 return .f.
+
+static function target_drag_leave(widget, event)
+  qout("leave&\n")
+  have_drag = FALSE
+  gtk_PixmapSet (widget, trashcan_closed, trashcan_closed_mask)
+return FALSE
+
+static function target_drag_motion(widget, event)
+
+local source_widget
+local tmp_list
+
+	qout("target_drag_motion")
+  	if !have_drag
+      		have_drag = TRUE
+      		gtk_PixmapSet (widget, trashcan_open, trashcan_open_mask)
+  	endif
+
+ 	 	source_widget = gtk_DragGetSourceWidget (event:DRAGCONTEXT)
+  	qout ("motion, source ",  GTK_WIDGETGETTYPENAME (source_widget) )
+
+  /*tmp_list = context->targets;
+  while (tmp_list)
+    {
+      char *name = gdk_atom_name (GDK_POINTER_TO_ATOM (tmp_list->data));
+      g_print ("%s\n", name);
+      g_free (name);
+
+      tmp_list = tmp_list->next;
+    }
+    */
+	gdk_DragStatus (event:DRAGCONTEXT, event:DRAGCONTEXT:SUGGESTED_ACTION, ;
+		event:TIME)
+
+return TRUE
+
+static function target_drag_drop(widget, event)
+local selection, iter, path, pathstr
+  	qout("drop")
+  	have_drag = FALSE
+
+  	gtk_PixmapSet (widget, trashcan_closed, trashcan_closed_mask)
+
+  	if (event:DRAGCONTEXT:TARGETS != NIL)
+      		gtk_DragGetData (widget, event:DRAGCONTEXT, ;
+			 event:DRAGCONTEXT:TARGETS, ;
+			 event:TIME)
+		selection := gtk_TreeViewGetSelection(view)
+        	if gtk_TreeSelectionGetSelected(selection, NIL, @iter)
+        		path := gtk_TreeModelGetPath(list, iter)
+        		pathstr := gtk_TreePathToString(path)
+        		gtk_ListStoreRemove(list, pathstr)
+        		gtk_TreePathFree(path)
+        	endif
+      		return
+      		return TRUE
+  	endif
+
+  return FALSE
+
+static function target_drag_data_received(widget, event)
+local data
+
+	data := event:SELECTIONDATA
+
+	qout("target_drag_data_received")
+
+  	if data:length >= 0 .and.  data:format == 8
+      		qout("Received "+data:data+" in trashcan")
+      		gtk_DragFinish(event:DRAGCONTEXT, TRUE, FALSE, event:TIME)
+
+    	endif
+
+  	gtk_DragFinish (event:DRAGCONTEXT, FALSE, FALSE, event:TIME)
+return
 
 

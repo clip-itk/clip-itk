@@ -1,6 +1,15 @@
 
 /*
    $Log: screen.c,v $
+   Revision 1.102  2004/06/21 04:43:03  clip
+   uri: small fix
+
+   Revision 1.101  2004/06/17 07:23:48  clip
+   uri:small fix for utf-8 && xterm
+
+   Revision 1.100  2004/05/19 08:32:18  clip
+   rust: fix for ./configure -m
+
    Revision 1.99  2004/03/01 13:01:57  clip
    uri: add some support UTF-8 to screen output
 
@@ -367,14 +376,14 @@
 
    Revision 1.2  1999/11/02 23:05:52  axl
    start of logging CVS
+*/
 
- */
-
+#include <string.h>
 #include "../clip.h"
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <string.h>
 #include <ctype.h>
 #ifndef OS_MINGW
 	#include <termios.h>
@@ -427,9 +436,9 @@ static int w32_readch(void);
 #endif
 
 #ifndef timercmp
-#define	timercmp(a, b, CMP) 						      \
-  (((a)->tv_sec == (b)->tv_sec) ? 					      \
-   ((a)->tv_usec CMP (b)->tv_usec) : 					      \
+#define	timercmp(a, b, CMP) 							  \
+  (((a)->tv_sec == (b)->tv_sec) ? 						  \
+   ((a)->tv_usec CMP (b)->tv_usec) : 						  \
    ((a)->tv_sec CMP (b)->tv_sec))
 #endif
 
@@ -1410,7 +1419,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 
 	dp->termcap_Visuals = 0;
 	if ((dp->termcap_NF > 0 && dp->termcap_NB > 0 && dp->termcap_CF && (dp->termcap_CB || dp->termcap_C2))
-	    || (dp->termcap_AF && dp->termcap_AB) || (dp->termcap_SETF && dp->termcap_SETB))
+		|| (dp->termcap_AF && dp->termcap_AB) || (dp->termcap_SETF && dp->termcap_SETB))
 	{
 		if (!dp->termcap_NF)
 			dp->termcap_NF = 16;
@@ -1512,11 +1521,12 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 
 		make_uniTable(cs1, len1, dp->uniTable);
 		if ( strcasecmp(p2, "UTF-8") == 0 ||
-		     ((pp = get_env(envp, "LANG")) && (strstr(pp, ".UTF-8") != 0)) ||
-		     ((pp = get_env(envp, "LC_ALL")) && (strstr(pp, ".UTF-8") != 0)) ||
-		     ((pp = get_env(envp, "LC_CTYPE")) && (strstr(pp, ".UTF-8") != 0)) )
+			 ((pp = get_env(envp, "LANG")) && (strstr(pp, ".UTF-8") != 0)) ||
+			 ((pp = get_env(envp, "LC_ALL")) && (strstr(pp, ".UTF-8") != 0)) ||
+			 ((pp = get_env(envp, "LC_CTYPE")) && (strstr(pp, ".UTF-8") != 0)) )
 		{
-		    dp->utf8_mode = 1;
+			if ((pp = get_env(envp, "TERM")) && (strncasecmp(pp, "xterm",5) == 0))
+				dp->utf8_mode = 0; //1;
 		}
 
 		if (!cs2 && load_charset_name(p2, &cs2, &len2))
@@ -1534,7 +1544,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 		free(cs1);
 		free(cs2);
 
-	      norm:
+		  norm:
 			;
 	}
 
@@ -2377,7 +2387,7 @@ termcap_set_color(ScreenData * dp, int color)
 		}
 		if (fg >= 7)
 			goto inverse;
-	      dim_inverse:
+		  dim_inverse:
 		termcap_put_raw_str(dp, dp->termcap_MH);
 		termcap_put_raw_str(dp, dp->termcap_SO);
 		break;
@@ -2391,7 +2401,7 @@ termcap_set_color(ScreenData * dp, int color)
 		}
 		if (fg <= 7)
 			goto inverse;
-	      bold_inverse:
+		  bold_inverse:
 		termcap_put_raw_str(dp, dp->termcap_MD);
 		termcap_put_raw_str(dp, dp->termcap_SO);
 		break;
@@ -2406,33 +2416,33 @@ termcap_set_color(ScreenData * dp, int color)
 	case VisualInverse:
 		if (!bg)
 			goto normal;
-	      inverse:
+		  inverse:
 		termcap_put_raw_str(dp, dp->termcap_ME);
 		termcap_put_raw_str(dp, dp->termcap_SO);
 		break;
 	case VisualBold:
 		if (fg <= 7)
 			goto normal;
-	      bold:
+		  bold:
 		termcap_put_raw_str(dp, dp->termcap_ME ? dp->termcap_ME : dp->termcap_SE);
 		termcap_put_raw_str(dp, dp->termcap_MD);
 		break;
 	case VisualBlink:
 		if (bg <= 7)
 			goto normal;
-	      blink:
+		  blink:
 		termcap_put_raw_str(dp, dp->termcap_ME ? dp->termcap_ME : dp->termcap_SE);
 		termcap_put_raw_str(dp, dp->termcap_mb);
 		break;
 	case VisualDim:
 		if (fg >= 7)
 			goto normal;
-	      dim:
+		  dim:
 		termcap_put_raw_str(dp, dp->termcap_ME ? dp->termcap_ME : dp->termcap_SE);
 		termcap_put_raw_str(dp, dp->termcap_MH);
 		break;
 	case 0:
-	      normal:
+		  normal:
 		termcap_put_raw_str(dp, dp->termcap_ME ? dp->termcap_ME : dp->termcap_SE);
 		break;
 	}
@@ -2821,7 +2831,7 @@ term_match_Key(ScreenBase * base, unsigned char b, unsigned long *keyp)
 		return 0;
 	}
 
-      end_match:
+	  end_match:
 	if (!dp->has_meta2)
 	{
 		if (key == Meta1_key)
@@ -3159,7 +3169,7 @@ get_Key(ScreenBase * base)
 				fd_set rfs;
 				int r, n;
 
-			      again:
+				  again:
 				FD_ZERO(&rfs);
 				FD_SET(gpm_fd, &rfs);
 				FD_SET(base->fd, &rfs);
@@ -3190,7 +3200,7 @@ get_Key(ScreenBase * base)
 				fd_set rfs;
 				int r, n;
 
-			      again1:
+				  again1:
 				FD_ZERO(&rfs);
 				FD_SET(base->fd, &rfs);
 				n = base->fd;
@@ -3221,29 +3231,29 @@ get_Key(ScreenBase * base)
 }
 
 #define tv_cmp(a,b,CMP) \
-      (((a)->tv_sec == (b)->tv_sec) ?            \
-       ((a)->tv_usec CMP (b)->tv_usec) :            \
-       ((a)->tv_sec CMP (b)->tv_sec))
+	  (((a)->tv_sec == (b)->tv_sec) ?            \
+	   ((a)->tv_usec CMP (b)->tv_usec) :            \
+	   ((a)->tv_sec CMP (b)->tv_sec))
 
 #define timer_sub(a, b, result) \
    do {                         \
-       (result)->tv_sec = (a)->tv_sec - (b)->tv_sec;     \
-       (result)->tv_usec = (a)->tv_usec - (b)->tv_usec;  \
-       if ((result)->tv_usec < 0) {                      \
-	      --(result)->tv_sec;                        \
-	      (result)->tv_usec += 1000000;              \
-       }                                                 \
+	   (result)->tv_sec = (a)->tv_sec - (b)->tv_sec;     \
+	   (result)->tv_usec = (a)->tv_usec - (b)->tv_usec;  \
+	   if ((result)->tv_usec < 0) {                      \
+		  --(result)->tv_sec;                        \
+		  (result)->tv_usec += 1000000;              \
+	   }                                                 \
    } while (0)
 
-#define	timer_add(a, b, result)						      \
-  do {									      \
-    (result)->tv_sec = (a)->tv_sec + (b)->tv_sec;			      \
-    (result)->tv_usec = (a)->tv_usec + (b)->tv_usec;			      \
-    if ((result)->tv_usec >= 1000000)					      \
-      {									      \
-	++(result)->tv_sec;						      \
-	(result)->tv_usec -= 1000000;					      \
-      }									      \
+#define	timer_add(a, b, result)							  \
+  do {										  \
+	(result)->tv_sec = (a)->tv_sec + (b)->tv_sec;				  \
+	(result)->tv_usec = (a)->tv_usec + (b)->tv_usec;				  \
+	if ((result)->tv_usec >= 1000000)						  \
+	  {										  \
+	++(result)->tv_sec;							  \
+	(result)->tv_usec -= 1000000;						  \
+	  }										  \
   } while (0)
 
 unsigned long
@@ -3348,7 +3358,7 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 				newMatch_Key(base);
 				return key;
 			}
-		     again1:
+			 again1:
 			gettimeofday(&tv, 0);
 
 		}
@@ -3443,7 +3453,7 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 			newMatch_Key(base);
 			return key;
 		}
-	    again:
+		again:
 		gettimeofday(&tv, 0);
 	}
 }
@@ -4193,10 +4203,10 @@ w32_readch(void)
 	if (inputBuffer.EventType == KEY_EVENT)
 	{
 		if (inputBuffer.Event.KeyEvent.bKeyDown
-		    && (inputBuffer.Event.KeyEvent.wVirtualScanCode == 27)
-		    && (inputBuffer.Event.KeyEvent.dwControlKeyState &
+			&& (inputBuffer.Event.KeyEvent.wVirtualScanCode == 27)
+			&& (inputBuffer.Event.KeyEvent.dwControlKeyState &
 			(LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED))
-		    && (inputBuffer.Event.KeyEvent.dwControlKeyState & (LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED)))
+			&& (inputBuffer.Event.KeyEvent.dwControlKeyState & (LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED)))
 		{
 			printf("\nescape key pressed; exiting...\n");
 			exit(1);
@@ -4246,7 +4256,7 @@ init_mouse(ScreenBase * base, char **envp)
 	e = get_env(envp, "XTERM_MOUSE");
 
 	if ((e && (!strcasecmp(e, "yes") || !strcasecmp(e, "on")))
-	    || !strncmp(term, "xterm", 5) || !strncmp(term, "rxvt", 4) || strstr(term, "xterm") || strstr(term, "rxvt"))
+		|| !strncmp(term, "xterm", 5) || !strncmp(term, "rxvt", 4) || strstr(term, "xterm") || strstr(term, "rxvt"))
 	{
 		const char msg[] = "\033[?1001s\033[?1000h";
 

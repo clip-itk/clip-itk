@@ -43,7 +43,8 @@ const char * _clip_type_name_button() { return "GTK_WIDGET_BUTTON"; }
 int
 clip_INIT___BUTTON(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_button, _clip_type_name_button, _gtk_type_button,  _gtk_type_container, button_signals);
+	//_wtype_table_put(_clip_type_button, _clip_type_name_button, _gtk_type_button,  _gtk_type_container, button_signals);
+	_wtype_table_put(_clip_type_button, _clip_type_name_button, _gtk_type_button,  _gtk_type_bin, button_signals);
 	return 0;
 }
 /**********************************************************/
@@ -555,4 +556,52 @@ clip_GTK_BUTTONGETUSESTOCK(ClipMachine * cm)
 err:
 	return 1;
 }
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+
+int
+clip_GTK_BUTTONSETFOCUSONCLICK(ClipMachine * cm)
+{
+	C_widget   *cbtn = _fetch_cw_arg(cm);
+	gboolean focus_on_click = _clip_parl(cm, 2);
+
+	CHECKCWID(cbtn,GTK_IS_BUTTON);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_button_set_focus_on_click(GTK_BUTTON(cbtn->widget), focus_on_click);
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_BUTTONGETFOCUSONCLICK(ClipMachine * cm)
+{
+	C_widget   *cbtn = _fetch_cw_arg(cm);
+
+	CHECKCWID(cbtn,GTK_IS_BUTTON);
+
+	_clip_retl(cm, gtk_button_get_focus_on_click(GTK_BUTTON(cbtn->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_BUTTONGETALIGNMENT(ClipMachine * cm)
+{
+	C_widget   *cbtn = _fetch_cw_arg(cm);
+        gfloat  xalign, yalign;
+
+	CHECKCWID(cbtn,GTK_IS_BUTTON);
+
+	gtk_button_get_alignment(GTK_BUTTON(cbtn->widget), &xalign, &yalign);
+
+	_clip_stornd(cm, xalign, 2, 0);
+	_clip_stornd(cm, yalign, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+#endif
 

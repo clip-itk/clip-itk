@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+              Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -49,12 +50,30 @@ clip_GTK_COMBONEW(ClipMachine * cm)
 	cpopup = _register_widget(cm, GTK_COMBO(wid)->popup, NULL);
 	cpopwin = _register_widget(cm, GTK_COMBO(wid)->popwin, NULL);
 
-	if (centry) _clip_madd(cm,&cwid->obj,HASH_ENTRY,&centry->obj);
-	if (clist) _clip_madd(cm,&cwid->obj,HASH_LIST,&clist->obj);
-	if (cbutton) _clip_madd(cm,&cwid->obj,HASH_BUTTON,&cbutton->obj);
-	if (cpopup) _clip_madd(cm,&cwid->obj,HASH_POPUP,&cpopup->obj);
-	if (cpopwin) _clip_madd(cm,&cwid->obj,HASH_POPWIN,&cpopwin->obj);
-
+	if (centry)
+        {
+		_clip_madd(cm,&cwid->obj,HASH_ENTRY,&centry->obj);
+		_clip_mputn(cm, &centry->obj, HASH_PARENT, cwid->handle);
+	}
+	if (clist)
+	{
+	 	_clip_madd(cm,&cwid->obj,HASH_LIST,&clist->obj);
+		_clip_mputn(cm, &clist->obj, HASH_PARENT, cwid->handle);
+	}
+	if (cbutton)
+	{
+	 	_clip_madd(cm,&cwid->obj,HASH_BUTTON,&cbutton->obj);
+		_clip_mputn(cm, &cbutton->obj, HASH_PARENT, cwid->handle);
+	}
+	if (cpopup)
+	{
+	 	_clip_madd(cm,&cwid->obj,HASH_POPUP,&cpopup->obj);
+		_clip_mputn(cm, &cpopup->obj, HASH_PARENT, cwid->handle);
+	}
+	if (cpopwin){
+	 	_clip_madd(cm,&cwid->obj,HASH_POPWIN,&cpopwin->obj);
+		_clip_mputn(cm, &cpopwin->obj, HASH_PARENT, cwid->handle);
+        }
 	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
 
 	return 0;
@@ -306,13 +325,16 @@ clip_GTK_COMBOSETPOPDOWNSTRINGS(ClipMachine * cm)
 {
 	C_widget   *ccmb = _fetch_cw_arg(cm);
 	ClipArrVar *astr = (ClipArrVar*)_clip_vptr(_clip_spar(cm,2));
+        gint         num = INT_OPTION(cm, 3, 1);
 	GList  *str_list = NULL;
 	gchar * text_utf;
 	ClipStrVar *s;
 	int i;
 	CHECKCWID(ccmb,GTK_IS_COMBO);
-	CHECKOPT(2,ARRAY_t);
+	CHECKOPT(2,ARRAY_t); CHECKOPT(3, NUMERIC_t);
 
+	if (_clip_parinfo(cm, 2) == UNDEF_t || astr->count == 0)
+        	return 0;
 	for(i=0; i < astr->count; i++ )
 	{
 		if ( astr->items[i].t.type != CHARACTER_t ) continue;
@@ -327,7 +349,11 @@ clip_GTK_COMBOSETPOPDOWNSTRINGS(ClipMachine * cm)
 			FREE_TEXT(text_utf);
 		}
 		else
+                {
+			text_utf = g_locale_to_utf8(text_utf, strlen(text_utf), NULL, NULL, NULL);
 			str_list = g_list_append( str_list, text_utf );
+                        //g_free(text_utf);
+                }
 
 	}
 	if (ccmb->objtype == GTK_WIDGET_COMBO_SIMPLE)
@@ -337,6 +363,21 @@ clip_GTK_COMBOSETPOPDOWNSTRINGS(ClipMachine * cm)
 	}
 	else
 		gtk_combo_set_popdown_strings(GTK_COMBO(ccmb->widget), str_list);
+
+	/* set item */
+	num --;
+	if (num > -1)
+        {
+		if (num > astr->count )
+        		num = 0;
+		s = (ClipStrVar*)_clip_vptr(&astr->items[num]);
+		text_utf = s->str.buf;
+		LOCALE_TO_UTF(text_utf);
+		gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(ccmb->widget)->entry), text_utf);
+                FREE_TEXT(text_utf);
+        }
+        else
+		gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(ccmb->widget)->entry), "");
 
 	return 0;
 err:
@@ -377,4 +418,95 @@ clip_GTK_COMBOGETSELECTIONINDEX(ClipMachine * cm)
 err:
 	return 1;
 }
+
+
+int
+clip_GTK_COMBOGETSELECTION(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+	GtkList    *list;
+	GList *selection;
+	gchar      *data;
+        guint          i;
+
+	CHECKCWID(ccmb,GTK_IS_COMBO);
+	list = GTK_LIST(GTK_COMBO(ccmb->widget)->list);
+	selection = list->selection;
+	if (selection)
+        {
+        	i = g_list_index(list->children, selection->data);
+
+        	data = (gchar *)gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(ccmb->widget)->entry));
+        	LOCALE_FROM_UTF(data);
+		_clip_retc(cm, data);
+                FREE_TEXT(data);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOGETPOPDOWNSTRINGSLENGTH(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+	GList      *list;
+        guint     length;
+
+	CHECKCWID(ccmb,GTK_IS_COMBO);
+	list = gtk_container_get_children(GTK_CONTAINER(GTK_COMBO(ccmb->widget)->list));
+        length = g_list_length(list);
+	_clip_retni(cm, length);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOGETPOPDOWNSTRINGS(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+        ClipVar   *cvarr = RETPTR(cm);
+	GList      *list;
+        long           l;
+
+	CHECKCWID(ccmb,GTK_IS_COMBO);
+	list = gtk_container_get_children(GTK_CONTAINER(GTK_COMBO(ccmb->widget)->list));
+        list = g_list_first(list);
+
+        l = g_list_length(list);
+
+	_clip_array(cm, cvarr, 1, &l);
+	for (l=0;list; list=g_list_next(list), l++)
+        {
+        	ClipVar cv;
+                gchar  *str;
+                gint      n;
+                GtkWidget *label;
+
+                memset(&cv, 0, sizeof(cv));
+                str = (gchar *)gtk_object_get_data(GTK_OBJECT(list->data), "gtk-combo-string-value");
+                if (!str)
+                {
+                     label = GTK_BIN (list->data)->child;
+                     if (label  && GTK_IS_LABEL (label))
+                     	gtk_label_get (GTK_LABEL (label), &str);
+                }
+
+
+                LOCALE_FROM_UTF(str);
+                n = strlen(str);
+                _clip_var_str(str, n, &cv);
+                FREE_TEXT(str);
+                _clip_aset(cm, cvarr, &cv, 1, &l);
+                _clip_destroy(cm, &cv);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
 

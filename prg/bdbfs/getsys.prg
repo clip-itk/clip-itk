@@ -186,8 +186,7 @@ DO CASE
 	     (_mox:=AMSCAN(m->_aGetKeys,1,key))<>0
 		EVAL(m->_aGetKeys[_mox,2])
 
-	CASE (_cGetType == "C") .AND. key==K_CTRL_X .AND. IsShift() .AND.;
-	      (ALTF()=2)
+	CASE (_cGetType == "C") .AND. key==K_CTRL_X .AND. IsCtrlShift()
 		get:buffer:=IF(_cGetBuffer>='€',Nation2Usa(_cGetBuffer),;
 			    Usa2Nation(_cGetBuffer))
 		get:VarPut(get:buffer)

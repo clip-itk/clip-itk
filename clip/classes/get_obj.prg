@@ -105,6 +105,7 @@ function GETNEW(row,col,block,varname,pic,color,var,vblock,wblock)
 
   obj:setcolor()
 
+
   if block!=NIL
 	dispbegin()
 	scr:=savescreen()
@@ -113,6 +114,7 @@ function GETNEW(row,col,block,varname,pic,color,var,vblock,wblock)
 	restscreen(,,,,scr)
 	dispend()
   endif
+
 
 return obj
 
@@ -324,7 +326,7 @@ static func setFocus()
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"__setfocus",::name)
 #endif
-   if ::block==NIL
+   if ::block==NIL .or. ::hasFocus
 	return NIL
    endif
   ::__oldReadVar:=set("__readvar",::name)
@@ -475,7 +477,7 @@ static func display(self)
    endif
    self:__fillbuffer()
    if !(s==self:buffer) .and. s!=NIL
-	self:buffer:=s
+	self:buffer := s
 	modify:=.t.
    endif
    newValue := eval(self:block)
@@ -690,7 +692,7 @@ return NIL
 
 **********************************************
 static func toDecPos()
-   local i,pos,s1,s2
+   local i,pos,s1,s2,neg:=.f.
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"todecpos",::name)
 #endif
@@ -716,11 +718,19 @@ static func toDecPos()
      ::pos:=atail(::__posArr)
    endif
    if ::decpos!=0
+	neg := (left(alltrim(::__original),1)=="-")
 	s1:=left(::__original,len(::__original)-::__dec)
 	s2:=right(::__original,::__dec)
 	s2:=strtran(s2," ","0")
-	s1:=str(val(s1,len(s1),0),len(s1),0)
-	::__original=s1+s2
+	s1:=val(s1,len(s1),0)
+	neg := (neg .and. s1==0)
+	s1:=str(s1,len(s1),0)
+	if neg
+		::__original='-'+right(s1,len(s1)-1)+s2
+		::__original=strtran(::__original,' ','0')
+	else
+		::__original=s1+s2
+	endif
 	::__fillBuffer()
    else
    //  		::__original=substr(::__original,1,p-1)+substr(::__original,p+1)+" "
@@ -1403,11 +1413,11 @@ static func __fillBuffer()
 	endif
      endif
      if "!" $ ::__flags
-	::buffer=upper(::buffer)
+	::buffer := upper(::buffer)
      endif
      if ::type=="N"
-	::buffer=strtran(::buffer,"-,"," -")
-	::buffer=strtran(::buffer,"- "," -")
+	::buffer := strtran(::buffer,"-,"," -")
+	::buffer := strtran(::buffer,"- "," -")
      endif
 return NIL
 

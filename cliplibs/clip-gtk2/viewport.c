@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001 - 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -8,11 +9,33 @@
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
 
 /**********************************************************/
+static gint
+handler_set_scroll_adjustments (GtkViewport *viewport, GtkAdjustment *hadj, GtkAdjustment *vadj, C_signal *cs)
+  {
+	C_widget *cwid;
+	PREPARECV(cs,cv);
+	cwid = _list_get_cwidget(cs->cw->cmachine,GTK_WIDGET(hadj));
+	if (!cwid) cwid = _register_widget(cs->cw->cmachine,GTK_WIDGET(hadj),NULL);
+	if (cwid) _clip_madd(cs->cw->cmachine, &cv, HASH_HADJ, &cwid->obj);
+	cwid = _list_get_cwidget(cs->cw->cmachine,GTK_WIDGET(vadj));
+	if (!cwid) cwid = _register_widget(cs->cw->cmachine,GTK_WIDGET(vadj),NULL);
+	if (cwid) _clip_madd(cs->cw->cmachine, &cv, HASH_VADJ, &cwid->obj);
+	INVOKESIGHANDLER(GTK_WIDGET(viewport),cs,cv);
+  }
+
+static SignalTable viewport_signals[] =
+{
+	/* signals */
+	{"set-scroll-adjustments",GSF( handler_set_scroll_adjustments ),	ESF( object_emit_signal ), GTK_SET_SCROLL_ADJUSTMENTS_SIGNAL},
+	{"", NULL, NULL, 0}
+};
+
 
 /* Register Viewport in global table */
 CLIP_DLLEXPORT GtkType _gtk_type_viewport() { return GTK_TYPE_VIEWPORT; }
@@ -22,7 +45,8 @@ const char * _clip_type_name_viewport() { return "GTK_WIDGET_VIEWPORT"; }
 int
 clip_INIT___VIEWPORT(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_viewport, _clip_type_name_viewport, _gtk_type_viewport, _gtk_type_container, NULL);
+	//_wtype_table_put(_clip_type_viewport, _clip_type_name_viewport, _gtk_type_viewport, _gtk_type_container, viewport_signals);
+	_wtype_table_put(_clip_type_viewport, _clip_type_name_viewport, _gtk_type_viewport, _gtk_type_bin, viewport_signals);
 	return 0;
 }
 

@@ -225,8 +225,8 @@ __timeout__func(void* data)
 	if (res.t.type == LOGICAL_t)
 		ret = res.l.val;
 	_clip_destroy(c->cm, &res);
-	if (!ret)
-		_destroy__func(c);
+//	if (!ret)
+  //		_destroy__func(c);
 	return ret;
 }
 
@@ -324,7 +324,7 @@ clip_GTK_TIMEOUTADD(ClipMachine * cm)
 	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
 	c->id = gtk_timeout_add(interval,(GtkFunction)__timeout__func,c);
 	_clip_retni(cm,_clip_store_c_item(cm, c, _C_ITEM_TYPE_GTK_TIMEOUT, NULL));
-
+	_clip_retni(cm,c->id);
 	return 0;
 err:
 	return 1;
@@ -341,7 +341,8 @@ clip_GTK_TIMEOUTREMOVE(ClipMachine * cm)
 
 	c = _clip_fetch_c_item(cm, timeout_handler_id, _C_ITEM_TYPE_GTK_TIMEOUT);
 	if (c)
-		gtk_timeout_remove(c->id);
+		gtk_timeout_remove(timeout_handler_id);
+	  //	gtk_timeout_remove(c->id);
 
 	_clip_destroy_c_item(cm, timeout_handler_id, _C_ITEM_TYPE_GTK_TIMEOUT);
 	_destroy__func(c);

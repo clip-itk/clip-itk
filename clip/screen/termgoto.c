@@ -1,6 +1,9 @@
 
 /*
    $Log: termgoto.c,v $
+   Revision 1.6  2004/05/21 11:22:19  clip
+   rust: minor fix for 'configure -m'
+
    Revision 1.5  2000/12/02 12:46:57  clip
    scancodes
    paul
@@ -20,6 +23,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#include "../clip.h"
 
 #define MAXRETURNSIZE 64
 	   /* max length of 'goto' string */
@@ -70,7 +75,7 @@ scr_tgoto(char *CM, int destcol, int destline, char *buf, int buflen)
 #endif
 	cp = CM;
 	if (!cp)
-	      toohard:
+		  toohard:
 		return;
 	dp = buf;
 	ep = dp + buflen - 1;
@@ -102,13 +107,13 @@ scr_tgoto(char *CM, int destcol, int destline, char *buf, int buflen)
 				which %= 100;
 				/* fall into... */
 			case '2':
-			      two:
+				  two:
 				*dp++ = which / 10 | '0';
-			      one:
+				  one:
 				*dp++ = which % 10 | '0';
-			      swap:
+				  swap:
 				oncol = 1 - oncol;
-			      setwhich:
+				  setwhich:
 				which = oncol ? destcol : destline;
 				continue;
 			case '>':
@@ -313,7 +318,7 @@ tparm(char *outp, char *cp, int p1, int p2)
 				goto two;
 			/* fall into... */
 		case '3':
-		      three:
+			  three:
 			if (c == '3' && *cp++ != 'd')
 				TPARMERR("bad char after %3");
 			*outp++ = (op / 100) | '0';
@@ -324,9 +329,9 @@ tparm(char *outp, char *cp, int p1, int p2)
 				goto three;
 			if (c == '2' && *cp++ != 'd')
 				TPARMERR("bad char after %2");
-		      two:
+			  two:
 			*outp++ = op / 10 | '0';
-		      one:
+			  one:
 			*outp++ = op % 10 | '0';
 			(void) POP();
 			continue;

@@ -10,7 +10,7 @@
 #else
 	#ifdef __CLIP__
 		#define x_EOL (chr(10))
-        #else
+	#else
 		#define x_EOL (chr(13)+chr(10))
 	#endif
 #endif
@@ -55,9 +55,9 @@ local a
 local aCode:={}
 local i,n,cTok,nTok
 static x_keywords:={"if","else","endif","while","endw","for","next",;
-                    "private","public","release","exit","loop",;
-                    "proc","endp","call","write","return","push","pop",;
-                    "param","block","elif","loadlib"}
+		    "private","public","release","exit","loop",;
+		    "proc","endp","call","write","return","push","pop",;
+		    "param","block","elif","loadlib"}
 memvar aCommStack
 private aCommStack:={}
 blprocs:={}
@@ -90,7 +90,7 @@ chkstack(aCommStack)
 release aCommStack
 return aCode
 
-function chkstack(a)
+static function chkstack(a)
 local i,s
 if len(a)==0
  return .t.
@@ -100,12 +100,12 @@ for i:=1 to len(a)
 next
 return .f.
 
-function mkblkerr(e,i)
+static function mkblkerr(e,i)
 myalert('Error in expression in line '+alltrim(str(i)),{'Stop'})
 BREAK(e)
 return e
 
-function mkblk(s,i,ReadyBlock)
+static function mkblk(s,i,ReadyBlock)
 STATIC e
 LOCAL r,errblk,c
 e:=errorblock({|err| mkblkerr(err,i)})
@@ -122,7 +122,7 @@ end sequence
 errorblock(e)
 return r
 
-function commparse(aCode,nTok,s)
+static function commparse(aCode,nTok,s)
 local r,k,n,i
 do case
   case nTok==x_if
@@ -154,8 +154,8 @@ do case
       r:=k[2]
       aCode[r][2][2]:=len(aCode)
       if k[1]==x_elif
-        n:=aCode[k[2]][2][5]
-        aCode[n][2][3]:=len(aCode)
+	n:=aCode[k[2]][2][5]
+	aCode[n][2][3]:=len(aCode)
       endif
     else
       myalert('ELSE without IF in line '+alltrim(str(len(aCode))),{'Ok'})
@@ -170,8 +170,8 @@ do case
       r:=k[2]
       aCode[r][2][3]:=len(aCode)
       if k[1]==x_elif
-        n:=aCode[k[2]][2][5]
-        aCode[n][2][3]:=len(aCode)
+	n:=aCode[k[2]][2][5]
+	aCode[n][2][3]:=len(aCode)
       endif
     else
       myalert('ENDIF without IF in line '+alltrim(str(len(aCode))),{'Ok'})
@@ -279,9 +279,9 @@ do case
     n:=scantok(aCommStack,{x_proc})
     if n<>0
       if empty(alltrim(s))
-        r:={aCommStack[n][2]}
+	r:={aCommStack[n][2]}
       else
-        r:={aCommStack[n][2],mkblk(s,len(aCode))}
+	r:={aCommStack[n][2],mkblk(s,len(aCode))}
       endif
     else
       //myalert('RETURN not within PROC in line '+alltrim(str(len(aCode))),{'Ok'})
@@ -302,7 +302,7 @@ do case
 end case
 return r
 
-function loadprocs(s,a)
+static function loadprocs(s,a)
 local lines,i
 lines:=lineparse(memoread(s),x_EOL)
 for i:=1 to len(lines)
@@ -310,7 +310,7 @@ for i:=1 to len(lines)
 next
 return nil
 
-function scantok(aStack,aTok)
+static function scantok(aStack,aTok)
 local i
 for i:=len(aStack) to 1 step -1
   if ascan(aTok,aStack[i][1])<>0
@@ -319,12 +319,12 @@ for i:=len(aStack) to 1 step -1
 next
 return 0
 
-function apush(a,v)
+static function apush(a,v)
 aadd(a,nil)
 a[len(a)]:=v
 return v
 
-function apop(a)
+static function apop(a)
 local v
 if len(a)==0
   return nil
@@ -334,14 +334,14 @@ adel(a,len(a))
 asize(a,len(a)-1)
 return v
 
-function atop(a)
+static function atop(a)
 return if(len(a)==0,nil,a[len(a)])
 
-function e_eval(p,pc)
+static function e_eval(p,pc)
 eval(p)
 return pc+1
 
-function if_eval(p,pc,a)
+static function if_eval(p,pc,a)
 local r:=eval(p[1])
 //return if(r,pc+1,if(p[2]==0,p[3],p[2]+1))
 if r == .t.
@@ -356,7 +356,7 @@ endif
 r:=a[p[2]][2]
 return elif_pc(r,a,p[2])
 
-function elif_pc(p,a,pc)
+static function elif_pc(p,a,pc)
 local r:=eval(p[1])
 if !(r==.t.)
   if (p[2]<>0 .and. a[p[2]][1]==x_elif) // there are more ELIF
@@ -369,23 +369,23 @@ if !(r==.t.)
 endif
 return pc+1
 
-function el_eval(p,pc,a)
+static function el_eval(p,pc,a)
 return a[p][2][3]
 
-function elif_eval(p,pc,a)
+static function elif_eval(p,pc,a)
 return a[p[5]][2][3]
 
-function endif_eval(p,pc)
+static function endif_eval(p,pc)
 return pc+1
 
-function while_eval(p,pc)
+static function while_eval(p,pc)
 local r:=eval(p[1])
 if !r
   return p[2]+1
 endif
 return pc+1
 
-function for_eval(p,pc)
+static function for_eval(p,pc)
 local i_v:=eval(p[1])
 i_v:=eval(p[2])
 if !i_v
@@ -393,7 +393,7 @@ if !i_v
 endif
 return pc+1
 
-function exit_eval(p,a)
+static function exit_eval(p,a)
 local r
 do case
   case a[p][1]==x_while
@@ -403,7 +403,7 @@ do case
 end case
 return r
 
-function loop_eval(p,pc)
+static function loop_eval(p,pc)
 memvar a
 local r
 do case
@@ -414,10 +414,10 @@ do case
 end case
 return r
 
-function endw_eval(p,pc)
+static function endw_eval(p,pc)
 return p
 
-function next_eval(p,pc,a)
+static function next_eval(p,pc,a)
 local v
 eval(a[p][2][3])
 v:=eval(a[p][2][2])
@@ -426,7 +426,7 @@ if !v
 endif
 return p+1
 
-function pub_eval(p,pc)
+static function pub_eval(p,pc)
 local i,v
 for i:=1 to len(p)
   v:=alltrim(p[i])
@@ -434,7 +434,7 @@ for i:=1 to len(p)
 next
 return pc+1
 
-function rel_eval(p,pc)
+static function rel_eval(p,pc)
 local i,v
 for i:=1 to len(p)
   v:=alltrim(p[i])
@@ -442,7 +442,7 @@ for i:=1 to len(p)
 next
 return pc+1
 
-function progerr(e,n)
+static function progerr(e,n)
 local k
 k:=myalert('BL runtime error in line '+alltrim(str(n)),{'Stop','More...'},'BL')
 if k==2
@@ -464,7 +464,7 @@ errorblock(e)
 release blStack
 return nil
 
-function realrun(aCode,ipc)
+static function realrun(aCode,ipc)
 local pc,key,op,p,i,v,k
 if ipc==nil
   pc:=1
@@ -500,8 +500,8 @@ while pc<=len(aCode) .and. pc<>0
       pc:=loop_eval(p,pc)
     case op==x_private
       for i:=1 to len(p)
-        v:=alltrim(p[i])
-        private &v
+	v:=alltrim(p[i])
+	private &v
       next
       pc:=pc+1
     case op==x_public
@@ -515,23 +515,23 @@ while pc<=len(aCode) .and. pc<>0
     case op==x_call
       i:=ascan(blprocs,{|x| x[1]==p})
       if i==0
-        pc++
+	pc++
       else
-        realrun(aCode,blprocs[i][2]+1)
-        pc++
+	realrun(aCode,blprocs[i][2]+1)
+	pc++
       endif
     case op==x_endp
       pc:=0
     case op==x_return
       pc:=0
       if len(p)>1
-        apush(blstack,eval(p[2]))
+	apush(blstack,eval(p[2]))
       endif
     case op==x_param
       for i:=len(p) to 1 step -1
-        v:=p[i][1]
-        private &v
-        eval(p[i][2])
+	v:=p[i][1]
+	private &v
+	eval(p[i][2])
       next
       pc++
     case op==x_block
@@ -587,7 +587,7 @@ elseif ( !Empty(e:operation) )
 end
 return (cMessage)
 
-function lineparse(cline,cdelim)
+static function lineparse(cline,cdelim)
 local a:={},n,s
 while !empty(cline)
   n:=at(cdelim,cline)
@@ -602,7 +602,7 @@ while !empty(cline)
 end
 return a
 
-function block(s,a)
+static function block(s,a)
 local cVars:= "" ,i,lfirst := .t.
 if ! empty(a)
  for i := 1 to len(a)
@@ -612,5 +612,5 @@ if ! empty(a)
 endif
 return &("{|"+cVars+"|"+s+"}")
 
-function clmacro(s)
+static function clmacro(s)
 return &s

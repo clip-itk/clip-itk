@@ -1,8 +1,8 @@
-/*   MEDIT class       						*/
-/*   								*/
-/*   Copyright (C) 2001 - 2004  IT				*/
-/*   Author  : Elena Kornilova (alena@itk.ru)			*/
-/*   Licence : (GPL) http://www.itk.ru/clipper/licence.html	*/
+/*   MEDIT class                                                */
+/*                                                              */
+/*   Copyright (C) 2001 - 2004  IT                              */
+/*   Author  : Elena Kornilova (alena@itk.ru)                   */
+/*   Licence : (GPL) http://www.itk.ru/clipper/licence.html     */
 
 #include "config.ch"
 #include "set.ch"
@@ -11,14 +11,15 @@
 #include "edit.ch"
 #include "box.ch"
 #include <clipcfg.h>
+#include <setcurs.ch>
 
-#define FA_NORMAL	0
-#define FA_READONLY	1
-#define FA_HIDDEN	2
-#define FA_SYSTEM	4
-#define FA_VOLUME	8
-#define FA_DIRECTORY	16
-#define FA_ARCHIVE	32
+#define FA_NORMAL       0
+#define FA_READONLY     1
+#define FA_HIDDEN       2
+#define FA_SYSTEM       4
+#define FA_VOLUME       8
+#define FA_DIRECTORY    16
+#define FA_ARCHIVE      32
 
 static __CurrentDir
 
@@ -40,118 +41,119 @@ return obj
 function _medit(par, ntop, nleft, nbot, nright, user_func,;
 		  tab_size, bline, bpos, wline, wpos)
 local obj:=map()
-	obj:className	:= "MEDIT"
-	obj:tobj	:= {}
-	obj:tobjinfo	:= {}
-	obj:curwin	:= 0
-	obj:nWins	:= 0
-	obj:__l_tobj	:= .f.
-	obj:Clipboard	:= {}
-	//obj:SB		:= 0
-	obj:Find	:= 0
-	obj:__FileD	:= 0
-	obj:Opt		:= 0
-	obj:__Hist	:= 0
-	obj:templ	:= map()
-	obj:tempmacro	:= map()
-	obj:__dirEdit	:= ""
-	obj:__fileOpt	:= ""
+	obj:className   := "MEDIT"
+	obj:tobj        := {}
+	obj:tobjinfo    := {}
+	obj:curwin      := 0
+	obj:nWins       := 0
+	obj:__l_tobj    := .f.
+	obj:Clipboard   := {}
+	//obj:SB                := 0
+	obj:Find        := 0
+	obj:__FileD     := 0
+	obj:Opt         := 0
+	obj:__Hist      := 0
+	obj:templ       := map()
+	obj:tempmacro   := map()
+	obj:__dirEdit   := ""
+	obj:__fileOpt   := ""
 	obj:__fileStatus:= ""
-	obj:__fileTempl	:= ""
-	obj:__fileMacro	:= ""
-	obj:userfunc	:= user_func
-	obj:ntop	:= iif(ntop==NIL,0,ntop)
-	obj:nbot	:= iif(nbot==NIL,maxrow(),nbot)
-	obj:nright	:= iif(nright==NIL,maxcol(),nright)
-	obj:nleft	:= iif(nleft==NIL,0,nleft)
-	obj:param	:= iif(par==NIL .or. valtype(par)!="A", {}, par)
-	obj:tab_size	:= iif(tab_size==NIL, TE_TABSIZE, tab_size)
-	obj:bline	:= iif(bline==NIL,1,bline)
-	obj:bpos	:= iif(bpos==NIL,1,bpos)
-	obj:wline	:= iif(wline==NIL,1,wline)
-	obj:wpos	:= iif(wpos==NIL,1,wpos)
-	obj:__mapKeys	:= -1
-	obj:single_mode	:= .f.
-	obj:double_mode	:= .f.
-	obj:stline	:= [ESC -menu]
-	obj:oMenu	:= NIL
-	obj:autoIndent	:= .t.
+	obj:__fileTempl := ""
+	obj:__fileMacro := ""
+	obj:userfunc    := user_func
+	obj:ntop        := iif(ntop==NIL,0,ntop)
+	obj:nbot        := iif(nbot==NIL,maxrow(),nbot)
+	obj:nright      := iif(nright==NIL,maxcol(),nright)
+	obj:nleft       := iif(nleft==NIL,0,nleft)
+	obj:param       := iif(par==NIL .or. valtype(par)!="A", {}, par)
+	obj:tab_size    := iif(tab_size==NIL, TE_TABSIZE, tab_size)
+	obj:bline       := iif(bline==NIL,1,bline)
+	obj:bpos        := iif(bpos==NIL,1,bpos)
+	obj:wline       := iif(wline==NIL,1,wline)
+	obj:wpos        := iif(wpos==NIL,1,wpos)
+	obj:__mapKeys   := -1
+	obj:single_mode := .f.
+	obj:double_mode := .f.
+	obj:stline      := [ESC -menu]
+	obj:oMenu       := NIL
+	obj:autoIndent  := .t.
 
-	obj:__iniMacro	:= NIL
-	obj:__macroKeys	:= map()
-	obj:__macroCmd	:= map()
-	obj:__hashKeys	:= map()
+	obj:__iniMacro  := NIL
+	obj:__macroKeys := map()
+	obj:__macroCmd  := map()
+	obj:__hashKeys  := map()
 
-	obj:__initMe	:= @me_initme()
-	obj:drawhead	:= @me_drawhead()
-	obj:getstatus	:= @me_getstatus()
-	obj:set_options	:= @me_set_options()
-	obj:runme	:= @me_runme()
-	obj:saveFile	:= @me_saveFile()
+	obj:__initMe    := @me_initme()
+	obj:drawhead    := @me_drawhead()
+	obj:getstatus   := @me_getstatus()
+	obj:set_options := @me_set_options()
+	obj:runme       := @me_runme()
+	obj:saveFile    := @me_saveFile()
 	obj:save_options:= @me_save_options()
-	obj:writestatus	:= @me_writestatus()
-	obj:listfiles	:= @me_listfiles()
-	obj:editopt	:= @me_editopt()
-	obj:goto	:= @me_goto()
-	obj:menu	:= @me_menu_create()
-	obj:enableMenu	:= @me_enableMenu()
-	obj:enableBlockMenu	:= @me_enableBlockMenu()
-	obj:__check_share	:= @me___check_share()
-	obj:helpEdit	:= @me_helpEdit()
+	obj:writestatus := @me_writestatus()
+	obj:listfiles   := @me_listfiles()
+	obj:editopt     := @me_editopt()
+	obj:goto        := @me_goto()
+	obj:menu        := @me_menu_create()
+	obj:enableMenu  := @me_enableMenu()
+	obj:enableBlockMenu     := @me_enableBlockMenu()
+	obj:__check_share       := @me___check_share()
+	obj:helpEdit    := @me_helpEdit()
+	obj:about       := @me_about()
 	obj:setReadOnly := @me_setReadOnly()
 	obj:getReadOnly := @me_getReadOnly()
 	obj:chooseCodePage := @me_chooseCodePage()
 	obj:changeCharset:= @me_changeCharset()
 	obj:removeWindow := @me_removeWindow()
-	obj:__setMacros	:= @me___setMacros()
-	obj:__addMacroToMenu	:= @me___addMacroToMenu()
+	obj:__setMacros := @me___setMacros()
+	obj:__addMacroToMenu    := @me___addMacroToMenu()
 	obj:initUserMacro:= @me__initUserMacro()
 
-	obj:__setDefaultHash	:= @me___setDefaultHash()
-	obj:applyHash		:= @me_applyHash()
-	obj:setHash		:= @me_setHash()
-	obj:__checkWindow	:= @me___checkWindow()
-	obj:__setFocus		:= @me___setFocus()
+	obj:__setDefaultHash    := @me___setDefaultHash()
+	obj:applyHash           := @me_applyHash()
+	obj:setHash             := @me_setHash()
+	obj:__checkWindow       := @me___checkWindow()
+	obj:__setFocus          := @me___setFocus()
 
-	obj:getFocus		:= @me_getFocus()
-	obj:saveWins		:= @me_saveWins()
-	obj:createNewWindow	:= @me_createNewWindow()
-	obj:openFile		:= @me_openFile()
-	obj:findString		:= @me_findString()
-	obj:findReplace		:= @me_findReplace()
-	obj:findPrev		:= @me_findPrev()
-	obj:findNext		:= @me_findNext()
-	obj:reloadFile		:= @me_reloadFile()
-	obj:prevWindow		:= @me_prevWindow()
-	obj:nextWindow		:= @me_nextWindow()
-	obj:setInsertMode	:= @me_setInsertMode()
-	obj:matchSymbol		:= @me_matchSymbol()
-	obj:matchStructure	:= @me_matchStructure()
-	obj:copyToClipboard	:= @me_copyToClipboard()
-	obj:saveBlock		:= @me_saveBlock()
-	obj:showFiles		:= @me_showFiles()
-	obj:closeWindow		:= @me_closeWindow()
-	obj:markBlock		:= @me_markBlock()
-	obj:cancelBlock		:= @me_cancelBlock()
-	obj:print		:= @me_print()
-	obj:undo		:= @me_undo()
-	obj:savePos		:= @me_savePos()
-	obj:callMenu		:= @me_callMenu()
-	obj:newLine		:= @me_NewLine()
-	obj:delete		:= @me_delete()
-	obj:deleteEnd		:= @me_deleteEnd()
-	obj:backspace		:= @me_backspace()
-	obj:deleteHome		:= @me_deleteHome()
-	obj:deleteLine		:= @me_deleteLine()
-	obj:centerLine		:= @me_centerLine()
-	obj:copyBlock		:= @me_copyBlock()
-	obj:deleteBlock		:= @me_deleteBlock()
-	obj:pasteFromClipboard	:= @me_pasteFromClipboard()
-	obj:loadBlock		:= @me_loadBlock()
-	obj:insTemplate		:= @me_insTemplate()
-	obj:insMacro		:= @me_insMacro()
-	obj:format		:= @me_format()
-	obj:setDraw		:= @me_setDraw()
+	obj:getFocus            := @me_getFocus()
+	obj:saveWins            := @me_saveWins()
+	obj:createNewWindow     := @me_createNewWindow()
+	obj:openFile            := @me_openFile()
+	obj:findString          := @me_findString()
+	obj:findReplace         := @me_findReplace()
+	obj:findPrev            := @me_findPrev()
+	obj:findNext            := @me_findNext()
+	obj:reloadFile          := @me_reloadFile()
+	obj:prevWindow          := @me_prevWindow()
+	obj:nextWindow          := @me_nextWindow()
+	obj:setInsertMode       := @me_setInsertMode()
+	obj:matchSymbol         := @me_matchSymbol()
+	obj:matchStructure      := @me_matchStructure()
+	obj:copyToClipboard     := @me_copyToClipboard()
+	obj:saveBlock           := @me_saveBlock()
+	obj:showFiles           := @me_showFiles()
+	obj:closeWindow         := @me_closeWindow()
+	obj:markBlock           := @me_markBlock()
+	obj:cancelBlock         := @me_cancelBlock()
+	obj:print               := @me_print()
+	obj:undo                := @me_undo()
+	obj:savePos             := @me_savePos()
+	obj:callMenu            := @me_callMenu()
+	obj:newLine             := @me_NewLine()
+	obj:delete              := @me_delete()
+	obj:deleteEnd           := @me_deleteEnd()
+	obj:backspace           := @me_backspace()
+	obj:deleteHome          := @me_deleteHome()
+	obj:deleteLine          := @me_deleteLine()
+	obj:centerLine          := @me_centerLine()
+	obj:copyBlock           := @me_copyBlock()
+	obj:deleteBlock         := @me_deleteBlock()
+	obj:pasteFromClipboard  := @me_pasteFromClipboard()
+	obj:loadBlock           := @me_loadBlock()
+	obj:insTemplate         := @me_insTemplate()
+	obj:insMacro            := @me_insMacro()
+	obj:format              := @me_format()
+	obj:setDraw             := @me_setDraw()
 
 	obj:__initMe()
 	//obj:runme()
@@ -165,7 +167,7 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 	::nleft := min(max(0,::nleft),maxcol())
 	::nright := min(max(0,::nright),maxcol())
 
-	::__mapKeys	:= HK_get("edit")
+	::__mapKeys     := HK_get("edit")
 
 	set("edit_margin_right","50") // длина строки
 	set("edit_page_len","20")     // длина страницы
@@ -200,7 +202,7 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 	::__FileD:setsize(::Opt:OHISTORY)
 	::Find := findOptions(,,set("edit_colors_dialog"), set("edit_colors_list"), ;
 		::Opt:FCASE, ::Opt:FWORDONLY, ::Opt:FREGEXP, ::Opt:FALLW, ::Opt:FDIRECT, ::Opt:FWHERE)
-	::Find:sethistorysize(::Opt:OHISTORY)
+//      ::Find:sethistorysize(::Opt:OHISTORY)
 	::__Hist := historyObj(,,,,set("edit_colors_list"))
 	::__Hist:setsize(::Opt:OHISTORY)
 
@@ -292,7 +294,7 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 			setcolor(set("edit_colors_window"))
 			::tobjinfo[nWin]:curwin := wopen(::ntop,::nleft,::nbot-1,::nright)
 			wbox()
-		     //	::drawhead()
+		     // ::drawhead()
 			aadd(::tobj, textEditNew(0, 0, maxrow(), maxcol(),set("edit_colors_edit")))
 			//::nWins ++
 			::tobj[nWin]:modeFormat         := 2
@@ -373,8 +375,10 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 		::curwin := 1
 	endif
 	dispend()
-	::__setDefaultHash()	// set default command by hash
+	::Find:sethistorysize(::Opt:OHISTORY)
+	::__setDefaultHash()    // set default command by hash
 	::initUserMacro()
+	setCursor(SC_INSERT)
 
 return
 **************************
@@ -394,108 +398,109 @@ local m
 	m := ::__hashKeys
 
 
-       m[HASH_ExitSave]			:= {|oMe, hKey| iif(oMe:saveWins() , (oMe:save_options(), iif( oMe:Opt:OSAVESTATUS,  oMe:writeStatus(), .f.), ME_EXIT), ME_CONTINUE) }
-       m[HASH_ExitNoSave]		:= {|oMe, hKey| iif(oMe:saveWins(), (oMe:save_options(), ME_EXIT), ME_CONTINUE)}
+       m[HASH_ExitSave]                 := {|oMe, hKey| iif(oMe:saveWins() , (oMe:save_options(), iif( oMe:Opt:OSAVESTATUS,  oMe:writeStatus(), .f.), ME_EXIT), ME_CONTINUE) }
+       m[HASH_ExitNoSave]               := {|oMe, hKey| iif(oMe:saveWins(), (oMe:save_options(), ME_EXIT), ME_CONTINUE)}
        /* create new window */
-	m[HASH_CreateNewFile] 		:= {|oMe, hKey| oMe:__l_tobj := oMe:createNewWindow(), ME_CONTINUE }
+	m[HASH_CreateNewFile]           := {|oMe, hKey| oMe:__l_tobj := oMe:createNewWindow(), ME_CONTINUE }
        /* open window */
-	m[HASH_OpenFile]		:= {|oMe, hKey| oMe:openFile(), ME_CONTINUE }
-	m[HASH_HelpEdit]		:= {|oMe, hKey| oMe:helpEdit(), ME_CONTINUE }
+	m[HASH_OpenFile]                := {|oMe, hKey| oMe:openFile(), ME_CONTINUE }
+	m[HASH_HelpEdit]                := {|oMe, hKey| oMe:helpEdit(), ME_CONTINUE }
+	m[HASH_About]                   := {|oMe, hKey| oMe:about(), ME_CONTINUE }
        /* save file */
-	m[HASH_SaveFile]		:= {|oMe, hKey| oMe:saveFile(), ME_CONTINUE }
+	m[HASH_SaveFile]                := {|oMe, hKey| oMe:saveFile(), ME_CONTINUE }
        /* save file as... */
-	m[HASH_SaveAsFile]		:= {|oMe, hKey| oMe:saveFile(.t.), ME_CONTINUE }
+	m[HASH_SaveAsFile]              := {|oMe, hKey| oMe:saveFile(.t.), ME_CONTINUE }
        /* find word */
-	m[HASH_FindString]		:= {|oMe, hKey| oMe:findString(), ME_CONTINUE }
+	m[HASH_FindString]              := {|oMe, hKey| oMe:findString(), ME_CONTINUE }
        /* find word and replace */
-	m[HASH_FindReplace]		:= {|oMe, hKey| iif(oMe:tobjinfo[oMe:curwin]:readOnly, oMe:findString(), oMe:findReplace()), ME_CONTINUE }
+	m[HASH_FindReplace]             := {|oMe, hKey| iif(oMe:tobjinfo[oMe:curwin]:readOnly, oMe:findString(), oMe:findReplace()), ME_CONTINUE }
        /* find next template to backward */
-	m[HASH_FindPrev]		:= {|oMe, hKey| oMe:findPrev(), ME_CONTINUE }
+	m[HASH_FindPrev]                := {|oMe, hKey| oMe:findPrev(), ME_CONTINUE }
        /* find next template to forward */
-	m[HASH_FindNext]		:= {|oMe, hKey| oMe:findNext(), ME_CONTINUE }
+	m[HASH_FindNext]                := {|oMe, hKey| oMe:findNext(), ME_CONTINUE }
        /* reload file */
-	m[HASH_Reload]			:= {|oMe, hKey| oMe:reloadFile(), ME_CONTINUE }
+	m[HASH_Reload]                  := {|oMe, hKey| oMe:reloadFile(), ME_CONTINUE }
        /* next window */
-	m[HASH_NextWindow]		:= {|oMe, hKey| oMe:nextWindow(), ME_CONTINUE }
+	m[HASH_NextWindow]              := {|oMe, hKey| oMe:nextWindow(), ME_CONTINUE }
        /* prev window */
-	m[HASH_PrevWindow]		:= {|oMe, hKey| oMe:prevWindow(), ME_CONTINUE }
+	m[HASH_PrevWindow]              := {|oMe, hKey| oMe:prevWindow(), ME_CONTINUE }
        /* on/off insert mode */
-	m[K_INS]			:= {|oMe, hKey| oMe:setInsertMode(), ME_CONTINUE }
-	m[HASH_InsMode]			:= {|oMe, hKey| oMe:setInsertMode(), ME_CONTINUE }
+	m[K_INS]                        := {|oMe, hKey| oMe:setInsertMode(), ME_CONTINUE }
+	m[HASH_InsMode]                 := {|oMe, hKey| oMe:setInsertMode(), ME_CONTINUE }
        /* match forward symbol */
-	m[HASH_MatchSymbolForward]	:= {|oMe, hKey| oMe:matchSymbol(), ME_CONTINUE }
+	m[HASH_MatchSymbolForward]      := {|oMe, hKey| oMe:matchSymbol(), ME_CONTINUE }
        /* match backward symbol */
-	m[HASH_MatchSymbolBackward]	:= {|oMe, hKey| oMe:matchSymbol(,.f.), ME_CONTINUE }
+	m[HASH_MatchSymbolBackward]     := {|oMe, hKey| oMe:matchSymbol(,.f.), ME_CONTINUE }
        /* match forward structure */
-	m[HASH_MatchStructForward]	:= {|oMe, hKey| oMe:matchStructure(), ME_CONTINUE }
+	m[HASH_MatchStructForward]      := {|oMe, hKey| oMe:matchStructure(), ME_CONTINUE }
        /* match backward structure */
-	m[HASH_MatchStructBackward]	:= {|oMe, hKey| oMe:matchStructure(, .f. ), ME_CONTINUE }
+	m[HASH_MatchStructBackward]     := {|oMe, hKey| oMe:matchStructure(, .f. ), ME_CONTINUE }
        /* copy block to Clipboard */
-	m[HASH_CopyClipboard]		:= {|oMe, hKey| oMe:copyToClipboard(), ME_CONTINUE }
+	m[HASH_CopyClipboard]           := {|oMe, hKey| oMe:copyToClipboard(), ME_CONTINUE }
        /* save block to file */
-	m[HASH_SaveBlock]		:= {|oMe, hKey| oMe:saveBlock(), ME_CONTINUE }
+	m[HASH_SaveBlock]               := {|oMe, hKey| oMe:saveBlock(), ME_CONTINUE }
        /* read only options on/off */
-	m[HASH_ReadOnly]		:= {|oMe, hKey| oMe:setReadOnly(oMe:curwin, !oMe:getReadOnly(oMe:curwin)), ME_CONTINUE }
+	m[HASH_ReadOnly]                := {|oMe, hKey| oMe:setReadOnly(oMe:curwin, !oMe:getReadOnly(oMe:curwin)), ME_CONTINUE }
        /* list opening files */
-	m[HASH_ListFiles]		:= {|oMe, hKey| oMe:showFiles(), ME_CONTINUE }
+	m[HASH_ListFiles]               := {|oMe, hKey| oMe:showFiles(), ME_CONTINUE }
        /* close current window */
-	m[HASH_CloseWindow]		:= {|oMe, hKey| oMe:closeWindow(), ME_CONTINUE }
+	m[HASH_CloseWindow]             := {|oMe, hKey| oMe:closeWindow(), ME_CONTINUE }
        /* edit options */
-	m[HASH_Options]			:= {|oMe, hKey| oMe:editopt(), ME_CONTINUE }
+	m[HASH_Options]                 := {|oMe, hKey| oMe:editopt(), ME_CONTINUE }
        /* change code page */
-	m[HASH_ChooseCodePage]		:= {|oMe, hKey| oMe:chooseCodePage(), ME_CONTINUE }
+	m[HASH_ChooseCodePage]          := {|oMe, hKey| oMe:chooseCodePage(), ME_CONTINUE }
        /* goto line/pos */
-	m[HASH_GoTo]			:= {|oMe, hKey| oMe:goto(), ME_CONTINUE }
+	m[HASH_GoTo]                    := {|oMe, hKey| oMe:goto(), ME_CONTINUE }
        /* save current line */
-	m[HASH_SavePos]			:= {|oMe, hKey| oMe:savePos(), ME_CONTINUE }
+	m[HASH_SavePos]                 := {|oMe, hKey| oMe:savePos(), ME_CONTINUE }
        /* mark string block */
-	m[HASH_MarkBlockString]		:= {|oMe, hKey| oMe:markBlock(,.t.), ME_CONTINUE }
+	m[HASH_MarkBlockString]         := {|oMe, hKey| oMe:markBlock(,.t.), ME_CONTINUE }
        /* mark rectangle block */
-	m[HASH_MarkBlockRect]		:= {|oMe, hKey| oMe:markBlock(,.f.), ME_CONTINUE }
+	m[HASH_MarkBlockRect]           := {|oMe, hKey| oMe:markBlock(,.f.), ME_CONTINUE }
        /* cancel block */
-	m[HASH_CancelBlock]		:= {|oMe, hKey| oMe:cancelBlock(), ME_CONTINUE }
+	m[HASH_CancelBlock]             := {|oMe, hKey| oMe:cancelBlock(), ME_CONTINUE }
        /* print text */
-	m[HASH_Print]			:= {|oMe, hKey| oMe:print(,.f.), ME_CONTINUE }
+	m[HASH_Print]                   := {|oMe, hKey| oMe:print(,.f.), ME_CONTINUE }
        /* print block */
-	m[HASH_PrintBlock]		:= {|oMe, hKey| oMe:print(,.t.), ME_CONTINUE }
+	m[HASH_PrintBlock]              := {|oMe, hKey| oMe:print(,.t.), ME_CONTINUE }
        /* run undo */
-	m[HASH_Undo]			:= {|oMe, hKey| oMe:undo(), ME_CONTINUE }
+	m[HASH_Undo]                    := {|oMe, hKey| oMe:undo(), ME_CONTINUE }
 
-	m[K_ENTER]			:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:newLine(), .f.), ME_CONTINUE }
+	m[K_ENTER]                      := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:newLine(), .f.), ME_CONTINUE }
        /* delete current symbol */
-	m[K_DEL]			:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:delete(), .f.), ME_CONTINUE }
+	m[K_DEL]                        := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:delete(), .f.), ME_CONTINUE }
        /* delete string from current pos to end */
-	m[HASH_DeleteEnd]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteEnd(), .f.), ME_CONTINUE }
+	m[HASH_DeleteEnd]               := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteEnd(), .f.), ME_CONTINUE }
        /* delete syblol brom left */
-	m[K_BS]				:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:backSpace(), .f.), ME_CONTINUE }
+	m[K_BS]                         := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:backSpace(), .f.), ME_CONTINUE }
        /* delete string from current pos to begin */
-	m[HASH_DeleteBack]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteHome(), .f.), ME_CONTINUE }
+	m[HASH_DeleteBack]              := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteHome(), .f.), ME_CONTINUE }
        /* delete current line */
-	m[HASH_DeleteLine]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteLine(), .f.), ME_CONTINUE }
+	m[HASH_DeleteLine]              := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteLine(), .f.), ME_CONTINUE }
        /* move string to the center */
-	m[HASH_MoveCenter]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:centerLine(), .f.), ME_CONTINUE }
+	m[HASH_MoveCenter]              := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:centerLine(), .f.), ME_CONTINUE }
        /* copy block */
-	m[HASH_CopyBlock]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:copyBlock(), .f.), ME_CONTINUE }
+	m[HASH_CopyBlock]               := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:copyBlock(), .f.), ME_CONTINUE }
        /* move block */
-	m[HASH_MoveBlock]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:copyBlock(,.f.), .f.), ME_CONTINUE }
+	m[HASH_MoveBlock]               := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:copyBlock(,.f.), .f.), ME_CONTINUE }
        /* remove block */
-	m[HASH_DeleteBlock]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteBlock(), .f.), ME_CONTINUE }
+	m[HASH_DeleteBlock]             := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:deleteBlock(), .f.), ME_CONTINUE }
        /* paste block from Clipboard */
-	m[HASH_PasteClipboard]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:pasteFromClipboard(), .f.), ME_CONTINUE }
+	m[HASH_PasteClipboard]          := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:pasteFromClipboard(), .f.), ME_CONTINUE }
        /* load block from file */
-	m[HASH_LoadBlock]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:loadBlock(), .f.), ME_CONTINUE }
+	m[HASH_LoadBlock]               := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:loadBlock(), .f.), ME_CONTINUE }
        /* insert template */
-	m[HASH_Template]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:insTemplate(), .f.), ME_CONTINUE }
+	m[HASH_Template]                := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:insTemplate(), .f.), ME_CONTINUE }
        /* insert macro */
-	m[HASH_Macro]			:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:insMacro(), .f.), ME_CONTINUE }
+	m[HASH_Macro]                   := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:insMacro(), .f.), ME_CONTINUE }
        /* format line */
-	m[HASH_FormatLine]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:format(), .f.), ME_CONTINUE }
+	m[HASH_FormatLine]              := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:format(), .f.), ME_CONTINUE }
        /* format part */
-	m[HASH_FormatPart]		:= {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:format(,.f.), .f.), ME_CONTINUE }
+	m[HASH_FormatPart]              := {|oMe, hKey| iif(!oMe:tobjinfo[oMe:curwin]:readOnly, oMe:format(,.f.), .f.), ME_CONTINUE }
        /* on/off single graphic mode */
-	m[HASH_SingleGraphic]		:= {|oMe, hKey| oMe:setDraw(,.t.), ME_CONTINUE }
+	m[HASH_SingleGraphic]           := {|oMe, hKey| oMe:setDraw(,.t.), ME_CONTINUE }
        /* on/off double graphic mode */
-	m[HASH_DoubleGraphic]		:= {|oMe, hKey| oMe:setDraw(,.f.), ME_CONTINUE }
+	m[HASH_DoubleGraphic]           := {|oMe, hKey| oMe:setDraw(,.f.), ME_CONTINUE }
 
 return .t.
 **************************
@@ -673,7 +678,7 @@ local i, nWin
 	::tobj[nWin]:marginRight            := ::Opt:OMARGINRIGHT
 	::tobj[nWin]:tabSize                := ::Opt:OTABSIZE
 	::tobj[nWin]:maxStrings             := ::Opt:OMAXSTRINGS
-	::tobj[nWin]:autoWrap   	    := ::Opt:OAUTOWRAP
+	::tobj[nWin]:autoWrap               := ::Opt:OAUTOWRAP
 	::tobj[nWin]:lEofString             := .t.
 	::tobj[nWin]:loadString("")
 	::__setFocus(nWin)
@@ -721,7 +726,7 @@ local fd, sh, i, oldwin, shnum
 		obj:marginRight        := ::Opt:OMARGINRIGHT
 		obj:tabSize            := ::Opt:OTABSIZE
 		obj:maxStrings         := ::Opt:OMAXSTRINGS
-		obj:autoWrap	       := ::Opt:OAUTOWRAP
+		obj:autoWrap           := ::Opt:OAUTOWRAP
 		obj:lEofString         := .t.
 		::__setFocus(nWin)
 		if sh == 2
@@ -945,6 +950,11 @@ static function me_setInsertMode(lMode)
 		lMode := !Set(_SET_INSERT)
 	endif
 	set( _SET_INSERT, lMode )
+	if lMode
+		setCursor( SC_INSERT )
+	else
+		setCursor( SC_NORMAL )
+	endif
 	::oMenu:_status("CHECKED", HASH_InsMode, lMode)
 	::drawhead()
 return  .t.
@@ -1534,6 +1544,20 @@ local keys:=HK_get("edit"),kn
       oItem :=MenuItem( [&Options...     ]+kn ,{|| .t. },,[Set options], HASH_Options)
       oPopUp:AddItem( oItem)
 
+**************************************************************************
+
+      oPopUp := PopUp()
+      oPopUp :ColorSpec:= set("edit_colors_menu")
+      oTopBar:AddItem( MenuItem ( [Info],oPopUp,,, HASH_ItemInfo) )
+
+      kn:=key_name(HK_get_key(keys,HASH_HelpEdit))
+      oItem :=MenuItem( [&Help       ]+kn ,{|| .t. }, ,[Help page], HASH_HelpEdit)
+      oPopUp:AddItem( oItem)
+
+      kn:=key_name(HK_get_key(keys,HASH_About))
+      oItem :=MenuItem( [&About ] ,{|| .t. }, ,[About program ], HASH_About)
+      oPopUp:AddItem( oItem)
+
    return ( oTopBar)
 
 **********************************************************
@@ -1775,29 +1799,29 @@ local str, arr, i, nfile
 memvar obj, options
 private obj, Options
 	::Opt:=map()
-	::Opt:OTABSIZE 		:= TE_TABSIZE
-	::Opt:OAUTOSAVE 	:= TE_AUTO_SAVE
-	::Opt:OTIMEAUTOSAVE 	:= TE_TIME_AUTO_SAVE
-	::Opt:OCREATEBAK 	:= TE_CREATE_BAK
-	::Opt:OMARGINLEFT 	:= TE_MARGIN_LEFT
-	::Opt:OMARGINRIGHT 	:= TE_MARGIN_RIGHT
-	::Opt:OSAVESTATUS 	:= TE_SAVE_STATUS
-	::Opt:OLANGUAGE 	:= TE_LANGUAGE
-	::Opt:OSTEPUNDO 	:= TE_STEP_UNDO
-	::Opt:OHISTORY 		:= TE_HISTORY_SIZE
-	::Opt:OAUTOMARGIN 	:= TE_AUTO_MARGIN
-	::Opt:OHYPHEN 		:= TE_HYPHEN
-	::Opt:OAUTOINDENT 	:= TE_AUTO_INDENT
-	::Opt:OTABPACK 		:= set("edit_tabpack")
-	::Opt:OMAXSTRINGS 	:= TE_MAXSTRINGS
-	::Opt:OAUTOWRAP 	:= TE_AUTO_WRAP
-	::Opt:OOPENFILES	:= 1
-	::Opt:FCASE		:= .f.
-	::Opt:FWORDONLY		:= .f.
-	::Opt:FREGEXP		:= .f.
-	::Opt:FALLW		:= .f.
-	::Opt:FDIRECT		:= 1
-	::Opt:FWHERE		:= 1
+	::Opt:OTABSIZE          := TE_TABSIZE
+	::Opt:OAUTOSAVE         := TE_AUTO_SAVE
+	::Opt:OTIMEAUTOSAVE     := TE_TIME_AUTO_SAVE
+	::Opt:OCREATEBAK        := TE_CREATE_BAK
+	::Opt:OMARGINLEFT       := TE_MARGIN_LEFT
+	::Opt:OMARGINRIGHT      := TE_MARGIN_RIGHT
+	::Opt:OSAVESTATUS       := TE_SAVE_STATUS
+	::Opt:OLANGUAGE         := TE_LANGUAGE
+	::Opt:OSTEPUNDO         := TE_STEP_UNDO
+	::Opt:OHISTORY          := TE_HISTORY_SIZE
+	::Opt:OAUTOMARGIN       := TE_AUTO_MARGIN
+	::Opt:OHYPHEN           := TE_HYPHEN
+	::Opt:OAUTOINDENT       := TE_AUTO_INDENT
+	::Opt:OTABPACK          := set("edit_tabpack")
+	::Opt:OMAXSTRINGS       := TE_MAXSTRINGS
+	::Opt:OAUTOWRAP         := TE_AUTO_WRAP
+	::Opt:OOPENFILES        := 1
+	::Opt:FCASE             := .f.
+	::Opt:FWORDONLY         := .f.
+	::Opt:FREGEXP           := .f.
+	::Opt:FALLW             := .f.
+	::Opt:FDIRECT           := 1
+	::Opt:FWHERE            := 1
 	nfile := fopen(::__fileOpt)
 	if nfile >= 0
 		do while !fileeof(nfile)
@@ -1853,7 +1877,7 @@ private obj
 	//? 'get Find repl'
 	str := fget(nfile, buflen)
 	::tobjinfo := str2var(str)
-	::nWins	:= len(::tobjinfo)
+	::nWins := len(::tobjinfo)
 
 	//? 'get info'
 	fclose(nfile)
@@ -1863,12 +1887,12 @@ return .t.
 ***************************
 static function me_save_options()
 local nfile, str
-	::Opt:FCASE		:= ::Find:case
-	::Opt:FWORDONLY		:= ::Find:wordonly
-	::Opt:FREGEXP		:= ::Find:regexp
-	::Opt:FALLW		:= ::Find:allw
-	::Opt:FDIRECT		:= ::Find:direct
-	::Opt:FWHERE		:= ::Find:where
+	::Opt:FCASE             := ::Find:case
+	::Opt:FWORDONLY         := ::Find:wordonly
+	::Opt:FREGEXP           := ::Find:regexp
+	::Opt:FALLW             := ::Find:allw
+	::Opt:FDIRECT           := ::Find:direct
+	::Opt:FWHERE            := ::Find:where
 	dirmake(::__dirEdit)
 	nfile := fcreate(::__dirEdit+PATH_DELIM+".edit")
 
@@ -1998,6 +2022,25 @@ return ret
 *********************************
 static function me_helpEdit()
 	hbrowse(,,,,"file:"+cliproot()+PATH_DELIM+"doc"+PATH_DELIM+"edit.html")
+return
+*********************************
+static function me_about()
+local w, color
+	w := wselect()
+	color := setcolor("0/7")
+	wopen(7, 8, 18, 69)
+	wbox()
+	@ 1, 2 say padc("TEXT EDITOR", 56)
+	@ 2, 2 say padc("Copyright (C) 2001-2004  ITK", 56)
+	@ 3, 2 say padc("----------", 56)
+	@ 4, 2 say padc("written by CLIP version "+CLIP_VERSION, 56)
+	@ 6, 2 say padc("Licence : (GPL) http://www.itk.ru/clipper/licence.html", 56)
+	@ 7, 2 say padc("Author  : Elena Kornilova <alena@itk.ru>              ", 56)
+	@ 8, 2 say padc("< OK >", 56)
+	inkey(0)
+	wclose()
+	wselect(w)
+	setcolor(color)
 return
 ************************************
 static function me_chooseCodePage()
@@ -2251,7 +2294,7 @@ return ::curWin
 **********************************
 static function me___setFocus(nWin)
 	*if ::curwin > 0 .and. ::nWins > 0 .and. ::curwin <= ::nWins
-	*	::tobj[::curwin]:setFocus(.F.)
+	*       ::tobj[::curwin]:setFocus(.F.)
 	*endif
 	if nWin < 1
 		nWin := ::nWins

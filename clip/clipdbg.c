@@ -5,6 +5,12 @@
  */
 /*
    $Log: clipdbg.c,v $
+   Revision 1.50  2004/05/26 09:52:23  clip
+   rust: some cleanings
+
+   Revision 1.49  2004/05/21 11:22:18  clip
+   rust: minor fix for 'configure -m'
+
    Revision 1.48  2003/11/11 11:36:58  clip
    uri: call errorblock with EG_SIGNAL if signal from system sended
 
@@ -254,7 +260,7 @@
 #include "rational.h"
 #include "screen/charset.h"
 #include "coll.h"
-#include "clipbase.h"
+#include "rdd.h"
 
 int _clip_debugnext = 0;
 
@@ -354,7 +360,7 @@ _clip_sigdebug(int sig)
 		}
 	}
 
-	if (!breakpoints.free)
+	if (!breakpoints._free)
 	{
 		init_Coll(&breakpoints, delete_ClipBreakPoint, 0);
 		init_Coll(&sbreakpoints, 0, compare_ClipBreakPoint);
@@ -1527,24 +1533,25 @@ print_wa(ClipMachine * mp, DBWorkArea * wa)
 		if (!wa || !wa->used)
 			continue;
 		fprintf(_clip_dbg_out, "no:%d name:%s alias:%s shared:%d ro:%d filter:%s\n"
-			,wa->no, wa->name, wa->alias, wa->shared, wa->readonly
-			,nullstr(wa->filter_expr));
-		fprintf(_clip_dbg_out, "\t%d fields:\n", wa->nfield);
-		for (j = 0; j < wa->nfield; j++)
+			,wa->rd->area, wa->rd->name, wa->alias, wa->rd->shared, wa->rd->readonly
+			,wa->rd->filter && wa->rd->filter->sfilter?wa->rd->filter->sfilter:"");
+		fprintf(_clip_dbg_out, "\t%d fields:\n", wa->rd->nfields);
+		for (j = 0; j < wa->rd->nfields; j++)
 		{
-			DBField *fp = wa->fields + j;
+			RDD_FIELD *fp = wa->rd->fields + j;
 
-			fprintf(_clip_dbg_out, "\t\tno:%d\tname:%s\ttype:%s\tlen:%d\tdec:%d\n"
-				,j, fp->name, fp->strtype, fp->len, fp->dec);
+			fprintf(_clip_dbg_out, "\t\tno:%d\tname:%s\ttype:%c\tlen:%d\tdec:%d\n"
+				,j, fp->name, fp->type, fp->len, fp->dec);
 		}
-		fprintf(_clip_dbg_out, "\t%d indexes: current %d\n", wa->nindex, wa->curIndex);
-		for (j = 0; j < wa->nindex; j++)
+		fprintf(_clip_dbg_out, "\t%d indexes: current %d\n", wa->rd->ords_opened, wa->rd->curord);
+		for (j = 0; j < wa->rd->ords_opened; j++)
 		{
-			DBIndex *ip = wa->indexes[j];
+			RDD_ORDER *ip = wa->rd->orders[j];
 
 			fprintf(_clip_dbg_out, "\t\tno:%d\tname:%s\texpr:%s\tunique:%d\n"
 				,j, ip->name, ip->expr, ip->unique);
 		}
+/*
 		fprintf(_clip_dbg_out, "\t%d relations: parent:%s\n", wa->relnum
 			,wa->parent ? nullstr(wa->parent->alias) : "");
 		for (j = 0; j < wa->relnum; j++)
@@ -1554,6 +1561,7 @@ print_wa(ClipMachine * mp, DBWorkArea * wa)
 			fprintf(_clip_dbg_out, "\t\tno:%d\tchield:%s\texpr:%s\n"
 				,j, rp->chield->alias, nullstr(rp->expr));
 		}
+*/
 	}
 }
 

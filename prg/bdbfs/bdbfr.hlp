@@ -105,6 +105,10 @@
   Скопировать сверху		Alt+Up		Снизу	  Alt+Dn
   Слева				Alt+Lt		Справа	  Alt+Rt
   Обменять с верхним		Alt+Shift+Up	С нижним  Alt+Shift+Dn
+  Сдвинуть столбец влево	Ctrl+Shift+Left
+  Сдвинуть столбец вправо	Ctrl+Shift+Right
+  Скрыть столбец		Ctrl+H
+  Восстановить столбец		Ctrl+Shift+H
 
 Преобразовать текстовое поле:
   В строчные		Alt+L		В прописные		 Alt+U
@@ -114,7 +118,7 @@
   Alt+Q, Alt+Y в цикле	Ctrl+Shift+X
 
 Буферы обмена (ClipBoards):
-
+---------------------------
   Внутренний:
 	Записать в него		Ctrl+Grey+
 	Из буфера в поле	Ctrl+Grey-, Alt+GreyEnter

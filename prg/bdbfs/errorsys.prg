@@ -62,7 +62,7 @@ IF TYPE('_nLines')=='N'	THEN nLine:=m->_nLines	//in ini-file
 nLine:=IF(EMPTY(nLine),;
 		  IF(Procname(2)=='MYREPL','RECNO(): '+NTRIM(RECNO()),''),;
 		  m->_ini+' Line: '+NTRIM(nLine))
-nLine:=NFIND(cMessage,,,nLine)
+nLine:=NFIND(Exclude(cMessage, 'E_COMPILED'),,,nLine)
 
 DO CASE
 	CASE nLine==K_ALT_C .OR. nLine==K_ALT_X

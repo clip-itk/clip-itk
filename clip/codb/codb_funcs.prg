@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2002  ITK
+    Copyright (C) 2004  ITK
     Author   : Uri (uri@itk.ru)
     License : (GPL) http://www.itk.ru/clipper/license.html
 */

@@ -23,8 +23,8 @@ clean:
 	rm -rf *.ex *.nm *.exe
 
 install:
-	cp ftosgml$(EXESUFF) $(CLIPROOT)/bin/ftosgml$(EXESUFF)
-	cp ctosgml$(EXESUFF) $(CLIPROOT)/bin/ctosgml$(EXESUFF)
+	cp ftosgml$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/ftosgml$(EXESUFF)
+	cp ctosgml$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/ctosgml$(EXESUFF)
 
 #.prg.o:
 #	$(CLIP) $(CLIPFLAGS) $<

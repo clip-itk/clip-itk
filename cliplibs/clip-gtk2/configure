@@ -9,7 +9,7 @@ oldpwd=`pwd`
 DLLSUFF='.so'
 DLLREALSUFF='.so'
 
-rm Makefile _hashcode.h
+rm -f Makefile _hashcode.h
 if [ $? != 0 ]
 then
 	hname=`hostname 2>/dev/null`
@@ -54,6 +54,50 @@ esac
 
 printf "configure: creating clip-gtkcfg2.h .."
 
+PKGCONFIG=""
+GTK2_VERSION=""
+PKGCONFIG_PRESENT=`which pkg-config >/dev/null 2>&1; echo $?`
+if [ $PKGCONFIG_PRESENT -ne 0 ]; then
+    PKGCONFIG_PRESENT=`whereis pkg-config 2>&1| sed 's|^pkg-config\:||' | grep -c pkg-config`
+    if [ $PKGCONFIG_PRESENT -ne 0 ]; then
+	PKGCONFIG=`whereis pkg-config|awk '{print $2;}'`
+    fi
+else
+    PKGCONFIG=`which pkg-config`
+fi
+if [ -z $PKGCONFIG ]; then
+    echo "ERROR!!!"
+    echo "*****************************************************************"
+    echo "*** The pkg-config not installed                              ***"
+    echo "*****************************************************************"
+    USE_GTK=no
+    echo "System MUST have installed pkg-config first!"
+    exit
+fi
+
+gtkprefix=`$PKGCONFIG gtk+-2.0 --libs 2>/dev/null`
+if [ $? -ne 0 ]; then
+    echo "ERROR!!!"
+    echo "*****************************************************************"
+    echo "*** The gtk+-2.0 not installed                                ***"
+    echo "*****************************************************************"
+    USE_GTK=no
+    echo "gtk2 not detected"
+    exit
+fi
+
+LIBS=`$PKGCONFIG gtk+-2.0 --libs`
+if [ "$osname" = "CYGWIN" ]; then
+    EXTRACFLAGS='-fnative-struct'
+fi
+GTK_MAJOR=`$PKGCONFIG gtk+-2.0 --modversion|cut -d. -f1`
+GTK_MINOR=`$PKGCONFIG gtk+-2.0 --modversion|cut -d. -f2`
+if [ ! \( "$GTK_MAJOR" -le 2  \) ]; then
+    echo
+    echo 'Warning: system must have installed GTK+ version 2.0 or above'
+fi
+
+
 exec 3>clip-gtkcfg2.h
 
 echo "/* Created automatically by 'configure' */" >&3
@@ -64,39 +108,14 @@ echo '#undef  VERSION ' >&3
 echo '#undef  OSNAME ' >&3
 echo '#define OSNAME "'$osname'"' >&3
 echo "#define OS_$osname" >&3
+echo '#define GTK2_VER_MAJOR '$GTK_MAJOR >&3
+echo '#define GTK2_VER_MINOR '$GTK_MINOR >&3
 echo '#undef  SYSTEM ' >&3
 echo '#define SYSTEM "'$uname'"' >&3
 echo '' >&3
-
+echo "done"
 printf "configure: Makefile creating.."
 
-gtkprefix=`pkg-config gtk+-2.0 --libs 2>/dev/null`
-
-if [ $? -ne 0 ]
-then
-	echo
-	echo "*****************************************************************"
-	echo "*** The gtk+-2.0 not installed                                ***"
-	echo "*****************************************************************"
-	USE_GTK=no
-	echo "gtk2 not detected"
-	exit
-else
-	LIBS=`pkg-config gtk+-2.0 --libs`
-
-	if [ "$osname" = "CYGWIN" ]
-	then
-		EXTRACFLAGS='-fnative-struct'
-	fi
-
-	GTK_MAJOR=`pkg-config gtk+-2.0 --modversion|cut -d. -f1`
-	GTK_MINOR=`pkg-config gtk+-2.0 --modversion|cut -d. -f2`
-	if [ ! \( "$GTK_MAJOR" -le 2  \) ]
-	then
-		echo
-		echo 'Warning: system must have installed GTK+ version 2.0 or above'
-	fi
-fi
 
 echo "#endif" >&3
 exec 3>&-
@@ -134,14 +153,22 @@ fi
 echo "COMPILER='$CC'" >&3
 echo "DLLSUFF='$DLLSUFF'" >&3
 echo "DLLREALSUFF='$DLLREALSUFF'" >&3
-echo 'INCLUDEDIRS=-I. -I$(CLIPROOT)/include '$(pkg-config gtk+-2.0 --cflags) >&3
+echo 'INCLUDEDIRS=-I. -I$(CLIPROOT)/include '$($PKGCONFIG gtk+-2.0 --cflags) >&3
 echo "XTARGETS='"'$(XLIB) $(XSLIB)'"'" >&3
 echo "C_FLAGS=-Wall '"'$(INCLUDEDIRS)'"' '$EXTRACFLAGS'" >&3
 echo "LIBS='$LIBS'" >&3
 
+if [ \( "$GTK_MAJOR" -ge 2  \) ]
+then
+	if [ \( "$GTK_MINOR" -ge 4  \) ]
+        then
+		echo "GTK_24=yes" >&3
+        fi
+fi
+
 if [ "$USE_GTK" = yes ]
 then
-	XCFLAGS=`pkg-config gtk+-2.0 --cflags`
+	XCFLAGS=`$PKGCONFIG gtk+-2.0 --cflags`
 	echo "XCFLAGS='$XCFLAGS'" >&3
 fi
 

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001 - 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
               Elena V. Kornilova  <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
@@ -27,14 +27,14 @@ static gint handle_draw_signal (GtkWidget *widget, GdkRectangle *area, C_signal 
 static gint handle_size_request_signal (GtkWidget *widget, GtkRequisition *requisition, C_signal *cs)
   { return handle_signals (widget, cs, NULL); }
 static gint handle_size_allocate_signal (GtkWidget *widget, GtkAllocation *allocation, C_signal *cs)
-	{
+{
 	PREPARECV(cs,cv);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, allocation->x);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, allocation->y);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_WIDTH, allocation->width);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_HEIGHT, allocation->height);
 	INVOKESIGHANDLER(widget,cs,cv);
-	}
+}
 static gint handle_state_changed_signal (GtkWidget *widget, GtkStateType state, C_signal *cs)
   { return handle_signals (widget, cs, NULL); }
 static gint handle_parent_set_signal (GtkWidget *widget, GtkObject *old_parent, C_signal *cs)
@@ -58,24 +58,171 @@ static gint handle_selection_received_signal (GtkWidget *widget, GtkSelectionDat
 static gint handle_drag_begin_signal (GtkWidget *widget, GdkDragContext *drag_context, C_signal *cs)
   { return handle_signals (widget, cs, NULL); }
 static gint handle_drag_end_signal (GtkWidget *widget, GdkDragContext *drag_context, C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+{
+	C_object *cdrag;
+	PREPARECV(cs,cv);
+
+	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
+	if (!cdrag)
+		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
+	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
+	INVOKESIGHANDLER(widget,cs,cv);
+}
 static gint handle_drag_data_delete_signal (GtkWidget *widget, GdkDragContext *drag_context, C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+{
+	C_object *cdrag;
+	PREPARECV(cs,cv);
+
+	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
+	if (!cdrag)
+		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
+	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
+	INVOKESIGHANDLER(widget,cs,cv);
+}
 static gint handle_drag_leave_signal (GtkWidget *widget, GdkDragContext *drag_context,
 				    guint time,C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+{
+	C_object *cdrag;
+	PREPARECV(cs,cv);
+
+	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
+	if (!cdrag)
+		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
+	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
+	INVOKESIGHANDLER(widget,cs,cv);
+}
 static gint handle_drag_motion_signal (GtkWidget *widget, GdkDragContext *drag_context,
 				    gint x, gint y, guint time, C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+{
+	C_object *cdrag;
+	PREPARECV(cs,cv);
+
+	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
+	if (!cdrag)
+		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
+	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
+        _clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_SUGGESTED_ACTION, drag_context->suggested_action);
+        _clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_ACTION, drag_context->action);
+        _clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_ACTIONS, drag_context->actions);
+	INVOKESIGHANDLER(widget,cs,cv);
+}
 static gint handle_drag_drop_signal (GtkWidget *widget, GdkDragContext *drag_context,
 				    gint x, gint y, guint time, C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+{
+	C_object *cdrag;
+        C_object *ctargets;
+	PREPARECV(cs,cv);
+
+	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
+	if (!cdrag)
+		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
+	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
+	if (drag_context->targets)
+        {
+		ctargets = _list_get_cobject(cs->cw->cmachine, drag_context->targets);
+		if (!ctargets)
+			ctargets = _register_object(cs->cw->cmachine, drag_context->targets, GDK_TYPE_ATOM, NULL, NULL);
+		_clip_madd(cs->cw->cmachine, &cdrag->obj, HASH_TARGETS, &ctargets->obj);
+	}
+        else
+		_clip_madd(cs->cw->cmachine, &cv, HASH_TARGETS, NULL);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
+	INVOKESIGHANDLER(widget,cs,cv);
+}
 static gint handle_drag_data_get_signal (GtkWidget *widget, GdkDragContext *drag_context,
 			      GtkSelectionData *data,guint info,guint time,C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+{
+	C_object *cdrag;
+	C_object  *csel;
+	C_object *ctarg;
+	C_object *ctype;
+	C_object *cdata;
+        ClipVar    seld;
+	PREPARECV(cs,cv);
+
+	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
+	if (!cdrag)
+		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
+	csel = _list_get_cobject(cs->cw->cmachine, data->selection);
+	if (!csel)
+		csel = _register_object(cs->cw->cmachine, data->selection, GDK_TYPE_ATOM, NULL, NULL);
+	ctarg = _list_get_cobject(cs->cw->cmachine, data->target);
+	if (!ctarg)
+		ctarg = _register_object(cs->cw->cmachine, data->target, GDK_TYPE_ATOM, NULL, NULL);
+	ctype = _list_get_cobject(cs->cw->cmachine, data->type);
+	if (!ctype)
+		ctype = _register_object(cs->cw->cmachine, data->type, GDK_TYPE_ATOM, NULL, NULL);
+	memset(&seld, 0, sizeof(ClipVar));
+	//_clip_map(cs->cw->cmachine, &seld);
+	cdata = _list_get_cobject(cs->cw->cmachine, data);
+	if (!cdata)
+		cdata = _register_object(cs->cw->cmachine, data, GTK_TYPE_SELECTION_DATA, NULL, NULL);
+	_clip_mclone(cs->cw->cmachine, &seld, &cdata->obj);
+	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_LENGTH, data->length);
+	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_FORMAT, data->format);
+	_clip_mputc(cs->cw->cmachine, &cdata->obj, HASH_DATA, data->data, data->data?strlen(data->data):0);
+	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_SELECTION, &csel->obj);
+	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TARGET, &ctarg->obj);
+	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TYPE, &ctype->obj);
+
+	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
+	_clip_madd(cs->cw->cmachine, &cv, HASH_SELECTIONDATA, &seld);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_INFO, info);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
+	INVOKESIGHANDLER(widget,cs,cv);
+        _clip_destroy(cs->cw->cmachine, &seld);
+}
 static gint handle_drag_data_received_signal (GtkWidget *widget, GdkDragContext *drag_context,
 	    gint x, gint y, GtkSelectionData *data, guint info, guint time, C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+{
+	C_object *cdrag;
+	C_object  *csel;
+	C_object *ctarg;
+	C_object *ctype;
+	C_object *cdata;
+        ClipVar    seld;
+	PREPARECV(cs,cv);
+
+	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
+	if (!cdrag)
+		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
+	csel = _list_get_cobject(cs->cw->cmachine, data->selection);
+	if (!csel)
+		csel = _register_object(cs->cw->cmachine, data->selection, GDK_TYPE_ATOM, NULL, NULL);
+	ctarg = _list_get_cobject(cs->cw->cmachine, data->target);
+	if (!ctarg)
+		ctarg = _register_object(cs->cw->cmachine, data->target, GDK_TYPE_ATOM, NULL, NULL);
+	ctype = _list_get_cobject(cs->cw->cmachine, data->type);
+	if (!ctype)
+		ctype = _register_object(cs->cw->cmachine, data->type, GDK_TYPE_ATOM, NULL, NULL);
+	memset(&seld, 0, sizeof(ClipVar));
+//	_clip_map(cs->cw->cmachine, &seld);
+	cdata = _list_get_cobject(cs->cw->cmachine, data);
+	if (!cdata)
+		cdata = _register_object(cs->cw->cmachine, data, GTK_TYPE_SELECTION_DATA, &seld, NULL);
+	_clip_mclone(cs->cw->cmachine, &seld, &cdata->obj);
+	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_LENGTH, data->length);
+	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_FORMAT, data->format);
+	_clip_mputc(cs->cw->cmachine, &cdata->obj, HASH_DATA, data->data, data->data?strlen(data->data):0);
+	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_SELECTION, &csel->obj);
+	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TARGET, &ctarg->obj);
+	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TYPE, &ctype->obj);
+
+	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
+	_clip_madd(cs->cw->cmachine, &cv, HASH_SELECTIONDATA, &seld);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_INFO, info);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
+	INVOKESIGHANDLER(widget,cs,cv);
+        _clip_destroy(cs->cw->cmachine, &seld);
+}
 static gint handle_debug_msg_signal (GtkWidget *widget, gchar *message, C_signal *cs)
   { return handle_signals (widget, cs, NULL); }
 
@@ -139,6 +286,15 @@ widget_show_help (GtkWidget *widget, GtkWidgetHelpType arg1, C_signal *cs)
 	INVOKESIGHANDLER(widget,cs,cv);
 }
 
+static gint handle_motion_notify_events (GtkWidget *widget, GdkEventMotion *event, C_signal *cs)
+{
+	PREPARECV(cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, event->x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, event->y);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X_ROOT, event->x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y_ROOT, event->y);
+	INVOKESIGHANDLER(widget,cs,cv);
+}
 
 /*************************************************************************/
 
@@ -197,7 +353,7 @@ static SignalTable widget_signals[] =
 	{"destroy-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DESTROY },
 	{"scroll-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_SCROLL_EVENT },
 	{"expose-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_EXPOSE },
-	{"motion-notify-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_MOTION_NOTIFY },
+	{"motion-notify-event",	GSF( handle_motion_notify_events ), ESF( object_emit_event ), GTK_MOTION_NOTIFY },
 	{"2button-press-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_2BUTTON_PRESS },
 	{"3button-press-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_3BUTTON_PRESS },
 	{"key-press-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_KEY_PRESS },
@@ -212,12 +368,12 @@ static SignalTable widget_signals[] =
 	{"selection-notify-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_SELECTION_NOTIFY },
 	{"proximity-in-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_PROXIMITY_IN },
 	{"proximity-out-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_PROXIMITY_OUT },
-	{"drag-enter-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_ENTER },
-	{"drag-leave-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_LEAVE },
-	{"drag-motion-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_MOTION },
-	{"drag-status-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_STATUS },
-	{"drop-start-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DROP_START },
-	{"drop-finished-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DROP_FINISHED },
+       //	{"drag-enter-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_ENTER },
+       //	{"drag-leave-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_LEAVE },
+       //	{"drag-motion-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_MOTION },
+       //	{"drag-status-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DRAG_STATUS },
+       //	{"drop-start-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DROP_START },
+       //	{"drop-finished-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_DROP_FINISHED },
 	{"client-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_CLIENT_EVENT },
 	{"visibility-notify-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_VISIBILITY_NOTIFY },
 	{"window-state-event",	GSF( handle_events ), ESF( object_emit_event ), GTK_WINDOW_STATE_EVENT },
@@ -1170,6 +1326,36 @@ clip_GTK_WIDGETGETTOPLEVEL (ClipMachine *cm)
 err:
 	return 1;
 }
+int
+clip_GTK_WIDGETGETANCESTOR (ClipMachine *cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+        gint      type = _clip_parni(cm, 2) ;
+	GtkWidget *ancestor; C_widget *cancestor;
+	CHECKOPT(2,NUMERIC_t);
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+        CHECKARG(2, NUMERIC_t);
+	switch (type)
+        {
+        	case HASH_GTK_TYPE_WINDOW:	type = GTK_TYPE_WINDOW; break;
+        	case HASH_GTK_TYPE_BOX:		type = GTK_TYPE_BOX; break;
+        	case HASH_GTK_TYPE_CONTAINER:	type = GTK_TYPE_CONTAINER; break;
+        	case HASH_GTK_TYPE_COMBO:	type = GTK_TYPE_COMBO; break;
+        	case HASH_GTK_TYPE_TOOLBAR:	type = GTK_TYPE_TOOLBAR; break;
+        	case HASH_GTK_TYPE_MENU:	type = GTK_TYPE_MENU; break;
+                default: 			type = GTK_TYPE_WIDGET; break;
+        }
+	ancestor = gtk_widget_get_ancestor(cwid->widget, type);
+	if (ancestor)
+	{
+		cancestor = _list_get_cwidget(cm,ancestor);
+		if (!cancestor) cancestor = _register_widget(cm,ancestor,NULL);
+		if (cancestor) _clip_mclone(cm,RETPTR(cm),&cancestor->obj);
+	}
+	return 0;
+err:
+	return 1;
+}
 
 /* Returns .T. if widget has a focus */
 int
@@ -1319,7 +1505,7 @@ clip_GTK_WIDGETGETCOLORMAP(ClipMachine * cm)
 
 	if (colormap)
 	{
-		ccmap = _register_object(cm,colormap,GDK_OBJECT_COLORMAP,NULL,
+		ccmap = _register_object(cm,colormap,GDK_TYPE_COLORMAP,NULL,
 			(coDestructor)gdk_object_colormap_destructor);
 		if (ccmap)
 		{
@@ -1344,7 +1530,6 @@ clip_GTK_WIDGETGETPARENTWINDOW (ClipMachine *cm)
 	C_widget *cwid = _fetch_cw_arg(cm);
 	GdkWindow *win;
 	C_object *cwin;
-	CHECKOPT(2,NUMERIC_t);
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 	win = gtk_widget_get_parent_window(cwid->widget);
 	if (win)
@@ -1352,6 +1537,25 @@ clip_GTK_WIDGETGETPARENTWINDOW (ClipMachine *cm)
 		cwin = _get_cobject(cm, win, GDK_OBJECT_WINDOW,
 			(coDestructor)gdk_object_window_destructor);
 		_clip_retni(cm, cwin->handle);
+	}
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETGETPARENT (ClipMachine *cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+	GtkWidget *parent;
+	C_widget *cparent;
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+	parent = gtk_widget_get_parent(cwid->widget);
+	if (parent)
+	{
+		cparent = _list_get_cwidget(cm, parent);
+                if (!cparent) cparent = _register_widget(cm, parent, NULL);
+                if (cparent) _clip_mclone(cm, RETPTR(cm), &cparent->obj);
 	}
 	return 0;
 err:
@@ -1404,7 +1608,6 @@ clip_GTK_WIDGETRESETSHAPES(ClipMachine *cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
 
-	CHECKOPT(3,NUMERIC_t); CHECKOPT(4, NUMERIC_t);
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 
 	gtk_widget_reset_shapes(cwid->widget);
@@ -1413,4 +1616,130 @@ clip_GTK_WIDGETRESETSHAPES(ClipMachine *cm)
 err:
 	return 1;
 }
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+
+int
+clip_GTK_WIDGETQUEURESIZENOREDRAW(ClipMachine *cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	gtk_widget_queue_resize_no_redraw(cwid->widget);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETCANACTIVATEACCEL(ClipMachine *cm)
+{
+	C_widget  *cwid = _fetch_cw_arg(cm);
+        guint signal_id = _clip_parni(cm, 2);
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_widget_can_activate_accel(cwid->widget, signal_id);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETSETNOSHOWALL(ClipMachine *cm)
+{
+	C_widget  *cwid = _fetch_cw_arg(cm);
+        gboolean   show = _clip_parl(cm, 2);
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_widget_set_no_show_all(cwid->widget, show);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETGETNOSHOWALL(ClipMachine *cm)
+{
+	C_widget  *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	_clip_retl(cm, gtk_widget_get_no_show_all(cwid->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETLISTMNEMONICLABELS(ClipMachine *cm)
+{
+	C_widget  *cwid = _fetch_cw_arg(cm);
+        ClipVar     *cv = RETPTR(cm);
+        GList     *list ;
+        long          l ;
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	l = g_list_length(list);
+	_clip_array(cm, cv, 1, &l);
+	list = gtk_widget_list_mnemonic_labels(cwid->widget);
+        for (l=0; list; list=g_list_next(list), l++)
+        {
+        	C_widget *cwid;
+                GtkWidget *wid;
+
+		wid = GTK_WIDGET(list->data);
+                if (wid)
+                {
+                	cwid = _list_get_cwidget(cm, wid);
+                        if (!cwid) cwid = _register_widget(cm, wid, NULL);
+                        if (cwid) _clip_aset(cm, cv, &cwid->obj, 1, &l);
+                }
+        }
+
+	g_list_free(list);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETADDMNEMONICLABEL(ClipMachine *cm)
+{
+	C_widget   *cwid = _fetch_cw_arg(cm);
+	C_widget *clabel = _fetch_cwidget(cm, _clip_spar(cm, 2));
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+	CHECKCWID(clabel,GTK_IS_WIDGET);
+
+	gtk_widget_add_mnemonic_label(cwid->widget, clabel->widget);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETREMOVEMNEMONICLABEL(ClipMachine *cm)
+{
+	C_widget   *cwid = _fetch_cw_arg(cm);
+	C_widget *clabel = _fetch_cwidget(cm, _clip_spar(cm, 2));
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+	CHECKCWID(clabel,GTK_IS_WIDGET);
+
+	gtk_widget_remove_mnemonic_label(cwid->widget, clabel->widget);
+	return 0;
+err:
+	return 1;
+}
+#endif
 

@@ -1,22 +1,25 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 
 */
 /*
 	$Log: charset.c,v $
+	Revision 1.10  2004/05/21 11:22:19  clip
+	rust: minor fix for 'configure -m'
+	
 	Revision 1.9  2004/03/01 13:01:57  clip
 	uri: add some support UTF-8 to screen output
-	
+
 	Revision 1.8  2002/04/09 12:14:04  clip
 	screen patches by Przemyslaw Czerpak
 	paul
-	
+
 	Revision 1.7  2002/02/01 09:02:15  clip
 	pgchars
 	paul
-	
+
 	Revision 1.6  2002/01/28 07:31:49  clip
 	C/unknown charset cleanup
 	paul
@@ -32,6 +35,8 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include "../clip.h"
 
 #include "charset.h"
 #include "screen.h"
@@ -50,7 +55,7 @@ getunicode(char **p0)
 	while (*p == ' ' || *p == '\t')
 		p++;
 	if (*p != 'U' || p[1] != '+' || !isxdigit(p[2]) || !isxdigit(p[3]) ||
-	    !isxdigit(p[4]) || !isxdigit(p[5]) || isxdigit(p[6]))
+		!isxdigit(p[4]) || !isxdigit(p[5]) || isxdigit(p[6]))
 		return -1;
 	*p0 = p + 6;
 	return strtol(p + 2, 0, 16);
@@ -200,7 +205,7 @@ load_charset(FILE * mapf, cons_CharsetEntry ** cp, int *lenp)
 	}
 
 	r = 0;
-      ret:
+	  ret:
 
 	return r;
 }
@@ -257,7 +262,7 @@ make_uniTable(cons_CharsetEntry * cp, int len, unsigned long buf[256])
 
 	return 0;
 }
-				
+
 int
 u32toutf8( char *utf8, unsigned long uc32 )
 {
@@ -319,13 +324,13 @@ int
 load_charset_name(char *bname, cons_CharsetEntry ** cp, int *lenp)
 {
 	char path[256];
-        char *name, *s;
+		char *name, *s;
 	FILE *file;
 	int r;
 
-        name = strdup(bname);
-        for(s=name; *s; s++)
-        	*s = tolower(*s);
+		name = strdup(bname);
+		for(s=name; *s; s++)
+			*s = tolower(*s);
 
 	snprintf(path, sizeof(path), "%s/charsets/%s", CLIPROOT, name);
 	file = fopen(path, "r");
@@ -345,7 +350,7 @@ load_charset_name(char *bname, cons_CharsetEntry ** cp, int *lenp)
 
 	r = load_charset(file, cp, lenp);
 	fclose(file);
-        free(name);
+		free(name);
 	return r;
 }
 
@@ -355,7 +360,7 @@ get_str(FILE * file, char *buf, int bufsize)
 	char *s;
 	int l, i;
 
-      again:
+	  again:
 	s = fgets(buf, bufsize, file);
 	if (!s)
 		return -1;
@@ -388,40 +393,40 @@ get_str(FILE * file, char *buf, int bufsize)
 
 int
 load_charset_tables(char *bname, unsigned char *cmptbl, unsigned char *uptbl, unsigned char *lowtbl, unsigned char *alphatbl,
-		    unsigned char *pgtbl)
+			unsigned char *pgtbl)
 {
 	char buf[256];
 	FILE *file;
 	int i;
 	int r = 0;
 	int val;
-        char *name, *s;
+		char *name, *s;
 
-        name = strdup(bname);
-        for(s=name; *s; s++)
-        	*s = tolower(*s);
+		name = strdup(bname);
+		for(s=name; *s; s++)
+			*s = tolower(*s);
 
 	for(i=0; i<256; i++)
-        {
-        	if (cmptbl)
-                	cmptbl[i] = i;
-        	if (uptbl)
-                	uptbl[i] = toupper(i);
-        	if (lowtbl)
-                	lowtbl[i] = tolower(i);
-        	if (alphatbl)
-                	alphatbl[i] = isalpha(i);
-        	if (pgtbl)
-                	pgtbl[i] = 0;
-        }
+		{
+			if (cmptbl)
+					cmptbl[i] = i;
+			if (uptbl)
+					uptbl[i] = toupper(i);
+			if (lowtbl)
+					lowtbl[i] = tolower(i);
+			if (alphatbl)
+					alphatbl[i] = isalpha(i);
+			if (pgtbl)
+					pgtbl[i] = 0;
+		}
 
 
 	snprintf(buf, sizeof(buf), "%s/charsets/%s.tbl", CLIPROOT, name);
 	file = fopen(buf, "r");
 
 	if (!file)
-        {
-        	r = -1;
+		{
+			r = -1;
 		goto err;
 	}
 
@@ -478,9 +483,9 @@ load_charset_tables(char *bname, unsigned char *cmptbl, unsigned char *uptbl, un
 
 
 	goto ret;
-      err:
+	  err:
 	r = -1;
-      ret:
+	  ret:
 	if (pgtbl)
 	{
 		if (!pgtbl[PGCH_HLINE])     pgtbl[PGCH_HLINE] = PG_HLINE;
@@ -512,7 +517,7 @@ load_charset_tables(char *bname, unsigned char *cmptbl, unsigned char *uptbl, un
 		if (!pgtbl[PGCH_LARROW])    pgtbl[PGCH_LARROW] = PG_LARROW;
 		if (!pgtbl[PGCH_RARROW])    pgtbl[PGCH_RARROW] = PG_RARROW;
 	}
-        if (file)
+		if (file)
 		fclose(file);
 	free(name);
 	return r;

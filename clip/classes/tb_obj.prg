@@ -463,7 +463,7 @@ static func __sayTable
    next
    ::rowCount:=::__rect[3]-::__rect[1]+1
    if ::winbuffer==nil
-      dispEnd()
+	  dispEnd()
    endif
    ::__lRedrawTable := .f.
 
@@ -625,10 +625,14 @@ static func setColumn(pos,col)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"setColumn")
 #endif
+	::stable := .f.
+	::__firstStab := .f.
 	::__columns[pos]=col
+	/*
 	if ::__firstStab
 	   ::__remakeColumns()
 	endif
+	*/
 return oldcol
 
 *********************************
@@ -1264,7 +1268,7 @@ static func _outCurrent ( row, hilite, fSay )
 		elseif valtype(::__columns[col]:len)=="N"
 			switch valtype(data)
 				case "N"
-					data := str(data, ::__columns[col]:len)
+					data := padl( toString(data), ::__columns[col]:len )
 				case "U"
 					data := space( ::__columns[col]:len )
 				otherwise
@@ -1303,7 +1307,7 @@ static func _outCurrent ( row, hilite, fSay )
 	  elseif valtype(::__columns[col]:len)=="N"
 		switch valtype(data)
 			case "N"
-				data := str(data, ::__columns[col]:len )
+				data := padl( toString(data), ::__columns[col]:len )
 			case "U"
 				data := space( ::__columns[col]:len )
 			otherwise

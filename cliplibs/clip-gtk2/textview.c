@@ -113,8 +113,8 @@ CLIP_DLLEXPORT GtkType _gtk_type_text_child_anchor() { return GTK_TYPE_TEXT_CHIL
 long _clip_type_text_view() { return GTK_WIDGET_TEXT_VIEW; }
 long _clip_type_text_child_anchor() { return GTK_OBJECT_TEXT_CHILD_ANCHOR; }
 
-const char * _clip_type_name_text_view()  { return "GTK_TYPE_TEXT_VIEW"; }
-const char * _clip_type_name_text_child_anchor()  { return "GTK_TYPE_TEXT_CHILD_ANCHOR"; }
+const char * _clip_type_name_text_view()  { return "GTK_OBJECT_TEXT_VIEW"; }
+const char * _clip_type_name_text_child_anchor()  { return "GTK_OBJECT_TEXT_CHILD_ANCHOR"; }
 
 int
 clip_INIT___TEXTVIEW(ClipMachine *cm)
@@ -1209,4 +1209,63 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_TEXTVIEWSETOVERWRITE(ClipMachine * cm)
+{
+	C_widget     *cview = _fetch_cw_arg(cm);
+        gboolean        set = _clip_parl(cm, 2);
 
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
+        CHECKARG(2, LOGICAL_t);
+
+        gtk_text_view_set_overwrite(GTK_TEXT_VIEW(cview->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TEXTVIEWGETOVERWRITE(ClipMachine * cm)
+{
+	C_widget     *cview = _fetch_cw_arg(cm);
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
+
+        _clip_retl(cm, gtk_text_view_get_overwrite(GTK_TEXT_VIEW(cview->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TEXTVIEWSETACCEPTSTAB(ClipMachine * cm)
+{
+	C_widget     *cview = _fetch_cw_arg(cm);
+        gboolean        set = _clip_parl(cm, 2);
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
+        CHECKARG(2, LOGICAL_t);
+
+        gtk_text_view_set_accepts_tab(GTK_TEXT_VIEW(cview->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TEXTVIEWGETACCEPTSTAB(ClipMachine * cm)
+{
+	C_widget     *cview = _fetch_cw_arg(cm);
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
+
+        _clip_retl(cm, gtk_text_view_get_accepts_tab(GTK_TEXT_VIEW(cview->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+#endif

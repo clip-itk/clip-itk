@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2002  ITK
+    Copyright (C) 2002-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -19,7 +20,7 @@
 /**********************************************************/
 CLIP_DLLEXPORT GtkType _gtk_type_table() { return GTK_TYPE_TABLE; }
 long _clip_type_table() { return GTK_WIDGET_TABLE; }
-const char * _clip_type_name_table()  { return "GTK_TYPE_TABLE"; }
+const char * _clip_type_name_table()  { return "GTK_OBJECT_TABLE"; }
 
 /* Register table in global table */
 int
@@ -198,11 +199,61 @@ err:
 }
 
 int
+clip_GTK_TABLEGETDEFAULTROWSPACING(ClipMachine *cm)
+{
+	C_widget *ctbl = _fetch_cw_arg(cm);
+        CHECKCWID(ctbl,GTK_IS_TABLE);
+        _clip_retni(cm, gtk_table_get_default_row_spacing(GTK_TABLE(ctbl->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
 clip_GTK_TABLEGETHOMOGENEOUS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
         CHECKCWID(ctbl,GTK_IS_TABLE);
         _clip_retl(cm, GTK_TABLE(ctbl->widget)->homogeneous);
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_TABLEGETROWSPACING(ClipMachine *cm)
+{
+	C_widget *ctbl = _fetch_cw_arg(cm);
+        guint      row = _clip_parni(cm, 2);
+        CHECKCWID(ctbl,GTK_IS_TABLE);
+        CHECKARG(2, NUMERIC_t);
+
+        _clip_retni(cm, gtk_table_get_row_spacing(GTK_TABLE(ctbl->widget), row));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TABLEGETCOLSPACING(ClipMachine *cm)
+{
+	C_widget *ctbl = _fetch_cw_arg(cm);
+        guint   column = _clip_parni(cm, 2);
+        CHECKCWID(ctbl,GTK_IS_TABLE);
+        CHECKARG(2, NUMERIC_t);
+        _clip_retni(cm, gtk_table_get_col_spacing(GTK_TABLE(ctbl->widget), column));
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_TABLEGETDEFAULTCOLSPACING(ClipMachine *cm)
+{
+	C_widget *ctbl = _fetch_cw_arg(cm);
+        CHECKCWID(ctbl,GTK_IS_TABLE);
+        _clip_retni(cm, gtk_table_get_default_col_spacing(GTK_TABLE(ctbl->widget)));
 	return 0;
 err:
 	return 1;
@@ -251,28 +302,6 @@ clip_GTK_TABLEGETNCOLUMNS(ClipMachine *cm)
 	C_widget *ctbl = _fetch_cw_arg(cm);
         CHECKCWID(ctbl,GTK_IS_TABLE);
         _clip_retl(cm, GTK_TABLE(ctbl->widget)->ncols);
-	return 0;
-err:
-	return 1;
-}
-
-int
-clip_GTK_TABLEGETROWSPACING(ClipMachine *cm)
-{
-	C_widget *ctbl = _fetch_cw_arg(cm);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        _clip_retl(cm, GTK_TABLE(ctbl->widget)->row_spacing);
-	return 0;
-err:
-	return 1;
-}
-
-int
-clip_GTK_TABLEGETCOLUMNSPACING(ClipMachine *cm)
-{
-	C_widget *ctbl = _fetch_cw_arg(cm);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        _clip_retl(cm, GTK_TABLE(ctbl->widget)->column_spacing);
 	return 0;
 err:
 	return 1;

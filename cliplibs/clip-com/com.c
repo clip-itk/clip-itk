@@ -6,6 +6,9 @@
 
 /*
   $Log: com.c,v $
+  Revision 1.4  2004/05/28 12:34:55  clip
+  uri: add com_rts()
+
   Revision 1.3  2002/06/24 10:03:00  clip
   don't know what
 
@@ -219,7 +222,7 @@ parity_val(char *p)
 
 /*
        COM_INIT(<nComPort>,[<nBaudRate>],[<cParity>],
-                 [<nDataLength>],[<nStopBits>]) --> lInitialized
+		 [<nDataLength>],[<nStopBits>]) --> lInitialized
 */
 
 int
@@ -313,14 +316,14 @@ clip_COM_SEND(ClipMachine * mp)
 	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
 	if (_clip_parinfo(mp,2)== NUMERIC_t)
-        {
-        	buf[0] = (char) _clip_parni(mp,2);
-                buf[1] = 0;
-                len = 1 ;
-                sptr = buf;
-        }
-        else
-        	sptr = str;
+	{
+		buf[0] = (char) _clip_parni(mp,2);
+		buf[1] = 0;
+		len = 1 ;
+		sptr = buf;
+	}
+	else
+		sptr = str;
 
 	if (gz == NULL || !sptr)
 	{
@@ -427,7 +430,7 @@ clip_COM_SFLUSH(ClipMachine * mp)
 
 /*
        COM_SOFT(<nComPort>,[<lNewHandshake>],[<cXONchar>],
-                 [<cXOFFchar>]) --> lOldHandshake
+		 [<cXOFFchar>]) --> lOldHandshake
 */
 int
 clip_COM_SOFT(ClipMachine * mp)
@@ -464,7 +467,7 @@ clip_COM_SOFT(ClipMachine * mp)
 
 /*
        COM_HARD(<nComPort>,<lNewHandshake>,[<lDTR/DSR>])
-                 --> lOldHandshake
+		 --> lOldHandshake
 */
 int
 clip_COM_HARD(ClipMachine * mp)
@@ -523,6 +526,32 @@ clip_COM_DTR(ClipMachine * mp)
 	if (mp->argc > 1)
 	{
 		oflag = v24SetDTR(gz, flag);
+	}
+
+	_clip_retl(mp, oflag ? 0 : 1);
+
+	return 0;
+}
+int
+clip_COM_RTS(ClipMachine * mp)
+{
+	v24_port_t *gz;
+	int fd = _clip_parni(mp, 1);
+	int flag = _clip_parl(mp, 2);
+	int oflag;
+
+	if (fd < 1 || fd > 32)
+		return EG_ARG;
+	fd = keys[fd];
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	if (!gz)
+		return (EG_ARG);
+
+	oflag = 0;
+
+	if (mp->argc > 1)
+	{
+		oflag = v24SetRTS(gz, flag);
 	}
 
 	_clip_retl(mp, oflag ? 0 : 1);

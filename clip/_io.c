@@ -5,6 +5,18 @@
 */
 /*
    $Log: _io.c,v $
+   Revision 1.259  2004/06/15 13:56:44  clip
+   rust: screenchar(),screenattr(),screenstr() (with attrs),screenstring() (w/o attrs)
+
+   Revision 1.258  2004/06/11 12:34:25  clip
+   uri: add screenChar(), and some fix in savescreen()
+
+   Revision 1.257  2004/06/11 10:15:14  clip
+   rust: SET PRINTER TO MEMBUF
+
+   Revision 1.256  2004/06/01 09:53:02  clip
+   uri: small fix
+
    Revision 1.255  2004/03/30 11:39:54  clip
    rust: fix in FLOATVAL() to understand both '.' and ',' as decimal separators
 
@@ -1114,6 +1126,7 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 	{
 		int i;
 
+		/*
 		if (mp->obuf)
 		{
 			int i;
@@ -1122,6 +1135,7 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 				putByte_Buf(mp->obuf, _clip_outtbl[(unsigned char) buf[i]]);
 			return;
 		}
+		*/
 
 		for (i = 0; i < n; i++)
 			fputc(_clip_outtbl[(unsigned char) buf[i]], (FILE *) mp->out);
@@ -1160,19 +1174,24 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 		char *s;
 
 		  prn:
-		printer = (FILE *) mp->printer;
-		if (printer)
+		if(mp->pbuf)
 		{
-			for (i = 0, s = buf; i < n; ++i, ++s, ++mp->pcol)
-				if (*s == '\n')
-				{
-					mp->pcol = 0;
-					mp->prow++;
-				}
-			for (i = 0; i < mp->margin; ++i)
-				fputc(' ', printer);
-			for (i = 0; i < n; i++)
-				fputc(mp->prn_xlat[mp->prntbl[((unsigned char *) buf)[i]]], printer);
+			putBuf_Buf(mp->pbuf, buf, n);
+		} else {
+			printer = (FILE *) mp->printer;
+			if (printer)
+			{
+				for (i = 0, s = buf; i < n; ++i, ++s, ++mp->pcol)
+					if (*s == '\n')
+					{
+						mp->pcol = 0;
+						mp->prow++;
+					}
+				for (i = 0; i < mp->margin; ++i)
+					fputc(' ', printer);
+				for (i = 0; i < n; i++)
+					fputc(mp->prn_xlat[mp->prntbl[((unsigned char *) buf)[i]]], printer);
+			}
 		}
 	}
 }
@@ -1182,6 +1201,7 @@ out_std(ClipMachine * mp, char *buf, int n, int attr)
 {
 	int i;
 
+	/*
 	if (mp->obuf)
 	{
 		int i;
@@ -1190,6 +1210,7 @@ out_std(ClipMachine * mp, char *buf, int n, int attr)
 			putByte_Buf(mp->obuf, _clip_outtbl[(unsigned char) buf[i]]);
 		return;
 	}
+	*/
 
 	for (i = 0; i < n; i++)
 		fputc(_clip_outtbl[(unsigned char) buf[i]], stdout);
@@ -2808,6 +2829,7 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 	int y = sp->y;
 	int top = -1024, left = -1024, bottom = 1024, right = 1024;
 
+	/*
 	if (mp->obuf)
 	{
 		int i;
@@ -2816,6 +2838,7 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 			putByte_Buf(mp->obuf, _clip_outtbl[(unsigned char) buf[i]]);
 		return;
 	}
+	*/
 
 	clip_region(mp, &top, &left, &bottom, &right, 1, -1);
 
@@ -4929,7 +4952,13 @@ save_region(ClipMachine * mp, char *mem, int top, int left, int bottom, int righ
 	unsigned char *s, *p;
 	Screen *sp = mp->screen;
 
-	*len = (bottom - top + 1) * (right - left + 1) * 3;
+#ifdef CLIP_DOS_SCRBUF
+	i=2;
+#else
+	i=3;
+#endif
+
+	*len = (bottom - top + 1) * (right - left + 1) * i;
 	s = (unsigned char *) realloc(mem, *len);
 
 	for (i = top, p = s; i <= bottom; ++i)
@@ -7181,3 +7210,107 @@ clip_WINBUF_OUT_TRANS(ClipMachine * mp)
 	return 0;
 }
 
+int
+clip_GETMEMBUF(ClipMachine *mp)
+{
+	ClipVar *rp = RETPTR(mp);
+
+	if(mp->pbuf)
+		_clip_var_str(mp->pbuf->buf,mp->pbuf->ptr - mp->pbuf->buf,rp);
+	return 0;
+}
+
+int
+clip_SCREENCHAR(ClipMachine *mp)
+{
+	int top  = _clip_parni(mp,1);
+	int left = _clip_parni(mp,2);
+	Screen *sp = mp->screen;
+	char* r = calloc(1,2);
+
+	if((_clip_parinfo(mp,1) != NUMERIC_t) || (top < 0) || (top >= sp->base->Lines))
+		top = sp->y;
+	if((_clip_parinfo(mp,2) != NUMERIC_t) || (left < 0) || (left >= sp->base->Columns))
+		left = sp->x;
+
+	r[0] = sp->chars[top][left];
+	_clip_retcn_m(mp,r,1);
+	return 0;
+}
+
+int
+clip_SCREENATTR(ClipMachine *mp)
+{
+	int top  = _clip_parni(mp,1);
+	int left = _clip_parni(mp,2);
+	Screen *sp = mp->screen;
+	int r;
+
+	if((_clip_parinfo(mp,1) != NUMERIC_t) || (top < 0) || (top >= sp->base->Lines))
+		top = sp->y;
+	if((_clip_parinfo(mp,2) != NUMERIC_t) || (left < 0) || (left >= sp->base->Columns))
+		left = sp->x;
+
+	r = (int)sp->colors[top][left];
+	_clip_retni(mp,r);
+	return 0;
+}
+
+int
+clip_SCREENSTR(ClipMachine *mp)
+{
+	int top  = _clip_parni(mp,1);
+	int left = _clip_parni(mp,2);
+	int l = _clip_parni(mp,3);
+	Screen *sp = mp->screen;
+	char *r,*p;
+	int i,b;
+
+#ifdef CLIP_DOS_SCRBUF
+	b=2;
+#else
+	b=3;
+#endif
+
+	if((_clip_parinfo(mp,1) != NUMERIC_t) || (top < 0) || (top >= sp->base->Lines))
+		top = sp->y;
+	if((_clip_parinfo(mp,2) != NUMERIC_t) || (left < 0) || (left >= sp->base->Columns))
+		left = sp->x;
+	if((_clip_parinfo(mp,3) != NUMERIC_t) || (l < 1) || (left+l > sp->base->Columns))
+		l = sp->base->Columns - left;
+
+	r = calloc(1,l*b+1);
+
+	for (i = 0,p = r; i < l; i++)
+	{
+		*p++ = sp->chars[top][left+i];
+		*p++ = sp->colors[top][left+i];
+#ifndef CLIP_DOS_SCRBUF
+		*p++ = sp->attrs[top][left+i];
+#endif
+	}
+	_clip_retcn_m(mp,r,l*b);
+	return 0;
+}
+
+int
+clip_SCREENSTRING(ClipMachine *mp)
+{
+	int top  = _clip_parni(mp,1);
+	int left = _clip_parni(mp,2);
+	int l = _clip_parni(mp,3);
+	Screen *sp = mp->screen;
+	char* r;
+
+	if((_clip_parinfo(mp,1) != NUMERIC_t) || (top < 0) || (top >= sp->base->Lines))
+		top = sp->y;
+	if((_clip_parinfo(mp,2) != NUMERIC_t) || (left < 0) || (left >= sp->base->Columns))
+		left = sp->x;
+	if((_clip_parinfo(mp,3) != NUMERIC_t) || (l < 1) || (left+l > sp->base->Columns))
+		l = sp->base->Columns - left;
+
+	r = calloc(1,l+1);
+	memcpy(r,sp->chars[top]+left,l);
+	_clip_retcn_m(mp,r,l);
+	return 0;
+}

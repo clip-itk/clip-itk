@@ -235,13 +235,8 @@ IF_NIL m->cDivideT IS m->_DefaultHBorder
 
 ScrSave(@scr)
 
-IF !m->_NoAsk .AND. !m->_lAddi .AND. !BeginPrint(m->_cFile, m->_fcondit)
+IF !BeginPrint(m->_cFile, m->_fcondit)
 	RETU .f.
-ELSEIF m->_NoAsk .OR. m->_lAddi
-	_plineNo:=_nl:=0
-	_pageNo:=1
-	Set(_SET_PRINTFILE,m->_cFile, m->_NeedApFile)
-	m->_F_Out:=m->_cFile
 ENDIF
 
 * Если количество заголовков < количества столбцов - сделаем пустые заголовки
@@ -604,13 +599,18 @@ BEGIN SEQUENCE
 
 IF !EMPTY(cFile) THEN _F_OUT:=cFile
 IF !EMPTY(cFcond) THEN _PCond:=cFCond
-IF TakeScope(FOROTBOR) .AND. GetName(_ZU+FOROTBOR,'_PCond') .AND. TrueCond(@_PCond)
+
+IF m->_lAddi THEN m->_NeedApFile:=.T.
+
+IF m->_NoAsk .OR. (TakeScope(FOROTBOR) .AND. GetName(_ZU+FOROTBOR,'_PCond') .AND. TrueCond(@_PCond))
 
 //  SetColor(m->_MenuColor)
-  _i:=Menu2({WHERE_DEV},1,WHERE_OUT,,{{9,_MSG_PR_F9,{||Configure(.T.)}}})
+  _i:=IF(m->_NoAsk, 1, ;
+	 Menu2({WHERE_DEV},1,WHERE_OUT,,{{9,_MSG_PR_F9,{||Configure(.T.)}}});
+	)
   lIsHtml:=.F.
   IF _i<3
-	IF GetName(_ZIF+m->_ABORT,'_F_OUT')
+	IF m->_NoAsk .OR. GetName(_ZIF+m->_ABORT,'_F_OUT')
 		IF  Empty(_F_OUT) THEN _F_Out=ClearName()
 		IF _i==1
 			cExt:='.PRN'
@@ -618,7 +618,7 @@ IF TakeScope(FOROTBOR) .AND. GetName(_ZU+FOROTBOR,'_PCond') .AND. TrueCond(@_PCo
 			cExt:='.HTM'
 			lIsHtml:=.T.
 		ENDIF
-		IF !m->_NeedApFile .AND. !TestWriteFile(@_F_OUT,cExt)
+		IF !m->_NoAsk .AND. !m->_NeedApFile .AND. !TestWriteFile(@_F_OUT,cExt)
 			BREAK
 		ENDIF
 	ELSE

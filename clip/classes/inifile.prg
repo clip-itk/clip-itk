@@ -42,6 +42,7 @@ function _recover_iniFile(obj)
 	obj:setValue	:=@ __IF_setValue()
 	obj:sections	:=@ __IF_sections()
 	obj:keys	:=@ __IF_keys()
+	obj:checkName 	:=@ __check_name()
 return obj
 
 ***************************************
@@ -54,7 +55,7 @@ return ret
 
 ***************************************
 static function __IF_keys(sPart)
-	local i,ret:={},s1:=__check_name(sPart)
+	local i,ret:={},s1:=::checkName(sPart)
 	if s1 $ ::data
 		ret:=mapkeys(::data[s1])
 		for i=1 to len(ret)
@@ -66,12 +67,19 @@ return ret
 ***************************************
 static function __IF_getValue(sPart,sKey)
 	local s1,s2
-	s1 := __check_Name(sPart)
-	s2 := __check_Name(sKey+"_"+host_charset())
+	s1 := ::checkName(sPart)
+	if sKey == NIL
+		if s1 $ ::data
+			return ::data[s1]
+		else
+			return map()
+		endif
+	endif
+	s2 := ::checkName(sKey+"_"+host_charset())
 	if s1 $ ::data .and. s2 $ ::data[s1]
 		return ::data[s1][s2]
 	endif
-	s2 := __check_Name(sKey)
+	s2 := ::checkName(sKey)
 	if s1 $ ::data .and. s2 $ ::data[s1]
 		return ::data[s1][s2]
 	endif
@@ -79,8 +87,8 @@ return NIL
 ***************************************
 static function __IF_setValue(sPart,sKey,xData)
 	local s1,s2
-	s1 := __check_Name(sPart)
-	s2 := __check_Name(sKey)
+	s1 := ::checkName(sPart)
+	s2 := ::checkName(sKey)
 	::__names[s1] := s1
 	::__names[s2]  := s2
 	if ! (s1 $ ::data)
@@ -171,7 +179,7 @@ static function __IF_load()
 			else
 				sPart:=substr(buf,2,len(buf)-1)
 			endif
-			sPart := __check_name(sPart)
+			sPart := ::checkName(sPart)
 			::__names[sPart]:=sPart
 			::data[sPart] := map()
 			oPart := ::data[sPart]
@@ -183,7 +191,7 @@ static function __IF_load()
 			loop
 	       endif
 	       sKey:=substr(buf,1,i-1)
-	       skey:=__check_name(sKey)
+	       skey:=::checkName(sKey)
 	       sVal:=substr(buf,i+1)
 	       ::__names[sKey] := sKey
 	       oPart[sKey]:=__stringToData(sVal)
@@ -192,7 +200,7 @@ static function __IF_load()
 return .t.
 
 ***************************************
-static function __check_name(sName)
+static function __check_name(self,sName)
 	local ret:=alltrim(sName)
 	ret:=strtran(ret,".","_")
 	ret:=strtran(ret," ","_")

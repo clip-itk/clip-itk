@@ -4,9 +4,15 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: dbf.c,v $
+	Revision 1.181  2004/07/12 11:04:43  clip
+	rust: unlink(filename) before creat() (fixes file permissions)
+	
+	Revision 1.180  2004/05/06 11:28:34  clip
+	rust: fixed typo in dbf_close()
+
 	Revision 1.179  2004/02/03 20:51:24  clip
 	rust: debug output removed
-	
+
 	Revision 1.178  2004/02/03 09:48:33  clip
 	rust: fix in _clip_close()
 
@@ -1133,6 +1139,7 @@ static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 
 	memset(&file,0,sizeof(RDD_FILE));
 	file.md = (char*)-1;
+	unlink(name);
 #ifdef _WIN32
 	file.fd = open(name,O_CREAT|O_TRUNC|O_RDWR|O_BINARY,cm->fileCreateMode);
 #else
@@ -1329,7 +1336,7 @@ static int dbf_close(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		hdr.yy = date->tm_year<100?date->tm_year:date->tm_year-100;
 		hdr.mm = date->tm_mon+1;
 		hdr.dd = date->tm_mday;
-		if((er = rdd_write(cm,&rd->file,1,2,&hdr.yy,__PROC__))) return er;
+		if((er = rdd_write(cm,&rd->file,1,3,&hdr.yy,__PROC__))) return er;
 	}
 /*
 	if(_clip_unlock(cm,rd->file.filehash,rd->file.fd,0x7fffffff,0))

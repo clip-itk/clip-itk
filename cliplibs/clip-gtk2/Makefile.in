@@ -23,50 +23,74 @@ GDK_SRC = gdk.c gdkfont.c  gdkcolor.c gdkgc.c gdkdraw.c gdkrgb.c gdkpixbuf.c \
 	  gdkregion.c gdkwindow.c
 
 #GTK_SRC = text.c tree.c treeitem.c
-GTK_SRC = accelgroup.c adjustment.c alignment.c bmpxpm.c box.c button.c buttonbox.c calendar.c \
-	  cellrenderer.c \
-	  checkbutton.c checkmenuitem.c clist.c colorsel.c combo.c common.c \
-	  container.c ctree.c curve.c dialog.c drawingarea.c editable.c entry.c \
-	  filesel.c fixed.c fontsel.c frame.c general.c  handlebox.c image.c item.c \
-	  itemfactory.c \
+GTK_SRC = accelgroup.c adjustment.c alignment.c bin.c bmpxpm.c box.c button.c\
+	  buttonbox.c calendar.c cellrenderer.c checkbutton.c \
+	  checkmenuitem.c clipboard.c clist.c colorsel.c combo.c common.c \
+	  container.c ctree.c curve.c dialog.c draganddrop.c drawingarea.c \
+	  editable.c entry.c  filesel.c fixed.c fontsel.c frame.c general.c \
+	   handlebox.c iconsource.c invisible.c \
+	  image.c imagemenuitem.c imcontext.c item.c itemfactory.c \
 	  label.c layout.c list.c listitem.c liststore.c menu.c menubar.c menuitem.c \
 	  menushell.c misc.c notebook.c object.c optionmenu.c paned.c \
-	  pixmap.c progress.c progressbar.c radiobutton.c radiomenuitem.c \
+	  pixmap.c plug.c progress.c progressbar.c radiobutton.c radiomenuitem.c \
 	  range.c rulers.c scale.c scrollbar.c scrolledwindow.c separator.c \
-	  spinbutton.c statusbar.c table.c textbuffer.c textiter.c textmark.c \
+          selections.c  sizegroup.c socket.c spinbutton.c statusbar.c stock.c \
+          table.c textbuffer.c \
+	  textiter.c textmark.c \
 	  texttag.c texttagtable.c textview.c tipsquery.c togglebutton.c \
 	  toolbar.c tooltips.c treemodel.c treeselection.c treestore.c \
-	  treeview.c treeviewcolumn.c viewport.c widget.c window.c windowgroup.c \
+	  treeview.c treeviewcolumn.c style.c viewport.c widget.c window.c windowgroup.c \
 	  gtkermsg.prg
 
 GTK_EXTEXT_SRC = #gtkextext.c extext.c
+
 
 #GDK_OBJ = gdkinput.o
 GDK_OBJ = gdk.o gdkfont.o gdkcolor.o gdkgc.o gdkdraw.o gdkrgb.o gdkpixbuf.o \
 	  gdkregion.o gdkwindow.o
 
 #GTK_OBJ = text.o tree.o treeitem.o
-GTK_OBJ = accelgroup.o adjustment.o alignment.o bmpxpm.o box.o button.o buttonbox.o calendar.o \
-	  cellrenderer.o \
-	  checkbutton.o checkmenuitem.o clist.o colorsel.o combo.o common.o \
-	  container.o ctree.o curve.o dialog.o drawingarea.o editable.o entry.o \
-	  filesel.o fixed.o fontsel.o frame.o general.o handlebox.o image.o item.o \
-	  itemfactory.o \
+GTK_OBJ = accelgroup.o adjustment.o alignment.o bin.o bmpxpm.o box.o button.o \
+	  buttonbox.o calendar.o cellrenderer.o checkbutton.o \
+	  checkmenuitem.o clipboard.o clist.o colorsel.o combo.o common.o \
+	  container.o ctree.o curve.o dialog.o draganddrop.o drawingarea.o \
+	  editable.o entry.o filesel.o fixed.o fontsel.o frame.o general.o \
+	  handlebox.o iconsource.o invisible.o \
+	  image.o imagemenuitem.o imcontext.o item.o itemfactory.o \
 	  label.o layout.o list.o listitem.o liststore.o menu.o menubar.o menuitem.o \
 	  menushell.o misc.o notebook.o object.o optionmenu.o paned.o \
-	  pixmap.o progress.o progressbar.o radiobutton.o radiomenuitem.o \
+	  pixmap.o plug.o progress.o progressbar.o radiobutton.o radiomenuitem.o \
 	  range.o rulers.o scale.o scrollbar.o scrolledwindow.o separator.o \
-	  spinbutton.o statusbar.o table.o textbuffer.o textiter.o textmark.o \
+	  selections.o sizegroup.o socket.o spinbutton.o statusbar.o stock.o \
+	  table.o textbuffer.o \
+	  textiter.o textmark.o \
 	  texttag.o texttagtable.o textview.o tipsquery.o togglebutton.o \
 	  toolbar.o tooltips.o treemodel.o treeselection.o treestore.o \
-	  treeview.o treeviewcolumn.o viewport.o widget.o window.o windowgroup.o \
+	  treeview.o treeviewcolumn.o style.o viewport.o widget.o window.o windowgroup.o \
 	  gtkermsg.o
 
 GTK_EXTEXT_OBJ = #gtkextext.o extext.o
 
-SRCS = $(GDK_SRC) $(GTK_SRC) $(GTK_EXTEXT_SRC)
+ifdef GTK_24
+	GTK_24_SRC = action.c actiongroup.c celllayout.c colorbutton.c \
+	combobox.c \
+	entrycompletion.c filechooser.c fontbutton.c filefilter.c \
+	icontheme.c \
+	radioaction.c toggleaction.c toolbutton.c toolitem.c uimanager.c
 
-OBJS = $(GDK_OBJ) $(GTK_OBJ) $(GTK_EXTEXT_OBJ)
+	GTK_24_OBJ = action.o actiongroup.o celllayout.o colorbutton.o \
+	combobox.o \
+	entrycompletion.o filechooser.o fontbutton.o filefilter.o \
+	icontheme.o \
+	radioaction.o toggleaction.o toolbutton.o toolitem.o uimanager.o
+else
+	GTK_24_SRC =
+	GTK_24_OBJ =
+endif
+
+SRCS = $(GDK_SRC) $(GTK_SRC) $(GTK_EXTEXT_SRC) $(GTK_24_SRC)
+
+OBJS = $(GDK_OBJ) $(GTK_OBJ) $(GTK_EXTEXT_OBJ) $(GTK_24_OBJ)
 
 OBJDIR	= .
 EXTOBJS =

@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: btree.c,v $
+	Revision 1.29  2004/05/26 09:52:23  clip
+	rust: some cleanings
+	
 	Revision 1.28  2003/09/02 14:27:43  clip
 	changes for MINGW from
 	Mauricio Abre <maurifull@datafull.com>
@@ -125,7 +128,6 @@
 #if defined(__GNUC__)
    #include <unistd.h>
 #endif
-#include "clipbase.h"
 #include "rdd.h"
 #include "./btree.h"
 #include "error.ch"

@@ -5,6 +5,9 @@
  */
 /*
    $Log: clipvm.c,v $
+   Revision 1.115  2004/05/19 11:34:01  clip
+   uri: memory leak fixed
+
    Revision 1.114  2004/04/14 10:38:32  clip
    rust: suppress GCC 3.3.3 warnings
 
@@ -612,27 +615,27 @@ SETINT(void *ptr, int l)
 static short get_short(void* ptr)
 {
 	short **pp = (short**)ptr;
-        short r;
+	short r;
 
 	memcpy(&r, pp, sizeof(r));
-        (*pp)++;
-        return r;
+	(*pp)++;
+	return r;
 }
 
 static long get_long(void* ptr)
 {
 	long **pp = (long**)ptr;
-        long r;
+	long r;
 
 	memcpy(&r, pp, sizeof(r));
-        (*pp)++;
-        return r;
+	(*pp)++;
+	return r;
 }
 
 static unsigned char get_byte(void* ptr)
 {
 	unsigned char **pp = (unsigned char**)ptr;
-        return *(*pp)++;
+	return *(*pp)++;
 }
 
 #else
@@ -645,19 +648,19 @@ static unsigned char get_byte(void* ptr)
 static short get_short(void* ptr)
 {
 	short **pp = (short**)ptr;
-        return *(*pp)++;
+	return *(*pp)++;
 }
 
 static long get_long(void* ptr)
 {
 	long **pp = (long**)ptr;
-        return *(*pp)++;
+	return *(*pp)++;
 }
 
 static unsigned char get_byte(void* ptr)
 {
 	unsigned char **pp = (unsigned char**)ptr;
-        return *(*pp)++;
+	return *(*pp)++;
 }
 
 #endif
@@ -1231,6 +1234,8 @@ destroy_ClipFile(ClipMachine * mp, ClipFile * fp)
 		/*free(fp->hash_names->mem); */
 		free(fp->hash_names);
 	}
+	if (fp->staticDefs)
+		free(fp->staticDefs);
 
 	return 1;
 }

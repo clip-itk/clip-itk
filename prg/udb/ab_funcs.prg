@@ -19,6 +19,10 @@ function ab_choice_class(oDict)
 	tmp := oDict:select("CLASS")
 	for i=1 to len(tmp)
 		o:=oDict:getValue(tmp[i])
+		if empty(o)
+			outlog(__FILE__,__LINE__,tmp[i],oDict:error,o)
+			loop
+		endif
 		s:=padr(o:name,20)
 		s+=" "+o:id
 		aadd(m,s)
@@ -50,6 +54,10 @@ function ab_choice_attr(oDict)
 	tmp := oDict:select("ATTR")
 	for i=1 to len(tmp)
 		o:=oDict:getValue(tmp[i])
+		if empty(o)
+			outlog(__FILE__,__LINE__,tmp[i],oDict:error,o)
+			loop
+		endif
 		s:=padr(o:name,20)
 		s+=" "+o:id
 		s+=" "+o:type
@@ -86,6 +94,10 @@ function ab_choice_index(oDict,tmp)
 	endif
 	for i=1 to len(tmp)
 		o:=oDict:getValue(tmp[i])
+		if empty(o)
+			outlog(__FILE__,__LINE__,tmp[i],oDict:error,o)
+			loop
+		endif
 		s:=padr(o:name,20)
 		s+=" "+o:expr
 		aadd(m,s)
@@ -117,6 +129,10 @@ function ab_choice_tcolumn(oDict)
 	tmp := oDict:select("TCOLUMN")
 	for i=1 to len(tmp)
 		o:=oDict:getValue(tmp[i])
+		if empty(o)
+			outlog(__FILE__,__LINE__,tmp[i],oDict:error,o)
+			loop
+		endif
 		s:=padr(o:name,20)
 		s+=" "+padr(o:header,20)
 		aadd(m,s)
@@ -150,6 +166,10 @@ function ab_choice_tview(oDict,tmp)
 	endif
 	for i=1 to len(tmp)
 		o:=oDict:getValue(tmp[i])
+		if empty(o)
+			outlog(__FILE__,__LINE__,tmp[i],oDict:error,o)
+			loop
+		endif
 		s:=o:header
 		aadd(m,s)
 	next
@@ -182,6 +202,10 @@ function ab_choice_report(oDict,tmp)
 	endif
 	for i=1 to len(tmp)
 		o:=oDict:getValue(tmp[i])
+		if empty(o)
+			outlog(__FILE__,__LINE__,tmp[i],oDict:error,o)
+			loop
+		endif
 		s:=o:name
 		aadd(m,s)
 	next

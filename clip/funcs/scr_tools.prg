@@ -1,7 +1,7 @@
 /*
-    Copyright (C) 2002  ITK
-    Author  : Tsarenko P  <tpe@dongu.donetsk.ua>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2002  ITK
+	Author  : Tsarenko P  <tpe@dongu.donetsk.ua>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "config.ch"
 
@@ -129,14 +129,14 @@ Function ClearEOL(nRow, nCol, xAttr, xChar)
 		nCol := Col()
 	endif
 	if xAttr == nil
-		cAttr := GetClearA()
+		cAttr := chr(GetClearA())
 	elseif ValType(xAttr) = 'N'
 		cAttr := Chr(xAttr)
 	else
 		cAttr := xAttr
 	endif
 	if xChar == nil
-		cChar := GetClearB()
+		cChar := chr(GetClearB())
 	elseif ValType(xChar) = 'N'
 		cChar := Chr(xChar)
 	else
@@ -361,16 +361,3 @@ Function SayScreen(cStr, nRow, nCol)
 	next
 	RestScreen(nRow, nCol, nRow, nCol + Len(cStr) - 1, cScr)
 Return ''
-
-***********************************
-Function ScreenAttr(nRow, nCol)
-	Local cScr
-	if nRow == nil
-		nRow := Row()
-	endif
-	if nCol == nil
-		nCol := Col()
-	endif
-	cScr := SaveScreen(nRow, nCol, nRow, nCol)
-Return Asc(Substr(cScr, 2, 1))
-

@@ -270,7 +270,7 @@ clip_GTK_SHEETNEWBROWSER(ClipMachine * cm)
         C_widget *cwid;
 
 	CHECKOPT(1,MAP_t);
-        CHECKARG(2,NUMERIC_t); CHECKARG(3,NUMERIC_t); CHECKOPT(3,CHARACTER_t);
+        CHECKARG(2,NUMERIC_t); CHECKARG(3,NUMERIC_t); CHECKOPT(4,CHARACTER_t);
 
 	wid = gtk_sheet_new_browser(ncolumns,nrows,title);
 

@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -33,8 +34,8 @@ const char * _clip_type_name_font_selection_dialog() { return "GTK_WIDGET_FONT_S
 int
 clip_INIT___FONT_SELECTION(ClipMachine *cm)
 {
-	_wtype_table_put(_clip_type_font_selection, _clip_type_name_font_selection, _gtk_type_font_selection, _gtk_type_notebook, NULL);
-	_wtype_table_put(_clip_type_font_selection_dialog, _clip_type_name_font_selection_dialog, _gtk_type_font_selection_dialog, _gtk_type_window, NULL);
+	_wtype_table_put(_clip_type_font_selection, _clip_type_name_font_selection, _gtk_type_font_selection, _gtk_type_vbox, NULL);
+	_wtype_table_put(_clip_type_font_selection_dialog, _clip_type_name_font_selection_dialog, _gtk_type_font_selection_dialog, _gtk_type_dialog, NULL);
 	return 0;
 }
 /**********************************************************/

@@ -6,8 +6,8 @@ CLIPFLAGS = -s -l
 
 all:		clip_hindex$(EXESUFF) clip_hseek$(EXESUFF)
 install:	all
-	cp clip_hindex$(EXESUFF) $(CLIPROOT)/bin/clip_hindex$(EXESUFF)
-	cp clip_hseek$(EXESUFF) $(CLIPROOT)/bin/clip_hseek$(EXESUFF)
+	cp clip_hindex$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/clip_hindex$(EXESUFF)
+	cp clip_hseek$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/clip_hseek$(EXESUFF)
 
 
 clean:

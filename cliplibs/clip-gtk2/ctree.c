@@ -302,10 +302,14 @@ _ctree_func(GtkCTree *ctree, GtkCTreeNode *node, Ctree_var *c)
 	ClipVar res;
 	if (!cnode) cnode = _register_object(c->cm,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
 	memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
-	stack[0] = c->cw->obj;
-	stack[1] = cnode->obj;
+	_clip_mclone(c->cm, &stack[0], &c->cw->obj);
+	_clip_mclone(c->cm, &stack[1], &cnode->obj);
+	//stack[0] = c->cw->obj;
+	//stack[1] = cnode->obj;
 	_clip_eval( c->cm, c->cfunc, 2, stack, &res );
 	_clip_destroy(c->cm, &res);
+	_clip_destroy(c->cm, &stack[0]);
+	_clip_destroy(c->cm, &stack[1]);
 }
 
 /* Recursively apply a function to all nodes of the tree at or below a

@@ -30,7 +30,7 @@ CLIP_DLLEXPORT GtkType _gtk_type_text_iter() { return GTK_TYPE_TEXT_ITER; }
 
 long _clip_type_text_iter() { return GTK_OBJECT_TEXT_ITER; }
 
-const char * _clip_type_name_text_iter()  { return "GTK_TYPE_TEXT_ITER"; }
+const char * _clip_type_name_text_iter()  { return "GTK_OBJECT_TEXT_ITER"; }
 
 int
 clip_INIT___TEXTITER(ClipMachine *cm)

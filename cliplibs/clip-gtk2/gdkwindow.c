@@ -39,23 +39,20 @@ clip_GDK_WINDOWGETPOINTER(ClipMachine * cm)
 {
 //	C_object    *cwin = _fetch_co_arg(cm);
 	C_widget    *cwin = _fetch_cw_arg(cm);
-	gint            x = _clip_parni(cm,2);
-	gint            y = _clip_parni(cm,3);
-	gint * px, * py;
+	gint  px,  py;
 	GdkWindow *win = NULL;
 	GdkModifierType mask;
 
 	CHECKCWID(cwin,GTK_IS_WIDGET);
-	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
-	px = _clip_parinfo(cm,2) == UNDEF_t ? NULL : &x;
-	py = _clip_parinfo(cm,3) == UNDEF_t ? NULL : &y;
 
 	if (cwin && cwin->widget) win = cwin->widget->window;
 
-	gdk_window_get_pointer(win, px, py, &mask);
-	_clip_storni(cm,*px,2,0);
-	_clip_storni(cm,*py,3,0);
-	_clip_storni(cm,mask,4,0);
+	if (!win) return 0;
+
+	gdk_window_get_pointer(win, &px, &py, &mask);
+	_clip_storni(cm, px,2,0);
+	_clip_storni(cm, py,3,0);
+	_clip_storni(cm, mask,4,0);
 
 	return 0;
 err:
@@ -252,4 +249,27 @@ clip_GDK_WINDOWSETHINTS(ClipMachine * cm)
 err:
 	return 1;
 }
+
+
+int
+clip_GDK_WINDOWSETBACKPIXMAP(ClipMachine * cm)
+{
+	C_widget    *cwin = _fetch_cw_arg(cm);
+        C_object    *cpix = _fetch_cobject(cm, _clip_spar(cm, 2));
+        gboolean relative = _clip_parl(cm, 3);
+	GdkWindow *win = NULL;
+
+	CHECKCWID(cwin,GTK_IS_WIDGET); CHECKOPT(2, MAP_t);
+	CHECKCOBJOPT(cpix,GDK_IS_PIXMAP(cpix->object));
+	CHECKARG(3,LOGICAL_t);
+
+	if (cwin && cwin->widget) win = cwin->widget->window;
+
+	gdk_window_set_back_pixmap(win, (cpix?GDK_PIXMAP(cpix->object):NULL), relative);
+
+	return 0;
+err:
+	return 1;
+}
+
 

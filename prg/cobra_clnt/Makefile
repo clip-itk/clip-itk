@@ -18,10 +18,10 @@ cobra_clnt1:cobra_clnt1.prg $(OBJS)
 	$(CLIP) $(CLIPFLAGS) -esl cobra_clnt1.prg $(OBJS) $(CLIPLIBS)
 
 install:
-	cp cobra_clnt1$(EXESUFF) $(CLIPROOT)/bin
-	mkdir -p $(CLIPROOT)/cobra
-	#ln -sf $(CLIPROOT)/bin/cobra_clnt1$(EXESUFF)  $(CLIPROOT)/cobra/cobra_clnt1$(EXESUFF)
-	cp cobra_clnt.ini $(CLIPROOT)/cobra
+	cp cobra_clnt1$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
+	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra
+	#ln -sf $(DESTDIR)$(CLIPROOT)/bin/cobra_clnt1$(EXESUFF)  $(DESTDIR)$(CLIPROOT)/cobra/cobra_clnt1$(EXESUFF)
+	cp cobra_clnt.ini $(DESTDIR)$(CLIPROOT)/cobra
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) -n $<

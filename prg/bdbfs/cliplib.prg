@@ -546,6 +546,7 @@ LOCAL	aStr:={},i,nStart,nFld,;
 	cfName,cfType,cfLen,cfDec,cfFlag,cFld:=SPACE(32),;
 	cNewByte,cNewType,lWasMemo, lCpDBF, lWasVFP
 #define DBASE4 CHR(139)+CHR(142)+CHR(123)+CHR(203)
+#define DBASE7 CHR(4)+CHR(5)
 nFld:=Fseek(_handle,0,2)	//Размер для проверки
 FSeek(_handle,0)
 Fread(_handle,@cFld,28)
@@ -677,7 +678,7 @@ IF !EMPTY(m->_lForced)
 	ENDIF
 	NeedForced:=0	//Зафорсировали уже
 ELSE
-	IF cNewType $ DBASE4
+	IF cNewType $ DBASE4+DBASE7
 		NeedForced:=2
 	ELSEIF cNewType $ CHR(179)
 		NeedForced:=3

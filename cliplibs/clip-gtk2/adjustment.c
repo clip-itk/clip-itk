@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornillova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -150,9 +151,9 @@ clip_GTK_ADJUSTMENTGETVALUE(ClipMachine * cm)
 
 	CHECKCWID(cadj,GTK_IS_ADJUSTMENT);
 
-	_clip_storni(cm, GTK_ADJUSTMENT(cadj->widget)->value, 2,0);
-	_clip_storni(cm, GTK_ADJUSTMENT(cadj->widget)->lower, 3,0);
-	_clip_storni(cm, GTK_ADJUSTMENT(cadj->widget)->upper, 4,0);
+	_clip_stornd(cm, gtk_adjustment_get_value(GTK_ADJUSTMENT(cadj->widget)), 2,0);
+	_clip_stornd(cm, GTK_ADJUSTMENT(cadj->widget)->lower, 3,0);
+	_clip_stornd(cm, GTK_ADJUSTMENT(cadj->widget)->upper, 4,0);
 
 	return 0;
 err:

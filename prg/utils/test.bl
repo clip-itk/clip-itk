@@ -7,7 +7,7 @@ qout()
 inkey(0)
 SUM:=0
 QQ:=30
-for QQ:=1;QQ <= 10000;QQ:=QQ+1
+for QQ:=1;QQ <= 100;QQ:=QQ+1
  SUM:=SUM+QQ
 next
 devPos(1,0)
