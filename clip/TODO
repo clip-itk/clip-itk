@@ -1,0 +1,50 @@
+- профайлер
+- сигнальный сервер и система обмена сигналами
+- compile time optimize const expression ( 2+2 -> 4)
+- RDD SDFNTX,SDFCDX,SDF*
+- undocumented clipper OO-functions
+!- SQL интерпертатор для навески поверх DBF
+!- HTML-бровзер,WEB-бродилка,
+!- отладчик довести до ума
+- FiveWin
+- GLADE filters
+- pdf
+#- rtf
+- hand systems (iPaq, other) support (skiffcluster[1-6].handhelds.org)
+- TCP services (POP,FTP,......)
+- mod_clip for apache
+- SqlLite
+- dbtcp
+- informix
+- DB2
+- DBF more than 2GB
+- mediator like server
+- ADS client
+- our ADS server
+- numprinter() under windows && support win printer servises
+#- undefined refrences for linking
+#- FPT packing Clipper5.3 extension
+#- tone() => beep()
+#- TCP connect,read & write
+#- перегрузка операций для объектов
+#- вешалка на прерывания или их эмуляция
+# - cygwin
+#- параметры по ссылке для некоторых функций
+#- connect(host,port)
+#- оптимизация set filter по индексам.
+#- mouse & xterm
+#- HTML-библа
+#- HELP over HTML
+#- индексация текстовых файлов
+#- do switch .. case .. otherwise .. endswitch
+#- MEM-файлы и HASH-коды
+#- ОО для обычных типов
+#- контроль за изменениями атрибутов объектов
+#- dbeval сделать на С
+#- кол-во записей по ключу
+#- порядковый номер по индексу
+#- WWW-clip as www-pgsql & www-mysql
+#- полная клавиатура
+#- эмуляция математики и большие числа
+#- clip_run
+#- рекурсивный вывод в лог при ошибке

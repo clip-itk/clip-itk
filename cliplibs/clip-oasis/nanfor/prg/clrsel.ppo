@@ -1,0 +1,435 @@
+
+FUNCTION FT_ClrSel( aClrs, lColour, cChr )
+LOCAL aClrOld := aClone( aClrs )
+LOCAL aOptions
+LOCAL nF, nB, nT, nL, nR
+LOCAL nChoice := 1
+LOCAL nLen    := 0
+LOCAL aPrompt := {}
+LOCAL aClrPal := {}
+LOCAL aClrTab := { "N","B","G","BG","R","RB","GR","W" }
+LOCAL aClrBW  := { "N","B","W" }
+LOCAL nRowSav := ROW()
+LOCAL nColSav := COL()
+LOCAL aEnvSav := FT_SaveSets()
+LOCAL cScrSav := SAVESCREEN( 00, 00, MAXROW(), MAXCOL() )
+lColour := IIF( lColour == NIL , ISCOLOR() , lColour )  DEFAULT cChr TO chr(254)+chr(254)
+cChr := PadR( cChr, 2 )
+SETCURSOR( 0 )
+SETCOLOR( IIF( lColour, "GR+/N,,N/N", "W+/N,,N/N" ) )
+SCROLL() 
+ SETPOS(0 ,0)
+aClrPal := _ftInitPal( IIF( lColour, aClrTab, aClrBW ) )
+_ftShowPal( aClrPal, cChr )
+aEval( aClrs, { |aOpt| nLen := MAX( nLen, LEN( aOpt[1] ) ) } )
+nLen := MIN( MAX( nLen, 1 ), 20 ) + 2
+aPrompt := ARRAY( LEN( aClrs ) )
+aEval( aClrs,        { |aOpt,nE| aPrompt[nE] := " "+ substr(aOpt[1], 1, nLen-2) +" " }      )
+nT := MAX( INT( (18-LEN(aPrompt)) /2 )-1, 1 )
+nB := MIN( nT + LEN(aPrompt) + 1, 17 )
+nL := MAX( INT( (27-nLen) /2 )-2, 1 )
+nR := MIN( nL + nLen + 3, 26 )
+SETCOLOR( IIF( lColour, "N/W,W+/R", "N/W,W+/N" ) )
+SCROLL( nT , nL , nB , nR ) 
+ SETPOS( nT , nL )
+WHILE nChoice <> 0
+  DISPBOX( nT , nL+1 , nB , nR-1 , ''  )
+nChoice := aChoice( nt+1, nL+2, nB-1, nR-2, aPrompt, , , nChoice )
+  IF nChoice <> 0
+    _ftHiLite( ROW(), nL+2, aPrompt[ nChoice ], nLen )
+    DISPBOX( nT , nL+1 , nB , nR-1 , ''  )
+    aClrs[ nChoice ] := _ftColours( aClrs[ nChoice ], aClrPal, lColour )
+  ENDIF  
+ENDDO  
+aOptions := { "Save New Colours", "Restore Original" }
+IF ! _ftIdentArr( aClrs, aClrOld )
+nChoice := ALERT( "Colors have been modified...", aOptions )
+ELSE
+nChoice := 1
+ENDIF  
+FT_RestSets( aEnvSav )
+RESTSCREEN( 00, 00, MAXROW(), MAXCOL(), cScrSav )
+SETPOS( nRowSav, nColSav )
+RETURN IIF( nChoice == 1, aClrs, aClrOld )
+STATIC FUNCTION _ftHiLite( nRow, nCol, cStr, nLen )
+LOCAL cClr := SETCOLOR()
+LOCAL aClr := _ftChr2Arr( cClr )
+SETCOLOR( aClr[ 2 ] )                   
+DEVPOS( nRow , nCol ) 
+ DEVOUT( PadR( cStr, nLen )  )
+SETCOLOR( cClr )
+RETURN Nil
+STATIC FUNCTION _ftColours( aOpt, aClrPal, lColour )
+LOCAL nF, nB, nT, nL, nR
+LOCAL nX      := 0
+LOCAL aClrs   := {}
+LOCAL cClr    := ""
+LOCAL nChoice := 1
+LOCAL aPrompt := {}
+LOCAL nLen    := 0
+LOCAL cColour := SETCOLOR()
+LOCAL cScrSav := SAVESCREEN( 18, 00, MAXROW(), MAXCOL() )
+aSize( aOpt, 4 )                             
+aOpt[ 4 ] := IIF( aOpt[ 4 ] == NIL , "" , aOpt[ 4 ] )  DEFAULT aOpt[ 3 ] TO "W"
+aOpt[ 2 ]  := UPPER( aOpt[ 2 ] )     
+aOpt[ 3 ] := UPPER( aOpt[ 3 ] )
+lColour := IIF( lColour == NIL , ISCOLOR() , lColour )  
+nChoice := 1
+DO  CASE 
+   CASE aOpt[ 3 ] == "D"
+aPrompt := { " Color ", " Character " }
+   CASE aOpt[ 3 ] == "M"
+aPrompt := { " Prompt ", " Message ", " HotKey ",                   " LightBar ", " LightBar HotKey " }
+   CASE aOpt[ 3 ] == "A" .OR.  aOpt[ 3 ] == "B"
+aPrompt := { " Standard ", " Selected ", " Border ", " Unavailable " }
+   OTHERWISE
+aPrompt := { " Standard ", " Selected ", " Border ", " Unselected " }
+ENDCASE  
+IF aOpt[ 3 ] <> "T"   
+  aEval( aPrompt, { |cPrompt| nLen := MAX( nLen, LEN( cPrompt ) ) } )
+nLen := MAX( nLen, LEN( aOpt[ 1 ] ) + 2 )
+nT := IIF( aOpt[ 3 ] == "M", 18, 19 )
+nB := nT + LEN(aPrompt) + 1
+nL := MAX( INT( (27-nLen) /2 )-2, 1 )
+nR := MIN( nL + nLen + 3, 26 )
+  SETCOLOR( "N/W" )
+  SCROLL( nT , nL , nB , nR ) 
+ SETPOS( nT , nL )
+ENDIF  
+WHILE .T.
+  _ftShowIt( aOpt )
+  IF aOpt[ 3 ] <> "T"   
+    SETCOLOR( IIF( lColour, "N/W,W+/R,,,N/W", "N/W,W+/N,,,N/W" ) )
+    DISPBOX( nT , nL+1 , nB , nR-1 , ''  )
+    DEVPOS( nT , nL+2 ) 
+ DEVOUT( PadC( " "+ aOpt[1] +" ", nR -nL -3, "Í" )  )
+    FOR nX := 1 TO LEN( aPrompt )
+      __ATPROMPT( nX+nT , nL+2 , PadR( aPrompt[nX], nR -nL -3 ) ,  )
+    NEXT  
+    nChoice := __MENUTO( {| _1 | IIF(PCOUNT() == 0, nChoice , nChoice := _1) }, "nChoice" )
+    DO  CASE 
+       CASE nChoice == 0
+         EXIT
+       CASE nChoice == 2 .AND. aOpt[ 3 ] == "D"
+aOpt := _ftDeskChar( aOpt )
+         LOOP
+       CASE nChoice == 4 .AND. aOpt[ 3 ] <> "M"
+nChoice := 5       
+    ENDCASE  
+  ENDIF  
+aClrs := _ftChr2Arr( aOpt[ 2 ] )    
+  aSize( aClrs, 5 )                       
+  aEval( aClrs, { |v,e| aClrs[e] := IIF( EMPTY(v), Nil, ALLTRIM(v) ) } )
+  aClrs[1] := IIF( aClrs[1] == NIL , "W/N" , aClrs[1] )    DEFAULT aClrs[2] TO "N/W"    
+  aClrs[3] := IIF( aClrs[3] == NIL , "N/N" , aClrs[3] )    DEFAULT aClrs[4] TO "N/N"
+  aClrs[5] := IIF( aClrs[5] == NIL , "N/W" , aClrs[5] )  cClr := aClrs[ nChoice ]     
+  IF aOpt[ 3 ] <> "T"
+    DISPBOX( nT , nL+1 , nB , nR-1 , ''  )
+    DEVPOS( nT , nL+2 ) 
+ DEVOUT( PadC( " "+ aOpt[1] +" ", nR -nL -3, "Ä" )  )
+  ENDIF  
+cClr := _ftClrSel( aClrPal, cClr, nChoice, aOpt )   
+  aClrs[ nChoice ] := cClr                
+  aOpt[ 2 ] := _ftArr2Chr( aClrs )    
+  IF aOpt[ 3 ] == "T"
+    EXIT
+  ENDIF  
+ENDDO  
+RESTSCREEN( 18, 00, MAXROW(), MAXCOL(), cScrSav )
+SETCOLOR( cColour )
+RETURN aOpt
+STATIC FUNCTION _ftShowIt( aOpt )
+LOCAL aClr := _ftChr2Arr( aOpt[ 2 ] )
+IF aOpt[ 3 ] <> "M"      
+  SETCOLOR( aOpt[ 2 ] )   
+ENDIF  
+DispBegin()
+DO  CASE 
+   CASE aOpt[ 3 ] == "D"     
+     SETCOLOR( aClr[1] )
+     DISPBOX( 19 , 43 , 22 , 64 , REPLICATE( aOpt[ 4 ] ,9) )  
+   CASE aOpt[ 3 ] == "T"     
+     SETCOLOR( aClr[1] )
+     DEVPOS( 20 , 08 ) 
+ DEVOUT( PadC( "This is an example of how the text shall look", 63 )  )
+   CASE aOpt[ 3 ] == "M"     
+     SETCOLOR( "W/N" )
+     DISPBOX( 19 , 41 , 23 , 66 , REPLICATE( CHR(177) ,9) )  
+     SETCOLOR( aClr[1] )
+     DISPBOX( 19 , 43 , 22 , 60 , ''  )
+     DEVPOS( 18 , 41 ) 
+ DEVOUT( "   Report  Inquiry  Quit  "  )
+     DEVPOS( 21 , 44 ) 
+ DEVOUT( " eXit           "  )
+     SETCOLOR( aClr[4] )
+     DEVPOS( 18 , 43 ) 
+ DEVOUT( " Report "  )
+     DEVPOS( 20 , 44 ) 
+ DEVOUT( " Product List   "  )
+     SETCOLOR( aClr[3] )
+     DEVPOS( 18 , 52 ) 
+ DEVOUT( "I"  )
+     DEVPOS( 18 , 61 ) 
+ DEVOUT( "Q"  )
+     DEVPOS( 21 , 46 ) 
+ DEVOUT( "X"  )
+     SETCOLOR( aClr[5] )
+     DEVPOS( 18 , 44 ) 
+ DEVOUT( "R"  )
+     DEVPOS( 20 , 45 ) 
+ DEVOUT( "P"  )
+     SETCOLOR( aClr[2] )
+     DEVPOS( 24 , 41 ) 
+ DEVOUT( PadC( "Inventory Report", 26 )  )
+   CASE aOpt[ 3 ] == "G"     
+     SETCOLOR( aClr[1] )
+     SCROLL( 19 , 41 , 24 , 66 ) 
+ SETPOS( 19 , 41 )
+     DISPBOX( 19 , 42 , 24 , 65 , ''  )
+     DEVPOS( 20 , 43 ) 
+ DEVOUT( "    Invoice Entry    "  )
+     DEVPOS( 21 , 42 ) 
+ DEVOUT( "ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´"  )
+     DEVPOS( 22 , 43 ) 
+ DEVOUT( "   Amount            "  )
+     DEVPOS( 23 , 43 ) 
+ DEVOUT( "   Date              "  )
+     SETCOLOR( aClr[2] )
+     DEVPOS( 22 , 53 ) 
+ DEVOUT( "  199.95"  )
+     SETCOLOR( aClr[5] )
+     DEVPOS( 23 , 53 ) 
+ DEVOUT( "09/15/91"  )
+   CASE aOpt[ 3 ] == "W"     
+     SETCOLOR( aClr[1] )
+     SCROLL( 18 , 40 , 24 , 66 ) 
+ SETPOS( 18 , 40 )
+     DISPBOX( 18 , 41 , 24 , 65 , ''  )
+     DEVPOS( 19 , 42 ) 
+ DEVOUT( "                       "  )
+     DEVPOS( 20 , 42 ) 
+ DEVOUT( "     Test Message      "  )
+     DEVPOS( 21 , 42 ) 
+ DEVOUT( "                       "  )
+     DEVPOS( 22 , 41 ) 
+ DEVOUT( "ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´"  )
+     SETCOLOR( aClr[2] )
+     DEVPOS( 23 , 44 ) 
+ DEVOUT( " Accept "  )
+     SETCOLOR( aClr[5] )
+     DEVPOS( 23 , 55 ) 
+ DEVOUT( " Reject "  )
+   CASE aOpt[ 3 ] == "B"     
+     SETCOLOR( aClr[1] )
+     SCROLL( 18 , 37 , 24 , 70 ) 
+ SETPOS( 18 , 37 )
+     DISPBOX( 18 , 38 , 24 , 69 , ''  )
+     DEVPOS( 19 , 39 ) 
+ DEVOUT( " Cust   Name           Amount "  )
+     DEVPOS( 20 , 38 ) 
+ DEVOUT( "ÆÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍµ"  )
+     DEVPOS( 21 , 39 ) 
+ DEVOUT( "  312 ³ Rick Shaw    ³ 143.25 "  )
+     DEVPOS( 23 , 39 ) 
+ DEVOUT( "      ³              ³        "  )
+     DEVPOS( 24 , 38 ) 
+ DEVOUT( "ÔÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍ¾"  )
+     SETCOLOR( aClr[2] )
+     DEVPOS( 22 , 39 ) 
+ DEVOUT( " 1005 ³ Harry Pitts  ³  78.95 "  )
+     SETCOLOR( aClr[5] )
+     DEVPOS( 23 , 39 ) 
+ DEVOUT( " 3162 "  )
+     DEVPOS( 23 , 46 ) 
+ DEVOUT( " Barb Wire    "  )
+     DEVPOS( 23 , 61 ) 
+ DEVOUT( " 345.06 "  )
+   CASE aOpt[ 3 ] == "A"     
+     SETCOLOR( aClr[1] )
+     SCROLL( 18 , 42 , 24 , 64 ) 
+ SETPOS( 18 , 42 )
+     DISPBOX( 18 , 43 , 24 , 63 , ''  )
+     DEVPOS( 19 , 44 ) 
+ DEVOUT( " Daily Reports     "  )
+     DEVPOS( 21 , 44 ) 
+ DEVOUT( " Quarterly Reports "  )
+     DEVPOS( 23 , 44 ) 
+ DEVOUT( " Exit ...   <Esc>  "  )
+     SETCOLOR( aClr[2] )
+     DEVPOS( 20 , 44 ) 
+ DEVOUT( " Monthend Reports  "  )
+     SETCOLOR( aClr[5] )
+     DEVPOS( 22 , 44 ) 
+ DEVOUT( " Yearend Reports   "  )
+ENDCASE  
+DispEnd()
+RETURN Nil
+STATIC FUNCTION _ftClrSel( aClrPal, cClr, nElem, aOpt )
+LOCAL nR     := 1
+LOCAL nC     := 1
+LOCAL lFound := .F.
+LOCAL nKey   := 0
+LOCAL nDim   := LEN( aClrPal )
+LOCAL nTop    := 0
+LOCAL nLeft   := 28
+LOCAL nBottom := nTop  + nDim + 1
+LOCAL nRight  := nLeft + ( nDim * 3 ) + 2
+SETCOLOR( "GR+/N" )
+DISPBOX( nTop , nLeft , nBottom , nRight , ''  )
+SETCOLOR ( "W+/N" )
+FOR nR := 1 TO nDim
+  FOR nC := 1 TO nDim
+    IF aClrPal[ nR, nC ] == ALLTRIM( cClr )
+lFound := .T. 
+  EXIT
+    ENDIF  
+  NEXT  
+  IF lFound 
+  EXIT 
+  ENDIF  
+NEXT  
+IF ! lFound
+nR := 1                          
+nC := IIF( nDim == 5, 3, 8 )     
+ENDIF  
+WHILE .T.
+nR := IIF( nR > nDim, 1, IIF( nR == 0, nDim, nR ) )
+nC := IIF( nC > nDim, 1, IIF( nC == 0, nDim, nC ) )
+  aOpt[ 2 ] := _ftClrPut( aOpt[ 2 ], nElem, aClrPal[ nR, nC ] )
+  _ftShowIt( aOpt )
+  SETCOLOR ( "W+/N" )
+  DEVPOS( nR , nC*3+26 ) 
+ DEVOUT( ""  )
+  DEVPOS( nR , nC*3+29 ) 
+ DEVOUT( ""  )
+nKey := INKEY(0)
+  DEVPOS( nR , nC*3+26 ) 
+ DEVOUT( " "  )
+  DEVPOS( nR , nC*3+29 ) 
+ DEVOUT( " "  )
+  DO  CASE 
+     CASE nKey == 27   
+  EXIT
+     CASE nKey == 13 
+cClr := aClrPal[ nR, nC ] 
+  EXIT
+     CASE nKey == 5    
+  --nR
+     CASE nKey == 24  
+  ++nR
+     CASE nKey == 19  
+  --nC
+     CASE nKey == 4 
+  ++nC
+  ENDCASE  
+ENDDO  
+SETCOLOR( "GR+/N" )
+DISPBOX( nTop , nLeft , nBottom , nRight , ''  )
+RETURN cClr
+STATIC FUNCTION _ftClrPut( cClrStr, nElem, cClr )
+LOCAL aClr := _ftChr2Arr( cClrStr )
+aClr[ nElem ] := cClr
+RETURN _ftArr2Chr( aClr )
+STATIC FUNCTION _ftDeskChar( aOpt )
+LOCAL aChar := { CHR(32), CHR(176), CHR(177), CHR(178) }
+LOCAL cChar := aOpt[ 4 ]
+LOCAL cClr  := aOpt[ 2 ]
+LOCAL nElem := aScan( aChar, cChar )
+LOCAL n, nKey
+IF nElem == 0             
+  aAdd( aChar, cChar )    
+nElem := 5              
+ENDIF                                                     
+SETCOLOR ( cClr )
+FOR n := 1 TO LEN( aChar )
+  DEVPOS( n+18 , 29 ) 
+ DEVOUT( REPL( aChar[n], 10 )  )
+NEXT  
+n := nElem + 18
+WHILE .T.
+n := IIF( n > Len(aChar)+18, 19, IIF( n < 19, Len(aChar)+18, n ) )
+  aOpt[ 4 ] := aChar[ n-18 ]  
+  _ftShowIt( aOpt )
+  SETCOLOR ( "W+/N" )
+  DEVPOS( n , 28 ) 
+ DEVOUT( ""  )
+  DEVPOS( n , 39 ) 
+ DEVOUT( ""  )
+nKey := INKEY(0)
+  DEVPOS( n , 28 ) 
+ DEVOUT( " "  )
+  DEVPOS( n , 39 ) 
+ DEVOUT( " "  )
+  DO  CASE 
+     CASE nKey == 27   
+  aOpt[ 4 ] := cChar 
+  EXIT
+     CASE nKey == 13 
+  EXIT
+     CASE nKey == 5    
+  --n
+     CASE nKey == 24  
+  ++n
+  ENDCASE  
+ENDDO  
+SETCOLOR ( "W+/N" )
+SCROLL( 18 , 28 , 23 , 39 ) 
+ SETPOS( 18 , 28 )
+RETURN aOpt
+STATIC FUNCTION _ftChr2Arr( cString, cDelim )
+LOCAL n, aArray := {}
+cDelim := IIF( cDelim == NIL , "," , cDelim )  DEFAULT cString TO ""   
+cString += cDelim
+WHILE .T.
+  IF EMPTY( cString ) 
+  EXIT 
+  ENDIF  
+n := AT( cDelim, cString )
+  AADD( aArray, IIF( n == 1, "", LEFT( cString, n - 1 ) ) )
+cString := substr( cString, n + 1 )
+ENDDO  
+RETURN aArray
+STATIC FUNCTION _ftArr2Chr( aArray, cDelim )
+LOCAL cString := ""
+aArray := IIF( aArray == NIL , {} , aArray )  DEFAULT cDelim TO ","
+AEVAL( aArray, { |v,e| cString += IIF( e == 1, v, cDelim + v ) } )
+RETURN cString
+STATIC FUNCTION _ftShowPal( aClrPal, cChr )
+LOCAL nF,nB
+LOCAL nTop    := 0
+LOCAL nLeft   := 28
+LOCAL nBottom := nTop  + LEN( aClrPal ) + 1
+LOCAL nRight  := nLeft + ( LEN( aClrPal )*3 ) + 2
+DispBegin()
+DISPBOX( nTop , nLeft , nBottom , nRight , ''  )
+FOR nF := 1 TO LEN( aClrPal )
+  FOR nB := 1 TO  LEN( aClrPal[ nF ] )
+    SETCOLOR( aClrPal[ nF, nB ] )
+    DEVPOS( nF , nB*3+27 ) 
+ DEVOUT( cChr  )
+  NEXT  
+NEXT  
+DispEnd()
+RETURN Nil
+STATIC FUNCTION _ftInitPal( aClrTab )
+LOCAL nF,nB
+LOCAL nDim    := LEN( aClrTab )
+LOCAL aClrPal := ARRAY( nDim*2, nDim*2 )
+FOR nF := 1 TO nDim*2
+  FOR nB := 1 TO nDim*2
+    aClrPal[ nF, nB ] :=       IIF( nF <= nDim, aClrTab[ nF ], aClrTab[ nF-nDim ] +"+" ) +"/"+       IIF( nB <= nDim, aClrTab[ nB ], aClrTab[ nB-nDim ] +"*" )
+  NEXT  
+NEXT  
+RETURN aClrPal
+STATIC FUNCTION _ftIdentArr( aArr1, aArr2 )
+LOCAL lIdentical := LEN(aArr1) == LEN(aArr2)
+LOCAL n := 1
+WHILE lIdentical .AND. n <= LEN(aArr1)
+  IF VALTYPE( aArr1[n] ) == VALTYPE( aArr2[n] )
+lIdentical := IIF( VALTYPE( aArr1[n] ) == "A",                             _ftIdentArr( aArr1[n], aArr2[n] ),                         aArr1[n] == aArr2[n] )
+  ELSE
+lIdentical := .f.
+  ENDIF  
+n ++
+ENDDO  
+RETURN lIdentical

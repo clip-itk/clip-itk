@@ -1,0 +1,61 @@
+#!/bin/sh
+
+std_rpm_root=/usr/src/redhat
+spec=clip-dev.spec
+pwd=`pwd`
+
+LANG=C
+LC_ALL=C
+LC_MESSAGES=C
+export MAKE LANG LC_ALL LC_MESSAGES
+
+name=clip-dev
+version=$(head -1 debian/changelog |cut -d'(' -f2|cut -d'-' -f1)
+release=$(head -1 debian/changelog |cut -d'(' -f2|cut -d'-' -f2|cut -d')' -f1)
+root=/tmp/mkspec$$
+
+echo "%define name $name
+%define version $version
+%define release $release
+%define _topdir $root
+" >$name.spec
+cat clip-dev.spec.in >> $name.spec
+
+[ -n "$root" ] || root="$std_rpm_root"
+
+echo $name $version $root
+#exit 0
+mkdir -p $root/SOURCES $root/RPMS $root/SRPMS $root/BUILD $root/SPECS
+
+arch=$(./arch.sh)
+libc=`./libcver.sh`
+path=../clip_distrib/$version-$release/rpm-$arch-$libc
+mkdir -p $path
+dir=$(cd $path; pwd)
+rm -rf $dir/*
+DISTROOT=$dir
+export DISTROOT
+
+
+tmp=/tmp/tmp.$$
+mkdir -p $tmp
+cd $pwd
+cp -a . $tmp/$name-$version
+
+cd $tmp
+echo tar czf $root/SOURCES/$name-$version.tar.gz $name-$version
+tar czf $root/SOURCES/$name-$version.tar.gz $name-$version
+
+cd $pwd
+#rpm --pipe "grep \\.rpm>$tmp/lst" -ba $name.spec
+opt=$1
+shift
+rpm --pipe "tee $tmp/lst" ${opt:--ba} $* $name.spec
+rpms=`grep $root/.\*\\\.rpm $tmp/lst | cut -d ' ' -f 2`
+echo RPMS: $rpms
+[ -n "$rpms" ] && mv $rpms $dir
+rm -rf $tmp $root/SOURCES/$name-$version.tar.gz
+[ "$root" = "$std_rpm_root" ] || rm -rf $root
+
+cp Readme_rpm $dir/Readme
+

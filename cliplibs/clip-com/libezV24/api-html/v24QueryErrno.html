@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24QueryErrno</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24QueryErrno</A></H2><H2>( v24_port_t* port )</H2>
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>If possible, all functions return the result of the operation as return
+code. Some function don't do this. Therefore, the last error code could be
+retrieved with this function.
+
+<P>For example: <TT>v24Read</TT> reports an error by returning a <TT>-1</TT>. To get the
+exact error code, the application can call <TT>v24QueryErrno</TT>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><DT><B>Returns:</B><DD>  the last error code as <TT>V24_*</TT> constant.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

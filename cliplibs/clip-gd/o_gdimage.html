@@ -1,0 +1,253 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+<center>
+<A HREF="index.html" target='pole'>Главная страница о компиляторе</a>
+</center>
+
+<h2>             Описание класса GDIMAGE </h2>
+
+ Предназначен для генерации графических примитивов
+ (прямоугольники, окружности, линии и т.п.) и обработки файлов
+ графических форматов PNG, JPEG,... Построен на основе библиотеки libgd, <A href="gd_lib.html">оригинальная документация самой
+ библиотеки libgd </A>
+ <br>
+ В свою очередь, на основе этого класса созданы классы простейших графиков,
+ <A href="o_graphics.html">см. здесь</a>
+
+
+<BR>
+Простенький пример использования:
+<PRE>
+im=GdImageNew(200, 200)
+// создать цвет
+white=im:newColor(255, 255, 255) // белый
+black=im:newColor() // черный
+red=im:newColor(255) // красный
+blue=im:newColor(,,255) // синий
+yellow=im:newColor(255, 255)
+fon=im:newColor(0xDE,0xEF,0xF5)
+// заполнить все белым цветом
+im:fill(0, 0, fon)
+im:filledArc(100, 100, 45, 45, yellow)
+// создать brush
+luch=GdImageNew(3, 3)
+luch:fill(0, 0, luch:newColor(255, 255))
+im:setBrush(luch)
+cx =100
+cy = 100
+for i=0 to 180 step 45
+	x1 = cos(PI*i/180) * 60 + cx
+	y1 = sin(PI*i/180) * 60 + cy
+	x2 = cos(PI*(i+180)/180) * 60 + cx
+	y2 = sin(PI*(i+180)/180) * 60 + cy
+	im:line(x1, y1, x2, y2, GDSTYLE_BRUSHED)
+next
+im:filledArc(93, 90, 6, 6, blue)
+im:filledArc(107, 90, 6, 6, blue)
+im:string("Hello world!", 50, 50, GDFONT_LARGE, black)
+im:stringVector("Привет мир!", 50, 150, 300, 0, black)
+im:filledTruncSector(100, 100, 30, 30, 26, 26, 40, 140, red)
+im:toPNG("asdf.png")
+</PRE>
+А вот и получившаяся картиночка!<br>
+<img src="asdf.png" alt="Тут должна быть картиночка :(">
+
+<h3> Атрибуты/свойства </H3>
+<TABLE border=1>
+<th> Название атрибута </TH>
+<th> Значение атрибута </TH>
+<TR> <td> fileName </td> <TD> string </TD>
+<TR> <td> fileType </td> <TD> GDFILE_PNG | GDFILE_GD | GDFILE_GD2 | GDFILE_XBM | GDFILE_JPEG </TD>
+<TR> <td> sizeX </td> <TD> numeric </TD>
+<TR> <td> sizeY </td> <TD> numeric </TD>
+<tr> <td> color </td> <TD> numeric </TD>
+<tr> <td> image </td> <TD> numeric </TD>
+</TABLE>
+
+<h3> Методы/функции </H3>
+<h4> функция GdImageNew </h4>
+gd=GdImageNew(sizeX, sizeY) - создает новый образ. <BR>
+gd=GdImageNew(fileName[, fileType]) - создает новый образ из образа fileName типа fileType
+(по умолчанию fileType=GDFILE_PNG)
+<h4> метод gd:create(sizeX, sizeY) </h4>
+Cоздает новый образ размером sizeX x sizeY
+<h4> метод gd:fromFile(fileName[, fileType=GDFILE_PNG]) </h4>
+Cоздает новый образ из образа fileName типа fileType
+<h4> метод gd:fromPNG(fileName) </h4>
+Cоздает новый образ из fileName типа GDFILE_PNG
+<h4> метод gd:fromGD(fileName) </h4>
+Cоздает новый образ из fileName типа GDFILE_GD
+<h4> метод gd:fromGD2(fileName) </h4>
+Cоздает новый образ из fileName типа GDFILE_GD2
+<h4> метод gd:fromXBM(fileName) </h4>
+Cоздает новый образ из fileName типа GDFILE_XBM
+<h4> метод gd:fromJPEG(fileName) </h4>
+Cоздает новый образ из fileName типа GDFILE_JPEG
+<h4> метод gd:destroy() </h4>
+Уничтожает образ
+<h4> метод gd:toFile(fileName[, fileType=GDFILE_PNG]) </h4>
+Записывает образ в fileName типа fileType
+<h4> метод gd:toPNG(fileName) </h4>
+Записывает образ в fileName типа GDFILE_PNG
+<h4> метод gd:toGD(fileName) </h4>
+Записывает образ в fileName типа GDFILE_GD
+<h4> метод gd:toGD2(fileName) </h4>
+Записывает образ в fileName типа GDFILE_GD2
+<h4> метод gd:toJPEG(fileName) </h4>
+Записывает образ в fileName типа GDFILE_JPEG
+<a name="currentColor"><h4> метод gd:setColor(color) </h4></a>
+Устанавливает текущий цвет образа color.
+<h4> метод gd:getColor(color) </h4>
+Возвращает текущий цвет образа color.
+<h4> метод gd:newColor(Red, Green, Blue) </h4>
+Резервирует и возвращает номер цвета для заказанной палитры RGB.
+Если лимит в 256 цветов уже выбран, то подбирает ближайший
+    похожий и возращает индекс поборанного цвета.
+По умолчанию Red=0, Green=0, Blue=0
+<h4> метод gd:transparent(color_index) </h4>
+Устанавливает цвет color_index прозрачности изображения.
+<h4> метод gd:interlace(interlace) </h4>
+Устанавливает черезстрочную "развертку".
+<h4> метод gd:compare(item) </h4>
+Сравнивает два образа побитно.item может быть объектом класса GDIMAGE, или образом
+<h4> метод gd:info(index, color_Index) </h4>
+Возвращает различную информацию о цветовых значениях <BR>
+index может принимать значения:<br>
+GDINFO_COLORSTOTAL<BR>
+GDINFO_TRANSPARENT<BR>
+GDINFO_INTERLACED <BR>
+GDINFO_COLORRED	  <BR>
+GDINFO_COLORGREEN <BR>
+GDINFO_COLORBLUE  <BR>
+GDINFO_SIZEX      <BR>
+GDINFO_SIZEY      <BR>
+Эти значения описаны в gdinfo.ch
+<h4> метод gd:getPixel(x, y) </h4>
+Возвращает индекс цвета в точке x, y
+<h4> метод gd:setPixel(x, y[, color]) </h4>
+Рисует точку указанным цветом color с координатами x, y<BR>
+Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:bound(x, y) </h4>
+Определяет находится ли точка  (x, y) внутри образа или находится за
+границами образа.
+<h4> метод gd:line(x1, y1, x2, y2[, color]) </h4>
+Рисует линию цветом color.
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:dashedLine(x1, y1, x2, y2[, color]) </h4>
+Рисует прерывистую линию цветом color.
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:rectagle(x1, y1, x2, y2[, color]) </h4>
+Рисует прямоугольник цветом color.
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:filledRectagle(x1, y1, x2, y2[, color]) </h4>
+Рисует заполненный прямоугольник цветом color.
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:arc(cx, cy, width[, high, begangle, endangle, color]) </h4>
+Рисует круг, эллипс или дугу с центром cx, cy  цветом color и радиусом width по оси Х и high по оси Y,
+начиная с угла startangle и заканчивая endangle.<br>
+<br>По умолчанию: high=width, begangle=0, endangle=360
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<h4> метод gd:filledArc(cx, cy, width[, high, color]) </h4>
+Рисует заполненный круг, эллипс с центром cx, cy  цветом color и радиусом width по оси Х и high по оси Y.
+<br>По умолчанию: high=width
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<h4> метод gd:sector(cx, cy, width[, high, begangle, endangle, color]) </h4>
+Рисует сектор с центром cx, cy  цветом color и радиусом width по оси Х и high по оси Y,
+начиная с угла startangle и заканчивая endangle.
+<br>По умолчанию: high=width, begangle=0, endangle=360
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:filledSector(cx, cy, width[, high, begangle, endangle, color]) </h4>
+Рисует заполненный сектор с центром cx, cy  цветом color и радиусом width по оси Х и high по оси Y,
+начиная с угла startangle и заканчивая endangle.
+<br>По умолчанию: high=width, begangle=0, endangle=360
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<h4> метод gd:truncSector(cx, cy, width, high, widthtrunc, hightrunc, begangle, endangle, color) </h4>
+Рисует усеченный сектор с центром cx, cy  и внешним радиусом width по оси Х и high по оси Y,
+и внутренним widthtrunc (X) hightrunc (Y), цветом color, начиная с угла startangle и
+заканчивая endangle.
+<br>По умолчанию: high=width, begangle=0, endangle=360
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:filledTruncSector(cx, cy, width, high, widthtrunc, hightrunc, begangle, endangle, color) </h4>
+Рисует заполненный усеченный сектор с центром cx, cy  и внешним радиусом width по оси Х и high по оси Y,
+и внутренним widthtrunc (X) hightrunc (Y), цветом color, начиная с угла startangle и
+заканчивая endangle.
+<br>По умолчанию: high=width, begangle=0, endangle=360
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:polygon(bounds[, color]) </h4>
+Рисует область(регион) по указанным координатам цветом color
+<br>bounds = {{x1, y1}, {x2, y2}, ..., {xn, yn}}
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:filledPolygon(bounds[, color]) </h4>
+Рисует заполненную область(регион) по указанным координатам цветом color
+<br>bounds = {{x1, y1}, {x2, y2}, ..., {xn, yn}}
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<h4> метод gd:fill(x, y[, color]) </h4>
+Заполняет цветом color начиная с точки (x,y) в пределах цветовой границы
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<h4> метод gd:fillToBorder(x, y, bordercolor[, color]) </h4>
+Заполняет цветом color регион с граничным цветом  bordercolor начиная с
+точки (x,y)
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<h4> метод gd:setBrush(imagePtrBrush) </h4>
+Устанавливает образ кисти, которым будут пользоваться функции рисующие
+линии и границы.<br>
+imagePtrBrush - может быть объектом класса GDIMAGE или графическим образом.
+
+<h4> метод gd:setTile(imagePtrTile) </h4>
+Устанавливает изображение, которым будут пльзоваться fill-функции.
+<br>imagePtrTile - может быть объектом класса GDIMAGE или графическим образом.
+
+<h4> метод gd:setStyle(colorsArray) </h4>
+Устанавливает стиль прорисовки прерывистых и т.п. линий.
+<br>В colorsArray надо набить цвета каждой точки, из которых будет состоять
+прерывистая линия. А также можно использовать специальные цвета описанные
+в gdinfo.ch
+<h4> метод gd:char(str, x, y, font[, color])<br>
+	   gd:charUp(str, x, y, font[, color])<br>
+	   gd:string(str, x, y, font[, color])<br>
+	   gd:stringUp(str, x, y, font[, color])
+</h4>
+Рисует изображение символа или строки str фонтом font , который может иметь
+одно из описанных в gdinfo.ch значений, и цветом color.
+<br> font:
+GDFONT_GIANT		<BR>
+GDFONT_LARGE		<BR>
+GDFONT_NEDIUMBOLD	<BR>
+GDFONT_SMALL		<BR>
+GDFONT_TINY		<BR>
+Функции charUp() и stringUp() рисуют символ или строку, повернутую
+на 270 градусов.
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+<h4> метод gd:charRotate(str, x, y, font[, angle, color])<br>
+	   gd:stringRotate(str, x, y, font[, angle, color])<br>
+</h4>
+Выводит строку или символ str под углом angle цветом color и фонтом font
+<br>По умолчанию: angle=0
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<h4> метод gd:charVector(str, x, y, fontSize[, angle, color])<br>
+	   gd:stringVector(str, x, y, fontSize[, angle, color])<br>
+</h4>
+Выводит строку или символ str под нужным углом angle в векторной графике с размером
+fontSize (не путайте с фонтом font) и цветом color.
+<br>По умолчанию: angle=0
+<br>Если параметр color опущен, то рисуется <a href="#currentColor">текущим цветом</a>
+
+<hr>
+<A HREF="index.html" target='pole'>Главная страница о компиляторе</a>
+<HR>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+
+

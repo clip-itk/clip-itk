@@ -1,0 +1,319 @@
+if [ $# = 0 ]
+then
+	echo "usage: `basename $0` target src1.a .. srcN.a [obj1.o .. objN.o]"
+	exit 1
+fi
+
+LC_ALL=C
+LANG=C
+export LC_ALL LANG
+
+echo $*
+
+pwd=`pwd`
+target=`echo $1|sed -e 's/^.*\///' -e 's/\..*//'`
+target_ref=${target}_ref.c
+#arch=$pwd/$1
+arch=$pwd/$target$DLLREALSUFF
+shift
+
+addlib="$ADDLIBS"
+dir=/tmp/makeslib$$
+#dir=/tmp/makeslib
+rm -rf $dir
+mkdir -p $dir
+
+cleanup()
+{
+	rm -rf $dir
+	exit $1
+}
+
+trap cleanup 1 2 3 4 5 6 7 8 9 10 12 13 14 15
+
+cd $dir
+
+for i in $*
+do
+	needex=no
+	case $i in
+
+	-*)
+		addlib="$addlib $i"
+		;;
+	/*$DLLSUFF)
+		addlib="$addlib $i"
+		;;
+	/*$DLLSREALSUFF)
+		addlib="$addlib $i"
+		;;
+	*$DLLSUFF)
+		cp $pwd/$i .
+                needex=yes
+		;;
+	*.a)
+		ar -x $pwd/$i
+                needex=yes
+		;;
+	*.o)
+		cp $pwd/$i .
+                needex=yes
+		;;
+	esac
+        if [ "$needex" = yes ]
+        then
+        	name=`echo "$i" | sed 's/\.[A-Za-z0-9]*$/\.ex/'`
+                test -r "$pwd/$name" && cp "$pwd/$name" .
+        	name=`echo "$i" | sed 's/\.[A-Za-z0-9]*$/\.nm/'`
+                test -r "$pwd/$name" && cp "$pwd/$name" .
+        fi
+done
+
+[ -z "$CC" ] && CC=cc
+
+echo
+
+/bin/ls *.o *.so 2>/dev/null >_olist
+if [ -z "$NM_UNDERSCORE" ]
+then
+	nm `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b6- |sort -u>_lst
+else
+	nm `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*_clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b7- |sort -u>_lst
+fi
+
+exec 3>_clst
+exec 4>_plst
+exec 5>_ilst
+exec 6>_elst
+exec 7>_mlst
+
+while read name
+do
+	case "$name" in
+	INIT_*)
+		echo $name >&5
+		;;
+	EXIT_*)
+		echo $name >&6
+		;;
+	_PCODE_*)
+		echo $name >&4
+		;;
+	_MODULE_*)
+		echo $name >&7
+		;;
+	*)
+		echo $name >&3
+		;;
+	esac
+done < _lst
+
+exec 3>&-
+exec 4>&-
+exec 5>&-
+exec 6>&-
+exec 7>&-
+
+exec 3>$target_ref
+echo "/*
+Created automatically by 'clip_makeslib'
+at `LC_ALL=C date +'%a, %d %b %Y %H:%M:%S %z'`
+target: $target
+ref: $target_ref
+*/
+
+#include \"clip.h\"
+
+">&3
+
+while read name
+do
+	echo "ClipFunction clip_$name;" >&3
+done < _clst
+
+cname=`echo $target|tr '-' '_'`
+
+echo "
+
+CLIP_DLLEXPORT ClipFunction *
+_clip_builtin_${cname}(long hash)
+{
+	switch( hash )
+	{
+" >&3
+
+
+#while read name
+#do
+#	echo "	case `echo $name|cliphash|cut -d' ' -f2`:
+#		return clip_$name;" >&3
+#done < _clst
+
+$CLIPROOT/bin/cliphash <_clst >_hashs
+
+exec 4<_hashs
+while read name
+do
+	read nm hash <&4
+	echo "	case $hash:
+		return clip_$name;" >&3
+done < _clst
+
+exec 4<&-
+
+
+echo "	}
+	return 0;
+}
+
+" >&3
+
+
+while read name
+do
+	echo "ClipFunction clip_$name;" >&3
+done < _ilst
+
+echo "
+static ClipFunction *_s_libinits[] =
+{
+" >&3
+
+while read name
+do
+	echo "	clip_$name," >&3
+done < _ilst
+
+echo "	0
+};
+
+CLIP_DLLEXPORT ClipFunction **_libinits_${cname} = _s_libinits;
+" >&3
+
+while read name
+do
+	echo "ClipFunction clip_$name;" >&3
+done < _elst
+
+echo "
+static ClipFunction * _s_libexits[] =
+{
+" >&3
+
+while read name
+do
+	echo "	clip_$name," >&3
+done < _elst
+
+echo "	0
+};
+CLIP_DLLEXPORT ClipFunction ** _libexits_${cname} = _s_libexits;
+" >&3
+
+while read name
+do
+	echo "extern ClipFile clip_$name;" >&3
+done < _plst
+
+echo "
+static ClipFile * _s_libcpfiles[] =
+{
+" >&3
+
+while read name
+do
+	echo "	&clip_$name," >&3
+done < _plst
+
+echo "	0
+};
+CLIP_DLLEXPORT ClipFile ** _libcpfiles_${cname} = _s_libcpfiles;
+" >&3
+
+ucname=`echo ${cname} | tr 'a-z' 'A-Z'`
+
+echo 'static ClipNameEntry _s_cfunctions[] =
+{' >&3
+
+exec 4<_hashs
+while read name
+do
+	read nm hash <&4
+	echo "	{ $hash, clip_$name }," >&3
+done < _clst
+exec 4<&-
+
+echo '	{0,0}
+};' >&3
+
+echo "
+CLIP_DLLEXPORT ClipModule clip__MODULE_${ucname} =
+{
+	\"${ucname}\",
+        _s_cfunctions,
+        _s_libinits,
+        _s_libexits,
+        _s_libcpfiles,
+        0,
+        0,
+        0
+};
+" >&3
+
+
+exec 3>&-
+
+rm -f $arch
+
+case "$OSNAME" in
+CYGWIN)
+	if [ "$target" != libclip ]
+	then
+		if [ -f $CLIPROOT/lib/libclip.dll.a ]
+		then
+			addlib="$addlib $CLIPROOT/lib/libclip.dll.a"
+		elif [ -f $CLIPROOT/libclip.dll.a ]
+		then
+			addlib="$addlib $CLIPROOT/libclip.dll.a"
+		elif [ -f $CLIP_ROOT/lib/libclip.dll.a ]
+		then
+			addlib="$addlib $CLIP_ROOT/lib/libclip.dll.a"
+		else
+			addlib="$addlib -lclip"
+		fi
+	fi
+	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -c $target_ref || cleanup 1
+	dlltool --output-def _def.def ${target}_ref.o `cat _olist` || cleanup 2
+	dllwrap --dllname $target.dll --def _def.def ${target}_ref.o `cat _olist` $addlib || cleanup 3
+	if [ -n "$USE_STDLIB" ]
+	then
+		dlltool --output-lib $target.dll.a --dllname $target.dll --def _def.def || cleanup 4
+	else
+		dlltool --output-lib $target.dll.a --dllname "`cygpath -w $CLIP_ROOT/lib/$target.dll|sed -e 's/\\\\/\\\\\\\\/g'`" --def _def.def || cleanup 4
+	fi
+	cp $target.dll $target.dll.a $pwd
+	;;
+*)
+	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -shared -o $arch $target_ref `cat _olist` $addlib || cleanup 1
+	;;
+esac
+
+case "$CLIP_NAMES" in
+1|[yY][eE][sS]|[oO][nN])
+
+	cat _clst *.nm 2>/dev/null | grep -v '^#\|^$' | sort -u > $pwd/$target.nm
+
+	if join --version >/dev/null 2>&1
+	then
+		cat *.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > _ex
+		join -v 1 _ex $pwd/$target.nm > $pwd/$target.ex
+	else
+		cat *.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > $pwd/$target.ex
+	fi
+	
+	;;
+esac
+
+cd $pwd
+
+cleanup 0

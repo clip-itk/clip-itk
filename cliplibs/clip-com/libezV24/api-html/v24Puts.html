@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24Puts</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24Puts</A></H2><H2>( v24_port_t* port,  const char* Buffer )</H2><BLOCKQUOTE>Send a string.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>Send a string. This function simply sends all characters of the ASCIIZ
+string. A single <TT>\n</TT> is not expanded to <TT>\n\r</TT>! The function returns the
+number of characters sent, or a <TT>-1</TT> if something fails.  Use
+<TT>v24QueryErrno</TT> to retrieve the error code.
+
+<P>Possible error code are <TT>V24_OK</TT>, <TT>V24_E_NULL_POINTER</TT>, <TT>V24_E_ILLHANDLE</TT> or
+<TT>V24_WRITE</TT>.
+
+<P><B>Implementation note:</B> the current release of the library defines the
+<EM>end of a string</EM> as a hard coded constant! Search the internal headers
+<TT>EZV24_END_OF_STRING</TT>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><B>Buffer</B> -  a pointer to an ASCIIZ string.
+<BR><DT><B>Returns:</B><DD>  <BR><DT><B>See Also:</B><DD><!1><A HREF="v24QueryErrno.html">v24QueryErrno</A>, <!1><A HREF="v24Putc.html">v24Putc</A>, v24Write.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

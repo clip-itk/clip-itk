@@ -1,0 +1,60 @@
+<HTML>
+<HEAD><TITLE>COM_DTR</TITLE></HEAD>
+<BODY>
+
+<PRE>
+ <B>COM_DTR()</B>
+ Queries/sets the Data Terminal Ready (DTR) status
+<HR>
+ <B>Syntax</B>
+
+     <B>COM_DTR(&lt;nComPort&gt;,[&lt;lNewDTRStatus&gt;]) --&gt; lOldDTRStatus</B>
+
+ <B>Arguments</B>
+
+     <B>&lt;nComPort&gt;</B>  Designates the port (1 to N) on which DSR is tested.
+
+     <B>&lt;lNewDTRStatus&gt;</B>  Designates the status of DTR.  .T. designates that
+     the DTR signal is active, and .F. designates that the signal is
+     inactive.  If the parameter is not specified, CA-Clipper Tools does not
+     affect the DTR exit signal.
+
+ <B>Returns</B>
+
+     The returned value corresponds to the DTR signal status prior to the new
+     setting, or in the absence of &lt;lNewDTRStatus&gt;, the returned value
+     corresponds to the current DTR.  A return of .T. indicates that the DTR
+     is active (MCR bit 1 = 1).  A return of .F. indicates that the DTR is
+     inactive (MCR bit 1 = 0).
+
+ <B>Description</B>
+
+     COM_DTR() queries the DTR signal status.  If the second parameter is not
+     supplied, the DTR signal status does not change.
+
+ <B>Note</B>
+
+     <B>”</B>  The COM_CLOSE() function resets DTR (to inactive).  By
+        contrast, COM_OPEN does not automatically make DTR active!
+
+ <B>Example</B>
+
+     A COM_OPEN() does not set the DTR signal.  You must specifically set the
+     DTR signal.
+
+     nBuff_size  :=  4000                      // 4000 byte buffer
+     lComOk      :=  COM_OPEN(1, nBuff_size)   // Open COM1
+
+     IF lComOk
+        COM_DTR(1, .T.)                        // Activate DTR Port 1
+        * ...
+     ENDIF
+
+</PRE>
+<HR>
+<B>See Also:</B>
+<A HREF="com_open.html">COM_OPEN()</A>
+<A HREF="com_close.html">COM_CLOSE()</A>
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,52 @@
+#  GNU make makefile
+#
+
+ifdef CLIPROOT
+include $(CLIPROOT)/include/Makefile.inc
+else
+CLIPROOT=/usr/local/clip
+endif
+
+LIBODBC=@LIBODBC@
+LIBOOB=@LIBOOB@
+CLIPINCLUDE=-I$(CLIPROOT)/include
+C_FLAGS=-Wall -g -I.
+#CC=gcc
+
+TARGET=libclip-odbc$(DLLSUFF)
+RTARGET=libclip-odbc$(DLLREALSUFF)
+TARGET1=libclip-oob$(DLLSUFF)
+RTARGET1=libclip-oob$(DLLREALSUFF)
+OBJS=odbc_clip.o odbc.o
+
+all:  $(TARGET) $(TARGET1)
+
+$(TARGET): $(OBJS)
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBODBC)
+
+$(TARGET1): $(OBJS)
+	[ "$(LIBOOB)" = '' ] || $(CLIPROOT)/bin/clip_makeslib $(TARGET1) $(LIBOOB) $(OBJS)
+
+odbc_clip.o: odbc_clip.c odbc.ch
+	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c odbc_clip.c
+
+odbc.o: odbc.prg odbc.ch
+	$(CLIPROOT)/bin/clip odbc.prg
+
+install: all
+	$(CLIPROOT)/bin/clip_cp $(TARGET) $(CLIPROOT)/lib
+	$(CLIPROOT)/bin/clip_cp $(TARGET1) $(CLIPROOT)/lib
+	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(CLIPROOT)/lib
+	#[ "$(TARGET1)" = "$(RTARGET1)" ] || cp $(RTARGET1) $(CLIPROOT)/lib
+	mkdir -p $(CLIPROOT)/doc/clip-odbc
+	cp *.html $(CLIPROOT)/doc/clip-odbc
+	cp odbc.ch $(CLIPROOT)/include
+	mkdir -p $(CLIPROOT)/doc/example/clip-odbc
+	cp -R example/* $(CLIPROOT)/doc/example/clip-odbc/
+
+clean:
+	rm -rf *.o *.bak *.a *.so *.dll *.exe odbc_ref.c *.ex *.nm
+
+distclean: clean
+	rm -f Makefile
+

@@ -1,0 +1,9 @@
+# all lines except empty and started with '#'
+# are added to environment (only if there are absent in current envirinment).
+# vars, started with '+', overwrite current environment vars
+# The next additions come from lang/$LANG, lang/$LC_ALL, lang/$CHARSET file
+# and then from term/$TERM file
+#
+#CLIP_HOSTCS=koi8-r
+#CLIP_LOGLEVEL=2
+

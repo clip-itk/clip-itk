@@ -1,0 +1,19 @@
+#!/bin/sh
+
+export CVS_RSH=ssh
+
+dirs="prg cliplibs"
+pwd=`pwd`
+
+./_cvs update -dP
+cd clip
+./_cvs_update
+cd $pwd
+
+for dir in $dirs
+do
+    cd $pwd
+    cd $dir
+    ../_cvs update -dP
+done
+

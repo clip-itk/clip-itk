@@ -1,0 +1,3 @@
+
+[ -z "$1" ] || root=$1
+cat << EOF | while read file; do if [ -d $root/$file ]; then rmdir $root/$file || true; else rm $root/$file || true; fi; done

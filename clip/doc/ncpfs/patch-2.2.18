@@ -1,0 +1,164 @@
+diff -rc linux.orig/fs/ncpfs/file.c linux/fs/ncpfs/file.c
+*** linux.orig/fs/ncpfs/file.c	Tue Feb  6 15:18:42 2001
+--- linux/fs/ncpfs/file.c	Mon Apr 22 12:01:57 2002
+***************
+*** 91,103 ****
+  		ncp_update_inode(inode, &finfo);
+  	}
+  
+! 	access = NCP_FINFO(inode)->access;
+  #ifdef NCPFS_PARANOIA
+  printk(KERN_DEBUG "ncp_make_open: file open, access=%x\n", access);
+  #endif
+  	if (access == right || access == O_RDWR)
+  		error = 0;
+  
+  out_unlock:
+  	unlock_super(inode->i_sb);
+  out:
+--- 91,185 ----
+  		ncp_update_inode(inode, &finfo);
+  	}
+  
+! 	access = NCP_FINFO(inode)->access & O_ACCMODE;
+  #ifdef NCPFS_PARANOIA
+  printk(KERN_DEBUG "ncp_make_open: file open, access=%x\n", access);
+  #endif
+  	if (access == right || access == O_RDWR)
+  		error = 0;
+  
++ out_unlock:
++ 	unlock_super(inode->i_sb);
++ out:
++ 	return error;
++ }
++ 
++ int
++ ncp_openmode(struct inode *inode, struct file *file, int excl)
++ {
++ 	int error;
++ 	int right;
++ 	int access;
++ 
++ 	error = -EINVAL;
++ 	if (!inode) {
++ 		printk(KERN_ERR "ncp_openmode: got NULL inode\n");
++ 		goto out;
++ 	}
++ 
++ 	error = -EIO;
++ 	if (!ncp_conn_valid(NCP_SERVER(inode)))
++ 		goto out;
++ 
++ 	error = -EACCES;
++ 
++ 	right = file->f_flags & O_ACCMODE;
++ 
++ 	lock_super(inode->i_sb);
++ 	if (!NCP_FINFO(inode)->opened) {
++ 		struct nw_file_info finfo;
++ /*		struct ncp_entry_info finfo;*/
++ 		int result;
++ 		int exclf;
++ 
++ 		exclf = excl?(N_AR_DENY_READ|N_AR_DENY_WRITE):0;
++ 		finfo.i.dirEntNum = NCP_FINFO(inode)->dirEntNum;
++ 		finfo.i.volNumber = NCP_FINFO(inode)->volNumber;
++ 		/* tries max. rights */
++ 		finfo.access = O_RDWR;
++ 		result = ncp_open_create_file_or_subdir(NCP_SERVER(inode),
++ 					NULL, NULL, OC_MODE_OPEN,
++ 					0, AR_READ | AR_WRITE | exclf, &finfo);
++ 		if (!result)
++ 			goto update;
++ 		/* RDWR did not succeeded, try readonly or writeonly as requested */
++ 		switch (right) {
++ 			case O_RDONLY:
++ 				finfo.access = O_RDONLY;
++ 				result = ncp_open_create_file_or_subdir(NCP_SERVER(inode),
++ 					NULL, NULL, OC_MODE_OPEN,
++ 					0, AR_READ | exclf, &finfo);
++ 				break;
++ 			case O_WRONLY:
++ 				finfo.access = O_WRONLY;
++ 				result = ncp_open_create_file_or_subdir(NCP_SERVER(inode),
++ 					NULL, NULL, OC_MODE_OPEN,
++ 					0, AR_WRITE | exclf, &finfo);
++ 				break;
++ 		}
++ 
++ 		if (result) {
++ 			goto out_unlock;
++ 		}
++ 		/*
++ 		 * Update the inode information.
++ 		 */
++ 	update:
++ 		if (excl)
++ 			finfo.access |= O_EXCL;
++ 		ncp_update_inode(inode, &finfo);
++ 		error = 0;
++ 	}
++ 	else {
++ 		int fl;
++ 
++ 		fl = NCP_FINFO(inode)->access;
++ 		if ( excl || (fl & O_EXCL))
++ 		{
++ 			goto out_unlock;
++ 		}
++ 		error = 0;
++ 	}
+  out_unlock:
+  	unlock_super(inode->i_sb);
+  out:
+diff -rc linux.orig/fs/ncpfs/ioctl.c linux/fs/ncpfs/ioctl.c
+*** linux.orig/fs/ncpfs/ioctl.c	Tue Feb  6 15:17:55 2001
+--- linux/fs/ncpfs/ioctl.c	Mon Apr 22 11:43:51 2002
+***************
+*** 561,566 ****
+--- 561,574 ----
+  		return 0;
+  #endif /* CONFIG_NCPFS_NLS */
+  
++ 	case NCP_IOC_OPENMODE:
++ 		{
++ 			int excl;
++ 			if (get_user(excl, (int *) arg))
++ 				return -EFAULT;
++ 			return ncp_openmode(inode, filp, excl);
++ 		}
++ 
+  	default:
+  		return -EINVAL;
+  	}
+diff -rc linux.orig/include/linux/ncp_fs.h linux/include/linux/ncp_fs.h
+*** linux.orig/include/linux/ncp_fs.h	Thu Apr 18 15:29:09 2002
+--- linux/include/linux/ncp_fs.h	Fri Apr 19 18:29:36 2002
+***************
+*** 124,129 ****
+--- 124,147 ----
+  #define NCP_IOC_SETCHARSETS		_IOR('n', 11, struct ncp_nls_ioctl)
+  
+  /*
++  * This ioctl allow work in dos-specific share/exclusive open mode
++  * without using lockfiles and so on, and in compatible with dos
++  * applications way.
++  *
++  * if ioctl *arg == 0, request for share open
++  * else request for exclusive open
++  * ioctl returns EINVAL if this feature is absent (invalid ioctl),
++  * 0 on success, and other value on share errors.
++  *
++  * Paul Lasarev <paul@itk.ru>
++  */
++ #define NCP_IOC_OPENMODE		_IOW('n', 21, int)
++ 
++ #define N_AR_DENY_READ      (ntohs(0x0400))
++ #define N_AR_DENY_WRITE     (ntohs(0x0800))
++ int ncp_openmode(struct inode *inode, struct file *file, int exclusive);
++ 
++ /*
+   * The packet size to allocate. One page should be enough.
+   */
+  #define NCP_PACKET_SIZE 4070

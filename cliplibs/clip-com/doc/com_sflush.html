@@ -1,0 +1,42 @@
+<HTML>
+<HEAD><TITLE>COM_SFLUSH</TITLE></HEAD>
+<BODY>
+<PRE>
+ <B>COM_SFLUSH()</B>
+ Deletes the sending background buffer
+<HR>
+ <B>Syntax</B>
+
+     <B>COM_SFLUSH(&lt;nComPort&gt;) --&gt; lDeleted</B>
+
+ <B>Argument</B>
+
+     <B>&lt;nComPort&gt;</B>  Designates the port (1 to N) for which the sending
+     buffer is deleted.
+
+ <B>Returns</B>
+
+     If the selected sending buffer is successfully deleted, the function
+     returns a .T.
+
+ <B>Description</B>
+
+     COM_SFLUSH() eliminates all the characters in a sending buffer.  This
+     can be useful when the send routine has been futilely waiting for an XON
+     character (bad software handshake).
+
+ <B>Notes</B>
+
+     <B>”</B>  A COM_SFLUSH() to a closed port does not work.
+
+     <B>”</B>  It is not necessary to test for characters in the sending
+        buffer to carry out a COM_SFLUSH().
+
+ <B>Example</B>
+
+     COM_SEND(2, cSendText)
+
+</PRE>
+<HR>
+</BODY>
+</HTML>

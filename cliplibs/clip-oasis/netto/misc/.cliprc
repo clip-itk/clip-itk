@@ -1,0 +1,7 @@
+-E CLIP_MODULE=netto
+-w
+-l
+#-U std.ch
+#-U config.ch
+#-U clip.ch
+

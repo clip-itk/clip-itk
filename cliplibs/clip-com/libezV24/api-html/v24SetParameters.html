@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24SetParameters</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24SetParameters</A></H2><H2>( v24_port_t* port,  int Baudrate,<BR>&nbsp; int Datasize,  int Parity )</H2><BLOCKQUOTE>setup the communication parameters.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>After a serial device is opened, the user have to setup the communication
+parameter. The parameter <TT>port</TT> references the handle of the opened
+device. With <TT>Baudrate</TT>, the speed can be set as bitrate (bits per
+second). Use the <TT>__EZV24_BAUDRATE</TT> values as parameter. The size of a
+transmitted data byte can be passed as <TT>__EZV24_DATASIZE</TT> value to
+<TT>Datasize</TT>. The last parameter <TT>Parity</TT> defines the parity checking. The
+possible values are defined in <TT>__EZV24_PARITY_FLAGS</TT>.
+
+<P>The number of stop bits is set to <TT>1</TT>. If you need <TT>2</TT> stop bits, you have
+to call <!1><A HREF="v24SetStopbits.html">v24SetStopbits</A>.
+
+<P>The values returned are: <TT>V24_E_ILLHANDLE</TT>, <TT>V24_E_ILLBAUD</TT>,
+<TT>V24_E_ILLDATASZ</TT>, <TT>V24_E_ILLPARITY</TT> and <TT>V24_E_OK</TT>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><B>Baudrate</B> -  a <TT>V24_*</TT> constant representing the <EM>baudrate</EM>.
+<BR><B>Datasize</B> -  a <TT>V24_*</TT> constant representing the size of a data byte.
+<BR><B>Parity</B> -  a <TT>V24_*</TT> constant representing the parity check mode.
+<BR><DT><B>Returns:</B><DD>  (int) the <TT>V24_*</TT> error code.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

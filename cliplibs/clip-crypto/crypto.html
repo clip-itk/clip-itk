@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+<TITLE>CRYPTO clip library</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+
+<h1> Simmetric block ciphers encrypt/decrypt functions </h1>
+<hr>
+<h2> EVP_ENCRYPT </h2>
+<b>
+EVP_ENCRYPT(cStr, cKey [, [cCipherMethod='des-ede3-cbc'] [, [cDigestMethod='md5'] [, [cInitVector='']]]]) --> cEncrypted
+</b>
+<p>
+<h2> EVP_DECRYPT </h2>
+<b>
+EVP_DECRYPT(cStr, cKey [, [cCipherMethod='des-ede3-cbc'] [, [cDigestMethod='md5'] [, [cInitVector='']]]]) --> cEncrypted
+</b>
+<p>
+<hr>
+some possible <b>cipher</b> names:<br>
+"DESX"
+"desx"
+"DES"
+"des"
+"DES3"
+"des3"
+"IDEA"
+"idea"
+"RC2"
+"rc2"
+"BF"
+"bf"
+"blowfish"
+"CAST"
+"cast"
+"CAST-cbc"
+"cast-cbc"
+"rc5"
+"RC5"
+"DSS1"
+"dss1"
+"ripemd"
+"rmd160"
+<p>
+some possible <b>digest</b> names:<br>
+"md5"
+"md4"
+"md2"
+"sha"
+"sha1"
+"dss"
+"dss1"
+"mdc2"
+"ripemd160"
+
+<h2> EVP_ALG_LIST </h2>
+<b>
+EVP_ALG_LIST() -> aAlgoritmes
+</b>
+<p>
+List algorithms, builtined in used version of <b> OpenSSL </b>  library.
+<p>
+
+</BODY>
+</HTML>

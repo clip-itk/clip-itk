@@ -1,0 +1,17 @@
+#!/bin/sh
+echo [ run in `pwd` ]
+for i in $*
+do
+    newname=`echo $i | tr \"[:upper:]\" \"[:lower:]\"`
+    if [ -d $i ] ; then
+        cd $i
+        $0 "*"
+        cd ..
+    fi
+    if [ $i != $newname ] ; then
+        echo move $i to $newname
+        cp $i lowname.tmp
+        rm -f $i
+        mv lowname.tmp $newname
+    fi
+done

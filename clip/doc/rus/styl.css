@@ -1,0 +1,67 @@
+BODY {
+	font-family: times;
+	font-size: 10pt;
+	color: black;
+	background-image: url(fon.gif);
+        margin-top: 10px;
+        margin-left: 50px;
+        margin-right: 30px;
+        text-align: justify;
+
+	}
+
+P {text-indent: 15}
+H1,H2,H3,H4,H5,H6 { font-family: arial;
+                    margin-left: -20px;
+	            }
+
+TABLE { background: url(fon.gif);
+	}
+
+TT { font-family: monospace }
+XMP { font-family: courier; color:darkgreen }
+PRE { font-family: courier; color:darkgreen }
+
+
+CITE {  font-family: arial;
+	font-weight: bold;
+	font-size: 10pt
+	}
+
+
+UL { list-style: disc;}
+
+OL { list-style: decimal; text-align: left }
+
+LI {  text-align: left;
+      font-family: times;
+	}
+
+
+
+DT { font-family: arial;
+     font-weight: bold; }
+
+DD { font-family: times;  }
+
+#TD {    background-color: silver;
+#	font-family: times;
+#	font-size: 8pt;
+#
+#	}
+
+TH {    background-color: gray;
+	font-size: 10pt;
+	}
+
+
+A { font-weight: bold; font-family: arial; text-align: left  }
+
+.ABLUE   {color:blue}
+
+
+A:link { color: blue }
+A:visited { color: purple }
+A:active { color: lime }
+
+

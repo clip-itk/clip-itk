@@ -1,0 +1,15 @@
+clip (1.0-2) unstable; urgency=low
+
+  * bugfixes.
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 22 Jan 2001 16:19:34 +0400
+
+clip (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Elena Kornilova <alena@itk.ru>  Fri, 19 Jan 2001 17:22:27 +0400
+
+Local variables:
+mode: debian-changelog
+End:

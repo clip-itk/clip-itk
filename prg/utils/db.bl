@@ -1,0 +1,10 @@
+private adr
+adr:={{"Name",     "C", 30, 0},{"Birth",    "D",  8, 0},{"Zip_Code", "N",  6, 0},{"Earn",     "N",  9, 2}}
+dbcreate("address", adr)
+dbusearea(,,"address")
+dbappend()
+address->name:='Sergey Aleshin'
+address->Birth:=ctod('10/11/1974')
+dbappend()
+dbcloseall()
+

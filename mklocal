@@ -1,0 +1,129 @@
+#!/bin/sh
+
+
+for opt in $*
+do
+	case $opt in
+	-noclip)
+		noclip=yes
+		;;
+	-noprg)
+		noprg=yes
+		;;
+	-noclean)
+		noclean=yes
+		;;
+	-strip)
+		dostrip=yes
+		;;
+	-clip)
+		noprg=yes
+		nogzip=yes
+		nogd=yes
+		noclean=yes
+		;;
+	-release)
+		RFLAG='-r'
+		LANG=C
+		[ -n "$CLIPROOT" ] || CLIPROOT=/usr/local/clip
+		;;
+	esac
+done
+
+if [ -n "$MAKE" ]
+then
+	MAKE="$MAKE"
+elif [ -x /usr/local/bin/gmake  ]
+then
+	MAKE=/usr/local/bin/gmake
+elif [ -x /usr/bin/gmake ]
+then
+	MAKE=/usr/bin/gmake
+else
+	MAKE=make
+fi
+
+LC_ALL=C
+LC_MESSAGES=C
+PATH="$HOME/bin:$PATH"
+if [ -z "$CLIP_NAMES" ]
+then
+	CLIP_NAMES=yes
+        export CLIP_NAMES
+fi
+
+export MAKE LANG LC_ALL LC_MESSAGES PATH
+
+pwd=`pwd`
+
+if [ -z "$CLIPROOT" ]
+then
+	CLIPROOT=`cd ..;pwd`/cliproot
+	echo "force CLIPROOT=$CLIPROOT"
+else
+	echo "use CLIPROOT=$CLIPROOT"
+fi
+
+if [ -z "$noclean" ]
+then
+	./clean.sh
+fi
+
+export CLIPROOT
+mkdir -p ${CLIPROOT}/include
+mkdir -p ${HOME}/bin
+
+if [ -z "$noclip" ]
+then
+
+cd clip || exit 1
+	./configure ${RFLAG} ${CLIP_CONFIGURE_FLAGS}
+	$MAKE install || exit 2
+cd $pwd
+
+fi
+
+. clip/clipcfg.sh || exit 2
+
+cp -R prg/include ${CLIPROOT}/
+cp -R prg/locale.po ${CLIPROOT}/
+
+cd cliplibs
+
+	$MAKE install
+
+cd $pwd
+
+if [ -z "$noprg" ]
+then
+
+cd  prg || exit 1
+	make &&\
+	make install &&\
+		${CLIPROOT}/bin/clip_msgmerge &&\
+		${CLIPROOT}/bin/clip_msgfmt  || exit 3
+cd $pwd
+
+fi
+
+mkdir -p ${CLIPROOT}/doc
+cp -R example ${CLIPROOT}/doc/
+
+cd  ${CLIPROOT}/ || exit 1
+	rm -rf `find . -name CVS -print`
+cd $pwd
+
+echo "-v0
+-O
+-r
+-l" > ${CLIPROOT}/cliprc/clipflags
+
+
+if [ -n "$dostrip" ]
+then
+
+strip ${DESTDIR}${CLIP_ROOT}/bin/*  2>/dev/null || true
+strip ${DESTDIR}${CLIP_ROOT}/lib/*${DLLREALSUFF} 2>/dev/null || true
+
+fi
+

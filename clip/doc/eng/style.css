@@ -1,0 +1,22 @@
+BODY {
+        font-family: arial;
+        font-size: 10pt;
+        color: black;
+        margin-left: 5pt;
+        margin-right: 5pt;
+        background-image: url("fon.gif") }
+
+A {     font-weight: bold;
+        font-size: 12pt }
+
+H3 {     font-weight: bold;
+         font-size: 12pt;
+         text-align: center}
+
+A:link { color: blue }
+A:visited { color: purple }
+A:active { color: lime }
+
+.class1 {font-size: 8pt }
+.class2 {font-size: 6pt }
+

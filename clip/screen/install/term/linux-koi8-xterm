@@ -1,0 +1,8 @@
+# remote linux console with trans extention
+# no scanmode
+#
+CLIP_SCANMODE=NO
+#CLIP_HOSTCS=koi8-r
+CLIP_CLIENTCS=koi8-r
+XTERM_MOUSE=on
++TERM=linux-koi8

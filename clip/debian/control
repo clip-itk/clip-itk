@@ -1,0 +1,14 @@
+Source: clip
+Section: devel
+Priority: optional
+Maintainer: Paul Lasarev <paul@itk.ru>
+Standards-Version: 3.0.1
+
+Package: clip
+Architecture: any
+Depends: ${shlibs:Depends}, gcc, gettext, zlib1g
+Conflicts: clip-prg
+Build-depends: gcc, bison, flex, zlib1g-dev
+Description: clip - XBASE/Clipper compatible program compiler
+ clip - XBASE/Clipper compatible program compiler
+

@@ -1,0 +1,41 @@
+#!/bin/sh
+
+exitf()
+{
+	rm -f test_odbc.c test_odbc
+	exit $1
+}
+
+cat <<EOF >test_odbc.c
+
+#include <sql.h>
+int
+main(int argc, char **argv)
+{
+	SQLHENV henv;
+	SQLAllocEnv(&henv);
+	return 0;
+}
+EOF
+
+LIBODBC=''
+LIBOOB=''
+
+gcc -o test_odbc test_odbc.c -liodbc >/dev/null 2>&1 && LIBODBC='-liodbc' && echo 'iODBC driver manager were found'
+
+if [ -z "$LIBODBC" ]
+then
+	gcc -o test_odbc test_odbc.c -lodbc >/dev/null 2>&1 && LIBODBC='-lodbc' && echo 'unixODBC driver manager were found'
+fi
+
+if [ -z "$LIBODBC" ]
+then
+	echo 'No ODBC driver`s manager were found'
+	exitf 1
+fi
+
+gcc -o test_odbc test_odbc.c -L/usr/local/easysoft/oob/client -lesoobclient >/dev/null 2>&1 && LIBOOB='-L\/usr\/local\/easysoft\/oob\/client -lesoobclient' && echo 'ODBC-ODBC bridge client were found'
+
+sed -e "s/@LIBODBC@/$LIBODBC/g" < Makefile.in | sed -e "s/@LIBOOB@/$LIBOOB/g" - >Makefile
+
+exitf 0

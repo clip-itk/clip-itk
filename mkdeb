@@ -1,0 +1,52 @@
+#!/bin/sh
+
+LANG=C
+LC_ALL=C
+LC_MESSAGES=C
+export MAKE LANG LC_ALL LC_MESSAGES
+if [ -z "$CLIP_NAMES" ]
+then
+	CLIP_NAMES=yes
+        export CLIP_NAMES
+fi
+
+arch=$(./arch.sh)
+ver=$(head -1 debian/changelog |cut -d'(' -f2|cut -d')' -f1)
+libc=`./libcver.sh`
+path=../clip_distrib/$ver/deb-$arch-$libc
+mkdir -p $path
+rm -f $path/*
+dir=$(cd $path; pwd)
+export DISTROOT=$dir ARCH=$arch VER=$ver
+
+
+sources=`grep -i '^Source:' debian/control | tr -s ' \t' ' ' | cut -d ' ' -f2`
+packages=`grep -i '^Package:' debian/control | tr -s ' \t' ' ' | cut -d ' ' -f2`
+
+time dpkg-buildpackage -rfakeroot -tc || exit 1
+#fakeroot debian/rules install
+
+echo sources $sources
+for i in $sources
+do
+	files=`ls ../${i}_$ver* 2>/dev/null`
+	if [ -n "$files" ]
+	then
+		echo move $files to $dir
+		mv $files $dir
+	fi
+done
+
+echo packages $packages
+for i in $packages
+do
+	files=`ls ../${i}_$ver*.deb 2>/dev/null`
+	if [ -n "$files" ]
+	then
+		echo move $files to $dir
+		mv $files $dir
+	fi
+done
+
+cp Readme_deb $dir/Readme
+

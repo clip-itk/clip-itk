@@ -1,0 +1,213 @@
+<HTML>
+<HEAD>
+<TITLE>CLIP</TITLE>
+</HEAD>
+<BODY>
+<center>
+</Center>
+
+<h3>NAME</h3>
+
+<b>CLIP</b> - XBASE program language compatible compiler.
+
+<h3>SYNOPSIS</h3>
+
+<b>clip</b> [options] [file1] [..fileN]
+
+<h3>DESCRIPTION</h3>
+
+<b>clip</b> is a preprocessor, compiler and linker for <b>XBASE</b>
+program language dialects, such as <b>Clipper &trade;</b>.
+<p>
+All components of <b>clip</b> use environment variable <b>CLIPROOT</b>.
+If <b>CLIPROOT</b> is not set, will used default value <b>/usr/local/clip</b>.
+<p>
+<b>clip</b> can create native executables, bytecode objects, and
+builtined-in-executable bytecodes. Bytecode objects may be maked
+executable by using standard Unix #!program feature.
+<p>
+<b>clip</b> uses standard <b>GNU gettext</b> package for work with
+localized messages.
+<p>
+
+<h3>OPTIONS</h3>
+<dl>
+	<dt><b>-h</b>
+		<dd>help page.
+	<dt><b>-H</b>
+		<dd>help about acceptable environment variables.
+	<dt><b>-V</b>
+		<dd>print clip version.
+	<dt><b>-v[level]</b>
+		<dd>set verbose level (default==1)
+	<dt><b>-a</b>
+		<dd>auto memvar variables. Any variabe, not included in
+		PUBLIC, PRIVATE or PARAMETER operators, automatically
+		declared as MEMVAR.
+	<dt><b>-w</b>
+		<dd>warning about implicit var declaration.
+	<dt><b>-e</b>
+		<dd>generate executable file.
+	<dt><b>-c</b>
+		<dd>stop after generation C code.
+	<dt><b>-g,-b</b>
+		<dd>generate debug info.
+	<dt><b>-t</b>
+		<dd>print program syntax tree
+	<dt><b>-o[name]</b>
+		<dd>set output file name.
+	<dt><b>-O</b>
+		<dd>make optimisations.
+	<dt><b>-M</b>
+		<dd>use first [file1] as start program point.
+	<dt><b>-n</b>
+		<dd>don't declare module procedure.
+	<dt><b>-p</b>
+		<dd>generate pseudocode module.
+	<dt><b>-l</b>
+		<dd>compile C-pseudocode module.
+	<dt><b>-s</b>
+		<dd>compile into shared object.
+	<dt><b>-I[path]</b>
+		<dd>add include search path.
+	<dt><b>-L[path]</b>
+		<dd>add library path.
+	<dt><b>-D[name]</b>
+		<dd>define macro name.
+	<dt><b>-D[name=value]</b>
+		<dd>define macro name as [value].
+	<dt><b>-U[filename]</b>
+		<dd>use alternate (or none) standard include file (default==std.ch).
+	<dt><b>-S[charset]</b>
+		<dd>define source charset of string constants.
+	<dt><b>-T[charset]</b>
+		<dd>define target charset of string constants.
+	<dt><b>-P</b>
+		<dd>preprocess only.
+	<dt><b>-C</b>
+		<dd>print command definitions.
+	<dt><b>-E[name=value]</b>
+		<dd>exact to set same environ variable(see -H for details).
+	<dt><b>filename</b>
+		<dd>files to process.
+	<dt><b> +option </b>
+		<dd>means disable feature (if possible).
+		    - for using in <b>.cliprc</b>.
+	<BR>
+</dl>
+
+<p>
+All options may be placed into file <b>$HOME/.cliprc</b> or in <b>./.cliprc</b>
+in form "one option - one line".
+<p>
+
+<h3>ENVIRONMENT VARIABLES</h3>
+<dl>
+	<dt><b>CC</b>
+		<dd>name of C compiler (default=='gcc')
+	<dt><b>CFLAGS</b>
+		<dd>options for C compiler (default=='')
+	<dt><b>COMPILE_FLAG</b>
+		<dd>'compile-only' flag for C compiler (default=='-c')
+	<dt><b>COPT</b>
+		<dd>optimisation flag for C compiler (default=='-O2')
+	<dt><b>CDBG</b>
+		<dd>debug flag for C compiler (default=='-g')
+	<dt><b>OUT_FLAG</b>
+		<dd>output flag for C compiler (default=='-o')
+	<dt><b>INCLUDE_FLAG</b>
+		<dd>include flag for C compiler (default=='-I')
+	<dt><b>OBJSUF</b>
+		<dd>suffix for output object files (default=='.o')
+	<dt><b>SOBJSUF</b>
+		<dd>suffix for output shared files (default=='.so')
+	<dt><b>LIBSUF</b>
+		<dd>suffix for library files (default=='.a')
+	<dt><b>SLIBSUF</b>
+		<dd>suffix for shared library files (default=='.so')
+	<dt><b>SFLAGS</b>
+		<dd>options for C compiler - shared version (default=='-shared')
+	<dt><b>CLIPLIB</b>
+		<dd>runtime support library (default=='libclip.a')
+	<dt><b>CLIPSLIB</b>
+		<dd>runtime support shared library (default=='libclip.so')
+	<dt><b>CLIPLIBS</b>
+		<dd>additional libs (default=='')
+	<dt><b>CLIPROOT</b>
+		<dd>root for all clip related files (default=='/usr/local/clip')
+	<dt><b>CLIP_MODULE</b>
+		<dd>current locale module (default=='doc')
+	<dt><b>CLIP_CMDSTR</b>
+		<dd>comma-separated list of command-line options
+</dl>
+<h3>PREDEFINED MACROS</h3>
+<dl>
+	<dt><b>__FILE__</b>
+		<dd>string - name of current compile file
+	<dt><b>__BASE_FILE__</b>
+		<dd>string - name of root compile file
+	<dt><b>__LINE__</b>
+		<dd>numeric - number of current line in current file
+	<dt><b>__VERSION__</b>
+		<dd>string - version of clip
+	<dt><b>__CLIP__</b>
+		<dd>string - version of clip
+	<dt><b>__SYSTEM__</b>
+		<dd>string - name of operating system
+	<dt><b>__DATE__</b>
+		<dd>string - date in format 'MON DD YYYY'
+	<dt><b>__TIME__</b>
+		<dd>string - current time in format 'HH:MM::SS'
+</dl>
+<h3>USAGE</h3>
+<br>
+<h3>FILES</h3>
+<dl>
+<dt><b>$CLIPROOT/bin/*</b>  <dd><b>clip</b> binaries.<br>
+<dt><b>$CLIPROOT/lib/*</b>  <dd><b>clip</b> libraries.<br>
+<dt><b>$CLIPROOT/include/*</b> <dd><b>clip</b> develop include files.<br>
+<dt><b>$CLIPROOT/charsets/*</b> <dd><b>clip</b> charset defitinion files.<br>
+<dt><b>$CLIPROOT/keymaps/*</b> <dd><b>clip</b> scanmode keymap files.<br>
+<dt><b>$CLIPROOT/environment</b> <dd>contens of this file automatically appends to
+	program environment.<br>
+<dt><b>$CLIPROOT/lang/$LANG</b> <dd>contens of this file automatically appends to
+	program environment for this LANG variable value<br>
+<dt><b>$CLIPROOT/lang/$LANG</b> <dd>contens of this file automatically appends to
+	program environment for this LANG variable value<br>
+<dt><b>$CLIPROOT/term/$TERM</b> <dd>contens of this file automatically appends to
+	program environment for this TERM variable value<br>
+<dt><b>$CLIPROOT/locale.pot/*</b> <dd>localized messages templates. Files in this
+	directory will be created by <b>clip</b> when program text contain
+	localized strings (such as [File] ).<br>
+<dt><b>$CLIPROOT/locale.po/$LANG/*</b> <dd>localized messages repository.
+	Files in this directory must be edited by hands for each locale,
+	and merge with current templates by call of <b>clip_msgmerge</b>.<br>
+<dt><b>$CLIPROOT/locale.mo/$LANG/*</b> <dd>compiled messages repository.
+	Files in this directory are created
+	by call of <b>clip_msgfmt</b>.<br>
+<dt><b>$HOME/.cliprc</b> <dd>recource file.<br>
+<dt><b> ./.cliprc<b> <dd>recource file.<br>
+</dl>
+
+<h3>SEE ALSO</h3>
+
+<b>clip_msgfmt</b>, <b>clip_msgmerge</b>, <b>clipar</b>
+<b>gcc</b>(1), <b>ar</b>(1),
+
+<h3>AUTHORS</h3>
+
+<a href="mailto:uri@itk.ru"> Uri Hnikyn </a></br>
+<a href="mailto:alena@itk.ru"> Elena Kornilova </a></br>
+<a href="mailto:kuli@itk.ru"> Andrew Kulikov </a></br>
+<a href="mailto:paul@itk.ru"> Paul Lasarev </a></br>
+<a href="mailto:rust@itk.ru"> Rushat Nabiullin </a></br>
+<a href="mailto:serg@itk.ru"> Sergey Rosenfeld </a></br>
+<a href="mailto:alexey@itk.ru"> Alexey M. Tkachenko </a></br>
+<a href="mailto:axl@itk.ru"> Alex Vorontsov </a></br>
+
+<h3>LICENSE</h3>
+
+<b>GPL</b>
+
+</BODY>
+</HTML>

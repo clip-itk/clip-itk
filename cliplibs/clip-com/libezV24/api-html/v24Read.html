@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24Read</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24Read</A></H2><H2>( v24_port_t* port,  unsigned char* Buffer,<BR>&nbsp; size_t Len )</H2>
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE><TT>v24Read</TT> is the basic function to get one or more received data bytes out
+of the receive queue. If the queue is empty, the behavious of the function
+depends on the used <EM>open flags</EM>. Without any open flags, a empty
+receive queue leads to an error. If the flag <TT>V24_NON_BLOCK</TT> is used, the
+function will wait for the reception of character. The wait time is limited
+to the given <EM>timeout time</EM>. If this limit is exceeded, the function
+aborts waiting. If nothing is read, the returned value is <TT>0</TT>, and the error
+code is set to <TT>V24_E_TIMEOUT</TT>. At this level it's no real error, so there
+is no error report for the debug output (see <TT>V24_DEBUG_ON</TT> in
+<!1><A HREF="v24OpenPort.html">v24OpenPort</A>).
+
+<P>The parameter <TT>Buffer</TT> references a buffer that should hold the received
+characters. The parameter <TT>Len</TT> is the number of characters to read.
+
+<P>The function returns the number of character read. An error is indicated by
+a return vlaue of <TT>-1</TT>. Use <!1><A HREF="v24QueryErrno.html">v24QueryErrno</A> to get the exact error code.
+
+<P>Possible error code are <TT>V24_OK</TT>, <TT>V24_E_NULL_POINTER</TT>, <TT>V24_E_ILLHANDLE</TT>,
+<TT>V24_E_TIMEOUT</TT> or <TT>V24_READ</TT>.
+
+<P><B>Note:</B> the caller has to ensure, that <TT>Buffer</TT> can hold the <TT>Len</TT>
+characters.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><B>Buffer</B> -  pointer to buffer to hold the data.
+<BR><B>Len</B> -  number of characters to receive.
+<BR><DT><B>Returns:</B><DD>  (int) number of received characters or <TT>-1</TT>.
+<BR><DT><B>See Also:</B><DD><!1><A HREF="v24QueryErrno.html">v24QueryErrno</A>, <!1><A HREF="v24Getc.html">v24Getc</A>, v24Gets.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

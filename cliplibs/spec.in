@@ -1,0 +1,93 @@
+%define DESTDIR	${RPM_BUILD_ROOT}
+
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+Vendor:		ITK
+Packager:	Paul Lasarev <paul@itk.ru>
+URL:		http://www.itk.ru
+Source:         %{name}-%{version}.tar.gz
+Group:		Development
+Copyright:	GPL
+Requires:	clip-lib, gcc, make, binutils
+BuildRoot:	/tmp/%{name}-%{version}
+Summary:	XBASE/Clipper compatible program compiler %{name} binding
+AutoReqProv: no
+
+
+%description
+XBASE/Clipper compatible program compiler -  %{name} binding
+This package provides %{name} binding for CLIP package
+
+%prep
+%setup -n %{name}-%{version}
+
+%build
+
+rm -rf %{DESTDIR}
+
+CLIPROOT=%{CLIPROOT}
+SCLIPROOT=%{SCLIPROOT}
+CLIP_ROOT=%{SCLIPROOT}
+DESTDIR=%{DESTDIR}
+LD_LIBRARY_PATH=${CLIPROOT}/usr/lib
+
+export CLIPROOT LD_LIBRARY_PATH CLIP_ROOT
+
+echo "cumulative install to $CLIPROOT"
+make || true
+make install || true
+#	package install
+mkdir -p ${DESTDIR}${SCLIPROOT}/lib \
+	 ${DESTDIR}${SCLIPROOT}/doc \
+	 ${DESTDIR}${SCLIPROOT}/include \
+	 ${DESTDIR}${SCLIPROOT}/bin \
+	 ${DESTDIR}${SCLIPROOT}/cliprc \
+	 ${DESTDIR}${SCLIPROOT}/etc \
+	 ${DESTDIR}${SCLIPROOT}/charsets \
+	 ${DESTDIR}${SCLIPROOT}/keymaps \
+	 ${DESTDIR}${SCLIPROOT}/locale.pot
+cp ${CLIPROOT}/include/clipcfg.sh ${CLIPROOT}/include/Makefile.inc \
+	 ${DESTDIR}${SCLIPROOT}/include/
+cp ${CLIPROOT}/bin/clip_cp ${CLIPROOT}/bin/clip_makelib \
+	 ${CLIPROOT}/bin/clip_makeslib \
+	 ${DESTDIR}${SCLIPROOT}/bin/
+echo "install to ${DESTDIR}${SCLIPROOT}"
+make install CLIPROOT=${DESTDIR}${SCLIPROOT} || true
+rm ${DESTDIR}${SCLIPROOT}/include/clipcfg.sh ${DESTDIR}${SCLIPROOT}/include/Makefile.inc
+
+mkdir -p ${DESTDIR}/usr/lib
+cd ${DESTDIR}/usr/lib || exit 1
+	LIBS=`cd ../local/clip/lib; ls libclip*`
+	if [ -n "$LIBS" ]
+	then
+		for nm in $LIBS
+		do
+			ln -s ../local/clip/lib/$nm .
+		done
+	fi
+cd $pwd
+
+rmempty()
+{
+	for i in $*
+	do
+		rmdir $i 2>/dev/null && continue
+		(cd $i 2>/dev/null && rmempty *)
+	done
+}
+
+cd ${DESTDIR}
+	rm -rf `find . -path '*CVS*'`
+	rmempty *
+cd $pwd
+
+%clean
+
+rm -rf %{DESTDIR}
+
+
+%files
+%defattr(-,root,root)
+/
+

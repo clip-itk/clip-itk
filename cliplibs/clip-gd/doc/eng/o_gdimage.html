@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="../styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+</center>
+
+<h2>             Class GDIMAGE </h2>
+
+Class <i>GDIMAGE</i> drawing grpahpics primitives( rectangle, oval, lines...)
+and working with PNG,JPEG,... formats.
+<a href=gd_lib.html>Original introduction the <i>libgd</i></a> <br>
+and see introduction for a <a href=gd_prg.html>gd* functions</a> <br>
+and <A href="o_graphics.html">business graphics</a>
+
+<BR>
+Simple example:
+<PRE>
+im=GdImageNew(200, 200)
+// creating colors
+white=im:newColor(255, 255, 255) // white
+black=im:newColor() // black
+red=im:newColor(255) // red
+blue=im:newColor(,,255) // blue
+yellow=im:newColor(255, 255) // yellow
+fon=im:newColor(0xDE,0xEF,0xF5) // gray
+// fills image to white color
+im:fill(0, 0, fon)
+im:filledArc(100, 100, 45, 45, yellow)
+// creating brush
+luch=GdImageNew(3, 3)
+luch:fill(0, 0, luch:newColor(255, 255))
+im:setBrush(luch)
+cx =100
+cy = 100
+for i=0 to 180 step 45
+	x1 = cos(PI*i/180) * 60 + cx
+	y1 = sin(PI*i/180) * 60 + cy
+	x2 = cos(PI*(i+180)/180) * 60 + cx
+	y2 = sin(PI*(i+180)/180) * 60 + cy
+	im:line(x1, y1, x2, y2, GDSTYLE_BRUSHED)
+next
+im:filledArc(93, 90, 6, 6, blue)
+im:filledArc(107, 90, 6, 6, blue)
+im:string("Hello world!", 50, 50, GDFONT_LARGE, black)
+im:stringVector("Привет мир!", 50, 150, 300, 0, black)
+im:filledTruncSector(100, 100, 30, 30, 26, 26, 40, 140, red)
+im:toPNG("asdf.png")
+</PRE>
+Well picture!<br>
+<img src="asdf.png" alt="Some picture :(">
+
+<h3> Attributes </H3>
+<TABLE border=1>
+<th> Attributes name </TH>
+<th> Attributes value </TH>
+<TR> <td> fileName </td> <TD> string </TD>
+<TR> <td> fileType </td> <TD> GDFILE_PNG | GDFILE_GD | GDFILE_GD2 | GDFILE_XBM | GDFILE_JPEG </TD>
+<TR> <td> sizeX </td> <TD> numeric </TD>
+<TR> <td> sizeY </td> <TD> numeric </TD>
+<tr> <td> color </td> <TD> numeric </TD>
+<tr> <td> image </td> <TD> numeric </TD>
+</TABLE>
+
+<h3> Methods/Functions </H3>
+<h4> gd:create(sizeX, sizeY) </h4>
+Create new image sizes sizeX x sizeY
+<h4> gd:fromFile(fileName[, fileType=GDFILE_PNG]) </h4>
+create new image from file fileName and types fileType
+(by default fileType=GDFILE_PNG)
+<h4> gd:fromPNG(fileName) </h4>
+create new image from file fileName and types GDFILE_PNG
+<h4> gd:fromGD(fileName) </h4>
+create new image from file fileName and types GDFILE_GD
+<h4> gd:fromGD2(fileName) </h4>
+create new image from file fileName and types GDFILE_GD2
+<h4> gd:fromXBM(fileName) </h4>
+create new image from file fileName and types GDFILE_XBM
+<h4> gd:fromJPEG(fileName) </h4>
+create new image from file fileName and types GDFILE_JPEG
+<h4> метод gd:destroy() </h4>
+destroyed image
+<h4> gd:toFile(fileName[, fileType=GDFILE_PNG]) </h4>
+Writing image to fileName and types fileType
+<h4> gd:toPNG(fileName) </h4>
+Writing image to fileName and types GDFILE_PNG
+<h4> gd:toGD(fileName) </h4>
+Writing image to fileName and types GDFILE_GD
+<h4> gd:toGD2(fileName) </h4>
+Writing image to fileName and types GDFILE_GD2
+<h4> gd:toJPEG(fileName) </h4>
+Writing image to fileName and types GDFILE_JPEG
+<h4> gd:setColor(color) </h4>
+Sets foreground color.
+<h4> color_index=gd:getColor(color) </h4>
+Get foreground color.
+<h4> color_index=gd:newColor([Red], [Green], [Blue]) </h4>
+Create and allocate new color.<br>
+By default Red=0, Green=0, Blue=0
+<h4> gd:transparent(color_index) </h4>
+Sets transparent color
+<h4> gd:interlace(interlace) </h4>
+Sets image interlace
+<h4> gd:compare(imageCmp) </h4>
+Compare image with imageCmp bit by bit.
+imageCmp - it's image or object GDIMAGE class.
+<h4> gd:info(index, color_Index) </h4>
+Get informations about <i>index</i>:<br>
+GDINFO_COLORSTOTAL<BR>
+GDINFO_TRANSPARENT<BR>
+GDINFO_INTERLACED <BR>
+GDINFO_COLORRED	  <BR>
+GDINFO_COLORGREEN <BR>
+GDINFO_COLORBLUE  <BR>
+GDINFO_SIZEX      <BR>
+GDINFO_SIZEY      <BR>
+<h4> gd:getPixel(x, y) </h4>
+Gets color_index in point x, y
+<h4> gd:setPixel(x, y[, color]) </h4>
+Draws a point in x, y, using color <i>color</i>. If color==NIL, using foregroud color
+<h4> gd:bound(x, y) </h4>
+Return .t. if point x, y belong image
+<h4> gd:line(x1, y1, x2, y2[, color]) </h4>
+Draws a line, using color <i>color</i>. If color==NIL, using foregroud color
+<h4> gd:dashedLine(x1, y1, x2, y2[, color]) </h4>
+Draws dashed line, using color <i>color</i>. If color==NIL, using foregroud color
+<h4> gd:rectagle(x1, y1, x2, y2[, color]) </h4>
+Draws rectangle, using color <i>color</i>. If color==NIL, using foregroud color
+<h4> gd:filledRectagle(x1, y1, x2, y2[, color]) </h4>
+Draws filled rectangle, using color <i>color</i>. If color==NIL, using foregroud color
+<h4> gd:arc(cx, cy, width[, high, begangle, endangle, color]) </h4>
+Draws an arc, using color <i>color</i>. If color==NIL, using foregroud color
+<i>cx</i> the x coordinate <br>
+<i>cy</i> the y coordinate <br>
+<i>width</i> the width of the bounding rectangle.
+<i>height</i> the height of the bounding rectangle.
+<i>startangle</i> the start angle of the arc
+<i>endangle</i>   the end angle of the arc
+
+<br>By default: high=width, begangle=0, endangle=360
+
+<h4> gd:filledArc(cx, cy, width[, high, color]) </h4>
+Draws filled arc, using color <i>color</i>. If color==NIL, using foregroud color
+<br>By default: high=width
+<h4> gd:sector(cx, cy, width[, high, begangle, endangle, color]) </h4>
+Draws a sector, using color <i>color</i>. If color==NIL, using foregroud color
+<i>cx</i> the x coordinate <br>
+<i>cy</i> the y coordinate <br>
+<i>width</i> the width of the bounding rectangle.
+<i>height</i> the height of the bounding rectangle.
+<i>startangle</i> the start angle of the sector
+<i>endangle</i>   the end angle of the sector
+<br>By default: high=width, begangle=0, endangle=360
+<h4> gd:filledSector(cx, cy, width[, high, begangle, endangle, color]) </h4>
+Draws filled sector, using color <i>color</i>. If color==NIL, using foregroud color
+<br>By default: high=width, begangle=0, endangle=360
+
+<h4> gd:truncSector(cx, cy, width, high, widthtrunc, hightrunc, begangle, endangle, color) </h4>
+Draws truncated sector, using color <i>color</i>. If color==NIL, using foregroud color
+<i>cx</i> the x coordinate <br>
+<i>cy</i> the y coordinate <br>
+<i>width</i> the external width of the bounding rectangle.
+<i>height</i> the external height of the bounding rectangle.
+<i>widthtr</i> the internal width of the bounding rectangle.
+<i>heighttr</i> the internal height of the bounding rectangle.
+<i>startangle</i> the start angle of the sector
+<i>endangle</i>   the end angle of the sector
+<br>By default: high=width, begangle=0, endangle=360
+<h4> метод gd:filledTruncSector(cx, cy, width, high, widthtrunc, hightrunc, begangle, endangle, color) </h4>
+Draws filled truncated sector, using color <i>color</i>. If color==NIL, using foregroud color
+<br>By default: high=width, begangle=0, endangle=360
+
+<h4> gd:polygon(bounds[, color]) </h4>
+Draws a polygon, using color <i>color</i>. If color==NIL, using foregroud color
+<br>bounds = {{x1, y1}, {x2, y2}, ..., {xn, yn}} - points of polygon
+<h4> gd:filledPolygon(bounds[, color]) </h4>
+Darws filled polygon, using color <i>color</i>. If color==NIL, using foregroud color
+<br>bounds = {{x1, y1}, {x2, y2}, ..., {xn, yn}} - points og polygon
+
+<h4> gd:fill(x, y[, color]) </h4>
+Fills image using color <i>color</i>. If color==NIL, using foregroud color
+ begining with x, y in colors bounds.
+
+<h4> gd:fillToBorder(x, y, bordercolor[, color]) </h4>
+Fills image to color <bordercolor>  bounds, using color <i>color</i>. If color==NIL, using foregroud color
+
+<h4> gd:setBrush(imagePtrBrush) </h4>
+Sets image brush
+imagePtrBrush - it's simple image or object of GDIMAGE class.
+
+<h4>  gd:setTile(imagePtrTile) </h4>
+Sets image tile.
+<br>imagePtrTile - it's image or object of GDIMAGE class.
+
+<h4> gd:setStyle(colorsArray) </h4>
+Sets lines style
+<h4>  gd:char(str, x, y, font[, color])<br>
+	   gd:charUp(str, x, y, font[, color])<br>
+	   gd:string(str, x, y, font[, color])<br>
+	   gd:stringUp(str, x, y, font[, color])
+</h4>
+Draws symbol or string, using color <i>color</i> and font <i>font</i>. If color==NIL, using foregroud color
+<br> font:
+GDFONT_GIANT		<BR>
+GDFONT_LARGE		<BR>
+GDFONT_NEDIUMBOLD	<BR>
+GDFONT_SMALL		<BR>
+GDFONT_TINY		<BR>
+Methods charUp() и stringUp() drawing rotateted symbol or string an 270
+<h4> gd:charRotate(str, x, y, font[, angle, color])<br>
+	   gd:stringRotate(str, x, y, font[, angle, color])<br>
+</h4>
+Draws rotateted  an <i>angle</i> symbol or string, using color <i>color</i> and font <i>font</i>. If color==NIL, using foregroud color
+<br>By default: angle=0
+
+<h4>  gd:charVector(str, x, y, fontSize[, angle, color])<br>
+	   gd:stringVector(str, x, y, fontSize[, angle, color])<br>
+</h4>
+Draws rotateted  an <i>angle</i> symbol or string in vectors graphics,
+using color <i>color</i> and size font <i>fontSize</i>. If color==NIL, using foregroud color
+<br>By default: angle=0
+
+<hr>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+<HR>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+
+

@@ -1,0 +1,5 @@
+# linux console or emulator
+# NO is default for scanmode
+CLIP_SCANMODE=NO
+#CLIP_HOSTCS=koi8-r
+CLIP_CLIENTCS=koi8-r

@@ -1,0 +1,8 @@
+# remote linux console (with trans extention)
+CLIP_SCANMODE=TERMINAL
+CLIP_SCANSTART=\033[S
+CLIP_SCANSTOP=\033[R
+#CLIP_HOSTCS=koi8-r
+CLIP_CLIENTCS=koi8-r
++TERM=linux-koi8
+XTERM_MOUSE=on

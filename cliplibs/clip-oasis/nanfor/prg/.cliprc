@@ -1,0 +1,7 @@
+-E CLIP_MODULE=nanfor
+-w
+-l
+#-U std.ch
+#-U config.ch
+#-U clip.ch
+

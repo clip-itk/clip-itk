@@ -1,0 +1,289 @@
+~MAINPositioning:
+  Moving	-><- , PgUp, PgDn		Last Field	CtrlEnd
+  Go Top		CtrlPgUp		First Field	CtrlHome
+  Go Bottom		CtrlPgDn
+  Top of next page	AltPgDn		Top of previous page	AltPgUp
+
+Menu: F10,AltV					UserMenu: F12
+
+DataBase Functions:
+  Select DataBase	F4			Reopen last	CtrlO
+  Set Index To		F5			Append		F3,Ins
+  Index To		AltF9			Append/Copy	AltF3
+  Reindex		AltF5			Insert Before	ShiftF3
+  Sum			AltF6			Count		CtrlF6
+  Set Filter		AltF,AltF11		Set Fields	CtrlF2
+  Sort			AltS,CtrlF11		Total		AltShiftF6
+  Append From		CtrlF9	  [.txt=Sdf]	Copy To		CtrlF3
+  Copy with MEMO converting	CtrlShiftF3	Create new	CtrlN
+  Print [To File]	F2			Print record	AltP
+  Modify Structure	ShiftF2                 Make HTML	Alt>
+  Show/Print Structure	AltF2
+  Edit record		AltE			Wide Edit	AltW
+  Swap with upper record	Ctrl
+  Swap with down record		Ctrl
+
+Replacing:
+					 Always	    Confirm each record
+
+  Current with expression		 AltR		AltShiftR
+  All records with constant expression	 AltF4		AltShiftF4
+  All with varied expression		 CtrlF4		CtrlShiftF4
+
+Finding:
+  Go To Record		F6		Seek index		F9
+  Locate For condition	F7		Continue locate		AltF7
+  Context search	AltI		Next context		AltShiftI
+  Find Max/Min		AltM		Locate in field		F11
+  Find longest		CtrlL		Seek double		Alt2
+  WildSeek		Alt[		Continue WildSeek	AltShift[
+
+Deleting/Recalling:
+  Mark/Unmark		Del,CtrlT	Delete For	CtrlF8
+  Pack			F8		Recall For	CtrlF7
+  Zap			AltF8
+  Current Field		ShiftF4		All Fields	CtrlY
+
+Field operations:
+  Copy From up		Alt		Copy From down		Alt
+  Copy From left	Alt<-		Copy From right		Alt->
+  Change with up	AltShift	Change with down	AltShift
+  LowerCase		AltL		UpperCase		AltU
+  QWERTY->ЙЦУКЕН	AltQ		ЙЦУКЕН->QWERTY		AltY
+  Capitalize		AltK
+
+ClipBoard:
+  Copy To		CtrlGrey+	Show			CtrlEnter
+  Copy From		CtrlGrey-,AltGreyEnter
+  Add  To		AltGrey+	Sub From		AltGrey-
+  Divide		AltGrey/	Multiplicate		AltGrey*
+  Copy To WinClpb	CtrlIns		Copy From WinClpb	ShiftIns
+
+Compound indexes:
+  Set Tag Number	ShiftF7		Set Tag Name		ShiftF8
+  Make Tag Name		ShiftF9		Del Tag Name		ShiftF10
+  Select Tag		ShiftF12,AltT	Set another CDX		ShiftF11
+
+Other:
+  Quit			Esc		Quit immediately	AltX
+  Os Exit		AltF10		Change disk & Dir	CtrlF10
+  Macro from var _MACRO CtrlF1		Set Variable or Array	CtrlF5
+  Calculation		?,ShiftF6,AltG	Freeze Fields		AltZ
+  Save vue		ShiftF1		Restore Vue		ShiftF5
+  Save AutoOpen		CtrlShiftF1	Read IniFile		CtrlF12
+  Set color condition	AltB		Restore color		AltShiftB
+  Save position		CtrlK+0..9	Restore position	CtrlQ+0..9
+  Filer			AltF12		Information		AltF1
+  Re-read		CtrlR		Undo replace		CtrlU,AltBS
+~GETFIELDPositioning:
+  Next Field	Tab			Prev.Field		ShiftTab
+  Moving	  , PgUp, PgDn
+
+Enter Mode:
+  Switch Enter Mode	F4
+  "Usual" - <Enter> at last field stops input
+  "Lock"  - <Enter> at any field moves to same field of next record
+  "Skip"  - <Enter> at last field moves to first field of next record
+
+Deleting:
+  Mark/Unmark record	ShiftDel
+  Current Field		CtrlY
+  Undo			CtrlU,AltBS
+
+Other:
+  Quit			 Esc		Quit/write		CtrlW,F10
+  Append blank		 F3
+  Macro From var _MACRO	 CtrlF1		Capitalize		AltK
+  LowerCase		 AltL		UpperCase		AltU
+  QWERTY->ЙЦУКЕН	 AltQ		ЙЦУКЕН->QWERTY		AltY
+  Copy From up		 Alt		Copy From down		Alt
+  Copy To Clipboard	 CtrlGrey+	Copy From Clipboard	CtrlGrey-
+  Copy To WIN Clipboard	 CtrlIns	Copy From WIN Clipboard ShiftIns
+~MODIFY_STR
+	Здесь Вы можете изменить структуру базы данных.
+ В названии поля допустимы буквы, цифры и спецсимволы, название
+ должно начинаться с буквы.
+
+			Назначение клавиш
+
+	Enter - изменить реквизит (если возможно).
+	F3 - добавить новое поле.
+	F5 - вставить поле перед текущим.
+	F8 - удалить.
+	F9 - оптимизировать структуру.
+	Ctrl, Ctrl - поменять поля местами.
+	F10- завершить с сохранением.
+	Esc- отменить изменения.
+~SETFIELD
+	Здесь Вы можете задать содержание,названия и шаблон вывода полей.
+ Содержанием поля может быть любое допустимое выражение.
+ В названии допустимы символы нац.алфавитов, причем эти названия будут
+ выводиться и при печати.
+ Шаблон (picture) будет использован и при вводе и печати.
+ При пометке поля, как удаленного, оно блокируется для вывода и
+ редакции.
+
+	Пример:
+
+ Cодержание поля: Sqrt(Number)
+ Название: Квадратный;корень
+ Шаблон: 999,999.99
+
+			Назначение клавиш
+
+	Enter - изменить реквизит.
+	F3 - добавить новое поле.
+	F5 - повторная установка (позволяет определить нужный разрез
+	     итерационно).
+	DEL - блокировать\разблокировать текущее поле.
+	F7 - разблокировать все поля, начиная с текущего.
+	F8 - блокировать.
+	Ctrl, Ctrl - поменять поля местами.
+	Alt, Alt - скопировать сверху/снизу.
+	F10- завершить с сохранением.
+	Esc- отменить изменения.
+~FORGET
+	Введите нужное значение и нажмите Enter.
+
+ Клавиши F4,AltF4,CtrlF4 предназначены для подбора значения из истории:
+	F4 (Ctrl)- данного условия
+	AltF4 (CtrlShift) - всех условий
+	CtrlF4 - результатов.
+
+ Прочие клавиши предназначены для облегчения ввода:
+	F2 - вводит имя текущего поля,
+	CTRL-F2 - имя любого поля,
+	F3 - заголовок текщего поля,
+	CTRL-F3 - заголовок любого поля,
+	F5 - значение текущего поля,
+	F6 - название текущей базы.
+
+ Можно также нажать клавишу F10 и выбрать эти величины по меню.
+
+	Если поле символьное, то над ним можно провести еще ряд
+ операций, доступных по F7. В диалоге задания полей по AltF2, их
+ можно подобрать интерактивно.
+~PRT
+	При выводе на диск у Вас запрашивается имя файла.
+
+ Нажав клавишу F9, Вы сможете произвести конфигурацию печати.
+~CONFIGURE
+	Здесь Вы можете произвести конфигурацию печати.
+
+ Имейте ввиду, что:
+ - стартовая и конечная последовательность задаются выражением,
+   например:chr(27)+'!'+CHR(0);
+ - длина листа >30 строк;
+ - установки сохраняются на все последующие печати.
+~OTHERCONF
+	Здесь Вы можете произвести настройку некоторых системных
+ переменных.
+
+ Имейте ввиду,что :
+ - макро-последовательность задается выражением,
+   например: chr(4)+CHR(13)+"пример" или массивом клавиш;
+ - внешние просмотрщик и редактор должны быть в пути или указаны
+   вместе с путем;
+ - установки сохраняются до перезапуска;для постоянного изменения
+   надо задать их в INI файле (см.bdbfs.doc).
+~FORACH
+	Выберите нужный элемент и нажмите Enter или щелкните мышкой.
+~FULLEDIT
+	Здесь Вы видите запись,развернутую "по вертикали".
+ Если все поля записи не помещаются на одной странице,то при нажатии
+ PgUp,PgDn будет происходить листание. Иначе - переход между записями.
+
+	Выход с записью - CtrlW (CtrlEnd), отказ - ESC.
+~MEMO_EDIT
+	Редакция текстовой информации.
+
+	F2 - печать
+	F3 - сохранение в файл
+	F4 - загрузка из файла
+	F5 - переключение режима авто-переноса строк.
+	F6,ShiftIns - запись в текущую позицию буфера Windows (при наличии).
+	F9 - настройка переменных просмотра.
+	CtrlGrey- - запись в текущую позицию буфера BdbfS.
+	Ctrl-Y - удаление текущей строки.
+	Ctrl-T - удаление слова справа.
+	Ctrl-B - реформирование параграфа.
+	F10 (Ctrl-W) - запись изменений и выход.
+~GETMEMOVAR
+	Задайте параметры обработки текстовой информации.
+
+	Длина строк при редакции мемо задает границу автоматического
+переноса.
+	Параметр "Ширина мемо-полей" используется при выводе на печать.
+~H1
+	Подберите нужное значение из истории и нажмите Enter или
+ щелкните мышкой.
+	Если какое-то значение в истории лишнее и в дальнейшем не
+ понадобится - нажмите "на нем" CtrlD.
+~H2
+	Выберите нужный файл и нажмите Enter или
+ щелкните мышкой.
+	F2 - смена текущего диска.
+	F5 - возврат к каталогу,с которого начался поиск.
+	F9 - смена маски просматриваемых файлов.
+~HF2
+	Действия над файлами:
+
+	F2 - смена текущего диска.
+	F3 - просмотр текущего файла.
+	F4 - редакция текущего файла.
+	F5 - возврат к каталогу, с которого начался поиск.
+	F9 - смена маски просматриваемых файлов.
+	F10- просмотр описания текущего файла(из файла descript.ion).
+
+	При нажатии Enter выполняется действие для данного расширения
+ (массив __aExt в ini-файле - см.bdbfs.doc).
+	Если описания нет - вызывается просмотр.
+~H3
+	Клавишей INS или ПРОБЕЛ снимите отметку [x] с тех полей,
+ которые Вам не нужны.
+	ALT-(серый) снимает пометку со всех полей,
+	ALT+(серый) ставит пометку на всех полях.
+
+	После завершения всех операций нажмите Enter.
+~HT
+	Выберите нужный тэг и нажмите Enter или щелкните мышкой.
+
+	F2 (Shift+Tab) - вывод списка на печать (на устройство _printer).
+	F3 - добавить тэг.
+	F4 - генерация кода создания тэгов.
+	F8 - удалить тэг.
+	F9 - настройка параметров печати.
+~H9
+	Операции со структурой базы.
+
+	F2 (Shift+Tab) - вывод структуры на печать
+			 (на устройство _printer).
+	F4 - вывод структуры в файл с именем базы и расширением STP.
+	F5 - создание файл с именем базы и расширением STE:
+	     структура базы в формате COPY STRU EXTENDED.
+	F6 - создание файл с именем базы и расширением STR:
+	     структура базы.
+	F9 - настройка параметров печати.
+	F10- вывод фрагмента программы, создающей файл с данной структурой.
+~NFIND
+	Показаны результаты выполнения операции.
+
+	Если получен значащий результат, то с ним можно выполнить
+ некоторые действия:
+	F2 - продолжить вычисления.
+	F5 - занести в текущее поле.
+	CtrlGrey+ - занести во внутренний буфер.
+	Ctrl+Insert - занести в буфер Windows.
+	$ - преобразовать целое число в денежный формат.
+	F10 - выбрать действие.
+~MENU2
+	Выберите нужное действие из меню (текущий выбор отмечен
+	символами  ).
+~MAINMENU
+	Выберите нужное подменю.
+~SECONDMENU
+	Выберите нужное действие из меню. Если пункт помечен
+ символом  , то это - подменю.
+~INFORMATIO
+	Выведена справочная информация о базе,системе и окружении.
+~

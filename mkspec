@@ -1,0 +1,56 @@
+#!/bin/sh
+
+names=clip-prg.spec.main
+ver=$(head -1 debian/changelog |cut -d'(' -f2|cut -d'-' -f1)
+rel=$(head -1 debian/changelog |cut -d'(' -f2|cut -d'-' -f2|cut -d')' -f1)
+
+if [ -f /usr/include/gtk/gtk.h ]
+then
+	GTK_MAJOR=`gtk-config --version|cut -d. -f1`
+	GTK_MINOR=`gtk-config --version|cut -d. -f2`
+	if [ "$GTK_MAJOR" -eq 1 -a "$GTK_MINOR" -ge 2 -o "$GTK_MAJOR" -gt 1 ]
+	then
+		USE_GTK=yes
+		names="$names clip-prg.spec.x"
+	fi
+fi
+
+
+if [ -f /usr/include/zlib.h ]
+then
+	names="$names clip-prg.spec.gzip"
+fi
+
+if [ -f /usr/include/bzlib.h ]
+then
+	names="$names clip-prg.spec.bzip2"
+fi
+
+if [ -f /usr/include/zlib.h ]
+then
+	names="$names clip-prg.spec.gd"
+fi
+
+if test -f /usr/include/mysql/mysql.h -o -f /usr/local/include/mysql/mysql.h
+then
+	names="$names clip-prg.spec.mysql"
+fi
+
+if test -f /usr/include/pgsql/libpq-fe.h -o -f /usr/include/postgresql/libpq-fe.h
+then
+	names="$names clip-prg.spec.postgres"
+fi
+
+if test -f $ORACLE_HOME/rdbms/demo/oci.h
+then
+	names="$names clip-prg.spec.oracle"
+fi
+
+
+
+echo "%define version $ver
+%define release $rel
+%define _topdir /tmp/mkspec$$
+" >clip-prg.spec
+cat $names >>clip-prg.spec
+

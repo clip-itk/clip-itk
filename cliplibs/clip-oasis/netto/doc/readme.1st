@@ -1,0 +1,18 @@
+NETTO
+---------------------------------------------------------------------
+
+This is NETTO, a public domain library of CA-Clipper (tm) software that 
+implements many of the Novell NetWare (tm) application programming 
+interfaces (APIs).
+
+This software is compatible with CA-Clipper v5.2 and later.
+
+For more information, please use the on-line documentation, which has
+been provided as a Norton Guide called NETTO.NG.  If you have a 
+copy of CA-Clipper, you should have an appropriate Norton Guide engine.
+
+The entire source code for this library is available.  If you did not
+receive it with this distribution, it can be found on CompuServe in 
+the Computer Associates International CLIPPER forum.  Please ask
+there.
+

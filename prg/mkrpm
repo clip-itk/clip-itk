@@ -1,0 +1,69 @@
+#!/bin/sh
+
+std_rpm_root=/usr/src/redhat
+
+LANG=C
+LC_ALL=C
+LC_MESSAGES=C
+export MAKE LANG LC_ALL LC_MESSAGES
+
+name=clip-prg
+
+version=$(head -1 ../debian/changelog |cut -d'(' -f2|cut -d'-' -f1)
+release=$(head -1 ../debian/changelog |cut -d'(' -f2|cut -d'-' -f2|cut -d')' -f1)
+root=/tmp/mkspec$$
+
+echo "%define name $name
+%define version $version
+%define release $release
+%define _topdir $root
+%define CLIPROOT $CLIPROOT
+%define SCLIPROOT $SCLIPROOT
+" >$name.spec
+cat spec.in >>$name.spec
+
+dir=$DISTROOT
+
+[ -n "$root" ] || root="$std_rpm_root"
+
+echo $name $version $root
+#exit 0
+mkdir -p $root/SOURCES $root/RPMS $root/SRPMS $root/BUILD $root/SPECS
+
+arch=`../arch.sh`
+libc=`../libcver.sh`
+
+#cd $name
+pwd=`pwd`
+
+if [ -f Makefile.in -a -x ./configure ]
+then
+	./configure
+fi
+
+tmp=/tmp/tmp.$$
+mkdir -p $tmp
+cd $pwd
+cp -a . $tmp/$name-$version
+
+cd $tmp
+echo tar czf $root/SOURCES/$name-$version.tar.gz $name-$version
+tar czf $root/SOURCES/$name-$version.tar.gz $name-$version
+
+cd $pwd
+#rpm --pipe "grep \\.rpm>$tmp/lst" -ba $name.spec
+
+echo rpm --pipe "tee $tmp/lst" -bb $name.spec
+rpm --pipe "tee $tmp/lst" -bb $name.spec
+rpms=`grep $root/.\*\\\.rpm $tmp/lst | cut -d ' ' -f 2`
+echo RPMS: $rpms
+if [ -n "$rpms" ]
+then
+	echo mv $rpms $dir
+	mv $rpms $dir
+fi
+
+rm -rf $tmp $root/SOURCES/$name-$version.tar.gz
+
+[ "$root" = "$std_rpm_root" ] || rm -rf $root
+

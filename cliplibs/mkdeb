@@ -1,0 +1,19 @@
+#!/bin/sh
+
+dir=$1
+
+rm -rf $dir/debian $dir/build-stamp
+cp -a debian $dir
+sed ../debian/changelog -e "s/^clip/$dir/g" > $dir/debian/changelog
+sed debian/control -e "s/PACKAGE/$dir/g" > $dir/debian/control
+cd $dir || exit 1
+
+if [ -f Makefile.in ]
+then
+	./configure
+fi
+
+fakeroot debian/rules binary clean
+#dpkg-buildpackage -rfakeroot -tc -b
+echo "Binary: $dir" > ${DISTROOT}/${dir}_${VER}_${ARCH}.dsc
+rm -rf debian

@@ -1,0 +1,187 @@
+/***
+*	Errorsys.prg
+* Стандартный обработчик ошибок для Clipper 5.0
+* Copyright (c) 1990 Nantucket Corp.  Все права сохраняются.
+*
+* Компилировать с опциями /m/n/w
+*/
+
+#include "error.ch"
+
+
+// Вывод сообщений на стандартное устройство STDERR
+#command ? <list,...>   =>  ?? Chr(13) + Chr(10) ; ?? <list>
+#command ?? <list,...>  =>  OutErr(<list>)
+
+
+// Используется ниже
+#define NTRIM(n)		( LTrim(Str(n)) )
+
+
+
+/***
+*	ErrorSys()
+*
+* Замечание:  Автоматически запускается при начале работы
+*/
+
+proc ErrorSys()
+	ErrorBlock( {|e| DefError(e)} )
+return
+
+
+
+
+/***
+*	DefError()
+*/
+static func DefError(e)
+local i, cMessage, aOptions, nChoice
+
+
+        while dispcount()>0
+           dispend()
+        enddo
+	outlog("error:",e)
+  // По умолчанию деление на ноль дает ноль
+	if ( e:genCode == EG_ZERODIV )
+		return (0)
+	end
+
+	if ( e:genCode == EG_OPEN .and. e:osCode == 32 .and. e:canDefault )
+		NetErr(.t.)
+		return (.f.)									// NOTE
+	end
+
+	if ( e:genCode == EG_APPENDLOCK .and. e:canDefault )
+		NetErr(.t.)
+		return (.f.)									// NOTE
+	end
+
+
+
+  // Построение сообщения об ошибке
+	cMessage := ErrorMessage(e)
+
+     // aOptions := {"Прервать", "Завершить"}  // 1,2
+        aOptions := {"Завершить"}                 // 1
+
+	if (e:canRetry)
+            AAdd(aOptions, "Повторить")             // 2
+	end
+
+	if (e:canDefault)
+           AAdd(aOptions, "Пропустить")            // 3
+	end
+
+
+  // активизация ALERT-меню
+	nChoice := 0
+	while ( nChoice == 0 )
+
+		if ( Empty(e:osCode) )
+			nChoice := Alert( cMessage, aOptions )
+
+		else
+			nChoice := Alert( cMessage + ;
+	      ";(Код DOS-ошибки: " + NTRIM(e:osCode) + ")", ;
+							aOptions )
+		end
+
+
+		if ( nChoice == NIL )
+			exit
+		end
+
+	end
+
+
+	if ( !Empty(nChoice) )
+
+    // Выполнение по инструкции оператора
+   if ( nChoice == 1 )                   // Прервать - Break
+      outlog("errorsys:",nchoice,"break")
+      Break(e)
+   endif
+
+    if ( nChoice == 2 )               // Повторить - Retry
+      outlog("errorsys:",nchoice,"return .t.")
+			return (.t.)
+
+    elseif ( nChoice == 3 )               // Пропустить - Default
+      outlog("errorsys:",nchoice,"return .f.")
+			return (.f.)
+
+		end
+
+	end
+
+
+  // Отображение сообщения и стека вызов процедур (при Завершить)
+	if ( !Empty(e:osCode) )
+    cMessage += " (Код DOS-ошибки: " + NTRIM(e:osCode) + ") "
+	end
+
+	? cMessage
+	i := 2
+	while ( !Empty(ProcName(i)) )
+    ? "Вызов из ", Trim(ProcName(i)) + ;
+			"(" + NTRIM(ProcLine(i)) + ")  "
+
+		i++
+	end
+
+
+  // Возврат в DOS
+	ErrorLevel(1)
+	QUIT
+
+return (.f.)
+
+
+
+
+/***
+*	ErrorMessage()
+*/
+static func ErrorMessage(e)
+local cMessage
+
+
+  // Начало сообщения об ошибке
+  cMessage := if( e:severity > ES_WARNING, "Ошибка ", "Предупреждение " )
+
+
+  // добавление имени подсистемы (если доступно)
+	if ( ValType(e:subsystem) == "C" )
+		cMessage += e:subsystem()
+	else
+		cMessage += "???"
+	end
+
+
+  // добавление SUBSYSTEM кода ошибки (если доступно)
+	if ( ValType(e:subCode) == "N" )
+		cMessage += ("/" + NTRIM(e:subCode))
+	else
+		cMessage += "/???"
+	end
+
+
+  // добавление описания ошибки (если доступно)
+	if ( ValType(e:description) == "C" )
+    cMessage += (" " + e:description)
+	end
+
+
+  // добавление либо FILENAME, либо названия операции
+	if ( !Empty(e:filename) )
+		cMessage += (": " + e:filename)
+
+	elseif ( !Empty(e:operation) )
+		cMessage += (": " + e:operation)
+
+	end
+
+
+return (cMessage)

@@ -1,0 +1,114 @@
+                                                      -*- indented-text -*-
++=========================================================================+
+|                          DEVELOPMENT HISTORY                            |
+`========================================================================='
+
+                  Project: `ezV24'
+                   Author: Joerg Desch
+          Current Release: 0.1.0
+		  Licence: LGPL
+
+           Used Libraries: POSIX
+                 Compiler: ANSI-C
+
++=========================================================================+
+|         Copyright   (c) Jörg Desch <jdesch@users.sourceforge.net>       |
+`========================================================================='
+
+
+
+10.9.2002 jd
+
+	Release 0.1.0
+
+9.9.2002 jd
+
+	* ezV24.c: v24SetParameters() has accidently used c_cflag to mask
+	  IGNPAR! This should have been c_iflag. On my Linux system, ISTRIP
+	  doesn't strip the parity bit (POSIX like), it strips the 8. bit. So
+          I've removed this.
+	* manual.dxx: add a sample for v24SetParameters().
+	* Makefile: there's no need to install ezV24_conf.h.
+
+20.6.2002 jd
+
+	* ezV24.c: v24Read() now set's V24_E_TIMEOUT if no characters are
+	  read. In this case the return value is 0, so it indicates that is
+	  no real error. It's part of the application to decide how to handle
+	  this. ;-)
+	* ezV24.h: doc++ comments updates and error code V24_E_TIMEOUT
+	  inserted. The doc++ must be in front of each enum-entry! Fixed for
+	  __EZV24_ERROR_CODES.
+	* manual.dxx: minor fixes.
+	* Makefile*: add target `clean-all' to remove all stuff that is
+	  generated. The Makefile for cygwin was missing in the tarball.
+
+12.5.2002 jd
+
+	Release 0.0.4
+
+6.5.2002 jd
+
+	* bug in lockfile handling fixed. The call to buildLockName returns a
+	  V24_E_* constant and not --as used before-- a boolean.
+	* test-v24.c: i now use -p instead of -c to specify the port name.
+
+2.5.2002 jd
+
+	* add new functions v24SetStopbits() and v24SetRTS().
+
+
+11.3.2002 jd
+
+	* ezV24.c: v24SetDTR calls ioctrl with status instead of &status.
+	* test-v24.c: usage: -c instead of -p to select the port.
+
+24.1.2002 jd
+
+ 	* ezV24.c: bufferoverflow in v24Gets() wasn't checked. If the
+ 	  received string is larger than the passed buffer, the application
+ 	  crashes. I've forgotten to check the buffersize passed in
+ 	  `BuffSize'. `BuffSize' must be at least 2.
+	* ezV24.h: new error constant V24_E_ILLPARM. Documentation of v24Gets
+	  updated.
+
+18.11.2001 jd
+
+	* Release 0.0.3	
+
+15.11.2001 jd
+
+	* ezV24.h: include stdlib.h to get the definition of size_t.
+	* Add some rudimentary support for the Cygwin 1.3.x toolchain. I know
+	  it could be much better, but I'm no windoze-guy.
+
+13.11.2001 jd
+
+	* Makefile: add support to build static libraries.
+
+18.10.2001 jd
+
+	* test-v24.c: minor fixes
+	* ezV24.c: v24Gets() miss the `end of string', if there are following
+	  characters! In this case, the read() fetch the `end of string' and
+	  it isn't the last char in the buffer.
+	* Makefile: the install-rule detect existing links now.
+
+25.9.2001 jd
+
+	* Release 0.0.2
+	* finished the documentation using DOC++ (http://docpp.sourceforge.net)
+
+18.9.2001 jd
+
+	* start documenting the header.
+	* minor typo's fixed.
+
+20.8.2001 jd
+
+	* Release 0.0.1: first release to some testers
+
+
++=========================================================================+
+| END OF FILE                                                             |
+`========================================================================='

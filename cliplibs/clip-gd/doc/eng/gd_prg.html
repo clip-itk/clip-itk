@@ -1,0 +1,235 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="../styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+
+
+<h2>             Functions gd*() </h2>
+</center>
+
+Functions gd* drawing grpahpics primitives( rectangle, oval, lines...)
+and working with PNG,JPEG,... formats.
+<a href=gd_lib.html>Original introduction the <i>libgd</i></a> <br>
+
+<h4> imagePtr=gdImageCreate(xSize, ySize) </H4>
+Creating graphics image with size xSize x ySize,
+return pointer to image <i>imagePtr</i>
+
+<h4> imagePtr=gdImageCreateFromPNG(filename)<br>
+ imagePtr=gdImageCreateFromGD(filename)     <br>
+ imagePtr=gdImageCreateFromGD2(filename)    <br>
+ imagePtr=gdImageCreateFromXBM(filename)    <br>
+ imagePtr=gdImageCreateFromJPEG(filename)   </h4>
+ Creating graphics image from file.
+
+<h4> imagePtr=gdImageCreateFromXPM(filename)    <br>
+ Not worked in this time, because required more X11 library...
+
+<h4> imagePtr=gdImageCreateFromFILE(filename[, typeFile])</H4>
+ Creating graphics image from file<br>
+ <i>typeFile</i>  is the type file - one from:<br>
+ <pre>
+	#define	GDFILE_PNG	1
+	#define	GDFILE_GD	2
+	#define GDFILE_GD2	3
+	#define GDFILE_XBM	4
+	#define GDFILE_JPEG	6
+ </pre><br>
+ By default GDFILE_PNG.(see include/gdinfo.ch)
+
+ gdImageCreateFromFILE("-|",<typeFile>) -reading the <i>stdin</i>
+
+<H4> gdImageDestroy(imagePtr) </H4>
+Destroyed image.
+<h4> gdImagePNG(imagePtr, filename) <br>
+ gdImageGD(imagePtr, filename)      <br>
+ gdImageGD2(imagePtr, filename)     <br>
+ gdImageJPEG(imagePtr, filename) </H4>
+Writing image <i>imagePtr</i> to <i>filename</i><br>
+gdImage...(imagePtr, "|-")  writing image to <i>stdout</i>
+
+<h4> gdImageToFile(imagePtr, filename[, typeFile]) </H4>
+Writing image <i>imagePtr</i> to <i>filename</i><br>
+ <i>typeFile</i>  is the files type (see types in  include/gdinfo.ch)
+ By default typeFile = GDFILE_PNG
+gdImage...(imagePtr, "|-")  writing image to <i>stdout</i>
+
+<h4> color_index=gdColorCreate(imagePtr, Red, Green, Blue) </H4>
+Exacting and allocating RGB colors and return colors index
+<h4> gdColorTransparent(imagePtr, color_index) </H4>
+Set transparent color.
+<h4> gdImageInterlace(imagePtr, interlaced) </H4>
+Set image interlace
+
+<h4> gdImageCompare(imagePtr1, imagePtr2) </H4>
+Compare imagePtr1 and imagePtr2 bit by bit.
+
+<h4> gdColorInfo(imagePtr, infoIndex, color_index) </H4>
+Return image info by index <i>infoIndex</i>:<br>
+GDINFO_COLORSTOTAL<BR>
+GDINFO_TRANSPARENT<BR>
+GDINFO_INTERLACED <BR>
+GDINFO_COLORRED	  <BR>
+GDINFO_COLORGREEN <BR>
+GDINFO_COLORBLUE  <BR>
+GDINFO_SIZEX      <BR>
+GDINFO_SIZEY      <BR>
+see gdinfo.ch
+
+<h4> gdImageGetPixel(imagePtr, x, y) </H4>
+Return color index in point x,y
+
+<h4> gdImageSetPixel(imagePtr, x, y, color_index) </H4>
+Draws a point in x, y using the color <a href="#color_index">color_index</a><BR>
+
+<h4> gdImageBoundsSafe(imagePtr, x, y) </H4>
+<h4> gdImageLine(imagePtr, x1, y1, x2, y2, color_index) </H4>
+Draws line using the color <a href="#color_index">color_index</a> <BR>
+<h4> gdImageDashedLine(imagePtr, x1, y1, x2, y2, color_index) </H4>
+Draws dashed line, using the color <a href="#color_index">color_index</a>
+<h4> gdImageRectangle(imagePtr, x1, y1, x2, y2, color_index) </H4>
+Draws a rectangle, using the color <a href="#color_index">color_index</a>
+<h4> gdImageFilledRectangle(imagePtr, x1, y1, x2, y2, color_index) </H4>
+Draws filled rectangle, using the color <a href="#color_index">color_index</a>
+<h4> gdImageArc(imagePtr, cx, cy, width, high, startangle, endangle, color_index) </H4>
+Draws an arc using color <a href="#color_index">color_index</a>. The arc is defined by the bounding rectangle of
+the entire ellipse, and the start and end angles of the part of the ellipse
+to be drawn.<br>
+<i>cx</i> the x coordinate <br>
+<i>cy</i> the y coordinate <br>
+<i>width</i> the width of the bounding rectangle.
+<i>height</i> the height of the bounding rectangle.
+<i>startangle</i> the start angle of the arc
+<i>endangle</i>   the end angle of the arc
+
+<h4> gdImageFilledArc(imagePtr, cx, cy, width, high, color_index) </H4>
+Draws an arc using color <a href="#color_index">color_index</a>.
+
+<h4> gdImageFill(imagePtr, x, y, color_index) </H4>
+Fills the image using color <a href="#color_index">color_index</a>begining with point (x,y)
+in colors bounds
+<h4> gdImageFillToBorder(imagePtr, x, y, bordercolor, color_index) </H4>
+Fills the image using color <a href="#color_index">color_index</a>begining with point (x,y)
+in <bordercolor> bounds
+
+<h4> gdImagePolygon(imagePtr, {{x1,y1}, {x2,y2}, ...{xn,yn}}, color_index) </H4>
+Draws a polygon, using color <a href="#color_index">color_index</a><br>
+{x1,y1}, {x2,y2}, ...{xn,yn} - points of polygon.
+<h4> gdImageFilledPolygon(imagePtr, {{x1,y1}, {x2,y2}, ...{xn,yn}}, color_index) </H4>
+Draws a filled polygon, using color <a href="#color_index">color_index</a><br>
+<h4> gdImageSetBrush(imagePtr, imagePtrBrush) </H4>
+Set image brush.
+
+<h4> gdImageSetTile(imagePtr, imagePtrTile) </H4>
+Set image tile (it may bu using for filling functions)
+<h4> gdImageSetStYle(imagePtr, colorsArray) </H4>
+Set the style a drawing lines.
+see gdinfo.ch <BR>
+GDSTYLE_STYLED		 <BR>
+GDSTYLE_BRUSHED		 <BR>
+GDSTYLE_STYLEDBRUSHED	 <BR>
+GDSTYLE_TILED		 <BR>
+GDSTYLE_TRANSPARENT	 <BR>
+
+<h4> gdImageChar(imagePtr, str, x, y, color_index, fontPtr) <br>
+    gdImageCharUP(imagePtr, str, x, y, color_index, fontPtr)<br>
+    gdImageString(imagePtr, str, x, y, color_index, fontPtr)<br>
+    gdImageStringUP(imagePtr, str, x, y, color_index, fontPtr) </h4>
+Draws a character or string <i>str</i> using color <a href="#color_index">color_index</a> and
+font <i>fontPtr</i>(see gdinfo.ch) <BR>
+GDFONT_GIANT		<BR>
+GDFONT_LARGE		<BR>
+GDFONT_NEDIUMBOLD	<BR>
+GDFONT_SMALL		<BR>
+GDFONT_TINY		<BR>
+
+Functions gdImageCharUp() и gdImageStringUp() draws symbol or string
+rotateted on 270
+
+<h4> gdImageCharRotate(imagePtr, str, x, y, color_index, fontPtr, angle)<br>
+     gdImageStringRotate(imagePtr, str, x, y, color_index, fontPtr, angle) </h4>
+Draws symbol or string rotateted an angel <i>angel</i>, using color <a href="#color_index">color_index</a>
+and font <i>fontPtr</i>
+
+<h4> gdImageCharVector(imagePtr, str, x, y, angle, color_index, fontSize)<br>
+    gdImageStringVector(imagePtr, str, x, y, angle, color_index, fontSize) </h4>
+Draws symbol or string rotateted an angel <i>angel</i> in vector graphics, using color <a href="#color_index">color_index</a>
+and size <i>fontSize</i>
+
+<h4> gdImageSector(imagePtr, cx, cy, width, high, startangle, endangle, color_index) <br>
+     gdImageFilledSector(imagePtr, cx, cy, width, high, startangle, endangle, color_index) </h4>
+Draws a sector and filled sector, using color <a href="#color_index">color_index</a>.<br>
+<i>cx</i> the x coordinate <br>
+<i>cy</i> the y coordinate <br>
+<i>width</i> the width of the bounding rectangle.
+<i>height</i> the height of the bounding rectangle.
+<i>startangle</i> the start angle of the sector
+<i>endangle</i>   the end angle of the sector
+
+<h4> gdImageTruncSector(imagePtr, cx, cy, width, high, widthtr, hightr, startangle, endangle, color_index)<br>
+     gdImageFilledTruncSector(imagePtr, cx, cy, width, high, widthtr, hightr, startangle, endangle, color_index) </h4>
+Draws a truncated sector and filled truncated sector, using color <a href="#color_index">color_index</a>.<br>
+<i>cx</i> the x coordinate <br>
+<i>cy</i> the y coordinate <br>
+<i>width</i> the external width of the bounding rectangle.
+<i>height</i> the external height of the bounding rectangle.
+<i>widthtr</i> the internal width of the bounding rectangle.
+<i>heighttr</i> the internal height of the bounding rectangle.
+<i>startangle</i> the start angle of the sector
+<i>endangle</i>   the end angle of the sector
+
+
+<a name="color_index"><h4>Color index</h4></a>
+Color index:<br>
+- color_index<br>
+<pre>
+For example:
+	#include <gdinfo.ch>
+	.....
+	image=gdImageCreate(100, 100)
+	.....
+	color=gdColorCreate(brush, 255, 255)
+
+	gdImageLine(image, 10, 10, 90, 90, color)
+	....
+</pre>
+- imageBrush<br>
+<pre>
+For example:
+	#include <gdinfo.ch>
+	.....
+	image=gdImageCreate(100, 100)
+	.....
+	brush=gdImageCreate(3, 3)
+	gdImageFill(brush, 0, 0, gdColorCreate(brush, 255, 255))
+
+	gdImageSetBrush(image, brush)
+
+	gdImageLine(image, 10, 10, 90, 90, GDSTYLE_BRUSHED)
+	....
+</pre>
+- imageTile<br>
+<pre>
+For example:
+	#include <gdinfo.ch>
+	.....
+	image=gdImageCreate(100, 100)
+	.....
+	tile=gdImageCreateFromFile("tile.png", GDFILE_PNG)
+
+	gdImageSetTile(image, tile)
+
+	gdImageFill(image, 0, 0, GDSTYLE_TILED)
+	....
+</pre>
+<br><A HREF="index.html" target='pole'>CLIP home page</a>
+<HR>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+

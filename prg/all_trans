@@ -1,0 +1,67 @@
+#!/bin/sh
+comm=$CLIPROOT/bin/clip_trans
+CPsource=koi8-r
+CPtarget=cp866
+echo $#
+if [ $# = 0 ]
+then
+	echo "usage: $0  target_codepage"
+	exit 1
+else
+	CPtarget=$1
+fi
+echo "translate from:" $CPsource "to:" $CPtarget
+make clean
+cd brow ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+if [ -d include ]
+then
+	cd include ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d sys ]
+then
+	cd sys ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d tbrowse ]
+then
+	cd tbrowse ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d tools ]
+then
+	cd tools ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d edit ]
+then
+	cd edit ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d html ]
+then
+	cd html ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d brow ]
+then
+	cd brow ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d fw ]
+then
+	cd fw ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d udb ]
+then
+	cd udb ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d utils ]
+then
+	cd utils ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d debug ]
+then
+	cd debug ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d ca_dbu ]
+then
+	cd ca_dbu ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi
+if [ -d ca_dbu53 ]
+then
+	cd ca_dbu53 ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi

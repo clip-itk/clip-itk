@@ -1,0 +1,51 @@
+#m pu
+#m pr
+#m lo
+#m st
+#m fi
+#? "asassas"
+#animate
+#bp
+#bp 1
+#bp 1 linux
+#bp 1 linux
+#bp 2 linux
+#bp 3 linux
+#bp 4 linux
+#bp 5 linux
+#callstack
+#callstack off
+#delete all
+#delete all qqq
+#delete bp 44
+#delete bp 1
+#delete all bp
+#list bp
+#run sgdfsgdfs
+#run
+#find asdasdsa
+#go
+#goto 1234
+#bp 4 linux
+#bp 5 linux
+#list
+#list bp
+#next
+#num on
+#num
+#output
+#prev
+#speed
+#speed 10
+#tp asdf
+#tp qwer
+#list tp
+#tp asdf
+#view init.cld
+wp oget
+wp nkey
+#list wp
+#v ../sys/getsys.prg
+#path ../sys
+path /home/uri/clip/funcs;/m2/uri/stas/bux
+co

@@ -1,0 +1,567 @@
+#!/bin/sh
+#
+# clip_bug: clip bugreport interactive generator
+# GPL by Paul Lasarev <paul@itk.ru>, 2002
+#
+
+VER=0.2
+DBG=no
+test -n "$BUGADDR" || BUGADDR='bugzilla@itk.ru'
+test -n "$TITLE" || TITLE='Clip Bug Report'
+test -n "$PRODUCT" || PRODUCT='Clip'
+
+headers=''
+
+if [ -z "$DIALOG" -a  -n "$DISPLAY" ]
+then
+	DIALOG=`which Xdialog`
+fi
+
+if [ -z "$DIALOG" ]
+then
+	DIALOG=`which whiptail`
+fi
+
+if [ -z "$DIALOG" ]
+then
+	DIALOG=`which dialog`
+fi
+
+if [ -z "$DIALOG" ]
+then
+#        echo "Please install one of packages: xdialog|dialog|whiptail" >&2
+#        echo "and call me again..." >&2
+#	echo "Cannot find dialog program; exit now." >&2
+	DIALOG='textdialog'
+fi
+
+if [ -z "$SENDMAIL" -a "$DBG" != 'yes' ]
+then
+	SENDMAIL="/usr/sbin/sendmail"
+fi
+
+if [ ! -x "$SENDMAIL" ]
+then
+	echo "cannot find executable $SENDMAIL" >&2
+	exit 2
+fi
+
+if [ -z "$EMAIL" ]
+then
+	if  [ ! -r /etc/mailname ]
+	then
+		echo "$0: Please set the environment variable EMAIL to contain your fully qualified e-mail address and try again." >&2
+		exit 1
+	fi
+	FROM="`id -un`"
+	FROM=`sed -ne "s/^$FROM:[^:]*:[^:]*:[^:]*:\\([^,:]*\\),\\?.*:.*/\\1/p" \
+		< /etc/passwd`" <$FROM@`cat /etc/mailname`>"
+else
+	FROM="$EMAIL"
+fi
+
+usage()
+{
+	echo "usage: $0 [options] [<bug_description_file>]"
+	echo "	-h this help"
+	echo "	-v print version and exit"
+	echo "	-h this help"
+	echo "	-s <short_description>"
+	echo "	-a <header_line> add this line to message header"
+	echo "	-d turn on debug mode: do not send mail; output message to stderr"
+	echo "optional <bug_description_file> can contain bug description"
+	echo
+	echo "you can set next environment variables:"
+	echo "DIALOG for path of dialog program (now '$DIALOG')"
+	echo "SENDMAIL for path of sendmail program (now '$SENDMAIL')"
+	echo "TITLE for window title (now '$TITLE')"
+	echo "BUGADDR for target email address (now '$BUGADDR')"
+	echo "PRODUCT for bug product field (now '$PRODUCT')"
+	echo "EDITOR to set bug description editor (now '$EDITOR')"
+	echo "EMAIL to set your email address (now '$FROM')"
+	echo "REPLYTO to set reply email address (now '$REPLYTO')"
+	exit $1
+}
+
+for opt in $*
+do
+	case "$opt" in
+        
+        --help|-h|-help)
+        	usage 0
+        	;;
+	-v)
+        	echo "$VER"
+                exit 0
+        	;;
+        -d)
+        	DBG=yes
+                shift
+                ;;
+        -s)
+        	shift
+                short_desc="$1"
+                shift
+        	;;
+        -a)
+        	shift
+                if [ -z "$headers" ]
+                then
+                	headers="$1"
+                else
+                	headers="$headers
+$1"
+                fi
+                shift
+        	;;
+        esac
+done
+
+if [ -f "$1" ]
+then
+	descr_file="$1"
+fi
+
+# dialog result file
+res=/tmp/clip_bug.res.$$
+msg=/tmp/clip_bug.msg.$$
+
+cleanup()
+{
+	rm -f $res $msg
+        exit $1
+}
+
+trap cleanup 1 2 3 4 5 6 7 8 9 10 12 13 14 15
+
+textdialog()
+{
+	l_clear='no'
+        l_title='dialog'
+        l_action='none'
+        l_msg=''
+
+	for opt in $*
+        do
+        	case "$opt" in
+                --title)
+                	shift
+                	l_title="$1"
+                        shift
+                	;;
+                --clear)
+                	l_clear='yes'
+                        shift
+                	;;
+                --msgbox)
+                        l_action='msg'
+                	shift
+                        l_msg="$1"
+                        shift
+                	;;
+		--radiolist)
+                	l_action='radiolist'
+                        shift
+                        l_title="$1"
+                        shift
+                        shift
+                        shift
+                        shift
+                        break
+                	;;
+                --inputbox)
+                	l_action='inputbox'
+                        shift
+                        l_title="$1"
+                        shift
+                        shift
+                        shift
+                        l_msg="$1"
+                        #shift
+                	break
+                	;;
+		--yesno)
+                	l_action='yesno'
+                        shift
+                        l_msg="$1"
+                        #shift
+                        #shift
+                        break
+                	;;
+                esac
+        done
+
+	while true
+        do
+
+	if [ "$l_clear" = 'yes' ]
+        then
+        	clear
+        fi
+
+	if [ -n "$l_title" ]
+        then
+        	echo "$l_title:"
+                echo
+        fi
+	
+	case "$l_action" in
+        msg)
+        	echo "$l_msg"
+                echo
+                echo "Press Enter to continue..."
+
+                read ans
+                return 0
+        	;;
+
+        radiolist)
+        	no='1'
+                ansdef='1'
+                #echo "radiolist $#"
+                while [ "$#" != 0 ]
+                do
+                	eval "item_$no=\"$1\""
+                        if [ -z "$2" ]
+                        then
+                        	l_emsg=''
+                        else
+                        	l_emsg=" ($2)"
+                        fi
+        		echo "$no: $1$l_emsg"
+                        test "$3" = 'on' && ansdef="$no"
+                        no=`expr $no + 1`
+                        shift
+                        shift
+                        shift
+                done
+                echo
+                printf "Enter number and press Enter [$ansdef]: "
+                read ans
+
+		test -z "$ans" && ans="$ansdef"
+                test "$ans" -ge 1 -a "$ans" -lt "$no" ||  ans="$ansdef"
+		
+		name="item_$ans"
+                eval echo "\$item_$ans" >&2
+                return 0
+		
+        	;;
+        
+        inputbox)
+        	echo "[$l_msg]: "
+                read ans
+		test -z "$ans" && ans="$l_msg"
+                echo "$ans" >&2
+                return 0
+        	;;
+
+        yesno)
+        	echo "$l_msg"
+                printf "Enter [yes]/no: "
+                read ans
+		test -z "$ans" && ans="yes"
+                test "$ans" = 'yes' || return 1
+                return 0
+        	;;
+
+        *)
+        	return 1
+        	;;
+        esac
+        done
+
+	return 1
+}
+
+STATE=logo
+
+while true
+do
+
+case "$STATE" in
+
+	logo)
+        	$DIALOG --title "$TITLE" --clear \
+        	--msgbox \
+"This is a Clip bugreport generator.
+Now you will be prompted by number of questions,
+and then composed bugreport will be send to
+$BUGADDR
+
+Note that you must be registrated in Bug System
+to be able to send bug reports. If server will
+respond with 'Permission denied' or similar, please
+send to $BUGADDR message with 'Registration' 
+subject field, and follow respond instructions.
+
+Note that your ident now is email part of
+'$FROM'
+If you want some other, set EMAIL environment
+variable. See also 'clip_bug -h' output
+" \
+                24 60 || cleanup 1
+        	STATE=version
+        	;;
+
+	version)
+        	$DIALOG --title "$TITLE" --clear \
+                	--radiolist \
+			"Choose $PRODUCT version" 11 50 4 \
+                	'0.99' 'current version' 'on' \
+                        2>$res \
+                	|| cleanup 1
+        	version=`cat $res`
+        	STATE=component
+        	;;
+
+	component)
+
+        	$DIALOG --title "$TITLE" --clear \
+                	--radiolist \
+			"Choose $PRODUCT component" 24 75 16 \
+			'clip compiler' 'clip compiler' 'on' \
+			'clip preprocessor' 'clip compiler preprocessor' 'off' \
+			'clip database drivers' 'database drivers for clip' 'off' \
+			'clip low-level runtime' 'low level runtime support functions' 'off' \
+			'clip high-level runtime' 'written in Clip library functions and classes' 'off' \
+			'clip prg' 'Utilities, written in Clip' 'off' \
+			'clip packages' 'clip packages (rpm, deb, tgz)' 'off' \
+			'clip bugtracking' 'clip bugtracking system itself' 'off' \
+			'cliplibs gtk' 'gtk binding' 'off' \
+			'cliplibs gtkextra' 'gtkextra binding' 'off' \
+			'cliplibs fw' 'FiveWin library realisation' 'off' \
+			'cliplibs cti' 'Clip text interface' 'off' \
+			'cliplibs bzip2' 'bzip2 library binding' 'off' \
+			'cliplibs com' 'Seriall port access' 'off' \
+			'cliplibs crypto' 'openssl crypto functions' 'off' \
+			'cliplibs fcgi' 'FastCgi library for clip' 'off' \
+			'cliplibs gd' 'Plot graphic library' 'off' \
+			'cliplibs gzip' 'gzip library binding' 'off' \
+			'cliplibs interbase' 'Interbase access library' 'off' \
+			'cliplibs mysql' 'mysql access library' 'off' \
+			'cliplibs oasis' 'netto and nanfor libraries' 'off' \
+			'cliplibs odbc' 'odbc access library' 'off' \
+			'cliplibs oracle' 'oracle access library' 'off' \
+			'cliplibs postgres' 'postgres access library' 'off' \
+			'cliplibs rtf' 'rtf generating library' 'off' \
+			'cliplibs txtprn' 'text printer library' 'off' \
+			2>$res \
+                	|| cleanup 1
+        	component=`cat $res`
+		STATE=platform
+        	;;
+	platform)
+        	$DIALOG --title "$TITLE" --clear \
+                	--radiolist \
+			"Choose hardware platform" 15 50 8 \
+			'All' '' 'off' \
+			'PC' '' 'on' \
+			'DEC' '' 'off' \
+			'HP' '' 'off' \
+			'Macintosh' '' 'off' \
+			'SGI' '' 'off' \
+			'Sun' '' 'off' \
+			'Other' '' 'off' \
+                        2>$res \
+                	|| cleanup 1
+        	platform=`cat $res`
+		STATE=opsys
+        	;;
+
+	opsys)
+        	$DIALOG --title "$TITLE" --clear \
+                	--radiolist \
+			"Choose operating system" 23 50 16 \
+			'All' '' 'off' \
+			'Linux' '' 'on' \
+			'BSDI' '' 'off' \
+			'FreeBSD' '' 'off' \
+			'NetBSD' '' 'off' \
+			'OpenBSD' '' 'off' \
+			'Windows 3.1' '' 'off' \
+			'Windows 95' '' 'off' \
+			'Windows 98' '' 'off' \
+			'Windows ME' '' 'off' \
+			'Windows 2000' '' 'off' \
+			'Windows NT' '' 'off' \
+			'Mac System 7' '' 'off' \
+			'Mac System 7.5' '' 'off' \
+			'Mac System 7.6.1' '' 'off' \
+			'Mac System 8.0' '' 'off' \
+			'Mac System 8.5' '' 'off' \
+			'Mac System 8.6' '' 'off' \
+			'Mac System 9.0' '' 'off' \
+			'AIX' '' 'off' \
+			'BeOS' '' 'off' \
+			'HP-UX' '' 'off' \
+			'IRIX' '' 'off' \
+			'Neutrino' '' 'off' \
+			'OpenVMS' '' 'off' \
+			'OS/2' '' 'off' \
+			'OSF/1' '' 'off' \
+			'Solaris' '' 'off' \
+			'SunOS' '' 'off' \
+			'other' '' 'off' \
+                        2>$res \
+                	|| cleanup 1
+        	opsys=`cat $res`
+		STATE=severity
+        	;;
+        	
+	severity)
+        	$DIALOG --title "$TITLE" --clear \
+                	--radiolist \
+			"Choose bug severity" 23 77 16 \
+			'blocker' 'Blocks development and/or testing work' 'off' \
+			'critical' 'Crashes, loss of data, severe memory leak' 'off' \
+			'major' 'Major loss of function' 'off' \
+			'normal' 'This is the run of the mill bug' 'on' \
+			'minor' 'Minor loss of function, or other problem where an easy workaround' 'off' \
+			'trivial' 'Cosmetic problem like misspelled words or misaligned text' 'off' \
+			'enhancement' 'Request for enhancement' 'off' \
+                        2>$res \
+                	|| cleanup 1
+        	severity=`cat $res`
+		STATE=priority
+        	;;
+
+	priority)
+        	$DIALOG --title "$TITLE" --clear \
+                	--radiolist \
+			"Choose bug priority" 15 50 8 \
+			'P1' 'Most important' 'off' \
+			'P2' 'Very important' 'off' \
+			'P3' 'Important' 'on' \
+			'P4' 'Less important' 'off' \
+			'P5' 'Least important' 'off' \
+                        2>$res \
+                	|| cleanup 1
+        	priority=`cat $res`
+		STATE=short_desc
+        	;;
+
+	short_desc)
+        	$DIALOG --title "$TITLE" --clear \
+                	--inputbox \
+			"Enter one-line short bug description" 10 70 \
+                        "$short_desc" \
+                        2>$res \
+                	|| cleanup 1
+        	short_desc=`cat $res`
+                test -n "$short_desc" || continue
+		STATE=description
+        	;;
+
+	description)
+        	$DIALOG --title "$TITLE" --clear \
+        	--msgbox \
+"Now you must enter bug description.
+Please keep in mind such things as reproduction and
+maximum isolation of the bug situation.
+" \
+                9 60 || cleanup 1
+
+		if [ -n "$descr_file" ]
+		then
+                	cp "$descr_file" $res
+                else
+                	echo -n >$res
+                fi
+                $EDITOR $res || cleanup 2
+
+		description=`cat $res`
+
+		test -n "$description" || continue
+
+		STATE=attach
+        	;;
+
+	attach)
+        	# nothing yet
+        	STATE=compose
+                ;;
+
+	compose)
+                echo -n >$msg
+                exec 3>$msg
+
+		echo "From: $FROM" >&3
+		echo "Subject: Bug Report" >&3
+		echo "To: $BUGADDR" >&3
+		echo "X-Mailer: clip_bug $VER" >&3
+		test "$REPLYTO" && echo "Reply-To: $REPLYTO" >&3
+		if [ -n "$headers" ]
+                then
+                	echo "$headers" >&3
+                fi
+		echo >&3
+                echo "@product = $PRODUCT" >&3
+                echo "@version = $version" >&3
+                echo "@component = $component" >&3
+                echo "@short_desc = $short_desc" >&3
+                echo "@rep_platform = $platform" >&3
+                echo "@bug_severity = $severity" >&3
+                echo "@priority = $priority" >&3
+                echo "@op_sys = $opsys" >&3
+		echo >&3
+                echo "$description" >&3
+
+                exec 3>&-
+
+		
+		STATE=check
+
+        	;;
+	
+	check)
+        	$DIALOG --title "$TITLE" --clear \
+        	 	--yesno \
+"The Bug Report message is composed.
+Now you can view/edit it or send immediately.
+Do you want edit the bug message?:
+" \
+                9 50
+                if [ $? = 0 ]
+                then
+                	$EDITOR $msg || cleanup 2
+                fi
+                STATE=send
+        	;;
+
+	send)
+        	STATE=done
+        	if [ "$DBG" = yes ]
+                then
+                	cat $msg >&2
+                else
+                	$SENDMAIL -t <$msg 2>$res || STATE=senderror
+                fi
+        	;;
+
+	senderror)
+        	$DIALOG --title "$TITLE" --clear \
+        	--msgbox \
+"Some error was occured during mail sending to $BUGADDR.
+Please check your mail system and report the bug again.
+The error message is:
+`cat $res`
+" \
+                20 78 || cleanup 1
+        	cleanup 3
+        	;;
+
+	done)
+        	break
+        	;;
+
+	*)
+        	echo "Unknown UI state $STATE" >&2
+                exit 2
+        	;;
+esac
+
+done
+
+cleanup 0
+

@@ -1,0 +1,26 @@
+// Factorial
+private fact_n
+fact_n:=10
+push fact_n
+call calc
+call out
+return
+
+proc calc
+param c_n
+private c_n1
+if c_n<=0
+  push 1
+else
+  push c_n-1
+  call calc
+  pop c_n1
+  push c_n*c_n1
+endif
+endp
+
+proc out
+param out_r
+scroll()
+alert(str(fact_n)+'! is '+str(out_r),{'Ok'})
+endp

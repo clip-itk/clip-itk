@@ -1,0 +1,325 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+
+<h4>             Описание новых функций </h4>
+<h4> A2EDIT </H4>
+Тоже что и dbedit, но обрабатывает двумерный массив.
+
+<h4> str=addslashes(str) </a4>
+<xmp>
+ Returns a string with backslashes before characters that need to be quoted
+ in database queries etc. These characters are single quote ('), double quote
+ ("), backslash (\) and NUL (the null byte).
+</xmp>
+
+<h4> ASCAN </H4>
+тоже что и обычный ascan, только добавлен еще один параметр "искать с конца".
+
+<h4> BETWEEN </H4>
+between(value,min,max) - возвращает находиться ли значение value в пределах
+от min до max или от max до min. Сравнивает любые типы данных.
+<h4> CLIP </H4>
+clip("funcname",param1,param2,....paramN) -
+запускает функцию funcname, передает ей параметры param1....paramN и
+возвращает то значение, которое возвращает funcname. Пример <BR>
+clip("substr","asdfghjkl",2,3) // -> "sdf" <BR>
+
+<h4> CSCOUNT </H4>
+cscount(char,string) - возвращает кол-во char в string
+
+<h4> compileFile(filename,flags,@error) </H4>
+Компилирует файл filename с ключами компилятора flags, описание ошибок
+складывает в error, возвращает .t. | .f.
+
+<h4> compileString(str,@error) </H4>
+компилирует строку str, возвращает кодовый блок, описание ошибки
+складывает в error.<BR>
+В компилируемой строке могут быть любые конструкции, команды и т.п.
+Вообщем все что может переварить clip, потому-что он и вызывается :).
+НО !!! В этой строке не может быть объявлений нестатических функций,
+начинатся она должна с приема параметров без каких либо описаний
+названия функции или процедуры. Примерно так:<BR>
+<PRE>
+str:="
+parameters p1,p2
+   qout(p1,p2)
+   localfunc1(p1,p2)
+return p1+p2
+static function localfunc1(fp1,fp2)
+   qout("called local function in string compiled block")
+return p1-p2"
+
+block:=compileString(str,@err)
+if empty(err)
+       x:=eval(block,1,2) // выведет значения p1 и p2
+       ? x //выведет значение p1+p2
+else
+       ? err // описание ошибки
+endif
+</PRE>
+<h4> loadblock(filename.po) </H4>
+читает filename.po и выдает на выходе блок кода.<BR>
+filename.po можно получить скомпилировав <BR>
+clip -p filename.prg<BR>
+правила и структура filename.prg должна соответсвовать правилам
+для строки из функции compileString().
+
+<h4> DBRANGE </H4>
+dbrange(index_name,min_value,max_value) - устанавливает ограничение для
+навигационных функций (skip,locate,...) по значению индекса. Практически
+эта функция является эквивалентом setfilter, но работает только по тем
+значениям, которые есть в качестве ключей в индексном файле и исполняется
+на несколько порядков быстрее.
+
+<h4> DOSPATH </h4>
+dospath( unix_file_name ) - возвращает досовское имя файла в соответствии
+с назначениями дисков, сделанными через set( "C:", ... )
+
+<h4> dStrToN </h4>
+dStrToN( string ) - преобразует строку с double-представлением в clipper-число.<BR>
+Например: <BR>
+fread(file,@str,8)<BR>
+n=dStrToN(str)
+
+<h4> fStrToN </h4>
+fStrToN( string ) - преобразует строку с float-представлением в clipper-число.<BR>
+Например: <BR>
+fread(file,@str,4)<BR>
+n=fStrToN(str)
+
+<h4> FILEATTRS </h4>
+fileattrs(filename) - работает как fileattr, только вместо цифрового
+кода атрибутов файла возвращается строка символов: <b>A</b> - архивный,
+<b>H</b> - скрытый, <b>R</b> - только чтение, <b>D</b> - каталог
+
+<h4> FILEDIALOG, DISKFILEDIALOG </h4>
+filedialog(dir,mask) - предоставляет диалог для выбора файла, начиная с
+каталога dir, предоставляя для выбора файлы, удовлетворяющие маске mask.
+<BR>
+diskFileDialog(driver,drv,dir,mask) - также как и filedialog - выбирает
+нужный файл, но еще предоставляет возможность выбирать и диск, на котором
+выбирать файл. driver - список дисков, drv - номер текущего диска.
+
+<h4> FILEGETSTR </h4>
+filegetstr(fhandle,max_size) - читает из файла, ранее открытого FOPEN(),
+строку ограниченную CRLF или CR, но не более max_size символов.
+
+<h4> FACCESS </h4>
+fACCESS(filename,mode) - проверяет имеется ли доступ к filename с правами
+mode в виде rwx-rwx-rwx.
+
+<h4> GLOB </H4>
+glob(str,pattern, caseflag) - проверяет соответсвует ли str регулярному
+выражению pattern с учетом или без учета регистра символов.
+Поддерживает только упрощенные регулярные выражения.
+
+<h4> HASHSTR </H4>
+hashstr(str_value) - выдает число от 1000000 до MAX_LONG, которое почти
+гарантировано имеет уникальное значение.
+
+<h4> HASHNAME </H4>
+hashName(hash_value) - возвращает значение из которого был получен это
+значение hash_value
+
+<h4> gd*() </H4>
+Пакет функций gd*() для работы с файлами png,jpeg..... и набор функций
+для генерации графических примитивов прямоугольники, окружности, линии, ....<BR>
+<a href=gd_lib.html>Оригинальная документация самой библиотеки libgd</a> <br>
+<a href=gd_prg.html>Clipper-функции, аналогичные С-ишным</a> <br>
+<a href=o_gdimage.html>Класс gdImage - обработка графических файлов</a> <br>
+<h4> gzip.so </H4>
+Все функции GZIP*() вынесены в отдельную динамически загружаемую библиотеку
+gzip.so, обязательно перед первым вызовом любой из функций GZIP*() надо делать
+load("gzip.so").
+
+<h4> GZIPOPEN </H4>
+gzipOpen(filename [,mode]) - открывает GZIP файл с именем filename и режимом
+mode, по умолчанию на чтение. <BR>
+Mode могут быть следующими: <BR>
+"rb" - чтение в бинарном режиме <BR>
+"wbX" - запись со степенью упаковки X в диапазоне от 0 до 9 <br>
+
+<h4> GZIPREAD </H4>
+gzipRead(handle, @buffer [,len]) - читает и распаковывает данные из открытого
+GZIP файл с номером handle в заранее выделенный буффер buffer len байт.<BR>
+s:=space(1000)<BR>
+realLen=gzipRead(h,@s,300)<BR>
+
+<h4> GZIPWRITE </H4>
+gzipWrite(handle, str_data [,len]) - запаковывает len байт из str_data
+и записывает в GZIP-файл. Обязятельно надо явно вызвать gzipclose(), чтобы
+сбросились все буфера !!!
+
+<h4> GZIPCLOSE </H4>
+gzipClose(handle) - закрывает GZIP-файл
+
+<h4> <a href=c_html.html> HTML-класс и HTML_TAG-класс </a></H4>
+
+<h4> INLIST </H4>
+inlist(value,p1,p2,...pn) - возвращает иммется ли среди p1...pn значение value.
+
+<h4> ISFIELD </H4>
+isfield("varname") - возвращает, является ли данное имя переменной связанной
+с именем поля в данный момент выполнения программы.
+
+<h4> ISFUNCTION </H4>
+isfunction("func_name") - возвращает, является ли данное имя функцией, т.е.
+возможно ли вызвать функцию с именем func_name.
+
+<h4> ISMEMVAR </H4>
+isfield("varname") - возвращает, является ли данное имя переменной связанной
+с переменной памяти (PRIVATE,PUBLIC) в данный момент выполнения программы.
+
+<h4> LIKE </H4>
+like(mask,string) - возвращает, соответсвует ли string маске. В качестве
+маски могут быть спецсимволы *,?,.<BR>
+
+<h4> LOAD </H4>
+Load("filename.po") - зачитывает po-файл (внешний кодовый блок) и регистрирует
+все не-статик функции, объявленные в этом модуле, доступными для дальнейшего
+использования как и обычные клиппер-функции.<BR>
+Load("filename.so") - зачитывает динамическую библиотеку во время работы
+программы, и делает доступными клиппер-функции.
+
+<h4> MAP </H4>
+map() - создает пустой объект (ассоциативный массив)
+
+<h4> MAPMODIFY </H4>
+map(map_obj, [ .t. | .f. ]) -  включает / отключает режим котроля изменений
+атрибутов объекта, возвращает старое значение режима.
+В случае если у объекта map_obj имеется метод modify, то при включенном
+контроле перед попыткой изменить атрибут объекта будет вызываться <BR>
+map_obj:modify(hash_attrib, new_value ) и этот метод должен вернуть
+новое значение, которое надо прописать в атрибут с hash-кодом hash_attrib.
+
+<h4> MAKEPATH </H4>
+makepath(dos_path) - возвращает юниксовый путь для заданного dos-пути.<BR>
+Например makepath("c:\clip\ca_dbu") выдаст /usr/home/uri/clip/ca_dbu
+
+<h4> MEMVARGET </H4>
+memvarget(varname) -> возвращает значение MEMVAR переменной varname
+
+<h4> MEMVARSET </H4>
+memvarset(varname,data) -> устанавливает значение MEMVAR переменной с именем
+varname в значение data, возвращает успешно ли проведено данная операция
+
+<h4> PARAM </H4>
+ param(i) - возвращает значение i-того параметра функции, очень часто это
+    избавляет от использования макроподставновок.
+
+<h4> QUEUE - class </H4>
+o:=queueNew() - создает новую очередь <BR>
+o:put(var) - добавляет в хвост очереди новые данные <BR>
+o:get() - выдает значение из головы очереди и удаляет его <BR>
+o:head() - выдает значение из головы очереди без удаления <BR>
+o:tail() - выдает значение из хвоста очереди без удаления <BR>
+o:len() - выдает длину очереди<BR>
+o:free() - очищает все данные в очереди <BR>
+
+<h4> RUN_BLANK </H4>
+run_blank(filename,stdinFlag) - интерпретирует шаблон документа и выводит его
+либо на stdin либо во временный файл, возвращает имя файла с готовым документом.
+<BR>
+_run_blank(intext,stdinFlag) - тоже самое делает со входной строкой intext.
+
+<h4> SEARCH</h4>
+Поиск по регулярному выражению в строке.<br>
+search(pattern, string[, reg[, from[, range]]])<br>
+pattern - шаблон поиска<br>
+string - строка, где ищется регулярное выражение<br>
+reg - регистр - массив, куда будет записан результат поиска<br>
+   reg[i][1] - начало регулярного выражения<br>
+   reg[i][2] - конец <br>
+   reg[i][3] - длина <br>
+from - позиция, с которой начинать искать<br>
+range - это значение сдвигов, при которых проверяется  совпадение,
+    относительно from; т.е. при range==0  проверяется только позция from;
+    при range==1 проверяются  позиции from, from+1; при range==-1
+    проверяются позиции  from, from-1 <br>
+Функция возвращает .t. -в случае успешного поиска и .f. в противном
+случае.
+
+<h4> SET</h4>
+Как и раньше функция set возвращает предыдущее значение. <BR>
+1. set(_SET_LOGLEVEL) - устанавливает уровень логирования для функции outlog() <BR>
+2. set(_SET_LOGFILE, filename) - устанавливает имя файла для записи лог-информации<BR>
+3. set(string_key,string_value) - для любой произвольной строки-ключа запоминает
+любую произвольную строку-значение. Будьте внимательны - запоминаются только строковые
+значения <BR>
+4. set(dos_hdd,unix_path) - устанавливает соотвествие между именем диска в DOS и
+пути в юниксовых системах.<BR>
+Например set("C:","/usr/home/uri") назначит диску C: путь /usr/home/uri.<BR>
+
+<h4> STARTPATH </H4>
+Возвращает полный путь и имя стартовавшей программы.
+
+<h4> SLEEP </H4>
+sleep(sec.msec) - останавливает выполнение программы на заказанное количество
+секунд и милисекунд. Никакой гарантии что программа будет остановлена на
+данное кол-во МИЛЛИСЕКУНД не дается. Разве что в тех операционных системах,
+где такие гарантии могут быть предоставлены.
+
+<h4> STACK - class </H4>
+o:=stackNew() - создает новый стек <BR>
+o:push(var_data) - добавляет в стек новые данные <BR>
+o:pop() - выдает последнее значение, положенное в стек и удаляет его <BR>
+o:len() - выдает длину стека<BR>
+o:free() - очищает все данные в стеке <BR>
+
+<h4> START() - start task </H4>
+start("funcname"| {||codeblock} | @funcname(),par1,...parN) - запускает в паралельном
+режиме функцию funcname или кодовый блок или адрес статической функции
+и передает ей параметры par1,...parN.
+<h4> TASKSTOP(), TASKSTART() </H4>
+Останавливает/распускает выполнение всех task`ов кроме текущего,
+
+<h4> SYSCMD </H4>
+syscmd(cmd,stdin_string,@res_buf,@err_buf) - выполняет системную команду, посылает этой
+команде на стандартный входной поток stdin_string, записывает в err_buf
+все что выводиться в stderr, записывает в res_buf весь вывод stdout
+и возвращает значение, возвращаемое cmd.<BR>
+res_buf и err_buf не могут быть объявлены как константы<BR>
+Например: <BR>
+err_buf=space(0)<BR>
+res_buf=space(0)<BR>
+result_code=syscmd("grep -i uri ","тут был uri",@res_buf,@err_buf)<BR>
+<h4> ulimit(limit_info,limit_value) </H4>
+устанавливает ограничение на использование пользователем системных
+ресурсов. Возможные значения limit_info  описаны в ulimit.ch.
+Возвращает старое значение limit_info.
+<h4> MEDIT </H4>
+medit(par, ntop, nleft, nbot, nright, user_func, tab_size, bline, bpos, wline, wpos)<BR>
+многооконный текстовый редактор с менюшками и прибамбасами, построен на базе
+класса <a href="o_textedit.html">TEXTEDIT</a>. Более подробное описание см. <a href="o_medit.html">здесь</a><br>
+<h4> TCPconnect(host,port,timeout) </h4>
+ Соединяется с сервером host и создает сокет к порту port, возвращает номер
+ соединения или -1. ferror() хранит номер ошибки соединения
+<h4> TCPread(sHandle,@buffer,len,timeout) </h4>
+ Аналогично fread() читает в buffer данные из соединения, возвращает кол-во
+ прочитанных байт или -1. ferror() хранит номер ошибки чтения
+<h4> TCPwrite(sHandle,data,len,timeout) </h4>
+ Аналогично fwrite() пытется передать данные в соединение, возвращает кол-во
+ переданных байт или -1. ferror() хранит номер ошибки записи
+<h4> TCPclose(sHandle) </h4>
+ закрывает соединение
+<h4> weightTable </H4>
+weightTable() - выдает весовую таблицу, используемую в сравнении строк, индексации,
+регулярных выражениях и т.п.
+<h4> weightAsc </H4>
+weightAsc(string) - выдает весовую характеристику первого символа строки.
+<h4> weightChr </H4>
+weightChr(num) - выдает строку из одного символа, соответсвующего переданной
+весовой характеристике.
+<h4> uucode,uudecode,var2str,str2var </H4>
+<hr>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+</body>
+</html>

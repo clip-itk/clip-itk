@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<TITLE>GZIP clip library</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+
+<h1> File functions </h1>
+<hr>
+<h2> GZIPOPEN </h2>
+<b>gzipOpen(filename [,mode])</b>
+<br>
+открывает GZIP файл с именем filename и режимом
+mode, по умолчанию на чтение. <BR>
+Mode могут быть следующими: <BR>
+"rb" - чтение в бинарном режиме <BR>
+"wbX" - запись со степенью упаковки X в диапазоне от 0 до 9 <br>
+
+<h2> GZIPREAD </h2>
+<b>gzipRead(handle, @buffer [,len])</b>
+<br>
+читает и распаковывает данные из открытого
+GZIP файл с номером handle в заранее выделенный буффер buffer len байт.<BR>
+s:=space(1000)<BR>
+realLen=gzipRead(h,@s,300)<BR>
+
+<h2> GZIPWRITE </h2>
+<b>gzipWrite(handle, str_data [,len])</b>
+<br>
+
+запаковывает len байт из str_data
+и записывает в GZIP-файл. Обязятельно надо явно вызвать gzipclose(), чтобы
+сбросились все буфера !!!
+
+<h2> GZIPCLOSE </h2>
+<b>gzipClose(handle)</b>
+<br>
+закрывает GZIP-файл
+<br>
+
+<h1> Sting functions </h1>
+<hr>
+
+
+<h2> GZIP </h2>
+<a name=gzip></a>
+<b>GZIP(cStr[, nLevel]) --> cResult</b>
+<br>
+compress string with given compression level (default 6)
+
+<h2> GUNZIP </h2>
+<b>GUNZIP(cStr) --> cResult</b>
+<br>
+uncompress string, compressed by <a href=#gzip>GZIP()</a>
+<br>
+
+</body>
+</html>

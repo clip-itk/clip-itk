@@ -1,0 +1,112 @@
+# main part
+#
+#
+
+#export CC
+#DBGFLAGS	= -g #-DMEMDBG
+#WARNFLAGS	= -Wimplicit -Wall
+
+.SUFFIXES: .prg .c .po
+.PHONY:	tests screen hash
+
+SRCS  = sheet.c fontcombo.c bordercombo.c colorcombo.c togglecombo.c \
+	combobox.c itementry.c
+
+OBJS  = sheet.o fontcombo.o bordercombo.o colorcombo.o togglecombo.o \
+	combobox.o itementry.o
+
+HDRS	= clip-gtkextra.ch clip-gtkextra.h $(CLIPROOT)/include/clip-gtk.ch
+
+OBJDIR	= .
+EXTOBJS =
+
+HASHSRCS = $(SRCS) $(HDRS)
+
+XLIB	= libclip-gtkextra.a
+XSLIB	= libclip-gtkextra$(DLLSUFF)
+XSLIBREAL = libclip-gtkextra$(DLLREALSUFF)
+XLIBOBJS= $(OBJS)
+
+SYS = $OSNAME
+SYSTEM_NAME = $(OSNAME)
+
+DEFS	=
+# -DVERSION=\"0.1\"
+# -DSYSTEM=\"$(SYSTEM_NAME)\"
+
+CC = $(COMPILER)
+CFLAGS  = $(C_FLAGS) $(DEFS) $(MEMDBGFLAGS)
+#  $(WARNFLAGS) $(DBGFLAGS) $(OPTFLAGS) -I$(INCLUDE)
+
+export CC CFLAGS
+export MEMDBG MEMDBGFLAGS
+
+all: Makefile hash $(XTARGETS)
+
+d: set_dbg
+
+set_dbg: CDBGFLAGS=-g
+set_dbg: all
+
+Makefile: Makefile.in configure
+	./configure
+
+hash: _hashcode.h
+
+_hashcode.h: $(HASHSRCS)
+	$(CLIPROOT)/bin/clip_hashextract $(HASHSRCS) | sort -u > _hashcode.h
+	cmp _hashcode.h hashcode.h 2>/dev/null || cp _hashcode.h hashcode.h
+
+$(XLIB): $(XLIBOBJS)
+	rm -f $(XLIB)
+	$(CLIPROOT)/bin/clip_makelib $(XLIB) $(XLIBOBJS)
+	ranlib $(XLIB)
+
+$(XSLIB): $(XLIB)
+	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) $(XLIB) $(LIBS)
+
+test: install
+	cd example && $(MAKE)
+
+clean:
+	rm -rf *.o *.a *.so *.dll *.po *.pa *.b *.BAK *.bak *~ core* \
+	*core Makefile.inc _hashcode.h *.ex *.nm
+
+distclean: clean
+	rm -rf clip-gtkextracfg.h hashcode.h _hashcode.h Makefile
+	cd example && $(MAKE) clean
+
+install: $(XTARGETS)
+	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(CLIPROOT)/lib
+	chmod 0644  $(CLIPROOT)/lib/$(XLIB)
+	chmod 0755  $(CLIPROOT)/lib/$(XSLIB)
+	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(CLIPROOT)/lib
+	cp clip-gtkextra.ch $(CLIPROOT)/include/
+#	cp -R doc/* $(CLIPROOT)/doc/clip-gtk
+	mkdir -p $(CLIPROOT)/doc/example/clip-gtkextra
+	- cp example/*.prg example/Makefile example/*.ch $(CLIPROOT)/doc/example/clip-gtkextra
+
+.c.o:
+	@echo $(CC) $(CDBGFLAGS) $(CFLAGS) -c $<
+	@$(CC) $(CDBGFLAGS) $(CFLAGS) $(XCFLAGS) -c $<
+
+depend:
+	$(MAKE) hash
+	makedepend -Y  -- $(CFLAGS) -- $(SRCS) 2>/dev/null
+
+commit:
+	_cvs commit
+
+update:
+	_cvs update -dP
+
+ucommit:
+	_cvs update -dP && _cvs commit
+
+shell:
+	sh
+
+# DO NOT DELETE
+
+
+

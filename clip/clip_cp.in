@@ -1,0 +1,47 @@
+
+if [ $# = 0 ]
+then
+	echo "usage: `basename $0` src1.{o,so,a} [.. srcN.{o,so,a}] target_dir"
+	exit 1
+fi
+
+LC_ALL=C
+LANG=C
+export LC_ALL LANG
+
+#echo $*
+
+pwd=`pwd`
+lst=''
+
+while [ "$#" != 0 -a "$#" != 1 ]
+do
+    	name=`echo "$1" | sed -e 's/\.[A-Za-z0-9]*$//'`
+	test -r "$1" && lst="$lst
+$1"
+	test -r "$name.a" && lst="$lst
+$name.a"
+	test -r "$name.o" && lst="$lst
+$name.o"
+	test -r "$name$DLLSUFF" && lst="$lst
+$name$DLLSUFF"
+	test -r "$name$DLLREALSUFF" && lst="$lst
+$name$DLLREALSUFF"
+	test -r "$name.ex" && lst="$lst
+$name.ex"
+	test -r "$name.nm" && lst="$lst
+$name.nm"
+
+        shift
+done
+
+dir="$1"
+
+lst=`echo "$lst"|sort -u`
+lst=`echo $lst`
+
+#echo "lst: $lst"
+#echo "dir: $dir"
+
+cp $lst $dir
+

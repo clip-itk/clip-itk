@@ -1,0 +1,40 @@
+#ifndef _GDINFO_DEFINED
+#define _GDINFO_DEFINED
+
+#define	GDFILE_PNG	1
+#define	GDFILE_GD	2
+#define GDFILE_GD2	3
+#define GDFILE_XBM	4
+/*
+#define GDFILE_XPM	5
+	uri: fucked library
+*/
+#define GDFILE_JPEG	6
+
+#define	GDFONT_GIANT		0
+#define	GDFONT_LARGE		1
+#define	GDFONT_MEDIUMBOLD	2
+#define	GDFONT_SMALL		3
+#define	GDFONT_TINY		4
+
+
+#define	GDSTYLE_STYLED		-2
+#define	GDSTYLE_BRUSHED		-3
+#define	GDSTYLE_STYLEDBRUSHED	-4
+#define	GDSTYLE_TILED		-5
+#define	GDSTYLE_TRANSPARENT	-6
+
+
+#define GDINFO_COLORSTOTAL	1
+#define GDINFO_TRANSPARENT	2
+#define GDINFO_INTERLACED	3
+#define GDINFO_COLORRED		4
+#define GDINFO_COLORGREEN	5
+#define GDINFO_COLORBLUE	6
+#define GDINFO_SIZEX		7
+#define GDINFO_SIZEY		8
+#define	GDINFO_FONT_WIDTH	9
+#define	GDINFO_FONT_HIGH	10
+
+
+#endif

@@ -1,0 +1,56 @@
+
+if [ "$NO_GETTEXT" = yes ]
+then
+	echo "$0: no installed gettext package, skip i18n"
+	exit 0
+fi
+
+
+if [ $# = 2 -a "$1" = "-h" ]
+then
+	echo "usage: $0 [locale1 [... localeN]]"
+	exit 1
+fi
+
+if [ -n "$CLIP_LOCALE_ROOT" ]
+then
+	CLIPROOT="$CLIP_LOCALE_ROOT"
+        echo "use locale root $CLIP_LOCALE_ROOT"
+fi
+
+cd $CLIPROOT || exit 2
+pwd=`pwd`
+
+tmp=/tmp/clip_msgfmt.$$
+mkdir -p $tmp
+
+clean()
+{
+	rm -rf $tmp
+	exit $1
+}
+
+trap clean 1 2 3 4 5 6 7 8 9 10 12 13 14 15
+
+mkdir -p $pwd/locale.po || clean 2
+mkdir -p $pwd/locale.mo || clean 2
+cd $pwd/locale.po || clean 3
+
+for locale in *
+do
+	[ "$locale" = "CVS" ] && continue
+	cd $pwd/locale.po/$locale || continue
+	echo "locale $locale"
+
+	mkdir -p $pwd/locale.mo/$locale || clean 3
+	for mod in *.po
+	do
+		fmod=`basename $mod .po`
+		msgfmt -o $pwd/locale.mo/$locale/$fmod.mo $mod && echo module $fmod
+#		msgfmt -f -o $pwd/locale.mo/$locale/$fmod.mo $mod && echo module $fmod
+		# || clean 2
+	done
+done
+
+
+clean 0

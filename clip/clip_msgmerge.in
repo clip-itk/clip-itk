@@ -1,0 +1,105 @@
+PATH=/bin:/usr/bin
+export PATH
+
+if [ "$NO_GETTEXT" = yes ]
+then
+	echo "$0: no installed gettext package, skip i18n"
+	exit 0
+fi
+
+if [ $# = 2 -a "$1" = "-h" ]
+then
+	echo "usage: $0 [module1 [... moduleN]]"
+	exit 1
+fi
+
+if [ -n "$CLIP_LOCALE_ROOT" ]
+then
+	CLIPROOT="$CLIP_LOCALE_ROOT"
+        echo "use locale root $CLIP_LOCALE_ROOT"
+fi
+
+cd $CLIPROOT || exit 2
+pwd=`pwd`
+mods="$*"
+if [ -z "$mods" ]
+then
+	cd $pwd/locale.pot || exit 3
+	mods=`ls 2>/dev/null`
+fi
+
+tmp=/tmp/clip_merge.$$
+mkdir -p $tmp
+
+clean()
+{
+	rm -rf $tmp
+	exit $1
+}
+
+trap clean 1 2 3 4 5 6 7 8 9 10 12 13 14 15
+
+for mod in $mods
+do
+	[ "$mod" = "CVS" ] && continue
+	echo "module $mod"
+	cd $pwd/locale.pot/$mod || continue
+	cd $pwd
+
+	rm -f $pwd/locale.pot/$mod/_.pot
+	lst=`find $pwd/locale.pot/$mod -type f -not -path '*CVS*' 2>/dev/null`
+	[ -n "$lst" ] || continue
+
+	cat > $pwd/locale.pot/$mod/_.pot << EOF
+# Module $mod.
+# FIRST AUTHOR <EMAIL@ADDRESS>, `date +%Y`.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: `date '+%Y-%m-%d %H:%S%z'`\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+
+EOF
+#echo	msgcomm --more-than 0 -o $tmp/$mod.pot $pwd/locale.pot/$mod/_.pot $lst
+	msgcomm --more-than 0 -o $tmp/$mod.pot $pwd/locale.pot/$mod/_.pot $lst
+#	msgcomm -u -o $tmp/$mod.pot $pwd/locale.pot/$mod/_.pot $lst
+	#cat $lst >> $tmp/$mod.pot
+
+	mkdir -p $pwd/locale.po || clean 2
+	cd $pwd/locale.po || clean 3
+
+	lst=`ls 2>/dev/null`
+	if [ -z "$lst" ]
+	then
+		echo "ERROR: no locales in $pwd/locale.po"
+		clean 0
+	fi
+
+	for locale in $lst
+	do
+		[ "$locale" = "CVS" ] && continue
+		cd $pwd/locale.po/$locale || continue
+		echo -n "locale $locale .."
+
+		if [ ! -f $mod.po ]
+		then
+			echo -n ". (creating new $mod.po) .."
+			cat $tmp/$mod.pot > $mod.po
+		fi
+		msgmerge -o $mod.new $mod.po $tmp/$mod.pot || clean 2
+		mv $mod.new $mod.po
+	done
+	echo
+
+done
+
+
+clean 0

@@ -1,0 +1,51 @@
+CLIP	= $(CLIPROOT)/bin/clip
+CLIPFLAGS = -g -w -l -I .. $(INCLUDEDIRS)
+CC = gcc
+CFLAGS = -Wall -g -I. -I$(CLIPROOT)/include
+
+CLIPLIBS  =
+FWLIB = libclip-fw.a
+FWINLIB = libclip-fw$(DLLSUFF)
+FWINLIBREAL = libclip-fw$(DLLREALSUFF)
+
+COBJS    = c_funcs.o
+LIBOBJS  = fw_sysgtk.o fw_common.o fw_syscti.o fw_menusys.o\
+	   fw_color.o fw_window.o fw_menu.o fw_menuitem.o \
+	   fw_msg.o fw_font.o fw_msgbar.o fw_bar.o fw_btnbmp.o \
+	   fw_control.o fw_dialog.o fw_combobox.o fw_get.o fw_say.o fw_button.o\
+	   fw_meter.o fw_listbox.o fw_msgitem.o fw_timer.o fw_rect.o\
+	   fw_mdiclien.o fw_mdichild.o fw_mdiframe.o fw_scrllbar.o fw_tabs.o\
+	   #fw_wbrowse.o
+
+.SUFFIXES: .prg .o .po
+
+
+all:    $(FWINLIB)
+
+$(FWINLIB): $(COBJS) $(LIBOBJS)
+	$(CC) $(CFLAGS) -c c_funcs.c
+	$(CLIPROOT)/bin/clip_makelib $(FWLIB) $(LIBOBJS) $(COBJS)
+	$(CLIPROOT)/bin/clip_makeslib $(FWINLIB) $(FWLIB)
+
+clean:
+	rm -f *.exe *.o *.po *.log *.bak *.so *.a *.ex *.nm
+	cd test && $(MAKE) clean
+
+install: $(FWINLIB)
+	$(CLIPROOT)/bin/clip_cp $(FWINLIB) $(CLIPROOT)/lib
+	chmod 0755 $(CLIPROOT)/lib/$(FWINLIB)
+	#[ "$(FWINLIBREAL)" = "$(FWINLIB)" ] || cp $(FWINLIBREAL) $(CLIPROOT)/lib
+	mkdir -p $(CLIPROOT)/include/fwin
+	cp ./fwin/*.ch $(CLIPROOT)/include/fwin
+	cp ./fwin/*.h $(CLIPROOT)/include/fwin
+	mkdir -p $(CLIPROOT)/doc/example/clip-fw
+	mkdir -p $(CLIPROOT)/doc/example/clip-fw/bitmaps
+	mkdir -p $(CLIPROOT)/doc/example/clip-fw/data
+	cp -R test/Makefile test/*.prg test/.clipcharset $(CLIPROOT)/doc/example/clip-fw/
+	cp -R test/bitmaps/*.bmp $(CLIPROOT)/doc/example/clip-fw/bitmaps/
+	cp -R test/data/*.dbf test/data/*.ntx $(CLIPROOT)/doc/example/clip-fw/data/
+
+.prg.o:
+	$(CLIP) $(CLIPFLAGS) $<
+
+

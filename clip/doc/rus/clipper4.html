@@ -1,0 +1,257 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY background=fon.gif>
+<h4>             Новшества в компиляторе и препроцессоре </h4>
+
+<hr>
+	<h5> Многозначные/многоязычные строки в RUN-TIME </h5>
+	CLIP предоставляет средства для разработки многоязычных программ
+и контролирования значений строк в RUN_TIME. Здесь и ниже под термином
+"language" подразумеваются не только "язык", а и другие причины, по которым
+необходимо организовать перегрузку строк. Например это может быть:
+"пользователь","время дня","квалификация пользователя" (бухгалтерам желательно
+выдавать сообщение "нажмите самую большую клавишу", а остальным "Нажмите
+любую клавишу"), а также другие критерии по вашему усмотрению.
+<BR><BR>
+В качестве примера приводится часть исходников из prg/samples с
+комментариями.
+<xmp>
+//file: prg/samples/multilang.prg
+#define s1 [Hello world]     // keyword1
+#define s2 [Good bye world]  // keyword2
+// All strings enclosed in [] delimiters are localized keywords
+
+? "Locale module name is:",__CLIP_MODULE__
+// __CLIP_MODULE__ is compile time predefined, it depends on -E compile switch
+? "Default string1 is:",s1
+? "Default string2 is:",s2
+?
+? "Install external data from lang1/ml1.mo:"
+  ?? loadModuleMsg(__CLIP_MODULE__,"./locale.mo/lang1/"+__CLIP_MODULE__+".mo")
+? "String1 for lang1 is:",s1
+? "String2 for lang1 is:",s2
+?
+? "Install external data from lang2/ml1.mo:"
+  ?? loadModuleMsg(__CLIP_MODULE__,"./locale.mo/lang2/"+__CLIP_MODULE__+".mo")
+? "String1 for lang2 is:",s1
+? "String2 for lang2 is:",s2
+
+?
+return
+
+#file: prg/samples/Makefile
+# [ some defines skipped ]
+# CLIP_LOCALE_ROOT defines path where to save modules
+CLIP_LOCALE_ROOT=./
+export CLIP_LOCALE_ROOT
+# [ other targets skipped ]
+multilang: multilang.prg
+	$(CLIP) $(CLIPFLAGS) -e -M -E CLIP_MODULE="ml1" multilang.prg $(CLIPLIBS)
+	clip_msgmerge
+	clip_msgfmt
+
+
+#output from make processing
+/home/uri/prg/samples > make multilang
+/m2/uri/cliproot/bin/clip -a -O -b -e -M -E CLIP_MODULE="ml1" multilang.prg
+parsing file 'multilang.prg' ..
+open locale file './/locale.pot/ml1/multilang.pot'
+# at this moment keyword1 and keyword2 are moved to external pot-file
+.. done (23/2643 lines, 0 warnings, 1.47s)
+writing file 'multilang.c' .... done, 3546 bytes ,0.00s
+compile file 'multilang.c' .... done, 0.21s
+generate reference file 'multilang_ref.c' .... done, 0.04s
+make file 'multilang' .... done, 0.33s
+clip: 2 files, 2.05s
+# at this moment we create two or more directories (one per language)
+# compiler does not know how many languages will your app support,
+# so we need do it once. A new target language could be added at any time.
+# mkdir ./locale.po/lang1
+# mkdir ./locale.po/lang2
+clip_msgmerge
+# generate editable po-modules templates from pot-files
+use locale root ./
+module ml1
+locale lang1 ... OK.
+locale lang2 ... OK.
+# at this moment we edit files (translate keywords from english to
+# desired language). You will need to edit them next time as soon
+# as new keywords will be added to application.
+# vi ./locale.po/lang1/ml1.po
+# vi ./locale.po/lang2/ml1.po
+clip_msgfmt
+# generate loadable mo-modules
+use locale root ./
+locale lang1
+module ml1
+locale lang2
+module ml1
+</xmp>
+
+<hr>
+	Все слова начинающиеся на <i> HASH_</i>, препроцессор переводит в
+        <i>hashstr("HASH_.....").</i> Нам это нужно, для того чтобы уменьшить
+        количество включаемых (#include) файлов. И вместо того чтобы писать
+        <xmp>
+        #define HASH_asdf   12345678
+        #define HASH_qwerty 231423534
+        </xmp>
+
+        и т.п., теперь можно  просто в тексте программы
+        использовать ключевые слова <i>HASH_....</i>, например:
+        <xmp>
+        do case
+        	case HASH_asdf
+                case HASH_qwerty
+                ....
+        endcase
+        </xmp>
+        И, при этом, можно быть уверенным, что если в разных prg-файлах попадется
+        набор символов <i>HASH_asdf</i>, то результат будет одинаков, как если бы это
+        слово было бы  объявлено через #define.
+
+<hr>
+	Препроцессор умеет доставать данные из окружения, например: <BR>
+        <xmp>
+        #define $USER
+        </xmp>
+        будет фактически странслировано  в
+        <xmp>
+        #define uri
+        </xmp>
+        В частности, можно использовать переменную окружения CLIP_LANG для
+        изменения языка, на котором говорят clip-библиотеки. Например:<BR>
+        <xmp>
+        export CLIP_LANG=LANG_RUSSIAN
+        </xmp>
+<hr>
+ имеются предопределенные препроцессором #define:
+	<xmp>
+	__FILE__
+	__BASE_FILE__
+	__LINE__
+	__VERSION__
+	__CLIP__
+	__SYSTEM__
+	__DATE__
+	__TIME__
+        </xmp>
+
+<hr>
+ Появилась  команда  препроцессора  #xdefine  -  это  то же самое, что и
+ #define, но не чувствительна к регистру объявляемого имени макроса.
+
+<hr>
+ Конфигурацию ключиков можно прописать в файл .cliprc, и положить этот
+ файл в домашний или текущий каталог.
+
+<hr>
+ В дополнение к std.ch можно прописать еще несколько автоматически
+ подключаемых заголовочных файлов, прописав в .cliprc-файле строчки типа:
+  <xmp>
+ -U std.ch
+ -U clip.ch
+ -U config.ch
+  </xmp>
+<hr>
+ Ключики компилятора не совсем соответствуют стандартному Клиппер-компилятору.
+ Формулировки ошибок и предупреждений компилятора совсем не соответствуют.
+ Но я не думаю, что это несоответсвие доставит большие неприятности.
+
+<HR>
+ Компилятор умеет перекодировать исходные тексты в разные русские кодировки
+ во время компиляции. Т.е. вы можете писать программы в DOS, и без всяких
+ ухищрений собирать программы в UNIX.
+ Единственное ограничение - имена файлов должны быть в нижнем регистре.
+
+<HR>
+ <H5> Компилятор умеет генерировать </H5>
+   <ul>
+   <li>PO-файлы - псевдокод или продвинутые кодовые блоки - небольшой размер,
+   быстрая компиляция, возможность загружать в run-time, медленное выполнение.
+   Легко декомпилируются, но самого декомпилятора пока нет.
+   <li>С-программы -  размер в 2-3 раза больше чем у PO, долго компилируются
+   из С в объектные  модули, работают на 30-50% быстрее чем PO, легко
+   управляются штатными средствами С-разработчика, не подлежат декомпиляции.
+   Но все-таки ручное кодирование более эффективно, как по размеру, так и по
+   скорости выполнения. Так что если вам нужны быстродействующие функции -
+   пишите их на С, или напишите нам что вам нужно, а мы напишем на С.
+   <li>C+PO-программы  -  псевдокод  обернутый  в С-программу - быстро
+   компилируются.  Имеют маленький размер, медленно работают, но зато
+   управляются стандартными средствами  С-разработчика.
+   Декомпиляция теоретически возможна, но намного сложнее чем
+   декомпиляция PO-файлов.
+   <li>  Программы  с использованием динамически загружаемых библиотек (-s).
+   Для примера почитайте о clip_run.
+   </ul>
+
+<hr>
+ O-файлы собираются в библиотеки стандартными библиотекарями.
+
+<hr>
+ PO-файлы собираются в библиотеки утилитой clipar.
+
+<hr>
+ Изменена формулировка команды GET, раньше она вызывала встроенную
+   функцию _GET_, а теперь GETNEW с добавленными параметрами.
+
+<hr>
+ Теперь можно в run-time загружать псевдокод (кодовые блоки) из файлов,
+   например делается файл mylib.prg, в котором
+        <xmp>
+   func myfunc1
+   return 1
+   func myfunc2
+   return 2
+         </xmp>
+   делается команда
+        <xmp>
+   clip -p mylib.prg,
+        </xmp>
+   в результате рождается файл mylib.po с псевдокодом внутри.<br>
+   А во время работы любой программы можно написать:
+        <xmp>
+   load("mylib.po")
+   ? myfunc1()
+   ? myfunc2()
+         </xmp>
+<hr>
+ В довесок к outdev, outerr сделан еще один поток вывода информации -
+    в log-файл.
+    <xmp>
+    SET(_SET_LOGLEVEL,num_level) // задает уровень отладки
+    SET(_SET_LOGFILE,filename)   // задает имя log-файла, если не задано,
+                                    то весь вывод будет направлен в
+                                    <имя_программы>.log
+    OUTLOG(level, <list ,,,>)    // если level не указан или
+    				    первым параметром указано не число,
+    				    то данная информация будет выводиться
+    				    в log-файл ВСЕГДА не зависимо от
+    				    текущего уровня отладки.
+    </xmp>
+    Для прикладного логгирования используйте уровни 1-3, 4 уровень дает
+    информацию о вызываемых функциях, скомпилированные как байт-код,
+    5 уровень выводит информацию о всех вызываемых функциях.<br>
+    <b>Примечание</b> - log-файл не удаляется, так что позаботьтесь об этом
+    сами.
+    <p>
+    Для пояснения и в качестве рекомендаций - я бы использовал<br>
+    <ul>
+    <li>0 уровень - кто и когда запускал программу, errorsys, вызов критических
+    операций типа индексации и "перерасчет зарплаты".</li>
+    <li>1 уровень - какие пункты меню вызывались, какие крупные модули программы
+    использовались</li>
+    <li>3 уровень - анализ критических по времени процедур, анализ деятельности
+    пользователей и подобное, печать документов, доступ к "секретным" данным,
+    и т.п.     </li>
+<hr>
+<center>
+&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# stelnet scanmode client with linux emulation
+# all lines except empty and started with '#'
+# are added to environment via 'putenv' call
+#
+#
++TERM=linux-koi8
+CLIP_SCANMODE=terminal
+CLIP_SCANSTART=\033[S
+CLIP_SCANSTOP=\033[R
+#CLIP_KEYMAP=ru1itk
+CLIP_KEYMAP=rustelnet1
+XTERM_MOUSE=on
+#
+#CLIP_HOSTCS=koi8-r
+CLIP_CLIENTCS=cp866
+#CLIP_LINECHARS=\200\201\204\211\205\206\212\207\202\210\203
+#CLIP_DLINECHARS=\240\241\253\273\256\261\276\265\245\270\250
+CLIP_COLORMAP=0123456789ABCDEF

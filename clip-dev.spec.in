@@ -1,0 +1,171 @@
+%define CLIPROOT /usr/local/clip
+%define DESTDIR	${RPM_BUILD_ROOT}
+
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+Vendor:		ITK
+Packager:	Paul Lasarev <paul@itk.ru>
+URL:		http://www.itk.ru
+Source:         %{name}-%{version}.tar.gz
+Group:		Development
+Copyright:	GPL
+Requires:	clip-lib, gcc, make, binutils, readline
+BuildRoot:	/tmp/%{name}-%{version}
+Summary:	XBASE/Clipper compatible program compiler
+AutoReqProv: no
+
+%description
+This package includes the clip compiler and supplimentary libraries
+
+%package -n clip-lib
+Summary: XBASE/Clipper compatible program compiler - runtime library
+Group: devel
+
+%description -n clip-lib
+XBASE/Clipper compatible program compiler - runtime library
+This package provides runtime shared libraries for CLIP package
+
+%prep
+%setup -n %{name}-%{version}
+
+%build
+
+rm -rf %{DESTDIR}
+
+CLIPROOT=%{CLIPROOT}
+SCLIPROOT=%{CLIPROOT}
+export CLIPROOT SCLIPROOT
+export CLIP_LOCALE_ROOT=%{DESTDIR}%{CLIPROOT}
+
+mkdir -p %{DESTDIR}%{CLIPROOT}/include
+
+pushd clip
+	./configure -r
+	make install DESTDIR=%{DESTDIR}
+popd
+
+CLIPROOT=%{DESTDIR}%{CLIPROOT}
+LD_LIBRARY_PATH=%{DESTDIR}/usr/lib
+export CLIPROOT LD_LIBRARY_PATH
+
+#pushd prg
+#	make && make install &&\
+#		%{DESTDIR}%{CLIPROOT}/bin/clip_msgmerge &&\
+#		%{DESTDIR}%{CLIPROOT}/bin/clip_msgfmt
+#popd
+#exit 1
+
+mkdir -p %{DESTDIR}/usr/local/bin
+pushd %{DESTDIR}/usr/local/bin
+	BINS=`cd ../clip/bin; ls clip*`
+	rm -rf *
+	if [ -n "$BINS" ]
+	then
+		rm -rf $BINS
+		for name in $BINS
+		do
+			ln -s ../clip/bin/$name .
+		done
+	fi
+popd
+mkdir -p %{DESTDIR}/usr/lib
+pushd %{DESTDIR}/usr/lib
+	LIBS=`cd ../local/clip/lib; ls libclip* 2>/dev/null`
+	if [ -n "$LIBS" ]
+	then
+		rm -rf $LIBS
+		for name in $LIBS
+		do
+			ln -s ../local/clip/lib/$name .
+		done
+	fi
+popd
+
+mkdir -p %{DESTDIR}%{CLIPROOT}/doc
+cp -a example %{DESTDIR}%{CLIPROOT}/doc/
+
+pushd %{DESTDIR}%{CLIPROOT}/
+	rm -rf `find . -path '*CVS*'`
+popd
+
+echo "-v0
+-O
+-r
+-l" > %{DESTDIR}%{CLIPROOT}/cliprc/clipflags
+strip %{DESTDIR}%{CLIPROOT}/bin/* %{DESTDIR}%{CLIPROOT}/lib/*.so 2>/dev/null || true
+
+rm -f %{DESTDIR}%{CLIPROOT}/lib/Make
+
+tmproot=/tmp/tmproot$$
+mkdir -p $tmproot
+cp -R %{DESTDIR}/* $tmproot
+export DESTDIR=$tmproot
+export CLIPROOT=${DESTDIR}%{CLIPROOT}
+export CLIP_LOCALE_ROOT="${DESTDIR}${CLIPROOT}"
+export LD_LIBRARY_PATH="${DESTDIR}/usr/lib:${LD_LIBRARY_PATH}"
+#export SCLIPROOT
+#=${SCLIPROOT}
+
+# build cliplibs
+pushd cliplibs
+        make rpm
+popd
+
+# build prg
+pushd prg
+	make rpm
+popd
+
+rm -rf $tmproot
+
+%install
+
+%clean
+
+CLIPROOT=%{DESTDIR}%{CLIPROOT} ./clean.sh
+
+rm -rf %{DESTDIR}
+
+%post
+
+/usr/sbin/groupadd clip >/dev/null 2>&1 || true
+
+CLIPROOT=%{CLIPROOT}
+LOCALEDIRS="$CLIPROOT/locale.pot $CLIPROOT/locale.po $CLIPROOT/locale.mo"
+chgrp -R clip $LOCALEDIRS || true
+chmod -R g+w $LOCALEDIRS || true
+
+%post -n clip-lib
+
+/usr/sbin/groupadd clip >/dev/null 2>&1 || true
+
+CLIPROOT=%{CLIPROOT}
+LOCALEDIRS="$CLIPROOT/locale.pot $CLIPROOT/locale.po $CLIPROOT/locale.mo"
+chgrp -R clip $LOCALEDIRS || true
+chmod -R g+w $LOCALEDIRS || true
+
+%files -n clip-lib
+%defattr(-,root,root)
+%dir %{CLIPROOT}/locale.pot
+%dir %{CLIPROOT}/locale.po
+/usr/lib/libclip.so
+%{CLIPROOT}/lib/libclip.so
+%{CLIPROOT}/charsets
+%{CLIPROOT}/keymaps
+%{CLIPROOT}/lang
+%{CLIPROOT}/term
+%{CLIPROOT}/locale.mo
+%{CLIPROOT}/etc
+
+%files
+%defattr(-,root,root)
+%docdir %{CLIPROOT}/doc
+/usr/local/bin
+%{CLIPROOT}/bin
+%{CLIPROOT}/doc
+%{CLIPROOT}/lib/*.a
+%{CLIPROOT}/include
+%{CLIPROOT}/locale.pot
+%{CLIPROOT}/cliprc/clipflags
+

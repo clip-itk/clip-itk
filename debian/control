@@ -1,0 +1,23 @@
+Source: clip
+Section: devel
+Priority: optional
+Maintainer: Paul Lasarev <paul@itk.ru>
+Build-depends: gcc, flex, bison, libc6-dev, make, binutils, fakeroot, libgpmg1-dev
+Standards-Version: 3.0.1
+
+Package: clip-dev
+Architecture: any
+Depends: ${shlibs:Depends}, clip-lib, gcc, gettext, libc6-dev, make, binutils
+Conflicts: clip
+Provides: clip
+Description: XBASE/Clipper compatible program compiler
+ XBASE/Clipper compatible program compiler
+ This package includes the CLIP compiler and developer utilites
+
+Package: clip-lib
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: XBASE/Clipper compatible program compiler - runtime library
+ XBASE/Clipper compatible program compiler - runtime library
+ This package provides runtime shared libraries for CLIP package
+

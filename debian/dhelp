@@ -1,0 +1,9 @@
+<item>
+<directory>devel
+<linkname>Clip Manual
+<filename>doc/index.html
+<description>
+The user manual of Clip, XBase compatible compiler.
+</description>
+</item>
+

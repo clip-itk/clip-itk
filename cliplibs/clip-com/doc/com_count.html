@@ -1,0 +1,48 @@
+<HTML>
+<HEAD><TITLE>COM_COUNT</TITLE></HEAD>
+<BODY>
+
+<PRE>
+ <B>COM_COUNT()</B>
+ Counts the number of characters in the input buffer
+<HR>
+ <B>Syntax</B>
+
+     <B>COM_COUNT(&lt;nComPort&gt;) --&gt; nTotalCharacters</B>
+
+ <B>Argument</B>
+
+     <B>&lt;nComPort&gt;</B>  Designates the port (1 to N) for which the number of
+     characters in the input buffer is determined.
+
+ <B>Returns</B>
+
+     COM_COUNT() returns the number of characters in the selected buffer.
+
+ <B>Description</B>
+
+     This function allows you to determine the number of characters in one of
+     the four possible buffers.  This lets you determine how many characters
+     can be read with the COM_READ() function.
+
+ <B>Note</B>
+
+     <B>”</B>  If an attempt is made to read the number of characters
+        available in a closed port, the function returns a value of -1.
+
+ <B>Example</B>
+
+     nCharacter  :=  COM_COUNT(1)   // Number of characters-port 1
+
+     IF nCharacter &gt; 0
+        COM_READ(1, 1)              // Read 1 character
+     ENDIF
+
+</PRE>
+<HR>
+<B>See Also:</B>
+<A HREF="com_open.html">COM_OPEN()</A>
+<A HREF="com_read.html">COM_READ()</A>
+<HR>
+</BODY>
+</HTML>

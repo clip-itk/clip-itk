@@ -1,0 +1,57 @@
+This is a source tree for standard (prg) clip packages.
+
+For local installation (binaries linked into $HOME/bin,
+CLIPROOT defaults to ../cliproot, shared libraries with full path
+in executable), just type
+
+./make local
+
+from user console. Note that $HOME/bin must be in your PATH environment
+variable for easy launch of CLIP binaries.
+
+
+For system-wide installation (binaries linked into /usr/local/bin,
+CLIPROOT defaults to /usr/local/clip, shared libraries without
+path in executable and are linked into /usr/lib), type
+
+./make system
+
+from root console.
+
+It is possible set CLIPROOT from command line like this:
+
+./make system CLIPROOT=/usr/local/opt/clip
+
+or set CLIPROOT as environment variable.
+
+
+You can compile system-wide packages in some packager format as:
+
+./make deb  - for Debian package
+./make rpm  - for RPM package
+./make tgz  - for system without package manager (or unknown)
+./make tbz  - the same as tgz, but archives are in tar.bz2 format
+
+Destination directory for this targets is
+../clip_distrib/VERSION/TARGET-ARCHITECTURE-LIBCVERSION
+
+Created packages are:
+clip-lib	- base (standard) runtime library
+clip-dev	- development package (compiler)
+clip-prg	- development utilities
+clip-gtk	- GTK GUI support library
+clip-gzip	- zlib interface library
+clip-bzip2	- bzip2 interface library
+clip-gd		- GD image plot graphtics interface library
+clip-mysql	- mysql interface library
+clip-postgres	- postgres interface library
+clip-oracle	- oracle interface library
+
+
+Main www site: http://www.itk.ru
+Main ftp site: ftp://ftp.itk.ru
+
+Please send your bug/reports to uri@itk.ru.
+
+
+Paul Lasarev <paul@itk.ru>

@@ -1,0 +1,5 @@
+# remote linux console (with trans extention)
+CLIP_SCANMODE=TERMINAL
+CLIP_SCANSTART=\033[S
+CLIP_SCANSTOP=\033[R
+XTERM_MOUSE=on

@@ -1,0 +1,39 @@
+#!/bin/sh
+
+pwd=`pwd`
+
+ver=$(head -1 debian/changelog |cut -d'(' -f2|cut -d')' -f1)
+path=../clip_distrib/$ver/src
+rm -rf $path
+mkdir -p $path
+path=$(cd $path; pwd)
+tmp=/tmp/mksrc$$
+pname=clip-prg-$ver
+mkdir -p $tmp/$pname
+
+cd clip
+./configure
+make clic.tab.c rt.tab.c lex.yy.c lex.c.c lex.hash.c
+make distclean
+cd $pwd
+
+echo cp -a * $tmp/$pname
+cp -a * $tmp/$pname
+
+if [ "$NODBU" = yes ]
+then
+	cd $tmp/$pname
+	pwd
+	echo rm -rf $(cat $pwd/exclude_dbu $pwd/exclude_prg)
+	rm -rf $(cat $pwd/exclude_dbu $pwd/exclude_prg)
+fi
+
+cd $tmp
+
+tar cvzf $path/$pname.tgz $pname
+cd $pwd
+
+cp Readme_src $path/Readme
+
+rm -rf $tmp
+

@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24Getc</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24Getc</A></H2><H2>( v24_port_t* port )</H2><BLOCKQUOTE>read a single character.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>The function tries to read a single character from the opened device. To do
+this, the function <!1><A HREF="v24Read.html">v24Read</A> is used. If we have got some data, the
+character is returned as integer value. The caller have to cast it to the
+data type he need. 
+
+<P>In a case of an error, the functions returns <TT>-1</TT>. The caller has to use
+<!1><A HREF="v24QueryErrno.html">v24QueryErrno</A> to get the exact error code. Contrary to <!1><A HREF="v24Read.html">v24Read</A>,
+a timeout is reported as error!
+
+<P>Possible error code are <TT>V24_OK</TT>, <TT>V24_E_NULL_POINTER</TT>, <TT>V24_E_ILLHANDLE</TT>,
+<TT>V24_E_TIMEOUT</TT> or <TT>V24_READ</TT>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><DT><B>Returns:</B><DD>  (int) the character read or <TT>-1</TT>.
+<BR><DT><B>See Also:</B><DD><!1><A HREF="v24QueryErrno.html">v24QueryErrno</A>, v24Read.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

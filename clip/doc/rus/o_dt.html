@@ -1,0 +1,105 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY>
+
+<h3> Класс DATETIME </h3>
+
+Управляет объектами, сотоящими из year,month,day,hour,min,sec,msec.
+<BR>
+Есть набор функций и на их базе построен класс.
+<hr>
+Простенький пример использования функций:
+<xmp>
+x:=dt_create(date(),"11:22:33:44")
+? dt_date(x), dt_time(x)
+? dt_year(x), dt_month(x), dt_day(x), dt_hour(x),dt_min(x),dt_sec(x),dt_msec(x)
+x2:=dt_create("0000/00/00","101:102:103:1024")
+? dt_date(x2), dt_time(x2)
+dt_normalize(@x2)
+? dt_date(x2), dt_time(x2)
+x3:=dt_add(x,x2)
+? dt_date(x3), dt_time(x3)
+x3:=dt_sub(x,x2)
+? dt_date(x3), dt_time(x3)
+</xmp>
+Простенький пример использования объектов:
+<xmp>
+x:=dateTimeNew(date(),"11:22:33:44")
+? x:date(), x:time(x)
+? x:year(), x:month(), x:day(), x:hour(),x:min(),x:sec(),x:msec()
+x2:=dateTimeNew("0000/00/00","101:102:103:1024")
+? x2:date(), x2:time()
+x2:normalize()
+? x2:date(), x2:time()
+x3:=x:add(x2)
+? x3:date(), x3:time()
+x3:=x:sub(x2)
+? x3:date(), x3:time()
+</xmp>
+
+<hr>
+<h3> Описание функций </H3>
+
+<h4> dt:=dt_create(date(),time() ) </H4>
+<h4> dt:=dt_create(date() | "yyyy/mm/dd", nHour, nMin, nSec, nMsec ) </H4>
+<h4> dt:=dt_create(nYear, nMonth, nDay, nHour, nMin, nSec, nMsec ) </H4>
+ Создает и возвращает новую структуру с datetime.
+
+<h4> dVar:=dt_date(dt) </h4>
+ Возвращает дату.
+
+<h4> sVar:=dt_time(dt) </h4>
+ Возвращает время в формате "hh:mm:ss:ms".
+
+<h4>dt_year(dt), dt_month(dt), dt_day(dt), dt_hour(dt), dt_min(dt), dt_sec(dt), dt_msec(dt) </h4>
+ Возвращают составляющие части структуры datetime
+
+<h4> dt2:=dt_normalize(@dt) </h4>
+ Приводит dt в нормализованнное состояние и
+ возвращает новое значение приведенное к нормальному состоянию.
+
+<h4> dt3:=dt_add(dt1,dt2) </h4>
+ Возвращает сумму двух структур datetime.
+
+<h4> dt3:=dt_sub(dt1,dt2) </h4>
+ Возвращает разницу двух структур datetime.
+
+<hr>
+<h3> Описание класса DATETIME </H3>
+
+<h3> Атрибутов у данного класса нет. </h3>
+
+<h3> Методы/функции </H3>
+<h4> dt:=dateTimeNew(date(),time() ) </H4>
+<h4> dt:=dateTimeNew(date() | "yyyy/mm/dd", nHour, nMin, nSec, nMsec ) </H4>
+<h4> dt:=dateTimeNew(nYear, nMonth, nDay, nHour, nMin, nSec, nMsec ) </H4>
+ Создает и возвращает новый объект datetime.
+
+<h4> dt:date() </h4>
+ Возвращает дату.
+
+<h4> dt:time() </h4>
+ Возвращает время в формате "hh:mm:ss:ms".
+
+<h4>dt:year(), dt:month(), dt:day(), dt:hour(), dt:min(), dt:sec(), dt:msec() </h4>
+ Возвращают составляющие части объекта datetime
+
+<h4> dt:normalize() </h4>
+ Нормализует объект.
+
+<h4> dt3:=dt1:add(dt2) </h4>
+ Возвращает сумму двух объектов datetime.
+
+<h4> dt3:=dt1:sub(dt2) </h4>
+ Возвращает разницу двух объектов datetime.
+
+<HR>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+</body>
+</html>

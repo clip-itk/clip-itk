@@ -1,0 +1,252 @@
+/* -*- Mode: C -*-
+ * $Id: manual.dxx,v 1.2 2002/09/11 09:11:28 clip Exp $
+ * -----------------------------------------------------------------------
+ * Copyright  (c) 2001,02  Joerg Desch <jd@die-deschs.de>
+ * -----------------------------------------------------------------------
+ * PROJECT: ezV24-Library
+ * MODUL..: MANUAL.DXX: 
+ * AUTHOR.: Joerg Desch
+ * -----------------------------------------------------------------------
+ */
+
+
+// ----<CHAPTER>----------------------------------------------------------
+//
+/** @name The ezV24 Library
+
+\begin{center}
+{\small Copyright (c) 2002 Joerg Desch}
+\end{center}
+
+The project it hosted at sourceforge. You can find the latest release of the
+`ezV24' library at \URL{http://libezV24.sourceforge.net/}. If you have some questions,
+feel free to write me an email #jdesch@users.sourceforge.net#.
+
+
+The following sections should introduce into the usage of the #ezV24#
+library. At the time being, the current release only support a shared
+libary. Therefor you have to install the resulting #.so# file into your
+\emph{load path}. The installation part of the makefile uses the standard
+#/usr/local# tree. The headers are stored below #/usr/local/ezV24#, while the
+library file itself is installed directly in #/usr/local/lib#.
+
+@memo `easy to use' serial port access.
+*/
+//@{
+
+
+// ----<SECTION>----------------------------------------------------------
+//
+/** @name Installation
+
+The installation is currently \emph{hard wired}. There is no support for the
+GNU auto-tools (automake or autoconf). The whole `configuration' is done by the
+user. You have to edit #ezV24_conf.h#. For the moment, that's all.
+
+To compile and install the libary, just unpack the archive (you may have done
+this ;) and execute the following steps:
+
+\begin{enumerate} 
+
+  \item compile the library by typing `make'. The result should be a executable
+  shared library named `libezV24.so.*'.
+
+  \begin{verbatim}
+    make
+  \end{verbatim}
+
+  \item become root and install the library and the header files. This call
+  will update you ldd-cache too! Note that this doen's install the html
+  documentation! I'm not shure where to install it, so you can put it into your
+  prefered directory.
+
+  \begin{verbatim}
+    su
+    make install
+    exit
+  \end{verbatim}
+
+  \item Now you have the `ezV24'-library installed. The last (optional) step is
+  to compile the sample program.
+
+  \begin{verbatim}
+    make test-v24
+  \end{verbatim}
+
+  The result is a small executable #test-v24#. To see what #test-v24# do, you
+  must have a look into the source code.
+
+\end{enumerate}
+
+@memo    
+*/
+
+
+// ----<SECTION>----------------------------------------------------------
+//
+/** @name Usage
+
+This sections shows the general usage of the Library. The first part gives a
+quick overviews over the `what' and `how'. The second part explain some basics
+using some samples.
+
+@memo an introduction.    
+*/
+//@{
+
+
+/** @name A quick view
+
+To use the libary for your own applications, you have to include the main
+header <ezV24.h>
+
+\begin{verbatim}
+#include <ezV24/ezV24.h>
+\end{verbatim}
+
+To link the shared library to your application, you just have to specify the
+basename of the library with #-lezV24#. The whole call could look like this:
+
+\begin{verbatim}
+gcc -o foo foo.c -lezV24
+\end{verbatim}
+
+To communicate over the serial device, you have to open and close it. Use
+\Ref{v24OpenPort} to open the device. The next step is the correct setup of the
+communication parameters with \Ref{v24SetParameters}.  Note that you must have
+the access rights to do this. After the communication is done, use
+\Ref{v24ClosePort} to close the port and release the lock.
+
+To send and receive data, there are several pairs of functions available. It is
+possible to send and receive single bytes with \Ref{v24Getc} and
+\Ref{v24Putc}. To send an array with data, the functions \Ref{v24Read} and
+\Ref{v24Write} are the right choose. At last, usage of ASCIIZ strings is
+possible using \Ref{v24Gets} and \Ref{v24Puts}.
+
+More details and a few snippets of code are shown in the section \Ref{The Hello-World-Sample}.
+
+@memo
+*/
+
+
+/** @name The Hello-World-Sample
+
+The previous section introduces an very short overview. Here we want to show
+you a whole sample. This sample is cut into smaller pieces. Each piece have its
+own desciption. Ok, let's start with a skeleton.
+
+\begin{verbatim}
+// sample.c
+#include <stdio.h>
+#include <ezV24/ezV24.h>
+
+v24_port_t *UsedPort=NULL;
+
+static void installSignalhandler ( void )
+{
+    signal(SIGINT,mySignalHandler);
+    signal(SIGTERM,mySignalHandler);    
+}
+
+static void mySignalHandler ( int reason )
+{
+    v24ClosePort(UsedPort);
+    exit(99);
+}
+
+void main (void)
+{
+    installSignalhandler();
+    // part-2 ...
+}
+\end{verbatim}
+
+The above skeleton #sample.c# show's several important parts. First it 
+includes the base header of the library. After this, the global variable
+#UsedPort# is declared and set to #NULL#. This variable will hold the
+initialized handle. To ensure, that program close the port, a signal handler
+is installed by #installSignalhandler#.
+
+
+\begin{verbatim}
+    // part-2
+    UsedPort=v24OpenPort("/dev/ttyS0",V24_STANDARD);
+    if ( UsedPort==NULL )
+    {
+        fputs("error: sorry, open failed!\n",stderr);
+        return;
+    }
+    // part-3 ...
+    v24ClosePort(UsedPort);
+\end{verbatim}
+
+This part opens the device #/dev/ttyS0#. After the work (of part-3) is done,
+the port is closed. This snippet doesn't use any special \emph{open
+flags}. The port name is fix. To be a little bit more platform independent, we
+can use \Ref{v24PortName}.
+
+\begin{verbatim}
+    // part-3
+    rc=v24SetParameters(UsedPort,V24_B9600,V24_8BIT,V24_NONE);
+    if ( rc!=V24_E_OK )
+    {
+        fputs("error: setup of the port failed!\n",stderr);
+	v24ClosePort(UsedPort);
+	return 1;
+    }
+    // part-4 ...    
+\end{verbatim}
+
+In part-3, we try to set the communication parameters of the opened port. In
+the above sample, the baudrate is set to 9600. The size of the data byte is
+set to 8 bits, and the parity bit generation is disabled. To see all possible
+parameters, just have a look at \Ref{v24SetParameters}. The shown setup is
+the default used by \Ref{v24OpenPort}. Nevertheless, it is better to use a
+explicit call to #v24SetParameters# to setup the port. The code will be more
+readable and IMO it's better style.
+
+\textbf{Note:} as you can see, the program aborts, if the setup
+fails. Because of this, we have to close the port!
+
+\begin{verbatim}
+    // part-4
+    char* msg="Hello world.\n\r";
+    char answer[80];
+    rc=v24Puts(UsedPort,msg);
+    if ( rc < strlen(msg) )
+    {
+        fputs("error: v24Puts failed.\n",stderr);
+    }
+    else
+    {
+        rc=v24Gets(UsedPort,answer,sizeof(answer)-1);
+        if ( rc < 0 )
+        {
+            fputs("error: v24Gets failed!\n",stderr);
+        }
+        else
+            printf("the answer is `%s'\n",answer);
+    }
+\end{verbatim}
+
+This snippet of part-4 send the string #"Hello world.\n\r"#. If all characters are sent,
+it waits for a reply. Look's good?
+
+For now that's all folks. (but I'm working on more stuff ;-)
+
+*/
+
+
+//@}
+
+
+// ----<SECTION>----------------------------------------------------------
+//
+/** @name The Reference
+ */
+//@{
+//@Include: ezV24.h
+//@}
+
+
+//@}

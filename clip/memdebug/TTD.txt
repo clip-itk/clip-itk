@@ -1,0 +1,113 @@
+-------------------------------------------------------------------------------
+$Id: TTD.txt,v 1.1 2000/04/20 19:38:45 paul Exp $
+-------------------------------------------------------------------------------
+
+IMPORTANT:
+
+- add special-blocks with a sorted-free list
+	- over X bits then it becomes special
+	- if in free special and someone matches then drop the rest of
+		the allocation into a free list maybe, maybe-not
+- be able to break up bigger blocks of memory into small ones
+	- have a split(x) which asks for x+1 bits and then splits it into
+		2 blocks of x bits
+	- split then might go recursive
+	- maybe have a level X and only jump up a maximum of X bits to find
+		free space (depending on how much you want to fragment)
+- change the large block allocation process:
+	- needs to be a lot cleaner and produce a denser heap
+
+-------------------------------------------------------------------------------
+
+CHECKING:
+
+- check in heap_check the cleared space above each allocation instead of
+	only the fence posts
+- maybe write the address % 256 into bytes instead of a constant
+	- maybe it would slow it down.
+	- a token/option?
+	- \305 is recognizable however
+- another token to have the library never reclaim memory, always extend the
+	heap (i.e. don't use free lists at all)
+	- this would grow into an enormous heap however.
+- maybe add another debug level which stores crc information about internal
+	heap structures and verifies it during run time.  slow, slow!!
+
+-------------------------------------------------------------------------------
+
+STRING SUPPORT:
+
+- have special macros for string allocation for string functions.  possibly
+	uppercase or normal overrides.
+- maybe build in most string functions (strcat, strcpy, etc)
+- have a checking level/value that runs though the strings and makes sure
+	they have a NULL in them.
+- this may not be too important in the face of the bounds checking stuff but
+	it may report errors more intelligently
+- need to think if more support for strings would be a good thing
+- it would be able to locate common errors with strings a lot closer to the
+	actual problem.
+- inform the user to include the string stuff at the end of include list
+
+-------------------------------------------------------------------------------
+
+GENERAL:
+
+- for fence underflow, print out the allocation below and for fence overflow
+	the allocation above if possible
+- maybe expand_string dump the first X bytes of an allocation per a token
+- add __builtin_return_value support for higher gcc versions (2.2.0+)
+- have either a bunch of free or used bblocks be:
+	- start block and then a set of continuation blocks
+	- this would mean we do not have to hit each bblock entry to redo
+		the type flag
+- handle memalign, valloc, maybe some form of mallopt
+- maybe use getpagesize (mach_dep.c) to determine BASIC block size
+- handle 0 length allocations correctly if the #define is set
+	- i.e. maybe give back a small section with bounds-checking touching
+- manage dblock_admin entries better
+	- map out usage and get some stats
+	- add to normal db_free lists, zero out each of the entries.  if they
+		are both zero or some magic X then we need to get more bblock
+		space for the dblocks.
+- special case last bunch of bblocks:
+	- have a pointer to the last contiguous set
+	- have them not in a free list
+	- if used and reallocs then just extend it
+	- if free and need some of it then extend (or not) and give
+	- maybe not worth it for 1 pointer
+- maybe make malloc_dbg use no stdio so no unwanted memory allocations.
+- turn realloc into an intelligent beasty that looks on either side
+	of existing chunk (if expanding) for free space and manages free-lists
+	appropriately
+
+-------------------------------------------------------------------------------
+
+TESTING / STATISTICS:
+
+- need to write a set of fully automated test programs
+	- maybe start with a test shell like malloc_t but stripped and then
+		run a script through it and analyse the output
+	- should be a killer that does a million hits
+- test define for allowing 0 length defines
+- test define for realloc(NULL)
+- check out situation where sbrk calls return ERROR (from the beginning and
+	in the middle).  the library should return NULL's straight off and
+	log appropriate errors.
+- add free-list statistics whenever it gets more memory to see the viability of
+	dividing larger free entries in two
+- add statistics whenever it frees memory to see the viability of combining
+	adjacent blocks
+- maybe a program that would try a standard set of tests on a number of
+	different combinations of debug-values to look for dependancies.
+
+-------------------------------------------------------------------------------
+
+RMS comments:
+	- integrate into gnu-malloc
+	- change the bit-flags into the functionality strings themselves
+	- get rid of the malloc_dbg program and the mallocrc file (too "hairy")
+	- integrate __builtin_return_address functionality from gcc
+		gdb command 'info line *ADDRESS' to get file/line
+
+-------------------------------------------------------------------------------

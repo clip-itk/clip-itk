@@ -1,0 +1,55 @@
+<HTML>
+<HEAD><TITLE>COM_CLOSE</TITLE></HEAD>
+<BODY>
+
+<PRE>
+ <B>COM_CLOSE()</B>
+ Clears the receiving buffer and closes the com port
+<hr>
+ <B>Syntax</B>
+
+     <B>COM_CLOSE(&lt;nComPort&gt;) --&gt; lClosed</B>
+
+ <B>Argument</B>
+
+     <B>&lt;nComPort&gt;</B>  Designates which port is closed, COM1 to COMN.
+
+ <B>Returns</B>
+
+     A return of .T. indicates that the port is open and can be closed
+     successfully.
+
+ <B>Description</B>
+
+     This function closes one of the ports (1 to 4).  This means that the
+     buffer is cleared, and all signals in the modem control register (MCR)
+     are deactivated.  Characters remaining in the buffer are lost.  The DTR
+     and RTS signals become inactive, and any existing modem connection is
+     broken.
+
+ <B>Note</B>
+
+     <B>Warning!</B>  All characters in the buffer are cleared, and the status
+     register is set to 0.  Existing connections are always broken!
+
+ <B>Example</B>
+
+     nCharacter  :=  COM_COUNT(1)      // How many characters in
+                                       // the buffer ?
+
+     IF nCharacter &gt; 0
+        * Read everything from buffer!
+        cContent  :=  COM_READ(1, nCharacter)
+     ENDIF
+
+     COM_CLOSE(1)
+
+</PRE>
+<HR>
+<B>See Also:</B>
+<A HREF="com_open.html">COM_OPEN()</A>
+<A HREF="com_init.html">COM_INIT()</A>
+<A HREF="com_dtr.html">COM_DTR()</A>
+<HR>
+</BODY>
+</HTML>

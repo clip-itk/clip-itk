@@ -1,0 +1,9 @@
+Document: clip
+Title: Clip compiler
+Author: Paul Lasarev
+Abstract: This is documentation for the Clip Xbase compatible compiler.
+Section: Devel
+
+Format: HTML
+Index: /usr/share/doc/clip-dev/doc/index.html
+Files: /usr/share/doc/clip-dev/doc/*.html

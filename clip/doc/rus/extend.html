@@ -1,0 +1,280 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY>
+<h4> Система расширения </h4>
+<p>
+Практически 90% функциональных возможностей CLIP, сделаны на базе его
+системы расширения. <BR>
+Система расширения представляет собой набор функций для получения
+параметров при вызове, возврат данных, генерация ошибок, некоторые
+функции для обработки массивов, объектов и других типов в
+представлении на языке С/С++. <BR>
+Например простейшая функция будет представляться в С-сырце примерно так: <BR>
+<PRE>
+#include "clip.h"
+#include "error.ch" // ну еще тут надо stdlib, stdio, .....
+
+int
+clip_SUBSTR(ClipMachine * mp)
+// Название подключаемой функции должно начинаться с "clip_" и далее
+// название CLIPPER-функции в верхнем регистре.
+// такие имена clip-компилятор помещает в специальный список доступных
+// в run-time функций.
+// mp - это описание текущего состояния clip-машины, лучше смотрите ее структуру
+// непосредственно в clip.h
+// Если эта функция возвращает 0 - то ошибок не произошло, если
+// не 0 - то это будет код ошибки.
+{
+	int l;
+	char *ret;
+	char *str = _clip_parcl(mp, 1, &l);
+// получаем первый параметр в виде строки с конкретной длиной.
+	int from = _clip_parni(mp, 2);
+	int kol = _clip_parni(mp, 3);
+// получаем второй и третий параметр в виде числа с автоматическим преобразованием
+// в int - тип.
+// если передаваемые параметры были не того типа - в качестве С-значений
+// будет получено NULL
+	if (str == NULL)
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "SUBSTR");
+// проверка полученной строки и генерация ошибки в случае неправильно
+// переданного параметра
+	}
+// собственно алгоритм обработки
+// на него можно не обращать внимания
+	if (kol &lt;= 0)
+		kol = 0;
+	if (from &lt;= 0)
+	{
+		from = l+from;
+		if (from&lt;0)    	from=0;
+	}
+	else
+		from--;
+	if (_clip_parinfo(mp, 0) &lt; 3)
+		kol = l - from;
+	if ((kol + from) &gt; l)
+		kol = l - from;
+	if (kol &lt; 0)
+		kol = 0;
+	ret = malloc(kol + 1);
+	memcpy(ret, str + from, kol);
+	ret[kol] = 0;
+	_clip_retcn_m(mp, ret, kol);
+// возврат значения в clip-машину в виде строки (с выделенной областью памяти)
+// с указанной длиной (потому что в clipper-строках могут быть нулевые
+// байты!).
+// если ничего не вернуть посредством _clip_.... , то в clip-машину вернется NIL
+	return 0;
+// сообщение clip-машине что функция завершилась без ошибок
+}
+</PRE>
+
+Ну а теперь собственно коротко о тех функциях расширения, которыми надо
+пользоваться при написании новых возможностей для clip.
+Для тех, кто легко читает и пишет на Си - лучше загляните в файл clip.h.
+
+<h3> Функции получения передаваемых параметров </h3>
+<h4>int _clip_parinfo(ClipMachine * mp, int num)</h4>
+Если num==0 - выдает количество параметров, если не 0 - выдает
+тип переданного параметра с номером num.
+<h4>int _clip_parni(ClipMachine * mp, int num)</h4>
+Возвращает значение параметра с номером num преобразованное к типу int
+<h4>long _clip_parnl(ClipMachine * mp, int num)</h4>
+Возвращает значение параметра с номером num преобразованное к типу long
+<h4>double _clip_parnd(ClipMachine * mp, int num)</h4>
+Возвращает значение параметра с номером num преобразованное к типу double
+<h4>int _clip_parp(ClipMachine * mp, int num, int *len, int *dec)</h4>
+Заполняет информацию о параметре с номером num - длину и точность представления
+<h4>char *_clip_parc(ClipMachine * mp, int num)</h4>
+Возвращает значение параметра с номером num как строку без длины
+<h4>char *_clip_parcl(ClipMachine * mp, int num, int *len)</h4>
+Возвращает значение параметра с номером num как строку с длиной (в clipper-строках
+могут быть нулевые байты!)
+<h4>int _clip_parl(ClipMachine * mp, int num)</h4>
+Возвращает  логическое значение параметра с номером num в виде 0/1
+<h4>ClipVar *_clip_par(ClipMachine * mp, int num)</h4>
+Думаю, это и так понятно, а кому не понятно лучше не трогать.
+<h4>long _clip_pardj(ClipMachine * mp, int num)</h4>
+Возвращает значение параметра с номером num, как дату преобразованную в julian - представление
+<h4>long _clip_pardc(ClipMachine * mp, int num, int *yy, int *mm, int *dd, int *ww)</h4>
+Возвращает значение параметра с номером num как дату представленную в виде year,month,day, millenium
+
+<h3> Функции возврата данных в clip-машину </h3>
+<h4>void _clip_retni(ClipMachine * mp, int n)</h4>
+Вернуть число, преобразовав его из int.
+<h4>void _clip_retnl(ClipMachine * mp, long n)</h4>
+Вернуть число, преобразовав его из long.
+<h4>void _clip_retnd(ClipMachine * mp, double n)</h4>
+Вернуть число, преобразовав его из double.
+<h4>void _clip_retndp(ClipMachine * mp, double n, int len, int dec)</h4>
+Вернуть число, преобразовав его из double в формате с длиной len и точностью dec.
+<h4>void _clip_retc(ClipMachine * mp, char *str)</h4>
+Вернуть строку, предварительно скопировав данные из str.
+Str должна быть освобождена без участия clip-машины!
+<h4>void _clip_retcn(ClipMachine * mp, char *str, int len)</h4>
+Вернуть строку c длиной len, предварительно скопировав данные из str.
+Str должна быть освобождена без участия clip-машины!
+<h4>void _clip_retcn_m(ClipMachine * mp, char *str, int len)</h4>
+Вернуть строку c длиной len, без копирования данных из str.
+Str будет освобождена clip-машиной когда эта строка не будет больше
+использоваться (когда кол-во ссылок на эту строку станет равно 0).
+<h4>void _clip_retl(ClipMachine * mp, int l)</h4>
+Вернуть логическое значение.
+<h4>void _clip_retdj(ClipMachine * mp, long julian)</h4>
+Вернуть дату, преобразовав из формата julian.
+<h4>void _clip_retdc(ClipMachine * mp, int yy, int mm, int dd)</h4>
+Вернуть дату, преобразовав из формата year, month, day.
+<h4>void _clip_retnr(ClipMachine * mp, struct rational *r, int len, int dec)</h4>
+Вернуть рациональное число в формате с длиной len и точностью dec.
+
+<h3> Функции вычисления hash-кодов </h3>
+hash-коды используются в clip-машине на каждом углу, так что частенько
+их приходиться вычислять.
+Описывать особенно их собственно и нечего - и так понятно по параметрам.
+<h4>long _clip_hashstr(const char *x)</h4>
+<h4>long _clip_casehashstr(const char *x)</h4>
+<h4>long _clip_hashbytes(long seed, const char *bytes, int len)</h4>
+<h4>long _clip_casehashbytes(long seed, const char *bytes, int len)</h4>
+<h4>long _clip_hash(ClipMachine * mp, ClipVar * vp)</h4>
+<h4>long _clip_casehash(ClipMachine * mp, ClipVar * vp)</h4>
+
+<h3> Функции генерации run-time ошибок </h3>
+
+Для более полного понимания сущности "ошибка" читайте о классе error и тогда
+все эти функции вам станут понятными.
+
+<h4>void _clip_trap(ClipMachine * mp, const char *filename, int line)</h4>
+<h4>void _clip_trap_str(ClipMachine * mp, const char *filename, int line, const char *str)</h4>
+<h4>void _clip_trap_printf(ClipMachine * mp, const char *filename, int line, const char *fmt,...)</h4>
+<h4>void _clip_trap_printv(ClipMachine * mp, const char *filename, int line, const char *fmt, void *vect)</h4>
+<h4>void _clip_trap_var(ClipMachine * mp, const char *filename, int line, ClipVar * var)</h4>
+<h4>void _clip_trap_pop(ClipMachine * mp)</h4>
+<h4>void _clip_trap_invargv(ClipMachine * mp, const char *filename, int line)</h4>
+
+<h4>int _clip_trap_err(ClipMachine * mp, int genCode, int canDefault, int canRetry,
+		   const char *subSystem, int subCode,
+		   const char *operation)</h4>
+
+<h3> Функции управления статическими данными </h3>
+Если появиться необходимость хранить какие-то статические данные
+(например какой-нибудь свой set(_MY_SET_1,MY_DATA) ), то в clip-машине существует
+небольшой набор функций для этого.
+Внимание! Явно в языке Си объявлять конструкции типа "static my_type var_name"
+категорически запрещено. Такие данные могут привести в конфликту между несколькими
+clip-процессами!
+<h4>void _clip_store_item(ClipMachine * mp, long hash, void *item)</h4>
+Запомнить данные item под идентификатором  hash (для его генерации лучше всего
+использовать функции *_hash_*). Область памяти под item должна быть явно выделена!
+<h4>void _clip_store_item_destroy(ClipMachine * mp, long hash, void *item, void (*destroy) (void *))</h4>
+Установить функцию освобождения памяти для статических данных с идентификатором hash.
+<h4>void _clip_free_item(ClipMachine * mp, long hash)</h4>
+Освободить память для идентификатора hash.
+<h4>void _clip_remove_item(ClipMachine * mp, long hash)</h4>
+Вообще уничтожить всю информацию о hash.
+<h4>void *_clip_fetch_item(ClipMachine * mp, long hash)</h4>
+Возвращает указатель на область памяти с идентификатором hash.
+
+<h3> Функции управления контейнерами </h3>
+
+Контейнер - это еще одно средство для хранения статических данных.
+Например, в clip-машину трудно вернуть какой-нибудь Си-указатель на структуру.
+<pre>
+например:
+FILE * fh
+fh=open(filename,...)
+Куда девать указатель "FILE * fh"?
+А ведь в clipper-функции fopen() возвращаемое значение - простое число.
+Или, например, структура открытого соединения с ORACLE,MYSQL и т.п.
+Тоже ведь желательно внутри clip-программы лучше все-таки оперировать числом.
+Вот именно для хранения таких структур и предназначен контейнер.
+</pre>
+<h4>void *_clip_fetch_c_item( ClipMachine *cm, int key, int type )</h4>
+<h4>int _clip_destroy_c_item( ClipMachine *cm, int key, int type )</h4>
+<h4>int _clip_store_c_item( ClipMachine *cm, void *item, int type, void (*destroy)(void*) )</h4>
+<pre>
+В данных функциях:
+key - номер файла,соединения и т.п.
+type - тип хранимой информации (это для того, чтобы случайно не подсунули
+номер файла вместо номера соединения).
+*destroy - функция уничтожения/закрытия хранимой структуры.
+</pre>
+<h3> Вызов функции/процедуры, написанной на клипе, из C </h3>
+<h4>int _clip_clip(ClipMachine * mp, const char *funcname, int argc,ClipVar * stackp, ClipVar * retp), где</h4>
+<p>funcname - имя функции, написанной на клипе;<br>
+<p>argc - количество аргументов;<br>
+<p>stackp - указатель на массив параметров;<br>
+<p>retp - указатель на возвращаемое значение.<br>
+<br>
+stackp представляет собой массив из argc элементов типа ClipVar.<br>
+retp - указатель на ячейку стека в который будет помещено возвращаемое
+значение. Для получения этого указателя можно использовать макрос RETPTR.
+Например:<br>
+<pre>
+int clip_MY_C_FUNC(ClipMachine* mp)
+{
+    ClipVar pars[2];
+    ClipVar* retp = RETPTR(mp); // RETPTR - макрос, возращает указатель
+                                // на ячейку стека в которой будет возвращаемое
+                                // значение
+
+    memset(pars,0,sizeof(ClipVar)*2); // на всякий случай :)
+
+    pars[0].t.type = CHARACTER_t; // первый аргумент - строка ("Вова")
+    pars[0].s.str.buf = "Вова"; // элемент s юниона ClipVar - для строк
+    pars[0].s.str.len = strlen("Вова");
+
+    pars[1].t.type = NUMERIC_t; // второй - число (123.45)
+    pars[1].n.d = 123.45; // элемент n юниона ClipVar - для чисел
+
+    _clip_clip(mp,"MY_CLIP_FUNC",2,pars,retp);
+    return 0;
+}
+</pre>
+
+<h3> Другие возможности </h3>
+Вышеперечисленными функциями C-API не ограничивается. Есть еще масса
+функций по управлению массивами, объектами, вводом-выводом, вызовами
+кодовых блоков и многое другое.
+Но данная информация будет предоставляться только тем, кто имеет
+соответствующую квалификацию, так как некорректное, бестактное и
+неквалифицированное использование данных возможностей может привести к
+грубым и непонятным "падениям" прикладных программ, утечке памяти,
+и как результат - наезды на нас.
+Кто захочет прикрутить что-то серьезное к clip  - обращайтесь -
+дадим и информацию и примеры, поможем в работе и освоению внутреннего
+устройства clip-машины.
+
+<h3> Создание динамически загружаемых модулей для clip. </h3>
+В clip имеется функция load(), которая загружает динамические модули (*.so)
+или байт-код (*.po) и библиотеки байт-кодов (*.pa). <BR>
+Байт-код и so-модули легко получить из prg-файлов командами: <BR>
+clip -p module.prg  -&gt; module.po <BR>
+clip -s module.prg  -&gt; module.c -&gt; module.so <BR>
+А вот написать на Си такой же загружаемый модуль можно таким способом:<BR>
+Создается module.prg и в нем описываются все необходимые пустые функции<BR>
+function my_func1()<BR>
+return             <BR>
+function my_func2()<BR>
+return             <BR>
+затем этот модуль компилируется <BR>
+clip -s  module.prg<BR>
+в результате получается Сишный текст в файле module.c.<BR>
+Этот текст имеет заготовки для описанных функций my_func1,my_func2,....
+Остается просто поменять тело функций по вышеописанным правилам для C-API
+и получится so-модуль написанный на Си. Далее его останется только
+скомпилировать Си-компилятором с ключиком -shared или аналогичным,
+в зависимости от компилятора.
+<hr>
+<center>
+&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+</BODY>
+</HTML>

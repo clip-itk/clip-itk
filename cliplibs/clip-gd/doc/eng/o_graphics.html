@@ -1,0 +1,193 @@
+<HTML>
+<HEAD>
+<TITLE>Business graphics library</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL="STYLESHEET" TYPE="text/css" HREF="../styl.css">
+</HEAD>
+</HEAD>
+<BODY background="fon.gif">
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+</center>
+
+<h2>Business graphics library</h2>
+Includig classes for creating:<br>
+<ul>
+<li> histograms - <br>
+	BgHistNew(sizeX, sizeY)
+<li> histograms with cumulation  - <br>
+	BgHistCumulNew(sizeX, sizeY)
+<li> 100%-normalized histograms - <br>
+	BgHistNormNew(sizeX, sizeY)
+<li> 3D-histograms - <br>
+	BgHist3DNew(sizeX, sizeY)
+<li> linear diagram - <br>
+	BgLineNew(sizeX, sizeY)
+<li> linear diagram with cumulation - <br>
+	BgLineCumulNew(sizeX, sizeY)
+<li> linear 100%-normalized diagram - <br>
+	BgLineNormNew(sizeX, sizeY)
+<li> circle diagram  - <br>
+	BgCircleNew(sizeX, sizeY)
+<li> ring diagram - <br>
+	BgRingNew(sizeX, sizeY)
+</ul>
+<h3> Attributes </H3>
+<TABLE border=1>
+<th> Attribute name </TH>
+<th> Attribute value </TH>
+<TR> <td> sizeX </td> <TD> width picture </TD>
+<TR> <td> sizeY </td> <TD> high picture </TD>
+</TABLE>
+
+<h3> Methods/Functions </H3>
+<h4> Creating </h4>
+bg=BgHistNew(sizeX, sizeY)<br>
+bg=BgHistCumulNew(sizeX, sizeY)<br>
+bg=BgHistNormNew(sizeX, sizeY)<br>
+bg=BgHist3DNew(sizeX, sizeY)  <br>
+bg=BgLineNew(sizeX, sizeY)    <br>
+bg=BgLineCumulNew(sizeX, sizeY)<br>
+bg=BgLineNormNew(sizeX, sizeY)<br>
+bg=BgCircleNew(sizeX, sizeY)  <br>
+bg=BgRingNew(sizeX, sizeY)    <br>
+bg=BgNew(bgType, sizeX, sizeY) - total business graphics, where <i>bgType</i> - graphics type (see <i>bggraph.ch</i>)  <br>
+<h4>Method bg:setData(arr[, legend][, alignLeg][, signat]) --&gt; <i>.t.</i>/<i>.f.</i></h4>
+Settings data, <br>
+arr - array of data<br>
+legend - legend, array<br>
+alignLeg - align legend (ALIGN_NONE | ALIGN_TOP | ALIGN_BOTTOM | ALIGN_LEFT | ALIGN_RIGHT),
+types defined in <i>bggraph.ch</i>
+signat - categoryes, array
+<h4>Method bg:setInfo([title][, subTitle][, vrtTitle]) --&gt; <i>.t.</i></h4>
+Create title, subtitle and title for vertical axis.
+<h4>Method bg:setAverage(type[, value]) --&gt; <i>.t.</i>/<i>.f.</i></h4>
+On/Off draw middle-value line,<br>
+type - : <br>
+0 - nothing showed<br>
+1 - showed middle-value<br>
+2 - showed "critical" value<br>
+3 -  showed middle and critical values<br>
+value - critical value.
+Attantion: at now worked only type=0 and type=1.
+<h4>Method bg:setVolume([volume]) --&gt; <i>volume</i></h4>
+On/Off volume. For all classes exclude BgHist3DNew.
+<br>
+volume - .t./.f. on/off volume<br>
+If called method without parameters, then volume shell be inverted.
+<h4>Method bg:drawImage() --&gt; <i>.t.</i>/<i>.f.</i> </h4>
+Drew graphic.
+<h4>Method bg:storeImage(type, filename) --&gt; <i>.t.</i>/<i>.f.</i></h4>
+Store image to file.<br>
+type - type of file: GDFILE_PNG | GDFILE_GD | GDFILE_GD2 | GDFILE_XBM | GDFILE_JPEG ,
+by default -  GDFILE_PNG<br>
+filename - file name
+<br>
+Simple example:
+<PRE>
+#include "gdinfo.ch"
+#include "bggraph.ch"
+
+local bg, data, legend, alignleg, signat
+
+bg := BgHistNew(300, 300)
+
+data := {{12, 156, -34, 104, 45, 78, -34},{34,67, 65,11,-45,-67,90}, {32, 56, 11, 43, 67, 34, 89}}
+legend := {"first", "second", 'third', 'fourth'}
+signat := {"Sun", "Mon", 'Tu', 'Wed', "Thur", "Fri", "Sat"}
+alignleg := ALIGN_RIGHT
+
+bg:setData(data, legend, alignleg, signat)
+bg:setInfo("Histogram", "One week of...", "Some digits on the axis...")
+
+/* drew graphic in volume */
+bg:setAverage(1)
+bg:setVolume(.t.)
+bg:drawImage()
+/* and store it */
+bg:storeImage(GDFILE_PNG, "hist1.png")
+
+/* now the same but 2D */
+bg:setAverage(0)
+bg:setVolume(.f.)
+bg:drawImage()
+bg:storeImage(GDFILE_PNG, "hist2.png")
+
+</PRE>
+Next example for BgNew():
+<PRE>
+#include "gdinfo.ch"
+#include "bggraph.ch"
+
+local bg, data, legend, alignleg, signat
+
+bg := BgNew(BG_TYPE_HIST, 300, 300)
+
+data := {{12, 156, -34, 104, 45, 78, -34},{34,67, 65,11,-45,-67,90}, {32, 56, 11, 43, 67, 34, 89}}
+legend := {"first", "second", 'third', 'fourth'}
+signat := {"Sun", "Mon", 'Tu', 'Wed', "Thur", "Fri", "Sat"}
+alignleg := ALIGN_RIGHT
+
+bg:setData(data, legend, alignleg, signat)
+bg:setInfo("Histogram", "One week of...", "Some digits on the axis...")
+
+/* drew graphic in volume */
+bg:setAverage(1)
+bg:setVolume(.t.)
+bg:drawImage()
+/* and store it */
+bg:storeImage(GDFILE_PNG, "hist1.png")
+
+/* now the same but 2D */
+bg:setAverage(0)
+bg:setVolume(.f.)
+bg:drawImage()
+bg:storeImage(GDFILE_PNG, "hist2.png")
+</PRE>
+<table width=100%>
+<tr><th align=center colspan=2>Histogram<br>
+showed values different categoryes
+<tr><td><img src="hist1.png" alt="Example histogram">
+    <td><img src="hist2.png" alt="Example histogram">
+<tr><td><img src="line1.png" alt="Example linear histogram">
+    <td><img src="line2.png" alt="Example linear histogram">
+<tr><th align=center colspan=2>Histogram with cumulation<br>
+showed  part every categories in sum total
+<tr><td><img src="histcumul1.png" alt="Example histogram with cumulation">
+    <td><img src="histcumul2.png" alt="Example histogram with cumulation">
+<tr><td><img src="linecumul1.png" alt="Example linear histogram with cumulation">
+    <td><img src="linecumul2.png" alt="Example linear histogram with cumulation">
+<tr><th align=center colspan=2>100%-normolized histogram<br>
+showed piece every categories in sum total
+<tr><td><img src="histnorm1.png" alt="Example 100%-normolized histogram">
+    <td><img src="histnorm2.png" alt="Example 100%-normolized histogram">
+<tr><td><img src="linenorm1.png" alt="Example linear 100%-normolized histogram">
+    <td><img src="linenorm2.png" alt="Example linear 100%-normolized histogram">
+<tr><th align=center colspan=2>3D histogram<br>
+showed values different categoryes by lines
+<tr><td colspan=2><img src="histvolume.png" alt="Example 3D histogram">
+<tr><th align=center colspan=2>Circle diagram<br>
+showed  part(values or percent) every categories in sum total
+<tr><td><img src="circle1.png" alt="Example circle diagram">
+    <td><img src="circle2.png" alt="Example circle diagram">
+<tr><th align=center colspan=2>Ring diagram<br>
+showed  part(values or percent) every categories in sum total. Equivalent circle
+diagram but showed some lines of data
+<tr><td><img src="ring1.png" alt="Example ring diagram">
+    <td><img src="ring2.png" alt="Example ring diagram">
+</table>
+
+
+
+
+
+
+<hr>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+<HR>
+&#169 E.Kornilova, <A HREF="mailto:alena@itk.ru">alena@itk.ru</A>, 2000
+</center>
+
+
+

@@ -1,0 +1,43 @@
+Format of CLIP PCODE object/archive file.
+
+All integers & doubles are in native byteorder.
+
+label:	type/length:	contens:	description:
+
+	char[8]		"!<pobj>\n"	magic field - file ident
+	long		timestamp	compile time
+	long		length		length of rest of module
+modbeg:
+	long		staticOffs	offset of static vars in file
+	long		staticNo+1	number of static vars + 1
+	short		numCount	count of Numeric constants
+	short		strCount	count of String constants
+	long		pubCount	count public functions in module
+	long		allCount	count of functions in module
+	short		numOffs		offset of Numeric constants from modbeg
+	short		strOffs		offset of String constants from modbeg
+	short		initOffs	offset of init module code from modbeg
+	long		funcOffs	offset of function array from modbeg
+#add
+	short		initCount
+	short		exitCount
+#eadd
+	char[]		name		null-terminated name of module
+numoffs:
+	double[numCount] numbers	Numeric constants
+stroffs:
+	{
+	short len;
+	short offs;
+	}[strCount] 	strinfo		array of len/offs pairs of String constants
+	char[][strCount] strings	null-terminated String constants
+initoffs:
+	function	initFunc	init module function
+funcoffs:
+	{
+	long hash;
+	long offs;
+	}[allCount]	funcinfo	array of hash/offs pairs of module functions
+	function[pubCount]		public functions
+	function[]			static functions
+	function[]			codeblock functions

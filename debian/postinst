@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+[ "$1" = configure ] || exit 0
+
+/usr/sbin/groupadd clip || true
+
+CLIPROOT=/usr/local/clip
+LOCALEDIRS="$CLIPROOT/locale.pot $CLIPROOT/locale.po $CLIPROOT/locale.mo"
+chgrp -R clip $LOCALEDIRS || true
+chmod -R g+w $LOCALEDIRS || true
+
+
+#DEBHELPER#

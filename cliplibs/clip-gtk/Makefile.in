@@ -1,0 +1,137 @@
+# main part
+#
+#
+
+#export CC
+#DBGFLAGS	= -g #-DMEMDBG
+#WARNFLAGS	= -Wimplicit -Wall
+
+.SUFFIXES: .prg .c .po
+.PHONY:	test screen hash
+
+
+HDRS	= clip-gtk.ch clip-gtk.h
+
+GDK_SRC = gdk.c gdkfont.c gdkinput.c gdkcolor.c gdkgc.c gdkdraw.c \
+	  gdkwindow.c gdkregion.c
+
+GTK_SRC = adjustment.c alignment.c bmpxpm.c box.c button.c buttonbox.c calendar.c \
+	  checkbutton.c checkmenuitem.c clist.c colorsel.c combo.c common.c \
+	  container.c ctree.c curve.c dialog.c drawingarea.c editable.c entry.c \
+	  filesel.c fixed.c fontsel.c frame.c general.c gtkdraw.c handlebox.c item.c \
+	  label.c layout.c list.c listitem.c menu.c menubar.c menuitem.c \
+	  menushell.c misc.c notebook.c object.c optionmenu.c packer.c paned.c \
+	  pixmap.c progress.c progressbar.c radiobutton.c radiomenuitem.c \
+	  range.c rulers.c scale.c scrollbar.c scrolledwindow.c separator.c \
+	  spinbutton.c statusbar.c table.c text.c tipsquery.c togglebutton.c \
+	  toolbar.c tooltips.c tree.c treeitem.c viewport.c widget.c window.c
+
+GDK_OBJ = gdk.o gdkfont.o gdkinput.o gdkcolor.o gdkgc.o gdkdraw.o \
+	  gdkwindow.o gdkregion.o
+
+GTK_OBJ = adjustment.o alignment.o bmpxpm.o box.o button.o buttonbox.o calendar.o \
+	  checkbutton.o checkmenuitem.o clist.o colorsel.o combo.o common.o \
+	  container.o ctree.o curve.o dialog.o drawingarea.o editable.o entry.o \
+	  filesel.o fixed.o fontsel.o frame.o general.o gtkdraw.o handlebox.o item.o \
+	  label.o layout.o list.o listitem.o menu.o menubar.o menuitem.o \
+	  menushell.o misc.o notebook.o object.o optionmenu.o packer.o paned.o \
+	  pixmap.o progress.o progressbar.o radiobutton.o radiomenuitem.o \
+	  range.o rulers.o scale.o scrollbar.o scrolledwindow.o separator.o \
+	  spinbutton.o statusbar.o table.o text.o tipsquery.o togglebutton.o \
+	  toolbar.o tooltips.o tree.o treeitem.o viewport.o widget.o window.o
+
+SRCS = $(GDK_SRC) $(GTK_SRC)
+
+OBJS = $(GDK_OBJ) $(GTK_OBJ)
+
+OBJDIR	= .
+EXTOBJS =
+
+HASHSRCS = $(SRCS) $(HDRS)
+
+XLIB	= libclip-gtk.a
+XSLIB	= libclip-gtk$(DLLSUFF)
+XSLIBREAL = libclip-gtk$(DLLREALSUFF)
+XLIBOBJS= $(OBJS)
+
+SYS = $OSNAME
+SYSTEM_NAME = $(OSNAME)
+
+DEFS	=
+# -DVERSION=\"0.1\"
+# -DSYSTEM=\"$(SYSTEM_NAME)\"
+
+CC = $(COMPILER)
+CFLAGS  = $(C_FLAGS) $(DEFS) $(MEMDBGFLAGS)
+#  $(WARNFLAGS) $(DBGFLAGS) $(OPTFLAGS) -I$(INCLUDE)
+
+export CC CFLAGS
+export MEMDBG MEMDBGFLAGS
+
+all: Makefile hash $(XTARGETS)
+
+d: set_dbg
+
+set_dbg: CDBGFLAGS=-g
+set_dbg: all
+
+Makefile: Makefile.in configure
+	./configure
+
+hash: _hashcode.h
+
+_hashcode.h: $(HASHSRCS)
+	$(CLIPROOT)/bin/clip_hashextract $(HASHSRCS) | sort -u > _hashcode.h
+	cmp _hashcode.h hashcode.h 2>/dev/null || cp _hashcode.h hashcode.h
+
+$(XLIB): $(XLIBOBJS)
+	rm -f $(XLIB)
+	$(CLIPROOT)/bin/clip_makelib $(XLIB) $(XLIBOBJS)
+	ranlib $(XLIB)
+
+$(XSLIB): $(XLIB)
+	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) $(XLIB) $(LIBS)
+
+clean:
+	rm -rf *.o *.a *.so *.dll *.po *.pa *.b *.BAK *.bak *~ core* \
+	*core Makefile.inc *.ex *.nm
+
+distclean: clean
+	rm -rf clip-gtkcfg.h hashcode.h _hashcode.h Makefile
+	-cd test &&  $(MAKE) clean
+	-cd example && $(MAKE) clean
+
+install: all
+	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(CLIPROOT)/lib
+	chmod 0644  $(CLIPROOT)/lib/$(XLIB)
+	chmod 0755  $(CLIPROOT)/lib/$(XSLIB)
+	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(CLIPROOT)/lib
+	cp clip-gtk.cliprc $(CLIPROOT)/cliprc/
+	chmod 0644  $(CLIPROOT)/cliprc/clip-gtk.cliprc
+	cp clip-gtk.ch $(CLIPROOT)/include/
+	cp clip-gtk.h $(CLIPROOT)/include/
+#	mkdir -p $(CLIPROOT)/doc/clip-gtk
+#	cp -R doc/* $(CLIPROOT)/doc/clip-gtk
+	mkdir -p $(CLIPROOT)/doc/example/clip-gtk
+	cp example/clipgtktest.prg example/Makefile example/clip.xpm example/basket.bmp $(CLIPROOT)/doc/example/clip-gtk
+
+.c.o:
+	@echo $(CC) $(CDBGFLAGS) $(CFLAGS) -c $<
+	@$(CC) $(CDBGFLAGS) $(CFLAGS) $(XCFLAGS) -c $<
+
+depend:
+	$(MAKE) hash
+	makedepend -Y  -- $(CFLAGS) -- $(SRCS) 2>/dev/null
+
+commit:
+	_cvs commit
+
+update:
+	_cvs update -dP
+
+ucommit:
+	_cvs update -dP && _cvs commit
+
+shell:
+	sh
+

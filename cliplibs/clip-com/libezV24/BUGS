@@ -1,0 +1,112 @@
+                                                        -*- indented-text -*-
++===========================================================================+
+|                              REPORTED BUGS                                |
+`==========================================================================='
+
+
+DATE:		<date> / <author>
+RELEASE:	<release of project>
+BUG:		<description>
+SOLUTION:	<possible solutions>
+RESULT:		<state of the bug {report|open|in-work|fixed}>
+
+
+
+
+
+              .-----------------------------------------------.
+_____________/   REPORTED / UNRATED BUG-REPORTS                \_____________
+             `-------------------------------------------------'
+
+              .-----------------------------------------------.
+_____________/   OPEN / UNRESOLVED BUGS                        \_____________
+             `-------------------------------------------------'
+
+-----------------------------------------------------------------------------
+DATE:		2.12.2002 / jd
+
+RELEASE:	0.0.3
+
+BUG:		enabling parity checking results in the reception of bytes
+                with a stript 8 bit (MSB). The bytes seems to be send
+		correctly. This happens with a special embedded hardware. I
+		have not checked it with other serial devices.
+
+SOLUTION:	no idea why/where this happens....
+
+RESULT:		open
+-----------------------------------------------------------------------------
+
+
+              .-----------------------------------------------.
+_____________/   FIXES IN-WORK                                 \_____________
+             `-------------------------------------------------'
+
+              .-----------------------------------------------.
+_____________/   FIXED BUGS                                    \_____________
+             `-------------------------------------------------'
+
+-----------------------------------------------------------------------------
+
+DATE:		11.3.2002 / ??
+
+RELEASE:	0.0.3
+
+BUG:		test-v24 mentions the parameter -c as -p.
+
+RESULT:		fixed
+
+-----------------------------------------------------------------------------
+
+DATE:		11.3.2002 / ??
+
+RELEASE:	0.0.3
+
+BUG:		v24SetDTR calls ioctl wirh `status' instead of `&status'.
+
+RESULT:		fixed
+
+-----------------------------------------------------------------------------
+
+DATE:		24.1.2002 / jd
+
+RELEASE:	0.0.3
+
+BUG: 		bufferoverflow in v24Gets() wasn't checked. If the received
+		string is larger than the passed buffer, the application
+		crashes. I've forgotten to check the buffersize passed in
+		`BuffSize'
+
+SOLUTION:	limit the number of char to read to `BuffSize'
+
+RESULT:		fixed / jd - 24.1.2002 
+
+-----------------------------------------------------------------------------
+
+DATE:		30.10.2001 / jd
+
+RELEASE:	0.0.2
+
+BUG:		The API of the libary uses the type size_t. This requires, 
+		that the header stdlib.h is loaded before ezV24.h!
+
+SOLUTION:	Just loaded the header in ezV24.h.
+
+RESULT:		fixed / jd - 15.11.2001
+
+-----------------------------------------------------------------------------
+
+DATE:		18.10.2001 / jd
+
+RELEASE:	0.0.2
+
+BUG:		v24Gets() miss the `end of string', if there are following
+		characters! In this case, the read() fetch the `end of string'
+		and it isn't the last char in the buffer.
+
+RESULT:		fixed / jd - 18.10.2001
+
+-----------------------------------------------------------------------------
+
+
+===[end of file]=============================================================

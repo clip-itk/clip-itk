@@ -1,0 +1,20 @@
+Public QQ,SUM
+scroll()
+devPos(0,0)
+devout(time())
+qout("sadfsdfsd")
+qout()
+inkey(0)
+SUM:=0
+QQ:=30
+for QQ:=1;QQ <= 10000;QQ:=QQ+1
+ SUM:=SUM+QQ
+next
+devPos(1,0)
+devout(time())
+devPos(2,0)
+devout('SUM from 1 to 10000 is '+STR(SUM))
+devPos(3,0)
+devout('QQ is '+STR(QQ))
+
+__wait('')

@@ -1,0 +1,278 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+
+Небольшой коментарий по поводу параметра <B> other </B>, имеющийся во многих фукнциях и
+методах классов <B>HTML и HTML_TAG </B>.
+Этот параметр предназначен для создания в тегах полей не поддающихся
+систематизации, вы всегда можете воспользоваться им для создания нестандартного
+тега с нестандартными полями/атрибутами.
+В качестве other может использоваться:<BR>
+<UL>
+<LI> строка, и в этом случае эта строка просто попадет в описание тега, например : <BR>
+	html_tagNew("BR",'other_field="value_field"') <BR>
+     и в данном случае представление этого тега в выходном потоке или файле
+     будет выглядеть как: <BR>
+     &lt BR other_field="value_field" &gt  &LT /BR &gt
+<LI> массив дополнительный полей с их значениями в виде: <BR>
+	<PRE>
+        {
+        	{ "name_field1", value_field1 },
+        	{ "name_field2", value_field2 },
+                ......
+        }
+        </PRE>
+</UL>
+
+<h2>             Include files </h2>
+<h3> clr_html.ch </H3>
+Файл с описаниями популярных цветов, используемых в HTML-документах.
+<h3> html.ch </H3>
+Файл с описаниями команд для управления HTML-документами.<BR>
+Я думаю что расписывать их особенно не стоит, и по описанию в html.ch
+будет понятно что делают команды.<BR>
+А вот если у кого проявится желание написать доку на эти команды,
+или перепахать весь html.ch - мы только будет приветсвовать.
+
+
+<h2>             Описание класса HTML_TAG </h2>
+<h3> Атрибуты/свойства </H3>
+<TABLE border=1>
+<th> Название атрибута </TH>
+<th> Значение атрибута </TH>
+<TR>
+<td> className </td> <TD> "HTML_TAG" </TD>
+<tr>
+<td> tagName </td> <TD> строковое название тега </TD>
+<tr>
+<td> fields </td> <TD> двухмерный массив полей тега </TD>
+</TABLE>
+<h3> Методы/функции </H3>
+<h4> функция html_tagNew </h4>
+Создает новый объект класса HTML_TAG
+<TABLE border=1>
+<th> Название параметра </TH>
+<th> назначение </TH>
+<TR>
+<td> tagname </td> <TD> название создаваемого тега </TD>
+<TR>
+<td> other </td> <TD> дополнительные поля тега, не попавшие в остальные
+			параметры функции </TD>
+<TR>
+<td> title </td> <TD> значение поля title </TD>
+<TR>
+<td> style </td> <TD> значение поля style </TD>
+<TR>
+<td> class </td> <TD> значение поля class </TD>
+<TR>
+<td> event </td> <TD> значение поля event </TD>
+<TR>
+<td> id </td> <TD> значение поля id </TD>
+<TR>
+<td> lang </td> <TD> значение поля lang </TD>
+<TR>
+<td> language </td> <TD> значение поля language </TD>
+</TABLE>
+<h4> метод html:toString() </h4>
+параметров не имеет, возвращает строковое представление открывающего
+тега со всеми полями
+<h4> метод html:closeString() </h4>
+параметров не имеет, возвращает строковое представление закрывающего тега
+<h4> метод html:addField() </h4>
+addField(field_name,field_value) - добавляет в тег новое поле с именем
+field_name и значением field_value, возвращает идентификатор/номер этого поля.
+
+<h2>             Описание класса HTML </h2>
+<hr>
+<h3> Атрибуты/свойства </H3>
+<TABLE border=1>
+<th> Название атрибута </TH>
+<th> Значение атрибута </TH>
+<TR>
+<td> className </td> <TD> "HTML" </TD>
+<tr>
+<td> fileName </td> <TD> имя файла с которым ассоциируется данных экземпляр класса,
+			т.е. этот документ был/будет прочитан/записан из/в
+			указанный файл  </TD>
+<tr>
+<td> title </td> <TD> титульное название этого объекта </TD>
+<tr>
+<td> tags  </td> <TD> массив всех тегов и данных этого объекта </TD>
+</TABLE>
+
+<h3> Методы/функции </H3>
+<h4> функция htmlNew(fileName,title) </h4>
+Создает новый объект класса HTML, но не читает его из файла, для этого имеется
+соотвествующий метод. Если filename отсутсвует то объект будет прочитан/записан
+со/в входного/выходной поток.
+<h4> метод html:writeToFile(fileName) </h4>
+Записывает строковое представление объекта в указанный fileName, если
+fileName не указан то запишет в html:fileName
+<h4> метод html:writeToHttp() </h4>
+Записывает http-заголовок и следом за ним строковое представление объекта в
+выходной поток.
+<h4> метод html:addTag(tag) </h4>
+добавляет tag, созданный через html_tagNew в конец списка тегов,
+возвращает идентификатор в списке html_tags или 0 если добавление не
+произошло.
+<h4> метод html:closeTag(tag_ident) </h4>
+создает закрывающий тег для тега с идентификатором tag_ident, возвращает
+идентификатор созданного тега.
+<h4> метод html:addData(data_string) </h4>
+добавляет в объект текстовые данные, возвращает идентификатор.
+<h4> метод html:newLine(lBr) </h4>
+добавляет в объект CRLF и если lBR==.t. то еще и тег BR, возвращает
+идентификатор добавленного тега.
+<h4> метод html:setPageColor(color) </h4>
+в теге BODY устанавливает поле BGCOLOR в значение color, возвращает .t. или .f.
+<h4> метод html:setTextColor(color) </h4>
+в теге BODY устанавливает поле TEXT в значение color, возвращает .t. или .f.
+<h4> метод html:setBgImage(img_url) </h4>
+в теге BODY устанавливает поле BACKGROUND в значение img_url, возвращает .t. или .f.
+<h4> метод html:setCEnter(lOn) </h4>
+в зависимости от lOn добавляет открывающий/закрывающий тег CENTER, возвращает
+идентификатор тега
+<h4> метод html:startFont(face,size,color,lBold,lItalic,lUline) </h4>
+Формирует и добавляет тег FONT в соотвествии с указанными face,size,color.
+И если переданы lBold,lItalic,lUline то и добавляет еще и теги включения
+соответсвующих шрифтов. Возвращает идентификатор тега FONT
+<h4> метод html:endFont() </h4>
+Добавляет закрывающий тег FONT, возвращает его идентификатор
+<h4> метод html:setFontType(font_type,lOn) </h4>
+Добавляет открывающий/закрывающий тег (в зависимости от lOn) для
+типа фонта font_type (B,I,BIG, и т.п.), возвращает идентификатор тега
+<h4> метод html:say(str,font,size,type,color) </h4>
+<h4> метод html:sayColor(str,color) </h4>
+Формирует тег FONT с соответсвующими параметрами font,size,type,color,
+добавляет str в описание документа и формирует закрывающий тег FONT.
+Возвращает идентификатор присвоенный str
+<h4> метод html:qout(p1,p2,p3,.....) </h4>
+<h4> метод html:qqout(p1,p2,p3,.....) </h4>
+Результат работы этих методов аналогичен командам ?,?? и функциям qout,qqout.
+Т.е. преобразует p1,p2,p3,... в строковое представление и добавляет их через
+запятую в описание документа. Возвращает идентификатор.
+<h4> метод html:Space() </h4>
+Добавляет в документ ключевое слово nbsp
+<h4> метод html:putImage(file,alt,border,height,name,target,other)</h4>
+Формирует тег IMG из переданных параметров и добавляет его в документ,
+возвращает идентификатор добавленного тега.
+<h4> метод html:text(text,width,lWrap) </h4>
+Добавляет в документ тег TEXT обрамленный тегами PRE, возвращает
+идетнификатор тега TEXT
+<h4> метод html:multiCol(text,cols,gutter,width) </h4>
+Добавляет в документ тег MULTICOL, возвращает идентификатор
+<h4> метод html:putHeading(text,Weight,align,lCenter)</h4>
+Добавляет в документ заголовок соответсвующего Weight размера и при
+необходимости ( LCenter) обрамляет его тегами CENTER.
+Возвращает идентификатор тега Hx
+<h4> метод html:hLine(size,width)</h4>
+Добавляет в документ горизонтальную линию соответсвующего Size & Weight
+размера, возвращает идентификатор тега
+<h4> метод html:Paragraph(lOn,align,style)</h4>
+Добавляет в документ открывающий/закрывающий (lOn) тег P,
+возвращает идентификатор тега
+<h4> метод html:putBreak()</h4>
+равнозанчно newLine(.t.)
+<h4> метод html:startMarquee(other,align,behavior,bgcolor,direct,height,
+				hspace,loop,scrollAmount,scrollDelay,
+				vSpace,width) </h4>
+Добавляет тег "бегущей строки",
+возвращает идентификатор тега
+<h4> метод html:endMarquee()</h4>
+Добавляет закрывающий тег "бегущей строки",
+возвращает идентификатор тега
+<h4> метод html:url( text, url, target, other )</h4>
+Формирует "ссылку", возвращает идентификатор открывающего тега
+<h4> метод html:imageUrl(url,target,file,alt,border,height,name,other)</h4>
+Формирует "ссылку" с картинкой, возвращает идентификатор открывающего тега
+<hr>
+<h4> метод html:startTable(other,align,border,backGround,bgColor,
+				borderColor,borderColorDark,borderColorLight,
+                                cellPadding,cellSpacing,frame,
+				hspace,rules,vSpace,width) </h4>
+Добавляет открывающий тег TABLE,
+возвращает идентификатор тега
+<h4> метод html:endTable()</h4>
+Добавляет закрывающий тег TABLE, возвращает идентификатор тега
+<h4> метод html:THcell(text,other,align,backGround,bgColor,
+				borderColor,borderColorDark,borderColorLight,
+                                colspan,rowspan,nowrap,vAlign,width)</h4>
+Формирует тег с названием колонки в таблице,
+возвращает идентификатор тега
+<h4> метод html:startTrow(other,align,border,backGround,bgColor,
+				borderColor,borderColorDark,borderColorLight,
+                                vAlign,width)</h4>
+Формирует тег новой строки в таблице,
+возвращает идентификатор тега
+<h4> метод html:endTrow()</h4>
+Добавляет закрывающий тег TR, возвращает идентификатор тега
+<h4> метод html:startTcell(other,align,backGround,bgColor,
+				borderColor,borderColorDark,borderColorLight,
+                                colSpan,noWrap,rowSpan,vAlign,width)</h4>
+Формирует тег новой ячейки в таблице,
+возвращает идентификатор тега
+<h4> метод html:endTcell()</h4>
+Добавляет закрывающий тег TD, возвращает идентификатор тега
+<hr>
+<h4> метод html:startList(ordering,other,compact,type)</h4>
+Формирует тег начала [не]сортированного списка (ordering),
+возвращает идентификатор тега
+<h4> метод html:listItem(text,other,type,value)</h4>
+Добавляет элемент списка, возвращает идентификатор тега
+<h4> метод html:endList()</h4>
+Добавляет закрывающий тег UL | UL, возвращает идентификатор тега
+
+<h4> метод html:startSelect(name,other,size,multiple)</h4>
+Формирует тег SELECT для выбора значения из списка
+возвращает идентификатор тега
+<h4> метод html:addOption(value,text,other,selected)</h4>
+Добавляет элемент списка, возвращает идентификатор тега
+<h4> метод html:endSelect()</h4>
+Добавляет закрывающий тег SELECT, возвращает идентификатор тега
+
+<hr>
+<h4> метод html:startForm(other,action,enctype,method,target)</h4>
+Формирует открывающий тег новой новой формы,
+возвращает идентификатор тега
+<h4> метод html:endForm()</h4>
+Добавляет закрывающий FORM, возвращает идентификатор тега
+<h4> метод html:inputImage(src,other,align,name)</h4>
+Добавляет тег INPUT TYPE="IMG", возвращает идентификатор тега
+<h4> метод html:formGet(type,name,value,size,maxlength,other)</h4>
+Добавляет тег INPUT TYPE=type, возвращает идентификатор тега
+<h4> метод html:formReset(text,name,other)</h4>
+Добавляет тег INPUT TYPE="reset", возвращает идентификатор тега
+<h4> метод html:formSubmit(text,name,other)</h4>
+Добавляет тег INPUT TYPE="submit", возвращает идентификатор тега
+<h4> метод html:checkBox(name,value,checked,other) </h4>
+Добавляет тег INPUT TYPE="checkbox", возвращает идентификатор тега
+<h4> метод html:radioBox(name,value,checked,other)</h4>
+Добавляет тег INPUT TYPE="radio", возвращает идентификатор тега
+<h4> метод html:formFile(name,value,size,maxLength,other)</h4>
+Добавляет тег INPUT TYPE="file", возвращает идентификатор тега
+<h4> метод html:formHidden(name,value,size,maxLength,other)</h4>
+Добавляет тег INPUT TYPE="hidden", возвращает идентификатор тега
+<h4> метод html:formPasswd(name,value,size,maxLength,other)</h4>
+Добавляет тег INPUT TYPE="password", возвращает идентификатор тега
+<h4> метод html:formText(name,value,size,maxLength,other)</h4>
+Добавляет тег INPUT TYPE="text", возвращает идентификатор тега
+<hr>
+
+<h4> метод html:startFrameSet(other,cols,rows,border,borderColor,
+	frameBorder,frameSpacing) </H4>
+Формирует открывающий тег FRAMESET, возвращает идентификатор тега
+<h4> метод html:frame(name,url,other,borderColor, frameBorder,
+marginHeight,marginWidth,noResize,scrolling) </H4>
+Формирует тег FRAME, возвращает идентификатор тега
+<h4> метод html:endFrameSet()</h4>
+Добавляет закрывающий тег FRAMESET, возвращает идентификатор тега
+<hr>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+</body>
+</html>

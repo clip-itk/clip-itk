@@ -1,0 +1,134 @@
+Thanks for lost time and money ;)
+About all questions please contact:
+e-mail  : uri@itk.ru
+phone   : 1-7-3412-253950 (may be changed in future)
+home www: www.itk.ru
+home ftp: ftp.itk.ru/pub/clip
+
+Files list:
+   clip-prg-<version>.tgz  - SRC: all source packages and documentation
+        clip_deb.tgz       - BIN: debian DEB package
+        clip_rpm.tgz       - BIN: RH-clones RPM package
+        clip_dev.tgz       - SRC: base package, == clipper 5.3
+        clip_docs.tgz      - HTML: base documentation, all packages including
+        		     private documentation of private functions.
+        clip_mysql.tgz     - SRC: MySQL client
+        clip_oracle.tgz    - SRC: Oracle client
+        clip_postgres.tgz  - SRC: Postgres client
+        clip_interbase.tgz - SRC: Interbase & FireBird client
+        clip_gtk.tgz       - SRC: GUI library over GTK
+        clip_gtkextra.tgz  - SRC: GUI library over GTKextra
+        clip_fw.tgz        - SRC: FiveWin-like classes & commands
+        clip_gd.tgz        - SRC: library for PNG (and more) files and business
+                                histograms
+        clip_gzip.tgz      - SRC: library for supprt gz files
+        clip_com.tgz       - SRC: COM_*() functions from Tools.
+        clip_rtf.tgz       - SRC: Rich text format library by Thomas Marchione
+        clip_cti.tgz       - SRC: CLIP t4ext interface library, base for
+        			text FiveWin and FoxPro-like windows.
+        clip_udb.tgz       - SRC: CLIP universal (object) data base, the
+        			object orientired data base.
+        clip_oasis.tgz     - SRC: libraries from the-oasis.net
+        clip_prg.tgz       - SRC: base utils - debugger, text editor, ...
+        			include preprocessor (PP) by Ron Pinkas,
+                                bdbf by Yevgen Bondar, ....
+        dbc.tgz            - SRC: DBU (C) Aleksandr Kresin
+
+        cygwin_trunc.rar   - BIN: cygwin developer tools for migration from unix to
+        		     win32 platforms ( trunc - it`s truncated by ITK
+        		     distribution), for details, please,
+        		     see Readme.cygwin from ftp.
+        Readme.cygwin	   - TXT: details for instalation truncated cygwin.
+        clip_win32_bin.rar - BIN: CLIP and base libraries for Win32+Cygwin.
+        gtk_std_win32.rar  - BIN: GTK+ standart libraries for Windows, installing
+        		     after cygwin and clip.
+        clip_gtk_win32.rar - BIN: clip library over GTK+, generated from clip_gtk
+        		     package.
+
+	(rar archiver home page - www.rarsoft.com)
+
+ATTENTION:
+1. source codes (prg and ch files in packages) have russian codepage koi8-r.
+2. In OS Solaris must installed "GNU bin utils" and path for it must in
+   first: export PATH=/usr/local/bin;.............
+
+               First:
+
+1. Set CLIPROOT environment variable to the directory in which data for the
+   operation of the compiler and ready programs.
+   Or use "make system" for installing to system directories.
+
+   Warning: don`t use $CLIPROOT directory for saving source packages.
+   For saving source use any other directory, for example: /usr/src
+   or /home/$USER/clip_src .
+
+   The best way - in your home .profile add line:
+   export CLIPROOT=/usr/local/clip
+   and reconnect/relogin to Unix.
+
+2. Add $CLIPROOT/bin to PATH variable (the best - in home .profile).
+
+3. If GNU maker in your system have name "gmake", add to environment
+   variable MAKE=gmake.
+
+4. In Win32+CygWin add to autoexec.bat via UNIX-STYLE:
+   set CLIPROOT=/clip
+   set LANG=ru_RU.CP866
+   #or
+   set CLIP_LANG=ru_RU.CP866
+   If you use truncated CygWin from ftp.itk.ru - add to autoexec.bat:
+   set PATH= ....; c:\cygwin\bin;c:\cygwin\clip\bin; ....
+
+
+
+               The following action is recommended:
+
+1. Set LANG (or CLIP_LANG) environment variable as you wish
+	(ru_RU.KOI8-R, for example).
+It's necessary for normal localization of executable utilities.
+
+
+		Installation from binary codes
+
+1. cygwin - unpack in root directory on disk C:\
+	rar x cygwin_trunc.rar
+
+	or install full cygwin distribution and install CLIP from source
+	code or more
+
+2. clip_win32_bin.rar - unpack in root directory on disk C: over cygwin.
+	rar x clip_win32_bin.rar
+
+3. unpack other packages.
+
+4. for installing from DEB or RPM packages - see Readme_deb or Readme_rpm
+
+
+
+		Installation all source code
+
+1. Download ftp.itk.ru/pub/clip/clip_src.tgz
+
+2. See Readme_src
+
+		Installation  source code from any package
+
+1. Download ftp.itk.ru/pub/clip/clip_<package>.tgz
+2. Unpack in any work directory (for example: /home/<user>/clip_src)
+   with command "tar xzvf <filename>"
+3. run:
+   ./configure # if exist this script
+   make
+   make install
+
+
+   Also, for further operation, it's better to do the following:
+
+1. ;) read the documentation in doc directory.
+
+2. Create a .cliprc file in the home directory and write compiler options and
+   flags into it, which are used by default.
+
+   All success and good luck to everybody!
+
+   Remember uri@itk.ru and do not hesitate to contact us.

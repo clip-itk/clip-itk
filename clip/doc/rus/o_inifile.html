@@ -1,0 +1,73 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY>
+
+<h3> Класс iniFile </h3>
+
+Чтение и запись Windows-like .ini файлов, доступ к обработанным данным.
+<hr>
+Пример .ini файла
+
+<xmp>
+
+[PART1]
+	P1_V1	= xval1
+	P1V6	= a1,a2,a3,4
+	P1V4	= 1,2,3,4
+	P1_V2	= val2
+	P1_V3	= 1234
+	P1V5	= a1,a2,a3,4
+        p1 d1   = {2002.04.26}
+
+[PART2]
+	P2_V1	= val1
+	P2V4	= 1,2,3,4
+	P2_V2	= val2
+	P2_V3	= 1234
+
+</xmp>
+<hr>
+Простенький пример использования объектов:
+<xmp>
+o:=inifile():new("test.ini")  // or iniFileNew("test.ini")
+o:load()
+? o:sections()
+? o:keys("part1")
+? o:keys("part2")
+? o:getValue("part1","p1 v1")
+? o:setValue("part1","p1 v1","xval1")
+? o:getValue("part1","p1 v1")
+? o:save("test1.ini")
+</xmp>
+
+<hr>
+<h3> Описание класса IniFile </H3>
+
+<h3> Атрибутов у данного класса нет. </h3>
+
+<h3> Методы/функции </H3>
+<h4> oIni:=iniFileNew(sFileName) </H4>
+<h4> oIni:load() </H4>
+ читает содержимое файла
+<h4> oIni:sections() </H4>
+ возвращает массив с именами секций
+<h4> oIni:Keys(sSectionName) </H4>
+ возвращает массив с именами ключей в секции
+<h4> oIni:getValue(sSectionName, skeyName) </H4>
+ возвращает значение в указанной секции для ключа sKeyName
+<h4> oIni:setValue(sSectionName, skeyName) </H4>
+ устанавливает новое значение в указанной секции для ключа sKeyName
+<h4> oIni:save([sNewFileName]) </H4>
+ записывает данные в указанный файл или перезаписывает тот файл, из которого
+ были считаны данные.
+
+<HR>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2002
+</center>
+</body>
+</html>

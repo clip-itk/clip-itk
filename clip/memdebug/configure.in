@@ -1,0 +1,74 @@
+dnl
+dnl Process this file with autoconf to produce a configure script.
+dnl Copyright 1992 by Gray Watson and the Antaire Corporation
+dnl
+AC_INIT(malloc.c)
+AC_CONFIG_HEADER(conf.h)
+dnl
+echo Configuring for the malloc-debug library
+echo .
+echo checking programs:
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+dnl
+echo .
+echo checking functions:
+AC_HAVE_FUNCS(bcmp bcopy memcmp memcpy memset)
+dnl this is necessary because index is a m4 function
+echo checking for _index
+AC_TEST_PROGRAM([
+main() { exit(0); }
+t() {
+#ifdef __stub_index
+choke me
+#else
+/* Override any gcc2 internal prototype to avoid an error.  */
+extern char index(); index();
+#endif
+ }
+], [
+AC_DEFINE(HAVE_INDEX, 1)
+], [
+AC_DEFINE(HAVE_INDEX, 0)
+])
+AC_HAVE_FUNCS(rindex)
+AC_HAVE_FUNCS(strcat strcmp strlen strtok)
+echo .
+echo checking various functions for string checking
+AC_HAVE_FUNCS(bzero)
+AC_HAVE_FUNCS(memccpy memchr)
+AC_HAVE_FUNCS(strchr strrchr strcpy strncpy strcasecmp strncasecmp)
+AC_HAVE_FUNCS(strspn strcspn strncat strncmp strpbrk strstr)
+dnl
+echo .
+echo PLEASE WATCH: checking for very important functionality:
+AC_HAVE_FUNCS(sbrk)
+echo checking for heap ordering...
+AC_TEST_PROGRAM([
+main()
+{
+  char	* first, *next;
+  first = sbrk(1024);
+  next = sbrk(1024);
+  if (next > first)
+    exit(0);
+  else
+    exit(1);
+}
+], [
+AC_DEFINE(HEAP_GROWS_UP, 1)
+echo '   FYI: your heap seems to grow up.'
+], [
+AC_DEFINE(HEAP_GROWS_UP, 0)
+echo '   FYI: your heap seems to grow down.'
+echo '   WARNING: the library has little support for this.'
+])
+dnl
+echo .
+AC_OUTPUT(Makefile)
+echo .
+echo Done!!
+echo created conf.h and Makefile.
+echo Please check-out Makefile and especially conf.h to make sure that
+echo     sane configuration values were a result.

@@ -1,0 +1,381 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY>
+
+<h2>  Многооконный текстовый редактор clip_we </h2>
+
+<ul>
+<li><a href="#arguments">Аргументы</a>
+<li><a href="#menu">Меню</a>
+<li><a href="#window">Работа с окнами</a>
+<li><a href="#block">Работа с блоками</a>
+<li><a href="#text">Вставка/удаление символов</a>
+<li><a href="#find">Поиск</a>
+<li><a href="#format">Форматирование</a>
+<li><a href="#macro">Макроподстановки</a>
+<li><a href="#draw">Рисование линий</a>
+<li><a href="#settings">Настройка "горячих" клавиш</a>
+</ul>
+<p>
+<a name="arguments"><h2>Аргументы</h2></a>
+Аргументы - одно или несколько имен файлов (через пробел)<br>
+<pre>
+Например, clip_we *.prg
+	  clip_we a.prg b.prg ../include/i.ch
+</pre>
+<p>
+<p>
+<a name="menu"><h2>Меню</h2></a>
+Меню вызывается по клавише <i>ESC</i> - это по умолчанию, при желании
+можно поменять "горячие" клавиши. См. <a href="#settings">настройка</a>
+<ul>
+<li><ul>Файл
+	<li>Новый - открыть новый файл
+	<li>Открыть - открыть уже существующий файл в новом окне -
+	выбрать файл из списка или ручками ввести имя файла с путем.
+	Если файл уже открыт в одном из окон редактора, то будет предложено
+	открыть этот файл в режиме share. Это удобно, если файл большой, а
+	редактировать надо начало и конец текста. При этом изменения будут отражены
+	в обоих окнах.
+	<li>Сохранить - сохранить изменения в текущем файле
+	<li>Перечитать - перечитать файл
+	<li>Только чтение - установить/снять атрибут "read only"
+	<li>Печать - печать файла
+	<li>Выход с сохранением - выйти из редактора с сохранением статуса,
+	т.е. сохранится список открытых окон, настройки и т.п.
+	<li>Выход без сохранения - выйти из программы без сохранения статуса.
+	</ul>
+<li><ul>Окно
+	<li>Список - отобразить список открытых окон. Текущее окно будет выделено
+	цветом. Клавиши <i>Up</i> и <i>Down</i> - служат для перемещения по списку,
+	<i>Enter</i> - активизирует выбраное из списка окно, <i>Del</i> - закрывает
+	окно.
+	<li>Следующее - активизировать следующее по списку окно. Если окно последнее
+	в списке, то активизируется окно с номером 1.
+	<li>Предыдущее - активизировать предыдущее по списку окно. Если текущее окно
+	имеет номер 1, то активизируется последнее из списка.
+	<li>Закрыть - закрыть текущее окно.
+	</ul>
+<li><ul>Блок
+	<li>Строчный блок - начать/закончить отметку строчного блока.
+	<li>Прямоугольный блок - начать/закончить отметку прямоугольного блока.
+	<li>Снять - снять отметку блока.
+	<li>Копировать - копировать отмеченный блок.
+	<li>Переместить - переместить отмеченный блок.
+	<li>Удалить - удалить отмеченный блок.
+	<li>Копировать в буфер - копировать выделенный блок в буфер.
+	<li>Вставить из буфера - вставить блок из буфера.
+	<li>Записать в файл - записать выделенный блок в файл.
+	<li>Прочитать из файла - прочитать блок из файла.
+	</ul>
+<li><ul>Сервис
+	<li>Режим вставки - вкл/выкл режим вставки/замещения
+	<li>Поиск строки - поиск строки по шаблону, по регулярному выражению -
+	ищет в тексте, в блоке, во всех окнах.
+	<li>Найти следующее/предыдущее - найти следующее/предыдущее вхождение
+	подстроки в тексте.
+	<li>Заменить - найти и заменить все вхождения подстроки на что-то
+	новое.
+	<li>Поиск символа вперед/назад - поиск идентичного символа вперед/назад
+	по тексту. <a href=="#find">См. Поиск</a>
+	<li>Поиск структуры - поиск структур по правилам CLIPPER: <a href=="#find">См. Поиск</a>
+	<li>Откат - операция отката, в настройках редактора задается количество
+	шагов отката.
+	<li>Форматирование строки/абзаца - форматирование строки/абзаца по
+	заданным настройкам (ширина строки, отступ, перенос в словах ...)
+	</ul>
+<li><ul>Прочее
+	<li>Шаблон - вставить строку по шаблону. Шаблоны и строки замены
+	берутся из файла <a href="#templ">$HOME/.clip/.templ</a>
+	<li>Макроподстановка - выполнить макроподстановку. Шаблоны и строки
+	замены берутся из файла <a href="#macro">$HOME/.clip/.macro</a>
+	<li>Графика одиночная/двойная  - включить/выключить режим рисования
+	одиночных/двойных линий.
+	<li>Опции - настройки редактора
+	</ul>
+</ul>
+<p>
+<p>
+<p>
+<p>
+<a name="block"><h2>Работа с блоками</h2></a>
+Редактор различает два типа блоков - строчный и прямоугольный. Отметка блока
+очуществляется либо через меню, либо с помощью клавиатуры. "Горячие" клавиши
+отметки начала/конца строчного блока <i>F7</i>, а прямоугольного <i>F8</i>.
+<br>Отмеченные блоки выделяются цветом, снять отметку блока можно либо отметив
+новый блок, либо с помощью специальной команды через меню или нажав клавиши
+<i>Ctrl+P</i>.
+<br>Блоки можно копировать, переносить, удалять, копировать в буфер обмена и вставлять
+из буфера в другом окне, копировать блок из файла и записывать на диск.
+При копировании строчного блока он  помещается между текущей строкой и предыдущей,
+а при копировании прямоугольного блока - начиная с текущей строки и колонки.
+<br>Перемещение отличается от копирования тем, что блок удаляется с прежнего места.
+<br>Удаление либо через меню, либо по "горячей" клавише <i>Alt+Y</i>. При этом
+<br>При копировании блока в буфер, прежнее содержимое буфера (если оно существовало)
+уничтожается, блок остается помеченным и сохраняется в буфере при удалении блока
+из текста вплоть до помещение в буфер нового блока или до завершения работы программы.
+
+<p>
+<p>
+<p>
+<p>
+<a name="text"><h2>Вставка/удаление символов</h2></a>
+Редактор поддерживает режимы вставки и замещения символов.
+Перемещение курсора - клавиши &lt;Up&gt;, &lt;Down&gt;, &lt;Left&gt;, &lt;Right&gt;,
+<br>на страницу вверх/вниз - &lt;PgUp&gt;/&lt;PgDown&gt;,  <br>в начало текста - &lt;Ctrl+PgUp&gt;,
+<br>в конец текста - &lt;Ctrl+PgDown&gt;, <br>на начало строки - &lt;Home&gt;, <br>в конец
+строки - &lt;End&gt;, <br>удаление символа: над курсором - &lt;Del&gt;, <br>слева от курсора - - &lt;BackSpace&gt;,
+<br>удаление символов от текущего символа до конца строки -  &lt;Ctrl+Q&gt;,
+<br>удаление символов от текущего символа до начала строки -  &lt;Ctrl+BS&gt;,
+<br>удаление строки -  &lt;Ctrl+Y&gt;,
+<br>удаление отмеченного блока -  &lt;Alt+Y&gt;,
+<p>
+<p>
+<p>
+<p>
+
+<a name="find"><h2>Поиск</h2></a>
+	Поиск (поиск с заменой) по шаблону, регулярному выражению с текущей позиции до
+конца/начала текста, блока, или во всех окнах. Через меню или по "горячей"
+клавише <i>F6</i> вызывается объект "диалог", где и задается шаблон поиска,
+режимы (только слово, учитывать регистр и пр), направление поиска (вперед, назад) и
+где искать (текст, блок, во всех окнах). Продолжение
+поиска - <i>Ctrl+L</i> - поиск вперед.
+<br>	Поиск идентичных символов вперед/назад по тексту. В случае поиска одного из парных
+символов <i>{ }</i>, <i>[ ]</i>, <i>( )</i>, <i>&lt; &gt;</i> ищется пара для текущего.
+Если это открывающая скобка, то ищется парная ей закрывающая. И наоборот.
+<br>	Поиск структур по правилам CLIPPER:
+<ul>
+<li> DO WHILE - LOOP - EXIT - ENDDO
+<li> DO CASE - CASE - OTHERWISE - EXIT - ENDCASE
+<li> FOR - EXIT - LOOP - NEXT
+<li> IF - ELSE - ELSEIF - ENDIF
+<li> BEGIN SEQUENCE - BREAK - RECOVER - END SEQUENCE
+</ul>
+<p>
+<p>
+<p>
+<p>
+<a name="format"><h2>Форматирование</h2></a>
+Форматирование строки/абзаца по
+заданным настройкам (ширина строки, отступ, перенос в словах ...)
+
+<p>
+<p>
+<p>
+<p>
+<a name="macro"><h2>Макроподстановки</h2></a>
+Для быстрой и красивой работы придуманы шаблоны.
+Шаблон представляет собой строку символов, которая по команде заменяется на более
+сложную конструкцию - одну или несколько строк. Шаблоны и строки замены можно
+конструировать по своему вкусу и желанию. Они хранятся в домашнем каталоге в директории
+<i>.clip</i>в файле с именем .templ. <a href="#templ">Примеры и формат файла $HOME/.clip/.templ</a>.
+<br>Макроподстановка отличается от шаблона тем, что по команде - выполнить макроподстановку -
+выполняется команда clip'а и результат помещается в текст. Шаблоны макроподстановки и команды
+замены берутся из файла <a href="#macro">$HOME/.clip/.macro</a>
+
+<p>
+<p>
+<p>
+<p>
+<a name="draw"><h2>Рисование линий</h2></a>
+С помощью редактора Вы можете рисовать простейшие таблицы символами псевдографики.
+Для этого через меню или при помощи клавиатуры необходимо переключиться в режим
+рисования (одиночные или двойные линии). Удерживая клавишу &lt;Shift&gt; используйте
+для рисования клавиши перемещения курсора &lt;Up&gt;, &lt;Down&gt;, &lt;Left&gt;, &lt;Right&gt;
+
+<p>
+<p>
+<p>
+<p>
+<a name="settings"><h2>Настройка "горячих" клавиш</h2></a>
+<BR>
+"Пользовательские кнопки" при старте загружаются из файла <b>keymaps.po</b>. Он
+хранится в домашнем каталоге в директории <b>./clip</b> и компилируется из файла
+<b>keymaps.prg</b> Вы можете в соответствии со своими требованиями, желаниями и
+настроениями настроить "горячие" клавиши. Это легко. См. пример ниже.
+<p>Пример файла <b>keymaps.prg</b>
+<pre>
+/* User key_maps */
+#include "inkey.ch"
+
+function init_user_key(key_maps)
+local k
+
+	/* for debugger */
+	k:=key_maps:debug
+	/* Код клавиши 	  Команда */
+	k[ K_ESC ]	:=HASH_CallMenu
+	k[ K_F1 ] 	:=HASH_Help
+	     .........
+
+	/* for text editor */
+	k:=key_maps:edit
+
+	/* Код клавиши 	  Код                    Команда */
+	k[ K_ESC ]	:=HASH_CallMenu		// call Menu
+	k[ K_ALT_X ]	:=HASH_ExitSave		// exit from editor witch save
+	k[ K_ALT_B ]	:=HASH_ExitNoSave	// exit from editor witchout save
+	k[ K_F1 ]	:=HASH_HelpEdit		// help
+
+	/* file/window function */
+	k[ K_F2 ]	:=HASH_SaveFile		// save File
+	k[ K_F3 ]	:=HASH_OpenFile		// open file
+	k[ K_CTRL_F3 ]	:=HASH_CreateNewFile	// create new file
+	k[ K_ALT_N ]	:=HASH_NextWindow	// open next window
+	k[ K_ALT_P ]  	:=HASH_PrevWindow	// open previous window
+//	k[  ]	:=HASH_ReadOnly		// on/off read only options
+//	k[  ]	:=HASH_ListFiles	// listing opening files
+//	k[  ]	:=HASH_CloseWindow	// close current window
+//	k[  ]	:=HASH_Reload		// reload file
+
+	/* find function */
+	k[ K_F6 ]	:=HASH_FindString	// find string
+	k[ K_CTRL_F6 ]	:=HASH_FindReplace	// find and replace string
+	k[ K_CTRL_L ]	:=HASH_FindNext		// find string to forward
+//	k[  ]	:=HASH_FindPrev		// find string to backward
+	k[ K_CTRL_O ]	:=HASH_MatchSymbolForward // matching symbol to forward
+	k[ K_CTRL_T ]	:=HASH_MatchSymbolBackward // matching symbol to backward
+
+	/* move function */
+	k[ K_F4 ]	:=HASH_GoTo		// goto string
+	k[ K_CTRL_F4 ]	:=HASH_SavePos		// save current string
+	k[ K_CTRL_PGUP ]:=HASH_TopText		// go top text
+	k[ K_CTRL_PGDN ]:=HASH_BottomText	// go bottom text
+
+	/* edit function */
+	k[ K_F5 ]	:=HASH_Template		// insert template
+	k[ K_CTRL_F5 ]	:=HASH_Macro		// insert macro
+	k[ K_CTRL_Q ]	:=HASH_DeleteEnd	// delete string from current position to end
+	k[ K_CTRL_BS ]	:=HASH_DeleteBack	// delete string from current position to begin string
+	k[ K_CTRL_Y ]	:=HASH_DeleteLine	// delete line
+
+	/* block function */
+	k[ K_F7 ]	:=HASH_MarkBlockString	// mark/unmark strings block
+	k[ K_F8 ]	:=HASH_MarkBlockRect	// mark/unmark rectangle block
+	k[ K_F9 ]	:=HASH_CopyBlock	// copy marked block
+	k[ K_F10 ]	:=HASH_MoveBlock	// move marked block
+	k[ K_CTRL_P ]	:=HASH_CancelBlock	//unmark block
+	k[ K_ALT_Y ]	:=HASH_DeleteBlock	// delete marked block
+//	k[  ]	:=HASH_CopyClipboard	// copy marked block to clipboard
+//	k[  ]	:=HASH_PasteClipboard	// paste block from clipboard
+//	k[  ]	:=HASH_SaveBlock	// save marked block as ...
+//	k[  ]	:=HASH_LoadBlock	// load block from file
+
+
+	k[ K_CTRL_U ]	:=HASH_Undo		// undo operation
+
+	/* formatting function */
+//	k[  ]	:=HASH_FormatLine	// formatting line
+//	k[  ]	:=HASH_FormatPart	// formatting part
+//	k[  ]	:=HASH_MoveString	// move string to the center line
+
+	/* other */
+//	k[  ]	:=HASH_Options		// editors options
+//	k[  ]	:=HASH_SingleGraphic	// on/off single graphic mode
+//	k[  ]	:=HASH_DoubleGraphic	// on/off double graphic mode
+//	k[  ]	:=HASH_MatchStructForward // find clipper-structure to forward
+//	k[  ]	:=HASH_MatchStructBackward // find clipper-structure to backward
+return key_maps
+</pre>
+<br>
+Вам необходимо просто поменять код клавиши "по умолчанию", на тот, который Вам больше
+нравится. Например, Вы приыкли вызывать меню по Клавише &lt;F10&gt;, для этого
+Вы должны исправить строку:
+<pre>
+	k[ K_ESC ]	:=HASH_CallMenu		// call Menu
+</pre>
+на:
+<pre>
+	k[ K_F10 ]	:=HASH_CallMenu		// call Menu
+</pre>
+<br> Но будьте внимательны, если ниже на эту же клавишу будет "повешана" другая
+команда, то эта последняя и будет исполнятся при нажатии клавиши. Т.е. действует
+принцип "кто последний, тот и папа".
+<br>После переназначения клавиш необходимо перекомпилировать файл <i>keymaps.prg</i>
+с ключом <i>-p</i>, чтобы получился файл <i>keymaps.po</i>:
+<pre>
+$(CLIPROOT)/bin/clip -e -p keymaps.prg
+</pre>
+И получившийся <i>.po</i> скопировать в домашний каталог:
+<pre>
+cp keymaps.po ~/.clip
+</pre>
+
+
+<p>
+<p>
+<p>
+<p>
+<a name="templ">Формат файла .templ</a>
+<p> Файл <b>.templ</b> хранится в домашнем каталоге пользователя в директории
+<b>.clip</b>
+<p>
+<i>шаблон</i> [Space|Tab] <i>описание[/описание]</i>
+<br> Символ [/] служит для деления на строки
+<br> Пример:<pre>
+
+headf	******************************/*Function:/*Notes:/ /*** End of          **********
+headp	******************************/*File:/*Author:/*Date:/*Version:/*Notes:/ /*** End of          **********
+f	For/Next
+c	CLEAR
+*	******************************
+IF	If/EndIF
+I	If/EndIF
+IE	If/Else/EndIF
+D	DO/EndDO
+DW	DO WHILE/EndDO
+DC	DO CASE/    CASE/    OTHERWISE/EndCASE
+.............
+
+</pre>
+
+<p>т.е. после подстановки, например, вместо шаблона <i>DC</i> должно
+получиться что-то вроде:<pre>
+DO CASE
+    CASE
+    OTHERWISE
+EndCASE
+</pre>
+<br> а вместо шаблона <i>headp</i><pre>
+******************************
+*File:
+*Author:
+*Date:
+*Version:
+*Notes:
+
+*** End of          **********
+</pre>
+<p>
+<p>
+<p>
+<p>
+
+<a name="macro">Формат файла .macro</a>
+<p> Файл <b>.macro</b> хранится в домашнем каталоге пользователя в директории
+<b>.clip</b>
+<p>
+<i>шаблон</i> [Space|Tab] <i>функция</i>
+<br> Пример:<pre>
+
+d	DATE()
+dd	date_rus(date())
+.............
+
+</pre>
+
+<p>т.е. после подстановки, например, вместо шаблона <i>d</i> должно
+получиться что-то вроде:<pre>
+11/22/2000
+</pre>
+<br> а вместо шаблона <i>dd</i><pre>
+22  Ноября 2000 г.
+</pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24HaveData</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24HaveData</A></H2><H2>( v24_port_t* port )</H2>
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>If implemented by the operating system, this function returns the number of
+character waiting in the receive-queue. If the functions isn't available or
+if an error happens, a <TT>-1</TT> is returned. Use <TT>v24QueryErrno</TT> to retrieve the
+error code.
+
+<P>Possible error code are <TT>V24_OK</TT>, <TT>V24_E_NOT_IMPLEMENTED</TT> and
+<TT>V24_E_ILLHANDLE</TT>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><DT><B>Returns:</B><DD>  (int) number of character in the receive-queue.
+<BR><DT><B>See Also:</B><DD>v24QueryErrno.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

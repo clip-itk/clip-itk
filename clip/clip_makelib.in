@@ -1,0 +1,121 @@
+
+if [ $# = 0 ]
+then
+	echo "usage: `basename $0` target_lib src1.{o,so,a} [.. srcN.{o,so,a}] "
+	exit 1
+fi
+
+LC_ALL=C
+LANG=C
+export LC_ALL LANG
+
+#echo $*
+echo $*
+
+target=`echo "$1" | sed -e 's/\.[A-Za-z0-9]*$//'`
+rtarget="$1"
+shift
+
+pwd=`pwd`
+dir=/tmp/makelib$$
+rm -rf $dir
+mkdir -p $dir
+
+cleanup()
+{
+	rm -rf $dir
+	exit $1
+}
+
+trap cleanup 1 2 3 4 5 6 7 8 9 10 12 13 14 15
+
+pwd=`pwd`
+lst=''
+
+while [ "$#" != 0 ]
+do
+    	name=`echo "$1" | sed -e 's/\.[A-Za-z0-9]*$//'`
+	test -r "$1" && { cp "$1" $dir; lst="$lst
+$1"; }
+	test -r "$name.ex" && cp "$name.ex" $dir
+	test -r "$name.nm" && cp "$name.nm" $dir
+
+        shift
+done
+
+lst=`echo "$lst"|sort -u`
+lst=`echo $lst`
+
+#echo "lst: $lst"
+#echo "dir: $dir"
+
+cd $dir
+[ -z "$CC" ] && CC=cc
+
+echo
+
+/bin/ls *.o *.so 2>/dev/null >_olist
+if [ -z "$NM_UNDERSCORE" ]
+then
+	nm `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b6- |sort -u>_lst
+else
+	nm `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*_clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b7- |sort -u>_lst
+fi
+
+exec 3>_clst
+exec 4>_plst
+exec 5>_ilst
+exec 6>_elst
+exec 7>_mlst
+
+while read name
+do
+	case "$name" in
+	INIT_*)
+		echo $name >&5
+		;;
+	EXIT_*)
+		echo $name >&6
+		;;
+	_PCODE_*)
+		echo $name >&4
+		;;
+	_MODULE_*)
+		echo $name >&7
+		;;
+	*)
+		echo $name >&3
+		;;
+	esac
+done < _lst
+
+exec 3>&-
+exec 4>&-
+exec 5>&-
+exec 6>&-
+exec 7>&-
+
+#ar -q __o.a $lst
+ar -q __o.a `cat _olist`
+cd $pwd
+cp $dir/__o.a "$rtarget"
+
+case "$CLIP_NAMES" in
+1|[yY][eE][sS]|[oO][nN])
+
+	cat $dir/_clst $dir/*.nm 2>/dev/null | grep -v '^#\|^$' | sort -u > $target.nm
+
+	if join --version >/dev/null 2>&1
+	then
+		cat $dir/*.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > $dir/_ex
+		join -v 1 $dir/_ex $target.nm > $target.ex
+	else
+		cat $dir/*.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > $target.ex
+	fi
+	
+	;;
+esac
+
+cd $pwd
+
+cleanup 0

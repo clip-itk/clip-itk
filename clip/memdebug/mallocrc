@@ -1,0 +1,110 @@
+#
+# Sample Malloc rc file for the debug malloc library
+# Rename this to .mallocrc and place in your home directory to activate.
+# See malloc.info for more information
+#
+# $Id: mallocrc,v 1.5 2001/06/09 16:55:04 clip Exp $
+#
+
+#
+# Lines in this file should have the form:
+#
+#	tag	token1, token2, ...
+#
+# The above 'tag' is then passed to the 'malloc' alias to set the current
+# debugging functionality to token1, token2, ...
+#
+# Tag lines can be finished with a \ meaning it continues onto the next line.
+# Lines begining with '#' or empty lines are ignored
+#
+
+#
+# Token:			Description:
+###########################################################################
+# none				no debuging functionality
+#
+# log-stats			log general statistics
+# log-non-free			log non-freed memory pointers on shutdown
+# log-perror			log error codes and messages
+# log-trans			log memory transactions
+# log-bad-pnt			log information about bad-pointers
+# log-admin			log full administrative information
+# log-blocks			log detailed block information in heap_map
+# log-unknown			log unknown non-freed memory pointers too
+#
+# check-fence			check fence-post areas
+# check-heap			do general heap checking
+# check-lists			verify internal heap linked-lists
+# check-dblock			do detailed checking on small allocations
+# check-dblock-fence		check the fence-post areas of small allocations
+# check-free			check to see if free space has been overwritten
+# check-funcs			check the arguments of some routines
+#
+# realloc-copy			always copy data to a new pointer when realloc
+# free-blank			overwrite space that is freed
+# error-abort			abort the program (and dump core) on errors
+# alloc-blank			overwrite space that is to be alloced
+# heap-check-map		log a heap-map every time the heap is checked
+# print-perror			dump errors and messages to STDERR
+#
+
+# no debugging
+none	none
+
+# basic production
+production	log-stats, log-non-free, log-perror, log-bad-pnt
+
+# basic runtime
+runtime		log-stats, log-non-free, log-perror, log-bad-pnt, \
+		check-fence
+
+# more logging and some heap checking  #log-trans
+2		log-stats, log-non-free, log-perror, log-bad-pnt, \
+		check-fence, check-heap, check-lists, check-dblock-fence, \
+		check_dblock, check_free, \
+		error-abort
+
+# extensive checking
+uri		log-stats, log-non-free, log-perror, log-bad-pnt, \
+		check-fence, check-heap, check-lists, check-dblock-fence,
+		check-dblock, \
+		check-fence-dblock,
+		check-funcs, \
+		error-abort
+
+# good checking functionality
+3		log-stats, log-non-free, log-perror, log-trans, log-bad-pnt, \
+		log-admin, log-blocks, \
+		check-fence, check-heap, check-lists, check-dblock-fence,
+		check-funcs, \
+		realloc-copy, free-blank, alloc-blank, error-abort
+
+# extensive checking
+4		log-stats, log-non-free, log-perror, log-trans, log-bad-pnt, \
+		log-admin, log-blocks, \
+		check-fence, check-heap, check-lists, check-dblock, \
+		check-fence-dblock, check-funcs, \
+		realloc-copy, free-blank, alloc-blank, error-abort
+
+# ultra-extensive checking
+5		log-stats, log-non-free, log-perror, log-trans, log-bad-pnt, \
+		log-admin, log-blocks, \
+		check-fence, check-heap, check-lists, check-dblock, \
+		check-dblock-fence, check-free, check-funcs, \
+		realloc-copy, free-blank, alloc-blank, error-abort
+
+# ultra-extensive checking
+check		log-stats, log-non-free, log-perror, log-bad-pnt, \
+		check-fence, check-heap, check-lists, check-dblock, \
+		check-dblock-fence, check-free, check-funcs, \
+		realloc-copy, free-blank, alloc-blank
+
+# full fence-post checking
+fence		log-stats, log-non-free, log-perror, log-bad-pnt, \
+		check-fence, check-dblock-fence
+
+# full logging of statistics to logfile and screen
+log		log-stats, log-non-free, log-perror, log-trans, log-bad-pnt, \
+		log-admin, log-blocks, \
+		check-fence, \
+		heap-check-map, print-perror

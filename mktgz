@@ -1,0 +1,188 @@
+#!/bin/sh
+
+
+COMPRESS_PRG='gzip'
+UNCOMPRESS_PRG='gzip -d'
+COMPRESS_SUFF='gz'
+
+for opt in $*
+do
+	case $opt in
+	-noclip)
+		noclip=yes
+		;;
+	-noprg)
+		noprg=yes
+		;;
+	-bzip2)
+		COMPRESS_PRG='bzip2'
+		UNCOMPRESS_PRG='bzip2 -d'
+		COMPRESS_SUFF='bz2'
+		;;
+	-libs)
+		noclip=yes
+		noprg=yes
+		;;
+	esac
+done
+
+if [ -n "$MAKE" ]
+then
+	MAKE="$MAKE"
+elif [ -x /usr/local/bin/gmake  ]
+then
+	MAKE=/usr/local/bin/gmake
+elif [ -x /usr/bin/gmake ]
+then
+	MAKE=/usr/bin/gmake
+else
+	MAKE=make
+fi
+
+LANG=C
+LC_ALL=C
+LC_MESSAGES=C
+export MAKE LANG LC_ALL LC_MESSAGES
+
+ver=`head -1 debian/changelog |cut -d'(' -f2|cut -d')' -f1`
+ostype=`./ostype.sh`
+arch=`./arch.sh`
+libc=`./libcver.sh`
+path=../clip_distrib/$ver/tar-$COMPRESS_SUFF-$ostype-$arch-$libc
+rm -rf $path
+mkdir -p $path
+dir=`cd $path; pwd`
+DISTROOT=$dir
+rm -rf $DISTROOT/*
+VER=$ver
+export DISTROOT COMPRESS_PRG UNCOMPRESS_PRG COMPRESS_SUFF VER
+pwd=`pwd`
+
+SCLIPROOT=usr/local/clip
+CLIPROOT=/${SCLIPROOT}
+DESTDIR=debian/tmp
+
+rm -rf ${DESTDIR}
+mkdir -p ${DESTDIR}
+DESTDIR=`cd $DESTDIR; pwd`
+
+export SCLIPROOT CLIPROOT DESTDIR
+mkdir -p ${DESTDIR}${CLIPROOT}/include
+
+if [ -z "$noclip" ]
+then
+
+cd clip || exit 1
+	./configure -r
+	$MAKE install DESTDIR=${DESTDIR} || exit 2
+cd $pwd
+
+fi
+
+. clip/clipcfg.sh || exit 2
+
+CLIPROOT=${DESTDIR}${CLIP_ROOT}
+LD_LIBRARY_PATH=${DESTDIR}/usr/lib
+export CLIPROOT LD_LIBRARY_PATH CLIP_ROOT
+
+mkdir -p ${DESTDIR}/usr/local/bin
+cd ${DESTDIR}/usr/local/bin || exit 1
+	rm -rf *
+	for name in clip*
+	do
+		ln -s ../clip/bin/$name .
+	done
+cd $pwd
+
+mkdir -p ${DESTDIR}${CLIP_ROOT}/doc
+cp -R example ${DESTDIR}${CLIP_ROOT}/doc/
+
+cd  ${DESTDIR}${CLIP_ROOT}/ || exit 1
+	rm -rf `find . -name CVS -print`
+cd $pwd
+
+echo "-v0
+-O
+-r
+-l" > ${DESTDIR}${CLIP_ROOT}/cliprc/clipflags
+
+strip ${DESTDIR}${CLIP_ROOT}/bin/*  2>/dev/null || true
+strip ${DESTDIR}${CLIP_ROOT}/lib/*${DLLREALSUFF} 2>/dev/null || true
+
+
+cd ${DESTDIR} || exit 1
+
+lst="\
+./usr/lib/libclip${DLLREALSUFF} \
+.${CLIP_ROOT}/lib/libclip${DLLREALSUFF} \
+.${CLIP_ROOT}/charsets \
+.${CLIP_ROOT}/keymaps \
+.${CLIP_ROOT}/lang \
+.${CLIP_ROOT}/term \
+.${CLIP_ROOT}/locale.mo \
+.${CLIP_ROOT}/etc \
+"
+[ "$DLLSUFF" != "$DLLREALSUFF" ] && \
+	lst="$lst .${CLIP_ROOT}/lib/libclip${DLLSUFF}"
+
+tar cvf - $lst | $COMPRESS_PRG > $dir/clip-lib_$ver.tar.$COMPRESS_SUFF
+#rm -rf $lst
+
+tar cvf - \
+./usr/local/bin \
+.${CLIP_ROOT}/bin \
+.${CLIP_ROOT}/doc \
+.${CLIP_ROOT}/lib/libclip.a \
+.${CLIP_ROOT}/include \
+.${CLIP_ROOT}/locale.po \
+.${CLIP_ROOT}/locale.pot \
+.${CLIP_ROOT}/cliprc \
+| $COMPRESS_PRG > $dir/clip-dev_$ver.tar.$COMPRESS_SUFF
+
+cd $pwd
+cd cliplibs
+$MAKE tgz
+cd $pwd
+
+if [ -z "$noprg" ]
+then
+
+cd $pwd
+cd  prg || exit 1
+	make tgz
+#	make && make install &&\
+#		${DESTDIR}${CLIP_ROOT}/bin/clip_msgmerge &&\
+#		${DESTDIR}${CLIP_ROOT}/bin/clip_msgfmt  || exit 3
+cd $pwd
+
+fi
+
+
+
+cd $pwd
+echo "#!/bin/sh
+CLIPROOT=$CLIP_ROOT" > $dir/install.sh
+echo "COMPRESS_PRG='$COMPRESS_PRG'" >> $dir/install.sh
+echo "UNCOMPRESS_PRG='$UNCOMPRESS_PRG'" >> $dir/install.sh
+cat install.in >> $dir/install.sh
+cd $dir
+for n in *.tar.$COMPRESS_SUFF
+do
+	echo $n >>$dir/install.sh
+done
+echo 'EOF' >>$dir/install.sh
+
+cd $pwd
+echo "#!/bin/sh
+CLIPROOT=$CLIP_ROOT" > $dir/remove.sh
+cat remove.in >> $dir/remove.sh
+for n in $dir/*.tar.$COMPRESS_SUFF
+do
+	cat $n | $UNCOMPRESS_PRG | tar tf -
+done | sort -u -r >>$dir/remove.sh
+echo 'EOF' >>$dir/remove.sh
+
+chmod +x $dir/install.sh $dir/remove.sh
+
+cp Readme_tgz $dir/Readme
+

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24Write</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24Write</A></H2><H2>( v24_port_t* port,  const unsigned char* Buffer,<BR>&nbsp; size_t Len )</H2>
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>Send a buffer. This function sends all <TT>Len</TT> characters of the array
+referenced by <TT>Buffer</TT>. The number of sent bytes is returned. If an error
+occurs, a <TT>-1</TT> is returned. Use <TT>v24QueryErrno</TT> to retrieve the error code.
+
+<P>Possible error code are <TT>V24_OK</TT>, <TT>V24_E_NULL_POINTER</TT>, <TT>V24_E_ILLHANDLE</TT> or
+<TT>V24_WRITE</TT>. 
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><B>Buffer</B> -  pointer to buffer.
+<BR><B>Len</B> -  number of characters to send.
+<BR><DT><B>Returns:</B><DD>  (int) number of sent characters or <TT>-1</TT>.
+<BR><DT><B>See Also:</B><DD><!1><A HREF="v24QueryErrno.html">v24QueryErrno</A>, <!1><A HREF="v24Putc.html">v24Putc</A>, v24Puts.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

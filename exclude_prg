@@ -1,0 +1,8 @@
+prg/lib
+prg/locale.pot
+prg/plane
+prg/test
+prg/tmp
+prg/sql
+prg/term
+prg/charsets

@@ -1,0 +1,1030 @@
+<hr>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<A HREF="index.html" target='pole'>Главная страница о компиляторе</a>
+<HTML> <PRE>
+Извините за неудобство - эта страница пока будет просто в текстовом
+виде. Не обращайте на этот бардак внимания - так уж получилось, что
+никто не хочет тратить время на перевод этой страницы в более привлекательный
+вид. Все-таки почти 900 строк текста !!!! И им еще расти и расти !!!
+
+* A2EDIT
+* AADD
+* ABS
+* ACHOICE
+* ACLONE
+* ACOPY
+* ADEL
+* ADIR
+* AEVAL
+* AFIELDS
+* AFILL
+* AINS
+* ALERT
+* ALIAS
+* ALLTRIM
+  ALTD
+* ARRAY
+* ASC
+* ASCAN
+* ASIZE
+* ASORT
+* AT  == ATL
+* ATL == AT
+* ATR == RAT
+* ATC
+* ATAIL
+* BETWEEN
+* BIN2I
+* BIN2L
+* BIN2W
+* BOF
+* BREAK
+* BROWSE
+* CDOW
+* CHR
+* CLONE            clone object
+* CMONTH
+* COL
+* COLORSELECT
+* CTOD
+* CURDIR
+* CSCOUNT
+* DATE
+* DAY
+* DBAPPEND
+* DBCLEARFILTER
+* DBCLEARINDEX
+* DBCLEARRELATION
+* DBCLOSEALL
+* DBCLOSEAREA
+* DBCOMMITALL
+* DBCREATE
+* DBCREATEIND
+* DBDELETE
+* DBEDIT
+* DBEVAL
+* DBF
+* DBFILTER
+* DBGOBOTTOM
+* DBGOTO
+* DBGOTOP
+* DBRECALL
+* DBREINDEX
+* DBRELATION
+? DBRSELECT
+* DBSEEK
+* DBSELECTAREA
+* DBSETDRIVER
+* DBSETFILTER
+* DBSETINDEX
+* DBSETORDER
+* DBSETRELATION
+* DBSKIP
+* DBSTRUCT
+* DBTABLEEXT
+* DBUNLOCK
+* DBUNLOCKALL
+* DBUSEAREA
+* DELETED
+* DESCEND
+* DEVOUT
+* DEVOUTPICT
+* DEVOUTATTR
+* DEVOUTSTR
+* DEVPOS
+* DIRECTORY
+* DISPBEGIN
+* DISPBOX
+* DISPCOUNT
+* DISPEND
+* DISPOUT
+? DISPOUTAT       // what is it ?
+* DOSERROR        // возвращает системно-зависимые коды
+* DOW
+* DTOC
+* DTOS
+* EMPTY
+* EOF
+* ERRORBLOCK
+* ERRORLEVEL
+* EVAL
+* EXP
+* FCLOSE
+* FCOUNT
+* FCREATE
+* FERASE
+* FERROR          // возвращает системно-зависимые коды
+* FERRORSTR       // строка с описанием ошибки
+* FIELDBLOCK
+* FIELDGET
+* FIELDNAME
+* FIELDPOS
+* FIELDPUT
+* FIELDWBLOCK
+* FILE
+* FILEEOF
+* FILESTR
+X FKLABEL              // not support
+X FKMAX                // not support
+* FLOCK
+* FOPEN
+* FOUND
+* FACCESS
+* FREAD
+* FILEGETSTR
+* FRENAME
+* FSEEK
+* FWRITE
+* FWRITELN
+* FFLUSH
+* FTELL
+* FLENGTH
+* GETENV
+* HARDCR
+* HEADER
+* HASHSTR
+* I2BIN
+* IF
+* INDEXEXT
+* INDEXKEY
+* INDEXORD
+* INKEY
+* INT
+* INLIST
+* ISALPHA
+* ISCOLOR
+* ISDIGIT
+* ISLOWER
+* ISPRINTER           // всегда готов
+* ISUPPER
+* L2BIN
+* LASTKEY
+* LASTREC
+* LEFT
+* LEN
+* LIKE
+* LOG
+* LOWER
+* LTRIM
+* LUPDATE
+* MAKEPATH
+* MAX
+* MAXCOL
+* MAXROW
+* MEMOEDIT
+* MEMOLINE
+* MEMOREAD
+* MEMORY             // возвращает большое число
+* MEMOTRAN
+* MEMOWRIT
+* MEMVARBLOCK
+* MIN
+* MLCOUNT
+* MLCTOPOS
+* MLPOS
+* MOD
+* MONTH
+  MPOSTOLC
+  NETERR
+  NETNAME
+* NEXTKEY
+* NOSNOW
+* OS
+* OUTERR
+* OUTSTD
+* PAD
+* PCOL
+* PCOUNT
+* POW
+* PROCLINE
+* PROCNAME
+* PROW
+* QOUT
+* RAT  == ATR
+* RANDOM
+* RANDOMIZE
+* RDDLIST
+* RDDNAME
+  RDDREGISTER
+* RDDSETDEFAULT
+* READEXIT
+* READINSERT
+* READKEY
+* READMODAL
+* READVAR
+* RECCOUNT
+* RECNO
+* RECSIZE
+* REPLICATE
+* RESTSCREEN
+* RIGHT
+* RLOCK
+* ROUND
+* ROW
+* RTRIM
+* SAVESCREEN
+* SCROLL
+* SECONDS
+* SELECT
+* SET
+* SETBLINK
+*? SETCANCEL
+* SETCOLOR
+* SETCURSOR
+* SETKEY
+* SETMODE
+* SETPOS
+  SETPOSBS
+  SETPRC
+* SLEEP
+  SOUNDEX
+* SPACE
+* SQRT
+* STARTPATH
+* STR
+* STRTRAN
+* STRZERO
+* STUFF
+* SUBSTR
+* TIME
+  TONE
+* TRANSFORM
+* TYPE
+* UPDATED
+* UPPER
+* USED
+* VAL
+* VALTYPE
+* VERSION
+X WORD
+* YEAR
+  DBRLOCK
+  DBRLOCKLIST
+  DBRUNLOCK
+  ORDBAGEXT
+  ORDBAGNAME
+  ORDCONDSET
+  ORDCREATE
+  ORDDESTROY
+  ORDFOR
+  ORDKEY
+  ORDLISTADD
+  ORDLISTCLEAR
+  ORDLISTREBUI
+  ORDNAME
+  ORDNUMBER
+  ORDSETFOCUS
+* RDDLIST
+* RDDNAME
+* RDDSETDEFAULT
+
+		 Команды
+
+* ?,??            Qout,Qqout
+* @...BOX         DispBox
+* @...CLEAR       Scroll
+* @...GET         getObj+ReadModal
+* @...PROMPT      __atPrompt
+* @...SAY         DevOut
+* @...TO          DispBox
+* ACCEPT          __Accept
+* APPEND BLANK    dbAppend
+* APPEND FROM     __dbAppDelim, __dbAppSDF, __dbApp
+* AVERAGE         dbEval
+  CALL            not supported
+* CANCEL          __Quit
+* CLEAR ALL       prerocessed
+* CLEAR GETS      __KillRead
+  CLEAR MEMORY    __Mclear
+* CLEAR SCREEN    Scroll
+* CLEAR TYPEAHEAD __Keyboard
+* CLOSE           dbCloseArea
+* COMMIT          dbCommitAll
+* CONTINUE        __dbContinue
+* RDDCONTINUE     __RddContinue
+* COPY FILE       __CopyFile
+* COPY STRUCTURE __dbCopyStruct
+* COPY STRU EXTE __dbCopyXStruct
+* COPY TO        __dbCopyDelim,__dbCopySDF,__dbCopy
+* COUNT          dbeval
+* CREATE         __dbCreate
+* CREATE FROM    __dbCreate
+* DELETE         dbeval+dbdelete
+* DELETE FILE    Ferase
+* DIR            __dir
+* DISPLAY        __dbList
+  EJECT          __eject
+* ERASE          ferase
+* FIND           dbseek
+* GO             dbgoto
+* INDEX          dbCreateIndex
+* INPUT          __Accept, __acceptstr
+  JOIN           __dbjoin
+* KEYBOARD       __Keyboard
+* LABEL FORM     __LabelForm
+* LIST           __dbList
+* LOCATE         __dbLocate
+* RDDLOCATE      __RddLocate
+* MENU TO        __AtMenu
+  NOTE
+* PACK           __dbpack
+* QUIT           __Quit
+* READ           readModal
+* RECALL         dbeval+dbrecall
+* REINDEX        dbreindex
+* RELEASE        __MRelease,__MXRelease
+* RENAME         frename
+* REPLACE        preprocessed
+* REPORT FORM    __ReportForm
+* RESTORE        __MRestore
+* RESTORE SCREEN RestScreen
+* RUN            __run
+* SAVE           __MSave
+* SAVE SCREEN    SaveScreen
+* SEEK           dbseek
+* SELECT         dbSelectArea
+* SET CENTURY    __SetCentury
+* SET COLOR      setcolor
+* SET FILTER     dbSetFilter
+* SET FORMAT     _ProcReq_,__SetFormat
+* SET FUNCTION   __SetFunction
+* SET INDEX      dbSetIndex
+* SET KEY        SetKey
+* SET ORDER      dbSetOrder
+* SET PROCEDURE  _ProcReq_
+* SET RELATION   dbSetRelation
+* SKIP           dbskip
+* SORT           __dbSort
+* STORE          preprocessed
+* SUM            dbeval
+* TEXT
+* TOTAL          __dbTotal
+  TYPE           __TypeFile
+* UNLOCK         dbunlock
+* UPDATE         __dbUpdate
+* USE            dbusearea
+* WAIT           __wait
+* ZAP            __dbZap
+
+* __Accept
+* __AcceptStr
+* __AtPrompt
+* __CopyFile
+* __dbAppDelim
+* __dbAppSDF
+* __dbApp
+* __dbContinue
+* __RddContinue
+* __dbCopyStruct
+* __dbCopyXStruct
+* __dbCopyDelim
+* __dbCopySDF
+* __dbCopy
+* __dbCreate
+  __dbJoin
+* __dbList
+* __dbLocate
+* __RddLocate
+* __dbPack
+* __dbSort
+* __dbTotal
+* __dbUpdate
+* __dbZap
+* __Dir
+* __Eject
+* __Keyboard
+* __LabelForm
+  __MClear
+* __MenuTo
+* __MRelease, __MXRelease
+* __MRestore
+* __MSave
+* __Quit
+  _ProcReq_                // not support
+* __SetFormat
+* __ReportForm
+* __Run
+* __SetCentury
+* __SetFormat
+  __SetFunction
+* __TextRestore
+* __TextSave
+  __TypeFile
+* __Wait
+? __XRestScreen
+? __XSaveScreen
+
+  ErrorNew
+* :Args
+* :CanDefault
+* :CanRetry
+* :CanSubstitute
+* :Cargo
+* :Description
+* :FileName
+* :GenCode
+* :Operation
+* :OsCode
+* :Severity
+* :SubCode
+* :SubSystem
+* :Tries
+	      // getsys
+* GETACTIVE
+* GETAPPLYKEY
+* GETDOSETKEY
+* GETPOSTVALIDATE
+* GETPREVALIDATE
+* GETREADER
+* READFORMAT
+* READKILL
+* READUPDATED
+* __KillRead
+	      // get object
+* GetNew
+* :BadDate
+* :Block
+* :Buffer
+* :Cargo
+* :Changed
+* :Clear
+* :Col
+* :ColorSpec
+* :DecPos
+* :ExitState
+* :HasFocus
+* :Minus
+* :Name
+* :Original
+* :Picture
+* :Pos
+* :PostBlock
+* :PreBlock
+* :Reader
+* :Rejected
+* :Row
+* :SubScript
+* :Type
+* :TypeOut
+* :Assign
+* :ColorDisp
+* :Display
+* :killFocus
+* :Reset
+* :SetFocus
+* :UnTransform
+* :UpDateBuffer
+* :VarGet
+* :VarPut
+* :End
+* :Home
+* :Left
+* :Right
+* :ToDecPos
+* :WordLeft
+* :WordRight
+* :BackSpace
+* :DelLeft
+* :DelRight
+* :Delete
+* :DelEnd
+* :Undo
+  :DelWordLeft
+  :DelWordRight
+* :Insert
+* :OverStrike
+
+		// tbrowse object
+
+* TBrowseNew
+* TBrowseDB
+* :AutoLite
+* :Cargo
+* :ColCount
+* :ColorSpec
+* :ColPos
+* :ColSep
+* :FootSep
+* :Freeze
+* :GoBottomBlock
+* :GoTopBlock
+* :HeadSep
+* :HitBottom
+* :HitTop
+* :LeftVisible
+* :nBottom
+* :nLeft
+* :nRight
+* :nTop
+* :RightVisible
+* :RowCount
+* :RowPos
+* :SkipBlock
+* :Stable
+* :Down
+* :end
+* :GoBottom
+* :GoTop
+* :Home
+* :Left
+* :PageDown
+* :PageUp
+* :PanEnd
+* :PanHome
+* :PanLeft
+* :PanRight
+* :Right
+* :Up
+* :AddColumn
+  :ColorRect
+* :ColWidth
+* :Configure
+* :DeHilite
+* :DelColumn
+* :ForceStable
+* :GetColumn
+* :Hilite
+* :InsColumn
+* :Invalidate
+* :RefreshAll
+* :RefreshCurrent
+* :SetColumn
+* :Stabilize
+		 // tbcolumn object
+* TBColumnNew
+* :Block
+* :Cargo
+* :ColorBlock
+* :ColSep
+* :DefColor
+* :Footing
+* :FootSep
+* :Heading
+* :HeadSep
+* :Picture
+* :Width
+
+		 // text edit object
+textEditNew(Lrow, Lcol, Rrow,Rcol, color)
+* :cargo
+* :modeFormat
+* :lines
+* :colorSpec
+* :line
+* :pos
+* :colWin
+* :rowWin
+* :nTop
+* :nLeft
+* :nBottom
+* :nRight
+* :updated
+* :marginLeft
+* :marginRight
+* :tabSize
+* :strlen
+* :pageLen
+* :tabPack
+   //
+* :down
+* :up
+* :left
+* :right
+* :wordLeft
+* :wordRight
+* :Bottom
+* :Top
+* :home
+* :end
+* :pageDown
+* :pageUp
+* :prevPage
+* :nextPage
+* :panHome
+* :panEnd
+* :panLeft
+* :panRight
+* :panUp
+* :panDown
+* :gotoLine
+* :gotoPos
+* :find
+* :replace
+* :clear
+* :loadString
+* :loadFile
+* :saveFile
+* :loadBlock
+* :saveBlock
+* :beginBlock
+* :endBlock
+* :cancelBlock
+* :copyBlock
+* :moveBlock
+* :deleteBlock
+* :newClipBoard
+* :addClipBoard
+* :moveClipBoard
+* :pasteClipBoard
+* :refresh
+* :refreshStr
+* :undo
+* :backSpace
+* :delLeft
+* :delHome
+* :delRight
+* :delete
+* :deleteLine
+* :delEnd
+* :delWordLeft
+* :delWordRight
+* :Insert
+* :overStrike
+* :insertLine
+* :centerLine
+* :formatLine
+* :formatPart
+* :formatPage
+* :formatAll
+* :splitPage
+
+
+   String  tools function
+
+* ADDASCII()
+* AFTERATNUM()
+* ASCIISUM()
+* ASCPOS()
+* ATADJUST()
+* ATNUM()
+* ATREPL()
+* BEFORATNUM()
+* CENTER()
+* CHARADD()
+* CHARAND()
+* CHAREVEN()
+* CHARLIST()
+* CHARMIRR()            // csetref не поддерживает
+* CHARMIX()
+* CHARNOLIST()
+* CHARNOT()
+* CHARODD()
+* CHARONE()
+* CHARONLY()
+* CHAROR()
+* CHARRELA()
+* CHARRELREP()          // csetref не поддерживает
+* CHARREM()
+* CHARREPL()            // csetref не поддерживает
+* CHARSORT()    - тут есть один статис - надо избавиться
+* CHARSPREAD()
+* CHARSWAP()
+* CHARXOR()
+* CHECKSUM()    == HASHSTR
+* COUNTLEFT()
+* COUNTRIGHT()
+* CSETATMUPA()  == set("CSETATMUPA" [,"t"|"f"])
+* CSETREF()
+* EXPAND()
+* JUSTLEFT()
+* JUSTRIGHT()
+* LIKE()
+* LTOC()
+* MAXLINE()
+* NUMAT()
+* NUMLINE()
+* PADLEFT()
+* PADRIGHT()
+* POSALPHA()
+* POSCHAR()
+* POSDEL()
+* POSDIFF()
+* POSEQUAL()
+* POSINS()
+* POSLOWER()
+* POSRANGE()    // symbols > 127  -> translate to index compare table
+* RANGEREM()    //  see posrange
+* RANGEREPL()   //  see posrange
+* POSREPL()
+* POSUPPER()
+* REMALL()
+* REMLEFT()
+* REMRIGHT()
+* REPLALL()
+* REPLLEFT()
+* REPLRIGHT()
+* SETATLIKE()
+* STRSWAP()
+* TABEXPAND()
+* TABPACK()
+* VALPOS()
+
+*? WORDONE()           // честно говоря так и не понял
+*? WORDONLY()          // до конца алгоритмы этих функций, возможны глюки
+*? WORDREPL()          // csetref не поддерживает
+*? WORDSWAP()
+*? WORDTOCHAR()
+
+* ATTOKEN()
+* NUMTOKEN()
+* TOKEN()
+* TOKENLOWER()
+* TOKENUPPER()
+* TOKENAT()
+* TOKENSEP()         // работает даже с tokeninit(), tokennext()
+* TOKENINIT()        // не требует обязательной передачи по указателю
+* RESTTOKEN()
+* SAVETOKEN()
+* TOKENNEXT()
+* TOKENEND()
+
+? STRDIFF()
+? CHARPACK()
+? CHARUNPACK()
+? CRYPT()
+
+  disk tools functions
+
+
+* DELETEFILE()
+* DIRCHANGE()
+* DIRMAKE()
+* DIRNAME()
+* DIRREMOVE()
+* DISKCHANGE()
+* DISKFREE()
+* DISKNAME()
+* DISKREADY()
+* DISKREADYW()
+* DISKTOTAL()
+* DISKTYPE()
+* DRIVETYPE()
+* FILEAPPEND()
+* FILESEEK()
+* FILEATTR()
+* FILEATTRS()
+* FILEDATE()
+* FILESIZE()
+* FILETIME()
+  RESTFSEEK()
+  SAVEFSEEK()
+* SETFATTR()
+* FILESTR()
+* SETFCREATE()
+* STRFILE()
+* TEMPFILE()
+* NUMDISKF()
+* NUMDISKH()
+* NUMDISKL()
+* DOSPATH()
+* FILEMOVE()
+* FILEVALID()
+* TRUENAME()
+* FILECHECK()
+* SETFDATI()
+* FILEDELETE()
+* SETSHARE()
+* GETSHARE()
+* FACCESS()
+
+  DISKCHECK()
+  DISKFORMAT()
+  DISKSPEED()
+  DISKSTAT()
+
+  FILECCLOSE()
+  FILECCONT()
+  FILECDATI()
+  FILECOPEN()
+  FILECOPY()
+  FLOPPYTYPE()
+  RENAMEFILE()
+  VOLSERIAL()
+  VOLUME()
+
+    Date tools functions
+
+* ADDMONTH
+* BOM
+* BOQ
+* BOY
+CTODOW      // какой язык они должны понимать ?
+CTOMONTH    //
+* DMY
+* DOY
+* EOM
+* EOQ
+* EOY
+* ISLEAP
+* LASTDAYOM
+* MDY
+* NTOCDOW
+* NTOCMONTH
+* QUARTER
+* SECTOTIME
+* STOD
+* TIMETOSEC
+* TIMEVALID
+* WAITPERIOD
+* WEEK
+* WOM
+
+SETDATE     // ну-ну ! и как его ставить в юниксах ?
+SETTIME
+SHOWTIME    //
+
+    math tools functions
+
+* ACOS
+* ASIN
+* ATAN
+* ATN2 == ATAN2
+* CEILING
+* COS
+* COT
+* DTOR
+* FACT
+* FLOOR
+* LOG10
+* PI
+* RTOD
+* SETPREC
+* SIGN
+* SIN
+* TAN
+
+? FV        // не понял как они получили из 150 4900 за 36 месяцев ?
+? GETPREC   // возвращает всегда 16, не понял зачем вообще нужна эта функция
+? PAYMENT
+? PERIODS
+? PV
+? RATE
+
+
+ Number and Bit tools functions
+
+* BITTOC
+* CELSIUS
+* CLEARBIT
+* CTOBIT
+* CTOF
+* CTON
+* EXPONENT
+* FAHRENHEIT
+* FTOC
+* INFINITY
+* INTNEG
+* INTPOS
+* ISBIT
+* LTON
+* MANTISSA
+* NTOC
+* NUMAND
+* NUMCOUNT
+* NUMHIGH
+* NUMLOW
+* NUMMIRR
+* NUMNOT
+* NUMOR
+* NUMROL
+* NUMXOR
+* RAND
+* RANDOM
+* SETBIT
+
+   get/read tools functions
+
+* COUNTGETS
+* CURRENTGET
+* GETFLDCOL
+* GETFLDROW
+* GETFLDVAR
+* RESTGETS
+* SAVEGETS
+* GETINPUT
+* GETSECRET
+RESTSETKEY
+SAVESETKEY
+
+  Miscellaneous Functions of tools
+
+* ALLOFREE   // return 0xffff
+* STACKFREE  // return 0xffff
+* BLANK
+* COMPLEMENT
+* DATATYPE   // что за тип "alias" ? доделать определение ссылок
+* MILLISEC
+* NUL
+* TOOLVER
+* XTOC
+
+GETTIC
+SETTIC
+KBDDISABLE
+KBDEMULATE
+KBDSPEED
+KBDSTAT
+KBDTYPE
+KEYSEC
+KEYTIME
+SCANKEY
+SHOWKEY
+SOUND
+SPEED
+
+	 CA Tools Windows functions
+
+* WACLOSE
+*? WBOARD
+* WBOX
+* WCENTER
+* WCLOSE
+* WCOL
+* WFCOL
+* WFLASTCOL
+* WFLASTROW
+* WFORMAT
+* WFROW
+* WLASTCOL
+* WLASTROW
+* WMODE
+* WMOVE
+* WNUM
+* WOPEN
+* WROW
+* WSELECT
+* WSETMOVE
+* WSETSHADOW
+* WSTEP
+
+	   // CA-TOOLS
+
+* CSETFUNC
+* INPUTMODE
+
+	   // CA-TOOLS Video functions
+
+CHARPIX
+CHARWIN
+CLEAREOL
+CLEARSLOW
+CLEARWIN
+CLEOL
+CLWIN
+COLORREPL
+COLORTON
+COLORWIN
+EGAPALETTE
+* ENHANCED
+FILESCREEN
+FONTLOAD
+FONTRESET
+FONTROTATE
+FONTSELECT
+GETCLEARA
+* GETCLEARB
+GETFONT
+GETSCRSTR
+GETVGAPAL
+INVERTATTR
+INVERTWIN
+ISCGA
+ISEGA
+ISHERCULES
+ISMCGA
+ISMONO
+ISPGA
+ISVGA
+MAXFONT
+MONISWITCH
+NTOCOLOR
+NUMCOL
+RESTCURSOR
+SAVECURSOR
+SAYDOWN
+SAYMOVEIN
+SAYSCREEN
+SAYSPREAD
+SCREENATTR
+SCREENFILE
+SCREENMARK
+SCREENMIX
+SCREENSIZE
+SCREENSTR
+SETCLEARA
+* SETCLEARB
+SETFONT
+* SETRC
+SETSCRSTR
+* STANDARD
+STRSCREEN
+* UNSELECTED
+UNTEXTWIN
+VGAPALETTE
+VIDEOINIT
+VIDEOSETUP
+VIDEOTYPE
+
+<hr>
+<A HREF="index.html" target='pole'>Главная страница о компиляторе</a>
+

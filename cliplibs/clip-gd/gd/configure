@@ -1,0 +1,198 @@
+#!/bin/sh
+#
+#	Configure script for clip
+#	<uri@itk.ru>
+#
+
+uname=`uname -s`
+uver=`uname -r`
+hname=`hostname -f 2>/dev/null`
+if [ $? != 0 ]
+then
+	hname=`hostname 2>/dev/null`
+	if [ $? != 0 ]
+	then
+		hname=`uname -n 2>/dev/null`
+		if [ $? != 0 ]
+		then
+			hname=localhost
+		fi
+	fi
+fi
+
+osname=UNIX
+stdlibpath=/usr/local/lib
+stdincpath=/usr/local/include
+LIBXPM='-lXpm -lX11'
+
+case "$uname" in
+	BSD/OS*|bsdi*)
+		osname=BSDI
+		;;
+	[lL]inux*)
+		osname=LINUX
+		stdlibpath=/usr/lib
+		stdincpath=/usr/include
+		;;
+	FreeBSD*)
+		osname=FREEBSD
+		STATICLINK=-static
+		;;
+	NetBSD*)
+		osname=NETBSD
+		;;
+	SunOS*)
+		osname=SUNOS
+		;;
+	CYGWIN*)
+		osname=CYGWIN
+		stdlibpath=/usr/lib
+		stdincpath=/usr/include
+		LIBXPM='-lXpm-noX'
+                if [ -f /usr/include/X11/Xlib.h ]
+                then
+	                CYGFLAGS=
+		else
+                	CYGFLAGS=-DXPM_NO_X
+		fi
+		;;
+esac
+
+if [ -f $CLIPROOT/include/clipcfg.sh ]
+then
+	. $CLIPROOT/include/clipcfg.sh
+fi
+
+printf "configure: Makefile creating.."
+echo ''
+
+exec 3>Makefile.inc
+
+echo "#	Created automatically by 'configure'" >&3
+echo '#' >&3
+echo >&3
+echo '#' >&3
+echo '#	Compile flags' >&3
+echo '#' >&3
+echo "OSNAME='$osname'" >&3
+echo "DLLIB='$DLLIB'" >&3
+echo "CYGFLAGS='$CYGFLAGS'" >&3
+
+if [ -z "$CC" ]
+then
+	if [ -x "$(which gcc)" ]
+	then
+		CC=gcc
+	else
+		CC=cc
+	fi
+fi
+echo "COMPILER='$CC'" >&3
+echo "INSTALL_LIB='$stdlibpath'" >&3
+echo "INSTALL_INCLUDE='$stdincpath'" >&3
+echo "LIBDIRS='-L. -L$stdlibpath -L/usr/lib/X11 -L/usr/X11R6/lib'" >&3
+echo "INCLUDEDIRS='-I. -I/usr/include/freetype2 -I/usr/include/X11 -I/usr/X11R6/include -I/usr/X11R6/include/X11 -I$stdincpath'" >&3
+
+if [ -f $stdlibpath/libpng${DLLSUFF} ]
+then
+	echo "LIBPNG='-lpng'" >&3
+else
+	echo 'Warning: libpng not installed'
+fi
+
+if [ -f $stdlibpath/libjpeg${DLLSUFF} ]
+then
+	echo "LIBJPEG='-ljpeg'" >&3
+else
+	echo 'Warning: libjpeg not installed'
+fi
+
+#??????????
+if [ -f $stdlibpath/freetype${DLLSUFF} ]
+then
+	echo "LIBFREETYPE='-lfreetype'" >&3
+else
+	echo 'Warning: libfreetype not installed'
+fi
+
+if [ -f $stdlibpath/libttf${DLLSUFF} ]
+then
+	echo "LIBTTF='-lttf'" >&3
+else
+	echo 'Warning: libttf not installed'
+fi
+
+if [ -f /usr/X11R6/include/X11/xpm.h -o -f /usr/include/X11/xpm.h ]
+then
+	echo "LIBXPM='$LIBXPM'" >&3
+else
+	echo 'Warning: system do not have installed XPM development'
+        LIBXPM=''
+fi
+
+
+echo >&3
+exec 3>&-
+
+tr -d \' <./Makefile.inc >Makefile
+cat ./Makefile.in >>Makefile
+
+echo ". done."
+
+printf "configure: creating gdcfg.h .."
+echo ''
+
+exec 3>gdcfg.h
+
+echo "/* Created automatically by 'configure' */" >&3
+echo "#ifndef GD_CONFIG_H" >&3
+echo "#define GD_CONFIG_H" >&3
+echo >&3
+echo '#undef  VERSION ' >&3
+echo '#define VERSION "1.8.4"' >&3
+echo '#undef  OSNAME ' >&3
+echo '#define OSNAME "'$osname'"' >&3
+echo "#define OS_$osname" >&3
+echo '#undef  SYSTEM ' >&3
+echo '#define SYSTEM "'$uname'"' >&3
+echo '' >&3
+echo '#define DEFAULT_FONTPATH "/usr/share/fonts/truetype"'>&3
+echo '#define PATHSEPARATOR ":"'>&3
+
+if [ -f $stdincpath/jpeglib.h ]
+then
+	echo '#define HAVE_LIBJPEG' >&3
+else
+	echo 'Warning: system do not have installed JPEG development'
+fi
+
+if [ -f $stdincpath/png.h ]
+then
+	echo '#define HAVE_LIBPNG' >&3
+else
+	echo 'Warning: system do not have installed PNG development'
+fi
+
+if [ -n "$LIBXPM" ]
+then
+	echo '#define HAVE_LIBXPM'  >&3
+fi
+
+if [ -f $stdincpath/freetype2/freetype.h ]
+then
+	echo '#define HAVE_LIBFREETYPE' >&3
+else
+	echo 'Warning: system do not have installed FREETYPE development'
+fi
+
+if [ -f $stdincpath/freetype2/freetype.h ]
+then
+	echo '#define HAVE_LIBTTF' >&3
+else
+	echo 'Warning: system do not have installed TTF development'
+fi
+
+echo "#endif" >&3
+exec 3>&-
+echo ". done."
+

@@ -1,0 +1,11 @@
+
+[ -z "$1" ] || root=$1
+
+[ ! -x /usr/sbin/groupadd ] || /usr/sbin/groupadd clip >/dev/null 2>&1 || true
+
+LOCALEDIRS="$CLIPROOT/locale.pot $CLIPROOT/locale.po $CLIPROOT/locale.mo"
+mkdir -p $LOCALEDIRS
+chgrp -R clip $LOCALEDIRS 2>/dev/null || true
+chmod -R g+w $LOCALEDIRS || true
+
+cat << EOF | while read file; do echo "install $file to $root/"; cat $file | $UNCOMPRESS_PRG | (cd $root && tar xf - ); done

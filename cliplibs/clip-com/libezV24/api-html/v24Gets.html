@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24Gets</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24Gets</A></H2><H2>( v24_port_t* port,  char* Buffer,  size_t BuffSize )</H2><BLOCKQUOTE>Receive a string.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>Receive a string. Unlike <TT>v24Read</TT>, which tries to read a fixed number of
+character, <TT>v24Gets</TT> read characters unless <TT>BuffSize</TT> characters are
+fetched, or a <EM>end of line</EM> (<TT>\n</TT>) is recieved. At the end of the game,
+the number of characters read ist returned. If an error occurs, a <TT>-1</TT> is
+returned. The characters are stored in <TT>Buffer</TT>. The functions ensures a
+<TT>\0</TT> terminated string!
+
+<P>Possible error code are <TT>V24_OK</TT>, <TT>V24_E_NULL_POINTER</TT>, <TT>V24_E_ILLPARM</TT>,
+<TT>V24_E_ILLHANDLE</TT> or <TT>V24_WRITE</TT>. To get this error code, use
+<TT>v24QueryErrno</TT>.
+
+<P>A string should at least have 1 character and the terminating <TT>\0</TT>. The
+parameter <TT>BuffSize</TT> must therefore be greater than 1! If not, the operation
+results in a <TT>V24_E_ILLPARM</TT> error. To read a single character, we have
+<!1><A HREF="v24Getc.html">v24Getc</A>.
+
+<P><B>Implementation note:</B> the current release of the library defines the
+<EM>end of a string</EM> as a hard coded constant! Search the internal headers
+<TT>EZV24_END_OF_STRING</TT>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><B>Buffer</B> -  pointer to buffer.
+<BR><B>BuffSize</B> -  the maximum size of the buffer.
+<BR><DT><B>Returns:</B><DD>  (int) number of fetched characters or <TT>-1</TT>.<BR><DT><B>See Also:</B><DD><!1><A HREF="v24QueryErrno.html">v24QueryErrno</A>, <!1><A HREF="v24Getc.html">v24Getc</A>, v24Read.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

@@ -1,0 +1,47 @@
+В целях русификации мной сделаны некоторые исправления:
+
+1)  Файл richtext.prg
+
+  a)  Строка 155
+
+      LOCAL cTopFile  := "rtf1\ansi\deff0\deftab720"
+      изменена на
+      LOCAL cTopFile  := "rtf1\ansi\deff0\deftab720\deflang1033"
+
+      Comment: Согласно спецификации код русского языка
+
+  b)  Строка 160
+
+      aFontData := { "Courier" }, ;
+      изменена на
+      aFontData := { "Courier New Cyr" }, ;
+
+      Comment: Думаю, понятно..
+
+  c)  Строка 454
+
+      cWrite += "\" + LOWER( NewBase( nChar, 16 ) )
+      изменена на
+      cWrite += "\'" + LOWER( NewBase( nChar, 16 ) )
+
+      Comment: Автор видимо немного ошибся
+
+  d)  Строка 412
+
+      Добавлено
+      cString := OEMTOANSI(cString)
+
+      Comment: Для автоматической перекодировки
+
+
+
+2)  Подправлен пример
+
+3)  В архив добавлена RICH-TEXT FORMAT (RTF) SPECIFICATION (c) Microsoft
+
+
+                                       Mike Gorbunov aka M00N
+                                       mike@tpi.ac.ru
+                                       2:5010/178.5
+                                       http://www.tpi.ac.ru/~mike/fivewin
+

@@ -1,0 +1,96 @@
+#ifndef _CLIP_GTK_EXTRA_DEFINED
+#define _CLIP_GTK_EXTRA_DEFINED
+
+
+#define GTK_WIDGET_SHEET		HASH___GTK_WIDGET_SHEET
+
+/* signals */
+#define GTK_SELECT_COLUMN_SIGNAL	HASH___SELECT_COLUMN_SIGNAL
+#define GTK_SELECT_RANGE_SIGNAL		HASH___SELECT_RANGE_SIGNAL
+#define GTK_CLIP_RANGE_SIGNAL		HASH___CLIP_RANGE_SIGNAL
+#define GTK_RESIZE_RANGE_SIGNAL		HASH___RESIZE_RANGE_SIGNAL
+#define GTK_MOVE_RANGE_SIGNAL		HASH___MOVE_RANGE_SIGNAL
+#define GTK_TRAVERSE_SIGNAL		HASH___TRAVERSE_SIGNAL
+#define GTK_NEW_COL_WIDTH_SIGNAL	HASH___NEW_COL_WIDTH_SIGNAL
+#define GTK_NEW_ROW_HEIGHT_SIGNAL	HASH___NEW_ROW_HEIGHT_SIGNAL
+#define GTK_SET_CELL_SIGNAL             HASH___SET_CELL_SIGNAL
+#define GTK_CLEAR_CELL_SIGNAL           HASH___CLEAR_CELL_SIGNAL
+
+#ifndef __GTK_SHEET_H__
+
+/* sheet flags */
+#define flg_GTK_SHEET_IS_LOCKED			1
+#define flg_GTK_SHEET_IS_FROZEN			2
+#define flg_GTK_SHEET_IN_XDRAG			4
+#define flg_GTK_SHEET_IN_YDRAG			8
+#define flg_GTK_SHEET_IN_DRAG			16
+#define flg_GTK_SHEET_IN_SELECTION		32
+#define flg_GTK_SHEET_IN_RESIZE			64
+#define flg_GTK_SHEET_IN_CLIP			128
+#define flg_GTK_SHEET_ROW_FROZEN		256  /* set rows to be resizeable */
+#define flg_GTK_SHEET_COLUMN_FROZEN		512  /* set cols to be resizeable */
+#define flg_GTK_SHEET_AUTORESIZE		1024 /* resize column if text width is great than column width */
+#define flg_GTK_SHEET_CLIP_TEXT			2048 /* clip text to cell */
+#define flg_GTK_SHEET_ROW_TITLES_VISIBLE	4096
+#define flg_GTK_SHEET_COL_TITLES_VISIBLE	8192
+#define flg_GTK_SHEET_AUTO_SCROLL		16384
+#define flg_GTK_SHEET_JUSTIFY_ENTRY		32768
+
+#define GTK_SHEET_FLAGS(sheet)             gtk_SheetFlags(sheet)
+#define GTK_SHEET_SET_FLAGS(sheet,flag)    gtk_SheetSetFlags(sheet)
+#define GTK_SHEET_UNSET_FLAGS(sheet,flag)  gtk_SheetUnsetFlags(sheet)
+
+#define GTK_SHEET_IS_LOCKED(sheet)   	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IS_LOCKED) != 0)
+#define GTK_SHEET_IS_FROZEN(sheet)   	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IS_FROZEN) != 0)
+#define GTK_SHEET_IN_XDRAG(sheet)    	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IN_XDRAG) != 0)
+#define GTK_SHEET_IN_YDRAG(sheet)    	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IN_YDRAG) != 0)
+#define GTK_SHEET_IN_DRAG(sheet)     	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IN_DRAG) != 0)
+#define GTK_SHEET_IN_SELECTION(sheet) 	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IN_SELECTION) != 0)
+#define GTK_SHEET_IN_RESIZE(sheet) 	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IN_RESIZE) != 0)
+#define GTK_SHEET_IN_CLIP(sheet) 	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_IN_CLIP) != 0)
+#define GTK_SHEET_ROW_FROZEN(sheet)   	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_ROW_FROZEN) != 0)
+#define GTK_SHEET_COLUMN_FROZEN(sheet)	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_COLUMN_FROZEN) != 0)
+#define GTK_SHEET_AUTORESIZE(sheet)   	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_AUTORESIZE) != 0)
+#define GTK_SHEET_CLIP_TEXT(sheet)   	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_CLIP_TEXT) != 0)
+#define GTK_SHEET_ROW_TITLES_VISIBLE(sheet)   (NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_ROW_TITLES_VISIBLE) != 0)
+#define GTK_SHEET_COL_TITLES_VISIBLE(sheet)   (NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_COL_TITLES_VISIBLE) != 0)
+#define GTK_SHEET_AUTO_SCROLL(sheet)   	(NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_AUTO_SCROLL) != 0)
+#define GTK_SHEET_JUSTIFY_ENTRY(sheet)  (NumAnd(GTK_SHEET_FLAGS (sheet), flg_GTK_SHEET_JUSTIFY_ENTRY) != 0)
+
+
+/* Sheet attributes */
+#define GTK_SHEET_FOREGROUND		0
+#define GTK_SHEET_BACKGROUND		1
+#define GTK_SHEET_FONT			2
+#define GTK_SHEET_JUSTIFICATION		3
+#define GTK_SHEET_BORDER		4
+#define GTK_SHEET_BORDER_COLOR		5
+#define GTK_SHEET_IS_EDITABLE		6
+#define GTK_SHEET_IS_VISIBLE		7
+
+/* sheet->state */
+#define GTK_SHEET_NORMAL		0
+#define GTK_SHEET_ROW_SELECTED		1
+#define GTK_SHEET_COLUMN_SELECTED	2
+#define GTK_SHEET_RANGE_SELECTED	3
+
+#define GTK_SHEET_LEFT_BORDER		1
+#define GTK_SHEET_RIGHT_BORDER		2
+#define GTK_SHEET_TOP_BORDER		4
+#define GTK_SHEET_BOTTOM_BORDER		8
+#endif
+
+#define GTK_WIDGET_COMBO_BOX		HASH___GTK_WIDGET_COMBO_BOX
+
+#define GTK_WIDGET_FONT_COMBO		HASH___GTK_WIDGET_FONT_COMBO
+
+#define GTK_WIDGET_BORDER_COMBO		HASH___GTK_WIDGET_BORDER_COMBO
+
+#define GTK_WIDGET_COLOR_COMBO		HASH___GTK_WIDGET_COLOR_COMBO
+
+#define GTK_WIDGET_TOGGLE_COMBO		HASH___GTK_WIDGET_TOGGLE_COMBO
+
+#define GTK_WIDGET_ITEM_ENTRY		HASH___GTK_WIDGET_ITEM_ENTRY
+
+
+#endif

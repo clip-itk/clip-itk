@@ -1,0 +1,17 @@
+#!/bin/sh
+
+export CVS_RSH=ssh
+
+dirs="clip prg cliplibs"
+pwd=`pwd`
+
+for dir in $dirs
+do
+	cvs -d :ext:clip@last.itk.ru:/home/clip/cvsroot checkout $dir
+
+	if [ -f $dir/CVS/Template ]
+	then
+		echo $USER >>$dir/CVS/Template
+	fi
+
+done

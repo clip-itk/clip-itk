@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compatible compiler</TITLE>
+</HEAD>
+<BODY>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+
+
+<h3>             Recommendations for quick start </h3>
+</center>
+<hr>
+   Set the environment variable CLIPROOT, something like <BR>
+   <i>export CLIPROOT="/usr/local/clip"</i><br>
+   All necessary files from distributives will be installed in this
+   directory. Also, while compiling and execution, necessary information
+   will be read from this directory.
+
+<hr>
+   The base program doing everything (preprocessor, compiler, translator
+   into c-files and po-files, linker) is clip, but it uses gcc as
+   an end compiler and linker.
+   To link a simple program, it's necessary to execute:<BR>
+   clip -e -s -M test.prg <BR>
+   -e - create executable file <BR>
+   -s - use shared library <BR>
+   -M - genereate MAIN procedure - this option should be used, if there is
+   no declaration of MAIN procedure in the program.
+
+
+<hr>
+   Programs may be linked:
+   - in share mode, using -s option.
+   In this case, the result binary file will be of minimal size, but it
+   will be dependent on $CLIPROOT/lib/libclip.so library.<BR>
+   - in static mode, it's necessary to designate clearly, what libraries should
+   be linked (clip -e test.prg $CLIPROOT/lib/tools.a).
+   In this case, the program becomes independent of external files, but it
+   will contain all object and library files, and the program size may be
+   of several megabytes.
+
+<hr>
+   For compiling any old source codes from DOS, file names must be in the
+   lower case (use lowname utility). We recommend you to include <BR>
+   set translate path on <BR>
+   into your programs to automatically
+   convert file names and libraries to the lower case while executing
+   the program.<BR>
+   The initialization procedure is in prg/sys/sys_init.prg.
+
+<hr>
+   If prg module includes a function or procedure with the same name, as the name
+   of prg file, compiling with "-n" option (module without a starting procedure)
+   is automatically set, therefore compiling may be executed by default,
+   i.e. without designating "-n", by a simple execution of "clip *prg"
+   or "clip -p *.prg".
+
+<hr>
+ During file operations on mounted file systems from other OS's
+ (Novell,Win,...) there may be problems with the support of locking and cashing
+ interfaces. In particular, Novell support library under freeBsd does not support
+ locking.
+
+<hr>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+<br>
+&#169 Uri Khnykin, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2001
+</center>
+

@@ -1,0 +1,63 @@
+<HTML>
+<HEAD><TITLE>COM_SOFT</TITLE></HEAD>
+<BODY>
+
+<PRE>
+ <B>COM_SOFT()</B>
+ Queries or sets the software handshake (automatic XON/XOFF)
+<HR>
+ <B>Syntax</B>
+
+     <B>COM_SOFT(&lt;nComPort&gt;,[&lt;lNewHandshake&gt;],[&lt;cXONchar&gt;],</B>
+     <B>   [&lt;cXOFFchar&gt;]) --&gt; lOldHandshake</B>
+
+ <B>Arguments</B>
+
+     <B>&lt;nComPort&gt;</B>  Designates the port (1 to N) for which the software
+     handshake is set.
+
+     <B>&lt;lNewHandshake&gt;</B>  Designates whether the handshake is on (.T.) or off
+     (.F.).  If this parameter is omitted, the function returns the current
+     setting.
+
+     <B>&lt;cXONchar&gt;</B>  Designates any character you choose as an XON character.
+     The default character is ASCII 19 - Ctrl-S.
+
+     <B>&lt;cXOFFchar&gt;</B>  Designates any character you choose as an XOFF
+     character.  The default value is ASCII 17 - Ctrl-Q.
+
+ <B>Returns</B>
+
+     The function returns the previously set value.
+
+ <B>Description</B>
+
+     With modem connections, a hardware handshake is impossible, which is why
+     we are making a software handshake available with this function.  When a
+     buffer is 75% full, an XOFF character (Ctrl-Q) is transmitted to the
+     remote station.  As soon as the buffer has again been emptied to 50% or
+     less, the XON character (Ctrl-S) is transmitted.  You can use characters
+     other than Ctrl-S or Ctrl-Q for individual protocols, which would then
+     be taken into account in the situations described above.
+
+ <B>Notes</B>
+
+     <B>”</B>  The software handshake only supports background transmission
+        (when COM_OPEN() has been implemented with the third parameter
+        &lt;nBufferOut&gt;).
+
+     <B>”</B>  When you want to transmit binary data, the software handshake
+        must always be turned off.
+
+ <B>Example</B>
+
+     COM_OPEN(1, 1000, 1000)   // Open port, background transmission
+     COM_SOFT(1, .T.)          // Software handshake COM1
+
+</PRE>
+<HR>
+<B>See Also:</B>
+<A HREF="com_hard.html">COM_HARD()</A>
+<HR>
+</BODY>
+</HTML>

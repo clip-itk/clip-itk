@@ -1,0 +1,31 @@
+2001-12-18 21:35 UTC-0800 Ron Pinkas <ron@profit-master.com>
+
+  * pp.prg
+    * Corrected CompileRule() to support spaces in <x,...> match pattern.
+    /* Clipper allows any number of spaces anywhere, even between the dots!
+    ! Optimized ExtractLeadingWS() by adding INLINE C version.
+     
+2001-09-08 21:35 UTC-0800 Ron Pinkas <ron@profit-master.com>
+
+  + changelog
+    + Added a change log file.
+
+  * pp.prg
+    * Corrections in Matching Engine to avoid infinite loop.
+    * Corrections in Output Engine to avoid infinite loop.
+    * Corrected sModule in PP_Run_Err() to s_sModule.
+    * Updated burned in rules of rp_run.ch and hbclass.ch.
+    * Added support fr -D<id> command line switch.
+    * Changed -D[E|M|P] to -d:[E|M|P]
+
+  * rp_run.ch
+    * Minor sync to rp_run.ch with latest hbclass.ch.
+
+  * pp.txt
+    * Updated documentation.
+
+  + ppclass.ch
+    + Added the file used to create the burned in version of hbclass.ch
+
+    /* Actual hbclass.ch can't be processed because it is ill formed 
+       to match bugs in Harbour PreProcessor. */

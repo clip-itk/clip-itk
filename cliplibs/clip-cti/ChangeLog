@@ -1,0 +1,8 @@
+02.10.02 - method widget:realize() added, but not all widget corrected to use it
+12.09.02 - CTI_CHANGED_SIGNAL in CTI_OPTION_MENU
+01.10.02 - changed syntax:
+	object:signal_connect(<signal>,<obj>,<handler>) ==>
+	object:signal_connect(<signal>,<handler>,<obj>)
+01.10.02 - signal-based mechanism implemented
+08.10.02 - nesting cti_main(),cti_quit()
+01.10.02 - centering windows

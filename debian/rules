@@ -1,0 +1,136 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#/usr/lib/libndbm.a=1
+
+# This is the debhelper compatability version to use.
+export DH_COMPAT=1
+SCLIPROOT=usr/local/clip
+export CLIPROOT=/$(SCLIPROOT)
+PWD=$(shell pwd)
+DESTDIR=$(PWD)/debian/tmp
+CLIP_LOCALE_ROOT=$(DESTDIR)$(CLIPROOT)
+export DESTDIR SCLIPROOT CLIP_LOCALE_ROOT
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	# Add here commands to compile the package.
+	mkdir -p debian/tmp$(CLIPROOT)/include
+	cd clip; ./configure -r
+	cd clip; $(MAKE) install DESTDIR=$(DESTDIR)
+
+	echo "-v0" > ${DESTDIR}${CLIPROOT}/cliprc/clipflags
+	echo "-O" >> ${DESTDIR}${CLIPROOT}/cliprc/clipflags
+	echo "-r" >> ${DESTDIR}${CLIPROOT}/cliprc/clipflags
+	echo "-l" >> ${DESTDIR}${CLIPROOT}/cliprc/clipflags
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc
+	cp -a example $(DESTDIR)$(CLIPROOT)/doc/
+
+	cd $(PWD)/debian/tmp$(CLIPROOT)/; rm -rf `find . -path '*CVS*'`
+	rm -f $(PWD)/debian/tmp$(CLIPROOT)/lib/Make
+
+	dh_link -pclip-dev usr/local/clip/doc usr/share/doc/clip-dev/doc \
+		usr/local/clip/bin/clip usr/local/bin/clip \
+		usr/local/clip/bin/clip_dbg usr/local/bin/clip_dbg \
+		usr/local/clip/bin/clip_trans usr/local/bin/clip_trans \
+		usr/local/clip/bin/clip_bug usr/local/bin/clip_bug \
+		usr/local/clip/bin/clip_msgmerge usr/local/bin/clip_msgmerge \
+		usr/local/clip/bin/clip_msgfmt usr/local/bin/clip_msgfmt \
+		usr/local/clip/bin/clip_makeslib usr/local/bin/clip_makeslib \
+		usr/local/clip/bin/clip_makelib usr/local/bin/clip_makelib \
+		usr/local/clip/bin/clip_cp usr/local/bin/clip_cp \
+		usr/local/clip/bin/clipar usr/local/bin/clipar \
+		usr/local/clip/bin/cliphash usr/local/bin/cliphash \
+		usr/local/clip/bin/clip_conv usr/local/bin/clip_conv \
+		usr/local/clip/bin/clip_hashextract usr/local/bin/clip_hashextract
+# lib
+	rm -rf $(DESTDIR)/usr/lib/*
+	dh_link $(SCLIPROOT)/lib/libclip.so usr/lib/libclip.so
+	dh_movefiles -pclip-lib $(SCLIPROOT)/lib/libclip.so
+
+	dh_movefiles -pclip-lib usr/lib \
+		$(SCLIPROOT)/charsets $(SCLIPROOT)/keymaps \
+		$(SCLIPROOT)/lang $(SCLIPROOT)/term \
+		$(SCLIPROOT)/locale.mo $(SCLIPROOT)/etc
+
+	touch build-stamp
+
+cliplibs:
+	export CLIPROOT=$(DESTDIR)$(CLIPROOT) ;\
+		export LD_LIBRARY_PATH=$(DESTDIR)/usr/lib:$$LD_LIBRARY_PATH ;\
+		cd cliplibs ; make deb
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	# Add here commands to clean up after the build process.
+	CLIPROOT=$(PWD)/debian/tmp/$(CLIPROOT) ./clean.sh
+
+	dh_clean -d
+	rm -f debian/*.substvars debian/substvars debian/*.debhelper debian/files build-stamp
+
+install: build
+	dh_testdir
+	dh_testroot
+#	dh_clean -k
+	dh_installdirs
+
+	# Add here commands to install the package into debian/tmp.
+#	cd clip; $(MAKE) install DESTDIR=$(PWD)/debian/tmp
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+#	dh_testversion
+	dh_testdir
+	dh_testroot
+	dh_installdebconf
+	dh_installdocs -pclip-dev
+	dh_installexamples
+	dh_installmenu
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installinit
+	dh_installcron
+	dh_installmanpages -pclip-dev
+#	dh_installinfo
+	dh_dhelp
+#	dh_undocumented
+	dh_installchangelogs -pclip-dev
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps #-l$(DESTDIR)/usr/lib
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+#!!!!  join back clip-dev and clip-lib!!!
+	cp -Rv debian/clip-lib/* debian/tmp
+#
+#	build cliplibs
+	export CLIPROOT=$(DESTDIR)$(CLIPROOT) ;\
+		export LD_LIBRARY_PATH=$(DESTDIR)/usr/lib:$$LD_LIBRARY_PATH ;\
+		export SCLIPROOT=$(SCLIPROOT);\
+		cd cliplibs ; make deb
+#	build cliplibs
+	cd prg; export CLIPROOT=$(DESTDIR)$(CLIPROOT) ;\
+		export LD_LIBRARY_PATH=$(DESTDIR)/usr/lib:$$LD_LIBRARY_PATH ;\
+		make deb
+		$(DESTDIR)$(CLIPROOT)/bin/clip_msgmerge &&\
+		$(DESTDIR)$(CLIPROOT)/bin/clip_msgfmt
+
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

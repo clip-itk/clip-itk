@@ -1,0 +1,196 @@
+#!/bin/sh
+
+uname=`uname -s`
+uver=`uname -r`
+hname=`hostname -f 2>/dev/null`
+oldpwd=`pwd`
+
+[ -z "$CLIPROOT" ] && CLIPROOT=/usr/local/clip
+DLLSUFF='.so'
+DLLREALSUFF='.so'
+
+if [ $? != 0 ]
+then
+	hname=`hostname 2>/dev/null`
+	if [ $? != 0 ]
+	then
+		hname=`uname -n 2>/dev/null`
+		if [ $? != 0 ]
+		then
+			hname=localhost
+		fi
+	fi
+fi
+
+osname=UNIX
+case "$uname" in
+	BSD/OS*|bsdi*)
+		osname=BSDI
+		;;
+	[lL]inux*)
+		osname=LINUX
+		stdlibpath=/usr/lib
+		stdincpath=/usr/include
+		;;
+	FreeBSD*)
+		osname=FREEBSD
+		STATICLINK=-static
+		;;
+	NetBSD*)
+		osname=NETBSD
+		;;
+	SunOS*)
+		osname=SUNOS
+		;;
+	CYGWIN*)
+		osname=CYGWIN
+		stdlibpath=/lib
+		stdincpath=/usr/include
+		DLLSUFF='.dll.a'
+		DLLREALSUFF='.dll'
+esac
+
+printf "configure: creating clip-gtkextracfg.h .."
+
+exec 3>clip-gtkextracfg.h
+
+echo "/* Created automatically by 'configure' */" >&3
+echo "#ifndef CLIPGTKEXTRA_CONFIG_H" >&3
+echo "#define CLIPGTKEXTRA_CONFIG_H" >&3
+echo >&3
+echo '#undef  VERSION ' >&3
+echo '#undef  OSNAME ' >&3
+echo '#define OSNAME "'$osname'"' >&3
+echo "#define OS_$osname" >&3
+echo '#undef  SYSTEM ' >&3
+echo '#define SYSTEM "'$uname'"' >&3
+echo '' >&3
+
+gtkprefix=`gtk-config --prefix 2>/dev/null`
+
+if [ $? -ne 0 ]
+then
+	echo
+	echo "*****************************************************************"
+	echo "*** The gtk-config script installed by GTK could not be found ***"
+	echo "*****************************************************************"
+	USE_GTK=no
+else
+	gtkincpath=`find $gtkprefix/include -name 'gtk.h' -printf '%h'`
+        cd $gtkincpath/..
+        gtkincpath=`pwd`
+        cd $oldpwd
+	LIBS=`gtk-config --libs`
+
+	if [ "$osname" = "CYGWIN" ]
+	then
+		EXTRACFLAGS='-fnative-struct'
+#		LIBS=$LIBS" -L"$CLIPROOT"/lib -llibclip-gtk"
+	fi
+	if [ -f $gtkincpath/gtk/gtk.h ]
+	then
+		USE_GTK=yes
+		echo '#define HAVE_GTK' >&3
+	else
+		echo
+		echo 'Warning: system do not have installed GTK+ development'
+                exit
+	fi
+	GTK_MAJOR=`gtk-config --version|cut -d. -f1`
+	GTK_MINOR=`gtk-config --version|cut -d. -f2`
+	if [ ! \( "$GTK_MAJOR" -ge 1 -o "$GTK_MINOR" -ge 2 -o "$GTK_MAJOR" -gt 1 \) ]
+	then
+		echo
+		echo 'Warning: system must have installed GTK+ version 1.2 or above'
+	fi
+fi
+
+gtkextraprefix=`gtkextra-config --prefix 2>/dev/null`
+if [ $? -ne 0 ]
+then
+	echo
+	echo "****************************************************************************"
+	echo "*** The gtkextra-config script installed by GTK+Extra could not be found ***"
+	echo "****************************************************************************"
+	USE_GTK_EXTRA=no
+else
+	gtkextraincpath=`find $gtkprefix/include -name 'gtk.h' -printf '%h'`
+        cd $gtkextraincpath/..
+        gtkextraincpath=`pwd`
+        cd $oldpwd
+	LIBS=$LIBS' '`gtkextra-config --libs`
+
+	if [ "$osname" = "CYGWIN" ]
+	then
+		EXTRACFLAGS='-fnative-struct'
+		LIBS=$LIBS' -L$(CLIPROOT)/lib -lclip-gtk '`gtkextra-config --libs`
+	fi
+	if [ -f $gtkextraprefix/include/gtkextra/gtkextra.h ]
+	then
+		USE_GTK_EXTRA=yes
+		echo '#define HAVE_GTK_EXTRA' >&3
+	else
+		echo
+		echo 'Warning: system do not have installed GTK+Extra development'
+	fi
+fi
+
+echo "#endif" >&3
+exec 3>&-
+echo ". done."
+
+printf "configure: Makefile creating.."
+
+exec 3>Makefile.inc
+
+echo "#	Created automatically by 'configure'" >&3
+echo '#' >&3
+echo >&3
+echo '#' >&3
+echo '#	Compile flags' >&3
+echo '#' >&3
+echo "OSNAME='$osname'" >&3
+
+if [ -z "$CC" ]
+then
+  	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=":"
+	for cc_dir in $PATH; do
+    		test -z "$cc_dir" && cc_dir=.
+    		if test -f $cc_dir/gcc; then
+      			CC=gcc
+      			break
+    		fi
+    		if test -f $cc_dir/cc; then
+      			CC=cc
+      			break
+    		fi
+  	done
+  	IFS="$save_ifs"
+fi
+echo "COMPILER='$CC'" >&3
+echo "DLLSUFF='$DLLSUFF'" >&3
+echo "DLLREALSUFF='$DLLREALSUFF'" >&3
+echo "CLIPROOT=$CLIPROOT" >&3
+echo 'INCLUDEDIRS=-I. -I$(CLIPROOT)/include -I'$gtkprefix'/include -I'$gtkextraprefix'/include' >&3
+echo "XTARGETS='"'$(XLIB) $(XSLIB)'"'" >&3
+echo "C_FLAGS=-Wall '"'$(INCLUDEDIRS)'"' '$EXTRACFLAGS'" >&3
+echo "LIBS='$LIBS'" >&3
+
+if [ "$USE_GTK" = yes ]
+then
+	XCFLAGS=`gtk-config --cflags`
+fi
+if [ "$USE_GTK_EXTRA" = yes ]
+then
+	XCFLAGS="'$XCFLAGS' `gtkextra-config --cflags`"
+fi
+echo "XCFLAGS='$XCFLAGS'" >&3
+
+echo >&3
+exec 3>&-
+
+tr -d \' <./Makefile.inc >Makefile
+cat ./Makefile.in >>Makefile
+
+echo ". done."
+

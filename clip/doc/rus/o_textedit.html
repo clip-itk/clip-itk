@@ -1,0 +1,329 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY>
+
+
+<h3>             Описание класса TEXTEDIT </h3>
+<h4> Атрибуты/свойства </H4>
+<TABLE border=1>
+<th> Название атрибута </TH>
+<th> Значение атрибута </TH>
+<TR>
+<td> className </td> <TD> "TEXTEDIT" </TD>
+<tr>
+<td> line </td> <TD> позиция в тексте: строка  </TD>
+<tr>
+<td> pos </td> <TD> позиция в тексте: колонка </TD>
+<tr>
+<td> nTop </td> <TD> координата окна: левый верхний угол - строка </TD>
+<tr>
+<td> nLeft </td> <TD> координата окна: левый верхний угол - колонка </TD>
+<tr>
+<td> nBottom </td> <TD> координата окна: правый нижний угол - строка </TD>
+<tr>
+<td> nRight </td> <TD> координата окна: правый нижний угол - колонка </TD>
+<tr>
+<td> tabSize </td> <TD> шаг табуляции </TD>
+<tr>
+<td> marginRight </td> <TD> правая граница</TD>
+<tr>
+<td> marginLeft </td> <TD> левая граница</TD>
+<tr>
+<td> lenundo </td> <TD> размер буфера отката</TD>
+</TABLE>
+<h3> Методы/функции </H3>
+<p>Функция textEditNew(Lrow, Lcol, Rrow, Rcol, color) - создает новый объект
+класса TEXTEDIT
+<br>Lrow - граница окна редактирования: левый верхний угол - строка
+<br>Lcol - граница окна редактирования: левый верхний угол - колонка
+<br>Rrow - граница окна редактирования: правый нижний угол - строка
+<br>Rcol - граница окна редактирования: правый нижний угол - колонка
+<br>color - string, цвет редактирования "color1, color2, color3, color4"
+<br> color1 - основной цвет
+<br> color2 - цвет линии конца файла (<EOF>)
+<br> color3 - цвет выделенной области (блоки - строчные/прямоугольные)
+<br> color4 - цвет выделенной области (поиск)
+
+<p>Все методы класса имеют последний параметр - undo(default .t./.f.)- сохранять
+информацию для операции "откат". Метод writeundo - записать информацию для отката -
+вызывается автоматически из всех остальных методов, если undo=.t.
+<table width="100%" border=1>
+<caption><h4>Управление курсором</h4></caption>
+<tr><th align=right> down() <td>на строку вниз</tr>
+<tr><th align=right> up() <td>на строку вверх</tr>
+<tr><th align=right> left() <td>на строку влево</tr>
+<tr><th align=right> right() <td>на строку вправо</tr>
+<tr><th align=right> pageUp() <td>на страницу вверх</tr>
+<tr><th align=right> pageDown() <td>на страницу вниз</tr>
+<tr><th align=right> top() <td>в начало текста</tr>
+<tr><th align=right> bottom() <td>в конец текста</tr>
+<tr><th align=right> wordLeft() <td>на слово влево</tr>
+<tr><th align=right> wordRight() <td>на слово вправо</tr>
+<tr><th align=right> gotoLine(line) <td>на заданную строку
+<br><i> line </i>- номер строки
+</tr>
+<tr><th align=right> gotoPos(pos) <td>на заданную колонку
+<br><i> pos </i> - номер колонки
+</tr>
+<tr><th align=right> home() <td>в начало строки</tr>
+<tr><th align=right> end() <td>в конец строки</tr>
+</table>
+
+<table width="100%" border=1>
+<caption><h4>Редактирование</h4></caption>
+<tr><th align=right> insert(str) <td>вставить символ/строку символов
+<br><i>str</i> - вставляемый символ/строка
+</tr>
+<tr><th align=right> overStrike(str) <td>заменить символ/строку
+<br><i>str</i> - новый символ/строка
+</tr>
+<tr><th align=right> insertLine() <td>вставить новую строку</tr>
+<tr><th align=right> newLine() <td>перейти на следующую строку</tr>
+<tr><th align=right> backSpace() <td>удаление символа слева от курсора</tr>
+<tr><th align=right> delLeft() <td>удаление символа слева от курсора == backSpace()</tr>
+<tr><th align=right> delHome() <td>удаление от курсора до начала строки</tr>
+<tr><th align=right> delete() <td>удаление символа</tr>
+<tr><th align=right> delRigth() <td>удаление символа справа от курсора</tr>
+<tr><th align=right> delEnd() <td>удаление от курсора до конца строки</tr>
+<tr><th align=right> deleteLine() <td>удаление строки</tr>
+<tr><th align=right> delWordRight() <td>удаление слова справа</tr>
+<tr><th align=right> insTempl(targ) <td>замена подстроки по шаблону
+<br><i>targ</i> - string, шаблон для замены<br>
+Шаблоны и строки замены берутся из файла <a href="#templ">$HOME/.clip/.templ</a>
+</tr>
+<tr><th align=right> insMacro(targ) <td>макроподстановка
+<br><i>targ</i> - string, шаблон для замены<br>
+Шаблоны и строки замены берутся из файла <a href="#macro">$HOME/.clip/.macro</a>
+</tr>
+<tr><th align=right> draw(Draw_mode, nkey) <td>рисование линий, таблиц
+<br><i>Draw_mode</i> - logical, .t. - одиночные линии, .f. - двойные
+<br><i>nkey</i> - numeric, код клавиши (K_UP, K_DOWN, K_LEFT, K_RIGHT) - направление рисования
+</tr>
+</table>
+
+<table width="100%" border=1>
+<caption><h4>Работа с блоками</h4></caption>
+<tr><th align=right> loadBlock(filename) <td>загрузка блока с диска
+<br><i>filename</i> - string, имя файла
+<br>Возвращает .t. или .f.
+</tr>
+<tr><th align=right> saveBlock(filename, createbak) <td>записать блок на диск
+<br><i>filename</i> - string, имя файла
+<br><i>createbak</i> - logical, .t./.f. создавать .bak файл
+<br>Возвращает .t. или .f.
+</tr>
+<tr><th align=right> beginBlock(vid) <td>начать отметку блока
+<br><i>vid</i> - logical, .t./.f. строчный/прямоугольный блок(default .t.)
+</tr>
+<tr><th align=right> endBlock() <td>закончить отметку блока</tr>
+<tr><th align=right> cancelBlock() <td>снять отметку блока</tr>
+<tr><th align=right> copyBlock() <td>копировать блок</tr>
+<tr><th align=right> moveBlock() <td>переместить блок</tr>
+<tr><th align=right> deleteBlock() <td>удалить блок</tr>
+<tr><th align=right> newClipBoard(Clipboard) <td>записать блок в буфер с удалением содержимого буфера
+<br><i>Clipboard</i> - array, буфер
+</tr>
+<tr><th align=right> addClipBoard(Clipboard) <td>добавить блок в буфер
+<br><i>Clipboard</i> - array, буфер
+</tr>
+<tr><th align=right> moveClipBoard(Clipboard) <td>переместить блок в буфер
+<br><i>Clipboard</i> - array, буфер
+</tr>
+<tr><th align=right> pasteClipBoard(Clipboard, it) <td>вставить блок из буфера
+<br><i>Clipboard</i> - array, буфер
+<br><i>it</i> - numeric, индекс в массиве Clipboard (default 1)
+</tr>
+</table>
+
+
+<table width="100%" border=1>
+<caption><h4>Форматирование</h4></caption>
+<tr><th align=right> formatLine(Opt) <td>форматирование строки
+<br><i>Opt</i> - map, должен содержать елементы:<br>
+<ul>
+<li> Opt:OAUTOMARGIN - logical, автоматическая установка левой границы
+<li> Opt:OTABSIZE  - numeric, шаг табуляции
+<li> Opt:OMARGINRIGHT - numeric, правая граница
+<li> Opt:OMARGINLEFT - numeric, левая граница
+<li> Opt:OHYPHEN - logical, перенос в словах
+</ul>
+</tr>
+<tr><th align=right> formatPart(Opt) <td>форматирование абзаца
+<br><i>Opt</i> - map, должен содержать елементы:<br>
+<ul>
+<li> Opt:OAUTOMARGIN - logical, автоматическая установка левой границы
+<li> Opt:OTABSIZE  - numeric, шаг табуляции
+<li> Opt:OMARGINRIGHT - numeric, правая граница
+<li> Opt:OMARGINLEFT - numeric, левая граница
+<li> Opt:OHYPHEN - logical, перенос в словах
+</ul>
+</tr>
+<tr><th align=right> centerLine() <td>центрирование строки (длина
+строки определяется атрибутом marginRight класса TEXTEDIT)</tr>
+</table>
+
+
+<table width="100%" border=1>
+<caption><h4>Поиск</h4></caption>
+<tr><th align=right> Find(Find) <td>поиск подстроки
+<br><i>Find</i> - объект <a href="o_findoptions.html">FINDOPTIONS</a>
+<br>Возвращает .t.-найдено или .f.-не найдено</tr>
+<tr><th align=right> findNext(Find) <td>найти следующее вхождение подстроки
+<br><i>Find</i> - объект <a href="o_findoptions.html">FINDOPTIONS</a>
+<br>Возвращает .t.-найдено или .f.-не найдено</tr>
+<tr><th align=right> findPrev(Find) <td>найти предыдущее вхождение подстроки
+<br><i>Find</i> - объект <a href="o_findoptions.html">FINDOPTIONS</a>
+<br>Возвращает .t.-найдено или .f.-не найдено</tr>
+<tr><th align=right> Replace(Find) <td>поиск с заменой подстроки
+<br><i>Find</i> - объект <a href="o_findoptions.html">FINDOPTIONS</a>
+<br>Возвращает .t.-найдено или .f.-не найдено</tr>
+<tr><th align=right> identity(symb, forward)<td>поиск парного символа (), [], {}, <>
+<br><i>symb</i> - string, символ, для которого ищется пара. Если символ не скобка,
+то ищется идентичный символ
+<br><i>forward</i> - logical, направление поиска (вперед/назад)
+<br>Возвращает .t.-найдено или .f.-не найдено</tr>
+<tr><th align=right> identity(symb, forward)<td>поиск парного символа (), [], {}, <>
+<br><i>symb</i> - string, символ, для которого ищется пара. Если символ не скобка,
+то ищется идентичный символ
+<br><i>forward</i> - logical, направление поиска (вперед/назад)
+<br>Возвращает .t.-найдено или .f.-не найдено</tr>
+<tr><th align=right> matchStruct(curword, forward)<td>поиск структуры по правилам Clipper'а
+<br><i>curword</i> - string, слово для поиска
+<ul>определяются следующие структуры:
+<li> DO WHILE - LOOP - EXIT - ENDDO
+<li> DO CASE - CASE - OTHERWISE - EXIT - ENDCASE
+<li> FOR - EXIT - LOOP - NEXT
+<li> IF - ELSE - ELSEIF - ENDIF
+<li> BEGIN SEQUENCE - BREAK - RECOVER - END SEQUENCE
+</ul>
+<br><i>forward</i> - logical, направление поиска (вперед/назад)
+<br>Возвращает .t.-найдено или .f.-не найдено</tr>
+</table>
+
+<table width="100%" border=1>
+<caption><h4>Работа с файлами</h4></caption>
+<tr><th align=right> loadFile(filename) <td>загрузка текста из файла
+<br><i>filename</i> - string, имя загружаемого файла
+<br>Возвращает .t. или .f.</tr>
+<tr><th align=right> saveFile(filename, createbak) <td>записать файл на диск
+<br><i>filename</i> - string, ифя файла
+<br><i>createbak</i> - logical, создавать/не создавать .bak копию файла (default .f.)
+<br>Возвращает .t. или .f.</tr>
+<tr><th align=right> loadString(str) <td>загрузка текста из строки
+<br><i>str</i> - string, строка для редактирования
+<br>Возвращает .t. или .f.</tr>
+<tr><th align=right> saveString() <td>текст ->  в строку
+<br>Возвращает текст, записанный в строку </tr>
+</table>
+
+
+<table width="100%" border=1>
+<caption><h4>Прочее</h4></caption>
+<tr><th align=right> refresh() <td>перерисовывает экран
+<tr><th align=right> setNewColor(newcolor) <td>перерисовывает экран<br>
+<i>newcolor</i> - string, новая цветовая строка,
+<i>newcolor</i> = color1[,color2,[color3,color4]]]
+<br> color1 - основной цвет
+<br> color2 - цвет линии конца файла (<EOF>)
+<br> color3 - цвет выделенной области (блоки - строчные/прямоугольные)
+<br> color4 - цвет выделенной области (поиск)
+<tr><th align=right> curWord() <td>текущее слово в строке
+<br>Возвращает строку - текущее слово</tr>
+<tr><th align=right> prevWord() <td>предыдущее слово
+<br>Возвращает строку - предыдущее слово</tr>
+<tr><th align=right> nextWord() <td>следующее слово
+<br>Возвращает строку - следующее слово</tr>
+<tr><th align=right> clear() <td>очистить буфер редактирования
+<tr><th align=right> check_line(line) <td>проверка существования строки
+<br><i>line</i> - numeric, строка для проверки. Если строка с номером
+line не существует, то она создается.
+</tr>
+<tr><th align=right> writeundo(cmd, val) <td>запись информации для отката,
+хранятся данные о предыдущем состоянии буфера редактирования, поиска, положение курсора
+и прочее
+<br><i>cmd</i> - numeric, команда
+<br><i>val</i> - numeric/string/logical/array/NIL, запоминаемое значение
+</tr>
+<tr><th align=right> undo(cmd) <td>восстановить предыдущее состояние буфера
+редактирования, поиска, положение курсора и прочее
+<br><i>cmd</i> - numeric, команда
+</tr>
+</table>
+<p><p>
+<a name="templ">Формат файла .templ</a>
+<p> Файл <b>.templ</b> хранится в домашнем каталоге пользователя в директории
+<b>.clip</b>
+<p>
+<i>шаблон</i> [Space|Tab] <i>описание[/описание]</i>
+<br> Символ [/] служит для деления на строки
+<br> Пример:<pre>
+
+headf	******************************/*Function:/*Notes:/ /*** End of          **********
+headp	******************************/*File:/*Author:/*Date:/*Version:/*Notes:/ /*** End of          **********
+f	For/Next
+c	CLEAR
+*	******************************
+IF	If/EndIF
+I	If/EndIF
+IE	If/Else/EndIF
+D	DO/EndDO
+DW	DO WHILE/EndDO
+DC	DO CASE/    CASE/    OTHERWISE/EndCASE
+.............
+
+</pre>
+
+<p>т.е. после подстановки, например, вместо шаблона <i>DC</i> должно
+получиться что-то вроде:<pre>
+DO CASE
+    CASE
+    OTHERWISE
+EndCASE
+</pre>
+<br> а вместо шаблона <i>headp</i><pre>
+******************************
+*File:
+*Author:
+*Date:
+*Version:
+*Notes:
+
+*** End of          **********
+</pre>
+
+<p><p>
+<a name="macro">Формат файла .macro</a>
+<p> Файл <b>.macro</b> хранится в домашнем каталоге пользователя в директории
+<b>.clip</b>
+<p>
+<i>шаблон</i> [Space|Tab] <i>функция</i>
+<br> Пример:<pre>
+
+d	DATE()
+dd	date_rus(date())
+.............
+
+</pre>
+
+<p>т.е. после подстановки, например, вместо шаблона <i>d</i> должно
+получиться что-то вроде:<pre>
+11/22/2000
+</pre>
+<br> а вместо шаблона <i>dd</i><pre>
+22  Ноября 2000 г.
+</pre>
+
+
+
+<hr>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+<center>&#169 Е.Корнилова, <A HREF="mailto:alena@itk.ru">alena@itk.ru</A>, 2000
+</center>
+
+

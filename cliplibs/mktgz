@@ -1,0 +1,70 @@
+#!/bin/sh
+
+pwd=`pwd`
+DESTDIR=$pwd/tmp
+rm -rf $DESTDIR
+mkdir -p $DESTDIR
+
+dir=$1
+cd $dir || exit 2
+
+if [ -f Makefile.in ]
+then
+	./configure
+fi
+
+cleanup()
+{
+	cd $pwd
+	rm -rf $DESTDIR
+	exit $1
+}
+
+
+# 	cumulative install
+$MAKE || cleanup 1
+$MAKE install || cleanup 1
+#	package install
+mkdir -p ${DESTDIR}/${SCLIPROOT}/lib \
+	 ${DESTDIR}/${SCLIPROOT}/doc \
+	 ${DESTDIR}/${SCLIPROOT}/include \
+	 ${DESTDIR}/${SCLIPROOT}/bin \
+	 ${DESTDIR}/${SCLIPROOT}/cliprc \
+	 ${DESTDIR}/${SCLIPROOT}/etc \
+	 ${DESTDIR}/${SCLIPROOT}/charsets \
+	 ${DESTDIR}/${SCLIPROOT}/keymaps \
+	 ${DESTDIR}/${SCLIPROOT}/locale.pot
+cp ${CLIPROOT}/include/clipcfg.sh ${CLIPROOT}/include/Makefile.inc ${DESTDIR}/${SCLIPROOT}/include/
+$MAKE install CLIPROOT=${DESTDIR}/${SCLIPROOT} || cleanup 2
+rm ${DESTDIR}/${SCLIPROOT}/include/clipcfg.sh ${DESTDIR}/${SCLIPROOT}/include/Makefile.inc
+
+mkdir -p ${DESTDIR}/usr/lib
+cd ${DESTDIR}/usr/lib || exit 1
+	LIBS=`cd ../local/clip/lib; ls libclip*`
+	if [ -n "$LIBS" ]
+	then
+		for name in $LIBS
+		do
+			ln -s ../local/clip/lib/$name .
+		done
+	fi
+cd $pwd
+
+mkdir -p ${DISTROOT}
+cd ${DESTDIR}
+
+rmempty()
+{
+	for i in $*
+	do
+		rmdir $i 2>/dev/null && continue
+		(cd $i 2>/dev/null && rmempty *)
+	done
+}
+
+rm -rf `find . -path '*CVS*'`
+rmempty *
+
+tar cvf - * | $COMPRESS_PRG  > ${DISTROOT}/${dir}_${VER}.tar.$COMPRESS_SUFF
+
+cleanup 0

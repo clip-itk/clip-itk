@@ -1,0 +1,13 @@
+#!/bin/sh
+
+sed ../debian/changelog -e "s/^clip/clip-prg/g" > debian/changelog
+
+if [ -f Makefile.in -a -f ./configure ]
+then
+	./configure
+fi
+
+rm -f build-stamp
+fakeroot debian/rules binary clean
+
+echo "Binary: clip-prg" > ${DISTROOT}/clip-prg_${VER}_${ARCH}.dsc

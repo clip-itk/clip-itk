@@ -1,0 +1,80 @@
+%define DESTDIR	${RPM_BUILD_ROOT}
+
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+Vendor:		ITK
+Packager:	Paul Lasarev <paul@itk.ru>
+URL:		http://www.itk.ru
+Source:         %{name}-%{version}.tar.gz
+Group:		Development
+Copyright:	GPL
+Requires:	clip-lib, gcc, make, binutils
+BuildRoot:	/tmp/%{name}-%{version}
+Summary:	XBASE/Clipper compatible program compiler - utilities
+AutoReqProv: no
+
+
+%description
+XBASE/Clipper compatible program compiler - utilities
+
+%prep
+%setup -n %{name}-%{version}
+
+%build
+
+rm -rf %{DESTDIR}
+
+CLIPROOT=%{CLIPROOT}
+SCLIPROOT=%{SCLIPROOT}
+CLIP_ROOT=%{SCLIPROOT}
+DESTDIR=%{DESTDIR}
+LD_LIBRARY_PATH="${CLIPROOT}/usr/lib:$LD_LIBRARY_PATH"
+
+export CLIPROOT LD_LIBRARY_PATH CLIP_ROOT
+
+echo "cumulative install to $CLIPROOT"
+make || true
+make install || true
+#	package install
+mkdir -p ${DESTDIR}${SCLIPROOT}/lib \
+	 ${DESTDIR}${SCLIPROOT}/doc \
+	 ${DESTDIR}${SCLIPROOT}/include \
+	 ${DESTDIR}${SCLIPROOT}/bin \
+	 ${DESTDIR}${SCLIPROOT}/cliprc \
+	 ${DESTDIR}${SCLIPROOT}/etc \
+	 ${DESTDIR}${SCLIPROOT}/charsets \
+	 ${DESTDIR}${SCLIPROOT}/keymaps \
+	 ${DESTDIR}${SCLIPROOT}/locale.pot
+cp ${CLIPROOT}/include/clipcfg.sh ${CLIPROOT}/include/Makefile.inc ${DESTDIR}${SCLIPROOT}/include/
+cp ${CLIPROOT}/bin/clip_msgfmt ${CLIPROOT}/bin/clip_msgmerge ${DESTDIR}${SCLIPROOT}/bin/
+echo "install to ${DESTDIR}${SCLIPROOT}"
+make install CLIPROOT=${DESTDIR}${SCLIPROOT} || true
+rm ${DESTDIR}${SCLIPROOT}/include/clipcfg.sh ${DESTDIR}${SCLIPROOT}/include/Makefile.inc
+rm ${DESTDIR}${SCLIPROOT}/bin/clip_msgfmt ${DESTDIR}${SCLIPROOT}/bin/clip_msgmerge
+
+cd $pwd
+
+rmempty()
+{
+	for i in $*
+	do
+		rmdir $i 2>/dev/null && continue
+		(cd $i 2>/dev/null && rmempty *)
+	done
+}
+
+cd ${DESTDIR}
+	rm -rf `find . -path '*CVS*'`
+	rmempty *
+cd $pwd
+
+%clean
+
+rm -rf %{DESTDIR}
+
+
+%files
+%defattr(-,root,root)
+/
+

@@ -1,0 +1,667 @@
+#!/bin/sh
+#
+#	Configure script for clip
+#	Paul Lasarev - 2000.
+#
+
+DEBUGFLAGS="-g"
+STD_LIBDIR=''
+STD_LIB_DIR=/usr/lib
+DLLSUFF='.so'
+DLLREALSUFF='.so'
+CLIP_DLLIMPORT=''
+CLIP_DLLEXPORT=''
+NM_UNDERSCORE=''
+EXESUFF=''
+USE_WCHARS=yes
+USE_TASKS=yes
+
+for opt in $*
+do
+	case "$opt" in
+	-[mM]*)
+        	USE_MEMDBG=yes
+		;;
+	-[oO]*)
+		rm -f Makefile.inc
+		OPTFLAGS=-O2
+		;;
+	-[cC]*)
+		rm -f Makefile.inc clipcfg.sh
+		;;
+	-[rR]*)
+		rm -f Makefile.inc
+		[ -z "$CLIPROOT" ] && CLIPROOT=/usr/local/clip
+		[ -z "$BINDIR" ] && BINDIR=/usr/local/bin
+		OPTFLAGS=-O2
+		DEBUGFLAGS=''
+		STD_LIBDIR='yes'
+		USE_WCHARS=''
+		;;
+	-[sS])
+		STD_LIBDIR='yes'
+		;;
+	-l)
+		STD_LIB_DIR=/usr/local/lib
+		STD_LIBDIR='yes'
+		;;
+	-a)
+		FORCEALIGN=4
+		;;
+	-[tT]*)
+		USE_TASKS='no'
+		;;
+	-stack)
+        	CHECK_STACK=yes
+                ;;
+	*)
+		echo "usage: ./configure [-o] [-m] [-c] [-r] [-s] [-t]"
+		echo "	-o  for optimisation"
+		echo "	-m  for memdebug"
+		echo "	-c  to clean cache"
+		echo "	-r  release options"
+		echo "	-s  use standard libdir (/usr/lib)"
+		echo "	-l  set standard libdir to /usr/local/lib"
+		echo "	-a  force align code"
+		echo "	-t  do NOT use tasks code"
+		echo "	-stack  enable runtime stack check"
+		exit 0
+		;;
+	esac
+done
+
+if [ "$USE_MEMDBG" = yes ]
+then
+	rm -f Makefile.inc
+	MEMDEBUG=${opt#*=}
+	DBGLIB=memdebug/memdebug.a
+	MEMDBGFLAGS="-DMEMDBG -Imemdebug"
+	(cd memdebug; ./configure.sh; make)
+	MDBG="-DMEMDEBUG=$(eval $(memdebug/malloc_dbg -f memdebug/mallocrc -b ${MEMDEBUG} 2>&-); echo MALLOC_DEBUG ) -DMALLOC_FUNC_CHECK"
+	MLIB=memdebug/memdebug.a
+fi
+
+arch="$HOSTTYPE"
+[ -z "$arch" ] && a=`uname -m 2>/dev/null`
+[ -z "$arch" ] && a=`uname -p 2>/dev/null`
+[ -z "$arch" ] && a=unknown
+
+case "$arch" in
+i?86)
+	arch='i386'
+	;;
+*)
+	;;
+esac
+
+
+
+[ -z "$CLIPROOT" ] && CLIPROOT=`pwd`/cliproot
+[ -z "$BINDIR" ] && BINDIR=$HOME/bin
+
+#	initial CFLAGS
+#
+#C_FLAGS="-Wall -I. $DEBUGFLAGS $OPTFLAGS $MDBG"
+C_FLAGS="-Wall -I. -I./include $DEBUGFLAGS $OPTFLAGS"
+
+uname=`uname -s`
+uver=`uname -r`
+
+hname=`hostname -f 2>/dev/null`
+if [ $? != 0 ]
+then
+	hname=`hostname 2>/dev/null`
+	if [ $? != 0 ]
+	then
+		hname=`uname -n 2>/dev/null`
+		if [ $? != 0 ]
+		then
+			hname=localhost
+		fi
+	fi
+fi
+
+osname=UNIX
+case "$uname" in
+	BSD/OS*|bsdi*)
+		osname=BSDI
+		;;
+	[lL]inux*)
+		osname=LINUX
+		;;
+	FreeBSD*)
+		osname=FREEBSD
+		STATICLINK=-static
+		;;
+	NetBSD*)
+		osname=NETBSD
+		;;
+        OpenBSD*)
+                osname=OPENBSD
+                ;;
+	SunOS*)
+		osname=SUNOS
+		;;
+	CYGWIN*)
+		osname=CYGWIN
+		;;
+	*)
+        	osname=`echo $osname|tr 'a-z' 'A-Z'`
+        	;;
+esac
+
+oneof()
+{
+	for i in $*
+	do
+		if [ -f $i ]
+		then
+			echo $i
+			return 0
+		fi
+	done
+}
+
+xoneof()
+{
+	for i in $*
+	do
+		if [ -x $i ]
+		then
+			echo $i
+			return 0
+		fi
+	done
+#	which $i
+	return 0
+}
+
+readans()
+{
+	local ans
+	if [ -z "$yesf" ]
+	then
+		printf  "$1 [$2]: " >&2
+		read ans <&2
+	else
+		echo "$1 [$2]:" >&2
+	fi
+	if [ -n "$ans" ]
+	then
+		echo $ans
+	else
+		echo $2
+	fi
+}
+
+
+DLLIB=-ldl
+ADDLIBS=''
+NM_PRG=nm
+case "$osname" in
+OPENBSD)
+        NM_UNDERSCORE=yes
+ 	DLLIB=''
+	;;
+*BSD)
+	#	BSD-os's have dl support in libc
+	#
+	DLLIB=""
+	;;
+CYGWIN)
+	DLLIB=''
+	DLLSUFF='.dll.a'
+	DLLREALSUFF='.dll'
+	EXESUFF='.exe'
+	CLIP_DLLIMPORT='__declspec(dllimport)'
+	CLIP_DLLEXPORT='__declspec(dllexport)'
+	NM_UNDERSCORE=yes
+	ADDLIBS='-lregex'
+	;;
+*SUNOS)
+	NM_PRG="nm -p"
+	ADDLIBS='-lsocket -lnsl'
+	STD_LIB_DIR=/usr/local/lib
+	FORCEALIGN=4
+	;;
+LINUX)
+	;;
+*)
+	;;
+esac
+
+if [ -f /usr/include/gpm.h ]
+then
+	ADDLIBS="$ADDLIBS -lgpm"
+fi
+
+
+if [ -f ./Makefile.in ]
+then
+
+#	read cashed values
+#
+if [ -f ./clipcfg.sh ]
+then
+	. ./clipcfg.sh
+fi
+
+
+msgfmt -V >/dev/null 2>&1
+if [ $? != 0 ]
+then
+	echo 'Warning: GETTEXT package does not installed'
+	echo 'Warning: clip_msgfmt and clip_msgmerge will not work'
+	NO_GETTEXT=yes
+fi
+
+if [ "$USE_TASKS" = yes -a ! -f task/task.o ]
+then
+	cd task
+	make clean task.o >/dev/null 2>&1
+	if [ $? = 0 ]
+	then
+		USE_TASKS=yes
+	else
+		USE_TASKS=no
+		echo 'Warning: task not available: unknown system'
+	fi
+	cd ..
+fi
+
+
+
+printf "configure: Makefile creating.."
+
+exec 3>Makefile.incl
+
+echo "#	Created automatically by 'configure'" >&3
+echo '#' >&3
+echo >&3
+echo '#' >&3
+echo '#	Compile flags' >&3
+echo '#' >&3
+echo "OSNAME='$osname'" >&3
+echo "DLLIB='$DLLIB'" >&3
+echo "ARCH='$arch'" >&3
+echo "ADDLIBS='$ADDLIBS'" >&3
+echo "DLLSUFF='$DLLSUFF'" >&3
+echo "EXESUFF='$EXESUFF'" >&3
+echo "DLLREALSUFF='$DLLREALSUFF'" >&3
+if [ -n "$FORCEALIGN" ]
+then
+	echo "FORCEALIGN='$FORCEALIGN'" >&3
+fi
+
+echo "MLIB='$MLIB'" >&3
+if [ -n "$MDBG" ]
+then
+	echo "MALLOC_H='memdebug/malloc.h'" >&3
+fi
+echo "STATICLINK='$STATICLINK'" >&3
+echo "CLIP_ROOT='$CLIPROOT'" >&3
+echo "BINDIR='$BINDIR'" >&3
+echo "INSTDIR='$CLIPROOT'" >&3
+echo "DLLSUFF='$DLLSUFF'" >&3
+echo "EXESUFF='$EXESUFF'" >&3
+echo "DLLREALSUFF='$DLLREALSUFF'" >&3
+echo "OS_$osname=yes" >&3
+
+echo "C_FLAGS='$C_FLAGS'" >&3
+fi
+if [ -f /usr/include/readline/readline.h ]
+then
+	case "$osname" in
+	FREEBSD*)
+		READLINE_LIBS='-lreadline -lncurses'
+		;;
+	LINUX*)
+		READLINE_LIBS='-lreadline -lncurses'
+		;;
+        *)
+                READLINE_LIBS='-lreadline'
+                ;;
+ 	esac
+	echo "READLINE_LIBS='$READLINE_LIBS'" >&3
+fi
+
+if [ "$USE_TASKS" = yes ]
+then
+	echo 'USE_TASKS=yes' >&3
+	echo 'TASK=task/task.a' >&3
+fi
+
+echo "NO_GETTEXT=$NO_GETTEXT" >&3
+
+if [ -z "$CC" ]
+then
+	if [ -x /usr/bin/gcc -o -x /usr/local/bin/gcc ]
+	then
+		CC=gcc
+	else
+		CC=cc
+	fi
+fi
+echo "CC='$CC'" >&3
+
+if [ -n "$STD_LIBDIR" ]
+then
+	echo 'INST_STD_LIB=inst_std_lib' >&3
+	echo "STD_LIBDIR='$STD_LIB_DIR'" >&3
+fi
+
+echo >&3
+
+
+exec 3>&-
+
+tr -d \' <./Makefile.incl >Makefile.inc
+cat ./Makefile.inc ./Makefile.in >Makefile
+
+echo ". done."
+
+cp Makefile.incl clipcfg.sh
+echo export `cat Makefile.incl | grep '^[A-Z_][A-Z_]*=' | cut -d'=' -f1` >> clipcfg.sh
+
+rm Makefile.incl
+
+
+printf "configure: creating clipcfg.h .."
+
+exec 3>clipcfg.h
+
+echo "/* Created automatically by 'configure' */" >&3
+echo "#ifndef CLIP_CONFIG_H" >&3
+echo "#define CLIP_CONFIG_H" >&3
+echo >&3
+echo '#define CLIP_VERSION "'`cat release_version`'"' >&3
+echo '#define DLLIB "'$DLLIB'"' >&3
+echo '#define ADDLIBS "'$ADDLIBS'"' >&3
+echo '#define DLLSUFF "'$DLLSUFF'"' >&3
+echo '#define EXESUFF "'$EXESUFF'"' >&3
+echo '#define DLLREALSUFF "'$DLLREALSUFF'"' >&3
+echo "#define CLIP_DLLEXPORT $CLIP_DLLEXPORT" >&3
+echo "#define CLIP_DLLIMPORT $CLIP_DLLIMPORT" >&3
+echo '#define NM_PRG "'$NM_PRG'"' >&3
+echo '#define OSNAME "'$osname'"' >&3
+echo '#define ARCH "'$arch'"' >&3
+echo "#define ARCH_$arch" >&3
+echo "#define OS_$osname" >&3
+echo '#define SYSTEM "'$uname'"' >&3
+echo '#define CLIP_ROOT "'$CLIPROOT'"' >&3
+echo '#define BINDIR "'$BINDIR'"' >&3
+
+if [ "$CHECK_STACK" = yes ]
+then
+	echo '#define WITH_CHECK_STACK  1' >&3
+else
+	echo '#undef WITH_CHECK_STACK' >&3
+fi
+
+#if [ -n "$MEMDBGFLAGS" ]
+#then
+#	echo '#define MEMDBGFLAGS "'$MEMDBGFLAGS'"' >&3
+#fi
+
+if [ -n "$MDBG" ]
+then
+#	echo '#define MEMDEBUG '`memdebug/malloc_dbg -f memdebug/mallocrc $MEMDEBUG 2>&- `>&3
+	dvar=`memdebug/malloc_dbg -f memdebug/mallocrc -b ${MEMDEBUG} 2>&-`
+	echo '#define MEMDEBUG'	`eval $dvar; echo $MALLOC_DEBUG ` >&3
+	echo '#define MALLOC_FUNC_CHECK' >&3
+fi
+
+if [ -f /usr/include/float.h ]
+then
+	echo '#define HAVE_FLOAT_H' >&3
+fi
+
+if [ -f /usr/include/sys/io.h ]
+then
+	echo '#define HAVE_SYS_IO_H' >&3
+fi
+
+if [ -f /usr/bin/wget ]
+then
+	echo '#define WGET_PRG "/usr/bin/wget"' >&3
+else
+	if [ -f /usr/local/bin/wget ]
+	then
+		echo '#define WGET_PRG "/usr/local/bin"' >&3
+	else
+		echo 'Warning: system does not have program WGET'
+	fi
+fi
+
+if [ -f /usr/include/zlib.h ]
+then
+	echo '#define HAVE_ZLIB_H' >&3
+else
+	echo 'Warning: system do not have installed ZLIB development'
+fi
+if [ -f /usr/include/readline/readline.h ]
+then
+	echo '#define HAVE_READLINE_H' >&3
+	echo '
+#include <stdio.h>
+#include <readline/readline.h>
+int main(int argc, char **argv) { rl_already_prompted=1; return 0;}
+	' > /tmp/$$.c
+	gcc -o /tmp/$$ /tmp/$$.c $READLINE_LIBS 2>/dev/null 1>&2
+	if [ $? = 0 ]
+	then
+		echo '#define HAVE_READLINE_ALREADY_PROMPTED' >&3
+	else
+		echo 'Warning: old READLINE version'
+	fi
+	rm -f /tmp/$$*
+else
+	echo 'Warning: system does not have READLINE development'
+	echo 'Warning: clip_dbg will not work !!!'
+fi
+
+if [ -f /usr/include/sys/mman.h ]
+then
+	echo '#define HAVE_MMAN_H' >&3
+else
+	echo '#define NO_MMAP' >&3
+fi
+
+if [ -f /usr/include/sys/vfs.h ]
+then
+	echo '#define HAVE_VFS_H' >&3
+fi
+
+if [ -f /usr/include/sys/statvfs.h ]
+then
+	echo '#define HAVE_STATVFS_H' >&3
+fi
+
+#	ptmx support
+#
+if [ -c /dev/ptmx -a -f /usr/include/stropts.h ]
+then
+	echo '#define USE_PTS' >&3
+fi
+
+if [ -n "$STD_LIBDIR" ]
+then
+	echo '#define STD_LIBDIR "$STD_LIB_DIR"' >&3
+fi
+
+if [ -n "$USE_WCHARS" ]
+then
+	echo '#define USE_WCHARS' >&3
+fi
+
+if [ -n "$NM_UNDERSCORE" ]
+then
+	echo '#define NM_UNDERSCORE' >&3
+fi
+
+if [ "$USE_TASKS" = yes ]
+then
+	echo '#define USE_TASKS 1' >&3
+else
+	echo '#undef USE_TASKS' >&3
+fi
+
+if [ -n "$FORCEALIGN" ]
+then
+	echo "#define FORCEALIGN $FORCEALIGN" >&3
+fi
+
+if [ -f /usr/include/gpm.h ]
+then
+	echo '#define HAVE_GPM_H' >&3
+fi
+
+
+echo >&3
+echo "#endif" >&3
+exec 3>&-
+echo ". done."
+
+if [ -f clip_msgmerge.in ]
+then
+
+printf "configure: creating clip_msgmerge .."
+exec 3>clip_msgmerge
+
+echo '#!/bin/sh' >&3
+echo "# Created automatically by 'configure'" >&3
+echo >&3
+echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
+if [ -n "$CLIP_LOCALE_ROOT" ]
+then
+	echo '[ -z "$CLIP_LOCALE_ROOT" ] && '"CLIP_LOCALE_ROOT=$CLIP_LOCALE_ROOT" >&3
+fi
+echo "NO_GETTEXT=$NO_GETTEXT" >&3
+cat clip_msgmerge.in >&3
+
+exec 3>&-
+echo ". done."
+
+chmod +x clip_msgmerge
+
+fi
+
+if [ -f clip_msgfmt.in ]
+then
+
+printf "configure: creating clip_msgfmt .."
+exec 3>clip_msgfmt
+
+echo '#!/bin/sh' >&3
+echo "# Created automatically by 'configure'" >&3
+echo >&3
+echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
+if [ -n "$CLIP_LOCALE_ROOT" ]
+then
+	echo '[ -z "$CLIP_LOCALE_ROOT" ] && '"CLIP_LOCALE_ROOT=$CLIP_LOCALE_ROOT" >&3
+fi
+echo "NO_GETTEXT=$NO_GETTEXT" >&3
+cat clip_msgfmt.in >&3
+
+exec 3>&-
+echo ". done."
+
+chmod +x clip_msgfmt
+
+fi
+
+if [ -f clip_makeslib.in ]
+then
+
+printf "configure: creating clip_makeslib .."
+exec 3>clip_makeslib
+
+echo '#!/bin/sh' >&3
+echo "# Created automatically by 'configure'" >&3
+echo >&3
+echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
+echo "CLIP_ROOT=$CLIPROOT" >&3
+echo "ADDLIBS='$ADDLIBS'" >&3
+echo "DLLSUFF=$DLLSUFF" >&3
+echo "EXESUFF=$EXESUFF" >&3
+echo "DLLREALSUFF=$DLLREALSUFF" >&3
+echo "STD_LIBDIR=$STD_LIBDIR" >&3
+echo "NM_UNDERSCORE=$NM_UNDERSCORE" >&3
+echo "OS_$osname=yes" >&3
+echo "OSNAME=$osname" >&3
+echo "CC=$CC" >&3
+if [ "$USE_TASKS" = yes ]
+then
+	echo 'USE_TASKS=yes' >&3
+fi
+
+cat clip_makeslib.in >&3
+
+exec 3>&-
+echo ". done."
+
+chmod +x clip_makeslib
+
+fi
+
+if [ -f clip_cp.in ]
+then
+
+printf "configure: creating clip_cp .."
+exec 3>clip_cp
+
+echo '#!/bin/sh' >&3
+echo "# Created automatically by 'configure'" >&3
+echo >&3
+echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
+echo "CLIP_ROOT=$CLIPROOT" >&3
+echo "ADDLIBS='$ADDLIBS'" >&3
+echo "DLLSUFF=$DLLSUFF" >&3
+echo "EXESUFF=$EXESUFF" >&3
+echo "DLLREALSUFF=$DLLREALSUFF" >&3
+echo "STD_LIBDIR=$STD_LIBDIR" >&3
+echo "NM_UNDERSCORE=$NM_UNDERSCORE" >&3
+echo "OS_$osname=yes" >&3
+echo "OSNAME=$osname" >&3
+echo "CC=$CC" >&3
+
+cat clip_cp.in >&3
+
+exec 3>&-
+echo ". done."
+
+chmod +x clip_cp
+
+fi
+
+if [ -f clip_makelib.in ]
+then
+
+printf "configure: creating clip_makelib .."
+exec 3>clip_makelib
+
+echo '#!/bin/sh' >&3
+echo "# Created automatically by 'configure'" >&3
+echo >&3
+echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
+echo "CLIP_ROOT=$CLIPROOT" >&3
+echo "ADDLIBS='$ADDLIBS'" >&3
+echo "DLLSUFF=$DLLSUFF" >&3
+echo "EXESUFF=$EXESUFF" >&3
+echo "DLLREALSUFF=$DLLREALSUFF" >&3
+echo "STD_LIBDIR=$STD_LIBDIR" >&3
+echo "NM_UNDERSCORE=$NM_UNDERSCORE" >&3
+echo "OS_$osname=yes" >&3
+echo "OSNAME=$osname" >&3
+echo "CC=$CC" >&3
+
+cat clip_makelib.in >&3
+
+exec 3>&-
+echo ". done."
+
+chmod +x clip_makelib
+
+fi
+
+

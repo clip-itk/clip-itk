@@ -1,0 +1,155 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY>
+
+<h4>             Описание класса MEDIT </h4>
+Многооконный текстовый редактор с менюшками и прибамбасами, построен на базе
+класса <a href="o_textedit.html">TEXTEDIT</a>.
+
+<h5> Атрибуты/свойства </H5>
+<TABLE border="0" cellpadding="4">
+<tr>
+<th> Название атрибута </TH>
+<th> Значение атрибута </TH>
+</tr>
+
+<TR>
+<td> className </td> <TD> "MEDIT" </TD>
+<tr>
+<td> nTop </td> <TD> координата окна: левый верхний угол - строка </TD>
+<tr>
+<td> nLeft </td> <TD> координата окна: левый верхний угол - колонка </TD>
+<tr>
+<td> nBottom </td> <TD> координата окна: правый нижний угол - строка </TD>
+<tr>
+<td> nRight </td> <TD> координата окна: правый нижний угол - колонка </TD>
+</tr>
+</TABLE>
+
+<h5> Методы/функции </H5>
+<p>Функция medit(par, ntop, nleft, nbot, nright, user_func, tab_size, bline, bpos, wline, wpos)
+- создает новый объект класса MEDIT
+
+<br>par - string, список имен файлов, которые предназначены для редактирования
+<br>ntop - кордината окна редактирования: левый верхний угол - строка
+<br>nleft - кордината окна редактирования: левый верхний угол - колонка
+<br>nbot - кордината окна редактирования: правый нижний угол - строка
+<br>nright - кордината окна редактирования: правый нижний угол - колонка
+<br>user_func - пользовательская функция
+<br>tab_size - шаг табуляции
+<br>bline - строка текста
+<br>bpos - позиция в строке
+<br>wline - позиция курсора в окне: строка
+<br>wpos - позиция курсора в окне: колонка
+
+<h5> Возможности редактора </H5>
+
+<table width="100%" border="0" cellpadding="4">
+
+<tr>
+	<th>Работа с окнами</th>
+	<td>
+	- открыть<br>
+	- открыть share-окно<br>
+	- закрыть<br>
+	- посмотреть список открытых окон <br>
+	</td>
+</tr>
+
+<tr>
+	<th>Работа с блоками</th>
+        <td>
+	- блоки строчные/прямоугольные<br>
+	- копирование<br>
+	- перемещение<br>
+	- копрование в буфер<br>
+	- вставка блока из буфера<br>
+	- загрузка из файла<br>
+	- запись в файл<br>
+        </td>
+</tr>
+
+<tr>
+	<th>Работа с текстом</th>
+	<td>
+- всяческие перемещения и стандартное редактирование текста<br>
+- форматирование строки/абзаца<br>
+- рисование таблиц (псевдографика)<br>
+- откат (настраиваемый размер буфера отката)<br>
+- вставка по шаблону - настраивается пользователем (см. класс <a href="o_textedit.html#templ">TEXTEDIT</a>)<br>
+- макроподстановки - настраивается пользователем (см. класс <a href="o_textedit.html#macro">TEXTEDIT</a>)<br>
+	</td>
+</tr>
+<tr>
+
+	<th>Операции поиска</th>
+	<td>
+- поиск(поиск с заменой) по шаблону, по регулярному выражению - ищет в тексте,
+в блоке, во всех окнах<br>
+- поиск парных символов (), {}, [], <><br>
+- поиск структур по правилам CLIPPER:
+		<ul>
+		<li> DO WHILE - LOOP - EXIT - ENDDO
+		<li> DO CASE - CASE - OTHERWISE - EXIT - ENDCASE
+		<li> FOR - EXIT - LOOP - NEXT
+		<li> IF - ELSE - ELSEIF - ENDIF
+		<li> BEGIN SEQUENCE - BREAK - RECOVER - END SEQUENCE
+		</ul>
+	</td>
+</tr>
+</table>
+
+<h5>Настройка "горячих" клавиш по желанию пользователя.</h5>
+<BR>
+"Пользовательские кнопки" при старте загружаются из файла <b>keymaps.po</b>. Он
+хранится в домашнем каталоге в директории <b>./clip</b> и компилируется из файла
+<b>keymaps.prg</b>
+<p>Пример файла <b>keymaps.prg</b>
+<pre>
+/* User key_maps */
+#include "inkey.ch"
+
+function init_user_key(key_maps)
+local k
+
+	/* for debugger */
+	k:=key_maps:debug
+	/* Код клавиши 	  Команда */
+	k[ K_ESC ]	:=HASH_CallMenu
+	k[ K_F1 ] 	:=HASH_Help
+	     .........
+
+	/* for text editor */
+	k:=key_maps:edit
+
+	/* Код клавиши 	  Команда */
+	k[ K_ESC ]	:=HASH_CallMenu		// call Menu
+//	k[ ]	:=HASH_ExitSave		// exit from editor witch save
+//	k[ ]	:=HASH_ExitNoSave	//exit from editor witchout save
+
+	/* file/window function */
+	k[ K_F2 ]	:=HASH_SaveFile		// save File
+	k[ K_F3 ]	:=HASH_OpenFile		// open file
+	k[ K_SH_F3 ]	:=HASH_CreateNewFile	// create new file
+	k[ K_CTRL_N ]	:=HASH_NextWindow	// open next window
+//	k[  ]  	:=HASH_PrevWindow	// open previous window
+//	k[  ]	:=HASH_ReadOnly		// on/off read only options
+//	k[  ]	:=HASH_ListFiles	// listing opening files
+//	k[  ]	:=HASH_CloseWindow	// close current window
+//	k[  ]	:=HASH_Reload		// reload file
+		.............
+return key_maps
+</pre>
+<HR>
+<center>
+&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+<br>
+&#169 Е.Корнилова, <A HREF="mailto:alena@itk.ru">alena@itk.ru</A>, 2000
+</center>
+</body>
+</HTML>

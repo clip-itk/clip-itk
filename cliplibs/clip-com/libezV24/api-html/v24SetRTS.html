@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24SetRTS</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24SetRTS</A></H2><H2>(v24_port_t* port,  int NewState )</H2>
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>Set the state of the RTS line according to the parameter <TT>NewState</TT>. If
+<TT>NewsState</TT> is <TT>0</TT> the RTS signal is unset, otherwise it is set. This is
+only allowed, if the port don't use <EM>hardware handshaking</EM>. This means,
+<!1><A HREF="v24OpenPort.html">v24OpenPort</A> isn't called with <TT>V24_RTS_CTS</TT>. If hardware handshaking
+is used while calling this function, it aborts and returns <TT>V24_E_ILLPARM</TT>
+as error.
+
+<P>The values returned are: <TT>V24_E_OK</TT>, <TT>V24_E_ILLHANDLE</TT>, <TT>V24_E_ILLPARM</TT>,
+<TT>V24_E_NOT_IMPLEMENTED</TT>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>port</B> -  pointer to handle of the opened port.
+<BR><B>NewState</B> -  the new state to set DTR to.
+<BR><DT><B>Returns:</B><DD>  (int) the <TT>V24_*</TT> error code.
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

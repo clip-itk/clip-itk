@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE> Installation</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2> <A HREF="#DOC.DOCU">Installation</A></H2></H2><A NAME="DOC.DOCU"></A>
+<BLOCKQUOTE>
+The installation is currently <EM>hard wired</EM>. There is no support for the
+GNU auto-tools (automake or autoconf). The whole `configuration' is done by the
+user. You have to edit <TT>ezV24_conf.h</TT>. For the moment, that's all.
+
+<P>To compile and install the libary, just unpack the archive (you may have done
+this ;) and execute the following steps:
+
+<P><OL> 
+
+<P><LI> compile the library by typing `make'. The result should be a executable
+shared library named `libezV24.so.*'.
+
+<P><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;make
+&nbsp;&nbsp;</PRE>
+
+<P><LI> become root and install the library and the header files. This call
+will update you ldd-cache too! Note that this doen's install the html
+documentation! I'm not shure where to install it, so you can put it into your
+prefered directory.
+
+<P><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;su
+&nbsp;&nbsp;&nbsp;&nbsp;make&nbsp;install
+&nbsp;&nbsp;&nbsp;&nbsp;exit
+&nbsp;&nbsp;</PRE>
+
+<P><LI> Now you have the `ezV24'-library installed. The last (optional) step is
+to compile the sample program.
+
+<P><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;make&nbsp;test-v24
+&nbsp;&nbsp;</PRE>
+
+<P>The result is a small executable <TT>test-v24</TT>. To see what <TT>test-v24</TT> do, you
+must have a look into the source code.
+
+<P></OL>
+
+<P></BLOCKQUOTE>
+<DL><DT><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

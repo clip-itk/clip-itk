@@ -1,0 +1,27 @@
+#!/bin/sh
+
+pwd=`pwd`
+
+ver=$(head -1 debian/changelog |cut -d'(' -f2|cut -d')' -f1)
+path=../clip_distrib/$ver/src_p
+rm -rf $path
+mkdir -p $path
+DPATH=$(cd $path; pwd)
+
+
+cd clip
+./configure
+make clic.tab.c rt.tab.c lex.yy.c lex.c.c lex.hash.c
+make distclean
+cd $pwd
+
+tar czvf  $DPATH/clip_dev.tgz clip -Xexclude_dev
+tar czvf  $DPATH/clip_prg.tgz prg  -Xexclude_dbu -Xexclude_prg
+tar czvf  $DPATH/clip_dbu.tgz prg/ca_dbu prg/ca_dbu53 \
+	prg/Make prg/Clean prg/Makefile
+
+cd cliplibs
+tar czvf  $DPATH/clip_gd.tgz clip_gd
+tar czvf  $DPATH/clip-gzip.tgz clip-gzip
+cd $pwd
+

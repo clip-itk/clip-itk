@@ -1,0 +1,46 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+<BODY>
+
+<h3> class (object) TXTPRN </h3>
+
+Printing to text printers.
+<BR>
+Простенький пример использования объектов:
+<xmp>
+x:=dateTimeNew(date(),"11:22:33:44")
+? x:date(), x:time(x)
+? x:year(), x:month(), x:day(), x:hour(),x:min(),x:sec(),x:msec()
+x2:=dateTimeNew("0000/00/00","101:102:103:1024")
+? x2:date(), x2:time()
+x2:normalize()
+? x2:date(), x2:time()
+x3:=x:add(x2)
+? x3:date(), x3:time()
+x3:=x:sub(x2)
+? x3:date(), x3:time()
+</xmp>
+
+<hr>
+<h3> Описание функций </H3>
+
+<h4> dt:=dt_create(date(),time() ) </H4>
+
+<hr>
+<h3> Описание класса DATETIME </H3>
+
+<h3> Атрибутов у данного класса нет. </h3>
+
+<h3> Методы/функции </H3>
+<h4> dt:=dateTimeNew(date(),time() ) </H4>
+
+<HR>
+<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2002
+</center>
+</body>
+</html>

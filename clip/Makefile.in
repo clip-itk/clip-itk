@@ -1,0 +1,404 @@
+# main parts
+#
+#
+
+#export CC
+#DBGFLAGS	= -g #-DMEMDBG
+#WARNFLAGS	= -Wimplicit -Wall
+
+CLIPFLAGS	= -g -v2 -N#-O
+CLIP	= ./clip
+CVS_RSH = ./ssh.sh
+YACC = bison
+CLIPROOT = $(CLIP_ROOT)
+# strip on install
+#ISTRIP = --strip
+#CLIP_NAMES ?= 1
+#export CLIP_NAMES
+
+.SUFFIXES: .prg .c .po
+.PHONY:	tests screen hash
+
+SRCS	= coll.c list.c hash.c getopt.c getopt1.c clicutil.c \
+	  clic.y clic.lex file.c node.c locale.c \
+	  clip.c
+OBJS	= clic.tab.o lex.yy.o lex.c.o coll.o list.o getopt.o getopt1.o clicutil.o \
+	  clip.o file.o node.o clip_hash.o charset.o locale.o
+OBJDIR	= .
+LIBS	= -lm
+
+LIB	= libclip.a
+SLIB	= libclip$(DLLSUFF)
+SLIBREAL = libclip$(DLLREALSUFF)
+LIBOBJS = cliprt.o clipdbg.o cliphash.o clipvm.o hash.o rt.tab.o coll.o _io.o \
+	  cliptbl.o set.o _util.o _file.o _file1.o _string.o _date.o \
+	  list.o clipbase.o _math.o _ctools_s.o diskutils.o _mem.o \
+	  _system.o _thread.o rational.o integer.o charset.o gettext.o _dbg.o \
+	  _tcp.o _regex.o ncp.o _clipboard.o
+
+EXTOBJS =
+
+BINS=clip$(EXESUFF) clipar$(EXESUFF) clip_msgmerge clip_msgfmt clip_makeslib \
+	clip_cp clip_makelib \
+	clip_dbg$(EXESUFF) clip_trans$(EXESUFF) gen_tbl$(EXESUFF) \
+	clip_conv$(EXESUFF)
+
+#koitbl.o alttbl.o
+
+HASHSRCS = cliprt.c clipdbg.c clipvm.c clipmain.c rt.y _io.c \
+	   set.c _util.c _file.c _file1.c _string.c _date.c \
+	   clipbase.c _math.c _ctools_s.c diskutils.c _mem.c \
+	  _system.c _thread.c rational.c integer.c \
+	   _dbg.c _tcp.c _regex.c _thread.c
+
+# mapbase.o
+
+RDDBASE = rdd/librdd.a
+CLASSLIB = classes/libclipclasses.a
+FUNCSLIB = funcs/libclipfuncs.a
+SCREEN = screen/libscr.a
+TERMCAP = #screen/libtermcap.a
+SQL = sql/libdbfsql.a
+
+BASES =  $(RDDBASE)
+
+
+ALIBS = $(BASES) $(SCREEN) $(TASK) $(TERMCAP) $(DBGLIB) $(CLASSLIB) $(FUNCSLIB)\
+	$(SQL)
+
+#DISPLIB=-lncurses
+#DISPLIB=$(TERMCAP)
+
+SYS = $OSNAME
+#SYS := $(shell ./sys_name.sh)
+
+#SYSTEM_NAME := $(shell ./sys_name.sh)
+SYSTEM_NAME = $(OSNAME)
+
+DEFS	=
+# -DVERSION=\"0.1\"
+# -DSYSTEM=\"$(SYSTEM_NAME)\"
+
+CFLAGS  = $(C_FLAGS) $(DEFS) $(MEMDBGFLAGS)
+BCFLAGS = $(C_FLAGS) $(DEFS)
+#  $(WARNFLAGS) $(DBGFLAGS) $(OPTFLAGS) -I$(INCLUDE)
+
+export CC CFLAGS
+export CLIP CLIPFLAGS
+export MEMDBG MEMDBGFLAGS
+export CLIPROOT BINDIR
+#export CVS_RSH
+
+#main: install
+
+all: links Makefile clipcfg.h hashextract $(CLIP) clipar calchash genlist $(BASES) $(LIB) $(SLIB) \
+	clip_msgmerge clip_msgfmt clip_makeslib clip_cp clip_makelib \
+	clip_dbg clip_trans gen_tbl clip_conv
+#tests
+
+links:
+	[ -d charsets ] || ln -s screen/install/charsets .
+
+charset.o: screen/charset.c
+	$(CC) $(CFLAGS) -Iscreen -c screen/charset.c
+
+trans: clip_trans inst_dir inst_screen
+
+Makefile: Makefile.in configure
+	./configure
+
+clip_dbg:  clip_dbg.o
+	$(CC) $(CFLAGS) -o clip_dbg clip_dbg.o $(READLINE_LIBS)
+
+gen_tbl:  gen_tbl.o charset.o coll.o
+	$(CC) $(CFLAGS) -o gen_tbl  gen_tbl.o charset.o coll.o
+
+clip_conv:  clip_conv.o charset.o
+	$(CC) $(CFLAGS) -o clip_conv clip_conv.o charset.o
+
+clip_trans:  clip_trans.o
+	$(CC) $(CFLAGS) -o clip_trans clip_trans.o
+
+clip.1: clip.html
+	htex -o man clip.html
+
+clipcfg.h: Makefile.in configure
+	./configure
+
+clip_msgmerge: clip_msgmerge.in configure
+	./configure
+
+clip_makeslib: clip_makeslib.in configure
+	./configure
+
+clip_cp: clip_cp.in configure
+	./configure
+
+clip_makelib: clip_makelib.in configure
+	./configure
+
+clip_msgfmt: clip_msgfmt.in configure
+	./configure
+
+$(CLIP):  $(OBJS) seq_no.txt
+	$(CC) $(CFLAGS) $(STATICLINK) -DSEQ_NO=\"`cat seq_no.txt`\" -o $(CLIP) version.c $(OBJS) $(LIBS)
+
+seq_no.txt:
+	./seq_no.sh > seq_no.txt
+
+clipar:	clipar.o coll.o
+	$(CC) $(CFLAGS) $(STATICLINK) -o clipar clipar.o coll.o
+
+clip_hash.o: cliphash.c
+	$(CC) $(BCFLAGS) -DSTANDALONE -o clip_hash.o -c cliphash.c
+
+calchash: calchash.o clip_hash.o
+	$(CC) $(BCFLAGS) -o calchash calchash.o clip_hash.o
+	rm -rf bin
+	mkdir bin
+	cd bin;	ln -s ../calchash cliphash
+
+hash: _hashcode.h
+
+_hashcode.h: hashextract $(HASHSRCS)
+	./hashextract $(HASHSRCS) | sort -u > _hashcode.h
+	cmp _hashcode.h hashcode.h || cp _hashcode.h hashcode.h
+
+hashextract: lex.hash.o clip_hash.o
+	$(CC) -O -o hashextract lex.hash.o clip_hash.o
+
+lex.hash.o: lex.hash.c
+
+lex.hash.c: hasher.lex
+	flex -Phash hasher.lex
+
+genlist: genlist.c
+	$(CC) $(CFLAGS) -o genlist genlist.c
+
+$(SQL): sql/*.c sql/*.h sql/*.prg
+	cd sql && $(MAKE)
+
+$(RDDBASE): rdd.h rdd/*.h rdd/*.c
+	cd rdd && $(MAKE)
+
+$(CLASSLIB):
+	cd classes && $(MAKE)
+
+$(FUNCSLIB):
+	cd funcs && $(MAKE)
+
+$(SCREEN):
+	cd screen && $(MAKE) libscr.a
+
+$(TASK):
+	cd task && $(MAKE)
+
+test:
+	cd tests && $(MAKE)
+
+memdebug/memdebug.a:
+	cd memdebug && ./configure.sh && $(MAKE)
+
+memdebug/malloc_dbg: memdebug/memdebug.a
+
+$(LIB): $(LIBOBJS) $(ALIBS) $(EXTOBJS) $(MLIB)
+	rm -f $(LIB)
+	ar -r $(LIB) $(LIBOBJS)
+	./joinlib.sh $(LIB) $(ALIBS) $(LIB) $(MLIB)
+	ranlib $(LIB)
+
+test.o: test.prg
+	./clip -a -O -b -n -l test.prg
+
+$(SLIB): $(LIB) #test.o
+	CLIPROOT=`pwd` ./clip_makeslib $(SLIB) $(LIB) #test.o
+
+clean: cleanc
+
+cleanc:
+	rm -rf $(BINS) *.o *.a *.so *.dll *.pa *.b *.BAK *.bak *~ core* *core \
+		*.output test dtest clip clipar clip_dbg clip_trans \
+		calchash genlist hashextract clipcfg.h clip_hashextract \
+		bin *.exe Makefile.inc clipcfg.sh locale.pot
+	rm -f *.ex *.nm
+	cd screen && $(MAKE) clean
+	cd task && $(MAKE) clean
+	cd rdd && $(MAKE) clean
+	cd sql && $(MAKE) clean
+	cd classes && $(MAKE) clean
+	cd funcs && $(MAKE) clean
+	cd include && rm -rf *.bak *.log *core core*
+	[ ! -f tests/Makefile ] || (cd tests ; $(MAKE) clean)
+	[ ! -f memdebug/Makefile ] || (cd memdebug ; $(MAKE) clean)
+	[ ! -f doc/Readme.rus ] || (cd doc ; rm -rf *.bak *.log *.core core)
+	[ ! -f doc/rus/index.html ] || (cd doc/rus ; rm -rf *.bak *.log *.core core)
+	[ ! -f doc/eng/index.html ] || (cd doc/eng ; rm -rf *.bak *.log *.core core)
+
+
+distclean: clean
+	rm -f Makefile Makefile.inc clipcfg.sh clipcfg.h clip_msgmerge \
+		clip_msgfmt clip_makeslib clip_makelib clip_cp
+	rm -rf cliproot
+
+cleantest:
+	rm -f test dtest *.pa test.o dtest.o
+	cd tests && $(MAKE) clean
+
+install: all inst_dir inst_clip $(XINSTALL) inst_lib inst_screen inst_ch \
+	 inst_locale $(INST_STD_LIB) inst_doc inst_end
+
+inst_dir:
+	mkdir -p $(DESTDIR)$(CLIPROOT)
+	mkdir -p $(DESTDIR)$(BINDIR)
+	mkdir -p $(DESTDIR)$(CLIPROOT)/keymaps
+	mkdir -p $(DESTDIR)$(CLIPROOT)/include
+	[ ! -d memdebug ] || mkdir -p $(DESTDIR)$(CLIPROOT)/include/memdebug
+	mkdir -p $(DESTDIR)$(CLIPROOT)/bin
+	mkdir -p $(DESTDIR)$(CLIPROOT)/lib
+	mkdir -p $(DESTDIR)$(CLIPROOT)/etc
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc
+	mkdir -p $(DESTDIR)$(CLIPROOT)/cliprc
+	mkdir -p $(DESTDIR)$(CLIPROOT)/locale.pot
+	mkdir -p $(DESTDIR)$(CLIPROOT)/locale.po
+	mkdir -p $(DESTDIR)$(CLIPROOT)/locale.po/ru_RU.KOI8-R
+	mkdir -p $(DESTDIR)$(CLIPROOT)/locale.mo
+
+
+inst_clip:
+	cp $(BINS) joinlib.sh clip_bug lowname $(DESTDIR)$(CLIPROOT)/bin
+	cp calchash$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/cliphash$(EXESUFF)
+	cp hashextract$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/clip_hashextract$(EXESUFF)
+	cd $(DESTDIR)$(CLIPROOT)/bin && chmod 0755 $(BINS) joinlib.sh clip_bug cliphash$(EXESUFF) lowname
+	if [ "$(OSNAME)" = CYGWIN ] ; then echo "bash lowname %1 %2 %3 %4 %5 %6 %7 %8 %9" > $(DESTDIR)$(CLIPROOT)/bin/lowname.bat ; fi
+	-cd $(DESTDIR)$(BINDIR)/ && rm -f clip$(EXESUFF) clip_msgfmt \
+		clip_msgmerge clip_makeslib clip_cp clip_makelib \
+		clipar$(EXESUFF) cliphash$(EXESUFF) clip_bug$(EXESUFF) \
+		clip_dbg$(EXESUFF) clip_trans$(EXESUFF)
+	ln -sf $(CLIPROOT)/bin/clip $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_msgfmt $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_msgmerge $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_makeslib $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_makelib $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_cp $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clipar $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/cliphash$(EXESUFF) $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_bug $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_dbg $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_trans $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_conv $(DESTDIR)$(BINDIR)/
+	ln -sf $(CLIPROOT)/bin/clip_hashextract $(DESTDIR)$(BINDIR)/
+	touch $(DESTDIR)$(CLIPROOT)/cliprc/.notrm
+
+inst_locale:
+	cp -R locale.po $(DESTDIR)$(CLIPROOT)/
+	rm -rf `find $(DESTDIR)$(CLIPROOT)/locale.po -type d -name CVS -print`
+	CLIPROOT=$(DESTDIR)$(CLIPROOT) ./clip_msgfmt
+
+
+inst_lib:
+	./clip_cp $(LIB) $(DESTDIR)$(CLIPROOT)/lib
+	#; chmod 0644 $(DESTDIR)$(CLIPROOT)/lib/$(LIB)
+#	cp $(SLIB) $(DESTDIR)$(CLIPROOT)/lib; chmod 0755 $(DESTDIR)$(CLIPROOT)/lib/$(SLIB)
+	[ "$(SLIBREAL)" = "$(SLIB)" ] || cp $(SLIBREAL) $(DESTDIR)$(CLIPROOT)/lib
+
+inst_std_lib:
+	mkdir -p $(DESTDIR)$(STD_LIBDIR)
+	for i in $(DESTDIR)$(CLIPROOT)/lib/*$(DLLSUFF); do ln -s $$i $(DESTDIR)$(STD_LIBDIR) 2>/dev/null || true; done
+	for i in $(DESTDIR)$(CLIPROOT)/lib/*$(DLLREALSUFF); do ln -s $$i $(DESTDIR)$(STD_LIBDIR) 2>/dev/null || true; done
+	for i in $(DESTDIR)$(CLIPROOT)/lib/*.a; do ln -s $$i $(DESTDIR)$(STD_LIBDIR) 2>/dev/null || true; done
+
+inst_screen:
+	cd screen/install \
+	&& tar cf - `find . -type f -print |grep -v CVS` \
+	| (cd $(DESTDIR)$(CLIPROOT) && tar xf -)
+
+
+inst_ch:
+	cp clip.h clipcfg.h clipbase.h hash.h rdd/btree.h Makefile.inc clipcfg.sh include/*.ch sql/*.h task/*.h $(DESTDIR)$(CLIPROOT)/include/
+	[ ! -d memdebug ] || cp  memdebug/malloc.h memdebug/malloc_str.h $(DESTDIR)$(CLIPROOT)/include/memdebug
+
+inst_doc:
+	cp -R clip.html pcode.txt TODO $(DESTDIR)$(CLIPROOT)/doc/
+	[ ! -d doc ] || tar cf - doc | (cd $(DESTDIR)$(CLIPROOT) && tar xf -)
+
+inst_end:
+	./inst_end.sh $(DESTDIR)$(CLIPROOT) $(DESTDIR)$(BINDIR)
+
+.prg.c:
+	$(CLIP) $(CLIPFLAGS) -c $<
+
+.prg.po:
+	$(CLIP) $(CLIPFLAGS) -p $<
+
+cliprt.o: cliprt.c
+	$(CC) $(CFLAGS) -c -O $<
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+
+_ctools_s.o: _ctools_s.c
+	$(CC) $(CFLAGS) -O -c  _ctools_s.c
+
+clic.tab.o: clic.tab.c clic.h
+	$(CC) $(CFLAGS) -c $<
+
+lex.yy.o: lex.yy.c
+	$(CC) $(CFLAGS) -c $<
+
+lex.c.o: lex.c.c
+	$(CC) $(CFLAGS) -c $<
+
+clic.tab.c: clic.y clic.h
+	$(YACC) -bclic -v -d clic.y
+
+rt.tab.c: rt.y clic.h
+	$(YACC) -brt -prt -v -d rt.y
+
+#note: flex -i for case-insencitive parser
+lex.yy.c: clic.lex clic.tab.h
+	flex -i clic.lex
+
+lex.c.c: clic_c.lex clic.tab.h
+	flex -Pc clic_c.lex
+
+clicutil.o: clicutil.c clic.tab.h
+
+clic_name.o: clic_name.c
+
+clic_name.c: clic.tab.c
+	echo "#include <stdio.h>" >clic_name.c
+	echo "#ifndef YYDEBUG" >>clic_name.c
+	echo "#define YYDEBUG 0" >>clic_name.c
+	echo "#endif" >>clic_name.c
+	echo "#if !YYDEBUG" >>clic_name.c
+	echo "#define static" >>clic_name.c
+	sed -n -e "/^\(.*\)yytname[ \t]*\[\]/,/^};/p" clic.tab.c >> clic_name.c
+	echo "int yymaxtoken=sizeof(yytname)/sizeof(char*);" >>clic_name.c
+	echo "#endif" >>clic_name.c
+
+depend:
+	$(MAKE) hashcode.h
+	makedepend -Y  -- $(CFLAGS) -- $(SRCS) 2>/dev/null
+
+lex: lex.yy.c lex.c.c
+yacc: clic.tab.c rt.tab.c
+
+commit:
+	./_cvs_commit
+
+update:
+	./_cvs_update
+
+ucommit:
+	./_cvs_commit
+	./_cvs_update
+
+shell:
+	sh
+
+#modu.po: modu.prg $(CLIP)
+
+# DO NOT DELETE
+
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE> A quick view</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2> <A HREF="#DOC.DOCU">A quick view</A></H2></H2><A NAME="DOC.DOCU"></A>
+<BLOCKQUOTE>
+To use the libary for your own applications, you have to include the main
+header &lt;ezV24.h&gt;
+
+<P><PRE>
+#include&nbsp;&lt;ezV24/ezV24.h&gt;
+</PRE>
+
+<P>To link the shared library to your application, you just have to specify the
+basename of the library with <TT>-lezV24</TT>. The whole call could look like this:
+
+<P><PRE>
+gcc&nbsp;-o&nbsp;foo&nbsp;foo.c&nbsp;-lezV24
+</PRE>
+
+<P>To communicate over the serial device, you have to open and close it. Use
+<!1><A HREF="v24OpenPort.html">v24OpenPort</A> to open the device. The next step is the correct setup of the
+communication parameters with <!1><A HREF="v24SetParameters.html">v24SetParameters</A>.  Note that you must have
+the access rights to do this. After the communication is done, use
+<!1><A HREF="v24ClosePort.html">v24ClosePort</A> to close the port and release the lock.
+
+<P>To send and receive data, there are several pairs of functions available. It is
+possible to send and receive single bytes with <!1><A HREF="v24Getc.html">v24Getc</A> and
+<!1><A HREF="v24Putc.html">v24Putc</A>. To send an array with data, the functions <!1><A HREF="v24Read.html">v24Read</A> and
+<!1><A HREF="v24Write.html">v24Write</A> are the right choose. At last, usage of ASCIIZ strings is
+possible using <!1><A HREF="v24Gets.html">v24Gets</A> and <!1><A HREF="v24Puts.html">v24Puts</A>.
+
+<P>More details and a few snippets of code are shown in the section <!1><A HREF="TheHello-World-Sample.html">The Hello-World-Sample</A>.
+
+<P></BLOCKQUOTE>
+<DL><DT><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

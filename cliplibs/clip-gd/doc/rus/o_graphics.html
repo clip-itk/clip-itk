@@ -1,0 +1,185 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="../styl.css">
+<TITLE>Clipper compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+
+<h4>Библиотека деловой графики</h4>
+Включает в себя классы для создания:<br>
+<ul>
+<li> гистограмм - <br>
+       BgHistNew(sizeX, sizeY)
+<li> гистограмм с накоплением  - <br>
+	BgHistCumulNew(sizeX, sizeY)
+<li> нормированных гистограмм - <br>
+	BgNormNew(sizeX, sizeY)
+<li> трехмерных гистограмм - <br>
+	BgHist3DNew(sizeX, sizeY)
+<li> линейных диаграмм - <br>
+	BgLineNew(sizeX, sizeY)
+<li> линейных диаграмм с накоплением - <br>
+	BgLineCumulNew(sizeX, sizeY)
+<li> нормированных линейных диаграмм - <br>
+	BgLineNormNew(sizeX, sizeY)
+<li> круговых диаграмм - <br>
+	BgCircleNew(sizeX, sizeY)
+<li> кольцевых диаграмм - <br>
+	BgRingNew(sizeX, sizeY)
+<li> общий класс - <br>
+	BgNew(bgType, sizeX, sizeY)
+</ul>
+<h3> Атрибуты/свойства </H3>
+<TABLE border=1>
+<th> Название атрибута </TH>
+<th> Значение атрибута </TH>
+<TR> <td> sizeX </td> <TD> размер рисунка в пикселах по оси X </TD>
+<TR> <td> sizeY </td> <TD> размер рисунка в пикселах по оси Y </TD>
+</TABLE>
+
+<h3> Методы/функции </H3>
+<h4> создание </h4>
+bg=BgHistNew(sizeX, sizeY)<br>
+bg=BgHistCumulNew(sizeX, sizeY)<br>
+bg=BgHistNormNew(sizeX, sizeY)<br>
+bg=BgHist3DNew(sizeX, sizeY)  <br>
+bg=BgLineNew(sizeX, sizeY)    <br>
+bg=BgLineCumulNew(sizeX, sizeY)<br>
+bg=BgLineNormNew(sizeX, sizeY)<br>
+bg=BgCircleNew(sizeX, sizeY)  <br>
+bg=BgRingNew(sizeX, sizeY)    <br>
+bg=BgNew(bgType, sizeX, sizeY) - общий класс, где <i>bgType</i> - тип графика (см. <i>bggraph.ch</i>)  <br>
+<h4>Метод bg:setData(arr[, legend][, alignLeg][, signat]) --&gt; <i>.t.</i>/<i>.f.</i></h4>
+Инициализирует начальные значения, <br>
+arr - массив данных, на основе которых будет строиться график<br>
+legend - легенда, массив<br>
+alignLeg - размещение легенды (BG_ALIGN_NONE | BG_ALIGN_TOP | BG_ALIGN_BOTTOM | BG_ALIGN_LEFT | BG_ALIGN_RIGHT),
+типы описаны в файле <i>bggraph.ch</i>
+signat - значения категорий, массив
+<h4>Метод bg:setInfo([title][, subTitle][, vrtTitle]) --&gt; <i>.t.</i></h4>
+Задает заголовок к графику, подвал и подпись к шкале Y.
+<h4>Метод bg:setAverage(type[, value]) --&gt; <i>.t.</i>/<i>.f.</i></h4>
+Устанавливает/снимает режим рисования среднего значения,<br>
+type - режим: <br>
+0 - не показывать среднее значение<br>
+1 - показать среднее значение<br>
+2 - показать "критическое" значение<br>
+3 - показать и среднее и "критическое" значения<br>
+value - "критическое" значение.
+Attantion: на текущий момент реализовано только два режима 0/1.
+<h4>Метод bg:setVolume([volume]) --&gt; <i>volume</i></h4>
+Включить/выключить рисование графика в объемном варианте. Метод существует
+во всех классах, за исключением трехмерной гистограммы - этот график
+всегда рисуется в объеме.<br>
+volume - .t./.f. включить/выключить объем<br>
+Если метод вызывается без параметра, то прежнее значение volume инвертируется.
+<h4>Метод bg:drawImage() --&gt; <i>.t.</i>/<i>.f.</i> </h4>
+Нарисовать график.
+<h4>Метод bg:storeImage(type, filename) --&gt; <i>.t.</i>/<i>.f.</i></h4>
+Записать полученный рисунок в файл.<br>
+type - тип файла  GDFILE_PNG | GDFILE_GD | GDFILE_GD2 | GDFILE_XBM | GDFILE_JPEG ,
+по умолчанию тип файла GDFILE_PNG<br>
+filename - имя файла
+<br>
+Простейший пример использования:
+<PRE>
+#include "gdinfo.ch"
+#include "bggraph.ch"
+
+local bg, data, legend, alignleg, signat
+
+bg := BgHistNew(300, 300)
+
+data := {{12, 156, -34, 104, 45, 78, -34},{34,67, 65,11,-45,-67,90}, {32, 56, 11, 43, 67, 34, 89}}
+legend := {"first", "second", 'third', 'fourth'}
+signat := {"Sun", "Mon", 'Tu', 'Wed', "Thur", "Fri", "Sat"}
+alignleg := BG_ALIGN_RIGHT
+
+bg:setData(data, legend, alignleg, signat)
+bg:setInfo("Histogram", "One week of...", "Some digits on the axis...")
+
+/* drew graphic in volume */
+bg:setAverage(1)
+bg:setVolume(.t.)
+bg:drawImage()
+/* and store it */
+bg:storeImage(GDFILE_PNG, "hist1.png")
+
+/* now the same but 2D */
+bg:setAverage(0)
+bg:setVolume(.f.)
+bg:drawImage()
+bg:storeImage(GDFILE_PNG, "hist2.png")
+</PRE>
+И еще один пример:
+<PRE>
+#include "gdinfo.ch"
+#include "bggraph.ch"
+
+local bg, data, legend, alignleg, signat
+
+bg := BgNew(BG_TYPE_HIST, 300, 300)
+
+data := {{12, 156, -34, 104, 45, 78, -34},{34,67, 65,11,-45,-67,90}, {32, 56, 11, 43, 67, 34, 89}}
+legend := {"first", "second", 'third', 'fourth'}
+signat := {"Sun", "Mon", 'Tu', 'Wed', "Thur", "Fri", "Sat"}
+alignleg := BG_ALIGN_RIGHT
+
+bg:setData(data, legend, alignleg, signat)
+bg:setInfo("Histogram", "One week of...", "Some digits on the axis...")
+
+/* drew graphic in volume */
+bg:setAverage(1)
+bg:setVolume(.t.)
+bg:drawImage()
+/* and store it */
+bg:storeImage(GDFILE_PNG, "hist1.png")
+
+/* now the same but 2D */
+bg:setAverage(0)
+bg:setVolume(.f.)
+bg:drawImage()
+bg:storeImage(GDFILE_PNG, "hist2.png")
+</PRE>
+
+<table width=100%>
+<tr><th align=center colspan=2>Гистограмма обыкновенная<br>
+отражает значения различных категорий
+<tr><td><img src="hist1.png" alt="Пример гистограммы">
+    <td><img src="hist2.png" alt="Пример гистограммы">
+<tr><td><img src="line1.png" alt="Пример гистограммы">
+    <td><img src="line2.png" alt="Пример гистограммы">
+<tr><th align=center colspan=2>Гистограмма с накоплением<br>
+показывает вклад каждой категории в общую сумму
+<tr><td><img src="histcumul1.png" alt="Пример гистограммы">
+    <td><img src="histcumul2.png" alt="Пример гистограммы">
+<tr><td><img src="linecumul1.png" alt="Пример гистограммы">
+    <td><img src="linecumul2.png" alt="Пример гистограммы">
+<tr><th align=center colspan=2>Гистограмма нормированная на 100%<br>
+показывает ДОЛЮ каждой категории в общем котле
+<tr><td><img src="histnorm1.png" alt="Пример гистограммы">
+    <td><img src="histnorm2.png" alt="Пример гистограммы">
+<tr><td><img src="linenorm1.png" alt="Пример гистограммы">
+    <td><img src="linenorm2.png" alt="Пример гистограммы">
+<tr><th align=center colspan=2>Гистограмма объемная<br>
+отражает значения различных категорий с раскладкой по рядам
+<tr><td colspan=2><img src="histvolume.png" alt="Пример гистограммы">
+<tr><th align=center colspan=2>Круговая диаграмма<br>
+показывает вклад каждой категории в общую сумму
+<tr><td><img src="circle1.png" alt="Пример гистограммы">
+    <td><img src="circle2.png" alt="Пример гистограммы">
+<tr><th align=center colspan=2>Кольцевая диаграмма<br>
+показывает вклад каждой категории в общую сумму, подобна круговой диаграмме,
+но может отражать несколько рядов данных
+<tr><td><img src="ring1.png" alt="Пример гистограммы">
+    <td><img src="ring2.png" alt="Пример гистограммы">
+</table>
+
+<center>&#169 Е.Корнилова, <A HREF="mailto:alena@itk.ru">alena@itk.ru</A>, 2000
+</center>
+</BODY>
+</HTML>
+
+

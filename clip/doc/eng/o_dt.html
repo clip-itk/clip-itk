@@ -1,0 +1,108 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compatible compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+</center>
+
+<h2> Class DATETIME </h2>
+
+This object/structure have data of year,month,day,hour,min,sec,msec.
+<BR>
+<BR>
+<hr>
+Sample for function-oriented programming:
+<xmp>
+x:=dt_create(date(),"11:22:33:44")
+? dt_date(x), dt_time(x)
+? dt_year(x), dt_month(x), dt_day(x), dt_hour(x),dt_min(x),dt_sec(x),dt_msec(x)
+x2:=dt_create("0000/00/00","101:102:103:1024")
+? dt_date(x2), dt_time(x2)
+dt_normalize(@x2)
+? dt_date(x2), dt_time(x2)
+x3:=dt_add(x,x2)
+? dt_date(x3), dt_time(x3)
+x3:=dt_sub(x,x2)
+? dt_date(x3), dt_time(x3)
+</xmp>
+Sample for object-oriented programming:
+<xmp>
+x:=dateTimeNew(date(),"11:22:33:44")
+? x:date(), x:time(x)
+? x:year(), x:month(), x:day(), x:hour(),x:min(),x:sec(),x:msec()
+x2:=dateTimeNew("0000/00/00","101:102:103:1024")
+? x2:date(), x2:time()
+x2:normalize()
+? x2:date(), x2:time()
+x3:=x:add(x2)
+? x3:date(), x3:time()
+x3:=x:sub(x2)
+? x3:date(), x3:time()
+</xmp>
+
+<hr>
+<h3> Function description </H3>
+
+<h4> dt:=dt_create(date(),time() ) </H4>
+<h4> dt:=dt_create(date() | "yyyy/mm/dd", nHour, nMin, nSec, nMsec ) </H4>
+<h4> dt:=dt_create(nYear, nMonth, nDay, nHour, nMin, nSec, nMsec ) </H4>
+ Create and return new structure of datetime.
+
+<h4> dVar:=dt_date(dt) </h4>
+ Return date from datetime.
+
+<h4> sVar:=dt_time(dt) </h4>
+ Return time from datetime in format "hh:mm:ss:ms".
+
+<h4>dt_year(dt), dt_month(dt), dt_day(dt), dt_hour(dt), dt_min(dt), dt_sec(dt), dt_msec(dt) </h4>
+ Return info of subdata.
+
+<h4> dt2:=dt_normalize(@dt) </h4>
+ Noramlized data. Return new value.
+
+<h4> dt3:=dt_add(dt1,dt2) </h4>
+ Return addittive value of two datetime.
+
+<h4> dt3:=dt_sub(dt1,dt2) </h4>
+ Return result of subtract two datetime.
+
+<hr>
+<h3> Decription of class DATETIME </H3>
+
+<h3> This class don`t have attributes. </h3>
+
+<h3> Methods </H3>
+<h4> dt:=dateTimeNew(date(),time() ) </H4>
+<h4> dt:=dateTimeNew(date() | "yyyy/mm/dd", nHour, nMin, nSec, nMsec ) </H4>
+<h4> dt:=dateTimeNew(nYear, nMonth, nDay, nHour, nMin, nSec, nMsec ) </H4>
+ Created and return new object.
+
+<h4> dt:date() </h4>
+ Return date from datetime.
+
+<h4> dt:time() </h4>
+ Return time from datetime in format "hh:mm:ss:ms".
+
+<h4>dt:year(), dt:month(), dt:day(), dt:hour(), dt:min(), dt:sec(), dt:msec() </h4>
+ Return subdata.
+
+<h4> dt:normalize() </h4>
+ Normalized object.
+
+<h4> dt3:=dt1:add(dt2) </h4>
+ Return addittive value of two datetime.
+
+<h4> dt3:=dt1:sub(dt2) </h4>
+ Return result of subtract two datetime.
+
+<hr>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+<br>
+&#169 Khnykin Uri <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+

@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>v24_port_t* v24OpenPort</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>v24_port_t* <A HREF="#DOC.DOCU">v24OpenPort</A></H2><H2>( const char* PortName,<BR>&nbsp; unsigned int OpenFlags )</H2><BLOCKQUOTE>open a device.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>This function opens a serial device for reading and writing. A pointer to a
+special <EM>handle</EM> is return. This handle must be passed to all futher
+functions. If the function fails to open the port, a value of <TT>NULL</TT> is
+returned to indicate the error.
+
+<P>The portname is a string which represents the serial device. This
+representation is platform dependent. The following table shows the naming
+on several different operating systems. To avoid the usage of this names,
+you can use <!1><A HREF="v24PortName.html">v24PortName</A> to build the name for you.
+
+<P><TABLE BORDER>
+<TR><TD>
+<B>System</B> </TD><TD> <B>port-1</B></TD><TD> <B>port-2</B> </TD></TR><TR><TD>
+Linux           </TD><TD> /dev/ttyS0  </TD><TD> /dev/ttyS1  </TD></TR><TR><TD>
+IRIX            </TD><TD> /dev/ttyf1  </TD><TD> /dev/ttyf2  </TD></TR><TR><TD>
+HP-UX           </TD><TD> /dev/tty1p0 </TD><TD> /dev/tty2p0 </TD></TR><TR><TD>
+Solaris/SunOS   </TD><TD> /dev/ttya   </TD><TD> /dev/ttyb   </TD></TR><TR><TD>
+Digital UNIX    </TD><TD> /dev/tty01  </TD><TD> /dev/tty02  </TD></TR><TR><TD>
+Windows         </TD><TD> com1:       </TD><TD> com2:
+</TR></TABLE>
+
+<P>The <EM>open flags</EM> are used to specify a special behaviour ot the
+library. The following flag can be OR'ed together.
+
+<P><DL>
+<DT><B><TT>V24_STANDARD</TT></B><DD>	just empty. The defaults are used.
+<DT><B><TT>V24_LOCK</TT></B><DD>    	lock the port. Therefore a lock file is
+created. After the port is closed, the lock
+file is removed automagically.
+<DT><B><TT>V24_NO_DELAY</TT></B><DD>	no wait on DCD.
+<DT><B><TT>V24_RTS_CTS</TT></B><DD> 	use RTS/CTS hardware handshake.
+<DT><B><TT>V24_XON_XOFF</TT></B><DD>	use Xon/Xoff software handshake.
+<DT><B><TT>V24_DROP_DTR</TT></B><DD>	drop DTR after closing the port.
+<DT><B><TT>V24_NON_BLOCK</TT></B><DD>	non blocking read. Using this flag, the read
+access is not delayed. Without this, read will
+wait until a character is received or the
+timeout time is reached.
+<DT><B><TT>V24_DEBUG_ON</TT></B><DD>	enable stderr messages.
+</DL>
+
+<P>
+Some more word about the lock files: the handling of the lock file
+(hopefully) accords to the specification from
+<TT>http://www.pathname.com/fhs/2.0/fhs-5.5.html</TT>.
+
+<P>Device lock files, such as the serial device lock files that were originally
+found in either <TT>/usr/spool/locks</TT> or <TT>/usr/spool/uucp</TT>, must now be stored
+in <TT>/var/lock</TT>. The naming convention which must be used is <TT>LCK..</TT> followed
+by the base name of the device.  For example, to lock <TT>/dev/ttyS0</TT> the file
+<TT>LCK..ttyS0</TT> would be created.
+
+<P>The format used for device lock files must be the HDB UUCP lock file
+format. The HDB format is to store the process identifier (PID) as a ten
+byte ASCII decimal number, with a trailing newline. For example, if process
+1230 holds a lock file, it would contain the eleven characters: space,
+space, space, space, space, space, one, two, three, zero, and newline.
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>PortName</B> -     the name of the device.
+<BR><B>OpenFlags</B> -    the OR'ed <EM>open flags</EM>.
+<BR><DT><B>Returns:</B><DD>  (v24_port_t*) pointer to a handle of the opened device.
+<BR><DT><B>See Also:</B><DD><!1><A HREF="v24ClosePort.html">v24ClosePort</A>, <!1><A HREF="v24SetParameters.html">v24SetParameters</A>, <!1><A HREF="v24SetTimeouts.html">v24SetTimeouts</A>
+<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

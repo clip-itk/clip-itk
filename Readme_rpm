@@ -1,0 +1,36 @@
+This is a precompiled packages for systems, based on
+Redhat Package Manager (RPM):
+
+clip-lib	- base (standard) runtime library
+clip-dev	- development package (compiler)
+clip-prg	- development utilities
+clip-gtk	- GTK GUI support library
+clip-gzip	- zlib interface library
+clip-bzip2	- bzip2 interface library
+clip-gd		- GD image plot graphtics interterface library
+clip-mysql	- mysql interface library
+clip-postgres	- postgres interface library
+clip-oracle	- oracle interface library
+
+To install packages, download *.rpm files, and type
+
+rpm -i filename.rpm
+
+for all nessessary packages from root console.
+
+To remove package, type
+
+rpm -e <package>
+
+from root console.
+
+
+Precompiled CLIPROOT value is /usr/local/clip.
+
+Main www site: http://www.itk.ru
+Main ftp site: ftp://ftp.itk.ru
+
+Please send your bug/reports to uri@itk.ru.
+
+
+Paul Lasarev <paul@itk.ru>

@@ -1,0 +1,227 @@
+Tue Apr  6 00:46:45 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Upgraded to version 1.2.0.  Ready for 2nd release to
+	comp.sources.unix.  Lots of work on the manual.
+
+Mon Apr  5 18:28:05 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Finished adding token "check-funcs" to check the arguments of
+	some common string functions to see whether they are in the heap.
+	if so it tries to verify that the pointers are good.
+
+Sun Apr  4 21:24:45 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Added token "log-unknown" to dump non-free unknown pointers as
+	well as known ones.  Also cleaned up the displaying of the
+	pointers.
+
+	* comp.sources.unix is almost ready to post so lots of last minute
+	cleanups in the manual, etc.
+
+	* Started integration of function argument checking.
+
+Tue Mar 30 19:36:27 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Changed malloc.h defines so malloc routines are handled as well
+	as the ALLOC macros.
+
+	* malloc_dbg program now reports on the token NAME and values.
+
+	* Added initial string files for string support in the future.
+
+	* A number of minor changes: fixed gcc compilation problems per
+	scott's help, combined malloc_lp.h into malloc.h, cleaned most .h
+	and .c files.
+
+Fri Mar 26 04:00:14 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Fixed post 1.1.6 problem with chunk.c.  Boy do I need some
+	automated testing tools.  Discovered the illusive localtime
+	fence-post error.  Had a hard time tracking it down.  Maybe due to
+	the fact that the checks were not being made on dblock fence posts
+	before?
+
+	* Upgraded to 1.1.6
+
+	* Found some problems with malloc debug codes.  Use of DB_FENCE
+	and CHECK_LISTS and some others were improper.  A MALLOC_DEBUG
+	value of 0x403000 would crash all malloc programs.  :-)
+
+	* Added some better comments to all files and cleaned up most
+	files too.
+
+Fri Mar 12 18:35:02 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Upgraded to 1.1.5.
+
+Sat Feb 13 17:25:43 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Finished add a number of const operators to improve coding per
+	scott's recommendations.
+
+Sat Jan 30 12:33:43 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Took out the check_vars call inside of malloc_strerror since
+	_malloc_perror calls malloc_strerror which would go quickly
+	recursive.  Thanks scott.
+
+	* Changed to version 1.1.4
+
+Tue Jan  5 00:00:00 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Sent off 1.1.3 shar files to comp.sources.unix.
+
+Sat Jan  2 00:16:58 1993  Gray Watson  (gray at toaster.antaire.com)
+
+	* Made last minute changes to solve some gcc/ansi errors and
+	to the manual to get things ready for the post.
+
+Sun Dec 27 20:28:19 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Fixed problem with some external functions in malloc.c not
+	reseting the in_alloc flag.  Also removed some testing of unsigned
+	variables < 0 in chunk.c per gcc 2.3.3 warnings.
+
+	* Changed version to 1.1.3.
+
+Mon Dec 21 15:31:50 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Created the series of shar files in preparation to posting to
+	comp.unix.sources.  Looking good.
+
+Thu Dec 17 18:33:38 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Renamed a number of files to comply with the Sys5 12 character
+	restrictions (14 - 2 for RCS/CVS/SCCS).  Yeach.  malloc_debug ->
+	malloc_dbg.
+
+Sat Nov 14 15:59:53 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Added all external functions to configure and conf.h even though
+	the library assumes that some functions will be resolved.  Also
+	upgraded the version number to 1.01gamma (oooooh).
+
+	* Added print-perror debug token for logging messages to STDERR as
+	well as log-files.  Removed stdio from the malloc library to make
+	sure it does not go recursive (alloc for stderr) at a bad time.
+
+Wed Nov 11 18:19:49 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Moved the heap_check calls from chunk.c over to malloc so we can
+	be guaranteed that it gets called only once per user call.
+	chunk's routines often cross-call each other meaning that
+	heap-check was being run 5 times be realloc.  YEACH!!
+
+Tue Nov 10 17:55:53 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Added two new debug-tokens: log-blocks and heap-check-map.  Also
+	made sure that heap_check was being called from everywhere.
+	Updated the manual and corresponding files.
+
+	* Added library functions that may not be defined.  Updated the
+	conf.h.in and configure.in files to improve confiurability.
+	Upgraded the manual which still needs a lot of work (sigh).
+
+Mon Nov  9 19:21:25 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Added configure, configure.in, conf.h.in, and Makefile.in to try
+	and conform with autoconf specs.  What a bear.  The documentation
+	for autoconf needs a whole bunch more examples, etc.  Sigh.
+	Removed all the MEMORY and STRING defines, etc.
+
+Thu Nov  5 22:13:18 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Released version 1.01b.  Sending it off to some folks.
+
+	* Lots and lots of changes.  Translated all programs into non-ansi
+	C dependance and then went back again when I found some problems
+	with my macros.  :-)  Took out all (and I mean all) Antaire
+	dependancies and defines.
+
+Thu Oct 22 00:47:18 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Ran through most of the debug-flag functionality testing and
+	tweaking.  Found some bugs on dblock handling and some messed up
+	logic with the way the LOG flags were working.
+
+	* malloc_debug is looking good.  It now outputs C or Bourne shell
+	code and seems to work in both environments.  What do sh folks use
+	in the place of c-shell aliasing?  I guess use bash.  :-)
+
+Wed Oct 21 03:27:35 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Major changes.  I sort of went overboard tonight.  I integrated
+	the new malloc_debug program which sets all the debug variables
+	for you.  I also added a .mallocrc which you can define with tags
+	exactly the functionality you want to happen.  No more levels!!
+
+	* Did some renaming of files, cleaned up some other things,
+	had to rework a number of items to get new debug flags working.
+
+Tue Oct 20 18:06:36 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Removed useful.h requirements and integrated necessary
+	definitions into malloc.h.
+
+	* Transfered malloc.txt documentation into malloc.texinfo.  Boy
+	is it nifty!!  And damn easy!!!
+
+	* Major changes to improve general machine independance.  Added
+	malloc_mach.h.  Moved alloc.[ch] to malloc.[ch] for sanity
+	reasons.
+
+Tue Oct 13 16:14:17 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Made various cosmetic changes.  Fixed realloc inbound pointer
+	checking per MALLOC_ADDRESS.  Fixed problem with MALLOC_ADDRESS
+	initialization to NULL causing free to "find" NULL pointers.  :-)
+
+	* Separated the PERROR debug level and the KILL_SELF level.  Now
+	(by default) all memory errors are logged at level 1 and above and
+	malloc kills itself at level 2 and above.
+
+Mon Sep 28 23:24:36 1992  Gray Watson  (gray at toaster.antaire.com)
+
+	* Added MALLOC_ADDRESS support for free.  MALLOC_ADDRESS counts
+	now also apply to frees also.
+
+Mon Sep 21 20:39:38 1992  Gray Watson  (gray at toaster)
+
+	* Fixed some size problems with bounds checking enabled.
+
+	* Made free be able to report who freed a pointer.  I don't know
+	why this wasn't caught before.  free wasn't even using its
+	file/line arguments.
+
+Thu Sep  3 03:23:39 1992  Gray Watson  (gray at toaster)
+
+	* Added ability to realloc a NULL pointer with an ifdef to
+	disable.  Useful in realloc loops where the first time you don't
+	have to alloc it.
+
+Fri Aug 14 15:54:03 1992  Gray Watson  (gray at toaster)
+
+	* Added a bunch of new environmental variables features:
+	MALLOC_ADDRESS now can have a :# argument.  MALLOC_START now has
+	two formats, the old number and new file:line.  Looks nice!
+
+	* Made a pass through chunk.c and fixed a number of problems where
+	debug output pnt/size did not match user-supplied information.
+
+	* Moved most of the debug variables into alloc.c from chunk.c and
+	added a standardizied check_debug_vars() checking routine.
+
+Tue Jul 21 16:06:13 1992  Gray Watson  (gray at toaster)
+
+	* Fixed malloc count statistics.  Removed duplicate malloc_count
+	varaibale from a number of places.
+
+Mon Mar 23 10:49:25 1992  Gray Watson  (gray at toaster)
+
+	* Released version 0.04 with new env variable features.
+
+Thu Mar 12 19:28:34 1992  Gray Watson  (gray at toaster)
+
+	* Fixed a large problem with chunk.c not reporting the correct
+	memory address when listing unfreed memory.  This was discovered
+	when MALLOC_ADDRESS was not working correctly.

@@ -1,0 +1,3 @@
+# linux console
+CLIP_SCANMODE=IOCTL
+CLIP_KEYMAP=ru-koi8-r

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE> The Hello-World-Sample</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2> <A HREF="#DOC.DOCU">The Hello-World-Sample</A></H2></H2><A NAME="DOC.DOCU"></A>
+<BLOCKQUOTE>
+The previous section introduces an very short overview. Here we want to show
+you a whole sample. This sample is cut into smaller pieces. Each piece have its
+own desciption. Ok, let's start with a skeleton.
+
+<P><PRE>
+//&nbsp;sample.c
+#include&nbsp;&lt;stdio.h&gt;
+#include&nbsp;&lt;ezV24/ezV24.h&gt;
+
+v24_port_t&nbsp;*UsedPort=NULL;
+
+static&nbsp;void&nbsp;installSignalhandler&nbsp;(&nbsp;void&nbsp;)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;signal(SIGINT,mySignalHandler);
+&nbsp;&nbsp;&nbsp;&nbsp;signal(SIGTERM,mySignalHandler);&nbsp;&nbsp;&nbsp;&nbsp;
+}
+
+static&nbsp;void&nbsp;mySignalHandler&nbsp;(&nbsp;int&nbsp;reason&nbsp;)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;v24ClosePort(UsedPort);
+&nbsp;&nbsp;&nbsp;&nbsp;exit(99);
+}
+
+void&nbsp;main&nbsp;(void)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;installSignalhandler();
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;part-2&nbsp;...
+}
+</PRE>
+
+<P>The above skeleton <TT>sample.c</TT> show's several important parts. First it 
+includes the base header of the library. After this, the global variable
+<TT>UsedPort</TT> is declared and set to <TT>NULL</TT>. This variable will hold the
+initialized handle. To ensure, that program close the port, a signal handler
+is installed by <TT>installSignalhandler</TT>.
+
+<P>
+<PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;part-2
+&nbsp;&nbsp;&nbsp;&nbsp;UsedPort=v24OpenPort(&quot;/dev/ttyS0&quot;,V24_STANDARD);
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;UsedPort==NULL&nbsp;)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fputs(&quot;error:&nbsp;sorry,&nbsp;open&nbsp;failed!\n&quot;,stderr);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;part-3&nbsp;...
+&nbsp;&nbsp;&nbsp;&nbsp;v24ClosePort(UsedPort);
+</PRE>
+
+<P>This part opens the device <TT>/dev/ttyS0</TT>. After the work (of part-3) is done,
+the port is closed. This snippet doesn't use any special <EM>open
+flags</EM>. The port name is fix. To be a little bit more platform independent, we
+can use <!1><A HREF="v24PortName.html">v24PortName</A>.
+
+<P><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;part-3
+&nbsp;&nbsp;&nbsp;&nbsp;rc=v24SetParameters(UsedPort,V24_B9600,V24_8BIT,V24_NONE);
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;rc!=V24_E_OK&nbsp;)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fputs(&quot;error:&nbsp;setup&nbsp;of&nbsp;the&nbsp;port&nbsp;failed!\n&quot;,stderr);
+	v24ClosePort(UsedPort);
+	return&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;part-4&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;
+</PRE>
+
+<P>In part-3, we try to set the communication parameters of the opened port. In
+the above sample, the baudrate is set to 9600. The size of the data byte is
+set to 8 bits, and the parity bit generation is disabled. To see all possible
+parameters, just have a look at <!1><A HREF="v24SetParameters.html">v24SetParameters</A>. The shown setup is
+the default used by <!1><A HREF="v24OpenPort.html">v24OpenPort</A>. Nevertheless, it is better to use a
+explicit call to <TT>v24SetParameters</TT> to setup the port. The code will be more
+readable and IMO it's better style.
+
+<P><B>Note:</B> as you can see, the program aborts, if the setup
+fails. Because of this, we have to close the port!
+
+<P><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;part-4
+&nbsp;&nbsp;&nbsp;&nbsp;char*&nbsp;msg=&quot;Hello&nbsp;world.\n\r&quot;;
+&nbsp;&nbsp;&nbsp;&nbsp;char&nbsp;answer[80];
+&nbsp;&nbsp;&nbsp;&nbsp;rc=v24Puts(UsedPort,msg);
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;rc&nbsp;&lt;&nbsp;strlen(msg)&nbsp;)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fputs(&quot;error:&nbsp;v24Puts&nbsp;failed.\n&quot;,stderr);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;else
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rc=v24Gets(UsedPort,answer,sizeof(answer)-1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;rc&nbsp;&lt;&nbsp;0&nbsp;)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fputs(&quot;error:&nbsp;v24Gets&nbsp;failed!\n&quot;,stderr);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;the&nbsp;answer&nbsp;is&nbsp;`%s'\n&quot;,answer);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+</PRE>
+
+<P>This snippet of part-4 send the string <TT>&quot;Hello&nbsp;world.\n\r&quot;</TT>. If all characters are sent,
+it waits for a reply. Look's good?
+
+<P>For now that's all folks. (but I'm working on more stuff ;-)
+</BLOCKQUOTE>
+<DL><DT><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

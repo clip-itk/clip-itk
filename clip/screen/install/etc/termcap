@@ -1,0 +1,187 @@
+# Demos Commander termcap appendix.
+# Copyright (C) 1991 Serge Vakulenko
+
+# Descriptor tc= refer to default termcap.
+# Use TERM=xenix for standard xenix console.
+# Terminal type ansi is hacked to be Xenix console.
+# Use trueansi for real ansi devices.
+
+# True ansi terminal.
+trueansi:kI=\E[L:kH=\E[F:kN=\E[G:kh=\E[H:kP=\E[I:kD=\177:\
+	:f1=\E[M:f2=\E[N:f3=\E[O:f4=\E[P:f5=\E[Q:\
+	:f6=\E[R:f7=\E[S:f8=\E[T:f9=\E[U:f0=\E[V:tc=ansi
+
+# Standard Xenix console.
+# It is not true ansi, but has been hacked for dumb users.
+ansi|xenix:gs=:ge=:\
+	:g2=\315\272\310\312\274\314\316\271\311\313\273:\
+	:C2:Nf#16:Nb#8:Mf=062415378EAC9DBF:Mb=06241537:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:fs=\E[m:\
+	:CY:Ce=:Cs=:Ct=/usr/local/lib/deco/koi2alt.tab:\
+	:kI=\E[L:kH=\E[F:kd=\E[B:kN=\E[G:kl=\E[D:\
+	:kr=\E[C:kh=\E[H:ku=\E[A:kP=\E[I:kD=\177:\
+	:f1=\E[M:f2=\E[N:f3=\E[O:f4=\E[P:f5=\E[Q:\
+	:f6=\E[R:f7=\E[S:f8=\E[T:f9=\E[U:f0=\E[V:tc=ansi
+
+#cons25r:C2:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:tc=cons25
+cons25r::AF=\E[3%p1%dm:AB=\E[4%p1%dm:tc=cons25
+
+# Xenix console with Demos/* Russification Kit.
+xenix8:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:gs=:ge=:g2=\215\272\210\212\274\214\216\271\211\213\273:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:fs=\E[m:tc=xenix8
+
+# Interactive Unix 386 console
+AT386|at386:gs=:ge=:g2=\315\272\310\312\274\314\316\271\311\313\273:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:fs=\E[m:\
+	:k0=\EOY:kI=\E[@:kH=\E[Y:kN=\E[U:kP=\E[V:kD=\177:tc=AT386
+
+# Interactive Unix 386 console with koi8 cyrillic font
+AT386c|at386c:C2:Nf#16:Nb#8:Mf=042B15378CEF9D6A:Mb=13240567:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:fs=\E[m:tc=AT386c
+
+# X Windows terminal emulator
+xterm:ms@:ti@:te@:gs=\E(0:ge=\E(B:g1=qxmvjtnulwk:me=\E[m:\
+	:f1=\E[11~:f2=\E[12~:f3=\E[13~:f4=\E[14~:f5=\E[15~:\
+	:f6=\E[17~:f7=\E[18~:f8=\E[19~:f9=\E[20~:f0=\E[21~:\
+	:kI=\E[2~:kD=\177:kN=\E[6~:kP=\E[5~:tc=xterm
+
+xterm-std:ms@:ti@:te@:gs=\E(0:ge=\E(B:g1=qxmvjtnulwk:me=\E[m:\
+	:f1=\E[11~:f2=\E[12~:f3=\E[13~:f4=\E[14~:f5=\E[15~:\
+	:f6=\E[17~:f7=\E[18~:f8=\E[19~:f9=\E[20~:f0=\E[21~:\
+	:kI=\E[2~:kD=\177:kN=\E[6~:kP=\E[5~:tc=xterm-std
+
+# X Windows terminal emulator (small)
+xterms:ms@:ti@:te@:gs=\E(0:ge=\E(B:g1=qxmvjtnulwk:me=\E[m:\
+	:f1=\EOP:f2=\EOQ:f3=\EOR:f4=\EOS:f5=\E[15~:\
+	:f6=\E[17~:f7=\E[18~:f8=\E[19~:f9=\E[20~:f0=\E[21~:\
+	:kI=\E[2~:kD=\177:kN=\E[6~:kP=\E[5~:tc=xterms
+
+vt100:gs=\E(0:ge=\E(B:g1=qxmvjtnulwk:\
+	:f0=\EOp:f1=\EOq:f2=\EOr:f3=\EOs:f4=\EOt:f5=\EOu:f6=\EOv:\
+	:f7=\EOw:f8=\EOx:f9=\EOy:kh=\EOP:\
+	:md=\E[1m:mr=\E[7m:mb=\E[5m:me=\E[m:tc=vt100:
+
+vt200:gs=\E(0:ge=\E(B:g1=qxmvjtnulwk:\
+	:f0=\EOp:f1=\EOq:f2=\EOr:f3=\EOs:f4=\EOt:f5=\EOu:f6=\EOv:\
+	:f7=\EOw:f8=\EOx:f9=\EOy:kh=\EOP:\
+	:md=\E[1m:mr=\E[7m:mb=\E[5m:me=\E[m:tc=vt200:
+
+vt340:gs=\E(0:ge=\E(B:g1=qxmvjtnulwk:\
+	:f0=\EOp:f1=\EOq:f2=\EOr:f3=\EOs:f4=\EOt:f5=\EOu:f6=\EOv:\
+	:f7=\EOw:f8=\EOx:f9=\EOy::kD=\E[3~:kI=\E[2~:\
+	:kh=\E[29~:kH=\E[4~:kP=\E[5~:kN=\E[6~:\
+	:md=\E[1m:mr=\E[7m:mb=\E[5m:me=\E[m:tc=vt340:
+
+pc3|ibmpc3:C2:Nf#16:Nb#8:Mf=012345BE89A6CDF7:Mb=10264537:\
+	:Cf=\E[=%p1%dF\E[=%p2%dG:\
+	:g2=\245\222\240\242\224\244\246\221\241\243\223:\
+	:gs=:ge=:g2=:cu=\333:\
+	:f1=\E[M:f2=\E[N:f3=\E[O:f4=\E[P:f5=\E[Q:\
+	:f6=\E[R:f7=\E[S:f8=\E[T:f9=\E[U:f0=\E[V:\
+	:kh=\E[H:kN=\E[G:kP=\E[I:kH=\E[F:kI=\E[L:tc=pc3:
+
+pc3co|ibmpc3co:C2:Nf#16:Nb#8:Cf=\E[=%p1%dF\E[=%p2%dG:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Mf=0123456789ABCDEF:Mb=01234567:tc=pc3c:
+
+pc3am|ibmpc3am:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:C2:Nf#16:Nb#8:Mf=0123456789ABCDEF:Mb=01234567:fs=\E[m:\
+	:Cf=\E[=%p1%dF\E[=%p2%dG:\
+	:po=\E[P:pf=\E[p:\
+	:gs=:ge=:cu=\333:kD=\177:li#25:\
+	:f1=\E[M:f2=\E[N:f3=\E[O:f4=\E[P:f5=\E[Q:\
+	:f6=\E[R:f7=\E[S:f8=\E[T:f9=\E[U:f0=\E[V:\
+	:kh=\E[H:kN=\E[G:kP=\E[I:kH=\E[F:kI=\E[L:tc=pc3am:
+
+#	:g1=\304\263\300\301\331\303\305\264\332\302\277:\
+#	:g2=\315\272\310\312\274\314\316\271\311\313\273:\
+#        :CY:Ce=:Cs=:Ct=/usr/local/lib/deco/koi2alt.tab:\
+
+pc3a|ibmpc3a:\
+	:g1=-\263+-+\263+\263+++:\
+	:CY:Ce=:Cs=:Ct=/usr/local/lib/deco/koi2alt.tab:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:fs=\E[m:\
+	:po=\E[P:pf=\E[p:pO=\E[%dP:\
+	:gs=:ge=:cu=\333:kD=\177:li#25:\
+	:f1=\E[M:f2=\E[N:f3=\E[O:f4=\E[P:f5=\E[Q:\
+	:f6=\E[R:f7=\E[S:f8=\E[T:f9=\E[U:f0=\E[V:\
+	:kh=\E[H:kN=\E[G:kP=\E[I:kH=\E[F:kI=\E[L:tc=pc3a:
+
+pc3nc:C2:Nf#16:Nb#8:Cf=\E[3;%p2%{16}%*%p1%+%dx:tc=pc3nc:
+
+console|linux|linux-koi8|linux-c|linux-koi8r|fslinux:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+
+con80x25:co#80:li#25:\
+	:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+con80x28:co#80:li#25:\
+	:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+con80x43:co#80:li#43\
+	:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+con80x50:co#80:li#50:\
+	:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+con100x37:co#100:li#37:\
+	:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+con100x40:co#100:li#40:\
+	:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+con132x43:co#132:li#43:\
+	:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=042615378CAE9DBF:Mb=04261537:\
+	:g1=\200\201\204\211\205\206\212\207\202\210\203:\
+	:g2=\240\241\253\273\256\261\276\265\245\270\250:\
+	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+	:ti@:te@:tc=console:
+
+ct120:Nf#16:Nb#8:\
+	:C2:Nf#16:Nb#8:Mf=0123456789ABCDEF:Mb=01234567:\
+	:Cf=\E[2;%d;%dm:\
+	:me=\E[0:\
+	:f1=\E[M:f2=\E[N:f3=\E[O:f4=\E[P:f5=\E[Q:\
+	:f6=\E[R:f7=\E[S:f8=\E[T:f9=\E[U:f0=\E[V:\
+	:kh=\E[H:kN=\E[G:kP=\E[I:kH=\E[F:kI=\E[L:kD=\177:kb=^H:\
+	:tc=ct120:
+
+#	:Cf=\E[%p1%{8}%/%d;3%p1%{8}%m%d;4%p2%dm:\
+#	:C2:Nf#16:Nb#8:Mf=0132456789ABCDEF:Mb=01234567:\
+

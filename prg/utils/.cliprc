@@ -1,0 +1,8 @@
+#-E CLIPSLIB=libclip.so
+#-I ../include
+-s
+-l
+-U std.ch
+-U config.ch
+-U clip.ch
+

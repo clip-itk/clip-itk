@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>const char* v24PortName</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>const char* <A HREF="#DOC.DOCU">v24PortName</A></H2><H2>( int PortNo,  char* PortName )</H2><BLOCKQUOTE>Build a valid port name.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>Build a valid port name. This function can be used to build the platform
+dependent name of the serial device used by <TT>v24OpenPort</TT>. The exact format
+of the the name is explained at <!1><A HREF="v24OpenPort.html">v24OpenPort</A>.
+
+<P>The parameter <TT>PortNo</TT> is the number of the port. The parameter <TT>PortName</TT>
+is a pointer to a string buffer, where the built name is stored.
+<B>Important:</B> the caller must ensure, that the string buffer
+referenced by <TT>PortName</TT> could hold <TT>V24_SZ_PORTNAME</TT> characters.
+
+<P>To ease the use, the function return the pointer <TT>PortName</TT>.
+
+<P><B>Note:</B> this function can be used without an opened device!
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>PortNo</B> -     number of the port.
+<BR><B>PortName</B> -   resulting name for <TT>v24OpenPort</TT>.
+<BR><DT><B>Returns:</B><DD>  (const char*) copy of the pointer <TT>PortName</TT>.<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

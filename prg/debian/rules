@@ -1,0 +1,103 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+DISTROOT ?= ..
+
+# This is the debhelper compatability version to use.
+export DH_COMPAT=1
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	# Add here commands to compile the package.
+	ls -R $(CLIPROOT)
+	$(MAKE)
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	# Add here commands to clean up after the build process.
+	-$(MAKE) clean
+
+	-dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+# 	cumulative install
+	$(MAKE) install
+#	package install
+	mkdir -p debian/tmp/$(SCLIPROOT)/lib \
+		debian/tmp/$(SCLIPROOT)/doc \
+		debian/tmp/$(SCLIPROOT)/include \
+		debian/tmp/$(SCLIPROOT)/bin \
+		debian/tmp/$(SCLIPROOT)/cliprc \
+		debian/tmp/$(SCLIPROOT)/etc \
+		debian/tmp/$(SCLIPROOT)/charsets \
+		debian/tmp/$(SCLIPROOT)/keymaps \
+		debian/tmp/$(SCLIPROOT)/locale.pot \
+		debian/tmp/usr/lib
+	cp $(CLIPROOT)/include/clipcfg.sh $(CLIPROOT)/include/Makefile.inc debian/tmp/$(SCLIPROOT)/include/
+	cp $(CLIPROOT)/bin/clip_msgfmt $(CLIPROOT)/bin/clip_msgmerge debian/tmp/$(SCLIPROOT)/bin/
+	$(MAKE) install CLIPROOT=`pwd`/debian/tmp/$(SCLIPROOT)
+	rm debian/tmp/$(SCLIPROOT)/include/clipcfg.sh debian/tmp/$(SCLIPROOT)/include/Makefile.inc
+	rm debian/tmp/$(SCLIPROOT)/bin/clip_msgfmt debian/tmp/$(SCLIPROOT)/bin/clip_msgmerge
+#	cd debian/tmp/usr/lib ;\
+#	LIBS=`cd ../local/clip/lib; ls libclip*` ;\
+#	if [ -n "$$LIBS" ] ;\
+#	then \
+#		for name in $$LIBS ;\
+#		do \
+#			ln -s ../local/clip/lib/$$name . ;\
+#		done ;\
+#	fi
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+#	dh_testversion
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf
+#	dh_installdocs
+#	dh_installexamples
+#	dh_installmenu
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installinit
+#	dh_installcron
+	dh_installmanpages
+	dh_installinfo
+#	dh_undocumented
+#	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_suidregister
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb --destdir=$(DISTROOT)
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

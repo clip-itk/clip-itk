@@ -1,0 +1,255 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>Clipper compatible compiler</TITLE>
+</HEAD>
+</HEAD>
+<BODY>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+
+
+<h3>              Possible problems </h3>
+</center>
+<p>
+	select 0 ; dbskip() -  and more functions db*()
+   under clipper50 not error EG_NOTABLE, under clipper53 have error.
+   Clip support as clipper53
+<p>
+   Clip supports CAVO and Flagship syntax<br>
+   local varname AS REF typename<BR>
+   so "AS","REF" is a keywords,
+   and it should not be used as variable or function name.
+
+<hr>
+	static a:= chr(13) +chr(10) <br>
+   In clipper chr() analize compiler, this expression clipper compiler
+   as constant, in clip chr() - fucntion, as any other functions.
+   This expression - not constant.
+<hr>
+   FULLSCREEN/stream - clip works in two modes: <BR>
+   - fullscreen mode - usual mode. Note that
+   clipper displays into video-RAM; clip works via terminal and
+   can't read from terminal like video-RAM (this is impossible),
+   all 'save|restore screen' operations are working with screen buffer.
+   <BR><BR>
+   - stream mode - unix-style mode. You must use only "?" operator in this
+   mode. Using of any screen or/and keyboard functions switches to
+   fullscreen mode.
+   <BR><BR>
+   In stream mode clip doesn't convert chars from CLIP_HOSTCS to CLIP_CLIENTCS.
+   <BR><BR>
+   By default clip-application works in stream mode. Any fullscreen operation
+   switches into fullscreen mode. If switching fails, error is generated and
+   program quiting.
+   <BR><BR>
+   Hint #1 - to switch your application into fullscreen mode use command:<BR>
+   clear screen<BR>
+   in first lines of main procedure.
+   This initializes terminal and switches into fullscreen mode.
+   <BR><BR>
+   Hint #2 - if you want to work in stream mode use '?' operator only
+   and make hook on error handler:
+   <xmp>
+   errorBlock({ |err| myErrHandle(err) })
+   static function myErrHandle(err)
+   	outlog(0,"Error:",err)
+        quit
+   return
+   </xmp>
+   because standard error handler uses fullscreen operations.
+
+<hr>
+ <pre>a = fileseek(currdrive()+"/"+CurDir() + "/*.*", FA_DIRECTORY)</pre>
+ <br>
+ If the directory contains no files, we get an empty array;<br>
+ if we have at least one file in the directory, we get additionally a list of
+ subdirectories;<br>in case of initialising as:<br>
+
+ <pre>a = fileseek(currdrive()+"/"+CurDir(), FA_DIRECTORY)</pre>
+<br>
+ everything is executed as usually.
+ <p>
+*.* mask is usual in DOS, and in DOS, even if there's no extension,
+the point is assumed to be present.
+
+For UNIX platforms the correct mask is "*".
+In ólip, there exists platform dependent constant - FILE_MASK<br>
+<pre>#define FILE_MASK  "*"</pre><br>
+
+<hr>
+   There some problems with compatibility in codeblocks, and now
+   we are working on them.
+
+<hr>
+ Not always keywords ( FIELD, WHILE, FOR, CASE, END and some others ) can
+   be defined as the names of variables or fields, therefore it's better
+   not to use keywords as the names of variables.
+
+
+<hr>
+ Sometimes IF(,,) function may be accepted by preprocessor as IF ..
+ ELSE .. ENDIF command and cause error message, so it's better to use
+ Iif(,,).
+
+<hr>
+<xmp>
+   String constants enclosed in [] symbols are not supported.
+   Or rather, these strings will be "internationalised".
+   In this case,it's better to use preceding "&\" key
+   symbols, particularly C-like &\n &\t &\r &\" &\' && pseudoconstants,
+   etc. can be used.
+</xmp>
+
+<hr>
+   Type() problem:<BR>
+   in clipper -<BR>
+   type("substr('sdfgfg')") -> substr() is called<BR>
+   type('alert()') -> alert() is not called<BR>
+   That is, in Clipper, there are some pseudofunctions which can be invoked.
+   In Clip, at the moment, no functions are called from type().
+
+
+<hr>
+   FKLABEL(), FKMAX() are not supported.
+
+<hr>
+   Not supported is the revealed Clipper error which consists in the following:
+   Clipper generates an error of comparison for <BR> if NIL==0<BR> expression
+   and generates no error for <BR>if (NIL==0)<BR> expression, though, according
+   to comparison rules, an error wouldn't generated. <BR>
+   We consider this bug of Clipper to be of no practical use, therefore it is
+   not supported in Clip.
+
+<hr>
+   File functions getting a path as a parameter:
+   - a path will be translated - '\' symbols in '/'symbols<BR>
+   - "c:","d:",... symbols will be substituted for corresponding settings
+   returned/set via <BR>
+   SET("C:","/usr/home/c:"),<BR>
+   - all the symbols in path are converted to the lower case, if
+   "set translate path" command has set ON mode (default - OFF)<BR>
+   Indicating disk name in SET, you should indicate DOS disk name ("C:")<BR>
+   just in capital letters. <BR>
+   - by default, clip program has one "C:" disk pointing to the root directory
+   ("/"); it is important to include your disks settings into "init procedure".<BR>
+   Instead of "/" symbol, it's better to use PATH_DELIM #defined in config.ch.
+
+<hr>
+   indexExt() returns the string in the lower case because of the
+   case-sensitivity of UNIX file systems, where file names and extensions
+   are usually in the lower case.
+
+
+<hr>
+   The output of double pseudographics is impossible to be described by
+   terminfo, but the description can be made by termcap (in a slightly
+   uncommon way, g1 and g2 escape-codes being used, the idea is from old
+   good Demos Commander).
+   Execute 'setenv TERMCAP /etc/termcap', and if your terminal type is
+   described correctly, there will be both double and single strings.
+
+<hr>
+   The oOutput of symbols with codes less than 32 to the terminal is impossible,
+   therefore these symbols are displayed as sym+32 and are lighted in another color.
+
+
+<hr>
+   You should recollect DISPBEGIN(), DISPEND() functions. Those who have long
+   been working with terminals must understand well why it is necessary. As for
+   novices, they should read attentively the description of these functions and
+   imagine how information runs via narrow commiunication channels from
+   the server to terminals and how the processor is loaded, while
+   outputting information. To use them is not necessary, but it's desirable,
+   particularly in those places where you display and process the input from
+   the keyboard themselves. In those functions and commands (PROMPT/MENU,
+   GET/READ ...) where the processing of the display and keyboard is
+   executed independently, an optimal output mode has been already used, and so
+   enclosing them by BEGIN() & END() is unnecessary.
+
+<hr>
+   The restriction of the function/procedure name size of 10 symbles has been
+   removed.<BR> It applies equally to variable names; and, to simplify the
+   transition to a length of more than 10 symbols, the Clip processor has one
+   more command, "#xdefine long_name small_name", which can be used for quick
+   replacement of all long names by former short ones.
+
+
+<hr>
+  The restriction of the string size of 64k has been removed.
+
+
+<hr>
+ The restriction of the array size of 4096/8192 elements has been removed.
+
+<hr>
+ MEMOEDIT is based on textedit class, and there may be some problems with
+ user functions for memoedit.
+
+<hr>
+ get:baddate() is a method, not Án attribute.
+
+<hr>
+	Tbrowse object is visualised not quite so as a standard one is,
+	which eliminates problems with number of fields in a database
+	looked through and cursor positioning, when navigating over the table
+	in user functions.
+
+
+<hr>
+	RUN command output damages current screen contents.
+	When outputting to the terminal, this problem cannot be completely
+        solved without resorting to tricks, as it turns out that several programs
+	output independenly to one device, in the same way as if several
+        programs, independent of each other, output information to one COM port. <BR>
+	We recommend to use something like:<BR>
+	.....<BR>
+	run &command<BR>
+	wait "Press any key"<BR>
+	clear screen   // or restore screen<BR>
+	.....<BR>
+
+  And one more peculiarity of run command - in UNIX, this command runs
+  shell, then shell executes the program.<BR>
+  Though "run cd mydir" will operate, only after exiting from shell the
+  current directory will return to the place!!!<BR>
+  To change the current directory, use dirchange(new_cur_dir) function.
+
+<hr>
+ In error object, there is some incompatibility.<BR>
+	<ol>
+	<li>subsytem is not a method, but an attribute; you should check
+	your errorsys at once, otherwise you will have the situation
+	of errorblock recursive activation and a lot of troubles.</li>
+	<li> in error object, compatibility is ensured only on the level of</li>
+	error.ch; everything that was not described in it is not supported.</li>
+	<li>error:osCode is a system dependent variable.</li>
+	</ol>
+
+<hr>
+ 	It is preferable to use inkey(0.1) instead of inkey(), otherwise
+        a program will use too much of processor time.
+
+<hr>
+ "restore from" always operates with "additive".<BR>
+
+<hr>
+
+  In particular, we had to make some changes in DBU concerning inkey() and
+  stabilization in BROWSE; these changes are enclosed by #ifdef __CLIP__.
+
+<hr>
+  The set procedure command is not and probably will not be supported.
+  Link the whole program from object files by using Clip or use new
+  features relating to po-files; read about load() function.
+
+<hr>
+  setcolor() have 10 pair colors, new 5 pair don`t have especialy target.
+
+<hr>
+<center>
+<A HREF="index.html" target='pole'>CLIP home page</a>
+<br>
+&#169 Khnykin Uri <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+</center>
+

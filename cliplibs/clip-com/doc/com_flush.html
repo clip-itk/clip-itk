@@ -1,0 +1,52 @@
+<HTML>
+<HEAD><TITLE>COM_FLUSH</TITLE></HEAD>
+<BODY>
+
+<PRE>
+ <B>COM_FLUSH()</B>
+ Clears the receiving buffer
+<HR>
+ <B>Syntax</B>
+
+     <B>COM_FLUSH(&lt;nComPort&gt;) --&gt; lClear</B>
+
+ <B>Argument</B>
+
+     <B>&lt;nComPort&gt;</B>  Designates the port (1 to N) for which the receiving
+     buffer is cleared.
+
+ <B>Returns</B>
+
+     If the receiving buffer can be cleared successfully, the function
+     returns .T..
+
+ <B>Description</B>
+
+     This function allows you to flush all the characters in a receiving
+     buffer.  This makes it unnecessary to tediously determine how many
+     characters are currently in the buffer in order to remove them with a
+     read procedure.
+
+     COM_FLUSH() guarantees a truly empty buffer.  However, a new character
+     can be received between the time that you call a COM_COUNT() and a
+     COM_READ().
+
+ <B>Note</B>
+
+     <B>”</B>  A COM_FLUSH() on an unopened port is ineffective.
+
+ <B>Example</B>
+
+     cHayes  :=  "ATZ"           // Hayes modem reset command
+     COM_SEND(1, cHayes)         // Issue Hayes command
+     INKEY(1)                    // Wait one second
+     COM_FLUSH(1)                // Reject modem reply messages
+
+</PRE>
+<HR>
+<B>See Also:</B>
+<A HREF="com_count.html">COM_COUNT()</A>
+<A HREF="com_read.html">COM_READ()</A>
+<HR>
+</BODY>
+</HTML>

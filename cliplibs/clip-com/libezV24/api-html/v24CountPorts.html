@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>int v24CountPorts</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.8">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>int <A HREF="#DOC.DOCU">v24CountPorts</A></H2><H2>( unsigned long* BitMask )</H2><BLOCKQUOTE>Detect installed serial devices.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>Detect installed serial devices. The goal of this function is to detect
+which serial devices are installed. Therefore the <TT>/proc</TT> file system is
+used. The content of the virtual file <TT>/proc/tty/driver/serial</TT> must be
+present. It must hold a specially formatted line for each device (see
+below). A device is recognized as `installed' if this line doesn't contain
+the word ``unknown'' but contain the ``tx:''.
+
+<P>The line format of the virtual file should look like this:
+
+<P><PRE>&nbsp;
+&nbsp;&nbsp;&nbsp;0:&nbsp;uart:16550A&nbsp;port:3F8&nbsp;irq:4&nbsp;tx:0&nbsp;rx:0
+&nbsp;&nbsp;&nbsp;1:&nbsp;uart:16550A&nbsp;port:2F8&nbsp;irq:3&nbsp;tx:0&nbsp;rx:0
+&nbsp;&nbsp;&nbsp;2:&nbsp;uart:unknown&nbsp;port:3E8&nbsp;irq:4
+&nbsp;&nbsp;&nbsp;</PRE> 
+
+<P>The result of the detection is stored in a <TT>unsigned&nbsp;long</TT> variable. For
+every port found, the corresponding bit is set. The above sample shows us,
+that port0 (<TT>ttyS0</TT>) and port1 (<TT>ttyS1</TT>) are present. So the bit0 and bit1
+of the variable referenced by <TT>BitMask</TT> are set.
+
+<P>If the function failes to detect the installed ports, a <TT>-1</TT> is return. If
+all went fine, the number of detected ports is returned.
+
+<P><B>Note:</B> this function can be used without an opened device!
+
+<P></BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>BitMask</B> -     pointer to a <TT>unsigned&nbsp;long</TT> variable.
+<BR><DT><B>Returns:</B><DD>  (int) number of detected ports or <TT>-1</TT>.<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

@@ -1,0 +1,40 @@
+This is a precompiled packages for Debian systems, based on
+dpkg package manager:
+
+clip-lib	- base (standard) runtime library
+clip-dev	- development package (compiler)
+clip-prg	- development utilities
+clip-gtk	- GTK GUI support library
+clip-gzip	- zlib interface library
+clip-bzip2	- bzip2 interface library
+clip-gd		- GD image plot graphtics interterface library
+clip-mysql	- mysql interface library
+clip-postgres	- postgres interface library
+clip-oracle	- oracle interface library
+
+To install packages, download *.deb files, and type
+
+dpkg -i filename.deb
+
+for all nessessary packages from root console.
+Precompiled CLIPROOT value is /usr/local/clip.
+
+To view installed packages, type
+dpkg -l <package_name>
+or
+dpkg -L <package_name>
+to view package's files.
+
+To remove package, type
+dpkg --remove <package_name>
+or
+dpkg --purge <package_name>
+if you want remove package's configuration files.
+
+Main www site: http://www.itk.ru
+Main ftp site: ftp://ftp.itk.ru
+
+Please send your bug/reports to uri@itk.ru.
+
+
+Paul Lasarev <paul@itk.ru>
