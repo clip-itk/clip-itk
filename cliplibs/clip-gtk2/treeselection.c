@@ -21,7 +21,7 @@ static GtkTreeIter *Iter = &_Iter;
 /* Signals table */
 static SignalTable tree_selection_signals[] =
 {
-	{"changed",	GSF( widget_signal_handler ), ESF( object_emit_signal ), GTK_CHANGED_SIGNAL},
+	{"changed",	GSF( object_signal_handler ), ESF( object_emit_signal ), GTK_CHANGED_SIGNAL},
 	{"", NULL, NULL, 0}
 };
 

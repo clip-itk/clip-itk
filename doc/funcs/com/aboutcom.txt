@@ -1,0 +1,19 @@
+$ABOUTCATEG$
+  Serial I/O
+$DESCRIPTION$
+	Category Serial I/O include description of functions for
+	using communication over COM-ports. This function based on
+	multiplatform library EZV24 http://libezV24.sourceforge.net/.
+
+	For using need linking clip-com library:
+
+	clip -e test.prg -lclip-com
+
+$LANG_RU$
+	В категории Serial I/O находятся описания функций для
+	коммуникации посредством COM-портов. Эти функции основаны на
+	многоплатформной библиотеке EZV24 http://libezV24.sourceforge.net/.
+
+	Для использования необходимо линковать библтотеку clip-com:
+
+	clip -e test.prg -lclip-com

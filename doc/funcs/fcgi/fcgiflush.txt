@@ -1,0 +1,33 @@
+$FUNCNAME$
+	FCGI_FLUSH()
+$CATEGORY$
+  CGI/FCGI
+$SUMMARY$
+	Flush all buffered data to FCGI server peer.
+$LANG_RU$
+	Сбрасывает все буферизованные данные на FCGI сервер.
+$SYNTAX$
+	FCGI_FLUSH()
+$ARGUMENTS$
+	None.
+$LANG_RU$
+	Нет.
+$RETURNS$
+$LANG_RU$
+$DESCRIPTION$
+	Flush all buffered data to FCGI server peer.
+$LANG_RU$
+	Сбрасывает все буферизованные данные на FCGI сервер.
+$EXAMPLES$
+$LANG_RU$
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+$LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	FCGI_GETENV(),FCGI_READ(),FCGI_ACCEPT()
+$AUTHOR$
+ITK,Paul
+$END$

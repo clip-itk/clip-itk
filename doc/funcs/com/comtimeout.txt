@@ -1,0 +1,47 @@
+$FUNCNAME$
+	COM_TIMEOUT()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Set timeout for all operations in 1/10 seconds.
+$LANG_RU$
+	Установливает таймаут операций в единицах 1/10 секунды.
+$SYNTAX$
+	nOldTimeout := COM_TIMEOUT(<nComPort>[,<nTimeout>])
+$ARGUMENTS$
+	<nComPort> - Designates the number of the port (1 to N).
+	<nTimeout> - Designates operation timeout in tenth (1/10) seconds.
+$LANG_RU$
+	<nComPort> - Номер порта (от 1 до N).
+	<nTimeout> - Определяет таймаут операций в единицах 1/10 секунды.
+$RETURNS$
+	Return previous value of operation timeout.
+$LANG_RU$
+	Возвращает предыдщее значение таймаута.
+$DESCRIPTION$
+	All read functions may use a timeout mechanism while waiting for
+	characters. If this time limit is exceeded the function abort reading.
+
+	The timeout duration is specified by the parameter
+	TenthOfSeconds. This value is given as a multiple of a thenth of a
+	second.
+$LANG_RU$
+	Все фукции чтения могут использовать механизм таймаута при
+	ожидании символов. Если таймаут первышен, функция обрывает ожидание.
+
+	Длительность таймаута определяется параметром TenthOfSeconds.
+	Значение задается в десятых долях секунды.
+$EXAMPLES$
+	COM_OPEN(2)
+	COM_TIMEOUT(6000)
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_DTR(),COM_RTS(),COM_SOFT(),COM_HARD(),COM_NUM(),COM_COUNT()
+$AUTHOR$
+ITK,Paul
+$END$

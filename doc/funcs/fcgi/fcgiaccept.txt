@@ -1,0 +1,56 @@
+$FUNCNAME$
+	FCGI_ACCEPT()
+$CATEGORY$
+  CGI/FCGI
+$SUMMARY$
+	Accept FCGI connecton from server peer.
+$LANG_RU$
+	Принимает FCGI соединение c сервером.
+$SYNTAX$
+	lAccepted := FCGI_ACCEPT()
+$ARGUMENTS$
+	None.
+$LANG_RU$
+	Нет.
+$RETURNS$
+$LANG_RU$
+$DESCRIPTION$
+	When the connection is accepted, all steram output (via ? or
+	QOUT() or similar functions will be redirected to server. The output is
+	buffered; you can use function FCGI_FLUSH() to explicitly flush output
+	buffers.
+
+	Note that real end of transaction happens when you again call
+	FCGI_ACCEPT(), this corresponds to termination of CGI program.
+$LANG_RU$
+	После того как соединение установлено, весь потоковый вывод
+	(через ? или QOUT() или подобные фукции) будет перенаправлен на сервер.
+
+	Весь вывод буферизуется; вы можете использовать функцию
+	FCGI_FLUSH() для явного сброса буферов.
+
+	Учтите, что реальное окончание транзакции происходит когда снова
+	вызывается FCGI_ACCEPT(). Этот момент соответсвует окончанию CGI
+	программы.
+$EXAMPLES$
+$LANG_RU$
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+$LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	FCGI_GETENV(),FCGI_READ(),FCGI_FLUSH()
+$AUTHOR$
+ITK,Paul
+$END$
+
+
+
+
+
+
+
+
+

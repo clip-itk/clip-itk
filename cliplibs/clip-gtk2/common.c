@@ -141,6 +141,22 @@ _list_put_cobject(ClipMachine * cm, void *pointer, C_object * cobj)
 		_clip_mputn(cm, widget_list, (long) pointer, (long) cobj);
 }
 
+CLIP_DLLEXPORT void
+_list_remove_cobject(ClipMachine * cm)
+{
+	int i;
+        ClipVar *cv = (ClipVar *)&(widget_list->m.items[0]);
+	for(i=0; i<cv->m.count; i++)
+        {
+        	C_object *cobj = (C_object *)((long)(((ClipVar*)&(cv->m.items[i]))->n.d));
+                C_widget *cwid = (C_widget *)((long)(((ClipVar*)&(cv->m.items[i]))->n.d));
+                if (cobj->objtype)
+                	destroy_c_object(cobj);
+                else
+                	destroy_c_widget(cwid);
+        }
+}
+
 CLIP_DLLEXPORT C_widget *
 _list_get_cwidget(ClipMachine * cm, void *pointer)
 {
@@ -712,10 +728,10 @@ _register_object(ClipMachine * cm, void * data, long clip_type, ClipVar * cv, co
 	_clip_mputn(cm, &cobj->obj, HASH_TYPE, clip_wtype);
 	/* Store C_object pointer in list of widgets */
 	_list_put_cobject(cm, data, cobj);
-/*  	if (data && clip_type != GDK_TYPE_ATOM)
+  	if (data && clip_type != GDK_TYPE_ATOM && clip_type != GTK_TYPE_TREE_ITER && clip_type != GTK_TYPE_TREE_PATH && clip_type != GTK_TYPE_SELECTION_DATA)
 
-  		g_object_set_data_full(G_OBJECT(data),"destructor",cobj,
-			(GDestroyNotify)object_destructor);*/
+  		if (G_IS_OBJECT(data)) g_object_set_data_full(G_OBJECT(data),"destructor",cobj,
+			(GDestroyNotify)object_destructor);
 	return cobj;
 }
 

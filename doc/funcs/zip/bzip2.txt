@@ -1,0 +1,36 @@
+$FUNCNAME$
+	bZip2()
+$CATEGORY$
+  Pack/Unpack,String
+$SUMMARY$
+	Compress string with bZIP2 alghoritm.
+$LANG_RU$
+	Пакует строку по bZIP2 алгоритму.
+$SYNTAX$
+	cResult := bZip2(<cData> [,<nLevel>])
+$LANG_RU$
+$ARGUMENTS$
+	<cData> - data for compress.
+	<nLevel> - level of compress.
+$LANG_RU$
+	<cData> - данные для упаковки.
+	<nLevel> - уровень сжатия.
+$RETURNS$
+	bZip2() returns compressed string.
+$LANG_RU$
+	bZip2() возвращает упакованную строку.
+$DESCRIPTION$
+	Compress string with given compression level (default 6).
+$LANG_RU$
+	Упаковывает строку с указанным уровнем сжатия (по умолчанию - 6).
+$EXAMPLES$
+	cResult := bZip2(space(1000))
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	bUnZip2()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -1,0 +1,54 @@
+$FUNCNAME$
+	COM_SEND()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Transmits data.
+$LANG_RU$
+	Передача данных.
+$SYNTAX$
+	nLength := COM_SEND(<nComPort>,<cString>)
+$ARGUMENTS$
+	<nComPort> - Designates the port (1 to N) from which transmission occurs.
+	<cString> - Designates the string that is transmitted by the
+	selected port. If you only need to transmit a single character, then the
+	second parameter can also be numeric and thereby pass the ASCII
+	character code directly.
+$LANG_RU$
+	<nComPort> - Определяет порт передачи.
+	<cString> - Определяет строку для передачи через порт. Если
+	необходимо передать один символ, второй параметр может быть числовым и
+	задавать ASCII код символа.
+$RETURNS$
+	When transmission is successful, a 0 is returned. If
+	transmission is not successful, the number of characters that have not
+	been transmitted or could not be placed in the sending buffer is
+	returned.
+$LANG_RU$
+	Если передача была успешной, возвращает 0. Если передача была
+	неполной, возвращает число непереданных символов.
+$DESCRIPTION$
+	Transmits one or more characters from one of four ports.
+$LANG_RU$
+	Передает один или более символов через выбранный порт.
+$EXAMPLES$
+	COM_OPEN(1)    //
+	COM_HARD(.T.)  // Hardware handshake
+	ACCEPT "Please input name " TO cInput
+	nRest := COM_SEND(1, cInput)         // 1st attempt to transmit
+
+	DO WHILE nRest > 0
+	      cInput := RIGHT(cInput, nRest)    // Characters not yet sent
+	      nRest := COM_SEND(1, cInput)
+	ENDDO
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_FLUSH(),COM_INIT(),COM_OPEN(),COM_READ(),COM_SFLUSH()
+$AUTHOR$
+ITK,Paul
+$END$

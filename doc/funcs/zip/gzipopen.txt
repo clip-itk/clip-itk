@@ -1,0 +1,44 @@
+$FUNCNAME$
+	gZipOpen()
+$CATEGORY$
+  Pack/Unpack,FILE/IO
+$SUMMARY$
+	Open GZIP file.
+$LANG_RU$
+	Открывает GZIP файл.
+$SYNTAX$
+	nHandle := gZipOpen(<filename> [,<mode>])
+$LANG_RU$
+$ARGUMENTS$
+	<filename> - name of file with gzip archive.
+	<mode> - file open mode.
+$LANG_RU$
+	<filename> - имя файла с gzip архивом.
+	<mode> - режим открытия файла.
+$RETURNS$
+       gZipOpen() returns number of opened file or -1 if error.
+$LANG_RU$
+       gZipOpen() возвращает номер открытого файла или -1 при ошибке.
+$DESCRIPTION$
+	Open GZIP file with name <filename> and mode <mode> , by default
+	for reading.
+	Possible modes:
+	"rb" - binary read (no cr/lf translation)
+	"wbX" - set compression level X in range 0 to 9
+$LANG_RU$
+	Открывает GZIP файл с именем <filename> в режиме <mode> , если режим
+	не указан - файл открывается для чтения.
+	Возможные режимы открытия:
+	"rb" - бинарное чтение без трансляции символов cr/lf.
+	"wbX" - открыть для записи с уровнем компресии X от 0 до 9.
+$EXAMPLES$
+	h := gZipOpen("a.gz","rb")
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	gZipRead(),gZipWrite(),gZipClose()
+$AUTHOR$
+ITK,Paul
+$END$

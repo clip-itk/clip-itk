@@ -360,7 +360,13 @@ handle_signals( GtkWidget *widget, C_signal *cs, ClipVar *cv )
 	_clip_destroy(cs->cw->cmachine, &stack[1]);
 	return ret;
 }
+
+CLIP_DLLEXPORT gint
+object_signal_handler(GtkObject *obj, C_signal *cs)
+  { return object_handle_signals (cs, NULL); }
+
 /* Common object signal handlers. It called from signal handler in C and passes it to CLIP */
+
 CLIP_DLLEXPORT gint
 object_handle_signals( C_signal *cs, ClipVar *cv )
 {

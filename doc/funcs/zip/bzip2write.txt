@@ -1,0 +1,39 @@
+$FUNCNAME$
+	bZip2Write()
+$CATEGORY$
+  Pack/Unpack,FILE/IO
+$SUMMARY$
+	Write data to bZIP2 file.
+$LANG_RU$
+	Записывает данные в bZIP2 файл.
+$SYNTAX$
+	realLen := bZip2Write(<nHandle>, <cBuffer> [,<nLen>])
+$LANG_RU$
+$ARGUMENTS$
+	<nHandle> - number of opened file.
+	<cBuffer> - buffer with data.
+	<nLen> - number of write bytes.
+$LANG_RU$
+	<nHandle> - номер открытого файла.
+	<cBuffer> - буффер с данными для записи в файл.
+	<nLen> - кол-во байт для записи.
+$RETURNS$
+       bZip2Write() returns number of writed bytes or -1 if error.
+$LANG_RU$
+       bZip2Write() возвращает кол-во записанных байт или -1 при ошибке.
+$DESCRIPTION$
+	Pack <len> bytes from <cBuffer> and write them to bZIP2-file.
+$LANG_RU$
+	Упаковывает <len> байт из <cBuffer> и записывает их в bZIP2-файл.
+$EXAMPLES$
+	s := space(1000)
+	realLen := bZip2Write(h,s,300)
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	bZip2Open(),bZip2Read(),bZip2Close()
+$AUTHOR$
+ITK,Paul
+$END$

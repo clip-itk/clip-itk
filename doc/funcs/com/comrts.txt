@@ -1,0 +1,62 @@
+$FUNCNAME$
+	COM_RTS()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Queries/sets the RTS status.
+$LANG_RU$
+	Запрашивает/устанавливает сигнал RTS.
+$SYNTAX$
+	lOldRTSStatus := COM_RTS(<nComPort>,[<lNewRTSStatus>])
+$ARGUMENTS$
+	<nComPort> - Designates the port (1 to N) for which the number of characters in the input buffer is determined.
+	<lNewRTSStatus> - Designates the status of RTS. .T. designates
+	that the RTS signal is active, and .F. designates that the signal is
+	inactive. If the parameter is not specified, does not affect the RTS
+	exit signal.
+$LANG_RU$
+	<nComPort> - Определяет номер порта.
+	<lNewRTSStatus> - Определяет статус RTS: .T. для активации
+	сигнала, .F. для сброса сигнала. Если параметр не задан, статус RTS не
+	изменяется.
+$RETURNS$
+	The returned value corresponds to the RTS signal status prior to
+	the new setting, or in the absence of <lNewRTSStatus>, the returned
+	value corresponds to the current RTS. A return of .T. indicates that the
+	RTS is active (MCR bit 1 = 1). A return of .F. indicates that the RTS is
+	inactive (MCR bit 1 = 0).
+$LANG_RU$
+	Возвращается .T. если RTS активен, .F. если нет. Если задан
+	параметр <lNewRTSStatus>, возвращается значение сигнала перед вызовом
+	функции.
+$DESCRIPTION$
+	COM_RTS() queries the RTS signal status.
+	If the second parameter is not supplied, the signal status does not change.
+
+
+	The COM_CLOSE() function resets RTS (to inactive). By contrast,
+	COM_OPEN does not automatically make RTS active!
+
+$LANG_RU$
+	COM_RTS() запрашивает или устанавливает статус сигнала RTS.
+	Если второй параметр не указан, статус сигнала не изменяется.
+
+	Функция COM_CLOSE() сбрасывает сигнал RTS. Однако, COM_OPEN не
+	устанавливает RTS автоматически.
+$EXAMPLES$
+	lComOk  :=  COM_OPEN(1)	       // Open COM1
+	IF lComOk
+		COM_RTS(1, .T.)       // Activate RTS Port 1
+		* ...
+	ENDIF
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_SOFT(),COM_DTR(),COM_TIMEOUT(),COM_HARD(),COM_NUM(),COM_COUNT()
+$AUTHOR$
+ITK,Paul
+$END$

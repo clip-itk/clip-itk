@@ -5,6 +5,9 @@
 */
 /*
    $Log: _math.c,v $
+   Revision 1.37  2004/12/21 14:10:55  clip
+   uri: small fix
+
    Revision 1.36  2004/11/05 09:22:07  clip
    uri: add ROUN(),FCOUN() - short func names
 
@@ -336,7 +339,7 @@ clip_ROUND(ClipMachine * mp)
 int
 clip_ROUN(ClipMachine * mp)
 {
-	return clip_ROUN(mp);
+	return clip_ROUND(mp);
 }
 
 int

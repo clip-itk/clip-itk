@@ -1,0 +1,34 @@
+$FUNCNAME$
+	gZipClose()
+$CATEGORY$
+  Pack/Unpack,FILE/IO
+$SUMMARY$
+	Close GZIP file.
+$LANG_RU$
+	Закрывает GZIP файл.
+$SYNTAX$
+	lRet := gZipClose(<nHandle>)
+$LANG_RU$
+$ARGUMENTS$
+	<nHandle> - number of opened file.
+$LANG_RU$
+	<nHandle> - номер открытого файла.
+$RETURNS$
+       gZipClose() returns .t. or .f. as information about error.
+$LANG_RU$
+       gZipClose() возвращает .t. или .f. в зависимости от наличия ошибки.
+$DESCRIPTION$
+	gZipClose() must be called explicitly, to clear and sync all buffers.
+$LANG_RU$
+	gZipClose() сбрасывает все буффера на диск и закрывает файл.
+$EXAMPLES$
+	lRet := gzipClose(h)
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	gZipOpen(),gZipRead(),gZipWrite()
+$AUTHOR$
+ITK,Paul
+$END$

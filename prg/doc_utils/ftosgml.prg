@@ -11,14 +11,15 @@
 function main()
 local fsrc, fsgml, str, outfile, i, j, par, fname, t, x
 local argn, argd, categ, ab_order, ab_part, fs, ii, jj, key, val, lang
-local outdir, s, alang:={"EN"}, lEnd, l_l
+local outdir, s, outlang:={"EN"},alang:={"EN"}, lEnd, l_l
 
 //clear screen
 
 for i=1 to pcount()
 	j := upper(param(i))
 	if ascan(alang, j) < 1
-		aadd(alang, j)
+		//aadd(alang, j)
+		aadd(outlang, j)
 	endif
 next
 outfile := "funcs.sgml"
@@ -145,10 +146,12 @@ next
 qout("&\n Summary functions:"+toString(len(fs)))
 
 for i=1 to len(alang)
+	if ascan(outlang, alang[i]) > 0
 	makeDirectory(outdir+"/"+lower(alang[i])+"/clip-funcs")
 	writeFuncsOrder(outdir+'/'+lower(alang[i])+"/clip-funcs/"+outfile, alang[i], fs, ab_order, categ)
 
 	writeSection(outdir+'/'+lower(alang[i])+"/clip-funcs/", alang[i], fs, categ)
+	endif
 next
 
 asize(fs, 0)

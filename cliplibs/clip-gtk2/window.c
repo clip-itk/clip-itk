@@ -98,8 +98,8 @@ clip_GTK_WINDOWNEW(ClipMachine * cm)
 		}
 	//cwid = (C_widget*)calloc( 1, sizeof(C_widget) );
 	cwid = _register_widget(cm, wid, cv);
-	//cwid->accel_group = gtk_accel_group_new();
-	//gtk_window_add_accel_group (GTK_WINDOW (wid), cwid->accel_group);
+	cwid->accel_group = gtk_accel_group_new();
+	gtk_window_add_accel_group (GTK_WINDOW (wid), cwid->accel_group);
 //	gtk_signal_connect( GTK_OBJECT( wid ), "delete-event",
 //		GTK_SIGNAL_FUNC( delete_window_handler ), NULL );
 

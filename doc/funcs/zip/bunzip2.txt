@@ -1,0 +1,34 @@
+$FUNCNAME$
+	bUnZip2()
+$CATEGORY$
+  Pack/Unpack,String
+$SUMMARY$
+	Uncompress string with BZIP2 alghoritm.
+$LANG_RU$
+	Распаковывает строку по BZIP2 алгоритму.
+$SYNTAX$
+	cResult := bUnZip2(<cData>)
+$LANG_RU$
+$ARGUMENTS$
+	<cData> - data for uncompress.
+$LANG_RU$
+	<cData> - данные для распаковки.
+$RETURNS$
+	bUnZip2() returns uncompressed string.
+$LANG_RU$
+	bUnZip2() возвращает распакованную строку.
+$DESCRIPTION$
+	Unompress string, compressed by bZip2().
+$LANG_RU$
+	Распаковывает строку, запакованную ранее bZip2().
+$EXAMPLES$
+	cResult := bUnZip2(bZip2(space(1000)))
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+   bZip2()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -1,0 +1,48 @@
+$FUNCNAME$
+	COM_OPEN()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Opens the port and initializes the buffer
+$LANG_RU$
+	Открывает порт и инициализирует буффер.
+$SYNTAX$
+	lStatus := COM_OPEN(<nComPort>,<notused>,<notused>,<notused>,
+		[<lRTSCTS>],[<lXONXOFF>],[<lDebug>])
+$ARGUMENTS$
+	<nComPort> - Designates the number of the port (1 to N).
+	<lRTSCRS>  - Enable or disable use of hardware flow control.
+	<lXONXOFF> - Enable or disable use of software flow control.
+	<lDebug> - True value enable com port debug output
+$LANG_RU$
+	<nComPort> - Номер порта (от 1 до N).
+	<lRTSCRS> - Разрешает или запрещает использование аппаратного управления потоком символов.
+	<lXONXOFF> - Разрешает или запрещает использование программного управления потоком символов.
+	<lDebug> - Включает отладочный вывод библиотеки.
+$RETURNS$
+	Returns .T. when the port has been successfully opened and you can select the buffer.
+$LANG_RU$
+	Возвращает .T. если порт был успешно открыт.
+$DESCRIPTION$
+	This function allows you to open a serial interface port.
+$LANG_RU$
+	Эта функция открывает порт последовательного интерфейса.
+$EXAMPLES$
+	IF COM_NUM() > 0
+	    ComOk  :=  COM_OPEN(1)     // Open COM1
+
+	    IF .NOT. ComOk
+		 ? "Port cannot be opened  !"
+	    ENDIF
+	ENDIF
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_FLUSH(),COM_INIT(),COM_READ(),COM_SEND(),COM_SFLUSH()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -1,0 +1,45 @@
+$FUNCNAME$
+	EVP_DECRYPT()
+$CATEGORY$
+  Crypto
+$SUMMARY$
+	Decrypt string encrypted by ENV_ENCRYPT().
+$LANG_RU$
+	Расшифровывает строку, зашифрованную функцией ENV_ENCRYPT().
+$SYNTAX$
+	cDecrypted := EVP_DECRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>])
+$ARGUMENTS$
+	<cData> - string for decryption.
+	<cKey>  - key for decryption.
+	<cCipherMethod> - decryption method. Default value 'des-ede3-cbc'.
+	<cDigestMethod>	- the digest method. Default value 'md5'.
+	<cInitVector> - initial vector for decryption. Default value ''.
+$LANG_RU$
+	<cData> - строка для расшифровки.
+	<cKey>  - ключ для расшифровки.
+	<cCipherMethod> - метод дешифрации, по умолчанию 'des-ede3-cbc'.
+	<cDigestMethod>	- метод хеширования, по умолчанию 'md5'.
+	<cInitVector> - начальный вектор дешифрации, по умолчанию ''.
+$RETURNS$
+	Decrypted string.
+$LANG_RU$
+	Расшифрованную строку.
+$DESCRIPTION$
+	Decrypt string, encrypted by EVP_ENCRYPT(), using
+	one of symmetric block algoritm and given key string.
+$LANG_RU$
+	Дешифрует строку, зашифрованную функцией ENV_ENCRYPT(),
+	используя один из симметричных алгоритмов и возвращает результат.
+$EXAMPLES$
+$LANG_RU$
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+   EVP_ENCRYPT(),EVP_ALG_LIST()
+$AUTHOR$
+ITK,Paul
+$END$

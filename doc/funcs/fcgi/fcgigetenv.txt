@@ -1,0 +1,40 @@
+$FUNCNAME$
+	FCGI_GETENV()
+$CATEGORY$
+  CGI/FCGI
+$SUMMARY$
+	Return value of environment variable, or map all variables as name/value pairs.
+$LANG_RU$
+	Возвращает значения переменных окружения, либо map со всеми переменными в виде пар имя/значение.
+$SYNTAX$
+	cValue := FCGI_GETENV(<cName>)
+	mapEnv := FCGI_GETENV()
+$ARGUMENTS$
+	<cName> - name of environment variable.
+$LANG_RU$
+	<cName> - имя переменной окружения.
+$RETURNS$
+	Return value of environment variable, or map all variables as name/value pairs.
+$LANG_RU$
+	Возвращает значения переменных окружения, либо map со всеми переменными в виде пар имя/значение.
+$DESCRIPTION$
+	When the connection is accepted, WWW server sends some
+	environment variables (well-known in CGI programming) via FCGI protocol.
+	The function FCGI_GETENV() give access to this variables.
+$LANG_RU$
+	Когда соединение установлено, WWW сервер посылает некоторые
+	переменные окружения (хорошо известные в CGI-программировании) через
+	протокол FCGI. Функция FCGI_GETENV() дает доступ к этим переменным.
+$EXAMPLES$
+$LANG_RU$
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+$LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	FCGI_READ(),FCGI_FLUSH(),FCGI_ACCEPT()
+$AUTHOR$
+ITK,Paul
+$END$

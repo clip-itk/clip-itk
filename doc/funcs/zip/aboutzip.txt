@@ -1,0 +1,26 @@
+$ABOUTCATEG$
+  Pack/Unpack
+$DESCRIPTION$
+	Category Pack/Unpack include description of functions for
+	pack/unpack and compress/uncompress data or file.
+
+	Library clip-gzip is wrapper to populiar gzip library,
+	for using clip-gzip need linking:
+	clip -e test.prg -lclip-gzip
+
+	Library clip-bzip2 is wrapper to populiar bzip2 library,
+	for using clip-bzip2 need linking:
+	clip -e test.prg -lclip-bzip2
+
+$LANG_RU$
+	В категории Pack/Unpack находятся описания функций для
+	упаковки/распаковки и сжатия/расжатия строк и файлов.
+
+	Библиотека clip-gzip является враппером (переходником или
+	библиотекой связи) для популярной библиотеки gzip, для ее использования
+	требуется линковать:
+	clip -e test.prg -lclip-gzip
+
+	Библиотека clip-bzip2 является враппером для популярной библиотеки
+	bzip2, для ее использования требуется линковать:
+	clip -e test.prg -lclip-bzip2

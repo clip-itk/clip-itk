@@ -41,14 +41,14 @@ install:
 	$(CLIPROOT)/bin/clip_cp libclip-bzip2 $(DESTDIR)$(CLIPROOT)/lib
 	#mkdir -p $(CLIPROOT)/doc/clip-bzip2
 	#cp *.html $(CLIPROOT)/doc/clip-bzip2
-	-cd tdoc && $(MAKE) install
+	#-cd tdoc && $(MAKE) install
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-bzip2
 	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-bzip2/
 
 clean:
 	rm -rf *.o *.bak *.a *.so hashcode.h *.dll *.exe bzpref.h *.ex *.nm
-	-cd tdoc && $(MAKE) clean
+	#-cd tdoc && $(MAKE) clean
 
 distclean: clean
-	-cd tdoc && $(MAKE) distclean
+	#-cd tdoc && $(MAKE) distclean
 

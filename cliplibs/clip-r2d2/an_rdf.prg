@@ -113,13 +113,13 @@ local host:=""
 	an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	asort(an_data,,,{|x,y| x:essence <= y:essence })
 
-	putRdf1(an_data,account,an_level,urn)
+	cgi_an_putRdf1(an_data,account,an_level,urn)
 	//putRdf2(an_data,account,an_level)
 
 	? '</RDF:RDF>'
 	return
 ******************************
-static function putRdf1(bal_data,account,an_level,urn)
+function cgi_an_putRdf1(bal_data,account,an_level,urn)
 	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
 	acc := codb_getValue(account)
@@ -145,7 +145,9 @@ static function putRdf1(bal_data,account,an_level,urn)
 		endif
 	*/
 		urn_id := urn
-		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+'" id="'+tmp:an_value+'" DOCUM:about="'+urn_id+':'+tmp:an_value+'"'
+		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+'" id="'+tmp:an_value+'_'+alltrim(str(random(10000)))+'" DOCUM:about="'+urn_id+':'+tmp:an_value+'"'
+		? '	DOCUM:_saldo_="an_data"'
+		? '	DOCUM:account="'+codb_essence(account)+'"'
 		? '	DOCUM:ref_account="'+account+'"'
 		? '	DOCUM:account_name="'+tmp:essence+'"'
 		? ' 	DOCUM:an_value.id="'+tmp:an_value+'"'
@@ -189,11 +191,11 @@ static function putRdf1(bal_data,account,an_level,urn)
 		   .and. tmp:out_num == 0 .and. tmp:end_num==0
 		    loop
 		endif
-		
+
 		if tmp:an_value == 'total'
 			loop
 		endif
-		
+
 		? '	<RDF:li resource="'+urn_id+':'+tmp:an_value+'"/>'
 	next
 	? '</RDF:Seq>'

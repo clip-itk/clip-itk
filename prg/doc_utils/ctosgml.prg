@@ -11,13 +11,14 @@
 function main()
 local fsrc, fsgml, str, outfile, i, j, par, fname, t, x
 local argn, argd, ab_order, ab_met, fs, ii, jj, key, val, lang
-local outdir, s, alang:={"EN"}, lEnd, l_l, lMet, nMet
+local outdir, s, outlang:={"EN"},alang:={"EN"}, lEnd, l_l, lMet, nMet
 
 //clear screen
 for i=1 to pcount()
 	j := upper(param(i))
 	if ascan(alang, j) < 1
-		aadd(alang, j)
+		//aadd(alang, j)
+		aadd(outlang, j)
 	endif
 next
 
@@ -149,10 +150,12 @@ next
 qout("&\n Summary classes:"+toString(len(fs)))
 
 for i=1 to len(alang)
+	if ascan(outlang, alang[i]) > 0
 	makeDirectory(outdir+"/"+lower(alang[i])+"/clip-classes")
 	writeClassOrder(outdir+'/'+lower(alang[i])+"/clip-classes/"+outfile, alang[i], fs, ab_order)
 
 	writeMethods(outdir+'/'+lower(alang[i])+"/clip-classes/", alang[i], fs, ab_order, ab_met)
+	endif
 next
 
 asize(fs, 0)
@@ -203,10 +206,16 @@ local newstr, l, i, j
 		for i:= 1 to l
 			s := left(str, 1)
 			if s == "<"
-				if left(lower(str), 5) == "<pre>"
+				/*if left(lower(str), 5) == "<pre>"
 					newstr += "&\n<programlisting>"
 					j := atl("</pre>", lower(str))
-					newstr += substr(str, 6, j-6) + "</programlisting>&\n"
+					newstr += substr(str, 6, j-11) + "</programlisting>&\n"
+					str := substr(str, j+6)
+					loop
+				else*/
+				if left(lower(str), 5) == "<pre>"
+					j := atl("</pre>", lower(str))
+					newstr += substr(str, 1, j+5)
 					str := substr(str, j+6)
 					loop
 				elseif  left(lower(str), 9) == "<command>"
@@ -257,9 +266,9 @@ local i, j, a, str, lStr, arr
 	str := '<para>&\n'
 	if !empty(fs:ABOUT)
 		if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:ABOUT)
-			a := split(trans(fs[lang]:ABOUT), "&\n")
+			a := split_str(fs[lang]:ABOUT, "&\n")
 		else
-			a := split(trans(fs:ABOUT), "&\n")
+			a := split_str(fs:ABOUT, "&\n")
 		endif
 		for j=1 to len(a)
 			if empty(a[j])
@@ -304,7 +313,7 @@ local i, j, a, str, lStr, arr
 		str += '<informaltable frame="none"><tgroup cols="2"><tbody>&\n'
 		if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:ATTRIBS)
 			for i=1 to len(fs[lang]:ATTRIBS)
-				a := split(trans(fs[lang]:ATTRIBS[i][2]), "&\n")
+				a := split_str(fs[lang]:ATTRIBS[i][2], "&\n")
 
 				str += '<row><entry align="right"><command><![CDATA['+fs[lang]:ATTRIBS[i][1]+']]></command></entry>'
 				str += '&\n'
@@ -317,7 +326,7 @@ local i, j, a, str, lStr, arr
 			next
 		else
 			for i=1 to len(fs:ATTRIBS)
-				a := split(trans(fs:ATTRIBS[i][2]), "&\n")
+				a := split_str(fs:ATTRIBS[i][2], "&\n")
 				str += '<row><entry align="right"><command><![CDATA['+fs:ATTRIBS[i][1]+']]></command></entry>'
 				str += '&\n'
 				for j=1 to len(a)
@@ -480,7 +489,7 @@ local i, j, key, val, str, a, x, ii, fs, fsl
 			str += '<informaltable frame="none"><tgroup cols="2"><tbody>&\n'
 			if lang != "EN" .and. !empty(fsl[x]:ARGS)
 				for i=1 to len(fsl[x]:ARGS)
-					a := split(trans(fsl[x]:ARGS[i][2]), "&\n")
+					a := split_str(fsl[x]:ARGS[i][2], "&\n")
 
 					str += '<row><entry align="right"><command><![CDATA['+fsl[x]:ARGS[i][1]+']]></command></entry>'
 					str += '&\n'
@@ -495,7 +504,7 @@ local i, j, key, val, str, a, x, ii, fs, fsl
 				next
 			else
 				for i=1 to len(fs[x]:ARGS)
-					a := split(trans(fs[x]:ARGS[i][2]), "&\n")
+					a := split_str(fs[x]:ARGS[i][2], "&\n")
 					str += '<row><entry align="right"><command><![CDATA['+fs[x]:ARGS[i][1]+']]></command></entry>'
 					str += '&\n'
 					for j=1 to len(a)
@@ -518,9 +527,9 @@ local i, j, key, val, str, a, x, ii, fs, fsl
 			str += '<para>Returns NIL.</para>&\n'
 		else
 			str += '<para>&\n'
-			a := split(trans(fs[x]:RETURNS), "&\n")
+			a := split_str(fs[x]:RETURNS, "&\n")
 			if lang != "EN" .and. !empty(fsl[x]:RETURNS)
-				a := split(trans(fsl[x]:RETURNS), "&\n")
+				a := split_str(fsl[x]:RETURNS, "&\n")
 			endif
 			for j=1 to len(a)
 				if empty(a[j])
@@ -536,9 +545,9 @@ local i, j, key, val, str, a, x, ii, fs, fsl
 
 		str := '<section><title>Description</title>&\n'
 		str += '<para>&\n'
-		a := split(trans(fs[x]:DESCRIPTION), "&\n")
+		a := split_str(fs[x]:DESCRIPTION, "&\n")
 		if lang != "EN" .and. !empty(fsl[x]:DESCRIPTION)
-			a := split(trans(fsl[x]:DESCRIPTION), "&\n")
+			a := split_str(fsl[x]:DESCRIPTION, "&\n")
 		endif
 		for j=1 to len(a)
 			if empty(a[j])
@@ -688,4 +697,35 @@ static function writeArgs(fs, argname, argdesc, lCls)
 		aadd(fs:ARGS, {argname, argdesc})
 	endif
 return
+*******************************************************************************
+static function split_str(str, delim)
+local arr, i, sp, ep, x, y
+	arr := split(trans(str), delim)
+	for i=1 to len(arr)
+		x := atl("<pre>", lower(arr[i]))
+
+		if  x == 0
+			loop
+		endif
+		sp = i
+		do while (y := atl("</pre>", lower(arr[i]))) == 0
+			if x > 0
+				arr[i] := substr(arr[i], 1, x-1)+"<programlisting><![CDATA["+substr(arr[i], x+5)
+				i ++
+				x := 0
+			elseif (i-1>0)
+				arr[i-1] += delim+arr[i]
+				adel(arr, i)
+				asize(arr, len(arr)-1)
+			endif
+		enddo
+		if sp == i
+			arr[i] := substr(arr[i], 1, x-1)+"<programlisting><![CDATA["+substr(arr[i], y-1)+"]]></programlisting>"+substr(arr[i], y+6)
+		else
+			arr[i-1] += delim+substr(arr[i], 1, y-1)+"]]></programlisting>"+substr(arr[i], y+6)
+			adel(arr, i)
+			asize(arr, len(arr)-1)
+		endif
+	next
+return arr
 

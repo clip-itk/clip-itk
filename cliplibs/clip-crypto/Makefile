@@ -35,16 +35,16 @@ install:
 	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
 #	mkdir -p $(CLIPROOT)/doc/clip-crypto
 #	cp *.html $(CLIPROOT)/doc/clip-crypto
-	-cd tdoc && $(MAKE) install
+	#-cd tdoc && $(MAKE) install
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-crypto
 	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-crypto/
 
 clean:
 	rm -rf *.o *.bak *.a *.so hashcode.h *.dll *.exe names.h *.ex *.nm
-	-cd tdoc && $(MAKE) clean
+	#-cd tdoc && $(MAKE) clean
 
 distclean: clean
-	-cd tdoc && $(MAKE) distclean
+	#-cd tdoc && $(MAKE) distclean
 
 
 

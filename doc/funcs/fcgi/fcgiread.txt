@@ -1,0 +1,37 @@
+$FUNCNAME$
+	FCGI_READ()
+$CATEGORY$
+  CGI/FCGI
+$SUMMARY$
+	Read output of WWW server, passed via FCGI protocol.
+$LANG_RU$
+	Читает вывод WWW сервера, переданный через протокол FCGI.
+$SYNTAX$
+	cStdInData := FCGI_READ()
+$ARGUMENTS$
+	None.
+$LANG_RU$
+	Нет.
+$RETURNS$
+	Data from StdIn.
+$LANG_RU$
+	Данные из входного потока.
+$DESCRIPTION$
+	This function read exactly CONTENT_LENGTH bytes, where
+	CONTENT_LENGTH is a number, supplied by HTTP client
+$LANG_RU$
+	Эта функция читает ровно CONTENT_LENGTH байт, где CONTENT_LENGTH
+	это число, задаваемое HTTP-клиентом.
+$EXAMPLES$
+$LANG_RU$
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+$LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	FCGI_GETENV(),FCGI_FLUSH(),FCGI_ACCEPT()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -24,7 +24,6 @@
 #translate ISNUMBER( <v1> )      => ( valtype( <v1> ) == "N" )
 #translate ISOBJECT( <v1> )      => ( valtype( <v1> ) == "O" )
 
-/*
 #xcommand DEFAULT <v1> TO <x1> [, <vn> TO <xn> ]                        ;
 	  =>                                                            ;
 	  IF <v1> == NIL ; <v1> := <x1> ; END                           ;
@@ -32,7 +31,6 @@
 #command UPDATE <v1> IF <exp> TO <v2> ;
 	 =>                           ;
 	 IF <exp> ; <v1> := <v2> ; END
-*/
 
 #endif
 

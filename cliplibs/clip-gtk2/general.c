@@ -149,7 +149,10 @@ int
 clip_GTK_QUIT(ClipMachine * cm)
 {
 	if (gtk_main_level() == 1)
+        {
+                _list_remove_cobject(cm);
         	_wtype_table_destroy(_wtype_table_get_first());
+	}
 	gtk_main_quit();
 	return 0;
 }

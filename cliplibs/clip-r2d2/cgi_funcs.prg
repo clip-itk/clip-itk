@@ -1396,12 +1396,14 @@ function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree)
 	endif
 	for i=1 to len(aRefs)
 		tmp:=aRefs[i][4]
+
 		if "ID" $ tmp .and. !empty(tmp:id)
 			sid := tmp:id
 		else
 			sid := "XXXXXXXXXXXX"
 		endif
 		if empty(aRefs[i][5])
+
 			if llTree
 				? s+'   <RDF:seq about="'+dname+sTree+':'+sid+'"/>'
 			else

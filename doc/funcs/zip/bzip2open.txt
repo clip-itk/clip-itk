@@ -1,0 +1,44 @@
+$FUNCNAME$
+	bZip2Open()
+$CATEGORY$
+  Pack/Unpack,FILE/IO
+$SUMMARY$
+	Open bZip2 file.
+$LANG_RU$
+	Открывает bZIP2 файл.
+$SYNTAX$
+	nHandle := bZip2Open(<filename> [,<mode>])
+$LANG_RU$
+$ARGUMENTS$
+	<filename> - name of file with bZIP2 archive.
+	<mode> - file open mode.
+$LANG_RU$
+	<filename> - имя файла с bZIP2 архивом.
+	<mode> - режим открытия файла.
+$RETURNS$
+       bZip2Open() returns number of opened file or -1 if error.
+$LANG_RU$
+       bZip2Open() возвращает номер открытого файла или -1 при ошибке.
+$DESCRIPTION$
+	Open bZIP2 file with name <filename> and mode <mode> , by default
+	for reading.
+	Possible modes:
+	"rb" - binary read (no cr/lf translation)
+	"wbX" - set compression level X in range 0 to 9
+$LANG_RU$
+	Открывает bZIP2 файл с именем <filename> в режиме <mode> , если режим
+	не указан - файл открывается для чтения.
+	Возможные режимы открытия:
+	"rb" - бинарное чтение без трансляции символов cr/lf.
+	"wbX" - открыть для записи с уровнем компресии X от 0 до 9.
+$EXAMPLES$
+	h := bZip2Open("a.gz","rb")
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	bZip2Read(),bZip2Write(),bZip2Close()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -1,0 +1,41 @@
+$FUNCNAME$
+	COM_NUM()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Return the number of the highest available serial interface port
+$LANG_RU$
+	Возвращает кол-во доступных COM-портов.
+$SYNTAX$
+	nMaxCom := COM_NUM()
+$ARGUMENTS$
+$RETURNS$
+	Return the number of the highest available serial interface port
+$LANG_RU$
+	Возвращает кол-во доступных COM-портов.
+$DESCRIPTION$
+	This function returns the number of the serial interface port
+	available. This is not to say that a return value of 3 necessarily means
+	that ports 1 through 3 are available; for example, COM2 could be
+	missing. Whether or not a serial port can actually be used can be tested
+	using the COM_OPEN() or COM_INIT() functions.
+$LANG_RU$
+	Эта функция позволяет узнать максимальное число последовательных
+	портов в системе. Однако, она не гарантирует доступность портов.
+	Например, если функция вернула 3, то COM2 может отсутствовать или быть
+	недоступен. Реальная доступность порта проверяется функциями COM_OPEN()
+	или COM_INIT().
+$EXAMPLES$
+	? COM_NUM()                 // e.g. 4
+$LANG_RU$
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_DTR(),COM_RTS(),COM_SOFT(),COM_TIMEOUT(),COM_HARD(),COM_COUNT()
+$AUTHOR$
+ITK,Paul
+$END$

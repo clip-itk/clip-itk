@@ -81,8 +81,8 @@ local  window, table, label, pixmap, button, drag_icon, drag_mask
 		    numor(GTK_EXPAND , GTK_FILL), numor(GTK_EXPAND , GTK_FILL), ;
 		    1, 1)
 
-  ? "drag-motion to label", gtk_SignalConnect (label, "drag-motion",{|w, e| popsite_motion(w, e)})
-  ? "drag-leave to label", gtk_SignalConnect (label, "drag-leave", {|w, e| popsite_leave(w, e)})
+  gtk_SignalConnect (label, "drag-motion",{|w, e| popsite_motion(w, e)})
+  gtk_SignalConnect (label, "drag-leave", {|w, e| popsite_leave(w, e)})
 
   pixmap = gtk_PixmapNew (,trashcan_closed, trashcan_closed_mask)
   gtk_DragDestSet (pixmap, 0, NIL, 0, 0)
@@ -90,13 +90,13 @@ local  window, table, label, pixmap, button, drag_icon, drag_mask
 		    numor(GTK_EXPAND , GTK_FILL), numor(GTK_EXPAND , GTK_FILL), ;
 		    1, 1)
 
-  ? "drag-leave to pixmap", gtk_SignalConnect (pixmap, "drag-leave", {|w, e| target_drag_leave(w, e)})
+  gtk_SignalConnect (pixmap, "drag-leave", {|w, e| target_drag_leave(w, e)})
 
-  ? "drag-motion to pixmap", gtk_SignalConnect (pixmap, "drag-motion", {|w, e| target_drag_motion(w,e)})
+  gtk_SignalConnect (pixmap, "drag-motion", {|w, e| target_drag_motion(w,e)})
 
-  ? "drag-drop to pixmap", gtk_SignalConnect (pixmap, "drag-drop", {|w, e| target_drag_drop(w, e)})
+  gtk_SignalConnect (pixmap, "drag-drop", {|w, e| target_drag_drop(w, e)})
 
-  ? "drag-data-received to pixmap", gtk_SignalConnect (pixmap, "drag-data-received", {|w, e|  target_drag_data_received(w, e)})
+  gtk_SignalConnect (pixmap, "drag-data-received", {|w, e|  target_drag_data_received(w, e)})
 
   /* Drag site */
 

@@ -1,0 +1,43 @@
+$FUNCNAME$
+	EVP_ENCRYPT()
+$CATEGORY$
+  Crypto
+$SUMMARY$
+	Encrypt string using one of symmetric block algoritm and given key string.
+$LANG_RU$
+	Шифрует строку, используя один из алгоритмов.
+$SYNTAX$
+	cEncrypted := EVP_ENCRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>])
+$ARGUMENTS$
+	<cData> - string for encryption.
+	<cKey>  - key for encryption.
+	<cCipherMethod> - encryption method. Default value 'des-ede3-cbc'.
+	<cDigestMethod>	- the digest method. Default value 'md5'.
+	<cInitVector> - initial vector for encryption. Default value ''.
+$LANG_RU$
+	<cData> - шифруемая строка.
+	<cKey>  - ключ для шифрации.
+	<cCipherMethod> - метод шифрации, по умолчанию 'des-ede3-cbc'.
+	<cDigestMethod>	- метод хеширования, по умолчанию 'md5'.
+	<cInitVector> - начальный вектор шифрации, по умолчанию ''.
+$RETURNS$
+	Encrypted string.
+$LANG_RU$
+	Зашифрованную строку.
+$DESCRIPTION$
+	Encrypt string using one of symmetric block algoritm and given key string.
+$LANG_RU$
+	Шифрует строку одним из симметричных алгоритмов и возвращает результат.
+$EXAMPLES$
+$LANG_RU$
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+   EVP_DECRYPT(),EVP_ALG_LIST()
+$AUTHOR$
+ITK,Paul
+$END$

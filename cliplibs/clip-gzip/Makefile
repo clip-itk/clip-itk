@@ -31,14 +31,14 @@ install:
 	$(CLIPROOT)/bin/clip_cp libclip-gzip $(DESTDIR)$(CLIPROOT)/lib
 	#mkdir -p $(CLIPROOT)/doc/clip-gzip
 	#cp *.html $(CLIPROOT)/doc/clip-gzip
-	-cd tdoc && $(MAKE) install
+	#-cd tdoc && $(MAKE) install
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-gzip
 	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-gzip/
 
 clean:
 	rm -rf *.o *.bak *.a *.so hashcode.h *.dll *.exe *.ex *.nm
 	cd example && $(MAKE) clean
-	-cd tdoc && make clean
+	#-cd tdoc && make clean
 
 distclean: clean
-	-cd tdoc && make distclean
+	#-cd tdoc && make distclean

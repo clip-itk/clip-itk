@@ -1,0 +1,17 @@
+$ABOUTCATEG$
+  Crypto
+$DESCRIPTION$
+	Category Crypto include description of functions for
+	cryptography based on OpenSSL technology.
+
+	For using need linking clip-crypto library:
+
+	clip -e test.prg -lclip-crypto
+
+$LANG_RU$
+	В категории Crypto находятся описания функций для
+	шифрования, основанные на библиотеки OpenSSL.
+
+	Для использования необходимо линковать библиотеку clip-crypto:
+
+	clip -e test.prg -lclip-crypto

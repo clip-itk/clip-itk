@@ -40,8 +40,8 @@ install:
 	$(CLIPROOT)/bin/clip_cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
 	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-com
-	-cd tdoc && $(MAKE) install
-	-cp -R doc/* $(DESTDIR)$(CLIPROOT)/doc/clip-com/
+	#-cd tdoc && $(MAKE) install
+	#-cp -R doc/* $(DESTDIR)$(CLIPROOT)/doc/clip-com/
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-com
 	-cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-com/
 
@@ -49,9 +49,9 @@ clean:
 	rm -rf *.o *.bak *.a *.so hashcode.h *.dll *.exe bzpref.h *.ex *.nm
 	-cd libezV24; $(MAKE) clean; rm -f *.a *.so *.so.* *.exe
 	-cd example; $(MAKE) clean
-	-cd tdoc && $(MAKE) clean
+	#-cd tdoc && $(MAKE) clean
 
 distclean: clean
-	-cd tdoc && $(MAKE) distclean
+	#-cd tdoc && $(MAKE) distclean
 
 

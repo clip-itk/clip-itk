@@ -1,0 +1,40 @@
+$FUNCNAME$
+	COM_SFLUSH()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Flush sending buffer.
+$LANG_RU$
+	Очищает буфер передачи.
+$SYNTAX$
+	lDeleted := COM_SFLUSH(<nComPort>)
+$ARGUMENTS$
+	<nComPort> - Designates the port (1 to N).
+$LANG_RU$
+	<nComPort> - Определяет номер порта.
+$RETURNS$
+	On success returns .T..
+$LANG_RU$
+	В случае успеха возвращает .T..
+$DESCRIPTION$
+	This function remove all characters from sending buffer not yet
+	transmitted.
+$LANG_RU$
+	Эта функция удаляет все символы из буфера передачи, которые еще
+	не переданы.
+$EXAMPLES$
+	cHayes  :=  "ATZ"           // Hayes modem reset command
+	COM_SEND(1, cHayes)         // Issue Hayes command
+	INKEY(1)                    // Wait one second
+	COM_SFLUSH(1)                // Reject modem reply messages
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_FLUSH(),COM_INIT(),COM_OPEN(),COM_READ(),COM_SEND()
+$AUTHOR$
+ITK,Paul
+$END$

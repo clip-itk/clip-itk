@@ -24,5 +24,5 @@ install:
 	mkdir -p $(DESTDIR)$(CLIPROOT)/cobra/auth
 	cd $(DESTDIR)$(CLIPROOT)/cobra/auth; rm -f pam-auth
 	cp Makefile make_mod.sh other pam* $(DESTDIR)$(CLIPROOT)/cobra/auth
-	cd $(DESTDIR)$(CLIPROOT)/cobra/auth; sudo ./make_mod.sh || exit 0
+	cd $(DESTDIR)$(CLIPROOT)/cobra/auth; test -z $(DESTDIR) && sudo ./make_mod.sh || exit 0
 

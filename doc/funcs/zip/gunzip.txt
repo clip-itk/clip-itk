@@ -1,0 +1,34 @@
+$FUNCNAME$
+	gUnZip()
+$CATEGORY$
+  Pack/Unpack,String
+$SUMMARY$
+	Uncompress string with GZIP alghoritm.
+$LANG_RU$
+	Распаковывает строку по GZIP алгоритму.
+$SYNTAX$
+	cResult := gUnZip(<cData>)
+$LANG_RU$
+$ARGUMENTS$
+	<cData> - data for uncompress.
+$LANG_RU$
+	<cData> - данные для распаковки.
+$RETURNS$
+	gUnZip() returns uncompressed string.
+$LANG_RU$
+	gUnZip() возвращает распакованную строку.
+$DESCRIPTION$
+	Unompress string, compressed by gZip().
+$LANG_RU$
+	Распаковывает строку, запакованную ранее gZip().
+$EXAMPLES$
+	cResult := gUnZip(gZip(space(1000)))
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+   gZip()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -1,0 +1,18 @@
+$ABOUTCATEG$
+  CGI/FCGI
+$DESCRIPTION$
+	Category CGI/FCGI include description of functions for
+	using CGI or FCGI technology of WEB-servers.
+
+	For using need linking clip-fcgi library:
+
+	clip -e test.prg -lclip-fcgi
+
+$LANG_RU$
+	В категории CGI/FCGI находятся описания функций для
+	использования технологий CGI и FCGI, предназначенных
+	для создания динамических WEB-страниц.
+
+	Для использования необходимо линковать библтотеку clip-fcgi:
+
+	clip -e test.prg -lclip-fcgi

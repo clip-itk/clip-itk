@@ -1,0 +1,79 @@
+$FUNCNAME$
+	COM_INIT()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Initializes the port parameters.
+$LANG_RU$
+	Инициализирует параметры порта.
+$SYNTAX$
+	lInitialized := COM_INIT(<nComPort>,[<nBaudRate>],[<cParity>],
+		 [<nDataLength>],[<nStopBits>])
+$ARGUMENTS$
+	<nComPort> - Designates the port (1 to N) that is initialized.
+	<nBaudRate> - Designates the selected baud rate for the port. Settings of 300, 600, 1200, 2400, 4800, 9600 and 19200 baud are possible. The default value is 300 baud.
+	<cParity> - Designates parity in the following form: (E)ven, (O)dd, (M)ark, (S)pace, or (N)one. The default value is (N)one.
+	<nDataLength> - Designates the data length; seven or eight bits are possible. The default value is eight bits.
+	<nStopBits> - Designates the number of stop bits, one or two. The default value is one stop bit.
+$LANG_RU$
+	<nComPort> - Определяет номер порта для инициализации
+	<nBaudRate> - Определяет битовую скорость для порта. Возможные значения 300, 600, 1200, 2400, 4800, 9600 19200 38400 бод Значение по умолчанию 9600
+	<cParity> - Задает четность в виде: (E)ven, (O)dd, (M)ark, (S)pace, or (N)one. Значение по умолчанию (N)one.
+	<nDataLength> - Определяет число бит данных; возможные значения 7 или 8 бит. Значение по умолчанию - 8.
+	<nStopBits> - Определяет число стоп битов; 1 или 2. Значение по умолчанию 1.
+$RETURNS$
+	If the com port is initialized successfully, the function returns .T.
+$LANG_RU$
+	Если порт успешно инициализирован, возвращает .T.
+$DESCRIPTION$
+	In order to use the serial port after you open it, four
+	operating parameters must have been passed to this function. These
+	operating parameters are the transmission speed (baud rate), the data
+	length, the parity, and the number of stop bits. Tht defaul
+	configuration is "9600 baud, 8N1". This configuration means eight data
+	bits, no parity, and one stop bit. What is important is that all these
+	parameters can be changed while the port is closed. Neither the data
+	buffer or the modem status register (DTR, etc.) are affected.
+
+	The port must have been opened previously. It is impossible to
+	initialize a port prior to opening it.
+
+	If any or all of the four operating parameters are not
+	designated, or are designated incorrectly, the standard arguments of
+	9600 baud, no parity, eight data bits, and one stop bit is used.
+$LANG_RU$
+	Для иницализации открытого порта требуется четыре параметра. Это
+	скорость порта в бодах (бит в секунду), число битов данных, четность, и
+	число стоп-битов. По умолчанию выбираются следующие параметры: 9600 бод,
+	8 бит данных, проверка на четность отсутствует, 1 стоп-бит. Важно
+	отметить, что любой из этих параметров может быть изменен, пока порт не
+	закрыт. При использование этой функции данные и регистры статуса модема
+	(DTR и другие) не затрагиваются.
+
+	Порт должен быть предварительно открыт. Инициализация не
+	открытого порта невозможна.
+
+	Если любые из четырех параметров порта не заданы, либо заданы
+	некорректно, используются значения по умолчанию: 9600 бод, без проверки
+	на четность, 8 бит данных, 1 стоп-бит.
+$EXAMPLES$
+	nBuff_size := 4000                     // 4000 character buffer
+	lComOk  :=  COM_OPEN(1, nBuff_size)    // Open port
+	IF lComOk
+	      lInitOk  :=  COM_INIT(1, 1200, "N", 8, 1)
+
+	      IF .NOT. lInitOk
+		      ? "Port cannot be initialized !"
+	      ENDIF
+	ENDIF
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_FLUSH(),COM_OPEN(),COM_READ(),COM_SEND(),COM_SFLUSH()
+$AUTHOR$
+ITK,Paul
+$END$

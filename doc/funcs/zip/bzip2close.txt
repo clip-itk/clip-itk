@@ -1,0 +1,34 @@
+$FUNCNAME$
+	bZip2Close()
+$CATEGORY$
+  Pack/Unpack,FILE/IO
+$SUMMARY$
+	Close bZIP2 file.
+$LANG_RU$
+	Закрывает bZIP2 файл.
+$SYNTAX$
+	lRet := bZip2Close(<nHandle>)
+$LANG_RU$
+$ARGUMENTS$
+	<nHandle> - number of opened file.
+$LANG_RU$
+	<nHandle> - номер открытого файла.
+$RETURNS$
+       bZip2Close() returns .t. or .f. as information about error.
+$LANG_RU$
+       bZip2Close() возвращает .t. или .f. в зависимости от наличия ошибки.
+$DESCRIPTION$
+	bZip2Close() must be called explicitly, to clear and sync all buffers.
+$LANG_RU$
+	bZip2Close() сбрасывает все буффера на диск и закрывает файл.
+$EXAMPLES$
+	lRet := bZip2Close(h)
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	bZip2Open(),bZip2Read(),bZip2Write()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -258,11 +258,11 @@ clip_GDK_KEYVALTOLOWER(ClipMachine * cm)
 int
 clip_GDK_KEYVALTOUNICODE(ClipMachine * cm)
 {
-	//guint keyval = INT_OPTION(cm, 1,0);
-        wchar_t wc = INT_OPTION(cm, 1,0);
+	guint keyval = INT_OPTION(cm, 1,0);
+        wchar_t wc ; //= INT_OPTION(cm, 1,0);
         gchar *result ;
         int total_len, first, clen ;
-	//wc  = keyval;//gdk_keyval_to_unicode(keyval);
+	wc  = gdk_keyval_to_unicode(keyval);
 
   	total_len = 0;
       	if (wc < 0x80)

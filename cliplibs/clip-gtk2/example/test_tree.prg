@@ -196,8 +196,8 @@ local i
 	gtk_ContainerAdd(win, box)
 
 	gtk_WidgetShowAll(win)
-	gtk_SignalConnect(win, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 
+	gtk_SignalConnect(win, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 
 
 /*****************************************************************************
@@ -299,7 +299,11 @@ local model, value, iter, path, pathstr, log, num, dat
 	model = GTK_TREEMODEL (data)
 
 	selection := gtk_TreeViewGetSelection(wid)
+        ? "111111111"
+        ?
         if selection != NIL .and. gtk_TreeSelectionGetSelected(selection, NIL, @iter)
+        	? "2222222222"
+                ?
         	path := gtk_TreeModelGetPath(model, iter)
         	pathstr := gtk_TreePathToString(path)
   	 	gtk_TreeModelGetFromPathString (model, pathstr, 1, @value, 2, @log, ;

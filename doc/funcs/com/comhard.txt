@@ -1,0 +1,77 @@
+$FUNCNAME$
+	COM_HARD()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Turns the hardware handshake (automatic CTS) on/off.
+$LANG_RU$
+	Включает/выключает аппаратное управление потоком символов (CTS/RTS).
+$SYNTAX$
+	lOldHandshake := COM_HARD(<nComPort>,<lNewHandshake>,[<lDTR/DSR>])
+$ARGUMENTS$
+	<nComPort> - Designates the number of the port (1 to N).
+	<lNewHandshake> - Designates whether the handshake is on (.T.) or off (.F.).
+	<lDTR/DSR> - Designates whether the function uses the DTR/DSR
+	handshake or the RTS/CTS handshake. When passed as .T., the function
+	uses the DTR/DSR handshake instead of the RTS/CTS handshake.
+$LANG_RU$
+	<nComPort> - Номер порта (от 1 до N).
+	<lNewHandshake> - Определяет включение (.T.) или выключение (.F.) аппаратного управления потоком.
+	<lDTR/DSR> - Определяет, должно ли использоваться управление при
+	помощи сигналов DTS/DSR (.T.) или RTS/CTS (.F.).
+$RETURNS$
+	When called only with <nComPort>, the COM_HARD() returns .T. if
+	the hardware handshake is on and .F. if the hardware handshake is off.
+	When <lNewHandshake> is passed, the function returns the status prior to
+	the new setting.
+$LANG_RU$
+	Когда функция вызывается только с параметром <nComPort>,
+	возвращается .T. если аппаратное управление потоком включено, и .F. если
+	выключено. Когда передается параметр <lNewHandshake>, функция возвращает
+	предыдущий статус.
+$DESCRIPTION$
+	The size of a receiving buffer is always limited. To avoid
+	overflow, and thereby a loss of characters, software or hardware
+	handshakes are usually implemented. During a hardware handshake, the
+	port monitors the RTS signal. If you use this function to switch this
+	handshake on, the signal is activated as soon as the buffer is 75% full.
+	As soon as the buffer content is once again reduced to 50% or less, the
+	port (the RTS signal) is once again released. Some printers use the port
+	signals, DTR (output like RTS) and DSR (entry like CTS) instead of RTS/
+	CTS, to avoid buffer overflow. In this case, <lDTR/DSR> can be passed
+	with .T..
+
+	This function works for data input as well as output.
+
+	If you use a hardware handshake, then the RTS signal should no
+	longer be affected by COM_RTS() or COM_MCR().
+$LANG_RU$
+	Размер буфера приема всегда ограничен. Для того чтобы
+	предотвратить переполнение и потерю символов, используется аппаратое или
+	программное управление потоком. При аппаратном управлении, порт
+	использует сигнал RTS для остановки передачи. Когда аппаратный буфер
+	приемника наполняется до 75%, RTS активизируется и останавливает
+	передачу. Как только заполнение буфера снижается до 50%, сигнал RTS
+	сбрасывается и разрешает передачу. Некоторые принтеры используют другой
+	сигнал (DTR) вместо RTS и DSR вместо CTS. В этом случае необходимо
+	установить параметр <lDTR/DSR> в .T.
+
+	Функция работает как при приеме, так и при передаче.
+
+	Если вы используете аппаратное управление потоком, сигнал RTS не
+	должен устанавливаться вручную с использованием функций COM_RTS() или
+	COM_MCR().
+$EXAMPLES$
+	COM_OPEN(2)      // Open COM2
+	COM_HARD(2, .T.) // RTS/CTS Hardware handshake
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_DTR(),COM_RTS(),COM_SOFT(),COM_TIMEOUT(),COM_NUM(),COM_COUNT()
+$AUTHOR$
+ITK,Paul
+$END$

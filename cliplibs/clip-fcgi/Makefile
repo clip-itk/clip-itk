@@ -35,15 +35,15 @@ install:
 	cp *.ch $(DESTDIR)$(CLIPROOT)/include/
 	#mkdir -p $(CLIPROOT)/doc/clip-fcgi
 	#cp *.html $(CLIPROOT)/doc/clip-fcgi
-	-cd tdoc && $(MAKE) install
+	#-cd tdoc && $(MAKE) install
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-fcgi
 	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-fcgi/
 
 clean:
 	rm -rf *.o *.bak *.a *.so hashcode.h *.dll *.exe names.h *.ex *.nm
 	cd example && $(MAKE) clean
-	-cd tdoc && $(MAKE) clean
+	#-cd tdoc && $(MAKE) clean
 
 distclean: clean
-	-cd tdoc && $(MAKE) distclean
+	#-cd tdoc && $(MAKE) distclean
 

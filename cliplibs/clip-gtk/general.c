@@ -16,6 +16,13 @@
 #include "clip-gtk.ch"
 #include "clip-gtk.h"
 
+static ClipVar _data_list;
+static ClipVar *data_list = &_data_list;
+
+static ClipVar _func_list;
+static ClipVar *func_list = &_func_list;
+
+
 /* Sets the current locale according to the program environment.
  * This is the same as calling the libc function setlocale(LC_ALL, "")
  * but also takes care of the locale specific setup of the windowing

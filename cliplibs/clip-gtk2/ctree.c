@@ -19,7 +19,7 @@ gint handle_tree_select_row_signal (GtkWidget *widget, GtkCTreeNode *node, gint 
 {
 	C_object *cnode = (C_object*)_list_get_cobject(cs->cw->cmachine,node);
 	PREPARECV(cs,cv);
-	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_TYPE_CTREE_NODE,NULL,NULL);
 	if (cnode) _clip_madd(cs->cw->cmachine, &cv, HASH_NODE, &cnode->obj);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_COLUMN, column+1);
 	INVOKESIGHANDLER(widget,cs,cv);
@@ -29,7 +29,7 @@ gint handle_tree_unselect_row_signal (GtkWidget *widget, GtkCTreeNode *node, gin
 {
 	C_object *cnode = (C_object*)_list_get_cobject(cs->cw->cmachine,node);
 	PREPARECV(cs,cv);
-	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_TYPE_CTREE_NODE,NULL,NULL);
 	if (cnode) _clip_madd(cs->cw->cmachine, &cv, HASH_NODE, &cnode->obj);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_COLUMN, column+1);
 	INVOKESIGHANDLER(widget,cs,cv);
@@ -39,7 +39,7 @@ gint handle_tree_expand_signal (GtkWidget *widget, GtkCTreeNode *node, C_signal 
 {
 	C_object *cnode = (C_object*)_list_get_cobject(cs->cw->cmachine,node);
 	PREPARECV(cs,cv);
-	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_TYPE_CTREE_NODE,NULL,NULL);
 	if (cnode) _clip_madd(cs->cw->cmachine, &cv, HASH_NODE, &cnode->obj);
 	INVOKESIGHANDLER(widget,cs,cv);
 }
@@ -48,7 +48,7 @@ gint handle_tree_collapse_signal (GtkWidget *widget, GtkCTreeNode *node, C_signa
 {
 	C_object *cnode = (C_object*)_list_get_cobject(cs->cw->cmachine,node);
 	PREPARECV(cs,cv);
-	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_TYPE_CTREE_NODE,NULL,NULL);
 	if (cnode) _clip_madd(cs->cw->cmachine, &cv, HASH_NODE, &cnode->obj);
 	INVOKESIGHANDLER(widget,cs,cv);
 }
@@ -59,9 +59,9 @@ gint handle_tree_move_signal (GtkWidget *widget, GtkCTreeNode *node, GtkCTreeNod
 	C_object *cnewparent = (C_object*)_list_get_cobject(cs->cw->cmachine,new_parent);
 	C_object *cnewsibling = (C_object*)_list_get_cobject(cs->cw->cmachine,new_sibling);
 	PREPARECV(cs,cv);
-	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
-	if (!cnewparent) cnode = _register_object(cs->cw->cmachine,new_parent,GTK_OBJECT_CTREE_NODE,NULL,NULL);
-	if (!cnewsibling) cnode = _register_object(cs->cw->cmachine,new_sibling,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+	if (!cnode) cnode = _register_object(cs->cw->cmachine,node,GTK_TYPE_CTREE_NODE,NULL,NULL);
+	if (!cnewparent) cnode = _register_object(cs->cw->cmachine,new_parent,GTK_TYPE_CTREE_NODE,NULL,NULL);
+	if (!cnewsibling) cnode = _register_object(cs->cw->cmachine,new_sibling,GTK_TYPE_CTREE_NODE,NULL,NULL);
 	if (cnode) _clip_madd(cs->cw->cmachine, &cv, HASH_NODE, &cnode->obj);
 	if (cnewparent) _clip_madd(cs->cw->cmachine, &cv, HASH_NEWPARENT, &cnewparent->obj);
 	if (cnewsibling) _clip_madd(cs->cw->cmachine, &cv, HASH_NEWSIBLING, &cnewsibling->obj);
@@ -202,8 +202,8 @@ clip_GTK_CTREEINSERTNODE(ClipMachine * cm)
 	int ncolumns;
 
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cparent,cparent->type==GTK_OBJECT_CTREE_NODE);
-	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(csibling,csibling->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cparent,cparent->type==GTK_TYPE_CTREE_NODE);
+	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(csibling,csibling->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT2(4,ARRAY_t,CHARACTER_t); CHECKOPT(5,NUMERIC_t);
 	CHECKOPT2(6,MAP_t,NUMERIC_t); CHECKCWIDOPT(cclosed,GTK_IS_PIXMAP);
 	CHECKOPT2(7,MAP_t,NUMERIC_t); CHECKCWIDOPT(copened,GTK_IS_PIXMAP);
@@ -248,7 +248,7 @@ clip_GTK_CTREEINSERTNODE(ClipMachine * cm)
 		pxm_opened,mask_opened,is_leaf,expanded);
 	if (new_node)
 	{
-		cnew_node = _register_object(cm,new_node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+		cnew_node = _register_object(cm,new_node,GTK_TYPE_CTREE_NODE,NULL,NULL);
 		if (cnew_node) _clip_mclone(cm,RETPTR(cm),&cnew_node->obj);
 		gtk_ctree_node_set_row_data_full(GTK_CTREE(cctree->widget),
 			new_node,cnew_node,(GtkDestroyNotify)destroy_c_object);
@@ -278,7 +278,7 @@ clip_GTK_CTREEREMOVENODE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_remove_node(GTK_CTREE(cctree->widget),GTK_CTREE_NODE(cnode->object));
 	return 0;
 err:
@@ -300,7 +300,7 @@ _ctree_func(GtkCTree *ctree, GtkCTreeNode *node, Ctree_var *c)
 	C_object *cnode = _list_get_cobject(c->cm,node);
 	ClipVar stack[2];
 	ClipVar res;
-	if (!cnode) cnode = _register_object(c->cm,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+	if (!cnode) cnode = _register_object(c->cm,node,GTK_TYPE_CTREE_NODE,NULL,NULL);
 	memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
 	_clip_mclone(c->cm, &stack[0], &c->cw->obj);
 	_clip_mclone(c->cm, &stack[1], &cnode->obj);
@@ -323,7 +323,7 @@ clip_GTK_CTREEPOSTRECURSIVE(ClipMachine * cm)
 	ClipVar     *cfunc = _clip_spar(cm,3);
 	Ctree_var c;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKARG2(3,CCODE_t,PCODE_t);
 	c.cm = cm; c.cv = cfunc; c.cw = cctree; c.cfunc = cfunc;
 	gtk_ctree_post_recursive(GTK_CTREE(cctree->widget),GTK_CTREE_NODE(cnode->object),
@@ -345,7 +345,7 @@ clip_GTK_CTREEPOSTRECURSIVETODEPTH(ClipMachine * cm)
 	ClipVar     *cfunc = _clip_spar(cm,4);
 	Ctree_var c;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t); CHECKARG2(4,CCODE_t,PCODE_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) depth = -1;
 	c.cm = cm; c.cv = cfunc; c.cw = cctree; c.cfunc = cfunc;
@@ -368,7 +368,7 @@ clip_GTK_CTREEPRERECURSIVE(ClipMachine * cm)
 	ClipVar     *cfunc = _clip_spar(cm,3);
 	Ctree_var c;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKARG2(3,CCODE_t,PCODE_t);
 	c.cm = cm; c.cv = cfunc; c.cw = cctree; c.cfunc = cfunc;
 	gtk_ctree_pre_recursive(GTK_CTREE(cctree->widget),GTK_CTREE_NODE(cnode->object),
@@ -389,7 +389,7 @@ clip_GTK_CTREEPRERECURSIVETODEPTH(ClipMachine * cm)
 	ClipVar     *cfunc = _clip_spar(cm,4);
 	Ctree_var c;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t); CHECKARG2(4,CCODE_t,PCODE_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) depth = -1;
 	c.cm = cm; c.cv = cfunc; c.cw = cctree; c.cfunc = cfunc;
@@ -411,7 +411,7 @@ clip_GTK_CTREEISVIEWABLE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	_clip_retl(cm,gtk_ctree_is_viewable(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object)));
 	return 0;
@@ -428,12 +428,12 @@ clip_GTK_CTREELAST(ClipMachine * cm)
 	GtkCTreeNode *last;
 	C_object *clast;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	last = gtk_ctree_last(GTK_CTREE(cctree->widget),GTK_CTREE_NODE(cnode->object));
 	if (last)
 	{
 		clast = _list_get_cobject(cm,last);
-		if (!clast) clast = _register_object(cm,last,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+		if (!clast) clast = _register_object(cm,last,GTK_TYPE_CTREE_NODE,NULL,NULL);
 		if (clast) _clip_mclone(cm,RETPTR(cm),&clast->obj);
 	}
 	return 0;
@@ -449,8 +449,8 @@ clip_GTK_CTREEFIND(ClipMachine * cm)
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	C_object   *cchild = _fetch_cobject(cm,_clip_spar(cm,3));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
-	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(cchild,cchild->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
+	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(cchild,cchild->type==GTK_TYPE_CTREE_NODE);
 	_clip_retl(cm,gtk_ctree_find(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object),
 			GTK_CTREE_NODE(cchild->object)));
@@ -467,8 +467,8 @@ clip_GTK_CTREEISANCESTOR(ClipMachine * cm)
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	C_object   *cchild = _fetch_cobject(cm,_clip_spar(cm,3));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
-	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(cchild,cchild->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
+	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(cchild,cchild->type==GTK_TYPE_CTREE_NODE);
 	_clip_retl(cm,gtk_ctree_is_ancestor(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object),
 			GTK_CTREE_NODE(cchild->object)));
@@ -501,9 +501,9 @@ clip_GTK_CTREEMOVE(ClipMachine * cm)
 	C_object  *cnew_parent = _fetch_cobject(cm,_clip_spar(cm,3));
 	C_object *cnew_sibling = _fetch_cobject(cm,_clip_spar(cm,4));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
-	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnew_parent,cnew_parent->type==GTK_OBJECT_CTREE_NODE);
-	CHECKOPT2(4,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnew_sibling,cnew_sibling->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
+	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnew_parent,cnew_parent->type==GTK_TYPE_CTREE_NODE);
+	CHECKOPT2(4,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnew_sibling,cnew_sibling->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_move(GTK_CTREE(cctree->widget),GTK_CTREE_NODE(cnode->object),
 			GTK_CTREE_NODE(cnew_parent->object),
 			GTK_CTREE_NODE(cnew_sibling->object));
@@ -519,7 +519,7 @@ clip_GTK_CTREEEXPAND(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_expand(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -534,7 +534,7 @@ clip_GTK_CTREEEXPANDRECURSIVE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_expand_recursive(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -550,7 +550,7 @@ clip_GTK_CTREEEXPANDTODEPTH(ClipMachine * cm)
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	gint         depth = _clip_parni(cm,3);
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	if (_clip_parinfo(cm,3)==UNDEF_t) depth = -1;
 	gtk_ctree_expand_to_depth(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object), depth);
@@ -566,7 +566,7 @@ clip_GTK_CTREECOLLAPSE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_collapse(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -581,7 +581,7 @@ clip_GTK_CTREECOLLAPSERECURSIVE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_collapse_recursive(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -597,7 +597,7 @@ clip_GTK_CTREECOLLAPSETODEPTH(ClipMachine * cm)
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	gint         depth = _clip_parni(cm,3);
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	if (_clip_parinfo(cm,3)==UNDEF_t) depth = -1;
 	gtk_ctree_collapse_to_depth(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object), depth);
@@ -613,7 +613,7 @@ clip_GTK_CTREETOGGLEEXPANSION(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_toggle_expansion(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -628,7 +628,7 @@ clip_GTK_CTREETOGGLEEXPANSIONRECURSIVE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_toggle_expansion_recursive(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -643,7 +643,7 @@ clip_GTK_CTREESELECT(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_select(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -659,7 +659,7 @@ clip_GTK_CTREESELECTRECURSIVE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_select_recursive(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -675,7 +675,7 @@ clip_GTK_CTREEUNSELECT(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_unselect(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -691,7 +691,7 @@ clip_GTK_CTREEUNSELECTRECURSIVE(ClipMachine * cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_unselect_recursive(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object));
 	return 0;
@@ -708,7 +708,7 @@ clip_GTK_CTREENODESETTEXT(ClipMachine * cm)
 	gint        column = _clip_parni(cm,3);
 	gchar        *text = _clip_parc(cm,4);
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,CHARACTER_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	if (_clip_parinfo(cm,4)==UNDEF_t) text = "";
@@ -731,7 +731,7 @@ clip_GTK_CTREENODESETPIXMAP(ClipMachine * cm)
 	C_widget  *cpixmap = _fetch_cwidget(cm,_clip_spar(cm,4));
 	GdkPixmap *pixmap=NULL; GdkBitmap *mask=NULL;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t);
 	CHECKOPT2(4,MAP_t,NUMERIC_t); CHECKCWIDOPT(cpixmap,GTK_IS_PIXMAP);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
@@ -758,7 +758,7 @@ clip_GTK_CTREENODESETPIXTEXT(ClipMachine * cm)
 	C_widget  *cpixmap = _fetch_cwidget(cm,_clip_spar(cm,6));
 	GdkPixmap *pixmap=NULL; GdkBitmap *mask=NULL;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,CHARACTER_t); CHECKOPT(5,NUMERIC_t);
 	CHECKOPT2(6,MAP_t,NUMERIC_t); CHECKCWIDOPT(cpixmap,GTK_IS_PIXMAP);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
@@ -799,7 +799,7 @@ clip_GTK_CTREENODESETNODEINFO(ClipMachine * cm)
 	int ncolumns;
 
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT2(3,ARRAY_t,CHARACTER_t); CHECKOPT(4,NUMERIC_t);
 	CHECKOPT2(5,MAP_t,NUMERIC_t); CHECKCWIDOPT(cclosed,GTK_IS_PIXMAP);
 	CHECKOPT2(6,MAP_t,NUMERIC_t); CHECKCWIDOPT(copened,GTK_IS_PIXMAP);
@@ -867,7 +867,7 @@ clip_GTK_CTREENODESETSHIFT(ClipMachine * cm)
 	gint      vertical = _clip_parni(cm,4);
 	gint    horizontal = _clip_parni(cm,5);
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	gtk_ctree_node_set_shift(GTK_CTREE(cctree->widget),
@@ -886,7 +886,7 @@ clip_GTK_CTREENODESETSELECTABLE(ClipMachine * cm)
 	C_object     *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	gboolean selectable = _clip_parl(cm,3);
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,LOGICAL_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) selectable = TRUE;
 	gtk_ctree_node_set_selectable(GTK_CTREE(cctree->widget),
@@ -903,7 +903,7 @@ clip_GTK_CTREENODEGETSELECTABLE(ClipMachine * cm)
 	C_widget    *cctree = _fetch_cw_arg(cm);
 	C_object     *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	_clip_retl(cm,gtk_ctree_node_get_selectable(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object)));
 	return 0;
@@ -919,7 +919,7 @@ clip_GTK_CTREENODEGETCELLTYPE(ClipMachine * cm)
 	C_object     *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	gint         column = _clip_parni(cm,3);
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	_clip_retni(cm,gtk_ctree_node_get_cell_type(GTK_CTREE(cctree->widget),
@@ -938,7 +938,7 @@ clip_GTK_CTREENODEGETTEXT(ClipMachine * cm)
 	gint         column = _clip_parni(cm,3);
 	gint nColumns;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t);
 	nColumns = GTK_CLIST(cctree->widget)->columns;
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
@@ -977,7 +977,7 @@ clip_GTK_CTREENODEGETPIXMAP(ClipMachine * cm)
 	GdkBitmap *mask;
 	C_widget *cpixmap;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	if (gtk_ctree_node_get_pixmap(GTK_CTREE(cctree->widget),
@@ -1008,7 +1008,7 @@ clip_GTK_CTREENODEGETPIXTEXT(ClipMachine * cm)
 	GdkBitmap *mask;
 	C_widget *cpixmap;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	if (gtk_ctree_node_get_pixtext(GTK_CTREE(cctree->widget),
@@ -1057,7 +1057,7 @@ clip_GTK_CTREENODEGETNODEINFO(ClipMachine * cm)
 	long ncolumns;
 
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 
 	ncolumns = GTK_CLIST(cctree->widget)->columns;
 	text = calloc(ncolumns, sizeof(gchar*));
@@ -1126,7 +1126,7 @@ clip_GTK_CTREENODESETROWSTYLE (ClipMachine *cm)
 	ClipVar    *mstyle = _clip_spar(cm,3);
 	GtkStyle *style;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKARG(3,MAP_t);
 	style = gtk_ctree_node_get_row_style (GTK_CTREE(cctree->widget),
 		GTK_CTREE_NODE(cnode->object));
@@ -1147,7 +1147,7 @@ clip_GTK_CTREENODEGETROWSTYLE (ClipMachine *cm)
 	ClipVar    *mstyle = RETPTR(cm);
 	GtkStyle *style;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	style = gtk_ctree_node_get_row_style (GTK_CTREE(cctree->widget),
 		GTK_CTREE_NODE(cnode->object));
 	memset(mstyle,0,sizeof(*mstyle));
@@ -1169,7 +1169,7 @@ clip_GTK_CTREENODESETCELLSTYLE (ClipMachine *cm)
 	ClipVar    *mstyle = _clip_spar(cm,4);
 	GtkStyle *style;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t); CHECKARG(4,MAP_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	style = gtk_ctree_node_get_cell_style (GTK_CTREE(cctree->widget),
@@ -1192,7 +1192,7 @@ clip_GTK_CTREENODEGETCELLSTYLE (ClipMachine *cm)
 	ClipVar    *mstyle = RETPTR(cm);
 	GtkStyle *style;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	style = gtk_ctree_node_get_cell_style (GTK_CTREE(cctree->widget),
@@ -1214,7 +1214,7 @@ clip_GTK_CTREENODESETFOREGROUND (ClipMachine *cm)
 	ClipVar    *mcolor = _clip_spar (cm,3);
 	GdkColor color;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,MAP_t);
 	if (_clip_parinfo(cm,3) == MAP_t)
 		_map_colors_to_gdk(cm, mcolor, &color);
@@ -1236,7 +1236,7 @@ clip_GTK_CTREENODESETBACKGROUND (ClipMachine *cm)
 	ClipVar    *mcolor = _clip_spar (cm,3);
 	GdkColor color;
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,MAP_t);
 	if (_clip_parinfo(cm,3) == MAP_t)
 		_map_colors_to_gdk(cm, mcolor, &color);
@@ -1259,7 +1259,7 @@ clip_GTK_CTREENODEMOVETO (ClipMachine *cm)
 	gfloat   row_align = _clip_parnd(cm,4);
 	gfloat   col_align = _clip_parnd(cm,5);
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
 	gtk_ctree_node_moveto (GTK_CTREE(cctree->widget),
@@ -1278,7 +1278,7 @@ clip_GTK_CTREENODEISVISIBLE (ClipMachine *cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	_clip_retni(cm,gtk_ctree_node_is_visible (GTK_CTREE(cctree->widget),
 				GTK_CTREE_NODE(cnode->object)));
 	return 0;
@@ -1360,7 +1360,7 @@ clip_GTK_CTREESORTNODE (ClipMachine *cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_sort_node (GTK_CTREE(cctree->widget),GTK_CTREE_NODE(cnode->object));
 	return 0;
 err:
@@ -1374,7 +1374,7 @@ clip_GTK_CTREESORTRECURSIVE (ClipMachine *cm)
 	C_widget   *cctree = _fetch_cw_arg(cm);
 	C_object    *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
 	CHECKCWID(cctree,GTK_IS_CTREE);
-	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_TYPE_CTREE_NODE);
 	gtk_ctree_sort_recursive (GTK_CTREE(cctree->widget),GTK_CTREE_NODE(cnode->object));
 	return 0;
 err:
@@ -1396,7 +1396,7 @@ clip_GTK_CTREENODENTH (ClipMachine *cm)
 	if (node)
 	{
 		cnode = _list_get_cobject(cm,node);
-		if (!cnode) cnode = _register_object(cm,node,GTK_OBJECT_CTREE_NODE,NULL,NULL);
+		if (!cnode) cnode = _register_object(cm,node,GTK_TYPE_CTREE_NODE,NULL,NULL);
 		if (cnode) _clip_mclone(cm,RETPTR(cm),&cnode->obj);
 	}
 	return 0;

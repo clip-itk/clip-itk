@@ -1,0 +1,61 @@
+$FUNCNAME$
+	COM_SOFT()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Queries or sets the software handshake (automatic XON/XOFF).
+$LANG_RU$
+	Запрашивает статус или устанавливает программное управление потоком (XON/XOFF).
+$SYNTAX$
+	lOldHandshake := COM_SOFT(<nComPort>,[<lNewHandshake>],[<cXONchar>],[<cXOFFchar>])
+$ARGUMENTS$
+	<nComPort> - Designates the port (1 to N) for which the software handshake is set.
+	<lNewHandshake> - Designates whether the handshake is on (.T.) or off (.F.). If this parameter is omitted, the function returns the current setting.
+	<cXONchar> - Designates any character you choose as an XON character. The default character is ASCII 19 - Ctrl-S.
+	<cXOFFchar> - Designates any character you choose as an XOFF character. The default value is ASCII 17 - Ctrl-Q.
+$LANG_RU$
+	<nComPort> - Определяет номер порта.
+	<lNewHandshake> - Включает (.T.) или выключает (.F.) программное управление потоком. Если этот параметр опущен, функция возвращает текущие установки.
+	<cXONchar> - Определяет символ, используемый как XON. Значением по умолчанию является ASCII 19 - Ctrl-S.
+	<cXOFFchar> - Определяет значение символа, используемого как XOFF. Значением по умолчанию является ASCII 17 - Ctrl-Q.
+$RETURNS$
+	The function returns the previously set value.
+$LANG_RU$
+	Функция возвращает предыдущее значение.
+$DESCRIPTION$
+	With modem connections, a hardware handshake is impossible,
+	which is why we are making a software handshake available with this
+	function. When a buffer is 75% full, an XOFF character (Ctrl-Q) is
+	transmitted to the remote station. As soon as the buffer has again been
+	emptied to 50% or less, the XON character (Ctrl-S) is transmitted. You
+	can use characters other than Ctrl-S or Ctrl-Q for individual protocols,
+	which would then be taken into account in the situations described
+	above.
+
+	When you want to transmit binary data, the software handshake
+	must always be turned off.
+$LANG_RU$
+	При использовании модемного соединения, а также в некоторых
+	других случаях, аппаратное управление потоком не всегда возможно.
+	Поэтому в таких случаях применяется программная реализация. Когда буфер
+	приема заполняется на 75%, передается XOFF символ. При приеме которого
+	удаленная станция должна приостановить пердачу.Как только наполнение
+	буфера снижается до 50%, передается XON символ, разрешающий передачу
+	удаленной станции.
+
+	Когда вы передаете бинарные данные, программное управление
+	потоком должно быть отключено.
+$EXAMPLES$
+	COM_OPEN(1)   		// Open port
+	COM_SOFT(1, .T.)        // Software handshake COM1
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_DTR(),COM_RTS(),COM_TIMEOUT(),COM_HARD(),COM_NUM(),COM_COUNT()
+$AUTHOR$
+ITK,Paul
+$END$

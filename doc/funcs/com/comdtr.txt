@@ -1,0 +1,62 @@
+$FUNCNAME$
+	COM_DTR()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Queries/sets the Data Terminal Ready (DTR) status.
+$LANG_RU$
+	Запрашивает/устанавливает сигнал Data Terminal Ready (DTR).
+$SYNTAX$
+	lOldDTRStatus := COM_DTR(<nComPort>,[<lNewDTRStatus>])
+$ARGUMENTS$
+	<nComPort> - Designates the port (1 to N) for which the number of characters in the input buffer is determined.
+	<lNewDTRStatus> - Designates the status of DTR. .T. designates
+	that the DTR signal is active, and .F. designates that the signal is
+	inactive. If the parameter is not specified, does not affect the DTR
+	exit signal.
+$LANG_RU$
+	<nComPort> - Определяет номер порта.
+	<lNewDTRStatus> - Определяет статус DTR: .T. для активации
+	сигнала, .F. для сброса сигнала. Если параметр не задан, статус DTR не
+	изменяется.
+$RETURNS$
+	The returned value corresponds to the DTR signal status prior to
+	the new setting, or in the absence of <lNewDTRStatus>, the returned
+	value corresponds to the current DTR. A return of .T. indicates that the
+	DTR is active (MCR bit 1 = 1). A return of .F. indicates that the DTR is
+	inactive (MCR bit 1 = 0).
+$LANG_RU$
+	Возвращается .T. если DTR активен, .F. если нет. Если задан
+	параметр <lNewDTRStatus>, возвращается значение сигнала перед вызовом
+	функции.
+$DESCRIPTION$
+	COM_DTR() queries the DTR signal status.
+	If the second parameter is not supplied, the signal status does not change.
+
+
+	The COM_CLOSE() function resets DTR (to inactive). By contrast,
+	COM_OPEN does not automatically make DTR active!
+
+$LANG_RU$
+	COM_DTR() запрашивает или устанавливает статус сигнала DTR.
+	Если второй параметр не указан, статус сигнала не изменяется.
+
+	Функция COM_CLOSE() сбрасывает сигнал DTR. Однако, COM_OPEN не
+	устанавливает DTR автоматически.
+$EXAMPLES$
+	lComOk  :=  COM_OPEN(1)	       // Open COM1
+	IF lComOk
+		COM_DTR(1, .T.)       // Activate DTR Port 1
+		* ...
+	ENDIF
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_SOFT(),COM_RTS(),COM_TIMEOUT(),COM_HARD(),COM_NUM(),COM_COUNT()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -1,0 +1,48 @@
+$FUNCNAME$
+	COM_FLUSH()
+$CATEGORY$
+  Serial I/O
+$SUMMARY$
+	Clears the receiving buffer.
+$LANG_RU$
+	Очищает буфер приема.
+$SYNTAX$
+	lClear := COM_FLUSH(<nComPort>)
+$ARGUMENTS$
+	<nComPort> - Designates the port (1 to N).
+$LANG_RU$
+	<nComPort> - Определяет номер порта.
+$RETURNS$
+	If the receiving buffer can be cleared successfully, the function returns .T..
+$LANG_RU$
+	В случае успеха возвращает .T..
+$DESCRIPTION$
+	This function allows you to flush all the characters in a
+	receiving buffer. This makes it unnecessary to tediously determine how
+	many characters are currently in the buffer in order to remove them with
+	a read procedure.
+
+	COM_FLUSH() guarantees a truly empty buffer. However, a new
+	character can be received between the time that you call a COM_COUNT()
+	and a COM_READ().
+$LANG_RU$
+	Эта функция позволяет очистить все символы в буфере приема.
+
+	COM_FLUSH() гарантирует полную очистку буфера приема. Однако,
+	новые символы могут быть приняты между вызовом COM_COUNT() и COM_READ().
+$EXAMPLES$
+	cHayes  :=  "ATZ"           // Hayes modem reset command
+	COM_SEND(1, cHayes)         // Issue Hayes command
+	INKEY(1)                    // Wait one second
+	COM_FLUSH(1)                // Reject modem reply messages
+$PECULIARITIES$
+$LANG_RU$
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	COM_INIT(),COM_OPEN(),COM_READ(),COM_SEND(),COM_SFLUSH()
+$AUTHOR$
+ITK,Paul
+$END$

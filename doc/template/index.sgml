@@ -1,0 +1,150 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.0//EN"
+[
+  <!ENTITY introduction SYSTEM "doc/introduction.sgml">
+  <!ENTITY about SYSTEM "doc/about.sgml">
+  <!ENTITY license SYSTEM "doc/license.sgml">
+  <!ENTITY envir SYSTEM "doc/envir.sgml">
+  <!ENTITY install SYSTEM "doc/install.sgml">
+  <!ENTITY compiler SYSTEM "doc/compiler.sgml">
+  <!ENTITY problems SYSTEM "doc/problems.sgml">
+  <!ENTITY dev SYSTEM "doc/dev.sgml">
+  <!ENTITY localisation SYSTEM "doc/localisation.sgml">
+  <!ENTITY docbook SYSTEM "doc/docbook.sgml">
+  <!ENTITY rdd SYSTEM "doc/rdd.sgml">
+  <!ENTITY codb SYSTEM "doc/codb.sgml">
+  <!-- !ENTITY capi SYSTEM "doc/capi.sgml" -->
+  <!ENTITY sql SYSTEM "doc/sql.sgml">
+  <!ENTITY langext SYSTEM "doc/langext.sgml">
+  <!-- ENTITY fcgi SYSTEM "clip-fcgi/fcgi.sgml" -->
+  <!-- ENTITY crypto SYSTEM "clip-crypto/crypto.sgml" -->
+  <!-- ENTITY bzip2 SYSTEM "clip-bzip2/bzip2.sgml" -->
+  <!-- ENTITY gzip SYSTEM "clip-gzip/gzip.sgml" -->
+
+  <!-- ENTITY comnum SYSTEM "clip-com/comnum.sgml" -->
+  <!-- ENTITY comopen SYSTEM "clip-com/comopen.sgml" -->
+  <!-- ENTITY comclose SYSTEM "clip-com/comclose.sgml" -->
+  <!-- ENTITY cominit SYSTEM "clip-com/cominit.sgml" -->
+  <!-- ENTITY comtimeout SYSTEM "clip-com/comtimeout.sgml" -->
+  <!-- ENTITY comhard SYSTEM "clip-com/comhard.sgml" -->
+  <!-- ENTITY comsoft SYSTEM "clip-com/comsoft.sgml" -->
+  <!-- ENTITY comsend SYSTEM "clip-com/comsend.sgml" -->
+  <!-- ENTITY comread SYSTEM "clip-com/comread.sgml" -->
+  <!-- ENTITY comcount SYSTEM "clip-com/comcount.sgml" -->
+  <!-- ENTITY comdtr SYSTEM "clip-com/comdtr.sgml" -->
+  <!-- ENTITY comflush SYSTEM "clip-com/comflush.sgml" -->
+  <!-- ENTITY comsflush SYSTEM "clip-com/comsflush.sgml" -->
+
+  <!ENTITY functions SYSTEM "clip-funcs/funcs.sgml">
+  <!ENTITY fncsect1  SYSTEM "clip-funcs/fncsect1.sgml">
+  <!ENTITY fncsect2  SYSTEM "clip-funcs/fncsect2.sgml">
+  <!ENTITY fncsect3  SYSTEM "clip-funcs/fncsect3.sgml">
+  <!ENTITY fncsect4  SYSTEM "clip-funcs/fncsect4.sgml">
+  <!ENTITY fncsect5  SYSTEM "clip-funcs/fncsect5.sgml">
+  <!ENTITY fncsect6  SYSTEM "clip-funcs/fncsect6.sgml">
+  <!ENTITY fncsect7  SYSTEM "clip-funcs/fncsect7.sgml">
+  <!ENTITY fncsect8  SYSTEM "clip-funcs/fncsect8.sgml">
+  <!ENTITY fncsect9  SYSTEM "clip-funcs/fncsect9.sgml">
+  <!ENTITY fncsect10 SYSTEM "clip-funcs/fncsect10.sgml">
+  <!ENTITY fncsect11 SYSTEM "clip-funcs/fncsect11.sgml">
+  <!ENTITY fncsect12 SYSTEM "clip-funcs/fncsect12.sgml">
+  <!ENTITY fncsect13 SYSTEM "clip-funcs/fncsect13.sgml">
+  <!ENTITY fncsect14 SYSTEM "clip-funcs/fncsect14.sgml">
+  <!ENTITY fncsect15 SYSTEM "clip-funcs/fncsect15.sgml">
+  <!ENTITY fncsect16 SYSTEM "clip-funcs/fncsect16.sgml">
+  <!ENTITY fncsect17 SYSTEM "clip-funcs/fncsect17.sgml">
+  <!ENTITY fncsect18 SYSTEM "clip-funcs/fncsect18.sgml">
+  <!ENTITY fncsect19 SYSTEM "clip-funcs/fncsect19.sgml">
+  <!ENTITY fncsect20 SYSTEM "clip-funcs/fncsect20.sgml">
+  <!ENTITY fncsect21 SYSTEM "clip-funcs/fncsect21.sgml">
+  <!ENTITY fncsect22 SYSTEM "clip-funcs/fncsect22.sgml">
+  <!ENTITY fncsect23 SYSTEM "clip-funcs/fncsect23.sgml">
+  <!ENTITY fncsect24 SYSTEM "clip-funcs/fncsect24.sgml">
+  <!ENTITY fncsect25 SYSTEM "clip-funcs/fncsect25.sgml">
+  <!ENTITY fncsect26 SYSTEM "clip-funcs/fncsect26.sgml">
+  <!ENTITY fncsect27 SYSTEM "clip-funcs/fncsect27.sgml">
+  <!ENTITY fncsect28 SYSTEM "clip-funcs/fncsect28.sgml">
+  <!ENTITY fncsect29 SYSTEM "clip-funcs/fncsect29.sgml">
+  <!ENTITY fncsect30 SYSTEM "clip-funcs/fncsect30.sgml">
+
+  <!ENTITY classes SYSTEM "clip-classes/classes.sgml">
+  <!ENTITY class1  SYSTEM "clip-classes/class1.sgml">
+  <!ENTITY class2  SYSTEM "clip-classes/class2.sgml">
+  <!ENTITY class3  SYSTEM "clip-classes/class3.sgml">
+  <!ENTITY class4  SYSTEM "clip-classes/class4.sgml">
+  <!ENTITY class5  SYSTEM "clip-classes/class5.sgml">
+  <!ENTITY class6  SYSTEM "clip-classes/class6.sgml">
+  <!ENTITY class7  SYSTEM "clip-classes/class7.sgml">
+  <!ENTITY class8  SYSTEM "clip-classes/class8.sgml">
+  <!ENTITY class9  SYSTEM "clip-classes/class9.sgml">
+  <!ENTITY class10 SYSTEM "clip-classes/class10.sgml">
+  <!ENTITY class11 SYSTEM "clip-classes/class11.sgml">
+  <!ENTITY class12 SYSTEM "clip-classes/class12.sgml">
+  <!ENTITY class13 SYSTEM "clip-classes/class13.sgml">
+  <!ENTITY class14 SYSTEM "clip-classes/class14.sgml">
+  <!ENTITY class15 SYSTEM "clip-classes/class15.sgml">
+  <!ENTITY class16 SYSTEM "clip-classes/class16.sgml">
+  <!ENTITY class17 SYSTEM "clip-classes/class17.sgml">
+  <!ENTITY class18 SYSTEM "clip-classes/class18.sgml">
+  <!ENTITY class19 SYSTEM "clip-classes/class19.sgml">
+  <!ENTITY class20 SYSTEM "clip-classes/class20.sgml">
+
+  <!ENTITY utilites SYSTEM "doc/utilites.sgml">
+  <!ENTITY sockets SYSTEM "doc/sockets.sgml">
+]
+>
+
+
+<book id="Clip" lang="_(LANG)_">
+<title>_(xBase and Clipper language compatible compiler)_</title>
+
+<bookinfo>
+<abstract>
+<para>_(Object oriented, CA-Clipper compatible compiler)_</para>
+</abstract>
+</bookinfo>
+
+
+&introduction;
+&about;
+&license;
+&envir;
+&install;
+&compiler;
+&problems;
+&dev;
+&localisation;
+&langext;
+<!-- &capi; -->
+&rdd;
+&classes;
+&functions;
+&codb;
+&sql;
+&sockets;
+<!-- &gzip; -->
+<!-- &bzip2; -->
+<!-- &crypto; -->
+<!-- &fcgi; -->
+&utilites;
+
+<!-- chapter id="clip-com" lang="_(LANG)_">
+<title> _(COM-port access library)_ </title>
+&comnum;
+&comopen;
+&comclose;
+&cominit;
+&comtimeout;
+&comhard;
+&comsoft;
+&comsend;
+&comread;
+&comcount;
+&comdtr;
+&comflush;
+&comsflush;
+
+</chapter -->
+
+
+</book>
+

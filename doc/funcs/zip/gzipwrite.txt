@@ -1,0 +1,39 @@
+$FUNCNAME$
+	gZipWrite()
+$CATEGORY$
+  Pack/Unpack,FILE/IO
+$SUMMARY$
+	Write data to GZIP file.
+$LANG_RU$
+	Записывает данные в GZIP файл.
+$SYNTAX$
+	realLen := gZipWrite(<nHandle>, <cBuffer> [,<nLen>])
+$LANG_RU$
+$ARGUMENTS$
+	<nHandle> - number of opened file.
+	<cBuffer> - buffer with data.
+	<nLen> - number of write bytes.
+$LANG_RU$
+	<nHandle> - номер открытого файла.
+	<cBuffer> - буффер с данными для записи в файл.
+	<nLen> - кол-во байт для записи.
+$RETURNS$
+       gZipWrite() returns number of writed bytes or -1 if error.
+$LANG_RU$
+       gZipWrite() возвращает кол-во записанных байт или -1 при ошибке.
+$DESCRIPTION$
+	Pack <len> bytes from <cBuffer> and write them to GZIP-file.
+$LANG_RU$
+	Упаковывает <len> байт из <cBuffer> и записывает их в GZIP-файл.
+$EXAMPLES$
+	s := space(1000)
+	realLen := gzipWrite(h,s,300)
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	gZipOpen(),gZipRead(),gZipClose()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -1,0 +1,42 @@
+$FUNCNAME$
+	bZip2Read()
+$CATEGORY$
+  Pack/Unpack,FILE/IO
+$SUMMARY$
+	Read data from bZIP2 file.
+$LANG_RU$
+	Читает данные из bZIP2 файла.
+$SYNTAX$
+	realLen := bZip2Read(<nHandle>, <@cBuffer> [,<nLen>])
+$LANG_RU$
+$ARGUMENTS$
+	<nHandle> - number of opened file.
+	<cBuffer> - buffer for read data.
+	<nLen> - number of read bytes.
+$LANG_RU$
+	<nHandle> - номер открытого файла.
+	<cBuffer> - буффер для чтения данных.
+	<nLen> - кол-во байт для чтения.
+$RETURNS$
+
+       bZip2Read() returns number of readed bytes or -1 if error.
+$LANG_RU$
+       bZip2Read() возвращает кол-во прочитанных байт или -1 при ошибке.
+$DESCRIPTION$
+	Read and unpack data from opened bZIP2 file with <nHandle>
+	into preallocated <cBuffer> <nLen> bytes.
+$LANG_RU$
+	Читает и распаковывает <nLen> данных из открытого bZIP2 файла
+	с номером <nHandle> в зарезервированный <cBuffer> .
+$EXAMPLES$
+	s := space(1000)
+	realLen := bZip2Read(h,@s,300)
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	bZip2Open(),bZip2Write(),bZip2Close()
+$AUTHOR$
+ITK,Paul
+$END$

@@ -55,7 +55,6 @@ function Main()
 	vb:= gtk_VBoxNew()
 	vb:name = "VBox 1"
 	gtk_ContainerAdd (w, vb)
-
 	D_MSG("Create horizontal box container")
 	hb:= gtk_HBoxNew()
 	gtk_WidgetSetSizeRequest(hb,600,25)
@@ -142,6 +141,7 @@ function Main()
 	radioitem3:Style:FG_color = ColorNew(0,40000,10000)
 	gtk_RadioMenuItemSetStyle(radioitem3,radioitem3:Style)
 	gtk_RadioMenuItemSetGroup(radioitem3,rmg)
+
 
 	D_MSG("Create check menu item 1")
 	checkitem1:=gtk_CheckMenuItemNew(,"Check Item 1")
@@ -405,8 +405,6 @@ comment -because GTK_ENABLE_BROKEN */
 	gtk_SignalConnect(csdialog:OkButton,"clicked",{|wid,ev|mySetColor(),gtk_WidgetHide(csdialog)})
 	gtk_SignalConnect(csdialog:CancelButton,"clicked",{|wid,ev|gtk_WidgetHide(csdialog)})
 	gtk_WindowSetTransientFor(csdialog, w)
-/***************
-**********************/
 
 	D_MSG("Create button 11")
 	btn11:=gtk_ButtonNewWithMnemonic(,"Select &color", "&")
@@ -620,9 +618,6 @@ comment -because GTK_ENABLE_BROKEN */
 	//
 	/***************************************************/
 	D_MSG("Run events")
-
-/**************************************************************************
-**************************************************************************/
 
 	gtk_Main()
 return
