@@ -1,0 +1,278 @@
+File: gettext.info,  Node: Plural forms,  Next: GUI program problems,  Prev: Charset conversion,  Up: gettext
+
+Additional functions for plural forms
+-------------------------------------
+
+   The functions of the `gettext' family described so far (and all the
+`catgets' functions as well) have one problem in the real world which
+have been neglected completely in all existing approaches.  What is
+meant here is the handling of plural forms.
+
+   Looking through Unix source code before the time anybody thought
+about internationalization (and, sadly, even afterwards) one can often
+find code similar to the following:
+
+        printf ("%d file%s deleted", n, n == 1 ? "" : "s");
+
+After the first complaints from people internationalizing the code
+people either completely avoided formulations like this or used strings
+like `"file(s)"'.  Both look unnatural and should be avoided.  First
+tries to solve the problem correctly looked like this:
+
+        if (n == 1)
+          printf ("%d file deleted", n);
+        else
+          printf ("%d files deleted", n);
+
+   But this does not solve the problem.  It helps languages where the
+plural form of a noun is not simply constructed by adding an `s' but
+that is all.  Once again people fell into the trap of believing the
+rules their language is using are universal.  But the handling of plural
+forms differs widely between the language families.  For example, Rafal
+Maszkowski `<rzm@mat.uni.torun.pl>' reports:
+
+     In Polish we use e.g. plik (file) this way:
+          1 plik
+          2,3,4 pliki
+          5-21 pliko'w
+          22-24 pliki
+          25-31 pliko'w
+     and so on (o' means 8859-2 oacute which should be rather okreska,
+     similar to aogonek).
+
+   There are two things which can differ between languages (and even
+inside language families);
+
+   * The form how plural forms are built differs.  This is a problem
+     with languages which have many irregularities.  German, for
+     instance, is a drastic case.  Though English and German are part
+     of the same language family (Germanic), the almost regular forming
+     of plural noun forms (appending an `s') is hardly found in German.
+
+   * The number of plural forms differ.  This is somewhat surprising for
+     those who only have experiences with Romanic and Germanic languages
+     since here the number is the same (there are two).
+
+     But other language families have only one form or many forms.  More
+     information on this in an extra section.
+
+   The consequence of this is that application writers should not try to
+solve the problem in their code.  This would be localization since it is
+only usable for certain, hardcoded language environments.  Instead the
+extended `gettext' interface should be used.
+
+   These extra functions are taking instead of the one key string two
+strings and a numerical argument.  The idea behind this is that using
+the numerical argument and the first string as a key, the implementation
+can select using rules specified by the translator the right plural
+form.  The two string arguments then will be used to provide a return
+value in case no message catalog is found (similar to the normal
+`gettext' behavior).  In this case the rules for Germanic language is
+used and it is assumed that the first string argument is the singular
+form, the second the plural form.
+
+   This has the consequence that programs without language catalogs can
+display the correct strings only if the program itself is written using
+a Germanic language.  This is a limitation but since the GNU C library
+(as well as the GNU `gettext' package) are written as part of the GNU
+package and the coding standards for the GNU project require program
+being written in English, this solution nevertheless fulfills its
+purpose.
+
+ - Function: char * ngettext (const char *MSGID1, const char *MSGID2,
+          unsigned long int N)
+     The `ngettext' function is similar to the `gettext' function as it
+     finds the message catalogs in the same way.  But it takes two
+     extra arguments.  The MSGID1 parameter must contain the singular
+     form of the string to be converted.  It is also used as the key
+     for the search in the catalog.  The MSGID2 parameter is the plural
+     form.  The parameter N is used to determine the plural form.  If no
+     message catalog is found MSGID1 is returned if `n == 1', otherwise
+     `msgid2'.
+
+     An example for the use of this function is:
+
+          printf (ngettext ("%d file removed", "%d files removed", n), n);
+
+     Please note that the numeric value N has to be passed to the
+     `printf' function as well.  It is not sufficient to pass it only to
+     `ngettext'.
+
+ - Function: char * dngettext (const char *DOMAIN, const char *MSGID1,
+          const char *MSGID2, unsigned long int N)
+     The `dngettext' is similar to the `dgettext' function in the way
+     the message catalog is selected.  The difference is that it takes
+     two extra parameter to provide the correct plural form.  These two
+     parameters are handled in the same way `ngettext' handles them.
+
+ - Function: char * dcngettext (const char *DOMAIN, const char *MSGID1,
+          const char *MSGID2, unsigned long int N, int CATEGORY)
+     The `dcngettext' is similar to the `dcgettext' function in the way
+     the message catalog is selected.  The difference is that it takes
+     two extra parameter to provide the correct plural form.  These two
+     parameters are handled in the same way `ngettext' handles them.
+
+   Now, how do these functions solve the problem of the plural forms?
+Without the input of linguists (which was not available) it was not
+possible to determine whether there are only a few different forms in
+which plural forms are formed or whether the number can increase with
+every new supported language.
+
+   Therefore the solution implemented is to allow the translator to
+specify the rules of how to select the plural form.  Since the formula
+varies with every language this is the only viable solution except for
+hardcoding the information in the code (which still would require the
+possibility of extensions to not prevent the use of new languages).
+
+   The information about the plural form selection has to be stored in
+the header entry of the PO file (the one with the empty `msgid' string).
+The plural form information looks like this:
+
+     Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;
+
+   The `nplurals' value must be a decimal number which specifies how
+many different plural forms exist for this language.  The string
+following `plural' is an expression which is using the C language
+syntax.  Exceptions are that no negative numbers are allowed, numbers
+must be decimal, and the only variable allowed is `n'.  This expression
+will be evaluated whenever one of the functions `ngettext',
+`dngettext', or `dcngettext' is called.  The numeric value passed to
+these functions is then substituted for all uses of the variable `n' in
+the expression.  The resulting value then must be greater or equal to
+zero and smaller than the value given as the value of `nplurals'.
+
+The following rules are known at this point.  The language with families
+are listed.  But this does not necessarily mean the information can be
+generalized for the whole family (as can be easily seen in the table
+below).(1)
+
+Only one form:
+     Some languages only require one single form.  There is no
+     distinction between the singular and plural form.  An appropriate
+     header entry would look like this:
+
+          Plural-Forms: nplurals=1; plural=0;
+
+     Languages with this property include:
+
+    Finno-Ugric family
+          Hungarian
+
+    Asian family
+          Japanese, Korean
+
+    Turkic/Altaic family
+          Turkish
+
+Two forms, singular used for one only
+     This is the form used in most existing programs since it is what
+     English is using.  A header entry would look like this:
+
+          Plural-Forms: nplurals=2; plural=n != 1;
+
+     (Note: this uses the feature of C expressions that boolean
+     expressions have to value zero or one.)
+
+     Languages with this property include:
+
+    Germanic family
+          Danish, Dutch, English, German, Norwegian, Swedish
+
+    Finno-Ugric family
+          Estonian, Finnish
+
+    Latin/Greek family
+          Greek
+
+    Semitic family
+          Hebrew
+
+    Romanic family
+          Italian, Portuguese, Spanish
+
+    Artificial
+          Esperanto
+
+Two forms, singular used for zero and one
+     Exceptional case in the language family.  The header entry would
+     be:
+
+          Plural-Forms: nplurals=2; plural=n>1;
+
+     Languages with this property include:
+
+    Romanic family
+          French, Brazilian Portuguese
+
+Three forms, special case for zero
+     The header entry would be:
+
+          Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2;
+
+     Languages with this property include:
+
+    Baltic family
+          Latvian
+
+Three forms, special cases for one and two
+     The header entry would be:
+
+          Plural-Forms: nplurals=3; plural=n==1 ? 0 : n==2 ? 1 : 2;
+
+     Languages with this property include:
+
+    Celtic
+          Gaeilge (Irish)
+
+Three forms, special case for numbers ending in 1[2-9]
+     The header entry would look like this:
+
+          Plural-Forms: nplurals=3; \
+              plural=n%10==1 && n%100!=11 ? 0 : \
+                     n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2;
+
+     Languages with this property include:
+
+    Baltic family
+          Lithuanian
+
+Three forms, special cases for numbers ending in 1 and 2, 3, 4, except those ending in 1[1-4]
+     The header entry would look like this:
+
+          Plural-Forms: nplurals=3; \
+              plural=n%10==1 && n%100!=11 ? 0 : \
+                     n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;
+
+     Languages with this property include:
+
+    Slavic family
+          Croatian, Czech, Russian, Slovak, Ukrainian
+
+Three forms, special case for one and some numbers ending in 2, 3, or 4
+     The header entry would look like this:
+
+          Plural-Forms: nplurals=3; \
+              plural=n==1 ? 0 : \
+                     n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;
+
+     Languages with this property include:
+
+    Slavic family
+          Polish
+
+Four forms, special case for one and all numbers ending in 02, 03, or 04
+     The header entry would look like this:
+
+          Plural-Forms: nplurals=4; \
+              plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3;
+
+     Languages with this property include:
+
+    Slavic family
+          Slovenian
+
+   ---------- Footnotes ----------
+
+   (1) Additions are welcome.  Send appropriate information to
+<bug-glibc-manual@gnu.org>.
+

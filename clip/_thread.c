@@ -5,6 +5,14 @@
 */
 /*
    $Log: _thread.c,v $
+   Revision 1.14  2004/01/25 10:23:40  clip
+   uri: fix bug in exit procedures and inkey()
+
+   Revision 1.13  2003/04/29 11:09:39  clip
+   memleak on start()
+   possibly closes #140
+   paul
+
    Revision 1.12  2001/11/26 07:51:09  clip
    start() now can take reference to (possible static) function or codeblock
    as first parameter
@@ -95,6 +103,8 @@ task_run(void *data)
 	if (r)
 		_clip_logg(0, "task_run: cannot start function '%s'", sp->name);
 
+	/*printf("\ntask_run done\n");*/
+
 	return r;
 }
 
@@ -104,6 +114,8 @@ task_destroy(void *data)
 	start_data *sp = (start_data*) data;
 	int i;
 
+	/*printf("\ntask_destroy\n");*/
+
 	for(i=0; i<sp->argc+1; i++)
 		_clip_destroy(sp->mp, sp->stack+i);
 
@@ -112,8 +124,10 @@ task_destroy(void *data)
 	else
 		_clip_destroy(sp->mp, &sp->block);
 
-
+#if 1
 	delete_ClipMachine(sp->mp);
+#endif
+	free(sp->stack);
 	free(sp);
 }
 

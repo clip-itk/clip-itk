@@ -8,7 +8,6 @@
 /* CTI_RADIOGROUP -  */
 
 #include "cti.ch"
-#include "ctiradiobutton.ch"
 
 #define	SUPERCLASS	CTI_OBJECT
 

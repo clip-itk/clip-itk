@@ -5,6 +5,98 @@
  */
 /*
    $Log: clipvm.c,v $
+   Revision 1.114  2004/04/14 10:38:32  clip
+   rust: suppress GCC 3.3.3 warnings
+
+   Revision 1.113  2004/01/23 09:42:29  clip
+   uri: small fix in macro_in_string
+
+   Revision 1.112  2003/11/14 10:13:48  clip
+   fix trap in PO code
+   paul
+
+   Revision 1.111  2003/11/13 13:17:31  clip
+   add error 'po code too large'
+   paul
+
+   Revision 1.110  2003/11/13 08:16:43  clip
+   fall back for switch
+   paul
+
+   Revision 1.108  2003/11/04 11:18:34  clip
+   post signal handler
+   paul
+
+   Revision 1.107  2003/09/08 15:06:03  clip
+   uri: next step fixes for mingw from uri
+
+   Revision 1.106  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.105  2003/08/14 08:46:56  clip
+   fix charset
+   fix #154
+   paul
+
+   Revision 1.104  2003/08/13 10:36:42  clip
+   extend limit of 255 local vars.
+   fixes #151
+   paul
+
+   Revision 1.103  2003/07/03 07:15:55  clip
+   fix a lot of warnings
+   paul
+
+   Revision 1.102  2003/05/16 11:08:02  clip
+   initial support for using assembler instead C
+   now activated if environment variable CLIP_ASM is defined to any value
+   paul
+
+   Revision 1.101  2003/03/25 10:31:13  clip
+   possible fixes #133
+   paul
+
+   Revision 1.100  2003/03/17 08:24:59  clip
+   Solaris 8 patches
+   paul
+
+   Revision 1.99  2003/01/05 12:32:25  clip
+   possible fixes #95,#98
+   paul
+
+   Revision 1.98  2003/01/05 10:34:23  clip
+   possible fixes #98
+   paul
+
+   Revision 1.97  2002/12/31 08:03:36  clip
+   assign to locals
+   closes #95
+   paul
+
+   Revision 1.96  2002/12/23 13:57:47  clip
+   reference to temporary object
+   frame structure extended!
+   closes #90
+   paul
+
+   Revision 1.95  2002/12/05 12:38:01  clip
+   fix sigsegv with local vars in codeblock
+   possible fixes #15
+   may be memleaks...
+   paul
+
+   Revision 1.94  2002/12/04 07:09:59  clip
+   simple profiler realised
+   start program with --profile will generate <progname>.pro profile
+   limitations: manual written C functions are not profiled, bad accuracy
+   paul
+
+   Revision 1.93  2002/11/10 13:20:17  clip
+   fix for gcc-3.2 optimisation
+   paul
+
    Revision 1.92  2002/08/02 10:07:03  clip
    double errblock call fix
    paul
@@ -432,16 +524,24 @@
 
  */
 
+#include "clipcfg.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
+#ifdef HAVE_MMAN_H
+	#include <sys/mman.h>
+#endif
 #include <sys/types.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <dlfcn.h>
+#ifdef OS_MINGW
+	#include <ltdl.h>
+	#define dlerror lt_dlerror
+#else
+	#include <dlfcn.h>
+#endif
 #include <ctype.h>
 
 #include "clip.h"
@@ -462,7 +562,7 @@
 #define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
 #define VAR(type,var,ini) type *var=(type*)(ini)
 #define NEWVAR(type,var) type *var=(type*)calloc(sizeof(type),1)
-#define DELETE(type,var)	{destroy_##type(var);free(var);}
+#define c_DELETE(type,var)	{destroy_##type(var);free(var);}
 #define M_OFFS(base,nl,ns) ((base)+8+nl*sizeof(long)+ns*sizeof(short))
 #define F_OFFS(fp,nl,ns,nb) ((fp)+(nl)*sizeof(long)+(ns)*sizeof(short)+(nb))
 
@@ -509,9 +609,31 @@ SETINT(void *ptr, int l)
 	memcpy(ptr, &l, sizeof(l));
 }
 
-#define GET_SHORT(pp) (GETSHORT(((short *)pp)++))
-#define GET_LONG(pp) (GETLONG(((long *)(pp))++))
-#define GET_BYTE(pp) (*((unsigned char*)(pp))++)
+static short get_short(void* ptr)
+{
+	short **pp = (short**)ptr;
+        short r;
+
+	memcpy(&r, pp, sizeof(r));
+        (*pp)++;
+        return r;
+}
+
+static long get_long(void* ptr)
+{
+	long **pp = (long**)ptr;
+        long r;
+
+	memcpy(&r, pp, sizeof(r));
+        (*pp)++;
+        return r;
+}
+
+static unsigned char get_byte(void* ptr)
+{
+	unsigned char **pp = (unsigned char**)ptr;
+        return *(*pp)++;
+}
 
 #else
 
@@ -520,11 +642,29 @@ SETINT(void *ptr, int l)
 #define SETLONG(ptr,l) (*(long*)(ptr)=(l))
 #define SETINT(ptr,l) (*(int*)(ptr)=(l))
 
-#define GET_SHORT(pp) (*((short *)(pp))++)
-#define GET_LONG(pp) (*((long *)(pp))++)
-#define GET_BYTE(pp) (*((unsigned char*)(pp))++)
+static short get_short(void* ptr)
+{
+	short **pp = (short**)ptr;
+        return *(*pp)++;
+}
+
+static long get_long(void* ptr)
+{
+	long **pp = (long**)ptr;
+        return *(*pp)++;
+}
+
+static unsigned char get_byte(void* ptr)
+{
+	unsigned char **pp = (unsigned char**)ptr;
+        return *(*pp)++;
+}
 
 #endif
+
+#define GET_SHORT(pp) get_short(&(pp))
+#define GET_LONG(pp) get_long(&(pp))
+#define GET_BYTE(pp) get_byte(&(pp))
 
 static void
 get_str(char *modbeg, int no, char **sp, int *len)
@@ -576,6 +716,7 @@ load_pobj(ClipMachine * mp, struct ClipFile *file, const char *name, int mallocM
 
 	file->bodyMem = mallocMem;
 	file->bodySize = len;
+#ifdef HAVE_MMAN_H
 	if (file->bodyMem == 0)
 	{
 		file->body = mmap(NULL, len, PROT_READ, MAP_SHARED, fd, 0);
@@ -591,6 +732,7 @@ load_pobj(ClipMachine * mp, struct ClipFile *file, const char *name, int mallocM
 		}
 	}
 	else
+#endif
 	{
 		char *s;
 		int readed, r;
@@ -635,7 +777,7 @@ load_pobj(ClipMachine * mp, struct ClipFile *file, const char *name, int mallocM
 	if (memcmp(sp, "!<pobj>\n", 8))
 	{
 		_clip_trap_printf(mp, __FILE__, __LINE__, " '%s' is not valid pobj file: invalid magic", name);
-		destroy_File(mp, file);
+		destroy_ClipFile(mp, file);
 		return _clip_call_errblock(mp, 1);
 	}
 
@@ -646,7 +788,7 @@ load_pobj(ClipMachine * mp, struct ClipFile *file, const char *name, int mallocM
 	   if (GETLONG( sp != (len - 8 - 2 * sizeof(long))))
 	   {
 	   _clip_trap_printf(mp, __FILE__, __LINE__, " '%s' is not valid pobj file: invalid length", name);
-	   destroy_File(mp, file);
+	   destroy_ClipFile(mp, file);
 	   return 1;
 	   }
 	 */
@@ -743,12 +885,12 @@ load_dll(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * resp)
 {
 	void *hp;
 	char buf[256], *s, *e;
-        char uname[128];
+	char uname[128];
 	const char **spp;
 	ClipModule *entry;
 	ClipFunction **fpp;
 	ClipNameEntry *np;
-        ClipFile **cpp;
+	ClipFile **cpp;
 	struct DBFuncTable **dpp;
 	int l, ret = 0, i;
 
@@ -759,16 +901,20 @@ load_dll(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * resp)
 		snprintf(buf, sizeof(buf), "%s/lib/%s", CLIPROOT, name);
 
 	if (!loaded_dlls)
-        {
-        	loaded_dlls = new_Coll(free, strcmp);
-        }
-        else
-        {
-        	if (search_Coll(loaded_dlls, buf, 0))
-                	return 0;
+	{
+		loaded_dlls = new_Coll(free, strcmp);
+	}
+	else
+	{
+		if (search_Coll(loaded_dlls, buf, 0))
+			return 0;
 	}
 
+#ifdef OS_MINGW
+	hp = lt_dlopen(buf);
+#else
 	hp = dlopen(buf, RTLD_NOW);
+#endif
 	if (!hp)
 	{
 		_clip_trap_printf(mp, __FILE__, __LINE__, "shared loading problem: %s: file %s", dlerror(), buf);
@@ -795,16 +941,20 @@ load_dll(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * resp)
 		l = sizeof(uname);
 
 	for (i = 0; i < l; i++, s++)
-        {
-        	if (*s == '-')
-                	uname[i] = '_';
+	{
+		if (*s == '-')
+			uname[i] = '_';
 		else
 			uname[i] = toupper(*s);
 	}
 	uname[l] = 0;
-        snprintf(buf, sizeof(buf), "clip__MODULE_%s", uname);
+	snprintf(buf, sizeof(buf), "clip__MODULE_%s", uname);
 
+#ifdef OS_MINGW
+	entry = (ClipModule *) lt_dlsym(hp, buf);
+#else
 	entry = (ClipModule *) dlsym(hp, buf);
+#endif
 
 	if (!entry)
 	{
@@ -933,9 +1083,9 @@ _clip_load(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * res
 			{
 				snprintf(path, sizeof(path), "%s%s", name, DLLREALSUFF);
 				if (!access(path, R_OK))
-                                {
+				{
 					r = load_dll(mp, path, names, resp);
-                                        return r;
+					return r;
 				}
 				else
 				{
@@ -1022,20 +1172,20 @@ _clip_load(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * res
 
 	_clip_load_inits(mp, file);
 
-	delete_File(mp, file);
+	delete_ClipFile(mp, file);
 
 	return 0;
 }
 
 void
-delete_File(ClipMachine * mp, ClipFile * fp)
+delete_ClipFile(ClipMachine * mp, ClipFile * fp)
 {
-	if (destroy_File(mp, fp))
+	if (destroy_ClipFile(mp, fp))
 		free(fp);
 }
 
 int
-destroy_File(ClipMachine * mp, ClipFile * fp)
+destroy_ClipFile(ClipMachine * mp, ClipFile * fp)
 {
 	int i;
 
@@ -1047,9 +1197,11 @@ destroy_File(ClipMachine * mp, ClipFile * fp)
 
 	switch (fp->bodyMem)
 	{
+#ifndef OS_MINGW
 	case 0:
 		munmap(fp->mem, fp->bodySize);
 		break;
+#endif
 	case 1:
 		free(fp->mem);
 		break;
@@ -1062,9 +1214,11 @@ destroy_File(ClipMachine * mp, ClipFile * fp)
 
 	switch (fp->staticsMem)
 	{
+#ifndef OS_MINGW
 	case 0:
 		munmap((void *) fp->statics, sizeof(ClipVar) * fp->nstatics);
 		break;
+#endif
 	case 1:
 		free(fp->statics);
 		break;
@@ -1159,7 +1313,7 @@ _clip_init_Block(ClipMachine * mp, ClipBlock * dest, struct ClipFile *file, char
 void
 destroy_Block(ClipMachine * mp, ClipBlock * bp)
 {
-	delete_File(mp, bp->file);
+	delete_ClipFile(mp, bp->file);
 }
 
 void
@@ -1236,6 +1390,11 @@ do_code(ClipMachine * mp, struct ClipBlock *cp, int argc, int isProc, int rest, 
 	mp->bp = fp->sp;
 	mp->fp->localvars = uplocals;
 
+	if (_clip_profiler)
+	{
+		_clip_stop_profiler(mp);
+	}
+
 	_clip_logg(6, "PCODE call from: proc '%s' file '%s' line %d", fp->procname ? fp->procname : "unknown", fp->filename, fp->line);
 	for (;;)
 	{
@@ -1251,6 +1410,9 @@ do_code(ClipMachine * mp, struct ClipBlock *cp, int argc, int isProc, int rest, 
 		Task_yield();
 #endif
 		ret = run_vm(mp, cp);
+
+		if (_clip_sig_flag)
+			_clip_signal_real(_clip_sig_flag);
 
 		if (_clip_debuglevel)
 		{
@@ -1295,6 +1457,12 @@ do_code(ClipMachine * mp, struct ClipBlock *cp, int argc, int isProc, int rest, 
 		_clip_destroy(mp, fp->sp);
 	}
 
+	if (_clip_profiler)
+	{
+		_clip_start_profiler(mp);
+		mp->pbucket->callno--;
+	}
+
 	return ret;
 }
 
@@ -1321,7 +1489,7 @@ search_long(long *coll, int count, long key)
 	while (l <= h)
 	{
 		i = (l + h) >> 1;
-		if ((c = coll[i]) < key)
+		if ((c = GETLONG(coll+i)) < key)
 			l = i + 1;
 		else
 		{
@@ -1349,9 +1517,15 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	int nreflocals = GETSHORT(F_OFFS(func, 3, 1, 1));
 	int ret = 0;
 	int i;
+#if 0
 	ClipVar *locals /* = (ClipVar *) alloca(sizeof(ClipVar) * nlocals) */ ;
+#endif
 	int maxdeep = GETSHORT(F_OFFS(func, 3, 2, 1));
+#ifdef OS_MINGW
+	ClipVar *stack = (ClipVar *) malloc(sizeof(ClipVar) * maxdeep);
+#else
 	ClipVar *stack = (ClipVar *) alloca(sizeof(ClipVar) * maxdeep);
+#endif
 	char *filename = F_OFFS(modbeg, 7, 4, 0);
 	int nprivates = GETSHORT(F_OFFS(func, 3, 3, 1));
 
@@ -1369,7 +1543,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	/*ClipVar *params = (ClipVar *)alloca( nparams*sizeof(ClipVar)); */
 	ClipFrame frame =
 	{stack, stack, filename, 0, 0, 0, 0 /*localDefs */ , file->staticDefs, 0,
-	 file->hash_names, procname, maxdeep};
+	 file->hash_names, procname, maxdeep, 0};
 	unsigned char c, c1;
 	short s, s1;
 	long l, l1;
@@ -1397,6 +1571,14 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	}
 	else
 	{
+#if 1
+		localvars = (ClipVarFrame *) calloc(1, sizeof(ClipVarFrame) + numlocals * sizeof(ClipVar));
+		localvars->vars = (ClipVar *) (localvars + 1);
+		localvars->size = numlocals;
+		localvars->refcount = 1;
+		localvars->names = localnames;
+		reflocals = frame.localvars = localvars;
+#else
 		locals = (ClipVar *) alloca(sizeof(ClipVar) * numlocals);
 		memset(locals, 0, numlocals * sizeof(ClipVar));
 		localvars = (ClipVarFrame *) alloca(sizeof(ClipVarFrame));
@@ -1406,6 +1588,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 		localvars->names = localnames;
 		reflocals = frame.localvars = localvars;
 		local_locals = 1;
+#endif
 	}
 
 	frame.up = mp->fp;
@@ -1428,6 +1611,9 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 		ldp->vp = 0;
 	}
 #endif
+
+	if (_clip_profiler)
+		_clip_start_profiler(mp);
 
 	_clip_logg(4, "PCODE call: proc '%s' file '%s' line %d", frame.procname ? frame.procname : "unknown", frame.filename, frame.line);
 
@@ -1472,11 +1658,13 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 			frame.sp->t.flags = F_MSTAT;
 			frame.sp->t.memo = 0;
 			get_str(modbeg, s, &(frame.sp->s.str.buf), &(frame.sp->s.str.len));
+			/*
 			if ( !(mp->flags1 & NOEXPAND_MACRO_FLAG) )
-                        {
+			{
+			*/
 				if (strchr(frame.sp->s.str.buf, '&'))
 					_clip_expand_var(mp, frame.sp);
-			}
+			/*}*/
 			++frame.sp;
 			break;
 #endif
@@ -1493,11 +1681,13 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 				frame.sp->s.str.buf = _clip_memdup(str, len);
 				frame.sp->s.str.len = len;
 			}
+			/*
 			if ( !(mp->flags1 & NOEXPAND_MACRO_FLAG) )
-                        {
+			{
+			*/
 				if (strchr(frame.sp->s.str.buf, '&'))
-			 		_clip_expand_var(mp, frame.sp);
-			}
+					_clip_expand_var(mp, frame.sp);
+			/*}*/
 			++frame.sp;
 			break;
 		case CLIP_PUSH_NIL:
@@ -1555,13 +1745,20 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 			_clip_param(mp, c, s);
 			break;
 		case CLIP_PUSH_LOCAL:
-			c = GET_BYTE(pp);
-			if ((ret = _clip_push_local(mp, c)))
+			s = GET_SHORT(pp);
+			if ((ret = _clip_push_local(mp, s)))
 				goto _trap;
 			break;
 		case CLIP_PUSH_REF_LOCAL:
-			c = GET_BYTE(pp);
-			frame.sp->p.vp = _clip_ref_local(mp, c);
+			s = GET_SHORT(pp);
+#if 0
+			frame.sp->p.vp = _clip_ref_local(mp, s);
+#else
+			{
+				ClipVar *vp1 = _clip_ref_local(mp, s);
+				frame.sp->p.vp = vp1;
+			}
+#endif
 			break;
 		case CLIP_PUSH_STATIC:
 			s = GET_SHORT(pp);
@@ -1596,7 +1793,21 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 			break;
 		case CLIP_PUSH_REF_MEMVAR:
 			l = GET_LONG(pp);
+#if 0
 			frame.sp->p.vp = _clip_ref_memvar(mp, l);
+#else
+			{
+				ClipVar *vp1 = _clip_ref_memvar(mp, l);
+				frame.sp->p.vp = vp1;
+			}
+#endif
+			break;
+		case CLIP_PUSH_REF_MEMVAR_NOADD:
+			l = GET_LONG(pp);
+			{
+				ClipVar *vp1 = _clip_ref_memvar_noadd(mp, l);
+				frame.sp->p.vp = vp1;
+			}
 			break;
 		case CLIP_PUSH_PUBLIC:
 			l = GET_LONG(pp);
@@ -1605,7 +1816,14 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 			break;
 		case CLIP_PUSH_REF_PUBLIC:
 			l = GET_LONG(pp);
+#if 0
 			frame.sp->p.vp = _clip_ref_public(mp, l);
+#else
+			{
+				ClipVar *vp1 = _clip_ref_public(mp, l);
+				frame.sp->p.vp = vp1;
+			}
+#endif
 			break;
 		case CLIP_REFMACRO:
 			if ((ret = _clip_refmacro(mp)))
@@ -1711,6 +1929,12 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 			vp = frame.sp->p.vp;
 			if ((ret = _clip_assign(mp, vp)))
 				goto _trap;
+			break;
+		case CLIP_REF_DESTROY:
+			vp = frame.sp->p.vp;
+			/*if (vp->t.flags != F_MREF)*/
+				_clip_destroy(mp, vp);
+			/*_clip_destroy(mp, vp);*/
 			break;
 		case CLIP_MACROASSIGN:
 			c = GET_BYTE(pp);
@@ -1862,9 +2086,17 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 			break;
 		case CLIP_FETCHREF:
 			c = GET_BYTE(pp);
+#if 0
 			frame.sp->p.vp = _clip_fetchref(mp, c);
-                        if (!frame.sp->p.vp)
-                        	goto _trap;
+#else
+			{
+				ClipVar *vp1 = _clip_fetchref(mp, c);
+				/*printf("%p\n", vp1);*/
+				frame.sp->p.vp = vp1;
+			}
+#endif
+			if (!frame.sp->p.vp)
+				goto _trap;
 			break;
 		case CLIP_IFETCH:
 			c = GET_BYTE(pp);
@@ -2032,6 +2264,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 		case CLIP_RECOVER:
 			while (frame.sp > frame.stack)
 				_clip_destroy(mp, --frame.sp);
+			ret = 0;
 			break;
 		case CLIP_USING:
 			if (mp->trapVar)
@@ -2109,7 +2342,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 				if (n < 0)
 					pp += other;
 				else
-					pp += jmps[n];
+					pp += GETSHORT(jmps+n);
 			}
 			break;
 		default:
@@ -2129,6 +2362,8 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	_clip_trap(mp, filename, frame.line);
 	/*ret = 1; */
       _return:
+	if (_clip_profiler)
+		_clip_stop_profiler(mp);
 	if (local_locals)
 		_clip_destroy_locals(mp);
 	_clip_resume(mp, nlocals, nreflocals);
@@ -2144,6 +2379,9 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 #endif
 /*_clip_vremove_privates(mp, nprivates, privates);*/
 
+#ifdef OS_MINGW
+	free(stack);
+#endif
 	return ret;
 }
 

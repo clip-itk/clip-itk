@@ -1,4 +1,3 @@
-%define CLIPROOT /usr/local/clip
 %define DESTDIR	${RPM_BUILD_ROOT}
 
 Name:		%{name}
@@ -41,13 +40,30 @@ export CLIP_LOCALE_ROOT=%{DESTDIR}%{CLIPROOT}
 mkdir -p %{DESTDIR}%{CLIPROOT}/include
 
 pushd clip
-	./configure -r
+	./configure -r || exit 1
 	make install DESTDIR=%{DESTDIR}
 popd
 
+if [ -d doc ]
+then
+    (
+	DOC_LANGS='en ru'
+	(  export CLIPROOT=%{DESTDIR}%{CLIPROOT}
+	   export LD_LIBRARY_PATH=%{DESTDIR}%{LIBDIR}:$LD_LIBRARY_PATH
+	   cd prg/doc_utils && make && make install DESTDIR=%{DESTDIR}
+	) || true
+	cd doc \
+	 && make html LANGS="$DOC_LANGS" CLIPROOT=%{DESTDIR}%{CLIPROOT} \
+	 && make install LANGS="$DOC_LANGS" DESTDIR=%{DESTDIR} \
+	 || true
+    )
+fi
+
+
 CLIPROOT=%{DESTDIR}%{CLIPROOT}
-LD_LIBRARY_PATH=%{DESTDIR}/usr/lib
+LD_LIBRARY_PATH=%{DESTDIR}%{LIBDIR}
 export CLIPROOT LD_LIBRARY_PATH
+
 
 #pushd prg
 #	make && make install &&\
@@ -56,28 +72,28 @@ export CLIPROOT LD_LIBRARY_PATH
 #popd
 #exit 1
 
-mkdir -p %{DESTDIR}/usr/local/bin
-pushd %{DESTDIR}/usr/local/bin
-	BINS=`cd ../clip/bin; ls clip*`
+mkdir -p %{DESTDIR}%{BINDIR}
+pushd %{DESTDIR}%{BINDIR}
+	BINS=`cd %{DESTDIR}%{CLIPROOT}/bin; ls clip*`
 	rm -rf *
 	if [ -n "$BINS" ]
 	then
 		rm -rf $BINS
 		for name in $BINS
 		do
-			ln -s ../clip/bin/$name .
+			ln -s %{CLIPROOT}/bin/$name .
 		done
 	fi
 popd
-mkdir -p %{DESTDIR}/usr/lib
-pushd %{DESTDIR}/usr/lib
-	LIBS=`cd ../local/clip/lib; ls libclip* 2>/dev/null`
+mkdir -p %{DESTDIR}%{LIBDIR}
+pushd %{DESTDIR}%{LIBDIR}
+	LIBS=`cd %{DESTDIR}%{CLIPROOT}/lib; ls libclip* 2>/dev/null`
 	if [ -n "$LIBS" ]
 	then
 		rm -rf $LIBS
 		for name in $LIBS
 		do
-			ln -s ../local/clip/lib/$name .
+			ln -s %{CLIPROOT}/lib/$name .
 		done
 	fi
 popd
@@ -103,23 +119,27 @@ cp -R %{DESTDIR}/* $tmproot
 export DESTDIR=$tmproot
 export CLIPROOT=${DESTDIR}%{CLIPROOT}
 export CLIP_LOCALE_ROOT="${DESTDIR}${CLIPROOT}"
-export LD_LIBRARY_PATH="${DESTDIR}/usr/lib:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${DESTDIR}%{LIBDIR}:${LD_LIBRARY_PATH}"
 #export SCLIPROOT
 #=${SCLIPROOT}
 
 # build cliplibs
 pushd cliplibs
-        make rpm
+	make %{rpm_target}
 popd
 
 # build prg
 pushd prg
 	make rpm
 popd
+rm -f %{DESTDIR}/%{CLIPROOT}/bin/ftosgml
+rm -f %{DESTDIR}/%{CLIPROOT}/bin/ctosgml
+
 
 rm -rf $tmproot
 
-%install
+#%install
+#
 
 %clean
 
@@ -149,8 +169,19 @@ chmod -R g+w $LOCALEDIRS || true
 %defattr(-,root,root)
 %dir %{CLIPROOT}/locale.pot
 %dir %{CLIPROOT}/locale.po
-/usr/lib/libclip.so
+%{CLIPROOT}/locale.po/es_ES.8859-1/clip.po
+%{CLIPROOT}/locale.po/es_ES.8859-1/cliprt.po
+%{CLIPROOT}/locale.po/es_ES.8859-1/sys.po
+%{CLIPROOT}/locale.po/es_ES.ISO01/clip.po
+%{CLIPROOT}/locale.po/es_ES.ISO01/cliprt.po
+%{CLIPROOT}/locale.po/es_ES.ISO01/sys.po
+%{CLIPROOT}/locale.po/ru_RU.KOI8-R/clip.po
+%{CLIPROOT}/locale.po/ru_RU.KOI8-R/cliprt.po
+%{CLIPROOT}/locale.po/ru_RU.KOI8-R/sys.po
+%{CLIPROOT}/locale.po/ru_RU.KOI8-R/codb.po
+%{LIBDIR}/libclip.so
 %{CLIPROOT}/lib/libclip.so
+%{CLIPROOT}/lib/libclip-codb.so
 %{CLIPROOT}/charsets
 %{CLIPROOT}/keymaps
 %{CLIPROOT}/lang
@@ -161,11 +192,13 @@ chmod -R g+w $LOCALEDIRS || true
 %files
 %defattr(-,root,root)
 %docdir %{CLIPROOT}/doc
-/usr/local/bin
+%{BINDIR}
 %{CLIPROOT}/bin
 %{CLIPROOT}/doc
 %{CLIPROOT}/lib/*.a
+%{CLIPROOT}/lib/*.ex
+%{CLIPROOT}/lib/*.nm
 %{CLIPROOT}/include
 %{CLIPROOT}/locale.pot
 %{CLIPROOT}/cliprc/clipflags
-
+%{CLIPROOT}/cliprc/.notrm

@@ -5,6 +5,56 @@
 */
 /*
    $Log: set.c,v $
+   Revision 1.85  2004/02/25 09:12:19  clip
+   uri: SIGSEGV fixed in set(_SET_ROOTPATH)
+
+   Revision 1.84  2004/02/05 11:03:46  clip
+   rust: common ClipMachine->kbdbuf
+
+   Revision 1.83  2004/01/04 10:24:50  clip
+   uri: add set(_SET_ROOTPATH,"rootpath") for add "rootpath" to all filenames,
+		via "/var/www/htdocs" in apache.
+
+   Revision 1.82  2003/11/20 13:59:35  clip
+   uri: small fix
+
+   Revision 1.81  2003/11/19 11:48:25  clip
+   add FLUSHOUT_FLAG, _SET_FLUSHOUT to set
+   paul
+
+   Revision 1.80  2003/09/08 15:06:03  clip
+   uri: next step fixes for mingw from uri
+
+   Revision 1.79  2003/09/04 14:04:41  clip
+   *** empty log message ***
+
+   Revision 1.78  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.77  2003/08/04 12:50:33  clip
+   uri: get object support datetime type and small fix in set(_SET_SECONDS)
+
+   Revision 1.76  2003/02/18 11:02:05  clip
+   uri: small fix
+
+   Revision 1.75  2003/02/10 13:04:47  clip
+   rust: SET MULTILOCKS ON|OFF (FlagShip extension)
+
+   Revision 1.74  2003/02/02 12:23:36  clip
+   uri: FT_COLOR2N() added
+
+   Revision 1.73  2002/11/20 09:18:16  clip
+   SET(_SET_ESC_DELAY[, <nMilliseconds>]) -> nOldMilliseconds
+   get/set Esc timeout in milliseconds; default == 300 ms
+   closes #50
+   paul
+
+   Revision 1.72  2002/10/29 13:29:45  clip
+   rust: SET INDEX BUFFER LIMIT [TO] <n_Megabytes>
+	  SET MAP FILE ON|OFF
+
    Revision 1.71  2002/10/02 12:21:55  clip
    uri: added "set buffring on|off" and changed fileIO functions for it.
 
@@ -294,6 +344,12 @@
 #include <fcntl.h>
 
 #include "clip.h"
+#include "clipcfg.h"
+
+#ifdef OS_CYGWIN
+	#include <io.h>
+#endif
+
 #include "set.ch"
 #include "screen/screen.h"
 #include "hashcode.h"
@@ -388,15 +444,15 @@ set_flag1(ClipMachine * mp, int flag, int beg, int inverse)
 
 		if (lp != -1)
 		{
-                	if (inverse)
-                        {
+					if (inverse)
+						{
 				if (lp)
 					mp->flags1 &= ~flag;
 				else
 					mp->flags1 |= flag;
 			}
-                        else
-                        {
+						else
+						{
 				if (lp)
 					mp->flags1 |= flag;
 				else
@@ -412,35 +468,35 @@ _clip_addExtToFile(char *buf,int maxlen, const char *sExt)
 	int len=strlen(buf);
 	int len2=strlen(sExt);
 	int i=len,j;
-        int extExist = 0;
-        /* filename begin from end string*/
-        for (; i>=0; i--)
-        {
-        	if (buf[i] == '/')
-                	break;
-        	if (buf[i] == '\\')
-                	break;
-        	if (buf[i] == ':')
-                	break;
-        }
-        /* ext exist ? */
-        for (; i < len ; i++)
-        {
-        	if ( buf[i] == '.' )
-                	extExist = 1;
-        }
+		int extExist = 0;
+		/* filename begin from end string*/
+		for (; i>=0; i--)
+		{
+			if (buf[i] == '/')
+					break;
+			if (buf[i] == '\\')
+					break;
+			if (buf[i] == ':')
+					break;
+		}
+		/* ext exist ? */
+		for (; i < len ; i++)
+		{
+			if ( buf[i] == '.' )
+					extExist = 1;
+		}
 	i=len;
-        if (!extExist && i < (maxlen-(len2+1)) )
-        {
-        	buf[i] = '.';
-                for (j=0,i++; j<len2; j++, i++)
-        		buf[i] = sExt[j];
-                buf[i]=0;
-                extExist = 1;
-        }
-        else
-        	extExist = 0;
-        return extExist;
+		if (!extExist && i < (maxlen-(len2+1)) )
+		{
+			buf[i] = '.';
+				for (j=0,i++; j<len2; j++, i++)
+				buf[i] = sExt[j];
+				buf[i]=0;
+				extExist = 1;
+		}
+		else
+			extExist = 0;
+		return extExist;
 }
 
 static void
@@ -839,7 +895,7 @@ clip_SET(ClipMachine * mp)
 			mp->typeahead = lp;
 			mp->kbdbuf = (int *) realloc(mp->kbdbuf, lp * sizeof(int));
 
-			mp->kbdptr = mp->kbdbuf;
+			*mp->kbdptr = mp->kbdbuf;
 		}
 		break;
 
@@ -894,7 +950,7 @@ clip_SET(ClipMachine * mp)
 					return 1;
 				}
 
-                                _clip_addExtToFile(buf,PATH_MAX,"txt");
+								_clip_addExtToFile(buf,PATH_MAX,"txt");
 				sp = strdup(buf);
 
 				if (access(sp, F_OK) != 0)
@@ -905,7 +961,7 @@ clip_SET(ClipMachine * mp)
 					_clip_trap_printf(mp, __FILE__, __LINE__, "%s: '%s'", strerror(errno), sp);
 					return 1;
 				}
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 				setmode(fileno(alt),O_BINARY);
 #endif
 				if (mp->altfile != NULL)
@@ -959,7 +1015,7 @@ clip_SET(ClipMachine * mp)
 					return 1;
 				}
 
-                                _clip_addExtToFile(buf,PATH_MAX,"txt");
+								_clip_addExtToFile(buf,PATH_MAX,"txt");
 				sp = strdup(buf);
 
 				if (access(sp, F_OK) != 0)
@@ -972,7 +1028,7 @@ clip_SET(ClipMachine * mp)
 				}
 				if (mp->extrafile != NULL)
 					free(mp->extrafile);
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 				setmode(fileno(extra),O_BINARY);
 #endif
 				mp->extrafile = sp;
@@ -1025,7 +1081,7 @@ clip_SET(ClipMachine * mp)
 					char buf[PATH_MAX];
 
 					_clip_translate_path(mp, sp, buf, sizeof(buf));
-                                        _clip_addExtToFile(buf,PATH_MAX,"prn");
+										_clip_addExtToFile(buf,PATH_MAX,"prn");
 
 					mp->real_prfile = mp->prfile = strdup(buf);
 				}
@@ -1046,7 +1102,7 @@ clip_SET(ClipMachine * mp)
 					mp->prfile = 0;
 					return 1;
 				}
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 				setmode(fileno(printer),O_BINARY);
 #endif
 				mp->printer = printer;
@@ -1139,8 +1195,11 @@ clip_SET(ClipMachine * mp)
 		break;
 	case _SET_DISPBOX:
 		set_flag1(mp, DISPBOX_FLAG, 1, 0);
-		_clip_fullscreen(mp);
-		setPgMode_Screen(mp->screen, !(mp->flags1 & DISPBOX_FLAG) );
+		if (mp->fullscreen)
+		{
+			_clip_fullscreen(mp);
+			setPgMode_Screen(mp->screen, !(mp->flags1 & DISPBOX_FLAG) );
+		}
 		break;
 	case _SET_OPTIMIZE:
 		set_flag1(mp, OPTIMIZE_FLAG, 1, 0);
@@ -1154,6 +1213,13 @@ clip_SET(ClipMachine * mp)
 	case _SET_BUFFERING:
 		set_flag1(mp, BUFFERING_FLAG, 1, 0);
 		break;
+	case _SET_MAP_FILE:
+		set_flag1(mp, MAP_FILE_FLAG, 1, 0);
+		break;
+	case _SET_MULTILOCKS:
+		set_flag1(mp, MULTILOCKS_FLAG, 1, 0);
+	case _SET_FLUSHOUT:
+		set_flag1(mp, FLUSHOUT_FLAG, 1, 0);
 	case _SET_OPTIMIZELEVEL:
 		_clip_retni(mp, mp->optimizelevel + 1);
 		if (argc > 1)
@@ -1172,7 +1238,7 @@ clip_SET(ClipMachine * mp)
 		}
 		break;
 	case _SET_HOURS:
-		_clip_retni(mp, mp->lockstyle);
+		_clip_retni(mp, mp->hours);
 		if (argc > 1)
 		{
 			lp = _clip_parni(mp, 2);
@@ -1180,10 +1246,21 @@ clip_SET(ClipMachine * mp)
 		}
 		break;
 	case _SET_SECONDS:
-		_clip_retni(mp, mp->lockstyle);
+		_clip_retl(mp, mp->seconds);
 		if (argc > 1)
 		{
-			lp = _clip_parni(mp, 2);
+			lp = 0;
+			if ( _clip_parinfo(mp,2) == LOGICAL_t )
+			{
+				lp = _clip_parl(mp, 2);
+			//printf("\nset=logical,lp=%d\n",lp);
+			}
+			if ( _clip_parinfo(mp,2) == CHARACTER_t )
+			{
+				if ( strncasecmp("ON",_clip_parc(mp,2),2) == 0)
+					lp = 1;
+			//printf("\nset=%s,lp=%d\n",_clip_parc(mp,2),lp);
+			}
 			mp->seconds = lp;
 		}
 		break;
@@ -1197,7 +1274,47 @@ clip_SET(ClipMachine * mp)
 			mp->eventmask = lp;
 		}
 		break;
+	case _SET_INDEX_BUFFER_LIMIT:
+		_clip_retni(mp, mp->index_buffer_limit);
+		if (argc > 1)
+		{
+			lp = _clip_parni(mp, 2);
+			if (lp < 0)
+				lp = 0;
+			mp->index_buffer_limit = lp;
+		}
+		break;
+	case _SET_ESC_DELAY:
+		_clip_retni(mp, esc_delay_Screen);
+		if (argc > 1)
+		{
+			lp = _clip_parni(mp, 2);
+			if (lp > 0)
+				esc_delay_Screen = lp;
+		}
+		break;
 
+	case _SET_ROOTPATH:
+		_clip_retc(mp, mp->rootpath);
+		if ( mp->rootpath==NULL && argc > 1 && (sp = _clip_parc(mp, 2)))
+		{
+			int len;
+			len = strlen(sp);
+			mp->rootpath = malloc(len+2);
+			strcpy(mp->rootpath,sp);
+			if (sp[len-1] == '/' || sp[len-1] == '\\')
+				;
+			else
+			{
+#ifdef _WIN32
+				mp->rootpath[len] = '\\';
+#else
+				mp->rootpath[len] = '/';
+#endif
+				mp->rootpath[len+1] = 0;
+			}
+		}
+		break;
 	default:
 		{
 			char *name = _clip_parc(mp, 1);
@@ -1206,7 +1323,6 @@ clip_SET(ClipMachine * mp)
 			{
 				char *val;
 				long hash;
-
 				hash = _clip_hashstr(name);
 				val = _clip_fetch_item(mp, hash);
 				if (val)
@@ -1221,6 +1337,12 @@ clip_SET(ClipMachine * mp)
 					val = _clip_parcl(mp, 2, &len);
 					if (val)
 						_clip_store_item(mp, hash, _clip_memdup(val, len));
+				}
+
+				if ( strlen(name)==2 && name[1]==':' && name[0]>='A' && name[0]<='Z' )
+				{
+					int clip_INIT__CTOOLS_DISKFUNC(ClipMachine * mp);
+					clip_INIT__CTOOLS_DISKFUNC(mp);
 				}
 			}
 		}
@@ -1260,21 +1382,27 @@ clip_COLORTON(ClipMachine * mp)
 }
 
 int
+clip_FT_COLOR2N(ClipMachine * mp)
+{
+	return clip_COLORTON(mp);
+}
+
+int
 clip_NTOCOLOR(ClipMachine * mp)
 {
 	int attr = _clip_parni(mp, 1);
-        int num_format = _clip_parl(mp,2);
+		int num_format = _clip_parl(mp,2);
 	char *buf ;
-        if (attr <0 || attr>0xff)
-        {
-        	_clip_retc(mp,"");
-                return 0;
-        }
+		if (attr <0 || attr>0xff)
+		{
+			_clip_retc(mp,"");
+				return 0;
+		}
 	buf = malloc(32);
 	memset(buf,0,32);
 	_clip_attr2str(attr, buf, 31, !num_format);
 	_clip_retc(mp, buf);
-        free(buf);
+		free(buf);
 	return 0;
 }
 
@@ -1387,4 +1515,5 @@ set_printer_charset(ClipMachine * mp)
 	free(cs1);
 	free(cs2);
 	  norm:
+		;
 }

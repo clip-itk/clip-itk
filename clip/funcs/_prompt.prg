@@ -27,7 +27,8 @@ function __AtPrompt(row,col,prompt,msg)
 		prompt:=substr(prompt,1,pos-1)+substr(prompt,pos+1)
 		aadd(massHotkey,{pos,lower(substr(prompt,pos,1))})
 	else
-		aadd(massHotkey,{0,substr(HOT_KEYS,nhotkey,1)})
+		//aadd(massHotkey,{0,substr(HOT_KEYS,nhotkey,1)})
+		aadd(massHotkey,{0,lower(left(alltrim(prompt),1))})
 		nhotkey++
 	endif
 	aadd(massPrompt,{int(row),int(col),prompt,msg})
@@ -38,14 +39,22 @@ function __AtPrompt(row,col,prompt,msg)
 	endif
 return .f.
 ***************************************
-static function sayPromptVyd(n,colVyb)
+static function sayPromptVyd(n,colVyb,colOsn)
 	local row:=set(_SET_MESSAGE)
+	local _colOsn:=set("MENUTO_MESSAGE_COLOR")
+	if empty(_colOsn)
+		_colOsn := colOsn
+	endif
 	dispOutAt( massPrompt[n][1],massPrompt[n][2], massPrompt[n][3], colVyb )
 	if !empty(massprompt[n][4]) .and. row>0
-		if set(_SET_MCENTER)
-			dispOutAt( row,0, padc(massprompt[n][4],maxcol()), colvyb )
+		if valtype(massprompt[n][4]) =="B"
+			eval(massprompt[n][4])
 		else
-			dispOutAt( row,0, padr(massprompt[n][4],maxcol()), colvyb )
+			if set(_SET_MCENTER)
+				dispOutAt( row,0, padc(massprompt[n][4],maxcol()), _colOsn )
+			else
+				dispOutAt( row,0, massprompt[n][4], _colOsn )
+			endif
 		endif
 	endif
 	//setpos(massPrompt[n][1],massPrompt[n][2])
@@ -77,7 +86,7 @@ function __menuTo(choice,_varname)
 	local bKeyBlock, oldErrBlock,err
 	local _massp,_masshk
 	local chr, lenMass:=len(massPrompt)
-	local mI, mCol, mChoice
+	local mI, mCol, mChoice ,maxlen:=0
 	//parameters choice,_varname
 	set("__readvar",_varname)
 	oldcur:=setcursor(0)
@@ -101,7 +110,17 @@ function __menuTo(choice,_varname)
 	if nchoice==NIL .or. nchoice<=0 .or. nchoice>len(massprompt)
 		nchoice=1
 	endif
-	sayPromptVyd(nChoice,colDop)
+	for i=1 to len(massPrompt)
+		maxLen := max(maxLen,len(massPrompt[i][4]))
+	next
+	for i=1 to len(massPrompt)
+		if valtype(massPrompt[i][4])=="C"
+			massPrompt[i][4] := padr(massPrompt[i][4],maxLen)
+		else
+			massPrompt[i][4] := space(maxLen)
+		endif
+	next
+	sayPromptVyd(nChoice,colDop,colOsn)
 	do while nKey!=27 .and. nKey!=13
 		do while .t.
 			nKey := InKey(0, 255) //INKEY_ALL)
@@ -138,7 +157,7 @@ function __menuTo(choice,_varname)
 				else
 					sayPrompt(nChoice,colOsn)
 					nChoice:=mChoice
-					sayPromptVyd(nChoice,colDop)
+					sayPromptVyd(nChoice,colDop,colOsn)
 					nKey := -1
 				endif
 			endif
@@ -147,33 +166,34 @@ function __menuTo(choice,_varname)
 			case nKey==5 .or. nKey==19
 				sayPrompt(nChoice,colOsn)
 				nChoice:=iif(nChoice > 1, nChoice-1, iif( lWrap, lenMass, nChoice))
-				sayPromptVyd(nChoice,colDop)
+				sayPromptVyd(nChoice,colDop,colOsn)
 			case nKey==24 .or. nKey==4
 				sayPrompt(nChoice,colOsn)
 				nChoice:=iif(nChoice < lenMass, nChoice+1,  iif( lWrap, 1, nChoice))
-				sayPromptVyd(nChoice,colDop)
+				sayPromptVyd(nChoice,colDop,colOsn)
 			case nKey==1
 				sayPrompt(nChoice,colOsn)
 				nChoice:=1
-				sayPromptVyd(nChoice,colDop)
+				sayPromptVyd(nChoice,colDop,colOsn)
 			case nKey==6  //End
 				sayPrompt(nChoice,colOsn)
 				nChoice:=lenMass
-				sayPromptVyd(nChoice,colDop)
+				sayPromptVyd(nChoice,colDop,colOsn)
 			case nKey >= 32 .and. nKey <= 259
 				oldChoice:=nChoice
 				chr:=alltrim(lower(chr(lastKey())))
-				i:=iif(nChoice<lenMass,nChoice+1,1)
-			do while i!=nChoice
-				if chr==massHotkey[i][2]
-					flagSeek:=.t.
-					sayPrompt(nChoice,colOsn)
-					nChoice:=i
-					sayPromptVyd(nChoice,colDop)
-					exit
-				endif
-				i:=(iif(i==lenMass, 1, i+1))
-			enddo
+				i:=1 //i:=iif(nChoice<lenMass,nChoice+1,1)
+				do while i<=lenMass//i!=nChoice
+					if chr==massHotkey[i][2]
+						flagSeek:=.t.
+						sayPrompt(nChoice,colOsn)
+						nChoice:=i
+						sayPromptVyd(nChoice,colDop,colOsn)
+						keyboard chr(13)
+						exit
+					endif
+					i++ //i:=(iif(i==lenMass, 1, i+1))
+				enddo
 		endcase
 		dispend()
 		PrevChoice:=nChoice

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
@@ -54,7 +54,6 @@ LOCAL i,lg,LgMax,HMax,hMin,Smlen,lExact,cColor,adjust,B_row,;
 	MakeMenu(Doing)
 */
 lExact:=Set(_SET_EXACT,.t.)
-*ScrSave(@scr)
 
 IF !Empty(_Color)
 	cColor:=SetColor(IF( ValType(_Color)=='C',;
@@ -220,6 +219,7 @@ DO WHILE E_Sel(Current)
 ENDDO
 oldPos:=Current
 
+DispBegin()
 FOR i:=1 to nLArrp
 	aEl:=ArrP[i]
 	j:=AT('~',cp:=aEl[P_PROMPT])
@@ -242,6 +242,7 @@ FOR i:=1 to nLArrp
 	IF clr==1 THEN;	//Обычный пункт
 		Ch_Attr(aEl[P_ROW],aEl[HI_POS],char)
 NEXT
+DispEnd()
 _ff_e:=Nation2Usa(_ff)
 
 DO WHILE .t.
@@ -323,13 +324,14 @@ DO WHILE .t.
 	ENDIF
 	IF Current<>oldPos
 		aEl:=ArrP[oldPos]
+		DispBegin()
 		@ aEl[P_ROW],aEl[P_COL] SAY aEl[P_PROMPT] COLOR UsualColor
 
 		Ch_Attr(aEl[P_ROW], aEl[HI_POS], aEl[HI_CHAR])
 
 		aEl:=ArrP[Current]
 		@ aEl[P_ROW],aEl[P_COL] SAY aEl[P_PROMPT] COLOR ReversColor
-
+		DispEnd()
 		oldPos:=Current
 	ENDIF
 	ShowMouse()
@@ -362,7 +364,7 @@ FUNC BarMenu(aMenu,Current,lSaveScreen)
 				   CurPrompt,color)
 
 LOCAL	i,ckey,lm:=LEN(aMenu),_my,_mx,firstKeys:='',scr,;
-	aItem, color:=m->_MenuColor, aDb, CurPrompt
+	aItem, color:=m->_MenuColor, aDb, CurPrompt, sc:=SetCursor(0)
 
 IF !EMPTY(lSaveScreen) THEN scr:=SaveScreen()
 
@@ -423,4 +425,5 @@ DO WHILE .T.
 ENDDO
 
 IF !EMPTY(lSaveScreen) THEN ScrRest(scr)
+SetCursor(sc)
 RETURN Current

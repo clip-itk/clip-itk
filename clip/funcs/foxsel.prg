@@ -385,10 +385,12 @@ static function sql_openDB()
 	local i,j
         for i in ::from
         	if i:hDB==NIL
-                	if (j:=getarea(i:file)) > 0
+                	if (j:=getalias(i:file)) > 0
 				i:hDB:=rddHandle(j)
+				i:Open:=.f.
                         else
         			i:hDB:=rddUseArea(,i:file,.t.,.f.)
+				i:Open:=.t.				
                         	if file(i:file+memoext())
         				rddSetMemo(i:hDB,,i:file)
                         	endif
@@ -407,7 +409,7 @@ static function sql_closeDB()
         	return
         endif
         for i in ::from
-        	if i:hDB!=NIL
+        	if i:hDB!=NIL.and.i:Open
         		rddCloseArea(i:hDB)
                         i:hDB:=NIL
                 endif
@@ -539,8 +541,8 @@ static function sql_parseFields()
                 	loop
                 endif
                 if xnames[xname][1]>1
-                        xname:=substr(xname,1,8)
-                	xname+="_"+chr(64+xnames[xname][2]++)
+                      xname:=substr(xname,1,8)
+             	      xname+="_"+chr(64+xnames[i:xname][2]++)
                 endif
                 i:xname:=xname
         next
@@ -1628,21 +1630,21 @@ static function sql_initOut()
         	case ::to==SQL_TO_CURSOR
                 	fname:=tmpfile()
                         dbcreate(fname,mstru)
-                        use (fname) alias (::fileName) exclusive temporary
+                        use (fname) alias (::fileName) exclusive temporary new
                         ::newLine :=@tbl_newLine()
                         ::out    :=@tbl_out()
                         ::heading:=.f.
                         ::outBuffer:=map()
         	case ::to==SQL_TO_DBF
                         dbcreate(::filename,mstru)
-                        use (::filename)
+                        use (::filename) new
                         ::newLine :=@tbl_newLine()
                         ::out    :=@tbl_out()
                         ::heading:=.f.
                         ::outBuffer:=map()
         	case ::to==SQL_TO_TABLE
                         dbcreate(::filename,mstru)
-                        use (::filename)
+                        use (::filename) new
                         ::newLine :=@tbl_newLine()
                         ::out    :=@tbl_out()
                         ::heading:=.f.

@@ -1,6 +1,10 @@
-ifdef CLIPROOT
-include $(CLIPROOT)/include/Makefile.inc
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
+
+include $(CLIPROOT)/include/Makefile.inc
+
+export CLIPROOT
 
 all:
 	cd netto && $(MAKE)

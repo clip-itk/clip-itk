@@ -1,10 +1,57 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Sergey Rosenfeld <serg@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Sergey Rosenfeld <serg@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
    $Log: diskutils.c,v $
+   Revision 1.104  2003/09/09 14:36:15  clip
+   uri: fixes for mingw from Mauricio and Uri
+
+   Revision 1.103  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.102  2003/06/27 09:55:08  clip
+   uri: some fix
+
+   Revision 1.101  2003/05/19 08:24:40  clip
+   uri: tempfile() rewrited and moved from diskutils.c to ftools.prg
+	C-level  mkstemp() not compatibility with:
+	- len of file name is not 8 bites
+	- file name have lower and upper characters
+
+   Revision 1.100  2003/04/02 13:47:33  clip
+   rust: small fix
+
+   Revision 1.99  2003/04/02 10:53:19  clip
+   rust: _clip_close() added
+
+   Revision 1.98  2002/11/12 10:41:42  clip
+   uri:small fix in dirChange()
+
+   Revision 1.97  2002/11/05 13:20:01  clip
+   *** empty log message ***
+
+   Revision 1.96  2002/11/05 11:19:09  clip
+   *** empty log message ***
+
+   Revision 1.95  2002/10/21 11:06:17  clip
+   *** empty log message ***
+
+   Revision 1.94  2002/10/19 14:16:47  clip
+   uri: small fix
+
+   Revision 1.93  2002/10/19 12:45:14  clip
+   uri: small fix for cygwin
+
+   Revision 1.92  2002/10/16 15:42:18  clip
+   uri: small fix in curdir() under cygwin
+
+   Revision 1.91  2002/10/16 15:41:16  clip
+   *** empty log message ***
+
    Revision 1.90  2002/09/07 12:55:16  clip
    uri: small fix
 
@@ -275,6 +322,7 @@
 
  */
 
+#include "clipcfg.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -286,7 +334,9 @@
 #include <time.h>
 
 #include <sys/param.h>
+#ifndef OS_MINGW
 #include <sys/mount.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -306,6 +356,7 @@
 #endif
 #ifdef OS_CYGWIN
 #include <w32api/windows.h>
+#include <sys/cygwin.h>
 #endif
 
 #include "hashcode.h"
@@ -370,7 +421,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	char *s = NULL, hstr[10];
 	int *f_attr = NULL;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	LPTSTR currpath;
 	LPTSTR savepath;
 	LPTSTR cDisk;
@@ -398,7 +449,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	 * рабочий каталог dos
 	 */
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 
 	savepath = malloc(sizeof(LPTSTR) * (MAXPATHLEN + 1));
 	i = GetCurrentDirectory(MAXPATHLEN, savepath);
@@ -421,6 +472,19 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 		if (SetCurrentDirectory(cDisk) <= 0)
 			continue;
 		j = GetCurrentDirectory(MAXPATHLEN, currpath);
+#if 0
+		if (j>3)
+		{
+			char *ch = (char *) calloc(MAXPATHLEN, 1);
+			cygwin_win32_to_posix_path_list(currpath,ch);
+			_clip_store_item(cm, _hash_cur_dir[i - 65], ch);
+		}
+		else if (j==3)
+		{
+			char *ch = (char *) calloc(1, 1);
+			_clip_store_item(cm, _hash_cur_dir[i - 65], ch);
+		}
+#else
 		if (j > 0)
 		{
 			char *ch = (char *) calloc(j - 1, 1);
@@ -428,6 +492,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 			memcpy(ch, currpath + 2, j - 1);
 			_clip_store_item(cm, _hash_cur_dir[i - 65], ch);
 		}
+#endif
 	}
 	i = SetCurrentDirectory(savepath);
 	free(savepath);
@@ -699,8 +764,13 @@ clip_DIRCHANGE(ClipMachine * cm)
 		_clip_retni(cm, ER_PATH_NOT_FOUND);
 		return 0;
 	}
-#if 1
-/* uri added - curdir with drive specification */
+#ifdef _WIN32
+	if (SetCurrentDirectory(dname) <= 0)
+	{
+		_clip_retni(cm, ER_PATH_NOT_FOUND);
+		return 0;
+	}
+#endif
 	if (strlen(dname) > 2 && *(dname + 1) == ':')
 	{
 		drv = calloc(1, 3);
@@ -710,8 +780,26 @@ clip_DIRCHANGE(ClipMachine * cm)
 		drv[1] = ':';
 		_clip_store_item(cm, CLIP_CUR_DRIVE, drv);	/* смена текущего диска */
 		hash_dir = _hash_cur_dir[*drv - 65];
-		dname++;
-		*dname = '/';
+		dname+=2;
+//		*dname = '/';
+//		printf("\ndname=%s\n",dname);
+	}
+#ifdef _WIN32
+	{
+	char ndir [MAXPATHLEN];
+	char * ch;
+	int len;
+	len = GetCurrentDirectory(MAXPATHLEN, ndir);
+	if (len > 0)
+	{
+		ch = (char *) calloc(len - 1, 1);
+		memcpy(ch, ndir + 2, len - 1);
+	}
+	else
+		ch = (char *) calloc(1,1);
+	_clip_store_item(cm, hash_dir, ch);
+	_clip_retni(cm, NO_DISK_ERR);	/* success */
+	return 0;
 	}
 #endif
 	if (*dname == '\\' || *dname == '/')
@@ -770,7 +858,7 @@ clip_DIRCHANGE(ClipMachine * cm)
 		char *dir = NULL, *ndir = NULL;
 
 #if 0
-	      next:
+		  next:
 #endif
 		if (*dname == '\\' || *dname == '/')
 		{		/* абсолютный путь dos */
@@ -859,8 +947,8 @@ clip_DIRMAKE(ClipMachine * cm)
 	 * создаем каталог со всеми правами для всех, они обрежутся
 	 * в зависимости от установки umask для этого юзера
 	 */
-#if 0
-	if (mkdir(uname, S_IRWXU | S_IRWXG | S_IRWXO))
+#ifdef OS_MINGW
+	if (mkdir(uname))
 #else
 	if (mkdir(uname, cm->dirCreateMode))
 #endif
@@ -947,7 +1035,7 @@ clip_DIRREMOVE(ClipMachine * cm)
 	else
 		_clip_retni(cm, -3);
 
-      ret:
+	  ret:
 	free(uname);
 	return 0;
 }
@@ -981,16 +1069,29 @@ clip_DISKCHANGE(ClipMachine * cm)
 		drv[0] = *dname;
 		break;
 	}
-
+#ifdef _WIN32
+	if (SetCurrentDirectory(drv) > 0)
+	{
+		_clip_store_item(cm, CLIP_CUR_DRIVE, drv);
+		_clip_retl(cm, 1);
+	}
+	else
+		_clip_retl(cm, 0);
+#else
 	_clip_store_item(cm, CLIP_CUR_DRIVE, drv);
 	_clip_retl(cm, 1);
+#endif
 	return 0;
 }
 
 int
 clip_DISKFREE(ClipMachine * cm)
 {
+#ifdef OS_MINGW
+	DWORD fs;
+#else
 	struct statfs st;
+#endif
 
 	/*struct statvfs stv; */
 	char *dname = _clip_parc(cm, 1);
@@ -1010,12 +1111,18 @@ clip_DISKFREE(ClipMachine * cm)
 		return 0;
 	}
 
+#ifdef OS_MINGW
+	GetDiskFreeSpace(uname, NULL, NULL, &fs, NULL);
+	_clip_retnd(cm, ((double) fs) * fs);
+#else
 	if (statfs(uname, &st))
 	{
 		_clip_retnd(cm, 0);
 		return 0;
 	}
 	_clip_retnd(cm, ((double) st.f_bavail) * st.f_bsize);
+#endif
+
 	return 0;
 }
 
@@ -1075,11 +1182,14 @@ clip_DISKREADYW(ClipMachine * cm)
 	}
 	else
 	{
+#ifdef OS_MINGW
+		_clip_retl(cm, 0);
+#else
 		uid_t uid = geteuid();
 		gid_t gid = getegid();
 
 		if ((uid == st.st_uid && (st.st_mode & S_IWUSR)) ||
-		    (gid == st.st_gid && (st.st_mode & S_IWGRP)) || (st.st_mode & S_IWOTH))
+			(gid == st.st_gid && (st.st_mode & S_IWGRP)) || (st.st_mode & S_IWOTH))
 		{
 			_clip_retl(cm, 1);
 		}
@@ -1087,6 +1197,7 @@ clip_DISKREADYW(ClipMachine * cm)
 		{
 			_clip_retl(cm, 0);
 		}
+#endif
 	}
 	return 0;
 }
@@ -1094,7 +1205,11 @@ clip_DISKREADYW(ClipMachine * cm)
 int
 clip_DISKTOTAL(ClipMachine * cm)
 {
+#ifdef OS_MINGW
+	DWORD dt;
+#else
 	struct statfs st;
+#endif
 	char *dname = _clip_parc(cm, 1);
 	char *uname;
 
@@ -1112,12 +1227,18 @@ clip_DISKTOTAL(ClipMachine * cm)
 		return 0;
 	}
 
+#ifdef OS_MINGW
+	GetDiskFreeSpace(uname, NULL, NULL, NULL, &dt);
+	_clip_retnd(cm, (double) dt);
+#else
 	if (statfs(uname, &st))
 	{
 		_clip_retnd(cm, 0);
 		return 0;
 	}
 	_clip_retnd(cm, ((double) st.f_blocks) * st.f_bsize);
+#endif
+
 	return 0;
 }
 
@@ -1134,61 +1255,61 @@ clip_DISKTYPE(ClipMachine * mp)	/* Determines the type of data carrier */
    240     DT_35_SEC_18        Double sided 3.5" 18 sectors
    248     DT_HARDDISK         Hard disk
  */
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	LPTSTR path = _clip_parc(mp,1);
-        LPTSTR buf;
-        int dType ;
-        int ret = 0,len ;
+	LPTSTR buf;
+	int dType ;
+	int ret = 0,len ;
 
 	if ( path == NULL || (*path) == 0)
 		path = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
 
 	len = strlen(path);
 	switch (len)
-        {
-                case 1:
-                	buf = malloc(4*sizeof(LPTSTR));
-                        buf[0] = path[0];
-                        buf[1] = ':';
-                        buf[2] = '/';
-                        buf[3]= 0;
-                	break;
-                case 2:
-                	buf = malloc(4*sizeof(LPTSTR));
-                        buf[0] = path[0];
-                        buf[1] = path[1];
-                        buf[2] = '/';
-                        buf[3]= 0;
-                	break;
-                default:
-                	buf = malloc(len+1);
-                        memcpy(buf,path,len);
-                        ( (char *)buf)[len]=0;
-                 	break;
-        }
-        dType = GetDriveType(buf);
-        free(buf);
+	{
+		case 1:
+			buf = malloc(4*sizeof(LPTSTR));
+			buf[0] = path[0];
+			buf[1] = ':';
+			buf[2] = '/';
+			buf[3]= 0;
+			break;
+		case 2:
+			buf = malloc(4*sizeof(LPTSTR));
+			buf[0] = path[0];
+			buf[1] = path[1];
+			buf[2] = '/';
+			buf[3]= 0;
+			break;
+		default:
+			buf = malloc(len+1);
+			memcpy(buf,path,len);
+			( (char *)buf)[len]=0;
+			break;
+	}
+	dType = GetDriveType(buf);
+	free(buf);
 
-        switch ( dType )
-        {
-        	case 0:
-                case 1:
-                	break;
-                case DRIVE_RAMDISK:
-                	ret=254;
-                        break;
-                case DRIVE_FIXED:
-                case DRIVE_REMOTE:
-                case DRIVE_CDROM:
-                	ret=248;
-                        break;
-                case DRIVE_REMOVABLE:
-                	ret=249;
-                        break;
+	switch ( dType )
+	{
+		case 0:
+		case 1:
+			break;
+		case DRIVE_RAMDISK:
+			ret=254;
+			break;
+		case DRIVE_FIXED:
+		case DRIVE_REMOTE:
+		case DRIVE_CDROM:
+			ret=248;
+			break;
+		case DRIVE_REMOVABLE:
+			ret=249;
+			break;
 
-        }
-        _clip_retni(mp,ret);
-        return 0;
+	}
+	_clip_retni(mp,ret);
+	return 0;
 #else
 	_clip_retni(mp, 248);
 	return 0;
@@ -1204,61 +1325,61 @@ clip_DRIVETYPE(ClipMachine * mp)	/* Determines the drive type */
    2       Floppy Disk (disk change can be established by system)
    3       Hard Disk
  */
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	LPTSTR path = _clip_parc(mp,1);
-        LPTSTR buf;
-        int dType ;
-        int ret = 0,len ;
+	LPTSTR buf;
+	int dType ;
+	int ret = 0,len ;
 
 	if ( path == NULL || (*path) == 0)
 		path = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
 
 	len = strlen(path);
 	switch (len)
-        {
-                case 1:
-                	buf = malloc(4*sizeof(LPTSTR));
-                        buf[0] = path[0];
-                        buf[1] = ':';
-                        buf[2] = '/';
-                        buf[3]= 0;
-                	break;
-                case 2:
-                	buf = malloc(4*sizeof(LPTSTR));
-                        buf[0] = path[0];
-                        buf[1] = path[1];
-                        buf[2] = '/';
-                        buf[3]= 0;
-                	break;
-                default:
-                	buf = malloc(len+1);
-                        memcpy(buf,path,len);
-                        ( (char *)buf)[len]=0;
-                 	break;
-        }
-        dType = GetDriveType(buf);
-        free(buf);
+	{
+		case 1:
+			buf = malloc(4*sizeof(LPTSTR));
+			buf[0] = path[0];
+			buf[1] = ':';
+			buf[2] = '/';
+			buf[3]= 0;
+			break;
+		case 2:
+			buf = malloc(4*sizeof(LPTSTR));
+			buf[0] = path[0];
+			buf[1] = path[1];
+			buf[2] = '/';
+			buf[3]= 0;
+			break;
+		default:
+			buf = malloc(len+1);
+			memcpy(buf,path,len);
+			( (char *)buf)[len]=0;
+			break;
+	}
+	dType = GetDriveType(buf);
+	free(buf);
 
-        switch ( dType )
-        {
-        	case 0:
-                case 1:
-                	break;
-                case DRIVE_RAMDISK:
-                	ret=0;
-                        break;
-                case DRIVE_FIXED:
-                case DRIVE_REMOTE:
-                case DRIVE_CDROM:
-                	ret=3;
-                        break;
-                case DRIVE_REMOVABLE:
-                	ret=2;
-                        break;
+	switch ( dType )
+	{
+		case 0:
+		case 1:
+			break;
+		case DRIVE_RAMDISK:
+			ret=0;
+			break;
+		case DRIVE_FIXED:
+		case DRIVE_REMOTE:
+		case DRIVE_CDROM:
+			ret=3;
+			break;
+		case DRIVE_REMOVABLE:
+			ret=2;
+			break;
 
-        }
-        _clip_retni(mp,ret);
-        return 0;
+	}
+	_clip_retni(mp,ret);
+	return 0;
 #else
 	_clip_retni(mp, 3);
 	return 0;
@@ -1293,12 +1414,16 @@ clip_FILEAPPEND(ClipMachine * cm)	/* Appends data to a file */
 
 	if (fattr && !(*fattr & FA_READONLY))
 	{
+#ifdef OS_MINGW
+		mode |= S_IWUSR;
+#else
 		mode |= S_IWUSR | S_IWGRP | S_IWOTH;
+#endif
 	}
 
 	if ((fdsrc = open(usrc, O_RDONLY)) < 0)
 	{
-            err:
+		err:
 		_clip_retni(cm, 0);
 		*err = errno;
 		goto end;
@@ -1306,35 +1431,35 @@ clip_FILEAPPEND(ClipMachine * cm)	/* Appends data to a file */
 
 	if (!_set_lock(fdsrc, F_RDLCK) || fstat(fdsrc, &st))
 	{
-            err1:
-        	close(fdsrc);
-                goto err;
+		err1:
+		close(fdsrc);
+		goto err;
 	}
 
 	if ( access(udst, F_OK) )
-        {
-        	if ( (fddst = _clip_creat(udst, O_WRONLY, mode, 1)) < 0 )
-                	goto err1;
-	}
-        else
 	{
-        	if ( (fddst = open(udst, O_WRONLY)) < 0 )
-                	goto err1;
+		if ( (fddst = creat(udst, mode)) < 0 )
+			goto err1;
+	}
+	else
+	{
+		if ( (fddst = open(udst, O_WRONLY)) < 0 )
+			goto err1;
 		if (!_set_lock(fddst, F_WRLCK))
-                {
-                    err2:
-                	close(fddst);
-                        goto err1;
-                }
+		{
+			err2:
+			close(fddst);
+			goto err1;
+		}
 	}
 
 	if (!(fsrc = fdopen(fdsrc, "r")))
-        {
-        	goto err2;
-        }
+	{
+		goto err2;
+	}
 	if ( !(fdst = fdopen(fddst, "a")) )
 	{
-        	close(fddst);
+		close(fddst);
 		_clip_retni(cm, 0);
 		*err = errno;
 		goto end;
@@ -1349,7 +1474,7 @@ clip_FILEAPPEND(ClipMachine * cm)	/* Appends data to a file */
 		}
 	}
 	_clip_retnd(cm, i);
-      end:
+	  end:
 	if (fsrc)
 		fclose(fsrc);
 	if (fdst)
@@ -1382,7 +1507,7 @@ clip___COPYFILE(ClipMachine * cm)
 	}
 
 	if ((fdsrc = open(usrc, O_RDONLY)) < 0 || (/*access(udst, F_OK) == 0 ||*/
-	    (fddst = _clip_creat(udst, O_WRONLY, cm->fileCreateMode, 1)) < 0))
+		(fddst = creat(udst, cm->fileCreateMode)) < 0))
 	{
 		ret = 0;
 		r = _clip_trap_err(cm, EG_OPEN, 0, 0, __FILE__, __LINE__, funcname);
@@ -1419,7 +1544,7 @@ clip___COPYFILE(ClipMachine * cm)
 		}
 	}
 
-      end:
+	  end:
 	_clip_retl(cm, ret);
 
 	if (fsrc)
@@ -1549,7 +1674,11 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 
 				fsd->fname[i] = 0;
 			}
+#ifdef _WIN32
+			if (_clip_glob_match(entry->d_name, mask, 1) != strlen(entry->d_name))
+#else
 			if (_clip_glob_match(entry->d_name, mask, 0) != strlen(entry->d_name))
+#endif
 				continue;
 			strcpy(filename, entry->d_name);
 			stat(fullname, &(fsd->st[i]));
@@ -1615,7 +1744,7 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 
 	_clip_retc(cm, fsd->fname[fsd->pos]);
 
-      end:
+	  end:
 	if (uname)
 		free(uname);
 	if (fullname)
@@ -1761,12 +1890,12 @@ int
 clip_FILEDATE(ClipMachine * cm)	/* Determines the file date */
 {
 /*
-       0       FA_NORMAL
-       1       FA_READONLY         READ ONLY (Read-only)
-       2       FA_HIDDEN           HIDDEN (Hidden files)
-       4       FA_SYSTEM           SYSTEM (System files)
-       16      FA_DIRECTORY        DIR (Directory)
-       32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
+	   0       FA_NORMAL
+	   1       FA_READONLY         READ ONLY (Read-only)
+	   2       FA_HIDDEN           HIDDEN (Hidden files)
+	   4       FA_SYSTEM           SYSTEM (System files)
+	   16      FA_DIRECTORY        DIR (Directory)
+	   32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
 */
 	struct stat st;
 	char *fname = NULL;
@@ -1775,9 +1904,9 @@ clip_FILEDATE(ClipMachine * cm)	/* Determines the file date */
 	struct tm *t = NULL;
 
 	if (fname != NULL && (fattr == FA_NORMAL ||
-			      ((fattr & FA_READONLY) && (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) ||
-			      ((fattr & FA_HIDDEN) && fname[0] == '.') ||
-			      ((fattr & FA_DIRECTORY) && S_ISDIR(st.st_mode)) || ((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode))))
+				  ((fattr & FA_READONLY) && (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) ||
+				  ((fattr & FA_HIDDEN) && fname[0] == '.') ||
+				  ((fattr & FA_DIRECTORY) && S_ISDIR(st.st_mode)) || ((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode))))
 	{
 		t = localtime(&st.st_mtime);
 	}
@@ -1785,7 +1914,7 @@ clip_FILEDATE(ClipMachine * cm)	/* Determines the file date */
 	if (t == NULL)
 		_clip_retdj(cm, 0);
 	else
-		_clip_retdc(cm, 1900 + t->tm_year, t->tm_mon, t->tm_mday);
+		_clip_retdc(cm, 1900 + t->tm_year, t->tm_mon+1, t->tm_mday);
 
 	if (uname != NULL)
 		free(uname);
@@ -1797,11 +1926,11 @@ int
 clip_FILESIZE(ClipMachine * cm)	/* Determines the size of a file */
 {
 /*
-       0       FA_NORMAL
-       1       FA_READONLY         READ ONLY (Read-only)
-       2       FA_HIDDEN           HIDDEN (Hidden files)
-       4       FA_SYSTEM           SYSTEM (System files)
-       32      FA_ARCHIVE          ARCHIVE (Changes since last backup.)
+	   0       FA_NORMAL
+	   1       FA_READONLY         READ ONLY (Read-only)
+	   2       FA_HIDDEN           HIDDEN (Hidden files)
+	   4       FA_SYSTEM           SYSTEM (System files)
+	   32      FA_ARCHIVE          ARCHIVE (Changes since last backup.)
 */
 	struct stat st;
 	char *fname = NULL;
@@ -1810,9 +1939,9 @@ clip_FILESIZE(ClipMachine * cm)	/* Determines the size of a file */
 	off_t fsize = -1;
 
 	if (fname != NULL && (fattr == FA_NORMAL ||
-			      ((fattr & FA_READONLY) && (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) ||
-			      ((fattr & FA_HIDDEN) && fname[0] == '.') ||
-			      ((fattr & FA_DIRECTORY) && S_ISDIR(st.st_mode)) || ((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode))))
+				  ((fattr & FA_READONLY) && (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) ||
+				  ((fattr & FA_HIDDEN) && fname[0] == '.') ||
+				  ((fattr & FA_DIRECTORY) && S_ISDIR(st.st_mode)) || ((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode))))
 	{
 		fsize = st.st_size;
 	}
@@ -1829,12 +1958,12 @@ int
 clip_FILETIME(ClipMachine * cm)	/* Determines a file's time */
 {
 /*
-       0       FA_NORMAL
-       1       FA_READONLY         READ ONLY (Read-only)
-       2       FA_HIDDEN           HIDDEN (Hidden files)
-       4       FA_SYSTEM           SYSTEM (System files)
-       16      FA_DIRECTORY        (Subdirectory)
-       32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
+	   0       FA_NORMAL
+	   1       FA_READONLY         READ ONLY (Read-only)
+	   2       FA_HIDDEN           HIDDEN (Hidden files)
+	   4       FA_SYSTEM           SYSTEM (System files)
+	   16      FA_DIRECTORY        (Subdirectory)
+	   32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
 */
 	struct stat st;
 	char *fname = NULL;
@@ -1846,9 +1975,9 @@ clip_FILETIME(ClipMachine * cm)	/* Determines a file's time */
 	memset(tbuf, 0, 9);
 
 	if (fname != NULL && (fattr == FA_NORMAL ||
-			      ((fattr & FA_READONLY) && (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) ||
-			      ((fattr & FA_HIDDEN) && fname[0] == '.') ||
-			      ((fattr & FA_DIRECTORY) && S_ISDIR(st.st_mode)) || ((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode))))
+				  ((fattr & FA_READONLY) && (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) ||
+				  ((fattr & FA_HIDDEN) && fname[0] == '.') ||
+				  ((fattr & FA_DIRECTORY) && S_ISDIR(st.st_mode)) || ((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode))))
 	{
 		t = localtime(&st.st_mtime);
 		snprintf(tbuf, 9, "%02d:%02d:%02d", t->tm_hour, t->tm_min, t->tm_sec);
@@ -1878,20 +2007,20 @@ int
 clip_SETFATTR(ClipMachine * cm)	/* Sets a file's attributes */
 {
 /*
-       Возвращаемые значения:
-       ~~~~~~~~~~~~~~~~~~~~~~
+	   Возвращаемые значения:
+	   ~~~~~~~~~~~~~~~~~~~~~~
 	0      NO_DISK_ERR         No error found
-       -2      ER_FILE_NOT_FOUND   File not found
-       -3      ER_PATH_NOT_FOUND   Path not found
-       -5      ER_ACCESS_DENIED    Access denied (e.g., in network)
+	   -2      ER_FILE_NOT_FOUND   File not found
+	   -3      ER_PATH_NOT_FOUND   Path not found
+	   -5      ER_ACCESS_DENIED    Access denied (e.g., in network)
 
-       Устанавливаемые атрибуты:
-       ~~~~~~~~~~~~~~~~~~~~~~~~~
-       0       FA_NORMAL
-       1       FA_READONLY         READ ONLY (Read-only)
-       2       FA_HIDDEN           HIDDEN (Hidden files)
-       4       FA_SYSTEM           SYSTEM (System files)
-       32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
+	   Устанавливаемые атрибуты:
+	   ~~~~~~~~~~~~~~~~~~~~~~~~~
+	   0       FA_NORMAL
+	   1       FA_READONLY         READ ONLY (Read-only)
+	   2       FA_HIDDEN           HIDDEN (Hidden files)
+	   4       FA_SYSTEM           SYSTEM (System files)
+	   32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
 */
 	char *uname = _get_unix_name(cm, _clip_parc(cm, 1));
 	int fattr = _clip_parni(cm, 2);
@@ -1902,10 +2031,18 @@ clip_SETFATTR(ClipMachine * cm)	/* Sets a file's attributes */
 		_clip_retni(cm, ER_PATH_NOT_FOUND);
 		return 1;
 	}
+#ifdef OS_MINGW
+	mode = S_IRUSR;
+#else
 	mode = S_IRUSR | S_IRGRP | S_IROTH;
+#endif
 	if (!(fattr & FA_READONLY))
 	{
+#ifdef OS_MINGW
+		mode = S_IWUSR;
+#else
 		mode |= S_IWUSR | S_IWGRP | S_IWOTH;
+#endif
 	}
 	if (chmod(uname, mode) != 0)
 	{
@@ -1942,7 +2079,7 @@ clip_FILESTR(ClipMachine * cm)	/* Reads a portion of a file into a string */
 		nlen = 0xFFFF;
 
 	if ((fd = open(uname, O_RDONLY)) == -1 || !_set_lock(fd, F_RDLCK) ||
-	    (f = fdopen(fd, "r")) == NULL || fseek(f, noff, SEEK_SET) || (ret = (char *) malloc(nlen)) == NULL)
+		(f = fdopen(fd, "r")) == NULL || fseek(f, noff, SEEK_SET) || (ret = (char *) malloc(nlen)) == NULL)
 		goto end;
 
 	if (!ctrl_z)
@@ -1958,7 +2095,7 @@ clip_FILESTR(ClipMachine * cm)	/* Reads a portion of a file into a string */
 		}
 
 	fclose(f);
-      end:
+	  end:
 	if (uname != NULL)
 		free(uname);
 
@@ -1974,11 +2111,11 @@ int
 clip_SETFCREATE(ClipMachine * cm)
 {
 /*
-       0       FA_NORMAL
-       1       FA_READONLY         READ ONLY (Read-only)
-       2       FA_HIDDEN           HIDDEN (Hidden files)
-       4       FA_SYSTEM           SYSTEM (System files)
-       32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
+	   0       FA_NORMAL
+	   1       FA_READONLY         READ ONLY (Read-only)
+	   2       FA_HIDDEN           HIDDEN (Hidden files)
+	   4       FA_SYSTEM           SYSTEM (System files)
+	   32      FA_ARCHIVE          ARCHIVE (Changes since last backup)
 */
 	int oldattr = -1, *ptrattr = NULL;
 	int newattr = _clip_parni(cm, 1);
@@ -2014,7 +2151,11 @@ clip_STRFILE(ClipMachine * cm)	/* Writes a string to a file */
 	long n = 0, noff = _clip_parnl(cm, 4);
 	int lcut = _clip_parl(cm, 5);
 	int fd = -1, flags = O_WRONLY | O_CREAT;
+#ifdef OS_MINGW
+	mode_t mode = S_IRUSR;
+#else
 	mode_t mode = S_IRUSR | S_IRGRP | S_IROTH;
+#endif
 	int *fattr = _clip_fetch_item(cm, CLIP_CA_FCREATE_ATTR);
 
 	/*struct stat st; */
@@ -2028,10 +2169,14 @@ clip_STRFILE(ClipMachine * cm)	/* Writes a string to a file */
 	}
 
 	if (fattr && !(*fattr & FA_READONLY))
+#ifdef OS_MINGW
+		mode |= S_IWUSR;
+#else
 		mode |= S_IWUSR | S_IWGRP | S_IWOTH;
+#endif
 
 	if ((fd = open(uname, flags, mode)) < 0	/*|| fstat( fd, &st ) */
-	    || !_set_lock(fd, F_WRLCK))
+		|| !_set_lock(fd, F_WRLCK))
 		goto end;
 
 	if (cm->argc > 3)
@@ -2042,7 +2187,7 @@ clip_STRFILE(ClipMachine * cm)	/* Writes a string to a file */
 
 	n = write(fd, str, strlen(str));
 
-      end:
+	  end:
 	_clip_retnl(cm, n);
 
 	if (lcut)
@@ -2056,19 +2201,24 @@ clip_STRFILE(ClipMachine * cm)	/* Writes a string to a file */
 	return 0;
 }
 
+
+#if 0
+	/* Uri: moved to funcs/ftools.prg */
+
 /*
  *      TEMPFILE([<cDirectory>], [<cExtension>], [<nFileAttr>])
  *	   --> cFileName
  */
+
 int
 clip_TEMPFILE(ClipMachine * cm)	/* Creates a file for temporary use */
 {
 /*
-       0       FA_NORMAL
-       1       FA_READONLY         READ ONLY
-       2       FA_HIDDEN           HIDDEN (Hidden files)
-       4       FA_SYSTEM           SYSTEM (System files)
-       32      FA_ARCHIVE          ARCHIVE (Changed since last backup)
+	   0       FA_NORMAL
+	   1       FA_READONLY         READ ONLY
+	   2       FA_HIDDEN           HIDDEN (Hidden files)
+	   4       FA_SYSTEM           SYSTEM (System files)
+	   32      FA_ARCHIVE          ARCHIVE (Changed since last backup)
 */
 	char *dname = _clip_parc(cm, 1);
 	char *uname = _get_unix_name(cm, dname);
@@ -2134,6 +2284,7 @@ clip_TEMPFILE(ClipMachine * cm)	/* Creates a file for temporary use */
 		free(uname);
 	return 0;
 }
+#endif
 
 /*
  * NUMDISKF() --> nTotalFloppy
@@ -2209,7 +2360,7 @@ clip_DOSPATH(ClipMachine * cm)
 	if (uname == NULL)
 	{
 		_clip_trap_err(cm, EG_ARG, 0, 0, __FILE__, __LINE__, inv_arg);
-	    /*_clip_trap_printf(cm, __FILE__, __LINE__, "invalid argument");*/
+		/*_clip_trap_printf(cm, __FILE__, __LINE__, "invalid argument");*/
 		return 1;
 	}
 	hstr[1] = ':';
@@ -2244,10 +2395,10 @@ clip_FILEMOVE(ClipMachine * cm)	/* Moves files to another directory */
 {
 /*
 	0      NO_DISK_ERR            No errors
-       -2      ER_FILE_NOT_FOUND      File not found
-       -3      ER_PATH_NOT_FOUND      Access path not found
-       -5      ER_ACCESS_DENIED       Access denied (e.g., network)
-       -17     ER_DIFFERENT_DEVICE    Target file not on same drive
+	   -2      ER_FILE_NOT_FOUND      File not found
+	   -3      ER_PATH_NOT_FOUND      Access path not found
+	   -5      ER_ACCESS_DENIED       Access denied (e.g., network)
+	   -17     ER_DIFFERENT_DEVICE    Target file not on same drive
 */
 	char *src = _get_unix_name(cm, _clip_parc(cm, 1));
 	char *dst = _get_unix_name(cm, _clip_parc(cm, 2));
@@ -2256,7 +2407,7 @@ clip_FILEMOVE(ClipMachine * cm)	/* Moves files to another directory */
 	if (src == NULL || dst == NULL)
 	{
 		ret = _clip_trap_err(cm, EG_ARG, 0, 0, __FILE__, __LINE__, inv_arg);
-	    /*_clip_trap_printf(cm, __FILE__, __LINE__, "invalid argument");*/
+		/*_clip_trap_printf(cm, __FILE__, __LINE__, "invalid argument");*/
 		goto end;
 	}
 	if (access(dst, F_OK) == 0)
@@ -2278,7 +2429,7 @@ clip_FILEMOVE(ClipMachine * cm)	/* Moves files to another directory */
 		_check_error(cm, src);
 	}
 
-      end:
+	  end:
 	if (src)
 		free(src);
 	if (dst)
@@ -2307,7 +2458,7 @@ clip_TRUENAME(ClipMachine * cm)	/* Standardizes the path designation */
 	if (cm->argc < 1)
 	{
 		_clip_trap_err(cm, EG_ARG, 0, 0, __FILE__, __LINE__, inv_arg);
-	    /*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
+		/*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
 		return 1;
 	}
 	dname = _clip_parc(cm, 1);
@@ -2413,11 +2564,11 @@ clip_FILECHECK(ClipMachine * cm)
 	if (cm->argc < 1)
 	{
 		_clip_trap_err(cm, EG_ARG, 0, 0, __FILE__, __LINE__, inv_arg);
-	    /*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
+		/*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
 		return 1;
 	}
 	if ((uname = _get_unix_name(cm, _clip_parc(cm, 1))) == NULL ||
-	    (fd = open(uname, O_RDONLY)) == -1 || !_set_lock(fd, F_RDLCK) || (f = fdopen(fd, "r")) == NULL)
+		(fd = open(uname, O_RDONLY)) == -1 || !_set_lock(fd, F_RDLCK) || (f = fdopen(fd, "r")) == NULL)
 	{
 		_clip_retni(cm, -1);
 		goto end;
@@ -2432,7 +2583,7 @@ clip_FILECHECK(ClipMachine * cm)
 	}
 #undef ROTATE_RIGHT
 
-      end:
+	  end:
 	_clip_retni(cm, checksum);
 	if (uname != NULL)
 		free(uname);
@@ -2453,7 +2604,7 @@ clip_SETFDATI(ClipMachine * cm)	/* Sets the date and time of a file */
 	if (cm->argc < 1)
 	{
 		_clip_trap_err(cm, EG_ARG, 0, 0, __FILE__, __LINE__, inv_arg);
-	    /*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
+		/*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
 		return 1;
 	}
 	if ((uname = _get_unix_name(cm, _clip_parc(cm, 1))) == NULL)
@@ -2508,7 +2659,7 @@ clip_SETFDATI(ClipMachine * cm)	/* Sets the date and time of a file */
 
 	ret = utime(uname, u) ? 0 : 1;
 
-      end:
+	  end:
 	_clip_retl(cm, ret);
 
 	if (uname != NULL)
@@ -2520,12 +2671,12 @@ int
 clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 {
 /*
-       0         FA_NORMAL
-       1         FA_READONLY       Read-only
-       2         FA_HIDDEN         HIDDEN (Concealed files)
-       4         FA_SYSTEM         SYSTEM (System files)
-       8         FA_VOLUME         VOLUME (Name of floppy/hard disk)
-       32        FA_ARCHIVE        ARCHIVE (Changed since last backup)
+	   0         FA_NORMAL
+	   1         FA_READONLY       Read-only
+	   2         FA_HIDDEN         HIDDEN (Concealed files)
+	   4         FA_SYSTEM         SYSTEM (System files)
+	   8         FA_VOLUME         VOLUME (Name of floppy/hard disk)
+	   32        FA_ARCHIVE        ARCHIVE (Changed since last backup)
 */
 	char *s = NULL, *uname = NULL;
 	int ret = 0, fattr = FA_ARCHIVE, plen = 0;
@@ -2536,7 +2687,7 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 	if (cm->argc < 1)
 	{
 		_clip_trap_err(cm, EG_ARG, 0, 0, __FILE__, __LINE__, inv_arg);
-	    /*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
+		/*_clip_trap_printf( cm, __FILE__, __LINE__, "invalid argument" );*/
 		return 1;
 	}
 	if ((uname = _get_unix_name(cm, _clip_parc(cm, 1))) == NULL)
@@ -2569,13 +2720,17 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 
 	while ((d = readdir(dir)) != NULL)
 	{
+#ifdef _WIN32
+		if (_clip_glob_match(d->d_name, s, 1) != strlen(d->d_name) ||
+#else
 		if (_clip_glob_match(d->d_name, s, 0) != strlen(d->d_name) ||
-		    !strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+#endif
+			!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
 			continue;
 		stat(d->d_name, &st);
 		if (!(((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode)) ||
-		      ((fattr & FA_READONLY) &&
-		       (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) || ((fattr & FA_HIDDEN) && d->d_name[0] == '.')))
+			  ((fattr & FA_READONLY) &&
+			   (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) || ((fattr & FA_HIDDEN) && d->d_name[0] == '.')))
 		{
 			continue;
 		}
@@ -2583,7 +2738,7 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 			ret = 1;
 	}
 
-      end:
+	  end:
 	_clip_retl(cm, ret);
 
 	if (uname != NULL)

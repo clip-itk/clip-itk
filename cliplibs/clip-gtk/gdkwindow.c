@@ -188,3 +188,68 @@ err:
 	return 1;
 }
 
+/* Alena */
+/* Window is viewable */
+int
+clip_GDK_WINDOWISVIEWABLE(ClipMachine * cm)
+{
+	C_widget    *cwin = _fetch_cw_arg(cm);
+	GdkWindow *win = NULL;
+
+	CHECKCWID(cwin,GTK_IS_WIDGET);
+
+	if (cwin && cwin->widget) win = cwin->widget->window;
+
+	_clip_retl(cm, gdk_window_is_viewable(win));
+
+	return 0;
+err:
+	return 1;
+}
+/* Alena */
+/* Window is visible */
+int
+clip_GDK_WINDOWISVISIBLE(ClipMachine * cm)
+{
+	C_widget    *cwin = _fetch_cw_arg(cm);
+	GdkWindow *win = NULL;
+
+	CHECKCWID(cwin,GTK_IS_WIDGET);
+
+	if (cwin && cwin->widget) win = cwin->widget->window;
+
+	_clip_retl(cm, gdk_window_is_visible(win));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GDK_WINDOWSETHINTS(ClipMachine * cm)
+{
+	C_widget    *cwin = _fetch_cw_arg(cm);
+	gint            x = INT_OPTION(cm,2,-1);
+	gint            y = INT_OPTION(cm,3,-1);
+	gint    min_width = INT_OPTION(cm,4,-1);
+	gint   min_height = INT_OPTION(cm,5,-1);
+	gint    max_width = INT_OPTION(cm,6,-1);
+	gint   max_height = INT_OPTION(cm,7,-1);
+	gint        flags = INT_OPTION(cm,8,0);
+	GdkWindow *win = NULL;
+
+	CHECKCWID(cwin,GTK_IS_WIDGET); CHECKOPT(2,NUMERIC_t);
+	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);
+	CHECKOPT(6,NUMERIC_t); CHECKOPT(7,NUMERIC_t); CHECKOPT(8,NUMERIC_t);
+
+	CHECKCWID(cwin,GTK_IS_WIDGET);
+
+	if (cwin && cwin->widget) win = cwin->widget->window;
+
+	gdk_window_set_hints(win,x,y,min_width,min_height,max_width,max_height,flags);
+
+	return 0;
+err:
+	return 1;
+}
+

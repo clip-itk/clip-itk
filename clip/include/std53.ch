@@ -136,9 +136,13 @@
 
 #command SET AUTOPEN <x:ON,OFF,&>       => Set( _SET_AUTOPEN, <(x)> )
 #command SET AUTOPEN (<x>)              => Set( _SET_AUTOPEN, <x> )
+#command SET AUTOOPEN <x:ON,OFF,&>      => Set( _SET_AUTOPEN, <(x)> )
+#command SET AUTOOPEN (<x>)             => Set( _SET_AUTOPEN, <x> )
 
 #command SET AUTORDER TO                => Set( _SET_AUTORDER,  0  )
 #command SET AUTORDER TO <x>            => Set( _SET_AUTORDER, <x> )
+#command SET AUTOORDER TO               => Set( _SET_AUTORDER,  0  )
+#command SET AUTOORDER TO <x>           => Set( _SET_AUTORDER, <x> )
 
 #command SET AUTOSHARE TO               => Set( _SET_AUTOSHARE,  0  )
 #command SET AUTOSHARE TO <x>           => Set( _SET_AUTOSHARE, <x> )
@@ -771,8 +775,8 @@
 	 [<rest:REST>]                                                  ;
 	 [ALL]                                                          ;
 									;
-      => __dbCopyDelim(                                                 ;
-		       .t.,<(file)>, <(delim)>, { <(fields)> },            ;
+      => __dbDelim(                                                     ;
+		       .t.,<(file)>, <(delim)>, { <(fields)> },         ;
 			<{for}>, <{while}>, <next>, <rec>, <.rest.>     ;
 		      )
 
@@ -785,8 +789,8 @@
 	 [<rest:REST>]                                                  ;
 	 [ALL]                                                          ;
 									;
-      => __dbCopySDF(                                                   ;
-		     .t.,<(file)>, { <(fields)> },                         ;
+      => __dbSDF(                                                       ;
+		     .t.,<(file)>, { <(fields)> },                      ;
 		      <{for}>, <{while}>, <next>, <rec>, <.rest.>       ;
 		    )
 
@@ -814,8 +818,8 @@
 	 [<rest:REST>]                                                  ;
 	 [ALL]                                                          ;
 									;
-      => __dbAppDelim(                                                  ;
-		   .f., <(file)>, <(delim)>, { <(fields)> },             ;
+      => __dbDelim(                                                     ;
+		   .f., <(file)>, <(delim)>, { <(fields)> },            ;
 		       <{for}>, <{while}>, <next>, <rec>, <.rest.>      ;
 		     )
 
@@ -829,7 +833,7 @@
 	 [<rest:REST>]                                                  ;
 	 [ALL]                                                          ;
 									;
-      => __dbAppSDF(                                                    ;
+      => __dbSDF(                                                    ;
 		   .f., <(file)>, { <(fields)> },                          ;
 		     <{for}>, <{while}>, <next>, <rec>, <.rest.>        ;
 		   )

@@ -1,6 +1,9 @@
 
 /*
    $Log: clipmain.c,v $
+   Revision 1.7  2004/01/25 10:23:40  clip
+   uri: fix bug in exit procedures and inkey()
+
    Revision 1.6  2000/05/24 18:34:14  clip
    _clip_push_area
    indents all
@@ -32,7 +35,9 @@ extern char **environ;
 int
 main(int argc, char **argv)
 {
+	int ret;
 	ClipMachine *mp = new_ClipMachine(0);
 
-	return _clip_main(mp, HASH_main, argc, argv, environ);
+	ret = _clip_main(mp, HASH_main, argc, argv, environ);
+	return ret;
 }

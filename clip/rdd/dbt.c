@@ -152,6 +152,7 @@ static int dbt_setvalue(ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int bin
 		_rdd_put_uint(fuu,*id+pages);
 		if((er = rdd_write(cm,&rm->file,0,4,fuu,__PROC__))) return er;
 	}
+	rm->updated = 1;
 	return 0;
 }
 

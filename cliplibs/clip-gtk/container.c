@@ -39,9 +39,9 @@ CLIP_DLLEXPORT GtkType _gtk_type_container() { return GTK_TYPE_CONTAINER; }
 long _clip_type_container() { return GTK_WIDGET_CONTAINER; }
 const char * _clip_type_name_container() { return "GTK_WIDGET_CONTAINER"; }
 
-CLIP_DLLEXPORT GtkType _gtk_type_event_box() { return GTK_TYPE_CONTAINER; }
-long _clip_type_event_box() { return GTK_WIDGET_CONTAINER; }
-const char * _clip_type_name_event_box() { return "GTK_WIDGET_CONTAINER"; }
+CLIP_DLLEXPORT GtkType _gtk_type_event_box() { return GTK_TYPE_EVENT_BOX; }
+long _clip_type_event_box() { return GTK_WIDGET_EVENT_BOX; }
+const char * _clip_type_name_event_box() { return "GTK_WIDGET_EVENT_BOX"; }
 
 int
 clip_INIT___CONTAINER(ClipMachine *cm)
@@ -166,8 +166,10 @@ _container_for_each_func(GtkWidget *wid, gpointer data)
 	if (c_wid)
 	{
 		memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
-		stack[0] = c->cw->obj; stack[1] = c_wid->obj;
-		_clip_eval( c->cm, c->cfunc, 2, stack, &res );
+		_clip_mclone(c->cw->cmachine, &stack[0], &c->cw->obj);
+		//stack[0] = c->cw->obj;
+		stack[1] = c_wid->obj;
+		_clip_eval( c->cm, &(c->cfunc), 2, stack, &res );
 		_clip_destroy(c->cm, &res);
 	}
 }
@@ -178,14 +180,15 @@ clip_GTK_CONTAINERFOREACH (ClipMachine *cm)
 {
 	C_widget *ccon = _fetch_cw_arg(cm);
 	ClipVar *cfunc = _clip_spar(cm,2);
-	C_var c;
+	C_var *c;
 
 	CHECKCWID(ccon,GTK_IS_CONTAINER);
 	CHECKARG2(2,CCODE_t,PCODE_t);
 
-	c.cm = cm; c.cfunc = cfunc; c.cw = ccon;
+	c->cm = cm; c->cw = ccon;
+	_clip_mclone(cm, &c->cfunc, cfunc);
 	gtk_container_foreach(GTK_CONTAINER(ccon->widget),
-		(GtkCallback)_container_for_each_func,&c);
+		(GtkCallback)_container_for_each_func,c);
 	return 0;
 err:
 	return 1;

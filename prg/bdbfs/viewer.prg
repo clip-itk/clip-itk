@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -19,11 +18,11 @@ PRIVATE _TextViewer
 IF Type('__aExt')=='A' .AND. (i:=ASCAN(m->__aExt,{|_1|LIKE(_1[1],cFile)}))#0
 	m->_TextViewer:=m->__aExt[i,2]
 ENDIF
-ViewFile(cFile)
+ViewFiles(cFile)
 **********
-PROC ViewFile(cFile,bApply,lCheckExist)
+PROC ViewFiles(cFile,bApply,lCheckExist)
 /*
-Версия адаптирована для bdbf.
+Версия упрощена для bdbf.
 Показывает файл cFile.
 Может использовать встроенный вьюер (с возможностью печати,подсветки и т.д.).
 или внешний,определенный в переменной _TextViewer.
@@ -32,8 +31,8 @@ PROC ViewFile(cFile,bApply,lCheckExist)
 
 Примеры:
 	_TextViewer:='WpView'
-	ViewFile('MyFile.prn')
-	ViewFile('Help.txt',{|_1|StrTran(_1,chr(K_TAB),SPACE(8))})
+	ViewFiles('MyFile.prn')
+	ViewFiles('Help.txt',{|_1|StrTran(_1,chr(K_TAB),SPACE(8))})
 */
 LOCAL oldc:=SetCursor(0)
 IF_NIL bApply IS {|_1|RemoveTabs(_1)}
@@ -126,6 +125,7 @@ LOCAL	nHighliteLine := 0, nHighliteOffset := 0, nLength,;
 // ELB For showing row
 LOCAL nCurrRow:=1,nTemp,nEndest:=1
 LOCAL _mX,_mY,bOrigin,lWasF8:=.F.,_r,_c, nStart
+PRIVATE _CodePage
 SavePos()
 
 _cLookText:='' 	//need for Getname()
@@ -155,6 +155,7 @@ DownFillArray(nHandle,aLines,1,nLastLine,lApplyBlock,bApplyText)
 PUSH KEYS COLOR cWinColor
 m->Main_keys:=FB_M_Keys
 m->Alt_keys[7]:=FB_A_Key
+m->Alt_keys[8]:=FB_C_Key
 // paint the screen
 DISPBEGIN()
 //Scroll(nTop,nLeft,nBottom,nRight)
@@ -194,7 +195,7 @@ WHILE .t.
 	nRow = nBarTop + INT( (nBarBottom - nBarTop) * i/nSize )
    ENDIF
    // display the button
-   @ nRow,nRight SAY '■' COLOR cButtonColor
+   @ nRow,nRight SAY L_A_SIGN COLOR cButtonColor
 //End ScrollBar()
 
    @ nTop,nRight-23 SAY 'L:'+STR(nCurrRow,6) +'  C:'+STR(nLeftBrowse,3)
@@ -296,10 +297,24 @@ WHILE .t.
 		ListFile(cFileName,IF(i==1,0,nCurrRow),0,bApplyText)
 
    CASE nKey == K_F8
+#IFDEF ENGLISH
 	bApplyText:= IF(lWasF8, bOrigin,;
-				{|_1| RemoveTabs(AnsiToOem(_1))})
+				{|_1| RemoveTabs(Translate_Charset("cp437", host_charset(), _1))})
+#ELSE
+	bApplyText:= IF(lWasF8, bOrigin,;
+				{|_1| RemoveTabs(Translate_Charset("cp866", host_charset(), _1))})
+#ENDIF
 	lWasF8:=!lWasF8
 	KEYBOARD _CTRLPGUP
+
+   CASE nKey == K_ALT_F8
+	i:=.T.
+	IF SelectCP(@i)
+		m->_CodePage:=LEFT(i,RAT('.', i)-1)
+		bApplyText:= {|_1| RemoveTabs(;
+				   Translate_Charset( m->_CodePage, host_charset(), _1))}
+		KEYBOARD _CTRLPGUP
+	ENDIF
 
    ENDCASE
 END
@@ -433,7 +448,7 @@ lHitBottom = .f.
 // WHILE the array is not full
 WHILE nCounter < nEnd
    // reposition to current file position
-   FSEEK( nHandle, nFilePos, 0 )
+   FSEEK( nHandle, nFilePos )
    // assign a buffer and read the file
    cBuffer = SPACE( nBlock )
    IF (nBytesRead := FREAD( nHandle, @cBuffer, nBlock )) # nBlock;
@@ -470,13 +485,13 @@ STATIC FUNC SkipDown(nHandle,aLines,nLastLine,nNumLines,nSize,;
 LOCAL lHitBottom := .f.,nCounter:=0
 IF aLines[ nLastLine, 3 ] # 0
    // position file to last line offset
-   Fseek( nHandle, aLines[ nLastLine, 3 ], 0 )
+   Fseek( nHandle, aLines[ nLastLine, 3 ] )
    ADEL( aLines, 1 )
    aLines[nLastLine] = {'',0,0}
    // get the next line
    nCounter:=DownFillArray(nHandle,aLines,nLastLine+1-nNumLines,nLastLine,;
 		 	lApplyBlock,bApplyText,@lHitBottom)
-   IF lHitBottom // .OR. Ascan(aLines,{|X|!empty(x[1])}) = 0
+   IF lHitBottom
 	// we hit bottom or no text in any line
 	aLines[1,2] = nSize	//FSEEK( nHandle, 0, 2 )
 	UpFillArray(nHandle,aLines,nLastLine,nSize,lApplyBlock,bApplyText)
@@ -502,7 +517,7 @@ WHILE nCounter < nEnd
 	// assign some defaults and read the file
    nBlock = min(nBlock,aLines[1,2])
    nFilePos = aLines[1,2] - nBlock
-   Fseek( nHandle, nFilePos, 0 )
+   Fseek( nHandle, nFilePos )
    cBuffer = space( nBlock )
    IF Fread( nHandle, @cBuffer, nBlock ) = 0
 	exit
@@ -564,24 +579,22 @@ RETURN lReturn
 **************************************************************************/
 STATIC FUNC SkipUP(nHandle,aLines,lApplyBlock,bApplyText)
 LOCAL nBlock,cBuffer, cLine := '', lBof := .f., nEol, nFilePos, nLength,;
-	_ret:=.F.
+	_ret:=.F.,nlBuf:=aLines[1,2]
 
-IF aLines[1,2] #0
-   nBlock = min(512,aLines[1,2])
-   nFilePos = aLines[1,2] - nBlock
+IF nlBuf #0
+   nBlock = min(512,nlBuf)
+   nFilePos = nlBuf - nBlock
    lBof = (nFilePos <= 1 )
-   Fseek( nHandle, nFilePos, 0 )
+   Fseek( nHandle, nFilePos )
    cBuffer = space( nBlock )
-   IF !Fread( nHandle, @cBuffer, nBlock ) = 0
+   IF Fread( nHandle, @cBuffer, nBlock ) # 0
 	// get past the first eol mark
-	nEol = Rat(chr(10),cBuffer)
-	IF nEol # 0
-		cLine = right( cBuffer, len(cBuffer)-nEol+1 )
+	IF (nEol:=Rat(chr(10),cBuffer)) # 0
+		cLine = SUBSTR(cBuffer, nEol+1 )
 		cBuffer = left(cBuffer,nEol-1)
 	ENDIF
 	// get the last line in the buffer
-	nEol =  Rat(chr(10),cBuffer)
-	IF nEol == 0 .AND. !lBof
+	IF (nEol:=Rat(chr(10),cBuffer)) == 0 .AND. !lBof
 		nEol = MIN(nBlock,MAXBROWSELENGTH)
 	ELSEIF len(cBuffer) - nEol > MAXBROWSELENGTH
 		nEol = MAXBROWSELENGTH
@@ -589,7 +602,7 @@ IF aLines[1,2] #0
 	// update the file position
 	nFilePos += nEol
 	// get the line
-	cLine = ( RIGHT(cBuffer,len(cBuffer)-nEol) + cLine )
+	cLine = SUBSTR(cBuffer,nEol+1) + cLine
 	// save the real length of the line in the file
 	nLength = LEN( cLine )
 	// clean it up
@@ -655,7 +668,7 @@ DO WHILE nBytesRead == nBlock
    cHoldBack = RIGHT(cBuffer,nLookLen - 1)
    nLoop ++
 ENDDO
-IF nOffset == 0 THEN  NFind(NTRIM(nTotalFound)+FB_ALSO)
+IF nOffset == 0 THEN NFind(NTRIM(nTotalFound)+FB_ALSO)
 
 RETURN nOffset
 **********
@@ -689,3 +702,22 @@ SET CONSOLE ON
 SET PRINTER OFF
 ScrRest(scr)
 FClose(_handle)
+**********
+FUNC FreadLn(_handle,_string,_max_len)
+LOCAL _eol,_num_read,_save_pos
+
+_save_pos:=Fseek(_handle,0,1)
+_string:=SPACE(_max_len)
+
+IF (_num_read:=Fread(_handle,@_string,_max_len) )#0
+
+	IF (_eol:=AT(CHR(10),LEFT(_string,_num_read))) = 0 THEN;
+		_eol:=_num_read+1
+
+	_string:=STRTRAN(LEFT(_string,_eol-1),CHR(13))
+
+	Fseek(_handle,_save_pos+_eol)
+
+ENDIF
+
+RETURN (_num_read#0)

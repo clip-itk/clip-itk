@@ -13,7 +13,7 @@ mkdir -p $tmp/$pname
 
 cd clip
 ./configure
-make clic.tab.c rt.tab.c lex.yy.c lex.c.c lex.hash.c
+#make clic.tab.c rt.tab.c lex.yy.c lex.c.c lex.hash.c
 make distclean
 cd $pwd
 
@@ -29,6 +29,9 @@ then
 fi
 
 cd $tmp
+
+echo 'Removing tdoc sources...'
+rm -rf `find $pname -path '*/tdoc'` $pname/doc
 
 tar cvzf $path/$pname.tgz $pname
 cd $pwd

@@ -18,7 +18,7 @@
 <br> <br>
  "ODBC" - идентификатор СУБД;
 <br> <br>
- &lt;DSN&gt; - Data Source Name (источник данных. См. файл .odbc.ini);
+ &lt;DSN&gt; - Data Source Name (источник данных. См. файл odbc.ini);
 <br> <br>
  &lt;login&gt; - логин пользователя;
 <br> <br>
@@ -48,6 +48,10 @@
 <br> <br>
  UPDATE mytable SET fname=:fname,lname=:lname WHERE id=:id
 <br> <br>
+ Поскольку интерфейс ODBC не предоставляет соответствующей возможности,
+ уровень изоляции необходимо выставлять средствами используемого сервера SQL.
+ Параметр &lt;cIsolation&gt; функций ConnectNew() и TConnect:Start()
+ игнорируется.
 <hr>
 В качестве простейшего примера использования clip-odbc, см. утилиту
 my_isql, которая представляет собой простой фронтенд, аналогичный isql.

@@ -138,7 +138,7 @@ clip_GTK_CLISTNEW(ClipMachine * cm)
 
 	CHECKOPT(1,MAP_t);
 	CHECKARG(2,NUMERIC_t); CHECKOPT2(3,ARRAY_t,CHARACTER_t);
-	switch (cvcol->t.type)
+	switch (_clip_parinfo(cm,3))
 	{
 		case CHARACTER_t:
 			columns = (gchar**)calloc(sizeof(columns),ncolumns);
@@ -153,7 +153,7 @@ clip_GTK_CLISTNEW(ClipMachine * cm)
 			break;
 		case ARRAY_t:
 			acol = (ClipArrVar*)_clip_vptr( cvcol );
-			columns = (gchar**)calloc(sizeof(columns),ncolumns);
+			columns = (gchar**)calloc(sizeof(gchar *),ncolumns);
 #ifdef OS_CYGWIN
 			for(i=0; i < ncolumns; i++ )
 			{
@@ -171,14 +171,17 @@ clip_GTK_CLISTNEW(ClipMachine * cm)
 #else
 			for(i=0; i < ncolumns; i++ )
 			{
-				if ( i < acol->count && acol->items[i].t.type == CHARACTER_t )
-					columns[i] = acol->items[i].s.str.buf;
+				ClipVar *vp = _clip_vptr( acol->items+i);
+				if ( i < acol->count && vp->t.type == CHARACTER_t )
+					columns[i] = vp->s.str.buf;
 				else
 					columns[i] = empty_string;
 			}
+
 			wid = gtk_clist_new_with_titles(ncolumns,columns);
 			if (columns) free(columns);
 #endif
+			break;
 		default:
 			wid = gtk_clist_new(ncolumns);
 	}
@@ -990,6 +993,7 @@ clip_GTK_CLISTPREPEND(ClipMachine * cm)
 	CHECKOPT2(2,ARRAY_t, CHARACTER_t);
 	ncolumns = GTK_CLIST(clst->widget)->columns;
 	columns = (gchar**)calloc(sizeof(columns),ncolumns);
+
 	for(i=0; i < ncolumns; i++ ) columns[i] = empty_string;
 #ifdef OS_CYGWIN
 	if (_clip_parinfo(cm,2)==ARRAY_t)
@@ -1492,8 +1496,60 @@ clip_GTK_CLISTSETFOCUSROW(ClipMachine * cm)
 	C_widget  *clst = _fetch_cw_arg(cm);
 	gint   row = _clip_parni(cm,2);
 	CHECKCWID(clst,GTK_IS_CLIST);
-	CHECKOPT(row, NUMERIC_t);
+	CHECKOPT(2, NUMERIC_t);
 	GTK_CLIST(clst->widget)->focus_row = row-1;
+	return 0;
+err:
+	return 1;
+}
+
+void
+__row_data_destroy_func(gpointer data)
+{
+	C_var * cvar = (C_var*) data;
+
+	if (!cvar || !cvar->cv)
+		return;
+
+	_clip_destroy(cvar->cm,cvar->cv);
+	free(cvar);
+}
+
+int
+clip_GTK_CLISTSETROWDATA(ClipMachine * cm)
+{
+	C_widget  *clst = _fetch_cw_arg(cm);
+	gint        row = _clip_parni(cm,2);
+	C_var     *cvar;
+	CHECKCWID(clst,GTK_IS_CLIST);
+	CHECKARG(2, NUMERIC_t);
+	cvar = NEW(C_var);
+	cvar->cm = cm; cvar->cv = NEW(ClipVar);
+	_clip_mclone(cm, cvar->cv, _clip_par(cm,3));
+
+	gtk_clist_set_row_data_full(GTK_CLIST(clst->widget),row-1,cvar,__row_data_destroy_func);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLISTGETROWDATA(ClipMachine * cm)
+{
+	C_widget  *clst = _fetch_cw_arg(cm);
+	gint        row = _clip_parni(cm,2);
+	C_var     *cvar;
+	ClipVar    *ret = RETPTR(cm);
+	CHECKCWID(clst,GTK_IS_CLIST);
+	CHECKARG(2, NUMERIC_t);
+
+	cvar = gtk_clist_get_row_data(GTK_CLIST(clst->widget),row-1);
+
+	if (!cvar ||!cvar->cm || !cvar->cv)
+		return 0;
+
+	_clip_mclone(cvar->cm,ret,cvar->cv);
+
 	return 0;
 err:
 	return 1;
@@ -1545,6 +1601,19 @@ clip_GTK_CLISTGETCOUNTSELECTED(ClipMachine * cm)
 	CHECKCWID(clst,GTK_IS_CLIST);
 
 	_clip_retni(cm,g_list_length(selection));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLISTGETROWCOUNT(ClipMachine * cm)
+{
+	C_widget  *clst = _fetch_cw_arg(cm);
+	CHECKCWID(clst,GTK_IS_CLIST);
+
+	_clip_retni(cm,g_list_length(GTK_CLIST(clst->widget)->row_list));
 
 	return 0;
 err:

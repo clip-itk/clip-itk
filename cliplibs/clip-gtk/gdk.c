@@ -72,8 +72,8 @@ static int
 gdk_object_cursor_destructor(ClipMachine *cm, C_object *ccur)
 {
 	if (ccur && GDK_IS_CURSOR(ccur) && ccur->ref_count >= 0)
-        	gdk_cursor_destroy(GDK_CURSOR(ccur->object));
-        return 0;
+		gdk_cursor_destroy(GDK_CURSOR(ccur->object));
+	return 0;
 }
 
 // Sets shape of mouse cursor
@@ -88,12 +88,12 @@ clip_GDK_WINDOWSETCURSOR(ClipMachine * cm)
 	if (cwin && cwin->widget)
 	{
 		GdkCursor *cursor = gdk_cursor_new(cursor_type);
-                C_object *ccur;
+		C_object *ccur;
 
 		if (cursor)
-                {
-                	ccur = _register_object(cm,cursor,GDK_OBJECT_CURSOR,NULL,
-                		(coDestructor)gdk_object_cursor_destructor);
+		{
+			ccur = _register_object(cm,cursor,GDK_OBJECT_CURSOR,NULL,
+				(coDestructor)gdk_object_cursor_destructor);
 			ccur->ref_count = 1;
 			_clip_mclone(cm,RETPTR(cm),&ccur->obj);
 		}
@@ -123,13 +123,13 @@ int
 clip_GDK_POINTERGRAB(ClipMachine * cm)
 {
 	C_widget    *cwin = _fetch_cw_arg(cm);
-        GdkWindow *win = NULL;
-        gint owner_events = _clip_parl(cm,2);
-        GdkEventMask event_mask = _clip_parnl(cm,3);
-        C_widget *cconfine_to = _fetch_cwidget(cm,_clip_spar(cm,4));
-        GdkWindow *confine_to = NULL;
-        C_object *ccursor = _fetch_cobject(cm,_clip_spar(cm,5));
-        GdkCursor *cursor = NULL;
+	GdkWindow *win = NULL;
+	gint owner_events = _clip_parl(cm,2);
+	GdkEventMask event_mask = _clip_parnl(cm,3);
+	C_widget *cconfine_to = _fetch_cwidget(cm,_clip_spar(cm,4));
+	GdkWindow *confine_to = NULL;
+	C_object *ccursor = _fetch_cobject(cm,_clip_spar(cm,5));
+	GdkCursor *cursor = NULL;
 
 	CHECKCWID(cwin,GTK_IS_WIDGET);
 	CHECKOPT(2,LOGICAL_t); CHECKOPT(3,NUMERIC_t);
@@ -137,8 +137,8 @@ clip_GDK_POINTERGRAB(ClipMachine * cm)
 	CHECKOPT2(5,MAP_t,NUMERIC_t); CHECKCOBJOPT(ccursor,GDK_IS_CURSOR(ccursor));
 
 	if (cwin && cwin->widget) win = cwin->widget->window;
-        if (cconfine_to && cconfine_to->widget) confine_to = cconfine_to->widget->window;
-        if (ccursor) cursor = GDK_CURSOR(ccursor->object);
+	if (cconfine_to && cconfine_to->widget) confine_to = cconfine_to->widget->window;
+	if (ccursor) cursor = GDK_CURSOR(ccursor->object);
 
 	_clip_retni(cm,gdk_pointer_grab(win, owner_events, event_mask,
 		confine_to, cursor, GDK_CURRENT_TIME));
@@ -176,8 +176,8 @@ int
 clip_GDK_KEYBOARDGRAB(ClipMachine * cm)
 {
 	C_widget    *cwin = _fetch_cw_arg(cm);
-        GdkWindow *win = NULL;
-        gint owner_events = _clip_parl(cm,2);
+	GdkWindow *win = NULL;
+	gint owner_events = _clip_parl(cm,2);
 
 	CHECKCWID(cwin,GTK_IS_WIDGET);
 	CHECKOPT(2,LOGICAL_t);
@@ -215,3 +215,61 @@ clip_GDK_KEYREPEATRESTORE(ClipMachine * cm)
 	gdk_key_repeat_restore();
 	return 0;
 }
+
+/* Converts a key value into a symbolic name. The names are the same as those
+   in the <clip-gdk.ch> header file but without the leading "GDK_". */
+int
+clip_GDK_KEYVALNAME(ClipMachine * cm)
+{
+	guint keyval = INT_OPTION(cm, 1,0);
+	_clip_retc(cm, gdk_keyval_name(keyval));
+	return 0;
+}
+
+/* Converts a key name to a key value. */
+int
+clip_GDK_KEYVALFROMNAME(ClipMachine * cm)
+{
+	gchar * keyval_name = CHAR_OPTION(cm, 1,"");
+	_clip_retni(cm, gdk_keyval_from_name(keyval_name));
+	return 0;
+}
+
+/* Returns TRUE if the given key value is in upper case. */
+int
+clip_GDK_KEYVALISUPPER(ClipMachine * cm)
+{
+	guint keyval = INT_OPTION(cm, 1,0);
+	_clip_retl(cm, gdk_keyval_is_upper(keyval));
+	return 0;
+}
+
+/* Returns TRUE if the given key value is in lower case. */
+int
+clip_GDK_KEYVALISLOWER(ClipMachine * cm)
+{
+	guint keyval = INT_OPTION(cm, 1,0);
+	_clip_retl(cm, gdk_keyval_is_lower(keyval));
+	return 0;
+}
+
+/* Converts a key value to upper case, if applicable. */
+int
+clip_GDK_KEYVALTOUPPER(ClipMachine * cm)
+{
+	guint keyval = INT_OPTION(cm, 1,0);
+	_clip_retl(cm, gdk_keyval_to_upper(keyval));
+	return 0;
+}
+
+/* Converts a key value to lower case, if applicable. */
+int
+clip_GDK_KEYVALTOLOWER(ClipMachine * cm)
+{
+	guint keyval = INT_OPTION(cm, 1,0);
+	_clip_retl(cm, gdk_keyval_to_lower(keyval));
+	return 0;
+}
+
+
+

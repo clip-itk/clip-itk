@@ -6,6 +6,11 @@ libc=`./libcver.sh|tr '.' '_'|tr [:lower:] [:upper:]`
 
 exec > taskcfg.h
 
+case "$osname" in
+	MINGW*)
+		osname="MINGW"
+        	;;
+esac
 echo "#define OS_$osname	1"
 echo "#define ARCH_$arch	1"
 echo "#define LIBC_$libc	1"
@@ -14,6 +19,10 @@ echo
 
 case "$osname" in
 	CYGWIN)
+		echo '#define TASK_DLLEXPORT __declspec(dllexport)'
+		echo '#define _WIN32'
+        	;;
+	MINGW*)
 		echo '#define TASK_DLLEXPORT __declspec(dllexport)'
         	;;
 	*)

@@ -10,6 +10,18 @@ if [ -d brow ]
 then
 	cd brow; $MAKE clean; cd ..
 fi
+if [ -d doc_utils ]
+then
+	cd doc_utils; $MAKE clean; cd ..
+fi
+if [ -d cobra_serv ]
+then
+	cd cobra_serv; $MAKE clean; cd ..
+fi
+if [ -d cobra_clnt ]
+then
+	cd cobra_clnt; $MAKE clean; cd ..
+fi
 if [ -d debug ]
 then
 	cd debug; $MAKE clean; cd ..
@@ -29,6 +41,16 @@ fi
 if [ -d udb ]
 then
 	cd udb; $MAKE clean; cd ..
+fi
+if [ -d udbx ]
+then
+	cd udbx; $MAKE clean; cd ..
+fi
+if [ -d dbc ]
+then
+   cd dbc
+   $MAKE clean
+   cd ..
 fi
 if [ -d ca_dbu ]
 then

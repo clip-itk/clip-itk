@@ -8,32 +8,22 @@
 /* CTI_OBJECT - virtual object, all other objects inherits from it. */
 
 #include "cti.ch"
-#include "ctiobject.ch"
-
-init procedure cti_object_init()
-	public ObjectCurrentID
-	public CTIObjects
-
-	ObjectCurrentID := -1
-	CTIObjects := map()
-return
 
 /* CTI_OBJECT constructor */
 
 function cti_object_new()
 	local obj
-	memvar ObjectCurrentID
-	memvar CTIObjects
 
 	obj := cti_inherit(map(),"CTI_OBJECT")
 
 //	obj:classname	:= ":CTI_OBJECT:"
 //	obj:__genealogy	:= obj:classname
 //	obj:name	:= obj:classname
-	obj:id		:= ++ObjectCurrentID
-	obj:parent	:= nil
+	obj:id		:= cti_object_list_get_new_id()
+//	obj:parent	:= nil
+	obj:parent_id	:= nil
 
-	CTIObjects[obj:id] := obj
+	cti_object_list_put(obj:id, obj)
 
 	obj:__signals	:= map()
 	obj:__signals_after := map()
@@ -97,7 +87,7 @@ static function cti_object_signal_emit(obj,signal)
 	if signal:type $ obj:__signals_internal
 		siglist := obj:__signals_internal[signal:type]
 		for i:=1 to len(siglist)
-			eval(siglist[i],obj)
+			ret := eval(siglist[i],obj)
 		next
 	endif
 
@@ -106,10 +96,10 @@ static function cti_object_signal_emit(obj,signal)
 		siglist := obj:__signals_after[signal:type]
 		for i:=1 to len(siglist)
 //			obj:__signal_emit_real(siglist[i]:handler,signal,siglist[i]:connected_obj)
-			eval(siglist[i]:handler,obj,signal,siglist[i]:connected_obj)
+			ret := eval(siglist[i]:handler,obj,signal,siglist[i]:connected_obj)
 		next
 	endif
-return iif(ret==TRUE,TRUE,FALSE)
+return valtype(ret)=="L" .and. ret
 
 static function cti_object_signal_connect_internal(obj,SigType,SigHandler)
 	local S_Type
@@ -129,7 +119,6 @@ static function cti_object_signal_connect_real(obj,SigType,ConnectedObj,SigHandl
 	memvar SignalCurrentID
 
 	if valtype(SigHandler)!="B"
-		outlog(__FILE__,__LINE__,procname(),"object class",obj:classname,"object id",obj:id)
 		cti_return_if_fail(valtype(SigHandler)=="B",-1)
 	endif
 
@@ -140,7 +129,6 @@ static function cti_object_signal_connect_real(obj,SigType,ConnectedObj,SigHandl
 	siginfo:connected_obj	:= ConnectedObj
 
 	if .not. lAfter
-//outlog(__FILE__,__LINE__,procname(),obj:__signals)
 		if .not. S_Type $ obj:__signals
 			obj:__signals[S_Type] := {}
 		endif
@@ -150,18 +138,16 @@ static function cti_object_signal_connect_real(obj,SigType,ConnectedObj,SigHandl
 			obj:__signals_after[S_Type] := {}
 		endif
 		aadd(obj:__signals_after[S_Type],siginfo)
-        endif
+	endif
 return siginfo:id
 
 /* Destructor */
 static function cti_object_destroy(obj)
-	memvar CTIObjects
-
 	obj:signal_emit(cti_signal_new(HASH_CTI_DESTROY_SIGNAL))
 
-	if valtype(CTIObjects)=="O"
-		adel(CTIObjects, obj:id)
-	endif
+	obj:parent_id:=nil
+	cti_object_list_del(obj:id)
+	obj:id := -1
 return
 
 /* Sets name of object */

@@ -49,7 +49,7 @@ function _recover_bg_line(obj)
 	obj:setAverage	:= @bg_setAverage()
 return obj
 ************
-static function bg_setData(arr, legend, alignLeg)
+static function bg_setData(arr, legend, alignLeg, signat)
 local i, j, l, ts
 	if empty(arr) .or. !(valtype(arr)$"AM") .or. len(arr)==0
 		return .f.
@@ -152,7 +152,7 @@ return .t.
 ************
 static function bg_drawImage()
 local i, j, key, v, colwidth, dy, x, y, arry:={}, wCol, volume
-local xav, rmin, x1, x2, y1, y2, a, cntColor
+local xav, rmin, x1, x2, y1, y2, a, cntColor, kl
 	if !::__isData
 		return .f.
 	endif
@@ -181,12 +181,14 @@ local xav, rmin, x1, x2, y1, y2, a, cntColor
 	dy := wCol/2
 	::image:line(::sX0, ::Y0-::Y-volume, ::sX0, ::Y0-volume, ::scaleColor)
 	for i=1 to ::__category
-		j := ::signat[i]
 		if i>1
 			::image:line(x-2, arry[i], x+2, arry[i], ::scaleColor)
 			::image:line(x, arry[i], x+volume, arry[i]-volume, ::scaleColor)
 		endif
-		::image:stringVector(j, x, arry[i]-dy+::font_sign_high, ::font_sign, 270, ::scaleColor)
+		if ::__isSignat
+			j := ::signat[i]
+			::image:stringVector(j, x, arry[i]-dy+::font_sign_high, ::font_sign, 270, ::scaleColor)
+		endif
 	next
 
 	dy := int((wCol-colwidth*::__datarow)/2)
@@ -203,6 +205,8 @@ local xav, rmin, x1, x2, y1, y2, a, cntColor
 			y2 := arry[i]-dy-(key-1)*colwidth
 			y1 := y2-colwidth
 			x1 := ::X0
+			kl := iif(key<=10, key, &(right(alltrim(str(key)),1)))
+			kl := iif(kl==0, 10, kl)
 			if ::log
 				//x2 := int(::X0+(log10(max(1, abs(j)))-rmin)*iif(j<0, -1, 1)*::dskl)
 				x2 := int(::X0+(log10(max(1, abs(j))))*iif(j<0, -1, 1)*::dskl)
@@ -212,18 +216,18 @@ local xav, rmin, x1, x2, y1, y2, a, cntColor
 			if ::volume
 				if (j>=0)
 					a := {{x1, y1}, {x1+volume, y1-volume}, {x2+volume, y1-volume}, {x2+volume, y2-volume}, {x2, y2}, {x1, y2}}
-					::image:filledPolygon(a, ::legendColor[key])
+					::image:filledPolygon(a, ::legendColor[kl])
 					::image:polygon(a, ::scaleColor)
 					if ::average>0 .and. ::valAverage>0
 						::image:line(xav, ::Y0, xav, ::Y0-::Y, ::scaleColor)
 						if x2>xav// .and. x2>xav+volume
 							a := {{xav, y1}, {xav, y1-volume}, {xav+volume, y1-volume}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						elseif between(xav, x2, x2+volume)
 							va := xav-x2
 							a := {{x2+va, y2-va}, {x2+va, y1-volume}, {x2+volume, y1-volume}, {x2+volume, y2-volume}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						endif
 					endif
@@ -233,23 +237,23 @@ local xav, rmin, x1, x2, y1, y2, a, cntColor
 				else
 					// сам столбик
 					a := {{x2, y1}, {x2+volume, y1-volume}, {x1+volume, y1-volume}, {x1+volume, y2-volume}, {x1, y2}, {x2, y2}}
-					::image:filledPolygon(a, ::legendColor[key])
+					::image:filledPolygon(a, ::legendColor[kl])
 					::image:polygon(a, ::scaleColor)
 					// подошва
 					a := {{x1, y2}, {x1, y1-volume}, {x1+volume, y1-volume}, {x1+volume, y2-volume}}
-					::image:filledPolygon(a, ::legendColor[key+cntColor])
+					::image:filledPolygon(a, ::legendColor[kl+cntColor])
 					::image:polygon(a, ::scaleColor)
 
 					if ::average>0 .and. ::valAverage<0
 						// средняя линия
 						if x2+volume<=xav
 							a := {{xav, y1}, {xav, y1-volume}, {xav+volume, y1-volume}}
-							::image:filledPolygon(a, ::legendColor[key+cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+cntColor])
 							::image:polygon(a, ::scaleColor)
 						elseif between(x2+volume, xav, xav+volume)
 							va := xav-x2
 							a := {{xav, y1}, {xav, y1-va}, {x2+volume, y1-volume}, {xav+volume, y1-volume}}
-							::image:filledPolygon(a, ::legendColor[key+cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+cntColor])
 							::image:polygon(a, ::scaleColor)
 						endif
 					endif
@@ -261,9 +265,9 @@ local xav, rmin, x1, x2, y1, y2, a, cntColor
 				endif
 			else
 				if j>=0
-					::image:filledRectangle(x1, y1,  x2, y2, ::legendColor[key])
+					::image:filledRectangle(x1, y1,  x2, y2, ::legendColor[kl])
 				else
-					::image:filledRectangle(x2, y1, x1, y2, ::legendColor[key])
+					::image:filledRectangle(x2, y1, x1, y2, ::legendColor[kl])
 				endif
 				if ::average>0
 					::image:line(xav, ::Y0, xav, ::Y0-::Y, ::image:exactColor(::AvColor[1], ::AvColor[2], ::AvColor[3]))

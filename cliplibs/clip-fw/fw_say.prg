@@ -163,7 +163,7 @@ static function fw_HandleEvent( self, nMsg, nWParam, nLParam )
 	endif
 
 	if ( ( self:lDrag .or. self:lWantClick ) .and. nMsg == WM_NCHITTEST ) // To have a standard behavior on Clicks
-		return DefWindowProc( self:hWnd, nMsg, nWParam, nLParam )
+		return //DefWindowProc( self:hWnd, nMsg, nWParam, nLParam )
 	endif
 
 return self:Super:HandleEvent( nMsg, nWParam, nLParam )

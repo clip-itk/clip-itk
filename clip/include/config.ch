@@ -1,9 +1,8 @@
-//#include "clipcfg.h"
 
 #ifndef __CONFIG_DEFINED
 #define __CONFIG_DEFINED
 
- 		// language compatibilites
+		// language compatibilites
 #define __NO_PGCH__  // comment for Chinese or other two byte charset`s
 
 			 // define OS type
@@ -15,9 +14,9 @@
 #ifdef CLIPPER53_COMPATIBLE
 	// new version clipper 5.3 have in getsys.prg
 	// ( readmodal() and command GET )
-        // setcursor() function call
-        // clipper 5.0 and old version 5.3 don`t have this call
-        //
+	// setcursor() function call
+	// clipper 5.0 and old version 5.3 don`t have this call
+	//
 	// #define SETCURSOR_IN_GETSYS
 #endif
 
@@ -43,13 +42,16 @@
 		   //  maximum color palette in GET object
 #define GET_MAX_COLORS 10
 		   //  enable var types for GET object
-#define GETS_TYPES "CNDML"
+#define GETS_TYPES "CNDMLT"
 
-                   //  maximum and minimum key codes in inkey()
+		   //  maximum and minimum key codes in inkey()
 #define MIN_KEY_CODE   -40
 #define MAX_KEY_CODE   500
 
 #define MAX_ALIASES    256
+
+/*DOS-like 2bytes structure in save/rest screen functons*/
+#define CLIP_DOS_SCRBUF
 
 
 #endif

@@ -5,6 +5,10 @@
  */
 /*
   $Log: gzip.c,v $
+  Revision 1.6  2003/07/03 07:15:56  clip
+  fix a lot of warnings
+  paul
+
   Revision 1.5  2001/11/15 13:16:49  clip
   fix
   paul
@@ -13,6 +17,7 @@
 
 #include <errno.h>
 #include <limits.h>
+#include <string.h>
 
 #include "hashcode.h"
 #include "clip.h"

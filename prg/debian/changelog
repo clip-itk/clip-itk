@@ -1,3 +1,60 @@
+clip-prg (1.1.0-1) stable; urgency=low
+
+  * new release, CODB first announce
+
+ -- Paul Lasarev <paul@itk.ru>  Thu,  21 Jul 2003 19:00:00 +0500
+
+clip-prg (1.0.7-1) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@itk.ru>  Thu,  3 Jul 2003 12:33:03 +0500
+
+clip-prg (1.0.6-1) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@itk.ru>  Fri, 23 May 2003 18:53:49 +0500
+
+clip-prg (1.0-5) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@sun.itk.ru>  Thu, 12 Apr 2003 17:42:21 +0400
+
+clip-prg (1.0-1) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@sun.itk.ru>  Thu, 20 Feb 2003 17:42:21 +0400
+
+clip-prg (0.99-9) prestable; urgency=low
+
+  * subversion
+
+ -- Paul Lasarev <paul@sun.itk.ru>  Fri, 24 Jan 2003 16:09:09 +0400
+
+clip-prg (0.99-8) prestable; urgency=low
+
+  * subversion
+  * about 200 changes !!!!
+
+ -- Paul Lasarev <paul@itk.ru>  Mon,  6 Jan 2003 15:00:00 +0400
+
+clip-prg (0.99-7) prestable; urgency=low
+
+  * subversion
+  * about 360 changes !!!!
+
+ -- Paul Lasarev <paul@itk.ru>  Mon,  1 Dec 2002 11:54:58 +0400
+
+clip-prg (0.99-6) prestable; urgency=low
+
+  * subversion
+  * added detecting of unresolved symbols
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 14 Oct 2002 13:02:57 +0500
+
 clip-prg (0.99-5) prestable; urgency=low
 
   * subversion

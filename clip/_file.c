@@ -5,6 +5,130 @@
 */
 /*
    $Log: _file.c,v $
+   Revision 1.154  2004/03/25 12:56:45  clip
+   rust: no timeout on F_SETLKW in _clip_setlock()
+
+   Revision 1.153  2004/03/03 11:59:57  clip
+   rust: don't erase file on FERASE() if file isn't closed
+
+   Revision 1.152  2004/02/03 09:48:32  clip
+   rust: fix in _clip_close()
+
+   Revision 1.151  2003/12/16 08:23:37  clip
+   uri: fwrite(NIL,...) by default have stdout handle.
+
+   Revision 1.150  2003/12/10 09:20:09  clip
+   uri: memory leak fixed in directory()
+
+   Revision 1.149  2003/12/02 10:10:48  clip
+   uri: small fix in _clip_fwrite
+
+   Revision 1.148  2003/11/20 13:59:35  clip
+   uri: small fix
+
+   Revision 1.147  2003/09/09 14:36:14  clip
+   uri: fixes for mingw from Mauricio and Uri
+
+   Revision 1.146  2003/09/04 13:05:53  clip
+   *** empty log message ***
+
+   Revision 1.145  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.144  2003/08/04 08:08:52  clip
+   rust: DBUSEAREA() looking for neterrors in mp->HASH_ferror, not errno
+
+   Revision 1.143  2003/07/03 07:15:55  clip
+   fix a lot of warnings
+   paul
+
+   Revision 1.142  2003/06/19 10:43:38  clip
+   rust: close() -> _clip_close in MEMOWRIT(READ)
+
+   Revision 1.141  2003/06/16 13:37:35  clip
+   rust: FO_DENYWRITE(READ) as FO_EXCLUSIVE (clipper compatiblity)
+
+   Revision 1.140  2003/06/14 09:56:24  clip
+   uri: small fix for directory("/")
+
+   Revision 1.139  2003/05/19 09:07:47  clip
+   uri: small fix
+
+   Revision 1.138  2003/05/19 08:24:40  clip
+   uri: tempfile() rewrited and moved from diskutils.c to ftools.prg
+	C-level  mkstemp() not compatibility with:
+	- len of file name is not 8 bites
+	- file name have lower and upper characters
+
+   Revision 1.137  2003/04/15 08:05:10  clip
+   uri: fix for fopen(FO_TRUNC)
+
+   Revision 1.136  2003/04/14 14:01:24  clip
+   rust: bug in fclose(), reported by IstvАn FЖldi <foldii@terrasoft.hu>
+
+   Revision 1.135  2003/04/14 07:37:37  clip
+   uri: small fix in ftrunc()
+
+   Revision 1.134  2003/04/03 14:05:14  clip
+   *** empty log message ***
+
+   Revision 1.133  2003/04/03 13:52:47  clip
+   rust: Cygwin fixes
+
+   Revision 1.132  2003/04/02 13:09:11  clip
+   rust: small fix
+
+   Revision 1.131  2003/04/02 10:53:19  clip
+   rust: _clip_close() added
+
+   Revision 1.130  2003/03/26 10:00:56  clip
+   rust: __off_t -> off_t
+
+   Revision 1.129  2003/03/25 10:58:11  clip
+   rust: _clip_setlock() added
+
+   Revision 1.128  2003/03/21 11:49:39  clip
+   rust: RDD locks with tasks (DOS compatibility)
+
+   Revision 1.127  2003/02/07 06:18:38  clip
+   uri: small fix in FCREATE
+
+   Revision 1.126  2003/02/02 12:04:11  clip
+   uri: ftrunc() added
+
+   Revision 1.125  2003/01/21 11:01:50  clip
+   uri: small fix in file IO nonbuffering
+
+   Revision 1.124  2002/11/26 10:21:22  clip
+   OpenBSD fixes
+   paul
+
+   Revision 1.123  2002/11/12 09:47:11  clip
+   *** empty log message ***
+
+   Revision 1.122  2002/11/05 11:19:09  clip
+   *** empty log message ***
+
+   Revision 1.121  2002/11/05 10:07:13  clip
+   uri: added FO_TRUNC mode to fopen()
+
+   Revision 1.120  2002/11/05 09:20:20  clip
+   *** empty log message ***
+
+   Revision 1.119  2002/10/24 10:39:10  clip
+   uri: small fix for freebsd:
+
+   Revision 1.118  2002/10/21 09:54:32  clip
+   uri: small fix for cygwin
+
+   Revision 1.117  2002/10/21 09:32:56  clip
+   uri: changes from druzus.
+
+   Revision 1.116  2002/10/19 12:39:13  clip
+   uri: small fix in directory() for cygwin
+
    Revision 1.115  2002/10/10 08:49:44  clip
    uri: fileeof(-1) bug fixed
 
@@ -369,6 +493,7 @@
    start cvs logging
 
  */
+#include "clip.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -379,25 +504,57 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
+#ifndef OS_MINGW
+	#include <sys/wait.h>
+#endif
 #include <sys/time.h>
 #include <fcntl.h>
 #include <dirent.h>
 #include <limits.h>
+#include "hash.h"
 #include "hashcode.h"
 
-#include "clip.h"
 #include "error.ch"
 #include "fileio.ch"
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	#include <io.h>
 #endif
 
+#ifdef OS_CYGWIN
+	#include <io.h>
+	#include <w32api/windows.h>
+	#include <sys/cygwin.h>
+#endif
+
+
 #include "ncp.h"
+
+#ifdef USE_TASKS
+#include "task/task.h"
+#endif
+
+typedef struct {
+	off_t pos;
+	int write;
+	int fd;
+} OneTaskLock;
+
+typedef struct {
+	OneTaskLock* locks;
+	int count;
+	int flockfd;
+} TaskLock;
 
 /* everytime buffering or not */
 /* #define FILEIO_BUFFERING */
+
+/* always read until buffer is full or timeout */
+/* #define FILEIO_FULLREAD */
+
+/* always write until whole buffer is flushed or timeout */
+#define FILEIO_FULLWRITE
+
 
 void
 destroy_c_file(void *item)
@@ -408,79 +565,578 @@ destroy_c_file(void *item)
 		return;
 
 	if ( cf->f != NULL )
-        {
+	{
 		fflush(cf->f);
 		fclose(cf->f);
-        }
-        else
-        	close(cf->fileno);
+	}
+	else if ( cf->type == FT_FILE )
+		_clip_close(cf->cm,cf->hash,cf->fileno);
+	else
+		close(cf->fileno);
 
-
+#ifndef OS_MINGW
 	if (cf->pid > 0)
 		waitpid(cf->pid, NULL, 0);
+#endif
+	/* TODO? it can hang up main clip process.
+	   maybe some simple signal handler for caching children PIDs?
+	   Under Linux you can set SIGCHLD to SIG_IGN and this signal
+	   will be redirected to pid=1 process (init) or maybe we should
+	   use timeout value from C_FILE, too?
+	*/
 
 	free(cf);
+}
+
+int
+_set_lock(int fd, int l_type)
+{
+	struct flock fl;
+	int r;
+
+	fl.l_type = l_type;
+	fl.l_whence = SEEK_SET;
+	fl.l_start = 0x7fffffff;
+	fl.l_len = 1;
+#ifndef OS_MINGW
+	fl.l_pid = 0;
+#endif
+	r = fcntl(fd, F_SETLK, &fl);
+
+#ifdef USE_NCPFS
+	if (r)
+		return !r;
+	r = ncp_openmode(fd, l_type == F_WRLCK ? 1 : 0);
+#endif
+
+	return !r;
+}
+
+/*
+int _check_lock( int fd, int l_type )
+{
+	struct flock fl;
+	fl.l_type = l_type;
+	fl.l_whence = SEEK_SET;
+	fl.l_start  = 0x7fffffff;
+	fl.l_len = 1;
+	fl.l_pid = 0;
+	if ( fcntl( fd, F_GETLK, &fl ) != 0 || fl.l_type != F_UNLCK )
+		return 1;
+
+	return 0;
+}
+*/
+
+int
+_clip_creat(ClipMachine* cm,char *file, int flags, mode_t mode, int exclusive)
+{
+#ifndef OS_CYGWIN
+	int fd, fl, lock;
+	long hash = _clip_hashstr(file);
+	int *fileopen;
+	int* err = _clip_fetch_item(cm,HASH_ferror);
+
+	*err = 0;
+
+	fl = flags & ~(O_TRUNC|O_CREAT|O_EXCL);
+	lock = exclusive?F_WRLCK:F_RDLCK;
+
+	fd = open(file, fl);
+
+	if (fd>=0)
+	{
+		fileopen = HashTable_fetch(cm->fileopens,hash);
+		if(fileopen){
+			(*fileopen)++;
+		} else {
+			fileopen = malloc(sizeof(int));
+			*fileopen = 1;
+			HashTable_store(cm->fileopens,fileopen,hash);
+		}
+		if(_clip_setlock(cm,hash,fd,0x7fffffff,
+			(exclusive?CLIP_LOCK_WRITE:CLIP_LOCK_READ)))
+		{
+			_clip_close(cm,hash,fd);
+			return -1;
+		}
+#ifdef USE_NCPFS
+		if(ncp_openmode(fd, exclusive)){
+			_clip_unlock(cm,hash,fd,0x7fffffff,0);
+			_clip_close(cm,hash,fd);
+			return -1;
+		}
+#endif
+		_clip_unlock(cm,hash,fd,0x7fffffff,0);
+		_clip_close(cm,hash,fd);
+		unlink(file);
+	}
+
+	/* creat call work buggy on network filesystems...
+	   druzus:
+	   and this is important for secure reason, hacker can
+	   create link form file to /any/other/important/file
+	   so we always should use pair of functions:
+	   unlink() and open(file, fl|O_EXCL, mode)
+	 */
+	unlink(file);
+	fd = open(file, fl|O_CREAT|O_EXCL, mode);
+	if(fd != -1){
+		fileopen = HashTable_fetch(cm->fileopens,hash);
+		if(fileopen){
+			(*fileopen)++;
+		} else {
+			fileopen = malloc(sizeof(int));
+			*fileopen = 1;
+			HashTable_store(cm->fileopens,fileopen,hash);
+		}
+	}
+
+	if (fd != -1)
+	{
+		if(_clip_setlock(cm,hash,fd,0x7fffffff,
+			(exclusive?CLIP_LOCK_WRITE:CLIP_LOCK_READ)))
+		{
+			_clip_unlock(cm,hash,fd,0x7fffffff,0);
+			_clip_close(cm,hash,fd);
+			return -1;
+		}
+#ifdef USE_NCPFS
+		if(ncp_openmode(fd, exclusive)){
+			_clip_unlock(cm,hash,fd,0x7fffffff,0);
+			_clip_close(cm,hash,fd);
+			return -1;
+		}
+#endif
+		errno = 0;
+	}
+	return fd;
+#else
+	HANDLE h;
+	char* wp = malloc(PATH_MAX);
+	int fd = -1;
+
+	cygwin_conv_to_full_win32_path(file,wp);
+	h = CreateFile(wp,GENERIC_READ|GENERIC_WRITE,
+		exclusive?0:(FILE_SHARE_READ|FILE_SHARE_WRITE),
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	setmode((int)h,O_BINARY);
+	if(h==INVALID_HANDLE_VALUE){
+		if(GetLastError()){
+			free(wp);
+			return -1;
+		}
+	}
+	fd = cygwin_attach_handle_to_fd(wp,-1,h,1,0);
+	free(wp);
+	return fd;
+#endif
+}
+
+int
+_clip_open(ClipMachine* cm,char *file, int flags, mode_t mode, int exclusive)
+{
+#ifndef OS_CYGWIN
+	int fd, fl;
+	long hash = _clip_hashstr(file);
+	int *fileopen;
+	int* err = _clip_fetch_item(cm,HASH_ferror);
+
+	*err = 0;
+
+	if ( (flags & (O_CREAT|O_TRUNC)) == (O_CREAT|O_TRUNC) )
+		return _clip_creat(cm,file, flags, mode, exclusive);
+
+	/* 20031504 - fix for fopen(FO_TRUNC)
+	fl = flags & ~(O_TRUNC|O_CREAT|O_EXCL);
+	*/
+	fl = flags & ~(O_CREAT|O_EXCL);
+
+	fd = open(file, fl, mode);
+
+	if (fd != -1)
+	{
+		fileopen = HashTable_fetch(cm->fileopens,hash);
+		if(fileopen){
+			(*fileopen)++;
+		} else {
+			fileopen = malloc(sizeof(int));
+			*fileopen = 1;
+			HashTable_store(cm->fileopens,fileopen,hash);
+		}
+		if(_clip_setlock(cm,hash,fd,0x7fffffff,
+			(exclusive?CLIP_LOCK_WRITE:CLIP_LOCK_READ)))
+		{
+			_clip_close(cm,hash,fd);
+			err = _clip_fetch_item(cm,HASH_ferror);
+			*err = 32;
+			return -1;
+		}
+#ifdef USE_NCPFS
+		if(ncp_openmode(fd, exclusive)){
+			_clip_unlock(cm,hash,fd,0x7fffffff,0);
+			_clip_close(cm,hash,fd);
+			return -1;
+		}
+#endif
+		errno = 0;
+	}
+	if(fd == -1)
+		*err = 2;
+	return fd;
+#else
+	HANDLE h;
+	char* wp = malloc(PATH_MAX);
+	int fd = -1;
+	DWORD access = GENERIC_READ | GENERIC_WRITE;
+
+	if(flags & O_RDONLY)
+		access &= ~GENERIC_WRITE;
+	else if(flags & O_WRONLY)
+		access &= ~GENERIC_READ;
+
+	cygwin_conv_to_full_win32_path(file,wp);
+	h = CreateFile(wp,access,
+		exclusive?0:(FILE_SHARE_READ|FILE_SHARE_WRITE),
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	setmode((int)h,O_BINARY);
+	if(h==INVALID_HANDLE_VALUE){
+		if(GetLastError()){
+			free(wp);
+			return -1;
+		}
+	}
+	fd = cygwin_attach_handle_to_fd(wp,-1,h,1,0);
+	free(wp);
+	return fd;
+#endif
+}
+
+int
+_clip_close(ClipMachine *cm,long hash,int fd)
+{
+#ifndef OS_CYGWIN
+	int *fileopen = HashTable_fetch(cm->fileopens,hash);
+	int* err = _clip_fetch_item(cm,HASH_ferror);
+
+	*err = 0;
+
+	if(!fileopen)
+		return -1;
+
+	(*fileopen)--;
+	if(!*fileopen){
+		TaskLock* tl = HashTable_fetch(cm->tasklocks,hash);
+		if(tl){
+			if(tl->locks)
+				free(tl->locks);
+			HashTable_remove(cm->tasklocks,hash);
+			free(tl);
+		}
+		HashTable_remove(cm->fileopens,hash);
+		free(fileopen);
+		_clip_unlock(cm,hash,fd,0x7fffffff,0);
+	}
+	return close(fd);
+#else
+	return close(fd);
+#endif
+}
+
+/* TODO? the macros below are used in different files (eg. I copied it
+   from screen.c - I think it is better to put all of them in one
+   header file, isn't it? */
+
+#define	timer_add(a, b, result)							  \
+  do {										  \
+	(result)->tv_sec = (a)->tv_sec + (b)->tv_sec;				  \
+	(result)->tv_usec = (a)->tv_usec + (b)->tv_usec;				  \
+	if ((result)->tv_usec >= 1000000)						  \
+	  {										  \
+	++(result)->tv_sec;							  \
+	(result)->tv_usec -= 1000000;						  \
+	  }										  \
+  } while (0)
+
+#define timer_sub(a, b, result) \
+   do {                         \
+	   (result)->tv_sec = (a)->tv_sec - (b)->tv_sec;     \
+	   (result)->tv_usec = (a)->tv_usec - (b)->tv_usec;  \
+	   if ((result)->tv_usec < 0) {                      \
+		  --(result)->tv_sec;                        \
+		  (result)->tv_usec += 1000000;              \
+	   }                                                 \
+   } while (0)
+
+
+/* TODO? For native Windows port (no CygWin) this function should
+   use different mechanism for differ type of handles, select()
+   is a WinSock function and operates only on sockets. */
+int
+_clip_select(int n, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timeval *tv)
+{
+	int ret;
+
+	if (tv == NULL || (tv->tv_sec == 0 && tv->tv_usec == 0))
+		ret = select(n, rfds, wfds, efds, tv);
+	else
+	{
+		/* Linux decrease timeval struct in timeout parameter to
+		   indicate how much time was left. Other system doesn't
+		   do that so we have consider timeout to be undefined and
+		   decrease it ourself. */
+#if defined(HAVE_GETTIMEOFDAY) && !defined(OS_LINUX)
+		struct timeval beg, end;
+		gettimeofday(&beg, NULL);
+		timer_add(&beg, tv, &end);
+#endif
+
+#ifdef USE_TASKS
+		ret = task_select(n, rfds, wfds, efds, tv);
+#else
+		ret = select(n, rfds, wfds, efds, tv);
+#endif
+
+#ifndef OS_LINUX
+		if ((ret == -1 && errno != EINTR) || ret == 0)
+#else
+		if (ret == -1 && errno != EINTR)
+#endif
+		{
+			/* Bad handle, parameters error or out of memory,
+			   in any of such cases we shouldn't wait longer
+			   (or select finished with no event) */
+			tv->tv_sec = tv->tv_usec = 0;
+		}
+#if defined(HAVE_GETTIMEOFDAY) && !defined(OS_LINUX)
+		else
+		{
+			gettimeofday(&beg, NULL);
+			timer_sub(&end, &beg, tv);
+			if (tv->tv_sec < 0)
+				tv->tv_sec = tv->tv_usec = 0;
+		}
+#endif
+	}
+	return ret;
+}
+
+int
+_clip_read(C_FILE *cf, void *buf, size_t count)
+{
+	int n = 0, i = 0;
+
+	errno = 0;
+	if (count > 0)
+	{
+		fd_set rfds;
+		struct timeval tv, *ptv = NULL;
+
+		if (cf->timeout >= 0)
+		{
+			tv.tv_sec = cf->timeout / 1000;
+			tv.tv_usec = (cf->timeout % 1000) * 1000;
+			ptv = &tv;
+		}
+
+		do
+		{
+			if (ptv == NULL)
+				i = 1;
+			else
+			{
+				FD_ZERO(&rfds);
+				FD_SET(cf->fileno, &rfds);
+
+				i = _clip_select(cf->fileno+1, &rfds, NULL, NULL, ptv);
+
+				if (i == 0 && (cf->type == FT_SOCKET ||
+						   cf->type == FT_PIPE))
+				{
+					errno = EAGAIN;
+					i = -1;
+				}
+			}
+			if (i > 0)
+			{
+				i = read(cf->fileno, buf + n, count - n);
+				if (i > 0)
+				{
+					n += i;
+#ifndef FILEIO_FULLREAD
+					break;
+#endif
+				}
+				else if (i == 0 &&
+					 (cf->type == FT_SOCKET ||
+					  cf->type == FT_PIPE))
+				{	/* if other side close a connection
+					   (pipe or socket) select allow to
+					   read but read() returns 0. It's
+					   POSIX systems behavior, Windows
+					   (WinSock) does not respect it.
+					*/
+					errno = EPIPE;
+					i = -1;
+				}
+			}
+			if (i == -1 && errno == EINTR)
+				i = 1; /* operation interrupted by signal,
+					  Let's try again, _clip_select
+					  should decrease tv to avoid
+					  infinite loop. */
+		} while (i != -1 && i != 0 && n < count);
+
+		if (i == -1 && errno == EPIPE)
+			cf->stat |= FS_EOF;
+	}
+	return n > 0 ? n : i; /* POSIX allow to return -1 when some bytes
+				 was read/written and then appear
+				 error/interrupts(unblocked signal)
+				 (it's undefined) but such behavior is
+				 rather seldom and it complicates high level
+				 code, so let's inform programmer about
+				 bytes read/written even the whole operation
+				 wasn't completed */
+}
+
+int
+_clip_write(C_FILE *cf, void *buf, size_t count)
+{
+	int n = 0, i = 0;
+
+	errno = 0;
+	if (count > 0)
+	{
+		fd_set wfds;
+		struct timeval tv, *ptv = NULL;
+
+		if (cf->timeout >= 0)
+		{
+			tv.tv_sec = cf->timeout / 1000;
+			tv.tv_usec = (cf->timeout % 1000) * 1000;
+			ptv = &tv;
+		}
+
+		do
+		{
+			if (ptv == NULL)
+				i = 1;
+			else
+			{
+				FD_ZERO(&wfds);
+				FD_SET(cf->fileno, &wfds);
+
+				i = _clip_select(cf->fileno+1, NULL, &wfds, NULL, ptv);
+
+				if (i == 0 && (cf->type == FT_SOCKET ||
+						   cf->type == FT_PIPE))
+				{
+					errno = EAGAIN;
+					i = -1;
+				}
+			}
+			if (i > 0)
+			{
+				i = write(cf->fileno, buf + n, count - n);
+				if (i > 0)
+				{
+					n += i;
+#ifndef FILEIO_FULLWRITE
+					break;
+#endif
+				}
+			}
+			if (i == -1 && errno == EINTR)
+				i = 1; /* operation interrupted by signal,
+					  Let's try again, _clip_select
+					  should decrease tv to avoid
+					  infinite loop. */
+		} while (i != -1 && i != 0 && n < count);
+	}
+	return n > 0 ? n : i;
+}
+
+int
+_clip_ftype(int fd)
+{
+	int retval = FT_ERROR;
+	struct stat st;
+
+	if (fstat(fd, &st) != -1)
+	{
+		if (S_ISREG(st.st_mode))
+			retval = FT_FILE;
+		else if (S_ISFIFO(st.st_mode))
+			retval = FT_PIPE;
+#ifndef OS_MINGW
+		else if (S_ISSOCK(st.st_mode))
+			retval = FT_SOCKET;
+		else if (S_ISLNK(st.st_mode))
+			retval = FT_LINK;
+#endif
+		else if (S_ISCHR(st.st_mode))
+			retval = FT_CHARDEV;
+		else if (S_ISBLK(st.st_mode))
+			retval = FT_BLOCKDEV;
+		else if (S_ISDIR(st.st_mode))
+			retval = FT_DIRECTORY;
+		else
+			retval = FT_UNKNOWN;
+		/*
+		TODO: For native windows code we should check for other
+		type of	handle
+		Unimplemented so far:
+		For COM_* function use FT_TERM
+		For GZIP* -> FT_GZIP
+		For BZIP2 -> FT_BZIP2
+		It needs changes in clip-* libs.
+		*/
+	}
+	return retval;
 }
 
 int
 clip_INIT_FILE_SETS(ClipMachine * mp)
 {
 	C_FILE *cf = NULL;
-#ifdef FILEIO_BUFFERING
 	int fd;
-	FILE *f = NULL;
-#endif
+
 	int *err;
 	err = calloc(sizeof(int), 1);
 
 	_clip_store_item(mp, HASH_ferror, err);
 	err = calloc(sizeof(int), 1);
 
-	_clip_store_item(mp, HASH_neterror, err);
-
-	/* open stdin */
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	setmode(0,O_BINARY);
 	setmode(1,O_BINARY);
 #endif
 
-	cf = (C_FILE *) calloc(1, sizeof(C_FILE));
-#ifdef FILEIO_BUFFERING
-	fd = dup(0);
-	f = fdopen(fd, "r");
-	cf->f = f;
-        cf->mode = 1;
-#endif
-        cf->type = FT_STREAM;
-        cf->fileno = 0;
-	cf->pid = -1;
-	_clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
-
-	/* open stdout */
-	cf = (C_FILE *) calloc(1, sizeof(C_FILE));
-#ifdef FILEIO_BUFFERING
-	fd = dup(1);
-	f = fdopen(fd, "a");
-	cf->f = f;
-        cf->mode = 1;
-#endif
-        cf->type = FT_STREAM;
-        cf->fileno = 1;
-	cf->pid = -1;
-	_clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
-
-	/* open stderr */
-	cf = (C_FILE *) calloc(1, sizeof(C_FILE));
-#ifdef FILEIO_BUFFERING
-	fd = dup(2);
-	f = fdopen(fd, "a");
-	cf->f = f;
-        cf->mode = 1;
-#endif
-        cf->type = FT_STREAM;
-        cf->fileno = 2;
-	cf->pid = -1;
-	_clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
+	/*setvbuf(stdout, (char *)NULL, _IOFBF, 0);*/
+	/* open stdin, stdout, stderr */
+	for (fd = 0; fd < 3; fd++)
+	{
+		cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+		if (fd == 0)
+			cf->f = stdin;
+		else if (fd == 1)
+			cf->f = stdout;
+		else if (fd == 2)
+			cf->f = stderr;
+		cf->fileno = fd;
+		cf->pid = -1;
+		cf->type = _clip_ftype(fd);
+		cf->timeout = -1;
+		cf->stat = 0;
+		_clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
+	}
 	return 0;
 }
 
@@ -519,7 +1175,7 @@ clip_STARTPATH(ClipMachine * mp)
 {
 	char buf[PATH_MAX];
 
-        memset(buf,0,PATH_MAX);
+	memset(buf,0,PATH_MAX);
 
 	if (_clip_argv[0][0] == '/')
 	{
@@ -531,7 +1187,15 @@ clip_STARTPATH(ClipMachine * mp)
 		memcpy(buf + strlen(buf) + 1, _clip_argv[0], strlen((char *) _clip_argv[0]) + 1);
 		buf[strlen(buf)] = '/';
 	}
+#ifdef OS_CYGWIN
+	{
+	char ch[MAXPATHLEN];
+	cygwin_posix_to_win32_path_list(buf,ch);
+	_clip_retc(mp, ch);
+	}
+#else
 	_clip_retc(mp, buf);
+#endif
 	return 0;
 }
 
@@ -542,128 +1206,36 @@ clip_EXENAME(ClipMachine * mp)
 }
 
 int
-clip_FLOCKF(ClipMachine * mp)
-{
-	/*
-	   ( nFhandle, nLckType, nSize ) -> nRet
-	   where:
-	   nLckType
-	   0    FF_UNLCK        Unlock the whole file
-	   1    FF_RDLCK        Lock for reading by currrent process,
-	   prevents others from writing
-	   2    FF_WRLCK        Lock for writing by current porcess,
-	   prevents others from reading
-
-	   nSize
-	   is a positive byte count to be locked from the current position.
-	   If omitted, or zero is specified, the rest of the file is locked
-	   until end-of-file.
-
-	   nRet
-	   is set to zero, if the required locking is successful,
-	   nonzero otherwise
-
-	   (this syntax of FLOCKF is FlagShip compatible)
-	 */
-
-	int ret, l_type = 0, l_cmd = 0, *err = NULL;
-	struct flock fl;
-	int fd = _clip_parni(mp, 1);
-	int type = _clip_parni(mp, 2);
-	long size = _clip_parnl(mp, 3);
-	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-
-	if (_clip_parinfo(mp, 0) < 2 || cf == NULL || cf->f == NULL)
-	{
-		_clip_retni(mp, -1);
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FLOCKF");
-	}
-
-	fd = cf->fileno;
-
-	l_cmd = (type == 0 ? F_UNLCK : F_SETLK);
-	l_type = (type == 1 ? F_RDLCK : F_WRLCK);
-	if (size == 0)
-		size = 0xFfffffff;
-
-	fl.l_type = l_type;
-	fl.l_whence = SEEK_SET;
-        if ( cf->f== NULL || cf->mode == 0 )
-		fl.l_start = lseek(cf->fileno,0,SEEK_CUR);
-        else
-		fl.l_start = ftell(cf->f);
-
-	fl.l_len = size;
-	fl.l_pid = 0;
-	ret = fcntl(fd, l_cmd, &fl);
-
-	err = _clip_fetch_item(mp, HASH_ferror);
-	*err = ret < 0 ? errno : 0;
-
-	_clip_retni(mp, ret);
-	return 0;
-}
-
-int
-_set_lock(int fd, int l_type)
-{
-	struct flock fl;
-	int r;
-
-	fl.l_type = l_type;
-	fl.l_whence = SEEK_SET;
-	fl.l_start = 0x7fffffff;
-	fl.l_len = 1;
-	fl.l_pid = 0;
-	r = fcntl(fd, F_SETLK, &fl);
-
-#ifdef USE_NCPFS
-	if (r)
-		return !r;
-	r = ncp_openmode(fd, l_type == F_WRLCK ? 1 : 0);
-#endif
-
-	return !r;
-}
-
-/*
-int _check_lock( int fd, int l_type )
-{
-	struct flock fl;
-	fl.l_type = l_type;
-	fl.l_whence = SEEK_SET;
-	fl.l_start  = 0x7fffffff;
-	fl.l_len = 1;
-	fl.l_pid = 0;
-	if ( fcntl( fd, F_GETLK, &fl ) != 0 || fl.l_type != F_UNLCK )
-		return 1;
-
-	return 0;
-}
-*/
-
-int
 clip_FOPEN(ClipMachine * mp)
 {
 	FILE *f = NULL;
 	C_FILE *cf = NULL;
-	int fd = -1, ret = -1, mode = 0, share_mode = 0, ioflag = -1, *err = NULL;
+	int fd = -1, ret = -1, *err = NULL;
+	int mode = 0, share_mode = 0, type = FT_NONE;
 	pid_t pid = -1;
 	char buf[PATH_MAX];
 	char *fmode = NULL, *fname = _clip_parc(mp, 1);
 	int m = _clip_parni(mp, 2);
-	int raw = _clip_parl(mp, 3);
-
-	if ( _clip_parinfo(mp,0) < 3 )
-        	raw = (FOPENMODE_FLAG & mp->flags1);
+	int lbuf, lposix;
 
 	share_mode = m & 0xfff8;
-	m &= 7;
+	m &= 7;		/* read/write access */
 
-	if (raw)
-		memcpy(buf, fname, strlen(fname));
+	lposix = ((share_mode & FO_POSIX) != 0 ||
+		  (FOPENMODE_FLAG & mp->flags1) != 0);
+		 /* set fopen mode to POSIX */
+
+	if ((share_mode & FO_NOBUFF) != 0)
+		lbuf = 1; /*((share_mode & FO_NOBUFF) != 0);*/
 	else
-		_clip_translate_path(mp, fname, buf, sizeof(buf));
+	{
+	if ((share_mode & FO_BUFFERED) != 0)
+		lbuf = 0; /*((share_mode & FO_BUFFERED) != 0);*/
+	else
+		lbuf = ((BUFFERING_FLAG & mp->flags1) != 0);
+	}
+
+	_clip_translate_path(mp, fname, buf, sizeof(buf));
 
 	switch (m)
 	{
@@ -694,6 +1266,7 @@ clip_FOPEN(ClipMachine * mp)
 			goto err;
 		}
 		fd = dup(0);
+		type = FT_PIPE;
 	}
 	else if (!strcmp(buf, "|-"))
 	{			/* stdout */
@@ -703,23 +1276,24 @@ clip_FOPEN(ClipMachine * mp)
 			goto err;
 		}
 		fd = dup(1);
+		type = FT_PIPE;
 	}
 	else
 	{
 		int blen = strlen(buf);
 
 		if (buf[0] == '|')
-		{		/* output to chield */
+		{		/* output to child */
 			if (mode != O_WRONLY)
 			{
 				errno = EACCES;
 				goto err;
 			}
-			ioflag = 0;
+			type = FT_PIPE;
 			memmove(buf, buf + 1, blen);
 		}
 		else if (buf[blen - 1] == '|')
-		{		/* input from chield */
+		{		/* input from child */
 			mode = O_RDONLY;
 			/*
 			   if (mode != O_RDONLY)
@@ -728,28 +1302,43 @@ clip_FOPEN(ClipMachine * mp)
 			   goto err;
 			   }
 			 */
-			ioflag = 1;
+			type = FT_PIPE;
 			buf[blen - 1] = 0;
 		}
+	}
 
-		if (ioflag >= 0)
+	if (type == FT_NONE)
+		type = FT_FILE;
+
+
+	if (fd == -1)
+	{
+#ifndef OS_MINGW
+		if (type == FT_PIPE)
 		{
 			int pfd[2];
 
-			pipe(pfd);
+			if (pipe(pfd) == -1)
+				goto err;
 
-			if ((pid = fork()) == 0)
-			{	/* chield */
+			if ((pid = fork()) == -1)
+			{
+				close(pfd[0]);
+				close(pfd[1]);
+				goto err;
+			}
+			else if (pid == 0)
+			{	/* child */
 				int i = 0;
 
 				setuid(getuid());
 				setgid(getgid());
-				if (ioflag == 0)
+				if (mode == O_WRONLY)
 				{	/* input from parent */
 					dup2(pfd[0], 0);
 					close(pfd[0]);
 				}
-				else
+				else if (mode == O_RDONLY)
 				{	/* output to parent */
 					dup2(pfd[1], 1);
 					dup2(pfd[1], 2);
@@ -762,128 +1351,271 @@ clip_FOPEN(ClipMachine * mp)
 				exit(0);
 			}
 
-			if (ioflag == 0)
-			{	/* output to chield */
+			if (mode == O_WRONLY)
+			{	/* output to child */
 				close(pfd[0]);
 				fd = pfd[1];
 			}
-			else
-			{	/* input from chield */
+			else if (mode == O_RDONLY)
+			{	/* input from child */
 				close(pfd[1]);
 				fd = pfd[0];
 			}
-			mode |= O_NONBLOCK;
+			if ((mode = fcntl(fd, F_GETFL, 0)) == -1)
+				goto err;
+			fcntl(fd, F_SETFL, mode | O_NONBLOCK);
 		}
-	}
-
-#ifdef OS_CYGWIN
-	mode |= O_BINARY;
-#endif
-
-#if 0
-	if (fd >= 0 || (fd = open(buf, mode)) >= 0)
-		f = fdopen(fd, fmode);
+		else if (type == FT_FILE)
 #else
-        if ( raw && ioflag < 0 )
-        {
-		mode |= O_NONBLOCK;
-		fd = open(buf, mode);
-	}
-	if (fd < 0 && (fd = open(buf, mode)) >= 0)
-	{
+		if (type == FT_FILE)
+#endif
+		{
 #define FO_COMPAT	 0	/* Режим совместимости (по умолчанию) */
 #define FO_EXCLUSIVE	16	/* Монопольное использование (Exclusive) */
 #define FO_DENYWRITE	32	/* Предупреждение от записи другими процессами */
 #define FO_DENYREAD	48	/* Предупреждение от чтения другими процессами */
 #define FO_SHARED	64	/* Разрешение чтения и записи другими процессами */
 #define FO_DENYNONE	64	/* (то же самое, что и FO_SHARED) */
-		/*int l_type = F_WRLCK; */
-		int l_type = -1;
+			/*int l_type = F_WRLCK; */
+			int l_type = -1;
 
-		switch (share_mode)
-		{
-			/*
-			   case FO_COMPAT:
-			   case FO_DENYWRITE:
-			 */
-		case FO_DENYREAD:
-		case FO_EXCLUSIVE:
-			l_type = (mode == O_RDONLY ? F_RDLCK : F_WRLCK);
-			break;
-		case FO_DENYWRITE:
-			l_type = (mode != O_WRONLY ? F_RDLCK : F_WRLCK);
-			break;
-		case FO_COMPAT:
-		case FO_SHARED:
-			l_type = (mode == O_WRONLY ? F_WRLCK : F_RDLCK);
-			break;
+			if (!lposix)
+			{
+				switch (share_mode & 0x70)
+				{
+				case FO_DENYREAD:
+				case FO_EXCLUSIVE:
+				case FO_DENYWRITE:
+					l_type = F_WRLCK;
+					break;
+				case FO_COMPAT:
+				case FO_SHARED:
+					l_type = F_RDLCK;
+					break;
+				}
+			}
+#ifdef _WIN32
+			mode |= ((share_mode & FO_TEXT) != 0) ? O_TEXT: O_BINARY;
+#endif
+			mode |= O_NONBLOCK;
+			mode |= ((share_mode & FO_TRUNC) != 0) ? O_TRUNC: 0;
+
+			fd = _clip_open(mp, buf, mode, 0, l_type == F_WRLCK);
 		}
+	}
 
-		/* if ( ioflag >= 0 || _set_lock(fd, l_type) ) */
-		if (ioflag >= 0 || l_type == -1 || _set_lock(fd, l_type))
-			f = fdopen(fd, fmode);
-	}
-	else
+	if (fd != -1)
 	{
-		if (fd >= 0)
-			f = fdopen(fd, fmode);
-	}
-#endif
-      err:
-	err = _clip_fetch_item(mp, HASH_ferror);
-	*err = 0;
-
-	if (f == NULL)
-	{
-		*err = errno;
-		if (fd >= 0)
-			close(fd);
-	}
-	else
-	{
-		*err = 0;
+		if (lbuf)
+		{
+			if ((f = fdopen(fd, fmode)) == NULL)
+				goto err;
+		}
+		if (type == FT_FILE && m == 1)	/* O_WRONLY */
+		{
+			if (lbuf)
+				fseek(f, 0, SEEK_SET);
+			else
+				lseek(fd, 0, SEEK_SET);
+		}
 		cf = (C_FILE *) calloc(1, sizeof(C_FILE));
-                if ( ioflag >=0 )
-                	cf->type = FT_PIPE;
-                else
-        		cf->type = FT_FILE;
-#ifdef FILEIO_BUFFERING
-		cf->mode = 1;
-#else
-        	cf->mode = ( (BUFFERING_FLAG & mp->flags1) !=0 );
-#endif
-        	cf->fileno = fd;
+		cf->fileno = fd;
 		cf->f = f;
+		cf->stat = (lbuf ? FS_BUFFERED : 0);
+		cf->type = _clip_ftype(fd);
 		cf->pid = pid;
-		if (m == 1 && cf->mode == 1)
-			fseek(cf->f, 0, SEEK_SET);
-		if (m == 1 && cf->mode == 0)
-			lseek(cf->fileno, 0, SEEK_SET);
+		cf->timeout = 0; /* (type == FT_FILE) ? 0 : -1; */
+		cf->hash = _clip_hashstr(buf);
+		cf->cm = mp;
 		ret = _clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
 	}
 
+	err:
+	err = _clip_fetch_item(mp, HASH_ferror);
+	if (ret != -1)
+		*err = 0;
+	else
+	{
+		*err = errno;
+		if (f != NULL)
+			fclose(f);
+		else if (fd != -1)
+			close(fd);
+	}
 	_clip_retni(mp, ret);
 
 	return 0;
 }
 
 int
-_clip_fready(ClipMachine * mp, int rmode)
+clip_FCREATE(ClipMachine * mp)
 {
-	int *err = NULL, ret = -1;
-	fd_set set;
-	struct timeval tv;
+	FILE *f = NULL;
+	C_FILE *cf = NULL;
+	int fd = -1, ret = -1, *err = _clip_fetch_item(mp, HASH_ferror);
+	char buf[PATH_MAX];
+	char *fname = _clip_parc(mp, 1);
+	int share_mode = _clip_parni(mp, 2);
+	int lbuf; /*, lposix; */
+
+	/* TODO: How to create file without locking?
+	   We need to extend last param in _clip_creat for new mode
+	 */
+	/*
+	lposix = ((share_mode & FO_POSIX) != 0 ||
+		  (FOPENMODE_FLAG & mp->flags1) != 0);
+	*/
+
+	if ((share_mode & FO_NOBUFF) != 0)
+		lbuf = 1; /*((share_mode & FO_NOBUFF) != 0);*/
+	else
+	{
+	if ((share_mode & FO_BUFFERED) != 0)
+		lbuf = 0; /*((share_mode & FO_BUFFERED) != 0);*/
+	else
+		lbuf = ((BUFFERING_FLAG & mp->flags1) != 0);
+	}
+
+	*err = 0;
+
+	if (fname == NULL)
+	{
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FCREATE");
+	}
+	_clip_translate_path(mp, fname, buf, sizeof(buf));
+
+	if ((fd = _clip_creat(mp, buf, O_RDWR|O_BINARY, mp->fileCreateMode, 1)) != -1 )
+	{
+		if (!lbuf || (f = fdopen(fd, "r+")) != NULL)
+		{
+			cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+			cf->type = _clip_ftype(fd);
+			cf->fileno = fd;
+			cf->f = f;
+			cf->stat = (lbuf ? FS_BUFFERED : 0);
+			cf->pid = -1;
+			cf->timeout = 0;
+			cf->hash = _clip_hashstr(buf);
+			cf->cm = mp;
+			ret = _clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
+		}
+	}
+	if (ret == -1)
+	{
+		*err = errno;
+		if (fd != -1)
+			close(fd);
+	}
+	_clip_retni(mp, ret);
+	return 0;
+}
+
+int
+clip_FCLOSE(ClipMachine * mp)
+{
 	int fd = _clip_parni(mp, 1);
-	int timeout = _clip_parni(mp, 2);
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	int ret = -1, *err = _clip_fetch_item(mp, HASH_ferror);
+
+	if (cf == NULL)
+	{
+		*err = EBADF;
+	}
+	else if (_clip_destroy_c_item(mp, fd, _C_ITEM_TYPE_FILE))
+	{
+		*err = 0;
+		ret = 0;
+	}
+
+	_clip_retl(mp, (ret == 0));
+	return 0;
+}
+
+int
+clip_FILENO(ClipMachine * mp)
+{
+	int fd = _clip_parni(mp, 1), *err = _clip_fetch_item(mp, HASH_ferror);
 	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
-	err = _clip_fetch_item(mp, HASH_ferror);
-	*err = 0;
+	if (cf == NULL)
+	{
+		*err = EBADF;
+		_clip_retni(mp, -1);
+	}
+	else
+	{
+		*err = 0;
+		_clip_retni(mp,cf->fileno);
+	}
+	return 0;
+}
+
+int
+clip_FTYPE(ClipMachine * mp)
+{
+	int fd = _clip_parni(mp, 1), *err = _clip_fetch_item(mp, HASH_ferror);
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	if (cf == NULL)
+	{
+		*err = EBADF;
+		_clip_retni(mp, -1);
+	}
+	else
+	{
+		*err = 0;
+		_clip_retni(mp,cf->type);
+	}
+	return 0;
+}
+
+int
+clip_FTIMEOUT(ClipMachine * mp)
+{
+	int fd = _clip_parni(mp, 1), *err = _clip_fetch_item(mp, HASH_ferror);
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	if (cf == NULL)
+	{
+		*err = EBADF;
+		_clip_retni(mp, -1);
+	}
+	else
+	{
+		*err = 0;
+		_clip_retni(mp, cf->timeout);
+		if (_clip_parinfo(mp, 2) == NUMERIC_t)
+			cf->timeout = _clip_parni(mp, 2);
+	}
+	return 0;
+}
+
+int
+_clip_fready(ClipMachine * mp, int rmode)
+{
+	int ret = -1, *err = _clip_fetch_item(mp, HASH_ferror);
+	fd_set set;
+	struct timeval tv;
+	int fd = _clip_parni(mp, 1), timeout;
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
 	_clip_retl(mp, 0);
 
-	if (cf == NULL )
+	if (cf == NULL)
+	{
+		*err = EBADF;
 		return 0;
+	}
+
+	if (_clip_parinfo(mp, 2) == NUMERIC_t)
+		timeout = _clip_parni(mp, 2);
+	else
+		timeout = cf->timeout;
+
+	if (timeout < 0)
+		timeout = 0;	/* TODO?: maybe we should set in such case
+				   infinit timeout (&tv=NULL)? */
 
 	fd = cf->fileno;
 
@@ -896,18 +1628,17 @@ _clip_fready(ClipMachine * mp, int rmode)
 	switch (rmode)
 	{
 	case 1:
-		ret = select(fd + 1, &set, NULL, NULL, &tv);
+		ret = _clip_select(fd + 1, &set, NULL, NULL, &tv);
 		break;
 	case 2:
-		ret = select(fd + 1, NULL, &set, NULL, &tv);
+		ret = _clip_select(fd + 1, NULL, &set, NULL, &tv);
 		break;
 	}
-	if (ret <= 0)
-	{
-		*err = errno;
-		return 0;
-	}
-	_clip_retl(mp, 1);
+
+	*err = ret == -1 ? errno : 0;
+	if (ret > 0)
+		_clip_retl(mp, 1);
+
 	return 0;
 }
 
@@ -921,145 +1652,6 @@ int
 clip_FWRITEREADY(ClipMachine * mp)
 {
 	return _clip_fready(mp, 2);
-}
-
-int
-clip_FCREATE(ClipMachine * mp)
-{
-	FILE *f = NULL;
-	C_FILE *cf = NULL;
-	int fd = -1, ret = -1, *err = NULL;
-	char buf[PATH_MAX];
-	char *fname = _clip_parc(mp, 1);
-	int m = _clip_parni(mp, 2);
-
-	if (fname == NULL)
-	{
-		_clip_retni(mp, -1);
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FCREATE");
-	}
-	_clip_translate_path(mp, fname, buf, sizeof(buf));
-
-	err = _clip_fetch_item(mp, HASH_ferror);
-	*err = 0;
-	if ((fd = _clip_creat(buf, O_RDWR|O_BINARY, mp->fileCreateMode, 1)) >=0 )
-	{
-		f = fdopen(fd, "r+");
-	}
-	if (f == NULL)
-	{
-		*err = errno;
-	}
-	else
-	{
-		*err = 0;
-		cf = (C_FILE *) calloc(1, sizeof(C_FILE));
-        	cf->type = FT_FILE;
-        	cf->fileno = fd;
-		cf->f = f;
-#ifdef FILEIO_BUFFERING
-		cf->mode = 1 ;
-#else
-        	cf->mode = ( (BUFFERING_FLAG & mp->flags1) !=0 );
-#endif
-		if (m == 1 && cf->mode == 1)
-			fseek(cf->f, 0, SEEK_SET);
-		if (m == 1 && cf->mode == 1)
-			lseek(cf->fileno, 0, SEEK_SET);
-		ret = _clip_store_c_item(mp, cf, _C_ITEM_TYPE_FILE, destroy_c_file);
-	}
-
-	_clip_retni(mp, ret);
-	return 0;
-}
-
-int
-clip_FCLOSE(ClipMachine * mp)
-{
-	int fd = _clip_parni(mp, 1);
-	C_FILE *cf = (C_FILE *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-	int ret = -1, *err = _clip_fetch_item(mp, HASH_ferror);
-
-	if (cf == NULL)
-	{
-		*err = EBADF;
-	}
-	else if (_clip_destroy_c_item(mp, fd, _C_ITEM_TYPE_FILE))
-	{
-		ret = 0;
-		*err = 0;
-	}
-
-	_clip_retl(mp, (ret == 0));
-	return 0;
-}
-
-int
-clip_FERASE(ClipMachine * mp)
-{
-	int ret, *err, fd;
-	char buf[PATH_MAX];
-	char *fname = _clip_parc(mp, 1);
-
-	if (fname == NULL)
-	{
-		_clip_retni(mp, -1);
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FERASE");
-	}
-	_clip_translate_path(mp, fname, buf, sizeof(buf));
-	fd = open(buf, O_WRONLY);
-	err = _clip_fetch_item(mp, HASH_ferror);
-	if (fd < 0)
-	{
-		*err = errno;
-		_clip_retni(mp, -1);
-		return 0;
-	}
-	if (!_set_lock(fd, F_WRLCK))
-	{
-		*err = errno;
-		_clip_retni(mp, -1);
-		return 0;
-	}
-	close(fd);
-	ret = unlink(buf);
-
-	if (ret < 0)
-		*err = errno;
-	else
-		*err = 0;
-	_clip_retni(mp, ret);
-	return 0;
-}
-
-int
-clip_FILENO(ClipMachine * mp)
-{
-	int fd = _clip_parni(mp, 1);
-	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-
-        _clip_retni(mp, -1);
-	if (cf == NULL )
-        	return 0;
-        if ( cf->f == NULL )
-        	_clip_retni(mp,cf->fileno);
-        else
-        	_clip_retni(mp,fileno(cf->f));
-
-        return 0;
-}
-
-int
-clip_FTYPE(ClipMachine * mp)
-{
-	int fd = _clip_parni(mp, 1);
-	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-
-	if (cf == NULL)
-        	_clip_retni(mp, -1);
-        else
-        	_clip_retni(mp,cf->type);
-        return 0;
 }
 
 int
@@ -1082,32 +1674,36 @@ clip_FREAD(ClipMachine * mp)
 	else
 		*err = 0;
 #else
-	int *err = NULL, lenbuf = 0;
-	int fd = _clip_parni(mp, 1);
+	int *err = _clip_fetch_item(mp, HASH_ferror);
+	int fd = _clip_parni(mp, 1), lenbuf = 0;
 	char *buf = _clip_parcl(mp, 2, &lenbuf);
 	long ret = -1, nb = _clip_parnl(mp, 3);
 	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
 	_clip_retnl(mp, -1);
+
 	if (cf == NULL )
-        	return 0;
+	{
+		*err = EBADF;
+		return 0;
+	}
 
 	if (lenbuf < nb)
 		nb = lenbuf;
 
 	if ( nb>0 )
-        {
-        	if ( cf->f == NULL || cf->mode == 0 )
-			ret = read(cf->fileno, buf, nb);
-                else
+	{
+		if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+			ret = _clip_read(cf, buf, nb);
+		else
 			ret = fread(buf, 1, nb, cf->f);
-        }
-        else
-        	ret = 0;
+	}
+	else
+		ret = 0;
 
-	err = _clip_fetch_item(mp, HASH_ferror);
 	*err = ret < 0 ? errno : 0;
 #endif
+
 	_clip_retnl(mp, ret);
 	return 0;
 }
@@ -1137,19 +1733,24 @@ clip_FREADSTR(ClipMachine * mp)
 	else
 		*err = 0;
 #else
-	int *err = NULL;
+	int *err = _clip_fetch_item(mp, HASH_ferror);
 	int fd = _clip_parni(mp, 1);
 	long ret = -1, nb = _clip_parnl(mp, 2);
-	char *buf = malloc(nb + 1);
+	char *buf;
 	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
 	_clip_retc(mp, "");
-	if (cf == NULL )
-        	return 0;
 
-	if (cf->f == NULL || cf->mode == 0)
-		ret = read(cf->fileno, buf, nb);
-        else
+	if (cf == NULL )
+	{
+		*err = EBADF;
+		return 0;
+	}
+
+	buf = malloc(nb + 1);
+	if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+		ret = _clip_read(cf, buf, nb);
+	else
 		ret = fread(buf, 1, nb, cf->f);
 
 	if (ret >= 0)
@@ -1157,74 +1758,146 @@ clip_FREADSTR(ClipMachine * mp)
 		buf[ret] = 0;
 		_clip_retc(mp, buf);
 	}
-        free(buf);
+	free(buf);
 
-	err = _clip_fetch_item(mp, HASH_ferror);
 	*err = ret < 0 ? errno : 0;
 #endif
 	return 0;
 }
 
 int
-clip_FRENAME(ClipMachine * mp)
+clip_FILEGETSTR(ClipMachine * mp)
 {
-	int ret, *err;
-	char buf1[PATH_MAX];
-	char buf2[PATH_MAX];
-	char *fname1 = _clip_parc(mp, 1);
-	char *fname2 = _clip_parc(mp, 2);
+#if 0
+	char *buf, *e;
+	int *err;
+	int h = _clip_parni(mp, 1);
+	int kol = _clip_parni(mp, 2);
+	int oldmesto = lseek(h, 0, SEEK_CUR);
 
-	if (fname1 == NULL || fname2 == NULL)
-	{
-		_clip_retni(mp, -1);
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FRENAME");
-	}
-	_clip_translate_path(mp, fname1, buf1, sizeof(buf1));
-	_clip_translate_path(mp, fname2, buf2, sizeof(buf1));
-	ret = rename(buf1, buf2);
+	if (kol <= 0)
+		kol = 256;
+
+	buf = malloc(kol + 1);
+	kol = read(h, buf, kol);
 
 	err = _clip_fetch_item(mp, HASH_ferror);
 
-	if (ret < 0)
+	if (kol < 0)
 		*err = errno;
 	else
 		*err = 0;
 
-	_clip_retni(mp, ret);
-	return 0;
-}
-
-int
-clip_FSEEK(ClipMachine * mp)
-{
+	if (kol < 0)
+	{
+		_clip_retc(mp, "");
+		lseek(h, oldmesto, SEEK_SET);
+		return 0;
+	}
+	for (e = buf; e < buf + kol && *e != '\n'; e++);
+	if (e == buf + kol)
+	{
+		_clip_retcn_m(mp, buf, kol);
+		return 0;
+	}
+	if (*(e - 1) == '\r')
+	{
+		*(e - 1) = 0;
+		_clip_retcn_m(mp, buf, e - buf - 1);
+		lseek(h, oldmesto + e - buf + 2, SEEK_SET);
+		return 0;
+	}
+	*e = 0;
+	_clip_retcn_m(mp, buf, e - buf);
+	lseek(h, oldmesto + e - buf + 1, SEEK_SET);
+#else
+	int *err = _clip_fetch_item(mp, HASH_ferror);
+	char *buf = NULL;
 	int fd = _clip_parni(mp, 1);
-	long nb = _clip_parnl(mp, 2);
-	int whence = SEEK_SET, w = _clip_parni(mp, 3);
+	int i, c = 0, n = _clip_parni(mp, 2);
 	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
-	_clip_retnl(mp, -1);
-	if (cf == NULL )
-        	return 0;
-
-	switch (w)
+	if (cf == NULL)
 	{
-	case 0:
-		whence = SEEK_SET;
-		break;
-	case 1:
-		whence = SEEK_CUR;
-		break;
-	case 2:
-		whence = SEEK_END;
-		break;
+		*err = EBADF;
+		_clip_retc(mp, "");
 	}
-        if (cf->f==NULL || cf->mode== 0 )
-		_clip_retnl(mp, lseek(cf->fileno, nb, whence) );
-        else
-        {
-		fseek(cf->f, nb, whence);
-		_clip_retnl(mp, ftell(cf->f));
-        }
+	else
+	{
+		*err = 0;
+		if (n <= 0)
+			n = 256;
+		buf = calloc(n + 1,1);
+		if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+		{
+			if (cf->type == FT_FILE)
+			{
+				int j;
+				j = _clip_read(cf, buf, n);
+				if (j < n)
+					n = j;
+				for(i = j = 0; j < n; )
+				{
+					c = *(buf + j++);
+					if (c == '\n')
+						break;
+					if (c != '\r')
+						*(buf + i++) = c;
+				}
+				if (n > 0 && j < n)
+					lseek(cf->fileno, j - n, SEEK_CUR);
+				else if (n == -1)
+					*err = errno;
+			}
+			else
+			{
+				for (i = 0; i < n; )
+				{
+					if ( _clip_read(cf, buf+i, 1) <= 0 )
+						break;
+					c = *(buf + i);
+					if (c == '\n')
+						break;
+					if (c != '\r')
+						++i;
+				}
+			}
+		}
+		else
+		{
+/*
+			if (fgets(buf, n + 1, cf->f) != NULL)
+			{
+				for (i = strlen(buf); i; )
+				{
+					c = *(buf + --i);
+					if (c != EOF && c != '\n' && c != '\r')
+						break;
+				}
+				*(buf + i) = '\0';
+			}
+*/
+			for (i = 0; i < n;)
+			{
+				c = fgetc(cf->f);
+				if ( c == EOF || c == '\n')
+					break;
+				if (c != '\r')
+					buf[i++] = c;
+			}
+		}
+		if (i > 0)
+		{
+			buf = (char *) realloc(buf, i + 1);
+			_clip_retcn_m(mp, buf, i);
+		}
+		else
+		{
+			free(buf);
+			_clip_retc(mp, "");
+		}
+	}
+#endif
 	return 0;
 }
 
@@ -1252,29 +1925,34 @@ clip_FWRITE(ClipMachine * mp)
 		*err = 0;
 	_clip_retni(mp, ret);
 #else
-	int len = 0, *err = NULL;
-	int fd = _clip_parni(mp, 1);
-	char *str = _clip_parcl(mp, 2, &len);
+	int *err = _clip_fetch_item(mp, HASH_ferror);
+	int fd = _clip_parni(mp, 1), len = 0;
+	char *buf = _clip_parcl(mp, 2, &len);
 	long ret = -1, n = _clip_parnl(mp, 3);
 	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
-	if (cf != NULL)
+	if (_clip_parinfo(mp,1) == UNDEF_t )
+		fd = 1;
+
+	cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	if (cf == NULL)
+		*err = EBADF;
+	else
 	{
 		if (_clip_parinfo(mp, 3) != NUMERIC_t)
 			n = len;
-		if (n >= len)
+		if (n > len)
 			n = len;
 
 		if (n <= 0)
+			ret = 0;
+		else
 		{
-			_clip_retnl(mp, 0);
-			return 0;
+			if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+				ret = _clip_write(cf, buf, n);
+			else
+				ret = fwrite(buf, 1, n, cf->f);
 		}
-                if ( cf->f == NULL || cf->mode == 0)
-			ret = write(cf->fileno,str, n);
-                else
-			ret = fwrite(str, 1, n, cf->f);
-		err = _clip_fetch_item(mp, HASH_ferror);
 		*err = ret < 0 ? errno : 0;
 	}
 	_clip_retnl(mp, ret);
@@ -1304,34 +1982,377 @@ clip_FWRITELN(ClipMachine * mp)
 	else
 		*err = 0;
 #else
-	int ret = -1, len = 0, *err = NULL;
+	int ret = -1, len = 0, *err = _clip_fetch_item(mp, HASH_ferror);
 	int fd = _clip_parni(mp, 1);
-	char *str = _clip_parcl(mp, 2, &len);
+	char *buf = _clip_parcl(mp, 2, &len);
 	int n = _clip_parni(mp, 3);
 	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
 
-	if (cf != NULL )
+	if (cf == NULL)
+		*err = EBADF;
+	else
 	{
 		if (n <= 0)
 			n = len;
 		if (len < n)
 			n = len;
-                if ( cf->f == NULL || cf->mode == 0)
-                {
-			ret = write(cf->fileno,str, n);
-			ret += write(cf->fileno,"\n", 1);
-                }
-                else
-                {
-			ret = fwrite(str, 1, n, cf->f);
-			ret += fwrite("\n", 1, 1, cf->f);
-                }
-		err = _clip_fetch_item(mp, HASH_ferror);
+
+		if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+		{
+			ret = _clip_write(cf, buf, n);
+			if (ret == n)
+				if (_clip_write(cf, "\n", 1) == 1)
+					++ret;
+		}
+		else
+		{
+			ret = fwrite(buf, 1, n, cf->f);
+			if(ret == n)
+				if (fwrite("\n", 1, 1, cf->f) == 1)
+					++ret;
+		}
 		*err = ret < 0 ? errno : 0;
 	}
 #endif
 	_clip_retni(mp, ret);
 
+	return 0;
+}
+
+int
+clip_FFLUSH(ClipMachine * mp)
+{
+	int ret = 0, fd = _clip_parni(mp, 1);
+	int *err = _clip_fetch_item(mp, HASH_ferror);
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	if (cf == NULL)
+		*err = EBADF;
+	else
+	{
+		*err = 0;
+		if (cf->f != NULL && (cf->stat & FS_BUFFERED) != 0)
+		{
+			if (fflush(cf->f) == 0)
+				ret = 1;
+			else
+				*err = errno;
+		}
+		else
+			ret = 1;
+	}
+	_clip_retl(mp, ret);
+	return 0;
+}
+
+int
+clip_FSEEK(ClipMachine * mp)
+{
+	int fd = _clip_parni(mp, 1);
+	long nb = _clip_parnl(mp, 2);
+	int whence = SEEK_SET, w = _clip_parni(mp, 3), *err, ret = -1;
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	err = _clip_fetch_item(mp, HASH_ferror);
+	*err = 0;
+	_clip_retnl(mp, -1);
+
+	if (cf == NULL )
+	{
+		*err = EBADF;
+		return 0;
+	}
+	else if (cf->type == FT_FIFO || cf->type == FT_SOCKET)
+	{
+		*err = ESPIPE;
+		return 0;
+	}
+
+	switch (w)
+	{
+	case 0:
+		whence = SEEK_SET;
+		break;
+	case 1:
+		whence = SEEK_CUR;
+		break;
+	case 2:
+		whence = SEEK_END;
+		break;
+	}
+	if (cf->f==NULL || (cf->stat & FS_BUFFERED) == 0)
+	{
+		if ((ret = lseek(cf->fileno, nb, whence)) == -1)
+			*err = errno;
+	}
+	else
+	{
+		if ((ret = fseek(cf->f, nb, whence)) == -1)
+			*err = errno;
+		else
+			ret = ftell(cf->f);
+	}
+	_clip_retnl(mp, ret);
+	return 0;
+}
+
+int
+clip_FTRUNC(ClipMachine * mp)
+{
+	int *err = _clip_fetch_item(mp, HASH_ferror);
+	int fd = _clip_parni(mp, 1), fno = -1;
+	long len = _clip_parnl(mp,2);
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	if (cf == NULL)
+	{
+		*err = EBADF;
+		_clip_retl(mp, 0);
+		return 0;
+	}
+
+	if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+		fno = cf->fileno;
+	else
+		fno = fileno(cf->f);
+
+	if ( fno == -1)
+	{
+		*err = EBADF;
+		_clip_retl(mp, 0);
+		return 0;
+	}
+
+	if (_clip_parinfo(mp, 0) < 2)
+		len = lseek(fno,0,SEEK_CUR);
+
+	//if ( len > 0 )
+	len = ftruncate(fno, len);
+
+	*err = len < 0 ? errno : 0;
+
+	_clip_retl(mp, len>=0 );
+	return 0;
+}
+
+int
+clip_FILEEOF(ClipMachine * mp)
+{
+	int ret = 1, fd = _clip_parni(mp, 1);
+	int *err = _clip_fetch_item(mp, HASH_ferror);
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	*err = 0;
+	if (cf == NULL )
+		*err = EBADF;
+	else if (cf->type == FT_FIFO || cf->type == FT_SOCKET)
+		ret = (cf->stat & FS_EOF) ? 1 : 0;
+	else
+	{
+		if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+		{
+			int i, j;
+			i = lseek(cf->fileno, 0, SEEK_CUR);
+			j = lseek(cf->fileno, 0, SEEK_END);
+			ret = (i >= j);
+			lseek(cf->fileno, i, SEEK_SET);
+		}
+		else
+			ret = feof(cf->f) ? 1 : 0;
+	}
+	_clip_retl(mp, ret);
+	return 0;
+}
+
+int
+clip_FTELL(ClipMachine * mp)
+{
+	int fd = _clip_parni(mp, 1), *err = _clip_fetch_item(mp, HASH_ferror);
+	long ret = -1;
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	_clip_retni(mp,ret);
+	if (cf == NULL)
+		*err = EBADF;
+	else
+	{
+		if (cf->f == NULL || (cf->stat & FS_BUFFERED) == 0)
+			ret = lseek(cf->fileno,0,SEEK_CUR);
+		else
+			ret = ftell(cf->f);
+
+		*err = ret < 0 ? errno : 0;
+	}
+	_clip_retnl(mp, ret);
+	return 0;
+}
+
+int
+clip_FLOCKF(ClipMachine * mp)
+{
+	/*
+	   ( nFhandle, nLckType, nSize ) -> nRet
+	   where:
+	   nLckType
+	   0    FF_UNLCK        Unlock the whole file
+	   1    FF_RDLCK        Lock for reading by currrent process,
+	   prevents others from writing
+	   2    FF_WRLCK        Lock for writing by current porcess,
+	   prevents others from reading
+
+	   nSize
+	   is a positive byte count to be locked from the current position.
+	   If omitted, or zero is specified, the rest of the file is locked
+	   until end-of-file.
+
+	   nRet
+	   is set to zero, if the required locking is successful,
+	   nonzero otherwise
+
+	   (this syntax of FLOCKF is FlagShip compatible)
+	 */
+
+	int ret, l_type = 0, l_cmd = 0;
+	int *err = _clip_fetch_item(mp, HASH_ferror);
+	struct flock fl;
+	int fd = _clip_parni(mp, 1);
+	int type = _clip_parni(mp, 2);
+	long size = _clip_parnl(mp, 3);
+	C_FILE *cf;
+
+	_clip_retni(mp, -1);
+	if (_clip_parinfo(mp, 0) < 2)
+	{
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FLOCKF");
+	}
+
+	cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+
+	if (cf == NULL)
+	{
+		*err = EBADF;
+		return 0;
+	}
+	else if (cf->type == FT_FIFO || cf->type == FT_SOCKET)
+	{
+		*err = ESPIPE;
+		return 0;
+	}
+
+	l_cmd = (type == 0 ? F_UNLCK : F_SETLK);
+	l_type = (type == 1 ? F_RDLCK : F_WRLCK);
+	if (size == 0)
+		size = 0xFFFFFFFF;
+
+	fl.l_type = l_type;
+	fl.l_whence = SEEK_SET;
+	fl.l_start = lseek(cf->fileno, 0, SEEK_CUR);
+	fl.l_len = size;
+#ifndef OS_MINGW
+	fl.l_pid = 0;
+#endif
+	ret = fcntl(cf->fileno, l_cmd, &fl);
+
+	*err = ret == -1 ? errno : 0;
+	_clip_retni(mp, ret);
+	return 0;
+}
+
+int
+clip_FLENGTH(ClipMachine * mp)
+{
+	int fd = _clip_parni(mp, 1), *err = _clip_fetch_item(mp, HASH_ferror);
+	long ret = -1;
+	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	struct stat st;
+
+	if (cf == NULL)
+		*err = EBADF;
+	else
+	{
+		if (fstat(cf->fileno, &st) == 0)
+			ret = st.st_size;
+		else
+			*err = errno;
+	}
+	_clip_retnl(mp, ret);
+	return 0;
+}
+
+int
+clip_FERASE(ClipMachine * mp)
+{
+	int ret, *err = _clip_fetch_item(mp, HASH_ferror);
+	char buf[PATH_MAX];
+	char *fname = _clip_parc(mp, 1);
+
+	if (fname == NULL)
+	{
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FERASE");
+	}
+	_clip_translate_path(mp, fname, buf, sizeof(buf));
+
+#if 1
+	/* I think I know what you wanted to do but this is very
+	   dangerous. POSIX defined that if process close a file
+	   all locks set by this process are removed. Kernel recognize
+	   locks by pair INODE & PID not by file handle. It means that
+	   if you run FERASE() on file which is opened database by
+	   the same process you remove all locks made by RDD :-(.
+	   The same happened if you try to remove any link
+	   (soft or hard) to this file.
+	 */
+	{
+	int fd;
+
+	fd = _clip_open(mp,buf,O_RDWR,0,1);
+	if (fd < 0)
+	{
+		*err = errno;
+		_clip_retni(mp, -1);
+		return 0;
+	}
+	_clip_close(mp,_clip_hashstr(buf),fd);
+	}
+#endif
+
+	ret = unlink(buf);
+
+	if (ret == -1)
+		*err = errno;
+	else
+		*err = 0;
+	_clip_retni(mp, ret);
+	return 0;
+}
+
+int
+clip_FRENAME(ClipMachine * mp)
+{
+	int ret, *err;
+	char buf1[PATH_MAX];
+	char buf2[PATH_MAX];
+	char *fname1 = _clip_parc(mp, 1);
+	char *fname2 = _clip_parc(mp, 2);
+
+	if (fname1 == NULL || fname2 == NULL)
+	{
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FRENAME");
+	}
+	_clip_translate_path(mp, fname1, buf1, sizeof(buf1));
+	_clip_translate_path(mp, fname2, buf2, sizeof(buf1));
+	ret = rename(buf1, buf2);
+
+	err = _clip_fetch_item(mp, HASH_ferror);
+
+	if (ret < 0)
+		*err = errno;
+	else
+		*err = 0;
+
+	_clip_retni(mp, ret);
 	return 0;
 }
 
@@ -1382,181 +2403,25 @@ clip_PUTENV(ClipMachine * mp)
 }
 
 int
-clip_FILEEOF(ClipMachine * mp)
-{
-	int fd = _clip_parni(mp, 1);
-	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-
-	_clip_retl(mp,1);
-
-	if (cf == NULL )
-        	return 0;
-
-	if ( cf->f == NULL || cf->mode==0 )
-        {
-        	int i,j;
-		i = lseek(cf->fileno, 0, SEEK_CUR);
-		j = lseek(cf->fileno, 0, SEEK_END);
-		_clip_retl(mp, (i >= j));
-		i = lseek(cf->fileno, i, SEEK_SET);
-        }
-        else
-		_clip_retl(mp, feof(cf->f) ? 1 : 0);
-	return 0;
-}
-
-int
-clip_FILEGETSTR(ClipMachine * mp)
-{
-#if 0
-	char *buf, *e;
-	int *err;
-	int h = _clip_parni(mp, 1);
-	int kol = _clip_parni(mp, 2);
-	int oldmesto = lseek(h, 0, SEEK_CUR);
-
-	if (kol <= 0)
-		kol = 256;
-
-	buf = malloc(kol + 1);
-	kol = read(h, buf, kol);
-
-	err = _clip_fetch_item(mp, HASH_ferror);
-
-	if (kol < 0)
-		*err = errno;
-	else
-		*err = 0;
-
-	if (kol < 0)
-	{
-		_clip_retc(mp, "");
-		lseek(h, oldmesto, SEEK_SET);
-		return 0;
-	}
-	for (e = buf; e < buf + kol && *e != '\n'; e++);
-	if (e == buf + kol)
-	{
-		_clip_retcn_m(mp, buf, kol);
-		return 0;
-	}
-	if (*(e - 1) == '\r')
-	{
-		*(e - 1) = 0;
-		_clip_retcn_m(mp, buf, e - buf - 1);
-		lseek(h, oldmesto + e - buf + 2, SEEK_SET);
-		return 0;
-	}
-	*e = 0;
-	_clip_retcn_m(mp, buf, e - buf);
-	lseek(h, oldmesto + e - buf + 1, SEEK_SET);
-#else
-	char *buf = NULL;
-	int *err = _clip_fetch_item(mp, HASH_ferror);
-	int fd = _clip_parni(mp, 1);
-	int i, c = 0, n = _clip_parni(mp, 2);
-	C_FILE *cf = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
-
-	if (cf == NULL || cf->f == NULL)
-	{
-		*err = errno;
-		_clip_retc(mp, "");
-	}
-	else
-	{
-		*err = 0;
-		if (n <= 0)
-			n = 256;
-		buf = calloc(n + 1,1);
-                if (cf->f == NULL || cf->mode==0)
-                {
-			for (i = 0; i < n; )
-			{
-				if ( read(cf->fileno, buf+i, 1) <= 0 )
-                                	break;
-                		c = *(buf+i);
-				if ( c == '\n')
-					break;
-				if (c != '\r')
-					i++;
-			}
-                }
-                else
-                {
-			for (i = 0; i < n;)
-			{
-                		c = fgetc(cf->f);
-				if ( c == EOF || c == '\n')
-					break;
-				if (c != '\r')
-					buf[i++] = c;
-			}
-                }
-		buf = (char *) realloc(buf, i + 1);
-		_clip_retcn_m(mp, buf, i);
-	}
-#endif
-	return 0;
-}
-
-int
-clip_FFLUSH(ClipMachine * cm)
-{
-	int ret = 0, fd = _clip_parni(cm, 1);
-	C_FILE *cf = _clip_fetch_c_item(cm, fd, _C_ITEM_TYPE_FILE);
-
-	if (cf != NULL && cf->f != NULL && fflush(cf->f) == 0)
-		ret = 1;
-	_clip_retl(cm, ret);
-	return 0;
-}
-
-int
-clip_FTELL(ClipMachine * cm)
-{
-	int fd = _clip_parni(cm, 1);
-	long ret = -1;
-	C_FILE *cf = _clip_fetch_c_item(cm, fd, _C_ITEM_TYPE_FILE);
-
-	_clip_retni(cm,ret);
-	if (cf == NULL )
-        	return 0;
-
-	if ( cf->f == NULL || cf->mode == 0 )
-        	ret = lseek(cf->fileno,0,SEEK_CUR);
-        else
-		ret = ftell(cf->f);
-	_clip_retnl(cm, ret);
-	return 0;
-}
-
-int
-clip_FLENGTH(ClipMachine * cm)
-{
-	int fd = _clip_parni(cm, 1);
-	long ret = -1;
-	C_FILE *cf = _clip_fetch_c_item(cm, fd, _C_ITEM_TYPE_FILE);
-	struct stat st;
-
-	if (cf != NULL && cf->f != NULL && fstat(fileno(cf->f), &st) == 0)
-	{
-		ret = st.st_size;
-	}
-	_clip_retnl(cm, ret);
-	return 0;
-}
-
-int
 _clip_parse_path(char *fullpath, char *path, char *name)
 {
 	int len, i, j;
 
 	len = strlen(fullpath);
-	for (i = len; i >= 0 && fullpath[i] != '/'; i--);
+	for (i = len; i >= 0 && fullpath[i] != '/' && fullpath[i] != '\\' && fullpath[i] != ':'; i--);
 	for (j = i + 1; j <= len; j++)
 		name[j - i - 1] = fullpath[j];
-	if (i >= 0)
+	if (i == 0)
 	{
+		path[0] = fullpath[0];
+		path[1] = 0;
+	}
+	else if (i > 0)
+	{
+#ifdef _WIN32
+		if ( (i>1 && fullpath[i-1]==':' && fullpath[i]=='\\') || fullpath[i]==':' )
+			i++;
+#endif
 		path[i] = 0;
 		for (i--; i >= 0; i--)
 			path[i] = fullpath[i];
@@ -1651,10 +2516,10 @@ clip_MEMOREAD(ClipMachine * mp)
 	}
 	_clip_translate_path(mp, fname, buf, sizeof(buf));
 	mode |= O_RDONLY;
-	fh = open(buf, mode);
+	fh = _clip_open(mp, buf, mode, 0, mode != O_RDONLY);
 
 	err = _clip_fetch_item(mp, HASH_ferror);
-	if (fh < 0 || !_set_lock(fh, (mode == O_RDONLY) ? F_RDLCK : F_WRLCK))
+	if (fh < 0)
 	{
 		*err = errno;
 		close(fh);
@@ -1678,7 +2543,7 @@ clip_MEMOREAD(ClipMachine * mp)
 		*err = errno;
 	else
 		*err = 0;
-	close(fh);
+	_clip_close(mp,_clip_hashstr(buf),fh);
 	if (len <= 0)
 	{
 		free(ret);
@@ -1708,7 +2573,7 @@ clip_MEMOWRIT(ClipMachine * mp)
 	}
 	_clip_translate_path(mp, fname, buf, sizeof(buf));
 
-	fh = _clip_creat(buf, O_WRONLY, mode, 1);
+	fh = _clip_creat(mp, buf, O_WRONLY, mode, 1);
 	if (fh < 0)
 	{
 		*err = errno;
@@ -1727,6 +2592,7 @@ clip_MEMOWRIT(ClipMachine * mp)
 		*err = errno;
 	else
 		*err = 0;
+	_clip_close(mp,_clip_hashstr(buf),fh);
 	close(fh);
 	if (len < 0)
 	{
@@ -1762,7 +2628,7 @@ int
 clip_DOSERROR(ClipMachine * mp)
 {
 	/*_clip_retni(mp, errno);*/
-        _clip_retni(mp,0);
+	_clip_retni(mp,0);
 	return 0;
 }
 
@@ -1779,17 +2645,19 @@ clip_FILE(ClipMachine * mp)
 	int ret = 0;
 	char *c, *c1;
 	char *fname;
-	struct dirent *dirp;
+	struct dirent *dirp = NULL;
 	struct stat statbuf;
 	DIR *dirh;
 
-	paths = malloc(sizeof(char *));
 
 	if (filename == NULL || *filename == 0)
 	{
 		_clip_retl(mp, 0);
 		return 0;
 	}
+
+	paths = malloc(sizeof(char *));
+
 	if ( strlen(filename)>2 && filename[1]==':' && filename[2] !='/' && filename[2] !='\\' )
 	{
 		/* drive with default path */
@@ -1852,11 +2720,12 @@ clip_FILE(ClipMachine * mp)
 			*err = errno;
 		else
 			*err = 0;
+
 		if (dirh != NULL)
 			dirp = readdir(dirh);
 		while (dirh != NULL && dirp != NULL)
 		{
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 			if (_clip_glob_match(dirp->d_name, fname, 1) > 0)
 #else
 			if (_clip_glob_match(dirp->d_name, fname, 0) > 0)
@@ -1927,8 +2796,13 @@ clip_DIRECTORY(ClipMachine * mp)
 	{
 		_clip_translate_path(mp, str, buf, sizeof(buf));
 		i = _clip_parse_path(buf, dirn, filen);
+#ifdef _WIN32
+		if (i < 0)
+			GetCurrentDirectory(PATH_MAX, dirn);
+#else
 		if (i < 0)
 			getcwd(dirn, sizeof(dirn));
+#endif
 	}
 	dirh = opendir(*dirn == 0 ? "/" : dirn);
 
@@ -1947,7 +2821,11 @@ clip_DIRECTORY(ClipMachine * mp)
 	i = 0;
 	while (dirp != NULL)
 	{
+#ifdef _WIN32
+		if (_clip_glob_match(dirp->d_name, filen, 1) <= 0)
+#else
 		if (_clip_glob_match(dirp->d_name, filen, 0) <= 0)
+#endif
 		{
 			dirp = readdir(dirh);
 			continue;
@@ -2008,6 +2886,7 @@ clip_DIRECTORY(ClipMachine * mp)
 		var.s.str.len = 1;
 		vect[1] = 4;
 		_clip_aset(mp, rp, &var, 2, vect);
+		_clip_destroy(mp,empty);
 		free(empty);
 
 		dirp = readdir(dirh);
@@ -2038,6 +2917,7 @@ _clip_fileStrModeToNumMode(char *mode)
 	if (m3)
 		ret += S_IREAD;
 
+#ifndef OS_MINGW
 	/* group access mode */
 	tmp = *(mode + 1) - '0';
 	m1 = tmp & 0x0001;
@@ -2065,82 +2945,184 @@ _clip_fileStrModeToNumMode(char *mode)
 		ret += S_IWOTH;
 	if (m3)
 		ret += S_IROTH;
+#endif
 	return ret;
 }
 
+static int _clip_wrlock(HashTable* locks,long hash,int fd,struct flock* fl,int lowlevel){
+	int i;
+	TaskLock* tl = HashTable_fetch(locks,hash);
+	OneTaskLock* lck;
+	int flock = (fl->l_len != 1);
 
-int
-_clip_creat(char *file, int flags, mode_t mode, int exclusive)
-{
-	int fd, fl, lock;
-
-	fl = flags & ~(O_TRUNC|O_CREAT|O_EXCL);
-        lock = exclusive?F_WRLCK:F_RDLCK;
-
-	fd = open(file, fl);
-
-        if (fd>=0)
-        {
-		if (!_set_lock(fd, lock))
-                {
-        		close(fd);
-                	return -1;
-                }
-        	close(fd);
-                unlink(file);
-        }
-
-#if 1
-	/* creat call work buggy on network filesystems...*/
-	unlink(file);
-#else
-	fd = creat(file, mode);
-        if (fd<0)
-        	return fd;
-	close(fd);
-#endif
-	fd = open(file, fl|O_CREAT, mode);
-
-	if (fd<0)
-        	return fd;
-
-	if (!_set_lock(fd, lock))
-        {
-        	close(fd);
-                return -1;
-        }
-
-	errno = 0;
-
-	return fd;
-}
-
-
-int
-_clip_open(char *file, int flags, mode_t mode, int exclusive)
-{
-	int fd, fl, lock;
-
-	if ( (flags & (O_CREAT|O_TRUNC)) == (O_CREAT|O_TRUNC) )
-        	return _clip_creat(file, flags, mode, exclusive);
-
-	fl = flags & ~(O_TRUNC|O_CREAT|O_EXCL);
-        lock = exclusive?F_WRLCK:F_RDLCK;
-
-	fd = open(file, fl, mode);
-
-        if (fd<0)
-        	return -1;
-
-	if (!_set_lock(fd, lock))
-	{
-       		close(fd);
-               	return -1;
+	if(flock){
+		if(tl && tl->flockfd){
+			if(tl->flockfd == fd)
+				return 1;
+			return 0;
+		}
+		if(!fcntl(fd,F_SETLK,fl)){
+			tl->flockfd = fd;
+			return 1;
+		}
+		return 0;
 	}
+	if(tl && tl->flockfd && !lowlevel)
+		return (fd == tl->flockfd);
 
-	errno = 0;
-
-	return fd;
+	if(!tl){
+		if(!fcntl(fd,F_SETLK,fl)){
+			tl = calloc(1,sizeof(TaskLock));
+			tl->count = 1;
+			lck = tl->locks = calloc(1,sizeof(OneTaskLock));
+			lck->pos = fl->l_start;
+			lck->write = 1;
+			lck->fd = fd;
+			HashTable_store(locks,tl,hash);
+			return 1;
+		}
+		return 0;
+	}
+	for(i=0;i<tl->count;i++){
+		lck = tl->locks+i;
+		if(lck->pos == fl->l_start){
+			if(lck->fd == fd){
+				if(lck->write){
+					return 1;
+				} else {
+					if(!fcntl(fd,F_SETLK,fl)){
+						lck->write = 1;
+						return 1;
+					}
+					return 0;
+				}
+			} else {
+				return 0;
+			}
+		}
+	}
+	if(!fcntl(fd,F_SETLK,fl)){
+		tl->count++;
+		tl->locks = realloc(tl->locks,sizeof(OneTaskLock)*tl->count);
+		lck = tl->locks + tl->count - 1;
+		lck->pos = fl->l_start;
+		lck->write = 1;
+		lck->fd = fd;
+		return 1;
+	}
+	return 0;
 }
 
+static int _clip_rdlock(HashTable* locks,long hash,int fd,struct flock* fl,int lowlevel){
+	int i;
+	TaskLock* tl = HashTable_fetch(locks,hash);
+	OneTaskLock* lck;
 
+	if(tl && tl->flockfd && !lowlevel)
+		return (fd == tl->flockfd);
+
+	if(!tl){
+		if(!fcntl(fd,F_SETLK,fl)){
+			tl = calloc(1,sizeof(TaskLock));
+			tl->count = 1;
+			lck = tl->locks = calloc(1,sizeof(OneTaskLock));
+			lck->pos = fl->l_start;
+			lck->write = 0;
+			lck->fd = fd;
+			HashTable_store(locks,tl,hash);
+			return 1;
+		}
+		return 0;
+	}
+	for(i=0;i<tl->count;i++){
+		lck = tl->locks+i;
+		if(lck->pos == fl->l_start){
+			if(lck->fd == fd){
+				if(!lck->write){
+					return 1;
+				} else {
+					if(!fcntl(fd,F_SETLK,fl)){
+						lck->write = 0;
+						return 1;
+					}
+					return 0;
+				}
+			} else {
+				if(lck->write)
+					return 0;
+			}
+		}
+	}
+	if(!fcntl(fd,F_SETLK,fl)){
+		tl->count++;
+		tl->locks = realloc(tl->locks,sizeof(OneTaskLock)*tl->count);
+		lck = tl->locks + tl->count - 1;
+		lck->pos = fl->l_start;
+		lck->write = 0;
+		lck->fd = fd;
+		return 1;
+	}
+	return 0;
+}
+
+int _clip_setlock(ClipMachine* cm,long hash,int fd,off_t pos,int flags){
+	int ok = 0;
+	struct flock fl;
+
+	fl.l_type = (flags & CLIP_LOCK_WRITE)?F_WRLCK:F_RDLCK;
+	fl.l_whence = SEEK_SET;
+	fl.l_start = pos;
+	fl.l_len = (flags & CLIP_LOCK_FLOCK)?pos-1:1;
+
+	while(1){
+		if(fl.l_type == F_WRLCK)
+			ok = _clip_wrlock(cm->tasklocks,hash,fd,&fl,
+				!(flags & CLIP_LOCK_HILEVEL));
+		else
+			ok = _clip_rdlock(cm->tasklocks,hash,fd,&fl,
+				!(flags & CLIP_LOCK_HILEVEL));
+
+		if(ok || !(flags & CLIP_LOCK_WAIT))
+			break;
+		Task_sleep(1);
+	}
+	return !ok;
+}
+
+int _clip_unlock(ClipMachine* cm,long hash,int fd,off_t pos,int flags){
+	int i;
+	TaskLock* tl = HashTable_fetch(cm->tasklocks,hash);
+	OneTaskLock* lck;
+	struct flock fl;
+
+	fl.l_type = F_UNLCK;
+	fl.l_whence = SEEK_SET;
+	fl.l_start = pos;
+	fl.l_len = (flags & CLIP_LOCK_FLOCK)?pos-1:1;
+
+	if(flags & CLIP_LOCK_FLOCK){
+		if(tl && tl->flockfd != fd)
+			return 0;
+		if(!fcntl(fd,F_SETLK,&fl)){
+			tl->flockfd = 0;
+			return 0;
+		}
+		return 1;
+	}
+	if(!tl)
+		return 0;
+	for(i=0;i<tl->count;i++){
+		lck = tl->locks+i;
+		if(lck->pos == fl.l_start){
+			if(lck->fd == fd){
+				if(!fcntl(fd,F_SETLK,&fl)){
+					memmove(tl->locks+i,tl->locks+i+1,(tl->count-i-1)*sizeof(OneTaskLock));
+					tl->count--;
+					tl->locks = realloc(tl->locks,tl->count*sizeof(OneTaskLock));
+					i--;
+				}
+			}
+		}
+	}
+	return 0;
+}

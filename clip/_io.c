@@ -2,9 +2,158 @@
    Copyright (C) 2001  ITK
    Author   : Paul Lasarev <paul@itk.ru>
    License : (GPL) http://www.itk.ru/clipper/license.html
- */
+*/
 /*
    $Log: _io.c,v $
+   Revision 1.255  2004/03/30 11:39:54  clip
+   rust: fix in FLOATVAL() to understand both '.' and ',' as decimal separators
+
+   Revision 1.254  2004/03/19 14:12:15  clip
+   rust: FLOATVAL("9E09") -> Numeric
+
+   Revision 1.253  2004/03/17 08:47:25  clip
+   uri: bug in colowin() fixed. Reported by Stas
+
+   Revision 1.252  2004/03/01 11:27:12  clip
+   uri: add CLIP_DOS_SCRBUF for save/rest screen
+
+   Revision 1.251  2004/02/06 12:06:57  clip
+   alena: add check to "," into clip_strtod
+
+   Revision 1.250  2004/01/28 13:49:00  clip
+   rust: common ClipMachine->kbdbuf
+
+   Revision 1.249  2004/01/23 12:55:56  clip
+   uri: some fix in STR(10.2,5) from Marco
+
+   Revision 1.248  2004/01/09 14:42:31  clip
+   uri: small fix about BINDIR
+
+   Revision 1.247  2003/12/11 16:19:08  clip
+   uri: small fix in scroll
+
+   Revision 1.246  2003/11/21 05:26:18  clip
+   uri: reguest -> request
+
+   Revision 1.245  2003/11/19 11:48:25  clip
+   add FLUSHOUT_FLAG, _SET_FLUSHOUT to set
+   paul
+
+   Revision 1.244  2003/11/04 11:18:33  clip
+   post signal handler
+   paul
+
+   Revision 1.243  2003/10/14 06:10:22  clip
+   uri: fix bug in "set alternate to; devout()" from Marco
+
+   Revision 1.242  2003/09/08 12:06:09  clip
+   uri: small fix in savescreen()
+
+   Revision 1.241  2003/09/01 14:36:57  clip
+   uri: savescreen(,,,,lMainScreen) added
+
+   Revision 1.240  2003/08/22 08:36:59  clip
+   uri: add winbuf_out_trans() from Mauricio Abre.
+
+   Revision 1.239  2003/07/16 11:41:22  clip
+   uri: str("abc") fixed, call error.
+
+   Revision 1.238  2003/06/04 06:55:44  clip
+   uri: timevalid() added
+
+   Revision 1.237  2003/05/14 12:25:30  clip
+   uri: small fix in wselect(),wclose()
+
+   Revision 1.236  2003/05/14 09:02:07  clip
+   uri: small fix in wselect().
+
+   Revision 1.234  2003/04/09 09:23:10  clip
+   rust: small fix in VAL()
+
+   Revision 1.233  2003/04/02 10:53:19  clip
+   rust: _clip_close() added
+
+   Revision 1.232  2003/03/28 08:11:38  clip
+   uri: small fix for ALT_keys
+
+   Revision 1.231  2003/03/24 12:35:16  clip
+   *** empty log message ***
+
+   Revision 1.230  2003/02/07 11:45:48  clip
+   mstate fix
+
+   Revision 1.229  2003/02/07 11:43:23  clip
+   mstate fix
+
+   Revision 1.228  2003/02/03 08:59:09  clip
+   uri: ISKBDEMPTY() added
+
+   Revision 1.227  2003/02/02 12:30:15  clip
+   uri: FT_SETATTR() added
+
+   Revision 1.226  2003/02/02 12:19:21  clip
+   uri: FT_SHADOW() added
+
+   Revision 1.225  2003/01/24 08:53:20  clip
+   uri: beep() -> __beep()
+
+   Revision 1.224  2003/01/15 06:44:52  clip
+   uri: small fix in draw_shadow()
+
+   Revision 1.223  2003/01/13 14:49:23  clip
+   uri: small fix in wopen() && window_shadow()
+
+   Revision 1.222  2003/01/13 10:40:23  clip
+   uri: small fix
+
+   Revision 1.221  2003/01/09 11:41:27  clip
+   uri: small fix for c5.3 compatibility
+
+   Revision 1.220  2002/12/20 11:21:46  clip
+   fix for ^2, ^6, Ctrl+numpads in scan mode
+   closes #88
+   paul
+
+   Revision 1.219  2002/12/17 12:08:46  clip
+   fix scancodes for keypad '/' '*' '-' '+' + alt/ctrl
+   paul
+
+   Revision 1.218  2002/12/16 14:10:47  clip
+   uri: waitperiod() remaked.
+
+   Revision 1.217  2002/11/27 12:22:45  clip
+   alexey: outlog() - removed printing extra comma at end of line.
+
+   Revision 1.216  2002/11/20 10:22:51  clip
+   include beep patch from Przemyslaw Czerpak <druzus@acn.waw.pl>
+   paul
+
+   Revision 1.215  2002/11/18 09:26:58  clip
+   pgch fix
+   paul
+
+   Revision 1.214  2002/11/18 08:52:30  clip
+   charset fixes
+   asdf
+
+   Revision 1.213  2002/11/14 11:25:03  clip
+   uri: fixes for achoice()
+
+   Revision 1.212  2002/10/30 15:42:38  clip
+   uri: small fix
+
+   Revision 1.211  2002/10/30 14:58:44  clip
+   uri: small tab formatting.
+
+   Revision 1.210  2002/10/30 08:51:03  clip
+   rust: _clip_dtostr() again
+
+   Revision 1.209  2002/10/29 14:58:45  clip
+   rust: poor poor _clip_dtostr() :)
+
+   Revision 1.208  2002/10/18 08:16:47  clip
+   uri: small fix in wselect()
+
    Revision 1.207  2002/10/08 11:33:08  clip
    uri: maxrow(.t.) small bug fixed.
 
@@ -790,12 +939,14 @@
 #include <sys/time.h>
 #include <math.h>
 #include <locale.h>
+#include <signal.h>
 
 #include "clip.h"
 #include "screen/screen.h"
 #include "hashcode.h"
 #include "error.ch"
 #include "ctwin.ch"
+#include "config.ch"
 #include "rational.h"
 #include "coll.h"
 
@@ -842,7 +993,7 @@ static void transform(ClipMachine * mp, ClipVar * vp, char *pict);
 
 #endif
 static void sync_mp(ClipMachine * mp);
-static void clip_region(ClipMachine * mp, int *top, int *left, int *bottom, int *right, int full);
+static void clip_region(ClipMachine * mp, int *top, int *left, int *bottom, int *right, int full, int wnum);
 static void wind_region(ClipMachine * mp, int *ptop, int *pleft, int *pbottom, int *pright, int full);
 
 extern FILE *logg;
@@ -851,6 +1002,7 @@ extern int log_level;
 static void dialog_init(ClipMachine * mp);
 
 const static int _clip_deck[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+const static double _clip_deck1[] = { 0.5f, 0.05f, 0.005f, 0.0005f, 0.00005f, 0.000005f, 0.0000005f, 0.00000005f, 0.000000005f };
 
 void
 _clip_dtos(double d, char *buf, int buflen, int *dp)
@@ -975,7 +1127,7 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 			fputc(_clip_outtbl[(unsigned char) buf[i]], (FILE *) mp->out);
 	}
 
-	if (mp->flags & ALTERNATE_FLAG)
+	if (wrap == 1 && (mp->flags & ALTERNATE_FLAG) )
 	{
 		FILE *alt = (FILE *) mp->alt;
 
@@ -987,7 +1139,8 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 				fputc(_clip_outtbl[(unsigned char) buf[i]], alt);
 		}
 	}
-	if (mp->flags & EXTRA_FLAG)
+
+	if (wrap == 1 && (mp->flags & EXTRA_FLAG) )
 	{
 		FILE *extra = (FILE *) mp->extra;
 
@@ -1006,7 +1159,7 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 		int i;
 		char *s;
 
-	      prn:
+		  prn:
 		printer = (FILE *) mp->printer;
 		if (printer)
 		{
@@ -1350,7 +1503,8 @@ clip_OUTLOG(ClipMachine * mp)
 		if (i > 1)
 			out_any(mp, " ", 1, _clip_colorSelect(mp), DEV_LOG);
 		print_var(mp, vp, _clip_colorSelect(mp), DEV_LOG, 0);
-		_clip_out_log(buf, 1);
+		if (i < mp->argc)
+			_clip_out_log(buf, 1);
 	}
 	buf[0] = '\n';
 
@@ -1386,6 +1540,7 @@ clip_SLEEP(ClipMachine * mp)
 	return 0;
 }
 
+/*
 int
 clip_WAITPERIOD(ClipMachine * mp)
 {
@@ -1398,9 +1553,10 @@ clip_WAITPERIOD(ClipMachine * mp)
 	_clip_retl(mp, 1);
 	return 0;
 }
+*/
 
 int
-clip_MILLISECS(ClipMachine * mp)
+clip_MILLISEC(ClipMachine * mp)
 {
 	int per = _clip_parni(mp, 1);
 	struct timeval tv;
@@ -1458,25 +1614,16 @@ clip_STR(ClipMachine * mp)
 	int dec = _clip_parni(mp, 3);
 	char *buf;
 
+	if ( _clip_parinfo(mp,1) != NUMERIC_t )
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "STR");
+	}
+
 	_clip_parp(mp, 1, &lend, &decd);
 	if (!lend)
 		lend = 10;
-	if (v->t.type == NUMERIC_t && !v->t.memo)
-	{
-/*		if (!dec && !decd)
-		{
-			char b[32];
-
-			snprintf(b, sizeof(b), "%d", (int) v->n.d);
-			_clip_retc(mp, b);
-			return 0;
-		}*/
-		buf = malloc((len ? len : lend) + 1);
-
-		_clip_dtostr(buf, len ? len : lend, _clip_parinfo(mp, 3) != UNDEF_t ? dec : decd, v->n.d, 0);
-		_clip_retcn_m(mp, buf, len ? len : lend);
-	}
-	if (v->t.type == NUMERIC_t && v->t.memo)
+	if ( v->t.memo)
 	{
 		if (len)
 			s = rational_toString(v->r.r, 10, dec, 0);
@@ -1488,6 +1635,27 @@ clip_STR(ClipMachine * mp)
 				s = rational_toString(v->r.r, 10, mp->decimals, 0);
 		}
 		_clip_retcn_m(mp, s, strlen(s));
+	}
+	else
+	{
+
+#if 1 /* Uri, 20040122: fix for str(10.2,5) */
+		if ( _clip_parinfo(mp,2) == NUMERIC_t )
+		{
+			lend = len;
+			if ( _clip_parinfo(mp,3) == NUMERIC_t )
+				decd = dec;
+			else
+				decd = 0;
+		}
+		buf = malloc(lend+1);
+		_clip_dtostr(buf, lend, decd, v->n.d, 0);
+		_clip_retcn_m(mp, buf, lend );
+#else
+		buf = malloc(( len ? len : lend) + 1);
+		_clip_dtostr(buf, len ? len : lend, _clip_parinfo(mp, 3) != UNDEF_t ? dec : decd, v->n.d, 0);
+		_clip_retcn_m(mp, buf, len ? len : lend);
+#endif
 	}
 	return 0;
 }
@@ -1616,7 +1784,7 @@ do_templ(char *str, char *templ, char *buf, int buflen, int ins, int left, int n
 
 		/* find template and source field */
 		lead = 0;
-	      next:
+		  next:
 		switch (*t)
 		{
 		case 0:
@@ -1975,6 +2143,9 @@ _clip_dtostr(char *buf, int len, int dec, double d, int zero)
 		if (dec > 0)
 		{
 			cnt = dec;
+#ifdef ARCH_i386
+			(*(long long*)&d)++;
+#endif
 			im = (int) (modf(d, &de) * _clip_deck[dec] + 0.5f);
 			/* chek if fractional part was rounded up */
 			/* commented out - 'ie += im' is faster
@@ -2074,7 +2245,7 @@ _clip_dtostr(char *buf, int len, int dec, double d, int zero)
 
 	return 0;
 
-      err:
+	  err:
 	memset(buf, '*', len);
 	if (dec > 0 && dec < len)
 		buf[len - dec - 1] = '.';
@@ -2167,7 +2338,7 @@ _clip_dtostr(char *buf, int len, int dec, double d, int zero)
 			*(--s) = ' ';
 	}
 	return 0;
-      err:
+	  err:
 	memset(buf, '*', len);
 	if (dec > 0 && dec < len)
 		buf[len - dec - 1] = '.';
@@ -2189,7 +2360,7 @@ _clip_strtod(char *str, int *decpos)
 
 	while (*s == ' ')
 		s++;
-	if (!(((*s >= '0') && (*s <= '9')) || (*s == '.') || (*s == '-')))
+	if (!(((*s >= '0') && (*s <= '9')) || (*s == '.') || (*s == ',') || (*s == '-')))
 	{
 		if (decpos)
 			*decpos = strlen(str);
@@ -2207,7 +2378,7 @@ _clip_strtod(char *str, int *decpos)
 	ecnt = s - e;
 
 	m = s;
-	if (*m == '.')
+	if ((*m == '.') || (*m == ','))
 	{
 		if (decpos)
 			*decpos = (s == str) ? 1 : s - str;
@@ -2389,14 +2560,44 @@ clip_VAL(ClipMachine * mp)
 			dec = 0;
 		if (plen != 0)
 			len = plen;
-		if (len < 3)
-			len = 3;
+		if (len < dec+2)
+			len = dec+2;
 		if (_clip_parinfo(mp, 0) == 3)
 			dec = pdec;
 		_clip_retndp(mp, d, len, dec);
 	}
 
 	return 0;
+}
+
+int
+clip_FLOATVAL(ClipMachine * mp)
+{
+	char *s = _clip_parc(mp, 1);
+	int len = _clip_parni(mp, 2);
+	int dec = _clip_parni(mp, 3);
+
+	if (!s)
+	{
+		_clip_retnd(mp, 0);
+		return 0;
+	}
+	if(strchr(s,'e') || strchr(s,'E'))
+	{
+		struct lconv* lc = localeconv();
+		char c,*r;
+
+		if(*lc->decimal_point == '.')
+			c = ',';
+		else
+			c = '.';
+		r = s;
+		while((r = strchr(r,c)))
+			*r = *lc->decimal_point;
+		_clip_retndp(mp, atof(s), len, dec);
+		return 0;
+	}
+	return clip_VAL(mp);
 }
 
 static void
@@ -2476,7 +2677,7 @@ clip_SETPOS(ClipMachine * mp)
 		}
 	}
 
-      norm:
+	  norm:
 	_clip_fullscreen(mp);
 
 	if (scr)
@@ -2491,7 +2692,7 @@ clip_SETPOS(ClipMachine * mp)
 			y = mp->screen->base->Lines - 1;
 	}
 	else
-		clip_region(mp, &y, &x, 0, 0, 1);
+		clip_region(mp, &y, &x, 0, 0, 1, -1);
 
 	mp->screen->y = y;
 	mp->screen->x = x;
@@ -2616,7 +2817,7 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 		return;
 	}
 
-	clip_region(mp, &top, &left, &bottom, &right, 1);
+	clip_region(mp, &top, &left, &bottom, &right, 1, -1);
 
 	if (x > right || y > bottom || x < left || y < top)
 		return;
@@ -2682,7 +2883,7 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 
 			break;
 		default:
-		      def:
+			  def:
 			ch = mp->term_xlat[ch];
 
 			if (ch < 32 && !is_pgch(ch))
@@ -2714,7 +2915,7 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 			if (y > bottom)
 			{
 				top = 0;
-				clip_region(mp, &top, 0, 0, 0, 0);
+				clip_region(mp, &top, 0, 0, 0, 0, -1);
 				while (y > bottom)
 				{
 					scrollw_Screen(sp, top, left, bottom, right, 1, attr);
@@ -2724,7 +2925,7 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 			if (y < top)
 			{
 				top = 0;
-				clip_region(mp, &top, 0, 0, 0, 0);
+				clip_region(mp, &top, 0, 0, 0, 0, -1);
 				while (y < top)
 				{
 					scrollw_Screen(sp, top, left, bottom, right, -1, attr);
@@ -2963,7 +3164,7 @@ _clip_fullscreen(ClipMachine * mp)
 		int l;
 		ClipFrame *fp;
 
-		snprintf(msg, sizeof(msg), "reguest to switch into FULLSCREEN mode failed: %s\n", mp->syserr);
+		snprintf(msg, sizeof(msg), "request to switch into FULLSCREEN mode failed: %s\n", mp->syserr);
 		l = strlen(msg);
 		out_log(mp, msg, l, 0);
 		out_err(mp, msg, l, 0);
@@ -3030,7 +3231,7 @@ sync_mp(ClipMachine * mp)
 	{
 		if (mp->fullscreen)
 			sync_Screen(mp->screen);
-		else
+		else if (mp->flags1 & FLUSHOUT_FLAG)
 			fflush((FILE *) mp->out);
 	}
 }
@@ -3060,7 +3261,7 @@ clip_DISPPOS(ClipMachine * mp)
 
 	_clip_fullscreen(mp);
 
-	clip_region(mp, &y, &x, 0, 0, 1);
+	clip_region(mp, &y, &x, 0, 0, 1, -1);
 
 	mp->screen->y = y;
 	mp->screen->x = x;
@@ -3109,7 +3310,7 @@ clip_DISPSTR(ClipMachine * mp)
 	bottom = top;
 	right = left + len - 1;
 
-	clip_region(mp, &top, &left, &bottom, &right, 0);
+	clip_region(mp, &top, &left, &bottom, &right, 0, -1);
 	sp->touched[top] = 1;
 	for (k = 0, i = left; i <= right; ++i, ++k)
 		sp->chars[top][i] = str[k];
@@ -3179,7 +3380,7 @@ clip_DISPATTR(ClipMachine * mp)
 	else
 		attr = _clip_colorSelect(mp);
 
-	clip_region(mp, &top, &left, &bottom, &right, 0);
+	clip_region(mp, &top, &left, &bottom, &right, 0, -1);
 	for (i = top; i <= bottom; ++i)
 	{
 		sp->touched[i] = 1;
@@ -3193,6 +3394,18 @@ clip_DISPATTR(ClipMachine * mp)
 
 	sync_mp(mp);
 	return 0;
+}
+
+int
+clip_FT_SHADOW(ClipMachine * mp)
+{
+	return clip_DISPATTR(mp);
+}
+
+int
+clip_FT_SETATTR(ClipMachine * mp)
+{
+	return clip_DISPATTR(mp);
 }
 
 static void
@@ -3213,25 +3426,25 @@ disp_box(ClipMachine * mp, int Top, int Left, int Bottom, int Right,
 
 	if (!chars && chars_n == 2)
 	{
-		ulc = sp->base->pg_chars[PG_ULCORNER2];
-		urc = sp->base->pg_chars[PG_URCORNER2];
-		hlt = sp->base->pg_chars[PG_HLINE2];
-		hlb = sp->base->pg_chars[PG_HLINE2];
-		llc = sp->base->pg_chars[PG_LLCORNER2];
-		lrc = sp->base->pg_chars[PG_LRCORNER2];
-		vll = sp->base->pg_chars[PG_VLINE2];
-		vlr = sp->base->pg_chars[PG_VLINE2];
+		ulc = PGCH_ULCORNER2;
+		urc = PGCH_URCORNER2;
+		hlt = PGCH_HLINE2;
+		hlb = PGCH_HLINE2;
+		llc = PGCH_LLCORNER2;
+		lrc = PGCH_LRCORNER2;
+		vll = PGCH_VLINE2;
+		vlr = PGCH_VLINE2;
 	}
 	else
 	{
-		ulc = sp->base->pg_chars[PG_ULCORNER];
-		urc = sp->base->pg_chars[PG_URCORNER];
-		hlt = sp->base->pg_chars[PG_HLINE];
-		hlb = sp->base->pg_chars[PG_HLINE];
-		llc = sp->base->pg_chars[PG_LLCORNER];
-		lrc = sp->base->pg_chars[PG_LRCORNER];
-		vll = sp->base->pg_chars[PG_VLINE];
-		vlr = sp->base->pg_chars[PG_VLINE];
+		ulc = PGCH_ULCORNER;
+		urc = PGCH_URCORNER;
+		hlt = PGCH_HLINE;
+		hlb = PGCH_HLINE;
+		llc = PGCH_LLCORNER;
+		lrc = PGCH_LRCORNER;
+		vll = PGCH_VLINE;
+		vlr = PGCH_VLINE;
 	}
 
 	top = Top;
@@ -3240,7 +3453,7 @@ disp_box(ClipMachine * mp, int Top, int Left, int Bottom, int Right,
 	right = Right;
 
 	wind_region(mp, &Top, &Left, &Bottom, &Right, 0);
-	clip_region(mp, &top, &left, &bottom, &right, 0);
+	clip_region(mp, &top, &left, &bottom, &right, 0, -1);
 
 	if (chars && cl > 0)
 	{
@@ -3314,8 +3527,8 @@ disp_box(ClipMachine * mp, int Top, int Left, int Bottom, int Right,
 				continue;
 
 			sp->chars[i][j] = ch;
-			if (pg_char)
-				sp->attrs[i][j] |= PG_ATTR;
+			/*if (pg_char)
+				sp->attrs[i][j] |= PG_ATTR;*/
 			sp->colors[i][j] = attr;
 		}
 	}
@@ -3571,8 +3784,8 @@ key2clip(unsigned long key, int mask)
 		int type, buttons;
 
 		if (!(mask & (_CLIP_INKEY_MOVE
-			      | _CLIP_INKEY_LDOWN
-			      | _CLIP_INKEY_LUP | _CLIP_INKEY_RDOWN | _CLIP_INKEY_RUP | _CLIP_INKEY_MDOWN | _CLIP_INKEY_MUP)))
+				  | _CLIP_INKEY_LDOWN
+				  | _CLIP_INKEY_LUP | _CLIP_INKEY_RDOWN | _CLIP_INKEY_RUP | _CLIP_INKEY_MDOWN | _CLIP_INKEY_MUP)))
 			return 0;
 
 		type = MOUSE_TYPE(key);
@@ -3839,7 +4052,8 @@ key2clip(unsigned long key, int mask)
 		break;
 
 	case META1_MASK | '/':
-		ckey = 309;
+		/*ckey = 309;*/
+		ckey = 420;
 		break;
 
 		/* shift-Tab */
@@ -3912,6 +4126,10 @@ key2clip(unsigned long key, int mask)
 		ckey = 400;
 		break;
 
+	case META2_MASK | '2':
+		ckey = 259;
+		break;
+
 	default:
 		if (key & (META_MASK | META1_MASK | META2_MASK))
 		{
@@ -3974,6 +4192,8 @@ key2clip(unsigned long key, int mask)
 				flags = key & ~(META1_MASK | META2_MASK);
 				if (flags < 27)
 					ckey = altkeys[flags - 1];
+				else if (flags == '`' || flags == '~')
+					ckey = 297;
 				else if (flags >= '0' && flags <= '9')
 					ckey = altnums[flags - '0'];
 				else if (flags >= 'A' && flags <= 'Z')
@@ -4025,7 +4245,7 @@ clip___KEYBOARD(ClipMachine * mp)
 	if (!_clip_parl(mp, 2) || _clip_parinfo(mp, 0) == 0)
 	{
 		while (_clip_key(mp, 0, 0xFF));
-		mp->kbdptr = mp->kbdbuf;
+		*mp->kbdptr = mp->kbdbuf;
 	}
 
 	if (vp == NULL)
@@ -4036,23 +4256,23 @@ clip___KEYBOARD(ClipMachine * mp)
 		unsigned char *s = vp->s.str.buf;
 		int l = vp->s.str.len;
 		int i;
-		int n = mp->kbdptr - mp->kbdbuf;
+		int n = *mp->kbdptr - mp->kbdbuf;
 
 		if ((l - n) > mp->typeahead)
 			l = mp->typeahead - n;
 
-		for (i = 0, s = s + l - 1; i < l; ++i, --s, mp->kbdptr++)
-			*mp->kbdptr = *s;
+		for (i = 0, s = s + l - 1; i < l; ++i, --s, (*mp->kbdptr)++)
+			**mp->kbdptr = *s;
 	}
 	else if (vp->t.type == NUMERIC_t)
 	{
 		int key = _clip_parni(mp, 1);
-		int n = mp->kbdptr - mp->kbdbuf;
+		int n = *mp->kbdptr - mp->kbdbuf;
 
 		if (n < mp->typeahead)
 		{
-			*mp->kbdptr = key;
-			mp->kbdptr++;
+			**mp->kbdptr = key;
+			(*mp->kbdptr)++;
 		}
 
 	}
@@ -4063,7 +4283,16 @@ clip___KEYBOARD(ClipMachine * mp)
 int
 clip_LASTKEY(ClipMachine * mp)
 {
-	_clip_retni(mp, mp->lastkey);
+	_clip_retndp(mp, mp->lastkey,10,0);
+	return 0;
+}
+
+int
+clip_SETLASTKEY(ClipMachine * mp)
+{
+	if (_clip_parinfo(mp, 1) == NUMERIC_t)
+		mp->lastkey = _clip_parni(mp, 1);
+	_clip_retc(mp, "");
 	return 0;
 }
 
@@ -4076,8 +4305,8 @@ clip_NEXTKEY(ClipMachine * mp)
 		eventmask = mp->eventmask;
 
 	_clip_fullscreen(mp);
-	if (mp->kbdptr != mp->kbdbuf)
-		_clip_retni(mp, mp->kbdptr[-1]);
+	if (*mp->kbdptr != mp->kbdbuf)
+		_clip_retndp(mp, (*mp->kbdptr)[-1],10,0);
 	else
 	{
 		long key;
@@ -4087,20 +4316,28 @@ clip_NEXTKEY(ClipMachine * mp)
 		if (key)
 		{
 			ckey = key2clip(key, eventmask);
-			if ((l = mp->kbdptr - mp->kbdbuf) >= mp->typeahead)
+			if ((l = *mp->kbdptr - mp->kbdbuf) >= mp->typeahead)
 			{
 				mp->typeahead *= 2;
 				mp->kbdbuf = (int *) realloc(mp->kbdbuf, sizeof(int) * mp->typeahead);
 
-				mp->kbdptr = mp->kbdbuf + l;
+				*mp->kbdptr = mp->kbdbuf + l;
 			}
-			*mp->kbdptr++ = ckey;
+			*(*mp->kbdptr)++ = ckey;
 
-			_clip_retni(mp, ckey);
+			_clip_retndp(mp, ckey,10,0);
 		}
 		else
-			_clip_retni(mp, 0);
+			_clip_retndp(mp, 0,10,0);
 	}
+	return 0;
+}
+
+int
+clip_ISKBDEMPTY(ClipMachine * mp)
+{
+	_clip_fullscreen(mp);
+	_clip_retl(mp, *mp->kbdptr == mp->kbdbuf);
 	return 0;
 }
 
@@ -4159,13 +4396,14 @@ _clip_key(ClipMachine * mp, int timeout_ms, int mask)
 	int ckey = 0;
 
 	/*_clip_fullscreen(mp); */
-	if (mp->kbdptr != mp->kbdbuf)
+	if (*mp->kbdptr != mp->kbdbuf)
 	{
-		mp->kbdptr--;
-		ckey = mp->lastkey = *mp->kbdptr;
+		(*mp->kbdptr)--;
+		ckey = mp->lastkey = **mp->kbdptr;
 		return ckey;
 	}
 
+	signal(SIGINT, _clip_sigint_real);
 	if (timeout_ms < 0)
 		timeout_ms = 1000 * 6000;
 
@@ -4197,6 +4435,7 @@ _clip_key(ClipMachine * mp, int timeout_ms, int mask)
 	}
 	while (timeout_ms > 0);
 
+	signal(SIGINT, _clip_sigint);
 	return ckey;
 }
 
@@ -4294,7 +4533,7 @@ clip__INKEY(ClipMachine * mp)
 	else
 		ckey = _clip_key(mp, 0, mask);
 
-	_clip_retni(mp, ckey);
+	_clip_retndp(mp, ckey,10,0);
 
 	return 0;
 }
@@ -4434,7 +4673,7 @@ clip___ACCEPT(ClipMachine * mp)
 			if (!hpos)
 				break;
 			hpos--;
-		      newstr:
+			  newstr:
 			{
 				char *sp = mp->history.items[hpos];
 				int l = strlen(sp);
@@ -4564,7 +4803,7 @@ clip___ACCEPT(ClipMachine * mp)
 		}
 	}
 
-      ret:
+	  ret:
 	_clip_retc(mp, s);
 
 	if (c == 0 || strcmp(mp->history.items[c - 1], s))
@@ -4603,20 +4842,25 @@ wind_region(ClipMachine * mp, int *ptop, int *pleft, int *pbottom, int *pright, 
 }
 
 static void
-clip_region(ClipMachine * mp, int *ptop, int *pleft, int *pbottom, int *pright, int full)
+clip_region(ClipMachine * mp, int *ptop, int *pleft, int *pbottom, int *pright, int full, int wnum)
 {
-	ClipWindow *wp = mp->windows + mp->wnum;
+	ClipWindow *wp;
+	int top = -1024, left = -1024, bottom = 1024, right = 1024;
+	int Top, Bottom,Left,Right,ftop,fleft,columns,lines;
+	if ( wnum == -1 )
+		wp = mp->windows + mp->wnum;
+	else
+		wp = mp->windows + wnum;
 
 	/*int Top = wp->rect.top; */
-	int Top = (full ? wp->rect.top : wp->format.top);
-	int Bottom = (full == 2 ? wp->rect.bottom : wp->format.bottom);
-	int Left = (full == 2 ? wp->rect.left : wp->format.left);
-	int Right = (full == 2 ? wp->rect.right : wp->format.right);
-	int ftop = (full == 2 ? wp->rect.top : wp->format.top);
-	int fleft = (full == 2 ? wp->rect.left : wp->format.left);
-	int columns = mp->screen->base->Columns - 1;
-	int lines = mp->screen->base->Lines - 1;
-	int top = -1024, left = -1024, bottom = 1024, right = 1024;
+	Top = (full ? wp->rect.top : wp->format.top);
+	Bottom = (full == 2 ? wp->rect.bottom : wp->format.bottom);
+	Left = (full == 2 ? wp->rect.left : wp->format.left);
+	Right = (full == 2 ? wp->rect.right : wp->format.right);
+	ftop = (full == 2 ? wp->rect.top : wp->format.top);
+	fleft = (full == 2 ? wp->rect.left : wp->format.left);
+	columns = mp->screen->base->Columns - 1;
+	lines = mp->screen->base->Lines - 1;
 
 	if (Bottom > lines)
 		Bottom = lines;
@@ -4693,7 +4937,9 @@ save_region(ClipMachine * mp, char *mem, int top, int left, int bottom, int righ
 		{
 			*p++ = sp->chars[i][j];
 			*p++ = sp->colors[i][j];
+#ifndef CLIP_DOS_SCRBUF
 			*p++ = sp->attrs[i][j];
+#endif
 		}
 	return s;
 }
@@ -4722,9 +4968,11 @@ rest_region(ClipMachine * mp, int top, int left, int bottom, int right, char *s,
 			if (p >= e)
 				return;
 			sp->colors[i][j] = *p++;
+#ifndef CLIP_DOS_SCRBUF
 			if (p >= e)
 				return;
 			sp->attrs[i][j] = *p++;
+#endif
 		}
 	}
 }
@@ -4738,9 +4986,13 @@ clip_SAVESCREEN(ClipMachine * mp)
 	int bottom = _clip_parni(mp, 3);
 	int right = _clip_parni(mp, 4);
 	int par = _clip_parinfo(mp, 0);
+	int mainscreen = (_clip_parl(mp,5) != 0 ? 0: mp->wnum);
+	int modescreen = (_clip_parl(mp,5) == 0 ? 0: 2);
 	ClipVar *rp;
 	char *s;
-	ClipWindow *wp = mp->windows + mp->wnum;
+	ClipWindow *wp;
+
+	wp = mp->windows + mainscreen;
 
 	_clip_fullscreen(mp);
 
@@ -4749,7 +5001,7 @@ clip_SAVESCREEN(ClipMachine * mp)
 	if (par < 4 || _clip_parinfo(mp, 3) == UNDEF_t)
 		right = wp->rect.right;
 
-	clip_region(mp, &top, &left, &bottom, &right, 0);
+	clip_region(mp, &top, &left, &bottom, &right, modescreen, mainscreen);
 
 	s = save_region(mp, 0, top, left, bottom, right, &l);
 
@@ -4799,7 +5051,7 @@ clip_RESTSCREEN(ClipMachine * mp)
 	s = vp->s.str.buf;
 	l = vp->s.str.len;
 
-	clip_region(mp, &top, &left, &bottom, &right, 0);
+	clip_region(mp, &top, &left, &bottom, &right, 0, -1);
 	rest_region(mp, top, left, bottom, right, s, l);
 
 	sync_mp(mp);
@@ -4833,7 +5085,7 @@ clip_SCROLL(ClipMachine * mp)
 	if (_clip_parinfo(mp, 4) != NUMERIC_t)
 		right = sp->base->Columns - 1;
 
-	clip_region(mp, &top, &left, &bottom, &right, 0);
+	clip_region(mp, &top, &left, &bottom, &right, 0, -1);
 
 	if (!vert && !hor)
 	{
@@ -4874,6 +5126,8 @@ clip_SCROLL(ClipMachine * mp)
 						sp->colors[j][i] = sp->colors[j + vert][i];
 						sp->attrs[j][i] = sp->attrs[j + vert][i];
 					}
+					if ( vert > bottom )
+						vert = bottom;
 					for (j = bottom - vert + 1; j <= bottom; ++j)
 					{
 						sp->chars[j][i] = fill;
@@ -4892,6 +5146,8 @@ clip_SCROLL(ClipMachine * mp)
 						sp->colors[j][i] = sp->colors[j + vert][i];
 						sp->attrs[j][i] = sp->attrs[j + vert][i];
 					}
+					if ( (0-vert) > top )
+						vert = 0-top;
 					for (j = top - vert - 1; j >= top; --j)
 					{
 						sp->chars[j][i] = fill;
@@ -5047,18 +5303,22 @@ draw_shadow(ClipMachine * mp, ClipWindow * wp)
 	int i, j, attr;
 	Screen *sp;
 
-	if (mp->wshadow == -1)
+	if (wp->shadow == -1)
 		return;
 
 	sp = mp->screen;
 	lines = sp->base->Lines;
 	columns = sp->base->Columns;
-	attr = mp->wshadow;
+	attr = wp->shadow;
 
 	nrow = 1;
+#if 0
 	ncol = (columns - 20) / lines;
 	if (ncol < 1)
 		ncol = 1;
+#else
+	ncol = 2;
+#endif
 
 	top = wp->rect.top;
 	left = wp->rect.left;
@@ -5070,11 +5330,11 @@ draw_shadow(ClipMachine * mp, ClipWindow * wp)
 		if (i < 0 || i >= lines)
 			continue;
 		sp->touched[i] = 1;
-		for (j = left + ncol + 1; j <= right + ncol; j++)
+		for (j = left + ncol; j <= right + ncol; j++)
 		{
 			if (j < 0 || j >= columns)
 				continue;
-			if ((i >= (top + nrow) && j > right) || (j >= (top + ncol) && i > bottom))
+			if ((i >= (top + nrow) && j > right) || (j >= (left + ncol) && i > bottom))
 			{
 				/*int pg = sp->colors[i][j] & PG_ATTR; */
 
@@ -5109,7 +5369,7 @@ rest_window(ClipMachine * mp, ClipWindow * wp)
 	mp->cursor = ws->cursor;
 	y = ws->y /*+ wp->rect.top */ ;
 	x = ws->x /*+ wp->rect.left */ ;
-	clip_region(mp, &y, &x, 0, 0, 2);
+	clip_region(mp, &y, &x, 0, 0, 2, -1);
 	mp->screen->y = y;
 	mp->screen->x = x;
 
@@ -5144,20 +5404,19 @@ select_window(ClipMachine * mp, int n)
 		ClipWindow w;
 
 		nno = mp->wnum;
+
+		if ( (mp->windows + nno)->no !=0 )
+			save_window(mp, mp->windows + nno);
 		if (nno != ono)
 		{
-			save_window(mp, mp->windows + nno);
-			w = mp->windows[nno];
-			mp->windows[nno] = mp->windows[ono];
-			mp->windows[ono] = w;
-			if (w.no == 0 && ono != 0)
-			{
-				mp->windows[ono] = mp->windows[0];
-				mp->windows[0] = w;
-			}
+			w = mp->windows[ono];
+			for (i=ono; i< mp->wnum ; i++)
+				mp->windows[i] = mp->windows[i+1];
+			mp->windows[mp->wnum] = w;
 		}
-		for (i = 0; i <= nno; i++)
-			rest_window(mp, mp->windows + i);
+		if ( n!=0 )
+			rest_window(mp, mp->windows + mp->wnum);
+
 		sync_mp(mp);
 	}
 
@@ -5231,7 +5490,7 @@ adjust_cursor(ClipMachine * mp)
 		x = wp->format.right;
 	y -= wp->format.top;
 	x -= wp->format.left;
-	clip_region(mp, &y, &x, 0, 0, 0);
+	clip_region(mp, &y, &x, 0, 0, 0, -1);
 
 	mp->screen->y = y;
 	mp->screen->x = x;
@@ -5311,88 +5570,6 @@ clip_WBOX(ClipMachine * mp)
 		return 0;
 	}
 
-#if 0
-	if (!chars)
-		switch (chars_n)
-		{
-		case 0:
-			chars = WB_0;
-			fill = 1;
-			break;
-		case 1:
-			chars = WB_1;
-			fill = 1;
-			break;
-		case 2:
-			chars = WB_2;
-			fill = 1;
-			break;
-		case 3:
-			chars = WB_3;
-			fill = 1;
-			break;
-		case 4:
-			chars = WB_4;
-			fill = 1;
-			break;
-		case 5:
-			chars = WB_5;
-			fill = 1;
-			break;
-		case 6:
-			chars = WB_6;
-			fill = 1;
-			break;
-		case 7:
-			chars = WB_7;
-			fill = 1;
-			break;
-
-		case 8:
-			chars = WB_8;
-			fill = 1;
-			break;
-		case 9:
-			chars = WB_9;
-			fill = 1;
-			break;
-		case 10:
-			chars = WB_10;
-			fill = 1;
-			break;
-		case 11:
-			chars = WB_11;
-			fill = 1;
-			break;
-		case 12:
-			chars = WB_12;
-			fill = 0;
-			break;
-		case 13:
-			chars = WB_13;
-			fill = 0;
-			break;
-		case 14:
-			chars = WB_14;
-			fill = 0;
-			break;
-		case 15:
-			chars = WB_15;
-			fill = 0;
-			break;
-		}
-	cl = strlen(chars);
-	memcpy(bchars, chars, cl);
-	if (cl > 8)
-		bchars[8] = *((char *) _clip_fetch_item(mp, HASH_setclearb));
-
-#ifdef USE_WCHARS
-	disp_box(mp, 0, 0, wp->format.bottom - wp->format.top, wp->format.right - wp->format.left, chars, cl, chars_n, 0, fill);
-#else
-	disp_box(mp, 0, 0, wp->format.bottom - wp->format.top, wp->format.right - wp->format.left, 0, 0, chars_n, 0, fill);
-#endif
-
-#else
 	if (chars)
 	{
 		cl = strlen(chars);
@@ -5405,7 +5582,6 @@ clip_WBOX(ClipMachine * mp)
 		chars = bchars;
 	}
 	disp_box(mp, 0, 0, wp->format.bottom - wp->format.top, wp->format.right - wp->format.left, chars, cl, chars_n, 0, fill);
-#endif
 
 	wp->format = format;
 	if (fill)
@@ -5448,60 +5624,38 @@ clip_WCENTER(ClipMachine * mp)
 int
 clip_WCLOSE(ClipMachine * mp)
 {
-	int num;
+	int num,i;
 	ClipWindow *wp;
 
 	_clip_fullscreen(mp);
-
-	if (mp->argc > 0 && _clip_parinfo(mp, 1) == NUMERIC_t)
-	{
-		int i, ono = -1;
-		ClipWindow w;
-
-		num = _clip_parni(mp, 1);
-
-		for (i = 0; i <= mp->wnum; i++)
-		{
-			wp = mp->windows + i;
-			if (wp->no == num)
-			{
-				ono = i;
-				break;
-			}
-		}
-
-		if (ono == -1)
-			return EG_ARG;
-
-		save_window(mp, mp->windows + mp->wnum);
-		w = mp->windows[ono];
-
-		for (i = ono; i < mp->wnum; i++)
-			mp->windows[i] = mp->windows[i + 1];
-
-		mp->windows[mp->wnum] = w;
-
-	}
 
 	num = mp->wnum;
 	wp = mp->windows + num;
 
 	if (wp->no == 0)
-	{
-		if (num > 0)
-			select_window(mp, mp->windows[num - 1].no);
 		return 0;
-	}
 
 	destroy_window(wp);
 
 	num = --(mp->wnum);
 	wp = mp->windows + num;
+	if (wp->no == 0 && num>0)
+	{
+		ClipWindow wp2;
+		wp2 = mp->windows[num-1];
+		mp->windows[num-1] = mp->windows[num];
+		mp->windows[num] = wp2;
+	}
+	wp = mp->windows + num;
 
-	if (wp->no == 0 && num > 0)
-		select_window(mp, mp->windows[num - 1].no);
-	else
-		select_window(mp, mp->windows[num].no);
+	for (i = 0; i <= mp->wnum; i++)
+		if ( (mp->windows + i)->no ==0 )
+			rest_window(mp, mp->windows + i);
+	for (i = 0; i <= mp->wnum; i++)
+		if ( (mp->windows + i)->no !=0 )
+			rest_window(mp, mp->windows + i);
+
+	sync_mp(mp);
 
 	return 0;
 }
@@ -5717,7 +5871,7 @@ clip_WMOVE(ClipMachine * mp)
 {
 	ClipWindow *wp = mp->windows + mp->wnum;
 	int top = _clip_parni(mp, 1);
-	int left = _clip_parni(mp, 1);
+	int left = _clip_parni(mp, 2);
 
 	_clip_fullscreen(mp);
 
@@ -5778,6 +5932,7 @@ clip_WOPEN(ClipMachine * mp)
 	wp->rect.left = left;
 	wp->rect.right = right;
 	wp->format = wp->rect;
+	wp->shadow = mp->wshadow;
 
 	//if (mp->wshadow)
 	//      erase = 1;
@@ -5797,7 +5952,7 @@ clip_WOPEN(ClipMachine * mp)
 		top = 0;
 		right -= left;
 		left = 0;
-		clip_region(mp, &top, &left, &bottom, &right, 2);
+		clip_region(mp, &top, &left, &bottom, &right, 2, -1);
 		for (i = top; i <= bottom; ++i)
 		{
 			sp->touched[i] = 1;
@@ -5861,7 +6016,7 @@ clip_WREOPEN(ClipMachine * mp)
 		top = 0;
 		right -= left;
 		left = 0;
-		clip_region(mp, &top, &left, &bottom, &right, 2);
+		clip_region(mp, &top, &left, &bottom, &right, 2, -1);
 		for (i = top; i <= bottom; ++i)
 		{
 			sp->touched[i] = 1;
@@ -5991,7 +6146,7 @@ dialog_init(ClipMachine * mp)
 				int l;
 				char msg[256];
 
-				snprintf(msg, sizeof(msg), "\nreguest to switch into DIALOG mode failed: %s\n", mp->syserr);
+				snprintf(msg, sizeof(msg), "\nrequest to switch into DIALOG mode failed: %s\n", mp->syserr);
 				l = strlen(msg);
 				out_log(mp, msg, l, 0);
 				out_err(mp, msg, l, 0);
@@ -6003,10 +6158,14 @@ dialog_init(ClipMachine * mp)
 }
 
 int
-clip_BEEP(ClipMachine * mp)
+clip___BEEP(ClipMachine * mp)
 {
-	fputc('\007', stdout);
-	fflush(stdout);
+	if (mp->fullscreen)
+		mp->screen->beeps++;
+	else
+		fputc('\007', (FILE *) mp->out);
+
+	sync_mp(mp);
 	return 0;
 }
 
@@ -6053,7 +6212,7 @@ clip_SCREENMIX(ClipMachine * mp)
 	ex = x + l;
 	ey = y;
 
-	clip_region(mp, &y, &x, &ey, &ex, 1);
+	clip_region(mp, &y, &x, &ey, &ex, 1, -1);
 
 	if (y <= ey)
 	{
@@ -6434,13 +6593,13 @@ clip_MSTATE(ClipMachine * mp)
 	_clip_destroy(mp, &var);
 
 	/* LLM_STATE_LEFT */
-	_clip_var_num(sp->mouse_left, &var);
+	_clip_var_num( (sp->mouse_buttons & MOUSE_BUTTONS_LEFT) ? 1 : 0, &var);
 	dim = 4;
 	_clip_aset(mp, rp, &var, 1, &dim);
 	_clip_destroy(mp, &var);
 
 	/* LLM_STATE_RIGHT */
-	_clip_var_num(sp->mouse_right, &var);
+	_clip_var_num( (sp->mouse_buttons & MOUSE_BUTTONS_RIGHT) ? 1 : 0, &var);
 	dim = 5;
 	_clip_aset(mp, rp, &var, 1, &dim);
 	_clip_destroy(mp, &var);
@@ -6559,7 +6718,7 @@ static WinBuf *find_WinBuf(int no);
 
 /*
    buf = winbuf_create(height,width) - создает буфер размером height x width
-       (могут быть больше физических размеров экрана).
+	   (могут быть больше физических размеров экрана).
 */
 int
 clip_WINBUF_CREATE(ClipMachine * mp)
@@ -6849,12 +7008,12 @@ clip_WINBUF_COPY(ClipMachine * mp)
 
 	for (y = top, d_y = d_top; y < hi && d_y < d_wp->hi; y++, d_y++)
 	{
-        	if (y < 0 || d_y < 0)
-                	continue;
+		if (y < 0 || d_y < 0)
+				continue;
 		for (x = left, d_x = d_left; x < wi && d_x < d_wp->wi; x++, d_x++)
 		{
-        		if (x < 0 || d_x < 0)
-                		continue;
+			if (x < 0 || d_x < 0)
+				continue;
 			d_wp->chars[d_y][d_x] = wp->chars[y][x];
 			d_wp->colors[d_y][d_x] = wp->colors[y][x];
 			d_wp->attrs[d_y][d_x] = wp->attrs[y][x];
@@ -6866,9 +7025,9 @@ clip_WINBUF_COPY(ClipMachine * mp)
 
 /*
   winbuf_display(buf,top,left[,r_top,r_left[,r_height,r_width]]) -
-    отображается буфер buf в абсолютных координатах top,left. Если указаны
-    r_top,r_left,r_height,r_width - отображается не buf, а только область,
-    ограниченная этими координатами. При этом r_top,r_left помещается в top,left
+	отображается буфер buf в абсолютных координатах top,left. Если указаны
+	r_top,r_left,r_height,r_width - отображается не buf, а только область,
+	ограниченная этими координатами. При этом r_top,r_left помещается в top,left
 */
 
 int
@@ -6929,7 +7088,7 @@ clip_WINBUF_DISPLAY(ClipMachine * mp)
 	r_bottom = r_top + d_hi;
 	r_right = r_left + d_wi;
 
-	clip_region(mp, &r_top, &r_left, &r_bottom, &r_right, 0);
+	clip_region(mp, &r_top, &r_left, &r_bottom, &r_right, 0, -1);
 
 	for (y = top, yi = d_top; yi < d_hi; ++y, ++yi)
 	{
@@ -6950,3 +7109,75 @@ clip_WINBUF_DISPLAY(ClipMachine * mp)
 
 	return 0;
 }
+
+/*
+  winbuf_out_trans(buf,top,left,str,color) - output "transparent" text
+  2003/08/21, Mauricio Abre
+*/
+int
+clip_WINBUF_OUT_TRANS(ClipMachine * mp)
+{
+	int no;
+	WinBuf *wp;
+	int top, left;
+	char *str;
+	int slen;
+	ClipVar *vp;
+	int attr;
+
+	if (mp->argc < 5)
+		return EG_ARG;
+
+	no = _clip_parni(mp, 1);
+	wp = find_WinBuf(no);
+
+	if (!wp)
+		return EG_ARG;
+
+	top = _clip_parni(mp, 2);
+	left = _clip_parni(mp, 3);
+	str = _clip_parcl(mp, 4, &slen);
+
+	if (!str)
+		return EG_ARG;
+
+	vp = _clip_par(mp, 5);
+	if (vp)
+	{
+		if (vp->t.type == NUMERIC_t)
+			attr = _clip_parni(mp, 5);
+		else
+			attr = get_color(mp, _clip_parc(mp, 5));
+	}
+	else
+		attr = _clip_colorSelect(mp);
+
+	if (top >= 0 && top < wp->hi)
+	{
+		int y = top;
+		int x, i;
+
+		for (x = left, i = 0; x < wp->wi && i < slen; i++, x++)
+		{
+			int ch;
+
+			ch = mp->term_xlat[((unsigned char *) str)[i]];
+
+			if (ch < 32 && !is_pgch(ch))
+			{
+				wp->chars[y][x] = ch + 64;
+				wp->colors[y][x] = attr | 0x8;
+				wp->attrs[y][x] = 0;
+			}
+			else
+			{
+				wp->chars[y][x] = ch;
+				wp->colors[y][x] = (wp->colors[y][x] & 0xf0) | (attr & 0x0f);
+				wp->attrs[y][x] = 0;
+			}
+		}
+	}
+
+	return 0;
+}
+

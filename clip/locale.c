@@ -1,5 +1,26 @@
 /*
    $Log: locale.c,v $
+   Revision 1.12  2003/09/05 12:11:53  clip
+   uri: initial fixes for mingw+win32 from uri
+
+   Revision 1.11  2003/01/22 08:10:40  clip
+   registration fix
+   paul
+
+   Revision 1.10  2002/11/06 12:55:44  clip
+   fix plural/singular
+   paul
+
+   Revision 1.9  2002/11/01 07:54:13  clip
+   load msg file bug fix
+   paul
+
+   Revision 1.8  2002/10/31 10:33:59  clip
+   plural form runtime messages support:
+   gettext(cMsgid [,cModule])->cTranslated
+   ngettext(cMsgid, cMsgid_plural, nNum, [,cModule]) ->cTranslated
+   paul
+
    Revision 1.7  2002/09/25 11:47:25  clip
    add function: loadModuleMsg(cModule, cFilename_mo) -> bResult
    predefined macro: __CLIP_MODULE__  expands to current module name as "modname"
@@ -43,6 +64,7 @@
 #include <errno.h>
 
 #include "clic.h"
+#include "clipcfg.h"
 
 static FILE *out = 0;
 static char *fname = 0, *mname = 0;
@@ -55,7 +77,11 @@ make_dir(char *path)
 	int r;
 
 	snprintf(dir, sizeof(dir), path);
+#ifdef OS_MINGW
+	r = mkdir(dir);
+#else
 	r = mkdir(dir, 0775);
+#endif
 	if (r && errno == EEXIST)
 		return 0;
 
@@ -72,7 +98,11 @@ make_dir(char *path)
 			else
 			{
 				snprintf(dir, sizeof(dir), path);
+#ifdef OS_MINGW
+				if ((r = mkdir(dir)))
+#else
 				if ((r = mkdir(dir, 0775)))
+#endif
 					yywarning("cannot create dir '%s': %s", dir, strerror(errno));
 			}
 			return r;
@@ -202,6 +232,8 @@ put_locale_string(char *name)
 {
 	if (!out && file_name)
 		set_locale();
+	if (!out)
+        	return 0;
 
 	fprintf(out, "#: %s:%ld\n", file_name, clic_line);
 	fprintf(out, "msgid \"");
@@ -212,3 +244,31 @@ put_locale_string(char *name)
 	v_printf(2, "wrote locale message entry '%s'\n", name);
 	return 0;
 }
+
+int
+put_locale_string_plural(char *singular, char *plural)
+{
+	if (!out && file_name)
+		set_locale();
+	if (!out)
+        	return 0;
+
+	fprintf(out, "#: %s:%ld\n", file_name, clic_line);
+	fprintf(out, "msgid \"");
+	put_str(out, singular);
+	fprintf(out, "\"\n");
+	fprintf(out, "msgid_plural \"");
+	put_str(out, plural);
+	fprintf(out, "\"\n");
+	fprintf(out, "msgstr[0] \"\"\n");
+	fprintf(out, "msgstr[1] \"\"\n\n");
+
+	v_printf(2, "wrote plural locale message '%s' '%s'\n", singular, plural);
+
+	/*put_locale_string(singular);*/
+	/*put_locale_string(plural);*/
+
+	return 0;
+}
+
+

@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -23,8 +22,11 @@ STATIC	Updated := .f.,;
 	LastPos,;
 	ActiveGet,;
 	ReadProcName,;
-	_ReadInsert:=.T.
+	_ReadInsert:=.T.,;
+	lSame:=.f., nSame, nCrt, aPos
 //	_buffer:=''
+
+#define GE_MPOINT		GE_ESCAPE+1000
 
 // format of array used to preserve state variables
 #define GSV_KILLREAD		1
@@ -36,7 +38,6 @@ STATIC	Updated := .f.,;
 #define GSV_READVAR 		7
 #define GSV_READPROCNAME	8
 
-
 /***
 	ReadModal()
 	Standard modal READ on an array of GETs.
@@ -45,9 +46,14 @@ FUNC ReadModal( GetList, lCycle, lPassword )
 LOCAL get, pos, savedGetSysVars, savedCursor, name, _aSub
 
 PRIVATE _NeedScroll:='FORG' $ ProcName(1) .AND. m->_tv //,;
+m->Ctrl_keys[10]:=_MSG_GET_CF10
+
 lCycle:=!EMPTY(lCycle)
 
 IF EMPTY(getList) THEN	RETURN .F.
+
+aPos:={}
+AEVAL(GetList,{|_1| AADD(aPos, SaveCoords(_1) ) } )
 
 // preserve state vars	//ClearGetSysVars()
 savedGetSysVars:={KillRead,BumpTop,BumpBot,LastExit,;
@@ -70,7 +76,6 @@ WHILE ( pos <> 0 )
 	// get next GET from list and post it as the active GET
 	get := GetList[pos]
 	IF !EMPTY(lPassword) THEN get:ColorSpec:="w/w"
-
 
 //Текст PostActiveGet( get )
 	name := Upper(get:name)
@@ -127,6 +132,7 @@ get:exitstate:=IF( KillRead,GE_ESCAPE,GE_NOEXIT)
 
 // activate the GET for reading
 get:SetFocus()
+IF lSame THEN get:pos:=nSame
 
 WHILE ( get:exitstate == GE_NOEXIT )
 
@@ -135,17 +141,16 @@ WHILE ( get:exitstate == GE_NOEXIT )
 		get:exitstate := GE_ENTER
 	// apply keystrokes until exit
 	WHILE ( get:exitstate == GE_NOEXIT )
-		_c:=get:pos
-		@ 0,63 say TRANSFORM(ASC(SUBSTR(get:buffer,_c)),'@R CODE:999')
-		IF  _NeedScroll
+		IF IsKbdEmpty()
+		  _c:=get:pos
+		  DispBegin()
+		  @ 0,63 say TRANSFORM(ASC(SUBSTR(get:buffer,_c)),'@R CODE:999')
+		  IF  _NeedScroll
 			@ 13,__c:=6+Int((_c-1)*(__MCOL-11)/255)  say SCROLL_MARK color m->_CM
+	 	  ENDIF
+		  get:Display()
+		  DispEnd()
 		ENDIF
-
-//		#ifdef __CLIP__
-//			SetPos(get:row,get:col+_c-1)
-//		#else
-			get:Display()
-//		#endif
 		ShowMouse()
 		GetApplyKey( get, WaitKey(0), lCycle )
 		HideMouse()
@@ -169,31 +174,47 @@ get:KillFocus()
 	NOTE: GET must have focus.
 */
 PROC GetApplyKey(get, key, lCycle)
-LOCAL cKey, _mox,_moy,_cGetBuffer,;
+LOCAL cKey, _mox,_moy, _cGetBuffer, _cGetType, _nGetCol,;
 	lIsField:=('GETF' $ PROCNAME(3))//,_col,_row
 
 ckey:=chr(key)
 _cGetBuffer:=get:buffer
+_cGetType:=get:type
+lSame:=.F.
 DO CASE
 	CASE TYPE('_aGetKeys')=='A' .AND.;
 	     (_mox:=AMSCAN(m->_aGetKeys,1,key))<>0
 		EVAL(m->_aGetKeys[_mox,2])
 
+	CASE (_cGetType == "C") .AND. key==K_CTRL_X .AND. IsShift() .AND.;
+	      (ALTF()=2)
+		get:buffer:=IF(_cGetBuffer>='А',Nation2Usa(_cGetBuffer),;
+			    Usa2Nation(_cGetBuffer))
+		get:VarPut(get:buffer)
+		get:Changed:=.t.
+
 	CASE (_mox:=ASCAN({K_UP,K_DOWN,K_CTRL_HOME,K_CTRL_END,K_PGUP,K_PGDN,K_F10},key))<>0
 		get:exitstate:={GE_UP,GE_DOWN,GE_TOP,GE_WRITE,IF(lCycle,GE_TOP,GE_WRITE),IF(lCycle,GE_BOTTOM,GE_WRITE),GE_WRITE}[_mox]
+
+		IF IsShift()
+			lSame:=.T.
+			nSame:=get:pos
+		ENDIF
 
 	CASE key=K_DEL .AND. IsShift() .AND. lIsField
 		KEYBOARD _ESC+cKey+_EMP+_ENTER
 
 	CASE key=K_INS .AND. IsShift()
-		__KeyBoard(GetWinClip())
+		InsString(Get,GetWinClip())
 
 	CASE key=K_CTRL_INS
 		SetWinClip(_cGetBuffer)
 
 	CASE (_mox:=ASCAN({K_INS,K_HOME,K_END,K_RIGHT,K_LEFT,;
-			   K_CTRL_RIGHT,K_CTRL_LEFT,K_BS,K_DEL,;
-			   K_CTRL_T,K_CTRL_Y,K_CTRL_BS,K_CTRL_GPLUS;
+			   K_CTRL_RIGHT,K_CTRL_LEFT,;
+			   K_BS,K_DEL,;
+			   K_CTRL_T,K_CTRL_Y,K_CTRL_BS,K_CTRL_K,;
+			   K_CTRL_GPLUS;
 			   },key))<>0
 	      EVAL({;
 		{||Set( _SET_INSERT, (_ReadInsert:=!_ReadInsert )),ShowScoreboard()},;
@@ -206,27 +227,43 @@ DO CASE
 		{||get:BackSpace()},;
 		{||get:Delete()},;
 		{||get:DelWordRight()},;
+		{||get:Home(), get:DelEnd()},;
+		{||get:WordLeft(), get:DelWordRight()},;
 		{||get:DelEnd()},;
-		{||get:WordLeft,get:DelWordRight()},;
 		{||A_INS(m->_clipText,_cGetBuffer)},;
 		   }[_mox])
 
+	CASE key==296 .AND. IsShift() .AND. _NeedScroll	//Alt+Shift+"
+		KEYB _HOME+'"'+_END+'"'
 
-	CASE (_mox:=ASCAN({  384, 385,       282,       296,           K_ALT_B, K_ALT_O, K_ALT_A,  K_ALT_C},key))#0
-		KEYB {'()'+_LEFT,'()','{}'+_LEFT,'[]'+_LEFT,'{||}'+_LEFT+_LEFT,' .OR. ',' .AND. ','CTOD("//")'+_LEFT+_LEFT+_LEFT+_LEFT}[_mox]
+	CASE IsKbMacro(key, IF(_NeedScroll,2,3))
 
-	CASE key=K_CTRL_GMINUS	//Нельзя в пред.ASCAN - функция вычисляется.
-		KEYB ClipField(8)
 
-	CASE (_mox:=ASCAN({K_ALT_U,K_ALT_L,K_ALT_K,K_ALT_Q,K_ALT_Y},key))<>0
+	CASE key=K_CTRL_GMINUS
+		InsString(get, ClipField(8))
+
+	CASE key=K_CTRL_F10
+		InsString(get, AsciiTbl(SUBSTR(_cGetBuffer,get:pos)))
+
+	CASE (_cGetType == "L") .AND. (cKey $ " " + L_YES_SET+L_NO_SET)
+		InsString(get,IF(cKey==" ",;
+				IF(_cGetBuffer $ L_YES_SET,'F','T'),;
+				IF(cKey $ L_YES_SET,'T','F');
+				))
+
+	CASE (_cGetType == "C") .AND.;
+	     (_mox:=ASCAN({K_ALT_U,K_ALT_L,K_ALT_K,K_ALT_Q,K_ALT_Y,K_ALT_J,K_ALT_P},key))<>0
 		EVAL({;
 		{||get:buffer:=UPPER(_cGetBuffer)},;
 		{||get:buffer:=LOWER(_cGetBuffer)},;
 		{||get:buffer:=Capitalz(_cGetBuffer)},;
 		{||get:buffer:=Usa2Nation(_cGetBuffer)},;
-		{||get:buffer:=Nation2Usa(_cGetBuffer)};
+		{||get:buffer:=Nation2Usa(_cGetBuffer)},;
+		{||get:buffer:=PADJ(_cGetBuffer)},;
+		{||get:buffer:=PROPER(_cGetBuffer)};
 		}[_mox])
 		get:VarPut(get:buffer)
+		get:Changed:=.t.
 
 	CASE ASCAN({K_UNDO,K_ALT_BS,K_ESC},key)<>0
 		get:Undo()
@@ -239,19 +276,23 @@ DO CASE
 			get:exitstate := GE_ENTER
 		ELSE
 			GetMouseXY()
+			_nGetCol:=get:col
 			DO CASE
 				CASE _moy ==get:row .AND. ;
-				     _mox>=get:col .AND. _mox<=get:col+Len(_cGetBuffer) //buffer
-					get:pos:=_mox-get:col+1
+				     _mox>=_nGetCol .AND. _mox<=_nGetCol+Len(_cGetBuffer) //buffer
+					get:pos:=_mox-_nGetCol+1
 					#ifndef __CLIP__
 						get:display()
 					#endif
 				CASE _NeedScroll .AND. _moy=get:row+1 .AND.;
 				     _mox>=5 .AND. _mox<=__mcol-5
-					get:pos:=1+Int((_mox-5)*254/(__MCOL-10))
+					get:pos:=1+Int((_mox-5)*254/(__mcol-10))
 					#ifndef __CLIP__
 						get:display()
 					#endif
+				CASE (nCrt:=DefPos(_moy,_mox))<>0
+					get:exitState := GE_MPOINT
+
 				OTHER
 					get:exitstate := GE_ENTER
 			ENDCASE
@@ -259,40 +300,63 @@ DO CASE
 
 	CASE ( key == K_SH_TAB ) .OR. ( key == K_TAB )
 		PlayMacro(IF(lIsField,;
-			{K_CTRL_END,key,255,K_ENTER},;
+			{K_CTRL_END,key,K_EMP,K_ENTER},;
 			IF( key == K_TAB, K_DOWN,  K_UP));
 		)
 
-	CASE (get:type == "N") .AND. (cKey $  ".," ) .AND.;
+	CASE (_cGetType == "N") .AND. (cKey $  ".," ) .AND.;
 	      get:DecPos<LEN(_cGetBuffer)
-		get:pos:=get:DecPos
-		get:Reform()
+		get:ToDecPos()
 		get:display()
 
 	CASE lIsField .AND. (key=K_ALT_UP .OR. key=K_ALT_DOWN)
 		PlayMacro({K_ESC,key,_EMP,K_ENTER})
 
-	CASE TestMacro(key,IF(_NeedScroll,2,3))
+	CASE (key >= 1 .AND. key <= 255) .OR. key==K_CTRL_2 .OR. key==K_CTRL_Q
 
-	CASE (key >= 1 .AND. key <= 254)
+		IF key==K_CTRL_2 .OR. key==K_CTRL_Q
+			key:=Inkey(30)
+			IF key=K_CTRL_2
+				ckey:=chr(0)
+			ELSEIF key=0 .OR. key>255
+				RETURN
+			ELSE
+			       cKey:=CHR(key)
+			ENDIF
+		ENDIF
 
-		IF get:Type  == 'L' .AND. cKey $ L_YES_SET+L_NO_SET
-			cKey:=IF(cKey $ L_YES_SET,'T','F')
-		END
-
-		IF ( _ReadInsert )
-			get:Insert(cKey)
-		ELSE
-			get:Overstrike(cKey)
-		END
-
-		IF (get:typeOut .AND. !Set(_SET_CONFIRM) )
-			?? Chr(7)
-			get:exitstate := GE_ENTER
-		END
+		InsString(get, cKey)
 
 ENDCASE
-
+***********
+STATIC FUNC DefPos(mR,mC)
+LOCAL nRes:=0,i,aEl
+IF LEN(aPos)>1
+	i:=1
+	WHILE i<=LEN(aPos)
+		aEl:=aPos[i]
+		IF (aEl[1]==mR) .AND. Between(mC,aEl[2],aEl[3])
+			nRes:=i
+			lSame:=.T.
+			nSame:=mC-aEl[2]
+			EXIT
+		ENDIF
+		i++
+	END
+ENDIF
+RETURN nRes
+***********
+STATIC FUNC SaveCoords(get)
+LOCAL nr:=get:row, nc:=get:col, nl, cScr, i, cAttr
+cScr:=Savescreen(nr,nc,nr,__mcol)
+cAttr:=SUBSTR(cScr,2,1)
+nl:=1
+i:=5
+WHILE cAttr==SUBSTR(cScr,i,1)
+	nl++
+	i+=3
+END
+RETURN {nr,nc,nc+nl}
 
 /***
 	GetPostValidate()
@@ -391,6 +455,9 @@ DO CASE
 		BumpBot := .T.
 		exitState := GE_UP
 
+	CASE ( exitState == GE_MPOINT )
+		pos:=nCrt
+
 ENDCASE
 
 
@@ -462,10 +529,7 @@ RETURN ( Set(_SET_INSERT, lNew) )
 PROC ShowScoreboard()
 LOCAL _r,_c
 
-// display coordinates for SCOREBOARD
-IF TYPE('m->score_row')='U'
-	m->score_row:=0; m->score_col:=16
-ENDIF
+// default display coordinates for SCOREBOARD 0, 16
 
 SetCursor(IF(SET(_SET_INSERT),1,3))
 Out(m->score_row, m->score_col, IF(SET(_SET_INSERT),_MSG_INSOVR),m->_hDColor )
@@ -477,3 +541,108 @@ IF (ValType(Arg1) == "C")
 	ActiveGet:= Arg1
 ENDIF
 RETU _var
+**********
+PROC InsString(oGet,cStr,lMemo)
+//Вместо KeyBoard из-за возможного наличия в строке управляющих символов
+LOCAL i
+FOR i:=1 TO LEN(cStr)
+	IF ( _ReadInsert )
+		oGet:Insert(SUBSTR(cStr,i,1))
+	ELSE
+		oGet:Overstrike(SUBSTR(cStr,i,1))
+	ENDIF
+
+	IF EMPTY(lMemo) .AND. (oGet:typeOut .AND. !Set(_SET_CONFIRM) )
+		?? Chr(7)
+		oGet[9] := GE_ENTER
+		EXIT
+	END
+
+NEXT
+**********
+FUNC AsciiTbl(cStart)
+LOCAL nR, nR1, nC, i, j, cStr, nA, cNa, nK, sc:=SetCursor(1)
+IF_NIL cStart IS CHR(0)
+
+PUSH KEYS COLOR m->_im
+
+nR:=m->_middlerow-6
+nR1:=m->_middlerow+7
+nC:=m->_middlecol-17
+Window(nR, nC, nR1, m->_middlecol+17, _MSG_ASCII)
+
+@ nR+2, nC SAY (cStr:='╟'+REPL('─', 33)+'╢')
+@ nR1-2, nC++ SAY cStr
+
+FOR i:=0 TO 7
+	cStr:=''
+	For j:=0 TO 31 DO cStr += CHR( i*32+j)
+	@ nR+3+i, nC SAY cStr
+NEXT
+
+nA:=ASC(cStart)
+i:=INT(nA/32)
+j:=nA-i*32
+cStr:=''
+
+DO WHILE .T.
+	nA:=i*32+j
+	cNa:=CHR(nA)
+
+        DevPos(nR+3+i, nC+j)
+
+	Out(nR1-1, nC+2, [Char: ]+ cNa +[   Dec: ]+STR(nA, 3)+;
+			  [   Hex: ]+FT_Byt2Hex(cNa) )
+
+*	Out(nR+3+i, nC+j, cNa, m->_HdColor)
+	Out(, , cNa, m->_HdColor)
+
+	nK:=WaitKey(0)
+	DevOut(cNa)
+
+	DO CASE
+		CASE nK==K_ESC
+			cStr:=''
+			EXIT
+
+		CASE nK==K_ENTER
+			cStr+=cNa
+			EXIT
+
+		CASE nK==KP_ALT_PLUS .OR. nK==KP_ALT_MINUS
+			IF nK==KP_ALT_PLUS
+				cStr+=cNa
+			ELSE
+				cStr:=Strip(cStr,1)
+			ENDIF
+			Out(nR1-2, nC, PAD(_MSG_ASC_SLCT+cStr, 33), m->_HdColor)
+
+		CASE nk==K_RIGHT
+			j:=IF( j<31, j+1, 0)
+
+		CASE nK==K_LEFT
+			j:=IF( j>0, j-1, 31)
+
+		CASE nK==K_DOWN
+			i:=IF( i<7, i+1, 0)
+
+		CASE nK==K_UP
+			i:=IF( i>0, i-1, 7)
+	ENDCASE
+ENDDO
+
+POP KEYS
+SetCursor(sc)
+
+RETURN cStr
+**********
+FUNC IsKbMacro(Key, nMode)
+LOCAL i, lRes:=.T.
+IF TestMacro(key,nMode)
+
+ELSEIF (i:=ASCAN({  384, 385,       282,       296,           K_ALT_B, K_ALT_O, K_ALT_A,  K_ALT_C},key))#0
+	KEYB {'()'+_LEFT,'()','{}'+_LEFT,'""'+_LEFT,'{||}'+_LEFT+_LEFT,' .OR. ',' .AND. ','CTOD("//")'+_LEFT+_LEFT+_LEFT+_LEFT}[i]
+ELSE
+	lRes:=.F.
+ENDIF
+RETU lRes

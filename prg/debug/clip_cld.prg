@@ -31,6 +31,7 @@ parameters par1,par2
         ddd:run("input "+script_file)
         ddd:statusLine([Esc-menu F1-help CtrlU-switch panels AltX-exit Alt0-list windows])
 
+        ret=ddd:handleKey(HASH_Noop)
        do while .t.
                 ret=ddd:handleKey(inkey(0))
                 if ret==0

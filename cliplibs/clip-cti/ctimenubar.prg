@@ -8,9 +8,6 @@
 /* CTI_MENUBAR - used as a main menu in which pop-up menus reside */
 
 #include "cti.ch"
-#include "ctievents.ch"
-#include "ctimenubar.ch"
-#include "ctimenuitem.ch"
 
 #include "inkey.ch"
 
@@ -23,6 +20,9 @@ function cti_menubar_new(top,left,width)
 
 	obj:__real_draw			:= @cti_menubar_real_draw()
 	obj:__handle_event		:= @cti_menubar_handle_event()
+	obj:__set_default_keys		:= @cti_menubar_set_default_keys()
+	obj:can_focus			:= {|_obj|_obj:__is_shown .and. _obj:__is_enabled}
+
 	obj:popup_item			:= @cti_menubar_popup_item()
 	obj:unpopup_item		:= @cti_menubar_unpopup_item()
 
@@ -32,8 +32,11 @@ function cti_menubar_new(top,left,width)
 	obj:signal_connect(HASH_CTI_ITEM_SELECTED_SIGNAL,{|_obj,_sig|_obj:popup_item(_sig:item)})
 	obj:signal_connect(HASH_CTI_ITEM_DESELECTED_SIGNAL,{|_obj,_sig| ;
 		iif(_sig:item:is_popup(),_sig:item:__submenu:unpopup(),nil)})
-	obj:signal_connect(HASH_CTI_SET_FOCUS_SIGNAL,{|_m,_sig|_m:popup_item(_m:__current) })
-	obj:signal_connect(HASH_CTI_LOST_FOCUS_SIGNAL,{|_m,_sig|_m:unpopup_item(_m:__current) })
+
+	obj:signal_connect(HASH_CTI_WIDGET_SET_FOCUS_SIGNAL,{|_m,_sig|_m:popup_item(_m:__current) })
+	obj:signal_connect(HASH_CTI_WIDGET_LOST_FOCUS_SIGNAL,{|_m,_sig| _m:unpopup_item(_m:__current) })
+
+	obj:__set_default_keys()
 return obj
 
 /************************************************************/
@@ -41,7 +44,7 @@ return obj
 /* Draw a menu bar */
 static function cti_menubar_real_draw(obj)
 	local i, item, left
-	local color
+	local color, bg
 
 	left := 0
 	winbuf_out_at(obj:__buffer,0,0,space(obj:width),obj:Palette:Menu)
@@ -53,9 +56,16 @@ static function cti_menubar_real_draw(obj)
 				color := item:Palette:ActiveMenu
 			endif
 			winbuf_out_at(obj:__buffer,0,left,item:__caption,color)
-                        item:top := obj:top
-                        item:left := obj:left + left
-                        left += len(item:__caption)
+			if item:__accel_pos > 0
+				bg := substr(color, at("/",color)+1)
+				winbuf_attr_at(obj:__buffer,0,left+item:__accel_pos, ;
+					0,left+item:__accel_pos,item:Palette:AccelKey+"/"+bg)
+			endif
+//			item:top := obj:0
+//			item:left := obj:left + left
+			item:top := 0
+			item:left := left
+			left += len(item:__caption)
 		endif
 	next
 return TRUE
@@ -81,16 +91,16 @@ static function cti_menubar_popup_item(obj,item_no)
 	if valtype(item_no)=="N"
 		cti_return_if_fail(item_no>0 .and. item_no<=obj:__item_count)
 		item := obj:__items[item_no]
-        else
+	else
 		if valtype(item_no)=="O"
 			cti_return_if_fail(CTI_IS_MENUITEM(item_no))
-        		item := item_no
-        	else
-        		return FALSE
-        	endif
-        endif
+			item := item_no
+		else
+			return FALSE
+		endif
+	endif
 
-        if !item:is_popup(); return FALSE; endif
+	if !item:is_popup(); return FALSE; endif
 
 	if obj:__abs_left!=nil .and. obj:__abs_top!=nil
 		item:__submenu:left := obj:__abs_left + item:left
@@ -106,24 +116,24 @@ static function cti_menubar_unpopup_item(obj,item_no)
 	if valtype(item_no)=="N"
 		cti_return_if_fail(item_no>0 .and. item_no<=obj:__item_count)
 		item := obj:__items[item_no]
-        else
+	else
 		if valtype(item_no)=="O"
 			cti_return_if_fail(CTI_IS_MENUITEM(item_no))
-        		item := item_no
-        	else
-        		return FALSE
-        	endif
-        endif
+			item := item_no
+		else
+			return FALSE
+		endif
+	endif
 
-        if !item:is_popup(); return FALSE; endif
-
-	item:__submenu:unpopup()
-return TRUE
+	if item:is_popup()
+		item:__submenu:unpopup()
+		return TRUE
+	endif
+return FALSE
 
 /* Event handler */
 static function cti_menubar_handle_event(obj,event)
 ***********************************************
-	local not_changed := FALSE
 	local item, old := obj:__current
 
 	if obj:__current != 0
@@ -133,32 +143,19 @@ static function cti_menubar_handle_event(obj,event)
 		endif
 	endif
 
-	if event:type != CTI_KEYBOARD_EVENT; return TRUE; endif
+	if event:type != CTI_KEYBOARD_EVENT; return FALSE; endif
 
-	switch (event:keycode)
-		case K_HOME
-		obj:first_item()
-
-		case K_END
-		obj:last_item()
-
-		case K_RIGHT
-		obj:next_item()
-
-		case K_LEFT
-		obj:prev_item()
-
-		case K_ENTER
-		obj:activate_item(obj:__current)
-
-		otherwise
-		not_changed := TRUE
-	end
-
-	if not_changed
-		return TRUE
-	else
+	if obj:apply_key(event:keycode)
 		event:type := CTI_NOTHING_EVENT
 		obj:draw_queue()
+		return TRUE
 	endif
+return FALSE
+
+static function cti_menubar_set_default_keys(obj)
+	obj:set_key(K_HOME,  obj:first_item )
+	obj:set_key(K_END,   obj:last_item  )
+	obj:set_key(K_RIGHT, obj:next_item  )
+	obj:set_key(K_LEFT,  obj:prev_item  )
+	obj:set_key(K_ENTER, {|_obj|_obj:activate_item(_obj:__current)})
 return TRUE

@@ -1,0 +1,5 @@
+******************************************************************************
+Please install package gdk-pixbuf and recompile clip-gtk package
+before compilling tests in this directory.
+******************************************************************************
+

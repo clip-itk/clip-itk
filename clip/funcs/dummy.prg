@@ -48,9 +48,9 @@ return .f.
 function csetcurs(lvisible)
 	local ret
 	ret:=setcursor()!=0
-        if lVisible != NIL
+	if lVisible != NIL
 		setcursor(iif(lvisible,1,0))
-        endif
+	endif
 return ret
 *****************************************************
 function _isgraphics()
@@ -62,18 +62,15 @@ return lower(s)
 function cretry()
 return 0
 *****************************************************
-function colorwin()
-return NIL
-*****************************************************
 function kbdEmulate()
 return 0
 *****************************************************
 function tone()
-	beep()
+	__beep()
 return .t.
 *****************************************************
 function sound
-	beep()
+	__beep()
 return .t.
 *****************************************************
 function kbdspeed()
@@ -85,30 +82,36 @@ return .t.
 FUNCTION Network()
   RETURN ( .T. )
 *****************************************************
+FUNCTION NOSNOW()
+  RETURN NIL
+*****************************************************
 FUNCTION ISVGA()
   RETURN .F.
 *****************************************************
 FUNCTION ISEGA()
   RETURN .F.
 *****************************************************
+	function setmode()
+	return .t.
+*****************************************************
 	function getmode
-        return "CGA80(.t.)"
+	return "CGA80(.t.)"
 *****************************************************
-        function cga80
-        return .t.
+	function cga80
+	return .t.
 *****************************************************
-        function vga28
-        return .f.
+	function vga28
+	return .f.
 *****************************************************
-        function vga50
-        return .f.
+	function vga50
+	return .f.
 *****************************************************
-        function fontload
-        return 0
+	function fontload
+	return 0
 *****************************************************
-        function fontselect
-        return 0
+	function fontselect
+	return 0
 *****************************************************
-        function fontreset
-        return .t.
+	function fontreset
+	return .t.
 

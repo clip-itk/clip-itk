@@ -4,6 +4,7 @@
 /*   Author  : Elena Kornilova (alena@itk.ru)			*/
 /*   License : (GPL) http://www.itk.ru/clipper/licence.html	*/
 
+#include <ctievents.ch>
 #include <inkey.ch>
 #include <fwin/FiveWin.ch>
 #include <fwin/Constant.ch>
@@ -70,6 +71,7 @@ return
 function GetSelectorCTI()
 local selector := map()
 
+selector:GetFwDriver 	:= @GetFwDriver()
 selector:isZoomed 	:= @isZoomed()
 selector:GetInstance 	:= @GetInstance()
 selector:RefreshObj 	:= @RefreshObj()
@@ -94,7 +96,6 @@ selector:BeginPaint 	:= @BeginPaint()
 selector:EndPaint 	:= @EndPaint()
 selector:GetTextWidth 	:= @GetTextWidth()
 selector:GetWndRect 	:= @GetWndRect()
-selector:NexDlgTab 	:= @NexDlgTab()
 selector:SetFocus 	:= @SetFocus()
 selector:BringWindowToTop:= @BringWindowToTop()
 selector:CloseWindow 	:= @CloseWindow()
@@ -212,19 +213,27 @@ selector:SendMessage	:= @SendMessage()
 selector:GetParent	:= @GetParent()
 selector:ClientToScreen	:= @ClientToScreen()
 selector:GetSysMetrics	:= @GetSysMetrics()
+selector:FileDialog	:= @FileDialog()
+selector:KeyboardEvent	:= @KeyboardEvent()
 
 return selector
 
+************************
+static function GetFwDriver()
+return "CTI"
+************************
 static function isZoomed()
-return
+return .f.
 *******************************
 static function GetInstance()
-return
+return 0
 *******************************
 static function RefreshObj()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SetWindowPos()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function __keybHandler(oCti, event)
@@ -236,12 +245,18 @@ local oWnd, oMenu
 			if !"OMENU"$oWnd .or. oWnd:oMenu == nil
 				return
 			endif
-			oMenu := cti_Get_Obj_by_id(oWnd:oMenu:hMenu)
+			oMenu := cti_get_object_by_id(oWnd:oMenu:hMenu)
+			outlog(__FILE__, __LINE__, oMenu:classname, oMenu:__is_focused)
 			if oMenu:__is_focused
-				ctiApp:set_focus(focus)
+				//ctiApp:set_focus(focus)
+				//oCti:set_focus(focus)
+				focus:set_focus()
 			else
-				focus := ctiApp:__FocusedObj
-				ctiApp:set_focus(oMenu)
+				focus := oCti:__FocusedObj
+				//oCti:set_focus(oMenu)
+				oMenu:set_focus()
+				//focus := CtiApp:__FocusedObj
+				//CtiApp:set_focus(oMenu)
 			endif
 		case K_ALT_X
 			oWnd := __aObj[oCti:id]
@@ -278,13 +293,15 @@ local val, low, up, oCti
 	if oWnd:oRight == NIL
 		oWnd:oRight := gtk_VBoxNew()
 	endif
+	*/
 	if oWnd:oClient == NIL
-		oWnd:oClient := gtk_LayoutNew()
-		oWnd:oClient:nWidth := oWnd:nRight-oWnd:nLeft+20
-		oWnd:oClient:nHeight := oWnd:nBottom-oWnd:nLeft+20
-		gtk_WidgetSetSize(oWnd:oClient, oWnd:oClient:nWidth, oWnd:oClient:nHeight)
+		oWnd:oClient := cti_Layout_New()
+		oWnd:oClient:hWnd := oWnd:oClient:id
+		oWnd:oClient:show()
+		oCTI:add(oWnd:oClient)
 	endif
 
+	 /*
 	gtk_BoxPackStart(hBox, oWnd:oLeft)
 	gtk_BoxPackEnd(hBox, oWnd:oRight)
 
@@ -323,12 +340,14 @@ local val, low, up, oCti
 	gtk_BoxPackStart(vBox, hBox, .t., .t.)
 
 */
-	ctiApp:put(oCTI)
+	ctiApp:add(oCTI)
 
 	cti_event_connect(HASH_CTI_KEYBOARD_EVENT, @__keybHandler())
 	//outlog(__FILE__, __LINE__, 'connect signal', HASH_DELETE_EVENT, 'to id', oCTI:id)
-	oCTI:Signal_Connect(HASH_CTI_DELETE_SIGNAL, {|w, e, obj| iif(obj:end(), CloseAppl(w), nil)}, oWnd)
+//	oCTI:Signal_Connect(HASH_CTI_DELETE_SIGNAL, {|w, e, obj| iif(obj:end(), CloseAppl(w), nil)}, oWnd)
 	//oCTI:Signal_Connect(HASH_CTI_HIDE_SIGNAL, oWnd, {|w, e, obj| iif(obj:end(), CloseAppl(w), nil)})
+	oCTI:signal_connect(HASH_CTI_DELETE_SIGNAL, {|w, e, obj| iif(obj:end(), w:hide(), .t.)}, oWnd)
+	oCTI:signal_connect(HASH_CTI_HIDE_SIGNAL, {|w| CloseAppl(w)})
 
 	if nLeft!=NIL .and. nLeft != CW_USEDEFAULT
 	    oCTI:Set_Position(, nLeft)
@@ -403,19 +422,22 @@ local val, low, up, oCti
 
 	__aObj[oCTI:id] := oWnd
 
-return oWnd:Handle
+return oWnd:hWnd
 *******************************
 static function CloseAppl(oWnd)
 	cti_Quit()
 return
 *******************************
 static function ValueChanged()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CoorsUpdate()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function PostChild()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WndCreateError(oWnd)
@@ -429,25 +451,37 @@ static function GetActiveWindow(oItem)
 return ctiApp:Get_Active_Window_id()
 *******************************
 static function aSend()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WndCenter()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetCoors(hWnd)
-local aRect, nTop, nLeft, nWidth, nHeight, ctiWnd
+local aRect, nTop, nLeft, nWidth, nHeight, ctiWnd, oWnd
+	oWnd := __aObj[hWnd]
 	ctiWnd := cti_get_object_by_id(hWnd)
 	aRect := map()
 	aRect:Left   := ctiWnd:Left
 	aRect:Top    := ctiWnd:Top
 	aRect:Right  := ctiWnd:Left + ctiWnd:Width - 1
-	aRect:Bottom := ctiWnd:Top + ctiWnd:Height - 1
+	aRect:Bottom := ctiWnd:Top  + ctiWnd:Height - 1
+	outlog(__FILE__, __LINE__, ctiWnd:classname, oWnd:classname, aRect:top, arect:left, arect:bottom, arect:right)
 return aRect
 *******************************
-static function GetClientRect()
-return
+static function GetClientRect(hWnd)
+local aRect[4], oWnd
+	oWnd := __aObj[hWnd]
+	aRect[1] := oWnd:nTop
+	aRect[2] := oWnd:nLeft
+	aRect[3] := oWnd:nTop + oWnd:nHeight - 1
+	aRect[4] := oWnd:nLeft + oWnd:nWidth - 1
+	outlog(__FILE__, __LINE__, oWnd:classname, aRect[1], arect[2], arect[3], arect[4])
+return aRect
 *******************************
 static function ShowChildrenControls()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function ShowWindow(oWnd, nShowMode, ret)
@@ -458,6 +492,7 @@ local i, item, aItem, val, hFocus, toolt, oRect, style, oCti, itemCti
 		for i=1 to len(oWnd:aControls)
 			item := oWnd:aControls[i]
 			itemCti := cti_get_object_by_id(item:hWnd)
+			itemCti:show()
 			do switch item:className
 			case 'FWIN_TTABS'
 			/*
@@ -494,7 +529,10 @@ local i, item, aItem, val, hFocus, toolt, oRect, style, oCti, itemCti
 			*/
 			endswitch
 
-			oCti:put(itemCti, itemCti:Top, itemCti:Left)
+			outlog(__FILE__, __LINE__, 'add to', oWnd:oClient:classname, 'item', itemcti:classname, itemCti:Top, itemCti:Left)
+			oWnd:oClient:add(itemCti, itemCti:Top, itemCti:Left)
+			outlog(__FILE__, __LINE__, 'add  ok')
+
 			/*
 			if oWnd:oClient:nWidth < item:nRight
 				oWnd:oClient:nWidth += item:nRight
@@ -510,6 +548,7 @@ local i, item, aItem, val, hFocus, toolt, oRect, style, oCti, itemCti
 				//hFocus := iif(oCti:Set_Focus(hFocus), hFocus, NIL)
 			endif
 		next
+		outlog(__FILE__, __LINE__, len(oWnd:aControls), oWnd:classname, oCti:classname)
 		/*
 		if oWnd:oTop != NIL
 			ShowChildrenControls(oWnd:oTop, oWnd)
@@ -539,44 +578,56 @@ local i, item, aItem, val, hFocus, toolt, oRect, style, oCti, itemCti
 		oCti:Show()
 	case 2 	//ICONIZED
 	otherwise
-		//outlog(__FILE__, __LINE__, oWnd:className, 'handle',iif("HANDLE"$oWnd, oWnd:handle, "no"))
 		oCti:Show()
 	endswitch
 	if !empty(oWnd:bPainted)
 		eval(oWnd:bPainted)
 	endif
-	ctiApp:Set_Focus(oCti)
-	//outlog(__FILE__, __LINE__, "check visible",GTK_WIDGET_VISIBLE(oWnd), 'focus', GTK_WIDGET_HAS_FOCUS(oWnd), 'mapped', GTK_WIDGET_MAPPED(oWnd))
+	//ctiApp:Set_Focus(oCti)
+	oCti:Show()
+	oCti:Set_Focus()
 return
 *******************************
 static function UpdateWindow()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WSay()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function DragQueryPoint()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function BeginPaint()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function EndPaint()
+	outlog("Call empty function;"+procname())
 return
 *******************************
-static function GetTextWidth()
-return
+static function GetTextWidth(cText, hFont)
+return len(cText)
 *******************************
 static function GetWndRect()
+	outlog("Call empty function;"+procname())
 return
 *******************************
-static function NexDlgTab()
-return
-*******************************
-static function SetFocus()
-return
+static function SetFocus(hCtrl)
+local ret, ctiObj, parent
+	if hCtrl<0
+		return
+	endif
+	ctiObj := cti_get_object_by_id(hCtrl)
+	parent := ctiObj:parent
+	//ret := parent:Set_Focus(ctiObj)
+	ret := ctiObj:Set_Focus()
+return ret
 *******************************
 static function BringWindowToTop()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CloseWindow(hWnd)
@@ -586,84 +637,234 @@ local ctiWin := cti_get_object_by_id(hWnd)
 return
 *******************************
 static function SetKey()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetKeyState()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function IsChild()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SysRefresh()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SetCursor()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CursorArrow()
+	outlog("Call empty function;"+procname())
 return
 *******************************
-static function MoveWindow()
-return
+static function MoveWindow( hWnd, nTop, nLeft, nWidth, nHeight, lRepaint )
+local ret:=.f., item, ctiWin, oWnd
+
+	if hWnd==NIL .or. hWnd==0
+		return ret
+	endif
+	if nTop==NIL .or. nLeft==NIL .or. nWidth==NIL .or. nHeight==NIL
+		return ret
+	endif
+
+	oWnd := __aObj[hWnd]
+	if oWnd:className == "FWIN_TDIALOG"
+		nTop := int(nTop/DLG_CHARPIX_H)
+		nLeft := int(nLeft/DLG_CHARPIX_W)
+		nWidth := int(nWidth/DLG_CHARPIX_W)
+		nHeight := int(nHeight/DLG_CHARPIX_H)
+	else
+		nTop := int(nTop/WIN_CHARPIX_H)
+		nLeft := int(nLeft/WIN_CHARPIX_W)
+		nWidth := int(nWidth/WIN_CHARPIX_W)
+		nHeight := int(nHeight/WIN_CHARPIX_H)
+	endif
+
+
+	DEFAULT lRepaint TO .t.
+
+	ctiWin := cti_get_object_by_id(hWnd)
+	ctiWin:set_position(nTop, nLeft)
+	ctiWin:set_size(nHeight, nWidth)
+	/*
+	item := aWindows[hWnd]
+	item:moveWindow(nTop, nLeft, nWidth, nHeight)
+	if lRepaint
+		item:update()
+	endif
+	*/
+return .t.
 *******************************
 static function GetFocus()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function DrawIcon()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WndPrint()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function IsIconic()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function InvalidateRect()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function RegisterClass()
+	outlog("Call empty function;"+procname())
 return
 *******************************
-static function PostMessage()
+static function PostMessage(hWnd, cMsg, nWParam, nLParam)
+local oCti, sig
+	oCti := cti_get_object_by_id(hWnd)
+	if !empty(oCti)
+		cMsg := upper(cMsg)
+		do case
+		case cMsg == "HIDE"
+		oCti:signal_emit(HASH_CTI_HIDE_SIGNAL)
+		endcase
+	endif
 return
 *******************************
 static function DeleteObject()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SelectObject()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function FwSetColor()
+	outlog("Call empty function;"+procname())
 return
 *******************************
-static function CreateStatusBar()
+static function CreateStatusBar(oMsgBar)
+local mess, ctiStBar, ctiParentWin
+
+	ctiParentWin := cti_get_object_by_id(oMsgBar:oWnd:hWnd)
+
+	ctiStBar := cti_StatusBar_New()
+	ctiStBar:set_size(1, ctiParentWin:width-2)
+
+	ctiStBar:set_position(ctiParentWin:height-2, 0)
+	oMsgBar:hWnd := ctiStBar:id
+
+	mess := oMsgBar:cMsg
+	if oMsgBar:lCentered
+		mess := padc(mess, ctiStBar:width)
+	endif
+
+	ctiStBar:Set_message(mess)
+	ctiStBar:show()
+
+	ctiParentWin:put(ctiStBar, ctiStBar:top, ctiStBar:left+1)
+	__aObj[oMsgBar:hWnd] := oMsgBar
 return
 *******************************
-static function PaintStatusBar()
+static function PaintStatusBar(hWnd, cMsg, cMsgDef, lErase, lCentered, nWidth, nClrText, nClrPane, hFont, lInset)
+local style, ctiStBar, oMsgBar
+	DEFAULT lErase    TO .f.
+	DEFAULT lInset    TO .f.
+	DEFAULT lCentered TO .f.
+	DEFAULT nClrText  TO 0
+	DEFAULT nClrPane  TO GetSysColor( COLOR_BTNFACE )
+outlog(__FILE__, __LINE__, procname())
+	ctiStBar := cti_get_object_by_id(hWnd)
+	oMsgBar := __aObj[hWnd]
+
+	ctiStBar:set_message(iif(cMsg==NIL .or. empty(cMsg), cMsgDef, cMsg))
+	/*
+	style := gtk_WidgetGetStyle(hWnd)
+	oMsgBar := gtk_GetObjByHandle(hWnd)
+	gtk_WidgetSetStyle(oLabel, style)
+	*/
+outlog(__FILE__, __LINE__, int((oMsgBar:nWidth-oMsgBar:nSizeItem)/WIN_CHARPIX_W)-2)
+	ctiStBar:set_size(1, int((oMsgBar:nWidth-oMsgBar:nSizeItem)/WIN_CHARPIX_W)-2)
 return
 *******************************
-static function MsgPaint()
+static function MsgPaint(hMsgBar, cMsg, cMsgDef, lErase, lCentered, nWidth, nClrText, nClrPane, oFont, lInset)
+local style, ctiStBar, oMsgBar
+
+	DEFAULT lErase    TO .f.
+	DEFAULT lInset    TO .f.
+	DEFAULT lCentered TO .f.
+	DEFAULT nClrText  TO 0
+	DEFAULT nClrPane  TO GetSysColor( COLOR_BTNFACE )
+
+	ctiStBar := cti_get_object_by_id(hMsgBar)
+	oMsgBar := __aObj[hMsgBar]
+
+	ctiStBar:set_message(iif(cMsg==NIL .or. empty(cMsg), cMsgDef, cMsg))
+	/*
+	style := gtk_WidgetGetStyle(hWnd)
+	oMsgBar := gtk_GetObjByHandle(hWnd)
+	gtk_WidgetSetStyle(oLabel, style)
+	*/
+
+	ctiStBar:set_size(1, int((oMsgBar:nWidth-oMsgBar:nSizeItem)/WIN_CHARPIX_W)-2)
+
 return
 *******************************
-static function AddMsgItem()
+static function AddMsgItem(hMsgBar, oItem)
+local button, toolt, frame, style, ctiMsgBar, ctiWin, fwMsgBar
+
+	ctiMsgBar := cti_get_object_by_id(hMsgBar)
+	fwMsgBar := __aObj[hMsgBar]
+	ctiWin := cti_get_object_by_id(fwMsgBar:oWnd:hWnd)
+	style := ctiMsgBar:palette
+	button := cti_pushButton_New(oItem:cMsg)
+	button:palette := style
+	button:show()
+	oItem:hWnd := button:id
+
+	/*
+	if oItem:cToolTip != NIL .and. !empty(oItem:cToolTip)
+		toolt := gtk_toolTipsNew()
+		gtk_ToolTipsSetTip(toolt, button, oItem:cToolTip, "")
+	endif
+	*/
+	if "BACTION"$oItem .and. oItem:bAction != NIL
+		button:Signal_Connect(HASH_CTI_CLICKED_SIGNAL, {|w, e, fwobj| fwobj:bAction()}, oItem)
+	endif
+	/* because container not avilable in cti */
+	ctiWin:put(button, 7, 5)
+	/*
+	gtk_ContainerAdd(frame, button)
+	gtk_BoxPackStart(hMsgBar, frame)
+	*/
+
 return
 *******************************
 static function PaintMsgItem()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WndDrawBox()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WindowRaised()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WindowBoxIn()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function MsgPaint3L()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateButtonBar()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateButton(self)
@@ -674,15 +875,21 @@ local button
 		self:cCaption := "Btn "+alltrim(toString(Bnumber))
 	endif
 	button := cti_pushbutton_new(self:cCaption, "&")
-	button:set_size(1, len(self:cCaption)+2)
-	button:top := int(self:nTop/WIN_CHARPIX_H)
-	button:left := int(self:nLeft/WIN_CHARPIX_W)
+	/*****SET_SIZE****/
+	//button:set_size(1, len(self:cCaption)+2)
+	if self:className == "FWIN_TBUTTON"
+		button:top := int(self:nTop/WIN_CHARPIX_H)
+		button:left := int(self:nLeft/WIN_CHARPIX_W)
+	else  // FWIN_TBTNBMP
+	endif
 	button:show()
 	self:hWnd := button:id
 
 	FwSetColor(self, self:nClrText, self:nClrPane)
 	FwSetFont(self, self:oFont)
 
+	button:signal_connect(HASH_CTI_SET_FOCUS_SIGNAL, {|w, e, fwobj|  fwobj:GotFocus(getActiveWindow())}, self)
+	button:signal_connect(HASH_CTI_LOST_FOCUS_SIGNAL, {|w, e, fwobj|  fwobj:LostFocus()}, self)
 	/*
 	gtk_SignalConnect(self, "enter", {|w, e|  w:GotFocus(getActiveWindow())})
 	gtk_SignalConnect(self, "leave", {|w, e|  w:LostFocus()})
@@ -701,75 +908,99 @@ local button
 		endif
 	endif
 */
+	__aObj[button:id] := self
 return
 *******************************
 static function GColorNew()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function nGetForeRGB()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function nGetBackRGB()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateFont()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function FwSetFont()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function ChooseFont()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetFontWidth()
-return
+
+return 1
 *******************************
 static function GetFontHeight()
-return
+
+return 1
 *******************************
 static function SetChosedFont()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetDefaultFont()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SetDefaultFont()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SizeFont()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetFontInfo()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function PalBmpLoad()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function PalBmpRead()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function PalBmpNew()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateDlgBox(oDlg)
-local Dialog, activeW
-	Dialog := cti_Window_New(oDlg:cCaption)
-	Dialog:top := int(oDlg:nTop/DLG_CHARPIX_H)
-	Dialog:left := int(oDlg:nLeft/DLG_CHARPIX_W)
-	Dialog:width := int(oDlg:nWidth/DLG_CHARPIX_W)
-	Dialog:height := int(oDlg:nHeight/DLG_CHARPIX_H)
-	oDlg:hWnd := Dialog:id
-	Dialog:set_position(Dialog:top, Dialog:left)
-	Dialog:set_size(Dialog:height, Dialog:width)
+local Dialog, activeW, top, left, height, width, layout
+
+	top := int(oDlg:nTop/DLG_CHARPIX_H)
+	left := int(oDlg:nLeft/DLG_CHARPIX_W)
+	width := int(oDlg:nWidth/DLG_CHARPIX_W)
+	height := int(oDlg:nHeight/DLG_CHARPIX_H)
+
+	Dialog := cti_Window_New(oDlg:cCaption, top, left, height, width)
+
+	oDlg:oClient := cti_Layout_New()
+	oDlg:oClient:hWnd := oDlg:oClient:id
+	outlog(__FILE__, __LINE__, 'layout created, try add it to dialog')
+	Dialog:add(oDlg:oClient)
+	outlog(__FILE__, __LINE__, 'add it' )
 
 	if "OWND"$oDlg .and. oDlg:oWnd != NIL
-		activeW := cti_get_object_by_id(oDlg:oWnd:hWnd)
+	  //	activeW := cti_get_object_by_id(oDlg:oWnd:hWnd)
 		//activeW:put(Dialog) // while not realized
-		ctiApp:put(Dialog)
+		//activeW:add(Dialog) // while not realized
+		ctiApp:add(Dialog)
 	else
-		ctiApp:put(Dialog)
+		ctiApp:add(Dialog)
 	endif
-	__aObj[oDlg:hWnd] := oDlg
+	oDlg:hWnd := Dialog:id
+	__aObj[Dialog:id] := oDlg
 
 	/* set modal */
 	//gtk_WindowSetModal(oDlg, oDlg:lModal)
@@ -789,34 +1020,24 @@ local i, nResult, hFocus, ctiWin
 
 	oDlg:Initiate(, oDlg:hWnd)
 	nResult := -1000
-	ctiWin := cti_get_object_by_id(oDlg:hWnd)
 	if hActiveWnd!= NIL .and. hActiveWnd != oDlg:hWnd
 		//gtk_WindowSetTransientFor(oDlg, hActiveWnd)
 	endif
 
 	ctiWin:Signal_Connect(HASH_CTI_DELETE_SIGNAL, {|w, e, oD| iif(oD:end(), (w:destroy(), cti_quit()), )}, oDlg)
 
+	outlog(__FILE__, __LINE__, 'try show dialog')
 	ShowWindow(oDlg, 1, @nResult)
+	outlog(__FILE__, __LINE__, 'show ok')
 
 	/*
 	gtk_SignalConnect(oDlg, 'focus-in-event', ;
 		{|w, e| oDlg:GotFocus(), oDlg:HandleEvent(WM_PAINT)})
 		*/
 
-	ctiWin:show()
+	//ctiWin:show_all()
 
-	x:=ctiWin
-	aa := cti_entry_new("C", "@S20")
-	aa:set_size(1, 20)
-	aa:set_value("abrakadabra")
-	aa:show()
-	bb := cti_label_new("Ctttwtwt")
-	bb:set_size(1, 20)
-	bb:show()
-	outlog(__FILE__, __LINE__, iif(x!=nil, x:classname, 'it is not window!!!!'))
-	x:put(aa, 5, 20)
-	x:put(bb, 6, 20)
-
+	outlog(__FILE__, __LINE__, 'try cti_main')
 	cti_Main()
 	adel(__aObj, oDlg:hWnd)
 return nResult
@@ -828,7 +1049,7 @@ local hCtrl, _step:=1, hC:=1, nLen
 	if lPrev
 		_step := -1
 	endif
-	aEval(oWnd:aControls, {|x,y| iif(x:handle==hControl, hC:=y, nil)})
+	aEval(oWnd:aControls, {|x,y| iif(x:hWnd==hControl, hC:=y, nil)})
 	hC += _step
 	if hC<1
 		hC := nLen
@@ -837,7 +1058,7 @@ local hCtrl, _step:=1, hC:=1, nLen
 		hC := 1
 	endif
 	if hC <= nLen
-		hCtrl := oWnd:aControls[hC]:handle
+		hCtrl := oWnd:aControls[hC]:hWnd
 	endif
 return hCtrl
 /*****************************************************************************
@@ -845,57 +1066,49 @@ Get function
 *****************************************************************************/
 static function mGetCreate(oEntry, cCaption, nStyle, nLeft, nTop, nWidth, ;
 			   nHeight, hWnd, nId, hHeap )
-local hFunc := oEntry:KeyChar, ctiEntry
-	ctiEntry := cti_Entry_New("C", oEntry:cPicture)
+local ctiEntry
 
-	x:=cti_get_object_by_id(oEntry:oWnd:hWnd)
-	aa := cti_entry_new("C")
-	aa:set_size(1, 20)
-	aa:set_value("abrakadabra")
-	aa:show()
-	outlog(__FILE__, __LINE__, hWnd, iif(x!=nil, x:classname, 'it is not window!!!!'))
-	x:put(aa, 5, 20)
+	ctiEntry := cti_Entry_New("C")//, oEntry:cPicture)
 
-//	ctiEntry:Set_Value(cCaption)
+	ctiEntry:Set_Value(cCaption)
 	ctiEntry:Set_Position(int(nTop/GET_CHARPIX_H), int(nLeft/GET_CHARPIX_W))
-/*
+
 	if nWidth != NIL
 		ctiEntry:Set_Size(1, int(nWidth/GET_CHARPIX_W))
 	else
 		ctiEntry:Set_Size(1, 10)
 	endif
-*/
-	ctiEntry:__cursorPos := oEntry:nPos-1
-	ctiEntry:__Set_Cursor( )  // entry position started with 0
-	//gtk_SignalConnect(oEntry, GTK_EVENT, {|wgt, ev| wgt:KeyChar(ev) })
-	/*
+
+	ctiEntry:signal_connect(HASH_CTI_EVENT, {|en, ev, wgt| wgt:KeyChar(ev) }, oEntry)
 	if "CMSG"$oEntry .and. oEntry:cMsg != NIL
+		ctiEntry:signal_connect(HASH_CTI_SET_FOCUS_SIGNAL, {|w, e, fwobj|  fwobj:GotFocus(getActiveWindow())}, oEntry)
+		ctiEntry:signal_connect(HASH_CTI_LOST_FOCUS_SIGNAL, {|w, e, fwobj|  fwobj:LostFocus()}, oEntry)
+	endif
+	/*
 		/* mouse cursor enters on button region */
 		gtk_SignalConnect(oEntry, "enter", {|w, e| w:GotFocus(GetActiveWindow())})
 		gtk_SignalConnect(oEntry, "focus-in-event", {|w, e| w:GotFocus(GetActiveWindow())})
 		/* mouse cursor leave button region */
 		gtk_SignalConnect(oEntry, "leave", {|w, e| w:LostFocus()})
 		gtk_SignalConnect(oEntry, "focus-out-event", {|w, e| w:LostFocus()})
-	endif
 	*/
 	ctiEntry:show()
+	__aObj[ctiEntry:id] := oEntry
 return ctiEntry:id
 *******************************
 static function SetText(oEntry, uVal)
 local ctiEntry := cti_get_object_by_id(oEntry:hWnd)
 	if ctiEntry != NIL .and. ctiEntry:className == "CTI_ENTRY"
 		ctiEntry:Set_value(ToString(uVal))
-		ctiEntry:__cursorPos := 1
-		ctiEntry:__Set_Cursor()
+		ctiEntry:set_pos(1)
 	endif
 return
 *******************************
 static function SetGetText(hEntry, uVal, nPos)
 local ctiEntry := cti_get_object_by_id(hEntry)
-	ctiEntry:Set_value(ToString(uVal))
+	ctiEntry:set_value(ToString(uVal))
 	if nPos != nil
-		ctiEntry:__cursorPos := nPos-1
-		ctiEntry:__Set_Cursor()
+		ctiEntry:set_pos(nPos)
 	endif
 return
 /*****************************************************************************
@@ -923,12 +1136,15 @@ local cType, ctiWin := cti_get_object_by_id(hWnd)
 return
 *******************************
 static function CreateProgressBar()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function ProgressPaint()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function ProgressBarSetTotal()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateCombo(oCombo)
@@ -987,72 +1203,95 @@ local Style, clrFore, clrBack
 return
 *******************************
 static function CreateListbox()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function configure_event()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function expose_event()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetDc()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function ReleaseDc()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreatePen()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function MoveTo()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function LineTo()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateSolidBrush()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function FWBrushes()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function DrawMsgItem()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function ExtTextOut()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function DrawText()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function WndBoxIn()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SetTimer()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function KillTimer()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function ReadBitmap()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateScrollBar()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SetScrollRange()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function SetScrollPos()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetMDIInstance()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function cMdiStruct()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function CreateTabs()
+	outlog("Call empty function;"+procname())
 return
 *******************************************************************************
 * Messages functions                                                          *
@@ -1061,7 +1300,7 @@ static function __MsgBox(cMsg, cTitle, FontMessage, lbStyle, cXPM, aButtons, aRe
 #define DEF_BUTT	[&OK]
 local nWidth, nHeight
 local Button, Label, activeWnd
-local Dialog, inFocus, i, ret:=.f.
+local Dialog, inFocus, i, ret:=.f., DialLay
 local BtnWidth:=40, BtnHeight:=25, hbox, vbox
 local aMes, str, j, k, lenMes, lenMas, x, n, m, curLine, id
 
@@ -1096,13 +1335,19 @@ local aMes, str, j, k, lenMes, lenMas, x, n, m, curLine, id
 	next
 	//setcolor(color)
 
-	Dialog := cti_Window_New(cTitle, 1, 1, 3+lenMas, j+1)
+	/****SET_SIZE****/
+	//Dialog := cti_Window_New(cTitle, 1, 1, 3+lenMas, j+1)
+	Dialog := cti_Window_New(cTitle)
+	Dialog:set_size(3+lenMas, j+1)
 	Dialog:center()
+	DialLay := cti_layout_new(3+lenMas, j+1)
+	DialLay:show()
+	Dialog:add(DialLay)
 	id := Dialog:id
 	__aObj[id] := Dialog
 
-	//gtk_SignalConnect(Dialog, GTK_DELETE, {|| gtk_WidgetHideOnDelete(Dialog)})
-	//Dialog:Signal_Connect(HASH_CTI_HIDE_SIGNAL, {|w, e| w:Destroy()})
+	Dialog:signal_connect(HASH_CTI_DELETE_SIGNAL, {|w, e| w:hide()})
+	Dialog:signal_connect(HASH_CTI_HIDE_SIGNAL, {|w, e| w:Destroy(), cti_quit()})
 
 	//gtk_WindowSetModal(Dialog, .t.)
 
@@ -1115,13 +1360,13 @@ local aMes, str, j, k, lenMes, lenMas, x, n, m, curLine, id
 		label := cti_Label_New( str )
 		label:set_size(1,len( str ))
 		label:show()
-		Dialog:put(label, ++CurLine, 1)
+		DialLay:put(label, ++CurLine, 1)
 	next
 	curLine ++
 	if aButtons == NIL
 		Button := cti_pushButton_New(DEF_BUTT, "&")
 
-		Button:Signal_Connect(HASH_CTI_CLICKED_SIGNAL, {|w,e,dial| ret:=.t., dial:Destroy(), cti_quit()}, Dialog)
+		Button:Signal_Connect(HASH_CTI_CLICKED_SIGNAL, {|w,e,dial| ret:=.t., dial:hide()}, Dialog)
 		/*
 		gtk_WidgetAddAccelerator(Button, GTK_CLICKED_SIGNAL, Dialog, ;
 			Button:AccelKey)
@@ -1129,7 +1374,7 @@ local aMes, str, j, k, lenMes, lenMas, x, n, m, curLine, id
 			Button:AccelKey, GDK_CONTROL_MASK)
 		*/
 		Button:show()
-		Dialog:put(Button, curLine, Dialog:width-len(DEF_BUTT)/2)
+		DialLay:put(Button, curLine, Dialog:width-len(DEF_BUTT)/2)
 		inFocus := Button:id
 	else
 		Button := {}
@@ -1139,7 +1384,7 @@ local aMes, str, j, k, lenMes, lenMas, x, n, m, curLine, id
 		for i=1 to len(aButtons)
 			aadd(Button, cti_pushButton_New(aButtons[i], "&"))
 			Button[i]:nResult := iif(aReturn[i]==NIL, i, aReturn[i])
-			Button[i]:Signal_Connect(HASH_CTI_CLICKED_SIGNAL,{|w,e, dial| ret:=w:nResult, dial:Destroy(), cti_quit()},Dialog)
+			Button[i]:Signal_Connect(HASH_CTI_CLICKED_SIGNAL,{|w,e, dial| ret:=w:nResult, dial:hide()},Dialog)
 			/*
 			gtk_WidgetAddAccelerator(Button[i], GTK_CLICKED_SIGNAL, Dialog, ;
 				Button[i]:AccelKey)
@@ -1147,7 +1392,7 @@ local aMes, str, j, k, lenMes, lenMas, x, n, m, curLine, id
 				Button[i]:AccelKey, GDK_CONTROL_MASK)
 			*/
 			Button[i]:show()
-			Dialog:put(Button[i], curLine, x)
+			DialLay:put(Button[i], curLine, x)
 			x+=len(aButtons[i])+m+2
 			if i==1
 				inFocus := Button[i]:id
@@ -1156,17 +1401,26 @@ local aMes, str, j, k, lenMes, lenMas, x, n, m, curLine, id
 	endif
 
 	Dialog:show()
-	ctiApp:put(Dialog)
+	ctiApp:add(Dialog)
 	//ActiveWnd:put(Dialog)
 	//Dialog:Set_Focus(inFocus)
-	ctiApp:set_focus(Dialog)
+	//ctiApp:set_focus(Dialog)
+	Dialog:set_focus_child()
 	cti_main()
 	adel(__aObj, id)
 	//outlog(__FILE__, __LINE__, "cti_quit()")
 return ret
 *******************************
-static function __MsgAbout()
-return
+static function __MsgAbout(FontMessage, lbStyle)
+local cMsg
+
+	cMsg := FWCOPYRIGHT + ";" + ;
+		FWVERSION   + ";" + ;
+		"OS-version: "+OS() + ";" + ;
+		"CTI-version: "//+version))
+
+return __MsgBox(cMsg, [About], FontMessage, lbStyle,,{[&OK]}, {.t.})
+
 *******************************
 static function __InitMessageStyle(lbStyle, FontMessage)
 	//lbStyle := cti_WidgetGetDefaultStyle()
@@ -1179,50 +1433,180 @@ static function __MsgBeep()
 return
 *******************************
 static function __ChooseColor()
+	outlog("Call empty function;"+procname())
 return
 *******************************
-static function Calendar()
-return
+static function Calendar(date)
+local wnd, ctiCalendar, nWidth, nHeight, nTop, nLeft, ret
+
+	date := iif(date==NIL .or. valtype(date)!= "D", date(), date)
+	ret := date
+
+	FWInitDriver()
+
+	ctiCalendar := cti_calendar_new(date)
+	ctiCalendar:show()
+
+	ctiCalendar:signal_connect(HASH_CTI_DELETE_SIGNAL, {|wnd| wnd:Hide()})
+	ctiCalendar:signal_connect(HASH_CTI_HIDE_SIGNAL, {|wnd| wnd:Destroy(), cti_Quit()})
+	ctiCalendar:signal_connect(HASH_DAY_SELECTED_SIGNAL, {|wnd| ret:= wnd:get_date(), wnd:Destroy(), cti_Quit()})
+
+	ctiCalendar:center()
+
+	ctiApp:put(ctiCalendar)
+
+	cti_Main()
+return ret
 *******************************************************************************
 * Menu function                                                               *
 *******************************************************************************
-static function IsMenu()
-return
-*******************************
-static function CreateMenu()
-return
+static function IsMenu(hItem)
+
+return .f.
+*************
+static function CreateMenu(oMenu)
+local ctiMenu
+	if len(aMenuStack)==0
+		ctiMenu := cti_MenuBar_New()
+		oMenu:hWnd := ctiMenu:id
+		oMenu:handle := ctiMenu:id
+	else
+		ctiMenu := cti_Menu_New()
+		oMenu:hWnd := ctiMenu:id
+		oMenu:handle := ctiMenu:id
+		oLastItem:set_submenu( ctiMenu)
+	endif
+
+	ctiMenu:show()
+	aadd(aMenuStack, oMenu )
+
+return oMenu:handle
 *******************************
 static function CreatePopupMenu()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function GetSystemMenu()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function TrackPopup()
+	outlog("Call empty function;"+procname())
 return
 *******************************
-static function AppendMenu()
+static function AppendMenu(hMenu, oItem, nFlags, nId, cPrompt)
+local oMenu, lb, box, ctiItem
+
+	oMenu := cti_get_object_by_id(hMenu)
+
+	if numOr(nFlags, MF_BITMAP) == nFlags
+		ctiItem := cti_menuItem_new ("")
+		oItem:hWnd := ctiItem:id
+	else
+		if cPrompt == NIL .or. empty(cPrompt)
+			ctiItem := cti_MenuItem_New ("")//, popUp() )
+		else
+			ctiItem := cti_MenuItem_New (cPrompt, "&")//, popUp() )
+		endif
+		ctiItem:show()
+		aadd(aMenuAccel, ctiItem)
+	endif
+
+	oItem:hWnd := ctiItem:id
+	oItem:hMenu := ctiItem:id
+
+	if oItem:lChecked != NIL
+		//oItem:checked := lChecked
+	endif
+	if oItem:lActive != NIL
+		ctiItem:set_enabled(oItem:lActive)
+	endif
+	if oItem:cMsg != NIL
+		//oItem:message := cMsg
+	endif
+	if oItem:bAction != NIL
+		ctiItem:signal_connect(HASH_CTI_ACTIVATE_SIGNAL, {|w, e, fw| fw:bAction()}, oItem)
+	endif
+	/*if nEvent != NIL
+		oItem:id := nEvent
+	endif*/
+
 return
 *******************************
-static function MenuBegin()
-return
+static function MenuBegin(lPopup, lSystem, oWnd)
+local oMenu
+	oMenu := TMenu():New(lPopup, oWnd)
+return oMenu
 *******************************
-static function MenuAddItem()
-return
+static function MenuAddItem(cPrompt, cMsg, lChecked, lActive, bAction, cBmpFile, ;
+			cResName, oMenu, bBlock, nVKState, nVirtKey, lHelp, nHelpId, bWhen, lBreak )
+local oItem, ctiItem
+
+	DEFAULT cMsg := "", lChecked := .f., lActive := .t.
+
+	oItem := TMenuItem():New( cPrompt, cMsg, lChecked, lActive, bAction, ;
+				cBmpFile, cResName, nVKState, nVirtKey, ;
+				lHelp, nHelpId, bWhen, lBreak )
+
+
+	if valtype(oMenu)=="O" .and. oMenu:className == "FWIN_TMENU"
+		oMenu:Add(oItem)
+	else
+		aMenuStack[len(aMenuStack)]:Add(oItem)
+	endif
+
+	if nVirtKey != NIL
+		//oItem:shortCut := nVirtKey
+	endif
+
+	if bBlock != NIL
+		//oItem:data := bBlock
+	endif
+
+	ctiItem := cti_get_object_by_id(oItem:hWnd)
+	oLastItem := ctiItem
+	if len(aMenuStack)==1
+		outlog(__FILE__, __LINE__, aMenuStack[1]:classname)
+		ctiMenu := cti_get_object_by_id(aMenuStack[1]:hWnd)
+		ctiMenu:add_item(ctiItem)
+	else
+		ctiMenu := cti_get_object_by_id(aMenuStack[len(aMenuStack)]:hWnd)
+		ctiMenu:add_item(ctiItem)
+	endif
+return oItem
 *******************************
 static function MenuEnd()
-return
+local ret := atail(aMenuStack)
+	asize(aMenuStack, len(aMenuStack)-1 )
+return ret
 *******************************
-static function SetMenu()
+static function SetMenu(oWnd, oMenu)
+local i, item, ctiParentWnd, ctiMenu
+	for i=1 to len(aMenuAccel)
+		item := aMenuAccel[i]
+		/*
+		gtk_WidgetAddAccelerator(item:Handle, GTK_ACTIVATE_ITEM_SIGNAL, oWnd, ;
+			item:AccelKey, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE)
+			*/
+	next
+	ctiParentWnd := cti_get_object_by_id(oWnd:hWnd)
+	ctiMenu := cti_get_object_by_id(oMenu:hMenu)
+	ctiMenu:set_size(1, ctiParentWnd:width-2)
+	ctiParentWnd:put(ctiMenu, 0, 1)
+	//ctiApp:put(ctiMenu)
+	aMenuAccel := {}
 return
 *******************************
 static function GetSubMenu()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function DrawMenuBar()
+	outlog("Call empty function;"+procname())
 return
 *******************************
 static function MenuMeasureItem()
+	outlog("Call empty function;"+procname())
 return
 *******************************************************************************
 * System functions                                                            *
@@ -1270,22 +1654,90 @@ return
 static function GetWndApp()
 return hWndApp
 *******************************
-static function SendMessage()
-	outlog(__FILE__, __LINE__, "send message not realized!!!")
-return
+static function SendMessage(oWnd, nMsg, nWParam, nLParam)
+local ret, nS:=0, nE:=0, nRow
+	do switch nMsg
+	/****** GET MESSAGES ******/
+	case WM_USER //EM_GETSEL
+		//ret := oWnd:get_selection(@nS, @nE)
+		nWParam := nS
+		nLParam := nE
+
+
+	/****** COMBOBOX MESSAGES ******/
+	case HASH_CB_ADDSTRING
+		//outlog('nLParam', nLParam)
+		//gtk_ListAppendItems(oWnd:List, gtk_ListItemNew(, nLParam))
+		gtk_ListAppendItems(oWnd:List, nLParam)
+		gtk_ComboSetPopdownStrings(oWnd, oWnd:aItems)// ??????
+	case HASH_CB_DELETESTRING
+		// delete by index
+		gtk_ListClearItems(oWnd:List, nWParam, nWParam)
+	case HASH_CB_GETCURSEL
+		ret := gtk_EntryGetText(oWnd:Entry)
+	case HASH_CB_INSERTSTRING
+		gtk_ListInsertItems(oWnd:List, nLParam, nWParam)
+	case HASH_CB_RESETCONTENT
+		gtk_ListClearItems(oWnd:List, 1, len(oWnd:Popup)+1)
+	case HASH_CB_FINDSTRING
+		// find item in dropDown list
+	case HASH_CB_SETCURSEL
+		//qout('setting', nWParam)
+		gtk_EntrySetText(oWnd:Entry, toString(nWParam))
+	case HASH_CB_SHOWDROPDOWN
+		// show dropDown list
+
+	/****** LISTBOX MESSAGES ******/
+	case HASH_LB_ADDSTRING
+		gtk_CListAppend(oWnd, {toString(nLParam)})
+		gtk_WidgetShowAll(oWnd)
+	case HASH_LB_INSERTSTRING
+		gtk_CListInsert(oWnd, {toString(nLParam)}, nWParam)
+	case HASH_LB_DELETESTRING
+		gtk_CListRemove(oWnd, nWParam)
+	case HASH_LB_RESETCONTENT
+		gtk_CListClear(oWnd)
+	case HASH_LB_SETSEL
+		/* multiple select */
+		//gtk_List
+	case HASH_LB_SETCURSEL
+		gtk_CListSetFocusRow(oWnd, nWParam)
+	case HASH_LB_GETSEL
+		/* multiple return */
+		//gtk_List
+	case HASH_LB_GETCURSEL
+		/* ret current selected row */
+		ret := gtk_CListGetFocusRow(oWnd)
+	case HASH_LB_GETCOUNT
+		//
+	case HASH_LB_GETSELCOUNT
+	case HASH_LB_GETSELITEMS
+	case HASH_CLOSE_APL
+		gtk_Quit()
+
+	/****** MDI MESSAGES ******/
+	case HASH_WM_MDICREATE	 // create MDI child
+		ret := gtk_WindowNew(, nLParam:cTitle)
+		if nLParam:cx != CW_USEDEFAULT
+			gtk_WidgetSetSize(ret, nLParam)
+		endif
+	endswitch
+return ret
 *******************************
 static function GetParent(hWnd)
-local hParentWnd
-	hParentWnd := cti_Widget_Get_Parent_Window(hWnd)
+local hParentWnd, ctiWin
+	ctiWin := cti_get_object_by_id(hWnd)
+	hParentWnd := ctiWin:parent:id
+	//hParentWnd := cti_Widget_Get_Parent_Window(hWnd)
 	if hParentWnd == NIL
 		hParentWnd := -1
 	endif
 return hParentWnd
 *******************************
 static function ClientToScreen(hWnd, aPos) // aPos = {nRow, nCol}
-local nPos, nRow, nCol
-	nRow := 0; nCol := 0
-	cti_Widget_Get_Position(hWnd, @nCol, @nRow)
+local nPos, nRow, nCol, ctiWin
+	ctiWin := cti_get_object_by_id(hWnd)
+	nRow := ctiWin:top; nCol := ctiWin:left
 	nPos := {}
 	aadd(nPos, nRow + aPos[1] * GRP_CHARPIX_H)
 	aadd(nPos, nCol + aPos[2] * GRP_CHARPIX_W)
@@ -1294,5 +1746,34 @@ return nPos
 static function GetSysMetrics()
 	outlog(__FILE__, __LINE__, "Get Sys metricse not realized!!!")
 return
-*******************************
+*******************************************************************************
+* FileDialog functions
+static function FileDialog(cMask, cTitle)
+local cFileName:="", fileSel, activeWnd
+	FWInitDriver()
+
+	cTitle := iif(empty(cTitle), [File selection], cTitle)
+	cMask := iif(empty(cMask), "*", cMask)
+
+	activeWnd := GetActiveWindow()
+	fileSel := cti_FileDialog_new(, cMask, cTitle)
+
+	if activeWnd > -1
+		//gtk_WindowSetTransientFor(fileSel, activeWnd)
+	endif
+
+	//fileSel:signal_connect(HASH_CTI_DELETE_SIGNAL, {|w,e| w:signal_emit(HASH_CTI_HIDE_SIGNAL)})
+	fileSel:signal_connect(HASH_CTI_HIDE_SIGNAL, {|w| w:Destroy(), cti_Quit()})
+	fileSel:cancelButton:signal_connect(HASH_CTI_CLICKED_SIGNAL, {|w, e, fd| fd:hide()}, fileSel)
+	fileSel:okButton:signal_connect(HASH_CTI_CLICKED_SIGNAL, {|w, e, fd| cFileName := fd:retFile, fd:hide()}, fileSel)
+
+	fileSel:Show()
+	ctiApp:put(fileSel)
+	cti_main()
+
+return cFileName
+******************************************************************************
+*
+static function KeyboardEvent(event)
+return event == CTI_KEYBOARD_EVENT
 

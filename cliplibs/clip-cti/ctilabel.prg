@@ -8,7 +8,6 @@
 /* CTI_LABEL - A widget that displays a small to medium amount of text. */
 
 #include "cti.ch"
-#include "ctilabel.ch"
 
 #define	SUPERCLASS	CTI_WIDGET
 
@@ -16,17 +15,19 @@
 function cti_label_new(caption)
 	local obj := cti_inherit(cti_widget_new(),"CTI_LABEL")
 
-	obj:__caption	:= nil
-	obj:__justify	:= CTI_JUSTIFY_LEFT
+	obj:__caption		:= nil
+	obj:__accel_key		:= ""
+	obj:__accel_pos		:= -1
+	obj:__justify		:= CTI_JUSTIFY_LEFT
 
-	obj:__real_draw	:= @cti_label_real_draw()
-//	obj:__repaint	:= @cti_label_repaint()
+	obj:__real_draw		:= @cti_label_real_draw()
+	obj:realize_real	:= @cti_label_realize_real()
 
-	obj:can_focus	:= @cti_label_can_focus()
+	obj:can_focus		:= {||FALSE}
 
-	obj:set_text	:= @cti_label_set_text()
-	obj:get_text	:= @cti_label_get_text()
-	obj:set_justify	:= @cti_label_set_justify()
+	obj:set_text		:= @cti_label_set_text()
+	obj:get_text		:= {||obj:__caption}
+	obj:set_justify		:= @cti_label_set_justify()
 
 /*****************************************************/
 	obj:set_text(caption)
@@ -36,8 +37,10 @@ return obj
 
 /* Draw a label */
 static function cti_label_real_draw(obj)
-	local caption
-//	setcursor(SC_NONE)
+	local caption, bg
+
+	CALL SUPER obj:__real_draw()
+
 	caption := iif(obj:__caption!=nil,obj:__caption,"")
 	switch(obj:__justify)
 		case CTI_JUSTIFY_LEFT
@@ -49,13 +52,19 @@ static function cti_label_real_draw(obj)
 		case CTI_JUSTIFY_CENTER
 		caption := padc(caption,obj:width)
 	end
-//	DispOutAt(obj:__abs_top,obj:__abs_left,caption,obj:Palette:Label)
 	winbuf_out_at(obj:__buffer,0,0,caption,obj:Palette:Label)
+	if obj:__accel_pos > 0
+		bg := substr(obj:Palette:Label, at("/",obj:Palette:Label)+1)
+		winbuf_attr_at(obj:__buffer,0,obj:__accel_pos-1,0,obj:__accel_pos-1,obj:palette:AccelKey+"/"+bg)
+	endif
 return TRUE
 
 /* Set caption of the label */
 static function cti_label_set_text(obj,cText)
-	obj:__caption := iif(valtype(cText) $ "CU",cText,obj:__caption)
+	cti_return_if_fail(valtype(cText) $ "CU")
+
+	obj:__caption := cti_text_parse_accelerator(cText,@obj:__accel_key,@obj:__accel_pos)
+
 //	obj:signal_emit()
 	obj:draw_queue()
 return TRUE
@@ -69,9 +78,17 @@ static function cti_label_set_justify(obj,nJustify)
 	obj:draw_queue()
 return TRUE
 
-/* Returns caption of the label*/
-static function cti_label_get_text(obj)
-return obj:__caption
+static function cti_label_realize_real(obj)
+	local w,h
 
-static function cti_label_can_focus(obj)
-return FALSE
+	CALL SUPER obj:realize_real()
+
+	w := obj:width; h := obj:height
+	if obj:width == nil .or. obj:height == nil
+		if obj:width == nil
+			w := len(obj:__caption)
+		endif
+	endif
+
+	obj:set_size(1,w)
+return TRUE

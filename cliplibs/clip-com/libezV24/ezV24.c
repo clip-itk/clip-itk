@@ -1,11 +1,11 @@
 /* -*- Mode: C -*-
  *
- * $Id: ezV24.c,v 1.3 2002/09/11 09:11:28 clip Exp $
+ * $Id: ezV24.c,v 1.5 2003/04/23 09:07:45 clip Exp $
  * --------------------------------------------------------------------------
  * Copyright  (c) 2001,02  Joerg Desch <jd@die-deschs.de>
  * --------------------------------------------------------------------------
  * PROJECT: ezV24 -- easy RS232/V24 access
- * MODULE.: EZV24.C: 
+ * MODULE.: EZV24.C:
  * AUTHOR.: Joerg Desch <jdesch@users.sourceforge.net>
  * --------------------------------------------------------------------------
  * DESCRIPTION:
@@ -15,6 +15,13 @@
  *
  * --------------------------------------------------------------------------
  * $Log: ezV24.c,v $
+ * Revision 1.5  2003/04/23 09:07:45  clip
+ * uri: small fix
+ *
+ * Revision 1.4  2003/04/14 09:19:24  clip
+ * lock file creation mode fix by Andrei Okhremenko <andreo@sanet.ru>
+ * paul
+ *
  * Revision 1.3  2002/09/11 09:11:28  clip
  * new upstream verson of eZ library
  * paul
@@ -40,6 +47,7 @@
 #include <errno.h>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
 
 
 #define __EZV24_C__
@@ -76,7 +84,7 @@
 static int MapBaudrate[V24_NUM_BAUDRATES]=
 {
 #if EZV24_POSIX_STYLE
-    B0, B50, B75, B110, B134, B150, B200, B300, B600, B1200, B1800, 
+    B0, B50, B75, B110, B134, B150, B200, B300, B600, B1200, B1800,
     B2400, B4800, B9600, B19200, B38400, B57600, B115200
 #else
 #error "unsupported API! Define and implement a EZV24_*_STYLE."
@@ -136,7 +144,7 @@ int v24CountPorts ( unsigned long* BitMask )
     // 0: uart:16550A port:3F8 irq:4 tx:0 rx:0
     // 1: uart:16550A port:2F8 irq:3 tx:0 rx:0
     // 2: uart:unknown port:3E8 irq:4
-    
+
     proc_fd = fopen("/proc/tty/driver/serial","r");
     if ( proc_fd==NULL )
     {
@@ -159,7 +167,7 @@ int v24CountPorts ( unsigned long* BitMask )
 	}
 	else
 	{
-	    if ( strstr(proc_line,"unknown")==NULL && 
+	    if ( strstr(proc_line,"unknown")==NULL &&
 		 strstr(proc_line,"tx:")!=NULL )
 	    {
 		// printf("match: %s\n",proc_line);
@@ -201,7 +209,7 @@ const char* v24PortName ( int PortNo, char* PortName )
 v24_port_t* v24OpenPort ( const char* PortName, unsigned int OpenFlags )
 {
     v24_port_t *handle=NULL;
-    int open_mode;    
+    int open_mode;
 
     /* check for `null pointer'
      */
@@ -253,7 +261,7 @@ v24_port_t* v24OpenPort ( const char* PortName, unsigned int OpenFlags )
 	free(handle);
 	handle=NULL;
 	return NULL;
-    }    
+    }
 
     if ( v24SetParameters(handle,V24_B9600,V24_8BIT,V24_NONE)!=V24_E_OK )
     {
@@ -262,7 +270,7 @@ v24_port_t* v24OpenPort ( const char* PortName, unsigned int OpenFlags )
 	handle=NULL;
 	return NULL;
     }
-    
+
     if ( v24SetTimeouts(handle,600)!=V24_E_OK )
     {
 	reportError(handle,handle->Errno,"v24OpenPort");
@@ -282,7 +290,7 @@ int v24ClosePort ( v24_port_t *port )
 	return V24_E_ILLHANDLE;
     }
     port->Errno=V24_E_OK;
-    
+
 #if EZV24_WANT_LOCKFILE
     if ( port->OpenFlags&V24_LOCK )
     {
@@ -292,7 +300,7 @@ int v24ClosePort ( v24_port_t *port )
 	}
     }
 #endif
-    
+
     close(port->fd);
     free(port);
     port=NULL;
@@ -375,13 +383,13 @@ int v24SetParameters ( v24_port_t *port, int Baudrate, int Datasize, int Parity 
 	options.c_cc[VTIME] = 0x00;
     else
 	options.c_cc[VTIME] = port->TimeoutValue;
-    
+
 
     /* Mask the character size bits and set data bits according to the
      * parameter.
      */
     options.c_cflag &= ~CSIZE;
-    options.c_cflag |= MapDatasize[port->Datasize]; 
+    options.c_cflag |= MapDatasize[port->Datasize];
 
     /* Set the handling of the parity bit.
      */
@@ -504,9 +512,9 @@ int v24SetTimeouts ( v24_port_t *port, int TenthOfSeconds )
 
 
 int v24Getc ( v24_port_t *port )
-{ 
+{
     unsigned char TheData;
-    
+
     if ( port==NULL )
     {
 	reportError(port,V24_E_ILLHANDLE,"v24Getc");
@@ -568,7 +576,7 @@ int v24Read ( v24_port_t *port, unsigned char* Buffer, size_t Len )
 int v24Write ( v24_port_t *port, const unsigned char* Buffer, size_t Len )
 {
     size_t _sent;
-    
+
     if ( port==NULL )
     {
 	reportError(port,V24_E_ILLHANDLE,"v24Write");
@@ -596,7 +604,7 @@ int v24Gets ( v24_port_t *port, char* Buffer, size_t BuffSize )
     int total;				     /* allready read */
     int nbytes;				     /* size of the read chunk */
     char* bufptr;
-    
+
     if ( port==NULL )
     {
 	reportError(port,V24_E_ILLHANDLE,"v24Gets");
@@ -654,7 +662,7 @@ int v24Gets ( v24_port_t *port, char* Buffer, size_t BuffSize )
 int v24Puts ( v24_port_t *port, const char* Buffer )
 {
     int _sent;
-    
+
     if ( port==NULL )
     {
 	reportError(port,V24_E_ILLHANDLE,"v24Puts");
@@ -681,7 +689,7 @@ int v24Puts ( v24_port_t *port, const char* Buffer )
 int v24HaveData ( v24_port_t *port )
 {
     int CharsWaiting=0;
-    
+
     if ( port==NULL )
     {
 	reportError(port,V24_E_ILLHANDLE,"v24HaveData");
@@ -831,7 +839,7 @@ int v24QueryErrno ( v24_port_t *port )
 /*`========================================================================='*/
 
 
-static void 
+static void
 reportError ( const v24_port_t *port, const int Errno, const char* caller )
 {
     if ( port==NULL )
@@ -860,7 +868,7 @@ reportError ( const v24_port_t *port, const int Errno, const char* caller )
  * /var/lock. The naming convention which must be used is LCK.. followed by the
  * base name of the device.  For example, to lock /dev/cua0 the file LCK..cua0
  * would be created.
- * 
+ *
  * The format used for device lock files must be the HDB UUCP lock file
  * format. The HDB format is to store the process identifier (PID) as a ten
  * byte ASCII decimal number, with a trailing newline. For example, if process
@@ -872,14 +880,15 @@ reportError ( const v24_port_t *port, const int Errno, const char* caller )
 
 
 
-static int 
+static int
 createLockFile ( v24_port_t *port )
 {
     char LockFile[MAXNAMLEN+1];
     char buf[64];
     int len, pid;
     int fd;
-    
+    mode_t oldmask;
+
     if ( port==NULL )
     {
 	reportError(port,V24_E_ILLHANDLE,"createLockFile");
@@ -896,7 +905,7 @@ createLockFile ( v24_port_t *port )
     /* Do we have allready a lock file?
      */
     fd = open(LockFile,O_RDONLY);
-    if ( fd < 0 ) 
+    if ( fd < 0 )
     {
 	if ( errno != ENOENT )
 	{
@@ -908,7 +917,7 @@ createLockFile ( v24_port_t *port )
     }
     else
     {
-	/* lock file exists. check if the lock is valid or stale 
+	/* lock file exists. check if the lock is valid or stale
 	 */
 	len = read(fd,buf,sizeof buf);
 	close( fd );
@@ -923,30 +932,32 @@ createLockFile ( v24_port_t *port )
 
 	    /* check if the pid exists
 	     */
-	    if ( kill(pid,0) == 0 ) 
+	    if ( kill(pid,0) == 0 )
 	    {
 		port->Errno=V24_E_LOCK_EXIST;
 		/* yes, the process exists. lock is thus valid */
 		reportError(port,port->Errno,"createLockFile");
 		return port->Errno;
 	    }
-	    else 
+	    else
 	    {
 		reportError(port,V24_E_DBG_STALE_LOCK,"createLockFile");
 	    }
 	}
     }
-    
-    /* Here we have to create the lock file 
+
+    /* Here we have to create the lock file
      */
-    fd=creat(LockFile,O_WRONLY);
-    if (fd < 0) 
+    oldmask=umask(0002);
+    fd=creat(LockFile,S_IREAD|S_IWRITE|S_IRGRP|S_IWGRP);
+    umask(oldmask);
+    if (fd < 0)
     {
 	port->Errno=V24_E_CREATE_LOCK;
 	reportError(port,port->Errno,"createLockFile");
 	return port->Errno;
     }
-    else 
+    else
     {
 	/* Now write our pid to lock file, so others know who locked the port.
 	 */
@@ -959,13 +970,13 @@ createLockFile ( v24_port_t *port )
 	    reportError(port,port->Errno,"createLockFile");
 	    return port->Errno;
 	}
-    }    
+    }
     port->Locked=1;
     return port->Errno;
 }
 
 
-static int 
+static int
 deleteLockFile ( v24_port_t *port )
 {
     char LockFile[MAXNAMLEN+1];
@@ -994,7 +1005,7 @@ deleteLockFile ( v24_port_t *port )
     return port->Errno;
 }
 
-static int 
+static int
 buildLockName ( v24_port_t *port, char* TheName, size_t Len )
 {
     char device[32];
@@ -1015,12 +1026,12 @@ buildLockName ( v24_port_t *port, char* TheName, size_t Len )
 
     /* extract device name */
     ptr = strrchr (port->PortName,'/');
-    if ( ptr ) 
+    if ( ptr )
     {
 	/* we found a /dev/ style tty name */
 	strncpy (device,++ptr,sizeof(device)-1);
     }
-    else 
+    else
     {
 	/* no /dev/ specified. weird, but lets try it anyway */
 	strncpy (device,port->PortName,sizeof(device)-1);

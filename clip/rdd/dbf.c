@@ -4,9 +4,149 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: dbf.c,v $
+	Revision 1.179  2004/02/03 20:51:24  clip
+	rust: debug output removed
+	
+	Revision 1.178  2004/02/03 09:48:33  clip
+	rust: fix in _clip_close()
+
+	Revision 1.177  2004/01/26 13:16:07  clip
+	rust: small fix
+
+	Revision 1.176  2003/12/19 09:27:43  clip
+	rust: translation of field names from DBF_CHARSET
+
+	Revision 1.175  2003/11/09 10:36:50  clip
+	rust: signal() removed
+
+	Revision 1.174  2003/10/13 09:23:03  clip
+	rust: RLOCK() with USE ... READONLY
+
+	Revision 1.173  2003/09/02 14:27:43  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+
+	Revision 1.172  2003/07/16 09:03:54  clip
+	rust: exclude deleted records from filter with OL2 and SET DELETED ON
+
+	Revision 1.171  2003/06/21 08:54:47  clip
+	rust: CMF (CLIP Memo File) with 64-bit file support started
+
+	Revision 1.170  2003/06/17 09:00:16  clip
+	rust: 'structural index present' attribute in .dbf header
+
+	Revision 1.169  2003/06/13 12:07:04  clip
+	uri: HZ, вроде всЕ было скинуто.
+
+	Revision 1.168  2003/06/11 09:57:08  clip
+	rust: speed up optimization level 2
+
+	Revision 1.167  2003/06/10 10:27:54  clip
+	rust: speed up optimization level 2
+
+	Revision 1.166  2003/05/15 14:39:30  clip
+	rust: some speed optimizations for relations
+
+	Revision 1.165  2003/05/06 10:16:29  clip
+	rust: extended 'bad datawidth' error message
+
+	Revision 1.164  2003/05/06 09:59:08  clip
+	rust: minor fixes and cleanings
+
+	Revision 1.163  2003/04/30 13:53:12  clip
+	rust: more compatible NTX and some speed optimizations
+
+	Revision 1.162  2003/04/16 10:19:58  clip
+	rust: #include "btree.h" -> "./btree.h" and some other fixes for BeOS
+
+	Revision 1.161  2003/04/11 08:31:44  clip
+	rust: #ifdef HAVE_MMAN_H (BeOS)
+
+	Revision 1.160  2003/04/02 12:52:26  clip
+	rust: small fix
+
+	Revision 1.159  2003/04/02 10:53:20  clip
+	rust: _clip_close() added
+
+	Revision 1.158  2003/03/26 14:20:19  clip
+	uri: small fix for round(0.644999999,2)
+
+	Revision 1.157  2003/03/24 15:22:34  clip
+	rust: no child moving on dbappend(), reported by M&MS <berezniki@smtp.ru>
+
+	Revision 1.156  2003/03/21 11:49:40  clip
+	rust: RDD locks with tasks (DOS compatibility)
+
+	Revision 1.155  2003/03/12 12:50:43  clip
+	rust: tasks share RDDs and subdrivers
+
+	Revision 1.154  2003/03/04 10:36:08  clip
+	rust: 'P', 'G' - always binary
+
+	Revision 1.153  2003/03/04 10:31:24  clip
+	rust: some cleanings
+
+	Revision 1.152  2003/03/04 10:00:57  clip
+	rust: bug in get_value() with DATE_t of 'X' type fixed
+
+	Revision 1.151  2003/02/28 09:26:50  clip
+	rust: checking record size in dbcreate()
+
+	Revision 1.150  2003/02/23 17:18:34  clip
+	rust: small fixes
+
+	Revision 1.149  2003/02/22 11:18:44  clip
+	rust: charset translation in getvalue() with 'V' field during indexing
+
+	Revision 1.148  2003/02/10 13:05:41  clip
+	rust: _SEEK_EVAL( <bBlock> ) (FlagShip extension)
+
+	Revision 1.147  2003/01/31 11:52:00  clip
+	rust: sx_islocked() with foreign locks, reported by druzus@polbox.com
+
+	Revision 1.146  2003/01/20 13:47:49  clip
+	rust: small changes
+
+	Revision 1.145  2003/01/18 12:47:54  clip
+	rust: dbseek() with DBFNTX bug fixed
+
+	Revision 1.144  2003/01/18 11:34:03  clip
+	rust: small bug in record buffering
+
+	Revision 1.143  2003/01/14 13:01:26  clip
+	rust: small fixes
+
+	Revision 1.142  2003/01/14 09:50:37  clip
+	rust: small fix in reading memo
+
+	Revision 1.141  2003/01/13 15:25:02  clip
+	rust: 'Y' type related bug fixed
+
+	Revision 1.140  2003/01/13 12:32:13  clip
+	rust: discern DBF-type on signature; FOXCDX driver added
+
+	Revision 1.139  2003/01/04 11:59:21  clip
+	rust: currency bug
+
+	Revision 1.138  2002/11/28 12:27:20  clip
+	rust: assigning NIL to 'X'-field fixed
+
+	Revision 1.137  2002/11/26 10:21:23  clip
+	OpenBSD fixes
+	paul
+
+	Revision 1.136  2002/11/04 10:44:07  clip
+	rust: small fixes
+
+	Revision 1.135  2002/10/26 11:10:02  clip
+	initial support for localized runtime messages
+	messages are in module 'cliprt'
+	paul
+
 	Revision 1.134  2002/09/20 09:06:41  clip
 	rust: trim spaces in field name in dbf_create
-	
+
 	Revision 1.133  2002/09/05 13:49:23  clip
 	rust: V4 processing fixed
 
@@ -381,20 +521,17 @@
 #include <fcntl.h>
 #include <time.h>
 #include <ctype.h>
-#include <sys/mman.h>
 #include <sys/file.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <signal.h>
+#include <limits.h>
 #include "../rdd.h"
-#include "btree.h"
+#include "./btree.h"
 #include "error.ch"
 #include "dbinfo.ch"
-
-#ifdef OS_CYGWIN
-
-int w32fcntl(int fd, int flag, void *argp);
-#define fcntl w32fcntl
-
+#ifdef HAVE_MMAN_H
+#include <sys/mman.h>
 #endif
 
 #include "../ncp.h"
@@ -443,6 +580,7 @@ typedef struct _DBF_FIELD_ {
 
 static RDD_DATA_VTBL* dbf_vtbl();
 static RDD_DATA_VTBL* vfp_vtbl();
+static RDD_DATA_VTBL* fox_vtbl();
 
 static int dbf_open(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT* rddstru,int nfields,const char* __PROC__);
@@ -461,7 +599,8 @@ static int dbf_rawgoto(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,char valid_
 static int dbf_rlock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__);
 static int dbf_flock(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
 static int dbf_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char* __PROC__);
-static int dbf_rlocked(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
+static int dbf_rlocked(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__);
+static int dbf_forlock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__);
 static int dbf__rlock(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 static int dbf__wlock(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 static int dbf__ulock(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
@@ -478,22 +617,25 @@ static int dbf_recall(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 
 static int dbf_lupdate(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 static int dbf_info(ClipMachine* cm,RDD_DATA* rd,int cmd,const char* __PROC__);
+static int dbf_setstruct(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 
 static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 
 static int vfp_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT* rddstru,int nfields,const char* __PROC__);
 
-static const char* er_unlock		= "Unlock error";
-static const char* er_readlock		= "Shared lock error";
-static const char* er_writelock		= "Exclusive lock error";
-static const char* er_badheader		= "Table header corrupted";
-static const char* er_badstructure	= "Bad table structure";
-static const char* er_notpermitted	= "Operation not permitted";
-static const char* er_corruption	= "Corruption detected";
-static const char* er_nomemo		= "Memo file not opened";
-static const char* er_baddata		= "Bad data";
-static const char* er_type			= "Type mismatch";
-static const char* er_ioerror		= "I/O error";
+static int dbf_verify(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
+
+#define  er_unlock          _clip_gettext("Unlock error")
+#define  er_readlock        _clip_gettext("Shared lock error")
+#define  er_writelock       _clip_gettext("Exclusive lock error")
+#define  er_badheader       _clip_gettext("Table header corrupted")
+#define  er_badstructure    _clip_gettext("Bad table structure")
+#define  er_notpermitted    _clip_gettext("Operation not permitted")
+#define  er_corruption      _clip_gettext("Corruption detected")
+#define  er_nomemo          _clip_gettext("Memo file not opened")
+#define  er_baddata         _clip_gettext("Bad data")
+#define  er_type            _clip_gettext("Type mismatch")
+#define  er_ioerror         _clip_gettext("I/O error")
 
 int clip_INIT_DBF(ClipMachine* cm){
 	rdd_registerdatadriver(cm,dbf_vtbl());
@@ -502,6 +644,11 @@ int clip_INIT_DBF(ClipMachine* cm){
 
 int clip_INIT_VFP(ClipMachine* cm){
 	rdd_registerdatadriver(cm,vfp_vtbl());
+	return 0;
+}
+
+int clip_INIT_FOX(ClipMachine* cm){
+	rdd_registerdatadriver(cm,fox_vtbl());
 	return 0;
 }
 
@@ -515,38 +662,41 @@ static RDD_DATA_VTBL* dbf_vtbl(){
 	vtbl->dbfsig = 0x03;
 	vtbl->dbfwithmemosig = 0x83;
 
-	vtbl->open		= dbf_open;
-	vtbl->create	= dbf_create;
-	vtbl->pack		= dbf_pack;
-	vtbl->zap		= dbf_zap;
-	vtbl->close		= dbf_close;
-	vtbl->lastrec	= dbf_lastrec;
-	vtbl->deleted	= dbf_deleted;
-	vtbl->gotop		= dbf_gotop;
-	vtbl->gobottom	= dbf_gobottom;
-	vtbl->next		= dbf_next;
-	vtbl->prev		= dbf_prev;
-	vtbl->go		= dbf_goto;
-	vtbl->rawgo		= dbf_rawgoto;
-	vtbl->append	= dbf_append;
-	vtbl->getrecord = dbf_getrecord;
-	vtbl->getvalue	= dbf_getvalue;
-	vtbl->setrecord = dbf_setrecord;
-	vtbl->setvalue	= dbf_setvalue;
-	vtbl->getmemoid	= dbf_getmemoid;
-	vtbl->setmemoid	= dbf_setmemoid;
-	vtbl->delete	= dbf_delete;
-	vtbl->recall	= dbf_recall;
-	vtbl->rlock		= dbf_rlock;
-	vtbl->flock		= dbf_flock;
-	vtbl->ulock		= dbf_ulock;
-	vtbl->rlocked	= dbf_rlocked;
-	vtbl->_rlock	= dbf__rlock;
-	vtbl->_wlock	= dbf__wlock;
-	vtbl->_ulock	= dbf__ulock;
-	vtbl->lupdate	= dbf_lupdate;
-	vtbl->info		= dbf_info;
-	vtbl->calcfiltlist = dbf_calcfiltlist;
+	vtbl->open          = dbf_open;
+	vtbl->create        = dbf_create;
+	vtbl->pack          = dbf_pack;
+	vtbl->zap           = dbf_zap;
+	vtbl->close         = dbf_close;
+	vtbl->lastrec       = dbf_lastrec;
+	vtbl->deleted       = dbf_deleted;
+	vtbl->gotop         = dbf_gotop;
+	vtbl->gobottom      = dbf_gobottom;
+	vtbl->next          = dbf_next;
+	vtbl->prev          = dbf_prev;
+	vtbl->go            = dbf_goto;
+	vtbl->rawgo         = dbf_rawgoto;
+	vtbl->append        = dbf_append;
+	vtbl->getrecord     = dbf_getrecord;
+	vtbl->getvalue      = dbf_getvalue;
+	vtbl->setrecord     = dbf_setrecord;
+	vtbl->setvalue      = dbf_setvalue;
+	vtbl->getmemoid     = dbf_getmemoid;
+	vtbl->setmemoid     = dbf_setmemoid;
+	vtbl->delete        = dbf_delete;
+	vtbl->recall        = dbf_recall;
+	vtbl->rlock         = dbf_rlock;
+	vtbl->flock         = dbf_flock;
+	vtbl->ulock         = dbf_ulock;
+	vtbl->rlocked       = dbf_rlocked;
+	vtbl->forlock       = dbf_forlock;
+	vtbl->_rlock        = dbf__rlock;
+	vtbl->_wlock        = dbf__wlock;
+	vtbl->_ulock        = dbf__ulock;
+	vtbl->lupdate       = dbf_lupdate;
+	vtbl->info          = dbf_info;
+	vtbl->setstruct     = dbf_setstruct;
+	vtbl->verify        = dbf_verify;
+	vtbl->calcfiltlist  = dbf_calcfiltlist;
 	return vtbl;
 }
 
@@ -560,44 +710,93 @@ static RDD_DATA_VTBL* vfp_vtbl(){
 	vtbl->dbfsig = 0x30;
 	vtbl->dbfwithmemosig = 0x30;
 
-	vtbl->open		= dbf_open;
-	vtbl->create	= vfp_create;
-	vtbl->pack		= dbf_pack;
-	vtbl->zap		= dbf_zap;
-	vtbl->close		= dbf_close;
-	vtbl->lastrec	= dbf_lastrec;
-	vtbl->deleted	= dbf_deleted;
-	vtbl->gotop		= dbf_gotop;
-	vtbl->gobottom	= dbf_gobottom;
-	vtbl->next		= dbf_next;
-	vtbl->prev		= dbf_prev;
-	vtbl->go		= dbf_goto;
-	vtbl->rawgo		= dbf_rawgoto;
-	vtbl->append	= dbf_append;
-	vtbl->getrecord = dbf_getrecord;
-	vtbl->getvalue	= dbf_getvalue;
-	vtbl->setrecord = dbf_setrecord;
-	vtbl->setvalue	= dbf_setvalue;
-	vtbl->getmemoid	= dbf_getmemoid;
-	vtbl->setmemoid	= dbf_setmemoid;
-	vtbl->delete	= dbf_delete;
-	vtbl->recall	= dbf_recall;
-	vtbl->rlock		= dbf_rlock;
-	vtbl->flock		= dbf_flock;
-	vtbl->ulock		= dbf_ulock;
-	vtbl->rlocked	= dbf_rlocked;
-	vtbl->_rlock	= dbf__rlock;
-	vtbl->_wlock	= dbf__wlock;
-	vtbl->_ulock	= dbf__ulock;
-	vtbl->lupdate	= dbf_lupdate;
-	vtbl->info		= dbf_info;
-	vtbl->calcfiltlist = dbf_calcfiltlist;
+	vtbl->open          = dbf_open;
+	vtbl->create        = vfp_create;
+	vtbl->pack          = dbf_pack;
+	vtbl->zap           = dbf_zap;
+	vtbl->close         = dbf_close;
+	vtbl->lastrec       = dbf_lastrec;
+	vtbl->deleted       = dbf_deleted;
+	vtbl->gotop         = dbf_gotop;
+	vtbl->gobottom      = dbf_gobottom;
+	vtbl->next          = dbf_next;
+	vtbl->prev          = dbf_prev;
+	vtbl->go            = dbf_goto;
+	vtbl->rawgo         = dbf_rawgoto;
+	vtbl->append        = dbf_append;
+	vtbl->getrecord     = dbf_getrecord;
+	vtbl->getvalue      = dbf_getvalue;
+	vtbl->setrecord     = dbf_setrecord;
+	vtbl->setvalue      = dbf_setvalue;
+	vtbl->getmemoid     = dbf_getmemoid;
+	vtbl->setmemoid     = dbf_setmemoid;
+	vtbl->delete        = dbf_delete;
+	vtbl->recall        = dbf_recall;
+	vtbl->rlock         = dbf_rlock;
+	vtbl->flock         = dbf_flock;
+	vtbl->ulock         = dbf_ulock;
+	vtbl->rlocked       = dbf_rlocked;
+	vtbl->forlock       = dbf_forlock;
+	vtbl->_rlock        = dbf__rlock;
+	vtbl->_wlock        = dbf__wlock;
+	vtbl->_ulock        = dbf__ulock;
+	vtbl->lupdate       = dbf_lupdate;
+	vtbl->info          = dbf_info;
+	vtbl->setstruct     = dbf_setstruct;
+	vtbl->verify        = dbf_verify;
+	vtbl->calcfiltlist  = dbf_calcfiltlist;
+	return vtbl;
+}
+
+static RDD_DATA_VTBL* fox_vtbl(){
+	RDD_DATA_VTBL* vtbl = (RDD_DATA_VTBL*)malloc(sizeof(RDD_DATA_VTBL));
+
+	memset(vtbl,0,sizeof(RDD_DATA_VTBL));
+	strcpy(vtbl->id,"FOX");
+	strcpy(vtbl->suff,".dbf");
+	strcpy(vtbl->desc,"Generic FoxPro data files driver v0.0.1 (c) 2002 Copyright ITK Ltd.");
+	vtbl->dbfsig = 0x03;
+	vtbl->dbfwithmemosig = 0xF5;
+
+	vtbl->open          = dbf_open;
+	vtbl->create        = dbf_create;
+	vtbl->pack          = dbf_pack;
+	vtbl->zap           = dbf_zap;
+	vtbl->close         = dbf_close;
+	vtbl->lastrec       = dbf_lastrec;
+	vtbl->deleted       = dbf_deleted;
+	vtbl->gotop         = dbf_gotop;
+	vtbl->gobottom      = dbf_gobottom;
+	vtbl->next          = dbf_next;
+	vtbl->prev          = dbf_prev;
+	vtbl->go            = dbf_goto;
+	vtbl->rawgo         = dbf_rawgoto;
+	vtbl->append        = dbf_append;
+	vtbl->getrecord     = dbf_getrecord;
+	vtbl->getvalue      = dbf_getvalue;
+	vtbl->setrecord     = dbf_setrecord;
+	vtbl->setvalue      = dbf_setvalue;
+	vtbl->getmemoid     = dbf_getmemoid;
+	vtbl->setmemoid     = dbf_setmemoid;
+	vtbl->delete        = dbf_delete;
+	vtbl->recall        = dbf_recall;
+	vtbl->rlock         = dbf_rlock;
+	vtbl->flock         = dbf_flock;
+	vtbl->ulock         = dbf_ulock;
+	vtbl->rlocked       = dbf_rlocked;
+	vtbl->forlock       = dbf_forlock;
+	vtbl->_rlock        = dbf__rlock;
+	vtbl->_wlock        = dbf__wlock;
+	vtbl->_ulock        = dbf__ulock;
+	vtbl->lupdate       = dbf_lupdate;
+	vtbl->info          = dbf_info;
+	vtbl->setstruct     = dbf_setstruct;
+	vtbl->verify        = dbf_verify;
+	vtbl->calcfiltlist  = dbf_calcfiltlist;
 	return vtbl;
 }
 
 static int dbf_rlock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__){
-	struct flock fl;
-
 	*r = 1;
 	if(rd->shared){
 		int i;
@@ -607,25 +806,23 @@ static int dbf_rlock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const 
 				return 0;
 		}
 		if(!rd->flocked){
-			fl.l_type = F_WRLCK;
-			fl.l_whence = SEEK_SET;
-			fl.l_start = (rd->lockstyle?0x10000000:1000000000)+rec;
-			fl.l_len = 1;
+			if(_clip_setlock(cm,rd->file.filehash,rd->file.fd,
+				(rd->lockstyle?0x10000000:1000000000)+rec,
+				(rd->readonly?CLIP_LOCK_READ:CLIP_LOCK_WRITE) | CLIP_LOCK_HILEVEL))
 
-			if(fcntl(rd->file.fd,F_SETLK,&fl))
 				*r = 0;
-		}
-		if(*r){
-			rd->locks = realloc(rd->locks,(rd->nlocks+1)*sizeof(unsigned int));
-			rd->locks[rd->nlocks] = rec;
-			rd->nlocks++;
+
+			if(*r){
+				rd->locks = realloc(rd->locks,(rd->nlocks+1)*sizeof(unsigned int));
+				rd->locks[rd->nlocks] = rec;
+				rd->nlocks++;
+			}
 		}
 	}
 	return 0;
 }
 
 static int dbf_flock(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__){
-	struct flock fl;
 	int er;
 
 	*r = 1;
@@ -636,13 +833,13 @@ static int dbf_flock(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__){
 			return 0;
 		for(i=0;i<rd->nlocks;i++)
 			if((er = dbf_ulock(cm,rd,rd->locks[i],0,__PROC__))) return er;
-		fl.l_type = F_WRLCK;
-		fl.l_whence = SEEK_SET;
-		fl.l_start = (rd->lockstyle?0x10000000:1000000000)+1;
-		fl.l_len = rd->lockstyle?0x10000000:1000000000;
 
-		if(fcntl(rd->file.fd,F_SETLK,&fl))
+		if(_clip_setlock(cm,rd->file.filehash,rd->file.fd,
+			(rd->lockstyle?0x10000000:1000000000)+1,
+			CLIP_LOCK_WRITE | CLIP_LOCK_FLOCK | CLIP_LOCK_HILEVEL))
+
 			*r = 0;
+
 		if(*r)
 			rd->flocked = 1;
 	}
@@ -650,7 +847,6 @@ static int dbf_flock(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__){
 }
 
 static int dbf_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char* __PROC__){
-	struct flock fl;
 	int er;
 
 	if(rd->shared){
@@ -664,11 +860,9 @@ static int dbf_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,con
 			if(i==rd->nlocks)
 				return 0;
 			if(!rd->flocked){
-				fl.l_type = F_UNLCK;
-				fl.l_whence = SEEK_SET;
-				fl.l_start = (rd->lockstyle?0x10000000:1000000000)+rec;
-				fl.l_len = 1;
-				if(fcntl(rd->file.fd,F_SETLK,&fl))
+				if(_clip_unlock(cm,rd->file.filehash,rd->file.fd,
+					(rd->lockstyle?0x10000000:1000000000)+rec,0))
+
 					return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,
 						er_unlock);
 			}
@@ -679,13 +873,13 @@ static int dbf_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,con
 		} else {
 			if(rd->flocked){
 				if(flock){
-					fl.l_type = F_UNLCK;
-					fl.l_whence = SEEK_SET;
-					fl.l_start = (rd->lockstyle?0x10000000:1000000000)+1;
-					fl.l_len = rd->lockstyle?0x10000000:1000000000;
-					if(fcntl(rd->file.fd,F_SETLK,&fl))
+					if(_clip_unlock(cm,rd->file.filehash,rd->file.fd,
+						(rd->lockstyle?0x10000000:1000000000)+1,
+						CLIP_LOCK_FLOCK))
+
 						return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,
 							er_unlock);
+
 					rd->flocked = 0;
 					rd->locks = realloc(rd->locks,0);
 					rd->nlocks = 0;
@@ -700,14 +894,14 @@ static int dbf_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,con
 	return 0;
 }
 
-static int dbf_rlocked(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__){
+static int dbf_rlocked(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__){
 	int i;
 
 	*r = 1;
 	if(!rd->shared)
 		return 0;
 	for(i=0;i<rd->nlocks;i++){
-		if(rd->locks[i]==rd->recno)
+		if(rd->locks[i]==rec)
 			break;
 	}
 	if(i==rd->nlocks)
@@ -715,60 +909,65 @@ static int dbf_rlocked(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__)
 	return 0;
 }
 
+static int dbf_forlock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__){
+	*r = _clip_setlock(cm,rd->file.filehash,rd->file.fd,
+		(rd->lockstyle?0x10000000:1000000000)+rec,
+		CLIP_LOCK_WRITE | CLIP_LOCK_HILEVEL);
+	if(!*r){
+		if(_clip_unlock(cm,rd->file.filehash,rd->file.fd,
+			(rd->lockstyle?0x10000000:1000000000)+rec,0))
+
+			return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,
+				er_unlock);
+	}
+	return 0;
+}
+
 static int dbf__rlock(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	if(rd->shared){
 		if(!rd->locked){
-			struct flock fl;
+			if(_clip_setlock(cm,rd->file.filehash,rd->file.fd,
+				rd->lockstyle?0x10000000:1000000000,
+				CLIP_LOCK_READ | CLIP_LOCK_LOWLEVEL | CLIP_LOCK_WAIT))
 
-			fl.l_type = F_RDLCK;
-			fl.l_whence = SEEK_SET;
-			fl.l_start = rd->lockstyle?0x10000000:1000000000;
-			fl.l_len = 1;
-
-			if(fcntl(rd->file.fd,F_SETLKW,&fl))
 				return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,
 					er_readlock);
 		}
 		rd->locked++;
 	}
+	rd->file.rlocked = 1;
 	return 0;
 }
 
 static int dbf__wlock(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	if(rd->shared){
 		if(!rd->locked){
-			struct flock fl;
+			if(_clip_setlock(cm,rd->file.filehash,rd->file.fd,
+				rd->lockstyle?0x10000000:1000000000,
+				CLIP_LOCK_WRITE | CLIP_LOCK_LOWLEVEL | CLIP_LOCK_WAIT))
 
-			fl.l_type = F_WRLCK;
-			fl.l_whence = SEEK_SET;
-			fl.l_start = rd->lockstyle?0x10000000:1000000000;
-			fl.l_len = 1;
-
-			if(fcntl(rd->file.fd,F_SETLKW,&fl))
 				return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,
 					er_writelock);
 		}
 		rd->locked++;
 	}
+	rd->file.wlocked = 1;
 	return 0;
 }
 
 static int dbf__ulock(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	if(rd->shared){
 		if(rd->locked==1){
-			struct flock fl;
+			if(_clip_unlock(cm,rd->file.filehash,rd->file.fd,
+				rd->lockstyle?0x10000000:1000000000,0))
 
-			fl.l_type = F_UNLCK;
-			fl.l_whence = SEEK_SET;
-			fl.l_start = rd->lockstyle?0x10000000:1000000000;
-			fl.l_len = 1;
-
-			if(fcntl(rd->file.fd,F_SETLKW,&fl))
 				return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,
 					er_unlock);
 		}
 		rd->locked--;
 	}
+	rd->file.rlocked = 0;
+	rd->file.wlocked = 0;
 	return 0;
 }
 
@@ -780,37 +979,6 @@ static int dbf_open(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	char* s;
 	int er;
 
-#ifndef OS_CYGWIN
-{
-	struct flock fl;
-	fl.l_whence = SEEK_SET;
-	fl.l_start = 0x7fffffff;
-	fl.l_len = 1;
-
-	if(rd->shared){
-#ifndef OS_FREEBSD
-		if (flock(rd->file.fd, LOCK_SH|LOCK_NB))
-			return rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,
-				er_readlock);
-#endif
-		fl.l_type = F_RDLCK;
-		if(fcntl(rd->file.fd,F_SETLK,&fl))
-			return rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,
-				er_readlock);
-	} else {
-#ifndef OS_FREEBSD
-		if (flock(rd->file.fd, LOCK_EX|LOCK_NB))
-			return rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,
-				er_writelock);
-#endif
-		fl.l_type = F_WRLCK;
-		if(fcntl(rd->file.fd,F_SETLK,&fl))
-			return rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,
-				er_writelock);
-	}
-}
-#endif
-
 	if((er = rdd_read(cm,&rd->file,0,sizeof(DBF_HEADER),(char*)&hdr,__PROC__)))
 		return er;
 	rd->hdrsize = _rdd_ushort(hdr.hdrsize);
@@ -819,12 +987,15 @@ static int dbf_open(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	rd->recno = 0;
 	rd->bof = rd->v_bof = 0;
 	rd->eof = 0;
-	if((hdr.version!=rd->vtbl->dbfsig)&&(hdr.version!=rd->vtbl->dbfwithmemosig)
-		&&(hdr.version!=0xF5))
+
+	if((hdr.version!=0x03)&&(hdr.version!=0x83)&&(hdr.version!=0xF5)
+		&&(hdr.version!=0x30))
 		return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,
 			er_badheader);
 
-	if(rd->vtbl->dbfsig == 0x30) /* VFP */
+	rd->sig = hdr.version;
+
+	if(rd->sig == 0x30) /* VFP */
 		rd->nfields = (rd->hdrsize-263-sizeof(DBF_HEADER))/sizeof(DBF_FIELD);
 	else
 		rd->nfields = (rd->hdrsize-sizeof(DBF_HEADER))/sizeof(DBF_FIELD);
@@ -842,6 +1013,7 @@ static int dbf_open(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		strcpy(rd->fields[i].name,field.name);
 		s = rd->fields[i].name+strlen(rd->fields[i].name);
 		while(((--s) >= rd->fields[i].name) && *s == ' ') *s = 0;
+		loc_read(rd->loc,rd->fields[i].name,strlen(rd->fields[i].name));
 		if(strchr("NBFYX",field.type)){
 			if(field.type=='X')
 				rd->x = 1;
@@ -854,16 +1026,18 @@ static int dbf_open(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			rd->fields[i].len = field.len.num.len;
 			rd->fields[i].dec = 0;
 		}
-		if(rd->vtbl->dbfsig == 0x30){ /* VFP */
+		if(rd->sig == 0x30){ /* VFP */
 			rd->fields[i].binary = (field.flags & 0x04) != 0;
 			if(rd->fields[i].type == 'P')
 				rd->fields[i].binary = 1;
 			rd->fields[i].nullable = (field.flags & 0x02) != 0;
 		}
+		if(strchr("PG",rd->fields[i].type))
+			rd->fields[i].binary = 1;
 		rd->fields[i].offs = offs;
 		offs += rd->fields[i].len;
 		if(!HashTable_insert(rd->hashes,&rd->fields[i],
-			_clip_casehashword(field.name,strlen(field.name)))){
+			_clip_casehashword(rd->fields[i].name,strlen(rd->fields[i].name)))){
 			return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,
 				er_badheader);
 		}
@@ -881,11 +1055,12 @@ static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 	struct tm *date;
 	HashTable* hashes;
 	int er;
+	unsigned int recsize;
 
 	memset(hdr,0,sizeof(DBF_HEADER));
 	hdr->version = vtbl->dbfsig;
 	for(i=0;i<nfields;i++)
-		if(stru[i].type=='M' ||
+		if(strchr("MPG",stru[i].type) ||
 			(stru[i].type=='V' && stru[i].len != 3 && stru[i].len != 4))
 		{
 			hdr->version = vtbl->dbfwithmemosig;
@@ -898,17 +1073,18 @@ static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 	hdr->dd = date->tm_mday;
 	_rdd_put_uint(hdr->recs,0);
 	_rdd_put_ushort(hdr->hdrsize,sizeof(DBF_HEADER)+nfields*sizeof(DBF_FIELD)+2);
-	_rdd_put_ushort(hdr->recsize,1);
+	recsize = 1;
 	hdr = realloc(hdr,_rdd_ushort(hdr->hdrsize)+1);
 	hashes = new_HashTable();
 	offs = 1;
 	for(i=0;i<nfields;i++){
-		_rdd_put_ushort(hdr->recsize,_rdd_ushort(hdr->recsize)+stru[i].len);
+		recsize += stru[i].len;
 		fld = (DBF_FIELD*)((char*)hdr+sizeof(DBF_HEADER)+i*sizeof(DBF_FIELD));
 		memset(fld,0,sizeof(DBF_FIELD));
 		strncpy(fld->name,stru[i].name,10);
 		for(s=fld->name;*s && *s!=' ';s++);
 		*s = 0;
+		loc_write(dbf_get_locale(cm),fld->name,strlen(fld->name));
 		fld->type = stru[i].type;
 		if(stru[i].type == 'V' && stru[i].len!=3 && stru[i].len!=4 && stru[i].len<6){
 			er = rdd_err(cm,EG_CREATE,0,__FILE__,__LINE__,__PROC__,
@@ -942,6 +1118,12 @@ static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 			goto err;
 		}
 	}
+	if(recsize > 0xffff){
+		er = rdd_err(cm,EG_CREATE,0,__FILE__,__LINE__,__PROC__,
+			er_badstructure);
+		goto err;
+	}
+	_rdd_put_ushort(hdr->recsize,recsize);
 	delete_HashTable(hashes);
 
 	chdr = (char*)hdr;
@@ -951,7 +1133,7 @@ static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 
 	memset(&file,0,sizeof(RDD_FILE));
 	file.md = (char*)-1;
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	file.fd = open(name,O_CREAT|O_TRUNC|O_RDWR|O_BINARY,cm->fileCreateMode);
 #else
 	file.fd = open(name,O_CREAT|O_TRUNC|O_RDWR,cm->fileCreateMode);
@@ -984,7 +1166,7 @@ static int vfp_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 	memset(hdr,0,sizeof(DBF_HEADER));
 	hdr->version = vtbl->dbfsig;
 	for(i=0;i<nfields;i++)
-		if(stru[i].type=='M' ||
+		if(strchr("MPG",stru[i].type) ||
 			(stru[i].type=='V' && stru[i].len != 3 && stru[i].len != 4))
 		{
 			hdr->version = vtbl->dbfwithmemosig;
@@ -1010,13 +1192,14 @@ static int vfp_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 		strncpy(fld->name,stru[i].name,10);
 		for(s=fld->name;*s && *s!=' ';s++);
 		*s = 0;
+		loc_write(dbf_get_locale(cm),fld->name,strlen(fld->name));
 		fld->type = stru[i].type;
 		if(stru[i].type == 'V' && stru[i].len!=3 && stru[i].len!=4 && stru[i].len<6){
 			er = rdd_err(cm,EG_CREATE,0,__FILE__,__LINE__,__PROC__,
 				er_badstructure);
 			goto err;
 		}
-		if(stru[i].type == 'P')
+		if(strchr("PG",stru[i].type))
 			stru[i].binary = 1;
 		_rdd_put_uint(fld->offs,offs);
 		offs += stru[i].len;
@@ -1035,6 +1218,9 @@ static int vfp_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 				goto err;
 			}
 			fld->len.num.len = stru[i].len;
+			fld->len.num.dec = stru[i].dec;
+		} else if(fld->type=='Y'){
+			fld->len.num.len = 8;
 			fld->len.num.dec = stru[i].dec;
 		} else {
 			_rdd_put_ushort(fld->len.len,stru[i].len);
@@ -1069,7 +1255,7 @@ static int vfp_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 
 	memset(&file,0,sizeof(RDD_FILE));
 	file.md = (char*)-1;
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	file.fd = open(name,O_CREAT|O_TRUNC|O_RDWR|O_BINARY,cm->fileCreateMode);
 #else
 	file.fd = open(name,O_CREAT|O_TRUNC|O_RDWR,cm->fileCreateMode);
@@ -1130,8 +1316,10 @@ static int dbf_close(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		return er;
 	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 	if(!rd->readonly && rd->updated){
-		if((er = rdd_trunc(cm,&rd->file,_rdd_ushort(hdr.hdrsize)+_rdd_ushort(hdr.recsize)*lastrec+1,__PROC__)))
-			return er;
+		if(!rd->shared){
+			if((er = rdd_trunc(cm,&rd->file,_rdd_ushort(hdr.hdrsize)+_rdd_ushort(hdr.recsize)*lastrec+1,__PROC__)))
+				return er;
+		}
 		if((er = rdd_write(cm,&rd->file,_rdd_ushort(hdr.hdrsize)+_rdd_ushort(hdr.recsize)*lastrec,1,&end,__PROC__)))
 			return er;
 	}
@@ -1143,6 +1331,11 @@ static int dbf_close(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		hdr.dd = date->tm_mday;
 		if((er = rdd_write(cm,&rd->file,1,2,&hdr.yy,__PROC__))) return er;
 	}
+/*
+	if(_clip_unlock(cm,rd->file.filehash,rd->file.fd,0x7fffffff,0))
+		return rdd_err(cm,EG_CLOSE,errno,__FILE__,__LINE__,__PROC__,
+			er_unlock);
+*/
 	return 0;
 }
 
@@ -1175,10 +1368,11 @@ static int dbf_deleted(ClipMachine* cm,RDD_DATA* rd,int* deleted,const char* __P
 
 static int dbf_gotop(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	unsigned int lastrec;
-	int res;
-	int er;
+	int res,deleted,er;
 
 	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
+
+	rd->bof = rd->v_bof = rd->eof = 0;
 
 	if(rd->filter && rd->filter->list){
 		if(rd->filter->listlen==0){
@@ -1186,15 +1380,24 @@ static int dbf_gotop(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			if((er = dbf_rawgoto(cm,rd,lastrec+1,0,__PROC__))) return er;
 			rd->filter->cursor = 0;
 		} else {
-			rd->filter->cursor = 0;
-			if((er = dbf_rawgoto(cm,rd,rd->filter->list[rd->filter->cursor],
-				0,__PROC__))) return er;
+			rd->filter->cursor = -1;
+			while(++rd->filter->cursor < rd->filter->listlen){
+				if((er = dbf_rawgoto(cm,rd,rd->filter->list[rd->filter->cursor],
+					0,__PROC__))) return er;
+				if(!(cm->flags & DELETED_FLAG))
+					return 0;
+				if((er = rdd_deleted(cm,rd,&deleted,__PROC__))) return er;
+				if(!deleted)
+					return 0;
+			}
+			rd->eof = rd->bof = rd->v_bof = 1;
+			if((er = dbf_rawgoto(cm,rd,lastrec+1,0,__PROC__))) return er;
 		}
 		return 0;
 	}
 
-	rd->bof = rd->v_bof = rd->eof = 0;
 	rd->recno = 1;
+
 	if(rd->filter && rd->filter->rmap){
 		while(rd->recno<=lastrec &&
 			!_rm_getbit(rd->filter->rmap,rd->filter->size,rd->recno))
@@ -1221,8 +1424,7 @@ static int dbf_gotop(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 
 static int dbf_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	unsigned int lastrec;
-	int res;
-	int er;
+	int res,deleted,er;
 
 	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 	rd->bof = rd->v_bof = rd->eof = 0;
@@ -1233,9 +1435,19 @@ static int dbf_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			if((er = dbf_rawgoto(cm,rd,lastrec+1,0,__PROC__))) return er;
 			rd->filter->cursor = 0;
 		} else {
-			rd->filter->cursor = rd->filter->listlen-1;
-			if((er = dbf_rawgoto(cm,rd,rd->filter->list[rd->filter->cursor],
-				0,__PROC__))) return er;
+			rd->filter->cursor = rd->filter->listlen;
+			while(rd->filter->cursor > 0){
+				if((er = dbf_rawgoto(cm,rd,rd->filter->list[--rd->filter->cursor],
+					0,__PROC__))) return er;
+				if(!(cm->flags & DELETED_FLAG))
+					return 0;
+				if((er = rdd_deleted(cm,rd,&deleted,__PROC__))) return er;
+				if(!deleted)
+					return 0;
+			}
+			rd->eof = rd->bof = rd->v_bof = 1;
+			if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
+			if((er = dbf_rawgoto(cm,rd,lastrec+1,0,__PROC__))) return er;
 		}
 		return 0;
 	}
@@ -1273,28 +1485,30 @@ static int dbf_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 }
 
 static int dbf_next(ClipMachine* cm,RDD_DATA* rd,int filtok,const char* __PROC__){
-	int lastrec;
-	int res;
-	int er;
+	int lastrec,res,er,deleted;
 
 	if(rd->eof) return 0;
 	rd->bof = rd->v_bof = rd->eof = 0;
 
+	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 	if(rd->filter && rd->filter->list){
-		rd->filter->cursor++;
-		if(rd->filter->cursor < rd->filter->listlen){
+		while(++rd->filter->cursor < rd->filter->listlen){
 			if((er = dbf_rawgoto(cm,rd,rd->filter->list[rd->filter->cursor],
 				0,__PROC__))) return er;
-		} else {
-			rd->eof = 1;
-			if(rd->filter->listlen==0){
-				rd->bof = rd->v_bof =1;
-				rd->filter->cursor = 0;
-			}
+			if(!(cm->flags & DELETED_FLAG))
+				return 0;
+			if((er = rdd_deleted(cm,rd,&deleted,__PROC__))) return er;
+			if(!deleted)
+				return 0;
+		}
+		rd->eof = 1;
+		if((er = dbf_rawgoto(cm,rd,lastrec+1,0,__PROC__))) return er;
+		if(rd->filter->listlen==0){
+			rd->bof = rd->v_bof = 1;
+			rd->filter->cursor = 0;
 		}
 		return 0;
 	}
-	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 	while(1){
 		rd->recno++;
 		if(rd->filter && rd->filter->rmap)
@@ -1316,21 +1530,31 @@ static int dbf_next(ClipMachine* cm,RDD_DATA* rd,int filtok,const char* __PROC__
 }
 
 static int dbf_prev(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
-	int res;
-	int er;
+	int res,deleted,lastrec,er;
 
 	if(rd->bof) return 0;
 	rd->bof = rd->v_bof =rd->eof = 0;
 
 	if(rd->filter && rd->filter->list){
-		if(rd->filter->cursor>0){
-			rd->filter->cursor--;
-			if((er = dbf_rawgoto(cm,rd,rd->filter->list[rd->filter->cursor],
+		int oldcursor = rd->filter->cursor;
+		while(rd->filter->cursor > 0){
+			if((er = dbf_rawgoto(cm,rd,rd->filter->list[--rd->filter->cursor],
 				0,__PROC__))) return er;
+			if(!(cm->flags & DELETED_FLAG))
+				return 0;
+			if((er = rdd_deleted(cm,rd,&deleted,__PROC__))) return er;
+			if(!deleted)
+				return 0;
+		}
+		rd->bof = rd->v_bof = 1;
+		if(rd->filter->listlen==0){
+			rd->eof = 1;
+			if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
+			if((er = dbf_rawgoto(cm,rd,lastrec+1,0,__PROC__))) return er;
 		} else {
-			rd->bof = rd->v_bof =1;
-			if(rd->filter->listlen==0)
-				rd->eof = 1;
+			rd->filter->cursor = oldcursor;
+			if((er = dbf_rawgoto(cm,rd,rd->filter->list[oldcursor],
+				0,__PROC__))) return er;
 		}
 		return 0;
 	}
@@ -1370,6 +1594,7 @@ static int dbf_goto(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,const char* __
 	int lastrec;
 	int er;
 
+/*	printf("goto %d\n? 'goto %d',recno(),bof()\n",rec,rec);*/
 	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 
 	rd->recno = rec;
@@ -1390,8 +1615,11 @@ static int dbf_append(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			er_notpermitted);
 		goto err;
 	}
-	rd->updated = rd->changed = 1;
 	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) goto err;
+	rd->recno = lastrec+1;
+	if(rd->curord >= 0)
+		rd->orders[rd->curord]->valid_stack = 0;
+	rd->updated = 1;
 
 	if(!rd->shared){
 		flen = rd->hdrsize+rd->recsize*(lastrec+1)+1;
@@ -1404,19 +1632,22 @@ static int dbf_append(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		}
 	}
 
-	memset(rd->record,32,rd->recsize);
-	for(i=0;i<rd->nfields;i++)
-		if(rd->fields[i].type == 'V' || rd->fields[i].type == 'X')
-			memset(rd->record+rd->fields[i].offs,0,rd->fields[i].len);
+	if(rd->sig != 0x30){
+		memset(rd->record,32,rd->recsize);
+		for(i=0;i<rd->nfields;i++)
+			if(rd->fields[i].type == 'V' || rd->fields[i].type == 'X')
+				memset(rd->record+rd->fields[i].offs,0,rd->fields[i].len);
+	}
+	((char*)rd->record)[0] = 0x20;
 	((char*)rd->record)[rd->recsize] = 0x1a;
-	rd->valid = 0;
+	rd->valid = 1;
+	rd->changed = 0;
 	lastrec++;
 	_rdd_put_uint(recs,lastrec);
 	if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(lastrec-1),
 		rd->recsize+1,rd->record,__PROC__))) goto err;
 	if((er = rdd_write(cm,&rd->file,4,4,recs,__PROC__))) goto err;
 	rd->bof = rd->v_bof = rd->eof = 0;
-	if((er = dbf_rawgoto(cm,rd,lastrec,0,__PROC__))) goto err;
 	return 0;
 err:
 	return er;
@@ -1427,11 +1658,17 @@ static int dbf_getmemoid(ClipMachine* cm,RDD_DATA* rd,int no,unsigned int* memoi
 	int er;
 
 	*memoid = 0;
-	if(rd->fields[no].type == 'M'){
-		if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-			rd->fields[no].offs,10,memo,__PROC__))) return er;
-		memo[10] = 0;
-		*memoid = atoi(memo);
+	if(strchr("MPG",rd->fields[no].type)){
+		if(rd->sig != 0x30){
+			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
+				rd->fields[no].offs,10,memo,__PROC__))) return er;
+			memo[10] = 0;
+			*memoid = atoi(memo);
+		} else {
+			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
+				rd->fields[no].offs,4,memo,__PROC__))) return er;
+			*memoid = _rdd_uint(memo);
+		}
 	} else if(rd->fields[no].type == 'V'){
 		if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
 			rd->fields[no].offs+rd->fields[no].len-6,4,memo,__PROC__)))
@@ -1458,10 +1695,16 @@ static int dbf_setmemoid(ClipMachine* cm,RDD_DATA* rd,int no,unsigned int memoid
 		return rdd_err(cm,EG_READONLY,0,__FILE__,__LINE__,__PROC__,
 			er_notpermitted);
 	rd->updated = 1;
-	if(rd->fields[no].type == 'M'){
-		snprintf(memo,sizeof(memo),"%d",memoid);
-		if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-			rd->fields[no].offs,10,memo,__PROC__))) return er;
+	if(strchr("MPG",rd->fields[no].type)){
+		if(rd->sig != 0x30){
+			snprintf(memo,sizeof(memo),"%d",memoid);
+			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
+				rd->fields[no].offs,10,memo,__PROC__))) return er;
+		} else {
+			_rdd_put_uint(memo,memoid);
+			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
+				rd->fields[no].offs,4,memo,__PROC__))) return er;
+		}
 	} else if(rd->fields[no].type == 'V'){
 		_rdd_put_uint(memo,memoid);
 		if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
@@ -1486,6 +1729,21 @@ static int dbf_setrecord(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		rd->recsize,rd->record,__PROC__);
 }
 
+static int dbf_verify(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__){
+	void* buf = malloc(rd->recsize);
+	int er;
+
+	if(!rd->valid){
+		if((er = dbf_getrecord(cm,rd,__PROC__))) return er;
+		*r = 1;
+		return 0;
+	}
+	if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1),
+		rd->recsize,buf,__PROC__))) return er;
+	*r = !memcmp(rd->record,buf,rd->recsize);
+	return 0;
+}
+
 static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __PROC__){
 	char* str;
 	char l;
@@ -1501,8 +1759,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 		int nbyte = no>>3;
 		unsigned char byte;
 
-/*		if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-			rd->nulloffs+nbyte,1,&byte,__PROC__))) return er;*/
 		memcpy(&byte,(char*)rd->record+rd->nulloffs+nbyte,1);
 		if(byte & (1 << (no - (nbyte << 3)))){
 			memset(vp,0,sizeof(ClipVar));
@@ -1515,9 +1771,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 			vp->t.flags = F_NONE;
 			vp->t.memo = 0;
 			str = (char*)malloc(rd->fields[no].len+1);
-/*			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,rd->fields[no].len,str,__PROC__)))
-				return er;*/
 			memcpy(str,(char*)rd->record+rd->fields[no].offs,rd->fields[no].len);
 			str[rd->fields[no].len] = 0;
 			vp->s.str.buf = str;
@@ -1527,20 +1780,17 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 			break;
 		case 'M':
 		case 'P':
+		case 'G':
 			vp->t.type = CHARACTER_t;
 			vp->t.flags = F_NONE;
 			vp->t.memo = 1;
 			if(rd->memo){
-				if(rd->vtbl->dbfsig == 0x03){
-/*					if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-						rd->fields[no].offs,10,memo,__PROC__))) return er;*/
+				if(rd->sig != 0x30){ /* Not VFP */
 					memcpy(memo,(char*)rd->record+rd->fields[no].offs,10);
 					memo[10] = 0;
 					if((er = rd->memo->vtbl->getvalue(cm,rd->memo,atoi(memo),vp,__PROC__)))
 						return er;
 				} else {
-/*					if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-						rd->fields[no].offs,4,memo,__PROC__))) return er;*/
 					memcpy(memo,(char*)rd->record+rd->fields[no].offs,4);
 					if((er = rd->memo->vtbl->getvalue(cm,rd->memo,
 						_rdd_uint(memo),vp,__PROC__)))
@@ -1558,8 +1808,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 			vp->t.memo = 0;
 			str = (char*)malloc(rd->fields[no].len+1);
 			str[rd->fields[no].len] = 0;
-/*			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,rd->fields[no].len,str,__PROC__))) return er;*/
 			memcpy(str,(char*)rd->record+rd->fields[no].offs,rd->fields[no].len);
 			vp->n.d = _clip_strtod(str,&yy);
 			free(str);
@@ -1570,8 +1818,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 			vp->t.type = DATE_t;
 			vp->t.flags = F_NONE;
 			vp->t.memo = 0;
-/*			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,rd->fields[no].len,date,__PROC__))) return er;*/
 			memcpy(date,(char*)rd->record+rd->fields[no].offs,rd->fields[no].len);
 			if(!isdigit(date[0])){
 				dd = 0;
@@ -1598,8 +1844,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 				vp->t.type = DATE_t;
 				vp->t.flags = F_NONE;
 				vp->t.memo = 0;
-/*				if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,rd->fields[no].len,vd+1,__PROC__))) return er;*/
 				memcpy(vd+1,(char*)rd->record+rd->fields[no].offs,rd->fields[no].len);
 				*vd = 0;
 				if(vd[1] == ' ' || vd[1] == 0)
@@ -1613,8 +1857,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 				vp->t.type = NUMERIC_t;
 				vp->t.flags = F_NONE;
 				vp->t.memo = 0;
-/*				if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,rd->fields[no].len,vi,__PROC__))) return er;*/
 				memcpy(vi,(char*)rd->record+rd->fields[no].offs,rd->fields[no].len);
 				vp->n.d = (double)_rdd_uint(vi);
 				vp->t.len = 11;
@@ -1631,37 +1873,24 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 						vp->s.str.len = rd->fields[no].len-6;
 						vp->s.str.buf = malloc(vp->s.str.len+1);
 						vp->s.str.buf[vp->s.str.len] = 0;
-/*						if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-							rd->fields[no].offs,vp->s.str.len,vp->s.str.buf,__PROC__)))
-							return er;*/
 						memcpy(vp->s.str.buf,
 							(char*)rd->record+rd->fields[no].offs,vp->s.str.len);
 						s = vp->s.str.buf+vp->s.str.len;
 						while(!(*(--s))) *s = ' ';
+						if(!rd->fields[no].binary)
+							loc_read(rd->loc,vp->s.str.buf,vp->s.str.len);
 						return 0;
 					}
-/*					if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-						rd->fields[no].offs+rd->fields[no].len-2,2,vlen,__PROC__)))
-						return er;*/
 					memcpy(vlen,(char*)rd->record+rd->fields[no].offs+rd->fields[no].len-2,2);
 					vp->s.str.len = _rdd_ushort(vlen);
 					vp->s.str.buf = malloc(vp->s.str.len+1);
 					vp->s.str.buf[vp->s.str.len] = 0;
 					if(vp->s.str.len <= rd->fields[no].len-2){
-/*						if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-							rd->fields[no].offs,vp->s.str.len,vp->s.str.buf,__PROC__)))
-							return er;*/
 						memcpy(vp->s.str.buf,(char*)rd->record+
 							rd->fields[no].offs,vp->s.str.len);
 					} else {
-/*						if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-							rd->fields[no].offs,rd->fields[no].len-6,vp->s.str.buf,__PROC__)))
-							return er;*/
 						memcpy(vp->s.str.buf,(char*)rd->record+
 							rd->fields[no].offs,rd->fields[no].len-6);
-/*						if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-							rd->fields[no].offs+rd->fields[no].len-6,4,vlen,__PROC__)))
-							return er;*/
 						memcpy(vlen,(char*)rd->record+
 							rd->fields[no].offs+rd->fields[no].len-6,4);
 						if(rd->memo->vtbl->getvchar){
@@ -1684,8 +1913,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 			vp->t.type = LOGICAL_t;
 			vp->t.flags = F_NONE;
 			vp->t.memo = 0;
-/*			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,1,&l,__PROC__))) return er;*/
 			memcpy(&l,(char*)rd->record+rd->fields[no].offs,1);
 			vp->l.val = (l=='T'?1:0);
 			break;
@@ -1718,7 +1945,7 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 					unsigned char vd[4];
 
 					vp->t.type = DATE_t;
-					memcpy(vd+1,(char*)rd->record+rd->fields[no].offs+2,rd->fields[no].len);
+					memcpy(vd+1,(char*)rd->record+rd->fields[no].offs+2,3);
 					*vd = 0;
 					if(vd[1] == ' ' || vd[1] == 0)
 						vp->d.julian = 0;
@@ -1750,15 +1977,11 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 		}
 /* Visual FoxPro types */
 		case 'I':
-		case 'G':
 		{
 			unsigned char u4[4];
 			vp->t.type = NUMERIC_t;
 			vp->t.flags = F_NONE;
 			vp->t.memo = 0;
-/*			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,4,u4,__PROC__)))
-				return er;*/
 			memcpy(u4,(char*)rd->record+rd->fields[no].offs,4);
 			vp->n.d = (double)((int)_rdd_uint(u4));
 			vp->t.len = 11;
@@ -1771,10 +1994,9 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 			vp->t.type = NUMERIC_t;
 			vp->t.flags = F_NONE;
 			vp->t.memo = 0;
-/*			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,8,&vp->n.d,__PROC__)))
-				return er;*/
 			memcpy(&vp->n.d,(char*)rd->record+rd->fields[no].offs,8);
+			if(rd->fields[no].type == 'Y')
+				vp->n.d = (double)(*(long long*)&vp->n.d)/10000;
 			vp->t.len = 20;
 			vp->t.dec = rd->fields[no].dec;
 			break;
@@ -1786,9 +2008,6 @@ static int dbf_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const ch
 			vp->t.type = DATETIME_t;
 			vp->t.flags = F_NONE;
 			vp->t.memo = 0;
-/*			if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,8,t,__PROC__)))
-				return er;*/
 			memcpy(t,(char*)rd->record+rd->fields[no].offs,8);
 			vp->dt.julian = _rdd_uint(t);
 			vp->dt.time = _rdd_uint(t+4);
@@ -1805,6 +2024,9 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 		return rdd_err(cm,EG_READONLY,0,__FILE__,__LINE__,__PROC__,
 			er_notpermitted);
 
+	if(!rd->valid)
+		if((er = dbf_getrecord(cm,rd,__PROC__))) return er;
+
 	if(!rd->data[no]){
 		rd->data[no] = calloc(1,sizeof(ClipVar));
 		if((er = dbf_getvalue(cm,rd,no,rd->data[no],__PROC__))) return er;
@@ -1814,15 +2036,11 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 		int nbyte = no>>3;
 		unsigned char byte;
 
-/*		if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-			rd->nulloffs+nbyte,1,&byte,__PROC__))) return er;*/
 		memcpy(&byte,rd->record+rd->nulloffs+nbyte,1);
 		if(vp->t.type == UNDEF_t)
 			byte |= (1 << (no - (nbyte << 3)));
 		else
 			byte &= ~(1 << (no - (nbyte << 3)));
-/*		if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-			rd->nulloffs+nbyte,1,&byte,__PROC__))) return er;*/
 		memcpy(rd->record+rd->nulloffs+nbyte,&byte,1);
 		if(vp->t.type == UNDEF_t)
 			return 0;
@@ -1842,17 +2060,13 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 			if(!rd->fields[no].binary)
 				loc_write(rd->loc,str,l);
 			memset(str+l,' ',rd->fields[no].len-l);
-/*			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,rd->fields[no].len,str,__PROC__))){
-				free(str);
-				return er;
-			}*/
 			memcpy(rd->record+rd->fields[no].offs,str,rd->fields[no].len);
 			free(str);
 			break;
 		}
 		case 'M':
 		case 'P':
+		case 'G':
 		{
 			char memoid[11];
 			int memo;
@@ -1860,30 +2074,22 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 			if(!rd->memo)
 				return rdd_err(cm,EG_WRITE,0,__FILE__,__LINE__,__PROC__,
 					er_nomemo);
-			if(rd->fields[no].type == 'P')
+			if(rd->fields[no].type == 'P' || rd->fields[no].type == 'G')
 				binary = 1;
-			if(rd->vtbl->dbfsig == 0x03){
-/*				if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,10,memoid,__PROC__))) return er;*/
+			if(rd->sig != 0x30){ /* Not VFP */
 				memcpy(memoid,rd->record+rd->fields[no].offs,10);
 				memoid[10] = 0;
 				memo = atoi(memoid);
 				if((er = rd->memo->vtbl->setvalue(cm,rd->memo,&memo,vp,binary,__PROC__)))
 					return er;
 				snprintf(memoid,sizeof(memoid),"%10d",memo);
-/*				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,10,memoid,__PROC__))) return er;*/
 				memcpy(rd->record+rd->fields[no].offs,memoid,10);
 			} else {
-/*				if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,4,memoid,__PROC__))) return er;*/
 				memcpy(memoid,rd->record+rd->fields[no].offs,4);
 				memo = _rdd_uint(memoid);
 				if((er = rd->memo->vtbl->setvalue(cm,rd->memo,&memo,vp,binary,__PROC__)))
 					return er;
 				_rdd_put_uint(memoid,memo);
-/*				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,4,memoid,__PROC__))) return er;*/
 				memcpy(rd->record+rd->fields[no].offs,memoid,4);
 			}
 			break;
@@ -1899,15 +2105,12 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 				goto err;
 			n = calloc(1,len+1);
 			if(_clip_dtostr(n,len,dec,vp->n.d,0)){
+				char buf[PATH_MAX];
+				snprintf(buf,sizeof(buf),"%s: %s",rd->path,rd->fields[no].name);
 				free(n);
-				return rdd_err(cm,EG_DATAWIDTH,0,__FILE__,__LINE__,__PROC__,
+				return rdd_err(cm,EG_DATAWIDTH,0,__FILE__,__LINE__,buf,
 					er_baddata);
 			}
-/*			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,len,n,__PROC__))){
-				free(n);
-				return er;
-			}*/
 			memcpy(rd->record+rd->fields[no].offs,n,len);
 			free(n);
 			break;
@@ -1921,16 +2124,12 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 			if(vp->d.julian){
 				_clip_datetostr(vp->d.julian,d);
 			}
-/*			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,8,d,__PROC__))) return er;*/
 			memcpy(rd->record+rd->fields[no].offs,d,8);
 			break;
 		}
 		case 'L':
 			if(vp->t.type != LOGICAL_t)
 				goto err;
-/*			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,1,vp->l.val?"T":"F",__PROC__))) return er;*/
 			memcpy(rd->record+rd->fields[no].offs,vp->l.val?"T":"F",1);
 			break;
 		case 'V':
@@ -1947,16 +2146,12 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 				vi = (yy<<9)+(mm<<5)+dd;
 
 				_rdd_put_backuint(vd,vi);
-/*				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,3,vd+1,__PROC__))) return er;*/
 				memcpy(rd->record+rd->fields[no].offs,vd+1,3);
 			} else if(rd->fields[no].len==4){
 				unsigned char vi[4];
 				if(vp->t.type != NUMERIC_t)
 					goto err;
 				_rdd_put_uint(vi,(int)vp->n.d);
-/*				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs,4,vi,__PROC__))) return er;*/
 				memcpy(rd->record+rd->fields[no].offs,vi,4);
 			} else {
 				unsigned char vlen[4];
@@ -1969,40 +2164,21 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 						er_nomemo);
 				if(vp->t.type != CHARACTER_t)
 					goto err;
-/*				if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs+rd->fields[no].len-2,2,vlen,__PROC__)))
-					return er;*/
 				memcpy(vlen,rd->record+rd->fields[no].offs+rd->fields[no].len-2,2);
 				oldlen = max((int)_rdd_ushort(vlen)-(rd->fields[no].len-6),0);
 				if(oldlen > rd->fields[no].len-6){
-/*					if((er = rdd_read(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-						rd->fields[no].offs+rd->fields[no].len-6,4,vlen,__PROC__)))
-						return er;*/
 					memcpy(vlen,rd->record+rd->fields[no].offs+rd->fields[no].len-6,4);
 					memoid = _rdd_uint(vlen);
 				}
 				_rdd_put_ushort(vlen,vp->s.str.len);
-/*				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-					rd->fields[no].offs+rd->fields[no].len-2,2,vlen,__PROC__)))
-					return er;*/
 				memcpy(rd->record+rd->fields[no].offs+rd->fields[no].len-2,vlen,2);
 				str = calloc(1,vp->s.str.len);
 				memcpy(str,vp->s.str.buf,vp->s.str.len);
 				if(!rd->fields[no].binary)
 					loc_write(rd->loc,str,vp->s.str.len);
 				if(vp->s.str.len <= rd->fields[no].len-2){
-/*					if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-						rd->fields[no].offs,vp->s.str.len,str,__PROC__))){
-						free(str);
-						return er;
-					}*/
 					memcpy(rd->record+rd->fields[no].offs,str,vp->s.str.len);
 				} else {
-/*					if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-						rd->fields[no].offs,rd->fields[no].len-6,str,__PROC__))){
-						free(str);
-						return er;
-					}*/
 					memcpy(rd->record+rd->fields[no].offs,str,rd->fields[no].len-6);
 					if(rd->memo->vtbl->setvchar){
 						if((er = rd->memo->vtbl->setvchar(cm,rd->memo,
@@ -2013,11 +2189,6 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 						}
 					}
 					_rdd_put_uint(vlen,memoid);
-/*					if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-						rd->fields[no].offs+rd->fields[no].len-6,4,vlen,__PROC__))){
-						free(str);
-						return er;
-					}*/
 					memcpy(rd->record+rd->fields[no].offs+rd->fields[no].len-6,vlen,4);
 				}
 				free(str);
@@ -2076,6 +2247,8 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 					((char*)rd->record)[rd->fields[no].offs+2] = (vp->l.val?'T':'F');
 					break;
 				}
+				case UNDEF_t:
+					break;
 				default:
 					goto err;
 			}
@@ -2083,16 +2256,12 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 		}
 /* Visual FoxPro types */
 		case 'I':
-		case 'G':
 		{
 			unsigned char u4[4];
 
 			if(vp->t.type != NUMERIC_t)
 				goto err;
 			_rdd_put_uint(u4,(int)vp->n.d);
-/*			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,4,u4,__PROC__)))
-				return er;*/
 			memcpy(rd->record+rd->fields[no].offs,u4,4);
 			break;
 		}
@@ -2101,10 +2270,16 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 		{
 			if(vp->t.type != NUMERIC_t)
 				goto err;
-/*			if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno-1)+
-				rd->fields[no].offs,8,&vp->n.d,__PROC__)))
-				return er;*/
-			memcpy(rd->record+rd->fields[no].offs,&vp->n.d,8);
+			if(rd->fields[no].type=='Y'){
+				long long tmp;
+				double d = vp->n.d;
+#ifdef ARCH_i386
+				(*(long long*)&d)++;
+#endif
+				tmp = d*10000;
+				memcpy(rd->record+rd->fields[no].offs,&tmp,8);
+			} else
+				memcpy(rd->record+rd->fields[no].offs,&vp->n.d,8);
 			break;
 		}
 		case 'T':
@@ -2127,10 +2302,13 @@ err:
 
 static int dbf_delete(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	char d = 0x2a;
+	int er;
 
 	if(rd->readonly)
 		return rdd_err(cm,EG_READONLY,0,__FILE__,__LINE__,__PROC__,
 			er_notpermitted);
+	if(!rd->valid)
+		if((er = dbf_getrecord(cm,rd,__PROC__))) return er;
 	rd->updated = rd->changed = 1;
 	((char*)rd->record)[0] = d;
 	return 0;
@@ -2138,10 +2316,13 @@ static int dbf_delete(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 
 static int dbf_recall(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	char d = 0x20;
+	int er;
 
 	if(rd->readonly)
 		return rdd_err(cm,EG_READONLY,0,__FILE__,__LINE__,__PROC__,
 			er_notpermitted);
+	if(!rd->valid)
+		if((er = dbf_getrecord(cm,rd,__PROC__))) return er;
 	rd->updated = rd->changed = 1;
 	((char*)rd->record)[0] = d;
 	return 0;
@@ -2178,7 +2359,11 @@ static int dbf_info(ClipMachine* cm,RDD_DATA* rd,int cmd,const char* __PROC__){
 	return 0;
 }
 
-static int _dbf_compare(void* op,void* lp,void* rp){
+static int dbf_setstruct(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
+	return rdd_write(cm,&rd->file,28,1,"\001",__PROC__);
+}
+
+static int _dbf_compare(void* op,void* lp,void* rp,int* uniq){
 	if((unsigned int)lp < (unsigned int)rp)
 		return -1;
 	if((unsigned int)lp > (unsigned int)rp)
@@ -2196,7 +2381,7 @@ static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			_dbf_compare);
 		for(i=0;i<rd->filter->listlen;i++){
 			recno = rd->filter->list[i];
-			bt_add(bt,NULL,(void*)recno);
+			bt_add(bt,NULL,(void*)&recno);
 		}
 		free(rd->filter->list);
 		rd->filter->list = malloc(sizeof(unsigned int)*rd->filter->listlen);
@@ -2209,16 +2394,51 @@ static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		}
 		bt_destroy(bt);
 	} else {
+#if 1
+		unsigned int bytes = ((rd->filter->size+1) >> 5) + 1;
+		int i,b,bb,t,tt;
+
+		rd->filter->listlen = 0;
+		for(i=0;i<bytes;i++){
+			if(rd->filter->rmap[i]){
+				for(b=(i<<2),bb=0;bb<4;b++,bb++){
+					if(((char*)rd->filter->rmap)[b]){
+						for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
+							if(_rm_getbit(rd->filter->rmap,rd->filter->size,t))
+								rd->filter->listlen++;
+						}
+					}
+				}
+			}
+		}
+		if(rd->filter->listlen > 100)
+			return 0;
+#else
 		rd->filter->listlen = 0;
 		for(i=1;i<=rd->filter->size;i++)
 			if(_rm_getbit(rd->filter->rmap,rd->filter->size,i))
 				rd->filter->listlen++;
-		rd->filter->list = malloc(sizeof(unsigned int)*rd->filter->listlen);
-		for(i=1,j=0;i<=rd->filter->size;i++){
-			if(_rm_getbit(rd->filter->rmap,rd->filter->size,i)){
-				rd->filter->list[j++] = i;
+#endif
+		rd->filter->list = malloc(sizeof(unsigned int)*(rd->filter->listlen+1));
+#if 1
+		for(i=0,j=0;i<bytes;i++){
+			if(rd->filter->rmap[i]){
+				for(b=(i<<2),bb=0;bb<4;b++,bb++){
+					if(((char*)rd->filter->rmap)[b]){
+						for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
+							if(_rm_getbit(rd->filter->rmap,rd->filter->size,t))
+								rd->filter->list[j++] = t;
+						}
+					}
+				}
 			}
 		}
+#else
+		for(i=1;i<=rd->filter->size;i++){
+			if(_rm_getbit(rd->filter->rmap,rd->filter->size,i))
+				rd->filter->list[j++] = i;
+		}
+#endif
 	}
 	return 0;
 }

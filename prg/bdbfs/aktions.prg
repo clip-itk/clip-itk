@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -20,8 +20,8 @@ STATIC	_corrupted:=_STAT_CORRUPTED,;
 	_ertip:=_STAT_ERTIP
 
 MEMVAR _tmr,_c_f,_ptr,_req,__mcol,;
-	_tally,_base,_timing,_ncnt,_im,_bm,_cm,_HdColor,;
-	_menucolor,HiddenColor,score_row,score_col,_MainHandle
+	_tally,_base,_ncnt,_im,_bm,_cm,;
+	_menucolor,HiddenColor,_MainHandle
 MEMVAR _pole,_works,_curtype,__ContentType,_fc,_dtype,_ddr,_dlen,_dubl,;
        _ftype,_fdr,_flen,_pictures
 MEMVAR _LCondit,_indexFile,_oldInd,_Fcondit,_ClipText,_bdbfbrow,_fltrcond,_ngoto,_repl,;
@@ -29,7 +29,8 @@ MEMVAR _LCondit,_indexFile,_oldInd,_Fcondit,_ClipText,_bdbfbrow,_fltrcond,_ngoto
 	_newfile,_ckfield,_cpc,_initvar,_countcond,_delcond,;
 	_newdir,_sortfile,_sortcond,_cksort,_inifile,_vuefile,;
 	__cdxname,__tagname,__tagnom,_cdxch,__go,_gsearch,_cb,_econd,_mask,;
-	_Memoeditor,_Textviewer,_nMemotab,_Dirshow,_TotalCond,_TotalFile
+	_Memoeditor,_Textviewer,_nMemotab,_Dirshow,;
+	_TotalCond,_TotalFile,_TotalExpr
 MEMVAR _zif,_iv,_zu,_abort
 
 **********
@@ -43,28 +44,15 @@ IF !EMPTY(_fltrcond).AND. !&_Fltrcond THEN go _tmr
 PROC SetIndex()
 LOCAL	iExt:=Rdd_Info()[4],aName,;
 	nUniq,nExpr,nExpr2:=0,nMin,nFor,cName
+m->_SetIndFiler:=.T.	//For Filer F10
+
 DO CASE
-/*
-	CASE EMPTY(iExt)
-		nMin:=2048
-		nUniq:=14
-		nExpr:=2072
-		nExpr2:=2072
-		nFor:=2800
-		iExt:='.MDX'
-*/
 	CASE 'ntx' $ iExt
 		nMin:=2048
 		nUniq:=278
 		nExpr:=22
 		nFor:=282
-/*
-	CASE 'nsx' $ iExt
-		nMin:=3072
-		nUniq:=1034
-		nExpr:=1038
-		nFor:=1294
-*/
+
 	CASE 'cdx' $ iExt
 		nMin:=3072
 		nUniq:=2062
@@ -82,7 +70,7 @@ ENDCASE
 
 BEGIN SEQUENCE
 	aName:=Filer('*'+iExt,INDEX_CHOICE,{|el|Idx_An(el,nMin,nUniq,nExpr,Nexpr2,nFor)},;
-		     {_zi,INDEX_NO},,{|_1|Ascan(_1,_IndexFile)})
+		     {_zi,INDEX_NO},,{|_1|Ascan(_1,{|_a|UPPER(_a)==UPPER(m->_IndexFile)})})
 	IF aName[1]<>0
 		cName:=aName[2]
 		IF aName[3] .AND. cName==_zi
@@ -127,9 +115,8 @@ END
 _req:=2
 **********
 FUNC Idx_An(aName,nMin,nUniq,nExpr,Nexpr2,nFor,lOnlyKey)
-LOCAL _handle,cRet:=PAD(UPPER(aName[1]),m->_DirShow)+' - ',_tmp,;
+LOCAL _handle,cRet:=PAD(aName[1],m->_DirShow+1),_tmp,;
 	cExpr,cFor
-
 IF ((_handle:=FOPEN(aName[1],64))<0 ) .OR. OpenFileSize(_handle)<nMin
 	cExpr:=''
 ELSE
@@ -137,12 +124,12 @@ ELSE
 	IF _tmp>31 THEN nExpr:=nExpr2
 	cExpr:=ReadFromFile(_handle,nExpr,255)
 	IF EMPTY(lOnlyKey)
+		cRet += IF(aName[1]==_IndexFile,'√ ','- ')
 		IF nFor==0 THEN nFor:=nExpr+LEN(cExpr)+1
 		cFor:=ReadFromFile(_handle,nFor,255)
-		IF LEN(cFor)>1 THEN cExpr+=' <FOR> '+ cFor
-		IF _tmp % 2 = 1 THEN cExpr+=' <Unique>'
-		cRet+=' '+cExpr
-		IF aName[1]==_IndexFile THEN cRet += ' √ '
+		IF LEN(cFor)>1 THEN cExpr+=CHR(0)+'<FOR>'+ CHR(0)+cFor
+		IF _tmp % 2 = 1 THEN cExpr+=CHR(0)+'<Unique>'
+		cRet+=cExpr
 	ELSE
 		cRet:=cExpr
 	ENDIF
@@ -152,8 +139,7 @@ FCLOSE(_handle)
 RETURN cRet
 **********
 PROC GotoRec(_i)
-IF EMPTY(_i) THEN;
-	_i:=ForAch(10,REC_FIND,REC_FIND_C)
+IF EMPTY(_i) THEN _i:=ForAch(10,REC_FIND,REC_FIND_C)
 
 BEGIN SEQU
  DO CASE
@@ -199,21 +185,25 @@ IF !EMPTY(m->_aCommon[1]) .AND. m->lWasMemo
 	RETURN
 ENDIF
 
-IF Continue(NEED_PACK)
+IF m->_lPckNoAsk .OR. Continue(NEED_PACK)
 	TimerOn()
-	BEGIN SEQU
-		Waiting(PACKING)
-		MainUse(M_EXCL,!Empty(_IndexFile))
-		PACK
+	BEGIN SEQUENCE
+		IF m->_lPckCheck .AND. !(__DbLocate({||DELETED()} ))
+			NFIND(_MSG_A_NOPACK)
+		ELSE
+			Waiting(PACKING)
+			MainUse(M_EXCL,!Empty(_IndexFile))
+			PACK
 
-		_req:=0
-		_Tally:=nWas-LASTREC()
-		IF _Tally>0
-			m->_UndoNew:=.T.
+			_req:=0
+			_Tally:=nWas-LASTREC()
+			IF _Tally>0
+				m->_UndoNew:=.T.
+			ENDIF
+			cMsg:=REMOVED		//удаленных
+			_Tally:=nWas
+			OpFinish(cMsg)
 		ENDIF
-		cMsg:=REMOVED		//удаленных
-		_Tally:=nWas
-		OpFinish(cMsg)
 
 	RECOVER
 		ElseUse()
@@ -224,17 +214,14 @@ PROC SeekInd
 LOCAL _ik:=Upper(IndexKey(0)),_tp,_tmp,_tps
 IF Empty(_ik)
 	Nfind(_noindex)
-ELSEIF GetName(I_SEARCH+_Iv+_ik,'_Fcondit')
-	_tp:=&_ik
+ELSEIF GetName(I_SEARCH+_Iv+_ik,'_Fcondit',,,,,,,(_tp:=VALTYPE(&_ik)) )
 	BEGIN SEQUENCE
-		Store Alltrim(_Fcondit) to _FCondit,_tmp
+		_tmp:=_Fcondit
 
 		IF (_tp:=ValType(_tp))=='D' .AND. _Fcondit<':'
 			_Tmp:='CTOD(_Fcondit)'
 		ELSEIF _tp=='D' .AND. First(_Fcondit)=='{'
 			_Tmp:='CTOD(SUBSTR(_Fcondit,2,LEN(_Fcondit)-2))'
-		ELSEIF _tp=='C' .AND. (Between(_Fcondit,'0','@') .OR.(_Fcondit>'z'))
-			_Tmp:='"'+_Fcondit+'"'
 		END
 
 		IF (_tps:=Type(_tmp))=='UI' THEN _tps:=VALTYPE(&_tmp)
@@ -249,7 +236,7 @@ ELSEIF GetName(I_SEARCH+_Iv+_ik,'_Fcondit')
 ENDIF
 **********
 PROC SeekWild(lContinue,cInit)
-LOCAL _ik:=Upper(IndexKey(0)),_tmp
+LOCAL _ik:=Upper(IndexKey(0))
 STATIC cWild
 IF Empty(_ik)
 	Nfind(_noindex)
@@ -260,13 +247,8 @@ ELSEIF !EMPTY(lContinue) .AND. EMPTY(cWild) .AND. EMPTY(cInit)
 ELSE
 	BEGIN SEQUENCE
 		IF EMPTY(lContinue)
-			IF GetName(I_SEARCH+_Iv+_ik,'_Fcondit')
-			   Store Alltrim(_Fcondit) to _FCondit,_tmp
-
-			   IF (Between(_Fcondit,'0','@') .OR.(_Fcondit>'z'))
-				_Tmp='"'+_Fcondit+'"'
-			   END
-			   cWild:=&_tmp
+			IF GetName(I_SEARCH+_Iv+_ik,'_Fcondit',,,,,,,VALTYPE(&_ik))
+				cWild:=&_Fcondit
 			ELSE
 				BREAK
 			ENDIF
@@ -277,16 +259,44 @@ ELSE
 	END
 ENDIF
 **********
-PROC SimpleLoc()
+PROC SimpleLoc(lChoice)
+LOCAL _i, nRec:=RECNO(), cSign
 MEMVAR _SimpleLoc,_Lcondit
+*
 _SimpleLoc:=m->__Content
-IF GetName(_ze + F_SEARCH,'_SIMPLELOC') .AND. TakeScope()
+*
+IF !EMPTY(lChoice)
+	_i:=ForAch(10,_MSG_A_SIMPH,_MSG_A_SIMPA)
+	DO CASE
+		CASE _i=0
+			RETURN
+		CASE _i=7
+			lChoice:=.F.
+			_i:=1
+	ENDCASE
+ELSE
+	lChoice:=.F.
+	_i:=1
+ENDIF
+*
+IF (lChoice .OR. GetName(_ze + F_SEARCH,'_SIMPLELOC')) .AND. TakeScope()
 	IniSearching()
-	_Lcondit:=IF(__ContentType $ 'MC',;
-		[TRIM(_SimpleLoc) $ ] +_C_F,;
-		_C_F+[ = _SimpleLoc])
+	cSign:={'=','<>','>','<','>=','<='}[_i]
+	_LCondit:=_C_F+cSign
+	IF m->__ContentType=='C'
+		IF lChoice
+			_LCondit+='"'+_SimpleLoc+'"'
+		ELSE
+			_LCondit:='"'+TRIM(_SimpleLoc)+'" $ '+ _C_F
+			cSign:='='
+		ENDIF
+	ELSEIF m->__ContentType=='D'
+		_LCondit +='CTOD("'+DTOC(_SimpleLoc)+'")'
+	ELSE
+		_LCondit += FT_XTOY(_SimpleLoc,"C")
+	ENDIF
 
-	//IF KeyNo()>1 .AND. _SimpleLoc==m->__Content THEN SKIP
+	IF nRec==RECNO() .AND. '=' $ cSign THEN SKIP
 	__DBLOCATE(Compile(_Lcondit),,,,.T.)
 	CheckFound()
 ENDIF
@@ -301,8 +311,11 @@ AEval(m->__aDbStruct,{|el,_i| AADD(_flds,Str(_i,3)+'.'+Pad(el[1],17)+;
 		ShowTypeLen(el[2],el[3],el[4],el[5]))})
 aInfo:=.T.
 Information(@aInfo)	//in Help
-m->_L:=MAX(38,A_MAXLEN(aInfo))
-AADD(_flds,REPL('-',38))
+m->_L:=MAX(39,A_MAXLEN(aInfo))
+FOR i:=1 TO LEN(aInfo)
+	aInfo[i]:=StrTran(aInfo[i], CHR(0), ' ')
+NEXT
+AADD(_flds,REPL('-',39))
 _flds:=A_JOIN(_flds,aInfo)
 
 _i:=_Base_Struct+_base
@@ -341,8 +354,8 @@ ELSE
 ENDIF
 AchKeys(.F.)
 **********
-STATIC FUNC ShowTypeLen(cType,nLen,nDec,cRealType)
-IF cType=='V'
+FUNC ShowTypeLen(cType,nLen,nDec,cRealType)
+IF cType=='V' .AND. cRealType=='V'
 	DO CASE
 		CASE  nLen==4
 			cRealType:='I'
@@ -352,11 +365,11 @@ IF cType=='V'
 			cRealType:='M'
 	ENDCASE
 ENDIF
-IF nDec>0 .AND. cType='C'
+IF nDec>0 .AND. cRealType='C'
 	nLen:=nDec*256+nLen
 	nDec:=0
 ENDIF
-RETURN PAD(cType+IF(cType<>cRealType,'('+cRealType+')',''),4)+STR(nLen,7)+STR(nDec,6)
+RETURN PAD(cType+IF(cType<>cRealType,'('+cRealType+')',''),5)+STR(nLen,7)+STR(nDec,6)
 **********
 PROC CopyRec()
 LOCAL _i
@@ -385,45 +398,26 @@ PROC ClearRec()
 IF TryRlock() THEN AEVAL(DbStruct_(), {|_1| MakeEmpty(_1[1])})
 **********
 PROC ReplFor(_a,lQuest)
-LOCAL _rpl,_beval,_nCnt:=0,_F_type,lEnd,cFld
+LOCAL _rpl,_beval,_nCnt:=0,cFld,lEnd,lCnv
 IF !m->_IsField THEN ReturnMess(CALC_FIELD)
 PUSH KEYS
 
 BEGIN SEQUENCE
 
 	m->lCanFunc:=( __ContentType $ 'CM' )	// для возможности выбора
-	IF  !GetName(_ZE+REPL_EXPR+Alltrim(_Works[_ptr]),'_Repl');
-		THEN Break
-	_repl=Alltrim(_repl)
+	IF  !GetName(_ZE+REPL_EXPR+Alltrim(_Works[_ptr]),'_Repl',;
+		,,,,,,__ContentType) THEN Break
 
-	lEnd:=(_CurType<>'V') .AND.;
+	lCnv:=!(_CurType $ 'VX') .AND.;
 	   !(m->_CurRType=='M'.AND.m->_aCommon[5])	//Возможно преобразуем
 
-	IF m->lCanFunc .AND. (_repl>'z')
-		_repl:='"'+_repl+'"'
+	IF (__ContentType = 'D') .AND. '{' $ _repl
+		_repl:=STRTRAN(STRTRAN(_repl, '{', 'CTOD("'),'}','")' )
 	ENDIF
 
-	_rpl:=&_repl
-	_F_Type:=VALTYPE(_rpl)
+	_rpl:=ConvType(lCnv)
 
-	IF lEnd
-	  DO CASE
-		CASE m->lCanFunc	//__ContentType $ 'CM'
-			IF _F_Type=='N'
-				_rpl:=NTRIM(_rpl)
-			ELSEIF _F_Type=='D'
-				_rpl:=DTOC(_rpl)
-			ENDIF
-		CASE _F_Type=='C'
-			IF __ContentType $ 'NF' .AND. Between(_rpl,'0','9')
-				_rpl:=VAL(_rpl)
-			ELSEIF __ContentType = 'D'
-				_rpl:=CTOD(_rpl)
-			ENDIF
-	  ENDCASE
-	ENDIF
-
-	IF  VALTYPE(_rpl) # __ContentType .AND. lEnd THEN ;
+	IF  VALTYPE(_rpl) # __ContentType .AND. lCnv THEN ;
 		BreakMess(_ERTIP)
 
 	IF (_a=K_ALT_F4 .OR. _A=K_CTRL_F4)
@@ -436,7 +430,7 @@ BEGIN SEQUENCE
 			cFld:=RealFldName(_c_f)
 			DO WHILE !EOF()
 				IF EVAL(_bEval)
-				     IF _a=K_CTRL_F4 THEN _rpl:=&(_repl)
+				     IF _a=K_CTRL_F4 THEN _rpl:=ConvType(lCnv)
 				     IF EMPTY(lQuest) .OR.;
 					ReplQuest({NEED_REPLACE,'   '+PAD(&_C_F,__mcol-19),'-> '+PAD(_rpl,__mcol-19),''},@lQuest,@lEnd)
 					MyRepl(cFld,_rpl,m->_CurRType,.T.)
@@ -464,6 +458,29 @@ END
 _req:=2
 POP KEYS
 **********
+STATIC FUNC ConvType(lCnv)
+LOCAL _F_Type,_rpl
+_rpl:=&(m->_repl)
+_F_Type:=VALTYPE(_rpl)
+
+IF lCnv
+	  DO CASE
+		CASE m->lCanFunc	//__ContentType $ 'CM'
+			IF _F_Type=='N'
+				_rpl:=NTRIM(_rpl)
+			ELSEIF _F_Type=='D'
+				_rpl:=DTOC(_rpl)
+			ENDIF
+		CASE _F_Type=='C'
+			IF __ContentType $ 'NF' .AND. Between(_rpl,'0','9')
+				_rpl:=VAL(_rpl)
+			ELSEIF __ContentType = 'D'
+				_rpl:=CTOD(_rpl)
+			ENDIF
+	  ENDCASE
+ENDIF
+RETURN _rpl
+**********
 STATIC FUNC ReplQuest(aMsg,lQuest,lEnd)
 LOCAL i,scr
 ScrSave(@scr)
@@ -484,13 +501,12 @@ RETURN BETWEEN(i,1,2)
 PROC InsFunc
 LOCAL _i,aIns,aFunc,aIns1:={},cTrans,_lf:=_LEFT,_cFld,_cTran,_cPsw
 LOCAL _Crf:='('+RealFldName(m->_c_f)
+
 _cFld:= _Crf+')'+_lf
 _cTran:=_Crf+',[],[])'+REPL(_lf,5)
 _cPsw:= _Crf+',[password])'+REPL(_lf,10)
-
 cTrans:=_MSG_A_IF_TRANS
 aIns:=_MSG_A_IF_AINS
-
 aFunc:={'StrTran'+_cTran,;
 	'ChrTran'+_cTran,;
 	'Upper'+_cFld,;
@@ -501,6 +517,7 @@ aFunc:={'StrTran'+_cTran,;
 	'AnsiToOem'+_cFld,;
 	'Usa2Nation'+_cFld,;
 	'Nation2Usa'+_cFld,;
+	'PADJ'+_crf+',""," ")'+REPL(_lf,6),;
 	'CryptStr'+_cPsw,;
 	'DeCryptStr'+_cPsw,;
 	'Crc_All()',;
@@ -551,9 +568,9 @@ IF Empty(__dbSetLoc())
 ELSE
 	IniSearching()
 	IF EMPTY(lBack)
-		__DbContinue()
+		__DBLOCATE(, , , , , .T.)
 	ELSE
-		__DbBackContinue()
+		__DbBackLocate(,,.T.)
 	ENDIF
 	CheckFound()
 ENDIF
@@ -597,8 +614,8 @@ BEGIN SEQU
 	ENDIF
 *
         ordCondSet(_if, _ifb, NIL, NIL,;
-			 {|| Meter(2,,(nRec:=nRec+10))},;
-			 10, RECNO())
+			 {|| Meter(2,,(nRec:=nRec+_Sx_Step))},;
+			 _Sx_Step, RECNO())
 	DbCreateIndex(_NewIndF, _newInd, {|| &_newInd}, )
 *
 	COMMIT
@@ -610,9 +627,32 @@ BEGIN SEQU
 	CheckFound(.T.)
 END
 **********
-PROC SetFilter()
+PROC SetFilter(lChoice)
 LOCAL _i
-IF MakeFunc(F_FLTRING,'_FltrCond')
+IF !EMPTY(lChoice)
+	_i:=ForAch(10,_MSG_A_FILTH,_MSG_A_FILTA)
+	DO CASE
+		CASE _i=0
+			RETURN
+		CASE _i=1
+			lChoice:=.F.
+		CASE _i=8
+			_FltrCond:=''
+		OTHER		//_i=2-7
+			_FltrCond:=_C_F+{'=','<>','>','<','>=','<='}[_i-1]
+			IF m->__ContentType=='C'
+				_FltrCond+='"'+m->__Content+'"'
+			ELSEIF m->__ContentType=='D'
+				_FltrCond+='CTOD("'+DTOC(m->__Content)+'")'
+			ELSE
+				_FltrCond+=FT_XTOY(m->__Content,"C")
+			ENDIF
+			*AddHistory(_HFltrCond,_FltrCond)
+	ENDCASE
+ELSE
+	lChoice:=.F.
+ENDIF
+IF lChoice .OR. MakeFunc(F_FLTRING,'_FltrCond')
 
   _i:=SetFilt(_FltrCond)
   ScrRest()
@@ -627,36 +667,35 @@ IF MakeFunc(F_FLTRING,'_FltrCond')
 ENDIF
 **********
 FUNC TestMacro(nKey,nRegion)
-LOCAL i
+LOCAL i, cm
 IF ((i:=ASCAN(m->_MacroTable, {|x| x[1]==nKey .AND. x[3]==nRegion}))#0) .OR.;
    ((i:=ASCAN(m->_MacroTable, {|x| x[1]==nKey .AND. EMPTY(x[3])}))#0)
-	PlayMacro(m->_MacroTable[i,2])
+	cM:=m->_MacroTable[i,2]
+	IF ValType(cM)=='B' THEN cM:=EVAL(cM,ReadVar())
+	PlayMacro(cM)
 ENDIF
 RETURN !EMPTY(i)
 **********
 PROC PlayMacro(aSequ)
-#ifdef __CLIP__
-LOCAL aStuff:=""
-        AEVAL(aSequ,{|_1| aStuff+=(IF(ValType(_1)=='N',chr(_1),_1))})
-        __keyboard(aStuff)
-        return
-#else
-LOCAL aStuff:={}
+LOCAL aStuff:={}, i
 IF_NIL aSequ IS _macro
 IF ValType(aSequ)=='C'
 	KEYB aSequ
+	RETU
 ELSEIF ValType(aSequ)=='N'
 	aStuff:={aSequ}
 ELSE
 	aStuff:=aSequ
 ENDIF
 BEGIN SEQU
-	AEVAL(aStuff,{|_1| FT_PUTKEY(IF(ValType(_1)=='C',ASC(_1),_1))})
+	FOR i:=LEN(aStuff) TO 1 STEP -1
+		__KeyBoard( aStuff[i], .T.)
+	NEXT
+	*AEVAL(aStuff,{|_1| FT_PUTKEY(_1)} )
 END
-#endif
 **********
 PROC SelectFlds()
-LOCAL _flds:={}
+LOCAL _flds:={},cSel
 
 AEval(m->__aDBStruct,{|el,_i| AADD(_flds,Pad(el[1],17)+;
 		el[2]+Padl(el[3],7)+Padl(el[4],6)+'  [x]')})
@@ -664,10 +703,9 @@ m->alSelect:=Ext_Arr(,m->__dfc,.T.)
 
 IF (ForAch(5,FLDS_SELECT,_flds,1,'H3')<>0) .AND.;
    (ASCAN(m->alSelect,.F.)<>0) .AND. (ASCAN(m->alSelect,.T.)<>0)
-	_flds:=''
-	AEVAL(m->alSelect,{|el,i| IF(el,_flds+=','+TRIM(m->__aDBSTRUCT[i,1]),NIL)})
-	_flds:=SUBSTR(_flds,2)
-	&_vars:=PAD(_flds,255)
+	cSel:=''
+	AEVAL(m->alSelect,{|el,i| IF(el,cSel+=','+TRIM(LEFT(_flds[i],17)),NIL) })
+	&_vars:=PAD(SUBSTR(cSel,2),255)
 	m->GetList[1]:UpdateBuffer()
 	KEYBOARD _END
 ELSE
@@ -688,6 +726,7 @@ BEGIN SEQUENCE
 	   TakeScopeFunc(COPYING,'_Cpc')
 
 		_bFor:=Compile(_Cpc)
+		_ckField:=ALLTRIM(_ckField)
 		IF i==1 //Usual DBF
 			IF EMPTY(_ckField)
 				__dbCopy( _Newfile, {}, _bFor ,,,,!EOF(), cRdd)
@@ -808,7 +847,10 @@ BEGIN SEQUENCE
 	ELSE
 		StripRight(@_var,':')
 		IF 'U' $ TYPE(_var) THEN Public &_var
-		&_var:=AKTION(Preproc(TRIM(_Init)))
+*		_Init:=Compile(Preproc(_Init))
+*		Nfind(_Init)
+*		&_var:=Aktion(_Init)
+		&_var:=Aktion(Compile(Preproc(_Init)))
 	ENDIF
 
     ENDIF
@@ -820,9 +862,10 @@ IF TakeScopeFunc(COUNTING,'_CountCond')
 	OpFinish(IT_RECS,m->__count)
 ENDIF
 **********
-PROC RestFor(cMsg,bEval)
+PROC RestFor(cMsg,bEval,cAddC)
+IF_NIL cAddc IS ''
 IF TakeScopeFunc(cMsg,'_DELCond') .AND. TryFLock()
-	BD_Dbeval( bEval, Compile(_DelCond))
+	BD_Dbeval( bEval, Compile(_DelCond+cAddC))
 	OpReady()
 	_req:=2
 ENDIF
@@ -851,25 +894,25 @@ BEGIN SEQUENCE
 
 		__dbSort( _Sortfile,;
 			 IF(EMPTY(_ckSort),{},SplitLine(_ckSort)),;
-			 Compile('_nCnt:=_nCnt+1,Meter(2,,_nCnt),'+_SortCond),;
-			 {||Inkey()<>K_ESC} )
+			 _SortCond)
 		CheckFound(.T.)
 	ENDIF
 END
 go _tmr
 **********
 PROC TotalFor()
-LOCAL _ik:=Indexkey(0)
-IF  Empty(_ik)
+IF  Empty(IndexKey(0))
 	Nfind(_noindex)
 ELSE
   BEGIN SEQUENCE
+	m->_TotalExpr:=Indexkey(0)
 	IF  GetName(PRV_ZIFN,'_TotalFile') .AND.;
 		TestWriteFile(@_TotalFile,'.DBF',.T.) .AND.;
+		GetName(EXPR_TOTAL,'_TotalExpr',,,.T.).AND.;
 		GetName(FLDS_TOTAL,'_cksort',,,.T.).AND.;
 		TakeScopeFunc(SUMMING,'_TotalCond')
 
-		__dbTotal( _Totalfile,Compile(_ik),;
+		__dbTotal( _Totalfile,Compile(_TotalExpr),;
 			 IF(EMPTY(_ckSort),{},SplitLine(_ckSort)),;
 			 Compile(m->_TotalCond))
 		CheckFound(.T.)
@@ -951,15 +994,16 @@ ELSE
 ENDIF
 **********
 FUNC SetTag(sposob, lForStruct)
-LOCAL aTag:={},cTagFull,aTagInfo,_i,aEl,fPrg:=ClearName()+'.TRG'
+LOCAL aTag:={},cTagFull,aTagInfo,_i,aEl,fPrg:=ClearName()+'.TRG',;
+	cName,cExpr,cCond,lUniq,nL:=__mcol-63
 PRIVATE lAgain
 IsTags()
 
-IF IndexCount()>=1 .AND. Sx_TagCount()=0	//Не в текущем каталоге или MDX
+IF IndexCount()>=1 .AND. Sx_TagCount(1)=0	//Не в текущем каталоге или MDX
 	OrdSetFocus(1,__CdxName)
 ENDIF
 
-IF SX_TagCount()=0
+IF SX_TagCount(1)=0
 	IF EMPTY(lForStruct) THEN NFIND(NO_ORDER)
 	RETURN ''
 ENDIF
@@ -979,24 +1023,31 @@ BEGIN SEQUENCE
 	cTagFull:="//"+_base+" TAGS"+_CRLF
 	FOR _i:=1 TO LEN(aTagInfo)
 		aEl:=aTagInfo[_i]
-		AADD(aTag,Pad(aEl[1],13)+Pad(aEl[2],44)+' '+Pad(aEl[3],16))
-		cTagFull+=(_CRLF+"INDEX ON "+TRIM(aEl[2]) + ";"+_CRLF+;
-			"      TAG "+aEl[1])
-		IF !EMPTY(aEl[3]) THEN;
-			 cTagFull+=(";"+_CRLF+"      FOR "+aEl[3])
-		IF aEl[4] THEN;
+		cName:=aEl[1]
+		cExpr:=aEl[2]
+		cCond:=aEl[3]
+		lUniq:=aEl[4]
+		Add2Choice(aTag,cName,13,cExpr+IF(lUniq,' <Unique>',''),45,;
+			   cCond,nL)
+		cTagFull+=(_CRLF+"INDEX ON "+TRIM(cExpr) + ";"+_CRLF+;
+			"      TAG "+cName)
+		IF !EMPTY(cCond) THEN;
+			 cTagFull+=(";"+_CRLF+"      FOR "+cCond)
+		IF lUniq THEN;
 			 cTagFull+=" UNIQ"
 	NEXT
 
 	_i:={||m->_L:=70,PrintArr(,TAG_HEAD,aTag)}
 	SetKey(K_SH_TAB,_i)
-	aTagInfo:=AchKeys(.T.,{ {_MSG_A_DS_F2,_i},;
-				{_MSG_A_DS_F3,{||AddTag(),m->lAchFinish:=.T.,m->lAgain:=.T.,__KeyBoard(_EMP)}},;
-				{_MSG_A_DS_F4,{|| MemoWrit(fPrg,cTagFull),;
+	aTagInfo:=AchKeys(.T.,{ {_MSG_A_ST_F2,_i},;
+				{_MSG_A_ST_F3,{||AddTag(),m->lAchFinish:=.T.,m->lAgain:=.T.,__KeyBoard(_EMP)}},;
+				{_MSG_A_ST_F4,{|| MemoWrit(fPrg,cTagFull),;
 						  File_Dial(fPrg)}},;
-				,,,;
-				{_MSG_A_DS_F8,},;
-				{_MSG_A_DS_F9,{||Configure()}},;
+				{_MSG_A_ST_F5,{||Reindex(),m->lAchFinish:=.T.,m->lAgain:=.T.,__KeyBoard(_EMP)}},;
+				{_MSG_A_ST_F6,{||ReBuildAll(),m->lAchFinish:=.T.,m->lAgain:=.T.,__KeyBoard(_EMP)}},;
+				,;
+				{_MSG_A_ST_F8,},;
+				{_MSG_A_ST_F9,{||Configure()}},;
         			};
 			  )
 	IF EMPTY(lForStruct) .AND. ;
@@ -1017,40 +1068,93 @@ __tagName:=OrdName()
 _req:=2
 RETURN cTagFull
 **********
-PROC AddTag()
-LOCAL nRec:=0, _if, _ifb
+PROC Add2Choice(aTag,c1,n1,c2,n2,c3,n3)
+AADD(aTag,PAD(c1,n1)+PAD(c2,n2)+PAD(c3,n3))
+WHILE LEN(c2)>n2 .OR. LEN(c3)>n3
+	c2:=SUBSTR(c2,n2+1)
+	c3:=SUBSTR(c3,n3+1)
+	AADD(aTag,PAD('>',n1)+PAD(c2,n2)+PAD(c3,n3))
+ENDDO
+**********
+PROC RebuildAll(lObligate)
+LOCAL aTagInfo,_i,aEl,scr,oldTag:=__TagName,oldNom:=__TagNom
 IsTags()
-__tagname:=_NewInd:=RealFldName(_c_f)
-IF GetName(_Give+TAG_NAME,'__tagName') .AND.;
+IF EMPTY(lObligate) .AND. !Continue(NEED_REBUILD)
+	RETURN
+ENDIF
+OrdSetFocus(1,__CdxName)
+IF SX_TagCount()=0
+	NFIND(NO_ORDER)
+	RETURN
+ENDIF
+aTagInfo:=TagInfo()
+BEGIN SEQUENCE
+	USE
+	FERASE(__CdxName)
+	MainUse(M_EXCL,.T.)
+	OrdSetFocus(1,__CdxName)	//Какой-то нужен для Kill
+*	Sx_KillTag(.t.)
+
+	FOR _i:=1 TO LEN(aTagInfo)
+		aEl:=aTagInfo[_i]
+		IF !aEl[6]	//RYO не перестраиваем
+			ScrSave(@scr)
+			AddTag(aEl[1],aEl[2],aEl[3],aEl[4],aEl[5])
+			ScrRest(scr)
+		ENDIF
+	NEXT
+	CheckFound(.T.)
+RECOVER
+	ElseUse()
+END
+__tagName:=oldTag
+__tagNom:=oldNom
+**********
+PROC AddTag(cTagName,cOn,cFor,lUniq,lDescend)
+LOCAL nRec:=0, _if, _ifb, lUniqSave:=Set(_SET_UNIQUE)
+IsTags()
+IF PCOUNT()=0
+	__tagname:=_NewInd:=RealFldName(_c_f)
+	IF !(GetName(_Give+TAG_NAME,'__tagName') .AND.;
 	   GetName(_Give+_Iv,'_newInd') .AND.;
 	   GetName(_ZU+F_INDEXING,'_indexFor') .AND.;
-	   GetName(_ZIF,'__cdxName')
-
-	_newind:=Rtrim(_newInd) ; _indexFor:=Rtrim(_indexFor) ;__cdxName:=Rtrim(__CdxName)
+	   GetName(_ZIF,'__cdxName'))
+		RETURN
+	ENDIF
+	_newind:=Rtrim(_newInd)
+	_indexFor:=Rtrim(_indexFor)
+	__cdxName:=Rtrim(__CdxName)
 	__tagName:=Rtrim(__tagName)
 	Set(_SET_UNIQUE,Continue(IS_UNIQ))
+ELSE
+	__TagName:=cTagName
+	_newInd:=cOn
+	_IndexFor:=cFor
+	Set(_SET_UNIQUE,lUniq)
+ENDIF
 
-	TimerOn()
-	Meter(1,INDEXING,,LASTREC())
-	BEGIN SEQU
-		IF !EMPTY(_IndexFor)
-			_if:=_IndexFor
-			_ifb:={|| &_IndexFor}
-		ENDIF
-*		IF EMPTY(_If) THEN _If:='.T.'
-		ordCondSet( _if, _ifb, , , {||Meter(2,,(nRec:=nRec+10))},;
-			  10 , RECNO())
-		ordCreate( __cdxName, __TagName, _newInd, {|| &_newInd}, )
+TimerOn()
+Meter(1,INDEXING,,LASTREC())
+BEGIN SEQU
+	IF !EMPTY(_IndexFor)
+		_if:=_IndexFor
+		_ifb:={|| &_IndexFor}
+	ENDIF
 
-*		INDEX ON &_NewInd TAG &__TagName TO &__cdxName;
-*			FOR &_if  EVERY 10 EVAL Meter(2,,(nRec:=nRec+10))
-		__TagNom:=Sx_TagCount(1)
-	END
-	_tally:=KeyCount()
-	IF !MGoTo(_tmr) THEN GO TOP
-	CheckFound(.T.)
-	_req:=0
+	ordCondSet( _if, _ifb, , , {||Meter(2,,(nRec:=nRec+_sx_step))},;
+		  _sx_step, RECNO(), , , , lDescend)
+	ordCreate( __cdxName, __TagName, _newInd, {|| &_newInd}, )
+
+*	INDEX ON &_NewInd TAG &__TagName TO &__cdxName;
+*		FOR &_if  EVERY _sx_step EVAL Meter(2,,(nRec:=nRec+_sx_step))
+	__TagNom:=Sx_TagCount(1)
 END
+_tally:=KeyCount()
+IF !MGoTo(_tmr) THEN GO TOP
+IF PCOUNT()=0 THEN CheckFound(.T.)
+_req:=0
+
+Set(_SET_UNIQUE,lUniqSave)
 **********
 PROC DelTag(sposob,nTag)
 LOCAL aTag:={},aTagInfo,_i, oldTag, cDelTag
@@ -1058,7 +1162,7 @@ IsTags()
 IF IndexCount()>=1 .AND. Sx_TagCount()=0	//Не в текущем каталоге или MDX
 	OrdSetFocus(1,__CdxName)
 ENDIF
-IF SX_TagCount()=0 THEN ReturnMess(NO_ORDER)
+IF SX_TagCount(1)=0 THEN ReturnMess(NO_ORDER)
 IF_NIL sposob IS 3
 BEGIN SEQUENCE
   oldTag:=OrdName()
@@ -1100,11 +1204,14 @@ go _tmr
 **********
 PROC SetCdx()
 LOCAL _i,aName,cName,iExt
-IsTags()
+*IsTags()
 iExt:=m->_DefaultCdx
+IF EMPTY(iExt)
+	RETURN
+ENDIF
 BEGIN SEQUENCE
 	aName:=Filer('*'+iExt,INDEX_CHOICE,{|el|Cdx_An(el)},;
-		     {_zi,'■ No Index'},,{|_1|Ascan(_1,__cdxName)})
+		     {_zi,L_A_SIGN+[ No Index]},,{|_1|Ascan(_1,__cdxName)})
 	IF aName[1]<>0
 		cName:=aName[2]
 		IF aName[3] .AND. cName==_zi
@@ -1133,16 +1240,12 @@ RECOVER
 END
 **********
 FUNC Cdx_An(aName)
-LOCAL _handle,cRet:=UPPER(aName[1])
+LOCAL _handle,cRet:=PAD(UPPER(aName[1]),16)
 IF aName[1]=Sx_IndexName()
-	cRet:=' √ '+PAD(cRet,16)
-
-ELSEIF ((_handle:=FOPEN(aName[1],64))<0) .OR.;
-	OpenFileSize(_handle) < 3072
-	cRet:=PAD(cRet,16)+INDEX_CORRUPT
-ELSE
-	cRet:=PAD(cRet,16)
-EndIF
+	cRet += ' √ '
+ELSEIF ((_handle:=FOPEN(aName[1],64))<0) .OR. OpenFileSize(_handle) < 3072
+	cRet += INDEX_CORRUPT
+ENDIF
 FCLOSE(_handle)
 RETURN cRet
 **********
@@ -1214,7 +1317,7 @@ DO CASE
 		_ClipText[1] /= _val
 
 	CASE sposob=8	//Для ввода в GET и MEMO
-		ALLTRIM(Medi(GetClipBoard(),4096,''))
+		RETURN ALLTRIM(Medi(GetClipBoard(),4096,''))
 
 ENDCASE
 **********
@@ -1295,91 +1398,98 @@ ELSE
 	CheckFound()
 ENDIF
 **********
-PROC GlobFind()
-LOCAL _tmp,_i,scr
-STATIC cSrch,lCase:=.T.
-*ScrSave(@scr)
+PROC GlobFind(lExp)
+LOCAL _tmp,_i
+STATIC cSrch,lCase:=.T.,cAddCond
 
-BEGIN SEQU
+BEGIN SEQUENCE
 	IF IsShift().AND.!EMPTY(cSrch)	// С Shift- продолжение поиска
 		SKIP
-	ELSEIF GetName(_ZE+GLOB_FIND,'_GSearch') .AND.;
-	   (cSrch:=ALLTRIM(_gSearch))<>''
-		lCase:=IF( TYPE(m->_GSearch) $ 'CU',;
+	ELSEIF GetName(_ZE+GLOB_FIND,'_GSearch',,,,,,@cSrch) ;
+	       .AND. !EMPTY(cSrch)
+
+		cSrch:=IF( LASTKEY()==K_CTRL_W .OR. !EMPTY(lExp),;
+				Aktion(Compile(_gSearch)),;
+				ALLTRIM(cSrch))
+
+		lCase:=IF( TYPE(cSrch) $ 'CU',;
 				CONTINUE(_MSG_A_CASE_SENSITIVE),;
 				.T. )
+
+		IF !(m->_lGFCond .AND.;
+		     GetName(_MSG_A_GFCOND,'_GFCond',,,,,,@cAddCond))
+			cAddCond:=NIL
+		ENDIF
 	ELSE
 		BREAK
 	ENDIF
 
-	IniSearching((DbfDskSize()-Header())/RecSize())
-	_tmp:=GlobalFind(cSrch,lCase)
-	Meter(3)
-	IF  _tmp = 0
-		OpFinish(_NFD)
-	ELSE
-		IF MGoTo(INT(_tmp))
-			*_gSearch:=&_gSearch
-			IF !lCase THEN cSrch:=UPPER(cSrch)
-			FOR _i=1 to _Fc
-				IF  Ascan(_dubl,ALLTRIM(_tmp:=_Pole[_i]))#0
-				    _tmp:=IF( _Ftype[_i] $ 'NF',;
-						PADL(&_tmp,_FLen[_i]),;
-						_tmp:=XTOC(&_tmp,'C') )
+	IniSearching( (LASTREC() - RecNo())*RecSize() - Header() )
 
-				    IF !lCase THEN _tmp:=UPPER(_tmp)
-				    IF cSrch $ _tmp THEN EXIT
-				ENDIF
-			NEXT
-			_req:=2
-			m->_Tally:=RECNO()
-			OpReady()
-			IF _i<=_fc THEN;
-				keyb(_CTRLHOME+REPL(_RIGHT,_i-1))
-		ENDIF
+	__Dbsetfou( GlobalFind(cSrch,lCase,cAddCond) )
+	CheckFound()
+	IF FOUND()
+		IF EMPTY(lCase) THEN cSrch:=UPPER(cSrch)
+		FOR _i=1 to _Fc
+			IF  Ascan(_dubl,ALLTRIM(_tmp:=_Pole[_i]))#0
+			    _tmp:=IF( _Ftype[_i] $ 'NF',;
+					PADL(&_tmp,_FLen[_i]),;
+					_tmp:=XTOC(&_tmp,'C') )
+
+			    IF EMPTY(lCase) THEN _tmp:=UPPER(_tmp)
+			    IF cSrch $ _tmp THEN EXIT
+			ENDIF
+		NEXT
+		_req:=2
+		IF _i<=_fc THEN KEYB(_CTRLHOME+REPL(_RIGHT,_i-1))
 	ENDIF
-END SEQU
-*ScrRest(scr)
+END SEQUENCE
 **********
-FUNC GlobalFind(cSearch,lCase)
-#define FilePos() Fseek(_MainHandle,0,1)
+FUNC GlobalFind(cSearch,lCase,cAddCond)
+#define FilePos() FSeek(_MainHandle,0,1)
 #define BufSize 16384
-LOCAL cString:=space(BufSize),nCPos,nSize,nBytes, nSearch,nAtPos,nCur:=RECNO(),;
-	_MainHandle:=FOPEN(m->_base, 64)
+LOCAL cString:=SPACE(BufSize),nCPos,nSize,nBytes,nSearch,nAtPos,;
+	nCur:=RECNO(),nInit,nAt, _MainHandle:=FOPEN(m->_base, 64)
 IF (nSearch:=Len(cSearch))#0
-  IF !lCase THEN cSearch:=UPPER(cSearch)
-
-  Fseek(_MainHandle,Header()+RecSize()*(Recno()-1))
-  nCPos:=FilePos() ; nSize:=DbfDskSize()
+  IF EMPTY(lCase) THEN cSearch:=UPPER(cSearch)
+  nInit:=Header()+RecSize()*(nCur-1)
+  FSeek(_MainHandle, nInit)
+  nCPos:=FilePos() ; nSize:=FSeek(_MainHandle, 0, 2)	//DbfDskSize()
 
   DO WHILE InKey()#K_ESC .AND. (nSize - nCpos)>nsearch
-	Meter(2,,INT((ncPos-Header())/RecSize()))
-	nBytes:=Fread(_MainHandle,@cString,BufSize)
-	IF !lCase THEN	cString:=UPPER(cString)
-	IF (nAtPos:=AT(cSearch,cString))#0 		// найдено !
-		nAtPos:=1+(ncPos+nAtPos-Header())/RecSize()
-		_Tally:=nAtPos-nCur+1
-		FCLOSE(_MainHandle)
-		RETU nAtPos
+	Meter(2,,INT( (nCPos-Header() - nInit) /RecSize()) )
+	nBytes:=FRead(_MainHandle,@cString,BufSize)
+	IF EMPTY(lCase) THEN	cString:=UPPER(cString)
+	IF (nAt:=AT(cSearch,cString))#0
+		nAtPos:=INT(1+(nCPos+nAt-Header())/RecSize())
+		IF MGoTo(nAtPos) .AND. Eval(Compile(cAddCond))	// найдено !
+			_Tally:=nAtPos-nCur+1
+			FCLOSE(_MainHandle)
+			RETU .T.
+		ELSE	//не в фильтре или условие не то
+			nBytes:=nAt+nSearch
+		ENDIF
+
 	ENDIF
-	nCpos+=nBytes - nSearch + 1
-	Fseek(_MainHandle,nCPos)
+	nCPos+=nBytes - nSearch + 1
+	FSeek(_MainHandle,nCPos)
+
   ENDDO
   _Tally:=LASTREC()-nCur+1
 ENDIF
 FCLOSE(_MainHandle)
-RETU 0
+RETU .F.
 **********
 PROC CalcExpr
-LOCAL xRes
-IF GetName(_ZE+CALC_EXPR,'_Econd')
+LOCAL xRes,cInp
+IF GetName(_ZE+CALC_EXPR,'_Econd', , , , , , @cInp)
    BEGIN SEQUENCE
 	TimerOn()
-	xRes:=__Go:=AKTION(Preproc(_Econd))	//in common.prg
+	xRes:=__Go:=Aktion(Compile(_Econd))	//in common.prg
 	IF VALTYPE(xRes)=='C' THEN xRes:='"'+xRes+'"'
-	Nfind(xRes,__go,, RESULT_IS + TRIM(_econd))
+	Nfind(xRes,__go,, RESULT_IS + TRIM(cInp),(Seconds()-_tOld>3))
+	_Econd:=cInp
   END
-  xRes:=NIL
 ENDIF
 **********
 PROC Chg_Recs(nWhere)
@@ -1411,6 +1521,8 @@ RETURN Sx_EnCrypt(cStr,cPsw)
 FUNC DeCryptStr(cStr,cPsw)
 IF_NIL cPsw IS ''
 RETURN Sx_DeCrypt(cStr,cPsw)
+#xtranslate SX_DBFEncrypt(<cPsw>) => .T.
+#xtranslate SX_DBFDecrypt(<cPsw>) => .T.
 **********
 FUNC CryptBase(cBase,cPsw)
 LOCAL res
@@ -1441,7 +1553,6 @@ PROC MFiler()
 LOCAL aView:={, {_MSG_A_MF_F3,{||m->__mfAct:=3,__KeyBoard(_ENTER)}},;
 		{_MSG_A_MF_F4,{||m->__mfAct:=4,__KeyBoard(_ENTER)}},;
 		,,,,,;
-		{_MSG_A_MF_F10,{||m->__mfAct:=10,__KeyBoard(_ENTER)}};
 		}
 LOCAL aFile,cFile:='',i
 DO WHILE .T.
@@ -1452,10 +1563,7 @@ DO WHILE .T.
 		IF m->__mfAct=4
 			ModiFile(cFile)
 		ELSEIF m->__mfAct=3
-			ViewFile(cFile,,.F.)
-		ELSEIF m->__mfAct=10
-			i:=Description(cFile)
-			NFind(IF(EMPTY(i),_MSG_A_MF_DSCR,i))
+			ViewFiles(cFile,,.F.)
 		ELSE
 			ShowFile(cFile)
 		ENDIF
@@ -1573,7 +1681,7 @@ BEGIN SEQU
     dbSize:=DbfSize()	//Надо определить до эксклюзивного открытия
     nRec:=LASTREC()
     MainUse(M_EXCL)
-    _MainHandle:=FOPEN(m->base, 64)
+    _MainHandle:=FOPEN(m->base, 2)
 
     BEGIN SEQU
 
@@ -1618,7 +1726,7 @@ END
 **********
 FUNC SelectBase
 LOCAL aNames,cFile
-aNames:=Filer(m->_mask,SELECT_BASE,,{_zi},,{|_1|Ascan(_1,m->_base)})
+aNames:=Filer(m->_mask,SELECT_BASE,,{_zi},,{|_1|Ascan(_1,{|_a|UPPER(_a)==UPPER(m->_base)} )})
 IF aNames[1]#0
 	IF aNames[3]		// задать файл
 		m->_dbfc=''
@@ -1695,7 +1803,7 @@ IF GetName(_ZU+_txt+IF(EMPTY(lRest),EMPTY_IS_ALL,''),_varu) .AND.;
 		IF (cSkl:=Substr(_txt,-1)) $ 'яи'
 			_txt:=CHG_EXT(_txt,1,IF(cSkl='я','е','а'))
 		ELSE
-			_txt:=SUBSTR(_txt,1,LEN(_txt)-1)
+			_txt:=LEFT(_txt,LEN(_txt)-1)
 		ENDIF
 	#ENDIF
 
@@ -1708,4 +1816,14 @@ ENDIF
 RETU .f.
 **********
 FUNC TakeScopeFunc(_txt,_varu,lRest)
-RETU TakeScope() .AND. MakeFunc(_txt,_varu,lRest)
+RETU TakeScope(_txt) .AND. MakeFunc(_txt,_varu,lRest)
+**********
+/*
+PROC CallSite
+#IFDEF ENGLISH
+	#define URL "http://www.geocities.com/bondar_eugen/bdbfsmain.htm"
+#ELSE
+	#define URL "http://www.geocities.com/bondar_eugen/bdbfs_ru.htm"
+#ENDIF
+BliRun ("Start "+URL)
+*/

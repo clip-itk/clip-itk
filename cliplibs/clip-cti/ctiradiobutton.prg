@@ -8,8 +8,6 @@
 /* CTI_RADIOBUTTON - button */
 
 #include "cti.ch"
-#include "ctiradiogroup.ch"
-#include "ctievents.ch"
 
 #include "inkey.ch"
 
@@ -24,7 +22,6 @@ function cti_radiobutton_new(Caption,group)
 	obj:__mark_symbol	:= "*"
 
 	obj:__real_draw		:= @cti_radiobutton_real_draw()
-	obj:__handle_event	:= @cti_radiobutton_handle_event()
 	obj:get_value		:= {|_obj|_obj:value}
 	obj:set_value		:= @cti_radiobutton_set_value()
 	obj:set_caption		:= @cti_radiobutton_set_caption()
@@ -39,6 +36,8 @@ function cti_radiobutton_new(Caption,group)
 	if group!=nil
 		obj:set_group(group)
 	endif
+
+	obj:set_key(K_SPACE, {|_obj|_obj:set_value(TRUE)})
 return obj
 
 static function cti_radiobutton_real_draw(obj)
@@ -103,14 +102,4 @@ return
 static function cti_radiobutton_set_mark_symbol(obj,markSymbol)
 	obj:__mark_symbol := iif(valtype(markSymbol)=="C",padr(markSymbol,1),"*")
 	obj:draw_queue()
-return
-
-static function cti_radiobutton_handle_event(obj,event)
-***********************************************
-	if event:type != CTI_KEYBOARD_EVENT; return .F.; endif
-
-	switch (event:keycode)
-		case K_SPACE
-		obj:set_value(TRUE)
-	end
 return

@@ -21,7 +21,7 @@ FUNCTION Main()
    DEFINE BUTTON OF oBar                                        ;
       FILE "bitmaps/Info.bmp"                                ;
       TOOLTIP "Test"						;
-      ACTION MsgAlert("Test button pressed")
+      ACTION (oWnd:say(3, 3, cGetFile("*.*", "")))
 
    DEFINE BUTTON OF oBar                                        ;
       FILE "bitmaps\Exit.bmp"                                ;

@@ -1,8 +1,44 @@
 /*
 	$Log: odbc_clip.c,v $
+	Revision 1.20  2004/04/09 10:43:49  clip
+	rust: minor fix
+	
+	Revision 1.19  2004/02/26 12:59:55  clip
+	rust: bindpars with NIL
+
+	Revision 1.18  2003/06/09 13:10:14  clip
+	rust: multiple column PRIMARY KEY as row ID
+
+	Revision 1.17  2003/04/29 08:51:12  clip
+	rust: small fixes
+
+	Revision 1.16  2003/04/09 08:48:09  clip
+	rust: increase loaded rows counter on append
+
+	Revision 1.15  2003/03/12 12:49:36  clip
+	rust: tasks share SQL drivers
+
+	Revision 1.14  2003/02/15 11:16:50  clip
+	rust: SQLFieldType() -> SQLFieldTypeSQL()
+
+	Revision 1.13  2003/02/12 14:56:41  clip
+	rust: small fix
+
+	Revision 1.12  2002/12/25 14:45:08  clip
+	rust: driver registration changed
+
+	Revision 1.11  2002/12/21 11:34:05  clip
+	rust: small fixes
+
+	Revision 1.10  2002/11/25 11:13:46  clip
+	rust: transactions
+
+	Revision 1.9  2002/11/24 14:31:07  clip
+	rust: transactions and smart rows fetching
+
 	Revision 1.8  2002/08/21 10:13:30  clip
 	rust: firebird required some changes
-	
+
 	Revision 1.7  2002/07/04 15:46:46  clip
 	rust: orders in TRowset
 
@@ -57,15 +93,18 @@
 					rowset->fields[i].type == SQL_LONGVARBINARY || \
 					rowset->fields[i].type == SQL_LONGVARCHAR)
 
-static const char subsys[] = "DBFSQL";
-static const char er_connect[] = "Can't connect to database server";
-static const char er_nosql[] = "No SQL statement";
-static const char er_nostatement[] = "No statement (not prepared)";
-static const char er_norowset[] = "No such rowset";
+static const char subsys[]          = "DBFSQL";
+static const char er_connect[]      = "Can't connect to database server";
+static const char er_nosql[]        = "No SQL statement";
+static const char er_nostatement[]  = "No statement (not prepared)";
+static const char er_norowset[]     = "No such rowset";
 static const char er_badstatement[] = "Bad statement";
-static const char er_execute[] = "Execution error";
+static const char er_execute[]      = "Execution error";
 static const char er_createrowset[] = "Fetching data error";
-static const char er_refresh[] = "Refreshing row data error";
+static const char er_refresh[]      = "Refreshing row data error";
+static const char er_start[]        = "Can't start transaction";
+static const char er_commit[]       = "Can't commit transaction";
+static const char er_rollback[]     = "Can't roll transaction back";
 
 int odbc_createconn(ClipMachine * mp);
 
@@ -73,7 +112,6 @@ struct ODBC_CONN;
 
 typedef struct ODBC_STMT
 {
-	struct ODBC_STMT *next;
 	int stmt_item;
 	struct ODBC_CONN *conn;
 	char *sql;
@@ -86,19 +124,26 @@ typedef struct ODBC_ROWSET
 {
 	int rowset_item;
 	struct ODBC_CONN *conn;
-	struct ODBC_ROWSET *next;
+	struct ODBC_STMT *stmt;
 	int recno;
 	int lastrec;
+	int loaded;
+	int unknownrows;
+	int done;
 	int bof;
 	int eof;
 	int nfields;
 	SQLFIELD *fields;
 	int id;
+	int nids;
+	int* ids;
 	HashTable* orders;
 	long* taghashes;
 	int ntags;
 	BTREE* bt;
 	struct tagSQLORDER* curord;
+	int hot;
+	int newrec;
 	void ***data;
 }
 ODBC_ROWSET;
@@ -107,9 +152,8 @@ ODBC_ROWSET;
 typedef struct ODBC_CONN
 {
 	SQLVTBL *vtbl;
-	ODBC_STMT *stmts;
-	ODBC_ROWSET *rowsets;
 	SQLLocale* loc;
+	int at;
 	SQLHDBC conn;
 	SQLHENV henv;
 	char postgres;
@@ -119,14 +163,18 @@ ODBC_CONN;
 void odbc_destroyconn(SQLCONN * conn);
 int odbc_prepare(ClipMachine * mp, SQLCONN * conn, char *sql);
 int odbc_command(ClipMachine * mp, SQLSTMT * stmt, ClipVar * ap);
-int odbc_createrowset(ClipMachine * mp, SQLROWSET* rs, SQLSTMT * stmt, ClipVar * ap,const char* idname,const char* gen_idSQL);
+int odbc_createrowset(ClipMachine * mp, SQLROWSET* rs, ClipVar * ap,ClipVar* idname,const char* gen_idSQL);
 char *odbc_testparser(ClipMachine * mp, char * sql, ClipVar * ap);
 char *odbc_getvalue(SQLROWSET * rowset, int fieldno, int *len);
 void odbc_setvalue(SQLROWSET * rowset, int fieldno, char *value, int len);
 void odbc_append(SQLROWSET * rowset);
 void odbc_delete(SQLROWSET * rowset);
 void odbc_newid(ClipMachine * mp, SQLSTMT * stmt);
-int odbc_refresh(ClipMachine* mp,SQLROWSET* rowset,SQLSTMT* stmt,ClipVar* ap,const char* idname);
+int odbc_refresh(ClipMachine* mp,SQLROWSET* rowset,SQLSTMT* stmt,ClipVar* ap);
+int odbc_start(ClipMachine* mp,SQLCONN* conn,const char* p1,const char* p2);
+int odbc_commit(ClipMachine* mp,SQLCONN* conn);
+int odbc_rollback(ClipMachine* mp,SQLCONN* conn);
+int odbc_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors);
 
 static SQLVTBL vtbl =
 {
@@ -142,15 +190,19 @@ static SQLVTBL vtbl =
 	odbc_delete,
 	odbc_newid,
 	odbc_refresh,
-	NULL
+	NULL,
+	odbc_start,
+	odbc_commit,
+	odbc_rollback,
+	odbc_fetch
 };
 
 int odbc_error(ClipMachine* cm,SQLLocale* loc,SQLHENV henv,SQLHDBC hdbc,SQLHSTMT hstmt,int line,const char* er_){
 	char state[6];
 	SQLINTEGER native;
-	char error[MAX_ERROR_MESSAGE_LEN];
+	char error[MAX_ERROR_MESSAGE_LEN+1];
 	SQLSMALLINT errlen;
-	char err[MAX_ERROR_MESSAGE_LEN];
+	char err[MAX_ERROR_MESSAGE_LEN+1];
 	int u;
 	char *r,*c,*e;
 
@@ -175,8 +227,14 @@ int odbc_error(ClipMachine* cm,SQLLocale* loc,SQLHENV henv,SQLHDBC hdbc,SQLHSTMT
 	return -1;
 }
 
-int clip_INIT_ODBC(ClipMachine* cm){
-	cm->odbc_connect = odbc_createconn;
+int clip_INIT_ODBC(ClipMachine* mp){
+	(*mp->nsqldrivers)++;
+	*mp->sqldrivers = realloc(*mp->sqldrivers,sizeof(SQLDriver)*(*mp->nsqldrivers));
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].id,"ODBC");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].name,"ODBC manager");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].desc,
+		"Generic ODBC for CLIP driver v.1.0");
+	(*mp->sqldrivers)[*mp->nsqldrivers-1].connect = odbc_createconn;
 	return 0;
 }
 
@@ -205,7 +263,7 @@ static void destroy_odbc_rowset(void* rs){
 			free(rowset->fields);
 		}
 		if(rowset->data){
-			for(i=0;i<rowset->lastrec;i++){
+			for(i=0;i<rowset->loaded;i++){
 				for(j=0;j<rowset->nfields;j++){
 					if(rowset->data[i][j]){
 						free(rowset->data[i][j]);
@@ -221,8 +279,7 @@ static void destroy_odbc_rowset(void* rs){
 }
 
 void
-odbc_bindpars(ODBC_STMT * stmt, ClipVar * ap)
-{
+odbc_bindpars(ODBC_STMT* stmt,ClipVar* ap){
 	char* sql = stmt->sql;
 	int initlen = strlen(sql);
 	int len = initlen;
@@ -246,24 +303,22 @@ odbc_bindpars(ODBC_STMT * stmt, ClipVar * ap)
 		tp = _clip_vptr(&ap->a.items[i]);
 		vp = _clip_vptr(&tp->a.items[1]);
 		tp = _clip_vptr(&tp->a.items[0]);
-		if(vp->t.type == CHARACTER_t){
-			strcpy(parname,tp->s.str.buf);
-			b = sql;
-			while((b = strstr(b,parnamebuf))){
-				if(!(strchr(delims,*(b+tp->s.str.len+1)) || !(*(b+tp->s.str.len+1)))){
-					b++;
-					continue;
-				}
-				e = strpbrk(b,delims);
-				if(e){
-					if(e-b==strlen(parnamebuf)){
-						len += strlen(vp->s.str.buf) - (e - b);
-					}
-				} else {
-					len += strlen(vp->s.str.buf) - (initlen - (b-sql));
-				}
+		strcpy(parname,tp->s.str.buf);
+		b = sql;
+		while((b = strstr(b,parnamebuf))){
+			if(!(strchr(delims,*(b+tp->s.str.len+1)) || !(*(b+tp->s.str.len+1)))){
 				b++;
+				continue;
 			}
+			e = strpbrk(b,delims);
+			if(e){
+				if(e-b==strlen(parnamebuf)){
+					len += (vp->t.type==CHARACTER_t)?strlen(vp->s.str.buf):4 - (e - b);
+				}
+			} else {
+				len += (vp->t.type==CHARACTER_t)?strlen(vp->s.str.buf):4 - (initlen - (b-sql));
+			}
+			b++;
 		}
 	}
 	t = res = malloc(len+1);
@@ -287,6 +342,9 @@ odbc_bindpars(ODBC_STMT * stmt, ClipVar * ap)
 		if(vp->t.type == CHARACTER_t){
 			strcpy(t,vp->s.str.buf);
 			t += strlen(vp->s.str.buf);
+		} else {
+			strcpy(t,"null");
+			t += 4;
 		}
 	}
 	if(t!=&res[len] && b){
@@ -361,8 +419,6 @@ int odbc_prepare(ClipMachine* cm,SQLCONN* c,char* sql){
 	stmt->sql = strdup(sql);
 
 	stmt->conn = conn;
-	stmt->next = conn->stmts;
-	conn->stmts = stmt;
 
 	return stmt->stmt_item;
 }
@@ -392,14 +448,48 @@ char* odbc_testparser(ClipMachine* mp,char* sql,ClipVar* ap){
 	return stmt.sql;
 }
 
-int odbc_createrowset(ClipMachine* cm,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname,const char* gen_idSQL){
-	ODBC_STMT* stmt = (ODBC_STMT*)s;
-	SQLRETURN er;
+static char _odbc_ctype(int type){
+	switch(type){
+		case SQL_CHAR:
+		case SQL_VARCHAR:
+		case SQL_LONGVARCHAR:
+		case SQL_BINARY:
+		case SQL_VARBINARY:
+		case SQL_LONGVARBINARY:
+			return 'C';
+
+		case SQL_NUMERIC:
+		case SQL_DECIMAL:
+		case SQL_INTEGER:
+		case SQL_SMALLINT:
+		case SQL_FLOAT:
+		case SQL_REAL:
+		case SQL_DOUBLE:
+		case SQL_BIGINT:
+		case SQL_TINYINT:
+			return 'N';
+
+		case SQL_DATE:
+			return 'D';
+
+		case SQL_TIME:
+		case SQL_TIMESTAMP:
+			return 'T';
+
+		case SQL_BIT:
+		case SQL_GUID:
+			break;
+	}
+	return 'U';
+}
+
+int odbc_createrowset(ClipMachine* cm,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,const char* gen_idSQL){
 	ODBC_ROWSET* rowset = (ODBC_ROWSET*)rs;
+	ODBC_STMT* stmt = rowset->stmt;
+	SQLRETURN er;
 	SQLSMALLINT cols;
 	SQLINTEGER nullable;
 	int i;
-	void** rec;
 
 	odbc_bindpars(stmt,ap);
 	if((er = SQLAllocStmt(stmt->conn->conn,&stmt->hstmt))) goto err;
@@ -421,6 +511,7 @@ int odbc_createrowset(ClipMachine* cm,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const
 		if((er = SQLColAttributes(stmt->hstmt,i+1,
 			SQL_COLUMN_TYPE,0,0,0,(SQLPOINTER)&rowset->fields[i].type)))
 			goto err;
+		rowset->fields[i].ctype[0] = _odbc_ctype(rowset->fields[i].type);
 		if((er = SQLColAttributes(stmt->hstmt,i+1,
 			SQL_COLUMN_LENGTH,0,0,0,(SQLPOINTER)&rowset->fields[i].buflen)))
 			goto err;
@@ -447,9 +538,26 @@ int odbc_createrowset(ClipMachine* cm,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const
 		}
 		if(rowset->fields[i].type == SQL_LONGVARBINARY)
 			rowset->fields[i].buflen *= 2;
-		if(idname && strcasecmp(rowset->fields[i].name,idname)==0){
-			rowset->id = i;
+
+		if(idname->t.type == CHARACTER_t){
+			if(idname->s.str.buf && !strcasecmp(rowset->fields[i].name,idname->s.str.buf)){
+				rowset->id = i;
+				rowset->nids = 1;
+			}
+		} else if(idname->t.type == ARRAY_t){
+			int j;
+			for(j=0;j<idname->a.count;j++){
+				ClipVar* vp = idname->a.items+j;
+				if(vp->t.type == CHARACTER_t && vp->s.str.buf
+					&& !strcasecmp(rowset->fields[i].name,vp->s.str.buf)){
+
+					rowset->nids++;
+					rowset->ids = realloc(rowset->ids,rowset->nids*sizeof(int));
+					rowset->ids[rowset->nids-1] = i;
+				}
+			}
 		}
+
 		if(rowset->fields[i].type == SQL_BINARY ||
 			rowset->fields[i].type == SQL_VARBINARY ||
 			rowset->fields[i].type == SQL_LONGVARBINARY)
@@ -457,32 +565,14 @@ int odbc_createrowset(ClipMachine* cm,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const
 	}
 	rowset->lastrec = 0;
 	rowset->data = malloc(sizeof(void*)*rowset->lastrec);
-
-	do {
-		rec = malloc(sizeof(void*)*rowset->nfields);
-		for(i=0;i<rowset->nfields;i++){
-			rec[i] = malloc(rowset->fields[i].buflen+4+_TERM_ZERO);
-			if((er = SQLBindCol(stmt->hstmt,i+1,SQL_DEFAULT,
-				rec[i]+4,rowset->fields[i].buflen+_TERM_ZERO,rec[i]))) goto err;
-		}
-		rowset->data = realloc(rowset->data,sizeof(void*)*(rowset->lastrec+1));
-		rowset->data[rowset->lastrec] = rec;
-		rowset->lastrec++;
-	} while (!(er = SQLFetch(stmt->hstmt)));
-	if(er != SQL_NO_DATA)
-		goto err;
-	rowset->lastrec--;
-	for(i=0;i<rowset->nfields;i++)
-		free(rec[i]);
-	free(rec);
-	rowset->data = realloc(rowset->data,sizeof(void*)*rowset->lastrec);
+	rowset->unknownrows = 1;
 	return 0;
 err:
 	odbc_error(cm,stmt->conn->loc,0,stmt->conn->conn,stmt->hstmt,__LINE__,er_createrowset);
 	return 1;
 }
 
-int odbc_refresh(ClipMachine* cm,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname){
+int odbc_refresh(ClipMachine* cm,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap){
 	ODBC_STMT* stmt = (ODBC_STMT*)s;
 	SQLRETURN er;
 	ODBC_ROWSET* rowset = (ODBC_ROWSET*)rs;
@@ -560,6 +650,7 @@ odbc_append(SQLROWSET * rs)
 	void **row;
 
 	rowset->lastrec++;
+	rowset->loaded++;
 	rowset->data = realloc(rowset->data,sizeof(void*) * rowset->lastrec);
 
 	row = calloc(rowset->nfields,sizeof(void*));
@@ -734,6 +825,125 @@ int clip_ODBC_OUT_BLOB(ClipMachine* mp){
 		_clip_retc(mp,"");
 	}
 	return 0;
+}
+
+/* ----------------------------------------------------------------------- */
+
+int odbc_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors){
+	ODBC_ROWSET* rowset = (ODBC_ROWSET*)rs;
+	ODBC_STMT* stmt = rowset->stmt;
+	int i,j,er = 0,r = 0;
+	void **rec;
+
+	if(rowset->done)
+		return 0;
+
+	if(!recs)
+		recs = 0x7fffffff;
+
+	for(j=0;j<recs;j++){
+		rec = calloc(rowset->nfields,sizeof(void*));
+		for(i=0;i<rowset->nfields;i++){
+			rec[i] = malloc(rowset->fields[i].buflen+4+_TERM_ZERO);
+			if((r = SQLBindCol(stmt->hstmt,i+1,SQL_DEFAULT,
+				rec[i]+4,rowset->fields[i].buflen+_TERM_ZERO,rec[i]))) goto err;
+		}
+		r = SQLFetch(stmt->hstmt);
+		if(r){
+			for(i=0;i<rowset->nfields;i++)
+				free(rec[i]);
+			free(rec);
+			if(r != SQL_NO_DATA)
+				goto err;
+			goto done;
+		}
+		rowset->loaded++;
+		rowset->data = realloc(rowset->data,sizeof(void*)*(rowset->loaded));
+		rowset->data[rowset->loaded-1] = rec;
+		if(eval && (eval->t.type == CCODE_t || eval->t.type == PCODE_t) && !(rowset->loaded % every)){
+			ClipVar var,*v;
+			if(_clip_eval(mp,eval,1,ors,&var)){
+				_clip_destroy(mp,&var);
+				er = 1;
+				goto done;
+			}
+			v = _clip_vptr(&var);
+			if(v->t.type == LOGICAL_t && !v->l.val){
+				_clip_destroy(mp,&var);
+				goto done;
+			}
+			_clip_destroy(mp,&var);
+		}
+	}
+	return 0;
+err:
+	er = 1;
+done:
+	rowset->lastrec = rowset->loaded;
+	rowset->done = 1;
+	if(!rowset->lastrec){
+		rowset->bof = rowset->eof = 1;
+		rowset->recno = 0;
+	}
+	_clip_destroy_c_item(mp,stmt->stmt_item,_C_ITEM_TYPE_SQL);
+	return er;
+}
+
+int odbc_start(ClipMachine* mp,SQLCONN* c,const char* p1,const char* p2){
+	ODBC_CONN* conn = (ODBC_CONN*)c;
+	SQLRETURN er;
+
+	if(conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	if(p1){
+	}
+	if((er = SQLSetConnectOption(conn->conn,SQL_AUTOCOMMIT,SQL_AUTOCOMMIT_OFF)))
+		goto err;
+	conn->at = 1;
+	return 0;
+err:
+	odbc_error(mp,conn->loc,0,conn->conn,0,__LINE__,er_start);
+	return 1;
+}
+
+int odbc_commit(ClipMachine* mp,SQLCONN* c){
+	ODBC_CONN* conn = (ODBC_CONN*)c;
+	SQLRETURN er;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_COMMIT,er_commit);
+		return 1;
+	}
+	if((er = SQLTransact(conn->henv,conn->conn,SQL_COMMIT)))
+		goto err;
+	if((er = SQLSetConnectOption(conn->conn,SQL_AUTOCOMMIT,SQL_AUTOCOMMIT_ON)))
+		goto err;
+	conn->at = 0;
+	return 0;
+err:
+	odbc_error(mp,conn->loc,0,conn->conn,0,__LINE__,er_commit);
+	return 1;
+}
+
+int odbc_rollback(ClipMachine* mp,SQLCONN* c){
+	ODBC_CONN* conn = (ODBC_CONN*)c;
+	SQLRETURN er;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_ROLLBACK,er_rollback);
+		return 1;
+	}
+	if((er = SQLTransact(conn->henv,conn->conn,SQL_ROLLBACK)))
+		goto err;
+	if((er = SQLSetConnectOption(conn->conn,SQL_AUTOCOMMIT,SQL_AUTOCOMMIT_ON)))
+		goto err;
+	conn->at = 0;
+	return 0;
+err:
+	odbc_error(mp,conn->loc,0,conn->conn,0,__LINE__,er_commit);
+	return 1;
 }
 
 

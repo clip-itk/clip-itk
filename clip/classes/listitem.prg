@@ -15,6 +15,10 @@ color "1,     2, 3, 4, 5, 6"
 6- current selected item
 7- found symbols
 */
+#define LI_EXIT			-1
+#define LI_CONTINUE		0
+#define LI_EXCEPTION		1
+
 function listItemNew(Lrow, Lcol, Rrow, Rcol, Columns, Delimiter, color)
 local obj
        obj:=map()
@@ -22,16 +26,16 @@ local obj
        obj:classname    := "LISTITEM"
        obj:first        := 1
        obj:colorSpec    := iif(color==NIL,setcolor(),color)
-       obj:line         := Lrow
-       obj:row		:= Rcol
-       obj:pos          := 1
-       obj:colWin       := iif(empty(Columns), 1, Columns)
-       obj:rowWin       := Rrow-Lrow
-       obj:lencol	:= {}
        obj:nTop         := Lrow
        obj:nLeft        := Lcol
        obj:nBottom      := Rrow-1
        obj:nRight       := Rcol
+       obj:line         := Lrow
+       obj:col		:= Rcol
+       obj:pos          := 1
+       obj:colWin       := iif(empty(Columns), 1, Columns)
+       obj:rowWin       := Rrow-Lrow
+       obj:lencol	:= {}
        obj:itemCount	:= 0
        obj:buffer	:= 0
        obj:hasFocus	:= .f.
@@ -39,6 +43,7 @@ local obj
        obj:union	:= .f.
        obj:itemWin	:= obj:rowWin*obj:colWin
        obj:delim	:= iif(Delimiter==NIL, "|", Delimiter)
+       obj:__keys	:= map()
 
        _recover_listitem(obj)
 
@@ -46,6 +51,8 @@ local obj
 
        obj:item 	:= {}
        obj:__colors	:= {}      // палитры цветов
+
+       obj:__init()
        obj:__setcolor()
 
        while (Rcol-Lcol)%obj:colWin > 0
@@ -56,6 +63,7 @@ local obj
 return obj
 *************************************
 function _recover_listitem(obj)
+       obj:__init       := @__init()
        obj:down         := @down()
        obj:up           := @up()
        obj:left         := @left()
@@ -71,7 +79,7 @@ function _recover_listitem(obj)
        obj:getItem 	:= @getItem()
        obj:setItem 	:= @setItem()
        obj:refresh      := @refresh()
-       obj:refreshUnion := @refreshUnion()
+       obj:__refreshUnion := @__refreshUnion()
        obj:setFocus     := @setFocus()
        obj:killFocus    := @killFocus()
        obj:clear        := @clear()
@@ -86,8 +94,26 @@ function _recover_listitem(obj)
        obj:select	:= @li_select()
        obj:getSelected	:= @getSelected()
        obj:find       	:= @find()
+       obj:handleKey	:= @handleKey()
+       obj:setKey	:= @setKey()
        obj:__setColor	:= @__setcolor()
 return obj
+*************************************
+static func __init()
+local m
+	::__keys := map()
+	m := ::__keys
+	m[K_LEFT]	:= {|oL, nKey| oL:left(), LI_CONTINUE }
+	m[K_RIGHT]	:= {|oL, nKey| oL:right(), LI_CONTINUE }
+	m[K_UP]		:= {|oL, nKey| oL:up(), LI_CONTINUE }
+	m[K_DOWN]	:= {|oL, nKey| oL:down(), LI_CONTINUE }
+	m[K_HOME]	:= {|oL, nKey| oL:home(), LI_CONTINUE }
+	m[K_END]	:= {|oL, nKey| oL:end(), LI_CONTINUE }
+	m[K_PGUP]	:= {|oL, nKey| oL:pageup(), LI_CONTINUE }
+	m[K_PGDN]	:= {|oL, nKey| oL:pagedown(), LI_CONTINUE }
+	m[K_ESC]	:= {|oL, nKey| LI_EXIT }
+
+return .t.
 *************************************
 static func __setcolor()
 local s, i
@@ -124,7 +150,7 @@ local m := map()
 return 1
 ***********
 static func insItem(item, position, color, colorSel, sel)
-    if item == NIL .or. !between(position, 1, ::itemCount)
+    if item == NIL .or. position == NIL .or. !between(position, 1, ::itemCount)
 	return 0
     endif
     color := iif(color==NIL, ::__colors[1], color)
@@ -138,7 +164,7 @@ static func insItem(item, position, color, colorSel, sel)
     ::item[position]:scolor := colorSel
     ::item[position]:select := sel
     //::colorItem[position] := {color, colorSel}
-    ::refresh()
+    //::refresh() //why it need?
 return 1
 ***********
 static func delItem(position)
@@ -206,7 +232,7 @@ return
 static func refresh()
 local cur, i, j, nl:=::nLeft
        if ::union
-		::refreshUnion()
+		::__refreshUnion()
 		return
        endif
        if ::line > ::nBottom
@@ -279,21 +305,21 @@ local cur, i, j, nl:=::nLeft
 	   nl += ::lenCol[i]+1
        next
        if empty(::findbuffer)
-	   ::row := ::nLeft
+	   ::col := ::nLeft
 	   for i=1 to ::pos-1
-		::row += ::lencol[i]+1
+		::col += ::lencol[i]+1
 	   next
        else
-	   ::row:= ::nLeft+len(::findbuffer)
+	   ::col:= ::nLeft+len(::findbuffer)
 	   for i=1 to ::pos-1
-		::row += ::lencol[i]+1
+		::col += ::lencol[i]+1
 	   next
        endif
-       devpos(::line, ::row)
+       devpos(::line, ::col)
        dispend()
 return
 ******************
-static function refreshUnion()
+static function __refreshUnion()
 local i,a, j, nl:=::nLeft, s, es:="", cur
        if ::line > ::nBottom
 	       ::first ++
@@ -351,17 +377,17 @@ local i,a, j, nl:=::nLeft, s, es:="", cur
        next
 
        if empty(::findbuffer)
-	   ::row := ::nLeft
+	   ::col := ::nLeft
 	   for i=1 to ::pos
-		::row += ::lencol[i]
+		::col += ::lencol[i]
 	   next
        else
-	   ::row:= ::nLeft+len(::findbuffer)
+	   ::col:= ::nLeft+len(::findbuffer)
 	   for i=1 to ::pos
-		::row += ::lencol[i]
+		::col += ::lencol[i]
 	   next
        endif
-       devpos(::line, ::row)
+       devpos(::line, ::col)
        dispend()
 return
 
@@ -453,7 +479,7 @@ local i, j, cur, oldfirst, oldline, oldbuff, oldpos, oldfb, found:=.f., cw
     endif
     ::findbuffer += ch
     for j=cw to ::itemWin
-	if cur<=::itemCount .and. "item"$::item[cur] .and. !empty(::item[cur]:item) ;
+	if cur<=::itemCount .and. "ITEM"$::item[cur] .and. !empty(::item[cur]:item) ;
 		.and. ::item[cur]:item = ::findbuffer
 		::buffer := cur
 		found := .t.
@@ -467,7 +493,7 @@ local i, j, cur, oldfirst, oldline, oldbuff, oldpos, oldfb, found:=.f., cw
     ::pos := ::colWin
     ::first ++
 
-    if cur<=::itemCount .and. "item"$::item[cur] .and. !empty(::item[cur]:item)
+    if cur<=::itemCount .and. "ITEM"$::item[cur] .and. !empty(::item[cur]:item)
        for i=cur to ::itemCount
 	   if ::item[i]:item = ::findbuffer
 	      ::buffer := i
@@ -491,7 +517,7 @@ RETURN found
 static function setTitle(Title)
 local i
 	if empty(Title) .or. valtype(Title)!="A"
-		return
+		return .f.
 	endif
 	if empty(::title)
 		::rowWin --
@@ -505,7 +531,7 @@ local i
 		endif
 		::title[i] := Title[i]
 	next
-return
+return .t.
 **************
 static function drawTitle()
 local i, nl:=::nLeft
@@ -516,17 +542,20 @@ local i, nl:=::nLeft
 		endif
 		nl += ::lencol[i]+1
 	next
-return
+return .t.
 *************
 static function setColumns(col)
 local Rcol:=::nRight, Lcol:=::nLeft
+	if col == NIL .or. valtype(col) != "N" .or. col < 1
+		return .f.
+	endif
 	::colWin := col
 	while (Rcol-Lcol)%::colWin > 0
 		Rcol --
 	enddo
 	asize(::lencol, ::colWin)
 	afill(::lencol, int((Rcol-Lcol)/::colWin))
-return
+return .t.
 *************
 /*
 width - это массив {}
@@ -536,7 +565,7 @@ width - это массив {}
 static function setWidthCol(width)
 local i, az:={}, s:=0, len
 	if empty(width) .or. valtype(width)!="A"
-		return
+		return .f.
 	endif
 	afill(::lencol, 0)
 	for i=1 to ::colWin
@@ -556,36 +585,43 @@ local i, az:={}, s:=0, len
 	for i=1 to len(az)
 		::lencol[az[i]] := len
 	next
-return
+return .t.
 *************
 static function setUnion()
 	::union := .t.
-return
+return .t.
 *************
 static function killUnion()
 	::union := .f.
-return
+return .t.
 **************
 //static function setNewBound(top, left, bottom, right)
 static function setNewBound(left, right)
+	if valtype(left) != "N" .or. valtype(right) != "N" ;
+		.or. (left < 0) .or. (right < 0)
+		return .f.
+	endif
 	//::nTop := top
 	::nLeft := left
 	//::nBottom := bottom
 	::nRight := right
-return
+	::SetColumns(::ColWin)
+return .t.
 ***************
 static function li_select(it)
 local i
 	it := iif(it==NIL, ::buffer, it)
 	if valtype(it)=="A"
 		for i=1 to len(it)
-			::item[it[i]]:select := !::item[it[i]]:select
+			if valtype(it[i])== "N" .and. between(it[i], 1, ::itemCount)
+				::item[it[i]]:select := !::item[it[i]]:select
+			endif
 		next
-	elseif valtype(it)=="N"
+	elseif valtype(it)=="N".and. between(it, 1, ::itemCount)
 		::item[it]:select := !::item[it]:select
 	endif
 	::refresh()
-return
+return .t.
 ***************
 static function getSelected()
 local ret:={}, i
@@ -596,6 +632,27 @@ local ret:={}, i
 	next
 	if len(ret) == 0
 		aadd(ret, ::getItem())
+	endif
+return ret
+***************
+static function handleKey(oL, nKey)
+local ret := LI_CONTINUE
+	if !(nKey $ oL:__keys)
+		return ret
+	endif
+
+	ret := eval(oL:__keys[nKey], oL, nKey)
+return ret
+*************************************
+static function setKey(nKey, vData)
+local ret
+	ret := vData
+	if nKey $ ::__keys
+		ret := ::__keys[nKey]
+	endif
+	::__keys[nKey] := vData
+	if vData == NIL
+		adel(::__keys, nKey)
 	endif
 return ret
 

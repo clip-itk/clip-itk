@@ -5,6 +5,9 @@
 */
 /*
    $Log: clip_dbg.c,v $
+   Revision 1.20  2003/09/09 14:36:14  clip
+   uri: fixes for mingw from Mauricio and Uri
+
    Revision 1.19  2001/11/02 08:21:53  clip
    dbg again work
    paul
@@ -79,6 +82,7 @@
 
  */
 
+#include "clip.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -88,19 +92,21 @@
 #include <signal.h>
 #include <stdarg.h>
 #include <fcntl.h>
+#ifndef OS_MINGW
 #include <termios.h>
+#include <sys/wait.h>
+#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
 #include <sys/time.h>
-
-#include "clipcfg.h"
 
 #ifdef HAVE_READLINE_H
 /* libreadline */
 #include <readline/readline.h>
 #include <readline/history.h>
+
+#undef select
 
 extern char *optarg;
 extern int optind, opterr, optopt;
@@ -122,7 +128,7 @@ static const char usage_str[] = "clip_dbg local commands:\n\
 \tDebugged program MUST be started with --debug or --stop option.\n\
 ";
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 int mkfifo(const char * path, mode_t mode)
 {
 	return -1;
@@ -155,6 +161,7 @@ cleanup(int code)
 		remove(in_path);
 	if (out_path[0])
 		remove(out_path);
+#ifndef OS_MINGW
 	if (tpid != 0)
 	{
 		int status;
@@ -162,6 +169,7 @@ cleanup(int code)
 		kill(tpid, SIGTERM);
 		waitpid(tpid, &status, 0);
 	}
+#endif
 
 	tcsetattr(0, TCSANOW, &oterm);
 	write(1, "\n", 1);
@@ -374,12 +382,14 @@ process_line(char *bp)
 		cleanup(1);
 	}
 	fflush(fin);
+#ifndef OS_MINGW
 	if (kill(pid, SIGUSR1))
 	{
 		fprintf(stderr, "cannot send signal to PID %lu\n",
 			(unsigned long) pid);
 		cleanup(1);
 	}
+#endif
 
 	free(argv);
 #ifdef HAVE_READLINE_ALREADY_PROMPTED
@@ -462,11 +472,13 @@ main(int argc, char **argv)
 
 	signal(SIGINT, sigfunc);
 	signal(SIGTERM, sigfunc);
+#ifndef OS_MINGW
 	signal(SIGHUP, sigfunc);
 	signal(SIGPIPE, sigpipe);
+	signal(SIGUSR1, sigusr);
+#endif
 	signal(SIGILL, sigfunc);
 	signal(SIGSEGV, sigfunc);
-	signal(SIGUSR1, sigusr);
 
 	snprintf(in_path, sizeof(in_path), "/tmp/clip_dbg.%lu.in", (unsigned long) pid);
 	remove(in_path);
@@ -489,12 +501,15 @@ main(int argc, char **argv)
 	}
 	logg(1, "fifo %s created successfully", out_path);
 
+#ifndef OS_MINGW
 	if (kill(pid, SIGUSR1))
 	{
 		fprintf(stderr, "clip_dbg: cannot send signal SIGUSR1 to pid %lu: %s\n",
 			(unsigned long) pid, strerror(errno));
 		cleanup(7);
 	}
+#endif
+
 	fin = fopen(in_path, "w");
 	if (!fin)
 	{
@@ -517,7 +532,9 @@ main(int argc, char **argv)
 			out_path, strerror(errno));
 		cleanup(6);
 	}
+#ifndef OS_MINGW
 	fcntl(fout, F_SETFL, O_NONBLOCK);
+#endif
 
 	logg(1, "fifo %s opened for reading", out_path);
 	mpid = getpid();

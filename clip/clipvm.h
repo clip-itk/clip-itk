@@ -1,5 +1,14 @@
 /*
    $Log: clipvm.h,v $
+   Revision 1.21  2003/03/25 10:31:13  clip
+   possible fixes #133
+   paul
+
+   Revision 1.20  2002/12/31 08:03:36  clip
+   assign to locals
+   closes #95
+   paul
+
    Revision 1.19  2001/09/21 10:29:15  clip
    memvar priority in macro
    paul
@@ -237,6 +246,8 @@
 #define CLIP_SWITCH		116
 #define CLIP_NOP		117
 #define CLIP_PUSH_MEMVARF	118
+#define CLIP_REF_DESTROY	119
+#define CLIP_PUSH_REF_MEMVAR_NOADD	120
 
 typedef struct
 {

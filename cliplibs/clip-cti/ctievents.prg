@@ -5,7 +5,6 @@
 	License	: (GPL) http://www.itk.ru/clipper/license.html
 */
 
-#include "ctievents.ch"
 #include "cti.ch"
 
 static evQueue
@@ -21,7 +20,6 @@ return
 /* Extract one event from events queue */
 function cti_event_get()
 	local event
-	memvar evQueue
 
 	event := cti_event_peek()
 	evQueue:get()
@@ -30,7 +28,6 @@ return event
 /* Take one event from events queue without extracting it*/
 function cti_event_peek()
 	local event:=nil
-	memvar evQueue
 
 	if .not. evQueue:empty()
 		event:=evQueue:head()
@@ -38,43 +35,38 @@ function cti_event_peek()
 return iif(event!=nil,event,cti_event_new())
 
 /* Gets one event from keyboard */
-procedure cti_keyb_listen(Delay)
-	memvar evQueue, kbstat
+function cti_keyb_listen(Delay)
 	local keycode, scan_code
 	local Event
 
-//	do while .T.
-//		scan_code := scankey()
-//outlog("scankey=",scan_code)
-		keycode := inkey(Delay)
-		if keycode != 0
-			kbstat:=kbdstat()
-			Event := cti_event_new(CTI_KEYBOARD_EVENT)
-			Event:keyCode := keycode
-			Event:keyState := kbdstat()
-			evQueue:put(Event)
-		endif
-//	enddo
+	keycode := inkey(Delay)
+
+	if keycode != 0
+		kbstat:=kbdstat()
+		Event := cti_event_new(CTI_KEYBOARD_EVENT)
+		Event:keyCode := keycode
+		Event:keyState := kbdstat()
+		evQueue:put(Event)
+	endif
+
 return
 
 function cti_event_put(event)
-	memvar evQueue
 	cti_return_if_fail(valtype(event)=="O" .and. event:classname=="CTI_EVENT")
-        evQueue:put(Event)
+	evQueue:put(Event)
 return TRUE
 
 /* Create event */
 function cti_event_new(eventType,code,state)
 	local obj:=map()
 
-        obj:classname := "CTI_EVENT"
+	obj:classname := "CTI_EVENT"
 	eventType := iif(valtype(eventType)=="N",eventType,CTI_NOTHING_EVENT)
 	obj:Type := eventType
 return obj
 
 /* Returns TRUE if events queue is not empty */
 function cti_events_pending()
-	memvar evQueue
 return .not. evQueue:empty()
 
 function cti_event_type_by_name(evname)

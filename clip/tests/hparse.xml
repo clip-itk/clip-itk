@@ -1,0 +1,24 @@
+<-- description of dictionary GBL01 ("Global information") -->
+
+
+<!-- begin metadata COUNTER -->
+<counter	name	= "doc_number" type="LAST" deposit="  "
+ />
+<!-- end metadata COUNTER -->
+
+
+<!-- begin metadata DEPOSIT -->
+<deposit	name	= "Russia"
+		memosize= 32
+/>
+<deposit	name	= "Ukraine"
+		memosize= 32
+/>
+<!-- end metadata DEPOSIT -->
+
+<dataloader_module
+	classname="currency"	todepository="GBL0101" primary_key="code"
+	script="okv_b"  	type="clip_script"
+	datatype="sdf"		datafile="data/ru/okv_b.txt"
+	>
+

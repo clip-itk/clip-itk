@@ -1,0 +1,31 @@
+$FUNCNAME$
+   AADD()
+$CATEGORY$
+   Array,...
+$SUMMARY$
+   Add element to the array
+$SYNTAX$
+   AADD( ... ) -> NIL
+$ARGNAME$
+   ...
+$ARGDESC$
+   ...
+$RETURNS$
+   ...
+$DESCRIPTION$
+   ...
+$EXAMPLES$
+   ...
+$PECULIARITIES$
+   ...
+$PLATFORMS$
+   ...
+$CONFORMS$
+   (which Clipper clones support that function)
+$SEEALSO$
+   ...
+$AUTHOR$
+   (author of article)
+$LASTDATE$
+   (last changes date)
+

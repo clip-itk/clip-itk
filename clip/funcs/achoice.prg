@@ -8,23 +8,22 @@
 
 memvar __ac_data
 
-Func achoice ( nT,nL,nB,nR,_massP,__lMass,FunName,nPos,nLine,color,BoxType,topMess,BotMess )
+Func achoice( nT,nL,nB,nR,_massP,__lMass,FunName,nPos,nLine,color,BoxType,topMess,BotMess )
 local retVal:=0,bb,column,lVal, i, oldCursor,oldcolor,_lmass:={}
-local maxStrSS,__bbbb,massp:=aclone(_massp)
+local maxStrSS,__bbbb
+local massp:=_massp
 private __ac_data
 for i=1 to len(massp)
 	if len(massp[i])==0 .or. valtype(massp[i]) != "C"
-//	if massp[i] != NIL
-        	exit
-        endif
+		exit
+	endif
 next
 i--
-asize(massp,i)
-//i:=max(min(i,len(massp)),1)
 i:=max(i,1)
 if i>len(massP) .and. len(massp)==0
+	massp:=aclone(_massp)
 	aadd(massP,"")
-        __lMass:={.f.}
+	__lMass:={.f.}
 endif
 __ac_data:=map()
 __ac_data:lenMass:=i //len(massP)
@@ -61,6 +60,9 @@ elseif valType(__lMass)=="L"
 else
    _lmass=aclone(__Lmass)
 endif
+for i=len(_lMass) to __ac_data:lenMass
+	aadd(_lMass,.t.)
+next
 for i=1 to __ac_data:lenMass
    if valtype(_lmass[i])=="C"
       __bbbb=_lmass[i]
@@ -90,8 +92,10 @@ if valtype(nLine)=="N"
 	nLine++
 endif
 nLine:=max(iif(nLine==NIL, nPos,nLine),1)
+if nLine > nPos
+	nLine :=1
+endif
 nLine:=min( __ac_data:nB-__ac_data:nT-1,nLine)
-//nLine++
 
 bb:headSep :=""
 bb:colSep := ""
@@ -104,11 +108,9 @@ column:cargo:=__ac_data:lenMass
 column:colorBlock:={|x| iif( __ach_color_block() ,{1,2},{5,2})}
 bb:addColumn(column)
 
-//__ac_data:nRowMass:=itemInMass-nPos
-//nPos++
-//nPos:=iif(nPos>bb:rowCount .or. nPos>__ac_data:LenMass,nPos-1,nPos)
 eval(bb:skipBlock,npos-1)
 bb:rowPos:=nLine
+bb:forceStable()
 
 RetVal:=runTBm( bb )
 bb:deHilite()
@@ -122,8 +124,9 @@ local vyb,i,nnn
 local scr,curCol,CurRow
 local retVal:=0,mode:=2
 local nkey:=0, mKey:=0, lMore:=.t.
-local nskip,xskip
+local nskip,xskip,oldlen
 local bKeyBlock, scrTop:=savescreen(__ac_data:nT,__ac_data:nL,__ac_data:nT,__ac_data:nR)
+local ufunc:=__ac_data:FunName
 memvar __ac_data
 
     lMore := .t.
@@ -138,11 +141,15 @@ memvar __ac_data
        mode:=4
        if __ac_data:exit
 	   bb:dehilite()
-	   if valtype(__ac_data:FUNNAME) == "C" .and. __ac_data:flagUserF
-	      mode:=&(__ac_data:FunName+"("+str(mode)+","+str(__ac_data:nRowMass)+","+str(bb:rowpos-1)+")")
+	   oldLen := __ac_data:lenMass
+	   if valtype(uFunc) == "C" .and. __ac_data:flagUserF
+	      mode:=&uFunc.(mode,__ac_data:nRowMass,bb:rowpos-1,bb)
+	   elseif valtype(uFunc) == "B" .and. __ac_data:flagUserF
+	      mode:=eval(uFunc,mode,__ac_data:nRowMass,bb:rowpos-1, bb)
 	   endif
-	   if valtype(__ac_data:FUNNAME) == "B" .and. __ac_data:flagUserF
-	      mode:=eval(__ac_data:FunName,mode,__ac_data:nRowMass,bb:rowpos-1)
+	   __ac_data:lenMass:=min(__ac_data:lenMass,len(__ac_data:massp))
+	   if oldLen != __ac_data:lenMass
+	     bb:refreshAll()
 	   endif
 	   return 0
        endif
@@ -161,8 +168,8 @@ memvar __ac_data
 	   elseif __ac_data:nRowMass==__ac_data:lenMass
 	       keyBoard chr(K_UP)
 	   elseif lastkey()==K_ENTER .or. lastkey()==K_ESC
-       		 keyBoard chr(K_UP)
-           else
+		 keyBoard chr(K_UP)
+	   else
 	       keyBoard chr(lastkey())
 	   endif
        endif
@@ -190,6 +197,7 @@ memvar __ac_data
 	   mKey:=0
 	   do while .t. //!__ac_data:exit
 		   nKey := InKey(0)
+		   bb:hitTop := bb:hitBottom := .f.
 		   if ( (bKeyBlock:=setkey(nKey))!=NIL )
 		      eval(bKeyBlock,procname(),procline(),readvar())
 		   else
@@ -201,6 +209,7 @@ memvar __ac_data
 
        do case
        case ( nKey == K_ENTER) .and. !__ac_data:flagUserF
+	    bb:hitTop := bb:hitBottom := .f.
 	    retVal:=__ac_data:nRowMass
 	    mode:=0
 	    lmore:=.f.
@@ -222,19 +231,33 @@ memvar __ac_data
 	    bb:up()
 	    mode:=0
        case ( nKey == K_PGUP )
+	    mode:=0
+	    bb:hitTop := bb:hitBottom := .f.
 	    xskip=0-(__ac_data:nB-__ac_data:nT-2)
-       	    nskip := eval(bb:skipBlock,xskip)
+	    nskip := eval(bb:skipBlock,xskip)
+	    if nskip == 0
+		bb:rowPos:=bb:rowpos-nskip+xskip
+	    endif
 	    if nskip>xskip
-	    	bb:rowPos:=bb:rowpos-nskip+xskip
-            endif
-            bb:refreshAll()
-	    //bb:pageUp()
-	    mode:=0
+		bb:rowPos:=bb:rowpos-nskip+xskip
+	    endif
+	    bb:refreshAll()
        case ( nKey == K_PGDN )
-       	    eval(bb:skipBlock,__ac_data:nB-__ac_data:nT-2)
-            bb:refreshAll()
-	    //bb:pageDown()
 	    mode:=0
+	    bb:hitTop := bb:hitBottom := .f.
+	    xskip := __ac_data:nB-__ac_data:nT-2
+	    nskip := eval(bb:skipBlock,xskip)
+	    if nskip == 0
+		bb:hitBottom := .t.
+	    endif
+	    if nskip<xskip
+		bb:rowPos:=bb:rowpos+nskip-xskip
+	    endif
+	    if __ac_data:nRowMass == len(__ac_data:massp)
+		bb:rowPos := __ac_data:nB-__ac_data:nT-1
+	    endif
+	    bb:rowPos := max(1,bb:rowpos)
+	    bb:refreshAll()
        case ( nKey == K_CTRL_HOME ) .or. nKey==K_HOME .or. nKey==K_CTRL_PGUP
 	    mode:=0
 	    __ac_data:nRowMass:=1
@@ -253,18 +276,25 @@ memvar __ac_data
 		       bb:refreshAll()
 	    endcase
        endcase
-       if valtype(__ac_data:FUNNAME) $ "CB" .and. __ac_data:flagUserF
+       if valtype(uFunc) $ "CB" .and. __ac_data:flagUserF //.and. nextkey()==0
+	    bb:forceStable()
+	    bb:dehilite()
 	    IF bb:hitTop
 	       mode:=1
 	    ENDIF
 	    IF bb:hitBottom
 	       mode:=2
 	    ENDIF
-            if valtype(__ac_data:FUNNAME) == "C"
-	    	mode:=&(__ac_data:FunName+"("+str(mode)+","+str(__ac_data:nRowMass)+","+str(bb:rowpos-1)+")")
-            else
-	    	mode:=eval(__ac_data:FunName,mode,__ac_data:nRowMass,bb:rowpos-1)
-            endif
+	    oldLen := __ac_data:lenMass
+	    if valtype(uFunc) == "C"
+		mode:=&uFunc.(mode,__ac_data:nRowMass,bb:rowpos-1,bb)
+	    else
+		mode:=eval(__ac_data:FunName,mode,__ac_data:nRowMass,bb:rowpos-1, bb)
+	    endif
+	    __ac_data:lenMass:=min(__ac_data:lenMass,len(__ac_data:massp))
+	    if oldLen != __ac_data:lenMass
+	      bb:refreshall()
+	    endif
 	    if mode==0
 	       retval:=0
 	       lmore:=.f.
@@ -291,9 +321,10 @@ return retVal
 *****************************************************
 static func Skipper(n)
     local i:=0
+    i=__ac_data:nRowMass
+    __ac_data:lenMass:=min(__ac_data:lenMass,len(__ac_data:massp))
     __ac_data:nRowMass:=max(1,__ac_data:nRowMass)
     __ac_data:nRowMass:=min(__ac_data:lenMass,__ac_data:nRowMass)
-    i=__ac_data:nRowMass
     __ac_data:nRowMass+=n
     __ac_data:nRowMass:=max(1,__ac_data:nRowMass)
     __ac_data:nRowMass:=min(__ac_data:lenMass,__ac_data:nRowMass)

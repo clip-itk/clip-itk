@@ -1,0 +1,29 @@
+#!/bin/sh
+
+if [ -z "$PGINCDIR" ]; then
+	for x in /usr/include/pgsql \
+		/usr/include/pgsql/server \
+		/usr/include/postgresql \
+		/opt/postgresql/include
+	do
+		if [ -f "$x/libpq-fe.h" ]; then
+			PGINCDIR=$x
+			break
+		fi
+	done
+fi
+if [ -z "$PGLIBDIR" ]; then
+	for x in /usr/local/lib \
+		/usr/local/pgsql/lib \
+		/opt/postgresql/lib
+	do
+		if [ -f "$x/libpq.so" ]; then
+			PGLIBDIR=$x
+			break
+		fi
+	done
+fi
+
+sed -e "s,@PGINCDIR@,${PGINCDIR:-/usr/include},g" \
+    -e "s,@PGLIBDIR@,${PGLIBDIR:-/usr/lib},g" \
+	Makefile.in > Makefile

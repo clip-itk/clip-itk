@@ -77,14 +77,14 @@ distclean: clean
 	cd example && $(MAKE) clean
 
 install: $(XTARGETS)
-	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(CLIPROOT)/lib
-	chmod 0644  $(CLIPROOT)/lib/$(XLIB)
-	chmod 0755  $(CLIPROOT)/lib/$(XSLIB)
-	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(CLIPROOT)/lib
-	cp clip-gtkextra.ch $(CLIPROOT)/include/
+	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(DESTDIR)$(CLIPROOT)/lib
+	chmod 0644  $(DESTDIR)$(CLIPROOT)/lib/$(XLIB)
+	chmod 0755  $(DESTDIR)$(CLIPROOT)/lib/$(XSLIB)
+	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(DESTDIR)$(CLIPROOT)/lib
+	cp clip-gtkextra.ch $(DESTDIR)$(CLIPROOT)/include/
 #	cp -R doc/* $(CLIPROOT)/doc/clip-gtk
-	mkdir -p $(CLIPROOT)/doc/example/clip-gtkextra
-	- cp example/*.prg example/Makefile example/*.ch $(CLIPROOT)/doc/example/clip-gtkextra
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-gtkextra
+	- cp example/*.prg example/Makefile example/*.ch $(DESTDIR)$(CLIPROOT)/doc/example/clip-gtkextra
 
 .c.o:
 	@echo $(CC) $(CDBGFLAGS) $(CFLAGS) -c $<

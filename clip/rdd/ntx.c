@@ -4,9 +4,111 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: ntx.c,v $
+	Revision 1.115  2004/03/15 10:53:43  clip
+	rust: GO TOP before processing INDEX ... ALL
+	
+	Revision 1.114  2004/02/09 11:13:31  clip
+	rust: SKIP with conditional index
+
+	Revision 1.113  2004/02/04 14:47:45  clip
+	rust: fix in seek
+
+	Revision 1.112  2003/12/29 12:18:56  clip
+	rust: INDEX ... ALL uses controlling order
+
+	Revision 1.111  2003/12/08 14:40:54  clip
+	rust: small fix in _ntx_calc_key()
+
+	Revision 1.110  2003/11/28 13:15:19  clip
+	rust: small fix in *_prev() (remember EOF status)
+
+	Revision 1.109  2003/10/31 11:14:01  clip
+	rust: fix in softseek (first and last)
+
+	Revision 1.108  2003/10/28 13:00:19  clip
+	rust: bug in seek fixed
+
+	Revision 1.107  2003/10/08 08:58:13  clip
+	rust: small fix to previous change
+
+	Revision 1.106  2003/10/07 12:54:47  clip
+	rust: always leave correct ro->stack after SEEK
+
+	Revision 1.105  2003/10/07 09:46:56  clip
+	rust: go bottom with set deleted on and deleted last record
+
+	Revision 1.104  2003/08/27 07:58:38  clip
+	rust: SKIP -1 at first record after DELETE moves to the first undeleted record
+
+	Revision 1.103  2003/06/24 08:03:15  clip
+	rust: perform child duty on eof() and found() also (clipper compatible)
+
+	Revision 1.102  2003/06/17 09:00:16  clip
+	rust: 'structural index present' attribute in .dbf header
+
+	Revision 1.101  2003/05/27 08:38:32  clip
+	rust: pages caching bug fixed
+
+	Revision 1.100  2003/05/07 11:09:46  clip
+	rust: minor fixes
+
+	Revision 1.99  2003/04/30 13:53:12  clip
+	rust: more compatible NTX and some speed optimizations
+
+	Revision 1.98  2003/04/16 10:19:58  clip
+	rust: #include "btree.h" -> "./btree.h" and some other fixes for BeOS
+
+	Revision 1.97  2003/04/11 08:31:44  clip
+	rust: #ifdef HAVE_MMAN_H (BeOS)
+
+	Revision 1.96  2003/03/05 09:56:35  clip
+	rust: bug with unique indexes fixed,
+	reported by Stas I. Litovka <root@depot.pharm.sumy.ua>
+
+	Revision 1.95  2003/02/26 10:22:56  clip
+	rust: unsuitable optimization try, reported by M&MS <berezniki@smtp.ru>
+
+	Revision 1.94  2003/02/26 09:15:36  clip
+	rust: clear eof state in _ntx_savebtree(), reported by Marco
+
+	Revision 1.93  2003/02/24 11:28:52  clip
+	rust: soft seek problem, reported by Marco Bernardi <bernx@tin.it>
+
+	Revision 1.92  2003/02/16 12:49:23  clip
+	rust: bug in _ntx_savebtree() reported by Marco Bernardi <bernx@tin.it>
+
+	Revision 1.91  2003/01/23 14:05:23  clip
+	rust: bug in ntx_seek(), reported by Marco Bernardi <bernx@tin.it>
+
+	Revision 1.90  2003/01/23 10:45:25  clip
+	rust: bug in dbskip() reported by Vladimir Klimenko <vnikli@ukr.net>
+
+	Revision 1.89  2003/01/22 09:23:41  clip
+	rust: small fix in ntx_seek()
+
+	Revision 1.88  2003/01/21 14:59:17  clip
+	rust: rdd_info() with latest changes
+
+	Revision 1.87  2003/01/18 12:47:54  clip
+	rust: dbseek() with DBFNTX bug fixed
+
+	Revision 1.86  2003/01/13 13:16:45  clip
+	rust: support tag names with NTX
+
+	Revision 1.85  2002/12/17 14:02:54  clip
+	rust: EXACT or NON-EXACT set scope
+
+	Revision 1.84  2002/11/12 11:35:16  clip
+	rust: DBFIDX
+
+	Revision 1.83  2002/10/26 11:10:02  clip
+	initial support for localized runtime messages
+	messages are in module 'cliprt'
+	paul
+
 	Revision 1.82  2002/09/25 13:17:03  clip
 	rust: compatibility of INDEX ON behavior and some cleanups
-	
+
 	Revision 1.81  2002/08/08 14:30:54  clip
 	rust: invalidate the stack after deleting and adding
 
@@ -155,11 +257,14 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include <errno.h>
 #include "../rdd.h"
 #include "error.ch"
-#include "btree.h"
+#include "./btree.h"
+#include "../clipbase.h"
+#ifdef HAVE_MMAN_H
+#include <sys/mman.h>
+#endif
 
 #define MAX_BTREE_DEEP 64
 #define MAX_TAG_LEN 10
@@ -180,9 +285,10 @@ typedef struct _NTX_HEADER_ {
 	char descend;
 	char reserver2;
 	char forexpr[256];
+	char tag[12];
 	char custom;
 	char reserved3;
-	unsigned char reserved2[484];
+	unsigned char reserved2[472];
 } NTX_HEADER;
 
 typedef struct _CTX_TAG_ {
@@ -230,8 +336,6 @@ static int ntx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 static int ntx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
 static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
 static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
-static int _ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
-static int _ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
 static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int soft,int last,int* found,const char* __PROC__);
 
 static int ntx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__);
@@ -248,20 +352,16 @@ static int ntx__rlock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 static int ntx__wlock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 static int ntx__ulock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 
-static int ctx__rlock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__){return 0;}
-static int ctx__wlock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__){return 0;}
-static int ctx__ulock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__){return 0;}
-
-static const char* er_unlock			= "Unlock error";
-static const char* er_readlock			= "Shared lock error";
-static const char* er_writelock			= "Exclusive lock error";
-static const char* er_badforexpr		= "Bad FOR expression";
-static const char* er_corruption		= "Index corrupted";
-static const char* er_deepexceeded		= "MAX_BTREE_DEEP exceeded";
-static const char* er_baddata			= "Bad data";
-static const char* er_longkey			= "Key length is too long";
-static const char* er_badwhileexpr		= "Bad WHILE expression";
-static const char* er_badevalexpr		= "Bad EVAL expression";
+#define er_unlock           _clip_gettext("Unlock error")
+#define er_readlock         _clip_gettext("Shared lock error")
+#define er_writelock        _clip_gettext("Exclusive lock error")
+#define er_badforexpr       _clip_gettext("Bad FOR expression")
+#define er_corruption       _clip_gettext("Index corrupted")
+#define er_deepexceeded     _clip_gettext("MAX_BTREE_DEEP exceeded")
+#define er_baddata          _clip_gettext("Bad data")
+#define er_longkey          _clip_gettext("Key length is too long")
+#define er_badwhileexpr     _clip_gettext("Bad WHILE expression")
+#define er_badevalexpr      _clip_gettext("Bad EVAL expression")
 
 int clip_INIT_NTX(ClipMachine* cm){
 	rdd_registerindexdriver(cm,ntx_vtbl());
@@ -317,7 +417,8 @@ static int ntx__ulock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__){
 			char cnt[2];
 
 			er = rdd_read(cm,&ro->index->file,2,2,cnt,__PROC__);
-			_rdd_put_ushort(cnt,_rdd_ushort(cnt)+1);
+			ro->cnt = _rdd_ushort(cnt)+1;
+			_rdd_put_ushort(cnt,ro->cnt);
 			er = rdd_write(cm,&ro->index->file,2,2,cnt,__PROC__);
 		}
 		fl.l_type = F_UNLCK;
@@ -369,14 +470,16 @@ static int _ntx_compare(RDD_DATA* rd,char unique,char descend,char *s1,int l1,un
 }
 
 static int _ntx_search_page(RDD_DATA* rd,RDD_ORDER* ro,NTX_PAGE* page,char* key,int len,
-							unsigned int recno,int *no){
+							unsigned int recno,int *no,int exact){
 	int l;
 	int h;
 	int i = 0;
 	int c = 0;
 	int count;
+	int f = 0;
 	NTX_BUCKET* buck;
 
+	*no = 0;
 	count = _rdd_ushort(page->nkeys);
 	l = 0;
 	h = count-1;
@@ -384,18 +487,26 @@ static int _ntx_search_page(RDD_DATA* rd,RDD_ORDER* ro,NTX_PAGE* page,char* key,
 		i = (l+h)/2;
 		buck = _ntx_buck(page,i);
 		c = _ntx_compare(rd,ro->unique,ro->descend,buck->key,ro->keysize,
-			_rdd_uint(buck->recno),key,len,recno);
+			exact?_rdd_uint(buck->recno):0,key,len,exact?recno:0);
+		if(c && f)
+			return 1;
 		if(c<0)
 			l = i+1;
 		else if(c>0)
 			h = i-1;
 		else {
-			while(!c && i--){
-				buck = _ntx_buck(page,i);
-				c = _ntx_compare(rd,ro->unique,ro->descend,buck->key,ro->keysize,
-					_rdd_uint(buck->recno),key,len,recno);
+			if(exact){
+				while(!c && i--){
+					buck = _ntx_buck(page,i);
+					c = _ntx_compare(rd,ro->unique,ro->descend,buck->key,ro->keysize,
+						_rdd_uint(buck->recno),key,len,recno);
+				}
+				*no = i+1;
+			} else {
+				*no = i;
+				f = 1;
+				h = i-1;
 			}
-			*no = i+1;
 			return 1;
 		}
 	}
@@ -405,20 +516,242 @@ static int _ntx_search_page(RDD_DATA* rd,RDD_ORDER* ro,NTX_PAGE* page,char* key,
 	return 0;
 }
 
+static int _ntx_loadpage(ClipMachine* cm,RDD_ORDER* ro,unsigned int offs,const char* __PROC__){
+	if(offs == ro->curoffs)
+		return 0;
+	ro->curoffs = offs;
+	return rdd_read(cm,&ro->index->file,offs,sizeof(NTX_PAGE),
+		(char*)ro->curpage,__PROC__);
+}
+
+static int __ntx_last(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int root,const char* __PROC__){
+	NTX_PAGE* page = ro->curpage;
+	NTX_BUCKET* buck;
+	int er;
+
+	if((er = _ntx_loadpage(cm,ro,root,__PROC__))) return er;
+	buck = _ntx_buck(page,0);
+	ro->level++;
+
+	if(ro->level >= MAX_BTREE_DEEP)
+		return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,
+			er_corruption);
+
+	ro->stack[ro->level].page = root;
+	ro->stack[ro->level].pos = _rdd_ushort(page->nkeys);
+	if(!_rdd_uint(buck->left)){
+		if(ro->stack[ro->level].pos > 0){
+			ro->stack[ro->level].pos--;
+			buck = _ntx_buck(page,ro->stack[ro->level].pos);
+			return rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__);
+		}
+	} else {
+		buck = _ntx_buck(page,ro->stack[ro->level].pos);
+		if((er = __ntx_last(cm,rd,ro,_rdd_uint(buck->left),__PROC__)))
+			return er;
+	}
+	return 0;
+}
+
+static int __ntx_first(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int root,const char* __PROC__){
+	NTX_PAGE* page = ro->curpage;
+	NTX_BUCKET* buck;
+	int er;
+
+	do {
+		ro->level++;
+		if(ro->level >= MAX_BTREE_DEEP)
+			return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,
+				er_corruption);
+		ro->stack[ro->level].page = root;
+		ro->stack[ro->level].pos = 0;
+		if((er = _ntx_loadpage(cm,ro,root,__PROC__))) return er;
+		buck = _ntx_buck(page,0);
+		root = _rdd_uint(buck->left);
+	} while(root);
+	return rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__);
+}
+
+static int __ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* out,const char* __PROC__){
+	NTX_PAGE* page = ro->curpage;
+	NTX_BUCKET* buck;
+	int level,er;
+
+	*out = 0;
+	level = ro->level;
+
+	if((er = _ntx_loadpage(cm,ro,ro->stack[level].page,__PROC__))) return er;
+	buck = _ntx_buck(page,ro->stack[level].pos);
+
+	if(!_rdd_uint(buck->left)){
+		if(ro->stack[level].pos > 0){
+			ro->stack[level].pos--;
+			buck = _ntx_buck(page,ro->stack[level].pos);
+			return rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__);
+		} else {
+			while(level >= 0 && ro->stack[level].pos == 0) level--;
+			if(level < 0){
+				*out = 1;
+			} else {
+				ro->level = level;
+				ro->stack[level].pos--;
+				if((er = _ntx_loadpage(cm,ro,ro->stack[level].page,__PROC__))) return er;
+				buck = _ntx_buck(page,ro->stack[level].pos);
+				return rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__);
+			}
+		}
+	} else {
+		if((er = __ntx_last(cm,rd,ro,_rdd_uint(buck->left),__PROC__)))
+			return er;
+	}
+	return 0;
+}
+
+static int __ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* out,const char* __PROC__){
+	NTX_PAGE* page = ro->curpage;
+	NTX_BUCKET* buck;
+	int level,er;
+
+	*out = 0;
+	level = ro->level;
+
+	if((er = _ntx_loadpage(cm,ro,ro->stack[level].page,__PROC__))) return er;
+	buck = _ntx_buck(page,ro->stack[level].pos);
+
+	if(!_rdd_uint(buck->left)){
+		if(ro->stack[level].pos < _rdd_ushort(page->nkeys)-1 ){
+			ro->stack[level].pos++;
+			buck = _ntx_buck(page,ro->stack[level].pos);
+			return rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__);
+		} else {
+			while(--level >= 0){
+				if((er = _ntx_loadpage(cm,ro,ro->stack[level].page,__PROC__))) return er;
+				if(ro->stack[level].pos < _rdd_ushort(page->nkeys))
+					break;
+			}
+			if(level < 0){
+				*out = 1;
+			} else {
+				ro->level = level;
+				buck = _ntx_buck(page,ro->stack[level].pos);
+				return rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__);
+			}
+		}
+	} else {
+		ro->stack[level].pos++;
+		buck = _ntx_buck(page,ro->stack[level].pos);
+		if((er = __ntx_first(cm,rd,ro,_rdd_uint(buck->left),__PROC__)))
+			return er;
+	}
+	return 0;
+}
+
+static int __ntx_tuneseek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,int len,const char* __PROC__){
+	NTX_PAGE page;
+	NTX_BUCKET* buck;
+	int c;
+	int out,er;
+
+	_ntx_page(ro,ro->stack[ro->level].page,&page);
+	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+	c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	while(!c){
+		if((er = __ntx_prev(cm,rd,ro,&out,__PROC__)))
+			return er;
+		if(out)
+			break;
+		_ntx_page(ro,ro->stack[ro->level].page,&page);
+		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+		c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	}
+	if(c){
+		if((er = __ntx_next(cm,rd,ro,&out,__PROC__)))
+			return er;
+	}
+	return 0;
+}
+
+static int __ntx_tuneprev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,int len,unsigned int recno,int* ok,const char* __PROC__){
+	NTX_PAGE page;
+	NTX_BUCKET* buck;
+	int c;
+	int out,er;
+
+	_ntx_page(ro,ro->stack[ro->level].page,&page);
+	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+	c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	while(!c && _rdd_uint(buck->recno) != recno){
+		if((er = __ntx_prev(cm,rd,ro,&out,__PROC__)))
+			return er;
+		if(out)
+			break;
+		_ntx_page(ro,ro->stack[ro->level].page,&page);
+		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+		c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	}
+	*ok = _rdd_uint(buck->recno) == recno;
+	return 0;
+}
+
+static int __ntx_tunenext(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,int len,unsigned int recno,int* ok,const char* __PROC__){
+	NTX_PAGE page;
+	NTX_BUCKET* buck;
+	int c;
+	int out,er;
+
+	_ntx_page(ro,ro->stack[ro->level].page,&page);
+	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+	c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	while(!c && _rdd_uint(buck->recno) != recno){
+		if((er = __ntx_next(cm,rd,ro,&out,__PROC__)))
+			return er;
+		if(out)
+			break;
+		_ntx_page(ro,ro->stack[ro->level].page,&page);
+		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+		c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	}
+	*ok = _rdd_uint(buck->recno) == recno;
+	return 0;
+}
+
 static int _ntx_search_tree(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
 							char* key,int len,unsigned int recno,
-							int* res,const char* __PROC__){
+							int* res,int exact,const char* __PROC__){
 	NTX_PAGE page;
 	NTX_BUCKET* buck;
 	int no;
 	long offs = ro->stack[ro->level].page;
-	int er;
+	int ok,er;
 
 	_ntx_page(ro,offs,&page);
-	*res = _ntx_search_page(rd,ro,&page,key,len,recno,&no);
+	*res = _ntx_search_page(rd,ro,&page,key,len,recno,&no,exact);
 	buck = _ntx_buck(&page,no);
 	ro->stack[ro->level].pos = no;
 	if(*res){
+		if(recno && !ro->unique){
+			RDD_STACK stack[MAX_BTREE_DEEP];
+			int level = ro->level;
+
+			memcpy(stack,ro->stack,sizeof(stack));
+			if((er = __ntx_tunenext(cm,rd,ro,key,len,recno,&ok,__PROC__)))
+				return er;
+			if(!ok){
+				ro->level = level;
+				memcpy(ro->stack,stack,sizeof(stack));
+				if((er = __ntx_tuneprev(cm,rd,ro,key,len,recno,&ok,__PROC__)))
+					return er;
+			}
+			if(!ok){
+				ro->level = level;
+				memcpy(ro->stack,stack,sizeof(stack));
+				*res = 1;
+				return 0;
+			}
+		} else if(!exact){
+			if((er = __ntx_tuneseek(cm,rd,ro,key,len,__PROC__)))
+				return er;
+		}
 		*res = 0;
 		return 0;
 	}
@@ -426,7 +759,7 @@ static int _ntx_search_tree(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
 	offs = _rdd_uint(buck->left);
 	if (!offs){
 		if(no==_rdd_ushort(page.nkeys)){
-			rd->eof = 1;
+			ro->eof = 1;
 		}
 		*res = 1;
 		return 0;
@@ -439,7 +772,7 @@ static int _ntx_search_tree(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
 	}
 	ro->stack[ro->level].page = offs;
 
-	return _ntx_search_tree(cm,rd,ro,key,len,recno,res,__PROC__);
+	return _ntx_search_tree(cm,rd,ro,key,len,recno,res,exact,__PROC__);
 }
 
 static int _ntx_calc_key(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
@@ -450,7 +783,7 @@ static int _ntx_calc_key(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
 		ClipVar v;
 
 		memset(&v,0,sizeof(ClipVar));
-		if((er = rd->vtbl->getvalue(cm,rd,ro->simpfno,&v,__PROC__))) return er;
+		if((er = rdd_takevalue(cm,rd,ro->simpfno,&v,__PROC__))) return er;
 		if(v.t.type==CHARACTER_t){
 			memcpy(ro->key,v.s.str.buf,v.s.str.len);
 		} else if(v.t.type==NUMERIC_t){
@@ -865,8 +1198,9 @@ static int ntx_addkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,cons
 		if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 	}
 
-	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,
+	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,1,
 		__PROC__))) return er;
+
 	_ntx_page(ro,ro->stack[ro->level].page,&page);
 	bp = _ntx_buck(&page,_rdd_ushort(page.nkeys));
 
@@ -878,6 +1212,7 @@ static int ntx_addkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,cons
 		if((er = _ntx_add_node(cm,rd,ro,ro->key,rd->recno,_rdd_uint(bp->left),__PROC__)))
 			return er;
 	rd->eof = 0;
+	ro->curoffs = 0;
 	return 0;
 }
 
@@ -1210,7 +1545,7 @@ static int ntx_delkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __P
 
 	if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 
-	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,
+	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,1,
 		__PROC__))) return er;
 
 	ro->valid_stack = 0;
@@ -1218,6 +1553,7 @@ static int ntx_delkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __P
 		return 0;
 
 	if((er = _ntx_del_node(cm,rd,ro,__PROC__))) return er;
+	ro->curoffs = 0;
 	return 0;
 }
 
@@ -1236,8 +1572,6 @@ static int ntx_open(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* tag,c
 		sizeof(RDD_ORDER*)*rd->ords_opened);
 	rd->orders[rd->ords_opened-1] = ro;
 
-	ro->name = (char*)malloc(strlen(ri->name)+1);
-	strcpy(ro->name,ri->name);
 	ro->orderno = rd->ords_opened-1;
 
 	if((er = rdd_read(cm,&ri->file,0,sizeof(NTX_HEADER),(char*)&hdr,__PROC__))) return er;
@@ -1265,9 +1599,16 @@ static int ntx_open(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* tag,c
 	ro->dec = _rdd_ushort(hdr.dec);
 
 	ro->key = (char*)malloc(ro->keysize+1);
-	ro->foundkey = (char*)malloc(ro->keysize+1);
 	ro->fullpage = _rdd_ushort(hdr.fullpage);
 	ro->halfpage = _rdd_ushort(hdr.halfpage);
+	if(hdr.tag[0]){
+		ro->name = malloc(strlen(hdr.tag)+1);
+		strcpy(ro->name,hdr.tag);
+	} else {
+		ro->name = strdup(ri->name);
+	}
+	ro->curpage = calloc(1,sizeof(NTX_PAGE));
+	ro->curoffs = 0;
 
 	if(hdr.forexpr[0]){
 		int r = _clip_parni(cm,1);
@@ -1296,7 +1637,7 @@ static int ntx_close(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PR
 	return 0;
 }
 
-static int _ntx_comp(void* op,void* k1,void* k2){
+static int _ntx_comp(void* op,void* k1,void* k2,int* uniqfound){
 	RDD_ORDER* ro = op;
 	int r = 0;
 
@@ -1310,6 +1651,14 @@ static int _ntx_comp(void* op,void* k1,void* k2){
 			r = _clip_cmptbl[*ss1] - _clip_cmptbl[*ss2];
 	} else {
 		r = memcmp(k1+sizeof(unsigned int),k2+sizeof(unsigned int),ro->keysize);
+	}
+	if(uniqfound)
+		*uniqfound = r;
+	if(!r){
+		if(*(unsigned int*)k1<*(unsigned int*)k2)
+			r = -1;
+		else if(*(unsigned int*)k1>*(unsigned int*)k2)
+			r = 1;
 	}
 	return r;
 }
@@ -1335,12 +1684,12 @@ static int _ntx_savebtree(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,BTREE* bt,c
 				return er;
 			if((er = rd->vtbl->rawgo(cm,rd,*((unsigned int*)bt_key(bt)),0,__PROC__)))
 				return er;
+			rd->eof = 0;
 			if((er = ntx_addkey(cm,rd,ro,NULL,__PROC__))) return er;
 			if(bt_next(bt)){
 				f = 0;
 				break;
 			}
-
 			if((er = rdd_read(cm,&ro->index->file,ro->header+4,sizeof(unsigned int),
 				&poffs,__PROC__))) return er;
 			_ntx_page(ro,poffs,&page);
@@ -1383,7 +1732,7 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	*rop = ro;
 
 	ro->header = header;
-	ro->name = (char*)malloc(strlen(tag?tag:ri->name)+1);
+	ro->name = (char*)calloc(1,strlen(tag?tag:ri->name)+1);
 	strcpy(ro->name,tag?tag:ri->name);
 
 	ro->expr = (char*)malloc(strlen(expr)+1);
@@ -1439,7 +1788,6 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	ro->custom = rd->os.lCustom;
 
 	ro->key = (char*)malloc(ro->keysize+1);
-	ro->foundkey = (char*)malloc(ro->keysize+1);
 	ro->fullpage = ((((1024-2)/(ro->keysize+2*4+2))-1)/2)*2;
 	if(ro->fullpage<4)
 		return rdd_err(cm,EG_CREATE,0,__FILE__,__LINE__,__PROC__,
@@ -1450,6 +1798,8 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 		strcpy(ro->cforexpr,rd->os.cForCondition);
 		_clip_clone(cm,&ro->bforexpr,&rd->os.bForCondition);
 	}
+	ro->curpage = calloc(1,sizeof(NTX_PAGE));
+	ro->curoffs = 0;
 
 	ri->orders = (RDD_ORDER**)realloc(ri->orders,(ri->norders+1)*sizeof(RDD_ORDER*));
 	ri->orders[ri->norders] = ro;
@@ -1471,6 +1821,8 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	hdr.unique = ro->unique;
 	hdr.descend = ro->descend;
 	hdr.custom = ro->custom;
+	if(tag)
+		strcpy(hdr.tag,tag);
 
 	if((er = rdd_write(cm,&ri->file,ro->header,sizeof(NTX_HEADER),(char*)&hdr,__PROC__)))
 		return er;
@@ -1510,6 +1862,10 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 
 	if(rd->os.bWhileCondition.t.type != UNDEF_t)
 		rd->os.lCurrent = 1;
+	if(rd->os.lAll){
+		if((er = rdd_gotop(cm,rd,__PROC__))) return er;
+		rd->os.lCurrent = 1;
+	}
 
 	rd->tagindexing = ro->name;
 	if(ro->descend)
@@ -1584,7 +1940,6 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 		}
 		rd->keysincluded = 0;
 	} else {
-/*		if((er = rdd_gotop(cm,rd,__PROC__))) return er;*/
 		while(!rd->eof){
 			rd->eof = 0;
 			/* check WHILE condition */
@@ -1788,6 +2143,7 @@ static int ntx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 	int res,sok,out,er;
 
 	_ntx_header(ro,&hdr);
+/*	printf("go top\n? 'go top',recno(),bof()\n");*/
 	ro->level = 0;
 	if((er = _ntx_first(cm,ro,_rdd_uint(hdr.root),&recno,&out,__PROC__))) return er;
 	if(out){
@@ -1811,6 +2167,7 @@ static int ntx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 	int res,sok,out,er;
 
 	_ntx_header(ro,&hdr);
+/*	printf("go bottom\n? 'go bottom',recno(),bof()\n");*/
 	ro->level = 0;
 	if((er = _ntx_last(cm,ro,_rdd_uint(hdr.root),&recno,&out,__PROC__))) return er;
 	if(out){
@@ -1828,174 +2185,70 @@ static int ntx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 	return 0;
 }
 
-static int _ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
-	NTX_HEADER hdr;
-	NTX_PAGE page;
-	NTX_BUCKET* buck;
-	int r = 0;
-	int nextf = 0;
-	int pageno,er;
+static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
+	int res = 0,sok,er;
 	unsigned int lastrec;
 
-	if(rd->eof)	return 0;
+	if(rd->eof) return 0;
+	rd->bof = rd->v_bof = rd->eof = 0;
+/*	printf("skip 1\n? 'skip 1',recno(),bof()\n");*/
 	if(rd->shared || !ro->valid_stack){
-		_ntx_header(ro,&hdr);
-		ro->stack[0].page = _rdd_uint(hdr.root);
-		ro->level = 0;
+		char cnt[2];
+		int r;
 
-		if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
+		er = rdd_read(cm,&ro->index->file,2,2,cnt,__PROC__);
+		if(!ro->valid_stack || ro->cnt != _rdd_ushort(cnt)){
+			NTX_HEADER hdr;
+			_ntx_header(ro,&hdr);
+			ro->stack[0].page = _rdd_uint(hdr.root);
+			ro->level = 0;
+			ro->curoffs = 0;
 
-		if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,
-			__PROC__))) return er;
+			if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
+
+			if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,0,
+				__PROC__))) return er;
+			if(r){
+				if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
+				if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
+					return er;
+				rd->eof = 1;
+				ro->valid_stack = 0;
+				return 0;
+			}
+			ro->cnt = _rdd_ushort(cnt);
+		}
 	}
 
-next:
-	pageno = ro->stack[ro->level].page;
+	while(1){
+		int out;
 
-	if(!pageno){
-eof_l:
-		rd->eof = 1;
-		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
-		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
-			return er;
-		return 0;
-	} else if(r){
-		_ntx_page(ro,pageno,&page);
-		if(ro->stack[ro->level].pos>=_rdd_ushort(page.nkeys)){
+		if((er = __ntx_next(cm,rd,ro,&out,__PROC__))) return er;
+		if(out){
 			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
-			return 0;
+			rd->eof = 1;
+			ro->valid_stack = 0;
+			break;
 		}
-		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-		ro->stack[ro->level].pos = ro->stack[ro->level].pos;
-		if((er = rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__)))
-			return er;
-	} else {
-		int count;
-
-		_ntx_page(ro,pageno,&page);
-		count = _rdd_ushort(page.nkeys);
-		if(!nextf)
-			++(ro->stack[ro->level].pos);
-		if(ro->stack[ro->level].pos>count){
-up:
-			if(ro->level<1){
-				goto eof_l;
-			} else {
-				--(ro->level);
-				nextf = 1;
-				goto next;
-			}
-		}
-
-		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-		pageno = _rdd_uint(buck->left);
-		if(!nextf && pageno){
-			ro->level++;
-			if((er = _ntx_first(cm,ro,pageno,&rd->recno,NULL,__PROC__))) return er;
-			if((er = rd->vtbl->rawgo(cm,rd,rd->recno,1,__PROC__)))
-				return er;
-		} else if(ro->stack[ro->level].pos<count){
-			if((er = rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__)))
-				return er;
-		} else
-			goto up;
-	}
-	memcpy(ro->foundkey,buck->key,ro->keysize);
-	return 0;
-}
-
-static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
-	int res = 0,sok,er;
-
-	if(rd->eof) return 0;
-	rd->bof = rd->v_bof =rd->eof = 0;
-	while(1){
-		if((er = _ntx_next(cm,rd,ro,__PROC__))) return er;
-		if(rd->eof)	break;
 		if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
 		if((er = _ntx_checkscope(cm,rd,ro,&sok,__PROC__))) return er;
-		if(res && sok)
+		if(res && sok){
+			ro->valid_stack = 1;
 			break;
-	}
-	return 0;
-}
-
-static int _ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
-	NTX_HEADER hdr;
-	NTX_PAGE page;
-	NTX_BUCKET* buck = 0;
-	int r = 0;
-	int nextf = 0;
-	int pageno,er;
-	int oldlevel = ro->level;
-
-	if(rd->bof)	return 0;
-
-	if(rd->shared || !ro->valid_stack){
-		_ntx_header(ro,&hdr);
-		ro->stack[0].page = _rdd_uint(hdr.root);
-		ro->level = 0;
-
-		if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-
-		if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,
-			__PROC__))) return er;
-	}
-
-next:
-	pageno = ro->stack[ro->level].page;
-
-	if(!pageno){
-bof_l:
-		ro->level = oldlevel;
-		rd->bof = rd->v_bof = 1;
-	} else {
-		int count;
-
-		_ntx_page(ro,pageno,&page);
-		count = _rdd_ushort(page.nkeys);
-
-		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-		pageno = _rdd_uint(buck->left);
-
-		if(!nextf && pageno){
-			ro->level++;
-			_ntx_last(cm,ro,pageno,&rd->recno,NULL,__PROC__);
-			if((er = rd->vtbl->rawgo(cm,rd,rd->recno,1,__PROC__)))
-				return er;
-		} else {
-			if(!ro->stack[ro->level].pos){
-				--(ro->level);
-				if(ro->level<0)
-					goto bof_l;
-				nextf = 1;
-				goto next;
-			}
-			--(ro->stack[ro->level].pos);
-			buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-			pageno = _rdd_uint(buck->left);
-			if(!nextf && pageno){
-				ro->level++;
-				_ntx_last(cm,ro,pageno,&rd->recno,NULL,__PROC__);
-				if((er = rd->vtbl->rawgo(cm,rd,rd->recno,1,__PROC__)))
-					return er;
-			} else {
-				if((er = rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__)))
-					return er;
-			}
 		}
 	}
-	memcpy(ro->foundkey,buck->key,ro->keysize);
 	return 0;
 }
 
 static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
-	int res = 0,sok,er;
+	int res = 0,sok,out,er;
 	int oldrecno = rd->recno;
+	int oldeof = rd->eof;
 
 	if(rd->bof) return 0;
+/*	printf("skip -1\n? 'skip -1',recno(),bof()\n");*/
 	if(rd->eof){
 		rd->eof = 0;
 		if((er = ro->vtbl->gobottom(cm,rd,ro,__PROC__))) return er;
@@ -2003,20 +2256,58 @@ static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 		ro->valid_stack = 1;
 		return 0;
 	}
-	rd->bof = rd->v_bof =rd->eof = 0;
+	rd->bof = rd->v_bof = rd->eof = 0;
+
+	if(rd->shared || !ro->valid_stack){
+		char cnt[2];
+		int r;
+
+		er = rdd_read(cm,&ro->index->file,2,2,cnt,__PROC__);
+		if(!ro->valid_stack || ro->cnt != _rdd_ushort(cnt)){
+			NTX_HEADER hdr;
+			_ntx_header(ro,&hdr);
+			ro->stack[0].page = _rdd_uint(hdr.root);
+			ro->level = 0;
+			ro->curoffs = 0;
+
+			if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
+
+			if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,0,
+				__PROC__))) return er;
+			if(r){
+				if((er = ntx_gotop(cm,rd,ro,__PROC__))) return er;
+				rd->bof = 1;
+				return 0;
+			}
+			ro->cnt = _rdd_ushort(cnt);
+		}
+	}
+
+	if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
+	if(!res){
+		if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
+		oldrecno = rd->recno;
+		oldeof = rd->eof;
+	}
+
 	while(1){
-		if((er = _ntx_prev(cm,rd,ro,__PROC__))) return er;
-		if(rd->bof){
+		rd->eof = 0;
+		if((er = __ntx_prev(cm,rd,ro,&out,__PROC__))) return er;
+		if(out){
 			if((er = rd->vtbl->rawgo(cm,rd,oldrecno,0,__PROC__)))
 				return er;
+			rd->bof = 1;
+			rd->eof = oldeof;
+			ro->valid_stack = 0;
 			break;
 		}
 		if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
 		if((er = _ntx_checkscope(cm,rd,ro,&sok,__PROC__))) return er;
-		if(res && sok)
+		if(res && sok){
+			ro->valid_stack = 1;
 			break;
+		}
 	}
-	ro->valid_stack = 1;
 	return 0;
 }
 
@@ -2028,7 +2319,7 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 	int res,sok,lastrec,oldrecno,er;
 	int len = ro->keysize;
 
-	rd->bof = rd->v_bof =rd->eof = 0;
+	rd->bof = rd->v_bof = rd->eof = 0;
 	if((er = ntx_formatkey(cm,ro,v,expr,__PROC__))) return er;
 	if(v->t.type == CHARACTER_t)
 		len = v->s.str.len;
@@ -2037,11 +2328,16 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 	ro->stack[0].page = _rdd_uint(hdr.root);
 	ro->level = 0;
 
-	if((er = _ntx_search_tree(cm,rd,ro,expr,len,0,&res,__PROC__)))
+	if((er = _ntx_search_tree(cm,rd,ro,expr,len,0,&res,0,__PROC__)))
 		return er;
 
 	_ntx_page(ro,ro->stack[ro->level].page,&page);
 	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+	if(!_rdd_uint(buck->recno) && (ro->level > 0)){
+		ro->level--;
+		_ntx_page(ro,ro->stack[ro->level].page,&page);
+		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
+	}
 	if((er = rd->vtbl->rawgo(cm,rd,_rdd_uint(buck->recno),1,__PROC__)))
 		return er;
 	*found = !res;
@@ -2050,64 +2346,109 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 		if(!ro->unique){
 			if(last){
 				while(1){
+					RDD_STACK stack[MAX_BTREE_DEEP];
+					int level = ro->level;
+					int i;
+
+					for(i=0;i<=level;i++)
+						stack[i] = ro->stack[i];
 					oldrecno = rd->recno;
 					if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
 					if(rd->eof){
 						rd->eof = 0;
 						if((er = rd->vtbl->rawgo(cm,rd,oldrecno,0,__PROC__)))
 							return er;
+						for(i=0;i<=level;i++)
+							ro->stack[i] = stack[i];
+						ro->level = level;
+						if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
+						if((er = _ntx_checkscope(cm,rd,ro,&sok,__PROC__))) return er;
+						if(!res || !sok){
+							if((er = ntx_prev(cm,rd,ro,__PROC__))) return er;
+							if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
+							loc_write(rd->loc,ro->key,ro->keysize);
+							*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
+						}
 						break;
 					}
 					if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 					loc_write(rd->loc,ro->key,ro->keysize);
 					if(_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0)){
 						if((er = ntx_prev(cm,rd,ro,__PROC__))) return er;
+						if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
+						loc_write(rd->loc,ro->key,ro->keysize);
+						*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
 						break;
 					}
 				}
 			} else {
 				while(1){
+					RDD_STACK stack[MAX_BTREE_DEEP];
+					int level = ro->level;
+					int i;
+
+					for(i=0;i<=level;i++)
+						stack[i] = ro->stack[i];
 					oldrecno = rd->recno;
 					if((er = ntx_prev(cm,rd,ro,__PROC__))) return er;
 					if(rd->bof){
 						rd->bof = rd->v_bof = 0;
 						if((er = rd->vtbl->rawgo(cm,rd,oldrecno,0,__PROC__)))
 							return er;
+						for(i=0;i<=level;i++)
+							ro->stack[i] = stack[i];
+						ro->level = level;
+						if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
+						if((er = _ntx_checkscope(cm,rd,ro,&sok,__PROC__))) return er;
+						if(!res || !sok){
+							if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
+							if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
+							loc_write(rd->loc,ro->key,ro->keysize);
+							*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
+						}
 						break;
 					}
 					if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 					loc_write(rd->loc,ro->key,ro->keysize);
 					if(_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0)){
 						if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
+						if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
+						loc_write(rd->loc,ro->key,ro->keysize);
+						*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
 						break;
 					}
 				}
 			}
+		} else {
+			if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
+			if((er = _ntx_checkscope(cm,rd,ro,&sok,__PROC__))) return er;
+			if(!res || !sok){
+				if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
+				*found = 0;
+			}
 		}
 	}
 
-	if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
-	if((er = _ntx_checkscope(cm,rd,ro,&sok,__PROC__))) return er;
-	while(!res || !sok){
-		if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
-		if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-		loc_write(rd->loc,ro->key,ro->keysize);
-		*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
-		if(rd->eof)
-			break;
-		if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
-	}
 	if(*found){
 		ro->valid_stack = 1;
+		if(rd->area != -1)
+			((DBWorkArea*)(cm->areas->items[rd->area]))->found = 1;
 		return 0;
+	} else if(rd->area != -1){
+		((DBWorkArea*)(cm->areas->items[rd->area]))->found = 0;
 	}
 
-	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
-
 	if(!soft || (rd->recno==0)){
+		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 			return er;
+	} else {
+		if((er = rdd_checkfilter(cm,rd,&res,__PROC__))) return er;
+		if((er = _ntx_checkscope(cm,rd,ro,&sok,__PROC__))) return er;
+		if(!res || !sok){
+			if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
+		}
 	}
 	return 0;
 }
@@ -2145,7 +2486,7 @@ static int ntx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const
 
 	if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 
-	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,
+	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,1,
 		__PROC__))) return er;
 	if(r)
 		return 0;
@@ -2240,7 +2581,7 @@ static int ntx_keyvalue(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,co
 
 	if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 
-	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,
+	if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,1,
 		__PROC__))) return er;
 	if(r)
 		return 0;
@@ -2309,10 +2650,6 @@ static int ntx_info(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int cmd,const cha
 	return 0;
 }
 
-static int ntx_setscope(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* top,ClipVar* bottom,unsigned int* map,int bytes,const char* __PROC__){
-	return 0;
-}
-
 static int ntx_destroy(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
 	return 0;
 }
@@ -2328,7 +2665,7 @@ static int ntx_buildtree(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* 
 
 		if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 
-		if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,
+		if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,1,
 			__PROC__))) return er;
 	}
 	ro->valid_stack = 1;
@@ -2341,6 +2678,7 @@ static RDD_INDEX_VTBL* ntx_vtbl(){
 	memset(vtbl,0,sizeof(RDD_INDEX_VTBL));
 	strcpy(vtbl->id,"NTX");
 	strcpy(vtbl->suff,".ntx");
+	strcpy(vtbl->sing_suff,".ntx");
 	strcpy(vtbl->desc,"Generic NTX index files driver v0.0.1 (c) 2001 Copyright ITK Ltd.");
 	vtbl->ismulti = 0; /* one order per file */
 
@@ -2364,7 +2702,7 @@ static RDD_INDEX_VTBL* ntx_vtbl(){
 	vtbl->buildtree	= ntx_buildtree;
 	vtbl->info		= ntx_info;
 	vtbl->keyvalue	= ntx_keyvalue;
-	vtbl->setscope	= ntx_setscope;
+	/*vtbl->setscope	= ntx_setscope;*/
 	vtbl->formatkey = ntx_formatkey;
 	vtbl->_rlock	= ntx__rlock;
 	vtbl->_wlock	= ntx__wlock;
@@ -2418,9 +2756,11 @@ static int _ctx_openorder(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,CTX_TAG* ta
 	ro->dec = _rdd_ushort(hdr.dec);
 
 	ro->key = (char*)malloc(ro->keysize+1);
-	ro->foundkey = (char*)malloc(ro->keysize+1);
 	ro->fullpage = _rdd_ushort(hdr.fullpage);
 	ro->halfpage = _rdd_ushort(hdr.halfpage);
+
+	ro->curpage = calloc(1,sizeof(NTX_PAGE));
+	ro->curoffs = 0;
 
 	if(hdr.forexpr[0]){
 		int r = _clip_parni(cm,1);
@@ -2448,7 +2788,7 @@ static int ctx_open(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* tag,c
 	if(_rdd_ushort(hdr.sig)!=(unsigned short int)0x9591){
 		char err[1024];
 
-		snprintf(err,sizeof(err),"Not CTX file (bad signature): %s",ri->path);
+		snprintf(err,sizeof(err),_clip_gettext("Not CTX file (bad signature): %s"),ri->path);
 		return rdd_err(cm,EG_OPEN,0,__FILE__,__LINE__,__PROC__,err);
 	}
 	if(!tag){
@@ -2560,6 +2900,8 @@ static int ctx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 		_rdd_put_ushort(chdr.sig,(unsigned short int)0x9591);
 		if((er = rdd_write(cm,&ri->file,0,sizeof(CTX_HEADER),&chdr,__PROC__)))
 			return er;
+		if(strcmp(rd->name,ri->name)==0)
+			ri->structural = 1;
 	} else {
 		if((er = rdd_read(cm,&ri->file,0,sizeof(CTX_HEADER),&chdr,__PROC__)))
 			return er;
@@ -2627,6 +2969,7 @@ static RDD_INDEX_VTBL* ctx_vtbl(){
 	memset(vtbl,0,sizeof(RDD_INDEX_VTBL));
 	strcpy(vtbl->id,"CTX");
 	strcpy(vtbl->suff,".ctx");
+	strcpy(vtbl->sing_suff,".ntx");
 	strcpy(vtbl->desc,"Compound NTX (CTX) index files driver v0.0.1 (c) 2001 Copyright ITK Ltd.");
 	vtbl->ismulti = 1;
 
@@ -2650,10 +2993,10 @@ static RDD_INDEX_VTBL* ctx_vtbl(){
 	vtbl->buildtree	= ntx_buildtree;
 	vtbl->info		= ntx_info;
 	vtbl->keyvalue	= ntx_keyvalue;
-	vtbl->setscope	= ntx_setscope;
+	/*vtbl->setscope	= ntx_setscope;*/
 	vtbl->formatkey = ntx_formatkey;
-	vtbl->_rlock	= ctx__rlock;
-	vtbl->_wlock	= ctx__wlock;
-	vtbl->_ulock	= ctx__ulock;
+	vtbl->_rlock	= ntx__rlock;
+	vtbl->_wlock	= ntx__wlock;
+	vtbl->_ulock	= ntx__ulock;
 	return vtbl;
 }

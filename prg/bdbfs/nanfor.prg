@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 // Немножечко оптимизированные функции Nantucket Forum
@@ -8,12 +7,8 @@
 #include "common.ch"
 
 EXTERNAL FT_LASTKEY, FT_ELAPSED, FT_Fday, FT_Hex2Dec
-EXTERNAL FT_Int86,FT_ISPrint,FT_SysMem
-EXTERNAL FT_ORIGIN, FT_GetMode
-**********
-*FUNC FT_Origin()	//в ASM! GetPath()
-**********
-*FUNC FT_GetMode()	//в ASM! vMode()
+EXTERNAL FT_ISPrint
+EXTERNAL FT_ORIGIN
 **********
 FUNC FT_DosVer
 RETURN NTRIM(OsVer())
@@ -24,32 +19,13 @@ RETU INT(OsVer())
 FUNC DosMinor
 RETU (OsVer()-INT(OsVer()))*100
 **********
-*FUNC FT_SetMode(nMode)
-*RETURN VMode(nMode)
-**********
-
-* Эмуляция Clipper Tools II
-**********
-FUNC XTOC(xVal)
-DO CASE
-	CASE VALTYPE(xVal)=='N'
-		xVal:=D2BIN(xVal)	// из Expand
-	CASE VALTYPE(xVal)='D'
-		xVal:=DTOS(xVal)
-	CASE VALTYPE(xVal)='L'
-		xVal:= IF(xVal,'T','F')
-ENDCASE
-RETURN xVal
-**********
-EXTE FTOC,CTOF
-**********
-
 #define FORCE_BETWEEN(x,y,z)	(y := MAX(MIN(y,z),x))
 #define BLOCKIFY(x)		{ || x }
 #define IS_CHAR(x)		(VALTYPE(x) $ "CM")
 #define IS_DATE(x)		(VALTYPE(x) == "D")
 #define IS_LOGICAL(x)		(VALTYPE(x) == "L")
 #define IS_NUMERIC(x)		(VALTYPE(x) $ "NF")
+#define IS_DATETIME(x)		(VALTYPE(x) == "T")
 #define NULL			""
 #define CASE_AT(x,y,z)		z[AT(x,y)+1]
 #define IS_NOT_CHAR(x)		!(VALTYPE(x) $ "CM")
@@ -60,18 +36,21 @@ EXTE FTOC,CTOF
 #define IS_NOT_LOGICAL(x)	(VALTYPE(x) <> "L")
 #define IS_NOT_NUMERIC(x)	!(VALTYPE(x) $ "NF")
 #define IS_NOT_CODE_BLOCK(x)	(VALTYPE(x) <> "B")
+#define IS_NOT_DATETIME(x)	(VALTYPE(x) <> "T")
 
-#define XTOC(x)	  CASE_AT(VALTYPE(x), "CNDLM", ;
+#define XTOC(x)	  CASE_AT(VALTYPE(x), "CNDLMT", ;
 			     { NULL, ;
 			       x, ;
 			       IF(IS_NUMERIC(x),;
 				  NTRIM(x), ;
 				  NULL), ;
 			       IF(IS_DATE(x),DTOC(x),NULL),;
+			       IF(IS_DATETIME(x),TTOC(x),NULL),;
 			       IF(IS_LOGICAL(x),;
 				  IF(x,".T.",".F."), ;
 				  NULL), ;
 			       x })
+
 **********
 FUNC Arr2Str(aX)
 LOCAL i,cT,cRes:='{',item
@@ -88,6 +67,8 @@ FOR i:=1 TO LEN(aX)
 			item:=NTRIM(item)
 		CASE ct=='D'
 			item:='CTOD("'+DTOC(item)+'")'
+		CASE ct=='T'
+			item:='CTOT("'+TTOC(item)+'")'
 		CASE ct=='L'
 			item:=IF(item,'.T.','.F.')
 		CASE ct=='A'
@@ -116,6 +97,8 @@ cTypeToConvertTo:=UPPER(cTypeToConvertTo)
 DO CASE
       CASE cTypeToConvertTo == 'V'	//и так хорошо
 	IF xValueToConvert==NIL THEN xValueToConvert:=''
+
+      CASE cTypeToConvertTo == 'X'	//и так хорошо
 
       CASE cTypeToConvertTo $ "CM" .AND.; // They Want a Character String
 	   IS_NOT_CHAR(xValueToConvert)
@@ -167,7 +150,7 @@ DO CASE
 				      ; // Convert from a Number
 				     xValueToConvert != 0, ;
 				      ; // Unsupported Type
-				     FALSE)))
+				     .F.)))
 
       CASE cTypeToConvertTo == "A" .AND.; // They Want an Array
 	   IS_NOT_ARRAY(xValueToConvert)
@@ -178,6 +161,14 @@ DO CASE
 	   IS_NOT_CODE_BLOCK(xValueToConvert)
 
 	xValueToConvert := BLOCKIFY(xValueToConvert)
+
+      CASE cTypeToConvertTo == "T" .AND.; // They Want a DateTime
+	   IS_NOT_DATETIME(xValueToConvert)
+
+	xValueToConvert := IF(IS_CHAR(xValueToConvert),;
+				CTOT(xValueToConvert),;
+				CTOT("  /  /  00:00"))
+     	
 
 ENDCASE
 
@@ -300,12 +291,6 @@ LOCAL nWorkDays := 0, nDays, nAdjust
 
 IF dStart # NIL .AND. dStop # NIL
    IF dStart # dStop
-/*Так почему-то больше
-	nAdjust:=dStop
-	nDays:=dStart
-	dStart:=MIN(nAdjust,nDays)
-	dStop :=MAX(nAdjust,nDays)
-*/
 	IF dStart > dStop	// Swap the values
 		nAdjust:= dStop
 		dStop  := dStart
@@ -796,8 +781,7 @@ FUNC FT_AEminlen( aArray, nDimension, nStart, nCount )
 RETURN FT_AEmaxlen( aArray, nDimension, nStart, nCount, .T.)
 **********
 
-#include "FTINT86.CH"
-FUNC FT_TEMPFIL( cPath, lHide )
+FUNC FT_TEMPFILE( cPath, lHide )
 // в отличие от оригинальной функции допускает числовой атрибут
 IF valType(lHide) = "L" .AND. lHide
 	lHide:=1

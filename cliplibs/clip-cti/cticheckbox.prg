@@ -9,10 +9,6 @@
 	toggled on or off by a user*/
 
 #include "cti.ch"
-#include "cticontrol.ch"
-#include "cticheckbox.ch"
-#include "ctievents.ch"
-
 #include "inkey.ch"
 
 #define	SUPERCLASS	CTI_CONTROL
@@ -26,7 +22,7 @@ function cti_checkbox_new(Caption)
 	obj:__mark_symbol	:= chr(0x96)
 
 	obj:__real_draw		:= @cti_checkbox_real_draw()
-	obj:__handle_event	:= @cti_checkbox_handle_event()
+
 	obj:get_value		:= {|_obj|_obj:__value}
 	obj:set_value		:= @cti_checkbox_set_value()
 	obj:toggle		:= {|_obj|_obj:signal_emit(HASH_CTI_TOGGLE_SIGNAL)}
@@ -35,7 +31,9 @@ function cti_checkbox_new(Caption)
 	obj:set_mark_symbol	:= @cti_checkbox_set_mark_symbol()
 	obj:realize_real	:= @cti_checkbox_realize_real()
 
-	obj:__signal_connect_internal(HASH_CTI_TOGGLE_SIGNAL, {|_obj|_obj:toggle_real})
+	obj:__signal_connect_internal(HASH_CTI_TOGGLE_SIGNAL, {|_obj|_obj:toggle_real()})
+
+	obj:set_key(K_SPACE, {|_obj|_obj:toggle()})
 return obj
 
 static function cti_checkbox_real_draw(obj)
@@ -80,14 +78,4 @@ return
 static function cti_checkbox_set_mark_symbol(obj,markSymbol)
 	obj:__mark_symbol := iif(valtype(markSymbol)=="C",padr(markSymbol,1),"*")
 	obj:draw_queue()
-return
-
-static function cti_checkbox_handle_event(obj,event)
-***********************************************
-	if event:type != CTI_KEYBOARD_EVENT; return .F.; endif
-
-	switch (event:keycode)
-		case K_SPACE
-		obj:toggle()
-	end
 return

@@ -194,7 +194,7 @@ return .t.
 ************
 static function bg_drawImage()
 local i, j, key, va, colwidth, dx, x, y, arrx:={}, wCol, volume
-local yav, rmin, x1, x2, a, cntColor, arry:={}
+local yav, rmin, x1, x2, a, cntColor, arry:={}, kl
 	if !::__isData
 		return .f.
 	endif
@@ -245,6 +245,8 @@ local yav, rmin, x1, x2, a, cntColor, arry:={}
 	next
 	for i=1 to ::__category
 		for key=1 to ::__datarow
+			kl := iif(key<=10, key, &(right(alltrim(str(key)),1)))
+			kl := iif(kl==0, 10, kl)
 			j := ::newarr[key][i]
 			x1 := arrx[i]+dx
 			x2 := x1+colwidth
@@ -270,19 +272,19 @@ local yav, rmin, x1, x2, a, cntColor, arry:={}
 			if ::volume
 				if j>=0
 					a := {{x1, y1}, {x1, y2}, {x2, y2}, {x2+volume, y2-volume}, {x2+volume, y1-volume}, {x1+volume, y1-volume}}
-					::image:filledPolygon(a, ::legendColor[key])
+					::image:filledPolygon(a, ::legendColor[kl])
 					::image:polygon(a, ::scaleColor)
 				else
 					a := {{x1, y2}, {x1, y1}, {x2, y1}, {x2+volume, y1-volume}, {x2+volume, y2-volume}, {x2, y2}}
-					::image:filledPolygon(a, ::legendColor[key])
+					::image:filledPolygon(a, ::legendColor[kl])
 					::image:polygon(a, ::scaleColor)
 					if arry[i][1] == ::Y0 .and. y2 == ::Y0
 						a := {{x1, y2}, {x2+volume, y2}, {x2+volume, y2-volume}, {x1+volume, y2-volume}}
-						::image:filledPolygon(a, ::legendColor[key+cntColor])
+						::image:filledPolygon(a, ::legendColor[kl+cntColor])
 						::image:polygon(a, ::scaleColor)
 					elseif y2 == ::Y0
 						a := {{x2, y2}, {x2+volume, y2-volume}, {x2+volume, y2}}
-						::image:filledPolygon(a, ::legendColor[key+cntColor])
+						::image:filledPolygon(a, ::legendColor[kl+cntColor])
 						::image:polygon(a, ::scaleColor)
 					endif
 					::image:line(x2, y2, x2, y1, ::scaleColor)
@@ -293,32 +295,32 @@ local yav, rmin, x1, x2, a, cntColor, arry:={}
 						if  between(y1-volume, yav, yav-volume)
 							va := y1 - yav
 							a := {{x2+va, yav}, {x2+volume, y1-volume}, {x2+volume, yav}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						elseif  between(y2-volume, yav, yav-volume)
 							va := y2-yav
 							a := {{x2, yav}, {x2+volume, yav-volume}, {x2+volume, y2-volume}, {x2+va, yav}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						elseif y2>yav-volume
 							a := {{x2, yav}, {x2+volume, yav-volume}, {x2+volume, yav}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						endif
 					elseif ::valAverage<0 .and. j<0
 						if  y1 >= yav .and. between(y1-volume, yav, yav-volume)
 							va := y1 - yav
 							a := {{x2, yav}, {x2+volume, yav-volume}, {x2+volume, y1-volume}, {x2+va, yav}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						elseif  y1 >= yav .and. between(y2-volume, yav, yav-volume)
 							va := y2 - yav
 							a := {{x2+va, yav}, {x2+volume, y2-volume}, {x2+volume, yav}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						elseif y1 >= yav .and. y2<=yav
 							a := {{x2, yav}, {x2+volume, yav-volume}, {x2+volume, yav}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						endif
 					endif
@@ -334,10 +336,10 @@ local yav, rmin, x1, x2, a, cntColor, arry:={}
 				endif
 			else
 				if (j>=0)
-					::image:filledRectangle(x1, y1,  x2, y2-1, ::legendColor[key])
+					::image:filledRectangle(x1, y1,  x2, y2-1, ::legendColor[kl])
 					::image:rectangle(x1, y1,  x2, y2-1, ::scaleColor)
 				else
-					::image:filledRectangle(x1, y2+1, x2, y1, ::legendColor[key])
+					::image:filledRectangle(x1, y2+1, x2, y1, ::legendColor[kl])
 					::image:rectangle(x1, y2+1, x2, y1, ::scaleColor)
 				endif
 			endif

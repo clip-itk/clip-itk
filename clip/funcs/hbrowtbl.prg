@@ -4,6 +4,7 @@ function HTableNew(selfDoc, width, border, parse)
 local obj := selfDoc//map()
 	obj:className	:= "HTABLE"
 	obj:caption	:= NIL
+	obj:captionAlign:= "TOP"
 	obj:Titems	:= {}
 	obj:Tcolumns	:= {}
 	obj:Trows	:= {}
@@ -159,7 +160,7 @@ local box:={"‚","€","ˆ","ƒ","","†","‡","Š","„","‰","…"}
 		s += box[2]:replicate(w)+box[3]
 	next
 	s := s:left(s:len()-1) + box[4]
-	if !empty(::caption)
+	if !empty(::caption) .and. upper(::captionAlign) == "TOP"
 		j := len(s)
 		arr := split_string(::caption, j)
 		for i in arr
@@ -229,7 +230,7 @@ local box:={"‚","€","ˆ","ƒ","","†","‡","Š","„","‰","…"}
 				endif
 			next
 			if j-elem:colspan == 0
-				::doc:Text(iif(::border, box[5], " "),::doc:n_Line, ::doc:n_Pos,,,::clr)
+				::doc:Text(iif(::border, box[5], " "),::doc:n_Line, ::doc:n_Pos,,,tcolor)
 			endif
 			kx := 0
 			for x=1 to y
@@ -258,9 +259,8 @@ local box:={"‚","€","ˆ","ƒ","","†","‡","Š","„","‰","…"}
 			next
 			asize(elem:items, len(elem:items)-y)
 			dataOk := dataOk .and. empty(elem:items)
-			::doc:Text(iif(::border, box[5], " "), ::doc:n_Line, ::doc:n_Pos+iif(y==0, w, 0),,,::clr)
+			::doc:Text(iif(::border, box[5], " "), ::doc:n_Line, ::doc:n_Pos+iif(y==0, w, 0),,,tcolor)
 
-			::doc:refresh()
 			s1 += symb_tbl(::Titems, i, j)
 		next
 		::doc:n_Line ++
@@ -271,8 +271,14 @@ local box:={"‚","€","ˆ","ƒ","","†","‡","Š","„","‰","…"}
 
 		enddo
 		::doc:Text(s1,::doc:n_Line,::doc:n_Pos,,,tcolor)
-				::doc:refresh()
 	next
+	if !empty(::caption) .and. upper(::captionAlign) == "BOTTOM"
+		j := len(s)
+		arr := split_string(::caption, j)
+		for x in arr
+			::doc:Text(padc(x, j),,,,,::clr)
+		next
+	endif
 return
 ***********************************************
 ** Class HCell
@@ -329,3 +335,59 @@ static function tc_setWidthCell(width)
 		::width := width
 	endif
 return ::width
+**************
+function symb_tbl(arr, row, col)
+local symb:=" ", elem, elemD, elemR, len
+local box:={"‚","€","ˆ","ƒ","","†","‡","Š","„","‰","…"}
+      //     1   2   3   4   5   6   7   8   9   0   1
+	len := len(arr[row])
+	elem := arr[row][max(1, min(col, len))]
+	if len(arr)>row
+		elemD := arr[row+1][max(1, min(col, len(arr[row+1])))]
+	endif
+	if col < len
+		elemR := arr[row][col+1]
+	endif
+	if row<len(arr)
+		if col==0
+			symb := iif(elem:rowspan>1, box[5], box[6])
+		elseif col>=len
+			symb := iif(elem:colspan!=1 .or. elem:rowspan>1, box[5], box[7])
+/*
+		elseif col==1 .and. elem:colspan==1
+			symb := iif(elem:rowspan>1, box[6], box[8])
+			if elemD != NIL .and. elemD:colspan>1
+				symb := box[10]
+			endif
+*/
+		elseif col<len .and. elem:colspan>1 .and. row<len(arr) .and. elem:rowspan==1
+			symb := box[3]
+		elseif col>=1 .and. col<len
+			symb := iif(elem:rowspan==1, iif(elem:colspan==1, box[8], box[6]), box[6])
+			if elemR !=NIL .and. elemR:rowspan > 1
+				symb := box[7]
+			endif
+			if elemD != NIL .and. elemD:colspan>1
+				if elem:colspan>1
+					symb := " "
+				else
+					symb := box[10]
+				endif
+			endif
+
+		endif
+		return symb
+	endif
+	if row==len(arr)
+		if col==0
+			symb := box[9]
+		elseif col==1
+			symb := iif(elem:colspan==1, box[10], box[2])//box[9]
+		elseif col<len
+			symb := iif(elem:colspan==1, box[10], box[2])
+		else
+			symb := box[11]
+		endif
+	endif
+return symb
+

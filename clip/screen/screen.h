@@ -1,5 +1,11 @@
 /*
 $Log: screen.h,v $
+Revision 1.20  2002/11/20 09:18:16  clip
+SET(_SET_ESC_DELAY[, <nMilliseconds>]) -> nOldMilliseconds
+get/set Esc timeout in milliseconds; default == 300 ms
+closes #50
+paul
+
 Revision 1.19  2002/05/27 11:17:58  clip
 scankey() fix
 paul
@@ -156,6 +162,10 @@ unsigned long getWait_Key(ScreenBase *base, long milliseconds); /* 0 means nowai
 unsigned long getRaw_Key(ScreenBase *base);
 unsigned long getRawWait_Key(ScreenBase * base, long milliseconds);
 int getState_Key(ScreenBase *base);
+
+/* esc delay, milliseconds */
+extern int esc_delay_Screen;
+
 /* state bits */
 #define KEY_SHIFT	0
 #define KEY_CTRL	2

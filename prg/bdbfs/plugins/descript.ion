@@ -1,0 +1,23 @@
+dbfupper.ini Make all fields UPPER
+del_doub.ini Mark all non-unique records (in current order)
+sort_crt.ini Sort current base on current field
+sum_all.ini Sum all numeric fields
+
+app_new.ini Append from another base all records absent in current.
+mark_dbl.ini Mark all records containing in other
+relation.ini SET RELATION example
+
+sh_keys.ini Information about key codes
+
+fvi_ru.ini Future value investment (in Russian)
+fvi.ini Future value investment
+
+pvi_ru.ini Present value investment (in Russian)
+pvi.ini Present value investment
+
+scr_save_ru.ini Screen-saver example (in Russian)
+scr_save.ini Screen-saver example
+
+bdbfs.ch bdbfs specific commands and definitions
+clipper.ch Common include file
+

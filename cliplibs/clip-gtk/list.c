@@ -153,11 +153,13 @@ clip_GTK_LISTINSERTITEMS(ClipMachine *cm)
 						}
 	                                	break;
 	                                default:
+	                                	break;
 	                	}
 	                }
 
 	        }
                 default:
+	        	break;
 	}
         gtk_list_insert_items(GTK_LIST(clst->widget),items,position-1);
 	return 0;
@@ -222,11 +224,13 @@ clip_GTK_LISTAPPENDITEMS(ClipMachine *cm)
 						}
 	                                	break;
 	                                default:
+	        				break;
 	                	}
 	                }
 
 	        }
                 default:
+	        	break;
 	}
         gtk_list_append_items(GTK_LIST(clst->widget),items);
 	return 0;
@@ -291,11 +295,13 @@ clip_GTK_LISTPREPENDITEMS(ClipMachine *cm)
 						}
 	                                	break;
 	                                default:
+	        				break;
 	                	}
 	                }
 
 	        }
                 default:
+	        	break;
 	}
         gtk_list_prepend_items(GTK_LIST(clst->widget),items);
 	return 0;
@@ -325,6 +331,7 @@ clip_GTK_LISTREMOVEITEMS(ClipMachine *cm)
                                 items = g_list_append(items,citem->widget);
                         	break;
                         default:
+	        		break;
         	}
         }
         gtk_list_remove_items(GTK_LIST(clst->widget),items);
@@ -356,6 +363,7 @@ clip_GTK_LISTREMOVEITEMSNOUNREF(ClipMachine *cm)
                                 items = g_list_append(items,citem->widget);
                         	break;
                         default:
+	        		break;
         	}
         }
         gtk_list_remove_items_no_unref(GTK_LIST(clst->widget),items);

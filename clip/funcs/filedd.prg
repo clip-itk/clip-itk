@@ -10,6 +10,8 @@
 #include <config.ch>
 #include <set.ch>
 #include <box.ch>
+#include <pgch.ch>
+
 #define LIST_COLORS	"0/3,0/2,15/3,0/3,0/2,15/2,15/2"
 #define DOP	replicate(" ", 256)
 #define DRIVE_PATH	"/usr/home"
@@ -20,11 +22,12 @@
 #define FA_VOLUME	8
 #define FA_DIRECTORY	16
 #define FA_ARCHIVE	32
-
+//#define FD_DELIM	translate_charset(__CHARSET__, host_charset(), "Å")
+#define FD_DELIM 	chr(PGCH_VLINE)
 
 function DiskFileDialog(Driver, Curdrv, Curdir, pMask)
-local i, gi, retvalue, scr, k, item, r, f, nkey:=1, gfocus, lbopen:=.f., c[2]
-local fdp:=map(), drv
+local i, gi, retvalue, scr, k, item, r, f, nkey:=1, gfocus, lbopen:=.f., c[2], s
+local fdp:=map(), drv, old_dir:=curDir()
 
 fdp:current := ""
 k := int(3*maxcol()/4)
@@ -59,7 +62,7 @@ gi := ""
 
 fdp:getobj  := getnew(fdp:nTop-2, fdp:nLeft,{|_1| iif(_1==NIL, gi,gi:=_1)}, "gi", "@kS"+alltrim(str(fdp:length)), "w+/b")
 fdp:lbobj   := _listbox_(fdp:nTop-3, fdp:nLeft-5, fdp:nBottom+2, fdp:nLeft-2, Driver[Curdrv], Driver,,, "15/7,0/2,0/7,0/7,0/7",,,.f., .t.)
-fdp:listobj := listitemnew(fdp:nTop, fdp:nLeft, fdp:nBottom, fdp:nRight, 3, "Å", LIST_COLORS)
+fdp:listobj := listitemnew(fdp:nTop, fdp:nLeft, fdp:nBottom, fdp:nRight, 3, FD_DELIM, LIST_COLORS)
 
 initItem(fdp)
 fdp:lbobj:display()
@@ -194,25 +197,29 @@ while nkey!=0
 			case gfocus == 1
 				r := alltrim(fdp:getobj:buffer)
 				r := strtran(r, '\', '/')
+				r := strtran(r, '//', '/')
 				f := fileattr(r)
 				do case
 				case rat("*", r) != 0
 					fdp:getobj:killFocus()
 					gfocus := 2
-					f := substr(r, 1, rat("/", r)-1)
-					drv := substr(f, 1, at(":", f))
-					if drv != currdrive()
-						diskchange(drv)
+					s := rat("/", r)
+					if s <= 0
+						fdp:mask:= substr(r, 3)
+						r := substr(r, 1, 2)+"/"
+					else
+						fdp:mask:= substr(r, s+1)
+						r := substr(r, 1, s)
 					endif
-					f := substr(f, at(":", f)+1)
-					dirchange(f)
-					fdp:mask := substr(r, rat("/", r)+1)
+					dirchange(r)
 					initItem(fdp)
 				case f >= FA_ARCHIVE
 					retvalue := r
 					nkey := 0
 				case f<FA_ARCHIVE .and. f>0
-					if dirchange(substr(r, at(":", r)+1)) == 0
+					r += "/"
+					r := strtran(r, "//", "/")
+					if dirchange(r) == 0
 						initItem(fdp)
 						gfocus := 2
 					endif
@@ -269,23 +276,36 @@ while nkey!=0
 	endcase
 enddo
 restore screen from scr
+dirchange(PATH_DELIM+old_dir)
 return retvalue
+
+*************************************
 static function initItem(fdp)
     local s, c, a, b, i, cc[2]
 
     fdp:viewitem := {}
     fdp:listobj:clear()
     c := curdir()
-    fdp:current := currdrive()+"/"+iif(empty(c), "", c+"/")
+    fdp:current := strtran(currdrive()+"/"+iif(empty(c), "", c+"/"), "//", "/")
 
     //a := fileseek(current, 16)
     a := fileseek(fdp:current, FA_DIRECTORY)
     b := {}
     while !empty(a)
+	#ifdef OS_CYGWIN
+	if a == ".."
+		a := fileseek()
+		loop
+	endif
+	if a == "."
+		a := ".."
+	endif
+	#else
 	if a == "."
 		a := fileseek()
 		loop
 	endif
+	#endif
 	cc[1] := a+"/"
 	cc[2] := a+"|"+padr(padr(fileattrs(), 5)+"| "+str(filesize()), (fdp:nRight-fdp:nLeft)-23 )+"| "+filetime()+" | "+dtoc(filedate())
 	aadd(b, aclone(cc))
@@ -316,6 +336,8 @@ static function initItem(fdp)
     fdp:getobj:setFocus()
     fdp:listobj:refresh()
 return
+
+*************************************
 static func showview(fdp)
 local i
 
@@ -325,11 +347,13 @@ i := fdp:listobj:buffer
 devpos(fdp:listobj:line, fdp:listobj:row)
 return
 
+*************************************
 static func lastdir(str)
 	str := substr(str, 1, rat("/", str)-1)
 	str := substr(str, rat("/", str)+1)
 return str
 
+*************************************
 static function i_driver(Driver)
 	local i
 	for i=67 to 90

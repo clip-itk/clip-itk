@@ -1,12 +1,48 @@
 /*
 	$Log: ms_clip.c,v $
+	Revision 1.27  2004/02/26 12:59:55  clip
+	rust: bindpars with NIL
+	
+	Revision 1.26  2003/06/09 13:10:14  clip
+	rust: multiple column PRIMARY KEY as row ID
+
+	Revision 1.25  2003/04/29 08:51:12  clip
+	rust: small fixes
+
+	Revision 1.24  2003/04/09 08:48:09  clip
+	rust: increase loaded rows counter on append
+
+	Revision 1.23  2003/03/12 12:49:36  clip
+	rust: tasks share SQL drivers
+
+	Revision 1.22  2003/02/16 16:02:23  clip
+	rust: bug in ms_refresh() fixed
+
+	Revision 1.21  2003/02/14 10:08:39  clip
+	rust: SQLFieldType() -> SQLFieldTypeSQL()
+
+	Revision 1.20  2003/02/12 14:56:41  clip
+	rust: small fix
+
+	Revision 1.19  2002/12/25 14:45:07  clip
+	rust: driver registration changed
+
+	Revision 1.18  2002/12/21 11:34:05  clip
+	rust: small fixes
+
+	Revision 1.17  2002/11/26 10:56:38  clip
+	rust: documentation is up-to-date
+
+	Revision 1.16  2002/11/24 14:31:07  clip
+	rust: transactions and smart rows fetching
+
 	Revision 1.15  2002/09/11 12:29:00  clip
 	build fixes
 	paul
-	
+
 	Revision 1.14  2002/08/21 10:11:04  clip
 	rust: firebird required some changes
-	
+
 	Revision 1.13  2002/07/03 12:54:37  clip
 	rust: orders in TRowset
 
@@ -55,15 +91,19 @@
 
 #include "clip.h"
 #include "dbfsql.h"
+#include "mysql.ch"
 
 #undef UNIQUE_FLAG
 #include <mysql.h>
 
-static const char subsys[] = "DBFSQL";
-static const char er_connect[] = "Can't connect to database server";
-static const char er_nosql[] = "No SQL statement";
-static const char er_nostatement[] = "No statement (not prepared)";
-static const char er_norowset[] = "No such rowset";
+static const char subsys[]          = "DBFSQL";
+static const char er_connect[]      = "Can't connect to database server";
+static const char er_nosql[]        = "No SQL statement";
+static const char er_nostatement[]  = "No statement (not prepared)";
+static const char er_norowset[]     = "No such rowset";
+static const char er_start[]        = "Can't start transaction";
+static const char er_commit[]       = "Can't commit transaction";
+static const char er_rollback[]     = "Can't roll transaction back";
 
 int ms_createconn(ClipMachine * mp);
 
@@ -71,7 +111,6 @@ struct tagMS_CONN;
 
 typedef struct tagMS_STMT
 {
-	struct tagMS_STMT *next;
 	int stmt_item;
 	struct tagMS_CONN *conn;
 	char *sql;
@@ -84,19 +123,26 @@ typedef struct tagMS_ROWSET
 {
 	int rowset_item;
 	struct tagMS_CONN *conn;
-	struct tagMS_ROWSET *next;
+	struct tagMS_STMT *stmt;
 	int recno;
 	int lastrec;
+	int loaded;
+	int unknownrows;
+	int done;
 	int bof;
 	int eof;
 	int nfields;
 	SQLFIELD *fields;
 	int id;
+	int nids;
+	int* ids;
 	HashTable* orders;
 	long* taghashes;
 	int ntags;
 	BTREE* bt;
 	struct tagSQLORDER* curord;
+	int hot;
+	int newrec;
 	void ***data;
 }
 MS_ROWSET;
@@ -105,24 +151,27 @@ MS_ROWSET;
 typedef struct tagMS_CONN
 {
 	SQLVTBL *vtbl;
-	MS_STMT *stmts;
-	MS_ROWSET *rowsets;
 	SQLLocale* loc;
+	int at;
 	MYSQL *conn;
 }
 MS_CONN;
 
-void ms_destroyconn(SQLCONN * conn);
-int ms_prepare(ClipMachine * mp, SQLCONN * conn, char *sql);
-int ms_command(ClipMachine * mp, SQLSTMT * stmt, ClipVar * ap);
-int ms_createrowset(ClipMachine * mp, SQLROWSET* rs,SQLSTMT * stmt, ClipVar * ap,const char* idname,const char* gen_idSQL);
-char *ms_testparser(ClipMachine * mp, char * sql, ClipVar * ap);
-char *ms_getvalue(SQLROWSET * rowset, int fieldno, int *len);
-void ms_setvalue(SQLROWSET * rowset, int fieldno, char *value, int len);
-void ms_append(SQLROWSET * rowset);
-void ms_delete(SQLROWSET * rowset);
-void ms_newid(ClipMachine * mp, SQLSTMT * stmt);
-int ms_refresh(ClipMachine* mp,SQLROWSET* rowset,SQLSTMT* stmt,ClipVar* ap,const char* idname);
+void ms_destroyconn(SQLCONN* conn);
+int ms_prepare(ClipMachine* mp,SQLCONN* conn,char* sql);
+int ms_command(ClipMachine* mp,SQLSTMT* stmt,ClipVar* ap);
+int ms_createrowset(ClipMachine* mp,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,const char* gen_idSQL);
+char *ms_testparser(ClipMachine* mp,char* sql,ClipVar* ap);
+char *ms_getvalue(SQLROWSET* rowset,int fieldno,int* len);
+void ms_setvalue(SQLROWSET* rowset,int fieldno,char* value,int len);
+void ms_append(SQLROWSET* rowset);
+void ms_delete(SQLROWSET* rowset);
+void ms_newid(ClipMachine* mp,SQLSTMT* stmt);
+int ms_refresh(ClipMachine* mp,SQLROWSET* rowset,SQLSTMT* stmt,ClipVar* ap);
+int ms_start(ClipMachine* mp,SQLCONN* conn,const char* p1,const char* p2);
+int ms_commit(ClipMachine* mp,SQLCONN* conn);
+int ms_rollback(ClipMachine* mp,SQLCONN* conn);
+int ms_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors);
 
 static SQLVTBL vtbl =
 {
@@ -138,31 +187,35 @@ static SQLVTBL vtbl =
 	ms_delete,
 	ms_newid,
 	ms_refresh,
-	NULL
+	NULL,
+	ms_start,
+	ms_commit,
+	ms_rollback,
+	ms_fetch
 };
 
 int clip_INIT_MYSQL(ClipMachine* mp){
-	mp->ms_connect = ms_createconn;
+	(*mp->nsqldrivers)++;
+	*mp->sqldrivers = realloc(*mp->sqldrivers,sizeof(SQLDriver)*(*mp->nsqldrivers));
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].id,"MS");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].name,"MySQL");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].desc,"Generic MySQL for CLIP driver, v.1.0");
+	(*mp->sqldrivers)[*mp->nsqldrivers-1].connect = ms_createconn;
 	return 0;
 }
 
-static void
-destroy_ms_stmt(void *stmt)
-{
+static void destroy_ms_stmt(void* s){
+	MS_STMT* stmt = (MS_STMT*)s;
 
-	if (stmt)
-	{
-		if (((MS_STMT *) (stmt))->res)
-		{
-			mysql_free_result(((MS_STMT *) (stmt))->res);
+	if(stmt){
+		if(stmt->res){
+			mysql_free_result(stmt->res);
 		}
-		if (((MS_STMT *) (stmt))->sql)
-		{
-			free(((MS_STMT *) (stmt))->sql);
+		if(stmt->sql){
+			free(stmt->sql);
 		}
 		free(stmt);
 	}
-
 }
 
 /* Helper function used by _clip_destroy_c_item to release rowset. */
@@ -179,7 +232,7 @@ destroy_ms_rowset(void *rowset)
 		}
 		if (((MS_ROWSET *) (rowset))->data)
 		{
-			for (i = 0; i < ((MS_ROWSET *) (rowset))->lastrec; i++)
+			for (i = 0; i < ((MS_ROWSET *) (rowset))->loaded; i++)
 			{
 				for (j = 0; j < ((MS_ROWSET *) (rowset))->nfields; j++)
 				{
@@ -205,27 +258,7 @@ destroy_ms_rowset(void *rowset)
 static void
 destroy_ms_conn(void *conn)
 {
-	MS_ROWSET *currowset = ((MS_CONN *) (conn))->rowsets;
-	MS_ROWSET *nextrowset;
-	MS_STMT *curstmt = ((MS_CONN *) (conn))->stmts;
-	MS_STMT *nextstmt;
-
-	if (conn)
-	{
-		while (currowset)
-		{
-			nextrowset = currowset->next;
-			destroy_ms_rowset(currowset);
-			currowset = nextrowset;
-		}
-		while (curstmt)
-		{
-			nextstmt = curstmt->next;
-			destroy_ms_stmt(curstmt);
-			curstmt = nextstmt;
-		}
-		free(conn);
-	}
+	free(conn);
 	return;
 }
 
@@ -255,24 +288,22 @@ ms_bindpars(MS_STMT * stmt, ClipVar * ap)
 		tp = _clip_vptr(&ap->a.items[i]);
 		vp = _clip_vptr(&tp->a.items[1]);
 		tp = _clip_vptr(&tp->a.items[0]);
-		if(vp->t.type == CHARACTER_t){
-			strcpy(parname,tp->s.str.buf);
-			b = sql;
-			while((b = strstr(b,parnamebuf))){
-				if(!(strchr(delims,*(b+tp->s.str.len+1)) || !(*(b+tp->s.str.len+1)))){
-					b++;
-					continue;
-				}
-				e = strpbrk(b,delims);
-				if(e){
-					if(e-b==strlen(parnamebuf)){
-						len += strlen(vp->s.str.buf) - (e - b);
-					}
-				} else {
-					len += strlen(vp->s.str.buf) - (initlen - (b-sql));
-				}
+		strcpy(parname,tp->s.str.buf);
+		b = sql;
+		while((b = strstr(b,parnamebuf))){
+			if(!(strchr(delims,*(b+tp->s.str.len+1)) || !(*(b+tp->s.str.len+1)))){
 				b++;
+				continue;
 			}
+			e = strpbrk(b,delims);
+			if(e){
+				if(e-b==strlen(parnamebuf)){
+					len += (vp->t.type==CHARACTER_t)?strlen(vp->s.str.buf):4 - (e - b);
+				}
+			} else {
+				len += (vp->t.type==CHARACTER_t)?strlen(vp->s.str.buf):4 - (initlen - (b-sql));
+			}
+			b++;
 		}
 	}
 	t = res = malloc(len+1);
@@ -296,6 +327,9 @@ ms_bindpars(MS_STMT * stmt, ClipVar * ap)
 		if(vp->t.type == CHARACTER_t){
 			strcpy(t,vp->s.str.buf);
 			t += strlen(vp->s.str.buf);
+		} else {
+			strcpy(t,"null");
+			t += 4;
 		}
 	}
 	if(t!=&res[len] && b){
@@ -318,10 +352,13 @@ ms_createconn(ClipMachine * mp)
 	char *db = _clip_parc(mp, 6);
 	char *socket = _clip_parc(mp, 7);
 	char *flagstr = _clip_parc(mp, 8);
+	char *trpars = _clip_parc(mp, 10);
 	unsigned int port = portstr ? atoi(portstr) : 0;
 	unsigned int flag = flagstr ? atoi(flagstr) : 0;
 	MS_CONN *conn;
 	MYSQL *tmpconn;
+	char str[256];
+	int status;
 
 	tmpconn = mysql_init(NULL);
 	tmpconn = mysql_real_connect(tmpconn, host, user, passwd, db, port, socket, flag);
@@ -331,10 +368,23 @@ ms_createconn(ClipMachine * mp)
 		return -1;
 	}
 
-	conn = malloc(sizeof(MS_CONN));
-	memset(conn, 0, sizeof(MS_CONN));
+	conn = calloc(1,sizeof(MS_CONN));
 	conn->conn = tmpconn;
 	conn->vtbl = &vtbl;
+
+	if(!trpars)
+		trpars = _clip_fetch_item(mp, _clip_hashstr("MS_ISOLATION_LEVEL"));
+	if(!trpars)
+		trpars = _clip_fetch_item(mp, _clip_hashstr("SQL_ISOLATION_LEVEL"));
+	if(trpars){
+		snprintf(str,sizeof(str),"set session transaction isolation level %s",trpars);
+		status = mysql_query(conn->conn,str);
+		if(status){
+			_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,mysql_error(conn->conn));
+			mysql_close(conn->conn);
+			return -1;
+		}
+	}
 
 	return _clip_store_c_item(mp, (void *) conn, _C_ITEM_TYPE_SQL, destroy_ms_conn);
 }
@@ -345,10 +395,9 @@ ms_destroyconn(SQLCONN * conn)
 	mysql_close(((MS_CONN *) conn)->conn);
 }
 
-int
-ms_prepare(ClipMachine * mp, SQLCONN * conn, char *sql)
-{
-	MS_STMT *stmt;
+int ms_prepare(ClipMachine* mp,SQLCONN* c,char* sql){
+	MS_CONN* conn = (MS_CONN*)c;
+	MS_STMT* stmt;
 
 	stmt = malloc(sizeof(MS_STMT));
 	memset(stmt, 0, sizeof(MS_STMT));
@@ -358,28 +407,24 @@ ms_prepare(ClipMachine * mp, SQLCONN * conn, char *sql)
 	stmt->sql = malloc(strlen(sql) + 1);
 	strcpy(stmt->sql, sql);
 
-	stmt->conn = (MS_CONN *) conn;
-	stmt->next = ((MS_CONN *) conn)->stmts;
-	((MS_CONN *) conn)->stmts = stmt;
+	stmt->conn = conn;
 
 	return stmt->stmt_item;
 }
 
-int
-ms_command(ClipMachine * mp, SQLSTMT * stmt, ClipVar * ap)
-{
+int ms_command(ClipMachine* mp,SQLSTMT* s,ClipVar* ap){
+	MS_STMT* stmt = (MS_STMT*)s;
+	MS_CONN* conn = stmt->conn;
 	int status;
 	int rows;
 
-	ms_bindpars((MS_STMT *) stmt, ap);
-	status = mysql_query(((MS_STMT *) stmt)->conn->conn, ((MS_STMT *) stmt)->sql);
-	if (status)
-	{
-		_clip_trap_err(mp, 0, 0, 0, subsys, ER_BADSTATEMENT,
-				   mysql_error(((MS_STMT *) stmt)->conn->conn));
+	ms_bindpars(stmt,ap);
+	status = mysql_query(conn->conn,stmt->sql);
+	if(status){
+		_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,mysql_error(conn->conn));
 		return -1;
 	}
-	if((rows = mysql_affected_rows(((MS_STMT *) stmt)->conn->conn)) == -1){
+	if((rows = mysql_affected_rows(conn->conn)) == -1){
 		_clip_trap_err(mp, 0, 0, 0, subsys, ER_BADSTATEMENT,
 			"Unable to determine amount of affected rows");
 		return -1;
@@ -395,49 +440,77 @@ char* ms_testparser(ClipMachine* mp,char* sql,ClipVar* ap){
 	return stmt.sql;
 }
 
-int
-ms_createrowset(ClipMachine * mp, SQLROWSET* rs, SQLSTMT * stmt, ClipVar * ap, const char* idname, const char* gen_idSQL)
-{
-	MS_ROWSET *rowset = (MS_ROWSET*)rs;
+static char _ms_ctype(int type){
+	switch(type){
+		case MST_DECIMAL:
+		case MST_TINY:
+		case MST_SHORT:
+		case MST_LONG:
+		case MST_FLOAT:
+		case MST_DOUBLE:
+		case MST_LONGLONG:
+		case MST_INT24:
+		case MST_YEAR:
+			return 'N';
+
+		case MST_TINY_BLOB:
+		case MST_MEDIUM_BLOB:
+		case MST_LONG_BLOB:
+		case MST_BLOB:
+		case MST_VAR_STRING:
+		case MST_STRING:
+		case MST_ENUM:
+		case MST_SET:
+			return 'C';
+
+		case MST_DATE:
+		case MST_DATETIME:
+		case MST_TIMESTAMP:
+			return 'D';
+
+		case MST_TIME:
+			return 'A';
+	}
+	return 'U';
+}
+
+int ms_createrowset(ClipMachine* mp,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,const char* gen_idSQL){
+	MS_ROWSET* rowset = (MS_ROWSET*)rs;
+	MS_STMT* stmt = rowset->stmt;
+	MS_CONN* conn = rowset->conn;
 	int i;
-	unsigned long *lens;
-	void **rec;
 	int status;
 	MYSQL_FIELD *fields;
-	MYSQL_ROW row;
 
-	ms_bindpars((MS_STMT *) stmt, ap);
+	ms_bindpars(stmt,ap);
 	rowset->rowset_item =
-		_clip_store_c_item(mp, rowset, _C_ITEM_TYPE_SQL, destroy_ms_rowset);
+		_clip_store_c_item(mp,rowset,_C_ITEM_TYPE_SQL,destroy_ms_rowset);
 
-	if (!((MS_STMT *) stmt)->sql)
-	{
+	if(!stmt->sql){
 		_clip_trap_err(mp, 0, 0, 0, subsys, ER_NOSQL, er_nosql);
 		return 1;
 	}
 
-	status = mysql_query(((MS_STMT *) stmt)->conn->conn, ((MS_STMT *) stmt)->sql);
-	if (status)
-	{
-		_clip_trap_err(mp, 0, 0, 0, subsys, ER_BADSTATEMENT,
-				   mysql_error(((MS_STMT *) stmt)->conn->conn));
+	status = mysql_query(conn->conn,stmt->sql);
+	if(status){
+		_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,mysql_error(conn->conn));
 		return 1;
 	}
-	((MS_STMT *) stmt)->res = mysql_use_result(((MS_STMT *) stmt)->conn->conn);
-	rowset->nfields = mysql_field_count(((MS_STMT *) stmt)->conn->conn);
-	if (!rowset->nfields)
-	{
-		_clip_trap_err(mp, 0, 0, 0, subsys, ER_BADSELECT,
-				   mysql_error(((MS_STMT *) stmt)->conn->conn));
+	stmt->res = mysql_use_result(conn->conn);
+	rowset->unknownrows = 1;
+	rowset->lastrec = mysql_num_rows(stmt->res);
+	rowset->nfields = mysql_field_count(conn->conn);
+	if(!rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_BADSELECT,mysql_error(conn->conn));
 		return 1;
 	}
 	rowset->fields = calloc(1,rowset->nfields * sizeof(SQLFIELD));
-	fields = mysql_fetch_fields(((MS_STMT *) stmt)->res);
-	for (i = 0; i < rowset->nfields; i++)
-	{
+	fields = mysql_fetch_fields(stmt->res);
+	for(i=0;i<rowset->nfields;i++){
 		strncpy(rowset->fields[i].name, fields[i].name, MAXFIELDNAME);
 		rowset->fields[i].name[MAXFIELDNAME] = 0;
 		rowset->fields[i].type = fields[i].type;
+		rowset->fields[i].ctype[0] = _ms_ctype(rowset->fields[i].type);
 		rowset->fields[i].len = fields[i].length;
 		rowset->fields[i].dec = fields[i].decimals;
 		rowset->fields[i].ops = 0;
@@ -449,34 +522,11 @@ ms_createrowset(ClipMachine * mp, SQLROWSET* rs, SQLSTMT * stmt, ClipVar * ap, c
 			rowset->id = i;
 		}
 	}
-	rowset->lastrec = 0;
-	rowset->data = malloc(0);
-	while ((row = mysql_fetch_row(((MS_STMT *) stmt)->res)))
-	{
-		rowset->lastrec++;
-		rowset->data = realloc(rowset->data, sizeof(void *) * rowset->lastrec);
-		rec = malloc(sizeof(void *) * rowset->nfields);
-
-		lens = mysql_fetch_lengths(((MS_STMT *) stmt)->res);
-		for (i = 0; i < rowset->nfields; i++)
-		{
-			if (row[i])
-			{
-				rec[i] = malloc(lens[i] + 4);
-				*((int *) (rec[i])) = (int) lens[i];
-				memcpy(((char *) rec[i]) + 4, row[i], lens[i]);
-			}
-			else
-			{
-				rec[i] = NULL;
-			}
-		}
-		rowset->data[rowset->lastrec - 1] = rec;
-	}
+	rowset->data = calloc(rowset->lastrec,sizeof(void*));
 	return 0;
 }
 
-int ms_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname){
+int ms_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap){
 	MS_ROWSET *rowset = (MS_ROWSET*)rs;
 	MS_STMT* stmt = (MS_STMT*)s;
 	int i;
@@ -495,7 +545,7 @@ int ms_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* 
 	status = mysql_query(stmt->conn->conn,stmt->sql);
 	if(status){
 		_clip_trap_err(mp, 0, 0, 0, subsys, ER_BADSTATEMENT,
-				   mysql_error(stmt->conn->conn));
+			mysql_error(stmt->conn->conn));
 		return -1;
 	}
 	stmt->res = mysql_use_result(stmt->conn->conn);
@@ -513,8 +563,10 @@ int ms_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* 
 			} else {
 				rec[i] = NULL;
 			}
+			if(rowset->data[rowset->recno-1][i])
+				free(rowset->data[rowset->recno-1][i]);
 		}
-		ms_delete((SQLROWSET*)rowset);
+		free(rowset->data[rowset->recno-1]);
 		rowset->data[rowset->recno-1] = rec;
 	} else {
 		ms_delete((SQLROWSET*)rowset);
@@ -525,43 +577,27 @@ int ms_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* 
 	return 0;
 }
 
-char *
-ms_getvalue(SQLROWSET * rowset, int fieldno, int *len)
-{
-	if (((MS_ROWSET *) rowset)->data[((MS_ROWSET *) rowset)->recno - 1][fieldno])
-	{
-		*len = *((int *) (((MS_ROWSET *) rowset)->data[
-									  ((MS_ROWSET *) rowset)->recno - 1][fieldno]));
-		return (char *) (((MS_ROWSET *) rowset)->data[
-									 ((MS_ROWSET *) rowset)->recno - 1][fieldno]) + 4;
+char* ms_getvalue(SQLROWSET* rs,int fieldno,int *len){
+	MS_ROWSET* rowset = (MS_ROWSET*)rs;
+	if(rowset->data[rowset->recno-1][fieldno]){
+		*len = *(int*)rowset->data[rowset->recno-1][fieldno];
+		return (char*)(rowset->data[rowset->recno-1][fieldno]) + 4;
 	}
 	return NULL;
 }
 
-void
-ms_setvalue(SQLROWSET * rowset, int fieldno, char *value, int len)
-{
-
-	if (((MS_ROWSET *) rowset)->data[((MS_ROWSET *) rowset)->recno - 1][fieldno])
-	{
-		free(((MS_ROWSET *) rowset)->data[
-							 ((MS_ROWSET *) rowset)->recno - 1][fieldno]);
+void ms_setvalue(SQLROWSET* rs,int fieldno,char* value,int len){
+	MS_ROWSET* rowset = (MS_ROWSET*)rs;
+	if(rowset->data[rowset->recno-1][fieldno]){
+		free(rowset->data[rowset->recno-1][fieldno]);
 	}
-	if (value)
-	{
-		((MS_ROWSET *) rowset)->data[
-							((MS_ROWSET *) rowset)->recno - 1][fieldno] = malloc(len + 4);
-		*((int *) (((MS_ROWSET *) rowset)->data[
-								   ((MS_ROWSET *) rowset)->recno - 1][fieldno])) = len;
-		memcpy(((char *) (((MS_ROWSET *) rowset)->data[
-								   ((MS_ROWSET *) rowset)->recno - 1][fieldno])) + 4, value, len);
+	if(value){
+		rowset->data[rowset->recno-1][fieldno] = malloc(len + 4);
+		*(int*)rowset->data[rowset->recno-1][fieldno] = len;
+		memcpy((char*)(rowset->data[rowset->recno-1][fieldno])+4,value,len);
+	} else {
+		rowset->data[rowset->recno-1][fieldno] = NULL;
 	}
-	else
-	{
-		((MS_ROWSET *) rowset)->data[
-							((MS_ROWSET *) rowset)->recno - 1][fieldno] = NULL;
-	}
-
 }
 
 void
@@ -573,6 +609,7 @@ ms_append(SQLROWSET * rowset)
 	len = sizeof(void *) * ((MS_ROWSET *) rowset)->nfields;
 
 	((MS_ROWSET *) rowset)->lastrec++;
+	((MS_ROWSET *) rowset)->loaded++;
 	((MS_ROWSET *) rowset)->data = realloc(((MS_ROWSET *) rowset)->data,
 						   sizeof(void *) * ((MS_ROWSET *) rowset)->lastrec);
 
@@ -581,25 +618,20 @@ ms_append(SQLROWSET * rowset)
 	((MS_ROWSET *) rowset)->data[((MS_ROWSET *) rowset)->lastrec - 1] = row;
 }
 
-void
-ms_delete(SQLROWSET * rowset)
-{
+void ms_delete(SQLROWSET* rs){
+	MS_ROWSET* rowset = (MS_ROWSET*)rs;
 	int i;
 
-	for (i = 0; i < ((MS_ROWSET *) rowset)->nfields; i++)
-	{
-		if (((MS_ROWSET *) rowset)->data[((MS_ROWSET *) rowset)->recno - 1][i])
-		{
-			free(((MS_ROWSET *) rowset)->data[((MS_ROWSET *) rowset)->recno - 1][i]);
+	for(i=0;i<rowset->nfields;i++){
+		if(rowset->data[rowset->recno-1][i]){
+			free(rowset->data[rowset->recno-1][i]);
 		}
 	}
-	free(((MS_ROWSET *) rowset)->data[((MS_ROWSET *) rowset)->recno - 1]);
-	for (i = ((MS_ROWSET *) rowset)->recno; i < ((MS_ROWSET *) rowset)->lastrec; i++)
-	{
-		((MS_ROWSET *) rowset)->data[i - 1] = ((MS_ROWSET *) rowset)->data[i];
+	free(rowset->data[rowset->recno-1]);
+	for(i=rowset->recno;i<rowset->lastrec;i++){
+		rowset->data[i-1] = rowset->data[i];
 	}
-	((MS_ROWSET *) rowset)->data = realloc(((MS_ROWSET *) rowset)->data,
-						   sizeof(void *) * (((MS_ROWSET *) rowset)->lastrec - 1));
+	rowset->data = realloc(rowset->data,sizeof(void*)*(rowset->lastrec-1));
 }
 
 void
@@ -647,3 +679,126 @@ clip_MS_IN_DATE(ClipMachine * mp)
 	}
 	return 0;
 }
+
+/* ------------------------------------------------------------------ */
+
+int ms_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors){
+	MS_ROWSET* rowset = (MS_ROWSET*)rs;
+	MS_STMT* stmt = rowset->stmt;
+	MYSQL_ROW row;
+	int i,j,er = 0;
+	unsigned long *lens;
+	void **rec;
+
+	if(rowset->done)
+		return 0;
+
+	if(!recs)
+		recs = 0x7fffffff;
+	for(j=0;j<recs;j++){
+		row = mysql_fetch_row(stmt->res);
+		if(!row)
+			goto done;
+		rowset->loaded++;
+		rec = calloc(rowset->nfields,sizeof(void*));
+
+		lens = mysql_fetch_lengths(stmt->res);
+		for(i=0;i<rowset->nfields;i++){
+			if(row[i]){
+				rec[i] = malloc(lens[i] + 4);
+				*((int *) (rec[i])) = (int) lens[i];
+				memcpy(((char *) rec[i]) + 4, row[i], lens[i]);
+			} else {
+				rec[i] = NULL;
+			}
+		}
+		rowset->data = realloc(rowset->data,rowset->loaded*sizeof(void*));
+		rowset->data[rowset->loaded - 1] = rec;
+		if(eval && (eval->t.type == CCODE_t || eval->t.type == PCODE_t) && !(rowset->loaded % every)){
+			ClipVar var,*v;
+			if(_clip_eval(mp,eval,1,ors,&var)){
+				_clip_destroy(mp,&var);
+				er = 1;
+				goto done;
+			}
+			v = _clip_vptr(&var);
+			if(v->t.type == LOGICAL_t && !v->l.val){
+				_clip_destroy(mp,&var);
+				goto done;
+			}
+			_clip_destroy(mp,&var);
+		}
+	}
+	return 0;
+done:
+	rowset->lastrec = rowset->loaded;
+	rowset->done = 1;
+	if(!rowset->lastrec){
+		rowset->bof = rowset->eof = 1;
+		rowset->recno = 0;
+	}
+	_clip_destroy_c_item(mp,stmt->stmt_item,_C_ITEM_TYPE_SQL);
+	return er;
+}
+
+int ms_start(ClipMachine* mp,SQLCONN* c,const char* p1,const char* p2){
+	MS_CONN* conn = (MS_CONN*)c;
+	int status;
+
+	if(conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	if(p1){
+		char str[256];
+		snprintf(str,sizeof(str),"set transaction isolation level %s",p1);
+		status = mysql_query(conn->conn,str);
+		if(status){
+			_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,mysql_error(conn->conn));
+			return 1;
+		}
+	}
+	status = mysql_query(conn->conn,"begin");
+	if(status){
+		_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,mysql_error(conn->conn));
+		return 1;
+	}
+	conn->at = 1;
+	return 0;
+}
+
+int ms_commit(ClipMachine* mp,SQLCONN* c){
+	MS_CONN* conn = (MS_CONN*)c;
+	int status;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_COMMIT,er_commit);
+		return 1;
+	}
+	status = mysql_query(conn->conn,"commit");
+	conn->at = 0;
+	if(status){
+		_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,mysql_error(conn->conn));
+		return 1;
+	}
+	return 0;
+}
+
+int ms_rollback(ClipMachine* mp,SQLCONN* c){
+	MS_CONN* conn = (MS_CONN*)c;
+	int status;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_COMMIT,er_commit);
+		return 1;
+	}
+	conn->at = 0;
+	status = mysql_query(conn->conn,"rollback");
+	if(status){
+		_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,mysql_error(conn->conn));
+		return 1;
+	}
+	return 0;
+}
+
+

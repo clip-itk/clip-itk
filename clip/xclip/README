@@ -1,0 +1,92 @@
+$Id: README,v 1.1 2002/10/15 08:39:01 clip Exp $
+
+WHAT IS XCLIP?
+==============
+
+xclip is a command line utility that is designed to run on any system with an
+X11 implementation. It provides an interface to X selections ("the clipboard")
+from the command line. It can read data from standard in or a file and place it
+in an X selection for pasting into other X applications. xclip can also print
+an X selection to standard out, which can then be redirected to a file or
+another program.
+
+USING XCLIP
+===========
+
+Here are some ideas for things you can do with xclip:
+
+	Copy your uptime into the selection for pasting:
+	uptime | xclip
+
+	Copy your password file for pasting:
+	xclip /etc/passwd
+
+	Save some text you have Edit | Copied in a web browser:
+	xclip -o -sel clip > webpage.txt
+
+	Open a URL selected in an email client
+	mozilla `xclip -o`
+
+	Copy XA_PRIMARY to XA_CLIPBOARD
+	xclip -o | xclip -sel clip
+
+	In command mode in vim, select some lines of text, then press shift-:
+	for an ex prompt, and use this command to copy the selected lines of
+	text to the primary X selection:
+	!xclip -f
+
+FEATURES
+========
+
+* Reads data piped to standard in or files given as arguments
+* Prints contents of selection to standard out
+* Accesses the XA_PRIMARY, XA_SECONDARY or XA_CLIPBOARD selection
+* Supports the INCR mechanism for large transfers
+* Connects to the X display in $DISPLAY, or specified with -display host:0 
+* Waits for selection requests in the background
+
+SELECTIONS
+==========
+
+For a good overview of what selections are about, have a look at 
+<http://www.freedesktop.org/standards/clipboards.txt>. Short version:
+
+* XA_PRIMARY contains the last text you highlighted
+* Middle click pastes XA_PRIMARY
+* XA_CLIPBOARD contains text explicitly copied with Edit | Copy, Ctrl-C etc.
+* Edit | Paste pastes XA_CLIPBOARD
+* xclip uses XA_PRIMARY unless you specify otherwise with -selection 
+
+CAN I HELP?
+===========
+
+Glad you asked! At this stage, I'm pretty happy with the features and
+implementation, so if you have anything at all that should be done, I want to
+hear about it. Doesn't matter how small, compiler warnings, segfaults, spelling
+mistakes, whatever, I want to get it sorted out. xclip is not a big project,
+I'd like to get all these things sorted out and then declare it "complete".
+
+VERSION
+=======
+
+0.08 - No added features. Updated xclib to be more friendly to integrate into
+other software. Changed email address (again) and website.
+
+LICENSE
+=======
+
+GNU GPL, see the COPYING file for details.
+
+CONTACT
+=======
+
+Web:
+http://people.debian.org/~kims/xclip/
+
+Email:
+kims@debian.org
+
+Please email me about problems, experiences, patches, fixes, etc. Also, please
+drop me an email to let me know if you are going to feature xclip on a website,
+in a publication or in a distribution. Obviously, you are encouraged to do
+these things, I'd just be interested to know, that's all.

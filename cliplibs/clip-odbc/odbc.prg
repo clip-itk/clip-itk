@@ -2,7 +2,7 @@
 #include "odbc.ch"
 
 FUNCTION ODBC2CLIP(rowset,fieldno)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL data := SQLGetValue(rowset,fieldno)
 	LOCAL len := SQLFieldLen(rowset,fieldno)
 	LOCAL dec := SQLFieldDec(rowset,fieldno)
@@ -93,7 +93,7 @@ FUNCTION ODBC2CLIP(rowset,fieldno)
 RETURN NIL
 
 FUNCTION CLIP2ODBC(rowset,fieldno,value,totext)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL nullable := SQLFieldNullable(rowset,fieldno)
 	LOCAL len := SQLFieldLen(rowset,fieldno)
 	LOCAL dec := SQLFieldDec(rowset,fieldno)
@@ -142,6 +142,9 @@ FUNCTION CLIP2ODBC(rowset,fieldno,value,totext)
 		CASE SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR
 			IF value == NIL
 				RETURN ""
+			ENDIF
+			IF totext
+				RETURN ADDSLASH(value)
 			ENDIF
 			RETURN value
 		CASE SQL_DATE

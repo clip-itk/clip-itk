@@ -5,10 +5,9 @@
 	License	: (GPL) http://www.itk.ru/clipper/license.html
 */
 
-/* CTI_LIST - */
+/* CTI_LIST multi-column list */
 
 #include "cti.ch"
-#include "ctievents.ch"
 
 #include "inkey.ch"
 
@@ -18,17 +17,16 @@ function cti_list_new(nColumns)
 	local obj := cti_inherit(cti_control_new(),"CTI_LIST")
 	local i
 
-	obj:__items		:= nil
-	obj:__current		:= nil
+	obj:auto_lose_focus	:= FALSE
 
-	obj:__ncolumns		:= iif(valtype(nColumns)=="N",nColumns,1)
+	obj:__ncolumns		:= iif(valtype(nColumns)=="N",nColumns,0)
 	obj:__columns		:= {}
 	obj:__list_width	:= 0
 
 	obj:__nrows		:= 0
 	obj:__rows		:= {}
 
-	obj:__selection		:= {}
+	obj:__selection		:= map()
 
 	obj:__show_titles	:= FALSE
 	obj:__auto_sort		:= FALSE
@@ -40,28 +38,41 @@ function cti_list_new(nColumns)
 	obj:__vis_left		:= 1
 	obj:__vis_rows		:= 0
 
-	obj:__cur_row		:= 1
-	obj:__cur_col		:= 1
+	obj:__cur_row		:= 0
+	obj:__cur_col		:= 0
 
 	obj:__col_separator	:=  ""
 	obj:__title_separator	:= "€Š€"
 
 	obj:__real_draw			:= @cti_list_real_draw()
-	obj:__handle_event		:= @cti_list_handle_event()
 	obj:__refresh_columns		:= @cti_list_refresh_columns()
 	obj:__get_new_row		:= @cti_list_get_new_row()
 	obj:__calc_vis_rows		:= @cti_list_calc_vis_rows()
+	obj:__col_pos			:= @cti_list_col_pos()
+
+	obj:__set_default_keys		:= @cti_list_set_default_keys()
 
 //	obj:set_selection_mode		:= @cti_list_set_selection_mode()
+	obj:clear			:= @cti_list_clear()
 	obj:column_titles_show		:= @cti_list_column_titles_show()
 	obj:set_col_separator		:= @cti_list_set_col_separator()
 	obj:set_title_separator		:= @cti_list_set_title_separator()
 
-	obj:get_visible_rows		:= @cti_list_get_visible_rows()
-	obj:first_visible_row		:= @cti_list_first_visible_row()
-	obj:last_visible_row		:= @cti_list_last_visible_row()
+	obj:visible_rows		:= {|_obj|_obj:__vis_rows}
+	obj:first_visible_row		:= {|_obj|_obj:__vis_top}
+	obj:last_visible_row		:= {|_obj|min(obj:__vis_top + obj:__vis_rows,obj:__nrows)}
+	obj:num_rows			:= {|_obj|_obj:__nrows}
+
+	obj:set_row_selectable		:= @cti_list_set_row_selectable()
+	obj:select_row			:= @cti_list_select_row()
+	obj:toggle_row			:= @cti_list_toggle_row()
+	obj:clear_selection		:= @cti_list_clear_selection()
+	obj:select_rows			:= @cti_list_select_rows()
+	obj:select_rows_by_data		:= @cti_list_select_rows_by_data()
 
 	obj:row_is_visible		:= @cti_list_row_is_visible()
+	obj:row_is_disabled		:= @cti_list_row_is_visible()
+	obj:row_selected		:= @cti_list_row_selected()
 
 	obj:set_column_title		:= @cti_list_set_column_title()
 	obj:set_column_justification	:= @cti_list_set_column_justification()
@@ -72,8 +83,6 @@ function cti_list_new(nColumns)
 	obj:set_column_min_width	:= @cti_list_set_column_min_width()
 	obj:set_column_max_width	:= @cti_list_set_column_max_width()
 
-	obj:set_row_selectable		:= @cti_list_set_row_selectable()
-
 	obj:append			:= @cti_list_append()
 	obj:prepend			:= @cti_list_prepend()
 	obj:insert			:= @cti_list_insert()
@@ -83,6 +92,24 @@ function cti_list_new(nColumns)
 	obj:scroll_horizontal		:= @cti_list_scroll_horizontal()
 	obj:move_vertical		:= @cti_list_move_vertical()
 	obj:move_horizontal		:= @cti_list_move_horizontal()
+	obj:move_to			:= @cti_list_move_to()
+
+	obj:up				:= {|_obj|_obj:move_vertical(1)}
+	obj:down			:= {|_obj|_obj:move_vertical(-1)}
+	obj:left			:= {|_obj|_obj:scroll_horizontal(-1)}
+	obj:right			:= {|_obj|_obj:scroll_horizontal(1)}
+	obj:page_up			:= {|_obj|_obj:move_vertical(- _obj:__vis_rows)}
+	obj:page_down			:= {|_obj|_obj:move_vertical(_obj:__vis_rows)}
+	obj:home			:= {|_obj|_obj:move_to(1)}
+	obj:end				:= {|_obj|_obj:move_to(_obj:__nrows)}
+
+	obj:get_cur_row			:= @cti_list_get_cur_row()
+	obj:get_cell			:= @cti_list_get_cell()
+
+	obj:find			:= @cti_list_find()
+	obj:find_by_data		:= @cti_list_find_by_data()
+
+	obj:realize_real		:= @cti_list_realize_real()
 
 /********************************************************/
 	for i:=1 to obj:__ncolumns
@@ -90,6 +117,7 @@ function cti_list_new(nColumns)
 	next
 	obj:__refresh_columns()
 
+	obj:__set_default_keys()
 return obj
 
 /******************************************************************/
@@ -108,15 +136,47 @@ function cti_list_column_new()
 	obj:auto_resize	:= FALSE
 return obj
 /******************************************************************/
+/******************************************************************/
 
 function cti_list_row_new()
-	local obj := cti_inherit(cti_object_new(),"CTI_LIST_ROW")
+	//local obj := clone(cti_inherit(cti_object_new(),"CTI_LIST_ROW"))
+	local obj := map()
+
+	obj:classname := "CTI_LIST_ROW"
 
 	obj:__text	:= {}
 	obj:__data	:= nil
 	obj:selectable	:= TRUE
+	obj:__is_selected	:= FALSE
 return obj
 /******************************************************************/
+
+function cti_list_clear(obj)
+	obj:__nrows		:= 0
+	obj:__rows		:= {}
+
+	obj:__selection		:= {}
+
+	obj:__vis_top		:= 1
+	obj:__vis_left		:= 1
+	obj:__vis_rows		:= 0
+
+	obj:__cur_row		:= 0
+	obj:__cur_col		:= 0
+	obj:draw_queue()
+return TRUE
+
+static function cti_list_realize_real(obj)
+	local height, width
+
+	height := obj:__uheight; width := obj:__uwidth
+	obj:__refresh_columns()
+	height := iif(height==nil,3,height)
+	width  := iif(width==nil,obj:__list_width,width)
+	obj:set_size(height,width)
+
+	CALL SUPER obj:realize_real()
+return TRUE
 
 /* Sets the title for the specified column. */
 static function cti_list_set_column_title(obj,nColumn,cTitle)
@@ -197,6 +257,79 @@ static function cti_list_set_row_selectable(obj,nRow,lSelectable)
 	obj:draw_queue()
 return TRUE
 
+static function cti_list_select_row(obj,nRow,lSelect)
+	local signal
+	cti_return_if_fail(nRow==nil .or. valtype(nRow)=="N" .and. nRow>0 .and. nRow<=obj:__nrows)
+	cti_return_if_fail(valtype(lSelect)=="L" .or. lSelect==nil)
+
+	if nRow==nil; nRow:=obj:__cur_row; endif
+	if lSelect==nil; lSelect:=TRUE; endif
+
+	if nRow==0; return FALSE; endif
+
+	if obj:__rows[nRow]:selectable
+		obj:__rows[nRow]:__is_selected := lSelect
+		if lSelect
+			signal := cti_signal_new(HASH_CTI_SELECT_ROW_SIGNAL)
+		else
+			signal := cti_signal_new(HASH_CTI_UNSELECT_ROW_SIGNAL)
+		endif
+		signal:row := nRow
+		obj:signal_emit(signal)
+		obj:draw_queue()
+	endif
+return TRUE
+
+static function cti_list_toggle_row(obj,nRow)
+	cti_return_if_fail(nRow==nil .or. nRow>0 .and. nRow<=obj:__nrows)
+
+	if nRow==nil; nRow:=obj:__cur_row; endif
+	if nRow==0; return FALSE; endif
+
+	if obj:__rows[nRow]:selectable
+		obj:__rows[nRow]:__is_selected := .not. obj:__rows[nRow]:__is_selected
+		obj:draw_queue()
+	endif
+return TRUE
+
+static function cti_list_select_rows(obj,nRow,bCriteria)
+	local lselect_row, i
+
+	cti_return_if_fail(nRow>0 .and. nRow<=obj:__nrows)
+	cti_return_if_fail(valtype(bCriteria)=="B")
+
+	for i:=1 to obj:__nrows
+		if obj:__rows[i]:selectable
+			lselect_row := eval(bCriteria,obj:__rows[i]:__text)
+			obj:__rows[i]:__is_selected := valtype(lselect_row)=="L" .and. lselect_row
+		endif
+	next
+	obj:draw_queue()
+return TRUE
+
+static function cti_list_select_rows_by_data(obj,nRow,bCriteria)
+	local lselect_row, i
+
+	cti_return_if_fail(nRow>0 .and. nRow<=obj:__nrows)
+	cti_return_if_fail(valtype(bCriteria)=="B")
+
+	for i:=1 to obj:__nrows
+		if obj:__rows[i]:selectable
+			lselect_row := eval(bCriteria,obj:__rows[i]:__data)
+			obj:__rows[i]:__is_selected := valtype(lselect_row)=="L" .and. lselect_row
+		endif
+	next
+	obj:draw_queue()
+return TRUE
+
+static function cti_list_clear_selection(obj)
+	local i
+
+	for i:=1 to obj:__nrows
+		obj:__rows[i]:__is_selected := FALSE
+	next
+return TRUE
+
 /* Recreate list`s title */
 static function cti_list_refresh_columns(obj)
 	local i, col, s, st, w
@@ -206,7 +339,7 @@ static function cti_list_refresh_columns(obj)
 		col := obj:__columns[i]
 		if col:visible
 			s += cti_text_justify(col:title,col:width,col:title_justification) + ;
-                		obj:__col_separator
+				obj:__col_separator
 			st += replicate(left(obj:__title_separator,1),col:width) + ;
 				substr(obj:__title_separator,2,1)
 			w += col:width
@@ -220,7 +353,7 @@ return
 
 /* Calculates, how many rows may be displayed */
 static function cti_list_calc_vis_rows(obj)
-	obj:__vis_rows := obj:height
+	obj:__vis_rows := cti_cnum(obj:height)
 	if obj:__show_titles
 		obj:__vis_rows --
 		if .not. empty(obj:__title_separator)
@@ -274,7 +407,7 @@ static function cti_list_scroll_horizontal(obj,cols)
 		col := min(col,obj:__list_width - obj:width)
 	endif
 
-	/* Scroll up */
+	/* Scroll left */
 	if cols < 0
 		col := max(col,1)
 	endif
@@ -295,32 +428,28 @@ static function cti_list_move_vertical(obj,rows)
 			row := obj:__nrows
 		endif
 
-		if .not. obj:__rows[row]:selectable
-			do while row < obj:__nrows .and. .not. obj:__rows[row]:selectable
-				row ++
-			enddo
+		do while row < obj:__nrows .and. !obj:__rows[row]:selectable
+			row ++
+		enddo
 
-			do while row > obj:__cur_row .and. .not. obj:__rows[row]:selectable
-				row --
-			enddo
-		endif
+		do while row > obj:__cur_row .and. !obj:__rows[row]:selectable
+			row --
+		enddo
 	endif
 
 	/* Move up */
 	if rows < 0
 		if row < 1
-			row := 1
+			row := min(1,obj:__nrows)
 		endif
 
-		if .not. obj:__rows[row]:selectable
-			do while row > 1 .and. .not. obj:__rows[row]:selectable
-				row --
-			enddo
+		do while row > 1 .and. !obj:__rows[row]:selectable
+			row --
+		enddo
 
-			do while row < obj:__cur_row .and. .not. obj:__rows[row]:selectable
-				row ++
-			enddo
-		endif
+		do while row < obj:__cur_row .and. row>0 .and. !obj:__rows[row]:selectable
+			row ++
+		enddo
 	endif
 
 	if row == obj:__cur_row; return FALSE; endif
@@ -339,20 +468,60 @@ return TRUE
 static function cti_list_move_horizontal(obj,cols)
 return
 
-static function cti_list_get_visible_rows(obj)
-return obj:__vis_rows
+/* Tells the CTI_LIST widget to visually move to the specified row and column. */
+static function cti_list_move_to(obj,nRow,nCol,nRowAlign,nColAlign)
+	/* Checking parameters */
+	cti_return_if_fail(valtype(nRow)=="N")
+	nRow := cti_bound(nRow, 1, obj:__nrows)
 
-static function cti_list_first_visible_row(obj)
-return obj:__vis_top
+	cti_return_if_fail(nRowAlign==nil .or. valtype(nRowAlign)=="N")
+	cti_return_if_fail(nColAlign==nil .or. valtype(nColAlign)=="N")
 
-static function cti_list_last_visible_row(obj)
-	local row := obj:__vis_top + obj:__vis_rows
-return iif(row<=obj:__nrows,row,obj:__nrows)
+	nRowAlign := cti_cnum(nRowAlign)
+	nRowAlign := cti_bound(nRowAlign,0,1)
+
+	nColAlign := cti_cnum(nColAlign)
+	nColAlign := cti_bound(nColAlign,0,1)
+
+	/* Move to new row */
+	obj:__cur_row := nRow
+	obj:__vis_top := nRow - round(obj:__vis_rows * nRowAlign)
+	obj:__vis_top := cti_bound(obj:__vis_top, 1, obj:__nrows)
+
+	if nCol!=nil
+		/* Move to new column, if need */
+		cti_return_if_fail(valtype(nCol)=="N")
+		nCol := cti_bound(nCol, 1, obj:__ncols)
+		obj:__vis_left := obj:__col_pos(nCol)
+		obj:__vis_left := obj:__vis_left - round(obj:__vis_left * nColAlign)
+		obj:__vis_left := cti_bound(obj:__vis_left, 1, obj:__list_width)
+	endif
+
+	/* Redraw widget */
+	obj:draw_queue()
+return TRUE
+
+static function cti_list_col_pos(obj,nCol)
+	local i, width := 0
+
+	cti_return_if_fail(valtype(nCol)=="N")
+	nCol := cti_bound(nCol, 1, obj:__ncols)
+	for i:=1 to nCol
+		width += obj:__columns[i]:width
+	next
+return width
 
 static function cti_list_row_is_visible(obj,row)
 	if row < 1 .or. row > obj:__nrows; return FALSE; endif
 	if row < obj:__vis_top .or. row > obj:__vis_top + obj:__vis_rows
 		return FALSE
+	endif
+return TRUE
+
+static function cti_list_row_selected(obj,row)
+	if row < 1 .or. row > obj:__nrows; return FALSE; endif
+	if row < obj:__vis_top .or. row > obj:__vis_top + obj:__vis_rows
+		return obj:__rows[row]:__is_selected
 	endif
 return TRUE
 
@@ -363,21 +532,10 @@ static function cti_list_real_draw(obj)
 	local start_col, end_col, w, s, scell
 	local row, col, nrow, ncol
 
-/*
-	if obj:__control_focused != obj:__is_focused
-		if obj:__is_focused
-			obj:__list:setfocus()
-		else
-			obj:__list:killfocus()
-		endif
-		obj:__control_focused := obj:__is_focused
-	endif
-*/
-
 	title_color := obj:Palette:ListTitle
-	cur_color := iif(obj:__is_focused,obj:Palette:Selection,obj:Palette:Control)
+	cur_color := iif(obj:__is_focused,obj:Palette:ListFocusCurrent,obj:Palette:ListNoFocusCurrent)
 	color := obj:Palette:Control
-	dis_color := obj:Palette:DisabledRow
+	dis_color := obj:Palette:ListDisabledRow
 	if .not. obj:__is_enabled
 		dis_color := title_color := cur_color := color := obj:Palette:DisabledControl
 	endif
@@ -385,12 +543,6 @@ static function cti_list_real_draw(obj)
 	/* Draw title */
 	top := 0
 	if obj:__show_titles
-/*
-		w := 0
-		for i:=1 to obj:__vis_left
-			w += obj:__columns[i]:width + len(obj:__col_separator)
-		next
-*/
 		s := padr(substr(obj:__buf_title,obj:__vis_left),obj:width)
 		winbuf_out_at(obj:__buffer,top,0,s,title_color)
 		top ++
@@ -410,17 +562,6 @@ static function cti_list_real_draw(obj)
 	start_col := 1
 	end_col := obj:__ncolumns
 
-/*
-	start_col := obj:__vis_left
-	w := 0
-	for i:=start_col to obj:__ncolumns
-		w += obj:__columns[i]:width+len(obj:__col_separator)
-		if w >= obj:width .or. i == obj:__ncolumns
-			end_col := i
-			exit
-		endif
-	next
-*/
 	/* Draw visible rows */
 	nrow:=start_row
 	do while nrow<=end_row .or. top<=obj:height
@@ -433,10 +574,40 @@ static function cti_list_real_draw(obj)
 				obj:__col_separator
 		next
 		s := padr(substr(s,obj:__vis_left),obj:width)
-//outlog(__FILE__,__LINE__,procname(),s)
-		row_color := color
-		if nrow==obj:__cur_row; row_color := cur_color; endif
-		if row!=nil .and. .not. row:selectable; row_color := dis_color; endif
+		row_color := obj:Palette:Control
+//		if nrow==obj:__cur_row; row_color := cur_color; endif
+		if row!=nil
+			if .not. row:selectable; row_color := dis_color; endif
+			if obj:__is_focused
+				if row:__is_selected
+					if nrow==obj:__cur_row
+						row_color := obj:Palette:ListCurSelected
+					else
+						row_color := obj:Palette:ListSelected
+					endif
+				else
+					if nrow==obj:__cur_row
+						row_color := obj:Palette:ListFocusCurrent
+					else
+						row_color := obj:Palette:Control
+					endif
+				endif
+			else
+				if row:__is_selected
+					if nrow==obj:__cur_row
+						row_color := obj:Palette:ListNoFocusCurSelected
+					else
+						row_color := obj:Palette:ListSelected
+					endif
+				else
+					if nrow==obj:__cur_row
+						row_color := obj:Palette:ListNoFocusCurrent
+					else
+						row_color := obj:Palette:Control
+					endif
+				endif
+			endif
+		endif
 		winbuf_out_at(obj:__buffer,top,0,s,row_color)
 		top ++
 		nrow ++
@@ -484,38 +655,85 @@ static function cti_list_insert(obj,aText,pos)
 return TRUE
 
 /* Remove row from the list */
-static function cti_list_remove(obj,pos)
-	pos := iif(valtype(pos)=="N",pos,1)
-	adel(obj:__rows,pos)
+static function cti_list_remove(obj,nPos)
+	nPos := iif(valtype(nPos)=="N",nPos,obj:__cur_row)
+	cti_return_if_fail2(between(nPos,1,obj:__nrows))
+	cti_return_if_fail2(obj:__nrows>0)
+
+	adel(obj:__rows,nPos)
 	asize(obj:__rows,obj:__nrows-1)
 	obj:__nrows --
+
+	if obj:__cur_row > nPos .or. obj:__cur_row > obj:__nrows
+		obj:__cur_row --
+		if obj:__cur_row < obj:__vis_top
+			obj:scroll_vertical(-1)
+		endif
+	endif
+
 	obj:draw_queue()
 return TRUE
 
-static function cti_list_handle_event(obj,event)
-	local row
+/* Alena                             */
+/* Get current row -> array of cells */
+static function cti_list_get_cur_row(obj)
+local aRow := {}, i
+	if len(obj:__rows)==0
+		return aRow
+	endif
+	for i=1 to obj:__ncolumns
+		aadd(aRow, obj:__rows[obj:__cur_row]:__text[i])
+	next
+return aRow
 
-	if event:type != CTI_KEYBOARD_EVENT; return .F.; endif
+/* Alena                             */
+/* Get cell                          */
+static function cti_list_get_cell(obj, nCol)
+	if !between(nCol, 1, obj:__ncolumns) .or. len(obj:__rows)==0
+		return nil
+	endif
+return obj:__rows[obj:__cur_row]:__text[nCol]
 
-//outlog(__FILE__,__LINE__,procname(),event:keycode, K_CTRL_T)
+/* Search in row's text */
+static function cti_list_find(obj, bCompareCode, start_row, rows)
+	local i, end_row
 
-	switch (event:keycode)
-		case K_DOWN
-		obj:move_vertical(1)
+	cti_return_if_fail(valtype(bCompareCode)=="B")
+	start_row := iif(valtype(start_row)=="N",start_row,1)
+	rows := iif(valtype(rows)=="N",rows,obj:__nrows)
+	end_row := min(obj:__nrows,start_row+rows-1)
 
-		case K_UP
-		obj:move_vertical(-1)
+	for i:=start_row to end_row
+		if eval(bCompareCode,obj,obj:__rows[i]:__text)
+			return i
+		endif
+	next
+return -1
 
-		case K_LEFT
-		obj:scroll_horizontal(-1)
+/* Search in row's data */
+static function cti_list_find_by_data(obj, bCompareCode, start_row, rows)
+	local i, end_row
 
-		case K_RIGHT
-		obj:scroll_horizontal(1)
+	cti_return_if_fail(valtype(bCompareCode)=="B")
+	start_row := iif(valtype(start_row)=="N",start_row,1)
+	rows := iif(valtype(rows)=="N",rows,obj:__nrows)
+	end_row := min(obj:__nrows,start_row+rows-1)
 
-		case K_PGDN
-		obj:move_vertical(obj:__vis_rows)
+	for i:=start_row to end_row
+		if eval(bCompareCode,obj,obj:__rows[i]:__data)
+			return i
+		endif
+	next
+return -1
 
-		case K_PGUP
-		obj:move_vertical(-obj:__vis_rows)
-	end
+static function cti_list_set_default_keys(obj)
+	obj:set_key(K_UP,    {|_obj|_obj:move_vertical(-1), !_obj:auto_lose_focus} )
+	obj:set_key(K_DOWN,  {|_obj|_obj:move_vertical(1), !_obj:auto_lose_focus} )
+	obj:set_key(K_LEFT,  {|_obj|_obj:scroll_horizontal(-1)} )
+	obj:set_key(K_RIGHT, {|_obj|_obj:scroll_horizontal(1)} )
+	obj:set_key(K_PGUP,  {|_obj|_obj:move_vertical(- _obj:__vis_rows)} )
+	obj:set_key(K_PGDN,  {|_obj|_obj:move_vertical(_obj:__vis_rows)} )
+	obj:set_key(K_HOME,  {|_obj|_obj:move_to(1)} )
+	obj:set_key(K_END,   {|_obj|_obj:move_to(_obj:__nrows)} )
+	obj:set_key(K_INS,   {|_obj|_obj:toggle_row(),_obj:move_vertical(1)} )
 return TRUE

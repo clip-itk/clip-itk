@@ -213,6 +213,19 @@
 #define GTK_EXPAND_SIGNAL		HASH___EXPAND_SIGNAL
 #define GTK_COLLAPSE_SIGNAL		HASH___COLLAPSE_SIGNAL
 
+/* extext signals */
+#define GTK_PROPERTY_TEXT_INSERT_SIGNAL HASH___PROPERTY_TEXT_INSERT_SIGNAL
+#define GTK_PROPERTY_TEXT_REMOVE_SIGNAL HASH___PROPERTY_TEXT_REMOVE_SIGNAL
+#define GTK_PROPERTY_DESTROY_SIGNAL     HASH___PROPERTY_DESTROY_SIGNAL
+#define GTK_UNDO_CHANGED_SIGNAL         HASH___UNDO_CHANGED_SIGNAL
+#define GTK_PROPERTY_MARK_SIGNAL        HASH___PROPERTY_MARK_SIGNAL
+#define GTK_LINE_INSERT_SIGNAL          HASH___LINE_INSERT_SIGNAL
+#define GTK_LINE_REMOVE_SIGNAL          HASH___LINE_REMOVE_SIGNAL
+#define GTK_MARGIN_ENTER_SIGNAL         HASH___MARGIN_ENTER_SIGNAL
+#define GTK_MARGIN_EXIT_SIGNAL          HASH___MARGIN_EXIT_SIGNAL
+#define GTK_MARGIN_CLICKED_SIGNAL       HASH___MARGIN_CLICKED_SIGNAL
+
+
 /* set window position */
 #define GTK_WIN_POS_NONE		0
 #define GTK_WIN_POS_CENTER		1
@@ -260,6 +273,7 @@
 
 #define GTK_OBJECT_CTREE_NODE		HASH___GTK_OBJECT_CTREE_NODE
 #define GTK_OBJ_WIDGET			HASH___GTK_OBJ_WIDGET
+#define GTK_OBJECT_ITEM_FACTORY		HASH___GTK_OBJECT_ITEM_FACTORY
 
 /* типы виджетов */
 #define GTK_WIDGET_OBJECT		HASH___GTK_WIDGET_OBJECT
@@ -275,6 +289,9 @@
 #define GTK_WIDGET_RANGE		HASH___GTK_WIDGET_RANGE
 #define GTK_WIDGET_MISC			HASH___GTK_WIDGET_MISC
 #define GTK_WIDGET_RULER		HASH___GTK_WIDGET_RULER
+#define GTK_OBJECT_ACCEL_GROUP		HASH___GTK_OBJECT_ACCEL_GROUP
+
+
 /* Windows & Dialogs */
 #define GTK_WIDGET_WINDOW			HASH___GTK_WIDGET_WINDOW
 #define GTK_WIDGET_DIALOG			HASH___GTK_WIDGET_DIALOG
@@ -362,6 +379,9 @@
 #define GTK_WIDGET_CALENDAR		HASH___GTK_WIDGET_CALENDAR
 #define GTK_WIDGET_HRULER		HASH___GTK_WIDGET_HRULER
 #define GTK_WIDGET_VRULER		HASH___GTK_WIDGET_VRULER
+
+/* extext widget */
+#define GTK_WIDGET_EXTEXT		HASH___GTK_WIDGET_EXTEXT
 
 /* Justify constants */
 #define GTK_JUSTIFY_LEFT		0
@@ -541,6 +561,10 @@
 #define GTK_TOOLBAR_SPACE_EMPTY		 0
 #define GTK_TOOLBAR_SPACE_LINE		 1
 
+/* Window types */
+#define GTK_WINDOW_TOPLEVEL		0 /* A window for a typical application. */
+#define GTK_WINDOW_DIALOG		1 /* A window for transient messages and dialogs. */
+#define GTK_WINDOW_POPUP		3 /* A window for popups. */
 
 /* Widget's flags */
 #define GTK_TOPLEVEL         		16
@@ -587,6 +611,31 @@
 
 #define GTK_WIDGET_STATE(wid)		  (gtk_WidgetGetState (wid))
 #define GTK_WIDGET_SAVED_STATE(wid)	  (gtk_WidgetGetSavedState (wid))
+
+
+/* Macros for extracting a widgets private_flags from GtkWidget. */
+#define PRIVATE_GTK_USER_STYLE		  1
+#define PRIVATE_GTK_REDRAW_PENDING	  2
+#define PRIVATE_GTK_RESIZE_PENDING	  4
+#define PRIVATE_GTK_RESIZE_NEEDED	  8
+#define PRIVATE_GTK_LEAVE_PENDING	 16
+#define PRIVATE_GTK_HAS_SHAPE_MASK	 32
+#define PRIVATE_GTK_IN_REPARENT		 64
+#define PRIVATE_GTK_IS_OFFSCREEN	128
+#define PRIVATE_GTK_FULLDRAW_PENDING	256
+
+#define GTK_PRIVATE_FLAGS(wid)            (gtk_WidgetPrivateFlags(wid))
+#define GTK_WIDGET_USER_STYLE(obj)	  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_USER_STYLE) != 0)
+#define GTK_WIDGET_REDRAW_PENDING(obj)	  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_REDRAW_PENDING) != 0)
+#define GTK_CONTAINER_RESIZE_PENDING(obj) (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_RESIZE_PENDING) != 0)
+#define GTK_WIDGET_RESIZE_NEEDED(obj)	  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_RESIZE_NEEDED) != 0)
+#define GTK_WIDGET_LEAVE_PENDING(obj)	  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_LEAVE_PENDING) != 0)
+#define GTK_WIDGET_HAS_SHAPE_MASK(obj)	  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_HAS_SHAPE_MASK) != 0)
+#define GTK_WIDGET_IN_REPARENT(obj)	  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_IN_REPARENT) != 0)
+#define GTK_WIDGET_IS_OFFSCREEN(obj)	  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_IS_OFFSCREEN) != 0)
+#define GTK_WIDGET_FULLDRAW_PENDING(obj)  (NumAnd(GTK_PRIVATE_FLAGS (obj), PRIVATE_GTK_FULLDRAW_PENDING) != 0)
+
+
 #endif
 
 /* GtkPackerOptions */
@@ -931,7 +980,22 @@ and GDK_OR are also useful. */
 #define GDK_XTERM			152
 #endif
 
-/* кнопки */
+/* GtkAttachOptions */
+
+/*
+Denotes the expansion properties that a widget will have when it (or it's parent) is resized.
+
+GTK_EXPAND the widget should expand to take up any extra space in its container that has been allocated.
+GTK_SHRINK the widget should shrink as and when possible.
+GTK_FILL the widget should fill the space allocated to it.
+*/
+
+#define GTK_EXPAND	1
+#define GTK_SHRINK	2
+#define GTK_FILL	4
+
+
+/* Key codes */
 #define GDK_VoidSymbol 0xFFFFFF
 #define GDK_BackSpace 0xFF08
 #define GDK_Tab 0xFF09
@@ -2249,6 +2313,23 @@ and GDK_OR are also useful. */
 #define GDK_Hangul_J_KkogjiDalrinIeung 0xef9
 #define GDK_Hangul_J_YeorinHieuh 0xefa
 #define GDK_Korean_Won 0xeff
+
+/* gdk_drawRgb's functions */
+#define GDK_RGB_DITHER_NONE     0
+#define GDK_RGB_DITHER_NORMAL   1
+#define GDK_RGB_DITHER_MAX      2
+
+/* gdk_pixbuf's functions  */
+#define GDK_INTERP_NEAREST      0
+#define GDK_INTERP_TILES        1
+#define GDK_INTERP_BILINEAR     2
+#define GDK_INTERP_HYPER        3
+
+#define CLIP_GTK_TYPE_MENU_BAR		0
+#define CLIP_GTK_TYPE_MENU		1
+#define CLIP_GTK_TYPE_OPTION_MENU	2
+
+
 
 #endif
 

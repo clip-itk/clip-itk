@@ -2,9 +2,6 @@
 <HEAD>
 	<TITLE>Editor of DBF-files BDBFS.EXE </TITLE>
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;>
-	<LINK REL="STYLESHEET" TYPE="text/css" HREF="styl.css">
-	<META NAME="keywords" content="DBF, EDITOR, VIEWER, CLIPPER, CLIP, DBASE, XBASE, FOXPRO, SIX, MDX, CDX, NTX, NSX, DATABASE, “≈ƒ¡À‘œ“, ◊ÿ¿≈“, FLAGSHIP, VISUAL FOXPRO, FLEXMEMO>
-	<META NAME="Description" content="Powerwul DBF Editor for xBase professionals">
 	<META NAME="Author" CONTENT="Yevgen Bondar">
 
 	<STYLE>
@@ -24,45 +21,39 @@
 		}
 
 		H6 {	font-family: Arial;
-			font-size: 10pt;
+			font-size: 12pt;
 			font-weight: bold;
 			text-decoration: underline;
 			color: blue
 		}
 
+		TT {	color: blue	}
+		EM {	color: magenta	}
 	</STYLE>
 </HEAD>
-<BODY background=fon.gif>
 
-
-<IMG align="right" SRC="bdbf.gif">
-
-<I><font color='red'><pre>
-First of all, sorry for my ugly English,
-but it seems to me it's better to have poor documentation than nothing.
-</I></font></pre>
 <H2><U><center>
-	     Editor of DBF-files BDBFS.EXE
-</H2>
+Editor of DBF-files BDBFS.EXE. Version 1.26.
+</H2></U>
 <br>
 <H3><U>
-			  Programmer's guide
+Programmer's guide
 </H3></U></center>
-</U>
-<pre>
 
-	Following does not apply for the complete description, but
-probably it will be useful to somebody.
+<H3> WARNING! </H3><pre><I>
 
-	The current description corresponds to the version
-			BDBFS 1.21
+BDBFS for CLIP is in the initial stage. So, there are
+a lot of various bugs at the very unexpected places. Besides,
+undoubted advantages  of CLIP are used not enough.
 
-</pre>
-<p><hr><U>
-<a NAME="contents">
+Please, be patient. You can also visit <a href=http://www.geocities.com/bondar_eugen>BDBFS home page</a>
+and make the acquaintance of original BDBFS and attendant utilities.
+
+<p><HR><U>
+<a name="contents">
 	Table of Contents<br><br>
 </U>
-
+<ul>
 <li><a href="#p1">1.Why BDBFS?</a>
 <li><a href="#p2">2.Supported formats of the data.</a>
 <li><a href="#p3">3.Editing of records.</a>
@@ -76,9 +67,12 @@ probably it will be useful to somebody.
 <li><a href="#p11">11.Variables initialization.</a>
 <li><a href="#p12">12.Structure modifying.</a>
 <li><a href="#p13">13.Records inserting.</a>
-<li><a href="#p14">14.TOTAL.</a>
+<li><a href="#p14">14.TOTAL and SORT.</a>
 <li><a href="#p15">15.Saving / restoring an environment.</a>
 <li><a href="#p16">16.Initialization files.</a>
+<ul TYPE="square">
+	<li><a href="#p16_1">16.1.Auto Open files.</a>
+</ul>
 <li><a href="#p17">17.Macro-keys.</a>
 <li><a href="#p18">18.Exit to DOS.</a>
 <li><a href="#p19">19.Using of a mouse.</a>
@@ -88,7 +82,7 @@ probably it will be useful to somebody.
 <li><a href="#p23">23.Expressions of highlighting.</a>
 <li><a href="#p24">24.Jobs with the clipboard.</a>
 <li><a href="#p25">25.History of conditions and expressions.</a>
-<li><a href="#p26">26.Stack of positions.</a>
+<li><a href="#p26">26.Bookmarks.</a>
 <li><a href="#p27">27.Edition of memo-fields and external files.</a>
 <li><a href="#p28">28.Printing forms.</a>
 <li><a href="#p29">29.Keyboard codes.</a>
@@ -107,19 +101,28 @@ probably it will be useful to somebody.
 <li><a href="#pp2">SUPPLEMENT II. Messages.</a>
 <li><a href="#pp3">SUPPLEMENT III. Supported functions.</a>
 <li><a href="#pp4">SUPPLEMENT IV. BDBFS-PRO.</a>
+<ul TYPE="square">
+	<li><a href="#pp4a">A. System variables</a>
+	<li><a href="#pp4b">B. Called functions</a>
+	<ol>
+	<li><a href="#pp4b1">Functions of calculation</a>
+	<li><a href="#pp4b2">Functions of transformation</a>
+	<li><a href="#pp4b3">Other system functions</a>
+	<li><a href="#pp4b4">Interface functions</a>
+	</ol>
+</ul>
 
 </ul>
 
+<p><HR><a name="p1">
+<h4>1. Why BDBFS?</h4><pre><pre>
 
-<p><hr><a name="p1">
-	 <h4>1. Why BDBFS?</h4>
-<pre>
 
-	And really - there are a lot of analogues, only to author
-the following viewers/browsers are known:
+In fact, there are a lot of analogues, I know the following
+viewers/browsers:
 
 	- dbview by Trophimenko ~3k!!!!
-	- dbview by Tsarenko ~32k but with edition and search
+	- dbview by Tsarenko ~32k but with edit and search functions
 	- popdbf by Bowen-software - sole TSR, known for me
 	- vdbf by Rodionoff, served by a push for development
 	- d123 by Deveza
@@ -131,456 +134,510 @@ the following viewers/browsers are known:
 	- dbfview by Tibor Kovach
 	- clut by Sergio Cocci
 
-	And thus I do not doubt at all, that all is listed not.
-It is possible also to use and firm DBU from Nantucket/CA.
-It is possible simply to use Fox or there Delphi any ;-).
+And so on...
+
+It is possible also to use firm DBU from Nantucket/CA, embedded tools
+of FoxPro, dBase, etceteras.
 
 Nevertheless, BDBFS has a niche.
 At a development BDBFS the motto was:
 	" We'll make with the chosen base, all that we want! "
 
 You can use practically all functions necessary for daily jobs with bases!
-Almost all of them can be called via hot-keys.
-Besides it is desirable to have "near at hand" a uniform product for
+Almost all of them can be called by pressing hot-keys.
+Besides it is desirable to have "near at hand" an uniform product for
 jobs with different formats of bases and indexes.
 
-	So, BDBFS is able:
+So, BDBFS is able:
 
 	- automatically or optionally to choose a format
 	  of indexes and MEMO-fields from Clipper,FoxPro,dBase4,SIX
-	- to edit records in a mode BROWSE and EDIT
-	- to print chosen base (optionally into file), all or on
+	- to edit records in a mode BROWSE or EDIT
+	- to print chosen base (optionally into file), entire or on
 	  condition
-	- to prepare special report file
+	- to print form from special report file
 	- to modify base structure
 	- to optimize base structure
 	- to print structure on the printer or into a file
-	- to search on a condition LOCATE / CONTINUE
-	- to search for a context without binding to fields
+	- to search records matching a condition (LOCATE / CONTINUE)
+	- to search a context without binding to fields
 	- to search in current field
 	- to copy records
 	- to copy contents of separate fields from the left and right
 	  sides, from below and from above
-	- to establish an existing index (or tag)
+	- to set an existing index (or tag)
 	- to make a new index (or tag)
+	- to reindex or rebuild all tags
 	- to make "soft" index search
 	- to make wildcard index search
-	- Replace on a condition
-	- Sum, Count, Total on a condition
-	- Delete/Recall on a condition
-	- Copy to File / Append from, including on a condition and
-	  in text formats. The transformation and renaming of fields
-	  is possible. MEMO-fields can be converted to different format.
-	- to establish filters
+	- Replace fields matching a condition
+	- Sum, Count, Total set of records matching a condition
+	- Delete/Recall records matching a condition
+	- Copy to File / Append from, including conditions and
+	  different text formats. The transformation and renaming of
+	  fields is possible. MEMO-fields can be converted to
+	  different format
+	- to export to HTML, XML, XLS formats
+	- to set filters
 	- to sort base
-	- to establish the necessary order and quantity of fields,
+	- to set the necessary order and quantity of fields,
 	  their headings. The calculated fields are possible! Thus
 	  the chosen cut can be printed out and is saved for further use!
 	- to calculate any Clipper-expression
-	- to set variables
-	- to clear at once all record
-	- to make Upper and Lower in text fields
+	- to assign variables
+	- to clear all fields of record at once
+	- to make different conversions with text fields
 	- to change modes of input
 	- to work with the mouse
 	- to choose all conditions from a history
 	- to save and to restore an environment
 	- to read ini-files
-	- to highlight with color various cells on a condition
+	- to highlight with color various cells matching a condition
 	- to work with the own clipboard and Win-clipboard
 	- "to freeze" fields for viewing
-	- to search for a maximum / minimum
+	- to search  maximum / minimum in a field
 	- to change the disks / directories (Filer)
 	- to use long names Win9x
 
 	- and other pleasant trivialities.
 
-	Almost all functions can be called as through hot keys, so
+Almost all functions can be called as through hot keys, so
 and through the menu.
 
-	Majority of functions is clear for any xBase-man (though
-acquaintance with Clipper it is desirable). Some explanatories are below.
-Appointments of all hot keys see in HELP and in <a href="#pp1">SUPPLEMENT I.</a>
+Most of functions are clear for any xBase-man (though acquaintance with
+Clipper it is desirable). Some explanations are below. Appointments of
+all hot keys see in HELP and in <a href="#pp1">SUPPLEMENT I</a>.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
 
-<p><hr><a name="p2">
-	  <h4>2. Supported formats of the data.</h4>
+<p><HR><a name="p2">
+<h4>2. Supported formats of the data.</h4><pre>
 
-<pre>
-	The formats of xBase-files are supported basic for today:
+The formats of xBase-files are supported fully at present time:
 
-		 dBASE3/Clipper		 (DBT/NTX)
-		 FoxPro			 (FPT/IDX/CDX)
-		 dBASE4			 (DBT/MDX)
-		 SIX3			 (SMT/NSX)
+	dBASE3/Clipper		(DBT/NTX)
+	FoxPro			(FPT/IDX/CDX)
+	Visual FoxPro   (new headers and field types)
+	SIX		(new field types)
+	CLIP		(CTX, new field types)
 
-	If the base has memo-field, the appropriate driver is defined
+If the database has memo-field, the appropriate driver is defined
 automatically. Besides you can set the default driver in an ini-file
 or through the menu.
 
-	FoxPro (SIXCDX) driver is default.
+FoxPro (DBFCDX) driver is default.
 
-	Except for standard Clipper-fields, Float (FoxPro) and
-VariField (SIX) are supported.
-
-	You'll be asked for password for SIX ciphered files.
-
-	The new formats of Visual FoxPro, dBASE5, FlagShip, FlexMemo are
-supported in "forced" mode <a href="#p34">(see ch.34).</a>
-
-	It is really possible to make support of NDX, if it is necessary
-for somebody else.
-	Unfortunately, I have not the drivers for other existing
-formats (Comix, Inx, etc) :-(.
-
+The new formats of  dBASE4-5, FlagShip, FlexMemo are
+supported in a <a href="#p34">forced mode</a>.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p3">
-	 <h4> 3. Editing of records.</h4>
-<pre>
+<p><HR><a name="p3">
+<h4>3. Editing of records.</h4><pre>
 
-	The initial mode of BDBFS is "VIEW".
 
-	For starting of edition ("BROWSE" mode) it is necessary to press
-<font color="blue">Enter</font> in chosen field, then you receive practically Browse of FoxPro:
-keys <font color="blue">Up, Down, PgUp, PgDn, Tab, Shift+Tab</font> are acceptable.
+The initial mode of BDBFS is "VIEW".
 
-	Besides BDBFS passes in a mode "BROWSE" by pressing any "simple"
+For starting of edition ("BROWSE" mode) it is necessary to press
+<tt>Enter</tt> in chosen field, then you receive practically Browse of FoxPro:
+keys <tt>Up, Down, PgUp, PgDn, Tab, Shift+Tab</tt> are acceptable.
+
+Besides BDBFS passes in a mode "BROWSE" by pressing any "simple"
 key depending on a type of a field. For example, if current field's type
-is Numeric, entrance in edition passes by pressing any figure, and this
-figure at once is displayed.
-For an exit from a mode "BROWSE" it is necessary to press <font color="blue">Escape</font> or
-<font color="blue">Ctrl+W</font>. As against FoxPro (dBase), for editing a memo-field special
-keys don't need to be pressed.
+is Numeric, editing started by pressing any figure, and this figure is
+displayed at once. For an exit from a mode "BROWSE" it is necessary
+to press <tt>Escape</tt> or <tt>Ctrl+W</tt>. As against FoxPro (dBase),
+special keys are not necessary to be pressed for editing a memo-field.
 
-	There are four modes of input in "BROWSE". In "Usual" mode
-pressing <font color="blue">Enter</font> in last the field of record simply stops input;
-in a mode "Enter/skip" in this case there is a transition to first
-field of the following record; in a mode " Lock Enter" pressing
-<font color="blue">Enter</font> in any the field results in descent to record below in the
-same field. In a mode "Enter/stop" after pressing <font color="blue">Enter</font> there is
-a transition to a mode "VIEW". The modes can be switched during input.
+	There are four modes of input in "BROWSE".
+	-------------------------------------------------------
+	Modes           <tt>Enter</tt> in any            <tt>Enter</tt> in last
+	                field                   field of record
+	-------------------------------------------------------
+	"Usual"         Go to next field        Stop input
+	"Lock Enter"    Go to same field        Go to same field
+	                in next record          in next record
+	"Enter/skip"    Go to next field        Go to first field
+	                                        in next record
+	"Enter/stop"    Stop input              Stop input
 
-	Except for a mode "BROWSE" there is a mode "EDIT". It allows
+The modes could be switched during input by pressing <tt>F4</tt>.
+
+Except for a mode "BROWSE" there is a mode "EDIT". It allows
 editing of the fields "vertically". This mode is acceptable from a
-mode "VIEW" via hot key <font color="blue">Alt+E</font>(dit).
-	It is sometimes convenient to edit a symbolical field exceeding
-the size of the screen, as a memo-field. It can be made by pressing a key
-<font color="blue">Alt+W</font>(ide).
+mode "VIEW" through hot key <tt>Alt+E</tt>(dit).
 
-	You can undo the editing changes (by <font color="blue">Ctrl+U, Alt+BS</font>). Undo
-buffer is defined by variable _UndoSize and can be from 0 to 4095 actions
-(default 1024). Any global operation (like ZAP, PACK) clears the undo buffer.
+It is sometimes convenient to edit a symbolical field exceeding
+the size of the screen, as a memo-field. It could be made by pressing a key
+<tt>Alt+W</tt>(ide).
+
+You can undo the editing changes (by <tt>Ctrl+U, Alt+BS</tt>). Undo
+buffer is defined by variable _UndoSize and could be from 0 to 4095
+actions (default 1024). Any global operation (like ZAP, PACK) clears the
+undo buffer.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p4">
-	 <h4> 4. Replace-modes.</h4>
-<pre>
+<p><HR><a name="p4">
+<h4>4. Replace-modes.</h4><pre>
 
-	BDBFS supports three Replace modes (all - in current field):
-		- constant expression		<font color="blue">Alt+F4</font>
-		- varied expression		<font color="blue">Ctrl+F4</font>
-		- in the current record		<font color="blue">Alt+R</font>
 
-	A difference between <font color="blue">Alt+F4</font> and <font color="blue">Ctrl+F4</font> we'll explain
+BDBFS supports three Replace modes (all - in current field):
+	- constant expression		<tt>Alt+F4</tt>
+	- varied expression		<tt>Ctrl+F4</tt>
+	- in the current record 	<tt>Alt+R</tt>
+
+A difference between <tt>Alt+F4</tt> and <tt>Ctrl+F4</tt> we'll explain
 on an example:
 
-	Let we stand in a field NUM on 15 records. Now we set the
-expression of replacement Recno()+2 and the scope - all records.
+Let us assume that current field is numeric and record is 15. Now we set
+the expression of replacement Recno()+2 and the scope - all records.
 
-	Now the value 17 will be brought in all records by <font color="blue">Alt+F4</font>,
-and accordingly 3,5,7.. by <font color="blue">Ctrl+F4</font>.
+Then the value 17 will be brought in all records by <tt>Alt+F4</tt>,
+and accordingly 3,5,7.. by <tt>Ctrl+F4</tt>.
 
-	Can ask: and what for is necessary for Replace in the current
-record, if it is possible simply to correct it? But imagine, that
-the field contents 3242756 and it is necessary to multiplicate it on 234.
-With <font color="blue">Alt+R</font> it is simple - Field*234.
+What is necessity for Replace in the current record, if it is
+possible simply to correct it? But imagine, that the field contents
+3242756 and it is necessary to multiplicate it on 234. With <tt>Alt+R</tt> it
+is simple - Field*234.
 
-	<font color="blue">Shift</font> with any replace function (f.e. <font color="blue">Ctrl+Shift+F4</font>),
+<tt>Shift</tt> with any replace function (f.e. <tt>Ctrl+Shift+F4</tt>),
 causes the confirming for each record. It's especially convenient with
 varied expression.
 
+If type of replace expression doesn't match type of current
+field BDBFS makes an attempt to convert the replace expression. For
+example, if current field has type CHARACTER and you input 123 (not
+"123") in replace dialogue, BDBFS convert the expression to string.
+If conversion is impossible, BDBFS shows the warning.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p5">
-	 <h4> 5.Append/Copy.</h4>
+<p><HR><a name="p5">
+<h4>5.Append/Copy.</h4><pre>
 
 
-	<font color="blue">F3</font> simply adds the empty record, <font color="blue">Alt+F3</font> - offers to copy
+<tt>F3</tt> simply adds the empty record, <tt>Alt+F3</tt> - offers to copy
 contents of current or last record.
 
-	It is possible also to press <font color="blue">F3</font> in a mode "BROWSE", then new
+It is possible also to press <tt>F3</tt> in a mode "BROWSE", then new
 record will be added with the copied current field.
 
-	It is possible also to make "Append from file" (<font color="blue">Ctrl+F9</font>), and
-if in name of a file is specified extension other than DBF, inquiry
-of file type will be made: SDF, WITH DELIMITERS, DBF. Same concerns and
-to "Copy File" (<font color="blue">Ctrl+F3</font>).
+It is possible also to make "Append from file" (<tt>Ctrl+F9</tt>), and
+if file's extension is other than .DBF, inquiry of file's type will be
+made: SDF, WITH DELIMITERS, DBF. Same concerns and to "Copy File" (<tt>Ctrl+F3</tt>).
 
-	It is possible also to append from "myself" (current base).
+It is possible also to append from "myself" (current base).
 
-	There are two conflict situations with appending: incompatible
-field types and numeric overflow. In BDBFS the disputable concept is now
+There are two conflict situations with appending: incompatible field
+types and numeric overflow. In BDBFS the disputable concept is now
 accepted: the maximal performance of operations. It means, that in the
 first case the attempt of types transformation is made, and in second
 case the greatest possible number enters in a field. For example, if
-field's length is 3 and number is 1200, "999" will be entered.
+field's length is 3 and number is 1200, the number 999 will be entered.
 
-	At copying a file it is possible to specify only required fields
-(via <font color="blue">Alt+F2</font>).
+At copying a file it is possible to specify only required fields
+(by pressing <tt>Alt+F2</tt>).
 
-	The transformation and renaming of fields is accessible also
-at copying (to base, but not to SDF). It some kind of mini-"Query By
-Example". For example, you can set expressions in the list of fields:
+The transformation and renaming of fields is accessible also at copying
+(to base, but not to SDF). It's some kind of mini-"Query By Example". For
+example, you can set expressions in the list of fields:
+
 	Num, Num*2 AS Double, Upper(Char), CTOF(Char) AS Secret
 
-	The optional "AS" <column_name> clause specifies the heading
-for a name in the query output (Num*2 AS Double - the field in new base
+The optional "AS" &lt;column_name> clause specifies the field's
+name in the target base (Num*2 AS Double - the field in new base
 will be called "DOUBLE").
-	If the target field is not named (word "AS" is not used) and a
+
+If the target field is not named (word "AS" is not used) and a
 select item is expression, a field will be named Exp_??, where ?? -
-serial number in the list (is similar FoxPro).
+serial number in the list (is similar to FoxPro).
 
 If the expression can't be calculated, it is ignored.
 
-	See also the description of <a href="#pp4dbtrans">function DBTrans().</a>
+See also the description of <a href="#pp4dbtrans">function DBTrans()</a>.
 
-It is possible also to copy (to transform) the base (table) to a HTML
-format. This operation is accessible through the menu File -> Create
-HTML. See also description of <a href="#pp4Tb2Html">function Tb2Html().</a>
+<a name="p5_1">
+It is possible also to export the base to formats HTML, XML and
+MS EXCEL (XLS). Those operations are accessible through the menu
+File - Export to HTML, Export to XML, Export to XLS.
+
+The translation OEM-to-ANSI is requested at any export operation.
+If you prefer to omit the question (it is especially useful when
+the export called from <a href="#p33">command line</a>), you could set
+the variable _l_exp_o2aq:=.F. in <a href="#p16">ini-file</a>. The variable
+_l_exp_o2a at the same time defines th necessity of translation, by
+default _l_exp_o2a==.T..
+
+Export to XLS is realized in Biff5/Biff7 format without sheets. The field
+starts from column "B", the symbol "*" in column "A" means the record
+marked for deleting. Maximum length of character fields is 255 symbols.
+
+At export to XML:
+	- the database name is used as root tag (if the name begins from
+	  digit, the symbol "_" is added first);
+
+	- the word "Record" is used as tag for each record;
+
+	- the fields are described as tags not attributes;
+
+	- internal DTD are used;
+
+	- following attributes are used for each record:
+		- record number in database ("RecNo");
+		- sequence number in established index or tag ("KeyNo");
+		- deleted status ("Deleted" - when the record is marked);
+
+	- following  attributes are used as obligate for fields:
+		- "type" - the field's type;
+		- "len"  - the field's length;
+
+	- following  attributes are used as additional for fields:
+		- "dec" - when the field has fractional part;
+		- "realtype" - when the type of data differ from
+		  field's type (f.e., Strongly-type VariFields or
+		  <a href="p34">"forced" fields</a>);
+		- "valtype" - for fields with variable type (Weakly-Typed
+		   VariFields or Variant);
+
+	- all character fields are described as CDATA section;
+
+	- the fields with DATE type are written down in DTOS() format;
+
+	- the logical fields are written down as "1"/"0";
+
+	- the following are written down in comment section:
+		- the name of source database;
+		- the description from descript.ion (if present);
+		- the index expression (when the index or tag is active).
+
+See also description of functions <a href="#pp4Tb2Html">Tb2Html()</a>, <a href="#pp4Tb2Xml">Tb2Xml()</a>, <a href="#pp4Tb2Xls">Tb2Xls()</a>.
+
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p6">
-	 <h4> 6. SUM.</h4>
-<pre>
+<p><HR><a name="p6">
+<h4>6. SUM.</h4><pre>
 
-	The summation always occurs on the current field, it is possible
-to choose and calculated field too (see below). It is possible to
-summarize numerical or symbolical field (i.e. SUM(VAL(field))).
-It is meant, that you know, that you do. It is also possible to use the
-function Sum (see below).
+The summation is always performed on the current field (including
+<a href="#p9">calculated fields</a>). It is possible to summarize numerical or
+character fields (i.e. SUM(VAL(field))). It is meant, that you know,
+that you do. It is also possible to use the <a href="#pp4Sum">function Sum().</a>
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p7">
-	 <h4> 7. Search an index (tag).</h4>
-<pre>
+<p><HR><a name="p7">
+<h4>7. Search an index (tag).</h4><pre>
 
-	When you search index key of DATE-type, it is not necessary
+When you search index key of DATE-type, it is not necessary
 to write CTOD. So, is equally correct
-		12/03/93  CTOD('12/03/93')  DATE()
 
-	By search on an index of a symbolical type the value should be
+	12/03/93  CTOD('12/03/93')  DATE()
+
+By search on an index of a symbolical type the value should be
 concluded in inverted commas. However, if the expression of search begins
 with figure or symbol with a code more than 127, the inverted commas are
 not obligatory.
 
-	By default the search is conducted in a mode SoftSeek OFF
-(SET NEAR - for habitual to FoxPro). To set a mode SoftSeek ON
-it is necessary to make
-		<font color="blue">Alt+G</font> Set(9, .t.)	// see Set.CH,
-or to write =Set(9,.T.) in an ini-file.
+By default the search is conducted in a mode SoftSeek OFF (SET NEAR - for
+habitual to FoxPro). To set a mode SoftSeek ON it is necessary to make
 
-	Sometimes it happens necessary to find not unique records in an
-index. It can be made by pressing <font color="blue">Alt+2</font>. The cursor thus will be
-established on duplicating record.
+		<tt>Alt+G</tt> Set(9, .T.)	//see Set.CH,
 
-	The search on a mask (naturally, in an index of a character type)
-is accessible also.  The mask is similar DOS. For example, it is possible
-to set:
+or to write Set(9, .T.) in an ini-file.
 
-		<font color="blue">Alt+[</font> 'B?LL',	// found: BILL
-		<font color="blue">Alt+Shift+]</font>	// found: BYLL
+Sometimes it's necessary to find not unique records in an index. It could
+be made by pressing <tt>Alt+2</tt>. The cursor thus will be established on
+duplicating record.
 
-		<font color="blue">Alt+ [</font> 'JO*SON' // found: Johnson,Johanson etc.
+The search on a mask (naturally, in an index of a character type)
+is accessible also. The mask is similar to DOS.
+
+	<em>Example:</em>
+		<tt>Alt+[</tt> 'B?LL',	//found: BILL
+		<tt>Alt+Shift+]</tt>	//found: BYLL
+
+		<tt>Alt+ [</tt> 'JO*SON' //found: Johnson,Johanson etc.
+
+<center><form>
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
+</form></center>
+<p><HR><a name="p8">
+<h4>8. Expressions of conditions.</h4><pre>
+
+
+At a choice of many functions BDBFS, you will be requested for condition
+of selection or searching. It is possible to vary expressions in such
+conditions widely enough. Any system and user functions can be applied.
+Sole restriction - length expressions (no more than 255 symbols).
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p8">
-	 <h4> 8. Expressions of conditions.</h4>
-<pre>
-
-	At a choice of many functions BDBFS, you will be requested for
-condition of selection or searching. It is possible to vary expressions
-in such conditions widely enough. Any system and user functions can be
-applied. Sole restriction - length expressions (no more than 255 symbols).
+<p><HR><a name="p9">
+<h4>9. Set Fields.</h4><pre>
 
 
-<center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
-</form></center>
-<p><hr><a name="p9">
-	 <h4> 9. Set Fields.</h4>
-<pre>
-
-	By Ctrl+F2 you can set the contents, names(headings), show format
-and order of fields. The contents of a field can be any allowable expression.
+On <tt>Ctrl+F2</tt> you can set the contents, names(headings), show format and
+order of fields. The contents of a field can be any allowable expression.
 The symbols of national alphabets in the contents now are allowable only
 in russian version (see NATIONAL.TXT).
 
-	Example:
+	<em>Example:</em>
 	Contents of a field: If(Deleted(), [Yes], [No])
 	Name: Is marked?
 
 	To divide the name of the field use the symbol ;.
-	Example:
+	<em>Example:</em>
 	This;Field;Name		//3 lines
 
-	You could also set the picture and width for each field.
+You could also set the picture and width for each field.
 The formats of the pictures are described in any xBase language.
-	Example:
+
+	<em>Example:</em>
 		Field: Money
 		Picture: 999,999.99
 
-	To finish changes press <font color="blue">F10</font>. Then you can press again <font color="blue">Ctrl+F2</font>
+To finish changes press <tt>F10</tt>. Then you can press again <tt>Ctrl+F2</tt>
 to restore all fields.
 
-	The calculated fields will not be editable. Besides, they can
+The calculated fields will not be editable. Besides, they can
 be used in expressions.
 
-	The fields was marked as deleted (via <font color="blue">DEL</font>) will not be shown and
-edited. <font color="blue">F8/<F7></font> blocks/unblocks all fields below current.
+The fields was marked as deleted (on <tt>DEL</tt>) will not be shown and
+edited. <tt>F8/F7</tt> blocks/unblocks all fields below current.
 
-	The required order can be established by pressing <font color="blue">Ctrl+Up</font> or
-<font color="blue">Ctrl+Down</font>.
+The required order can be established by pressing <tt>Ctrl+Up</tt> or
+<tt>Ctrl+Down</tt>.
 
-	The required order and contents of fields can be established
+The required order and contents of fields can be established
 consistently. Let's assume, we have removed from viewing some field.
 And now we don't want to see another field, not only previous. Press
-again <font color="blue">Ctrl+F2</font> (to restore all fields), again <font color="blue">Ctrl+F2</font>, then <font color="blue">F5</font> and
+again <tt>Ctrl+F2</tt> (to restore all fields), again <tt>Ctrl+F2</tt>, then <tt>F5</tt> and
 you can see previous established fields. Correct further, etc..
 
-	Set Fields does not influent on "Copy TO" operation.
+Set Fields does not influent on "Copy TO" operation.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p10">
-	 <h4> 10.Calculation of expressions.</h4>
-<pre>
+<p><HR><a name="p10">
+<h4>10.Calculation of expressions.</h4><pre>
 
-	By pressing <font color="blue">Shift+F6 (Alt+G(o), ?)</font> it is possible to calculate
-almost any correct Clipper expression of length up to 255 symbols.
-Not speaking about it is necessary to remember, what number was Date()-21
-or quickly to take Log(Exp(1)) :-), it has turned out rather interesting
-simulator for Clipper-programmer. It is possible, for example, to
-experiment with parameters Memoedit, to understand, at last, than differs
-Bin2i from Bin2w or to take an interest, that such Descend('Ω¥∑∞∞ªÆ').
+By pressing <tt>Shift+F6 (Alt+G(o), ?)</tt> it is possible to calculate almost any
+correct Clipper expression of length up to 255 symbols. Not to mention
+it is necessary to remember, what day was Date()-21 or quickly to compute
+Log(Exp(1)) :-), it has turned out rather interesting simulator for
+Clipper-programmer. It is possible, for example, to experiment with
+parameters of Memoedit, to understand, at last, what differs Bin2i from
+Bin2w or to be curious, what is Descend("æºæ∫≠").
 
-	It is possible to use almost all functions from Clipper.Lib and
+It is possible to use almost all functions from Clipper.Lib and
 Extend.Lib, number useful (on my sight) functions of known libraries
 Six3, NanFor, Clipper Tools, Netto, Blinker, emulation of some functions
 FoxPro, and also number of special functions BDBFS.
-	The list of functions <a href="#pp4">see in SUPPLEMENT IV.</a>
+
+The list of functions <a href="#pp4">see in SUPPLEMENT IV</a>.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p11">
-	 <h4> 11.Variables initialization.</h4>
-<pre>
+<p><HR><a name="p11">
+<h4>11.Variables initialization.</h4><pre>
 
-	By <font color="blue">Ctrl+F5</font> you can initialize variable (or to set
-it's new value).
+On <tt>Ctrl+F5</tt> you can initialize variable (or to set it's new value).
 
-	For simple variable it is necessary simply to execute assignment
+For simple variable it is necessary simply to execute assignment
 
-		new=5
-		word:='daddy'
-		today=date()
+	new=5
+	word:='daddy'
+	today=date()
 
-	For the announcement of a array it should be described:
+For the announcement of a array it should be described:
 
-		arr[20] or arr=Array(20)
+	arr[20] or arr=Array(20)
 
-	Then it is possible to make Arr[3]=Exp(12.09).
-	However, it is possible and directly to write:
-		Arr := {10,20,'example'}
+Then it is possible to make Arr[3]=Exp(12.09).
+However, direct assignment is also allowable:
 
-	Any correct Clipper expression are allowable in the right part.
+	Arr := {10,20,'example'}
 
-	What for all this is necessary?
+Any correct Clipper expression are allowable in the right part.
 
-	You can, f.e. store result of previous operation and use it
-	later.
-		<font color="blue">F6</font>				// sum current field
-		<font color="blue">Ctrl+F5</font>	Sum1:=__sum	// store it
+What for all this is necessary?
 
-	It is sometimes convenient to calculate expression, and then it
-to use in conditions. Using assignment variable and calculation
-expressions it is possible even to write small programs. Try, f.e.,
-to make following:
-	<font color="blue">Ctrl+F5</font>	aPrg=Array[Adir('*.prg ')]
-	<font color="blue">Alt+G</font>		Adir('*.prg ', aPrg)
-	<font color="blue">Alt+G</font>		ForAch (5,10,24, 'Program', aPrg)
+You can, f.e. store result of previous operation and use it later:
 
-	Selecting the index, which has non-standard extension.
+	<tt>F6</tt>				//sum current field
+	<tt>Ctrl+F5</tt>	Sum1:=__sum	//store it
 
-	<font color="blue">Ctrl+F5</font>	_oldind:='MyOwn.FIL '
-	<font color="blue">Ctrl+F5</font>	_req=0
+It is sometimes convenient to calculate expression, and then to use it in
+conditions. Using assignment variable and calculation expressions it is
+possible even to write small programs. Try, f.e., to make following:
 
-	Choosing base from backup copies.
+	<tt>Ctrl+F5</tt>	aPrg=Array[Adir('*.prg ')]
+	<tt>Alt+G</tt>		Adir('*.prg ', aPrg)
+	<tt>Alt+G</tt>		ForAch (5,10,24, 'Program', aPrg)
 
-	<font color="blue">Ctrl+F5</font>	_mask = '*.bak'
-	<font color="blue">F4</font>
+Selecting the index with non-standard extension.
 
+	<tt>Ctrl+F5</tt>	_oldind:='MyOwn.FIL '
+	<tt>Ctrl+F5</tt>	_req=0
 
-	Printing base with a fine font and with the slogan.
+Choosing the database from backup copies.
 
-	<font color="blue">Ctrl+F5</font>	_PSCode ='We are the champions ' +chr(15)
-	<font color="blue">F2</font>
+	<tt>Ctrl+F5</tt>	_mask = '*.bak'
+	<tt>F4</tt>
 
-	It is possible to give the block of a code
-	<font color="blue">Ctrl+F5</font>	bck = {| i|i+1} , then
-	<font color="blue">Alt+G</font>		Eval(num)
+Printing the database with a small font and with the slogan.
 
+	<tt>Ctrl+F5</tt>	_PSCode ='We are the champions ' +chr(15)
+	<tt>F2</tt>
 
-	Some examples are in Examples.Ini.
+It is possible to assign the block of a code
 
+	<tt>Ctrl+F5</tt>	bck = {| i|i+1} , then
+	<tt>Alt+G</tt>		Eval(num)
+
+Some examples are in EXAMPLES\Examples.Ini and PLUGINS\ directory.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p12">
-	 <h4> 12.Structure modifying.</h4>
-<pre>
+<p><HR><a name="p12">
+<h4>12.Structure modifying.</h4><pre>
 
-	After change of structure, previous version remains with
-extension BAK. If there was a memo-file, it remains with extension TBK.
+After change of structure, previous version is saved with extension BAK.
+If there was a memo-file, it is saved with extension TBK.
 
-	If at updating there is a situation of numerical overflow,
-it will be brought 0 in a field.
+If at updating there is a situation of numerical overflow, it will be
+brought 0 in a field.
 
-	In the program is realized known Clipper-trick - symbolical
-fields with length more than 255 symbols. It is made so: in a field
-Field_Dec enters Mod(Length, 256), in a field Field_Len - rest.
+The known Clipper-trick is realized in the program  - symbolical
+fields with length more than 255 symbols. It is made so: a field
+Field_Dec keeps Mod(Length, 256), a field Field_Len - remainder.
 For example: length of a field is 700. Then Field_Dec=2, Field_Len=188.
 But to enter necessary length in BDBFS it is enough to correct Field_len.
 Then the necessary sizes will be brought automatically.
 
-	<font color="blue">F9</font> (except for the driver SIXMDX) causes function of structure
+<tt>F9</tt> (except for the driver SIXMDX) causes function of structure
 optimization (like in OTTO utility from SIX-driver). It is made with
 using VariField by the following rules:
+
 	- All CHARACTER fields greater than 16 characters are
 	  defaulted to 10 byte "V" fields. However, for short CHARACTER
-	  fields, or those whose data is always a fixed length, you may
-	  want to change them back to "C" types manually instead of using
-	  "V" types.
+	  fields with data of a fixed length, you may want to change them
+	  back to "C" types manually instead of using "V" types.
 
 	- All MEMO fields are defaulted to 6 byte "V" fields.
 
@@ -590,103 +647,115 @@ using VariField by the following rules:
 
 	- All 8 byte DATE fields are converted to 3 byte DATE fields.
 
-	For non-English named fields see NATIONAL.TXT.
-
-
-<center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
-</form></center>
-<p><hr><a name="p13">
-	 <h4> 13.Records inserting.</h4>
-<pre>
-
-	As is known, Clipper doesn't have the operation INSERT.
-But sometimes it would be desirable very much. Therefore it is necessary
-to go by heavy way: append, to move all downwards, to clear top. On the
-large bases it can take long time. INSERT does not work with active INDEX
-or TAG.
-
+For non-English named fields see NATIONAL.TXT.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p14">
-	 <h4> 14.TOTAL.</h4>
-<pre>
+<p><HR><a name="p13">
+<h4>13.Records inserting.</h4><pre>
 
-	The are some difference between TOTAL in BDBFS and in Clipper:
+As is known, Clipper doesn't have the operation INSERT.  But sometimes it
+would be desirable very much. Therefore it is necessary to follow by
+heavy way: append, to move all downwards, to clear top. It can take long
+time on the large bases. INSERT does not work with active INDEX or TAG.
 
-	- "ON" expression always equals IndexKey(0), so it doesn't work
-	   in SORTed base;
+<center><form>
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
+</form></center>
+<p><HR><a name="p14">
+<h4>14.TOTAL and SORT.</h4><pre>
+
+
+The differences between TOTAL in BDBFS and in Clipper:
+
+	- "ON" expression always uses IndexKey(0) or it's part, so TOTAL
+	   doesn't work in SORTed base;
 	- ALL fields are copied to the new database (Clipper excludes
 	   the memo-fields);
 	- if field "TOTALCOUNT" exists, it will be filled with number of
 	  totalled records on each key expression;
 	- fields with alias (like base->fld1) aren't supported.
 
+The differences between SORT in BDBFS and in Clipper:
+
+	- sorting on memo-fields is possible (on first 255 symbols);
+	- deleted records retain their deleted status in sorted database.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p15">
-	 <h4> 15.Saving / restoring an environment.</h4>
-<pre>
+<p><HR><a name="p15">
+<h4>15.Saving / restoring an environment.</h4><pre>
 
-	You can define any variable, set conditions of search and
-summation, specify an index and necessary fields etc., and
-then save all this in a usual memo-file, having pressed <font color="blue">Shift+F1</font>.
-	If then at any moment to press <font color="blue">Shift+F5</font> and to set a name of
+You can define any variable, set conditions of search and summation,
+specify an index and necessary fields etc., and then save all in a usual
+memo-file, by pressing <tt>Shift+F1</tt>.
+
+If then at any moment to press <tt>Shift+F5</tt> and to set a name of
 this file, the all this environment, including used DBF, will be
-(whenever possible) restored. Besides, it is possible at once to load an
-environment, having set a name of MEM-file in a command line. Certainly,
-can be as much as necessary files of an environment in the directory.
+(whenever possible) restored. Besides, it is possible to load an
+environment from <a href="#p33">command line</a>:
 
-	The file BDBFS.MEM is used by default.
-	If variable _AutoSave: =.T. is determined in a INI-file
-(or directly from the program), the file BDBFS.MEM is created in the
-current directory automatically at an exit.
-	If variable _AutoRestore: =.T. is determined in a INI-file and
-BDBFS.EXE is started without parameters, a file BDBFS.MEM from current
-directory is read out automatically.
+	BDBFS &lt;name of MEM-file>.
+
+Certainly, could be as much as necessary files of an environment in the
+directory. The file BDBFS.MEM is used by default.
+
+If variable _AutoSave: =.T. is defined in INI-file (or directly from
+the program), the file BDBFS.MEM is created in the current directory
+automatically at an exit.
+
+If variable _AutoRestore: =.T. is defined in INI-file and BDBFS.EXE
+is started without parameters, a file BDBFS.MEM from current directory is
+restored automatically.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p16">
-	 <h4> 16.Initialization files.</h4>
-<pre>
+<p><HR><a name="p16">
+<h4>16.Initialization files.</h4><pre>
 
-	You can at loading or later, by pressing <font color="blue">Ctrl+F12</font>, to read
-contents of a file of initialization. The file of initialization
-represents from itself a usual text file, containing assignment variables,
-and also, probably, performance of some functions, mini-programs.
-	Variable will be then are accessible in the program.
+You can read the file of initialization from <a href="#p33">command line</a>
+(bdbfs &lt;file.ini>) or later, by pressing <tt>Ctrl+F12</tt>. Any ini-file
+represents from itself an usual text file, containing assignment
+variables, and also, probably, execution of some functions,
+mini-programs. In fact, most statements of Clipper and other xBase
+dialects are allowable in ini-files. Variables are defined in ini-files
+will be then accessible in the program. The statements defined specially
+for BDBFS must begin with symbol #. This symbol could absent in
+statements with standard Clipper syntax.
 
-	The following operations are determined:
+The following operations are defined:
 
-	<h5>A. Assignment.</h5><pre>
+<a name="p16_a">
+<h5>A. Assignment.</h5><pre>
 
-	Syntax:
+	<em>Syntax:</em>
 		&lt;var>:=&lt;expression>		or
 		&lt;var> = &lt;expression>		or
-		#define &lt;var> [&lt;expression>]
+		#define &lt;var> [&lt;expression>]	or
+		#undef &lt;var>
 
-	Examples:
+	<em>Examples:</em>
 		MyVar=100
 		MyVar := 100
 		MyVar=Sqrt(4)
 		#define MyVar 100
+		#undef MyVar
 
-	In the latter case, as against of Clipper and C #include,
+In the case of #define, as against of Clipper and C #include-files,
 the variable will be announced and are accessible for all session time.
-Default &lt;expression> for #define is .T..
-	Can be useful the defining of code blocks in ini-file. Then they
+Default &lt;expression> for #define is .T.. The statement #undef release the
+variable.
+
+Can be useful the defining of code blocks in ini-file. Then they
 can be used in program as functions.
 
-	Example:
+	<em>Example:</em>
 	//in ini-file
-		Squart = {|i|  'the Area of a circle with radius '+STR(i,3)+;
+		Squart = {|i|	'the Area of a circle with radius '+STR(i,3)+;
 				' = '+LTRIM(STR(3.1415 * i * i,16,2))}
 
 	//in program
@@ -694,13 +763,14 @@ can be used in program as functions.
 		{?} Eval(Squart,4)
 
 
-	<h5>B. Function evaluation without assignment variable.</h5><pre>
+<a name="p16_b">
+<h5>B. Function evaluation without assignment variable.</h5><pre>
 
-	Syntax:
+	<em>Syntax:</em>
 		=&lt;expression>	or
 		&lt;expression>
 
-	Examples:
+	<em>Examples:</em>
 		=Tone(440,3)
 		Eval(bEval, 100)
 
@@ -709,53 +779,56 @@ symbol "=" is inside &lt;expression>, f.e.
 		=Devout('S='+S)
 
 
-	<h5>C. Including of another initialization file.</h5><pre>
+<a name="p16_c">
+<h5>C. Including of another initialization file.</h5><pre>
 
-	Syntax:
+	<em>Syntax:</em>
 		#include &lt;FileSpec>
 
-	The attention for Clipper & C programmers: the name of a file
-could be given without inverted commas.
+The attention for Clipper & C programmers: the name of a file
+could be written without inverted commas.
 
-	&lt;FileSpec> may contain an explicit path and file name as well as a
+&lt;FileSpec> may contain an explicit path and file name as well as a
 file extension. If, however, no path is specified, bdbfs searches the
 following places:
 
 	- Current directory
 
 	- Directories supplied in global variable _PlugDir
-	  (default - &lt;place of bdbfs.exe>\plugins)
+	  (default - &lt;place of bdbfs.EXE>\PLUGINS)
 
 	- Directories specified in the INCLUDE environment variable.
 
-	Examples:
+	<em>Examples:</em>
 		#include second.ini
 		#include 'second.ini'
 		#include c:\my\second.ini
 
-	As the operation #define is supported, it is possible to
-include standard Clipper .ch files, like inkey.ch, Set.ch.
-Notice, that #define with parameters is not supported yet.
+As the operation #define is supported, it is possible to include standard
+Clipper .ch files, like inkey.ch, Set.ch.  Notice, that #define with
+parameters is not supported yet.
 
 
-	<h5>D. User-defined command.</h5><pre>
+<a name="p16_d">
+<h5>D. User-defined command.</h5><pre>
 
-	Syntax:
+	<em>Syntax:</em>
 		#xcommand &lt;matchPattern> => &lt;resultPattern>
 
  &lt;matchPattern> is the pattern to match in the input text.
 
  &lt;resultPattern> is the text produced if a piece of input text matches
-	 	the <matchPattern>.
+	 	the &lt;matchPattern>.
 
-	Patterns can include parameters (match markers). Match markers
+Patterns can include parameters (match markers). Match markers
 are label and optional symbols delimited by angle brackets (&lt;>) that
 provide a substitute (idMarker) to be used in the &lt;resultPattern> and
-identify the clause for which it is a  substitute.
-	As against commands of Clipper-preprocessor, only one parameter
+identify the clause for which it is a substitute.
+
+As against commands of Clipper-preprocessor, only one parameter
 (or absence of parameters) is supported.
 
-	Examples:
+	<em>Examples:</em>
 
 	  #xCommand INVERT =>;
 		    DBEval({||Rlock(),IF(DELE(),dbRecall(),dbDelete())})
@@ -764,167 +837,195 @@ identify the clause for which it is a  substitute.
 
 	  #xCommand EOM(&lt;x>) => FT_LDAY(&lt;x>)
 
-	It is most natural to apply commands from calculation of
+It is most natural to apply commands from calculation of
 expressions, for example:
+
 		{?} INVERT
 
-	<h5>E. Defining of command's local table.</h5><pre>
+<a name="p16_e">
+<h5>E. Defining of command's local table.</h5><pre>
 
-	Syntax:
+	<em>Syntax:</em>
 		#LOCALTABLE
 
-	The commands defining by #xcommand operators occupate some memory
-and slow down a little the calculation's execution (the substitution is
+The commands defining by #xcommand operators occupate some memory and
+slow down a little the calculation's execution (the substitution is
 tested for each expression). So it is sometimes useful to free command's
 table after execution.
 
-	Example:
+	<em>Example:</em>
 		#LOCALTABLE
 		#include MyCmd.ch
 
-	Suppose, the set of commands are defined in MyCmd. The
-preliminary definition by #LOCALTABLE guarantees the clearing of
-resources after ending of ini-file interpretation.
+Suppose, the set of commands are defined in MyCmd. The preliminary
+definition by #LOCALTABLE guarantees the clearing of resources after
+ending of ini-file interpretation.
 
 
-	<h5>F. MACRO keys definition.</h5><pre>
+<a name="p16_f">
+<h5>F. MACRO keys definition.</h5><pre>
 
-	Syntax:
+	<em>Syntax:</em>
 		#MACRO &lt;key code> => &lt;a sequence of pressing>
 		or
 		#MACRO_IN_[scope] &lt;key code> => &lt;a sequence of pressing>
 
-	The sequence of pressing can be given as symbolical line
-(KEYBOARD format), or as a array of codes (INKEY format).
-In the second case it is possible to set the functional and extended keys,
-but length of a sequence is less or equal 16 symbols.
+The sequence of pressing can be defined as symbolical line (KEYBOARD
+format), or as a array of codes (INKEY format). In the second case it is
+possible to set the functional and extended keys, but length of a
+sequence is less or equal 16 symbols. The sequence could be a codeblock,
+it is useful to vary actions.
 
-	Next scopes modifications could be given:
+Next scopes modifications could be defined:
 
-		#MACRO_IN_BROWSE - main mode,
-		#MACRO_IN_DIALOG - dialogues of conditions and field list
-		#MACRO_IN_FIELD  - GET mode
-		#MACRO_IN_MEMO   - edition of memo-fields and text files
+	#MACRO_IN_BROWSE - main mode,
+	#MACRO_IN_DIALOG - dialogues of conditions and field list
+	#MACRO_IN_FIELD  - GET mode
+	#MACRO_IN_MEMO	 - edition of memo-fields and text files
 
-	If the scope isn't given the macro-key will be active in all modes.
+If the scope is not defined, the macro-key will be active in all modes.
 
-
-	Examples:
+	<em>Examples:</em>
 		#MACRO 307 => {-9, 'F', 'A'}
-		;Create HTML via menu on <font color="blue">Alt+<</font>.
+		;Create HTML through menu on <tt>Alt+<</tt>.
 
 		#MACRO_IN_FIELD 308 => "It we'll press quite often at
-		edition"
+		edition"N
 
 		#MACRO_IN_DIALOG 383 => 'Like("*",&_C_F)'+REPL(CHR(19),9)
-		;<font color="blue">Alt+*</font> suitable for pattern
+		;<tt>Alt+*</tt> suitable for pattern
+
+		#MACRO_IN_DIALOG 276 => {|| Time()}
+		;Codeblock example: <tt>Alt+T</tt> inputs the current time.
 
 
-	<h5>G. Announcement of the local variables.</h5><pre>
+<a name="p16_g">
+<h5>G. Announcement of the variables.</h5><pre>
 
-	Syntax:
-		#LOCAL &lt;v1>,&lt;v2>...	or
-		LOCAL &lt;v1>,&lt;v2>...
+	<em>Syntax:</em>
+		LOCAL &lt;v1>[:=&lt;xv1>],&lt;v2>[:=&lt;xv2>]	or
+		PRIVATE &lt;v1>[:=&lt;xv1>],&lt;v2>[:=&lt;xv2>]	or
+		PUBLIC &lt;v1>[:=&lt;xv1>],&lt;v2>[:=&lt;xv2>]
 
-	If the variable isn't announced as local, it exist for the
-duration of the program. Local variables are visible only within the
-current ini-file.
+If the variable is not announced as LOCAL or PRIVATE, it exists for the
+duration of the program. Local and private variables are visible only
+within the current ini-file. The statements LOCAL and PRIVATE are
+synonyms.
 
-	Example:
+	<em>Examples:</em>
 		#LOCAL cFile,nSum
 
-	 Inline assignments are prohibited:
-		LOCAL cX:=""		//Error!!!
+		LOCAL cFile:="MyFile"
+
+		PUBLIC nSum
 
 
-	<h5>H. Execution's termination.</h5><pre>
+<a name="p16_h">
+<h5>H. Execution's termination.</h5><pre>
 
-	Syntax:
-		#BREAK  or
+	<em>Syntax:</em>
+		#BREAK	or
 		#BREAK &lt;condition>
 
-	#BREAK without parameter forces the immediate termination of
-the ini-file interpretation, #BREAK with &lt;condition> terminate the
-interpretation if condition are valid:
+#BREAK without parameter forces the immediate termination of the ini-file
+interpretation, #BREAK with &lt;condition> terminate the interpretation
+if condition are valid:
 
-	Example:
+	<em>Example:</em>
 		#BREAK File("NeedFile")
 
 
-	<h5>I. Parameters and return value.</h5><pre>
+<a name="p16_i">
+<h5>I. Parameters and return value.</h5><pre>
 
-	Up to 5 parameters can be passed to ini-file. They are
-accessible via _1.._5 identifier. Ini-file can return the value to
-the calling process.
-	Syntax:
-		#RETURN &lt;expression>	or
+Up to 5 parameters can be passed to ini-file. They are accessible with
+_1.._5 identifier. You could also announce own names of parameters in
+operator PARAMETERS.
+
+	<em>Syntax:</em>
+		PARAMETERS &lt;list of variables>
+
+	<em>Example:</em>
+		PARAMETERS nVal,cVal,xVal
+
+
+Ini-file can return the value to the calling process.
+
+	<em>Syntax:</em>
 		RETURN &lt;expression>
 
-	Examples:
+	<em>Examples:</em>
 		#RETURN 4.
 		#RETURN _1*_2+_3
 
-	#RETURN doesn't terminate the interpretation, it only defines the
-result. There can be more than one #RETURN in ini-file.
+#RETURN doesn't terminate the interpretation, it only defines the
+result. There could be more than one #RETURN in ini-file.
 
-	The calling of ini-file with parameters is suitable from
+The calling of ini-file with parameters is suitable from
 calculation or user menu:
 
 	{?} RestoreIni("MyPlug",Date(),"Example",2.4)
 
-	You can use the recurrent RestoreIni(), so in "MyPlug" can be
-written:
+You can use the recurrent RestoreIni(), so in "MyPlug" can be written:
 
 	RestoreIni("R2")
-	and so on.
+and so on.
 
-	Since the version 1.21 you can use the direct calling of ini-file
-as a function:
+You can use the direct calling of ini-file as a function:
+
 	{?} MyPlug(par1,par2)
 
-	Ini-file should have .ini extension in this case, that is
+Ini-file should have .ini extension in this case, that is
 unessential in case of RestoreIni().
 
 
-	<h5>J. Alternative execution.</h5><pre>
+<a name="p16_j">
+<h5>J. Alternative execution.</h5><pre>
 
-	Syntax:
-		#IF &lt;lCondition>		(or IF &lt;lCondition>)
+	<em>Syntax:</em>
+		IF &lt;lCondition1>
 			&lt;statements>...
-		#ELSE				(or ELSE)
+		[ELSEIF &lt;lCondition2>]
 			&lt;statements>...
-		#ENDIF				(or ENDIF)
+		[ELSE]
+			&lt;statements>...
+		ENDIF
 
-	It is the analogue of usual xBase IF..ENDIF statement.
+It is the analogue of usual xBase IF..ENDIF statement.
 
-	&lt;lCondition> is a logical control expression. If it evaluates to
-true (.T.), all following statements are executed until an #ELSE or
-#ENDIF is encountered.
+&lt;lCondition> is a logical control expression. If it evaluates to
+true (.T.), all following statements are executed until an ELSE,ELSEIF or
+ENDIF is encountered.
 
-	#ELSE identifies statements to execute if the #IF condition
+ ELSEIF &lt;lCondition> identifies statements to execute if the
+associated condition evaluates to true (.T.) and all preceding IF or
+ELSEIF conditions evaluate to false (.F.). Any number of ELSEIF
+statements can be specified within the same IF...ENDIF control structure.
+
+ELSE identifies statements to execute if all IF/ELSEIF conditions
 evaluates to false (.F.).
 
-	#IF...#ENDIF structures may be nested within other #IF...#ENDIF
+IF...ENDIF structures may be nested within other IF...ENDIF
 structures up to 10 levels for one ini-file.
 
-	Example:
-		#IF Continue("Do you want to make something?")
+	<em>Example:</em>
+		IF Continue("Do you want to make something?")
 			&lt;statements for "Something">
-		#ELSE
+		ELSE
 			Nfind("May be next time...")
-		#ENDIF
+		ENDIF
 
-	The special cases of #IF operator are operators #IFDEF, #IFNDEF.
+The special cases of #IF operator are operators #IFDEF, #IFNDEF.
 They are often used in Clipper #include files for prevention of repeated
 loading.
-	Examples:
+	<em>Examples:</em>
 
 	//in set.ch
-	#ifndef _SET_CH
+	#IFNDEF _SET_CH
 		... constants announcements
 
-		#define _SET_CH
-	#endif
+		#DEFINE _SET_CH
+	#ENDIF
 
 	//in plugins\clipper.ch
 	#IFDEF _CLIPPER_CH
@@ -933,372 +1034,495 @@ loading.
 	...
 	#DEFINE _CLIPPER_CH
 
-	The symbol # is obligatory in #IFDEF, #IFNDEF.
+The symbol # is obligatory in #IFDEF, #IFNDEF.
 
 
-	<h5>K. WHILE cycle.</h5><pre>
+<a name="p16_k">
+<h5>K. CASE - Alternative execution.</h5><pre>
 
-	Syntax:
-		#WHILE &lt;lCondition>	or  WHILE &lt;lCondition>
+	<em>Syntax:</em>
+		DO CASE
+			CASE &lt;lCondition1>
+				&lt;statements>...
+			[CASE &lt;lCondition2>]
+				&lt;statements>...
+			...
+			[OTHERWISE]
+				&lt;statements>...
+		ENDCASE
+
+It is the analogue of usual xBase DO CASE..ENDCASE statement.
+
+CASE &lt;lCondition> defines a block of statements to execute if
+&lt;lCondition> evaluates to true (.T.).
+
+OTHERWISE defines a block of statements to execute if none of the
+specified CASE conditions evaluates to true (.T.).
+
+CASE...ENDCASE structures may be nested within other CASE...ENDCASE
+structures up to 10 levels for one ini-file.
+
+DO CASE...ENDCASE is identical to IF...ELSEIF...ENDIF with neither syntax
+having a specific advantage over the other.
+
+	<em>Example:</em>
+	DO CASE
+		CASE	_1 &lt; 0
+			s := s - _1
+		CASE	_1 = 0
+			s := 0
+		OTHER
+			s := s * _1
+	ENDCASE
+
+
+<a name="p16_l">
+<h5>L. WHILE cycle.</h5><pre>
+
+	<em>Syntax:</em>
+		[DO ]WHILE &lt;lCondition>
 			&lt;statements>...
-		#ENDW[hile]		or ENDWHILE or #ENDDO or ENDDO
+			[EXIT]
+			&lt;statements>...
+			[LOOP]
+		ENDWHILE	or	 ENDDO
 
 
-	It is the analogue of usual xBase WHILE..ENDWHILE statement.
+It is the analogue of usual xBase WHILE..ENDWHILE statement.
 
-	&lt;lCondition> is a logical control expression. If it evaluates to
+&lt;lCondition> is a logical control expression. If it evaluates to
 true (.T.), all following statements are executed until an #ENDWHILE is
 encountered.
 
-	#WHILE...#ENDWHILE structures may be nested within other
+#WHILE...#ENDWHILE structures may be nested within other
 #WHILE...#ENDWHILE structures up to 10 levels for one ini-file.
 
-	Example:
+	<em>Examples:</em>
 		sum:=0
-		#WHILE !EOF()
+		WHILE !EOF()
 			sum:=sum+FieldGet(1)+FieldGet(2)
 			DBSKIP()
-		#ENDWHILE
+		ENDWHILE
 
-<hr>
+		WHILE .T.
+			....
+			IF inkey(0)=27	//ESC
+				EXIT
+			ENDIF
+		ENDDO
 
-	You probably also will want to use functions For() and While() for
-organization of cycling in ini-files <a href="#pp4for">(see SUPPLEMENT IV).</a>
+<a name="p16_m">
+<h5>M. FOR cycle.</h5><pre>
 
-	A lot of various examples are contained in the demonstration file
-Examples.ini and in PLUGINS directory. <a href="#p32">See also ch.32.</a>
+	<em>Syntax:</em>
+		FOR &lt;idCounter> := &lt;nStart> TO &lt;nEnd> [STEP &lt;nIncrement>]
+			&lt;statements>...
+			[EXIT]
+			&lt;statements>...
+			[LOOP]
+		NEXT	or	ENDFOR
 
-	At start of the program the attempt is made to read a file
-BDBFS.INI, taking place in the program's start directory. If file of
-initialization is not given in a command line, then the attempt is made
-to consider a file BDBFS.INI, taking place in the current directory (at
-its absence is searched BDBF.INI - for compatibility with the previous
-versions of BDBF).
+&lt;idCounter> is the name of the loop control or counter variable.
+If the specified &lt;idCounter> is not visible or does not exist, a private
+variable is created.
 
-	If the file with extension .AOP (Auto Open) will be found in
-the current directory, it will be read automatically when the base with
-appropriate name will be opened. You can define some commands, variables,
-menu <a href="#p30">(see ch.30)</a> specific for this base. Besides, you can define list of
-necessary fields here. Fields list is given in variable FIELDS and
-headers list in variable HEADS. Formats (show patterns) of fields can be
-given in variable PICTURES. Width of each fields can be given in variable
-Widths. Calculated fields can be also given.
+&lt;nStart> is the initial value assigned to &lt;idCounter>. If &lt;nIncrement>
+is negative, &lt;nStart> must be less than &lt;nEnd>.
 
-	Example:
+TO &lt;nEnd> defines the final value of &lt;idCounter>. If &lt;nIncrement>
+is negative, &lt;nStart> must be greater than &lt;nEnd>; otherwise, &lt;nStart>
+must be less than &lt;nEnd>.
+
+STEP &lt;nIncrement> defines the amount &lt;idCounter> is changed for
+each iteration of the loop. &lt;nIncrement> can be either positive or
+negative. If the STEP clause is not specified, &lt;idCounter> is
+incremented by one for each iteration of the loop.
+
+	<em>Example:</em>
+		FOR i:=1 TO 100 STEP 2
+			s:=s+i
+		NEXT
+<HR>
+
+You probably also will want to use functions For() and While()
+for organization of cycling in ini-files <a href="#pp4for">(see SUPPLEMENT IV).</a>
+These functions are much quicker than WHILE and FOR statements but are
+not so evident.
+
+<a name="p16_n">
+<h5>N. Disarmed statements. </h5><pre>
+
+They are: <em>MEMVAR, FIELD, EXTERNAL</em>. These statements are
+of no practical importance and was included for compatibility with
+existing programs on xBase dialects.
+
+<HR>
+A lot of various examples are contained in the demonstration
+file Examples.ini and in PLUGINS directory. <a href="#p32">See also ch.32.</a>
+
+At start of the program the attempt is made to read a file BDBFS.INI from
+the program's start directory. If file of initialization is not defined
+in a command line, then the attempt is made to read a file BDBFS.INI from
+the current directory (at its absence is searched BDBF.INI - for
+compatibility with the previous versions of BDBF).
+
+Calling of any ini-file (f.e., on {<tt>Ctrl+F12</tt>}) results to
+compulsory reopening of current base. If you do not wish it, you should
+define variable lNoReOpen:=.T. in any place of ini-file.
+
+<a name="p16_1">
+<h4>16.1. Auto Open files.</h4><pre>
+
+ The file with extension .AOP (Auto Open) will be read automatically when
+the base with appropriate name will be opened. You can define some
+commands, variables, <a href="#p30">menu</a> specific for this database.
+Besides, you can define list of necessary fields here. Fields list is
+defined in variable FIELDS and headers list - in variable HEADS.  Formats
+(show patterns) of fields can be defined in variable PICTURES.  Width of
+each fields can be defined in variable Widths. Calculated fields can be
+also defined.
+
+	<em>Example:</em>
 
 	Fields:={'Char','Num','Num*2'}
 	Heads:={'Character;field','Numeric;field','Double value'}
 	Pictures:={, '999,999.99'}
 	Widths:={7,,,}
 
-	You can also define other useful instruction (see also
-<a href="#pp4">Supplement IV</a>). For example it's possible to set index or tag:
-		_IndexFile:="MyIndex"		or
-		__TagNom:=3			or
-		__TagName:='MyTag'
+Sometimes there is a necessity to exclude some fields from
+browsing. You can do it with statement #EXCLUDE.
 
-	You can interactively define an index and necessary  fields
-(via <font color="blue">Ctrl+F2</font>), and then save all this in AOP-file, by pressing
-<font color="blue">Ctrl+Shift+F1</font>.
+	<em>Example:</em>
+		#EXCLUDE Secret, KeyField
 
-	Calling of any ini-file (f.e., via {<font color="blue">Ctrl+F12</font>}) results to
-compulsory reopening of current base. If you do not wish it, you should
-define variable lNoReOpen:=.T. in any place of ini-file.
+
+You can also define other useful instruction (see also <a href="#pp4">SUPPLEMENT IV</a>).
+For example it's possible to set index or tag:
+
+	_IndexFile:="MyIndex"		or
+	__TagNom:=3			or
+	__TagName:='MyTag'
+
+You can interactively define an index and necessary fields (on
+<tt>Ctrl+F2</tt>), and then save all this in AOP-file, by pressing
+<tt>Ctrl+Shift+F1</tt>.
+
+You can also define the actions executing when current base
+is closing. The statements should reside after defining of [close]
+section of AOP-file in this case.
+
+	<em>Example:</em>
+
+	//Remember the file creation time
+	aD:=Directory('WrkBase.DBF')
+	tOld:=aD[1,4]
+
+	[close]
+	//Reserve copy if file was changed
+	DBCommit()
+	aD:=Directory('WrkBase.DBF')
+	IF tOld <> aD[1,4]
+		__DbCopy('Z:\ARCHIVE\RsrvBase')
+	ENDIF
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p17">
-	 <h4> 17.Macro-keys.</h4>
-<pre>
+<p><HR><a name="p17">
+<h4>17.Macro-keys.</h4><pre>
 
-	By pressing <font color="blue">Ctrl+F1</font> the sequence of symbols, saved in variable
+
+By pressing <tt>Ctrl+F1</tt> the sequence of symbols, saved in variable
 _MACRO is called. In a mode VIEW this opportunity works as Set Key,
 in edition - as Set Function.
 
-		Example:
+	<em>Example:</em>
 
-	<font color="blue">Ctrl+F5</font> _Macro=chr(4) +chr(4) +chr(13)
+	<tt>Ctrl+F5</tt> _Macro=chr(4) +chr(4) +chr(13)
 
-	Now, in a mode VIEW, by <font color="blue">Ctrl+F1</font> you will enter edition of a field
-	CurrentField+2
+Now, in a mode VIEW, by <tt>Ctrl+F1</tt> you will enter edition of a field
+CurrentField+2
 
-	<font color="blue">Ctrl+F5</font> _macro ='Bravo!'
+	<tt>Ctrl+F5</tt> _macro ='Bravo!'
 
-	Now, in a modes of edition, by <font color="blue">Ctrl+F1</font> in a field the text Bravo!
+Now, in modes of edition, by <tt>Ctrl+F1</tt> in a field the text Bravo!
 will be written down.
-	It is convenient, when it is necessary in an interactive mode to
+
+It is convenient, when it is necessary in an interactive mode to
 bring in many fields similar information.
 
-	In a mode of edition the following macros are additionally
-determined:
-		<font color="blue">Alt+(</font>	=	() and cursor inside of brackets
-		<font color="blue">Alt+)</font>	=	() and cursor outside
-		<font color="blue">Alt+{</font>	=	{}
-		<font color="blue">Alt+"</font>	=	[]
-		<font color="blue">Alt+A</font>	=	.AND.
-		<font color="blue">Alt+O</font>	=	.OR.
-		<font color="blue">Alt+B</font>	=	{||}
-		<font color="blue">Alt+C</font>	=	CTOD("//")
+In modes of edition the following macros are additionally defined:
 
-	It is especially convenient at definition of a condition.
+	<tt>Alt+(</tt>	=	() and cursor inside of brackets
+	<tt>Alt+)</tt>	=	() and cursor outside
+	<tt>Alt+{</tt>	=	{}
+	<tt>Alt+"</tt>	=	[]
+	<tt>Alt+A</tt>	=	.AND.
+	<tt>Alt+O</tt>	=	.OR.
+	<tt>Alt+B</tt>	=	{||}
+	<tt>Alt+C</tt>	=	CTOD("//")
 
-	It is possible to define and own macros:
+It is especially convenient at definition of a condition.
 
-		<font color="blue">?</font> __SetFunction (&lt; a code of a key >, &lt; macros >),
-or via <a href="#p16">command #MACRO</a> in ini-file.
+It is possible to define own macros:
 
-	Besides in a mode of edition the "hot" keys are accessible
-transformations of the current focus of input (same work and in VIEW):
-		<font color="blue">Alt+U</font>	= UpperCase
-		<font color="blue">Alt+L</font>	= Lower
-		<font color="blue">Alt+K</font>	= Capitalize (Proper)
-		<font color="blue">Alt+Q</font>	= English -> National (if you casually have typed
+	<tt>?</tt> __SetFunction (&lt; a code of a key >, &lt; macros >),
+
+or by <a href="#p16">command #MACRO</a> in ini-file.
+
+Besides in modes of edition are accessible transformations
+of the current focus of input (same work and in VIEW):
+
+	<tt>Alt+U</tt>	= UpperCase
+	<tt>Alt+L</tt>	= Lower
+	<tt>Alt+K</tt>	= Capitalize
+	<tt>Alt+P</tt>	= Proper
+	<tt>Alt+Q</tt>	= English -> National (if you casually have typed
 			  something in "English" keyboard instead of
 			  "National").
-		<font color="blue">Alt+Y</font>	= on the contrary.
+	<tt>Alt+Y</tt>	= on the contrary.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p18">
-	 <h4> 18.Exit to DOS.</h4>
-<pre>
+<p><HR><a name="p18">
+<h4>18.Exit to DOS.</h4><pre>
 
-	At an exit to DOS via <font color="blue">Alt+F10</font>, BDBFS occupies in memory 8k.
 
-	If you want to start the large program directly under BDBFS,
+At an exit to DOS on <tt>Alt+F10</tt>, BDBFS occupies in memory 8k.
+
+If you want to start the large program directly under BDBFS,
 it is possible to use function BliRun().
 
-	<font color="blue">Alt+G</font> BliRun('FoxPro').
+	<tt>?</tt> BliRun('FoxPro').
 
-	BliRun() returns the error level of process.
+BliRun() returns the error level of process.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p19">
-	 <h4> 19.Using of a mouse.</h4>
-<pre>
+<p><HR><a name="p19">
+<h4>19.Using of a mouse.</h4><pre>
 
-	In a mode of a viewing the following rules work:
+These rules work in a mode "VIEW":
 
 	- any button on a line of the base name = Select Base
 	- any button on a line of the field names = Set Fields
 	- any button on a functional line = appropriate function
-	  (exception: right button on <font color="blue">F10</font> finishes without demand),
+	  (exception: right button on <tt>F10</tt> finishes without demand),
 	  including and with Ctrl, Shift and Alt
 	- any button on bottom scroll bar - transition on
 	  relative position of a field in a file
 	- any button in the basic space (4-MaxRow()-3 lines) =
 	  transition to this field
-	- left button on the same field = <font color="blue">Enter</font>
+	- left button on the same field = <tt>Enter</tt>
 	- any button on MaxCol() column - transition in a file on relative
 	  position.
 
-	In a mode of a choice (Achoice, f.e., at a choice of an index):
+In a mode of a choice (Achoice, f.e., at a choice of an index):
 
-	- right button = <font color="blue">Escape</font>
-	- left on the top frame = <font color="blue">PgUp</font>
-	- left on the bottom frame = <font color="blue">PgDn</font>
+	- right button = <tt>Escape</tt>
+	- left on the top frame = <tt>PgUp</tt>
+	- left on the bottom frame = <tt>PgDn</tt>
 	- left inside - first time: stay on an element, second time:
 	  select it.
 
-	In a menu and in an edition:
+In a menu and in an edition:
 
-	- right button = <font color="blue">Escape</font>
-	- left button = <font color="blue">Enter</font>
+	- right button = <tt>Escape</tt>
+	- left button = <tt>Enter</tt>
 
-	At a showing of the warning messages - any button = any key.
+At a showing of the warning messages - any button = any key.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p20">
-	 <h4> 20.Compatibility with FoxPro.</h4>
-<pre>
+<p><HR><a name="p20">
+<h4>20.Compatibility with FoxPro.</h4><pre>
 
-	BDBFS is able to look and to edit files FoxPro with memo-fields.
-The index files are completely supported.
+BDBFS is able to look and to edit files FoxPro, including Visual FoxPro.
+The index files are completely supported except non-compact IDX.
 
-	As it was already marked, in Browse the keys <font color="blue">Tab, Shift+Tab,
-Ctrl+T</font> are supported.
-	System variable of printing and the amount of the processed records
+As it was already marked, in Browse the keys <tt>Tab, Shift+Tab,
+Ctrl+T</tt> are supported.
+
+System variables of printing and the amount of the processed records
 have the same names, as in FoxPRO.
-	In expressions it is possible to use almost all functions FoxPro,
+
+In expressions it is possible to use almost all functions FoxPro,
 not corresponded with screen (Screen, Menu) and printed forms.
-	The correctness of locking in a network is provided.
 
-	If there is a file EUROPEAN.MEM in the current directory, it is
-read out at start.
+The correctness of locking in a network is provided.
 
-	The new types of Visual FoxPro are supported in "forced" mode
-<a href="#p34">(see ch.34).</a>
-
+If there is a file EUROPEAN.MEM in the current directory, it is
+loaded at start.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p21">
-	 <h4> 21.Working in a network and multitask systems.</h4>
-<pre>
+<p><HR><a name="p21">
+<h4>21.Working in a network and multitask systems.</h4><pre>
 
-	All files are opened in mode of sharing for records, that allows
-various processes to use the same base.
-	BDBFS tested in a NOVELL network and in sessions of
-Windows 9*/ME, Windows NT/2000/XP, Windows 3.11, OS/2, DV.
+All files are opened in a share mode, that allows various processes to
+use the same base.
 
-	The joint job is guaranteed with the applications using standard
-blocking mode of dBase . The joint job is not guaranteed, f.e. with
+BDBFS tested in a NOVELL network and in sessions of Windows 9*/ME,
+Windows NT/2000/XP, Windows 3.11, OS/2, DV.
+
+The joint work is guaranteed with the applications using standard
+blocking mode of dBase. The joint work is not guaranteed, f.e. with
 Dbview from Norton-Commander.
 
-	BDBFS independently gives back TimeSlice, so at job in multitask
-systems there is no necessity for the extraneous programs such as TAME.
-
+BDBFS on one's own returns "time slices", so there is not necessity
+for the extraneous programs such as TAME in multitask systems.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p22">
-	 <h4> 22.Errors processing.</h4>
-<pre>
+<p><HR><a name="p22">
+<h4>22.Errors processing.</h4><pre>
 
-	Generally, many efforts are undertaken, that the wrong actions
-did not finish the job completely. Besides a number possible disputed
+Generally, many efforts are undertaken, that the wrong actions did not
+finish the working completely. Besides a number possible disputed
 situations manage before their occurrence.
 
-	Nevertheless mistakes of the program are not excluded.
-	In this case BDBFS draws the frame and writes something like
-		"Incorrect expression xxxxxxx"
-The large request: notice it "xxxxxxx" and inform me.
-But mean, that such message could arise and as a result of your incorrect
+Nevertheless mistakes of the program are not excluded.
+In this case BDBFS draws the frame and writes something like
+
+	"Incorrect expression xxxxxxx"
+
+I have a favour to ask of you: notice this "xxxxxxx" and inform me.
+But mean, that such message could arise as a result of your incorrect
 expression, then it is necessary simply to recover.
 
-	There is, however, number of non-restorable mistakes, f.e.,
-" Disk full ". It can appear, for example, at copying a file
-(it is difficult to check up beforehand, since it is not known, how
-much places will be occupied by a file, selected on a condition).
-So, be attentive.
-
+There are, however, number of non-restorable mistakes, f.e., "Disk full".
+It can appear, for example, at copying a file (it is difficult to check
+up beforehand, since it is not known, how much places will be occupied by
+records matching a condition). So, be attentive.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p23">
-	 <h4> 23.Expressions of highlighting.</h4>
-<pre>
+<p><HR><a name="p23">
+<h4>23.Expressions of highlighting.</h4><pre>
 
-	You can highlight with color in current field the records
+
+You could highlight with color in current field the records
 adequate certain condition. For example,
 
-		<font color="blue">Alt+B</font> BirthDate > CTOD('01/01/1960')
+	<tt>Alt+B</tt> BirthDate > CTOD('01/01/1960')
 
-	The color is defined by 6 and 7 pair of primary color of edition.
+The color is defined by 6 and 7 pair of primary color.
 Bear in mind, that the deleted records are shown by 4 and 5 pair.
 
-	To change color is possible having corrected variable _bm
-(see below) through the task of expressions or menu (File - Settings -
-Colors).
+To change color is possible having corrected variable _bm (see below)
+through the task of expressions or menu (File - Settings - Colors).
 
-	To return standard colors you should press <font color="blue">Alt+Shift+B</font>.
-
+To return standard colors you should press <tt>Alt+Shift+B</tt>.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p24">
-	 <h4> 24.Jobs with the clipboard.</h4>
-<pre>
+<p><HR><a name="p24">
+<h4>24.Jobs with the clipboard.</h4><pre>
 
-	The exchange buffer is supported. It work in a mode VIEW and
+The exchange buffer is supported. It work in a mode VIEW and
 in a mode GET. For recording of value of the current cell in mode VIEW or
-current value of edition - press <font color="blue">Ctrl+GreyPlus</font>. For input in a cell
-(at conformity of types) - <font color="blue">Alt+GreyEnter</font> or <font color="blue">Ctrl+GreyMinus</font>.
+current value of edition - press <tt>Ctrl+GreyPlus</tt>. For input in a cell
+(at conformity of types) - <tt>Alt+GreyEnter</tt> or <tt>Ctrl+GreyMinus</tt>.
 
-	It is possible to make operations	+ - * /
+It is possible to make operations
+	+ - * /
 directly with clipBoard and current cell (last 2, naturally, only with
-numerical values), pressing <font color="blue">Alt+corresponding Grey</font>. It is possible to
-see the current value of ClipBoard by pressing <font color="blue">Ctrl+Enter</font>.
+numerical values), pressing <tt>Alt+corresponding Grey</tt>. It is possible to
+see the current value of ClipBoard by pressing <tt>Ctrl+Enter</tt>.
 
-	In a mode of editing of memo-fields the writing from clipBoard
+In a mode of editing of memo-fields the writing from clipBoard
 is accessible. During a showing of result of calculation, summation, etc
 is accessible record calculated in ClipBoard. However, it is possible
 and directly save result in a field.
 
-	The operations of entering in the buffer are accessible and at
+The operations of entering in the buffer are accessible and at
 a showing of results operations.
 
-	It is very convenient to use ClipBoard for the giving various
+It is very convenient to use ClipBoard for the inputting various
 conditions. For example, you have set long expression of search. Remember
-it by <font color="blue">Ctrl+Grey+</font>. Now you want to copy all records, satisfying to this
+it by <tt>Ctrl+Grey+</tt>. Now you want to copy all records, satisfying to this
 condition. Proceed in dialogue of copying and at inquiry conditions press
-<font color="blue">Ctrl+Grey-</font>.
+<tt>Ctrl+Grey-</tt>.
 
-	In Win9* (not NT!) Windows ClipBoard is accessible. It is
+The ClipBoard contains all expressions placed into them during
+current seance and the choice from these expressions is offered when
+pasting. You could cancel this "behavior" by assignment the variable
+_ClipChoice:=.F., in initialization file or through menu. Last expression
+will always be used in this case.
+
+In Windows the system ClipBoard is also accessible. It is
 possible to copy the current field there (and therefrom). These
-operations is accessible by pressing <font color="blue">Ctrl+Ins, Shift+Ins</font>.
-
+operations are accessible by pressing <tt>Ctrl+Ins, Shift+Ins</tt>. The
+utility <em>bdb_wclp</em> (from distributive) is necessary for
+2000/XP. Place it to same directory with bdbfs.exe or somewhere in PATH.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p25">
-	 <h4> 25.History of conditions and expressions.</h4>
-<pre>
+<p><HR><a name="p25">
+<h4>25.History of conditions and expressions.</h4><pre>
 
-	All conditions, expressions, lists of fields, are given during
+
+All conditions, expressions, lists of fields, are inputted during
 a session the works, and also results of calculations, summation,
 calculations are brought in a history, thus the control on doubling will
-be carried out. Accordingly, at the task of conditions and expressions,
-it is possible to use this history.
+be carried out. Accordingly, at the dialogues of conditions and
+expressions, it is possible to use this history.
 
-	<font color="blue">F4</font> (<font color="blue">Ctrl+Down</font>) calls a history of the current condition,
-	<font color="blue">Alt+F4</font> (<font color="blue">Ctrl+Shift+Down</font>) - history of all conditions,
-	<font color="blue">Ctrl+F4</font> - history of results.
+	<tt>F4</tt> (<tt>Ctrl+Down</tt>) calls a history of the current condition,
+	<tt>Alt+F4</tt> (<tt>Ctrl+Shift+Down</tt>) - history of all conditions,
+	<tt>Ctrl+F4</tt> - history of results.
 
-	The unnecessary conditions can be erased by pressing
-		<font color="blue">F8</font> or <font color="blue">Ctrl+D</font>.
+The unnecessary conditions can be erased by pressing
 
+	<tt>F8</tt> or <tt>Ctrl+D</tt>.
 
-<center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
-</form></center>
-<p><hr><a name="p26">
-	 <h4> 26.Stack of positions.</h4>
-<pre>
-
-	It is possible to remember up to 10 positions (records) in base
-and to pass to them when need. Such opportunity is feature for the text
-editors; I do not know, as far as it will be useful here. Nevertheless,
-WordStar and Borland "were plundered" and by <font color="blue">Ctrl+K</font>+ 0.. 9 the bookmarks
-are established. They can be restored by <font color="blue">Ctrl+Q</font>+ 0.. 9. After pressing
-<font color="blue">Ctrl+K</font> or <font color="blue">Ctrl+Q</font> pressing 0.. 9 is expected within 20 seconds, then is
-reset.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p27">
-	 <h4> 27.Edition of memo-fields and external files.</h4>
-<pre>
+<p><HR><a name="p26">
+<h4>26.Bookmarks.</h4><pre>
 
-	It's possible to use the internal or external editor for edition
+It is possible to remember up to 10 positions (records) in base and to
+pass to them when need. Usually it is a feature of the text editors; I do
+not know, as far as it will be useful here. Nevertheless, WordStar and
+Borland "were plundered" and by <tt>Ctrl+K</tt>+ 0..9 the bookmarks are
+established. They can be restored by <tt>Ctrl+Q</tt>+ 0..9. After
+pressing <tt>Ctrl+K</tt> or <tt>Ctrl+Q</tt> pressing 0..9 is expected
+within 20 seconds, then is reset.
+
+<center><form>
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
+</form></center>
+<p><HR><a name="p27">
+<h4>27.Edition of memo-fields and external files.</h4><pre>
+
+
+It is possible to use the internal or external editor for edition
 of memo-fields, and also external files (by pressing F4 in filer or
 through the menu "File" - "Modify text"). The internal editor uses
 standard function MemoEdit and works when variable _MemoEditor is not
-given (for example, in an ini-file). Variable can be given as String, for
-example, _MemoEditor:='c:\medit\me.exe' (then always will be used
-MultiEdit) or as an array of arrays:
+defined (for example, in an ini-file). Variable could be defined as
+String, for example, _MemoEditor:='c:\medit\me.exe' (then always will be
+used MultiEdit) or as an array of arrays:
 
-	{Field's Mask,			// f.e "BM*"
-	 External editor,		// f.e. "ME"
-	 Shift in a memo-field,		// by default 0 - whole field
-	 The additional options,	// by default are absent
-	 Temporary file			// by default $$BDBF$$.COM }.
+	{Field's Mask,			//f.e "BM*"
+	 External editor,		//f.e. "ME"
+	 Shift in a memo-field,		//by default 0 - whole field
+	 The additional options,	//by default are absent
+	 Temporary file			//by default $$BDBF$$.COM }.
 
-	The external editor can be not given, then it is supposed, that
+The external editor can be not defined, then it is supposed, that
 the program(for example, screen-saver) resides in a memo-field, and this
 program simply is started. The shift in a memo-field is necessary to set,
 if the memo-field keeps the diverse information. For example, animals.dbf
@@ -1310,44 +1534,44 @@ Example:
 			{'SAVER', '', 0, ",'tmp.com"},;
 			{'*','ME ', 0, "};
 		     }
-	So, PV.EXE will be called on a field with the name BMP,
-the field SAVER contains executable programs, and for edition all rest
-will be called MultiEdit.
 
-	The internal editor can't edit files with the size more than
-64K. But also at use of the external editor it is necessary to remember,
-that the memo-fields of a format DBT are not capable to store the section
-more 64K. If your file has large length, at recording it in a field of a
+So, PV.EXE will be called on a field with the name BMP, the field SAVER
+contains executable programs, and for edition all rest will be called
+MultiEdit.
+
+The internal editor can't edit files with the size more than 64K. But
+also at use of the external editor it is necessary to remember, that the
+memo-fields of a format DBT are not capable to store the section more
+64K. If your file has large length, at recording it in a field of a
 format DBT it will be cut off.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p28">
-	 <h4> 28.Printing forms.</h4>
-<pre>
+<p><HR><a name="p28">
+<h4>28.Printing forms.</h4><pre>
 
-	Besides a usual printing on <font color="blue">F2</font>, since the version 1.13,
-it is possible to use special definitions for a report forms. Form are
-stored in usual textual files and contain instructions for definitions of
-columns, groupings, summarizing, etc.
+Besides a usual printing on F2, it is possible to use the special
+report forms. The forms are stored in usual textual files and contain
+instructions for definitions of columns, groupings, summarizing, etc.
 
-	Report forms can use the following variables:
+Report forms could use the variables:
 
 	_aExpr - array of expressions for each column.
 	_aHead - array of column's headings. Default == _aExpr
 	_aElen - array of column's widths. Default = width of a field
 
-	If _aElen is default, width of a column is defined as maximal
+If _aElen is default, width of a column is defined as maximal
 between _aElen, width of column heading and _aPict for this column. If
-width of a field is more, than width of a column, it is made correct
-carry (up to 10 lines in a column) on separators:
+width of a field is more than width of a column, it is made correct
+division (up to 10 lines in a column) on separators:
+
 		space tabulation . , ; ? !
 
 	_aPict	 - array of pictures for each column.
 
-	_aTitle	 - report title. Default - nothing. Can be given as a
+	_aTitle	 - report title. Default - nothing. Can be defined as a
 		   string or array of strings.
 
 	_cFile	 - output file. Default - name of base + '.PRN'.
@@ -1360,11 +1584,11 @@ carry (up to 10 lines in a column) on separators:
 		   array containing the footer.
 
 	_pEveryStep - name of additional procedure or block called
-		      before a printing of each line satisfying to a
-		      condition _fCondit
+			before a printing of each line satisfying to a
+			condition _fCondit
 
 	_aGroup - array specifying report group.
-		Structure of a array:
+		Structure of an array:
 		{
 		&lt;expression of grouping>,;
 		[&lt;an array or block for a printing of group heading>],;
@@ -1379,9 +1603,12 @@ carry (up to 10 lines in a column) on separators:
 		always).
 
 	_nDouble - attribute of necessity of a printing in two columns on
-		   a sheet. If 0 or is not given - one is printed. If
-		   numerical parameter is given - is perceived as
-		   amount of blanks between two columns.
+		   a sheet. If 0 or is not defined - one string is
+		   printed.  If numerical parameter is defined - is
+		   perceived as amount of blanks between two columns.
+
+	_NoAsk - don't confirm the print condition and output file's
+	         name.
 
 	_NoShow - don't offer a file for viewing and printing.
 
@@ -1391,7 +1618,7 @@ carry (up to 10 lines in a column) on separators:
 		 [&lt;an array or block for a printing of page heading>],;
 		 [&lt;an array or block for a printing of page footer>]
 		}.
-	If it's determined, the totals of page are printed. Header
+	If it's defined, the totals of page are printed. Header
 	of page is printed, since second.
 
 	cDivideT, cDivide - delimiter of columns in the header and
@@ -1401,234 +1628,246 @@ carry (up to 10 lines in a column) on separators:
 		    side of sheet (with width _nCounter).
 
 	CountName - name of a column for serial number (default "NN").
-		    It is meaningful only if _nCounter > 0 is given.
+		    It is meaningful only if _nCounter > 0 is defined.
 
 	_PrintZero - whether to print of zero values, by default - .F.
 
 Following variables can be additionally adjusted directly from the
-programs (by pressing <font color="blue">F9</font> in dialogue of a beginning of a printing).
+programs (by pressing <tt>F9</tt> in dialogue of a beginning of a printing).
 
-	Printing of heading on each page	_NeedHeadPage
-	Printing of numbers of pages		_NeedPrPage
-	Page eject after each sheet		_NeedEject
+	Numbers of pages on each page		_NeedPrPage
+	Standard title				_NeedMainHead
+	Title on each page			_lTitleAll
+	Header on each page			_NeedHeadPage
+	Head's numbers: on first page		_lDgtHdr
+			on other pages		_lHdAll
+	Eject after each page			_NeedEject
 	Starting sequence of the printer	_PSCode
 	Final sequence of the printer		_PECode
 	The left margin				_LMargin
 	Page length (0=tape)			_Plength
-	Whether to print the standard heading	_NeedMainHead
 	The printer device			_printer
 	Whether to append to a file		_NeedApFile
-
 
 Report-form files have standard extension .BPF and can be loaded through
 the menu "Base" - "Read report template".
 
-See also example in BDBFS distributive.
+See also example in distributive of BDBFS.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p29">
-	 <h4> 29.Keyboard codes.</h4>
-<pre>
+<p><HR><a name="p29">
+<h4>29.Keyboard codes.</h4><pre>
 
-	By pressing the keys, pay attention to the left top corner,
-where their codes are shown. So, it is possible to find out a number codes
-are absent in Clipper documentation.
+By pressing the keys, pay attention to the left top corner, where their
+codes are shown. So, it is possible to find out a number codes are absent
+in Clipper documentation.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p30">
-	 <h4> 30.User menu.</h4>
-<pre>
+<p><HR><a name="p30">
+<h4>30.User menu.</h4><pre>
 
-	Besides the general menu, in BDBFS it is possible to define
-the additional user menu accessible by <font color="blue">F12</font>. For this purpose it is
-necessary in ini-file to define two arrays: UserMenuPrompts and
-UserMenuActs. First it is necessary to fill by lines offered on a choice
-in the menu, in second - by the appropriate blocks of a code. For example,
-you want to have an opportunity to start FoxPro from BDBFS. Then in
-BDBFS.INI it is necessary to write down:
+	Besides the general menu, it is possible to define the additional
+user menu accessible by pressing <tt>F12</tt>. For this purpose it is necessary to define
+arrays UserMenuPrompts and UserMenuActs in ini-file. First should
+contain the lines offered for a choice in the menu, second - appropriate
+codeblocks. For example, you want to have an opportunity to start some
+programs from BDBFS. Then you should write in BDBFS.INI:
 
-	UserMenuPrompts: = {'Call FoxPro '}
-	UserMenuActs: = {{|| BliRun('Fox.exe')}}.
+	UserMenuPrompts: = {'Call FoxPro', 'Call ME'}
+	UserMenuActs: = {{|| BliRun('Fox.exe')}, {||BliRun('me.exe')}}.
 
-	Some examples are in Examples.Ini.
+Some examples are in Examples.Ini.
+
+<center><form>
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
+</form></center>
+<p><HR><a name="p31">
+<h4>31.Header checking.</h4><pre>
+
+You can check the size of current base from menu "File -> Check Header".
+3 numbers are compared: logical size (is calculated basing on structure
+and records size), "header" size (based on records number in base header)
+and real disk file size. If all sizes are equal, OK message will be
+shown. Besides, you'll be prompted for choice one of these sizes. Rest
+will be synchronized. I recommend logical size as most accurate (in
+common case).
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p31">
-	 <h4> 31.Header checking.</h4>
-<pre>
-
-	 You can check the size of current base from menu "File -> Check
-Header". 3 numbers are compared: logical size (is calculated basing on
-structure and records size), "header" size (based on records number in
-base header) and real disk file size. If all sizes are equal, OK message
-will be shown. Besides, you'll be prompted for choice one of these sizes.
-Rest will be synchronized. I recommend logical size as most accurate
-(in common case).
+<p><HR><a name="p32">
+<h4>32.Plug-ins.</h4><pre>
 
 
-<center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
-</form></center>
-<p><hr><a name="p32">
-	 <h4> 32.Plug-ins.</h4>
-<pre>
-
-	 "Plug-ins" of bdbfs are usual ini-files <a href="#p16">(see ch.16)</a>, realizing
+ "Plug-ins" of bdbfs are usual <a href="#p16">ini-files</a>, realizing
 some completed function. Some examples (probably useful) are in
 PLUGINS\ directory. Send me your plug-ins, best will be published.
 
-	Bdbfs searches for Plug-ins (and #include)-files:
-		- in current directory;
-		- in directories supplied in global variable _PlugDir
-		  (default - &lt;place of bdbfs.exe>\plugins). You can
-		  define(f.e. in bdbfs.ini) more than one directory:
-			_PlugDir:='c:\bdbfs\plugins; d:\MyOwn\plugins'
-		- in directories specified in the INCLUDE environment
-		  variable.
+Bdbfs searches for Plug-ins (and #include)-files:
+	- in current directory;
+	- in directories supplied in global variable _PlugDir
+	  (default - &lt;place of bdbfs.exe>\plugins). You can
+	  define(f.e. in bdbfs.ini) more than one directory:
+		_PlugDir:='c:\bdbfs\plugins; d:\MyOwn\plugins'
+	- in directories specified in the INCLUDE environment
+	  variable.
 
-	You can use the plug-ins as usual function, if they have default
-extension .INI.  Suppose, you have MyPlug.ini.
-It is then possible, f.e.:
+You can use the plug-ins as usual function, if they have default
+extension .INI. Suppose, you have MyPlug.ini. It is then possible, f.e.:
 
 	{?} MyPlug()			//Calculate current
 
-	{CTRL+F5} xVar:=MyPlug()*2      //Assignment
+	{CTRL+F5} xVar:=MyPlug()*2	//Assignment
 
 	{F7} MyPlug() > 100		//Searching
 
 Plug-in could have up to 5 parameters.
 
-	Example:
+	<em>Example:</em>
 		MyPlug(2,3,'Hello')
 
-	If you need call the plug-in from another plug-in, or plug-in
-has non-standard extension, you should use the function RestoreIni().
+If you need call the plug-in from another plug-in, or plug-in has
+non-standard extension, you should use the function RestoreIni().
 
-	Example:
+	<em>Example:</em>
 		RestoreIni('MyPlug',2,3,'Hello')
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p33">
-	 <h4> 33.Start BDBFS.</h4>
-<pre>
+<p><HR><a name="p33">
+<h4>33.Start BDBFS.</h4><pre>
 
-	You can use the mask (with symbols * and ?) at starting.
+You can use the mask (with symbols * and ?) at starting.
 The files will be offered for a choice.
-	Example:
+
+	<em>Example:</em>
 		 BDBFS *.Str
+
 Files with extension STR will be offered.
 
-	Parameter /i = &lt;indexname> sets loading a file together with
+Parameter /i = &lt;indexname> sets loading a file together with
 specified index.
 
-	Parameter /BW adjusts colors to monochrome.
+Parameter /BW adjusts colors to monochrome.
 
-	The order of parameters /BW and /i = can be alternated.
+The order of parameters /BW and /i = can be alternated.
 
-	At start with a parameter - name of a file of an environment
-the attempt is made to restore this environment. Similarly, with a file of
-initialization - see <a href="#p15">ch.15</a> and <a href="#p16">ch.16.</a>
+At start with a parameter - name of a <a href="#p15">file of an environment</a>
+the attempt is made to restore this environment. Similarly, with a <a href="#p16">file of
+initialization</a>.
 
-	Example:
+	<em>Example:</em>
 	 	BDBFS Envr.mem
 
+The parameters /DBFCDX /DBFNTX /DBFCTX /DBFIDX /VFPCDX /SIXCDX
+set the default RDD (usually it's defined in bdbfs.ini). You can use also
+short form: /CDX /NTX /CTX /IDX.
 
-	The parameters /NTX /CDX /MDX /NSX set the default RDD (usually
-it defined in bdbfs.ini). You can use also /SIX[driver] form.
+	<em>Examples:</em>
 
-	Examples:
-		BDBFS MyBase /SIXNSX
+		BDBFS MyBase /VFPCDX    //Visual Foxpro driver
 
 		BDBFS MyBase /ntx /i=char
 
-	The parameter /CREATE allows to begin the work with a creating of
+
+The parameter /CREATE allows to begin the work with a creating of
 a new database.
 
-	Example:
+	<em>Example:</em>
 		BDBFS MyNew /CREATE
 
 
-	Besides there are some parameters forcing BDBFS to work in
-batch mode - REINDEX, HTML, PACK, CHECK and variety of STRUCT_ parameter.
-In batch mode BDBFS carries out given operation and finishes the work.
+Besides there are some parameters forcing BDBFS to work in
+batch mode - REINDEX, REBUILD, HTML, XML, XLS, PACK, CHECK and varieties
+of STRUCT_ parameter. In batch mode BDBFS executes the defined operation
+and finishes the work.
 
 
-	Parameter REINDEX causes reindexing of a base. A compound index
-(CDX, NSX, MDX) reindexes automatically, for reindexing of simple index
+Parameter REINDEX causes reindexing of a base. A compound index
+(CDX, NSX, MDX) is reindexed automatically, for reindexing of simple index
 it should be specified in third parameter with a key /i. If any
 index is not found, the appropriate message will be shown.
 
-	Examples:
+	<em>Examples:</em>
 		BDBFS f_w_cdx REINDEX
 		BDBFS f_w_ntx /REINDEX /i=MyNtx.ntx
 
 
-	Parameter HTM (HTML) causes production of a HTML file.
+Parameter REBUILD causes a full rebuilding of a compound index
+file (CDX,NSX,MDX). It's some longer than reindexing, but protects from
+some strange bugs and decreases the file size in most cases.
 
-	Examples:
+	<em>Example:</em>
+		BDBFS f_w_cdx /REBUILD
+
+
+Parameters HTM (HTML), XML, XLS causes export to a corresponding
+file format.
+
+	<em>Examples:</em>
 		BDBFS MyDbf HTM			//MyDbf.htm is generated
 		BDBFS MyDbf /HTML=e:\1		//e:\1.htm is generated
+		BDBFS MyDbf /XLS		//MyDbf.xls is generated
 
-	If HTML file exists you will be asked for rewriting.
-So if you wish to rewrite existing HTML without confirming, destroy it
-before!
+If target file exists, you will be asked for rewriting. So, if you wish
+to rewrite existing file without confirming, delete it before!
+
+<a href="#p5">Ch.5</a> contains additional information about exporting.
 
 
-	Parameter PACK causes packing of a base.
+Parameter PACK causes packing of a base. Inasmuch as it is
+dangerous operation, warning will always shown!
 
 
-	Parameter PRINT causes initialization of BPF-file <a href="#p28">(see ch.28).</a>
+Parameter PRINT causes initialization of <a href="#p28">BPF-file</a>.
 
-	Examples:
+	<em>Examples:</em>
 		BDBFS Customer /PRINT		//Customer.BPF used
 		BDBFS Customer /PRINT=Annual	//Annual.BPF used
 
-	Parameter STRUCT_ allows to execute all file operations with
-database structure, usually allowable from DISPLAY STRUCTURE mode (<font color="blue">Alt+F2</font>).
-	Variety of parameter:
-		STRUCT_PRINT	- print the structure description to
-				  print device
-		STRUCT_FILE	- print the structure description to
-				  file (database.STP)
-		STRUCT_EXTENDED	- create the file in COPY STRU EXTENDED
-				  format (database.STE)
-		STRUCT_COPY	- create the empty file of same structure
-				  (database.STR)
-		STRUCT_PROGRAM	- create the program generating this
-				  structure and tags of compound index,
-				  if it exists (database.STG).
+Parameter STRUCT_ allows to execute all file operations with database
+structure, usually allowable from DISPLAY STRUCTURE mode (<tt>Alt+F2</tt>).
 
-	All postfix of STRUCT_ parameter can be reduced up to 4 symbols.
+Variety of parameter:
+	STRUCT_PRINT	- print the structure description to
+			  print device
+	STRUCT_FILE	- print the structure description to
+			  file (database.STP)
+	STRUCT_EXTENDED	- create the file in COPY STRU EXTENDED
+			  format (database.STE)
+	STRUCT_COPY	- create the empty file of same structure
+			  (database.STR)
+	STRUCT_PROGRAM	- create the program generating this
+			  structure and tags of compound index,
+			  if it exists (database.STG).
 
-	Example:
+All postfix of STRUCT_ parameter can be reduced up to 4 symbols.
+
+	<em>Example:</em>
 		BDBFS MyDbf /STRUCT_PROG
 
 
-	Parameter CHECK causes testing of a base size <a href="#p31">(see ch.31).</a>
+Parameter CHECK causes <a href="#p31">checking of a base size</a>.
 
 
-	Parameter FORCED causes "forced" mode <a href="#p34">(see ch.34).</a>
+Parameter FORCED causes <a href="#p34">a forced mode</a>.
 
-	It is possible to apply the command FOR to work with the
-catalogue.
+It is possible to apply the command FOR to work with the catalogue.
 
-	Examples:
-// Reindex all
+	<em>Examples:</em>
+Reindex all
 		FOR %a in (*.DBF) DO bdbfs %a REINDEX
 
-// To create HTMLs in subdirectory _HTMLS_
+Create HTMLs in subdirectory _HTMLS_
 		echo y | DEL _HTMLS_\*.HTM
 		FOR %%a in (*.DBF) DO bdbfs %%a HTM=_HTMLS_\%%a
 		REN _HTMLS_\*.DBF _HTMLS_\*.HTM
@@ -1637,7 +1876,7 @@ The happy owners of 4DOS can save the command (and time):
 		DEL /y _HTMLS_\*.HTM
 		FOR %a in (*.DBF) DO bdbfs %a HTM=_HTMLS_\%@NAME[%a]
 
-//To make the database documentation
+Make the database documentation
 		FOR %%a in (*.DBF) DO BDBFS %%a /STRUCT_FILE
 		ECHO Databases of system > All_Dbf.txt
 		FOR %%a in (*.STP) DO COPY All_DBF.TXT+%%a All_Dbf.TXT
@@ -1645,27 +1884,26 @@ The happy owners of 4DOS can save the command (and time):
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p34">
-	 <h4> 34.Forced mode.</h4>
-<pre>
+<p><HR><a name="p34">
+<h4>34.Forced mode.</h4><pre>
 
-	BDBFS supports different formats of DBF via so called RDD of
-CLIPPER. On the other hand, many formats recently have appeared, which are
-not supported via RDD (at least, I haven't such RDD).
-	They are: new fields and headers of Visual FoxPro, dBASE5, FlagShip,
-FlexMemo. Besides, there are some programs, calling the fields "wrongly",
-f.e. beginning with figure.
-	Therefore, I wrote the special "forced" mode in BDBFS, allowing
-to process such bases without RDD. For this purpose the heading of base
-is corrected "in flight" to supported of RDD and is restored after all
+BDBFS supports different formats of DBF with the aid of CLIP drivers.
+On the other hand, many formats recently have appeared, are not
+supported by CLIP yet.
+
+They are: new fields and headers of  dBASE5, FlagShip, FlexMemo. Besides,
+there are some programs, calling the fields "wrongly", f.e. beginning with
+figure.
+
+Therefore, I wrote the special "forced" mode in BDBFS, allowing to
+process such bases without driver. For this purpose the heading of base
+is corrected "in flight" to supported format and is restored after all
 works.
 
-	So, in "forced" mode BDBFS supports the following formats:
+So, in "forced" mode BDBFS supports the following formats:
 
-	- Visual FoxPro (field types Currency, DateTime, Binary, Integer,
-	  Double, Picture, General, new memo-format, new header format);
 	- dBASE4, dBASE5 (field type Bitmap, new headers);
 	- FlagShip (field types 2,4,8, new headers);
 	- FoxBase 1.0 (old header);
@@ -1673,7 +1911,7 @@ works.
 	- and, potentially, all another possible (and unknown to me)
 	  field types, which will be processed as Character in this case.
 
-	Non-standard field names are transformed by the following rules:
+Non-standard field names are transformed by the following rules:
 
 	- if there are Code Page FoxPro 1200-1299 in header,
 	  AnsiToOem() executed;
@@ -1681,545 +1919,518 @@ works.
 	  by symbol "_".
 	- if the name begins with figure, it is anticipated with "_".
 
-	"Forced" mode can be applied also for processing of bases with
-"long" (>64K) memo-fields, as use of standard drivers in this case causes
-the internal error of Clipper.
 
-	For today the following restrictions work:
+The following restrictions work for today:
 
 	- the base is used only in an exclusive mode;
 	- PACK-operation is prohibited if the base contains memo-fields;
 	- MODIFY STRUCTURE-operation is prohibited;
-	- in a memo-field it is possible to write down up to 64K
-	  and standard way SX_Blob2File/SX_File2Blob does not work.
 
-	"Forced" mode can be activated from command line via parameter
-/FORCED (f.e. bdbfs MyBase /forced) or by setting of variable _lForced:=.T.
-in ini-file.
+"Forced" mode can be activated from <a href="#p33">command line</a> with parameter
+/FORCED (f.e. BDBFS MyBase /forced) or by setting of variable _lForced:=.T.
+in <a href="#p16">ini-file</a>. Besides, the question about activation are asked at opening,
+if "forced" mode is not active yet and non-standard structure are
+detected.
 
-	 For access to some "non-standard" types of fields (f.e., at use
+ For access to some "non-standard" types of fields (f.e., at use
 in expressions, searches) it is necessary to use special functions (usual
 edition, viewing, replacement of additional efforts not require):
 
 	- Memo, Picture, Bitmap - types
 		MemoSrc(&lt;field_name>) - returns the string
-	- Currency - type
-		YToCurs(&lt;field_name>) - returns the number
-	- DateTime - type
-		TToC(&lt;field_name>) - returns the string
-	- Binary - type
-		CToF(&lt;field_name>) - returns the number
+
 	- 2 - type
 		Bin2I(&lt;field_name>) - returns the number
 
-	Example:
-// Set filter to field Cur1 of type "Currency"
+	<em>Example:</em>
+//Set filter to field Cur1 of type "Currency"
 
-	   <font color="blue">Alt+F</font> YToCurs(Cur1)>100
+		<tt>Alt+Shift+F</tt> YToCurs(Cur1)>100
 
-	Once again I remind, for processing of base in the forced mode,
+Once again I remind, for processing of base in the forced mode,
 it is necessary to correct its heading! Therefore, if, f.e., the power
 will be lost or current window will be closed during the works, the
-structure of base will be corrupted (in case of Visual FoxPro even rather
-essentially).
-	     <font color=red><center>SO, USE THIS MODE AT OWN RISK!</font></center>
+structure of base will be corrupted!
 
-
-<center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
-</form></center>
-<p><hr><a name="p35">
-	 <h4> 35.Video-modes.</h4>
-<pre>
-
-	BDBFS correctly supports all earlier established text modes -
-from 40*25 up to 132*60 etc.. However, if you have started from under
-BDBFS the program, changing a mode of the screen - troubles are possible.
-
+		<em>SO, USE THIS MODE AT OWN RISK!</em>
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p36">
-	 <h4> 36.What is absent in BDBFS in comparison with "competitors".</h4>
-<pre>
+<p><HR><a name="p35">
+<h4>35.Video-modes.</h4><pre>
 
-	I had seen in products of similar purpose some features are
+
+BDBFS correctly supports all earlier established text modes - from 40*25
+up to 132*60 etc.. However, if you have started from BDBFS the program,
+changing a mode of the screen - troubles are possible.
+
+<center><form>
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
+</form></center>
+<p><HR><a name="p36">
+<h4>36.What is absent in BDBFS in comparison with "competitors".</h4><pre>
+
+
+I had seen in products of similar purpose some features are
 absent now in BDBFS.
 
-	Their list:
+Their list:
 
-	* A calendar - I don't see sense, IMHO it isn't ORGANIZER, but
+	- A calendar - I don't see a sense, IMHO it is not ORGANIZER, but
 	  your opinion...
-	* The export / import 1-2-3 - IMHO it is too specialized.
-	* The calculation of statistical such as deviation etc. - is
+	- The export / import 1-2-3 - IMHO it is too specialized.
+	- The calculation of statistical such as deviation etc. - is
 	  similar previous item.
-	* The diagrams on fields of base - will not be, IMHO this
+	- The diagrams on fields of base - will not be, IMHO this
 	  feature of special-programs.
-	* the viewing of the screen DOS - may be...
+	- the viewing of the screen DOS - may be...
 
-	I'll be grateful for any opinions in this occasion.
+I'll be grateful for any opinions in this occasion.
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p37">
-	<h4>37.Known problems.</h4>
-<pre>
+<p><HR><a name="p37">
+<h4>37.Known problems.</h4><pre>
 
-	Besides again found out mistakes, there is a number of known
-problems, which, probably, will be eliminated in the future.
+Besides newly found mistakes, there is a number of known problems, which,
+probably, will be eliminated in the future.
 
-	- the new formats of Visual FoxPro,DBASE4,DBASE5,FlagShip,FlexMemo
-	  are supported in "forced" mode <a href="#p34">(see ch.34)</a>;
+	- the new formats of DBASE4, DBASE5, FlagShip, FlexMemo
+	  are supported in <a href="#p34">forced mode</a>;
 
-	- #define with parameters in ini-files is not supported;
-	- #xCommand with more, than one parameter is not supported;
-
-	- problems with MDX indexes (restriction of the driver):
-	  - the wildseek in indexes is not accessible;
-	  - number of a key in an index and quantity of records in
-	    the filter (without calculation) are not accessible. It is
-	    reflected in correctness of indicators showing;
-
-ˇ ˇ ˇ ˇ - long names in filer are shown up to 16-symbols.
+	- #define with parameters in <a href="#p16">ini-files</a>is not supported;
+	- #xcommand with more, than one parameter is not supported;
 
 	- a nonrestorable mistake "Disk overflow" during COPY or APPEND
 	  operation.
 
-	- due to mistake in realization of TBROWSE object,
-	  not all fields in base can be shown. By default,
-	  quantity of fields, are shown in BDBFS is limited to 170
-	  (experimental limit on my computer is 173). You can
-	  experiment by setting _nBrowMaxField variable in a INI-file.
-
-	- internal error 1112. It appears on database with
-	  long memo-fields (more than 64K). It's Clipper 5.2 fault (in
-	  5.0 it wasn't). You can exclude such fields from viewing
-	  in AutoOpen files <a href="#p16">(see ch.16)</a> (and access them via
-	  Sx_Blob2File() function) or use "forced" mode <a href="#p34">(see ch.34).</a>
-
 	- FoxPro's indexes with expression like alias.field instead
 	  alias->field cause the error when index field is changed.
 
-	- noncompact IDX-s are not supported (restriction of SIX3
-	  driver).
+	- noncompact IDX-s are not supported (restriction of driver).
 
 	- SEEK doesn't work in FoxPro indexes made with established
 	  SET COLLATE.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p37">
-	 <h4> 38.Gratitudes.</h4>
-<pre>
+<p><HR><a name="p38">
+<h4>38.Gratitudes.</h4><pre>
 
-	To Nantucket (to CA essentially I'll not be), American
+To Nantucket (to CA essentially I'll not be), American
 Cybernetics, Assembler Software, Borland, SuccessWare - for the
 used products.
 
-	To authors of Clipper echo-conferences & NanFor.LIB.
-
-	To all people, who sent bag reports and proposals.
-
-	Special gratitude to L.Kujiy for careful testing and number of
-the efficient offers.
-
-	To Phil Barnett for extremely useful Clipper oasis and a lot of
-interesting programs.
-
-	To Tom Claffy for the used code of FileBrowse.
-
-	To Dark Black Software for Long Name support library.
-
-	To <a href="mailto:uri@itk.ru">Yury Hnykin uri@itk.ru</a> for
+To <a href="mailto:uri@itk.ru">Yury Hnykin uri@itk.ru</a> for
 unvaluable help in translation to CLIP.
 
+To authors of Clipper echo-conferences & NanFor.LIB.
+
+To all people, who sent bag reports and proposals.
+
+Special gratitude to L.Kujiy for careful testing and number of
+the efficient offers.
+
+To Phil Barnett for extremely useful Clipper oasis and a lot of
+interesting programs.
+
+To Tom Claffy for the used code of FileBrowse.
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p39">
-	 <h4> 39.FeedBack.</h4>
-<pre>
+<p><HR><a name="p39">
+<h4>39.FeedBack.</h4><pre>
 
-	Any questions, suggestions or bug-reports send me to:
 
-		<a href="mailto:elb@lg.bank.gov.ua">E-Mail	elb@lg.bank.gov.ua</a>
-				Or
-		<a href="mailto:elb@lg.bank.gov.ua">Bondar_Eugen@yahoo.com</a>
+Any questions, suggestions or bug-reports send me to:
 
-		Bondar Yevgen,
-		91024,
-		Leningradskaya 8,
-		Lugansk, Ukraine
+	<a href="mailto:elb@lg.bank.gov.ua">elb@lg.bank.gov.ua (preferably)</a> Or <a
+	href="mailto:Bondar_Eugen@yahoo.com">Bondar_Eugen@yahoo.com</a>
 
-	For newest version refer to <a href="http://www.geocities.com/Bondar_Eugen/index.htm"> my web-page</a>
+	Bondar Yevgen,
+	91024,
+	Leningradskaya 8,
+	Lugansk, Ukraine
 
+For newest version refer to <a href="http://www.geocities.com/Bondar_Eugen/index.htm"> my web-page</a>
+
+	<center><form>
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
+</form></center>
+<p><HR><a name="p40">
+<h4>40.The form of distribution.</h4><pre>
+
+	BDBFS for CLIP is distributed under GPL.
+
+<center><a href="http://www.regsoft.net/purchase.php3?productid=31110">
+Quickest way is online registration.</a></center>
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="p40">
-	 <h4> 40.The form of distribution.</h4>
-<pre>
-
-	BDBFS for CLIP is distibuted under GPL.
+<p><HR><a name="pp1">
+<h4>SUPPLEMENT I. List of hot-keys.</h4><pre>
 
 
-<center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
-</form></center>
-<p><hr><a name="pp1">
-	 <h4>SUPPLEMENT I. List of hot-keys.</h4>
-<pre>
+Remember, that some functions are accessible only through the menu.
 
-	Remember, that some functions are accessible only through the menu.
+<h5>A.Main VIEW mode.</h5><pre>
 
-	 <h5>A.Main VIEW mode.</h5><pre>
-
-	<h6>Positioning:</h6><pre>
+<h6>Positioning:</h6><pre>
 
 		Up Down Left Right PgUp PgDn
 
-	On last field			Ctrl+End
-	On the first field		Ctrl+Home
+	On last field                   Ctrl+End
+	On the first field              Ctrl+Home
 
-	Go top				Ctrl+PgUp
-	Go Bottom			Ctrl+PgDn
+	Go top                          Ctrl+PgUp
+	Go Bottom                       Ctrl+PgDn
 
-	To top of next page		Alt+PgDn
+	To top of next page             Alt+PgDn
 
-	To top of previous page		Alt+PgUp
+	To top of previous page         Alt+PgUp
 
 
-	<h6>Function of management:</h6><pre>
+<h6>Functions of management:</h6><pre>
 
-	To call the main menu			F10, Alt+V
-	To call the user menu			F12
+	Call the main menu                      F10, Alt+V
+	Call the user menu                      F12
 
-	To choose the base			F4
-	To open previous base			Ctrl+O
+	Choose the base                         F4
+	Open previous base                      Ctrl+O
 
-	To establish the index file		F5
-	To reindex				Alt+F5
-	To index for				Alt+F9
+	Set the index file                      F5
+	Reindex                                 Alt+F5
+	Index for                               Alt+F9
 
-	To add record				F3, Ins
-	To add with copying			Alt+F3
-	To insert new record			Shift+F3
+	Add record                              F3, Ins
+	Add with copying                        Alt+F3
+	Insert new record                       Shift+F3
 
-	To count records			Ctrl+F6
-	To summarize the current field		Alt+F6
-	Total on current index expression	Alt+Shift+F6
+	Count records                           Ctrl+F6
+	Summarize the current field             Alt+F6
+	Total on current index expression       Alt+Shift+F6
 
-	To replace the current field by expression	Alt+R
-	To replace a field in all records with:
-			constant expression		Alt+F4
-			varied expression		Ctrl+F4
+	Replace the current field by expression         Alt+R
+	Replace a field in all records with:
+	                constant expression             Alt+F4
+	                varied expression               Ctrl+F4
 
-	Same but with confirming			Alt+Shift+R
-							Alt+Shift+F4
-							Ctrl+Shift+F4
+	Same but with confirming                        Alt+Shift+R
+	                                                Alt+Shift+F4
+	                                                Ctrl+Shift+F4
 
-	To edit one record (EDIT)		Alt+E
+	Edit one record (EDIT)                  Alt+E
 
-	To edit a symbolical field		Alt+W
+	Edit a symbolical field                 Alt+W
 	as a memo-field (for wide fields)
+	Invert logical                          Space
 
-	Information about base and environment	Alt+F1
-	To show / print base structure		Alt+F2
+	Information about base and environment  Alt+F1
+	Show / print base structure             Alt+F2
 
-	To attach from base (text)		Ctrl+F9
-	To copy to base (text)			Ctrl+F3
-	To copy with MEMO converting		Ctrl+Shift+F3
+	Attach from base (text)                 Ctrl+F9
+	Copy to base (text)                     Ctrl+F3
+	Copy with MEMO converting               Ctrl+Shift+F3
 
-	To sort					Alt+S, Ctrl+F11
-	To establish the filter			Alt+F, Alt+F11
+	Sort                                    Alt+S, Ctrl+F11
+	Call the filter menu                    Alt+F, Alt+F11
+	Set the filter for a condition          Alt+Shift+F, Alt+Shift+F11
 
-	To print base [in a file]		F2
-	To print record [in <base.rec>]		Alt+P
+	Print base [in a file]                  F2
+	Print record [in &lt;base.rec>]            Ctrl+P
 
-	To modify structure			Shift+F2
-	To establish fields and headings	Ctrl+F2
+	Modify structure                        Shift+F2
+	Set fields and headings                 Ctrl+F2
 
-	"To freeze" the current field		Alt+Z
+	"Freeze" the current field              Alt+Z
 	and all fields more to the left
 
-	To establish a condition of illumination	Alt+B
-	Restore color					Alt+Shift+B
+	Set a condition of highlighting         Alt+B
+	Restore color                           Alt+Shift+B
 
-	To make HTML				Alt+>
+	Make HTML                               Alt+>
 
 
-	<h6>Functions of search:</h6><pre>
+<h6>Search Functions:</h6><pre>
 
-	To go to record NN			F6
-	To search key in an index (Seek)	F9
-	To search for a condition (Locate)	F7
-	To continue search			Alt+F7
-	To search in all fields at once		Alt+I
+	Go to record NN                         F6
+	Search a key in an index (Seek)         F9
+	Search for a condition (Locate)         F7
+	Continue search                         Alt+F7
+	Search in all fields at once            Alt+I
 	(contextual search)
-	To continue contextual search		Alt+Shift+I
-	To search in current field		F11
+	Continue contextual search              Alt+Shift+I
+	Search in current field                 F11
 	(especially for non-experience users)
-	To search for a maximum / minimum	Alt+M
-	To search for a longest value		Ctrl+L
+	Call a menu of searching                Ctrl+Shift+F11
+	in current field
+	Search for a maximum / minimum          Alt+M
+	Search for a longest value              Ctrl+L
 	in a text field
-	To search for a double in an index	Alt+2
-	WildSeek in index			Alt+[
-	To continue wildseek			Alt+Shift+[
+	Search for a double in an index         Alt+2
+	WildSeek in index                       Alt+[
+	Continue wildseek                       Alt+Shift+[
 
 
 <h6>Deleting / recalling</h6><pre>
 
-	To delete / recall current record	Del, Ctrl+T
-	To delete for a condition		Ctrl+F8
-	To restore for a condition		Ctrl+F7
+	Delete / recall current record:         Del, Ctrl+T
+	Delete for a condition                  Ctrl+F8
+	Restore for a condition                 Ctrl+F7
+	Invert for a condition                  Ctrl+Shift+F8
 
-	To pack					F8
-	To clear all (Zap)			Alt+F8
+	Pack                                    F8
+	Clear all (Zap)                         Alt+F8
 
-	To clear the current field		Shift+F4
-	To clear all fields of record		Ctrl+Y
+	Clear the current field                 Shift+F4
+	Clear all fields of record              Ctrl+Y
 
 
-<h6>Buffer of an exchange</h6><pre>
+<h6>Clipboards</h6><pre>
 
-	To write down into WIN clipboard	Ctrl+Ins
-	To write down from WIN clipboard	Shift+Ins
-	To write down into internal clipboard	Ctrl+Grey+
-	To write down from internal clipboard	Ctrl+Grey-, Alt+GreyEnter
-	ClipBoard:=Clipboard+Field		Alt+Grey+
-	ClipBoard:=Clipboard-Field		Alt+Grey-
-	ClipBoard:=Clipboard/Field		Alt+Grey/
-	ClipBoard:=Clipboard*Field		Alt+Grey*
-	To show the clipboard			Ctrl+Enter
+	Copy to WIN clipboard                   Ctrl+Ins
+	Paste from WIN clipboard                Shift+Ins
+	Copy to internal clipboard              Ctrl+Grey+
+	Paste from internal clipboard           Ctrl+Grey-, Alt+GreyEnter
+	ClipBoard:=Clipboard+Field              Alt+Grey+
+	ClipBoard:=Clipboard-Field              Alt+Grey-
+	ClipBoard:=Clipboard/Field              Alt+Grey/
+	ClipBoard:=Clipboard*Field              Alt+Grey*
+	Show the internal clipboard             Ctrl+Enter
 
 
 <h6>Other</h6><pre>
 
-	To finish jobs				Esc
-	To finish without confirmation		Alt+X
+	Exit                                    Esc
+	Exit without confirmation               Alt+X
 
-	Exit to DOS				Alt+F10
-	To replace a disk and directory		Ctrl+F10
+	Exit to DOS                             Alt+F10
+	Change a disk and directory             Ctrl+F10
 
-	To execute macro-function		Ctrl+F1
-	To establish variable			Ctrl+F5
-	To calculate expression			Shift+F6, Alt+G, ?
+	Execute macro-function                  Ctrl+F1
+	Establish a variable                    Ctrl+F5
+	Calculate an expression                 Shift+F6, Alt+G, ?
 
-	To translate in lower case		Alt+L
-	To translate in capital			Alt+U
-	Capitalization				Alt+K
-	To transform English->National		Alt+Q
-	To transform National->English		Alt+Y
+	Translate in lower case                 Alt+L
+	Translate in capital                    Alt+U
+	Capitalization                          Alt+K
+	Proper                                  Alt+P
+	Transform English->National             Alt+Q
+	Transform National->English             Alt+Y
+	Align a current field                   Alt+J
 
-<h6>To copy a field from</h6><pre>
+<h6>Copy a field from</h6><pre>
 				above		Alt+Up
 				below		Alt+Down
 				left		Alt+Left
 				right		Alt+Right
 
-<h6>To exchange record with</h6><pre>
+<h6>Exchange record with</h6><pre>
 			above record		Ctrl+Up
 			below record		Ctrl+Down
 
-<h6>To exchange the field with</h6><pre>
+<h6>Exchange the field with</h6><pre>
 			above record		Alt+Shift+Up
 			below record		Alt+Shift+Down
 
-	To set a bookmark			Ctrl+K + 0..9
-	To pass to a bookmark			Ctrl+Q + 0..9
+	Set a bookmark                          Ctrl+K + 0..9
+	Go to a bookmark                        Ctrl+Q + 0..9
 
 
-	To save environment			Shift+F1
-	To restore environment			Shift+F5
-	To save environment in AutoOpen file	Ctrl+Shift+F1
+	Save environment                        Shift+F1
+	Restore environment                     Shift+F5
+	Save environment in AutoOpen file       Ctrl+Shift+F1
 
-	To load ini-file			Ctrl+F12
+	Load ini-file                           Ctrl+F12
 
-	Filer					Alt+F12
+	Filer                                   Alt+F12
 
-	To refresh (in network)			Ctrl+R
+	Refresh (in network)                    Ctrl+R
 
-	To undo changes				Ctrl+U,Alt+BS
-
-
-<h6>Jobs with compound indexes (CDX, MDX, NSX)</h6><pre>
-
-	To choose TAG				Alt+T,Shift+F12
-	To set TAG number			Shift+F7
-	To set TAG name				Shift+F8
-	To make new TAG				Shift+F9
-	To remove TAG				Shift+F10
-	To establish another CDX		Shift+F11
+	Undo changes                            Ctrl+U,Alt+BS
 
 
+<h6>Compound Indexes (CDX, MDX, NSX)</h6><pre>
 
-	 <h5>B. GET mode</h5><pre>
+	Choose TAG                              Alt+T,Shift+F12
+	Set TAG number                          Shift+F7
+	Set TAG name                            Shift+F8
+	Make new TAG                            Shift+F9
+	Remove TAG                              Shift+F10
+	Set another CDX                         Shift+F11
+
+
+
+<h5>B. GET mode</h5><pre>
 
 <h6>Positioning</h6><pre>
 
-		Up Down Left Right PgUp PgDn
+	Move in a field                 Left Right
+	Move between the fields         Up Down PgUp PgDn
+	Same without changing
+	the cursor's position           Shift+Up, Shift+Dn, Shift+PgUp, Shift+PgDn
+
 
 	Next field				Tab
 	Previous field				Shift+Tab
 
 <h6>Functions of management</h6><pre>
 
-	To add record				F3
-	To switch a mode of an Ins/Ovr		Ins
-	To clear the current field		Ctrl+Y
-	To finish input without saving		Esc
-	To finish input with saving		Enter, Ctrl+W, Ctrl+End
-	To cancel changes			Ctrl+U
+	Add record				F3
+	Switch a mode of an Ins/Ovr            	Ins
+	Clear the current field			Ctrl+Y
+	Stop input without saving              	Esc
+	Stop input with saving			Enter, Ctrl+W, Ctrl+End
+	Cancel changes				Ctrl+U
 
-	To switch a mode of input		F4
-	<a href="#p1">(see topic 1)</a>
-	To play macro from "MACRO"		Ctrl+F1
+	Switch a mode of input(see topic 1)    	F4
+	Play macro				Ctrl+F1
+	Input next as a symbol			Ctrl+Q, Ctrl+2
 
-	To copy a field from above		Alt+ Up
-	To copy a field from below		Alt+ Down
+	Copy a field from above			Alt+ Up
+	Copy a field from below			Alt+ Down
+	Invert logical				Space
 
-	To translate in lower case		Alt+L
-	To translate in capital			Alt+U
+	Translate in lower case			Alt+L
+	Translate in capital			Alt+U
 	Capitalization				Alt+K
-	To transform English->National		Alt+Q
-	To transform National->English		Alt+Y
+	Proper					Alt+P
+	Transform English->National    		Alt+Q
+	Transform National->English    		Alt+Y
 
-	To write down into WIN clipboard	Ctrl+Ins
-	To write down from WIN clipboard	Shift+Ins
-	To write down into internal clipboard	Ctrl+Grey+
-	To write down from internal clipboard	Ctrl+Grey-, Alt+GreyEnter
+	Copy to SYS clipboard			Ctrl+Ins
+	Paste from SYS clipboard       		Shift+Ins
+	Copy to internal clipboard     		Ctrl+Grey+
+	Paste from internal clipboard		Ctrl+Grey-, Alt+GreyEnter
 
-	To delete / recall current record	Shift+Del
-
-
-	 <h5>C. SET FIELDS mode</h5><pre>
-
-	To remove a field from the list		DEL, Ctrl+Y
-	To change the fields order		Ctrl+Down, Ctrl+Up
-	To restore the previous settings	F5
-	To switch a mode of sorting		F6
-	To finish changes			F10
-	To cancel changes			Esc, Alt+X
+	Delete / recall current record		Shift+Del
 
 
+<h5>C. SET FIELDS mode</h5><pre>
 
-	 <h5>D. MODIFY STRUCTURE mode</h5><pre>
+	Remove a field from the list		DEL, Ctrl+Y
+	Change the fields order			Ctrl+Down, Ctrl+Up
+	Restore the previous settings		F5
+	Finish changes				F10
+	Cancel changes				Esc, Alt+X
 
 
-	To change value (if it's possible)	Enter
-	To add a new field			F3
-	To remove a field			F8
-	To insert a field before current	F5, Ctrl+N
-	To establish the necessary type		C, N, D, L, M, V, F
+<h5>D. MODIFY STRUCTURE mode</h5><pre>
+
+	Change value (if it's possible)		Enter
+	Add a new field				F3
+	Remove a field				F8
+	Insert a field before current		F5, Ctrl+N
+	Establish the necessary type		C, N, D, L, M, V, F
 	(when cursor in File_Type)
-	To optimize a structure			F9
-	To finish and to save changes		F10
-	To cancel changes			Esc
+	Optimize a structure			F9
+	Quit and save changes			F10
+	Cancel changes				Esc
 
 
-	 <h5>E. VIEW STRUCTURE mode</h5><pre>
+<h5>E. VIEW STRUCTURE mode</h5><pre>
 
 
 	Output to a printer				F2, Shift+Tab
 	Output to a text file (*.STP)			F4
 	Output to a file with structure (*.STR)		F6
-	Output to a file with the extended		F5
+	Output to a file with the extended     		F5
 	structure (*.STE)
 	Configure of a printer				F9
-	Create a program generating this structure	F10
+	Create a program generating this structure     	F10
 	and tags of compound index (*.STG)
 	Moving to this field				Enter
 
 
-	 <h5>F. DIALOGUES mode</h5><pre>
+<h5>F. DIALOGUES mode</h5><pre>
 
 
-<h6>To select expression from</h6><pre>
+	Select expression from:
 		this condition history		F4, Ctrl+Down
-		common condition history	Alt+F4, Ctrl+Shift+Down
+		common condition history       	Alt+F4, Ctrl+Shift+Down
 		results history			Ctrl+F4
 
-	To insert a name of the current field		F2
-	To insert a name of any field			Ctrl+F2
-	To insert heading of the current field		F3
-	To insert heading of any field			Ctrl+F3
-	To insert value of the current field		F5
-	To insert the name of the current base		F6
-	Menu of input					F10
+	Insert a name of the current field		F2
+	Insert a name of any field			Ctrl+F2
+	Insert a header of the current field		F3
+	Insert a header of any field    		Ctrl+F3
+	Insert a value of the current field		F5
+	Insert a value of the current field
+	in quoted marks 				Ctrl+F5
+	Insert a name of the current base		F6
+	Quote all text  				Alt+Shift+"
+	Call an insert menu     			F10
 
 	In dialogue REPLACE of a symbolical field
-	Menu of functions				F7
+	Call a menu of functions			F7
 
 	In dialogue of fields defining
-	(COPY, SORT) - select fields			Alt+F2
+	(COPY, SORT) - select fields    		Alt+F2
 
 
-	 <h5>G. VIEW RESULT mode (after calculation, summation etc.)</h5><pre>
+<h5>G. VIEW RESULT mode (after calculation, summation etc.)</h5><pre>
 
 
-	To continue with result				F2
-	To write a result to the current field		F5
-	To write a result to the buffer			Ctrl+Ins
-	Menu of writing					F10
+	Continue with result    			F2
+	Write a result to the current field     	F5
+	Write a result to the buffer    		Ctrl+Ins
+	Menu of writing 				F10
 
 
-	 <h5>H. MEMOEDIT mode (wide edit)</h5><pre>
+<h5>H. MEMOEDIT mode (wide edit)</h5><pre>
 
 
-	To print					F2
-	To save as file					F3
-	To load from file				F4
-	To switch a mode of line's auto-wrapping	F5
-	To insert a Windows clipboard in the
+	Print   					F2
+	Save as file    				F3
+	Load from file  				F4
+	Switch a mode of line's auto-wrapping   	F5
+	Insert a Windows clipboard in the
 	current position				F6,Shift+Ins
 
-	To tune some system variables			F9
-	To insert internal clipboard in the		Ctrl+Grey-
+	Tune some system variables			F9
+	Insert internal clipboard in the		Ctrl+Grey-
 	current position.
-	To delete the current line			Ctrl+Y
-	To delete word right				Ctrl+T
-	To reform current paragraph			Ctrl+B
-	To write down all changes			F10 (Ctrl+W)
+	Delete the current line 			Ctrl+Y
+	Delete word right				Ctrl+T
+	Reform current paragraph			Ctrl+B
+	Quit and save   				F10 (Ctrl+W)
+	Abort editing with confirmation 		Esc
+	Abort editing without confirmation		Alt+X
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="pp2">
-	 <h4>SUPPLEMENT II. THE MESSAGES.</h4>
-<pre>
+<p><HR><a name="pp2">
+<h4>SUPPLEMENT II. THE MESSAGES.</h4><pre>
 
-	At opening base the following messages can be given:
+The following messages could be shown at database opening.
 
-	&ltFileName > - is damaged or is blocked.
-	The heading of base is damaged or the base is locked by
-	other process, or the base is marked as Read Only
-	(I remind - BDBFS is Editor!).
+&lt;FileName> - is damaged or is blocked.
 
-	&lt;a name of a file > - is damaged.
-	There are damages to the list of fields of base or there are
+	The header of database is damaged or the base is locked by
+	other process, or the base is marked as Read Only. You could
+	download <a href="http://www.geocities.com/bondar_eugen/bdbfsmain#DownLoad">FREE BDBFS-Viewer</a> for working with Read Only files.
+
+&lt;FileName> - is damaged.
+
+	There are damages in the list of fields or there are
 	unsupported field type.
 
-	&lt; a name of a file > - incorrect format.
-	It is absolutely not DBF on structure or it is base with
-	unfamiliar type of a field. Try:
-		 BDBFS &lt; a name of a file > /FORCED
-
-
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="pp3">
-	 <h4>SUPPLEMENT III. Supported functions.</h4>
+<p><HR><a name="pp3">
+<h4>SUPPLEMENT III. Supported functions.</h4><pre>
 
-	As it was already noticed, it is possible to use almost all
-	system Clipper Functions.
+As it was already noticed, it is possible to use almost all
+system Clipper Functions.
 
 AADD		ABS		ACHOICE		ACLONE		ACOPY
 ADEL		ADIR		AEVAL		AFIELDS		AFILL
@@ -2227,35 +2438,35 @@ AINS		ALIAS		ALLTRIM		ARRAY		ASC
 ASCAN		ASIZE		ASORT		AT		BIN2I
 BIN2L		BIN2W		BOF		BREAK		CDOW
 CHR		CMONTH		COL		CTOD		CURDIR
-DATE		DAY		DAYS		DBAPPEND	DBCLEARFILTER
+DATE		DAY		DAYS		DBAPPEND  	DBCLEARFILTER
 DBCLEARINDEX	DBCLEARREL	DBCLOSEALL	DBCLOSEAREA	DBCOMMIT
-DBCOMMITALL	DBCREATE	DBCREATEINDEX	DBDELETE	DBEVAL
-DBF		DBFILTER	DBGOBOTTOM	DBGOTO		DBGOTOP
-DBRECALL	DBREINDEX	DBSEEK		DBSELECTAREA	DBSETFILTER
+DBCOMMITALL	DBCREATE  	DBCREATEINDEX	DBDELETE  	DBEVAL
+DBF		DBFILTER  	DBGOBOTTOM	DBGOTO		DBGOTOP
+DBRECALL  	DBREINDEX 	DBSEEK		DBSELECTAREA	DBSETFILTER
 DBSETINDEX	DBSETORDER	DBSETRELATION	DBSKIP		DBSTRUCT
-DBUNLOCK	DBUSEAREA	DELETED		DESCEND		DEVOUT
-DEVPOS		DIRECTORY	DISKSPACE	DISPBOX		DOW
-DTOC		DTOS		ELAPTIME	EMPTY		EOF
+DBUNLOCK  	DBUSEAREA 	DELETED		DESCEND		DEVOUT
+DEVPOS		DIRECTORY 	DISKSPACE 	DISPBOX		DOW
+DTOC		DTOS		ELAPTIME  	EMPTY		EOF
 EVAL		EXP		FCLOSE		FCOUNT		FCREATE
-FERASE		FIELDGET	FIELDNAME	FIELDPUT	FILE
+FERASE		FIELDGET  	FIELDNAME 	FIELDPUT  	FILE
 FLOCK		FOPEN		FOUND		FREAD		FREADSTR
 FRENAME		FSEEK		FWRITE		GETE		GETNEW
-HEADER		I2BIN		IF		INDEXKEY	INKEY
-INT		ISCOLOR		ISPRINTER	L2BIN		LASTKEY
+HEADER		I2BIN		IF		INDEXKEY  	INKEY
+INT		ISCOLOR		ISPRINTER 	L2BIN		LASTKEY
 LASTREC		LEFT		LEN		LENNUM		LOG
 LOWER		LTRIM		MAX		MAXCOL		MAXROW
-MEMOEDIT	MEMOREAD	MEMORY		MEMOWRIT
+MEMOEDIT  	MEMOREAD  	MEMORY		MEMOWRIT
 MIN		MOD		MONTH		NETERR		NEXTKEY
 PAD		PADC		PADL		PADR		PCOL
-PCOUNT		PROCNAME	PROW		QOUT		QQOUT
-RAT		READEXIT	READKEY		READMODAL	READVAR
-RECCOUNT	RECNO		RECSIZE		REPLICATE	RESTSCREEN
+PCOUNT		PROCNAME  	PROW		QOUT		QQOUT
+RAT		READEXIT  	READKEY		READMODAL 	READVAR
+RECCOUNT  	RECNO		RECSIZE		REPLICATE 	RESTSCREEN
 RIGHT		RLOCK		ROUND		ROW		RTRIM
 SAVESCREEN	SCROLL		SECS		SECONDS		SELECT
-SET		SETBLINK	SETCOLOR	SETCURSOR	SETKEY
+SET		SETBLINK  	SETCOLOR  	SETCURSOR  	SETKEY
 SETPOS		SOUNDEX		SPACE		SQRT		STR
 STRTRAN		STRZERO		STUFF		SUBSTR		TBCOLUMNNEW
-TBROWSEDB	TBROWSENEW	TIME		TONE		TRANSFORM
+TBROWSEDB  	TBROWSENEW	TIME		TONE		TRANSFORM
 TSTRING		TYPE		VAL		VALTYPE		UPDATED
 UPPER		USED		WORD		YEAR,
 
@@ -2270,16 +2481,16 @@ SIX Functions
 BAG2TAG		SXCHAR		SXDATE		SXLOG		SXNUM
 SX_BLOB2FILE	SX_DATEVAL	SX_DBFDECR	SX_DBFENCR	SX_DECRYPT
 SX_DTOP		SX_ENCRYPT	SX_FILE2BLOB	SX_FILEORDER	SX_FINDREC
-SX_FNAMEPARSER	SX_GETLOCK	SX_IDTYPE	SX_INDEXCOUNT	SX_INDEXNAME
+SX_FNAMEPARSER	SX_GETLOCK	SX_IDTYPE  	SX_INDEXCOUNT	SX_INDEXNAME
 SX_ISFLOCK	SX_ISLOCKED	SX_ISREADONLY	SX_ISSHARE	SX_KEYADD
 SX_KEYCOUN	SX_KEYDATA	SX_KEYDROP	SX_KEYGOTO	SX_KEYNO
 SX_KILLTAG	SX_MEMOBLK	SX_MEMOEXT	SX_ORDERCOUNT	SX_PTOD
-SX_RLOCK	SX_SETFILE	SX_SETMEMOBLOCK	SX_SETPASS	SX_SETTAG
+SX_RLOCK  	SX_SETFILE	SX_SETMEMOBLOCK	SX_SETPASS	SX_SETTAG
 SX_SLIMFAST	SX_TABLENAME	SX_TABLETYPE	SX_TAGCOUN	SX_TAGINFO
-SX_TAGNO	SX_TAGS		SX_TAGUNIQ	SX_VALDATE	SX_VFGET
+SX_TAGNO  	SX_TAGS		SX_TAGUNIQ	SX_VALDATE	SX_VFGET
 SX_WILDMATCH	SX_WILDSEEK
 
-M6_ADDSCOPED	M6_CHGOWNER	M6_DBEVAL	M6_DBFILTER	M6_FILTADDREC
+M6_ADDSCOPED	M6_CHGOWNER	M6_DBEVAL  	M6_DBFILTER	M6_FILTADDREC
 M6_FILTCHGREC	M6_FILTCOPY	M6_FILTCOUNT	M6_FILTDROPREC	M6_FILTINFO
 M6_FILTINVERSE	M6_FILTJOIN	M6_FREEFILTER	M6_GETAREAFILT	M6_ISFILTER
 M6_ISFILTREC	M6_ISOPTIMIZE	M6_NEWFILTER	M6_RECCOUNT
@@ -2292,174 +2503,196 @@ Nantucket Forum Functions
 FT_AADDITION	FT_AAVG		FT_ADESSORT	FT_AEMAXLEN	FT_AEMINLEN
 FT_AMEDIAN	FT_ANOMATCHES	FT_ASUM		FT_AT2
 FT_BYT2BIT	FT_BYT2HEX	FT_BYTEAND	FT_BYTENEG	FT_BYTENOT
-FT_BYTEOR	FT_BYTEXOR	FT_BITCLR	FT_BITSET	FT_D2E
-FT_DEC2BIN	FT_DOSVER	FT_E2D		FT_ELAPSED	FT_FDAY
+FT_BYTEOR  	FT_BYTEXOR	FT_BITCLR  	FT_BITSET  	FT_D2E
+FT_DEC2BIN	FT_DOSVER  	FT_E2D		FT_ELAPSED	FT_FDAY
 FT_FINDITH	FT_GCD		FT_GETE		FT_GETMODE	FT_INT86
-FT_ISBIT	FT_HEX2DEC	FT_ISBITON	FT_ISPrint	FT_LASTKEY
-FT_LDAY		FT_MADD		FT_METAPH	FT_NOOCCUR	FT_PUTKEY
-FT_ORIGIN	FT_RAND1	FT_ROUND	FT_SQZN		FT_SYSMEM
-FT_TEMPFIL	FT_UNSQZN	FT_WORKDAYS	FT_XTOY
+FT_ISBIT  	FT_HEX2DEC	FT_ISBITON	FT_ISPrint	FT_LASTKEY
+FT_LDAY		FT_MADD		FT_METAPH  	FT_NOOCCUR	FT_PUTKEY
+FT_ORIGIN  	FT_RAND1  	FT_ROUND  	FT_SQZN		FT_SYSMEM
+FT_TEMPFIL	FT_UNSQZN  	FT_WORKDAYS	FT_XTOY
 
 
 Netto Functions
 
-FN_BIN2HEX	FN_BIN2I	FN_CONNID	FN_CONNINF	FN_CONNNUM
-FN_DEFCID	FN_DEVTYPE	FN_ERROR	FN_FSNAME	FN_GETSN
-FN_HEX2BIN	FN_I2BIN	FN_INETADD	FN_NAMEL
-FN_NETVER	FN_NONULL	FN_OBJCNUM	FN_PEEKSTR	FN_PFCONID
-FN_POKESTR	FN_PRCONID	FN_SPFCID	FN_SPRCID	FN_STAADDR
-FN_WHOAMI	FN_WRCONNI	FN_WRFSNAM
+FN_BIN2HEX	FN_BIN2I  	FN_CONNID  	FN_CONNINF	FN_CONNNUM
+FN_DEFCID  	FN_DEVTYPE	FN_ERROR  	FN_FSNAME  	FN_GETSN
+FN_HEX2BIN	FN_I2BIN  	FN_INETADD	FN_NAMEL
+FN_NETVER  	FN_NONULL  	FN_OBJCNUM	FN_PEEKSTR	FN_PFCONID
+FN_POKESTR	FN_PRCONID	FN_SPFCID  	FN_SPRCID  	FN_STAADDR
+FN_WHOAMI  	FN_WRCONNI	FN_WRFSNAM
 
 
 FoxPro Functions
 
-ALEN		ANSITOOEM	ATC		BETWEEN		CDX
-CEILING		CHRTRAN		CTOT		DATETIME	DMY
-EVALUATE	FILTER		FLOOR		GOMONTH		INLIST
-ISBLANK		KEY		NDX		OCCURS		OEMTOANSI
-PI		PROPER		SEEK		SIGN
-SYS(2,3,5,6,12-16,21-23,1001,2000,2003,2012,2020,2021)
+ALEN		ANSITOOEM  	ATC		BETWEEN		BINTOC
+CDX		CEILING		CHRTRAN		CTOBIN		CTOT
+DATETIME  	DMY		EVALUATE  	FILTER		FLOOR
+GOMONTH		ID		INLIST		ISBLANK		KEY
+NDX		OCCURS		OEMTOANSI  	PI		PROPER
+SEEK		SIGN
+SYS(0-3,5,6,10-16,21-23,1001,2000,2003,2012,2020,2021)
 
 
 Clipper Tools Functions
 
-CTOF	FTOC	XTOC	LIKE
+CTOF            FTOC            XTOC            LIKE            Expand
+CharOnly        CharRem         CharSpread
 
-
-The functions is determined specially for BDBFS are described in the
+The functions are defined specially for BDBFS are described in the
 SUPPLEMENT IV.
 
 
 
 <center><form>
-<input type="button" value="To content" onClick="window.location.href='#contents'">
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
 </form></center>
-<p><hr><a name="pp4">
-	 <h4>SUPPLEMENT IV. BDBFS-PRO.</h4>
+<p><HR><a name="pp4">
+<h4>SUPPLEMENT IV. BDBFS-PRO.</h4><pre>
 
 	This supplement is intended for wishing as much as possible
 fully to master BDBFS. This is an information about calling of BDBFS
 procedures and functions, and also using of internal variables.
 
+<a name="pp4a">
+<h5>A. System variables.</h5><pre>
 
-	 <h5>A. System variables.</h5><pre>
+You can somehow use in expressions (examples was above)
+the following variables:
 
-	You can somehow use in expressions (examples was above)
-	the following variables:
-								Default
-Variable conditions:						-------
-	Condition Locate			_LCONDIT	  ""
-	Expression of search			_GSearch	  ""
-	Condition Seek				_FCONDIT	  ""
-	Condition Sum				_SumCOND	  ""
-	Condition Print				_PCOND		  ""
-	Condition Count				_CountCOND	  ""
-	Condition Delete			_DelCOND	  ""
-	Condition of calculation		_ECOND		  ""
-	Condition Replace			_RCOND		  ""
-	Expression Replace			_Repl		  ""
-	Condition of the filter			_FltrCond	  ""
-	Condition of sorting			_SortCond	  ""
-	File sorting				_SortFile	  ""
-	Expression of sorting			_ckSort		  ""
-	Field of copying			_ckField	  ""
-	Condition of illumination		_cb		  ""
-	Condition of an index (tag)		_IndexFor	  ""
-	Global history of conditions		_aGlbHcond	  {}
+                                                                Default
+Variables of conditions:                                        -------
+	Condition Locate                	_LCONDIT  	  ""
+	Expression of search            	_GSearch  	  ""
+	Condition Seek                  	_FCONDIT  	  ""
+	Condition Sum                   	_SumCOND  	  ""
+	Condition Print                 	_PCOND		  ""
+	Condition Count                 	_CountCOND	  ""
+	Condition Delete                	_DelCOND  	  ""
+	Condition of calculation        	_ECOND		  ""
+	Condition Replace               	_RCOND		  ""
+	Expression Replace              	_Repl		  ""
+	Condition of the filter         	_FltrCond 	  ""
+	Condition of sorting            	_SortCond 	  ""
+	File sorting                    	_SortFile 	  ""
+	Condition of TOTAL              	_TotalCond	  ""
+	File TOTAL                      	_TotalFile	  ""
+	Expression of sorting           	_ckSort   	  ""
+	Field of copying                	_ckField  	  ""
+	Condition of Export to HTML     	_HtmlCond 	  ""
+	File HTML                       	_HtmlFile 	  ""
+	Condition of Export to XML      	_XmlCond  	  ""
+	File XML                        	_XmlFile  	  ""
+	Condition of Export to XML      	_XmlCond  	  ""
+	File XML                        	_XmlFile  	  ""
+	Condition of highlighting       	_cb	  	  ""
+	Condition of an index (tag)     	_IndexFor 	  ""
+	Global history of conditions    	_aGlbHcond	  {}
 
 Variables of results:
 	Last sum				__Sum		  0
-	Last count				__Count		  0
-	Last result				__Go		  0
+	Last count      			__Count		  0
+	Last result     			__Go		  0
 	ClipBoard contents			_ClipText	  {}
-	Choice from it				_ClipChoice	 .T.
-	Windows clipboard OEM/ANSI		_lCnvWClip	 .T.
-	converting
-	Directory of transition			_newDir		  ""
-	Quantity of processed records		_Tally		  0
-	Global history of results		_aGlbHRes	  {}
+	Choice from it  			_ClipChoice	 .T.
+	Windows clipboard			_lCnvWClip	 .T.
+	OEM/ANSI converting
+	Directory of transition 		_newDir		  ""
+	Quantity of processed   		_Tally		  0
+	records
+	Global history of results		_aGlbHRes 	  {}
 
 Configuration of a printing:
-	Centering of numbers			_NeedCentr	  .F.
+	Centering of numbers    		_NeedCentr	  .F.
 	Whether to print 0 when number=0	_PrintZero	  .F.
-	Whether to print numbers of records	_NeedRec	  .T.
-	Needing of heading on each page		_NeedHeadPage	  .T.
-	Needing of numbers of pages		_NeedPrPage	  .T.
-	Eject after each page			_NeedEject	  .F.
-	Starting sequence of the printer	_PSCode		  ""
-	Ending sequence of the printer		_PECode		  ""
-	Left border				_LMargin	  0
-	Length of page				_Plength	  0 (tapes)
-	Needing of standard heading		_NeedMainHead	  .T.
-	Print device				_printer	  PRN
+	Whether to print numbers of records	_NeedRec  	  .T.
+	Title on each page			_lTitleAll	  .F.
+	Header on each page     		_NeedHeadPage	  .T.
+	Head's numbers: on first page   	_lDgtHdr  	  .F.
+			on other pages  	_lHdAll		  .F.
+	Numbers of pages			_NeedPrPage	  .T.
+	Eject after each page   		_NeedEject	  .F.
+	Starting sequence of the printer	_PSCode   	  ""
+	Ending sequence of the printer  	_PECode   	  ""
+	Left border     			_LMargin  	  0
+	Length of page  			_Plength  	  0(tapes)
+	Standard header 			_NeedMainHead	  .T.
+	Print device    			_printer  	  PRN
 	Whether to append to a file		_NeedApFile	  .F.
-	Whether to summarize numerical fields	_NeedSum	  .T.
-	Width of Memo-fields			_MemoPrnt	  50
-	Maximum number of lines in Memo-fields	_MemoNumLines	  10
-	Symbol divider of cells			_DefaultBorder	   :
+	Whether to summarize    		_NeedSum  	  .T.
+	numerical fields
+	Width of Memo-fields    		_MemoPrnt	  50
+	Maximum number of lines 		_MemoNumLines	  10
+	in Memo-fields
+	Symbol divider of cells:
+			in body 		_DefaultBorder	  :
+			in header		_DefaultHBorder	  :
 
 Color scale:
-	Primary color			_Bm	'7/1,0/3,N,4/7,7/4,7+/1,7+/4'
+	Primary color   		_Bm	'7/1,0/3,N,4/7,7/4,7+/1,7+/4'
 	Help and inquiries		_Im		'n/w+,g+/n'
-	Results				_CM		'Gr+/N,W+/B'
-	Menu				_MenuColor	'Gr+/b, g+/b'
-	Unchoosable elements of menu	HiddenColor	'w/b'
-	Headings of panels		_HdColor	'G+/b*'
+	Results 			_CM		'Gr+/N,W+/B'
+	Menu    			_MenuColor	'Gr+/b, g+/b'
+	Unchoosable     		HiddenColor	'w/b'
+	elements of menu
+	Headings of panels		_HdColor   	'G+/b*'
 
 The interface:
-	Step of the indicator		_Sx_Step	100
-	Indicator			_lMeter		.T.
-	Editor of memo and wide fields	_MemoEditor	""  (built - in)
-	Viewer of files			_TextViewer	""  (built - in)
-	Step of tabulation in memo	_nMemoTab	8
+	Indicator's step		_Sx_Step	100
+	Indicator			_lMeter 	.T.
+	Editor of memo  		_MemoEditor	""  (built - in)
+	and wide fields
+	Viewer of files 		_TextViewer	""  (built - in)
+	Step of tabulation		_nMemoTab	8
+	in memo
 	Memo line length		_nMemoWrap	255
 	Gauging time of execution	_Timing		.T.
 	Width of display of file	_DirShow	16
 	names in Filer
-	Extensions associations		__aExt		{}
+	Extensions associations 	__aExt		{}
 	in Filer
 	(array structure: {{mask1,command1},{mask2,command2}...} )
 
-
 Other:
 	Current base			_base
-	Current index file		_oldind
+	Current index file  		_oldind
 	TBrowse object			_BDBFBrow
 	Current field			_C_F
 	Current field context		__Content
 	Current tag			_TagName
 	Current cdx			__CDX
 	Mask of files			_Mask		'*.dbf '
-	Current RDD			_DefaultRDD	'SIXCDX'
+	Current RDD			_DefaultRDD	'DBFCDX'
 	Current memo extension		_DefaultMemo	'FPT'
 	Current cdx extension		_DefaultCDX	'.CDX '
 	User menu
-		Line			UserMenuPrompts {}
-		Action			UserMenuActs	{}
-	Auto-saving environment		_AutoSave	.F.
-	Auto-restoring environment	_AutoRestore	.F.
-	"Standard" keyboard		_Usa_Keyboard	'QWERTY......'
-	"My" keyboard			_My_Keyboard	'âñìäÖç......'
-	DOS char set			_Oem_Set	'ÄÅÇÉÑÖ......'
-	WINDOWS char set		_Ansi_Set	'¿¡¬√ƒ≈......'
-	Max fields in browse		_nBrowMaxField  170
-	Max UNDO count			_UndoSize	1024
-	"Forced" mode			_lForced	.F.
+		Line			UserMenuPrompts	 {}
+		Action			UserMenuActs	 {}
+	Auto-saving environment		_AutoSave   	.F.
+	Auto-restoring environment  	_AutoRestore	.F.
+	Standard keyboard             	_Usa_Keyboard	'QWERTY......'
+	National keyboard             	_My_Keyboard	'âñìäÖç......'
+	DOS char set			_Oem_Set    	'ÄÅÇÉÑÖ......'
+	WINDOWS char set              	_Ansi_Set   	'¿¡¬√ƒ≈......'
+	Max fields in browse		_nBrowMaxField	170
+	Max UNDO count			_UndoSize   	1024
+	"Forced" mode			_lForced    	.F.
+	OEM-to-ANSI request at export	_lexp_o2aq  	.T.
+	OEM-to-ANSi necessity		_lexp_o2    	.T.
+	Plugin's search path		_PlugDir    	Path to bdbfs/PLUGINS
 
 
+<a name="pp4b">
+<h5>B.Called functions.</h5><pre>
 
-	 <h5>B.Called functions.</h5><pre>
-
-	It is possible to call any internal function BDBFS, as well as
+It is possible to call any internal function BDBFS, as well as
 system in any modes. It looks more natural to use this in a mode of
-calculation (<font color="blue">Shift+F6, Alt+G, ?</font>),or in a mode of assignment (<font color="blue">Ctrl+F5</font>).
+calculation (<tt>Shift+F6, Alt+G, ?</tt>),or in a mode of assignment (<tt>Ctrl+F5</tt>).
 
-	Examples:
-		<font color="blue">Alt+G</font>		Aver('Example')
-		<font color="blue">Ctrl+F5</font>	avrg=Aver('Example')
+<em>Examples:</em>
+	<tt>Alt+G</tt>		Aver('Example')
+	<tt>Ctrl+F5</tt>	avrg=Aver('Example')
 
-	For presentation of the explanatory we shall conduct on
-	educational base
+For presentation of the explanatory we shall conduct on educational base
 
 	NAME	S02	S03	S04
 	Your	12	1	13
@@ -2467,73 +2700,72 @@ calculation (<font color="blue">Shift+F6, Alt+G, ?</font>),or in a mode of assig
 	My	10	3	10
 	My1	30	4	0
 
-
+<a name="pp4b1">
 <h6>1. Functions of calculation.</h6><pre>
 
-<hr>
-		SUM( &lt;cExpr> [, &lt;cCond>] ) - > nResult
+<a name="pp4Sum">
+	SUM( &lt;cExpr> [, &lt;cCond>] ) --> nResult
 
-	Sum base on expression cExpr for a condition cCond.
-	Returns Number.
+Sum base on expression cExpr for a condition cCond.
+Returns Number.
 
-	Examples:
-		<font color="blue">Alt+G</font>	(1)	Sum ('S02+S03', '[My] $ Name')
+<em>Examples:</em>
+	<tt>Alt+G</tt>	(1)	Sum ('S02+S03', '[My] $ Name')
 			(2)	Sum ('S02', '.t.')
-
 
 	(1) will return 47	(2) - 84
 
-	If &lt;cCond> is omitted, the scope is all records.
+If &lt;cCond> is omitted, the scope is all records.
 
-	Except for returned value the result is remembered in variable
-		__Sum
+Except for returned value the result is remembered in variable
+	__Sum
 
-<hr>
-		AVER(&lt; cExpr > [, &lt; cCond >]) - > nResult
+<HR>
+	AVER(&lt;cExpr> [, &lt;cCond>]) --> nResult
 
-	Calculates average on expression cExpr for a condition cCond.
-	Returns Number.
+Calculates average on expression cExpr for a condition cCond.
+Returns Number.
 
-	If second parameter is omitted, it is meant .t.
+If second parameter is omitted, it is meant .t.
 
-	Example:
-		<font color="blue">Ctrl+F5</font>  MediumS2=Aver('S02', '[My] $ Name')
+<em>Example:</em>
+	<tt>Ctrl+F5</tt> MediumS2=Aver('S02', '[My] $ Name')
 
-		will return 21
+	will return 21
 
-<hr>
-		COUN(&lt; cCond >) - > nResult
+<HR>
+	COUN(&lt;cCond>) --> nResult
 
-	Counts up quantity of records satisfying to a condition cCond.
+Counts up quantity of records satisfying to a condition cCond.
 
-	Example:
-		<font color="blue">Ctrl+F5</font>  CntMy=Coun ('[My] $ Name')
+<em>Example:</em>
+	<tt>Ctrl+F5</tt>  CntMy=Coun ('[My] $ Name')
 
-		will return 2
+	will return 2
 
-	If second parameter is omitted, it is meant .t.
+If second parameter is omitted, it is meant .t.
 
-	Except for returned value the result is remembered in variable
-		__count
+Except for returned value the result is remembered in variable
+	__count
 
-<hr>
-		SumLine([&lt;FromField>], [&lt;ToField>]) - > nResult
+<HR>
+	SumLine([&lt;FromField>], [&lt;ToField>]) --> nResult
 
-	Summarizes fields "lengthways" records, from &lt;FromField> up to
+Summarizes fields "lengthways" records, from &lt;FromField> up to
 &lt;ToField>. Default FromField is first field, ToField - last field.
-	The non-numerical fields are ignored.
+The non-numerical fields are ignored.
 
-	Examples: (for the first record)
-		SumLine()	- > 26
-		SumLine(1,2)	- > 12
-		SumLine(3)	- > 14
+<em>Examples:</em> (for the first record)
+	SumLine()	--> 26
+	SumLine(1,2)	--> 12
+	SumLine(3)	--> 14
 
-	Except for returned value the result is remembered in variable
-		__Go
-<hr>
-		Like(&lt;cEtalon>, &lt;cTest>)
+Except for returned value the result is remembered in variable
+	__Go
+<HR>
+	Like(&lt;cEtalon>, &lt;cTest>)
 
-	Determines whether or not a character expression is contained in
+Defines whether or not a character expression is contained in
 another expression. LIKE() returns true (.T.) if &lt;cEtalon> matches
 &lt;cTest>. &lt;cEtalon> can contain the wildcard characters * and ?. The
 question mark matches any single character in &lt;cTest> and the asterisk
@@ -2542,199 +2774,259 @@ characters in any combination in &lt;cEtalon>. The function has shown the
 same high-speed results, as same function of Clipper Tools (probably,
 algorithm is same). But EXE is 0.5K less :-) .
 
-	Examples:
-		<font color="blue">F7</font> Like ('spr*.dbf', FileName)
+<em>Examples:</em>
+	<tt>F7</tt> Like ('spr*.dbf', FileName)
 
-		<font color="blue">Alt+G</font> Like ('?m*h', 'smith') - > .t.
+	<tt>Alt+G</tt> Like ('?m*h', 'smith') --> .t.
 
-<hr>
-		Crc32(&lt; cExpr >)
+<HR>
+	Crc32(&lt;cExpr>)
 
-	Calculates the control sum of a line.
-	The algorithm of PKZIP is used.
+Calculates the check sum of a line. The algorithm of PKZIP is used.
 
-	Example: the control sum of all fields:
-		Crc32(Name+XTOC(s02) +XTOC(s03) +XTOC(s04))
+<em>Example:</em> the check sum of all fields:
+	Crc32(Name+XTOC(s02) +XTOC(s03) +XTOC(s04))
 
-<hr>
-		Rand([&lt; nExpr >])
+<HR>
+	Rand([&lt;nExpr>])
 
-	Returns a random number in a range from 0 up to 1.
-	From everyone ExprN the identical sequence comes back.
+Returns a random number in a range from 0 up to 1.
+Everyone ExprN give birth to the identical sequence.
 
-	Example: Rand(Seconds())
+<em>Example:</em> Rand(Seconds())
 
-<hr>
-		Random(&lt; nMin >, &lt; nMax >)
+<HR>
+	Random(&lt;nMin>, &lt;nMax>)
 
-	Returns random integer in range from nMin up to nMax.
+Returns random integer in range from nMin up to nMax.
 
-	Example: Random(0,1000)
+<em>Example:</em> Random(0,1000)
 
-<hr>
-		RoundIt(&lt;nVar>,&lt;nPlace)
+<HR>
+	RoundIt(&lt;nVar>,&lt;nPlace>)
 
-	Correct rounding off. Clipper not always correctly carries out
+Correct rounding off. Clipper not always correctly carries out
 operation of a rounding off.
 
-	Example:
-		Round(1.025,2)		-->	1.02
-		RoundIt(1.025,2)	-->	1.03
+<em>Example:</em>
+	Round(1.025,2)		--> 1.02
+	RoundIt(1.025,2)	--> 1.03
 
 
+<a name="pp4b2">
 <h6>2. Functions of transformation</h6><pre>
 
-<hr>
-		Capitalz(&lt;cExpr>) - > ExprC
+	Capitalz(&lt;cExpr>)	--> ExprC
 
-	Returns the specified character expression with initial letter
+Returns the specified character expression with initial letter
 capitalized and the remaining characters lowercase.
 
-	Returns the empty line if parameter is absent.
+Returns the empty line if parameter is absent.
 
-	Example:
-		Capitalz('LUGANSK')	- >  Lugansk
+<em>Example:</em>
+	Capitalz('LUGANSK')	-->  Lugansk
 
-<hr>
-		OemToAnsi(&lt;cExpr>)
+<HR>
+	Padj(&lt;ExprC>,&lt;cAlign>,&lt;cFill>,&lt;nLen>) --> ExprC
 
-	Converts each character in a character expression to the
+Align the specified character expression with a fill character
+to create a new character string of a length &lt;nLen>
+(default: current field's length).
+
+&lt;cAlign> defines the method of aligning:
+	"L" - String is aligned to left side.
+	"C" - String is centered.
+	"R" - String is aligned to right side.
+	"J" - String is justified.
+	"E" - String is expanded.
+
+Default &lt;cFill> is space.
+
+<em>Example:</em>
+	//Current field length is 12.
+	PADJ("Report",'C')		--> "   Report   "
+	PADJ("Report",'E')		--> "R e p o r t "
+	PADJ("My Report",'J','.',14)	--> "My      Report"
+
+<HR>
+	OemToAnsi(&lt;cExpr>)
+
+Converts each character in a character expression to the
 corresponding character in the ANSI character set (default: 1251).
 
-	You can change the char set to your own, to change variables
-	_Oem_Set, _Ansi_Set in BDBFS.INI.
+You can change the char set to your own, by defining the variables
+_Oem_Set, _Ansi_Set in BDBFS.INI.
 
-	Example:
-		OemToAnsi('ãìÉÄçëä')	--> À”√¿Õ— 
+<em>Example:</em>
+	OemToAnsi('ãìÉÄçëä')	--> À”√¿Õ— 
 
-<hr>
-		AnsiToOem(&lt;cExpr>)
+<HR>
+	AnsiToOem(&lt;cExpr>)
 
-	Inverse function to OemToAnsi() .
+Inverse function to OemToAnsi().
 
-<hr>
-		SplitLine(&lt;cExpr>)
+<HR>
+	SplitLine(&lt;cExpr>)
 
-	Transform the specified character expression to an array.
-	Array's elements are separated by points.
+Transform the specified character expression to an array.
+Array's elements are separated by points.
 
-	Example:
-		SplitLine('One,Two,Three') - > {'One', 'Two', 'Three'}
+<em>Example:</em>
+	SplitLine('One,Two,Three') --> {'One', 'Two', 'Three'}
 
-<hr>
-<a name="pp4dbTrans">		dbTrans(cNewBase, Fields [, bFor, bWhile, nNext, lRest])
+<HR>
+<a name="pp4dbTrans">	dbTrans(cNewBase, Fields [, bFor, bWhile, nNext, lRest])
 
-	Copies the current base with an opportunity of renaming or
+Copies the current base with an opportunity of renaming or
 transformation of fields.
-	The list of fields is set in inverted commas (as a line), or as
+
+The list of fields is set in inverted commas (as a line), or as
 the array (that is necessary at the giving of expressions with points).
-	If the calculated fields are not given in the list of fields, the
+
+If the calculated fields are not defined in the list of fields, the
 function works completely as system command COPY.
-	See also <a href="#p5">topic 5.Append/Copy</a> of the present description.
 
-	Examples:
-		DBTrans('NewFile','Char,Num AS Digit,Num*2 AS Double')
+See also <a href="#p5">topic 5.Append/Copy</a> of the present description.
 
-		DBTrans('NewFile',{'LEFT(Char,2) AS Symbol','Num'},;
-			{||Num # 0})
+<em>Examples:</em>
+	DBTrans('NewFile','Char,Num AS Digit,Num*2 AS Double')
 
-<hr>
-<a name="pp4Tb2Html">		TB2Html([cHtmlFile, cTitle, aDesign])
+	DBTrans('NewFile',{'LEFT(Char,2) AS Symbol','Num'}, {||Num # 0})
 
-	Transforms the current TBrowse object to a format HTML.
-If the name of a file is not given - it is requested. An array
-of colors aDesign has structure:
-		{page background color,
-		table background,
-		text color for table and header,
-		text color for deleted records}.
-	Default: "navy","blue","white","red".
+<HR><a name="pp4Tb2Html">
+	TB2Html([&lt;cHtmlFile>] [, &lt;cTitle] [, &lt;aDesign>])
 
-		Example:
+Exports the database to a format HTML. If the name of a file is
+not defined - it is requested.
 
-		Tb2Html('MyBase','WWW FOREVER!',;
-			{'fffffc0','fffff80','00000ff','black'})
+Title of a file (cTitle) is database name by default.
+
+An array of colors aDesign has structure:
+
+	{page background color,
+	table background,
+	text color for table and header,
+	text color for deleted records}.
+
+Default: "navy","blue","white","red".
+
+<em>Example:</em>
+
+	Tb2Html('MyBase','WWW FOREVER!',;
+		{'fffffc0','fffff80','00000ff','black'})
 
 
-<h6>3. Other.</h6><pre>
+<HR><a name="pp4Tb2Xml">
+	TB2Xml([&lt;cXmlFile>] [, &lt;cTitle] [, &lt;lYesNo>] [, &lt;cRecName>])
 
-<hr>
-		ModiFile(cFileName)	- > .T. at successful record
+Exports the database to a format XML. If the name of a file is
+not defined - it is requested.
 
-	Elementary text editor. As uses MemoEdit, it can edits files up
+If parameter lYesNo==.T. than the words "Yes" / "No" are used for logical
+values, otherwise - "1"/"0" constants.
+
+The parameter cRecName defines tag's name for records (by default it is
+word "Record").
+
+<em>Example:</em>
+	Tb2Xml('MyBase',,"Employes",.T.)
+
+<HR><a name="pp4Tb2Xls">
+	TB2Xls([&lt;cXlsFile>] [, &lt;cTitle] [, &lt;lYesNo>] )
+
+Exports the database to a format XLS. If the name of a file is
+not defined - it is requested. If title of sheet (cTitle) is defined it
+is placed into first row of XLS-file.
+
+If parameter lYesNo==.T. than the words "Yes" / "No" are used for logical
+values, otherwise - .T./.F. constants.
+
+<em>Example:</em>
+	Tb2Xls('MyBase',"Sellers")
+
+<a name="pp4b3">
+<h6>3. Other system functions.</h6><pre>
+
+<HR>
+	ModiFile(&lt;cFileName>)	--> .T. at successful record
+
+It is an elementary text editor. As uses MemoEdit, it can edits files up
 to 64K. In conditions of small amount of memory, this size can decrease.
 
-		Example:
-			ModiFile('c:\config.Sys')
+<em>Example:</em>
+	ModiFile('c:\config.Sys')
 
-<hr>
-		Scatter()
+<HR>
+	Scatter()
 
-	Writes down contents of the current record in a array with a name
-_Scatter. The attribute of deleting enters in last element of an array.
+Copies data from the current record to an array with a name _Scatter.
+The attribute of deleting enters in last element of an array.
 
-<hr>
-		Gather()
+<HR>
+	Gather()
 
-	Writes down in the current record an array with a name _Scatter,
-usually created by function Scatter().
+Replaces the data in the current record with data from an array with a
+name _Scatter, usually created by function Scatter().
 
-<hr>
-		SWAP(recno1, recno2)
+<HR>
+	SWAP(recno1, recno2)
 
-	Exchanges the contents of records with physical numbers
+Exchanges the contents of records with physical numbers
 recno1, recno2 through the internal buffer.
 
-		Example:
-			Swap(1,3)
+<em>Example:</em>
+	Swap(1,3)
 
-<hr>
-		WORK(HEAD) - > cResult
+<HR>
+	WORK(HEAD) --> cResult
 
-	Defines the true name of a field on heading.
-It is useful in case of the setting of fields by <font color="blue">Ctrl+F2</font>, when you
-don't remember the real field's name, and its name should be specified,
-for example, in the search expression.
+Defines the true name of a field on heading.  It is useful in case of the
+setting of fields by <tt>Ctrl+F2</tt>, when you don't remember the real
+field's name, and its name should be specified, for example, in the
+search expression.
 
-		Example:
-			Work('My name for 2 field') - > 'S02'
+<em>Example:</em>
+	Work('My name for 2 field') --> 'S02'
 
-<hr>
-		FindMax(NeedMax [, FieldName], [EvalBlock]) - > MaxVal
+<HR>
+	FindMax(NeedMax [, FieldName], [EvalBlock]) - > MaxVal
 
-	Universal function of searching of a maximum / minimum.
-		Parameters:
-			NeedMax - .T., if the maximum is necessary,
-				  .F. - minimum
-			FieldName - field or expression, by default -
-				    current field.
-			EvalBlock - block of a code calculated for
-				    comparison, by default - value
-				    FieldName ({|i| i})
+The universal function of searching of a maximum / minimum.
 
-		Examples:
+<em>Parameters:</em>
+	NeedMax - .T., if the maximum is necessary,
+		  .F. - minimum
+	FieldName - field or expression, by default -
+			current field.
+	EvalBlock - block of a code calculated for
+			comparison, by default - value
+			FieldName ({|i| i})
 
-			FindMax(.T.,'S02 ') - > 32
+<em>Examples:</em>
 
-			FindMax(.F.,'S02 ') - > 10
+	FindMax(.T.,'S02 ') - > 32
 
-// Length the longest name
+	FindMax(.F.,'S02 ') - > 10
 
-		FindMax(.T.,'Name ',{|i |Len(Trim (i))}) -> 5
-		(is found ' Your1 ')
+//Length of the longest name
 
-<hr>
-		PrintEdit([cFileName])
+	FindMax(.T.,'Name ',{|i |Len(Trim (i))}) -> 5
+	(is found ' Your1 ')
 
-	Prints the current record on the device of a printing
+<HR>
+	PrintEdit([cFileName])
+
+Prints the current record on the device of a printing
 (default-printer) in an unwrapped kind.
-	By pressing <font color="blue">Alt+P</font> in BDBFS - into the file with a name
+
+By pressing <tt>Ctrl+P</tt> in BDBFS - into the file with a name
 &lt;CurrentBase>.Rec.
-	Appending/rewriting of a file depends on the appropriate
-adjustment printer.
+
+Appending/rewriting of a file depends on the appropriate printer's
+setting.
 
 
-	<font color=magenta>Example:</font>
+<em>Example:</em>
 
 				NEW.DBF Record 1
 	----------------------------------------
@@ -2743,43 +3035,227 @@ adjustment printer.
 	S03				1
 	S04				13
 
-<hr>
-<a NAME="pp4for">
-		For(&lt; nFrom >, &lt; nTo >, &lt; bEval >, &lt; bFor > )
+<HR>
+<a name="pp4for">
+	For(&lt;nFrom>, &lt;nTo>, &lt;bEval>, &lt;bFor> )
 
-	"FOR" cycle. Could be useful, for example, in INI-files.
+"FOR" cycle. Could be useful, for example, in <a href="#p16">INI-files</a>.
 Codeblock bEval is executed when Eval(bFor)==.T..
 The cycle variable is transferred to the bEval and bFor as parameter.
 bEval and bFor can be of Codeblock or Character type.
 
-	Examples:
-		cSet:=''
-		For(1,254,{|_1|cSet:=cSet+CHR(_1)}) --> '...˛'
+<em>Examples:</em>
+	cSet:=''
+	For(1,254,{|_1|cSet:=cSet+CHR(_1)}) --> '...˛'
 
-		nSum:=0
-		For(1,FCOUNT(),{|i| nSum:=nSum+FIELDGET(i)**2},;
-		    {|i| VALTYPE(i)=='N'})
+	nSum:=0
+	For(1,FCOUNT(),{|i| nSum:=nSum+FIELDGET(i)**2},;
+	    {|i| VALTYPE(i)=='N'})
 
-		nSum:=0
-		For(1,FCOUNT(), "nSum:=nSum+MyField**2")
+	nSum:=0
+	For(1,FCOUNT(), "nSum:=nSum+MyField**2")
 
-	Some examples are in PLUGINS directory.
+Some examples are in PLUGINS directory.
 
-<hr>
-		While(&lt;bCondition>, &lt;bEval> [,&lt;bFor>] [,&lt;lBase>])
+<HR>
+	While(&lt;bCondition>, &lt;bEval> [,&lt;bFor>] [,&lt;lBase>])
 
-	"WHILE" cycle. If lBase==.T., SKIP is executed after each bEval.
-	bCondition, bEval and bFor can be of Codeblock or Character type.
+"WHILE" cycle. If lBase==.T., SKIP is executed after each bEval.
+bCondition, bEval and bFor can be of Codeblock or Character type.
 
-	Example:
-		cName:=''
-		While( '!EOF()', {|| cName+= Name},,.T.)
+<em>Example:</em>
+	cName:=''
+	While( '!EOF()', {|| cName+= Name},,.T.)
 
-	Result:	'YourYour1MyMy1'
+Result:	'YourYour1MyMy1'
 
-		cName:=''
-		While( '!EOF()', {|| cName+= Name},'s02<30',.T.)
+	cName:=''
+	While( '!EOF()', {|| cName+= Name},'s02&lt;30',.T.)
 
-	Result:	'YourMy'
+Result:	'YourMy'
 
-	Some examples are in PLUGINS directory.
+Some examples are in PLUGINS directory.
+
+<a name="pp4b4">
+<h6>4. Interface functions.</h6><pre>
+
+These functions are usually used in plug-ins. See also
+include file BDBFS.CH, improving use of these functions.
+
+<HR>
+	NFIND((&lt;_mess>,[&lt;_var>],[&lt;_color>],[&lt;_Footer>],;
+		[&lt;lNeedTone>],[&lt;nTimeWait>],;
+		[&lt;nlShine>],[&lt;nMuch)] )
+
+The universal function for result's show.
+
+<em>Parameters:</em>
+	_mess - any datatype's message.
+	_var - the result's variable. If defined then:
+		- the result is written in global history;
+		- some additional actions are allowed with
+		  result (f.e. it could be placed into the
+		  field by pressing hot-key).
+	_color - the color of message, default is defined
+		 in variable _im.
+	_Footer - the message on bottom border.
+	lNeedTone - the necessity of beep.
+	nTimeWait - the duration of show in seconds,
+		    default - until any key pressing.
+	nlShine - the position of highlighted symbols in message.
+	nMuch - number of highlighted symbols
+
+<em>Examples:</em>
+	Nfind('Ready')
+
+	Nfind('Nfind',,,,.T.)	//with beep
+
+	Nfind(Date(),,,'Today:')
+
+	Nfind(Directory('*.DBF'))	//Array example
+
+	nSum:=Sum('s01+s02+s03')
+	Nfind(nSum, nSum, ,'Sum result',.T., 30)
+
+	Nfind(nls,,,'Check Digit is highlighted',,,,5,1)
+
+<HR>
+	Meter(&lt;nStep>,[&lt;cMsg>],[&lt;nCurr>],[&lt;nTotal>])
+
+The universal progress-indicator.
+
+<em>Parameters:</em>
+	nStep - phase. Legitimate values:
+		1 - Start (initial screen's painting)
+		2 - Show (paint current position)
+		3 - Finish (restore screen)
+
+	cMsg - warning mess, default: "Wait..."
+	nCurr - ordinal number of current record, default:
+	        KeyNo() with active index and Recno() without it.
+	nTotal - number of all records to process taking into
+		consideration database filter, active index and
+		scope (All/Rest).
+
+<em>Example:</em>
+	Meter(1, 'CHECK'S SUM PRODUCING')
+	GO TOP
+	_tally:=0
+	WHILE !EOF()
+		_Field->Crc:=Crc32( Name+XTOC(s02)+XTOC(s03))
+		IF RECNO()-_tally > 10
+			_tally:=RECNO()
+			Meter(2)
+		ENDIF
+	ENDDO
+	Meter(3)
+
+<HR>
+	CheckEsc([&lt;lStart>],[&lt;nTotal>]) -->lContinue
+
+The function organizes the calling of progress-indicator
+with interval defined in system variable _SX_STEP, with checking
+of process interrupting by pressing ESC.
+
+<em>Example:</em>
+	Meter(1)
+	CheckEsc(.T.)	//Clear counter
+	DO WHILE CheckEsc()
+		...
+	ENDDO
+	Meter(3)
+
+<HR>
+	CheckFound([&lt;lFnd>])
+
+The function:
+	- Close Meter(),
+	- when lFnd and !FOUND() says, that search was
+	  unsuccessful, otherwise reports the readiness.
+
+<HR>
+	GetName(&lt;chead>,&lt;_varName>,[&lt;cMask>],[&lt;cGetMask>],;
+		[&lt;lCanSelect>],[&lt;lReturn>],[&lt;lPsw>]) -->lRes
+
+The universal function of dialogue for inputting any values.  Could offer
+the choice from History, picking file in Filer, field list selection.
+
+<em>Parameters:</em>
+	cHead - window's title.
+	_VarName - variable's name. Must begin from symbol _.
+	cMask - mask for picking file in filer (through F9).
+	cGetMask - input pattern.
+	lCanSelect - if equal .T. dialogue of field list
+		     selection (through Alt+F2) is added.
+	lReturn -  if equal .T. then always return to
+		    initial directory after filer.
+	lPsw - the password's mode (symbols are not displayed).
+
+<em>Examples:</em>
+
+	m->_OutFile:='CopyFile'
+	IF GetName('Define the filename for copy','_Outfile')
+		__CopyFile('MyFile.DBF',_OutFile)
+	ENDIF
+
+	IF GetName("Specify the fields for processing", '_ckField',,,.T.)
+		...
+	ENDIF
+
+	IF GetName('File to delete','_DelFile', '*.BAK',,,.T.)
+		FERASE(_DelFile)
+	ENDIF
+
+<HR>
+	Panel(&lt;nTop>,&lt;nLeft>,&lt;nBottom>,&lt;nRight>,;
+	      &lt;aMess>,&lt;aColor>,&lt;nBottomBord>)
+
+Draws  a "3-d" panel.
+
+  nTop,nLeft
+   +-------------------------------------------+
+   |               aMess[1]                    |
+   |                 ...                       |
+   |               aMess[n]                    |
+   | +---------------------------------------+ |
+   | |                                       | |
+   | |                                       | |
+   | |                                       | |
+   | +---------------------------------------+ | nBottomBord
+   +-------------------------------------------+ nBottom,nRight
+
+The external rectangle is convex and internal is concave. The messages
+(aMess) may be array, single string, or string with comma. The internal
+rectangle is drawn from first row after messages to row with number
+nBottom-nBottomBord (by default, nBottomBord==1).
+
+An array of colors (aColor) may consist 3 elements:
+	 - color of external rectangle
+	 - color of messages
+	 - color of internal rectangle
+
+If aColor (or it's elements) is not defined, SetColor() is used.
+
+<em>Examples:</em>
+
+	Panel(10,10,16,69,'Write Error!, Press any key',AlarmColor)
+
+	Panel(10,10,17,69,{'Score-Board',''},{m->_cm,m->_im,m->_cm},2)
+
+<HR>
+	ReadCycle(&lt;aGets>,&lt;aSets>,&lt;sc_Row>,&lt;sc_col>) -->lRes
+
+The universal function for inputting any values. The edition continues in
+cycle until pressing ESC or F10. Usually used for configuration.
+
+<em>Parameters:</em>
+	aGets - array of arrays of GET parameters for each variable.
+		The structure: {row,col,msg,[picture],[validblock]}
+	aSets - array of variables
+	sc_row, sc_col - coordinates for indicator "Ins/Ovr".
+
+<em>Example:</em> See PLUGINS\PVI.INI in distributive.
+
+<center><form>
+<input type="button" value="To contents" onClick="window.location.href='#contents'">
+</form></center>

@@ -13,6 +13,9 @@ PWD=$(shell pwd)
 DESTDIR=$(PWD)/debian/tmp
 CLIP_LOCALE_ROOT=$(DESTDIR)$(CLIPROOT)
 export DESTDIR SCLIPROOT CLIP_LOCALE_ROOT
+#
+#DOC_LANGS=en
+DOC_LANGS=en ru
 
 build: build-stamp
 build-stamp:
@@ -22,6 +25,15 @@ build-stamp:
 	mkdir -p debian/tmp$(CLIPROOT)/include
 	cd clip; ./configure -r
 	cd clip; $(MAKE) install DESTDIR=$(DESTDIR)
+	#cd tdoc; $(MAKE) CLIPROOT=$(DESTDIR)/$(CLIPROOT)
+	#cd tdoc; $(MAKE) install DESTDIR=$(DESTDIR)
+	-export CLIPROOT=$(DESTDIR)$(CLIPROOT) ;\
+		export LD_LIBRARY_PATH=$(DESTDIR)/usr/lib:$$LD_LIBRARY_PATH ;\
+		cd prg/doc_utils && $(MAKE) && $(MAKE) install DESTDIR=$(DESTDIR)
+	-cd doc && $(MAKE) html CLIPROOT=$(DESTDIR)/$(CLIPROOT) LANGS='$(DOC_LANGS)' #USEUTF=1
+	-cd doc && $(MAKE) install DESTDIR=$(DESTDIR) LANGS='$(DOC_LANGS)' #USEUTF=1
+	-rm -f $(DESTDIR)/$(CLIPROOT)/bin/ftosgml
+	-rm -f $(DESTDIR)/$(CLIPROOT)/bin/ctosgml
 
 	echo "-v0" > ${DESTDIR}${CLIPROOT}/cliprc/clipflags
 	echo "-O" >> ${DESTDIR}${CLIPROOT}/cliprc/clipflags
@@ -127,9 +139,9 @@ binary-arch: build install
 #	build cliplibs
 	cd prg; export CLIPROOT=$(DESTDIR)$(CLIPROOT) ;\
 		export LD_LIBRARY_PATH=$(DESTDIR)/usr/lib:$$LD_LIBRARY_PATH ;\
-		make deb
-		$(DESTDIR)$(CLIPROOT)/bin/clip_msgmerge &&\
-		$(DESTDIR)$(CLIPROOT)/bin/clip_msgfmt
+		make deb || true
+	-$(DESTDIR)$(CLIPROOT)/bin/clip_msgmerge &&\
+	$(DESTDIR)$(CLIPROOT)/bin/clip_msgfmt
 
 
 binary: binary-indep binary-arch

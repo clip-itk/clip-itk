@@ -1,11 +1,12 @@
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
+endif
+
+include $(CLIPROOT)/include/Makefile.inc
+
 CLIPINCLUDE=-I$(CLIPROOT)/include -I./gd
 C_FLAGS=-Wall -g -I.
 CC=gcc
-
-ifdef CLIPROOT
-include $(CLIPROOT)/include/Makefile.inc
-endif
-
 
 XLIB=libclip-gd.a
 XSLIB=libclip-gd$(DLLSUFF)
@@ -23,27 +24,27 @@ build_gd:
 	./makegd.sh $(XLIB)
 	touch build_gd
 
-install: all
-	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(CLIPROOT)/lib
-	cp ./gd/libgd.a $(CLIPROOT)/lib
-	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(CLIPROOT)/lib
-	chmod 0644 $(CLIPROOT)/lib/$(XLIB)
-	chmod 0644 $(CLIPROOT)/lib/libgd.a
-	chmod 0755 $(CLIPROOT)/lib/$(XSLIB)
-	cp gdinfo.ch $(CLIPROOT)/include
-	cp bsgraphic/bggraph.ch $(CLIPROOT)/include
-	mkdir -p $(CLIPROOT)/doc/clip-gd
-	mkdir -p $(CLIPROOT)/doc/clip-gd/rus
-	mkdir -p $(CLIPROOT)/doc/clip-gd/eng
-	cp ./doc/rus/*.html $(CLIPROOT)/doc/clip-gd/rus
-	cp ./doc/rus/*.png $(CLIPROOT)/doc/clip-gd/rus
-	cp ./doc/eng/*.html $(CLIPROOT)/doc/clip-gd/eng
-	cp ./doc/eng/*.png $(CLIPROOT)/doc/clip-gd/eng
-	mkdir -p $(CLIPROOT)/doc/example/clip-gd
-	cp -R example/* $(CLIPROOT)/doc/example/clip-gd/
+install:
+	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(DESTDIR)$(CLIPROOT)/lib
+	cp ./gd/libgd.a $(DESTDIR)$(CLIPROOT)/lib
+	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(DESTDIR)$(CLIPROOT)/lib
+	chmod 0644 $(DESTDIR)$(CLIPROOT)/lib/$(XLIB)
+	chmod 0644 $(DESTDIR)$(CLIPROOT)/lib/libgd.a
+	chmod 0755 $(DESTDIR)$(CLIPROOT)/lib/$(XSLIB)
+	cp gdinfo.ch $(DESTDIR)$(CLIPROOT)/include
+	cp bsgraphic/bggraph.ch $(DESTDIR)$(CLIPROOT)/include
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-gd
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-gd/rus
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-gd/eng
+	cp ./doc/rus/*.html $(DESTDIR)$(CLIPROOT)/doc/clip-gd/rus
+	cp ./doc/rus/*.png $(DESTDIR)$(CLIPROOT)/doc/clip-gd/rus
+	cp ./doc/eng/*.html $(DESTDIR)$(CLIPROOT)/doc/clip-gd/eng
+	cp ./doc/eng/*.png $(DESTDIR)$(CLIPROOT)/doc/clip-gd/eng
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-gd
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-gd/
 
 clean:
 	-cd gd; $(MAKE) clean
 	cd bsgraphic && $(MAKE) clean
 	cd example; $(MAKE) clean
-	rm -rf *.o *.bak *.a *.so gd_obj.c *.dll build_gd  *.ex *.nm
+	rm -rf *.o gd_obj.c *.s *.bak *.a *.so gd_obj.c *.dll build_gd  *.ex *.nm

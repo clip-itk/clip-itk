@@ -45,11 +45,11 @@ clip_GTK_HPANEDNEW(ClipMachine * cm)
 {
 	ClipVar * cv     = _clip_spar(cm, 1);
 	GtkWidget *wid = NULL;
-        C_widget *cwid;
+	C_widget *cwid;
 	CHECKOPT(1,MAP_t);
 
 	wid = gtk_hpaned_new();
-        if (!wid) goto err;
+	if (!wid) goto err;
 	cwid = _register_widget(cm, wid, cv);
 	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
 	return 0;
@@ -62,11 +62,11 @@ clip_GTK_VPANEDNEW(ClipMachine * cm)
 {
 	ClipVar * cv     = _clip_spar(cm, 1);
 	GtkWidget *wid = NULL;
-        C_widget *cwid;
+	C_widget *cwid;
 	CHECKOPT(1,MAP_t);
 
 	wid = gtk_vpaned_new();
-        if (!wid) goto err;
+	if (!wid) goto err;
 	cwid = _register_widget(cm, wid, cv);
 	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
 	return 0;
@@ -80,10 +80,10 @@ int
 clip_GTK_PANEDADD1(ClipMachine * cm)
 {
 	C_widget *cpan = _fetch_cw_arg(cm);
-        C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
-        CHECKCWID(cpan,GTK_IS_PANED);
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	CHECKCWID(cpan,GTK_IS_PANED);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
-        gtk_paned_add1(GTK_PANED(cpan->widget), cwid->widget);
+	gtk_paned_add1(GTK_PANED(cpan->widget), cwid->widget);
 	return 0;
 err:
 	return 1;
@@ -95,10 +95,10 @@ int
 clip_GTK_PANEDADD2(ClipMachine * cm)
 {
 	C_widget *cpan = _fetch_cw_arg(cm);
-        C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
-        CHECKCWID(cpan,GTK_IS_PANED);
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	CHECKCWID(cpan,GTK_IS_PANED);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
-        gtk_paned_add2(GTK_PANED(cpan->widget), cwid->widget);
+	gtk_paned_add2(GTK_PANED(cpan->widget), cwid->widget);
 	return 0;
 err:
 	return 1;
@@ -113,15 +113,15 @@ int
 clip_GTK_PANEDPACK1(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-        C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
-        gboolean resize = _clip_parl(cm,3);
-        gboolean shrink = _clip_parl(cm,4);
-        CHECKCWID(cpan,GTK_IS_PANED);
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	gboolean resize = _clip_parl(cm,3);
+	gboolean shrink = _clip_parl(cm,4);
+	CHECKCWID(cpan,GTK_IS_PANED);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKOPT(3,LOGICAL_t); CHECKOPT(4,LOGICAL_t);
-        if (_clip_parinfo(cm,3)==UNDEF_t) resize = TRUE;
-        if (_clip_parinfo(cm,4)==UNDEF_t) shrink = TRUE;
-        gtk_paned_pack1(GTK_PANED(cpan->widget), cwid->widget, resize, shrink);
+	CHECKOPT(3,LOGICAL_t); CHECKOPT(4,LOGICAL_t);
+	if (_clip_parinfo(cm,3)==UNDEF_t) resize = TRUE;
+	if (_clip_parinfo(cm,4)==UNDEF_t) shrink = TRUE;
+	gtk_paned_pack1(GTK_PANED(cpan->widget), cwid->widget, resize, shrink);
 	return 0;
 err:
 	return 1;
@@ -132,15 +132,15 @@ int
 clip_GTK_PANEDPACK2(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-        C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
-        gboolean resize = _clip_parl(cm,3);
-        gboolean shrink = _clip_parl(cm,4);
-        CHECKCWID(cpan,GTK_IS_PANED);
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	gboolean resize = _clip_parl(cm,3);
+	gboolean shrink = _clip_parl(cm,4);
+	CHECKCWID(cpan,GTK_IS_PANED);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKOPT(3,LOGICAL_t); CHECKOPT(4,LOGICAL_t);
-        if (_clip_parinfo(cm,3)==UNDEF_t) resize = TRUE;
-        if (_clip_parinfo(cm,4)==UNDEF_t) shrink = TRUE;
-        gtk_paned_pack2(GTK_PANED(cpan->widget), cwid->widget, resize, shrink);
+	CHECKOPT(3,LOGICAL_t); CHECKOPT(4,LOGICAL_t);
+	if (_clip_parinfo(cm,3)==UNDEF_t) resize = TRUE;
+	if (_clip_parinfo(cm,4)==UNDEF_t) shrink = TRUE;
+	gtk_paned_pack2(GTK_PANED(cpan->widget), cwid->widget, resize, shrink);
 	return 0;
 err:
 	return 1;
@@ -153,7 +153,7 @@ clip_GTK_PANEDSETGUTTERSIZE(ClipMachine * cm)
 	C_widget  *cpan = _fetch_cw_arg(cm);
 	CHECKCWID(cpan,GTK_IS_PANED);
 	CHECKARG(2,NUMERIC_t);
-        gtk_paned_set_gutter_size(GTK_PANED(cpan->widget), _clip_parni(cm,2));
+	gtk_paned_set_gutter_size(GTK_PANED(cpan->widget), _clip_parni(cm,2));
 	return 0;
 err:
 	return 1;
@@ -164,8 +164,8 @@ int
 clip_GTK_PANEDGETGUTTERSIZE(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-        CHECKCWID(cpan,GTK_IS_PANED);
-        _clip_retni(cm,GTK_PANED(cpan->widget)->gutter_size);
+	CHECKCWID(cpan,GTK_IS_PANED);
+	_clip_retni(cm,GTK_PANED(cpan->widget)->gutter_size);
 	return 0;
 err:
 	return 1;
@@ -177,10 +177,10 @@ int
 clip_GTK_PANEDSETHANDLESIZE(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-        guint16    size = _clip_parni(cm,2);
-        CHECKCWID(cpan,GTK_IS_PANED);
+	guint16    size = _clip_parni(cm,2);
+	CHECKCWID(cpan,GTK_IS_PANED);
 	CHECKARG(2,NUMERIC_t);
-        gtk_paned_set_handle_size(GTK_PANED(cpan->widget), size);
+	gtk_paned_set_handle_size(GTK_PANED(cpan->widget), size);
 	return 0;
 err:
 	return 1;
@@ -190,8 +190,8 @@ int
 clip_GTK_PANEDGETHANDLESIZE(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-        CHECKCWID(cpan,GTK_IS_PANED);
-        _clip_retni(cm,GTK_PANED(cpan->widget)->handle_size);
+	CHECKCWID(cpan,GTK_IS_PANED);
+	_clip_retni(cm,GTK_PANED(cpan->widget)->handle_size);
 	return 0;
 err:
 	return 1;
@@ -204,12 +204,64 @@ int
 clip_GTK_PANEDSETPOSITION(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-        gint   position = _clip_parni(cm,2);
-        CHECKCWID(cpan,GTK_IS_PANED);
+	gint   position = _clip_parni(cm,2);
+	CHECKCWID(cpan,GTK_IS_PANED);
 	CHECKOPT(2,NUMERIC_t);
-        if (_clip_parinfo(cm,2)==UNDEF_t) position = -1;
-        gtk_paned_set_position(GTK_PANED(cpan->widget), position);
+	if (_clip_parinfo(cm,2)==UNDEF_t) position = -1;
+	gtk_paned_set_position(GTK_PANED(cpan->widget), position);
 	return 0;
 err:
 	return 1;
 }
+/* Alena */
+/* Get size child1 (top or left)*/
+int
+clip_GTK_PANEDGETSIZECHILD1(ClipMachine * cm)
+{
+	C_widget  *cpan = _fetch_cw_arg(cm);
+	gint    width, height;
+	GtkPaned * paned;
+	GtkRequisition child_requisition;
+
+	CHECKCWID(cpan,GTK_IS_PANED);
+	paned = GTK_PANED(cpan->widget);
+
+	if (paned->child1 && GTK_WIDGET_VISIBLE (paned->child1))
+	{
+		gtk_widget_size_request (paned->child1, &child_requisition);
+
+		height = child_requisition.height;
+		width = child_requisition.width;
+	}
+	_clip_storni(cm, width, 2, 0);
+	_clip_storni(cm, height, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+/* Get size child2 (bottom or right)*/
+int
+clip_GTK_PANEDGETSIZECHILD2(ClipMachine * cm)
+{
+	C_widget  *cpan = _fetch_cw_arg(cm);
+	gint    width, height;
+	GtkPaned * paned;
+	GtkRequisition child_requisition;
+
+	CHECKCWID(cpan,GTK_IS_PANED);
+	paned = GTK_PANED(cpan->widget);
+
+	if (paned->child2 && GTK_WIDGET_VISIBLE (paned->child2))
+	{
+		gtk_widget_size_request (paned->child2, &child_requisition);
+
+		height = child_requisition.height;
+		width = child_requisition.width;
+	}
+	_clip_storni(cm, width, 2, 0);
+	_clip_storni(cm, height, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+

@@ -45,4 +45,9 @@ im:filledTruncSector(100, 100, 30, 30, 26, 26, 40, 140, red)
 im:toPNG("asdf.png")
 im:toJPEG("|-")
 
+im2:=gdImageNew(400, 300)
+gdImageCopyResized(im2:image, im:image, 0, 0, 0, 0, 400, 300, 200, 200)
+im2:toPNG("asdf2.png")
+
+
 return .t.

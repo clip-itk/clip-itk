@@ -36,7 +36,8 @@ install: build
 	dh_installdirs
 
 # 	cumulative install
-	$(MAKE) install
+	make || true
+	DESTDIR='' $(MAKE) install || true
 #	package install
 	mkdir -p debian/tmp/$(SCLIPROOT)/lib \
 		debian/tmp/$(SCLIPROOT)/doc \
@@ -48,15 +49,23 @@ install: build
 		debian/tmp/$(SCLIPROOT)/keymaps \
 		debian/tmp/$(SCLIPROOT)/locale.pot \
 		debian/tmp/usr/lib
-	cp $(CLIPROOT)/include/clipcfg.sh $(CLIPROOT)/include/Makefile.inc \
+	cp $(CLIPROOT)/include/clipcfg.sh \
+		$(CLIPROOT)/include/Makefile.inc \
+		$(CLIPROOT)/include/Makefile.tdoc \
 		debian/tmp/$(SCLIPROOT)/include/
 	cp $(CLIPROOT)/bin/clip_cp $(CLIPROOT)/bin/clip_makelib \
 		$(CLIPROOT)/bin/clip_makeslib \
 		debian/tmp/$(SCLIPROOT)/bin/
-	$(MAKE) install CLIPROOT=`pwd`/debian/tmp/$(SCLIPROOT)
-	rm debian/tmp/$(SCLIPROOT)/include/clipcfg.sh debian/tmp/$(SCLIPROOT)/include/Makefile.inc
+	DESTDIR='' $(MAKE) install CLIPROOT=`pwd`/debian/tmp/$(SCLIPROOT) || true
+	rm 	debian/tmp/$(SCLIPROOT)/include/clipcfg.sh \
+		debian/tmp/$(SCLIPROOT)/include/Makefile.inc \
+		debian/tmp/$(SCLIPROOT)/include/Makefile.tdoc \
+		debian/tmp/$(SCLIPROOT)/bin/clip_cp \
+		debian/tmp/$(SCLIPROOT)/bin/clip_makelib \
+		debian/tmp/$(SCLIPROOT)/bin/clip_makeslib
+	ls -R  debian/tmp ;\
 	cd debian/tmp/usr/lib ;\
-	LIBS=`cd ../local/clip/lib; ls libclip*` ;\
+	LIBS=`cd ../local/clip/lib; ls libclip*.so libclip*.a` ;\
 	if [ -n "$$LIBS" ] ;\
 	then \
 		for name in $$LIBS ;\

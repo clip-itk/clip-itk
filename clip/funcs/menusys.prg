@@ -25,7 +25,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 
    aSavMenuSys := map()
    for k in oStatus KEYS
-   	aSavMenuSys[k] := oStatus[k]
+	aSavMenuSys[k] := oStatus[k]
    next
 
 
@@ -62,7 +62,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 
    oTopMenu:Select( nSelection )
 
-   IF ( oTopMenu:ClassName() != "TOPBARMENU" .AND. !oTopMenu:IsOpen )
+   IF ( oTopMenu:ClassName != "TOPBARMENU" .AND. !oTopMenu:IsOpen )
       oTopMenu:Open()
    ELSE
       oTopMenu:Display()
@@ -81,9 +81,9 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 	 ELSEIF ( ( nSelection := oTopMenu:GetAccel( nKey ) ) != 0 )
 
 	 ELSEIF ( IsShortCut( oTopMenu, nKey, @nReturn ) )
-            for k in aSavMenuSys KEYS
-	        oStatus[k] := aSavMenuSys[k]
-            next
+	    for k in aSavMenuSys KEYS
+		oStatus[k] := aSavMenuSys[k]
+	    next
 	    RETURN ( nReturn )
 
 	 ELSE
@@ -99,10 +99,10 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
    ENDIF
 
    IF ( !oTopMenu:GetItem( nSelection ):Enabled .or. ;
-   	oTopMenu:GetItem( nSelection ):Disabled )
-            for k in aSavMenuSys KEYS
-	        oStatus[k] := aSavMenuSys[k]
-            next
+	oTopMenu:GetItem( nSelection ):Disabled )
+	    for k in aSavMenuSys KEYS
+		oStatus[k] := aSavMenuSys[k]
+	    next
       RETURN ( 0 )
    ENDIF
 
@@ -131,7 +131,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 
 	       IF ( nNewItem == oNewMenu:Current )
 	       ELSEIF ( oNewMenu:GetItem( nNewItem ):Enabled .and. ;
-	       		!oNewMenu:GetItem( nNewItem ):Disabled)
+			!oNewMenu:GetItem( nNewItem ):Disabled)
 		  oStatus:oMenu := oNewMenu
 		  PopChild( nNewLevel, oTopMenu )
 		  oStatus:oMenu:Select( nNewItem )
@@ -145,7 +145,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 	       PopChild( oStatus:menuLevel, oTopMenu  )
 
 	       IF ( oStatus:oMenu:GetItem( nNewItem ):Enabled .and. ;
-	       	    !oStatus:oMenu:GetItem( nNewItem ):Disabled )
+		    !oStatus:oMenu:GetItem( nNewItem ):Disabled )
 		  oStatus:oMenu:Select( nNewItem )
 		  oStatus:oMenu:Display()
 		  PushMenu( .T., oTopMenu )
@@ -158,7 +158,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 
       ELSEIF ( nKey == K_DOWN )
 
-	 IF oStatus:oMenu:ClassName() == "TOPBARMENU"
+	 IF oStatus:oMenu:ClassName == "TOPBARMENU"
 	    IF ( PushMenu( .T., oTopMenu ) )
 	       ShowMsg( oMsg, .T. )
 	    ENDIF
@@ -175,7 +175,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 
       ELSEIF ( nKey == K_UP )
 
-	 IF oStatus:oMenu:ClassName() != "TOPBARMENU"
+	 IF oStatus:oMenu:ClassName != "TOPBARMENU"
 	    nTemp := oStatus:oMenu:GetPrev()
 	    IF ( nTemp == 0 )
 	       nTemp := oStatus:oMenu:GetLast()
@@ -190,7 +190,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 	 IF ( lSubMenu := oStatus:menuLevel > 1 )
 	    PopMenu( oTopMenu )
 	 ENDIF
-	 IF oStatus:oMenu:ClassName() == "TOPBARMENU"
+	 IF oStatus:oMenu:ClassName == "TOPBARMENU"
 	    nTemp := oStatus:oMenu:GetPrev()
 	    IF ( nTemp == 0 )
 	      nTemp := oStatus:oMenu:GetLast()
@@ -207,11 +207,11 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 	 IF ( lSubMenu := oStatus:menuLevel > 1 )
 	    IF !( PopMenu( oTopMenu ) )
 	       PopAll()
-            ENDIF
+	    ENDIF
 	    PopMenu( oTopMenu )
 	 ENDIF
 
-	 IF oStatus:oMenu:ClassName() == "TOPBARMENU"
+	 IF oStatus:oMenu:ClassName == "TOPBARMENU"
 	    nTemp := oStatus:oMenu:GetNext()
 	    IF ( nTemp == 0 )
 	       nTemp := oStatus:oMenu:GetFirst()
@@ -242,7 +242,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 	    ShowMsg( oMsg, .T. )
 	 ELSE
 
-	    IF oStatus:oMenu:ClassName() == "POPUPMENU"
+	    IF oStatus:oMenu:ClassName == "POPUPMENU"
 	       oStatus:oMenu:Close()
 	    ENDIF
 	    nReturn := -1
@@ -256,14 +256,14 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 	       HitTest( GetList, MROW(), MCOL(), oMsg ) != 0 )
 	       GETACTIVE():ExitState := GE_MOUSEHIT
 	       //ReadStats( SNLASTEXIT, GE_MOUSEHIT )
-	       IF oStatus:oMenu:ClassName() == "POPUPMENU"
+	       IF oStatus:oMenu:ClassName == "POPUPMENU"
 		  PopMenu( oTopMenu )
 	       ENDIF
 	       nReturn := -1
 	       EXIT
 	    ENDIF
 
-	    IF oStatus:oMenu:ClassName() == "POPUPMENU"
+	    IF oStatus:oMenu:ClassName == "POPUPMENU"
 	       PopMenu( oTopMenu )
 	    ENDIF
 
@@ -314,7 +314,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 
       ELSEIF ( ( nNewItem := oStatus:oMenu:GetAccel( nKey ) ) != 0 )
 	 IF oStatus:oMenu:GetItem( nNewItem ):Enabled .and. ;
-            !oStatus:oMenu:GetItem( nNewItem ):Disabled
+	    !oStatus:oMenu:GetItem( nNewItem ):Disabled
 
 	    oStatus:oMenu:Select( nNewItem )
 	    oStatus:oMenu:Display()
@@ -340,7 +340,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 	 ( ( nNewItem := Accelerator( GetList, nKey, oMsg ) ) != 0 ) )
 	 GETACTIVE():ExitState := GE_SHORTCUT
 	 //ReadStats( SNNEXTGET, nNewItem )
-	 IF oStatus:oMenu:ClassName() == "POPUPMENU"
+	 IF oStatus:oMenu:ClassName == "POPUPMENU"
 	    PopMenu( oTopMenu )
 	 ENDIF
 	 nReturn := -1
@@ -348,7 +348,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
 
       ELSEIF ( ( nNewItem := oTopMenu:GetAccel( nKey ) ) != 0 )
 	 IF oTopMenu:GetItem( nNewItem ):Enabled .and. ;
-            !oTopMenu:GetItem( nNewItem ):Disabled
+	    !oTopMenu:GetItem( nNewItem ):Disabled
 
 	    PopAll( oTopMenu )
 	    oStatus:oMenu:Select( nNewItem )
@@ -379,7 +379,7 @@ FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, ;
    SetCursor( lSaveCursor )
 
    for k in aSavMenuSys KEYS
-           oStatus[k] := aSavMenuSys[k]
+	   oStatus[k] := aSavMenuSys[k]
    next
 
 RETURN ( nReturn )
@@ -463,7 +463,7 @@ STATIC FUNCTION Execute( oTopMenu )
 
    IF ( !( ValType( oNewMenu ) == "O" ) )
    ELSEIF ( !oNewMenu:IsPopUp() )
-      IF ( oStatus:oMenu:ClassName() == "TOPBARMENU" )
+      IF ( oStatus:oMenu:ClassName == "TOPBARMENU" )
 	 nOldRow    := oStatus:oldRow
 	 nOldCol    := oStatus:oldCol
 	 nOldCursor := oStatus:oldCursor
@@ -471,12 +471,12 @@ STATIC FUNCTION Execute( oTopMenu )
 	 SETCURSOR( oStatus:oldCursor )
 	 nCurrent := oStatus:oMenu:Current
 	 EVAL( oNewMenu:Data, oNewMenu )
-         oStatus:oMenu:Select( nCurrent )
+	 oStatus:oMenu:Select( nCurrent )
 	 SETCURSOR( SC_NONE )
 	 lPas := .F.
-      ELSEIF ( oStatus:oMenu:ClassName() == "POPUPMENU" )
-      	 do while popMenu(oNewMenu)
-         enddo
+      ELSEIF ( oStatus:oMenu:ClassName == "POPUPMENU" )
+	 do while popMenu(oNewMenu)
+	 enddo
 	 nOldRow    := oStatus:oldRow
 	 nOldCol    := oStatus:oldCol
 	 nOldCursor := oStatus:oldCursor
@@ -484,7 +484,7 @@ STATIC FUNCTION Execute( oTopMenu )
 	 SETCURSOR( oStatus:oldCursor )
 	 nCurrent := oStatus:oMenu:Current
 	 EVAL( oNewMenu:Data, oNewMenu )
-         oStatus:oMenu:Select( nCurrent )
+	 oStatus:oMenu:Select( nCurrent )
 	 SETCURSOR( SC_NONE )
 	 lPas := .F.
       ENDIF
@@ -494,14 +494,14 @@ STATIC FUNCTION Execute( oTopMenu )
       ENDIF
 
       oStatus:oMenu:Select( nCurrent )
-      IF ( oStatus:oMenu:ClassName() == "POPUPMENU" .AND. ;
+      IF ( oStatus:oMenu:ClassName == "POPUPMENU" .AND. ;
 	 oStatus:menuLevel == 1 .AND. !oStatus:oMenu:IsOpen )
 	 oStatus:oMenu:Open()
       ENDIF
 
       IF lPas
-      	 do while popMenu(oNewMenu)
-         enddo
+	 do while popMenu(oNewMenu)
+	 enddo
 	 nOldRow    := oStatus:oldRow
 	 nOldCol    := oStatus:oldCol
 	 nOldCursor := oStatus:oldCursor
@@ -509,7 +509,7 @@ STATIC FUNCTION Execute( oTopMenu )
 	 SETCURSOR( oStatus:oldCursor )
 	 nCurrent := oStatus:oMenu:Current
 	 EVAL( oNewMenu:Data, oNewMenu )
-         oStatus:oMenu:Select( nCurrent )
+	 oStatus:oMenu:Select( nCurrent )
 	 SETCURSOR( SC_NONE )
 
       ENDIF
@@ -528,8 +528,8 @@ STATIC FUNCTION MHitTest( oNewMenu, nNewLevel, nNewItem, oTopMenu )
 	 RETURN ( .F. )
 
       ELSEIF ( nNewItem > 0 ) .AND. ;
-      		oNewMenu:GetItem( nNewItem ):Enabled .and. ;
-      		!oNewMenu:GetItem( nNewItem ):Disabled
+		oNewMenu:GetItem( nNewItem ):Enabled .and. ;
+		!oNewMenu:GetItem( nNewItem ):Disabled
 	 RETURN ( .T. )
       ENDIF
    NEXT
@@ -567,12 +567,12 @@ RETURN ( .T. )
 FUNCTION IsShortCut( oMenu, nKey, nID )
    LOCAL nItem, nTotal, nShortCut, oItem, i
 
-   IF !( oMenu:ClassName() == "TOPBARMENU" )
+   IF !( oMenu:ClassName == "TOPBARMENU" )
       RETURN ( IsQuick( oMenu, nKey, @nID ) )
 
    ELSEIF ( ( nShortCut := oMenu:GetShortCt( nKey ) ) > 0 ) .AND. ;
 	    ( ( oItem := oMenu:GetItem( nShortcut ) ):Enabled .and. ;
-	    	!oItem:Disabled ) .AND. ;
+		!oItem:Disabled ) .AND. ;
 	    ( !( oItem:IsPopUp() ) )
       oMenu:Select( nShortCut )
       EVAL( oItem:Data, oItem )
@@ -627,15 +627,15 @@ RETURN ( .F. )
 ****************************************
 procedure menusysInit()
    if oStatus==NIL
-   	oStatus:=map()
-   	oStatus:menuList     := NIL
-   	oStatus:menuLevel    := NIL
-   	oStatus:oMenu        := NIL
-   	oStatus:oldMessage   := NIL
-   	oStatus:scrVmsg      := NIL
-   	oStatus:oldMsgFlag   := NIL
-   	oStatus:oldRow       := row()
-   	oStatus:oldCol       := col()
-   	oStatus:oldCursor    := SC_NORMAL
+	oStatus:=map()
+	oStatus:menuList     := NIL
+	oStatus:menuLevel    := NIL
+	oStatus:oMenu        := NIL
+	oStatus:oldMessage   := NIL
+	oStatus:scrVmsg      := NIL
+	oStatus:oldMsgFlag   := NIL
+	oStatus:oldRow       := row()
+	oStatus:oldCol       := col()
+	oStatus:oldCursor    := SC_NORMAL
    endif
 return

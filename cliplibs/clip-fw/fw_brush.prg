@@ -86,7 +86,7 @@ local aStdTypes := { "HORIZONTAL", "VERTICAL", "FDIAGONAL", "BDIAGONAL",;
 		endif
 
 	case cBmpRes != nil
-		self:hBitmap = eval(Selector:LoadBitmap, GetResources(), cBmpRes )
+		self:hBitmap = eval(Selector:LoadBitmap, eval(Selector:GetResources), cBmpRes )
 		self:hBrush  = If( self:hBitmap > 0, eval(Selector:CreatePatternBrush, self:hBitmap ),)
 	endcase
 

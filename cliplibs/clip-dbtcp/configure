@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ "$1" = "-h" -o "$1" = "--help" -o -z "$1" ]
+then
+echo 'usage: ./configure <dbtcp_sources_path>'
+exit 1
+fi
+
+rm Makefile
+if [ ! -f "$1"/libs/libdbftp.a ]
+then
+echo 'No libdbftp.a library found in '$1'/libs'
+exit 1
+fi
+
+sed -e "s%@DBTCP_PATH@%$1%;s%/$%%" < Makefile.in >Makefile
+
+exit 0

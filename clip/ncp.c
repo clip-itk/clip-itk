@@ -4,11 +4,16 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: ncp.c,v $
+	Revision 1.5  2003/09/02 14:27:42  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+	
 	Revision 1.4  2002/04/22 14:05:12  clip
 	add _clip_creat
 	creat & open modes on ncpfs
 	paul
-	
+
 	Revision 1.3  2002/04/22 11:43:58  clip
 	ncp fix
 	paul
@@ -25,6 +30,7 @@
 
 
 */
+#include "clip.h"
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>

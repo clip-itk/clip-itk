@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "dbedit.ch"
@@ -8,7 +8,7 @@
 #include "bdbfmsg.ch"
 
 #define _ptr _BdbfBrow:ColPos
-#translate Stable() => IF !_bdbfbrow:Stable; _bdbfbrow:ForceStable();ENDIF
+#translate Stable() => IF !_bdbfbrow:Stable; _bdbfbrow:ForceStable(); ENDIF
 *#define Stable() _bdbfbrow:ForceStable()
 #define ClearVScroll() FOR i:=_tp2+_h to bottom-1 ;  @ i,r_bord say SCROLL_FILL; NEXT
 #define ClearHScroll() @ b_Bord,l_1 Say _Sp
@@ -30,7 +30,7 @@ LOCAL _sp:=Repl(SCROLL_FILL,_wide),;
 	tbKey:={{K_DOWN,{||_BdbfBrow:down()}		},;
 		{K_UP,{||_BdbfBrow:up()}  		},;
 		{K_PGDN,{||_BdbfBrow:pagedown()}	},;
-		{K_PGUP,{||_BdbfBrow:pageup()}		},;
+		{K_PGUP,{||IF(Altf()=2,_BdbfBrow:RefreshAll(),_BdbfBrow:pageup())}},;
 		{K_CTRL_PGDN,{||_BdbfBrow:gobottom(),__KeyBoard(_EMP)}	},;
 		{K_CTRL_PGUP,{||_BdbfBrow:gotop()}	},;
 		{K_LEFT,{||_BdbfBrow:left()}		},;
@@ -44,7 +44,7 @@ LOCAL _sp:=Repl(SCROLL_FILL,_wide),;
 		{K_TAB,{||IF(_oldCol=m->_fc,_BdbfBrow:panhome(),_Bdbfbrow:right())}},;
 		{K_SH_TAB,{||IF(_oldCol=1,_BdbfBrow:panend(),_Bdbfbrow:left())}},;
 		{K_F1,{||Help()}			},;
-		{0,{||_BdbfBrow:ForceStable()}	}}
+		{K_EMP,{||_BdbfBrow:ForceStable()}	}}
 
 
 IF_NIL aPictures IS {}
@@ -65,9 +65,7 @@ ASIZE(colHeaders,nMaxColumn)
 ASIZE(aPictures,nMaxColumn)
 ASIZE(aWidths,nMaxColumn)
 FOR i:= 1 TO nMaxColumn
-	#IFDEF ENGLISH
-		IF Columns[i]>'z' THEN Columns[i]:=''
-	#ENDIF
+*	IF ('U' $ TYPE(Columns[i])) THEN Columns[i]:=''
 	IF !empty(columns[i])
 		IF EMPTY(_c:=colheaders[i]) THEN _c:=columns[i]
 		oTbc:=tbColumnNew(_c,Compile(columns[i]))
@@ -80,6 +78,7 @@ FOR i:= 1 TO nMaxColumn
 NEXT
 IF !EMPTY(nFreeze) THEN FreezeFields(nFreeze)
 
+DispBegin()
 // начальная разрисовка экрана
 Window(t_bord,l_bord,b_bord,r_bord,WinHeader)
 @ top+_h,l_bord Say '╠'
@@ -87,17 +86,17 @@ Window(t_bord,l_bord,b_bord,r_bord,WinHeader)
 _length:=bottom-top-3-_h
 
 // начальная разрисовка скроллингов
+
 ClearHScroll()
 DEVOUT( SCROLL_RIGHT, _cm)
-@ b_bord,Left say SCROLL_LEFT+_LF color _cm
+@ b_bord,Left say SCROLL_LEFT+SCROLL_MARK color _cm
 @ _tp1+_h,r_bord say SCROLL_UP color _cm
 @ bottom,r_bord say SCROLL_DOWN color _cm
-                      
 Fkeys()
-
+DispEnd()
 // Главный цикл:
 *_bdbfbrow:ForceStable()
-Keyb(255)	//чтобы 1-й раз нарисовать
+Keyb(260)	//чтобы 1-й раз нарисовать - незначащий код
 
 _lr:=KeyCount()
 WHILE .T.
@@ -133,7 +132,8 @@ WHILE .T.
 				   ELSE
 					KeyGoTo(MIN(1+int((_moy-top-3)*(_lr-1)/_length),_lr))
 					_bdbfbrow:refreshAll()
-					_mox:=_EMP	//Только это не помогает
+					KeyPressed:=.T.
+					exit
 				   ENDIF
 
 				CASE _mox=l_bord
@@ -141,11 +141,7 @@ WHILE .T.
 				CASE (_moy=_BdbfBrow:RowPos+_tp1) .AND.;
 				     (nVs==column)
 					IF _ms=2 .AND. SELECT()=1
-						#IFDEF ENGLISH
-						_mox:={K_F10,'D'}
-						#ELSE
-						_mox:={K_F10,'П'}
-						#ENDIF
+						_mox:={K_F10, _MM_FIELDMENU_HK}
 					ELSE
 						_mox=_ENTER
 					ENDIF
@@ -193,23 +189,33 @@ WHILE .T.
 		ShowAlt()
 		_nkey:=0
 		Stable()
-*		IF (KeyPressed .AND. NextKey()=0)
-		IF  NextKey(254)=0
+		IF  KeyPressed .AND. NextKey(254)=0
 			KeyPressed:=.f.
+			DispBegin()
 			SavePos()
 
-			@ 0,56 SAY VALType(&(columns[_ptr]))+'  '+;
+			IF SELECT()=1
+				_mox:=	_Ftype[_ptr]+;
+					PAD(IF(_FDr[_ptr]<>0,;
+						NTRIM(_FLen[_ptr])+'.'+NTRIM(_FDr[_ptr]),;
+						_FLen[_ptr]),7)
+			ELSE
+				_mox:=	DbStruct()[_ptr,2]+;
+					PAD(NTRIM(DbStruct()[_ptr,3]),7)
+			ENDIF
+			@ 0,52 SAY _mox+;
 				  IF(EMPTY(m->_clipText),'  ','C'+ValType(m->_ClipText[1]))+;
-				  '  '+dTOC8(DATE())+' '+Time();
+				  ' '+dTOC8(DATE());
 				  color _bm
 
 			DevPos(0,0)
 			IF LASTREC()=0
-				DevOut(EMPTY_BASE,_cm)
+				DevOut("0/0",_cm)
 			ELSE
 				DevOut( PAD(NTRIM(RECNO())+'/'+NTRIM(LASTREC()),15),_bm )
 			ENDIF
 			RestPos()
+			DispEnd()
 		ENDIF
 	ENDIF
    ENDDO
@@ -228,6 +234,9 @@ WHILE .T.
 		eval(baction,ProcName(1))	// ProcName() для Help
 		_lr:=KeyCount()
 		LOOP
+
+	CASE _nKey==K_CTRL_X .AND. ALTF()=2 .AND. IsShift() .AND. (VALTYPE(&_c_F) $ 'CM')
+		__KeyBoard(_ENTER+_DOWN+_CTRLEND)
 
 // Обработка стандартных клавиш навигации
 	CASE (baction:=Ascan(tbKey,{|elem|_nkey=elem[1]}))<>0
@@ -251,6 +260,7 @@ WHILE .T.
 			RETURN
 		ELSEIF rc == DE_REFRESH .OR. (rec_no <> recno())
 			_lr:=KeyCount()
+			IF !Mgoto(recno(),.f.) THEN GO TOP
 			_bdbfbrow:cargo:= .T.
 			_bdbfbrow:refreshall()
 			_bdbfbrow:cargo:= .F.
@@ -263,6 +273,7 @@ WHILE .T.
 // "Освежить", если переместился указатель:
    IF NextKey(254)=0
 	Stable()
+	DispBegin()
 	SavePos()
 	IF (column:=_ptr)<=nMaxColumn
 		ClearHScroll()
@@ -275,6 +286,7 @@ WHILE .T.
 		@ rec_no,r_bord say SCROLL_MARK color _cm
 	ENDIF
 	RestPos()
+	DispEnd()
    ENDIF
 ENDDO
 **********

@@ -8,6 +8,7 @@
 #include "clip-gtkcfg.h"
 
 #include <gtk/gtk.h>
+#include <gtk/gtkprivate.h>
 #include <string.h>
 
 #include "clip-gtk.ch"
@@ -24,8 +25,15 @@ static gint handle_draw_signal (GtkWidget *widget, GdkRectangle *area, C_signal 
   { return handle_signals (widget, cs, NULL); }
 static gint handle_size_request_signal (GtkWidget *widget, GtkRequisition *requisition, C_signal *cs)
   { return handle_signals (widget, cs, NULL); }
-static gint handle_size_allocate_signal (GtkWidget *widget, GtkRequisition *requisition, C_signal *cs)
-  { return handle_signals (widget, cs, NULL); }
+static gint handle_size_allocate_signal (GtkWidget *widget, GtkAllocation *allocation, C_signal *cs)
+	{
+	PREPARECV(cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, allocation->x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, allocation->y);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_WIDTH, allocation->width);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_HEIGHT, allocation->height);
+	INVOKESIGHANDLER(widget,cs,cv);
+	}
 static gint handle_state_changed_signal (GtkWidget *widget, GtkStateType state, C_signal *cs)
   { return handle_signals (widget, cs, NULL); }
 static gint handle_parent_set_signal (GtkWidget *widget, GtkObject *old_parent, C_signal *cs)
@@ -1094,6 +1102,17 @@ clip_GTK_WIDGETFLAGS(ClipMachine * cm)
 	C_widget *cwid = _fetch_cw_arg(cm);
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 	_clip_retnl(cm, GTK_WIDGET_FLAGS(cwid->widget));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETPRIVATEFLAGS(ClipMachine * cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+	_clip_retnl(cm, GTK_PRIVATE_FLAGS(cwid->widget));
 	return 0;
 err:
 	return 1;

@@ -5,10 +5,11 @@ uver=`uname -r`
 hname=`hostname -f 2>/dev/null`
 oldpwd=`pwd`
 
-[ -z "$CLIPROOT" ] && CLIPROOT=/usr/local/clip
+[ -z "$CLIPROOT" ] && CLIPROOT=$(cd ../../../; pwd)/cliproot
 DLLSUFF='.so'
 DLLREALSUFF='.so'
 
+rm Makefile
 if [ $? != 0 ]
 then
 	hname=`hostname 2>/dev/null`
@@ -77,9 +78,9 @@ then
 	USE_GTK=no
 else
 	gtkincpath=`find $gtkprefix/include -name 'gtk.h' -printf '%h'`
-        cd $gtkincpath/..
-        gtkincpath=`pwd`
-        cd $oldpwd
+	cd $gtkincpath/..
+	gtkincpath=`pwd`
+	cd $oldpwd
 	LIBS=`gtk-config --libs`
 
 	if [ "$osname" = "CYGWIN" ]
@@ -94,7 +95,7 @@ else
 	else
 		echo
 		echo 'Warning: system do not have installed GTK+ development'
-                exit
+		exit
 	fi
 	GTK_MAJOR=`gtk-config --version|cut -d. -f1`
 	GTK_MINOR=`gtk-config --version|cut -d. -f2`
@@ -115,9 +116,9 @@ then
 	USE_GTK_EXTRA=no
 else
 	gtkextraincpath=`find $gtkprefix/include -name 'gtk.h' -printf '%h'`
-        cd $gtkextraincpath/..
-        gtkextraincpath=`pwd`
-        cd $oldpwd
+	cd $gtkextraincpath/..
+	gtkextraincpath=`pwd`
+	cd $oldpwd
 	LIBS=$LIBS' '`gtkextra-config --libs`
 
 	if [ "$osname" = "CYGWIN" ]
@@ -149,28 +150,29 @@ echo >&3
 echo '#' >&3
 echo '#	Compile flags' >&3
 echo '#' >&3
+echo "CLIPROOT=$CLIPROOT" >&3
+echo "include $CLIPROOT/include/Makefile.inc" >&3
 echo "OSNAME='$osname'" >&3
 
 if [ -z "$CC" ]
 then
-  	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=":"
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=":"
 	for cc_dir in $PATH; do
-    		test -z "$cc_dir" && cc_dir=.
-    		if test -f $cc_dir/gcc; then
-      			CC=gcc
-      			break
-    		fi
-    		if test -f $cc_dir/cc; then
-      			CC=cc
-      			break
-    		fi
-  	done
-  	IFS="$save_ifs"
+		test -z "$cc_dir" && cc_dir=.
+		if test -f $cc_dir/gcc; then
+			CC=gcc
+			break
+		fi
+		if test -f $cc_dir/cc; then
+			CC=cc
+			break
+		fi
+	done
+	IFS="$save_ifs"
 fi
 echo "COMPILER='$CC'" >&3
 echo "DLLSUFF='$DLLSUFF'" >&3
 echo "DLLREALSUFF='$DLLREALSUFF'" >&3
-echo "CLIPROOT=$CLIPROOT" >&3
 echo 'INCLUDEDIRS=-I. -I$(CLIPROOT)/include -I'$gtkprefix'/include -I'$gtkextraprefix'/include' >&3
 echo "XTARGETS='"'$(XLIB) $(XSLIB)'"'" >&3
 echo "C_FLAGS=-Wall '"'$(INCLUDEDIRS)'"' '$EXTRACFLAGS'" >&3

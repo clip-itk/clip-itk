@@ -12,7 +12,7 @@ POBJS  = init.o cld_obj.po menu.po command.po source.po values.po viewset.po vie
 all: clip_cld
 
 clean:
-	rm -rf *.exe *.o *.c *.a *.so *.po *.pa *.log *.uri *.b *.BAK *.bak *~ core* *core clip_cld test
+	rm -rf *.exe *.o *.c *.s *.a *.so *.po *.pa *.log *.uri *.b *.BAK *.bak *~ core* *core clip_cld test
 	rm -rf *.ex *.nm
 
 clip_cld:$(OBJS)

@@ -1,1048 +1,23 @@
 # Module sys.
 # FIRST AUTHOR <uri@itk.ru>, 2000.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-09-12 13:42+0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2004-04-30 13:01+0500\n"
+"PO-Revision-Date: 2002-11-29 11:54+0400\n"
+"Last-Translator: Paul Lasarev <paul@itk.ru>\n"
+"Language-Team: Russian <clip-devel@itk.ru>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-r\n"
-"Content-Transfer-Encoding: 8-bit\n"
-
-#: get_obj.prg:317 var_func.prg:34 var_func.prg:73 var_func.prg:101
-msgid "array"
-msgstr "массив"
-
-#: get_obj.prg:319 var_func.prg:36 var_func.prg:75 var_func.prg:103
-msgid "Block"
-msgstr "Блоск"
-
-#: get_obj.prg:331 var_func.prg:52 var_func.prg:89 var_func.prg:117
-msgid "Object"
-msgstr "Объект"
-
-#: get_obj.prg:335 var_func.prg:56 var_func.prg:93 var_func.prg:121
-msgid "Unknown"
-msgstr "Неизвестен"
-
-#: edit.prg:345 edit.prg:581 edit.prg:664 edit.prg:699 edit.prg:941
-#: edit.prg:1220 edit.prg:1225 get_obj.prg:325 get_obj.prg:838 get_obj.prg:840
-#: get_obj.prg:883 get_obj.prg:885 memoedit.prg:61 scr_func.prg:326
-#: var_func.prg:83 var_func.prg:111
-msgid "Yes"
-msgstr "Да "
-
-#: get_obj.prg:325 get_obj.prg:838 get_obj.prg:840 get_obj.prg:883
-#: get_obj.prg:885 memoedit.prg:61 scr_func.prg:327 var_func.prg:83
-#: var_func.prg:111
-msgid "No "
-msgstr "Нет"
-
-#: var_func.prg:87
-msgid "Memo"
-msgstr "Текст"
-
-#: get_obj.prg:333 var_func.prg:91 var_func.prg:119
-msgid "Undef"
-msgstr "Неопределен"
-
-#: tedit_obj.prg:293
-msgid "Load file..."
-msgstr "Чтение файла..."
-
-#: tedit_obj.prg:444
-msgid "The size of file is a most maximum size!;Last strings may be lost"
-msgstr "Размер файла превышает максимальный!; Последние строки текста могут потеряться"
-
-#: tedit_obj.prg:444
-msgid "OK"
-msgstr "ОК"
-
-#: tedit_obj.prg:2046
-msgid "Save file..."
-msgstr "Сохранение файла..."
-
-#: tedit_obj.prg:2052 tedit_obj.prg:2104
-msgid "Can't create ;"
-msgstr "Не возможно создать ;"
-
-#: tedit_obj.prg:2052 tedit_obj.prg:2104
-msgid ".bak file"
-msgstr ".bak файл"
-
-#: tedit_obj.prg:2098
-msgid "Save block to file..."
-msgstr "Запись блока в файл..."
-
-#: te_find.prg:81 te_find.prg:82
-msgid " Find & replace "
-msgstr " Поиск и замена "
-
-#: te_find.prg:84
-msgid "Find:"
-msgstr "Найти:"
-
-#: te_find.prg:91
-msgid "Replace:"
-msgstr "Заменить:"
-
-#: te_find.prg:96 te_find.prg:97
-msgid " Find "
-msgstr " Поиск "
-
-#: te_find.prg:110
-msgid "Options"
-msgstr " Опции "
-
-#: te_find.prg:114
-msgid "Case-sensitive"
-msgstr "Учитывать регистр"
-
-#: te_find.prg:115
-msgid "Word only"
-msgstr "Только слово"
-
-#: te_find.prg:116
-msgid "Reg. expression"
-msgstr "Рег.выражение"
-
-#: te_find.prg:117
-msgid "All windows"
-msgstr "Во всех окнах"
-
-#: te_find.prg:121
-msgid "Forward"
-msgstr "Вперед"
-
-#: te_find.prg:122
-msgid "Backward"
-msgstr "Назад"
-
-#: te_find.prg:123
-msgid "From begin"
-msgstr "От начала"
-
-#: te_find.prg:124
-msgid "Direction"
-msgstr "Направление"
-
-#: te_find.prg:127
-msgid "Global"
-msgstr "В тексте"
-
-#: te_find.prg:128
-msgid "In block"
-msgstr "В блоке"
-
-#: te_find.prg:129
-msgid "Where"
-msgstr "Где"
-
-#: sys_prn.prg:81
-msgid "View printer output in text editor"
-msgstr "Просмотр в текстовом редакторе"
-
-#: sys_prn.prg:85
-msgid "Printing to main printer on your host"
-msgstr "Печать на главном принтере"
-
-#: sys_prn.prg:144
-msgid "choice printer"
-msgstr "Выберите принтер"
-
-#: memoedit.prg:111 sys_prn.prg:144
-msgid "Esc: Cancel"
-msgstr "Прервать"
-
-#: sys_prn.prg:155
-msgid ": Printing pages range: from XXXX to YYYY"
-msgstr ": Печать страниц с XXXX до YYYY"
-
-#: sys_prn.prg:162
-msgid ": Printing copies: XXXX "
-msgstr ": Кол-во копий: XXXX"
-
-#: sys_prn.prg:211
-msgid "Printbegin(): printing already in process"
-msgstr "Printbegin(): печать уже активизирована"
-
-#: sys_prn.prg:261
-msgid "PrintEnd(): printing process not actived"
-msgstr "PrintEnd(): печать еше не активизирована"
-
-#: browse.prg:49 sqlbrows.prg:19
-msgid "<bof>"
-msgstr "<начало>"
-
-#: sqlbrows.prg:20
-msgid "<eof>"
-msgstr "<конец>"
-
-#: sqlbrows.prg:21
-msgid "<empty>"
-msgstr "<пусто>"
-
-#: browse.prg:71 sqlbrows.prg:76
-msgid "Record N "
-msgstr "Запись N"
-
-#: smtp_obj.prg:77 smtp_obj.prg:120
-msgid "Connect not activated"
-msgstr "Связь не установлена"
-
-#: scr_func.prg:126
-msgid "Press any key"
-msgstr "Нажмите любую клавишу"
-
-#: get_obj.prg:210 get_obj.prg:840 get_obj.prg:885 get_obj.prg:926
-#: get_obj.prg:929 scr_func.prg:287 scr_func.prg:288
-msgid "Y"
-msgstr "Д"
-
-#: get_obj.prg:926 get_obj.prg:929 scr_func.prg:289 scr_func.prg:290
-msgid "N"
-msgstr "Н"
-
-#: sarray.prg:56
-msgid "Out from bound in sorted array"
-msgstr "Выход за границы сортированного массива"
-
-#: sarray.prg:91 sarray.prg:145
-msgid "Unknown values for key or data"
-msgstr "Неизвестно значение ключа или данных"
-
-#: sarray.prg:132
-msgid "Out bounds in sorted array"
-msgstr "Выход за границы сортированного массива"
-
-#: sarray.prg:178
-msgid "Key value not found in sorted array"
-msgstr "Значение ключа не найдено в сортированном массиве"
-
-#: sarray.prg:194
-msgid "Unknown values for key"
-msgstr "Неизвестно значение ключа или данных"
-
-#: nation.prg:21
-msgid "CLIPMSGS v1.0 04/Sep/02"
-msgstr ""
-
-#: nation.prg:25
-msgid "DD-MM-YYYY"
-msgstr "DD-MM-YYYY"
-
-#: nation.prg:29
-msgid "Invalid argument"
-msgstr "Плохой аргумент "
-
-#: nation.prg:32
-msgid "Database Files    # Records    Last Update     Size"
-msgstr "Файлы БД         # Записей    Дата изм.     Размер"
-
-#: nation.prg:34
-msgid "Do you want more samples?"
-msgstr "Хотите еще примеров ?"
-
-#: nation.prg:36
-msgid "Page No."
-msgstr "Стр.No."
-
-#: nation.prg:38
-msgid "** Subtotal **"
-msgstr "** итого **"
-
-#: nation.prg:40
-msgid "* Subsubtotal *"
-msgstr "* всего *"
-
-#: nation.prg:42
-msgid "*** Total ***"
-msgstr "*** итого ***"
-
-#: nation.prg:44
-msgid "Ins"
-msgstr "Вст"
-
-#: nation.prg:48
-msgid "Invalid date"
-msgstr "Плохая дата "
-
-#: nation.prg:50
-msgid "Range: "
-msgstr "Предел:"
-
-#: nation.prg:63
-msgid "YyTtYy1"
-msgstr "YyTtДд1"
-
-#: nation.prg:72
-msgid "NnFfNn0"
-msgstr "NnFfНн0"
-
-#: memoedit.prg:61
-msgid "Exit from memoedit; Don~t save ?"
-msgstr "Выйти из memoedit; без сохранения?"
-
-#: memoedit.prg:230
-msgid "<Ins>"
-msgstr "<Вст>"
-
-#: memoedit.prg:230
-msgid "<Ovr>"
-msgstr "<Зам>"
-
-#: inifile.prg:101
-msgid ": create error:"
-msgstr ": ошибка создания:"
-
-#: inifile.prg:127
-msgid ": open error:"
-msgstr ": ошибка открытия:"
-
-#: inifile.prg:155
-msgid "Bad string in .ini file:"
-msgstr "Непральная строка в .ini файле"
-
-#: hbrowse.prg:224
-msgid "Where are you going?"
-msgstr "Куда пойдем?"
-
-#: dialbox.prg:747 dialbox.prg:754 edit.prg:470 edit.prg:477 edit.prg:511
-#: edit.prg:538 edit.prg:567 edit.prg:574 hbrowse.prg:243 hbrowse.prg:250
-msgid "String;"
-msgstr "Строка;"
-
-#: dialbox.prg:747 dialbox.prg:754 edit.prg:470 edit.prg:477 edit.prg:511
-#: edit.prg:538 edit.prg:567 edit.prg:574 edit.prg:851 hbrowse.prg:243
-#: hbrowse.prg:250
-msgid ";not found!"
-msgstr ";не найдена!"
-
-#: dialbox.prg:1235 edit.prg:967 hbrowse.prg:1586
-msgid "&File"
-msgstr "&Файл"
-
-#: dialbox.prg:1247 hbrowse.prg:1596
-msgid "E&xit   "
-msgstr "&Выход   "
-
-#: dialbox.prg:1247 hbrowse.prg:1596
-msgid "End of application"
-msgstr "Завершить работу"
-
-#: hbrowse.prg:1601
-msgid "&Control"
-msgstr "&Управление"
-
-#: hbrowse.prg:1604
-msgid "&Next   "
-msgstr "&Дальше "
-
-#: hbrowse.prg:1604
-msgid "Go next item"
-msgstr "Перейти на след. объект"
-
-#: hbrowse.prg:1608
-msgid "&Prev   "
-msgstr "&Назад  "
-
-#: hbrowse.prg:1608
-msgid "Go previous item"
-msgstr "Перейти на пред. объект"
-
-#: hbrowse.prg:1612
-msgid "P&revUrl   "
-msgstr "Пред. документ "
-
-#: hbrowse.prg:1612
-msgid "Go previous URL document"
-msgstr "Загрузить пред. документ"
-
-#: hbrowse.prg:1616
-msgid "Nex&tUrl   "
-msgstr "След. документ "
-
-#: hbrowse.prg:1616
-msgid "Go next URL document"
-msgstr "Загрузить след. документ"
-
-#: hbrowse.prg:1620
-msgid "&InfoUrl   "
-msgstr "Информация "
-
-#: hbrowse.prg:1620
-msgid "Get information about URL document"
-msgstr "Информация о URL"
-
-#: dialbox.prg:1252 hbrowse.prg:1626
-msgid "&Options"
-msgstr "&Опции "
-
-#: dialbox.prg:1255 hbrowse.prg:1629
-msgid "&Find   "
-msgstr "&Найти  "
-
-#: dialbox.prg:1255 hbrowse.prg:1629
-msgid "Find string"
-msgstr "Поиск строки"
-
-#: dialbox.prg:1259 hbrowse.prg:1633
-msgid "&Resume   "
-msgstr "&Продолжить "
-
-#: dialbox.prg:1259 hbrowse.prg:1633
-msgid "Resume find string"
-msgstr "Продолжить поиск строки"
-
-#: dialbox.prg:1263 hbrowse.prg:1637
-msgid "&Unmark   "
-msgstr "Сн&ять отметку "
-
-#: dialbox.prg:1263 hbrowse.prg:1637
-msgid "Unmark selected block"
-msgstr "Снять отметку блока"
-
-#: ftools.prg:117
-msgid "Database files"
-msgstr "Файлы баз данных"
-
-#: ftools.prg:117
-msgid "  # records"
-msgstr "  # записей"
-
-#: ftools.prg:117
-msgid " last update"
-msgstr " изменен "
-
-#: ftools.prg:117
-msgid "  size "
-msgstr " размер "
-
-#: foxsel.prg:1698
-msgid "Press any key to continue"
-msgstr "Нажмите любую клавишу"
-
-#: filedd.prg:220
-msgid "Can't open;"
-msgstr "Невозможно открыть;"
-
-#: edit.prg:72
-msgid "ESC -menu"
-msgstr "ESC - меню"
-
-#: edit.prg:201 edit.prg:237 edit.prg:423 edit.prg:588 edit.prg:854
-msgid "Can't open file;"
-msgstr "Не могу открыть файл;"
-
-#: edit.prg:345 edit.prg:664 edit.prg:699 edit.prg:851 edit.prg:941
-#: edit.prg:1225
-msgid "File;"
-msgstr "Файл;"
-
-#: edit.prg:345 edit.prg:699
-msgid ";not saved. Save it?"
-msgstr ";не сохранен. Сохранить?"
-
-#: edit.prg:345 edit.prg:581 edit.prg:664 edit.prg:699 edit.prg:941
-#: edit.prg:1220 edit.prg:1225
-msgid "No"
-msgstr "Нет"
-
-#: edit.prg:345 edit.prg:699 edit.prg:1220 edit.prg:1540
-msgid "Cancel"
-msgstr "Прервать"
-
-#: edit.prg:518
-msgid "Made "
-msgstr "Произведено "
-
-#: edit.prg:518
-msgid " changes"
-msgstr " изменений"
-
-#: edit.prg:523 edit.prg:552
-msgid "Nothing to find!!!"
-msgstr "А искать-то - нечего!!!"
-
-#: edit.prg:545
-msgid "String "
-msgstr "Строка "
-
-#: edit.prg:545
-msgid " not found!"
-msgstr " не найдена!"
-
-#: edit.prg:581
-msgid "There is a change in the file.;"
-msgstr "Файл был изменен.;"
-
-#: edit.prg:581
-msgid "; Reload?"
-msgstr "; Перечитать?"
-
-#: edit.prg:634 edit.prg:639
-msgid "Symbol '"
-msgstr "Символ '"
-
-#: edit.prg:634 edit.prg:639
-msgid "' not found!"
-msgstr "' не найден!"
-
-#: edit.prg:645 edit.prg:651
-msgid "Structure not found!"
-msgstr "Структура не найдена!"
-
-#: edit.prg:659 edit.prg:762
-msgid "Block not marked!"
-msgstr "Блок не отмечен!"
-
-#: edit.prg:664 edit.prg:941 edit.prg:1225
-msgid ";already exists. Overwrite it?"
-msgstr ";уже существует. Переписать?"
-
-#: edit.prg:680 edit.prg:681
-msgid " Windows list "
-msgstr " Список окон "
-
-#: edit.prg:875
-msgid "ESC - menu          <SINGLE GRAPHIC>"
-msgstr "ESC - меню          <SINGLE GRAPHIC>"
-
-#: edit.prg:878 edit.prg:896
-msgid "ESC - menu "
-msgstr "ESC - меню "
-
-#: edit.prg:893
-msgid "ESC - menu           <DOUBLE GRAPHIC>"
-msgstr "ESC - меню           <DOUBLE GRAPHIC>"
-
-#: edit.prg:924
-msgid "<R>"
-msgstr "<Ч>"
-
-#: edit.prg:924
-msgid "<Link>"
-msgstr "<Связь>"
-
-#: edit.prg:924
-msgid "I"
-msgstr "В"
-
-#: edit.prg:924
-msgid "O"
-msgstr "З"
-
-#: edit.prg:970
-msgid "&New                "
-msgstr "&Новый              "
-
-#: edit.prg:970
-msgid "Create a new file"
-msgstr "Создать новый файл"
-
-#: edit.prg:974
-msgid "&Open...            "
-msgstr "&Открыть ...        "
-
-#: edit.prg:974
-msgid "Open a file"
-msgstr "Открыть файл"
-
-#: edit.prg:978
-msgid "&Save               "
-msgstr "&Сохранить          "
-
-#: edit.prg:978
-msgid "Save a file"
-msgstr "Записать файл  на диск"
-
-#: edit.prg:982
-msgid "&Save as...         "
-msgstr "&Сохранить          "
-
-#: edit.prg:982
-msgid "Save a file as..."
-msgstr "Сохранение файла..."
-
-#: edit.prg:986
-msgid "&Reload file        "
-msgstr "&Перечитать         "
-
-#: edit.prg:986
-msgid "Reload a file"
-msgstr "Перечитать файл"
-
-#: edit.prg:990
-msgid "Read on&ly          "
-msgstr "Только &чтение"
-
-#: edit.prg:990
-msgid "Read only options"
-msgstr "Включить/выключить режим Только Чтение"
-
-#: edit.prg:996 edit.prg:1082
-msgid "&Print...           "
-msgstr "Печа&ть...          "
-
-#: edit.prg:996
-msgid "Print a file"
-msgstr "Печать файла"
-
-#: edit.prg:1000
-msgid "Print &block...     "
-msgstr "Печа&ть блока...    "
-
-#: edit.prg:1000 edit.prg:1082
-msgid "Print marked block"
-msgstr "Печа&ть блока...    "
-
-#: edit.prg:1006
-msgid "E&xit with save     "
-msgstr "Выход с со&хранением"
-
-#: edit.prg:1006
-msgid "End of application and save options"
-msgstr "Завершить работу и сохранить текущие установки"
-
-#: edit.prg:1010
-msgid "Exit with-out sa&ve "
-msgstr "Выйти &без сохранения"
-
-#: edit.prg:1010
-msgid "End of application and not save options"
-msgstr "Завершить работу без сохранения текущих установок"
-
-#: edit.prg:1017
-msgid "&Window"
-msgstr "&Окно"
-
-#: edit.prg:1020
-msgid "&List    "
-msgstr "&Список   "
-
-#: edit.prg:1020
-msgid "List of windows"
-msgstr "Список открытых окон"
-
-#: edit.prg:1024
-msgid "&Next    "
-msgstr "С&ледующее"
-
-#: edit.prg:1024
-msgid "Next window"
-msgstr "Следующее окно"
-
-#: edit.prg:1028
-msgid "&Prev    "
-msgstr "&Предыдущее"
-
-#: edit.prg:1028
-msgid "Prevoice window"
-msgstr "Предыдущее окно"
-
-#: edit.prg:1032
-msgid "&Close   "
-msgstr "&Закрыть"
-
-#: edit.prg:1032
-msgid "Close window"
-msgstr "Закрыть окно"
-
-#: edit.prg:1039
-msgid "&Block"
-msgstr "&Блок"
-
-#: edit.prg:1042
-msgid "&Line block marker    "
-msgstr "&Строчный блок"
-
-#: edit.prg:1042
-msgid "Start/stop line block marker"
-msgstr "Начать/закончить отметку строчного блока"
-
-#: edit.prg:1046
-msgid "&Column block marker  "
-msgstr "&Прямоугольный блок"
-
-#: edit.prg:1046
-msgid "Start/stop columns block marker"
-msgstr "Начать/закончить отметку прямоугольного блока"
-
-#: edit.prg:1050
-msgid "&Unmark               "
-msgstr "Сн&ять                "
-
-#: edit.prg:1050
-msgid "Unmark block marker"
-msgstr "Снять отметку блока"
-
-#: edit.prg:1054
-msgid "Co&py                 "
-msgstr "&Копировать           "
-
-#: edit.prg:1054
-msgid "Copy block "
-msgstr "Копировать блок"
-
-#: edit.prg:1058
-msgid "&Move                 "
-msgstr "Пе&реместить          "
-
-#: edit.prg:1058
-msgid "Move block "
-msgstr "Переместить блок"
-
-#: edit.prg:1062
-msgid "&Delete               "
-msgstr "&Удалить              "
-
-#: edit.prg:1062
-msgid "Delete block"
-msgstr "Удалить блок"
-
-#: edit.prg:1066
-msgid "Copy to clip&board    "
-msgstr "Копировать в &буфер   "
-
-#: edit.prg:1066
-msgid "Copy block to clipboard"
-msgstr "Сопировать блок в буфер"
-
-#: edit.prg:1070
-msgid "Pa&ste from clipboard "
-msgstr "Вставить из бу&фера   "
-
-#: edit.prg:1070
-msgid "Paste block from clipboard"
-msgstr "Вставить блок из буфера"
-
-#: edit.prg:1074
-msgid "&Save to file         "
-msgstr "&Записать в файл      "
-
-#: edit.prg:1074
-msgid "Save block to file"
-msgstr "Записать выделенный блок в файл"
-
-#: edit.prg:1078
-msgid "&Load from file       "
-msgstr "П&рочитать из файла   "
-
-#: edit.prg:1078
-msgid "Load block from file"
-msgstr "Прочитать блок из файла"
-
-#: edit.prg:1091
-msgid "&Service"
-msgstr "&Сервис"
-
-#: edit.prg:1094
-msgid "&Insert mode    "
-msgstr "&Режим вставки"
-
-#: edit.prg:1094
-msgid "On/off insert mode "
-msgstr "Вкл/выкл режим вставки"
-
-#: edit.prg:1099
-msgid "Find &string    "
-msgstr "&Поиск строки   "
-
-#: edit.prg:1099
-msgid "Find string "
-msgstr "Поиск строки"
-
-#: edit.prg:1103
-msgid "Find &next      "
-msgstr "Найти &следующее"
-
-#: edit.prg:1103
-msgid "Find next "
-msgstr "Найти следующее вхождение подстроки"
-
-#: edit.prg:1107
-msgid "Find pre&vious  "
-msgstr "Найти пре&дыдущее"
-
-#: edit.prg:1107
-msgid "Find previous "
-msgstr "П&родолжить поиск"
-
-#: edit.prg:1111
-msgid "&Replace        "
-msgstr "&Заменить       "
-
-#: edit.prg:1111
-msgid "Find and replace string "
-msgstr "Найти подстроку и заменить "
-
-#: edit.prg:1115
-msgid "&Match symbol forward  "
-msgstr "Поиск &символа вперед"
-
-#: edit.prg:1115
-msgid "Match identity symbol in forward "
-msgstr "Поиск похожего символа вперед по тексту"
-
-#: edit.prg:1119
-msgid "Match symbol &backward "
-msgstr "Поиск си&мвола назад"
-
-#: edit.prg:1119
-msgid "Match identity symbol in backward "
-msgstr "Поиск похожего символа в обратном направлении"
-
-#: edit.prg:1123
-msgid "Match structure forward  "
-msgstr "По&иск структуры"
-
-#: edit.prg:1123
-msgid "Match Clipper structure to forward "
-msgstr "Поиск структуры по правилам Clipper вперед"
-
-#: edit.prg:1127
-msgid "Match structure backward "
-msgstr "Поиск структуры &назад"
-
-#: edit.prg:1127
-msgid "Match Clipper structure to backward "
-msgstr "Поиск структуры по правилам Clipper назад"
-
-#: edit.prg:1131
-msgid "&Undo           "
-msgstr "О&ткат"
-
-#: edit.prg:1131
-msgid "Undo operation"
-msgstr "Операция отката"
-
-#: edit.prg:1135
-msgid "Format &line    "
-msgstr "Ф&ормат строка  "
-
-#: edit.prg:1135
-msgid "Format line"
-msgstr "Форматирование строки"
-
-#: edit.prg:1139
-msgid "Format &part    "
-msgstr "Формат абза&ц   "
-
-#: edit.prg:1139
-msgid "Format part"
-msgstr "Форматирование абзаца"
-
-#: edit.prg:1146
-msgid "O&therwise"
-msgstr "П&рочее"
-
-#: edit.prg:1149
-msgid "&Template       "
-msgstr "&Шаблон         "
-
-#: edit.prg:1149
-msgid "Template "
-msgstr "Вставить строку по шаблону"
-
-#: edit.prg:1153
-msgid "Template &macro "
-msgstr "&Макроподстановка"
-
-#: edit.prg:1153
-msgid "Template macro "
-msgstr "Выполнить макроподстановку"
-
-#: edit.prg:1157
-msgid "&Single graphic "
-msgstr "&Графика одиночная"
-
-#: edit.prg:1157
-msgid "On/Off single graphic mode "
-msgstr "Вкл/выкл режим рисования одиночных линий"
-
-#: edit.prg:1162
-msgid "&Double graphic "
-msgstr "Графика &двойная"
-
-#: edit.prg:1162
-msgid "On/Off double graphic mode  "
-msgstr "Вкл/выкл режим рисования двойных линий"
-
-#: edit.prg:1167
-msgid "&Choose code page "
-msgstr "&Выбрать кодировку"
-
-#: edit.prg:1167
-msgid "Choose code page  "
-msgstr "Выбрать кодировку"
-
-#: edit.prg:1171
-msgid "&Options...     "
-msgstr "Оп&ции...        "
-
-#: edit.prg:1171
-msgid "Set options"
-msgstr "Настройка"
-
-#: edit.prg:1195
-msgid "R:"
-msgstr "Ч:"
-
-#: edit.prg:1220
-msgid "; not saved. Save?"
-msgstr "; не сохранен. Сохранить?"
-
-#: edit.prg:1287 edit.prg:1288
-msgid " Options "
-msgstr " Опции "
-
-#: edit.prg:1289
-msgid "Create .bak files"
-msgstr "Создавать .bak файлы"
-
-#: edit.prg:1291
-msgid "Tabulation size"
-msgstr "Шаг табуляции"
-
-#: edit.prg:1294
-msgid "Autosave files"
-msgstr "Автосохранение"
-
-#: edit.prg:1296
-msgid "Autosave time"
-msgstr "Время автосохр."
-
-#: edit.prg:1303
-msgid "Save status"
-msgstr "Сохранять статус"
-
-#: edit.prg:1305
-msgid "Hypen in word"
-msgstr "Перенос в словах"
-
-#: edit.prg:1307
-msgid "Auto margin left"
-msgstr "Автоматич. установка левой границы"
-
-#: edit.prg:1309
-msgid "Margin left"
-msgstr "Левая граница"
-
-#: edit.prg:1311
-msgid "Margin right"
-msgstr "Правая граница"
-
-#: edit.prg:1463
-msgid "Line "
-msgstr "Строка "
-
-#: edit.prg:1523
-msgid "Bad line number!"
-msgstr "Не правильно указан номер строки!"
-
-#: edit.prg:1540
-msgid "New"
-msgstr "Новый"
-
-#: edit.prg:1540
-msgid "Link"
-msgstr "Связь"
-
-#: edit.prg:1580
-msgid " Source charset "
-msgstr " Исходная кодировка"
-
-#: dtools.prg:15
-msgid "January"
-msgstr "Январь"
-
-#: dtools.prg:16
-msgid "February"
-msgstr "Февраль"
-
-#: dtools.prg:17
-msgid "March"
-msgstr "Март"
-
-#: dtools.prg:18
-msgid "April"
-msgstr "Апрель"
-
-#: dtools.prg:19
-msgid "May"
-msgstr "Май"
-
-#: dtools.prg:20
-msgid "June"
-msgstr "Июнь"
-
-#: dtools.prg:21
-msgid "July"
-msgstr "Июль"
-
-#: dtools.prg:22
-msgid "August"
-msgstr "Август"
-
-#: dtools.prg:23
-msgid "September"
-msgstr "Сентябрь"
-
-#: dtools.prg:24
-msgid "October"
-msgstr "Октябрь"
-
-#: dtools.prg:25
-msgid "November"
-msgstr "Ноябрь"
-
-#: dtools.prg:26
-msgid "December"
-msgstr "Декабрь"
-
-#: dtools.prg:29
-msgid "Sunday"
-msgstr "Воскресенье"
-
-#: dtools.prg:30
-msgid "Monday"
-msgstr "Понедельник"
-
-#: dtools.prg:31
-msgid "Tuesday"
-msgstr "Вторник"
-
-#: dtools.prg:32
-msgid "Wednesday"
-msgstr "Среда"
-
-#: dtools.prg:33
-msgid "Thursday"
-msgstr "Четверг"
-
-#: dtools.prg:34
-msgid "Friday"
-msgstr "Пятница"
-
-#: dtools.prg:35
-msgid "Saturday"
-msgstr "Суббота"
-
-#: dialbox.prg:728
-msgid "Line"
-msgstr "Строка "
-
-#: dbm.prg:57
-msgid "Field not found in dictonary"
-msgstr "Поле не найдено в словаре"
-
-#: dbm.prg:71
-msgid "Index not found in dictonary"
-msgstr "Индекс не найден в словаре"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: block.prg:19
+msgid "Class TBlock constructor error:Invalid expression"
+msgstr "Класс TBlock ошибка создания:кривое выражение"
 
 #: database.prg:18
 msgid "Beginning of file"
@@ -1064,14 +39,1204 @@ msgstr "Не могу заблокировать dataBase! Пожалуйста попробуйте снова"
 msgid "Called Error:"
 msgstr "Ошибка вызова:"
 
-#: browse.prg:50
-msgid "<new>"
-msgstr "<новая>"
+#: dbm.prg:57
+msgid "Field not found in dictonary"
+msgstr "Поле не найдено в словаре"
 
-#: block.prg:19
-msgid "Class TBlock constructor error:Invalid expression"
-msgstr "Класс TBlock ошибка создания:кривое выражение"
+#: dbm.prg:71
+msgid "Index not found in dictonary"
+msgstr "Индекс не найден в словаре"
+
+#: dialbox.prg:728
+msgid "Line"
+msgstr "Строка "
+
+#: dialbox.prg:747 dialbox.prg:754 hbrowse.prg:260 hbrowse.prg:267
+#: edit.prg:778 edit.prg:785 edit.prg:824 edit.prg:852 edit.prg:882
+#: edit.prg:889
+msgid "String;"
+msgstr "Строка;"
+
+#: dialbox.prg:747 dialbox.prg:754 hbrowse.prg:260 hbrowse.prg:267
+#: edit.prg:778 edit.prg:785 edit.prg:824 edit.prg:852 edit.prg:882
+#: edit.prg:889 edit.prg:1169
+msgid ";not found!"
+msgstr ";не найдена!"
+
+#: dialbox.prg:1235 hbrowse.prg:1610 edit.prg:1323
+msgid "&File"
+msgstr "&Файл"
+
+#: dialbox.prg:1247 hbrowse.prg:1629
+msgid "E&xit   "
+msgstr "&Выход   "
+
+#: dialbox.prg:1247 hbrowse.prg:1629
+msgid "End of application"
+msgstr "Завершить работу"
+
+#: dialbox.prg:1252 hbrowse.prg:1659
+msgid "&Options"
+msgstr "&Опции "
+
+#: dialbox.prg:1255 hbrowse.prg:1662
+msgid "&Find   "
+msgstr "&Найти  "
+
+#: dialbox.prg:1255 hbrowse.prg:1662
+msgid "Find string"
+msgstr "Поиск строки"
+
+#: dialbox.prg:1259 hbrowse.prg:1666
+msgid "&Resume   "
+msgstr "&Продолжить "
+
+#: dialbox.prg:1259 hbrowse.prg:1666
+msgid "Resume find string"
+msgstr "Продолжить поиск строки"
+
+#: dialbox.prg:1263 hbrowse.prg:1670
+msgid "&Unmark   "
+msgstr "Сн&ять отметку "
+
+#: dialbox.prg:1263 hbrowse.prg:1670
+msgid "Unmark selected block"
+msgstr "Снять отметку блока"
+
+#: get_obj.prg:225 get_obj.prg:988 get_obj.prg:1060 get_obj.prg:1110
+#: scr_func.prg:287 scr_func.prg:288
+msgid "Y"
+msgstr "Д"
+
+#: get_obj.prg:418 var_func.prg:35 var_func.prg:74 var_func.prg:102
+msgid "array"
+msgstr "массив"
+
+#: get_obj.prg:420 var_func.prg:37 var_func.prg:76 var_func.prg:104
+msgid "Block"
+msgstr "Блок"
+
+#: get_obj.prg:427 get_obj.prg:986 get_obj.prg:988 get_obj.prg:1058
+#: get_obj.prg:1060 var_func.prg:83 var_func.prg:111 scr_func.prg:326
+#: edit.prg:622 edit.prg:899 edit.prg:990 edit.prg:1030 edit.prg:1294
+#: edit.prg:1581 edit.prg:1589
+msgid "Yes"
+msgstr "Да "
+
+#: get_obj.prg:427 get_obj.prg:986 get_obj.prg:988 get_obj.prg:1058
+#: get_obj.prg:1060 var_func.prg:83 var_func.prg:111 scr_func.prg:327
+msgid "No "
+msgstr "Нет"
+
+#: get_obj.prg:434 var_func.prg:53 var_func.prg:90 var_func.prg:118
+msgid "Object"
+msgstr "Объект"
+
+#: get_obj.prg:1110 scr_func.prg:289 scr_func.prg:290
+msgid "N"
+msgstr "Н"
+
+#: smtp_obj.prg:89 smtp_obj.prg:106 smtp_obj.prg:156
+msgid "Connect not activated"
+msgstr "Связь не установлена"
+
+#: te_find.prg:84 te_find.prg:85
+msgid " Find & replace "
+msgstr " Поиск и замена "
+
+#: te_find.prg:87
+msgid "Find:"
+msgstr "Найти:"
+
+#: te_find.prg:94
+msgid "Replace:"
+msgstr "Заменить:"
+
+#: te_find.prg:99 te_find.prg:100
+msgid " Find "
+msgstr " Поиск "
+
+#: te_find.prg:113
+msgid "Options"
+msgstr " Опции "
+
+#: te_find.prg:117
+msgid "Case-sensitive"
+msgstr "Учитывать регистр"
+
+#: te_find.prg:118
+msgid "Word only"
+msgstr "Только слово"
+
+#: te_find.prg:119
+msgid "Reg. expression"
+msgstr "Рег.выражение"
+
+#: te_find.prg:120
+msgid "All windows"
+msgstr "Во всех окнах"
+
+#: te_find.prg:124
+msgid "Forward"
+msgstr "Вперед"
+
+#: te_find.prg:125
+msgid "Backward"
+msgstr "Назад"
+
+#: te_find.prg:126
+msgid "From begin"
+msgstr "От начала"
+
+#: te_find.prg:127
+msgid "Direction"
+msgstr "Направление"
+
+#: te_find.prg:130
+msgid "Global"
+msgstr "В тексте"
+
+#: te_find.prg:131
+msgid "In block"
+msgstr "В блоке"
+
+#: te_find.prg:132
+msgid "Where"
+msgstr "Где"
+
+#: sarray.prg:60
+msgid "Out from bound in sorted array"
+msgstr "Выход за границы сортированного массива"
+
+#: sarray.prg:111 sarray.prg:165
+msgid "Unknown values for key or data"
+msgstr "Неизвестно значение ключа или данных"
+
+#: sarray.prg:152
+msgid "Out bounds in sorted array"
+msgstr "Выход за границы сортированного массива"
+
+#: sarray.prg:198
+msgid "Key value not found in sorted array"
+msgstr "Значение ключа не найдено в сортированном массиве"
+
+#: sarray.prg:215
+msgid "Unknown values for key"
+msgstr "Неизвестно значение ключа или данных"
+
+#: inifile.prg:103
+msgid ": create error:"
+msgstr ": ошибка создания:"
+
+#: inifile.prg:146
+msgid "Bad file name: name is not specified"
+msgstr ""
+
+#: inifile.prg:154
+msgid ": open error:"
+msgstr ": ошибка открытия:"
+
+#: inifile.prg:182
+msgid "Bad string in .ini file:"
+msgstr "Неправильная строка в .ini файле"
+
+#: cobra_service.prg:55
+#, fuzzy
+msgid "TCP connection error:"
+msgstr ": ошибка открытия:"
+
+#: cobra_service.prg:164 cobra_service.prg:203
+msgid "Bad cobraQuery object"
+msgstr ""
+
+#: cobra_service.prg:181
+msgid "Bad cobraAnswer object"
+msgstr ""
+
+#: cobra_service.prg:237
+#, fuzzy
+msgid "Answer ID not found"
+msgstr " не найдена!"
+
+#: cobra_service.prg:368 cobra_service.prg:460 cobra_service.prg:481
+#: cobra_service.prg:513 cobra_service.prg:550
+msgid "CODB library not linked"
+msgstr ""
+
+#: cobra_service.prg:373 cobra_service.prg:414 cobra_service.prg:434
+#: cobra_service.prg:518
+msgid "Bad depository ID:"
+msgstr ""
+
+#: cobra_service.prg:384 cobra_service.prg:529
+msgid "Bad class name or ID:"
+msgstr ""
+
+#: cobra_service.prg:617
+#, fuzzy
+msgid "File not found:"
+msgstr " не найдена!"
+
+#: cobra_service.prg:674
+msgid "Need updating client"
+msgstr ""
+
+#: cobra_service.prg:694
+msgid "Client LANG value not supported"
+msgstr ""
+
+#: cobra_service.prg:713
+msgid "Client CHARSET value not supported"
+msgstr ""
+
+#: cobra_service.prg:732
+msgid "Client CRYPTO value not supported"
+msgstr ""
 
 #: a2edit.prg:33
 msgid "Error A2EDIT; What~s Edit ?"
 msgstr "Ошибка A2EDIT; Чего редактировать ?"
+
+#: blank.prg:53 blank.prg:55
+#, fuzzy
+msgid "cannot open file:"
+msgstr "Не могу открыть файл;"
+
+#: browse.prg:50 sqlbrows.prg:19
+msgid "<bof>"
+msgstr "<начало>"
+
+#: browse.prg:51
+msgid "<new>"
+msgstr "<новая>"
+
+#: browse.prg:71 sqlbrows.prg:89
+msgid "Record N "
+msgstr "Запись N"
+
+#: dtools.prg:16
+msgid "January"
+msgstr "Январь"
+
+#: dtools.prg:17
+msgid "February"
+msgstr "Февраль"
+
+#: dtools.prg:18
+msgid "March"
+msgstr "Март"
+
+#: dtools.prg:19
+msgid "April"
+msgstr "Апрель"
+
+#: dtools.prg:20
+msgid "May"
+msgstr "Май"
+
+#: dtools.prg:21
+msgid "June"
+msgstr "Июнь"
+
+#: dtools.prg:22
+msgid "July"
+msgstr "Июль"
+
+#: dtools.prg:23
+msgid "August"
+msgstr "Август"
+
+#: dtools.prg:24
+msgid "September"
+msgstr "Сентябрь"
+
+#: dtools.prg:25
+msgid "October"
+msgstr "Октябрь"
+
+#: dtools.prg:26
+msgid "November"
+msgstr "Ноябрь"
+
+#: dtools.prg:27
+msgid "December"
+msgstr "Декабрь"
+
+#: dtools.prg:30
+msgid "Sunday"
+msgstr "Воскресенье"
+
+#: dtools.prg:31
+msgid "Monday"
+msgstr "Понедельник"
+
+#: dtools.prg:32
+msgid "Tuesday"
+msgstr "Вторник"
+
+#: dtools.prg:33
+msgid "Wednesday"
+msgstr "Среда"
+
+#: dtools.prg:34
+msgid "Thursday"
+msgstr "Четверг"
+
+#: dtools.prg:35
+msgid "Friday"
+msgstr "Пятница"
+
+#: dtools.prg:36
+msgid "Saturday"
+msgstr "Суббота"
+
+#: errorsys.prg:60 errorsys.prg:73
+msgid "Error"
+msgstr ""
+
+#: filedd.prg:227
+msgid "Can't open;"
+msgstr "Невозможно открыть;"
+
+#: ftools.prg:117
+msgid "Database files"
+msgstr "Файлы баз данных"
+
+#: ftools.prg:117
+msgid "  # records"
+msgstr "  # записей"
+
+#: ftools.prg:117
+msgid " last update"
+msgstr " изменен "
+
+#: ftools.prg:117
+msgid "  size "
+msgstr " размер "
+
+#: memoedit.prg:133 sys_prn.prg:140
+msgid "Esc: Cancel"
+msgstr "Прервать"
+
+#: memoedit.prg:293
+msgid "<Ins>"
+msgstr "<Вст>"
+
+#: memoedit.prg:293
+msgid "<Ovr>"
+msgstr "<Зам>"
+
+#: nation.prg:22
+msgid "CLIPMSGS v1.0 04/Sep/02"
+msgstr "CLIPMSGS v1.0 04/Sep/02"
+
+#: nation.prg:26
+msgid "DD-MM-YYYY"
+msgstr "DD-MM-YYYY"
+
+#: nation.prg:30
+msgid "Invalid argument"
+msgstr "Плохой аргумент "
+
+#: nation.prg:33
+msgid "Database Files    # Records    Last Update     Size"
+msgstr "Файлы БД         # Записей    Дата изм.     Размер"
+
+#: nation.prg:35
+msgid "Do you want more samples?"
+msgstr "Хотите еще примеров ?"
+
+#: nation.prg:37
+msgid "Page No."
+msgstr "Стр.No."
+
+#: nation.prg:39
+msgid "** Subtotal **"
+msgstr "** итого **"
+
+#: nation.prg:41
+msgid "* Subsubtotal *"
+msgstr "* всего *"
+
+#: nation.prg:43
+msgid "*** Total ***"
+msgstr "*** итого ***"
+
+#: nation.prg:45
+msgid "Ins"
+msgstr "Вст"
+
+#: nation.prg:49
+msgid "Invalid date"
+msgstr "Плохая дата "
+
+#: nation.prg:51
+msgid "Range: "
+msgstr "Предел:"
+
+#: nation.prg:62
+msgid "YyTtYy1"
+msgstr "YyTtДд1"
+
+#: nation.prg:67
+msgid "NnFfNn0"
+msgstr "NnFfНн0"
+
+#: rtcompil.prg:47
+#, fuzzy
+msgid "Plugin not found:"
+msgstr " не найдена!"
+
+#: rtcompil.prg:76
+msgid "Error compiling plugin file:"
+msgstr ""
+
+#: rtcompil.prg:85
+#, fuzzy
+msgid "Error loading plugin block from file:"
+msgstr "Прочитать блок из файла"
+
+#: var_func.prg:57 var_func.prg:94 var_func.prg:122
+msgid "Unknown"
+msgstr "Неизвестен"
+
+#: var_func.prg:88
+msgid "Memo"
+msgstr "Текст"
+
+#: var_func.prg:92 var_func.prg:120
+msgid "Undef"
+msgstr "Неопределен"
+
+#: hbrowse.prg:159
+msgid ""
+"<   >-go next item  i-info  <F5>-go line  <F6>-find  <F9>-menu  <ESC>,<F10>-"
+"exit"
+msgstr ""
+
+#: hbrowse.prg:241
+msgid "Where are you going?"
+msgstr "Куда пойдем?"
+
+#: hbrowse.prg:1626
+msgid "&Charset"
+msgstr ""
+
+#: hbrowse.prg:1634
+msgid "&Control"
+msgstr "&Управление"
+
+#: hbrowse.prg:1637
+msgid "&Next   "
+msgstr "&Дальше "
+
+#: hbrowse.prg:1637
+msgid "Go next item"
+msgstr "Перейти на след. объект"
+
+#: hbrowse.prg:1641
+msgid "&Prev   "
+msgstr "&Назад  "
+
+#: hbrowse.prg:1641
+msgid "Go previous item"
+msgstr "Перейти на пред. объект"
+
+#: hbrowse.prg:1645
+msgid "P&revUrl   "
+msgstr "Пред. документ "
+
+#: hbrowse.prg:1645
+msgid "Go previous URL document"
+msgstr "Загрузить пред. документ"
+
+#: hbrowse.prg:1649
+msgid "Nex&tUrl   "
+msgstr "След. документ "
+
+#: hbrowse.prg:1649
+msgid "Go next URL document"
+msgstr "Загрузить след. документ"
+
+#: hbrowse.prg:1653
+msgid "&InfoUrl   "
+msgstr "Информация "
+
+#: hbrowse.prg:1653
+msgid "Get information about URL document"
+msgstr "Информация о URL"
+
+#: sqlbrows.prg:20
+msgid "<eof>"
+msgstr "<конец>"
+
+#: sqlbrows.prg:21
+msgid "<empty>"
+msgstr "<пусто>"
+
+#: foxsel.prg:1700
+msgid "Press any key to continue"
+msgstr "Нажмите любую клавишу"
+
+#: sys_prn.prg:77
+msgid "View printer output in text editor"
+msgstr "Просмотр в текстовом редакторе"
+
+#: sys_prn.prg:81
+msgid "Printing to main printer on your host"
+msgstr "Печать на главном принтере"
+
+#: sys_prn.prg:140
+msgid "choice printer"
+msgstr "Выберите принтер"
+
+#: sys_prn.prg:152
+msgid ": Printing pages range: from XXXX to YYYY"
+msgstr ": Печать страниц с XXXX до YYYY"
+
+#: sys_prn.prg:159
+msgid ": Printing copies: XXXX "
+msgstr ": Кол-во копий: XXXX"
+
+#: sys_prn.prg:207
+msgid "Printbegin(): printing already in process"
+msgstr "Printbegin(): печать уже активизирована"
+
+#: sys_prn.prg:254
+msgid "PrintEnd(): printing process not actived"
+msgstr "PrintEnd(): печать еше не активизирована"
+
+#: scr_func.prg:127
+msgid "Press any key"
+msgstr "Нажмите любую клавишу"
+
+#: edit.prg:77
+msgid "ESC -menu"
+msgstr "ESC - меню"
+
+#: edit.prg:277 edit.prg:327 edit.prg:732 edit.prg:906 edit.prg:1172
+msgid "Can't open file;"
+msgstr "Не могу открыть файл;"
+
+#: edit.prg:622 edit.prg:990 edit.prg:1030 edit.prg:1169 edit.prg:1294
+#: edit.prg:1589
+msgid "File;"
+msgstr "Файл;"
+
+#: edit.prg:622 edit.prg:1030
+msgid ";not saved. Save it?"
+msgstr ";не сохранен. Сохранить?"
+
+#: edit.prg:622 edit.prg:899 edit.prg:990 edit.prg:1030 edit.prg:1294
+#: edit.prg:1581 edit.prg:1589
+msgid "No"
+msgstr "Нет"
+
+#: edit.prg:622 edit.prg:1030 edit.prg:1581 edit.prg:1995
+msgid "Cancel"
+msgstr "Прервать"
+
+#: edit.prg:831
+msgid "Made "
+msgstr "Произведено "
+
+#: edit.prg:831
+msgid " changes"
+msgstr " изменений"
+
+#: edit.prg:840 edit.prg:870
+msgid "Nothing to find!!!"
+msgstr "А искать-то - нечего!!!"
+
+#: edit.prg:859
+msgid "String "
+msgstr "Строка "
+
+#: edit.prg:859
+msgid " not found!"
+msgstr " не найдена!"
+
+#: edit.prg:899
+msgid "There is a change in the file.;"
+msgstr "Файл был изменен.;"
+
+#: edit.prg:899
+msgid "; Reload?"
+msgstr "; Перечитать?"
+
+#: edit.prg:958
+msgid "Symbol '"
+msgstr "Символ '"
+
+#: edit.prg:958
+msgid "' not found!"
+msgstr "' не найден!"
+
+#: edit.prg:969
+msgid "Structure not found!"
+msgstr "Структура не найдена!"
+
+#: edit.prg:982 edit.prg:1080
+msgid "Block not marked!"
+msgstr "Блок не отмечен!"
+
+#: edit.prg:990 edit.prg:1294 edit.prg:1589
+msgid ";already exists. Overwrite it?"
+msgstr ";уже существует. Переписать?"
+
+#: edit.prg:1006 edit.prg:1007
+msgid " Windows list "
+msgstr " Список окон "
+
+#: edit.prg:1210
+msgid "ESC - menu          <SINGLE GRAPHIC>"
+msgstr "ESC - меню          <SINGLE GRAPHIC>"
+
+#: edit.prg:1213 edit.prg:1223
+msgid "ESC - menu "
+msgstr "ESC - меню "
+
+#: edit.prg:1220
+msgid "ESC - menu           <DOUBLE GRAPHIC>"
+msgstr "ESC - меню           <DOUBLE GRAPHIC>"
+
+#: edit.prg:1266
+msgid "<R>"
+msgstr "<Ч>"
+
+#: edit.prg:1266
+msgid "<Link>"
+msgstr "<Связь>"
+
+#: edit.prg:1266
+msgid "I"
+msgstr "В"
+
+#: edit.prg:1266
+msgid "O"
+msgstr "З"
+
+#: edit.prg:1304
+#, fuzzy
+msgid "Can't save file ;"
+msgstr "Не могу открыть файл;"
+
+#: edit.prg:1326
+msgid "&New                "
+msgstr "&Новый              "
+
+#: edit.prg:1326
+msgid "Create a new file"
+msgstr "Создать новый файл"
+
+#: edit.prg:1330
+msgid "&Open...            "
+msgstr "&Открыть ...        "
+
+#: edit.prg:1330
+msgid "Open a file"
+msgstr "Открыть файл"
+
+#: edit.prg:1334
+msgid "&Save               "
+msgstr "&Сохранить          "
+
+#: edit.prg:1334
+msgid "Save a file"
+msgstr "Записать файл  на диск"
+
+#: edit.prg:1338
+msgid "&Save as...         "
+msgstr "&Сохранить          "
+
+#: edit.prg:1338
+msgid "Save a file as..."
+msgstr "Сохранение файла..."
+
+#: edit.prg:1342
+msgid "&Reload file        "
+msgstr "&Перечитать         "
+
+#: edit.prg:1342
+msgid "Reload a file"
+msgstr "Перечитать файл"
+
+#: edit.prg:1346
+msgid "Read on&ly          "
+msgstr "Только &чтение"
+
+#: edit.prg:1346
+msgid "Read only options"
+msgstr "Включить/выключить режим Только Чтение"
+
+#: edit.prg:1352 edit.prg:1438
+msgid "&Print...           "
+msgstr "Печа&ть...          "
+
+#: edit.prg:1352
+msgid "Print a file"
+msgstr "Печать файла"
+
+#: edit.prg:1356
+msgid "Print &block...     "
+msgstr "Печа&ть блока...    "
+
+#: edit.prg:1356 edit.prg:1438
+msgid "Print marked block"
+msgstr "Печа&ть блока...    "
+
+#: edit.prg:1362
+msgid "E&xit with save     "
+msgstr "Выход с со&хранением"
+
+#: edit.prg:1362
+msgid "End of application and save options"
+msgstr "Завершить работу и сохранить текущие установки"
+
+#: edit.prg:1366
+msgid "Exit with-out sa&ve "
+msgstr "Выйти &без сохранения"
+
+#: edit.prg:1366
+msgid "End of application and not save options"
+msgstr "Завершить работу без сохранения текущих установок"
+
+#: edit.prg:1373
+msgid "&Window"
+msgstr "&Окно"
+
+#: edit.prg:1376
+msgid "&List    "
+msgstr "&Список   "
+
+#: edit.prg:1376
+msgid "List of windows"
+msgstr "Список открытых окон"
+
+#: edit.prg:1380
+msgid "&Next    "
+msgstr "С&ледующее"
+
+#: edit.prg:1380
+msgid "Next window"
+msgstr "Следующее окно"
+
+#: edit.prg:1384
+msgid "&Prev    "
+msgstr "&Предыдущее"
+
+#: edit.prg:1384
+msgid "Prevoice window"
+msgstr "Предыдущее окно"
+
+#: edit.prg:1388
+msgid "&Close   "
+msgstr "&Закрыть"
+
+#: edit.prg:1388
+msgid "Close window"
+msgstr "Закрыть окно"
+
+#: edit.prg:1395
+msgid "&Block"
+msgstr "&Блок"
+
+#: edit.prg:1398
+msgid "&Line block marker    "
+msgstr "&Строчный блок"
+
+#: edit.prg:1398
+msgid "Start/stop line block marker"
+msgstr "Начать/закончить отметку строчного блока"
+
+#: edit.prg:1402
+msgid "&Column block marker  "
+msgstr "&Прямоугольный блок"
+
+#: edit.prg:1402
+msgid "Start/stop columns block marker"
+msgstr "Начать/закончить отметку прямоугольного блока"
+
+#: edit.prg:1406
+msgid "&Unmark               "
+msgstr "Сн&ять                "
+
+#: edit.prg:1406
+msgid "Unmark block marker"
+msgstr "Снять отметку блока"
+
+#: edit.prg:1410
+msgid "Co&py                 "
+msgstr "&Копировать           "
+
+#: edit.prg:1410
+msgid "Copy block "
+msgstr "Копировать блок"
+
+#: edit.prg:1414
+msgid "&Move                 "
+msgstr "Пе&реместить          "
+
+#: edit.prg:1414
+msgid "Move block "
+msgstr "Переместить блок"
+
+#: edit.prg:1418
+msgid "&Delete               "
+msgstr "&Удалить              "
+
+#: edit.prg:1418
+msgid "Delete block"
+msgstr "Удалить блок"
+
+#: edit.prg:1422
+msgid "Copy to clip&board    "
+msgstr "Копировать в &буфер   "
+
+#: edit.prg:1422
+msgid "Copy block to clipboard"
+msgstr "Скопировать блок в буфер"
+
+#: edit.prg:1426
+msgid "Pa&ste from clipboard "
+msgstr "Вставить из бу&фера   "
+
+#: edit.prg:1426
+msgid "Paste block from clipboard"
+msgstr "Вставить блок из буфера"
+
+#: edit.prg:1430
+msgid "&Save to file         "
+msgstr "&Записать в файл      "
+
+#: edit.prg:1430
+msgid "Save block to file"
+msgstr "Записать выделенный блок в файл"
+
+#: edit.prg:1434
+msgid "&Load from file       "
+msgstr "П&рочитать из файла   "
+
+#: edit.prg:1434
+msgid "Load block from file"
+msgstr "Прочитать блок из файла"
+
+#: edit.prg:1447
+msgid "&Service"
+msgstr "&Сервис"
+
+#: edit.prg:1450
+msgid "&Insert mode    "
+msgstr "&Режим вставки"
+
+#: edit.prg:1450
+msgid "On/off insert mode "
+msgstr "Вкл/выкл режим вставки"
+
+#: edit.prg:1455
+msgid "Find &string    "
+msgstr "&Поиск строки   "
+
+#: edit.prg:1455
+msgid "Find string "
+msgstr "Поиск строки"
+
+#: edit.prg:1459
+msgid "Find &next      "
+msgstr "Найти &следующее"
+
+#: edit.prg:1459
+msgid "Find next "
+msgstr "Найти следующее вхождение подстроки"
+
+#: edit.prg:1463
+msgid "Find pre&vious  "
+msgstr "Найти пре&дыдущее"
+
+#: edit.prg:1463
+msgid "Find previous "
+msgstr "П&родолжить поиск"
+
+#: edit.prg:1467
+msgid "&Replace        "
+msgstr "&Заменить       "
+
+#: edit.prg:1467
+msgid "Find and replace string "
+msgstr "Найти подстроку и заменить "
+
+#: edit.prg:1471
+msgid "&Match symbol forward  "
+msgstr "Поиск &символа вперед"
+
+#: edit.prg:1471
+msgid "Match identity symbol in forward "
+msgstr "Поиск похожего символа вперед по тексту"
+
+#: edit.prg:1475
+msgid "Match symbol &backward "
+msgstr "Поиск си&мвола назад"
+
+#: edit.prg:1475
+msgid "Match identity symbol in backward "
+msgstr "Поиск похожего символа в обратном направлении"
+
+#: edit.prg:1479
+msgid "Match structure forward  "
+msgstr "По&иск структуры"
+
+#: edit.prg:1479
+msgid "Match Clipper structure to forward "
+msgstr "Поиск структуры по правилам Clipper вперед"
+
+#: edit.prg:1483
+msgid "Match structure backward "
+msgstr "Поиск структуры &назад"
+
+#: edit.prg:1483
+msgid "Match Clipper structure to backward "
+msgstr "Поиск структуры по правилам Clipper назад"
+
+#: edit.prg:1487
+msgid "&Undo           "
+msgstr "О&ткат"
+
+#: edit.prg:1487
+msgid "Undo operation"
+msgstr "Операция отката"
+
+#: edit.prg:1495
+#, fuzzy
+msgid "Forma&t"
+msgstr "Форматирование абзаца"
+
+#: edit.prg:1498
+msgid "Format &line    "
+msgstr "Ф&ормат строка  "
+
+#: edit.prg:1498
+msgid "Format line"
+msgstr "Форматирование строки"
+
+#: edit.prg:1502
+msgid "Format &part    "
+msgstr "Формат абза&ц   "
+
+#: edit.prg:1502
+msgid "Format part"
+msgstr "Форматирование абзаца"
+
+#: edit.prg:1509
+msgid "O&therwise"
+msgstr "П&рочее"
+
+#: edit.prg:1512
+msgid "&Template       "
+msgstr "&Шаблон         "
+
+#: edit.prg:1512
+msgid "Template "
+msgstr "Вставить строку по шаблону"
+
+#: edit.prg:1516
+msgid "Template &macro "
+msgstr "&Макроподстановка"
+
+#: edit.prg:1516
+msgid "Template macro "
+msgstr "Выполнить макроподстановку"
+
+#: edit.prg:1520
+msgid "&Single graphic "
+msgstr "&Графика одиночная"
+
+#: edit.prg:1520
+msgid "On/Off single graphic mode "
+msgstr "Вкл/выкл режим рисования одиночных линий"
+
+#: edit.prg:1525
+msgid "&Double graphic "
+msgstr "Графика &двойная"
+
+#: edit.prg:1525
+msgid "On/Off double graphic mode  "
+msgstr "Вкл/выкл режим рисования двойных линий"
+
+#: edit.prg:1530
+msgid "&Choose code page "
+msgstr "&Выбрать кодировку"
+
+#: edit.prg:1530
+msgid "Choose code page  "
+msgstr "Выбрать кодировку"
+
+#: edit.prg:1534
+msgid "&Options...     "
+msgstr "Оп&ции...        "
+
+#: edit.prg:1534
+msgid "Set options"
+msgstr "Настройка"
+
+#: edit.prg:1555
+msgid "R:"
+msgstr "Ч:"
+
+#: edit.prg:1581
+msgid "; not saved. Save?"
+msgstr "; не сохранен. Сохранить?"
+
+#: edit.prg:1671 edit.prg:1672
+msgid " Options "
+msgstr " Опции "
+
+#: edit.prg:1674
+msgid "Create .bak files"
+msgstr "Создавать .bak файлы"
+
+#: edit.prg:1677
+msgid "Tabulation size"
+msgstr "Шаг табуляции"
+
+#: edit.prg:1680
+#, fuzzy
+msgid "Tabulation packing"
+msgstr "Шаг табуляции"
+
+#: edit.prg:1683
+#, fuzzy
+msgid "Open files in "
+msgstr "Открыть файл в"
+
+#: edit.prg:1685
+msgid "current directory"
+msgstr "текущей директории"
+
+#: edit.prg:1686
+msgid "last directory"
+msgstr "последней директории"
+
+#: edit.prg:1691
+msgid "Autosave files"
+msgstr "Автосохранение"
+
+#: edit.prg:1694
+msgid "Autosave time"
+msgstr "Время автосохр."
+
+#: edit.prg:1705
+msgid "Save status"
+msgstr "Сохранять статус"
+
+#: edit.prg:1708
+msgid "Hypen in word"
+msgstr "Перенос в словах"
+
+#: edit.prg:1711
+msgid "Auto wrap"
+msgstr "Автоперенос"
+
+#: edit.prg:1714
+msgid "Auto margin left"
+msgstr "Автоматич. установка левой границы"
+
+#: edit.prg:1718
+msgid "Margin left"
+msgstr "Левая граница"
+
+#: edit.prg:1721
+msgid "Margin right"
+msgstr "Правая граница"
+
+#: edit.prg:1724
+#, fuzzy
+msgid "Max strings"
+msgstr "Поиск строки"
+
+#: edit.prg:1916
+msgid "Line "
+msgstr "Строка "
+
+#: edit.prg:1975
+msgid "Bad line number!"
+msgstr "Не правильно указан номер строки!"
+
+#: edit.prg:1995
+msgid "New"
+msgstr "Новый"
+
+#: edit.prg:1995
+msgid "Link"
+msgstr "Связь"
+
+#: edit.prg:2030
+msgid " Source charset "
+msgstr " Исходная кодировка"
+
+#: edit.prg:2240
+msgid "Macros"
+msgstr ""
+
+#: tedit_obj.prg:72
+#, fuzzy
+msgid "<EOF>"
+msgstr "<Зам>"
+
+#: tedit_obj.prg:327
+msgid "Load file..."
+msgstr "Чтение файла..."
+
+#: tedit_obj.prg:355 tedit_obj.prg:367
+msgid "The size of file ;"
+msgstr "Размер файла ;"
+
+#: tedit_obj.prg:355 tedit_obj.prg:367
+#, fuzzy
+msgid "; most maximum size!;Last strings may be lost"
+msgstr "; превышает максимально допустимый. ; Последние строки текста могут быть утеряны"
+
+#: tedit_obj.prg:355 tedit_obj.prg:367 tedit_obj.prg:452
+msgid "OK"
+msgstr "ОК"
+
+#: tedit_obj.prg:452
+#, fuzzy
+msgid ""
+"The size of file is a most maximum size!;Last strings may be lost; Please "
+"check MAXSTRINGS options"
+msgstr ""
+"Размер файла превышает максимальный!; Последние строки текста могут "
+"потеряться"
+
+#: tedit_obj.prg:2211
+msgid "Save file..."
+msgstr "Сохранение файла..."
+
+#: tedit_obj.prg:2218
+#, fuzzy
+msgid "file ;"
+msgstr "Файл;"
+
+#: tedit_obj.prg:2223 tedit_obj.prg:2321
+msgid "Can't create ;"
+msgstr "Не возможно создать ;"
+
+#: tedit_obj.prg:2223 tedit_obj.prg:2321
+msgid ".bak file"
+msgstr ".bak файл"
+
+#: tedit_obj.prg:2315
+msgid "Save block to file..."
+msgstr "Запись блока в файл..."
+
+#: filed.prg:353
+#, fuzzy
+msgid "Bad directory name!"
+msgstr "Не правильно указано имя директории!"
+
+#: sys_init.prg:43
+msgid "cp437"
+msgstr "cp866"
+
+#~ msgid "Exit from memoedit; Don~t save ?"
+#~ msgstr "Выйти из memoedit; без сохранения?"

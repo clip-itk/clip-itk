@@ -8,6 +8,7 @@
 #include "inkey.ch"
 #include "button.ch"
 
+//#define TBR_CACHED
 //#define DEBUG_CALL
 
 *********************************
@@ -24,12 +25,16 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"browseNew")
 #endif
+	   lRow := iif(lRow == NIL, 0, lRow)
+	   lCol := iif(lCol == NIL, 0, lCol)
+	   rRow := iif(rRow == NIL, 0, rRow)
+	   rCol := iif(rCol == NIL, 0, rCol)
 	   obj		:= map()
-	   obj:nTop		:=Lrow
+	   obj:nTop	:=Lrow
 	   obj:nLeft	:=Lcol
 	   obj:nBottom	:=Rrow
 	   obj:nRight	:=Rcol
-	   obj:classname	:= "TBROWSE"
+	   obj:classname:= "TBROWSE"
 	   obj:autoLite	:= .t.
 	   obj:cargo	:= NIL
 	   obj:colCount	:= 0
@@ -38,36 +43,41 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	   obj:rowPos	:= 1
 	   obj:mColPos	:= 0
 	   obj:mRowPos	:= 0
-	   obj:rowcount	:= rRow-lrow
+	   obj:rowcount	:= rRow-lrow+1
 	   obj:colSep	:= " "
 	   obj:headSep	:= " "
 	   obj:footSep	:= " "
 	   obj:freeze	:= 0
 	   obj:leftVisible	:= 1
+	   obj:rightVisible	:= 1
+	   obj:message	:= ""
 	   obj:chop		:= .f. /* показывать неполностью вмещаемые колонки ?*/
-           obj:hiliteType	:= 1   /* 0 -none
-           				  1 - current ceil
-                                          2 - current line
-                                          3 - current line include separators
-           				*/
+	   obj:hiliteType	:= 1   /* 0 -none
+					  1 - current ceil
+					  2 - current line
+					  3 - current line include separators
+					*/
 	   obj:refreshBlock	:= {|| NIL }
 	   if db!=NIL .and. db
 		  obj:goBottomBlock	:= {||dbgobottom() }
 		  obj:goTopBlock	:= {|| dbgoTop() }
 		  obj:bofBlock		:= {||bof() }
 		  obj:eofBlock		:= {||eof() }
-	   	  obj:skipBlock		:= {|x,y,z| __tdbskip(x,y,z) }
+		  obj:skipBlock		:= {|x,y,z| __tdbskip(x,y,z) }
 	   else
-	  	obj:bofBlock		:= NIL
-	  	obj:eofBlock		:= NIL
-	  	obj:goBottomBlock	:= NIL
-	  	obj:goTopBlock	:= NIL
-	  	obj:SkipBlock		:= NIL
+		obj:bofBlock		:= NIL
+		obj:eofBlock		:= NIL
+		obj:goBottomBlock	:= NIL
+		obj:goTopBlock	:= NIL
+		obj:SkipBlock		:= NIL
 	   endif
 	   obj:hitBottom	:=.f.
 	   obj:hitTop	:=.f.
 	   obj:hitEmpty	:=.f.
 	   obj:stable	:=.f.
+	   obj:cursorCol:=0
+	   obj:cursorRow:=0
+	   obj:cursorLen:=0
 
 	  *************************************
 	  obj:_stableRowPos	:=NIL
@@ -78,8 +88,12 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	  obj:__rect	:={0,0,0,0}
 
 	  obj:__colorCells	:={}  // items for colorRect()
+#ifdef TBR_CACHED
+	  obj:__dataCache	:={}  // cache for output data
+#endif
 	  obj:__columns	:={}
 
+	  obj:__lRedrawTable    := .t. // need redraw headers & footers
 	  obj:__columnsLen	:={} // длины колонок
 	  obj:__colVisible	:={} // видимые колонки
 	  obj:__colpos	:=1  // текущая колонка из числа видимых
@@ -160,74 +174,84 @@ return obj
 
 **********************************************************
 static func __whoVisible(num)
-	   local i,leftcol,lensep,scol,oldcol,col,mincol,maxcol
+	   local i,cnum,leftcol,lensep,scol,oldcol,col,mincol,maxcol
 #ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"whoVisible")
+	outlog(__FILE__,__LINE__,"whoVisible",num)
 #endif
-	   num=iif(num==NIL,0,num)
+	   if empty(::__columns)
+		return
+	   endif
+	   cnum=iif(num==NIL,0,num)
 	   lenSep:=len(::colsep)
 	   //lenSep:=min(iif(lensep==3,3,1),lensep)
 	   ::freeze:=max(::freeze,0)
 	   ::freeze:=min(::freeze,::colCount)
 	   if (empty(::__colVisible))
-	  	col    := 1  // ::colpos
-	  	oldcol := ::colpos
+		col    := 1  // ::colpos
+		oldcol := ::colpos
 	   else
-	  	col:=min(max(::__colPos,::freeze+1),::colCount)
-		if col <= len(::__colVisible)
-			col:=::__colVisible[col]
+		if num == NIL
+			col := ::__colVisible[1]
+		else
+			col:=min(max(::__colPos,::freeze+1),::colCount)
+			if col <= len(::__colVisible)
+				col:=::__colVisible[col]
+			endif
 		endif
 		oldcol:=max(1,min(::colCount,::colPos))
 	   endif
 	   scol:=::__rect[2]
 	   leftcol:=scol
 	   for i=1 to ::freeze
-	   	leftcol+=::__columnsLen[i]+lensep
-	   	next
-	   while i<=::colCount .and. leftcol>::nRight-10 .and. ::freeze>0
-	   	leftcol-=::__columnsLen[i]+lensep
-	   	::freeze--
+		leftcol+=::__columnsLen[i]+lensep
+	   next
+	   while i<=::colCount .and. leftcol>::nRight-3 .and. ::freeze>0
+		leftcol-=::__columnsLen[i]+lensep
+		::freeze--
 	   enddo
+	   leftcol:=max(leftcol,::__rect[2])
 	   ::__colVisible:={}
 	   ::__whereVisible:={}
 	   for i=1 to ::freeze
-	   	aadd(::__colVisible,i)
-	   	aadd(::__whereVisible,scol)
-	   	scol+=::__columnsLen[i]+lensep
+		aadd(::__colVisible,i)
+		aadd(::__whereVisible,scol)
+		scol+=::__columnsLen[i]+lensep
 	   next
 	   *
-	   col+=num
+	   col+=cnum
 	   col=min(max(min(col,::colCount),::freeze+1),::colCount)
-	   if num>=0
+	   if cnum>=0 .and. num != NIL
 			scol:=::__rect[4]-(::__columnsLen[col]+lenSep)
 			while scol>leftcol .and. col > ::freeze+1
-   				col--
+				col--
 				scol-=::__columnsLen[col]+lenSep
 			enddo
-			if scol<leftcol .and. (col<=oldcol .or. num >= ::colCount)
+			if scol<leftcol .and. (col<=oldcol .or. cnum >= ::colCount) .and. cnum>0
 				col++
 			endif
 	   endif
 	   mincol:=col
 	   scol:=leftcol
 	   while scol<::__rect[4] .and. col<=::colCount
-	   	scol+=::__columnsLen[col]+lenSep
-	   	col++
+		scol+=::__columnsLen[col]+lenSep
+		col++
 	   enddo
 	   scol--
 	   col--
 	   col=min(col,::colCount)
 	   col=max(1,col)
 	   maxcol:=col
-	   if col>1 .and. !::chop .and. ::colCount>1 .and. scol-lensep>::__rect[4] .and. mincol!=maxcol
-			col--
-			maxcol:=col
+	   if (col>1 .and. !::chop .and. ::colCount>1 .and. scol-lensep>::__rect[4] .and. mincol!=maxcol) .or. cnum>::colCount
+			if cnum < ::colCount
+				col--
+				maxcol:=col
+			endif
 			scol:=::__rect[4]-(::__columnsLen[col]+lenSep)
 			while scol>leftcol .and. col>1
 				col--
 				scol-=::__columnsLen[col]+lenSep
 			enddo
-			if scol<leftcol
+			if scol+lenSep<leftcol
 				col++
 			endif
 			col:=max(1,col)
@@ -240,18 +264,19 @@ static func __whoVisible(num)
 	   maxcol := min(maxcol,len(::__columns))
 	   * add to list of columns
 	   scol:=leftcol
+	   ::leftVisible := mincol
 	   for col=mincol to maxcol
-		::leftVisible := col
-	   	aadd(::__colVisible,col)
-	   	aadd(::__whereVisible,scol)
-	   	scol+=::__columnsLen[col]+lensep
+		aadd(::__colVisible,col)
+		aadd(::__whereVisible,scol)
+		scol+=::__columnsLen[col]+lensep
 	   next
 	   if empty(::__colVisible)
 		aadd(::__colVisible,col)
 		aadd(::__whereVisible,scol)
 	   endif
+	   ::rightVisible := atail(::__colVisible)
 	   for i=1 to len(::__colVisible)
-		if ::__colVisible[i]==oldcol+num
+		if ::__colVisible[i]==oldcol+cnum
 			col:=::__colVisible[i]
 			::__colPos=i
 		endif
@@ -261,19 +286,35 @@ static func __whoVisible(num)
 	   ::__colPos:=max(::__colPos,1)
 	   ::colpos:=::__colVisible[::__colpos]
 	   ::_stableColPos:=::colpos
+	   ::__lRedrawTable := .t.
 return NIL
 
 *********************************
 static func __sayTable
    local visLen,col,colSep,lensep,lenhsep
    local strsep1,strsep2,strseph,scol,len,strings
-   local i,j,s,ccc,headsep,strhsep1, x,y
+   local i,j,k,s,ccc,headsep,strhsep1, x,y
+   local heading:=.t., footing:=.t.
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"sayTable")
 #endif
    if ::winbuffer==nil; dispBegin(); endif
 
    visLen= len(::__colVisible)
+   j=0;k=0
+   for i=1 to visLen
+	col=::__colVisible[i]
+	headSep:=::__columns[col]:headSep
+	if headSep!=NIL .and. headSep==""
+	   j++
+	endif
+	headSep:=::__columns[col]:footSep
+	if headSep!=NIL .and. headSep==""
+	   k++
+	endif
+   next
+   heading := !(j==visLen)
+   footing := !(k==vislen)
    for i=1 to visLen
 	  col=::__colVisible[i]
 	  len=::__columnsLen[col]
@@ -296,24 +337,24 @@ static func __sayTable
 		ccc:=::__colors[::__columns[col]:colorHeading]
 	  endif
 	  for j=1 to len(strings )
-	 	s=padr(strings[j],len)
+		s=padr(strings[j],len)
 		y := ::nTop+j-1
 		x := scol
 		if ::__columns[col]:colSepH != nil
-		 	strseph:=substr(::__columns[col]:colSepH,j,1)
-	   		if ::winbuffer == nil
-	   			dispOutAt(::nTop+j-1, scol-1,strseph,::__colors[1])
-		 	else
+			strseph:=substr(::__columns[col]:colSepH,j,1)
+			if ::winbuffer == nil
+				dispOutAt(::nTop+j-1, scol-1,strseph,::__colors[1])
+			else
 				winbuf_out_at(::winbuffer,::nTop+j-1, scol-1,strseph,::__colors[1])
-		 	endif
-	 		x := scol-1 + len(strseph)
+			endif
+			x := scol-1 + len(strseph)
 		else
-	   		if ::winbuffer == nil
-	   			dispOutAt(::nTop+j-1, scol,strsep1,::__colors[1])
-		 	else
-	   			winbuf_out_at(::winbuffer,::nTop+j-1, scol,strsep1,::__colors[1])
-		 	endif
-	 		x := scol + len(strsep1)
+			if ::winbuffer == nil
+				dispOutAt(::nTop+j-1, scol,strsep1,::__colors[1])
+			else
+				winbuf_out_at(::winbuffer,::nTop+j-1, scol,strsep1,::__colors[1])
+			endif
+			x := scol + len(strsep1)
 		endif
 		if ::winbuffer == nil
 			dispOut(s,ccc)
@@ -324,10 +365,10 @@ static func __sayTable
 			winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,""),::__colors[1])
 			x += len(iif(i<visLen,strSep2,""))
 		endif
-	 	if i==visLen
+		if i==visLen
 			if ::winbuffer == nil
 				dispout(space(::nRight-col()+1),::__colors[1])
-	 		else
+			else
 				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
 			endif
 		endif
@@ -337,29 +378,29 @@ static func __sayTable
 	lenHSep=len(headSep)
 	strhsep1=right(headsep,1)
 	j:=len(strings)
-	if (j>0 .and. lenHSep>0 ) .or. !empty(::headSep)
+	if heading .and. ((j>0 .and. lenHSep>0 ) .or. !empty(::headSep))
 		if ::__columns[col]:colSepH != nil .and. len(::__columns[col]:colSepH)>j
 			strseph:=substr(::__columns[col]:colSepH,j+1,1)
 			if ::winbuffer == nil
-	   			dispOutAt(::nTop+j, scol-1, strseph,::__colors[1])
-	 		else
+				dispOutAt(::nTop+j, scol-1, strseph,::__colors[1])
+			else
 				winbuf_out_at(::winbuffer,::nTop+j, scol-1, strseph,::__colors[1])
 			endif
-	 	endif
+		endif
 		s := replicate(strHsep1,len)+iif(i<visLen,headsep,"")
 		if ::winbuffer == nil
 			dispOutAt(::nTop+j, scol,s, ::__colors[1])
-	 	else
+		else
 			winbuf_out_at(::winbuffer,::nTop+j, scol, s, ::__colors[1])
 		endif
-	 	y := ::nTop+j; x := scol + len(s)
-	 	if i==vislen
+		y := ::nTop+j; x := scol + len(s)
+		if i==vislen
 			if ::winbuffer == nil
 				dispout(replicate(strHsep1,::nright-col()+1),::__colors[1])
-	 		else
+			else
 				winbuf_out_at(::winbuffer,y,x, replicate(strHsep1,::nright-col()+1),::__colors[1])
 			endif
-	 	endif
+		endif
 		j++
 	endif
 	::__rect[1]=::nTop+j
@@ -380,7 +421,7 @@ static func __sayTable
 			if i==visLen
 				dispout(space(::nRight-col()+1),::__colors[1])
 			endif
-	 	else
+		else
 			winbuf_out_at(::winbuffer,::nBottom-j+1, scol, strsep1, ::__colors[1])
 			y := ::nBottom-j+1
 			x := scol + len(strsep1)
@@ -401,13 +442,13 @@ static func __sayTable
 	//endif
 	j:=len(strings)
 	//if ( j>0 .and. lenHSep>0 ) .or. !empty(::footSep)
-	if lenHSep>0  .and. !empty(headSep)
+	if footing .and. lenHSep>0  .and. !empty(headSep)
 		if ::winbuffer == nil
 			dispOutAt(::nBottom-j, scol, replicate(strHsep1,len)+iif(i<visLen,headsep,"") , ::__colors[1])
 			if i==vislen
 				dispOut(replicate(strHsep1,::nright-col()+1),::__colors[1])
 			endif
-	 	else
+		else
 			s := replicate(strHsep1,len)+iif(i<visLen,headsep,"")
 			winbuf_out_at(::winbuffer,::nBottom-j, scol, s, ::__colors[1])
 			y := ::nBottom-j+1
@@ -421,7 +462,10 @@ static func __sayTable
 	::__rect[3]=::nBottom-j
    next
    ::rowCount:=::__rect[3]-::__rect[1]+1
-   if ::winbuffer==nil; dispEnd(); endif
+   if ::winbuffer==nil
+      dispEnd()
+   endif
+   ::__lRedrawTable := .f.
 
 return NIL
 
@@ -440,10 +484,11 @@ static func __remakeColumns
    max_hr:=0; max_hf:=0
    for i=1 to len(::__columns)
 	  h:=::__columns[i]:heading
-	  hr:=iif(empty(h),0,occurs(";",h)+1)
+	  //hr:=iif(empty(h),0,occurs(";",h)+1)
+	  hr:=iif(h==NIL .or. h=="",0,occurs(";",h)+1)
 	  max_hr:=max(max_hr,hr)
 	  f:=::__columns[i]:footing
-	  hf:=iif(empty(f),0,occurs(";",f)+1)
+	  hf:=iif(f==NIL .or. f=="",0,occurs(";",f)+1)
 	  max_hf:=max(max_hf,hf)
    next
    ::__columnsLen:={}
@@ -451,52 +496,58 @@ static func __remakeColumns
 	  clen:=0
 	  aadd(::__headStrings,{})
 	  h:=::__columns[i]:heading
-	  hr:=iif(empty(h),0,occurs(";",h)+1)
+	  //hr:=iif(empty(h),0,occurs(";",h)+1)
+	  hr:=iif(h==NIL .or. h=="",0,occurs(";",h)+1)
 	  for j=1 to hr
-	 	a=at(";",h)
-	 	a=iif(a==0,len(h)+1,a)
-	 	s=substr(h,1,a-1)
-	 	clen:=max(clen,len(s))
-	 	aadd(::__headStrings[i], s )
-	 	h:=substr(h,a+1)
+		a=at(";",h)
+		a=iif(a==0,len(h)+1,a)
+		s=substr(h,1,a-1)
+		clen:=max(clen,len(s))
+		aadd(::__headStrings[i], s )
+		h:=substr(h,a+1)
 	  next
 	  for j=hr+1 to max_hr
-	  	aadd(::__headStrings[i],"")
+		aadd(::__headStrings[i],"")
 	  next
 
 	  aadd(::__footStrings,{})
 	  f:=::__columns[i]:footing
-	  hf:=iif(empty(f),0,occurs(";",f)+1)
+	  hf:=iif(f==NIL .or. f=="",0,occurs(";",f)+1)
 	  for j=1 to hf
-	 	a=at(";",f)
-	 	a=iif(a==0,len(f)+1,a)
-	 	s=substr(f,1,a-1)
-	 	clen=max(clen,len(s))
-	 	aadd(::__footStrings[i],s)
-	 	f:=substr(f,a+1)
+		a=at(";",f)
+		a=iif(a==0,len(f)+1,a)
+		s=substr(f,1,a-1)
+		clen=max(clen,len(s))
+		aadd(::__footStrings[i],s)
+		f:=substr(f,a+1)
 	  next
 	  for j=hf+1 to max_hf
-	  	aadd(::__footStrings[i],"")
+		aadd(::__footStrings[i],"")
 	  next
-          if ::__columns[i]:fieldname == NIL
-	  	data=eval(::__columns[i]:block)
-          else
-	  	data=eval(::__columns[i]:block,::__columns[i]:fieldname)
-          endif
-	  if valtype(::__columns[i]:picture)=="C"
-		data:=transform(data,::__columns[i]:picture)
-	  else
-		data:=toString(data)
-	  endif
-	  clen=max(clen,len(data))
 	  if !empty(::__columns[i]:width) .and. valtype(::__columns[i]:width)=="N"
-	 	clen:=::__columns[i]:width
+		clen:=::__columns[i]:width
+	  elseif valtype(::__columns[i]:picture)=="C" .or. valtype(::__columns[i]:len)!="N"
+		if ::__columns[i]:fieldname == NIL
+			data=eval(::__columns[i]:block)
+		else
+			data=eval(::__columns[i]:block,::__columns[i]:fieldname)
+		endif
+		if valtype(::__columns[i]:picture)=="C"
+			data:=transform(data,::__columns[i]:picture)
+		else
+			data:=toString(data)
+		endif
+		clen:=max(clen,len(data))
+	  else
+		clen:=max(clen,::__columns[i]:len)
 	  endif
+
 	  aadd(::__columnsLen,clen)
    next
    ::__headRows:=max_hr-iif(empty(::headSep),1,0)
    ::__footRows:=max_hf
    ::__rect:={::ntop+::__headRows,::nleft,::nbottom-::__footRows,::nright}
+   //outlog(__FILE__,__LINE__,::__rect)
    ::rowCount:=::__rect[3]-::__rect[1]+1
    //::__colorCells:={}
    asize(::__colorCells,::rowCount)
@@ -508,6 +559,18 @@ static func __remakeColumns
 		::__colorCells[i][j]:=::__columns[j]:defColor
 	next
    next
+#ifdef TBR_CACHED
+   asize(::__dataCache,::rowCount)
+   for i=1 to len(::__colorCells)
+	::__dataCache[i]={}
+	asize(::__dataCache[i],len(::__columns))
+	for j=1 to len(::__dataCache[i])
+		::__dataCache[i][j]={}
+		asize(::__dataCache[i][j],3)
+		afill(::__dataCache[i][j],NIL)
+	next
+   next
+#endif
    ::refreshAll()
 return NIL
 
@@ -520,11 +583,14 @@ static func __setcolor()
 	   ::__colors:={}
 	   s:=::colorSpec
 	   while len(s)>0
-	   i:=at(",",s)
-	   i=iif(i==0,len(s)+1,i)
-	   aadd(::__colors,substr(s,1,i-1) )
-	   s:=substr(s,i+1)
+		i:=at(",",s)
+		i=iif(i==0,len(s)+1,i)
+		aadd(::__colors,substr(s,1,i-1) )
+		s:=substr(s,i+1)
 	   enddo
+	   for i=len(::__colors) to 10
+		aadd(::__colors,"W/N")
+	   next
 return NIL
 
 *********************************
@@ -609,28 +675,37 @@ static func down(self)
    self:__checkRow()
    self:hitTop:=self:hitBottom:=.f.
    if self:rowpos >= self:rowCount
-   	nskip:=eval(self:skipBlock,1)
-        /*
-        dispbegin()
-        scroll(self:__rect[1],self:__rect[2],self:__rect[3],self:__rect[4],1)
-        dispend()
-        */
-        self:refreshAll()
-        return self
-   else
-   	if self:winbuffer==nil; dispBegin(); endif
-        self:refreshCurrent()
-        self:forceStable()
-   	self:_outCurrent(0)
-        if self:winbuffer==nil; dispEnd(); endif
-	self:rowpos++
-   	nskip:=eval(self:skipBlock,1)
-   	if nskip==0
-          self:rowPos--
+	nskip:=eval(self:skipBlock,1)
+	if nskip==0
 	  self:_outCurrent()
 	  self:hitBottom=.t.
 	  return self
-   	endif
+	endif
+	/*
+	dispbegin()
+	scroll(self:__rect[1],self:__rect[2],self:__rect[3],self:__rect[4],1)
+	dispend()
+	*/
+	self:refreshAll()
+	return self
+   else
+	if self:winbuffer==nil
+		dispBegin()
+	endif
+	self:refreshCurrent()
+	self:forceStable()
+	self:_outCurrent(0)
+	if self:winbuffer==nil
+		dispEnd()
+	endif
+	self:rowpos++
+	nskip:=eval(self:skipBlock,1)
+	if nskip==0
+		self:rowPos--
+		self:_outCurrent()
+		self:hitBottom=.t.
+		return self
+	endif
    endif
    if self:_stableRowPos!=NIL
 	self:_stableRowPos:=self:rowPos
@@ -646,6 +721,9 @@ static func up(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"up")
 #endif
+   if !self:__firststab
+	  return self
+   endif
    /*
    if !self:stable
 	  return self
@@ -654,29 +732,34 @@ static func up(self)
    self:__checkRow()
    self:hitTop:=self:hitBottom:=.f.
    if self:rowpos<2
-   	nskip:=eval(self:skipBlock,-1)
-        /*
-	dispbegin()
-	scroll(self:__rect[1],self:__rect[2],self:__rect[3],self:__rect[4],-1)
-	dispend()
-        */
-	self:refreshAll()
-   else
-	if self:winbuffer==nil; dispBegin(); endif
-        self:refreshCurrent()
-        self:forcestable()
-        self:_outcurrent(0)
-	if self:winbuffer==nil; dispEnd(); endif
-
-	self:rowpos--
-   	nskip:=eval(self:skipBlock,-1)
-
-   	if nskip==0
-           self:rowPos++
+	nskip:=eval(self:skipBlock,-1)
+	if nskip==0
 	   self:hitTop:=.t.
 	   self:_outCurrent()
 	   return self
-   	endif
+	endif
+	/*
+	dispbegin()
+	scroll(self:__rect[1],self:__rect[2],self:__rect[3],self:__rect[4],-1)
+	dispend()
+	*/
+	self:refreshAll()
+   else
+	if self:winbuffer==nil; dispBegin(); endif
+	self:refreshCurrent()
+	self:forcestable()
+	self:_outcurrent(0)
+	if self:winbuffer==nil; dispEnd(); endif
+
+	self:rowpos--
+	nskip:=eval(self:skipBlock,-1)
+
+	if nskip==0
+	   self:rowPos++
+	   self:hitTop:=.t.
+	   self:_outCurrent()
+	   return self
+	endif
 
    endif
    if self:_stableRowPos!=NIL
@@ -692,15 +775,24 @@ static func refreshCurrent(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"refreshCurrent")
 #endif
+	self:hitTop:=self:hitBottom:=.f.
 	if !self:__firstStab
 		return self
 	endif
 	self:__checkRow()
 	//afill(self:__colorCells[self:rowPos],{1,2})
 	i:=self:rowpos
-	for j=1 to len(self:__colorCells[i])
-		self:__colorCells[i][j]:=self:__columns[j]:defColor
+	if i>=1
+		for j=1 to len(self:__colorCells[i])
+			self:__colorCells[i][j]:=self:__columns[j]:defColor
+		next
+	endif
+#ifdef TBR_CACHED
+	i:=self:rowpos
+	for j=1 to len(self:__dataCache[i])
+		self:__dataCache[i][j][1]:=NIL
 	next
+#endif
 	if self:__stablePos!=-1
 		self:__stablePos=-999
 	endif
@@ -709,12 +801,14 @@ return self
 
 *********************************
 static func refreshAll(self)
-	   local i,j
+	   local i,j,tmp
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"refreshAll")
 #endif
+	   self:hitTop:=self:hitBottom:=.f.
 	   if !self:__firstStab
-			return self
+		self:stabilize()
+		return self
 	   endif
 	   eval(self:refreshBlock)
 	   self:__checkRow()
@@ -724,18 +818,26 @@ static func refreshAll(self)
 		  self:__stablePos:=0
 	   endif
 	   for i=1 to len(self:__colorCells)
-			//afill(self:__colorCells[i],{1,2})
-		for j=1 to len(self:__colorCells[i])
-			self:__colorCells[i][j]:=self:__columns[j]:defColor
+		tmp := self:__colorCells[i]
+		for j=1 to len(tmp)
+			tmp[j]:=self:__columns[j]:defColor
 		next
 	   next
+#ifdef TBR_CACHED
+	   for i=1 to len(self:__dataCache)
+		tmp := self:__dataCache[i]
+		for j=1 to len(tmp)
+			tmp[j][1]:=NIL
+		next
+	   next
+#endif
 	   self:stable:=.f.
 	   i=eval(self:skipBlock,-1)
 	   i+=eval(self:skipBlock,1)
 	   if i!=0
-   		i+=eval(self:skipBlock,0-i)
-   		self:rowPos+=i
-   		self:rowpos:=max(1,self:rowpos)
+		i+=eval(self:skipBlock,0-i)
+		self:rowPos+=i
+		self:rowpos:=max(1,self:rowpos)
 		if self:_stableRowPos!=NIL
 			self:_stableRowPos:=self:rowPos
 		endif
@@ -754,8 +856,8 @@ static func goBottom(self)
 #endif
 	   self:__checkRow()
 
+	self:hitTop:=self:hitBottom:=.f.
 	   if self:gobottomBlock!=NIL
-		  self:hitTop:=self:hitBottom:=.f.
 		  self:rowPos=self:rowCount
 		  eval(self:gobottomBlock)
 		  self:refreshAll()
@@ -767,9 +869,9 @@ static func goTop(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"goTop")
 #endif
+	self:hitTop:=self:hitBottom:=.f.
 	   self:__checkRow()
 	   if self:gotopBlock!=NIL
-		  self:hitTop:=self:hitBottom:=.f.
 		  self:rowPos=1
 		  eval(self:gotopBlock)
 		  self:refreshAll()
@@ -783,20 +885,21 @@ static func pageDown(self)
 	outlog(__FILE__,__LINE__,"pageDown")
 #endif
 	   if !self:stable
-	  	eval(self:skipBlock,0-self:__stableSkips)
-	  	self:__stableSkips:=0
-	  	self:__stablePos:=0
+		eval(self:skipBlock,0-self:__stableSkips)
+		self:__stableSkips:=0
+		self:__stablePos:=0
 	   endif
 	   self:__checkRow()
 	   self:hitTop:=self:hitBottom:=.f.
 	   xskip=self:rowCount
 	   nskip=eval(self:skipBlock,xskip)
 	   if nskip<xskip
-	  	self:rowPos+=nskip
+		self:hitBottom := .t.
+		self:rowPos+=nskip
 		self:rowPos=max(min(self:rowPos,self:__rect[3]-self:__rect[1]+1),1)
-	  	if self:_stableRowPos!=NIL
+		if self:_stableRowPos!=NIL
 			self:_stableRowPos:=self:rowPos
-	  	endif
+		endif
 	   endif
 	   self:refreshAll()
 return self
@@ -808,9 +911,9 @@ static func pageUp(self)
 	outlog(__FILE__,__LINE__,"pageUp")
 #endif
 	   if !self:stable
-	  	eval(self:skipBlock,0-self:__stableSkips)
-	  	self:__stableSkips:=0
-	  	self:__stablePos:=0
+		eval(self:skipBlock,0-self:__stableSkips)
+		self:__stableSkips:=0
+		self:__stablePos:=0
 	   endif
 	   self:__checkRow()
 	   self:hitTop:=self:hitBottom:=.f.
@@ -818,15 +921,16 @@ static func pageUp(self)
 	   xskip=0-self:rowcount
 	   nskip=eval(self:skipBlock,xskip)
 	   if nskip>xskip
-	  	//self:rowPos:=self:rowCount-nskip+xskip+1
-	  	self:rowPos:=self:rowpos-nskip+xskip
-	  	self:rowpos:=max(1,self:rowpos)
-	  	if self:_stableRowPos!=NIL
+		self:hitTop := .t.
+		//self:rowPos:=self:rowCount-nskip+xskip+1
+		self:rowPos:=self:rowpos-nskip+xskip
+		self:rowpos:=max(1,self:rowpos)
+		if self:_stableRowPos!=NIL
 			self:_stableRowPos:=self:rowPos
-	  	endif
-	  	//nskip=eval(self:skipBlock,self:rowPos-1)
+		endif
+		//nskip=eval(self:skipBlock,self:rowPos-1)
 	   else
-	  	//nskip=eval(self:skipBlock,self:rowPos)
+		//nskip=eval(self:skipBlock,self:rowPos)
 	   endif
 	   self:refreshAll()
 return self
@@ -836,6 +940,7 @@ static func home(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"Home")
 #endif
+	self:hitTop:=self:hitBottom:=.f.
 	   self:__checkRow()
 	   self:__colPos:=1
 	   self:colpos:=self:__colVisible[self:__colpos]
@@ -848,6 +953,7 @@ static func end(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"End")
 #endif
+	self:hitTop:=self:hitBottom:=.f.
 	   self:__checkRow()
 	   self:__colPos:=len(self:__colVisible)
 	   self:colpos:=self:__colVisible[self:__colpos]
@@ -861,13 +967,14 @@ static func cleft(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"Left")
 #endif
+	self:hitTop:=self:hitBottom:=.f.
 	self:__checkRow()
 	if self:__colpos==1
 	   if self:__colVisible[1]==1
-           	if ! self:stable
-                	self:refreshall()
-                endif
-	  	return self
+		if ! self:stable
+			self:refreshall()
+		endif
+		return self
 	   endif
 	   fl:=.t.
 	else
@@ -875,7 +982,7 @@ static func cleft(self)
 	   if self:__colPos > self:freeze
 		  self:colpos:=self:__colVisible[self:__colpos]
 		  self:_stableColPos:=self:colpos
-	  	  self:_outCurrent()
+		  self:_outCurrent()
 		  return self
 	   else
 		  if len(self:__colVisible) > self:freeze .and. ;
@@ -892,7 +999,7 @@ static func cleft(self)
 	endif
 	if fl
 		self:__whoVisible(-1)
-		self:__sayTable()
+		//self:__sayTable()
 		self:refreshAll()
 	endif
 return self
@@ -902,31 +1009,32 @@ static func cright(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"Right")
 #endif
+	self:hitTop:=self:hitBottom:=.f.
 	self:__checkRow()
 	if self:__colpos==len(self:__colVisible)
 	   if self:__rightAll
-           	if ! self:stable
-                	self:refreshall()
-                endif
-	   	return self
+		if ! self:stable
+			self:refreshall()
+		endif
+		return self
 	   endif
 	   if !self:stable
-	  	eval(self:skipBlock,0-self:__stableSkips)
-	  	self:__stableSkips:=0
-	  	self:__stablePos:=0
+		eval(self:skipBlock,0-self:__stableSkips)
+		self:__stableSkips:=0
+		self:__stablePos:=0
 	   endif
 	   self:__whoVisible(1)
-	   self:__sayTable()
+	   //self:__sayTable()
 	   self:refreshAll()
 	else
 	   self:__colPos++
 	   self:colpos:=self:__colVisible[self:__colpos]
 	   self:_stableColPos:=self:colpos
-           if !self:stable
-           	self:refreshall()
-           else
-	   	self:_outCurrent()
-           endif
+	   if !self:stable
+		self:refreshall()
+	   else
+		self:_outCurrent()
+	   endif
 	endif
 return self
 
@@ -935,6 +1043,7 @@ static func panHome(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"panHome")
 #endif
+	self:hitTop:=self:hitBottom:=.f.
 	self:__checkRow()
 	if self:__colpos==1
 	   if self:__colVisible[1]==1
@@ -948,7 +1057,7 @@ static func panHome(self)
 	endif
 	self:__colpos:=1
 	self:__whoVisible(0-self:colCount)
-	self:__sayTable()
+	//self:__sayTable()
 	self:refreshAll()
 return self
 
@@ -960,17 +1069,18 @@ static func panEnd(self)
 	self:__checkRow()
 	if self:__colpos==len(self:__colVisible)
 	   if self:__rightAll
-	   	return self
+		return self
 	   endif
 	endif
 	if !self:stable
-	  eval(self:skipBlock,0-self:__stableSkips)
-	  self:__stableSkips:=0
-	  self:__stablePos:=0
+		eval(self:skipBlock,0-self:__stableSkips)
+		self:__stableSkips:=0
+		self:__stablePos:=0
+		self:stable := .t.
 	endif
 	self:__colpos:=self:colcount+1 //len(self:__colVisible)
 	self:__whoVisible(self:colCount+1)
-	self:__sayTable()
+	//self:__sayTable()
 	self:refreshAll()
 return self
 
@@ -989,7 +1099,7 @@ static func panLeft(self)
 	  self:__stablePos:=0
 	endif
 	self:__whoVisible(-1)
-	self:__sayTable()
+	//self:__sayTable()
 	self:refreshAll()
 return self
 
@@ -1008,7 +1118,7 @@ static func panRight(self)
 	  self:__stablePos:=0
 	endif
 	self:__whoVisible(1)
-	self:__sayTable()
+	//self:__sayTable()
 	self:refreshAll()
 return self
 
@@ -1063,10 +1173,10 @@ static func colWidth(self,col)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"colWidth")
 #endif
-	   x=ascan(self:__colVisible,col)
-	   if x>0
-	  ret=self:__columnsLen[col]
-	   endif
+	x=ascan(self:__colVisible,col)
+	if x>0
+		ret=self:__columnsLen[col]
+	endif
 return ret
 
 *********************************
@@ -1077,7 +1187,7 @@ static func invalidate(self)
 	 self:__setColor()
 	 self:__remakeColumns()
 	 self:__whoVisible()
-	 self:__sayTable()
+	 //self:__sayTable()
 	 self:refreshAll()
 return self
 
@@ -1085,12 +1195,19 @@ return self
 static func configure(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"configure")
+	outlog(__FILE__,__LINE__,procname(1),procline(1))
+	outlog(__FILE__,__LINE__,procname(2),procline(2))
+	outlog(__FILE__,__LINE__,procname(3),procline(3))
 #endif
+	 self:stable := .f.
+	 self:__firstStab := .f.
 	 self:__setColor()
+/*
 	 self:__remakeColumns()
 	 self:__whoVisible()
+*/
 /*
-	 self:__sayTable()
+	 //self:__sayTable()
 	 self:refreshAll()
 	 self:forcestable()
 */
@@ -1101,7 +1218,7 @@ return self
 static func _outCurrent ( row, hilite, fSay )
    local i,col,vislen,data,datat,srow,cblock
    local colsep,lensep,scol,ecol,len,lenc
-   local xcur:=NIL,ycur:=::nLeft,xcolor,ccolors:="",x,y
+   local xcur:=NIL,ycur:=::nLeft,lencur:=0,xcolor,ccolors:="",x,y
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"_outCurrent",row)
 #endif
@@ -1124,109 +1241,176 @@ static func _outCurrent ( row, hilite, fSay )
 	  colsep:=iif(colSep==NIL,::colSep,colSep)
 	  lenSep:=len(colSep)
 	  scol=::__whereVisible[i]
-          if ::__columns[col]:fieldName == NIL
-	  	data:=eval(::__columns[col]:block)
-          else
-	  	data:=eval(::__columns[col]:block,::__columns[col]:fieldName)
-          endif
-	  datat:=valtype(data)
-	  cblock=::__columns[col]:colorBlock
 	  ccolors:=::__colorCells[srow][col]
-	  if valtype(cblock)=="B" .and. ccolors[1]==1 .and. ccolors[2]==2
+#ifdef TBR_CACHED
+	  if ::__dataCache[sRow][col][1] == NIL
+		if ::__columns[col]:fieldName == NIL
+			data:=eval(::__columns[col]:block)
+		else
+			data:=eval(::__columns[col]:block,::__columns[col]:fieldName)
+		endif
+		::__dataCache[sRow][col][1] := data
+		datat:=valtype(data)
+		if datat == "U" .and. ::__columns[col]:type != NIL
+			datat := ::__columns[col]:type
+		endif
+		cblock=::__columns[col]:colorBlock
+		if valtype(cblock)=="B" //.and. ccolors[1]==1 .and. ccolors[2]==2
+			ccolors:=eval(cblock,data)
+		endif
+		::__dataCache[sRow][col][2] := ccolors
+		if valtype(::__columns[col]:picture)=="C"
+			data:=transform(data,::__columns[col]:picture)
+		elseif valtype(::__columns[col]:len)=="N"
+			switch valtype(data)
+				case "N"
+					data := str(data, ::__columns[col]:len)
+				case "U"
+					data := space( ::__columns[col]:len )
+				otherwise
+					data := padr( toString(data), ::__columns[col]:len )
+			endswitch
+		else
+			if valtype(data) == "N"
+				data := str(data, ::__columnsLen[col])
+			else
+				data := toString(data)
+			endif
+		endif
+		::__dataCache[sRow][col][3] := data
+	  else
+		datat:=valtype(::__dataCache[sRow][col][1])
+		ccolors := ::__dataCache[sRow][col][2]
+		data := ::__dataCache[sRow][col][3]
+	  endif
+#else
+	  if ::__columns[col]:fieldName == NIL
+		data:=eval(::__columns[col]:block)
+	  else
+		data:=eval(::__columns[col]:block,::__columns[col]:fieldName)
+	  endif
+	  datat:=valtype(data)
+	  if datat == "U" .and. ::__columns[col]:type != NIL
+		datat := ::__columns[col]:type
+	  endif
+	  cblock=::__columns[col]:colorBlock
+	  if valtype(cblock)=="B" //.and. ccolors[1]==1 .and. ccolors[2]==2
 		ccolors:=eval(cblock,data)
 	  endif
 
 	  if valtype(::__columns[col]:picture)=="C"
 		data:=transform(data,::__columns[col]:picture)
+	  elseif valtype(::__columns[col]:len)=="N"
+		switch valtype(data)
+			case "N"
+				data := str(data, ::__columns[col]:len )
+			case "U"
+				data := space( ::__columns[col]:len )
+			otherwise
+				data := toString(data)
+		endswitch
 	  else
-		data:=toString(data)
+		if valtype(data) == "N"
+			if left(str(data),1) == "*"
+				data := str(data, ::__columnsLen[col])
+			else
+				data := str(data)
+			endif
+		else
+			data:=toString(data)
+		endif
 	  endif
+#endif
 	  len=min(::__columnsLen[col],len(data))
 	  lenc=max(::__columnsLen[col],len)
 	  len=min(len,::nright-scol)
 	  lenc=min(lenc,::nright-scol)
 	  ecol=min(scol+::__columnsLen[col],::nright)
-	  if vislen==1
+	  if vislen==1 .or. i==vislen //.or. vislen==len(::__columns)
 		len++; lenc++
 	  endif
 	  //data:=padr(data,len)
 	  data:=left(data,len)
 	  xcolor:=::__colors[ccolors[1]]
 	  if hilite .and. row >0
-          	switch ( ::hiliteType )
-                case 0
-                case 1
-	  		if srow==::rowPos .and. i==::__colPos .and. row>0
-	  			xcolor:=::__colors[ccolors[2]]
-                        endif
-                case 2
-	  		if srow==::rowPos
-	  			xcolor:=::__colors[ccolors[2]]
-                        endif
-                endswitch
+		switch ( ::hiliteType )
+		case 0
+		case 1
+			if srow==::rowPos .and. i==::__colPos .and. row>0
+				xcolor:=::__colors[ccolors[2]]
+			endif
+		case 2
+			if srow==::rowPos
+				xcolor:=::__colors[ccolors[2]]
+			endif
+		endswitch
 	  endif
 	  if srow==::rowPos .and. i==::__colPos .and. row>0
-	 	xcur:=::__rect[1]-1+srow
-	 	ycur:=scol
-	 	if datat $ 'N'
+		xcur:=::__rect[1]-1+srow
+		ycur:=scol
+		lencur := len
+		if datat $ 'N'
 			ycur += lenc-len
-	 	endif
-	 	if datat $ 'L'
+		endif
+		if datat $ 'L'
 			ycur += (lenc-len)/2
-	 	endif
+		endif
 	  endif
 	  if fSay
 		  if ::winbuffer == nil
-		  	dispOutAt(::__rect[1]-1+srow ,scol,"")
+			dispOutAt(::__rect[1]-1+srow ,scol,"")
 		  endif
 		  y := ::__rect[1]-1+srow; x := scol
 		  if datat $ "N"
 			if ::winbuffer == nil
 				dispout(space(lenc-len),::__colors[1])
-		  	else
-		  		winbuf_out_at(::winbuffer,y,x,space(lenc-len),::__colors[1])
-		  		x += lenc-len
-		  	endif
+			else
+				winbuf_out_at(::winbuffer,y,x,space(lenc-len),::__colors[1])
+				x += lenc-len
+			endif
 		  endif
 		  if datat $ "L"
 			if ::winbuffer == nil
 				dispout(space((lenc-len)/2),::__colors[1])
-		  	else
-		  		winbuf_out_at(::winbuffer,y,x,space((lenc-len)/2),::__colors[1])
-		  		x += (lenc-len)/2
-		  	endif
+			else
+				winbuf_out_at(::winbuffer,y,x,space((lenc-len)/2),::__colors[1])
+				x += (lenc-len)/2
+			endif
 		  endif
 		  if ::winbuffer == nil
-		  	dispOut(data, xcolor)
-		  	//dispOut(space(ecol-col()), xcolor)
-		  	dispOut(space(ecol-col()), ::__colors[1])
-		  	if i==vislen //.and. fSay
+			dispOut(data, xcolor)
+			//dispOut(space(ecol-col()), xcolor)
+			dispOut(space(ecol-col()), ::__colors[1])
+			if i==vislen //.and. fSay
 				dispOut(space(::nRight-col()+1),::__colors[1])
-		  	else
+			else
 				dispOut(colsep,::__colors[1])
-		  	endif
+			endif
 		  else
-		  	winbuf_out_at(::winbuffer,y,x,data, xcolor)
-		  	x += len(data)
-		  	//dispOut(space(ecol-col()), xcolor)
-		  	winbuf_out_at(::winbuffer,y,x,space(ecol-x), ::__colors[1])
-		  	x := ecol
-		  	if i==vislen //.and. fSay
+			winbuf_out_at(::winbuffer,y,x,data, xcolor)
+			x += len(data)
+			//dispOut(space(ecol-col()), xcolor)
+			winbuf_out_at(::winbuffer,y,x,space(ecol-x), ::__colors[1])
+			x := ecol
+			if i==vislen //.and. fSay
 				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
-		  	else
+			else
 				winbuf_out_at(::winbuffer,y,x,colsep,::__colors[1])
-		  	endif
+			endif
 		  endif
 	  endif
    next
    if hilite .and. ::hiliteType==3 .and. srow==::rowPos .and. row!=0
-   	xcolor:=colorToN(::__colors[ccolors[2]])
-   	if ::winbuffer == nil
-   		draw_rect(xcur,::nLeft,xcur,::nright,xColor)
-   	else
-   	endif
+	xcolor:=colorToN(::__colors[ccolors[2]])
+	if ::winbuffer == nil
+		draw_rect(xcur,::nLeft,xcur,::nright,xColor)
+	else
+	endif
    endif
    //setpos(xcur,ycur)
+   ::cursorCol:=ycur
+   ::cursorRow:=xcur
+   ::cursorLen:=lencur
    if ::winbuffer==nil; dispOutAt(xcur,ycur,""); endif
    if ::winbuffer==nil; dispEnd(); endif
 return NIL
@@ -1252,21 +1436,21 @@ static func __dummyRow( row )
 	  len=::__columnsLen[col]
 	  len=min(len,::nright-scol)
 	  if ::winbuffer == nil
-	  	dispOutAt(::__rect[1]-1+srow ,scol,space(len), ::__colors[1])
-	  	if i==vislen
-	 		dispOut(space(::nRight-col()+1),::__colors[1])
-	  	else
+		dispOutAt(::__rect[1]-1+srow ,scol,space(len), ::__colors[1])
+		if i==vislen
+			dispOut(space(::nRight-col()+1),::__colors[1])
+		else
 			dispOut(colsep,::__colors[1])
-	  	endif
-   	  else
-	  	winbuf_out_at(::winbuffer,::__rect[1]-1+srow ,scol,space(len), ::__colors[1])
-	  	y := ::__rect[1]-1+srow; x := scol + len
-	  	if i==vislen
-	 		winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
-	  	else
+		endif
+	  else
+		winbuf_out_at(::winbuffer,::__rect[1]-1+srow ,scol,space(len), ::__colors[1])
+		y := ::__rect[1]-1+srow; x := scol + len
+		if i==vislen
+			winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
+		else
 			winbuf_out_at(::winbuffer,y,x,colsep,::__colors[1])
-	  	endif
-   	  endif
+		endif
+	  endif
    next
    if ::winbuffer==nil; dispEnd(); endif
 return NIL
@@ -1277,29 +1461,36 @@ static func stabilize(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"stabilize")
 #endif
+   if empty(self:__columns)
+	return .t.
+   endif
   if !self:__firstStab
+	 self:__firstStab:=.t.
 	 self:stable:=.f.
 	 self:__setcolor()
-	 self:__remakeColumns()
-	 self:__whoVisible()
-	 self:__sayTable()
 	 self:rowPos=min(self:rowPos,self:rowCount)
 	 self:__stableSkips=eval(self:skipBlock,1-self:rowPos)
 	 self:rowPos=0-self:__stableSkips+1
 	 self:__stablePos:=-1
+	 self:__remakeColumns()
+	 self:__whoVisible()
+	 self:__sayTable()
 #ifdef DEBUG_CALL
 	 outlog(__FILE__,__LINE__,"stabilize return 1")
 #endif
 	 self:__firstStab:=.t.
 	 return self:stable
   endif
+  if self:__lRedrawTable
+	self:__sayTable()
+  endif
   if self:stable
-		self:_outCurrent(,,.f.)
-		self:_stableRowPos:=self:rowPos
-		self:_stableColPos:=self:colPos
-		self:_stablefreeze:=self:freeze
+	self:_outCurrent(,,.f.)
+	self:_stableRowPos:=self:rowPos
+	self:_stableColPos:=self:colPos
+	self:_stablefreeze:=self:freeze
 #ifdef DEBUG_CALL
-	 outlog(__FILE__,__LINE__,"stabilize return 2")
+	outlog(__FILE__,__LINE__,"stabilize return 2")
 #endif
 	return self:stable
   endif
@@ -1335,14 +1526,14 @@ static func stabilize(self)
 		if self:bofBlock!=NIL .and. self:eofBlock!=NIL
 			i:=eval(self:skipBlock,-1)
 			self:hitEmpty:= ( eval(self:bofBlock) .and. eval(self:eofBlock) )
-				//self:hitTop:=eval(self:bofBlock)
-				self:hitBottom:=eval(self:eofBlock)
-				if i==0 .and. !self:hitEmpty
+			//self:hitTop:=eval(self:bofBlock)
+			//self:hitBottom:=eval(self:eofBlock)
+			if i==0 .and. !self:hitEmpty
 				i:=eval(self:skipBlock,1)
 				eval(self:skipBlock,0-i)
-				else
+			else
 				i=eval(self:skipBlock,0-i)
-				endif
+			endif
 		endif
 		self:_outCurrent()
 		self:_stableRowPos:=self:rowPos
@@ -1388,37 +1579,37 @@ static function __checkRow()
 #endif
 	if ::_stablefreeze!=NIL .and. ::_stablefreeze!=::freeze
 		::invalidate()
-			::_stablefreeze:=NIL
-		endif
+		::_stablefreeze:=NIL
+	endif
 	if ::_stableColPos!=NIL .and. ::_stableColPos!=::colPos
-			::__colpos:=ascan(::__colVisible,::colpos)
-			::_stableColPos:=NIL
-				if ::__colpos==0
-					::invalidate()
-				else
-				::__whoVisible(0)
-				::__sayTable()
-				::refreshAll()
-				endif
+		::__colpos:=ascan(::__colVisible,::colpos)
+		::_stableColPos:=NIL
+		if ::__colpos==0
+			::invalidate()
+		else
+			::__whoVisible(0)
+			::__sayTable()
+			::refreshAll()
 		endif
+	endif
 	if ::_stableRowPos!=NIL .and. ::_stableRowPos!=::rowPos
 		// user program run "::rowPos:=newValue"
-				xskip:=::rowPos-::_stableRowPos
-				nskip:=xskip
-				if !::stable
-					if xskip<0
-						nskip-=::__stableSkips
-						::__stableSkips-=xskip
-						else
-						nskip=0-::__stableSkips
-						::__stableSkips-=xskip
-						endif
-				endif
+		xskip:=::rowPos-::_stableRowPos
+		nskip:=xskip
+		if !::stable
+			if xskip<0
+				nskip-=::__stableSkips
+				::__stableSkips-=xskip
+			else
+				nskip=0-::__stableSkips
+				::__stableSkips-=xskip
+			endif
+		endif
 		eval(::skipBlock,nskip)
-			::_stableRowPos:=NIL
-				if ::stable
-					::refreshAll()
-				endif
+		::_stableRowPos:=NIL
+		if ::stable
+			::refreshAll()
+		endif
 	endif
 return
 *********************************
@@ -1426,8 +1617,10 @@ static function  forceStable
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"forceStable")
 #endif
+	dispbegin()
 	   do while !::stabilize()
 	   enddo
+	dispend()
 return NIL
 
 *********************************
@@ -1457,75 +1650,75 @@ RETURN i
 *********************************
 static function tb_hitTest(mrow,mcol)
 	local i
-		::mRowPos := ::rowPos
-		::mColPos := ::colPos
-		if mRow< ::__rect[1] .or. mRow > ::__rect[3]
+	::mRowPos := ::rowPos
+	::mColPos := ::colPos
+	if mRow< ::__rect[1] .or. mRow > ::__rect[3]
 		return HTNOWHERE
-		endif
-		if mCol < ::__rect[2] .or. mCol > ::__rect[4]
+	endif
+	if mCol < ::__rect[2] .or. mCol > ::__rect[4]
 		return HTNOWHERE
+	endif
+	::mRowPos := mRow - ::__rect[1]+1
+	for i = 1 to len(::__whereVisible)
+		if ::__whereVisible[i] > mcol
+			exit
 		endif
-		::mRowPos := mRow - ::__rect[1]+1
-		for i = 1 to len(::__whereVisible)
-			if ::__whereVisible[i] > mcol
-						exit
-				endif
-		next
-		::mColpos := ::__colVisible[i-1]
+	next
+	::mColpos := ::__colVisible[i-1]
 return HTCELL
 
 *********************************
 static function	tb_set_default_keys()
 	local m
 	::__keys := map()
-		m:=::__keys
-		m[K_DOWN] 	:= { |oTb,nKey| oTb:down(), 	TBR_CONTINUE }
-		m[K_UP] 	:= { |oTb,nKey| oTb:up(), 	TBR_CONTINUE }
-		m[K_END]  	:= { |oTb,nKey| oTb:end(), 	TBR_CONTINUE }
-		m[K_HOME]  	:= { |oTb,nKey| oTb:home(), 	TBR_CONTINUE }
-		m[K_LEFT]  	:= { |oTb,nKey| oTb:left(), 	TBR_CONTINUE }
-		m[K_RIGHT]  	:= { |oTb,nKey| oTb:right(), 	TBR_CONTINUE }
-		m[K_PGDN]  	:= { |oTb,nKey| oTb:pageDown(), TBR_CONTINUE }
-		m[K_PGUP]  	:= { |oTb,nKey| oTb:pageUp(), 	TBR_CONTINUE }
-		m[K_CTRL_PGDN]  := { |oTb,nKey| oTb:goBottom(), TBR_CONTINUE }
-		m[K_CTRL_PGUP]  := { |oTb,nKey| oTb:goTop(), 	TBR_CONTINUE }
-		m[K_CTRL_END]  	:= { |oTb,nKey| oTb:panEnd(), 	TBR_CONTINUE }
-		m[K_CTRL_HOME]  := { |oTb,nKey| oTb:panHome(), 	TBR_CONTINUE }
-		m[K_CTRL_LEFT]  := { |oTb,nKey| oTb:panLeft(), 	TBR_CONTINUE }
-		m[K_CTRL_RIGHT] := { |oTb,nKey| oTb:panRight(),	TBR_CONTINUE }
+	m:=::__keys
+	m[K_DOWN] 	:= { |oTb,nKey| oTb:down(), 	TBR_CONTINUE }
+	m[K_UP] 	:= { |oTb,nKey| oTb:up(), 	TBR_CONTINUE }
+	m[K_END]  	:= { |oTb,nKey| oTb:end(), 	TBR_CONTINUE }
+	m[K_HOME]  	:= { |oTb,nKey| oTb:home(), 	TBR_CONTINUE }
+	m[K_LEFT]  	:= { |oTb,nKey| oTb:left(), 	TBR_CONTINUE }
+	m[K_RIGHT]  	:= { |oTb,nKey| oTb:right(), 	TBR_CONTINUE }
+	m[K_PGDN]  	:= { |oTb,nKey| oTb:pageDown(), TBR_CONTINUE }
+	m[K_PGUP]  	:= { |oTb,nKey| oTb:pageUp(), 	TBR_CONTINUE }
+	m[K_CTRL_PGDN]  := { |oTb,nKey| oTb:goBottom(), TBR_CONTINUE }
+	m[K_CTRL_PGUP]  := { |oTb,nKey| oTb:goTop(), 	TBR_CONTINUE }
+	m[K_CTRL_END]  	:= { |oTb,nKey| oTb:panEnd(), 	TBR_CONTINUE }
+	m[K_CTRL_HOME]  := { |oTb,nKey| oTb:panHome(), 	TBR_CONTINUE }
+	m[K_CTRL_LEFT]  := { |oTb,nKey| oTb:panLeft(), 	TBR_CONTINUE }
+	m[K_CTRL_RIGHT] := { |oTb,nKey| oTb:panRight(),	TBR_CONTINUE }
 
-		m[K_ESC]  	:= { |oTb,nKey| TBR_EXIT }
+	m[K_ESC]  	:= { |oTb,nKey| TBR_EXIT }
 //        m[K_ENTER]  	:= { |oTb,nKey| TBR_EXIT }
-		m[K_LBUTTONDOWN]:= { |oTb,nKey| tbMouse(oTb,mrow(),mcol()) }
+	m[K_LBUTTONDOWN]:= { |oTb,nKey| tbMouse(oTb,mrow(),mcol()) }
 return
 *********************************
 static function tb_setkey(nKey,value)
 	local ret,m := ::__keys
 
 	if nkey $ m
-			ret := m[nKey]
-		endif
-		if pcount() > 2   /* self as first parameter */
-			m[nKey] := value
-		endif
-		if nKey $ m .and. m[nKey] == NIL
-			adel(m ,nKey)
-		endif
+		ret := m[nKey]
+	endif
+	if pcount() > 2   /* self as first parameter */
+		m[nKey] := value
+	endif
+	if nKey $ m .and. m[nKey] == NIL
+		adel(m ,nKey)
+	endif
 return ret
 
 *********************************
 static func __applykey(browse,nkey)
 	local b, ret:=TBR_CONTINUE
-		b := browse:setkey(nKey)
+	b := browse:setkey(nKey)
+	if b != NIL
+		ret := eval(b,browse,nkey)
+	else
+		b := browse:setkey(0)
 		if b != NIL
 			ret := eval(b,browse,nkey)
 		else
-			b := browse:setkey(0)
-			if b != NIL
-				ret := eval(b,browse,nkey)
-			else
 			ret:=TBR_EXCEPTION
-			endif
+		endif
 	endif
 return ret
 

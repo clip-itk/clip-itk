@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -8,6 +7,7 @@
 #include "bdbfmsg.ch"
 #include "inkey.ch"
 #include "set.ch"
+#include "memoedit.ch"
 MEMVAR __mrow,__mcol,_im,_bm,_HdColor,_c_f,_zif,_lWrap
 MEMVAR cFld,cTitle,cFooter,lEdit,nrBorder,cPrintHeader	//parameters
 **********
@@ -41,6 +41,7 @@ IF EMPTY(m->_MemoEditor) .OR. !m->lEdit
 		ShowMouse();ShowMouse()
 		i:=MemoEdit(m->cFld,6,3,__mrow-6,__mcol-3,m->lEdit,;
 			    'FileEditor', m->nrBorder,m->_nMemoTab)
+		inkey()		//вычитать лишний ESC
 		IF !m->lReload
 			cFld:=i
 			m->lReload:=.F.
@@ -49,7 +50,8 @@ IF EMPTY(m->_MemoEditor) .OR. !m->lEdit
 //Произошли изменения конфигурации
 		m->nrBorder:=m->_nMemoWrap
 	ENDDO
-	IF !m->lEdit .OR. LastKey()==K_ESC THEN m->cFld:=NIL
+	IF !m->lEdit .OR. LastKey()==K_ESC;
+		THEN m->cFld:=NIL
 ELSE
 	cOpt:=''
 	cData:=m->cFld
@@ -83,19 +85,47 @@ POP KEYS
 SetCursor(_cur)
 RETURN m->cFld
 **********
-FUNC FileEditor(nMode,nRow,nCol)
-LOCAL	nKey:=LastKey()
-
-IF nMode=3
-	ShowScoreBoard()
+FUNC FileEditor(nMode,nRow,nCol,oEd)
+LOCAL	nKey:=LastKey(), nRes:=ME_DEFAULT, _r,_c, _moy, _mox
+STATIC ch
+SavePos()
+IF nMode=ME_INIT
+	IF m->lEdit THEN ShowScoreBoard()
 	SetCursor(IF(SET(_SET_INSERT),1,3))
 	m->lFinish:=.T.
-ELSEIF nKey <> K_ESC
+	oEd:idletime:=0.2
+ELSEIF nMode=ME_IDLE
+	DispBegin()
 	@ 5,5 SAY 'L:'+PAD(nRow,5)+'C:'+PAD(nCol+1,3) COLOR _HdColor
-*	@ 5,__mcol-15 SAY 'Code:'+??? COLOR _HdColor
-	@ 0,19 SAY Str(nKey,3) COLOR _bm
-
+	IF nRow<=LEN(oEd:edbuffer)
+		ch := ASC(substr(oEd:edbuffer[nrow],ncol,1))
+		@ 5,__mcol-15 SAY 'Code: '+STR(ch, 3) COLOR _HdColor
+	ENDIF
+	Fkeys(Altf())
+	DispEnd()
+ELSE
 	DO CASE
+		CASE nKey==K_F1
+			Help('_MEMO_EDIT')
+			nRes:=ME_IGNORE
+
+		CASE nKey==K_ESC
+			IF nMode==ME_UNKEYX
+				nKey:=Menu2(SAVE_AND_EXIT_ALT,1,SAVE_AND_EXIT)
+				IF nKey<2
+					nRes:=ME_IGNORE
+				ELSEIF nKey=2
+					oEd:updated:=.F.
+					KEYBOARD _ESC	//Далее есть обработка LastKey()
+				ELSEIF nKey=3
+					nRes:=K_CTRL_W
+				ENDIF
+			ENDIF
+
+		CASE nKey==K_ALT_X
+			oEd:updated:=.F.
+			KEYBOARD _ESC	//Не допустить повтора
+			nRes:=K_ESC
 
 		CASE nKey==K_F2
 			PrintMemo(m->cFld,m->cPrintHeader)
@@ -116,39 +146,87 @@ ELSEIF nKey <> K_ESC
 					MyRepl(_c_F,m->cFld)
 				m->lFinish:=.F.
 				m->lReload:=.T.
-				RETURN K_CTRL_W
-
+				nRes:=K_CTRL_W
 			ENDIF
 
 		CASE nKey==K_F5
 			_lWrap:=!_lWrap
-			Fkeys()
-			RETURN 34
-/*
+			nRes:=ME_TOGGLEWRAP
+
 		CASE nKey==K_F6 .OR. (nKey==K_INS .AND. IsShift())
-			__KeyBoard(GetWinClip())
-			RETURN 32
-*/
+			InsString(oEd, GetWinClip(), .T.)
+			nRes:=ME_IGNORE
+			__Keyboard(_RIGHT+_LEFT)	//курсор не устанавливается
+
+		CASE nKey==K_CTRL_GMINUS
+			InsString(oEd, FT_XTOY(GetClipBoard(), 'C'), .T.)
+			__Keyboard(_RIGHT+_LEFT)
+
 		CASE nKey==K_F9 .AND. GetMemoVars()
 			m->lFinish:=.F.		//перечитать
-			RETURN K_CTRL_W
+			nRes:=K_CTRL_W
 
 		CASE nKey==K_F10
-			RETURN K_CTRL_W
+			nRes:=K_CTRL_W
 
-		CASE nKey==K_INS
+		CASE nKey==K_CTRL_F10
+			InsString(oEd, AsciiTbl(CHR(ch)), .T. )
+			__Keyboard(_RIGHT+_LEFT)	//курсор не устанавливается
+
+		CASE nKey==K_INS .AND. m->lEdit
 			Set( _SET_INSERT, !Set(_SET_INSERT) )
 			ShowScoreBoard()
-			RETURN 32
+			nRes:=ME_IGNORE
 
-		CASE (nRow:=ASCAN({  384,    385,  282,  296, K_ALT_B, K_ALT_O,  K_ALT_A,       K_ALT_C, K_ALT_X, K_CTRL_GMINUS  },nKey))#0
-				KEYB {'()'+CHR(19),'()','{}'+CHR(19),'[]'+CHR(19),'{||}'+CHR(19)+CHR(19),' .OR. ',' .AND. ','CTOD("//")'+CHR(19)+CHR(19)+CHR(19)+CHR(19),  _ESC, ClipField(8) }[nRow]
+		CASE nKey==K_CTRL_U .OR. nKey==K_ALT_BS
+			oEd:Undo()
+			nRes:=ME_IGNORE
 
-		CASE TestMacro(nKey,4)
+		CASE nKey==K_CTRL_2
+			nRes:=ME_DATA
+			nKey:=Inkey(10)
+			IF nKey=K_CTRL_2
+				nkey:=0
+			ELSEIF nKey=0 .OR. nKey>255
+				nRes:=ME_IGNORE
+			ENDIF
+
+			oEd:cargo:=nKey
+
+		CASE IsKBMacro(nKey,4)
+
+		CASE nKey=K_LBUTTONDOWN
+			GetMouseXY()
+
+			DO CASE
+			  CASE Between(_moy,6,__mrow-6) .AND.;
+				     Between(_mox,3,__mcol-3)
+				ch:=REPL(IF(_Moy<_r,_UP,_DOWN),abs(_moy-_r))+;
+				    REPL(IF(_Mox<_c,_LEFT,_RIGHT),abs(_mox-_c))
+			  CASE Between(_moy,__mrow-5,__mrow-3)
+				ch:= _PGDN
+			  CASE Between(_moy,3,5)
+				ch:= _PGUP
+			  CASE _mox<=2
+				ch:=CHR(K_CTRL_A)
+			  CASE _mox>=__mcol-2
+				ch:=CHR(K_CTRL_F)
+			  OTHER
+				ch:=_RIGHT+_LEFT
+		  	ENDCASE
+			KEYB ch
+
+		CASE nKey==K_RBUTTONDOWN
+			WHILE mrightdown()
+				inkey()
+			ENDDO
+			KEYBOARD _ESC
+			nRes:=K_ESC
 
 	ENDCASE
 ENDIF
-RETURN 0
+RestPos()
+RETURN nRes
 **********
 STATIC FUNC GetMemoVars()
 LOCAL	i,Sets

@@ -60,9 +60,49 @@ then
 	cd ..
 fi
 
+
+if [ -d doc_utils ]
+then
+	cd doc_utils
+	$MAKE
+	cd ..
+fi
+
+if [ -d cobra_serv ]
+then
+	cd cobra_serv
+	$MAKE
+	cd ..
+fi
+
+if [ -d cobra_clnt ]
+then
+	cd cobra_clnt
+	$MAKE
+	cd ..
+fi
+
 if [ -d bdbfs ]
 then
 	cd bdbfs
+	$MAKE
+	cd ..
+fi
+if [ -d dbc ]
+then
+	cd dbc
+	$MAKE
+	cd ..
+fi
+if [ -d udb ]
+then
+	cd udb
+	$MAKE
+	cd ..
+fi
+if [ -d udbx ]
+then
+	cd udbx
 	$MAKE
 	cd ..
 fi

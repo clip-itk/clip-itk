@@ -167,10 +167,10 @@ static function fw_New( self, nRow, nCol, bSetGet, aItems, nWidth, nHeight, oWnd
 	//self:SetColor( nClrFore, nClrBack )
 
 	if self:oGet != nil
-		self:oGet:hWnd = GetWindow( self:hWnd, GW_CHILD )
+		self:oGet:hWnd = eval(Selector:GetWindow, self:hWnd, GW_CHILD )
 		self:oGet:Link()
 		self:oGet:bLostFocus = ;
-			{| hCtlFocus, nAt, cItem| cItem := GetWindowText( self:hWnd ), ;
+			{| hCtlFocus, nAt, cItem| cItem := eval(Selector:GetWindowText, self:hWnd ), ;
 		nAt := self:SendMsg( HASH_CB_FINDSTRING, 0, Trim( cItem )) + 1,;
 		Eval( self:bSetGet, cItem ),;
 		self:Select( nAt ),;
@@ -267,7 +267,7 @@ return
 ***********
 static function fw_Change(self)
 
-local cItem := GetWindowText( self:hWnd ) // Current Value
+local cItem := eval(Selector:GetWindowText, self:hWnd ) // Current Value
 
 	self:nAt = self:SendMsg( HASH_CB_GETCURSEL ) + 1
 
@@ -338,7 +338,7 @@ local nAt := self:SendMsg( HASH_CB_GETCURSEL )
 			Eval( self:bSetGet, self:aItems[ nAt + 1 ] )
 		endif
 	else
-		Eval( self:bSetGet, GetWindowText( self:hWnd ) )
+		Eval( self:bSetGet, eval(Selector:GetWindowText, self:hWnd ) )
 	endif
 
 return
@@ -412,11 +412,11 @@ local cStart := Eval( self:bSetGet )
 	endif
 
 	if self:oGet != nil
-		self:oGet:hWnd = GetWindow( self:hWnd, GW_CHILD )
+		self:oGet:hWnd = eval(Selector:GetWindow, self:hWnd, GW_CHILD )
 		self:oGet:Link()
 		if self:nStyle = CBS_DROPDOWN
 			self:oGet:bLostFocus = ;
-			{| hCtlFocus, nAt, cItem| cItem := GetWindowText( self:hWnd ), ;
+			{| hCtlFocus, nAt, cItem| cItem := eval(Selector:GetWindowText, self:hWnd ), ;
 			nAt := self:SendMsg( HASH_CB_FINDSTRING, 0, Trim( cItem )) + 1,;
 			Eval( self:bSetGet, cItem ),;
 			self:Select( nAt ),;
@@ -451,11 +451,11 @@ local n
 			if File( acBitmaps[ n ] )
 				self:aBitmaps[ n ] = eval(Selector:ReadBitmap, 0, acBitmaps[ n ] )
 			else
-				self:aBitmaps[ n ] = eval(Selector:LoadBitmap, GetResources(), acBitmaps[ n ] )
+				self:aBitmaps[ n ] = eval(Selector:LoadBitmap, eval(Selector:GetResources), acBitmaps[ n ] )
 			endif
 		next
-		self:nBmpHeight = nBmpHeight( self:aBitmaps[ 1 ] )
-		self:nBmpWidth  = nBmpWidth( self:aBitmaps[ 1 ] )
+		//self:nBmpHeight = nBmpHeight( self:aBitmaps[ 1 ] )
+		//self:nBmpWidth  = nBmpWidth( self:aBitmaps[ 1 ] )
 	endif
 
 return
@@ -474,7 +474,7 @@ return self:Super:Destroy()
 ************
 static function fw_DrawItem( self, nIdCtl, nPStruct )
 
-return LbxDrawItem( nPStruct, self:aBitmaps, self:aItems, self:nBmpWidth, self:bDrawItem )
+return eval(Selector:LbxDrawItem, nPStruct, self:aBitmaps, self:aItems, self:nBmpWidth, self:bDrawItem )
 ************
 static function fw_VarGet(self)
 local cRet, nAt := self:SendMsg( HASH_CB_GETCURSEL )
@@ -483,7 +483,7 @@ local cRet, nAt := self:SendMsg( HASH_CB_GETCURSEL )
 		self:nAt = nAt + 1
 		cRet :=  self:aItems[ nAt + 1 ]
 	else
-		cRet := GetWindowText( self:hWnd )
+		cRet := eval(Selector:GetWindowText, self:hWnd )
 	endif
 
 return cRet
@@ -501,7 +501,7 @@ static function fw_ShowToolTip(self)
 local nOldBottom
 
 	nOldBottom = self:nBottom
-	self:nBottom  = self:nTop + GetTextHeight( self:hWnd ) + 8
+	self:nBottom  = self:nTop + eval(Selector:GetTextHeight, self:hWnd ) + 8
 
 	self:Super:ShowToolTip()
 	self:nBottom  = nOldBottom

@@ -1,5 +1,23 @@
 /*
  * $Log: node.h,v $
+ * Revision 1.29  2003/03/26 13:10:11  clip
+ * possible closes #133, #139
+ * paul
+ *
+ * Revision 1.28  2003/01/05 12:32:25  clip
+ * possible fixes #95,#98
+ * paul
+ *
+ * Revision 1.27  2002/11/27 13:40:44  clip
+ * initial _CGET_ pseudofunction(bug 62):
+ * _CGET_(var[i1,i2,i3,...]) -> __CGET__(@var[i1,i2,i3],{i1,i2,i3},"var",...)
+ * paul
+ *
+ * Revision 1.26  2002/11/06 12:03:41  clip
+ * add plural locale construction:
+ * [asdf] ^ num_expr == ngettext("asdf", "asdf", num_expr)
+ * paul
+ *
  * Revision 1.25  2002/10/10 08:30:37  clip
  * &(expr) do not auto-codestr in codeblocks.
  * Closes #16
@@ -163,10 +181,11 @@ typedef struct Var
 	Coll *arr;
 	char *alias;
 	struct Node *macro;
-	int isRef;
-	int isFld;
-	int isParam;
-	int isCodeParam;
+	int isRef:1;
+	int isFld:1;
+	int isParam:1;
+	int isCodeParam:1;
+        int isLocalRef:1;
 	int pno;
 	int level;
 	struct Var *refvar;
@@ -235,7 +254,8 @@ typedef struct Node
 	int isExec:1, isExpr:1, isConst:1, isLval:1, isInit:1, isExit:1, isLoop:1
 	,isNum:1, isStr:1, isLog:1, isArray:1, isTop:1, isAssign:1
 	,isMinus:1, isField:1, isMacro:1, isExprList:1, isCode:1
-	,isArrEl:1, isFMemvar:1, isRef:1, isNil:1, isLocal:1;
+	,isArrEl:1, isFMemvar:1, isRef:1, isNil:1, isLocal:1, isMemvar:1
+	,isAssignLval:1;
 	int (*pass) (void *self, Pass passno, int level, void *par);	/* traverser */
 	const char *name;
 }
@@ -269,7 +289,7 @@ Node *new_NilConstNode();
 Node *new_VardefNode(VarColl * cp);
 int compareConstNode(void *n1, void *n2);
 
-Node *new_LocalDefNode(VarColl * cp, int err);
+Node *new_LocalDefNode(VarColl * cp, int err, int localref);
 Node *new_LocalDefNode1(VarColl * cp);
 Node *new_StaticDefNode(VarColl * cp);
 Node *new_MemvarDefNode(VarColl * cp);
@@ -296,12 +316,15 @@ Node *new_ArgNode(Node * expr, int byRef);
 Node *new_RefNode(Node * expr);
 Node *new_CallNode(char *name, Coll * argv, int rest);
 Node *new2_CallNode(const char *name, Node * expr1, Node * expr2);
+Node *new3_CallNode(const char *name, Node * expr1, Node * expr2, Node *expr3);
 Node *new_CallNameNode(Node * name, Coll * argv);
 Node *newList_CallNode(char *name, Node * exprlist);
 Node *new_ExprListNode();
+Node *new_ExprArrNode();
 Node *new_AssignNode(Node * var, Node * expr, int op);
 
 Node *new_ArrayInitNode(Node * exprlist);
+Node *new_ArrayInitNodeN(Node * exprlist, int n);
 Node *new_NewArrayNode(Coll * cp);
 
 Node *new_MethodNode(Node * obj, char *name, Coll * argv, int rest);
@@ -351,5 +374,7 @@ Node *new_CodestrNode(Node * expr, int block, VarColl *params);
 Node *new_QuotNode(Node * expr);
 
 Node *new_SwitchNode(Node *expr, Coll *cases, Node *otherwise);
+
+Node *new_CGetNode(Coll * argv);
 
 #endif

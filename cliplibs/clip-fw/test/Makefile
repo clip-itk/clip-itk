@@ -6,7 +6,7 @@ endif
 CLIPFLAGS = -g -l
 CLIPLIBS  =
 OBJS  =
-BINS = atest bmp combos dlgtest gettest lines test testbar testlbx \
+BINS = atest bmp combos dlgtest gettest lines test testbar testbrw testlbx \
 	testscrl testwsty tooltip
 
 .SUFFIXES: .prg .o .po
@@ -40,6 +40,11 @@ gettest:gettest.prg
 	$(CLIP) $(CLIPFLAGS) -e -s gettest.prg -lclip-fw -lclip-gtk -lclip-cti
 #	$(CLIP) $(CLIPFLAGS) -P gettest.prg -lclip-fw -lclip-gtk
 
+gettest2:gettest2.prg
+#	$(CLIP) $(CLIPFLAGS) -e -s gettest2.prg -lclip-fw -lclip-gtk -lclip-cti
+	$(CLIP) $(CLIPFLAGS) -e -s gettest2.prg -lclip-fw -lclip-gtk
+#	$(CLIP) $(CLIPFLAGS) -P gettest2.prg -lclip-fw -lclip-gtk
+
 lines:	lines.prg
 	$(CLIP) $(CLIPFLAGS) -e -s lines.prg -lclip-fw -lclip-gtk -lclip-cti
 #	$(CLIP) $(CLIPFLAGS) -e -s lines.prg libclip-gtk.a -lclip-fw -lgtk -lgdk #-lclip-gtk
@@ -51,6 +56,9 @@ test:	test.prg
 
 testbar: testbar.prg
 	$(CLIP) $(CLIPFLAGS) -e -s testbar.prg -lclip-fw -lclip-gtk -lclip-cti
+
+testbrw: testbrw.prg
+	$(CLIP) $(CLIPFLAGS) -e -s testbrw.prg -lclip-fw -lclip-gtk -lclip-cti
 
 testlbx: testlbx.prg
 	$(CLIP) $(CLIPFLAGS) -e -s testlbx.prg -lclip-fw -lclip-gtk -lclip-cti
@@ -77,12 +85,12 @@ tooltip: tooltip.prg
 #	$(CLIP) $(CLIPFLAGS) -e -s tooltip.prg ./libclip-fw.a ./libclip-gtk.a -lgtk -lgdk
 
 t:	t.prg
-	$(CLIP) $(CLIPFLAGS) -e -s -M t.prg  -lclip-fw -lclip-gtk -lclip-cti
+	$(CLIP) $(CLIPFLAGS) -e -s -M t.prg   -lclip-gtk
 #	$(CLIP) $(CLIPFLAGS) -e -s -M t.prg libclip-gtk.a -lclip-fw -lgtk -lgdk #-lclip-gtk
 
 tt:	tt.prg
-#	$(CLIP) $(CLIPFLAGS) -e -s -M tt.prg  -lclip-fw -lclip-gtk -lclip-cti
-	$(CLIP) $(CLIPFLAGS) -e -s -M tt.prg  -lclip-cti -lclip-cti
+	$(CLIP) $(CLIPFLAGS) -e -s -M tt.prg  -lclip-fw -lclip-gtk -lclip-cti
+#	$(CLIP) $(CLIPFLAGS) -e -s -M tt.prg  -lclip-cti
 #	$(CLIP) $(CLIPFLAGS) -e -s -M tt.prg libclip-gtk.a -lclip-fw -lgtk -lgdk #-lclip-gtk
 
 gtktest: gtktest.prg

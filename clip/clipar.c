@@ -5,6 +5,17 @@
 */
 /*
    $Log: clipar.c,v $
+   Revision 1.20  2003/09/08 15:06:02  clip
+   uri: next step fixes for mingw from uri
+
+   Revision 1.19  2003/09/05 12:11:52  clip
+   uri: initial fixes for mingw+win32 from uri
+
+   Revision 1.18  2003/04/08 09:30:42  clip
+   pcode sequience
+   closes #134
+   paul
+
    Revision 1.17  2001/10/29 06:51:21  clip
    fix text fopen modes
    paul
@@ -71,6 +82,11 @@
 #include <time.h>
 #include <ctype.h>
 #include "coll.h"
+#include "clipcfg.h"
+
+#ifdef OS_MINGW
+	#include "getopt.h"
+#endif
 
 extern char *optarg;
 extern int optind;
@@ -204,7 +220,7 @@ read_module(FILE * file)
 	ret = (char *) malloc(l);
 	if (fread(ret, l, 1, file) != 1)
 		goto ferr;
-	filename = M_OFFS(ret, 7, 7);
+	filename = M_OFFS(ret, 8,6/*7, 7*/);
 
 	v_printf(2, "read module %s: %ld bytes\n", filename, l);
 
@@ -230,11 +246,11 @@ print_table(char *arname)
 		int modlen = *(long *) M_OFFS(modp, 1, 0);
 		int funcnum = *(long *) M_OFFS(modp, 5, 2);
 		int pubnum = *(long *) M_OFFS(modp, 4, 2);
-		int initnum = *(short *) M_OFFS(modp, 7, 5);
-		int exitnum = *(short *) M_OFFS(modp, 7, 6);
+		int initnum = *(short *) M_OFFS(modp, 8,4/*7, 5*/);
+		int exitnum = *(short *) M_OFFS(modp, 8,5/*7, 6*/);
 		time_t ts = *(long *) M_OFFS(modp, 0, 0);
-		char *filename = M_OFFS(modp, 7, 7);
-		long funcOffs = *(long *) M_OFFS(modp, 6, 5);
+		char *filename = M_OFFS(modp, 8,6/*7, 7*/);
+		long funcOffs = *(long *) M_OFFS(modp, 7,4/*6, 5*/);
 		long *fp = (long *) (modbeg + funcOffs);
 
 		v_printf(0, "%s: %d byte %d func %d pub %d inits %d exits %s", filename, modlen + 8 + 2 * sizeof(long), funcnum, pubnum, initnum, exitnum, ctime(&ts));
@@ -264,7 +280,7 @@ read_file(char *name, Coll * cp, Coll * readed)
 	for (j = 0; (modp = read_module(file)); ++j)
 	{
 		/*char *modbeg = M_OFFS(modp, 2, 0);*/
-		char *filename = M_OFFS(modp, 7, 7);
+		char *filename = M_OFFS(modp, 8,6/*7, 7*/);
 		char *e = strrchr(filename, '.');
 
 		if (!readed)
@@ -377,13 +393,13 @@ make_pa_file(char *arname, int argc, char **argv)
 		char *modp = (char *) coll.items[i];
 		char *modbeg = M_OFFS(modp, 2, 0);
 		long modlen = *(long *) M_OFFS(modp, 1, 0);
-		long funcOffs = *(long *) M_OFFS(modp, 6, 5);
+		long funcOffs = *(long *) M_OFFS(modp, 7,4/*6, 5*/);
 		long *f_p = (long *) (modbeg + funcOffs);
 		long funcnum = *(long *) M_OFFS(modp, 4, 2);
 
 		/*long allnum = *(long *) M_OFFS(modp, 5, 2); */
-		short initnum = *(short *) M_OFFS(modp, 7, 5);
-		short exitnum = *(short *) M_OFFS(modp, 7, 6);
+		short initnum = *(short *) M_OFFS(modp, 8,4 /*7, 5*/);
+		short exitnum = *(short *) M_OFFS(modp, 8,5 /*7, 6*/);
 		long statnum = *(long *) M_OFFS(modp, 3, 0);
 		long *statOffs = (long *) M_OFFS(modp, 2, 0);
 		int j;
@@ -449,7 +465,7 @@ make_pa_file(char *arname, int argc, char **argv)
 	write_long(file, npub + ninit + nexit);
 	write_short(file, 0);
 	write_short(file, 0);
-	write_short(file, 0);
+	write_long(file, 0);
 	func_Offs = ftell(file);
 	write_long(file, 0);
 	write_short(file, ninit);

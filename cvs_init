@@ -7,7 +7,7 @@ pwd=`pwd`
 
 for dir in $dirs
 do
-	cvs -d :ext:clip@last.itk.ru:/home/clip/cvsroot checkout $dir
+	cvs -d :ext:clip@last.itk.ru:/home/clip/cvsroot checkout -P $dir
 
 	if [ -f $dir/CVS/Template ]
 	then

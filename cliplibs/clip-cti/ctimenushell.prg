@@ -13,8 +13,6 @@
    allowing for nested hierarchical menus. */
 
 #include "cti.ch"
-#include "ctimenushell.ch"
-#include "ctimenuitem.ch"
 
 #define	SUPERCLASS	CTI_WIDGET
 
@@ -28,6 +26,9 @@ function cti_menushell_new(top,left,width)
 	obj:__activated	:= FALSE
 
 	obj:__items	:= {}
+
+	obj:__size_allocate	:= @cti_menushell_size_allocate()
+	obj:__position_allocate	:= @cti_menushell_position_allocate()
 
 	obj:activate	:= @cti_menushell_activate()
 	obj:deactivate	:= @cti_menushell_deactivate()
@@ -53,7 +54,7 @@ static function cti_menushell_add_item(obj,item)
 	cti_return_if_fail(CTI_IS_MENUITEM(item))
 
 	aadd(obj:__items, item)
-	item:parent := obj
+	item:parent_id := obj:id
 	obj:__item_count++
 	item:signal_connect(HASH_CTI_ACTIVATE_SIGNAL,{|_item,_sig,_menu|_menu:signal_emit(_sig)},obj)
 	item:signal_connect(HASH_CTI_DRAW_QUEUE_SIGNAL,{|_item,_sig,_menu|_menu:draw_queue()},obj)
@@ -65,6 +66,7 @@ static function cti_menushell_add_item(obj,item)
 	if obj:__current == 0
 		obj:select_item(1)
 	endif
+	obj:draw_queue()
 return obj:__item_count
 
 /* Inserts an item into menu at position nPos */
@@ -86,6 +88,7 @@ static function cti_menushell_ins_item(obj,item,nPos)
 	sig := cti_signal_new(HASH_CTI_ADD_SIGNAL)
 	sig:child := item
 	obj:signal_emit(sig)
+	obj:draw_queue()
 return nPos
 
 /* Deletes an item from menu by number */
@@ -106,6 +109,7 @@ static function cti_menushell_del_item(obj,nItem)
 	asize(obj:__items,obj:__item_count)
 
 	obj:signal_emit(sig)
+	obj:draw_queue()
 return nItem
 
 /* Activates a menu */
@@ -140,10 +144,15 @@ static function cti_menushell_select_item(obj,nItem)
 	endif
 return obj:__current
 
-/* Activates an item and emits signal */
+/* Activates an item and emits signals */
 static function cti_menushell_activate_item(obj,nItem)
+	local sig
 	if nItem > 0 .and. nItem <= obj:__item_count
+//outlog(__FILE__,__LINE__,procname(),obj:name,obj:id)
 		obj:__items[nItem]:signal_emit(cti_signal_new(HASH_CTI_ACTIVATE_SIGNAL))
+		sig := cti_signal_new(HASH_CTI_ACTIVATE_ITEM_SIGNAL)
+		sig:item := obj:__items[nItem]
+		obj:signal_emit(sig)
 		return TRUE
 	endif
 return FALSE
@@ -207,3 +216,19 @@ static function cti_menushell_prev_item(obj)
 		endif
 	next
 return obj:__current
+
+static function cti_menushell_size_allocate(obj,child)
+	if !child:__size_set
+		child:__set_real_size(child:__uheight, child:__uwidth)
+	endif
+return TRUE
+
+static function cti_menushell_position_allocate(obj,child)
+	local sig
+
+	if !child:__position_set
+		child:__set_real_position(child:__utop, child:__uleft)
+	endif
+return TRUE
+
+

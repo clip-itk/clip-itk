@@ -5,6 +5,10 @@
 */
 /*
    $Log: _mem.c,v $
+   Revision 1.21  2003/08/19 11:49:18  clip
+   fix #155
+   paul
+
    Revision 1.20  2002/08/27 13:31:57  clip
    add _clip_ref_public_noadd func
    fix for mem restore
@@ -597,7 +601,11 @@ clip___MRESTORE(ClipMachine * mp)
 		for (i = 0; i < nvars; i++)
 		{
 			ClipVar *vp;
+                        char *s;
 			long hash = _clip_casehashstr(names[i]);
+
+			s = strdup(names[i]);
+			HashTable_store(mp->hashnames, s, hash);
 
 			vp = _clip_ref_public_noadd(mp, hash);
                         if (!vp)

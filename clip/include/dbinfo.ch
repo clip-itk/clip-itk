@@ -45,8 +45,9 @@
 #define DBI_RDD_VERSION   102  /* C: RDD version (current RDD)        */
 
 /* CLIP extension */
-#define DBI_RECNO   	  -1   /* N: number of current record         */
-#define DBI_LASTREC 	  -2   /* N: number of last record            */
+#define DBI_RECNO   	   -1  /* N: number of current record         */
+#define DBI_LASTREC 	   -2  /* N: number of last record            */
+#define DBI_DBFILTER_BLOCK -3  /* B: Codeblock of the filter          */
 
 #define DBI_USER         1000  /* Start of user defineable values  */
 

@@ -1,0 +1,12 @@
+- LANG для метаобъектов
+
+- dbeval()
+- cubespacing
+- NIL не индексировать при добавлении
+- transactions
+- backup
+
+#- CRC32 для объектов
+#- version and deleted
+#- TVIEW:header
+

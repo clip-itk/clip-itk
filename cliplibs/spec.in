@@ -26,7 +26,7 @@ This package provides %{name} binding for CLIP package
 
 rm -rf %{DESTDIR}
 
-CLIPROOT=%{CLIPROOT}
+CLIPROOT=%{cliproot}
 SCLIPROOT=%{SCLIPROOT}
 CLIP_ROOT=%{SCLIPROOT}
 DESTDIR=%{DESTDIR}
@@ -36,7 +36,7 @@ export CLIPROOT LD_LIBRARY_PATH CLIP_ROOT
 
 echo "cumulative install to $CLIPROOT"
 make || true
-make install || true
+make install DESTDIR='' || true
 #	package install
 mkdir -p ${DESTDIR}${SCLIPROOT}/lib \
 	 ${DESTDIR}${SCLIPROOT}/doc \
@@ -47,23 +47,33 @@ mkdir -p ${DESTDIR}${SCLIPROOT}/lib \
 	 ${DESTDIR}${SCLIPROOT}/charsets \
 	 ${DESTDIR}${SCLIPROOT}/keymaps \
 	 ${DESTDIR}${SCLIPROOT}/locale.pot
-cp ${CLIPROOT}/include/clipcfg.sh ${CLIPROOT}/include/Makefile.inc \
-	 ${DESTDIR}${SCLIPROOT}/include/
+cp ${CLIPROOT}/include/clipcfg.sh \
+	${CLIPROOT}/include/Makefile.inc \
+	${CLIPROOT}/include/Makefile.tdoc \
+	${DESTDIR}${SCLIPROOT}/include/
 cp ${CLIPROOT}/bin/clip_cp ${CLIPROOT}/bin/clip_makelib \
 	 ${CLIPROOT}/bin/clip_makeslib \
 	 ${DESTDIR}${SCLIPROOT}/bin/
 echo "install to ${DESTDIR}${SCLIPROOT}"
-make install CLIPROOT=${DESTDIR}${SCLIPROOT} || true
-rm ${DESTDIR}${SCLIPROOT}/include/clipcfg.sh ${DESTDIR}${SCLIPROOT}/include/Makefile.inc
+make install CLIPROOT=${DESTDIR}${SCLIPROOT} DESTDIR='' || true
+rm ${DESTDIR}${SCLIPROOT}/include/clipcfg.sh \
+	${DESTDIR}${SCLIPROOT}/include/Makefile.inc \
+	${DESTDIR}${SCLIPROOT}/include/Makefile.tdoc \
+	${DESTDIR}${SCLIPROOT}/bin/clip_cp \
+	${DESTDIR}${SCLIPROOT}/bin/clip_makelib \
+	${DESTDIR}${SCLIPROOT}/bin/clip_makeslib
+rm -rf ${DESTDIR}${SCLIPROOT}/doc/%{name} \
 
 mkdir -p ${DESTDIR}/usr/lib
 cd ${DESTDIR}/usr/lib || exit 1
-	LIBS=`cd ../local/clip/lib; ls libclip*`
+#	LIBS=`cd ../local/clip/lib; ls libclip*`
+	LIBS=`cd %{DESTDIR}%{SCLIPROOT}/lib; ls libclip*`
 	if [ -n "$LIBS" ]
 	then
 		for nm in $LIBS
 		do
-			ln -s ../local/clip/lib/$nm .
+#			ln -s ../local/clip/lib/$nm .
+			ln -s %{SCLIPROOT}/lib/$nm .
 		done
 	fi
 cd $pwd
@@ -75,11 +85,12 @@ rmempty()
 		rmdir $i 2>/dev/null && continue
 		(cd $i 2>/dev/null && rmempty *)
 	done
+        return 0
 }
 
 cd ${DESTDIR}
 	rm -rf `find . -path '*CVS*'`
-	rmempty *
+	rmempty * || true
 cd $pwd
 
 %clean

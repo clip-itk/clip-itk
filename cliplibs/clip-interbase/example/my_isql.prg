@@ -4,6 +4,7 @@ LOCAL I := 1
 LOCAL user := "sysdba"		// -u
 LOCAL passwd := "masterkey"	// -p
 LOCAL db
+LOCAL trpars
 
 ErrorBlock({|e| SQLError(e)})
 
@@ -37,7 +38,7 @@ END SEQUENCE
 DO WHILE UPPER(sql := GetCommand()) != "Q"
 	IF UPPER(LEFT(sql,6))=="SELECT"
 		BEGIN SEQUENCE
-			rs := conn:CreateRowset(sql)
+			rs := conn:CreateRowset(sql,,,,,,,,,.t.)
 		RECOVER USING e
 			LOOP
 		END SEQUENCE
@@ -66,9 +67,24 @@ DO WHILE UPPER(sql := GetCommand()) != "Q"
 		rs:Destroy()
 	ELSE
 		BEGIN SEQUENCE
-			?? LEFT(sql,LEN(sql)-1)+": "
-			conn:Command(sql)
-			?? "OK"
+			IF UPPER(LEFT(sql,5))=="START"
+				?? (sql := LEFT(sql,LEN(sql)-1))+": "
+				trpars := SPLIT(CHARONE(' ',sql)," ")
+				conn:Start(IF(LEN(trpars)>1,trpars[2],NIL),IF(LEN(trpars)>2,trpars[3],NIL))
+				?? "OK"
+			ELSEIF UPPER(LEFT(sql,6))=="COMMIT"
+				?? LEFT(sql,LEN(sql)-1)+": "
+				conn:Commit(sql)
+				?? "OK"
+			ELSEIF UPPER(LEFT(sql,8))=="ROLLBACK"
+				?? LEFT(sql,LEN(sql)-1)+": "
+				conn:Rollback(sql)
+				?? "OK"
+			ELSE
+				?? LEFT(sql,LEN(sql)-1)+": "
+				conn:Command(sql)
+				?? "OK"
+			ENDIF
 		RECOVER USING e
 			LOOP
 		END SEQUENCE

@@ -1,4 +1,4 @@
-PATH=/bin:/usr/bin
+PATH=/bin:/usr/bin:/usr/local/bin
 export PATH
 
 if [ "$NO_GETTEXT" = yes ]
@@ -16,7 +16,7 @@ fi
 if [ -n "$CLIP_LOCALE_ROOT" ]
 then
 	CLIPROOT="$CLIP_LOCALE_ROOT"
-        echo "use locale root $CLIP_LOCALE_ROOT"
+	echo "use locale root $CLIP_LOCALE_ROOT"
 fi
 
 cd $CLIPROOT || exit 2
@@ -68,10 +68,12 @@ msgstr ""
 
 
 EOF
-#echo	msgcomm --more-than 0 -o $tmp/$mod.pot $pwd/locale.pot/$mod/_.pot $lst
-	msgcomm --more-than 0 -o $tmp/$mod.pot $pwd/locale.pot/$mod/_.pot $lst
-#	msgcomm -u -o $tmp/$mod.pot $pwd/locale.pot/$mod/_.pot $lst
-	#cat $lst >> $tmp/$mod.pot
+#	msgcomm --more-than 0 -o $tmp/$mod.pot $pwd/locale.pot/$mod/_.pot $lst
+
+	cat $lst\
+		| $PO_TO_COMPAT \
+		| msgcomm -o $tmp/$mod.pot --more-than 0 \
+			$pwd/locale.pot/$mod/_.pot -
 
 	mkdir -p $pwd/locale.po || clean 2
 	cd $pwd/locale.po || clean 3
@@ -94,10 +96,13 @@ EOF
 			echo -n ". (creating new $mod.po) .."
 			cat $tmp/$mod.pot > $mod.po
 		fi
-		msgmerge -o $mod.new $mod.po $tmp/$mod.pot || clean 2
-		mv $mod.new $mod.po
+		$PO_TO_COMPAT <$mod.po > $tmp/$mod.po
+		#msgmerge -o $mod.new $mod.po $tmp/$mod.pot || clean 2
+		msgmerge -o $tmp/$mod.new $tmp/$mod.po $tmp/$mod.pot || clean 2
+		#mv $mod.new $mod.po
+		$PO_FROM_COMPAT <$tmp/$mod.new >$mod.po
 	done
-	echo
+	#echo
 
 done
 

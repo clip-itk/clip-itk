@@ -13,6 +13,8 @@
 #include "clip.h"
 #include "coll.h"
 #include "gettext.h"
+#include "plural.h"
+#include "clipcfg.h"
 
 #ifdef OS_CYGWIN
 #undef NO_MMAP
@@ -44,12 +46,16 @@ typedef struct
 	nls_uint32 hash_size;
 	nls_uint32 *hash_tab;
 	char *charset;
+
+	char *nullentry;
+	int nplural;
+	PluralData *pd;
 }
 Locale;
 
 static nls_uint32 SWAP(nls_uint32 i);
 static void delete_Locale(void *item);
-static char *find_msg(Locale * lp, const char *msg);
+static char *find_msg(Locale * lp, const char *msg, int *lenp);
 static unsigned long hash_string(const char *str);
 static int cmp_Locale(void *p1, void *p2);
 static Locale *find_locale(char *module);
@@ -70,6 +76,40 @@ _clip_add_locale(char *locale)
 	append_Coll(&locale_names, strdup(locale));
 }
 
+char *
+_clip_gettext(const char *msg)
+{
+	Locale *locale;
+
+	locale = find_locale("cliprt");
+
+	if (locale)
+        {
+		char *s;
+
+		s = find_msg(locale, msg, 0);
+                if (s)
+                {
+			if (locale->charset && strcasecmp(locale->charset, _clip_hostcs))
+			{
+                        	static char buf[1024];
+
+				int l = sizeof(buf) - 1;
+                                buf[l] = 0;
+				_clip_translate_charset(locale->charset, _clip_hostcs, s, buf, l);
+				return buf;
+			}
+                        else
+                        	return s;
+                }
+                else
+                	return (char*)msg;
+        }
+        else
+        	return (char *)msg;
+}
+
+
 void
 _clip_locale_msg(char *module, char *msg, char **dst)
 {
@@ -81,7 +121,7 @@ _clip_locale_msg(char *module, char *msg, char **dst)
 	{
 		char *s;
 
-		s = find_msg(locale, msg);
+		s = find_msg(locale, msg, 0);
 		if (s)
 		{
 			_clip_logg(4, "locale msg: %s -> %s: %s", locale->charset, _clip_hostcs, s);
@@ -101,6 +141,111 @@ _clip_locale_msg(char *module, char *msg, char **dst)
 		}
 	}
 	*dst = strdup(msg);
+}
+
+void
+_clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, char **dst)
+{
+	Locale *lp;
+
+	lp = find_locale(module);
+
+	if (lp)
+	{
+		int i, l;
+		unsigned long int nn = 0;
+		char *ep;
+		char *sp = 0;
+
+#ifdef PO_COMPAT
+		{
+        		int l1, l2;
+        		char *buf;
+
+			l1 = strlen(msgid);
+        		l2 = strlen(msgid_plural);
+        		buf = alloca(l1+l2+2);
+
+        		memcpy(buf, msgid, l1);
+        		memcpy(buf+l1+1, msgid_plural, l2);
+        		buf[l1] = PO_COMPAT_CHAR;
+        		buf[l1+l2+1] = 0;
+
+			sp = find_msg(lp, buf, &l);
+        	}
+#endif
+		if (!sp)
+			sp = find_msg(lp, msgid, &l);
+                if (!sp)
+                	goto ret;
+
+		if (!lp->pd)
+		{
+			if (n == 1)
+				goto retok;
+			sp = find_msg(lp, msgid_plural, &l);
+			if (sp)
+				goto retok;
+			else
+                        	goto ret;
+		}
+
+		nn = plural_eval(lp->pd, n);
+		ep = sp + l;
+		for (i = 0; i < lp->nplural && sp < ep; i++)
+		{
+			char *p;
+
+#ifdef PO_COMPAT
+			p = strchr(sp, PO_COMPAT_CHAR);
+                        if (!p)
+                        {
+                        	l = strlen(sp);
+                        	break;
+			}
+			else
+                        {
+                        	l = p - sp;
+				p++;
+			}
+#else
+			p = sp + strlen(sp) + 1;
+#endif
+			if (p >= ep || i >= nn)
+				break;
+			sp = p;
+		}
+
+	retok:
+		if (sp)
+		{
+#ifndef PO_COMPAT
+			l = strlen(sp);
+#endif
+			_clip_logg(4, "locale msg plural(%ld:%lu): %s -> %s: %s", n, nn, lp->charset, _clip_hostcs, sp);
+			if (lp->charset && strcasecmp(lp->charset, _clip_hostcs))
+			{
+				*dst = (char *) malloc(l + 1);
+				(*dst)[l] = 0;
+				_clip_translate_charset(lp->charset, _clip_hostcs, sp, *dst, l);
+				_clip_logg(4, "localed msg: %s -> %s: %.*s -> %.*s",
+					   lp->charset, _clip_hostcs, l, sp, l, *dst);
+			}
+			else
+                        {
+				*dst = (char *) malloc(l + 1);
+				(*dst)[l] = 0;
+				memcpy(*dst, sp, l);
+			}
+                        return;
+		}
+	}
+
+ret:
+	if (n == 1)
+		*dst = strdup(msgid);
+	else
+		*dst = strdup(msgid_plural);
 }
 
 int
@@ -365,13 +510,6 @@ add_locale(char *module, char *filename)
 	lp->data = (char *) data;
 	lp->fd = fd;
 	lp->charset = charset;
-	if (charset)
-	{
-		char *s;
-
-		for (s = charset; *s; s++)
-			*s = tolower(*s);
-	}
 
 	/* Fill in the information about the available tables.  */
 	revision = W(lp->must_swap, data->revision);
@@ -399,6 +537,59 @@ add_locale(char *module, char *filename)
 	}
 
 	lp->ok = 1;
+	lp->nullentry = find_msg(lp, "", 0);
+
+	if (lp->nullentry)
+	{
+		char *plural;
+		char *nplurals;
+
+		plural = strstr(lp->nullentry, "plural=");
+		nplurals = strstr(lp->nullentry, "nplurals=");
+		if (plural && nplurals)
+		{
+			char *endp;
+			unsigned long int n;
+			int l;
+
+			/* First get the number.  */
+			nplurals += 9;
+			while (*nplurals != '\0' && isspace((unsigned char) *nplurals))
+				++nplurals;
+			if (!(*nplurals >= '0' && *nplurals <= '9'))
+				goto no_plural;
+			for (endp = nplurals, n = 0; *endp >= '0' && *endp <= '9'; endp++)
+				n = n * 10 + (*endp - '0');
+			if (nplurals == endp)
+				goto no_plural;
+			lp->nplural = n;
+
+			plural += 7;
+			l = strcspn(plural, ";\n\r");
+			lp->pd = plural_new(plural, l);
+		}
+	      no_plural:
+		charset = strstr(lp->nullentry, "charset=");
+                if (charset)
+                	{
+                	int l;
+                        charset += 8;
+                        l = strcspn(charset, ";\n\r \t");
+                        if (lp->charset)
+                        	free(lp->charset);
+			lp->charset = (char*) malloc(l+1);
+                        memcpy(lp->charset, charset, l);
+                        lp->charset[l] = 0;
+                }
+	}
+
+	if (lp->charset)
+	{
+		char *s;
+
+		for (s = lp->charset; *s; s++)
+			*s = tolower(*s);
+	}
 }
 
 #if 0
@@ -430,6 +621,8 @@ delete_Locale(void *item)
 	free(lp->name);
 	free(lp->module);
 	free(lp->charset);
+        if (lp->pd)
+        	plural_delete(lp->pd);
 
 	free(lp);
 }
@@ -441,9 +634,9 @@ SWAP(nls_uint32 i)
 }
 
 static char *
-find_msg(Locale * lp, const char *msgid)
+find_msg(Locale * lp, const char *msgid, int *lenp)
 {
-	size_t top, act, bottom;
+	size_t top, act = 0, bottom;
 
 	/* Locate the MSGID and its translation.  */
 	if (lp->hash_size > 2 && lp->hash_tab != NULL)
@@ -459,9 +652,13 @@ find_msg(Locale * lp, const char *msgid)
 			/* Hash table entry is empty.  */
 			return NULL;
 
-		if (W(lp->must_swap, lp->orig_tab[nstr - 1].length) == len
+		if (W(lp->must_swap, lp->orig_tab[nstr - 1].length) >= len
 		    && strcmp(msgid, lp->data + W(lp->must_swap, lp->orig_tab[nstr - 1].offset)) == 0)
+		{
+			if (lenp)
+				*lenp = W(lp->must_swap, lp->trans_tab[nstr - 1].length);
 			return (char *) lp->data + W(lp->must_swap, lp->trans_tab[nstr - 1].offset);
+		}
 
 		while (1)
 		{
@@ -475,9 +672,13 @@ find_msg(Locale * lp, const char *msgid)
 				/* Hash table entry is empty.  */
 				return NULL;
 
-			if (W(lp->must_swap, lp->orig_tab[nstr - 1].length) == len
+			if (W(lp->must_swap, lp->orig_tab[nstr - 1].length) >= len
 			    && strcmp(msgid, lp->data + W(lp->must_swap, lp->orig_tab[nstr - 1].offset)) == 0)
+			{
+				if (lenp)
+					*lenp = W(lp->must_swap, lp->trans_tab[nstr - 1].length);
 				return (char *) lp->data + W(lp->must_swap, lp->trans_tab[nstr - 1].offset);
+			}
 		}
 		/* NOTREACHED */
 	}
@@ -500,6 +701,8 @@ find_msg(Locale * lp, const char *msgid)
 			break;
 	}
 
+	if (lenp && bottom < top)
+		*lenp = W(lp->must_swap, lp->trans_tab[act].length);
 	/* If an translation is found return this.  */
 	return bottom >= top ? NULL : (char *) lp->data + W(lp->must_swap, lp->trans_tab[act].offset);
 }

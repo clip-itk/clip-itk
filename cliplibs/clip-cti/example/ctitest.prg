@@ -1,24 +1,24 @@
 #include "inkey.ch"
 
-#include "../include/ctiwindow.ch"
+#include "cti.ch"
+
+static lst, br
 
 procedure main()
 	public app
 	public menu
 
 	local win, win2, win3
-	local en, en2, en3, en4, en5
+	local layout1,layout2,layout3
+	local en, en2, en3, en4, en5, en6
 	local but, but2, qbut
 	local statb
 	local lbl1, lbl2
 	local sigid, evid
 	local check1
 	local grp,rb1,rb2,rb3,rb4
-	local lst //list
 	local opm, opm_menu, item
-
-	public br
-        local col
+	local col
 
 
 	app:=cti_init()
@@ -27,6 +27,9 @@ procedure main()
 	win:set_position(5,5)
 	win:set_size(12,40)
 	win:show()
+	layout1 := cti_layout_new(12,40)
+	win:add(layout1)
+	win:set_key(asc("r"),{||qout("r"),outlog("r")})
 
 	cti_event_connect("CTI_KEYBOARD_EVENT",@KeybHandler())
 
@@ -34,71 +37,80 @@ procedure main()
 	win2:set_position(7,20)
 	win2:set_size(17,50)
 	win2:show()
+	layout2 := cti_layout_new(17,50)
+	win2:add(layout2)
 
 	win3:=cti_window_new(" CTI Test window 3 ")
 	win3:set_position(3,15)
-	win3:set_size(10,50)
+	win3:set_size(11,50)
 	win3:show()
+	layout3 := cti_layout_new(10,50)
+	win3:add(layout3)
 
-	app:put(win)
-	app:put(win2)
-	app:put(win3)
+	app:add(win)
+	app:add(win2)
+	app:add(win3)
 
-	app:set_focus(win)
+	//app:set_focus_child(win)
+	win:set_focus()
 
 	en := cti_entry_new("N","999.999")
+	//en := cti_entry_new("N","@S50")
 	en:set_size(1,7)
 	en:show()
-	win:put(en,2,20)
+	en:set_editable(FALSE)
+	layout1:add(en,1,20)
 	en:set_value(10.05)
-	lbl1 := cti_label_new("Input number:")
+	//en:set_value(space(100))
+	lbl1 := cti_label_new("Input &number:")
 	lbl1:set_size(1,13)
 	lbl1:show()
-	win:put(lbl1,2,5)
+	layout1:add(lbl1,1,5)
 
 	en2 := cti_entry_new("C","@S10")
-	win:put(en2,4,5)
+	layout1:add(en2,3,5)
 	en2:show()
 	en2:set_value("Text entry Text entry Text entry Text entry ")
+	en2:set_size(,10)
 
 	en3 := cti_entry_new("L")
-	win:put(en3,6,5)
+	layout1:add(en3,5,5)
 	en3:show()
 	en3:set_value(.T.)
 
 	but := cti_pushbutton_new("Button 1")
-	win:put(but,8,8)
+	layout1:add(but,7,8)
 	but:show()
-	but:signal_connect("CTI_CLICKED_SIGNAL",{|_but,_sig,_ar|_ar[1]:set_focus(_ar[2])},{win,en2})
+	but:signal_connect("CTI_CLICKED_SIGNAL",{|_but,_sig,_en2|_en2:set_focus()},en2)
 
 	but2 := cti_pushbutton_new("Button 2")
-	win:put(but2,8,20)
+	layout1:add(but2,7,20)
 	but2:show()
 	but2:signal_connect("CTI_CLICKED_SIGNAL",{|_but,_sig,_app|_app:focus_next_window()},app)
 
 	qbut := cti_pushbutton_new("Quit")
-	win:put(qbut,8,32)
+	layout1:add(qbut,7,31)
 	qbut:show()
 	qbut:signal_connect("CTI_CLICKED_SIGNAL",{||cti_quit()})
 
 	check1 := cti_checkbox_new(" checkbox")
 	check1:show()
-	win:put(check1,4,20)
+	layout1:add(check1,3,20)
 
 	menu := CreateMenu()
 	menu:set_size(1,50)
 
 	menu:show()
-	app:put(menu)
+	app:add(menu)
 //	win:put(menu)
 
 	en4 := cti_entry_new("C","@S20")
-	win2:put(en4,1,2)
+	layout2:add(en4,0,1)
 	en4:show()
 	en4:set_value("Input text")
 
 	en5 := cti_entry_new("C","@S20")
-	win:put(en5,6,10)
+	layout1:add(en5,5,10)
 	en5:set_enabled(.F.)
 	en5:set_size(1,16)
 	en5:show()
@@ -106,11 +118,11 @@ procedure main()
 
 	br := cti_tbrowse_new()
 	br:set_size(8,45)
-	br:set_position(3,2)
+	br:set_position(2,1)
 	br:show()
-	br:set_shadow(.F.)
+//	br:set_shadow(.F.)
 	br:set_skip_block(@Skipper())
-	win2:put(br)
+	layout2:add(br)
 
 	use test
 	col := TBColumnNew("First",{||test->first})
@@ -132,7 +144,7 @@ procedure main()
 	statb:set_size(1,app:width)
 	statb:set_position(app:height-1,0)
 	statb:set_message("Alt+X-exit   F6-switch window   Esc-menu Tab-next control")
-	app:put(statb)
+	app:add(statb)
 
 	grp := cti_radiogroup_new()
 	rb1 := cti_radiobutton_new(" Radio button 1",grp); rb1:show()
@@ -140,15 +152,14 @@ procedure main()
 	rb3 := cti_radiobutton_new(" Radio button 3",grp); rb3:show()
 	rb4 := cti_radiobutton_new(" Radio button 4",grp); rb4:show()
 
-	win2:put(rb1,12,2)
-	win2:put(rb2,13,2)
-	win2:put(rb3,14,2)
-	win2:put(rb4,15,2)
+	layout2:add(rb1,11,1)
+	layout2:add(rb2,12,1)
+	layout2:add(rb3,13,1)
+	layout2:add(rb4,14,1)
 
 	lst := cti_list_new(3)
 	lst:show()
-	lst:set_size(7,40)
-	win3:put(lst,2,3)
+	layout3:add(lst,2,2)
 
 	lst:column_titles_show(.T.)
 	lst:set_column_title(1,"Column1")
@@ -172,13 +183,19 @@ procedure main()
 	lst:append({"71","72","73"})
 	lst:append({"81","82","83"})
 
+	lst:set_size(7,40)
 //	lst:set_row_selectable(4,.F.)
 //	lst:set_row_selectable(1,.F.)
+
+	en6 := cti_entry_new("N")
+	en6:set_value(10.2)
+	en6:show()
+	layout3:add(en6,0,2)
 
 	opm := cti_option_menu_new()
 	opm:show()
 	opm:set_size(1,20)
-	win2:put(opm,12,23)
+	layout2:add(opm,11,23)
 
 	opm_menu := opm:get_menu()
 	item := cti_menuitem_new("Option 1")
@@ -191,6 +208,8 @@ procedure main()
 	item:show()
 	opm_menu:add_item(item)
 	opm_menu:show()
+
+	app:show_all()
 
 	cti_main()
 	close
@@ -215,7 +234,7 @@ static function CreateMenu()
 	item2 := cti_menuitem_new(" Item 2 ")
 	item2:show()
 	item3 := cti_menuitem_new(" Item 3 ")
-        item3:show()
+	item3:show()
 
 	submenu1 := cti_menu_new()
 	submenu1:show()
@@ -225,9 +244,9 @@ static function CreateMenu()
 	item12 := cti_menuitem_new("Item 12")
 	item12:show()
 	item13 := cti_menuitem_new()
-        item13:show()
+	item13:show()
 	item14 := cti_menuitem_new("Quit")
-        item14:show()
+	item14:show()
 	item14:signal_connect("CTI_ACTIVATE_SIGNAL",{|_item,_sig|cti_quit()})
 	submenu1:add_item(item11)
 	submenu1:add_item(item12)
@@ -243,9 +262,9 @@ static function CreateMenu()
 	item22 := cti_menuitem_new("Item 22")
 	item22:show()
 	item23 := cti_menuitem_new()
-        item23:show()
+	item23:show()
 	item24 := cti_menuitem_new("Item 24")
-        item24:show()
+	item24:show()
 	submenu2:add_item(item21)
 	submenu2:add_item(item22)
 	submenu2:add_item(item23)
@@ -260,7 +279,7 @@ static function CreateMenu()
 	item32 := cti_menuitem_new("Item 32")
 	item32:show()
 	item33 := cti_menuitem_new("Item 33")
-        item33:show()
+	item33:show()
 	item33:set_checked(.T.)
 	item33:signal_connect("CTI_ACTIVATE_SIGNAL",{|_item,_sig|_item:set_checked(.not. _item:is_checked())})
 	submenu3:add_item(item31)
@@ -299,23 +318,38 @@ static function KeybHandler(win,event)
 */
 		case K_ESC
 			if menu:__is_focused
-				app:set_focus(focus)
+				//app:set_focus_child(focus)
+//				outlog(__FILE__,__LINE__,procname())
+				focus:set_focus()
+//				menu:lost_focus()
 			else
-				focus := app:__FocusedObj
-				app:set_focus(menu)
+				focus := app:__focus_widget
+				//app:set_focus_child(menu)
+				menu:set_focus()
 			endif
 //		case 113
 		case K_ALT_D
 			br:set_enabled(.not. br:is_enabled())
-                case K_ALT_X
+		case K_ALT_X
 			cti_quit()
+		case K_F2
+			lst:append({"1","2",tostring(time())})
 		case K_F6
 			app:focus_next_window()
+		case K_F8
+			lst:clear()
+		case K_F9
+			lst:remove()
+		case K_F10
+			lst:remove(1)
 		case K_CTRL_F4, K_F4
 			if win!=nil
-				win:hide()
+//				win:hide()
 				win:destroy()
+				app:set_focus_to_top_window()
 			endif
+		case K_F1
+			br:__debug_paint()
 	end
 return
 
@@ -336,7 +370,6 @@ return
 static function Skipper(n, browse)
     LOCAL lAppend:=.f.
     LOCAL i:=0
-//    lAppend := IS_APPEND_MODE(browse)           // see #defines at top
 
 //	sleep(0.05)
 

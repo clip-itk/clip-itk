@@ -114,7 +114,9 @@ clip_GTK_NOTEBOOKAPPENDPAGE(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t)
 	{
 		gchar * text;
-		label = gtk_label_new(_clip_parc(cm,3));
+		char   * caption = _clip_parc(cm, 3);
+		LOCALE_TO_UTF(caption);
+		label = gtk_label_new(caption);
 		gtk_label_get(GTK_LABEL(label), &text);
 		if (pchar)
 		{
@@ -126,6 +128,7 @@ clip_GTK_NOTEBOOKAPPENDPAGE(ClipMachine * cm)
 
 		if (pchar)
 			accel_key = gtk_label_parse_uline(GTK_LABEL(label), text);
+		FREE_TEXT(caption);
 
 	}
 	else
@@ -171,16 +174,24 @@ clip_GTK_NOTEBOOKAPPENDPAGEMENU(ClipMachine * cm)
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
 	CHECKARG3(3,MAP_t,NUMERIC_t,CHARACTER_t);
 	CHECKARG3(4,MAP_t,NUMERIC_t,CHARACTER_t);
-	if (_clip_parinfo(cm,3)==CHARACTER_t)
-		tab_label = gtk_label_new(_clip_parc(cm,3));
+	if (_clip_parinfo(cm,3)==CHARACTER_t) {
+		char   * caption = _clip_parc(cm, 3);
+		LOCALE_TO_UTF(caption);
+		tab_label = gtk_label_new(caption);
+		FREE_TEXT(caption);
+	}
 	else
 	{
 		ctab_label = _fetch_cwidget(cm,_clip_spar(cm,3));
 		CHECKCWID(ctab_label,GTK_IS_WIDGET);
 		if (ctab_label) tab_label = ctab_label->widget;
 	}
-	if (_clip_parinfo(cm,4)==CHARACTER_t)
-		menu_label = gtk_label_new(_clip_parc(cm,4));
+	if (_clip_parinfo(cm,4)==CHARACTER_t) {
+		char   * menu_text = _clip_parc(cm, 4);
+		LOCALE_TO_UTF(menu_text);
+		menu_label = gtk_label_new(menu_text);
+		FREE_TEXT(menu_text);
+	}
 	else
 	{
 		cmenu_label = _fetch_cwidget(cm,_clip_spar(cm,4));
@@ -204,8 +215,12 @@ clip_GTK_NOTEBOOKPREPENDPAGE(ClipMachine * cm)
 	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
 	CHECKARG3(3,MAP_t,NUMERIC_t,CHARACTER_t);
-	if (_clip_parinfo(cm,3)==CHARACTER_t)
-		label = gtk_label_new(_clip_parc(cm,3));
+	if (_clip_parinfo(cm,3)==CHARACTER_t) {
+		char   * caption = _clip_parc(cm, 3);
+		LOCALE_TO_UTF(caption);
+		label = gtk_label_new(caption);
+		FREE_TEXT(caption);
+	}
 	else
 	{
 		clabel = _fetch_cwidget(cm,_clip_spar(cm,3));
@@ -231,16 +246,24 @@ clip_GTK_NOTEBOOKPREPENDPAGEMENU(ClipMachine * cm)
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
 	CHECKARG3(3,MAP_t,NUMERIC_t,CHARACTER_t);
 	CHECKARG3(4,MAP_t,NUMERIC_t,CHARACTER_t);
-	if (_clip_parinfo(cm,3)==CHARACTER_t)
-		tab_label = gtk_label_new(_clip_parc(cm,3));
+	if (_clip_parinfo(cm,3)==CHARACTER_t) {
+		char   * caption = _clip_parc(cm, 3);
+		LOCALE_TO_UTF(caption);
+		tab_label = gtk_label_new(caption);
+		FREE_TEXT(caption);
+	}
 	else
 	{
 		ctab_label = _fetch_cwidget(cm,_clip_spar(cm,3));
 		CHECKCWID(ctab_label,GTK_IS_WIDGET);
 		if (ctab_label) tab_label = ctab_label->widget;
 	}
-	if (_clip_parinfo(cm,4)==CHARACTER_t)
-		menu_label = gtk_label_new(_clip_parc(cm,4));
+	if (_clip_parinfo(cm,4)==CHARACTER_t) {
+		char   * menu_text = _clip_parc(cm, 4);
+		LOCALE_TO_UTF(menu_text);
+		menu_label = gtk_label_new(menu_text);
+		FREE_TEXT(menu_text);
+	}
 	else
 	{
 		cmenu_label = _fetch_cwidget(cm,_clip_spar(cm,4));
@@ -268,8 +291,12 @@ clip_GTK_NOTEBOOKINSERTPAGE(ClipMachine * cm)
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
 	CHECKARG3(3,MAP_t,NUMERIC_t,CHARACTER_t);
 	CHECKOPT(4,NUMERIC_t);
-	if (_clip_parinfo(cm,3)==CHARACTER_t)
-		label = gtk_label_new(_clip_parc(cm,3));
+	if (_clip_parinfo(cm,3)==CHARACTER_t) {
+		char   * caption = _clip_parc(cm, 3);
+		LOCALE_TO_UTF(caption);
+		label = gtk_label_new(caption);
+		FREE_TEXT(caption);
+	}
 	else
 	{
 		clabel = _fetch_cwidget(cm,_clip_spar(cm,3));
@@ -300,16 +327,24 @@ clip_GTK_NOTEBOOKINSERTPAGEMENU(ClipMachine * cm)
 	CHECKARG3(3,MAP_t,NUMERIC_t,CHARACTER_t);
 	CHECKARG3(4,MAP_t,NUMERIC_t,CHARACTER_t);
 	CHECKOPT(5,NUMERIC_t);
-	if (_clip_parinfo(cm,3)==CHARACTER_t)
-		tab_label = gtk_label_new(_clip_parc(cm,3));
+	if (_clip_parinfo(cm,3)==CHARACTER_t) {
+		char   * caption = _clip_parc(cm, 3);
+		LOCALE_TO_UTF(caption);
+		tab_label = gtk_label_new(caption);
+		FREE_TEXT(caption);
+	}
 	else
 	{
 		ctab_label = _fetch_cwidget(cm,_clip_spar(cm,3));
 		CHECKCWID(ctab_label,GTK_IS_WIDGET);
 		if (ctab_label) tab_label = ctab_label->widget;
 	}
-	if (_clip_parinfo(cm,4)==CHARACTER_t)
-		menu_label = gtk_label_new(_clip_parc(cm,4));
+	if (_clip_parinfo(cm,4)==CHARACTER_t) {
+		char   * menu_text = _clip_parc(cm, 4);
+		LOCALE_TO_UTF(menu_text);
+		menu_label = gtk_label_new(menu_text);
+		FREE_TEXT(menu_text);
+	}
 	else
 	{
 		cmenu_label = _fetch_cwidget(cm,_clip_spar(cm,4));
@@ -344,12 +379,9 @@ clip_GTK_NOTEBOOKPAGENUM(ClipMachine * cm)
 {
 	C_widget   *cntb = _fetch_cw_arg(cm);
 	C_widget *cchild = _fetch_cwidget(cm,_clip_spar(cm,2));
-	gint    page_num = _clip_parni(cm,2);
 	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
-	CHECKOPT(2,NUMERIC_t);
-	if (_clip_parinfo(cm,2)==UNDEF_t) page_num = 1;
-	_clip_retni(cm,gtk_notebook_page_num(GTK_NOTEBOOK(cntb->widget), cchild->widget));
+	_clip_retni(cm,gtk_notebook_page_num(GTK_NOTEBOOK(cntb->widget), cchild->widget)+1);
 	return 0;
 err:
 	return 1;
@@ -365,7 +397,7 @@ clip_GTK_NOTEBOOKSETPAGE(ClipMachine * cm)
 	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
 	CHECKOPT(2,NUMERIC_t);
 	if (_clip_parinfo(cm,2)==UNDEF_t) page_num = 1;
-	gtk_notebook_set_page(GTK_NOTEBOOK(cntb->widget), page_num-1);
+	gtk_notebook_set_page(GTK_NOTEBOOK(cntb->widget), (page_num>0?page_num-1: page_num));
 	return 0;
 err:
 	return 1;
@@ -633,9 +665,13 @@ clip_GTK_NOTEBOOKSETMENULABEL(ClipMachine * cm)
 	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
 	CHECKARG3(3,MAP_t,NUMERIC_t,CHARACTER_t);
-	if (_clip_parinfo(cm,3)==CHARACTER_t)
+	if (_clip_parinfo(cm,3)==CHARACTER_t) {
+		char * menu_text = _clip_parc(cm,3);
+		LOCALE_TO_UTF(menu_text);
 		gtk_notebook_set_menu_label_text(GTK_NOTEBOOK(cntb->widget),
-			cchild->widget, _clip_parc(cm,3));
+			cchild->widget, menu_text);
+		FREE_TEXT(menu_text);
+	}
 	else
 	{
 		clabel = _fetch_cwidget(cm,_clip_spar(cm,3));
@@ -675,10 +711,13 @@ clip_GTK_NOTEBOOKSETTABLABEL(ClipMachine * cm)
 	CHECKCWID(cntb,GTK_IS_NOTEBOOK);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cchild,GTK_IS_WIDGET);
 	CHECKARG3(3,MAP_t,NUMERIC_t,CHARACTER_t);
-	if (_clip_parinfo(cm,3)==CHARACTER_t)
+	if (_clip_parinfo(cm,3)==CHARACTER_t) {
+		char   * caption = _clip_parc(cm, 3);
+		LOCALE_TO_UTF(caption);
 		gtk_notebook_set_tab_label_text(GTK_NOTEBOOK(cntb->widget),
-			cchild->widget,_clip_parc(cm,3));
-
+			cchild->widget,caption);
+		FREE_TEXT(caption);
+	}
 	else
 	{
 		clabel = _fetch_cwidget(cm,_clip_spar(cm,3));

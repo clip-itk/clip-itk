@@ -239,7 +239,7 @@ return color
 ***********
 static function gd_interlace(interlace)
 local ret
-	ret := gdColorInterlace(::image, interlace)
+	ret := gdImageInterlace(::image, interlace)
 return ret
 ***********
 static function gd_compare(item)

@@ -6,5 +6,5 @@ clean:
 		*~ core* *core $(PRG) *.bz2 *.ex *.nm
 
 bz2: bz2.prg
-	clip -e -M bz2.prg -lclip-bzip2
+	clip -e -s -l -M bz2.prg -lclip-bzip2
 

@@ -14,7 +14,7 @@ install:
 	cp *.ch $(CLIPROOT)/include
 
 clean:
-	rm -f *.exe *.so *.c *.o *.po *.bak *.uri *.log *.ntx *.pa pp *.pp?
+	rm -f *.exe *.so *.c *.s *.o *.po *.bak *.uri *.log *.ntx *.pa pp *.pp?
 	rm -f *.ex *.nm
 
 .prg.o:

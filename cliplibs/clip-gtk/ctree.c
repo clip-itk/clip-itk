@@ -13,8 +13,9 @@
 #include "clip-gtk.ch"
 #include "clip-gtk.h"
 
-/**********************************************************/
+/*********************************************************/
 /* Signal handlers */
+
 gint handle_tree_select_row_signal (GtkWidget *widget, GtkCTreeNode *node, gint column, C_signal *cs)
 {
 	C_object *cnode = (C_object*)_list_get_cobject(cs->cw->cmachine,node);
@@ -254,7 +255,7 @@ clip_GTK_CTREEINSERTNODE(ClipMachine * cm)
 			new_node,cnew_node,(GtkDestroyNotify)destroy_c_object);
 	}
 
-#ifdef OS_CYGWIN
+//#ifdef OS_CYGWIN
 	if (cvtext->t.type==ARRAY_t)
 	{
 		ClipArrVar *acol = (ClipArrVar*)_clip_vptr(cvtext);
@@ -264,7 +265,7 @@ clip_GTK_CTREEINSERTNODE(ClipMachine * cm)
 	}
 	if (cvtext->t.type==CHARACTER_t)
 		FREE_TEXT(columns[0]);
-#endif
+//#endif
 	if (columns) free(columns);
 	return 0;
 err:
@@ -930,28 +931,33 @@ int
 clip_GTK_CTREENODEGETTEXT(ClipMachine * cm)
 {
 	C_widget    *cctree = _fetch_cw_arg(cm);
-	C_object     *cnode = _fetch_cobject(cm,_clip_spar(cm,2));
+	C_object     *cnode = _fetch_cobject(cm, _clip_spar(cm,2));
 	gint         column = _clip_parni(cm,3);
 	gint nColumns;
+
 	CHECKCWID(cctree,GTK_IS_CTREE);
 	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cnode,cnode->type==GTK_OBJECT_CTREE_NODE);
 	CHECKOPT(3,NUMERIC_t);
 	nColumns = GTK_CLIST(cctree->widget)->columns;
 	if (_clip_parinfo(cm,3)==UNDEF_t) column = 1;
+
 	if (column==1)
 	{
 		gchar **text = calloc(nColumns, sizeof(gchar*));
 
 		if (gtk_ctree_get_node_info (GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object), text, 0,0,0,0,0,0,0))
-		LOCALE_TO_UTF(*text);
+		LOCALE_FROM_UTF(*text);
 		_clip_retc(cm, text[column-1]);
 		FREE_TEXT(*text);
 		free(text);
+
 	}
 	else
 	{
+
 		gchar *text;
+
 		gtk_ctree_node_get_text(GTK_CTREE(cctree->widget),
 			GTK_CTREE_NODE(cnode->object), column-1, &text);
 		LOCALE_FROM_UTF(text);

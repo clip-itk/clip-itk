@@ -5,6 +5,51 @@
 */
 /*
    $Log: _string.c,v $
+   Revision 1.107  2004/04/30 14:33:38  clip
+   rust: buffer overflow in clip_BASE64ENCODE() fixed
+
+   Revision 1.106  2004/04/30 13:47:58  clip
+   rust: clip_BASE64ENCODE(sData) -> sEncodedData
+
+   Revision 1.105  2004/04/19 10:59:56  clip
+   rust: clip_SPLITDELIM(<str>,<strdelim>,<flddelim>) -> array
+
+   Revision 1.104  2004/03/03 11:59:06  clip
+   rust: small fix in ADDSLASH()
+
+   Revision 1.103  2003/11/27 06:44:50  clip
+   uri: first command "GETTFILE" in COBrA server
+
+   Revision 1.102  2003/09/21 07:53:58  clip
+   uri: small fix in mlcount()
+
+   Revision 1.101  2003/08/04 09:42:20  clip
+   uri: small fix
+
+   Revision 1.100  2003/03/23 13:11:10  clip
+   uri: fix in memoline()
+
+   Revision 1.99  2003/03/21 09:18:18  clip
+   uri: small fix in mlcount(),memoline(),mlpos()
+
+   Revision 1.98  2003/03/20 14:50:29  clip
+   uri: fixes in memoline()
+
+   Revision 1.97  2003/02/07 06:18:38  clip
+   uri: small fix in FCREATE
+
+   Revision 1.96  2003/02/06 10:56:03  clip
+   uri: added CRC16, reconstructed CRC32.
+
+   Revision 1.95  2003/02/02 11:34:04  clip
+   uri: crc32() added
+
+   Revision 1.94  2003/01/15 06:14:12  clip
+   uri: small fix in mlcount()
+
+   Revision 1.93  2002/12/16 13:06:02  clip
+   rust: XUPPER()
+
    Revision 1.92  2002/08/30 08:24:58  clip
    fix LOWER, UPPER funcs
    paul
@@ -790,19 +835,46 @@ clip_UPPER(ClipMachine * mp)
 {
 	int l;
 	char *s;
-        char *r;
+	char *r;
 
 	s = _clip_parcl(mp, 1, &l);
 	if (!s)
-        {
+	{
 		_clip_retc(mp, "");
-                return 0;
+		return 0;
 	}
 
 	r = _clip_memdup(s, l);
 	translate(r, l, 1);
-        
-        _clip_retcn_m(mp, r, l);
+
+	_clip_retcn_m(mp, r, l);
+
+	return 0;
+}
+
+int
+clip_XUPPER(ClipMachine * mp)
+{
+	if(_clip_parinfo(mp,1) == CHARACTER_t){
+		int l;
+		char *s;
+		char *r;
+
+		s = _clip_parcl(mp, 1, &l);
+		if (!s)
+		{
+			_clip_retc(mp, "");
+			return 0;
+		}
+
+		r = _clip_memdup(s, l);
+		translate(r, l, 1);
+
+		_clip_retcn_m(mp, r, l);
+	} else {
+		ClipVar* r = RETPTR(mp);
+		_clip_dup(mp,r,_clip_par(mp,1));
+	}
 
 	return 0;
 }
@@ -812,19 +884,19 @@ clip_LOWER(ClipMachine * mp)
 {
 	int l;
 	char *s;
-        char *r;
+		char *r;
 
 	s = _clip_parcl(mp, 1, &l);
 	if (!s)
-        {
+		{
 		_clip_retc(mp, "");
-                return 0;
+				return 0;
 	}
 
 	r = _clip_memdup(s, l);
 	translate(r, l, 0);
-        
-        _clip_retcn_m(mp, r, l);
+
+		_clip_retcn_m(mp, r, l);
 
 	return 0;
 }
@@ -869,33 +941,33 @@ int
 clip_ISWORD(ClipMachine * mp)
 {
 	int ret = 1;
-        unsigned char *ptr;
+		unsigned char *ptr;
 	unsigned char *s = (unsigned char *) _clip_parc(mp, 1);
 
 	if (!s || !(*s))
-        {
+		{
 		_clip_retl(mp, 0);
-                return 0;
-        }
-        for ( ptr=s; (*ptr); ptr++)
-        {
-        	switch (*ptr)
-                {
-                	case '0'...'9':
-                        	if (ptr == s)
-                                	ret = 0;
-                                break;
-                	case 'a'...'z':
-                        case 'A'...'Z':
-                        case '_':
-                        	break;
-                        default:
-                        	ret = 0;
-                                break;
-                }
-                if ( !ret )
-                	break;
-        }
+				return 0;
+		}
+		for ( ptr=s; (*ptr); ptr++)
+		{
+			switch (*ptr)
+				{
+					case '0'...'9':
+							if (ptr == s)
+									ret = 0;
+								break;
+					case 'a'...'z':
+						case 'A'...'Z':
+						case '_':
+							break;
+						default:
+							ret = 0;
+								break;
+				}
+				if ( !ret )
+					break;
+		}
 	_clip_retl(mp, ret);
 	return 0;
 }
@@ -917,7 +989,7 @@ clip_LEFT(ClipMachine * mp)
 	if (vp == NULL)
 	{
 		_clip_retc(mp, "");
-                return 0;
+				return 0;
 	}
 	rp = malloc(nl + 1);
 	if (nl > vl)
@@ -1008,8 +1080,8 @@ clip_MIN(ClipMachine * mp)
 int
 clip_MEMOLINE(ClipMachine * mp)
 {
-	int vl = 0, i, j, len, nstr, ntab;
-	char *rp, *e;
+	int vl = 0, i, j, len, nstr, ntab, wrap;
+	char *rp, *e,*e2, *wrappos = NULL;
 	char *vp = _clip_parcl(mp, 1, &vl);
 
 	if (vp == NULL)
@@ -1029,10 +1101,27 @@ clip_MEMOLINE(ClipMachine * mp)
 	if (ntab >= len)
 		ntab = len - 1;
 
+	if (_clip_parinfo(mp,5) == LOGICAL_t)
+		wrap = _clip_parl(mp,5);
+	else
+		wrap = 1;
+	rp = (char *) malloc(len + 1);
+	memset(rp,' ',len);
+	rp[len] = 0;
+
 	for (i = 1, j = 1, e = vp; e < vp + vl && i < nstr; e++, j++)
 	{
+		if (*e == ' ')
+			wrappos = e;
 		if (j >= len || *e == '\n')
 		{
+			if ( wrap && wrappos != NULL && e < vp+vl-1 && *e != '\n')
+			{
+				if ( *(e+1) == ' ')
+					e++;
+				else
+					e = wrappos;
+			}
 			i++;
 			j = 0;
 		}
@@ -1043,39 +1132,58 @@ clip_MEMOLINE(ClipMachine * mp)
 	}
 	if (i < nstr)
 	{
-		_clip_retc(mp, "");
+		_clip_retcn_m(mp, rp,len);
 		return 0;
 	}
-
-	rp = (char *) malloc(len + 1);
-	for (i = 0, j = 0; e < vp + vl && j <= len && *e != '\n'; e++, j++, i++)
+	if ( i>1 && j>len )
 	{
+		if (wrap && wrappos != NULL)
+			e = wrappos+1;
+		else
+			e++;
+	}
+	wrappos = NULL;
+	e2 = rp;
+	for (j = 0; e < vp + vl && j <= len && *e != '\n'; e++, j++,e2++)
+	{
+		if (*e == ' ')
+			wrappos = e2;
 		if (*e != '\r')
-			rp[i] = *e;
+			*e2 = *e;
 		else
 		{
 			j--;
-			i--;
+			e2--;
 		}
 		if (*e == '\t')
 			j += ntab - 1;
 	}
-	rp[i] = 0;
-	_clip_retcn_m(mp, rp, j);
+	if ( j>len )
+	{
+		if (wrap && wrappos != NULL)
+			e2 = wrappos+1;
+		else
+			e2++;
+	}
+	e = rp+len;
+	for (;e2<=e; e2++)
+		*e2 = ' ';
+	rp[len] = 0;
+	_clip_retcn_m(mp, rp, len);
 	return 0;
 }
 
 int
 clip_MLCOUNT(ClipMachine * mp)
 {
-	int vl = 0, i, j, len, ntab;
-	char *e;
+	int vl = 0, i, j, len, ntab, wrap;
+	char *e, *wrappos=NULL;
 	char *vp = _clip_parcl(mp, 1, &vl);
 
 	if (vp == NULL)
 	{
 		_clip_retni(mp, 0);
-                return 0;
+				return 0;
 	}
 	len = _clip_parni(mp, 2);
 	if (len <= 4)
@@ -1085,11 +1193,27 @@ clip_MLCOUNT(ClipMachine * mp)
 		ntab = 1;
 	if (ntab >= len)
 		ntab = len - 1;
+	if (_clip_parinfo(mp,5) == LOGICAL_t)
+		wrap = _clip_parl(mp,5);
+	else
+		wrap = 1;
 
 	for (i = 0, j = 1, e = vp; e < vp + vl; e++, j++)
 	{
+		if (*e == ' ')
+			wrappos = e;
 		if (j >= len || *e == '\n')
 		{
+			if ( wrap && wrappos != NULL && e < vp+vl-1 && *e != '\n')
+			{
+				if ( *(e+1) == ' ')
+					e++;
+				else
+				{
+					e = wrappos;
+					wrappos = NULL;
+				}
+			}
 			i++;
 			j = 0;
 		}
@@ -1098,7 +1222,62 @@ clip_MLCOUNT(ClipMachine * mp)
 		if (*e == '\r')
 			j--;
 	}
-	_clip_retni(mp, i);
+	_clip_retni(mp, i + (j>1));
+	return 0;
+}
+
+int
+clip_MLPOS(ClipMachine * mp)
+{
+	int vl = 0, i, j, len, nstr, ntab, npos = 1,wrap;
+	char *e,*wrappos = NULL;
+	char *vp = _clip_parcl(mp, 1, &vl);
+
+	if (vp == NULL)
+	{
+		_clip_retni(mp, 0);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "MLPOS");
+	}
+	len = _clip_parni(mp, 2);
+	if (len <= 4)
+		len = 79;
+	nstr = _clip_parni(mp, 3);
+	if (nstr <= 1)
+		nstr = 1;
+	ntab = _clip_parni(mp, 4);
+	if (ntab < 1)
+		ntab = 1;
+	if (ntab >= len)
+		ntab = len - 1;
+	if (_clip_parinfo(mp,5) == LOGICAL_t)
+		wrap = _clip_parl(mp,5);
+	else
+		wrap = 1;
+
+	for (i = 1, j = 1, e = vp; e < vp + vl; e++, j++)
+	{
+		if (*e == ' ')
+			wrappos = e;
+		if (j >= len || *e == '\n')
+		{
+			if ( wrap && wrappos != NULL && e < vp+vl-1 && *e != '\n')
+			{
+				if ( *(e+1) == ' ')
+					e++;
+				else
+					e = wrappos;
+			}
+			i++;
+			j = 0;
+		}
+		if (*e == '\t')
+			j += ntab - 1;
+		if (*e == '\r')
+			j--;
+		if (i >= nstr && j >= npos)
+			break;
+	}
+	_clip_retni(mp, e - vp + 1);
 	return 0;
 }
 
@@ -1149,47 +1328,6 @@ clip_MLCTOPOS(ClipMachine * mp)
 	return 0;
 }
 
-int
-clip_MLPOS(ClipMachine * mp)
-{
-	int vl = 0, i, j, len, nstr, ntab, npos = 1;
-	char *e;
-	char *vp = _clip_parcl(mp, 1, &vl);
-
-	if (vp == NULL)
-	{
-		_clip_retni(mp, 0);
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "MLPOS");
-	}
-	len = _clip_parni(mp, 2);
-	if (len <= 4)
-		len = 79;
-	nstr = _clip_parni(mp, 3);
-	if (nstr <= 1)
-		nstr = 1;
-	ntab = _clip_parni(mp, 4);
-	if (ntab < 1)
-		ntab = 1;
-	if (ntab >= len)
-		ntab = len - 1;
-
-	for (i = 1, j = 1, e = vp; e < vp + vl; e++, j++)
-	{
-		if (j >= len || *e == '\n')
-		{
-			i++;
-			j = 0;
-		}
-		if (*e == '\t')
-			j += ntab - 1;
-		if (*e == '\r')
-			j--;
-		if (i >= nstr && j >= npos)
-			break;
-	}
-	_clip_retni(mp, e - vp + 1);
-	return 0;
-}
 
 int
 clip_PADR(ClipMachine * mp)
@@ -1438,6 +1576,24 @@ clip_REPLI(ClipMachine * mp)
 }
 
 int
+clip_REPLIC(ClipMachine * mp)
+{
+	return clip_REPLICATE(mp);
+}
+
+int
+clip_REPLICA(ClipMachine * mp)
+{
+	return clip_REPLICATE(mp);
+}
+
+int
+clip_REPLICAT(ClipMachine * mp)
+{
+	return clip_REPLICATE(mp);
+}
+
+int
 clip_RIGHT(ClipMachine * mp)
 {
 	int vl = 0;
@@ -1472,7 +1628,8 @@ clip_SPACE(ClipMachine * mp)
 	if (kol <= 0)
 		kol = 0;
 	ret = malloc(kol + 1);
-	memset(ret, ' ', kol);
+	if ( !_clip_parl(mp,2) )
+		memset(ret, ' ', kol);
 	ret[kol] = 0;
 	_clip_retcn_m(mp, ret, kol);
 	return 0;
@@ -1663,6 +1820,42 @@ clip_HASHSTR(ClipMachine * mp)
 		HashTable_store(mp->hashnames, s, hash);
 	}
 	return 0;
+}
+
+
+static int
+_clip_calc_crc(ClipMachine * mp,int type)
+{
+	long hash;
+	int len;
+	char *str = _clip_parcl(mp, 1, &len);
+
+	if (str == NULL)
+	{
+		_clip_retnl(mp, 0);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "HASHSTR");
+	}
+
+	if (type==32)
+		hash = _clip_hashbytes32(0, str, len);
+	else
+		hash = _clip_hashbytes16(0, str, len);
+
+	_clip_retnl(mp, hash);
+
+	return 0;
+}
+
+int
+clip_CRC32(ClipMachine * mp)
+{
+	return _clip_calc_crc(mp,32);
+}
+
+int
+clip_CRC16(ClipMachine * mp)
+{
+	return _clip_calc_crc(mp,16);
 }
 
 int
@@ -1949,40 +2142,133 @@ clip_KOI2ALT(ClipMachine * mp)
 int
 clip_ADDSLASH(ClipMachine * mp)
 {
-
 	int count=0,i,l;
 	unsigned char *ret;
 	unsigned char *str = _clip_parcl(mp, 1, &l);
-		if ( str==NULL || l==0 )
+
+	if ( str==NULL || l==0 )
+	{
+		_clip_retc(mp,"");
+		return 0;
+	}
+	for (i=0; i<l; i++)
+	{
+		switch (str[i])
 		{
-			_clip_retc(mp,"");
-				return 0;
+			case '"' :
+			case '\'':
+			case 0   :
+				if(i==0 || str[i-1] != '\\')
+					count++;
+				break;
 		}
-		for (i=0; i<l; i++)
+	}
+	ret=malloc(l+count+1);
+	for (count=0,i=0; i<l; i++,count++)
+	{
+		switch (str[i])
 		{
-			switch (str[i])
+			case '"' :
+			case '\'':
+			case 0   :
+				if(i==0 || str[i-1] != '\\')
 				{
-					case '"' :
-						case '\'':
-						case 0   :
-							count++;
+					ret[count] = '\\';
+					count++;
 				}
+				break;
 		}
-		ret=malloc(l+count+1);
-		for (count=0,i=0; i<l; i++,count++)
-		{
-			switch (str[i])
-				{
-					case '"' :
-						case '\'':
-						case 0   :
-							ret[count] = '\\';
-							count++;
-				}
-				ret[count] = str[i];
-		}
-		ret[count] = 0;
-		_clip_retcn_m(mp,ret,count);
+		ret[count] = str[i]?str[i]:'0';
+	}
+	ret[count] = 0;
+	_clip_retcn_m(mp,ret,count);
 	return 0;
 }
 
+int
+clip_SPLITDELIM(ClipMachine * mp)
+{
+	ClipVar *ap = RETPTR(mp);
+	char *str = _clip_parc(mp,1);
+	char *fdelim = _clip_parc(mp,2);
+	char *rdelim = _clip_parc(mp,3);
+	char *b,*p,f,r;
+	long dims[1] = {0};
+	ClipVar v;
+
+	_clip_array(mp,ap,1,dims);
+
+	if(!str || !str[0])
+		return 0;
+	if(!fdelim) f = '\"'; else f = fdelim[0];
+	if(!rdelim) r = ','; else r = rdelim[0];
+
+	p = str;
+	while(*p)
+	{
+		while(*p && *p == ' ') p++; if(!(*p)) continue;
+		b = p;
+		if(*p == f)
+		{
+			while(*p && *(++p) != f); if(!(*p)) continue;
+			_clip_var_str(b+1,p-b-1,&v);
+			_clip_aadd(mp,ap,&v);
+			while(*p && *(p++) != r);
+			continue;
+		}
+		while(*p && *p != r) p++;
+		_clip_var_str(b,p-b,&v);
+		_clip_aadd(mp,ap,&v);
+		if(*p)
+			p++;
+	}
+	return 0;
+}
+
+int
+clip_BASE64ENCODE(ClipMachine * mp)
+{
+	int inlen;
+	char *str = _clip_parcl(mp,1,&inlen);
+	const char base64char[64] =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	char *inp = str;
+	int outlen = 0;
+	int l = ((inlen+2)/3)*4;
+	char *outp,*out;
+
+	l += (inlen+53)/54;
+	out = outp = calloc(1,l+1);
+
+	while (inlen >= 3) {
+		*outp++ = base64char[(inp[0] >> 2) & 0x3f];
+		*outp++ = base64char[((inp[0] & 0x03) << 4) |
+					 ((inp[1] >> 4) & 0x0f)];
+		*outp++ = base64char[((inp[1] & 0x0f) << 2) |
+					 ((inp[2] >> 6) & 0x03)];
+		*outp++ = base64char[inp[2] & 0x3f];
+
+		inp += 3;
+		inlen -= 3;
+		if (++outlen == 18) {
+			*outp++ = 10;
+			outlen = 0;
+		}
+	}
+
+	if (inlen > 0) {
+		*outp++ = base64char[(inp[0] >> 2) & 0x3f];
+		if (inlen == 1) {
+			*outp++ = base64char[(inp[0] & 0x03) << 4];
+			*outp++ = '=';
+		} else {
+			*outp++ = base64char[((inp[0] & 0x03) << 4) |
+						 ((inp[1] >> 4) & 0x0f)];
+			*outp++ = base64char[((inp[1] & 0x0f) << 2)];
+		}
+		*outp++ = '=';
+	}
+
+	_clip_retcn_m(mp,out,l);
+	return 0;
+}

@@ -22,7 +22,21 @@
 #define TE_HISTORY_SIZE		25
 #define TE_HYPHEN 		.f.
 #define TE_AUTO_MARGIN		.f.
+#define TE_AUTO_WRAP		.f.
 #define TE_AUTO_INDENT		.t.
+
+
+#define TE_EXIT		-1
+#define TE_CONTINUE	0
+#define TE_EXCEPTION	1
+
+
+#define ME_EXIT			-1
+#define ME_CONTINUE		0
+#define ME_EXCEPTION		1
+
+
+
 #ifdef LANG_RISSIAN
    #define TE_LANGUAGE		"ru"
 #else

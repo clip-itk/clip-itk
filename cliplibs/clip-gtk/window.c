@@ -72,7 +72,7 @@ clip_GTK_WINDOWNEW(ClipMachine * cm)
 		{
 		LOCALE_TO_UTF(title);
 		gtk_window_set_title(GTK_WINDOW(wid), title);
-        	FREE_TEXT(title);
+		FREE_TEXT(title);
 		}
 	//cwid = (C_widget*)calloc( 1, sizeof(C_widget) );
 	cwid = _register_widget(cm, wid, cv);
@@ -122,7 +122,7 @@ clip_GTK_WINDOWSETICONNAME(ClipMachine * cm)
 	{
 		LOCALE_TO_UTF(name);
 		gdk_window_set_icon_name(cwin->widget->window, name);
-        	FREE_TEXT(name);
+		FREE_TEXT(name);
 		_clip_retl(cm, TRUE);
 	}
 	else
@@ -203,7 +203,7 @@ clip_GTK_WINDOWSETTITLE(ClipMachine * cm)
 	CHECKARG(2,CHARACTER_t);
 	LOCALE_TO_UTF(title);
 	gtk_window_set_title(GTK_WINDOW(cwin->widget), title);
-        FREE_TEXT(title);
+	FREE_TEXT(title);
 	return 0;
 err:
 	return 1;
@@ -359,4 +359,20 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_WINDOWADDACCELGROUP(ClipMachine * cm)
+{
+	C_widget *cwin = _fetch_cw_arg(cm);
+	C_object *caccg = _fetch_cobject(cm,_clip_spar(cm,2));
+
+	CHECKARG2(2, MAP_t, NUMERIC_t);
+	CHECKCWID(cwin,GTK_IS_WINDOW);
+	CHECKCOBJ(caccg,GTK_IS_ACCEL_GROUP(caccg));
+
+	gtk_window_add_accel_group(GTK_WINDOW(cwin->widget), GTK_ACCEL_GROUP(caccg->object));
+
+	return 0;
+err:
+	return 1;
+}
 

@@ -194,6 +194,7 @@ local hActiveWnd, hWnd, bDlgProc
 		      eval(Selector:DialogBoxIndirect, eval(Selector:GetInstance),;
 					 If( ! Empty( self:cResData ), self:cResData, self:cToChar( hActiveWnd ) ),;
 					 hActiveWnd, Self ) )
+		//outlog(__FILE__, __LINE__, 'ups dialog indirect and self:nResult=', self:nResult)
 		if self:nResult == -1
 			eval(Selector:CreateDlgError, Self )
 		endif
@@ -330,10 +331,10 @@ local lFocus := .t., lResult
 		self:hWnd = hWnd
 	endif
 
-	self:Link()
+	//self:Link()
 
 	if self:lVbx .and. ! Empty( self:cResName )
-		if ! eval(Selector:VbxInitDialog, self:hWnd, GetResources(), self:cResName )
+		if ! eval(Selector:VbxInitDialog, self:hWnd, eval(Selector:GetResources), self:cResName )
 			MsgAlert( "Error on VBX's initialization" )
 		endif
 	endif

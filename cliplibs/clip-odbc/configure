@@ -6,6 +6,7 @@ exitf()
 	exit $1
 }
 
+rm Makefile
 cat <<EOF >test_odbc.c
 
 #include <sql.h>

@@ -1,7 +1,4 @@
-
-ifdef CLIPROOT
 include $(CLIPROOT)/include/Makefile.inc
-endif
 
 TARGET=libclip-netto$(DLLSUFF)
 RTARGET=libclip-netto$(DLLREALSUFF)
@@ -15,16 +12,16 @@ $(TARGET):
 
 clean distclean*:
 	cd misc && $(MAKE) clean
-	rm -f $(LIBS) $(TARGET) $(RTARGET) *.ex *.nm
+	rm -f $(LIBS) $(TARGET) $(RTARGET) *.ex *.nm *.bak
 
 install: $(TARGET)
-	$(CLIPROOT)/bin/clip_cp $(TARGET) $(CLIPROOT)/lib
-	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(CLIPROOT)/lib
-	$(CLIPROOT)/bin/clip_cp $(LIBS) $(CLIPROOT)/lib
-	mkdir -p $(CLIPROOT)/doc/clip-oasis/netto
-	cp doc/netto*.* $(CLIPROOT)/doc/clip-oasis/netto
-	cp doc/readme*.* $(CLIPROOT)/doc/clip-oasis/netto
-	mkdir -p $(CLIPROOT)/include/netto
-	cp include/*.ch $(CLIPROOT)/include/netto
-	cp include/*.h $(CLIPROOT)/include/netto
+	$(CLIPROOT)/bin/clip_cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
+	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
+	$(CLIPROOT)/bin/clip_cp $(LIBS) $(DESTDIR)$(CLIPROOT)/lib
+	#mkdir -p $(CLIPROOT)/doc/clip-oasis/netto
+	#cp doc/netto*.* $(CLIPROOT)/doc/clip-oasis/netto
+	#cp doc/readme*.* $(CLIPROOT)/doc/clip-oasis/netto
+	mkdir -p $(DESTDIR)$(CLIPROOT)/include/netto
+	cp include/*.ch $(DESTDIR)$(CLIPROOT)/include/netto
+	cp include/*.h $(DESTDIR)$(CLIPROOT)/include/netto
 

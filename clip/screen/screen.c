@@ -1,6 +1,76 @@
 
 /*
    $Log: screen.c,v $
+   Revision 1.99  2004/03/01 13:01:57  clip
+   uri: add some support UTF-8 to screen output
+
+   Revision 1.98  2003/12/19 09:35:38  clip
+   uri: small fix for WIN32 about chars with codes <32
+
+   Revision 1.97  2003/12/11 16:19:08  clip
+   uri: small fix in scroll
+
+   Revision 1.96  2003/11/21 09:34:18  clip
+   ifdef USE_NATIONAL_KEY for CtrlN
+   paul
+
+   Revision 1.95  2003/11/12 09:43:16  clip
+   fix for Ctrl-Z signal
+   paul
+
+   Revision 1.94  2003/10/29 11:40:03  clip
+   small fix for #160 (clear screen)
+   paul
+
+   Revision 1.93  2003/10/29 08:49:29  clip
+   fix terminal restoring in scanmode
+   fix restore screen after run
+   closes #160
+   paul
+
+   Revision 1.92  2003/09/09 15:36:20  clip
+   uri: small fix for cygwin
+
+   Revision 1.91  2003/09/09 14:36:15  clip
+   uri: fixes for mingw from Mauricio and Uri
+
+   Revision 1.88  2003/07/02 09:41:59  clip
+   do not send IS termcap string to avoid konsole bug
+   paul
+
+   Revision 1.87  2003/02/07 08:44:03  clip
+   fetch SIGINT in scanmode
+   closes #117
+   paul
+
+   Revision 1.86  2003/01/10 12:19:53  clip
+   set cursor on after exit from fullscreen program
+   paul
+
+   Revision 1.85  2002/12/20 11:21:46  clip
+   fix for ^2, ^6, Ctrl+numpads in scan mode
+   closes #88
+   paul
+
+   Revision 1.84  2002/12/20 08:53:50  clip
+   fix enhanced scancodes in Cygwin
+   closes #12
+   asdf
+
+   Revision 1.83  2002/11/20 10:22:52  clip
+   include beep patch from Przemyslaw Czerpak <druzus@acn.waw.pl>
+   paul
+
+   Revision 1.82  2002/11/20 09:18:16  clip
+   SET(_SET_ESC_DELAY[, <nMilliseconds>]) -> nOldMilliseconds
+   get/set Esc timeout in milliseconds; default == 300 ms
+   closes #50
+   paul
+
+   Revision 1.81  2002/11/13 12:58:13  clip
+   auto set charset in fullscreen mode
+   asdf
+
    Revision 1.80  2002/06/22 09:34:16  clip
    uri: shift & alt залипание
 
@@ -300,17 +370,20 @@
 
  */
 
+#include "../clip.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include <termios.h>
-#include <sys/ioctl.h>
 #include <ctype.h>
+#ifndef OS_MINGW
+	#include <termios.h>
+	#include <sys/ioctl.h>
+	#include <sys/socket.h>
+	#include <sys/un.h>
+#endif
 #include <sys/time.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -320,13 +393,18 @@
 #include "tcaps.h"
 #include "charset.h"
 #include "scankey.h"
-#include "../clip.h"
 
 #ifdef OS_CYGWIN
+	#include <w32api/windows.h>
+	#include <sys/cygwin.h>
+#endif
 
-#include <w32api/windows.h>
-#include <sys/cygwin.h>
+/* use CtrlN as internal rus/lat switch */
+/*#define USE_NATIONAL_KEY*/
 
+
+/* #define DBG */
+#ifdef _WIN32
 static int w32_console = 0;
 static CHAR_INFO *w32_screen = 0;
 static COORD w32_size, w32_beg, w32_end;
@@ -342,11 +420,10 @@ static void w32_set_cursor_shape(int cursor);
 static void w32_set_cursor(int r, int c);
 static void w32_beep(void);
 static int w32_readch(void);
+#endif
 
 #ifdef USE_TASKS
 #include "../task/task.h"
-#endif
-
 #endif
 
 #ifndef timercmp
@@ -366,6 +443,8 @@ static Gpm_Connect conn;
 
 #define RAWMODE_ESC 117
 
+int esc_delay_Screen = 300;
+static int has_esc = 0;
 static int xterm_mouse = 0, xterm_pos = 0, xterm_buttons = 0, xterm_x = 0, xterm_y = 0;
 
 #if 0
@@ -662,17 +741,21 @@ typedef struct
 	unsigned char inputTable[256];
 	unsigned char outputTable[256];
 	unsigned char pgTable[256];
+	unsigned long uniTable[256];
 
 	struct termios start_mode;
 	struct termios work_mode;
 
 	int pg_mode;
+	int utf8_mode;
 
 	Keytab keytab[KEYTAB_SIZE];
 
 	Terminfo terminfo;
 }
 ScreenData;
+
+static ScreenData *screen_data = 0;
 
 static struct termios start_mode;
 
@@ -825,12 +908,19 @@ setColorMap(ScreenData * dp, char *fg, char *bg)
 int
 restore_tty(ScreenBase * base)
 {
-	ScreenData *dp = (ScreenData *) base->data;
+	ScreenData *dp;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 		return 0;
 #endif
+	if (scr_scan_mode)
+		stop_scan_mode(0);
+
+	if (!base)
+		return 0;
+
+	dp = (ScreenData *) base->data;
 	return tcsetattr(base->fd, TCSADRAIN, &dp->start_mode);
 }
 
@@ -838,12 +928,19 @@ int
 restart_tty(ScreenBase * base)
 {
 	struct termios ts;
-	ScreenData *dp = (ScreenData *) base->data;
+	ScreenData *dp;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 		return 0;
 #endif
+	if (scr_scan_mode)
+		start_scan_mode(0);
+
+	if (!base)
+		return 0;
+
+	dp = (ScreenData *) base->data;
 	tcgetattr(base->fd, &ts);
 	ts.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
 	ts.c_oflag &= ~OPOST;
@@ -858,6 +955,8 @@ restart_tty(ScreenBase * base)
 
 		for (i = 0; i < NCCS; i++)
 			ts.c_cc[i] = 0;
+		ts.c_lflag &= ~ISIG;
+		ts.c_cc[VINTR] = 0;
 	}
 	else
 		ts.c_cc[VINTR] = 'C' - '@';
@@ -875,6 +974,16 @@ restart_tty(ScreenBase * base)
 	{
 		ts.c_iflag &= ~IXON;
 	}
+
+#ifdef VSUSP
+	ts.c_cc[VSUSP] = 0;
+#endif
+#ifdef VDSUSP
+	ts.c_cc[VDSUSP] = 0;
+#endif
+#ifdef VQUIT
+	ts.c_cc[VQUIT] = 0;
+#endif
 
 	dp->work_mode = ts;
 
@@ -895,18 +1004,27 @@ exit_tty()
 	termcap_flush();
 #endif
 	stop_scan_mode(0);
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 		return;
 #endif
 
-#ifndef OS_CYGWIN
+#ifndef _WIN32
 	if (xterm_mouse)	/* xterm */
 	{
 		const char msg[] = "\033[?1000l\033[?1001r";
 
 		write(1, msg, sizeof(msg) - 1);
 	}
+
+	/* enable cursor */
+
+	if (screen_data)
+	{
+		termcap_put_raw_str(screen_data, screen_data->termcap_VE);
+		termcap_flush(screen_data);
+	}
+
 #endif
 
 #ifdef HAVE_GPM_H
@@ -1045,7 +1163,9 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 {
 	ScreenData *dp;
 	char *p;
+#ifndef OS_MINGW
 	struct winsize ws;
+#endif
 	int i, tfd;
 	int translateGraphMode = 0;
 	static int first = 1;
@@ -1075,16 +1195,19 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	dp = (ScreenData *) calloc(sizeof(ScreenData), 1);
 	base->data = dp;
 
+
 	init_Terminfo(&dp->terminfo);
 
 	dp->terminfo.name = base->terminalName;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
+#ifndef OS_MINGW
 	p = get_env(envp, "CLIP_W32CONSOLE");
 	if (p && *p)
 	{
 		if (!strcasecmp(p, "yes"))
 		{
+#endif
 			CONSOLE_SCREEN_BUFFER_INFO info;
 
 			if (w32_hStdOut == INVALID_HANDLE_VALUE)
@@ -1109,8 +1232,10 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 			row = info.dwCursorPosition.Y;
 			w32_console = 1;
 			scr_scan_mode = ScanIoctl;
+#ifndef OS_MINGW
 		}
 	}
+#endif
 
 #endif
 
@@ -1174,7 +1299,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 			}
 			if (read_term(fnum, fnames, 1, &dp->terminfo, errbuf, errbuflen))
 			{
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 				if (!w32_console)
 #endif
 					return -1;
@@ -1185,7 +1310,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 			/* tcap is a termcap entry */
 			if (read_tcapbuf(tcap, &dp->terminfo, errbuf, errbuflen))
 			{
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 				if (!w32_console)
 #endif
 					return -1;
@@ -1194,7 +1319,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	}
 	else if (read_term(fnum, fnames, 1, &dp->terminfo, errbuf, errbuflen))
 	{
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 		if (!w32_console)
 #endif
 			return -1;
@@ -1216,7 +1341,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	init_ScreenData(dp);
 	dp->base = base;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (!w32_console)
 	{
 #endif
@@ -1228,10 +1353,11 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 			free(dp);
 			return -1;
 		}
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	}
 #endif
 
+#ifndef OS_MINGW
 	if (ioctl(fd, TIOCGWINSZ, &ws) != -1)
 	{
 		if (ws.ws_row > 0)
@@ -1239,6 +1365,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 		if (ws.ws_col > 0)
 			base->Columns = ws.ws_col;
 	}
+#endif
 
 	if (!base->Lines && dp->termcap_lines > 0)
 		base->Lines = dp->termcap_lines;
@@ -1328,6 +1455,8 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	for (i = 0; i < 256; ++i)
 		dp->outputTable[i] = i /*+ 256 */ ;
 	/*dp->outputTable[127] = 0xdf; */
+	for (i = 0; i < 256; ++i)
+		dp->uniTable[i] = i /*+ 256 */ ;
 
 	if (dp->termcap_Ct && (tfd = open(dp->termcap_Ct, O_RDONLY)) >= 0)
 	{
@@ -1341,23 +1470,56 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	}
 
 	{
-		char *p1, *p2;
+		char *p1, *p2, *pp;
 		cons_CharsetEntry *cs1 = 0, *cs2 = 0;
 		int len1 = 0, len2 = 0;
+#ifdef _WIN32
+		/*char pibuf[12];*/
+		char pobuf[12];
+#endif
+
 
 		p1 = get_env(envp, "CLIP_HOSTCS");
 		p2 = get_env(envp, "CLIP_CLIENTCS");
+
+#ifdef _WIN32
+		if (w32_console)
+		{
+			int cp_num;
+
+			/*
+			cp_num = GetConsoleCP();
+			snprintf(pibuf, sizeof(pibuf), "cp%d", cp_num);
+			if (!load_charset_name(pibuf, &cs1, &len1))
+				p1 = pibuf;
+			*/
+
+			cp_num = GetConsoleOutputCP();
+			snprintf(pobuf, sizeof(pobuf), "cp%d", cp_num);
+			if (!load_charset_name(pobuf, &cs2, &len2))
+				p2 = pobuf;
+		}
+#endif
 		if (!p1 || !p2 || !*p1 || !*p2)
 			goto norm;
 
-		if (load_charset_name(p1, &cs1, &len1))
+		if (!cs1 && load_charset_name(p1, &cs1, &len1))
 		{
 			snprintf(errbuf, errbuflen, "cannot load charset file '%s': %s", p1, strerror(errno));
 			ret = 1;
 			goto norm;
 		}
 
-		if (load_charset_name(p2, &cs2, &len2))
+		make_uniTable(cs1, len1, dp->uniTable);
+		if ( strcasecmp(p2, "UTF-8") == 0 ||
+		     ((pp = get_env(envp, "LANG")) && (strstr(pp, ".UTF-8") != 0)) ||
+		     ((pp = get_env(envp, "LC_ALL")) && (strstr(pp, ".UTF-8") != 0)) ||
+		     ((pp = get_env(envp, "LC_CTYPE")) && (strstr(pp, ".UTF-8") != 0)) )
+		{
+		    dp->utf8_mode = 1;
+		}
+
+		if (!cs2 && load_charset_name(p2, &cs2, &len2))
 		{
 			snprintf(errbuf, errbuflen, "cannot load charset file '%s': %s", p2, strerror(errno));
 			ret = 2;
@@ -1373,6 +1535,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 		free(cs2);
 
 	      norm:
+			;
 	}
 
 	if (dp->termcap_Visuals & VisualGraph)
@@ -1607,7 +1770,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 			scr_scan_mode = ScanTerminal;
 	}
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (!w32_console)
 #endif
 		tcgetattr(dp->fd, &dp->start_mode);
@@ -1615,11 +1778,12 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	{
 		start_scan_mode(0);
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 		if (!w32_console)
 #endif
-			tcgetattr(0, &start_mode);
+		tcgetattr(0, &start_mode);
 		first = 0;
+		screen_data = dp;
 		atexit(exit_tty);
 	}
 
@@ -1628,7 +1792,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	base->realScreen->y = row;
 	base->realScreen->x = col;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 	{
 		CHAR_INFO p;
@@ -1655,12 +1819,17 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	else
 #endif
 	{
+		#if 0
 		termcap_put_raw_str(dp, dp->termcap_IS);
+		#endif
+
 		termcap_put_raw_str(dp, dp->termcap_TI);
 		termcap_put_raw_str(dp, dp->termcap_VE);
 		termcap_put_raw_str(dp, dp->termcap_KS);
 		termcap_put_raw_str(dp, dp->termcap_EA);
 		termcap_put_raw_str(dp, dp->termcap_ME);
+
+
 		termcap_flush(dp);
 
 		termcap_set_color(dp, COLOR_WHITE | COLOR_BACK_BLACK);
@@ -1688,7 +1857,7 @@ destroy_tty(struct ScreenBase *base)
 	if (!dp)
 		return 0;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 	{
 		if (base->clear_on_exit)
@@ -1712,8 +1881,8 @@ destroy_tty(struct ScreenBase *base)
 	restore_tty(base);
 
 	delete_Screen(base->realScreen);
-	destroy_ScreenData(dp);
-	free(dp);
+	/*destroy_ScreenData(dp);
+	free(dp);*/
 	free(base->terminalName);
 	memset(base, 0, sizeof(ScreenBase));
 
@@ -1899,11 +2068,16 @@ init_ScreenData(ScreenData * dp)
 	dp->scrool = 0;
 	dp->rscrool = 0;
 	dp->pg_mode = 1;
+	dp->utf8_mode = 0;
 
 	strncpy(dp->meta_key, "\033", sizeof(dp->meta_key));
 	strncpy(dp->meta1_key, "\012", sizeof(dp->meta1_key));
 	strncpy(dp->meta2_key, "\013", sizeof(dp->meta2_key));
+#ifdef USE_NATIONAL_KEY
 	strncpy(dp->national_key, "\016", sizeof(dp->national_key));
+#else
+	memset(dp->national_key, 0, sizeof(dp->national_key));
+#endif
 
 	memcpy(dp->nationalTable, koi8_nationalTable, 128);
 
@@ -1926,7 +2100,7 @@ clear_Screen(Screen * scr)
 			scr->attrs[i][j] = scr->base->realScreen->attrs[i][j] = 0;
 		}
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 	{
 		w32_clear();
@@ -1945,7 +2119,10 @@ setCtrlBreak_Screen(Screen * scr, int val)
 {
 	ScreenData *dp = (ScreenData *) scr->base->data;
 
-#ifdef OS_CYGWIN
+	if (scr_scan_mode)
+		return;
+
+#ifdef _WIN32
 	if (w32_console)
 		return;
 #endif
@@ -2080,7 +2257,15 @@ termcap_put_char(ScreenData * dp, int ch)
 	{
 		int pg;
 
-		if (scr_scan_mode && ch > 32)
+		if (dp->utf8_mode)
+		{
+			char utfch[7];
+			int n;
+			n = u32toutf8( utfch, dp->uniTable[ch] );
+			utfch[n] = 0;
+			termcap_put_raw_str(dp, utfch);
+		}
+		else if (scr_scan_mode && ch > 32)
 			termcap_put_raw_char(dp->outputTable[ch], dp);
 		else if (dp->pg_mode && (pg = dp->pgTable[ch]))
 			termcap_put_graph_char(dp, (pg >= PG_SIZE) ? pg : dp->base->pg_chars[pg]);
@@ -2373,6 +2558,8 @@ termcap_clear_screen(ScreenData * dp)
 	}
 	termcap_put_raw_str(dp, dp->termcap_ME);
 	dp->boldMode = 0;
+	termcap_set_cursor(dp, 0, 0);
+	termcap_put_raw_str(dp, " ");
 	termcap_put_raw_str(dp, dp->termcap_CL);
 	termcap_set_cursor(dp, 0, 0);
 }
@@ -2432,11 +2619,20 @@ termcap_scroll(ScreenBase * base, int top, int bottom, int n)
 static void
 termcap_beep(ScreenData * dp)
 {
+	if (dp->lineDrawMode)
+	{
+		if (dp->termcap_GE)
+			termcap_put_raw_str(dp, dp->termcap_GE);
+		else if (dp->termcap_AE)
+			termcap_put_raw_str(dp, dp->termcap_AE);
+		dp->lineDrawMode = 0;
+	}
 	if (dp->termcap_BL)
 		termcap_put_raw_str(dp, dp->termcap_BL);
 	else
 		termcap_put_raw_str(dp, "\007");
 }
+
 
 void
 newMatch_Key(ScreenBase * base)
@@ -2445,6 +2641,7 @@ newMatch_Key(ScreenBase * base)
 
 	dp->matchpos = 0;
 	dp->matchno = 0;
+	has_esc = 0;
 }
 
 static int
@@ -2570,11 +2767,16 @@ term_match_Key(ScreenBase * base, unsigned char b, unsigned long *keyp)
 	else
 		trymatch = 1;
 
+	has_esc = 0;
+
 	if (trymatch)
 	{
 		if (dp->matchno < 0)
 		{
 			Keytab *kp;
+
+			if (b == 27)
+				has_esc = 1;
 
 			kp = (Keytab *) bsearch(&b, keytab, key_count, sizeof(Keytab), cmp_first);
 
@@ -2808,7 +3010,7 @@ scan_match_Key(ScreenBase * base, unsigned char b, unsigned long *keyp)
 	if (key)
 	{
 		*keyp = key;
-               	//scan_reset();
+		//scan_reset();
 		return 1;
 	}
 	else
@@ -2827,12 +3029,12 @@ match_Key(ScreenBase * base, unsigned char b, unsigned long *keyp)
 unsigned long
 getRaw_Key(ScreenBase * base)
 {
-#if 1
+#if !defined(OS_MINGW) && 1
 	return getRawWait_Key(base, 1000 * 6000);
 #else
 	unsigned char ch = 0;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 		ch = w32_readch();
 	else
@@ -2840,6 +3042,9 @@ getRaw_Key(ScreenBase * base)
 	if (!scr_scan_mode)
 		return 0;
 
+#ifdef _WIN32
+	if (!w32_console)
+#endif
 	read(base->fd, &ch, 1);
 
 	if (scr_scan_mode)
@@ -2862,7 +3067,7 @@ unsigned long
 getRawWait_Key(ScreenBase * base, long milliseconds)
 {
 	if (!scr_scan_mode)
-        	return 0;
+		return 0;
 	return get_wait_key(base, milliseconds, 1);
 }
 
@@ -2939,12 +3144,15 @@ get_Key(ScreenBase * base)
 	newMatch_Key(base);
 	for (;;)
 	{
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 		if (w32_console)
 			ch = w32_readch();
 		else
 #endif
 		{
+			struct timeval tv;
+			tv.tv_sec = esc_delay_Screen/1000;
+			tv.tv_usec = (esc_delay_Screen % 1000)*1000;
 #ifdef HAVE_GPM_H
 			if (gpm_fd >= 0)
 			{
@@ -2967,9 +3175,43 @@ get_Key(ScreenBase * base)
 						return key;
 				}
 				if (!FD_ISSET(base->fd, &rfs))
+				{
+					if (r == 0 && has_esc)
+					{
+						newMatch_Key(base);
+						return 27;
+					}
 					goto again;
+				}
 			}
+			else
 #endif
+			{
+				fd_set rfs;
+				int r, n;
+
+			      again1:
+				FD_ZERO(&rfs);
+				FD_SET(base->fd, &rfs);
+				n = base->fd;
+
+				r = select(n + 1, &rfs, 0, 0, &tv);
+
+				if (r < 0)
+					return 0;
+
+				if (!FD_ISSET(base->fd, &rfs))
+				{
+					if (r == 0 && has_esc)
+					{
+						newMatch_Key(base);
+						return 27;
+					}
+
+					goto again1;
+				}
+			}
+
 			if (read(base->fd, &ch, 1) < 1)
 				return 0;
 		}
@@ -3014,12 +3256,15 @@ static unsigned long
 get_wait_key(ScreenBase * base, long milliseconds, int raw)
 {
 	unsigned char ch;
-	struct timeval end, tv, dt;
+	struct timeval end, tv, dt, etv;
 	unsigned long key;
 
 	gettimeofday(&tv, 0);
 	dt.tv_sec = milliseconds / 1000;
 	dt.tv_usec = (milliseconds % 1000) * 1000;
+
+	etv.tv_sec = esc_delay_Screen/1000;
+	etv.tv_usec = (esc_delay_Screen % 1000)*1000;
 
 	timer_add(&tv, &dt, &end);
 
@@ -3029,14 +3274,17 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 	if (!raw && scr_scan_mode)
 	{
 		key = scan_check();
+#ifdef DBG
+		printf("get_wait_key: %ld\r\n", key);
+#endif
 		if (key)
-                {
-                	scan_reset();
+		{
+			scan_reset();
 			return key;
 		}
 	}
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 	{
 		struct timeval timeout;
@@ -3046,6 +3294,8 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 		{
 			int r;
 
+			if (!raw)
+			{
 			while (w32_scan_buf_len)
 			{
 				ch = w32_readch();
@@ -3054,6 +3304,7 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 					newMatch_Key(base);
 					return key;
 				}
+			}
 			}
 
 			if (!milliseconds || timercmp(&end, &tv, <))
@@ -3084,8 +3335,12 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 			ch = w32_readch();
 			if (raw && scr_scan_mode)
 			{
-                        	if (!scan_push(ch))
-                                	goto again1;
+				/*if (!scan_push(ch))
+					goto again1;*/
+				scan_push(ch);
+#ifdef DBG
+				printf("get_wait_key return %d\r\n", ch);
+#endif
 				return ch;
 			}
 			if (match_Key(base, ch, &key))
@@ -3106,6 +3361,7 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 		struct timeval timeout;
 		int r, n;
 		fd_set rfs;
+		int esc_tv = 0;
 
 		if (!milliseconds || timercmp(&end, &tv, <))
 		{
@@ -3116,6 +3372,13 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 		{
 			timer_sub(&end, &tv, &timeout);
 		}
+
+		if (timercmp(&etv, &timeout, <))
+		{
+			timeout = etv;
+			esc_tv = 1;
+		}
+
 		FD_ZERO(&rfs);
 		FD_SET(base->fd, &rfs);
 
@@ -3130,6 +3393,12 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 #endif
 
 		r = select(n + 1, &rfs, 0, 0, &timeout);
+
+		if (r == 0 && esc_tv && has_esc)
+		{
+			newMatch_Key(base);
+			return 27;
+		}
 
 		if (r < 1)
 		{
@@ -3164,8 +3433,8 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 
 		if (raw && scr_scan_mode)
 		{
-                        if (!scan_push(ch))
-                               	goto again;
+			if (!scan_push(ch))
+				goto again;
 			return ch;
 		}
 
@@ -3174,7 +3443,7 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 			newMatch_Key(base);
 			return key;
 		}
-            again:
+	    again:
 		gettimeofday(&tv, 0);
 	}
 }
@@ -3329,6 +3598,8 @@ scrollw_Screen(Screen * scr, int beg, int left, int end, int right, int num, uns
 			scr->lnums[i - num] = scr->lnums[i];
 			/*scr->touched[i - num] = 1; */
 		}
+		if ( num > end )
+			num = end;
 		for (i = end - num + 1; i <= end; i++)
 		{
 			memset(scr->chars[i] + left, ' ', dw);
@@ -3348,6 +3619,8 @@ scrollw_Screen(Screen * scr, int beg, int left, int end, int right, int num, uns
 			scr->lnums[i - num] = scr->lnums[i];
 			/*scr->touched[i - num] = 1; */
 		}
+		if ( (0-num) > beg )
+			num = 0-beg;
 		for (i = beg - num - 1; i >= beg; i--)
 		{
 			memset(scr->chars[i] + left, ' ', dw);
@@ -3393,7 +3666,7 @@ syncLine(Screen * scr, int y)
 	e = end = l;
 	i = x;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 	{
 		CHAR_INFO *p;
@@ -3413,9 +3686,11 @@ syncLine(Screen * scr, int y)
 
 			ch = chars[i];
 			p->Attributes = colors[i];
+/*
 			if (dp->pg_mode && ch < 32 && (pg = dp->pgTable[ch]))
 				ch = dp->base->pg_chars[pg];
 			else
+*/
 				ch = dp->outputTable[ch];
 			p->Char.AsciiChar = ch;
 
@@ -3496,7 +3771,7 @@ sync_Screen(Screen * scr)
 
 /* make scrolls */
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 	{
 		w32_beg = w32_size;
@@ -3560,7 +3835,7 @@ sync_Screen(Screen * scr)
 	for (y = 0; y < Lines; y++)
 		syncLine(scr, y);
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	if (w32_console)
 	{
 		for (; scr->beeps > 0; --scr->beeps)
@@ -3595,12 +3870,22 @@ void
 redraw_Screen(Screen * scr)
 {
 	int i, j;
-	int Lines = scr->base->Lines;
-	int Columns = scr->base->Columns;
-	ScreenData *dp = (ScreenData *) scr->base->data;
-	unsigned char **chars = scr->base->realScreen->chars;
-	unsigned char **colors = scr->base->realScreen->colors;
-	unsigned char **attrs = scr->base->realScreen->attrs;
+	int Lines;
+	int Columns;
+	ScreenData *dp;
+	unsigned char **chars;
+	unsigned char **colors;
+	unsigned char **attrs;
+
+	if (!scr)
+		return;
+
+	Lines = scr->base->Lines;
+	Columns = scr->base->Columns;
+	dp = (ScreenData *) scr->base->data;
+	chars = scr->base->realScreen->chars;
+	colors = scr->base->realScreen->colors;
+	attrs = scr->base->realScreen->attrs;
 
 	for (i = 0; i < Lines; ++i)
 	{
@@ -3672,9 +3957,6 @@ set_rawmode(int fd, int mode)
 	write(1, "\033(K", 3);
 #endif
 
-#ifdef OS_CYGWIN
-
-#endif
 }
 
 static void
@@ -3711,7 +3993,7 @@ stop_scan_mode(int fd)
 	}
 }
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 
 static void
 w32_clear(void)
@@ -3840,8 +4122,9 @@ w32_push_key_event(KEY_EVENT_RECORD * kp)
 		scan_numlock_state = 1;
 	}
 
-/*      printf("\nread key: scan=0x%x pstate=0x%x count=%d down=%d\n", word, pstate, kp->wRepeatCount, kp->bKeyDown); */
-
+#ifdef DBG
+	printf("\nread key: scan=0x%x pstate=0x%x count=%d down=%d\r\n", word, pstate, kp->wRepeatCount, kp->bKeyDown);
+#endif
 	for (i = 0; i < kp->wRepeatCount; i++)
 	{
 		if ((pstate & ENHANCED_KEY) && (word != 0x45))
@@ -3899,8 +4182,9 @@ w32_readch(void)
 	INPUT_RECORD inputBuffer;
 	DWORD dwInputEvents;
 
-/*      printf("w32_readch()\n"); */
-
+#ifdef DBG
+	printf("w32_readch()\r\n");
+#endif
 	if (w32_scan_buf_len)
 		return w32_get_scan_buf();
 
@@ -3934,7 +4218,7 @@ init_mouse(ScreenBase * base, char **envp)
 {
 	char *term;
 
-#ifndef OS_CYGWIN
+#ifndef _WIN32
 	char *e;
 #endif
 
@@ -3952,7 +4236,7 @@ init_mouse(ScreenBase * base, char **envp)
 	base->mouse_dclick_speed = 250;
 	base->mouse_driver = "";
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	xterm_mouse = 1;
 	base->mouse_present = 1;
 	base->mouse_driver = "win32console";
@@ -4008,6 +4292,19 @@ setPgMode_Screen(Screen * scr, int newmode)
 	dp = ((ScreenData *) scr->base->data);
 	r = dp->pg_mode;
 	dp->pg_mode = newmode;
+
+	return r;
+}
+
+int
+setUtf8Mode_Screen(Screen * scr, int newmode)
+{
+	int r;
+	ScreenData *dp;
+
+	dp = ((ScreenData *) scr->base->data);
+	r = dp->utf8_mode;
+	dp->utf8_mode = newmode;
 
 	return r;
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "common.ch"
@@ -32,16 +32,19 @@ LOCAL	mP:=_MM_MAINMENU,;
 IF !EMPTY(lShow)
 	i:=1
 	aStart:={}
+	DispBegin()
 	AEval(mP,{|_el| AADD(aStart,i),;
 			DevPos(1,i),;
 			DevOut(Exclude(_el,'~')),;
 			i:=col()+4})
+	DispEnd()
 	AADD(aStart,i-3)
 	RETURN
 ENDIF
 _Finish:=.F.
 
 _SysF:={{||SelectRdd()},;
+	{||SelectCP()},;
 	{||SecondMenu(_MM_SETMENU,_SetF)},;
 	{||SaveIni()},;
 	{||CalcExpr()},;
@@ -54,7 +57,8 @@ _SysF:={{||SelectRdd()},;
 _SetF:={{||Configure()},;
 	{||Colors()},;
 	{||Sets()},;
-	{||OtherConf()};
+	{||OtherConf()},;
+	{||OtherConf1()};
 }
 
 _FileF:={{||SelectBase()},;
@@ -70,16 +74,18 @@ _FileF:={{||SelectBase()},;
 	 {||ChangeDir()},;
 	 {||MFiler()},;
 	 {||ModiFile()},;
-	 {||Tb2Html()};
+	 {||Tb2Html()},;
+	 {||Tb2Xml()},;
+	 {||Tb2XLS()};
 }
 _FileW:={.F.,EMPTY(m->__aPrev[2])}
 
 _BaseF:={{||AppeFrom()},;
 	 {||CopyTo()},;
 	 {||CopyRdd()},;
-	 {||RestFor(DELETING,{||dbDelete()})},;
-	 {||RestFor(RECALLING,{||dbRecall()})},;
-	 {||RestFor(INVERTING,{|| IF(DELETED(),dbRecall(),dbDelete())})},;
+	 {||RestFor(DELETING,{||dbDelete()}, '.AND. !DELE()')},;
+	 {||RestFor(RECALLING,{||dbRecall()}, '.AND. DELE()') },;
+	 {||RestFor(INVERTING,{|| IF(DELE(),dbRecall(),dbDelete())})},;
 	 {||PackProg()},;
 	 {||SortFor()},;
 	 {||TotalFor()},;
@@ -88,7 +94,7 @@ _BaseF:={{||AppeFrom()},;
 	 {||SetIndex()},;
 	 {||SecondMenu(_MM_TAGMENU, _TagF)},;
 	 {||SX_Descend(),m->_req:=2},;
-	 {||SetFilter()},;
+	 {||SetFilter(.t.)},;
 	 {||CountFor()},;
 	 {||Prt()},;
 	 {||RestPrintIni()};
@@ -144,7 +150,7 @@ _CfF:={ {||CopyField(1)},;
 	{||CopyField(7)};
 }
 _CfW:={.F.,.F.,.F.,.F.,.F.,.F.,;
-	!Is_ClipBrd(),!Is_ClipBrd()}
+        .F., .F.}
 
 _ReplM:=_MM_REPLMENU
 _ReplAF:={{||ReplFor(K_ALT_F4,.T.)},{||ReplFor(K_ALT_F4,.F.)}}
@@ -158,6 +164,7 @@ _FieldF:={{||SumFor()},;
 	  {||MakeEmpty(_C_F)},;
 	  {||Undo()},;
 	  {||SecondMenu(_MM_TRANSMENU, _TransF)},;
+	  {||MyRepl(_C_F,PADJ(m->__Content))},;
 	  {||MyRepl(_C_F,CryptStr(m->__Content))},;
 	  {||MyRepl(_C_F,DeCryptStr(m->__Content))},;
 	  {||MyRepl(_C_F,Crc_All(_C_F))},;
@@ -183,6 +190,7 @@ _FieldW:={!(m->__ContentType $ [NC]),;
 	  cTypWhen,;
 	  cTypWhen,;
 	  cTypWhen,;
+	  cTypWhen,;
 	  .F.,;
 	  .F.,;
 	  .F.;
@@ -194,8 +202,9 @@ _FindF:={{||GotoRec()},;
 	 {||ContLocate()},;
 	 {||LocateFor(.T.)},;
 	 {||ContLocate(.T.)},;
-	 {||GlobFind()},;
-	 {||SimpleLoc()},;
+	 {||GlobFind(.F.)},;
+	 {||GlobFind(.T.)},;
+	 {||SimpleLoc(.T.)},;
 	 {||Extremum(1)},;
 	 {||Extremum(2)},;
 	 {||FindLong()},;
@@ -221,7 +230,8 @@ _FindW:={.F.,;
 }
 
 _InfoF:={{||Information()},;
-	 {||DispStru()};
+	 {||DispStru()},;
+	 {||AsciiTbl()};
 }
 
 _OtherF:={{||PlayMacro()},;
@@ -251,7 +261,8 @@ _OtherW:={EMPTY(m->_macro),.F.,.F.,;
 _TagF:={{||SetTag()},;
 	{||DelTag()},;
 	{||AddTag()},;
-	{||SetCdx()};
+	{||SetCdx()},;
+	{||RebuildAll()};
 }
 
 _CpbF:={{||ClipField(1)},;
@@ -298,13 +309,19 @@ IF _row+LEN(mp) >= m->__mrow-2 THEN _row:=m->__mrow-LEN(mp)-3
 
 AEVAL(mp,{|_el,i| AADD(aMp,Num_S36(i)+'-'+_el)})
 
-nLevel++
+IF EMPTY(lNoSetLR)
+	nLevel++
+ELSE
+	nLevel:=0
+	_Finish:=.F.
+ENDIF
+
 DO WHILE ch1<>0 .AND. !_Finish
 	BEGIN SEQUENCE
 	READMENU PROMPTS aMp VERTICAL ;
 		MAKE mf ROW _row COL column  ;
 		COLOR {_MenuColor,'n/bg','w+/b',HiddenColor};
-		LEVEL IF(EMPTY(lNoSetLR), nlevel, 0);
+		LEVEL nLevel;
 		WHEN_NOT aWhenNot;
 		TITLE cTitle;
 		start ch1 to ch1

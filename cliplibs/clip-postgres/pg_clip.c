@@ -8,18 +8,20 @@
 #include "dbfsql.h"
 #include "error.ch"
 
-static const char subsys[] = "DBFSQL";
-static const char er_nosql[] = "No SQL statement";
-static const char er_nostatement[] = "No statement. PG_PREPARE must be executed first";
-static const char er_norowset[] = "No such rowset";
-static const char er_badorders[] = "Bad orders";
+static const char subsys[]          = "DBFSQL";
+static const char er_nosql[]        = "No SQL statement";
+static const char er_nostatement[]  = "No statement. PG_PREPARE must be executed first";
+static const char er_norowset[]     = "No such rowset";
+static const char er_badorders[]    = "Bad orders";
+static const char er_start[]        = "Can't start transaction";
+static const char er_commit[]       = "Can't commit transaction";
+static const char er_rollback[]     = "Can't roll transaction back";
 
 int pg_createconn(ClipMachine* mp);
 
 struct tagPG_CONN;
 
 typedef struct tagPG_STMT {
-	struct tagPG_STMT* next;
 	int stmt_item;
 	struct tagPG_CONN* conn;
 	char* sql;
@@ -30,19 +32,26 @@ typedef struct tagPG_STMT {
 typedef struct tagPG_ROWSET {
 	int rowset_item;
 	struct tagPG_CONN* conn;
-	struct tagPG_ROWSET* next;
+	struct tagPG_STMT* stmt;
 	int recno;
 	int lastrec;
+	int loaded;
+	int unknownrows;
+	int done;
 	int bof;
 	int eof;
 	int nfields;
 	SQLFIELD* fields;
 	int id;
+	int nids;
+	int* ids;
 	HashTable* orders;
 	long* taghashes;
 	int ntags;
 	BTREE* bt;
 	SQLORDER* curord;
+	int hot;
+	int newrec;
 	int binary;
 	void*** data;
 } PG_ROWSET;
@@ -50,23 +59,26 @@ typedef struct tagPG_ROWSET {
 // Connection abstract structure
 typedef struct tagPG_CONN {
 	SQLVTBL* vtbl;
-	PG_STMT* stmts;
-	PG_ROWSET* rowsets;
 	SQLLocale* loc;
+	int at;
 	PGconn* conn;
 } PG_CONN;
 
 void pg_destroyconn(SQLCONN* conn);
 int pg_prepare(ClipMachine* mp,SQLCONN* conn,char* sql);
 int pg_command(ClipMachine* mp,SQLSTMT* stmt,ClipVar* ap);
-int pg_createrowset(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* stmt,ClipVar* ap,const char* idname,const char* gen_idSQL);
+int pg_createrowset(ClipMachine* mp,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,const char* gen_idSQL);
 char* pg_testparser(ClipMachine* mp,char* sql,ClipVar* ap);
 char* pg_getvalue(SQLROWSET* rowset,int fieldno,int* len);
 void pg_setvalue(SQLROWSET* rowset,int fieldno,char* value,int len);
 void pg_append(SQLROWSET* rowset);
 void pg_delete(SQLROWSET* rowset);
 void pg_newid(ClipMachine* mp,SQLSTMT* stmt);
-int pg_refresh(ClipMachine* mp,SQLROWSET* rowset,SQLSTMT* stmt,ClipVar* ap,const char* idname);
+int pg_refresh(ClipMachine* mp,SQLROWSET* rowset,SQLSTMT* stmt,ClipVar* ap);
+int pg_start(ClipMachine* mp,SQLCONN* conn,const char* p1,const char* p2);
+int pg_commit(ClipMachine* mp,SQLCONN* conn);
+int pg_rollback(ClipMachine* mp,SQLCONN* conn);
+int pg_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors);
 
 static SQLVTBL vtbl = {
 	sizeof(PG_ROWSET),
@@ -81,43 +93,58 @@ static SQLVTBL vtbl = {
 	pg_delete,
 	pg_newid,
 	pg_refresh,
-	NULL
+	NULL,
+	pg_start,
+	pg_commit,
+	pg_rollback,
+	pg_fetch
 };
 
 int clip_INIT_POSTGRES(ClipMachine* mp){
-	mp->pg_connect = pg_createconn;
+	(*mp->nsqldrivers)++;
+	*mp->sqldrivers = realloc(*mp->sqldrivers,sizeof(SQLDriver)*(*mp->nsqldrivers));
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].id,"PG");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].name,"PostgreSQL");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].desc,
+		"Generic PostgreSQL for CLIP driver v.1.0");
+	(*mp->sqldrivers)[*mp->nsqldrivers-1].connect = pg_createconn;
 	return 0;
 }
 
-static void destroy_pg_stmt(void* stmt){
+static void destroy_pg_stmt(void* s){
+	PG_STMT* stmt = (PG_STMT*)s;
 	if(stmt){
-		if(((PG_STMT*)(stmt))->res){
-			PQclear(((PG_STMT*)(stmt))->res);
+		if(stmt->res){
+			PQclear(stmt->res);
 		}
-		if(((PG_STMT*)(stmt))->sql){
-			free(((PG_STMT*)(stmt))->sql);
+		if(stmt->sql){
+			free(stmt->sql);
 		}
 		free(stmt);
 	}
 }
 
 // Helper function used by _clip_destroy_c_item to release rowset.
-static void destroy_pg_rowset(void* rowset){
+static void destroy_pg_rowset(void* rs){
+	PG_ROWSET* rowset = (PG_ROWSET*)rs;
 	int i,j;
+
 	if(rowset){
-		if(((PG_ROWSET*)(rowset))->fields){
-			free(((PG_ROWSET*)(rowset))->fields);
+		if(rowset->fields){
+			free(rowset->fields);
 		}
-		if(((PG_ROWSET*)(rowset))->data){
-			for(i=0;i<((PG_ROWSET*)(rowset))->lastrec;i++){
-				for(j=0;j<((PG_ROWSET*)(rowset))->nfields;j++){
-					if(((PG_ROWSET*)(rowset))->data[i][j]){
-						free(((PG_ROWSET*)(rowset))->data[i][j]);
+		if(rowset->data){
+			for(i=0;i<rowset->loaded;i++){
+				if(rowset->data[i]){
+					for(j=0;j<rowset->nfields;j++){
+						if(rowset->data[i][j]){
+							free(rowset->data[i][j]);
+						}
 					}
+					free(rowset->data[i]);
 				}
-				free(((PG_ROWSET*)(rowset))->data[i]);
 			}
-			free(((PG_ROWSET*)(rowset))->data);
+			free(rowset->data);
 		}
 		free(rowset);
 	}
@@ -125,25 +152,8 @@ static void destroy_pg_rowset(void* rowset){
 }
 
 // Helper function used by _clip_destroy_c_item to release connect.
-// All opened rowsets are released too.
 static void destroy_pg_conn(void* conn){
-	PG_ROWSET* currowset = ((PG_CONN*)(conn))->rowsets;
-	PG_ROWSET* nextrowset;
-	PG_STMT* curstmt = ((PG_CONN*)(conn))->stmts;
-	PG_STMT* nextstmt;
-	if(conn){
-		while(currowset){
-			nextrowset = currowset->next;
-			destroy_pg_rowset(currowset);
-			currowset = nextrowset;
-		}
-		while(curstmt){
-			nextstmt = curstmt->next;
-			destroy_pg_stmt(curstmt);
-			curstmt = nextstmt;
-		}
-		free(conn);
-	}
+	free(conn);
 	return;
 }
 
@@ -171,24 +181,22 @@ void pg_bindpars(PG_STMT* stmt,ClipVar* ap){
 		tp = _clip_vptr(&ap->a.items[i]);
 		vp = _clip_vptr(&tp->a.items[1]);
 		tp = _clip_vptr(&tp->a.items[0]);
-		if(vp->t.type == CHARACTER_t){
-			strcpy(parname,tp->s.str.buf);
-			b = sql;
-			while((b = strstr(b,parnamebuf))){
-				if(!(strchr(delims,*(b+tp->s.str.len+1)) || !(*(b+tp->s.str.len+1)))){
-					b++;
-					continue;
-				}
-				e = strpbrk(b,delims);
-				if(e){
-					if(e-b==strlen(parnamebuf)){
-						len += strlen(vp->s.str.buf) - (e - b);
-					}
-				} else {
-					len += strlen(vp->s.str.buf) - (initlen - (b-sql));
-				}
+		strcpy(parname,tp->s.str.buf);
+		b = sql;
+		while((b = strstr(b,parnamebuf))){
+			if(!(strchr(delims,*(b+tp->s.str.len+1)) || !(*(b+tp->s.str.len+1)))){
 				b++;
+				continue;
 			}
+			e = strpbrk(b,delims);
+			if(e){
+				if(e-b==strlen(parnamebuf)){
+					len += (vp->t.type==CHARACTER_t)?strlen(vp->s.str.buf):4 - (e - b);
+				}
+			} else {
+				len += (vp->t.type==CHARACTER_t)?strlen(vp->s.str.buf):4 - (initlen - (b-sql));
+			}
+			b++;
 		}
 	}
 	t = res = malloc(len+1);
@@ -212,6 +220,9 @@ void pg_bindpars(PG_STMT* stmt,ClipVar* ap){
 		if(vp->t.type == CHARACTER_t){
 			strcpy(t,vp->s.str.buf);
 			t += strlen(vp->s.str.buf);
+		} else {
+			strcpy(t,"null");
+			t += 4;
 		}
 	}
 	if(t!=&res[len] && b){
@@ -232,9 +243,11 @@ int pg_createconn(ClipMachine* mp){
 	char* dbName	= _clip_parc(mp,6);
 	char* pgtty		= _clip_parc(mp,7);
 	char* pgoptions = _clip_parc(mp,8);
+	char* trpars	= _clip_parc(mp,10);
 	PGconn* tmpconn;
 	PGresult* res;
 	PG_CONN* conn;
+	char str[256];
 
 	tmpconn = PQsetdbLogin(pghost,pgport,pgoptions,pgtty,dbName,login,pwd);
 	if(PQstatus(tmpconn)!=CONNECTION_OK){
@@ -251,6 +264,22 @@ int pg_createconn(ClipMachine* mp){
 			PQresultErrorMessage(res));
 		return -1;
 	}
+
+	if(!trpars)
+		trpars = _clip_fetch_item(mp, _clip_hashstr("PG_ISOLATION_LEVEL"));
+	if(!trpars)
+		trpars = _clip_fetch_item(mp, _clip_hashstr("SQL_ISOLATION_LEVEL"));
+	if(trpars){
+		snprintf(str,sizeof(str),"set session characteristics as transaction isolation level %s",trpars);
+		res = PQexec(tmpconn,str);
+		if(PQresultStatus(res) != PGRES_COMMAND_OK){
+			_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,
+				PQresultErrorMessage(res));
+			return -1;
+		}
+	}
+
+
 	return _clip_store_c_item(mp,(void*)conn,_C_ITEM_TYPE_SQL,destroy_pg_conn);
 }
 
@@ -270,8 +299,6 @@ int pg_prepare(ClipMachine* mp,SQLCONN* conn,char* sql){
 	strcpy(stmt->sql,sql);
 
 	stmt->conn = (PG_CONN*)conn;
-	stmt->next = ((PG_CONN*)conn)->stmts;
-	((PG_CONN*)conn)->stmts = stmt;
 
 	return stmt->stmt_item;
 }
@@ -302,77 +329,124 @@ char* pg_testparser(ClipMachine* mp,char* sql,ClipVar* ap){
 	return stmt.sql;
 }
 
-int pg_createrowset(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* stmt,ClipVar* ap,const char* idname,const char* gen_idSQL){
-	PG_ROWSET* rowset = (PG_ROWSET*)rs;
-	int i,j,len;
-	void** rec;
+static char _pg_ctype(int type){
+	switch(type){
+		case PGT_INT4:
+		case PGT_CID:
+		case PGT_OID:
+		case PGT_XID:
+		case PGT_INT2:
+		case PGT_MONEY:
+		case PGT_INT8:
+		case PGT_FLOAT4:
+		case PGT_FLOAT8:
+		case PGT_NUMERIC:
+		case PGT_RELTIME:
+		case PGT_TIMESPAN:
+			return 'N';
 
-	pg_bindpars((PG_STMT*)stmt,ap);
-	if(!((PG_STMT*)stmt)->sql){
+		case PGT_VARCHAR:
+		case PGT_TEXT:
+		case PGT_BPCHAR:
+		case PGT_BYTEA:
+		case PGT_NAME:
+		case PGT_FILENAME:
+		case PGT_ABSTIME:
+			return 'C';
+
+		case PGT_DATE:
+		case PGT_TIMESTAMP:
+			return 'D';
+
+		case PGT_BOOL:
+			return 'L';
+
+		case PGT_DATETIME:
+			return 'T';
+
+		case PGT_BOX:
+		case PGT_LSEG:
+		case PGT_CIDR:
+		case PGT_CIRCLE:
+		case PGT_INET:
+		case PGT_INT28:
+		case PGT_OID8:
+		case PGT_PATH:
+		case PGT_POINT:
+		case PGT_POLYGON:
+		case PGT_TIME:
+			return 'A';
+	}
+	return 'U';
+}
+
+int pg_createrowset(ClipMachine* mp,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,const char* gen_idSQL){
+	PG_ROWSET* rowset = (PG_ROWSET*)rs;
+	PG_STMT* stmt = rowset->stmt;
+	PG_CONN* conn = rowset->conn;
+	int i,mod;
+
+	pg_bindpars(stmt,ap);
+	if(!stmt->sql){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOSQL,er_nosql);
 		return 1;
 	}
 
-	((PG_STMT*)stmt)->res = PQexec(((PG_STMT*)stmt)->conn->conn,
-		((PG_STMT*)stmt)->sql);
-	if(!((PG_STMT*)stmt)->res){
+	stmt->res = PQexec(conn->conn,stmt->sql);
+	if(!stmt->res){
 		_clip_trap_err(mp,0,0,0,subsys,ER_BADSTATEMENT,
-			PQresultErrorMessage(((PG_STMT*)stmt)->res));
+			PQresultErrorMessage(stmt->res));
 		return 1;
 	}
-	if(PQresultStatus(((PG_STMT*)stmt)->res)!=PGRES_TUPLES_OK){
+	if(PQresultStatus(stmt->res)!=PGRES_TUPLES_OK){
 		_clip_trap_err(mp,0,0,0,subsys,ER_BADSELECT,
-			PQresultErrorMessage(((PG_STMT*)stmt)->res));
+			PQresultErrorMessage(stmt->res));
 		return 1;
 	}
 
 	rowset->rowset_item =
 		_clip_store_c_item(mp,rowset,_C_ITEM_TYPE_SQL,destroy_pg_rowset);
 
-	rowset->binary = PQbinaryTuples(((PG_STMT*)stmt)->res);
-	rowset->nfields = PQnfields(((PG_STMT*)stmt)->res);
+	rowset->binary = PQbinaryTuples(stmt->res);
+	rowset->nfields = PQnfields(stmt->res);
 	rowset->fields = calloc(1,rowset->nfields*sizeof(SQLFIELD));
 	rowset->id = -1;
 	for(i=0;i<rowset->nfields;i++){
-		strncpy(rowset->fields[i].name,PQfname(((PG_STMT*)stmt)->res,i),
+		strncpy(rowset->fields[i].name,PQfname(stmt->res,i),
 			MAXFIELDNAME);
 		rowset->fields[i].name[MAXFIELDNAME] = 0;
-		rowset->fields[i].type = PQftype(((PG_STMT*)stmt)->res,i);
-		rowset->fields[i].len = PQfsize(((PG_STMT*)stmt)->res,i);
+		rowset->fields[i].type = PQftype(stmt->res,i);
+		rowset->fields[i].ctype[0] = _pg_ctype(rowset->fields[i].type);
 		rowset->fields[i].dec = 0;
+		mod = PQfmod(stmt->res,i);
+		switch(rowset->fields[i].type){
+			case PGT_VARCHAR:
+				rowset->fields[i].len = mod-4;
+				break;
+			case PGT_NUMERIC:
+				rowset->fields[i].len = (mod >> 16);
+				rowset->fields[i].dec = (mod & 0xffff)-4;
+				break;
+			default:
+				rowset->fields[i].len = PQfsize(stmt->res,i);
+				break;
+		}
 		rowset->fields[i].ops = 0;
-		if(rowset->fields[i].type == PGT_OID){
+		if(idname && idname->t.type == CHARACTER_t && idname->s.str.buf){
+			if(!strcasecmp(rowset->fields[i].name,idname->s.str.buf)){
+				rowset->id = i;
+			}
+		} else if(rowset->fields[i].type == PGT_OID){
 			rowset->id = i;
 		}
 	}
 
-	rowset->lastrec = PQntuples(((PG_STMT*)stmt)->res);
-	rowset->data = malloc(sizeof(void*)*rowset->lastrec);
-	for(i=0;i<rowset->lastrec;i++){
-		rec = malloc(sizeof(void*)*rowset->nfields);
-		for(j=0;j<rowset->nfields;j++){
-			if(!PQgetisnull(((PG_STMT*)stmt)->res,i,j)){
-				len = PQgetlength(((PG_STMT*)stmt)->res,i,j);
-				if(rowset->binary){
-					rec[j] = malloc(len+4);
-					*((int*)(rec[j])) = len;
-					memcpy(((char*)rec[j])+4,
-						PQgetvalue(((PG_STMT*)stmt)->res,i,j),len);
-				} else {
-					rec[j] = malloc(len+1);
-					memcpy(rec[j],PQgetvalue(((PG_STMT*)stmt)->res,i,j),len);
-					((char*)(rec[j]))[len] = 0;
-				}
-			} else {
-				rec[j] = NULL;
-			}
-		}
-		rowset->data[i] = rec;
-	}
+	rowset->lastrec = PQntuples(stmt->res);
+	rowset->data = calloc(rowset->lastrec,sizeof(void*));
 	return 0;
 }
 
-int pg_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname){
+int pg_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap){
 	PG_ROWSET* rowset = (PG_ROWSET*)rs;
 	PG_STMT* stmt = (PG_STMT*)s;
 	int i,j,len;
@@ -478,6 +552,7 @@ void pg_append(SQLROWSET* rowset){
 	len = sizeof(void*)*((PG_ROWSET*)rowset)->nfields;
 
 	((PG_ROWSET*)rowset)->lastrec++;
+	((PG_ROWSET*)rowset)->loaded++;
 	((PG_ROWSET*)rowset)->data = realloc(((PG_ROWSET*)rowset)->data,
 		sizeof(void*)*((PG_ROWSET*)rowset)->lastrec);
 	row = malloc(len);
@@ -539,7 +614,7 @@ int clip_PG_IN_INT4(ClipMachine* mp){
 	} else {
 		str = _clip_parc(mp,2);
 		if(str){
-			_clip_retni(mp,atoi(str));
+			_clip_retndp(mp,(double)atoi(str),strlen(str),0);
 		}
 	}
 	return 0;
@@ -934,4 +1009,133 @@ int clip_PG_OUT_DATETIME(ClipMachine* mp){
 	}
 	return 0;
 }
+
+/* ------------------------------------------------------------------ */
+
+int pg_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors){
+	PG_ROWSET* rowset = (PG_ROWSET*)rs;
+	PG_STMT* stmt = rowset->stmt;
+	int i,j,er = 0,len;
+	void **rec;
+
+	if(rowset->done)
+		return 0;
+
+	if(!recs)
+		recs = 0x7fffffff;
+
+	for(i=0;i<recs;i++){
+		if(rowset->loaded == rowset->lastrec)
+			goto done;
+		rec = calloc(rowset->nfields,sizeof(void*));
+		for(j=0;j<rowset->nfields;j++){
+			if(!PQgetisnull(stmt->res,rowset->loaded,j)){
+				len = PQgetlength(stmt->res,rowset->loaded,j);
+				if(rowset->binary){
+					rec[j] = malloc(len+4);
+					*((int*)(rec[j])) = len;
+					memcpy(((char*)rec[j])+4,
+						PQgetvalue(stmt->res,rowset->loaded,j),len);
+				} else {
+					rec[j] = malloc(len+1);
+					memcpy(rec[j],PQgetvalue(stmt->res,rowset->loaded,j),len);
+					((char*)(rec[j]))[len] = 0;
+				}
+			} else {
+				rec[j] = NULL;
+			}
+		}
+		rowset->data[rowset->loaded] = rec;
+		rowset->loaded++;
+		if(eval && (eval->t.type == CCODE_t || eval->t.type == PCODE_t) && !(rowset->loaded % every)){
+			ClipVar var,*v;
+			if(_clip_eval(mp,eval,1,ors,&var)){
+				_clip_destroy(mp,&var);
+				er = 1;
+				goto done;
+			}
+			v = _clip_vptr(&var);
+			if(v->t.type == LOGICAL_t && !v->l.val){
+				_clip_destroy(mp,&var);
+				goto done;
+			}
+			_clip_destroy(mp,&var);
+		}
+	}
+	return 0;
+done:
+	rowset->lastrec = rowset->loaded;
+	rowset->done = 1;
+	if(!rowset->lastrec){
+		rowset->bof = rowset->eof = 1;
+		rowset->recno = 0;
+	}
+	_clip_destroy_c_item(mp,stmt->stmt_item,_C_ITEM_TYPE_SQL);
+	return er;
+}
+
+int pg_start(ClipMachine* mp,SQLCONN* c,const char* p1,const char* p2){
+	PG_CONN* conn = (PG_CONN*)c;
+	PGresult* res;
+
+	if(conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	res = PQexec(conn->conn,"begin");
+	if(PQresultStatus(res) != PGRES_COMMAND_OK){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,
+			PQresultErrorMessage(res));
+		return 1;
+	}
+	if(p1){
+		char str[256];
+		snprintf(str,sizeof(str),"set transaction isolation level %s",p1);
+		res = PQexec(conn->conn,str);
+		if(PQresultStatus(res) != PGRES_COMMAND_OK){
+			_clip_trap_err(mp,0,0,0,subsys,ER_START,
+				PQresultErrorMessage(res));
+			return 1;
+		}
+	}
+	conn->at = 1;
+	return 0;
+}
+
+int pg_commit(ClipMachine* mp,SQLCONN* c){
+	PG_CONN* conn = (PG_CONN*)c;
+	PGresult* res;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	res = PQexec(conn->conn,"commit");
+	if(PQresultStatus(res) != PGRES_COMMAND_OK){
+		_clip_trap_err(mp,0,0,0,subsys,ER_COMMIT,
+			PQresultErrorMessage(res));
+		return 1;
+	}
+	conn->at = 0;
+	return 0;
+}
+
+int pg_rollback(ClipMachine* mp,SQLCONN* c){
+	PG_CONN* conn = (PG_CONN*)c;
+	PGresult* res;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	res = PQexec(conn->conn,"rollback");
+	if(PQresultStatus(res) != PGRES_COMMAND_OK){
+		_clip_trap_err(mp,0,0,0,subsys,ER_ROLLBACK,
+			PQresultErrorMessage(res));
+		return 1;
+	}
+	conn->at = 0;
+	return 0;
+}
+
 

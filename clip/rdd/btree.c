@@ -4,13 +4,52 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: btree.c,v $
+	Revision 1.28  2003/09/02 14:27:43  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+	
+	Revision 1.27  2003/05/07 11:09:46  clip
+	rust: minor fixes
+
+	Revision 1.26  2003/04/16 10:19:58  clip
+	rust: #include "btree.h" -> "./btree.h" and some other fixes for BeOS
+
+	Revision 1.25  2003/04/11 08:31:44  clip
+	rust: #ifdef HAVE_MMAN_H (BeOS)
+
+	Revision 1.24  2003/03/05 09:56:35  clip
+	rust: bug with unique indexes fixed,
+	reported by Stas I. Litovka <root@depot.pharm.sumy.ua>
+
+	Revision 1.23  2002/10/29 13:29:46  clip
+	rust: SET INDEX BUFFER LIMIT [TO] <n_Megabytes>
+		  SET MAP FILE ON|OFF
+
+	Revision 1.22  2002/10/28 11:22:55  clip
+	rust: small fix
+
+	Revision 1.21  2002/10/28 10:09:19  clip
+	rust: SIGSEGV when indexing an empty dbf; closes #48
+
+	Revision 1.20  2002/10/26 11:10:02  clip
+	initial support for localized runtime messages
+	messages are in module 'cliprt'
+	paul
+
+	Revision 1.19  2002/10/24 14:07:55  clip
+	rust: bt1_destroy()
+
+	Revision 1.18  2002/10/24 13:53:36  clip
+	rust: new btree implementation
+
 	Revision 1.17  2002/09/11 12:29:00  clip
 	build fixes
 	paul
-	
+
 	Revision 1.16  2002/07/03 12:16:17  clip
 	rust: orders in TRowset
-	
+
 	Revision 1.15  2002/07/01 11:20:10  clip
 	rust: small fix
 
@@ -77,26 +116,30 @@
 
 */
 
+#include "clipcfg.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <ctype.h>
+#include <string.h>
 #if defined(__GNUC__)
    #include <unistd.h>
-   #include <sys/mman.h>
 #endif
 #include "clipbase.h"
 #include "rdd.h"
-#include "btree.h"
+#include "./btree.h"
 #include "error.ch"
+#ifdef HAVE_MMAN_H
+   #include <sys/mman.h>
+#endif
 
 typedef unsigned char uchar;
 typedef unsigned int u4;
 
-static const char er_unknowndata[] = "Unknown data type or bad size of item";
-static const char er_badtree[] = "Bad BTREE handle";
-static const char er_nofield[] = "No such field";
-static const char er_internal[] = "Internal error in BTREE module";
+#define er_unknowndata 	_clip_gettext("Unknown data type or bad size of item")
+#define er_badtree 	_clip_gettext("Bad BTREE handle")
+#define er_nofield 	_clip_gettext("No such field")
+#define er_internal 	_clip_gettext("Internal error in BTREE module")
 
 extern DBWorkArea *cur_area(ClipMachine * cm);
 
@@ -259,7 +302,7 @@ static u4 _bt_getfuu(BTREE* bt){
 	return r;
 }
 
-BTREE* bt_create(int unique,int count,int size,int (*compare)(void* op,void* key1,void* key2)){
+BTREE* bt_create(int unique,int count,int size,int (*compare)(void* op,void* key1,void* key2,int* uniqfound)){
 	BTREE* bt = (BTREE*)calloc(1,sizeof(BTREE));
 
 	bt->unique = unique;
@@ -292,12 +335,12 @@ int bt_seek(BTREE* bt,void* op,void* key){
 	int r = 0;
 
 	while(*node){
-		r = bt->bt_compare(op,key,(void*)((uchar*)NODE(*node)+sizeof(BT_NODE)));
+		r = bt->bt_compare(op,key,(void*)((uchar*)NODE(*node)+sizeof(BT_NODE)),NULL);
 		bt->cur = *node;
 		if(r==0){
 			if(!bt->unique){
 				while(!bt_prev(bt)){
-					r = bt->bt_compare(op,key,bt_key(bt));
+					r = bt->bt_compare(op,key,bt_key(bt),NULL);
 					if(r){
 						bt_next(bt);
 						break;
@@ -471,7 +514,7 @@ int bt_add(BTREE* bt,void* op,void* key){
 	u4 bn;
 	u4* node = &bt->root;
 	u4 parent = 0;
-	int r;
+	int r,uniqfound;
 
 	bn = _bt_getfuu(bt);
 	bt->in++;
@@ -486,8 +529,8 @@ int bt_add(BTREE* bt,void* op,void* key){
 	memcpy((char*)NODE(bn)+sizeof(BT_NODE),key,bt->size);
 	while(*node){
 		parent = *node;
-		r = bt->bt_compare(op,key,(void*)((uchar*)NODE(*node)+sizeof(BT_NODE)));
-		if(bt->unique && r==0)
+		r = bt->bt_compare(op,key,(void*)((uchar*)NODE(*node)+sizeof(BT_NODE)),&uniqfound);
+		if(bt->unique && !uniqfound)
 			return 0;
 		if(r<0)
 			node = &(NODE(*node)->left);
@@ -557,7 +600,7 @@ void* bt_key(BTREE* bt){
 	return bt->cur?(void*)((uchar*)NODE(bt->cur)+sizeof(BT_NODE)):NULL;
 }
 
-static int _comp_uint(void* op,void* key1,void* key2){
+static int _comp_uint(void* op,void* key1,void* key2,int* uniqfound){
 	return *(u4*)key1 - *(u4*)key2;
 }
 
@@ -571,7 +614,7 @@ int clip_BT_CREATE(ClipMachine* cm){
 	int itemsize = _clip_parni(cm,2);
 	const char* type = _clip_parc(cm,3);
 	BTREE* bt;
-	int (*compare)(void* op,void* key1,void* key2) = NULL;
+	int (*compare)(void* op,void* key1,void* key2,int* uniqfound) = NULL;
 	int er;
 
 	CHECKARG1(1,NUMERIC_t);
@@ -815,4 +858,234 @@ int clip_BT_DESTROY(ClipMachine* cm){
 	return 0;
 err:
 	return er;
+}
+/* --------------------------------------------------------- */
+static void* _bt_newpage(BTREE1* bt){
+	char* page = calloc(1,bt->pagesize);
+	short offs = 2*sizeof(short)+sizeof(void*)+bt->keysonpage*sizeof(short);
+	int i;
+
+	bt->memused++;
+	for(i=0;i<bt->keysonpage;i++){
+		*(short*)(page+2*sizeof(short)+sizeof(void*)+i*sizeof(short)) = offs;
+		offs += bt->recsize;
+	}
+	return (void*)page;
+}
+
+BTREE1* bt1_create(int unique,int keysize,int (*compare)(void* op,void* key1,void* key2,int* uniqfound),int limit){
+	BTREE1* bt;
+
+	if(!limit)
+		return NULL;
+
+	bt = calloc(1,sizeof(BTREE1));
+
+	bt->bt_compare = compare;
+	bt->keysize = keysize;
+	bt->recsize = keysize+sizeof(void*);
+	bt->pagesize = getpagesize();
+	bt->keysonpage = (bt->pagesize-2*sizeof(short)-sizeof(void*))/(bt->recsize+sizeof(short));
+	bt->halfpage = bt->keysonpage/2;
+	bt->root = _bt_newpage(bt);
+	bt->cur = bt->root;
+	bt->curpos = 0;
+	bt->limit = (limit*1024*1024)/bt->pagesize;
+	bt->unique = unique;
+	return bt;
+}
+
+static int _bt1_search(BTREE1* bt,void* op,void* page,void* key,int* uniqfound){
+	int i = 0;
+	int c = 1;
+	int l = 0;
+	int h = NKEYS(page)-1;
+
+	if(LEFT(page,0))
+		h--;
+	while(l<=h){
+		i = (l+h)/2;
+		c = bt->bt_compare(op,KEY(page,i),key,uniqfound);
+		if(bt->unique && !*uniqfound)
+			return 0;
+		if(c<0)
+			l = i+1;
+		else if(c>0)
+			h = i-1;
+		else {
+			break;
+		}
+	}
+	if(!c || !LEFT(page,i)){
+		bt->cur = page;
+		bt->curpos = i;
+		if(c<0)
+			bt->curpos++;
+	} else {
+		if(c<0)
+			i++;
+		_bt1_search(bt,op,LEFT(page,i),key,uniqfound);
+		if(bt->unique && !*uniqfound)
+			return 0;
+	}
+	return !c;
+}
+
+int bt1_seek(BTREE1* bt,void* op,void* key){
+	return _bt1_search(bt,op,bt->root,key,NULL);
+}
+
+static int _bt1_add(BTREE1* bt,void* page,short pos,void* key,void* left,void** lpar,short* lpos,void** rpar,short* rpos){
+	short nkeys = NKEYS(page);
+	short ipos = POS(page,nkeys);
+	short i;
+
+	memmove(&POS(page,pos+1),&POS(page,pos),
+		sizeof(short)*(nkeys-pos));
+	POS(page,pos) = ipos;
+	memcpy(KEY(page,pos),key,bt->keysize);
+	LEFT(page,pos) = left;
+	(NKEYS(page))++;
+	if(lpar){
+		*lpar = *rpar = page;
+		*lpos = *rpos = pos;//PARPOS(page);
+		(*rpos)++;
+	}
+	if(LEFT(page,0)){
+		for(i=pos+1;i<=nkeys;i++){
+			PARPOS(LEFT(page,i)) = i;
+		}
+	}
+	if(nkeys == bt->keysonpage-1){
+		void* lp = _bt_newpage(bt);
+		void* pp = PARENT(page);
+		void *rrpar,*llpar;
+		short rrpos,llpos;
+		int i,j;
+
+		for(i=0,j=bt->halfpage+1;i<=bt->halfpage;i++,j++){
+			memcpy(KEY(lp,i),KEY(page,i),bt->recsize);
+			if(j<=nkeys)
+				memcpy(KEY(page,i),KEY(page,j),bt->recsize);
+			if(LEFT(lp,i)){
+				PARENT(LEFT(lp,i)) = lp;
+				PARPOS(LEFT(lp,i)) = i;
+				if(j<=nkeys)
+					PARPOS(LEFT(page,i)) = i;
+			}
+		}
+		if(!pp){
+			bt->root = pp = _bt_newpage(bt);
+			LEFT(pp,0) = page;
+			NKEYS(pp) = 1;
+		}
+		if(pos/*PARPOS(page)*/ < bt->halfpage){
+			if(lpar){
+				*lpar = *rpar = lp;
+				*lpos = *rpos = pos;//PARPOS(page);
+				(*rpos)++;
+			}
+		} else if(pos/*PARPOS(page)*/ > bt->halfpage){
+			if(lpar){
+				*lpar = *rpar = page;
+				*lpos = *rpos = pos/*PARPOS(page)*/ - bt->halfpage - 1;
+				(*rpos)++;
+			}
+		} else {
+			if(lpar){
+				*lpar = lp;
+				*rpar = page;
+				*lpos = pos;//PARPOS(page);
+				*rpos = 0;
+			}
+		}
+		NKEYS(lp) = bt->halfpage + (LEFT(lp,0)!=0);
+		NKEYS(page) = nkeys-bt->halfpage;
+		if(_bt1_add(bt,pp,PARPOS(page),KEY(page,bt->halfpage),lp,&llpar,&llpos,&rrpar,&rrpos)) return 1;
+		PARENT(lp) = llpar;
+		PARPOS(lp) = llpos;
+		PARENT(page) = rrpar;
+		PARPOS(page) = rrpos;
+	}
+	return 0;
+}
+
+int bt1_add(BTREE1* bt,void* op,void* key){
+	int uniqfound;
+	if(bt->memused > bt->limit)
+		return 1;
+	if(_bt1_search(bt,op,bt->root,key,&uniqfound))
+		return 1;
+	if(bt->unique && !uniqfound)
+		return 0;
+	return _bt1_add(bt,bt->cur,bt->curpos,key,0,NULL,NULL,NULL,NULL);
+}
+
+static int _bt1_first(BTREE1* bt,void* root){
+	bt->cur = root;
+	while(LEFT(bt->cur,0))
+		bt->cur = LEFT(bt->cur,0);
+	bt->curpos = 0;
+	return 0;
+}
+
+int bt1_first(BTREE1* bt){
+	if(!bt->root || !NKEYS(bt->root))
+			return 1;
+	return _bt1_first(bt,bt->root);
+}
+
+static int _bt1_last(BTREE1* bt,void* root){
+	bt->cur = root;
+	while(LEFT(bt->cur,NKEYS(bt->cur)-1))
+		bt->cur = LEFT(bt->cur,NKEYS(bt->cur)-1);
+	bt->curpos = NKEYS(bt->cur)-1;
+	return 0;
+}
+
+int bt1_last(BTREE1* bt){
+	if(!NKEYS(bt->root))
+		return 1;
+	return _bt1_last(bt,bt->root);
+}
+
+int bt1_next(BTREE1* bt){
+	if(!LEFT(bt->cur,0)){
+		bt->curpos++;
+		if(NKEYS(bt->cur)<=bt->curpos){
+			bt->curpos = PARPOS(bt->cur);
+			bt->cur = PARENT(bt->cur);
+			while(bt->cur && NKEYS(bt->cur)-1 == bt->curpos){
+				bt->curpos = PARPOS(bt->cur);
+				bt->cur = PARENT(bt->cur);
+			}
+			if(!bt->cur)
+				return 1;
+		}
+	} else {
+		bt->curpos++;
+		_bt1_first(bt,LEFT(bt->cur,bt->curpos));
+	}
+	return 0;
+}
+
+static int _bt1_destroy(BTREE1* bt,void* root){
+	int i;
+	if(LEFT(root,0)){
+		for(i=0;i<NKEYS(root);i++){
+			_bt1_destroy(bt,LEFT(root,i));
+		}
+	}
+	free(root);
+	return 0;
+}
+
+int bt1_destroy(BTREE1* bt){
+	_bt1_destroy(bt,bt->root);
+	free(bt);
+	return 0;
+}
+
+void* bt1_key(BTREE1* bt){
+	return KEY(bt->cur,bt->curpos);
 }

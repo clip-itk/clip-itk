@@ -963,6 +963,7 @@ _map_to_style(ClipMachine *cm, ClipVar *m_style, GtkStyle *style)
 			}
 			break;
 		default:
+			break;
 	}
 	if (font)
 	{

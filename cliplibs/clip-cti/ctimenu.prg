@@ -8,9 +8,6 @@
 /* CTI_MENU - Place items on the top bar menu or another pop-up menu */
 
 #include "cti.ch"
-#include "ctievents.ch"
-#include "ctimenu.ch"
-#include "ctimenuitem.ch"
 
 #include "inkey.ch"
 #include "button.ch"
@@ -30,21 +27,26 @@ function cti_menu_new(top,left,width)
 
 	obj:__buf_frame	:= nil
 
-	obj:__real_draw	:= @cti_menu_real_draw()
-	obj:__make_buffer := @cti_menu_make_buffer()
-	obj:__handle_event := @cti_menu_handle_event()
+	obj:__real_draw		:= @cti_menu_real_draw()
+	obj:__make_buffer 	:= @cti_menu_make_buffer()
+	obj:__handle_event 	:= @cti_menu_handle_event()
+	obj:__set_default_keys	:= @cti_menu_set_default_keys()
 
-	obj:__draw_frame:= @cti_menu_draw_frame()
+	obj:__draw_frame	:= @cti_menu_draw_frame()
 
-	obj:can_focus	:= @cti_menu_can_focus()
-	obj:popup	:= @cti_menu_popup()
-	obj:unpopup	:= @cti_menu_unpopup()
-	obj:calc_height	:= @cti_menu_calc_height()
-	obj:destroy	:= @cti_menu_destroy()
+	obj:can_focus		:= {||FALSE}
+	obj:popup		:= @cti_menu_popup()
+	obj:unpopup		:= @cti_menu_unpopup()
+	obj:calc_height		:= @cti_menu_calc_height()
+	obj:left		:= @cti_menu_left()
+	obj:right		:= @cti_menu_right()
+	obj:destroy		:= @cti_menu_destroy()
 
 /**************************************************************************/
 	obj:signal_connect(HASH_CTI_ADD_SIGNAL,@cti_menu_change_size())
 	obj:signal_connect(HASH_CTI_REMOVE_SIGNAL,@cti_menu_change_size())
+
+	obj:__set_default_keys()
 return obj
 
 /************************************************************/
@@ -60,7 +62,8 @@ static function cti_menu_popup(obj)
 	memvar CtiApplication
 
 	if .not. obj:__popped
-		CtiApplication:put(obj)
+		CtiApplication:add(obj)
+		CtiApplication:move_widget_to_top(obj)
 		obj:__popped := TRUE
 	endif
 return TRUE
@@ -68,10 +71,11 @@ return TRUE
 static function cti_menu_unpopup(obj)
 	memvar CtiApplication
 
+//outlog(__FILE__,__LINE__,procname(),obj:name,obj:id)
 	if obj:__popped
 		CtiApplication:remove(obj)
 		obj:__popped := FALSE
-		if obj:__items[obj:__current]:is_popup() .and. obj:__items[obj:__current]:__submenu:__popped
+		if !empty(obj:__items) .and. obj:__items[obj:__current]:is_popup() .and. obj:__items[obj:__current]:__submenu:__popped
 			obj:__items[obj:__current]:__submenu:unpopup()
 		endif
 	endif
@@ -80,13 +84,13 @@ return TRUE
 /* Draw a popup menu */
 static function cti_menu_real_draw(obj)
 	local i, item
-	local color
+	local color, bg
 	local caption
 	local top,left
-        /*
+	/*
 	top := iif(obj:__abs_top!=nil,obj:__abs_top,0)
 	left := iif(obj:__abs_left!=nil,obj:__abs_left,0)
-        */
+	*/
 	top := iif(obj:top!=nil,obj:top,0)
 	left := iif(obj:left!=nil,obj:left,0)
 
@@ -105,8 +109,13 @@ static function cti_menu_real_draw(obj)
 				caption += padr(item:__caption,obj:width-4)
 				caption += iif(item:is_popup(),substr(item:style,2,1)," ")
 				winbuf_out_at(obj:__buffer,i,1,caption,color)
-	                        item:top := i
-        	                item:left := obj:left
+				if item:__accel_pos > 0
+					bg := substr(color, at("/",color)+1)
+					winbuf_attr_at(obj:__buffer,i,1+item:__accel_pos, ;
+						i,1+item:__accel_pos,item:Palette:AccelKey+"/"+bg)
+				endif
+				item:top := i
+				item:left := obj:left
 			else
 				// Draw a menu separator
 				caption := substr(SEPARATOR_SINGLE,1,1)+replicate(substr(SEPARATOR_SINGLE,2,1),obj:width-2)+substr(SEPARATOR_SINGLE,3,1)
@@ -146,9 +155,7 @@ return height+2
 /* Event handler */
 static function cti_menu_handle_event(obj,event)
 ***********************************************
-	local cKey
-	local not_changed := FALSE
-	local item
+	local cKey, item
 
 	if obj:__current != 0
 		item := obj:__items[obj:__current]
@@ -159,6 +166,12 @@ static function cti_menu_handle_event(obj,event)
 
 	if event:type != CTI_KEYBOARD_EVENT; return TRUE; endif
 
+	if obj:apply_key(event:keycode)
+		event:type := CTI_NOTHING_EVENT
+		obj:draw_queue()
+	endif
+
+/*
 	switch (event:keycode)
 		case K_HOME
 		obj:first_item()
@@ -204,7 +217,25 @@ static function cti_menu_handle_event(obj,event)
 	else
 		obj:draw_queue()
 	endif
+*/
 return TRUE
+
+static function cti_menu_right(obj)
+	if obj:__items[obj:__current]:is_popup() .and. !obj:__items[obj:__current]:__submenu:__popped
+//		obj:__items[obj:__current]:__submenu:left := obj:__abs_left + obj:__items[obj:__current]:left + obj:__items[obj:__current]:__submenu:width - 1
+		obj:__items[obj:__current]:__submenu:left := obj:__abs_left + obj:__items[obj:__current]:__submenu:width - 1
+		obj:__items[obj:__current]:__submenu:top := obj:__abs_top + obj:__items[obj:__current]:top
+		obj:__items[obj:__current]:__submenu:popup()
+		return TRUE
+	endif
+return FALSE
+
+static function cti_menu_left(obj)
+	if obj:__items[obj:__current]:is_popup() .and. obj:__items[obj:__current]:__submenu:__popped
+		obj:__items[obj:__current]:__submenu:unpopup()
+		return TRUE
+	endif
+return FALSE
 
 /* Menu destructor - must destroy menu frame buffer */
 static function cti_menu_destroy(obj)
@@ -215,6 +246,12 @@ static function cti_menu_destroy(obj)
 	CALL SUPER obj:destroy()
 return
 
-/* Menu can not have focus */
-static function cti_menu_can_focus(obj)
-return FALSE
+static function cti_menu_set_default_keys(obj)
+	obj:set_key(K_HOME,  obj:first_item )
+	obj:set_key(K_END,   obj:last_item  )
+	obj:set_key(K_DOWN,  obj:next_item  )
+	obj:set_key(K_UP,    obj:prev_item  )
+	obj:set_key(K_LEFT,  obj:left       )
+	obj:set_key(K_RIGHT, obj:right      )
+	obj:set_key(K_ENTER, {|_obj|_obj:activate_item(_obj:__current)})
+return TRUE

@@ -7,23 +7,22 @@
 #include "inkey.ch"
 #include "box.ch"
 
-function findOptions(str, rstr, color, colorhist)
+function findOptions(str, rstr, color, colorhist, lcase, lwordonly, lregexp, lallw, ndirect, nwhere)
 local obj
        obj:=map()
        obj:classname    := "FINDOPTIONS"
-
        obj:replace	:= .f.
        obj:fstring	:= iif (str!=NIL, str, "")
        obj:rstring	:= iif (rstr!=NIL, rstr, "")
        obj:colorSpec    := iif(empty(color),setcolor(),color)
        obj:colorHistSpec:= iif(empty(colorhist),setcolor(),colorhist)
 
-       obj:case		:= .f.
-       obj:wordonly 	:= .f.
-       obj:regexp 	:= .f.
-       obj:allw 	:= .f.
-       obj:direct 	:= 1	// forward/backward/frombegin
-       obj:where 	:= 1	// in text/ in block
+       obj:case		:= iif(lcase!=NIL .and. valtype(lcase)=="L", lcase, .f.)
+       obj:wordonly 	:= iif(lwordonly!=NIL .and. valtype(lwordonly)=="L", lwordonly, .f.)
+       obj:regexp 	:= iif(lregexp!=NIL .and. valtype(lregexp)=="L", lregexp, .f.)
+       obj:allw 	:= iif(lallw!=NIL .and. valtype(lallw)=="L", lallw, .f.)
+       obj:direct 	:= iif(ndirect!=NIL .and. valtype(ndirect)=="N", ndirect, 1 )	// forward/backward/frombegin
+       obj:where 	:= iif(nwhere!=NIL .and. valtype(nwhere)=="N", nwhere, 1 )	// in text/ in block
 
        obj:fhistory	:= historyObj(, , , , obj:colorHistSpec)
        obj:rhistory	:= historyObj(, , , , obj:colorHistSpec)
@@ -41,13 +40,16 @@ local obj
 return obj
 ***********
 static function __setcolor()
-local i, s
+local i, s, j:=1
        s:=::colorSpec
+       asize(::__colors, 10)
+       afill(::__colors, "0/7")
        while len(s)>0
 	   i:=at(",",s)
 	   i=iif(i==0,len(s)+1,i)
-	   aadd(::__colors,substr(s,1,i-1) )
+	   ::__colors[j] := substr(s,1,i-1)
 	   s:=substr(s,i+1)
+	   j++
        enddo
 return
 
@@ -59,7 +61,7 @@ local a, x, col2, col1, line:=1, obj[8], str, replstr, oldcolor
 k := int(2*maxcol()/3)
 r := int(2*maxrow()/3)
 oldcolor := setcolor()
-s := setcolor(::colorSpec)
+s := setcolor(::__colors[8])
 str := iif(::fstring==NIL,space(0),::fstring)
 replstr := iif(::rstring==NIL,space(0),::rstring)
 
@@ -77,6 +79,7 @@ clear screen
 col1 := maxcol()/2-8
 col2 := maxcol()/2
 //str := padr(str, length)
+s := setcolor(::colorSpec)
 
 if ::replace
 	@ -1, (maxcol()-len([ Find & replace ]))/2 say [ Find & replace ]
@@ -89,7 +92,7 @@ if ::replace
 	line++
 	focus++
 	@ line, 1 say padl([Replace:], 10)
-	obj[focus] := getnew(line++, 11,{|_1| iif(_1==NIL, padr(replstr, 256),replstr:=_1)}, "replstr", "@kS"+alltrim(str(length)), ::__colors[3])
+	obj[focus] := getnew(line++, 11,{|_1| iif(_1==NIL, padr(replstr, 256),replstr:=_1)}, "replstr", "@kS"+alltrim(str(length)), ::colorSpec)
 	obj[focus]:varPut(replstr)
 	obj[focus]:assign()
 	line++
@@ -186,7 +189,7 @@ while nkey != 0
 				endif
 			endif
 			obj[focus]:varPut(s)
-			obj[focus]:assign()
+			//obj[focus]:assign()
 			obj[focus]:setFocus()
 			obj[focus]:gotopos(len(alltrim(obj[focus]:varGet()))+1)
 		else

@@ -13,10 +13,12 @@ function html_tagNew(tagname, other, title, style, class, event, id, lang, langu
 	tagname=upper(tagName)
 	obj:classname	:= "HTML_TAG"
 	obj:tagName     := tagname	//
+	obj:closed 	:= .f.
 
 	obj:fields	:= map()           // list of fields this tag
 	obj:fieldsOrder	:= {}           // list of fields this tag
-        obj:hashes	:= map()
+	obj:hashes	:= map()
+	obj:entities	:= {{"&amp;","&"},{"&gt;",">"},{"&lt;","<"}}
 
 	obj:toString	:= @tag_toString()
 	obj:closeString	:= @tag_closeString()
@@ -65,24 +67,49 @@ return obj
 *******************************************
 static function tag_hashname(hashstr)
 	local fff
-        if valtype(hashstr)=="C"
+	if valtype(hashstr)=="C"
 		fff:=alltrim(upper(hashstr))
-        else
-        	fff:=hashstr
-        endif
-        if fff $ ::hashes
-        	return ::hashes[fff]
-        endif
+	else
+		fff:=hashstr
+	endif
+	if fff $ ::hashes
+		return ::hashes[fff]
+	endif
 return hashstr
 
 *******************************************
-static function tag_addField(fname,fdata)
-	local fff:=alltrim(upper(fname))
+static function tag_addField(fname,_fdata)
+	local i,j,k,fff,s,fdata := ""
+	if valtype(fdata)=="C"
+		while .t.
+			i := atl("&",_fdata)
+			if i<=0
+				fdata += _fdata
+				exit
+			endif
+			fdata+=left(_fdata,i-1)
+			_fdata:=substr(_fdata,i)
+			j := atl(";",_fdata)
+			if j<=0
+				fdata += _fdata
+				exit
+			endif
+			s := left(_fdata,j)
+			_fdata:=substr(_fdata,j+1)
+			k := ascan(::entities,{|x|lower(s)==x[1]})
+			if k<=0
+				fdata+=s
+				loop
+			endif
+			fdata += ::entities[k][2]
+		end
+	endif
 	if valtype(fname)=="C"
-        	if fff $ ::fields
-                else
-                	aadd(::fieldsOrder,fff)
-                endif
+		fff:=alltrim(upper(fname))
+		if fff $ ::fields
+		else
+			aadd(::fieldsOrder,fff)
+		endif
 		::fields[fff]:=fdata
 		::hashes[fff]:=fff
 		return len(::fields)

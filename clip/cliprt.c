@@ -5,11 +5,333 @@
  */
 /*
    $Log: cliprt.c,v $
+   Revision 1.419  2004/04/30 11:50:02  clip
+   uri: add mimeTypesLoad(), mimeTypeGet(cType), mimeTypeSet(cType,cData)
+
+   Revision 1.418  2004/04/08 15:01:46  clip
+   rust: suppress call to Task_killAll() in clip___QUIT()
+
+   Revision 1.417  2004/02/17 08:39:56  clip
+   rust: missing trailing spaces in string substraction ('-' op)
+
+   Revision 1.416  2004/02/16 13:19:53  clip
+   rust: sigsegv with RDD drivers fixed
+
+   Revision 1.415  2004/02/10 11:14:03  clip
+   rust: str_str() -> _clip_strstr() with '"" $ "string"' bugfix
+
+   Revision 1.414  2004/01/29 13:47:53  clip
+   uri: small fix
+
+   Revision 1.413  2004/01/28 13:49:00  clip
+   rust: common ClipMachine->kbdbuf
+
+   Revision 1.412  2004/01/25 10:23:40  clip
+   uri: fix bug in exit procedures and inkey()
+
+   Revision 1.411  2004/01/23 14:40:19  clip
+   uri: small fix for cygwin
+
+   Revision 1.410  2004/01/23 10:24:49  clip
+   uri: small fix in find_macro
+
+   Revision 1.409  2004/01/23 09:42:28  clip
+   uri: small fix in macro_in_string
+
+   Revision 1.408  2004/01/23 08:29:23  clip
+   uri: small fix ROOTPATH for cygwin
+
+   Revision 1.407  2004/01/16 10:04:33  clip
+   uri: small fix for ROOTPATH
+
+   Revision 1.406  2004/01/04 10:24:49  clip
+   uri: add set(_SET_ROOTPATH,"rootpath") for add "rootpath" to all filenames,
+	via "/var/www/htdocs" in apache.
+
+   Revision 1.405  2003/12/20 09:02:18  clip
+   uri: small fix for freeBsd
+
+   Revision 1.404  2003/12/16 11:24:05  clip
+   uri: support FoxPro syntax aVar[nElement];
+	support call codeblock via function cb:={||}; cb()
+	redisign error NOFUNC.
+
+   Revision 1.403  2003/11/27 17:11:59  clip
+   uri:small fix int ctod()
+
+   Revision 1.402  2003/11/27 12:55:56  clip
+   add CLIPA function
+   paul
+
+   Revision 1.401  2003/11/21 11:12:21  clip
+   set operation result if errorblock return new value
+   paul
+
+   Revision 1.400  2003/11/21 06:21:16  clip
+   uri: rewriting generator error for "invalid arguments for %s operation",
+	for operation +-*$=%**....
+
+   Revision 1.399  2003/11/19 11:48:25  clip
+   add FLUSHOUT_FLAG, _SET_FLUSHOUT to set
+   paul
+
+   Revision 1.398  2003/11/11 11:58:16  clip
+   uri: small fix: called EG_SIGNAL with first_mp
+
+   Revision 1.397  2003/11/11 11:36:58  clip
+   uri: call errorblock with EG_SIGNAL if signal from system sended
+
+   Revision 1.396  2003/11/04 11:18:34  clip
+   post signal handler
+   paul
+
+   Revision 1.395  2003/10/30 10:29:06  clip
+   hash conflict in area/field pairs
+   closes #159
+   paul
+
+   Revision 1.394  2003/10/13 06:08:48  clip
+   uri: fix for "errorlevel(3); quit" code
+
+   Revision 1.393  2003/10/03 09:30:22  clip
+   uri: obj:onError(self,attr_name) trigger added
+
+   Revision 1.392  2003/09/11 11:18:06  clip
+   uri: small fix
+
+   Revision 1.391  2003/09/09 14:36:15  clip
+   uri: fixes for mingw from Mauricio and Uri
+
+   Revision 1.390  2003/09/09 09:41:00  clip
+   uri: sorry, removed debug info from prev fix
+
+   Revision 1.389  2003/09/09 09:39:05  clip
+   uri: small fix in dirChange()
+
+   Revision 1.388  2003/09/08 15:06:02  clip
+   uri: next step fixes for mingw from uri
+
+   Revision 1.387  2003/09/05 12:11:52  clip
+   uri: initial fixes for mingw+win32 from uri
+
+   Revision 1.386  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.385  2003/09/01 13:34:12  clip
+   uri: fix in translate_path() for non-existing directories.
+
+   Revision 1.384  2003/08/04 09:49:23  clip
+   generate 'no variable' when call by reference
+   paul
+
+   Revision 1.383  2003/07/30 11:06:06  clip
+
+   paul
+
+   Revision 1.382  2003/07/03 06:10:04  clip
+   fix for --static, --fullstatic and libs
+   paul
+
+   Revision 1.381  2003/07/02 12:13:27  clip
+   possible fix sigsegv #141
+   paul
+
+   Revision 1.380  2003/07/01 11:32:13  clip
+   fix some memleaks
+   paul
+
+   Revision 1.379  2003/06/20 08:21:25  clip
+   possible fixes #144
+   paul
+
+   Revision 1.378  2003/06/14 09:56:24  clip
+   uri: small fix for directory("/")
+
+   Revision 1.377  2003/05/16 12:55:43  clip
+   uri: small fix in operator "="
+
+   Revision 1.376  2003/05/16 11:08:02  clip
+   initial support for using assembler instead C
+   now activated if environment variable CLIP_ASM is defined to any value
+   paul
+
+   Revision 1.375  2003/04/29 11:09:39  clip
+   memleak on start()
+   possibly closes #140
+   paul
+
+   Revision 1.374  2003/04/14 14:01:24  clip
+   rust: bug in fclose(), reported by István Földi <foldii@terrasoft.hu>
+
+   Revision 1.373  2003/04/02 10:53:19  clip
+   rust: _clip_close() added
+
+   Revision 1.372  2003/04/02 07:18:44  clip
+   uri: containers for all clipMachines
+
+   Revision 1.371  2003/04/01 07:28:12  clip
+   str[x], str[x,y] syntax support
+   possible closes #130
+   paul
+
+   Revision 1.370  2003/04/01 06:08:24  clip
+   uri: initial support syntax 'string[pos,len]', but not work really.
+
+   Revision 1.369  2003/03/28 11:24:52  clip
+   possible fix for sigsegv in menu and mouse
+   paul
+
+   Revision 1.368  2003/03/25 10:31:13  clip
+   possible fixes #133
+   paul
+
+   Revision 1.367  2003/03/21 11:49:40  clip
+   rust: RDD locks with tasks (DOS compatibility)
+
+   Revision 1.366  2003/03/20 12:22:36  clip
+   uri: errorLevel() small fix.
+
+   Revision 1.365  2003/03/12 12:50:42  clip
+   rust: tasks share RDDs and subdrivers
+
+   Revision 1.364  2003/03/06 07:16:24  clip
+   uri: delete right ' ' from filenames for "set translate path on"
+
+   Revision 1.363  2003/01/22 10:33:38  clip
+   dosparam() function
+   closes #111
+   paul
+
+   Revision 1.362  2003/01/21 14:05:17  clip
+   license info:
+   hidden flag --license print license
+   file clip/registration can contain signed license info
+   and must be generated by rsa-sign utilite
+   paul
+
+   Revision 1.361  2003/01/18 12:04:30  clip
+   uri: small fix in oget:varget()
+
+   Revision 1.360  2003/01/05 12:32:25  clip
+   possible fixes #95,#98
+   paul
+
+   Revision 1.359  2003/01/05 10:34:22  clip
+   possible fixes #98
+   paul
+
+   Revision 1.358  2002/12/31 08:03:36  clip
+   assign to locals
+   closes #95
+   paul
+
+   Revision 1.357  2002/12/27 12:11:37  clip
+   references to arrays
+   again closes #85
+   paul
+
+   Revision 1.356  2002/12/26 13:10:40  clip
+   reference to local param
+   possible fixes #13
+   paul
+
+   Revision 1.355  2002/12/23 13:57:47  clip
+   reference to temporary object
+   frame structure extended!
+   closes #90
+   paul
+
+   Revision 1.354  2002/12/18 11:28:42  clip
+   fix reference to array in params
+   closes #85
+   paul
+
+   Revision 1.353  2002/12/11 13:09:08  clip
+   clear t.memo flag on assign
+   possibly closes #80
+   paul
+
+   Revision 1.352  2002/12/04 09:30:25  clip
+   profile sigsegv fix
+   paul
+
+   Revision 1.351  2002/12/04 09:05:52  clip
+   possible profile cleanup in _clip_eval
+   paul
+
+   Revision 1.350  2002/12/04 07:09:59  clip
+   simple profiler realised
+   start program with --profile will generate <progname>.pro profile
+   limitations: manual written C functions are not profiled, bad accuracy
+   paul
+
+   Revision 1.349  2002/12/02 09:24:08  clip
+   map obj fetch for simple name
+   closes #65
+   paul
+
+   Revision 1.348  2002/11/27 14:09:14  clip
+   rust: _clip_vptr(rval) to _clip_dup in _clip_[i]assign()
+
+   Revision 1.347  2002/11/27 14:06:07  clip
+   clear field flag on assign
+   possible closes #63
+   paul
+
+   Revision 1.346  2002/11/19 13:36:28  clip
+   sigsegv in clip_CLIP func
+   closes #42
+   paul
+
+   Revision 1.345  2002/11/12 09:47:11  clip
+   *** empty log message ***
+
+   Revision 1.344  2002/11/12 09:12:17  clip
+   uri: small fix for cygwin
+
+   Revision 1.343  2002/11/10 13:20:17  clip
+   fix for gcc-3.2 optimisation
+   paul
+
+   Revision 1.342  2002/10/31 16:23:24  clip
+   *** empty log message ***
+
+   Revision 1.341  2002/10/30 14:58:44  clip
+   uri: small tab formatting.
+
+   Revision 1.340  2002/10/30 14:39:32  clip
+   rust: some default SETs
+
+   Revision 1.339  2002/10/26 11:10:02  clip
+   initial support for localized runtime messages
+   messages are in module 'cliprt'
+   paul
+
+   Revision 1.338  2002/10/19 14:23:34  clip
+   uri:small fix
+
+   Revision 1.337  2002/10/19 14:10:52  clip
+   uri: small fix
+
+   Revision 1.336  2002/10/19 14:08:38  clip
+   uri: small fix for cygwin
+
+   Revision 1.335  2002/10/19 14:05:37  clip
+   uri: hz
+
+   Revision 1.334  2002/10/19 14:03:52  clip
+   uri: small fix in _clip_absolute_path for cygwin
+
+   Revision 1.333  2002/10/19 13:36:42  clip
+   uri: small fix for cygwin in _clip_translate_path()
+
    Revision 1.332  2002/09/25 11:47:25  clip
    add function: loadModuleMsg(cModule, cFilename_mo) -> bResult
    predefined macro: __CLIP_MODULE__  expands to current module name as "modname"
    new accepted environment var: CLIP_LOCALE_ROOT
-   	used by clip, clip_msgmerge, clip_msgfmt, and at runtime
+	used by clip, clip_msgmerge, clip_msgfmt, and at runtime
    paul
 
    Revision 1.331  2002/09/19 08:36:29  clip
@@ -39,22 +361,22 @@
 
    Revision 1.324  2002/08/05 07:25:03  clip
    Operator overloading for objects:
-    '+' operator_add
-    '-' operator_sub
-    '*' operator_mul
-    '/' operator_div
-    '%' operator_mod
-    '^' operator_pow
-    '|' operator_or
-    '&' operator_and
-    '$' operator_in
-    '=' operator_eq
-    '==' operator_eeq
-    '!=' operator_neq
-    '<'  operator_lt
-    '>'  operator_gt
-    '<=' operator_le
-    '>=' operator_ge
+	'+' operator_add
+	'-' operator_sub
+	'*' operator_mul
+	'/' operator_div
+	'%' operator_mod
+	'^' operator_pow
+	'|' operator_or
+	'&' operator_and
+	'$' operator_in
+	'=' operator_eq
+	'==' operator_eeq
+	'!=' operator_neq
+	'<'  operator_lt
+	'>'  operator_gt
+	'<=' operator_le
+	'>=' operator_ge
    paul
 
    Revision 1.323  2002/07/02 10:32:33  clip
@@ -1392,6 +1714,7 @@
 
  */
 
+#include "clipcfg.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -1400,7 +1723,11 @@
 #include <ctype.h>
 #include <math.h>
 #include <time.h>
-#include <dlfcn.h>
+#ifdef OS_MINGW
+	#include <ltdl.h>
+#else
+	#include <dlfcn.h>
+#endif
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -1417,6 +1744,7 @@
 #include "rational.h"
 #include "screen/charset.h"
 #include "coll.h"
+#include "license.h"
 
 #ifdef USE_TASKS
 #include "task/task.h"
@@ -1426,11 +1754,14 @@
 #define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
 #define VAR(type,var,ini) type *var=(type*)(ini)
 #define NEWVAR(type,var) type *var=(type*)calloc(sizeof(type),1)
-#define DELETE(type,var)	{destroy_##type(var);free(var);}
+#define c_DELETE(type,var)	{destroy_##type(var);free(var);}
 
 #define EXPAND_MACRO
 
 #define MIN_NUMERIC_DIFF 0.00000000000001
+
+extern CLIP_DLLEXPORT void _clip_close_all(ClipMachine * mp);
+extern int clip_RDDCLOSEALL(ClipMachine * mp);
 
 #ifdef FORCEALIGN
 
@@ -1482,6 +1813,9 @@ static VarEntry *fetch_var(ClipMachine * mp, long hash);
 
 static void dup_ref(ClipVar * dest, ClipVar * src);
 static ClipVar *clip_fetch(ClipMachine * mp, int dim, int push, int store, ClipVar ** mapp, long *hashp);
+
+int _clip_profiler = 0;
+static void fini_profiler(ClipMachine *mp);
 
 /* [ ClipBuf */
 
@@ -1588,7 +1922,9 @@ void
 clear_ClipVect(ClipVect * vect)
 {
 	vect->count = 0;
-	vect->items = realloc(vect->items, sizeof(void *) * 4);
+	free(vect->items);
+	vect->items = 0;
+	/*vect->items = realloc(vect->items, sizeof(void *) * 4);*/
 }
 
 void
@@ -1646,10 +1982,10 @@ _clip_init_tty(ClipMachine * ret)
 
 	r = init_tty(ret->screen_base, 0, _clip_envp, 0, (ScreenPgChars *) _clip_pgtbl, errbuf, sizeof(errbuf));
 
-	if (r>=0)
+	if (r >= 0)
 	{
 		ret->screen = new_Screen(ret->screen_base);
-		if (r>0)
+		if (r > 0)
 			_clip_logg(0, "init screen: %s", errbuf);
 		r = 0;
 	}
@@ -1677,6 +2013,8 @@ _clip_restore_tty(ClipMachine * mp)
 	return restore_tty(mp->screen->base);
 }
 
+static int errorlevel = 0; /* result of errorlevel() */
+
 static HashTable *all_publics = 0;
 static HashTable *all_hashnames = 0;
 static HashTable *all_functions = 0;
@@ -1686,10 +2024,39 @@ static HashTable *all_fields = 0;
 static HashTable *all_keys = 0;
 static HashTable *all_store = 0;
 
+/*
 static ClipVect *all_areas = 0;
 static ClipVect *all_areaStack = 0;
+*/
 
 static Container *all_container = 0;
+
+static DBDriver *all_dbdrivers = 0;
+struct _RDD_DATA_VTBL_ **all_data_drivers;
+struct _RDD_INDEX_VTBL_ **all_idx_drivers;
+struct _RDD_MEMO_VTBL_ **all_memo_drivers;
+static int all_ndbdrivers = 0;
+static int all_ndata_drivers = 0;
+static int all_nidx_drivers = 0;
+static int all_nmemo_drivers = 0;
+static char all_def_data_driver[6];
+static char all_def_idx_driver[6];
+static char all_def_memo_driver[6];
+static char all_def_db_driver[9];
+
+static SQLDriver *all_sqldrivers = 0;
+static int all_nsqldrivers = 0;
+
+static HashTable *all_tasklocks = 0;
+static HashTable *all_fileopens = 0;
+/*static ClipWindow *all_windows = 0;*/
+
+static int *all_kbdbuf;
+static int *all_kbdptr;
+
+int _clip_sig_flag = 0;
+void _clip_signal_real(int sig);
+
 
 CLIP_DLLEXPORT struct ClipMachine *
 new_ClipMachine(struct Screen *screen)
@@ -1716,6 +2083,32 @@ new_ClipMachine(struct Screen *screen)
 		ret->functions = all_functions = new_HashTable();
 	++machineCount;
 
+	ret->dbdrivers      = &all_dbdrivers;
+	ret->ndbdrivers     = &all_ndbdrivers;
+	ret->data_drivers   = &all_data_drivers;
+	ret->ndata_drivers  = &all_ndata_drivers;
+	ret->idx_drivers    = &all_idx_drivers;
+	ret->nidx_drivers   = &all_nidx_drivers;
+	ret->memo_drivers   = &all_memo_drivers;
+	ret->nmemo_drivers  = &all_nmemo_drivers;
+	ret->def_data_driver = all_def_data_driver;
+	ret->def_idx_driver  = all_def_idx_driver;
+	ret->def_memo_driver = all_def_memo_driver;
+	ret->def_db_driver   = all_def_db_driver;
+
+	ret->sqldrivers     = &all_sqldrivers;
+	ret->nsqldrivers    = &all_nsqldrivers;
+
+	if(all_tasklocks)
+		ret->tasklocks = all_tasklocks;
+	else
+		ret->tasklocks = all_tasklocks = new_HashTable();
+
+	if(all_fileopens)
+		ret->fileopens = all_fileopens;
+	else
+		ret->fileopens = all_fileopens = new_HashTable();
+
 	if (all_publics)
 		ret->publics = all_publics;
 	else
@@ -1723,10 +2116,14 @@ new_ClipMachine(struct Screen *screen)
 	ret->privates = new_HashTable();
 	ret->spaces = new_HashTable();
 
+/*
 	if (all_aliases)
 		ret->aliases = all_aliases;
 	else
 		ret->aliases = all_aliases = new_HashTable();
+*/
+	ret->aliases = new_HashTable();
+
 	if (all_fields)
 		ret->fields = all_fields;
 	else
@@ -1735,6 +2132,7 @@ new_ClipMachine(struct Screen *screen)
 		ret->keys = all_keys;
 	else
 		ret->keys = all_keys = new_HashTable();
+
 	if (all_store)
 		ret->store = all_store;
 	else
@@ -1747,15 +2145,22 @@ new_ClipMachine(struct Screen *screen)
 	ret->dirCreateMode = _clip_fileStrModeToNumMode("753");
 	ret->flags = CONSOLE_FLAG;
 	ret->date_format = strdup(CLIP_DATEFORMAT_DEFAULT);
+	ret->rootpath = NULL;
 	if (CLIP_CENTURY_DEFAULT)
 		ret->flags += CENTURY_FLAG;
 	ret->epoch = CLIP_EPOCH_DEFAULT;
 	ret->path = strdup(".");
 	ret->defaul = strdup(".");
 	ret->typeahead = 32;
-	ret->kbdbuf = (int *) malloc(ret->typeahead * sizeof(int));
 
-	ret->kbdptr = ret->kbdbuf;
+	if (all_kbdbuf)
+		ret->kbdbuf = all_kbdbuf;
+	else
+		ret->kbdbuf = all_kbdbuf = (int *) calloc(ret->typeahead,sizeof(int));
+
+	ret->kbdptr = &all_kbdptr;
+	*(ret->kbdptr) = ret->kbdbuf;
+
 	ret->cursor = SC_NORMAL;
 	ret->altfile = 0;
 	ret->out = stdout;
@@ -1785,7 +2190,15 @@ new_ClipMachine(struct Screen *screen)
 	ret->driver = init_struct->_dbdrivers[0];
 	ret->syserr[0] = 0;
 
+#if 1
 	ret->windows = NEW(ClipWindow);
+#else
+	if (all_windows)
+		ret->windows = all_windows;
+	else
+		ret->windows = all_windows = NEW(ClipWindow);
+#endif
+
 	ret->wnum = 0;
 	if (ret->screen)
 	{
@@ -1794,10 +2207,14 @@ new_ClipMachine(struct Screen *screen)
 		ret->windows->format = ret->windows->rect;
 	}
 	ret->wshadow = -1;
+#if 1
 	if (all_container)
 		ret->container = all_container;
 	else
 		ret->container = all_container = NEW(Container);
+#else
+	ret->container = NEW(Container);
+#endif
 
 	if (all_hashnames)
 		ret->hashnames = all_hashnames;
@@ -1817,6 +2234,7 @@ new_ClipMachine(struct Screen *screen)
 		}
 	}
 
+/*
 	if (all_areas)
 	{
 		ret->areas = all_areas;
@@ -1827,6 +2245,22 @@ new_ClipMachine(struct Screen *screen)
 		ret->areas = all_areas = NEW(ClipVect);
 		ret->areaStack = all_areaStack = NEW(ClipVect);
 	}
+*/
+	ret->areas = NEW(ClipVect);
+	ret->areaStack = NEW(ClipVect);
+
+	ret->index_buffer_limit = 32;
+
+	ret->flags |= ESCAPE_FLAG;
+	ret->flags |= EXCLUSIVE_FLAG;
+	ret->flags |= TRANSLATE_FLAG;
+	ret->flags1 |= OPTIMIZE_FLAG;
+
+#ifdef OS_LINUX
+	if (ret->out && isatty(fileno(ret->out)))
+		ret->flags1 |= FLUSHOUT_FLAG;
+#endif
+
 
 	return ret;
 }
@@ -1839,6 +2273,9 @@ int log_level = 1;
 FILE *logg = 0;
 static int exited = 0;
 
+int _clip_raw_argc = 0;
+char **_clip_raw_argv = 0;
+
 void
 _clip_exit(void)
 {
@@ -1847,6 +2284,8 @@ _clip_exit(void)
 	if (exited)
 		return;
 	exited = 1;
+
+
 	while (first_mp)
 	{
 		ClipMachine *mp = first_mp;
@@ -1941,13 +2380,20 @@ _clip_put_env(char *name, char *val)
 	int l2 = strlen(val);
 	int r;
 
+#ifdef OS_MINGW
+	char *buf = (char *) malloc(l1 + l2 + 2);
+#else
 	char *buf = (char *) alloca(l1 + l2 + 2);
+#endif
 
 	memcpy(buf, name, l1);
 	memcpy(buf + l1 + 1, val, l2);
 	buf[l1] = '=';
 	buf[l1 + l2 + 1] = 0;
 	r = put_env(&_clip_envp, buf);
+#ifdef OS_MINGW
+	free(buf);
+#endif
 
 	return r;
 }
@@ -2055,6 +2501,26 @@ debug_enable(char *opt)
 /*_clip_logg(0, "set debug level to %d", _clip_debuglevel);*/
 }
 
+static void
+license_on_start(char *opt)
+{
+	fprintf(stdout, "%s", CLIP_LICENSE);
+	exit(0);
+}
+
+static void
+profile_enable(char *opt)
+{
+	char *s;
+
+	s = strchr(opt, '=');
+	if (s)
+		_clip_profiler = atoi(s + 1);
+	else
+		_clip_profiler++;
+/*_clip_logg(0, "set profiledebug level to %d", _clip_debuglevel);*/
+}
+
 static int need_stop = 0;
 
 static void
@@ -2072,7 +2538,9 @@ struct OptionAction
 
 static struct OptionAction hidden_options[] = {
 	{"--debug", debug_enable},
+	{"--profile", profile_enable},
 	{"--stop", breakpoint_on_start},
+	{"--license", license_on_start},
 };
 
 #define HIDDEN_NUM (sizeof(hidden_options)/sizeof(struct OptionAction))
@@ -2144,6 +2612,9 @@ _clip_init(ClipMachine * mp, int Argc, char **Argv, char **envp)
 
 		_clip_put_env("CLIP_HOSTCS", init_struct->CLIP_HOSTCS);
 
+		_clip_raw_argc = Argc;
+		_clip_raw_argv = Argv;
+
 		process_args(Argc, Argv, &arg_c, &arg_v);
 
 		_clip_argc = arg_c;
@@ -2161,21 +2632,24 @@ _clip_init(ClipMachine * mp, int Argc, char **Argv, char **envp)
 
 		atexit(_clip_exit);
 
+#ifndef OS_MINGW
 		signal(SIGHUP, _clip_signal);
-		signal(SIGINT, _clip_sigint);
 		signal(SIGQUIT, _clip_signal);
-		signal(SIGILL, _clip_signal);
-		signal(SIGABRT, _clip_signal);
-		signal(SIGFPE, _clip_signal);
 		signal(SIGKILL, _clip_signal);
-		signal(SIGSEGV, _clip_signal);
 		signal(SIGPIPE, _clip_signal);
 		signal(SIGALRM, _clip_signal);
-		signal(SIGTERM, _clip_signal);
 		if (_clip_debuglevel)
 			signal(SIGUSR1, _clip_sigdebug);
 		else
 			signal(SIGUSR1, SIG_IGN);
+#endif
+
+		signal(SIGINT, _clip_sigint);
+		signal(SIGILL, _clip_signal);
+		signal(SIGABRT, _clip_signal);
+		signal(SIGFPE, _clip_signal);
+		signal(SIGSEGV, _clip_signal);
+		signal(SIGTERM, _clip_signal);
 
 		set_sysvars();
 
@@ -2188,7 +2662,7 @@ _clip_init(ClipMachine * mp, int Argc, char **Argv, char **envp)
 
 		process_environ(CLIPROOT, "etc/environment");
 		e = get_env(_clip_envp, "CLIP_LANG");
-                if ( e == NULL )
+		if (e == NULL)
 			e = get_env(_clip_envp, "LANG");
 		if (e && *e)
 		{
@@ -2221,7 +2695,7 @@ _clip_init(ClipMachine * mp, int Argc, char **Argv, char **envp)
 		if (!e)
 		{
 			e = _clip_getenv("CLIP_LANG");
-                        if ( e == NULL )
+			if (e == NULL)
 				e = _clip_getenv("LANG");
 			if (e && !strcmp(e, "C"))
 				e = 0;
@@ -2248,6 +2722,7 @@ _clip_init(ClipMachine * mp, int Argc, char **Argv, char **envp)
 			if (e)
 			{
 				char *s;
+
 				s = strrchr(e, '.');
 				if (s)
 					e = s + 1;
@@ -2261,8 +2736,9 @@ _clip_init(ClipMachine * mp, int Argc, char **Argv, char **envp)
 			if (e)
 			{
 				char *s;
+
 				s = strdup(e);
-				for(e = s; *e; e++)
+				for (e = s; *e; e++)
 					*e = tolower(*e);
 				_clip_put_env("CLIP_CLIENTCS", s);
 				free(s);
@@ -2469,30 +2945,51 @@ _clip_logg(int level, const char *fmt, ...)
 	fprintf(logg, "%02d:%02d:%02d %s:%lu:%d ", tp->tm_hour, tp->tm_min, tp->tm_sec, _clip_progname,
 		(unsigned long) getpid(), level);
 	va_start(ap, fmt);
-	vfprintf(logg, fmt, ap);
+	vfprintf(logg, _clip_gettext(fmt), ap);
 	va_end(ap);
 	fputc('\n', logg);
 	fflush(logg);
 
 	  ret:
+		;
 }
 
 void
 _clip_signal(int sig)
 {
-	const char *msg = "UNKNOWN";
+	_clip_sig_flag = sig;
+}
+
+void
+_clip_signal_real(int sig)
+{
+	const char *msg;
 	ClipFrame *fp;
+	ClipMachine *mp;
 
 	switch (sig)
 	{
+	case 0:
+		return;
+#ifndef OS_MINGW
 	case SIGHUP:
 		msg = "SIGHUP";
 		break;
-	case SIGINT:
-		msg = "SIGINT";
-		break;
 	case SIGQUIT:
 		msg = "SIGQUIT";
+		break;
+	case SIGKILL:
+		msg = "SIGKILL";
+		break;
+	case SIGPIPE:
+		msg = "SIGPIPE";
+		break;
+	case SIGALRM:
+		msg = "SIGALRM";
+		break;
+#endif
+	case SIGINT:
+		msg = "SIGINT";
 		break;
 	case SIGILL:
 		msg = "SIGILL";
@@ -2503,22 +3000,20 @@ _clip_signal(int sig)
 	case SIGFPE:
 		msg = "SIGFPE";
 		break;
-	case SIGKILL:
-		msg = "SIGKILL";
-		break;
 	case SIGSEGV:
 		msg = "SIGSEGV";
-		break;
-	case SIGPIPE:
-		msg = "SIGPIPE";
-		break;
-	case SIGALRM:
-		msg = "SIGALRM";
 		break;
 	case SIGTERM:
 		msg = "SIGTERM";
 		break;
+	default:
+		msg = "UNKNOWN";
+		break;
 	}
+	mp = first_mp; /*cur_ClipMachine();*/
+	_clip_sig_flag = 0;
+	_clip_trap_err(mp, EG_SIGNAL, 0, 0, "SIGNAL", sig, "system signal");
+	_clip_call_errblock(mp, EG_SIGNAL);
 
 	_clip_logg(0, "got signal %s, exiting...", msg);
 	fprintf(stderr, "\n%s: got signal %s, exiting...\n", _clip_progname, msg);
@@ -2609,7 +3104,7 @@ delete_Functions(ClipMachine * mp, HashTable * hp)
 	{
 		VAR(FuncEntry, fp, HashTable_current(hp));
 		/*if (!fp->f)
-		   delete_File(mp, fp->block.file); */
+		   delete_ClipFile(mp, fp->block.file); */
 		free(fp);
 	}
 	delete_HashTable(hp);
@@ -2623,7 +3118,35 @@ delete_ClipMachine(ClipMachine * mp)
 	ClipFunction **np, ****npp;
 	int r;
 
-	_clip_close_all(mp);
+	if (mp->deleted)
+		return ;
+	mp->deleted = 1;
+
+	if (_clip_profiler)
+	{
+		fini_profiler(mp);
+	}
+
+	if (mp==first_mp)
+		first_mp = mp->next;
+	else
+	{
+		ClipMachine *mpp;
+		for(mpp = first_mp; mpp && mpp->next; mpp = mpp->next)
+		{
+			if(mpp->next == mp)
+			{
+				mpp->next = mp->next;
+				break;
+			}
+		}
+	}
+
+	/*if (machineCount == 1)*/
+	{
+		_clip_close_all(mp);
+		clip_RDDCLOSEALL(mp);
+	}
 
 	for (i = mp->nexits - 1; i >= 0; --i)
 	{
@@ -2643,10 +3166,14 @@ delete_ClipMachine(ClipMachine * mp)
 		_clip_main_func(mp, *np, _clip_argc, _clip_argv, _clip_envp);
 
 	clear_VarTable(mp, mp->privates);
-	clear_VarTable(mp, mp->publics);
+	/*clear_VarTable(mp, mp->publics);*/
 
 	for (i = 0; i < mp->dlls.count; ++i)
+#ifdef OS_MINGW
+		lt_dlclose(mp->dlls.items[i]);
+#else
 		dlclose(mp->dlls.items[i]);
+#endif
 
 	out = (FILE *) mp->out;
 	if (out != stdout)
@@ -2689,19 +3216,21 @@ delete_ClipMachine(ClipMachine * mp)
 	_clip_delete(mp, mp->errorblock);
 	_clear_trap(mp);
 
-	if (machineCount == 1)
-	{
+/*	if (machineCount == 1)
+	{*/
 		destroy_ClipVect(mp->areas);
 		destroy_ClipVect(mp->areaStack);
 		free(mp->areas);
 		free(mp->areaStack);
-	}
+/*	}*/
 
 	free(mp->date_format);
 	free(mp->path);
 	free(mp->defaul);
 	free(mp->altfile);
 	free(mp->extrafile);
+	if ( mp->rootpath != NULL )
+		free(mp->rootpath);
 	free(mp->delimchars);
 	if (machineCount == 1)
 	{
@@ -2718,7 +3247,10 @@ delete_ClipMachine(ClipMachine * mp)
 
 	free(mp->exits);
 	free(mp->cexits);
-	free(mp->dbdrivers);
+	/*free(*mp->dbdrivers);*/
+
+	if (machineCount == 1)
+		free(mp->kbdbuf);
 
 	destroy_ClipVect(&mp->dlls);
 
@@ -2730,15 +3262,22 @@ delete_ClipMachine(ClipMachine * mp)
 		free(mp->screen_base);
 	}
 
-	for (i = 0; i <= mp->wnum; i++)
+	/*if ( machineCount == 1 )*/
 	{
-		ClipWindow *wp = mp->windows + i;
+		/*all_windows = 0;*/
+		for (i = 0; i <= mp->wnum; i++)
+		{
+			ClipWindow *wp = mp->windows + i;
 
-		if (wp->save)
-			free(wp->save);
+			if (wp->save)
+				free(wp->save);
+		}
+		free(mp->windows);
 	}
 
 	--machineCount;
+
+	free(mp);
 }
 
 CLIP_DLLEXPORT void
@@ -2755,6 +3294,8 @@ CLIP_DLLEXPORT void
 _clip_log_call(ClipMachine * mp)
 {
 	ClipFrame *fp = mp->fp;
+	if (_clip_profiler)
+		_clip_start_profiler(mp);
 
 	if (log_level >= 5)
 	{
@@ -2768,6 +3309,26 @@ _clip_errorblock(ClipMachine * mp, ClipVar * vp, int genCode)
 {
 	int r;
 	ClipVar res;
+	memset(&res, 0, sizeof(res));
+
+	r = _clip_errorblock_res(mp, vp, genCode, &res);
+
+	_clip_destroy(mp, &res);
+
+	if (!r)
+		r = _clip_log(&res);
+	else
+		r = 0;
+
+
+	return 0;
+}
+
+
+CLIP_DLLEXPORT int
+_clip_errorblock_res(ClipMachine * mp, ClipVar * vp, int genCode, ClipVar *res)
+{
+	int r;
 
 	if (mp->noerrblock)
 		return 0;
@@ -2808,7 +3369,6 @@ _clip_errorblock(ClipMachine * mp, ClipVar * vp, int genCode)
 		clip___QUIT(mp);
 	}
 
-	memset(&res, 0, sizeof(res));
 
 	if (_clip_type(vp) == MAP_t)
 	{
@@ -2817,20 +3377,14 @@ _clip_errorblock(ClipMachine * mp, ClipVar * vp, int genCode)
 		_clip_mgetn(mp, vp, HASH_gencode, &d);
 		if (d == 0.0)
 		{
-			_clip_var_num(genCode, &res);
-			_clip_madd(mp, vp, HASH_gencode, &res);
-			_clip_destroy(mp, &res);
+			_clip_var_num(genCode, res);
+			_clip_madd(mp, vp, HASH_gencode, res);
+			_clip_destroy(mp, res);
 		}
 	}
 
-	r = _clip_eval(mp, mp->errorblock, 1, vp, &res);
+	r = _clip_eval(mp, mp->errorblock, 1, vp, res);
 	mp->errorlevel--;
-	if (!r)
-		r = _clip_log(&res);
-	else
-		r = 0;
-
-	_clip_destroy(mp, &res);
 
 	return r;
 }
@@ -2847,6 +3401,11 @@ do_call(ClipMachine * mp, ClipFunction f, int argc, int isProc, int rest, ClipVa
 	mp->bp = fp->sp;
 	if (uplocals)
 		mp->fp->localvars = uplocals;
+
+	if (_clip_profiler)
+	{
+		_clip_stop_profiler(mp);
+	}
 
 	if (log_level >= 6)
 	{
@@ -2871,6 +3430,9 @@ do_call(ClipMachine * mp, ClipFunction f, int argc, int isProc, int rest, ClipVa
 
 		ret = f(mp);
 
+		if (_clip_sig_flag)
+			_clip_signal_real(_clip_sig_flag);
+
 		if (_clip_debuglevel)
 		{
 			/*printf("+dnext=%d _clip_debugnext=%d line %d\n", dnext, _clip_debugnext, fp->line); */
@@ -2886,7 +3448,7 @@ do_call(ClipMachine * mp, ClipFunction f, int argc, int isProc, int rest, ClipVa
 				   fp->procname ? fp->procname : "unknown", fp->filename, fp->line);
 
 		if (!ret)
-			break;
+			break	;
 
 		if (!mp->trapVar)
 			_clip_generr(mp, ret);
@@ -2918,11 +3480,304 @@ do_call(ClipMachine * mp, ClipFunction f, int argc, int isProc, int rest, ClipVa
 		_clip_destroy(mp, fp->sp);
 	}
 
+	if (_clip_profiler)
+	{
+		_clip_start_profiler(mp);
+		mp->pbucket->callno--;
+	}
+
 	return ret;
 }
 
+static void
+init_profiler(ClipMachine *mp)
+{
+	if(mp->profiler)
+		return;
+
+	mp->profiler = new_HashTable();
+}
+
+
+#if 0
+static void
+delete_profile_bucket(void *bpp)
+{
+	ProfileBucket *bp = (ProfileBucket*) bpp;
+	if (!bp)
+		return;
+	free(bp->procname);
+	free(bp->filename);
+#if 0
+	destroy_Coll(&(bp->callby));
+#endif
+	free(bp);
+}
+
 static int
-_clip_refclone(ClipMachine *mp, ClipVar *dest, ClipVar *src)
+cmp_profile_bucket(void *p1, void *p2)
+{
+	long h1 = ((ProfileBucket *)p1)->hash;
+	long h2 = ((ProfileBucket *)p2)->hash;
+	if (h1<h2)
+		return -1;
+	else if (h1>h2)
+		return 1;
+	else
+		return 0;
+}
+
+#endif
+
+static ProfileBucket *
+find_profile_bucket_name(ClipMachine *mp, const char *procname, const char *filename)
+{
+	long hash;
+	ProfileBucket *bp;
+
+	hash = _clip_casehashbytes(0, procname, strlen(procname));
+	hash = _clip_casehashbytes(hash, filename, strlen(filename));
+
+	init_profiler(mp);
+	bp = (ProfileBucket*) HashTable_fetch(mp->profiler, hash);
+	if (!bp)
+	{
+		bp = NEW(ProfileBucket);
+		bp->hash = hash;
+		bp->procname = strdup(procname);
+		bp->filename = strdup(filename);
+#if 0
+		init_Coll(&bp->callby, delete_profile_bucket, cmp_profile_bucket);
+#endif
+		HashTable_insert(mp->profiler, bp, hash);
+	}
+
+	return bp;
+}
+
+static ProfileBucket *
+find_profile_bucket(ClipMachine *mp)
+{
+	const char *fs = "", *ps = "";
+
+	if (mp->fp && mp->fp->procname)
+		ps = mp->fp->procname;
+	if (mp->fp && mp->fp->filename)
+		fs = mp->fp->filename;
+
+	return find_profile_bucket_name(mp, ps, fs);
+}
+
+#ifndef timer_add
+#define	timer_add(a, b, result)							  \
+  do {										  \
+	(result)->tv_sec = (a)->tv_sec + (b)->tv_sec;				  \
+	(result)->tv_usec = (a)->tv_usec + (b)->tv_usec;				  \
+	if ((result)->tv_usec >= 1000000)						  \
+	  {										  \
+	++(result)->tv_sec;							  \
+	(result)->tv_usec -= 1000000;						  \
+	  }										  \
+  } while (0)
+#endif
+
+#ifndef timer_sub
+#define timer_sub(a, b, result) \
+   do {                         \
+	   (result)->tv_sec = (a)->tv_sec - (b)->tv_sec;     \
+	   (result)->tv_usec = (a)->tv_usec - (b)->tv_usec;  \
+	   if ((result)->tv_usec < 0) {                      \
+		  --(result)->tv_sec;                        \
+		  (result)->tv_usec += 1000000;              \
+	   }                                                 \
+   } while (0)
+#endif
+
+
+
+static int
+start_profiler(ClipMachine *mp, ProfileBucket *bp)
+{
+	ProfileBucket *pbp;
+	struct timeval tv;
+
+	pbp = mp->pbucket;
+
+	if(mp->pbucket && mp->pbucket->started)
+		_clip_stop_profiler(mp);
+
+	if (bp->started)
+	{
+		mp->pbucket = bp;
+		_clip_stop_profiler(mp);
+	}
+
+	gettimeofday(&tv, 0);
+	bp->start = tv;
+	mp->pbucket = bp;
+	bp->started = 1;
+	bp->callno ++;
+
+	return 0;
+}
+
+int CLIP_DLLEXPORT
+_clip_start_profiler(ClipMachine *mp)
+{
+	ProfileBucket *bp;
+
+	bp = find_profile_bucket(mp);
+
+	return start_profiler(mp, bp);
+}
+
+int CLIP_DLLEXPORT
+_clip_start_profiler_name(ClipMachine *mp, const char *procname, const char *filename)
+{
+	ProfileBucket *bp;
+
+	if (!_clip_profiler)
+		return 0;
+
+	bp = find_profile_bucket_name(mp, procname, filename);
+
+	return start_profiler(mp, bp);
+}
+
+static int
+stop_profiler(ClipMachine *mp, ProfileBucket *bp, struct timeval *tv)
+{
+	struct timeval dt, rt;
+
+	if (!bp->started)
+		return 0;
+
+	timer_sub(tv, &bp->start, &dt);
+
+	timer_add(&bp->self, &dt, &rt);
+	bp->self = rt;
+	bp->started = 0;
+
+	return 0;
+}
+
+int CLIP_DLLEXPORT
+_clip_stop_profiler(ClipMachine *mp)
+{
+	struct timeval tv;
+	ProfileBucket *bp;
+
+	gettimeofday(&tv, 0);
+	bp = mp->pbucket;
+	if (!bp)
+		bp = find_profile_bucket(mp);
+
+	return stop_profiler(mp, bp, &tv);
+}
+
+int CLIP_DLLEXPORT
+_clip_stop_profiler_name(ClipMachine *mp, const char *procname, const char *filename)
+{
+	struct timeval tv;
+	ProfileBucket *bp;
+
+	if (!_clip_profiler)
+		return 0;
+
+	gettimeofday(&tv, 0);
+	bp = find_profile_bucket_name(mp, procname, filename);
+
+	return stop_profiler(mp, bp, &tv);
+}
+
+static int
+cmp_profile_out(void *p1, void *p2)
+{
+	ProfileBucket *bp1 = (ProfileBucket*) p1;
+	ProfileBucket *bp2 = (ProfileBucket*) p2;
+
+	if (bp1->self.tv_sec > bp2->self.tv_sec)
+		return -1;
+	else if (bp1->self.tv_sec < bp2->self.tv_sec)
+		return 1;
+	else if (bp1->self.tv_usec > bp2->self.tv_usec)
+		return -1;
+	else if (bp1->self.tv_usec < bp2->self.tv_usec)
+		return 1;
+	else
+		return 0;
+#if 0
+	{
+	int r;
+	r = strcasecmp(bp1->procname, bp2->procname);
+	if (r)
+		return r;
+	r = strcasecmp(bp1->filename, bp2->filename);
+	return r;
+	}
+#endif
+}
+
+static void
+fini_profiler(ClipMachine *mp)
+{
+	Coll coll;
+	int r, i;
+	FILE *out;
+	char path[256];
+	struct timeval total;
+	unsigned long ms, us;
+
+	init_profiler(mp);
+	/* generate report here */
+
+	init_Coll(&coll, 0, cmp_profile_out);
+
+	snprintf(path, sizeof(path), "%s.pro", _clip_progname);
+	out = fopen(path, "w");
+	if (!out)
+		out = stderr;
+
+
+	for(r = HashTable_first(mp->profiler); r; r = HashTable_next(mp->profiler))
+	{
+		ProfileBucket *bp = (ProfileBucket *) HashTable_current(mp->profiler);
+		insert_Coll(&coll, bp);
+	}
+
+	total.tv_sec = 0;
+	total.tv_usec = 0;
+	for(i = 0; i < coll.count; i++)
+	{
+		ProfileBucket *bp = (ProfileBucket *) coll.items[i];
+		struct timeval tv;
+
+		if (!bp->procname[0] && !bp->filename[0])
+			continue;
+
+		ms = bp->self.tv_sec * 1000 + bp->self.tv_usec/1000;
+		us = bp->self.tv_usec%1000;
+
+		tv = total;
+		timer_add(&tv, &bp->self, &total);
+
+		fprintf(out, "%18s %-13s %8ld calls %8lu.%03lu ms\n", bp->procname, bp->filename, bp->callno, ms, us);
+	}
+
+	ms = total.tv_sec * 1000 + total.tv_usec/1000;
+	us = total.tv_usec%1000;
+	fprintf(out, "---------------------------------\n");
+	fprintf(out, "total registered %8lu.%03lu ms\n", ms, us);
+
+	destroy_Coll(&coll);
+
+	if (out != stderr)
+		fclose(out);
+}
+
+
+static int
+_clip_refclone(ClipMachine * mp, ClipVar * dest, ClipVar * src)
 {
 	if (src->t.flags == F_MREF)
 	{
@@ -2937,16 +3792,29 @@ _clip_refclone(ClipMachine *mp, ClipVar *dest, ClipVar *src)
 CLIP_DLLEXPORT int
 _clip_eval(ClipMachine * mp, ClipVar * blockp, int argc, ClipVar * stackp, ClipVar * retp)
 {
+#ifdef OS_MINGW
+	ClipVar *stack = (ClipVar *) malloc(sizeof(ClipVar) * (argc + 1));
+#else
 	ClipVar *stack = (ClipVar *) alloca(sizeof(ClipVar) * (argc + 1));
-	ClipFrame frame = { stack, stack + 1 + argc, __file__, __LINE__, 0, 0, 0, 0, 0, 0, "eval" ,
-			argc+1};
+#endif
+	ClipFrame frame = { stack, stack + 1 + argc, __file__, __LINE__, 0, 0, 0, 0, 0, 0, "eval",
+		argc + 1, 0
+	};
 	enum ClipVarType type = _clip_type(blockp);
 	int i, j, r;
 
 	if (type != PCODE_t && type != CCODE_t)
 	{
 		_clip_trap_str(mp, __file__, __LINE__, "clip_eval: non-code argument");
+#ifdef OS_MINGW
+		free(stack);
+#endif
 		return _clip_call_errblock(mp, 1);
+	}
+
+	if (_clip_profiler)
+	{
+		_clip_stop_profiler(mp);
 	}
 
 	blockp = _clip_vptr(blockp);
@@ -2960,6 +3828,11 @@ _clip_eval(ClipMachine * mp, ClipVar * blockp, int argc, ClipVar * stackp, ClipV
 	frame.up = mp->fp;
 	mp->fp = &frame;
 
+	if (_clip_profiler)
+	{
+		_clip_stop_profiler(mp);
+	}
+
 	if (type == CCODE_t)
 		r = _clip_func(mp, blockp->c.u.func, argc, 0, blockp->c.uplocals);
 	else
@@ -2971,6 +3844,16 @@ _clip_eval(ClipMachine * mp, ClipVar * blockp, int argc, ClipVar * stackp, ClipV
 	else
 		_clip_destroy(mp, stack + 0);
 
+	if (_clip_profiler)
+	{
+		_clip_start_profiler(mp);
+		mp->pbucket->callno--;
+	}
+
+
+#ifdef OS_MINGW
+	free(stack);
+#endif
 	return r;
 }
 
@@ -2990,7 +3873,7 @@ clip_CLIP(ClipMachine * mp)
 	}
 	params = malloc(parcount * sizeof(ClipVar));
 	for (i = 2; i <= parcount; i++)
-		params[i - 2] = *_clip_par(mp, i);
+		params[i - 2] = *_clip_spar(mp, i);
 
 	_clip_clip(mp, funcname, parcount - 1, params, retVal);
 
@@ -2998,11 +3881,35 @@ clip_CLIP(ClipMachine * mp)
 	return 0;
 }
 
+int
+clip_CLIPA(ClipMachine * mp)
+{
+	char *funcname = _clip_parc(mp, 1);
+	int parcount;
+	ClipVar *params, *retVal = RETPTR(mp);
+	ClipVar *ap = _clip_par(mp, 2);
+
+	if (!funcname || !ap || ap->t.type != ARRAY_t)
+	{
+		int r;
+
+		r = _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "CLIPA");
+		return _clip_call_errblock(mp, r);
+	}
+
+	parcount  = ap->a.count;
+	params = ap->a.items;
+
+	_clip_clip(mp, funcname, parcount, params, retVal);
+
+	return 0;
+}
+
 CLIP_DLLEXPORT int
 _clip_clip(ClipMachine * mp, const char *funcname, int argc, ClipVar * stackp, ClipVar * retp)
 {
 	ClipVar *stack;
-	ClipFrame frame = { 0, 0, __file__, __LINE__, 0, 0, 0, 0, 0, 0, "clip" , 0};
+	ClipFrame frame = { 0, 0, __file__, __LINE__, 0, 0, 0, 0, 0, 0, "clip", 0, 0};
 	int i, j, r;
 	ClipFunction *fp;
 	ClipBlock *bp;
@@ -3257,21 +4164,82 @@ _clip_func_hash(struct ClipMachine *mp, long hash, int argc, int rest, ClipVarFr
 
 		vep = fetch_var(mp, hash);
 
-		if (vep)
+		if (vep && (vep->var.t.type == ARRAY_t || vep->var.t.type == MAP_t))
 		{
+			/* support FoxPro syntax aVar(nElement) */
 			ClipVar *vp;
 			ClipVar *ap = mp->fp->sp - argc - 1;
-
 			_clip_clone(mp, ap, &vep->var);
 			vp = clip_fetch(mp, argc, 1, 0, 0, 0);
 			if (vp)
 				goto ret;
 		}
+		if (vep && (vep->var.t.type == PCODE_t || vep->var.t.type == CCODE_t))
+		{
+			/* if function not found - call codeblock from memvar*/
+			int _argc = mp->argc;
+			ClipFrame *fp = mp->fp;
+			ClipVar *bp = mp->bp;
 
-		_clip_hash_name(mp, hash, buf, sizeof(buf));
-		r = _clip_trap_err(mp, EG_NOFUNC, 0, 0, 0, 0, buf);
-		r = _clip_call_errblock(mp, r);
-		goto ret;
+			ClipVar res;
+			memset(&res, 0, sizeof(res));
+
+			mp->argc = argc;
+			mp->bp = fp->sp;
+			r =_clip_eval(mp, &(vep->var), mp->argc, ARGPTR(mp, 1), &res);
+			//r = _clip_eval(mp, &(vep->var), mp->argc,0, &res);
+			mp->argc = _argc;
+			mp->fp = fp;
+			mp->bp = bp;
+			argc++;
+			for (; argc; --argc)
+			{
+				--(fp->sp);
+				_clip_destroy(mp, fp->sp);
+			}
+			_clip_push(mp, &res);
+			_clip_destroy(mp, &res);
+			r = 0;
+			goto ret;
+		}
+#if 1
+		{
+			/* call error with args */
+			int _argc = mp->argc;
+			ClipFrame *fp = mp->fp;
+			ClipVar *bp = mp->bp;
+			ClipVar res;
+			memset(&res, 0, sizeof(res));
+
+			mp->argc = argc;
+			mp->bp = fp->sp;
+			_clip_hash_name(mp, hash, buf, sizeof(buf));
+			r = _clip_trap_err(mp, EG_NOFUNC, 0, 0, 0, 0, buf);
+			mp->argc = _argc;
+			mp->fp = fp;
+			mp->bp = bp;
+			if (!mp->trapVar)
+				_clip_generr(mp, r);
+			_clip_errorblock_res(mp, mp->trapVar, r, &res);
+			argc++;
+			for (; argc; --argc)
+			{
+				--(fp->sp);
+				_clip_destroy(mp, fp->sp);
+			}
+			_clip_push(mp, &res);
+			_clip_destroy(mp, &res);
+			r = 0;
+			goto ret;
+		}
+#else
+		{
+			/* old code for call error without args */
+			_clip_hash_name(mp, hash, buf, sizeof(buf));
+			r = _clip_trap_err(mp, EG_NOFUNC, 0, 0, 0, 0, buf);
+			r = _clip_call_errblock(mp, r);
+		}
+#endif
 	}
 	if (fp)
 	{
@@ -3400,6 +4368,7 @@ _clip_destroy_locals(ClipMachine * mp)
 	}
 }
 
+
 #if 0
 static void
 resume_mp(ClipMachine * mp)
@@ -3455,6 +4424,34 @@ calc_loopcount(ClipMachine * mp, ClipVar * vp, ClipVarFrame * vfp, int deep)
 	return r;
 }
 
+
+CLIP_DLLEXPORT ClipVar *
+_clip_add_tempvar(ClipMachine *mp, ClipVar *vp)
+{
+	ClipFrame *fp;
+	ClipVarVect *vvp;
+	ClipVar *np;
+
+	if (!vp)
+		return 0;
+
+	fp = mp->fp;
+	vvp = fp->tempvars;
+	if (!vvp)
+	{
+		vvp = NEW(ClipVarVect);
+		fp->tempvars = vvp;
+	}
+
+	vvp->items = (ClipVar *) realloc (vvp->items, (vvp->count+1)*sizeof(ClipVar));
+	np = vvp->items + vvp->count;
+	vvp->count++;
+
+	_clip_clone(mp, np, vp);
+
+	return np;
+}
+
 CLIP_DLLEXPORT void
 _clip_resume(ClipMachine * mp, int nlocals, int nreflocals)
 {
@@ -3505,6 +4502,18 @@ _clip_resume(ClipMachine * mp, int nlocals, int nreflocals)
 		++p;
 		remove_private_vect(mp, num, p);
 		free(fp->privates);
+	}
+
+	if (fp->tempvars)
+	{
+		ClipVarVect *vvp = fp->tempvars;
+
+		for(i = 0; i < vvp->count; i++)
+			_clip_destroy(mp, vvp->items+i);
+
+		free(vvp->items);
+		free(vvp);
+		fp->tempvars = 0;
 	}
 
 	mp->fp = mp->fp->up;
@@ -3623,6 +4632,14 @@ _clip_destroy(ClipMachine * mp, ClipVar * vp)
 	CLEAR_CLIPVAR(vp);
 }
 
+CLIP_DLLEXPORT ClipVar *
+_clip_ref_destroy(ClipMachine * mp, ClipVar * vp)
+{
+	/*if (vp->t.flags != F_MREF)*/
+		_clip_destroy(mp, vp);
+	return vp;
+}
+
 int
 type_weight(int type)
 {
@@ -3693,20 +4710,20 @@ _clip_cmp(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int *res, int bytype
 		char *s;
 
 		for (s = Rval->s.str.buf + rlen - 1; rlen; --rlen, --s)
-			if (*s != ' ' && *s != '\n')
+			if (*s != ' ' /* && *s != '\n'*/)
 				break;
 
 		if (!(mp->flags & EXACT_FLAG))
 		{		/* SET EXACT OFF - empty rstr, len must match for equal */
-			if (rrlen == 0 )
+			if (rrlen == 0)
 				l = 0;
 #if 1
-			else if (lllen == 0 && rrlen >0 )
+			else if (lllen == 0 && rrlen > 0)
 				l = -1;
-			else /* if ( rrlen > lllen ) */
+			else	/* if ( rrlen > lllen ) */
 			{
-				if ( lllen > rrlen )
-					lllen = rrlen ;
+				if (lllen > rrlen)
+					lllen = rrlen;
 				l = _clip_strnncmp(Lval->s.str.buf, Rval->s.str.buf, lllen, rrlen);
 			}
 #else
@@ -3723,21 +4740,21 @@ _clip_cmp(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int *res, int bytype
 		else
 			/* SET EXACT ON - all but trailing spaces */
 		{
-			if ( llen==0 && rlen>0 /* llen > rlen */)
+			if (llen == 0 && rlen > 0 /* llen > rlen */ )
 				l = -1;
 			else
-                        {
+			{
 				for (s = Rval->s.str.buf + rlen - 1; rlen && *s == ' '; --rlen, --s)
 					;
 				for (s = Lval->s.str.buf + llen - 1; llen && *s == ' '; --llen, --s)
 					;
-				if ( rlen==0 && llen>0 )
+				if (rlen == 0 && llen > 0)
 					l = 1;
-				else if ( rlen>0 && llen==0 )
+				else if (rlen > 0 && llen == 0)
 					l = -1;
-                        	else
+				else
 					l = _clip_strnncmp(Lval->s.str.buf, Rval->s.str.buf, llen, rlen);
-                        }
+			}
 		}
 	}
 	else if (ltype == DATE_t && rtype == DATE_t)
@@ -3747,13 +4764,13 @@ _clip_cmp(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int *res, int bytype
 	else if (ltype == DATETIME_t && rtype == DATETIME_t)
 	{
 		l = (Lval->dt.julian < Rval->dt.julian ? -1 : (Lval->dt.julian > Rval->dt.julian ? 1 : 0));
-		if (l==0)
+		if (l == 0)
 			l = (Lval->dt.time < Rval->dt.time ? -1 : (Lval->dt.time > Rval->dt.time ? 1 : 0));
 	}
 	else if (ltype == NUMERIC_t && rtype == NUMERIC_t)
 	{
 		if (!Lval->t.memo && !Rval->t.memo)
-				{
+		{
 			double diff;
 
 			diff = fabs(Lval->n.d - Rval->n.d);
@@ -3765,10 +4782,10 @@ _clip_cmp(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int *res, int bytype
 				l = 1;
 			else
 				l = 0;
-						/*
-			l = (Lval->n.d < Rval->n.d ? -1 : (Lval->n.d > Rval->n.d ? 1 : 0));
-						*/
-				}
+			/*
+			   l = (Lval->n.d < Rval->n.d ? -1 : (Lval->n.d > Rval->n.d ? 1 : 0));
+			 */
+		}
 		else
 		{
 			if (Lval->t.memo && Rval->t.memo)
@@ -3834,19 +4851,21 @@ _clip_cmp(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int *res, int bytype
 	}
 	else
 	{
-		_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for compare operation");
-		return _clip_call_errblock(mp, 1);
+		return _clip_trap_operation(mp, __file__, __LINE__, "==", Lval);
+		/*return _clip_call_errblock(mp, 1);*/
 	}
 
 	*res = l;
 	return 0;
 }
 
-static const char *
-str_str(const char *src, int slen, const char *dst, int dlen)
+const char *
+_clip_strstr(const char *src, int slen, const char *dst, int dlen)
 {
 	const char *end, *de, *s = src, *d = dst;
 
+	if(!dlen)
+		return src;
 	for (end = src + slen, de = dst + dlen - 1; src < end; src++)
 		if (*src == *d)
 		{
@@ -3876,64 +4895,66 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 	rtype = _clip_type(Rval);
 
 	if (ltype == MAP_t)
-        {
+	{
 		int ind;
 		long hash = 0;
-                switch(op)
-                {
-                case '+':
-                	hash = HASH_operator_add;
-                        break;
-                case '-':
-                	hash = HASH_operator_sub;
-                        break;
-                case '*':
-                	hash = HASH_operator_mul;
-                        break;
-                case '/':
-                	hash = HASH_operator_div;
-                        break;
-                case '%':
-                	hash = HASH_operator_mod;
-                        break;
-                case '^':
-                	hash = HASH_operator_pow;
-                        break;
-                case '|':
-                	hash = HASH_operator_or;
-                        break;
-                case '&':
-                	hash = HASH_operator_and;
-                        break;
-                case '$':
-                	hash = HASH_operator_in;
-                        break;
-                case 'e':
-                	hash = HASH_operator_eq;
-                        break;
-                case 'E':
-                	hash = HASH_operator_eeq;
-                        break;
-                case 'N':
-                	hash = HASH_operator_neq;
-                        break;
-                case '<':
-                	hash = HASH_operator_lt;
-                        break;
-                case '>':
-                	hash = HASH_operator_gt;
-                        break;
-                case 'L':
-                	hash = HASH_operator_le;
-                        break;
-                case 'G':
-                	hash = HASH_operator_ge;
-                        break;
-                }
+
+		switch (op)
+		{
+		case '+':
+			hash = HASH_operator_add;
+			break;
+		case '-':
+			hash = HASH_operator_sub;
+			break;
+		case '*':
+			hash = HASH_operator_mul;
+			break;
+		case '/':
+			hash = HASH_operator_div;
+			break;
+		case '%':
+			hash = HASH_operator_mod;
+			break;
+		case '^':
+			hash = HASH_operator_pow;
+			break;
+		case '|':
+			hash = HASH_operator_or;
+			break;
+		case '&':
+			hash = HASH_operator_and;
+			break;
+		case '$':
+			hash = HASH_operator_in;
+			break;
+		case 'e':
+			hash = HASH_operator_eq;
+			break;
+		case 'E':
+			hash = HASH_operator_eeq;
+			break;
+		case 'N':
+			hash = HASH_operator_neq;
+			break;
+		case '<':
+			hash = HASH_operator_lt;
+			break;
+		case '>':
+			hash = HASH_operator_gt;
+			break;
+		case 'L':
+			hash = HASH_operator_le;
+			break;
+		case 'G':
+			hash = HASH_operator_ge;
+			break;
+		}
 
 		if (hash)
-                {
-                	ClipVar *vp = Lval;
+		{
+			ClipVar *vp = Lval;
+
 			/* try run `destroy` member */
 			if (search_map(vp->m.items, vp->m.count, hash, &ind))
 			{
@@ -3949,7 +4970,7 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 					ClipVar stack[2], res;
 
 					memset(stack, 0, sizeof(stack));
-                                        memset(&res, 0, sizeof(res));
+					memset(&res, 0, sizeof(res));
 
 					stack[0].t = vp->t;
 					stack[0].t.flags = F_MPTR;
@@ -3967,11 +4988,10 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 
 					_clip_destroy(mp, &res);
 				}
-        			return ret;
+				return ret;
 			}
-        	}
-        }
-
+		}
+	}
 
 	switch (op)
 	{
@@ -4008,49 +5028,52 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		else if (ltype == NUMERIC_t && rtype == DATE_t)
 		{
 			double tmp;
+
 			if (Lval->t.memo)
 				tmp = rational_toDouble(Lval->r.r);
 			else
 				tmp = Lval->n.d;
-			Lval->t.type   = DATE_t;
+			Lval->t.type = DATE_t;
 			Lval->d.julian = Rval->d.julian;
 			Lval->d.julian += tmp;
 		}
 		else if (ltype == DATETIME_t && rtype == NUMERIC_t)
 		{
 			long tmp;
+
 			if (Rval->t.memo)
-				tmp = (long)rational_toDouble(Rval->r.r);
+				tmp = (long) rational_toDouble(Rval->r.r);
 			else
-				tmp = (long)Rval->n.d;
-			Lval->dt.julian += tmp / (24*60*60);
-			Lval->dt.time += (tmp % (24*60*60)) * 1000;
+				tmp = (long) Rval->n.d;
+			Lval->dt.julian += tmp / (24 * 60 * 60);
+			Lval->dt.time += (tmp % (24 * 60 * 60)) * 1000;
 		}
 		else if (ltype == NUMERIC_t && rtype == DATETIME_t)
 		{
 			long tmp;
+
 			if (Lval->t.memo)
-				tmp = (long)rational_toDouble(Lval->r.r);
+				tmp = (long) rational_toDouble(Lval->r.r);
 			else
-				tmp = (long)Lval->n.d;
-			Lval->t.type   = DATETIME_t;
-			Lval->dt.julian = Rval->dt.julian + tmp / (24*60*60);
-			Lval->dt.time = Rval->dt.time + (tmp % (24*60*60)) * 1000;
+				tmp = (long) Lval->n.d;
+			Lval->t.type = DATETIME_t;
+			Lval->dt.julian = Rval->dt.julian + tmp / (24 * 60 * 60);
+			Lval->dt.time = Rval->dt.time + (tmp % (24 * 60 * 60)) * 1000;
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for  '+' operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "+", Lval);
+			/*return 1;*/
 		}
 		break;
 	case '-':
 		if (ltype == CHARACTER_t && rtype == CHARACTER_t)
 		{
 			int llen = Lval->s.str.len;
-			int len;
+			int len,slen = 0;
 			char *s;
 
-			for (s = Lval->s.str.buf + llen - 1; llen; --llen, --s)
+			for (s = Lval->s.str.buf + llen - 1; llen; --llen, --s, ++slen)
 				if (*s != ' ' && *s != '\t')
 					break;
 			len = llen + Rval->s.str.len;
@@ -4064,9 +5087,11 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 				Lval->s.str.buf = s;
 			}
 			else
-				Lval->s.str.buf = (char *) realloc(Lval->s.str.buf, len + 1);
+				Lval->s.str.buf = (char *) realloc(Lval->s.str.buf, len + slen + 1);
 			memcpy(Lval->s.str.buf + llen, Rval->s.str.buf, Rval->s.str.len + 1);
-			Lval->s.str.len = len;
+			memset(Lval->s.str.buf + len,' ',slen);
+			Lval->s.str.buf[len+slen] = 0;
+			Lval->s.str.len = len+slen;
 			Lval->t.MACRO = Rval->t.MACRO;
 		}
 		else if (ltype == NUMERIC_t && rtype == NUMERIC_t)
@@ -4082,7 +5107,7 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else if (ltype == DATETIME_t && rtype == DATETIME_t)
 		{
-			long tmp = (Lval->dt.julian - Rval->dt.julian) * 24*60*60;
+			long tmp = (Lval->dt.julian - Rval->dt.julian) * 24 * 60 * 60;
 
 			tmp += (Lval->dt.time - Rval->dt.time) / 1000;
 
@@ -4092,26 +5117,28 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		else if (ltype == DATETIME_t && rtype == NUMERIC_t)
 		{
 			long tmp;
+
 			if (Rval->t.memo)
-				tmp = (long)rational_toDouble(Rval->r.r);
+				tmp = (long) rational_toDouble(Rval->r.r);
 			else
-				tmp = (long)Rval->n.d;
-			Lval->dt.julian -= tmp / (24*60*60);
-			Lval->dt.time -= (tmp % (24*60*60)) * 1000;
+				tmp = (long) Rval->n.d;
+			Lval->dt.julian -= tmp / (24 * 60 * 60);
+			Lval->dt.time -= (tmp % (24 * 60 * 60)) * 1000;
 			if (Lval->dt.time < 0)
 			{
 				Lval->dt.julian--;
-				Lval->dt.time = (24*60*60*1000) + Lval->dt.time;
+				Lval->dt.time = (24 * 60 * 60 * 1000) + Lval->dt.time;
 			}
 		}
 		else if (ltype == NUMERIC_t && rtype == DATE_t)
 		{
 			double tmp;
+
 			if (Lval->t.memo)
 				tmp = rational_toDouble(Lval->r.r);
 			else
 				tmp = Lval->n.d;
-			Lval->t.type   = DATE_t;
+			Lval->t.type = DATE_t;
 			Lval->d.julian = Rval->d.julian;
 			Lval->d.julian -= tmp;
 		}
@@ -4125,8 +5152,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for  '-' operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "-", Lval);
+			/*return 1;*/
 		}
 		break;
 	case '*':
@@ -4136,8 +5163,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for  '*' operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "*", Lval);
+			/*return 1;*/
 		}
 		break;
 	case '/':
@@ -4147,8 +5174,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for  '/' operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "/", Lval);
+			/*return 1;*/
 		}
 		break;
 	case '%':
@@ -4195,8 +5222,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for  '%' operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "%", Lval);
+			/*return 1;*/
 		}
 		break;
 	case '^':
@@ -4223,14 +5250,14 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for  '**' operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "**", Lval);
+			/*return 1;*/
 		}
 		break;
 	case '$':
 		if (ltype == CHARACTER_t && rtype == CHARACTER_t)
 		{
-			const char *s = str_str(Rval->s.str.buf, Rval->s.str.len,
+			const char *s = _clip_strstr(Rval->s.str.buf, Rval->s.str.len,
 						Lval->s.str.buf, Lval->s.str.len);
 
 			_clip_destroy(mp, lval);
@@ -4251,7 +5278,7 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 					no = Lval->n.d;
 				break;
 			case CHARACTER_t:
-				/*no = _clip_casehashbytes(0, Lval->s.str.buf, Lval->s.str.len);*/
+				/*no = _clip_casehashbytes(0, Lval->s.str.buf, Lval->s.str.len); */
 				no = _clip_hashbytes(0, Lval->s.str.buf, Lval->s.str.len);
 				break;
 			default:
@@ -4286,8 +5313,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		else
 		{
 			  inv_in_arg:
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for  '$' operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "$", Lval);
+			/*return 1;*/
 		}
 		break;
 	case 'E':
@@ -4347,8 +5374,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for OR operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "OR", lval);
+			/*return 1;*/
 		}
 		lval->l.val = l;
 		lval->t.type = LOGICAL_t;
@@ -4360,8 +5387,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for AND operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "AND", lval);
+			/*return 1;*/
 		}
 		lval->l.val = l;
 		lval->t.type = LOGICAL_t;
@@ -4373,10 +5400,10 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		if (ltype == CHARACTER_t && rtype == CHARACTER_t)
 		{
 			l = _clip_strnncmp(Lval->s.str.buf, Rval->s.str.buf, Lval->s.str.len, Rval->s.str.len);
-                        /*
-			if ((ret = _clip_cmp(mp, lval, rval, &l, 0)))
-				return ret;
-                        */
+#if 1   /* added 20030118 for test '? "" <="0"' */
+			ret = _clip_cmp(mp, lval, rval, &l, 0);
+#endif
+			//printf("\nl=%d,ret=%d\n",l,ret);
 			_clip_destroy(mp, lval);
 		}
 		else if (ltype == DATE_t && rtype == DATE_t)
@@ -4396,7 +5423,7 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 				l = 1;
 			else
 				l = 0;
-			if (l==0)
+			if (l == 0)
 			{
 				if (Lval->dt.time < Rval->dt.time)
 					l = -1;
@@ -4461,8 +5488,8 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 		}
 		else
 		{
-			_clip_trap_str(mp, __file__, __LINE__, "invalid arguments for compare operation");
-			return 1;
+			return _clip_trap_operation(mp, __file__, __LINE__, "==", lval);
+			/*return 1;*/
 		}
 		switch (op)
 		{
@@ -4497,7 +5524,8 @@ _clip_op(ClipMachine * mp, int op)
 	ClipVar *lval = mp->fp->sp - 2;
 
 	if ((ret = do_assign(mp, lval, rval, op)))
-		return _clip_call_errblock(mp, ret);
+		return ret;
+		/*return _clip_call_errblock(mp, ret);*/
 	_clip_destroy(mp, rval);
 	--mp->fp->sp;
 	return 0;
@@ -4577,14 +5605,27 @@ _clip_assign(struct ClipMachine *mp, void *Lval)
 		}
 		else
 		{
-			if (!(lval->t.flags & F_MPTR) && (rval->t.flags == F_MREF) &&
-				lval->t.type == UNDEF_t )
-					_clip_dup(mp, lval, rval);
-				else
-			if ((ret = _clip_mclone(mp, lval, rval)))
+			if (!(lval->t.flags & F_MPTR) && (rval->t.flags == F_MREF) && lval->t.type == UNDEF_t
+				 && !(rval->t.type == ARRAY_t || rval->t.type == MAP_t)
+				)
+			{
+					_clip_dup(mp, lval, _clip_vptr(rval));
+			}
+#if 0
+			else if (lval->t.type == ARRAY_t || lval->t.type == MAP_t)
+			{
+				_clip_destroy(mp, lval);
+				ret = _clip_mclone(mp, lval, rval);
+			}
+#endif
+			else if ((ret = _clip_mclone(mp, lval, rval)))
 				return ret;
 		}
+		lval->t.field = 0;
+		if (lval->t.type == CHARACTER_t)
+			lval->t.memo = 0;
 	}
+
 	_clip_destroy(mp, rval);
 	mp->fp->sp--;
 	return 0;
@@ -4620,18 +5661,24 @@ _clip_iassign(struct ClipMachine *mp, void *Lval)
 
 	if ((lval->t.flags & F_MPTR) && lval->t.field && lval->p.fp)
 	{
-		return _clip_iassign_field(mp, lval->p.fp->fieldhash, lval->p.fp->areahash);
+		ret = _clip_iassign_field(mp, lval->p.fp->fieldhash, lval->p.fp->areahash);
 	}
 	else
 	{
-			if (!(lval->t.flags & F_MPTR) && (rval->t.flags == F_MREF) &&
-				lval->t.type == UNDEF_t )
-					_clip_dup(mp, lval, rval);
-				else
-			if ((ret = _clip_mclone(mp, lval, rval)))
-				return ret;
+		if (!(lval->t.flags & F_MPTR) && (rval->t.flags == F_MREF) && lval->t.type == UNDEF_t
+				 && !(rval->t.type == ARRAY_t || rval->t.type == MAP_t)
+		)
+		{
+				ret = _clip_dup(mp, lval, _clip_vptr(rval));
+		}
+		else
+			ret = _clip_mclone(mp, lval, rval);
+		lval->t.field = 0;
+		if (lval->t.type == CHARACTER_t)
+			lval->t.memo = 0;
 	}
-	return 0;
+
+	return ret;
 }
 
 static ClipVar *
@@ -4788,7 +5835,7 @@ _clip_memdup(const void *src, int len)
 CLIP_DLLEXPORT int
 _clip_mclone(struct ClipMachine *mp, ClipVar * dest, ClipVar * src)
 {
-	if (dest->t.flags == F_MREF && dest->p.vp->t.count>1)
+	if (dest->t.flags == F_MREF && dest->p.vp->t.count > 1)
 	{
 		ClipVar *dp, *srcp;
 		int count, ret;
@@ -4844,7 +5891,7 @@ _clip_clone(struct ClipMachine *mp, ClipVar * dest, ClipVar * src)
 		dup_ref(dest, src);
 		return 0;
 	case F_MREF:
-		switch(src->t.type)
+		switch (src->t.type)
 		{
 		case MAP_t:
 		case ARRAY_t:
@@ -4909,7 +5956,6 @@ _clip_clone(struct ClipMachine *mp, ClipVar * dest, ClipVar * src)
 CLIP_DLLEXPORT int
 _clip_dup(ClipMachine * mp, ClipVar * dest, ClipVar * src)
 {
-
 	dest->t = src->t;
 
 	switch (src->t.flags)
@@ -4918,14 +5964,15 @@ _clip_dup(ClipMachine * mp, ClipVar * dest, ClipVar * src)
 	case F_MREF:
 #if 0
 		{
-		enum ClipVarType type = src->t.type;
-		if (type == CCODE_t || type == PCODE_t)
-		{
-			dest->p.vp = src->p.vp;
-			++(src->p.vp->t.count);
-			return 0;
+			enum ClipVarType type = src->t.type;
+
+			if (type == CCODE_t || type == PCODE_t)
+			{
+				dest->p.vp = src->p.vp;
+				++(src->p.vp->t.count);
+				return 0;
+			}
 		}
-				}
 #endif
 		src = src->p.vp;
 		dest->t.flags = F_NONE;
@@ -4961,7 +6008,7 @@ _clip_dup(ClipMachine * mp, ClipVar * dest, ClipVar * src)
 		break;
 	case CCODE_t:
 	case PCODE_t:
-			{
+		{
 		/**dest = *src;*/
 			CLEAR_CLIPVAR(dest);
 			dest->t.flags = F_MPTR;
@@ -4969,30 +6016,31 @@ _clip_dup(ClipMachine * mp, ClipVar * dest, ClipVar * src)
 			dest->p.vp = src;
 
 			src->t.count++;
-						#if 0
+#if 0
 			vp->t.type = src->t.type;
 			vp->t.flags = F_NONE;
-						vp->c = src->c;
-						if (vp->t.type == PCODE_t && vp->c.u.block->file)
-							vp->c.u.block->file->refCount++;
-						#if 0
-						if (vp->t.type == PCODE_t)
-						{
+			vp->c = src->c;
+			if (vp->t.type == PCODE_t && vp->c.u.block->file)
+				vp->c.u.block->file->refCount++;
+#if 0
+			if (vp->t.type == PCODE_t)
+			{
 				ClipBlock *bp;
+
 				bp = NEW(ClipBlock);
 				*bp = *(src->c.u.block);
 				vp->c.u.block = bp;
-				/*bp->file->refCount++;*/
-						}
-						else
-							vp->c.u.func = src->c.u.func;
-			#endif
-						#endif
-				}
-				#if 0
+				/*bp->file->refCount++; */
+			}
+			else
+				vp->c.u.func = src->c.u.func;
+#endif
+#endif
+		}
+#if 0
 		if (src->c.uplocals && src->c.uplocals->refcount)
 			src->c.uplocals->refcount++;
-		#endif
+#endif
 		break;
 	case CHARACTER_t:
 		{
@@ -5069,7 +6117,7 @@ _clip_push(ClipMachine * mp, void *vpp)
 	ClipVar *vp = (ClipVar *) vpp;
 	int ret;
 
-	if ((vp->t.flags & F_MPTR) && vp->t.field && vp->p.fp)
+	if (vp->t.type != UNDEF_t && (vp->t.flags & F_MPTR) && vp->t.field && vp->p.fp)
 	{
 		ret = _clip_take_field(mp, vp->p.fp->fieldhash, vp->p.fp->areahash, vp);
 		if (ret)
@@ -5080,30 +6128,62 @@ _clip_push(ClipMachine * mp, void *vpp)
 
 	++(mp->fp->sp);
 
-	if ( !(mp->flags1 & NOEXPAND_MACRO_FLAG) )
-        {
+	/*
+	if (!(mp->flags1 & NOEXPAND_MACRO_FLAG))
+	{
+	*/
 		if (!ret)
 		{
 			if (sp->t.type == CHARACTER_t && sp->t.MACRO)
 				ret = _clip_expand_var(mp, sp);
 		}
-        }
+	/*}*/
 
 	CLIP_CHECK_STACK;
 
 	return ret;
 }
 
+CLIP_DLLEXPORT void
+_clip_push_nil(ClipMachine *mp)
+{
+	ClipFrame *fp = mp->fp;
+	fp->sp->t.type = UNDEF_t;
+	fp->sp->t.flags = F_NONE;
+	fp->sp++;
+}
+
+CLIP_DLLEXPORT void
+_clip_push_true(ClipMachine * mp)
+{
+	ClipFrame *fp = mp->fp;
+	fp->sp->t.type = LOGICAL_t;
+	fp->sp->t.flags = F_NONE;
+	fp->sp->l.val = 1;
+	fp->sp++;
+}
+
+CLIP_DLLEXPORT void
+_clip_push_false(ClipMachine * mp)
+{
+	ClipFrame *fp = mp->fp;
+	fp->sp->t.type = LOGICAL_t;
+	fp->sp->t.flags = F_NONE;
+	fp->sp->l.val = 0;
+	fp->sp++;
+}
 
 CLIP_DLLEXPORT int
 _clip_push_static(ClipMachine * mp, void *vpp)
 {
 	int r;
+
 	r = _clip_push(mp, vpp);
 	if (!r)
 	{
 		ClipVar *vp;
-		vp = _clip_vptr(mp->fp->sp-1);
+
+		vp = _clip_vptr(mp->fp->sp - 1);
 		if (vp->t.type == CCODE_t || vp->t.type == PCODE_t)
 		{
 			if (!vp->c.uplocals && mp->fp->localvars)
@@ -5139,6 +6219,7 @@ _clip_ref(ClipMachine * mp, void *Vp, int noadd)
 	ClipVar *nv;
 	ClipVar *vp = (ClipVar *) Vp;
 	ClipVar *sp = mp->fp->sp;
+	CLEAR_CLIPVAR(sp);
 
 	if (!vp)
 		return EG_NOVAR;
@@ -5169,13 +6250,13 @@ _clip_ref(ClipMachine * mp, void *Vp, int noadd)
 		*nv = *vp;
 
 	nv->t.count = noadd ? 1 : 2;
-	vp->t.flags = F_MREF/*mptr?F_MPTR:F_MREF*/;
+	vp->t.flags = F_MREF /*mptr?F_MPTR:F_MREF */ ;
 	vp->p.vp = nv;
 	vp->t.field = 0;
 	vp->p.fp = 0;
 
 	sp->t.type = nv->t.type;
-	sp->t.flags = F_MREF/*mptr?F_MPTR:F_MREF*/;
+	sp->t.flags = F_MREF /*mptr?F_MPTR:F_MREF */ ;
 	sp->p.vp = nv;
 	sp->t.field = 0;
 	sp->p.fp = 0;
@@ -5218,26 +6299,28 @@ calc_casehash(ClipMachine * mp, ClipVar * vp, int trim)
 	switch (vp->t.type)
 	{
 	case CHARACTER_t:
+		{
+			char *s = vp->s.str.buf;
+			int l = vp->s.str.len;
+
+			if (trim)
 			{
-					char *s = vp->s.str.buf;
-						int l = vp->s.str.len;
-						if (trim)
-						{
-							char *e;
-								for(e=s+l-1; e>=s; e--)
-								{
-									switch(*e)
-										{
-										case ' ':
-										case '\t':
-										case '\r':
-										case '\n':
-											l--;
-											continue;
-										}
-										break;
-								}
-						}
+				char *e;
+
+				for (e = s + l - 1; e >= s; e--)
+				{
+					switch (*e)
+					{
+					case ' ':
+					case '\t':
+					case '\r':
+					case '\n':
+						l--;
+						continue;
+					}
+					break;
+				}
+			}
 			return _clip_casehashbytes(0, s, l);
 		}
 	case NUMERIC_t:
@@ -5291,6 +6374,7 @@ CLIP_DLLEXPORT void
 _clip_param(ClipMachine * mp, int no, int lno)
 {
 	ClipVar *param = _clip_ref_local(mp, lno);
+
 	_clip_destroy(mp, param);
 
 	if (!param)
@@ -5537,10 +6621,10 @@ fetch_var(ClipMachine * mp, long hash)
 }
 
 static ClipVar *
-fetch_obj(ClipMachine *mp, ClipVar *obj, long hash)
+fetch_obj(ClipMachine * mp, ClipVar * obj, long hash)
 {
 	if (obj->t.type != MAP_t)
-        	return 0;
+		return 0;
 	return _clip_mget(mp, obj, hash);
 }
 
@@ -5552,7 +6636,16 @@ _clip_memvar(ClipMachine * mp, long hash)
 	vp = fetch_var(mp, hash);
 
 	if (!vp)
+	{
+#if 0
 		vp = add_private(mp, hash);
+#else
+		char buf[64];
+		_clip_hash_name(mp, hash, buf, sizeof(buf));
+		_clip_trap_printf(mp, __file__, __LINE__, "no memvar variable '%s'", buf);
+		return _clip_call_errblock(mp, EG_NOVAR);
+#endif
+	}
 	_clip_push(mp, &vp->var);
 	return 0;
 }
@@ -5563,15 +6656,16 @@ _clip_fmemvar(ClipMachine * mp, long hash)
 	VarEntry *vp;
 
 	if (mp->obj)
-        {
-        	ClipVar *vpp;
-        	vpp = fetch_obj(mp, _clip_vptr(mp->obj), hash);
-                if (vpp)
-                {
+	{
+		ClipVar *vpp;
+
+		vpp = fetch_obj(mp, _clip_vptr(mp->obj), hash);
+		if (vpp)
+		{
 			_clip_push(mp, vpp);
 			return 0;
-                }
-        }
+		}
+	}
 
 	if (!_clip_try_field(mp, hash))
 		return 0;
@@ -5631,6 +6725,9 @@ _clip_ref_fmemvar(ClipMachine * mp, long hash)
 
 	if (!vp)
 	{
+#if 1
+		vp = add_private(mp, hash);
+#else
 		char buf[64];
 
 		/*int r; */
@@ -5639,6 +6736,7 @@ _clip_ref_fmemvar(ClipMachine * mp, long hash)
 		_clip_trap_printf(mp, __file__, __LINE__, "no variable '%s'", buf);
 		/*r = _clip_trap_err(mp, EG_NOVAR, 0, 0, 0, 0, buf); */
 		return _clip_call_errblock(mp, EG_NOVAR);
+#endif
 	}
 	_clip_ref(mp, &vp->var, 0);
 	return 0;
@@ -5650,7 +6748,17 @@ _clip_ref_memvar(ClipMachine * mp, long hash)
 	VarEntry *vp = fetch_var(mp, hash);
 
 	if (!vp)
+	{
+#if 1
 		vp = add_private(mp, hash);
+#else
+		char buf[64];
+		_clip_hash_name(mp, hash, buf, sizeof(buf));
+		_clip_trap_printf(mp, __file__, __LINE__, "no variable '%s'", buf);
+		_clip_call_errblock(mp, EG_NOVAR);
+		return 0;
+#endif
+	}
 	return &vp->var;
 }
 
@@ -5660,7 +6768,17 @@ _clip_ref_memvar_noadd(ClipMachine * mp, long hash)
 	VarEntry *vp = fetch_var(mp, hash);
 
 	if (!vp)
+	{
+#if 0
 		return 0;
+#else
+		char buf[64];
+		_clip_hash_name(mp, hash, buf, sizeof(buf));
+		_clip_trap_printf(mp, __file__, __LINE__, "no memvar variable '%s'", buf);
+		_clip_call_errblock(mp, EG_NOVAR);
+		return 0;
+#endif
+	}
 	return &vp->var;
 }
 
@@ -5703,7 +6821,7 @@ _clip_ref_public_noadd(ClipMachine * mp, long hash)
 	VarEntry *vp = (VarEntry *) HashTable_fetch(mp->publics, hash);
 
 	if (!vp)
-        	return 0;
+		return 0;
 	else
 		return &vp->var;
 }
@@ -5742,8 +6860,32 @@ _clip_trap_str(ClipMachine * mp, const char *filename, int line, const char *str
 {
 	ClipVar *vp;
 
-	vp = _clip_new_error(mp, str, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	vp = _clip_new_error(mp, _clip_gettext(str), 2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	_clip_trap_var(mp, filename, line, vp);
+}
+
+CLIP_DLLEXPORT int
+_clip_trap_operation(ClipMachine * mp, const char *filename, int line, const char *oper,
+	ClipVar *lval)
+{
+	ClipVar *vp;
+	int r;
+	char buf[256];
+	snprintf(buf,256,_clip_gettext("invalid arguments for  '%s' operation"),oper);
+
+	vp = _clip_new_error(mp, buf, 2, 0, 0, 0, 0, 0, 0, 0, 0, oper);
+	_clip_trap_var(mp, filename, line, vp);
+
+	if (!mp->trapVar)
+		_clip_generr(mp, 1);
+
+	_clip_destroy(mp, lval);
+	r = _clip_errorblock_res(mp, mp->trapVar, 1, lval);
+
+	if (!r && _clip_type(lval) == UNDEF_t)
+		r = 1;
+
+	return r;
 }
 
 CLIP_DLLEXPORT void
@@ -5753,7 +6895,7 @@ _clip_trap_printf(ClipMachine * mp, const char *filename, int line, const char *
 	char buf[256];
 
 	va_start(ap, fmt);
-	vsnprintf(buf, sizeof(buf), fmt, ap);
+	vsnprintf(buf, sizeof(buf), _clip_gettext(fmt), ap);
 	va_end(ap);
 	_clip_trap_str(mp, filename, line, buf);
 }
@@ -5763,7 +6905,7 @@ _clip_trap_printv(ClipMachine * mp, const char *filename, int line, const char *
 {
 	char buf[256];
 
-	vsnprintf(buf, sizeof(buf), fmt, ap);
+	vsnprintf(buf, sizeof(buf), _clip_gettext(fmt), ap);
 	_clip_trap_str(mp, filename, line, buf);
 }
 
@@ -5804,7 +6946,7 @@ _clip_sarray(ClipMachine * mp, int n)
 	ap = NEW(ClipVar);
 	CLEAR_CLIPVAR(&arr);
 	arr.t.type = ARRAY_t;
-	arr.t.flags = F_MPTR;
+	arr.t.flags = F_MPTR/*F_MREF*/;
 	arr.p.vp = ap;
 	ap->t.type = ARRAY_t;
 	ap->t.flags = F_NONE;
@@ -5860,13 +7002,20 @@ _clip_dimarray(ClipMachine * mp, int n)
 	int i;
 	long *dims;
 
+#ifdef OS_MINGW
+	dims = (long *) malloc(sizeof(long) * n);
+#else
 	dims = (long *) alloca(sizeof(long) * n);
+#endif
 
 	for (i = 0; i < n; i++)
 		dims[i] = _clip_long(sp - n + i);
 
 	mp->fp->sp -= n - 1;
 	new_array(mp->fp->sp - 1, n, dims);
+#ifdef OS_MINGW
+	free(dims);
+#endif
 }
 
 /* create with n dimentions */
@@ -6150,14 +7299,15 @@ _clip_unref_arr(ClipMachine * mp)
 }
 
 static void
-print_dim(ClipMachine *mp, char *buf, int size, int dim, int Dim, long *Vect)
+print_dim(ClipMachine * mp, char *buf, int size, int dim, int Dim, long *Vect)
 {
 	char *s = buf, *e = buf + size - 20;
 	int i;
 
 	for (i = 0, *s = 0; i < Dim - dim && s < e; ++i)
 	{
-			char bb[64];
+		char bb[64];
+
 		s = s + strlen(s);
 		_clip_hash_name(mp, GETLONG(Vect + i), bb, sizeof(bb));
 		sprintf(s, "[%s]", bb);
@@ -6345,6 +7495,46 @@ _clip_mind(ClipMachine * mp, ClipVar * ap, long no, int *ind)
 	return !search_map(ap->m.items, ap->m.count, no, ind);
 }
 
+static int
+test_maponerror(ClipMachine * mp, ClipVar * map, char * member)
+{
+	int ind, ret = 1;
+
+	/* try run `onerror` member */
+	if (search_map(map->m.items, map->m.count, HASH_onerror, &ind))
+	{
+		ClipVar *ep;
+
+		map->t.memo = 0;
+		ep = _clip_vptr(&(map->m.items[ind].v));
+
+		if (ep->t.type == PCODE_t || ep->t.type == CCODE_t)
+		{
+			int i;
+			ClipVar stack[3];
+			ClipVar *rval = mp->fp->sp - 1;
+
+			memset(stack, 0, sizeof(stack));
+
+			stack[0].t = map->t;
+			stack[0].t.flags = F_MPTR;
+			stack[0].p.vp = map;
+			map->t.count++;
+
+			_clip_var_str(member, strlen(member), stack + 1);
+			_clip_clone(mp, stack + 2, rval);
+
+			_clip_eval(mp, _clip_vptr(ep), 3, stack, rval);
+
+			for (i = 0; i < 3; i++)
+				_clip_destroy(mp, stack + i);
+			ret = 0;
+		}
+		map->t.memo = 1;
+	}
+	return ret;
+}
+
 static ClipVar *
 fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Vect, int store, ClipVar ** mapp, long *hashp)
 {
@@ -6352,29 +7542,69 @@ fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Ve
 	ClipVar *vp = NULL;
 	ClipVarEl *vlp = 0;
 	int isMap, type;
-
-	type = _clip_type(ap);
-
-	/*ClipVarEl empty; */
-	isMap = (type == MAP_t ? 1 : 0);
+	int pdim;
+	long *pvect;
+	ClipVar *pap;
 
 	if (!dim)
 		return ap;
+
+	type = _clip_type(ap);
+
+	isMap = (type == MAP_t ? 1 : 0);
+
+	if ( type == CHARACTER_t)
+	{
+		long pos, len=1, slen;
+		char *buf;
+		ClipVar *sp = mp->fp->sp, var;
+
+		pos = _clip_hash(mp, sp - dim);
+		pos --;
+		if ( dim > 1 )
+			len = _clip_hash(mp, sp - dim + 1);
+		if ( len < 1 )
+			len = 1;
+
+		vp = _clip_vptr(ap);
+		slen = vp->s.str.len;
+		buf = vp->s.str.buf;
+
+		CLEAR_CLIPVAR(&var);
+		if ( pos<0 || pos >= slen )
+		{
+			pos = 0;
+			len = 0;
+		}
+		if ( pos + len > slen)
+			len = slen - pos;
+		_clip_var_str(buf+pos, len, &var);
+		vp = _clip_add_tempvar(mp, &var);
+		_clip_destroy(mp, &var);
+		return vp;
+	}
 
 	if (type != ARRAY_t && !isMap)
 	{
 		char buf[64];
 
-		print_dim(mp, buf, sizeof(buf), dim-1, Dim, Vect);
+		print_dim(mp, buf, sizeof(buf), dim - 1, Dim, Vect);
 		_clip_trap_printf(mp, mp->fp->filename, mp->fp->line, "try fetch element from non-array object%s%s",
 				  buf[0] ? " " : "", buf);
 		_clip_call_errblock(mp, EG_BOUND);
 		return NULL;
 	}
+
+	pap = ap;
+	pvect = vect;
+	pdim = dim;
+
 	ap = _clip_vptr(ap);
 	no = GETLONG(vect);
+
 	++vect;
 	--dim;
+
 	if (isMap)
 	{
 		int ind;
@@ -6384,7 +7614,7 @@ fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Ve
 			vlp = ap->m.items + ind;
 		else if (store)
 		{
-		/*addvar:*/
+			/*addvar: */
 			ap->m.items = (ClipVarEl *) realloc(ap->m.items, (c + 1) * sizeof(ClipVarEl));
 			if (ind < c)
 				memmove(ap->m.items + ind + 1, ap->m.items + ind, (c - ind /*-1*/ ) * sizeof(ClipVarEl));
@@ -6395,9 +7625,9 @@ fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Ve
 		}
 		else
 		{
-			if ( (mp->flags1 & MAPERR_FLAG) )
+			if ((mp->flags1 & MAPERR_FLAG))
 			{
-				/*goto addvar;*/
+				/*goto addvar; */
 				vp = mp->fp->sp;
 				memset(vp, 0, sizeof(ClipVar));
 				vp->p.vp = vp;
@@ -6406,10 +7636,19 @@ fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Ve
 			else
 			{
 				char buf[64];
+
 				_clip_hash_name(mp, no, buf, sizeof(buf));
-				_clip_trap_printf(mp, mp->fp->filename, mp->fp->line, "map fetch error: index %s", buf);
-				_clip_call_errblock(mp, EG_BOUND);
-				return 0;
+				if ( test_maponerror(mp,ap,buf) )
+				{
+					_clip_trap_printf(mp, mp->fp->filename, mp->fp->line, "map fetch error: index %s", buf);
+					_clip_call_errblock(mp, EG_BOUND);
+					return 0;
+				}
+				else
+				{
+					vp = fetch_arr(mp, pap, pdim, pvect, Dim, Vect, store, mapp, hashp);
+					return vp;
+				}
 			}
 		}
 
@@ -6439,6 +7678,20 @@ fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Ve
 	return vp;
 }
 
+static int
+clip_count(ClipVar *vp)
+{
+	int count;
+
+	if (vp && vp->t.flags & F_MPTR)
+	{
+		count = vp->p.vp->t.count + clip_count(vp->p.vp);
+	}
+	else
+		count = 0;
+	return count;
+}
+
 static ClipVar *
 clip_fetch(ClipMachine * mp, int dim, int push, int store, ClipVar ** mapp, long *hashp)
 {
@@ -6447,14 +7700,29 @@ clip_fetch(ClipMachine * mp, int dim, int push, int store, ClipVar ** mapp, long
 	ClipVar *ap = sp - dim - 1;
 	ClipVar arr;
 	ClipVar *vp = NULL;
+	/*ClipVar *app;*/
 	int i;
+#ifdef OS_MINGW
+	long *vect = (long *) malloc(sizeof(long) * dim);
+#else
 	long *vect = (long *) alloca(sizeof(long) * dim);
+#endif
 
 	memset(&arr, 0, sizeof(ClipVar));
 	_clip_clone(mp, &arr, ap);
 
 	for (i = 0; i < dim; ++i)
-		SETLONG(vect + i, _clip_hash(mp, sp - dim + i));
+	{
+		long h;
+		void *p;
+
+		h = _clip_hash(mp, sp - dim + i);
+		p = vect + i;
+
+		*(long *) (p) = (h);
+		/*SETLONG(vect + i, _clip_hash(mp, sp - dim + i)); */
+	}
+
 
 	vp = fetch_arr(mp, &arr, dim, vect, dim, vect, store, mapp, hashp);
 
@@ -6485,7 +7753,20 @@ clip_fetch(ClipMachine * mp, int dim, int push, int store, ClipVar ** mapp, long
 		_clip_call_errblock(mp, EG_BOUND);
 	}
 
+#if 0
+	app = _clip_vptr(&arr);
+	if (app->t.count == 1 && !push)
+#else
+	if (clip_count(&arr) == 1 && !push)
+#endif
+	{
+		vp = _clip_add_tempvar(mp, vp);
+	}
+
 	_clip_destroy(mp, &arr);
+#ifdef OS_MINGW
+	free(vect);
+#endif
 	return vp;
 }
 
@@ -6504,7 +7785,11 @@ _clip_fetch(ClipMachine * mp, int dim)
 CLIP_DLLEXPORT ClipVar *
 _clip_fetchref(ClipMachine * mp, int dim)
 {
-	return clip_fetch(mp, dim, 0, 0, 0, 0);
+	ClipVar *vp;
+
+	vp = clip_fetch(mp, dim, 0, 0, 0, 0);
+	/*printf("%p\n",vp); */
+	return vp;
 }
 
 static void
@@ -6804,6 +8089,19 @@ _clip_eval_macro(ClipMachine * mp, char *str, int len, ClipVar * dest)
 			return 0;
 
 		vp = fetch_var(mp, hash);
+
+		if (!vp)
+		{
+			if (mp->obj)
+			{
+				ClipVar *vpp;
+
+				vpp = fetch_obj(mp, _clip_vptr(mp->obj), hash);
+				if (vpp)
+					return _clip_clone(mp, dest, vpp);
+			}
+		}
+
 		if (!vp)
 		{
 			if (mp->noerrblock)
@@ -6814,11 +8112,11 @@ _clip_eval_macro(ClipMachine * mp, char *str, int len, ClipVar * dest)
 				return _clip_clone(mp, dest, &var);
 			}
 			else
-                        {
+			{
 				_clip_trap_printf(mp, __file__, __LINE__, "no variable name: '%.*s'", len, str);
 				return _clip_call_errblock(mp, 1);
-				/*vp = add_private(mp, hash);*/
-                        }
+				/*vp = add_private(mp, hash); */
+			}
 		}
 		return _clip_clone(mp, dest, &vp->var);
 	}
@@ -6827,7 +8125,7 @@ _clip_eval_macro(ClipMachine * mp, char *str, int len, ClipVar * dest)
 		ClipBlock block;
 		int ret = _clip_compile_Block(mp, str, len, &block);
 		ClipVar stack[1];
-		ClipFrame frame = { stack, stack + 1, __file__, __LINE__, 0, 0, 0, 0, 0, 0, "eval_macro", 1 };
+		ClipFrame frame = { stack, stack + 1, __file__, __LINE__, 0, 0, 0, 0, 0, 0, "eval_macro", 1, 0 };
 		ClipFrame *inMacro = mp->inMacro;
 
 		if (ret)
@@ -6905,6 +8203,8 @@ find_macro(char *s, char *e, char **beg, char **end, char **next, int *dot)
 			if (s >= e)
 				return 0;
 			*beg = s;
+			if (*s == '.')
+				*dot = 1;
 			if (*s == '\\')
 			{
 				++s;
@@ -6931,7 +8231,11 @@ find_macro(char *s, char *e, char **beg, char **end, char **next, int *dot)
 			}
 			else
 			{
+				if (*s == '.')
+					*dot = 1;
+
 				  cont:
+
 				for (; s <= e; ++s)
 					if (s == e || !(isalnum(*s) || *s == '_'))
 					{
@@ -7027,6 +8331,8 @@ _clip_expand(ClipMachine * mp, ClipBuf * dest, ClipBuf * src)
 		if (end == beg)
 		{
 			putByte_Buf(&buf, '&');
+			if (dot)
+				putByte_Buf(&buf, '.');
 			continue;
 		}
 
@@ -7115,6 +8421,7 @@ _clip_expand(ClipMachine * mp, ClipBuf * dest, ClipBuf * src)
 			}
 		}
 
+
 		hash = _clip_casehashbytes(0, beg, end - beg);
 		vp = fetch_var(mp, hash);
 #if 0
@@ -7131,7 +8438,7 @@ _clip_expand(ClipMachine * mp, ClipBuf * dest, ClipBuf * src)
 			goto _trap;
 		}
 #endif
-		if (vp)
+		if (vp && !(mp->flags1 & NOEXPAND_MACRO_FLAG))
 		{
 			vpp = _clip_vptr(&vp->var);
 			switch (vpp->t.type)
@@ -7183,20 +8490,22 @@ _clip_expand(ClipMachine * mp, ClipBuf * dest, ClipBuf * src)
 			case DATETIME_t:
 				{
 					int len;
-					char* r = _clip_ttoc(mp, vpp->dt.julian, vpp->dt.time, &len, mp->date_format, mp->hours, mp->seconds);
+					char *r =
+						_clip_ttoc(mp, vpp->dt.julian, vpp->dt.time, &len, mp->date_format, mp->hours,
+							   mp->seconds);
 
 					putBuf_Buf(&buf, r, len);
 					free(r);
 				}
 				break;
 			default:
-							goto badtype;
+				goto badtype;
 				break;
 			}
 		}
 		else
 		{
-				  badtype:
+			  badtype:
 			putByte_Buf(&buf, '&');
 			while (beg < end)
 				putByte_Buf(&buf, *beg++);
@@ -8011,8 +9320,13 @@ static int
 do_main(ClipMachine * mp, long hash, ClipFunction * func, ClipBlock * block, int argc, char **argv, char **envp)
 {
 	int i, ret;
+#ifdef OS_MINGW
+	ClipVar *_stack = (ClipVar *) malloc(sizeof(ClipVar) * (argc + 1));
+#else
 	ClipVar *_stack = (ClipVar *) alloca(sizeof(ClipVar) * (argc + 1));
-	ClipFrame _frame = { _stack, _stack, "" /*__FILE__*//* ": do_main()" */ , /*__LINE__*/ 0, 0, 0, 0, 0, 0, 0, 0, argc+1 };
+#endif
+	ClipFrame _frame =
+		{ _stack, _stack, "" /*__FILE__*//* ": do_main()" */ , /*__LINE__*/ 0, 0, 0, 0, 0, 0, 0, 0, argc + 1, 0 };
 
 	_frame.up = mp->fp;
 	mp->fp = &_frame;
@@ -8065,25 +9379,48 @@ do_main(ClipMachine * mp, long hash, ClipFunction * func, ClipBlock * block, int
 	}
 	  _return:
 	_clip_resume(mp, 0, 0);
+	if (ret == 0)
+		ret = errorlevel;
+#ifdef OS_MINGW
+	free(_stack);
+#endif
 	return ret;
 }
 
 CLIP_DLLEXPORT int
 _clip_main(ClipMachine * mp, long hash, int argc, char **argv, char **envp)
 {
-	return do_main(mp, hash, NULL, NULL, argc, argv, envp);
+	int ret;
+	mp->main_func_level++;
+	ret = do_main(mp, hash, NULL, NULL, argc, argv, envp);
+	mp->main_func_level--;
+	if (mp->main_func_level == 0)
+		delete_ClipMachine(mp);
+	return ret;
 }
 
 CLIP_DLLEXPORT int
 _clip_main_func(ClipMachine * mp, ClipFunction func, int argc, char **argv, char **envp)
 {
-	return do_main(mp, 0, func, NULL, argc, argv, envp);
+	int ret;
+	mp->main_func_level++;
+	ret = do_main(mp, 0, func, NULL, argc, argv, envp);
+	mp->main_func_level--;
+	if (mp->main_func_level == 0)
+		delete_ClipMachine(mp);
+	return  ret;
 }
 
 CLIP_DLLEXPORT int
 _clip_main_code(ClipMachine * mp, ClipBlock * block, int argc, char **argv, char **envp)
 {
-	return do_main(mp, 0, NULL, block, argc, argv, envp);
+	int ret;
+	mp->main_func_level++;
+	ret = do_main(mp, 0, NULL, block, argc, argv, envp);
+	mp->main_func_level--;
+	if (mp->main_func_level == 0)
+		delete_ClipMachine(mp);
+	return ret;
 }
 
 CLIP_DLLEXPORT const char *
@@ -8355,6 +9692,7 @@ _clip_str_to_date(char *str, char *format, int epoch)
 	int i, j, len;
 	int d = 0, m = 0, y = 0;
 	int b[3] = { 0, 0, 0 };
+	int mms[12] = {31,29,31,30,31,30,31,31,30,31,30,31};
 	char ch = 0;
 
 	if (epoch == 0)
@@ -8417,6 +9755,12 @@ _clip_str_to_date(char *str, char *format, int epoch)
 		return 0;
 	if (m > 12 || d > 31)
 		return 0;
+	/*
+	printf("\nctod m=%d,d=%d,mms[m]=%d\n",m,d,mms[m]);
+	*/
+	if (m > 0 && (d > mms[m-1]))
+		return 0;
+
 	i = epoch % 100;
 	j = epoch / 100;
 	if (y < 100)
@@ -8717,8 +10061,7 @@ _clip_glob_match(const char *string, const char *pattern, int caseflag)
 				break;
 			}
 		}
-		else if ((caseflag && _clip_toupper(*pattern) != _clip_toupper(*string))
-			 || (!caseflag && *pattern != *string) )
+		else if ((caseflag && _clip_toupper(*pattern) != _clip_toupper(*string)) || (!caseflag && *pattern != *string))
 		{
 			return -1;
 		}
@@ -8827,7 +10170,7 @@ _clip_fetch_c_item(ClipMachine * cm, int key, int type)
 }
 
 CLIP_DLLEXPORT void *
-_clip_fetch_c_item_type(ClipMachine * cm, int type, int* key)
+_clip_fetch_c_item_type(ClipMachine * cm, int type, int *key)
 {
 	ContainerItem citem, *ci = NULL;
 
@@ -8912,21 +10255,119 @@ _clip_store_c_item(ClipMachine * cm, void *item, int type, void (*destroy) (void
  * CONTAINER end
  */
 
+static char *
+_clip_normalize_path(char * _path)
+{
+	/* translate "path1/../path2" -> "path2" */
+	int pos[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	int pos2[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	int flag[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	int i,beg,end,len,cur = 1, cur2 = 0;
+	char *tmp;
+	char *path;
+
+	path = strdup(_path);
+
+	i = 0;
+	if ( path[i]=='/' || path[i]=='\\')
+		 { i++; pos[0]=1;}
+	for (len=strlen(path); i<len; i++)
+	{
+		if ( path[i] == '.' )
+			flag[cur]++;
+		else if ( path[i]=='/' || path[i]=='\\')
+		{
+			pos[cur]=i+1;
+			cur++;
+		}
+		else
+			flag[cur]--;
+		if (cur>15)
+			break;
+	}
+	for (cur=0,cur2=-1; cur<16; cur++)
+	{
+		if ( flag[cur] == 2) /* subpath ==".." */
+			cur2--;
+		else
+			cur2++;
+		if ( cur2 < 0)
+			cur2 = 0;
+		//printf("\ncur=%d,flag=%d,cur2=%d",cur,flag[cur],cur2);
+		pos2[cur2] = cur;
+	}
+
+	tmp = strdup(path);
+	//printf("\npos[0]=%d,pos[1]=%d,pos[2]=%d",pos[0],pos[1],pos[2]);
+	//printf("\npo2[0]=%d,po2[1]=%d,po2[2]=%d",pos2[0],pos2[1],pos2[2]);
+	memset(path,0,len);
+	for (i=0,len=0; i<16; i++)
+	{
+		beg = pos[ pos2[i] ];
+		end = pos[ pos2[i]+1 ];
+		if (end == 0)
+		{
+			end = strlen(tmp);
+			i = 200;
+		}
+		strncpy(path+len,tmp+beg,end-beg);
+		len+=(end-beg);
+		//printf("\ni=%d,pos2=%d,beg=%d,end=%d,tmp=%s,str=%s\n",i,pos2[i],beg,end,tmp,path);
+	}
+	return path;
+}
+
 CLIP_DLLEXPORT int
 _clip_translate_path(ClipMachine * mp, const char *str, char *buf, int buflen)
 {
-#ifdef OS_CYGWIN
-	strncpy(buf, str, buflen);
+#ifdef _WIN32
+	if ((memcmp(str, "\\\\", 2) == 0) || (memcmp(str, "//", 2) == 0))
+	{
+		/* network resource */
+		strncpy(buf, str, buflen);
 		return 0;
+	}
+
+	if (str != NULL && (*str == '/' || *str == '\\') && memcmp(str, "/cygdrive/", 10))
+	{
+		/* add default drive */
+		char *s = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
+		if (mp->rootpath==NULL)
+			snprintf(buf, buflen - 1, "%s%s", s, str);
+		else
+		{
+			char * _str = NULL;
+			_str = _clip_normalize_path( ( char *) str);
+			snprintf(buf, buflen - 1, "%s%s%s",s,mp->rootpath, _str);
+			free(_str);
+		}
+		return 0;
+	}
+	if (str != NULL && strlen(str) >= 2 && str[1] == ':' && str[2] != '/' && str[2] != '\\')
+	{
+		/* drive with default path */
+		char *def_path;
+
+		def_path = _clip_fetch_item(mp, _hash_cur_dir[toupper(*str) - 65]);
+		snprintf(buf, buflen - 1, "%c:%s%s\\%s", *str, mp->rootpath, def_path, str + 2);
+		return 0;
+	}
+	if (mp->rootpath == NULL )
+		snprintf(buf,buflen-1,"%s",str);
+	else
+	{
+		char * _str = NULL;
+		_str = _clip_normalize_path( ( char *) str);
+		snprintf(buf,buflen-1,"%s%s",mp->rootpath,_str);
+		free(_str);
+	}
+	return 0;
 #else
 	char *s, *e;
 	char *root = 0;
 	int bl, ch;
-	if (str[0] == '.' && str[1] == '.')
-	{
-		strncpy(buf, str, buflen);
-		return 1;
-	}
+
+	buf[0] = 0;
 	if (strchr(str, '|'))
 	{
 		strncpy(buf, str, buflen);
@@ -8962,24 +10403,74 @@ _clip_translate_path(ClipMachine * mp, const char *str, char *buf, int buflen)
 			--bl;
 		buf[bl++] = '/';
 	}
-	else if (str[0] != '/')
+	/*
+	else if (str[0] == '.' && str[1] == '.')
 	{
-		getcwd(buf, buflen);
-		bl = strlen(buf);
-		buf[bl++] = '/';
+		strncpy(buf, str, buflen);
+		return 1;
 	}
-
-	snprintf(buf + bl, buflen - bl, "%s", str);
+	*/
+	else if ( *str != '/' /*&& *str != '\\'*/)
+	{
+		if ( mp->rootpath == NULL )
+		{
+			getcwd(buf, buflen);
+			bl = strlen(buf);
+			buf[bl++] = '/';
+		}
+	}
+	if ( mp->rootpath != NULL )
+	{
+		char * _str = NULL;
+		char * tmp = strdup(buf);
+		snprintf(buf,buflen, "%s%s",mp->rootpath,tmp);
+		free(tmp);
+		bl = strlen(buf);
+		_str = _clip_normalize_path( ( char *) str);
+		snprintf(buf + bl, buflen - bl, "%s", _str);
+		free(_str);
+	}
+	else
+	{
+		snprintf(buf + bl, buflen - bl, "%s", str);
+	}
 	bl = strlen(buf);
 	for (e = buf + bl, s = buf; s < e; ++s)
 	{
 		if (*s == '\\')
 			*s = '/';
 	}
+	s = strrchr(buf,'/');
+	if (s && s != buf )
+	{
+		char ocwd[PATH_MAX];
+		char fname[PATH_MAX];
+		char ch;
+
+		getcwd(ocwd,sizeof(ocwd));
+
+		strncpy(fname,s+1,sizeof(fname));
+
+		ch  = *s;
+		* s = 0;
+		if (chdir(buf) == 0)
+		{
+			getcwd(buf,buflen);
+			strcat(buf,"/");
+			strcat(buf,fname);
+			chdir(ocwd);
+		}
+		else
+			*s = ch;
+	}
+	bl = strlen(buf);
 	if (mp->flags & TRANSLATE_FLAG)
 	{
+		char *tmp;
 		for (e = buf + bl, s = buf; s < e; ++s)
 			*s = tolower(*(unsigned char *) s);
+		for (tmp=buf+strlen(buf)-1; *tmp == ' ' && tmp>=buf; tmp--);
+		tmp++; *tmp=0;
 	}
 	return 0;
 #endif
@@ -9029,7 +10520,6 @@ _clip_new_error(ClipMachine * mp,
 		dim = i;
 		_clip_aset(mp, &var, ARGPTR(mp, i + 1), 1, &dim);
 	}
-
 	_clip_madd(mp, rp, HASH_args, &var);
 	_clip_destroy(mp, &var);
 
@@ -9071,10 +10561,10 @@ _clip_new_error(ClipMachine * mp,
 	_clip_destroy(mp, &var);
 
 	/* 'filename' */
-		if (mp->fp)
+	if (mp->fp)
 		s = (char *) mp->fp->filename;
 	else
-			s = "";
+		s = "";
 	_clip_var_str(s, strlen(s), &var);
 	_clip_madd(mp, rp, HASH_filename, &var);
 	_clip_destroy(mp, &var);
@@ -9114,108 +10604,117 @@ _clip_new_error(ClipMachine * mp,
 CLIP_DLLEXPORT const char *
 _clip_errname(int code)
 {
-	const char *msg = "unknown error";
+	char *msg;
 
 	switch (code)
 	{
+	default:
+		msg = _clip_gettext("unknown error");
+		break;
 	case EG_ARG:
-		msg = "invalid argument";
+		msg = _clip_gettext("invalid argument");
 		break;
 	case EG_BOUND:
-		msg = "bound error";
+		msg = _clip_gettext("bound error");
 		break;
 	case EG_STROVERFLOW:
-		msg = "string too long";
+		msg = _clip_gettext("string too long");
 		break;
 	case EG_NUMOVERFLOW:
-		msg = "number too big";
+		msg = _clip_gettext("number too big");
 		break;
 	case EG_ZERODIV:
-		msg = "divide by zero";
+		msg = _clip_gettext("divide by zero");
 		break;
 	case EG_NUMERR:
-		msg = "number error";
+		msg = _clip_gettext("number error");
 		break;
 	case EG_SYNTAX:
-		msg = "syntax error";
+		msg = _clip_gettext("syntax error");
 		break;
 	case EG_COMPLEXITY:
-		msg = "syntax too complex";
+		msg = _clip_gettext("syntax too complex");
 		break;
 
 	case EG_MEM:
-		msg = "memory error";
+		msg = _clip_gettext("memory error");
 		break;
 	case EG_NOFUNC:
-		msg = "no function";
+		msg = _clip_gettext("no function");
 		break;
 	case EG_NOMETHOD:
-		msg = "no method";
+		msg = _clip_gettext("no method");
 		break;
 	case EG_NOVAR:
-		msg = "no variable";
+		msg = _clip_gettext("no variable");
 		break;
 	case EG_NOALIAS:
-		msg = "no alias";
+		msg = _clip_gettext("no alias");
 		break;
 	case EG_NOVARMETHOD:
-		msg = "no varmethod";
+		msg = _clip_gettext("no varmethod");
 		break;
 
 	case EG_CREATE:
-		msg = "create error";
+		msg = _clip_gettext("create error");
 		break;
 	case EG_OPEN:
-		msg = "open error";
+		msg = _clip_gettext("open error");
 		break;
 	case EG_CLOSE:
-		msg = "close error";
+		msg = _clip_gettext("close error");
 		break;
 	case EG_READ:
-		msg = "read error";
+		msg = _clip_gettext("read error");
 		break;
 	case EG_WRITE:
-		msg = "write error";
+		msg = _clip_gettext("write error");
 		break;
 	case EG_PRINT:
-		msg = "print error";
+		msg = _clip_gettext("print error");
 		break;
 
 	case EG_UNSUPPORTED:
-		msg = "unsupported";
+		msg = _clip_gettext("unsupported");
 		break;
 	case EG_LIMIT:
-		msg = "limit exhaust";
+		msg = _clip_gettext("limit exhaust");
 		break;
 	case EG_CORRUPTION:
-		msg = "corruption detected";
+		msg = _clip_gettext("corruption detected");
 		break;
 	case EG_DATATYPE:
-		msg = "wrong datatype";
+		msg = _clip_gettext("wrong datatype");
 		break;
 	case EG_DATAWIDTH:
-		msg = "wrong datawidth";
+		msg = _clip_gettext("wrong datawidth");
 		break;
 	case EG_NOTABLE:
-		msg = "no table";
+		msg = _clip_gettext("no table");
 		break;
 	case EG_NOORDER:
-		msg = "no order";
+		msg = _clip_gettext("no order");
 		break;
 	case EG_SHARED:
-		msg = "share violation";
+		msg = _clip_gettext("share violation");
 		break;
 	case EG_UNLOCKED:
-		msg = "unlocked";
+		msg = _clip_gettext("unlocked");
 		break;
 	case EG_READONLY:
-		msg = "readonly";
+		msg = _clip_gettext("readonly");
 		break;
 	case EG_APPENDLOCK:
-		msg = "appendlock";
+		msg = _clip_gettext("appendlock");
 		break;
 	case EG_BADALIAS:
-		msg = "bad alias";
+		msg = _clip_gettext("bad alias");
+		break;
+	case EG_LOCK:
+		msg = _clip_gettext("locking error");
+		break;
+	case EG_SIGNAL:
+		msg = _clip_gettext("system signal");
 		break;
 	}
 
@@ -9243,7 +10742,7 @@ _clip_trap_err(ClipMachine * mp, int genCode, int canDefault, int canRetry,
 	vp = _clip_new_error(mp, _clip_errname(genCode), 2, genCode, 0, canDefault,
 				 canRetry, 0, 1, subSystem, subCode, operation);
 
-	_clip_trap_var(mp, mp->fp?mp->fp->filename:"", mp->fp?mp->fp->line:0, vp);
+	_clip_trap_var(mp, mp->fp ? mp->fp->filename : "", mp->fp ? mp->fp->line : 0, vp);
 
 	return genCode;
 }
@@ -9722,7 +11221,7 @@ _clip_push_locale(ClipMachine * mp)
 }
 
 static ClipVar *
-local_ref(ClipMachine *mp, int no)
+local_ref(ClipMachine * mp, int no)
 {
 	ClipVar *vp;
 	ClipVarFrame *lp = mp->fp->localvars;
@@ -9737,7 +11236,7 @@ local_ref(ClipMachine *mp, int no)
 		localvars->vars = (ClipVar *) (localvars + 1);
 		if (lp)
 		{
-			memset(localvars->vars+no, 0, (nlocals-localvars->size) * sizeof(ClipVar));
+			memset(localvars->vars + no, 0, (nlocals - localvars->size) * sizeof(ClipVar));
 		}
 		else
 		{
@@ -9748,6 +11247,18 @@ local_ref(ClipMachine *mp, int no)
 		mp->fp->localvars = localvars;
 
 		vp = localvars->vars + no;
+	}
+
+	if (vp->t.flags & F_MPTR && vp->p.vp->t.flags & F_MPTR)
+	{
+#if 1
+		if (vp->p.vp->t.flags == F_MPTR &&
+			(vp->p.vp->t.type == ARRAY_t || vp->p.vp->t.type == MAP_t) )
+		{
+		}
+		else
+#endif
+			vp = vp->p.vp;
 	}
 
 	return vp;
@@ -9841,7 +11352,6 @@ _clip_refmacro(ClipMachine * mp)
 		free(dim);
 	}
 
-
 	_clip_ref(mp, lval, 0);
 
 	return 0;
@@ -9850,9 +11360,9 @@ _clip_refmacro(ClipMachine * mp)
 static void
 dup_ref(ClipVar * dest, ClipVar * src)
 {
-	CLEAR_CLIPVAR(dest);
-	if (dest==src)
+	if (dest == src || src->p.vp == dest)
 		return;
+	CLEAR_CLIPVAR(dest);
 	dest->t.type = src->t.type;
 	dest->t.flags = src->t.flags;
 	dest->p.vp = src->p.vp;
@@ -9864,8 +11374,11 @@ dup_ref(ClipVar * dest, ClipVar * src)
 CLIP_DLLEXPORT ClipFieldDef *
 _clip_get_fielddef(ClipMachine * mp, long areahash, long namehash)
 {
-	long hash = _clip_hashbytes(areahash, (char *) &namehash, sizeof(namehash));
+	long hash;
 	ClipFieldDef *fp;
+
+	hash = _clip_hashbytes(0, (char *) &areahash, sizeof(areahash));
+	hash = _clip_hashbytes(hash, (char *) &namehash, sizeof(namehash));
 
 	fp = (ClipFieldDef *) HashTable_fetch(mp->fields, hash);
 	if (!fp)
@@ -10051,6 +11564,7 @@ _clip_strcmp(const char *str1, const char *str2)
 {
 	int l1 = strlen(str1);
 	int l2 = strlen(str2);
+
 	return _clip_strnncmp(str1, str2, l1, l2);
 }
 
@@ -10059,9 +11573,10 @@ _clip_strncmp(const char *str1, const char *str2, int len)
 {
 	int l1 = strlen(str1);
 	int l2 = strlen(str2);
-	if (l1>len)
+
+	if (l1 > len)
 		l1 = len;
-	if (l2>len)
+	if (l2 > len)
 		l2 = len;
 	return _clip_strnncmp(str1, str2, l1, l2);
 }
@@ -10069,18 +11584,18 @@ _clip_strncmp(const char *str1, const char *str2, int len)
 CLIP_DLLEXPORT int
 _clip_strnncmp(const char *str1, const char *str2, int len1, int len2)
 {
-	unsigned char ch1=0, ch2=0;
+	unsigned char ch1 = 0, ch2 = 0;
 	const unsigned char *us1, *us2;
 
-	for (us1 = str1, us2 = str2; len1 && len2; us1++, us2++, len1--,len2--)
+	for (us1 = str1, us2 = str2; len1 && len2; us1++, us2++, len1--, len2--)
 	{
-        	ch1 = *us1;
-                ch2 = *us2;
-                if (ch1<32 && ch2>31)
-                	ch1=0;
+		ch1 = *us1;
+		ch2 = *us2;
+		if (ch1 < 32 && ch2 > 31)
+			ch1 = 0;
 
-                if (ch1>31 && ch2<32)
-                	ch2=0;
+		if (ch1 > 31 && ch2 < 32)
+			ch2 = 0;
 
 		ch1 = _clip_cmptbl[ch1];
 		ch2 = _clip_cmptbl[ch2];
@@ -10103,6 +11618,7 @@ _clip_strcasecmp(const char *str1, const char *str2)
 {
 	int l1 = strlen(str1);
 	int l2 = strlen(str2);
+
 	return _clip_strnncasecmp(str1, str2, l1, l2);
 }
 
@@ -10111,29 +11627,29 @@ _clip_strncasecmp(const char *str1, const char *str2, int len)
 {
 	int l1 = strlen(str1);
 	int l2 = strlen(str2);
-	if (l1>len)
+
+	if (l1 > len)
 		l1 = len;
-	if (l2>len)
+	if (l2 > len)
 		l2 = len;
 	return _clip_strnncasecmp(str1, str2, l1, l2);
 }
 
-
 CLIP_DLLEXPORT int
 _clip_strnncasecmp(const char *str1, const char *str2, int len1, int len2)
 {
-	unsigned char ch1=0, ch2=0;
+	unsigned char ch1 = 0, ch2 = 0;
 	const unsigned char *us1, *us2;
 
-	for (us1 = str1, us2 = str2; len1 && len2; us1++, us2++, len1--,len2--)
+	for (us1 = str1, us2 = str2; len1 && len2; us1++, us2++, len1--, len2--)
 	{
-        	ch1 = _clip_uptbl[*us1];
-                ch2 = _clip_uptbl[*us2];
-                if (ch1<32 && ch2>31)
-                	ch1=0;
+		ch1 = _clip_uptbl[*us1];
+		ch2 = _clip_uptbl[*us2];
+		if (ch1 < 32 && ch2 > 31)
+			ch1 = 0;
 
-                if (ch1>31 && ch2<32)
-                	ch2=0;
+		if (ch1 > 31 && ch2 < 32)
+			ch2 = 0;
 
 		ch1 = _clip_cmptbl[ch1];
 		ch2 = _clip_cmptbl[ch2];
@@ -10167,9 +11683,11 @@ _clip_unix_path(char *p, int tolow)
 int
 _clip_absolute_path(ClipMachine * cm, const char *path, char *p, int len)
 {
-	const char *s = path;
 	char op[PATH_MAX];
 	char *e = p;
+
+#ifndef _WIN32
+	const char *s = path;
 
 	p[0] = 0;
 	if (path[1] == ':')
@@ -10196,6 +11714,26 @@ _clip_absolute_path(ClipMachine * cm, const char *path, char *p, int len)
 			s++;
 	}
 	strncpy(e, s, p + len - e - 2);
+#else
+	if ((memcmp(path, "\\\\", 2) == 0) || (memcmp(path, "//", 2) == 0))
+	{
+		/* network resource */
+		strncpy(p, path, len);
+	}
+	else
+	{
+		if (path != NULL && (*path == '/' || *path == '\\') && memcmp(path, "/cygdrive/", 10))
+		{
+
+			/* add default drive */
+			char *s = _clip_fetch_item(cm, CLIP_CUR_DRIVE);
+
+			snprintf(p, len - 1, "%s%s", s, path);
+		}
+		else
+			strncpy(p, path, len);
+	}
+#endif
 	_clip_unix_path(p, cm->flags & TRANSLATE_FLAG);
 
 	errno = 0;
@@ -10235,12 +11773,11 @@ _clip_path(ClipMachine * cm, const char *fn, char *p, int len, int create)
 		return 0;
 	}
 
-	if((memcmp(fn,"\\\\",2) == 0) || (memcmp(fn,"//",2) == 0))
+	if ((memcmp(fn, "\\\\", 2) == 0) || (memcmp(fn, "//", 2) == 0))
 	{
-		strncpy(p,fn,len);
+		strncpy(p, fn, len);
 	}
-	else
-	if ((s = strrchr(fn, '/')) || (s1 = strrchr(fn, '\\')) || (s2 = strrchr(fn,':')))
+	else if ((s = strrchr(fn, '/')) || (s1 = strrchr(fn, '\\')) || (s2 = strrchr(fn, ':')))
 	{
 		char path[PATH_MAX];
 		int f = 0;
@@ -10250,7 +11787,7 @@ _clip_path(ClipMachine * cm, const char *fn, char *p, int len, int create)
 		if (!s2)
 			s2 = strrchr(fn, ':');
 		s = (s > s1) ? s : s1;
-		if(s2 > s)
+		if (s2 > s)
 			f = 1;
 		s = (s > s2) ? s : s2;
 		memcpy(path, fn, s - fn + f);
@@ -10399,7 +11936,6 @@ pg2pgch(unsigned char ch)
 	return 0;
 }
 
-
 CLIP_DLLEXPORT int
 _clip_translate_charset(char *p1, char *p2, unsigned char *str, unsigned char *ostr, int len)
 {
@@ -10475,7 +12011,7 @@ _clip_translate_charset(char *p1, char *p2, unsigned char *str, unsigned char *o
 		for (i = 0; i < len; i++)
 		{
 			s = str[i];
-			if ( (s & 0x80) && tp->pg && (s1 = tp->pg[s & 0x7f]))
+			if ((s & 0x80) && tp->pg && (s1 = tp->pg[s & 0x7f]))
 				ostr[i] = pg2pgch(s1);
 			else
 				ostr[i] = tp->tbl[s];
@@ -10496,12 +12032,14 @@ _clip_translate_charset(char *p1, char *p2, unsigned char *str, unsigned char *o
 */
 
 int
-clip_ALTD(ClipMachine *mp)
+clip_ALTD(ClipMachine * mp)
 {
 	if (!_clip_debuglevel)
 	{
 		_clip_debuglevel = 1;
+#ifndef OS_MINGW
 		signal(SIGUSR1, _clip_sigdebug);
+#endif
 	}
 
 	_clip_in_breakpoint();
@@ -10509,20 +12047,43 @@ clip_ALTD(ClipMachine *mp)
 }
 
 void
-_clip_check_stack(ClipMachine *mp)
+_clip_check_stack(ClipMachine * mp)
 {
 	ClipFrame *fp = mp->fp;
-	if ( fp && fp->sp > (fp->stack + fp->stklen) )
-		{
+
+	if (fp && fp->sp > (fp->stack + fp->stklen))
+	{
 		_clip_call_errblock(mp, EG_MEM);
-				_clip_logg(0, "stack check failed at line %d file %d", fp->line, fp->filename?fp->filename:"unknown");
-			exit(1);
-		}
+		_clip_logg(0, "stack check failed at line %d file %d", fp->line, fp->filename ? fp->filename : "unknown");
+		exit(1);
+	}
 }
 
 CLIP_DLLEXPORT char *
 _clip_host_charset()
 {
 	return _clip_hostcs;
+}
+
+int
+clip_ERRORLEVEL(ClipMachine * mp)
+{
+	int level = errorlevel;
+
+	if (mp->argc > 0)
+		errorlevel = _clip_parni(mp, 1);
+
+	_clip_retni(mp, level);
+	return 0;
+}
+
+
+int
+clip___QUIT(ClipMachine * mp)
+{
+#ifdef USE_TASKS
+/*	Task_killAll();*/
+#endif
+	exit(errorlevel);
 }
 

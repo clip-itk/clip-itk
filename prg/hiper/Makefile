@@ -11,7 +11,7 @@ install:	all
 
 
 clean:
-	rm -rf clip_hindex clip_hseek *.exe *.c *.o *.a *.so *.po *.log *.pa *.b *.BAK *.bak *~ core* *core
+	rm -rf clip_hindex clip_hseek *.exe *.s *.c *.o *.a *.so *.po *.log *.pa *.b *.BAK *.bak *~ core* *core
 	rm -rf *.ex *.nm
 
 clip_hindex$(EXESUFF):	clip_hindex.prg

@@ -1,6 +1,127 @@
 
  /*
  * $Log: node.c,v $
+ * Revision 1.140  2004/04/14 10:37:59  clip
+ * rust: small fix to work OK with GCC 3.3.3
+ *
+ * Revision 1.139  2004/01/23 14:40:20  clip
+ * uri: small fix for cygwin
+ *
+ * Revision 1.138  2003/12/17 09:46:42  clip
+ * uri: "f->fname" as "alias->fname" not as "field->fname"
+ *
+ * Revision 1.137  2003/11/14 10:13:48  clip
+ * fix trap in PO code
+ * paul
+ *
+ * Revision 1.136  2003/11/13 13:17:31  clip
+ * add error 'po code too large'
+ * paul
+ *
+ * Revision 1.135  2003/11/13 08:16:43  clip
+ * fall back for switch
+ * paul
+ *
+ * Revision 1.133  2003/09/08 15:06:03  clip
+ * uri: next step fixes for mingw from uri
+ *
+ * Revision 1.132  2003/08/14 08:46:56  clip
+ * fix charset
+ * fix #154
+ * paul
+ *
+ * Revision 1.131  2003/08/13 10:36:42  clip
+ * extend limit of 255 local vars.
+ * fixes #151
+ * paul
+ *
+ * Revision 1.130  2003/08/04 09:49:23  clip
+ * generate 'no variable' when call by reference
+ * paul
+ *
+ * Revision 1.129  2003/07/15 08:36:04  clip
+ * fixes #146
+ * paul
+ *
+ * Revision 1.128  2003/06/20 08:21:25  clip
+ * possible fixes #144
+ * paul
+ *
+ * Revision 1.127  2003/05/29 10:57:58  clip
+ * fix for memdebug
+ * paul
+ *
+ * Revision 1.126  2003/03/26 13:10:11  clip
+ * possible closes #133, #139
+ * paul
+ *
+ * Revision 1.125  2003/03/25 14:20:59  clip
+ * uri: *gettext changed to _clic_*gettext
+ *
+ * Revision 1.124  2003/03/25 10:31:13  clip
+ * possible fixes #133
+ * paul
+ *
+ * Revision 1.123  2003/03/17 08:24:59  clip
+ * Solaris 8 patches
+ * paul
+ *
+ * Revision 1.122  2003/01/05 12:32:25  clip
+ * possible fixes #95,#98
+ * paul
+ *
+ * Revision 1.121  2002/12/31 08:03:36  clip
+ * assign to locals
+ * closes #95
+ * paul
+ *
+ * Revision 1.120  2002/12/16 11:28:41  clip
+ * reference to temporary object
+ * closes #81
+ * paul
+ *
+ * Revision 1.119  2002/11/29 08:09:10  clip
+ * fix _GET_ names
+ * fix translations
+ * paul
+ *
+ * Revision 1.118  2002/11/29 07:05:29  clip
+ * _CGET_ varname for fields fix
+ * paul
+ *
+ * Revision 1.117  2002/11/28 13:44:15  clip
+ * generate codeblock in _CGET_
+ * paul
+ *
+ * Revision 1.116  2002/11/28 09:22:25  clip
+ * _CGET name fix
+ * paul
+ *
+ * Revision 1.115  2002/11/28 07:27:33  clip
+ * fix for _CGET_ - now use internal refassign to temporary local var
+ * possible fixes #62
+ * paul
+ *
+ * Revision 1.114  2002/11/27 13:40:44  clip
+ * initial _CGET_ pseudofunction(bug 62):
+ * _CGET_(var[i1,i2,i3,...]) -> __CGET__(@var[i1,i2,i3],{i1,i2,i3},"var",...)
+ * paul
+ *
+ * Revision 1.113  2002/11/06 12:43:43  clip
+ * ngettext cleanup
+ * paul
+ *
+ * Revision 1.112  2002/11/06 12:03:41  clip
+ * add plural locale construction:
+ * [asdf] ^ num_expr == ngettext("asdf", "asdf", num_expr)
+ * paul
+ *
+ * Revision 1.111  2002/10/31 10:33:59  clip
+ * plural form runtime messages support:
+ * gettext(cMsgid [,cModule])->cTranslated
+ * ngettext(cMsgid, cMsgid_plural, nNum, [,cModule]) ->cTranslated
+ * paul
+ *
  * Revision 1.110  2002/10/11 10:27:11  clip
  * primary support for search of unresolved function names:
  * clip compler flag -N and/or envar CLIP_NAMES=yes will generate
@@ -525,6 +646,8 @@
 #include "clic.h"
 #include "nodepriv.h"
 #include "clipvm.h"
+#include "clipcfg.h"
+
 static void flush_codestr(CodestrNode *np, void *nod);
 static int loopNo, loopPart=0;
 
@@ -532,36 +655,55 @@ static long
 n_hashstr(char *str)
 {
 	char *s;
-        int is_dig = 1;
-        for(s=str; *s; s++)
-        {
-        	if (!isdigit(*s))
-                {
-                	is_dig=0;
-                        break;
-                }
-        }
+	int is_dig = 1;
+	for(s=str; *s; s++)
+	{
+		if (!isdigit(*s))
+		{
+			is_dig=0;
+			break;
+		}
+	}
 
 	if (is_dig)
-        	return atol(str);
+		return atol(str);
 	else
-        	return hashstr(str);
+		return hashstr(str);
 }
 
 /* [ utils */
 
+#define SETSHORT(bp, offs, val) setshort(np->node.line,bp,offs,val)
 
 #ifdef FORCEALIGN
 
 static void
-SETSHORT(StrBuf *bp, long offs, short val)
+setshort(int line, StrBuf *bp, long offs, long lval)
 {
-	memcpy(bp->buf+offs, &val, sizeof(short));
+	short val;
+	if (lval > 32767 || lval < -32767  )
+	{
+		yyerror("po code too large at line %d", line);
+	}
+	val = lval;
+	memcpy(bp->buf+offs, (char*)&val, sizeof(short));
 }
 
 #else
 
-#define SETSHORT(bp, offs, val) (*(short*)((bp)->buf+(offs))=(val))
+/*#define SETSHORT(bp, offs, val) (*(short*)((bp)->buf+(offs))=(val))*/
+
+
+static void
+setshort(int line, StrBuf *bp, long offs, long val)
+{
+	if (val > 32767 || val < -32767  /*val & 0xffff0000*/ )
+	{
+		yyerror("po code too large at line %d", line);
+	}
+	(*(short*)((bp)->buf+(offs))=(val&0xffff));
+}
+
 
 #endif
 
@@ -641,17 +783,17 @@ add_to_undeclared(char *name, Function ** fp)
 				return 2;
 		}
 	}
-        else
-        {
+	else
+	{
 		if (!search_Coll(&curFile->undeclExternFunctions, name, &no))
-        	{
-        		char *s = strdup(name);
-                	char *p;
-                	for(p = s; *p; p++)
-                		*p = toupper(*p);
+		{
+			char *s = strdup(name);
+			char *p;
+			for(p = s; *p; p++)
+				*p = toupper(*p);
 			insert_Coll(&curFile->undeclExternFunctions, s);
 		}
-        }
+	}
 
 	return 1;
 }
@@ -805,6 +947,7 @@ pass_OperListNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	return pass_Node(np, pass, level, par);
 }
@@ -865,6 +1008,7 @@ pass_OperExprNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 		}
 	}
 	return np->expr->pass(np->expr, pass, level + 1, par);
@@ -1001,13 +1145,13 @@ pass_ConstNode(void *self, Pass pass, int level, void *par)
 				fprintfOffs(out, level, "if ( (_ret=_clip_push(_mp, &_str_%d) )) goto _trap_%d;\n", np->no, np->node.seqNo);
 				break;
 			case CONST_NIL:
-				fprintfOffs(out, level, "_clip_push( _mp, &_nil_ );\n");
+				fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 				break;
 			case CONST_LOGIC:
 				if (np->no)
-					fprintfOffs(out, level, "_clip_push( _mp, &_true_ );\n");
+					fprintfOffs(out, level, "_clip_push_true( _mp );\n");
 				else
-					fprintfOffs(out, level, "_clip_push( _mp, &_false_ );\n");
+					fprintfOffs(out, level, "_clip_push_false( _mp );\n");
 				break;
 			}
 		}
@@ -1044,6 +1188,7 @@ pass_ConstNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	return 0;
 }
@@ -1121,7 +1266,10 @@ new_StringConstNode(char *val)
 {
 	int no;
 
-	NEWVAR(ConstNode, ret);
+//#define NEWVAR(type,var) type *var=(type*)calloc(sizeof(type),1)
+//	NEWVAR(ConstNode, ret);
+
+	ConstNode * ret = (ConstNode *) calloc(sizeof(ConstNode),1);
 
 	init_Node(ret, pass_ConstNode, "const");
 	ret->type = CONST_STRING;
@@ -1190,7 +1338,9 @@ print_Var(Var * vp, int level)
 	fprintfOffs(stdout, level, "");
 	if (vp->alias)
 		printf("%s->", vp->alias);
-	printf("%s as=%s isRef=%d refvar=%d ", vp->name, vp->type?vp->type:"undef", vp->isRef, vp->refvar?vp->refvar->no:-1);
+	printf("%s as=%s isRef=%d refvar=%d isLocalRef=%d", vp->name,
+		vp->type?vp->type:"undef", vp->isRef, vp->refvar?vp->refvar->no:-1
+		, vp->isLocalRef);
 	if (vp->init)
 	{
 		printf(":=\n");
@@ -1211,11 +1361,11 @@ print_Var(Var * vp, int level)
 Node *
 new_LocalDefNode1(VarColl * cp)
 {
-	return new_LocalDefNode(cp, 1);
+	return new_LocalDefNode(cp, 1, 0);
 }
 
 Node *
-new_LocalDefNode(VarColl * cp, int err)
+new_LocalDefNode(VarColl * cp, int err, int localref)
 {
 	int i;
 
@@ -1227,6 +1377,7 @@ new_LocalDefNode(VarColl * cp, int err)
 		VAR(Var, vp, cp->unsorted.items[i]);
 		Node *ip = 0;
 
+		vp->isLocalRef = localref;
 		if (vp->macro)
 		{
 			yyerror("macro variable name not allowed here");
@@ -1400,6 +1551,7 @@ pass_PublicDefNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	return pass_Node(np, pass, level, par);
 }
@@ -1424,11 +1576,11 @@ new_PublicDefNode(VarColl * cp)
 			if (!undeclaredName(vp->name, 1))
 				rm_VarColl(curFunction->memvars, vp);
 			if (search_VarColl(curFunction->publics, vp->name, &no))
-                        {
+			{
 				/*vp = (Var *) curFunction->publics->coll.items[no];*/
 			}
 			else
-                        {
+			{
 				add_VarColl(curFunction->publics, vp);
 			}
 
@@ -1545,6 +1697,7 @@ pass_CreateVarNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 
 	}
 
@@ -1594,6 +1747,7 @@ pass_PrivateDefNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return pass_Node(np, pass, level, par);
@@ -1723,6 +1877,7 @@ pass_ParametersDefNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -1824,6 +1979,7 @@ pass_ParamNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -1888,7 +2044,7 @@ pass_LocalNode(void *self, Pass pass, int level, void *par)
 		{
 			VAR(StrBuf, out, par);
 			putByte_StrBuf(out, CLIP_PUSH_LOCAL);
-			putByte_StrBuf(out, np->vp->no);
+			putShort_StrBuf(out, np->vp->no);
 		}
 		break;
 	case CTextLval:
@@ -1901,7 +2057,7 @@ pass_LocalNode(void *self, Pass pass, int level, void *par)
 		{
 			VAR(StrBuf, out, par);
 			putByte_StrBuf(out, CLIP_PUSH_REF_LOCAL);
-			putByte_StrBuf(out, np->vp->no);
+			putShort_StrBuf(out, np->vp->no);
 		}
 		break;
 	case Traverse:
@@ -1911,6 +2067,7 @@ pass_LocalNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -1990,6 +2147,7 @@ pass_StaticNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -2045,7 +2203,10 @@ pass_MemvarNode(void *self, Pass pass, int level, void *par)
 	case CTextLval:
 		{
 			VAR(FILE, out, par);
-			fprintf(out, "_clip_ref_memvar( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+			if (np->node.isAssignLval)
+				fprintf(out, "_clip_ref_memvar( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+			else
+				fprintf(out, "_clip_ref_memvar_noadd( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
 		}
 		break;
 	case OText:
@@ -2058,7 +2219,10 @@ pass_MemvarNode(void *self, Pass pass, int level, void *par)
 	case OTextLval:
 		{
 			VAR(StrBuf, out, par);
-			putByte_StrBuf(out, CLIP_PUSH_REF_MEMVAR);
+			if (np->node.isAssignLval)
+				putByte_StrBuf(out, CLIP_PUSH_REF_MEMVAR);
+			else
+				putByte_StrBuf(out, CLIP_PUSH_REF_MEMVAR_NOADD);
 			putLong_StrBuf(out, hashstr(np->vp->name));
 		}
 		break;
@@ -2069,6 +2233,7 @@ pass_MemvarNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -2083,6 +2248,7 @@ new_MemvarNode(Var * vp)
 	ret->vp = vp;
 	ret->node.isExpr = 1;
 	ret->node.isLval = 1;
+	ret->node.isMemvar = 1;
 	curFunction->goto_trap++;
 	ins_name(vp->name);
 
@@ -2135,7 +2301,7 @@ pass_FMemvarNode(void *self, Pass pass, int level, void *par)
 			if (np->isArg)
 			{
 				fprintfOffs(out, level, "if ((_ret=_clip_ref( _mp, ");
-				fprintf(out, "_clip_ref_memvar( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+				fprintf(out, "_clip_ref_memvar_noadd( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
 				fprintf(out, ", 0 ))) goto _trap_%d;\n", np->node.seqNo);
 			}
 			else
@@ -2166,7 +2332,7 @@ pass_FMemvarNode(void *self, Pass pass, int level, void *par)
 			VAR(StrBuf, out, par);
 			if (np->isArg)
 			{
-				putByte_StrBuf(out, CLIP_PUSH_REF_MEMVAR);
+				putByte_StrBuf(out, CLIP_PUSH_REF_MEMVAR_NOADD);
 				putLong_StrBuf(out, hashstr(np->vp->name));
 				putByte_StrBuf(out, CLIP_MAKE_REF);
 				putByte_StrBuf(out, 0);
@@ -2185,6 +2351,7 @@ pass_FMemvarNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -2200,6 +2367,7 @@ new_FMemvarNode(Var * vp)
 	ret->node.isExpr = 1;
 	ret->node.isLval = 1;
 	ret->node.isFMemvar = 1;
+	ret->node.isMemvar = 1;
 	curFunction->goto_trap++;
 	ins_name(vp->name);
 
@@ -2216,9 +2384,10 @@ new_MemvarFNode(Var * vp)
 	ret->node.isExpr = 1;
 	ret->node.isLval = 1;
 	ret->node.isFMemvar = 1;
+	ret->node.isMemvar = 1;
 	curFunction->goto_trap++;
 	ins_name(vp->name);
-        ret->p1 = 1;
+	ret->p1 = 1;
 
 	return (Node *) ret;
 }
@@ -2403,6 +2572,7 @@ pass_FieldNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	if (np->areaExpr)
@@ -2440,6 +2610,7 @@ new2_FieldNode(char *area, Node * areaExpr, char *name, Node * nameExpr)
 	ret->node.isExpr = 1;
 	/*ret->node.isLval = 1;*/
 	ret->node.isField = 1;
+	/*ret->node.isMemvar = 1;*/
 	ins_name(area);
 	ins_name(name);
 
@@ -2509,6 +2680,7 @@ pass_PublicNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -2523,6 +2695,7 @@ new_PublicNode(Var * vp)
 	ret->vp = vp;
 	ret->node.isExpr = 1;
 	ret->node.isLval = 1;
+	ret->node.isMemvar = 1;
 	curFunction->goto_trap++;
 	ins_name(vp->name);
 
@@ -2586,6 +2759,7 @@ pass_PrivateNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -2600,6 +2774,7 @@ new_PrivateNode(Var * vp)
 	ret->vp = vp;
 	ret->node.isExpr = 1;
 	ret->node.isLval = 1;
+	ret->node.isMemvar = 1;
 	curFunction->goto_trap++;
 	ins_name(vp->name);
 
@@ -2663,6 +2838,7 @@ pass_ParameterNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -2677,6 +2853,7 @@ new_ParameterNode(Var * vp)
 	ret->vp = vp;
 	ret->node.isExpr = 1;
 	ret->node.isLval = 1;
+	ret->node.isMemvar = 1;
 	curFunction->goto_trap++;
 	ins_name(vp->name);
 
@@ -2740,6 +2917,7 @@ pass_ArgNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	np->expr->pass(np->expr, pass, level + 1, par);
@@ -2811,8 +2989,14 @@ pass_RefNode(void *self, Pass pass, int level, void *par)
 			{
 				if (np->expr->isArrEl)
 				{
-					np->expr->pass(np->expr, CTextLval, level, par);
-					fprintfOffs(out, level, "if ((_ret=_clip_ref( _mp, _clip_pop_ref(_mp), 0 ))) goto _trap_%d;\n", np->node.seqNo);
+					VAR(ArrElNode, ap, np->expr);
+					if (!strcmp(ap->oarr->name, "call"))
+						np->expr->pass(np->expr, CText, level, par);
+					else
+					{
+						np->expr->pass(np->expr, CTextLval, level, par);
+						fprintfOffs(out, level, "if ((_ret=_clip_ref( _mp, _clip_pop_ref(_mp), 0 ))) goto _trap_%d;\n", np->node.seqNo);
+					}
 				}
 				else if (np->expr->isMacro)
 				{
@@ -2860,9 +3044,23 @@ pass_RefNode(void *self, Pass pass, int level, void *par)
 				}
 				else
 				{
-					np->expr->pass(np->expr, OTextLval, level, par);
-					putByte_StrBuf(out, CLIP_MAKE_REF);
-					putByte_StrBuf(out, (np->selfref && np->expr->isLocal)?1:0);
+					int done = 0;
+					if (np->expr->isArrEl)
+					{
+						VAR(ArrElNode, ap, np->expr);
+						if (!strcmp(ap->oarr->name, "call"))
+						{
+							np->expr->pass(np->expr, OText, level, par);
+							done = 1;
+						}
+					}
+
+					if (!done)
+					{
+						np->expr->pass(np->expr, OTextLval, level, par);
+						putByte_StrBuf(out, CLIP_MAKE_REF);
+						putByte_StrBuf(out, (np->selfref && np->expr->isLocal)?1:0);
+					}
 				}
 			}
 			else
@@ -2881,6 +3079,7 @@ pass_RefNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	if (np->expr)
@@ -3018,7 +3217,7 @@ pass_CallNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "_clip_push( _mp, &_nil_ );\n");
+			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			pass_Node(self, pass, level - 1, par);
 			switch (np->isC)
 			{
@@ -3072,9 +3271,78 @@ pass_CallNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return pass_Node(self, pass, level, par);
+}
+
+static void
+gettext_CallNode(CallNode *np)
+{
+	if (!strcasecmp(np->name, "_clic_gettext"))
+	{
+		Node *npp = (Node*)np;
+		int r;
+		char *msg = 0;
+		Node *module = 0;
+		int no = 0;
+		for (r = first_List(&npp->list); r; r = next_List(&npp->list), no++)
+		{
+			VAR(Node, p, npp->list.current);
+			if (!strcmp(p->name, "const"))
+			{
+				ConstNode *cp = (ConstNode *)p;
+				if (cp->type == CONST_STRING)
+				{
+					if (no == 0)
+						msg = cp->val;
+				}
+			}
+			if (no == 1)
+				module = p;
+		}
+		if (msg && !module)
+			put_locale_string(msg);
+		if (!module && no == 1)
+		{
+			append_Node(&np->node, new_StringConstNode(strdup(CLIP_MODULE)));
+			np->argc++;
+		}
+	}
+	else if (!strcasecmp(np->name, "_clic_ngettext"))
+	{
+		Node *npp = (Node*)np;
+		int r;
+		int no = 0;
+		char *singular = 0;
+		char *plural = 0;
+		Node *module = 0;
+		for (r = first_List(&npp->list); r; r = next_List(&npp->list), no++)
+		{
+			VAR(Node, p, npp->list.current);
+			if (!strcmp(p->name, "const"))
+			{
+				ConstNode *cp = (ConstNode *)p;
+				if (cp->type == CONST_STRING)
+				{
+					if (no == 0)
+						singular = cp->val;
+					else if (no == 1)
+						plural = cp->val;
+				}
+			}
+			if (no == 3)
+				module = p;
+		}
+		if (singular && plural /*&& !module*/)
+			put_locale_string_plural(singular, plural);
+		if (!module && no == 3)
+		{
+			append_Node(&np->node, new_StringConstNode(strdup(CLIP_MODULE)));
+			np->argc++;
+		}
+	}
 }
 
 Node *
@@ -3111,6 +3379,7 @@ new_CallNode(char *name, Coll * argv, int rest)
 	ins_name(name);
 
 	delete_Coll(argv);
+	gettext_CallNode(ret);
 	return (Node *) ret;
 }
 
@@ -3133,32 +3402,190 @@ newList_CallNode(char *name, Node * exprlist)
 	ins_name(name);
 	curFunction->goto_trap++;
 
+	gettext_CallNode(ret);
 	return (Node *) ret;
 }
 
 Node *
 new2_CallNode(const char *name, Node * expr1, Node * expr2)
 {
+	return new3_CallNode(name, expr1, expr2, 0);
+}
+
+Node *
+new3_CallNode(const char *name, Node * expr1, Node * expr2, Node *expr3)
+{
 	char *s;
+	int argc = 0;
 
 	NEWVAR(CallNode, ret);
 
 	init_Node(ret, pass_CallNode, "call");
 	if (expr1)
+	{
 		append_Node(&ret->node, expr1);
+		argc++;
+	}
 	if (expr2)
+	{
 		append_Node(&ret->node, expr2);
+		argc++;
+	}
+	if (expr3)
+	{
+		append_Node(&ret->node, expr3);
+		argc++;
+	}
 	ret->name = strdup(name);
 	for (s = ret->name; *s; ++s)
 		*s = toupper(*s);
 	ret->hash = hashstr(name);
 	ins_name((char *) name);
-	ret->argc = 2;
-	ret->isC = 2;
+	ret->argc = argc;
+	/*ret->isC = 2;*/
+	ret->isC = 1;
 	ret->cfunc = curFunction;
 	curFunction->goto_trap++;
 
+	gettext_CallNode(ret);
 	return (Node *) ret;
+}
+
+/*static int local_get_no = 0;*/
+
+Node *
+new_CGetNode(Coll * argv)
+{
+	Node *np, *ip, *sp, *ap;
+
+	if (argv->count < 1)
+		goto ret;
+
+	np = (Node*) argv->items[0];
+
+	if (np->isConst)
+	{
+		yyerror("cannot GET constant");
+		goto ret;
+	}
+
+	if (np->isArrEl)
+	{
+		int r, n;
+		Node *npp, *ep;
+		ap = npp = ((ArrElNode*)np)->arr;
+		ep = new_ExprArrNode();
+
+		for (n=0,r = first_List(&npp->list); r; r = next_List(&npp->list),n++)
+		{
+			VAR(Node, p, npp->list.current);
+			if (!n)
+				ap = p;
+			else
+				append_Coll(&(((ExprArrNode*)ep)->coll), p);
+		}
+
+		ip = new_ArrayInitNodeN( ep, ((ExprArrNode*)ep)->coll.count );
+	}
+	else
+	{
+		ap = np;
+		ip = new_NilConstNode();
+	}
+
+	if (ap->isMemvar)
+		sp = new_StringConstNode(strdup(((VarNode*)ap)->vp->name));
+	else if (ap->isMacro)
+	{
+		ExprNode *ep = (ExprNode*)ap;
+		sp = ep->expr;
+	}
+	else if (ap->isField)
+	{
+#if 1
+		sp = new_CodestrNode(ap, 0, 0);
+#else
+		StrBuf *bp;
+		CodestrNode cn;
+		bp = new_StrBuf();
+		memset(&cn, 0, sizeof(cn));
+		cn.buf = bp;
+		init_Coll(&cn.coll, 0, 0);
+		ap->pass(ap, PrintSrc, 0, &cn);
+		flush_codestr(&cn, 0);
+		putByte_StrBuf(bp, 0);
+		sp = new_StringConstNode(strdup(bp->buf));
+		destroy_Coll(&cn.coll);
+		delete_StrBuf(bp);
+#endif
+	}
+	else
+		sp = new_NilConstNode();
+
+#if 1
+	{
+		Var *vp, *vp2;
+		VarColl *vc, *vc2;
+		Node *cp, *el, *ldp;
+		Function *fp;
+		Coll *icp;
+
+		vp = new_Var(strdup("_1"));
+		vc = new_VarColl();
+		add_VarColl(vc, vp);
+
+		if (!np->isRef)
+			np = new_RefNode(np);
+		vp2 = newInit_Var(strdup ("_P"), np);
+
+		fp = curFunction;
+		cp = new_CodeNode(vc);
+
+		vc2 = new_VarColl();
+		add_VarColl(vc2, vp2);
+		ldp = new_LocalDefNode(vc2, 0, 0);
+		vp2->isLocalRef = 1;
+		/*prepend_Node(curFunction->body, ldp);*/
+
+		icp=new_Coll(NULL,NULL);
+		append_Coll(icp,new_OpNode(new_LocalNode(vp),new_NilConstNode(),'E'));
+		append_Coll(icp,new_LocalNode(vp2));
+		el = new_IfNode(icp,new_AssignNode(new_LocalNode(vp2),new_LocalNode(vp),'='));
+
+		fin_Function(curFunction);
+		append_Node(curFunction->body,new_ReturnNode(el,0/*1*/));
+
+
+		curFunction = fp;
+		np = cp;
+	}
+#else
+	if (!np->isRef && !np->isConst /*&& !np->isField
+		&& np->isLval && !np->isMacro*/ )
+	{
+		np = new_RefNode(np);
+	}
+
+
+	{
+		Var *vp;
+		char vname[64];
+		snprintf(vname, sizeof(vname), "__local_get_%d", local_get_no++);
+		vp = new_Var(strdup(vname));
+		ins_name(vp->name);
+		add_VarColl(curFunction->locals, vp);
+		np = new_AssignNode(new_LocalNode(vp), np, '=');
+	}
+#endif
+
+	argv->items[0] = np;
+
+
+	atInsert_Coll(argv, sp, 1);
+	atInsert_Coll(argv, ip, 1);
+
+    ret:
+	return new_CallNode(strdup("__CGET__"), argv, 0);
 }
 
 /* ] CallNode */
@@ -3229,6 +3656,7 @@ pass_ExprListNode(void *self, Pass pass, int level, void *par)
 		}
 		return 0;
 	default:
+		break;
 	}
 	return pass_Node(self, pass, level - 1, par);
 }
@@ -3246,6 +3674,97 @@ new_ExprListNode()
 }
 
 /* ] ExprListNode */
+/* [ ExprArrNode */
+
+static int
+pass_ExprArrNode(void *self, Pass pass, int level, void *par)
+{
+	VAR(ExprArrNode, npp, self);
+
+	switch (pass)
+	{
+	case Print:
+		fprintfOffs(stdout, level, "ExprArrNode: %d, islast=%d\n", npp->coll.count, npp->last);
+		break;
+	case PrintSrc:
+		{
+			VAR(CodestrNode, cp, par);
+			VAR(StrBuf, out, cp->buf);
+			int n;
+
+			for (n = 0; n < npp->coll.count; n++)
+			{
+				VAR(Node, p, npp->coll.items[n]);
+				if (n)
+					putString_StrBuf(out, ", ");
+				if (p->pass(p, pass, level + 1, par))
+					break;
+			}
+		}
+		return 0;
+	case Traverse:
+		{
+			VAR(TraversePar, tp, par);
+			tp->func((Node*)self, tp->par);
+		}
+		break;
+	case CText:
+		{
+			int n, e;
+			VAR(FILE, out, par);
+			for (n = 0, e = npp->coll.count; n < e; n++)
+			{
+				VAR(Node, p, npp->coll.items[n]);
+				p->pass(p, pass, level + 1, par);
+				if (n == (e-1) && npp->last)
+					fprintfOffs(out, level + 1, "_clip_pop(_mp);\n");
+			}
+
+		}
+		return 0;
+	case OText:
+		{
+			int n, e;
+			VAR(StrBuf, out, par);
+			for (n = 0, e = npp->coll.count; n < e; n++)
+			{
+				VAR(Node, p, npp->coll.items[n]);
+				p->pass(p, pass, level + 1, par);
+				if (n == (e-1) && npp->last)
+					putByte_StrBuf(out, CLIP_POP);
+			}
+
+		}
+		return 0;
+	default:
+		break;
+	}
+
+	{
+		int n, e;
+		for (n = 0, e = npp->coll.count; n < e; n++)
+		{
+			VAR(Node, p, npp->coll.items[n]);
+			p->pass(p, pass, level + 1, par);
+		}
+	}
+	return 0;
+}
+
+Node *
+new_ExprArrNode()
+{
+	NEWVAR(ExprArrNode, ret);
+
+	init_Node(ret, pass_ExprArrNode, "exprarr");
+	ret->node.isExpr = 1;
+	ret->node.isExprList = 1;
+	init_Coll(&(ret->coll), 0, 0);
+
+	return (Node *) ret;
+}
+
+/* ] ExprArrNode */
 /* [ AssignNode */
 
 static int
@@ -3316,6 +3835,16 @@ pass_AssignNode(void *self, Pass pass, int level, void *par)
 			}
 			else
 			{
+				int islocal = 0;
+				if (np->var->isLocal)
+				{
+					VAR(VarNode, lp, np->var);
+					if (!lp->vp->isParam && np->op == '='
+						 /*&& !(lp->vp->init && lp->vp->init->isRef)*/
+						 && !lp->vp->isLocalRef
+						 )
+						islocal = 1;
+				}
 				if (np->node.isTop)
 				{
 					if (np->op != '=')
@@ -3327,7 +3856,11 @@ pass_AssignNode(void *self, Pass pass, int level, void *par)
 					else
 					{
 						fprintfOffs(out, level, "if ((_ret=_clip_assign( _mp, ");
+						if (islocal)
+							fprintf(out, "_clip_ref_destroy(_mp ,");
 						np->var->pass(np->var, CTextLval, level, par);
+						if (islocal)
+							fprintf(out, ")");
 						fprintf(out, " ))) goto _trap_%d;\n", np->node.seqNo);
 					}
 				}
@@ -3342,7 +3875,11 @@ pass_AssignNode(void *self, Pass pass, int level, void *par)
 					else
 					{
 						fprintfOffs(out, level, "if ((_ret=_clip_iassign( _mp, ");
+						if (islocal)
+							fprintf(out, "_clip_ref_destroy(_mp ,");
 						np->var->pass(np->var, CTextLval, level, par);
+						if (islocal)
+							fprintf(out, ")");
 						fprintf(out, " ))) goto _trap_%d;\n", np->node.seqNo);
 					}
 				}
@@ -3377,9 +3914,21 @@ pass_AssignNode(void *self, Pass pass, int level, void *par)
 			}
 			else
 			{
+				np->var->pass(np->var, OTextLval, level, par);
+				if (np->var->isLocal)
+				{
+					VAR(VarNode, lp, np->var);
+					if (!lp->vp->isParam && np->op == '='
+						 /*&& !(lp->vp->init && lp->vp->init->isRef)*/
+						 && !lp->vp->isLocalRef
+						 )
+					{
+						putByte_StrBuf(out, CLIP_REF_DESTROY);
+					}
+				}
+
 				if (np->node.isTop)
 				{
-					np->var->pass(np->var, OTextLval, level, par);
 					if (np->op == '=')
 						putByte_StrBuf(out, CLIP_ASSIGN);
 					else
@@ -3390,7 +3939,6 @@ pass_AssignNode(void *self, Pass pass, int level, void *par)
 				}
 				else
 				{
-					np->var->pass(np->var, OTextLval, level, par);
 					if (np->op == '=')
 						putByte_StrBuf(out, CLIP_IASSIGN);
 					else
@@ -3409,6 +3957,7 @@ pass_AssignNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->var->pass(np->var, pass, level + 1, par);
 	np->expr->pass(np->expr, pass, level + 1, par);
@@ -3424,9 +3973,9 @@ new_AssignNode(Node * var, Node * expr, int op)
 	{
 		FieldNode *fp = (FieldNode *) var;
 		if (op != '=')
-                {
-        		return new_AssignFieldNode(fp->area, fp->areaExpr, fp->name, fp->nameExpr,
-        			new_OpNode(var, expr, op));
+		{
+			return new_AssignFieldNode(fp->area, fp->areaExpr, fp->name, fp->nameExpr,
+				new_OpNode(var, expr, op));
 		}
 		else
 		{
@@ -3444,6 +3993,7 @@ new_AssignNode(Node * var, Node * expr, int op)
 	{
 		return new_AssignFmemvarNode(var, expr);
 	}
+	var->isAssignLval = 1;
 
 	ret = NEW(AssignNode);
 	init_Node(ret, pass_AssignNode, "assign");
@@ -3528,6 +4078,7 @@ pass_AssignFmemvarNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->var->pass(np->var, pass, level + 1, par);
 	np->expr->pass(np->expr, pass, level + 1, par);
@@ -3783,6 +4334,7 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	if (np->nameExpr)
 		np->nameExpr->pass(np->nameExpr, pass, level + 1, par);
@@ -3837,12 +4389,13 @@ pass_ArrayInitNode(void *self, Pass pass, int level, void *par)
 	case CalcDeep:
 		{
 			VAR(Function, fp, par);
-			addDeep(fp, np->i);
+			addDeep(fp, np->i+1);
 		}
 		break;
 	case CText:
 		{
 			VAR(FILE, out, par);
+
 			np->expr->pass(np->expr, CText, level, par);
 			fprintfOffs(out, level, "_clip_sarray( _mp, %d );\n", np->i);
 		}
@@ -3862,8 +4415,9 @@ pass_ArrayInitNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
-	pass_Node(np->expr, pass, level, par);
+	np->expr->pass(np->expr, pass, level+1, par);
 	return 0;
 }
 
@@ -3883,6 +4437,22 @@ new_ArrayInitNode(Node * exprlist)
 	return (Node *) ret;
 }
 
+Node *
+new_ArrayInitNodeN(Node * exprlist, int n)
+{
+	NEWVAR(ExprNode, ret);
+
+	init_Node(ret, pass_ArrayInitNode, "arrayinit");
+	ret->node.isExpr = 1;
+
+	ret->i = n;
+	ret->expr = exprlist;
+	ret->node.isConst = exprlist->isConst;
+	ret->node.isArray = 1;
+
+	return (Node *) ret;
+}
+
 /* ] ArrayInitNode */
 /* [ NewArrayNode */
 
@@ -3890,7 +4460,7 @@ static int
 pass_NewArrayNode(void *self, Pass pass, int level, void *par)
 {
 	VAR(NewArrayNode, np, self);
-        int i;
+	int i;
 
 	switch (pass)
 	{
@@ -3945,6 +4515,7 @@ pass_NewArrayNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	return 0;
 }
@@ -4013,7 +4584,7 @@ pass_MethodNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "_clip_push( _mp, &_nil_ );\n");
+			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			np->obj->pass(np->obj, pass, level, par);
 			pass_Node(self, pass, level - 1, par);
 			fprintfOffs(out, level, "if ( (_ret=_clip_call(_mp, %d, 0x%lx /* %s */))) goto _trap_%d;\n",
@@ -4040,6 +4611,7 @@ pass_MethodNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	np->obj->pass(np->obj, pass, level, par);
@@ -4101,7 +4673,7 @@ pass_GetNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "_clip_push( _mp, &_nil_ );\n");
+			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			np->obj->pass(np->obj, pass, level, par);
 			fprintfOffs(out, level, "if ( (_ret=_clip_get(_mp, 0x%lx /* %s */))) goto _trap_%d;\n",
 				    hashstr(np->name), np->name, np->node.seqNo);
@@ -4125,6 +4697,7 @@ pass_GetNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return np->obj->pass(np->obj, pass, level + 1, par);
@@ -4177,7 +4750,7 @@ pass_SetNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "_clip_push( _mp, &_nil_ );\n");
+			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			pass_Node(self, pass, level - 1, par);
 			np->obj->pass(np->obj, pass, level, par);
 			fprintfOffs(out, level, "if ( (_ret=_clip_set(_mp, 0x%lx /* %s */))) goto _trap_%d;\n",
@@ -4203,6 +4776,7 @@ pass_SetNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	np->obj->pass(np->obj, pass, level, par);
@@ -4318,6 +4892,7 @@ pass_ReturnNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	if (np->expr)
@@ -4427,6 +5002,7 @@ pass_CodeNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	pass_Node(self, pass, level+1, par);
@@ -4437,7 +5013,7 @@ Node *
 new_CodeNode(VarColl * params)
 {
 	char buf[32], *s;
-        int i;
+	int i;
 
 	NEWVAR(CodeNode, ret);
 
@@ -4500,6 +5076,7 @@ pass_LangNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -4611,7 +5188,7 @@ pass_ArrElNode(void *self, Pass pass, int level, void *par)
 		{
 			VAR(FILE, out, par);
 			np->arr->pass(np->arr, CText, level, par);
-			fprintfOffs(out, level, "_mp->fp->sp->p.vp = _clip_fetchref( _mp, %d );\n", np->dim);
+			fprintfOffs(out, level, "{ClipVar *vp = _clip_fetchref( _mp, %d ); _mp->fp->sp->p.vp = vp;}\n", np->dim);
 		}
 		return 0;
 	case OText:
@@ -4675,6 +5252,7 @@ pass_ArrElNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->arr->pass(np->arr, pass, level + 1, par);
 	if (np->expr)
@@ -4727,15 +5305,15 @@ find_paramsonly(Node *np, void *par)
 	VAR(int, ip, par);
 
 	if (!strcmp(np->name, "macro"))
-        	np = ((ExprNode*) np)->expr;
-        	
+		np = ((ExprNode*) np)->expr;
+
 
 	if (!strcmp(np->name, "local"))
 	{
 		if (((VarNode*)np)->vp->isCodeParam)
 			return 0;
 	}
-	else if (strcmp(np->name, "const")
+	else if (!strcmp(np->name, "const") /* bug#55?? */
 		|| !strcmp(np->name, "arrel")
 		|| !strcmp(np->name, "call")
 		)
@@ -4829,6 +5407,7 @@ pass_MacroNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr->pass(np->expr, pass, level + 1, par);
 	return 0;
@@ -4844,7 +5423,7 @@ new_MacroNode(Node * expr, int isexpr)
 	ret->node.isMacro = 1;
 	ret->node.isExpr = expr->isExpr;
 	ret->node.isLval = 1;
-        ret->i = isexpr;
+	ret->i = isexpr;
 	if (!strcmp(expr->name, "fmemvar"))
 		((VarNode*)expr)->p1 = 1;
 
@@ -4887,6 +5466,7 @@ pass_PcountNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	return 0;
 }
@@ -4937,6 +5517,7 @@ pass_PshiftNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	return 0;
 }
@@ -4986,6 +5567,7 @@ pass_ParnNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr->pass(np->expr, pass, level, par);
 	return 0;
@@ -5031,7 +5613,7 @@ pass_CallNameNode(void *self, Pass pass, int level, void *par)
 		{
 			VAR(FILE, out, par);
 			np->name->pass(np->name, CTextLval, level, par);
-			fprintfOffs(out, level, "_clip_push( _mp, &_nil_ );\n");
+			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			pass_Node(self, pass, level - 1, par);
 			fprintfOffs(out, level, "if ((_ret=_clip_func_name(_mp, %d))) goto _trap_%d;\n", np->argc, np->node.seqNo);
 			return 0;
@@ -5055,6 +5637,7 @@ pass_CallNameNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->name->pass(np->name, pass, level, par);
 
@@ -5147,6 +5730,7 @@ pass_IncrNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr->pass(np->expr, pass, level, par);
 	return 0;
@@ -5175,7 +5759,7 @@ new_IncrNode(Node * expr, int isIncr, int isPost)
 		{
 			np = new_OpNode(expr, new_NumberConstNode(strdup("1"), 0), isIncr ? '+' : '-');
 			np = new_AssignNode(expr, np, '=');
-			/*np = new_SwapNode(expr, np);*/
+			np = new_SwapNode(expr, np);
 		}
 		else
 		{
@@ -5265,6 +5849,7 @@ pass_OpNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr1->pass(np->expr1, pass, level + 1, par);
 	np->expr2->pass(np->expr2, pass, level + 1, par);
@@ -5347,6 +5932,7 @@ pass_OrNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr1->pass(np->expr1, pass, level + 1, par);
 	np->expr2->pass(np->expr2, pass, level + 1, par);
@@ -5430,6 +6016,7 @@ pass_AndNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr1->pass(np->expr1, pass, level + 1, par);
 	np->expr2->pass(np->expr2, pass, level + 1, par);
@@ -5495,6 +6082,7 @@ pass_NotNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr->pass(np->expr, pass, level, par);
 	return 0;
@@ -5560,6 +6148,7 @@ pass_MinusNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr->pass(np->expr, pass, level, par);
 	return 0;
@@ -5653,7 +6242,7 @@ pass_IfNode(void *self, Pass pass, int level, void *par)
 			int no;
 			int count = np->elseifs->count / 2 + (np->elselist ? 0 : -1);
 			int eoffs;
-			int *ejmps = (int *) alloca(sizeof(int) * count);
+			int *ejmps = (int *) malloc(sizeof(int) * (count+1));
 
 			put_line(self, level, out);
 			for (i = 0, no = 0; i < np->elseifs->count; i += 2, ++no)
@@ -5686,6 +6275,7 @@ pass_IfNode(void *self, Pass pass, int level, void *par)
 			{
 				SETSHORT(out, ejmps[i], eoffs - (ejmps[i] + sizeof(short)));
 			}
+			free(ejmps);
 		}
 		return 0;
 	case Traverse:
@@ -5695,6 +6285,7 @@ pass_IfNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	for (i = 0; i < np->elseifs->count; i += 2)
 	{
@@ -5817,6 +6408,7 @@ pass_WhileNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr->pass(np->expr, pass, level, par);
 	np->list->pass(np->list, pass, level, par);
@@ -5896,6 +6488,7 @@ pass_LoopExitNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	return 0;
 }
@@ -5937,7 +6530,7 @@ pass_ForNode(void *self, Pass pass, int level, void *par)
 			int saveNo = loopNo;
 
 			print_line(self, level, out);
-                        loopPart = 0;
+			loopPart = 0;
 			np->init->pass(np->init, pass, level, par);
 			np->to->pass(np->to, pass, level, par);
 			np->step->pass(np->step, pass, level, par);
@@ -5948,11 +6541,11 @@ pass_ForNode(void *self, Pass pass, int level, void *par)
 			fprintfOffs(out, level, "goto _lbeg_%d;\n", no);
 
 			fprintfOffs(out, level, "_loop_%d:\n", no);
-                        loopPart = 1;
+			loopPart = 1;
 			np->var->pass(np->var, pass, level, par);
 			np->to->pass(np->to, pass, level, par);
 			np->step->pass(np->step, pass, level, par);
-                        loopPart = 0;
+			loopPart = 0;
 
 			fprintfOffs(out, level, "if ((_ret=_clip_forstep( _mp, &_if ))) goto _trap_%d;\n", np->node.seqNo);
 			fprintfOffs(out, level, "if ( !_if ) goto _endloop_%d;\n", no);
@@ -6018,6 +6611,7 @@ pass_ForNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	np->init->pass(np->init, pass, level, par);
@@ -6153,6 +6747,7 @@ pass_ForeachNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	np->var->pass(np->var, pass, level, par);
@@ -6188,7 +6783,7 @@ new_ForeachNode(Node * var, Node * expr, Node * list, int keys)
 typedef struct
 {
 	StrBuf *out;
-	int offs;
+	long offs;
 }
 TrapData;
 
@@ -6242,6 +6837,7 @@ pass_SeqNode(void *self, Pass pass, int level, void *par)
 			}
 			if (np->recover)
 				np->recover->pass(np->recover, pass, level, par);
+			fprintfOffs(out, level, "_ret = 0;\n");
 			fprintfOffs(out, level - 1, "_end_%d:\n", np->seqNo);
 		}
 		return 0;
@@ -6291,7 +6887,8 @@ pass_SeqNode(void *self, Pass pass, int level, void *par)
 	case OTextTrap:
 		{
 			VAR(TrapData, tp, par);
-			SETSHORT (tp->out,  np->toffs,  tp->offs);
+			/* SETSHORT (tp->out,  np->toffs,  tp->offs); */
+			SETSHORT (tp->out,  np->toffs,  (tp->offs - (np->toffs + sizeof(short))) );
 		}
 		return 0;
 	case Traverse:
@@ -6301,6 +6898,7 @@ pass_SeqNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->list->pass(np->list, pass, level, par);
 	if (np->using)
@@ -6372,7 +6970,7 @@ pass_BreakNode(void *self, Pass pass, int level, void *par)
 				fprintfOffs(out, level, "goto _trap_%d;\n", np->node.seqNo);
 			}
 			if (!np->i)
-				fprintfOffs(out, level, "_clip_push( _mp, &_nil_ );\n");
+				fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 		}
 		return 0;
 	case OText:
@@ -6397,6 +6995,7 @@ pass_BreakNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	if (np->expr)
@@ -6445,6 +7044,7 @@ pass_NamespaceDefNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	return 0;
@@ -6612,6 +7212,7 @@ pass_NewArrNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	pass_Node(np->expr, pass, level, par);
 	return 0;
@@ -6652,7 +7253,8 @@ pass_SwapNode(void *self, Pass pass, int level, void *par)
 			VAR(FILE, out, par);
 			np->expr1->pass(np->expr1, CText, level, par);
 			np->expr2->pass(np->expr2, CText, level, par);
-			fprintfOffs(out, level, "_clip_swap( _mp, 1 );\n");
+			/*fprintfOffs(out, level, "_clip_swap( _mp, 1 );\n");*/
+			fprintfOffs(out, level, "_clip_pop( _mp );\n");
 		}
 		return 0;
 	case OText:
@@ -6660,8 +7262,9 @@ pass_SwapNode(void *self, Pass pass, int level, void *par)
 			VAR(StrBuf, out, par);
 			np->expr1->pass(np->expr1, OText, level, par);
 			np->expr2->pass(np->expr2, OText, level, par);
-			putByte_StrBuf(out, CLIP_SWAP);
-			putByte_StrBuf(out, 1);
+			/*putByte_StrBuf(out, CLIP_SWAP);
+			putByte_StrBuf(out, 1);*/
+			putByte_StrBuf(out, CLIP_POP);
 		}
 		return 0;
 	case Traverse:
@@ -6671,9 +7274,10 @@ pass_SwapNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
-	pass_Node(np->expr1, pass, level, par);
-	pass_Node(np->expr2, pass, level, par);
+	np->expr1->pass(np->expr1, pass, level+1, par);
+	np->expr2->pass(np->expr2, pass, level+1, par);
 	return 0;
 }
 
@@ -6736,6 +7340,7 @@ pass_LocaleStringNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	pass_Node(np->expr, pass, level, par);
 	return 0;
@@ -6872,6 +7477,7 @@ pass_CodestrNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	for(i=0; i<np->coll.count; i++)
@@ -6943,6 +7549,7 @@ pass_QuotNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 	np->expr->pass(np->expr, pass, level, par);
 	return 0;
@@ -7177,6 +7784,7 @@ pass_SwitchNode(void *self, Pass pass, int level, void *par)
 		}
 		break;
 	default:
+		break;
 	}
 
 	np->expr->pass(np->expr, pass, level, par);

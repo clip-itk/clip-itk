@@ -1,6 +1,13 @@
 
 /*
    $Log: genlist.c,v $
+   Revision 1.5  2003/09/08 15:06:03  clip
+   uri: next step fixes for mingw from uri
+
+   Revision 1.4  2003/07/03 07:15:56  clip
+   fix a lot of warnings
+   paul
+
    Revision 1.3  2000/05/24 18:34:26  clip
    _clip_push_area
    indents all
@@ -14,6 +21,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #include <time.h>
 
 int
@@ -70,6 +78,7 @@ main(int argc, char **argv)
 
 		printf("\t{ %s, \"%s\" },\n", word3, word3);
 	      next:
+		;
 	}
 	printf("\t{ 0, 0 }\n");
 	printf("};\n\n");

@@ -8,15 +8,50 @@ LANG=C
 LC_ALL=C
 LC_MESSAGES=C
 export MAKE LANG LC_ALL LC_MESSAGES
+if [ -z "$CLIP_NAMES" ]
+then
+	CLIP_NAMES=yes
+        export CLIP_NAMES
+fi
+
+if [ -x /usr/bin/rpmbuild ]
+then
+	RPM=/usr/bin/rpmbuild
+elif [ -x /usr/bin/rpm ]
+then
+	RPM=/usr/bin/rpm
+else
+	RPM=rpm
+fi
+
+if [ "$1" = "-opt" ]
+then
+	rpm_root='/opt/clip'
+        rpm_bin='/usr/bin'
+        rpm_lib='/usr/lib'
+        rpm_target='rpm-opt'
+        shift
+else
+	rpm_root='/usr/local/clip'
+        rpm_bin='/usr/local/bin'
+        rpm_lib='/usr/lib'
+        rpm_target='rpm'
+fi
+
 
 name=clip-dev
 version=$(head -1 debian/changelog |cut -d'(' -f2|cut -d'-' -f1)
 release=$(head -1 debian/changelog |cut -d'(' -f2|cut -d'-' -f2|cut -d')' -f1)
 root=/tmp/mkspec$$
 
-echo "%define name $name
+echo "\
+%define name $name
 %define version $version
 %define release $release
+%define CLIPROOT $rpm_root
+%define BINDIR $rpm_bin
+%define LIBDIR $rpm_lib
+%define rpm_target $rpm_target
 %define _topdir $root
 " >$name.spec
 cat clip-dev.spec.in >> $name.spec
@@ -50,7 +85,7 @@ cd $pwd
 #rpm --pipe "grep \\.rpm>$tmp/lst" -ba $name.spec
 opt=$1
 shift
-rpm --pipe "tee $tmp/lst" ${opt:--ba} $* $name.spec
+$RPM --pipe "tee $tmp/lst" ${opt:--ba} $* $name.spec
 rpms=`grep $root/.\*\\\.rpm $tmp/lst | cut -d ' ' -f 2`
 echo RPMS: $rpms
 [ -n "$rpms" ] && mv $rpms $dir

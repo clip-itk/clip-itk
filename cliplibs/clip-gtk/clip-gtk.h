@@ -64,17 +64,19 @@ typedef struct _C_widget
 
 typedef struct
 {
-	ClipVar *cfunc;
+	ClipVar cfunc;
 	unsigned int id;
 	ClipMachine *cm;
 	ClipVar *cv;
 	C_widget *cw;
+	C_object *co;
 }
 C_var;
 
 typedef struct _C_signal
 {
 	C_widget *cw;
+	C_object *co;
 	const char * signame;
 	int sigid;
 	ClipVar cfunc;
@@ -397,4 +399,10 @@ GtkType _gtk_type_vscrollbar();
 GtkType _gtk_type_vseparator();
 GtkType _gtk_type_widget();
 GtkType _gtk_type_window();
+
+
+#define GTK_ACCEL_GROUP(obj)           ((GtkAccelGroup *)(obj))
+#define GTK_IS_ACCEL_GROUP(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_ACCEL_GROUP)
+
+
 #endif

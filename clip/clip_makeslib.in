@@ -62,9 +62,9 @@ do
 	esac
         if [ "$needex" = yes ]
         then
-        	name=`echo "$i" | sed 's/\.[A-Za-z0-9]*$/\.ex/'`
+        	name=`echo "$i" | sed 's/\.[A-Za-z0-9.]*$/\.ex/'`
                 test -r "$pwd/$name" && cp "$pwd/$name" .
-        	name=`echo "$i" | sed 's/\.[A-Za-z0-9]*$/\.nm/'`
+        	name=`echo "$i" | sed 's/\.[A-Za-z0-9.]*$/\.nm/'`
                 test -r "$pwd/$name" && cp "$pwd/$name" .
         fi
 done
@@ -76,9 +76,9 @@ echo
 /bin/ls *.o *.so 2>/dev/null >_olist
 if [ -z "$NM_UNDERSCORE" ]
 then
-	nm `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b6- |sort -u>_lst
+	$NM_PRG `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b6- |sort -u>_lst
 else
-	nm `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*_clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b7- |sort -u>_lst
+	$NM_PRG `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*_clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b7- |sort -u>_lst
 fi
 
 exec 3>_clst
@@ -293,24 +293,52 @@ CYGWIN)
 	fi
 	cp $target.dll $target.dll.a $pwd
 	;;
+MINGW)
+	if [ "$target" != libclip ]
+	then
+		if [ -f $CLIPROOT/lib/libclip.dll.a ]
+		then
+			addlib="$addlib $CLIPROOT/lib/libclip.dll.a"
+		elif [ -f $CLIPROOT/libclip.dll.a ]
+		then
+			addlib="$addlib $CLIPROOT/libclip.dll.a"
+		elif [ -f $CLIP_ROOT/lib/libclip.dll.a ]
+		then
+			addlib="$addlib $CLIP_ROOT/lib/libclip.dll.a"
+		else
+			addlib="$addlib -lclip"
+		fi
+	fi
+	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -c $target_ref || cleanup 1
+	dlltool --output-def _def.def ${target}_ref.o `cat _olist` || cleanup 2
+	dllwrap --dllname $target.dll --def _def.def ${target}_ref.o `cat _olist` $addlib || cleanup 3
+	dlltool --output-lib $target.dll.a --dllname $target.dll --def _def.def || cleanup 4
+	cp $target.dll $target.dll.a $pwd
+	;;
 *)
 	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -shared -o $arch $target_ref `cat _olist` $addlib || cleanup 1
 	;;
 esac
+
+if grep '^[[:space:]]*-N[[:space:]]*$' ${CLIP_ROOT}/cliprc/* >/dev/null 2>&1
+then
+	CLIP_NAMES='yes'
+fi
+
 
 case "$CLIP_NAMES" in
 1|[yY][eE][sS]|[oO][nN])
 
 	cat _clst *.nm 2>/dev/null | grep -v '^#\|^$' | sort -u > $pwd/$target.nm
 
-	if join --version >/dev/null 2>&1
+	if join  /dev/null /dev/null >/dev/null 2>&1
 	then
 		cat *.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > _ex
 		join -v 1 _ex $pwd/$target.nm > $pwd/$target.ex
 	else
 		cat *.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > $pwd/$target.ex
 	fi
-	
+
 	;;
 esac
 

@@ -1,0 +1,8 @@
+#-E CLIPLIBS=tools.a
+#-I ../include
+-l
+-D ENGLISH
+-U std.ch
+-U config.ch
+-U clip.ch
+

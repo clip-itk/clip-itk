@@ -162,7 +162,7 @@ return 0
 //----------------------------------------------------------------------------//
 
 static function fw_Paint( self )
-
+/*
    local hDarkPen  := eval(Selector:CreatePen, PS_SOLID, 1, GetSysColor( COLOR_BTNSHADOW ) )
    local hGrayPen  := eval(Selector:CreatePen, PS_SOLID, 1, GetSysColor( COLOR_BTNFACE ) )
    local hLightPen := eval(Selector:CreatePen, PS_SOLID, 1, GetSysColor( COLOR_BTNHIGHLIGHT ) )
@@ -223,14 +223,14 @@ static function fw_Paint( self )
 	 LineTo( hDC, nCol + self:aSizes[ n ] + 13,  0 )
 
 	 SetTextColor( hDC, self:nClrText )
-	 SetBkColor( hDC, self:nClrPane )
-	 DrawText( hDC, self:aPrompts[ n ],;
+	 eval(Selector:SetBkColor, hDC, self:nClrPane )
+	 eval(Selector:DrawText, hDC, self:aPrompts[ n ],;
 		   { 1, nCol + 4, 15, nCol + 5 + self:aSizes[ n ] + 5 },;
 		   numOr( DT_CENTER, DT_VCENTER ) )
       else
 	 SetTextColor( hDC, GetSysColor( COLOR_INACTIVECAPTIONTEXT ) )
-	 SetBkColor( hDC, GetSysColor( COLOR_INACTIVECAPTION ) )
-	 DrawText( hDC, self:aPrompts[ n ],;
+	 eval(Selector:SetBkColor, hDC, GetSysColor( COLOR_INACTIVECAPTION ) )
+	 eval(Selector:DrawText, hDC, self:aPrompts[ n ],;
 		   { 2, nCol + 3, 19, nCol + 5 + self:aSizes[ n ] + 6 },;
 		   numOr( DT_CENTER, DT_VCENTER ) )
       endif
@@ -248,7 +248,7 @@ static function fw_Paint( self )
    DeleteObject( hGrayBrush )
 
    self:ReleaseDC()
-
+*/
 return nil
 
 //----------------------------------------------------------------------------//

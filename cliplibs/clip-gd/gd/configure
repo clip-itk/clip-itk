@@ -49,11 +49,11 @@ case "$uname" in
 		stdlibpath=/usr/lib
 		stdincpath=/usr/include
 		LIBXPM='-lXpm-noX'
-                if [ -f /usr/include/X11/Xlib.h ]
-                then
-	                CYGFLAGS=
+		if [ -f /usr/include/X11/Xlib.h ]
+		then
+			CYGFLAGS=
 		else
-                	CYGFLAGS=-DXPM_NO_X
+			CYGFLAGS=-DXPM_NO_X
 		fi
 		;;
 esac
@@ -108,7 +108,7 @@ else
 fi
 
 #??????????
-if [ -f $stdlibpath/freetype${DLLSUFF} ]
+if [ -f $stdlibpath/libfreetype${DLLSUFF} ]
 then
 	echo "LIBFREETYPE='-lfreetype'" >&3
 else
@@ -127,7 +127,7 @@ then
 	echo "LIBXPM='$LIBXPM'" >&3
 else
 	echo 'Warning: system do not have installed XPM development'
-        LIBXPM=''
+	LIBXPM=''
 fi
 
 

@@ -6,6 +6,14 @@
 
 /*
    $Log: _system.c,v $
+   Revision 1.10  2003/09/09 14:36:14  clip
+   uri: fixes for mingw from Mauricio and Uri
+
+   Revision 1.9  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
    Revision 1.8  2001/09/07 10:13:06  clip
    uri: make _clip_PID() function
 
@@ -39,13 +47,15 @@
 
  */
 
+#include "clip.h"
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/wait.h>
+#ifndef OS_MINGW
+	#include <sys/wait.h>
+#endif
 
-#include "clip.h"
 #include "error.ch"
 
 #undef SYSTEM
@@ -61,14 +71,16 @@ clip_SYSCMD(ClipMachine * mp)
 	char *in;
 	int lin;
 	ClipVar *out, *err;
-	OutBuf obuf, ebuf;
 	int have_err = 0;
+#ifndef OS_MINGW
+	OutBuf obuf, ebuf;
 	pid_t pid;
 	int status;
 	int infd, outfd, errfd;
 	int inpipe[2], outpipe[2], errpipe[2];
 	fd_set r_fds, w_fds;
 	int arg = 0, r = 0;
+#endif
 
 	cmd = _clip_parcl(mp, 1, &lcmd);
 	in = _clip_parcl(mp, 2, &lin);
@@ -87,6 +99,10 @@ clip_SYSCMD(ClipMachine * mp)
 	if (err)
 		have_err = 1;
 
+/* FIXME!! figure how to run a command in mingw */
+#ifdef OS_MINGW
+	execlp("command.com", "/c", cmd, 0);
+#else
 	pipe(inpipe);
 	pipe(outpipe);
 	if (have_err)
@@ -261,6 +277,7 @@ clip_SYSCMD(ClipMachine * mp)
 		err->s.str.len = ebuf.ptr - ebuf.buf - 1;
 		/*destroy_Buf(&ebuf); */
 	}
+#endif
 	return 0;
 }
 

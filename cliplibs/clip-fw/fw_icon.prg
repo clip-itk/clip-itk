@@ -87,7 +87,7 @@ static function fw_New( self, nRow, nCol, cResName, cIcoFile, lBorder, bClick, o
    endif
 
    if ! Empty( cResName )
-      self:hIcon = eval(Selector:LoadIcon, GetResources(), cResName )
+      self:hIcon = eval(Selector:LoadIcon, eval(Selector:GetResources), cResName )
    endif
 
 return Self

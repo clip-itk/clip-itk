@@ -15,15 +15,20 @@ FUNCTION Main()
    DEFINE WINDOW oWnd                                          ;
       TITLE "Massive Dialog Box use test";
       COLOR CLR_YELLOW
-/*
+
+   if GetFwDriver()=="GTK"
    @ 2,  2 BUTTON "&Start"                                     ;
       SIZE 80, 20                                              ;
       ACTION ( MsgMeter( { | oMeter, oText, oDlg, lEnd, oBtn |       ;
       ArrayTest( oMeter, oText, @lEnd ) }                     , ;
       "Element nÚ xxxx"                                       , ;
       "Adding 2000 elements to a Clipper array..." ))
+   else
+   @ 2,  2 BUTTON "&Start"                                     ;
+      SIZE 80, 20                                              ;
+      ACTION MsgAbout()
+   endif
 
-*/
    ACTIVATE WINDOW oWnd VALID MsgYesNo("Uveren??")
 
 RETURN( NIL )

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -13,81 +13,8 @@
 #include "bdbfmsg.ch"
 MEMVAR _tally
 **********
-FUNC ADIR(csPath, aNames, aSizes, aDates, aTimes, aAttrs)
-LOCAL _aDir, _Path, i, el
-LOCAL aN, aS, aD, aT, aA
-IF !(SubStr(csPath, 2, 1) == ":" .OR. SubStr(csPath, 1, 1) == PATH_DELIM)
-	_Path:=Set(7)
-	IF (Len(_Path) > 0) .AND. !(Substr(_Path,-1) $ ":"+PATH_DELIM)
-		_Path += IF(Len(_Path) == 1, ":", PATH_DELIM)
-	ENDIF
-	csPath:=_Path+csPath
-ENDIF
-
-IF ValType(_aDir:=Directory(cSPath,IF(ValType(aAttrs) == "A","HSD","")))<>"A"
-	RETURN 0
-ENDIF
-
-/*Так хорошо, но параметры надо передавать по ссылке, что не соответствует
-функции
-
-aNames:={}
-aSizes:={}
-aDates:={}
-aTimes:={}
-aAttrs:={}
-AEVAL(_aDir,{|el|;
-	AADD(aNames,el[1]),;
-	AADD(aSizes,el[2]),;
-	AADD(aDates,el[3]),;
-	AADD(aTimes,el[4]),;
-	AADD(aAttrs,el[5]);
-})
-*/
-FOR i:=1 TO LEN(_adir)
-	el:=_aDir[i]
-	aNames[i]:=el[1]
-	IF ValType(aSizes) == "A"  THEN aSizes[i]:=el[2]
-	IF ValType(aDates) == "A"  THEN aDates[i]:=el[3]
-	IF ValType(aTimes) == "A"  THEN aTimes[i]:=el[4]
-	IF ValType(aAttrs) == "A"  THEN aAttrs[i]:=el[5]
-NEXT
-
-RETURN LEN(_adir)
-**********
-FUNC AFIELDS(aName, aType, aLen, aDec)
-LOCAL aStr, naStr, i, el
-IF (Empty(aStr:= Dbstruct_())) THEN RETURN 0
-
-naStr:= Min(Len(aStr),Len(aName))
-
-FOR i:=1 To naStr
-	el:=aStr[i]
-	aName[i]:=el[1]
-
-	IF (ValType(aType) == "A") THEN aType[i]:=el[2]
-	IF (ValType(aLen) == "A") THEN aLen[i]:=el[3]
-	IF (ValType(aDec) == "A") THEN aDec[i]:=el[4]
-NEXT
-
-RETURN naStr
-**********
-FUNC AFILL(Arg1, Arg2, Arg3, Arg4)
-
-Aeval(Arg1, {|_1, _2| Arg1[_2]:= Arg2}, Arg3, Arg4)
-RETURN Arg1
-**********
-FUNC ACLONE(aAr)
-LOCAL aNew
-IF ValType(aAr) = "A"
-	aNew:={}
-	AEval(aAr,{|el|AADD(aNew,IF(ValType(el) == "A",Aclone(el),el))})
-ENDIF
-RETURN aNew
-**********
 FUNC __DBCOPY(NewBase, aFlds, bFor, bWhile, nNext, nRec, lRest, cRdd)
 LOCAL NewSelect, oldBase:=Select(), _aFlds, RetError, _error:= .F.,i
-
 IF (Empty(_aFlds:= __Fledit(Dbstruct_(), aFlds))) THEN RETU .F.
 BEGIN SEQUENCE
 	Dbcreate(NewBase, _aFlds, cRdd, .T., "_nb")
@@ -131,6 +58,7 @@ RETURN .T.
 EXTE SDF	// драйвер SDF
 EXTE DELIM
 **********
+/*
 FUNC __DBDELIM( lCopy, NewBase, cDelim, aFlds, bFor, bWhile,;
 		nNext, nRec, lRest, _Rdd)
 LOCAL NewSelect, oldBase:= Select(), _aFlds, nFsize
@@ -152,6 +80,7 @@ __Dbtrans(IF(lCopy,NewSelect,OldBase), _aFlds, bFor, bWhile, nNext, nRec,lRest,n
 CLOSE (NewSelect)
 dbSelectArea(oldBase)
 RETURN .T.
+*/
 **********
 PROC __Dbtrans(fDest, _aFlds, bFor, bWhile, nNext,nRec, lRest,nFSize)
 LOCAL	nSkip:=0, aFld, cTDest,cTsrc,cfName,cFld,i,lErr:=.F.,nDec
@@ -200,33 +129,98 @@ Meter(3)
 ErrorSys()
 IF lErr THEN NFIND(_MSG_CL_NOF)
 **********
-FUNC __DBSORT(NewBase, aFlds, bFor, bWhile, nNext, nRec, lRest)
-LOCAL NewSelect, oldBase:=Select(), _aFlds, RetError, _error:= .F.
-_aFlds:= DbStruct_()
-BEGIN SEQUENCE
-	Dbcreate(NewBase, _aFlds, Nil,.T., "_nb")
-	NewSelect:= Select()
-	dbSelectArea(oldBase)
-	__Dbarrang(NewSelect, _aFlds, bFor, bWhile, nNext, nRec, lRest, aFlds)
-RECOVER USING RetError
-	_error:= .T.
-END SEQUENCE
-IF (NewSelect <> Nil)
-	dbSelectArea(NewSelect)
-	_tally:=LASTREC()
-	dbCloseArea()
-ENDIF
-dbSelectArea(oldBase)
-IF _error THEN BREAK(RetError)
+PROC __dbSort(fDest, afields, ufor, uwhile, nNext, nRec, lRest, cRdd)
+LOCAL	OldSel:=select(), OldOrder, cset:=set(_SET_CANCEL,.f.), ;
+	aFlds:={}, count:=0, aStruct,i, cT, xVal, cFld, cFldN,;
+	errMess:='DBSORT error', flag_err:=.f.,  err,;
+	tmpfile, indString, bFor, lRes:=.F.
 
-RETURN .T.
+IF EMPTY(fDest) THEN RETURN .F.
+
+IF VALTYPE(uFor)=='C' THEN uFor:=&("{||"+ uFor+"}")
+
+IF VALTYPE(uWhile)=='C' THEN uWhile:=&("{||"+ uWhile+"}")
+BEGIN SEQUENCE
+	OldOrder:=OrdSetFocus()
+	IF EMPTY(afields)
+		aStruct:=DBSTRUCT_()
+		FOR i=1 TO LEN(aStruct)
+			AADD(aFlds, {aStruct[i][1], .f., .f.})
+		NEXT
+	ELSE
+		FOR i=1 TO LEN(aFields)
+			cFld:=UPPER(ALLTRIM(aFields[i]))
+			Parce(cFld, '/', @cFldN)
+			AADD(aFlds,{AllTrim(cFldN),"/D" $ cFld,"/C" $ cFld})
+		NEXT
+	ENDIF
+	IF LEN(aFlds)==0
+		errMess:="invalid argument"
+		BREAK
+	ENDIF
+
+	indString:=""
+
+	FOR i=1 TO len(aFlds)
+		cFld:=aFlds[i,1]
+		cT:=VALTYPE(&(cFld))
+		xVal:=""
+		DO CASE
+			CASE cT $ "CM"
+				IF cT=='M' THEN cFld:="PAD("+cFld+", 255)"
+				xVal:=IF( aFlds[i,3],;
+					"LOWER("+cFld+")",;
+					 cFld)
+			CASE cT=="D"
+				xVal:="DTOS("+cFld+")"
+			CASE cT=="N"
+				xVal:="STR("+cFld+")"
+			CASE cT=="L"
+				xVal:="IF("+cFld+',"1","0")'
+		ENDCASE
+		IF aFlds[i][2]
+			xVal:="DESCEND("+xVal+")"
+		ENDIF
+		indString+=xVal+"+"
+	NEXT
+	indString:=Strip(indString,1)
+
+	tmpfile="clip_sort_tmp_file"+NTRIM(random(10000))
+
+        ordCondSet(, ,;
+		 !EMPTY(nNext) .OR. !EMPTY(nRec) .OR. !EMPTY(lRest), ;
+		 uWhile, , , , nNext, nRec,  lRest, , .t.)
+
+	DBCREATEINDEX( tmpfile , indString , {||&indString} , )
+	lRes:=__dbcopy(fDest,{},uFor,,,,,cRdd)
+
+RECOVER USING err
+	flag_err:=.t.
+END SEQUENCE
+
+SELECT(OldSel)
+DbClearIndex()
+FERASE(tmpfile+Rdd_info()[4])
+OrdSetFocus(OldOrder)
+
+SET(_SET_CANCEL,cset)
+IF flag_err
+	   Nfind(ErrMess)
+	   Break(err)
+ENDIF
+RETURN lRes
 **********
-FUNC __DBLOCATE(_bFor, _bWhile, _next, _rec, _rest)
+FUNC __DBLOCATE(_bFor, _bWhile, _next, _rec, _rest, lBack)
 LOCAL _lFound
 CheckEsc(.T.)	//Счетчик
-IF EMPTY(_next) .AND. EMPTY(_rest) THEN DbGoTop()
-IF_NIL _BFor IS {|| .T.}
-__Dbsetloc(_BFor)
+IF EMPTY(lBack)
+	IF EMPTY(_next) .AND. EMPTY(_rest) THEN DbGoTop()
+	IF_NIL _BFor IS {|| .T.}
+	__Dbsetloc(_BFor)
+ELSE
+	_BFor:=__DbSetLoc()
+	DBSkip()
+ENDIF
 
 IF EMPTY(_bWhile) .AND. EMPTY(_next)
 	WHILE (!EOF() .AND. !(eval(_BFor))) .AND. CheckEsc()
@@ -242,36 +236,20 @@ _lFound:=!EOF() .AND. Eval(_bFor)
 __Dbsetfou(_lFound)
 RETURN _lFound
 **********
-FUNC __DBCONTIN
-LOCAL _lFound, _bFor:=__DbsetLoc()
+FUNC __DBBACKLOCATE(_bFor, _bWhile, lCont)
+LOCAL _lFound, nMuch
 CheckEsc(.T.)
-dbSkip()
-WHILE !EOF() .AND. !eval(_bFor) .AND. CheckEsc()
-	dbSkip()
-END
-_lFound:=!EOF() .AND. Eval(_bFor)
-__Dbsetfou(_lFound)
-RETURN _lFound
-**********
-FUNC __DBBACKLOCATE(_bFor, _bWhile)
-LOCAL _lFound
-CheckEsc(.T.)
-IF_NIL _BFor IS {|| .T.}
-IF_NIL _BWhile IS {|| .T.}
-__Dbsetloc(_BFor)
-
-WHILE !BOF() .AND. !(eval(_BFor)) .AND. CheckEsc()
+IF EMPTY(lCont)
+	IF_NIL _BFor IS {|| .T.}
+	IF_NIL _BWhile IS {|| .T.}
+	__Dbsetloc(_BFor)
+ELSE
 	dbSkip(-1)
-END
-_lFound:=!BOF() .AND. Eval(_bFor)
-__Dbsetfou(_lFound)
-RETURN _lFound
-**********
-FUNC __DBBACKCONTIN
-LOCAL _lFound, _bFor:=__DbsetLoc()
-CheckEsc(.T.)
-dbSkip(-1)
-WHILE !BOF() .AND. !eval(_bFor) .AND. CheckEsc()
+	_BFor:=__DbsetLoc()
+ENDIF
+
+nMuch:=KeyNo()-1
+WHILE !BOF() .AND. !(eval(_BFor)) .AND. CheckEsc(, nMuch)
 	dbSkip(-1)
 END
 _lFound:=!BOF() .AND. Eval(_bFor)
@@ -328,7 +306,7 @@ BEGIN SEQUENCE
 	ELSE
 		dbUseArea(lNew, Nil, Struc_Ext)
 		DBEval({|| AAdd(Ar_Str,;
-			{FIELD->field_name,;
+			{TRIM(FIELD->field_name),;
 			 FIELD->field_type,;
 			 FIELD->field_len,FIELD->field_dec})})
 		dbCloseArea()
@@ -344,10 +322,10 @@ END SEQUENCE
 RETURN Used()
 **********
 FUNC __DBCOPYST(NewBase, aFlds)
-RETURN Dbcreate(NewBase,  Strip5(__FlEdit(DbStruct_(),aFlds)) )
+RETURN Dbcreate(NewBase,  __FlEdit(DbStruct_(),aFlds))
 **********
 FUNC __DBCOPYXS(NewBase)
-LOCAL	oldBase:=Select(), aFlds:=DbStruct_(), _error:= .F.,;
+LOCAL oldBase:=Select(), aFlds:=DbStruct_(), _error:= .F.,;
 	sa:=SET(_SET_AUTOPEN, .F.)
 *IF Empty(aFlds) THEN RETU .F.
 
@@ -374,7 +352,7 @@ IF _error THEN BREAK(_error)
 RETURN .T.
 **********
 FUNC __FLEDIT(aEtalon, aTrans)
-LOCAL aDest,i,n
+LOCAL aDest, aItem, i,n
 IF EMPTY(aTrans)
 	aDest:=aEtalon
 ELSE
@@ -384,30 +362,20 @@ ELSE
 			AADD(aDest,aEtalon[n])
 		ENDIF
 	NEXT
+ENDIF
 
+RETURN Strip5(aDest)
+**********
+STATIC FUNC Strip5(aDest)
+LOCAL aItem
+IF LEN(aDest)>4
+//Если массив не четырехмерный.
+	FOR i:=1 TO LEN(aDest)
+		aItem:=aDest[i]
+		aDest[i]:={aItem[1], aItem[2], aItem[3], aItem[4]}
+	NEXT
 ENDIF
 RETURN aDest
-**********
-PROC __SETFUNCT(Key, cText)
-SetKey(IF(Key == 1, 28, 1-Key),;
-	IF(ValType(cText) <> "C" .OR. Empty(cText),Nil,;
-						   {|| __Keyboard(cText)});
-      )
-**********
-PROC __SETHELPK
-SetKey(28, {|_1| __Xhelp(_1)})
-
-**********
-FUNC __SetCentu(xPar)
-LOCAL lFull, cyFmt:= UPPER(Set(_SET_DATEFORMAT))
-IF ValType(xPar) == "C" THEN xPar:= (UPPER(xPar) = "ON")
-lFull:= "YYYY" $ cyFmt
-IF (ValType(xPar) == "L") .AND. (xPar <> lFull)
-	SET(_SET_DATEFORMAT,IF(xPar, StrTran(cyFmt,'Y','YY'),;
-				StrTran(cyFmt,'YY','Y') ) )
-ENDIF
-RETURN lFull
-
 **********
 FUNC DBTrans(NewBase, aFlds, bFor, bWhile, nNext,lRest,cRdd )
 LOCAL	NewSelect, oldBase:=Select(), _aFlds:={},_aEt:=m->___aDbStruct,;
@@ -460,7 +428,7 @@ FOR i:=1 TO LEN(aFlds)
 NEXT
 BEGIN SEQUENCE
 	IF EMPTY(_aFlds) THEN BREAK
-	Dbcreate(NewBase, _aFlds, cRdd, .T., "_Nb")
+	Dbcreate(NewBase, Strip5(_aFlds), cRdd, .T., "_Nb")
 	NewSelect:= Select()
 	dbSelectArea(oldBase)
 	BD_DBEVAL(bAct,bFor, bWhile, nNext, , lRest)
@@ -558,26 +526,33 @@ IF _Error THEN BREAK(RetError)
 
 RETURN .T.
 **********
-FUNC MemoWrit(cFile,cStr)
-LOCAL h:=FCREATE(cFile),Res
-IF h>0
-	Res:=FWRITE(h,cStr)
-	FCLOSE(h)
-ENDIF
-RETURN (h>0) .AND. Res>=0
+FUNC __DbTransR(nSelect, aFields)
+LOCAL i, cFld
+(nSelect)->(DbAppend())
+FOR i:=1 TO LEN(aFields)
+	cFld:=aFields[i]
+	IF VALTYPE(cFld)=='A' THEN cFld:=cFld[1]
+	IF (nSelect)->(IsField(cFld)) .AND. IsField(cFld)
+		(nSelect)->&(CFld) := &cFld
+	ENDIF
+	IF deleted()
+		(nSelect)->(DbDelete())
+	ENDIF
+NEXT
 **********
 **********
-FUNC RealSTRUCT(_handle)
+FUNC RealSTRUCT(_handle,NeedForced)
 LOCAL	aStr:={},i,nStart,nFld,;
 	cfName,cfType,cfLen,cfDec,cfFlag,cFld:=SPACE(32),;
-	cNewByte,cNewType,lWasMemo, lCpDBF
-
-*m->lWasFoxPro:=m->lWasDBASE5:=m->lWasFlagShip:=lWasUnknown:=.F.
-*FSeek(_handle,0)	//И так - в начале
+	cNewByte,cNewType,lWasMemo, lCpDBF, lWasVFP
+#define DBASE4 CHR(139)+CHR(142)+CHR(123)+CHR(203)
+nFld:=Fseek(_handle,0,2)	//Размер для проверки
+FSeek(_handle,0)
 Fread(_handle,@cFld,28)
 //Тип базы, CDX_flag,CodePage
 cNewType:=First(cFld)
 nStart:=Bin2I(SUBSTR(cFld,9,2))		//Начало данных
+IF nStart>nFld .OR. nStart<65 .OR. nFld<65 THEN RETURN aStr	//Фигня какая-то
 
 m->__RealFlds:=ReadBin(_handle,0,nStart-36,1)
 lCpDBF:=BETWEEN(CPDBF(),1200,1299)
@@ -585,54 +560,67 @@ m->_aCommon:={lCpDBF .AND. !EMPTY(m->_lForced),;//Вообще форсированна
 	      cNewType,;			//Оригинал 1-го байта
 	      cNewType,;			//Измененный 1-й байт
 	      lCpDBF,;				//Надо OemToAnsi
-	      .F.}				//FlexMemo
+	      .F.;				//Есть AutoInc
+	      }
 
 lWasMemo:=.F.
 FSeek(_handle,32)
 DO WHILE .T.	//окончание полей
 	IF (Fread(_handle,@cFld,32) <>32) .OR.;
-	   (First(cFld) == _ENTER) THEN EXIT	//окончание полей
+	   (First(cFld) == _ENTER) .OR.;
+	   (FSeek(_handle,0,1)>nStart) THEN EXIT	//окончание полей
 
-	cfName:=FN_NoNull(cFld)
+	cfName:=TRIM(FN_NoNull(cFld))
+	IF lCpDBF
+		cfName:=Translate_Charset('cp'+NTRIM(CpDBF()), host_charset(), cfName )
+	ENDIF
 	cfType:=SUBSTR(cFld,12,1)
 	cfLen:=ASC(SUBSTR(cFld,17,1))
 	cfDec:=ASC(SUBSTR(cFld,18,1))
-	*cfFlag:=.F.
-	*cfFlag:=ASC(SUBSTR(cFld,19,1))	// 1|2|4
-					// NOT VISIBLE | CAN STORE 0 | BINARY
+	cfFlag:=ASC(SUBSTR(cFld,19,1))
+// 1|2|4|12
+// NOT VISIBLE | CAN STORE 0 | BINARY | AUTOINC
 
 	cNewByte:=''
 	DO CASE
-		CASE cfType $ 'GPM' .OR.; //general FP,D5, picture Fp, Memo
-		     (cfType=='B' .AND. cfLen==10) //bmp D5
-			cNewByte:='M'	//Проверить надо будет на VFP
-/*
-		CASE cfType=='V' .AND. cfLen < 3	//Ошибка в драйвере SIX
-			cNewByte:='C'
-			*cfType:='2'	//Заносятся пробелы и неверно интерпретируются
-*/
-		CASE (cfType $ 'CNFLD') .OR.;
-		     (cfType=='V' .AND. cfLen > 2)	//известные
+		CASE cfType $ 'M'
+			cNewByte:='M'	//Memo Flex, DBASE4
+			IF cNewType $ DBASE4 THEN NeedForced:=2 //D4
 
-		CASE cfType $ 'I4'	//Integer Fp or FS
+		CASE cfType=='B' .AND. cNewType $ DBASE4
+			cNewByte:='M'
+			NeedForced:=2	//bmp D5
+
+		CASE (cfType $ 'CNFLDYTGPBIX') .OR.;
+		     (cfType=='V' .AND. cfLen > 2)	//известные
+			IF cfType=='I' .AND. cfFlag=12
+				cfType:='AI'
+				m->_aCommon[6]:=.T.
+			ENDIF
+			IF cfType $ 'YTGPBIX' THEN lWasVFP:=.T.
+
+		CASE cfType $ '4'	//Integer FS
 			cNewByte:='V'
 
-		OTHER	//Y,T,2,8... Currensy Fp, DateTime, Short FS,Long FS,Unknown
+		CASE cfType $ '28'	//Short FS,Long FS,
+			NeedForced:=3
+			cNewByte:='C'
+
+		CASE cfType=='0' .AND. cFName=='_NullFlags'
+			lWasVFP:=.T.			
+	
+		OTHER	//Unknown
+			NeedForced:=6
 			cNewByte:='C'
 	ENDCASE
-
 	IF EMPTY(cNewByte)
 		cNewByte:=cfType
-	ELSEIF !EMPTY(m->_lForced)
-		m->_aCommon[1]:=.t.
+	ELSE
+		IF !EMPTY(m->_lForced) THEN m->_aCommon[1]:=.t.
 
 		IF cNewByte=='M'
 			lWasMemo:=.T.
-			IF cfLen=4
-				cNewByte:='C' //VFP-Мемо
-			ELSEIF cNewType='ї'
-				cNewByte:='N'
-			ELSEIF FileExist(ClearName()+'.DBV')	//FlexFile
+			IF FileExist(ClearName()+'.DBV')	//FlexFile
 				cNewByte:='C'
 				*cfFlag:=.T.
 				m->_aCommon[5]:=.T.
@@ -654,8 +642,9 @@ DO WHILE .T.	//окончание полей
 		FSeek(_handle,-32,1)
 		FWrite(_handle,cFld)
 	ENDIF
-	*AADD(aStr,{cFName,cNewByte,cfLen,cfDec,cfType,cfFlag})
-	AADD(aStr,{cFName,cNewByte,cfLen,cfDec,cfType})
+	IF cFName<>'_NullFlags' .AND. cFName<>'_'
+		AADD(aStr,{cFName,cNewByte,cfLen,cfDec,cfType,cfFlag})
+	ENDIF
 ENDDO
 IF !EMPTY(m->_lForced)
 	i:=FSeek(_handle,0,1)
@@ -674,20 +663,28 @@ IF !EMPTY(m->_lForced)
 		FWRITE(_handle,_ENTER,1)
 	ENDIF
 
-//	IF cNewType $ '√CcО{╦0'
-	IF InList(ASC(cNewType),2,251,4,5,67,99,142,123,203,48)
-//Различный dBase4-5, FoxBase,
-//xB3 - FlagShip, возможно с мемо
+	IF !InList(ASC(cNewType),3,131,245,48,49)	//известные RDD
 		FSeek(_handle,0)
 
-		cNewType:=IF(cNewType=='0' .AND. lWasMemo,;
-			     CHR(245),;
-			     IF(InList(ASC(cNewType),2,251,4,5,67,99,48), CHR(3),CHR(139));
-			     )
+		cNewType:=IF(cNewType $ DBASE4,;
+			     CHR(131), CHR(3))
+
+		IF !EMPTY(lWasVFP) THEN cNewType:="0"
 
 		Fwrite(_handle,cNewType,1)
 		m->_aCommon[3]:=cNewType
 		m->_aCommon[1]:=.t.
+	ENDIF
+	NeedForced:=0	//Зафорсировали уже
+ELSE
+	IF cNewType $ DBASE4
+		NeedForced:=2
+	ELSEIF cNewType $ CHR(179)
+		NeedForced:=3
+	ELSEIF cNewType $ CHR(2)+CHR(251) .AND. EMPTY(NeedForced)
+		NeedForced:=5
+	ELSEIF !InList(ASC(cNewType),3,131,245,48,49) .AND. EMPTY(NeedForced)
+		NeedForced:=IF(EMPTY(lWasVFP), 6, 1)
 	ENDIF
 ENDIF
 
@@ -697,7 +694,6 @@ STATIC FUNC MakeRghtName(cFld)
 LOCAL lRes,i,chr,cNew:=''
 FOR i:=1 TO LEN(cFld)
 	chr:=SUBSTR(cFld,i,1)
-	*IF !( IsDigit(chr) .OR. IsAlpha(chr) )
 	IF !( (chr $ '0123456789_') .OR. IsAlpha(chr) )
 		chr:='_'
 	ENDIF
@@ -708,25 +704,17 @@ lRes:=(cFld<>cNew)
 cFld:=cNew	//По ссылке
 RETU lRes
 **********
-PROC MakeRealStr()
+PROC MakeRealStr(cBase)
+LOCAL hBase
 IF VALTYPE(_aCommon)=='A' .AND. !EMPTY(_aCommon[1])	//ValType из-за старых мемо
-	m->_MainHandle:=FOPEN(m->_base)
-	FSeek(m->_MainHandle,0)
-	Fwrite(m->_MainHandle,m->_aCommon[2],1)
-	FSeek(m->_MainHandle,28)
-	Fwrite(m->_MainHandle,m->__RealFlds)
-	FCLOSE(m->_MainHandle)
+	hBase:=FOPEN(cBase, 2)
+	FSeek(hBase,0)
+	Fwrite(hBase,m->_aCommon[2],1)
+	FSeek(hBase,28)
+	Fwrite(hBase,m->__RealFlds)
+	FCLOSE(hBase)
 ENDIF
 **********
 FUNC DbStruct_()		//В CH хуже
 RETURN IF(SELECT()=1, m->__aDbStruct, DBStruct())
 
-**********
-STATIC FUNC Strip5(aFlds)
-LOCAL i, aNew:={}, aItem
-FOR i:=1 TO LEN(aFlds)
-	aItem:=aFlds[i]
-	*ACOPY(aFlds[i], aItem, 1, 4)
-	AADD(aNew, {aItem[1], aItem[2], aItem[3], aItem[4]})
-NEXT
-RETURN aNew

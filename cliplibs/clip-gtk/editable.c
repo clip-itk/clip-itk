@@ -18,75 +18,75 @@
 static gint handle_insert_text_signal (GtkWidget *widget, gchar *new_text, gint new_text_length, gint *position, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        LOCALE_FROM_UTF(new_text);
-        _clip_mputc(cs->cw->cmachine, &cv, HASH_TEXT, new_text, new_text_length);
-        FREE_TEXT(new_text);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_TEXTLENGTH, new_text_length);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_POSITION, *position);
-        INVOKESIGHANDLER(widget,cs,cv);
+	LOCALE_FROM_UTF(new_text);
+	_clip_mputc(cs->cw->cmachine, &cv, HASH_TEXT, new_text, new_text_length);
+	FREE_TEXT(new_text);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_TEXTLENGTH, new_text_length);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_POSITION, *position);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_delete_text_signal (GtkWidget *widget, gint start_pos, gint end_pos, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_STARTPOS, start_pos);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_ENDPOS, end_pos);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_STARTPOS, start_pos);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_ENDPOS, end_pos);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_set_editable_signal (GtkWidget *widget, gboolean is_editable, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputl(cs->cw->cmachine, &cv, HASH_EDITABLE, is_editable);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputl(cs->cw->cmachine, &cv, HASH_EDITABLE, is_editable);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_move_cursor_signal (GtkWidget *widget, gint x, gint y, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_move_word_signal (GtkWidget *widget, gint num_words, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_NUMWORDS, num_words);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_NUMWORDS, num_words);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_move_page_signal (GtkWidget *widget, gint x, gint y, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_move_to_row_signal (GtkWidget *widget, gint row, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_ROW, row);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_ROW, row);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_move_to_column_signal (GtkWidget *widget, gint column, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_COLUMN, column);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_COLUMN, column);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_kill_char_signal (GtkWidget *widget, gint direction, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTION, direction);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTION, direction);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_kill_word_signal (GtkWidget *widget, gint direction, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTION, direction);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTION, direction);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_kill_line_signal (GtkWidget *widget, gint direction, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-        _clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTION, direction);
-        INVOKESIGHANDLER(widget,cs,cv);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_DIRECTION, direction);
+	INVOKESIGHANDLER(widget,cs,cv);
 }
 
 /* Signals table */
@@ -129,11 +129,11 @@ int
 clip_GTK_EDITABLESELECTREGION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        gint     start = _clip_parni(cm,2);
-        gint       end = _clip_parni(cm,3);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
-        gtk_editable_select_region(GTK_EDITABLE(cedt->widget),start,end);
+	gint     start = _clip_parni(cm,2);
+	gint       end = _clip_parni(cm,3);
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	gtk_editable_select_region(GTK_EDITABLE(cedt->widget),start,end);
 	return 0;
 err:
 	return 1;
@@ -143,19 +143,19 @@ int
 clip_GTK_EDITABLEINSERTTEXT(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        gchar    *text = _clip_parc(cm,2);
-        gint  position = _clip_parni(cm,3);
-        gchar empty_text[] = "\0";
-        gint  text_length;
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        CHECKOPT(2,CHARACTER_t); CHECKOPT(3,NUMERIC_t);
-        if (_clip_parinfo(cm,2)==UNDEF_t)
-        	text = empty_text;
-        if (_clip_parinfo(cm,3)==UNDEF_t)
-        	position = gtk_editable_get_position(GTK_EDITABLE(cedt->widget));
-        text_length = strlen(text);
-        LOCALE_TO_UTF(text);
-        gtk_editable_insert_text(GTK_EDITABLE(cedt->widget),text,text_length,&position);
+	gchar    *text = _clip_parc(cm,2);
+	gint  position = _clip_parni(cm,3);
+	gchar empty_text[] = "\0";
+	gint  text_length;
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	CHECKOPT(2,CHARACTER_t); CHECKOPT(3,NUMERIC_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t)
+		text = empty_text;
+	if (_clip_parinfo(cm,3)==UNDEF_t)
+		position = gtk_editable_get_position(GTK_EDITABLE(cedt->widget));
+	text_length = strlen(text);
+	LOCALE_TO_UTF(text);
+	gtk_editable_insert_text(GTK_EDITABLE(cedt->widget),text,text_length,&position);
 	FREE_TEXT(text);
 	return 0;
 err:
@@ -166,13 +166,13 @@ int
 clip_GTK_EDITABLEDELETETEXT(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        gint start_pos = _clip_parni(cm,2);
-        gint   end_pos = _clip_parni(cm,3);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        CHECKOPT(2,CHARACTER_t); CHECKOPT(3,NUMERIC_t);
-        if (_clip_parinfo(cm,2)==UNDEF_t) start_pos = 0;
-        if (_clip_parinfo(cm,3)==UNDEF_t) end_pos = -1;
-        gtk_editable_delete_text(GTK_EDITABLE(cedt->widget),start_pos,end_pos);
+	gint start_pos = _clip_parni(cm,2);
+	gint   end_pos = _clip_parni(cm,3);
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t) start_pos = 0;
+	if (_clip_parinfo(cm,3)==UNDEF_t) end_pos = -1;
+	gtk_editable_delete_text(GTK_EDITABLE(cedt->widget),start_pos,end_pos);
 	return 0;
 err:
 	return 1;
@@ -182,16 +182,16 @@ int
 clip_GTK_EDITABLEGETCHARS(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        gint start_pos = _clip_parni(cm,2);
-        gint   end_pos = _clip_parni(cm,3);
-        gchar   * text;
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        CHECKOPT(2,CHARACTER_t); CHECKOPT(3,NUMERIC_t);
-        if (_clip_parinfo(cm,2)==UNDEF_t) start_pos = 0;
-        if (_clip_parinfo(cm,3)==UNDEF_t) end_pos = -1;
-        text = gtk_editable_get_chars(GTK_EDITABLE(cedt->widget),start_pos,end_pos);
-        LOCALE_FROM_UTF(text);
-        _clip_retc(cm,text);
+	gint start_pos = _clip_parni(cm,2);
+	gint   end_pos = _clip_parni(cm,3);
+	gchar   * text;
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t) start_pos = 0;
+	if (_clip_parinfo(cm,3)==UNDEF_t) end_pos = -1;
+	text = gtk_editable_get_chars(GTK_EDITABLE(cedt->widget),start_pos,end_pos);
+	LOCALE_FROM_UTF(text);
+	_clip_retc(cm,text);
 	FREE_TEXT(text);
 	return 0;
 err:
@@ -202,8 +202,8 @@ int
 clip_GTK_EDITABLECUTCLIPBOARD(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        gtk_editable_cut_clipboard(GTK_EDITABLE(cedt->widget));
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	gtk_editable_cut_clipboard(GTK_EDITABLE(cedt->widget));
 	return 0;
 err:
 	return 1;
@@ -213,8 +213,8 @@ int
 clip_GTK_EDITABLECOPYCLIPBOARD(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        gtk_editable_copy_clipboard(GTK_EDITABLE(cedt->widget));
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	gtk_editable_copy_clipboard(GTK_EDITABLE(cedt->widget));
 	return 0;
 err:
 	return 1;
@@ -224,8 +224,8 @@ int
 clip_GTK_EDITABLEPASTECLIPBOARD(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        gtk_editable_paste_clipboard(GTK_EDITABLE(cedt->widget));
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	gtk_editable_paste_clipboard(GTK_EDITABLE(cedt->widget));
 	return 0;
 err:
 	return 1;
@@ -235,11 +235,11 @@ int
 clip_GTK_EDITABLECLAIMSELECTION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        gboolean claim = _clip_parl(cm,2);
-        gint32    time = _clip_parni(cm,3);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        CHECKOPT(2,LOGICAL_t); CHECKOPT(3,NUMERIC_t);
-        gtk_editable_claim_selection(GTK_EDITABLE(cedt->widget),claim,time);
+	gboolean claim = _clip_parl(cm,2);
+	gint32    time = _clip_parni(cm,3);
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	CHECKOPT(2,LOGICAL_t); CHECKOPT(3,NUMERIC_t);
+	gtk_editable_claim_selection(GTK_EDITABLE(cedt->widget),claim,time);
 	return 0;
 err:
 	return 1;
@@ -249,8 +249,8 @@ int
 clip_GTK_EDITABLEDELETESELECTION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        gtk_editable_delete_selection(GTK_EDITABLE(cedt->widget));
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	gtk_editable_delete_selection(GTK_EDITABLE(cedt->widget));
 	return 0;
 err:
 	return 1;
@@ -260,9 +260,9 @@ int
 clip_GTK_EDITABLEGETSELECTION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        _clip_storni(cm,GTK_EDITABLE(cedt->widget)->selection_start_pos,2,0);
-        _clip_storni(cm,GTK_EDITABLE(cedt->widget)->selection_end_pos,3,0);
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	_clip_storni(cm,GTK_EDITABLE(cedt->widget)->selection_start_pos,2,0);
+	_clip_storni(cm,GTK_EDITABLE(cedt->widget)->selection_end_pos,3,0);
 	return 0;
 err:
 	return 1;
@@ -272,8 +272,8 @@ int
 clip_GTK_EDITABLEHASSELECTION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        _clip_retl(cm,GTK_EDITABLE(cedt->widget)->has_selection);
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	_clip_retl(cm,GTK_EDITABLE(cedt->widget)->has_selection);
 	return 0;
 err:
 	return 1;
@@ -283,8 +283,8 @@ int
 clip_GTK_EDITABLECHANGED(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        gtk_editable_changed(GTK_EDITABLE(cedt->widget));
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	gtk_editable_changed(GTK_EDITABLE(cedt->widget));
 	return 0;
 err:
 	return 1;
@@ -294,10 +294,10 @@ int
 clip_GTK_EDITABLESETPOSITION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        gint  position = _clip_parni(cm,2);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        CHECKOPT(2,NUMERIC_t);
-        gtk_editable_set_position(GTK_EDITABLE(cedt->widget),position);
+	gint  position = _clip_parni(cm,2);
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	CHECKOPT(2,NUMERIC_t);
+	gtk_editable_set_position(GTK_EDITABLE(cedt->widget),position);
 	return 0;
 err:
 	return 1;
@@ -307,8 +307,8 @@ int
 clip_GTK_EDITABLEGETPOSITION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        _clip_retni(cm,gtk_editable_get_position(GTK_EDITABLE(cedt->widget)));
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	_clip_retni(cm,gtk_editable_get_position(GTK_EDITABLE(cedt->widget)));
 	return 0;
 err:
 	return 1;
@@ -318,11 +318,11 @@ int
 clip_GTK_EDITABLESETEDITABLE(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        gboolean editable = _clip_parl(cm,2);
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        CHECKOPT(2,LOGICAL_t);
-        if (_clip_parinfo(cm,2)==UNDEF_t) editable = TRUE;
-        gtk_editable_set_editable(GTK_EDITABLE(cedt->widget),editable);
+	gboolean editable = _clip_parl(cm,2);
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	CHECKOPT(2,LOGICAL_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t) editable = TRUE;
+	gtk_editable_set_editable(GTK_EDITABLE(cedt->widget),editable);
 	return 0;
 err:
 	return 1;
@@ -332,12 +332,12 @@ int
 clip_GTK_EDITABLEGETEDITABLE(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-        GtkArg arg;
-        CHECKCWID(cedt,GTK_IS_EDITABLE);
-        arg.type = GTK_TYPE_BOOL;
-        arg.name = "editable";
+	GtkArg arg;
+	CHECKCWID(cedt,GTK_IS_EDITABLE);
+	arg.type = GTK_TYPE_BOOL;
+	arg.name = "editable";
 	gtk_widget_get(cedt->widget, &arg);
-        _clip_retl(cm,arg.d.bool_data);
+	_clip_retl(cm,arg.d.bool_data);
 	return 0;
 err:
 	return 1;

@@ -14,18 +14,18 @@ return
 static func DefError(e)
 local i, cMessage, aOptions, nChoice
 
-        while dispcount()>0
-           dispend()
-        enddo
-        set(20,"SCREEN")
+	while dispcount()>0
+	   dispend()
+	enddo
+	set(20,"SCREEN")
 
 	if "ARGS" $ e
 		for i=1 to len(e:args)
-                	if valtype(e:args[i]) == "O"
-                        	e:args[i] := "{OBJECT}"
-                        endif
-                next
-        endif
+			if valtype(e:args[i]) == "O"
+				e:args[i] := "{OBJECT}"
+			endif
+		next
+	endif
 
 	outlog("object error:",e)
 
@@ -34,48 +34,13 @@ local i, cMessage, aOptions, nChoice
 	if ( e:genCode == EG_ZERODIV )
 		return (0)
 	end
-/*
-#ifdef __UNIX__
-	if ( e:genCode == EG_OPEN .and. e:osCode == 11 /*.and. e:canDefault */)
-#else
-	if ( e:genCode == EG_OPEN .and. e:osCode == 32 /*.and. e:canDefault*/ )
-#endif
-	alert ( " Не возможно открыть нужный файл. Возможно кто-то работает с ним ;" +;
-	        " в сети в режиме монопольного использования. Попробуйте зайти ;"+;
-	        " в этот раздел через несколько минут.;"+e:description)
-		NetErr(.t.)
-		return (.f.)									// NOTE
-	end
-	if ( e:genCode == EG_APPENDLOCK /*.and. e:canDefault */)
- 		if alert("Вроде бы запись не добавилась. Попробовать еще ?",{"Да","Нет"})==1
-	   		return(.t.)
-		else
-	   		NetErr(.t.)
-	   		return (.f.)                                    // NOTE
-		endif
-	end
-	if e:gencode==EG_NOFUNC
-      		alert(" В Вашем варианте программы эта функция отсутствует.;"+;
-	       " Свяжитесь с разработчиком системы.")
-      		break(e)
-   	endif
-	if e:gencode==EG_PRINT
-		if alert("Ошибка печати ! Повторить ? ",{"Да","Нет"})==1
-			return (.t.)
-     		else
-			pfile=set(24)
-			set printer to
-			set print off
-			set(24,"")
-			set(23,.f.)
-			ferase(pfile)
-			set console off
-			e:=NIL
-			return (.t.)
-	      endif
-   	endif
 
-*/
+	if ( e:genCode == EG_SIGNAL )
+		if isFunction("CLIP_SHUTDOWN")
+			clip("CLIP_SHUTDOWN",e)
+		endif
+		quit
+	endif
 
 	aOptions := { EG_MSG_QUIT }
 
@@ -91,12 +56,22 @@ local i, cMessage, aOptions, nChoice
 	while ( nChoice == 0 )
 
 		if ( Empty(e:osCode) )
-			nChoice := Alert( cMessage, aOptions )
+			if IsFunction("gtk_InitCheck") .and. clip("gtk_InitCheck")
+				nChoice := clip("gtk_ErrorMsgBox", cMessage, aOptions, [Error] )
+			else
+				nChoice := Alert( cMessage, aOptions )
+			endif
 
 		else
-			nChoice := Alert( cMessage + ;
+			if IsFunction("gtk_InitCheck") .and. clip("gtk_InitCheck")
+				nChoice := Alert( cMessage + ;
 							";(OS Error " + NTRIM(e:osCode) + ")", ;
 							aOptions )
+			else
+				nChoice := clip("gtk_ErrorMsgBox", cMessage + ;
+							";(OS Error " + NTRIM(e:osCode) + ")", ;
+							aOptions,[Error] )
+			endif
 		end
 
 
@@ -128,7 +103,7 @@ local i, cMessage, aOptions, nChoice
 return (.f.)
 
 
-static func ErrorMessage(e)
+func ErrorMessage(e)
 local cMessage,i
 
 
@@ -168,7 +143,7 @@ local cMessage,i
 		cMessage += "; (OS Error " + NTRIM(e:osCode) + ") "
 	end
 
-        outlog("error message",cMessage)
+	outlog("error message",cMessage)
 	i := 1
 	while ( !Empty(ProcName(i)) )
 		outlog("Called from", Trim(ProcName(i)) + ;
@@ -193,5 +168,7 @@ local i
 
 		i++
 	end
+	outlog("object error:",err)
+	errorMessage(err)
 quit
 

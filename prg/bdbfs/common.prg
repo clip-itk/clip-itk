@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
@@ -23,7 +23,7 @@ IF _mins THEN SetMouseXY(__mcol,__mrow)
 PUBLIC __Menu_Row:=0,__Menu_Col:=0,__Menu_Prom:=''	//Используется в Меню
 **********
 FUNC NFIND(_mess,_var,_color,_Footer,lNeedTone,nTimeWait,nlShine,nMuch)
-LOCAL i,sc:=SetCursor(0),_r,_c,nStr,aDvd:={},cTst:='',nWide:=__mcol-18,aMess
+LOCAL i,sc:=SetCursor(0),_r,_c,nStr,aDvd:={},cTst:='',nWide:=__mcol-12,aMess
 IF TYPE('_lPlain')<>'U'
 	? _mess
 	QUIT	//все равно ошибка восстановления при RETURN
@@ -51,6 +51,13 @@ DO CASE
 		IF ValType(_mess)="A"
 			cTst:=Arr2Str(_mess)
 			aMess:={i}
+		ELSEIF ValType(_mess)="O"
+			aMess:={i}
+			cTst:={}
+			FOR i IN _mess
+				AADD(cTst, i)
+			NEXT
+			cTst:=Arr2Str(cTst)
 		ELSE
 			AADD(aMess,i)
 		ENDIF
@@ -63,18 +70,16 @@ ELSE
 ENDIF
 aDvd:=A_JOIN(aMess,aDvd)
 
-i:=ShowButton(_middlerow-nStr,8,_middlerow+nStr,__mcol-9,aDvd,_color,,7)
-Center(_middlerow+nStr, SUBSTR(TRIM(_Footer),1,nWide),,_HdColor)
+i:=ShowButton(_middlerow-nStr,5,_middlerow+nStr,__mcol-6,aDvd,_color,,7)
+Center(_middlerow+nStr, LEFT(TRIM(_Footer),nWide),,_HdColor)
 
-IF !EMPTY(nlShine) .AND. LEN(aDvd)=2
+IF !EMPTY(nlShine) //.AND. LEN(aDvd)=2
 	IF_NIL nMuch IS 1
-	cTst:=SUBSTR(_mess,nlShine,nMuch)
 	@ _middlerow, INT(9+Centr(_mess,__mcol-17)+nlShine-1);
-	   SAY cTst COLOR _HdColor
+	   SAY SUBSTR(_mess,nlShine,nMuch) COLOR _HdColor
 ENDIF
 
-IF !EMPTY(lNeedTone).OR.;
-   (!EMPTY(_Timing) .AND. ProcName(1)=='CALCEXPR' .AND. (Seconds()-_tOld>3))
+IF !EMPTY(lNeedTone)
 	Tone(440,1)
 ENDIF
 WaitKey(nTimeWait)
@@ -107,10 +112,103 @@ DO CASE
 
 END
 **********
+FUNC ShowButton(_x01,_y01,_x02,_y02,_s,_color,_Frame,_ColorBorder,_Selected)
+/*
+ Пpи наличии массива сообщения _s они появляются,начиная с первой строки окна
+ Пpи _ColordBorder вокpуг pамки есть тень заданного цвета (в числовом виде)
+ При задании _COLOR - устанавливается временно этот цвет
+ _FRAME определяет вид рамочки - по умолчанию - одинарная
+ Если определена символьная пара _Selected, то она окаймляет все сообщения
+ (это используется в меню)
+
+ Если координаты окна заданы неполностью,то используются максимальные
+ размеры.
+
+	Пример:
+// Рамочка в центре заданного цвета
+	ShowButton(10,10,14,69,[Нажмите что нибудь],NewColor,FRAME2)
+
+ См.также WaitWindow(),Nfind(),Waiting()
+*/
+
+LOCAL	_wide,nX1,_sc,_front,_lft,_i
+
+IF_NIL _x01 IS 0
+IF_NIL _y01 IS 0
+IF_NIL _x02 IS __mrow
+IF_NIL _y02 IS __mcol
+IF_NIL _s IS ''
+IF_NIL _color IS SetColor()
+IF_NIL _frame IS '┌─┐│┘─└│ '
+
+_x01:=INT(_x01)
+_x02:=INT(_x02)
+_y01:=INT(_y01)
+_y02:=INT(_y02)
+
+Hilite(_color,@_front,@_sc)
+
+_wide:=_y02-_y01-1
+BoxShadow(_x01,_y01,_x02,_y02,_ColorBorder,_frame,_front)
+
+HideMouse()
+DispBegin()
+@ _x02,_y01+1 SAY Repl(Substr(_Frame,2,1),_wide)+;
+		  Substr(_Frame,5,1) COLOR _sc
+nX1:=_x01+1		//Int((_x02-_x01)/2)
+FOR _i:=nX1 To _x02-1
+	@ _i,_y02 Say Substr(_Frame,4,1) COLOR _sc
+NEXT
+@ _x01,_y02 SAY Substr(_Frame,3,1) COLOR _sc
+
+IF ValType(_s)=='C' THEN _s:={_s}
+
+FOR _i:=1 TO LEN(_S)
+	_lft:=LEFT(_s[_i],_wide)
+	IF !Empty(_Selected) .AND. !EMPTY(_lft) .AND. ;
+	   LEFT(_lft,1)<>L_A_SIGN .AND. (Len(_lft) < _wide)
+		_lft:=LEFT(_Selected,1)+_lft+RIGHT(_Selected,1)
+	ELSEIF LEFT(_lft,1)==L_A_SIGN
+		_lft=Substr(_lft,2)
+	ENDIF
+	@ nX1++,INT(_y01+1+Centr(_lft,_wide+1)) say _lft COLOR _color
+NEXT
+
+ShowMouse()
+DispEnd()
+RETURN {_x01,_y01,_x02,_y02,_front,_sc,_frame}
+**********
+PROC DownButton(_aHandle,_waiting)
+* Показывает вдавленную кнопку по хэндлу,сохраненному в ShowButton
+* При наличии _waiting ждет указанное время
+
+LOCAL _i,_front:=_aHandle[5],;
+	_x01 :=_aHandle[1],;
+	_y01 := _aHandle[2],;
+	_x02 :=_aHandle[3],;
+	_y02 :=_aHandle[4],;
+	_frame:= _aHandle[7]
+
+IF_NIL _waiting IS 0.001
+
+HideMouse()
+DispBegin()
+DispBox(_x01,_y01,_x02,_y02,TRIM(_frame)/*'┌─┐│┘─└│ '*/,_aHandle[6])
+@ _x02,_y01+1 SAY Repl(Substr(_frame,2,1)/*'─'*/,_y02-_y01-1)+;
+		  Substr(_frame,5,1) /*'┘'*/ COLOR _front
+
+FOR _i:=_x01+1 To _x02-1
+	@ _i,_y02 Say Substr(_frame,4,1)/*'│'*/ COLOR _front
+NEXT
+@ _x01,_y02 SAY Substr(_frame,3,1) /*'┐'*/ COLOR _front
+
+ShowMouse()
+DispEnd()
+WaitKey(_waiting)
+**********
 PROC Okey(arr,_okey)
 LOCAL	_i,nCnt,nlOk,_mc,_srow
 IF_NIL _okey IS ""+[ Ok ]+""
-
 PUSH KEYS
 
 nCnt:=LEN(arr)
@@ -119,15 +217,34 @@ _Srow:=_middleRow-nCnt/2-4
 
 _i:=Min(Max(A_MaxLen(arr),nlOk*2),__mcol-4)
 _mc:=_middleCol-_i/2-2
+DispBegin()
 DownButton(ShowButton(_srow,_mc,_srow+5+ncnt,_middleCol+_i/2+1 ,,_im))
-aEval(arr,{|_1|DevPos(++_srow,_mc+2),DevOut(Padc(_1,_i+1),_im)})
+
+AEVAL(arr,{|_1| Hi_String(PADC(_1,_i+1),++_srow,_mc+2)})
+
 ShowMouse()
 _srow+=2
 _i:=ShowButton(_srow,_middlecol-nlOk,_srow+2,_middlecol+nlOk+1,_okey,"n/w")
+DispEnd()
 WaitKey(0)
 DownButton(_i,0.2)
 
 POP KEYS
+**********
+PROC Hi_String(cMsg,nRow,nCol,cDiv)
+LOCAL lHl,cHl,cC
+IF_NIL cDiv IS CHR(0)
+
+DevPos(nRow,nCol)
+lHl:=.F.
+cC:=_im
+
+WHILE Parce(cMsg,CHR(0),@cHl,@cMsg)<>0
+	DevOut(cHl+' ',cC)
+	lHl:=!lHl
+	cC:=IF(lHl, _HdColor, _im)
+ENDDO
+DevOut(cHl,cC)
 **********
 FUNC Medi(_s,_n,_bd,_nc)
 LOCAL	s1,_Decim
@@ -165,10 +282,14 @@ DO CASE
 	_s:='ARRAY['+NTRIM(LEN(_s))+']'
 
    CASE ValType(_s)='O'
-	_s:='OBJECT:'+_s:ClassName+' SIZE='+NTRIM(LEN(_s))
+	_s1:=IF( TYPE('_s:ClassName')<>'C',[UKNOWN CLASS], _s:ClassName)
+	_s:='OBJECT:'+_s1+' SIZE='+NTRIM(LEN(_s))
 
    CASE ValType(_s)='B'
 	_s:=PAD(Eval(_s),255)
+
+   CASE ValType(_s)='T'
+	_s:=TTOC(_s)
 
    CASE _s==NIL
 	_s:='NIL'
@@ -202,6 +323,12 @@ ClearRec()
 RECALL
 *Put_Rec(SPACE(RECSIZE()))
 Meter(3)
+**********
+PROC InsertAll(nMuch)
+LOCAL nRec:=RECNO()-1
+Appe(nMuch)
+SwapAll(nRec,nRec+nMuch,LASTREC()-nRec-nMuch, .T.)
+GO nRec
 **********
 PROC Scatter(aScat)
 LOCAL _i
@@ -253,15 +380,24 @@ IF _h < 0
 ENDIF
 RETURN lRes
 **********
-*FUNC Add_Ext(name, ext)
-*(UPPER(ALLTRIM(<name>))+if('.' $ <name>,'',<ext>))
+FUNC Add_Ext(name, ext)
+name:=ALLTRIM(name)
+IF RAT('.',name) <= RAT(PATH_DELIM,name)
+	IF IsLower(name)
+		ext:=LOWER(ext)
+	ELSE
+		ext:=UPPER(ext)
+	ENDIF
+	name+=ext
+ENDIF
+RETURN name
 **********
-FUNC IsFileExist(_NameFile,_DefaultExt,cPath)
+FUNC IsFileExist(_NameFile,_DefaultExt,cPath,lNoMsg)
 _NameFile:=ADD_EXT(_NameFile,_DefaultExt)
 IF_NIL cPath IS IF(_DefaultExt='.DBF',';'+SET(_SET_PATH),'')
 IF FileOnPath(@_NameFile,cPath) THEN RETU .T.
 
-Nfind(PRV_NOFILE+_NameFile)
+IF EMPTY(lNoMsg) THEN Nfind(PRV_NOFILE+_NameFile)
 RETU .F.
 **********
 FUNC FileExist(cName)
@@ -299,9 +435,12 @@ FUNC MakeEmpty(_fld)
 LOCAL i,xRes,cType
 
 xRes:=&_Fld
-xRes:={'','','',0,0,ctod(''),.f.}[AT(ValType(xRes),'CMVNFDL')]
+xRes:={'','','','','','','',0,0,0,0,0,ctod(''),.f.,NIL};
+ 	[AT(ValType(xRes),'CMVXGPTNFBIYDLU')]
+IF m->_CurRType=='X' THEN xRes:=NIL
 IF Select()==1
 	_fld:=RealFldName(_fld)
+
 	i:=ASCAN(m->__aDbStruct,{|_1|UPPER(TRIM(_fld))==_1[1]})
 	IF i#0 THEN cType:=m->__aDbStruct[i,5]
 ELSE
@@ -317,11 +456,13 @@ RETU IF(_i#0, &(_Pole[_i]), BAD_EXPR+_head)
 **********
 FUNC ForAch
 LOCAL _oldc:=SetColor(m->_im),_i
-PARAM _awt,_Whead,_acItems,_Current,_Hlp,anKeys
+PARAM _awt,_Whead,_acItems,_Current,_Hlp,anKeys,aDescr
 PRIVATE _aWl,_aWr
 
+m->_awt:=MAX(m->_awt,5)
+
 _i:=INT(Max(A_MaxLen(m->_acItems),LEN(m->_wHead))/2)+1
-m->_aWl:=MAX(_middlecol-_i,2)
+m->_aWl:=MAX(_middlecol-_i,2)-1
 m->_aWr:=MIN(_middlecol+_i,__mcol-2)+1
 
 SaveAllKeys(m->anKeys)
@@ -334,7 +475,7 @@ FOR _i:=m->_Awt+1 to m->_awb-1 DO @ _i,m->_awr say SCROLL_FILL
 @ m->_awt,m->_awr say SCROLL_UP color _cm
 @ m->_awb,m->_awr say SCROLL_DOWN color _cm
 
-//FT_PutKey(255)	&& Чтобы активировать L_ACH
+FT_PutKey(260)	&& Чтобы активировать L_ACH
 ShowMouse()
 m->lRepeat:=.T.
 m->lAchFinish:=.F.	// Завершить из пользовательской функции
@@ -342,39 +483,60 @@ WHILE m->lRepeat
 	_i=Achoice(m->_awt+1,m->_awl+1,m->_awb-2,m->_awr-2,;
 		   m->_acItems,,'L_Ach',IF(PCount()<6,1,m->_Current))
 END
-
+IF _i > 0
+	DO WHILE First(_acItems[_i])=='>'
+		_i--
+	ENDDO
+ENDIF
 RestoreAllKeys(!EMPTY(m->anKeys))
 SetColor(_oldc) ; retu _i
 **********
-FUNC L_Ach (_mode,_numb,_posit)
+FUNC L_Ach (_mode,_numb,_posit, oTb)
 Static _search:='', _Nmoves:=0
 LOCAL _a:=LastKey(),_n,_oldsearch:='',_mox,_moy,_length:=m->_awb-m->_awt-2,;
-      _la:=Len(m->_acItems),_Top:=m->_Awt+1,_Left:=m->_awl+1//,_ms
-LOCAL _cpos:=_Top+_Posit
-
+      _la:=Len(m->_acItems),_Top:=m->_Awt+1,_Left:=m->_awl+1,;
+      _right:=m->_awr-1
+LOCAL _cpos:=_Top+_Posit,;
+      cRowMark:=_top+Int((_numb-1)*_Length/(_la-1)),;
+      nWide:=_right-_left
 LOCAL bSelect:={|_n,lSlct| m->alSelect[_n]:=lSlct,;
 			m->_acItems[_n]:=IF(lSlct,;
 				Strtran(m->_acItems[_n],'[ ]','[x]'),;
 				Strtran(m->_acItems[_n],'[x]','[ ]'))}
-
 m->lRepeat:=.F.
+m->nItem:=_numb		//Для SetKey
 
-@ _top+Int((_numb-1)*_Length/(_la-1)),m->_awr SAY SCROLL_MARK COLOR _cm
-IF _nmoves=0 .AND. _a<32 THEN	_search=''
+DispBegin()
+@ cRowMark,m->_awr SAY SCROLL_MARK COLOR _cm
+IF _nmoves=0 .AND. Between(_a, 1, 31)
+	_search=''
+ENDIF
+@ m->_awb,_left SAY Padc(_search,nWide,'─');
+	COLOR IF(EMPTY(_search), "n/b*", )
 
-@ m->_awb,_left SAY Padc(_search,m->_awr-1-_left,'═')
+IF !EMPTY(m->aDescr)
+	@ m->_awb-1,_left SAY Padc(m->aDescr[_numb],nWide,'─');
+		COLOR IF(EMPTY(m->aDescr[_numb]),"w/b*",_HdColor)
+ENDIF
+
+IF _la<>_length
+	@ m->_awb, _right SAY IF(_numb+_length-_posit > _la, '─', '+') COLOR _HdColor
+	@ m->_awt, _right SAY IF(_numb-_posit > 1, '+', '┐') COLOR _HdColor
+ENDIF
+DispEnd()
+
 DO CASE
-	CASE _a=K_ESC .OR. m->lAchFinish
+	CASE _a=K_ESC .OR. _a=K_ALT_X .OR. m->lAchFinish
 		RETU 0
 
 	CASE _a=K_ENTER
 		RETU 1
 
 	CASE _a=K_F8 .OR. (_a=K_CTRL_D .AND. Altf()=2)	//Отличать от ->
-		IF 'HIST' $ PROCName(3)
+		IF 'HISTORY' $ CalledFrom()
 			A_Del(m->_acItems,_numb)
-			RETU 2
-		ELSEIF	'SETTAG' $ PROCNAME(3)
+			RETU 5
+		ELSEIF	'SETTAG' $ CalledFrom()
 			DelTag(1,_numb)
 			m->lAgain:=.T.	//Повторить выбор
 			RETU 0
@@ -382,17 +544,29 @@ DO CASE
 
 	CASE (_a=K_SPACE .OR. _a=K_INS) .AND. IsPArray('alSelect')
 		EVAL(bSelect,_numb,!alSelect[_numb])
-		KEYB _EMP+_DOWN
-		RETU 2
+		KEYB _DOWN
 
 	CASE (_a=KP_ALT_MINUS .OR. _a=KP_ALT_PLUS) .AND. IsPArray('alSelect')
 		AEVAL(m->_acItems,{|_el,_n| EVAL(bSelect,_n,(_a=KP_ALT_PLUS))})
 		m->lRepeat:=.T.
 		m->_Current:=_numb
-		KEYB _EMP
+		FT_PUTKEY(260)
+		@ cRowMark,m->_awr say '▒'
 		RETU 1
 
-	CASE BETWEEN(_a,32,254) .OR. _a==299	//ALT+\
+	CASE _a=K_CTRL_UP .AND. _numb<>1
+		_a:=m->_acItems[_numb]
+		m->_acItems[_numb]:=m->_acItems[_numb-1]
+		m->_acItems[_numb-1]:=_a
+		KEYB _UP
+
+	CASE _a=K_CTRL_DOWN  .AND. _numb<>_la
+		_a:=m->_acItems[_numb]
+		m->_acItems[_numb]:=m->_acItems[_numb+1]
+		m->_acItems[_numb+1]:=_a
+		KEYB _DOWN
+
+	CASE BETWEEN(_a,32,255) .OR. _a==299	//ALT+\
 	  _oldsearch := _search
 	  IF _a==299
 		_search:=" "+CHR(16)+" "+_search
@@ -406,74 +580,81 @@ DO CASE
 		_search:=_oldsearch
 		_NMoves:=0
 	  ELSE
-		_Nmoves=_Numb-_n
-		KeyB(IF(_NMoves=0,chr(_a),;
-			Repl(IF(_Numb<_n,_DOWN,_UP),Abs(_NMoves));
-			) )
+		_Nmoves=_n-_Numb
+		IF _nMoves==0
+			KEYB _a
+		ELSE
+	                Eval(oTb:SkipBlock, _nMoves)
+			oTb:RefreshAll()
+			@ _top+Int((_numb-1)*_Length/(_la-1)),m->_awr say SCROLL_FILL
+			KEYB _EMP
+			RETU 2
+		ENDIF
 	  ENDIF
 
 	OTHER
 		_Nmoves:=0
 ENDCASE
-
-IF Inlist(_a, K_PGUP, K_PGDN, K_CTRL_END, K_CTRL_HOME, K_HOME, K_END,;
-		K_CTRL_PGUP, K_CTRL_PGDN)
-	KEYB _EMP
-	@ _top+Int((_numb-1)*_Length/(_la-1)),m->_awr say SCROLL_FILL
-	RETU 2
-ENDIF
-@ _cpos,_left say (_a:=Pad(m->_acItems[_numb],m->_awr-1-_left) ) color m->_Rev
-
+*
+DispBegin()
+@ _cpos,_left say (_a:=Pad(m->_acItems[_numb],nWide) ) color m->_Rev
+DispEnd()
 ShowMouse();ShowMouse()
 
 _n:=WaitKey(0)
 HideMouse()
 IF m->_ms=1
 	GetMouseXY()
-	_n:=_EMP
-	IF Between(_mox,_left,m->_awr-2)
+	IF Between(_mox,_left,_right-1)
 	  DO CASE
 		CASE Between(_moy,_Top,m->_awb-1)
 			IF _moy=_cpos
 				RETU 1
 			ENDIF
-			_n:= REPL(IF(_Moy<_cpos,_UP,_DOWN),abs(_moy-_cpos))
-		CASE _moy=m->_awb
-			_n:= _PGDN
-		CASE _moy=m->_awt
-			_n:= _PGUP
+			Eval(oTb:SkipBlock, _moy-_cPos)
+		CASE Between(_moy, m->_awb, m->_awb+1)
+			KEYB _PGDN
+		CASE Between(_moy, m->_awt-2, m->_awt)
+			KEYB _PGUP
 	  ENDCASE
 
 	ELSEIF _mox=m->_Awr
-		_n:=_CTRLPGUP+REPL(_DOWN,Int((_moy-m->_awt)*(_la)/_Length))
+		IF _moy==m->_awt
+			KEYB _UP
+		ELSEIF _moy==m->_awb
+			KEYB _DOWN
+		ELSEIF Between(_moy, _top, _awb-1)
+			Eval(oTb:SkipBlock, Int((_moy-m->_awt)*(_la)/_Length)-_numb)
+		ENDIF
 	ENDIF
-	KEYB _n
+	m->_ms:=0
+	oTb:RefreshAll()
 ELSE
 	FT_PutKey(_n)
 ENDIF
-*
+
+DispBegin()
 @ _cpos,_left say _a
-@ _top+Int((_numb-1)*_Length/(_la-1)),m->_awr say SCROLL_FILL
+@ cRowMark,m->_awr say SCROLL_FILL
+DispEnd()
 RETU 2		//_mode
 **********
 FUNC AchKeys(lSet,abAction)
 LOCAL aKeys
 IF lSet
-  	PUSH KEYS
+	PUSH KEYS
 	abAction:=Ext_Arr(abAction,11,{'',})
 	aKeys:={_MSG_F1}
-   	AEVAL(abAction,{|_1,i|AADD(aKeys,_1[1]),SETKEY(0 - i,_1[2])})
+	AEVAL(abAction,{|_1,i|AADD(aKeys,_1[1]),SETKEY(0 - i,_1[2])})
 ELSE
-  	SET KEY K_SH_TAB TO	//где надо
-   	POP KEYS
+	SET KEY K_SH_TAB TO	//где надо
+	POP KEYS
 ENDIF
 RETURN aKeys
 **********
 FUNC Capitalz(_cf)
-LOCAL _i:=0
-DO WHILE  Substr(_cf,++_i,1)==' '
-ENDDO
-RETU Space(_i-1)+Upper(Substr(_cf,_i,1))+Lower(Substr(_cf,_i+1))
+LOCAL cRes:=LTRIM(_cf)
+RETU PADL( Upper(LEFT(cRes,1))+Lower(Substr(cRes,2)), LEN(_cf))
 **********
 PROC Waiting(_mess)
 ShowButton(_middlerow-2,8,;
@@ -488,7 +669,6 @@ cAdd - доп. разъяснение (см.Continue())
 */
 LOCAL i,_r,aMenu:={},aCol,nLeft, nRight
 aMsg:=FT_XTOY(aMsg,'A')
-_r:=11+LEN(aMsg)
 
 PUSH KEYS COLOR _MenuColor
 IF !EMPTY(aKeys)
@@ -499,7 +679,9 @@ ENDIF
 nLeft:=m->_middlecol-25
 nRight:=m->_middlecol+22-LEN(aPrompt[LEN(aPrompt)])
 aCol:={nLeft,nRight,nRight}
-Panel(9,nLeft-5,_r+4,m->_middlecol+30,aMsg)
+i:=INT(Len(aMsg)/2)
+_r:=m->_middlerow-1-i+LEN(aMsg)
+Panel(m->_middlerow-3-i,nLeft-5,_r+4,m->_middlecol+30,aMsg)
 ShowMouse()
 IF LEN(aPrompt)=2
 	IF !EMPTY(cAdd)
@@ -592,7 +774,7 @@ FUNC SetFilt(_cond)
 LOCAL _i
 _i:=DBFilter()
 SET FILTER TO &_cond
-go top
+IF !EMPTY(_cond) THEN go top
 _tally:=M6_RecCount()
 IF _tally==0 .AND. !EMPTY(DBFILTER()) THEN _tally:=LASTREC()
 _req:=2
@@ -668,6 +850,16 @@ IF !EMPTY(Sx_RLock({_rec1,_rec2}))
 	_req:=2
 ENDIF
 **********
+PROC SwapAll(nSrc,nDst,nMuch,lRev)
+LOCAL i
+FOR i:=1 TO nMuch
+	IF EMPTY(lRev)
+		Swap(nSrc++,nDst++)
+	ELSE
+		Swap(nSrc-- + nMuch, nDst-- + nMuch)
+	ENDIF
+NEXT
+**********
 PROC File_Dial(cFile)
 LOCAL cMsg:=IF(EMPTY(cFile),READY,F_CREATE+cFile)
 SET PRINTER TO
@@ -700,11 +892,13 @@ LOCAL nL:=_middlecol-28, cDev:=SET(_SET_DEVICE)
 SET(_SET_DEVICE,'')
 IF_NIL nCurr IS m->_tally
 DispBegin()
+
 DO CASE
 // Сначала - частая проверка
-	CASE lWas .AND. nStep=2 .AND. nCurr>=nLast
+	CASE lWas .AND. nStep=2 .AND. !EMPTY(m->_lMeter) .AND. nCurr>=(nLast+_sx_step)
 		nLast:=nCurr
 		IF nMuch==0 THEN nMuch:=KeyCount()	//В Append может проявиться
+		IF !EMPTY(nTotal) THEN nMuch:=nTotal
 		nCurr:=MIN(nCurr,nMuch-1)
 		@ 13,nL SAY REPL('▄',nCurr*57/nMuch-1) COLOR _im
 
@@ -754,6 +948,15 @@ LOCAL aTag:={},i,nCnt
 aTag:=Sx_TagInfo(1)
 RETURN aTag
 **********
+FUNC KeyGoTo(nRec)
+LOCAL nOld
+IF EMPTY(OrdKey())
+	nRec:=MGoTo(nRec,.t.)
+ELSE
+	nRec:=OrdKeyGoto(nRec)
+ENDIF
+RETU nRec
+**********
 FUNC NTRIM(nNum)
 RETURN LTRIM(STR(nNum))
 **********
@@ -776,16 +979,20 @@ IF_NIL cFldExclude IS m->_C_F
 IF_NIL aFlds IS m->_dubl
 cFldExclude:=UPPER(ALLTRIM(cFldExclude))
 AEVAL(aFlds,{|_1|IF(_1==cFldExclude,NIL,cStr:=cStr+XTOC(&(_1)))})
-RETURN Crc32(cStr)
+RETURN Ntoc(Crc32(cStr), 16, 8, '0')
 **********
 FUNC Compress(cStr,lArr)
 LOCAL xCopy:=cStr, nLen, cType:= ValType(cStr)
 IF (cType $ "CM")
 	nLen:=LEN(cStr)
 	IF !EMPTY(lArr) .OR. (nLen >= 256) .OR. Continue(TOO_SHORT)
+/*
 		xCopy:= Space(nLen + 257)
 		cStr:= Sx_Comp1(cStr, xCopy, nLen)
 		xCopy:= L2Bin(nLen) + Left(xCopy, cStr)
+*/
+*		xCopy:=CharPack(cStr)
+
 	ENDIF
 ELSEIF (cType = "A")
 	xCopy:={}
@@ -796,9 +1003,12 @@ RETURN xCopy
 FUNC Decompress(cStr)
 LOCAL xCopy:= cStr, cType:= ValType(cStr)
 IF (cType $ "CM")
+/*
 	xCopy:= Space(Bin2L(Left(cStr, 4)))
 	cStr:= SubStr(cStr, 5)
 	Sx_Decomp1(cStr, xCopy, Len(cStr))
+*/
+*	xCopy:=CharUnPack(cStr)
 ELSEIF (cType = "A")
 	xCopy:={}
 	AEVAL(cStr,{|_1|AADD(xCopy,DeCompress(_1))})
@@ -808,26 +1018,12 @@ RETURN xCopy
 PROC ShowNum(nVal,cMsg)
 Nfind(nVal,,,cMsg)
 **********
-PROC Cdd(cWhere,lAlways)
+PROC Cdd(cWhere)
 *Переход в каталог,независимо от диска
-LOCAL OldDisk:=Name_Disk()
-
 StripRight(@cWhere,'\')
-
 ChDisk(cWhere)
-IF ChDir(cWhere)<>0
-	IF !EMPTY(lAlways) .OR. ;
-	   Continue({cWhere+' does not exist.','Create ?'},1)
-		IF MkDir(cWhere)==0
-			ChDir(cWhere)
-		ELSE
-			Nfind("Can't create "+cWhere)
-			ChDisk(CHR(OldDisk))
-		ENDIF
-	ELSE
-		ChDisk(CHR(OldDisk))
-	ENDIF
-ENDIF
+ChDir(cWhere)
+
 **********
 FUNC For(xFrom,xTo, bEval, bFor)
 LOCAL i,xRet
@@ -861,13 +1057,13 @@ RETURN (t1==t2 .OR. (t1 $ 'NFV' .AND. t2 $ 'NFV') .OR. ;
        (t1 $ 'CMV' .AND. t2 $ 'CMV'))
 **********
 FUNC Preproc(cExp)
-LOCAL	i,j,jr, cCmd, cFcmd,cPar
+LOCAL	i,j,jr,cCmd,cFcmd,cPar
 
 cExp:=Sx_SlimFast(ALLTRIM(cExp))	//Сам SlimFast не обрезает последний пробел
 
 FOR i:=1 TO LEN(m->_aCommand)
 	cFcmd:=m->_aCommand[i,1]
-	cCmd:=IF( (j:=AT('<',cFcmd))=0,cFcmd,SUBSTR(cFcmd,1,j-1) )
+	cCmd:=IF( (j:=AT('<',cFcmd))=0,cFcmd,LEFT(cFcmd,j-1) )
 	IF IsLefts(cExp,UPPER(cCmd)) THEN EXIT
 NEXT
 IF i<=LEN(m->_aCommand)	//найдено
@@ -882,7 +1078,24 @@ IF i<=LEN(m->_aCommand)	//найдено
 	ENDIF
 ENDIF
 
-RETURN Compile(cExp)
+* Проверка предопределенных замен
+cPar:=Exclude(cExp,' ')
+DO CASE
+	CASE '{^' $ cExp	//VFP формат
+		j:= AT('{^',cPar)
+		jr:=AT( '}', SUBSTR(cPar,j+2))
+		IF Between(jr,9,11)	//datetime преобразовывать не будем
+			cFcmd:=SET(_SET_DATEFORMAT)
+			SET DATE JAPAN
+			cCmd:=CTOD(SUBSTR(cPar,j+2,jr-1))
+			SET(_SET_DATEFORMAT, cFcmd)
+			cExp:= LEFT(cPar,j-1)+;
+			       'CTOD("'+DTOC(cCmd)+'")'+;
+			       SUBSTR(cPar,j+2+jr)
+		ENDIF
+ENDCASE
+
+RETURN cExp
 **********
 FUNC WaitKey(_time)
 LOCAL key,keyBlock,_timeBegin:=Seconds(),_oldAlt:=-1
@@ -892,33 +1105,45 @@ ELSE
 	IF _time=0 THEN _time:=36000	// 10 часов ожидания
 	ShowMouse();ShowMouse()
 ENDIF
+m->_ms:=0
 DO WHILE .T.
-//	TimeSlice()
 	ShowMouse()
 	IF (key:=inkey(, 254))#0 .OR.  (Seconds()-_timeBegin > _time)
 		DO CASE
 		CASE (key=K_F1)
 			key:=ProcName(2)
-			IF 'MODAL' $ key
+			IF 'READMODAL' $ key
 				key:=ProcName(3)
-			ELSEIF ('ACH' $ key) .AND. !EMPTY(m->_Hlp)
+			ELSEIF ('ACH' $ CalledFrom()) .AND. !EMPTY(m->_Hlp)
 				key:=m->_hlp
 			ENDIF
-			*HELP(IF('MODAL' $ ProcName(2),ProcName(3),ProcName(2)))
 			HELP(key)
 		CASE ( (keyBlock := SetKey(key)) <> NIL )
 			Eval(keyBlock)
-		CASE (key>1001)
-			WHILE Inkey()#0
+
+		CASE key==K_LBUTTONDOWN
+			WHILE MLeftDown()
+				Inkey()
 			ENDDO
+			m->_ms:=1
 			IF MouseY()==m->__mrow
 				key:=Int(MouseX()/8)
 				FT_PutKey(IF( (_OldAlt:=Altf())=0,;
 				     IF(key=0,K_F1,-key),;
 				     -40 + _oldalt*10 - key))
 			ELSE
-				RETU IF(key=INKEY_RDOWN,K_ESC,K_ENTER)
+				RETU K_ENTER
 			ENDIF
+
+		CASE key==K_RBUTTONDOWN
+			m->_ms:=2
+			WHILE MRightDown()
+				Inkey()
+			ENDDO
+			RETU K_ESC
+
+		CASE key=K_RBUTTONUP .OR. key=K_LBUTTONUP
+
 		CASE (key=1001)
 		OTHER
 			IF _time>0 THEN HideMouse()
@@ -927,7 +1152,7 @@ DO WHILE .T.
 		_TimeBegin:=Seconds()	// Что-то все-таки нажато
 	ENDIF
 
-	IF _time>0 .AND. NextKey()=0 .AND. ((key:=AltF()) # _OldAlt)
+	IF _time>0 .AND. NextKey(254)=0 .AND. ((key:=AltF()) # _OldAlt)
 		 Fkeys(_OldAlt:=key)
 	ENDIF
 ENDDO
@@ -958,7 +1183,7 @@ PROC WINDOW(_x01,_y01,_x02,_y02,_s,_Mess)
 */
 LOCAL	_wide:=_y02-_y01
 BoxShadow(_x01,_y01,_x02,_y02,7,'╔═╗║╝═╚║ ' )
-_s:=Substr(_s,1,_wide--)
+_s:=LEFT(_s,_wide--)
 @ _x01,_y01+1+Centr(_s,_wide) say _s
 **********
 PROC BoxShadow(_x01,_y01,_x02,_y02,_ColorBorder,_box,_colorBox)
@@ -966,7 +1191,7 @@ LOCAL	_Ny1,_Nx1,_Ny2
 _Ny1:=_y01+2
 _Nx1:=_x02+1
 _Ny2:=_y02+1
-
+DispBegin()
 IF !Empty(_ColorBorder)
 	Shadow(_Nx1, _Ny1, _Nx1, _Ny2,;		&& последняя строка
 		_colorBorder, _Ny2-_Ny1+1 )
@@ -974,6 +1199,7 @@ IF !Empty(_ColorBorder)
 		_colorBorder, _Nx1-_x01 )
 ENDIF
 DispBox(_x01,_y01,_x02,_y02,_box,_ColorBox)
+DispEnd()
 **********
 PROC Shadow(nx1,ny1,nx2,ny2,_ColorBorder,nLength)
 IF  ValType(_ColorBorder)='N'
@@ -983,8 +1209,7 @@ ELSEIF ValType(_ColorBorder)<>'C'
 ENDIF
 RestScreen(nx1, ny1, nx2, ny2,;
 	transform( SaveScreen(nx1, ny1, nx2, ny2),;
-		   REPL("X"+_colorBorder+'X', nLength) ) )
-
+		   REPL("X"+_colorBorder+"X", nLength) ) )
 **********
 PROC Rename(fSrc,fDst)
 FERASE(fDst)
@@ -1001,7 +1226,7 @@ ELSEIF EMPTY(lNoMsg)
 ENDIF
 RETURN nSize
 ***********
-FUNC Aktion(symbol/*,needSay*/)
+FUNC Aktion(symbol)
 LOCAL res//:=.F.
 DO CASE
 CASE Empty(symbol)
@@ -1010,13 +1235,6 @@ CASE ValType(symbol)=='B'
 	res:=Eval(symbol)
 CASE IsSuchProc(symbol) .AND. (Substr(symbol,-1) # ')')
 		res:=&symbol()
-*	ELSE
-*		res:= &symbol	// any func
-*	ENDIF
-*CASE ValType(Symbol)=='C' .AND. (LEFT(symbol,1)=='{')
-*	res:=Eval(&symbol)
-*CASE IsNilOrTrue(needSay)
-*	NFIND( 'No such program')
 OTHER
 	res:= &symbol 	// any func
 ENDCASE
@@ -1127,16 +1345,17 @@ IF PAD(cDest,11) $  'ShowVaried( ShowForced('
 ENDIF
 RETURN cDest
 **********
-FUNC BliRun(process)
-LOCAL cursor,error:=0,scr
+FUNC BliRun(process, cmd_stdin)
+LOCAL cursor,out:=space(0), error:=space(0),scr
+IF_NIL cmd_stdin IS ''
+IF_NIL process IS GETE("COMSPEC")
 ScrSave(@scr)
 Scroll() ; DevPos(0,0)
 cursor:=SetCursor(1)
 COMMIT
 BEGIN SEQU
-	*SwpRunCmd(process)
-	*error:=SwpErrLev()
-	RUN &process
+	SysCmd(process, cmd_stdin, @out, @error)
+*	__run(process)
 END
 __KeyBoard()
 SetCursor(cursor)
@@ -1144,23 +1363,35 @@ ScrRest(scr)
 SetBlink(.F.)	// почему-то портится
 RETURN error
 **********
-// Для подключения FT_ONIDLE()
+// Для подключения ONIDLE
 PROC TimeShow()
 STATIC oldTime
-LOCAL _r,_c,cT
+LOCAL cT
 IF (cT:=Time())<>oldTime
 	Out(0,72,oldTime:=cT,m->_bm)
 ENDIF
 **********
 FUNC GetWinClip()
-LOCAL cBuf:=''
-Get_ClipB(@cBuf,IF( m->_LCnvWClip, 7, 1) )
-RETURN FN_NoNull( cBuf)
+LOCAL cBuf:=GetClipBoardData(), i:=0
+
+IF LEN(cBuf)>0
+	IF m->_LCnvWClip THEN cBuf:=AnsiToOem(cBuf)
+	IF ASCAN(m->_ClipWText, cBuf)=0 THEN A_INS(m->_ClipWText, cBuf)
+ENDIF
+
+IF !EMPTY(m->_ClipWText)
+	IF (LEN(m->_ClipWText) > 1) .AND. m->_ClipWChoice
+		i:=ForAch(10,USE_HISTORY,m->_ClipWText,1,'H5')
+	ENDIF
+	IF i<>0 THEN cBuf:=m->_ClipWText[i]
+ENDIF
+
+RETURN cBuf
 **********
 PROC SetWinClip(xVar)
 xVar:=TRIM(FT_XTOY(xVar,"C"))
 IF m->_LCnvWClip THEN xVar:=OemToAnsi(xVar)
-Send_ClipB(xVar)
+SetClipBoardData(xVar)
 **********
 FUNC GetClipboard()
 LOCAL xRes,i:=1, aClip:={}
@@ -1187,6 +1418,7 @@ RETURN cBlock
 **********
 PROC MainUse(lMode,lIndex)
 // lMode = (Shared,Excl)
+USE
 IF !EMPTY(m->_cPsw) THEN Sx_SetPass(m->_cPsw,1)
 dbUseArea( .F.,, (m->_base), "_mBase", lMode)
 IF !EMPTY(lIndex)
@@ -1211,8 +1443,8 @@ ENDIF
 RETU _dbfc
 **********
 FUNC ClearName()
-LOCAL i:=AT('.',m->_base)
-RETURN IF(i==0,m->_base,SUBSTR(m->_base,1,i-1))
+LOCAL i:=RAT('.',m->_base)
+RETURN IF(i==0,m->_base,LEFT(m->_base,i-1))
 **********
 FUNC ReadBin(_handle,_from,_num,nType)
 LOCAL cRet:=SPACE(_num)
@@ -1223,7 +1455,11 @@ FUNC IsLefts(cLong,cShort,lNeedTrim)
 *Проверяет на равенство cShort и соотв.левой подстроки cLong
 LOCAL i:=LEN(cShort)
 IF IsNILorTRUE(lNeedTrim) THEN cLong:=LTRIM(cLong)
-RETURN (SUBSTR(cLong,1,i)==cShort)
+RETURN (LEFT(cLong,i)==cShort)
+**********
+FUNC Out(r,c,xMsg,cClr)
+LOCAL _r, _c
+SavePos(); DispOutAt(r,c,xMsg,cClr); RestPos()
 **********
 FUNC A_JOIN(a1, a2)
 LOCAL aRet:=Aclone(a1)
@@ -1248,39 +1484,6 @@ FUNC A_MaxLen(ar)
 LOCAL i:=0
 AEVAL(ar,{|_1|i:=MAX(i,LEN(_1))})
 RETURN i
-**********
-FUNC FreadLn(_handle,_string,_max_len)
-/*
- Читает из файла строку в переменную _string,переданную по ссылке
- до CRLF или до _Max_len(по умолчанию -16к)
- возвращает !FEof() .and. !FError()
- В основном,применяется для последовательного чтения текстовых файлов
-
- Пример:
-
-	handle:=Fopen('FileOut.prn')
-	Current:=''
-	Do While FreadLn(Handle,@Current)
-		? Current
-	ENDDO
-
- См.также ListFile()
-*/
-#define Here() Fseek(_handle,0,FS_RELATIVE)
-
-LOCAL _line,_eol,_num_read,_save_pos
-IF_NIL _max_len IS 16384
-_save_pos:=Here()
-_line:=Space(_max_len)
-_num_read:=Fread(_handle,@_line,_max_len)
-IF  (_eol:=at(_CRLF,Left(_line,_num_read)))==0
-	_string:=_line		// достигли EOF или слишком длинная строка
-ELSE
-	_String:=Left(_line,_eol-1)
-	Fseek(_handle,_save_pos+_eol+1,FS_SET)
-ENDIF
-
-RETURN (_num_read#0)
 **********
 PROC ScrSave(_var)
 /*
@@ -1332,7 +1535,7 @@ FOR i:=1 TO size
 NEXT
 RETU arr
 **********
-PROC Center(_x,_s,_n,ccolor)
+PROC CenterB(_x,_s,_n,ccolor)		//B, чтобы не путать с тулзами
 /*
 *Центрирует строку текста на экране
 _x-Номер строки экрана
@@ -1343,7 +1546,7 @@ _ccolor - цвет вывода (умолчание-текущий)
 См.также Centr(),Medi(),Pc()
 */
 IF_NIL _n IS m->__mcol
-_s:=Substr(_s,1,_n)
+_s:=LEFT(_s,_n)
 @ _x,Centr(_s,_n)  Say _S color cColor
 **********
 FUNC Centr(_s,_n)
@@ -1372,7 +1575,7 @@ Func ReadFromFile(_handle,_from,_num)
 */
 
 Fseek(_handle,_from,0)
-RETU (FN_NoNull(FreadStr(_handle,_num)))
+RETU FreadStr(_handle,_num)
 **********
 FUNC Rand (nStart)
 /*
@@ -1393,9 +1596,13 @@ r_iy = r_iy - int(r_iy/2796203) * 2796203
 RETURN  (r_iy/2796203.0)
 
 **********
-FUNC Random(nMin,nMax)
+FUNC RandomScope(nMin,nMax)
 LOCAL n1,nDigits
-IF nMin>nMax THEN n1:=nMax;nMax:=nMin;nMin:=n1
+IF nMin>nMax 
+	n1:=nMax
+	nMax:=nMin
+	nMin:=n1
+ENDIF
 nDigits:=LenNum(nMax)
 n1:=INT(Rand()*10^nDigits)
 IF n1<nMin
@@ -1410,97 +1617,7 @@ LOCAL cRet,cCent:=__SETCENTURY(.F.)
 cRet:=DTOC(date)
 __SETCENTURY(cCent)
 RETURN cRet
-**********
-FUNC ShowButton(_x01,_y01,_x02,_y02,_s,_color,_Frame,_ColorBorder,_Selected)
-/*
- Пpи наличии массива сообщения _s они появляются,начиная с первой строки окна
- Пpи _ColordBorder вокpуг pамки есть тень заданного цвета (в числовом виде)
- При задании _COLOR - устанавливается временно этот цвет
- _FRAME определяет вид рамочки - по умолчанию - одинарная
- Если определена символьная пара _Selected, то она окаймляет все сообщения
- (это используется в меню)
-
- Если координаты окна заданы неполностью,то используются максимальные
- размеры.
-
-	Пример:
-// Рамочка в центре заданного цвета
-	ShowButton(10,10,14,69,[Нажмите что нибудь],NewColor,FRAME2)
-
- См.также WaitWindow(),Nfind(),Waiting(),Window_M()
-*/
-
-LOCAL	_wide,nX1,_sc,_front,_lft,_i
-
-IF_NIL _x01 IS 0
-IF_NIL _y01 IS 0
-IF_NIL _x02 IS __mrow
-IF_NIL _y02 IS __mcol
-IF_NIL _s IS ''
-IF_NIL _color IS SetColor()
-IF_NIL _frame IS '┌─┐│┘─└│ '
-
-_x01:=INT(_x01)
-_x02:=INT(_x02)
-_y01:=INT(_y01)
-_y02:=INT(_y02)
-
-Hilite(_color,@_front,@_sc)
-
-_wide:=_y02-_y01-1
-BoxShadow(_x01,_y01,_x02,_y02,_ColorBorder,_frame,_front)
-
-HideMouse()
-@ _x02,_y01+1 SAY Repl(Substr(_Frame,2,1),_wide)+;
-		  Substr(_Frame,5,1) COLOR _sc
-nX1:=_x01+1		//Int((_x02-_x01)/2)
-FOR _i:=nX1 To _x02-1
-	@ _i,_y02 Say Substr(_Frame,4,1) COLOR _sc
-NEXT
-@ _x01,_y02 SAY Substr(_Frame,3,1) COLOR _sc
-
-IF ValType(_s)=='C' THEN _s:={_s}
-
-FOR _i:=1 TO LEN(_S)
-	_lft:=Substr(_s[_i],1,_wide)
-	IF !Empty(_Selected) .AND. !EMPTY(_lft) .AND. ;
-	   LEFT(_lft,1)<>[■] .AND. (Len(_lft) < _wide)
-		_lft:=LEFT(_Selected,1)+_lft+RIGHT(_Selected,1)
-	ELSEIF LEFT(_lft,1)==[■]
-		_lft=Substr(_lft,2)
-	ENDIF
-	@ nX1++,INT(_y01+1+Centr(_lft,_wide+1)) say _lft COLOR _color
-NEXT
-
-ShowMouse()
-
-RETURN {_x01,_y01,_x02,_y02,_front,_sc,_frame}
-**********
-PROC DownButton(_aHandle,_waiting)
-* Показывает вдавленную кнопку по хэндлу,сохраненному в ShowButton
-* При наличии _waiting ждет указанное время
-
-LOCAL _i,_front:=_aHandle[5],;
-	_x01 :=_aHandle[1],;
-	_y01 := _aHandle[2],;
-	_x02 :=_aHandle[3],;
-	_y02 :=_aHandle[4],;
-	_frame:= _aHandle[7]
-
-IF_NIL _waiting IS 0.001
-
-HideMouse()
-DispBox(_x01,_y01,_x02,_y02,_frame/*'┌─┐│┘─└│ '*/,_aHandle[6])
-@ _x02,_y01+1 SAY Repl(Substr(_frame,2,1)/*'─'*/,_y02-_y01-1)+;
-		  Substr(_frame,5,1) /*'┘'*/ COLOR _front
-
-FOR _i:=_x01+1 To _x02-1
-	@ _i,_y02 Say Substr(_frame,4,1)/*'│'*/ COLOR _front
-NEXT
-@ _x01,_y02 SAY Substr(_frame,3,1) /*'┐'*/ COLOR _front
-
-ShowMouse()
-WaitKey(_waiting)
+#IFNDEF ENGLISH
 ************
 FUNC SayData(data)
 /*
@@ -1510,6 +1627,7 @@ local Cmth:=Cmonth(data)
 RETURN  NTRIM(day(data))+' '+;
 	IF(SUBSTR(Cmth,-1)=='т', Cmth+'а ', LEFT(Cmth,Len(cmth)-1)+'я ')+;
 	NTRIM(Year(data))+ ' года'
+#ENDIF
 **********
 FUNC ChrTran(c1,c2,c3)
 LOCAL cRet:='',i,cSym,nPos
@@ -1539,3 +1657,43 @@ ELSE
 	_front:='W/'+_back
 	_back:='n/'+_back
 ENDIF
+**********
+FUNC CalledFrom()
+LOCAL _i:=2,_s:='',_ss
+
+WHILE !Empty((_ss:=ProcName(_i++)))
+	_s+=_ss+','
+END
+RETU _S
+
+**********
+FUNC PADJ(cStr, cJust, cFill, nLen)
+LOCAL _i
+IF_EMPTY nLen IS LEN(cStr)
+IF EMPTY(cJust)
+	_i:=ForAch(10,_MSG_A_JUSTH,_MSG_A_JUSTA)
+
+	IF  _i <>0
+		cJust:=SUBSTR('LCRJEU',_i,1)
+	ELSE
+		RETURN cStr
+	ENDIF
+ELSE
+	cJust:=UPPER(cJust)
+ENDIF
+cStr:=ALLTRIM(cStr)
+DO CASE
+	CASE cJust=='L'
+		cStr:=PADR(cStr,nLen,cFill)
+	CASE cJust=='C'
+		cStr:=PADC(cStr,nLen,cFill)
+	CASE cJust=='J'
+		cStr:=CharSpread(cStr,nLen,cFill)
+	CASE cJust=='E'
+		cStr:=Expand(cStr,1,cFill)
+	CASE cJust=='U'
+		cStr:=CharOne(cFill,cStr)
+	OTHER //н-р, просто PAD
+		cStr:=PADL(cStr,nLen,cFill)
+ENDCASE
+RETURN cStr

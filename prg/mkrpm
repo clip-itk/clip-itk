@@ -6,7 +6,14 @@ LANG=C
 LC_ALL=C
 LC_MESSAGES=C
 export MAKE LANG LC_ALL LC_MESSAGES
-
+if [ -x /usr/bin/rpmbuild ]
+then
+    rpm=/usr/bin/rpmbuild
+else
+    rpm=`which rpm`
+fi
+	
+	
 name=clip-prg
 
 version=$(head -1 ../debian/changelog |cut -d'(' -f2|cut -d'-' -f1)
@@ -53,8 +60,8 @@ tar czf $root/SOURCES/$name-$version.tar.gz $name-$version
 cd $pwd
 #rpm --pipe "grep \\.rpm>$tmp/lst" -ba $name.spec
 
-echo rpm --pipe "tee $tmp/lst" -bb $name.spec
-rpm --pipe "tee $tmp/lst" -bb $name.spec
+echo $rpm --pipe "tee $tmp/lst" -bb $name.spec
+$rpm --pipe "tee $tmp/lst" -bb $name.spec
 rpms=`grep $root/.\*\\\.rpm $tmp/lst | cut -d ' ' -f 2`
 echo RPMS: $rpms
 if [ -n "$rpms" ]

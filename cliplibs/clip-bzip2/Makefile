@@ -1,16 +1,18 @@
-CLIPINCLUDE=-I$(CLIPROOT)/include
-
-ifdef CLIPROOT
-include $(CLIPROOT)/include/Makefile.inc
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
+
+include $(CLIPROOT)/include/Makefile.inc
+CLIPINCLUDE=-I$(CLIPROOT)/include
 
 #C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
 #CC=gcc
 TARGET=libclip-bzip2$(DLLSUFF)
+ATARGET=libclip-bzip2.a
 RTARGET=libclip-bzip2$(DLLREALSUFF)
 OBJS=bzip2.o
 
-all:  have_lib $(TARGET)
+all:  have_lib $(TARGET) $(ATARGET)
 
 have_lib:
 	test -f /usr/include/bzlib.h
@@ -26,19 +28,27 @@ bzpref.h:
 $(TARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lbz2
 
+$(ATARGET): $(OBJS)
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lbz2
+
 bzip2.o: bzip2.c hashcode.h bzpref.h
 	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c bzip2.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h
 
-install: all
-	$(CLIPROOT)/bin/clip_cp $(TARGET) $(CLIPROOT)/lib
-	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(CLIPROOT)/lib
-	mkdir -p $(CLIPROOT)/doc/clip-bzip2
-	cp *.html $(CLIPROOT)/doc/clip-bzip2
-	mkdir -p $(CLIPROOT)/doc/example/clip-bzip2
-	cp -R example/* $(CLIPROOT)/doc/example/clip-bzip2/
+install:
+	$(CLIPROOT)/bin/clip_cp libclip-bzip2 $(DESTDIR)$(CLIPROOT)/lib
+	#mkdir -p $(CLIPROOT)/doc/clip-bzip2
+	#cp *.html $(CLIPROOT)/doc/clip-bzip2
+	-cd tdoc && $(MAKE) install
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-bzip2
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-bzip2/
 
 clean:
 	rm -rf *.o *.bak *.a *.so hashcode.h *.dll *.exe bzpref.h *.ex *.nm
+	-cd tdoc && $(MAKE) clean
+
+distclean: clean
+	-cd tdoc && $(MAKE) distclean
+

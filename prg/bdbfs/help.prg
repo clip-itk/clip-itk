@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -8,40 +7,55 @@
 #include "bdbfmsg.ch"
 #include "inkey.ch"
 MEMVAR _hdColor, _im, _abort,__tagnom,_iv
-#define MYSELF 'Support: elb@lg.bank.gov.ua, Bondar_Eugen@yahoo.com'
+#define MYSELF 'Mailto: '+EMAIL+', '+EMAIL2
+#define CheckOsVer Os
 **********
-PROC HELP( _prg,_line,_var)
-LOCAL _handle,_HlpFile:=Sx_FnameParser(GetPath(),.t.),_r,_c
+PROC HELP(_prg,_line,_var,cDefault)
+LOCAL _handle,_HlpFile:=Sx_FnameParser(GetPath(),.t.),_r,_c, lTrans:=.F.,;
+	cHost:=host_charset(), cLang:=GETE('LANG')
 STATIC lInstance
 PRIVATE _MemoPrnt:=80
 IF_NIL _prg IS ProcName(1)
-IF EMPTY(lInstance) .AND. IsFileExist(@_HlpFile,'.HLP')
+IsFileExist(@_HlpFile,'.HLP', , .T.)
+IF File(_HlpFile+'.'+cHost)
+	_HlpFile+='.'+cHost
+ELSEIF '_RU' $ cLang .OR. '_UA' $ cLang
+	IF File(Strtran(_HlpFile, '.', 'r.'))
+		_HlpFile:=Strtran(_HlpFile, '.', 'r.')
+		lTrans:=.t.
+	ENDIF
+ENDIF
+SavePos()
+IF EMPTY(lInstance) .AND. IsFileExist(@_HlpFile,'.HLP', , !EMPTY(cDefault))
   lInstance:=.T.
-
-  SavePos()
 
   _line:=MemoRead(_HlpFile)
   IF (_handle:=At('~'+_prg,_line))==0
 	_var:=2
 	WHILE !EMPTY(_prg:=PROCNAME(_var++)) .AND.;
-	      (_handle:=AT('~'+_prg,_line))==0 .AND. _var<6
+	      (_handle:=AT('~'+_prg,_line))==0 .AND. _var<8
 	END
   ENDIF
   IF _handle#0
 	Parce(Substr(_line,_handle+1+Len(_prg)),_CRLF+'~',@_line)
+	IF lTrans THEN _line:=Translate_charset("cp866", cHost, _line)
 	Memo_Edit(_line,;
 		  'Up Down PgUp PgDn'+_ABORT,;
 		  MYSELF,;
 		  .F.,,'BDBFS: Help topic '+_prg)
+  ELSEIF !EMPTY(cDefault)
+	NFind(cDefault)
   ELSE
-	NFind(_MSG_H_NO)
+	NFind(_MSG_H_NO, , ,  _prg)
   ENDIF
-  IF PROCNAME(2)<>'NFIND' .AND. !('MEM' $ PROCNAME(2)) THEN FT_PutKey(255)
-  RestPos()
+  IF PROCNAME(2)<>'NFIND' .AND. !('MEM' $ PROCNAME(4)) THEN FT_PutKey(K_EMP)
   lInstance:=.F.
+ELSEIF !EMPTY(cDefault)
+	NFind(cDefault)
 ENDIF
+RestPos()
 **********
-FUNC Information(aFileStr)
+PROC Information(aFileStr)
 // В aFileStr по ссылке передается информация для File в DispStru
 LOCAL _a,aTagInfo,aTag,_i,nCnt,_ndb
 dbcommit()
@@ -79,14 +93,16 @@ _i:=(Min(A_MaxLen(_ndb),m->__mcol-3))/2+2
 PUSH KEYS COLOR m->_im
 Panel(nCnt,m->_middlecol-_i,nCnt+4+Len(_Ndb),m->_middlecol+_i,GetPath(),;
 	{m->_im,_HdColor, m->_im})
-nCnt+=2
-aEval(_ndb,{|_handle| Center(++nCnt,_handle)})
-Waitkey(0)
 
-IF (_a:=Sx_TagCount(1))<>0
+nCnt+=2
+aEval(_ndb,{|_handle| Hi_String(PADC(_handle,_i*2-3),++nCnt,_middlecol-_i+2)})
+IF Waitkey(0)<>K_ESC
+
+  IF (_a:=Sx_TagCount(1))<>0
 	aTagInfo := TagInfo(1)	// Получить информацию о тегах для текущего .CDX
 				// Теперь нарисуем дисплей
-	Panel(4,2,18,77,_MSG_H_TITLE+Rdd_Info(1)[1] + ' )',;
+	DispBegin()
+	Panel(4,2,18,77,_MSG_H_TITLE+Rdd_Info(1)[1] + ')',;
 			{_im,_HdColor,_im},2)
 	@  7, 4 SAY PADR(IND_FILE,18)+m->_IndexFile
 	@  7,40 SAY _MSG_H_TAGS+Str(_a,2)
@@ -100,13 +116,14 @@ IF (_a:=Sx_TagCount(1))<>0
 	@ 15,40 SAY _MSG_H_CK
 
 	Center(17," PgUp  PgDn "+_Abort,,_HdColor)
+	DispEnd()
 
-	nCnt := 1      // Начать с первого тега
+	nCnt := 1	// Начать с первого тега
 
 			//Отобразить информацию о тегах,
 
 	DO WHILE (.T.)
-
+	        DispBegin()
 		aTag:=aTagInfo[nCnt]
 		@  7,45 SAY nCnt pict '99' color _HdColor
 		@  9,23 SAY PADR(aTag[1], 10) color _HdColor
@@ -118,12 +135,9 @@ IF (_a:=Sx_TagCount(1))<>0
 		@ 13,23 SAY IF(aTag[5], YESNO)  color _HdColor
 		@ 14,23 SAY IF(aTag[6], YESNO)  color _HdColor
 
-		*Sx_SetTagNo(nCnt)
-		OrdSetFocus(nCnt)
-		SKIP 0
-		@ 15,23 SAY KeyCount() pict '99999999' color _HdColor
-		@ 15,57 SAY KeyNo() pict '99999999'    color _HdColor
-
+		@ 15,23 SAY KeyCount(nCnt) pict '99999999' color _HdColor
+		@ 15,57 SAY KeyNo(nCnt) pict '99999999'    color _HdColor
+		DispEnd()
 		DO CASE
 
 			CASE (_i :=WaitKey(0)) == K_PGDN .OR. _i==K_ENTER
@@ -138,52 +152,50 @@ IF (_a:=Sx_TagCount(1))<>0
 		ENDCASE
 
 	ENDDO
+  ENDIF
 ENDIF
-
 POP KEYS
 
 IF !Empty(m->_IndexFile)
 	ordListClear(); ordListAdd( m->_IndexFile )
-	*SET INDEX TO &_IndexFile
+	go _tmr
 ELSEIF __tagNom<>0
 	Sx_SetTagNo(__tagNom)
 ENDIF
+
 **********
-FUNC CheckOsVer()
-#IFDEF __CLIP__
-	RETURN OS()
-#ELSE
-LOCAL cVer,nCnt,cBuf:=''
-
-cVer:=Ft_DosVer()
-FT_GETE(@cBuf)
-DO CASE
-	CASE '20.' $ cVer
-		nCnt:=VAL(SUBSTR(cVer,4,1))
-		cVer:='OS/2 '+ IF (Between(nCnt,3,5),;
-				{'WARP','MERLIN','AURORA'}[nCnt-2],;
-				'2.'+NTRIM(nCnt) )
-
-	CASE Is_Linux()
-		cVer:='LINUX'
-
-	CASE Is_Nt()
-		cVer += '(WIN '+ IF ('5.' $ cVer, '2000/Xp)',;
-					 	  'NT)' )
-
-	CASE 'WINDIR' $ UPPER(cBuf)
-		cVer += ' (WINDOWS-'+IF('7.' $ cVer,'9x','Me')+')'
-ENDCASE
-IF Is_4DOS() THEN cVer+=' (UNDER 4DOS)'
-RETURN cVer
-#ENDIF
-**********
-FUNC Description(cFile/*,cDscr*/)
-LOCAL cDscr
-/*IF EMPTY(cDscr) THEN*/ cDscr:=MemoRead('Descript.ion')
-IF !EMPTY(cDscr) .AND.  Parce(cDscr,UPPER(cFile)+' ',,@cDscr)#0	//нашли!
-	Parce(cDscr,_CRLF,@cDscr)
+FUNC Description(cFile, cDscr)
+LOCAL i,aDscr,cLine,cDs,cDlm
+IF EMPTY(cDscr)
+	cDscr:=StrTran(MemoRead('Descript.ion'),CHR(9),' ')
+	aDscr:={}
+	DO WHILE !EMPTY(cDscr)
+		i:=Parce( cDscr, CHR(10), @cLine, @cDscr)
+		cLine:=Exclude(cLine, CHR(13))
+		cDlm:=' '
+		IF First(cLine)=='"'
+			cLine=SUBSTR(cLine,2)
+			cDlm:='" '
+		ENDIF
+		Parce( cLine, cDlm, @cLine, @cDs)
+		AADD(aDscr, {ALLTRIM(cLine), ALLTRIM(cDs)})
+	ENDDO
 ELSE
-	cDscr:=' '	//чтобы в ACH было видно
+	aDscr:=cDscr
 ENDIF
+
+IF EMPTY(cFile)
+	cDscr:=aDscr
+ELSE
+	cDscr:=''
+	IF (i:=AMSCAN(aDscr, 1, cFile))<>0
+		cDscr:=aDscr[i,2]
+		#IFDEF ENGLISH
+			cDscr:=Translate_charset("cp437", host_charset(), cDscr)
+		#ELSE
+			cDscr:=Translate_charset("cp866", host_charset(), cDscr)
+		#ENDIF
+	ENDIF
+ENDIF
+
 RETURN cDscr

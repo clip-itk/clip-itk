@@ -46,9 +46,8 @@ do
 	for mod in *.po
 	do
 		fmod=`basename $mod .po`
-		msgfmt -o $pwd/locale.mo/$locale/$fmod.mo $mod && echo module $fmod
-#		msgfmt -f -o $pwd/locale.mo/$locale/$fmod.mo $mod && echo module $fmod
-		# || clean 2
+                $PO_TO_COMPAT <$mod >$tmp/$mod
+		msgfmt -o $pwd/locale.mo/$locale/$fmod.mo $tmp/$mod && echo module $fmod
 	done
 done
 

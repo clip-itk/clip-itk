@@ -14,6 +14,7 @@ function cti_palette_new()
 
 	obj:AppWorkspace		:= "W/B"
 	obj:Window			:= "BG/B"
+	obj:WindowFooter		:= "GR/B"
 	obj:ActiveBorder		:= "GR+/B"
 	obj:ActiveCaption		:= "GR+/B"
 	obj:InactiveBorder		:= "BG/B"
@@ -38,9 +39,16 @@ function cti_palette_new()
 	obj:Selection			:= "W+/G"
 	obj:StatusBar			:= "N/W"
 	obj:Label			:= "BG/B"
-	obj:ListTitle			:= "N/BG"
-	obj:DisabledRow			:= "BR/BG"
+	obj:AccelKey			:= "GR+"
 	obj:Shadow			:= "W/N"
+
+	obj:ListTitle			:= "N/BG"
+	obj:ListDisabledRow		:= "BR/BG"
+	obj:ListFocusCurrent		:= obj:Selection
+	obj:ListNoFocusCurrent		:= "W+/BG"
+	obj:ListSelected		:= "GR+/BG"
+	obj:ListCurSelected		:= "GR+/G"
+	obj:ListNoFocusCurSelected	:= obj:ListSelected
 
 	obj:FillChar			:= ""
 //	obj:AppWorkspaceFill		:= "ê"

@@ -7,7 +7,7 @@ fi
 
 pwd=`pwd`
 arch=$pwd/$1
-target=`echo "$pwd/$1" | sed -e 's/\.[A-Za-z0-9]*$//'`
+target=`echo "$pwd/$1" | sed -e 's/\.[A-Za-z0-9.]*$//'`
 shift
 
 dir=/tmp/$$
@@ -18,7 +18,7 @@ cd $dir
 for i in $*
 do
 	ar -x $pwd/$i
-    	name=`echo "$pwd/$i" | sed -e 's/\.[A-Za-z0-9]*$//'`
+    	name=`echo "$pwd/$i" | sed -e 's/\.[A-Za-z0-9.]*$//'`
 	test -r "$name.ex" && cp "$name.ex" .
 	test -r "$name.nm" && cp "$name.nm" .
 done
@@ -32,14 +32,14 @@ case "$CLIP_NAMES" in
 
 	cat *.nm 2>/dev/null | grep -v '^#\|^$' | sort -u > $target.nm
 
-	if join --version >/dev/null 2>&1
+	if join /dev/null /dev/null >/dev/null 2>&1
 	then
 		cat *.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > _ex
 		join -v 1 _ex $target.nm > $target.ex
 	else
 		cat *.ex 2>/dev/null | grep -v '^#\|^$' | sort -u > $target.ex
 	fi
-	
+
 	;;
 esac
 

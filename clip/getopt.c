@@ -160,13 +160,17 @@ static enum
 } ordering;
 
 #ifdef	__GNU_LIBRARY__
-/* We want to avoid inclusion of string.h with non-GNU libraries
-   because there are many ways it can cause trouble.
-   On some systems, it contains special magic macros that don't work
-   in GCC.  */
-#include <string.h>
-#define	my_index	strchr
+	/* We want to avoid inclusion of string.h with non-GNU libraries
+	   because there are many ways it can cause trouble.
+	   On some systems, it contains special magic macros that don't work
+	   in GCC.  */
+	#include <string.h>
+	#define	my_index	strchr
 #else
+#include "clipcfg.h"
+#ifdef OS_MINGW
+	#include <string.h>
+#endif
 
 /* Avoid depending on library functions or files
    whose names are inconsistent.  */

@@ -49,11 +49,23 @@ install: build
 		debian/tmp/$(SCLIPROOT)/keymaps \
 		debian/tmp/$(SCLIPROOT)/locale.pot \
 		debian/tmp/usr/lib
-	cp $(CLIPROOT)/include/clipcfg.sh $(CLIPROOT)/include/Makefile.inc debian/tmp/$(SCLIPROOT)/include/
-	cp $(CLIPROOT)/bin/clip_msgfmt $(CLIPROOT)/bin/clip_msgmerge debian/tmp/$(SCLIPROOT)/bin/
+	cp $(CLIPROOT)/include/clipcfg.sh \
+		$(CLIPROOT)/include/Makefile.inc \
+		debian/tmp/$(SCLIPROOT)/include/
+	cp $(CLIPROOT)/bin/clip_msgfmt \
+		$(CLIPROOT)/bin/clip_msgmerge \
+		$(CLIPROOT)/bin/clip_cp \
+		$(CLIPROOT)/bin/clip_makelib \
+		$(CLIPROOT)/bin/clip_makeslib \
+		debian/tmp/$(SCLIPROOT)/bin/
 	$(MAKE) install CLIPROOT=`pwd`/debian/tmp/$(SCLIPROOT)
-	rm debian/tmp/$(SCLIPROOT)/include/clipcfg.sh debian/tmp/$(SCLIPROOT)/include/Makefile.inc
-	rm debian/tmp/$(SCLIPROOT)/bin/clip_msgfmt debian/tmp/$(SCLIPROOT)/bin/clip_msgmerge
+	rm debian/tmp/$(SCLIPROOT)/include/clipcfg.sh \
+		debian/tmp/$(SCLIPROOT)/include/Makefile.inc \
+		debian/tmp/$(SCLIPROOT)/bin/clip_msgfmt \
+		debian/tmp/$(SCLIPROOT)/bin/clip_msgmerge \
+		debian/tmp/$(SCLIPROOT)/bin/clip_cp \
+		debian/tmp/$(SCLIPROOT)/bin/clip_makelib \
+		debian/tmp/$(SCLIPROOT)/bin/clip_makeslib
 #	cd debian/tmp/usr/lib ;\
 #	LIBS=`cd ../local/clip/lib; ls libclip*` ;\
 #	if [ -n "$$LIBS" ] ;\

@@ -1,11 +1,67 @@
 /*
-    Copyright (C) 2001,2002  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001,2002  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 %{
 /*
  * $Log: clic.lex,v $
+ * Revision 1.253  2004/04/29 07:29:18  clip
+ * uri: fix backward output in command TEXT. Closes #172
+ *
+ * Revision 1.252  2004/04/21 08:06:53  clip
+ * uri: some fix for new flex
+ *
+ * Revision 1.251  2004/03/16 11:46:07  clip
+ * rust: reverse order of codeblocks in list ( <{list}> in <list,...> )
+ *
+ * Revision 1.250  2003/12/17 09:46:42  clip
+ * uri: "f->fname" as "alias->fname" not as "field->fname"
+ *
+ * Revision 1.249  2003/09/08 15:06:02  clip
+ * uri: next step fixes for mingw from uri
+ *
+ * Revision 1.248  2003/08/05 10:21:08  clip
+ * possible fixex #149
+ * paul
+ *
+ * Revision 1.247  2003/07/18 06:08:08  clip
+ * fix #147
+ * paul
+ *
+ * Revision 1.246  2003/01/24 10:59:56  clip
+ * fix #<x> marker
+ * closes #115
+ * paul
+ *
+ * Revision 1.245  2002/11/29 07:19:23  clip
+ * finally  rename pseudofunction _CGET_ to _GET_
+ * bug #62 closed
+ * paul
+ *
+ * Revision 1.244  2002/11/27 13:40:44  clip
+ * initial _CGET_ pseudofunction(bug 62):
+ * _CGET_(var[i1,i2,i3,...]) -> __CGET__(@var[i1,i2,i3],{i1,i2,i3},"var",...)
+ * paul
+ *
+ * Revision 1.243  2002/11/19 10:47:36  clip
+ * backslash processing in macro call
+ * closes #41
+ * paul
+ *
+ * Revision 1.242  2002/11/18 08:52:30  clip
+ * charset fixes
+ * asdf
+ *
+ * Revision 1.241  2002/11/06 12:43:43  clip
+ * ngettext cleanup
+ * paul
+ *
+ * Revision 1.240  2002/10/15 12:03:33  clip
+ * fix lex clean when compiles many files
+ * Closes #31
+ * paul
+ *
  * Revision 1.239  2002/10/10 07:41:37  clip
  * preproc: fix list source marker <id, ...> with spaces
  * Closes #21
@@ -1122,10 +1178,10 @@ static int
 n_return(void)
 {
 	if (!strcasecmp(yylval.string,"if"))
-        {
-        	free(yylval.string);
-                return m_return(IF);
-        }
+	{
+		free(yylval.string);
+		return m_return(IF);
+	}
 
 	return m_return(NAME);
 }
@@ -1323,6 +1379,12 @@ static char *sm_enum_word = 0;
 
 static char *marker_id(char *str);
 
+static void my_yy_set_bol(int val)
+{
+	yy_set_bol(val);
+}
+
+
 %}
 
 %array
@@ -1365,7 +1427,7 @@ sm_enum <{cid}\:{wt}*{cid}([ \t,]+{cid})*{wt}*>
 sm_enum_beg <{wt}*{cid}\:{wt}*
 sm_patt <\*{wt}*{cid}{wt}*\*>
 tm_norm <{wt}*{cid}{wt}*>
-tm_noni #<{wt}*{cid}{wt}*>
+tm_noni \#<{wt}*{cid}{wt}*>
 tm_str  <(\"|\'){wt}*{cid}{wt}*(\"|\')>
 tm_intel <\({wt}*{cid}{wt}*\)>
 tm_block <\{{wt}*{cid}{wt}*\}>
@@ -1378,10 +1440,10 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 
 ^{eol}	   {
 			BEGIN(INITIAL);
-	  		if (preproc_flag && !subst_flag)
+			if (preproc_flag && !subst_flag)
 				;
-                        else
-	  			PECHO("\n");
+			else
+				PECHO("\n");
 			newline();
 	 }
 {eol}    {
@@ -1410,18 +1472,18 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 "%="    newpos_w(); MECHO; MRETURN(MODA)
 "^="    newpos_w(); MECHO; MRETURN(MODA)
 
-"m"{wt}*"->"{wt}*	{ 
-			newpos_w(); 
-                        if (subst_flag)
-                        	{ REJECT; }
-			MECHO;  
-			MRETURN(MEMVARPTR) 
+"m"{wt}*"->"{wt}*	{
+			newpos_w();
+			if (subst_flag)
+				{ REJECT; }
+			MECHO;
+			MRETURN(MEMVARPTR)
 			}
 "memv"(a|ar)?{wt}*"->"{wt}*   {
-			newpos_w(); 
-                        if (subst_flag)
-                        	{ REJECT; }
-			MECHO;  
+			newpos_w();
+			if (subst_flag)
+				{ REJECT; }
+			MECHO;
 			MRETURN(MEMVARPTR)
 			}
 
@@ -1433,28 +1495,37 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 "m"{wt}*".N."	newpos_w(); PECHO("m"); yyless(yyleng-3); if (!subst_flag) yylval.string=strdup("M"); MRETURN(NAME)
 "m"{wt}*"."{wt}*	newpos_w(); MECHO;  MRETURN(MEMVARPTR)
 
-"f"{wt}*"->"{wt}*	newpos_w(); MECHO;  MRETURN(FIELDPTR)
-"_field"{wt}*"->"{wt}*	newpos_w(); MECHO;  MRETURN(FIELDPTR)
-"field"{wt}*"->"{wt}*	newpos_w(); MECHO;  MRETURN(FIELDPTR)
+"f"{wt}*"->"{wt}*   {
+	/*printf("found 'f'");*/
+	newpos_w(); PECHO("f"); yyless(yyleng-2); if (!subst_flag) yylval.string=strdup("F"); MRETURN(NAME)
+	}
+"_field"{wt}*"->"{wt}*	{
+	/*printf("found '_field'");*/
+	newpos_w(); MECHO;  MRETURN(FIELDPTR)
+	}
+"field"{wt}*"->"{wt}* {
+	/*printf("found 'field'");*/
+	newpos_w(); MECHO;  MRETURN(FIELDPTR)
+	}
 
 "->"    {
 		newpos_w();
-                /*vo_printf(4,0,"found ->: bad_translate=%d callName=%s\n",
-                	bad_translate, callName?callName:"");*/
+		/*vo_printf(4,0,"found ->: bad_translate=%d callName=%s\n",
+			bad_translate, callName?callName:"");*/
 		if ( !bad_translate && !callName && (curCommand=findFirst_Translate(yytext,&commandInd)) )
 		{
 			callEol=0;
 			free(callName);
 			callName=mem_dup(yytext, yyleng);
-                       	command_state = YYSTATE;
-                       	command_next_state = YYSTATE;
+			command_state = YYSTATE;
+			command_next_state = YYSTATE;
 			bol_translate = YY_AT_BOL();
-               		vo_printf(6,0, "find_translate1 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 1;
+			vo_printf(6,0, "find_translate1 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 1;
 			BEGIN(commandCall);
 		}
-                else
-        	{
+		else
+		{
 			MECHO; /*BEGIN(INITIAL);*/ MRETURN(RPTR)
 		}
 	}
@@ -1474,21 +1545,21 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 "#"    newpos_w(); MECHO; MRETURN(NE)
 "!"	newpos_w(); MECHO; MRETURN(NOT)
 "::"	{
-		newpos_w(); 
+		newpos_w();
 		if ( !bad_translate && !callName && (curCommand=findFirst_Translate(yytext,&commandInd)) )
 		{
 			callEol=0;
 			free(callName);
 			callName=mem_dup(yytext, yyleng);
-                       	command_state = YYSTATE;
-                       	command_next_state = YYSTATE;
+			command_state = YYSTATE;
+			command_next_state = YYSTATE;
 			bol_translate = YY_AT_BOL();
-               		vo_printf(6,0, "find_translate1 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 1;
+			vo_printf(6,0, "find_translate1 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 1;
 			BEGIN(commandCall);
 		}
-                else
-        	{
+		else
+		{
 			MECHO; MRETURN(DSEMICOLON)
 		}
 }
@@ -1544,15 +1615,15 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 
 {dig}+{wt}*"->"    {
 		int l1, l2;
-                char *s;
-                for(s=yytext; (s=strchr(s,'\n')); s++)
-                	newline();
-                l1=strspn(yytext, " \t");
-                l2=strcspn(yytext+l1, " \t;->");
+		char *s;
+		for(s=yytext; (s=strchr(s,'\n')); s++)
+			newline();
+		l1=strspn(yytext, " \t");
+		l2=strcspn(yytext+l1, " \t;->");
 		yylval.string=mem_Dup(yytext+l1,l2);
-                unput('>');
-                unput('-');
-                newpos();
+		unput('>');
+		unput('-');
+		newpos();
 		PECHO(yylval.string);
 		MRETURN(NAME)
 	}
@@ -1604,7 +1675,7 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 		addch_string_buf(0);
 		recodeString(string_buf);
 		SECHO('"','"');
-                if (!subst_flag)
+		if (!subst_flag)
 			yylval.string=strdup(string_buf);
 		MRETURN(STRING)
 	}
@@ -1612,14 +1683,14 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 	{
 		addch_string_buf('"');
 		addch_string_buf( 0 );
-                string_buf_ptr--;
+		string_buf_ptr--;
 		recode_string(string_buf);
 	}
 	else if (str_return==2)
 	{
 		addch_string_buf('"');
 		addch_string_buf( 0 );
-                string_buf_ptr--;
+		string_buf_ptr--;
 		recode_string(string_buf);
 		insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(string_buf),0));
 	}
@@ -1640,14 +1711,14 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 	{
 		addch_string_buf('\'');
 		addch_string_buf(0);
-                string_buf_ptr--;
+		string_buf_ptr--;
 		recode_string(string_buf);
 	}
 	else if (str_return==2)
 	{
 		addch_string_buf('\'');
 		addch_string_buf(0);
-                string_buf_ptr--;
+		string_buf_ptr--;
 		recode_string(string_buf);
 		insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(string_buf),0));
 	}
@@ -1663,7 +1734,7 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 		*s = toupper(*s);
 	snprintf(buf, sizeof(buf), "%ld", _clip_hashstr(string_buf));
 	PECHO(buf);
-        if (!subst_flag)
+	if (!subst_flag)
 		yylval.string=strdup(buf);
 	MRETURN(NUMBER)
 	}
@@ -1676,7 +1747,7 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 		addch_string_buf(0);
 		recodeString(string_buf);
 		SECHO('[',']');
-                if (!subst_flag)
+		if (!subst_flag)
 			yylval.string=strdup(string_buf);
 		MRETURN(ISTRING)
 	}
@@ -1684,23 +1755,23 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 	{
 		addch_string_buf(']');
 		addch_string_buf(0);
-                string_buf_ptr--;
+		string_buf_ptr--;
 		recode_string(string_buf);
 	}
 	else if (str_return==2)
 	{
 		addch_string_buf(']');
 		addch_string_buf(0);
-                string_buf_ptr--;
+		string_buf_ptr--;
 		recode_string(string_buf);
 		insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(string_buf),0));
 	}
 	}
 
 <lexString,lexString1,lexString2,lexString3>{eol}        {
-        yyerror("newline in string");
+	yyerror("newline in string");
 	newline();
-        BEGIN(INITIAL);
+	BEGIN(INITIAL);
 	/*addch_string_buf(*yytext);*/
 	}
 
@@ -1752,14 +1823,14 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 <lexComment>{eol}             	newline(); comment_eol++;
 <lexComment>"/*"      		newpos(); comment_depth++;
 <lexComment>"*"+"/"	{
-	  	newpos();
-	  	if (--comment_depth==0)
-	  		{
-	  			BEGIN(comment_caller);
-                                /*if (comment_eol)
-                                	yy_set_bol(1);*/
-	  		}
-                }
+		newpos();
+		if (--comment_depth==0)
+			{
+				BEGIN(comment_caller);
+				/*if (comment_eol)
+					my_yy_set_bol(1);*/
+			}
+		}
 <lexComment>.			newpos();
 
 <skipState>"//"		newpos(); comment_caller=skipState; full_string_flag=1; BEGIN(lexEolComment);
@@ -1807,9 +1878,9 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 			  char *s;
 			  for( s=yytext ; *s ; s++ )
 			   {
-			    if (*s=='\n')
-			      clic_line++;
-			    addCtext(*s);
+				if (*s=='\n')
+				  clic_line++;
+				addCtext(*s);
 			   }
 			  newpos();
 			}
@@ -1849,9 +1920,9 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 			  char *s;
 			  for( s=yytext ; *s ; s++ )
 			   {
-			    if (*s=='\n')
-			      clic_line++;
-			    addCtext(*s);
+				if (*s=='\n')
+				  clic_line++;
+				addCtext(*s);
 			   }
 			  newpos();
 			}
@@ -1892,25 +1963,25 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 <keyword>memvar/{delim}	{
 	newpos_w(); MECHO;
 	BEGIN(INITIAL); MRETURN(MEMVAR)
-        }
+	}
 
 <keyword>field/{delim}	{
 	/* [^-_a-ZA_Z0-9] */
 	newpos_w();
 	MECHO;
 	BEGIN(field_words);
-        /*printf("FIELD: %s\n", yytext);*/
+	/*printf("FIELD: %s\n", yytext);*/
 	MRETURN(FIELD)
-        }
+	}
 <keyword>for/{delim}	newpos_w(); MECHO; BEGIN(for_words); MRETURN(FOR)
 <keyword>next/{delim}	newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(NEXT)
 <keyword>text{wt}*{id}{wt}*","{wt}*{id}{wt}*{eol} {
 		char *s = yytext+4, *e;
-                if (subst_flag)
-                {
-                	mecho();
-                	break;
-                }
+		if (subst_flag)
+		{
+			mecho();
+			break;
+		}
 		for(;isspace(*s); ++s)
 			;
 		for(e=s; is_id(*e);++e)
@@ -1932,14 +2003,16 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 <textState>^{wt}*endtext{wt}*{eol}	{
 	int i;
 	newline();
-        if (subst_flag)
-        {
-        	mecho();
-                break;
-        }
-
-	for(i=text.count-1; i>=0;--i)
+	if (subst_flag)
 	{
+		mecho();
+		break;
+	}
+
+	/*for(i=text.count-1; i>=0;--i)*/
+	for(i=0; i<text.count;++i)
+	{
+		clic_line --;
 		put_str(textout);
 		put_char('(');
 		put_str_free(quot_str((char*) text.items[i], 0));
@@ -1947,6 +2020,7 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 		put_char('\n');
 	}
 
+	clic_line --;
 	put_str(textend);
 	put_char('(');
 	put_char(')');
@@ -1959,11 +2033,11 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 <textState>^{noteol}*{eol}	{
 		int l=yyleng;
 		newline();
-	        if (subst_flag)
-        	{
-        		mecho();
-                	break;
-        	}
+		if (subst_flag)
+		{
+			mecho();
+			break;
+		}
 		for(l=yyleng; l>0 ; --l)
 		{
 			int s= yytext[l-1];
@@ -2090,6 +2164,10 @@ iif/{delim}	newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(IIF)
 
 nil/{delim}		newpos_w(); MECHO; MRETURN(NIL)
 
+"$*"/{delim}		newpos_w(); MECHO; MRETURN(PALL)
+"$<"/{delim}		newpos_w(); MECHO; MRETURN(PSHIFT)
+
+"_GET_"/{delim}		newpos_w(); MECHO; MRETURN(CGET)
 "pcount"{wt}*"("{wt}*")"	newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PCOUNT)
 "param"{wt}*"("	newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PARAMBEG)
 "codestr"{wt}*"("	newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(CODESTR)
@@ -2194,7 +2272,7 @@ __CLIP_MODULE__ {
 				s = (char*) malloc(l+1);
 				memcpy(s, b, l);
 				s[l] = 0;
-                                vo_printf(4, 0, "add reffunc '%s'\n", s);
+				vo_printf(4, 0, "add reffunc '%s'\n", s);
 				if (insert_Coll(&reffuncs, s))
 				{
 					for(;*s; s++)
@@ -2248,11 +2326,11 @@ __CLIP_MODULE__ {
 <includeState>{eol}     {
 			if (!startCurInclude())
 				yyterminate();
-		     }
+			 }
 <includeState>{eolcomment}{noteol}*{eol} {
 			if (!startCurInclude())
 				yyterminate();
-		     }
+			 }
 
 <includeState>"/*"      	{	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
@@ -2285,15 +2363,15 @@ __CLIP_MODULE__ {
 <ifdefState>{id}	{
 			newpos();
 			if ( findMacro(yytext)
-			    || findMacroFunc(yytext) )
+				|| findMacroFunc(yytext) )
 			  {
 			   if (curIfdef->ifdef)
-			     curIfdef->condition|=1;
+				 curIfdef->condition|=1;
 			  }
 			else
 			  {
 			   if ( !curIfdef->ifdef )
-			     curIfdef->condition|=1;
+				 curIfdef->condition|=1;
 			  }
 			}
 <ifdefState>{eol}          {
@@ -2301,18 +2379,18 @@ __CLIP_MODULE__ {
 			curIfdef->state=ifdef_caller;
 			insert_Coll(&ifdefs, curIfdef);
 			if ( curIfdef->condition)
-			    BEGIN(ifdef_caller);
+				BEGIN(ifdef_caller);
 			else
-			    BEGIN(skipState);
+				BEGIN(skipState);
 			}
 <ifdefState>{eolcomment}{noteol}*{eol} {
 			newline();
 			curIfdef->state=ifdef_caller;
 			insert_Coll(&ifdefs, curIfdef);
 			if ( curIfdef->condition)
-			    BEGIN(ifdef_caller);
+				BEGIN(ifdef_caller);
 			else
-			    BEGIN(skipState);
+				BEGIN(skipState);
 			}
 <ifdefState>"/*"      	{	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
@@ -2328,12 +2406,12 @@ __CLIP_MODULE__ {
 			  yyerror("#else without #ifdef or #ifndef");
 			else
 			  {
-			    curIfdef=(IfdefState*)ifdefs.items[ifdefs.count-1];
-			    curIfdef->elseline=clic_line;
-			    if (curIfdef->condition)
-			      BEGIN(skipState);
-			    else
-			      BEGIN(curIfdef->state);
+				curIfdef=(IfdefState*)ifdefs.items[ifdefs.count-1];
+				curIfdef->elseline=clic_line;
+				if (curIfdef->condition)
+				  BEGIN(skipState);
+				else
+				  BEGIN(curIfdef->state);
 			  }
 			}
 
@@ -2343,9 +2421,9 @@ __CLIP_MODULE__ {
 			  yyerror( "#endif without #ifdef or #ifndef");
 			else
 			  {
-			    curIfdef=(IfdefState*)ifdefs.items[ifdefs.count-1];
-			    BEGIN(curIfdef->state);
-			    atFree_Coll(&ifdefs, ifdefs.count-1);
+				curIfdef=(IfdefState*)ifdefs.items[ifdefs.count-1];
+				BEGIN(curIfdef->state);
+				atFree_Coll(&ifdefs, ifdefs.count-1);
 			  }
 			}
 
@@ -2486,15 +2564,15 @@ __CLIP_MODULE__ {
 		   }
 
 <defineArgs>{id}   { newpos();
-		     insert_Coll(& curMacroFunc->macroArgs, strdup(yytext));
+			 insert_Coll(& curMacroFunc->macroArgs, strdup(yytext));
 		   }
 
 
 <defineArgs>{wt}*")"    {
-		     int c;
-		     newpos_t();
-		     while( (c=input())==' ' || c=='\t' ); unput(c);
-		     BEGIN(defineFuncBody);
+			 int c;
+			 newpos_t();
+			 while( (c=input())==' ' || c=='\t' ); unput(c);
+			 BEGIN(defineFuncBody);
 		   }
 
 <defineArgs>[ \t,]*  newpos();
@@ -2520,7 +2598,7 @@ __CLIP_MODULE__ {
 
 <defineBody>[^;&/\r\n\032'"\[]+	 {
 		   newpos();
-                   add_string_buf(yytext, yyleng);
+		   add_string_buf(yytext, yyleng);
 		 }
 
 <defineBody>;{wt}*{eol}	 {
@@ -2530,28 +2608,28 @@ __CLIP_MODULE__ {
 <defineBody>\"   {
 		newpos();
 		addch_string_buf('"');
-                /*
+		/*
 		strLine=clic_line; strPos=clic_pos; strFile=currentFile();
 		str_caller = YYSTATE; str_return = 0; BEGIN(lexString);
-                */
+		*/
 		}
 
 <defineBody>\'	{
 		newpos();
 		addch_string_buf('\'');
-                /*
+		/*
 		strLine=clic_line; strPos=clic_pos; strFile=currentFile();
 		str_caller = YYSTATE; str_return = 0; BEGIN(lexString1);
-                */
+		*/
 		}
 
 <defineBody>\[	{
 		newpos();
 		addch_string_buf('[');
-                /*
+		/*
 		strLine=clic_line; strPos=clic_pos; strFile=currentFile();
 		str_caller = YYSTATE; str_return = 0; BEGIN(lexString2);
-                */
+		*/
 /*
 <defineBody>"/ *"      	{	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
@@ -2567,6 +2645,7 @@ __CLIP_MODULE__ {
 		   while(string_buf_ptr>string_buf && isspace(string_buf_ptr[-1]))
 			--string_buf_ptr;
 		   *string_buf_ptr=0;
+		   recode_string(string_buf);
 		   curMacro->body=strdup(string_buf);
 		   if (curMacro->xdefine)
 			insert_Coll(&xmacros,curMacro);
@@ -2582,13 +2661,13 @@ __CLIP_MODULE__ {
 		 }
 
 <defineFuncBody>{id} {
-		    int find=0,i;
-		    newpos();
-		    for(i=0;!find && i<curMacroFunc->macroArgs.count;i++)
-		      if (!strcmp(yytext, (char*)curMacroFunc->macroArgs.items[i]))
+			int find=0,i;
+			newpos();
+			for(i=0;!find && i<curMacroFunc->macroArgs.count;i++)
+			  if (!strcmp(yytext, (char*)curMacroFunc->macroArgs.items[i]))
 			{ insert_Coll(& curMacroFunc->parts,new_MacroPart(0,i)); find=1; }
-		    if (!find)
-		       insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(yytext),0));
+			if (!find)
+			   insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(yytext),0));
 		 }
 
 <defineFuncBody>;{wt}*{eol}	{
@@ -2683,7 +2762,6 @@ __CLIP_MODULE__ {
 <macroCall>\(   newpos();if (!clic_quote) clic_brack2++; addch_string_buf(*yytext);
 <macroCall>\]   newpos();if (clic_brack1&&!clic_quote) clic_brack1--; addch_string_buf(*yytext);
 <macroCall>\}   newpos();if (clic_brack3&&!clic_quote) clic_brack3--; addch_string_buf(*yytext);
-<macroCall>\\.  newpos(); add_string_buf(yytext, yyleng);
 <macroCall>{wt}*,    {
 	newpos_t();
 	if (clic_quote || clic_brack1 || clic_brack2 || clic_brack3)
@@ -2692,13 +2770,13 @@ __CLIP_MODULE__ {
 	}
 	else
 	{ /* end of argument */
-	    *string_buf_ptr=0;
-	    if ( string_buf[0] )
-	      insert_Coll(&macroArgs,strdup(string_buf));
-	    else
-	      insert_Coll(&macroArgs,0);
-	    string_buf_ptr=string_buf;
-	    BEGIN(macroDelim);
+		*string_buf_ptr=0;
+		if ( string_buf[0] )
+		  insert_Coll(&macroArgs,strdup(string_buf));
+		else
+		  insert_Coll(&macroArgs,0);
+		string_buf_ptr=string_buf;
+		BEGIN(macroDelim);
 	}
 	}
 <macroCall>{wt}*\) 	{
@@ -2712,21 +2790,21 @@ __CLIP_MODULE__ {
 	  }
 	else
 	  { /* end of macro call */
-	    int i;
-	    *string_buf_ptr=0;
-	    if ( string_buf[0] )
-	      insert_Coll(&macroArgs,strdup(string_buf));
-	    string_buf_ptr=string_buf;
-	    if (macroArgs.count != curMacroFunc->macroArgs.count)
-	      yyerror("invalid number of macro arguments (%d instead %d)",
+		int i;
+		*string_buf_ptr=0;
+		if ( string_buf[0] )
+		  insert_Coll(&macroArgs,strdup(string_buf));
+		string_buf_ptr=string_buf;
+		if (macroArgs.count != curMacroFunc->macroArgs.count)
+		  yyerror("invalid number of macro arguments (%d instead %d)",
 			macroArgs.count, curMacroFunc->macroArgs.count );
-	    else
-	     for(i=0; i<curMacroFunc->parts.count; i++)
-	     {
+		else
+		 for(i=0; i<curMacroFunc->parts.count; i++)
+		 {
 		MacroPart *mp=(MacroPart*) curMacroFunc->parts.items[i];
 		if (mp->text)
 		 {
-                 	put_mem(mp->text, mp->len);
+			put_mem(mp->text, mp->len);
 		 }
 		else
 		 { /* argument substitution */
@@ -2734,14 +2812,14 @@ __CLIP_MODULE__ {
 		   s0=(char *)macroArgs.items[ mp->argno ];
 		   if (s0)
 		   {
-                   	put_str(s0);
+			put_str(s0);
 		   }
 		 }
-	     }
+		 }
 
-	    BEGIN(macro_call_state);
-	    /*yy_set_bol(macro_call_bol);*/
-            vo_printf(6,0,"macro_call_bol = %d\n", macro_call_bol);
+		BEGIN(macro_call_state);
+		/*my_yy_set_bol(macro_call_bol);*/
+		vo_printf(6,0,"macro_call_bol = %d\n", macro_call_bol);
 
 	  }
 	}
@@ -2840,13 +2918,13 @@ __CLIP_MODULE__ {
 		CommandPart *cp;
 
 		Coll *coll=new_Coll(free,back_strsize);
-                s = marker_id(yytext);
+		s = marker_id(yytext);
 		cp = new_CommandPart(SM_enum,s);
 		cp->option = coll;
 		insertCommandList( cp);
 		sm_enum_coll = coll;
 		BEGIN(smenumState);
-                sm_enum_word = 0;
+		sm_enum_word = 0;
 		newpos();
 	}
 
@@ -2861,16 +2939,16 @@ __CLIP_MODULE__ {
 
 <smenumState>;{wt}*{eol} {
 			newline();
-		     }
+			 }
 
 <smenumState>;{wt}*{eolcomment}{noteol}*{eol} {
 			newline();
-		     }
+			 }
 
 <smenumState>{wt}*{eol} {
 			yyerror("unexpected EOL in SM_ENUM");
 			newline();
-		     }
+			 }
 
 <smenumState>"/*"      	{	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
@@ -2945,7 +3023,7 @@ __CLIP_MODULE__ {
 		{
 			/*yywarning("non-balanced ']' in #command");*/
 			optLevel=0;
-                        REJECT;
+			REJECT;
 		}
 		finaleCommandList();
 		curCommandList=curCommandPart->prevList;
@@ -3031,14 +3109,14 @@ __CLIP_MODULE__ {
 		{
 			/*yywarning("non-balanced ']' in #command");*/
 			optLevel=0;
-                        REJECT;
+			REJECT;
 		}
-                check_CommandPart(curCommandPart);
+		check_CommandPart(curCommandPart);
 		curCommandList=curCommandPart->prevList;
 		curCommandPart=curCommandPart->prev;
 	}
 
-<substState>[^< \\\t;\[\]\r\n\032_a-zA-Z."']+  	{ /* literal text */
+<substState>[^#< \\\t;\[\]\r\n\032_a-zA-Z."']+  	{ /* literal text */
 		insertCommandList( new_CommandPart(TM_literal, yytext));
 		newpos();
 	}
@@ -3236,12 +3314,12 @@ __CLIP_MODULE__ {
 		/*printf("cmsString2:%d:%s\n", yyleng, yytext);*/
 			BEGIN(cmdString);
 		}
-                newpos_t();
+		newpos_t();
 		yymore();
 	}
 
 <cmdString2>[^\"\'\`;]+ {
-                newpos_t();
+		newpos_t();
 		yymore();
 	}
 
@@ -3260,7 +3338,7 @@ __CLIP_MODULE__ {
 				break;
 			}
 		}
-                newpos_t();
+		newpos_t();
 		yymore();
 	}
 <cmdString>\{|\}	{
@@ -3278,7 +3356,7 @@ __CLIP_MODULE__ {
 				break;
 			}
 		}
-                newpos_t();
+		newpos_t();
 		yymore();
 	}
 
@@ -3298,40 +3376,40 @@ __CLIP_MODULE__ {
 				break;
 			}
 		}
-                newpos_t();
+		newpos_t();
 		yymore();
 	}
 
 <cmdString>(;{wt}*{eol})|(;{wt}*"&&"{noteol}*{eol})|(;{wt}*"//"{noteol}*{eol}) {
-                if (stringQuota==')'||stringQuota =='}'||stringQuota==']')
-                {
-                        int i;
-                        for(i=cyyleng; i<yyleng;i++)
-                        	yytext[i] = ' ';
-                	/*
+		if (stringQuota==')'||stringQuota =='}'||stringQuota==']')
+		{
+			int i;
+			for(i=cyyleng; i<yyleng;i++)
+				yytext[i] = ' ';
+			/*
 			char *s;
 			for(s=yytext+yyleng-1; *s!=';'; s--)
 				*s=' ';
 			*s=' ';
-                        */
-                }
+			*/
+		}
 		newline();
 		yymore();
 	}
 
 <cmdString2>(;{wt}*{eol})|(;{wt}*"&&"{noteol}*{eol})|(;{wt}*"//"{noteol}*{eol}) {
-                if (stringQuota2==')'||stringQuota2 =='}'||stringQuota2==']')
-                {
-                        int i;
-                        for(i=cyyleng; i<yyleng;i++)
-                        	yytext[i] = ' ';
-                        /*
+		if (stringQuota2==')'||stringQuota2 =='}'||stringQuota2==']')
+		{
+			int i;
+			for(i=cyyleng; i<yyleng;i++)
+				yytext[i] = ' ';
+			/*
 			char *s;
 			for(s=yytext+yyleng-1; *s!=';'; s--)
 				*s=' ';
 			*s=' ';
-                        */
-                }
+			*/
+		}
 		newline();
 		yymore();
 	}
@@ -3341,7 +3419,7 @@ __CLIP_MODULE__ {
 	}
 
 <cmdString,cmdString2>{eol}        {
-        yyerror("cmdstr: newline in string");
+	yyerror("cmdstr: newline in string");
 	newline();
 
 	BEGIN(INITIAL);
@@ -3365,17 +3443,17 @@ __CLIP_MODULE__ {
 	}
 
 <commandCall>;{wt}* { /* /[^ \r\n\032]  */
-        char *s;
+	char *s;
 /*        vo_printf(3, 0, "commandCall; yytext: '%s'\n", yytext);*/
 	s = yytext+yyleng-1;
 	for(; *s!=';'; s--)
 		*s=' ';
 	*s=' ';
-        s = yytext;
+	s = yytext;
 /*        vo_printf(3, 0, "commandCall; yytext: '%s'\n", s);*/
 	put_char('\n');
 /*        command_end();*/
-        /* *s='\n'; */
+	/* *s='\n'; */
 	yymore();
 }
 
@@ -3386,7 +3464,7 @@ __CLIP_MODULE__ {
 		/*if (match_translate)
 			nlflag = 0;*/
 		command_end();
-            	vo_printf(6,0, "eol command_end %s: state=%d\n", curCommand->name, YYSTATE);
+		vo_printf(6,0, "eol command_end %s: state=%d\n", curCommand->name, YYSTATE);
 	}
 
 <commandCall>.  	{
@@ -3398,7 +3476,7 @@ __CLIP_MODULE__ {
 ^{wt}*{id}/{wt}*"("	{
 	char *s;
 	int l;
-        int cw = clic_word;
+	int cw = clic_word;
 	for(s=yytext; *s==' '||*s=='\t'; ++s)
 		;
 	l=yyleng-(s-yytext);
@@ -3407,9 +3485,9 @@ __CLIP_MODULE__ {
 	if ( (curMacroFunc=findMacroFunc(s))!=0 )
 	{ /* macro function */
 		freeAll_Coll(&macroArgs);
-                macro_call_state = YYSTATE;
+		macro_call_state = YYSTATE;
 		macro_call_bol = cw?0:1;
-	    	vo_printf(6,0, "^macro func call: clic_word=%d\n", cw);
+		vo_printf(6,0, "^macro func call: clic_word=%d\n", cw);
 		BEGIN(macroCallBegin);
 	}
 	else if ( (curMacro=findMacro(s))==0  )
@@ -3427,10 +3505,10 @@ __CLIP_MODULE__ {
 			callEol=0;
 			free(callName);
 			callName=mem_dup(s, l);
-                        command_state = YYSTATE;
-                        command_next_state = keyword;
-                	vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 0;
+			command_state = YYSTATE;
+			command_next_state = keyword;
+			vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 0;
 			BEGIN(commandCall);
 		}
 	}
@@ -3438,151 +3516,175 @@ __CLIP_MODULE__ {
 	{ /* macro name */
 		put_str(curMacro->body);
 	}
-        }
+	}
 
 ^{wt}*{id}{wtnl}*"->"	{
 		int l1, l2;
-                char *s;
-                for(s=yytext; (s=strchr(s,'\n')); s++)
-                	newline();
-                l1=strspn(yytext, " \t");
-                l2=strcspn(yytext+l1, " \t;->");
-                if ( (l2==1 && !strncasecmp(yytext+l1, "M", l2))
-                     || (l2==6 && !strncasecmp(yytext+l1, "MEMVAR", l2))	)
-                {
-                	PECHO("MEMVAR->");
-                        MRETURN(MEMVARPTR)
-                }
-                if ( (l2==1 && !strncasecmp(yytext+l1, "F", l2))
-                     || (l2==6 && !strncasecmp(yytext+l1, "_FIELD", l2))
-                     || (l2==5 && !strncasecmp(yytext+l1, "FIELD", l2))
-                     )
-                {
-                	PECHO("FIELD->");
-                        MRETURN(FIELDPTR)
-                }
-                unput('>');
-                unput('-');
+		char *s;
+		for(s=yytext; (s=strchr(s,'\n')); s++)
+			newline();
+		l1=strspn(yytext, " \t");
+		l2=strcspn(yytext+l1, " \t;->");
+		if ( (l2==1 && !strncasecmp(yytext+l1, "M", l2))
+			 || (l2==6 && !strncasecmp(yytext+l1, "MEMVAR", l2))	)
+		{
+			PECHO("MEMVAR->");
+			MRETURN(MEMVARPTR)
+		}
+		if ( (l2==1 && !strncasecmp(yytext+l1, "F", l2))
+			 || (l2==6 && !strncasecmp(yytext+l1, "_FIELD", l2))
+			 || (l2==5 && !strncasecmp(yytext+l1, "FIELD", l2))
+			 )
+		{
+			PECHO("FIELD->");
+			MRETURN(FIELDPTR)
+		}
+		unput('>');
+		unput('-');
 		s = mem_Dup(yytext+l1,l2);
 		if ( (curMacro=findMacro(s))==0  )
-                {
+		{
 			yylval.string = s;
 			PECHO(yylval.string);
 			MRETURN(NAME)
 		}
-                else
-                {
+		else
+		{
 			put_str(curMacro->body);
-                	free(s);
-                        /*yy_set_bol(1);*/
-                }
+			free(s);
+			/*my_yy_set_bol(1);*/
+		}
 	}
 
 ^{wt}*{id}{wt}*[-+=/*^%$:<>!#][-+=/*^%$:<>!#]?	{
 		/* [-+/=*^%$:<>!#] */
 		int l1, l2, force_name=0, i, l3;
-                char *s, *op;
+		char *s, *op;
 		if (subst_flag!=2 && subst_flag!=0)
-                {
-                	last_ret = 0;
-                	REJECT;
-                }
+		{
+			last_ret = 0;
+			REJECT;
+		}
 
-                for(s=yytext; (s=strchr(s,'\n')); s++)
-                	newline();
-                l1=strspn(yytext, " \t\n\r");
-                l2=strcspn(yytext+l1, "- \n\t\r;=+/*^%$:<>!#[]");
-                l3=strspn(yytext+l1+l2, " \t\n\r");
+		for(s=yytext; (s=strchr(s,'\n')); s++)
+			newline();
+		l1=strspn(yytext, " \t\n\r");
+		l2=strcspn(yytext+l1, "- \n\t\r;=+/*^%$:<>!#[]");
+		l3=strspn(yytext+l1+l2, " \t\n\r");
 		s = mem_dup(yytext+l1,l2);
-                for(i=yyleng; i>0; i--)
-                	if ( !strchr("-+=/*^%$:<>!#[]", yytext[i-1] ))
-                        	break;
+		for(i=yyleng; i>0; i--)
+			if ( !strchr("-+=/*^%$:<>!#[]", yytext[i-1] ))
+				break;
 
 		op = yytext+i;
-                if ( !l3
-                	|| !strcmp(op, ":=")
-                	|| !strcmp(op, "=")
-                	|| !strcmp(op, "#")
-                	|| !strcmp(op, "$")
-                	/*|| !strcmp(op, "/")*/
-                	/*|| !strcmp(op, "*")*/
-                	|| !strcmp(op, "%")
-                	|| !strcmp(op, "^")
-                	|| !strcmp(op, "+=")
-                	|| !strcmp(op, "-=")
-                	|| !strcmp(op, "/=")
-                	|| !strcmp(op, "*=")
-                	|| !strcmp(op, "%=")
-                	|| !strcmp(op, "^=")
-                	|| !strcmp(op, "!=")
-                	|| !strcmp(op, "==")
-                	|| !strcmp(op, "<>")
-                	|| !strcmp(op, "<=")
-                	|| !strcmp(op, "=>")
-                	|| !strcmp(op, "<")
-                	|| !strcmp(op, ">")
-                	/*|| !strcmp(op, ":")*/
-                	)
-                	force_name = 1;
+		if ( !l3
+			|| !strcmp(op, ":=")
+			|| !strcmp(op, "=")
+			|| !strcmp(op, "#")
+			|| !strcmp(op, "$")
+			/*|| !strcmp(op, "/")*/
+			/*|| !strcmp(op, "*")*/
+			|| !strcmp(op, "%")
+			|| !strcmp(op, "^")
+			|| !strcmp(op, "+=")
+			|| !strcmp(op, "-=")
+			|| !strcmp(op, "/=")
+			|| !strcmp(op, "*=")
+			|| !strcmp(op, "%=")
+			|| !strcmp(op, "^=")
+			|| !strcmp(op, "!=")
+			|| !strcmp(op, "==")
+			|| !strcmp(op, "<>")
+			|| !strcmp(op, "<=")
+			|| !strcmp(op, "=>")
+			|| !strcmp(op, "<")
+			|| !strcmp(op, ">")
+			/*|| !strcmp(op, ":")*/
+			)
+			force_name = 1;
 
 
 		if ( (curMacro=findMacro(s)) )
-                {
+		{
 			put_str(curMacro->body);
 			put_char(' ');
-             		put_str(op);
-                	free(s);
-                        /*yy_set_bol(1);*/
-                }
-                else if ((curCommand=findFirst_Command(s, &commandInd)))
-                {
-            		unputstr(op);
+			put_str(op);
+			free(s);
+			/*my_yy_set_bol(1);*/
+		}
+		else if ((curCommand=findFirst_Translate(s, &commandInd)))
+		{
+			unputstr(op);
 			unput(' ');
-                	if (force_name)
-                        {
+			/*if (force_name)
+			{
 				yylval.string = s;
 				PECHO(yylval.string);
 				MRETURN(NAME)
-                        }
-                        else
-                	{
+			}
+			else*/
+			{
 				callEol=0;
 				free(callName);
 				callName=mem_dup(s, l2);
-                        	command_state = YYSTATE;
-                        	command_next_state = keyword;
+				command_state = YYSTATE;
+				command_next_state = keyword;
 				bol_translate = 1;
-                		vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        	match_translate = 0;
+				vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+				match_translate = 0;
 				BEGIN(commandCall);
-                        	free(s);
-                	}
+				free(s);
+			}
 		}
-                else
-                {
-                	if (force_name)
-                        {
-                        /*
-                        	free(s);
-                		REJECT;
-                        */
-            			unputstr(op);
+		else if ((curCommand=findFirst_Command(s, &commandInd)))
+		{
+			unputstr(op);
+			unput(' ');
+			if (force_name)
+			{
+				yylval.string = s;
+				PECHO(yylval.string);
+				MRETURN(NAME)
+			}
+			else
+			{
+				callEol=0;
+				free(callName);
+				callName=mem_dup(s, l2);
+				command_state = YYSTATE;
+				command_next_state = keyword;
+				bol_translate = 1;
+				vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+				match_translate = 0;
+				BEGIN(commandCall);
+				free(s);
+			}
+		}
+		else
+		{
+			if (force_name)
+			{
+			/*
+				free(s);
+				REJECT;
+			*/
+				unputstr(op);
 				unput(' ');
 				yylval.string = s;
 				PECHO(yylval.string);
 				MRETURN(NAME)
-                        }
-                        else
-                        {
-             			unputstr(op);
+			}
+			else
+			{
+				unputstr(op);
 				unput(' ');
 				BEGIN(keyword);
 				free(callName);
 				callName = 0;
 				unputstr(s);
-                        	free(s);
-                        }
-                }
+				free(s);
+			}
+		}
 	}
 
 ^{wt}*{id}  { /*  +[^=]  */ /* /[;\r\n \t\032] */
@@ -3612,17 +3714,17 @@ cmd_id:
 			callEol=0;
 			free(callName);
 			callName=mem_dup(s, l);
-                       	command_state = YYSTATE;
-                       	command_next_state = keyword;
+			command_state = YYSTATE;
+			command_next_state = keyword;
 			bol_translate = 1;
-               		vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 0;
+			vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 0;
 			BEGIN(commandCall);
 		}
 	}
 	else
 	{ /* macro name */
-        	put_str(curMacro->body);
+		put_str(curMacro->body);
 		/*put_char('\n');*/
 	}
 	}
@@ -3633,9 +3735,9 @@ cmd_id:
 	if ( (curMacroFunc=findMacroFunc(yytext))!=0 )
 	{ /* macro function */
 		freeAll_Coll(&macroArgs);
-                macro_call_state = YYSTATE;
+		macro_call_state = YYSTATE;
 		macro_call_bol = cw?0:1;
-	    	vo_printf(6,0, "macro func call: clic_word=%d\n", cw);
+		vo_printf(6,0, "macro func call: clic_word=%d\n", cw);
 		BEGIN(macroCallBegin);
 	}
 	else if ( (curMacro=findMacro(yytext))!=0  )
@@ -3646,17 +3748,17 @@ cmd_id:
 	{
 		callEol=0;
 		callName=mem_dup(yytext, yyleng);
-               	command_state = YYSTATE;
-               	command_next_state = YYSTATE;
+		command_state = YYSTATE;
+		command_next_state = YYSTATE;
 		bol_translate = YY_AT_BOL();
-               	vo_printf(6,0, "find_translate2 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                match_translate = 1;
+		vo_printf(6,0, "find_translate2 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+		match_translate = 1;
 		BEGIN(commandCall);
 	}
 	else
 	{
-        	/*bad_translate = 0;*/
-        	REJECT;
+		/*bad_translate = 0;*/
+		REJECT;
 	}
 	}
 
@@ -3667,7 +3769,7 @@ cmd_id:
 		int c;
 		c = input();
 		if (c==EOF || c=='\n')
-                {
+		{
 			goto cmd_id;
 		}
 		else
@@ -3680,22 +3782,22 @@ cmd_id:
 			callEol=0;
 			free(callName);
 			callName=mem_dup(yytext, yyleng);
-                       	command_state = YYSTATE;
-                       	command_next_state = YYSTATE;
+			command_state = YYSTATE;
+			command_next_state = YYSTATE;
 			bol_translate = YY_AT_BOL();
-               		vo_printf(6,0, "find_translate3 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 1;
+			vo_printf(6,0, "find_translate3 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 1;
 			BEGIN(commandCall);
 		}
-                else
-                {
-                	bad_translate = 0;
+		else
+		{
+			bad_translate = 0;
 			yylval.string=mem_Dup(yytext,yyleng);
 			newpos_w();
 			MECHO;
 			MRETURN_NAME
 			/*MRETURN(NAME)*/
-                }
+		}
 	}
 	else
 	{ /* macro name */
@@ -3708,9 +3810,9 @@ cmd_id:
 		char *s;
 		int l;
 		if (subst_flag!=2)
-                {
-                	REJECT;
-                }
+		{
+			REJECT;
+		}
 		for(s=yytext; *s==' '||*s=='\t'; ++s)
 			;
 		l=yyleng-(s-yytext);
@@ -3719,7 +3821,7 @@ cmd_id:
 		{
 			newpos_w();
 			yylval.string=mem_Dup(s,l);
-                        PECHO(yylval.string);
+			PECHO(yylval.string);
 			MRETURN(NAME)
 		}
 		else /* command name */
@@ -3727,11 +3829,11 @@ cmd_id:
 			callEol=0;
 			free(callName);
 			callName=mem_dup(s, l);
-                       	command_state = YYSTATE;
-                       	command_next_state = keyword;
+			command_state = YYSTATE;
+			command_next_state = keyword;
 			bol_translate = 1;
-               		vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 0;
+			vo_printf(6,0, "find_command %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 0;
 			BEGIN(commandCall);
 		}
 	}
@@ -3739,50 +3841,50 @@ cmd_id:
 
 [@?$!.:]+{bcid}+	{
 		if (subst_flag!=2)
-                {
-                	REJECT;
-                }
+		{
+			REJECT;
+		}
 		if ( !bad_translate && !callName && (curCommand=findFirst_Translate(yytext,&commandInd)) )
 		{
 			callEol=0;
 			free(callName);
 			callName=mem_dup(yytext, yyleng);
-                       	command_state = YYSTATE;
-                       	command_next_state = YYSTATE;
+			command_state = YYSTATE;
+			command_next_state = YYSTATE;
 			bol_translate = YY_AT_BOL();
-               		vo_printf(6,0, "find_translate4 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 1;
+			vo_printf(6,0, "find_translate4 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 1;
 			BEGIN(commandCall);
 		}
-                else
-                {
-                	/*bad_translate = 0;*/
-                	REJECT;
-                }
+		else
+		{
+			/*bad_translate = 0;*/
+			REJECT;
+		}
 	}
 
 [@?$!.:]+	{
 		if (subst_flag!=2)
-                {
-                	REJECT;
-                }
+		{
+			REJECT;
+		}
 		if ( !bad_translate && !callName && (curCommand=findFirst_Translate(yytext,&commandInd)) )
 		{
 			callEol=0;
 			free(callName);
 			callName=mem_dup(yytext, yyleng);
-                       	command_state = YYSTATE;
-                       	command_next_state = YYSTATE;
+			command_state = YYSTATE;
+			command_next_state = YYSTATE;
 			bol_translate = YY_AT_BOL();
-               		vo_printf(6,0, "find_translate5 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
-                        match_translate = 1;
+			vo_printf(6,0, "find_translate5 %s state=%d next=%d\n", curCommand->name, command_state, command_next_state);
+			match_translate = 1;
 			BEGIN(commandCall);
 		}
-                else
-                {
-                	/*bad_translate = 0;*/
-                	REJECT;
-                }
+		else
+		{
+			/*bad_translate = 0;*/
+			REJECT;
+		}
 	}
 
 {wt}+  { newpos_t();
@@ -3804,39 +3906,39 @@ cmd_id:
 	clic_eof:
 			if ( includes.count<2 )
 			  {
-			     if (ifdefs.count>0)
+				 if (ifdefs.count>0)
 				yyerror("#ifdef or #ifndef without #endif");
 
-			     if ( YYSTATE==lexString|| YYSTATE==lexString1
+				 if ( YYSTATE==lexString|| YYSTATE==lexString1
 				  || YYSTATE==lexString2 || YYSTATE==lexString3 ||
 				  (YYSTATE==cmdString && (stringQuota=='\''||stringQuota=='"'||stringQuota=='`') )
 				)
 				  yyerror("unterminated string constant (possible begin at line %d pos %d file '%s')"
 					, strLine, strPos, fileName(strFile));
-			     /* { ([ */
-			     else if (  YYSTATE==cmdString && (stringQuota==']'||stringQuota=='}'||stringQuota==')') )
+				 /* { ([ */
+				 else if (  YYSTATE==cmdString && (stringQuota==']'||stringQuota=='}'||stringQuota==')') )
 				  yyerror("unmatched bracket '%c' (possible begin at line %d pos %d file '%s')",
 					stringQuota, strLine, strPos, fileName(strFile));
-			     else if ( YYSTATE==lexComment)
+				 else if ( YYSTATE==lexComment)
 				  yyerror("unclosed comment (possible begin at line %d pos %d file '%s')",
 					commentLine, commentPos, fileName(commentFile));
-			     else if ( YYSTATE==textState )
+				 else if ( YYSTATE==textState )
 				yyerror("no ENDTEXT");
-			     eof_checks();
-			     yyterminate();
+				 eof_checks();
+				 yyterminate();
 			  }
 			else
 			  {
-			     int last=includes.count-1;
-			     curInclude=(IncludeFile*)includes.items[last];
-			     clic_line=curInclude->line+1;
-			     fclose(yyin);
-			     pop_charset();
-			     yy_switch_to_buffer( curInclude->buf);
-			     atFree_Coll(&includes,last);
-			     insert_Coll(&fileList,strdup(((IncludeFile*)includes.items[last-1])->name));
+				 int last=includes.count-1;
+				 curInclude=(IncludeFile*)includes.items[last];
+				 clic_line=curInclude->line+1;
+				 fclose(yyin);
+				 pop_charset();
+				 yy_switch_to_buffer( curInclude->buf);
+				 atFree_Coll(&includes,last);
+				 insert_Coll(&fileList,strdup(((IncludeFile*)includes.items[last-1])->name));
 			  }
-		     }
+			 }
 
 ;	put_char('\n');  newpos();
 
@@ -3864,8 +3966,8 @@ cmd_id:
 
 \[      {
 		newpos_w();
-                if (subst_flag==1)
-                	goto str;
+		if (subst_flag==1)
+			goto str;
 		switch(last_ret)
 		{
 		case ']':
@@ -3885,17 +3987,17 @@ cmd_id:
 		case NIL:
 			MECHO;
 			MRETURN('[');
-                        break;
+			break;
 		default:
-                 str:
+		 str:
 			string_buf_ptr = string_buf;
 			str_caller = YYSTATE;
 			strLine=clic_line; strPos=clic_pos; strFile=currentFile();
 			str_return = 1;
-                        /*printf("BEGIN(lexString2)\n");*/
+			/*printf("BEGIN(lexString2)\n");*/
 			BEGIN(lexString2);
-                	break;
-                }
+			break;
+		}
 	}
 
 .	newpos_w(); MECHO; MRETURN(*yytext)
@@ -3911,28 +4013,28 @@ cmd_id:
 static void
 newline(void)
 {
-        cyyleng = yyleng;
+	cyyleng = yyleng;
 	cl_line=clic_line;
 	cl_pos=clic_pos;
 	clic_pos=1;
 	clic_word=0;
 
 	if (subst_flag)
-        	return;
-	
+		return;
+
 	clic_line++;
 	corr_line--;
-	
+
 	if (corr_line<0)
 		corr_line=0;
-	
+
 	all_lines++;
 }
 
 static void
 newpos(void)
 {
-        cyyleng = yyleng;
+	cyyleng = yyleng;
 	clic_pos+=yyleng;
 	cl_pos=clic_pos;
 	cl_line=clic_line;
@@ -3941,7 +4043,7 @@ newpos(void)
 static void
 newpos_w(void)
 {
-        cyyleng = yyleng;
+	cyyleng = yyleng;
 	clic_pos+=yyleng;
 	clic_word++;
 	cl_pos=clic_pos;
@@ -3953,7 +4055,7 @@ newpos_t(void)
 {
 	char *s;
 	int i;
-        cyyleng = yyleng;
+	cyyleng = yyleng;
 	for(s=yytext,i=0;i<yyleng;i++,s++)
 		if (*s=='\t')
 			clic_pos=(((clic_pos-1)/8)+1)*8+1;
@@ -3966,7 +4068,7 @@ newpos_wt(int l)
 {
 	char *s;
 	int i;
-        cyyleng = yyleng;
+	cyyleng = yyleng;
 	for(s=yytext,i=0;i<l;i++,s++)
 		if (*s=='\t')
 			clic_pos=(((clic_pos-1)/8)+1)*8+1;
@@ -4024,7 +4126,7 @@ init_lex()
 	}
 
 	init_Coll(&unput_strings, (void(*)(void*)) delete_StrBuf, 0);
-        unput_buffer.ptr = unput_buffer.buf;
+	unput_buffer.ptr = unput_buffer.buf;
 	subst_count = 0;
 }
 
@@ -4072,6 +4174,7 @@ clear_lex(void)
 	freeAll_Coll(&xmacros);
 	freeAll_Coll(&macroFuncs);
 	freeAll_Coll(&xmacroFuncs);
+	freeAll_Coll(&macroCommands);
 	freeAll_Coll(&macroArgs);
 	freeAll_Coll(&fileList);
 	freeAll_Coll(&charsets);
@@ -4181,7 +4284,10 @@ finale_MacroFunc(MacroFunc *self)
 	{
 		MacroPart *mp=(MacroPart*)self->parts.items[i];
 		if (mp->text)
+		{
+			recode_string(mp->text);
 			le+=strlen(mp->text);
+		}
 		else
 			le+=strlen((char*)self->macroArgs.items[mp->argno]);
 	}
@@ -4402,21 +4508,21 @@ static char *
 strdup_bs(const char *s)
 {
 	int l;
-        char *r, *ret;
+	char *r, *ret;
 
-        l = strlen(s);
-        ret = r = (char*) malloc(l+1);
+	l = strlen(s);
+	ret = r = (char*) malloc(l+1);
 
 
 	for(; *s; s++,r++)
-        {
-        	if (*s=='\\' && s[1])
-                {
-                	s++;
-                }
+	{
+		if (*s=='\\' && s[1])
+		{
+			s++;
+		}
 		*r = *s;
-        }
-        *r = 0;
+	}
+	*r = 0;
 
 	return ret;
 }
@@ -4484,7 +4590,7 @@ findFirst_Command(const char *name, int *ind)
 	Command buf, *cp;
 
 	if (subst_flag==1)
-        	return 0;
+		return 0;
 
 	buf.name=(char*)name;
 	buf.isX=1;
@@ -4521,17 +4627,17 @@ again:
 	buf.isX=1;
 	buf.isAX=0;
 	if ( !compare_Command(&buf, cp ))
-        {
-        	if (match_translate && !cp->isTranslate)
-                	goto again;
+	{
+		if (match_translate && !cp->isTranslate)
+			goto again;
 		return cp;
 	}
 	buf.isX=1;
 	buf.isAX=1;
 	if ( !compare_Command(&buf, cp ))
-        {
-        	if (match_translate && !cp->isTranslate)
-                	goto again;
+	{
+		if (match_translate && !cp->isTranslate)
+			goto again;
 		return cp;
 	}
 	return NULL;
@@ -4543,7 +4649,7 @@ findFirst_Translate(const char *name, int *ind)
 	Command buf, *cp;
 
 	if (subst_flag==1)
-        	return 0;
+		return 0;
 
 	buf.name=(char*)name;
 	buf.isX=1;
@@ -4667,7 +4773,7 @@ static void
 cadd_coll(Coll **cpp, char *text)
 {
 	if (!*cpp)
-        	*cpp = new_Coll(0,0);
+		*cpp = new_Coll(0,0);
 	append_Coll(*cpp, text);
 }
 
@@ -4675,14 +4781,14 @@ static Coll *
 clone_coll(Coll *cp)
 {
 	Coll *ret;
-        int i;
+	int i;
 
 	if (!cp)
-        	return 0;
+		return 0;
 
 	ret = new_Coll(0, 0);
-        for(i=0; i<cp->count; i++)
-        	append_Coll(ret, cp->items[i]);
+	for(i=0; i<cp->count; i++)
+		append_Coll(ret, cp->items[i]);
 
 	return ret;
 }
@@ -4700,43 +4806,43 @@ get_list_delim(Coll *coll, int beg, int is_opt, Coll **del)
 		{
 		case SM_word:
 		case SM_literal:
-                	if (!hard)
-                        {
+			if (!hard)
+			{
 				cadd_coll(del, cpp->text);
-                                hard++;
+				hard++;
 			}
 			break;
 		case SM_enum:
-                	if (!hard)
-                        {
-                        	int i;
+			if (!hard)
+			{
+				int i;
 				for(i=0 ; i<cpp->option->count/*-1*/ ; i++)
 					cadd_coll(del, cpp->option->items[i]);
-                                hard++;
+				hard++;
 			}
-                	break;
+			break;
 		case SM_option:
 			get_list_delim(cpp->option, 0, 1, del);
 			break;
 		default:
-                	break;
+			break;
 		}
 	}
 
 	/* only for options: collect all previous options delimiters */
-        for( j=beg-1; is_opt && j>=0; j-- )
-        {
+	for( j=beg-1; is_opt && j>=0; j-- )
+	{
 		CommandPart *cpp=(CommandPart*)coll->items[j];
 
 		switch(cpp->type)
 		{
-                default:
-                	return;
+		default:
+			return;
 		case SM_option:
 			get_list_delim(cpp->option, 0, 1, del);
 			break;
 		}
-        }
+	}
 
 }
 
@@ -4793,13 +4899,14 @@ set_list_delim(Coll *coll, Coll *delim, int is_opt)
 					{
 					case SM_word:
 					case SM_literal:
-                                        	cadd_coll(&del, cpp->text);
-                                                hard++;
+						cadd_coll(&del, cpp->text);
+						hard++;
 						break;
 					case SM_option:
 						get_list_delim(cpp->option, 0, 1, &del);
 						break;
 					default:
+						break;
 					}
 				}
 				cp->delim=del;
@@ -4809,6 +4916,7 @@ set_list_delim(Coll *coll, Coll *delim, int is_opt)
 			cp->delim=clone_coll(delim);
 			break;
 		default:
+			break;
 		}
 	}
 }
@@ -4992,22 +5100,22 @@ printCommandPart(CommandPart* cp, int level)
 		break;
 	}
 	if (cp->isWord)
-        {
+	{
 		vo_printf(0,0,"\n");
 		vo_printf(0,level+1,"isWord='%d'", cp->isWord);
 	}
 	if (cp->isLast)
-        {
+	{
 		vo_printf(0,0,"\n");
 		vo_printf(0,level+1, "isLast=1 ");
 	}
 	if (cp->delim)
-        {
-        	int i;
+	{
+		int i;
 		vo_printf(0,0,"\n");
 		vo_printf(0, level+1,"%d delims:", cp->delim->count);
-                for (i=0; i<cp->delim->count; i++)
-                	vo_printf(0, 0, " '%s'", (char*)cp->delim->items[i]);
+		for (i=0; i<cp->delim->count; i++)
+			vo_printf(0, 0, " '%s'", (char*)cp->delim->items[i]);
 	}
 	vo_printf(0,0,"\n");
 }
@@ -5083,11 +5191,11 @@ skip_to_space(int *pos, char *initial, int ilen)
 	int i;
 
 	for(i=0; i<ilen; i++)
-        {
-        	if (yytext[*pos] != initial[i])
-                	break;
-        	++(*pos);
-        }
+	{
+		if (yytext[*pos] != initial[i])
+			break;
+		++(*pos);
+	}
 
 	for(;;)
 		switch(yytext[*pos])
@@ -5141,10 +5249,10 @@ skip_brack(int *pos, int l, int r, int first)
 				return;
 			continue;
 		}
-                if (c=='\n'||c=='\r')
-                {
-                	(*pos)--;
-                	return;
+		if (c=='\n'||c=='\r')
+		{
+			(*pos)--;
+			return;
 		}
 	}
 	if (*pos==yyleng)
@@ -5157,8 +5265,8 @@ skip_string(int *pos, int quota)
 	while ( *pos< yyleng && (yytext[*pos]!=quota ||
 		(*pos>2 && yytext[(*pos)-1]=='\\' && yytext[(*pos)-2]=='&') ) )
 	{
-        	if ( yytext[(*pos)+1] == '\n' )
-                	return;
+		if ( yytext[(*pos)+1] == '\n' )
+			return;
 		++(*pos);
 	}
 }
@@ -5209,7 +5317,7 @@ is_op(int ch)
 	switch(ch)
 	{
 	case '.':
-        case ':':
+	case ':':
 	case '!':
 	case '<':
 	case '>':
@@ -5249,9 +5357,9 @@ static int
 is_pat(int ch)
 {
 	if (ch=='.' || ch=='*' || ch=='?')
-        	return 1;
+		return 1;
 	else
-        	return 0;
+		return 0;
 }
 
 static int
@@ -5260,14 +5368,14 @@ is_expr(int plch, int lch, int rch, int nch, int pplch, int nnch)
 	if ( lch == '.' && is_lconst(plch) && pplch=='.' && is_gr(rch) )
 		return 0;
 	if ( rch == '.' && toupper(lch)=='M' && !is_id(plch))
-        	return 1;
+		return 1;
 	if ( rch == '.' && is_lconst(nch) && nnch=='.' && is_id(lch) )
 		return 0;
 	if ( is_pat(lch) && is_pat(rch))
-        	return 1;
+		return 1;
 	if ( (is_op(lch) && (is_gr(rch)||rch==':'))
 		|| (is_id(lch) && (rch=='('||rch=='['))
-                || (lch==':' && (rch==':'||rch=='='))
+		|| (lch==':' && (rch==':'||rch=='='))
 		|| (lch=='.' && rch=='.'  )
 		|| (lch=='-' && rch=='>'  )
 		|| (lch=='<' && rch=='>'  )
@@ -5285,24 +5393,24 @@ delim_char(Coll *delims, int ch, int pos)
 	int i;
 
 	if (!delims)
-        	return 0;
+		return 0;
 
 	for(i=0; i<delims->count; i++)
-        {
-                char *s = (char*) delims->items[i];
+	{
+		char *s = (char*) delims->items[i];
 #if 1
-        	if (s[0]==ch)
-                {
-                	int l = strlen(s);
-                        int yl = yyleng-pos;
-                        if (l<=yl && !memcmp(s, yytext+pos, l))
-                        	return 1;
-                }
+		if (s[0]==ch)
+		{
+			int l = strlen(s);
+			int yl = yyleng-pos;
+			if (l<=yl && !memcmp(s, yytext+pos, l))
+				return 1;
+		}
 #else
-        	if (s[1]==0 && s[0]==ch)
-        		return 1;
+		if (s[1]==0 && s[0]==ch)
+			return 1;
 #endif
-        }
+	}
 
 	return 0;
 }
@@ -5319,22 +5427,22 @@ skip_norm(int *pos,int extend, Coll *delims)
 		switch(ch)
 		{
 		case '(': /* ) */
-                	if (delim_char(delims, ch, *pos))
-                        	return;
+			if (delim_char(delims, ch, *pos))
+				return;
 			++(*pos);
 			skip_brack(pos,'(',')',first);
 			ch=')';
 			break;
 		case '{': /* } */
-                	if (delim_char(delims, ch, *pos))
-                        	return;
+			if (delim_char(delims, ch, *pos))
+				return;
 			++(*pos);
 			skip_brack(pos,'{','}',first);
 			ch='}';
 			break;
 		case '[': /* ] */
-                	if (delim_char(delims, ch, *pos))
-                        	return;
+			if (delim_char(delims, ch, *pos))
+				return;
 			++(*pos);
 			skip_brack(pos,'[',']',first);
 			ch=']';
@@ -5349,68 +5457,68 @@ skip_norm(int *pos,int extend, Coll *delims)
 				while( *pos<yyleng && ( yytext[*pos]==' ' || yytext[*pos]=='\t' ) )
 					++(*pos);
 
-                case ':':
-                case '=':
-                case '+':
-                case '-':
-                case '.':
-                case '*':
-                case '/':
-                case '<':
-                case '>':
-                case '%':
-                case '$':
-                case '&':
-                case '|':
+		case ':':
+		case '=':
+		case '+':
+		case '-':
+		case '.':
+		case '*':
+		case '/':
+		case '<':
+		case '>':
+		case '%':
+		case '$':
+		case '&':
+		case '|':
 			{
 				if (first && (*pos<(yyleng-2)) && yytext[*pos]==':' && yytext[(*pos)+1]=='=')
-                                {
-                                	return;
-                                }
+				{
+					return;
+				}
 
-                        	if ( extend && (ch=='.'||ch=='/'||ch==':'||ch=='&') )
-                        		break;
+				if ( extend && (ch=='.'||ch=='/'||ch==':'||ch=='&') )
+					break;
 				if (lastch==']' && yytext[*pos]=='[')
-                                	continue;
+					continue;
 				if (delims)
 				{
-                                	int j;
-                                        int beg = *pos;
-                                        char *s = yytext+beg;
-                                	
-                                	for(j=0; j<delims->count; j++)
-                                        {
-                                        int pl, len, found = 0;
-                                        char *delim = (char*) delims->items[j];
-                                        pl = strlen(delim);
-                                        len = yyleng-beg;
-                                        if (pl>len)
-                                        	break;
+					int j;
+					int beg = *pos;
+					char *s = yytext+beg;
+
+					for(j=0; j<delims->count; j++)
+					{
+					int pl, len, found = 0;
+					char *delim = (char*) delims->items[j];
+					pl = strlen(delim);
+					len = yyleng-beg;
+					if (pl>len)
+						break;
 					if (pl <= len && !strncasecmp(s, delim, pl))
 					{
-                                		if (len==pl || !isalnum(s[pl]) || !isalnum(delim[0]))
+						if (len==pl || !isalnum(s[pl]) || !isalnum(delim[0]))
 							found=1;
 					}
-                                	else if (pl>4) /* partial match! */
-                                	{
-                                		int pp = beg;
-                                        	int l1;
-                                        	skip_to_space(&pp,delim,pl);
-                                        	l1 = pp-beg;
-                                        	if (l1 >= 4 && !strncasecmp(s, delim, l1))
-                                        	{
-                                                	found = 1;
-                                                	pl = l1;
-                                                	break;
-                                        	}
-                                	}
-                                        if (found)
+					else if (pl>4) /* partial match! */
 					{
-                                        	v_printf(4, "skip_norm: match delim '%s', return at '%s'\n",
-                                                	delim, yytext+*pos);
+						int pp = beg;
+						int l1;
+						skip_to_space(&pp,delim,pl);
+						l1 = pp-beg;
+						if (l1 >= 4 && !strncasecmp(s, delim, l1))
+						{
+							found = 1;
+							pl = l1;
+							break;
+						}
+					}
+					if (found)
+					{
+						v_printf(4, "skip_norm: match delim '%s', return at '%s'\n",
+							delim, yytext+*pos);
 						return;
 					}
-                                        }
+					}
 				}
 
 				ch = yytext[*pos];
@@ -5423,15 +5531,15 @@ skip_norm(int *pos,int extend, Coll *delims)
 				else
 					nnch = 0;
 				if ( *pos>0 && ( bch=='&' && is_id(yytext[*pos-1]) ))
-                                {
-                                }
+				{
+				}
 				else if ( lastch && !is_expr(plastch, lastch, ch, nch, pplastch, nnch) )
 				{
 					*pos=b;
 					return;
 				}
-                                if (bch==' '||bch=='\t')
-                                {
+				if (bch==' '||bch=='\t')
+				{
 					--(*pos);
 					continue;
 				}
@@ -5449,7 +5557,7 @@ skip_norm(int *pos,int extend, Coll *delims)
 			done=1;
 			break;
 		}
-                pplastch=plastch;
+		pplastch=plastch;
 		plastch=lastch;
 		lastch=ch;
 		if (done)
@@ -5579,7 +5687,7 @@ matchCommandPart(CommandPart *p, int *pos)
 			if (bp->delim)
 			{
 				int pbeg = *pos;
-                                char *m = match_delim(bp, yytext+pbeg);
+				char *m = match_delim(bp, yytext+pbeg);
 				if (m)
 				{
 					vo_printf (3,0,"match delim '%s' (at '%s')\n", m, yytext+*pos);
@@ -5654,7 +5762,7 @@ matchCommandPart(CommandPart *p, int *pos)
 				default:
 					goto end;
 				}
-		    end:
+			end:
 			vo_printf(3,0,"matched SM_patt: '%.*s'\n", e-*pos,yytext+*pos);
 			insert_Coll(&commandArgs, new_CommandArg(p, yytext+*pos, e-*pos));
 			*pos=yyleng;
@@ -5676,8 +5784,8 @@ matchCommandPart(CommandPart *p, int *pos)
 				if ( toupper(*s)!=toupper(*t) )
 				{
 					r=0;
-                                        s=yytext+*pos;
-                                        t=p->text;
+					s=yytext+*pos;
+					t=p->text;
 					break;
 				}
 #ifdef FOUR_BYTE
@@ -5749,19 +5857,19 @@ matchCommandPart(CommandPart *p, int *pos)
 			if (beg==yyleng)
 				return 0;
 
-                        #if 0
+			#if 0
 			if (p->delim && p->delim->count)
-                        {
-                        	int j;
+			{
+				int j;
 				int pbeg;
 				int l;
 				for(pbeg=beg; pbeg<yyleng;++pbeg)
-                                {
-                        		for (j=0; j<p->delim->count; j++)
-                        		{
-                        		char *delim = (char*) p->delim->items[j];
-                                        if (!delim)
-                                        	continue;
+				{
+					for (j=0; j<p->delim->count; j++)
+					{
+					char *delim = (char*) p->delim->items[j];
+					if (!delim)
+						continue;
 					l = strlen(delim);
 					if ( l==1  && !is_id(delim[0]) && delim[0]!=','
 						&& (!strncasecmp(yytext+pbeg,delim,l) ))
@@ -5774,9 +5882,9 @@ matchCommandPart(CommandPart *p, int *pos)
 					}
 
 					}
-                        	}
-                        }
-                        #endif
+				}
+			}
+			#endif
 
 			skip_norm(pos, p->type==SM_extend, p->delim);
 			insert_Coll(&commandArgs, new_CommandArg(p,
@@ -5794,16 +5902,16 @@ matchCommandPart(CommandPart *p, int *pos)
 				int beg =*pos;
 				int found=0;
 				/*int pbeg;*/
-                                int single=0;
-                                char *delim = (char *)p->delim->items[0];
-                                int pl = strlen(delim);
-                                if ( !(p->delim->count == 1 && pl==1 && !is_id(delim[0]))  )
-                                /*
-                                if ( p->delim->count == 1 && pl==1 && !is_id(delim[0]) )
-                                	single = 1;
-                                if ( (p->delim->count != 1 || (pl==1 && !is_id(delim[0])))  )
-                                */
-                                {
+				int single=0;
+				char *delim = (char *)p->delim->items[0];
+				int pl = strlen(delim);
+				if ( !(p->delim->count == 1 && pl==1 && !is_id(delim[0]))  )
+				/*
+				if ( p->delim->count == 1 && pl==1 && !is_id(delim[0]) )
+					single = 1;
+				if ( (p->delim->count != 1 || (pl==1 && !is_id(delim[0])))  )
+				*/
+				{
 				for(;*pos<yyleng;)
 				{
 					skip_space(pos);
@@ -5812,28 +5920,28 @@ matchCommandPart(CommandPart *p, int *pos)
 					if( *pos>beg  )
 					{
 						int ech;
-                        			int j;
+						int j;
 						ech = yytext[*pos];
 
-                                		for(j = 0; j<p->delim->count; j++)
-                                		{
+						for(j = 0; j<p->delim->count; j++)
+						{
 							delim = (char*) p->delim->items[j];
 							pl = strlen(delim);
 
 							vo_printf(3,0,"try delim '%s' at '%s'\n", delim, yytext+beg);
 							if ( (pl!=1 || is_id(delim[0]))
 							   && (pl<=((*pos)-beg) && !strncasecmp(yytext+beg,delim,pl) && !is_id(yytext[beg+pl]) /*&& (!ech||isspace(ech))*/ )
-                                                           )
+							   )
 							{
 								found=1;
 								*pos = beg;
 								vo_printf (3,0,"SM_list match  delim '%s', ech='%c', rest='%s'\n", delim, ech, yytext+*pos);
 								goto br;
 							}
-                                                }
+						}
 						insert_Coll(ap->list, mem_dup(yytext+beg, *pos-beg));
 						vo_printf (3,0,"SM_list match norm1 '%.*s'\n", *pos-beg, yytext+beg);
-                                                found++;
+						found++;
 					}
 					skip_space(pos);
 					if (yytext[*pos]==',')
@@ -5855,13 +5963,13 @@ matchCommandPart(CommandPart *p, int *pos)
 						++(*pos);
 					}
 					if (beg==*pos)
-                                        	break;
+						break;
 				}
-                                }
+				}
 				else
-                                #if 1
-                                	goto nodelim;
-                                #else
+				#if 1
+					goto nodelim;
+				#else
 				{
 				for(pbeg=beg; pbeg<yyleng;++pbeg)
 					if (!strncasecmp(yytext+pbeg,delim,pl))
@@ -5874,7 +5982,7 @@ matchCommandPart(CommandPart *p, int *pos)
 						break;
 					}
 				}
-                                #endif
+				#endif
 
 				if (!found)
 				{
@@ -5884,7 +5992,8 @@ matchCommandPart(CommandPart *p, int *pos)
 				}
 				/*else
 					*pos=beg;*/
-			    br:
+				br:
+				;
 			}
 			else
 			{
@@ -5925,8 +6034,8 @@ matchCommandPart(CommandPart *p, int *pos)
 					++(*pos);
 				}
 #if 0
-                                else
-                                	break;
+				else
+					break;
 #else
 				else if (i && ap->listcomma)
 				{
@@ -5964,50 +6073,51 @@ matchCommandPart(CommandPart *p, int *pos)
 			{
 				char *op = (char*) p->option->items[i];
 				l = strlen(op);
-                                
+
 				vo_printf (4,0,"try match SM_enum option: %s\n", op);
 				if (l==1 && *op=='&')
 				{
 					if (*s=='&')
 					{
-                                		int pp = beg+1;
-                                        	skip_norm(&pp, 0, p->delim);
-                                                l = pp - beg;
+						int pp = beg+1;
+						skip_norm(&pp, 0, p->delim);
+						l = pp - beg;
 						found=1;
 						break;
 					}
 				}
 				else if (l <= len && !strncasecmp(s, op, l))
 				{
-                                	if (len==l || !isalnum(s[l]))
-                                        {
+					if (len==l || !isalnum(s[l]))
+					{
 						found=1;
 						break;
-                                        }
+					}
 				}
-                                else if (l>4) /* partial match! */
-                                {
-                                	int pp = beg;
-                                        int l1;
-                                        skip_to_space(&pp,op,l);
-                                        l1 = pp-beg;
-                                        if (l1 >= 4 && !strncasecmp(s, op, l1))
-                                        {
-                                                found = 1;
-                                                l = l1;
-                                                break;
-                                        }
-                                }
+				else if (l>4) /* partial match! */
+				{
+					int pp = beg;
+					int l1;
+					skip_to_space(&pp,op,l);
+					l1 = pp-beg;
+					if (l1 >= 4 && !strncasecmp(s, op, l1))
+					{
+						found = 1;
+						l = l1;
+						break;
+					}
+				}
 			}
 			if (!found)
 				return 0;
 			else
 				vo_printf(3,0,"matched '%.*s'\n", l, s);
 			insert_Coll(&commandArgs, newLog_CommandArg(p,s,l));
-                        *pos += l;
+			*pos += l;
 		}
 		break;
 	default:
+		break;
 	}
 	return 1;
 }
@@ -6038,7 +6148,7 @@ matchCurCommand(int *pos)
 			goto next;
 
 		if (!curCommand->isTranslate)
-                {
+		{
 			for(i=*pos; i<yyleng; i++)
 				switch ( yytext[i] )
 				{
@@ -6056,7 +6166,8 @@ matchCurCommand(int *pos)
 				}
 		}
 		return 1;
-	     next:
+		 next:
+		;
 	} while ( (curCommand=findNext_Command(curCommand->name, &commandInd))!=NULL );
 	*pos=0;
 	curCommand=savecp;
@@ -6071,6 +6182,7 @@ findCommandPart(CommandPart *pp, const char *text)
 		case SM_word:
 			return 0;
 		default:
+			break;
 		}
 		if (!strcasecmp(text, pp->text))
 		{
@@ -6179,6 +6291,7 @@ testAllDefs(Coll *coll, int beg, int parno)
 				if (!findArg(cp,&Beg,0,parno))
 					return 0;
 			default:
+				break;
 		}
 	}
 	return 1;
@@ -6188,37 +6301,37 @@ static void
 check_CommandPart(CommandPart*cp)
 {
 	if (!cp)
-        	return;
+		return;
 	switch (cp->type)
-        {
-        case TM_option:
-        	{
-                	Coll *option = cp->option;
-                        int i;
-                        int good=0;
+	{
+	case TM_option:
+		{
+			Coll *option = cp->option;
+			int i;
+			int good=0;
 
-                        for(i=0; option && i<option->count; i++)
-                        {
-                        	CommandPart *cpp;
-                                cpp = (CommandPart*) option->items[i];
-                                switch(cpp->type)
-                                {
+			for(i=0; option && i<option->count; i++)
+			{
+				CommandPart *cpp;
+				cpp = (CommandPart*) option->items[i];
+				switch(cpp->type)
+				{
 					case TM_literal:
 					case TM_word:
-                                		break;
-                                	default:
-                                        	good++;
-                                                break;
-                                }
-                        }
-                        if (!good)
-                               	yyerror("bad command definition: OPTION have only literals");
+						break;
+					default:
+						good++;
+						break;
+				}
+			}
+			if (!good)
+				yyerror("bad command definition: OPTION have only literals");
 
-                }
-        	break;
-        default:
-        	break;
-        }
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 static void
@@ -6251,7 +6364,7 @@ quot_str(char *str, int simple)
 	char *s, *d, *e;
 
 	l = strlen(str);
-        e = str + l;
+	e = str + l;
 	r = choose_quot(str, &lq, &rq, simple);
 	if (!r)
 	{
@@ -6270,18 +6383,18 @@ quot_str(char *str, int simple)
 		}
 	}
 
-        e = str + l - 1;
+	e = str + l - 1;
 	for(s=str, nq=0; *s; s++)
 	{
 		switch(*s)
 		{
-                case '&':
-                	if (s[1]=='\\' && s+2 < e)
-                        {
-                        	s++;
-                                s++;
-                        }
-                        break;
+		case '&':
+			if (s[1]=='\\' && s+2 < e)
+			{
+				s++;
+				s++;
+			}
+			break;
 		case '\'':
 		case '"':
 		case '`':
@@ -6314,16 +6427,16 @@ quot_str(char *str, int simple)
 	{
 		switch(str[i])
 		{
-                case '&':
-                	if (str[i+1]=='\\' && str+i+2 < e)
-                        {
-                        	*d++ = str[i];
-                        	*d++ = str[i+1];
-                                *d = str[i+2];
-                                i += 2;
-                                continue;
-                        }
-                        break;
+		case '&':
+			if (str[i+1]=='\\' && str+i+2 < e)
+			{
+				*d++ = str[i];
+				*d++ = str[i+1];
+				*d = str[i+2];
+				i += 2;
+				continue;
+			}
+			break;
 		case '\'':
 		case '"':
 		case '`':
@@ -6471,16 +6584,16 @@ substCommandPartList(Coll *coll, int *beg, int reverse, int parno)
 				break;
 			if (ap->text)
 			{
-                                int l = strlen(ap->text);
+				int l = strlen(ap->text);
 				if (ap->text[0]=='&' && is_ident(ap->text+1))
 				{
 					put_mem(ap->text+1, l-1);
 				}
-                                else if ( l>3 && ap->text[0]=='&'
-                                	&&  ap->text[1]=='(' && ap->text[l-1]==')' )
+				else if ( l>3 && ap->text[0]=='&'
+					&&  ap->text[1]=='(' && ap->text[l-1]==')' )
 				{
-                                        put_mem(ap->text+2, l-3);
-                                }
+					put_mem(ap->text+2, l-3);
+				}
 				else
 				{
 					put_str_free(quot_str(ap->text,1));
@@ -6559,13 +6672,13 @@ substCommandPartList(Coll *coll, int *beg, int reverse, int parno)
 				for(i = 0; i < ap->list->count ;i++)
 				{
 					char *text=(char*)ap->list->items[i];
-					
-					
+
+
 					if (*text=='(')
 						isExpr=1;
 					else
 						isExpr=0;
-					
+
 					if (i > 0)
 					{
 						if (ap->listcomma)
@@ -6573,7 +6686,7 @@ substCommandPartList(Coll *coll, int *beg, int reverse, int parno)
 						else
 							put_char(' ');
 					}
-					
+
 					if (isExpr||!strcmp(text,","))
 						put_str(text);
 					else
@@ -6632,7 +6745,7 @@ substCommandPartList(Coll *coll, int *beg, int reverse, int parno)
 			else if (ap->list)
 			{
 				int i;
-				for(i=ap->list->count-1; i>=0 ;i--)
+				for(i=0;i<ap->list->count;i++)
 				{
 					char *text = (char*)ap->list->items[i];
 					if (!strcmp(text, ","))
@@ -6710,16 +6823,16 @@ substCommandPartList(Coll *coll, int *beg, int reverse, int parno)
 				}
 				else
 				{
-                                	int kk, bb=b;
+					int kk, bb=b;
 					for(kk=0; testAllDefs(cp->option,b,jj); kk++)
 					{
 						vo_printf(4, 0, "TM_option: %d %d %d\n", i, b, jj);
 						substCommandPartList(cp->option,&b,0,jj);
-                                                if (kk>64 && b==bb)
-                                                {
-                                                	yyerror("endless subst loop detected");
-                                                	break;
-                                                }
+						if (kk>64 && b==bb)
+						{
+							yyerror("endless subst loop detected");
+							break;
+						}
 					}
 				}
 			}
@@ -6728,6 +6841,7 @@ substCommandPartList(Coll *coll, int *beg, int reverse, int parno)
 			}
 			break;
 		default:
+			break;
 		}
 		if (*beg>end)
 			end=*beg;
@@ -6739,7 +6853,7 @@ static void
 substCurCommand(int nl)
 {
 	int beg=0;
-        vo_printf(4, 0, "substCurCommand: %s\n", curCommand->name);
+	vo_printf(4, 0, "substCurCommand: %s\n", curCommand->name);
 	substCommandPartList(&curCommand->subst,&beg,0,0);
 
 	if (nl)
@@ -6947,8 +7061,11 @@ recodeString(char *str)
 {
 	unsigned char *s;
 
+
+
 	if (subst_flag)
-        	return;
+		return;
+	v_printf(3, "recodeString: subst %d: '%s'->'%s': '%s'\n", subst_flag, sourceCharset, targetCharset, str);
 	/*recode_string(str);*/
 
 	if (!sourceCharset || !targetCharset
@@ -6983,11 +7100,11 @@ recodeString(char *str)
 
 		make_translation(cs1, len1, cs2, len2, transtbl);
 
-                memset(pgtbl, 0, sizeof(pgtbl));
-                if (!charset_have_pg(cs1, len1) && charset_have_pg(cs2, len2))
-                {
-                	load_charset_tables(p1, 0, 0, 0, 0, pgtbl);
-                }
+		memset(pgtbl, 0, sizeof(pgtbl));
+		if (!charset_have_pg(cs1, len1) && charset_have_pg(cs2, len2))
+		{
+			load_charset_tables(p1, 0, 0, 0, 0, pgtbl);
+		}
 
 		free(cs1);
 		free(cs2);
@@ -6998,7 +7115,7 @@ recodeString(char *str)
 	{
 		int s1, s2;
 
-                s1 = *s;
+		s1 = *s;
 		if ( (s1 & 0x80) && (s2 = pgtbl[s1]))
 			*s = pg2pgch(s2);
 		else if (s1>127)
@@ -7014,8 +7131,11 @@ recode_string(char *str)
 {
 	unsigned char *s;
 
-	if (subst_flag)
-        	return;
+
+	v_printf(3, "recode_string: subst %d: '%s'->'%s': '%s'\n", subst_flag, source_charset, sourceCharset, str);
+	if (subst_flag )
+		return;
+
 
 	if (!source_charset || !sourceCharset
 		|| !strcmp(source_charset,sourceCharset))
@@ -7048,11 +7168,11 @@ recode_string(char *str)
 		}
 
 		make_translation(cs1, len1, cs2, len2, trans_tbl);
-                memset(pg_tbl, 0, sizeof(pg_tbl));
-                if (!charset_have_pg(cs1, len1) && charset_have_pg(cs2, len2))
-                {
-                	load_charset_tables(p1, 0, 0, 0, 0, pg_tbl);
-                }
+		memset(pg_tbl, 0, sizeof(pg_tbl));
+		if (!charset_have_pg(cs1, len1) && charset_have_pg(cs2, len2))
+		{
+			load_charset_tables(p1, 0, 0, 0, 0, pg_tbl);
+		}
 
 
 		free(cs1);
@@ -7063,7 +7183,7 @@ recode_string(char *str)
 	{
 		int s1, s2;
 
-                s1 = *s;
+		s1 = *s;
 		if ( (s1 & 0x80) && (s2 = pg_tbl[s1]))
 			*s = pg2pgch(s2);
 		else if (s1>127)
@@ -7109,23 +7229,23 @@ command_end(void)
 {
 	int pos=0,l=0,found;
 	char *s;
-       	long fpos;
+	long fpos;
 
 	fpos = ftell(yyin);
-        if (fpos == yyin_pos)
-        {
-        	yyin_pos_count++;
-                if (yyin_pos_count >= MAX_YYIN_POS_COUNT)
-                {
-                	yyerror("circular loop in macro/command substitution detected");
-                        return;
+	if (fpos == yyin_pos)
+	{
+		yyin_pos_count++;
+		if (yyin_pos_count >= MAX_YYIN_POS_COUNT)
+		{
+			yyerror("circular loop in macro/command substitution detected");
+			return;
 		}
-        }
-        else
-        {
-        	yyin_pos_count = 0;
-                yyin_pos = fpos;
-        }
+	}
+	else
+	{
+		yyin_pos_count = 0;
+		yyin_pos = fpos;
+	}
 
 	for(s=yytext+yyleng-1; *s=='\r'|| *s=='\n' || *s==032 || *s==';' ; s--)
 	{
@@ -7147,15 +7267,15 @@ command_end(void)
 		substCurCommand(curCommand->isTranslate?0:1);
 
 		if (curCommand->isTranslate)
-                {
+		{
 			if ( l)
 				put_mem(yytext+pos, l);
-                	else
-                		put_char('\n');
-                }
+			else
+				put_char('\n');
+		}
 
-                free(callName);
-                callName = 0;
+		free(callName);
+		callName = 0;
 
 	}
 	else
@@ -7165,35 +7285,35 @@ command_end(void)
 
 
 	if ( curCommand->isTranslate && !bol_translate )
-        {
-        	/*yy_set_bol(0);*/
+	{
+		/*my_yy_set_bol(0);*/
 	}
 
 	if (!found)
 	{
-        	if (!match_translate)
+		if (!match_translate)
 			unput(' ');
 
-                if (curCommand->isTranslate)
-                	bad_translate = 1;
+		if (curCommand->isTranslate)
+			bad_translate = 1;
 		else
-                	bad_translate = 0;
+			bad_translate = 0;
 
 		unputstr(callName);
-                free(callName);
-                callName=0;
-                vo_printf(6,0, "not subst %s state=%d bad_translate=%d\n", curCommand->name, command_next_state, bad_translate);
-                BEGIN(command_next_state);
+		free(callName);
+		callName=0;
+		vo_printf(6,0, "not subst %s state=%d bad_translate=%d\n", curCommand->name, command_next_state, bad_translate);
+		BEGIN(command_next_state);
 	}
 	else
-        {
-               	bad_translate = 0;
-                vo_printf(6,0, "end subst %s state=%d nstr=%d buf '%.*s'\n", 
-                	curCommand->name, command_state,
-                	unput_strings.count, unput_buffer.ptr-unput_buffer.buf, unput_buffer.buf);
-                BEGIN(command_state);
+	{
+		bad_translate = 0;
+		vo_printf(6,0, "end subst %s state=%d nstr=%d buf '%.*s'\n",
+			curCommand->name, command_state,
+			unput_strings.count, unput_buffer.ptr-unput_buffer.buf, unput_buffer.buf);
+		BEGIN(command_state);
 	}
-        if (found)
+	if (found)
 		newline();
 }
 
@@ -7213,7 +7333,7 @@ set_charset(char *charset, const char *file)
 
 	free(source_charset);
 	change_charset = 1;
-	if (!strcasecmp(s, ".prg"))
+	if (s && !strcasecmp(s, ".prg"))
 		prgfile = 1;
 
 	charsets.items[charsets.count-1] = source_charset = charset;
@@ -7246,21 +7366,21 @@ static char *
 match_delim(CommandPart *cp, char *str)
 {
 	int i;
-        int len;
+	int len;
 
 	if (!cp || !cp->delim)
-        	return 0;
+		return 0;
 
 	len = strcspn(str, " \t\n");
 
 	for(i=0; i<cp->delim->count; i++)
-        {
-        	int l;
-                char *s = (char*) cp->delim->items[i];
-                l = strlen(s);
-                if ( l == len && !strncasecmp(s, str, l))
-                	return s;
-        }
+	{
+		int l;
+		char *s = (char*) cp->delim->items[i];
+		l = strlen(s);
+		if ( l == len && !strncasecmp(s, str, l))
+			return s;
+	}
 
 	return 0;
 }
@@ -7269,21 +7389,21 @@ void
 lex_vardef(int set)
 {
 	static int save = INITIAL;
-        if (!compat_as_word)
-        	return;
+	if (!compat_as_word)
+		return;
 
 	vo_printf(6, 0, "lex_vardef %d save=%d\n", set,save);
 
-        if (set)
-        {
+	if (set)
+	{
 		save = YYSTATE;
-        	BEGIN(vardef_words);
-        }
-        else
-        {
-        	/*BEGIN(save);*/
-                BEGIN(INITIAL);
-        }
+		BEGIN(vardef_words);
+	}
+	else
+	{
+		/*BEGIN(save);*/
+		BEGIN(INITIAL);
+	}
 }
 
 
@@ -7292,8 +7412,8 @@ m_return(int r)
 {
 /*
 	if (YYSTATE==static_words && r!=STATIC)
-        {
-        	BEGIN(INITIAL);
+	{
+		BEGIN(INITIAL);
 	}
 */
 	last_ret = r;
@@ -7306,8 +7426,8 @@ m_return(int r)
 */
 	/*if (preproc_flag)*/
 	vo_printf(6,0,"\nm_return: %d %s %c state=%d\n", r,
-                (r==NAME||r==STRING)?yylval.string:""
-                , (r>32&&r<256)?r:' ', YYSTATE);
+		(r==NAME||r==STRING)?yylval.string:""
+		, (r>32&&r<256)?r:' ', YYSTATE);
 	return r;
 }
 
@@ -7317,16 +7437,16 @@ is_preproc_str(char *ibuf, int result)
 {
 	int i;
 	for(i=0; i<result; i++)
-       	{
-               	int ch = ibuf[i];
-                if (ch==' '||ch=='\t')
-                       	continue;
-       		else if (ch=='#')
-                	return 1;
+	{
+		int ch = ibuf[i];
+		if (ch==' '||ch=='\t')
+			continue;
+		else if (ch=='#')
+			return 1;
 		else
-                       	return 0;
-       	}
-        return 0;
+			return 0;
+	}
+	return 0;
 }
 
 static int
@@ -7334,62 +7454,62 @@ is_empty_str(char *ibuf, int result)
 {
 	int i;
 	for(i=0; i<result; i++)
-       	{
-               	int ch = ibuf[i];
-                if (ch==' ' || ch=='\t' || ch=='\r' || ch=='\n')
-                       	continue;
+	{
+		int ch = ibuf[i];
+		if (ch==' ' || ch=='\t' || ch=='\r' || ch=='\n')
+			continue;
 		else
-                       	return 0;
-       	}
-        return 1;
+			return 0;
+	}
+	return 1;
 }
 
 static int
 get_input_str(char **ibuf, int *max_size)
 {
 	char *str;
-        int result = 0;
+	int result = 0;
 
 	if (unput_buffer.ptr > unput_buffer.buf)
-        {
-        	int l;
-                l = unput_buffer.ptr - unput_buffer.buf;
-                if (l >= *max_size)
-                {
-                	*ibuf = (char *) realloc(*ibuf, l+1);
-                        *max_size = l+1;
+	{
+		int l;
+		l = unput_buffer.ptr - unput_buffer.buf;
+		if (l >= *max_size)
+		{
+			*ibuf = (char *) realloc(*ibuf, l+1);
+			*max_size = l+1;
 		}
-                memcpy(*ibuf, unput_buffer.buf, l);
-                unput_buffer.ptr = unput_buffer.buf;
-                result = l;
+		memcpy(*ibuf, unput_buffer.buf, l);
+		unput_buffer.ptr = unput_buffer.buf;
+		result = l;
 		if (subst_flag==1)
 			subst_flag = 2;
-        	else
-                	subst_flag = 0;
-        }
-        else if (unput_strings.count)
-        {
-        	int ind, l;
-        	StrBuf *sp;
+		else
+			subst_flag = 0;
+	}
+	else if (unput_strings.count)
+	{
+		int ind, l;
+		StrBuf *sp;
 
 		ind = unput_strings.count - 1;
-        	sp = (StrBuf*) unput_strings.items[ind];
-                
-                l = sp->ptr - sp->buf;
-                if (l >= *max_size)
-                {
-                	*ibuf = (char *) realloc(*ibuf, l+1);
-                        *max_size = l+1;
+		sp = (StrBuf*) unput_strings.items[ind];
+
+		l = sp->ptr - sp->buf;
+		if (l >= *max_size)
+		{
+			*ibuf = (char *) realloc(*ibuf, l+1);
+			*max_size = l+1;
 		}
-                memcpy(*ibuf, sp->buf, l);
+		memcpy(*ibuf, sp->buf, l);
 		result = l;
-		
-                atFree_Coll(&unput_strings, ind);
+
+		atFree_Coll(&unput_strings, ind);
 		subst_flag = 1;
-                subst_count = 1;
-        }
-        else
-        {
+		subst_count = 1;
+	}
+	else
+	{
 		str = fgets(*ibuf, *max_size - 1, yyin);
 		if (!str)
 		{
@@ -7399,16 +7519,16 @@ get_input_str(char **ibuf, int *max_size)
 		}
 		else
 		{
-                	int l = strlen(str);
+			int l = strlen(str);
 			memcpy(*ibuf, str, l);
 			result = l;
 		}
 		subst_flag = 1;
-                subst_count = 1;
-        }
-	
+		subst_count = 1;
+	}
+
 	if (result > 0)
-        {
+	{
 		if ((*ibuf)[result - 1] != '\n')
 		{
 			(*ibuf)[result] = '\n';
@@ -7416,14 +7536,14 @@ get_input_str(char **ibuf, int *max_size)
 			(*ibuf)[result] = 0;
 		}
 		if (is_empty_str( *ibuf, result ))
-        	{
-        		(*ibuf)[0] = '\n';
-                	(*ibuf)[1] = 0;
-                	return 1;
-        	}
-        }
-        else
-        	subst_flag = 0;
+		{
+			(*ibuf)[0] = '\n';
+			(*ibuf)[1] = 0;
+			return 1;
+		}
+	}
+	else
+		subst_flag = 0;
 
 
 	return result;
@@ -7434,38 +7554,38 @@ static int
 split_input_str(char *buf, int size)
 {
 	int count;
-        int ins_ind = unput_strings.count;
+	int ins_ind = unput_strings.count;
 
 	for(count = 0 ; size > 0 ; count++)
-        {
-        	StrBuf *sp;
-        	char *b;
-                int l;
+	{
+		StrBuf *sp;
+		char *b;
+		int l;
 
-        	b = (char*) memchr(buf, '\000', size);
-                if (!b)
-                {
-                	if (!count)
-                		return 0;
+		b = (char*) memchr(buf, '\000', size);
+		if (!b)
+		{
+			if (!count)
+				return 0;
 			else
-                        	l = size;
+				l = size;
 		}
-                else
+		else
 			l = b + 1 - buf;
 
 		sp = new_StrBuf();
 		write_StrBuf(sp, buf, l-1);
-               	putByte_StrBuf(sp, '\n');
+		putByte_StrBuf(sp, '\n');
 		/*atInsert_Coll(&unput_strings, sp, 0);*/
 		atInsert_Coll(&unput_strings, sp, ins_ind);
-                if (b)
-                {
-                	clic_line--;
-                	all_lines--;
-                }
-                
-                buf += l;
-                size -= l;
+		if (b)
+		{
+			clic_line--;
+			all_lines--;
+		}
+
+		buf += l;
+		size -= l;
 	}
 
 	return count;
@@ -7475,23 +7595,23 @@ typedef enum
 {
 	PP_Normal,
 	PP_Bracket,
-        PP_Quote1,
-        PP_Quote2,
-        PP_Quote3,
-        PP_Comment,
+	PP_Quote1,
+	PP_Quote2,
+	PP_Quote3,
+	PP_Comment,
 }
 PP_State;
 
 typedef struct
 {
 	PP_State pstate;
-        PP_State rstate;
-        char **obuf;
-        int opos;
-        int *olen;
-        int brack_level;
-        int comment_level;
-        int pch;
+	PP_State rstate;
+	char **obuf;
+	int opos;
+	int *olen;
+	int brack_level;
+	int comment_level;
+	int pch;
 }
 P_State;
 
@@ -7501,10 +7621,10 @@ static void
 addch_pp(P_State *pp, int ch)
 {
 	if(pp->opos >= (*pp->olen))
-        {
-        	(*pp->olen) *= 2;
-                (*pp->obuf) = (char *) realloc(*pp->obuf, *pp->olen);
-        }
+	{
+		(*pp->olen) *= 2;
+		(*pp->obuf) = (char *) realloc(*pp->obuf, *pp->olen);
+	}
 
 	(*pp->obuf)[pp->opos]=ch;
 	(pp->opos)++;
@@ -7515,226 +7635,226 @@ static int
 process_input_str(char *ibuf, int ilen, P_State *pp)
 {
 	int ch, i, space = 1;
-        int do_comment = 0;
-        int is_preproc = 0;
-        int prev_opos = pp->opos;
+	int do_comment = 0;
+	int is_preproc = 0;
+	int prev_opos = pp->opos;
 
 	if ( is_preproc_str(ibuf, ilen)||is_preproc_str(*pp->obuf, pp->opos) )
-        {
+	{
 		is_preproc = 1;
 	}
 	if (pp->pstate != PP_Comment && is_preproc)
-        {
+	{
 		do_comment = 1;
 	}
-        
-	for(i=0; i<ilen; i++)
-        {
-        	ch = ibuf[i];
 
-        	switch(pp->pstate)
-                {
-                case PP_Normal:
-                case PP_Bracket:
-                	switch(ch)
-                        {
+	for(i=0; i<ilen; i++)
+	{
+		ch = ibuf[i];
+
+		switch(pp->pstate)
+		{
+		case PP_Normal:
+		case PP_Bracket:
+			switch(ch)
+			{
 			case '[':              /* { */
-                        	/*if (do_comment)
-                                	break;*/
+				/*if (do_comment)
+					break;*/
 				/*if (is_preproc)
-                                	break;*/
-                        	if (pp->pstate == PP_Bracket)
-                                	pp->brack_level++;
+					break;*/
+				if (pp->pstate == PP_Bracket)
+					pp->brack_level++;
 				else if( !do_comment && (ISNAME(pp->pch) || strchr( ")]}.", pp->pch )) )
-                                {
-                                	pp->rstate = pp->pstate;
+				{
+					pp->rstate = pp->pstate;
 					pp->pstate = PP_Bracket;
-                                        pp->brack_level = 1;
+					pp->brack_level = 1;
 				}
 				else
-                                {
-                                	pp->rstate = pp->pstate;
+				{
+					pp->rstate = pp->pstate;
 					pp->pstate = PP_Quote3;
 				}
 				break;
 
-                	case ']':
-                        	/*if (do_comment)
-                                	break;*/
+			case ']':
+				/*if (do_comment)
+					break;*/
 				/*if (is_preproc)
-                                	break;*/
-                        	if (pp->pstate == PP_Bracket)
-                                {
-                        		pp->brack_level--;
-                        		if (pp->brack_level == 0)
-                                	{
-                                		pp->pstate = pp->rstate;
+					break;*/
+				if (pp->pstate == PP_Bracket)
+				{
+					pp->brack_level--;
+					if (pp->brack_level == 0)
+					{
+						pp->pstate = pp->rstate;
 					}
-                                }
-                		break;
+				}
+				break;
 
-                        case '\"':
-                        	/*if (do_comment)
-                                	break;*/
+			case '\"':
+				/*if (do_comment)
+					break;*/
 				/*if (is_preproc)
-                                	break;*/
-                                pp->rstate = pp->pstate;
-                        	pp->pstate = PP_Quote1;
-                                break;
+					break;*/
+				pp->rstate = pp->pstate;
+				pp->pstate = PP_Quote1;
+				break;
 
-                        case '\'':
-                        	/*if (do_comment)
-                                	break;*/
+			case '\'':
+				/*if (do_comment)
+					break;*/
 				/*if (is_preproc)
-                                	break;*/
-                                pp->rstate = pp->pstate;
-                        	pp->pstate = PP_Quote2;
-                                break;
+					break;*/
+				pp->rstate = pp->pstate;
+				pp->pstate = PP_Quote2;
+				break;
 
-                        case '/':
-                        	if ((pp->opos)>0 && (*pp->obuf)[(pp->opos)-1] == '/')
-                                {
-                                	--(pp->opos);
-                                        addch_pp(pp,'\n');
-                                        goto ret;
-                                }
-                                break;
+			case '/':
+				if ((pp->opos)>0 && (*pp->obuf)[(pp->opos)-1] == '/')
+				{
+					--(pp->opos);
+					addch_pp(pp,'\n');
+					goto ret;
+				}
+				break;
 
-                        case '&':
-                        	if ((pp->opos)>0 && (*pp->obuf)[(pp->opos)-1] == '&')
-                                {
-                                	--(pp->opos);
-                                        addch_pp(pp,'\n');
-                                        goto ret;
-                                }
-                                break;
+			case '&':
+				if ((pp->opos)>0 && (*pp->obuf)[(pp->opos)-1] == '&')
+				{
+					--(pp->opos);
+					addch_pp(pp,'\n');
+					goto ret;
+				}
+				break;
 
-                        case '*':
-                                if (space)
-                                {
-                                        if (prev_opos)
-                                        	break;
-                                	if (ilen>8 && !strncmp(ibuf, "*charset", 8))
-                                        	break;
-                                	if (ilen>10 && !strncmp(ibuf, "*reference", 10))
-                                        	break;
-                                	if (ilen>7 && !strncmp(ibuf, "*cmdstr", 7))
-                                        	break;
-                                        addch_pp(pp,'\n');
-                                	goto ret;
-                                }
-                        	if ((pp->opos)>0 && (*pp->obuf)[(pp->opos)-1] == '/')
-                                {
-                                	pp->rstate = pp->pstate;
-                                	pp->comment_level = 1;
-                                        pp->pstate = PP_Comment;
-                                        pp->pch = 0;
-                                        space = 0;
-                                        (pp->opos)--;
-                                        continue;
-                                }
-                                break;
+			case '*':
+				if (space)
+				{
+					if (prev_opos)
+						break;
+					if (ilen>8 && !strncmp(ibuf, "*charset", 8))
+						break;
+					if (ilen>10 && !strncmp(ibuf, "*reference", 10))
+						break;
+					if (ilen>7 && !strncmp(ibuf, "*cmdstr", 7))
+						break;
+					addch_pp(pp,'\n');
+					goto ret;
+				}
+				if ((pp->opos)>0 && (*pp->obuf)[(pp->opos)-1] == '/')
+				{
+					pp->rstate = pp->pstate;
+					pp->comment_level = 1;
+					pp->pstate = PP_Comment;
+					pp->pch = 0;
+					space = 0;
+					(pp->opos)--;
+					continue;
+				}
+				break;
 
-                        case ';': /* Split line later!!! */
-                        	if (do_comment)
-                                	break;
+			case ';': /* Split line later!!! */
+				if (do_comment)
+					break;
 
-                        	addch_pp(pp,'\000');
-                        	continue;
+				addch_pp(pp,'\000');
+				continue;
 
-                        default:
-                                break;
-                        }
+			default:
+				break;
+			}
 
-                        if (ch != ' ' && ch != '\t')
-                        	pp->pch = ch;
-                        break;
-                
-                
-                case PP_Quote1:
-                	if (ch == '\"')
-                        {
-                        	pp->pstate = pp->rstate;
-                		pp->pch = ch;
-                        }
-                	break;
-                
-                case PP_Quote2:
-                	if (ch == '\'')
-                        {
-                        	pp->pstate = pp->rstate;
-                		pp->pch = ch;
-                	}
-                	break;
-                
-                case PP_Quote3:
-                	if (ch == ']')
-                        {
-                        	pp->pstate = pp->rstate;
-                		pp->pch = ch;
-                	}
-                	break;
-                
-                case PP_Comment:
-                	if (pp->pch == '/' && ch == '*')
-                        	pp->comment_level++;
-                        else if (pp->pch == '*' && ch == '/')
-                        	pp->comment_level--;
-                	
-                	if (pp->comment_level == 0)
-                        	pp->pstate = pp->rstate;
-                	
-                	pp->pch = ch;
-                        continue;
-                }
-                
-                if (space && ch != ' ' && ch!= '\t')
-                        space = 0;
+			if (ch != ' ' && ch != '\t')
+				pp->pch = ch;
+			break;
 
-                addch_pp(pp,ch);
+
+		case PP_Quote1:
+			if (ch == '\"')
+			{
+				pp->pstate = pp->rstate;
+				pp->pch = ch;
+			}
+			break;
+
+		case PP_Quote2:
+			if (ch == '\'')
+			{
+				pp->pstate = pp->rstate;
+				pp->pch = ch;
+			}
+			break;
+
+		case PP_Quote3:
+			if (ch == ']')
+			{
+				pp->pstate = pp->rstate;
+				pp->pch = ch;
+			}
+			break;
+
+		case PP_Comment:
+			if (pp->pch == '/' && ch == '*')
+				pp->comment_level++;
+			else if (pp->pch == '*' && ch == '/')
+				pp->comment_level--;
+
+			if (pp->comment_level == 0)
+				pp->pstate = pp->rstate;
+
+			pp->pch = ch;
+			continue;
+		}
+
+		if (space && ch != ' ' && ch!= '\t')
+			space = 0;
+
+		addch_pp(pp,ch);
 	}
 
-      ret:
+	  ret:
 	switch(pp->pstate)
-        {
-        case PP_Comment:
-        	return 1;
-        case PP_Quote1:
-        case PP_Quote2:
-        case PP_Quote3:
-        	if (is_preproc)
-        		pp->pstate = PP_Normal;
+	{
+	case PP_Comment:
+		return 1;
+	case PP_Quote1:
+	case PP_Quote2:
+	case PP_Quote3:
+		if (is_preproc)
+			pp->pstate = PP_Normal;
 		/*else
-                	return 1;*/
+			return 1;*/
 	default:
-        	break;
-        }
+		break;
+	}
 
 	for(i = pp->opos-1; i >= 0; i--)
-        {
-        	switch((*pp->obuf)[i])
-                {
-                case ' ':
-                case '\t':
-                case '\r':
-                case '\n':
-                	continue;
-                case '\000':
-                        (*pp->obuf)[i] = ' ';
-                	pp->opos = i+1;
-                        return 1;
-                case ';':
-                	if (do_comment)
-                        {
-                        	(*pp->obuf)[i] = ' ';
-                		pp->opos = i+1;
-                        	return 1;
-                        }
-                default:
-                	break;
-                }
-                break;
-        }
+	{
+		switch((*pp->obuf)[i])
+		{
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			continue;
+		case '\000':
+			(*pp->obuf)[i] = ' ';
+			pp->opos = i+1;
+			return 1;
+		case ';':
+			if (do_comment)
+			{
+				(*pp->obuf)[i] = ' ';
+				pp->opos = i+1;
+				return 1;
+			}
+		default:
+			break;
+		}
+		break;
+	}
 
 	return 0;
 }
@@ -7745,95 +7865,95 @@ process_input_str(char *ibuf, int ilen, P_State *pp)
 static int
 do_input(char *buf, int max_size)
 {
-        static char *ibuf = 0;
-        static char *obuf = 0;
-        static int ilen = 0, olen = 0;
-        static int subst_state=0;
-        
-        int r = 0;
-        P_State pstate;
-        
+	static char *ibuf = 0;
+	static char *obuf = 0;
+	static int ilen = 0, olen = 0;
+	static int subst_state=0;
+
+	int r = 0;
+	P_State pstate;
+
 
 	if (!ibuf)
 	{
-        	ilen = PP_READ_SIZE;
-        	ibuf = (char*) malloc(ilen);
-        	olen = PP_READ_SIZE;
-        	obuf = (char*) malloc(olen);
-        }
+		ilen = PP_READ_SIZE;
+		ibuf = (char*) malloc(ilen);
+		olen = PP_READ_SIZE;
+		obuf = (char*) malloc(olen);
+	}
 
 	pstate.obuf = &obuf;
 	pstate.olen = &olen;
 	pstate.opos = 0;
 	pstate.pstate = pstate.rstate = PP_Normal;
-        pstate.pch = 0;
+	pstate.pch = 0;
 
 	if (!subst_flag)
-        	subst_state = YYSTATE;
+		subst_state = YYSTATE;
 
 	for(;;)
-        {
+	{
 		r = get_input_str(&ibuf, &ilen);
-                if (r <= 0 )
-                	break;
+		if (r <= 0 )
+			break;
 
 		if ( process_input_str(ibuf, r, &pstate) )
-                {
+		{
 			clic_line++;
 			all_lines++;
-                        continue;
-                }
-                
-		if ( split_input_str(*pstate.obuf, pstate.opos) )
-                {
-                	pstate.pstate = PP_Normal;
-                	pstate.rstate = PP_Normal;
-                        pstate.opos = 0;
-        		pstate.pch = 0;
-                	continue;
+			continue;
 		}
 
-                break;
+		if ( split_input_str(*pstate.obuf, pstate.opos) )
+		{
+			pstate.pstate = PP_Normal;
+			pstate.rstate = PP_Normal;
+			pstate.opos = 0;
+			pstate.pch = 0;
+			continue;
+		}
+
+		break;
 	}
 
 	if (r>=0)
-        {
+	{
 		memcpy(buf, *pstate.obuf, pstate.opos);
-                r = pstate.opos;
-                if (is_preproc_str(buf, r))
-                {
-                	subst_flag = 0;
-                        subst_count = 0;
+		r = pstate.opos;
+		if (is_preproc_str(buf, r))
+		{
+			subst_flag = 0;
+			subst_count = 0;
 		}
 	}
 
 	if (subst_count)
 		subst_flag = 1;
 	else if (subst_flag == 1)
-        	subst_flag = 2;
+		subst_flag = 2;
 
 	if (YYSTATE == skipState)
-        	subst_flag = 0;
+		subst_flag = 0;
 
 	subst_count = 0;
 
 	if (preproc_flag)
-        {
-        	int ind = -1, line = 0;
-        	char *file;
-                get_include(&ind, &line, &file);
+	{
+		int ind = -1, line = 0;
+		char *file;
+		get_include(&ind, &line, &file);
 		vo_printf(3,0, "do_input: %d: subst_flag=%d: %d: '%.*s'\n", clic_line, subst_flag, r, r, buf);
 		vo_printf(4,0, "state: %d at: file %s line %d\n", subst_state, file, line);
 	}
 
 	if (!subst_flag)
-        {
-        	switch (YYSTATE)
-                {
-                case skipState:
-                default:
-        		BEGIN(subst_state);
-                        break;
+	{
+		switch (YYSTATE)
+		{
+		case skipState:
+		default:
+			BEGIN(subst_state);
+			break;
 		case field_words:
 		case for_words:
 		case recover_words:
@@ -7841,10 +7961,10 @@ do_input(char *buf, int max_size)
 		case field:
 		case vardef_words:
 		case static_words:
-                	BEGIN(INITIAL);
-                        break;
-                }
-                yy_set_bol(1);
+			BEGIN(INITIAL);
+			break;
+		}
+		my_yy_set_bol(1);
 		clic_pos=1;
 		clic_word=0;
 	}
@@ -7864,16 +7984,16 @@ put_char(int ch)
 	subst_count++;
 	if (ch=='\n')
 	{
-        	StrBuf *sp;
-                if (unput_buffer.ptr > unput_buffer.buf && unput_buffer.ptr[-1] == '\n')
-                {
+		StrBuf *sp;
+		if (unput_buffer.ptr > unput_buffer.buf && unput_buffer.ptr[-1] == '\n')
+		{
 			sp = calloc(sizeof(StrBuf), 1);
-                	memcpy(sp, &unput_buffer, sizeof(StrBuf));
+			memcpy(sp, &unput_buffer, sizeof(StrBuf));
 			memset(&unput_buffer, 0, sizeof(StrBuf));
-                        append_Coll(&unput_strings, sp);
-                }
+			append_Coll(&unput_strings, sp);
+		}
 	}
-	
+
 	if (ch)
 		putByte_StrBuf(&unput_buffer, ch);
 }
@@ -7882,14 +8002,14 @@ static void
 put_str(const char *str)
 {
 	int l=strlen(str);
-        put_mem(str, l);
+	put_mem(str, l);
 }
 
 static void
 unputstr(const char *str)
 {
 	int l=strlen(str);
-        unputmem(str, l);
+	unputmem(str, l);
 }
 
 static void
@@ -7921,9 +8041,9 @@ mecho(void)
 {
 	if (subst_flag)
 		write_StrBuf(&unput_buffer, yytext, yyleng);
-	else if (preproc_flag) 
+	else if (preproc_flag)
 		fwrite( yytext, yyleng, 1, stdout );
-	else 
+	else
 		prbrack();
 }
 
@@ -7932,7 +8052,7 @@ lecho(int l)
 {
 	if (subst_flag)
 		write_StrBuf(&unput_buffer, yytext, l);
-	else if (preproc_flag) 
+	else if (preproc_flag)
 		fwrite(yytext, l, 1, stdout);
 	else
 		prbrack();
@@ -7944,7 +8064,7 @@ pecho(char *p)
 	int l = strlen(p);
 	if (subst_flag)
 		write_StrBuf(&unput_buffer, p, l);
-	else if (preproc_flag) 
+	else if (preproc_flag)
 		fwrite(p, l, 1, stdout);
 	else
 		prbrack();
@@ -7954,11 +8074,11 @@ static void
 secho(int ch1, char *s, int ch2)
 {
 	if (subst_flag)
-        {
+	{
 		putByte_StrBuf(&unput_buffer, ch1);
 		putString_StrBuf(&unput_buffer, s);
 		putByte_StrBuf(&unput_buffer, ch2);
-        }
+	}
 	else if (preproc_flag)
 	{
 		fprintf(stdout, "%c%s%c", ch1, string_buf, ch2);
@@ -7969,40 +8089,40 @@ static void
 add_string_buf(char *buf, int len)
 {
 	if ( (string_buf_ptr + len) >= (string_buf + sizeof(string_buf) - 1) )
-        	yyerror("too long string");
-        else
-        {
-        	memcpy(string_buf_ptr, buf, len);
-                string_buf_ptr += len;
-        }
+		yyerror("too long string");
+	else
+	{
+		memcpy(string_buf_ptr, buf, len);
+		string_buf_ptr += len;
+	}
 }
 
 static void
 addch_string_buf(int ch)
 {
 	if ( string_buf_ptr >= (string_buf + sizeof(string_buf) - 1) )
-        {
-        	yyerror("too long string");
+	{
+		yyerror("too long string");
 	}
-        else
-        {
-        	*string_buf_ptr = ch;
-                string_buf_ptr++;
-        }
+	else
+	{
+		*string_buf_ptr = ch;
+		string_buf_ptr++;
+	}
 }
 
 
 static int
 back_strsize(void *s1, void *s2)
 {
-	int l1 = strlen((char *)s1);	
+	int l1 = strlen((char *)s1);
 	int l2 = strlen((char *)s2);
-        int r = l2-l1;
-	
+	int r = l2-l1;
+
 	if (r)
-        	return r;
+		return r;
 	else
-        	return strcasecmp((char*)s1, (char*)s2);
+		return strcasecmp((char*)s1, (char*)s2);
 }
 
 void
@@ -8015,25 +8135,28 @@ static char *
 marker_id(char *str)
 {
 	char *b = str;
-        char *e = b + strlen(b);
-        char *s;
-        int l;
+	char *e = b + strlen(b);
+	char *s;
+	int l;
 
-        for (;b<e; b++)
-        {
-        	if (is_id(*b))
-                	break;
-        }
-	
+	for (;b<e; b++)
+	{
+		if (is_id(*b))
+			break;
+	}
+
 	for(;b<e; e--)
-        {
-        	if (is_id(e[-1]))
-                	break;
-        }
+	{
+		if (is_id(e[-1]))
+			break;
+	}
 
 	l = e-b;
-        s = mem_dup(b, l);
+	s = mem_dup(b, l);
 
 	return s;
 }
 
+#if 0
+<macroCall>\\.  newpos(); add_string_buf(yytext, yyleng);
+#endif

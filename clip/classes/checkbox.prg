@@ -8,6 +8,8 @@
 
 function _checkbox_(var,caption,message,color,fblock,sblock,style,bitmaps,row,col)
    local obj
+   iif(row==NIL, row:=row(), NIL)
+   iif(col==NIL, col:=col(), NIL)
    obj:=checkbox(row,col,caption)
    obj:buffer:=var
    obj:fblock:=fblock
@@ -101,8 +103,8 @@ return self
 static func cb_select(self,newState)
        if newstate==NIL
 	  self:buffer:=!self:buffer
-       	  eval(self:sblock)
-       else
+	  eval(self:sblock)
+       elseif valtype(newState) == "L"
 	  self:buffer:=newState
        endif
        self:display()

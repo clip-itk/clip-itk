@@ -1,0 +1,6 @@
+
+- add arch to cobra_info and command CLNT
+- add crypto to cobra_service
+- add arch to cobra service
+#- add check client IP (and may be MAC) adress in AUTH
+   /* tcp-wrap added from Igor Satsyuk <satsyuk@tut.by>*/

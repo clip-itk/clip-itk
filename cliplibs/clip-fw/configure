@@ -4,9 +4,12 @@ uname=`uname -s`
 uver=`uname -r`
 hname=`hostname -f 2>/dev/null`
 
-[ -z "$CLIPROOT" ] && CLIPROOT=/usr/local/clip
+[ -z "$CLIPROOT" ] && CLIPROOT=$(cd ../../../; pwd)/cliproot
+
 DLLSUFF='.so'
 DLLREALSUFF='.so'
+
+rm Makefile
 
 if [ $? != 0 ]
 then
@@ -59,6 +62,8 @@ echo >&3
 echo '#' >&3
 echo '#	Compile flags' >&3
 echo '#' >&3
+echo "CLIPROOT='$CLIPROOT'" >&3
+echo "include $CLIPROOT/include/Makefile.inc" >&3
 echo "OSNAME='$osname'" >&3
 
 if [ -z "$CC" ]
@@ -72,7 +77,7 @@ then
 fi
 echo "DLLSUFF='$DLLSUFF'" >&3
 echo "DLLREALSUFF='$DLLREALSUFF'" >&3
-echo 'INCLUDEDIRS=-I. -I./fwin -I$(CLIPROOT)/include' >&3
+echo 'INCLUDEDIRS=-I. -I./fwin -I$(CLIPROOT)/include -I../clip-cti/include -I../clip-gtk' >&3
 
 echo >&3
 exec 3>&-

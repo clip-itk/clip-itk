@@ -18,7 +18,7 @@ all: clip_run clip_prg clip_we clip_bl www_clip wcl2prg clip_blank sqlrun \
 	clip_hv clip_fl clip_dbf2txt
 
 clean:
-	rm -rf *.uri *.c *.o *.a *.po *.log *.pa *.b *.BAK *.bak *~ core* *core \
+	rm -rf *.uri *.c *.s *.o *.a *.po *.log *.pa *.b *.BAK *.bak *~ core* *core \
 		clip_run clip_prg clip_bl www_clip wcl2prg sqlrun \
 		clip_blank clip_we clip_hv clip_fl clip_dbf2txt *.exe
 	rm -rf *.ex *.nm
@@ -37,6 +37,8 @@ install:
 	cp clip_prg$(EXESUFF) $(CLIPROOT)/bin
 	cp clip_bl$(EXESUFF) $(CLIPROOT)/bin
 	cp clip_we$(EXESUFF) $(CLIPROOT)/bin
+	cp .macro $(CLIPROOT)/etc
+	cp .templ $(CLIPROOT)/etc
 	cp clip_hv$(EXESUFF) $(CLIPROOT)/bin
 	cp clip_fl$(EXESUFF) $(CLIPROOT)/bin
 	cp clip_dbf2txt$(EXESUFF) $(CLIPROOT)/bin
@@ -44,6 +46,7 @@ install:
 	cp www_clip$(EXESUFF) $(CLIPROOT)/bin
 	cp wcl2prg$(EXESUFF) $(CLIPROOT)/bin
 	cp sqlrun$(EXESUFF) $(CLIPROOT)/bin
+
 
 clip_prg: clip_prg.prg
 	$(CLIP) $(CLIPFLAGS) -e -M clip_prg.prg $(CLIPLIBS)

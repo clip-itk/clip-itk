@@ -1,27 +1,38 @@
-- профайлер
-- сигнальный сервер и система обмена сигналами
+- windows without Cygwin
+- documentation
+- DBF more than 2GB, MDB, transactions
+- unicode,utf-8
 - compile time optimize const expression ( 2+2 -> 4)
 - RDD SDFNTX,SDFCDX,SDF*
-- undocumented clipper OO-functions
-!- SQL интерпертатор для навески поверх DBF
-!- HTML-бровзер,WEB-бродилка,
+- undocumented clipper OO-functions, qself()....
+- o:clip, class(y) support
+!- SQL интерпретатор для навески поверх DBF (update,delete)
+- QBE, other FoxPro features
 !- отладчик довести до ума
 - FiveWin
-- GLADE filters
 - pdf
-#- rtf
+- CUPS support
 - hand systems (iPaq, other) support (skiffcluster[1-6].handhelds.org)
 - TCP services (POP,FTP,......)
 - mod_clip for apache
 - SqlLite
-- dbtcp
 - informix
 - DB2
-- DBF more than 2GB
+- Sybase
+- Linter
+- Berkeley DB
+- MyISAM - support MySQL files with MySQL API
+- GLADE filters
+- свой буфеер для wselect(0)
+- numprinter() under windows && support win printer servises
 - mediator like server
 - ADS client
 - our ADS server
-- numprinter() under windows && support win printer servises
+!- профайлер
+!- HTML-бровзер,WEB-бродилка,
+!- сигнальный сервер и система обмена сигналами
+#- rtf
+#- dbtcp
 #- undefined refrences for linking
 #- FPT packing Clipper5.3 extension
 #- tone() => beep()

@@ -38,17 +38,17 @@ int
 clip_GTK_TABLENEW(ClipMachine * cm)
 {
 	ClipVar    * cv = _clip_spar(cm, 1);
-        guint      rows = _clip_parni(cm,2);
-        guint      cols = _clip_parni(cm,3);
-        gboolean homogeneous = BOOL_OPTION(cm,4,FALSE);
+	guint      rows = _clip_parni(cm,2);
+	guint      cols = _clip_parni(cm,3);
+	gboolean homogeneous = BOOL_OPTION(cm,4,FALSE);
 	GtkWidget *wid = NULL;
-        C_widget *cwid;
+	C_widget *cwid;
 	CHECKOPT(1,MAP_t);
-        CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t); CHECKOPT(4,LOGICAL_t);
-        wid = gtk_table_new(rows,cols,homogeneous);
-        if (!wid) goto err;
+	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t); CHECKOPT(4,LOGICAL_t);
+	wid = gtk_table_new(rows,cols,homogeneous);
+	if (!wid) goto err;
 	cwid = _register_widget(cm, wid, cv);
-        _clip_mclone(cm,RETPTR(cm),&cwid->obj);
+	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
 	return 0;
 err:
 	return 1;
@@ -61,11 +61,11 @@ int
 clip_GTK_TABLERESIZE(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        guint     rows = _clip_parni(cm,2);
-        guint     cols = _clip_parni(cm,3);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
-        gtk_table_resize (GTK_TABLE(ctbl->widget), rows, cols);
+	guint     rows = _clip_parni(cm,2);
+	guint     cols = _clip_parni(cm,3);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	gtk_table_resize (GTK_TABLE(ctbl->widget), rows, cols);
 	return 0;
 err:
 	return 1;
@@ -80,22 +80,22 @@ int
 clip_GTK_TABLEATTACH(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
-        guint   left_attach = INT_OPTION(cm,3,1);
-        guint  right_attach = INT_OPTION(cm,4,1);
-        guint    top_attach = INT_OPTION(cm,5,1);
-        guint bottom_attach = INT_OPTION(cm,6,1);
-        GtkAttachOptions xoptions = _clip_parni(cm,7);
-        GtkAttachOptions yoptions = _clip_parni(cm,8);
-        guint xpadding = _clip_parni(cm,9);
-        guint ypadding = _clip_parni(cm,10);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);
-        CHECKOPT(6,NUMERIC_t); CHECKOPT(7,NUMERIC_t); CHECKOPT(8,NUMERIC_t);
-        CHECKOPT(9,NUMERIC_t); CHECKOPT(10,NUMERIC_t);
-        gtk_table_attach(GTK_TABLE(ctbl->widget), cwid->widget, left_attach-1, right_attach-1,
-        	top_attach-1, bottom_attach-1, xoptions,yoptions, xpadding,ypadding);
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	guint   left_attach = INT_OPTION(cm,3,1);
+	guint  right_attach = INT_OPTION(cm,4,1);
+	guint    top_attach = INT_OPTION(cm,5,1);
+	guint bottom_attach = INT_OPTION(cm,6,1);
+	GtkAttachOptions xoptions = _clip_parni(cm,7);
+	GtkAttachOptions yoptions = _clip_parni(cm,8);
+	guint xpadding = _clip_parni(cm,9);
+	guint ypadding = _clip_parni(cm,10);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
+	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t); CHECKOPT(5,NUMERIC_t);
+	CHECKOPT(6,NUMERIC_t); CHECKOPT(7,NUMERIC_t); CHECKOPT(8,NUMERIC_t);
+	CHECKOPT(9,NUMERIC_t); CHECKOPT(10,NUMERIC_t);
+	gtk_table_attach(GTK_TABLE(ctbl->widget), cwid->widget, left_attach-1, right_attach-1,
+		top_attach-1, bottom_attach-1, xoptions,yoptions, xpadding,ypadding);
 	return 0;
 err:
 	return 1;
@@ -108,17 +108,17 @@ int
 clip_GTK_TABLEATTACHDEFAULTS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
-        guint   left_attach = INT_OPTION(cm,3,1);
-        guint  right_attach = INT_OPTION(cm,4,1);
-        guint    top_attach = INT_OPTION(cm,5,1);
-        guint bottom_attach = INT_OPTION(cm,6,1);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t);
-        CHECKOPT(5,NUMERIC_t); CHECKOPT(6,NUMERIC_t);
-        gtk_table_attach_defaults(GTK_TABLE(ctbl->widget), cwid->widget,
-        	left_attach-1, right_attach-1, top_attach-1, bottom_attach-1);
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	guint   left_attach = INT_OPTION(cm,3,1);
+	guint  right_attach = INT_OPTION(cm,4,1);
+	guint    top_attach = INT_OPTION(cm,5,1);
+	guint bottom_attach = INT_OPTION(cm,6,1);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);
+	CHECKOPT(3,NUMERIC_t); CHECKOPT(4,NUMERIC_t);
+	CHECKOPT(5,NUMERIC_t); CHECKOPT(6,NUMERIC_t);
+	gtk_table_attach_defaults(GTK_TABLE(ctbl->widget), cwid->widget,
+		left_attach-1, right_attach-1, top_attach-1, bottom_attach-1);
 	return 0;
 err:
 	return 1;
@@ -129,11 +129,11 @@ int
 clip_GTK_TABLESETROWSPACING(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        guint      row = INT_OPTION(cm,2,1);
-        guint  spacing = _clip_parni(cm,3);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
-        gtk_table_set_row_spacing(GTK_TABLE(ctbl->widget), row-1, spacing);
+	guint      row = INT_OPTION(cm,2,1);
+	guint  spacing = _clip_parni(cm,3);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	gtk_table_set_row_spacing(GTK_TABLE(ctbl->widget), row-1, spacing);
 	return 0;
 err:
 	return 1;
@@ -144,11 +144,11 @@ int
 clip_GTK_TABLESETCOLSPACING(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        guint      col = INT_OPTION(cm,2,1);
-        guint  spacing = _clip_parni(cm,3);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
-        gtk_table_set_col_spacing(GTK_TABLE(ctbl->widget), col-1, spacing);
+	guint      col = INT_OPTION(cm,2,1);
+	guint  spacing = _clip_parni(cm,3);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
+	gtk_table_set_col_spacing(GTK_TABLE(ctbl->widget), col-1, spacing);
 	return 0;
 err:
 	return 1;
@@ -159,10 +159,10 @@ int
 clip_GTK_TABLESETROWSPACINGS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        guint  spacing = _clip_parni(cm,2);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,NUMERIC_t);
-        gtk_table_set_row_spacings(GTK_TABLE(ctbl->widget), spacing);
+	guint  spacing = _clip_parni(cm,2);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,NUMERIC_t);
+	gtk_table_set_row_spacings(GTK_TABLE(ctbl->widget), spacing);
 	return 0;
 err:
 	return 1;
@@ -170,13 +170,13 @@ err:
 
 /* sets the space between every column in table equal to spacing. */
 int
-clip_GTK_TABLESETCOLSPACINGs(ClipMachine *cm)
+clip_GTK_TABLESETCOLSPACINGS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        guint  spacing = _clip_parni(cm,2);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,NUMERIC_t);
-        gtk_table_set_col_spacings(GTK_TABLE(ctbl->widget), spacing);
+	guint  spacing = _clip_parni(cm,2);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,NUMERIC_t);
+	gtk_table_set_col_spacings(GTK_TABLE(ctbl->widget), spacing);
 	return 0;
 err:
 	return 1;
@@ -188,10 +188,10 @@ int
 clip_GTK_TABLESETHOMOGENEOUS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        gboolean homogeneous = BOOL_OPTION(cm,2,FALSE);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,LOGICAL_t);
-        gtk_table_set_homogeneous(GTK_TABLE(ctbl->widget), homogeneous);
+	gboolean homogeneous = BOOL_OPTION(cm,2,FALSE);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,LOGICAL_t);
+	gtk_table_set_homogeneous(GTK_TABLE(ctbl->widget), homogeneous);
 	return 0;
 err:
 	return 1;
@@ -201,8 +201,8 @@ int
 clip_GTK_TABLEGETHOMOGENEOUS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        _clip_retl(cm, GTK_TABLE(ctbl->widget)->homogeneous);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	_clip_retl(cm, GTK_TABLE(ctbl->widget)->homogeneous);
 	return 0;
 err:
 	return 1;
@@ -212,10 +212,10 @@ int
 clip_GTK_TABLESETNROWS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        guint    nrows = _clip_parni(cm,2);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,NUMERIC_t);
-        gtk_widget_set(ctbl->widget, "n-rows",nrows,NULL);
+	guint    nrows = _clip_parni(cm,2);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,NUMERIC_t);
+	gtk_widget_set(ctbl->widget, "n-rows",nrows,NULL);
 	return 0;
 err:
 	return 1;
@@ -225,8 +225,8 @@ int
 clip_GTK_TABLEGETNROWS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        _clip_retl(cm, GTK_TABLE(ctbl->widget)->nrows);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	_clip_retl(cm, GTK_TABLE(ctbl->widget)->nrows);
 	return 0;
 err:
 	return 1;
@@ -236,10 +236,10 @@ int
 clip_GTK_TABLESETNCOLUMNS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        guint    ncols = _clip_parni(cm,2);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        CHECKOPT(2,NUMERIC_t);
-        gtk_widget_set(ctbl->widget, "n-columns",ncols,NULL);
+	guint    ncols = _clip_parni(cm,2);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	CHECKOPT(2,NUMERIC_t);
+	gtk_widget_set(ctbl->widget, "n-columns",ncols,NULL);
 	return 0;
 err:
 	return 1;
@@ -249,8 +249,8 @@ int
 clip_GTK_TABLEGETNCOLUMNS(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        _clip_retl(cm, GTK_TABLE(ctbl->widget)->ncols);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	_clip_retl(cm, GTK_TABLE(ctbl->widget)->ncols);
 	return 0;
 err:
 	return 1;
@@ -260,8 +260,8 @@ int
 clip_GTK_TABLEGETROWSPACING(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        _clip_retl(cm, GTK_TABLE(ctbl->widget)->row_spacing);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	_clip_retl(cm, GTK_TABLE(ctbl->widget)->row_spacing);
 	return 0;
 err:
 	return 1;
@@ -271,8 +271,8 @@ int
 clip_GTK_TABLEGETCOLUMNSPACING(ClipMachine *cm)
 {
 	C_widget *ctbl = _fetch_cw_arg(cm);
-        CHECKCWID(ctbl,GTK_IS_TABLE);
-        _clip_retl(cm, GTK_TABLE(ctbl->widget)->column_spacing);
+	CHECKCWID(ctbl,GTK_IS_TABLE);
+	_clip_retl(cm, GTK_TABLE(ctbl->widget)->column_spacing);
 	return 0;
 err:
 	return 1;

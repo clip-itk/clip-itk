@@ -1,0 +1,53 @@
+$Id: INSTALL,v 1.1 2002/10/15 08:39:01 clip Exp $
+
+BUILDING
+========
+
+You should be able to build and install xclip by running the following commands
+in the xclip source directory:
+
+xmkmf			# create the makefile
+make			# build the binary
+su			# su to root to install
+make install		# install xclip
+make install.man	# install man page
+
+This should make and install xclip using the configuration (in terms of install
+directories, libraries, etc) used to build everything else in your X11
+distribution.
+
+REQUIREMENTS
+============
+
+xclip should compile on pretty much any unix-like system. The requirements to
+compile xclip are pretty minimal, if you can compile any X apps at all, you'll
+be able to compile xclip.
+
+This means you will need a C compiler, C development environment, xlib
+development environment, make, etc. All of these should be available as
+packages for most useful distributions.
+
+PLATFORMS
+=========
+
+xclip should compile and work on any unix-like platform, I have taken great
+effort to avoid using anything that isn't absolutely standard.
+
+I have decided that it's not practical to compile a list of specific platforms
+that xclip works on, but it has been known to work on GNU/Linux, Solaris,
+Cygwin and Irix. If you are able to get xclip working on a different platform,
+or have any problems getting it to work on a platform you feel it should work
+on, please drop me an email - I'd be interested to know.
+
+TESTING
+=======
+
+The xctest shell script tests xclip by creating a file, and transferring it
+with xclip -i and xclip -o to put it trough xclip, then making sure that
+xclip -o returns exactly what we put in with xclip -i with diff. It was written
+primarily for my own benefit so that I can quickly test that all xclip features
+are working correctly after I make a change. However, I have included it to
+help out anyone who may be modifying the xclip code themselves.
+
+Basically, when you run xctest, you shouln't see any extra output from diff
+inbetween each test (because the input and output should be identical).

@@ -9,26 +9,28 @@
 #include "dbfsql.h"
 #include "error.ch"
 
-const char subsys[] = "DBFSQL";
-const char er_connect[] = "Can't connect to database server";
-const char er_noconnect[] = "No such connection";
-const char er_nosql[] = "No SQL statement";
-const char er_nostatement[] = "No statement. PG_PREPARE must be executed first";
-const char er_badselect[] = "SELECT statement expected";
-const char er_norowset[] = "No such rowset";
-const char er_nofield[] = "No field";
-const char er_typemismatch[] = "RDBMS and Clipper types are incompatible or RDBMS type is not supported";
-const char er_badstatement[] = "Non SELECT statement expected";
-const char er_orderexist[] = "Order exists";
-const char er_noorder[] = "No order";
-const char er_badorderlen[] = "Bad length of order key value";
-const char er_badordertype[] = "Unsupported type of order key value";
-const char er_badorders[] = "Bad orders";
-const char er_internal[] = "Internal error (no row)";
+const char subsys[]             = "DBFSQL";
+const char er_connect[]         = "Can't connect to database server";
+const char er_noconnect[]       = "No such connection";
+const char er_nosql[]           = "No SQL statement";
+const char er_nostatement[]     = "No statement. PREPARE must be executed first";
+const char er_badselect[]       = "SELECT statement expected";
+const char er_norowset[]        = "No such rowset";
+const char er_nofield[]         = "No field";
+const char er_typemismatch[]    = "RDBMS and Clipper types are incompatible or RDBMS type is not supported";
+const char er_badstatement[]    = "Non SELECT statement expected";
+const char er_orderexist[]      = "Order exists";
+const char er_noorder[]         = "No order";
+const char er_badorderlen[]     = "Bad length of order key value";
+const char er_badordertype[]    = "Unsupported type of order key value";
+const char er_badorders[]       = "Bad orders";
+const char er_internal[]        = "Internal error (no row)";
 
 static int sql_fillorders(ClipMachine* mp,SQLROWSET* rowset){
 	int k;
 	int oldrecno = rowset->recno;
+
+	if(rowset->conn->vtbl->fetch(mp,rowset,0,NULL,0,NULL)) return 1;
 
 	for(rowset->recno = 1;rowset->recno <= rowset->lastrec;rowset->recno++){
 		for(k=0;k<rowset->ntags;k++){
@@ -39,64 +41,54 @@ static int sql_fillorders(ClipMachine* mp,SQLROWSET* rowset){
 	return 0;
 }
 
+int clip_SQLLIST(ClipMachine* mp){
+	ClipVar* r = RETPTR(mp);
+	long dims[1] = {0};
+	int i;
+
+	_clip_array(mp,r,1,dims);
+	for(i=0;i<*mp->nsqldrivers;i++){
+		ClipVar a;
+		ClipVar e;
+
+		memset(&a,0,sizeof(ClipVar));
+		memset(&e,0,sizeof(ClipVar));
+		_clip_array(mp,&a,1,dims);
+		e.t.type = CHARACTER_t;
+		e.s.str.len = strlen((*mp->sqldrivers)[i].id);
+		e.s.str.buf = (*mp->sqldrivers)[i].id;
+		_clip_aadd(mp,&a,&e);
+		e.s.str.len = strlen((*mp->sqldrivers)[i].name);
+		e.s.str.buf = (*mp->sqldrivers)[i].name;
+		_clip_aadd(mp,&a,&e);
+		e.s.str.len = strlen((*mp->sqldrivers)[i].desc);
+		e.s.str.buf = (*mp->sqldrivers)[i].desc;
+		_clip_aadd(mp,&a,&e);
+		_clip_aadd(mp,r,&a);
+	}
+	return 0;
+}
+
 int clip_SQLCREATECONN(ClipMachine* mp){
 	char* id = _clip_parc(mp,1);
 	int conn_item = -1;
 	SQLCONN* conn;
 	const char* sqlcs = _clip_parc(mp,9);
+	int i;
 
-	if(strcmp(id,"PG")==0){
-		if(mp->pg_connect){
-			conn_item = (*mp->pg_connect)(mp);
+	for(i=0;i<(*mp->nsqldrivers);i++){
+		if(strcasecmp(id,(*mp->sqldrivers)[i].id) == 0){
+			conn_item = (*(*mp->sqldrivers)[i].connect)(mp);
 			if(conn_item==-1){
 				return 1;
 			}
-		} else {
-			_clip_trap_err(mp,0,0,0,subsys,ER_NOLIB,"libclip-postgres.so not linked");
-			return 1;
+			break;
 		}
-	} else if(strcmp(id,"MS")==0){
-		if(mp->ms_connect){
-			conn_item = (*mp->ms_connect)(mp);
-			if(conn_item==-1){
-				return 1;
-			}
-		} else {
-			_clip_trap_err(mp,0,0,0,subsys,ER_NOLIB,"libclip-mysql.so not linked");
-			return 1;
-		}
-	} else if(strcmp(id,"OR")==0){
-		if(mp->or_connect){
-			conn_item = (*mp->or_connect)(mp);
-			if(conn_item==-1){
-				return 1;
-			}
-		} else {
-			_clip_trap_err(mp,0,0,0,subsys,ER_NOLIB,"libclip-oracle.so not linked");
-			return 1;
-		}
-	} else if(strcmp(id,"ODBC")==0){
-		if(mp->odbc_connect){
-			conn_item = (*mp->odbc_connect)(mp);
-			if(conn_item==-1){
-				return 1;
-			}
-		} else {
-			_clip_trap_err(mp,0,0,0,subsys,ER_NOLIB,"libclip-odbc.so not linked");
-			return 1;
-		}
-	} else if(strcmp(id,"IB")==0){
-		if(mp->ib_connect){
-			conn_item = (*mp->ib_connect)(mp);
-			if(conn_item==-1){
-				return 1;
-			}
-		} else {
-			_clip_trap_err(mp,0,0,0,subsys,ER_NOLIB,"libclip-interbase.so not linked");
-			return 1;
-		}
-	} else {
-		_clip_trap_err(mp,0,0,0,subsys,ER_NOLIB,"Unknown RDBMS (bad identifier)");
+	}
+	if(i==*mp->nsqldrivers){
+		char err[256];
+		snprintf(err,sizeof(err),";Unknown RDBMS (bad identifier '%s' or library not linked);",id);
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOLIB,err);
 		return 1;
 	}
 
@@ -140,18 +132,6 @@ int clip_SQLPREPARE(ClipMachine* mp){
 	return 0;
 }
 
-static void freestmt(SQLSTMT* stmt){
-	SQLCONN* conn = stmt->conn;
-	SQLSTMT* iter = conn->stmts;
-
-	if(iter==stmt){
-		conn->stmts = stmt->next;
-	} else {
-		while(iter->next!=stmt){iter = iter->next;}
-		iter->next = stmt->next;
-	}
-}
-
 int clip_SQLFREESTMT(ClipMachine* mp){
 	int stmt_item = _clip_parni(mp,1);
 	SQLSTMT* stmt = (SQLSTMT*)_clip_fetch_c_item(
@@ -162,7 +142,6 @@ int clip_SQLFREESTMT(ClipMachine* mp){
 		return 1;
 	}
 
-	freestmt(stmt);
 	_clip_destroy_c_item(mp,stmt->stmt_item,_C_ITEM_TYPE_SQL);
 	return 0;
 }
@@ -177,8 +156,7 @@ int clip_SQLCOMMAND(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOSTATEMENT,er_nostatement);
 		return 1;
 	}
-	if((res = stmt->conn->vtbl->command(mp,stmt,ap))==-1){
-		freestmt(stmt);
+	if((res = stmt->conn->vtbl->command(mp,stmt,ap)) == -1){
 		_clip_destroy_c_item(mp,stmt->stmt_item,_C_ITEM_TYPE_SQL);
 		return 1;
 	}
@@ -197,12 +175,25 @@ int clip_SQLTESTPARSER(ClipMachine* mp){
 	return 0;
 }
 
+int _sql_fetch(ClipMachine* mp,SQLROWSET* rowset){
+	if(rowset->recno > rowset->loaded){
+		if(rowset->conn->vtbl->fetch(mp,rowset,rowset->recno - rowset->loaded,
+			NULL,0,NULL))
+			return 1;
+	}
+	if(rowset->done && (rowset->loaded == 0)){
+		rowset->recno = 0;
+		rowset->bof = rowset->eof = 1;
+	}
+	return 0;
+}
+
 int clip_SQLCREATEROWSET(ClipMachine* mp){
 	ClipVar* rmap = _clip_spar(mp,1);
 	SQLSTMT* stmt = (SQLSTMT*)_clip_fetch_c_item(
 		mp,_clip_parni(mp,2),_C_ITEM_TYPE_SQL);
 	ClipVar* ap = _clip_par(mp,3);
-	const char* idname = _clip_parc(mp,4);
+	ClipVar* idname = _clip_par(mp,4);
 	ClipVar* orders = _clip_par(mp,5);
 	const char* gen_idSQL = _clip_parc(mp,6);
 	SQLROWSET* rowset;
@@ -222,8 +213,7 @@ int clip_SQLCREATEROWSET(ClipMachine* mp){
 	rowset = calloc(1,stmt->conn->vtbl->sizeof_rowset);
 	rowset->orders = new_HashTable();
 	rowset->conn = stmt->conn;
-	rowset->next = stmt->conn->rowsets;
-	stmt->conn->rowsets = rowset;
+	rowset->stmt = stmt;
 	if(orders && orders->t.type == ARRAY_t){
 		rowset->ntags = orders->a.count;
 		rowset->taghashes = calloc(orders->a.count,sizeof(long));
@@ -253,19 +243,38 @@ int clip_SQLCREATEROWSET(ClipMachine* mp){
 				return 1;
 		}
 	}
-	if(stmt->conn->vtbl->createrowset(mp,rowset,stmt,ap,idname,gen_idSQL))
+	if(stmt->conn->vtbl->createrowset(mp,rowset,ap,idname,gen_idSQL)){
+		_clip_destroy_c_item(mp,rowset->rowset_item,_C_ITEM_TYPE_SQL);
 		return 1;
+	}
 
-	if(rowset->lastrec==0){
+	if(!rowset->unknownrows && rowset->lastrec==0){
 		rowset->bof = rowset->eof = 1;
 		rowset->recno = 0;
 	} else {
 		rowset->recno = 1;
+		if(_sql_fetch(mp,rowset)) return 1;
 	}
-	freestmt(stmt);
-	_clip_destroy_c_item(mp,stmt->stmt_item,_C_ITEM_TYPE_SQL);
 
 	_clip_retni(mp,rowset->rowset_item);
+	return 0;
+}
+
+int clip_SQLGETHOT(ClipMachine* mp){
+	int rowset_item = _clip_parni(mp,1);
+	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
+		mp,rowset_item,_C_ITEM_TYPE_SQL);
+
+	_clip_retl(mp,rowset->hot);
+	return 0;
+}
+
+int clip_SQLSETHOT(ClipMachine* mp){
+	int rowset_item = _clip_parni(mp,1);
+	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
+		mp,rowset_item,_C_ITEM_TYPE_SQL);
+
+	rowset->hot = _clip_parl(mp,2);
 	return 0;
 }
 
@@ -281,8 +290,6 @@ int clip_SQLDESTROYROWSET(ClipMachine* mp){
 	int rowset_item = _clip_parni(mp,1);
 	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
 		mp,rowset_item,_C_ITEM_TYPE_SQL);
-	SQLCONN* conn = rowset->conn;
-	SQLROWSET* iter = conn->rowsets;
 	int r;
 
 	if(!rowset){
@@ -304,12 +311,13 @@ int clip_SQLDESTROYROWSET(ClipMachine* mp){
 		r = HashTable_next(rowset->orders);
 	}
 	delete_HashTable(rowset->orders);
-	if(iter==rowset){
-		conn->rowsets = rowset->next;
-	} else {
-		while(iter->next!=rowset){iter = iter->next;}
-		iter->next = rowset->next;
-	}
+
+	if(rowset->ids)
+		free(rowset->ids);
+
+	if(!rowset->done)
+		_clip_destroy_c_item(mp,rowset->stmt->stmt_item,_C_ITEM_TYPE_SQL);
+
 	_clip_destroy_c_item(mp,rowset_item,_C_ITEM_TYPE_SQL);
 	return 0;
 }
@@ -322,22 +330,22 @@ int clip_SQLGOTOP(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
-	if(rowset->lastrec){
-		rowset->bof = rowset->eof = 0;
-		if(rowset->curord){
-			if(bt_first(rowset->curord->bt)){
-				rowset->bof = rowset->eof = 1;
-				rowset->recno = 0;
-			} else {
-				rowset->recno = *(int*)bt_key(rowset->curord->bt);
-			}
-		} else {
-			rowset->recno = 1;
-		}
-	} else {
+	if(rowset->done && !rowset->lastrec){
 		rowset->bof = rowset->eof = 1;
 		rowset->recno = 0;
+		return 0;
 	}
+	if(rowset->curord){
+		if(!rowset->curord->bt || bt_first(rowset->curord->bt)){
+			rowset->bof = rowset->eof = 1;
+			rowset->recno = 0;
+		} else {
+			rowset->recno = *(int*)bt_key(rowset->curord->bt);
+		}
+	}
+	rowset->bof = rowset->eof = 0;
+	rowset->recno = 1;
+	if(_sql_fetch(mp,rowset)) return 1;
 	return 0;
 }
 
@@ -349,22 +357,22 @@ int clip_SQLGOBOTTOM(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
-	if(rowset->lastrec){
-		rowset->bof = rowset->eof = 0;
-		if(rowset->curord){
-			if(bt_last(rowset->curord->bt)){
-				rowset->bof = rowset->eof = 1;
-				rowset->recno = 0;
-			} else {
-				rowset->recno = *(int*)bt_key(rowset->curord->bt);
-			}
-		} else {
-			rowset->recno = rowset->lastrec;
-		}
-	} else {
+	if(rowset->done && !rowset->lastrec){
 		rowset->bof = rowset->eof = 1;
 		rowset->recno = 0;
+		return 0;
 	}
+	if(rowset->curord){
+		if(!rowset->curord->bt || bt_last(rowset->curord->bt)){
+			rowset->bof = rowset->eof = 1;
+			rowset->recno = 0;
+		} else {
+			rowset->recno = *(int*)bt_key(rowset->curord->bt);
+		}
+	}
+	rowset->bof = rowset->eof = 0;
+	if(rowset->conn->vtbl->fetch(mp,rowset,0,NULL,0,NULL)) return 1;
+	rowset->recno = rowset->lastrec;
 	return 0;
 }
 
@@ -417,7 +425,11 @@ int clip_SQLSKIP(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
-	if(rowset->lastrec>0){
+	if(!rows || (rowset->bof && rowset->eof)){
+		_clip_retni(mp,0);
+		return 0;
+	}
+	if(!((rows > 0 && rowset->eof) || (rows < 0 && rowset->bof))){
 		rowset->bof = rowset->eof = 0;
 		if(rowset->curord){
 			int i,j;
@@ -441,10 +453,11 @@ int clip_SQLSKIP(ClipMachine* mp){
 		} else {
 			oldrecno = rowset->recno;
 			rowset->recno += rows;
+			if(_sql_fetch(mp,rowset)) return 1;
 			if(rowset->recno<1){
 				rowset->recno = 1;
 				rowset->bof = 1;
-			} else if(rowset->recno>rowset->lastrec){
+			} else if(rowset->done && rowset->recno>rowset->lastrec){
 				rowset->recno = rowset->lastrec;
 				rowset->eof = 1;
 			}
@@ -464,10 +477,11 @@ int clip_SQLGOTO(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
-	if(rowset->lastrec>0){
+	if(rowset->lastrec>0 || rowset->unknownrows){
 		rowset->bof = rowset->eof = 0;
 		rowset->recno = row;
-		if(row>rowset->lastrec){
+		if(_sql_fetch(mp,rowset)) return 1;
+		if(rowset->done && row>rowset->lastrec){
 			rowset->recno = rowset->lastrec;
 			rowset->eof = 1;
 		} else if(row<1){
@@ -542,7 +556,7 @@ int clip_SQLGETVALUE(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
 		return 1;
 	}
-	if(rowset->lastrec){
+	if(rowset->recno){
 		data = rowset->conn->vtbl->getvalue(rowset,fieldno,&len);
 		if(data){
 			_clip_retcn(mp,data,len);
@@ -579,20 +593,24 @@ int clip_SQLSETVALUE(ClipMachine* mp){
 	}
 
 	if(!value) len = 0;
-	for(k=0;k<rowset->ntags;k++){
-		order = (SQLORDER*)HashTable_fetch(rowset->orders,rowset->taghashes[k]);
-		if(sql_searchtree(mp,rowset,order)) return 1;
-		if(sql_orderdel(mp,rowset,rowset->taghashes[k])) return 1;
+	if(!rowset->newrec){
+		for(k=0;k<rowset->ntags;k++){
+			order = (SQLORDER*)HashTable_fetch(rowset->orders,rowset->taghashes[k]);
+			if(sql_searchtree(mp,rowset,order)) return 1;
+			if(sql_orderdel(mp,rowset,rowset->taghashes[k])) return 1;
+		}
 	}
 	rowset->conn->vtbl->setvalue(rowset,fieldno,value,len);
-	for(k=0;k<rowset->ntags;k++){
-		order = (SQLORDER*)HashTable_fetch(rowset->orders,rowset->taghashes[k]);
-		if(sql_orderadd(mp,rowset,rowset->taghashes[k])) return 1;
+	if(!rowset->newrec){
+		for(k=0;k<rowset->ntags;k++){
+			order = (SQLORDER*)HashTable_fetch(rowset->orders,rowset->taghashes[k]);
+			if(sql_orderadd(mp,rowset,rowset->taghashes[k])) return 1;
+		}
 	}
 	return 0;
 }
 
-int clip_SQLAPPEND(ClipMachine* mp){
+int clip_SQLADDKEYS(ClipMachine* mp){
 	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
 		mp,_clip_parni(mp,1),_C_ITEM_TYPE_SQL);
 	int k;
@@ -601,12 +619,26 @@ int clip_SQLAPPEND(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
-	rowset->conn->vtbl->append(rowset);
-	rowset->recno = rowset->lastrec;
-	rowset->bof = rowset->eof = 0;
 	for(k=0;k<rowset->ntags;k++){
 		if(sql_orderadd(mp,rowset,rowset->taghashes[k])) return 1;
 	}
+	rowset->newrec = 0;
+	return 0;
+}
+
+int clip_SQLAPPEND(ClipMachine* mp){
+	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
+		mp,_clip_parni(mp,1),_C_ITEM_TYPE_SQL);
+
+	if(!rowset){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
+		return 1;
+	}
+	if(rowset->conn->vtbl->fetch(mp,rowset,0,NULL,0,NULL)) return 1;
+	rowset->conn->vtbl->append(rowset);
+	rowset->recno = rowset->lastrec;
+	rowset->bof = rowset->eof = 0;
+	rowset->newrec = 1;
 	return 0;
 }
 
@@ -618,6 +650,7 @@ int clip_SQLDELETE(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
+	if(rowset->conn->vtbl->fetch(mp,rowset,0,NULL,0,NULL)) return 1;
 	if(rowset->lastrec>0){
 		int oldrecno = rowset->recno;
 		int newrecno = 0,k;
@@ -642,6 +675,7 @@ int clip_SQLDELETE(ClipMachine* mp){
 		}
 		rowset->conn->vtbl->delete_(rowset);
 		rowset->lastrec--;
+		rowset->loaded--;
 		if(rowset->lastrec==0){
 			rowset->bof = rowset->eof = 1;
 			rowset->recno = 0;
@@ -688,9 +722,8 @@ int clip_SQLFIELDNO(ClipMachine* mp){
 	while((++nfield<rowset->nfields)&&
 		(strncasecmp(rowset->fields[nfield].name,fieldname,MAXFIELDNAME)));
 	if(nfield>=rowset->nfields){
-		// No such field
-		_clip_retni(mp,0);
-		return 0;
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
+		return 1;
 	}
 
 	_clip_retni(mp,nfield+1);
@@ -706,6 +739,10 @@ int clip_SQLFIELDNAME(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
+		return 1;
+	}
 	_clip_retc(mp,rowset->fields[fieldno-1].name);
 	return 0;
 }
@@ -717,6 +754,27 @@ int clip_SQLFIELDTYPE(ClipMachine* mp){
 
 	if(!rowset){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
+		return 1;
+	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
+		return 1;
+	}
+	_clip_retc(mp,rowset->fields[fieldno-1].ctype);
+	return 0;
+}
+
+int clip_SQLFIELDTYPESQL(ClipMachine* mp){
+	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
+		mp,_clip_parni(mp,1),_C_ITEM_TYPE_SQL);
+	int fieldno = _clip_parni(mp,2);
+
+	if(!rowset){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
+		return 1;
+	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
 		return 1;
 	}
 	_clip_retni(mp,rowset->fields[fieldno-1].type);
@@ -732,6 +790,10 @@ int clip_SQLFIELDNULLABLE(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
+		return 1;
+	}
 	_clip_retl(mp,!rowset->fields[fieldno-1].notnull);
 	return 0;
 }
@@ -745,6 +807,10 @@ int clip_SQLFIELDUNSIGNED(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
+		return 1;
+	}
 	_clip_retl(mp,rowset->fields[fieldno-1].unsign);
 	return 0;
 }
@@ -753,12 +819,19 @@ int clip_SQLFIELDBINARY(ClipMachine* mp){
 	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
 		mp,_clip_parni(mp,1),_C_ITEM_TYPE_SQL);
 	int fieldno = _clip_parni(mp,2);
+	int newval = _clip_parl(mp,3);
 
 	if(!rowset){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
+		return 1;
+	}
 	_clip_retl(mp,rowset->fields[fieldno-1].binary);
+	if(_clip_parinfo(mp,3) == LOGICAL_t)
+		rowset->fields[fieldno-1].binary = newval;
 	return 0;
 }
 
@@ -769,6 +842,10 @@ int clip_SQLFIELDLEN(ClipMachine* mp){
 
 	if(!rowset){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
+		return 1;
+	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
 		return 1;
 	}
 	_clip_retni(mp,rowset->fields[fieldno-1].len);
@@ -784,6 +861,10 @@ int clip_SQLFIELDDEC(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
+	if(fieldno < 1 || fieldno > rowset->nfields){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOFIELD,er_nofield);
+		return 1;
+	}
 	_clip_retni(mp,rowset->fields[fieldno-1].dec);
 	return 0;
 }
@@ -796,7 +877,31 @@ int clip_SQLROWID(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
-	_clip_retni(mp,rowset->id+1);
+
+	if(!rowset->ids){
+		_clip_retni(mp,rowset->id+1);
+	} else if(rowset->nids == 1){
+		_clip_retni(mp,rowset->ids[0]+1);
+	} else {
+		ClipVar* r = RETPTR(mp);
+		ClipVar var;
+		long vect[1];
+		int i;
+
+		vect[0] = rowset->nids;
+		_clip_array(mp,r,1,vect);
+
+		for(i=0;i<rowset->nids;i++){
+			vect[0] = i;
+			memset(&var,0,sizeof(ClipVar));
+
+			var.t.type = NUMERIC_t;
+			var.t.len = 10;
+			var.t.dec = 2;
+			var.n.d = rowset->ids[i]+1;
+			_clip_aset(mp,r,&var,1,vect);
+		}
+	}
 	return 0;
 }
 
@@ -1106,7 +1211,6 @@ int clip_SQLREFRESH(ClipMachine* mp){
 	SQLSTMT* stmt = (SQLSTMT*)_clip_fetch_c_item(
 		mp,_clip_parni(mp,2),_C_ITEM_TYPE_SQL);
 	ClipVar* ap = _clip_par(mp,3);
-	const char* idname = _clip_parc(mp,4);
 	int k;
 
 	if(!rowset){
@@ -1117,11 +1221,11 @@ int clip_SQLREFRESH(ClipMachine* mp){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOSTATEMENT,er_nostatement);
 		return 1;
 	}
-
+	if(rowset->conn->vtbl->fetch(mp,rowset,0,NULL,0,NULL)) return 1;
 	for(k=0;k<rowset->ntags;k++){
 		if(sql_orderdel(mp,rowset,rowset->taghashes[k])) return 1;
 	}
-	if(stmt->conn->vtbl->refresh(mp,rowset,stmt,ap,idname) == -1)
+	if(stmt->conn->vtbl->refresh(mp,rowset,stmt,ap) == -1)
 		return 1;
 	for(k=0;k<rowset->ntags;k++){
 		if(sql_orderadd(mp,rowset,rowset->taghashes[k])) return 1;
@@ -1182,7 +1286,7 @@ static int sql_cmp(SQLLocale* loc,unsigned char* s1,unsigned char* s2,int len){
 	return r;
 }
 
-static int _sql_char_compare(void* op,void* key1,void* key2){
+static int _sql_char_compare(void* op,void* key1,void* key2,int* uniq){
 	SQLORDER* order = (SQLORDER*)op;
 	int k1 = *(int*)key1;
 	int k2 = *(int*)key2;
@@ -1197,7 +1301,7 @@ static int _sql_char_compare(void* op,void* key1,void* key2){
 	return r;
 }
 
-static int _sql_num_compare(void* op,void* key1,void* key2){
+static int _sql_num_compare(void* op,void* key1,void* key2,int* uniq){
 	int k1 = *(int*)key1;
 	int k2 = *(int*)key2;
 	double d;
@@ -1211,7 +1315,7 @@ static int _sql_num_compare(void* op,void* key1,void* key2){
 	return r;
 }
 
-static int _sql_date_compare(void* op,void* key1,void* key2){
+static int _sql_date_compare(void* op,void* key1,void* key2,int* uniq){
 	int k1 = *(int*)key1;
 	int k2 = *(int*)key2;
 	long r;
@@ -1222,7 +1326,7 @@ static int _sql_date_compare(void* op,void* key1,void* key2){
 	return (int)r;
 }
 
-static int _sql_dt_compare(void* op,void* key1,void* key2){
+static int _sql_dt_compare(void* op,void* key1,void* key2,int* uniq){
 	int k1 = *(int*)key1;
 	int k2 = *(int*)key2;
 	long r;
@@ -1248,7 +1352,7 @@ int sql_orderadd(ClipMachine* mp,SQLROWSET* rowset,long taghash){
 	if(_clip_eval(mp,order->block,1,order->rmap,&var))
 		return 1;
 	if(!order->bt){
-		int (*compare)(void* op,void* key1,void* key2);
+		int (*compare)(void* op,void* key1,void* key2,int* uniq);
 
 		switch(var.t.type){
 			case CHARACTER_t:
@@ -1328,7 +1432,12 @@ int clip_SQLCREATEORDER(ClipMachine* mp){
 		return 1;
 	}
 
+	if(rowset->conn->vtbl->fetch(mp,rowset,0,NULL,0,NULL)) return 1;
+
 	if(sql_createorder(mp,rmap,rowset,tagname,expr,len)) return 1;
+	rowset->ntags++;
+	rowset->taghashes = realloc(rowset->taghashes,rowset->ntags*sizeof(long));
+	rowset->taghashes[rowset->ntags-1] = _clip_casehashstr(tagname);
 
 	oldrecno = rowset->recno;
 	for(rowset->recno = 1;rowset->recno <= rowset->lastrec;rowset->recno++){
@@ -1430,5 +1539,109 @@ int clip_SQLGENID(ClipMachine* mp){
 
 	if(rowset->conn->vtbl->genid)
 		return rowset->conn->vtbl->genid(mp,rowset);
+	return 0;
+}
+
+int clip_SQLSTART(ClipMachine* mp){
+	int conn_item = _clip_parni(mp,1);
+	SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+		mp,conn_item,_C_ITEM_TYPE_SQL);
+	const char* p1 = _clip_parc(mp,2);
+	const char* p2 = _clip_parc(mp,3);
+
+	if(!conn){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+		return 1;
+	}
+	if(conn->vtbl->start)
+		return conn->vtbl->start(mp,conn,p1,p2);
+	return 0;
+}
+
+int clip_SQLCOMMIT(ClipMachine* mp){
+	int conn_item = _clip_parni(mp,1);
+	SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+		mp,conn_item,_C_ITEM_TYPE_SQL);
+
+	if(!conn){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+		return 1;
+	}
+	if(conn->vtbl->commit)
+		return conn->vtbl->commit(mp,conn);
+	return 0;
+}
+int clip_SQLROLLBACK(ClipMachine* mp){
+	int conn_item = _clip_parni(mp,1);
+	SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+		mp,conn_item,_C_ITEM_TYPE_SQL);
+
+	if(!conn){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+		return 1;
+	}
+	if(conn->vtbl->rollback)
+		return conn->vtbl->rollback(mp,conn);
+	return 0;
+}
+
+int clip_SQLFETCH(ClipMachine* mp){
+	int rowset_item = _clip_parni(mp,1);
+	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
+		mp,rowset_item,_C_ITEM_TYPE_SQL);
+	int recs = _clip_parni(mp,2);
+	ClipVar* eval = _clip_vptr(_clip_par(mp,3));
+	int every = _clip_parni(mp,4);
+	ClipVar* ors = _clip_spar(mp,5);
+
+	if(!rowset){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
+		return 1;
+	}
+	if(!every)
+		every = 1;
+	if(rowset->conn->vtbl->fetch(mp,rowset,recs,eval,every,ors)) return 1;
+
+	_clip_retni(mp,rowset->loaded);
+	return 0;
+}
+
+int clip_SQLFETCHED(ClipMachine* mp){
+	int rowset_item = _clip_parni(mp,1);
+	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
+		mp,rowset_item,_C_ITEM_TYPE_SQL);
+
+	if(!rowset){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
+		return 1;
+	}
+
+	_clip_retni(mp,rowset->loaded);
+	return 0;
+}
+
+int clip_SQLKEYNO(ClipMachine* mp){
+	SQLROWSET* rowset = (SQLROWSET*)_clip_fetch_c_item(
+		mp,_clip_parni(mp,1),_C_ITEM_TYPE_SQL);
+	int keyno = 0;
+
+	if(!rowset){
+		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
+		return 1;
+	}
+	if(rowset->curord){
+		if(!rowset->curord->bt)
+			keyno = rowset->recno;
+		else if(!bt_first(rowset->curord->bt)){
+			keyno++;
+			while(rowset->recno != *(int*)bt_key(rowset->curord->bt)){
+				bt_next(rowset->curord->bt);
+				keyno++;
+			}
+		}
+	} else {
+		keyno = rowset->recno;
+	}
+	_clip_retni(mp,keyno);
 	return 0;
 }

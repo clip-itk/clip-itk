@@ -25,6 +25,8 @@ do
 	-release)
 		RFLAG='-r'
 		LANG=C
+				dostrip=no
+				release=yes
 		[ -n "$CLIPROOT" ] || CLIPROOT=/usr/local/clip
 		;;
 	esac
@@ -39,6 +41,9 @@ then
 elif [ -x /usr/bin/gmake ]
 then
 	MAKE=/usr/bin/gmake
+elif [ -x /usr/bin/make ]
+then
+	MAKE=/usr/bin/make
 else
 	MAKE=make
 fi
@@ -49,7 +54,7 @@ PATH="$HOME/bin:$PATH"
 if [ -z "$CLIP_NAMES" ]
 then
 	CLIP_NAMES=yes
-        export CLIP_NAMES
+		export CLIP_NAMES
 fi
 
 export MAKE LANG LC_ALL LC_MESSAGES PATH
@@ -70,60 +75,115 @@ then
 fi
 
 export CLIPROOT
-mkdir -p ${CLIPROOT}/include
+#export -n DESTDIR
+_DESTDIR="$DESTDIR"
+unset DESTDIR
+DESTDIR="$_DESTDIR"
+mkdir -p ${DESTDIR}${CLIPROOT}/include
 mkdir -p ${HOME}/bin
 
 if [ -z "$noclip" ]
 then
 
 cd clip || exit 1
-	./configure ${RFLAG} ${CLIP_CONFIGURE_FLAGS}
-	$MAKE install || exit 2
+#	./configure ${RFLAG} ${CLIP_CONFIGURE_FLAGS}
+#	$MAKE install || exit 2
+	./configure ${RFLAG} ${CLIP_CONFIGURE_FLAGS} || exit 2
+	$MAKE install DESTDIR=${DESTDIR}
 cd $pwd
 
 fi
 
-. clip/clipcfg.sh || exit 2
-
-cp -R prg/include ${CLIPROOT}/
-cp -R prg/locale.po ${CLIPROOT}/
-
-cd cliplibs
-
-	$MAKE install
-
-cd $pwd
-
-if [ -z "$noprg" ]
-then
-
-cd  prg || exit 1
-	make &&\
-	make install &&\
-		${CLIPROOT}/bin/clip_msgmerge &&\
-		${CLIPROOT}/bin/clip_msgfmt  || exit 3
-cd $pwd
-
-fi
-
-mkdir -p ${CLIPROOT}/doc
-cp -R example ${CLIPROOT}/doc/
-
-cd  ${CLIPROOT}/ || exit 1
-	rm -rf `find . -name CVS -print`
-cd $pwd
+#. clip/clipcfg.sh || exit 2
 
 echo "-v0
 -O
 -r
--l" > ${CLIPROOT}/cliprc/clipflags
+-l" > ${DESTDIR}${CLIPROOT}/cliprc/clipflags
+
+#cd cliplibs
+
+#$MAKE install
+
+#(
+	cd cliplibs
+	CLIPROOT=${DESTDIR}${CLIPROOT}
+	LD_LIBRARY_PATH=${DESTDIR}/usr/lib:$LD_LIBRARY_PATH
+	export CLIPROOT  LD_LIBRARY_PATH
+	$MAKE
+	$MAKE install DESTDIR=''
+#)
+
+cd $pwd
+
+#if [ -z "$noprg" ]
+#then
+
+	cp -R prg/include ${DESTDIR}${CLIPROOT}/
+	cp -R prg/locale.po ${DESTDIR}${CLIPROOT}/
+
+#cd  prg || exit 1
+#	$MAKE &&\
+#	$MAKE install &&\
+#		${CLIPROOT}/bin/clip_msgmerge &&\
+#		${CLIPROOT}/bin/clip_msgfmt  || exit 3
+
+#	(
+		cd prg
+#		CLIPROOT=${DESTDIR}${CLIPROOT}
+#		LD_LIBRARY_PATH=${DESTDIR}/usr/lib:$LD_LIBRARY_PATH
+#		export CLIPROOT  LD_LIBRARY_PATH
+		$MAKE
+		$MAKE install
+#		${DESTDIR}${CLIPROOT}/bin/clip_msgmerge
+#		${DESTDIR}${CLIPROOT}/bin/clip_msgfmt
+#	)
+
+#fi
+
+cd $pwd
+mkdir -p ${DESTDIR}${CLIPROOT}/doc
+echo cp -R example ${DESTDIR}${CLIPROOT}/doc/
+cp -R example ${DESTDIR}${CLIPROOT}/doc/
+
+#if test -d tdoc
+#then
+#	(cd tdoc ; $MAKE install DESTDIR=${DESTDIR})
+#fi
+
+cd  ${DESTDIR}${CLIPROOT}/ || exit 1
+echo	rm -rf `find . -name CVS -print`
+	rm -rf `find . -name CVS -print`
+cd $pwd
 
 
-if [ -n "$dostrip" ]
+
+if [ -n "$release" ]
+then
+	echo mkdir -p ${DESTDIR}/usr/lib
+	mkdir -p ${DESTDIR}/usr/lib
+
+	cd ${DESTDIR}${CLIPROOT}/lib
+	if [ $(ls *.so) ]
+	then
+		for n in *.so
+		do
+			echo ln -sf ${CLIPROOT}/lib/$n ${DESTDIR}/usr/lib
+			rm -f ${DESTDIR}/usr/lib/$n
+			ln -sf ${CLIPROOT}/lib/$n ${DESTDIR}/usr/lib
+			echo done
+		done
+	fi
+fi
+
+#exit 0
+
+cd $pwd
+if [ -n "$dostrip" -a -z "$release" ]
 then
 
-strip ${DESTDIR}${CLIP_ROOT}/bin/*  2>/dev/null || true
-strip ${DESTDIR}${CLIP_ROOT}/lib/*${DLLREALSUFF} 2>/dev/null || true
+strip ${DESTDIR}${CLIP_ROOT}/bin/*
+strip ${DESTDIR}${CLIP_ROOT}/lib/*${DLLREALSUFF}
 
 fi
 

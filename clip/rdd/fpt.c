@@ -4,9 +4,50 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: fpt.c,v $
+	Revision 1.41  2003/09/02 14:27:43  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+	
+	Revision 1.40  2003/06/21 08:54:47  clip
+	rust: CMF (CLIP Memo File) with 64-bit file support started
+
+	Revision 1.39  2003/06/04 11:46:49  clip
+	rust: size optimization
+
+	Revision 1.38  2003/05/29 15:26:27  clip
+	rust: memory leak in fpt_setvalue()
+
+	Revision 1.37  2003/05/29 10:57:52  clip
+	rust: CLIP_MEMO is flex too
+
+	Revision 1.36  2003/03/04 10:31:24  clip
+	rust: some cleanings
+
+	Revision 1.35  2003/01/22 10:59:51  clip
+	rust: touch updated memo and index on close
+
+	Revision 1.34  2002/12/25 12:18:25  clip
+	rust: read arrays from SIxMemo
+
+	Revision 1.33  2002/12/12 13:42:27  clip
+	rust: small fix
+
+	Revision 1.32  2002/12/12 11:17:17  clip
+	rust: support for non-flex FPT (C52 DBFCDX, SIXCDX)
+
+	Revision 1.31  2002/11/27 12:13:38  clip
+	rust: small fix
+
+	Revision 1.30  2002/11/26 15:35:48  clip
+	rust: avoid permanent fuu increasing
+
+	Revision 1.29  2002/11/26 12:47:35  clip
+	rust: added parameter 'method' to _clip_var2str() and _clip_str2var()
+
 	Revision 1.28  2002/09/19 12:52:17  clip
 	rust: flex fpt bug
-	
+
 	Revision 1.27  2002/09/18 08:30:50  clip
 	rust: flex fpt with objects
 
@@ -91,6 +132,10 @@
 
 #define FLEXPAGE_SIZE 1024
 
+#define CLIP_MEMO    0
+#define SIX_MEMO     1
+#define FLEX_MEMO    2
+
 static RDD_MEMO_VTBL* fpt_vtbl();
 
 static const char* er_corruption = "Corruption in .FPT file detected";
@@ -104,7 +149,8 @@ typedef struct _FPT_HEADER_ {
 	char fuu[4];
 	char reserved1[2];
 	char blocksize[2];
-	char reserved2[504];
+	char sig0[12];
+	char reserved2[492];
 	char sig[12];
 	char flexdir[4];
 	char flexrev[4];
@@ -139,11 +185,12 @@ static int fpt_create(ClipMachine* cm,char* name,const char* __PROC__){
 	_rdd_put_backuint(hdr.fuu,fuu);
 	_rdd_put_backushort(hdr.blocksize,cm->mblocksize);
 	strcpy(hdr.sig,"FlexFile3");
+	strcpy(hdr.sig0,"Made by CLIP");
 	hdr.sig[9] = 3;
 
 	memset(&file,0,sizeof(RDD_FILE));
 	file.md = (char*)-1;
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	file.fd = open(name,O_CREAT|O_TRUNC|O_RDWR|O_BINARY,cm->fileCreateMode);
 #else
 	file.fd = open(name,O_CREAT|O_TRUNC|O_RDWR,cm->fileCreateMode);
@@ -183,6 +230,12 @@ static int fpt_open(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PROC
 	if((er = rdd_read(cm,&rm->file,0,sizeof(FPT_HEADER),&hdr,__PROC__)))
 		return er;
 	rm->blocksize = _rdd_backushort(hdr.blocksize);
+	if(memcmp(hdr.sig0,"SIxMemo",7) == 0)
+		rm->format = SIX_MEMO;
+	else if(memcmp(hdr.sig0,"Made by CLIP",12) == 0)
+		rm->format = CLIP_MEMO;
+	else if(memcmp(hdr.sig,"FlexFile3\03",9)==0)
+		rm->format = FLEX_MEMO;
 	return 0;
 }
 
@@ -192,10 +245,97 @@ static int fpt_close(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PRO
 	return 0;
 }
 
+static void _read_six_str(ClipVar* vp,DbfLocale* loc,char** str){
+	vp->t.type = CHARACTER_t;
+	*str += 2;
+	vp->s.str.len = _rdd_uint(*str);
+	*str += 12;
+	vp->s.str.buf = *str;
+	*str += vp->s.str.len;
+	loc_read(loc,vp->s.str.buf,vp->s.str.len);
+}
+
+static void _read_six_int(ClipVar* vp,char** str){
+	vp->t.type = NUMERIC_t;
+	*str += 6;
+	vp->n.d = (int)_rdd_uint(*str);
+	*str += 8;
+}
+
+static void _read_six_double(ClipVar* vp,int dec,char** str){
+	vp->t.type = NUMERIC_t;
+	*str += 6;
+	vp->n.d = *(double*)*str;
+	vp->t.dec = dec;
+	*str += 8;
+}
+
+static void _read_six_date(ClipVar* vp,char** str){
+	vp->t.type = DATE_t;
+	*str += 6;
+	vp->d.julian = _rdd_uint(*str);
+	*str += 8;
+}
+
+static void _read_six_log(ClipVar* vp,char** str){
+	vp->t.type = LOGICAL_t;
+	*str += 6;
+	vp->d.julian = _rdd_ushort(*str);
+	*str += 8;
+}
+
+static void _read_six_array(ClipMachine* cm,ClipVar* vp,DbfLocale* loc,char** s,int len){
+	char* b = *s;
+	char* e = b+len;
+	int size,i;
+	long dims[1] = {0};
+
+	_clip_array(cm,vp,1,dims);
+	*s += 2;
+	size = _rdd_uint(*s);
+	*s += 12;
+	for(i=0;i<size;i++){
+		int type = _rdd_backushort(*s);
+		ClipVar v;
+		memset(&v,0,sizeof(ClipVar));
+		switch(type){
+			case 0x4:
+				_read_six_str(&v,loc,s);
+				_clip_aadd(cm,vp,&v);
+				break;
+			case 0x800:
+				_read_six_double(&v,cm->decimals,s);
+				_clip_aadd(cm,vp,&v);
+				break;
+			case 0x200:
+				_read_six_int(&v,s);
+				_clip_aadd(cm,vp,&v);
+				break;
+			case 0x2000:
+				_read_six_date(&v,s);
+				_clip_aadd(cm,vp,&v);
+				break;
+			case 0x8000:
+				_read_six_log(&v,s);
+				_clip_aadd(cm,vp,&v);
+				break;
+			case 0x80:
+				_read_six_array(cm,&v,loc,s,len-(*s-b));
+				_clip_aadd(cm,vp,&v);
+				break;
+			default:
+				*s = e;
+				break;
+		}
+		if(*s>=e)
+			break;
+	}
+}
+
 static int fpt_getvalue(ClipMachine* cm,RDD_MEMO* rm,int id,ClipVar* vp,const char* __PROC__){
 	int len,er;
 	char buf[8];
-	char* str;
+	char *str,*s;
 
 	if(!id){
 		vp->s.str.buf = malloc(1);
@@ -211,8 +351,12 @@ static int fpt_getvalue(ClipMachine* cm,RDD_MEMO* rm,int id,ClipVar* vp,const ch
 		return er;
 	str[len] = 0;
 	if(_rdd_backuint(buf)==3){
-		_clip_str2var(cm,vp,str,len);
+		_clip_str2var(cm,vp,str,len,0);
 		free(str);
+	} else if(_rdd_backuint(buf)==0x8000){
+		s = str;
+		_read_six_array(cm,vp,rm->loc,&str,len);
+		free(s);
 	} else {
 		vp->s.str.buf = str;
 		vp->s.str.len = len;
@@ -228,37 +372,38 @@ static int flex_load(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,const char* __P
 
 	memset(flex,0,sizeof(FPT_FLEX));
 
-	if((er = rdd_read(cm,&rm->file,524,12,buf,__PROC__))) return er;
-	flex->dirpage = _rdd_uint(buf+4);
-	flex->revpage = _rdd_uint(buf);
-	flex->counter = _rdd_uint(buf+8);
-
 	if((er = rdd_read(cm,&rm->file,0,4,buf,__PROC__))) return er;
 	flex->fuu = _rdd_backuint(buf);
 
-	if(!flex->dirpage){
-		flex->revpage = flex->fuu*rm->blocksize;
-		flex->dirpage = flex->fuu*rm->blocksize + FLEXPAGE_SIZE;
-		flex->fuu += (2 * FLEXPAGE_SIZE)/rm->blocksize;
-		return 0;
-	}
+	if(rm->format == FLEX_MEMO || rm->format == CLIP_MEMO){
+		if((er = rdd_read(cm,&rm->file,524,12,buf,__PROC__))) return er;
+		flex->dirpage = _rdd_uint(buf+4);
+		flex->revpage = _rdd_uint(buf);
+		flex->counter = _rdd_uint(buf+8);
 
-	if((er = rdd_read(cm,&rm->file,flex->dirpage,FLEXPAGE_SIZE,buf,__PROC__)))
-		return er;
+		if(!flex->dirpage){
+			flex->revpage = flex->fuu*rm->blocksize;
+			flex->dirpage = flex->fuu*rm->blocksize + FLEXPAGE_SIZE;
+			flex->fuu += (2 * FLEXPAGE_SIZE)/rm->blocksize;
+			return 0;
+		}
 
-	if(_rdd_backuint(buf) != 1000 || _rdd_backuint(buf+4) != 1010)
-		return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,er_corruption);
+		if((er = rdd_read(cm,&rm->file,flex->dirpage,FLEXPAGE_SIZE,buf,__PROC__)))
+			return er;
 
-	if(!(_rdd_ushort(buf+8) & 1)){
-		// 0x0a
-	} else {
-		flex->nitems = (_rdd_ushort(buf+8)-3) >> 2;
-		for(i=0;i<flex->nitems;i++){
-			flex->items[i].offs = _rdd_uint(buf+10+(i<<3));
-			flex->items[i].len = _rdd_uint(buf+10+(i<<3)+4);
+		if(_rdd_backuint(buf) != 1000 || _rdd_backuint(buf+4) != 1010)
+			return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,er_corruption);
+
+		if(!(_rdd_ushort(buf+8) & 1)){
+			// 0x0a
+		} else {
+			flex->nitems = (_rdd_ushort(buf+8)-3) >> 2;
+			for(i=0;i<flex->nitems;i++){
+				flex->items[i].offs = _rdd_uint(buf+10+(i<<3));
+				flex->items[i].len = _rdd_uint(buf+10+(i<<3)+4);
+			}
 		}
 	}
-
 	return 0;
 }
 
@@ -277,10 +422,10 @@ static int _fpt_drop(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,int* id,const c
 	l = (_rdd_backuint(buf)+8+rm->blocksize-1)/rm->blocksize;
 
 	if(flex->nitems == 126){
-		for(i=63;i<flex->nitems;i++){
-			flex->items[i-63] = flex->items[i];
+		for(i=1;i<flex->nitems;i++){
+			flex->items[i-1] = flex->items[i];
 		}
-		flex->nitems = 63;
+		flex->nitems = 125;
 	}
 
 	o = *id*rm->blocksize;
@@ -325,7 +470,7 @@ static int _fpt_drop(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,int* id,const c
 
 static int _fpt_add(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,int* id,char* str,int l,int type,const char* __PROC__){
 	char buf[4];
-	int i,j,ll,er;
+	int i,j,ll,er,f = 0;
 	unsigned int page = flex->fuu * rm->blocksize;
 
 	ll = (l+8+rm->blocksize-1)/rm->blocksize;
@@ -347,15 +492,14 @@ static int _fpt_add(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,int* id,char* st
 				if((er = rdd_write(cm,&rm->file,flex->items[i].offs+4,4,buf,__PROC__)))
 					return er;
 			}
+			f = 1;
 			break;
 		}
 	}
-	if(i==flex->nitems){
+	if(!f){
 		flex->fuu += ll;
 	}
 
-	if(page == 0xeb1000)
-		puts("OK");
 	_rdd_put_backuint(buf,type);
 	if((er = rdd_write(cm,&rm->file,page,4,buf,__PROC__))) return er;
 	_rdd_put_backuint(buf,l);
@@ -375,13 +519,13 @@ static int _fpt_add(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,int* id,char* st
 
 static int flex_save(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,const char* __PROC__){
 	char buf[FLEXPAGE_SIZE];
-	int i,er;
+	int i,f,er;
 
+	if(rm->format == FLEX_MEMO || rm->format == CLIP_MEMO)
+		_rdd_put_backuint(buf,flex->fuu);
+	if((er = rdd_write(cm,&rm->file,0,4,buf,__PROC__))) return er;
 
 	memset(buf,0xad,FLEXPAGE_SIZE);
-
-	_rdd_put_backuint(buf,flex->fuu);
-	if((er = rdd_write(cm,&rm->file,0,4,buf,__PROC__))) return er;
 
 	flex->counter++;
 	_rdd_put_uint(buf,flex->revpage);
@@ -392,6 +536,24 @@ static int flex_save(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,const char* __P
 	_rdd_put_backuint(buf,1000);
 	_rdd_put_backuint(buf+4,1010);
 	_rdd_put_ushort(buf+8,flex->nitems*4+3);
+
+	f = 1;
+	while(f){
+		f = 0;
+		for(i=0;i<flex->nitems-1;i++){
+			if(flex->items[i].len > flex->items[i+1].len){
+				int len,offs;
+				len = flex->items[i].len;
+				offs = flex->items[i].offs;
+				flex->items[i].len = flex->items[i+1].len;
+				flex->items[i].offs = flex->items[i+1].offs;
+				flex->items[i+1].len = len;
+				flex->items[i+1].offs = offs;
+				f = 1;
+			}
+		}
+	}
+
 	for(i=0;i<flex->nitems;i++){
 		_rdd_put_uint(buf+10+i*8,flex->items[i].offs);
 		_rdd_put_uint(buf+10+i*8+4,flex->items[i].len);
@@ -411,14 +573,13 @@ static int flex_save(ClipMachine* cm,RDD_MEMO* rm,FPT_FLEX* flex,const char* __P
 }
 
 static int fpt_setvalue(ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int binary,const char* __PROC__){
-#if 1
 	long l;
 	int type,er;
 	char* str = NULL;
 	FPT_FLEX flex;
 
 	if(vp->t.type != CHARACTER_t){
-		_clip_var2str(cm,vp,&str,&l);
+		_clip_var2str(cm,vp,&str,&l,0);
 	} else {
 		l = vp->s.str.len;
 		str = _clip_memdup(vp->s.str.buf,l);
@@ -431,82 +592,54 @@ static int fpt_setvalue(ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int bin
 	} else {
 		type = (binary==0);
 	}
-	if((er = flex_load(cm,rm,&flex,__PROC__))) goto err;
-	if((er = _fpt_drop(cm,rm,&flex,id,__PROC__))) goto err;
-	if((er = _fpt_add(cm,rm,&flex,id,str,l,type,__PROC__))) goto err;
-	if((er = flex_save(cm,rm,&flex,__PROC__))) goto err;
-	{
-		int i,j;
-		for(i=0;i<flex.nitems;i++){
-			for(j=0;j<flex.nitems;j++){
-				if(i==j) continue;
-				if((flex.items[j].offs > flex.items[i].offs) &&
-					(flex.items[j].offs < flex.items[i].offs+flex.items[i].len))
+	if(rm->format == FLEX_MEMO || rm->format == CLIP_MEMO){
+		if((er = flex_load(cm,rm,&flex,__PROC__))) goto err;
+		if((er = _fpt_drop(cm,rm,&flex,id,__PROC__))) goto err;
+		if((er = _fpt_add(cm,rm,&flex,id,str,l,type,__PROC__))) goto err;
+		if((er = flex_save(cm,rm,&flex,__PROC__))) goto err;
+	} else {
+		int l1,l2,len;
+		char buf[8];
+		int add = 1;
 
-					puts("OK");
-			}
+		if(vp->t.type == UNDEF_t){
+			free(str);
+			*id = 0;
+			return 0;
 		}
-	}
-	return 0;
-err:
-	free(str);
-	return er;
-#else
-	int l1,l2,len,er;
-	long l;
-	char buf[8];
-	int add = 1;
-	char* str = NULL;
-
-	if(vp->t.type == UNDEF_t){
-		*id = 0;
-		return 0;
-	}
-	if(vp->t.type != CHARACTER_t){
-		_clip_var2str(cm,vp,&str,&l);
-	} else {
-		l = vp->s.str.len;
-		str = _clip_memdup(vp->s.str.buf,l);
-		if(!binary)
-			loc_write(rm->loc,str,l);
-	}
-	l2 = (l+8)/rm->blocksize;
-	l2 += (l2*rm->blocksize<(l+8))?1:0;
-	if(*id>0){
-		if((er = rdd_read(cm,&rm->file,*id*rm->blocksize+4,4,buf,__PROC__)))
+		l2 = (l+8)/rm->blocksize;
+		l2 += (l2*rm->blocksize<(l+8))?1:0;
+		if(*id>0){
+			if((er = rdd_read(cm,&rm->file,*id*rm->blocksize+4,4,buf,__PROC__)))
+				goto err;
+			len = _rdd_backuint(buf)+8;
+			l1 = len/rm->blocksize;
+			l1 += (l1*rm->blocksize<len)?1:0;
+			add = (l2>l1);
+		}
+		len = l2*rm->blocksize-8;
+		str = realloc(str,len);
+		if(add){
+			if((er = rdd_read(cm,&rm->file,0,4,buf,__PROC__))) goto err;
+			*id = _rdd_backuint(buf);
+			_rdd_put_backuint(buf,*id+l2);
+			if((er = rdd_write(cm,&rm->file,0,4,buf,__PROC__))) goto err;
+		}
+		_rdd_put_backuint(buf,type);
+		_rdd_put_backuint(buf+4,l);
+		if((l+8) % rm->blocksize)
+			str[len-1] = 0xAF;
+		if((er = rdd_write(cm,&rm->file,*id*rm->blocksize,8,buf,__PROC__)))
 			goto err;
-		len = _rdd_backuint(buf)+8;
-		l1 = len/rm->blocksize;
-		l1 += (l1*rm->blocksize<len)?1:0;
-		add = (l2>l1);
+		if((er = rdd_write(cm,&rm->file,*id*rm->blocksize+8,len,str,__PROC__)))
+			goto err;
 	}
-	len = l2*rm->blocksize-8;
-	str = realloc(str,len);
-	if(add){
-		if((er = rdd_read(cm,&rm->file,0,4,buf,__PROC__))) goto err;
-		*id = _rdd_backuint(buf);
-		_rdd_put_backuint(buf,*id+l2);
-		if((er = rdd_write(cm,&rm->file,0,4,buf,__PROC__))) goto err;
-	}
-	if(vp->t.type != CHARACTER_t){
-		_rdd_put_backuint(buf,3);
-	} else {
-		_rdd_put_backuint(buf,binary==0);
-	}
-	_rdd_put_backuint(buf+4,l);
-	if((l+8) % rm->blocksize)
-		str[len-1] = 0xAF;
-	if((er = rdd_write(cm,&rm->file,*id*rm->blocksize,8,buf,__PROC__)))
-		goto err;
-	if((er = rdd_write(cm,&rm->file,*id*rm->blocksize+8,len,str,__PROC__)))
-		goto err;
-
 	free(str);
+	rm->updated = 1;
 	return 0;
 err:
 	free(str);
 	return er;
-#endif
 }
 
 static int fpt_info(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int cmd,const char* __PROC__){
@@ -542,15 +675,21 @@ static int fpt_pack(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int tmpfd,int bsiz
 	if(block && block->t.type == UNDEF_t)
 		block = NULL;
 	_rdd_put_backushort(hdr.blocksize,rm->blocksize);
-	strcpy(hdr.sig,"FlexFile3");
-	hdr.sig[9] = 3;
+	if(rm->format == FLEX_MEMO || rm->format == CLIP_MEMO){
+		strcpy(hdr.sig,"FlexFile3");
+		hdr.sig[9] = 3;
+	}
+	if(rm->format == CLIP_MEMO)
+		strcpy(hdr.sig0,"Made by CLIP");
+	if(rm->format == SIX_MEMO)
+		strcpy(hdr.sig0,"SIxMemo");
 
 	if(write(rm->file.fd,&hdr,sizeof(FPT_HEADER))!=sizeof(FPT_HEADER)) goto err;
 	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) goto err1;
 
 	for(rd->recno=1;rd->recno<=lastrec;rd->recno++){
 		for(i=0;i<rd->nfields;i++){
-			if(rd->fields[i].type == 'M'){
+			if(strchr("MPG",rd->fields[i].type)){
 				if((er = rd->vtbl->getmemoid(cm,rd,i,&memoid,NULL,__PROC__)))
 					goto err1;
 				if(lseek(tmpfd,memoid*oldbsize,SEEK_SET) != memoid*oldbsize)
@@ -647,23 +786,26 @@ static int fpt_setvchar(ClipMachine* cm,RDD_MEMO* rm,int len,int oldlen,unsigned
 }
 
 static RDD_MEMO_VTBL* fpt_vtbl(){
-	RDD_MEMO_VTBL* vtbl = (RDD_MEMO_VTBL*)malloc(sizeof(RDD_MEMO_VTBL));
+	RDD_MEMO_VTBL* vtbl = (RDD_MEMO_VTBL*)calloc(1,sizeof(RDD_MEMO_VTBL));
 
-	memset(vtbl,0,sizeof(RDD_MEMO_VTBL));
 	strcpy(vtbl->id,"FPT");
 	strcpy(vtbl->suff,".fpt");
 	strcpy(vtbl->desc,"Generic FPT memo files driver v0.0.1 (c) 2001 Copyright ITK Ltd.");
 
-	vtbl->create    = fpt_create;
-	vtbl->pack        = fpt_pack;
+	vtbl->create     = fpt_create;
+	vtbl->pack       = fpt_pack;
 	vtbl->zap        = fpt_zap;
-	vtbl->open        = fpt_open;
-	vtbl->close        = fpt_close;
-	vtbl->getvalue    = fpt_getvalue;
-	vtbl->setvalue    = fpt_setvalue;
-	vtbl->getvchar    = fpt_getvchar;
-	vtbl->setvchar    = fpt_setvchar;
-	vtbl->info        = fpt_info;
+	vtbl->open       = fpt_open;
+	vtbl->close      = fpt_close;
+	vtbl->getvalue   = fpt_getvalue;
+	vtbl->setvalue   = fpt_setvalue;
+	vtbl->getvchar   = fpt_getvchar;
+	vtbl->setvchar   = fpt_setvchar;
+	vtbl->getvalue64 = NULL;
+	vtbl->setvalue64 = NULL;
+	vtbl->getvchar64 = NULL;
+	vtbl->setvchar64 = NULL;
+	vtbl->info       = fpt_info;
 	return vtbl;
 }
 

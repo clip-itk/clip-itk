@@ -5,6 +5,11 @@
  */
 /*
    $Log: _ctools_s.c,v $
+   Revision 1.65  2003/09/02 14:27:41  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
    Revision 1.64  2002/10/08 12:13:43  clip
    uri: fix in remright()
 
@@ -189,6 +194,7 @@
    test for logged _ctools_s.c
 
  */
+#include "clip.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -197,7 +203,6 @@
 #include <stdarg.h>
 #include <errno.h>
 
-#include "clip.h"
 #include "screen/screen.h"
 #include "error.ch"
 #include "hashcode.h"

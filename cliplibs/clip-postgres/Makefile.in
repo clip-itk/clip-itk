@@ -1,0 +1,49 @@
+#  GNU make makefile
+#
+
+ifdef CLIPROOT
+include $(CLIPROOT)/include/Makefile.inc
+else
+CLIPROOT=/usr/local/clip
+endif
+
+CLIPINCLUDE=-I$(CLIPROOT)/include
+#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
+#CC=gcc
+
+TARGET=libclip-postgres$(DLLSUFF)
+ATARGET=libclip-postgres.a
+RTARGET=libclip-postgres$(DLLREALSUFF)
+PGINC = -I@PGINCDIR@
+PGLIB = -L@PGLIBDIR@
+OBJS=pg_clip.o pg.o
+
+all:  have_lib	$(TARGET) $(ATARGET)
+
+have_lib:
+	test -f @PGINCDIR@/libpq-fe.h
+
+$(TARGET): $(OBJS)
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lpq $(PGLIB)
+
+$(ATARGET): $(OBJS)
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lpq $(PGLIB)
+
+pg_clip.o: pg_clip.c
+	$(CC) $(C_FLAGS) $(CLIPINCLUDE) $(PGINC) -c pg_clip.c
+
+pg.o: pg.prg postgres.ch
+	$(CLIPROOT)/bin/clip -l pg.prg
+
+install:
+#	$(CLIPROOT)/bin/clip_cp $(TARGET) $(CLIPROOT)/lib
+	$(CLIPROOT)/bin/clip_cp libclip-postgres $(DESTDIR)$(CLIPROOT)/lib
+	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(CLIPROOT)/lib
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-postgres
+	cp *.html $(DESTDIR)$(CLIPROOT)/doc/clip-postgres
+	cp postgres.ch $(DESTDIR)$(CLIPROOT)/include
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-postgres
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-postgres/
+
+clean:
+	rm -rf *.o pg.c *.s *.bak *.a *.so *.dll *.exe *.ex *.nm Makefile

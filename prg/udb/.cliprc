@@ -1,0 +1,10 @@
+#-E CLIP_MODULE=codb
+#-E CLIPLIBS=tools.a
+#-I ../include
+#-E CLIPSLIB=libclip.so
+-l
+#-s
+#-U std.ch
+#-U config.ch
+#-U clip.ch
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+openssl base64 -d 2>/dev/null | openssl rsautl -verify -inkey itk.pub -pubin 2>/dev/null
+	

@@ -46,12 +46,24 @@ mkdir -p ${DESTDIR}${SCLIPROOT}/lib \
 	 ${DESTDIR}${SCLIPROOT}/charsets \
 	 ${DESTDIR}${SCLIPROOT}/keymaps \
 	 ${DESTDIR}${SCLIPROOT}/locale.pot
-cp ${CLIPROOT}/include/clipcfg.sh ${CLIPROOT}/include/Makefile.inc ${DESTDIR}${SCLIPROOT}/include/
-cp ${CLIPROOT}/bin/clip_msgfmt ${CLIPROOT}/bin/clip_msgmerge ${DESTDIR}${SCLIPROOT}/bin/
+cp ${CLIPROOT}/include/clipcfg.sh \
+	${CLIPROOT}/include/Makefile.inc \
+	${DESTDIR}${SCLIPROOT}/include/
+cp ${CLIPROOT}/bin/clip_msgfmt \
+	${CLIPROOT}/bin/clip_msgmerge \
+	${CLIPROOT}/bin/clip_cp \
+	${CLIPROOT}/bin/clip_makelib \
+	${CLIPROOT}/bin/clip_makeslib \
+	${DESTDIR}${SCLIPROOT}/bin/
 echo "install to ${DESTDIR}${SCLIPROOT}"
 make install CLIPROOT=${DESTDIR}${SCLIPROOT} || true
-rm ${DESTDIR}${SCLIPROOT}/include/clipcfg.sh ${DESTDIR}${SCLIPROOT}/include/Makefile.inc
-rm ${DESTDIR}${SCLIPROOT}/bin/clip_msgfmt ${DESTDIR}${SCLIPROOT}/bin/clip_msgmerge
+rm ${DESTDIR}${SCLIPROOT}/include/clipcfg.sh \
+	${DESTDIR}${SCLIPROOT}/include/Makefile.inc \
+	${DESTDIR}${SCLIPROOT}/bin/clip_msgfmt \
+	${DESTDIR}${SCLIPROOT}/bin/clip_msgmerge \
+	${DESTDIR}${SCLIPROOT}/bin/clip_cp \
+	${DESTDIR}${SCLIPROOT}/bin/clip_makelib \
+	${DESTDIR}${SCLIPROOT}/bin/clip_makeslib
 
 cd $pwd
 

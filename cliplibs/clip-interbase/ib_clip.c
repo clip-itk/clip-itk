@@ -1,8 +1,53 @@
 /*
 	$Log: ib_clip.c,v $
+	Revision 1.20  2003/08/05 11:25:34  clip
+	rust: patch from Sergio Zayas <icaro.maneton@lycos.es> applied
+	
+	Revision 1.19  2003/06/09 13:10:14  clip
+	rust: multiple column PRIMARY KEY as row ID
+
+	Revision 1.18  2003/04/29 08:51:12  clip
+	rust: small fixes
+
+	Revision 1.17  2003/04/09 08:48:08  clip
+	rust: increase loaded rows counter on append
+
+	Revision 1.16  2003/03/12 12:49:36  clip
+	rust: tasks share SQL drivers
+
+	Revision 1.15  2003/02/14 10:01:16  clip
+	rust: SQLFieldType() -> SQLFieldTypeSQL()
+
+	Revision 1.14  2003/02/12 14:56:41  clip
+	rust: small fix
+
+	Revision 1.13  2003/01/23 10:20:41  clip
+	rust: SIGSEGV when username not specified reported by sneshka@online.bryansk.ru
+
+	Revision 1.12  2003/01/20 15:47:34  clip
+	rust: SQL_VARYING bug, reported by sneshka <sneshka@online.bryansk.ru>
+
+	Revision 1.11  2002/12/25 14:45:07  clip
+	rust: driver registration changed
+
+	Revision 1.10  2002/12/21 11:34:04  clip
+	rust: small fixes
+
+	Revision 1.9  2002/12/01 12:35:29  clip
+	rust: bug in testparser()
+
+	Revision 1.8  2002/11/26 10:56:38  clip
+	rust: documentation is up-to-date
+
+	Revision 1.7  2002/11/24 14:31:07  clip
+	rust: transactions and smart rows fetching
+
+	Revision 1.6  2002/10/25 10:10:12  clip
+	rust: small fix
+
 	Revision 1.5  2002/10/08 07:57:28  clip
 	rust: small fix
-	
+
 	Revision 1.4  2002/10/07 14:05:33  clip
 	rust: bug in ib_createrowset() reported by <sneshka@online.bryansk.ru>
 
@@ -24,6 +69,7 @@
 #include <ibase.h>
 #include "clip.h"
 #include "dbfsql.h"
+#include "interbase.ch"
 
 #define DPB_SIZE 256
 
@@ -59,17 +105,18 @@
 		return (r); \
 	}
 
-static const char subsys[] = "DBFSQL";
-static const char er_connect[] = "Can't connect to database server";
+static const char subsys[]      = "DBFSQL";
+static const char er_connect[]  = "Can't connect to database server";
 static const char er_internal[] = "Internal error";
+static const char er_start[]    = "Can't start transaction";
+static const char er_commit[]   = "Can't commit transaction";
+static const char er_rollback[] = "Can't roll transaction back";
 
 struct tagIB_CONN;
 
-static long _newid;
 
 typedef struct tagIB_STMT
 {
-	struct tagIB_STMT *next;
 	int stmt_item;
 	struct tagIB_CONN *conn;
 	char *sql;
@@ -77,7 +124,6 @@ typedef struct tagIB_STMT
 	int npars;
 	char **pars;
 	isc_stmt_handle res;
-	isc_tr_handle tr;
 	int ok;
 }
 IB_STMT;
@@ -87,21 +133,29 @@ typedef struct tagIB_ROWSET
 {
 	int rowset_item;
 	struct tagIB_CONN *conn;
-	struct tagIB_ROWSET *next;
+	struct tagIB_STMT *stmt;
 	int recno;
 	int lastrec;
+	int loaded;
+	int unknownrows;
+	int done;
 	int bof;
 	int eof;
 	int nfields;
 	SQLFIELD *fields;
 	int id;
+	int nids;
+	int* ids;
 	HashTable* orders;
 	long* taghashes;
 	int ntags;
 	BTREE* bt;
 	struct tagSQLORDER* curord;
+	int hot;
+	int newrec;
 	void ***data;
 	char* gen_idSQL;
+	XSQLDA* op;
 }
 IB_ROWSET;
 
@@ -109,11 +163,14 @@ IB_ROWSET;
 typedef struct tagIB_CONN
 {
 	SQLVTBL *vtbl;
-	IB_STMT *stmts;
-	IB_ROWSET *rowsets;
 	SQLLocale* loc;
+	int at;
 	isc_db_handle conn;
 	ISC_STATUS status[20];
+	isc_tr_handle tr;
+	char* tpb;
+	unsigned short tpblen;
+	long _newid;
 }
 IB_CONN;
 
@@ -121,15 +178,20 @@ int ib_createconn(ClipMachine* mp);
 void ib_destroyconn(SQLCONN* c);
 int ib_prepare(ClipMachine* mp,SQLCONN* c,char* sql);
 int ib_command(ClipMachine* mp,SQLSTMT* s,ClipVar* ap);
-int ib_createrowset(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname,const char* gen_idSQL);
+int ib_createrowset(ClipMachine* mp,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,const char* gen_idSQL);
 char* ib_testparser(ClipMachine* mp,char* sql,ClipVar* ap);
 char* ib_getvalue(SQLROWSET* rs,int fieldno,int *len);
 void ib_setvalue(SQLROWSET* rs,int fieldno,char *value,int len);
 void ib_append(SQLROWSET* rs);
 void ib_delete(SQLROWSET* rs);
 void ib_newid(ClipMachine* mp,SQLSTMT* stmt);
-int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname);
+int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap);
 int ib_genid(ClipMachine* mp,SQLROWSET* rs);
+int ib_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors);
+
+int ib_start(ClipMachine* mp,SQLCONN* conn,const char* p1,const char* p2);
+int ib_commit(ClipMachine* mp,SQLCONN* conn);
+int ib_rollback(ClipMachine* mp,SQLCONN* conn);
 
 
 static SQLVTBL vtbl =
@@ -146,23 +208,39 @@ static SQLVTBL vtbl =
 	ib_delete,
 	ib_newid,
 	ib_refresh,
-	ib_genid
+	ib_genid,
+	ib_start,
+	ib_commit,
+	ib_rollback,
+	ib_fetch
 };
 
 int clip_INIT_FIREBIRD(ClipMachine* mp)
 {
-	mp->ib_connect = ib_createconn;
+	(*mp->nsqldrivers)++;
+	*mp->sqldrivers = realloc(*mp->sqldrivers,sizeof(SQLDriver)*(*mp->nsqldrivers));
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].id,"IB");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].name,"Interbase/Firebird");
+	strcpy((*mp->sqldrivers)[*mp->nsqldrivers-1].desc,
+		"Generic Interbase/Firebird for CLIP driver v.1.0");
+	(*mp->sqldrivers)[*mp->nsqldrivers-1].connect = ib_createconn;
 	return 0;
 }
 
 static void destroy_ib_stmt(void* s)
 {
 	IB_STMT* stmt = (IB_STMT*)s;
+	int i;
 	if(stmt){
 		if(stmt->ok)
 			isc_dsql_free_statement(stmt->conn->status,&stmt->res,DSQL_drop);
 		free(stmt->sql);
 		free(stmt->parsed_sql);
+		for(i=0;i<stmt->npars;i++)
+			if(stmt->pars[i])
+				free(stmt->pars[i]);
+		if(stmt->pars)
+			free(stmt->pars);
 		free(stmt);
 	}
 }
@@ -182,7 +260,7 @@ static void destroy_ib_rowset(void *r)
 			free(rowset->fields);
 		}
 		if(rowset->data){
-			for(i=0;i<rowset->lastrec;i++){
+			for(i=0;i<rowset->loaded;i++){
 				for(j=0;j<rowset->nfields;j++){
 					if(rowset->data[i][j]){
 						free(rowset->data[i][j]);
@@ -199,30 +277,9 @@ static void destroy_ib_rowset(void *r)
 	return;
 }
 
-static void destroy_ib_conn(void *c)
+static void destroy_ib_conn(void *conn)
 {
-	IB_CONN* conn = (IB_CONN*)c;
-	IB_ROWSET* currowset = conn->rowsets;
-	IB_ROWSET* nextrowset;
-	IB_STMT* curstmt = conn->stmts;
-	IB_STMT* nextstmt;
-
-	if(conn)
-	{
-		while (currowset)
-		{
-			nextrowset = currowset->next;
-			destroy_ib_rowset(currowset);
-			currowset = nextrowset;
-		}
-		while (curstmt)
-		{
-			nextstmt = curstmt->next;
-			destroy_ib_stmt(curstmt);
-			curstmt = nextstmt;
-		}
-		free(conn);
-	}
+	free(conn);
 	return;
 }
 
@@ -263,6 +320,7 @@ static void ib_parsepars(IB_STMT* stmt)
 
 static int ib_bindpar(ClipMachine* mp,IB_STMT* stmt,char* parname,ClipVar* ap,XSQLVAR* v)
 {
+	IB_CONN* conn = stmt->conn;
 	int i;
 	ClipVar *tp,*vp;
 
@@ -284,7 +342,7 @@ static int ib_bindpar(ClipMachine* mp,IB_STMT* stmt,char* parname,ClipVar* ap,XS
 							isc_blob_handle bh = NULL;
 							ISC_QUAD* bid = calloc(1,sizeof(ISC_QUAD));
 							isc_create_blob2(stmt->conn->status,
-								&stmt->conn->conn,&stmt->tr,&bh,bid,0,NULL);
+								&stmt->conn->conn,&conn->tr,&bh,bid,0,NULL);
 							CHECKERR(stmt->conn->status,ER_CONNECT,er_connect,(free(bid),0),-1);
 							while(l<vp->s.str.len){
 								isc_put_segment(stmt->conn->status,&bh,
@@ -304,7 +362,7 @@ static int ib_bindpar(ClipMachine* mp,IB_STMT* stmt,char* parname,ClipVar* ap,XS
 							int k;
 
 							isc_array_lookup_bounds(stmt->conn->status,&stmt->conn->conn,
-								&stmt->tr,v->relname,v->sqlname,
+								&conn->tr,v->relname,v->sqlname,
 								&ad);
 							CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
 
@@ -315,7 +373,7 @@ static int ib_bindpar(ClipMachine* mp,IB_STMT* stmt,char* parname,ClipVar* ap,XS
 									- ad.array_desc_bounds[k].array_bound_lower+1;
 
 							isc_array_put_slice(stmt->conn->status,&stmt->conn->conn,
-								&stmt->tr,aid,&ad,vp->s.str.buf,&size);
+								&conn->tr,aid,&ad,vp->s.str.buf,&size);
 							CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
 
 							v->sqldata = (char*)aid;
@@ -366,31 +424,130 @@ static void ib_freepars(IB_STMT* stmt,XSQLDA* p)
 	free(p);
 }
 
+static char* _ib_tran_pars(const char* p,unsigned short* tpblen){
+	char* tpb = malloc(1);
+	char* par = strdup(p);
+	char* b = par;
+	int l = 1,i;
+	struct parname {char* name;int len;char value;};
+	struct parname pars[12] = {
+		{"CONCURRENCY",11,isc_tpb_concurrency},
+		{"READ COMMITTED",14,isc_tpb_read_committed},
+		{"READ_COMMITTED",14,isc_tpb_read_committed},
+		{"CONSISTENCY",11,isc_tpb_consistency},
+		{"WAIT",4,isc_tpb_wait},
+		{"NOWAIT",6,isc_tpb_nowait},
+		{"READ",4,isc_tpb_read},
+		{"WRITE",5,isc_tpb_write},
+		{"REC VERSION",11,isc_tpb_rec_version},
+		{"REC_VERSION",11,isc_tpb_rec_version},
+		{"NO REC VERSION",14,isc_tpb_no_rec_version},
+		{"NO_REC_VERSION",14,isc_tpb_no_rec_version}
+	};
+
+	*tpblen = 0;
+	*tpb = isc_tpb_version3;
+	_clip_upstr(par,strlen(par));
+	do {
+		for(i=0;i<12;i++){
+			if(strncasecmp(b,pars[i].name,pars[i].len)==0){
+				tpb = realloc(tpb,++l);
+				tpb[l-1] = pars[i].value;
+				break;
+			}
+		}
+		if(i==12){
+			free(par);
+			free(tpb);
+			return NULL;
+		}
+	} while((b = strchr(b,';')+1) != (char*)1);
+	free(par);
+	*tpblen = l;
+	return tpb;
+}
+
+static char* _ib_lock_tables(const char* p,char* tpb,unsigned short* tpblen){
+	char *par = strdup(p),*b = par,*t;
+
+	_clip_upstr(par,strlen(par));
+	do {
+		t = strchr(b,'=');
+		if(!t){
+			free(par);
+			free(tpb);
+			return NULL;
+		}
+		tpb = realloc(tpb,*tpblen+(t-b)+3);
+		if(strncmp(t+1,"SHARED_READ",11)==0){
+			tpb[*tpblen] = isc_tpb_shared;
+			tpb[*tpblen+1] = isc_tpb_lock_read;
+		} else if(strncmp(t+1,"SHARED_WRITE",12)==0){
+			tpb[*tpblen] = isc_tpb_shared;
+			tpb[*tpblen+1] = isc_tpb_lock_write;
+		} else if(strncmp(t+1,"PROTECTED_READ",14)==0){
+			tpb[*tpblen] = isc_tpb_protected;
+			tpb[*tpblen+1] = isc_tpb_lock_read;
+		} else if(strncmp(t+1,"PROTECTED_WRITE",15)==0){
+			tpb[*tpblen] = isc_tpb_protected;
+			tpb[*tpblen+1] = isc_tpb_lock_write;
+		} else {
+			free(par);
+			free(tpb);
+			return NULL;
+		}
+		tpb[*tpblen+2] = (t-b);
+		memcpy(tpb+*tpblen+3,b,t-b);
+		*tpblen += (t-b)+3;
+	} while((b = strchr(b,';')+1) != (char*)1);
+	free(par);
+	return tpb;
+}
+
 int ib_createconn(ClipMachine* mp)
 {
 	char *user = _clip_parc(mp, 4);
 	char *passwd = _clip_parc(mp, 5);
 	char *db = _clip_parc(mp, 6);
+	char* trpars = _clip_parc(mp, 10);
 	IB_CONN* conn = (IB_CONN*)calloc(1,sizeof(IB_CONN));
 	char dpb_buffer[256],*dpb,*p;
+	char *charset = _clip_parc(mp, 8);
 
 	conn->conn = 0;
 	dpb = dpb_buffer;
 	*dpb++ = isc_dpb_version1;
-	*dpb++ = isc_dpb_user_name;
-	*dpb++ = strlen(user);
-	for (p = user; *p;)
-		*dpb++ = *p++;
-	*dpb++ = isc_dpb_password;
-	*dpb++ = strlen(passwd);
-	for (p = passwd; *p;)
-		*dpb++ = *p++;
+	if(user){
+		*dpb++ = isc_dpb_user_name;
+		*dpb++ = strlen(user);
+		for (p = user; *p;)
+			*dpb++ = *p++;
+		*dpb++ = isc_dpb_password;
+		*dpb++ = strlen(passwd);
+		for (p = passwd; *p;)
+			*dpb++ = *p++;
+	}
+
+	if(charset){
+		*dpb++ = isc_dpb_lc_ctype;
+		*dpb++ = strlen(charset);
+		for(p = charset; *p;)
+			*dpb++ = *p++;
+	}
 
 	isc_attach_database(conn->status,0,db,&conn->conn,dpb-dpb_buffer,dpb_buffer);
 
 	CHECKERR(conn->status,ER_CONNECT,er_connect,(free(conn),0),-1);
 
 	conn->vtbl = &vtbl;
+
+	if(!trpars)
+		trpars = _clip_fetch_item(mp, _clip_hashstr("IB_ISOLATION_LEVEL"));
+	if(!trpars)
+		trpars = _clip_fetch_item(mp, _clip_hashstr("SQL_ISOLATION_LEVEL"));
+	if(trpars)
+		conn->tpb = _ib_tran_pars(trpars,&conn->tpblen);
+
 	return _clip_store_c_item(mp, (void *) conn, _C_ITEM_TYPE_SQL, destroy_ib_conn);
 }
 
@@ -415,20 +572,21 @@ int ib_prepare(ClipMachine* mp,SQLCONN* c,char* sql)
 	CHECKERR(conn->status,ER_INTERNAL,er_internal,
 		(free(stmt->sql),free(stmt),0),-1);
 
-	isc_start_transaction(conn->status,&stmt->tr,1,&conn->conn,0,NULL);
-	CHECKERR(conn->status,ER_INTERNAL,er_internal,
-		(free(stmt->sql),free(stmt),0),-1);
+	if(!conn->at){
+		conn->tr = 0;
+		isc_start_transaction(conn->status,&conn->tr,1,&conn->conn,conn->tpblen,conn->tpb);
+		CHECKERR(conn->status,ER_START,er_start,
+			(free(stmt->sql),free(stmt),0),-1);
+	}
 
 	ib_parsepars(stmt);
 
-	isc_dsql_prepare(conn->status,&stmt->tr,&stmt->res,0,stmt->parsed_sql,
+	isc_dsql_prepare(conn->status,&conn->tr,&stmt->res,0,stmt->parsed_sql,
 		SQL_DIALECT_CURRENT,NULL);
 	CHECKERR(conn->status,ER_INTERNAL,er_internal,
 		(free(stmt->sql),free(stmt->parsed_sql),free(stmt),0),-1);
 
 	stmt->conn = conn;
-	stmt->next = conn->stmts;
-	conn->stmts = stmt;
 
 	stmt->stmt_item =
 		_clip_store_c_item(mp,stmt,_C_ITEM_TYPE_SQL,destroy_ib_stmt);
@@ -438,6 +596,7 @@ int ib_prepare(ClipMachine* mp,SQLCONN* c,char* sql)
 int ib_command(ClipMachine* mp,SQLSTMT* s,ClipVar* ap)
 {
 	IB_STMT* stmt = (IB_STMT*)s;
+	IB_CONN* conn = stmt->conn;
 	XSQLDA* ip;
 	int i;
 
@@ -451,77 +610,115 @@ int ib_command(ClipMachine* mp,SQLSTMT* s,ClipVar* ap)
 		if(ib_bindpar(mp,stmt,stmt->pars[i],ap,ip->sqlvar+i)) return -1;
 	}
 
-	isc_dsql_execute(stmt->conn->status,&stmt->tr,&stmt->res,1,ip);
+	isc_dsql_execute(stmt->conn->status,&conn->tr,&stmt->res,1,ip);
 	ib_freepars(stmt,ip);
 	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
 	stmt->ok = 1;
 
-	isc_commit_transaction(stmt->conn->status,&stmt->tr);
-	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
-
+	if(!conn->at){
+		isc_commit_transaction(stmt->conn->status,&conn->tr);
+		CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
+	}
 	return 0;
 }
 
-int ib_createrowset(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname,const char* gen_idSQL)
-{
-	IB_ROWSET *rowset = (IB_ROWSET*)rs;
-	IB_STMT* stmt = (IB_STMT*)s;
-	XSQLDA *ip,*op;
-	ISC_STATUS r;
-	int i;
-	void **rec;
-	short* ind;
+static char _ib_ctype(int type){
+	switch(type){
+		case IBT_TEXT:
+		case IBT_VARYING:
+		case IBT_BLOB:
+			return 'C';
+		case IBT_SHORT:
+		case IBT_LONG:
+		case IBT_FLOAT:
+		case IBT_DOUBLE:
+		case IBT_D_FLOAT:
+		case IBT_INT64:
+			return 'N';
+		case IBT_TIMESTAMP:
+		case IBT_TYPE_TIME:
+			return 'T';
+		case IBT_TYPE_DATE:
+			return 'D';
+		case IBT_ARRAY:
+		case IBT_QUAD:
+			return 'A';
+	}
+	return 'U';
+}
 
-	ip = malloc(XSQLDA_LENGTH(stmt->npars));
+int ib_createrowset(ClipMachine* mp,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,const char* gen_idSQL)
+{
+	IB_ROWSET* rowset = (IB_ROWSET*)rs;
+	IB_STMT* stmt = rowset->stmt;
+	IB_CONN* conn = rowset->conn;
+	XSQLDA *ip;
+	int i;
+
+	ip = calloc(1,XSQLDA_LENGTH(stmt->npars));
 	ip->version = SQLDA_VERSION1;
 	ip->sqln = stmt->npars;
-	isc_dsql_describe_bind(stmt->conn->status,&stmt->res,1,ip);
-	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(free(ip),0),-1);
+	isc_dsql_describe_bind(conn->status,&stmt->res,1,ip);
+	CHECKERR(conn->status,ER_INTERNAL,er_internal,(free(ip),0),-1);
 
 	for(i=0;i<stmt->npars;i++){
 		if(ib_bindpar(mp,stmt,stmt->pars[i],ap,ip->sqlvar+i)) return -1;
 	}
 
-	isc_dsql_execute(stmt->conn->status,&stmt->tr,&stmt->res,1,ip);
+	isc_dsql_execute(conn->status,&conn->tr,&stmt->res,1,ip);
 	ib_freepars(stmt,ip);
-	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
+	CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
 	stmt->ok = 1;
 
 	rowset->rowset_item =
-		_clip_store_c_item(mp, rowset, _C_ITEM_TYPE_SQL, destroy_ib_rowset);
+		_clip_store_c_item(mp,rowset,_C_ITEM_TYPE_SQL,destroy_ib_rowset);
 
-	op = malloc(XSQLDA_LENGTH(1));
-	op->version = SQLDA_VERSION1;
-	op->sqln = 1;
-	isc_dsql_describe(stmt->conn->status,&stmt->res,1,op);
-	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(free(op),op=0,0),-1);
+	rowset->op = malloc(XSQLDA_LENGTH(1));
+	rowset->op->version = SQLDA_VERSION1;
+	rowset->op->sqln = 1;
+	isc_dsql_describe(conn->status,&stmt->res,1,rowset->op);
+	CHECKERR(conn->status,ER_INTERNAL,er_internal,(free(rowset->op),rowset->op=0,0),-1);
 
-	if(op->sqln < op->sqld){
-		op = realloc(op,XSQLDA_LENGTH(op->sqld));
-		op->sqln = op->sqld;
-		isc_dsql_describe(stmt->conn->status,&stmt->res,1,op);
-		CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(free(op),op=0,0),-1);
+	if(rowset->op->sqln < rowset->op->sqld){
+		rowset->op = realloc(rowset->op,XSQLDA_LENGTH(rowset->op->sqld));
+		rowset->op->sqln = rowset->op->sqld;
+		isc_dsql_describe(conn->status,&stmt->res,1,rowset->op);
+		CHECKERR(conn->status,ER_INTERNAL,er_internal,(free(rowset->op),rowset->op=0,0),-1);
 	}
 
-	rowset->nfields = op->sqld;
+	rowset->nfields = rowset->op->sqld;
 	rowset->fields = calloc(rowset->nfields,sizeof(SQLFIELD));
-	rec = calloc(rowset->nfields,sizeof(void*));
-	ind = calloc(rowset->nfields,sizeof(short));
+	rowset->id = -1;
 	for(i=0;i<rowset->nfields;i++){
-		strncpy(rowset->fields[i].name,op->sqlvar[i].aliasname,MAXFIELDNAME);
-		rowset->fields[i].type = op->sqlvar[i].sqltype & ~(0x1);
-		rowset->fields[i].len = op->sqlvar[i].sqllen;
-		rowset->fields[i].dec = -op->sqlvar[i].sqlscale;
+		strncpy(rowset->fields[i].name,rowset->op->sqlvar[i].aliasname,MAXFIELDNAME);
+		rowset->fields[i].type = rowset->op->sqlvar[i].sqltype & ~(0x1);
+		rowset->fields[i].ctype[0] = _ib_ctype(rowset->fields[i].type);
+		rowset->fields[i].len = rowset->op->sqlvar[i].sqllen;
+		rowset->fields[i].dec = -rowset->op->sqlvar[i].sqlscale;
 
-		rec[i] = calloc(1,rowset->fields[i].len+sizeof(int)
-			+((rowset->fields[i].type==SQL_TEXT)
-			||(rowset->fields[i].type==SQL_VARYING)));
-		op->sqlvar[i].sqldata = (char*)rec[i]+sizeof(int);
-		rowset->fields[i].notnull = !(op->sqlvar[i].sqltype & 1);
-		if(!rowset->fields[i].notnull)
-			op->sqlvar[i].sqlind = &(ind[i]);
-		if(idname && !strcasecmp(rowset->fields[i].name,idname))
-			rowset->id = i;
+		rowset->fields[i].notnull = !(rowset->op->sqlvar[i].sqltype & 1);
+		if(!rowset->fields[i].notnull){
+			short* ind = calloc(1,sizeof(short));
+			rowset->op->sqlvar[i].sqlind = ind;
+		}
+		if(idname->t.type == CHARACTER_t){
+			if(idname->s.str.buf && !strcasecmp(rowset->fields[i].name,idname->s.str.buf)){
+				rowset->id = i;
+				rowset->nids = 1;
+			}
+		} else if(idname->t.type == ARRAY_t){
+			int j;
+			for(j=0;j<idname->a.count;j++){
+				ClipVar* vp = idname->a.items+j;
+				if(vp->t.type == CHARACTER_t && vp->s.str.buf
+					&& !strcasecmp(rowset->fields[i].name,vp->s.str.buf)){
+
+					rowset->nids++;
+					rowset->ids = realloc(rowset->ids,rowset->nids*sizeof(int));
+					rowset->ids[rowset->nids-1] = i;
+				}
+			}
+		}
 		if(rowset->fields[i].type == SQL_BLOB
 			|| rowset->fields[i].type == SQL_ARRAY
 			|| rowset->fields[i].type == SQL_QUAD)
@@ -531,10 +728,10 @@ int ib_createrowset(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const c
 			int k;
 
 			rowset->fields[i].cargo = ad;
-			isc_array_lookup_bounds(stmt->conn->status,&stmt->conn->conn,
-				&stmt->tr,op->sqlvar[i].relname,op->sqlvar[i].sqlname,
-				ad);
-			CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
+			isc_array_lookup_bounds(conn->status,&conn->conn,
+				&conn->tr,rowset->op->sqlvar[i].relname,
+				rowset->op->sqlvar[i].sqlname,ad);
+			CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
 			rowset->fields[i].ops = ad->array_desc_length+2;
 			for(k=0;k<ad->array_desc_dimensions;k++)
 				rowset->fields[i].ops *= ad->array_desc_bounds[k].array_bound_upper
@@ -543,68 +740,7 @@ int ib_createrowset(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const c
 	}
 	rowset->lastrec = 0;
 	rowset->data = malloc(0);
-	while((r=isc_dsql_fetch(stmt->conn->status,&stmt->res,1,op))==0){
-		for(i=0;i<rowset->nfields;i++){
-			if(!rowset->fields[i].notnull && ind[i]){
-				free(rec[i]);
-				rec[i] = NULL;
-			} else {
-				if(rowset->fields[i].type == SQL_TEXT)
-					*(int*)(rec[i]) = strlen((char*)(rec[i])+4);
-				else if(rowset->fields[i].type == SQL_BLOB){
-					isc_blob_handle bh = NULL;
-					char chunk[CHUNKSIZE];
-					unsigned short cl;
-					isc_open_blob2(stmt->conn->status,&stmt->conn->conn,
-						&stmt->tr,&bh,(ISC_QUAD*)((char*)(rec[i])+4),0,NULL);
-					CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
-					*(int*)(rec[i]) = 0;
-					do {
-						isc_get_segment(stmt->conn->status,&bh,&cl,sizeof(chunk),
-							chunk);
-						if(stmt->conn->status[1] != isc_segment)
-							CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
-						rec[i] = realloc(rec[i],*(int*)rec[i] + 4 + cl);
-						memcpy((char*)rec[i] + 4 + *(int*)rec[i],chunk,cl);
-						*(int*)(rec[i]) += cl;
-					} while(cl == sizeof(chunk));
-					isc_close_blob(stmt->conn->status,&bh);
-					CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
-				} else if(rowset->fields[i].type == SQL_ARRAY){
-					ISC_ARRAY_DESC* ad = (ISC_ARRAY_DESC*)rowset->fields[i].cargo;
-					void* a = calloc(1,rowset->fields[i].ops);
-					long l = rowset->fields[i].ops;
-					isc_array_get_slice(stmt->conn->status,&stmt->conn->conn,
-						&stmt->tr,(ISC_QUAD*)((char*)(rec[i])+4),ad,
-						(char*)a,&l);
-					CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
-					free(rec[i]);
-					rec[i] = a;
-				} else
-					*(int*)rec[i] = op->sqlvar[i].sqllen;
-			}
-		}
-		rowset->lastrec++;
-		rowset->data = realloc(rowset->data,sizeof(void*)*rowset->lastrec);
-		rowset->data[rowset->lastrec-1] = rec;
-		rec = calloc(rowset->nfields,sizeof(void*));
-		for(i=0;i<rowset->nfields;i++){
-			rec[i] = calloc(1,rowset->fields[i].len+sizeof(int)
-				+(rowset->fields[i].type==SQL_TEXT)
-				||(rowset->fields[i].type==SQL_VARYING));
-			op->sqlvar[i].sqldata = (char*)rec[i]+sizeof(int);
-		}
-	}
-	for(i=0;i<rowset->nfields;i++)
-		free(rec[i]);
-	free(rec);
-	free(ind);
-	free(op);
-	if(r != 100){
-		CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
-	}
-	isc_commit_transaction(stmt->conn->status,&stmt->tr);
-	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
+	rowset->unknownrows = 1;
 
 	if(gen_idSQL && gen_idSQL[0])
 		rowset->gen_idSQL = strdup(gen_idSQL);
@@ -615,6 +751,7 @@ char* ib_testparser(ClipMachine* mp,char* sql,ClipVar* ap)
 {
 	IB_STMT stmt;
 
+	memset(&stmt,0,sizeof(IB_STMT));
 	stmt.sql = sql;
 	ib_parsepars(&stmt);
 	return stmt.parsed_sql;
@@ -627,7 +764,10 @@ char* ib_getvalue(SQLROWSET* rs,int fieldno,int *len)
 		if(rowset->fields[fieldno].type == SQL_ARRAY){
 			*len = rowset->fields[fieldno].ops;
 			return (char*)rowset->data[rowset->recno-1][fieldno];
-		} else{
+		} else if(rowset->fields[fieldno].type == SQL_VARYING){
+			*len = *(int*)rowset->data[rowset->recno-1][fieldno]+2;
+			return (char*)rowset->data[rowset->recno-1][fieldno]+4;
+		} else {
 			*len = *(int*)rowset->data[rowset->recno-1][fieldno];
 			return (char*)rowset->data[rowset->recno-1][fieldno]+4;
 		}
@@ -663,6 +803,7 @@ void ib_append(SQLROWSET* rs)
 	void **row;
 
 	rowset->lastrec++;
+	rowset->loaded++;
 	rowset->data = realloc(rowset->data,sizeof(void*) * (rowset->lastrec));
 
 	row = calloc(rowset->nfields,sizeof(void*));
@@ -686,15 +827,18 @@ void ib_delete(SQLROWSET* rs)
 	rowset->data = realloc(rowset->data,sizeof(void*) * (rowset->lastrec-1));
 }
 
-void ib_newid(ClipMachine* mp,SQLSTMT* stmt)
+void ib_newid(ClipMachine* mp,SQLSTMT* s)
 {
-	_clip_retni(mp,_newid);
+	IB_STMT* stmt = (IB_STMT*)s;
+
+	_clip_retni(mp,stmt->conn->_newid);
 }
 
-int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* idname)
+int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap)
 {
 	IB_ROWSET* rowset = (IB_ROWSET*)rs;
 	IB_STMT* stmt = (IB_STMT*)s;
+	IB_CONN* conn = stmt->conn;
 	XSQLDA *ip,*op;
 	ISC_STATUS r;
 	int i;
@@ -711,7 +855,7 @@ int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* 
 		if(ib_bindpar(mp,stmt,stmt->pars[i],ap,ip->sqlvar+i)) return -1;
 	}
 
-	isc_dsql_execute(stmt->conn->status,&stmt->tr,&stmt->res,1,ip);
+	isc_dsql_execute(stmt->conn->status,&conn->tr,&stmt->res,1,ip);
 	ib_freepars(stmt,ip);
 	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
 	stmt->ok = 1;
@@ -732,7 +876,9 @@ int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* 
 	rec = calloc(rowset->nfields,sizeof(void*));
 	ind = calloc(rowset->nfields,sizeof(short));
 	for(i=0;i<rowset->nfields;i++){
-		rec[i] = calloc(1,rowset->fields[i].len+sizeof(int)+(rowset->fields[i].type==SQL_TEXT));
+		rec[i] = calloc(1,rowset->fields[i].len+sizeof(int)+
+			(rowset->fields[i].type==SQL_TEXT)+
+			(rowset->fields[i].type==SQL_VARYING?3:0));
 		op->sqlvar[i].sqldata = (char*)rec[i]+sizeof(int);
 		if(!rowset->fields[i].notnull)
 			op->sqlvar[i].sqlind = &(ind[i]);
@@ -745,7 +891,35 @@ int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* 
 		} else {
 			if(rowset->fields[i].type == SQL_TEXT)
 				*(int*)rec[i] = strlen((char*)rec[i]+4);
-			else
+			else if(rowset->fields[i].type == SQL_BLOB){
+				isc_blob_handle bh = NULL;
+				char chunk[CHUNKSIZE];
+				unsigned short cl;
+				isc_open_blob2(conn->status,&conn->conn,&conn->tr,
+					&bh,(ISC_QUAD*)((char*)(rec[i])+4),0,NULL);
+				CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+				*(int*)(rec[i]) = 0;
+				do {
+					isc_get_segment(conn->status,&bh,&cl,sizeof(chunk),
+						chunk);
+					if(conn->status[1] != isc_segment)
+						CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+					rec[i] = realloc(rec[i],*(int*)rec[i] + 4 + cl);
+					memcpy((char*)rec[i] + 4 + *(int*)rec[i],chunk,cl);
+					*(int*)(rec[i]) += cl;
+				} while(cl == sizeof(chunk));
+				isc_close_blob(conn->status,&bh);
+				CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+			} else if(rowset->fields[i].type == SQL_ARRAY){
+				ISC_ARRAY_DESC* ad = (ISC_ARRAY_DESC*)rowset->fields[i].cargo;
+				void* a = calloc(1,rowset->fields[i].ops);
+				long l = rowset->fields[i].ops;
+				isc_array_get_slice(conn->status,&conn->conn,&conn->tr,
+					(ISC_QUAD*)((char*)(rec[i])+4),ad,(char*)a,&l);
+				CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+				free(rec[i]);
+				rec[i] = a;
+			} else
 				*(int*)rec[i] = op->sqlvar[i].sqllen;
 		}
 	}
@@ -768,15 +942,17 @@ int ib_refresh(ClipMachine* mp,SQLROWSET* rs,SQLSTMT* s,ClipVar* ap,const char* 
 	if(r != 100){
 		CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
 	}
-	isc_commit_transaction(stmt->conn->status,&stmt->tr);
-	CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
+	if(!conn->at){
+		isc_commit_transaction(stmt->conn->status,&conn->tr);
+		CHECKERR(stmt->conn->status,ER_INTERNAL,er_internal,(0),-1);
+	}
 	return 0;
 }
 
 int ib_genid(ClipMachine* mp,SQLROWSET* rs)
 {
 	IB_ROWSET* rowset = (IB_ROWSET*)rs;
-	isc_tr_handle tr = 0;
+	IB_CONN* conn = rowset->conn;
 	XSQLDA* op;
 	isc_stmt_handle stmt = 0;
 	short ind;
@@ -785,14 +961,17 @@ int ib_genid(ClipMachine* mp,SQLROWSET* rs)
 		isc_dsql_allocate_statement(rowset->conn->status,&rowset->conn->conn,&stmt);
 		CHECKERR(rowset->conn->status,ER_INTERNAL,er_internal,(0),1);
 
-		isc_start_transaction(rowset->conn->status,&tr,1,&rowset->conn->conn,0,NULL);
-		CHECKERR(rowset->conn->status,ER_INTERNAL,er_internal,(0),1);
+		if(!conn->at){
+			conn->tr = 0;
+			isc_start_transaction(conn->status,&conn->tr,1,&conn->conn,conn->tpblen,conn->tpb);
+			CHECKERR(rowset->conn->status,ER_START,er_start,(0),1);
+		}
 
 		op = malloc(XSQLDA_LENGTH(1));
 		op->version = SQLDA_VERSION1;
 		op->sqln = 1;
 
-		isc_dsql_prepare(rowset->conn->status,&tr,&stmt,0,rowset->gen_idSQL,
+		isc_dsql_prepare(rowset->conn->status,&conn->tr,&stmt,0,rowset->gen_idSQL,
 			SQL_DIALECT_CURRENT,op);
 		CHECKERR(rowset->conn->status,ER_INTERNAL,er_internal,(free(op),0),1);
 
@@ -802,20 +981,22 @@ int ib_genid(ClipMachine* mp,SQLROWSET* rs)
 			return 1;
 		}
 
-		op->sqlvar[0].sqldata = (char*)&_newid;
+		op->sqlvar[0].sqldata = (char*)&conn->_newid;
 		op->sqlvar[0].sqlind = &ind;
 
-		isc_dsql_execute2(rowset->conn->status,&tr,&stmt,1,NULL,op);
+		isc_dsql_execute2(rowset->conn->status,&conn->tr,&stmt,1,NULL,op);
 		CHECKERR(rowset->conn->status,ER_INTERNAL,er_internal,(free(op),0),1);
 		if(ind)
-			_newid = 0;
+			conn->_newid = 0;
 
-		isc_commit_transaction(rowset->conn->status,&tr);
-		CHECKERR(rowset->conn->status,ER_INTERNAL,er_internal,(free(op),0),1);
+		if(!conn->at){
+			isc_commit_transaction(rowset->conn->status,&conn->tr);
+			CHECKERR(rowset->conn->status,ER_INTERNAL,er_internal,(free(op),0),1);
+		}
 
 		free(op);
 
-		_clip_retni(mp,_newid);
+		_clip_retni(mp,conn->_newid);
 	}
 	return 0;
 }
@@ -1217,4 +1398,173 @@ int clip_IB_IN_ARRAY(ClipMachine* mp){
 		return 1;
 
 	return 0;
+}
+
+/* ---------------------------------------------------------------- */
+
+int ib_start(ClipMachine* mp,SQLCONN* c,const char* p1,const char* p2){
+	IB_CONN* conn = (IB_CONN*)c;
+	char* tpb = NULL;
+	unsigned short tpblen;
+
+	if(conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	conn->tr = 0;
+	if(p1){
+		tpb = _ib_tran_pars(p1,&tpblen);
+		if(!tpb){
+			_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+			return 1;
+		}
+	} else {
+		tpblen = conn->tpblen;
+		if(tpblen){
+			tpb = malloc(tpblen);
+			memcpy(tpb,conn->tpb,tpblen);
+		}
+	}
+	if(p2){
+		tpb = _ib_lock_tables(p2,tpb,&tpblen);
+		if(!tpb){
+			_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+			return 1;
+		}
+	}
+	isc_start_transaction(conn->status,&conn->tr,1,&conn->conn,tpblen,tpb);
+	free(tpb);
+	CHECKERR(conn->status,ER_START,er_start,(0),1);
+	conn->at = 1;
+	return 0;
+}
+
+int ib_commit(ClipMachine* mp,SQLCONN* c){
+	IB_CONN* conn = (IB_CONN*)c;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_COMMIT,er_commit);
+		return 1;
+	}
+	isc_commit_transaction(conn->status,&conn->tr);
+	CHECKERR(conn->status,ER_COMMIT,er_commit,(0),1);
+	conn->at = 0;
+	return 0;
+}
+
+int ib_rollback(ClipMachine* mp,SQLCONN* c){
+	IB_CONN* conn = (IB_CONN*)c;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_ROLLBACK,er_rollback);
+		return 1;
+	}
+	isc_rollback_transaction(conn->status,&conn->tr);
+	CHECKERR(conn->status,ER_ROLLBACK,er_rollback,(0),1);
+	conn->at = 0;
+	return 0;
+}
+
+int ib_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors){
+	IB_ROWSET* rowset = (IB_ROWSET*)rs;
+	IB_STMT* stmt = rowset->stmt;
+	IB_CONN* conn = rowset->conn;
+	ISC_STATUS r;
+	void** rec;
+	int i,j,er = 0;
+
+	if(rowset->done)
+		return 0;
+
+	if(!recs)
+		recs = 0x7fffffff;
+	for(j=0;j<recs;j++){
+		rec = calloc(rowset->nfields,sizeof(void*));
+		for(i=0;i<rowset->nfields;i++){
+			rec[i] = calloc(1,rowset->fields[i].len+sizeof(int)
+				+(rowset->fields[i].type==SQL_TEXT)
+				+(rowset->fields[i].type==SQL_VARYING?3:0));
+			rowset->op->sqlvar[i].sqldata = (char*)rec[i]+sizeof(int);
+		}
+		r = isc_dsql_fetch(conn->status,&stmt->res,1,rowset->op);
+		if(r){
+			if(r != 100){
+				CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+			}
+			for(i=0;i<rowset->nfields;i++)
+				free(rec[i]);
+			free(rec);
+			goto done;
+		}
+		for(i=0;i<rowset->nfields;i++){
+			if(!rowset->fields[i].notnull && *(rowset->op->sqlvar[i].sqlind)){
+				free(rec[i]);
+				rec[i] = NULL;
+			} else {
+				if(rowset->fields[i].type == SQL_TEXT)
+					*(int*)(rec[i]) = strlen((char*)(rec[i])+4);
+				else if(rowset->fields[i].type == SQL_BLOB){
+					isc_blob_handle bh = NULL;
+					char chunk[CHUNKSIZE];
+					unsigned short cl;
+					isc_open_blob2(conn->status,&conn->conn,&conn->tr,
+						&bh,(ISC_QUAD*)((char*)(rec[i])+4),0,NULL);
+					CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+					*(int*)(rec[i]) = 0;
+					do {
+						isc_get_segment(conn->status,&bh,&cl,sizeof(chunk),
+							chunk);
+						if(conn->status[1] != isc_segment)
+							CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+						rec[i] = realloc(rec[i],*(int*)rec[i] + 4 + cl);
+						memcpy((char*)rec[i] + 4 + *(int*)rec[i],chunk,cl);
+						*(int*)(rec[i]) += cl;
+					} while(cl == sizeof(chunk));
+					isc_close_blob(conn->status,&bh);
+					CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+				} else if(rowset->fields[i].type == SQL_ARRAY){
+					ISC_ARRAY_DESC* ad = (ISC_ARRAY_DESC*)rowset->fields[i].cargo;
+					void* a = calloc(1,rowset->fields[i].ops);
+					long l = rowset->fields[i].ops;
+					isc_array_get_slice(conn->status,&conn->conn,&conn->tr,
+						(ISC_QUAD*)((char*)(rec[i])+4),ad,(char*)a,&l);
+					CHECKERR(conn->status,ER_INTERNAL,er_internal,(0),-1);
+					free(rec[i]);
+					rec[i] = a;
+				} else
+					*(int*)rec[i] = rowset->op->sqlvar[i].sqllen;
+			}
+		}
+		rowset->loaded++;
+		rowset->data = realloc(rowset->data,sizeof(void*)*rowset->loaded);
+		rowset->data[rowset->loaded-1] = rec;
+		if(eval && (eval->t.type == CCODE_t || eval->t.type == PCODE_t) && !(rowset->loaded % every)){
+			ClipVar var,*v;
+			if(_clip_eval(mp,eval,1,ors,&var)){
+				_clip_destroy(mp,&var);
+				er = 1;
+				goto done;
+			}
+			v = _clip_vptr(&var);
+			if(v->t.type == LOGICAL_t && !v->l.val){
+				_clip_destroy(mp,&var);
+				goto done;
+			}
+			_clip_destroy(mp,&var);
+		}
+	}
+	return 0;
+done:
+	rowset->lastrec = rowset->loaded;
+	rowset->done = 1;
+	if(!rowset->lastrec){
+		rowset->bof = rowset->eof = 1;
+		rowset->recno = 0;
+	}
+	_clip_destroy_c_item(mp,stmt->stmt_item,_C_ITEM_TYPE_SQL);
+	if(!conn->at){
+		isc_commit_transaction(conn->status,&conn->tr);
+		CHECKERR(conn->status,ER_COMMIT,er_commit,(0),-1);
+	}
+	return er;
 }

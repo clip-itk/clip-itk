@@ -277,7 +277,7 @@ static function fw_MouseMove( self, nRow, nCol, nFlags )
 
    for n = 1 to Len( self:aItem )
       if self:aItem[ n ]:IsOver( nRow, nCol )
-	 CursorHand()
+	 //CursorHand()
 	 if self:nItem != n
 	    self:nItem := n
 	    self:DestroyToolTip()
@@ -315,9 +315,9 @@ static function fw_TimerEval(self)
    next
 
    if self:lCheckRes
-      self:oWnd:SetText( "MemUsed: " + AllTrim( Transform( MemUsed(), "999,999,999,999" ) ) + ;
-		      " MemMax: " + Alltrim( Transform( MemMax(), "999,999,999,999" ) ) + ;
-		      " Resources: " + AllTrim( Str( GetFreeSystemResources( 1 ) ) ) + "%" )
+      self:oWnd:SetText( "MemUsed: " + AllTrim( Transform( /*MemUsed()*/, "999,999,999,999" ) ) + ;
+		      " MemMax: " + Alltrim( Transform( /*MemMax()*/, "999,999,999,999" ) ) + ;
+		      " Resources: " + AllTrim( Str( /*GetFreeSystemResources( 1 )*/ ) ) + "%" )
    else
       if self:Cargo != NIL
 	 self:oWnd:SetText( self:Cargo )
@@ -333,18 +333,8 @@ static function fw_Paint(self)
 	     self:lCentered, If( Len( self:aItem ) > 0, self:aItem[ 1 ]:nLeft(), 0 ),;
 	     self:nClrText, self:nClrPane, self:oFont:hFont,;
 	     self:lInset )
-	ASend( self:aItem, "Paint" ) // ShowItem( Self, self:aItem, self:nRight )
+	Selector:ASend( self:aItem, "Paint" ) // ShowItem( Self, self:aItem, self:nRight )
 
-/*
-	MsgPaint( self:hWnd, self:cMsg, self:cMsgDef, .t.,;
-	     self:lCentered, If( Len( self:aItem ) > 0, self:aItem[ 1 ]:nLeft(), 0 ),;
-	     self:nClrText, self:nClrPane, self:oFont:hFont,;
-	     self:lInset )
-
-	ASend( self:aItem, "Paint" ) // ShowItem( Self, self:aItem, self:nRight )
-
-	MsgPaint3L( self:hWnd )
-*/
 return nil
 *******************************
 static function fw_ShowToolTip(self)

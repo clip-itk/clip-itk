@@ -30,29 +30,29 @@ if stdin
 else
 	set console off
 	if tipv!=NIL .and. tipv="add" .and. empty(pfile)
-   		pfile=tmpfile()+".txt"
-   		_pnumber=fcreate(pfile)
-   		ret:=fclose(_pnumber)
+		pfile=tmpfile()+".txt"
+		_pnumber=fcreate(pfile)
+		ret:=fclose(_pnumber)
 	endif
 	if tipv!=NIL .and. tipv="add"
-       		_pfile=pfile
-       		_pnumber=fopen(_pfile,2)
-       		fseek(_pnumber,0,2)
+		_pfile=pfile
+		_pnumber=fopen(_pfile,2)
+		fseek(_pnumber,0,2)
 	else
-       		pfile=""
-       		_pfile=tmpfile()+".txt"
-       		_pnumber=fcreate(_pfile)
-       		ret=fclose(_pnumber)
-       		_pnumber=fopen(_pfile,2)
-       		fseek(_pnumber,0,0)
+		pfile=""
+		_pfile=tmpfile()+".txt"
+		_pnumber=fcreate(_pfile)
+		ret=fclose(_pnumber)
+		_pnumber=fopen(_pfile,2)
+		fseek(_pnumber,0,0)
 	endif
-        save screen to scr
+	save screen to scr
 endif
 if _pnumber==-1
    if stdin
-   	outlog(__FILE__,__LINE__,"cannot open file:",_pfile)
+	outlog(__FILE__,__LINE__,[cannot open file:],_pfile)
    else
-   	message(" Невозможно открыть файл "+_pfile)
+	message([cannot open file:]+_pfile)
    endif
    return ""
 endif
@@ -110,97 +110,101 @@ do while !(_s1=="")
        obr:=.f.
        promstr=get_end(@_s1,"#if","#endif")
        if !empty(promstr)
-          aaaaaaaaaa()
-          f1xx=at(memvar->vk,promstr)
-          _usl=substr(promstr,1,f1xx-1)
-          promstr=substr(promstr,f1xx+len(vk))
-          if &_usl
-             _run_blank2(promstr,stdin)
-          endif
-          obr:=.t.
-          //break
+	  aaaaaaaaaa()
+	  f1xx=at(memvar->vk,promstr)
+	  _usl=substr(promstr,1,f1xx-1)
+	  promstr=substr(promstr,f1xx+len(vk))
+	  if &_usl
+	     _run_blank2(promstr,stdin)
+	  endif
+	  obr:=.t.
+	  //break
        endif
        promstr=get_end(@_s1,"#while","#endwhile")
        if !empty(promstr)
-          aaaaaaaaaa()
-          f1xx=at(memvar->vk,promstr)
-          _usl=substr(promstr,1,f1xx-1)
-          promstr=substr(promstr,f1xx+len(vk))
-          nstr=1
-          do while (&_usl)
-             if nstr==1
-                _run_blank2(promstr,stdin)
-             else
-                aaaaaaaaaa(,,,mlcount(promstr,250))
-                _run_blank2(promstr,stdin)
-             endif
-             nstr++
-             if !stdin
-                inkey()
-             endif
-             if lastkey()==27
-                _nesc++
-             elseif lastkey()!=0
-                _nesc=0
-             endif
-             if _nesc=2
-               buffer=" Цикл прекращен по клавише <ESC>! "+vk
-               fwrite(_pnumber,buffer,len(buffer))
-               exit
-             endif
-          enddo
-          obr:=.t.
-          //break
+	  aaaaaaaaaa()
+	  f1xx=at(memvar->vk,promstr)
+	  _usl=substr(promstr,1,f1xx-1)
+	  promstr=substr(promstr,f1xx+len(vk))
+	  nstr=1
+	  do while (&_usl)
+	     if nstr==1
+		_run_blank2(promstr,stdin)
+	     else
+		aaaaaaaaaa(,,,mlcount(promstr,250))
+		_run_blank2(promstr,stdin)
+	     endif
+	     nstr++
+	     if !stdin
+		inkey()
+	     endif
+	     if lastkey()==27
+		_nesc++
+	     elseif lastkey()!=0
+		_nesc=0
+	     endif
+	     if _nesc=2
+	       buffer=" Цикл прекращен по клавише <ESC>! "+vk
+	       fwrite(_pnumber,buffer,len(buffer))
+	       exit
+	     endif
+	  enddo
+	  obr:=.t.
+	  //break
        endif
        if !obr
-          f1xx=at(memvar->vk,_s1)
-          _s2=iif(f1xx!=0,substr(_s1,1,f1xx-1),_s1)
-          _s1=iif(f1xx!=0,substr(_s1,f1xx+len(vk)),"")
-          if at(":=",_s2)!=0
-             ___s3:=alltrim(_s2)
-             _s2:=&___s3
-             _s2:=""
-             obr:=.t.
-          endif
+	  f1xx=at(memvar->vk,_s1)
+	  _s2=iif(f1xx!=0,substr(_s1,1,f1xx-1),_s1)
+	  _s1=iif(f1xx!=0,substr(_s1,f1xx+len(vk)),"")
+	  if at(":=",_s2)!=0
+	     ___s3:=alltrim(_s2)
+	     _s2:=&___s3
+	     _s2:=""
+	     obr:=.t.
+	  endif
+       else
+	  _s2 := ""
        endif
        do while !(_s2=="")
-           f1xx=at("#",_s2)
-           if f1xx!=0
-              ___s3=substr(_s2,f1xx)
-              do while substr(___s3,1,1)="#"
-                 ___s3=substr(___s3,2)
-              enddo
-              buffer=substr(_s2,1,f1xx-1)
-              fwrite(_pnumber,buffer,len(buffer))
-              f2xx=atalpha(___s3)
-              _s2=iif(f2xx=0,"",substr(___s3,f2xx))
-              ___s3=iif(f2xx=0,___s3,substr(___s3,1,f2xx-1))
-           else
-              buffer=_s2
-              fwrite(_pnumber,_s2,len(_s2))
-              exit
-           endif
-           if !isdigit(___s3)
-              if select("blank")!=0
-                 if blank->what==0
-                    str=alltrim(sstr(&___s3))
-                    fwrite(_pnumber,str,len(str))
-                 elseif blank->what<0          //KP,PL...,Q_OBOR
-                    str=sstr(&___s3)
-                    fwrite(_pnumber,str,len(str))
-                 else                          //BALANS-15,EKON1-11
-                    str=sstr(&___s3,blank->what,val(blank->decim))
-                    fwrite(_pnumber,str,len(str))
-                 endif
-              else
-                    str=sstr(&___s3)
-                    fwrite(_pnumber,str,len(str))
-              endif
-              buffer=str
-           endif
+	   f1xx=at("#",_s2)
+	   if f1xx!=0
+	      ___s3=substr(_s2,f1xx)
+	      do while substr(___s3,1,1)="#"
+		 ___s3=substr(___s3,2)
+	      enddo
+	      buffer=substr(_s2,1,f1xx-1)
+	      //? "a1",buffer
+	      fwrite(_pnumber,buffer,len(buffer))
+	      f2xx=atalpha(___s3)
+	      _s2=iif(f2xx=0,"",substr(___s3,f2xx))
+	      ___s3=iif(f2xx=0,___s3,substr(___s3,1,f2xx-1))
+	   else
+	      buffer=_s2
+	      //? "a2",buffer
+	      fwrite(_pnumber,_s2,len(_s2))
+	      exit
+	   endif
+	   if !isdigit(___s3)
+	      if select("blank")!=0
+		 if blank->what==0
+		    str=alltrim(sstr(&___s3))
+		    fwrite(_pnumber,str,len(str))
+		 elseif blank->what<0          //KP,PL...,Q_OBOR
+		    str=sstr(&___s3)
+		    fwrite(_pnumber,str,len(str))
+		 else                          //BALANS-15,EKON1-11
+		    str=sstr(&___s3,blank->what,val(blank->decim))
+		    fwrite(_pnumber,str,len(str))
+		 endif
+	      else
+		    str=sstr(&___s3)
+		    fwrite(_pnumber,str,len(str))
+	      endif
+	      buffer=str
+	   endif
        enddo
        if !obr
-          fwrite(_pnumber,vk,len(vk))
+	  fwrite(_pnumber,vk,len(vk))
        endif
     End Sequence
     if !stdin
@@ -260,9 +264,9 @@ if _error:gencode==5
 endif
 if flagm==NIL
 messagep("Вы работаете с Бланком, в котором есть ошибки. Наверняка получите;"+;
-         " что-то не то. Отредактируйте Бланк, иначе это сообщение Вам надоест.;"+;
-         " Ошибка : "+_error:description+" "+iif(empty(_error:operation),"",_error:operation)+";";
-         +iif(!empty(_error:filename),_error:filename,"") )
+	 " что-то не то. Отредактируйте Бланк, иначе это сообщение Вам надоест.;"+;
+	 " Ошибка : "+_error:description+" "+iif(empty(_error:operation),"",_error:operation)+";";
+	 +iif(!empty(_error:filename),_error:filename,"") )
 endif
 Break(_error)
 return
@@ -273,15 +277,74 @@ parameters per,nect,dec
 local n:=""
  do case
     case stype("per")=="C"
-        n=per
+	n=per
     case stype("per")=="D"
-        n=dtoc(per)
+	n=dtoc(per)
     case stype("per")=="N"
-         if valtype(nect)=="U" .or. valtype(dec)=="U"
-           n=str(per)
-         else
-           n=str(per,nect,dec)
-         endif
+	 if valtype(nect)=="U" .or. valtype(dec)=="U"
+	   n=str(per)
+	 else
+	   n=str(per,nect,dec)
+	 endif
  endcase
 return n
+
+#include "mset.ch"
+*************************************************************
+*     используется для вывода на экран процента
+*     выполнения в цикле DO REPEAT
+*
+static func aaaaaaaaaa(v,x,str,div,set)
+static x1:=0,x2:=0
+local _maxR,t,l,b,r,i,j
+if set!=NIL .and. valtype(set)=="L"
+    mset(_MSET_PROGRESS,set)
+    return 0
+endif
+if mset(_MSET_PROGRESS)
+	return 0
+endif
+_maxR:=maxRow()-2
+T:=_maxR-2; L:=10; B:=_maxR+2; R:=70
+do case
+   case v<>NIL .and. v
+       return 0
+   case pcount()=0 .or. (pcount()=1 .and. v<>NIL .and. !v)
+       x2++
+       i:=(x2/x1)*100
+       i:=abs(i)
+       j:=iif(i>100,100,i)
+       j:=int(j/2.5)
+       dispOutAt( T+1,L+20, "Выполнено "+alltrim(str(i))+"%" )
+       dispOutAt( T+3,L+10, replicate("█",j) )
+   case pcount()==4 .and. div<>NIL
+       x1+=div
+       return 0
+   case pcount()>1 .and. pcount()<4
+       x1:=x
+       x2:=0
+       dbox(T,L,B,R)
+       dispOutAt( T+2,L+10, padc(alltrim(str),40) )
+       dispOutAt( T+3,L+10, replicate("░",40) )
+endcase
+return 0
+
+***********************************
+static func addScroll( x, col )
+	local str:="", len, xType, mmm
+	xType=valType(x)
+	do case
+		case xType=="L"
+			len= 3
+		case xType=="D"
+			len= len( dtoc(x) )
+		case xType=="N"
+			len= len( str(x) )
+		otherwise             // "C" | "M"
+			len= len(x)
+	endcase
+	if len+col > (mmm:=mset( _MSET_RIGHTBANK ))
+		str="@S"+alltrim(str(mmm-col+1))
+	endif
+return str
 

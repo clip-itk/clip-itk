@@ -62,7 +62,7 @@ function _recover_FWIN_TMDICLIENT(obj)
 
 	obj:ReSize	:= {|| }// VIRTUAL
 	obj:lCloseAll	:= @fw_lCloseAll()
-	obj:IconizeAll	:= {| self | ASend( self:aWnd, "Iconize" )}
+	obj:IconizeAll	:= {| self | Selector:ASend( self:aWnd, "Iconize" )}
 	obj:Select	:= @fw_Select()
 	obj:SetMenu	:= {| self, oMenu, nMenuInfo | ;
 				If( oMenu != nil,;
@@ -209,12 +209,12 @@ static function fw_KeyDown( self, nKey, nFlags )
    // MdiClient receives those messages and there is no a standard behavior
    // so we have to process them !
 
-   if nKey == VK_F4 .and. GetKeyState( VK_CONTROL )
+   if nKey == VK_F4 .and. eval(Selector:GetKeyState, VK_CONTROL )
       eval(Selector:SendMessage, self:SendMsg( WM_MDIGETACTIVE ), WM_SYSCOMMAND, SC_CLOSE )
       return 0
    endif
 
-   if nKey == VK_F6 .and. GetKeyState( VK_CONTROL )
+   if nKey == VK_F6 .and. eval(Selector:GetKeyState, VK_CONTROL )
       eval(Selector:SendMessage, self:SendMsg( WM_MDIGETACTIVE ), WM_SYSCOMMAND, SC_NEXT )
       return 0
    endif

@@ -5,10 +5,12 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include "clipbase.h"
 #include "rdd.h"
 #include "error.ch"
+#ifdef HAVE_MMAN_H
+#include <sys/mman.h>
+#endif
 
 extern DBWorkArea* cur_area(ClipMachine * cm);
 
@@ -262,7 +264,7 @@ int clip_HS_FILTER(ClipMachine* cm){
 
 	if(hs->lcase)
 		_clip_upstr(fexpr,strlen(fexpr));
-	if((er = rdd_createfilter(cm,wa->rd,&fp,NULL,fexpr,NULL,__PROC__))) goto err_unlock;
+	if((er = rdd_createfilter(cm,wa->rd,&fp,NULL,fexpr,NULL,0,__PROC__))) goto err_unlock;
 	free(fexpr); fexpr = NULL;
 	fp->active = 1;
 	wa->rd->filter = fp;
@@ -641,25 +643,6 @@ err:
 	return er;
 }
 
-static char *
-str_str(char *src, int slen, char *dst, int dlen)
-{
-	char *end, *de, *s = src, *d = dst;
-
-	for (end = src + slen, de = dst + dlen - 1; src < end; src++)
-		if (*src == *d)
-		{
-			s = src;
-			for (; src < end && d < de && *(++src) == *(++d);)
-				;
-			if (d == de && *src == *d)
-				return s;
-			src = s;
-			d = dst;
-		}
-	return 0;
-}
-
 int clip_HS_VERIFY(ClipMachine* cm){
 	const char* __PROC__ = "HS_UNDELETE";
 	ClipVar* val;
@@ -699,7 +682,7 @@ int clip_HS_VERIFY(ClipMachine* cm){
 		_clip_upstr(string,strl);
 		_clip_upstr(sub,subl);
 	}
-	r = str_str(string,strl,sub,subl);
+	r = (char*)_clip_strstr(string,strl,sub,subl);
 
 	free(sub);
 	free(string);
@@ -1232,9 +1215,13 @@ static int hs_add(ClipMachine* cm,HIPER* hs,const char* str,int len,unsigned int
 
 static int hs_close(ClipMachine* cm,HIPER* hs,const char* __PROC__){
 	if((int)hs->file.md != -1)
+#ifdef OS_MINGW
+		free(hs->file.md);
+#else
 		if(munmap(hs->file.md,hs->file.mapsize)==-1)
 			return rdd_err(cm,EG_CLOSE,errno,__FILE__,__LINE__,__PROC__,
 				er_ioerror);
+#endif
 
 	if(close(hs->file.fd))
 		return rdd_err(cm,EG_CLOSE,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
@@ -1268,7 +1255,7 @@ static int hs_create(ClipMachine* cm,const char* fname,int pagesize,int lcase,in
 	if((er = _rdd_parsepath(cm,fname,".htx",&hs->path,&hs->name,EG_CREATE,__PROC__)))
 		goto err;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	hs->file.fd = open(hs->path,O_CREAT|O_TRUNC|O_RDWR|O_BINARY,cm->fileCreateMode);
 #else
 	hs->file.fd = open(hs->path,O_CREAT|O_TRUNC|O_RDWR,cm->fileCreateMode);
@@ -1277,10 +1264,11 @@ static int hs_create(ClipMachine* cm,const char* fname,int pagesize,int lcase,in
 	hs->file.mapsize = sizeof(HS_HEADER);
 	if(lseek(hs->file.fd,hs->file.mapsize-1,SEEK_SET)==-1) goto err_create;
 	if(write(hs->file.fd,"",1)==-1) goto err_create;
+#ifdef HAVE_MMAN_H
 	hs->file.md = (caddr_t)mmap(0,hs->file.mapsize,
 		PROT_READ|PROT_WRITE,MAP_SHARED,hs->file.fd,0);
 	/* If failed use non-mapped file (md==-1) */
-
+#endif
 	if((er = rdd_write(cm,&hs->file,0,sizeof(HS_HEADER),&hdr,__PROC__)))
 		goto err;
 
@@ -1294,7 +1282,11 @@ err_create:
 	er = rdd_err(cm,EG_CREATE,errno,__FILE__,__LINE__,__PROC__,hs->path);
 err:
 	if(hs->file.md)
+#ifdef OS_MINGW
+		free(hs->file.md);
+#else
 		munmap(hs->file.md,hs->file.mapsize);
+#endif
 	if(hs->file.fd!=-1)
 		close(hs->file.fd);
 	if(hs->name)
@@ -1378,17 +1370,19 @@ static int hs_open(ClipMachine* cm,const char* fname,int mode,HIPER** hsp,const 
 	if((er = _rdd_parsepath(cm,fname,".htx",&hs->path,&hs->name,EG_OPEN,__PROC__)))
 		goto err;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	hs->file.fd = open(hs->path,(rdwr?O_RDWR:O_RDONLY)|O_BINARY);
 #else
 	hs->file.fd = open(hs->path,rdwr?O_RDWR:O_RDONLY);
 #endif
 	if(hs->file.fd == -1) goto err_open;
 	if(fstat(hs->file.fd,&st)==-1) goto err_open;
+#ifdef HAVE_MMAN_H
 	hs->file.mapsize = st.st_size;
 	hs->file.md = (caddr_t)mmap(0,hs->file.mapsize,
 		PROT_READ|(rdwr?PROT_WRITE:0),MAP_SHARED,hs->file.fd,0);
 	/* If failed use non-mapped file (md==-1) */
+#endif
 
 	if((er = rdd_read(cm,&hs->file,0,sizeof(HS_HEADER),&hdr,__PROC__))) goto err;
 	if(memcmp(hdr.sig,"HS",2)!=0){
@@ -1407,8 +1401,10 @@ static int hs_open(ClipMachine* cm,const char* fname,int mode,HIPER** hsp,const 
 err_open:
 	er = rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,hs->path);
 err:
+#ifdef HAVE_MMAN_H
 	if(hs->file.md)
 		munmap(hs->file.md,hs->file.mapsize);
+#endif
 	if(hs->file.fd!=-1)
 		close(hs->file.fd);
 	if(hs->name)

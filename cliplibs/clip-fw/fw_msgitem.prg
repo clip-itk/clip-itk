@@ -62,8 +62,8 @@ static function fw_New( self, oMsgBar, cMsg, nWidth, oFont, nClrText, nClrBack, 
 	self:cToolTip = cToolTip
 
 	if Valtype( nClrText ) == "C"
-		self:nClrText := nGetForeRGB( nClrText )
-		self:nClrPane := nGetBackRGB( nClrText )
+		self:nClrText := eval(Selector:nGetForeRGB, nClrText )
+		self:nClrPane := eval(Selector:nGetBackRGB, nClrText )
 	else
 		self:nClrText := nClrText
 		self:nClrPane := nClrBack

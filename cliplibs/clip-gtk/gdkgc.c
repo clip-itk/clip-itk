@@ -9,6 +9,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+#include <string.h>
 
 #include "clip-gtk.ch"
 #include "clip-gtk.h"
@@ -127,6 +128,7 @@ clip_GDK_GCNEWWITHVALUES(ClipMachine * cm)
 			}
 			break;
 		default:
+			break;
 	}
 	if (font)
 	{
@@ -400,6 +402,7 @@ clip_GDK_GCSETFONT(ClipMachine * cm)
 			}
 			break;
 		default:
+			break;
 	}
 	if (font)
 	{

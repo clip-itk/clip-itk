@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -12,9 +12,9 @@ MEMVAR  _zu,_zif,_base,_im,_l,_pole,_works,_F_Out,;
 	_printer,_plength,_pscode,_pecode,_plineno,_pageno,_lMargin,;
 	_pcond,_needRec,_recRight,_needCentr,_NeedPrPage,_NeedHeadPage,;
 	PGrSum,NeedPgGrp,ISum,PSum,NeedPart,nCol,_head,;
-	_NeedEject,_pspacing,_MemoNumLines
+	_NeedEject,_pspacing,_MemoNumLines,_lDgtHdr,_lDhAll
 MEMVAR  _aExpr, _aHead, _aElen, _aPict, _aTitle, _cFile, _aSecond, _aSum,;
-	_fCondit,_lSilense,_nCounter,_aFooter,_pEveryStep,;
+	_fCondit,_NoAsk,_nCounter,_aFooter,_pEveryStep,;
 	_aGroup,_nDouble,_NoShow,_lAddi,_aPage,cDivideT,cDivide,countName
 MEMVAR _InipFile,_MemoPrnFile
 *MEMVAR PGrSum2,ISum2,PSum2
@@ -24,7 +24,7 @@ MEMVAR _InipFile,_MemoPrnFile
 	 TO <i> ;
 	 => <i>:=FT_ASUM(<a>,<nStart>,<nCount>)
 #translate Double(<_s>,<_space>)=> Pad(<_s>,m->_L+<_space>)+Trim(<_s>)
-STATIC lIsHtml
+STATIC lIsHtml:=.F.
 **********
 PROC PRT
 LOCAL	_i,i,_el,nFLen,cFType, nRecLen:=MAX(LenNum(LastRec()),7),;
@@ -62,15 +62,18 @@ BEGIN SEQUENCE
   MakeReport(.T.,_aExpr, _aHead, _aElen, _aPict,/* _aTitle*/,/* _cFile*/,;
 	  /*_aSecond,*/ _aSum, _PCond)
 /*,;
-	_lSilense,_nCounter,_aFooter,_pEveryStep,_aGroup,;
+	_NoAsk,_nCounter,_aFooter,_pEveryStep,_aGroup,;
 	_nDouble,_NoShow,_lAddi,_aPage,cDivideT,cDivide,countName
 */
 END
 **********
 PROC PrintHead()
-LOCAL s
+LOCAL s,i,lNo1st:=(_PageNo>1),lWasHead:=.f.
 IF lIsHtml THEN Psay('<H2>',.T.)
-IF m->_NeedMainHead
+
+IF !lNo1st .OR. m->_lTitleAll
+  AEval(m->_aTitle,{|i| Pc(1,i,IF(VALTYPE(i)=='C',MAX(_L,LEN(i)),_L))})
+  IF m->_NeedMainHead
 	Pc(2,_base+BASE_STAT+Dtoc(DATE()))
 	Pc(1,LASTUPDATED+DTOC(Lupdate()))
 	IF  !Empty(m->_IndexFile)
@@ -78,26 +81,46 @@ IF m->_NeedMainHead
 		Pc(1,m->_Iv+IndexKey(0))
 	ENDIF
 	Pc(1,IF(_Pcond='.T.',ALL_RECS,CONDITION+_pcond))
+  ENDIF
 ENDIF
-IF  m->_NeedPrPage .AND. _PageNo>1
+
+IF  m->_NeedPrPage .AND. lNo1st
 	s:=SPACE(MAX(_l+_lmargin-15,25))+PLIST+NTRIM(_PageNo)
 	IF (TYPE('_nDouble')=='N' .AND. _nDouble>0) THEN s:=Double(s,_ndouble)
-	@ prow()+1,0 say s
-	_plineNo++
+	IF _NeedHeadPage
+		@ prow()+1,0 say s
+		_plineNo++
+	ELSE
+		@ prow()+3,0 say s
+		_plineNo+=3
+	ENDIF
 ENDIF
 IF lIsHtml THEN Psay('</H2>',.T.)
 
-IF !EMPTY(m->_head)
+IF !EMPTY(m->_head) .AND. (_NeedHeadPage .OR. !lNo1st)
 	IF lIsHtml THEN PSay('<b>',.T.)
 	Line()
 	AEval(m->_head,{|i| Psay(' '+i)})
 	Line()
 	IF lIsHtml THEN DevOut('</b>')
+	lWasHead:=.T.
 ENDIF
 
+IF (!lNo1st .AND. _lDgtHdr) .OR. (lNo1st .AND. _lDhAll)
+	IF lIsHtml THEN PSay('<b>',.T.)
+	IF !lWasHead THEN Line()
+	s:=' '
+	FOR i:=1 TO LEN(_aELen)
+		s+=Medi(i,_aELen[i],m->cDivideT)
+	NEXT
+	@ prow()+1,0 say s
+	Line()
+	IF lIsHtml THEN PSay('</b>',.T.)
+ENDIF
 **********
 PROC PrintEdit(_FName)
 LOCAL aEd:={},s
+IF_NIL _FName IS ClearName()+'.REC'
 PRIVATE _l:=0
 AEval(_pole,{|el,_i|AADD(aEd,(s:=Str(_i,3)+'.'+;
 		PAD(ALLTRIM(STRTRAN(_Works[_i],';',' ')),32)+;
@@ -134,7 +157,7 @@ FUNC MakeReport
 LOCAL nHead,_nl:=0,nPos,nMax,cHead,NeedCounter
 LOCAL i,j,Acurr,cCurr,pKod,scr,nGrpLines, nRecLen
 PARAM lUsual,_aExpr, _aHead, _aElen, _aPict, _aTitle, _cFile,/*_aSecond,*/ _aSum,_fCondit,;
-	_lSilense,_nCounter,_aFooter,_pEveryStep,_aGroup,;
+	_NoAsk,_nCounter,_aFooter,_pEveryStep,_aGroup,;
 	_nDouble,_NoShow,_lAddi,_aPage,cDivideT,cDivide,countName
 /*
 	Автогенерация и вывод отчета
@@ -148,7 +171,7 @@ PARAM lUsual,_aExpr, _aHead, _aElen, _aPict, _aTitle, _cFile,/*_aSecond,*/ _aSum
   _aSecond - массив вторых строчек вывода
   _aSum    - массив необходимости суммирования
   _fCondit - условие печати
-  _lSilense - молчание- ничего не спрашиваем
+  _NoAsk - молчание- ничего не спрашиваем
   _nCounter - если >0, то слева выводит порядковый номер шириной _nCounter
   _aFooter  - имя дополнительной процедуры,печатающей подвал или имя массива,
 	    содержащего подвал
@@ -190,7 +213,7 @@ PRIVATE _Head,ISum,PSum,NeedPart:=.f.,nCol,PGrSum,NeedPgGrp:=.F.,_nPp
 *PRIVATE ISum2,PSum2,PGrSum2
 
 IF Empty(m->_lAddi) THEN	m->_lAddi:=.f.
-IF Empty(m->_lSilense) THEN	m->_lSilense:=.f.
+IF Empty(m->_NoAsk) THEN	m->_NoAsk:=.f.
 IF Empty(m->_nDouble) THEN	m->_nDouble:=0
 
 IF Empty(m->_aExpr)
@@ -205,19 +228,20 @@ ELSE
 ENDIF
 
 IF_NIL m->_nCounter IS 0
-IF_NIL m->cDivide IS m->_DefaultBorder
-IF_NIL m->cDivideT IS m->_DefaultBorder
 IF_NIL m->CountName IS COUNTER_NAME
 NeedCounter:= (m->_nCounter>0)
+IF_NIL m->cDivide IS m->_DefaultBorder
+IF_NIL m->cDivideT IS m->_DefaultHBorder
 
 ScrSave(@scr)
 
-IF !m->_lSilense .AND. !m->_lAddi .AND. !BeginPrint(m->_cFile, m->_fcondit)
+IF !m->_NoAsk .AND. !m->_lAddi .AND. !BeginPrint(m->_cFile, m->_fcondit)
 	RETU .f.
-ELSEIF m->_lSilense .OR. m->_lAddi
+ELSEIF m->_NoAsk .OR. m->_lAddi
 	_plineNo:=_nl:=0
 	_pageNo:=1
 	Set(_SET_PRINTFILE,m->_cFile, m->_NeedApFile)
+	m->_F_Out:=m->_cFile
 ENDIF
 
 * Если количество заголовков < количества столбцов - сделаем пустые заголовки
@@ -240,7 +264,6 @@ IF NeedCounter
 	A_Ins(m->_aSum,.F.)
 ENDIF
 
-m->ISum := Ext_Arr(,nCol,0)
 
 IF m->lUsual .AND. _needRec
 	nCol++
@@ -258,7 +281,8 @@ IF m->lUsual .AND. _needRec
 		A_INS(m->_aSum,.F.)
 		A_INS(m->_aPict,)
 	ENDIF
-  ENDIF
+ENDIF
+m->ISum := Ext_Arr(,nCol,0)
 
 /*
 IF IsPArray('_aSecond')
@@ -345,7 +369,6 @@ BEGIN SEQUENCE
 * А вдруг заголовок шире
 *Заголовок отчета
 *Plen()		&& включить сжатие при необходимости
-  AEval(m->_aTitle,{|i| Pc(1,i,IF(VALTYPE(i)=='C',MAX(_L,LEN(i)),_L))})
 
   PrintHead()			&& заголовок
 
@@ -504,7 +527,7 @@ IF Ascan(_sum,{|_1|_1>0})==0	// Нет сумм>0
 ENDIF
 SUM ARRAY m->_aElen FROM 1 COUNT start-1 TO i
 
-n1Wide:=i+(start-2)*LEN(cDivide)	// Ширина для вывода
+n1Wide:=i+(start-2)*LEN(cDivide)+1	// Ширина для вывода
 					// итогового сообщения
 cCurr:=' '
 IF !need2 .AND. start>1			// Есть куда всунуть
@@ -581,10 +604,10 @@ BEGIN SEQUENCE
 
 IF !EMPTY(cFile) THEN _F_OUT:=cFile
 IF !EMPTY(cFcond) THEN _PCond:=cFCond
-IF TakeScope() .AND. GetName(_ZU+FOROTBOR,'_PCond') .AND. TrueCond(@_PCond)
+IF TakeScope(FOROTBOR) .AND. GetName(_ZU+FOROTBOR,'_PCond') .AND. TrueCond(@_PCond)
 
 //  SetColor(m->_MenuColor)
-  _i:=Menu2({WHERE_DEV},1,WHERE_OUT,,{{9,_MSG_PR_F9,{||Configure()}}})
+  _i:=Menu2({WHERE_DEV},1,WHERE_OUT,,{{9,_MSG_PR_F9,{||Configure(.T.)}}})
   lIsHtml:=.F.
   IF _i<3
 	IF GetName(_ZIF+m->_ABORT,'_F_OUT')
@@ -667,15 +690,7 @@ IF EMPTY(lPageNo) .AND. _PlineNo > _plength .AND. (_plength#0)
 	IF Really(NeedPgGrp)	// заглавие страниц
 		IF !EMPTY(_aPage[1]) THEN EvalA(m->_aPage[1])
 	ENDIF
-	IF _NeedHeadPage
-		PrintHead()
-	ELSEIF  _NeedPrPage
-		s:=SPACE(MAX(_l+_lmargin-15,25))+PLIST+NTRIM(_PageNo)
-		IF lDouble THEN	s:=Double(s,_nDouble)
-		@ prow()+2,0 say s+_CRLF
-		_plineNo+=3
-		Line()
-	ENDIF
+	PrintHead()
 ENDIF
 **********
 PROC Line(char,lNoPage)
@@ -684,7 +699,7 @@ Psay(Repl(char,_L),lNoPage)
 **********
 PROC RestPrintIni(cfBpf)
 PRIVATE _aExpr, _aHead, _aElen, _aPict, _aTitle, _cFile,/* _aSecond,*/ _aSum,;
-	_fCondit,_lSilense,_nCounter,_aFooter,_pEveryStep,;
+	_fCondit,_NoAsk,_nCounter,_aFooter,_pEveryStep,;
 	_aGroup,_nDouble,_NoShow,_lAddi,_aPage,cDivideT,cDivide,countName
 
 BEGIN SEQUENCE
@@ -700,7 +715,7 @@ BEGIN SEQUENCE
 	RestoreIni(_IniPFile)
 
 	MakeReport(.F.,_aExpr, _aHead, _aElen, _aPict, _aTitle, _cFile,;
-		   /*_aSecond,*/ _aSum, _fCondit, _lSilense, _nCounter,;
+		   /*_aSecond,*/ _aSum, _fCondit, _NoAsk, _nCounter,;
 		   _aFooter, _pEveryStep, _aGroup, _nDouble,;
 		   _NoShow, _lAddi, _aPage, cDivideT, cDivide, countName)
 END
@@ -727,7 +742,7 @@ DO WHILE !Empty(cStr) .AND. i<=NumItem
 			j--
 		ENDDO
 		IF j=1 THEN nsp:=nLen
-		cItem:=SUBSTR(cStr,1,nsp)
+		cItem:=LEFT(cStr,nsp)
 *		cStr:=LTRIM(Substr(cStr,nsp+1))
 		cStr:=Substr(cStr,nsp+1)
 	ELSE
@@ -758,7 +773,3 @@ IF GetName(_ZIF,'_MemoPrnFile') .AND. TestWriteFile(@_MemoPrnFile,'.MPF')
 	PrintArr(TRIM(m->_MemoPrnFile),cHeader,aPrnt)
 ENDIF
 **********
-/*
-STATIC FUNC Double(_s,_space)
-RETU Pad(_S,m->_L+_space)+Trim(_S)
-*/

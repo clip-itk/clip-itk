@@ -4,9 +4,268 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.308  2004/04/29 09:27:18  clip
+	rust: recalculate filter's codeblock if expression is changed for any reason
+	
+	Revision 1.307  2004/04/08 13:04:49  clip
+	rust: fix in filter parsing; suppres generating error when expression is
+	not optimizable and contains syntax errors
+
+	Revision 1.306  2004/03/17 09:14:41  clip
+	rust: drop/add index key on DELETE and RECALL
+
+	Revision 1.305  2004/02/16 09:03:46  clip
+	rust: perform 'child duty' at RECNO()
+
+	Revision 1.304  2004/01/28 11:17:31  clip
+	rust: RLOCK() required for DELETE and RECALL
+
+	Revision 1.303  2004/01/21 14:48:28  clip
+	rust: resolve M_REF in rdd_setvalue
+
+	Revision 1.302  2004/01/19 15:09:40  clip
+	rust: wrong length of numeric keys
+
+	Revision 1.301  2003/12/29 11:12:52  clip
+	rust: bug in cascade relations, reported by marco bernardi <bernx@tin.it>
+
+	Revision 1.300  2003/12/01 12:04:23  clip
+	rust: RDDCLOSEALL() closes only tables of current task
+
+	Revision 1.299  2003/09/30 10:36:17  clip
+	rust: perform "child duty" before SKIP
+
+	Revision 1.298  2003/09/29 10:15:22  clip
+	rust: cancel "child duty" on move, reported by Marco Bernardi <bernx@tin.it>
+
+	Revision 1.297  2003/09/22 12:17:34  clip
+	rust: update record buffer on rlock()
+
+	Revision 1.296  2003/09/04 14:04:41  clip
+	*** empty log message ***
+
+	Revision 1.295  2003/09/02 14:27:43  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+
+	Revision 1.294  2003/08/27 07:24:46  clip
+	rust: rdd_checkifnew() in rdd_clearindex()
+
+	Revision 1.293  2003/07/03 07:15:56  clip
+	fix a lot of warnings
+	paul
+
+	Revision 1.292  2003/06/24 08:03:15  clip
+	rust: perform child duty on eof() and found() also (clipper compatible)
+
+	Revision 1.291  2003/06/21 08:54:47  clip
+	rust: CMF (CLIP Memo File) with 64-bit file support started
+
+	Revision 1.290  2003/06/17 09:00:16  clip
+	rust: 'structural index present' attribute in .dbf header
+
+	Revision 1.289  2003/06/11 12:14:58  clip
+	rust: don't rebuild list of recs on setting to the same order (OL2)
+
+	Revision 1.288  2003/06/05 13:20:28  clip
+	rust: avoid 'unsafe read' warning and reduntant "gotop()"
+
+	Revision 1.287  2003/06/03 14:02:46  clip
+	rust: no pending seek after parent is closed
+
+	Revision 1.286  2003/05/27 10:44:05  clip
+	rust: force moving child on set relation
+
+	Revision 1.285  2003/05/27 09:36:41  clip
+	rust: child locking bug fixed
+
+	Revision 1.284  2003/05/27 08:39:08  clip
+	rust: relations bug reported by Marco Bernardi <bernx@tin.it> fixed
+
+	Revision 1.283  2003/05/20 10:05:27  clip
+	rust: minor fix
+
+	Revision 1.282  2003/05/15 14:39:30  clip
+	rust: some speed optimizations for relations
+
+	Revision 1.281  2003/05/07 14:56:30  clip
+	rust: memory leak in rdd_dbwrite()
+
+	Revision 1.280  2003/04/30 13:53:12  clip
+	rust: more compatible NTX and some speed optimizations
+
+	Revision 1.279  2003/04/16 10:19:58  clip
+	rust: #include "btree.h" -> "./btree.h" and some other fixes for BeOS
+
+	Revision 1.278  2003/04/14 11:07:25  clip
+	rust: small fix in rdd_closearea(), reported by Marco Bernardi <bernx@tin.it>
+
+	Revision 1.277  2003/04/11 08:31:44  clip
+	rust: #ifdef HAVE_MMAN_H (BeOS)
+
+	Revision 1.276  2003/04/03 14:05:14  clip
+	*** empty log message ***
+
+	Revision 1.275  2003/04/02 10:53:20  clip
+	rust: _clip_close() added
+
+	Revision 1.274  2003/03/26 10:00:57  clip
+	rust: __off_t -> off_t
+
+	Revision 1.273  2003/03/25 12:19:27  clip
+	rust: unlock FOR-index on update that excludes the key,
+	reported by M&MS <berezniki@smtp.ru>
+
+	Revision 1.272  2003/03/25 10:58:11  clip
+	rust: _clip_setlock() added
+
+	Revision 1.271  2003/03/25 09:50:59  clip
+	rust: destroy relation on child close, reported by Sergey Mudry <upx@pisem.net>
+
+	Revision 1.270  2003/03/21 11:49:40  clip
+	rust: RDD locks with tasks (DOS compatibility)
+
+	Revision 1.269  2003/03/12 12:50:43  clip
+	rust: tasks share RDDs and subdrivers
+
+	Revision 1.268  2003/03/05 13:08:34  clip
+	rust: locking childs
+
+	Revision 1.267  2003/02/28 11:50:14  clip
+	rust: flushing buffers of child tables, reported by M&MS <berezniki@smtp.ru>
+
+	Revision 1.266  2003/02/26 09:16:28  clip
+	rust: ignore filter in INDEX ... WHILE (Clipper compatible)
+
+	Revision 1.265  2003/02/25 09:50:10  clip
+	rust: LOCATE optimized
+
+	Revision 1.264  2003/02/24 15:08:41  clip
+	rust: assigning at EOF does not generate error
+
+	Revision 1.263  2003/02/23 17:18:34  clip
+	rust: small fixes
+
+	Revision 1.262  2003/02/15 14:29:35  clip
+	rust: small fix
+
+	Revision 1.261  2003/02/15 12:34:17  clip
+	rust: open index with suffix
+
+	Revision 1.260  2003/02/11 16:12:27  clip
+	rust: optional parameter to m6_addscoped(); eval or regex
+
+	Revision 1.259  2003/02/10 16:32:56  clip
+	rust: CLIP_REGEXSEEK( <regex> )
+
+	Revision 1.258  2003/02/10 13:05:41  clip
+	rust: _SEEK_EVAL( <bBlock> ) (FlagShip extension)
+
+	Revision 1.257  2003/01/31 11:52:00  clip
+	rust: sx_islocked() with foreign locks, reported by druzus@polbox.com
+
+	Revision 1.256  2003/01/22 10:59:51  clip
+	rust: touch updated memo and index on close
+
+	Revision 1.255  2003/01/22 08:47:24  clip
+	rust: small fix in rdd_createindex()
+
+	Revision 1.254  2003/01/21 11:09:28  clip
+	rust: small fix
+
+	Revision 1.253  2003/01/21 11:04:45  clip
+	rust: DBFCDX operates with .idx, DBFCTX - with .ntx
+
+	Revision 1.252  2003/01/20 09:35:11  clip
+	rust: set update flag in rdd_rawwrite()
+
+	Revision 1.251  2003/01/17 15:44:46  clip
+	rust: INDEX FOR bug reported and fixed by István Földi" <foldii@terrasoft.hu>
+
+	Revision 1.250  2003/01/15 10:42:34  clip
+	rust: small fix in rdd_createindex()
+
+	Revision 1.249  2003/01/13 13:16:46  clip
+	rust: support tag names with NTX
+
+	Revision 1.248  2002/12/24 09:55:29  clip
+	rust: SET SCOPE bug fixed
+
+	Revision 1.247  2002/12/10 15:13:39  clip
+	rust: few error messages are corrected
+
+	Revision 1.246  2002/12/09 13:41:13  clip
+	rust: rdd_dbwrite() optimized
+
+	Revision 1.245  2002/12/06 10:56:25  clip
+	rust: set order bug fixed
+
+	Revision 1.244  2002/12/02 13:48:33  clip
+	rust: ignoring case in CDX;
+	RDDCREATEINDEX(...,lIgnoreCase) (7th parameter)
+	ORDCONDSET(...,lIgnoreCase) (16th parameter)
+
+	Revision 1.243  2002/11/27 12:13:38  clip
+	rust: small fix
+
+	Revision 1.242  2002/11/22 13:25:20  clip
+	rust: small fix
+
+	Revision 1.241  2002/11/14 10:47:23  clip
+	rust: SIGSEGV in __DbSetLocate()
+
+	Revision 1.240  2002/11/11 13:12:15  clip
+	rust: m6_Error(), m6_Set()
+
+	Revision 1.239  2002/11/06 10:57:44  clip
+	rust: CYGWIN fix
+
+	Revision 1.238  2002/11/05 15:50:53  clip
+	rust: small fix
+
+	Revision 1.237  2002/11/05 15:25:30  clip
+	rust: small fix
+
+	Revision 1.236  2002/11/05 14:54:17  clip
+	rust: small fix
+
+	Revision 1.235  2002/11/05 14:46:30  clip
+	rust: some fixes
+
+	Revision 1.234  2002/11/04 13:56:30  clip
+	rust: CYGWIN fix
+
+	Revision 1.233  2002/11/04 10:44:07  clip
+	rust: small fixes
+
+	Revision 1.232  2002/10/30 13:04:38  clip
+	rust: m6_SetFilter()
+
+	Revision 1.231  2002/10/30 10:30:55  clip
+	rust: small fix
+
+	Revision 1.230  2002/10/30 10:29:50  clip
+	rust: small fix
+
+	Revision 1.229  2002/10/30 10:12:22  clip
+	rust: small fix
+
+	Revision 1.228  2002/10/29 13:29:46  clip
+	rust: SET INDEX BUFFER LIMIT [TO] <n_Megabytes>
+		  SET MAP FILE ON|OFF
+
+	Revision 1.227  2002/10/26 11:10:02  clip
+	initial support for localized runtime messages
+	messages are in module 'cliprt'
+	paul
+
+	Revision 1.226  2002/10/18 13:23:11  clip
+	rust: setmode(...,O_BINARY) for CYGWIN
+
 	Revision 1.225  2002/10/11 10:33:10  clip
 	rust: m6_IsOptimize()
-	
+
 	Revision 1.224  2002/10/11 09:11:13  clip
 	rust: m6_FiltSave()/m6_FiltRestore()
 
@@ -510,9 +769,9 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include <string.h>
 #include <limits.h>
+#include <time.h>
 #include "../clipbase.h"
 #include "../rdd.h"
 #include "coll.h"
@@ -520,18 +779,12 @@
 #include "error.ch"
 #include "six.ch"
 #include "btree.h"
-
-#ifdef OS_CYGWIN
-
-#include "w32fcntl.c"
-#include <w32api/windows.h>
-#include <sys/cygwin.h>
-
-int w32fcntl(int fd, int flag, void *argp);
-#define fcntl w32fcntl
-
+#ifdef USE_TASKS
+#include "../task/task.h"
 #endif
-
+#ifdef HAVE_MMAN_H
+#include <sys/mman.h>
+#endif
 
 #include "../ncp.h"
 
@@ -548,54 +801,73 @@ int w32fcntl(int fd, int flag, void *argp);
 	if(!(o)) \
 		return rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,"Bad independed order handle"); \
 
-const char* bad_arg = "Bad argument (%d)";
-static const char* er_badinstance		= "Bad RDD instance";
-static const char* er_badfilterexpr		= "Bad filter expression";
-static const char* er_badrelationexpr	= "Bad relation expression";
-static const char* er_badforexpr		= "Bad FOR expression";
-static const char* er_ioerror			= "I/O error";
-static const char* er_badstructure		= "Bad table structure";
-static const char* er_badfield			= "Bad field";
-static const char* er_notpermitted		= "Operation not permitted";
-static const char* er_noorder			= "No controlling order";
-static const char* er_nofield			= "No such field";
+#define er_badinstance      _clip_gettext("Bad RDD instance")
+#define er_badfilterexpr    _clip_gettext("Bad filter expression")
+#define er_badrelationexpr  _clip_gettext("Bad relation expression")
+#define er_badforexpr       _clip_gettext("Bad FOR expression")
+#define er_ioerror          _clip_gettext("I/O error")
+#define er_badstructure     _clip_gettext("Bad table structure")
+#define er_badfield         _clip_gettext("Bad field")
+#define er_notpermitted     _clip_gettext("Operation not permitted")
+#define er_noorder          _clip_gettext("No controlling order")
+#define er_nofield          _clip_gettext("No such field")
+
+int rdd_flushbuffer(ClipMachine* cm, RDD_DATA* rd, const char* __PROC__){
+	int i,er;
+
+	if(rd->changed){
+		if((er = rd->vtbl->_wlock(cm,rd,__PROC__))) goto err;
+		if((er = rd->vtbl->setrecord(cm,rd,__PROC__))) goto err_unlock;
+		if((er = rd->vtbl->_ulock(cm,rd,__PROC__))) goto err;
+		rd->changed = 0;
+	}
+	for(i=0;i<rd->rels_opened;i++){
+		if((er = rdd_flushbuffer(cm,rd->relations[i]->child,__PROC__)))
+			goto err;
+	}
+	return 0;
+err_unlock:
+	rd->vtbl->_ulock(cm,rd,__PROC__);
+err:
+	return er;
+}
 
 int clip_INIT_RDD(ClipMachine* cm){
-	strncpy(cm->def_data_driver,"DBF",sizeof(cm->def_data_driver));
-	strncpy(cm->def_idx_driver,"NTX",sizeof(cm->def_idx_driver));
-	strncpy(cm->def_memo_driver,"DBT",sizeof(cm->def_memo_driver));
-	strncpy(cm->def_db_driver,"DBFNTX",sizeof(cm->def_db_driver));
+	strncpy(cm->def_data_driver,"DBF",3);
+	strncpy(cm->def_idx_driver,"NTX",3);
+	strncpy(cm->def_memo_driver,"DBT",3);
+	strncpy(cm->def_db_driver,"DBFNTX",6);
 	return 0;
 }
 
 void rdd_registerdatadriver(ClipMachine* cm,RDD_DATA_VTBL* vtbl){
-	if(!cm->ndata_drivers)
-		cm->data_drivers = (RDD_DATA_VTBL**)malloc(sizeof(RDD_DATA_VTBL*));
+	if(!*cm->ndata_drivers)
+		*cm->data_drivers = (RDD_DATA_VTBL**)malloc(sizeof(RDD_DATA_VTBL*));
 	else
-		cm->data_drivers = (RDD_DATA_VTBL**)realloc(cm->data_drivers,
-			sizeof(RDD_DATA_VTBL*)*(cm->ndata_drivers+1));
-	cm->ndata_drivers++;
-	cm->data_drivers[cm->ndata_drivers-1] = vtbl;
+		*cm->data_drivers = (RDD_DATA_VTBL**)realloc(*cm->data_drivers,
+			sizeof(RDD_DATA_VTBL*)*(*cm->ndata_drivers+1));
+	(*cm->ndata_drivers)++;
+	(*cm->data_drivers)[*cm->ndata_drivers-1] = vtbl;
 }
 
 void rdd_registerindexdriver(ClipMachine* cm,RDD_INDEX_VTBL* vtbl){
-	if(!cm->nidx_drivers)
-		cm->idx_drivers = (RDD_INDEX_VTBL**)malloc(sizeof(RDD_INDEX_VTBL*));
+	if(!*cm->nidx_drivers)
+		*cm->idx_drivers = (RDD_INDEX_VTBL**)malloc(sizeof(RDD_INDEX_VTBL*));
 	else
-		cm->idx_drivers = (RDD_INDEX_VTBL**)realloc(cm->idx_drivers,
-			sizeof(RDD_INDEX_VTBL*)*(cm->nidx_drivers+1));
-	cm->nidx_drivers++;
-	cm->idx_drivers[cm->nidx_drivers-1] = vtbl;
+		*cm->idx_drivers = (RDD_INDEX_VTBL**)realloc(*cm->idx_drivers,
+			sizeof(RDD_INDEX_VTBL*)*(*cm->nidx_drivers+1));
+	(*cm->nidx_drivers)++;
+	(*cm->idx_drivers)[*cm->nidx_drivers-1] = vtbl;
 }
 
 void rdd_registermemodriver(ClipMachine* cm,RDD_MEMO_VTBL* vtbl){
-	if(!cm->nmemo_drivers)
-		cm->memo_drivers = (RDD_MEMO_VTBL**)malloc(sizeof(RDD_MEMO_VTBL*));
+	if(!*cm->nmemo_drivers)
+		*cm->memo_drivers = (RDD_MEMO_VTBL**)malloc(sizeof(RDD_MEMO_VTBL*));
 	else
-		cm->memo_drivers = (RDD_MEMO_VTBL**)realloc(cm->memo_drivers,
-			sizeof(RDD_MEMO_VTBL*)*(cm->nmemo_drivers+1));
-	cm->nmemo_drivers++;
-	cm->memo_drivers[cm->nmemo_drivers-1] = vtbl;
+		*cm->memo_drivers = (RDD_MEMO_VTBL**)realloc(*cm->memo_drivers,
+			sizeof(RDD_MEMO_VTBL*)*(*cm->nmemo_drivers+1));
+	(*cm->nmemo_drivers)++;
+	(*cm->memo_drivers)[*cm->nmemo_drivers-1] = vtbl;
 }
 
 RDD_DATA_VTBL* rdd_datadriver(ClipMachine* cm,const char* driver,const char* __PROC__){
@@ -603,14 +875,14 @@ RDD_DATA_VTBL* rdd_datadriver(ClipMachine* cm,const char* driver,const char* __P
 	char err[256];
 	if(!driver || !driver[0])
 		driver = cm->def_data_driver;
-	for(i=0;i<cm->ndata_drivers;i++){
-		if((strlen(driver)==strlen(cm->data_drivers[i]->id)) &&
-			(strncasecmp(cm->data_drivers[i]->id,driver,
-			sizeof(cm->data_drivers[i]->id))==0))
+	for(i=0;i<*cm->ndata_drivers;i++){
+		if((strlen(driver)==strlen((*cm->data_drivers)[i]->id)) &&
+			(strncasecmp((*cm->data_drivers)[i]->id,driver,
+			sizeof((*cm->data_drivers)[i]->id))==0))
 
-			return cm->data_drivers[i];
+			return (*cm->data_drivers)[i];
 	}
-	snprintf(err,sizeof(err),"No data file driver linked: %s",driver);
+	snprintf(err,sizeof(err),_clip_gettext("No data file driver linked: %s"),driver);
 	rdd_err(cm,EG_UNSUPPORTED,0,__FILE__,__LINE__,__PROC__,err);
 	return NULL;
 }
@@ -620,14 +892,14 @@ RDD_INDEX_VTBL* rdd_indexdriver(ClipMachine* cm,const char* driver,const char* _
 	char err[256];
 	if(!driver || !driver[0])
 		driver = cm->def_idx_driver;
-	for(i=0;i<cm->nidx_drivers;i++){
-		if((strlen(driver)==strlen(cm->idx_drivers[i]->id)) &&
-			(strncasecmp(cm->idx_drivers[i]->id,driver,
-			sizeof(cm->idx_drivers[i]->id))==0))
+	for(i=0;i<*cm->nidx_drivers;i++){
+		if((strlen(driver)==strlen((*cm->idx_drivers)[i]->id)) &&
+			(strncasecmp((*cm->idx_drivers)[i]->id,driver,
+			sizeof((*cm->idx_drivers)[i]->id))==0))
 
-			return cm->idx_drivers[i];
+			return (*cm->idx_drivers)[i];
 	}
-	snprintf(err,sizeof(err),"No index file driver linked: %s",driver);
+	snprintf(err,sizeof(err),_clip_gettext("No index file driver linked: %s"),driver);
 	rdd_err(cm,EG_UNSUPPORTED,0,__FILE__,__LINE__,__PROC__,err);
 	return NULL;
 }
@@ -637,14 +909,14 @@ RDD_MEMO_VTBL* rdd_memodriver(ClipMachine* cm,const char* driver,const char* __P
 	char err[256];
 	if(!driver || !driver[0])
 		driver = cm->def_memo_driver;
-	for(i=0;i<cm->nmemo_drivers;i++){
-		if((strlen(driver)==strlen(cm->memo_drivers[i]->id)) &&
-			(strncasecmp(cm->memo_drivers[i]->id,driver,
-			sizeof(cm->memo_drivers[i]->id))==0))
+	for(i=0;i<*cm->nmemo_drivers;i++){
+		if((strlen(driver)==strlen((*cm->memo_drivers)[i]->id)) &&
+			(strncasecmp((*cm->memo_drivers)[i]->id,driver,
+			sizeof((*cm->memo_drivers)[i]->id))==0))
 
-			return cm->memo_drivers[i];
+			return (*cm->memo_drivers)[i];
 	}
-	snprintf(err,sizeof(err),"No memo file driver linked: %s",driver);
+	snprintf(err,sizeof(err),_clip_gettext("No memo file driver linked: %s"),driver);
 	rdd_err(cm,EG_UNSUPPORTED,0,__FILE__,__LINE__,__PROC__,err);
 	return NULL;
 }
@@ -715,32 +987,10 @@ static void _rdd_freebuf(ClipMachine* cm,RDD_DATA* rd){
 }
 
 int rdd_open(ClipMachine* cm,char* path,int readonly,int shared,int* fd,const char* __PROC__){
-#ifdef OS_CYGWIN
-	HANDLE h;
-	char* wp = malloc(PATH_MAX);
-
-	*fd = -1;
-	cygwin_conv_to_full_win32_path(path,wp);
-	h = CreateFile(wp,GENERIC_READ|GENERIC_WRITE,
-		shared?(FILE_SHARE_READ|FILE_SHARE_WRITE):0,
-		NULL,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL);
-	if(h==INVALID_HANDLE_VALUE){
-		if(GetLastError()){
-			free(wp);
-			return rdd_err(cm,EG_OPEN,GetLastError(),__FILE__,__LINE__,__PROC__,path);
-		}
-	}
-	*fd = cygwin_attach_handle_to_fd(wp,-1,h,1,0);
-	free(wp);
-#else
-	*fd = _clip_open(path,readonly?O_RDONLY:O_RDWR,0,!shared);
+	*fd = _clip_open(cm,path,readonly?O_RDONLY:O_RDWR,0,!shared);
 	if(*fd == -1){
 		return rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,path);
 	}
-#endif
 	return 0;
 }
 
@@ -770,6 +1020,9 @@ int rdd_calc(ClipMachine* cm,int area,ClipVar* block,ClipVar* var,int noerror){
 int rdd_takevalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vv,
 			   const char* __PROC__){
 	int r,er;
+
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
 
 	if(rd->eof){
 		switch(rd->fields[no].type){
@@ -862,8 +1115,9 @@ int _clip_rddfield(ClipMachine* cm,int h,int no){
 
 int rdd_err(ClipMachine* cm,int genCode,int osCode,const char* subSystem,
 			 int line,const char* operation,const char* desc){
+	char buf[256];
 	if(osCode){
-#ifndef OS_CYGWIN
+#ifndef OS_MINGW
 		strcpy(cm->syserr,strerror(osCode));
 #else
 		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,NULL,GetLastError(),
@@ -873,8 +1127,9 @@ int rdd_err(ClipMachine* cm,int genCode,int osCode,const char* subSystem,
 			cm->syserr,strlen(cm->syserr));
 #endif
 	}
-	_clip_logg(0,"RDD layer error: %s/%d: %s: %s",subSystem,line,operation,desc);
-	_clip_trap_err(cm, genCode, osCode, 0, subSystem, line, desc);
+	_clip_logg(0,"RDD layer error: %s/%d: %s: %s",subSystem,line,desc,operation);
+	snprintf(buf,sizeof(buf),"%s: %s",desc,operation);
+	_clip_trap_err(cm, genCode, osCode, 0, subSystem, line, buf);
 	/*return genCode;*/
 	return _clip_call_errblock(cm, genCode);
 }
@@ -934,6 +1189,7 @@ int rdd_checkfilter(ClipMachine* cm,RDD_DATA* rd,int* ok,const char* __PROC__){
 	int er;
 
 	*ok = 1;
+	if(rd->indexing) return 0;
 	if((!rd->filter) && !hidedeleted) return 0;
 
 	if(hidedeleted){
@@ -949,7 +1205,12 @@ int rdd_checkfilter(ClipMachine* cm,RDD_DATA* rd,int* ok,const char* __PROC__){
 			return 0;
 		}
 		if(!rd->filter->custom && rd->filter->fps[0].bfilter.t.type != UNDEF_t){
-			if((er = rdd_calcfilter(cm,rd,&filterok,__PROC__))) return er;
+			if(rd->filter->rmap){
+				filterok = _rm_getbit(rd->filter->rmap,rd->filter->size,rd->recno);
+			}
+			if(filterok){
+				if((er = rdd_calcfilter(cm,rd,&filterok,__PROC__))) return er;
+			}
 		} else {
 			filterok = _rm_getbit(rd->filter->rmap,rd->filter->size,rd->recno);
 		}
@@ -960,7 +1221,7 @@ int rdd_checkfilter(ClipMachine* cm,RDD_DATA* rd,int* ok,const char* __PROC__){
 
 int rdd_checkifnew(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	RDD_ORDER* ro;
-	int i,er;
+	int i,er = 0;
 
 	_rdd_freebuf(cm,rd);
 	if(rd->newrec){
@@ -991,49 +1252,109 @@ unlock:
 }
 
 int rdd_childs(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
-	int i,er,found;
-	ClipVar v, *vp;
+	RDD_DATA* child;
+	int i,er;
 
-	CLEAR_CLIPVAR(&v);
 	for(i=0;i<rd->rels_opened;i++){
-		RDD_DATA* child = rd->relations[i]->child;
-		if(rd->relations[i]->simpexpr){
-			if((er = rdd_takevalue(cm,rd,rd->relations[i]->simpfno,&v,__PROC__)))
-				goto err;
-		} else {
-			if((er = rdd_calc(cm,rd->area,&rd->relations[i]->block,&v,0)))
-				goto err;
-		}
-		vp = _clip_vptr(&v);
-		if((child->ords_opened>0) && (child->curord != -1)){
-			if(rd->relations[i]->scoped){
-				if((er = rdd_scopetop(cm,child,vp,__PROC__))) goto err;
-				if((er = rdd_scopebottom(cm,child,vp,__PROC__))) goto err;
-			}
-			if((er = child->orders[child->curord]->vtbl->seek(cm,child,
-				child->orders[child->curord],vp,0,0,&found,__PROC__)))
-				goto err;
-		} else {
-			if(vp->t.type!=NUMERIC_t){
-				er = rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,er_badrelationexpr);
-				goto err;
-			}
-			if((er = child->vtbl->go(cm,child,vp->n.d,__PROC__))) goto err;
-		}
-		_clip_destroy(cm,&v);
+		child = rd->relations[i]->child;
+		child->pending_child_parent = rd;
+		if((er = rdd_childs(cm,child,__PROC__)))
+			return er;
 	}
 	return 0;
+}
+
+int rdd_child_duty(ClipMachine* cm,RDD_DATA* child,const char* __PROC__){
+	int i,er=0,found;
+	ClipVar v, *vp;
+	RDD_DATA* rd = child->pending_child_parent;
+	RDD_RELATION* rel = NULL;
+	int locked = child->file.rlocked || child->file.wlocked;
+
+	CLEAR_CLIPVAR(&v);
+	child->pending_child_parent = NULL;
+
+	if(!rd) goto err;
+	for(i=0;i<child->pars_opened;i++){
+		if(child->parents[i]->parent == rd){
+			rel = child->parents[i];
+			break;
+		}
+	}
+	if(!rel) goto err;
+
+	if(!locked){
+		if((er = child->vtbl->_rlock(cm,child,__PROC__))) goto err;
+	}
+	if(rel->simpexpr){
+		if((er = rdd_takevalue(cm,rd,rel->simpfno,&v,__PROC__)))
+			goto err_unlock;
+	} else {
+		if((er = rdd_calc(cm,rd->area,&rel->block,&v,0)))
+			goto err_unlock;
+	}
+	vp = _clip_vptr(&v);
+	if((child->ords_opened>0) && (child->curord != -1)){
+		if((er = rdd_checkifnew(cm,child,__PROC__))) goto err_unlock;
+		if(rel->scoped){
+			if((er = rdd_scopetop(cm,child,vp,__PROC__))) goto err_unlock;
+			if((er = rdd_scopebottom(cm,child,vp,__PROC__))) goto err_unlock;
+		}
+		if(rd->eof){
+			unsigned int lastrec;
+
+			child->orders[child->curord]->valid_stack = 0;
+			child->eof = 1;
+			if((er = rdd_lastrec(cm,child,&lastrec,__PROC__))) return er;
+			child->recno = lastrec+1;
+		} else {
+			if((er = child->orders[child->curord]->vtbl->seek(cm,child,
+				child->orders[child->curord],vp,0,0,&found,__PROC__)))
+				goto err_unlock;
+		}
+	} else {
+		if(vp->t.type!=NUMERIC_t){
+			er = rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,er_badrelationexpr);
+			goto err_unlock;
+		}
+		if((er = child->vtbl->go(cm,child,vp->n.d,__PROC__))) goto err_unlock;
+	}
+	if(!locked){
+		if((er = child->vtbl->_ulock(cm,child,__PROC__))) goto err;
+	}
+
+	_clip_destroy(cm,&v);
+	return 0;
+
+err_unlock:
+	if(!locked)
+		child->vtbl->_ulock(cm,child,__PROC__);
 err:
 	_clip_destroy(cm,&v);
 	return er;
 }
 
-int rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__){
+int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__){
+#ifdef HAVE_MMAN_H
+	struct stat st;
 	int realen;
+#endif
+	if(file->dbf && !file->rlocked && !file->wlocked){
+		char buf[256];
+		time_t tt;
+		struct tm *tp;
 
+		tt = time(0);
+		tp = localtime(&tt);
+		snprintf(buf,sizeof(buf),
+			"%02d:%02d:%02d: Warning: unsafe DBF read: wlocked=%d; %s(%s)\n",
+			tp->tm_hour,tp->tm_min,tp->tm_sec,file->wlocked,__PROC__,file->dbf);
+		_clip_out_log(buf,strlen(buf));
+		_clip_flush_log();
+	}
+#ifdef HAVE_MMAN_H
 	if((int)file->md!=-1){
 		if(pos+len>file->mapsize){
-			struct stat st;
 			if(fstat(file->fd,&st)==-1) goto err;
 			if(file->mapsize < st.st_size){
 				if(munmap(file->md,file->mapsize)==-1) goto err;
@@ -1053,21 +1374,51 @@ int rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char
 		memcpy(buf,file->md+pos,realen);
 		memset(buf+realen,0,len-realen);
 	} else {
+#endif
 		if(lseek(file->fd,pos,SEEK_SET)==-1) goto err;
 		if(read(file->fd,buf,len)==-1) goto err;
+#ifdef HAVE_MMAN_H
 	}
+#endif
 	return 0;
 err:
 	return rdd_err(cm,EG_READ,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
 }
 
-int rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,
+int _rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,
 			  const char* __PROC__){
+	struct stat st;
+
+	if(file->dbf && !file->wlocked){
+		char buf[256];
+		time_t tt;
+		struct tm *tp;
+
+		tt = time(0);
+		tp = localtime(&tt);
+		snprintf(buf,sizeof(buf),
+			"%02d:%02d:%02d: Warning: unsafe DBF write: rlocked=%d; %s(%s)\n",
+			tp->tm_hour,tp->tm_min,tp->tm_sec,file->rlocked,__PROC__,file->dbf);
+		_clip_out_log(buf,strlen(buf));
+		_clip_flush_log();
+	}
+#ifdef HAVE_MMAN_H
 	if((int)file->md!=-1){
 		if(pos+len>file->mapsize){
 			if(munmap(file->md,file->mapsize)==-1) goto err;
+#ifdef _WIN32
+			{
+				void* bf;
+				int p;
+				if((p = lseek(file->fd,0,SEEK_END))==-1) goto err;
+				bf = calloc(1,pos+len-p);
+				if(write(file->fd,bf,pos+len-p)==-1) goto err;
+				free(bf);
+			}
+#else
 			if(lseek(file->fd,pos+len-1,SEEK_SET)==-1) goto err;
 			if(write(file->fd,"",1)==-1) goto err;
+#endif
 			file->mapsize = pos+len;
 			file->md = (caddr_t)mmap(0,file->mapsize,
 				PROT_READ|PROT_WRITE,MAP_SHARED,
@@ -1080,15 +1431,28 @@ int rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,
 		}
 		memcpy(file->md+pos,buf,len);
 	} else {
-		if(lseek(file->fd,pos,SEEK_SET)==-1) goto err;
-		if(write(file->fd,buf,len)==-1) goto err;
+#endif
+		/* ext2 fs issue */
+		if(len == 0){
+			if(fstat(file->fd,&st)==-1) goto err;
+			if(pos > st.st_size){
+				if(lseek(file->fd,pos-1,SEEK_SET)==-1) goto err;
+				if(write(file->fd,"",1)==-1) goto err;
+			}
+		} else {
+			if(lseek(file->fd,pos,SEEK_SET)==-1) goto err;
+			if(write(file->fd,buf,len)==-1) goto err;
+		}
+#ifdef HAVE_MMAN_H
 	}
+#endif
 	return 0;
 err:
 	return rdd_err(cm,EG_WRITE,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
 }
 
-int rdd_trunc(ClipMachine* cm,RDD_FILE* file,unsigned int len,const char* __PROC__){
+int _rdd_trunc(ClipMachine* cm,RDD_FILE* file,unsigned int len,const char* __PROC__){
+#ifdef HAVE_MMAN_H
 	if((int)file->md!=-1){
 		if(munmap(file->md,file->mapsize)==-1) goto err;
 		if(ftruncate(file->fd,len)==-1) goto err;
@@ -1097,11 +1461,26 @@ int rdd_trunc(ClipMachine* cm,RDD_FILE* file,unsigned int len,const char* __PROC
 			PROT_READ|PROT_WRITE,MAP_SHARED,
 			file->fd,0);
 	} else {
+#endif
 		if(ftruncate(file->fd,len)==-1) goto err;
+#ifdef HAVE_MMAN_H
 	}
+#endif
 	return 0;
 err:
 	return rdd_err(cm,EG_WRITE,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
+}
+
+int _rdd_read64(ClipMachine* cm,RDD_FILE* file,u8 pos,int len,void* buf,const char* __PROC__){
+	return 0;
+}
+
+int _rdd_write64(ClipMachine* cm,RDD_FILE* file,u8 pos,int len,void* buf,const char* __PROC__){
+	return 0;
+}
+
+int _rdd_trunc64(ClipMachine* cm,RDD_FILE* file,u8 len,const char* __PROC__){
+	return 0;
 }
 
 int rdd_create(ClipMachine* cm,const char* driver,const char* memo_driver,const char* name,ClipVar* stru,const char* __PROC__){
@@ -1239,10 +1618,12 @@ int rdd_pack(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 
+#ifdef HAVE_MMAN_H
 	if((int)rd->file.md != -1){
 		if(munmap(rd->file.md,rd->file.mapsize)==-1) goto err;
 	}
-	if(close(rd->file.fd)==-1) goto err;
+#endif
+	if(_clip_close(cm,rd->file.filehash,rd->file.fd)==-1) goto err;
 
 	strcpy(tmp,rd->path);
 	s = strrchr(tmp,'/');
@@ -1252,19 +1633,28 @@ int rdd_pack(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 
 	if(rename(rd->path,tmp)==-1) goto err;
 
-	rd->file.fd = _clip_creat(rd->path,O_RDWR,cm->fileCreateMode,!rd->shared);
+#ifdef _WIN32
+	rd->file.fd = _clip_creat(cm,rd->path,O_RDWR|O_BINARY,cm->fileCreateMode,!rd->shared);
+#else
+	rd->file.fd = _clip_creat(cm,rd->path,O_RDWR,cm->fileCreateMode,!rd->shared);
+#endif
 	if(rd->file.fd == -1) goto err_create;
-
+	rd->vtbl->_wlock(cm,rd,__PROC__);
 	if((er = rdd_open(cm,tmp,0,0,&tmpfd,__PROC__))) return er;
 
 	if((er = rd->vtbl->pack(cm,rd,tmpfd,__PROC__))) return er;
-	if(close(tmpfd)==-1) goto err;
+	if(_clip_close(cm,_clip_hashstr(tmp),tmpfd)==-1) goto err;
 
 	if(fstat(rd->file.fd,&st)==-1) goto err;
 	rd->file.mapsize = st.st_size;
-	rd->file.md = (caddr_t)mmap(0,rd->file.mapsize,
-		PROT_READ|PROT_WRITE,MAP_SHARED,rd->file.fd,0);
+	rd->file.md = (caddr_t)-1;
+#ifdef HAVE_MMAN_H
+	if(cm->flags1 & MAP_FILE_FLAG)
+		rd->file.md = (caddr_t)mmap(0,rd->file.mapsize,
+			PROT_READ|PROT_WRITE,MAP_SHARED,rd->file.fd,0);
+#endif
 	if(remove(tmp)==-1) goto err;
+	rd->eof = 1;
 	if((er =  rdd_reindex(cm,rd,__PROC__))) return er;
 	return 0;
 err:
@@ -1291,7 +1681,7 @@ int rdd_zap(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			return er;
 	if(rd->memo)
 		if((er = rd->memo->vtbl->zap(cm,rd->memo,__PROC__))) return er;
-	rd->bof = rd->v_bof =rd->eof = 1;
+	rd->bof = rd->v_bof = rd->eof = 1;
 	rd->recno = 1;
 	rd->newrec = 0;
 	rd->valid = 0;
@@ -1307,6 +1697,7 @@ int rdd_usearea(ClipMachine* cm,const char* driver,const char* name,int shared,
 	rd->file.fd = -1;
 	rd->file.md = (char*)-1;
 	rd->locate_next = -1;
+	rd->cm = cm;
 
 	*rdp = NULL;
 	if(!(rd->vtbl = rdd_datadriver(cm,driver,__PROC__))) {er = 1;goto err;}
@@ -1322,6 +1713,9 @@ int rdd_usearea(ClipMachine* cm,const char* driver,const char* name,int shared,
 	rd->readonly = readonly;
 	rd->tempo = tempo;
 
+	rd->file.dbf = rd->path;
+	rd->file.filehash = _clip_hashstr(rd->path);
+
 	if((er = rdd_open(cm,rd->path,rd->readonly,rd->shared,&rd->file.fd,__PROC__)))
 		goto err;
 
@@ -1329,12 +1723,16 @@ int rdd_usearea(ClipMachine* cm,const char* driver,const char* name,int shared,
 	rd->file.mapsize = st.st_size;
 	rd->hashes = new_HashTable();
 
-	rd->file.md = (char*)-1;
-	rd->file.md = (caddr_t)mmap(0,rd->file.mapsize,
-		PROT_READ|(readonly?0:PROT_WRITE),MAP_SHARED,rd->file.fd,0);
+	rd->file.md = (caddr_t)-1;
+#ifdef HAVE_MMAN_H
+	if((cm->flags1 & MAP_FILE_FLAG) && !HashTable_fetch(cm->tasklocks,rd->file.filehash))
+		rd->file.md = (caddr_t)mmap(0,rd->file.mapsize,
+			PROT_READ|(readonly?0:PROT_WRITE),MAP_SHARED,rd->file.fd,0);
+#endif
 	/* If failed use non-mapped file (md==-1) */
 
-	if((er = rd->vtbl->open(cm,rd,__PROC__))) goto err;
+	if((er = rd->vtbl->_rlock(cm,rd,__PROC__))) goto err;
+	if((er = rd->vtbl->open(cm,rd,__PROC__))) goto err_unlock;
 
 	rd->curord = -1;
 	rd->idxs_opened = 0;
@@ -1347,17 +1745,23 @@ int rdd_usearea(ClipMachine* cm,const char* driver,const char* name,int shared,
 	rd->nlocks = 0;
 	rd->data = (ClipVar**)calloc(rd->nfields,sizeof(ClipVar*));
 
-	if((er = rd->vtbl->gotop(cm,rd,__PROC__))) goto err;
+	if((er = rd->vtbl->gotop(cm,rd,__PROC__))) goto err_unlock;
+	if((er = rd->vtbl->_ulock(cm,rd,__PROC__))) goto err;
 	*rdp = rd;
 
 	return 0;
+err_unlock:
+	rd->vtbl->_ulock(cm,rd,__PROC__);
+	goto err;
 err_open:
 	er = rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,rd->path);
 err:
+#ifdef HAVE_MMAN_H
 	if(rd && rd->file.md != (char*)-1)
 		munmap(rd->file.md,rd->file.mapsize);
+#endif
 	if(rd && rd->file.fd != -1)
-		close(rd->file.fd);
+		_clip_close(cm,rd->file.filehash,rd->file.fd);
 	if(rd && rd->name)
 		free(rd->name);
 	if(rd && rd->path)
@@ -1367,48 +1771,85 @@ err:
 	return er;
 }
 
-int rdd_setindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX** rip,const char* driver,const char* name,const char* tag,const char* __PROC__){
+int rdd_setindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX** rip,const char* driver,const char* name,const char* tag,int structural,const char* __PROC__){
 	RDD_INDEX* ri = (RDD_INDEX*)calloc(1,sizeof(RDD_INDEX));
 	struct stat st;
 	int i,er = EG_UNSUPPORTED;
+	int l = strlen(name);
 
-	if(!name || !strlen(name)) return 0;
+	if(!name || !l) return 0;
 
 	ri->file.fd = -1;
 	ri->file.md = (char*)-1;
 	ri->rd = rd;
 
-	if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+	if(!structural){
+		if(!(l>4 && isalnum(name[l-1]) && isalnum(name[l-2])
+			&& isalnum(name[l-3]) && name[l-4] == '.')){
 
-	if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_OPEN,__PROC__)))
-		goto err;
+			if(!tag && (rd->area !=-1) && (strcasecmp(driver,"CDX")==0)){
+				if(!(ri->vtbl = rdd_indexdriver(cm,"IDX",__PROC__))) goto err;
+				if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_OPEN,__PROC__)))
+					goto err;
+				if(access(ri->path,F_OK)){
+					free(ri->path); ri->path = NULL;
+					free(ri->name); ri->name = NULL;
+					if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+					if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_OPEN,__PROC__)))
+						goto err;
+				}
+			} else if(!tag && (rd->area !=-1) && (strcasecmp(driver,"CTX")==0)){
+				if(!(ri->vtbl = rdd_indexdriver(cm,"NTX",__PROC__))) goto err;
+				if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_OPEN,__PROC__)))
+					goto err;
+				if(access(ri->path,F_OK)){
+					free(ri->path); ri->path = NULL;
+					free(ri->name); ri->name = NULL;
+					if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+					if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_OPEN,__PROC__)))
+						goto err;
+				}
+			} else {
+				if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+				if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_OPEN,__PROC__)))
+					goto err;
+			}
+		} else {
+			if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+			if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_OPEN,__PROC__)))
+				goto err;
+		}
+	} else {
+		if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+		ri->path = strdup(name);
+		ri->name = strdup(rd->name);
+	}
 
-	if((er = rdd_open(cm,ri->path,rd->readonly,rd->shared,&ri->file.fd,__PROC__)))
-		goto err;
-
-	if(fstat(ri->file.fd,&st) == -1) goto err_open;
-	ri->file.mapsize = st.st_size;
-	ri->inode = st.st_ino;
 	for(i=0;i<rd->idxs_opened;i++)
-		if(rd->indices[i]->inode == ri->inode){
+		if(strcmp(rd->indices[i]->path,ri->path)==0){
 			free(ri->name);
 			free(ri->path);
-			close(ri->file.fd);
 			free(ri);
 			if(rip)
 				*rip = rd->indices[i];
 			return 0;
 		}
 
-	ri->file.md = (char*)-1;
-	ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
-		PROT_READ|(rd->readonly?0:PROT_WRITE),MAP_SHARED,ri->file.fd,0);
-	/* If failed use non-mapped file (md==-1) */
+	ri->file.filehash = _clip_hashstr(ri->path);
 
+	if((er = rdd_open(cm,ri->path,rd->readonly,rd->shared,&ri->file.fd,__PROC__)))
+		goto err;
+
+	if(fstat(ri->file.fd,&st) == -1) goto err_open;
+	ri->file.mapsize = st.st_size;
+	ri->file.md = (caddr_t)-1;
+#ifdef HAVE_MMAN_H
+	if((cm->flags1 & MAP_FILE_FLAG) && !HashTable_fetch(cm->tasklocks,rd->file.filehash))
+		ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
+			PROT_READ|(rd->readonly?0:PROT_WRITE),MAP_SHARED,ri->file.fd,0);
+	/* If failed use non-mapped file (md==-1) */
+#endif
 	if((er = ri->vtbl->open(cm,rd,ri,tag,__PROC__))) goto err;
-	if(rd->idxs_opened==0){
-		if((er = ri->vtbl->gotop(cm,rd,ri->orders[0],__PROC__))) goto err;
-	}
 	if(rd->curord==-1){
 		rd->curord = ri->orders[0]->orderno;
 	}
@@ -1440,10 +1881,12 @@ err:
 		free(ri->name);
 	if(ri && ri->path)
 		free(ri->path);
+#ifdef HAVE_MMAN_H
 	if(ri && ri->file.md != (char*)-1)
 		munmap(ri->file.md,ri->file.mapsize);
+#endif
 	if(ri && ri->file.fd != -1)
-		close(ri->file.fd);
+		_clip_close(cm,ri->file.filehash,ri->file.fd);
 	if(ri)
 		free(ri);
 	return er;
@@ -1467,17 +1910,21 @@ int rdd_setmemo(ClipMachine* cm,RDD_DATA* rd,const char* driver,const char* name
 	if((er = _rdd_parsepath(cm,name,rm->vtbl->suff,&rm->path,&rm->name,EG_OPEN,__PROC__)))
 		goto err;
 
+	rm->file.filehash = _clip_hashstr(rm->path);
+
 	if((er = rdd_open(cm,rm->path,rd->readonly,rd->shared,&rm->file.fd,__PROC__)))
 		goto err;
 
 	if(fstat(rm->file.fd,&st)==-1) goto err_open;
 	rm->file.mapsize = st.st_size;
 
-	rm->file.md = (char*)-1;
-	rm->file.md = (caddr_t)mmap(0,rm->file.mapsize,
-		PROT_READ|(rd->readonly?0:PROT_WRITE),MAP_SHARED,rm->file.fd,0);
-	/* If failed use non-mapped file (md==-1) */
-
+	rm->file.md = (caddr_t)-1;
+#ifdef HAVE_MMAN_H
+	if((cm->flags1 & MAP_FILE_FLAG) && !HashTable_fetch(cm->tasklocks,rd->file.filehash))
+		rm->file.md = (caddr_t)mmap(0,rm->file.mapsize,
+			PROT_READ|(rd->readonly?0:PROT_WRITE),MAP_SHARED,rm->file.fd,0);
+		/* If failed use non-mapped file (md==-1) */
+#endif
 	rd->memo = rm;
 
 	if((er = rm->vtbl->open(cm,rd,rm,__PROC__))) goto err;
@@ -1490,10 +1937,12 @@ err:
 		free(rm->name);
 	if(rm && rm->path)
 		free(rm->path);
+#ifdef HAVE_MMAN_H
 	if(rm && rm->file.md != (char*)-1)
 		munmap(rm->file.md,rm->file.mapsize);
+#endif
 	if(rm && rm->file.fd != -1)
-		close(rm->file.fd);
+		_clip_close(cm,rm->file.filehash,rm->file.fd);
 	if(rm)
 		free(rm);
 	rd->memo = NULL;
@@ -1508,18 +1957,31 @@ int rdd_createindex(ClipMachine* cm,RDD_DATA* rd,const char* driver,
 	int alreadyopened = 0;
 	int cr = 0,er = EG_UNSUPPORTED;
 	int i,j;
+	char tagname[11];
 
 	ri = (RDD_INDEX*)calloc(1,sizeof(RDD_INDEX));
-	if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+	if(rd->area != -1){
+		if(!tag && strcasecmp(driver,"CDX")==0){
+			if(!(ri->vtbl = rdd_indexdriver(cm,"IDX",__PROC__))) goto err;
+		} else if(!tag && strcasecmp(driver,"CTX")==0){
+			if(!(ri->vtbl = rdd_indexdriver(cm,"NTX",__PROC__))) goto err;
+		} else {
+			if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+		}
+	} else {
+		if(!(ri->vtbl = rdd_indexdriver(cm,driver,__PROC__))) goto err;
+	}
 	if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_CREATE,__PROC__)))
 		goto err;
+
+	ri->file.filehash = _clip_hashstr(ri->path);
 
 	if(ri->vtbl->ismulti && (access(ri->path,F_OK)==0)){
 		free(ri->path);
 		free(ri->name);
 		free(ri);
-		if((er = rdd_setindex(cm,rd,&ri,driver,name,NULL,__PROC__))) goto err;
-		alreadyopened = 1;
+		if((er = rdd_setindex(cm,rd,&ri,driver,name,NULL,0,__PROC__))) goto err;
+		alreadyopened = ri->indexno+1;
 	}
 
 	ri->rd = rd;
@@ -1527,39 +1989,52 @@ int rdd_createindex(ClipMachine* cm,RDD_DATA* rd,const char* driver,
 
 	if(!alreadyopened){
 		struct stat st;
-		ri->file.fd = _clip_creat(ri->path,O_RDWR,cm->fileCreateMode,rd->shared);
+		ri->file.fd = _clip_creat(cm,ri->path,O_RDWR,cm->fileCreateMode,rd->shared);
 		if(ri->file.fd == -1) goto err_create;
 		ri->file.mapsize = 1024;
 		if(fstat(ri->file.fd,&st) == -1) goto err_open;
-		ri->inode = st.st_ino;
 		if(lseek(ri->file.fd,ri->file.mapsize-1,SEEK_SET)==-1) goto err_create;
 		if(write(ri->file.fd,"",1)==-1) goto err_create;
-		ri->file.md = (char*)-1;
-		ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
-			PROT_READ|PROT_WRITE,MAP_SHARED,ri->file.fd,0);
-		/* If failed use non-mapped file (md==-1) */
+		ri->file.md = (caddr_t)-1;
+#ifdef HAVE_MMAN_H
+		if((cm->flags1 & MAP_FILE_FLAG) && !HashTable_fetch(cm->tasklocks,rd->file.filehash))
+			ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
+				PROT_READ|PROT_WRITE,MAP_SHARED,ri->file.fd,0);
+			/* If failed use non-mapped file (md==-1) */
+#endif
 		cr = 1;
 	}
 
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) goto err;
 
+	if(tag){
+		strncpy(tagname,tag,10);
+		tagname[10] = 0;
+		_clip_upstr(tagname,10);
+	}
 	rd->indexing = ri->name;
-	if((er = ri->vtbl->create(cm,rd,ri,&ro,tag,expr,block,unique,cr,0,__PROC__))) goto err;
+	if((er = ri->vtbl->create(cm,rd,ri,&ro,tag?tagname:NULL,expr,block,unique,cr,0,__PROC__))) goto err;
 	rd->indexing = NULL;
+
+	if(ri->structural && !rd->readonly){
+		if((er = rd->vtbl->setstruct(cm,rd,__PROC__))) goto err;
+	}
 
 	if(!rd->os.lAdditive){
 		j = rd->idxs_opened;
 		for(i=0;i<j;i++){
-			if(rd->indices[i]->structural)
+			if(rd->indices[i]->structural || rd->indices[i]->indexno == alreadyopened-1)
 				continue;
 			rd->idxs_opened--;
 			rd->ords_opened -= rd->indices[i]->norders;
 			if(rd->indices[i] != ri){
+#ifdef HAVE_MMAN_H
 				if((int)(rd->indices[i]->file.md)!=-1){
 					if(munmap(rd->indices[i]->file.md,rd->indices[i]->file.mapsize)==-1)
 						goto err_close;
 				}
-				if(close(rd->indices[i]->file.fd)==-1)
+#endif
+				if(_clip_close(cm,rd->indices[i]->file.filehash,rd->indices[i]->file.fd)==-1)
 					goto err_close;
 				if((er = rd->indices[i]->vtbl->close(cm,rd,rd->indices[i],__PROC__)))
 					goto err;
@@ -1599,10 +2074,12 @@ err:
 			free(ri->name);
 		if(ri && ri->path)
 			free(ri->path);
+#ifdef HAVE_MMAN_H
 		if(ri && ri->file.md != (char*)-1)
 			munmap(ri->file.md,ri->file.mapsize);
+#endif
 		if(ri && ri->file.fd != -1)
-			close(ri->file.fd);
+			_clip_close(cm,ri->file.filehash,ri->file.fd);
 		if(ri)
 			free(ri);
 	}
@@ -1668,23 +2145,25 @@ int rdd_orddestroy(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC
 int rdd_setorder(ClipMachine* cm,RDD_DATA*rd,int order,const char* __PROC__){
 	int er;
 
-	if(order < 0 || order>rd->ords_opened)
+	if(order < 0 || order>rd->ords_opened || order-1 == rd->curord)
 		return 0;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	rd->curord = order-1;
-	if(rd->curord != -1){
-		/*if((er = rd->orders[rd->curord]->vtbl->buildtree(
-			cm,rd,rd->orders[rd->curord],__PROC__))) return er;*/
+	if(rd->curord != -1)
 		rd->orders[rd->curord]->valid_stack = 0;
-	}
 	if((er = _rdd_calcfiltlist(cm,rd,__PROC__))) return er;
 	return 0;
 }
 
 int rdd_closearea(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
-	int i,er;
+	int i,k,er;
+#ifdef HAVE_MMAN_H
+	int fd;
+	char upd;
+#endif
 
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
+#ifdef HAVE_MMAN_H
 	if((int)(rd->file.md)!=-1){
 		if(msync(rd->file.md,rd->file.mapsize,MS_SYNC|MS_INVALIDATE)) goto err;
 		if(munmap(rd->file.md,rd->file.mapsize)==-1) goto err;
@@ -1693,6 +2172,13 @@ int rdd_closearea(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	if((rd->memo) && ((int)(rd->memo->file.md)!=-1)){
 		if(msync(rd->memo->file.md,rd->memo->file.mapsize,MS_SYNC|MS_INVALIDATE)) goto err;
 		if(munmap(rd->memo->file.md,rd->memo->file.mapsize)==-1) goto err;
+		if(rd->memo->updated){
+			fd = rd->memo->file.fd;
+			if(lseek(fd,0,SEEK_SET)) goto err;
+			if(read(fd,&upd,1)!=1) goto err;
+			if(lseek(fd,0,SEEK_SET)) goto err;
+			if(write(fd,&upd,1)!=1) goto err;
+		}
 	}
 	for(i=0;i<rd->idxs_opened;i++){
 		if((int)(rd->indices[i]->file.md)!=-1){
@@ -1700,16 +2186,26 @@ int rdd_closearea(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 				MS_SYNC|MS_INVALIDATE)) goto err;
 			if(munmap(rd->indices[i]->file.md,rd->indices[i]->file.mapsize)==-1)
 				goto err;
+			if(rd->indices[i]->updated){
+				fd = rd->indices[i]->file.fd;
+				if(lseek(fd,0,SEEK_SET)) goto err;
+				if(read(fd,&upd,1)!=1) goto err;
+				if(lseek(fd,0,SEEK_SET)) goto err;
+				if(write(fd,&upd,1)!=1) goto err;
+			}
 		}
 	}
+#endif
 	if(rd->memo){
-		if(close(rd->memo->file.fd)==-1) goto err;
+		if(_clip_close(cm,rd->memo->file.filehash,rd->memo->file.fd)==-1)
+			goto err;
 		if(rd->tempo){
 			if(remove(rd->memo->path)==-1) goto err;
 		}
 	}
 	for(i=0;i<rd->idxs_opened;i++){
-		if(close(rd->indices[i]->file.fd)==-1) goto err;
+		if(_clip_close(cm,rd->indices[i]->file.filehash,rd->indices[i]->file.fd)==-1)
+			goto err;
 		if(rd->tempo){
 			if(remove(rd->indices[i]->path)==-1) goto err;
 		}
@@ -1719,14 +2215,53 @@ int rdd_closearea(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			if((er = rdd_destroyfilter(cm,rd->filter,__PROC__))) return er;
 		}
 	}
-	for(i=0;i<rd->rels_opened;i++)
-		_clip_destroy(cm,&rd->relations[i]->block);
+	for(k=0;k<rd->rels_opened;k++){
+		RDD_DATA* rel = rd->relations[k]->child;
+		rel->pending_child_parent = NULL;
+		for(i=0;i<rel->pars_opened;i++){
+			if(rel->parents[i]->parent == rd){
+				if(rel->parents[i]->expr)
+					free(rel->parents[i]->expr);
+				_clip_destroy(cm,&rel->parents[i]->block);
+				free(rel->parents[i]);
+				memmove(rel->parents+i,rel->parents+i+1,
+					(rel->pars_opened-i-1)*sizeof(RDD_RELATION*));
+				rel->pars_opened--;
+				rel->parents = realloc(rel->parents,rel->pars_opened*sizeof(void*));
+				i--;
+			}
+		}
+	}
+	if(rd->relations)
+		free(rd->relations);
+
+	for(k=0;k<rd->pars_opened;k++){
+		RDD_DATA* par = rd->parents[k]->parent;
+		for(i=0;i<par->rels_opened;i++){
+			if(par->relations[i]->child == rd){
+				if(par->relations[i]->expr)
+					free(par->relations[i]->expr);
+				_clip_destroy(cm,&par->relations[i]->block);
+				free(par->relations[i]);
+				memmove(par->relations+i,par->relations+i+1,
+					(par->rels_opened-i-1)*sizeof(RDD_RELATION*));
+				par->rels_opened--;
+				par->relations = realloc(par->relations,par->rels_opened*sizeof(void*));
+				i--;
+			}
+		}
+	}
+	if(rd->parents)
+		free(rd->parents);
+
 	_clip_destroy(cm,&rd->os.bForCondition);
 	_clip_destroy(cm,&rd->os.bWhileCondition);
 	_clip_destroy(cm,&rd->os.bEval);
 
 	if((er = rd->vtbl->close(cm,rd,__PROC__))) return er;
-	if(close(rd->file.fd)==-1) goto err;
+	if((er = rdd_ulock(cm,rd,0,1,__PROC__))) return er;
+	if((er = rd->vtbl->_ulock(cm,rd,__PROC__))) return er;
+	if(_clip_close(cm,rd->file.filehash,rd->file.fd)==-1) goto err;
 	if(rd->tempo){
 		if(remove(rd->path)==-1) goto err;
 	}
@@ -1739,6 +2274,7 @@ int rdd_gotop(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	RDD_ORDER* ro;
 	int er;
 
+	rd->pending_child_parent = NULL;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	if(rd->curord==-1){
 		if((er = rd->vtbl->gotop(cm,rd,__PROC__))) return er;
@@ -1758,6 +2294,7 @@ int rdd_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	RDD_ORDER* ro;
 	int er;
 
+	rd->pending_child_parent = NULL;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	if(rd->curord==-1){
 		if((er = rd->vtbl->gobottom(cm,rd,__PROC__))) return er;
@@ -1777,6 +2314,8 @@ int rdd_skip(ClipMachine* cm,RDD_DATA* rd,int recs, const char* __PROC__){
 	RDD_ORDER* ro;
 	int i,er;
 
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	if((er = rdd_childs(cm,rd,__PROC__))) return er;
 	if(rd->curord==-1){
@@ -1803,6 +2342,9 @@ int rdd_skip(ClipMachine* cm,RDD_DATA* rd,int recs, const char* __PROC__){
 		}
 		if((er = ro->vtbl->_ulock(cm,ro,__PROC__))) return er;
 	}
+	if(recs==0){
+		rd->valid = 0;
+	}
 	return 0;
 unlock:
 	ro->vtbl->_ulock(cm,ro,__PROC__);
@@ -1816,6 +2358,7 @@ int rdd_seek(ClipMachine* cm,RDD_DATA* rd,ClipVar* v,int soft,int last,int* foun
 	if((rd->ords_opened<1) || (rd->curord==-1))
 		return rdd_err(cm,EG_NOORDER,0,__FILE__,__LINE__,__PROC__,er_noorder);
 
+	rd->pending_child_parent = NULL;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 
 	ro = rd->orders[rd->curord];
@@ -1831,6 +2374,7 @@ unlock:
 int rdd_goto(ClipMachine* cm,RDD_DATA* rd,int rec,const char* __PROC__){
 	int er;
 
+	rd->pending_child_parent = NULL;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 
 	if((er = rd->vtbl->go(cm,rd,rec,__PROC__))) return er;
@@ -1860,11 +2404,19 @@ int rdd_bof(ClipMachine* cm,RDD_DATA* rd,int* bof,const char* __PROC__){
 }
 
 int rdd_eof(ClipMachine* cm,RDD_DATA* rd,int* eof,const char* __PROC__){
+	int er;
+
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
 	*eof = rd->eof;
 	return 0;
 }
 
 int rdd_recno(ClipMachine* cm,RDD_DATA* rd,int* recno,const char* __PROC__){
+	int er;
+
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
 	*recno = rd->recno;
 	return 0;
 }
@@ -1909,6 +2461,7 @@ int rdd_append(ClipMachine* cm,RDD_DATA* rd,int* neterr,const char* __PROC__){
 	int r,er;
 	int lastrec;
 
+	rd->pending_child_parent = NULL;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	if((er = rdd_event(cm,EVENT_APPEND,rd->area,0,NULL,&r,__PROC__))) return er;
 	if(!r)
@@ -1952,6 +2505,9 @@ int rdd_getvaluebn(ClipMachine* cm,RDD_DATA* rd,const char* fname,const char* __
 int rdd_getvalue(ClipMachine* cm,RDD_DATA* rd,int no,const char* __PROC__){
 	int eof,r,er;
 
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
+
 	if((er = rdd_eof(cm,rd,&eof,__PROC__))) return er;
 	if(eof){
 		char* str;
@@ -1992,33 +2548,40 @@ int rdd_setvaluebn(ClipMachine* cm,RDD_DATA* rd,const char* fname,ClipVar* vp,co
 	return rdd_setvalue(cm,rd,fno,vp,__PROC__);
 }
 
-int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* v,const char* __PROC__){
+int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __PROC__){
+	ClipVar* v = _clip_vptr(vp);
 	RDD_ORDER* ro;
 	int eof,i,r,er;
+
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
 
 	if((er = rdd_event(cm,EVENT_PUT,rd->area,no+1,v,&r,__PROC__)))
 		return er;
 	if(!r)
 		return 0;
 
-	if((er = rd->vtbl->rlocked(cm,rd,&r,__PROC__))) return er;
-	if(!r && !rd->flocked)
-		return rdd_err(cm,EG_UNLOCKED,0,__FILE__,__LINE__,__PROC__,er_notpermitted);
-
 	if((er = rdd_eof(cm,rd,&eof,__PROC__))) return er;
 	if(eof){
 		return 0;
 	}
+
+	if((er = rd->vtbl->rlocked(cm,rd,rd->recno,&r,__PROC__))) return er;
+	if(!r && !rd->flocked)
+		return rdd_err(cm,EG_UNLOCKED,0,__FILE__,__LINE__,__PROC__,er_notpermitted);
+
 	if(!rd->newrec){
 		for(i=0;i<rd->ords_opened;i++){
 			ro = rd->orders[i];
 			if(!ro->custom){
-				if(ro->simpexpr && (ro->simpfno != no))
+				if((ro->bforexpr.t.type == UNDEF_t) && ro->simpexpr
+					&& (ro->simpfno != no))
 					continue;
 				if((er = rdd_event(cm,EVENT_UPDATE,rd->area,0,NULL,NULL,__PROC__)))
 					goto unlock;
 				if((er = ro->vtbl->_wlock(cm,ro,__PROC__))) goto unlock;
 				if((er = ro->vtbl->delkey(cm,rd,ro,__PROC__))) goto unlock;
+				ro->index->updated = 1;
 			}
 		}
 		rd->eof = 0;
@@ -2040,16 +2603,24 @@ int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* v,const char* __PR
 				}
 				if(!vp->l.val){
 					_clip_destroy(cm,&vv);
+					if((er = ro->vtbl->_ulock(cm,ro,__PROC__))) goto unlock;
 					continue;
 				}
 				_clip_destroy(cm,&vv);
 			}
 			if(!ro->custom){
-				if(ro->simpexpr && (ro->simpfno != no))
+				if((ro->bforexpr.t.type == UNDEF_t) && ro->simpexpr
+					&& (ro->simpfno != no))
 					continue;
 				if((er = rdd_event(cm,EVENT_UPDATE,rd->area,0,NULL,NULL,__PROC__)))
 					goto unlock;
-				if((er = ro->vtbl->addkey(cm,rd,ro,NULL,__PROC__))) goto unlock;
+				if(ro->simpexpr && ro->simpfno == no){
+					if((er = ro->vtbl->addkey(cm,rd,ro,v,__PROC__)))
+						goto unlock;
+				} else {
+					if((er = ro->vtbl->addkey(cm,rd,ro,NULL,__PROC__)))
+						goto unlock;
+				}
 				if((er = ro->vtbl->_ulock(cm,ro,__PROC__))) goto unlock;
 			}
 		}
@@ -2101,7 +2672,7 @@ int _rdd_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* a,int test,const char* __PROC__){
 	unsigned int lastrec;
 	unsigned int bytes;
-	int optimize;
+	int optimize = 0;
 	char* str = strdup(fp->sfilter);
 	int er = EG_UNSUPPORTED;
 	RDD_PSEUDO* pseudo = NULL;
@@ -2139,14 +2710,14 @@ int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* a,int 
 	fp->size = lastrec;
 
 	rd->rmflen = 0;
-	if(npseudo)
-		rd->rmfilter = malloc(1);
-	if(!(fp->rmap = rm_expr(cm,rd,fp,bytes,&optimize,npseudo,pseudo,test,__PROC__))) goto err;
-	if(npseudo){
-		free(fp->sfilter);
-		fp->sfilter = rd->rmfilter;
-		rd->rmfilter = NULL;
+	rd->rmfilter = malloc(1);
+	if(!(fp->rmap = rm_expr(cm,rd,fp,bytes,&optimize,npseudo,pseudo,test,__PROC__))){
+		er = 1;
+		goto err;
 	}
+	free(fp->sfilter);
+	fp->sfilter = rd->rmfilter;
+	rd->rmfilter = NULL;
 
 	fp->optimize = optimize;
 	if(fp->optimize==0){
@@ -2157,6 +2728,10 @@ int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* a,int 
 	free(str);
 	if(pseudo)
 		free(pseudo);
+	if(test && fp->rmap){
+		free(fp->rmap);
+		fp->rmap = NULL;
+	}
 	return 0;
 err_pseudo:
 	free(pseudo);
@@ -2191,7 +2766,7 @@ err:
 	return er;
 }
 
-int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _block,const char* str,ClipVar* remap,const char* __PROC__){
+int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _block,const char* str,ClipVar* remap,int lNoOptimize,const char* __PROC__){
 	char expr[PATH_MAX];
 	RDD_FILTER* fp = calloc(sizeof(RDD_FILTER),1);
 	int er;
@@ -2200,11 +2775,14 @@ int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _blo
 	fp->fps = calloc(1,sizeof(RDD_FPS));
 	fp->rd = rd;
 	if(str){
-		fp->sfilter = (char*)malloc(strlen(str)+1);
-		strcpy(fp->sfilter,str);
+		fp->sfilter = strdup(str);
 	}
-	if(cm->flags1 & OPTIMIZE_FLAG){
-		if((er = rdd_initrushmore(cm,rd,fp,remap,0,__PROC__))) goto err;
+	if((cm->flags1 & OPTIMIZE_FLAG) && !lNoOptimize && str){
+		er = rdd_initrushmore(cm,rd,fp,remap,0,__PROC__);
+		_clip_destroy(cm,_block);
+	} else if(str && remap && remap->t.type == ARRAY_t){
+		er = rdd_initrushmore(cm,rd,fp,remap,1,__PROC__);
+		_clip_destroy(cm,_block);
 	}
 	fp->nfps = 1;
 	if((!_block || _block->t.type == UNDEF_t) && str){
@@ -2224,13 +2802,13 @@ err:
 
 int rdd_setrelation(ClipMachine* cm,RDD_DATA* rd,RDD_DATA* child,ClipVar* block,
 					const char* expr,int scoped,const char* __PROC__){
-	RDD_RELATION* rel = (RDD_RELATION*)malloc(sizeof(RDD_RELATION));
+	RDD_RELATION* rel = (RDD_RELATION*)calloc(1,sizeof(RDD_RELATION));
 	int r = _clip_parni(cm,1);
 	int er;
 
-	memset(rel,0,sizeof(RDD_RELATION));
 	rel->scoped = scoped;
 	rel->child = child;
+	rel->parent = rd;
 	if(!expr)
 		expr = "";
 	rel->expr = (char*)malloc(strlen(expr)+1);
@@ -2252,6 +2830,12 @@ int rdd_setrelation(ClipMachine* cm,RDD_DATA* rd,RDD_DATA* child,ClipVar* block,
 	rd->relations = (RDD_RELATION**)realloc(rd->relations,
 		rd->rels_opened*sizeof(RDD_RELATION*));
 	rd->relations[rd->rels_opened-1] = rel;
+
+	child->pars_opened++;
+	child->parents = (RDD_RELATION**)realloc(child->parents,
+		child->pars_opened*sizeof(RDD_RELATION*));
+	child->parents[child->pars_opened-1] = rel;
+	if((er = rdd_childs(cm,rd,__PROC__))) return er;
 	return 0;
 err:
 	free(rel->expr);
@@ -2260,27 +2844,159 @@ err:
 }
 
 int rdd_delete(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
-	int r,er;
+	int i,r,er;
+	RDD_ORDER* ro;
+
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
 
 	if((er = rdd_event(cm,EVENT_DELETE,rd->area,0,NULL,&r,__PROC__))) return er;
 	if(!r)
 		return 0;
 	if(rd->eof)
 		return 0;
+
+	if((er = rd->vtbl->rlocked(cm,rd,rd->recno,&r,__PROC__))) return er;
+	if(!r && !rd->flocked)
+		return rdd_err(cm,EG_UNLOCKED,0,__FILE__,__LINE__,__PROC__,er_notpermitted);
+
+	if(!rd->newrec){
+		for(i=0;i<rd->ords_opened;i++){
+			ro = rd->orders[i];
+			if(!ro->custom){
+				if((ro->bforexpr.t.type == UNDEF_t) && ro->simpexpr)
+				if((er = ro->vtbl->_wlock(cm,ro,__PROC__))) goto unlock;
+				if((er = ro->vtbl->delkey(cm,rd,ro,__PROC__))) goto unlock;
+				ro->index->updated = 1;
+			}
+		}
+		rd->eof = 0;
+	}
 	if((er = rd->vtbl->delete(cm,rd,__PROC__))) return er;
+	if(!rd->newrec){
+		for(i=0;i<rd->ords_opened;i++){
+			RDD_ORDER* ro = rd->orders[i];
+			ClipVar vv,*vp;
+			if(ro->bforexpr.t.type!=UNDEF_t){
+				if((er = rdd_calc(cm,rd->area,&ro->bforexpr,&vv,0))) goto unlock;
+				vp = _clip_vptr(&vv);
+				if(vp->t.type!=LOGICAL_t){
+					er = rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,
+						er_badforexpr);
+					goto unlock;
+				}
+				if(!vp->l.val){
+					_clip_destroy(cm,&vv);
+					if((er = ro->vtbl->_ulock(cm,ro,__PROC__))) goto unlock;
+					continue;
+				}
+				_clip_destroy(cm,&vv);
+			}
+			if(!ro->custom){
+				if((er = ro->vtbl->addkey(cm,rd,ro,NULL,__PROC__)))
+						goto unlock;
+				if((er = ro->vtbl->_ulock(cm,ro,__PROC__))) goto unlock;
+			}
+		}
+	}
+	if(rd->filter && rd->filter->rmap){
+		int fok;
+
+		if((er = rdd_calcfilter(cm,rd,&fok,__PROC__))) return er;
+		if(fok)
+			_rm_setbit(rd->filter->rmap,rd->filter->size,rd->recno);
+		else
+			_rm_clrbit(rd->filter->rmap,rd->filter->size,rd->recno);
+	}
 	return 0;
+unlock:
+	if(!rd->newrec){
+		for(i=0;i<rd->ords_opened;i++){
+			ro = rd->orders[i];
+			if(!ro->custom){
+				ro->vtbl->_ulock(cm,ro,__PROC__);
+			}
+		}
+	}
+	return er;
 }
 
 int rdd_recall(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
-	int r,er;
+	int i,r,er;
+	RDD_ORDER* ro;
+
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
 
 	if((er = rdd_event(cm,EVENT_RECALL,rd->area,0,NULL,&r,__PROC__))) return er;
 	if(!r)
 		return 0;
 	if(rd->eof)
 		return 0;
+
+	if((er = rd->vtbl->rlocked(cm,rd,rd->recno,&r,__PROC__))) return er;
+	if(!r && !rd->flocked)
+		return rdd_err(cm,EG_UNLOCKED,0,__FILE__,__LINE__,__PROC__,er_notpermitted);
+
+	if(!rd->newrec){
+		for(i=0;i<rd->ords_opened;i++){
+			ro = rd->orders[i];
+			if(!ro->custom){
+				if((ro->bforexpr.t.type == UNDEF_t) && ro->simpexpr)
+				if((er = ro->vtbl->_wlock(cm,ro,__PROC__))) goto unlock;
+				if((er = ro->vtbl->delkey(cm,rd,ro,__PROC__))) goto unlock;
+				ro->index->updated = 1;
+			}
+		}
+		rd->eof = 0;
+	}
 	if((er = rd->vtbl->recall(cm,rd,__PROC__))) return er;
+	if(!rd->newrec){
+		for(i=0;i<rd->ords_opened;i++){
+			RDD_ORDER* ro = rd->orders[i];
+			ClipVar vv,*vp;
+			if(ro->bforexpr.t.type!=UNDEF_t){
+				if((er = rdd_calc(cm,rd->area,&ro->bforexpr,&vv,0))) goto unlock;
+				vp = _clip_vptr(&vv);
+				if(vp->t.type!=LOGICAL_t){
+					er = rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,
+						er_badforexpr);
+					goto unlock;
+				}
+				if(!vp->l.val){
+					_clip_destroy(cm,&vv);
+					if((er = ro->vtbl->_ulock(cm,ro,__PROC__))) goto unlock;
+					continue;
+				}
+				_clip_destroy(cm,&vv);
+			}
+			if(!ro->custom){
+				if((er = ro->vtbl->addkey(cm,rd,ro,NULL,__PROC__)))
+						goto unlock;
+				if((er = ro->vtbl->_ulock(cm,ro,__PROC__))) goto unlock;
+			}
+		}
+	}
+	if(rd->filter && rd->filter->rmap){
+		int fok;
+
+		if((er = rdd_calcfilter(cm,rd,&fok,__PROC__))) return er;
+		if(fok)
+			_rm_setbit(rd->filter->rmap,rd->filter->size,rd->recno);
+		else
+			_rm_clrbit(rd->filter->rmap,rd->filter->size,rd->recno);
+	}
 	return 0;
+unlock:
+	if(!rd->newrec){
+		for(i=0;i<rd->ords_opened;i++){
+			ro = rd->orders[i];
+			if(!ro->custom){
+				ro->vtbl->_ulock(cm,ro,__PROC__);
+			}
+		}
+	}
+	return er;
 }
 
 int rdd_deleted(ClipMachine* cm,RDD_DATA* rd,int* deleted,const char* __PROC__){
@@ -2298,15 +3014,18 @@ int rdd_clearindex(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	int i,er;
 	int structural = -1;
 
+	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	for(i=0;i<rd->idxs_opened;i++){
 		if(rd->indices[i]->structural){
 			structural = i;
 		} else {
+#ifdef HAVE_MMAN_H
 			if((int)(rd->indices[i]->file.md)!=-1){
 				if(munmap(rd->indices[i]->file.md,rd->indices[i]->file.mapsize)==-1)
 					return rdd_err(cm,EG_CLOSE,errno,__FILE__,__LINE__,__PROC__,rd->indices[i]->path);
 			}
-			if(close(rd->indices[i]->file.fd)==-1)
+#endif
+			if(_clip_close(cm,rd->indices[i]->file.filehash,rd->indices[i]->file.fd)==-1)
 				return rdd_err(cm,EG_CLOSE,errno,__FILE__,__LINE__,__PROC__,rd->indices[i]->path);
 			if((er = rd->indices[i]->vtbl->close(cm,rd,rd->indices[i],__PROC__)))
 				return er;
@@ -2356,21 +3075,36 @@ int rdd_clearfilter(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	return 0;
 }
 
+static int _rdd_clearparent(ClipMachine* cm,RDD_DATA* rd,RDD_DATA* parent){
+	int i;
+	for(i=0;i<rd->pars_opened;i++){
+		if(rd->parents[i]->parent == parent){
+			memcpy(rd->parents+i,rd->parents+i+1,(rd->pars_opened-1)*sizeof(void*));
+			rd->pars_opened--;
+			rd->parents = realloc(rd->parents,rd->pars_opened*sizeof(void*));
+		}
+	}
+	return 0;
+}
+
 int rdd_clearrelation(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	int i;
 	for(i=0;i<rd->rels_opened;i++){
+		rd->relations[i]->child->pending_child_parent = NULL;
+		_rdd_clearparent(cm,rd->relations[i]->child,rd);
 		if(rd->relations[i]->expr)
 			free(rd->relations[i]->expr);
 		_clip_destroy(cm,&rd->relations[i]->block);
 		free(rd->relations[i]);
 	}
 	free(rd->relations);
-		rd->relations = NULL;
+	rd->relations = NULL;
 	rd->rels_opened = 0;
 	return 0;
 }
 
 int rdd_rlock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__){
+	rd->valid = 0;
 	if(rec<=0)
 		return 0;
 	return rd->vtbl->rlock(cm,rd,rec,r,__PROC__);
@@ -2385,8 +3119,9 @@ int rdd_flock(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 }
 
 int rdd_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char* __PROC__){
+/*
 	int i;
-
+#ifdef HAVE_MMAN_H
 	if(rd->shared && (int)rd->file.md!=-1){
 		if(msync(rd->file.md,rd->file.mapsize,MS_ASYNC)==-1)
 			return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
@@ -2399,19 +3134,25 @@ int rdd_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char
 				return rdd_err(cm,EG_LOCK,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
 		}
 	}
+#endif
+*/
 	if(rec<0)
 		return 0;
 	return rd->vtbl->ulock(cm,rd,rec,flock,__PROC__);
 }
 
 int rdd_commit(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
-	int i,er;
+	int er;
+#ifdef HAVE_MMAN_H
+	int i;
+#endif
 
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	if(rd->changed){
 		if((er = rd->vtbl->setrecord(cm,rd,__PROC__))) return er;
 		rd->changed = 0;
 	}
+#ifdef HAVE_MMAN_H
 	if(rd->shared && (int)rd->file.md!=-1){
 		if(msync(rd->file.md,rd->file.mapsize,MS_ASYNC)==-1)
 			return rdd_err(cm,EG_WRITE,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
@@ -2424,6 +3165,7 @@ int rdd_commit(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 				return rdd_err(cm,EG_WRITE,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
 		}
 	}
+#endif
 	return 0;
 }
 
@@ -2445,20 +3187,42 @@ int rdd_dbread(ClipMachine* cm,RDD_DATA* rd,ClipVar* ap,const char* __PROC__){
 int rdd_dbwrite(ClipMachine* cm,RDD_DATA* rd,ClipVar* ap,const char* __PROC__){
 	RDD_ORDER* ro;
 	ClipVar* vp;
+	ClipVar old;
 	int eof;
-	int i,r,er;
+	int i,j,r,er;
+	int* fs = NULL;
 
-	if((er = rd->vtbl->rlocked(cm,rd,&r,__PROC__))) return er;
+	if(rd->pending_child_parent)
+		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
+
+	if((er = rd->vtbl->rlocked(cm,rd,rd->recno,&r,__PROC__))) return er;
 	if(!r && !rd->flocked)
 		return rdd_err(cm,EG_UNLOCKED,0,__FILE__,__LINE__,__PROC__,er_notpermitted);
 
 	if((er = rdd_eof(cm,rd,&eof,__PROC__))) return er;
 	if(eof)
 		return 0;
+
+	fs = calloc(rd->nfields,sizeof(int));
+	for(i=0;i<rd->nfields;i++){
+		vp = _clip_vptr(_clip_mget(cm,ap,_clip_casehashword(rd->fields[i].name,strlen(rd->fields[i].name))));
+		if(vp){
+			if((er = rd->vtbl->getvalue(cm,rd,i,&old,__PROC__))) goto err;
+			_clip_cmp(cm,&old,vp,&(fs[i]),1);
+			_clip_destroy(cm,&old);
+		}
+	}
 	if(!rd->newrec){
 		for(i=0;i<rd->ords_opened;i++){
 			ro = rd->orders[i];
 			if(!ro->custom){
+				if(ro->simpexpr){
+					for(j=0;j<rd->nfields;j++)
+						if(fs[j] && ro->simpfno == j)
+							break;
+					if(j==rd->nfields)
+						continue;
+				}
 				if((er = rdd_event(cm,EVENT_UPDATE,rd->area,0,NULL,NULL,__PROC__)))
 					goto unlock;
 				if((er = ro->vtbl->_wlock(cm,ro,__PROC__))) goto unlock;
@@ -2468,8 +3232,8 @@ int rdd_dbwrite(ClipMachine* cm,RDD_DATA* rd,ClipVar* ap,const char* __PROC__){
 		}
 	}
 	for(i=0;i<rd->nfields;i++){
-		vp = _clip_vptr(_clip_mget(cm,ap,_clip_casehashword(rd->fields[i].name,strlen(rd->fields[i].name))));
-		if(vp){
+		if(fs[i]){
+			vp = _clip_vptr(_clip_mget(cm,ap,_clip_casehashword(rd->fields[i].name,strlen(rd->fields[i].name))));
 			if((er = rd->vtbl->setvalue(cm,rd,i,vp,0,__PROC__))) goto unlock;
 		}
 	}
@@ -2477,6 +3241,13 @@ int rdd_dbwrite(ClipMachine* cm,RDD_DATA* rd,ClipVar* ap,const char* __PROC__){
 		for(i=0;i<rd->ords_opened;i++){
 			ro = rd->orders[i];
 			if(!ro->custom){
+				if(ro->simpexpr){
+					for(j=0;j<rd->nfields;j++)
+						if(fs[j] && ro->simpfno == j)
+							break;
+					if(j==rd->nfields)
+						continue;
+				}
 				if((er = rdd_event(cm,EVENT_UPDATE,rd->area,0,NULL,NULL,__PROC__)))
 					goto unlock;
 				if((er = ro->vtbl->addkey(cm,rd,ro,NULL,__PROC__)))
@@ -2485,6 +3256,7 @@ int rdd_dbwrite(ClipMachine* cm,RDD_DATA* rd,ClipVar* ap,const char* __PROC__){
 			}
 		}
 	}
+	free(fs); fs = NULL;
 
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 	if(rd->filter && rd->filter->rmap){
@@ -2504,6 +3276,9 @@ unlock:
 			ro->vtbl->_ulock(cm,ro,__PROC__);
 		}
 	}
+err:
+	if(fs)
+		free(fs);
 	return er;
 }
 
@@ -2524,6 +3299,10 @@ int rdd_scopetop(ClipMachine* cm,RDD_DATA* rd,ClipVar* v,const char* __PROC__){
 		ro->scopetop = malloc(ro->keysize);
 		if((er = ro->vtbl->formatkey(cm,ro,v,ro->scopetop,__PROC__))) return er;
 		_clip_clone(cm,&ro->scopetopvar,v);
+		if(v->t.type == CHARACTER_t)
+			ro->stoplen = min(v->s.str.len,ro->keysize);
+		else
+			ro->stoplen = ro->keysize;
 	}
 	return 0;
 }
@@ -2545,6 +3324,10 @@ int rdd_scopebottom(ClipMachine* cm,RDD_DATA* rd,ClipVar* v,const char* __PROC__
 		ro->scopebottom = malloc(ro->keysize);
 		if((er = ro->vtbl->formatkey(cm,ro,v,ro->scopebottom,__PROC__))) return er;
 		_clip_clone(cm,&ro->scopebottomvar,v);
+		if(v->t.type == CHARACTER_t)
+			ro->sbotlen = min(v->s.str.len,ro->keysize);
+		else
+			ro->sbotlen = ro->keysize;
 	}
 	return 0;
 }
@@ -2618,7 +3401,7 @@ int rdd_locate(ClipMachine* cm,RDD_DATA* rd,char* cfor,ClipVar* fexpr,ClipVar* w
 		if(rd->locate_filter)
 			if((er = rdd_destroyfilter(cm,rd->locate_filter,__PROC__)))
 				return er;
-		if((er = rdd_createfilter(cm,rd,&rd->locate_filter,fexpr,cfor,NULL,__PROC__)))
+		if((er = rdd_createfilter(cm,rd,&rd->locate_filter,fexpr,cfor,NULL,0,__PROC__)))
 			return er;
 		if(rd->filter)
 			if((er = rm_intersect(cm,rd->locate_filter,rd->filter,__PROC__)))
@@ -2626,16 +3409,20 @@ int rdd_locate(ClipMachine* cm,RDD_DATA* rd,char* cfor,ClipVar* fexpr,ClipVar* w
 		if(wexpr){
 			_clip_clone(cm,dest,wexpr);
 			rd->locate_wpar = dest;
+		} else {
+			rd->locate_wpar = NULL;
 		}
 		rd->locate_next = next;
 	}
 
-	if(rd->filter){
-		old = rd->filter;
-		old->active = 0;
+	if(!rd->locate_wpar){
+		if(rd->filter){
+			old = rd->filter;
+			old->active = 0;
+		}
+		rd->filter = rd->locate_filter;
+		rd->filter->active = 1;
 	}
-	rd->filter = rd->locate_filter;
-	rd->filter->active = 1;
 
 	while(1){
 		int wcond = 1;
@@ -2664,8 +3451,20 @@ int rdd_locate(ClipMachine* cm,RDD_DATA* rd,char* cfor,ClipVar* fexpr,ClipVar* w
 		if(!wcond)
 			break;
 
-		if(rd->locate_filter)
+		if(rd->locate_wpar){
+			ClipVar data;
+
+			_clip_eval(cm,&rd->locate_filter->fps->bfilter,0,0,&data);
+
+			if(data.t.type != LOGICAL_t)
+				break;
+			else
+				*found = data.l.val;
+
+			_clip_destroy(cm,&data);
+		} else {
 			if((er = rdd_calcfilter(cm,rd,found,__PROC__))) return er;
+		}
 
 		if(*found)
 			break;
@@ -2677,12 +3476,14 @@ int rdd_locate(ClipMachine* cm,RDD_DATA* rd,char* cfor,ClipVar* fexpr,ClipVar* w
 			rd->locate_next--;
 	}
 
-	if(rd->locate_filter)
-		rd->locate_filter->active = 0;
-	rd->filter = NULL;
-	if(old){
-		rd->filter = old;
-		rd->filter->active = 1;
+	if(!rd->locate_wpar){
+		if(rd->locate_filter)
+			rd->locate_filter->active = 0;
+		rd->filter = NULL;
+		if(old){
+			rd->filter = old;
+			rd->filter->active = 1;
+		}
 	}
 	return 0;
 }
@@ -2731,17 +3532,6 @@ void destroy_rdd_data(void* data){
 			free(rd->word);
 		if(rd->yylval)
 			free(rd->yylval);
-		if(rd->relations){
-			int i;
-			for(i=0;i<rd->rels_opened;i++){
-				if(rd->relations[i]){
-					if(rd->relations[i]->expr)
-						free(rd->relations[i]->expr);
-					free(rd->relations[i]);
-				}
-			}
-			free(rd->relations);
-		}
 		if(rd->locks)
 			free(rd->locks);
 		if(rd->os.cForCondition)
@@ -2792,8 +3582,8 @@ void destroy_rdd_order(ClipMachine* cm,RDD_ORDER* ro){
 			free(ro->cforexpr);
 		if(ro->key)
 			free(ro->key);
-		if(ro->foundkey)
-			free(ro->foundkey);
+		if(ro->curpage)
+			free(ro->curpage);
 		_clip_destroy(cm,&ro->block);
 		_clip_destroy(cm,&ro->scopetopvar);
 		_clip_destroy(cm,&ro->scopebottomvar);
@@ -3144,14 +3934,19 @@ int rdd_ii_create(ClipMachine* cm,const char* driver,const char* name,const char
 	if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_CREATE,__PROC__)))
 		goto err;
 
-	ri->file.fd = _clip_creat(ri->path,O_RDWR,cm->fileCreateMode,1);
+	ri->file.filehash = _clip_hashstr(ri->path);
+
+	ri->file.fd = _clip_creat(cm,ri->path,O_RDWR,cm->fileCreateMode,1);
 	if(ri->file.fd == -1) goto err_create;
 	ri->file.mapsize = 1024;
 	if(lseek(ri->file.fd,ri->file.mapsize-1,SEEK_SET)==-1) goto err_create;
 	if(write(ri->file.fd,"",1)==-1) goto err_create;
-	ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
-		PROT_READ|PROT_WRITE,MAP_SHARED,ri->file.fd,0);
-
+	ri->file.md = (caddr_t)-1;
+#ifdef HAVE_MMAN_H
+	if(cm->flags1 & MAP_FILE_FLAG)
+		ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
+			PROT_READ|PROT_WRITE,MAP_SHARED,ri->file.fd,0);
+#endif
 	if((er = ri->vtbl->ii_create(cm,ri,__PROC__))) goto err;
 
 	_clip_retni(cm,_clip_store_c_item(cm,ri,_C_ITEM_TYPE_I_INDEX,destroy_rdd_index));
@@ -3163,10 +3958,12 @@ err:
 		free(ri->name);
 	if(ri && ri->path)
 		free(ri->path);
+#ifdef HAVE_MMAN_H
 	if(ri && ri->file.md != (char*)-1)
 		munmap(ri->file.md,ri->file.mapsize);
+#endif
 	if(ri && ri->file.fd != -1)
-		close(ri->file.fd);
+		_clip_close(cm,ri->file.filehash,ri->file.fd);
 	if(ri)
 		free(ri);
 	return er;
@@ -3198,14 +3995,19 @@ int rdd_ii_open(ClipMachine* cm,const char* driver,const char* name,const char* 
 	if((er = _rdd_parsepath(cm,name,ri->vtbl->suff,&ri->path,&ri->name,EG_CREATE,__PROC__)))
 		goto err;
 
+	ri->file.filehash = _clip_hashstr(ri->path);
+
 	if((er = rdd_open(cm,ri->path,0,0,&ri->file.fd,__PROC__)))
 		goto err;
 
 	if(fstat(ri->file.fd,&st)==-1) goto err_open;
 	ri->file.mapsize = st.st_size;
-	ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
-		PROT_READ|PROT_WRITE,MAP_SHARED,ri->file.fd,0);
-
+	ri->file.md = (caddr_t)-1;
+#ifdef HAVE_MMAN_H
+	if(cm->flags1 & MAP_FILE_FLAG)
+		ri->file.md = (caddr_t)mmap(0,ri->file.mapsize,
+			PROT_READ|PROT_WRITE,MAP_SHARED,ri->file.fd,0);
+#endif
 	if((er = ri->vtbl->ii_open(cm,ri,__PROC__))) goto err;
 
 	_clip_retni(cm,_clip_store_c_item(cm,ri,_C_ITEM_TYPE_I_INDEX,destroy_rdd_index));
@@ -3217,10 +4019,12 @@ err:
 		free(ri->name);
 	if(ri && ri->path)
 		free(ri->path);
+#ifdef HAVE_MMAN_H
 	if(ri && ri->file.md != (char*)-1)
 		munmap(ri->file.md,ri->file.mapsize);
+#endif
 	if(ri && ri->file.fd != -1)
-		close(ri->file.fd);
+		_clip_close(cm,ri->file.filehash,ri->file.fd);
 	if(ri)
 		free(ri);
 	return er;
@@ -3431,44 +4235,75 @@ int _rdd_parsepath(ClipMachine* cm,const char* toopen,const char* suff,char** pa
 	return 0;
 }
 
-static int _rdd_wildskip(ClipMachine* cm,RDD_DATA* rd,const char* pattern,int* found,const char* __PROC__){
-	RDD_ORDER* ro = rd->orders[rd->curord];
-	ClipVar v,*vp;
-	char* e = (char*)pattern + strlen(pattern);
-	char* s = strchr(pattern,'*');
-	char* q = strchr(pattern,'?');
-	char* b = strchr(pattern,'[');
+int rdd_seekeval(ClipMachine* cm,RDD_DATA* rd,ClipVar* block,int* found,const char* __PROC__){
+	RDD_ORDER* ro;
 	int er;
 
-	if(!s) s = e; if(!q) q = e; if(!b) b = e;
-	s = min(min(s,q),b);
+	if((rd->ords_opened<1) || (rd->curord==-1))
+		return rdd_err(cm,EG_NOORDER,0,__FILE__,__LINE__,__PROC__,er_noorder);
 
-	*found = 1;
-	memset(&v,0,sizeof(ClipVar));
-	if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
-	vp = _clip_vptr(&v);
-	e = vp->s.str.buf+vp->s.str.len;
-	while((--e >= vp->s.str.buf) && *e == ' ');
-	*(e+1) = 0;
-	while(!rd->eof && (memcmp(vp->s.str.buf,pattern,s-pattern)==0) &&
-		 (_clip_glob_match(vp->s.str.buf,pattern,1) == -1)){
+	ro = rd->orders[rd->curord];
+	if(!ro->vtbl->wildskip)
+		return rdd_err(cm,EG_UNSUPPORTED,0,__FILE__,__LINE__,__PROC__,
+			"Operation is not supported by current RDD");
 
-		_clip_destroy(cm,&v);
-		if((er = rdd_skip(cm,rd,1,__PROC__))) return er;
+	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
+
+	if((er = ro->vtbl->wildskip(cm,rd,ro,NULL,0,NULL,block,found,__PROC__)))
+		return er;
+	if(!(*found)){
+		unsigned int lastrec;
+
+		if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
+		rd->eof = 1;
+		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
+	}
+	return 0;
+}
+
+static int _rdd_wildskip(ClipMachine* cm,RDD_DATA* rd,const char* pattern,int regular,const char* s,int* found,const char* __PROC__){
+	RDD_ORDER* ro = rd->orders[rd->curord];
+	int er;
+
+	if(ro->vtbl->wildskip){
+		if((er = ro->vtbl->wildskip(cm,rd,ro,pattern,regular,s,NULL,found,__PROC__)))
+			return er;
+	} else {
+		ClipVar v,*vp;
+		char* e;
+
+		*found = 1;
+		memset(&v,0,sizeof(ClipVar));
 		if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
 		vp = _clip_vptr(&v);
 		e = vp->s.str.buf+vp->s.str.len;
 		while((--e >= vp->s.str.buf) && *e == ' ');
 		*(e+1) = 0;
-	}
-	if(rd->eof || (memcmp(vp->s.str.buf,pattern,s-pattern)!=0))
-		*found = 0;
+		while(!rd->eof && (memcmp(vp->s.str.buf,pattern,s-pattern)==0) &&
+			 (_clip_glob_match(vp->s.str.buf,pattern,1) == -1)){
 
-	_clip_destroy(cm,&v);
+			_clip_destroy(cm,&v);
+			if((er = rdd_skip(cm,rd,1,__PROC__))) return er;
+			if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
+			vp = _clip_vptr(&v);
+			e = vp->s.str.buf+vp->s.str.len;
+			while((--e >= vp->s.str.buf) && *e == ' ');
+			*(e+1) = 0;
+		}
+		if(rd->eof || (memcmp(vp->s.str.buf,pattern,s-pattern)!=0))
+			*found = 0;
+
+		_clip_destroy(cm,&v);
+	}
 	return 0;
 }
 
-int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pattern,int cont,int* found,const char* __PROC__){
+int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pat,int regular,int cont,int* found,const char* __PROC__){
+	char* e;
+	char* s;
+	char* q;
+	char* b = NULL;
+	char* pattern;
 	int er;
 
 	if((rd->ords_opened<1) || (rd->curord==-1))
@@ -3478,44 +4313,58 @@ int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pattern,int cont,int* 
 		return rdd_err(cm,EG_UNSUPPORTED,0,__FILE__,__LINE__,__PROC__,
 			"Order is not CHARACTER");
 
-	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
-	if(!cont){
-		ClipVar v;
-		char* e = (char*)pattern + strlen(pattern);
-		char* s = strchr(pattern,'*');
-		char* q = strchr(pattern,'?');
-		char* b = strchr(pattern,'[');
-		int found;
+	pattern = strdup(pat);
+	if((er = rdd_checkifnew(cm,rd,__PROC__))) goto err;
 
+	e = (char*)pattern + strlen(pattern);
+	loc_write(rd->loc,pattern,e-pattern);
+	if(!regular){
+		s = strchr(pattern,'*');
+		q = strchr(pattern,'?');
 		if(!s) s = e; if(!q) q = e; if(!b) b = e;
 		s = min(min(s,q),b);
+	} else {
+		s = NULL;
+	}
 
-		if(s == pattern){
+	if(!cont){
+		ClipVar v;
+		int fnd;
+
+		if((s == pattern) || regular){
 			if((er = rd->orders[rd->curord]->vtbl->gotop(cm,rd,rd->orders[rd->curord],
-				__PROC__))) return er;
+				__PROC__))) goto err;
 		} else {
 			memset(&v,0,sizeof(ClipVar));
 			v.t.type = CHARACTER_t;
 			v.s.str.buf = malloc(s-pattern+1);
-			memcpy(v.s.str.buf,pattern,s-pattern);
+			memcpy(v.s.str.buf,pat,s-pattern);
 			v.s.str.buf[s-pattern] = 0;
 			v.s.str.len = s - pattern;
 			if((er = rd->orders[rd->curord]->vtbl->seek(cm,rd,rd->orders[rd->curord],
-				&v,0,0,&found,__PROC__))) return er;
+				&v,0,0,&fnd,__PROC__))) goto err;
 			free(v.s.str.buf);
 		}
 	} else {
-		if((er = rdd_skip(cm,rd,1,__PROC__))) return er;
+		if((er = rdd_skip(cm,rd,1,__PROC__))) goto err;
 	}
-	if((er = _rdd_wildskip(cm,rd,pattern,found,__PROC__))) return er;
-	if(!(*found)){
-		unsigned int lastrec;
+	if(rd->eof){
+		*found = 0;
+	} else {
+		if((er = _rdd_wildskip(cm,rd,pattern,regular,s,found,__PROC__))) goto err;
+		if(!(*found)){
+			unsigned int lastrec;
 
-		if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
-		rd->eof = 1;
-		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
+			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) goto err;
+			rd->eof = 1;
+			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) goto err;
+		}
 	}
+	free(pattern);
 	return 0;
+err:
+	free(pattern);
+	return er;
 }
 
 int rdd_rawread(ClipMachine* cm,RDD_DATA* rd,void* buf,const char* __PROC__){
@@ -3545,5 +4394,6 @@ int rdd_rawwrite(ClipMachine* cm,RDD_DATA* rd,void* buf,int append,const char* _
 			}
 		}
 	}
+	rd->updated = 1;
 	return 0;
 }

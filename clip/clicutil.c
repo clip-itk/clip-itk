@@ -1,5 +1,30 @@
 /*
  * $Log: clicutil.c,v $
+ * Revision 1.42  2003/05/16 11:08:02  clip
+ * initial support for using assembler instead C
+ * now activated if environment variable CLIP_ASM is defined to any value
+ * paul
+ *
+ * Revision 1.41  2003/03/25 14:20:59  clip
+ * uri: *gettext changed to _clic_*gettext
+ *
+ * Revision 1.40  2002/11/19 11:32:35  clip
+ * fix sigsegv on var redefinition
+ * closes #52
+ * paul
+ *
+ * Revision 1.39  2002/10/30 12:17:26  clip
+ * support for plural forms in i18n messages
+ * paul
+ *
+ * Revision 1.38  2002/10/28 08:22:30  clip
+ * done russian translation for clip.po
+ * paul
+ *
+ * Revision 1.37  2002/10/25 11:54:33  clip
+ * localized messages for clip itself
+ * paul
+ *
  * Revision 1.36  2002/08/08 09:49:27  clip
  * -a flag cleanup
  * paul
@@ -220,6 +245,26 @@ v_printf(int level, const char *fmt,...)
 		fputc('\n', stdout);
 
 	va_start(ap, fmt);
+	ret = vfprintf(stdout, _clic_gettext(fmt), ap);
+	va_end(ap);
+	fflush(stdout);
+
+	return ret;
+}
+
+int
+vr_printf(int level, const char *fmt,...)
+{
+	va_list ap;
+	int ret = 0;
+
+	if (level > verbose)
+		return 0;
+
+	for(; v_neednl; v_neednl--)
+		fputc('\n', stdout);
+
+	va_start(ap, fmt);
 	ret = vfprintf(stdout, fmt, ap);
 	va_end(ap);
 	fflush(stdout);
@@ -316,7 +361,7 @@ new_Var(char *name)
 
 	NEWVAR(Var, ret);
 	for(s=name; (*s); s++)
-        	*s = toupper(*s);
+		*s = toupper(*s);
 	ret->name = name;
 	ret->no = -1;
 	ret->line = cl_line;
@@ -481,10 +526,12 @@ add_VarColl(VarColl * coll, Var * var)
 	if (search_Coll(&coll->coll, var, &no))
 	{
 		VAR(Var, vp, coll->coll.items[no]);
-		yywarning("duplicate name '%s', previous name defined near line %d pos %d in file '%s'", vp->name, vp->line, vp->pos, fileName(vp->file));
+		yywarning( "duplicate name '%s', previous name defined near line %d pos %d in file '%s'", vp->name, vp->line, vp->pos, fileName(vp->file));
+		#if 0
 		remove_Coll(&coll->coll, vp);
 		remove_Coll(&coll->unsorted, vp);
 		delete_Var(vp);
+		#endif
 	}
 
 	var->no = coll->coll.count;
@@ -517,16 +564,23 @@ new_File(char *name)
 	e = strrchr(name, '/');
 	if (e)
 		ret->name = strdup(e+1);
-	else	
+	else
 		ret->name = strdup(name);
 	ret->origname = strdup(name);
-        if (name[0] == '/')
+	if (name[0] == '/')
 		strncpy(buf, name, sizeof(buf) - 3);
-        else
-        	snprintf(buf, sizeof(buf)-3, "%s/%s", outdir, name);
+	else
+		snprintf(buf, sizeof(buf)-3, "%s/%s", outdir, name);
 	s = strrchr(buf, '.');
 	e = strrchr(buf, '/');
-	if (pcode_flag && !pc_flag)
+	if (pc_flag)
+        {
+        	if (asm_flag)
+                	suf = ".s";
+		else
+                	suf = ".c";
+        }
+	else if (pcode_flag)
 		suf = ".po";
 	else
 		suf = ".c";
@@ -536,11 +590,11 @@ new_File(char *name)
 	else
 		strcpy(buf + strlen(buf), suf);
 	ret->cname = strdup(buf);
-        s = strrchr(buf, '/');
-        if(s)
-        	s++;
+	s = strrchr(buf, '/');
+	if(s)
+		s++;
 	else
-        	s = buf;
+		s = buf;
 	ret->s_cname = strdup(s);
 
 	if (pcode_flag && main_flag)
@@ -607,7 +661,7 @@ add_Function(File * file, Function * func)
 		{
 			char buf[80];
 
-			yywarning("declaration function with module name '%s'; force -n flag", fp->name);
+			yywarning( "declaration function with module name '%s'; force -n flag", fp->name);
 			remove_Coll(&file->functions, fp);
 			snprintf(buf, sizeof(buf), "%s_m", fp->name);
 			free(fp->name);
@@ -1082,7 +1136,7 @@ installName(char *name)
 	if (auto_memvar)
 		return new_MemvarFNode(vp);
 	else
-        {
+	{
 		add_VarColl(curFunction->fmemvars, vp);
 		return new_FMemvarNode(vp);
 	}

@@ -4,9 +4,108 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.h,v $
+	Revision 1.147  2003/12/01 12:04:23  clip
+	rust: RDDCLOSEALL() closes only tables of current task
+	
+	Revision 1.146  2003/09/17 07:54:49  clip
+	uri: some fixes for Solaris and Ukraina cp1251
+
+	Revision 1.145  2003/09/04 14:04:41  clip
+	*** empty log message ***
+
+	Revision 1.144  2003/09/02 14:27:42  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+
+	Revision 1.143  2003/07/12 11:30:44  clip
+	rust: OL2 parsing bug fixed
+
+	Revision 1.142  2003/06/21 08:54:46  clip
+	rust: CMF (CLIP Memo File) with 64-bit file support started
+
+	Revision 1.141  2003/06/17 09:00:15  clip
+	rust: 'structural index present' attribute in .dbf header
+
+	Revision 1.140  2003/05/15 14:39:29  clip
+	rust: some speed optimizations for relations
+
+	Revision 1.139  2003/05/06 09:59:08  clip
+	rust: minor fixes and cleanings
+
+	Revision 1.138  2003/04/30 13:53:12  clip
+	rust: more compatible NTX and some speed optimizations
+
+	Revision 1.137  2003/04/02 10:53:20  clip
+	rust: _clip_close() added
+
+	Revision 1.136  2003/03/25 09:50:59  clip
+	rust: destroy relation on child close, reported by Sergey Mudry <upx@pisem.net>
+
+	Revision 1.135  2003/03/21 11:49:40  clip
+	rust: RDD locks with tasks (DOS compatibility)
+
+	Revision 1.134  2003/02/28 09:26:49  clip
+	rust: checking record size in dbcreate()
+
+	Revision 1.133  2003/02/23 17:18:34  clip
+	rust: small fixes
+
+	Revision 1.132  2003/02/10 16:32:55  clip
+	rust: CLIP_REGEXSEEK( <regex> )
+
+	Revision 1.131  2003/02/10 13:05:41  clip
+	rust: _SEEK_EVAL( <bBlock> ) (FlagShip extension)
+
+	Revision 1.130  2003/01/31 11:52:00  clip
+	rust: sx_islocked() with foreign locks, reported by druzus@polbox.com
+
+	Revision 1.129  2003/01/22 10:59:51  clip
+	rust: touch updated memo and index on close
+
+	Revision 1.128  2003/01/21 14:59:17  clip
+	rust: rdd_info() with latest changes
+
+	Revision 1.127  2003/01/13 12:32:12  clip
+	rust: discern DBF-type on signature; FOXCDX driver added
+
+	Revision 1.126  2002/12/25 12:18:25  clip
+	rust: read arrays from SIxMemo
+
+	Revision 1.125  2002/12/24 09:55:29  clip
+	rust: SET SCOPE bug fixed
+
+	Revision 1.124  2002/12/17 14:02:53  clip
+	rust: EXACT or NON-EXACT set scope
+
+	Revision 1.123  2002/12/12 11:17:17  clip
+	rust: support for non-flex FPT (C52 DBFCDX, SIXCDX)
+
+	Revision 1.122  2002/12/02 13:48:33  clip
+	rust: ignoring case in CDX;
+	RDDCREATEINDEX(...,lIgnoreCase) (7th parameter)
+	ORDCONDSET(...,lIgnoreCase) (16th parameter)
+
+	Revision 1.121  2002/11/05 15:25:30  clip
+	rust: small fix
+
+	Revision 1.120  2002/11/05 14:46:30  clip
+	rust: some fixes
+
+	Revision 1.119  2002/10/30 13:04:38  clip
+	rust: m6_SetFilter()
+
+	Revision 1.118  2002/10/26 11:10:02  clip
+	initial support for localized runtime messages
+	messages are in module 'cliprt'
+	paul
+
+	Revision 1.117  2002/10/14 13:15:21  clip
+	rust: m6_FiltTop(), m6_FiltBott(), m6_FiltSkip(), m6_FiltGoRec()
+
 	Revision 1.116  2002/10/11 10:33:10  clip
 	rust: m6_IsOptimize()
-	
+
 	Revision 1.115  2002/10/01 13:16:51  clip
 	rust: build filter list
 
@@ -246,7 +345,7 @@
 #define CHECKWA(wa) if(!wa || !wa->used) return rdd_err(cm,EG_NOTABLE,0,__FILE__,__LINE__,__PROC__,"Workarea not in use")
 #endif
 
-extern const char* bad_arg;
+#define bad_arg		_clip_gettext("Bad argument (%d)")
 
 #define CHECKARG1(n,t) \
 	if(_clip_parinfo(cm,n)!=t){ \
@@ -330,6 +429,20 @@ extern const char* bad_arg;
 #define DBFLS_CLIPPER53	0
 #define DBFLS_SIX3		1
 
+/*#ifdef ARCH_i386*/
+typedef unsigned long long u8;
+/*#endif*/
+
+#define rdd_read(cm,file,pos,len,buf,__PROC__) \
+	((file)->f64?_rdd_read64(cm,(file),(pos),(len),(buf),__PROC__): \
+	_rdd_read(cm,(file),(pos),(len),(buf),__PROC__))
+#define rdd_write(cm,file,pos,len,buf,__PROC__) \
+	((file)->f64?_rdd_write64(cm,(file),(pos),(len),(buf),__PROC__): \
+	_rdd_write(cm,(file),(pos),(len),(buf),__PROC__))
+#define rdd_trunc(cm,file,len,__PROC__) \
+	((file)->f64?_rdd_trunc64(cm,(file),(len),__PROC__): \
+	_rdd_trunc(cm,(file),(len),__PROC__))
+
 typedef struct
 {
 	unsigned char cmp[128];
@@ -340,10 +453,19 @@ typedef struct
 }
 DbfLocale;
 
+#if defined(OS_MINGW)
+typedef char *caddr_t;
+#endif
+
 typedef struct _RDD_FILE_ {
 	int fd;
 	caddr_t md;
 	size_t mapsize;
+	char* dbf;
+	long filehash;
+	int rlocked;
+	int wlocked;
+	int f64;
 } RDD_FILE;
 
 typedef struct _RDD_STACK_ {
@@ -377,7 +499,9 @@ typedef struct _RDD_ORDER_ {
 	struct _RDD_INDEX_VTBL_* vtbl;
 
 	char* scopetop;
+	int stoplen;
 	char* scopebottom;
+	int sbotlen;
 	ClipVar scopetopvar;
 	ClipVar scopebottomvar;
 
@@ -386,14 +510,18 @@ typedef struct _RDD_ORDER_ {
 
 	unsigned int keyno;
 	char* key;
-	char* foundkey;
 
 	RDD_STACK stack[MAX_BTREE_DEEP];
+	void* curpage;
+	unsigned int curoffs;
 	int level;
 	char valid_stack;
+	unsigned short cnt;
+	unsigned int cntcdx;
 
 	char binary;
 	char wlocked;
+	char ic; /* ignore case */
 	/* Independed indices */
 	char* iikey;
 	unsigned char id[12];
@@ -407,7 +535,6 @@ typedef struct _RDD_INDEX_ {
 	char* name;
 	char* path;
 	int indexno;
-	ino_t inode;
 	int structural;
 	RDD_FILE file;
 	RDD_ORDER** orders;
@@ -415,6 +542,7 @@ typedef struct _RDD_INDEX_ {
 	DbfLocale* loc;
 	struct _RDD_INDEX_VTBL_* vtbl;
 	struct _RDD_DATA_* rd;
+	int updated;
 } RDD_INDEX;
 
 struct _RDD_MEMO_VTBL_;
@@ -422,10 +550,11 @@ typedef struct _RDD_MEMO_ {
 	char* name;
 	char* path;
 	RDD_FILE file;
-
+	int format;
 	int blocksize;
 	DbfLocale* loc;
 	struct _RDD_MEMO_VTBL_* vtbl;
+	int updated;
 } RDD_MEMO;
 
 typedef struct _RDD_FIELD_ {
@@ -454,6 +583,7 @@ typedef struct _RDD_ORDSTATE_ {
 	int lCurrent;
 	int lCustom;
 	int lNoOptimize;
+	int lIgnoreCase;
 } RDD_ORDSTATE;
 
 struct _RDD_DATA_VTBL_;
@@ -465,6 +595,7 @@ typedef struct _RDD_DATA_ {
 
 	int area;
 	int rdhandle;
+	int sig;
 
 	struct _RDD_DATA_VTBL_* vtbl;
 
@@ -479,6 +610,9 @@ typedef struct _RDD_DATA_ {
 
 	struct _RDD_RELATION_** relations;
 	int rels_opened;
+	struct _RDD_RELATION_** parents;
+	int pars_opened;
+	struct _RDD_DATA_* pending_child_parent;
 
 	RDD_MEMO* memo;
 
@@ -530,13 +664,14 @@ typedef struct _RDD_DATA_ {
 	unsigned int keysincluded;
 
 	char lockstyle;
-	char locked; /* fucking Win32 file locking */
+	char locked;
 
 	ClipVar** data;
 	void* record;
 	char valid;
 	char changed; /* record */
 	char x; /* 'X' field type */
+	ClipMachine* cm;
 } RDD_DATA;
 
 typedef struct _RDD_FPS_ {
@@ -557,6 +692,7 @@ typedef struct _RDD_FILTER_ {
 	unsigned int* list;
 	unsigned int listlen;
 	unsigned int cursor;
+	int recno; /* m6_FiltGoRec(), m6_FiltSkip(), ... */
 	RDD_DATA* rd;
 } RDD_FILTER;
 
@@ -567,13 +703,14 @@ typedef struct _RDD_RELATION_ {
 	ClipVar block;	/* Compiled key expression */
 	int scoped;
 	RDD_DATA* child;
+	RDD_DATA* parent;
 } RDD_RELATION;
 
 typedef struct _RDD_STRUCT_ {
 	char name[11];
 	char type;
-	int len;
-	int dec;
+	unsigned short len;
+	unsigned short dec;
 	char binary;
 	char nullable;
 } RDD_STRUCT;
@@ -587,100 +724,105 @@ typedef struct _RDD_DATA_VTBL_ {
 	unsigned char dbfsig;
 	unsigned char dbfwithmemosig;
 	/* open/close */
-	int (*open)		(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*close)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*open)     (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*close)    (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	/* create */
-	int (*create)	(ClipMachine* cm,struct _RDD_DATA_VTBL_* vtbl,char* name,RDD_STRUCT* rddstru,int nfields,const char* __PROC__);
-	int (*pack)		(ClipMachine* cm,RDD_DATA* rd,int tfd,const char* __PROC__);
-	int (*zap)		(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*create)   (ClipMachine* cm,struct _RDD_DATA_VTBL_* vtbl,char* name,RDD_STRUCT* rddstru,int nfields,const char* __PROC__);
+	int (*pack)     (ClipMachine* cm,RDD_DATA* rd,int tfd,const char* __PROC__);
+	int (*zap)      (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	/* info */
-	int (*lastrec)	(ClipMachine* cm,RDD_DATA* rd,int* lastrec,const char* __PROC__);
-	int (*deleted)	(ClipMachine* cm,RDD_DATA* rd,int* deleted,const char* __PROC__);
-	int (*lupdate)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*lastrec)  (ClipMachine* cm,RDD_DATA* rd,int* lastrec,const char* __PROC__);
+	int (*deleted)  (ClipMachine* cm,RDD_DATA* rd,int* deleted,const char* __PROC__);
+	int (*lupdate)  (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*setstruct)(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	/* navigation */
-	int (*gotop)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*gotop)    (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	int (*gobottom) (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*next)		(ClipMachine* cm,RDD_DATA* rd,int filtok,const char* __PROC__);
-	int (*prev)		(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*go)		(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,const char* __PROC__);
-	int (*rawgo)	(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,char valid_stack,const char* __PROC__);
+	int (*next)     (ClipMachine* cm,RDD_DATA* rd,int filtok,const char* __PROC__);
+	int (*prev)     (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*go)       (ClipMachine* cm,RDD_DATA* rd,unsigned int rec,const char* __PROC__);
+	int (*rawgo)    (ClipMachine* cm,RDD_DATA* rd,unsigned int rec,char valid_stack,const char* __PROC__);
 	/* locking */
-	int (*rlock)	(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__);
-	int (*flock)	(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
-	int (*ulock)	(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char* __PROC__);
-	int (*rlocked)	(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
+	int (*rlock)    (ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__);
+	int (*flock)    (ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
+	int (*ulock)    (ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char* __PROC__);
+	int (*rlocked)  (ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__);
+	int (*forlock)  (ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int* r,const char* __PROC__);
 	/* low level locking */
-	int (*_wlock)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*_rlock)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*_ulock)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*_wlock)   (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*_rlock)   (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*_ulock)   (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	/* data */
-	int (*append)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*append)   (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	int (*getrecord)(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*getvalue)	(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __PROC__);
+	int (*getvalue) (ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __PROC__);
 	int (*setrecord)(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*setvalue)	(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,const char* __PROC__);
+	int (*setvalue) (ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,const char* __PROC__);
 	int (*getmemoid)(ClipMachine* cm,RDD_DATA* rd,int no,unsigned int* memoid,unsigned short int* vlen,const char* __PROC__);
 	int (*setmemoid)(ClipMachine* cm,RDD_DATA* rd,int no,unsigned int memoid,const char* __PROC__);
-	int (*delete)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*recall)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-	int (*info)		(ClipMachine* cm,RDD_DATA* rd,int cmd,const char* __PROC__);
+	int (*delete)   (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*recall)   (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*info)     (ClipMachine* cm,RDD_DATA* rd,int cmd,const char* __PROC__);
+	int (*verify)   (ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
 	/* for filter optimization */
-	int (*calcfiltlist)	(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+	int (*calcfiltlist) (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 } RDD_DATA_VTBL;
 
 typedef struct _RDD_INDEX_VTBL_ {
 	char id[4];
 	char suff[5];
+	char sing_suff[5];
 	char desc[81];
 	int version;
 	char ismulti; /* is multi orderal RDD */
 	/* open/close */
-	int (*open)		(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* tag,const char* __PROC__);
-	int (*close)	(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__);
-	int (*create)	(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop,const char* tag,const char* expr,ClipVar* block,int unique,int first,unsigned int header,const char* __PROC__);
-	int (*reindex)	(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__);
-	int (*zap)		(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__);
+	int (*open)     (ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* tag,const char* __PROC__);
+	int (*close)    (ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__);
+	int (*create)   (ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop,const char* tag,const char* expr,ClipVar* block,int unique,int first,unsigned int header,const char* __PROC__);
+	int (*reindex)  (ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__);
+	int (*zap)      (ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__);
 	/* navigation */
-	int (*gotop)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
-	int (*gobottom)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
-	int (*next)		(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
-	int (*prev)		(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
-	int (*seek)		(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int soft,int last,int* found,const char* __PROC__);
-	int (*gotokey)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int keyno,int* ok,const char* __PROC__);
-	int (*descend)	(ClipMachine* cm,RDD_ORDER* ro,int descend,int* res,const char* __PROC__);
+	int (*gotop)    (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*gobottom) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*next)     (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*prev)     (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*seek)     (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int soft,int last,int* found,const char* __PROC__);
+	int (*gotokey)  (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int keyno,int* ok,const char* __PROC__);
+	int (*descend)  (ClipMachine* cm,RDD_ORDER* ro,int descend,int* res,const char* __PROC__);
 	int (*buildtree)(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*wildskip) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* pattern,int regular,const char* s,ClipVar* block,int* found,const char* __PROC__);
 	/* update */
-	int (*addkey)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
-	int (*delkey)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
-	int (*destroy)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*addkey)   (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
+	int (*delkey)   (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*destroy)  (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
 	/* format key */
 	int (*formatkey)(ClipMachine* cm,RDD_ORDER* ro,ClipVar* v,void* res,const char* __PROC__);
 	/* info */
-	int (*keyno)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const char* __PROC__);
-	int (*lastkey)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__);
-	int (*info)		(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int cmd,const char* __PROC__);
-	int (*keyvalue)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
+	int (*keyno)    (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const char* __PROC__);
+	int (*lastkey)  (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__);
+	int (*info)     (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int cmd,const char* __PROC__);
+	int (*keyvalue) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
 	/* rushmore */
-	int (*setscope)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* top,ClipVar* bottom,unsigned int* map,int bytes,const char* __PROC__);
+	int (*setscope) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* top,ClipVar* bottom,unsigned int* map,int bytes,int exact,const char* __PROC__);
 	/* Independed Indexes */
-	int (*ii_create)	(ClipMachine* cm,RDD_INDEX* ri,const char* __PROC__);
-	int (*ii_createtag)	(ClipMachine* cm,RDD_INDEX* ri,const char* tag,const char* expr,RDD_ORDER** rop,const char* __PROC__);
-	int (*ii_open)		(ClipMachine* cm,RDD_INDEX* ri,const char* __PROC__);
-	int (*ii_opentag)	(ClipMachine* cm,RDD_INDEX* ri,const char* tag,RDD_ORDER** rop,const char* __PROC__);
-	int (*ii_addkey)	(ClipMachine* cm,RDD_ORDER* ro,const char* id,ClipVar* key,const char* __PROC__);
-	int (*ii_delkey)	(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
-	int (*ii_gotop)		(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
-	int (*ii_gobottom)	(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
-	int (*ii_id)		(ClipMachine* cm,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
-	int (*ii_key)		(ClipMachine* cm,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
-	int (*ii_next)		(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
-	int (*ii_prev)		(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*ii_create)    (ClipMachine* cm,RDD_INDEX* ri,const char* __PROC__);
+	int (*ii_createtag) (ClipMachine* cm,RDD_INDEX* ri,const char* tag,const char* expr,RDD_ORDER** rop,const char* __PROC__);
+	int (*ii_open)      (ClipMachine* cm,RDD_INDEX* ri,const char* __PROC__);
+	int (*ii_opentag)   (ClipMachine* cm,RDD_INDEX* ri,const char* tag,RDD_ORDER** rop,const char* __PROC__);
+	int (*ii_addkey)    (ClipMachine* cm,RDD_ORDER* ro,const char* id,ClipVar* key,const char* __PROC__);
+	int (*ii_delkey)    (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*ii_gotop)     (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*ii_gobottom)  (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*ii_id)        (ClipMachine* cm,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
+	int (*ii_key)       (ClipMachine* cm,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
+	int (*ii_next)      (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*ii_prev)      (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 	/* for filter optimization */
-	int (*calcfiltlist)	(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
+	int (*calcfiltlist) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
 	/* index locks */
-	int (*_rlock)		(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
-	int (*_wlock)		(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
-	int (*_ulock)		(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*_rlock)   (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*_wlock)   (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
+	int (*_ulock)   (ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__);
 } RDD_INDEX_VTBL;
 
 typedef struct _RDD_MEMO_VTBL_ {
@@ -688,16 +830,20 @@ typedef struct _RDD_MEMO_VTBL_ {
 	char suff[5];
 	char desc[81];
 	int version;
-	int (*create)	(ClipMachine* cm,char* name,const char* __PROC__);
-	int (*pack)		(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int tmpfd,int bsize,ClipVar* block,int step,const char* __PROC__);
-	int (*zap)		(ClipMachine* cm,RDD_MEMO* rm,const char* __PROC__);
-	int (*open)		(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PROC__);
-	int (*close)	(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PROC__);
-	int (*getvalue)	(ClipMachine* cm,RDD_MEMO* rm,int id,ClipVar* vp,const char* __PROC__);
-	int (*setvalue)	(ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int binary,const char* __PROC__);
-	int (*getvchar)	(ClipMachine* cm,RDD_MEMO* rm,int len,unsigned int id,char* buf,const char* __PROC__);
-	int (*setvchar)	(ClipMachine* cm,RDD_MEMO* rm,int len,int oldlen,unsigned int* id,char* buf,const char* __PROC__);
-	int (*info)		(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int cmd,const char* __PROC__);
+	int (*create)    (ClipMachine* cm,char* name,const char* __PROC__);
+	int (*pack)      (ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int tmpfd,int bsize,ClipVar* block,int step,const char* __PROC__);
+	int (*zap)       (ClipMachine* cm,RDD_MEMO* rm,const char* __PROC__);
+	int (*open)      (ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PROC__);
+	int (*close)     (ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PROC__);
+	int (*getvalue)  (ClipMachine* cm,RDD_MEMO* rm,int id,ClipVar* vp,const char* __PROC__);
+	int (*setvalue)  (ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int binary,const char* __PROC__);
+	int (*getvchar)  (ClipMachine* cm,RDD_MEMO* rm,int len,unsigned int id,char* buf,const char* __PROC__);
+	int (*setvchar)  (ClipMachine* cm,RDD_MEMO* rm,int len,int oldlen,unsigned int* id,char* buf,const char* __PROC__);
+	int (*getvalue64)(ClipMachine* cm,RDD_MEMO* rm,u8 id,ClipVar* vp,const char* __PROC__);
+	int (*setvalue64)(ClipMachine* cm,RDD_MEMO* rm,u8* id,ClipVar* vp,int binary,const char* __PROC__);
+	int (*getvchar64)(ClipMachine* cm,RDD_MEMO* rm,int len,u8 id,char* buf,const char* __PROC__);
+	int (*setvchar64)(ClipMachine* cm,RDD_MEMO* rm,int len,int oldlen,u8* id,char* buf,const char* __PROC__);
+	int (*info)      (ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int cmd,const char* __PROC__);
 } RDD_MEMO_VTBL;
 
 typedef struct _RDD_PSEUDO_ {
@@ -735,6 +881,7 @@ void rdd_expandmacro(int area,int r,const char* key,char* expr);
 int rdd_calcfilter(ClipMachine* cm,RDD_DATA* rd,int* fok,const char* __PROC__);
 int rdd_checkfilter(ClipMachine* cm,RDD_DATA* rd,int* ok,const char* __PROC__);
 int rdd_childs(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+int rdd_child_duty(ClipMachine* cm,RDD_DATA* child,const char* __PROC__);
 int rdd_checkifnew(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 
 int rdd_event(ClipMachine* cm,int nEvent,int nArea,int nFieldPos,ClipVar* xTrigVal,int* re,const char* __PROC__);
@@ -745,9 +892,12 @@ int _rdd_fieldno(RDD_DATA* rd,long hash);
 
 int _rdd_parsepath(ClipMachine* cm,const char* toopen,const char* suff,char** path,char** name,int oper,const char* __PROC__);
 
-int rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__);
-int rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__);
-int rdd_trunc(ClipMachine* cm,RDD_FILE* file,unsigned int len,const char* __PROC__);
+int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__);
+int _rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__);
+int _rdd_trunc(ClipMachine* cm,RDD_FILE* file,unsigned int len,const char* __PROC__);
+int _rdd_read64(ClipMachine* cm,RDD_FILE* file,u8 pos,int len,void* buf,const char* __PROC__);
+int _rdd_write64(ClipMachine* cm,RDD_FILE* file,u8 pos,int len,void* buf,const char* __PROC__);
+int _rdd_trunc64(ClipMachine* cm,RDD_FILE* file,u8 len,const char* __PROC__);
 
 int rdd_create(ClipMachine* cm,const char* driver,const char* memo_driver,const char* name,ClipVar* stru,const char* __PROC__);
 int rdd_creatememo(ClipMachine* cm,const char* driver,const char* name,const char* __PROC__);
@@ -756,7 +906,7 @@ int rdd_pack(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 int rdd_zap(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 
 int rdd_usearea(ClipMachine* cm,const char* driver,const char* name,int shared,int readonly,int tempo,RDD_DATA** rdp,const char* __PROC__);
-int rdd_setindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX** rip,const char* driver,const char* name,const char* tag,const char* __PROC__);
+int rdd_setindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX** rip,const char* driver,const char* name,const char* tag,int structural,const char* __PROC__);
 int rdd_setmemo(ClipMachine* cm,RDD_DATA* rd,const char* driver,const char* name,const char* __PROC__);
 int rdd_closearea(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 
@@ -801,7 +951,7 @@ int rdd_scopetop(ClipMachine* cm,RDD_DATA* rd,ClipVar* v,const char* __PROC__);
 int rdd_scopebottom(ClipMachine* cm,RDD_DATA* rd,ClipVar* v,const char* __PROC__);
 
 int rdd_createuserfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,unsigned int size,const char* __PROC__);
-int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _block,const char* str,ClipVar* pseudo,const char* __PROC__);
+int rdd_createfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,ClipVar* _block,const char* str,ClipVar* pseudo,int lNoOptimize,const char* __PROC__);
 
 int rdd_clearindex(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 int rdd_destroyfilter(ClipMachine* cm,RDD_FILTER* fp,const char* __PROC__);
@@ -820,7 +970,8 @@ int rdd_dbwrite(ClipMachine* cm,RDD_DATA* rd,ClipVar* ap,const char* __PROC__);
 int rdd_locate(ClipMachine* cm,RDD_DATA* rd,char* cfor,ClipVar* fexpr,ClipVar* wexpr,ClipVar* vnext,ClipVar* vrec,ClipVar* vrest,int* found,const char* __PROC__);
 int rdd_continue(ClipMachine* cm,RDD_DATA* rd,int* found,const char* __PROC__);
 
-int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pattern,int cont,int* found,const char* __PROC__);
+int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pattern,int regular,int cont,int* found,const char* __PROC__);
+int rdd_seekeval(ClipMachine* cm,RDD_DATA* rd,ClipVar* block,int* found,const char* __PROC__);
 
 int rdd_ii_create(ClipMachine* cm,const char* driver,const char* name,const char* __PROC__);
 int rdd_ii_createtag(ClipMachine* cm,int h,const char* tag,const char* expr,const char* __PROC__);
@@ -849,7 +1000,7 @@ void destroy_rdd_memo(RDD_MEMO* rm);
 void destroy_ryo(void*);
 
 int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* remap,int test,const char* __PROC__);
-int rm_yylex(RDD_DATA* rd);
+int rm_yylex(RDD_DATA* rd,int nomove);
 int rm_init(ClipMachine* cm,RDD_DATA* rd,char* str,const char* __PROC__);
 unsigned int* rm_expr(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int bytes,int* optimize,int npseudo,RDD_PSEUDO* pseudo,int test,const char* __PROC__);
 int rm_checkjoin(ClipMachine* cm,RDD_FILTER* f1,RDD_FILTER* f2,const char* __PROC__);
@@ -864,3 +1015,6 @@ int rm_isfiltrec(ClipMachine* cm,RDD_FILTER* fp,unsigned int rec,int* r,const ch
 DbfLocale* dbf_get_locale(ClipMachine* cm);
 
 int _rdd_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
+int rdd_tasklock(ClipMachine* cm,RDD_DATA* rd,int cmd,struct flock* fl);
+int rdd_flushbuffer(ClipMachine* cm, RDD_DATA* rd, const char* __PROC__);
+

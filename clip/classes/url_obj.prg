@@ -107,7 +107,7 @@ static function url_open()
 #endif
 	s= WGET_PRG+" -c -v -s -O "+::fileName+" "
 	s+=::makeUrl(.f.)
-	::__wget:=fopen(s+" |",FO_READ)
+	::__wget:=fopen(s+" |",FO_READ+FO_NOBUFF)
 	if ferror()!=0 .or. ::__wget<0
 		return .f.
 	endif
@@ -215,6 +215,7 @@ static function url_makeUrl(full)
 		else
 			ret+="//"+::host
 		endif
+
 	endif
 	ret+=::path+"/"+::file
 	if full .and. ::params!=NIL
@@ -287,11 +288,12 @@ static function url_parseUrl(sUrl)
 			::host:=substr(sUrl,1,i-1)
 			sUrl:=substr(sUrl,i)
 		else
-			if !empty(sUrl)
-				::host:=sUrl
+			if !empty(sUrl) .and. sUrl!=::file
+				::host:= sUrl
 			endif
 			return .t.
 		endif
+
 	endif
 	i=rat("/",sUrl)
 	if i>2

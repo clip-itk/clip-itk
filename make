@@ -14,6 +14,6 @@ else
 fi
 
 export MAKE
-unset CLIPROOT
+#unset CLIPROOT
 
 $MAKE $*

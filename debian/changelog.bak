@@ -1,0 +1,265 @@
+clip (1.1.10-1) stable; urgency=low
+
+  * new release, some bugs fixed, GTK2 new functions, CODB & COBRA new features.
+
+ -- Uri Khnykin <uri@itk.ru>  Thu,  02 May 2004 01:00:00 +0500
+
+clip (1.1.9-1) stable; urgency=low
+
+  * new release, some bugs fixed, GTK2 new functions, CODB & COBRA new features.
+
+ -- Uri Khnykin <uri@itk.ru>  Thu,  27 Feb 2004 01:00:00 +0500
+
+clip (1.1.8-1) stable; urgency=low
+
+  * new release, many new docs, GTK2 new functions, bugs fixed
+
+ -- Uri Khnykin <uri@itk.ru>  Thu,  02 Feb 2004 21:00:00 +0500
+
+clip (1.1.7-1) stable; urgency=low
+
+  * new release, COBrA initial, GTK2 new functions, bugs fixed
+
+ -- Uri Khnykin <uri@itk.ru>  Thu,  21 Nov 2003 16:00:00 +0500
+
+clip (1.1.6-1) stable; urgency=low
+
+  * new release, GTK2 new functions, bugs fixed
+
+ -- Paul Lasarev <paul@itk.ru>  Thu,  15 Nov 2003 19:00:00 +0500
+
+clip (1.1.5-1) stable; urgency=low
+
+  * new release, GTK2 added
+
+ -- Paul Lasarev <paul@itk.ru>  Thu,  21 Jul 2003 19:00:00 +0500
+
+clip (1.1.0-1) stable; urgency=low
+
+  * new release, CODB first announce
+
+ -- Paul Lasarev <paul@itk.ru>  Thu,  21 Jul 2003 19:00:00 +0500
+
+clip (1.0.7-1) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@itk.ru>  Thu,  3 Jul 2003 12:33:03 +0500
+
+clip (1.0.6-1) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@itk.ru>  Fri, 23 May 2003 18:53:49 +0500
+
+clip (1.0-5) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@sun.itk.ru>  Thu, 12 Apr 2003 17:42:21 +0400
+
+clip (1.0-1) stable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@sun.itk.ru>  Thu, 20 Feb 2003 17:42:21 +0400
+
+clip (0.99-9) prestable; urgency=low
+
+  * subversion
+
+ -- Paul Lasarev <paul@sun.itk.ru>  Fri, 24 Jan 2003 16:09:09 +0400
+
+clip (0.99-8) prestable; urgency=low
+
+  * subversion
+  * about 200 changes !!!!
+
+ -- Paul Lasarev <paul@itk.ru>  Mon,  6 Jan 2003 15:00:00 +0400
+
+clip (0.99-7) prestable; urgency=low
+
+  * subversion
+  * about 360 changes !!!!
+
+ -- Paul Lasarev <paul@itk.ru>  Mon,  1 Dec 2002 11:54:58 +0400
+
+clip (0.99-6) prestable; urgency=low
+
+  * subversion
+  * added detecting of unresolved symbols
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 14 Oct 2002 13:02:57 +0500
+
+clip (0.99-5) prestable; urgency=low
+
+  * subversion
+
+ -- Paul Lasarev <paul@itk.ru>  Sun, 31 Sep 2002 18:23:14 +0400
+
+clip (0.99-4) prestable; urgency=low
+
+  * subversion
+
+ -- Paul Lasarev <paul@itk.ru>  Sun, 30 July 2002 17:45:14 +0400
+
+clip (0.99-3) unstable; urgency=low
+
+  * subversion
+
+ -- Paul Lasarev <paul@itk.ru>  Sun, 26 May 2002 15:35:14 +0500
+
+clip (0.99-2) unstable; urgency=low
+
+  * subversion
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 29 Apr 2002 18:55:12 +0500
+
+clip (0.99-1) unstable; urgency=low
+
+  * repackaging
+
+ -- Paul Lasarev <paul@itk.ru>  Tue, 19 Mar 2002 15:05:44 +0400
+
+clip (0.97-1) unstable; urgency=low
+
+  * initial chinese (Big5) support
+
+ -- Paul Lasarev <paul@itk.ru>  Wed, 16 Jan 2002 19:57:34 +0400
+
+clip (0.96-3) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Wed,  9 Jan 2002 18:29:07 +0400
+
+clip (0.96-1) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Wed, 26 Dec 2001 19:01:03 +0400
+
+clip (0.95-1) unstable; urgency=low
+
+  * new version
+  * mouse support
+
+ -- Paul Lasarev <paul@itk.ru>  Wed, 28 Nov 2001 16:42:35 +0400
+
+clip (0.94-4) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Fri, 23 Nov 2001 10:34:55 +0400
+
+clip (0.94-1) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Wed, 14 Nov 2001 10:23:24 +0400
+
+clip (0.93-2) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Thu,  8 Nov 2001 18:19:13 +0400
+
+clip (0.93-1) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Tue, 23 Oct 2001 16:36:01 +0500
+
+clip (0.92-7) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 22 Oct 2001 13:05:09 +0500
+
+clip (0.92-6) unstable; urgency=low
+
+  * new version
+
+ -- Paul Lasarev <paul@itk.ru>  Fri, 12 Oct 2001 11:21:08 +0500
+
+clip (0.92-5) unstable; urgency=low
+
+  * bugfixes
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 24 Sep 2001 11:03:39 +0500
+
+clip (0.92-4) unstable; urgency=low
+
+  * pre-stable release
+
+ -- Paul Lasarev <paul@itk.ru>  Wed, 19 Sep 2001 18:01:11 +0500
+
+clip (0.92-1) unstable; urgency=low
+
+  * split into runtime and devel packages
+
+ -- Paul Lasarev <paul@itk.ru>  Tue, 28 Aug 2001 11:27:00 +0500
+
+clip (0.91-1) unstable; urgency=low
+
+  * standard shared libs in release
+
+ -- Paul Lasarev <paul@itk.ru>  Tue, 28 Aug 2001 11:27:00 +0500
+
+clip (0.9-1) unstable; urgency=low
+
+  * new release
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 27 Aug 2001 10:44:12 +0500
+
+clip (0.8-1) unstable; urgency=low
+
+  * add cliplibs
+
+ -- Paul Lasarev <paul@itk.ru>  Sat,  9 Jun 2001 15:22:39 +0500
+
+clip (0.7-1) unstable; urgency=low
+
+  * updates
+
+ -- Paul Lasarev <paul@itk.ru>  Tue, 29 May 2001 14:49:33 +0500
+
+clip (0.6-1) unstable; urgency=low
+
+  * updates, add dependence from libc6-dev, make, binutils
+
+ -- Paul Lasarev <paul@itk.ru>  Sat, 12 May 2001 14:50:40 +0500
+
+clip (0.5-1) unstable; urgency=low
+
+  * updates.
+
+ -- Paul Lasarev <paul@itk.ru>  Fri, 11 May 2001 15:41:37 +0500
+
+clip (0.4-1) unstable; urgency=low
+
+  * updates.
+
+ -- Paul Lasarev <paul@itk.ru>  Fri, 27 Apr 2001 11:47:27 +0500
+
+clip (0.3-1) unstable; urgency=low
+
+  * updates.
+
+ -- Paul Lasarev <paul@itk.ru>  Thu, 15 Mar 2001 13:55:54 +0400
+
+clip (0.2-1) unstable; urgency=low
+
+  * updates.
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 26 Feb 2001 17:04:46 +0400
+
+clip (0.1-1) unstable; urgency=low
+
+  * initial revision.
+
+ -- Paul Lasarev <paul@itk.ru>  Mon, 22 Jan 2001 16:19:34 +0400
+
+Local variables:
+mode: debian-changelog
+End:

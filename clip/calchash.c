@@ -1,6 +1,10 @@
 
 /*
    $Log: calchash.c,v $
+   Revision 1.10  2003/07/03 07:15:55  clip
+   fix a lot of warnings
+   paul
+
    Revision 1.9  2001/10/22 07:44:27  clip
    add -d flag to cliphash
    paul
@@ -35,6 +39,8 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 #include "cliphash.h"
 
 int

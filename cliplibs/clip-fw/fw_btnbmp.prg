@@ -119,6 +119,8 @@ static function fw_newBar(self, cResName1, cResName2, cBmpFile1, cBmpFile2, cMsg
 
 	DEFAULT cMsg := "", lAdjust := .f., lPressed := .f., lBorder := .t. //ojo
 
+	DEFAULT oBar := GetWndDefault()
+
 	self:nStyle    = numOr( If( lBorder, WS_BORDER, 0 ), WS_CHILD, WS_VISIBLE )
 	self:l97Look   = !lBorder
 	self:nId       = self:GetNewId()

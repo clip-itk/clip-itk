@@ -9,7 +9,7 @@
 #define DBCOLORS	"0/3,1/3,14/3,14/1,1/3,14/1,0/3,14/1,9/3,14/1"
 //#define DBCOLORS	"0/7,1/7,14/7,14/1,1/7,3/7,0/7,14/1,9/7,14/1"
 #define _BUTTON_	1
-#define _GET_		2
+#define _GETB_		2
 #define _CHECK_		3
 #define _RADIO_		4
 #define _GETTEXT_	5
@@ -181,7 +181,7 @@ return
 ***********
 static function db_killFocus()
 local i
-	if ::item_type == _GET_
+	if ::item_type == _GETB_
 		::item:assign()
 		::item:killFocus()
 		::item:col := ::item_area[2]
@@ -248,7 +248,7 @@ static function db_down()
 return
 ***********
 static function db_left()
-	if ::item_type == _GET_
+	if ::item_type == _GETB_
 		::item:left()
 	elseif ::item_type == _GETTEXT_
 		::item:edit:left()
@@ -263,7 +263,7 @@ static function db_left()
 return
 ***********
 static function db_right()
-	if ::item_type == _GET_
+	if ::item_type == _GETB_
 		::item:right()
 	elseif ::item_type == _GETTEXT_
 		::item:edit:right()
@@ -321,7 +321,7 @@ return
 ***********
 static function db_home()
 local homepos:=1
-  if ::item_type == _GET_
+  if ::item_type == _GETB_
 	::item:home()
 	return
   elseif ::item_type == _GETTEXT_
@@ -345,7 +345,7 @@ return
 static function db_end()
 local len:=0
 
-  if ::item_type == _GET_
+  if ::item_type == _GETB_
 	::item:end()
 	return
   elseif ::item_type == _GETTEXT_
@@ -434,7 +434,7 @@ return
 
 ***********
 static function db_delete()
-	if ::item_type == _GET_ .or. _GETTEXT_
+	if ::item_type == _GETB_ .or. _GETTEXT_
 		::item:delete()
 	endif
 return
@@ -442,7 +442,7 @@ return
 static function db_insert(hKey)
 	if hKey == K_SPACE .and. ::item_type == _CHECK_
 		::item:Control:select(!::item:Control:buffer)
-	elseif ( ::item_type == _GET_  .or. ::item_type == _GETTEXT_ ).and. hKey>=32 .and. hKey<=256
+	elseif ( ::item_type == _GETB_  .or. ::item_type == _GETTEXT_ ).and. hKey>=32 .and. hKey<=256
 	       if set(_SET_INSERT)
 			::item:Insert(chr(hKey))
 	       else
@@ -453,7 +453,7 @@ return
 
 ***********
 static function db_backspace()
-	if ::item_type == _GET_ .or. ::item_type == _GETTEXT_
+	if ::item_type == _GETB_ .or. ::item_type == _GETTEXT_
 		::item:backspace()
 		return .t.
 	endif
@@ -506,7 +506,7 @@ local dx
 				str:= substr(str, 1, len(str)-(elem:nr-(::pos-::colWin+(::nRight-::nLeft)))+3)
 			endif
 
-			if (bl+i==::line) .and. elem:type == _GET_ .and. between(::pos, elem:nl, elem:nr)
+			if (bl+i==::line) .and. elem:type == _GETB_ .and. between(::pos, elem:nl, elem:nr)
 				if !elem:objit:hasFocus
 					::item:=elem:objit
 					asize(::item_area, 2)
@@ -515,7 +515,7 @@ local dx
 					::item:col := max(elem:nl-::pos+::colWin, ::nLeft)
 					::item:row := ::nTop+i-1
 					::item_num := j
-					::item_type := _GET_
+					::item_type := _GETB_
 					::item:setFocus()
 				endif
 			elseif (bl+i==::line) .and. elem:type == _CHECK_ .and. between(::pos, elem:nl, elem:nr)
@@ -629,7 +629,7 @@ local dx
        next
        //dispend()
        //devpos(::nTop+::rowWin-1,::nLeft+::colWin-1)
-	if ::item_type == _GET_
+	if ::item_type == _GETB_
 		::colWin := ::item:col+min(::item:pos, ::item:__winLen) - 1
 		::pos := ::item_area[2]+min(::item:pos, ::item:__winLen) -1
 	elseif ::item_type == _GETTEXT_
@@ -811,7 +811,7 @@ local i, len, m
 		name := iif(name==NIL, "", name)
 	else
 		nt := iif(nt==NIL, ::lines+1, nt)
-		nl := iif(nl==NIL, ::marginLeft, nl)
+		nl := iif(nl==NIL, ::n_Pos, nl)
 		nb := iif(nb==NIL, nt, nb)
 		nr := iif(nr==NIL, nl+len(txt)+1, nr)
 		color := iif(color==NIL .or. empty(color), ::__colors[3]+","+::__colors[4], color)
@@ -849,7 +849,7 @@ local nt,nl,nb,nr
 	color := iif(color==NIL .or. empty(color), ::__colors[5], color)
 	length := iif(length==NIL, len(var), length)
 	nt := iif(row==NIL, ::lines+1, row)
-	nl := iif(col==NIL, ::marginLeft, col)
+	nl := iif(col==NIL, ::n_pos, col)
 	nb := nt
 	nr := nl+length
 	name := iif(name==NIL, "", name)
@@ -1269,11 +1269,12 @@ local keys:=HK_get("dialog"),kn
 *************
 static function db_getStrElem(self, elem, line)
 local str, ielem
-	if "objit"$elem
-		ielem := elem:objit
+	if "OBJIT"$elem
+		ielem := elem:OBJIT
 	endif
+
 	do case
-	case elem:type == _GET_
+	case elem:type == _GETB_
 		str := substr(ielem:buffer, 1, ielem:__winLen)
 	case elem:type == _CHECK_
 		str := "["+substr(ielem:Control:style, iif(ielem:Control:buffer, 2, 3),1)+"]"
@@ -1289,12 +1290,12 @@ return str
 *************
 static function db_getString(self, elem, line)
 local str, i, ielem
-	if ("objit"$elem)
+	if ("OBJIT"$elem)
 		ielem := elem:objit
 	endif
 
 	do case
-	case elem:type == _GET_
+	case elem:type == _GETB_
 		str := ielem:buffer
 	case elem:type == _CHECK_
 		str := "["+substr(ielem:Control:style, iif(ielem:Control:buffer, 2, 3),1)+"]"
@@ -1326,6 +1327,6 @@ local elem
 		return .f.
 	endif
 	elem:objit:varPut(value)
-	elem:objit:assign()
+	//elem:objit:assign()
 	::refresh()
 return

@@ -65,10 +65,11 @@ STATIC PROCEDURE MyBrowse(nTop, nLeft, nBottom, nRight)
 	DO WHILE ! browse:stable //.and. nextKey() == 0
 	    browse:stabilize()
 	ENDDO
-        while dispcount()>0
-        	dispend()
-        enddo
+	while dispcount()>0
+		dispend()
+	enddo
 	dispOutAt(ntop-1, nright-40, MSG_RECORDS+padr(alltrim(str(recno()))+"/"+alltrim(str(lastrec())),20) )
+	//dispOutAt( ntop, nright-40, iif(deleted(),[Deleted],[Actived]) )
 	IF browse:stable
 
 	    IF browse:hitBottom .AND. .NOT. IS_APPEND_MODE(browse)
@@ -80,20 +81,20 @@ STATIC PROCEDURE MyBrowse(nTop, nLeft, nBottom, nRight)
 		    dispOutAt( ntop-1, nright-10, iif(bof(),strMsg1,strMsg2) )
 		    TONE(125, 0)
 		else
-                	if !IS_APPEND_MODE(browse)
-		    		dispOutAt( ntop-1, nright-10, space(max(len(strMsg1),len(strMsg2))) )
-                        endif
+			if !IS_APPEND_MODE(browse)
+				dispOutAt( ntop-1, nright-10, space(max(len(strMsg1),len(strMsg2))) )
+			endif
 		ENDIF
 	    ENDIF
-            if nkey==0
-	    	browse:refreshCurrent()
-	    	browse:ForceStable()
-	    	nKey := InKey(0)
-	    	if setkey(nKey)!=NIL
-		    	eval(setkey(nKey),procname(),procline(),readvar())
-        	    	loop
-	    	endif
-            endif
+	    if nkey==0
+		browse:refreshCurrent()
+		browse:ForceStable()
+		nKey := InKey(0)
+		if setkey(nKey)!=NIL
+			eval(setkey(nKey),procname(),procline(),readvar())
+			loop
+		endif
+	    endif
 	ENDIF
 
 	IF nKey == K_ESC
@@ -138,6 +139,8 @@ RETURN i
 STATIC PROCEDURE ApplyKey(browse, nKey)
 	local bBlock
     DO CASE
+    CASE nKey == K_F8
+	iif(deleted(),dbrecall(),dbdelete())
     CASE nKey == K_CTRL_PGDN
 	browse:goBottom()
 	TURN_OFF_APPEND_MODE(browse)
@@ -160,14 +163,14 @@ STATIC PROCEDURE ApplyKey(browse, nKey)
 	DoGet(browse)
     OTHERWISE
 	bBlock := browse:setkey(nkey)
-        if bBlock != NIL
-        	eval(bBlock, browse, nkey)
-        else
-    		if nKey >=32 .and. nKey < 1000
+	if bBlock != NIL
+		eval(bBlock, browse, nkey)
+	else
+		if nKey >=32 .and. nKey < 1000
 			KEYBOARD CHR(nKey)
 			DoGet(browse)
-        	endif
-        endif
+		endif
+	endif
     ENDCASE
 RETURN
 
@@ -242,14 +245,14 @@ STATIC PROCEDURE FancyColors(browse)
 	xValue := EVAL(column:block)
 
 	column:defColor := {1, 2}
-        /*
+	/*
 	IF VALTYPE(xValue) != "N"
 	    column:defColor := {1, 2}
 	ELSE
 	    column:colorBlock := {|x| if( x < 0, {7, 8}, {5, 6} )}
 	    column:defColor := {7, 8}
 	ENDIF
-        */
+	*/
     NEXT
 RETURN
 

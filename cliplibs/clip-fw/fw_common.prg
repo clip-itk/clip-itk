@@ -59,6 +59,9 @@ function GetWinDir()
 local cPath
 	cPath := set("C:")
 return cPath
+******************
+function GetFWDriver()
+return eval(Selector:GetFwDriver)
 *************
 function WinExec(cAppl)
 return eval(Selector:WinExec, cAppl)
@@ -92,3 +95,17 @@ return eval(Selector:LineTo, hDC, nRow, nCol)
 **************
 function MoveTo(hDC, nRow, nCol)
 return eval(Selector:MoveTo, hDC, nRow, nCol)
+*****************************
+function lAnd()
+return
+*****************************
+function nAnd()
+return
+*****************************
+function oRead (cStr)
+local obj
+	&(cStr)
+return obj
+*****************************
+function oSend()
+return

@@ -8,6 +8,7 @@
 #include "lang.ch"
 #include "getexit.ch"
 #include "date.ch"
+#include "button.ch"
 #include "config.ch"
 
 function TEXTGETNEW(row,col,bottom,right,block,varname,color,var,vblock,wblock)
@@ -23,8 +24,8 @@ function TEXTGETNEW(row,col,bottom,right,block,varname,color,var,vblock,wblock)
   obj:clear	:=.f.
   obj:col	:=col
   obj:row	:=row
-  obj:bottom	:=bottom
-  obj:right	:=right
+  obj:nbottom	:=bottom
+  obj:nright	:=right
   obj:colorSpec	:=iif(color==NIL,setcolor(),color)
   obj:decpos	:=0
   obj:exitState	:=GE_NOEXIT
@@ -43,6 +44,7 @@ function TEXTGETNEW(row,col,bottom,right,block,varname,color,var,vblock,wblock)
   obj:capRow	:=NIL
   obj:capCol	:=NIL
   obj:typeOut	:=.f.
+  obj:control	:= NIL
 
   obj:__colors	:={}
 
@@ -53,6 +55,11 @@ function TEXTGETNEW(row,col,bottom,right,block,varname,color,var,vblock,wblock)
   obj:__firstKey:=.f.   // pressed first key/metod
 
   obj:edit:=textEditNew(row, col, bottom, Right, obj:colorSpec)
+  obj:col	:=@ obj:edit:nLeft
+  obj:row	:=@ obj:edit:nTop
+  obj:pos	:=@ obj:edit:pos
+  //obj:control	:=@ obj:edit
+
   obj:setFocus()
   obj:killFocus()
 
@@ -85,7 +92,7 @@ function _recover_textget(obj)
   obj:delLeft	:= @backSpace()
   obj:delRight	:= @delRight()
   obj:delete	:= @delRight()
-  obj:delEnd       := @delEnd()
+  obj:delEnd    := @delEnd()
   obj:delWordLeft  := @delWordLeft()
   obj:delWordRight := @delWordRight()
 
@@ -96,12 +103,22 @@ function _recover_textget(obj)
   obj:pgUp	:= @cur_pgUp()
   obj:pgDn	:= @cur_pgDn()
   obj:overStrike:= @overStrike()
+  obj:hitTest 	:= @edit_hitTest()
   obj:__setColor:= @__setcolor()
 return obj
 
 **********************************************
 static function badDate()
 return .f.
+**********************************************
+static function edit_hitTest(mrow,mcol)
+	if mrow < ::row .or. mrow > ::nBottom
+		return HTNOWHERE
+	endif
+	if mcol < ::col .or. mcol > ::nRight
+		return HTNOWHERE
+	endif
+return HTCLIENT
 
 **********************************************
 static func assign()

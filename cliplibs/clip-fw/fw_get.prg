@@ -10,6 +10,7 @@
 #include <fwin/FiveWin.ch>
 #include <fwin/Constant.ch>
 #include <Set.ch>
+#include <Inkey.ch>
 
 #define ES_PASSWORD         32   // 0x020
 #define GWL_STYLE          -16
@@ -33,7 +34,7 @@
 static Selector := GetSelector()
 
 function TGet()
-local obj:=TControl()
+local obj:=Inherit(TControl())
 
 	obj:classname	:= "FWIN_TGET"
 	obj:oGet	:= NIL
@@ -62,6 +63,7 @@ function _recover_FWIN_TGET(obj)
 	//obj:destroy	:= @fw_Destroy()
 	obj:cGenPrg	:= @fw_cGenPrg()
 	obj:getDlgCode	:= @fw_GetDlgCode()
+	obj:getText	:= @fw_GetText()
 	obj:gotFocus	:= @fw_GotFocus()
 	obj:initiate	:= @fw_Initiate()
 	obj:keyDown	:= @fw_KeyDown()
@@ -121,7 +123,7 @@ local cText := Space( 50 )
 		lReadOnly := .f., lPassword := .f.,;
 		lSpinner  := .f.,;
 		nRow      := 0, nCol := 0, lNoBorder := .f.,;
-		bSGet   := bSETGET( cText )
+		bSGet   := BSETGET( cText )
 
 	self:cCaption = If( cPict == nil, ToString( Eval( bSGet ) ), ;
 			Transform( Eval( bSGet ), cPict ) )
@@ -130,7 +132,7 @@ local cText := Space( 50 )
 		nHeight := Min( 15, nHeight )
 	endif
 
-	self:oGet      = GetNew( ,, bSGet,, cPict )
+	self:oGet      = GetNew( ,, bSGet,, cPict,,, bValid, bWhen )
 	self:cPicture  = cPict
 	self:oGet:_display := @fw_DispText()
 	self:nTop     = nRow * If( lPixel, 1, GET_CHARPIX_H )	 //13
@@ -261,13 +263,13 @@ local hHeap
 		self:hWnd = eval(Selector:MGetCreate, self, self:cCaption, self:nStyle, ;
 			   self:nLeft, self:nTop, self:nWidth, ;
 			   self:nHeight, ;
-			   If( self:oWnd != nil, self:oWnd:oClient, nil ), ;
+			   self:oWnd/*If( self:oWnd != nil, self:oWnd:oClient, nil )*/, ;
 			   self:nId, @hHeap )
 
 	else
 		self:hWnd = eval(Selector:MGetCreate, self, self:cCaption, self:nStyle, ;
 			   self:nLeft, self:nTop, self:nRight, self:nBottom, ;
-			   If( self:oWnd != nil, self:oWnd:oClient, nil ), ;
+			   self:oWnd/*If( self:oWnd != nil, self:oWnd:oClient, nil )*/, ;
 			   self:nId, @hHeap )
 	endif
 
@@ -286,9 +288,11 @@ return
 static function fw_GetDlgCode( self, nLastKey )
 
    // Needed to do non-modal editing on a browse
+   /*
       if Len( self:oWnd:aControls ) == 1 .and. self:oWnd:ChildLevel( TWBrowse() ) != 0
 	 return DLGC_WANTALLKEYS
       endif
+   */
 
 return self:Super:GetDlgCode( nLastKey )
 *****************
@@ -297,7 +301,7 @@ static function fw_Initiate( self, hDlg )
 	self:Super:Initiate( hDlg )
 	self:oGet:SetFocus()
 
-	if lAnd( GetWindowLong( self:hWnd, GWL_STYLE ), ES_PASSWORD )
+	if lAnd( eval(Selector:GetWindowLong, self:hWnd, GWL_STYLE ), ES_PASSWORD )
 		self:lPassword = .t.
 	endif
 
@@ -333,7 +337,7 @@ static function fw_cText( self, uVal )
 		self:Refresh()
 	endif
 
-return eval(Selector:GetWindowText, self:hWnd )
+return //eval(Selector:GetWindowText, self:hWnd )
 ******************
 static function fw_GetSel(self)
 local nStart
@@ -472,8 +476,8 @@ static function fw_KeyDown( self, nKey, nFlags )
 	   endif
 	   return 0
 					  // Many thanks to HMP
-      case nKey == VK_INSERT .and. ! GetKeyState( VK_SHIFT ) ;
-	   .and. ! GetKeyState( VK_CONTROL )   // to copy to the clipboard
+      case nKey == VK_INSERT .and. ! eval(Selector:GetKeyState, VK_SHIFT ) ;
+	   .and. ! eval(Selector:GetKeyState, VK_CONTROL )   // to copy to the clipboard
 
 	   Set( _SET_INSERT, ! Set( _SET_INSERT ) )
 	   eval(Selector:DestroyCaret)
@@ -487,9 +491,9 @@ static function fw_KeyDown( self, nKey, nFlags )
 
       // EMW - Add a case to make sure Cut/Paste accelerators
       // recognize self:lReadOnly and self:bChange
-      case ( nKey == VK_INSERT .and. GetKeyState( VK_SHIFT ) ) .or. ;
-	   ( nKey == ASC("V") .and. GetKeyState( VK_CONTROL ) ) .or. ;
-	   ( nKey == ASC('X') .and. GetKeyState( VK_CONTROL ) )
+      case ( nKey == VK_INSERT .and. eval(Selector:GetKeyState, VK_SHIFT ) ) .or. ;
+	   ( nKey == ASC("V") .and. eval(Selector:GetKeyState, VK_CONTROL ) ) .or. ;
+	   ( nKey == ASC('X') .and. eval(Selector:GetKeyState, VK_CONTROL ) )
 	  if self:lReadOnly
 	     return 0
 	  endif
@@ -562,9 +566,20 @@ local nDefButton
 local nKey
 local nState, nFlags
 
-	if Event:event != GTK_KEY_PRESS
+	if !eval(Selector:KeyboardEvent, Event:event) //.and. Event:event != GTK_LEAVE_NOTIFY .and. Event:event != GTK_FOCUS_OUT_EVENT
 		return .f.
 	endif
+
+/*
+	if Event:event == GTK_FOCUS_OUT_EVENT .or. Event:event == GTK_LEAVE_NOTIFY
+                	quout('leave')
+                        qout()
+		if self:LostFocus()
+                	return .f.
+		endif
+		return .t.
+	endif
+*/
 
 	nKey := Event:keyval
 	nState := Event:state
@@ -588,27 +603,22 @@ local nState, nFlags
 		return .f.
 
 	case nKey == VK_TAB .and. nState == VK_SHIFT
-		if self:bChange != nil
-			lAccept = Eval( self:bChange, nKey, nFlags, Self )
-			if ValType( lAccept ) == "L" .and. lAccept
-				self:oWnd:GoPrevCtrl( self:hWnd )
-			endif
-		else
-			self:oWnd:GoPrevCtrl( self:hWnd )
+		if self:LostFocus()
+                	return .f.
 		endif
 		return .t.
 
 	case nKey == VK_TAB .or. nKey == VK_RETURN
-		if self:bChange != nil
-			lAccept = Eval( self:bChange, nKey, nFlags, Self )
-			if ValType( lAccept ) == "L" .and. lAccept
-				self:oWnd:GoNextCtrl( self:hWnd )
-			endif
-		else
-			self:oWnd:GoNextCtrl( self:hWnd )
+		if self:LostFocus()
+                	return .f.
 		endif
 		return .t.
 
+	case nKey == K_DOWN .or. nkey == K_UP
+		if self:LostFocus()
+                	return .f.
+		endif
+		return .t.
 	case nKey >= 32 .and. nKey < 256
 
 		nLo := nHi := 0
@@ -664,7 +674,7 @@ return .f.
 static function fw_lValid(self)
 local lRet := .t.
 
-	if self:oGet:BadDate
+	if self:oGet:BadDate()
 		Tone( 100, 3 )
 		return .f.
 	else
@@ -676,28 +686,35 @@ local lRet := .t.
 return lRet
 **************
 static function fw_LostFocus( self, hCtlFocus )
-
-	self:Super:LostFocus( hCtlFocus )
-
-	self:oGet:SetFocus()
-
-	if ! self:oGet:BadDate .and. ! self:lReadOnly .and. ;
+local lEnd, cTemp
+	if ! self:oGet:BadDate() .and. ! self:lReadOnly .and. ;
 		( self:oGet:changed .or. self:oGet:unTransform() <> self:oGet:original )
 		self:oGet:Assign()     // for adjust numbers
 		self:oGet:UpdateBuffer()
 	endif
+   	cTemp = self:VarGet()
 
-	self:DispText()
+   	do case
+      		case ValType( cTemp ) == "C"
+	   		Eval( self:bSetGet, self:GetText() )
 
-	if ! self:oGet:BadDate
-		self:oGet:KillFocus()
+      		case ValType( cTemp ) == "N"
+	   		Eval( self: bSetGet, Val( self:GetText() ) )
+
+      		case ValType( cTemp ) == "D"
+	   		Eval( self:bSetGet, CToD( self:GetText() ) )
+   	endcase
+	//lEnd := self:lValid()
+	lEnd := .T.
+	if !empty(self:oGet:postBlock)
+		lEnd := eval( self:oGet:postBlock )
+        endif
+	if lEnd
+	    	self:oGet:KillFocus()
 	else
-		self:oGet:Pos = 1
-		self:nPos = 1
-		self:oGet:TypeOut = .f.
+        	MsgBeep()
 	endif
-
-return
+return lEnd
 ***************
 static function fw_Paste( self, cText )
 
@@ -774,26 +791,15 @@ return
 ****************
 static function fw_GotFocus(self)
 
-   if ! self:lDrag
-      self:oGet:KillFocus()   // to properly initialize internal status
-      self:oGet:SetFocus()
-      self:DispText()
-      self:oGet:Pos = self:nPos
-      self:SetPos( self:nPos )
-      eval(Selector:CallWindowProc, self:nOldProc, self:hWnd, WM_SETFOCUS )
+local lRet:=.t.
 
-      if Set( _SET_INSERT )
-	 eval(Selector:DestroyCaret)
-	 eval(Selector:CreateCaret, self:hWnd, 0, 6, self:nGetChrHeight() )
-	 eval(Selector:ShowCaret, self:hWnd )
-      endif
-   else
-      eval(Selector:HideCaret, self:hWnd )
-   endif
+	if !empty(self:bWhen)
+		lRet := eval(self:oGet:preBlock)
+		self:oGet:Assign()     // for adjust numbers
+		self:oGet:UpdateBuffer()
+        endif
 
-   self:Super:GotFocus()
-
-return 0
+return lRet
 ****************
 static function fw_LButtonDown( self, nRow, nCol, nFlags )
 
@@ -802,7 +808,7 @@ static function fw_LButtonDown( self, nRow, nCol, nFlags )
    else
       eval(Selector:CallWindowProc, self:nOldProc, self:hWnd, WM_LBUTTONDOWN, nFlags,;
 		      nMakeLong( nCol, nRow ) )
-      self:nPos = GetCaretPos()[ 1 ]
+      //self:nPos = GetCaretPos()[ 1 ]
       return 1
    endif
 
@@ -829,7 +835,7 @@ static function fw_LButtonUp( self, nRow, nCol, nFlags )
 	 self:SetPos( self:nPos )
       else
 	 self:GetSelPos( @nLo, @nHi )
-	 self:oGet:pos = If( self:nPos <= GetCaretPos()[ 1 ], nHi, nLo ) + 1
+	 //self:oGet:pos = If( self:nPos <= GetCaretPos()[ 1 ], nHi, nLo ) + 1
 	 self:nPos = self:oGet:pos
       endif
    endif
@@ -860,7 +866,7 @@ static function fw_RButtonDown( self, nRow, nCol, nFlags )
 
    self:GetSelPos( @nLo, @nHi )
 
-   if GetFocus() != self:hWnd
+   if eval(Selector:GetFocus) != self:hWnd
       self:SetFocus()
       eval(Selector:SysRefresh)                  // In case there is a VALID somewhere
       if eval(Selector:GetFocus) != self:hWnd
@@ -983,7 +989,7 @@ static function fw_Cut(self)
 	   Eval( self:bSetGet, self:GetText() )
 
       case ValType( cTemp ) == "N"
-	   Eval( self:bSetGet, Val( self:GetText() ) )
+	   Eval( self: bSetGet, Val( self:GetText() ) )
 
       case ValType( cTemp ) == "D"
 	   Eval( self:bSetGet, CToD( self:GetText() ) )
@@ -1062,9 +1068,9 @@ static function fw_Spinner( self, bUp, bDown, bMin, bMax )
    DEFAULT bUp   := {|| Self++ } ,;
 	   bDown := {|| Self-- }
 
-   self:oVScroll:bGoUp   := {|| If( GetFocus() != self:hWnd, self:SetFocus(), ),;
+   self:oVScroll:bGoUp   := {|| If( eval(Selector:GetFocus) != self:hWnd, self:SetFocus(), ),;
 			     Eval( bUp ) }
-   self:oVScroll:bGoDown := {|| If( GetFocus() != self:hWnd, self:SetFocus(), ),;
+   self:oVScroll:bGoDown := {|| If( eval(Selector:GetFocus) != self:hWnd, self:SetFocus(), ),;
 			     Eval( bDown ) }
 
 return
@@ -1103,4 +1109,20 @@ static function fw_UnDo(self)
 return
 **************
 static function fw_Value(self)
-return self:VarGet()
+local cTemp
+   	cTemp := self:VarGet()
+   	do case
+      		case ValType( cTemp ) == "C"
+	   		Eval( self:bSetGet, self:GetText() )
+
+      		case ValType( cTemp ) == "N"
+	   		Eval( self: bSetGet, Val( self:GetText() ) )
+
+      		case ValType( cTemp ) == "D"
+	   		Eval( self:bSetGet, CToD( self:GetText() ) )
+   	endcase
+return cTemp
+*************
+static function fw_GetText(self)
+
+return eval(Selector:GetText, self)

@@ -1,12 +1,12 @@
 #  GNU make makefile
 #
-
-ifdef CLIPROOT
-	CLIP	= $(CLIPROOT)/bin/clip
-	include $(CLIPROOT)/include/Makefile.inc
-else
-	CLIP = clip
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
+
+include $(CLIPROOT)/include/Makefile.inc
+
+CLIP	= $(CLIPROOT)/bin/clip
 CLIPFLAGS = -l -n -w
 CLIPLIBS  =
 OBJS  = richtext.o
@@ -25,20 +25,20 @@ $(RTFLIB): $(OBJS)
 	$(CLIPROOT)/bin/clip_makeslib $(RTFLIB) $(RTLIB)
 
 clean:
-	rm -f *.exe *.c *.o *.po *.log *.bak *.a *.so *.ex *.nm
+	rm -f *.exe *.c *.s *.o *.po *.log *.bak *.a *.so *.ex *.nm
 	cd test && $(MAKE) clean
 
 install: $(RTFLIB)
-	$(CLIPROOT)/bin/clip_cp $(RTLIB) $(CLIPROOT)/lib
-	$(CLIPROOT)/bin/clip_cp $(RTFLIB) $(CLIPROOT)/lib
-	chmod 0755 $(CLIPROOT)/lib/$(RTFLIB)
+	$(CLIPROOT)/bin/clip_cp $(RTLIB) $(DESTDIR)$(CLIPROOT)/lib
+	$(CLIPROOT)/bin/clip_cp $(RTFLIB) $(DESTDIR)$(CLIPROOT)/lib
+	chmod 0755 $(DESTDIR)$(CLIPROOT)/lib/$(RTFLIB)
 	#[ "$(RTFLIBREAL)" = "$(RTFLIB)" ] || cp $(RTFLIBREAL) $(CLIPROOT)/lib
-	cp ./richtext.ch $(CLIPROOT)/include
-	cp ./objects.ch $(CLIPROOT)/include
+	cp ./richtext.ch $(DESTDIR)$(CLIPROOT)/include
+	cp ./objects.ch $(DESTDIR)$(CLIPROOT)/include
 
-	mkdir -p $(CLIPROOT)/doc/example/clip-rtf
-	cp -R test/Makefile test/*.prg $(CLIPROOT)/doc/example/clip-rtf/
-	cp -R test/*.dbf test/*.dbt $(CLIPROOT)/doc/example/clip-rtf/
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-rtf
+	cp -R test/Makefile test/*.prg $(DESTDIR)$(CLIPROOT)/doc/example/clip-rtf/
+	cp -R test/*.dbf test/*.dbt $(DESTDIR)$(CLIPROOT)/doc/example/clip-rtf/
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) $<

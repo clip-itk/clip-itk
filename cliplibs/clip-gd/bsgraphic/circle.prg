@@ -87,7 +87,7 @@ static function bg_drawImage()
 local cx, cy, diametr1, diametr2, volume, radius1, radius2, i, k, av, cntColor
 local angle:={}, begang, endang:=270, ug, pice:={}
 local right:={}, left:={}, top:={}, bottom:={}
-local x, y, sx, sy, s, v, len, l, summa:=0
+local x, y, sx, sy, s, v, len, l, summa:=0, kl
 	if !::__isData
 		return .f.
 	endif
@@ -116,7 +116,8 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 		av := abs(::arr[i])
 		aadd(pice, 100*av/summa)                 // доля в общем котле
 		begang := endang
-		endang := mod(endang+int(360*av/summa), 360)
+		//endang := mod(endang+int(360*av/summa), 360)
+		endang := mod(endang+360*av/summa, 360)
 		if (i==len)
 			endang := 270
 		endif
@@ -141,15 +142,28 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 		endif
 	next
 
+	if len == 1
+		left := {}
+		right := {{1, 0}}
+		top := {}
+		bottom := {}
+		angle := {{0, 360}}
+	endif
+
 	for k=1 to len(angle)
+		if len == 1
+			exit
+		endif
 		v := angle[k]
+		kl := iif(k<=10, k, &(right(alltrim(str(k)),1)))
+		kl := iif(kl==0, 10, kl)
 		if ((v[2]>270 .and. v[2]<360) .or. v[2]<90)
 			if (volume>0)
 				for i=1 to volume-1
-					::image:filledSector(cx, cy+i, diametr1, diametr2, v[1], v[2], ::legendColor[k+cntColor])
+					::image:filledSector(cx, cy+i, diametr1, diametr2, v[1], v[2], ::legendColor[kl+cntColor])
 				next
 			endif
-			::image:filledSector(cx, cy, diametr1, diametr2, v[1], v[2], ::legendColor[k])
+			::image:filledSector(cx, cy, diametr1, diametr2, v[1], v[2], ::legendColor[kl])
 			::image:sector(cx, cy, diametr1, diametr2, v[1], v[2], ::scaleColor)
 		else
 			exit
@@ -157,13 +171,15 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 	next
 
 	for kk=len(angle) to k step -1
+		kl := iif(kk<=10, kk, &(right(alltrim(str(kk)),1)))
+		kl := iif(kl==0, 10, kl)
 		if (volume>0)
 			for i=1 to volume-1
-				::image:filledSector(cx, cy+i, diametr1, diametr2, angle[kk][1], angle[kk][2], ::legendColor[kk+cntColor])
+				::image:filledSector(cx, cy+i, diametr1, diametr2, angle[kk][1], angle[kk][2], ::legendColor[kl+cntColor])
 			next
 		endif
 
-		::image:filledSector(cx, cy, diametr1, diametr2, angle[kk][1], angle[kk][2], ::legendColor[kk])
+		::image:filledSector(cx, cy, diametr1, diametr2, angle[kk][1], angle[kk][2], ::legendColor[kl])
 		::image:sector(cx, cy, diametr1, diametr2, angle[kk][1], angle[kk][2], ::scaleColor)
 	next
 
@@ -177,12 +193,17 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 	for v in right
 		ug := v[2]
 		radian := (pi()*ug)/180
-		x := int(cos(radian)*radius1_5)+cx
-		y := int(sin(radian)*radius2_5)+cy
+		//x := int(cos(radian)*radius1_5)+cx
+		//y := int(sin(radian)*radius2_5)+cy
+		x := cos(radian)*radius1_5+cx
+		y := sin(radian)*radius2_5+cy
 		::image:line(sx, sy, x, y, ::scaleColor)
 		::image:line(sx, sy, sx+l, sy, ::scaleColor)
 		a := {{sx, sy-1}, {sx, sy-1-8}, {sx+6, sy-1-8}, {sx+6, sy-1}}
-		::image:filledPolygon(a, ::legendColor[v[1]])
+		kl := iif(v[1]<=10, v[1], &(right(alltrim(str(v[1])),1)))
+		kl := iif(kl==0, 10, kl)
+
+		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
 		if ::isPice     // доля
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
@@ -197,12 +218,16 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 	for v in left
 		ug := v[2]
 		radian := (pi()*ug)/180
-		x := int(cos(radian)*radius1_5)+cx
-		y := int(sin(radian)*radius2_5)+cy
+		kl := iif(v[1]<=10, v[1], &(right(alltrim(str(v[1])),1)))
+		kl := iif(kl==0, 10, kl)
+		x := cos(radian)*radius1_5+cx
+		y := sin(radian)*radius2_5+cy
+		//x := int(cos(radian)*radius1_5)+cx
+		//y := int(sin(radian)*radius2_5)+cy
 		::image:line(sx, sy, x, y, ::scaleColor)
 		::image:line(sx-l, sy, sx, sy, ::scaleColor)
 		a := {{sx-l, sy-1}, {sx-l, sy-1-8}, {sx-l+6, sy-1-8}, {sx-l+6, sy-1}}
-		::image:filledPolygon(a, ::legendColor[v[1]])
+		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
 		if ::isPice     // доля
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx-l+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
@@ -218,12 +243,16 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 	for v in top
 		ug := v[2]
 		radian := (pi()*ug)/180
-		x := int(cos(radian)*radius1_5)+cx
-		y := int(sin(radian)*radius2_5)+cy
+		x := cos(radian)*radius1_5+cx
+		y := sin(radian)*radius2_5+cy
+		//x := int(cos(radian)*radius1_5)+cx
+		//y := int(sin(radian)*radius2_5)+cy
 		::image:line(sx, sy, x, y, ::scaleColor)
 		::image:line(sx, sy, sx+l, sy, ::scaleColor)
 		a := {{sx, sy-1}, {sx, sy-1-8}, {sx+6, sy-1-8}, {sx+6, sy-1}}
-		::image:filledPolygon(a, ::legendColor[v[1]])
+		kl := iif(v[1]<=10, v[1], &(right(alltrim(str(v[1])),1)))
+		kl := iif(kl==0, 10, kl)
+		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
 		if ::isPice     // доля
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
@@ -239,12 +268,16 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 	for v in bottom
 		ug := v[2]
 		radian := (pi()*ug)/180
-		x := int(cos(radian)*radius1_5)+cx
-		y := int(sin(radian)*radius2_5)+cy
+		x := cos(radian)*radius1_5+cx
+		y := sin(radian)*radius2_5+cy
+		//x := int(cos(radian)*radius1_5)+cx
+		//y := int(sin(radian)*radius2_5)+cy
 		::image:line(sx, sy, x, y, ::scaleColor)
 		::image:line(sx, sy, sx+l, sy, ::scaleColor)
 		a := {{sx, sy+1}, {sx, sy+1+8}, {sx+6, sy+1+8}, {sx+6, sy+1}}
-		::image:filledPolygon(a, ::legendColor[v[1]])
+		kl := iif(v[1]<=10, v[1], &(right(alltrim(str(v[1])),1)))
+		kl := iif(kl==0, 10, kl)
+		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
 		if ::isPice     // доля
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx+8, sy+1+::font_scale_width, ::font_scale, 0, ::scaleColor)
@@ -264,7 +297,8 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 			str := ZSTR(::valAverage)
 		endif
 		begang := 90
-		endang := mod(begang+int(360*abs(::valAverage)/summa), 360)
+		//endang := mod(begang+int(360*abs(::valAverage)/summa), 360)
+		endang := mod(begang+360*abs(::valAverage)/summa, 360)
 		d := (endang-begang)/2
 		begang -= d
 		endang -= d

@@ -1,15 +1,1392 @@
-clear screen                                                                    
-while .t.                                                                       
+#define BUG162
+
+#ifdef BUG165
+
+while .t.
+	k:=inkey(10)
+        ? k
+        if (chr(k)=='q')
+        	quit
+        end
+end
+
+#endif
+
+
+#ifdef BUGu1
+BEGIN SEQU
+	? 'b1'
+    BEGIN SEQU
+        ? 'b2'
+	BREAK
+        ? 'b3'
+    END
+	? 'end2'
+        break
+RECOVER
+	? 'recover1'
+END
+
+?
+#endif
+
+
+#ifdef BUG162
+
+ttt:=.T.
+ttt:=ttt+1      //ошибка
+? ttt
+?
+
+PROC ErrorSys()
+RETURN ErrorBlock({|e| DefError(e)})
+**********
+FUNC DefError(e)
+? 'error ', e
+?
+RETURN 5
+
+
+#endif
+
+#ifdef BUG161
+
+xx:=&('aa:=2*2')
+? xx, aa, VALTYPE(aa)
+xx:=&('aa:=(2=2)')
+? xx, aa, VALTYPE(aa)
+
+/* 1^3 - run-time error*/
+
+xx:=&('aa:=1^3')
+? xx, aa, VALTYPE(aa)
+xx:=&('aa:={|_1| _1^3}')
+? xx, EVAL(aa, 5), VALTYPE(aa)
+?
+return
+
+
+#endif
+
+#ifdef BUG159
+
+m1:={{"fff1","c",10,0}}
+dbcreate("test1",m1)
+m2:={{"fff2","c",10,0}}
+dbcreate("test2",m2)
+use test1 new
+append blank
+replace test1->fff1 with "asdf1"
+use test2 new
+append blank
+replace test2->fff2 with "asdf2"
+
+//b1:={|| local(p1),p1:=@test1->fff1, p1}
+//b2:={|| local(p2),p2:=@test2->fff2, p2}
+
+//b1:={|| local(p1),p1:=@fff1, p1}
+//b2:={|| local(p2),p2:=@fff2, p2}
+
+//p1:=eval(b1)
+//p2:=eval(b2)
+
+p1:=@test1->fff1
+p2:=@test2->fff2
+
+? test1->fff1, p1 //eval(b1)
+? test2->fff2, p2 //eval(b2)
+
+p1:='a1'
+p2:='a2'
+
+? test1->fff1, p1
+? test2->fff2, p2
+?
+return
+
+
+#endif
+
+#ifdef BUG160
+
+clear screen
+? "hello"
+inkey(0)
+save screen to scr
+/* in scan mode - Y have keyboard bugs */
+run("/usr/local/bin/y")
+//inkey(0)
+/* not restored old screen*/
+restore screen from scr
+/* */
+? inkey(0)
+? "hello2"
+?
+return
+
+
+
+#endif
+
+#ifdef BUG155
+
+/*
+memvar E_CW_D
+memvar E_CW_N
+
+E_CW_D:=1
+E_CW_N:=2
+
+SAVE TO 1.mem ALL LIKE E_*
+*/
+
+
+RESTORE FROM 1.mem ADDI
+SAVE TO 2.mem ALL LIKE E_*
+
+?
+
+#endif
+
+#ifdef BUG154
+
+m()
+
+func m()
+//begin sequence
+break 'asdf'
+//end
+
+? 'asdf'
+?
+
+return
+
+
+#endif
+
+#ifdef BUG151
+
+InitDokX("ABC", .T.)
+?
+return nil
+
+FUNCTION InitDokX(cTyp, lNew, aDef, cTrw, nEwi, cExit)
+LOCAL aDok:={}, ii, n, dt, nN:=0, nV:=0, bWhn, bVld, bFld, cInf, xVal, xPod;
+      ,cTmp, lTmp, lKor, nTmp, aSt, lSmVat:=.F., cUw, nNt, lTr:=.F., lPj:=.F.;
+            ,nSmB:=0, nSmN:=0, nSmV:=0, nH, nX:=0, nY:=0, nPos, lRen, cFR
+
+? cTyp, lNew, "XX"
+return nil
+
+
+ASCAN(aDef,{|a|a[1]="DDO"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .T.}
+ASCAN(aDef,{|a|a[1]="DKS"})
+ASCAN(aDef,{|a|a[1]="NKS"})
+AADD(aDok[1],{{|a,x|}})
+bWhn:={|n,o,w,i,j,t| .t.}
+bVld:={|n,o,w,i,j,t| .t.}
+ASCAN(aDef,{|a|a[1]="DDO"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .t.}
+ASCAN(aDef,{|a|a[1]="NDO"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .T.}
+bFld:={|a,x|!EMPTY(x)}
+
+
+ASCAN(aDef,{|a|a[1]="KOR"})
+ASCAN(aDef,{|a|a[1]="GRU"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t,nP,nK| .T.}
+ASCAN(aDef,{|a|a[1]="POJ"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t,nP,nK| .t.}
+ASCAN(aDef,{|a|a[1]="TKS"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t,nP,nK|.t.}
+bFld:={|a,x|.t.}
+ASCAN(aDok[1],{|a|a[1]="I"})
+ASCAN(aDef,{|a|a[1]="KON"})
+ASCAN(aDef,{|a|a[1]="KOK"})
+bWhn:= {|n,o,w,i,j,t| .T.}
+
+bVld:= {|n,o,w,i,j,t,nP,nK| .t.}
+ASCAN(aDef,{|a|a[1]="OZD"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| lNew}
+ASCAN(aDef,{|a|a[1]="UWA"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .T.}
+ASCAN(aDef,{|a|a[1]="DVA"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .t.}
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .T.}
+bFld:={|a,x|.t.}
+ASCAN(aDef,{|a|a[1]="NOV"})
+
+
+AADD(aDok[1],{|a,x|a[1]})
+ASCAN(aSt,{|a|a[2]=-1})
+ASCAN(aDef,{|a|a[1]="1"})
+bWhn:={|n,o,w,i,j,t| .T. }
+ASCAN(aDef,{|a|a[1]="1"})
+bWhn:={|n,o,w,i,j,t| .T. }
+ASCAN(aDef,{|a|a[1]="2"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .T.}
+ASCAN(aDef,{|a|a[1]="BRU"})
+bWhn:={|n,o,w,i,j,t| .T.}
+bVld:={|n,o,w,i,j,t| .T.}
+AADD(aDok[1],{|a,x|cTyp})
+return nil
+
+
+
+#endif
+
+#ifdef BUG149
+
+#xtranslate XYZ => a
+
+XYZ := 1
+
+
+#endif
+
+#ifdef BUG149_0
+
+ do P1 with L_B
+ ? L_B
+
+ P1(L_A)
+
+ ? L_A
+
+ return
+
+
+ //procedu P1(P_A)
+ func P1(P_A)
+
+ P_A=1
+
+ ?
+
+ return
+
+#endif
+
+#ifdef BUG148
+
+ proc main
+
+ local L_A
+ clear screen
+
+ L_A=P2({1})
+ P3(L_A, {2})
+ ? L_A[1, 2, 1]
+
+ P1(L_A)
+ ? L_A[1, 2, 1]
+
+
+
+
+
+ do P1 with L_A
+ ? L_A[1, 2, 1]
+
+ return
+
+
+ procedu P1(P_A)
+
+ P_A=P2({1})
+ ? 'p1:', p_a
+ P3(P_A, {2})
+ ? 'p1.2:', p_a
+
+
+ return
+
+
+ functio P2(P_R)
+
+ return {{P_R}}
+
+
+ functio P3(P_A, P_R)
+ local b
+
+ ? 'p3:', p_a
+ AAdd(P_A[1], NIL)
+ ? 'p3.1:', p_a
+
+ //P_A[1, 2]=AClone(P_A[1, 1])
+ b=AClone(P_A[1, 1])
+ P_A[1, 2]={33}
+ ? 'p3.2:', p_a[1,2]
+ P_A[1, 2, 1]=P_R[1]
+
+ return NIL
+
+#endif
+
+#ifdef BUG147
+
+#command LOCATE                                                         ;
+         [FOR <for>]                                                    ;
+=> __dbLocate( <{for}>)
+
+
+loca for a=b
+
+#command ROCATE                                                         ;
+         [FOR <for>]                                                    ;
+                                                                        ;
+=> __dbLocate( <{for}>)
+
+
+roca for a=b
+?
+return
+
+
+#endif
+
+
+#ifdef BUG146
+
+aaa("aaa", {}) // prints NIL (should "aaa")
+// aaa("aaa")  // works OK (prints "aaa")
+
+func aaa(file)
+? file
+?
+
+
+#endif
+
+#ifdef BUG145
+local a := {|| .t.}
+? codestr(eval(a))
+?
+
+//gives
+
+//EVAL(NIL)
+
+#endif
+
+#ifdef BUG144
+
+
+x:=200
+y:=x++
+? y,x    // equal 200
+?
+
+dbcreate("_test",{{"x","N",10,0}})
+use _test alias test
+test->(dbappend())
+test->x:=200
+y:=test->x++
+? y,test->x
+// in clipper equal 200 (I think correct) in clip equal 201
+?
+return
+
+
+#endif
+
+#ifdef BUG141
+local a
+fn(@a)
+//fn(a)
+a:="{1}"
+? a
+?
+fn(@a)
+//fn(a)
+? a
+?
+return nil
+
+function fn(a)
+//local a
+//private a
+a:={3}
+return nil
+
+
+#endif
+
+#ifdef BUG140
+
+
+? 'test'
+?
+
+/*
+//static a:=40
+
+#define NNN  450
+clear screen
+for i=1 to NNN
+    start(@asdf(),i)
+    sleep(0.1)
+    ?? i,""
+next
+inkey(0)
+
+static function asdf(n)
+	sleep(0.01)
+  	?? "c",n,""
+return
+*/
+
+/*
+
+#define NNN  550
+clear screen
+for i=1 to NNN
+        start(@asdf(),i)
+        ?? i,""
+next
+// wait for closing all  tasks
+inkey(0)
+for i=1 to NNN
+	start(@asdf(),i)
+	?? i,""
+next
+inkey(0)
+
+static function asdf(n)
+       sleep(2)
+       ?? "c",n,""
+return
+
+*/
+
+#endif
+
+
+
+#ifdef BUG130
+
+str='asdfqwer'
+? str
+? str[2,5]
+x:=str[2,5]
+? x
+? str[3]
+? str[0]
+? str[3,300]
+?
+
+
+#endif
+
+#ifdef BUG139
+
+
+m->first="XXX"
+use test
+? test->first         && ????? "a"
+first="XX1"
+? m->first            && ????? "XXX"
+? first               && ????? "XXX", ? ?????? ???? "a"
+?
+use
+return
+
+
+
+//? m->varname
+//m->varname = 1
+//? m->varname
+//?
+
+#endif
+
+#ifdef BUG133
+
+
+//aaa:=33
+//? aaa
+
+//memvar->aaa
+? memvar->aaa // prints NIL, and must generate an error
+? aaa // generates error
+?
+
+#endif
+
+#ifdef BUG122
+
+#command METHOD:<msg> => add(#<msg>)
+METHOD:aaa
+
+//preprocessor gives
+//add( ":aaa" )
+//      ^
+//instead of
+//add( "aaa" )
+
+#endif
+
+#ifdef BUG121
+
+clear screen
+
+obj:={getnew()}
+obj[1]:block:={||"test"}
+
+// 1) it is OK, it works in Clipper and CLIP
+string:="eval(obj[1]:block)"
+?&string
+
+// 2) it works in CLIP but not in Clipper
+string:="(obj[1]):varget()"
+?&string
+
+// 3) it works in Clipper but not in CLIP
+string:="obj[1]:varget()"
+?&string
+
+
+#endif
+
+#ifdef BUG104
+
+while .T.
+	if (inkey()==27)
+        	exit
+	end
+end
+
+#endif
+
+#ifdef BUG117
+mc='+w/bg,+gr/b'
+CLEAR SCREEN
+? cset:=set( _SET_CANCEL, .f. )
+? set( _SET_CANCEL, cset )
+? scankey(0)  // pRess "2" - scan code==3 as Ctrl+C
+
+? scankey(0)
+RETURN ( NIL )
+
+
+#endif
+
+#ifdef BUG118
+? "begin"
+/*
+? "one* /"
+? "two"
+*/
+? "end"
+?
+
+
+#endif
+
+#ifdef BUG115
+/*this not work */
+#command xMENU TO <x> ;
+   => <x> := _xMenu ( IF (ValType (#<x>) == "U", <x> := 1, <x>) )
+/* but this work */
+/*
+ #command xMENU TO <x> ;
+   => <x> := _xMenu ( IF (ValType (<x>) == "U", <x> := 1, <x>) )
+*/
+
+xMENU to  a
+
+
+#endif
+
+#ifdef BUG114
+beep()
+beep(1)
+beep(10)
+
+procedure beep(g)
+LOCAL I
+//default g to 1
+g := IIF( g == NIL , 1 , g )
+FOR i := 1 TO g
+     Tone(1100,0)
+NEXT
+RETURN
+
+
+
+#endif
+
+#ifdef BUG113
+local a,b // not work assign to "b"
+//private a,b // work correctly
+
+a:="hello"
+b:=@a
+? a,b
+b:="world"
+? a,b
+?
+return
+
+#endif
+
+#ifdef BUG111
+
+? dosparam()
+?
+
+
+#endif
+
+
+
+#ifdef BUG100
+
+#include <llibg.ch>
+
+? Mstate()[LLM_STATE_LEFT]
+?
+//, LLM_STATE_RIGHT already return 0,79
+
+
+#endif
+
+#ifdef BUG99
+
+_bdbfbrow:=map()
+_econd := {|| _bdbfbrow:test}
+res:=Eval(_econd)
+
+#endif
+
+#ifdef BUG98
+clear
+s:="a"
+bl:= _GET_(s):block
+? s,eval(bl)
+? eval(bl,"2345")
+? s,eval(bl)
+?
+return
+
+function __CGET__(block,aSubscript,cName,cRealName,cPic,bValid,bWhen)
+	local oget,row:=row(),col:=col()
+	oGet := getnew(row(),col(),block,cName,cPic,,,bValid,bWhen)
+	oGet:subscript := aSubscript
+	oGet:realName  := cRealName
+	setpos(row,col)
+        ? "__CGET__"
+return oGet
+
+/*
+function __CGET__(block,aSubscript,cName,cRealName,cPic,bValid,bWhen)
+        ? "__CGET__"
+return block
+*/
+
+
+/*
+a:="asdf"
+s:="a"
+//_GET_(&s)
+x:= @&s
+//x:=@s
+? x,&s//,a
+x:="1234"
+? x,&s//,a
+?
+return
+*/
+
+#endif
+
+
+#ifdef BUG96
+function Main()
+        local obj = map()
+return
+#endif
+
+
+#ifdef BUG95
+//function main()
+local a1:={1,2,3}, a2:={1,2}
+f1(@a1,@a2)
+//? len(a1), len(a2)
+? a1, a2
+?
+return nil
+function f1(a1,a2)
+local a,b
+a:=a1
+a:=a2
+return nil
+
+/*
+result:
+    0 2
+    should be:
+    3 2
+*/
+#endif
+
+/*
+//#94
+
+m:={;
+    {"a",{"b","c"},'<commands>'},;
+    {"b",{"c","d"},'<commands>'},;
+    {"c",{"y"},'<commands>'},;
+    {"y",{},'<commands>'};
+   }
+
+t:={"a",{"b","c"},'<commands>'}
+
+x := depsort(m/*, t */)
+
+? 'x:', x
+?
+/*
+    {;
+     {"y",{},'<commands>'},;
+     {"c",{"y"},'<commands>'},;
+     {"b",{"c","d"},'<commands>'},;
+     {"a",{"b","c"},'<commands>'};
+    }
+*/
+*/
+
+/*
+//#85
+local an:={1,2}
+? an
+f2(an)
+? an
+f1(@an)
+? an
+?
+
+Func f1(a1)
+a1:={1,2,3}
+return
+
+Func F2(a1)
+local a2:=a1
+a2[1]:=111
+return
+*/
+
+/*
+local a1:={1,2,3}, a2:={1,2}
+f1(@a1,@a2)
+?
+return
+
+function f1(a1,a2)
+local a, l:=(.t.)
+? valtype(a1), len(a1), valtype(a2), len(a2), valtype(a), len(a)
+// a:=NIL // with this line bugs closed
+a:=iif(l, a1, a2)
+l:=!l
+? valtype(a1), len(a1), valtype(a2), len(a2), valtype(a), len(a)
+a:=iif(l, a1, a2)
+l:=!l
+// next line have bugs - a!=a2, and a and a2 is crashed.
+? valtype(a1), len(a1), valtype(a2), len(a2), valtype(a), len(a)
+return
+*/
+
+/*
+local c
+f(@c)
+?
+return
+function f(c)
+
+//local c
+c:={||.T.}
+? valtype(c)
+c:={c}
+? c
+?? ":", valtype(c), valtype(c[1])//, valtype(c[1,1]), valtype(c[1,1,1])
+?
+return nil
+*/
+/*
+local a
+local obj := map()
+
+obj:fff := @_fff()
+? a := obj:fff():ccc
+//? a
+? obj:fff():ccc
+?
+
+static function _fff
+local o := map()
+o:ccc := "qwe"
+return o
+
+init proc adsf
+
+? 'asdf'
+
+return
+
+init proc clipinit
+? 'clipinit'
+
+return
+
+init proc qwer
+
+? 'qwer'
+
+return
+
+
+*/
+/*
+clear screen
+while .t.
+   ?(key:=inkey(0))
+
+   if key()=27
+         quit
+   endif
+
+end
+*/
+/*
+Local an:={'a','b'},n
+cls
+funcArr(@an,@n)
+//? len(an),n     //?? an={}, n=7
+? an, n
+return NIL
+
+Func FuncArr(a1,m)
+Local lF:=.t.
+
+a1[1]:=0
+? a1
+
+a1:={1,2,3}
+? a1
+m:=7
+return lF
+
+*/
+/*
+clear screen
+while .t.
+  ?(key:=scankey(0))
+
+   if key==224
+        ?scankey(0)
+   endif
+   if inkey()=27
+         quit
+   endif
+
+end
+
+*/
+/*
+
+
+clear screen
+for i=1 to 10
+	key:=scankey(0)
+
+	? key
+	if key==224
+        	key:=scankey(0)
+	        ? key
+	endif
+	if (inkey()==27)
+		quit
+	endif
+next
+*/
+
+/*
+while .t.
+	k:=inkey(0)
+        ? k
+        if k==27
+        	exit
+        end
+end
+?
+*/
+/*
+local b
+? b := f():a
+? f():a
+?
+
+func f()
+local m := map()
+m:a := "qwe"
+return m
+*/
+
+/*
+m:={{"num","N",6,0},{"text","M",10,0}}
+dbcreate("_a",m)
+use
+use _a
+s1:="field->text"
+s2:=field->text
+? type("s2"),valtype(s2),type("field->text"),valtype(field->text),valtype(&s1)
+append blank
+replace text with "sdfsdfsd"
+s2:=field->text
+? type("s2"),valtype(s2),type("field->text"),valtype(field->text),valtype(&s1)
+?
+return
+
+// clipper return "C" for type("s2") and valtype(s2), for other "M".
+// clip return "M" for all expressions
+// my opinion: after assing clipper clear flag "memo" in var structure.
+*/
+
+/*
+local c
+f(@c)
+?
+return nil
+
+function f(ac)
+local ac1
+ac:={||.T.}
+? valtype(ac)
+//ac:={ac}
+ac1:={ac}
+//ac1[1]:=ac
+ac:=ac1
+?? ":", valtype(ac), valtype(ac[1])
+//, valtype(ac[1,1]), valtype(ac[1,1,1])
+? ac, ac[1]
+*/
+
+/*
+static sKb
+
+//func main()
+//cls
+? outkb({|| outlog(__FILE__,__LINE__)})
+?
+
+return
+
+
+func OutKb(kb)
+//static sKb
+//local skb
+
+//if valtype (kb) == 'B'
+//valtype(kb) == 'B'
+fff(kb) == 'B'
+//'B' == valtype(kb)
+sKb:=kb
+//endif
+eval(sKb)
+//eval(kb)
+return
+
+func fff(f)
+return
+*/
+/*
+aaa()
+bbb()
+
+function aaa()
+   ccc()
+   return
+
+static function bbb()
+local i, ret
+for i=1 to 10000
+       //substr("asdf",1,4)
+       next
+return
+
+static function ccc()
+local i, ret
+for i=1 to 10000
+     //substr("asdf",1,4)
+     next
+return
+*/
+
+/*
+local a:="first"
+use test
+
+? test->first
+test->&a = time()   // not work
+//test->a = time()   // not work
+//test->&a := time()  // work
+//? test->&a = time()
+? test->first
+?
+return
+
+*/
+
+/*
+mpar(1,2,3,4,5)
+
+func mpar()
+
+? pcount()
+qout(param(1));
+
+
+return
+
+
+*/
+
+
+/*
+m:=map()
+m:code := "code1"
+? mapeval(m, "CODE ")  // this line work
+? mapeval(m, "CODE")   // this line not work
+?
+*/
+
+/*
+//local j
+j := "1"
+b1:= {|| &j }
+j := "2"
+b2:= {|| &j }
+? eval(b1),eval(b2) // clipper result is "1","2"
+?
+return
+*/
+
+/*
+use test
+bl:= _GET_(field->first,"field->first")
+? bl
+? eval(bl)
+?
+
+function __CGET__(xData,ind,varName,realName,p4,p5,p6)
+    ? '__CGET__:',xData," ind:",ind," varName:",varname," realName:",realname,",",p4,",",p5,",",p6,","
+return xData
+*/
+
+/*
+clear screen
+s1:="data"; s2:="s1"
+oget := _CGET_(&s2,"&s2","@K XXXXXX") // buggy work
+? s2,&s2,s1
+? eval(oGet)
+? eval(oGet,"asdasd")
+? eval(oGet)
+? s2,&s2,s1
+?
+return
+
+function __CGET__(xData,ind,varName,realName,p4,p5,p6)
+    ? '__CGET__:',xData," ind:",ind," varName:",varname," realName:",realname,",",p4,",",p5,",",p6,","
+return xData
+*/
+
+/*
+vat:=0
+
+a:={|_1| local(_p:=@var), iif(_1==NIL,_p,_p:=_1 ) }
+
+_CGET_(field->first,"field->first")
+
+return
+
+func __CGET__(obj, sub, name, p1, p2)
+
+? 'obj=', obj
+? 'sub=', sub
+? 'name=', name
+? 'p1=', p1
+? 'p2=', p2
+?
+return
+*/
+/*
+clear screen
+
+//inkey(0)
+
+*/
+/*
+local xxx
+clear screen
+s1:="data"; s2:="s1"
+xxx :=@&s2
+//oget := _CGET_(xxx,"&s2","@K XXXXXX") // this line work correctly
+oget := _CGET_(&s2,"&s2","@K XXXXXX") // buggy work
+? s2,&s2,s1
+? eval(oGet)
+? eval(oGet,"asdasd")
+? eval(oGet)
+? s2,&s2,s1
+?
+return
+
+function __CGET__(xData,ind,varName,realName,p4,p5,p6)
+    local block
+        ? '__CGET__:',xData," ind:",ind," varName:",varname," realName:",realname,",",p4,",",p5,",",p6,","
+            // varname for "&s2" in NIL, this is not correctly
+    block := {|_1| iif(pcount()==0, xData, xData := _1)}
+return block
+*/
+
+
+/*
+local b:='aaaa'
+
+a:={{1,0},{2,3}}
+
+i=2
+//? codestr(a)
+_CGET_(a[1,i],'1',2,'333')
+_CGET_(a[1])
+_CGET_(a,'1')
+_CGET_(b,'1', 2)
+
+func __CGET__(obj, sub, name, p1, p2)
+
+? 'obj=', obj
+? 'sub=', sub
+? 'name=', name
+? 'p1=', p1
+? 'p2=', p2
+?
+
+return
+*/
+
+/*
+xx := &("{||iif(a,b,)}")
+xx := &("{||a,b,}")
+
+*/
+/*
+clear screen
+m_color=    'GR+/B,W+/R,,,W+/N  '
+//setcolor(m_color)
+//cls
+//? inkey(0.01)
+//? inkey(0.01)
+? inkey(0.01)
+
+retu
+
+*/
+/*
+? inkey(0)
+set(_SET_ESC_DELAY, 100)
+? inkey(0)
+?
+*/
+
+/*
+#command IF <condition> THEN <*aktion*> ;
+ => IF <condition>; outlog("if", __FILE__,__LINE__) ;<aktion> ;ENDIF
+
+
+
+
+outlog("1", __FILE__,__LINE__)
+
+
+
+
+IF  MainCycle() THEN    outlog("2", __FILE__,__LINE__)
+mainCycle()
+outlog("3", __FILE__,__LINE__)
+
+function maincycle()
+// this output is bad
+outlog("called from:",procname(1),procline(1))
+return .t.
+
+*/
+
+/*
+tttt()
+? 'a'
+?
+*/
+
+/*
+local j
+
+j := "1"
+b1:= {|| &j }
+j := "2"
+b2:= {|| &j }
+? eval(b1),eval(b2) // clipper result is "1","2"
+?
+return
+*/
+
+
+/*
+static function f1(self)
+i:=ascan(WinChain,{|x|x:kk==::kk})
+retu i
+
+*/
+
+/*
+#define print(x,y,t) @ y,x SAY t
+? "a"
+print(50,1,AX_Loaded("W:\"))
+//qout(AX_Loaded('w:\'))
+print(50,1,AX_Loaded('w:\'))
+? "b"
+?
+*/
+/*
+ffffff()
+*/
+/*
+private x:=1
+Local cKb:='{|z| z:=memv->x}'
+//Local cKb:='{|z| z:=memvar->x}'
+// if "memv" change to "memvar" - this test work correctly
+Local kb
+kb:=&cKb
+eval(kb)
+return
+*/
+/*fileDialog()*/
+/*
+? 'OEM', getOEMcp()
+? 'ANSI', getANSIcp()
+? 'CONSOLE', getCONSOLEcp()
+? 'CONSOLEOUTPUT', getCONSOLEOUTPUTcp()
+? 'ТШБЮ'
+?
+inkey(0)
+
+clear screen
+@ 10,5 say ''
+? 'OEM', getOEMcp()
+? 'ANSI', getANSIcp()
+? 'CONSOLE', getCONSOLEcp()
+? 'CONSOLEOUTPUT', getCONSOLEOUTPUTcp()
+? 'ТШБЮ'
+?
+inkey(0)
+*/
+/*
+a:=map()
+a:asdf:='asdf'
+//a:qwer:='qwer'
+
+//? a
+//? 'asdf'
+? a:asdf
+? a
+//? 'qwer', a:qwer
+?
+*/
+/*
+? gettext("asdf")
+
+for i:=0 to 32
+//? i, ngettext("error", "error", i)
+?  i, [error]^i
+next
+
+?
+*/
+/*
+exit
+exit
+exit
+exit
+exit
+
+func main()
+cls
+outkb({|| outlog(__FILE__,__LINE__)})
+return
+
+func OutKb(kb)
+static sKb:={|| NIL}
+
+if valtype (kb) == 'B'
+        sKb:=kb
+endif
+
+eval(sKb)
+return
+*/
+
+/*
+/* not fixed*/
+a:=map()
+a:classname := "A"
+b:=map()
+b:classname := "B"
+b:c:= @asdf()
+
+a:b:= b
+? a:b:c()
+?
+return
+
+
+static function asdf(self)
+  ? qself() //:classname   //     "A"
+  ? self //:classname        //     "B"
+return "C"
+
+*/
+
+/*
+? 'got:', GETCLIPBOARDDATA()
+? 'set:', SETCLIPBOARDDATA('adsfasdf')
+? 'got:', GETCLIPBOARDDATA()
+?
+*/
+/*
+clear screen
+while .t.
   ? (key:=scankey(0))
-                                                      
+
    if key==224
 	? scankey(0)
    endif
    if inkey()=27
 	quit
    endif
-   asdf()                                                                                                
-end                                                                             
+   asdf()
+end
 
 func asdf()
 return
@@ -17,6 +1394,7 @@ return
 static func qwer()
 return
 
+*/
 /*
 Local nSum := 0, cf := 'age'
 use test new
@@ -62,25 +1440,6 @@ REPORT oRPT TITLE "ASDF"
 ? loadModuleMsg(__CLIP_MODULE__, "locale.mo/ru_RU.KOI8-R/tests.mo")
 ? [asdf]
 ?
-  
-*/
-/* not fixed
-a:=map()
-a:classname := "A"
-b:=map()
-b:classname := "B"
-b:c:= @asdf()
-
-a:b:= b
-? a:b:c()
-?
-return
-
-
-static function asdf(self)
-  ? qself() //:classname   //     "A"
-  ? self //:classname        //     "B"
-return "C"
 
 */
 /* not fixed
@@ -119,7 +1478,7 @@ return
 ? at(COMMENT, line)
 */
 
- 
+
 
 /*
 s:="ASDF"
@@ -408,7 +1767,7 @@ local aa:=11,bb:=22
 ? mapEval(o,"a+b")
 ? mapEval(o,{|c|a+b+c},4)
 ?
-       
+
 */
 /*
 o:=map()
@@ -518,7 +1877,7 @@ set filter to &fff
                          * ( Len( _Undef ) - nItogk - IIF( lSaldo, 2, 0 ) ) ;
                        )                                                   ;
             )
-                                                                         
+
   ? asdf
 */
 /*
@@ -929,7 +2288,7 @@ DEFAULT ;
         b = 33
 	nFontSize := 12
 	nScale    := INCH_TO_TWIP
-	
+
 return
 
 
@@ -1015,7 +2374,7 @@ clear screen
 #translate memv->s_cur_t => thcurt()
 //, препроцессор превращает
 ? memv->s_cur_t
-? memv->s_clrsong 
+? memv->s_clrsong
 //в thcurt() -> s_clrsong
 ?
 
@@ -1038,7 +2397,7 @@ var='QQQQ'
 SET MACRO_IN_STRING OFF
 ? "asdf &var asdf"
 ?
-*/   
+*/
 
 /*
 // вот это не компилируется

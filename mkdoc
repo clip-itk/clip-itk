@@ -1,0 +1,62 @@
+#!/bin/sh
+
+pwd=`pwd`
+
+formats='html txt pdf'
+ver=$(head -1 debian/changelog |cut -d'(' -f2|cut -d')' -f1)
+path=../clip_distrib/$ver/doc
+rm -rf $path
+mkdir -p $path
+path=$(cd $path; pwd)
+tmp=/tmp/mksrc$$
+pname=clip-doc
+#-$ver
+mkdir -p $tmp/$pname
+
+cd clip
+./configure
+${MAKE} po_extr po_subst
+#${MAKE} distclean
+cd $pwd
+
+cd doc
+
+${MAKE} distclean
+
+cd $pwd
+
+cp -a doc $tmp/$pname/
+
+cd $tmp
+tar cvzf $path/$pname-src.tgz $pname
+
+cd $pwd/doc
+rm -rf $tmp
+
+for frm in $formats
+do
+	case $frm in
+	txt|pdf)
+		${MAKE} clean $frm USEUTF=1
+		;;
+	*)
+		${MAKE} clean $frm
+		;;
+	esac
+done
+
+langs=`grep '^LANGS' Makefile | cut -d '=' -f 2`
+
+for frm in $formats
+do
+for lang in $langs
+do
+	tar czvf $path/$pname-$lang-$frm.tgz $frm/$lang
+done
+done
+
+
+cd $pwd
+
+#cp Readme_doc $path/Readme
+

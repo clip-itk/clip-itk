@@ -4,9 +4,106 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: six.c,v $
+	Revision 1.102  2003/09/02 14:27:43  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+	
+	Revision 1.101  2003/06/04 11:55:31  clip
+	rust: avoid 'unsafe read' warning in m6_IsOptimize()
+
+	Revision 1.100  2003/06/04 10:41:40  clip
+	rust: SIGSEGV in m6_IsOptimize()
+
+	Revision 1.99  2003/05/15 14:39:30  clip
+	rust: some speed optimizations for relations
+
+	Revision 1.98  2003/04/16 10:19:58  clip
+	rust: #include "btree.h" -> "./btree.h" and some other fixes for BeOS
+
+	Revision 1.97  2003/04/11 08:31:44  clip
+	rust: #ifdef HAVE_MMAN_H (BeOS)
+
+	Revision 1.96  2003/04/02 10:53:20  clip
+	rust: _clip_close() added
+
+	Revision 1.95  2003/03/12 12:50:43  clip
+	rust: tasks share RDDs and subdrivers
+
+	Revision 1.94  2003/02/23 17:18:34  clip
+	rust: small fixes
+
+	Revision 1.93  2003/02/23 11:24:32  clip
+	rust: some cleanings
+
+	Revision 1.92  2003/02/11 16:12:27  clip
+	rust: optional parameter to m6_addscoped(); eval or regex
+
+	Revision 1.91  2003/02/10 16:32:30  clip
+	rust: flushing record buffer
+
+	Revision 1.90  2003/02/10 13:05:41  clip
+	rust: _SEEK_EVAL( <bBlock> ) (FlagShip extension)
+
+	Revision 1.89  2003/02/03 10:16:03  clip
+	rust: small fixes
+
+	Revision 1.88  2003/01/31 11:52:00  clip
+	rust: sx_islocked() with foreign locks, reported by druzus@polbox.com
+
+	Revision 1.87  2003/01/30 12:07:27  clip
+	rust: fix in sxNum() and sxDate()
+
+	Revision 1.86  2003/01/21 14:59:17  clip
+	rust: rdd_info() with latest changes
+
+	Revision 1.85  2003/01/20 13:56:20  clip
+	rust: avoid warning
+
+	Revision 1.84  2003/01/04 11:10:41  clip
+	rust: sx_keygoto() with no order
+
+	Revision 1.83  2002/12/17 14:02:54  clip
+	rust: EXACT or NON-EXACT set scope
+
+	Revision 1.82  2002/12/06 10:56:25  clip
+	rust: set order bug fixed
+
+	Revision 1.81  2002/12/04 17:03:00  clip
+	rust: small fix
+
+	Revision 1.80  2002/12/04 16:49:29  clip
+	rust: rdd_m6_newfilter(), rdd_m6_addscoped(), rdd_m6_setareafilter()
+
+	Revision 1.79  2002/12/04 09:42:08  clip
+	rust: bug in Sx_Tags()
+
+	Revision 1.78  2002/11/29 09:52:58  clip
+	rust: bug in Sx_TagInfo(), reported by Yevgen Bondar <elb@lg.bank.gov.ua>
+
+	Revision 1.77  2002/11/11 13:12:15  clip
+	rust: m6_Error(), m6_Set()
+
+	Revision 1.76  2002/10/30 13:04:38  clip
+	rust: m6_SetFilter()
+
+	Revision 1.75  2002/10/26 11:10:02  clip
+	initial support for localized runtime messages
+	messages are in module 'cliprt'
+	paul
+
+	Revision 1.74  2002/10/14 15:06:02  clip
+	rust: Sx_Version(), m6_Version() and dummy m6_SetTemp()
+
+	Revision 1.73  2002/10/14 14:19:52  clip
+	rust: m6_RefreshFilter()
+
+	Revision 1.72  2002/10/14 13:15:21  clip
+	rust: m6_FiltTop(), m6_FiltBott(), m6_FiltSkip(), m6_FiltGoRec()
+
 	Revision 1.71  2002/10/11 10:33:10  clip
 	rust: m6_IsOptimize()
-	
+
 	Revision 1.70  2002/10/11 09:11:13  clip
 	rust: m6_FiltSave()/m6_FiltRestore()
 
@@ -266,7 +363,6 @@
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <ctype.h>
@@ -274,6 +370,10 @@
 #include "rdd.h"
 #include "six.ch"
 #include "error.ch"
+#include "set.ch"
+#ifdef HAVE_MMAN_H
+#include <sys/mman.h>
+#endif
 
 #define READLOCK	if((er = wa->rd->vtbl->_rlock(cm,wa->rd,__PROC__))) goto err
 #define WRITELOCK	if((er = wa->rd->vtbl->_wlock(cm,wa->rd,__PROC__))) goto err
@@ -285,36 +385,38 @@ extern DBWorkArea *get_area(ClipMachine * cm, long area, int any);
 
 extern int clip_ORDKEYNO(ClipMachine* cm);
 
-static const char* er_badfilter		= "Bad filter handle";
-static const char* er_invjoin		= "Invalid join type";
-static const char* er_notpermitted	= "Operation not permitted";
-static const char* er_nomemo		= "Memo file not opened";
-static const char* er_nofield		= "No such field";
-static const char* er_notmemo		= "Not memo field";
-static const char* er_noorder		= "No controlling order";
-static const char* er_notable		= "Workarea not in use";
-static const char* er_readlock		= "Shared lock error";
-static const char* er_writelock		= "Exclusive lock error";
-static const char* er_create		= "Create file error";
-static const char* er_open			= "Open file error";
-static const char* er_write			= "File write error";
-static const char* er_read			= "File read error";
-static const char* er_badfltfile	= "Bad .flt file";
+#define er_badfilter        _clip_gettext("Bad filter handle")
+#define er_invjoin          _clip_gettext("Invalid join type")
+#define er_notpermitted     _clip_gettext("Operation not permitted")
+#define er_nomemo           _clip_gettext("Memo file not opened")
+#define er_nofield          _clip_gettext("No such field")
+#define er_notmemo          _clip_gettext("Not memo field")
+#define er_noorder          _clip_gettext("No controlling order")
+#define er_notable          _clip_gettext("Workarea not in use")
+#define er_readlock         _clip_gettext("Shared lock error")
+#define er_writelock        _clip_gettext("Exclusive lock error")
+#define er_create           _clip_gettext("Create file error")
+#define er_open             _clip_gettext("Open file error")
+#define er_write            _clip_gettext("File write error")
+#define er_read             _clip_gettext("File read error")
+#define er_badfltfile       _clip_gettext("Bad .flt file")
 
 int clip_M6_NEWFILTER(ClipMachine* cm)
 {
-	const char* __PROC__ = "SX_NEWFILTER";
+	const char* __PROC__ = "M6_NEWFILTER";
 	int type = _clip_parinfo(cm,1);
 	DBWorkArea* wa = cur_area(cm);
 	RDD_FILTER* fp;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKOPT2(1,NUMERIC_t,CHARACTER_t);
 	if(!wa){
 		_clip_retni(cm,-1);
 		return 0;
 	}
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
 	READLOCK;
 	if(type==NUMERIC_t || type==UNDEF_t){
 		unsigned int len = _clip_parni(cm,1);
@@ -322,7 +424,7 @@ int clip_M6_NEWFILTER(ClipMachine* cm)
 			goto err_unlock;
 	} else if(type==CHARACTER_t){
 		char* str = _clip_parc(cm,1);
-		if((er = rdd_createfilter(cm,wa->rd,&fp,NULL,str,NULL,__PROC__)))
+		if((er = rdd_createfilter(cm,wa->rd,&fp,NULL,str,NULL,0,__PROC__)))
 			goto err_unlock;
 	}
 	UNLOCK;
@@ -339,13 +441,14 @@ err:
 int
 clip_M6_SETAREAFILTER(ClipMachine* cm)
 {
-	const char* __PROC__ = "SX_SETAREAFILTER";
+	const char* __PROC__ = "M6_SETAREAFILTER";
 	DBWorkArea* wa = cur_area(cm);
 	int h = _clip_parni(cm,1);
 	char expr[PATH_MAX];
 	RDD_FILTER* fp;
 	int er;
 
+	cm->m6_error = 0;
 	if(!wa){
 		_clip_retl(cm,0);
 		return 0;
@@ -363,9 +466,11 @@ clip_M6_SETAREAFILTER(ClipMachine* cm)
 	wa->rd->filter = fp;
 
 	fp->rd = wa->rd;
-	rdd_expandmacro(wa->rd->area,0,fp->sfilter,expr);
-	if((er = _clip_eval_macro(cm,expr,strlen(expr),&fp->fps->bfilter)))
-		goto err;
+	if(!fp->custom){
+		rdd_expandmacro(wa->rd->area,0,fp->sfilter,expr);
+		if((er = _clip_eval_macro(cm,expr,strlen(expr),&fp->fps->bfilter)))
+			goto err;
+	}
 
 	_clip_retl(cm,1);
 	return 0;
@@ -378,6 +483,7 @@ clip_M6_GETAREAFILTER(ClipMachine* cm)
 {
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	if(!wa){
 		_clip_retni(cm,-1);
 		return 0;
@@ -397,6 +503,7 @@ clip_M6_FREEFILTER(ClipMachine* cm)
 	RDD_FILTER* fp;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
@@ -424,6 +531,7 @@ clip_M6_FILTADDREC(ClipMachine* cm)
 	unsigned int rn = _clip_parni(cm,2);
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKARG1(2,NUMERIC_t);
 
@@ -452,6 +560,7 @@ clip_M6_FILTDROPREC(ClipMachine* cm)
 	unsigned int rn = _clip_parni(cm,2);
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKARG1(2,NUMERIC_t);
 
@@ -480,6 +589,7 @@ clip_M6_FILTCHGREC(ClipMachine* cm)
 	unsigned int rn = _clip_parni(cm,2);
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKARG1(2,NUMERIC_t);
 
@@ -511,6 +621,7 @@ clip_M6_ISFILTER(ClipMachine* cm)
 	RDD_FILTER* fp;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKOPT1(1,NUMERIC_t);
 	if(_clip_parinfo(cm,1) == NUMERIC_t){
 		fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
@@ -545,6 +656,7 @@ clip_M6_FILTJOIN(ClipMachine* cm)
 	RDD_FILTER* f2;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKARG1(2,NUMERIC_t);
 	CHECKARG1(3,NUMERIC_t);
@@ -589,6 +701,7 @@ clip_M6_EVALPARTIAL(ClipMachine* cm)
 	unsigned int ret;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKOPT2(2,CCODE_t,PCODE_t);
 	if(block && (block->t.type == UNDEF_t))
@@ -619,6 +732,7 @@ clip_M6_FILTINVERSE(ClipMachine* cm)
 	unsigned int ret;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
 	if(!fp){
@@ -646,6 +760,7 @@ clip_M6_FILTCOPY(ClipMachine* cm)
 	RDD_FILTER* ret;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
 	if(!fp){
@@ -668,6 +783,7 @@ clip_M6_FILTCOUNT(ClipMachine* cm)
 	unsigned int tmp,cnt;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
 	if(!fp){
@@ -695,6 +811,7 @@ clip_M6_ISFILTREC(ClipMachine* cm)
 	unsigned int rec = _clip_parni(cm,2);
 	int r,er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKARG1(2,NUMERIC_t);
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
@@ -722,6 +839,7 @@ clip_M6_FILTINFO(ClipMachine* cm)
 	unsigned int tmp,cnt;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
 	if(!fp){
@@ -798,6 +916,7 @@ int clip_M6_RECCOUNT(ClipMachine* cm){
 	RDD_FILTER* fp;
 	int i,cnt = 0,er;
 
+	cm->m6_error = 0;
 	if(!wa){
 		er = rdd_err(cm, EG_NOTABLE, 0, __FILE__, __LINE__, __PROC__,
 			er_notable);
@@ -828,10 +947,13 @@ int clip_M6_ADDSCOPED(ClipMachine* cm){
 	ClipVar* t = _clip_vptr(_clip_par(cm,2));
 	ClipVar* b = _clip_vptr(_clip_par(cm,3));
 	int ord = _clip_parni(cm,4)-1;
+	int opttype = _clip_parinfo(cm,5);
 	int er,i,cnt = 0;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKOPT1(4,NUMERIC_t);
+	CHECKOPT3(5,CCODE_t,PCODE_t,CHARACTER_t);
 	if(!wa){
 		er = rdd_err(cm, EG_NOTABLE, 0, __FILE__, __LINE__, __PROC__,
 			er_notable);
@@ -860,9 +982,46 @@ int clip_M6_ADDSCOPED(ClipMachine* cm){
 	if(b->t.type == UNDEF_t)
 		b = NULL;
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = wa->rd->orders[ord]->vtbl->setscope(cm,wa->rd,wa->rd->orders[ord],
-		t,b,fp->rmap,fp->size,__PROC__))) goto err_unlock;
+		t,b,fp->rmap,fp->size,0,__PROC__))) goto err_unlock;
+	if(opttype){
+		int found;
+		int oldrecno = wa->rd->recno;
+		int oldbof = wa->rd->bof;
+		int oldeof = wa->rd->eof;
+		int words = (fp->size >> 5) + 1;
+		int* tmap = calloc(4,words);
+		if(opttype == CHARACTER_t){
+			if((er = rdd_wildseek(cm,wa->rd,_clip_parc(cm,5),1,0,&found,__PROC__)))
+				goto err_unlock;
+			while(!wa->rd->eof){
+				_rm_setbit(tmap,fp->size,wa->rd->recno);
+				if((er = rdd_wildseek(cm,wa->rd,_clip_parc(cm,5),1,1,&found,__PROC__)))
+					goto err_unlock;
+			}
+		} else if((opttype == CCODE_t) || (opttype == PCODE_t)){
+			if((er = rdd_gotop(cm,wa->rd,__PROC__)))
+				goto err_unlock;
+			while(!wa->rd->eof){
+				if((er = rdd_seekeval(cm,wa->rd,_clip_spar(cm,5),&found, __PROC__)))
+					goto err_unlock;
+				if(found)
+					_rm_setbit(tmap,fp->size,wa->rd->recno);
+				else
+					break;
+				if((er = rdd_skip(cm,wa->rd,1,__PROC__)))
+					goto err_unlock;
+			}
+		}
+		if((er = wa->rd->vtbl->rawgo(cm,wa->rd,oldrecno,0,__PROC__)))
+			goto err_unlock;
+		wa->rd->bof = oldbof;
+		wa->rd->eof = oldeof;
+		for(i=0;i<words;i++)
+			fp->rmap[i] = fp->rmap[i] & tmap[i];
+	}
 	UNLOCK;
 	for(i=1;i<=fp->size;i++)
 		if(_rm_getbit(fp->rmap,fp->size,i))
@@ -882,6 +1041,7 @@ int clip_M6_CHGOWNER(ClipMachine* cm){
 	RDD_FILTER* fp;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
 	if(!fp){
@@ -905,6 +1065,7 @@ int clip_M6_FILTSAVE(ClipMachine* cm){
 	char buf[4];
 	int fd,er,bytes;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 	CHECKARG1(2,CHARACTER_t);
 	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
@@ -915,13 +1076,13 @@ int clip_M6_FILTSAVE(ClipMachine* cm){
 	if((er = _rdd_parsepath(cm,fname,".flt",&path,NULL,EG_CREATE,__PROC__)))
 		goto err;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	fd = open(path,O_RDWR|O_BINARY,cm->fileCreateMode);
 #else
 	fd = open(path,O_RDWR,cm->fileCreateMode);
 #endif
 	if(fd == -1){
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 		fd = open(path,O_CREAT|O_TRUNC|O_RDWR|O_BINARY,cm->fileCreateMode);
 #else
 		fd = open(path,O_CREAT|O_TRUNC|O_RDWR,cm->fileCreateMode);
@@ -977,11 +1138,12 @@ int clip_M6_FILTRESTORE(ClipMachine* cm){
 	char buf[4];
 	int fd,er,bytes;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,CHARACTER_t);
 	if((er = _rdd_parsepath(cm,fname,".flt",&path,NULL,EG_OPEN,__PROC__)))
 		goto err;
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	fd = open(path,O_RDONLY|O_BINARY,cm->fileCreateMode);
 #else
 	fd = open(path,O_RDONLY,cm->fileCreateMode);
@@ -1054,24 +1216,226 @@ int clip_M6_ISOPTIMIZE(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int er;
 
-	CHECKWA(wa);
+	cm->m6_error = 0;
 	CHECKARG1(1,CHARACTER_t);
+	cm->m6_error = 0;
+	if(!wa){
+		cm->m6_error = 2001;
+		_clip_retni(cm,0);
+		return 0;
+	}
+	if(!wa->rd->ords_opened){
+		cm->m6_error = 2005;
+		_clip_retni(cm,0);
+		return 0;
+	}
 
 	if(str){
-		fp->sfilter = str;
+		fp->sfilter = strdup(str);
 	}
-	if((er = rdd_initrushmore(cm,wa->rd,fp,NULL,1,__PROC__))) goto err;
+	READLOCK;
+	if((er = rdd_initrushmore(cm,wa->rd,fp,NULL,1,__PROC__))) goto err_unlock;
+	UNLOCK;
 	_clip_retni(cm,fp->optimize);
 
 	if(fp->rmap)
 		free(fp->rmap);
 	free(fp);
 	return 0;
+err_unlock:
+	wa->rd->vtbl->_ulock(cm,wa->rd,__PROC__);
 err:
 	if(fp->rmap)
 		free(fp->rmap);
 	free(fp);
 	return er;
+}
+
+int clip_M6_FILTGOREC(ClipMachine* cm){
+	const char* __PROC__ = "M6_FILTGOREC";
+	int h = _clip_parni(cm,1);
+	int recno = _clip_parni(cm,2);
+	RDD_FILTER* fp;
+	int er;
+
+	cm->m6_error = 0;
+	CHECKARG1(1,NUMERIC_t);
+	CHECKARG1(2,NUMERIC_t);
+	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
+	if(!fp){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	if(fp->optimize)
+		fp->recno = recno;
+	_clip_retni(cm,fp->recno);
+	return 0;
+err:
+	return er;
+}
+
+int clip_M6_FILTSKIP(ClipMachine* cm){
+	const char* __PROC__ = "M6_FILTSKIP";
+	int h = _clip_parni(cm,1);
+	int nrecs = _clip_parni(cm,2);
+	RDD_FILTER* fp;
+	int i,er,recno = 0;
+
+	cm->m6_error = 0;
+	CHECKARG1(1,NUMERIC_t);
+	CHECKOPT1(2,NUMERIC_t);
+	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
+	if(!fp){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	if(fp->optimize){
+		recno = fp->recno;
+		if(_clip_parinfo(cm,2) == UNDEF_t)
+			nrecs = 1;
+		if(nrecs < 0){
+			if(recno > fp->size)
+				recno = fp->size+1;
+			for(i=0;i>nrecs && recno>0;i--){
+				while(--recno > 0
+					&& !_rm_getbit(fp->rmap,fp->size,recno));
+			}
+			fp->recno = recno;
+		} else {
+			if(recno < 0)
+				recno = 0;
+			for(i=0;i<nrecs && recno<=fp->size;i++){
+				while(++recno <= fp->size
+					&& !_rm_getbit(fp->rmap,fp->size,recno));
+			}
+			fp->recno = recno;
+			if(recno > fp->size)
+				recno = 0;
+		}
+	}
+	_clip_retni(cm,recno);
+	return 0;
+err:
+	return er;
+}
+
+int clip_M6_FILTTOP(ClipMachine* cm){
+	const char* __PROC__ = "M6_FILTTOP";
+	int h = _clip_parni(cm,1);
+	RDD_FILTER* fp;
+	int er,recno;
+
+	cm->m6_error = 0;
+	CHECKARG1(1,NUMERIC_t);
+	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
+	if(!fp){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	fp->recno = recno = 0;
+	if(fp->optimize){
+		while(++recno <= fp->size
+			&& !_rm_getbit(fp->rmap,fp->size,recno));
+		if(recno <= fp->size)
+			fp->recno = recno;
+	}
+	_clip_retni(cm,fp->recno);
+	return 0;
+err:
+	return er;
+}
+
+int clip_M6_FILTBOTT(ClipMachine* cm){
+	const char* __PROC__ = "M6_FILTBOTT";
+	int h = _clip_parni(cm,1);
+	RDD_FILTER* fp;
+	int er,recno;
+
+	cm->m6_error = 0;
+	CHECKARG1(1,NUMERIC_t);
+	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
+	if(!fp){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	fp->recno = 0;
+	recno = fp->size+1;
+	if(fp->optimize){
+		while(--recno > 0
+			&& !_rm_getbit(fp->rmap,fp->size,recno));
+		fp->recno = recno;
+	}
+	_clip_retni(cm,fp->recno);
+	return 0;
+err:
+	return er;
+}
+
+int clip_M6_REFRESHFILTER(ClipMachine* cm){
+	const char* __PROC__ = "M6_REFRESHFILTER";
+	DBWorkArea* wa = cur_area(cm);
+	RDD_FILTER* fp;
+	int er;
+
+	cm->m6_error = 0;
+	if(!wa){
+		er = rdd_err(cm, EG_NOTABLE, 0, __FILE__, __LINE__, __PROC__,
+			er_notable);
+		goto err;
+	}
+	fp = wa->rd->filter;
+	if(!fp){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	if(cm->flags1 & OPTIMIZE_FLAG){
+		if(fp->list){
+			free(fp->list);
+			fp->list = NULL;
+			fp->listlen = 0;
+		}
+		if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
+		READLOCK;
+		if((er = rdd_initrushmore(cm,wa->rd,fp,NULL,0,__PROC__)))
+			goto err_unlock;
+		UNLOCK;
+	}
+	return 0;
+err_unlock:
+	wa->rd->vtbl->_ulock(cm,wa->rd,__PROC__);
+err:
+	return er;
+}
+
+int clip_M6_VERSION(ClipMachine* cm){
+	const char* __PROC__ = "M6_VERSION";
+	int type = _clip_parni(cm,1);
+	int er;
+
+	cm->m6_error = 0;
+	CHECKOPT1(1,NUMERIC_t);
+	switch(type){
+		case 1:
+			_clip_retdc(cm,2002,10,14);
+			break;
+		case 2:
+			_clip_retc(cm,"00:00a");
+			break;
+		case 3:
+			_clip_retc(cm,"Mach SIx by (c) SuccessWare, Inc. for CLIP, 1.0b, 10/14/2002, 00:00a");
+			break;
+		default:
+			_clip_retc(cm,"1.0b");
+	}
+	return 0;
+err:
+	return er;
+}
+
+int clip_M6_SETTEMP(ClipMachine* cm){
+	cm->m6_error = 0;
+	_clip_retc(cm,".");
+	return 0;
 }
 
 int clip_SX_BLOB2FILE(ClipMachine* cm){
@@ -1083,6 +1447,7 @@ int clip_SX_BLOB2FILE(ClipMachine* cm){
 	int fd,fno,er;
 	ClipVar v;
 
+	cm->m6_error = 0;
 	memset(&v,0,sizeof(ClipVar));
 	CHECKWA(wa);
 
@@ -1102,15 +1467,16 @@ int clip_SX_BLOB2FILE(ClipMachine* cm){
 		return rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,
 			er_notmemo);
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = wa->rd->vtbl->getvalue(cm,wa->rd,fno,&v,__PROC__))) goto err_unlock;
 	UNLOCK;
 
 	_clip_translate_path(cm,filename,file,sizeof(file));
-	fd = _clip_creat(file,O_RDWR,cm->fileCreateMode,1);
+	fd = _clip_creat(cm,file,O_RDWR,cm->fileCreateMode,1);
 	if(fd == -1) goto err_create;
 	if(write(fd,v.s.str.buf,v.s.str.len)==-1) goto err_create;
-	if(close(fd)==-1) goto err_create;
+	if(_clip_close(cm,_clip_hashstr(file),fd)==-1) goto err_create;
 
 	_clip_destroy(cm,&v);
 	_clip_retl(cm,1);
@@ -1138,6 +1504,7 @@ int clip_SX_FILE2BLOB(ClipMachine* cm){
 	struct stat st;
 	ClipVar v;
 
+	cm->m6_error = 0;
 	memset(&v,0,sizeof(ClipVar));
 	CHECKWA(wa);
 
@@ -1163,7 +1530,7 @@ int clip_SX_FILE2BLOB(ClipMachine* cm){
 	if(fstat(fd,&st)==-1) goto err_open;
 	buf = malloc(st.st_size);
 	if(read(fd,buf,st.st_size)==-1) goto err_open;
-	if(close(fd)==-1) goto err_open;
+	if(_clip_close(cm,_clip_hashstr(file),fd)==-1) goto err_open;
 
 	v.t.type = CHARACTER_t;
 	v.t.flags = F_NONE;
@@ -1199,6 +1566,7 @@ int clip_SX_MEMOPACK(ClipMachine* cm){
 	struct stat st;
 	int r,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT1(1,NUMERIC_t);
 	CHECKOPT2(2,CCODE_t,PCODE_t);
@@ -1227,11 +1595,15 @@ int clip_SX_MEMOPACK(ClipMachine* cm){
 
 	if((er = rdd_checkifnew(cm,wa->rd,__PROC__))) goto err;
 
+#ifdef HAVE_MMAN_H
 	if((int)wa->rd->memo->file.md != -1){
 		if(munmap(wa->rd->memo->file.md,wa->rd->memo->file.mapsize)==-1)
 			goto err_write;
 	}
-	if(close(wa->rd->memo->file.fd)==-1) goto err_write;
+#endif
+
+	if(_clip_close(cm,wa->rd->memo->file.filehash,wa->rd->memo->file.fd)==-1)
+		goto err_write;
 
 	strcpy(tmp,wa->rd->memo->path);
 	s = strrchr(tmp,'/');
@@ -1241,21 +1613,25 @@ int clip_SX_MEMOPACK(ClipMachine* cm){
 
 	if(rename(wa->rd->memo->path,tmp)==-1) goto err_write;
 
-	wa->rd->memo->file.fd = _clip_creat(wa->rd->memo->path,O_RDWR,cm->fileCreateMode,!wa->rd->shared);
+	wa->rd->memo->file.fd = _clip_creat(cm,wa->rd->memo->path,O_RDWR,cm->fileCreateMode,!wa->rd->shared);
 	if(wa->rd->memo->file.fd==-1) goto err_open1;
 
 	if((er = rdd_open(cm,tmp,1,1,&tmpfd,__PROC__))) goto err;
 
 	if(wa->rd->memo->vtbl->pack){
+		WRITELOCK;
 		if((er = wa->rd->memo->vtbl->pack(cm,wa->rd,wa->rd->memo,tmpfd,bsize,block,step,__PROC__)))
-			goto err;
+			goto err_unlock;
+		UNLOCK;
 	}
-	if(close(tmpfd)==-1) goto err_write;
+	if(_clip_close(cm,_clip_hashstr(tmp),tmpfd)==-1) goto err_write;
 
 	if(fstat(wa->rd->memo->file.fd,&st)==-1) goto err_write;
+#ifdef HAVE_MMAN_H
 	wa->rd->memo->file.mapsize = st.st_size;
 	wa->rd->memo->file.md = (caddr_t)mmap(0,wa->rd->memo->file.mapsize,
 		PROT_READ|PROT_WRITE,MAP_SHARED,wa->rd->memo->file.fd,0);
+#endif
 	remove(tmp);
 
 	if((er = rdd_event(cm,EVENT_POSTMEMOPACK,wa->rd->area,0,NULL,NULL,__PROC__)))
@@ -1267,6 +1643,8 @@ err_write:
 err_open1:
 	er = rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,wa->rd->memo->path);
 	goto err;
+err_unlock:
+	wa->rd->vtbl->_ulock(cm,wa->rd,__PROC__);
 err:
 	return er;
 }
@@ -1278,6 +1656,7 @@ int clip_SX_SETTRIGGER(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKARG1(1,NUMERIC_t);
 	CHECKOPT1(2,CHARACTER_t);
@@ -1318,7 +1697,8 @@ err:
 }
 
 int clip_RDD_COUNT(ClipMachine* cm){
-	_clip_retni(cm,cm->ndbdrivers);
+	cm->m6_error = 0;
+	_clip_retni(cm,*cm->ndbdrivers);
 	return 0;
 }
 
@@ -1327,9 +1707,10 @@ int clip_RDD_NAME(ClipMachine* cm){
 	int no = _clip_parni(cm,1);
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 
-	_clip_retc(cm,cm->dbdrivers[no-1].id);
+	_clip_retc(cm,(*cm->dbdrivers)[no-1].id);
 	return 0;
 err:
 	return er;
@@ -1345,37 +1726,38 @@ int clip_RDD_INFO(ClipMachine* cm){
 	long dim[] = {0};
 	ClipVar v;
 
+	cm->m6_error = 0;
 	memset(&v,0,sizeof(ClipVar));
 	if(type == CHARACTER_t){
 		rdd = _clip_parc(cm,1);
-		for(no=0;no<cm->ndbdrivers;no++)
-			if(strncasecmp(rdd,cm->dbdrivers[no].id,6)==0)
+		for(no=0;no<*cm->ndbdrivers;no++)
+			if(strncasecmp(rdd,(*cm->dbdrivers)[no].id,6)==0)
 				break;
-		if(no>=cm->ndbdrivers)
+		if(no>=*cm->ndbdrivers)
 			return 0;
 	} else if(type == NUMERIC_t){
 		DBWorkArea* wa;
 
 		no = _clip_parni(cm,1)-1;
-		if(no<0 || no>=cm->ndbdrivers){
+		if(no<0 || no>=*cm->ndbdrivers){
 			sprintf(err,bad_arg,1);
 			er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,err);
 			goto err;
 		}
 		wa = (DBWorkArea*)cm->areas->items[no];
-		for(no=0;no<cm->ndbdrivers;no++)
-			if(strncasecmp(wa->driver,cm->dbdrivers[no].id,6)==0)
+		for(no=0;no<*cm->ndbdrivers;no++)
+			if(strncasecmp(wa->driver,(*cm->dbdrivers)[no].id,6)==0)
 				break;
 	} else {
-		for(no=0;no<cm->ndbdrivers;no++)
-			if(strncasecmp(cm->def_db_driver,cm->dbdrivers[no].id,6)==0)
+		for(no=0;no<*cm->ndbdrivers;no++)
+			if(strncasecmp(cm->def_db_driver,(*cm->dbdrivers)[no].id,6)==0)
 				break;
 	}
 
 	_clip_array(cm,ap,1,dim);
 
 	v.t.type = CHARACTER_t;
-	v.s.str.buf = strdup(cm->dbdrivers[no].id);
+	v.s.str.buf = strdup((*cm->dbdrivers)[no].id);
 	v.s.str.len = strlen(v.s.str.buf);
 	_clip_aadd(cm,ap,&v);
 	_clip_destroy(cm,&v);
@@ -1386,61 +1768,61 @@ int clip_RDD_INFO(ClipMachine* cm){
 	_clip_destroy(cm,&v);
 
 	v.t.type = CHARACTER_t;
-	for(i=0;i<cm->ndata_drivers;i++)
-		if(strncasecmp(cm->dbdrivers[no].data,cm->data_drivers[i]->id,3)==0)
+	for(i=0;i<*cm->ndata_drivers;i++)
+		if(strncasecmp((*cm->dbdrivers)[no].data,(*cm->data_drivers)[i]->id,3)==0)
 			break;
-	v.s.str.buf = strdup(cm->data_drivers[i]->suff);
+	v.s.str.buf = strdup((*cm->data_drivers)[i]->suff);
 	v.s.str.len = strlen(v.s.str.buf);
 	_clip_aadd(cm,ap,&v);
 	_clip_destroy(cm,&v);
 
 	v.t.type = CHARACTER_t;
-	for(i=0;i<cm->nidx_drivers;i++)
-		if(strncasecmp(cm->dbdrivers[no].idx,cm->idx_drivers[i]->id,3)==0)
+	for(i=0;i<*cm->nidx_drivers;i++)
+		if(strncasecmp((*cm->dbdrivers)[no].idx,(*cm->idx_drivers)[i]->id,3)==0)
 			break;
-	v.s.str.buf = strdup(cm->idx_drivers[i]->suff);
+	v.s.str.buf = strdup((*cm->idx_drivers)[i]->sing_suff);
 	v.s.str.len = strlen(v.s.str.buf);
 	_clip_aadd(cm,ap,&v);
 	_clip_destroy(cm,&v);
 
 	v.t.type = CHARACTER_t;
-	v.s.str.buf = strdup("");
-	v.s.str.len = 1;
-	_clip_aadd(cm,ap,&v);
-	_clip_destroy(cm,&v);
-
-	v.t.type = CHARACTER_t;
-	for(i=0;i<cm->nmemo_drivers;i++)
-		if(strncasecmp(cm->dbdrivers[no].memo,cm->memo_drivers[i]->id,3)==0)
-			break;
-	v.s.str.buf = strdup(cm->memo_drivers[i]->suff);
+	v.s.str.buf = strdup((*cm->idx_drivers)[i]->suff);
 	v.s.str.len = strlen(v.s.str.buf);
 	_clip_aadd(cm,ap,&v);
 	_clip_destroy(cm,&v);
 
 	v.t.type = CHARACTER_t;
-	for(i=0;i<cm->ndata_drivers;i++)
-		if(strncasecmp(cm->dbdrivers[no].data,cm->data_drivers[i]->id,3)==0)
+	for(i=0;i<*cm->nmemo_drivers;i++)
+		if(strncasecmp((*cm->dbdrivers)[no].memo,(*cm->memo_drivers)[i]->id,3)==0)
 			break;
-	v.s.str.buf = strdup(cm->data_drivers[i]->desc);
+	v.s.str.buf = strdup((*cm->memo_drivers)[i]->suff);
 	v.s.str.len = strlen(v.s.str.buf);
 	_clip_aadd(cm,ap,&v);
 	_clip_destroy(cm,&v);
 
 	v.t.type = CHARACTER_t;
-	for(i=0;i<cm->nidx_drivers;i++)
-		if(strncasecmp(cm->dbdrivers[no].idx,cm->idx_drivers[i]->id,3)==0)
+	for(i=0;i<*cm->ndata_drivers;i++)
+		if(strncasecmp((*cm->dbdrivers)[no].data,(*cm->data_drivers)[i]->id,3)==0)
 			break;
-	v.s.str.buf = strdup(cm->idx_drivers[i]->desc);
+	v.s.str.buf = strdup((*cm->data_drivers)[i]->desc);
 	v.s.str.len = strlen(v.s.str.buf);
 	_clip_aadd(cm,ap,&v);
 	_clip_destroy(cm,&v);
 
 	v.t.type = CHARACTER_t;
-	for(i=0;i<cm->nmemo_drivers;i++)
-		if(strncasecmp(cm->dbdrivers[no].memo,cm->memo_drivers[i]->id,3)==0)
+	for(i=0;i<*cm->nidx_drivers;i++)
+		if(strncasecmp((*cm->dbdrivers)[no].idx,(*cm->idx_drivers)[i]->id,3)==0)
 			break;
-	v.s.str.buf = strdup(cm->memo_drivers[i]->desc);
+	v.s.str.buf = strdup((*cm->idx_drivers)[i]->desc);
+	v.s.str.len = strlen(v.s.str.buf);
+	_clip_aadd(cm,ap,&v);
+	_clip_destroy(cm,&v);
+
+	v.t.type = CHARACTER_t;
+	for(i=0;i<*cm->nmemo_drivers;i++)
+		if(strncasecmp((*cm->dbdrivers)[no].memo,(*cm->memo_drivers)[i]->id,3)==0)
+			break;
+	v.s.str.buf = strdup((*cm->memo_drivers)[i]->desc);
 	v.s.str.len = strlen(v.s.str.buf);
 	_clip_aadd(cm,ap,&v);
 	_clip_destroy(cm,&v);
@@ -1457,6 +1839,7 @@ int clip_SXCHAR(ClipMachine* cm){
 	ClipVar* r = RETPTR(cm);
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 
 	if(len<0)
@@ -1476,12 +1859,16 @@ int clip_SXCHAR(ClipMachine* cm){
 		case NUMERIC_t:
 		{
 			int d = min(v->t.dec,len-(v->t.len-v->t.dec));
-			_clip_dtostr(r->s.str.buf,len,d,v->n.d,0);
+			char* s = r->s.str.buf;
+			_clip_dtostr(s,len,d,v->n.d,0);
+			while(*s == ' ') s++;
+			memmove(r->s.str.buf,s,len-(s-r->s.str.buf));
+			memset(r->s.str.buf+len-(s-r->s.str.buf),' ',(s-r->s.str.buf));
 			break;
 		}
 		case DATE_t:
 		{
-			char* s = _clip_date_to_str(v->d.julian,cm->date_format);
+			char* s = _clip_date_to_str(v->d.julian,"yyyymmdd");
 			int l = min(len,strlen(s));
 
 			memcpy(r->s.str.buf,s,l);
@@ -1510,6 +1897,7 @@ err:
 int clip_SXNUM(ClipMachine* cm){
 	ClipVar* v = _clip_par(cm,1);
 
+	cm->m6_error = 0;
 	switch(_clip_parinfo(cm,1)){
 		case NUMERIC_t:
 			_clip_retnd(cm,v->n.d);
@@ -1522,8 +1910,21 @@ int clip_SXNUM(ClipMachine* cm){
 			break;
 		}
 		case DATE_t:
-			_clip_retnd(cm,v->d.julian);
+		{
+			int dd,mm,yy,ww,a,b;
+			long r;
+			_clip_cdate(v->d.julian,&dd,&mm,&yy,&ww);
+
+			if (mm <= 2){
+				yy--;
+				mm += 12;
+			}
+			a = yy / 100;
+			b = 2 - a + a / 4;
+			r = ((long) (365.25 * yy - (yy ? 0.0 : 0.75)) + (long) (30.6001 * (mm + 1) + dd + 1720995 + b));
+			_clip_retnd(cm,r);
 			break;
+		}
 		case LOGICAL_t:
 			_clip_retnd(cm,v->l.val);
 			break;
@@ -1537,6 +1938,7 @@ int clip_SXNUM(ClipMachine* cm){
 int clip_SXLOG(ClipMachine* cm){
 	ClipVar* v = _clip_par(cm,1);
 
+	cm->m6_error = 0;
 	switch(_clip_parinfo(cm,1)){
 		case LOGICAL_t:
 			_clip_retl(cm,v->l.val);
@@ -1560,6 +1962,7 @@ int clip_SXLOG(ClipMachine* cm){
 int clip_SXDATE(ClipMachine* cm){
 	ClipVar* v = _clip_par(cm,1);
 
+	cm->m6_error = 0;
 	switch(_clip_parinfo(cm,1)){
 		case DATE_t:
 			_clip_retdj(cm,v->d.julian);
@@ -1568,8 +1971,28 @@ int clip_SXDATE(ClipMachine* cm){
 			_clip_retdj(cm,_clip_str_to_date(v->s.str.buf,cm->date_format,cm->epoch));
 			break;
 		case NUMERIC_t:
-			_clip_retdj(cm,v->n.d);
+		{
+			long alf, a, b, c, d, e, r, dd, mm ,yy;
+			long ju = v->n.d;
+			alf = (long) ((ju - 1867216.25) / 36524.25);
+			a = ju + 1L + alf - alf / 4;
+			b = a + 1524;
+			c = (long) ((b - 122.1) / 365.25);
+			d = (long) (365.25 * c);
+			e = (long) ((b - d) / 30.6001);
+			dd = b - d - (long) (30.6001 * e);
+			if (e < 14)
+				mm = e - 1;
+			else
+				mm = e - 13;
+			if (mm > 2)
+				yy = c - 4716;
+			else
+				yy = c - 4715;
+			r = _clip_jdate(dd,mm,yy);
+			_clip_retdj(cm,r);
 			break;
+		}
 		default:
 			_clip_retdj(cm,0);
 			break;
@@ -1584,6 +2007,7 @@ int clip_SX_CHILL(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int ord,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT1(2,CHARACTER_t);
@@ -1611,6 +2035,7 @@ int clip_SX_FREEZE(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int ord,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT1(2,CHARACTER_t);
@@ -1638,6 +2063,7 @@ int clip_SX_WARM(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int ord,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT1(2,CHARACTER_t);
@@ -1665,6 +2091,7 @@ int clip_SX_THERMOMETER(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int ord,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT1(2,CHARACTER_t);
@@ -1689,6 +2116,7 @@ err:
 
 int clip_SX_CLEARORDER(ClipMachine* cm){
 /* dummy */
+	cm->m6_error = 0;
 	_clip_retl(cm,0);
 	return 0;
 }
@@ -1699,6 +2127,7 @@ int clip_SX_WILDMATCH(ClipMachine* cm){
 	const char* string = _clip_parc(cm,2);
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,CHARACTER_t);
 	CHECKARG1(2,CHARACTER_t);
 
@@ -1715,12 +2144,17 @@ int clip_SX_WILDSEEK(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int found,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
-	CHECKARG1(1,CHARACTER_t);
+	if(_clip_parinfo(cm,1) != CHARACTER_t){
+		_clip_retl(cm,0);
+		return 0;
+	}
 	CHECKOPT1(2,LOGICAL_t);
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) return er;
 	READLOCK;
-	if(rdd_wildseek(cm,wa->rd,pattern,cont,&found,__PROC__)) goto err_unlock;
+	if(rdd_wildseek(cm,wa->rd,pattern,0,cont,&found,__PROC__)) goto err_unlock;
 	UNLOCK;
 
 	wa->found = found;
@@ -1742,6 +2176,7 @@ int clip_SX_FNAMEPARSER(ClipMachine* cm){
 	char *r;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,CHARACTER_t);
 	CHECKOPT1(2,LOGICAL_t);
 	CHECKOPT1(3,LOGICAL_t);
@@ -1782,6 +2217,7 @@ int clip_SX_I_INDEXNAME(ClipMachine* cm){
 	const char* __PROC__ = "SX_I_INDEXNAME";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	_clip_retc(cm,wa->rd->indexing);
 	return 0;
@@ -1791,6 +2227,7 @@ int clip_SX_I_TAGNAME(ClipMachine* cm){
 	const char* __PROC__ = "SX_I_TAGNAME";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	_clip_retc(cm,wa->rd->tagindexing);
 	return 0;
@@ -1800,6 +2237,7 @@ int clip_SX_ISREINDEX(ClipMachine* cm){
 	const char* __PROC__ = "SX_ISREINDEX";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	_clip_retl(cm,wa->rd->reindexing);
 	return 0;
@@ -1809,6 +2247,7 @@ int clip_SX_INDEXCOUNT(ClipMachine* cm){
 	const char* __PROC__ = "SX_INDEXCOUNT";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	_clip_retni(cm,wa->rd->idxs_opened);
 	return 0;
@@ -1820,6 +2259,7 @@ int clip_SX_INDEXNAME(ClipMachine* cm){
 	ClipVar* order = _clip_par(cm,1);
 	int ord,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 
@@ -1839,6 +2279,7 @@ int clip_SX_TABLENAME(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	char* s = wa->rd->path;
 
+	cm->m6_error = 0;
 	_clip_retc(cm,"");
 	if(!wa)
 		return 0;
@@ -1858,6 +2299,7 @@ int clip_SX_INDEXTYPE(ClipMachine* cm){
 	int ord,er;
 	ClipVar order;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 
@@ -1883,6 +2325,7 @@ int clip_SX_ISFLOCKED(ClipMachine* cm){
 	const char* __PROC__ = "SX_ISFLOCKED";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	_clip_retl(cm,wa->rd->flocked);
 	return 0;
@@ -1892,18 +2335,18 @@ int clip_SX_ISLOCKED(ClipMachine* cm){
 	const char* __PROC__ = "SX_ISLOCKED";
 	DBWorkArea* wa = cur_area(cm);
 	int recno = _clip_parni(cm,1);
-	int r = 0,i,er;
+	int r = 0,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT1(1,NUMERIC_t);
 
 	if(!recno)
 		recno = wa->rd->recno;
-	for(i=0;i<wa->rd->nlocks;i++){
-		if(wa->rd->locks[i]==recno){
-			r = 1;
-			break;
-		}
+
+	if((er = wa->rd->vtbl->rlocked(cm,wa->rd,recno,&r,__PROC__))) goto err;
+	if(!r){
+		if((er = wa->rd->vtbl->forlock(cm,wa->rd,recno,&r,__PROC__))) goto err;
 	}
 	_clip_retl(cm,r);
 	return 0;
@@ -1915,6 +2358,7 @@ int clip_SX_ISREADONLY(ClipMachine* cm){
 	const char* __PROC__ = "SX_ISREADONLY";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 
 	_clip_retl(cm,wa->rd->readonly);
@@ -1925,6 +2369,7 @@ int clip_SX_ISSHARED(ClipMachine* cm){
 	const char* __PROC__ = "SX_ISSHARED";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 
 	_clip_retl(cm,wa->rd->shared);
@@ -1939,17 +2384,23 @@ int clip_SX_KEYGOTO(ClipMachine* cm){
 	unsigned int keyno = _clip_parni(cm,3);
 	int ord,ok,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKARG1(3,NUMERIC_t);
 
 	ord = get_orderno(wa,order,index);
 	_clip_retl(cm,0);
-	if(ord==-1)
-		return 0;
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
 	READLOCK;
-	if((er = rdd_gotokey(cm,wa->rd,wa->rd->orders[ord],keyno,&ok,__PROC__)))
-		goto err_unlock;
+	if(ord==-1){
+		if((er = rdd_goto(cm,wa->rd,keyno,__PROC__)))
+			goto err_unlock;
+		ok = 1;
+	} else {
+		if((er = rdd_gotokey(cm,wa->rd,wa->rd->orders[ord],keyno,&ok,__PROC__)))
+			goto err_unlock;
+	}
 	UNLOCK;
 
 	_clip_retl(cm,ok);
@@ -1965,6 +2416,7 @@ int clip_SX_KEYSINCLUDED(ClipMachine* cm){
 	const char* __PROC__ = "SX_KEYSINCLUDED";
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 
 	_clip_retni(cm,wa->rd->keysincluded);
@@ -1981,6 +2433,7 @@ int clip_SX_KILLTAG(ClipMachine* cm){
 	RDD_INDEX* ri;
 	int ord=0,i,er;
 
+	cm->m6_error = 0;
 	CHECKARG2(1,CHARACTER_t,LOGICAL_t);
 	_clip_retl(cm,0);
 	CHECKWA(wa);
@@ -2026,10 +2479,12 @@ int clip_SX_KILLTAG(ClipMachine* cm){
 	UNLOCK;
 
 	if(ri->norders==0){
+#ifdef HAVE_MMAN_H
 		if((int)(ri->file.md)!=-1){
 			if(munmap(ri->file.md,ri->file.mapsize)==-1) goto err_close;
 		}
-		if(close(ri->file.fd)==-1) goto err_close;
+#endif
+		if(_clip_close(cm,ri->file.filehash,ri->file.fd)==-1) goto err_close;
 		if(remove(ri->path)==-1) goto err_close;
 		if((er = ri->vtbl->close(cm,wa->rd,ri,__PROC__))) return er;
 		for(i=ri->indexno;i<wa->rd->idxs_opened-1;i++){
@@ -2051,8 +2506,9 @@ err:
 	return er;
 }
 
-int SX_LOCKRETRY(ClipMachine* cm){
+int clip_SX_LOCKRETRY(ClipMachine* cm){
 /* dummy */
+	cm->m6_error = 0;
 	_clip_retni(cm,0);
 	return 0;
 }
@@ -2062,22 +2518,22 @@ int clip_SX_MEMOEXT(ClipMachine* cm){
 	const char* ext = _clip_parc(cm,1);
 	int i,j,er;
 
+	cm->m6_error = 0;
 	CHECKOPT1(1,CHARACTER_t);
 
-	for(i=0;i<cm->ndbdrivers;i++){
-		if(strncasecmp(cm->def_db_driver,cm->dbdrivers[i].id,
-			sizeof(cm->def_db_driver))==0){
-			for(j=0;j<cm->nmemo_drivers;j++){
-				if(strncasecmp(cm->memo_drivers[j]->id,cm->dbdrivers[i].memo,
-					sizeof(cm->memo_drivers[j]->id))==0){
+	for(i=0;i<*cm->ndbdrivers;i++){
+		if(strncasecmp(cm->def_db_driver,(*cm->dbdrivers)[i].id,6)==0){
+			for(j=0;j<*cm->nmemo_drivers;j++){
+				if(strncasecmp((*cm->memo_drivers)[j]->id,(*cm->dbdrivers)[i].memo,
+					sizeof((*cm->memo_drivers)[j]->id))==0){
 
-					_clip_retc(cm,cm->memo_drivers[j]->suff);
+					_clip_retc(cm,(*cm->memo_drivers)[j]->suff);
 					if(ext && ext[0]){
-						memset(cm->memo_drivers[j]->suff,0,5);
-						strncpy(cm->memo_drivers[j]->suff,ext,min(4,strlen(ext)));
+						memset((*cm->memo_drivers)[j]->suff,0,5);
+						strncpy((*cm->memo_drivers)[j]->suff,ext,min(4,strlen(ext)));
 						for(i=0;i<4;i++)
-							cm->memo_drivers[j]->suff[i] =
-								tolower(cm->memo_drivers[j]->suff[i]);
+							(*cm->memo_drivers)[j]->suff[i] =
+								tolower((*cm->memo_drivers)[j]->suff[i]);
 					}
 					break;
 				}
@@ -2097,26 +2553,32 @@ int clip_SX_RLOCK(ClipMachine* cm){
 	ClipVar *ap,*vp;
 	int ok = 1,aok,i,er;
 
+	cm->m6_error = 0;
 	CHECKOPT2(1,ARRAY_t,NUMERIC_t);
 	_clip_retl(cm,0);
 	if(!wa) return 0;
 
+	READLOCK;
 	if(t==ARRAY_t){
 		ap = _clip_vptr(_clip_par(cm,1));
 		for(i=0;i<ap->a.count;i++){
 			vp = _clip_vptr(&ap->a.items[i]);
 			if((er = rdd_rlock(cm,wa->rd,(unsigned int)vp->n.d,&aok,__PROC__)))
-				return er;
+				goto err_unlock;
 			if(!aok)
 				ok = 0;
 		}
 	} else if(t==NUMERIC_t){
-		if((er = rdd_rlock(cm,wa->rd,_clip_parni(cm,1),&ok,__PROC__))) return er;
+		if((er = rdd_rlock(cm,wa->rd,_clip_parni(cm,1),&ok,__PROC__)))
+			goto err_unlock;
 	} else if(t==UNDEF_t){
-		if((er = rdd_rlock(cm,wa->rd,wa->rd->recno,&ok,__PROC__))) return er;
+		if((er = rdd_rlock(cm,wa->rd,wa->rd->recno,&ok,__PROC__)))
+			goto err_unlock;
 	}
 	_clip_retl(cm,ok);
 	return 0;
+err_unlock:
+	wa->rd->vtbl->_ulock(cm,wa->rd,__PROC__);
 err:
 	return er;
 }
@@ -2127,6 +2589,7 @@ int clip_SX_ROLLBACK(ClipMachine* cm){
 	DBWorkArea* wa;
 	int i,j,er;
 
+	cm->m6_error = 0;
 	CHECKOPT1(1,NUMERIC_t);
 	if(nwa > 0)
 		wa = get_area(cm,nwa,0);
@@ -2182,12 +2645,14 @@ int clip_SX_SEEKLAST(ClipMachine* cm){
 	int soft = _clip_parl(cm,2);
 	int found,er;
 
+	cm->m6_error = 0;
 	CHECKOPT1(2,LOGICAL_t);
 
 	if(!wa) return 0;
 	if(_clip_parinfo(cm,2) == UNDEF_t)
 		soft = (cm->flags & SOFTSEEK_FLAG);
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_seek(cm,wa->rd,v,soft,1,&found,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -2205,6 +2670,7 @@ err:
 int clip_SX_FILEORDER(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	_clip_retni(cm,0);
 	if(!wa) return 0;
 
@@ -2219,6 +2685,7 @@ int clip_SX_SETFILEORD(ClipMachine* cm){
 	int ord = _clip_parni(cm,1)-1;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
 
 	if(!wa) return 0;
@@ -2246,16 +2713,22 @@ int clip_SX_SETTAG(ClipMachine* cm){
 	ClipVar* index = _clip_par(cm,2);
 	int ord,er;
 
+	cm->m6_error = 0;
 	if(!wa) return 0;
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT1(2,CHARACTER_t);
 
 	_clip_retl(cm,0);
 
-	ord = get_orderno(wa,order,index);
-	if(ord < -1 || ord>=wa->rd->ords_opened || _clip_parinfo(cm,0)==0)
-		return 0;
+	if((order->t.type == NUMERIC_t) && (order->n.d == 0)){
+		ord = -1;
+	} else {
+		ord = get_orderno(wa,order,index);
+		if(ord < 0 || ord>=wa->rd->ords_opened || _clip_parinfo(cm,0)==0)
+			return 0;
+	}
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_setorder(cm, wa->rd, ord+1, __PROC__)))
 		goto err_unlock;
@@ -2278,6 +2751,7 @@ int clip_SX_SETTAGNO(ClipMachine* cm){
 	ClipVar in;
 	int ord,er;
 
+	cm->m6_error = 0;
 	if(!wa) return 0;
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT1(2,CHARACTER_t);
@@ -2297,6 +2771,7 @@ int clip_SX_SETTAGNO(ClipMachine* cm){
 	if(ord < -1 || ord>=wa->rd->ords_opened || _clip_parinfo(cm,0)==0)
 		return 0;
 
+	if((er = rdd_flushbuffer(cm,wa->rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_setorder(cm, wa->rd, ord+1, __PROC__)))
 		goto err_unlock;
@@ -2319,6 +2794,7 @@ int clip_SX_SLIMFAST(ClipMachine* cm){
 	char quote = 0;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKARG1(1,CHARACTER_t);
 
 	if(!str)
@@ -2352,6 +2828,7 @@ err:
 int clip_SX_STEP(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	_clip_retni(cm,0);
 	if(!wa) return 0;
 
@@ -2366,15 +2843,21 @@ int clip_SX_TAGCOUNT(ClipMachine* cm){
 	RDD_INDEX* ri = NULL;
 	int er;
 
+	cm->m6_error = 0;
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 
 	_clip_retni(cm,0);
 	if(!wa) return 0;
 
 	if(!index || index->t.type == UNDEF_t){
-		if(wa->rd->curord == -1)
-			return 0;
-		ri = wa->rd->orders[wa->rd->curord]->index;
+		if(wa->rd->curord == -1){
+			if(wa->rd->idxs_opened > 0 && wa->rd->indices[0]->structural)
+				ri = wa->rd->indices[0];
+			else
+				return 0;
+		} else {
+			ri = wa->rd->orders[wa->rd->curord]->index;
+		}
 	} else if(index->t.type == NUMERIC_t){
 		int no = index->n.d-1;
 		if(no >=0 && no < wa->rd->idxs_opened)
@@ -2405,6 +2888,7 @@ int clip_SX_TAGNO(ClipMachine* cm){
 	RDD_INDEX* ri;
 	int i;
 
+	cm->m6_error = 0;
 	_clip_retni(cm,0);
 
 	if(!wa) return 0;
@@ -2432,6 +2916,7 @@ int clip_SX_TAGINFO(ClipMachine* cm){
 	ClipVar* rp = RETPTR(cm);
 	int i,er;
 
+	cm->m6_error = 0;
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 
 	if(!wa){
@@ -2441,10 +2926,15 @@ int clip_SX_TAGINFO(ClipMachine* cm){
 
 	if(!index || index->t.type == UNDEF_t){
 		if(wa->rd->curord == -1){
-			_clip_array(cm,rp,1,vect);
-			return 0;
+			if(wa->rd->idxs_opened > 0 && wa->rd->indices[0]->structural){
+				ri = wa->rd->indices[0];
+			} else {
+				_clip_array(cm,rp,1,vect);
+				return 0;
+			}
+		} else {
+			ri = wa->rd->orders[wa->rd->curord]->index;
 		}
-		ri = wa->rd->orders[wa->rd->curord]->index;
 	} else if(index->t.type == NUMERIC_t){
 		int no = index->n.d-1;
 		if(no >=0 && no < wa->rd->idxs_opened)
@@ -2484,7 +2974,7 @@ int clip_SX_TAGINFO(ClipMachine* cm){
 
 		v.t.type = CHARACTER_t;
 		v.s.str.buf = ro->expr;
-		v.s.str.len = strlen(ro->name);
+		v.s.str.len = strlen(ro->expr);
 		vect[1] = 1;
 		_clip_aset(cm,rp,&v,2,vect);
 
@@ -2523,6 +3013,7 @@ int clip_SX_TAGS(ClipMachine* cm){
 	ClipVar* rp = RETPTR(cm);
 	int i,er;
 
+	cm->m6_error = 0;
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 
 	if(!wa){
@@ -2532,10 +3023,15 @@ int clip_SX_TAGS(ClipMachine* cm){
 
 	if(!index || index->t.type == UNDEF_t){
 		if(wa->rd->curord == -1){
-			_clip_array(cm,rp,1,vect);
-			return 0;
+			if(wa->rd->idxs_opened > 0 && wa->rd->indices[0]->structural){
+				ri = wa->rd->indices[0];
+			} else {
+				_clip_array(cm,rp,1,vect);
+				return 0;
+			}
+		} else {
+			ri = wa->rd->orders[wa->rd->curord]->index;
 		}
-		ri = wa->rd->orders[wa->rd->curord]->index;
 	} else if(index->t.type == NUMERIC_t){
 		int no = index->n.d-1;
 		if(no >=0 && no < wa->rd->idxs_opened)
@@ -2563,6 +3059,7 @@ int clip_SX_TAGS(ClipMachine* cm){
 		ClipVar v;
 		RDD_ORDER* ro = ri->orders[i];
 
+		CLEAR_CLIPVAR(&v);
 		v.t.type = CHARACTER_t;
 		v.s.str.buf = ro->name;
 		v.s.str.len = strlen(ro->name);
@@ -2581,6 +3078,7 @@ int clip_SX_TAGUNIQUE(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int ord,er;
 
+	cm->m6_error = 0;
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT2(2,CHARACTER_t,NUMERIC_t);
 
@@ -2603,6 +3101,7 @@ int clip_SX_VSIGLEN(ClipMachine* cm){
 	int t = _clip_parinfo(cm,1);
 	int fno = -1,er;
 
+	cm->m6_error = 0;
 	CHECKARG2(1,CHARACTER_t,NUMERIC_t);
 
 	_clip_retni(cm,0);
@@ -2639,6 +3138,7 @@ int clip_SX_DESCEND(ClipMachine* cm){
 	ClipVar* index = _clip_par(cm,2);
 	int res,ord,er;
 
+	cm->m6_error = 0;
 	CHECKWA(wa);
 	CHECKOPT2(1,CHARACTER_t,NUMERIC_t);
 	CHECKOPT2(2,CHARACTER_t,NUMERIC_t);
@@ -2659,9 +3159,68 @@ err:
 int clip_SX_TABLETYPE(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 
+	cm->m6_error = 0;
 	_clip_retni(cm,0);
 	if(!wa)
 		return 0;
 	_clip_retni(cm,1);
+	return 0;
+}
+
+int clip_SX_VERSION(ClipMachine* cm){
+	const char* __PROC__ = "SX_VERSION";
+	int type = _clip_parni(cm,1);
+	int er;
+
+	cm->m6_error = 0;
+	CHECKOPT1(1,NUMERIC_t);
+	switch(type){
+		case 1:
+			_clip_retdc(cm,2002,10,14);
+			break;
+		case 2:
+			_clip_retc(cm,"00:00a");
+			break;
+		case 3:
+			_clip_retc(cm,"SIx 3.* by (c) SuccessWare, Inc. for CLIP, 1.0b, 10/14/2002, 00:00a");
+			break;
+		default:
+			_clip_retc(cm,"1.0b");
+	}
+	return 0;
+err:
+	return er;
+}
+
+int clip_M6_SET(ClipMachine* cm){
+	int opt = _clip_parni(cm,1);
+	int f = _clip_parl(cm,2);
+	int r = 0;
+
+	cm->m6_error = 0;
+	switch(opt){
+		case _SET_TYPECHECK:
+			r = 0;
+			break;
+		case _SET_OPTIMIZE:
+		case 2:
+			r = cm->flags1 & OPTIMIZE_FLAG;
+			if(_clip_parinfo(cm,2) == LOGICAL_t){
+				if(f)
+					cm->flags1 |= OPTIMIZE_FLAG;
+				else
+					cm->flags1 &= ~OPTIMIZE_FLAG;
+			}
+			break;
+		case _SET_RECHECK:
+			r = 0;
+			break;
+	}
+	_clip_retl(cm,r);
+	return 0;
+}
+
+int clip_M6_ERROR(ClipMachine* cm){
+	_clip_retni(cm,cm->m6_error);
 	return 0;
 }

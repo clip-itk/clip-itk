@@ -5,10 +5,11 @@ uver=`uname -r`
 hname=`hostname -f 2>/dev/null`
 oldpwd=`pwd`
 
-[ -z "$CLIPROOT" ] && CLIPROOT=/usr/local/clip
+[ -z "$CLIPROOT" ] && CLIPROOT=$(cd ../../../; pwd)/cliproot
 DLLSUFF='.so'
 DLLREALSUFF='.so'
 
+rm Makefile _hashcode.h
 if [ $? != 0 ]
 then
 	hname=`hostname 2>/dev/null`
@@ -66,6 +67,21 @@ echo '#undef  SYSTEM ' >&3
 echo '#define SYSTEM "'$uname'"' >&3
 echo '' >&3
 
+pixbufprefix=`gdk-pixbuf-config --prefix 2>/dev/null`
+
+if [ $? -ne 0 ]
+then
+	PIXBUFLIBS=""
+	PIXBUFCFLAGS=""
+	PIXBUFSRC=''
+	PIXBUFOBJ=''
+else
+	PIXBUFLIBS=`gdk-pixbuf-config --libs`
+	PIXBUFCFLAGS=`gdk-pixbuf-config --cflags`
+	PIXBUFSRC='gdkpixbuf.c gdkrgb.c'
+	PIXBUFOBJ='gdkpixbuf.o gdkrgb.o'
+fi
+
 gtkprefix=`gtk-config --prefix 2>/dev/null`
 
 if [ $? -ne 0 ]
@@ -76,25 +92,25 @@ then
 	echo "*****************************************************************"
 	USE_GTK=no
 else
-#	LIBS='-lgtk -lgdk'
-	gtkincpath=`find $gtkprefix/include -name 'gtk.h' -printf '%h'`
-        cd $gtkincpath/..
-        gtkincpath=`pwd`
-        cd $oldpwd
-    	LIBS=`gtk-config --libs`
+##	LIBS='-lgtk -lgdk'
+#	gtkincpath=$(dirname $(find $gtkprefix/include -name 'gtk.h'))
+#	cd $gtkincpath/..
+#	gtkincpath=`pwd`
+#	cd $oldpwd
+	LIBS=`gtk-config --libs`
 
 	if [ "$osname" = "CYGWIN" ]
 	then
 		EXTRACFLAGS='-fnative-struct'
 	fi
-	if [ -f $gtkincpath/gtk/gtk.h ]
-	then
-		USE_GTK=yes
-		echo '#define HAVE_GTK' >&3
-	else
-		echo
-		echo 'Warning: system do not have installed GTK+ development'
-	fi
+#	if [ -f $gtkincpath/gtk.h ]
+#	then
+#		USE_GTK=yes
+#		echo '#define HAVE_GTK' >&3
+#	else
+#		echo
+#		echo 'Warning: system do not have installed GTK+ development'
+#	fi
 	GTK_MAJOR=`gtk-config --version|cut -d. -f1`
 	GTK_MINOR=`gtk-config --version|cut -d. -f2`
 	if [ ! \( "$GTK_MAJOR" -ge 1 -o "$GTK_MINOR" -ge 2 -o "$GTK_MAJOR" -gt 1 \) ]
@@ -107,6 +123,11 @@ fi
 echo "#endif" >&3
 exec 3>&-
 echo ". done."
+if [ "$USE_GTK" = no ]
+then
+	echo "gtk not detected"
+	exit 0
+fi
 
 
 printf "configure: Makefile creating.."
@@ -119,37 +140,41 @@ echo >&3
 echo '#' >&3
 echo '#	Compile flags' >&3
 echo '#' >&3
+echo "CLIPROOT='$CLIPROOT'" >&3
+echo "include $CLIPROOT/include/Makefile.inc" >&3
 echo "OSNAME='$osname'" >&3
 
 if [ -z "$CC" ]
 then
-  	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=":"
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=":"
 	for cc_dir in $PATH; do
-    		test -z "$cc_dir" && cc_dir=.
-    		if test -f $cc_dir/gcc; then
-      			CC=gcc
-      			break
-    		fi
-    		if test -f $cc_dir/cc; then
-      			CC=cc
-      			break
-    		fi
-  	done
-  	IFS="$save_ifs"
+		test -z "$cc_dir" && cc_dir=.
+		if test -f $cc_dir/gcc; then
+			CC=gcc
+			break
+		fi
+		if test -f $cc_dir/cc; then
+			CC=cc
+			break
+		fi
+	done
+	IFS="$save_ifs"
 fi
 echo "COMPILER='$CC'" >&3
 echo "DLLSUFF='$DLLSUFF'" >&3
 echo "DLLREALSUFF='$DLLREALSUFF'" >&3
-echo "CLIPROOT=$CLIPROOT" >&3
-echo 'INCLUDEDIRS=-I. -I$(CLIPROOT)/include -I'$gtkincpath >&3
+echo "PIXBUFINCLUDEDIRS='$PIXBUFCFLAGS'" >&3
+echo 'INCLUDEDIRS=-I. -I$(CLIPROOT)/include $(PIXBUFINCLUDEDIRS) '$(gtk-config --cflags) >&3
 echo "XTARGETS='"'$(XLIB) $(XSLIB)'"'" >&3
 echo "C_FLAGS=-Wall '"'$(INCLUDEDIRS)'"' '$EXTRACFLAGS'" >&3
-echo "LIBS='$LIBS'" >&3
+echo "LIBS='$LIBS $PIXBUFLIBS' " >&3
+echo "PIXBUFSRC='$PIXBUFSRC' " >&3
+echo "PIXBUFOBJ='$PIXBUFOBJ' " >&3
 
 if [ "$USE_GTK" = yes ]
 then
 	XCFLAGS=`gtk-config --cflags`
-	echo "XCFLAGS='$XCFLAGS'" >&3
+	echo "XCFLAGS='$XCFLAGS $PIXBUFCFLAGS'" >&3
 fi
 
 echo >&3

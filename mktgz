@@ -73,10 +73,26 @@ if [ -z "$noclip" ]
 then
 
 cd clip || exit 1
-	./configure -r
+	./configure -r || exit 2
 	$MAKE install DESTDIR=${DESTDIR} || exit 2
 cd $pwd
 
+fi
+
+cd $pwd
+if [ -d doc ]
+then
+    (
+    	DOC_LANGS='en ru'
+	(  export CLIPROOT=${DESTDIR}${CLIPROOT}
+	   export LD_LIBRARY_PATH=${DESTDIR}/usr/lib:$LD_LIBRARY_PATH
+	   cd prg/doc_utils && make && make install DESTDIR=${DESTDIR}
+	) || true
+	cd doc \
+	 && $MAKE html LANGS="$DOC_LANGS" CLIPROOT=${DESTDIR}${CLIPROOT} \
+	 && $MAKE install LANGS="$DOC_LANGS" DESTDIR=${DESTDIR} \
+	 || true
+    )
 fi
 
 . clip/clipcfg.sh || exit 2
@@ -96,6 +112,8 @@ cd $pwd
 
 mkdir -p ${DESTDIR}${CLIP_ROOT}/doc
 cp -R example ${DESTDIR}${CLIP_ROOT}/doc/
+
+
 
 cd  ${DESTDIR}${CLIP_ROOT}/ || exit 1
 	rm -rf `find . -name CVS -print`
@@ -149,11 +167,12 @@ then
 
 cd $pwd
 cd  prg || exit 1
-	make tgz
+	$MAKE tgz
 #	make && make install &&\
 #		${DESTDIR}${CLIP_ROOT}/bin/clip_msgmerge &&\
 #		${DESTDIR}${CLIP_ROOT}/bin/clip_msgfmt  || exit 3
 cd $pwd
+
 
 fi
 

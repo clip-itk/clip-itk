@@ -5,6 +5,56 @@
  */
 /*
    $Log: file.c,v $
+   Revision 1.91  2003/09/08 15:06:03  clip
+   uri: next step fixes for mingw from uri
+
+   Revision 1.90  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.89  2003/06/20 08:21:25  clip
+   possible fixes #144
+   paul
+
+   Revision 1.88  2003/05/22 15:18:07  clip
+   cygwin fix
+   asdf
+
+   Revision 1.87  2003/05/20 09:46:13  clip
+   fix for static build with assembler
+   paul
+
+   Revision 1.86  2003/05/16 11:08:02  clip
+   initial support for using assembler instead C
+   now activated if environment variable CLIP_ASM is defined to any value
+   paul
+
+   Revision 1.85  2003/03/17 08:24:59  clip
+   Solaris 8 patches
+   paul
+
+   Revision 1.84  2002/12/23 13:57:47  clip
+   reference to temporary object
+   frame structure extended!
+   closes #90
+   paul
+
+   Revision 1.83  2002/12/18 10:02:51  clip
+   memleak in C mode fixed
+   closes #84
+   paul
+
+   Revision 1.82  2002/11/19 14:33:28  clip
+   main in C code duplication in -M p1.prg.. pN.prg in C mode
+   closes #51
+   paul
+
+   Revision 1.81  2002/11/18 13:09:37  clip
+   fix searching .nm .ex under cygwin
+   closes #40
+   asdf
+
    Revision 1.80  2002/10/11 10:27:11  clip
    primary support for search of unresolved function names:
    clip compler flag -N and/or envar CLIP_NAMES=yes will generate
@@ -394,13 +444,34 @@
 #include "clic.h"
 #include "nodepriv.h"
 #include "clipcfg.h"
+#include "clip.h"
+#include "clipbase.h"
 
+#if 0
 typedef struct
 {
 	long hash;
 	long offs;
 }
 ClipHashBucket;
+#endif
+
+
+/* name underscore */
+#ifdef NM_UNDERSCORE
+#define US "_"
+#else
+#define US ""
+#endif
+
+
+/* dll import prefix */
+#ifdef _WIN32
+#define IMP "__imp_"
+#else
+#define IMP ""
+#endif
+
 
 static void print_Function(Function * fp);
 static void print_VarColl(VarColl * cp, char *msg);
@@ -460,7 +531,7 @@ print_Function(Function * fp)
 	if (!fp->isPublic)
 		printf("STATIC ");
 	printf("%s %s\n", fp->isProc ? "PROCEDURE" : "FUNCTION", fp->isPublic ? fp->name : fp->name + 3);
-        printf("\tAS %s\n", fp->typename? fp->typename:"undef");
+	printf("\tAS %s\n", fp->typename ? fp->typename : "undef");
 	printf("nlocals = %d reflocals = %d uplocals=%d\n", fp->nlocals, fp->reflocals, fp->uplocals);
 	print_VarColl(fp->params, "params");
 	print_VarColl(fp->locals, "locals");
@@ -614,7 +685,7 @@ codegen_Function(Function * fp)
 	for (j = fp->statics->unsorted.count - 1; j >= 0; --j)
 	{
 		VAR(Var, vp, fp->statics->unsorted.items[j]);
-		if (vp->init /*&& (pcode_flag || vp->init->isArray)*/)
+		if (vp->init /*&& (pcode_flag || vp->init->isArray) */ )
 		{
 			Node *np = new_OperExprNode(new_AssignNode(new_StaticNode(vp), vp->init, '='));
 
@@ -737,7 +808,8 @@ write_Function(FILE * out, File * file, Function * fp)
 
 	clic_line = fp->line;
 	if (file->init != fp)
-		fprintf(out, "\n%sint\nclip_%s(ClipMachine *_mp)\n{\n", fp->isPublic ? "" : "static ", fp != file->init ? fp->name : "_init");
+		fprintf(out, "\n%sint\nclip_%s(ClipMachine *_mp)\n{\n", fp->isPublic ? "" : "static ",
+			fp != file->init ? fp->name : "_init");
 	else
 		fprintf(out, "\nstatic int\n_init(ClipMachine *_mp, ClipFrame *_frame_p)\n{\n");
 
@@ -766,7 +838,9 @@ write_Function(FILE * out, File * file, Function * fp)
 	{
 		int i, l;
 
-		fprintf(out, "\tClipVarFrame *_localvars = (ClipVarFrame*) calloc(1, sizeof(ClipVarFrame)+%d*sizeof(ClipVar));\n", fp->locals->unsorted.count);
+		fprintf(out,
+			"\tClipVarFrame *_localvars = (ClipVarFrame*) calloc(1, sizeof(ClipVarFrame)+%d*sizeof(ClipVar));\n",
+			fp->locals->unsorted.count);
 		fprintf(out, "\tstatic const char _localnames[] = {");
 		for (j = 0; j < fp->locals->unsorted.count; j++)
 		{
@@ -824,7 +898,8 @@ write_Function(FILE * out, File * file, Function * fp)
 			fprintf(out, " /* %s */ ", vp->name);
 		}
 		fprintf(out, "0 };\n");
-		fprintf(out, "\tClipVarFrame _local_vars = { 0, %d, _vlocals, _localnames }, *_localvars = &_local_vars;\n", fp->locals->unsorted.count);
+		fprintf(out, "\tClipVarFrame _local_vars = { 0, %d, _vlocals, _localnames }, *_localvars = &_local_vars;\n",
+			fp->locals->unsorted.count);
 	}
 #endif
 
@@ -884,12 +959,10 @@ write_Function(FILE * out, File * file, Function * fp)
 #else
 #endif
 
-	fprintf(out, "\tClipFrame _frame = { _stack, _stack, _file, %d, 0, %s, 0, _statics, 0, &_hash_names,\"%s\", %d };\n"
-		,fp->line, "_localvars"
-		,fp->isPublic ? fp->name : fp->name + 3
-		,fp->maxdeep + 1);
+	fprintf(out, "\tClipFrame _frame = { _stack, _stack, _file, %d, 0, %s, 0, _statics, 0, &_hash_names,\"%s\", %d, 0 };\n",
+		fp->line, "_localvars", fp->isPublic ? fp->name : fp->name + 3, fp->maxdeep + 1);
 
-	if (!fp->nlocals && !fp->reflocals)
+	if (file->init != fp && !fp->nlocals && !fp->reflocals)
 	{
 		fprintf(out, "\tif (_localvars && _localvars->refcount)\n\t\t_localvars->refcount++;\n");
 	}
@@ -912,6 +985,7 @@ write_Function(FILE * out, File * file, Function * fp)
 		fprintf(out, "\tif (_init_flag)\n\t{\n");
 		fprintf(out, "\t\t_mp->fp = _frame_p;\n");
 		fprintf(out, "\t\treturn 0;\n\t}\n");
+		fprintf(out, "\telse if (_localvars && _localvars->refcount)\n\t\t_localvars->refcount++;\n");
 		fprintf(out, "\t_frame.up = _mp->fp;\n");
 		fprintf(out, "\t_mp->fp = &_frame;\n");
 		fprintf(out, "\t_init_flag = 1;\n");
@@ -981,8 +1055,7 @@ write_Function(FILE * out, File * file, Function * fp)
 #if 0
 	if ((fp->privates->unsorted.count + fp->parameters->unsorted.count) > 0)
 	{
-		fprintf(out, "\t_clip_remove_privates( _mp, %d",
-			fp->privates->unsorted.count + fp->parameters->unsorted.count);
+		fprintf(out, "\t_clip_remove_privates( _mp, %d", fp->privates->unsorted.count + fp->parameters->unsorted.count);
 		for (j = fp->privates->unsorted.count - 1; j >= 0; --j)
 		{
 			VAR(Var, vp, fp->privates->unsorted.items[j]);
@@ -1054,9 +1127,13 @@ write_staticDefs(FILE * out, VarColl * statics)
 	}
 }
 
+static int wrote_main = 0;
+
 void
 write_Main(File * file, FILE * out, const char *start)
 {
+	if (wrote_main)
+		return;
 	fprintf(out, "\n\nextern char **environ;\n");
 	fprintf(out, "void _clip_init_dll(void);\n");
 	fprintf(out, "\nint\nmain(int argc, char **argv)\n{\n");
@@ -1065,6 +1142,7 @@ write_Main(File * file, FILE * out, const char *start)
 	fprintf(out, "\tmp = new_ClipMachine(0);\n");
 	fprintf(out, "\treturn _clip_main_func( mp, clip_%s, argc, argv, environ);\n", start);
 	fprintf(out, "}\n");
+	wrote_main = 1;
 }
 
 void
@@ -1229,12 +1307,6 @@ write_File(File * file)
 	}
 
 	fprintf(out, "\n");
-	/*if (file->haveNil) */
-	fprintf(out, "static ClipVar _nil_ = { { UNDEF_t, 0,0,0,0 } };\n");
-	if (file->haveTrue)
-		fprintf(out, "static ClipVarLog _true_ = { { { LOGICAL_t, 0,0,0,0 }, 1 } };\n");
-	if (file->haveFalse)
-		fprintf(out, "static ClipVarLog _false_ = { { { LOGICAL_t, 0,0,0,0 }, 0 } };\n");
 
 	for (j = 0; j < file->unsortedNumbers.count; j++)
 	{
@@ -1252,10 +1324,11 @@ write_File(File * file)
 		if (len < 10)
 			len = 10;
 		/*if (dec < 2)
-   			dec = 2;*/
+		   dec = 2; */
 		if (dec > len)
 			len = dec + 1;
-		fprintf(out, "static ClipVarNum _num_%d = { { { NUMERIC_t,%d,%d,0,0,0 } , %s%s } };\n", j, len, dec, sp->val, s ? "" : ".0");
+		fprintf(out, "static ClipVarNum _num_%d = { { { NUMERIC_t,%d,%d,0,0,0 } , %s%s } };\n", j, len, dec, sp->val,
+			s ? "" : ".0");
 	}
 
 	for (j = 0; j < file->unsortedStrings.count; j++)
@@ -1337,21 +1410,33 @@ write_File(File * file)
 void
 compile_File(const char *cname)
 {
-	char cmd[1024], oname[256], *e;
+	char cmd[1024], oname[256], *e, *s;
 	int i;
 
 	strcpy(oname, cname);
+	s = strrchr(cname, '.');
 	e = strrchr(oname, '.');
 	strcpy(e, OBJSUF);
 
-	sprintf(cmd, "%s", CC);
-	for (e = cmd + strlen(cmd), i = 0; i < includePaths.count; ++i)
+#ifdef USE_AS
+	if (asm_flag && !strcmp(s, ".s"))
 	{
-		sprintf(e, " %s %s", INCLUDE_FLAG, (char *) includePaths.items[i]);
-		e = cmd + strlen(cmd);
+		snprintf(cmd, sizeof(cmd), "%s -o %s %s", AS_PRG, oname, cname);
 	}
-	sprintf(e, " %s %s %s %s %s %s %s", optLevel ? COPT : "", genDebug ? CDBG : "",
-		CFLAGS, COMPILE_FLAG, cname, OUT_FLAG, oname);
+	else
+#endif
+	{
+
+		snprintf(cmd, sizeof(cmd), "%s", CC);
+		for (e = cmd + strlen(cmd), i = 0; i < includePaths.count; ++i)
+		{
+			snprintf(e, sizeof(cmd) - (e - cmd), " %s %s", INCLUDE_FLAG, (char *) includePaths.items[i]);
+			e = cmd + strlen(cmd);
+		}
+		snprintf(e, sizeof(cmd) - (e - cmd), " %s %s %s %s %s %s %s", optLevel ? COPT : "", genDebug ? CDBG : "",
+			 CFLAGS, COMPILE_FLAG, cname, OUT_FLAG, oname);
+
+	}
 
 	v_printf(2, "%s\n", cmd);
 	if (system(cmd))
@@ -1468,6 +1553,7 @@ put_function(File * file, StrBuf * bp, Function * fp, long *loffs)
 	int j, count, namelen;
 	long lp, blp;
 
+	/*printf("put_function: beg: %s\n", fp->name);fflush(stdout); */
 	if (loffs)
 	{
 		SETLONG(bp, *loffs, hashstr(fp->name));
@@ -1495,7 +1581,7 @@ put_function(File * file, StrBuf * bp, Function * fp, long *loffs)
 	count = fp->privates->unsorted.count + fp->parameters->unsorted.count;
 	/* 3l,3s,1b */
 	putShort_StrBuf(bp, count);
-	/*!!! *//* 3l,4s,1b */
+/*!!! *//* 3l,4s,1b */
 	putShort_StrBuf(bp, fp->params->unsorted.count);
 
 	/* 3l,5s,1b */
@@ -1557,8 +1643,10 @@ put_function(File * file, StrBuf * bp, Function * fp, long *loffs)
 	lp += sizeof(long);
 
 	blp = CUROFFS;
+	/*printf("put_function: body: %s\n", fp->name);fflush(stdout); */
 	pass_Node(fp->body, OText, 0, bp);
 	SETLONG(bp, lp, CUROFFS - blp);
+	/*printf("put_function: end: %s\n", fp->name);fflush(stdout); */
 }
 
 static int
@@ -1591,13 +1679,14 @@ write_OFile(File * file, long *len)
 	char *hash_buckets_buf = 0;
 	int hash_buckets_len = 0;
 
+	/*printf("write_OFile: %s\n", file->name);fflush(stdout); */
+
 /* generate hash-buckets string */
 	{
 		Coll coll;
 		int sum = 0;
 		int count = file->names.count;
-		StrBuf str_buf =
-		{0, 0, 0, 0};
+		StrBuf str_buf = { 0, 0, 0, 0 };
 		StrBuf *hbp = &str_buf;
 		int l;
 		int nstatics = 0;
@@ -1680,9 +1769,19 @@ write_OFile(File * file, long *len)
 		fprintf(out, " *\tautomatically generated by clip\n");
 		fprintf(out, " *\tfrom source %s\n", file->origname);
 		fprintf(out, " *\tat %s", ctime(&timestamp));
-		fprintf(out, " */\n");
+		fprintf(out, " */\n\n");
 
-		fprintf(out, "\n#include \"clip.h\"\n\n");
+#ifdef USE_AS
+		if (asm_flag)
+		{
+			fprintf(out, "\t.file\t\"%s\"\n\n", file->cname);
+		}
+		else
+#endif
+		{
+			fprintf(out, "#include \"clip.h\"\n\n");
+		}
+
 	}
 
 	/* magic */
@@ -1696,7 +1795,7 @@ write_OFile(File * file, long *len)
 	/* 8,2l == modbeg */
 	putLong_StrBuf(bp, 0);	/* static Offs */
 	/* 8, 3l */
-	putLong_StrBuf(bp, file->staticNo + 1);		/* 1 for init flag */
+	putLong_StrBuf(bp, file->staticNo + 1);	/* 1 for init flag */
 	/* 8,4l */
 	putShort_StrBuf(bp, file->unsortedNumbers.count);
 	/* 8,4l,1s */
@@ -1733,7 +1832,7 @@ write_OFile(File * file, long *len)
 	for (j = 0; j < file->unsortedNumbers.count; j++)
 	{
 		VAR(ConstNode, sp, file->unsortedNumbers.items[j]);
-                int dec = 0;
+		int dec = 0;
 		char *s = strchr(sp->val, '.');
 		int len = strlen(sp->val);
 
@@ -1741,8 +1840,8 @@ write_OFile(File * file, long *len)
 			dec = len - (s - sp->val) - 1;
 		if (len < 10)
 			len = 10;
-              	/*if (dec < 2)
-   			dec = 2;*/
+		/*if (dec < 2)
+		   dec = 2; */
 		if (dec > len)
 			len = dec + 1;
 		putByte_StrBuf(bp, len);
@@ -1758,8 +1857,8 @@ write_OFile(File * file, long *len)
 			dec = len - (s - sp->val) - 1;
 		if (len < 10)
 			len = 10;
-              	/*if (dec < 2)
-   			dec = 2;*/
+		/*if (dec < 2)
+		   dec = 2; */
 		if (dec > len)
 			len = dec + 1;
 		putByte_StrBuf(bp, dec);
@@ -1836,6 +1935,103 @@ write_OFile(File * file, long *len)
 
 	SETLONG(bp, modlen, BEGOFFS);
 
+#ifdef USE_AS
+	if (asm_flag)
+	{
+		char *mp;
+		long j, modlen, size;
+		char *name = strdup(file->name), *upname;
+		char *s;
+
+		s = strchr(name, '.');
+		if (s)
+			*s = 0;
+
+		upname = strdup(name);
+		for (i = 0; i < strlen(name); ++i)
+			upname[i] = toupper(name[i]);
+
+		fprintf(out, ".data\n");
+		fprintf(out, "\t.align 4\n");
+		/*fprintf(out, "\t.type %s_statics,@object\n", name);*/
+		fprintf(out, "%s_statics:\n", name);
+
+		for (i = 0; i < file->staticNo + 1; ++i)
+		{
+			fprintf(out, ".byte 0x0\n");
+			fprintf(out, ".byte 0x0\n");
+			fprintf(out, "\t.zero 2\n");
+			fprintf(out, "\t.zero 12\n");
+		}
+/*		fprintf(out, "\t.size %s_statics,%d\n", name, (file->staticNo + 1) * sizeof(ClipVar));*/
+		fprintf(out, ".section\t.rodata\n");
+		/*fprintf(out, "\t.type %s_body,@object\n", name);*/
+		fprintf(out, "%s_body:\n", name);
+
+		mp = bp->buf;
+		modlen = bp->ptr - bp->buf;
+		size = 0;
+
+		for (j = 0; j < modlen; j++)
+			fprintf(out, ".byte %d\n", mp[j]);
+
+/*		fprintf(out, "\t.size %s_body,%ld\n", name, modlen);*/
+
+		fprintf(out, ".globl %sclip__PCODE_%s\n", US, upname);
+		fprintf(out, ".data\n");
+		fprintf(out, "\t.align 32\n");
+		/*fprintf(out, "\t.type clip__PCODE_%s,@object\n", upname);*/
+/*		fprintf(out, "\t.size clip__PCODE_%s,%d\n", upname, sizeof(ClipFile));*/
+		fprintf(out, US"clip__PCODE_%s:\n", upname);
+
+		fprintf(out, "\t.long 1\n");
+		fprintf(out, "\t.long %s_body\n", name);
+		fprintf(out, "\t.long %s_body\n", name);
+		fprintf(out, "\t.long %ld\n", size);
+		fprintf(out, "\t.long 3\n");
+		fprintf(out, "\t.long .LC0\n");
+		fprintf(out, "\t.long %s_statics\n", name);
+		fprintf(out, "\t.long 3\n");
+		fprintf(out, "\t.long %d\n", file->staticNo);
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long -1\n");
+
+		fprintf(out, ".section\t.rodata\n");
+		fprintf(out, ".LC0:\n\t.string \"%s\"\n", name);
+
+		fprintf(out, ".data\n");
+
+		fprintf(out, "\t.align 4\n");
+		/*fprintf(out, "\t.type %s_cpfiles,@object\n", upname);*/
+		fprintf(out, "%s_cpfiles:\n", upname);
+		fprintf(out, "\t.long %sclip__PCODE_%s\n", US, upname);
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size %s_cpfiles,%d\n", upname, sizeof(ClipFile *) * 2);*/
+
+		fprintf(out, ".globl %sclip__MODULE_%s\n", US, upname);
+		fprintf(out, "\t.align 32\n");
+/*		fprintf(out, "\t.type clip__MODULE_%s,@object\n", upname);*/
+/*		fprintf(out, "\t.size clip__MODULE_%s,%d\n", upname, sizeof(ClipModule));*/
+		fprintf(out, US"clip__MODULE_%s:\n ", upname);
+		fprintf(out, "\t.long .LC0\n");
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+
+		fprintf(out, "\t.long %s_cpfiles\n", upname);
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+		fprintf(out, "\t.long 0\n");
+
+		free(name);
+		free(upname);
+	}
+	else
+#endif
 	if (pc_flag)
 	{
 		char *mp;
@@ -1891,15 +2087,15 @@ write_OFile(File * file, long *len)
 			name[i] = toupper(name[i]);
 
 		fprintf(out, "static ClipFile *%s_cpfiles[]=\n{\n", name);
-                fprintf(out, "\t&clip__PCODE_%s,\n", name);
-                fprintf(out, "\t0\n};\n");
+		fprintf(out, "\t&clip__PCODE_%s,\n", name);
+		fprintf(out, "\t0\n};\n");
 
 		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n ", name);
 		fprintf(out, "\t\"%s\",\n", name);
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");
-		/*fprintf(out, "\t&clip__PCODE_%s,\n", name);*/
+		/*fprintf(out, "\t&clip__PCODE_%s,\n", name); */
 
 		fprintf(out, "\t%s_cpfiles,\n", name);
 		fprintf(out, "\t0,\n");
@@ -1951,59 +2147,64 @@ test_File(File * mp)
 {
 }
 
-
 static void
-add_name(Coll *cp, char *s)
+add_name(Coll * cp, char *s)
 {
 	int no;
-        if (!names_flag)
-        	return;
-        if (!search_Coll(cp, s, &no))
-        	atInsert_Coll(cp, strdup(s), no);
+
+	if (!names_flag)
+		return;
+	if (!search_Coll(cp, s, &no))
+		atInsert_Coll(cp, strdup(s), no);
 }
 
 static void
-read_file(char *path, Coll *coll)
+read_file(char *path, Coll * coll)
 {
-        FILE *f;
-        char buf[128];
+	FILE *f;
+	char buf[128];
 
 	f = fopen(path, "r");
-        if (!f)
-        	return;
-	
-	while(fgets(buf, sizeof(buf), f))
-        {
-        	int l;
-                l = strlen(buf);
-                while ( l > 0 && (buf[l-1] == '\n' || buf[l-1] == '\r') )
-                	l--;
-        	buf[l] = 0;
-                if (!l || buf[0]=='#')
-                	continue;
-                
-                add_name(coll, buf);
-        }
+	if (!f)
+		return;
 
-        fclose(f);
+	while (fgets(buf, sizeof(buf), f))
+	{
+		int l;
+
+		l = strlen(buf);
+		while (l > 0 && (buf[l - 1] == '\n' || buf[l - 1] == '\r'))
+			l--;
+		buf[l] = 0;
+		if (!l || buf[0] == '#')
+			continue;
+
+		add_name(coll, buf);
+	}
+
+	fclose(f);
 }
 
 static void
-read_names( char *s, Coll *ex, Coll *nm)
+read_names(char *s, Coll * ex, Coll * nm)
 {
-        int al;
-        char path[256], *e, *b;
-        
-        if (!names_flag)
-        	return;
+	int al;
+	char path[256], *e, *b;
 
-        e = strrchr(s, '.');
-        b = strrchr(s, '/');
-        
-        if (e && (!b || e > b) )
-        	al = e - s;
+	if (!names_flag)
+		return;
+
+	b = strrchr(s, '/');
+	if (b)
+		b++;
 	else
-        	al = strlen(s);
+		b = s;
+	e = strchr(b, '.');
+
+	if (e && (e > b))
+		al = e - s;
+	else
+		al = strlen(s);
 
 	snprintf(path, sizeof(path), "%s", s);
 	snprintf(path + al, sizeof(path) - al, ".ex");
@@ -2012,12 +2213,144 @@ read_names( char *s, Coll *ex, Coll *nm)
 	read_file(path, nm);
 }
 
+
+typedef struct
+{
+	long hash;
+        int label;
+        int branch;
+        char *str;
+}
+Label;
+
+static int
+cmp_Label(void *p1, void *p2)
+{
+	Label *l1 = (Label *)p1;
+	Label *l2 = (Label *)p2;
+
+	if (l1->hash < l2->hash)
+        	return -1;
+	else if (l1->hash > l2->hash)
+        	return 1;
+        else
+        	return 0;
+}
+
+static Label *
+new_Label(char *str)
+{
+	Label *ret;
+
+	ret = (Label *)calloc(1, sizeof(Label));
+        ret->hash = hashstr(str + 5);
+        ret->str = str;
+
+
+	return ret;
+}
+
+
+static void
+print_tree(FILE *out, Coll *tree, int beg, int end)
+{
+	int med;
+        Label *lp, *rp, *cp;
+
+	if (beg>end)
+		return;
+
+	med = (beg+end)/2;
+
+	fprintf(out, "#%d/%d/%d\n", beg, med, end);
+
+        if (beg == end)
+        {
+        	cp = (Label*) tree->items[beg];
+
+		/*fprintf(out, "\t.p2align 4,,7\n");*/
+		fprintf(out, ".L%d:\n", cp->branch);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", cp->hash );
+		fprintf(out, "\tje .L%d\n", cp->label);
+		fprintf(out, "\tjmp .L1\n");
+                return;
+        }
+        else if ( (beg+1) == med && (end-1) == med )
+        {
+        	cp = (Label*) tree->items[med];
+        	lp = (Label*) tree->items[beg];
+        	rp = (Label*) tree->items[end];
+
+		/*fprintf(out, "\t.p2align 4,,7\n");*/
+		fprintf(out, ".L%d:\n", cp->branch);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", lp->hash );
+		fprintf(out, "\tje .L%d\n", lp->label);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", cp->hash );
+		fprintf(out, "\tje .L%d\n", cp->label);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", rp->hash );
+		fprintf(out, "\tje .L%d\n", rp->label);
+
+		fprintf(out, "\tjmp .L1\n");
+                return;
+        }
+        else if (beg == (end-1))
+        {
+        	cp = (Label*) tree->items[beg];
+        	rp = (Label*) tree->items[end];
+
+		/*fprintf(out, "\t.p2align 4,,7\n");*/
+		fprintf(out, ".L%d:\n", cp->branch);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", cp->hash );
+		fprintf(out, "\tje .L%d\n", cp->label);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", rp->hash );
+		fprintf(out, "\tje .L%d\n", rp->label);
+
+		fprintf(out, "\tjmp .L1\n");
+                return;
+        }
+        else
+        {
+        	cp = (Label*) tree->items[med];
+        	lp = (Label*) tree->items[(beg+med-1)/2];
+        	rp = (Label*) tree->items[(med+1+end)/2];
+
+		/*fprintf(out, "\t.p2align 4,,7\n");*/
+		fprintf(out, ".L%d:\n", cp->branch);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", cp->hash );
+		fprintf(out, "\tje .L%d\n", cp->label);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", cp->hash );
+		fprintf(out, "\tjl .L%d\n", lp->branch);
+		fprintf(out, "\tcmpl $%ld,%%eax\n", cp->hash );
+		fprintf(out, "\tjg .L%d\n", rp->branch);
+
+		fprintf(out, "\tjmp .L1\n");
+        }
+
+	print_tree(out, tree, beg, med-1);
+	print_tree(out, tree, med+1, end);
+}
+
+static void
+print_labels(FILE *out, Coll *tree)
+{
+	int i, count;
+
+        for(i = 0, count = tree->count; i<count; i++)
+        {
+        	Label *cp = (Label*) tree->items[i];
+		/*fprintf(out, "\t.p2align 4,,7\n");*/
+		fprintf(out, ".L%d:\n", cp->label);
+		fprintf(out, "\tmovl $%s%s,%%eax\n", US, cp->str );
+		fprintf(out, "\tjmp .L2\n");
+        }
+}
+
 void
-write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
+write_Cfunc(const char *name, int argc, char **argv, Coll * ex, Coll * nm)
 {
 	char buf[1024 * 8];
 	char word1[80], word2[80], word3[80];
-	int i;
+	int i, use_asm = 0, count;
 	FILE *in = 0, *out = 0;
 	int shared = shared_flag || eshared_flag;
 	time_t tbuf;
@@ -2029,6 +2362,7 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 	Coll libs;
 	Coll nlibs, slibs;
 	Coll alibs;
+	int labn, labcn;
 
 	init_Coll(&names, free, strcmp);
 	init_Coll(&fnames, free, 0 /*strcmp */ );
@@ -2062,8 +2396,7 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 		}
 		if (strsuff(a, SLIBSUF) || strsuff(a, LIBSUF))
 		{
-			if (a[0] == '/' || (a[0] == '.' && a[1] == '/') ||
-			    (a[0] == '.' && a[1] == '.' && a[2] == '/'))
+			if (a[0] == '/' || (a[0] == '.' && a[1] == '/') || (a[0] == '.' && a[1] == '.' && a[2] == '/'))
 			{
 				append_Coll(&libs, strdup(a));
 			}
@@ -2129,7 +2462,7 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 		}
 		else
 			free(r);
-	
+
 		read_names(s, ex, nm);
 	}
 
@@ -2157,10 +2490,10 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 	for (i = 0; i < objs.count; i++)
 	{
 		char *s = (char *) objs.items[i];
-                
+
 		strcat(buf, " ");
 		strcat(buf, s);
-		
+
 		read_names(s, ex, nm);
 	}
 
@@ -2173,6 +2506,16 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 		yyerror("cannot open pipe '%s'", buf);
 		goto end;
 	}
+
+#ifdef USE_AS
+	{
+		char *s = strrchr(name, '.');
+
+		if (asm_flag && s && !strcmp(s, ".s"))
+			use_asm = 1;
+	}
+#endif
+
 	out = fopen(name, "wb");
 	if (!out)
 	{
@@ -2191,8 +2534,15 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 		fprintf(out, " *\t%s\n", argv[i]);
 	fprintf(out, " */\n");
 
-	fprintf(out, "\n#include \"clip.h\"\n");
-	fprintf(out, "#include \"clipbase.h\"\n\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\n#include \"clip.h\"\n");
+		fprintf(out, "#include \"clipbase.h\"\n\n");
+	}
+	else
+	{
+		fprintf(out, "\n\t.file \"%s\"\n", name);
+	}
 
 	while (fgets(buf, sizeof(buf), in) != NULL)
 	{
@@ -2242,6 +2592,7 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 		else
 			insert_Coll(&names, strdup(sp));
 	      next:
+			;
 	}
 	if (in)
 	{
@@ -2253,8 +2604,9 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 	{
 		VAR(char, s, names.items[i]);
 
-		fprintf(out, "ClipFunction %s;\n", s);
-                add_name(nm, s);
+		if (!use_asm)
+			fprintf(out, "ClipFunction %s;\n", s);
+		add_name(nm, s);
 	}
 
 	if (shared)
@@ -2263,47 +2615,157 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 		{
 			char *s = (char *) nlibs.items[i];
 
-			fprintf(out, "CLIP_DLLIMPORT ClipFunction *_clip_builtin_%s ( long hash );\n", s);
+			if (!use_asm)
+				fprintf(out, "CLIP_DLLIMPORT ClipFunction *_clip_builtin_%s ( long hash );\n", s);
 		}
 	}
 
-	fprintf(out, "\nstatic ClipFunction *\n_builtins(long hash)\n{\n");
-
-	if (shared)
+	labn = 3;
+	labcn = 0;
+	if (!use_asm)
 	{
-		fprintf(out, "\tClipFunction *rp = 0;\n");
-		for (i = nlibs.count - 1; i >= 0; i--)
+		fprintf(out, "\nstatic ClipFunction *\n_builtins(long hash)\n{\n");
+
+		if (shared)
 		{
-			char *s = (char *) nlibs.items[i];
+			fprintf(out, "\tClipFunction *rp = 0;\n");
+			for (i = nlibs.count - 1; i >= 0; i--)
+			{
+				char *s = (char *) nlibs.items[i];
 
-			fprintf(out, "\trp = _clip_builtin_%s ( hash );\n", s);
-			fprintf(out, "\tif ( rp )\n\t\treturn rp;\n");
+				fprintf(out, "\trp = _clip_builtin_%s ( hash );\n", s);
+				fprintf(out, "\tif ( rp )\n\t\treturn rp;\n");
+			}
 		}
-	}
 
-	fprintf(out, "\n\tswitch( hash )\n\t{\n");
-	for (i = 0; i < names.count; ++i)
+		fprintf(out, "\n\tswitch( hash )\n\t{\n");
+		for (i = 0; i < names.count; ++i)
+		{
+			VAR(char, s, names.items[i]);
+
+			if (!memcmp(s + 5, "INIT_", 5) || !memcmp(s + 5, "EXIT_", 5))
+				continue;
+			fprintf(out, "\tcase 0x%lx:\n", hashstr(s + 5));
+			fprintf(out, "\t\treturn %s;\n", s);
+		}
+		fprintf(out, "\tdefault:\n\t\treturn 0;\n");
+		fprintf(out, "\t}\n");
+		fprintf(out, "};\n\n");
+	}
+	else
 	{
-		VAR(char, s, names.items[i]);
 
-		if (!memcmp(s + 5, "INIT_", 5) || !memcmp(s + 5, "EXIT_", 5))
-			continue;
-		fprintf(out, "\tcase 0x%lx:\n", hashstr(s + 5));
-		fprintf(out, "\t\treturn %s;\n", s);
+		fprintf(out, ".text\n\t.align 4\n");
+/*		fprintf(out, "\t.type\t_builtins,@function\n");*/
+		fprintf(out, US"_builtins:\n");
+
+		fprintf(out, "\tpushl %%ebp\n");
+		fprintf(out, "\tmovl %%esp,%%ebp\n");
+#ifdef _WIN32
+		fprintf(out, "\tsubl $36,%%esp\n");
+		fprintf(out, "\tpushl %%ebx\n");
+#else
+		fprintf(out, "\tsubl $24,%%esp\n");
+#endif
+		fprintf(out, "\tmovl $0,-4(%%ebp)\n");
+
+		if (shared)
+		{
+			for (i = nlibs.count - 1; i >= 0; i--)
+			{
+				char *s = (char *) nlibs.items[i];
+
+				fprintf(out, "\taddl $-12,%%esp\n");
+				fprintf(out, "\tmovl 8(%%ebp),%%eax\n");
+				fprintf(out, "\tpushl %%eax\n");
+#ifdef _WIN32
+				fprintf(out, "\tmovl %s%s_clip_builtin_%s, %%ebx\n", IMP, US, s);
+				fprintf(out, "\tcall *%%ebx\n");
+#else
+				fprintf(out, "\tcall %s%s_clip_builtin_%s\n", IMP, US, s);
+#endif
+				fprintf(out, "\taddl $16,%%esp\n");
+				fprintf(out, "\tmovl %%eax,%%eax\n");
+				fprintf(out, "\tmovl %%eax,-4(%%ebp)\n");
+				fprintf(out, "\tcmpl $0,-4(%%ebp)\n");
+				fprintf(out, "\tje .L%d\n", labn);
+				fprintf(out, "\tmovl -4(%%ebp),%%edx\n");
+				fprintf(out, "\tmovl %%edx,%%eax\n");
+				fprintf(out, "\tjmp .L2\n");
+				fprintf(out, "\t.p2align 4,,7\n");
+				fprintf(out, ".L%d:\n", labn);
+				labn++;
+			}
+		}
+                if (names.count)
+                {
+			/* tree create */
+                        Coll tree;
+                        int i;
+
+			init_Coll(&tree, free, cmp_Label);
+
+			fprintf(out, "\tmovl 8(%%ebp),%%eax\n");
+
+                        for(i=0; i<names.count; i++)
+                        	insert_Coll(&tree, new_Label((char*)(names.items[i])));
+
+                        for(i=0; i<tree.count; i++)
+                        	((Label*)(tree.items[i]))->branch = labn++;
+                        for(i=0; i<tree.count; i++)
+                        	((Label*)(tree.items[i]))->label = labn++;
+
+                        print_tree(out, &tree, 0, names.count-1);
+                        print_labels(out, &tree);
+
+                        destroy_Coll(&tree);
+                }
+		fprintf(out, "\t.p2align 4,,7\n");
+		fprintf(out, ".L1:\n");
+		fprintf(out, "\txorl %%eax,%%eax\n");
+		fprintf(out, "\tjmp .L2\n");
+		fprintf(out, "\t.p2align 4,,7\n");
+		fprintf(out, ".L2:\n");
+#ifdef _WIN32
+			fprintf(out, "\tmovl -40(%%ebp),%%ebx\n");
+			fprintf(out, "\tmovl %%ebp,%%esp\n");
+			fprintf(out, "\tpopl %%ebp\n");
+#else
+			fprintf(out, "\tleave\n");
+#endif
+		fprintf(out, "\tret\n");
+
+		fprintf(out, ".L%d:\n", labn);
+/*		fprintf(out, "\t.size\t_builtins,.L%d-_builtins\n", labn);*/
+		labn++;
+
 	}
-	fprintf(out, "\tdefault:\n\t\treturn 0;\n");
-	fprintf(out, "\t}\n");
-	fprintf(out, "};\n\n");
 
-	fprintf(out, "\nstatic ClipFunction *_inits[]=\n{\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\nstatic ClipFunction *_inits[]=\n{\n");
+	}
+	else
+	{
+		fprintf(out, ".data\n");
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_inits,@object\n");*/
+		fprintf(out, US"_inits:\n");
+	}
+
 	/* CLIPINIT, if defined, _must_ be first */
+	count = 0;
 	for (i = 0; i < names.count; ++i)
 	{
 		VAR(char, s, names.items[i]);
 
 		if (strcmp(s + 5, "INIT_CLIPINIT"))
 			continue;
-		fprintf(out, "\t%s,\n", s);
+		if (!use_asm)
+			fprintf(out, "\t%s,\n", s);
+		else
+			fprintf(out, "\t.long %s%s\n", US, s);
+		count++;
 	}
 	for (i = 0; i < names.count; ++i)
 	{
@@ -2311,12 +2773,24 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 
 		if (memcmp(s + 5, "INIT_", 5) || !strcmp(s + 5, "INIT_CLIPINIT"))
 			continue;
-		fprintf(out, "\t%s,\n", s);
+		if (!use_asm)
+			fprintf(out, "\t%s,\n", s);
+		else
+			fprintf(out, "\t.long %s%s\n", US, s);
+		count++;
 	}
-	fprintf(out, "\t0,\n");
-	fprintf(out, "};\n\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\t0,\n");
+		fprintf(out, "};\n\n");
+	}
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _inits,%d\n", (count + 1) * sizeof(ClipFunction *));*/
+	}
 
-	if (shared)
+	if (!use_asm && shared)
 	{
 		for (i = 0; i < nlibs.count; ++i)
 		{
@@ -2325,30 +2799,73 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 			fprintf(out, "CLIP_DLLIMPORT extern ClipFunction **_libinits_%s;\n", s);
 		}
 	}
-	fprintf(out, "\nstatic ClipFunction ***_libinits[]=\n{\n");
+
+	if (!use_asm)
+		fprintf(out, "\nstatic ClipFunction ***_libinits[]=\n{\n");
+	else
+	{
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_libinits,@object\n");*/
+		fprintf(out, US"_libinits:\n");
+	}
+
 	if (shared)
 	{
 		for (i = 0; i < nlibs.count; ++i)
 		{
-			fprintf(out, "\t0,\n");
+			if (!use_asm)
+				fprintf(out, "\t0,\n");
+			else
+				fprintf(out, "\t.long 0\n");
 		}
 	}
-	fprintf(out, "\t0,\n");
-	fprintf(out, "};\n\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\t0,\n");
+		fprintf(out, "};\n\n");
+	}
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _libinits,%d\n", ((shared ? nlibs.count : 0) + 1) * sizeof(ClipFunction ***));*/
+	}
 
-	fprintf(out, "\nstatic ClipFunction *_exits[]=\n{\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\nstatic ClipFunction *_exits[]=\n{\n");
+	}
+	else
+	{
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_exits,@object\n");*/
+		fprintf(out, US"_exits:\n");
+	}
+
+	count = 0;
 	for (i = 0; i < names.count; ++i)
 	{
 		VAR(char, s, names.items[i]);
 
 		if (memcmp(s + 5, "EXIT_", 5))
 			continue;
-		fprintf(out, "\t%s,\n", s);
+		if (!use_asm)
+			fprintf(out, "\t%s,\n", s);
+		else
+			fprintf(out, "\t.long %s\n", s);
+		count++;
 	}
-	fprintf(out, "\t0\n");
-	fprintf(out, "};\n\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\t0\n");
+		fprintf(out, "};\n\n");
+	}
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _exits,%d\n", (count + 1) * sizeof(ClipFunction *));*/
+	}
 
-	if (shared)
+	if (!use_asm && shared)
 	{
 		for (i = 0; i < nlibs.count; ++i)
 		{
@@ -2357,52 +2874,140 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 			fprintf(out, "CLIP_DLLIMPORT extern ClipFunction **_libexits_%s;\n", s);
 		}
 	}
-	fprintf(out, "\nstatic ClipFunction ***_libexits[]=\n{\n");
+	if (!use_asm)
+		fprintf(out, "\nstatic ClipFunction ***_libexits[]=\n{\n");
+	else
+	{
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_libexits,@object\n");*/
+		fprintf(out, US"_libexits:\n");
+	}
+
 	if (shared)
 	{
 		for (i = 0; i < nlibs.count; ++i)
 		{
-			fprintf(out, "\t0,\n");
+			if (!use_asm)
+				fprintf(out, "\t0,\n");
+			else
+				fprintf(out, "\t.long 0\n");
 		}
 	}
-	fprintf(out, "\t0,\n");
-	fprintf(out, "};\n\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\t0,\n");
+		fprintf(out, "};\n\n");
+	}
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _libexits,%d\n", (nlibs.count + 1) * sizeof(ClipFunction ***));*/
+	}
 
-	fprintf(out, "\nstatic const char *_pfunctions[]=\n{\n");
+	if (!use_asm)
+		fprintf(out, "\nstatic const char *_pfunctions[]=\n{\n");
+	else
+	{
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_pfunctions,@object\n");*/
+/*		fprintf(out, "\t.size\t_pfunctions,%d\n", (poName.count + paName.count + 1) * sizeof(char *));*/
+		fprintf(out, US"_pfunctions:\n");
+	}
+	count = 0;
 	for (i = 0; i < poName.count; ++i)
 	{
 		VAR(char, name, poName.items[i]);
 
-		fprintf(out, "\t\"%s\",\n", name);
+		if (!use_asm)
+			fprintf(out, "\t\"%s\",\n", name);
+		else
+			fprintf(out, "\t.long .LC%d\n", labcn + count);
+		count++;
 	}
 	for (i = 0; i < paName.count; ++i)
 	{
 		VAR(char, name, paName.items[i]);
 
-		fprintf(out, "\t\"%s\",\n", name);
+		if (!use_asm)
+			fprintf(out, "\t\"%s\",\n", name);
+		else
+			fprintf(out, "\t.long .LC%d\n", labcn + count);
+		count++;
 	}
-	fprintf(out, "\t0\n");
-	fprintf(out, "};\n\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\t0\n");
+		fprintf(out, "};\n\n");
+	}
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+		if (count)
+		{
+			fprintf(out, ".section\t.rodata\n");
+			count = 0;
+			for (i = 0; i < poName.count; ++i)
+			{
+				VAR(char, name, poName.items[i]);
+
+				fprintf(out, ".LC%d:\n\t.string \"%s\"\n", labcn + count, name);
+				count++;
+			}
+			for (i = 0; i < paName.count; ++i)
+			{
+				VAR(char, name, paName.items[i]);
+
+				fprintf(out, ".LC%d:\n\t.string \"%s\"\n", labcn + count, name);
+				count++;
+			}
+			fprintf(out, ".data\n");
+			labcn += count;
+		}
+	}
+
+	if (!use_asm)
+	{
+		for (i = 0; i < fnames.count; ++i)
+		{
+			VAR(char, s, fnames.items[i]);
+
+			fprintf(out, "extern ClipFile %s;\n", s);
+		}
+	}
+
+	if (!use_asm)
+	{
+		fprintf(out, "\nstatic struct ClipFile *_cpfiles[]=\n");
+		fprintf(out, "{\n");
+	}
+	else
+	{
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_cpfiles,@object\n");*/
+		fprintf(out, US"_cpfiles:\n");
+	}
 
 	for (i = 0; i < fnames.count; ++i)
 	{
 		VAR(char, s, fnames.items[i]);
 
-		fprintf(out, "extern ClipFile %s;\n", s);
+		if (!use_asm)
+			fprintf(out, "\t&%s,\n", s);
+		else
+			fprintf(out, "\t.long %s%s\n", US, s);
 	}
-
-	fprintf(out, "\nstatic struct ClipFile *_cpfiles[]=\n");
-	fprintf(out, "{\n");
-	for (i = 0; i < fnames.count; ++i)
+	if (!use_asm)
 	{
-		VAR(char, s, fnames.items[i]);
-
-		fprintf(out, "\t&%s,\n", s);
+		fprintf(out, "\t0\n");
+		fprintf(out, "};\n\n");
 	}
-	fprintf(out, "\t0\n");
-	fprintf(out, "};\n\n");
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _cpfiles,%d\n", (fnames.count + 1) * sizeof(ClipFile *));*/
+	}
 
-	if (shared)
+	if (!use_asm && shared)
 	{
 		for (i = 0; i < nlibs.count; ++i)
 		{
@@ -2411,78 +3016,222 @@ write_Cfunc(const char *name, int argc, char **argv, Coll *ex, Coll *nm)
 			fprintf(out, "CLIP_DLLIMPORT extern ClipFile **_libcpfiles_%s;\n", s);
 		}
 	}
-	fprintf(out, "\nstatic ClipFile ***_libcpfiles[]=\n{\n");
+	if (!use_asm)
+		fprintf(out, "\nstatic ClipFile ***_libcpfiles[]=\n{\n");
+	else
+	{
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_libcpfiles,@object\n");*/
+		fprintf(out, US"_libcpfiles:\n");
+	}
 	if (shared)
 	{
 		for (i = 0; i < nlibs.count; ++i)
 		{
-			fprintf(out, "\t0,\n");
+			if (!use_asm)
+				fprintf(out, "\t0,\n");
+			else
+				fprintf(out, "\t.long 0\n");
 		}
 	}
-	fprintf(out, "\t0,\n");
-	fprintf(out, "};\n\n");
+	if (!use_asm)
+	{
+		fprintf(out, "\t0,\n");
+		fprintf(out, "};\n\n");
+	}
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _cpfiles,%d\n", ((shared ? nlibs.count : 0) + 1) * sizeof(ClipFile *));*/
+	}
+
+	if (!use_asm)
+	{
+		for (i = 0; i < dnames.count; ++i)
+		{
+			VAR(char, s, dnames.items[i]);
+
+			fprintf(out, "extern struct DBFuncTable %s;\n", s);
+		}
+	}
+
+	if (!use_asm)
+	{
+		fprintf(out, "\nstatic struct DBFuncTable *_dbdrivers[]=\n");
+		fprintf(out, "{\n");
+	}
+	else
+	{
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_dbdrivers,@object\n");*/
+		fprintf(out, US"_dbdrivers:\n");
+	}
 
 	for (i = 0; i < dnames.count; ++i)
 	{
 		VAR(char, s, dnames.items[i]);
 
-		fprintf(out, "extern struct DBFuncTable %s;\n", s);
+		if (!use_asm)
+			fprintf(out, "\t&%s,\n", s);
+		else
+			fprintf(out, "\t.long %s\n", s);
 	}
 
-	fprintf(out, "\nstatic struct DBFuncTable *_dbdrivers[]=\n");
-	fprintf(out, "{\n");
-	for (i = 0; i < dnames.count; ++i)
+	if (!use_asm)
 	{
-		VAR(char, s, dnames.items[i]);
-
-		fprintf(out, "\t&%s,\n", s);
+		fprintf(out, "\t0\n");
+		fprintf(out, "};\n\n");
 	}
-	fprintf(out, "\t0\n");
-	fprintf(out, "};\n\n");
-
-	for (i = 0; i < rnames.count; ++i)
+	else
 	{
-		VAR(char, s, rnames.items[i]);
-
-		fprintf(out, "extern struct ClipObjRtti %s;\n", s);
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _dbdrivers,%d\n", (dnames.count + 1) * sizeof(DBFuncTable *));*/
 	}
 
-	fprintf(out, "\nstatic struct ClipObjRtti *_objrtti[]=\n");
-	fprintf(out, "{\n");
-	for (i = 0; i < rnames.count; ++i)
+	if (!use_asm)
 	{
-		VAR(char, s, rnames.items[i]);
-
-		fprintf(out, "\t&%s,\n", s);
-	}
-	fprintf(out, "\t0\n");
-	fprintf(out, "};\n\n");
-
-	fprintf(out, "static ClipInitStruct _init_struct =\n{\n");
-	fprintf(out, "\t_builtins,\n");
-	fprintf(out, "\t_inits,\n\t_libinits,\n\t_exits,\n\t_libexits,\n\t_pfunctions,\n");
-	fprintf(out, "\t_cpfiles,\n\t_libcpfiles,\n\t_objrtti,\n\t(void**)_dbdrivers,\n");
-	fprintf(out, "\t\"%s\"\n", targetCharset);
-	fprintf(out, "};\n\n");
-	fprintf(out, "%svoid _clip_init_struct(ClipInitStruct *sp);\n", shared ? "CLIP_DLLIMPORT " : "");
-	fprintf(out, "void\n_clip_init_dll(void)\n{\n");
-	if (shared)
-	{
-		for (i = 0; i < nlibs.count; ++i)
+		for (i = 0; i < rnames.count; ++i)
 		{
-			VAR(char, s, nlibs.items[i]);
+			VAR(char, s, rnames.items[i]);
 
-			fprintf(out, "\t_libinits[%d] = &_libinits_%s,\n", i, s);
-			fprintf(out, "\t_libexits[%d] = &_libexits_%s,\n", i, s);
-			fprintf(out, "\t_libcpfiles[%d] = &_libcpfiles_%s,\n", i, s);
+			fprintf(out, "extern struct ClipObjRtti %s;\n", s);
 		}
-	}
-	fprintf(out, "\t_clip_init_struct(&_init_struct);\n");
-	fprintf(out, "}\n\n");
 
-	if (pcode_flag || pc_flag || !main_flag)
+		fprintf(out, "\nstatic struct ClipObjRtti *_objrtti[]=\n");
+		fprintf(out, "{\n");
+	}
+	else
 	{
-		fprintf(out, "\n\
+		fprintf(out, "\t.align 4\n");
+/*		fprintf(out, "\t.type\t_objrtti,@object\n");*/
+		fprintf(out, US"_objrtti:\n");
+	}
+
+	for (i = 0; i < rnames.count; ++i)
+	{
+		VAR(char, s, rnames.items[i]);
+
+		if (!use_asm)
+			fprintf(out, "\t&%s,\n", s);
+		else
+			fprintf(out, "\t.long %s\n", s);
+	}
+	if (!use_asm)
+	{
+		fprintf(out, "\t0\n");
+		fprintf(out, "};\n\n");
+	}
+	else
+	{
+		fprintf(out, "\t.long 0\n");
+/*		fprintf(out, "\t.size _objrtti,%d\n", (rnames.count + 1) * sizeof(ClipObjRtti *));*/
+	}
+
+	if (!use_asm)
+	{
+		fprintf(out, "static ClipInitStruct _init_struct =\n{\n");
+		fprintf(out, "\t_builtins,\n");
+		fprintf(out, "\t_inits,\n\t_libinits,\n\t_exits,\n\t_libexits,\n\t_pfunctions,\n");
+		fprintf(out, "\t_cpfiles,\n\t_libcpfiles,\n\t_objrtti,\n\t(void**)_dbdrivers,\n");
+		fprintf(out, "\t\"%s\"\n", targetCharset);
+		fprintf(out, "};\n\n");
+		fprintf(out, "%svoid _clip_init_struct(ClipInitStruct *sp);\n", shared ? "CLIP_DLLIMPORT " : "");
+		fprintf(out, "void\n_clip_init_dll(void)\n{\n");
+		if (shared)
+		{
+			for (i = 0; i < nlibs.count; ++i)
+			{
+				VAR(char, s, nlibs.items[i]);
+
+				fprintf(out, "\t_libinits[%d] = &_libinits_%s,\n", i, s);
+				fprintf(out, "\t_libexits[%d] = &_libexits_%s,\n", i, s);
+				fprintf(out, "\t_libcpfiles[%d] = &_libcpfiles_%s,\n", i, s);
+			}
+		}
+		fprintf(out, "\t_clip_init_struct(&_init_struct);\n");
+		fprintf(out, "}\n\n");
+	}
+	else
+	{
+/*		fprintf(out, "\t.type\t_init_struct,@object\n");*/
+/*		fprintf(out, "\t.size\t_init_struct,%d\n", sizeof(ClipInitStruct));*/
+		fprintf(out, US"_init_struct:\n");
+
+		fprintf(out, "\t.long %s_builtins\n", US);
+		fprintf(out, "\t.long %s_inits\n", US);
+		fprintf(out, "\t.long %s_libinits\n", US);
+		fprintf(out, "\t.long %s_exits\n", US);
+		fprintf(out, "\t.long %s_libexits\n", US);
+		fprintf(out, "\t.long %s_pfunctions\n", US);
+		fprintf(out, "\t.long %s_cpfiles\n", US);
+		fprintf(out, "\t.long %s_libcpfiles\n", US);
+		fprintf(out, "\t.long %s_objrtti\n", US);
+		fprintf(out, "\t.long %s_dbdrivers\n", US);
+		fprintf(out, "\t.long .LC%d\n", labcn);
+
+		fprintf(out, ".section\t.rodata\n");
+		fprintf(out, ".LC%d:\n\t.string \"%s\"\n", labcn, targetCharset);
+		labcn++;
+
+		fprintf(out, ".text\n");
+		fprintf(out, "\t.align 4\n");
+		fprintf(out, ".globl %s_clip_init_dll\n", US);
+/*		fprintf(out, "\t.type _clip_init_dll,@function\n");*/
+		fprintf(out, US"_clip_init_dll:\n");
+
+		fprintf(out, "\tpushl %%ebp\n");
+		fprintf(out, "\tmovl %%esp,%%ebp\n");
+#ifdef _WIN32
+		fprintf(out, "\tsubl $20,%%esp\n");
+		fprintf(out, "\tpushl %%ebx\n");
+#else
+		fprintf(out, "\tsubl $8,%%esp\n");
+#endif
+		if (shared)
+		{
+			for (i = 0; i < nlibs.count; ++i)
+			{
+				VAR(char, s, nlibs.items[i]);
+
+#ifdef _WIN32
+				fprintf(out, "\tmovl %s%s_libinits_%s,%%eax\n", IMP, US, s);
+				fprintf(out, "\tmovl %%eax,%s_libinits+%d\n", US, i * sizeof(ClipFunction ***));
+
+				fprintf(out, "\tmovl %s%s_libexits_%s,%%eax\n", IMP, US, s);
+				fprintf(out, "\tmovl %%eax,%s_libexits+%d\n", US, i * sizeof(ClipFunction ***));
+
+				fprintf(out, "\tmovl %s%s_libcpfiles_%s,%%eax\n", IMP, US, s);
+				fprintf(out, "\tmovl %%eax,%s_libcpfiles+%d\n", US, i * sizeof(ClipFile ***));
+#else
+				fprintf(out, "\tmovl $%s%s_libinits_%s,%s_libinits+%d\n", IMP, US, s, US, i * sizeof(ClipFunction ***));
+				fprintf(out, "\tmovl $%s%s_libexits_%s,%s_libexits+%d\n", IMP, US, s, US, i * sizeof(ClipFunction ***));
+				fprintf(out, "\tmovl $%s%s_libcpfiles_%s,%s_libcpfiles+%d\n", IMP, US, s, US, i * sizeof(ClipFile ***));
+#endif
+			}
+		}
+		fprintf(out, "\taddl $-12,%%esp\n");
+		fprintf(out, "\tpushl $%s_init_struct\n", US);
+		fprintf(out, "\tcall %s_clip_init_struct\n", US);
+		fprintf(out, "\taddl $16,%%esp\n");
+#ifdef _WIN32
+			fprintf(out, "\tmovl -24(%%ebp),%%ebx\n");
+			fprintf(out, "\tmovl %%ebp,%%esp\n");
+			fprintf(out, "\tpopl %%ebp\n");
+#else
+			fprintf(out, "\tleave\n");
+#endif
+		fprintf(out, "\tret\n");
+		fprintf(out, ".L%d:\n", labn);
+/*		fprintf(out, "\t.size	 _clip_init_dll,.L%d-_clip_init_dll\n", labn);*/
+		labn++;
+	}
+
+	if ((pcode_flag || pc_flag || !main_flag) && !wrote_main)
+	{
+
+		if (!use_asm)
+		{
+			fprintf(out, "\n\
 \n\
 extern char **environ;\n\
 \n\
@@ -2496,6 +3245,56 @@ main(int argc, char **argv)\n\
 	return _clip_main(mp, 0x%lx, argc, argv, environ);\n\
 }\n\
 ", hashstr("MAIN"));
+
+		}
+		else
+		{
+			fprintf(out, "\t.align 4\n");
+			fprintf(out, ".globl %smain\n",US);
+/*			fprintf(out, "\t.type	 main,@function\n");*/
+			fprintf(out, US"main:\n");
+			fprintf(out, "\tpushl %%ebp\n");
+			fprintf(out, "\tmovl %%esp,%%ebp\n");
+			fprintf(out, "\tsubl $24,%%esp\n");
+#ifdef _WIN32
+			fprintf(out, "\tcall ___main\n");
+#endif
+			fprintf(out, "\tcall %s_clip_init_dll\n",US);
+			fprintf(out, "\taddl $-12,%%esp\n");
+			fprintf(out, "\tpushl $0\n");
+			fprintf(out, "\tcall %snew_ClipMachine\n",US);
+			fprintf(out, "\taddl $16,%%esp\n");
+			fprintf(out, "\tmovl %%eax,-4(%%ebp)\n");
+			fprintf(out, "\taddl $-12,%%esp\n");
+			fprintf(out, "\tmovl %senviron,%%eax\n", US);
+			fprintf(out, "\tpushl %%eax\n");
+			fprintf(out, "\tmovl 12(%%ebp),%%eax\n");
+			fprintf(out, "\tpushl %%eax\n");
+			fprintf(out, "\tmovl 8(%%ebp),%%eax\n");
+			fprintf(out, "\tpushl %%eax\n");
+			fprintf(out, "\tpushl $%ld\n", hashstr("MAIN"));
+			fprintf(out, "\tmovl -4(%%ebp),%%eax\n");
+			fprintf(out, "\tpushl %%eax\n");
+			fprintf(out, "\tcall %s_clip_main\n", US);
+			fprintf(out, "\taddl $32,%%esp\n");
+			fprintf(out, "\tmovl %%eax,%%edx\n");
+			fprintf(out, "\tmovl %%edx,%%eax\n");
+			fprintf(out, "\tjmp .L%d\n", labn);
+/*			fprintf(out, "\t.p2align 4,,7\n");*/
+			fprintf(out, "\t.align 4\n");
+			fprintf(out, ".L%d:\n", labn);
+			labn++;
+#ifdef _WIN32
+			fprintf(out, "\tmovl %%ebp,%%esp\n");
+			fprintf(out, "\tpopl %%ebp\n");
+#else
+			fprintf(out, "\tleave\n");
+#endif
+			fprintf(out, "\tret\n");
+			fprintf(out, ".L%d:\n", labn);
+/*			fprintf(out, "\t.size	 main,.L%d-main\n", labn);*/
+
+		}
 	}
 
       end:

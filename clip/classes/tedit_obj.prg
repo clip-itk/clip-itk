@@ -1,57 +1,32 @@
 /*   TEXTEDIT class						*/
 /*   								*/
-/*   Copyright (C) 2001  ITK					*/
+/*   Copyright (C) 2001-2204  ITK				*/
 /*   Author  : Elena Kornilova (alena@itk.ru)			*/
 /*   Licence : (GPL) http://www.itk.ru/clipper/licence.html	*/
 
 #include "edit.ch"
 #include "box.ch"
-
-#define cmd_UP		1
-#define cmd_DOWN	2
-#define cmd_CRIGHT	3
-#define cmd_CLEFT	4
-#define cmd_HOME	5
-#define cmd_END		6
-#define cmd_PGUP	7
-#define cmd_PGDOWN	8
-#define cmd_TOP		9
-#define cmd_BOTTOM	10
-#define cmd_INS		11
-#define cmd_BS		12
-#define cmd_DEL		13
-#define cmd_INSLINE	14
-#define cmd_NEWLINE   	15
-#define cmd_DELINE	16
-#define cmd_CPBL	17
-#define cmd_MVBL	18
-#define cmd_DELBL	19
-#define cmd_BOTOP   	20
-#define cmd_GOPOS   	21
-#define cmd_GOLINE   	22
-#define cmd_DELHOME   	23
-#define cmd_DELEND   	24
-#define cmd_PASTCLB   	25
-#define cmd_BEGBLOCK   	26
-#define cmd_FIND   	27
-#define cmd_REPLACE   	28
-#define cmd_CHECKLINE  	29
-#define cmd_LOADBLOCK 	30
-#define cmd_FRLINE	31
-#define cmd_FRPART	32
-#define cmd_OVR		33
-#define cmd_DRAW	34
+#include "fileio.ch"
 
 #define U_CMD		1
 #define U_CYCLE		2
 #define U_POS		3
 #define U_LINE		4
-#define U_COL		5
-#define U_ROW		6
-#define U_VALUE		7
-#define U_BLOCK		8  //{type_block[0-no_block|1-str_block|2-rect_block], nt, nl, nb, nr}
-#define U_MKBLOCK	9
-#define U_FIND		10
+#define U_LINES		5
+#define U_COL		6
+#define U_ROW		7
+#define U_VALUE		8
+#define U_BLOCK		9  //{type_block[0-no_block|1-str_block|2-rect_block], nt, nl, nb, nr}
+#define U_MKBLOCK	10
+#define U_FIND		11
+
+#define FA_NORMAL	0
+#define FA_READONLY	1
+#define FA_HIDDEN	2
+#define FA_SYSTEM	4
+#define FA_VOLUME	8
+#define FA_DIRECTORY	16
+#define FA_ARCHIVE	32
 
 function textEditNew(Lrow, Lcol, Rrow, Rcol, color)
 local obj
@@ -68,33 +43,39 @@ local obj
        obj:rowWin       := 1
        obj:nTop         := Lrow
        obj:nLeft        := Lcol
-       obj:nBottom      := Rrow
+       obj:nBottom 	:= Rrow
        obj:nRight       := Rcol
        obj:updated      := .f.
        obj:marginLeft   := TE_MARGIN_LEFT
        obj:marginRight  := TE_MARGIN_RIGHT
        obj:tabSize      := TE_TABSIZE
        obj:maxStrings   := TE_MAXSTRINGS
+       obj:Hyphen   	:= TE_HYPHEN
        obj:tabPack      := iif(lower(set("edit_tabpack"))=='yes',.t.,.f.)
+       obj:inFocus	:= .f.
+       obj:autoWrap	:= TE_AUTO_WRAP
 
        obj:mkblock	:= .f.
        obj:strblock	:= .f. 		// строчный блок
        obj:rectblock	:= .f. 		// прямоугольный блок
        obj:koordblock	:= {NIL, NIL, NIL, NIL}	// координаты блока
 
-       obj:findR        := {}
-       obj:regSearch	:= {}
-       obj:undobuffer	:= {}
+       obj:__findR      := {}
+       obj:__regSearch	:= {}
+       obj:__undobuffer	:= {}
        obj:lenundo	:= 100
-       obj:curundo	:= 0
-       obj:startundo	:= 0
+       obj:__curundo	:= 0
+       obj:__startundo	:= 0
        obj:charset	:= NIL
-       obj:hostcharset	:= host_charset()
+       obj:lEofString	:= .f.      // show eof string
+       obj:eofString	:= [<EOF>]
+       obj:__hostcharset:= host_charset()
+       obj:__keys	:= map()
 
        obj:highLightColor	:= map()
 
        obj:Nstyle	:= .f.
-       obj:LNstyle	:= 0
+       obj:__LNstyle	:= 0
 
        obj:edbuffer 	:= {}
        obj:__colors 	:= {}      // палитры цветов
@@ -103,6 +84,7 @@ local obj
        _recover_textedit(obj)
 
        obj:__setcolor()
+       obj:__setDefaultKey()
        obj:__nullInit()
 
 return obj
@@ -124,12 +106,14 @@ function _recover_textedit(obj)
        obj:pageUp       := @te_pageUp()
        obj:prevPage     := @te_prevPage()
        obj:nextPage     := @te_nextPage()
-       obj:panHome      := @te_panHome()
-       obj:panEnd       := @te_panEnd()
-       obj:panLeft      := @te_panLeft()
-       obj:panRight     := @te_panRight()
-       obj:panUp        := @te_panUp()
-       obj:panDown      := @te_panDown()
+
+       //obj:panHome      := @te_panHome()
+       //obj:panEnd       := @te_panEnd()
+       //obj:panLeft      := @te_panLeft()
+       //obj:panRight     := @te_panRight()
+       //obj:panUp        := @te_panUp()
+       //obj:panDown      := @te_panDown()
+
        obj:handleKey    := @te_handleKey()
 
        obj:gotoLine     := @te_gotoLine()
@@ -160,14 +144,15 @@ function _recover_textedit(obj)
        obj:moveBlock    := @te_moveBlock()
        obj:deleteBlock  := @te_deleteBlock()
        obj:setTabSize	:= @te_setTabSize()
+       obj:setFocus	:= @te_setFocus()
 
-       obj:newClipBoard   := @te_newClipBoard()
-       obj:addClipBoard   := @te_addClipBoard()
-       obj:moveClipBoard  := @te_moveClipBoard()
-       obj:pasteClipBoard := @te_pasteClipBoard()
+       obj:copyToClipboard	:= @te_copyToClipboard()
+       obj:addToClipboard	:= @te_addToClipboard()
+       obj:moveToClipboard	:= @te_moveToClipboard()
+       obj:pasteFromClipboard	:= @te_pasteFromClipboard()
 
        obj:refresh      := @te_refresh()
-       obj:refreshStr   := @te_refreshStr()
+       //obj:refreshStr   := @te_refreshStr()
 
        obj:backSpace    := @te_backSpace()
        obj:delLeft      := @te_backSpace()
@@ -176,23 +161,24 @@ function _recover_textedit(obj)
        obj:delete       := @te_delRight()
        obj:deleteLine   := @te_deleteLine()
        obj:delEnd       := @te_delEnd()
-       obj:delWordLeft  := @te_delWordLeft()
-       obj:delWordRight := @te_delWordRight()
+       //obj:delWordLeft  := @te_delWordLeft()
+       //obj:delWordRight := @te_delWordRight()
 
        obj:Insert       := @te_Insert()
        obj:overStrike   := @te_overStrike()
+       obj:__autoWrap	:= @te___autoWrap()
        obj:insertLine   := @te_insertLine()
        obj:newLine      := @te_newLine()
 
        obj:draw		:= @te_draw()
-       obj:Frmt		:= @te_Frmt()
+       obj:__Frmt 	:= @te_Frmt()
        obj:formatLine   := @te_formatLine()
        obj:formatPart   := @te_formatPart()
        obj:centerLine   := @te_centerLine()
        obj:insTempl    	:= @te_insTempl()
        obj:insMacro    	:= @te_insMacro()
 
-       obj:check_line   := @te_check_line()
+       obj:__check_line := @te_check_line()
 
        obj:undo		:= @te_undo()
        obj:writeundo	:= @te_writeundo()
@@ -200,7 +186,7 @@ function _recover_textedit(obj)
        obj:print	:= @te_print()
        obj:printBlock	:= @te_printBlock()
 
-       obj:around_check	:= @te_around_check()
+       obj:__around_check	:= @te_around_check()
        obj:highLightAdd	:= @te_highLightAdd()
        obj:highLightDel	:= @te_highLightDel()
 
@@ -210,9 +196,55 @@ function _recover_textedit(obj)
        obj:setNewColor	:= @te_setNewColor()
        obj:__setColor 	:= @__te_setcolor()
 
-	obj:setCharset	:= @te_setCharset()
-	obj:check_clipchs := @te_check_clipchs()
+       obj:setCharset	:= @te_setCharset()
+       obj:__check_clipchs := @te_check_clipchs()
+       obj:__setDefaultKey	:= @te___setDefaultKey()
+       obj:setKey	:= @te_setKey()
+       obj:applyKey	:= @te_applyKey()
 return obj
+*************************************
+static function te___setDefaultKey()
+local m
+	::__keys := map()
+	m := ::__keys
+
+	m[K_DOWN]	:= {|oTe, nkey| oTe:down(), TE_CONTINUE }
+	m[K_PGDN]	:= {|oTe, nkey| oTe:pageDown(), TE_CONTINUE }
+	m[K_CTRL_PGDN]	:= {|oTe, nkey| oTe:bottom(), TE_CONTINUE }
+	m[K_UP]		:= {|oTe, nkey| oTe:up(), TE_CONTINUE }
+	m[K_PGUP]	:= {|oTe, nkey| oTe:pageUp(), TE_CONTINUE }
+	m[K_CTRL_PGUP]	:= {|oTe, nkey| oTe:top(), TE_CONTINUE }
+	m[K_HOME]	:= {|oTe, nkey| oTe:home(), TE_CONTINUE }
+	m[K_END]	:= {|oTe, nkey| oTe:end(), TE_CONTINUE }
+	m[K_LEFT]	:= {|oTe, nkey| oTe:left(), TE_CONTINUE }
+	m[K_RIGHT]	:= {|oTe, nkey| oTe:right(), TE_CONTINUE }
+	m[K_CTRL_LEFT]	:= {|oTe, nkey| oTe:wordLeft(), TE_CONTINUE }
+	m[K_CTRL_RIGHT]	:= {|oTe, nkey| oTe:wordRight(), TE_CONTINUE }
+
+	m[K_BS]		:= {|oTe, nkey| oTe:backSpace(), TE_CONTINUE }
+	m[K_CTRL_BS]	:= {|oTe, nkey| oTe:delHome(), TE_CONTINUE }
+	m[K_DEL]	:= {|oTe, nkey| oTe:delRight(), TE_CONTINUE }
+return
+*************************************
+static function te_setKey(nKey, vData)
+local ret
+	ret := vData
+	if nKey $ ::__keys
+		ret := ::__keys[nKey]
+	endif
+	::__keys[nKey] := vData
+	if vData == NIL
+		adel(::__keys, nKey)
+	endif
+return ret
+*************************************
+static function te_applyKey(oTe, nKey)
+local ret := TE_EXCEPTION, m
+	m := oTe:__keys
+	if nKey $ m
+		ret := eval(m[nKey], oTe, nKey)
+	endif
+return ret
 *************************************
 static function te_handleKey(nkey)
 local ret:=.t.
@@ -255,7 +287,7 @@ local i:=len(::edbuffer), oldLine
 
 /*
    if undo
-	::writeundo(cmd_CHECKLINE)
+	::writeundo(HASH_CHECKLINE)
    endif
 */
    oldLine := ::line
@@ -264,19 +296,19 @@ local i:=len(::edbuffer), oldLine
 	if undo
 		::line := i+1
 	    //	::pos := 1
-		::writeundo(cmd_INSLINE)
+		::writeundo(HASH_INSLINE)
 	endif
    next
   ::lines:=len(::edbuffer)
 return oldLine
 *********** initialisation
 static function __te_nullInit()
-  asize(::undobuffer, ::lenundo)
-  afill(::undobuffer, NIL)
+  asize(::__undobuffer, ::lenundo)
+  afill(::__undobuffer, NIL)
   asize(::edbuffer,0)
   afill(::koordblock, NIL)
-  asize(::findR, 3)
-  afill(::findR, NIL)
+  asize(::__findR, 3)
+  afill(::__findR, NIL)
   ::strblock := .f.
   ::rectblock := .f.
   ::mkblock := .f.
@@ -287,8 +319,10 @@ static function te_reLoadFile()
 return .t.
 
 *********** загрузка файла с диска
-static function te_loadFile(filename)
+static function te_loadFile(filename, lRefresh)
 local nfile, scr, i
+  lRefresh := iif(empty(lRefresh), .t., lRefresh)
+
   save screen to scr
   @ maxrow(), 0 say padr([Load file...], maxcol()) color "0/7"
   inkey()
@@ -298,6 +332,10 @@ local nfile, scr, i
      restore screen from scr
      return .f.
   endif
+
+  *if !empty(fileseek(filename, FA_ARCHIVE+FA_VOLUME+FA_SYSTEM+FA_HIDDEN+FA_READONLY))
+  *	alert(fileattrs()+';'+tostring(fileattr()))
+  *endif
   i:=atr(PATH_DELIM,filename)
   if i!=0
 	::path:=left(filename,i-1)
@@ -306,30 +344,30 @@ local nfile, scr, i
   ::__nullInit()
   ::lines := 0
   if ::charset == NIL
-	::check_clipchs(::path)
+	::__check_clipchs(::path)
   endif
   if ::charset != NIL
 	while !fileeof(nfile)
 		::lines ++
-		/*
+		/**/
 		if ::lines > ::maxStrings
 			::lines --
 			alert([The size of file ;]+filename+[; most maximum size!;Last strings may be lost], [OK])
 			exit
 		endif
-		*/
-		aadd(::edbuffer, translate_charset(::charset, ::hostcharset, tabexpand(filegetstr(nfile,TE_MAX_LEN_STRING),::tabSize)) )
+		/**/
+		aadd(::edbuffer, translate_charset(::charset, ::__hostcharset, tabexpand(filegetstr(nfile,TE_MAX_LEN_STRING),::tabSize)) )
 	enddo
   else
 	while !fileeof(nfile)
 		::lines ++
-		/*
+		/**/
 		if ::lines > ::maxStrings
 			::lines --
 			alert([The size of file ;]+filename+[; most maximum size!;Last strings may be lost], [OK])
 			exit
 		endif
-		*/
+		/**/
 		aadd(::edbuffer, tabexpand(filegetstr(nfile,TE_MAX_LEN_STRING),::tabSize) )
 	enddo
   endif
@@ -339,7 +377,9 @@ local nfile, scr, i
   ::pos:=1
   ::updated:=.f.
   restore screen from scr
-  ::refresh()
+  if lRefresh
+	::refresh()
+  endif
 RETURN .t.
 
 *********** загрузка текста из строки
@@ -351,7 +391,7 @@ local i
 
 	::__nullInit()
 	if ::charset != NIL
-		str := translate_charset(::charset, ::hostcharset, str)
+		str := translate_charset(::charset, ::__hostcharset, str)
 	endif
 	::edbuffer := split(str, "&\r?&\n")
 	//tab := ::tabSize
@@ -378,6 +418,9 @@ return
 ***********
 static function te_setNewColor(newColor)
 local i, oldcolor
+       if newColor == NIL
+		return
+       endif
        oldcolor := ::__colors
        asize(::__colors, 0)
        ::colorSpec := iif(newColor!=NIL, newColor, ::colorSpec)
@@ -397,56 +440,21 @@ local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
 
        ::line   := max(1, ::line)
        ::pos    := max(1, ::pos)
-       /*
-       if ::rowWin > ::nBottom -::nTop+1
-	::rowWin := min(::nBottom-::nTop+1, ::line)
-       elseif ::rowWin < ::nTop
-	::rowWin := max(::rowWin, 1)
-       else
-	::rowWin := min(::line, max(::rowWin, 1))
-       endif
-       */
-       /*
-       if ::rowWin > ::nBottom -::nTop+1
-	::rowWin := min(::nBottom-::nTop+1, ::line)
-       elseif ::rowWin < ::nTop
-	::rowWin := 1
-       else
-	::rowWin := min(::line, max(::rowWin, 1))
-       endif
-       */
+
        ::rowWin := min(min(max(1,::rowWin),::nBottom-::nTop+1),::line)
        ::colWin := min(min(max(1,::colWin),::nRight-::nLeft+1),::pos)
-       /*
-       if ::colWin > ::nRight-::nLeft+1
-	::colWin := min(::nRight-::nLeft+1, ::pos)
-       elseif ::colWin < ::nLeft
-	::colWin := max(::colWin, 1)
-       else
-	::colWin := min(::pos, max(::colWin, 1))
-       endif
-       */
-       /*
-       if ::colWin > ::nRight-::nLeft+1
-	::colWin := min(::nRight-::nLeft+1, ::pos)
-       elseif ::colWin < ::nLeft
-	::colWin := 1
-       else
-	::colWin := min(::pos, max(::colWin, 1))
-       endif
-       */
 
        if ::mkblock
 	   ::koordblock[3] := ::line
 	   ::koordblock[4] := ::pos
        endif
        if ::lines > ::maxStrings
-		alert([The size of file is a most maximum size!;Last strings may be lost], [OK])
+		alert([The size of file is a most maximum size!;Last strings may be lost; Please check MAXSTRINGS options], [OK])
 		::lines := ::maxStrings
-		::asize(::edbuffer, ::lines)
+		asize(::edbuffer, ::lines)
        endif
 
-       fnd := iif(::findR[1]!=NIL, .t., .f.)
+       fnd := iif(::__findR[1]!=NIL, .t., .f.)
 
        bl := ::line-::rowWin
        bp := ::pos-::colWin
@@ -465,9 +473,9 @@ local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
 	   min := max(min, 1)
 	   max := max(max, 0)
        endif
-       if fnd .and. !between(::findR[1], bl+1, bl+1+::nbottom-::ntop+1)
+       if fnd .and. !between(::__findR[1], bl+1, bl+1+::nbottom-::ntop+1)
 	   fnd := .f.
-	   afill(::findR, NIL)
+	   afill(::__findR, NIL)
        endif
        for i=1 to ::nbottom-::ntop+1
 	   if (bl+i) <= ::lines
@@ -477,10 +485,10 @@ local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
 		clr_st := ::__colors[::highLightColor[bl+i][1]]
 	      elseif !block .or. (block .and. !between(bl+i, ::koordblock[1], ::koordblock[3]))
 		   clr_st := ::__colors[1]
-		   if fnd .and. ::findR[1] == bl+i
-			@ ::ntop+i-1, ::nLeft say substr(str, 1, ::findR[2]-1) color ::__colors[1]
-			@ ::ntop+i-1, ::nLeft+::findR[2]-1 say substr(str, ::findR[2], ::findR[3]) color ::__colors[4]
-			@ ::ntop+i-1, ::nLeft+::findR[2]+::findR[3]-1 say substr(str, ::findR[2]+::findR[3]) color ::__colors[1]
+		   if fnd .and. ::__findR[1] == bl+i
+			@ ::ntop+i-1, ::nLeft say substr(str, 1, ::__findR[2]-1) color ::__colors[1]
+			@ ::ntop+i-1, ::nLeft+::__findR[2]-1 say substr(str, ::__findR[2], ::__findR[3]) color ::__colors[4]
+			@ ::ntop+i-1, ::nLeft+::__findR[2]+::__findR[3]-1 say substr(str, ::__findR[2]+::__findR[3]) color ::__colors[1]
 		   else
 			@ ::ntop+i-1, ::nLeft say str color ::__colors[1]
 		   endif
@@ -508,14 +516,16 @@ local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
 	      endif
 	   endif
 	   if (bl+i) == ::lines+1
-	      @ ::ntop+i-1, ::nLeft say padr("<EOF>",l) color ::__colors[2]
+	      if ::lEofString
+		@ ::ntop+i-1, ::nLeft say padr(::eofString,l) color ::__colors[2]
+	      endif
 	      clr_st := ::__colors[2]
 	   endif
-	   if ::Nstyle .and. (bl+i) < ::lines+1
-		@ ::ntop+i-1, ::nLeft-::LNstyle say str(bl+i, ::LNstyle-1, 0)+"│" color clr_st
+	   if ::Nstyle .and. (bl+i) < ::lines+iif(::lEofString,1,0)
+		@ ::ntop+i-1, ::nLeft-::__LNstyle say str(bl+i, ::__LNstyle-1, 0)+"│" color clr_st
 	   endif
-	   if (bl+i) > ::lines+1
-	      @ ::ntop+i-1, ::nLeft-::LNstyle say space(l) color ::__colors[1]
+	   if (bl+i) > ::lines+iif(::lEofString,1,0)
+	      @ ::ntop+i-1, ::nLeft-::__LNstyle say space(l) color ::__colors[1]
 	   endif
        next
        devpos(::nTop+::rowWin-1,::nLeft+::colWin-1)
@@ -540,7 +550,7 @@ return
 static function te_down( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
-	::writeundo(cmd_DOWN)
+	::writeundo(HASH_DOWN)
     endif
 
     ::line++
@@ -558,7 +568,7 @@ RETURN
 static function te_up( undo )
      undo := iif(undo==NIL, .t., undo)
      if undo
-	::writeundo(cmd_UP)
+	::writeundo(HASH_UP)
      endif
 
      ::line--
@@ -576,7 +586,7 @@ RETURN
 static function te_PageDown( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
-	::writeundo(cmd_PGDOWN)
+	::writeundo(HASH_PGDOWN)
     endif
     ::line := min(::line+::nbottom-::ntop, ::lines)
     if undo
@@ -588,7 +598,7 @@ return
 static function te_PageUp( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
-	::writeundo(cmd_PGUP)
+	::writeundo(HASH_PGUP)
     endif
     ::line=::line-::nbottom-::ntop
     if undo
@@ -600,7 +610,7 @@ RETURN
 static function te_cleft( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
-	::writeundo(cmd_CLEFT)
+	::writeundo(HASH_CLEFT)
     endif
     ::pos--
     ::colWin--
@@ -616,7 +626,7 @@ return
 static function te_cright( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
-	::writeundo(cmd_CRIGHT)
+	::writeundo(HASH_CRIGHT)
     endif
     ::pos++
     ::colWin++
@@ -633,7 +643,7 @@ return
 static function te_goTop( undo )
    undo := iif(undo==NIL, .t., undo)
    if undo
-	::writeundo(cmd_BOTOP)
+	::writeundo(HASH_BOTOP)
    endif
    ::line:=1
    ::rowWin:=1
@@ -646,7 +656,7 @@ RETURN
 static function te_goBottom( undo )
    undo := iif(undo==NIL, .t., undo)
    if undo
-	::writeundo(cmd_BOTOP)
+	::writeundo(HASH_BOTOP)
    endif
    ::line:=::lines+1
    ::rowWin:=::nbottom-::ntop
@@ -669,7 +679,7 @@ local homepos:=0, lt
 
   endif
   if undo
-	::writeundo(cmd_HOME)
+	::writeundo(HASH_HOME)
   endif
   if ::pos <= homepos
       ::pos := 1
@@ -687,7 +697,7 @@ return
 static function te_end( undo )
    undo := iif(undo==NIL, .t., undo)
    if undo
-	::writeundo(cmd_END)
+	::writeundo(HASH_END)
    endif
    //::gotoPos(len(::edBuffer[::line])+1, .f.)
    if ::line<=::lines
@@ -704,7 +714,11 @@ return
 
 *********** на слово вправо
 static function te_wordRight()
-   local s,str:=::edBuffer[::line], p:=::pos, fl:=.f.
+   local s,str, p:=::pos, fl:=.f.
+   if ::line>::lines
+	return
+   endif
+   str:=::edBuffer[::line]
    while p<len(str)
 	s=substr(str,p,1)
 	if s!=" " .and. (isalpha(s) .or. isdigit(s) .or. s=="_")
@@ -723,7 +737,11 @@ RETURN
 
 *********** на слово влево
 static function te_wordLeft()
-   local s,str:=::edBuffer[::line], p:=::pos, fl:=.f., pl:=.f.
+   local s,str, p:=::pos, fl:=.f., pl:=.f.
+   if ::line>::lines
+	return
+   endif
+   str:=::edBuffer[::line]
    while p>0
 	s=substr(str,p,1)
 	if s!=" " .and. (isalpha(s) .or. isdigit(s) .or. s=="_")
@@ -750,7 +768,7 @@ static function te_gotoLine(ln, undo)
   undo := iif(undo==NIL, .t., undo)
 
   if undo
-	::writeundo(cmd_GOLINE)
+	::writeundo(HASH_GOLINE)
   endif
   ::line := ln
   ::rowWin := int((::nBottom-::nTop)*2/3)
@@ -769,7 +787,7 @@ local len
 
    undo := iif(undo==NIL, .t., undo)
    if undo
-	::writeundo(cmd_GOPOS)
+	::writeundo(HASH_GOPOS)
    endif
    if ::line>::lines
 	::line := ::lines
@@ -792,7 +810,7 @@ static function te_newLine(undo, autoIndent)
     undo := iif(undo==NIL, .t., undo)
     autoIndent := iif(autoIndent==NIL, .t., autoIndent)
     if undo
-	::writeundo(cmd_NEWLINE)
+	::writeundo(HASH_NEWLINE)
     endif
     if ::line+1<=::lines
 	::line++
@@ -817,9 +835,9 @@ local str, mrL, ol
    undo := iif(undo==NIL, .t., undo)
    autoIndent := iif(autoIndent==NIL, .t., autoIndent)
    ol := ::lines
-   ::check_line(::line)
+   ::__check_line(::line, undo)
    if undo
-	::writeundo(cmd_INSLINE, ::edbuffer[::line])
+	::writeundo(HASH_INSLINE, ::edbuffer[::line])
    endif
    if ol < ::lines  // т.е. строка уже добавлена функцией check_line()
 	if undo
@@ -850,57 +868,163 @@ return
 
 *********** вставить символ
 static function te_insert(str, undo)
-   local expstr, p
+   local expstr, p, pos, colWin, tailstr
    undo := iif(undo==NIL, .t., undo)
-   if ::line > ::lines
-	::check_line(::line)
-   endif
    str := iif(str==NIL, "", str)
-   expstr := tabexpand(padr(::edbuffer[::line],::pos-1)+str, ::tabSize)
-   ::edbuffer[::line]=expstr+substr(::edbuffer[::line],::pos)
-   if undo
-	::writeundo(cmd_INS, str)
+   if ::line > ::lines
+	::__check_line(::line)
    endif
+
+   expstr := tabexpand(padr(::edbuffer[::line],::pos-1)+str, ::tabSize)
+   tailstr := substr(::edbuffer[::line], ::pos)
    if str == chr(K_TAB)
        p := ::pos-1
-       ::pos+=len(expstr)-p
-       ::colWin+=len(expstr)-p
+       pos := ::pos+len(expstr)-p
+       colWin := ::colWin+len(expstr)-p
    else
-       ::pos++
-       ::colWin++
+       pos := ::pos + len(str)
+       colWin := ::colWin + len(str)
    endif
+
+   if ::autoWrap .and. pos > ::marginRight
+	return ::__autoWrap(undo, HASH_INSAUTOWRAP, expstr, tailstr, pos, colWin)
+   endif
+
+   if undo
+	   if str == chr(K_TAB)
+		::writeundo(HASH_INSTAB, ::edbuffer[::line])
+	   else
+		::writeundo(HASH_INS, str)
+	   endif
+   endif
+   ::edbuffer[::line]=expstr+substr(::edbuffer[::line],::pos)
+
+   ::pos := pos
+   ::colWin := colWin
+
    ::updated:=.t.
    if undo
 	::refresh()
    endif
 return
-
 *********** заменить символ
 static function te_overStrike(str, undo)
-   local expstr, p
+   local expstr, p, k, pos, colWin, tailstr, srcchr
    undo := iif(undo==NIL, .t., undo)
-   ::check_line(::line)
+   ::__check_line(::line)
    str := iif(str==NIL, "", str)
-   if undo
-	   ::writeundo(cmd_OVR, substr(::edbuffer[::line], ::pos, len(str)))
-   endif
    if str == chr(K_TAB)
-       expstr := tabexpand(padr(::edbuffer[::line],::pos-1)+str, ::tabSize)
-       ::edbuffer[::line]=expstr+substr(::edbuffer[::line],::pos)
-       p := ::pos-1
-       ::pos+=len(expstr)-p
-       ::colWin+=len(expstr)-p
-   else
-       ::edbuffer[::line]=padr(::edbuffer[::line],::pos-1)+str+substr(::edbuffer[::line],::pos+1)
-       ::pos++
-       ::colWin++
+	if undo
+		::writeundo(HASH_OVRTAB, "")
+	endif
+	p := int(::pos / ::tabSize)
+	k := ::pos - p
+	::colWin += (p+1) * ::tabSize - ::pos + 1
+	::pos := (p+1) * ::tabSize + 1
+
+	if undo
+		::refresh()
+	endif
+	return
    endif
+   expstr := tabexpand(padr(::edbuffer[::line],::pos-1)+str, ::tabSize)
+   tailstr := substr(::edbuffer[::line], ::pos+1)
+   srcchr := substr(::edbuffer[::line], ::pos, len(str))
+   if undo
+	::writeundo(HASH_OVR, srcchr)
+   endif
+   pos := ::pos + len(str)
+   colWin := ::colWin + len(str)
+
+   if ::autoWrap .and. pos > ::marginRight
+	return ::__autoWrap(undo, HASH_OVRAUTOWRAP, expstr, tailstr, pos, colWin)
+   endif
+
+
+   ::edbuffer[::line]=expstr+tailstr
+
+   ::pos := pos
+   ::colWin := colWin
+
    ::updated:=.t.
    if undo
 	::refresh()
    endif
 return
 
+static function te___autoWrap(undo, undocmd, expstr, tailstr, pos, colWin)
+   /* auto margin right */
+local i, m, p, l, srcstr, parr
+   undo := iif(undo==NIL, .t., undo)
+
+   m:={}
+   if int(::pos/::marginRight) == 1
+	if undo
+		aadd(m, 1)
+		aadd(m, ::edbuffer[::line])
+		::writeundo(undocmd, m)
+	endif
+	::edbuffer[::line]=expstr+tailstr
+
+	::pos := pos
+	::colWin := colWin
+	p := 0
+	do while (::pos > 1)
+		::pos --
+		::colWin --
+		p ++
+		if (::pos <= ::marginRight) .and. ;
+		(substr(::edbuffer[::line], ::pos, 1) == " ")
+			::pos ++
+			::colWin ++
+			::insertLine(.f., .t.)
+			::pos += p - 1
+			::colWin += p - 1
+			exit
+		endif
+	enddo
+   else
+	srcstr := ::edbuffer[::line]
+
+	l := 0
+	parr := {}
+	do while len (expstr) > ::marginRight
+		p := ::marginRight
+		do while p > 1
+			if substr(expstr, p, 1) == " "
+				exit
+			endif
+			p --
+		enddo
+		aadd(parr, substr(expstr, 1, p) )
+		expstr := /*::space(::marginLeft -1)+*/substr(expstr, p+1)
+		l ++
+	enddo
+
+	aadd(parr, expstr + tailstr )
+
+	if undo
+		aadd(m, l)
+		aadd(m, srcstr)
+		::writeundo(undocmd, m)
+	endif
+	::lines += l
+	asize(::edbuffer, ::lines)
+	::edbuffer[::line] := parr[1]
+	for i=2 to len(parr)
+		ains(::edbuffer, ::line + i - 1)
+		::edbuffer[::line + i - 1] := parr[i]
+	next
+	::line += l
+	::rowWin += l
+	::pos := ::colWin := len(expstr) + 1
+
+   endif
+   ::updated:=.t.
+   if undo
+	::refresh()
+   endif
+return
 *********** удаление символа слева
 static function te_backSpace( undo )
 local min
@@ -908,12 +1032,12 @@ local min
    if ::line > ::lines
 	return
    endif
-   ::check_line(::line)
+   ::__check_line(::line)
    if undo
 	if ::pos == 1
-	    ::writeundo(cmd_BS, chr(K_ENTER))
+	    ::writeundo(HASH_BS, chr(K_ENTER))
 	else
-	    ::writeundo(cmd_BS, substr(::edbuffer[::line], ::pos-1, 1))
+	    ::writeundo(HASH_BS, substr(::edbuffer[::line], ::pos-1, 1))
 	endif
    endif
    if ::pos != 1
@@ -963,15 +1087,15 @@ local min
 	return
    endif
    undo := iif(undo==NIL, .t., undo)
-   ::check_line(::line)
+   ::__check_line(::line)
    if ::pos<=len(::edbuffer[::line])
        if undo
-	   ::writeundo(cmd_DEL, substr(::edbuffer[::line], ::pos, 1))
+	   ::writeundo(HASH_DEL, substr(::edbuffer[::line], ::pos, 1))
        endif
        ::edbuffer[::line]=substr(::edbuffer[::line],1,::pos-1)+substr(::edbuffer[::line],::pos+1)
    else
        if undo
-	   ::writeundo(cmd_DEL, chr(K_ENTER))
+	   ::writeundo(HASH_DEL, chr(K_ENTER))
        endif
        if ::line+1 <= ::lines
 		::edbuffer[::line]=::edbuffer[::line]+::edbuffer[::line+1]
@@ -1009,9 +1133,9 @@ RETURN
 static function te_deleteLine(undo)
 local min, max
    undo := iif(undo==NIL, .t., undo)
-   ::check_line(::line)
+   ::__check_line(::line)
    if undo
-	::writeundo(cmd_DELINE, ::edbuffer[::line])
+	::writeundo(HASH_DELINE, ::edbuffer[::line])
    endif
    adel(::edbuffer,::line)
    asize(::edBuffer,len(::edBuffer)-1)
@@ -1040,7 +1164,7 @@ return
 
 *********** центрировать строку
 static function te_centerLine()
-   ::check_line(::line)
+   ::__check_line(::line)
    ::edbuffer[::line]=center(alltrim(::edbuffer[::line]),::marginRight,32,.f.)
    ::updated:=.t.
    ::refresh()
@@ -1049,9 +1173,9 @@ return
 *********** удаление от курсора до начала строки
 static function te_delHome(undo)
    undo := iif(undo==NIL, .t., undo)
-   ::check_line(::line)
+   ::__check_line(::line)
    if undo
-	::writeundo(cmd_DELHOME, substr(::edbuffer[::line], 1, ::pos-1))
+	::writeundo(HASH_DELHOME, substr(::edbuffer[::line], 1, ::pos-1))
    endif
    ::edbuffer[::line]=substr(::edbuffer[::line],::pos)
    ::updated:=.t.
@@ -1065,9 +1189,9 @@ RETURN
 *********** удаление от курсора до конца строки
 static function te_delEnd(undo)
    undo := iif(undo==NIL, .t., undo)
-   ::check_line(::line)
+   ::__check_line(::line)
    if undo
-	::writeundo(cmd_DELEND, substr(::edbuffer[::line], ::pos))
+	::writeundo(HASH_DELEND, substr(::edbuffer[::line], ::pos))
    endif
    ::edbuffer[::line]=substr(::edbuffer[::line],1,::pos-1)
    ::updated:=.t.
@@ -1110,7 +1234,7 @@ local i, p, f, found:=.f., rr, st, en, _step
 
 	undo := iif(undo==NIL, .t., undo)
 	if undo
-		::writeundo(cmd_FIND, Find)
+		::writeundo(HASH_FIND, Find)
 	endif
 	//save screen to scr
 	//@ maxrow(), 0 say padr([Find string...], maxcol()) color "0/7"
@@ -1151,18 +1275,18 @@ local i, p, f, found:=.f., rr, st, en, _step
 
 	if Find:regexp
 		for i = st to en step _step
-			::regSearch := {}
-			f := search(str, iif(!Find:case, upper(::edbuffer[i]), ::edbuffer[i]), ::regSearch, p)
+			::__regSearch := {}
+			f := search(str, iif(!Find:case, upper(::edbuffer[i]), ::edbuffer[i]), ::__regSearch, p)
 			if f
-				if Find:wordonly .and. (isalpha(substr(::edbuffer[i], ::regSearch[1][1]-1, 1)) .or. isalpha(substr(::edbuffer[i], ::regSearch[1][2], 1)))
+				if Find:wordonly .and. (isalpha(substr(::edbuffer[i], ::__regSearch[1][1]-1, 1)) .or. isalpha(substr(::edbuffer[i], ::__regSearch[1][2], 1)))
 					loop
 				endif
-				::findR[1] := i		//line
-				::findR[2] := ::regSearch[1][1]	//start pos
-				::findR[3] := ::regSearch[1][2]-::regSearch[1][1]//length
+				::__findR[1] := i		//line
+				::__findR[2] := ::__regSearch[1][1]	//start pos
+				::__findR[3] := ::__regSearch[1][2]-::__regSearch[1][1]//length
 				::rowWin += i-(::line*_step)
 				::line := i
-				::gotoPos(::regSearch[1][1], .f.)
+				::gotoPos(::__regSearch[1][1], .f.)
 				found := .t.
 				exit
 			endif
@@ -1175,9 +1299,9 @@ local i, p, f, found:=.f., rr, st, en, _step
 				if Find:wordonly .and. (isalpha(substr(::edbuffer[i], p+f-2, 1)) .or. isalpha(substr(::edbuffer[i], p+f+len(str)-1, 1)))
 					loop
 				endif
-				::findR[1] := i	//line
-				::findR[2] := p+f-1	//start pos
-				::findR[3] := len(str)	//length
+				::__findR[1] := i	//line
+				::__findR[2] := p+f-1	//start pos
+				::__findR[3] := len(str)	//length
 				::rowWin += i-(::line*_step)
 				::line := i
 				::gotoPos(p+f-1, .f.)
@@ -1219,19 +1343,19 @@ local found:=.t., cstr:="", nkey, i, ret:=-1
 				return ret
 		endcase
 		if Find:regexp
-			if len(::regSearch) == 1
-				cstr := strtran(cstr, "\1", substr(::edbuffer[::findR[1]], ::regSearch[1][1], ::regSearch[1][2]-::regSearch[1][1]))
+			if len(::__regSearch) == 1
+				cstr := strtran(cstr, "\1", substr(::edbuffer[::__findR[1]], ::__regSearch[1][1], ::__regSearch[1][2]-::__regSearch[1][1]))
 			else
-				for i=1 to len(::regSearch)-1
-					cstr := strtran(cstr, "\"+alltrim(tostring(i)), substr(::edbuffer[::findR[1]], ::regSearch[i+1][1], ::regSearch[i+1][2]-::regSearch[i+1][1]))
+				for i=1 to len(::__regSearch)-1
+					cstr := strtran(cstr, "\"+alltrim(tostring(i)), substr(::edbuffer[::__findR[1]], ::__regSearch[i+1][1], ::__regSearch[i+1][2]-::__regSearch[i+1][1]))
 				next
 			endif
 		endif
 		if undo
-			::writeundo(cmd_REPLACE, Find)// {substr(::edbuffer[::findR[1]], ::findR[2], ::findR[3]), cstr})
+			::writeundo(HASH_REPLACE, Find)// {substr(::edbuffer[::__findR[1]], ::__findR[2], ::__findR[3]), cstr})
 		endif
-		::edbuffer[::findR[1]] := substr(::edbuffer[::findR[1]], 1, ::findR[2]-1)+;
-					  cstr + substr(::edbuffer[::findR[1]], ::findR[2]+::findR[3])
+		::edbuffer[::__findR[1]] := substr(::edbuffer[::__findR[1]], 1, ::__findR[2]-1)+;
+					  cstr + substr(::edbuffer[::__findR[1]], ::__findR[2]+::__findR[3])
 		::cancelBlock(.f.)
 		if undo
 			::refresh()
@@ -1243,17 +1367,19 @@ RETURN ret
 
 ********************* найти следующую
 static function te_findNext(Find, undo)
-local ret:=.f.
+local ret:=.f., oldDirect
 	undo:=iif(undo==NIL, .t., undo)
 	if undo
-		::writeundo(cmd_FIND, Find)//:fstring)
+		::writeundo(HASH_FIND, Find)//:fstring)
 	endif
+	oldDirect := Find:direct
 	Find:direct := 1
 	if !empty(Find:fstring)
 		::gotoPos(::pos+1, .f.)
 		ret := ::find(Find, .f.)
 	endif
 
+	Find:direct := oldDirect
 	if undo
 		::refresh()
 	endif
@@ -1261,18 +1387,20 @@ return ret
 
 ********************* найти предыдующую
 static function te_findPrev(Find, undo)
-local ret:=.f.
+local ret:=.f., oldDirect
 	undo:=iif(undo==NIL, .t., undo)
 	if undo
-		::writeundo(cmd_FIND, Find)//:fstring)
+		::writeundo(HASH_FIND, Find)//:fstring)
 	endif
 
+	oldDirect := Find:direct
 	Find:direct := 2
 	if !empty(Find:fstring)
 		::gotoPos(::pos-1, .f.)
 		ret := ::find(Find)
 	endif
 
+	Find:direct := oldDirect
 	if undo
 		::refresh()
 	endif
@@ -1284,7 +1412,7 @@ local ret:="", x, y, i, str, alpha, digit, ch
 	pos := iif(pos==NIL, ::pos, pos)
 	line := iif(line==NIL, ::line, line)
 	if valtype(line) == "N"
-		::check_line(line)
+		::__check_line(line)
 		str := ::edbuffer[line]
 	else
 		str := line
@@ -1293,14 +1421,14 @@ local ret:="", x, y, i, str, alpha, digit, ch
 	alpha := isalpha(ch)
 	digit := isdigit(ch)
 	if alpha .or. digit .or. !digit .and. (ch == '.' .or. ch == ',');
-	   .and. isdigit(substr(str, pos+1, 1))
+	   .and. isdigit(substr(str, pos+1, 1)) .or. ch =='_'
 		x := pos
 		y := pos
 		for i:=pos-1 to 0 step -1
 			ch := substr(str, i, 1)
 			alpha := isalpha(ch)
 			digit := isdigit(ch)
-			if !alpha .and. !digit .or. i==0
+			if !alpha .and. !digit .and. ch != '_' .or. i==0
 				x := i+1
 				exit
 			endif
@@ -1309,7 +1437,7 @@ local ret:="", x, y, i, str, alpha, digit, ch
 			ch := substr(str, i, 1)
 			alpha := isalpha(ch)
 			digit := isdigit(ch)
-			if !alpha .and. !digit
+			if !alpha .and. !digit .and. ch != '_'
 				y := i-1
 				exit
 			endif
@@ -1320,24 +1448,29 @@ RETURN ret
 
 *********** "предыдущее" слово
 static function te_prevWord(pos, line, newpos)
-local ret:="", x, y, i, str, e:=.t., ch
+local ret:="", x, y, i, str, e:=.f., ch
 	pos := iif(pos==NIL, ::pos, pos)
 	line := iif(line==NIL, ::line, line)
 	if valtype(line) == "N"
-		::check_line(line)
+		::__check_line(line)
 		str := ::edbuffer[line]
 	else
 		str := line
 	endif
-	x := 0
-	y := 0
+	x := pos
 	for i:=pos to 1 step -1
 		ch:= substr(str, i, 1)
 		if !isalpha(ch) .and. !isdigit(ch) .and. ch != "_"
 			pos := i
+			e := .t.
 			exit
 		endif
 	next
+	if x == pos .and. pos == 1
+		return ret
+	endif
+	x := 1
+	y := 0
 	for i:=pos to 1 step -1
 		ch:= substr(str, i, 1)
 		if e .and. (isalpha(ch) .or. isdigit(ch) .or. ch == "_")
@@ -1359,15 +1492,15 @@ local ret:="", x, y, i, str, e:=.t., ch
 	pos := iif(pos==NIL, ::pos, pos)
 	line := iif(line==NIL, ::line, line)
 	if valtype(line) == "N"
-		::check_line(line)
+		::__check_line(line)
 		str := ::edbuffer[line]
 	else
 		str := line
 	endif
 	for i:=pos to len(str)
 		ch:= substr(str, i, 1)
-		pos := i
 		if !isalpha(ch) .and. !isdigit(ch) .and. ch != "_"
+			pos := i
 			exit
 		endif
 	next
@@ -1399,28 +1532,31 @@ private st
 	forward := iif(forward==NIL, .t., forward)
 	undo := iif(undo==NIL, .t., .f.)
 	if undo
-		::writeundo(cmd_FIND, -1)
+		::writeundo(HASH_FIND, -1)
 	endif
-	clip_synt_beg := {"(DO WHILE)",;
+	clip_synt_beg := {"(DO WHILE)|(WHILE)",;
 			  "(BEGIN SEQUENCE)",;
 			  "(FOR)",;
 			  "(IF)",;
 			  "(DO CASE)"}
-	clip_synt_end := {"(ENDDO)", ;
+	clip_synt_end := {"(END)|(ENDDO)", ;
 			  "(END SEQUENCE)",;
 			  "(NEXT)",;
-			  "(ENDIF)",;
-			  "(ENDCASE)"}
+			  "(END)|(ENDIF)",;
+			  "(END)|(ENDCASE)"}
 	clip_synt_loop := {"(EXIT)|(LOOP)",;
 			   "(BREAK)|(RECOVER)",;
 			   "(EXIT)|(LOOP)",;
 			   "(ELSEIF)|(ELSE)",;
 			   "(CASE)|(OTHERWISE)|(EXIT)"}
-	::check_line(::line)
+	::__check_line(::line)
 	st := ::pos
 	curword := upper(curword)
 	prevword := upper(::prevWord())
 	nextword := upper(::nextWord())
+	if empty(curword) .and. ! empty(prevword)
+		curword := prevword
+	endif
 	do case
 		case curword == "DO"
 			curword += " "+nextword
@@ -1443,7 +1579,6 @@ private st
 			is_beg := .t.
 		endif
 	next
-	pat_beg := left(pat_beg, len(pat_beg)-1)
 	for i=1 to len(clip_synt_end)
 		is := search(clip_synt_end[i], curword) .and. search(curword, clip_synt_end[i])
 		pat_end += clip_synt_end[i] + "|"
@@ -1452,7 +1587,6 @@ private st
 			is_end := .t.
 		endif
 	next
-	pat_end := left(pat_end, len(pat_end)-1)
 	for i=1 to len(clip_synt_loop)
 		is := search(clip_synt_loop[i], curword) .and. search(curword, clip_synt_loop[i])
 		pat_loop += clip_synt_loop[i] + "|"
@@ -1461,6 +1595,8 @@ private st
 			is_loop := .t.
 		endif
 	next
+	pat_beg := left(pat_beg, len(pat_beg)-1)
+	pat_end := left(pat_end, len(pat_end)-1)
 	pat_loop := left(pat_loop, len(pat_loop)-1)
 
 	if !(is_beg .or. is_end .or. is_loop)
@@ -1473,18 +1609,24 @@ private st
 	elseif is_end
 		forward := .f.
 		cnt --
+		if curword == "END"
+			ind := 1
+			clip_synt_beg[ind] := "(DO WHILE)|(WHILE)|(DO CASE)|(IF)"
+			clip_synt_end[ind] := "(END)|(ENDDO)|(ENDIF)|(ENDCASE)"
+			clip_synt_loop[ind] := "(EXIT)|(LOOP)|(ELSE)|(ELSEIF)"
+		endif
 	else
 		cnt += iif(forward, 1, -1)
 		do case
 		case curword == "EXIT"
 			ind := 1
-			clip_synt_beg[ind] := "(DO WHILE)|(FOR)|(DO CASE)"
-			clip_synt_end[ind] := "(ENDDO)|(NEXT)|(ENDCASE)"
+			clip_synt_beg[ind] := "(DO WHILE)|(WHILE)|(FOR)|(DO CASE)"
+			clip_synt_end[ind] := "(END)|(ENDDO)|(NEXT)|(ENDCASE)"
 			clip_synt_loop[ind] := "(EXIT)|(LOOP)|(CASE)|(OTHERWISE)"
 		case curword == "LOOP"
 			ind := 1
 			clip_synt_beg[ind] := "(DO WHILE)|(FOR)"
-			clip_synt_end[ind] := "(ENDDO)|(NEXT)"
+			clip_synt_end[ind] := "(END)|(ENDDO)|(NEXT)"
 			clip_synt_loop[ind] := "(EXIT)|(LOOP)"
 		endcase
 	endif
@@ -1599,9 +1741,9 @@ private st
 			word := upper(iif(forward, ::nextWord(st, str, @st), ::prevWord(st, str, @st)))
 		enddo
 		if f_found
-			::findR[1]:= i
-			::findR[2]:= st
-			::findR[3]:= len(word)
+			::__findR[1]:= i
+			::__findR[2]:= st
+			::__findR[3]:= len(word)
 			found := .t.
 			::rowWin += i - ::line
 			::line := i
@@ -1629,7 +1771,7 @@ local i, j:=0, x, str1, str2, cnt:=0, ipos, iline, char, invchar, c
 	forward := iif(forward==NIL, .t., forward)
 	undo := iif(undo==NIL, .t., undo)
 	if undo
-		::writeundo(cmd_FIND, -1)
+		::writeundo(HASH_FIND, -1)
 	endif
 	i := ::pos
 	str1 := "({[<"
@@ -1744,9 +1886,9 @@ local i, j:=0, x, str1, str2, cnt:=0, ipos, iline, char, invchar, c
 		endif
 	endif
 	if found
-		::findR[1] := iline	//line
-		::findR[2] := ipos	//start pos
-		::findR[3] := 1		//length
+		::__findR[1] := iline	//line
+		::__findR[2] := ipos	//start pos
+		::__findR[3] := 1		//length
 		::gotoPos(ipos, .f.)
 		::gotoLine(iline, .f.)
 		if undo
@@ -1837,24 +1979,31 @@ return
 
 
 *********** форматирование строки
-static function te_formatLine(Opt, undo)
+static function te_formatLine(lAutoMargin, nMarginLeft, nMarginRight, nTabSize, lHyphen, undo)
 local s1, s2, firstPos
 	undo := iif(undo==NIL, .t., undo)
-	::check_line(::line+1)
+
+	lAutoMargin := iif(lAutoMargin==NIL, .t., lAutoMargin)
+	nMarginLeft := iif(nMarginLeft==NIL, ::MarginLeft, nMarginLeft)
+	nMarginRight := iif(nMarginRight==NIL, ::MarginRight, nMarginRight)
+	nTabSize := iif(nTabSize==NIL, ::TabSize, nTabsize)
+	lHyphen := iif(lHyphen==NIL, ::Hyphen, lHyphen)
+
+	::__check_line(::line+1)
 	if undo
-		::writeundo(cmd_FRLINE, ::edbuffer[::line])
+		::writeundo(HASH_FRLINE, ::edbuffer[::line])
 	endif
 
-	if Opt:OAUTOMARGIN
-		firstPos := Opt:OMARGINLEFT
+	if lAutoMargin
+		firstPos := nMarginLeft
 	else
 		firstPos := len(::edbuffer[::line])-len(ltrim(::edbuffer[::line]))
-		firstPos := iif(firstPos == 1, Opt:OTABSIZE, firstPos)
+		firstPos := iif(firstPos == 1, nTabSize, firstPos)
 	endif
 
 	::edbuffer[::line] := stripSpace(::edbuffer[::line], 1)
 	::edbuffer[::line] := replicate(" ", FirstPos) + ltrim(::edbuffer[::line])
-	::Frmt(::edbuffer[::line], Opt:OMARGINRIGHT, @s1, @s2, Opt:OHYPHEN, firstPos)
+	::__Frmt(::edbuffer[::line], nMarginRight, @s1, @s2, lHyphen, firstPos)
 
 	::lines += 1
 	asize(::edbuffer, ::lines)
@@ -1869,13 +2018,20 @@ local s1, s2, firstPos
 RETURN
 
 *********** форматирование абзаца
-static function te_formatPart(Opt, undo)
+static function te_formatPart(lAutoMargin, nMarginLeft, nMarginRight, nTabSize, lHyphen, undo)
 local i, s1, s2, line, st, en, arr:={}, firstPos1, firstPos2, len
 
 	undo := iif(undo==NIL, .t., undo)
+
+	lAutoMargin := iif(lAutoMargin==NIL, .t., lAutoMargin)
+	nMarginLeft := iif(nMarginLeft==NIL, ::MarginLeft, nMarginLeft)
+	nMarginRight := iif(nMarginRight==NIL, ::MarginRight, nMarginRight)
+	nTabSize := iif(nTabSize==NIL, ::TabSize, nTabsize)
+	lHyphen := iif(lHyphen==NIL, ::Hyphen, lHyphen)
+
 	line := ::line
-	::check_line(line+1)
-	len := Opt:OMARGINRIGHT	//length string
+	::__check_line(line+1)
+	len := nMarginRight	//length string
 	/* start part */
 	st := ::line
 
@@ -1895,11 +2051,11 @@ local i, s1, s2, line, st, en, arr:={}, firstPos1, firstPos2, len
 	aadd(arr, ::edbuffer[en])
 
 	if undo
-		::writeundo(cmd_FRPART, arr)
+		::writeundo(HASH_FRPART, arr)
 	endif
 
-	if Opt:OAUTOMARGIN
-		firstPos1 := Opt:OMARGINLEFT
+	if lAutoMargin
+		firstPos1 := nMarginLeft
 		firstPos2 := 0
 	endif
 
@@ -1910,13 +2066,13 @@ local i, s1, s2, line, st, en, arr:={}, firstPos1, firstPos2, len
 		s2 := ""
 		if line == st
 			::edbuffer[line] := replicate(" ", firstPos1) + ltrim(::edbuffer[line])
-			::Frmt(::edbuffer[line], Opt:OMARGINRIGHT, @s1, @s2, Opt:OHYPHEN, firstPos1)
+			::__Frmt(::edbuffer[line], nMArginRight, @s1, @s2, lHyphen, firstPos1)
 		else
 			::edbuffer[line] := replicate(" ", firstPos2) + ltrim(::edbuffer[line])
-			::Frmt(::edbuffer[line], Opt:OMARGINRIGHT, @s1, @s2, Opt:OHYPHEN, firstPos2)
+			::__Frmt(::edbuffer[line], nMarginRight, @s1, @s2, lHyphen, firstPos2)
 		endif
-		::Frmt(::edbuffer[line], Opt:OMARGINRIGHT, @s1, @s2, Opt:OHYPHEN)
-		::check_line(line+1)
+		::__Frmt(::edbuffer[line], nMarginRight, @s1, @s2, lHyphen)
+		::__check_line(line+1)
 		::edbuffer[line] := s1
 		if line == en
 			::lines ++
@@ -1941,8 +2097,13 @@ local i, s1, s2, line, st, en, arr:={}, firstPos1, firstPos2, len
 RETURN
 
 *********** форматирование  по правилам clipper
-static function te_insTempl(targ)
+static function te_insTempl(targ, undo)
 local i, j, p, target, start, en, spl
+	undo := iif(undo==NIL, .t., undo)
+
+	if ::line > ::lines
+		::__check_line(::line)
+	endif
 	p := ::pos
 	while p>0 .and. empty(substr(::edbuffer[::line], p, 1))
 		p--
@@ -1965,27 +2126,31 @@ local i, j, p, target, start, en, spl
 	if empty(target)
 		return
 	endif
-	for i:= 1 to len(targ)
-		if target == upper(targ[i][1])
-			spl := split(targ[i][2], "/")
-			::edbuffer[::line] := substr(::edbuffer[::line], 1, start-1) + spl[1] + substr(::edbuffer[::line], en)
-
-			for j := 2 to len(spl)
-				::lines++
-				asize(::edbuffer, ::lines)
-				ains(::edbuffer, ::line+j-1)
-				::edbuffer[::line+j-1] := replicate(" ", start-1) + spl[j]
-			next
-			::gotoPos(len(::edbuffer[::line])+1, .f.)
-			::refresh()
-			exit
+	if target $ targ
+		spl := split(targ[target], "/")
+		if undo
+			::writeundo(HASH_INSTEMPL, {::edbuffer[::line], len(spl)})
 		endif
-	next
+		::edbuffer[::line] := substr(::edbuffer[::line], 1, start-1) + spl[1] + substr(::edbuffer[::line], en)
+
+		for j := 2 to len(spl)
+			::lines++
+			asize(::edbuffer, ::lines)
+			ains(::edbuffer, ::line+j-1)
+			::edbuffer[::line+j-1] := replicate(" ", start-1) + spl[j]
+		next
+		::gotoPos(len(::edbuffer[::line])+1, .f.)
+		::refresh()
+	endif
 RETURN
 
 ***********
-static function te_insMacro(targ)
+static function te_insMacro(targ, undo)
 local i, j, p, target, start, en
+	undo := iif (undo==NIL, .t., undo)
+	if ::line > ::lines
+		::__check_line(::line)
+	endif
 	p := ::pos
 	while p>0 .and. empty(substr(::edbuffer[::line], p, 1))
 		p--
@@ -2008,14 +2173,15 @@ local i, j, p, target, start, en
 	if empty(target)
 		return
 	endif
-	for i:= 1 to len(targ)
-		if target == upper(targ[i][1])
-			::edbuffer[::line] := left(::edbuffer[::line], start-1) + ToString(&(targ[i][2])) + substr(::edbuffer[::line], en)
-			::gotoPos(len(::edbuffer[::line])+1, .f.)
+	if target $ targ
+			if undo
+				::writeUndo(HASH_INSMACRO, ::edbuffer[::line])
+			endif
+			::edbuffer[::line] := left(::edbuffer[::line], start-1);
+			    + ToString(&(targ[target])) + substr(::edbuffer[::line], en)
+			::gotoPos(start+len(ToString(&(targ[target])))+1, .f.)
 			::refresh()
-			exit
-		endif
-	next
+	endif
 RETURN
 
 
@@ -2030,66 +2196,115 @@ RETURN
 
 ***************************************************
 static function te_saveFile( filename, createbak )
-local nfile, nbakfile, i, str, scr
-/*
-  if file(filename)
-	nfile:=fopen(filename, 1)
-  else
-	nfile:=fcreate(filename, 0)
+local nfile, nbakfile, i, n, str, scr, newf, error
+  //save screen to scr
+  scr := saveScreen(0,0,maxRow(),maxCol(),.F.)
+  if empty(filename)
+	filename := ::FileName
   endif
-  */
-  save screen to scr
   filename := alltrim(filename)
   createbak := iif(createbak==NIL, .f., createbak)
   @ maxrow(), 0 say padr([Save file...], maxcol()) color "0/7"
   inkey()
+  newf := !(file(filename))
   /* create new or truncate to 0 exists file */
-  if !empty(createbak) .and. createbak
-	nbakfile := frename(filename, filename+".bak")
-	if nbakfile < 0
+
+  BEGIN SEQUENCE
+
+  ERRORBLOCK({|e| alert(e:description+";"+[file ;]+e:args[2])})
+
+  if !empty(createbak) .and. createbak .and. !newf
+	nbakfile := __copyFile(filename, filename+".bak")
+	if !nbakfile
 		alert([Can't create ;]+filename+[.bak file], "OK")
 	endif
   endif
-  nfile:=fcreate(filename, 1)
+  RECOVER USING error
+	outlog(__FILE__, __LINE__, error:description, error:operation, error:args)
+  ENDSEQUENCE
+  if newf
+	nfile:=fcreate(filename, FO_READWRITE)
+  else
+	nfile:=fopen(filename, FO_READWRITE+FO_TRUNC)
+  endif
   if nfile<0
-     restore screen from scr
+     //restore screen from scr
+     restScreen(0, 0, maxRow(), maxCol(), scr)
      return .f.
   endif
   if ::charset == NIL
+	if ::tabPack
 	for i=1 to ::lines
-		str := tabpack(::edbuffer[i], ::tabSize)+"&\n"
+		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+		str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+			ltrim(::edbuffer[i])+"&\n"
 		fwrite(nfile, str, len(str))
 	next
+	else
+	for i=1 to ::lines
+		str := ::edbuffer[i]+"&\n"
+		fwrite(nfile, str, len(str))
+	next
+	endif
   else
+	if ::tabPack
 	for i=1 to ::lines
-		str := tabpack(::edbuffer[i], ::tabSize)
-		str := translate_charset(::hostcharset, ::charset, str)+"&\n"
+		//str := tabpack(::edbuffer[i], ::tabSize)
+		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+		str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+			ltrim(::edbuffer[i])
+		str := translate_charset(::__hostcharset, ::charset, str)+"&\n"
 		fwrite(nfile, str, len(str))
 	next
+	else
+	for i=1 to ::lines
+		str := ::edbuffer[i]
+		str := translate_charset(::__hostcharset, ::charset, str)+"&\n"
+		fwrite(nfile, str, len(str))
+	next
+	endif
   endif
   fclose(nfile)
   ::updated:=.f.
   restore screen from scr
+  //restScreen(0, 0, maxRow(), maxCol(), scr)
 RETURN .t.
 
 ***************************************************
 static function te_saveString()
-  local i,str:=""
+  local i, n, str:=""
   if ::charset == NIL
+	if ::tabPack
 	for i=1 to ::lines
-		str += tabpack(::edbuffer[i], ::tabSize)+"&\n"
+		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+		str += tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+			ltrim(::edbuffer[i])+"&\n"
 	next
+	else
+	for i=1 to ::lines
+		str += ::edbuffer[i]+"&\n"
+	next
+	endif
   else
+	if ::tabPack
 	for i=1 to ::lines
-		str += translate_charset(::hostcharset, ::charset, tabpack(::edbuffer[i], ::tabSize))+"&\n"
+		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+		str += translate_charset(::__hostcharset, ::charset, ;
+			    tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+			    ltrim(::edbuffer[i]))+"&\n"
 	next
+	else
+	for i=1 to ::lines
+		str += translate_charset(::__hostcharset, ::charset, ::edbuffer[i])+"&\n"
+	next
+	endif
   endif
   ::updated:=.f.
 RETURN str
 
 *********** запись блока на диск
 static function te_saveBlock( fileName, createbak )
-local nfile, nbakfile, i, str, scr, ps, pl
+local nfile, nbakfile, i, n, str, scr, ps, pl
   save screen to scr
   filename := alltrim(filename)
   createbak := iif(createbak==NIL, .f., createbak)
@@ -2109,17 +2324,34 @@ local nfile, nbakfile, i, str, scr, ps, pl
   endif
   if ::strblock
 	if ::charset ==NIL
+		if ::tabPack
 		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			//str := tabpack(::edbuffer[i], ::tabSize)
+			n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+			str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+				ltrim(::edbuffer[i])+"&\n"
+			fwrite(nfile, str, len(str))
+		next
+		else
+		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
 			str := ::edbuffer[i]+"&\n"
 			fwrite(nfile, str, len(str))
 		next
+		endif
 	else
+		if ::tabPack
 		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			//str := tabpack(::edbuffer[i], ::tabSize)
-			str := translate_charset(::hostcharset, ::charset, ::edbuffer[i])+"&\n"
+			n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+			str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+				ltrim(::edbuffer[i])
+			str := translate_charset(::__hostcharset, ::charset, str)+"&\n"
 			fwrite(nfile, str, len(str))
 		next
+		else
+		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
+			str := translate_charset(::__hostcharset, ::charset, ::edbuffer[i])+"&\n"
+			fwrite(nfile, str, len(str))
+		next
+		endif
 	endif
   else
 	ps := min(::koordblock[2], ::koordblock[4])
@@ -2133,7 +2365,7 @@ local nfile, nbakfile, i, str, scr, ps, pl
 	else
 		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
 			//str := tabpack(::edbuffer[i], ::tabSize)
-			str := translate_charset(::hostcharset, ::charset, substr(::edbuffer[i], ps, pl))+"&\n"
+			str := translate_charset(::__hostcharset, ::charset, substr(::edbuffer[i], ps, pl))+"&\n"
 			fwrite(nfile, str, len(str))
 		next
 	endif
@@ -2158,7 +2390,7 @@ local nfile, i, path
 		if i!=0
 			path:=left(filename,i-1)
 		endif
-		::check_clipchs(path)
+		::__check_clipchs(path)
 	endif
 	i := ::line
 	if ::charset == NIL
@@ -2174,13 +2406,13 @@ local nfile, i, path
 			::lines ++
 			asize(::edbuffer, ::lines)
 			ains(::edbuffer,  i)
-			::edbuffer[i] := translate_charset(::charset, ::hostcharset,tabexpand(filegetstr(nfile, TE_MAX_LEN_STRING), ::tabSize), i)
+			::edbuffer[i] := translate_charset(::charset, ::__hostcharset,tabexpand(filegetstr(nfile, TE_MAX_LEN_STRING), ::tabSize), i)
 			i++
 		enddo
 	endif
 	fclose(nfile)
 	if undo
-		::writeundo(cmd_LOADBLOCK, {::line, i-1})
+		::writeundo(HASH_LOADBLOCK, {::line, i-1})
 	endif
 	::strblock := .t.
 	::rectblock := .f.
@@ -2195,62 +2427,67 @@ RETURN .t.
 *********** копировать блок
 static function te_copyBlock(mov, undo)
 local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
+
     undo := iif(undo==NIL, .t., undo)
     if !::strblock .and. !::rectblock
-	 return
+	 return .F.
     endif
     if mov == NIL   // переместить блок
 	mov := .f.
     endif
     if ::strblock
 	stbl := min(::koordblock[1], ::koordblock[3])
-	endbl := max(::koordblock[1], ::koordblock[3])
+	endbl := min(max(::koordblock[1], ::koordblock[3]), ::lines)
 	rowblock := endbl-stbl+1
-	if undo
-		buf := {}
-		for i=stbl to endbl
-			aadd(buf, ::edbuffer[i])
-		next
-		::writeundo(iif(mov, cmd_MVBL, cmd_CPBL), buf)
-	endif
 
-	if between(::line, stbl+1, endbl)
-	    return
-	endif
-
-	::line := ::check_line(::line+rowblock-1)
-	::lines += rowblock
-	asize(::edbuffer, ::lines)
-	for i=1 to rowblock
-	    ains(::edbuffer, ::line)
-	    ::edbuffer[::line] := ""
+	buf := {}
+	for i=stbl to endbl
+		aadd(buf, ::edbuffer[i])
 	next
 
-	if ::line <= stbl
-	    stbl += rowblock
-	    endbl += rowblock
+	if undo
+		::writeundo(iif(mov, HASH_MVBL, HASH_CPBL), buf)
 	endif
+	::line := ::__check_line(::line, .f.)
 
-	acopy(::edbuffer, ::edbuffer, stbl, rowblock, ::line)
 	if mov
 	    for i=stbl to endbl
 		adel(::edbuffer, stbl)
 	    next
-	    ::lines -= rowblock
-	    asize(::edbuffer, ::lines)
+	    //::lines -= rowblock
+	    //asize(::edbuffer, ::lines)
 	    if ::line > stbl
 		::line -= rowblock
 	    endif
+	else
+	   if ::line>::lines
+		::lines := rowblock+::line-1
+	   else
+		::lines += rowblock
+	   endif
+	   //::lines += rowblock+iif(::line>=::lines, -1, 0)
+	   asize(::edbuffer, ::lines)
 	endif
+
+
+	for i=rowblock to 1 step -1
+	    ains(::edbuffer, ::line)
+	    ::edbuffer[::line] := buf[i]
+	next
+
 	::koordblock[1] := ::line
 	::koordblock[3] := ::line+rowblock-1
     else
 	stbl := min(::koordblock[1], ::koordblock[3])
-	endbl := max(::koordblock[1], ::koordblock[3])
+	endbl := min(max(::koordblock[1], ::koordblock[3]), ::lines)
+	::koordblock[1] := stbl
+	::koordblock[3] := endbl
 	rowblock := endbl-stbl+1
 
 	leftbl := min(::koordblock[2], ::koordblock[4])
 	rightbl := max(::koordblock[2], ::koordblock[4])
+	::koordblock[2] := leftbl
+	::koordblock[4] := rightbl
 	colblock := rightbl-leftbl+1
 
 	buf := {}
@@ -2261,13 +2498,18 @@ local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
 			       + substr(::edbuffer[i], rightbl+1)
 	    endif
 	next
+
 	if undo
-		::writeundo(iif(mov, cmd_MVBL, cmd_CPBL), buf)
+		::writeundo(iif(mov, HASH_MVBL, HASH_CPBL), buf)
 	endif
+
 	lenbuf := len(buf)-1
-	::line := ::check_line(::line+rowblock-1)
+	::line := ::__check_line(::line+rowblock-1, .f.)
+	if ::pos > leftbl .and. mov
+		::pos -= iif( ::pos-leftbl < colblock, -(::pos-leftbl-1), colblock)
+	endif
 	for i=0 to lenbuf
-	     ::check_line(::line+i)
+	     ::__check_line(::line+i, .f.)
 	     ::edbuffer[::line+i] := padr(substr(::edbuffer[::line+i], 1, ::pos-1), ::pos-1) ;
 				     + buf[i+1];
 				     + substr(::edbuffer[::line+i], ::pos)
@@ -2282,30 +2524,33 @@ local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
     if undo
 	::refresh()
     endif
-RETURN
+RETURN .T.
 
 *********** переместить блок
 static function te_moveBlock(undo)
     undo := iif(undo==NIL, .t., undo)
-    ::copyBlock(.t., undo)
-RETURN
+
+RETURN ::copyBlock(.t., undo)
 
 *********** удалить блок
 static function te_deleteBlock(undo)
 local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}
     undo := iif(undo==NIL, .t., undo)
     if !::strblock .and. !::rectblock
-	 return
+	 return .f.
     endif
     if ::strblock
 	stbl := min(::koordblock[1], ::koordblock[3])
 	endbl := max(::koordblock[1], ::koordblock[3])
+	if endbl>::lines
+		endbl := ::lines
+	endif
 	rowblock := endbl-stbl+1
 	if undo
 		for i=stbl to endbl
 			aadd(unarr, ::edbuffer[i])
 		next
-		::writeundo(cmd_DELBL, unarr)
+		::writeundo(HASH_DELBL, unarr)
 	endif
 	for i=stbl to endbl
 	    adel(::edbuffer, stbl)
@@ -2324,11 +2569,14 @@ local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}
 	endbl := max(::koordblock[1], ::koordblock[3])
 	leftbl := min(::koordblock[2], ::koordblock[4])
 	rightbl := max(::koordblock[2], ::koordblock[4])
+	if endbl>::lines
+		endbl := ::lines
+	endif
 	if undo
 		for i=stbl to endbl
 			aadd(unarr, substr(::edbuffer[i], leftbl, rightbl-leftbl+1))
 		next
-		::writeundo(cmd_DELBL, unarr)
+		::writeundo(HASH_DELBL, unarr)
 	endif
 
 	for i=stbl to endbl
@@ -2349,14 +2597,14 @@ local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}
     if undo
 	::refresh()
     endif
-RETURN
+RETURN .t.
 
 *********** начать отметку блока
 static function te_beginBlock( vid, undo )
     undo := iif(undo==NIL, .t., undo)
     vid := iif(vid==NIL, .t., vid)
     if undo
-	::writeundo(cmd_BEGBLOCK)
+	::writeundo(HASH_BEGBLOCK)
     endif
     afill(::koordblock, NIL)
     ::cancelBlock()
@@ -2388,21 +2636,21 @@ static function te_cancelBlock( undo )
     ::strblock := .f.
     ::rectblock := .f.
     afill(::koordblock, NIL)
-    asize(::findR, 3)
-    afill(::findR, NIL)
+    asize(::__findR, 3)
+    afill(::__findR, NIL)
     if undo
 	::refresh()
     endif
 RETURN
 
 *********** очистить буфер и добавить туда блок
-static function te_newClipboard( Clipboard )
+static function te_copyToClipboard( Clipboard )
     asize(Clipboard, 0)
-    ::addClipboard(@Clipboard)
+    ::addToClipboard(@Clipboard)
 RETURN
 
 *********** добавить блок в буффер
-static function te_addClipboard(Clipboard)
+static function te_addToClipboard(Clipboard)
     local i, j:=0, cb[2], nT, nL, nB, nR
     if ::strblock .or. ::rectblock
 	cb[1] := iif(::strblock, .t., .f.)
@@ -2422,22 +2670,23 @@ static function te_addClipboard(Clipboard)
 RETURN
 
 *********** перенести блок в буффер
-static function te_moveClipboard(Clipboard)
-	::newClipboard(@Clipboard)
+static function te_moveToClipboard(Clipboard)
+	::copyToClipboard(@Clipboard)
 	::deleteBlock()
 RETURN
 
 *********** вставить блок из буффера
-static function te_pasteClipboard( Clipboard, it, undo )
+static function te_pasteFromClipboard( Clipboard, it, undo )
 local i, j
 	if empty(Clipboard)
-		return
+		return .f.
 	endif
 	it := iif(it==NIL, 1, it)
 	undo := iif(undo==NIL, .t., undo)
 	if undo
-		::writeundo(cmd_PASTCLB, Clipboard[it])
+		::writeundo(HASH_PASTCLB, Clipboard[it])
 	endif
+	::line := ::__check_line(::line, .f.)
 	/* вставить строчный блок */
 	if Clipboard[it][1]
 		::lines += len(Clipboard[it][2])
@@ -2462,274 +2711,321 @@ local i, j
 		::koordblock[3] := ::line+len(Clipboard[it][2]) - 1
 		::koordblock[4] := ::pos + len(Clipboard[it][2][1]) - 1
 		for i=1 to len(Clipboard[it][2])
-			::check_line(::line+i-1)
-			::edbuffer[::line+i-1] := substr(::edbuffer[::line+i-1], 1, ::pos-1)+Clipboard[it][2][i]+substr(::edbuffer[::line+i+1], ::pos)
+			::__check_line(::line+i-1)
+			::edbuffer[::line+i-1] := padr(::edbuffer[::line+i-1], ::pos-1)+Clipboard[it][2][i]+substr(::edbuffer[::line+i+1], ::pos)
 		next
 	endif
 	::updated := .t.
 	if undo
 		::refresh()
 	endif
-RETURN
+RETURN .t.
 
 ************ откат последних действий
 static function te_undo()
-local i, cmd, len, line, p
-	if ::curundo == ::startundo
+local i, j, cmd, len, line, p
+	if ::__curundo == ::__startundo
 		return
 	endif
-	cmd := ::undobuffer[::curundo][U_CMD]
-	for i=1 to ::undobuffer[::curundo][U_CYCLE]
+	cmd := ::__undobuffer[::__curundo][U_CMD]
+	for i=1 to ::__undobuffer[::__curundo][U_CYCLE]
 		do case
-		case cmd == cmd_UP
+		case cmd == HASH_UP
 			::down(.f.)
-		case cmd == cmd_DOWN
+		case cmd == HASH_DOWN
 			::up(.f.)
-		case cmd == cmd_CLEFT
+		case cmd == HASH_CLEFT
 			::right(.f.)
-		case cmd == cmd_CRIGHT
+		case cmd == HASH_CRIGHT
 			::left(.f.)
-		case cmd == cmd_PGUP
+		case cmd == HASH_PGUP
 			::pageDown(.f.)
-		case cmd == cmd_PGDOWN
+		case cmd == HASH_PGDOWN
 			::pageUp(.f.)
-		case cmd == cmd_HOME
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_END
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_BOTOP
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_GOPOS
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_GOLINE
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-		case cmd == cmd_INS
-			::backspace(.f.)
-			//::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_OVR
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-			::overStrike(::undobuffer[::curundo][U_VALUE],.f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_BS
-			if ::undobuffer[::curundo][U_VALUE] == chr(K_ENTER)
+		case cmd == HASH_HOME
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_END
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_BOTOP
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_GOPOS
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_GOLINE
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+		case cmd == HASH_INS
+			for j=1 to len(::__undobuffer[::__curundo][U_VALUE])
+				::backspace(.f.)
+			next
+			//::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_OVR
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::overStrike(::__undobuffer[::__curundo][U_VALUE],.f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_INSTAB
+			::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			//::overStrike(::__undobuffer[::__curundo][U_VALUE],.f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_OVRTAB
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_BS
+			if ::__undobuffer[::__curundo][U_VALUE] == chr(K_ENTER)
 				::insertLine(.f.)
 			else
-				::insert(::undobuffer[::curundo][U_VALUE], .f.)
+				::insert(::__undobuffer[::__curundo][U_VALUE], .f.)
 			endif
-		case cmd == cmd_DEL
-			if ::undobuffer[::curundo][U_VALUE] == chr(K_ENTER)
+		case cmd == HASH_DEL
+			if ::__undobuffer[::__curundo][U_VALUE] == chr(K_ENTER)
 				::insertLine(.f.)
-				::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-				::gotoPos(::undobuffer[::curundo][U_POS], .f.)
+				::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
 			else
-				::insert(::undobuffer[::curundo][U_VALUE], .f.)
-				::gotoPos(::undobuffer[::curundo][U_POS], .f.)
+				::insert(::__undobuffer[::__curundo][U_VALUE], .f.)
+				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
 			endif
-		case cmd == cmd_DELEND
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-			::edbuffer[::line] += ::undobuffer[::curundo][U_VALUE]
-		case cmd == cmd_DELHOME
-			::line := ::undobuffer[::curundo][U_LINE]
-			::pos := ::undobuffer[::curundo][U_POS]
-			::edbuffer[::line] := ::undobuffer[::curundo][U_VALUE]+::edbuffer[::line]
-		case cmd == cmd_DELINE
+		case cmd == HASH_DELEND
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::edbuffer[::line] += ::__undobuffer[::__curundo][U_VALUE]
+		case cmd == HASH_DELHOME
+			::line := ::__undobuffer[::__curundo][U_LINE]
+			::pos := ::__undobuffer[::__curundo][U_POS]
+			::edbuffer[::line] := ::__undobuffer[::__curundo][U_VALUE]+::edbuffer[::line]
+		case cmd == HASH_DELINE
 			::insertLine(.f.)
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-			::edbuffer[::undobuffer[::curundo][U_LINE]] := ::undobuffer[::curundo][U_VALUE]
-		case cmd == cmd_INSLINE
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
+		case cmd == HASH_INSLINE
 			if len(::edbuffer) > 0
-				::edbuffer[::undobuffer[::curundo][U_LINE]] := ::undobuffer[::curundo][U_VALUE]
+				::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
 				::deleteLine(.f.)
-				::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-				::gotoPos(::undobuffer[::curundo][U_POS], .f.)
+				::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
 			endif
-		case cmd == cmd_NEWLINE
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_BEGBLOCK
+		case cmd == HASH_NEWLINE
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_BEGBLOCK
 			::cancelBlock(.f.)
-		case cmd == cmd_DELBL .or. cmd == cmd_MVBL .or. cmd == cmd_CPBL
-			if cmd != cmd_DELBL
+		case cmd == HASH_DELBL .or. cmd == HASH_MVBL .or. cmd == HASH_CPBL
+			if cmd != HASH_DELBL
 				::deleteBlock(.f.)
 			endif
-			len := len(::undobuffer[::curundo][U_VALUE])
-			line := min(::undobuffer[::curundo][U_BLOCK][2], ::undobuffer[::curundo][U_BLOCK][4])
+			len := len(::__undobuffer[::__curundo][U_VALUE])
+			line := min(::__undobuffer[::__curundo][U_BLOCK][2], ::__undobuffer[::__curundo][U_BLOCK][4])
 			::gotoLine(line, .f.)
-			if ::undobuffer[::curundo][U_BLOCK][1] == 1
-				for i=1 to len
+			if ::__undobuffer[::__curundo][U_BLOCK][1] == 1
+				for j=1 to len
 					::insertLine(.f.)
-					::edbuffer[line+i-1] := ::undobuffer[::curundo][U_VALUE][i]
+					::edbuffer[line+j-1] := ::__undobuffer[::__curundo][U_VALUE][j]
 				next
 			else
-				for i=1 to len
-					::check_line(line+i-1)
-					::edbuffer[line+i-1] := substr(::edbuffer[line+i-1], 1, ::undobuffer[::curundo][U_BLOCK][3]-1)+;
-								::undobuffer[::curundo][U_VALUE][i] + substr(::edbuffer[line+i-1], ::undobuffer[::curundo][U_BLOCK][3])
+				for j=1 to len
+					::__check_line(line+j-1)
+					::edbuffer[line+j-1] := substr(::edbuffer[line+j-1], 1, ::__undobuffer[::__curundo][U_BLOCK][3]-1)+;
+								::__undobuffer[::__curundo][U_VALUE][j] + substr(::edbuffer[line+j-1], ::__undobuffer[::__curundo][U_BLOCK][3])
 				next
 			endif
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_PASTCLB
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::lines := ::__undobuffer[::__curundo][U_LINES]
+			asize(::edbuffer, ::__undobuffer[::__curundo][U_LINES])
+		case cmd == HASH_PASTCLB
 			::deleteBlock(.f.)
-		case cmd == cmd_FIND
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_REPLACE
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-			p := ::undobuffer[::curundo][U_VALUE]:fstring
-			::undobuffer[::curundo][U_VALUE]:fstring := ::undobuffer[::curundo][U_VALUE]:rstring
-			::undobuffer[::curundo][U_VALUE]:rstring := p
-			::replace(::undobuffer[::curundo][U_VALUE], .f.)
-		case cmd == cmd_CHECKLINE
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-			asize(::edbuffer, ::undobuffer[::curundo][U_VALUE])
-			::lines := ::undobuffer[::curundo][U_VALUE]
-		case cmd == cmd_LOADBLOCK
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-			for i=::undobuffer[::curundo][U_VALUE][1] to ::undobuffer[::curundo][U_VALUE][2]
-				adel(::edbuffer, i)
+			::lines := ::__undobuffer[::__curundo][U_LINES]
+			asize(::edbuffer, ::__undobuffer[::__curundo][U_LINES])
+		case cmd == HASH_FIND
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_REPLACE
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			p := ::__undobuffer[::__curundo][U_VALUE]:fstring
+			::__undobuffer[::__curundo][U_VALUE]:fstring := ::__undobuffer[::__curundo][U_VALUE]:rstring
+			::__undobuffer[::__curundo][U_VALUE]:rstring := p
+			::replace(::__undobuffer[::__curundo][U_VALUE], .f.)
+		case cmd == HASH_CHECKLINE
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			asize(::edbuffer, ::__undobuffer[::__curundo][U_VALUE])
+			::lines := ::__undobuffer[::__curundo][U_VALUE]
+		case cmd == HASH_LOADBLOCK
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			for j=::__undobuffer[::__curundo][U_VALUE][1] to ::__undobuffer[::__curundo][U_VALUE][2]
+				adel(::edbuffer, j)
 			next
-			::lines -= ::undobuffer[::curundo][U_VALUE][2] - ::undobuffer[::curundo][U_VALUE][1] + 1
+			::lines -= ::__undobuffer[::__curundo][U_VALUE][2] - ::__undobuffer[::__curundo][U_VALUE][1] + 1
 			asize(::edbuffer, ::lines)
 			::strblock := .f.
 			::rectblock := .f.
-		case cmd == cmd_FRLINE
+		case cmd == HASH_FRLINE
 			::lines -= 1
-			::edbuffer[::undobuffer[::curundo][U_LINE]] := ::undobuffer[::curundo][U_VALUE]
-			adel(::edbuffer, ::undobuffer[::curundo][U_LINE]+1)
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
+			::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE]
+			adel(::edbuffer, ::__undobuffer[::__curundo][U_LINE]+1)
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
 			asize(::edbuffer, ::lines)
-		case cmd == cmd_FRPART
+		case cmd == HASH_FRPART
 			p := 0
-			for i:= ::line to ::undobuffer[::curundo][U_LINE] step -1
-				adel(::edbuffer, i)
+			for j:= ::line to ::__undobuffer[::__curundo][U_LINE] step -1
+				adel(::edbuffer, j)
 				p++
 			next
 			::lines -= p
-			::lines += len(::undobuffer[::curundo][U_VALUE])
+			::lines += len(::__undobuffer[::__curundo][U_VALUE])
 			asize(::edbuffer, ::lines)
-			for i:=1 to len(::undobuffer[::curundo][U_VALUE])
-				ains(::edbuffer, ::undobuffer[::curundo][U_LINE]+i-1)
-				::edbuffer[::undobuffer[::curundo][U_LINE]+i-1] := ::undobuffer[::curundo][U_VALUE][i]
+			for j:=1 to len(::__undobuffer[::__curundo][U_VALUE])
+				ains(::edbuffer, ::__undobuffer[::__curundo][U_LINE]+j-1)
+				::edbuffer[::__undobuffer[::__curundo][U_LINE]+j-1] := ::__undobuffer[::__curundo][U_VALUE][j]
 			next
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-		case cmd == cmd_DRAW
-			::gotoLine(::undobuffer[::curundo][U_LINE], .f.)
-			::gotoPos(::undobuffer[::curundo][U_POS], .f.)
-			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos+1, 1, ::undobuffer[::curundo][U_VALUE][1])
-			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos-1, 1, ::undobuffer[::curundo][U_VALUE][2])
-			::edbuffer[::line-1] := stuff(::edbuffer[::line-1], ::pos, 1, ::undobuffer[::curundo][U_VALUE][3])
-			::edbuffer[::line+1] := stuff(::edbuffer[::line+1], ::pos, 1, ::undobuffer[::curundo][U_VALUE][4])
-			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos, 1, ::undobuffer[::curundo][U_VALUE][5])
-			::rowWin := ::undobuffer[::curundo][U_ROW]
-			::colWin := ::undobuffer[::curundo][U_COL]
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_DRAW
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos+1, 1, ::__undobuffer[::__curundo][U_VALUE][1])
+			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos-1, 1, ::__undobuffer[::__curundo][U_VALUE][2])
+			::edbuffer[::line-1] := stuff(::edbuffer[::line-1], ::pos, 1, ::__undobuffer[::__curundo][U_VALUE][3])
+			::edbuffer[::line+1] := stuff(::edbuffer[::line+1], ::pos, 1, ::__undobuffer[::__curundo][U_VALUE][4])
+			::edbuffer[::line] := stuff(::edbuffer[::line], ::pos, 1, ::__undobuffer[::__curundo][U_VALUE][5])
+			::rowWin := ::__undobuffer[::__curundo][U_ROW]
+			::colWin := ::__undobuffer[::__curundo][U_COL]
+		case cmd == HASH_INSMACRO
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::edbuffer[::line] := ::__undobuffer[::__curundo][U_VALUE]
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_INSTEMPL
+			for j=2 to ::__undobuffer[::__curundo][U_VALUE][2]
+				::gotoLine(::__undobuffer[::__curundo][U_LINE]+1, .f.)
+				::deleteLine(.f.)
+			next
+			::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+			::edbuffer[::line] := ::__undobuffer[::__curundo][U_VALUE][1]
+			::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+		case cmd == HASH_INSAUTOWRAP .or. cmd == HASH_OVRAUTOWRAP
+			if len(::edbuffer) > 0
+				::gotoLine(::__undobuffer[::__curundo][U_LINE], .f.)
+				for j=1 to ::__undobuffer[::__curundo][U_VALUE][1]
+					::deleteLine(.f.)
+				next
+				::edbuffer[::__undobuffer[::__curundo][U_LINE]] := ::__undobuffer[::__curundo][U_VALUE][2]
+				::gotoPos(::__undobuffer[::__curundo][U_POS], .f.)
+			endif
+
 		endcase
-		//::rowWin := ::undobuffer[::curundo][U_ROW]
-		//::colWin := ::undobuffer[::curundo][U_COL]
-		if ::undobuffer[::curundo][U_BLOCK][1] > 0   //block
-			if ::undobuffer[::curundo][U_BLOCK][1] == 1
+		//::rowWin := ::__undobuffer[::__curundo][U_ROW]
+		//::colWin := ::__undobuffer[::__curundo][U_COL]
+		if ::__undobuffer[::__curundo][U_BLOCK][1] > 0   //block
+			if ::__undobuffer[::__curundo][U_BLOCK][1] == 1
 				::strblock := .t.
 			else
 				::rectblock := .t.
 			endif
-			::koordblock[1] := ::undobuffer[::curundo][U_BLOCK][2]
-			::koordblock[2] := ::undobuffer[::curundo][U_BLOCK][3]
-			::koordblock[3] := ::undobuffer[::curundo][U_BLOCK][4]
-			::koordblock[4] := ::undobuffer[::curundo][U_BLOCK][5]
+			::koordblock[1] := ::__undobuffer[::__curundo][U_BLOCK][2]
+			::koordblock[2] := ::__undobuffer[::__curundo][U_BLOCK][3]
+			::koordblock[3] := ::__undobuffer[::__curundo][U_BLOCK][4]
+			::koordblock[4] := ::__undobuffer[::__curundo][U_BLOCK][5]
 		endif
-		::mkblock := ::undobuffer[::curundo][U_MKBLOCK]
-		::findR[1] := ::undobuffer[::curundo][U_FIND][1]
-		::findR[2] := ::undobuffer[::curundo][U_FIND][2]
-		::findR[3] := ::undobuffer[::curundo][U_FIND][3]
+		::mkblock := ::__undobuffer[::__curundo][U_MKBLOCK]
+		::__findR[1] := ::__undobuffer[::__curundo][U_FIND][1]
+		::__findR[2] := ::__undobuffer[::__curundo][U_FIND][2]
+		::__findR[3] := ::__undobuffer[::__curundo][U_FIND][3]
 	next
-	::curundo --
-	if ::curundo == 1 .and. ::startundo > 0
-		::curundo := ::lenundo
+	::__curundo --
+	if ::__curundo == 1 .and. ::__startundo > 0
+		::__curundo := ::lenundo
 	endif
 	::refresh()
 return
 
 ************ сохранение последних действий
 static function te_writeundo( cmd, val )
-local st[10], prev
+local st[11], prev
 
-	prev:=max(1, ::curundo)
-	if ::undobuffer[prev] != NIL .and. ::undobuffer[prev][U_CMD] == cmd .and. val==NIL//(val==NIL .or. val==::undobuffer[prev][U_VALUE])
-		::undobuffer[prev][U_CYCLE] ++
+	prev:=max(1, ::__curundo)
+	if ::__undobuffer[prev] != NIL .and. ::__undobuffer[prev][U_CMD] == cmd .and. val==NIL//(val==NIL .or. val==::__undobuffer[prev][U_VALUE])
+		::__undobuffer[prev][U_CYCLE] ++
 		return
 	endif
-	if ::curundo < 1
-		::curundo := 1
+	if ::__curundo < 1
+		::__curundo := 1
 	else
-		::curundo ++
+		::__curundo ++
 	endif
-	if ::curundo > ::lenundo
-		::curundo := 1
-		::startundo ++
+	if ::__curundo > ::lenundo
+		::__curundo := 1
+		::__startundo ++
 	endif
-	::startundo += iif(::startundo>0, 1, 0)
-	if ::startundo > ::lenundo
-		::startundo := 0
+	::__startundo += iif(::__startundo>0, 1, 0)
+	if ::__startundo > ::lenundo
+		::__startundo := 0
 	endif
 	st[U_CMD] := cmd
 	st[U_CYCLE] := 1
 	st[U_POS] := ::pos
 	st[U_LINE] := ::line
+	st[U_LINES] := ::lines
 	st[U_COL] := ::colWin
 	st[U_ROW] := ::rowWin
 	st[U_VALUE] := ""
 	st[U_BLOCK] := {0, 0, 0, 0, 0}
-	st[U_FIND] := aclone(::findR)
+	st[U_FIND] := aclone(::__findR)
 	st[U_MKBLOCK] := ::mkblock
 
 	do case
-	case cmd == cmd_INS
-		if ::undobuffer[prev] != NIL .and. !valtype(::undobuffer[prev][U_VALUE]) $ "AO" .and. ::undobuffer[prev][U_VALUE] == val
-			::undobuffer[prev][U_CYCLE] ++
-			::curundo := prev
+	case cmd == HASH_INS
+		if ::__undobuffer[prev] != NIL .and. !valtype(::__undobuffer[prev][U_VALUE]) $ "AO" .and. ::__undobuffer[prev][U_VALUE] == val
+			::__undobuffer[prev][U_CYCLE] ++
+			::__curundo := prev
 			return
 		endif
 		st[U_VALUE] := val
-	case cmd == cmd_OVR
-		if ::undobuffer[prev] != NIL .and. !valtype(::undobuffer[prev][U_VALUE]) $ "AO" .and. ::undobuffer[prev][U_VALUE] == val
-			::undobuffer[prev][U_CYCLE] ++
-			::curundo := prev
+	case cmd == HASH_OVR
+		/*
+		if ::__undobuffer[prev] != NIL .and. !valtype(::__undobuffer[prev][U_VALUE]) $ "AO" .and. ::__undobuffer[prev][U_VALUE] == val
+			::__undobuffer[prev][U_CYCLE] ++
+			::__curundo := prev
 			return
 		endif
+		*/
 		st[U_VALUE] := val
-	case cmd == cmd_BS .or. cmd == cmd_DEL
-		st[U_VALUE] := val
-	case cmd == cmd_DELINE .or. cmd == cmd_INSLINE
-		st[U_VALUE] := val
-	case cmd == cmd_DELEND .or. cmd == cmd_DELHOME
-		st[U_VALUE] := val
-	case cmd == cmd_DELBL .or. cmd == cmd_MVBL
+	case cmd == HASH_INSAUTOWRAP .or. cmd == HASH_OVRAUTOWRAP
 		st[U_VALUE] := aclone(val)
-	case cmd == cmd_PASTCLB
-		st[U_VALUE] := aclone(val)
-	case cmd == cmd_FIND
+	case cmd == HASH_BS .or. cmd == HASH_DEL
 		st[U_VALUE] := val
-	case cmd == cmd_REPLACE
+	case cmd == HASH_DELINE .or. cmd == HASH_INSLINE
 		st[U_VALUE] := val
-	case cmd == cmd_CHECKLINE
+	case cmd == HASH_DELEND .or. cmd == HASH_DELHOME
 		st[U_VALUE] := val
-	case cmd == cmd_LOADBLOCK
+	case cmd == HASH_DELBL .or. cmd == HASH_MVBL
 		st[U_VALUE] := aclone(val)
-	case cmd == cmd_FRLINE
+	case cmd == HASH_PASTCLB
+		st[U_VALUE] := aclone(val)
+	case cmd == HASH_FIND
 		st[U_VALUE] := val
-	case cmd == cmd_FRPART
+	case cmd == HASH_REPLACE
+		st[U_VALUE] := val
+	case cmd == HASH_CHECKLINE
+		st[U_VALUE] := val
+	case cmd == HASH_LOADBLOCK
 		st[U_VALUE] := aclone(val)
-	case cmd == cmd_DRAW
+	case cmd == HASH_FRLINE
+		st[U_VALUE] := val
+	case cmd == HASH_FRPART
 		st[U_VALUE] := aclone(val)
+	case cmd == HASH_DRAW
+		st[U_VALUE] := aclone(val)
+	case cmd == HASH_INSMACRO
+		st[U_VALUE] := val
+	case cmd == HASH_INSTEMPL
+		st[U_VALUE] := aclone(val)
+	case cmd == HASH_INSTAB .or. cmd == HASH_OVRTAB
+		st[U_VALUE] := val
 	endcase
 	if ::strblock .or. ::rectblock
 		st[U_BLOCK][1] := iif(::strblock, 1, 2)
@@ -2738,19 +3034,19 @@ local st[10], prev
 		st[U_BLOCK][4] := ::koordblock[3]
 		st[U_BLOCK][5] := ::koordblock[4]
 	endif
-	if len(::undobuffer)<1 .or. len(::undobuffer)<::curUndo
-	   aadd(::undobuffer, aclone(st) )
+	if len(::__undobuffer)<1 .or. len(::__undobuffer)<::__curundo
+	   aadd(::__undobuffer, aclone(st) )
 	else
-	   ::undobuffer[::curundo] := aclone(st)
+	   ::__undobuffer[::__curundo] := aclone(st)
 	endif
 return
 
 ****************** псевдографика *********************************
 static function te_around_check(around_char, R_Mode, L_Mode, U_Mode, D_Mode)
 local ch, p
-	::check_line(::line)
-	//::check_line(::line-1)
-	//::check_line(::line+1)
+	::__check_line(::line)
+	//::__check_line(::line-1)
+	//::__check_line(::line+1)
 
 	/* right */
 	around_char[1] := substr(::edbuffer[::line], ::pos+1, 1)
@@ -2857,12 +3153,12 @@ local p, ch_ret, line, pos, old_direction:=0, str, ch, i, j
 	endcase
 	line := ::line
 	pos := ::pos
-	::check_line(line)
+	::__check_line(line)
 	ch_ret := substr(::edbuffer[line], pos, 1)
-	::around_check(@around_char, @R_Mode, @L_Mode, @U_Mode, @D_Mode)
+	::__around_check(@around_char, @R_Mode, @L_Mode, @U_Mode, @D_Mode)
 	if undo
 		aadd(around_char, ch_ret)
-		::writeundo(cmd_DRAW, around_char)
+		::writeundo(HASH_DRAW, around_char)
 	endif
 
 	if direction == A_Right
@@ -3012,8 +3308,8 @@ static function te_setNumStyle(st)
 	endif
 	::Nstyle := st
 	if st
-		::LNstyle := int(log10(::lines))+2
-		::nLeft+=::LNstyle
+		::__LNstyle := int(log10(::lines))+2
+		::nLeft+=::__LNstyle
 		::refresh()
 	else
 		::killNumStyle()
@@ -3022,8 +3318,8 @@ return
 ************
 static function te_killNumStyle()
 	::Nstyle := .f.
-	::nLeft-=::LNstyle
-	::LNstyle := 0
+	::nLeft-=::__LNstyle
+	::__LNstyle := 0
 	::refresh()
 return
 ************
@@ -3060,19 +3356,27 @@ local ret := .f., i
 return ret
 *************
 static function te_setTabSize(tabsize)
-local i
+local i, n, str
 	for i=1 to ::lines
-		::edbuffer[i] := tabexpand(tabpack(::edbuffer[i], ::tabsize), tabsize)
+		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+		str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+			ltrim(::edbuffer[i])
+		::edbuffer[i] := tabexpand(str, tabsize)
 	next
 	::tabsize := iif(tabsize==NIL, ::tabsize, tabsize)
 	::refresh()
 return
+*************
+static function te_setFocus(lFocus)
+	lFocus := iif(lFocus==NIL, !::InFocus, lFocus)
+	::Infocus := lFocus
+return ::InFocus
 ***************
 static function te_setCharset(newchs)
 local i
 	::charset := newchs
 	for i=1 to ::lines
-		::edbuffer[i] := translate_charset(::charset, ::hostcharset, ::edbuffer[i])
+		::edbuffer[i] := translate_charset(::charset, ::__hostcharset, ::edbuffer[i])
 	next
 	::refresh()
 return
@@ -3095,7 +3399,7 @@ local i, str
 	qout(str)
   next
   printEnd()
-return
+return .t.
 **************
 static function te_printBlock()
 local i, str, x1, x2, y1, y2, l

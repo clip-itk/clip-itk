@@ -1,0 +1,167 @@
+# main part
+#
+#
+
+#export CC
+#DBGFLAGS	= -g #-DMEMDBG
+#WARNFLAGS	= -Wimplicit -Wall
+
+ifdef CLIPROOT
+	CLIP = $(CLIPROOT)/bin/clip
+else
+	CLIP = clip
+endif
+
+.SUFFIXES: .prg .c .po
+.PHONY:	test screen hash
+
+
+HDRS	= clip-gtk2.ch clip-gtk2.h
+
+#GDK_SRC =  gdkinput.c
+GDK_SRC = gdk.c gdkfont.c  gdkcolor.c gdkgc.c gdkdraw.c gdkrgb.c gdkpixbuf.c \
+	  gdkregion.c gdkwindow.c
+
+#GTK_SRC = text.c tree.c treeitem.c
+GTK_SRC = accelgroup.c adjustment.c alignment.c bmpxpm.c box.c button.c buttonbox.c calendar.c \
+	  cellrenderer.c \
+	  checkbutton.c checkmenuitem.c clist.c colorsel.c combo.c common.c \
+	  container.c ctree.c curve.c dialog.c drawingarea.c editable.c entry.c \
+	  filesel.c fixed.c fontsel.c frame.c general.c  handlebox.c image.c item.c \
+	  itemfactory.c \
+	  label.c layout.c list.c listitem.c liststore.c menu.c menubar.c menuitem.c \
+	  menushell.c misc.c notebook.c object.c optionmenu.c paned.c \
+	  pixmap.c progress.c progressbar.c radiobutton.c radiomenuitem.c \
+	  range.c rulers.c scale.c scrollbar.c scrolledwindow.c separator.c \
+	  spinbutton.c statusbar.c table.c textbuffer.c textiter.c textmark.c \
+	  texttag.c texttagtable.c textview.c tipsquery.c togglebutton.c \
+	  toolbar.c tooltips.c treemodel.c treeselection.c treestore.c \
+	  treeview.c treeviewcolumn.c viewport.c widget.c window.c windowgroup.c \
+	  gtkermsg.prg
+
+GTK_EXTEXT_SRC = #gtkextext.c extext.c
+
+#GDK_OBJ = gdkinput.o
+GDK_OBJ = gdk.o gdkfont.o gdkcolor.o gdkgc.o gdkdraw.o gdkrgb.o gdkpixbuf.o \
+	  gdkregion.o gdkwindow.o
+
+#GTK_OBJ = text.o tree.o treeitem.o
+GTK_OBJ = accelgroup.o adjustment.o alignment.o bmpxpm.o box.o button.o buttonbox.o calendar.o \
+	  cellrenderer.o \
+	  checkbutton.o checkmenuitem.o clist.o colorsel.o combo.o common.o \
+	  container.o ctree.o curve.o dialog.o drawingarea.o editable.o entry.o \
+	  filesel.o fixed.o fontsel.o frame.o general.o handlebox.o image.o item.o \
+	  itemfactory.o \
+	  label.o layout.o list.o listitem.o liststore.o menu.o menubar.o menuitem.o \
+	  menushell.o misc.o notebook.o object.o optionmenu.o paned.o \
+	  pixmap.o progress.o progressbar.o radiobutton.o radiomenuitem.o \
+	  range.o rulers.o scale.o scrollbar.o scrolledwindow.o separator.o \
+	  spinbutton.o statusbar.o table.o textbuffer.o textiter.o textmark.o \
+	  texttag.o texttagtable.o textview.o tipsquery.o togglebutton.o \
+	  toolbar.o tooltips.o treemodel.o treeselection.o treestore.o \
+	  treeview.o treeviewcolumn.o viewport.o widget.o window.o windowgroup.o \
+	  gtkermsg.o
+
+GTK_EXTEXT_OBJ = #gtkextext.o extext.o
+
+SRCS = $(GDK_SRC) $(GTK_SRC) $(GTK_EXTEXT_SRC)
+
+OBJS = $(GDK_OBJ) $(GTK_OBJ) $(GTK_EXTEXT_OBJ)
+
+OBJDIR	= .
+EXTOBJS =
+
+HASHSRCS = $(SRCS) $(HDRS)
+
+XLIB	= libclip-gtk2.a
+XSLIB	= libclip-gtk2$(DLLSUFF)
+XSLIBREAL = libclip-gtk2$(DLLREALSUFF)
+XLIBOBJS= $(OBJS)
+
+SYS = $OSNAME
+SYSTEM_NAME = $(OSNAME)
+
+DEFS	=
+# -DVERSION=\"0.1\"
+# -DSYSTEM=\"$(SYSTEM_NAME)\"
+
+CC = $(COMPILER)
+CFLAGS  = $(C_FLAGS) $(DEFS) $(MEMDBGFLAGS)
+#  $(WARNFLAGS) $(DBGFLAGS) $(OPTFLAGS) -I$(INCLUDE)
+
+export CC CFLAGS
+export MEMDBG MEMDBGFLAGS
+
+all: Makefile hash $(XTARGETS)
+
+d: set_dbg
+
+set_dbg: CDBGFLAGS=-g
+set_dbg: all
+
+Makefile: Makefile.in configure
+	./configure
+
+hash: _hashcode.h
+
+_hashcode.h: $(HASHSRCS)
+	$(CLIPROOT)/bin/clip_hashextract $(HASHSRCS) | sort -u > _hashcode.h
+	cmp _hashcode.h hashcode.h 2>/dev/null || cp _hashcode.h hashcode.h
+
+$(XLIB): $(XLIBOBJS)
+	rm -f $(XLIB)
+	$(CLIPROOT)/bin/clip_makelib $(XLIB) $(XLIBOBJS)
+	ranlib $(XLIB)
+
+$(XSLIB): $(XLIB)
+	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) $(XLIB) $(LIBS)
+
+clean:
+	rm -rf *.o *.a *.so *.dll *.po *.pa *.b *.BAK *.bak *~ core* \
+	*core Makefile.inc *.ex *.nm \
+	gtkermsg.c
+
+distclean: clean
+	rm -rf clip-gtkcfg2.h hashcode.h _hashcode.h Makefile
+	-cd test &&  $(MAKE) clean
+	-cd example && $(MAKE) clean
+
+install:
+	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(DESTDIR)$(CLIPROOT)/lib
+	chmod 0644  $(DESTDIR)$(CLIPROOT)/lib/$(XLIB)
+	chmod 0755  $(DESTDIR)$(CLIPROOT)/lib/$(XSLIB)
+	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(DESTDIR)$(CLIPROOT)/lib
+	cp clip-gtk2.cliprc $(DESTDIR)$(CLIPROOT)/cliprc/
+	chmod 0644  $(DESTDIR)$(CLIPROOT)/cliprc/clip-gtk2.cliprc
+	cp clip-gtk2.ch $(DESTDIR)$(CLIPROOT)/include/
+	cp gtk2-stock.ch $(DESTDIR)$(CLIPROOT)/include/
+	cp clip-gtk2.h $(DESTDIR)$(CLIPROOT)/include/
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-gtk2
+	cp example/Makefile example/clip.xpm example/basket.bmp $(DESTDIR)$(CLIPROOT)/doc/example/clip-gtk2
+	cp example/tbrow.xpm $(DESTDIR)$(CLIPROOT)/doc/example/clip-gtk2
+	cp example/banner.gif $(DESTDIR)$(CLIPROOT)/doc/example/clip-gtk2
+	cp example/*.prg  $(DESTDIR)$(CLIPROOT)/doc/example/clip-gtk2
+
+.c.o:
+	@echo $(CC) $(CDBGFLAGS) $(CFLAGS) -c $<
+	@$(CC) $(CDBGFLAGS) $(CFLAGS) $(XCFLAGS) -c $<
+
+.prg.o:
+	$(CLIP) -Olnw -I. $<
+
+depend:
+	$(MAKE) hash
+	makedepend -Y  -- $(CFLAGS) -- $(SRCS) 2>/dev/null
+
+commit:
+	_cvs commit
+
+update:
+	_cvs update -dP
+
+ucommit:
+	_cvs update -dP && _cvs commit
+
+shell:
+	sh
+

@@ -4,9 +4,79 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rddclip.c,v $
+	Revision 1.94  2004/02/05 13:34:12  clip
+	*** empty log message ***
+	
+	Revision 1.93  2004/02/05 13:21:28  clip
+	rust: rddcreateindex(...,cForCondition {8th parameter} )
+
+	Revision 1.92  2004/01/16 10:06:08  clip
+	rust: flush buffer on RLOCK()
+
+	Revision 1.91  2003/12/01 12:04:23  clip
+	rust: RDDCLOSEALL() closes only tables of current task
+
+	Revision 1.90  2003/08/12 12:51:53  clip
+	rust: index on readonly dbf
+
+	Revision 1.89  2003/07/16 07:57:04  clip
+	rust: another 'unsafe write'
+
+	Revision 1.88  2003/06/11 07:57:33  clip
+	rust: minor fix
+
+	Revision 1.87  2003/06/11 07:52:19  clip
+	rust: avoid 'unsafe read' warning in rddsetorder()
+
+	Revision 1.86  2003/06/05 13:20:28  clip
+	rust: avoid 'unsafe read' warning and reduntant "gotop()"
+
+	Revision 1.85  2003/05/29 12:47:49  clip
+	rust: SIGSEGV when dbseek(NIL)
+
+	Revision 1.84  2003/05/22 11:46:25  clip
+	rust: minor fix
+
+	Revision 1.83  2003/05/15 14:39:30  clip
+	rust: some speed optimizations for relations
+
+	Revision 1.82  2003/03/21 12:50:59  clip
+	rust: avoid warnings "unsafe read/write"
+
+	Revision 1.81  2003/03/12 12:50:43  clip
+	rust: tasks share RDDs and subdrivers
+
+	Revision 1.80  2003/03/04 12:47:01  clip
+	uri: added C-level exit procedures for closing DB & RDD
+
+	Revision 1.79  2002/12/17 14:02:54  clip
+	rust: EXACT or NON-EXACT set scope
+
+	Revision 1.78  2002/12/04 17:03:00  clip
+	rust: small fix
+
+	Revision 1.77  2002/12/04 16:49:29  clip
+	rust: rdd_m6_newfilter(), rdd_m6_addscoped(), rdd_m6_setareafilter()
+
+	Revision 1.76  2002/12/02 13:48:33  clip
+	rust: ignoring case in CDX;
+	RDDCREATEINDEX(...,lIgnoreCase) (7th parameter)
+	ORDCONDSET(...,lIgnoreCase) (16th parameter)
+
+	Revision 1.75  2002/11/05 14:46:30  clip
+	rust: some fixes
+
+	Revision 1.74  2002/10/30 13:04:38  clip
+	rust: m6_SetFilter()
+
+	Revision 1.73  2002/10/26 11:10:02  clip
+	initial support for localized runtime messages
+	messages are in module 'cliprt'
+	paul
+
 	Revision 1.72  2002/10/11 09:11:13  clip
 	rust: m6_FiltSave()/m6_FiltRestore()
-	
+
 	Revision 1.71  2002/10/01 13:33:17  clip
 	rust: build filter list
 
@@ -120,6 +190,7 @@
 
 */
 #include <string.h>
+#include <limits.h>
 #include "../rdd.h"
 #include "error.ch"
 
@@ -127,28 +198,11 @@
 #define WRITELOCK	if((er = rd->vtbl->_wlock(cm,rd,__PROC__))) goto err
 #define UNLOCK		if((er = rd->vtbl->_ulock(cm,rd,__PROC__))) goto err
 
-static const char* er_badinstance	= "Bad RDD instance";
-static const char* er_nofield		= "No such field";
-static const char* er_badargument2	= "Bad argument (2)";
-static const char* er_badfilter	= "Bad filter handle";
-
-static int
-_rdd_flushbuffer(ClipMachine* cm, RDD_DATA* rd, const char* __PROC__)
-{
-	int er;
-
-	if(rd->changed){
-		WRITELOCK;
-		if((er = rd->vtbl->setrecord(cm,rd,__PROC__))) goto err_unlock;
-		UNLOCK;
-		rd->changed = 0;
-	}
-	return 0;
-err_unlock:
-	rd->vtbl->_ulock(cm,rd,__PROC__);
-err:
-	return er;
-}
+#define er_badinstance  _clip_gettext("Bad RDD instance")
+#define er_nofield      _clip_gettext("No such field")
+#define er_badargument2 _clip_gettext("Bad argument (2)")
+#define er_badfilter    _clip_gettext("Bad filter handle")
+#define er_noorder      _clip_gettext("No controlling order")
 
 static RDD_DATA* _fetch_rdd(ClipMachine* cm,const char* __PROC__){
 	RDD_DATA* rd = (RDD_DATA*)_clip_fetch_c_item(cm,_clip_parni(cm,1),
@@ -252,8 +306,13 @@ int clip_RDDSETINDEX(ClipMachine* cm){
 	CHECKARG1(3,CHARACTER_t);
 	CHECKOPT1(4,CHARACTER_t);
 
-	if((er = rdd_setindex(cm,rd,NULL,driver,name,tag,__PROC__))) goto err;
+	READLOCK;
+	if((er = rdd_setindex(cm,rd,NULL,driver,name,tag,0,__PROC__))) goto err_unlock;
+	if((er = rdd_gotop(cm,rd,__PROC__))) goto err_unlock;
+	UNLOCK;
 	return 0;
+err_unlock:
+	rd->vtbl->_ulock(cm,rd,__PROC__);
 err:
 	return er;
 }
@@ -293,7 +352,7 @@ int clip_RDDSETRELATION(ClipMachine* cm){
 	if(_clip_parinfo(cm,2)==UNDEF_t) crd = NULL;
 	if(_clip_parinfo(cm,3)==UNDEF_t) crd = NULL;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_setrelation(cm,rd,crd,NULL,expr,1,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -312,6 +371,8 @@ int clip_RDDCREATEINDEX(ClipMachine* cm){
 	const char* tag = _clip_parc(cm,4);
 	const char* expr = _clip_parc(cm,5);
 	int unique = _clip_parl(cm,6);
+	int lIgnoreCase = _clip_parl(cm,7);
+	const char* cfor = _clip_parc(cm,8);
 	int er;
 
 	if(!rd) return EG_NOTABLE;
@@ -320,12 +381,39 @@ int clip_RDDCREATEINDEX(ClipMachine* cm){
 	CHECKOPT1(4,CHARACTER_t);
 	CHECKARG1(5,CHARACTER_t);
 	CHECKOPT1(6,LOGICAL_t);
+	CHECKOPT1(7,LOGICAL_t);
+	CHECKOPT1(8,CHARACTER_t);
 
 	if(_clip_parinfo(cm,6)==UNDEF_t)
 		unique = cm->flags & UNIQUE_FLAG;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
-	READLOCK;
+	rd->os.lIgnoreCase = lIgnoreCase;
+
+	if(rd->os.cForCondition){
+		free(rd->os.cForCondition);
+		rd->os.cForCondition = NULL;
+	}
+	if(cfor && cfor[0]){
+		int r = _clip_parni(cm,1);
+		char forexpr[1024];
+
+		rd->os.cForCondition = malloc(strlen(cfor)+1);
+		strcpy(rd->os.cForCondition,cfor);
+
+		memset(forexpr,0,sizeof(forexpr));
+
+		rdd_expandmacro(rd->area,r,cfor,forexpr);
+
+		if((er = _clip_eval_macro(cm,forexpr,strlen(forexpr),&rd->os.bForCondition)))
+			goto err;
+	}
+
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if(rd->readonly){
+		READLOCK;
+	} else {
+		WRITELOCK;
+	}
 	if((er = rdd_createindex(cm,rd,driver,name,tag,expr,NULL,unique,__PROC__)))
 		goto err_unlock;
 	UNLOCK;
@@ -343,7 +431,7 @@ int clip_RDDREINDEX(ClipMachine* cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) return er;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) return er;
 	return rdd_reindex(cm,rd,__PROC__);
 }
 
@@ -364,25 +452,28 @@ int clip_RDDSETORDER(ClipMachine* cm){
 	if(!rd) return EG_NOTABLE;
 	CHECKOPT2(2,NUMERIC_t,CHARACTER_t);
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	READLOCK;
 	if(_clip_parinfo(cm,2)==NUMERIC_t){
 		int order = _clip_parni(cm,2);
-		if((er = rdd_setorder(cm,rd,order,__PROC__))) goto err;
+		if((er = rdd_setorder(cm,rd,order,__PROC__))) goto err_unlock;
 	} else {
 		const char* tag = _clip_parc(cm,2);
 		int i;
 
-		if(!tag)
-			return 0;
-
-		for(i=0;i<rd->ords_opened;i++){
-			if(strcasecmp(rd->orders[i]->name,tag)==0){
-				if((er = rdd_setorder(cm,rd,i+1,__PROC__))) goto err;
-				break;
+		if(tag){
+			for(i=0;i<rd->ords_opened;i++){
+				if(strcasecmp(rd->orders[i]->name,tag)==0){
+					if((er = rdd_setorder(cm,rd,i+1,__PROC__))) goto err_unlock;
+					break;
+				}
 			}
 		}
 	}
+	UNLOCK;
 	return 0;
+err_unlock:
+	rd->vtbl->_ulock(cm,rd,__PROC__);
 err:
 	return er;
 }
@@ -407,7 +498,11 @@ int clip_RDDCLOSEAREA(ClipMachine* cm){
 
 	if(rd->area!=-1)
 		return 0;
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if(rd->readonly)
+		rd->vtbl->_rlock(cm,rd,__PROC__);
+	else
+		rd->vtbl->_wlock(cm,rd,__PROC__);
 	if((er = rdd_closearea(cm,rd,__PROC__))) goto err;
 	_clip_destroy_c_item(cm,key,_C_ITEM_TYPE_RDD);
 	return 0;
@@ -416,18 +511,25 @@ err:
 }
 
 int clip_RDDCLOSEALL(ClipMachine* cm){
-	const char* __PROC__ = "RDDCLOSEAREA";
+	const char* __PROC__ = "RDDCLOSEALL";
 	RDD_DATA* rd;
-	int key,er;
+	int key,i,er;
 
-	rd = (RDD_DATA*)_clip_fetch_c_item_type(cm,_C_ITEM_TYPE_RDD,&key);
-	while(rd){
-		if(rd->area!=-1)
-			continue;
-		if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
-		if((er = rdd_closearea(cm,rd,__PROC__))) goto err;
-		_clip_destroy_c_item(cm,key,_C_ITEM_TYPE_RDD);
-		rd = (RDD_DATA*)_clip_fetch_c_item_type(cm,_C_ITEM_TYPE_RDD,&key);
+	for(i=0;i<cm->container->len;i++){
+		if(cm->container->items[i].type == _C_ITEM_TYPE_RDD){
+			rd = (RDD_DATA*)cm->container->items[i].item;
+			if(rd->cm == cm && rd->area==-1){
+				key = cm->container->items[i].key;
+				if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+				if(rd->readonly)
+					rd->vtbl->_rlock(cm,rd,__PROC__);
+				else
+					rd->vtbl->_wlock(cm,rd,__PROC__);
+				if((er = rdd_closearea(cm,rd,__PROC__))) goto err;
+				_clip_destroy_c_item(cm,key,_C_ITEM_TYPE_RDD);
+				rd = (RDD_DATA*)_clip_fetch_c_item_type(cm,_C_ITEM_TYPE_RDD,&key);
+			}
+		}
 	}
 	return 0;
 err:
@@ -442,13 +544,17 @@ int clip_RDDSEEK(ClipMachine* cm){
 	int last = _clip_parl(cm,4);
 	int found,er;
 
+	_clip_retl(cm,0);
 	if(!rd) return EG_NOTABLE;
 	CHECKOPT1(3,LOGICAL_t);
 	CHECKOPT1(4,LOGICAL_t);
 
+	if(!v)
+		return 0;
+
 	if(_clip_parinfo(cm,3)==UNDEF_t)
 		soft = (cm->flags & SOFTSEEK_FLAG);
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_seek(cm,rd,v,soft,last,&found,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -467,7 +573,7 @@ int clip_RDDGOTOP(ClipMachine* cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_gotop(cm,rd,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -485,7 +591,7 @@ int clip_RDDGOBOTTOM(ClipMachine* cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_gobottom(cm,rd,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -507,7 +613,7 @@ int clip_RDDSKIP(ClipMachine* cm){
 
 	if(_clip_parinfo(cm,2)==UNDEF_t) recs = 1;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_skip(cm,rd,recs,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -527,7 +633,7 @@ int clip_RDDGOTO(ClipMachine* cm){
 	if(!rd) return EG_NOTABLE;
 	CHECKARG1(2,NUMERIC_t);
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_goto(cm,rd,rec,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -549,7 +655,7 @@ int clip_RDDGOTOKEY(ClipMachine* cm){
 	if(rd->curord == -1)
 		return 0;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_gotokey(cm,rd,rd->orders[rd->curord],rec,&ok,__PROC__)))
 		goto err_unlock;
@@ -628,7 +734,7 @@ int clip_RDDKEYNO(ClipMachine* cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_keyno(cm,rd,&keyno,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -647,7 +753,7 @@ int clip_RDDLASTKEY(ClipMachine* cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_lastkey(cm,rd,&lastkey,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -722,7 +828,7 @@ int clip_RDDREAD(ClipMachine* cm){
 	int er;
 
 	if(!rd) return EG_NOTABLE;
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_dbread(cm,rd,RETPTR(cm),__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -746,7 +852,7 @@ int clip_RDDWRITE(ClipMachine* cm){
 	WRITELOCK;
 	if((er = rdd_dbwrite(cm,rd,ap,__PROC__))) goto err_unlock;
 	UNLOCK;
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	return 0;
 err_unlock:
 	rd->vtbl->_ulock(cm,rd,__PROC__);
@@ -763,14 +869,14 @@ int clip_RDDAPPEND(ClipMachine* cm){
 	if(!rd) return EG_NOTABLE;
 	CHECKOPT1(2,MAP_t);
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	WRITELOCK;
 	if((er = rdd_append(cm,rd,&neterr,__PROC__))) goto err_unlock;
 	if(ap && ap->t.type!=UNDEF_t)
 		if((er = rdd_dbwrite(cm,rd,ap,__PROC__))) goto err_unlock;
 	UNLOCK;
 	if(ap && ap->t.type!=UNDEF_t)
-		if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+		if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	_clip_retl(cm,1);
 	return 0;
 err_unlock:
@@ -784,18 +890,20 @@ int clip_RDDSETFILTER(ClipMachine* cm){
 	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
 	const char* str = _clip_parc(cm,2);
 	ClipVar* a = _clip_par(cm,3);
+	int lNoOptimize = _clip_parl(cm,4);
 	RDD_FILTER* fp;
 	int er;
 
 	if(!rd) return EG_NOTABLE;
 	CHECKARG1(2,CHARACTER_t);
 	CHECKOPT1(3,ARRAY_t);
+	CHECKOPT1(4,LOGICAL_t);
 
 	if((er = rdd_clearfilter(cm,rd,__PROC__))) goto err;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
-	if((er = rdd_createfilter(cm,rd,&fp,NULL,str,a,__PROC__))) goto err_unlock;
+	if((er = rdd_createfilter(cm,rd,&fp,NULL,str,a,lNoOptimize,__PROC__))) goto err_unlock;
 	fp->active = 1;
 	rd->filter = fp;
 	if((er = _rdd_calcfiltlist(cm,rd,__PROC__))) goto err_unlock;
@@ -836,7 +944,7 @@ int clip_RDDDELETE(ClipMachine* cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	WRITELOCK;
 	if((er = rdd_delete(cm,rd,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -854,7 +962,7 @@ int clip_RDDRECALL(ClipMachine* cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	WRITELOCK;
 	if((er = rdd_recall(cm,rd,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -952,7 +1060,7 @@ int clip_RDDLOCATE(ClipMachine * cm)
 	memset(&wexpr,0,sizeof(ClipVar));
 	memset(expexp,0,sizeof(expexp));
 	rdd_expandmacro(rd->area,r,fe,expexp);
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = _clip_eval_macro(cm,expexp,strlen(expexp),&fexpr)))
 		goto err_unlock;
@@ -988,7 +1096,7 @@ clip_RDDCONTINUE(ClipMachine * cm){
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if((er = rdd_continue(cm,rd,&found,__PROC__))) goto err_unlock;
 	UNLOCK;
@@ -1059,7 +1167,7 @@ int clip_RDDORDSCOPE(ClipMachine* cm){
 	if(!rd) return EG_NOTABLE;
 	CHECKARG1(1,NUMERIC_t);
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if(scope==0){
 		if((er = rdd_scopetop(cm,rd,v,__PROC__))) goto err_unlock;
@@ -1087,14 +1195,14 @@ int clip_RDDNEWFILTER(ClipMachine* cm)
 
 	if(!rd) return EG_NOTABLE;
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	READLOCK;
 	if(type==NUMERIC_t || type==UNDEF_t){
 		unsigned int len = _clip_parni(cm,2);
 		if((er = rdd_createuserfilter(cm,rd,&fp,len,__PROC__))) goto err_unlock;
 	} else if(type==CHARACTER_t){
 		char* str = _clip_parc(cm,2);
-		if((er = rdd_createfilter(cm,rd,&fp,NULL,str,NULL,__PROC__))) goto err_unlock;
+		if((er = rdd_createfilter(cm,rd,&fp,NULL,str,NULL,0,__PROC__))) goto err_unlock;
 	} else {
 		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badargument2);
 		goto err_unlock;
@@ -1170,6 +1278,7 @@ clip_RDDRLOCK(ClipMachine* cm)
 	if (_clip_parinfo(cm,3)==UNDEF_t)
 		lrelease = 1;
 
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	if(lrelease){
 		if((er = rdd_ulock(cm,rd,0,0,__PROC__))) goto err;
 	}
@@ -1198,7 +1307,7 @@ clip_RDDUNLOCK(ClipMachine* cm)
 		recno = rd->recno;
 	}
 
-	if((er = _rdd_flushbuffer(cm,rd,__PROC__))) goto err;
+	if((er = rdd_flushbuffer(cm,rd,__PROC__))) goto err;
 	if((er = rdd_ulock(cm,rd,recno,1,__PROC__))) goto err;
 	return 0;
 err:
@@ -1269,6 +1378,139 @@ clip_RDDFIELDTYPE(ClipMachine* cm)
 
 	_clip_retc(cm,type);
 	return 0;
+err:
+	return er;
+}
+
+/* SIX */
+
+int clip_RDD_M6_NEWFILTER(ClipMachine* cm)
+{
+	const char* __PROC__ = "RDD_M6_NEWFILTER";
+	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
+	int type = _clip_parinfo(cm,2);
+	RDD_FILTER* fp;
+	int er;
+
+	if(!rd) return EG_NOTABLE;
+	CHECKOPT2(2,NUMERIC_t,CHARACTER_t);
+
+	READLOCK;
+	if(type==NUMERIC_t || type==UNDEF_t){
+		unsigned int len = _clip_parni(cm,2);
+		if((er = rdd_createuserfilter(cm,rd,&fp,len,__PROC__)))
+			goto err_unlock;
+	} else if(type==CHARACTER_t){
+		char* str = _clip_parc(cm,2);
+		if((er = rdd_createfilter(cm,rd,&fp,NULL,str,NULL,0,__PROC__)))
+			goto err_unlock;
+	}
+	UNLOCK;
+
+	_clip_retni(cm,fp->handle);
+	return 0;
+
+err_unlock:
+	rd->vtbl->_ulock(cm,rd,__PROC__);
+err:
+	return er;
+}
+
+int clip_RDD_M6_SETAREAFILTER(ClipMachine* cm)
+{
+	const char* __PROC__ = "RDD_M6_SETAREAFILTER";
+	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
+	int h = _clip_parni(cm,2);
+	char expr[PATH_MAX];
+	RDD_FILTER* fp;
+	int er;
+
+	if(!rd) return EG_NOTABLE;
+	CHECKARG1(2,NUMERIC_t);
+
+	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
+	if(!fp){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	fp->active = 1;
+	if(rd->filter)
+		rd->filter->active = 0;
+	rd->filter = fp;
+
+	fp->rd = rd;
+	if(!fp->custom){
+		rdd_expandmacro(rd->area,0,fp->sfilter,expr);
+		if((er = _clip_eval_macro(cm,expr,strlen(expr),&fp->fps->bfilter)))
+			goto err;
+	}
+
+	_clip_retl(cm,1);
+	return 0;
+err:
+	return er;
+}
+
+int
+clip_RDD_M6_GETAREAFILTER(ClipMachine* cm)
+{
+	const char* __PROC__ = "RDD_M6_GETAREAFILTER";
+	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
+
+	if(!rd) return EG_NOTABLE;
+
+	if(rd->filter)
+		_clip_retni(cm,rd->filter->handle);
+	else
+		_clip_retni(cm,-1);
+	return 0;
+}
+
+int clip_RDD_M6_ADDSCOPED(ClipMachine* cm){
+	const char* __PROC__ = "RDD_M6_ADDSCOPED";
+	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
+	int h = _clip_parni(cm,2);
+	RDD_FILTER* fp;
+	ClipVar* t = _clip_vptr(_clip_par(cm,3));
+	ClipVar* b = _clip_vptr(_clip_par(cm,4));
+	int ord = _clip_parni(cm,5)-1;
+	int er;
+
+	if(!rd) return EG_NOTABLE;
+	CHECKARG1(2,NUMERIC_t);
+	CHECKOPT1(5,NUMERIC_t);
+
+	fp = (RDD_FILTER*)_clip_fetch_c_item(cm,h,_C_ITEM_TYPE_RYO);
+	if(!fp){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	if(!fp->rmap){
+		er = rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,er_badfilter);
+		goto err;
+	}
+	if(_clip_parinfo(cm,5) == UNDEF_t)
+		ord = rd->curord;
+	if(ord >= rd->ords_opened)
+		ord = -1;
+	if(ord == -1){
+		er = rdd_err(cm,EG_NOORDER,0,__FILE__,__LINE__,__PROC__,er_noorder);
+		goto err;
+	}
+
+	if(t->t.type == UNDEF_t)
+		t = NULL;
+	if(b->t.type == UNDEF_t)
+		b = NULL;
+
+	READLOCK;
+	if((er = rd->orders[ord]->vtbl->setscope(cm,rd,rd->orders[ord],
+		t,b,fp->rmap,fp->size,0,__PROC__))) goto err_unlock;
+	UNLOCK;
+
+	return 0;
+err_unlock:
+	rd->vtbl->_ulock(cm,rd,__PROC__);
 err:
 	return er;
 }

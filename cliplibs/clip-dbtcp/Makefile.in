@@ -1,0 +1,37 @@
+#  GNU make makefile
+#
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
+endif
+include $(CLIPROOT)/include/Makefile.inc
+
+DBTCP_PATH=@DBTCP_PATH@
+LIBDBTCP=$(DBTCP_PATH)/libs/libdbftp.a
+DBTCPINCLUDE=-I$(DBTCP_PATH) -I$(DBTCP_PATH)/utils
+CLIPINCLUDE=-I$(CLIPROOT)/include
+C_FLAGS=-Wall -g -I.
+#CC=gcc
+
+TARGET=libclip-dbtcp$(DLLSUFF)
+RTARGET=libclip-dbtcp$(DLLREALSUFF)
+OBJS=dbtcp_clip.o dbtcp.o
+
+all:  $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBDBTCP)
+
+dbtcp_clip.o: dbtcp_clip.c
+	$(CC) $(C_FLAGS) $(DBTCPINCLUDE) $(CLIPINCLUDE) -c dbtcp_clip.c
+
+dbtcp.o: dbtcp.prg
+	$(CLIPROOT)/bin/clip dbtcp.prg
+
+install:
+	$(CLIPROOT)/bin/clip_cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
+
+clean:
+	rm -rf *.o dbtcp.c *.s *.bak *.a *.so *.dll *.exe dbtcp_ref.c *.ex *.nm *.log
+
+distclean: clean
+	rm -f Makefile

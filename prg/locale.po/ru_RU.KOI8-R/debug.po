@@ -31,7 +31,7 @@ msgstr "Список процессов"
 
 #: cld_obj.prg:292
 msgid "Process connection OK"
-msgstr "Подлючение к процессу выполнено"
+msgstr "Подключение к процессу выполнено"
 
 #: cld_obj.prg:297
 msgid "Process connection error"

@@ -14,7 +14,7 @@
 <br> <br><b>
  ConnectNew("PG",[&lt;host&gt;],[&lt;port&gt;],[&lt;login&gt;],
  [&lt;pwd&gt;],[&lt;dbName&gt;],[&lt;pgtty&gt;],
- [&lt;pgopt&gt;])</b>, где
+ [&lt;pgopt&gt;],NIL,[&lt;cIsolation&gt;])</b>, где
 <br> <br>
  "PG" - строка, идентифицирующая СУБД Postgres;
 <br> <br>
@@ -24,13 +24,15 @@
 <br> <br>
  &lt;login&gt; - логин пользователя;
 <br> <br>
- &lt;pwd&gt; - пароль пользователя.
+ &lt;pwd&gt; - пароль пользователя;
 <br> <br>
  &lt;dbName&gt; - имя базы данных;
 <br> <br>
  &lt;pgtty&gt; - терминал для вывода сообщений от клиента;
 <br> <br>
  &lt;pgopt&gt; - дополнительные опции соединения;
+<br> <br>
+ &lt;cIsolation&gt; - уровень изоляции по умолчанию.
 <br> <br>
  Если любой из аргументов опущен, используется соответствующая переменная
  окружения (см. документацию по Postgres). Если переменная окружения также
@@ -69,29 +71,15 @@
  следует сначала создать бинарный курсор, а затем для него выполнить команду
  FETCH. Например:
 <pre>
- conn:Command("BEGIN")
+ conn:Start()
  conn:Command("DECLARE mycur BINARY CURSOR FOR SELECT oid,* FROM mytable")
  rs := conn:CreateRowset("FETCH ALL FROM mycur")
- conn:Command("END")
+ conn:Commit()
 </pre>
- Для правильной работы с датами следует правильно установить переменную
- окружения PGDATESTYLE (в соответствии со значением PGDATESTYLE, используемым
- сервером Postgres). Например:
-<pre>
- export PGDATESTYLE=EURO
-</pre>
- Возможные значения PGDATESTYLE:
-<pre>
- Style      Date            Datetime
- --------------------------------------------------------
- ISO        1999-07-17      1999-07-17 07:09:18+01
- SQL        17/07/1999      17/07/1999 07:09:19.00 BST
- POSTGRES   17-07-1999      Sat 17 Jul 07:09:19 1999 BST
- GERMAN     17.07.1999      17.07.1999 07:09:19.00 BST
- NONEURO    07-17-1999      Sat Jul 17 07:09:19 1999 BST
- US         07-17-1999      Sat Jul 17 07:09:19 1999 BST
- EURO       17-07-1999      Sat 17 Jul 07:09:19 1999 BST
-</pre>
+ Возможные значения параметра &lt;cIsolation&gt; для ConnectNew()
+ и TConnect:Start():<br> <br>
+ "READ COMMITTED"<br>
+ "SERIALIZABLE"
 <br> <br>
  Реализованы следующие типы Postgres:
 <pre>

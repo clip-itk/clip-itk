@@ -6,6 +6,9 @@
 %{
 /*
 $Log: clic_c.lex,v $
+Revision 1.5  2004/04/21 08:06:53  clip
+uri: some fix for new flex
+
 Revision 1.4  2001/04/03 09:17:00  clip
 license errors
 paul
@@ -19,6 +22,7 @@ start cvs logging
 */
 #include <errno.h>
 #include <string.h>
+#include <stdlib.h>
 #include "clic.h"
 
 static char *i_name;

@@ -1,10 +1,45 @@
 /*
-    Copyright (C) 2001  ITK
-    Author   : Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Author   : Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
 $Log: rt.y,v $
+Revision 1.62  2003/11/05 11:20:58  clip
+fix POW in macro (closes #161)
+paul
+
+Revision 1.61  2003/08/13 10:36:42  clip
+extend limit of 255 local vars.
+fixes #151
+paul
+
+Revision 1.60  2003/05/07 11:11:12  clip
+rust: memory leak in _clip_compile_Block()
+
+Revision 1.59  2003/03/26 13:40:14  clip
+fix for memdebug build
+paul
+
+Revision 1.58  2003/03/17 08:24:59  clip
+Solaris 8 patches
+paul
+
+Revision 1.57  2003/02/07 10:26:10  clip
+method call for array elements
+closes #121
+paul
+
+Revision 1.56  2002/11/25 12:29:46  clip
+null expr in lists in runtime compiler
+closes #59
+paul
+
+Revision 1.55  2002/11/18 12:33:01  clip
+memv-> in runtime compiler
+closes #46
+paul
+
 Revision 1.54  2002/09/12 10:57:30  clip
 fix warnings
 paul
@@ -232,8 +267,6 @@ start cvs logging
 
 %{
 
-#include <clip.h>
-#include <clipvm.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -241,6 +274,31 @@ start cvs logging
 #include <ctype.h>
 #include "hashcode.h"
 #include "hash.h"
+#include "clipcfg.h"
+#include "clip.h"
+#include "clipvm.h"
+
+#ifdef FORCEALIGN
+
+static void
+SETLONG(void *ptr, long l)
+{
+	memcpy(ptr, &l, sizeof(l));
+}
+
+static void
+SETSHORT(void *ptr, short l)
+{
+	memcpy(ptr, &l, sizeof(l));
+}
+
+#else
+
+#define SETLONG(ptr,l) (*(long*)(ptr)=(l))
+#define SETSHORT(ptr,l) (*(short*)(ptr)=(l))
+
+#endif
+
 
 typedef struct
 {
@@ -312,10 +370,17 @@ typedef struct Parser
 #define BEGOFFS (bp->ptr-MODBEG)
 #define CUROFFS (bp->ptr-bp->buf)
 
+#if 1
+#define LONGVAL(offs,val) (SETLONG(bp->buf+(offs),(val)))
+#define SHORTVAL(offs,val) (SETSHORT(bp->buf+(offs),(val)))
+#define LONGINCR(offs) ((offs)+=sizeof(long));
+#define SHORTINCR(offs) ((offs)+=sizeof(short));
+#else
 #define LONGVAL(offs) (*(long*)(bp->buf+(offs)))
 #define SHORTVAL(offs) (*(short*)(bp->buf+(offs)))
 #define LONGINCR(offs) ((offs)+=sizeof(long));
 #define SHORTINCR(offs) ((offs)+=sizeof(short));
+#endif
 
 #define YYPARSE_PARAM parser
 #define YYLEX_PARAM parser
@@ -403,7 +468,7 @@ fexpr_list: expr
 	| fexpr_list ',' {
 			putByte_Buf(PARSER->out,CLIP_POP);
 		}
-	  expr {
+	  nexpr {
 			$$=$1;
 		}
 	;
@@ -412,8 +477,8 @@ expr:	 NUMBER	{
 			int no, num=PARSER->numbers_count;
 			for(no=0;no<num;++no)
 				if ( PARSER->numbers[no]==$1.d
-				     &&	PARSER->lendec[no].len == $1.len
-				     &&	PARSER->lendec[no].dec == $1.dec
+					 &&	PARSER->lendec[no].len == $1.len
+					 &&	PARSER->lendec[no].dec == $1.dec
 				   )
 				{
 					break;
@@ -470,11 +535,6 @@ expr:	 NUMBER	{
 	| mename	{ $$=$1;
 			 add_deep(PARSER->curFunction, 1);
 		}
-/*
-	| fieldptr NAME	{ $$.pos=POS; installName( PARSER, $2, 2, 0, -1, 0);
-			 add_deep(PARSER->curFunction, 1);
-		}
-*/
 
 	| fieldptr '(' expr ')' {
 			$$=$3;
@@ -512,6 +572,49 @@ expr:	 NUMBER	{
 			$$=$1;
 			putByte_Buf(PARSER->out, CLIP_FUNC_NAME);
 			putByte_Buf(PARSER->out, $5.i);
+		}
+
+	| expr ':' NAME '(' pos
+		{
+			$5.i = PARSER->curFunction->curdeep;
+		}
+	  arglist ')'
+		{
+			PARSER->curFunction->curdeep = $5.i;
+
+			putByte_Buf(PARSER->out, CLIP_PUSH_NIL);
+			add_deep(PARSER->curFunction, 1);
+
+			putByte_Buf(PARSER->out, CLIP_SWAP);
+			putByte_Buf(PARSER->out, $7.i+1);
+
+			putByte_Buf(PARSER->out,CLIP_CALL);
+			putByte_Buf(PARSER->out,$7.i+1);
+			putLong_Buf(PARSER->out,$3);
+			$$=$1;
+		}
+
+	| arr ':' NAME '(' pos
+		{
+			putByte_Buf(PARSER->out,CLIP_IFETCH);
+			putByte_Buf(PARSER->out,$1.i-1);
+			add_deep(PARSER->curFunction, 1);
+			$5.i = PARSER->curFunction->curdeep;
+		}
+	  arglist ')'
+		{
+			PARSER->curFunction->curdeep = $5.i;
+
+			putByte_Buf(PARSER->out, CLIP_PUSH_NIL);
+			add_deep(PARSER->curFunction, 1);
+
+			putByte_Buf(PARSER->out, CLIP_SWAP);
+			putByte_Buf(PARSER->out, $7.i+1);
+
+			putByte_Buf(PARSER->out,CLIP_CALL);
+			putByte_Buf(PARSER->out,$7.i+1);
+			putLong_Buf(PARSER->out,$3);
+			$$=$1;
 		}
 
 	| arr	{
@@ -589,25 +692,6 @@ expr:	 NUMBER	{
 			$$=$1;
 		}
 
-	| expr ':' NAME '(' pos
-		{
-			$5.i = PARSER->curFunction->curdeep;
-		}
-	  arglist ')'
-		{
-			PARSER->curFunction->curdeep = $5.i;
-
-			putByte_Buf(PARSER->out, CLIP_PUSH_NIL);
-			add_deep(PARSER->curFunction, 1);
-
-			putByte_Buf(PARSER->out, CLIP_SWAP);
-			putByte_Buf(PARSER->out, $7.i+1);
-
-			putByte_Buf(PARSER->out,CLIP_CALL);
-			putByte_Buf(PARSER->out,$7.i+1);
-			putLong_Buf(PARSER->out,$3);
-			$$=$1;
-		}
 	| NAME RPTR NAME {
 			$$.pos=POS;
 			add_deep(PARSER->curFunction, 1);
@@ -615,18 +699,6 @@ expr:	 NUMBER	{
 			putLong_Buf(PARSER->out, $3);
 			putLong_Buf(PARSER->out, $1);
 		}
-/*
-	| NAME RPTR '(' pos {
-			add_deep(PARSER->curFunction, 1);
-			putByte_Buf(PARSER->out, CLIP_PUSH_AREA);
-			putLong_Buf(PARSER->out, $1);
-		}
-	  expr ')'
-		{
-			putByte_Buf(PARSER->out, CLIP_POP_AREA);
-			$$=$4;
-		}
-*/
 	| NAME RPTR  pos {
 			add_deep(PARSER->curFunction, 1);
 			putByte_Buf(PARSER->out, CLIP_PUSH_AREA);
@@ -645,16 +717,6 @@ expr:	 NUMBER	{
 			putLong_Buf(PARSER->out, $3);
 			$$=$1;
 		}
-/*
-	| mename RPTR '('
-		{ putByte_Buf(PARSER->out, CLIP_PUSH_AREA_POP);	}
-	  expr ')'
-		{
-			add_deep(PARSER->curFunction, 1);
-			putByte_Buf(PARSER->out, CLIP_POP_AREA);
-			$$=$1;
-		}
-*/
 	| mename RPTR
 		{ putByte_Buf(PARSER->out, CLIP_PUSH_AREA_POP);	}
 	  mename
@@ -693,6 +755,7 @@ expr:	 NUMBER	{
 	| expr '*' expr		{ $$=$1; gen_op(PARSER, '*'); }
 	| expr '/' expr		{ $$=$1; gen_op(PARSER, '/'); }
 	| expr '%' expr		{ $$=$1; gen_op(PARSER, '%'); }
+	| expr POW expr		{ $$=$1; gen_op(PARSER, '^'); }
 	| NOT expr		{ $$=$2; putByte_Buf(PARSER->out, CLIP_NOT); }
 	| '-' expr %prec MINUS	{ $$=$2; putByte_Buf(PARSER->out, CLIP_MINUS); }
 	| '+' expr %prec MINUS	{ $$=$2; }
@@ -738,18 +801,18 @@ expr:	 NUMBER	{
 			add_deep(PARSER->curFunction, 1);
 			putByte_Buf(PARSER->out, CLIP_PARN);
 		}
-	| IF '(' expr ',' pos
+	| IF '(' nexpr ',' pos
 		{
 			putByte_Buf(PARSER->out, CLIP_COND);
 			putShort_Buf(PARSER->out, 0);
 		}
-	  expr ',' pos
+	  nexpr ',' pos
 		{
 			putByte_Buf(PARSER->out, CLIP_GOTO);
 			putShort_Buf(PARSER->out, 0);
 			*(short*)(PARSER->out->buf+$5.pos+1) = (POS-($5.pos+1+sizeof(short)));
 		}
-	  expr ')'
+	  nexpr ')'
 		{
 			*(short*)(PARSER->out->buf+$9.pos+1) = (POS-($9.pos+1+sizeof(short)));
 			$$=$3;
@@ -950,20 +1013,20 @@ static int
 findnext(Parser *pp, int ch)
 {
 	char *p;
-        for(p = pp->ptr; p<pp->end; p++)
-        {
-        	switch(*p)
-                {
-                case ' ':
-                case '\t':
-                	continue;
-                }
-                if (*p == ch)
-                	return 1;
-        	else
-                	return 0;
-        }
-        return 0;
+		for(p = pp->ptr; p<pp->end; p++)
+		{
+			switch(*p)
+				{
+				case ' ':
+				case '\t':
+					continue;
+				}
+				if (*p == ch)
+					return 1;
+			else
+					return 0;
+		}
+		return 0;
 }
 
 
@@ -1171,7 +1234,7 @@ rtlex(yylvalp, pp)
 				break;
 			case '#':
 				tok = NE;
-                        	break;
+							break;
 			case '<':
 				tok = (next=='=' ? LE : (next=='>' ? NE: '<'));
 				if (next=='=')
@@ -1254,6 +1317,8 @@ rtlex(yylvalp, pp)
 				/* memvar */
 				case HASH_memvar:
 				/* m */
+				case HASH_memva:
+				case HASH_memv:
 				case HASH_m:
 					if (find_rptr(pp))
 						tok = MEMVAR_PTR;
@@ -1286,13 +1351,13 @@ rtlex(yylvalp, pp)
 					tok = NIL;
 					break;
 				case HASH_pcount:
-                                	if (!findnext(pp, '('))
-                                        	goto nam;
+									if (!findnext(pp, '('))
+											goto nam;
 					tok = PCOUNT;
 					break;
 				case HASH_param:
-                                	if (!findnext(pp, '('))
-                                        	goto nam;
+									if (!findnext(pp, '('))
+											goto nam;
 					tok = PARAM;
 					break;
 				case HASH_if:
@@ -1328,12 +1393,12 @@ rtlex(yylvalp, pp)
 					break;
 
 				if (ch == '-' && next == '>')
-                                {
-                                	pp->lex_state = L_norm;
+								{
+									pp->lex_state = L_norm;
 					yylvalp->Long = atol(beg);
 					tok = NAME;
-                                        goto ret;
-                                }
+										goto ret;
+								}
 
 				pp->lex_state = L_norm;
 				tok = NUMBER;
@@ -1432,9 +1497,9 @@ put_function( OutBuf *bp, Function *fp, long *loffs, int isPub)
 	int codelen=fp->out.ptr-fp->out.buf;
 	int lp, i;
 
-	LONGVAL(*loffs) = 0;
+	LONGVAL(*loffs,0);
 	LONGINCR(*loffs);
-	LONGVAL(*loffs) = BEGOFFS;
+	LONGVAL(*loffs,BEGOFFS);
 	LONGINCR(*loffs);
 	putLong_Buf(bp, BEGOFFS);
 	lp=CUROFFS;
@@ -1452,7 +1517,7 @@ put_function( OutBuf *bp, Function *fp, long *loffs, int isPub)
 	putBuf_Buf(bp, "RUNTIME_COMPILED", 17);
 	putByte_Buf(bp, 0); /* null-terminated func name */
 
-	LONGVAL(lp)=BEGOFFS;
+	LONGVAL(lp,BEGOFFS);
 	putBuf_Buf(bp, fp->out.buf, codelen);
 }
 
@@ -1540,14 +1605,14 @@ _clip_compile_Block(ClipMachine * mp, char *str, int len, ClipBlock * dest)
 		putBuf_Buf(bp, str, len);
 		putByte_Buf(bp, 0);
 
-		SHORTVAL(numOffs) = BEGOFFS;
+		SHORTVAL(numOffs,BEGOFFS);
 		for(i=0; i<parser.numbers_count; ++i)
 			putDouble_Buf(bp,parser.numbers[i]);
 		for(i=0; i<parser.numbers_count; ++i)
 			putByte_Buf(bp,parser.lendec[i].len);
 		for(i=0; i<parser.numbers_count; ++i)
 			putByte_Buf(bp,parser.lendec[i].dec);
-		SHORTVAL(strOffs) = BEGOFFS;
+		SHORTVAL(strOffs,BEGOFFS);
 		soffs = CUROFFS;
 		for(i=0; i<parser.strings_count; ++i)
 		{
@@ -1559,15 +1624,15 @@ _clip_compile_Block(ClipMachine * mp, char *str, int len, ClipBlock * dest)
 			char *s = parser.strings[i];
 			char *e = parser.strings_end[i];
 			int len = e-s;
-			LONGVAL(soffs) = len;
+			LONGVAL(soffs,len);
 			LONGINCR(soffs);
-			LONGVAL(soffs) = BEGOFFS;
+			LONGVAL(soffs,BEGOFFS);
 			LONGINCR(soffs);
 			putBuf_Buf(bp, s, len);
 			putByte_Buf(bp, 0);
 		}
 		loffs = CUROFFS;
-		LONGVAL(funcOffs) = BEGOFFS;
+		LONGVAL(funcOffs,BEGOFFS);
 		for(i=0; i<parser.codeblocks_count+1; ++i)
 		{
 			putLong_Buf(bp, 0);
@@ -1577,7 +1642,7 @@ _clip_compile_Block(ClipMachine * mp, char *str, int len, ClipBlock * dest)
 		put_function(bp, &parser.main, &loffs, 1);
 		for(i=0;i<parser.codeblocks_count;++i)
 			put_function(bp, parser.codeblocks+i, &loffs, 0);
-		LONGVAL(modlen) = BEGOFFS;
+		LONGVAL(modlen,BEGOFFS);
 
 		l = file->bodySize = CUROFFS;
 		file->mem = file->body = (char*)realloc(bp->buf, l);
@@ -1589,6 +1654,7 @@ _clip_compile_Block(ClipMachine * mp, char *str, int len, ClipBlock * dest)
 	free(parser.numbers);
 	free(parser.strings);
 	free(parser.strings_end);
+	free(parser.lendec);
 	destroy_Function(&parser.main);
 
 	for(i=0;i<parser.codeblocks_count;++i)
@@ -1616,7 +1682,7 @@ installName(Parser *parser, long hash, int memvar, int lval, long area, int fld)
 				putByte_Buf(parser->out, CLIP_PUSH_REF_LOCAL);
 			else
 				putByte_Buf(parser->out, CLIP_PUSH_LOCAL);
-			putByte_Buf(parser->out, no);
+			putShort_Buf(parser->out, no);
 			break;
 		}
 		if (lval)

@@ -113,7 +113,7 @@ static function bg_drawImage()
 local cx, cy, diametr1, diametr2, volume, radius1, radius2, i, k, av, cntColor
 local angle:={}, value:={}, begang, endang:=270, ug, pice:={}
 local right:={}, left:={}, top:={}, bottom:={}
-local x, y, sx, sy, s, v, len, l, summa:=0
+local x, y, sx, sy, s, v, len, l, summa:=0, kl
 	if !::__isData
 		return .f.
 	endif
@@ -160,7 +160,8 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 		for k=1 to ::__category
 			av := abs(val[k])
 			begang := endang
-			endang := mod(endang+int(360*av/::summa[key]), 360)
+			//endang := mod(endang+int(360*av/::summa[key]), 360)
+			endang := mod(endang+360*av/::summa[key], 360)
 			if k==::__category
 				endang := 270
 			endif
@@ -175,10 +176,12 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 			d1 := diametr1-2*colwidth1
 			d2 := diametr2-2*colwidth2
 			for k=1 to len(angle[key])
+				kl := iif(k<=10, k, &(right(alltrim(str(k)),1)))
+				kl := iif(kl==0, 10, kl)
 				v := angle[key][k]
 				if (v[2]>270 .and. v[2]<360) .or. v[2]<90
 					for i=1 to volume
-						::image:filledTruncSector(cx, cy+i, diametr1, diametr2, d1, d2, v[1], v[2], ::legendColor[k+cntColor])
+						::image:filledTruncSector(cx, cy+i, diametr1, diametr2, d1, d2, v[1], v[2], ::legendColor[kl+cntColor])
 					next
 				else
 					exit
@@ -186,9 +189,11 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 			next
 
 			for kk=len(angle[key]) to k step -1
+				kl := iif(kk<=10, kk, &(right(alltrim(str(kk)),1)))
+				kl := iif(kl==0, 10, kl)
 				v := angle[key][kk]
 				for i=1 to volume
-					::image:filledTruncSector(cx, cy+i, diametr1, diametr2, d1, d2, v[1],v[2], ::legendColor[kk+cntColor])
+					::image:filledTruncSector(cx, cy+i, diametr1, diametr2, d1, d2, v[1],v[2], ::legendColor[kl+cntColor])
 				next
 			next
 		endif
@@ -213,19 +218,26 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 		d1 := diametr1-2*colwidth1
 		d2 := diametr2-2*colwidth2
 		for k=1 to len(angle[key])
+			kl := iif(k<=10, k, &(right(alltrim(str(k)),1)))
+			kl := iif(kl==0, 10, kl)
 			v := angle[key][k]
 			av := value[key][k]
-			::image:filledTruncSector(cx, cy, diametr1, diametr2, d1, d2, v[1], v[2], ::legendColor[k])
+			::image:filledTruncSector(cx, cy, diametr1, diametr2, d1, d2, v[1], v[2], ::legendColor[kl])
 			::image:truncSector(cx, cy, diametr1, diametr2, d1, d2, v[1], v[2], ::scaleColor)
 
 			ug := abs(v[2]-v[1])/2
 			radian := (pi()*(mod(v[1]+min(ug, 30), 360)))/180
-			x := int(cos(radian)*(radius1/2))+cx
-			y := int(sin(radian)*(radius2/2))+cy
-			x := int(cos(radian)*radius1)+cx
-			y := int(sin(radian)*radius2)+cy
+			//x := int(cos(radian)*(radius1/2))+cx
+			//y := int(sin(radian)*(radius2/2))+cy
+			//x := int(cos(radian)*radius1)+cx
+			//y := int(sin(radian)*radius2)+cy
+			x := cos(radian)*(radius1/2)+cx
+			y := sin(radian)*(radius2/2)+cy
+			x := cos(radian)*radius1+cx
+			y := sin(radian)*radius2+cy
 			if (::isPice)      // доля в общем котле
-				str := ZSTR(int(100*av/::summa[key]))+'%'
+				//str := ZSTR(int(100*av/::summa[key]))+'%'
+				str := ZSTR(100*av/::summa[key])+'%'
 			else 	 // значение
 				str := ZSTR(av)
 			endif
@@ -264,7 +276,8 @@ local x, y, sx, sy, s, v, len, l, summa:=0
 		cx := radius1+10
 		cy := ::LY-radius2-volume-10
 		begang := 90
-		endang := mod(begang+int(360*abs(::valAverage)/isumma), 360)
+		//endang := mod(begang+int(360*abs(::valAverage)/isumma), 360)
+		endang := mod(begang+360*abs(::valAverage)/isumma, 360)
 		d := (endang-begang)/2
 		begang-=d
 		endang-=d

@@ -1,6 +1,11 @@
 
 /*
    $Log: tcaps.c,v $
+   Revision 1.6  2003/09/02 14:27:43  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
    Revision 1.5  2001/12/20 12:45:56  clip
    fix for OPENBSD
 
@@ -40,8 +45,6 @@
 
 #define DELIM '\\'
 #define DELIMSTR "\\"
-
-#include "antivc.h"
 
 #endif
 

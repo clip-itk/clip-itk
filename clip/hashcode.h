@@ -23,11 +23,13 @@
 #define	HASH_iif                        	0xC14FA6A6
 #define	HASH_m                          	0x086D3D2D
 #define	HASH_main                       	0xA8F9FFCC
+#define	HASH_memv                       	0xD8F00A42
+#define	HASH_memva                      	0x99D1A1B0
 #define	HASH_memvar                     	0x4E9D52F5
 #define	HASH_modify                     	0xB6CCAEDC
-#define	HASH_neterror                   	0xD190493C
 #define	HASH_nil                        	0x24D5593D
 #define	HASH_numcount                   	0x4A937EB2
+#define	HASH_onerror                    	0xEBBAE750
 #define	HASH_operation                  	0xBB4AAC2C
 #define	HASH_operator_add               	0x979C8CFF
 #define	HASH_operator_and               	0x6D736475

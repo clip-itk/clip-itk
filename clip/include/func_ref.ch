@@ -63,7 +63,7 @@
 // *reference A2EDIT
 // *reference AADD
 *reference  ABS
-*reference  ACHOICE
+//*reference  ACHOICE
 // *reference ACLONE
 // *reference ACOPY
 *reference  ADEL

@@ -16,7 +16,7 @@
 
 ******************************
 function _listbox_(top,left,bottom,right,var,items,caption,message,;
-                   color, fblock,sblock,ldrop,scroll,bitmap)
+		   color, fblock,sblock,ldrop,scroll,bitmap)
 
    local i,dtext,data,obj
    obj		:= listbox(top,left,bottom,right,ldrop)
@@ -30,24 +30,24 @@ function _listbox_(top,left,bottom,right,var,items,caption,message,;
    for i=1 to len(items)
        do case
        case valtype(items[i])=="C"
-            dtext := items[i]
-            obj:__bufType:=1
+	    dtext := items[i]
+	    obj:__bufType:=1
        case valtype(items[i])=="A"
-            dtext := toString(items[i][1])
-            if len(items[i])>1
-            	data := items[i][2]
-            else
-            	obj:__bufType:=1
-            endif
+	    dtext := toString(items[i][1])
+	    if len(items[i])>1
+		data := items[i][2]
+	    else
+		obj:__bufType:=1
+	    endif
        otherwise
-            dtext := toString(items[i])
+	    dtext := toString(items[i])
        endcase
        obj:addItem(dtext,data,.f.)
        if obj:__bufType==1 .and. valtype(dtext)==valtype(var) .and. dtext==var
-          obj:value:=i
+	  obj:value:=i
        endif
        if obj:__bufType==2 .and. valtype(data)==valtype(var) .and. data==var
-          obj:value:=i
+	  obj:value:=i
        endif
    next
    if valtype(var)=="N"
@@ -74,6 +74,8 @@ function listBox(top,left,bottom,right,ldrop)
    ldrop:=iif(ldrop==NIL,.f.,ldrop)
 
    obj		:= map()
+   //obj:name	:= ""
+   //obj:subscript:= NIL
    obj:classname:="LISTBOX"
    obj:bitmap	:= NIL
    obj:bottom	:= bottom
@@ -140,6 +142,7 @@ function _recover_listbox(obj)
    obj:setText	:= @lb_setText()
    obj:__setBuffer:=@__setBuffer()
    obj:__setColor:= @__setcolor()
+   //obj:reader  := {|a,b,c,d|GuiReader(a,b,c,d)}
 return obj
 ******************************
 static func __setBuffer
@@ -158,33 +161,37 @@ return ::buffer
 static func lb_display(self)
   local curr:=self:value, pal:=1, ntop:=self:top,i,ltop,atop
   if len(self:__mtext) == 0
-  	return self
+	return self
+  endif
+  self:value:=min(self:itemCount,max(self:value,1))
+  if self:value>self:itemCount .or. self:value<1
+	return self
   endif
   dispbegin()
   if self:dropDown
       pal:= iif(self:hasFocus,2,1)
       dispOutAt(self:top, self:left, ;
-            padr(self:__mtext[curr],self:right-self:left)+ LB_PUSHSYM,;
-            self:__colors[pal] )
+	    padr(self:__mtext[curr],self:right-self:left)+ LB_PUSHSYM,;
+	    self:__colors[pal] )
       ntop++
   endif
   if self:isopen
      if self:hasFocus
-     		if self:hotBox!=NIL
-     			@ ntop, self:left, self:bottom, self:right box ;
-     				self:hotBox color self:__colors[3]
-                else
-     			@ ntop, self:left TO self:bottom, self:right;
-     				DOUBLE color self:__colors[3]
-                endif
+		if self:hotBox!=NIL
+			@ ntop, self:left, self:bottom, self:right box ;
+				self:hotBox color self:__colors[3]
+		else
+			@ ntop, self:left TO self:bottom, self:right;
+				DOUBLE color self:__colors[3]
+		endif
      else
-     		if self:coldBox!=NIL
-     			@ ntop, self:left, self:bottom, self:right box ;
-     				self:coldBox color self:__colors[3]
-                else
-     			@ ntop, self:left TO self:bottom, self:right;
-     				 color self:__colors[3]
-                endif
+		if self:coldBox!=NIL
+			@ ntop, self:left, self:bottom, self:right box ;
+				self:coldBox color self:__colors[3]
+		else
+			@ ntop, self:left TO self:bottom, self:right;
+				 color self:__colors[3]
+		endif
      endif
      self:__line:=min(min(max(1,self:__line),self:bottom-ntop-1),self:itemCount)
      ltop:=self:value-self:__line+1
@@ -193,19 +200,20 @@ static func lb_display(self)
      //pal:= iif(self:hasFocus,2,5)
      pal:=5
      for i=1 to self:bottom-ntop-1
-         if ltop<=self:itemCount
-            dispOutAt(ntop+i, self:left+1,;
-                  padr(self:__mText[ ltop ],self:right-self:left-1),;
-                  self:__colors[pal] )
-         else
-            dispOutAt(ntop+i, self:left+1, space(self:right-self:left-1) )
-         endif
-         ltop++
+	 if ltop<=self:itemCount
+	    dispOutAt(ntop+i, self:left+1,;
+		  padr(self:__mText[ ltop ],self:right-self:left-1),;
+		  self:__colors[pal] )
+	 else
+	    dispOutAt(ntop+i, self:left+1, space(self:right-self:left-1) )
+	 endif
+	 ltop++
      next
      pal:= iif(self:hasFocus,2,1)
+
      dispOutAt(ntop+self:__line, self:left+1,;
-             padr(self:__mText[ self:value ],self:right-self:left-1),;
-             self:__colors[pal] )
+	     padr(self:__mText[ self:value ],self:right-self:left-1),;
+	     self:__colors[pal] )
   endif
 
   if self:__SB != NIL .and. self:isopen
@@ -221,10 +229,10 @@ static func lb_killFocus(self)
        setcursor(self:__cursor)
        self:hasFocus:=.f.
        if self:dropDown
-          self:close()
+	  self:close()
        endif
        if self:fblock != NIL
-      	  eval(self:fblock,.f.)
+	  eval(self:fblock,.f.)
        endif
        self:display()
 return self
@@ -234,7 +242,7 @@ static func lb_setFocus(self)
       self:__cursor:=setcursor(SC_NONE)
       self:hasFocus:=.t.
       if self:fblock != NIL
-      	 eval(self:fblock,.t.)
+	 eval(self:fblock,.t.)
       endif
       self:display()
 return self
@@ -246,10 +254,10 @@ static func lb_addItem(self,dtext,data,visible)
      self:itemCount++
      self:typeOut:=.f.
      if self:__SB!=NIL
-        self:__SB:total:=self:itemCount
+	self:__SB:total:=self:itemCount
      endif
      if visible==NIL .or. visible
-     	self:display()
+	self:display()
      endif
 return self
 
@@ -261,10 +269,10 @@ static func lb_delItem(self,pos)
      asize(self:__mData,len(self:__mData)-1)
      self:itemCount--
      if self:itemCount==0
-     	self:typeOut:=.t.
+	self:typeOut:=.t.
      endif
      if self:__SB!=NIL
-        self:__SB:total:=self:itemCount
+	self:__SB:total:=self:itemCount
      endif
      self:display()
 return self
@@ -280,7 +288,7 @@ static func lb_insItem(self,pos,mtext,data)
      self:itemCount++
      self:typeOut:=.f.
      if self:__SB!=NIL
-        self:__SB:total:=self:itemCount
+	self:__SB:total:=self:itemCount
      endif
      self:display()
 return self
@@ -288,175 +296,175 @@ return self
 ******************************
 static func lb_setData(self,pos,data)
        if pos>0 .and. pos<=len(self:__mData)
-          self:__mData[pos]:=data
+	  self:__mData[pos]:=data
        endif
 return self
 
 ******************************
 static func lb_setItem(self,pos,item)
        if pos>0 .and. pos<=len(self:__mText) ;
-          .and. valtype(item)=="A"  .and. len(item)>=2
-          self:__mText[pos]:=item[1]
-          self:__mData[pos]:=item[2]
+	  .and. valtype(item)=="A"  .and. len(item)>=2
+	  self:__mText[pos]:=item[1]
+	  self:__mData[pos]:=item[2]
        endif
 return self
 
 ******************************
 static func lb_setText(self,pos,mtext)
        if pos>0 .and. pos<=len(self:__mText)
-          self:__mText[pos]:=mText
+	  self:__mText[pos]:=mText
        endif
 return self
 
 ******************************
 static func lb_nextItem(self)
-        if self:value<self:itemCount
+	if self:value<self:itemCount
 	   self:value++
-           if self:isopen
-              self:__line++
-           endif
-        endif
-        self:__setBuffer()
-        self:display()
+	   if self:isopen
+	      self:__line++
+	   endif
+	endif
+	self:__setBuffer()
+	self:display()
 return self
 ******************************
 static func lb_nextPage(self)
-        if self:value<self:itemCount
+	if self:value<self:itemCount
 	   self:value += (self:bottom-self:top)
-           if self:isopen
-              if self:value > self:itemCount
-              	self:__line := self:itemcount
-              endif
-           endif
-           self:value:=min(self:value,self:itemCount)
-        endif
-        self:__setBuffer()
-        self:display()
+	   if self:isopen
+	      if self:value > self:itemCount
+		self:__line := self:itemcount
+	      endif
+	   endif
+	   self:value:=min(self:value,self:itemCount)
+	endif
+	self:__setBuffer()
+	self:display()
 return self
 
 ******************************
 static func lb_prevItem(self)
-        if self:value>1
+	if self:value>1
 	   self:value--
-           if self:isopen
-              self:__line--
-           endif
-        endif
-        self:__setBuffer()
-        self:display()
+	   if self:isopen
+	      self:__line--
+	   endif
+	endif
+	self:__setBuffer()
+	self:display()
 return self
 ******************************
 static func lb_prevPage(self)
-        if self:value>1
+	if self:value>1
 	   self:value -= (self:bottom-self:top)
-           if self:isopen
-              if self:value<1
-              	 self:__line:=min(1,self:itemCount)
-              endif
-           endif
-           self:value:=min(max(1,self:value),self:itemCount)
-        endif
-        self:__setBuffer()
-        self:display()
+	   if self:isopen
+	      if self:value<1
+		 self:__line:=min(1,self:itemCount)
+	      endif
+	   endif
+	   self:value:=min(max(1,self:value),self:itemCount)
+	endif
+	self:__setBuffer()
+	self:display()
 return self
 
 ******************************
 static func lb_getData(pos)
        if pos>0 .and. pos<=len(::__mData)
-          return ::__mData[pos]
+	  return ::__mData[pos]
        endif
 return NIL
 
 ******************************
 static func lb_getItem(pos)
        if pos>0 .and. pos<=len(::__mText)
-          return {::__mText[pos],::__mData[pos]}
+	  return {::__mText[pos],::__mData[pos]}
        endif
 return NIL
 
 ******************************
 static func lb_getText(pos)
        if pos>0 .and. pos<=len(::__mText)
-          return ::__mText[pos]
+	  return ::__mText[pos]
        endif
 return NIL
 
 ******************************
 static func lb_close(self)
-        if self:isopen
-   	   restscreen(self:top+iif(self:dropDown,1,0),self:left,self:bottom,self:right,self:__scr)
-           self:isopen:=.f.
-        endif
+	if self:isopen
+	   restscreen(self:top+iif(self:dropDown,1,0),self:left,self:bottom,self:right,self:__scr)
+	   self:isopen:=.f.
+	endif
 return self
 
 ******************************
 static func lb_findText(mtext,pos,lcase,lexact)
-        local bl,ret
+	local bl,ret
 	if valtype(mtext)!="C"
-           return ::value
-        endif
-        pos:=iif(pos==NIL,1,pos)
-        lcase:=iif(lcase==NIL,.t.,lcase)
-        lexact:=iif(lexact==NIL,set(_SET_EXACT),lexact)
-        if lcase
-           mtext:=lower(mtext)
-           if lexact
-           	bl:={ |x| lower(x)==mtext }
-           else
-           	bl:={ |x| lower(x)=mtext }
-           endif
-        else
-           if lexact
-           	bl:={|x| x==mtext }
-           else
-           	bl:={|x| x=mtext }
-           endif
-        endif
+	   return ::value
+	endif
+	pos:=iif(pos==NIL,1,pos)
+	lcase:=iif(lcase==NIL,.t.,lcase)
+	lexact:=iif(lexact==NIL,set(_SET_EXACT),lexact)
+	if lcase
+	   mtext:=lower(mtext)
+	   if lexact
+		bl:={ |x| lower(x)==mtext }
+	   else
+		bl:={ |x| lower(x)=mtext }
+	   endif
+	else
+	   if lexact
+		bl:={|x| x==mtext }
+	   else
+		bl:={|x| x=mtext }
+	   endif
+	endif
 	ret:=ascan(::__mText,bl,pos,len(::__mText))
 return ret
 
 ******************************
 static func lb_select(self,pos)
-        if valtype(pos)=="N"
+	if valtype(pos)=="N"
 	   self:value:=pos
-           self:value:=min(max(1,self:value),self:itemCount)
-           self:__setBuffer()
-           self:display()
-           if self:sblock != NIL
-           	eval(self:sblock)
-           endif
-        endif
+	   self:value:=min(max(1,self:value),self:itemCount)
+	   self:__setBuffer()
+	   self:display()
+	   if self:sblock != NIL
+		eval(self:sblock)
+	   endif
+	endif
 return  self
 
 ******************************
 static func lb_open(self)
        if self:dropDown
-          self:__scr:= savescreen(self:top+iif(self:dropDown,1,0),self:left,self:bottom,self:right)
-          self:isopen:=.t.
-          self:__line:=self:value
-          self:display()
+	  self:__scr:= savescreen(self:top+iif(self:dropDown,1,0),self:left,self:bottom,self:right)
+	  self:isopen:=.t.
+	  self:__line:=self:value
+	  self:display()
        endif
 return self
 
 ******************************
 static func lb_scroll(self,num)
        if num==HTSCROLLUNITDEC
-          self:value++
-          if self:isopen
-              self:__line++
-          endif
+	  self:value++
+	  if self:isopen
+	      self:__line++
+	  endif
        endif
        if num==HTSCROLLUNITINC
-          self:value--
-          if self:isopen
-              self:__line--
-          endif
+	  self:value--
+	  if self:isopen
+	      self:__line--
+	  endif
        endif
        if num==HTSCROLLBLOCKDEC
-          self:value+=self:bottom-self:top-iif(self:dropDown,1,0)
+	  self:value+=self:bottom-self:top-iif(self:dropDown,1,0)
        endif
        if num==HTSCROLLBLOCKINC
-          self:value-=self:bottom-self:top-iif(self:dropDown,1,0)
+	  self:value-=self:bottom-self:top-iif(self:dropDown,1,0)
        endif
 
        self:value:=min(max(1,self:value),self:itemCount)
@@ -469,53 +477,53 @@ return self
 static func lb_hitTest(mrow,mcol)
        local ret:=0, ntop
        if ::isopen .and. ::__SB!=NIL
-          ret=::__SB:hitTest(mrow,mcol)
-          if ret!=0
-             return ret
-          endif
+	  ret=::__SB:hitTest(mrow,mcol)
+	  if ret!=0
+	     return ret
+	  endif
        endif
        ntop:=iif(::dropDown,::top+1,::top)
        if ::isopen
-             if mrow==ntop
-                if mcol>::left .and. mcol<::right
-                   ret=HTTOP
-                endif
-                if mcol==::left
-                   ret=HTTOPLEFT
-                endif
-                if mcol==::right
-                   ret=HTTOPRIGHT
-                endif
-             endif
-             if mrow==::bottom
-                if mcol>::left .and. mcol<::right
-                   ret=HTBOTTOM
-                endif
-                if mcol==::left
-                   ret=HTBOTTOMLEFT
-                endif
-                if mcol==::right
-                   ret=HTBOTTOMRIGHT
-                endif
-             endif
-             if mcol==::left .and. mrow>ntop .and. mrow<::bottom
-                ret=HTLEFT
-             endif
-             if mcol==::right .and. mrow>ntop .and. mrow<::bottom
-                ret=HTRIGHT
-             endif
-             if mrow>ntop .and. mrow<::bottom .and. ;
-                    mcol>::left .and. mcol<::right
-                ret=HTCAPTION
-             endif
+	     if mrow==ntop
+		if mcol>::left .and. mcol<::right
+		   ret=HTTOP
+		endif
+		if mcol==::left
+		   ret=HTTOPLEFT
+		endif
+		if mcol==::right
+		   ret=HTTOPRIGHT
+		endif
+	     endif
+	     if mrow==::bottom
+		if mcol>::left .and. mcol<::right
+		   ret=HTBOTTOM
+		endif
+		if mcol==::left
+		   ret=HTBOTTOMLEFT
+		endif
+		if mcol==::right
+		   ret=HTBOTTOMRIGHT
+		endif
+	     endif
+	     if mcol==::left .and. mrow>ntop .and. mrow<::bottom
+		ret=HTLEFT
+	     endif
+	     if mcol==::right .and. mrow>ntop .and. mrow<::bottom
+		ret=HTRIGHT
+	     endif
+	     if mrow>ntop .and. mrow<::bottom .and. ;
+		    mcol>::left .and. mcol<::right
+		ret=HTCAPTION
+	     endif
        endif
        if ::dropDown
-           if mrow==::top .and. mcol>=::left .and. mcol<::right
-                ret=HTCAPTION
-           endif
-           if mrow==::top .and. mcol==::right
-           	ret=HTDROPBUTTON
-           endif
+	   if mrow==::top .and. mcol>=::left .and. mcol<::right
+		ret=HTCAPTION
+	   endif
+	   if mrow==::top .and. mcol==::right
+		ret=HTDROPBUTTON
+	   endif
        endif
 return ret
 
@@ -524,7 +532,7 @@ static func __setcolor()
        local i
        ::__colors:=__splitColors(::colorSpec)
        for i=len(::__colors) to 8
-           aadd(::__colors,"W+/B")
+	   aadd(::__colors,"W+/B")
        next
 return NIL
 

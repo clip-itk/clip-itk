@@ -1,4 +1,3 @@
-
 #!/bin/sh
 
 ./_cvs history -w -D `cat release_date` -a -c | awk '{print $2,$3,$4,$8}' | \

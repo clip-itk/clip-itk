@@ -5,6 +5,21 @@
  */
 /*
    $Log: clipdbg.c,v $
+   Revision 1.48  2003/11/11 11:36:58  clip
+   uri: call errorblock with EG_SIGNAL if signal from system sended
+
+   Revision 1.47  2003/11/04 11:18:34  clip
+   post signal handler
+   paul
+
+   Revision 1.46  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.45  2002/11/26 14:31:47  clip
+   rust: added parameter 'method' to _clip_var2str() and _clip_str2var()
+
    Revision 1.44  2002/09/11 12:29:00  clip
    build fixes
    paul
@@ -207,6 +222,7 @@
    ClipMachine flags info
  */
 
+#include "clipcfg.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -215,7 +231,11 @@
 #include <ctype.h>
 #include <math.h>
 #include <time.h>
+#ifdef OS_MINGW
+#include <ltdl.h>
+#else
 #include <dlfcn.h>
+#endif
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -293,9 +313,11 @@ _clip_sigdebug(int sig)
 {
 	sigset_t oldset, newset;
 
+#ifndef OS_MINGW
 	sigemptyset(&newset);
 	sigaddset(&newset, SIGUSR1);
 	sigprocmask(SIG_BLOCK, &newset, &oldset);
+#endif
 
 	_clip_logg(0, "got debug signal %d", sig);
 	in_sigdebug = 1;
@@ -348,7 +370,9 @@ _clip_sigdebug(int sig)
 	}
 	in_sigdebug = 0;
 
+#ifndef OS_MINGW
 	sigprocmask(SIG_SETMASK, &oldset, 0);
+#endif
 }
 
 void
@@ -359,6 +383,28 @@ _clip_sigint(int sig)
 	if (!debugging)
 	{
 		_clip_signal(sig);
+		return;
+	}
+
+	mp = cur_ClipMachine();
+
+	fprintf(_clip_dbg_out, "\nsigint: file %s line %d proc %s", nullstr(mp->fp->filename), mp->fp->line, nullstr(mp->fp->procname));
+	fprintf(_clip_dbg_out, "\n.\n");
+	fflush(_clip_dbg_out);
+	_clip_logg(1, "sigint: file %s line %d proc %s", nullstr(mp->fp->filename), mp->fp->line, nullstr(mp->fp->procname));
+	_clip_in_breakpoint();
+}
+
+
+void
+_clip_sigint_real(int sig)
+{
+	ClipMachine *mp;
+
+	if (!debugging)
+	{
+		_clip_sig_flag = sig;
+		_clip_signal_real(sig);
 		return;
 	}
 
@@ -470,8 +516,8 @@ _clip_debug(ClipMachine * mp)
 		}
 
 		if (next_line && _clip_debugnext && mp->fp->line && mp->fp->line != next_line
-		    && next_file && next_file == mp->fp->filename
-		    && next_proc && next_proc == mp->fp->procname
+			&& next_file && next_file == mp->fp->filename
+			&& next_proc && next_proc == mp->fp->procname
 			)
 		{
 			_clip_debugnext = 0;
@@ -489,7 +535,7 @@ _clip_debug(ClipMachine * mp)
 		}
 
 		if (until_line && mp->fp->line == until_line
-		    && (!until_file || (mp->fp->filename && !strcasecmp(until_file, mp->fp->filename))))
+			&& (!until_file || (mp->fp->filename && !strcasecmp(until_file, mp->fp->filename))))
 		{
 			until_line = 0;
 			if (until_file)
@@ -678,7 +724,7 @@ _clip_process_dbg(ClipMachine * mp, char *str)
 		fprintf(_clip_dbg_out, "\n");
 	}
 
-      empty:
+	  empty:
 	if (r >= 0)
 	{
 		fprintf(_clip_dbg_out, ".\n");
@@ -799,7 +845,7 @@ frame_command(ClipMachine * mp, int argc, char **argv)
 	{
 		ClipFrame *fp;
 
-	      prframe:
+		  prframe:
 		fp = get_frame(mp);
 		fprintf(_clip_dbg_out, "%d: file:%s", cur_frame, nullstr(fp->filename));
 		fprintf(_clip_dbg_out, " line:%d", fp->line);
@@ -1005,7 +1051,7 @@ print_dbg(ClipMachine * mp, ClipVar * vp, int binary)
 		char *str = 0;
 		long len = 0;
 
-		_clip_var2str(mp, vp, &str, &len);
+		_clip_var2str(mp, vp, &str, &len, 1);
 		fwrite(str, len, 1, _clip_dbg_out);
 		fwrite("\n", 1, 1, _clip_dbg_out);
 		free(str);
@@ -1084,7 +1130,7 @@ print_command(ClipMachine * mp, int argc, char **argv)
 	}
 
 	if (!show_local && !show_static && !show_private && !show_public
-	    && !show_memvar && !show_field)
+		&& !show_memvar && !show_field)
 	{
 		show_local = 1;
 		show_static = 1;
@@ -1220,7 +1266,7 @@ print_command(ClipMachine * mp, int argc, char **argv)
 		}
 		if (!found && show_first)
 			fprintf(_clip_dbg_out, "No variable '%s'", name);
-	      cont:
+		  cont:
 		fprintf(_clip_dbg_out, "\n");
 		free(dim);
 	}

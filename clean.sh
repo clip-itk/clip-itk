@@ -20,7 +20,7 @@ pwd=`pwd`
 rm -rf debian/tmp debian/clip-lib clip-dev.spec
 
 cd clip
-	$MAKE distclean || true
+	$MAKE clean || true
 cd $pwd
 cd prg
 	./Clean.sh || true
@@ -29,5 +29,5 @@ cd cliplibs
 $MAKE clean
 rm -f clip-dev.spec _lst _nlst
 cd $pwd
-find . -name '*.ex' -or -name '*.nm' |  xargs rm -f
+#find . -name '*.ex' -or -name '*.nm' |  xargs rm -f
 

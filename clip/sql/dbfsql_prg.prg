@@ -4,7 +4,7 @@ FUNCTION ConnectNew(rdbms)
 	o:classname := "TCONNECT"
 
 	o:conn := SQLCreateConn(rdbms,PARAM(2),PARAM(3),PARAM(4),PARAM(5),PARAM(6),;
-		PARAM(7),PARAM(8),PARAM(9))
+		PARAM(7),PARAM(8),PARAM(9),PARAM(10))
 
 	o:RDBMS := rdbms
 	o:Rowsets := ARRAY(0)
@@ -12,6 +12,9 @@ FUNCTION ConnectNew(rdbms)
 	o:TestParser := @connTestParser()
 	o:Destroy := @connDestroy()
 	o:CreateRowset := @connCreateRowset()
+	o:Start := @connStart()
+	o:Commit := @connCommit()
+	o:Rollback := @connRollback()
 RETURN o
 
 STATIC FUNCTION connCommand(sql,pars)
@@ -20,14 +23,14 @@ STATIC FUNCTION connCommand(sql,pars)
 
 	SQLLocWrite(::conn,@sql)
 	stmt := SQLPrepare(::conn,sql)
-	ParLocWrite(::conn,pars)
+	ParLocWrite(::conn,pars,::RDBMS)
 	ret := SQLCommand(stmt,pars)
 	SQLFreeSTMT(stmt)
 RETURN ret
 
 STATIC FUNCTION connTestParser(sql,pars)
-	LOCAL ret := SQLTestParser(::conn,sql,pars)
-RETURN ret
+	ParLocWrite(::conn,pars,::RDBMS)
+RETURN SQLTestParser(::conn,sql,pars)
 
 STATIC FUNCTION connDestroy(self)
 	LOCAL I
@@ -36,19 +39,25 @@ STATIC FUNCTION connDestroy(self)
 	IF self:conn != NIL
 		FOR I:=1 TO LEN(self:Rowsets)
 			rs := self:Rowsets[I]
-			rs:destroy()
-			rs:rowset := NIL
+			SQLDestroyRowset(rs)
 		NEXT
 		SQLDestroyConn(self:conn)
 		self:conn := NIL
 	ENDIF
 RETURN
 
-STATIC FUNCTION connCreateRowset(self,selectSQL,pars,insertSQL,deleteSQL,updateSQL,refreshSQL,idname,orders,gen_idSQL)
-	LOCAL ors := map()
-	LOCAL stmt
-	LOCAL i
+STATIC FUNCTION connStart(self,p1,p2)
+RETURN SQLStart(self:conn,p1,p2)
 
+STATIC FUNCTION connCommit(self)
+RETURN SQLCommit(self:conn)
+
+STATIC FUNCTION connRollback(self)
+RETURN SQLRollback(self:conn)
+
+STATIC FUNCTION connCreateRowset(self,selectSQL,pars,insertSQL,deleteSQL,updateSQL,refreshSQL,idname,orders,gen_idSQL,nofetch,bEval,nEvery)
+	LOCAL ors := map()
+	LOCAL i
 
 	ors:classname := "TROWSET"
 
@@ -58,60 +67,74 @@ STATIC FUNCTION connCreateRowset(self,selectSQL,pars,insertSQL,deleteSQL,updateS
 	SQLLocWrite(self:conn,@updateSQL)
 	SQLLocWrite(self:conn,@refreshSQL)
 
-	stmt := SQLPrepare(self:conn,selectSQL)
+	ors:stmt := SQLPrepare(self:conn,selectSQL)
 
-	ParLocWrite(self:conn,pars)
-	ors:RDBMS := self:RDBMS
-	ors:conn := self:conn
+	ParLocWrite(self:conn,pars,self:RDBMS)
+
+	ors:RDBMS      := self:RDBMS
+	ors:connect    := self
+	ors:conn       := self:conn
 	ors:parameters := pars
-	ors:idname := idname
-	ors:orders := orders
-	ors:curorder := NIL
+	ors:idname     := idname
+	ors:orders     := orders
+	ors:curorder   := NIL
 
-	ors:selectSQL := selectSQL
-	ors:insertSQL := insertSQL
-	ors:deleteSQL := deleteSQL
-	ors:updateSQL := updateSQL
+	ors:selectSQL  := selectSQL
+	ors:insertSQL  := insertSQL
+	ors:deleteSQL  := deleteSQL
+	ors:updateSQL  := updateSQL
 	ors:refreshSQL := refreshSQL
 
-	ors:Read := @rowsetRead()
-	ors:Write := @rowsetWrite()
-	ors:BOF := @rowsetBOF()
-	ors:EOF := @rowsetEOF()
-	ors:Recno := @rowsetRecno()
-	ors:Lastrec := @rowsetLastrec()
-	ors:NFields := @rowsetNFields()
-	ors:FieldNo := @rowsetFieldNo()
-	ors:FieldName := @rowsetFieldName()
-	ors:FieldType := @rowsetFieldType()
-	ors:FieldNullable := @rowsetFieldNullable()
-	ors:FieldUnsigned := @rowsetFieldUnsigned()
-	ors:FieldBinary := @rowsetFieldBinary()
-	ors:FieldLen := @rowsetFieldLen()
-	ors:FieldDec := @rowsetFieldDec()
-	ors:GetValue := @rowsetGetValue()
-	ors:SetValue := @rowsetSetValue()
-	ors:Append := @rowsetAppend()
-	ors:Delete := @rowsetDelete()
-	ors:GoTop := @rowsetGoTop()
-	ors:GoBottom := @rowsetGoBottom()
-	ors:Skip := @rowsetSkip()
-	ors:Goto := @rowsetGoto()
-	ors:destroy := @rowsetDestroy()
-	ors:ToClip := @rowsetToClip()
-	ors:FromClip := @rowsetFromClip()
-	ors:FieldBlock := @rowsetFieldBlock()
-	ors:Browse := @rowsetBrowse()
-	ors:Refresh := @rowsetRefresh()
+	ors:Destroy        := @rowsetDestroy()
+	ors:Read           := @rowsetRead()
+	ors:Write          := @rowsetWrite()
+	ors:BOF            := @rowsetBOF()
+	ors:EOF            := @rowsetEOF()
+	ors:Recno          := @rowsetRecno()
+	ors:Lastrec        := @rowsetLastrec()
+	ors:NFields        := @rowsetNFields()
+	ors:FieldNo        := @rowsetFieldNo()
+	ors:FieldName      := @rowsetFieldName()
+	ors:FieldType      := @rowsetFieldType()
+	ors:FieldTypeSQL   := @rowsetFieldTypeSQL()
+	ors:FieldNullable  := @rowsetFieldNullable()
+	ors:FieldUnsigned  := @rowsetFieldUnsigned()
+	ors:FieldBinary    := @rowsetFieldBinary()
+	ors:FieldLen       := @rowsetFieldLen()
+	ors:FieldDec       := @rowsetFieldDec()
+	ors:GetValue       := @rowsetGetValue()
+	ors:SetValue       := @rowsetSetValue()
+	ors:Append         := @rowsetAppend()
+	ors:Delete         := @rowsetDelete()
+	ors:GoTop          := @rowsetGoTop()
+	ors:GoBottom       := @rowsetGoBottom()
+	ors:Skip           := @rowsetSkip()
+	ors:Goto           := @rowsetGoto()
+	ors:ToClip         := @rowsetToClip()
+	ors:FromClip       := @rowsetFromClip()
+	ors:FieldBlock     := @rowsetFieldBlock()
+	ors:Browse         := @rowsetBrowse()
+	ors:Refresh        := @rowsetRefresh()
+	ors:RefreshAll     := @rowsetRefresh()
 	ors:RefreshCurrent := @rowsetRefreshCurrent()
-	ors:CreateOrder := @rowsetCreateOrder()
-	ors:Seek := @rowsetSeek()
-	ors:SetOrder := @rowsetSetOrder()
+	ors:CreateOrder    := @rowsetCreateOrder()
+	ors:Seek           := @rowsetSeek()
+	ors:SetOrder       := @rowsetSetOrder()
+	ors:Fetched        := @rowsetFetched()
+	ors:FetchAll       := @rowsetFetchAll()
+	ors:KeyNo          := @rowsetKeyNo()
 
-	ors:rowset := SQLCreateRowset(ors,stmt,pars,idname,orders,gen_idSQL)
-	SQLFillOrders(ors:rowset)
+	ors:rowset := SQLCreateRowset(ors,ors:stmt,pars,idname,orders,gen_idSQL)
 
-	AADD(self:Rowsets,ors)
+	IF nofetch == NIL .OR. !nofetch
+		SQLFetch(ors:rowset,0,bEval,nEvery,ors)
+	ENDIF
+
+	IF orders != NIL
+		SQLFillOrders(ors:rowset)
+	ENDIF
+
+	AADD(self:Rowsets,ors:rowset)
 
 RETURN ors
 
@@ -136,23 +159,40 @@ RETURN SQLFieldNo(::rowset,fieldname)
 STATIC FUNCTION rowsetFieldName(fieldno)
 RETURN SQLFieldName(::rowset,fieldno)
 
-STATIC FUNCTION rowsetFieldType(fieldno)
-RETURN SQLFieldType(::rowset,fieldno)
+STATIC FUNCTION rowsetFieldType(self,field)
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
+RETURN SQLFieldType(self:rowset,fieldno)
 
-STATIC FUNCTION rowsetFieldNullable(fieldno)
-RETURN SQLFieldNullable(::rowset,fieldno)
+STATIC FUNCTION rowsetFieldTypeSQL(self,field)
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
+RETURN SQLFieldTypeSQL(self:rowset,fieldno)
 
-STATIC FUNCTION rowsetFieldUnsigned(fieldno)
-RETURN SQLFieldUnsigned(::rowset,fieldno)
+STATIC FUNCTION rowsetFieldNullable(self,field)
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
+RETURN SQLFieldNullable(self:rowset,fieldno)
 
-STATIC FUNCTION rowsetFieldBinary(fieldno)
-RETURN SQLFieldBinary(::rowset,fieldno)
+STATIC FUNCTION rowsetFieldUnsigned(self,field)
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
+RETURN SQLFieldUnsigned(self:rowset,fieldno)
 
-STATIC FUNCTION rowsetFieldLen(fieldno)
-RETURN SQLFieldLen(::rowset,fieldno)
+STATIC FUNCTION rowsetFieldBinary(self,field,newval)
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
+RETURN SQLFieldBinary(self:rowset,fieldno,newval)
 
-STATIC FUNCTION rowsetFieldDec(fieldno)
-RETURN SQLFieldDec(::rowset,fieldno)
+STATIC FUNCTION rowsetFieldLen(self,field)
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
+RETURN SQLFieldLen(self:rowset,fieldno)
+
+STATIC FUNCTION rowsetFieldDec(self,field)
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
+RETURN SQLFieldDec(self:rowset,fieldno)
 
 STATIC FUNCTION rowsetGetValue(self,field)
 	LOCAL fieldno :=;
@@ -164,16 +204,14 @@ STATIC FUNCTION rowsetSetValue(self,field,value)
 		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
 
 	SQLSetValue(self:rowset,fieldno,self:FromClip(fieldno,value,.F.))
+	SQLSetHot(self:rowset,.T.)
 RETURN
 
 STATIC FUNCTION rowsetAppend(self,data)
 	LOCAL keys := mapkeys(data)
-	LOCAL stmt
-	LOCAL id
-	LOCAL pars
-	LOCAL i
-	LOCAL idhash
+	LOCAL stmt,id,pars,i,j,idhash,sql
 
+	_sqlflush(self)
 	IF self:insertSQL != NIL
 		id := SQLGenId(self:rowset)
 		IF id != NIL .AND. self:idname != NIL
@@ -194,7 +232,7 @@ STATIC FUNCTION rowsetAppend(self,data)
 		ENDIF
 		SQLCommand(stmt,pars)
 		SQLAppend(self:rowset)
-		IF SQLRowId(self:rowset) != 0
+		IF VALTYPE(SQLRowId(self:rowset)) == "N" .AND. SQLRowId(self:rowset) != 0
 			id := SQLNewId(self:conn,stmt)
 			self:SetValue(SQLRowId(self:rowset),id)
 		ENDIF
@@ -204,17 +242,20 @@ STATIC FUNCTION rowsetAppend(self,data)
 	ENDIF
 	FOR I:=1 TO LEN(data)
 		FOR J:=1 TO SQLNFields(self:rowset)
-			IF HASHSTR(UPPER(SQLFieldName(self:rowset,J))) == keys[I]
-				self:SetValue(J,data[keys[I]])
-				EXIT
-			ENDIF
+			IF !(VALTYPE(SQLRowId(self:rowset)) == "N" .AND. J == SQLRowId(self:rowset))
+				IF HASHSTR(UPPER(SQLFieldName(self:rowset,J))) == keys[I]
+					self:SetValue(J,data[keys[I]])
+					EXIT
+				ENDIF
+            ENDIF
 		NEXT
 	NEXT
+	SQLAddKeys(self:rowset)
+	SQLSetHot(self:rowset,.F.)
 RETURN
 
 STATIC FUNCTION rowsetDelete(self)
-	LOCAL ret
-	LOCAL pars,i
+	LOCAL ret,pars,stmt,i
 
 	IF SQLLastrec(self:rowset) > 0 .AND. self:deleteSQL != NIL
 		stmt := SQLPrepare(self:conn,self:deleteSQL)
@@ -230,26 +271,71 @@ STATIC FUNCTION rowsetDelete(self)
 	ret := SQLDelete(self:rowset)
 RETURN ret
 
+STATIC PROCEDURE _sqlflush(self)
+	LOCAL data,sql,stmt,pars,ids,i
+
+	IF SQLGetHot(self:rowset) .AND. self:updateSQL != NIL;
+		.AND. !(self:Bof() .AND. self:Eof())
+
+		data := self:Read()
+		ids := SQLRowId(self:rowset)
+		IF VALTYPE(ids) == "N"
+			data[HASHSTR(UPPER(;
+				SQLFieldName(self:rowset,ids)))] := self:GetValue(ids)
+		ELSE
+			FOR i:=1 TO LEN(ids)
+				data[HASHSTR(UPPER(;
+					SQLFieldName(self:rowset,ids[i])))] := self:GetValue(ids[i])
+			NEXT
+		ENDIF
+		sql := ParsMacros(self,self:updateSQL,data)
+		stmt := SQLPrepare(self:conn,sql)
+		pars := ParsArray(self,sql,data)
+		IF VALTYPE(self:parameters) == "A"
+			FOR i:=1 TO LEN(self:parameters)
+				AADD(pars,self:parameters[i])
+			NEXT
+		ENDIF
+		SQLCommand(stmt,pars)
+		SQLFreeSTMT(stmt)
+	ENDIF
+	SQLSetHot(self:rowset,.F.)
+RETURN
+
 STATIC FUNCTION rowsetGoTop(self)
+	_sqlflush(self)
 	SQLGotop(self:rowset)
 RETURN
 
 STATIC FUNCTION rowsetGoBottom(self)
+	_sqlflush(self)
 	SQLGobottom(self:rowset)
 RETURN
 
 STATIC FUNCTION rowsetSkip(self,rows)
 	LOCAL ret
 	IF rows==NIL;rows:=1;ENDIF
+
+	_sqlflush(self)
 	ret := SQLSkip(self:rowset,rows)
 RETURN ret
 
 STATIC FUNCTION rowsetGoto(self,row)
 	LOCAL ret
+
+	_sqlflush(self)
 	ret := SQLGoto(self:rowset,row)
 RETURN ret
 
 STATIC FUNCTION rowsetDestroy(self)
+	LOCAL conn := self:connect
+	LOCAL p
+
+	p := ASCAN(conn:rowsets,{|x| x == self:rowset } )
+	IF p != 0
+		ADEL(conn:rowsets,p)
+		ASIZE(conn:rowsets,LEN(conn:rowsets)-1)
+	ENDIF
 	IF self:rowset != NIL
 		SQLDestroyRowset(self:rowset)
 		self:rowset := NIL
@@ -265,17 +351,22 @@ STATIC FUNCTION rowsetRead(self)
 RETURN data
 
 STATIC FUNCTION rowsetWrite(self,data)
-	LOCAL I,J
 	LOCAL datakeys := mapkeys(data)
-	LOCAL stmt
-	LOCAL sql
-	LOCAL pars
+	LOCAL stmt,sql,pars,ids,I,J
 
 	IF SQLLastrec(self:rowset) > 0
 		IF self:updateSQL != NIL
-			data[HASHSTR(UPPER(;
-				SQLFieldName(self:rowset,SQLRowId(self:rowset))))] :=;
-				self:GetValue(SQLRowId(self:rowset))
+			ids := SQLRowId(self:rowset)
+			IF VALTYPE(ids) == "N"
+				data[HASHSTR(UPPER(;
+					SQLFieldName(self:rowset,ids)))] := self:GetValue(ids)
+			ELSE
+				FOR i:=1 TO LEN(ids)
+					data[HASHSTR(UPPER(;
+						SQLFieldName(self:rowset,ids[i])))] :=;
+							self:GetValue(ids[i])
+				NEXT
+			ENDIF
 			sql := ParsMacros(self,self:updateSQL,data)
 			stmt := SQLPrepare(self:conn,sql)
 			pars := ParsArray(self,sql,data)
@@ -296,6 +387,7 @@ STATIC FUNCTION rowsetWrite(self,data)
 			NEXT
 		NEXT
 	ENDIF
+	SQLSetHot(self:rowset,.F.)
 RETURN
 
 STATIC FUNCTION rowsetToClip(self,fieldno)
@@ -314,6 +406,8 @@ FUNCTION _FromRDBMSToClip(rowset,conn,RDBMS,fieldno)
 		ret := CLIP("ODBC2CLIP",rowset,fieldno)
 	ELSEIF RDBMS == "IB"
 		ret := CLIP("IB2CLIP",rowset,fieldno)
+	ELSEIF RDBMS == "DBTCP"
+		ret := CLIP("DBTCP2CLIP",rowset,fieldno)
 	ENDIF
 	IF VALTYPE(ret) == "C" .AND. !SQLFieldBinary(rowset,fieldno)
 		SQLLocRead(conn,@ret)
@@ -350,17 +444,25 @@ FUNCTION _FromClipToRDBMS(rowset,conn,rdbms,fieldno,value,totext)
 		ENDIF
 	ELSEIF rdbms == "IB"
 		ret := CLIP("CLIP2IB",rowset,fieldno,value,totext)
+	ELSEIF rdbms == "DBTCP"
+		ret := CLIP("CLIP2DBTCP",rowset,fieldno,value,totext)
+		IF totext .AND. VALTYPE(value) != 'N'
+			ret := "'"+ret+"'"
+		ENDIF
 	ENDIF
 	IF VALTYPE(ret) == "C" .AND. !SQLFieldBinary(rowset,fieldno)
 		SQLLocWrite(conn,@ret)
 	ENDIF
+	SQLSetHot(rowset,.T.)
 RETURN ret
 
 STATIC FUNCTION rowsetFromClip(self,fieldno,value,totext)
 RETURN _FromClipToRDBMS(self:rowset,self:conn,self:RDBMS,fieldno,value,totext)
 
-STATIC FUNCTION rowsetFieldBlock(self,fieldno)
+STATIC FUNCTION rowsetFieldBlock(self,field)
 	LOCAL b,toclip,fromclip
+	LOCAL fieldno :=;
+		IIF(VALTYPE(field) == "C", SQLFieldNo(self:rowset,field), field)
 
 	toclip := "_FromRDBMSToClip("+ALLTRIM(STR(self:rowset))+","+;
 		ALLTRIM(STR(self:conn))+",'"+self:RDBMS+"',"+;
@@ -372,17 +474,17 @@ STATIC FUNCTION rowsetFieldBlock(self,fieldno)
 		self:RDBMS+"',"+ALLTRIM(STR(fieldno))+",x,.F.))"
 RETURN &("{|x| IF(x==NIL,"+toclip+","+fromclip+")}")
 
-STATIC FUNCTION rowsetBrowse(self,top,left,bottom,right,columns,headers,widths)
-RETURN SQLBrowse(self,top,left,bottom,right,columns,headers,widths)
+STATIC FUNCTION rowsetBrowse(self,top,left,bottom,right,columns,headers,widths,pictures)
+RETURN SQLBrowse(self,top,left,bottom,right,columns,headers,widths,pictures)
 
 STATIC FUNCTION ParsMacros(self,sql,data)
-	LOCAL I,J
+	LOCAL I,J,K
 	LOCAL keys := mapkeys(data)
 	LOCAL up := UPPER(sql)
 	LOCAL lis := ""
 	LOCAL fields := ""
 	LOCAL values := ""
-	LOCAL poslist,posfields,posvalues
+	LOCAL poslist,posfields,posvalues,ids,f
 
 	poslist := AT("%LIST",up)
 	posfields := AT("%FIELDS",up)
@@ -395,9 +497,23 @@ STATIC FUNCTION ParsMacros(self,sql,data)
 	IF LEN(data)==0
 		RETURN NIL
 	ENDIF
+
+	ids := SQLRowId(self:rowset)
+
 	FOR I:=1 TO LEN(data)
 		FOR J:=1 TO SQLNFields(self:rowset)
-			IF SQLRowId(self:rowset) != J .OR. self:idname != NIL
+			f := .T.
+			IF VALTYPE(ids) == "N"
+				f := (ids != J)
+			ELSE
+				FOR k:=1 TO LEN(ids)
+					IF ids[k] == J
+						f := .F.
+						BREAK
+					ENDIF
+				NEXT
+			ENDIF
+			IF f
 				IF HASHSTR(UPPER(SQLFieldName(self:rowset,J))) == keys[I]
 					IF poslist!=0
 						lis += SQLFieldName(self:rowset,J)+;
@@ -439,7 +555,7 @@ RETURN sql
 STATIC FUNCTION ParsArray(self,sql,data)
 	LOCAL ar := ARRAY(0)
 	LOCAL iter := sql
-	LOCAL b
+	LOCAL b,e
 	LOCAL name
 	LOCAL I
 	LOCAL fieldno
@@ -455,11 +571,11 @@ STATIC FUNCTION ParsArray(self,sql,data)
 			IF fieldno != 0
 				IF data[HASHSTR(UPPER(name))] != NIL
 					val := self:FromClip(fieldno,data[HASHSTR(UPPER(name))],.T.)
-					AADD(ar,{name,val,SQLFieldType(self:rowset,fieldno),;
+					AADD(ar,{name,val,SQLFieldTypeSQL(self:rowset,fieldno),;
 						SQLFieldBinary(self:rowset,fieldno)})
 				ELSE
 					AADD(ar,{name,IIF(self:RDBMS=="IB",NIL,"null"),;
-						self:FieldType(fieldno)})
+						self:FieldTypeSQL(fieldno)})
 				ENDIF
 			ENDIF
 		ENDIF
@@ -526,17 +642,23 @@ STATIC FUNCTION rowsetRefresh(self)
 RETURN SQLLastrec(self:rowset)
 
 STATIC FUNCTION rowsetRefreshCurrent(self,data)
-	LOCAL stmt
-	LOCAL sql
-	LOCAL pars,i
+	LOCAL stmt,sql,pars,i,ids
 
 	IF self:refreshSQL != NIL
 		IF VALTYPE(data) != "O"
 			data := map()
 		ENDIF
-		data[HASHSTR(UPPER(;
-			SQLFieldName(self:rowset,SQLRowId(self:rowset))))] :=;
-			self:GetValue(SQLRowId(self:rowset))
+
+		ids := SQLRowId(self:rowset)
+		IF VALTYPE(ids) == "N"
+			data[HASHSTR(UPPER(;
+				SQLFieldName(self:rowset,ids)))] := self:GetValue(ids)
+		ELSE
+			FOR i:=1 TO LEN(ids)
+				data[HASHSTR(UPPER(;
+					SQLFieldName(self:rowset,ids[i])))] := self:GetValue(ids[i])
+			NEXT
+		ENDIF
 		stmt := SQLPrepare(self:conn,self:refreshSQL)
 		pars := ParsArray(self,self:refreshSQL,data)
 		IF VALTYPE(self:parameters) == "A"
@@ -544,18 +666,33 @@ STATIC FUNCTION rowsetRefreshCurrent(self,data)
 				AADD(pars,self:parameters[i])
 			NEXT
 		ENDIF
-		SQLRefresh(self:rowset,stmt,pars,self:idname)
+		SQLRefresh(self:rowset,stmt,pars)
 		SQLFreeSTMT(stmt)
 	ENDIF
 RETURN
 
-STATIC PROCEDURE ParLocWrite(conn,pars)
+STATIC PROCEDURE ParLocWrite(conn,pars,RDBMS)
 	LOCAL i
 	IF VALTYPE(pars) == "A"
 		FOR i:=1 to LEN(pars)
 			IF VALTYPE(pars[i][2]) == "C" .AND.;
 				(LEN(pars[i]) < 4 .OR. VALTYPE(pars[i][4]) != "L" .OR. !pars[i][4])
 				SQLLocWrite(conn,@pars[i][2])
+			ENDIF
+			IF RDBMS == "MS" .OR. RDBMS == "PG" .OR. RDBMS == "ODBC";
+				.OR. RDBMS == "DBTCP"
+
+				IF VALTYPE(pars[i][2]) == "C"
+					IF !(LEFT(pars[i][2],1) == "'" .AND. RIGHT(pars[i][2],1) == "'")
+						pars[i][2] := "'"+pars[i][2]+"'"
+					ENDIF
+				ELSEIF VALTYPE(pars[i][2]) == "N"
+					pars[i][2] := ALLTRIM(STR(pars[i][2]))
+				ELSEIF VALTYPE(pars[i][2]) == "D"
+					pars[i][2] := "'"+STRZERO(YEAR(pars[i][2]),4)+"-"+;
+						STRZERO(MONTH(pars[i][2]),2)+"-"+;
+						STRZERO(DAY(pars[i][2]),2)+"'"
+				ENDIF
 			ENDIF
 		NEXT
 	ENDIF
@@ -572,3 +709,11 @@ STATIC FUNCTION rowsetSetOrder(self,tagname)
 	self:curorder := tagname
 RETURN SQLSetOrder(self:rowset,tagname)
 
+STATIC FUNCTION rowsetFetched(self)
+RETURN SQLFetched(self:rowset)
+
+STATIC FUNCTION rowsetFetchAll(self)
+RETURN SQLFetch(self:rowset,0)
+
+STATIC FUNCTION rowsetKeyNo(self)
+RETURN SQLKeyNo(self:rowset)

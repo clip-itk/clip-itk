@@ -12,10 +12,10 @@ function memoedit(str, ntop, nleft, nbot, nright, mode, user_func,;
 		  str_len, tab_size, bline, bpos, wline, wpos)
 
 	local tobj,i,nkey,oldcolor:=setcolor(), status
-	local user_ret
+	local user_ret,row,col
 
 	if !(valtype(str) $ "CM")
-   		str=""
+		str=""
 	endif
 
 	ntop=iif(ntop==NIL,0,min(ntop, maxrow()))
@@ -38,48 +38,70 @@ function memoedit(str, ntop, nleft, nbot, nright, mode, user_func,;
 	tobj:rowWin := iif(wline!=NIL, wline, tobj:rowWin)
 	tobj:colWin := iif(wpos!=NIL,  wpos,  tobj:colWin)
 	tobj:marginRight := str_len
+	tobj:autoWrap := .t.
 	tobj:tabSize:= iif(tab_size!=NIL,tab_size,tobj:tabSizw)
+	tobj:idletime:=60
+	tobj:loadString(@str)
 
-	if user_func # nil
-		while (user_ret:=clip(user_func, ME_INIT, tobj:line, tobj:pos)) # 0
+	if !empty( user_func ) .and. valtype( user_func ) == "C"
+		user_ret := 1
+		while   user_ret # 0
+			row := row(); col:=col()
+			user_ret:=clip(user_func, ME_INIT, tobj:line, tobj:pos-1, tobj, nil)
+			setpos(row,col)
 			user_action(tobj, user_ret, mode)
 		enddo
+	else
+		user_func := NIL
 	endif
 
-	tobj:loadString(@str)
 	ShowScoreboard()
 
 	while .t.
 		if nextkey() = 0
-                	if user_func != NIL
-				user_action(tobj, clip(user_func, ME_IDLE, tobj:line , tobj:pos), mode)
-                        endif
-		endif
-    		nKey:=inkey(0)
-    		do case
-       		case nKey==K_ESC
-	    		if !tobj:updated .or. alert([Exit from memoedit; Don~t save ?],{[Yes],[No ]})==1
-	       			exit
-	    		endif
-       		case nkey==K_CTRL_W
-	    		str:=""
-	    		for i=1 to tobj:lines
-				if tobj:tabPack
-		   			str+=tabPack(tobj:edBuffer[i],tobj:tabSize)+"&\r&\n" //CRLF
-				else
-		   			str+=tobj:edBuffer[i]+"&\r&\n" //CRLF
+			if !empty( user_func )
+				row := row(); col:=col()
+				user_ret := clip(user_func, ME_IDLE, tobj:line , tobj:pos-1, tobj, nil)
+				setpos(row,col)
+				user_ret:=user_action(tobj, user_ret, mode)
+				if user_ret
+					exit
 				endif
-	    		next
-	    		exit
-       		case (nkey == K_INS)
-	    		set( _SET_INSERT, !Set(_SET_INSERT) )
-	    		ShowScoreboard()
-       		otherwise
-	    		if ! if(mode, viewkeys(nkey,tobj) .or. editKeys(nkey,tobj), viewKeys(nkey,tobj)) .and. !empty(user_func)
-		   	    status:=if(tobj:updated, ME_UNKEYX, ME_UNKEY)
-			    user_action(tobj, clip(user_func, status, tobj:line , tobj:pos), mode, nkey)
-	    		endif
-       		endcase
+			endif
+		endif
+		if (nKey:=inkey(tobj:idletime)) == 0
+			loop
+		endif
+		if setkey(nKey)!=NIL
+			eval(setkey(nKey),procname(),procline(),readvar())
+			loop
+		endif
+		if empty(user_func)
+		    if ! viewKeys(nKey,tobj,@user_ret) .and. mode
+			editKeys(nKey,tobj,@user_ret)
+		    endif
+		else
+		    tobj:cargo:=NIL
+		    /* comment - if !empty(user_func) --> simple chars not writen*/
+		    /* => status will be = ME_IDLE */
+		    /* status:=ME_IDLE */
+		      /* uncomment for Bondar */
+		    status:=if(tobj:updated, ME_UNKEYX, ME_UNKEY)
+		    row := row(); col:=col()
+		    status:=clip(user_func, status, tobj:line , tobj:pos-1, tobj)
+		    setpos(row,col)
+		    if tobj:cargo<>NIL
+			nkey:=tobj:cargo
+		    endif
+		    user_ret:=user_action(tobj, status, mode, nkey)
+		endif
+		if valtype(user_ret)=='C'
+			str:=user_ret
+			user_ret:=.t.
+		endif
+		if user_ret
+			exit
+		endif
 	enddo
 	setcolor(oldcolor)
 return str
@@ -88,10 +110,10 @@ return str
 function viewFile(fName, ntop, nleft, nbot, nright, mode, user_func,;
 		  str_len, tab_size, bline, bpos, wline, wpos)
 
-	local tobj,i,nkey,oldcolor:=setcolor(),scr:=savescreen()
+	local tobj,i,nkey,oldcolor:=setcolor(),scr:=savescreen(), lExit
 
 	if !(valtype(fName) $ "CM")
-   		return .f.
+		return .f.
 	endif
 
 	setcolor("0/7")
@@ -118,27 +140,33 @@ function viewFile(fName, ntop, nleft, nbot, nright, mode, user_func,;
 	tobj:rowWin := iif(wline!=NIL, wline, tobj:rowWin)
 	tobj:colWin := iif(wpos!=NIL,  wpos,  tobj:colWin)
 	tobj:marginRight := str_len
+	tobj:autoWrap := .t.
 	tobj:tabSize:= iif(tab_size!=NIL,tab_size,tobj:tabSizw)
 	tobj:loadFile(fName)
 	ShowScoreboard()
 
 	while .t.
-    		nKey:=inkey(0)
-    		do case
-       		case nKey==K_ESC
-	       		exit
-       		otherwise
-	    		viewKeys(nkey,tobj)
-       		endcase
+		nKey:=inkey(0)
+		if setkey(nKey)!=NIL
+			eval(setkey(nKey),procname(),procline(),readvar())
+			loop
+		endif
+		viewKeys(nkey,tobj,@lExit)
+		if lExit
+			exit
+		endif
 	enddo
 
 	setcolor(oldcolor)
 	restscreen(,,,,scr)
 return .t.
 
-static func viewKeys(nkey,tobj)
+static func viewKeys(nkey,tobj,lExit)
     local ln,pos,oldcolor, ret:=.t.
+    lExit:=.F.
     do case
+       case (nkey==K_ESC .OR. nkey=K_CTRL_W) .AND. !tobj:updated
+	    lExit:=.T.
        case nkey==K_DOWN
 	    tobj:down()
        case nkey==K_PGDN
@@ -187,15 +215,47 @@ static func viewKeys(nkey,tobj)
     endcase
 return ret
 
-static func editKeys(nkey,tobj)
-    local ret:=.t.
+static func editKeys(nkey,tobj,lExit, lData)
+    local ret:=.t.,i, str, crlf
+    lExit:=.f.
     do case
-       case nkey==K_ENTER
+
+       case !EMPTY(lData)
 	    if ( Set(_SET_INSERT) )
-		tobj:insertLine()
+	       tobj:insert(chr(nkey))
 	    else
-		tobj:newLine()
+	       tobj:overStrike(chr(nkey))
 	    endif
+
+       case nkey==K_ESC .and. tobj:updated
+
+	     lExit:= .t. //alert([Exit from memoedit; Don~t save ?],{[Yes],[No ]})==1
+
+       case nkey==K_CTRL_W .and. tobj:updated
+	     crlf := set("CRLF_MEMOEDIT")
+	     if empty(crlf)
+		crlf := "&\r&\n"
+	     endif
+	     str:=""
+	     for i=1 to tobj:lines
+		if tobj:tabPack
+			str+=tabPack(tobj:edBuffer[i],tobj:tabSize)
+		else
+			str+=tobj:edBuffer[i]
+		endif
+		if i<>tobj:lines
+			str+="&\r&\n" //CRLF
+		endif
+	     next
+
+	     lExit := str
+
+       case nkey==K_ENTER
+	    //if ( Set(_SET_INSERT) )
+		tobj:insertLine()
+	    //else
+	    //	tobj:newLine()
+	    //endif
        case nkey==K_DEL
 	    tobj:delRight()
        case nkey==K_CTRL_T
@@ -208,8 +268,11 @@ static func editKeys(nkey,tobj)
 	    tobj:deleteLine()
        case nkey==K_CTRL_F7
 	    tobj:centerLine()
+       case nkey==K_INS
+	    set( _SET_INSERT, !Set(_SET_INSERT) )
+	    ShowScoreboard()
        otherwise
-	 if nkey>=32 .and. nkey<=256
+	 if nkey>=0 .and. nkey<256
 	    if ( Set(_SET_INSERT) )
 	       tobj:insert(chr(nkey))
 	    else
@@ -232,7 +295,8 @@ static proc ShowScoreboard()
      end
 return
 
-static proc user_action(tobj, user_ret, mode, nkey)
+static func user_action(tobj, user_ret, mode, nkey)
+local lExit:=.f.
     if user_ret = ME_TOGGLEWRAP
 // not supported
     elseif user_ret = ME_TOGGLESCROLL
@@ -242,15 +306,15 @@ static proc user_action(tobj, user_ret, mode, nkey)
     elseif user_ret = ME_BOTTOMRIGHT
 	tobj:Bottom()
     elseif user_ret = ME_DEFAULT .and. nkey # nil
-	if ! viewKeys(nkey,tobj) .and. mode
-	    editKeys(nkey,tobj)
-	endif
-    elseif user_ret = ME_DATA .and. mode .and. nkey # nil .and. nkey >=1 .and. nkey < 256
-	editKeys(nkey,tobj)
-    elseif user_ret >= 1 .and. user_ret <= 31
-	if ! viewKeys(user_ret,tobj) .and. mode
-	    editKeys(user_ret,tobj)
+	if ! viewKeys(nkey,tobj, @lExit) .and. mode
+	    editKeys(nkey,tobj, @lExit)
 	endif
     elseif user_ret = ME_IGNORE
+    elseif user_ret = ME_DATA .and. mode .and. nkey # nil .and. nkey >= 0
+	editKeys(nkey,tobj, @lExit, .t.)
+    elseif user_ret >= 1 .and. user_ret <= 31
+	if ! viewKeys(user_ret,tobj, @lExit) .and. mode
+	    editKeys(user_ret,tobj, @lExit)
+	endif
     endif
-return
+return lExit

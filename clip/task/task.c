@@ -5,6 +5,36 @@
  */
 /*
  $Log: task.c,v $
+ Revision 1.19  2003/09/18 10:52:04  clip
+ uri: small fix
+
+ Revision 1.18  2003/09/17 07:54:50  clip
+ uri: some fixes for Solaris and Ukraina cp1251
+
+ Revision 1.17  2003/09/05 12:11:53  clip
+ uri: initial fixes for mingw+win32 from uri
+
+ Revision 1.14  2003/07/03 07:39:06  clip
+ new release
+ paul
+
+ Revision 1.13  2003/07/02 07:05:04  clip
+ fix some memleaks
+ paul
+
+ Revision 1.12  2003/04/29 11:09:39  clip
+ memleak on start()
+ possibly closes #140
+ paul
+
+ Revision 1.11  2003/03/17 08:24:59  clip
+ Solaris 8 patches
+ paul
+
+ Revision 1.10  2002/12/25 13:26:10  clip
+ fixes for Solaris tasks
+ paul
+
  Revision 1.9  2001/12/24 13:26:25  clip
  add TASK_DLLEXPORT modifier for task library
  paul
@@ -52,15 +82,19 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <sys/times.h>
 #include <sys/types.h>
 
 #include "list.h"
 #include "coll.h"
 #include "hash.h"
 
-#include "task.h"
 #include "taskcfg.h"
+#ifdef OS_MINGW
+#include "../_win32.h"
+#else
+#include <sys/times.h>
+#endif
+#include "task.h"
 
 struct TaskMessage
 {
@@ -143,6 +177,14 @@ struct Task
 #define TASK_STACK_MIN        16384
 #endif
 
+#ifdef OS_SOLARIS_9
+#define OS_SOLARIS_8
+#endif
+
+#ifdef OS_SOLARIS_8
+#define TASK_STACK_MIN        16384*2
+#endif
+
 #ifndef TASK_STACK_MIN
 #define TASK_STACK_MIN 4096
 #endif
@@ -200,7 +242,7 @@ static void addToZombie(Task * task);
 
 static void removeFromList(Task * task);	/*  удаляет из списка, соответствующего состоянию */
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 static int t_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds,
 	    struct timeval *timeout);
 #else
@@ -379,11 +421,16 @@ initStack(Task * task)
 TASK_DLLEXPORT void
 Task_delete(Task * task)
 {
-	if (!task->isMain)
-		free(task->stack);
-
 	if (task->destroy)
 		task->destroy(task->data);
+
+	free(task->name);
+
+	if (!task->isMain)
+	{
+		free(task->stack);
+		free(task);
+	}
 }
 
 TASK_DLLEXPORT long
@@ -1071,6 +1118,16 @@ callTaskRun(Task * t)
 #define STACK_ALIGN	8
 #define SA(X)	(((X)+(STACK_ALIGN-1)) & ~(STACK_ALIGN-1))
 
+#ifdef OS_SOLARIS_8
+
+static void
+call_curr_task(void)
+{
+	callTaskRun(currTask);
+}
+
+#endif
+
 static void
 initTask(Task * task)
 {
@@ -1119,18 +1176,25 @@ initTask(Task * task)
 #undef UNKNOWN_SYSTEM
 #endif
 #ifdef OS_OPENBSD
-                ((unsigned *) &stkswitch)[2] = (unsigned) (sp);
+		((unsigned *) &stkswitch)[2] = (unsigned) (sp);
 #undef UNKNOWN_SYSTEM
 #endif
 #ifdef OS_SUNOS
 		stkswitch[0].__fp = task->stack + task->stacklen - sizeof(jmp_buf);
 #undef UNKNOWN_SYSTEM
 #endif
-#ifdef OS_SOLARIS
-		((unsigned *) &stkswitch)[2] = (unsigned) sp;
-#undef UNKNOWN_SYSTEM
+#ifdef OS_SOLARIS_8
+#if defined(sparc) || defined(__sparc)
+		stkswitch[1] = (long) sp;
+		stkswitch[2] = (long) &call_curr_task;
+		#undef UNKNOWN_SYSTEM
+#elif defined(i386) || defined(__i386)
+		stkswitch[4] = (long) sp;
+		stkswitch[5] = (long) &call_curr_task;
+		#undef UNKNOWN_SYSTEM
 #endif
-#ifdef OS_CYGWIN
+#endif
+#ifdef _WIN32
 		stkswitch[7] = (unsigned) (sp);
 #undef UNKNOWN_SYSTEM
 #endif
@@ -1477,6 +1541,13 @@ runSheduler(Task * task)
 		longjmp(mainEnv, 1);
 
 	/*  destroy all zombie tasks */
+#if 1
+	while ( first_List(&zombieTasks) )
+	{
+		Task *tp = (Task *) zombieTasks.current;
+		removeFromList(tp);
+		Task_delete(tp);
+	}
 #if 0
 	while (!zombieTasks.empty())
 	{
@@ -1487,6 +1558,7 @@ runSheduler(Task * task)
 		hashs.remove(tp.hash());
 		allTasks.get(tp);
 	}
+#endif
 #endif
 
 	while (code > 0)
@@ -1525,12 +1597,15 @@ deathMatch(void)
 }
 
 
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 
-#include <w32api/windows.h>
+	#ifdef OS_CYGWIN
+		#include <w32api/windows.h>
+	#else
+		#include <windows.h>
+	#endif
 
 extern HANDLE w32_hStdIn;
-
 static int
 zero_fds(fd_set *fds)
 {

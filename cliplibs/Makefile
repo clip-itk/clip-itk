@@ -1,22 +1,26 @@
 #
 
 dirs = clip-gzip clip-bzip2 clip-crypto clip-gd clip-fcgi \
-       clip-gtk clip-gtkextra clip-fw clip-cti \
+       clip-cti clip-gtk clip-gtkextra clip-gtk2 clip-fw \
        clip-mysql clip-postgres clip-oracle clip-interbase clip-odbc \
        clip-com clip-oasis clip-rtf \
 
-all local user system install lib: clean
+all local user system install lib:
 	for dir in $(dirs); \
 	do \
 		(cd $$dir ;\
-                [ -x ./configure ] && ./configure ;\
-		$(MAKE);\
+		[ -x ./configure ] && ./configure ;\
 		$(MAKE) $@ );\
 	done
 
-clean distclean:
+clean:
 	for dir in $(dirs); \
-		do (cd $$dir && $(MAKE) clean distclean || true; rm -rf debian build-stamp $dir.spec);\
+		do (cd $$dir && $(MAKE) clean || true; rm -rf debian build-stamp $dir.spec);\
+	done
+
+distclean: clean
+	for dir in $(dirs); \
+		do (cd $$dir && $(MAKE) distclean || true);\
 	done
 
 deb: clean
@@ -27,6 +31,11 @@ deb: clean
 rpm:
 	for dir in $(dirs); \
 		do ./mkrpm $$dir; \
+	done
+
+rpm-opt:
+	for dir in $(dirs); \
+		do ./mkrpm -opt $$dir; \
 	done
 
 tgz tbz:

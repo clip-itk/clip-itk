@@ -7,6 +7,48 @@
 %{
 /*
  * $Log: clic.y,v $
+ * Revision 1.80  2003/12/17 09:46:42  clip
+ * uri: "f->fname" as "alias->fname" not as "field->fname"
+ *
+ * Revision 1.79  2003/03/25 14:20:59  clip
+ * uri: *gettext changed to _clic_*gettext
+ *
+ * Revision 1.78  2003/01/05 12:32:25  clip
+ * possible fixes #95,#98
+ * paul
+ *
+ * Revision 1.77  2003/01/05 10:34:22  clip
+ * possible fixes #98
+ * paul
+ *
+ * Revision 1.76  2003/01/05 07:45:44  clip
+ * fix sigsegv on compile
+ * closes #96
+ * paul
+ *
+ * Revision 1.75  2002/12/05 09:41:01  clip
+ * use '=' at operator level as assign
+ * closes #68
+ * paul
+ *
+ * Revision 1.74  2002/12/04 09:05:52  clip
+ * possible profile cleanup in _clip_eval
+ * paul
+ *
+ * Revision 1.73  2002/11/27 13:40:44  clip
+ * initial _CGET_ pseudofunction(bug 62):
+ * _CGET_(var[i1,i2,i3,...]) -> __CGET__(@var[i1,i2,i3],{i1,i2,i3},"var",...)
+ * paul
+ *
+ * Revision 1.72  2002/11/06 12:03:41  clip
+ * add plural locale construction:
+ * [asdf] ^ num_expr == ngettext("asdf", "asdf", num_expr)
+ * paul
+ *
+ * Revision 1.71  2002/10/25 11:54:33  clip
+ * localized messages for clip itself
+ * paul
+ *
  * Revision 1.70  2002/10/11 10:27:11  clip
  * primary support for search of unresolved function names:
  * clip compler flag -N and/or envar CLIP_NAMES=yes will generate
@@ -413,7 +455,7 @@ static Node *(*def_node)(VarColl *cp) = 0;
 %token IF IIF ENDIF ELSE ELSEIF
 %token DOCASE CASE OTHERWISE ENDCASE SWITCH ENDSWITCH
 %token FIELD MEMVAR IN MEMVARPTR FIELDPTR
-%token PCOUNT PARBEG PARAMBEG PSHIFT PALL
+%token PCOUNT PARBEG PARAMBEG PSHIFT PALL CGET
 %token FOR STEP TO NEXT FOREACH
 %token BEGSEQ RECOVER USING BREAK EBREAK
 %token ANNOUNCE REQUEST
@@ -463,8 +505,8 @@ file:		{ }
 	| file function NAME paramlist type_def '\n'
 		{
 			curFunction=new_Function($3,$4,$2,0,0,0);
-                        curFunction->typename = $5;
-                        lex_vardef(0);
+			curFunction->typename = $5;
+			lex_vardef(0);
 			add_Function(curFile, curFunction);
 			curStatics=curFunction->statics;
 			fin_Function(curFunction);
@@ -474,8 +516,8 @@ file:		{ }
 		{
 			curFunction=new_Function($3,$4,$2,0,0,0);
 			curFunction->isProc=1;
-                        curFunction->typename = $5;
-                        lex_vardef(0);
+			curFunction->typename = $5;
+			lex_vardef(0);
 			add_Function(curFile, curFunction);
 			curStatics=curFunction->statics;
 			fin_Function(curFunction);
@@ -504,17 +546,17 @@ file:		{ }
 
 function:	FUNCTION	{$$=1; lex_vardef(1);}
 	| STATIC FUNCTION	{$$=0; lex_vardef(1);}
-        	;
+		;
 
 procedure:	PROCEDURE	{$$=1;lex_vardef(1);}
 	| STATIC PROCEDURE	{$$=0;lex_vardef(1);}
 	| IPROCEDURE	{$$=2;lex_vardef(1);}
 	| EPROCEDURE	{$$=3;lex_vardef(1);}
-        	;
+		;
 
 paramlist:                  {$$=new_VarColl();}
 	| '('  param_list ')' { $$=$2;}
-        	;
+		;
 
 operlist:	{ $$=new_OperListNode(); push_operlist($$); }
 	| operlist oper '\n'
@@ -527,15 +569,15 @@ operlist:	{ $$=new_OperListNode(); push_operlist($$); }
 				append_Node( $$, $2);
 			}
 		}
-                ;
+		;
 
 oper:                	{ $$=NULL; }
 	| function NAME paramlist type_def
 		{
 			eof_checks();
 			curFunction=new_Function($2,$3,$1,0,0,0);
-                        curFunction->typename = $4;
-                        lex_vardef(0);
+			curFunction->typename = $4;
+			lex_vardef(0);
 			add_Function(curFile, curFunction);
 			curStatics=curFunction->statics;
 			fin_Function(curFunction);
@@ -549,8 +591,8 @@ oper:                	{ $$=NULL; }
 			eof_checks();
 			curFunction=new_Function($2,$3,$1,0,0,0);
 			curFunction->isProc=1;
-                        curFunction->typename = $4;
-                        lex_vardef(0);
+			curFunction->typename = $4;
+			lex_vardef(0);
 			add_Function(curFile, curFunction);
 			curStatics=curFunction->statics;
 			fin_Function(curFunction);
@@ -567,7 +609,7 @@ oper:                	{ $$=NULL; }
 				if (insert_Coll( &curFile->externFunctions, vp)<0)
 					free(vp);
 				else
-                                {
+				{
 					for(s=vp; *s; ++s)
 						*s=toupper(*s);
 					insert_Coll( &curFile->undeclExternFunctions, strdup(vp));
@@ -585,63 +627,63 @@ oper:                	{ $$=NULL; }
 		}
 	 vardef
 		{
-		  	/*$$=new_LocalDefNode($3, 1);*/
-                        $$=NULL;
-		 	lex_vardef(0); CM;
-		 	def_node=0;
+			/*$$=new_LocalDefNode($3, 1);*/
+			$$=NULL;
+			lex_vardef(0); CM;
+			def_node=0;
 		}
 	| STATIC
 		{
 			lex_vardef(1);
-                        def_node = new_StaticDefNode;
+			def_node = new_StaticDefNode;
 		}
 	vardef
 		{
 			/*$$=new_StaticDefNode($3);*/
-                        $$=NULL;
+			$$=NULL;
 			lex_vardef(0);
-		 	def_node=0;
+			def_node=0;
 		}
 	| PUBLIC
 		{
-                        def_node = new_PublicDefNode;
+			def_node = new_PublicDefNode;
 		}
 	vardef
 		{
 			/*$$=new_PublicDefNode($2);*/
 			$$=NULL;
 			CM;
-		 	def_node=0;
+			def_node=0;
 		}
 	| PRIVATE
 		{
-                        def_node = new_PrivateDefNode;
+			def_node = new_PrivateDefNode;
 		}
 	 vardef
-	 	{
-	 		/*$$=new_PrivateDefNode($2);*/
-	 		$$=NULL;
-	 		CM;
-		 	def_node=0;
-	 	}
+		{
+			/*$$=new_PrivateDefNode($2);*/
+			$$=NULL;
+			CM;
+			def_node=0;
+		}
 	| DIMENSION
 		{
-                        def_node = new_PrivateDefNode;
+			def_node = new_PrivateDefNode;
 		}
 	 dimdef
-	 	{
-	 		/*$$=new_PrivateDefNode($2);*/
-	 		$$=NULL;
-	 		CM;
-		 	def_node=0;
-	 	}
+		{
+			/*$$=new_PrivateDefNode($2);*/
+			$$=NULL;
+			CM;
+			def_node=0;
+		}
 /*
 	| NAME varlist	{
-        			if (!strcasecmp($1, "field"))
-                                	$$=new_FieldDefNode($2, 0);
-        			else if (!strcasecmp($1, "memvar"))
-                                	$$=new_MemvarDefNode($2);
-                                else
+				if (!strcasecmp($1, "field"))
+					$$=new_FieldDefNode($2, 0);
+				else if (!strcasecmp($1, "memvar"))
+					$$=new_MemvarDefNode($2);
+				else
 					$$=new_NamespaceDefNode($1,$2);
 				CM;
 			}
@@ -675,46 +717,49 @@ oper:                	{ $$=NULL; }
 			}
 
 	| error 		{ $$=NULL; }
-	| expr  		{ $$=new_OperExprNode($1); CM;}
 
-	| name '=' expr 	{ CM;$$=new_OperExprNode(new_AssignNode($1,$3,'=')); }
-	| mname '=' expr  	{ CM;$$=new_OperExprNode(new_AssignNode($1,$3,'=')); }
-	| arr '=' expr 		{ CM;$$=new_OperExprNode(new_ArrElNode($1,$3,'=')); }
-        | NAME '(' arglist ')' '=' expr {
-        			Node *np;
-                                int i;
-        			CM;
-                                np = new_ExprListNode();
-                                append_Node(np, installName($1));
-                                for(i=0; i< $3.coll->count; i++)
-                                {
-                                	Node *p = (Node*) $3.coll->items[i];
-                                        append_Node(np, p);
-                                }
-                                $$=new_OperExprNode(new_ArrElNode(np, $6,'='));
-        		}
-
-	| '(' expr_list ')' '=' expr %prec ASSIGN { $$=new_OperExprNode(new_AssignNode(new_MacroNode($2,0),$5,'=')); }
 	/*| '(' expr_list ')' '=' expr %prec ASSIGN { $$=new_OperExprNode(new_AssignNode($2,$5,'=')); }*/
 
+	| expr '=' expr { CM;$$=new_OperExprNode(new_AssignNode($1,$3,'=')); }
 	| NAME RPTR NAME ass_op expr %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($4,$1,NULL,$3,0,$5)); }
+	| NAME RPTR mname ass_op expr %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($4,$1,NULL,0,$3,$5)); }
 	| fieldptr NAME RPTR NAME ass_op expr  %prec ASSIGN { CM; $$=new_OperExprNode(assop_node($5, $2,NULL,$4,0,$6)); }
 	| fieldptr NAME RPTR mname ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($5, $2,NULL,0,$4,$6)); }
 	| fieldptr NAME ass_op expr  %prec ASSIGN {CM;$$=new_OperExprNode(assop_node($3,NULL,NULL,$2,0,$4));}
 	| mname RPTR NAME ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($4,NULL,$1,$3,0,$5)); }
-	
+
 	| '(' expr_list ')' RPTR NAME ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($6,NULL,$2,$5,0,$7)); }
 	| '(' expr_list ')' RPTR mname ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($6,NULL,$2,0, $5,$7)); }
 	| '(' expr_list ')' RPTR '(' expr_list ')' ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($8,NULL,$2,0,$6,$9)); }
 	| fieldptr '(' expr_list ')' RPTR NAME ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($7,NULL,$3,$6,0,$8)); }
 	| fieldptr '(' expr_list ')' RPTR mname ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($7,NULL,$3,0, $6,$8)); }
 	| fieldptr '(' expr_list ')' RPTR '(' expr_list ')' ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($9,NULL,$3,0,$7,$10)); }
-	
+
 	| fieldptr mname RPTR NAME ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($5,NULL,$2,$4,0,$6)); }
-	| NAME RPTR mname ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($4,$1,NULL,0,$3,$5)); }
 	| fieldptr mname ass_op expr  %prec ASSIGN {CM;$$=new_OperExprNode(assop_node($3,NULL,NULL,0,$2,$4));}
 	| mname RPTR mname ass_op expr  %prec ASSIGN { CM;$$=new_OperExprNode(assop_node($4,NULL,$1,0,$3,$5)); }
 	| fieldptr mname RPTR mname ass_op expr %prec ASSIGN  { CM;$$=new_OperExprNode(assop_node($5,NULL,$2,0,$4,$6)); }
+
+	| name '=' expr 	{ CM;$$=new_OperExprNode(new_AssignNode($1,$3,'=')); }
+	| mname '=' expr  	{ CM;$$=new_OperExprNode(new_AssignNode($1,$3,'=')); }
+	| arr '=' expr 		{ CM;$$=new_OperExprNode(new_ArrElNode($1,$3,'=')); }
+	| expr  		{ $$=new_OperExprNode($1); CM;}
+	| NAME '(' arglist ')' '=' expr {
+				Node *np;
+				int i;
+				CM;
+				np = new_ExprListNode();
+				append_Node(np, installName($1));
+				for(i=0; i< $3.coll->count; i++)
+				{
+					Node *p = (Node*) $3.coll->items[i];
+					append_Node(np, p);
+				}
+				$$=new_OperExprNode(new_ArrElNode(np, $6,'='));
+			}
+
+	| '(' expr_list ')' '=' expr %prec ASSIGN { $$=new_OperExprNode(new_AssignNode(new_MacroNode($2,0),$5,'=')); }
+
 	| WHILE
 		{ CM;
 			if (!curFunction->inLoop)
@@ -837,7 +882,7 @@ oper:                	{ $$=NULL; }
 type_def:	{ $$=0; }
 	| AS NAME { $$=$2; }
 	| REF NAME { $$=$2; }
-        ;
+	;
 
 switchlist:	switchbeg
 	| switchlist switchlabel '\n' operlist
@@ -855,7 +900,7 @@ switchbeg:	{
 			$$ = new_Coll(0, 0);
 		}
 	| switchbeg '\n'
-        ;
+	;
 
 switchlabel: CASE mconstant
 		{
@@ -879,15 +924,15 @@ for: FOR
 
 next:	NEXT
 	| END
-        ;
+	;
 
 keys:		{ $$ = 0; }
 	| KEYS	{ $$ = 1; }
-        ;
+	;
 
 recoverr:  function NAME paramlist type_def '\n'	{}
 	| procedure NAME paramlist type_def '\n'	{}
-        ;
+	;
 
 recover:	{
 			$$.curseq = curFunction->seqNo;
@@ -922,11 +967,11 @@ curseq:		{$$ = curFunction->seqNo; }
 
 using:		{ $$=NULL; }
 	| USING name { $$=$2; }
-        ;
+	;
 
 step:			{ $$=new_NumberConstNode(strdup("1"),0); }
 	| STEP expr	{ $$=$2; }
-        ;
+	;
 
 enddo:	  END
 	| ENDDO
@@ -934,7 +979,7 @@ enddo:	  END
 
 iif:	  IIF
 	| IF
-        ;
+	;
 
 elseif:		{ $$=new_Coll(NULL,NULL); }
 	| elseif ELSEIF expr '\n'  operlist
@@ -982,27 +1027,27 @@ otherwise:	{ $$=NULL; }
 
 endcase:	END
 	|	ENDCASE
-        ;
+	;
 
 endswitch:	END
 	|	ENDSWITCH
-        ;
+	;
 
 inalias:  		{ $$=NULL; }
 	| IN NAME	{ $$=$2; }
-        ;
+	;
 
 name: NAME	{ $$=installName($1); }
 	| memvarptr NAME	{ $$=new_MemvarNode(new_Var($2)); }
 	/*| FIELDPTR NAME		{ $$=new2_FieldNode(NULL,NULL,$2,NULL); }*/
 	/*| FIELDPTR mname	{  }*/
 	| memvarptr mname	{ $$=$2; }
-        ;
+	;
 
 iname: NAME	{ $$=installName($1); }
 	| memvarptr NAME	{ $$=new_MemvarNode(new_Var($2)); }
 	| fieldptr NAME		{ $$=new2_FieldNode(NULL,NULL,$2,NULL); }
-        ;
+	;
 
 mname:	 '&' iname 	{ $$=new_MacroNode($2,0); }
 	| '&' iname '.'	{ $$=new_MacroNode($2,0); }
@@ -1011,41 +1056,46 @@ mname:	 '&' iname 	{ $$=new_MacroNode($2,0); }
 	| '&' iname NUMBER	{ char *s = $3+strspn($3,",.-+");
 			$$=new_MacroNode(new_OpNode($2,new_StringConstNode(s),'+'),0); }
 	| '&' '(' expr ')'	{ $$=new_MacroNode($3,1); }
-        ;
+	;
 
 expr:	constant
 	| ISTRING	{
-        			int i, l, bad;
-        			l = strlen($1);
-                                bad = 0;
-                                for(i=0; i<l; i++)
-                                {	
-                                	if ( $1[i] & 0x80 )
-                                        {
-                                        	bad = 1;
-                                                break;
-                                        }
-                                }
-        			if (l && !bad)
-                                {
+				int i, l, bad;
+				l = strlen($1);
+				bad = 0;
+				for(i=0; i<l; i++)
+				{
+					if ( $1[i] & 0x80 )
+					{
+						bad = 1;
+						break;
+					}
+				}
+				if (l && !bad)
+				{
 					put_locale_string($1);
-					$$=new_LocaleStringNode($1); 
-                                }
-                                else
-                                {
-                                	$$=new_StringConstNode($1);
-                                }
+					$$=new_LocaleStringNode($1);
+				}
+				else
+				{
+					$$=new_StringConstNode($1);
+				}
+			}
+	| ISTRING POW expr {
+				Node *e1 = new_StringConstNode($1);
+				Node *e2 = new_StringConstNode(strdup($1));
+				$$ = new3_CallNode("_clic_ngettext", e1, e2, $3);
 			}
 	| DATE		{
-        			Coll *cp = new_Coll(0,0);
-                                append_Coll(cp, new_StringConstNode($1));
+				Coll *cp = new_Coll(0,0);
+				append_Coll(cp, new_StringConstNode($1));
 				$$=new_CallNode(strdup("CTOD"), cp, 0);
 			}
 	| name
 	| mname
 	| '(' expr_list ')' 	{
 		/*((ExprListNode*)$2)->last=1; ; */
-                $$=reduce_ExprListNode($2);
+		$$=reduce_ExprListNode($2);
 		}
 	| '@' expr { $$=new_RefNode($2); }
 
@@ -1078,7 +1128,7 @@ expr:	constant
 		$$=new_MethodNode(installName(strdup("__SELF__")),$2,$4.coll, $4.haveRest);
 		}
 	| fieldptr NAME	{$$=new2_FieldNode(NULL,NULL,$2,NULL);}
-	| NAME RPTR NAME	 { $$=new2_FieldNode($1,NULL,$3,NULL); }
+	| NAME RPTR NAME  {$$=new2_FieldNode($1,NULL,$3,NULL); }
 	| fieldptr mname { $$=new2_FieldNode(NULL,NULL,NULL,$2); }
 
 	| NAME	REPTR '(' expr ')'	{ $$=$4; }
@@ -1089,14 +1139,14 @@ expr:	constant
 	| NAME RPTR '(' expr_list ')' { $$=new2_FieldNode($1,NULL,NULL,reduce_ExprListNode($4)); }
 	| fieldptr NAME RPTR '(' expr_list ')' { $$=new2_FieldNode($2,NULL,NULL,reduce_ExprListNode($5)); }
 	| NAME RPTR mname { $$=new2_FieldNode($1,NULL,NULL,$3); }
-	
+
 	| '(' expr_list ')' RPTR '(' expr_list ')' {$$=new2_FieldNode(NULL,reduce_ExprListNode($2),NULL,reduce_ExprListNode($6));}
 	| '(' expr_list ')' RPTR mname { $$=new2_FieldNode(NULL,reduce_ExprListNode($2),NULL,$5); }
 	| '(' expr_list ')' RPTR NAME { $$=new2_FieldNode(NULL,reduce_ExprListNode($2),$5,NULL); }
 	| fieldptr '(' expr_list ')' RPTR '(' expr_list ')' {$$=new2_FieldNode(NULL,reduce_ExprListNode($3),NULL,reduce_ExprListNode($7));}
 	| fieldptr '(' expr_list ')' RPTR mname { $$=new2_FieldNode(NULL,reduce_ExprListNode($3),NULL,$6); }
 	| fieldptr '(' expr_list ')' RPTR NAME { $$=new2_FieldNode(NULL,reduce_ExprListNode($3),$6,NULL); }
-	
+
 	| mname RPTR NAME	{$$=new2_FieldNode(NULL,$1,$3,NULL);}
 	/* !!!!!!! */
 	| fieldptr mname RPTR NAME	{$$=new2_FieldNode(NULL,$2,$4,NULL);}
@@ -1110,20 +1160,20 @@ expr:	constant
 	| fieldptr NAME RPTR mname assign expr  %prec ASSIGN { CM;$$=(assop_node($5, $2,NULL,0,$4,$6)); }
 	| fieldptr NAME assign expr  %prec ASSIGN {CM;$$=(assop_node($3,NULL,NULL,$2,0,$4));}
 	| mname RPTR NAME assign expr  %prec ASSIGN { CM;$$=(assop_node($4,NULL,$1,$3,0,$5)); }
-	
+
 	| '(' expr_list ')' RPTR NAME assign expr  %prec ASSIGN { CM;$$=(assop_node($6,NULL,reduce_ExprListNode($2),$5,0,$7)); }
 	| '(' expr_list ')' RPTR mname assign expr  %prec ASSIGN { CM;$$=(assop_node($6,NULL,reduce_ExprListNode($2),0, $5,$7)); }
 	| '(' expr_list ')' RPTR '(' expr_list ')' assign expr  %prec ASSIGN { CM;$$=(assop_node($8,NULL,reduce_ExprListNode($2),0,reduce_ExprListNode($6),$9)); }
 	| fieldptr '(' expr_list ')' RPTR NAME assign expr  %prec ASSIGN { CM;$$=(assop_node($7,NULL,reduce_ExprListNode($3),$6,0,$8)); }
 	| fieldptr '(' expr_list ')' RPTR mname assign expr  %prec ASSIGN { CM;$$=(assop_node($7,NULL,reduce_ExprListNode($3),0, $6,$8)); }
 	| fieldptr '(' expr_list ')' RPTR '(' expr_list ')' assign expr  %prec ASSIGN { CM;$$=(assop_node($9,NULL,reduce_ExprListNode($3),0,reduce_ExprListNode($7),$10)); }
-	
+
 	| fieldptr mname RPTR NAME assign expr  %prec ASSIGN { CM;$$=(assop_node($5,NULL,$2,$4,0,$6)); }
 	| NAME RPTR mname assign expr  %prec ASSIGN { CM;$$=(assop_node($4,$1,NULL,0,$3,$5)); }
 	| fieldptr mname assign expr  %prec ASSIGN {CM;$$=(assop_node($3,NULL,NULL,0,$2,$4));}
 	| mname RPTR mname assign expr  %prec ASSIGN { CM;$$=(assop_node($4,NULL,$1,0,$3,$5)); }
 	| fieldptr mname RPTR mname assign expr %prec ASSIGN  { CM;$$=(assop_node($5,NULL,$2,0,$4,$6)); }
-	
+
 	| expr '=' expr		{ $$=new_OpNode($1,$3,'e');  }
 	| expr EQ expr		{ $$=new_OpNode($1,$3,'E');  }
 	| expr NE expr		{ $$=new_OpNode($1,$3,'N');  }
@@ -1174,6 +1224,7 @@ expr:	constant
 
 			$$=np;
 		}
+	| CGET '(' arg_list ')'	{ $$=new_CGetNode($3); }
 	| PCOUNT	{ $$=new_PcountNode(); }
 	| PSHIFT	{ $$=new_PshiftNode(); }
 	| PARBEG expr ']' { $$=new_ParnNode($2); }
@@ -1193,7 +1244,7 @@ expr:	constant
 		{
 			Node *np;
 			curFunction = $3;
-			np = new_LocalDefNode($5, 0);
+			np = new_LocalDefNode($5, 0, 1);
 			prepend_Node(curFunction->body, np);
 			$$ = new_NilConstNode();
 			CM;
@@ -1215,25 +1266,25 @@ expr:	constant
 
 bparam_list:	{ $$=0; }
 	| '|' param_list '|' { $$=$2; }
-        ;
+	;
 
 nilexpr:	{ $$=new_NilConstNode(); }
 	| expr	{ $$=$1; }
-        ;
+	;
 
 eassign: ASSIGN
 	| '='
-        ;
+	;
 
 fieldptr: FIELDPTR
 	| fieldptr FIELDPTR
 	| memvarptr FIELDPTR
-        ;
+	;
 
 memvarptr: MEMVARPTR
 	| fieldptr MEMVARPTR
 	| memvarptr MEMVARPTR
-        ;
+	;
 
 assign: ASSIGN	{ $$='='; }
 	| ADDA	{ $$='+'; }
@@ -1242,7 +1293,7 @@ assign: ASSIGN	{ $$='='; }
 	| DIVA	{ $$='/'; }
 	| MODA	{ $$='%'; }
 	| POWA	{ $$='^'; }
-        ;
+	;
 
 ass_op: '=' { $$='='; }
 	;
@@ -1274,25 +1325,25 @@ arr:	 expr '[' expr_list ']' { $$=$3; prepend_Node($3,$1); }
 		upstr($3);
 		append_Node($$,new_HashConstNode($3));
 	}
-        ;
+	;
 
 vardef:  var  type_def	{
 			$$=new_VarColl();
-                        $1->type = $2;
+			$1->type = $2;
 			add_VarColl($$, $1);
-                        if (def_node)
+			if (def_node)
 				append_Node( curr_operlist, def_node($$));
 
 		}
 	| vardef ',' var type_def
 		{
-                	if (def_node)
+			if (def_node)
 				$$=new_VarColl();
-                        else
+			else
 				$$=$1;
-                        $3->type = $4;
+			$3->type = $4;
 			add_VarColl($$, $3);
-                        if (def_node)
+			if (def_node)
 				append_Node( curr_operlist, def_node($$));
 		}
 	;
@@ -1310,31 +1361,31 @@ dimdef:  dim	{
 
 dim:	NAME dim_list	{ $$=newArrInit_Var($1,$2); }
 	| mname dim_list	{ $$=mnewArrInit_Var($1,$1); }
-        ;
+	;
 
 dim_list:  '(' expr_list ')' { $$=$2; }
 	| dim_list '(' expr_list ')'	{ $$=$1; join_Node($1,$3); }
-        ;
+	;
 
 var:	  NAME		{ $$=new_Var($1); }
 	| NAME arr_list	{ $$=newArrInit_Var($1,$2); }
 	| NAME ASSIGN expr	{ $$=newInit_Var($1,$3); }
-	| name '=' expr	{ yyerror("only inline assign := allowed in initialisation"); $$=NULL; }
+	| name '=' expr	{ yyerror("only inline assign := allowed in initialisation"); $$=new_Var(strdup("")); }
 
 	| mname		{ $$=mnew_Var($1); }
 	| mname arr_list	{ $$=mnewArrInit_Var($1,$1); }
 	| mname ASSIGN expr	{ $$=mnewInit_Var($1,$3);  }
-	| mname '=' expr	{ yyerror("only inline assign := allowed in initialisation"); $$=NULL; }
-        ;
+	| mname '=' expr	{ yyerror("only inline assign := allowed in initialisation"); $$=new_Var(strdup("")); }
+	;
 
 arr_list:  '[' expr_list ']' { $$=$2; }
 	| arr_list '[' expr_list ']'	{ $$=$1; join_Node($1,$3); }
-        ;
+	;
 
 param_list:  { $$=new_VarColl(); }
 	| NAME type_def	{
 		Var *vp=new_Var($1);
-                vp->type = $2;
+		vp->type = $2;
 		$$=new_VarColl();
 		vp->no=0;
 		insert_Coll( &$$->coll, vp);
@@ -1342,7 +1393,7 @@ param_list:  { $$=new_VarColl(); }
 		}
 	| param_list ',' NAME type_def{
 		Var *vp=new_Var($3);
-                vp->type = $4;
+		vp->type = $4;
 		$$=$1;
 		vp->no = $$->unsorted.count;
 		insert_Coll( &$$->coll, vp);
@@ -1384,7 +1435,7 @@ varlist:  NAME	{
 arglist: arg_list		{ $$.coll=$1; $$.haveRest=0; }
 	| arg_list ',' PALL	{ $$.coll=$1; $$.haveRest=1; }
 	| PALL	{ $$.coll=new_Coll(NULL,NULL); $$.haveRest=1;  }
-        ;
+	;
 
 with:			{ $$.coll=new_Coll(NULL,NULL); $$.haveRest=0; }
 	| WITH arglist	{
@@ -1423,16 +1474,16 @@ arg_list: arg	{
 arg:		{ $$=NULL; }
 	| expr	{ $$=$1; /*$$=new_ArgNode($1,0);*/ }
 	/*| '@' expr { $$=new_ArgNode($2,1); }*/
-        ;
+	;
 
 
 pairlist: pair {}
 	| pairlist ',' pair 	{}
-        ;
+	;
 
 pair:	  NAME '#'  expr	{}
 	| NUMBER '#'  expr	{}
-        ;
+	;
 
 
 exprlist: nexpr			{
@@ -1464,22 +1515,22 @@ exprlist: nexpr			{
 
 nexpr:		{ $$=NULL; }
 	| expr
-        ;
+	;
 
 expr_list: expr	{ $$=new_ExprListNode(); append_Node($$, $1); }
 	| expr_list ',' expr { $$=$1; append_Node($$, $3); }
-        ;
+	;
 
 constant: STRING		{ $$=new_StringConstNode($1); }
 	| TRUE			{ $$=new_LogicConstNode(1); }
 	| FALSE			{ $$=new_LogicConstNode(0); }
 	| NIL			{ $$=new_NilConstNode(); }
 	| NUMBER		{ $$=new_NumberConstNode($1,0); }
-        ;
+	;
 
 mconstant: constant
 	| '-' constant	{ $$=$2; $$->isMinus = 1; }
-        ;
+	;
 
 %%
 
@@ -1579,9 +1630,9 @@ print_file()
 	do {
 		ret = get_include (&index, &line, &filename);
 		if (index>=0)
-			fprintf(stdout, "in file '%s',\n\tincluded at line %d ", filename, line);
+			fprintf(stdout, _clic_gettext("in file '%s',\n\tincluded at line %d "), filename, line);
 		else
-			fprintf(stdout, "in file '%s'\n", filename);
+			fprintf(stdout, _clic_gettext("in file '%s'\n"), filename);
 	} while (ret!=0);
 }
 
@@ -1595,15 +1646,15 @@ yyerror(const char *s, ... )
 	{
 		va_list ap;
 		va_start(ap, s);
-		fprintf(stdout, "error %d: ", clic_errorcount);
-		vfprintf(stdout, s, ap);
+		fprintf(stdout, _clic_gettext("error %d: "), clic_errorcount);
+		vfprintf(stdout, _clic_gettext(s), ap);
 		va_end(ap);
 
-		fprintf(stdout,"\n\tline %ld pos %ld (yychar=%d, '%c') ", cl_line+corr_line, cl_pos, yychar, (yychar>32&&yychar<256)?yychar:' ');
+		fprintf(stdout,_clic_gettext("\n\tline %ld pos %ld (yychar=%d, '%c') "), cl_line+corr_line, cl_pos, yychar, (yychar>32&&yychar<256)?yychar:' ');
 		/*fprintf(stdout,"\n\tline %d pos %d ", cl_line+corr_line, cl_pos);*/
 	}
 	else
-		fprintf(stdout, "error %d, (yychar=%d) ", clic_errorcount, yychar);
+		fprintf(stdout, _clic_gettext("error %d, (yychar=%d) "), clic_errorcount, yychar);
 
 	print_file();
 	fflush(stdout);
@@ -1620,14 +1671,14 @@ yywarning(const char *s, ... )
 	{
 		va_list ap;
 		va_start(ap, s);
-		fprintf(stdout, "warning %d: ", clic_warncount);
-		vfprintf(stdout, s, ap);
+		fprintf(stdout, _clic_gettext("warning %d: "), clic_warncount);
+		vfprintf(stdout, _clic_gettext(s), ap);
 		va_end(ap);
 
-		fprintf(stdout,"\n\tline %ld, pos %ld, ", cl_line+corr_line, cl_pos);
+		fprintf(stdout, _clic_gettext("\n\tline %ld, pos %ld, "), cl_line+corr_line, cl_pos);
 	}
 	else
-		fprintf(stdout, "warning %d, ", clic_warncount);
+		fprintf(stdout, _clic_gettext("warning %d, "), clic_warncount);
 	print_file();
 	fflush(stdout);
 	return 0;
@@ -1696,16 +1747,16 @@ static Node *
 reduce_ExprListNode(Node *np)
 {
 	if (strcmp(np->name, "exprlist"))
-        	return np;
-        if (getCount_Node(np) == 1)
-        {
-        	Node *p = (Node*) np->list.head;
-                return p;
-        }
-        else
-        {
-        	((ExprListNode*)np)->last = 1;
-        	return np;
+		return np;
+	if (getCount_Node(np) == 1)
+	{
+		Node *p = (Node*) np->list.head;
+		return p;
+	}
+	else
+	{
+		((ExprListNode*)np)->last = 1;
+		return np;
 	}
 }
 
@@ -1713,18 +1764,18 @@ static Node *
 assop_node( int assop, char *area, Node *areaExpr, char*name, Node *nameExpr, Node *expr)
 {
 	switch(assop)
-        {
-        case '=':
-        default:
-        	return new_AssignFieldNode(area, areaExpr, name, nameExpr, expr);
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-        case '^':
-        case '%':
-        	return new_AssignFieldNode(area, areaExpr, name, nameExpr,
-        		new_OpNode(new2_FieldNode(area, areaExpr, name, nameExpr), expr, assop));
-        }
+	{
+	case '=':
+	default:
+		return new_AssignFieldNode(area, areaExpr, name, nameExpr, expr);
+	case '+':
+	case '-':
+	case '*':
+	case '/':
+	case '^':
+	case '%':
+		return new_AssignFieldNode(area, areaExpr, name, nameExpr,
+			new_OpNode(new2_FieldNode(area, areaExpr, name, nameExpr), expr, assop));
+	}
 }
 

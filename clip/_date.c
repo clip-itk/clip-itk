@@ -6,6 +6,41 @@
 
 /*
    $Log: _date.c,v $
+   Revision 1.54  2004/04/29 10:40:05  clip
+   uri: timezone(),ascDataTime() added
+
+   Revision 1.53  2003/09/09 14:36:14  clip
+   uri: fixes for mingw from Mauricio and Uri
+
+   Revision 1.52  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.51  2003/08/07 12:16:49  clip
+   uri: fix for empty datetime data.
+
+   Revision 1.50  2003/08/04 12:50:33  clip
+   uri: get object support datetime type and small fix in set(_SET_SECONDS)
+
+   Revision 1.49  2003/06/27 09:55:08  clip
+   uri: some fix
+
+   Revision 1.48  2003/06/04 06:55:44  clip
+   uri: timevalid() added
+
+   Revision 1.47  2003/05/05 11:07:34  clip
+   rust: small fixes, reported by Yevgen Bondar <elb@lg.bank.gov.ua>
+
+   Revision 1.46  2003/03/13 08:08:06  clip
+   uri: small fixes in date functions
+
+   Revision 1.45  2003/02/13 16:36:44  clip
+   rust: STOT()
+
+   Revision 1.44  2002/10/28 08:35:52  clip
+   uri: date([yyyy][,mm][,dd])
+
    Revision 1.43  2002/08/15 07:15:40  clip
    rust: DATETIME fixes
 
@@ -142,6 +177,7 @@
 
  */
 
+#include "clip.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -150,9 +186,10 @@
 #include <time.h>
 #include <stdarg.h>
 #include <sys/time.h>
-#include <sys/times.h>
+#ifndef OS_MINGW
+	#include <sys/times.h>
+#endif
 
-#include "clip.h"
 #include "error.ch"
 #include "hashcode.h"
 
@@ -237,11 +274,23 @@ _clip_sysdate()
 int
 clip_DATE(ClipMachine * mp)
 {
+	int yy,mm,dd;
 	struct tm *sysTime;
 
 	sysTime = _clip_sysdate();
-	_clip_retdc(mp, sysTime->tm_year + 1900, sysTime->tm_mon + 1, sysTime->tm_mday);
+		yy = sysTime->tm_year + 1900;
+		mm = sysTime->tm_mon + 1;
+		dd = sysTime->tm_mday;
 	free(sysTime);
+
+		if ( _clip_parinfo(mp,1) == NUMERIC_t )
+			yy = _clip_parni(mp,1);
+		if ( _clip_parinfo(mp,2) == NUMERIC_t )
+			mm = _clip_parni(mp,2);
+		if ( _clip_parinfo(mp,3) == NUMERIC_t )
+			dd = _clip_parni(mp,3);
+
+	_clip_retdc(mp, yy , mm, dd);
 	return 0;
 }
 
@@ -249,49 +298,49 @@ int
 clip_DTOC(ClipMachine * mp)
 {
 	long d = _clip_pardj(mp, 1);
-		int flag1=0, flag2=0,flag3=0;
-		int fox=0, i,len;
-		int pcount = _clip_parinfo(mp,0);
+	int flag1=0, flag2=0,flag3=0;
+	int fox=0, i,len;
+	int pcount = _clip_parinfo(mp,0);
 	char *format = _clip_parcl(mp, 2, &len);
 	char *dtoc = NULL, ch;
 
 	if ( pcount == 1 )
-			format = mp->date_format;
-		else
+		format = mp->date_format;
+	else
+	{
+		if ( _clip_parinfo(mp,2) == CHARACTER_t )
 		{
-			if ( _clip_parinfo(mp,2) == CHARACTER_t )
+			fox = 1;
+			for ( i=0; i<len; i++)
+			{
+				ch=format[i];
+				switch (ch)
 				{
-					fox = 1;
-					for ( i=0; i<len; i++)
-						{
-							ch=format[i];
-								switch (ch)
-								{
-									case 'Y':
-									case 'y':
-											flag1 ++;
-											break;
-									case 'M':
-									case 'm':
-											flag2 ++;
-											break;
-									case 'D':
-									case 'd':
-											flag3 ++;
-											break;
-								}
-						}
-						if ( flag1 && flag2 && flag3 )
-							fox=0;
+					case 'Y':
+					case 'y':
+						flag1 ++;
+						break;
+					case 'M':
+					case 'm':
+						flag2 ++;
+						break;
+					case 'D':
+					case 'd':
+						flag3 ++;
+						break;
 				}
-				else
-					fox=1;
-
+			}
+			if ( flag1 && flag2 && flag3 )
+				fox=0;
 		}
-
-		if ( fox )
-		dtoc = _clip_date_to_str(d, "YYYYMMDD");
 		else
+			fox=1;
+
+	}
+
+	if ( fox )
+		dtoc = _clip_date_to_str(d, "YYYYMMDD");
+	else
 		dtoc = _clip_date_to_str(d, format);
 
 	_clip_retcn_m(mp, dtoc, strlen(dtoc));
@@ -367,7 +416,7 @@ _clip_seconds()
 	struct timezone tz;
 
 	gettimeofday(&tv, &tz);
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	ret = (tv.tv_sec ) % 86400 +
 		  (double) tv.tv_usec / 1000000;
 #else
@@ -400,13 +449,37 @@ _clip_seconds()
 	ret = (sysTime.tm_hour * 3600 + sysTime.tm_min * 60 + sysTime.tm_sec) * 1000;
 	ret = (ret + tv.tv_usec / 1000) / 1000;
 #endif
-		return ret;
+	return ret;
 }
 
 int
 clip_SECONDS(ClipMachine * mp)
 {
 	_clip_retndp(mp, _clip_seconds(), 10, 2);
+	return 0;
+}
+
+static int
+_clip_timezone()
+{
+	int ret;
+
+#if !defined( __ZTC__ ) || !defined(__MSDOS__)
+	struct timeval tv;
+	struct timezone tz;
+
+	gettimeofday(&tv, &tz);
+	ret = tz.tz_minuteswest;
+#else
+	ret = 0;
+#endif
+	return ret;
+}
+
+int
+clip_TIMEZONE(ClipMachine * mp)
+{
+	_clip_retndp(mp, _clip_timezone(), 10, 0);
 	return 0;
 }
 
@@ -444,10 +517,10 @@ int
 clip_TIME(ClipMachine * mp)
 {
 	char *ret = (char *) malloc(9);
-#ifdef OS_CYGWIN
-		SYSTEMTIME st;
-		GetLocalTime( &st );
-		snprintf( ret, 9, "%02d:%02d:%02d", st.wHour, st.wMinute, st.wSecond );
+#ifdef _WIN32
+	SYSTEMTIME st;
+	GetLocalTime( &st );
+	snprintf( ret, 9, "%02d:%02d:%02d", st.wHour, st.wMinute, st.wSecond );
 #else
 	time_t t = time(0);
 
@@ -474,10 +547,10 @@ clip_YEAR(ClipMachine * mp)
 	int dd, mm, yy, ww;
 
 	if ( _clip_pardj(mp,1) == 0 )
-		{
-			_clip_retndp(mp,0,5,0);
-				return 0;
-		}
+	{
+		_clip_retndp(mp,0,5,0);
+		return 0;
+	}
 
 	_clip_pardc(mp, 1, &yy, &mm, &dd, &ww);
 	_clip_retndp(mp, yy,5,0);
@@ -531,7 +604,7 @@ clip_ADDYEAR(ClipMachine * mp)
 	{
 		sysTime = _clip_sysdate();
 		yy = sysTime->tm_year + 1901;
-		mm = sysTime->tm_mon ;
+		mm = sysTime->tm_mon + 1 ;
 		dd = sysTime->tm_mday;
 		free(sysTime);
 	}
@@ -819,6 +892,7 @@ clip_TIMETOSEC(ClipMachine * mp)
 	_clip_retndp(mp, ret, 10, 2);
 	return 0;
 }
+
 int
 clip_VALIDTIME(ClipMachine * mp)
 {
@@ -839,6 +913,57 @@ clip_VALIDTIME(ClipMachine * mp)
 		ret = 0;
 	if (msec < 0 || msec > 99)
 		ret = 0;
+	_clip_retl(mp, ret);
+	return 0;
+}
+
+int
+clip_TIMEVALID(ClipMachine * mp)
+{
+	int l;
+	int hour = 0, min = 0, sec = 0, msec = 0, ret = 1;
+	int counts[] = {0,0,0,0};
+	int count = 0;
+	char *s,*e,*str = _clip_parcl(mp, 1, &l);
+
+	_clip_retl(mp, 0);
+	if (str == NULL)
+		return 0;
+
+	for (s=str, e=str+l; s<=e; s++)
+	{
+		if ( *s == ':' || *s==0 || (*s >= '0' && *s<= '9') )
+			counts[count] ++;
+		if ( *s == ':' || *s==0 )
+		{
+	 //		printf("\ns=%s,count=%d,c1=%d,c2=%d,c3=%d,c4=%d\n",str,count,counts[0],counts[1],counts[2],counts[3]);
+			if (counts[count]!=0 && counts[count]!=3)
+			{
+				ret = 0;
+				break;
+			}
+			if ( *s != 0)
+				count++;
+		}
+		if (count > 3)
+		{
+			ret = 0;
+			break;
+		}
+
+	}
+	if ( ret != 0)
+	{
+		sscanf(str, "%02d:%02d:%02d:%02d", &hour, &min, &sec, &msec);
+		if (hour < 0 || hour > 23)
+			ret = 0;
+		if (min < 0 || min > 59)
+			ret = 0;
+		if (sec < 0 || sec > 59)
+			ret = 0;
+		if (msec < 0 || msec > 99)
+			ret = 0;
+	}
 	_clip_retl(mp, ret);
 	return 0;
 }
@@ -1273,7 +1398,7 @@ long
 _clip_str_to_time(char* str)
 {
 	int len, am = 0, pm = 0;
-	char *t = str, *e;
+	char *t = str, *e, *ms = 0, *ss = 0, *ds = 0;
 	long r;
 	int h = 0, m = 0, s = 0, d = 0;
 
@@ -1281,18 +1406,25 @@ _clip_str_to_time(char* str)
 		return 0;
 
 	while(*t==' ') t++;
+	ms = strchr(t,':');
+	if(ms){
+		ss = strchr(ms+1,':');
+		if(ss)
+			ds = strchr(ss+1,':');
+	}
 	len = strlen(t);
 	e = t+len-1;
 	while (*e==' ') {e--; len--;}
-	*(e+1) = 0;
 
-	if (len < 5 || len > 13 || len%3 == 0)
-		return -1;
 	h = atoi(t);
-	m = atoi(t+3);
-	if(len%3==1){
-		if (toupper(*e) != 'M')
-			return -1;
+	if(ms)
+		m = atoi(ms+1);
+	if(ss)
+		s = atoi(ss+1);
+	if(ds)
+		d = atoi(ds+1);
+
+	if (toupper(*e) == 'M'){
 		if (toupper(*(e-1)) == 'A')
 			am = 1;
 		else if (toupper(*(e-1)) == 'P')
@@ -1302,11 +1434,6 @@ _clip_str_to_time(char* str)
 	}
 	if ((am || pm) && (h > 12))
 		return -1;
-
-	if (len > 7)
-		s = atoi(t+6);
-	if (len > 10)
-		d = atoi(t+9);
 
 	if (h == 12 && (am || pm))
 		h = 0;
@@ -1329,9 +1456,10 @@ _clip_str_to_time(char* str)
 }
 
 int
-_clip_ctot(ClipMachine * mp, char* ctime, long *date, long *time)
+_clip_ctot(ClipMachine * mp, char* ctime, long *date, long *time, char* dateformat)
 {
 	char* s = ctime;
+
 	*date = 0;
 	*time = 0;
 
@@ -1339,10 +1467,10 @@ _clip_ctot(ClipMachine * mp, char* ctime, long *date, long *time)
 		return 1;
 
 	while(*s==' ') s++;
-	if(strlen(s) < 5) /* 11:12 */
-		return 1;
+//	if(strlen(s) < 5) /* 11:12 */
+//		return 1;
 
-	if (s[2] == ':')
+	if (s[2] == ':' || strlen(s) < 5)
 	{
 		*date = 0/*2415019*/;
 		*time = _clip_str_to_time(s);
@@ -1353,7 +1481,7 @@ _clip_ctot(ClipMachine * mp, char* ctime, long *date, long *time)
 	{
 		char* t = strchr(s,' ');
 
-		*date = _clip_str_to_date(s, mp->date_format, mp->epoch);
+		*date = _clip_str_to_date(s, dateformat, mp->epoch);
 		if (*date == 0)
 			return 1;
 		*time = _clip_str_to_time(t);
@@ -1370,7 +1498,27 @@ clip_CTOT(ClipMachine * mp)
 	long date,time;
 	int er;
 
-	er = _clip_ctot(mp,ctime,&date,&time);
+	if(_clip_parinfo(mp,0) == 0)
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "CTOT");
+
+	er = _clip_ctot(mp,ctime,&date,&time,mp->date_format);
+	if (er)
+	{
+		_clip_retdtj(mp, 0, 0);
+		return 0;
+	}
+	_clip_retdtj(mp,date,time);
+	return er;
+}
+
+int
+clip_STOT(ClipMachine * mp)
+{
+	char* ctime = _clip_parc(mp, 1);
+	long date,time;
+	int er;
+
+	er = _clip_ctot(mp,ctime,&date,&time,"yyyy-mm-dd");
 	if (er)
 	{
 		_clip_retdtj(mp, 0, 0);
@@ -1404,19 +1552,23 @@ _clip_ttoc(ClipMachine *mp, long julian, long time, int *retlen, char* date_form
 	}
 
 	if(seconds){
-		if(hours)
+		if (h==0 && m==0 && s==0)
+			snprintf(r+len+1,11,"  :  :  AM");
+		else if(hours)
 			snprintf(r+len+1,9,"%02d:%02d:%02d",h,m,s);
 		else if(pm)
-			snprintf(r+len+1,11,"%02d:%02d:%02dpm",h,m,s);
+			snprintf(r+len+1,11,"%02d:%02d:%02dPM",h,m,s);
 		else
-			snprintf(r+len+1,11,"%02d:%02d:%02dam",h,m,s);
+			snprintf(r+len+1,11,"%02d:%02d:%02dPM",h,m,s);
 	} else {
-		if(hours)
+		if (h==0 && m==0 )
+			snprintf(r+len+1,8,"  :  AM");
+		else if(hours)
 			snprintf(r+len+1,6,"%02d:%02d",h,m);
 		else if(pm)
-			snprintf(r+len+1,8,"%02d:%02dpm",h,m);
+			snprintf(r+len+1,8,"%02d:%02dPM",h,m);
 		else
-			snprintf(r+len+1,8,"%02d:%02dam",h,m);
+			snprintf(r+len+1,8,"%02d:%02dAM",h,m);
 	}
 	if(retlen)
 		*retlen = len+6+(seconds?3:0)+(hours?0:2);
@@ -1426,20 +1578,38 @@ _clip_ttoc(ClipMachine *mp, long julian, long time, int *retlen, char* date_form
 int clip_TTOC(ClipMachine * mp)
 {
 	ClipVar *r = RETPTR(mp);
-	long time;
-	long julian = _clip_pardtj(mp, 1, &time);
+	char * date_format = _clip_parc(mp,2);
+	long time = 0;
+	long julian;
+
+	if(_clip_parinfo(mp,1) == DATE_t)
+		julian = _clip_pardj(mp, 1);
+	else if(_clip_parinfo(mp,1) == DATETIME_t)
+		julian = _clip_pardtj(mp, 1, &time);
+	else
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "TTOC");
+
+	if (date_format == NULL || *date_format==0)
+		date_format = mp->date_format;
 
 	memset(r,0,sizeof(ClipVar));
 	r->t.type = CHARACTER_t;
-	r->s.str.buf = _clip_ttoc(mp, julian, time, &r->s.str.len, mp->date_format, mp->hours, mp->seconds);
+	r->s.str.buf = _clip_ttoc(mp, julian, time, &r->s.str.len, date_format, mp->hours, mp->seconds);
 	return 0;
 }
 
 int clip_TTOS(ClipMachine * mp)
 {
 	ClipVar *r = RETPTR(mp);
-	long time;
-	long julian = _clip_pardtj(mp, 1, &time);
+	long time = 0;
+	long julian;
+
+	if(_clip_parinfo(mp,1) == DATE_t)
+		julian = _clip_pardj(mp, 1);
+	else if(_clip_parinfo(mp,1) == DATETIME_t)
+		julian = _clip_pardtj(mp, 1, &time);
+	else
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "TTOS");
 
 	memset(r,0,sizeof(ClipVar));
 	r->t.type = CHARACTER_t;

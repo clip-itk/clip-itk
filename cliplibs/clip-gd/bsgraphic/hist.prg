@@ -152,7 +152,7 @@ return .t.
 ************
 static function bg_drawImage()
 local i, j, key, v, colwidth, dx, x, y, arrx:={}, wCol, volume
-local yav, rmin, x1, x2, a, cntColor
+local yav, rmin, x1, x2, a, cntColor, kl
 	if !::__isData
 		return .f.
 	endif
@@ -198,6 +198,8 @@ local yav, rmin, x1, x2, a, cntColor
 	if ::volume
 		for i=1 to ::__category
 			for key=1 to ::__datarow
+				kl := iif(key<=10, key, &(right(alltrim(str(key)),1)))
+				kl := iif(kl==0, 10, kl)
 				j := ::arr[key][i]
 				if ::log
 					//y := int(::Y0-(log10(max(1,abs(j)))-rmin)*iif(j<0, -1, 1)*::dskl)
@@ -209,14 +211,14 @@ local yav, rmin, x1, x2, a, cntColor
 				x2 := x1+colwidth
 				if (j>=0)
 					a := {{x1, ::Y0-1}, {x1, y}, {x1+volume, y-volume}, {x2+volume, y-volume}, {x2+volume, ::Y0-1-volume}, {x2, ::Y0-1}}
-					::image:filledPolygon(a, ::legendColor[key])
+					::image:filledPolygon(a, ::legendColor[kl])
 					::image:polygon(a, ::scaleColor)
 				else
 					a := {{x1, y}, {x1, ::Y0}, {x1+volume, ::Y0-volume}, {x2+volume, ::Y0-volume}, {x2+volume, y-volume}, {x2, y}}
-					::image:filledPolygon(a, ::legendColor[key])
+					::image:filledPolygon(a, ::legendColor[kl])
 					::image:polygon(a, ::scaleColor)
 					a := {{x1, ::Y0}, {x1+volume, ::Y0-volume}, {x2+volume, ::Y0-volume}, {x2+volume, ::Y0}}
-					::image:filledPolygon(a, ::legendColor[key+cntColor])
+					::image:filledPolygon(a, ::legendColor[kl+cntColor])
 					::image:polygon(a, ::scaleColor)
 				endif
 
@@ -226,23 +228,23 @@ local yav, rmin, x1, x2, a, cntColor
 					if ::valAverage>0
 						if j>=::valAverage
 							a := {{x2, yav}, {x2+volume, yav-volume}, {x2+volume, yav}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						elseif yav>y-volume
 							va := y-yav
 							a := {{x1+va, y-va}, {x1+volume, y-volume}, {x2+volume, y-volume}, {x2+volume, y-va}}
-							::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+							::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 							::image:polygon(a, ::scaleColor)
 						endif
 					else
 						if j<=::valAverage
 							if y-volume > yav
-								::image:filledPolygon({{x2, yav}, {x2+volume, yav-volume}, {x2+volume, yav}}, ::legendColor[key+2*cntColor])
+								::image:filledPolygon({{x2, yav}, {x2+volume, yav-volume}, {x2+volume, yav}}, ::legendColor[kl+2*cntColor])
 								::image:polygon({{x2, yav}, {x2+volume, yav-volume}, {x2+volume, yav}}, ::scaleColor)
 							else
 								va := y-yav
 								a := {{x2, yav}, {x2+volume, y-volume-va}, {x2+volume, y-volume}, {x2+va, yav}}
-								::image:filledPolygon(a, ::legendColor[key+2*cntColor])
+								::image:filledPolygon(a, ::legendColor[kl+2*cntColor])
 								::image:polygon(a, ::scaleColor)
 							endif
 						endif
@@ -261,6 +263,9 @@ local yav, rmin, x1, x2, a, cntColor
 		next
 	else  //!::volume
 		for key=1 to ::__datarow
+			kl := iif(key<=10, key, &(right(alltrim(str(key)),1)))
+			kl := iif(kl==0, 10, kl)
+
 			for i=1 to ::__category
 				j := ::arr[key][i]
 				if ::log
@@ -272,9 +277,9 @@ local yav, rmin, x1, x2, a, cntColor
 				x1 := arrx[i]+dx+(key-1)*colwidth+1
 				x2 := x1+colwidth
 				if j>=0
-					::image:filledRectangle(x1, y,  x2, ::Y0-1, ::legendColor[key])
+					::image:filledRectangle(x1, y,  x2, ::Y0-1, ::legendColor[kl])
 				else
-					::image:filledRectangle(x1, ::Y0+1, x2, y, ::legendColor[key])
+					::image:filledRectangle(x1, ::Y0+1, x2, y, ::legendColor[kl])
 				endif
 			next
 		next

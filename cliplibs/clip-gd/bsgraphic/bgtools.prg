@@ -330,7 +330,7 @@ local lsign, widthLegend, highLegend
 			sk2 := log10(10^(len(ZSTR(abs(::decmax)))))-log10(10^(len(ZSTR(abs(::decmin)))-1))
 			*/
 			sk1 := log10(10^(len(ZSTR(abs(smax)))-1))
-			sk2 := log10(10^(len(ZSTR9(abs(smin)))-1))
+			sk2 := log10(10^(len(ZSTR(abs(smin)))-1))
 
 			::dskl := ::Y/(sk1+sk2)
 		endif

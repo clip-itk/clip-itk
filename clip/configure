@@ -15,12 +15,65 @@ NM_UNDERSCORE=''
 EXESUFF=''
 USE_WCHARS=yes
 USE_TASKS=yes
+USE_LD=no
+USE_AS=yes
+XCLIP=''
+pwd=`pwd`
 
-for opt in $*
+if [ X"$1" = X"-f" -a -f 'configure.flags' ]
+then
+	opts=`cat configure.flags`
+else
+	opts="$*"
+fi
+
+
+echo $opts > configure.flags
+
+rm -f Makefile Makefile.inc clipcfg.sh
+
+
+oneofdir()
+{
+	for i in $*
+	do
+		if [ -d $i ]
+		then
+			echo $i
+			return 0
+		fi
+	done
+	return 0
+}
+
+xoneof()
+{
+	for i in $*
+	do
+		if [ -x $i ]
+		then
+			echo $i
+			return 0
+		fi
+	done
+	return 0
+}
+
+
+for opt in $opts
 do
 	case "$opt" in
-	-[mM]*)
-        	USE_MEMDBG=yes
+	-f)
+		;;
+	-m=*)
+		MEMDEBUG_LEVEL=`echo "$opt" | sed -e 's/^-m=//'`
+		USE_MEMDBG=yes
+		#rm -f Makefile.inc clipcfg.sh
+		;;
+	-m)
+		MEMDEBUG_LEVEL=3
+		USE_MEMDBG=yes
+		#rm -f Makefile.inc clipcfg.sh
 		;;
 	-[oO]*)
 		rm -f Makefile.inc
@@ -30,7 +83,7 @@ do
 		rm -f Makefile.inc clipcfg.sh
 		;;
 	-[rR]*)
-		rm -f Makefile.inc
+		#rm -f Makefile.inc
 		[ -z "$CLIPROOT" ] && CLIPROOT=/usr/local/clip
 		[ -z "$BINDIR" ] && BINDIR=/usr/local/bin
 		OPTFLAGS=-O2
@@ -52,12 +105,31 @@ do
 		USE_TASKS='no'
 		;;
 	-stack)
-        	CHECK_STACK=yes
-                ;;
+		CHECK_STACK=yes
+		;;
+	-mingw-cross)
+		CC=`xoneof /usr/bin/i586-mingw32msvc-gcc /opt/cross-tools/bin/i386-mingw32msvc-gcc`
+		CROSSROOT=`oneofdir /usr/i586-mingw32msvc /opt/cross-tools/i386-mingw32msvc`
+
+		test -n "$CROSSROOT" || CROSSROOT=/usr/bin/i586-mingw32msvc-gcc
+
+		CC="$CC -mms-bitfields -march=pentium"
+		AS_PRG="$CROSSROOT/bin/as"
+
+		USE_AS=yes
+		LD_PRG="$CROSSROOT/bin/ld"
+		USE_LD=yes
+		NM_PRG='"$CROSSROOT/bin/nm"'
+		CLIPROOT=/clip
+		BINDIR=/windows/command
+		STD_LIBDIR='yes'
+		OSNAME=MINGW
+		;;
 	*)
 		echo "usage: ./configure [-o] [-m] [-c] [-r] [-s] [-t]"
 		echo "	-o  for optimisation"
 		echo "	-m  for memdebug"
+		echo "	-m=<LEVEL> for memdebug with level <LEVEL>"
 		echo "	-c  to clean cache"
 		echo "	-r  release options"
 		echo "	-s  use standard libdir (/usr/lib)"
@@ -65,15 +137,18 @@ do
 		echo "	-a  force align code"
 		echo "	-t  do NOT use tasks code"
 		echo "	-stack  enable runtime stack check"
+		echo "	-mingw-cross  configure for cross-compile on mingw32"
 		exit 0
 		;;
 	esac
 done
 
+
 if [ "$USE_MEMDBG" = yes ]
 then
 	rm -f Makefile.inc
-	MEMDEBUG=${opt#*=}
+	MEMDEBUG="$MEMDEBUG_LEVEL"
+	#${opt#*=}
 	DBGLIB=memdebug/memdebug.a
 	MEMDBGFLAGS="-DMEMDBG -Imemdebug"
 	(cd memdebug; ./configure.sh; make)
@@ -81,10 +156,10 @@ then
 	MLIB=memdebug/memdebug.a
 fi
 
-arch="$HOSTTYPE"
-[ -z "$arch" ] && a=`uname -m 2>/dev/null`
-[ -z "$arch" ] && a=`uname -p 2>/dev/null`
-[ -z "$arch" ] && a=unknown
+#arch="$HOSTTYPE"
+[ -z "$arch" ] && arch=`uname -m 2>/dev/null`
+[ -z "$arch" ] && arch=`uname -p 2>/dev/null`
+[ -z "$arch" ] && arch=unknown
 
 case "$arch" in
 i?86)
@@ -96,31 +171,35 @@ esac
 
 
 
-[ -z "$CLIPROOT" ] && CLIPROOT=`pwd`/cliproot
+[ -z "$CLIPROOT" ] && CLIPROOT=`cd ../..;pwd`/cliproot
 [ -z "$BINDIR" ] && BINDIR=$HOME/bin
 
 #	initial CFLAGS
 #
 #C_FLAGS="-Wall -I. $DEBUGFLAGS $OPTFLAGS $MDBG"
-C_FLAGS="-Wall -I. -I./include $DEBUGFLAGS $OPTFLAGS"
+C_FLAGS="-Wall -I. -I./include $DEBUGFLAGS $OPTFLAGS -O0"
 
 uname=`uname -s`
 uver=`uname -r`
 
-hname=`hostname -f 2>/dev/null`
-if [ $? != 0 ]
-then
-	hname=`hostname 2>/dev/null`
-	if [ $? != 0 ]
-	then
-		hname=`uname -n 2>/dev/null`
-		if [ $? != 0 ]
-		then
-			hname=localhost
-		fi
-	fi
-fi
+####remark from Uri: "hostname -f" on Solaris changed hostname !
+####                 and "hname" not used in this script.
+#hname=`hostname -f 2>/dev/null`
+#if [ $? != 0 ]
+#then
+#	hname=`hostname 2>/dev/null`
+#	if [ $? != 0 ]
+#	then
+#		hname=`uname -n 2>/dev/null`
+#		if [ $? != 0 ]
+#		then
+#			hname=localhost
+#		fi
+#	fi
+#fi
 
+if [ -z "$osname" ]
+then
 osname=UNIX
 case "$uname" in
 	BSD/OS*|bsdi*)
@@ -136,19 +215,24 @@ case "$uname" in
 	NetBSD*)
 		osname=NETBSD
 		;;
-        OpenBSD*)
-                osname=OPENBSD
-                ;;
+	OpenBSD*)
+		osname=OPENBSD
+		;;
 	SunOS*)
 		osname=SUNOS
 		;;
 	CYGWIN*)
 		osname=CYGWIN
 		;;
+	MINGW*)
+		C_FLAGS="-mms-bitfields -mno-cygwin $C_FLAGS"
+		osname=MINGW
+		;;
 	*)
-        	osname=`echo $osname|tr 'a-z' 'A-Z'`
-        	;;
+		osname=`echo $osname|tr 'a-z' 'A-Z'`
+		;;
 esac
+fi
 
 oneof()
 {
@@ -160,20 +244,6 @@ oneof()
 			return 0
 		fi
 	done
-}
-
-xoneof()
-{
-	for i in $*
-	do
-		if [ -x $i ]
-		then
-			echo $i
-			return 0
-		fi
-	done
-#	which $i
-	return 0
 }
 
 readans()
@@ -197,16 +267,16 @@ readans()
 
 DLLIB=-ldl
 ADDLIBS=''
-NM_PRG=nm
 case "$osname" in
 OPENBSD)
-        NM_UNDERSCORE=yes
- 	DLLIB=''
+	NM_UNDERSCORE=yes
+	DLLIB=''
 	;;
 *BSD)
 	#	BSD-os's have dl support in libc
 	#
 	DLLIB=""
+	USE_AS=yes
 	;;
 CYGWIN)
 	DLLIB=''
@@ -217,23 +287,47 @@ CYGWIN)
 	CLIP_DLLEXPORT='__declspec(dllexport)'
 	NM_UNDERSCORE=yes
 	ADDLIBS='-lregex'
+	USE_AS=yes
+	;;
+MINGW)
+	CC="gcc"
+	LD_PRG='gcc -shared'
+	LD_END=''
+	LDS_PRG='gcc -static'
+	LDS_END=''
+	USE_LD=yes
+	DLLIB='-lltdl'
+	DLLSUFF='.dll.a'
+	DLLREALSUFF='.dll'
+	EXESUFF='.exe'
+	CLIP_DLLIMPORT='__declspec(dllimport)'
+	CLIP_DLLEXPORT='__declspec(dllexport)'
+	NM_UNDERSCORE=yes
+	ADDLIBS='-lregex -lltdl -lwsock32'
+	USE_AS=yes
 	;;
 *SUNOS)
-	NM_PRG="nm -p"
+	NM_PRG='"nm -p"'
 	ADDLIBS='-lsocket -lnsl'
 	STD_LIB_DIR=/usr/local/lib
 	FORCEALIGN=4
 	;;
 LINUX)
+	LD_PRG='ld -Bdynamic -dynamic-linker /lib/ld-linux.so.2 /usr/lib/crt1.o /usr/lib/crti.o'
+	LD_END='/usr/lib/crtn.o -lc'
+	LDS_PRG='ld -Bstatic /usr/lib/crt1.o /usr/lib/crti.o'
+	LDS_END='/usr/lib/crtn.o -lc -lc_pic'
+	USE_LD=yes
+	USE_AS=yes
+	if [ -f /usr/include/gpm.h ]
+	then
+		ADDLIBS="$ADDLIBS -lgpm"
+	fi
 	;;
 *)
 	;;
 esac
 
-if [ -f /usr/include/gpm.h ]
-then
-	ADDLIBS="$ADDLIBS -lgpm"
-fi
 
 
 if [ -f ./Makefile.in ]
@@ -255,9 +349,26 @@ then
 	NO_GETTEXT=yes
 fi
 
+flex -V >/dev/null 2>&1
+if [ $? != 0 ]
+then
+	echo 'ERROR: FLEX package does not installed'
+	echo 'Warning: clip compilation may have a problems'
+	exit 1
+fi
+
+bison -V >/dev/null 2>&1
+if [ $? != 0 ]
+then
+	echo 'ERROR: BISON package does not installed'
+	echo 'Warning: clip compilation may have a problems'
+	exit 1
+fi
+
 if [ "$USE_TASKS" = yes -a ! -f task/task.o ]
 then
 	cd task
+	./configure
 	make clean task.o >/dev/null 2>&1
 	if [ $? = 0 ]
 	then
@@ -269,6 +380,16 @@ then
 	cd ..
 fi
 
+
+cd xclip
+	if xmkmf >/dev/null 2>&1
+	then
+		if make xclip >/dev/null 2>&1
+		then
+			XCLIP=xclip/xclip
+		fi
+	fi
+cd ..
 
 
 printf "configure: Makefile creating.."
@@ -297,7 +418,10 @@ echo "MLIB='$MLIB'" >&3
 if [ -n "$MDBG" ]
 then
 	echo "MALLOC_H='memdebug/malloc.h'" >&3
+	echo 'USE_MEMDEBUG=yes' >&3
+	echo 'INST_MEMDEBUG_H=inst_memdebug_h' >&3
 fi
+
 echo "STATICLINK='$STATICLINK'" >&3
 echo "CLIP_ROOT='$CLIPROOT'" >&3
 echo "BINDIR='$BINDIR'" >&3
@@ -318,10 +442,13 @@ then
 	LINUX*)
 		READLINE_LIBS='-lreadline -lncurses'
 		;;
-        *)
-                READLINE_LIBS='-lreadline'
-                ;;
- 	esac
+	*SUNOS)
+		READLINE_LIBS='-lreadline -lcurses'
+		;;
+	*)
+		READLINE_LIBS='-lreadline'
+		;;
+	esac
 	echo "READLINE_LIBS='$READLINE_LIBS'" >&3
 fi
 
@@ -344,13 +471,81 @@ then
 fi
 echo "CC='$CC'" >&3
 
+test -n "$AS_PRG" || AS_PRG='as'
+echo "AS_PRG='$AS_PRG'" >&3
+
+#test -n "$LD_PRG" || LD_PRG='ld'
+echo "LD_PRG='$LD_PRG'" >&3
+echo "LD_END='$LD_END'" >&3
+echo "LDS_PRG='$LDS_PRG'" >&3
+echo "LDS_END='$LDS_END'" >&3
+
+test -n "$NM_PRG" || NM_PRG='"nm"'
+echo "NM_PRG=$NM_PRG" >&3
+
+
 if [ -n "$STD_LIBDIR" ]
 then
 	echo 'INST_STD_LIB=inst_std_lib' >&3
 	echo "STD_LIBDIR='$STD_LIB_DIR'" >&3
 fi
 
+if [ -n "$XCLIP" ]
+then
+	echo 'INST_XCLIP=inst_xclip' >&3
+	echo "XCLIP='$XCLIP'" >&3
+fi
+
+echo '
+#include <iconv.h>
+int main(int argc, char **argv) { iconv_t it; it = iconv_open("utf-8", "utf-8"); return 0;}
+' > /tmp/$$.c
+$CC -o /tmp/$$ /tmp/$$.c -liconv 2>/dev/null 1>&2
+if [ $? = 0 ]
+then
+	echo 'ICONV_LIB=-liconv' >&3
+	echo "PO_BINS='po_extr$EXESUFF po_subst$EXESUFF po_compat$EXESUFF'" >&3
+	HAVE_ICONV=yes
+else
+	$CC -o /tmp/$$ /tmp/$$.c 2>/dev/null 1>&2
+	if [ $? = 0 ]
+	then
+		echo 'ICONV_LIB=' >&3
+		echo "PO_BINS='po_extr$EXESUFF po_subst$EXESUFF po_compat$EXESUFF'" >&3
+		HAVE_ICONV=yes
+	else
+		echo 'NO ICONV library found, doc building will have problems'
+		echo "PO_BINS='po_extr$EXESUFF po_compat$EXESUFF'" >&3
+		HAVE_ICONV=
+	fi
+fi
+rm -f /tmp/$$*
+
+
 echo >&3
+
+echo '
+msgid "error"
+msgid_plural "errors"
+msgstr[0] ""
+msgstr[1] ""
+'> /tmp/$$msg
+
+if msgfmt -o /dev/null /tmp/$$msg >/dev/null 2>&1
+then
+	PO_FROM_COMPAT='cat'
+	PO_TO_COMPAT='cat'
+	echo 'PO_COMPAT=' >&3
+else
+	PO_COMPAT=yes
+	PO_FROM_COMPAT='$CLIPROOT/bin/po_compat -f'
+	PO_TO_COMPAT='$CLIPROOT/bin/po_compat -t'
+	echo 'PO_COMPAT=yes' >&3
+fi
+
+echo >&3
+
+rm -f /tmp/$$msg
 
 
 exec 3>&-
@@ -382,7 +577,26 @@ echo '#define EXESUFF "'$EXESUFF'"' >&3
 echo '#define DLLREALSUFF "'$DLLREALSUFF'"' >&3
 echo "#define CLIP_DLLEXPORT $CLIP_DLLEXPORT" >&3
 echo "#define CLIP_DLLIMPORT $CLIP_DLLIMPORT" >&3
-echo '#define NM_PRG "'$NM_PRG'"' >&3
+echo '#define NM_PRG '$NM_PRG'' >&3
+if [ "$USE_AS" = no ]
+then
+	echo '#undef USE_AS' >&3
+	echo '#define AS_PRG 0' >&3
+else
+	echo '#define USE_AS' >&3
+	echo '#define AS_PRG "'$AS_PRG'"' >&3
+fi
+if [ "$USE_LD" = yes ]
+then
+	echo '#define USE_LD' >&3
+	echo '#define LD_PRG "'$LD_PRG'"' >&3
+	echo '#define LD_END "'$LD_END'"' >&3
+	echo '#define LDS_PRG "'$LDS_PRG'"' >&3
+	echo '#define LDS_END "'$LDS_END'"' >&3
+else
+	echo '#undef USE_LD' >&3
+	echo '#define LD_PRG 0' >&3
+fi
 echo '#define OSNAME "'$osname'"' >&3
 echo '#define ARCH "'$arch'"' >&3
 echo "#define ARCH_$arch" >&3
@@ -439,6 +653,12 @@ then
 else
 	echo 'Warning: system do not have installed ZLIB development'
 fi
+if [ -f /usr/include/regex.h ]
+then
+	echo '#define HAVE_REGEX_H' >&3
+else
+	echo 'Warning: system do not have installed REGEX development'
+fi
 if [ -f /usr/include/readline/readline.h ]
 then
 	echo '#define HAVE_READLINE_H' >&3
@@ -447,7 +667,7 @@ then
 #include <readline/readline.h>
 int main(int argc, char **argv) { rl_already_prompted=1; return 0;}
 	' > /tmp/$$.c
-	gcc -o /tmp/$$ /tmp/$$.c $READLINE_LIBS 2>/dev/null 1>&2
+	$CC -o /tmp/$$ /tmp/$$.c $READLINE_LIBS 2>/dev/null 1>&2
 	if [ $? = 0 ]
 	then
 		echo '#define HAVE_READLINE_ALREADY_PROMPTED' >&3
@@ -459,6 +679,40 @@ else
 	echo 'Warning: system does not have READLINE development'
 	echo 'Warning: clip_dbg will not work !!!'
 fi
+
+if [ "$osname" = "SUNOS" ]
+then
+	echo '#undef USE_UTMP' >&3
+else
+
+echo '
+#include <utmp.h>
+int main(int argc, char **argv) { setutent(); return 0;}
+	' > /tmp/$$.c
+$CC -o /tmp/$$ /tmp/$$.c 2>/dev/null 1>&2
+if [ $? = 0 ]
+then
+	echo '#define USE_UTMP 1' >&3
+else
+	echo '#undef USE_UTMP' >&3
+fi
+rm -f /tmp/$$*
+
+fi
+
+echo '
+#include <sys/time.h>
+int main(int argc, char **argv) { struct timeval tv; gettimeofday(&tv, 0); return 0;}
+	' > /tmp/$$.c
+$CC -o /tmp/$$ /tmp/$$.c 2>/dev/null 1>&2
+if [ $? = 0 ]
+then
+	echo '#define HAVE_GETTIMEOFDAY 1' >&3
+else
+	echo '#undef HAVE_GETTIMEOFDAY' >&3
+fi
+rm -f /tmp/$$*
+
 
 if [ -f /usr/include/sys/mman.h ]
 then
@@ -516,11 +770,40 @@ then
 	echo '#define HAVE_GPM_H' >&3
 fi
 
+if [ "$PO_COMPAT" = yes ]
+then
+	echo '#define PO_COMPAT 1' >&3
+	echo '#define PO_COMPAT_CHAR 0177' >&3
+else
+	echo '#undef PO_COMPAT' >&3
+fi
+
+if [ "$HAVE_ICONV" = yes ]
+then
+	echo '#define HAVE_ICONV 1' >&3
+else
+	echo '#undef HAVE_ICONV' >&3
+fi
+
+case "$osname" in
+	CYGWIN*)
+		echo '#define _WIN32' >&3
+		;;
+	MINGW*)
+		echo
+		echo '#define random rand' >&3
+		echo '#define srandom srand' >&3
+		echo '#define ftruncate chsize' >&3
+		echo
+		#echo '#define _WIN32' >&3
+		;;
+esac
 
 echo >&3
 echo "#endif" >&3
 exec 3>&-
 echo ". done."
+
 
 if [ -f clip_msgmerge.in ]
 then
@@ -531,12 +814,14 @@ exec 3>clip_msgmerge
 echo '#!/bin/sh' >&3
 echo "# Created automatically by 'configure'" >&3
 echo >&3
-echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
-if [ -n "$CLIP_LOCALE_ROOT" ]
-then
-	echo '[ -z "$CLIP_LOCALE_ROOT" ] && '"CLIP_LOCALE_ROOT=$CLIP_LOCALE_ROOT" >&3
-fi
+echo 'test  -n "$CLIPROOT" || '"CLIPROOT=$CLIPROOT" >&3
 echo "NO_GETTEXT=$NO_GETTEXT" >&3
+if [ "$PO_COMPAT" = yes ]
+then
+	echo "PO_COMPAT=yes" >&3
+fi
+echo "PO_FROM_COMPAT=\"$PO_FROM_COMPAT\"" >&3
+echo "PO_TO_COMPAT=\"$PO_TO_COMPAT\"" >&3
 cat clip_msgmerge.in >&3
 
 exec 3>&-
@@ -556,11 +841,13 @@ echo '#!/bin/sh' >&3
 echo "# Created automatically by 'configure'" >&3
 echo >&3
 echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
-if [ -n "$CLIP_LOCALE_ROOT" ]
-then
-	echo '[ -z "$CLIP_LOCALE_ROOT" ] && '"CLIP_LOCALE_ROOT=$CLIP_LOCALE_ROOT" >&3
-fi
 echo "NO_GETTEXT=$NO_GETTEXT" >&3
+if [ "$PO_COMPAT" = yes ]
+then
+	echo "PO_COMPAT=yes" >&3
+fi
+echo "PO_FROM_COMPAT=\"$PO_FROM_COMPAT\"" >&3
+echo "PO_TO_COMPAT=\"$PO_TO_COMPAT\"" >&3
 cat clip_msgfmt.in >&3
 
 exec 3>&-
@@ -579,13 +866,14 @@ exec 3>clip_makeslib
 echo '#!/bin/sh' >&3
 echo "# Created automatically by 'configure'" >&3
 echo >&3
-echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
+echo 'test -n "$CLIPROOT" || '"CLIPROOT=$CLIPROOT" >&3
 echo "CLIP_ROOT=$CLIPROOT" >&3
 echo "ADDLIBS='$ADDLIBS'" >&3
 echo "DLLSUFF=$DLLSUFF" >&3
 echo "EXESUFF=$EXESUFF" >&3
 echo "DLLREALSUFF=$DLLREALSUFF" >&3
 echo "STD_LIBDIR=$STD_LIBDIR" >&3
+echo "NM_PRG=$NM_PRG" >&3
 echo "NM_UNDERSCORE=$NM_UNDERSCORE" >&3
 echo "OS_$osname=yes" >&3
 echo "OSNAME=$osname" >&3
@@ -620,6 +908,7 @@ echo "DLLSUFF=$DLLSUFF" >&3
 echo "EXESUFF=$EXESUFF" >&3
 echo "DLLREALSUFF=$DLLREALSUFF" >&3
 echo "STD_LIBDIR=$STD_LIBDIR" >&3
+echo "NM_PRG=$NM_PRG" >&3
 echo "NM_UNDERSCORE=$NM_UNDERSCORE" >&3
 echo "OS_$osname=yes" >&3
 echo "OSNAME=$osname" >&3
@@ -650,6 +939,7 @@ echo "DLLSUFF=$DLLSUFF" >&3
 echo "EXESUFF=$EXESUFF" >&3
 echo "DLLREALSUFF=$DLLREALSUFF" >&3
 echo "STD_LIBDIR=$STD_LIBDIR" >&3
+echo "NM_PRG=$NM_PRG" >&3
 echo "NM_UNDERSCORE=$NM_UNDERSCORE" >&3
 echo "OS_$osname=yes" >&3
 echo "OSNAME=$osname" >&3
@@ -663,5 +953,38 @@ echo ". done."
 chmod +x clip_makelib
 
 fi
+
+reg=1
+if [ -f registration ]
+then
+	./rsa-verify >license.txt <registration
+	reg=$?
+	echo >>license.txt
+	echo "REGISTRATION BEGIN" >>license.txt
+	cat registration >>license.txt
+	echo "REGISTRATION END" >>license.txt
+fi
+
+if [ "$reg" != 0 ]
+then
+	cp license.gnu license.txt
+fi
+
+echo 'Registration info:'
+echo
+
+cat license.txt
+echo
+
+exec 3>license.h
+
+echo '#define CLIP_LICENSE "\' >&3
+#sed -e 's/"/\\"/g' -e 's/^.*$/"\0\\\n"\\/g' <license.txt >&3
+sed -e 's/"/\\"/g' -e 's/^.*$/\0\\n\\/g' <license.txt >&3
+echo '"' >&3
+rm -f license.txt
+
+exec 3>&-
+echo ". done."
 
 

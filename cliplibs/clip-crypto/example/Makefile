@@ -6,5 +6,5 @@ clean:
 		*~ core* *core $(PRG) *.ex *.nm
 
 crypto: crypto.prg
-	clip -e -M crypto.prg -lclip-crypto
+	clip -e -s -l -M crypto.prg -lclip-crypto
 

@@ -24,13 +24,12 @@ FUNCTION Main()
 
    @ 2, 20 BUTTON "&End"                                       ;
       SIZE 80, 20                                              ;
-      ACTION lEnd:=.T.
-
-      @ 4, 2 GET cName OF oWnd	;
-		PICTURE "(999),999"
+      ACTION ( lEnd:=.T., oWnd:end() )
 
    ACTIVATE WINDOW oWnd
 
+	qout('Cname is ', cName)
+        qout()
 RETURN( NIL )
 
 //-------------------------------------------------------------//
@@ -38,7 +37,9 @@ RETURN( NIL )
 FUNCTION StartTest()
    LOCAL oDlg
    LOCAL nPos  := 1
+   LOCAL nV
    cName := space( 30 )
+   nV := 0
 
 
       DEFINE DIALOG oDlg                                        ;
@@ -46,24 +47,31 @@ FUNCTION StartTest()
 	 TITLE "A Dialog Box"
 
       @ 2, 2 SAY "&One" OF oDlg
-/*
+
       @ 4, 2 GET cName OF oDlg	;
-		PICTURE "(999),999"
-*/
+		PICTURE "@R (999),999" ;
+		VALID !empty(cName)
+
       @ 6, 2 BUTTON "&One" OF oDlg ACTION MsgBeep()
 
       @ 8, 2 BUTTON "&Dlg" OF oDlg	;
 	MESSAGE "Some dialog box"	;
 	ACTION StartDialog()
-/*
-      oWnd:Say( 4, 2, str( ++nPos ) )
-*/
-      ACTIVATE DIALOG oDlg                                      //;
+
+      @ 12, 2 GET nV OF oDlg	;
+		WHEN (val(cName)>100)
+
+      ACTIVATE DIALOG oDlg
 
       SysRefresh()
 
+      qout('cName=', cName)
+      qout()
+      qout('nV=', nV)
+      qout()
+
 RETURN( NIL )
-****************
+***************************
 FUNCTION StartDialog()
    LOCAL oDlg
    LOCAL nPos  := 1

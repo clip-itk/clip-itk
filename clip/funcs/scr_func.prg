@@ -182,25 +182,25 @@ function message(str,y,x)
 	local j,oldcolor,scr, row,col
 	local oldCur:=setCursor(0)
 	if funcname("PROV_BLANK")
-   		return .t.
+		return .t.
 	endif
 	if y==NIL
-    		y=_maxRowN
+		y=_maxRowN
 	endif
- 	row=row()
- 	col=col()
- 	save screen to scr
- 	j=len(str)
- 	oldcolor=setcolor("W/R")
- 	x=iif(x==NIL,(80-j-2)/2,x)
- 	Dbox(y,x,y+2,x+j+3)
- 	dispOutAt( y+1,x+2, str, "W+/R")
- 	inkey(max(len(str)/30,1))
- 	clearkey()
- 	setcolor(oldcolor)
- 	restore screen from scr
- 	setpos(row,col)
- 	setcursor(oldCur)
+	row=row()
+	col=col()
+	save screen to scr
+	j=len(str)
+	oldcolor=setcolor("W/R")
+	x=iif(x==NIL,(80-j-2)/2,x)
+	Dbox(y,x,y+2,x+j+3)
+	dispOutAt( y+1,x+2, str, "W+/R")
+	inkey(max(len(str)/30,1))
+	clearkey()
+	setcolor(oldcolor)
+	restore screen from scr
+	setpos(row,col)
+	setcursor(oldCur)
 return .t.
 ****************************************************************
 function ColorMess(y,x,str2,colorP,mass)
@@ -433,9 +433,9 @@ return var
 function Say( Row, Col, string, pict, colors)
 	iif ( colors==NIL, colors:=setcolor(), )
 	if pict==NIL
-  		DevPos( Row, Col ) ; DevOut( string , colors )
+		DevPos( Row, Col ) ; DevOut( string , colors )
 	else
-  		DevPos( Row, Col ) ; DevOutPict( string, pict , colors )
+		DevPos( Row, Col ) ; DevOutPict( string, pict , colors )
 	endif
 return .t.
 
@@ -445,65 +445,6 @@ function copy_scr(x1,x2,x3,x4,x5,x6,x7,x8)
 	scr=SAVESCREEN(x1,x2,x3,x4)
 	RESTSCREEN(x5,x6,x7,x8,scr)
 RETURN
-
-#include "mset.ch"
-*************************************************************
-*     …”–œÃÿ⁄’≈‘”— ƒÃ— ◊Ÿ◊œƒ¡ Œ¡ ‹À“¡Œ –“œ√≈Œ‘¡
-*     ◊Ÿ–œÃŒ≈Œ…— ◊ √…ÀÃ≈ DO REPEAT
-*
-func aaaaaaaaaa(v,x,str,div,set)
-static x1:=0,x2:=0
-local _maxR,t,l,b,r,i,j
-if set!=NIL .and. valtype(set)=="L"
-    mset(_MSET_PROGRESS,set)
-    return 0
-endif
-if mset(_MSET_PROGRESS)
-	return 0
-endif
-_maxR:=maxRow()-2
-T:=_maxR-2; L:=10; B:=_maxR+2; R:=70
-do case
-   case v<>NIL .and. v
-       return 0
-   case pcount()=0 .or. (pcount()=1 .and. v<>NIL .and. !v)
-       x2++
-       i:=(x2/x1)*100
-       i:=abs(i)
-       j:=iif(i>100,100,i)
-       j:=int(j/2.5)
-       dispOutAt( T+1,L+20, "˜Ÿ–œÃŒ≈Œœ "+alltrim(str(i))+"%" )
-       dispOutAt( T+3,L+10, replicate("ç",j) )
-   case pcount()==4 .and. div<>NIL
-       x1+=div
-       return 0
-   case pcount()>1 .and. pcount()<4
-       x1:=x
-       x2:=0
-       dbox(T,L,B,R)
-       dispOutAt( T+2,L+10, padc(alltrim(str),40) )
-       dispOutAt( T+3,L+10, replicate("ê",40) )
-endcase
-return 0
-
-***********************************
-func addScroll( x, col )
-	local str:="", len, xType, mmm
-	xType=valType(x)
-	do case
-		case xType=="L"
-     			len= 3
-		case xType=="D"
-     			len= len( dtoc(x) )
-		case xType=="N"
-     			len= len( str(x) )
-		otherwise             // "C" | "M"
-     			len= len(x)
-	endcase
-	if len+col > (mmm:=mset( _MSET_RIGHTBANK ))
-   		str="@S"+alltrim(str(mmm-col+1))
-	endif
-return str
 
 ***********************************
 function machoice(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20)
@@ -566,102 +507,109 @@ function __WAIT(xMsg)
 Function dispbox(top, left, bottom, right, xType,color)
 	if !set(_SET_DISPBOX)
 		return dispboxTerm(top, left, bottom, right, xType,color)
-        else
+	else
 		return dispboxSay(top, left, bottom, right, xType,color)
-        endif
+	endif
 return
 
 ***********************************
 Function dispboxSay(top, left, bottom, right, xType,color)
 	local ch,ch1,ch2,x,y,sStyle
-        local row:=row(),col:=col()
-        local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
-        dispbegin()
-        if valtype(xType)=="N"
-        	sStyle:=iif(xType==1,s_string,d_string)
-        else
-        	sStyle:=xType
-                sStyle := strtran(sStyle,B_DOUBLE,d_string)
-                sStyle := strtran(sStyle,B_SINGLE,s_string)
-        endif
-        bottom:=max(top,bottom)
-        right:=max(left,right)
-        if len(sStyle)<8
-        	padr(sStyle,8,left(sStyle,1))
-        endif
-        if len(sStyle)>8
-        	ch:=replicate(substr(sStyle,9,1),right-left+1)
-                for x=top to bottom
-                	dispoutat(x,left,ch,color)
-                next
-        endif
-        if top==bottom
-        	dispoutat(top,left,replicate(substr(sStyle,2,1),right-left+1),color)
-        elseif left==right
-        	ch:=substr(sStyle,8,1)
-        	for x=top to bottom
-                	dispoutat(x,left,ch,color)
-                next
+	local row:=row(),col:=col()
+	local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
+	dispbegin()
+	if valtype(xType)=="N"
+		sStyle:=iif(xType==1,s_string,d_string)
 	else
-        	ch1:=substr(sStyle,8,1)
-        	ch2:=substr(sStyle,4,1)
-        	for x=top to bottom
-        		dispoutat(x,left,ch1,color)
-        		dispoutat(x,right,ch2,color)
-        	next
-        	dispoutat(top,left,replicate(substr(sStyle,2,1),right-left+1),color)
-        	dispoutat(bottom,left,replicate(substr(sStyle,6,1),right-left+1),color)
-                dispoutat(top,left,substr(sStyle,1,1),color)
-                dispoutat(top,right,substr(sStyle,3,1),color)
-                dispoutat(bottom,left,substr(sStyle,7,1),color)
-                dispoutat(bottom,right,substr(sStyle,5,1),color)
-        endif
-        setpos(row,col)
-        dispend()
+		sStyle:=iif(valtype(xType)=="C",xType,B_SINGLE)
+		sStyle := strtran(sStyle,B_DOUBLE,d_string)
+		sStyle := strtran(sStyle,B_SINGLE,s_string)
+	endif
+	bottom:=max(top,bottom)
+	right:=max(left,right)
+	if len(sStyle)<8
+		padr(sStyle,8,left(sStyle,1))
+	endif
+	if len(sStyle)>8
+		ch:=replicate(substr(sStyle,9,1),right-left+1)
+		for x=top to bottom
+			dispoutat(x,left,ch,color)
+		next
+	endif
+	if top==bottom
+		dispoutat(top,left,replicate(substr(sStyle,2,1),right-left+1),color)
+	elseif left==right
+		ch:=substr(sStyle,8,1)
+		for x=top to bottom
+			dispoutat(x,left,ch,color)
+		next
+	else
+		ch1:=substr(sStyle,8,1)
+		ch2:=substr(sStyle,4,1)
+		for x=top to bottom
+			dispoutat(x,left,ch1,color)
+			dispoutat(x,right,ch2,color)
+		next
+		dispoutat(top,left,replicate(substr(sStyle,2,1),right-left+1),color)
+		dispoutat(bottom,left,replicate(substr(sStyle,6,1),right-left+1),color)
+		dispoutat(top,left,substr(sStyle,1,1),color)
+		dispoutat(top,right,substr(sStyle,3,1),color)
+		dispoutat(bottom,left,substr(sStyle,7,1),color)
+		dispoutat(bottom,right,substr(sStyle,5,1),color)
+	endif
+	setpos(row,col)
+	dispend()
 return
 
 ***********************************
 Function winbuf_dispbox(winbuffer,top, left, bottom, right, xType,color)
 	local ch,ch1,ch2,x,y,sStyle
-        local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
-        if valtype(xType)=="N"
-        	sStyle:=iif(xType==1,s_string,d_string)
-        else
-        	sStyle:=xType
-                sStyle := strtran(sStyle,B_DOUBLE,d_string)
-                sStyle := strtran(sStyle,B_SINGLE,s_string)
-        endif
-        bottom:=max(top,bottom)
-        right:=max(left,right)
-        if len(sStyle)<8
-        	padr(sStyle,8,left(sStyle,1))
-        endif
-        if len(sStyle)>8
-        	ch:=replicate(substr(sStyle,9,1),right-left+1)
-                for x=top to bottom
-                	winbuf_out_at(winbuffer,x,left,ch,color)
-                next
-        endif
-        if top==bottom
-        	winbuf_out_at(winbuffer,top,left,replicate(substr(sStyle,2,1),right-left+1),color)
-        elseif left==right
-        	ch:=substr(sStyle,8,1)
-        	for x=top to bottom
-                	winbuf_out_at(winbuffer,x,left,ch,color)
-                next
+	local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
+	if valtype(xType)=="N"
+		sStyle:=iif(xType==1,s_string,d_string)
 	else
-        	ch1:=substr(sStyle,8,1)
-        	ch2:=substr(sStyle,4,1)
-        	for x=top to bottom
-        		winbuf_out_at(winbuffer,x,left,ch1,color)
-        		winbuf_out_at(winbuffer,x,right,ch2,color)
-        	next
-        	winbuf_out_at(winbuffer,top,left,replicate(substr(sStyle,2,1),right-left+1),color)
-        	winbuf_out_at(winbuffer,bottom,left,replicate(substr(sStyle,6,1),right-left+1),color)
-                winbuf_out_at(winbuffer,top,left,substr(sStyle,1,1),color)
-                winbuf_out_at(winbuffer,top,right,substr(sStyle,3,1),color)
-                winbuf_out_at(winbuffer,bottom,left,substr(sStyle,7,1),color)
-                winbuf_out_at(winbuffer,bottom,right,substr(sStyle,5,1),color)
-        endif
+		sStyle:=xType
+		sStyle := strtran(sStyle,B_DOUBLE,d_string)
+		sStyle := strtran(sStyle,B_SINGLE,s_string)
+	endif
+	bottom:=max(top,bottom)
+	right:=max(left,right)
+	if len(sStyle)<8
+		padr(sStyle,8,left(sStyle,1))
+	endif
+	if len(sStyle)>8
+		ch:=replicate(substr(sStyle,9,1),right-left+1)
+		for x=top to bottom
+			winbuf_out_at(winbuffer,x,left,ch,color)
+		next
+	endif
+	if top==bottom
+		winbuf_out_at(winbuffer,top,left,replicate(substr(sStyle,2,1),right-left+1),color)
+	elseif left==right
+		ch:=substr(sStyle,8,1)
+		for x=top to bottom
+			winbuf_out_at(winbuffer,x,left,ch,color)
+		next
+	else
+		ch1:=substr(sStyle,8,1)
+		ch2:=substr(sStyle,4,1)
+		for x=top to bottom
+			winbuf_out_at(winbuffer,x,left,ch1,color)
+			winbuf_out_at(winbuffer,x,right,ch2,color)
+		next
+		winbuf_out_at(winbuffer,top,left,replicate(substr(sStyle,2,1),right-left+1),color)
+		winbuf_out_at(winbuffer,bottom,left,replicate(substr(sStyle,6,1),right-left+1),color)
+		winbuf_out_at(winbuffer,top,left,substr(sStyle,1,1),color)
+		winbuf_out_at(winbuffer,top,right,substr(sStyle,3,1),color)
+		winbuf_out_at(winbuffer,bottom,left,substr(sStyle,7,1),color)
+		winbuf_out_at(winbuffer,bottom,right,substr(sStyle,5,1),color)
+	endif
+return
+
+***********************************
+function dbgshadow(x1,y1,x2,y2,attrib)
+	attrib := iif(attrib==NIL,7,attrib)
+	dispattr(x1+1,y2+1,x2+1,y2+2,attrib)
+	dispattr(x2+1,y1+2,x2+1,y2+2,attrib)
 return
 

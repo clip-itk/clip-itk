@@ -47,7 +47,7 @@ function _recover_FWIN_TSCROLLBAR(obj)
 	obj:new		:= @fw_new()
 	obj:WinNew	:= @fw_WinNew()
 	obj:ReDefine	:= @fw_ReDefine()
-	obj:cToChar	:= {| self | cToChar( "SCROLLBAR" ) }
+	obj:cToChar	:= {| self | self:cToChar( "SCROLLBAR" ) }
 	obj:GetPos	:= {| self | eval(Selector:GetScrollPos, If( self:lIsChild, self:oWnd:hWnd, self:hWnd ),;
 				If( self:lIsChild, If( self:lVertical, SB_VERT, SB_HORZ ), SB_CTL ) )}
 	obj:GetRange	:= {| self | eval(Selector:GetScrollRange, If( self:lIsChild, self:oWnd:hWnd, self:hWnd ),;

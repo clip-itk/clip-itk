@@ -1,6 +1,34 @@
 
 /*
    $Log: scankey.c,v $
+   Revision 1.29  2003/09/02 14:27:43  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.28  2003/02/18 10:17:53  clip
+   possible fixes scancode priority to ALT-CTRL-SHIFT
+   paul
+
+   Revision 1.27  2003/02/07 09:14:53  clip
+   leds on linux console in scan mode
+   closes #104
+   paul
+
+   Revision 1.26  2002/12/20 11:21:46  clip
+   fix for ^2, ^6, Ctrl+numpads in scan mode
+   closes #88
+   paul
+
+   Revision 1.25  2002/12/20 08:53:50  clip
+   fix enhanced scancodes in Cygwin
+   closes #12
+   asdf
+
+   Revision 1.24  2002/12/17 12:08:46  clip
+   fix scancodes for keypad '/' '*' '-' '+' + alt/ctrl
+   paul
+
    Revision 1.23  2002/09/20 10:41:45  clip
    fix for shift-Home/End/PgUn/PgDn/Up/Down/Left/Right
    paul
@@ -95,21 +123,24 @@
 
  */
 
+#include "../clipcfg.h"
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#ifndef OS_MINGW
 #include <sys/ioctl.h>
+#endif
 
 #include "../clip.h"
 #include "scankey.h"
 
-/*#define DBG*/
-/*#define DBG0*/
-/*#define DBG1*/
-/*#define DBG2*/
+/* #define DBG */
+/* #define DBG0 */
+/* #define DBG1 */
+/* #define DBG2 */
 
 #define KG_SHIFT	0
 #define KG_CTRL		2
@@ -333,6 +364,8 @@ static void to_utf8(unsigned short c);
 static void applkey(int key, char mode);
 static void set_console(int no, int diff);
 
+static void set_kbd_led(void);
+
 typedef void (*k_hand) (unsigned char value, char up_flag);
 typedef void (k_handfn) (unsigned char value, char up_flag);
 
@@ -403,12 +436,12 @@ put_fqueue(long key)
 {
 	int r = shift_state;
 
-	if (r & ( (1<<KG_SHIFT) | (1<<KG_SHIFTL) | (1<<KG_SHIFTR)))
-		key = META1(META2(key));
-	else if (r & ( (1<<KG_ALT) | (1<<KG_ALTGR)) )
+	if (r & ( (1<<KG_ALT) | (1<<KG_ALTGR)) )
 		key = META1(key);
 	else if (r & ( (1<<KG_CTRL) | (1<<KG_CTRLL) | (1<<KG_CTRLR)))
 		key = META2(key);
+	else if (r & ( (1<<KG_SHIFT) | (1<<KG_SHIFTL) | (1<<KG_SHIFTR)))
+		key = META1(META2(key));
 
 	put_queue(key);
 }
@@ -507,7 +540,11 @@ scan_state(void)
 long
 scan_check(void)
 {
-	return get_queue();
+	long value = get_queue();
+#ifdef DBG2
+	printf("scan_check: %d\r\n", value);
+#endif
+	return value;
 }
 
 long
@@ -531,7 +568,7 @@ scan_push(unsigned char scancode)
 	unsigned char keycode;
 	unsigned char raw_mode = 1;
 	int down = !(scancode & 0x80);
-	char up_flag = down ? 0 : 0200;
+	unsigned char up_flag = down ? 0 : 0200;
 	unsigned short keysym;
 	u_char type;
 	int shift_final,shift_local=0;
@@ -545,7 +582,7 @@ scan_push(unsigned char scancode)
         }
 
 #ifdef DBG0
-	printf("scan_push: %d\n", scancode);
+	printf("scan_push: %d\r\n", scancode);
 #endif
 	/*
 	 *  Convert scancode to keycode
@@ -593,7 +630,7 @@ scan_push(unsigned char scancode)
 		keysym = key_map[keycode];
 		type = KTYP(keysym);
 #ifdef DBG2
-	printf("\ntype=%x,shift=%d,keykode=%d,shift_local=%d\n",type,shift_final,keycode, shift_local);
+	printf("\ntype=%x,shift=%d,keykode=%d,shift_local=%d\r\n",type,shift_final,keycode, shift_local);
 #endif
 
 		if (type >= 0xf0)
@@ -610,7 +647,7 @@ scan_push(unsigned char scancode)
 					if (key_map)
 						keysym = key_map[keycode];
 #ifdef DBG2
-	printf("  caps=%d,keykode=%d,keysym=%d,kg_shift=%d\n",shift_final,keycode, keysym, KG_SHIFT );
+	printf("  caps=%d,keykode=%d,keysym=%d,kg_shift=%d\r\n",shift_final,keycode, keysym, KG_SHIFT );
 #endif
 				}
 			}
@@ -765,7 +802,7 @@ kbd_translate(unsigned char scancode, unsigned char *keycode)
 	{
 		prev_scancode = scancode;
 #ifdef DBG0
-	printf("kbd_translate1: return 0: scan=%d prev=%d\n", scancode, prev_scancode);
+	printf("kbd_translate1: return 0: scan=%d prev=%d\r\n", scancode, prev_scancode);
 #endif
 
 		return 0;
@@ -952,7 +989,7 @@ static void
 do_self(unsigned char value, char up_flag)
 {
 #ifdef DBG2
-	printf("do_self: %d\n", value);
+	printf("do_self: %d\r\n", value);
 #endif
 
 	if (up_flag)
@@ -1008,6 +1045,7 @@ norm:
 	switch (value)
 	{
 	case 0x7f:
+        case '2':
 		put_acqueue(value);
 		break;
 	case 0x9:
@@ -1077,7 +1115,7 @@ static void
 do_fn(unsigned char value, char up_flag)
 {
 #ifdef DBG2
-	printf("do_fn: %d\n", value);
+	printf("do_fn: %d\r\n", value);
 #endif
 
 	if (value < SIZE(func_table))
@@ -1158,7 +1196,7 @@ static void
 do_spec(unsigned char value, char up_flag)
 {
 #ifdef DBG2
-	printf("do_spec: %d\n", value);
+	printf("do_spec: %d\r\n", value);
 #endif
 
 	if (up_flag)
@@ -1186,10 +1224,10 @@ static void
 do_pad(unsigned char value, char up_flag)
 {
 	static const char pad_chars[] = "0123456789+-*/\015,.?()";
-	static const char app_map[] = "pqrstuvwxylSRQMnnmPQ";
+	/*static const char app_map[] = "pqrstuvwxylSRQMnnmPQ";*/
 
 #ifdef DBG2
-	printf("do_pad: %d\n", value);
+	printf("do_pad: %d\r\n", value);
 #endif
 
 	if (up_flag)
@@ -1205,8 +1243,26 @@ do_pad(unsigned char value, char up_flag)
 	}
 #endif
 
-	if (!scan_numlock_state /*vc_kbd_led(kbd,VC_NUMLOCK) */ 
-        	&& !(shift_state & ( (1<<KG_SHIFT) | (1<<KG_SHIFTL) | (1<<KG_SHIFTR)))
+	switch (value)
+	{
+	case KVAL(K_PPLUS):
+		put_acqueue('+');
+                return;
+	case KVAL(K_PMINUS):
+		put_acqueue('-');
+                return;
+	case KVAL(K_PSLASH):
+		put_acqueue('/');
+                return;
+	case KVAL(K_PSTAR):
+		put_acqueue('*');
+                return;
+	}
+
+
+	if ((!scan_numlock_state /*vc_kbd_led(kbd,VC_NUMLOCK) */
+        	&& !(shift_state & ( (1<<KG_SHIFT) | (1<<KG_SHIFTL) | (1<<KG_SHIFTR))))
+	    || (scan_numlock_state && (shift_state & ( (1<<KG_CTRL) | (1<<KG_CTRLL) | (1<<KG_CTRLR))))
 	   )
         {
 		switch (value)
@@ -1262,7 +1318,7 @@ do_cur(unsigned char value, char up_flag)
 {
 #if 1
 #ifdef DBG2
-	printf("do_cur: %d\n", value);
+	printf("do_cur: %d\r\n", value);
 #endif
 	if (up_flag)
 		return;
@@ -1336,7 +1392,11 @@ set_console(int no, int diff)
 {
 	if (scr_scan_mode == ScanIoctl)
 	{
+#ifdef OS_MINGW
+		char *tty = NULL;
+#else
 		char *tty = ttyname(0);
+#endif
 		int l;
 		if (!tty)
 			return;
@@ -1358,7 +1418,7 @@ do_shift(unsigned char value, char up_flag)
 {
 	int old_state = shift_state;
 #ifdef DBG2
-	printf("do_shift: %d\n", value);
+	printf("do_shift: %d\r\n", value);
 #endif
 
 	if (rep && !up_flag)
@@ -1371,6 +1431,7 @@ do_shift(unsigned char value, char up_flag)
 		value = KVAL(K_SHIFT);
 		if (!up_flag)
 			capslock_state = 0;
+		set_kbd_led();
 		/*clr_vc_kbd_led(kbd, VC_CAPSLOCK); */
 	}
 
@@ -1408,7 +1469,7 @@ do_meta(unsigned char value, char up_flag)
 
 #if 1
 #ifdef DBG2
-	printf("do_meta: %d\n", value);
+	printf("do_meta: %d\r\n", value);
 #endif
 	put_aqueue(value);
 #else
@@ -1427,7 +1488,7 @@ do_ascii(unsigned char value, char up_flag)
 {
 	int base;
 #ifdef DBG2
-	printf("do_acii: %d\n", value);
+	printf("do_acii: %d\r\n", value);
 #endif
 
 	if (up_flag)
@@ -1556,8 +1617,11 @@ static void
 bare_num(void)
 {
 	if (!rep)
+        {
 		/*chg_vc_kbd_led(kbd,VC_NUMLOCK); */
 		scan_numlock_state = !scan_numlock_state;
+		set_kbd_led();
+	}
 }
 
 static void
@@ -1585,6 +1649,7 @@ caps_toggle(void)
 		return;
 	/*chg_vc_kbd_led(kbd, VC_CAPSLOCK); */
 	capslock_state = !capslock_state;
+	set_kbd_led();
 }
 
 static void
@@ -1594,6 +1659,7 @@ caps_on(void)
 		return;
 	/*set_vc_kbd_led(kbd, VC_CAPSLOCK); */
 	capslock_state = 1;
+	set_kbd_led();
 }
 
 static void
@@ -1630,3 +1696,31 @@ static void
 spawn_console(void)
 {
 }
+
+
+#ifdef OS_LINUX
+#define KDGETLED	0x4B31	/* return current led state */
+#define KDSETLED	0x4B32	/* set led state [lights, not flags] */
+#define 	LED_SCR		0x01	/* scroll lock led */
+#define 	LED_NUM		0x02	/* num lock led */
+#define 	LED_CAP		0x04	/* caps lock led */
+#endif
+
+static void
+set_kbd_led(void)
+{
+#ifdef OS_LINUX
+	int leds = 0;
+
+        if (scan_numlock_state)
+        	leds |= LED_NUM;
+        if (capslock_state)
+        	leds |= LED_CAP;
+        if (slockstate)
+        	leds |= LED_SCR;
+
+	ioctl(0, KDSETLED, leds);
+#endif
+
+}
+

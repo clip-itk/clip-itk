@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -35,7 +34,7 @@ IF (i:=AT(cAcc,'ÄÇëÖçäåêíïABCEHKMPTX'))<>0
      cAcc:=STR((i-1) % 10,1)
 ENDIF
 
-cAcc:=	SUBSTR(Account,1,5)+cAcc+;
+cAcc:=	LEFT(Account,5)+cAcc+;
 	SUBSTR(Account,7,2)+'0'+SUBSTR(Account,10)
 
 n0:=Padl(amf,3)+cAcc

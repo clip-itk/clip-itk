@@ -23,7 +23,7 @@ export DISTROOT=$dir ARCH=$arch VER=$ver
 sources=`grep -i '^Source:' debian/control | tr -s ' \t' ' ' | cut -d ' ' -f2`
 packages=`grep -i '^Package:' debian/control | tr -s ' \t' ' ' | cut -d ' ' -f2`
 
-time dpkg-buildpackage -rfakeroot -tc || exit 1
+time dpkg-buildpackage -rfakeroot -tc #|| exit 1
 #fakeroot debian/rules install
 
 echo sources $sources

@@ -1,0 +1,285 @@
+# begin sample header
+#
+#ifdef CLIPROOT
+#	BIN=$(CLIPROOT)/bin
+#else
+#	CLIPROOT:=$(shell cd ../../../../cliproot; pwd)
+#	BIN:=$(shell cd ../../../clip; pwd)
+#endif
+#
+#
+#PACKAGE = clip-bzip2
+#MAIN=bzip2
+##DOCBOOK_OPTS = -p openjade
+#
+#all: html
+#install: install-html
+#
+# end of sample header
+
+#
+# source layout:
+# template/*.sgml  - sgml template sources
+# image/all    - dir for common images
+# image/<LANG> - dir for <LANG> images
+#
+# po dir layout:
+#
+# po/file.sgml/pot
+# po/file.sgml/en.po
+# po/file.sgml/ru.po
+#
+
+#LANGS = en ru hu es br ua
+en_charset = ascii
+ru_charset = koi8-r
+ua_charset = koi8-u
+hu_charset = iso-8859-2
+es_charset = iso-8859-1
+pt_charset = iso-8859-1
+
+en_tcharset = ascii
+ru_tcharset = koi8-r
+ua_tcharset = koi8-u
+hu_tcharset = iso-8859-2
+es_tcharset = iso-8859-1
+pt_tcharset = iso-8859-1
+
+ifdef USEUTF
+ru_charset = utf-8
+en_charset = utf-8
+ua_charset = utf-8
+hu_charset = utf-8
+es_charset = utf-8
+pt_charset = utf-8
+endif
+export ru_charset ua_charset en_charset hu_charset es_charset pt_charset
+export ru_tcharset ua_tcharset en_tcharset hu_tcharset es_tcharset pt_tcharset
+
+
+
+pot extract:
+	lst=`cd template; find . -name '*.sgml'` ;\
+	for F in $$lst ;\
+	do \
+		mkdir -p po/$$F ;\
+		$(BIN)/po_extr template/$$F > po/$$F/_.pot ;\
+	done
+#		find template -name '*.sgml' | xargs $(BIN)/po_extr >pot
+
+merge: pot
+	lst=`cd template; find . -name '*.sgml'` ;\
+	for L in $(LANGS); \
+	do \
+		for F in $$lst ;\
+		do \
+			mkdir -p po/$$F ;\
+			test -f po/$$F/$$L.po || cp po/$$F/_.pot po/$$F/$$L.po ;\
+			cp po/$$F/$$L.po po/$$F/$$L.po.bak ;\
+			msgmerge -o po/$$F/$$L.po po/$$F/$$L.po.bak po/$$F/_.pot ;\
+		done ;\
+	done
+
+sgml: extract merge
+	for L in $(LANGS); \
+	do \
+		eval charset=\$$$${L}_charset ;\
+		test -n "$$charset" || charset="utf-8" ;\
+		mkdir -p sgml/$$L ;\
+		lst=`cd template; find . -name '*.sgml'` ;\
+		for F in $$lst ;\
+		do \
+			echo $$F  $$charset ;\
+			mkdir -p `dirname sgml/$$L/$$F` ;\
+			$(BIN)/po_subst -e $$charset -i po/$$F/$$L.po -i po/$$F/en.po -o template/$$F sgml/$$L/$$F ;\
+		done ;\
+		(cd template; find . -name '*.gif' -o -name '*.jpg' -o -name '*.png' \
+			| cpio -p -d -m -u --quiet ../sgml/$$L) ;\
+		test ! -d image/all || (cd image/all; find . -type f -a ! -path '*CVS*'\
+			| cpio -p -d -m -u --quiet ../../sgml/$$L) ;\
+		test ! -d image/$$L || (cd template image/$$L; find . -type f -a ! -path '*CVS*'\
+			| cpio -p -d -m -u --quiet ../../sgml/$$L) ;\
+	done
+	-$(CLIPROOT)/bin/ftosgml $(LANGS)
+#	for L in $(LANGS); \
+#	do \
+#		eval charset=\$$$${L}_charset ;\
+#		test -n "$$charset" || charset="utf-8" ;\
+#		lst=`cd sgml/$$L/clip-funcs; find . -name '*.sgml'` ;\
+#		for F in $$lst ;\
+#		do \
+#			echo sgml/$$L/clip-funcs/$$F  $$charset ;\
+#			(cat sgml/$$L/clip-funcs/$$F | tconv $$charset utf-8 > sgml/$$L/clip-funcs/tconv.tmp) ;\
+#			mv sgml/$$L/clip-funcs/tconv.tmp sgml/$$L/clip-funcs/$$F;\
+#		done ;\
+#	done
+
+	-$(CLIPROOT)/bin/ctosgml $(LANGS)
+#	for L in $(LANGS); \
+#	do \
+#		eval charset=\$$$${L}_charset ;\
+#		test -n "$$charset" || charset="utf-8" ;\
+#		lst=`cd sgml/$$L/clip-classes; find . -name '*.sgml'` ;\
+#		for F in $$lst ;\
+#		do \
+#			echo sgml/$$L/clip-classes/$$F  $$charset ;\
+#			(cat sgml/$$L/clip-classes/$$F | tconv $$charset utf-8 > sgml/$$L/clip-classes/tconv.tmp) ;\
+#			mv sgml/$$L/clip-classes/tconv.tmp sgml/$$L/clip-classes/$$F;\
+#		done ;\
+#	done
+
+
+html: sgml clean-html
+	for L in $(LANGS); \
+	do \
+		eval charset=\$$$${L}_charset ;\
+		test -n "$$charset" || charset="utf-8" ;\
+		export SP_ENCODING=$$charset;\
+		echo $$charset;\
+		mkdir -p html/$$L ;\
+		out=`cd  html/$$L; pwd` ;\
+		(cd sgml/$$L ;  docbook2html $(DOCBOOK_OPTS) -o $$out $(MAIN).sgml) ;\
+		find html/$$L -name '*.html' |xargs $(BIN)/add_meta_tag $$charset;\
+	done
+
+ps: sgml clean-ps
+	for L in $(LANGS); \
+	do \
+		eval charset=\$$$${L}_charset ;\
+		test -n "$$charset" || charset="utf-8" ;\
+		export SP_ENCODING=$$charset ;\
+		mkdir -p ps/$$L ;\
+		out=`cd  ps/$$L; pwd` ;\
+		(cd sgml/$$L ; docbook2ps $(DOCBOOK_OPTS) -o $$out $(MAIN).sgml) ;\
+	done
+
+pdf: sgml clean-pdf
+	for L in $(LANGS); \
+	do \
+		eval charset=\$$$${L}_charset ;\
+		test -n "$$charset" || charset="utf-8" ;\
+		export SP_ENCODING=$$charset;\
+		mkdir -p pdf/$$L ;\
+		out=`cd  pdf/$$L; pwd` ;\
+		(cd sgml/$$L ; docbook2pdf $(DOCBOOK_OPTS) -e no-idref -o $$out $(MAIN).sgml) ;\
+	done
+
+txt: sgml clean-txt
+	for L in $(LANGS); \
+	do \
+		eval charset=\$$$${L}_charset ;\
+		test -n "$$charset" || charset="utf-8" ;\
+		eval tcharset=\$$$${L}_tcharset ;\
+		test -n "$$tcharset" || tcharset="utf-8" ;\
+		export SP_ENCODING=$$charset;\
+		mkdir -p txt/$$L ;\
+		out=`cd  txt/$$L; pwd` ;\
+		(cd sgml/$$L ; docbook2html -u $(DOCBOOK_OPTS) $(MAIN).sgml \
+			| sed -n -e '/^<!DOCTYPE/,$$p' \
+			| lynx -force_html -nolist -dump -stdin \
+				-assume-charset=$$charset \
+			| $(BIN)/tconv $$charset $$tcharset \
+			> $$out/$(MAIN).txt \
+		) ;\
+	done
+
+#		(cd sgml/$$L ; docbook2txt $(DOCBOOK_OPTS) -o $$out $(MAIN).sgml) ;\
+
+tex: sgml clean-tex
+	for L in $(LANGS); \
+	do \
+		eval charset=\$$$${L}_charset ;\
+		test -n "$$charset" || charset="utf-8" ;\
+		export SP_ENCODING=$$charset;\
+		mkdir -p tex/$$L ;\
+		out=`cd  tex/$$L; pwd` ;\
+		(cd sgml/$$L ; docbook2tex $(DOCBOOK_OPTS) -o $$out $(MAIN).sgml) ;\
+	done
+
+rtf: sgml clean-rtf
+	for L in $(LANGS); \
+	do \
+		eval charset=\$$$${L}_charset ;\
+		test -n "$$charset" || charset="utf-8" ;\
+		export SP_ENCODING=$$charset;\
+		mkdir -p rtf/$$L ;\
+		out=`cd  rtf/$$L; pwd` ;\
+		(cd sgml/$$L ; docbook2rtf $(DOCBOOK_OPTS) -o $$out $(MAIN).sgml) ;\
+	done
+
+install-html:
+	for L in $(LANGS); \
+	do \
+		mkdir -p $(DESTDIR)$(CLIPROOT)/doc/html/$$L/$(PACKAGE) ;\
+		cp -R html/$$L/* $(DESTDIR)$(CLIPROOT)/doc/html/$$L/$(PACKAGE)/ 2>/dev/null || true;\
+	done
+
+install-sgml:
+	for L in $(LANGS); \
+	do \
+		mkdir -p $(DESTDIR)$(CLIPROOT)/doc/sgml/$$L/$(PACKAGE) ;\
+		cp -R sgml/$$L/* $(DESTDIR)$(CLIPROOT)/doc/sgml/$$L/$(PACKAGE)/ 2>/dev/null || true;\
+	done
+
+install-ps:
+	for L in $(LANGS); \
+	do \
+		mkdir -p $(DESTDIR)$(CLIPROOT)/doc/ps/$$L/$(PACKAGE) ;\
+		cp -R ps/$$L/* $(DESTDIR)$(CLIPROOT)/doc/ps/$$L/$(PACKAGE)/ 2>/dev/null || true;\
+	done
+
+install-pdf:
+	for L in $(LANGS); \
+	do \
+		mkdir -p $(DESTDIR)$(CLIPROOT)/doc/pdf/$$L/$(PACKAGE) ;\
+		cp -R pdf/$$L/* $(DESTDIR)$(CLIPROOT)/doc/pdf/$$L/$(PACKAGE)/ 2>/dev/null || true;\
+	done
+
+install-rtf:
+	for L in $(LANGS); \
+	do \
+		mkdir -p $(DESTDIR)$(CLIPROOT)/doc/rtf/$$L/$(PACKAGE) ;\
+		cp -R rtf/$$L/* $(DESTDIR)$(CLIPROOT)/doc/rtf/$$L/$(PACKAGE)/ 2>/dev/null || true;\
+	done
+
+install-txt:
+	for L in $(LANGS); \
+	do \
+		mkdir -p $(DESTDIR)$(CLIPROOT)/doc/txt/$$L/$(PACKAGE) ;\
+		cp -R txt/$$L/* $(DESTDIR)$(CLIPROOT)/doc/txt/$$L/$(PACKAGE)/ 2>/dev/null || true;\
+	done
+
+#install all what possible
+#
+install-all: install-html install-ps install-pdf install-txt install-tex install-rtf
+
+distclean: clean clean-html clean-ps clean-pdf clean-txt clean-tex clean-rtf
+
+clean-html:
+	rm -rf html
+
+clean-ps:
+	rm -rf ps
+
+clean-pdf:
+	rm -rf pdf
+
+clean-txt:
+	rm -rf txt
+
+clean-tex:
+	rm -rf tex
+
+clean-rtf:
+	rm -rf rtf
+
+clean:
+	rm -rf sgml
+	find . -name '*.bak' -o -name '*~' -o -name '_.pot' | xargs rm -f
+
+.PHONY: extract merge subst clean distclean \
+	html sgml tex txt ps pdf rtf \
+	install-html install-sgml install-tex install-txt \
+	install-ps install-pdf install-rtf
+
+

@@ -50,5 +50,6 @@
 #define EG_READONLY			39
 #define EG_APPENDLOCK			40
 #define EG_LOCK  			41
+#define EG_SIGNAL  			42
 
 #endif

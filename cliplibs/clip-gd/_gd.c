@@ -6,6 +6,13 @@
 
 /*
    $Log: _gd.c,v $
+   Revision 1.6  2003/02/04 07:34:21  clip
+   alena: add new function gdImageCopyResized()
+
+   Revision 1.5  2002/10/14 07:06:44  clip
+   fixed bug from bugzilla - reference to functions
+   alena:
+
    Revision 1.4  2002/05/28 07:34:35  clip
    alena: add toFile to stdout and create file from stdin
 
@@ -207,6 +214,12 @@ clip_GDIMAGECREATEFROMPNG(ClipMachine * mp)
 	return _clip_gdImageFromFile(mp,GDFILE_PNG);
 }
 
+
+int
+clip_GDIMAGECREATEFROMXBM(ClipMachine * mp)
+{
+	return _clip_gdImageFromFile(mp,GDFILE_XBM);
+}
 int
 clip_GDIMAGECREATEFROMGD(ClipMachine * mp)
 {
@@ -2809,4 +2822,35 @@ clip_GDIMAGECOPY(ClipMachine * mp)
 	_clip_retni(mp,1);
 	return 0;
 }
+
+
+int
+clip_GDIMAGECOPYRESIZED(ClipMachine * mp)
+{
+	gdImagePtr imDst=GETIMAGE(mp);
+	gdImagePtr imSrc=NULL;
+	int nImSrc = _clip_parni(mp, 2);
+	int dstX = _clip_parni(mp, 3);
+	int dstY = _clip_parni(mp, 4);
+	int srcX = _clip_parni(mp, 5);
+	int srcY = _clip_parni(mp, 6);
+	int dstW = _clip_parni(mp, 7);
+	int dstH = _clip_parni(mp, 8);
+	int srcW = _clip_parni(mp, 9);
+	int srcH = _clip_parni(mp, 10);
+
+	if ( _clip_parinfo(mp,2) == NUMERIC_t )
+	{
+		imSrc=_clip_fetch_c_item(mp,nImSrc,_C_ITEM_TYPE_GDLIB);
+	}
+	if ( imDst==NULL || imSrc==NULL)
+	{
+		_clip_retni(mp,-1);
+		return 0;
+	}
+	gdImageCopyResized(imDst, imSrc, dstX, dstY, srcX, srcY, dstW, dstH, srcW, srcH);
+	_clip_retni(mp,1);
+	return 0;
+}
+
 

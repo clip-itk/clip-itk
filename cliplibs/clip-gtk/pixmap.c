@@ -63,7 +63,7 @@ clip_GTK_PIXMAPNEW(ClipMachine * cm)
 	}
 	pixmap = gdk_pixmap_new(win, width, height, depth);
 
-//        if (pixmap) wid = gtk_pixmap_new(pixmap,mask);
+//	if (pixmap) wid = gtk_pixmap_new(pixmap,mask);
 	if (pixmap) wid = gtk_pixmap_new(pixmap,NULL);
 	if (!wid) goto err;
 
@@ -101,7 +101,7 @@ clip_GTK_PIXMAPFROMXPMNEW(ClipMachine * cm)
 	#else
 	_clip_path(cm, filename, buf, sizeof(buf), 0 );
 	#endif
-        FREE_TEXT(filename);
+	FREE_TEXT(filename);
 	if (cwin && cwin->widget && cwin->widget->window)
 	{
 		win = cwin->widget->window;
@@ -220,7 +220,7 @@ clip_GTK_PIXMAPFROMBMPNEW(ClipMachine * cm)
 
 	LOCALE_TO_UTF(filename);
 	_clip_path(cm, filename, buf, sizeof(buf), 0 );
-        FREE_TEXT(filename);
+	FREE_TEXT(filename);
 	if (cwin && cwin->widget && cwin->widget->window)
 	{
 		win = cwin->widget->window;

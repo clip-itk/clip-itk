@@ -1,7 +1,7 @@
 TESTS = test.dbf mathtest type_field obj obj_p ttt_p ttt param set_t err \
 	macro1 param1 loop mem_file mainp.pa main a_flag replace memo_t \
-	run dutil wind key  mouse tbldec pload loadso a dbg pg testlock \
-        dispbox inkey
+	run dutil wind wind2 wind3 key  mouse tbldec pload loadso a dbg pg testlock \
+	dispbox inkey memoline hparse transform
 
 #CLIP = $(CLIPROOT)/bin/clip
 CLIP = clip
@@ -14,7 +14,7 @@ all: dbfs $(TESTS)
 
 clean:
 	rm -rf *.o *.a *.so *.po *.pa *.b *.BAK *.bak *~ core* *core *.tab.c *.tab.h lex.*.c *.output
-	rm -f *.c *.log *.mlog *.pid $(TESTS) $(DBFS) x *.exe
+	rm -f *.c *.s *.log *.mlog *.pid $(TESTS) $(DBFS) x *.exe *.ex *.nm *.s
 
 dbfs: $(DBFS)
 
@@ -27,11 +27,8 @@ ttt.dbf: ttt.dbf.orig
 ttt.dbt: ttt.dbt.orig
 	cp ttt.dbt.orig ttt.dbt
 
-mathtest: mathtest.o $(CLIPLIB)
-	$(CLIP) $(CLPFLAGS) $(SF) -e mathtest.o
-
-mathtest.o: mathtest.prg
-	$(CLIP) $(CLPFLAGS) $(SF) -M mathtest.prg
+mathtest: mathtest.prg
+	$(CLIP) $(CLPFLAGS) $(SF) -e -M mathtest.prg
 
 type_field: type_field.prg $(CLIPLIB)
 	$(CLIP) $(CLPFLAGS) $(SF) -e -M type_field.prg
@@ -124,6 +121,15 @@ dispbox: dispbox.prg
 inkey: inkey.prg
 	$(CLIP) $(CLPFLAGS) -I. -e -l -s -n inkey.prg
 
+memoline: memoline.prg
+	$(CLIP) $(CLPFLAGS) -I. -e -l -s -M memoline.prg
+
+hparse: hparse.prg
+	$(CLIP) $(CLPFLAGS) -I. -e -l -s -M hparse.prg
+
+transform: transform.prg
+	$(CLIP) $(CLPFLAGS) -I. -e -l -s -M transform.prg
+
 dbg: dbg.prg $(CLIPLIB)
 	$(CLIP) $(CLPFLAGS) $(SF) -e -M dbg.prg
 
@@ -161,6 +167,12 @@ dutil: dutil.prg $(CLIPLIB)
 
 wind: wind.prg $(CLIPLIB)
 	$(CLIP) $(CLPFLAGS) $(SF) -e -M wind.prg
+
+wind2: wind2.prg $(CLIPLIB)
+	$(CLIP) $(CLPFLAGS) $(SF) -e -M wind2.prg
+
+wind3: wind3.prg $(CLIPLIB)
+	$(CLIP) $(CLPFLAGS) $(SF) -e -M wind3.prg
 
 pg: pg.prg $(CLIPLIB)
 	$(CLIP) $(CLPFLAGS) $(SF) -e -M pg.prg

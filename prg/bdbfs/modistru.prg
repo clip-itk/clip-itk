@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "common.ch"
@@ -19,20 +18,24 @@ PRIVATE	_Pole[4],_was_changes:=.f.
 PRIVATE	 arAim
 
 arAim:={}
-AEVAL(m->_aDBSTRUCT, {|el| AADD(arAim, {el[1], el[1]} ) })
+FOR i:=1 TO LEN(m->_aDBSTRUCT)
+	aBlock:=m->_aDBSTRUCT[i, 1]
+	IF aBlock>='A' THEN  AADD(arAim, {aBlock, aBlock} ) 
+NEXT
 
 PUSH KEYS Modi_M_Keys COLOR _im
 COPY TO (_browBase) STRU EXTE
 
 USE (_browBase) NEW EXCL
 afields(_Pole)
-
+setColor(_im)
 cDbedit(5,m->_middlecol-23,m->__mrow-4,m->_middlecol+24,;
 	_Pole,'ModiBrow',_Pole,HEAD_BROW)
 
-aBlock:=MakeAim(arAim)
-
-lMemo:=__DbLocate(Compile("Field_Type=='M' .OR. (Field_Type=='V' .AND. Field_Len>5)" ) )
+IF  _Was_Changes
+	aBlock:=MakeAim(arAim)
+	lMemo:=__DbLocate(Compile("Field_Type $ 'MGP' .OR. (Field_Type=='V' .AND. Field_Len>5)" ) )
+ENDIF
 
 USE
 SELE 1
@@ -57,12 +60,13 @@ IF  _Was_Changes
 		END
 		IF 1->(DELETED()) THEN DELETE
 		SELE 1
-		IF !CheckEsc() 
+		IF !CheckEsc()
 			_Was_Changes:=.F.	//Отменить
 			EXIT
 		ENDIF
 	ENDSCAN
 	ErrorSys()
+*	(_tmpBase)->(dbclosearea())
 	20->(dbclosearea())
 	SELE 1
 	USE
@@ -77,7 +81,6 @@ IF  _Was_Changes
 		RENAME(_tmpBase,_base)
 		RENAME(_tmpMemo,m->_MainMemoFile)
 	ENDIF
-
 	Meter(3)
 
     END SEQU
@@ -89,8 +92,13 @@ RETU 0	// чтобы восстановить индексы
 **********
 FUNC MODIBROW(_ptr,_a)
 LOCAL	GetList:={},;
-	aType:={'Character','Numeric','Date','Logical','Memory','Float','VariField'},;
-	cTypes:='CNDLMFV'
+	aType:={'Character','Numeric','Date','Logical','Memory',;
+		'Float', 'Double', 'Integer',;
+		'VariField','Variant',; 
+		'DateTime',  'Currency',;
+		'General', 'Picture';
+	},;
+	cTypes:='CNDLMFBIVXTYGP'
 DO CASE
 	CASE _a=K_ENTER
 		SetPos( row(), col() )
@@ -100,10 +108,10 @@ DO CASE
 				AAdd( GetList, _GET_( _tmp, "_tmp", "@!K", {|| TrueName()} ):Display() )
 			CASE _ptr==2
 				Ch_Type(ForAch(9,FLD_TYPE,aType,AT(&(_Pole[_ptr]),cTypes)))
-			CASE _ptr==3 .AND. Field_Type $ 'CNVF'
+			CASE _ptr==3 .AND. Field_Type $ 'CNVFX'
 				m->_tmp=IF(Field_Type == 'C',256*Field_dec+Field_Len,Field_Len)
 				AAdd( GetList, _GET_( _tmp, "_tmp", IF(Field_type=="C","9999","999"), {|| TrueLen()} ) )
-			CASE Field_Type $ 'NF' .AND. Field_len>2
+			CASE Field_Type $ 'NFB' .AND. Field_len>2
 				m->_tmp=Field_DEC
 				AAdd( GetList, _GET_( _tmp, "_tmp", "999", ;
 						{||IF( Between(m->_tmp, 0, Field_len-2),;
@@ -139,7 +147,8 @@ DO CASE
 			APPE BLANK
 			AADD(arAim,{'',''})
 		ENDIF
-		REPLACE field_type WITH "C",;
+		REPLACE field_name with '',;
+			field_type WITH "C",;
 			field_len WITH 10
 		Keyb _HOME+_EMP+_ENTER
 		RETU 2
@@ -182,7 +191,7 @@ DO CASE
 		arAim[recno()+1]:=_a
 		SWAP(recNO(),recno()+1)
 
-	CASE (BETWEEN(_a,65,254) .AND.  (_ptr = 1)).OR.;
+	CASE (BETWEEN(_a,65,255) .AND.  (_ptr = 1)).OR.;
 	     (BETWEEN(_a,48,57) .AND.  (_ptr > 2))
 		KEYBOARD _ENTER+CHR(_a)
 
@@ -195,10 +204,11 @@ STATIC FUNC MakeAim(arAim)
  и преобразовать в блок
 */
 LOCAL i,_a,aBlock:={},aStr:=m->_aDBSTRUCT
+*Nfind(ArAim)
 FOR i:=1 TO LEN(arAim)
 	IF (_a:=AMScan(aStr,1,arAim[i,1])) <>0 // было такое поле
 		GO i
-		IF (m->_dtype[_a]<>Field_type) .AND. Field_Type # 'V'
+		IF (m->_dtype[_a]<>Field_type) .AND. !Field_Type $ 'VX'
 			arAim[i,1]:='XTOY('+TRIM(arAim[i,1])+',['+Field_Type+'])'
 		ENDIF
 	ENDIF
@@ -208,15 +218,21 @@ AEVAL(arAim,{|_1| IF(!EMPTY(_1[1]),;
 RETURN aBlock
 **********
 STATIC PROC Ch_TYPE(_a)
-LOCAL _ft:=substr('CNDLMFV',_a,1)
+#define _ML IF('VFP' $ RddSetDefault(), 4, 10)
+LOCAL _ft:=substr('CNDLMFBIVXTYGP',_a,1)
 IF _a>0 .AND. (Field_type<>_ft)
 	IF _ft<>'V'
         	REPLACE Field_Type WITH _ft,;
-			Field_Len WITH {field_len,field_len,8,1,10,10}[_a]
+			Field_Len WITH {field_len,field_len,8,1,_ML,;
+					field_len,8,4,10,10,8,8,_ML,_ML}[_a]
 	ELSE
 		VariFieldLen(.t.)
 	ENDIF
-	IF  _a<>2 THEN REPL Field_dec WITH 0
+	IF _ft='Y'  
+		REPL Field_dec WITH 4
+	ELSEIF !(_ft $ 'NFB') 
+		REPL Field_dec WITH 0
+	ENDIF
 ENDIF
 **********
 STATIC FUNC VariFieldLen(lObligate)
@@ -269,21 +285,25 @@ REPL field_Name WITH cFld
 RETU .T.
 **********
 STATIC FUNC  TrueLen
-LOCAL _i:=.T.
+//Сюда попадают CNVFX
+LOCAL _i:=.T., nS:=m->_tmp
 
-IF (m->_tmp>0) .AND. (m->_tmp<4096) .AND.;
-   ( ( (m->_tmp<20) .OR. (field_type $ "CV") ) ) .AND.;
-   ( ( !InList(m->_tmp,1,2,5) .OR. (field_type # "V") ) )
+IF (nS < 1) .OR. (nS>65534) .OR.;
+   ((field_type $ 'NF') .AND. (nS>20)) .OR.;
+   ((field_type = 'V') .AND. InList(nS,1,2,5)) .OR.;
+   ((field_type = 'X') .AND. !Between(nS,10, 127))
 
-	REPL field_len WITH (m->_tmp % 256)
-
-	IF field_type = "C"
-		REPL Field_Dec WITH INT(m->_tmp / 256)
-	ELSEIF field_type = "V" .OR. (Field_dec>=Field_len-2)
-		REPL Field_Dec with 0
-	ENDIF
-ELSE
 	_i:=.F.
 	Nfind(BAD_LEN)
+
+ELSE
+
+	REPL field_len WITH (nS % 256)
+
+	IF field_type = "C"
+		REPL Field_Dec WITH INT(nS / 256)
+	ELSEIF field_type $ "VX" .OR. (Field_dec>=Field_len-2)
+		REPL Field_Dec with 0
+	ENDIF
 ENDIF
 RETU _i

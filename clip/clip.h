@@ -5,6 +5,144 @@
 */
 /*
    $Log: clip.h,v $
+   Revision 1.233  2004/03/17 08:47:26  clip
+   uri: bug in colowin() fixed. Reported by Stas
+
+   Revision 1.232  2004/03/01 11:27:13  clip
+   uri: add CLIP_DOS_SCRBUF for save/rest screen
+
+   Revision 1.231  2004/02/10 11:14:03  clip
+   rust: str_str() -> _clip_strstr() with '"" $ "string"' bugfix
+
+   Revision 1.230  2004/01/28 13:49:00  clip
+   rust: common ClipMachine->kbdbuf
+
+   Revision 1.229  2004/01/25 10:23:40  clip
+   uri: fix bug in exit procedures and inkey()
+
+   Revision 1.228  2004/01/04 10:24:49  clip
+   uri: add set(_SET_ROOTPATH,"rootpath") for add "rootpath" to all filenames,
+	via "/var/www/htdocs" in apache.
+
+   Revision 1.227  2003/11/21 11:12:21  clip
+   set operation result if errorblock return new value
+   paul
+
+   Revision 1.226  2003/11/21 06:21:15  clip
+   uri: rewriting generator error for "invalid arguments for %s operation",
+	for operation +-*$=%**....
+
+   Revision 1.225  2003/11/19 11:48:25  clip
+   add FLUSHOUT_FLAG, _SET_FLUSHOUT to set
+   paul
+
+   Revision 1.224  2003/11/04 11:18:34  clip
+   post signal handler
+   paul
+
+   Revision 1.223  2003/09/05 12:11:52  clip
+   uri: initial fixes for mingw+win32 from uri
+
+   Revision 1.222  2003/09/04 14:04:41  clip
+   *** empty log message ***
+
+   Revision 1.221  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.220  2003/06/20 08:21:25  clip
+   possible fixes #144
+   paul
+
+   Revision 1.219  2003/05/16 11:08:02  clip
+   initial support for using assembler instead C
+   now activated if environment variable CLIP_ASM is defined to any value
+   paul
+
+   Revision 1.218  2003/04/14 14:01:24  clip
+   rust: bug in fclose(), reported by István Földi <foldii@terrasoft.hu>
+
+   Revision 1.217  2003/04/02 10:53:19  clip
+   rust: _clip_close() added
+
+   Revision 1.216  2003/03/25 10:58:11  clip
+   rust: _clip_setlock() added
+
+   Revision 1.215  2003/03/21 11:49:40  clip
+   rust: RDD locks with tasks (DOS compatibility)
+
+   Revision 1.214  2003/03/12 12:50:42  clip
+   rust: tasks share RDDs and subdrivers
+
+   Revision 1.213  2003/02/13 16:36:44  clip
+   rust: STOT()
+
+   Revision 1.212  2003/02/10 13:04:47  clip
+   rust: SET MULTILOCKS ON|OFF (FlagShip extension)
+
+   Revision 1.211  2003/02/06 10:56:03  clip
+   uri: added CRC16, reconstructed CRC32.
+
+   Revision 1.210  2003/01/22 10:33:38  clip
+   dosparam() function
+   closes #111
+   paul
+
+   Revision 1.209  2002/12/31 08:03:36  clip
+   assign to locals
+   closes #95
+   paul
+
+   Revision 1.208  2002/12/25 14:48:51  clip
+   rust: SQL driver registration changed
+
+   Revision 1.207  2002/12/23 13:57:46  clip
+   reference to temporary object
+   frame structure extended!
+   closes #90
+   paul
+
+   Revision 1.206  2002/12/04 07:09:59  clip
+   simple profiler realised
+   start program with --profile will generate <progname>.pro profile
+   limitations: manual written C functions are not profiled, bad accuracy
+   paul
+
+   Revision 1.205  2002/11/26 12:42:36  clip
+   rust: added parameter 'method' to _clip_var2str() and _clip_str2var()
+
+   Revision 1.204  2002/11/26 10:21:22  clip
+   OpenBSD fixes
+   paul
+
+   Revision 1.203  2002/11/11 13:12:15  clip
+   rust: m6_Error(), m6_Set()
+
+   Revision 1.202  2002/10/31 10:33:59  clip
+   plural form runtime messages support:
+   gettext(cMsgid [,cModule])->cTranslated
+   ngettext(cMsgid, cMsgid_plural, nNum, [,cModule]) ->cTranslated
+   paul
+
+   Revision 1.201  2002/10/29 13:29:45  clip
+   rust: SET INDEX BUFFER LIMIT [TO] <n_Megabytes>
+	  SET MAP FILE ON|OFF
+
+   Revision 1.200  2002/10/26 11:10:01  clip
+   initial support for localized runtime messages
+   messages are in module 'cliprt'
+   paul
+
+   Revision 1.199  2002/10/21 11:06:17  clip
+   *** empty log message ***
+
+   Revision 1.198  2002/10/21 10:20:10  clip
+   uri: small fix for cygwin
+
+   Revision 1.197  2002/10/21 09:32:56  clip
+   uri: changes from druzus.
+
    Revision 1.196  2002/10/02 12:21:55  clip
    uri: added "set buffring on|off" and changed fileIO functions for it.
 
@@ -21,7 +159,7 @@
    add function: loadModuleMsg(cModule, cFilename_mo) -> bResult
    predefined macro: __CLIP_MODULE__  expands to current module name as "modname"
    new accepted environment var: CLIP_LOCALE_ROOT
-   	used by clip, clip_msgmerge, clip_msgfmt, and at runtime
+	used by clip, clip_msgmerge, clip_msgfmt, and at runtime
    paul
 
    Revision 1.191  2002/09/16 09:37:37  clip
@@ -849,10 +987,12 @@
 #ifndef CLIP_H
 #define CLIP_H
 
-#if defined(_WIN32)
-#define INT64 __int64
+#include "clipcfg.h"
+#if defined(OS_MINGW)
+	/* #define INT64 __int64 */
+	#include "_win32.h"
 #else
-#define INT64 long long
+	#define INT64 long long
 #endif
 
 /*#define MEMDEBUG */
@@ -861,6 +1001,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/fcntl.h>
+#include <sys/time.h>
 #ifdef __FreeBSD__
 	#include <unistd.h>
 #endif
@@ -1170,6 +1311,14 @@ typedef struct ClipVarFrame
 ClipVarFrame;
 
 
+typedef struct
+{
+	int count;
+		ClipVar *items;
+}
+ClipVarVect;
+
+
 typedef struct ClipFrame
 {
 	ClipVar *stack;
@@ -1184,8 +1333,11 @@ typedef struct ClipFrame
 	ClipHashNames *names;
 	const char *procname;
 	int stklen;
+		ClipVarVect *tempvars;
 }
 ClipFrame;
+
+
 
 #define SYSERRLEN	128
 
@@ -1265,11 +1417,14 @@ Container;
  */
 typedef struct
 {
-	FILE *f;
+	int type;	/* type of opened file, see fileio.ch:FT_* */
+	int fileno;	/* real file or socket number */
+	FILE *f;	/* STDIO lib buffer */
 	pid_t pid;	/* pid for pipe children process */
-        int fileno;	/* real file or socket number */
-        int type;	/* type of opened file, see fileio.ch:FT_* */
-        int mode;	/* buffering IO or not */
+	int stat;	/* see fileio.ch:FS_* flags */
+	int timeout;/* default timeout for eoperations */
+	long hash;  /* hash code for the full file name (with path) */
+	struct ClipMachine* cm;
 } C_FILE;
 
 /* Container end */
@@ -1280,16 +1435,49 @@ struct _RDD_MEMO_VTBL_;
 
 typedef struct DBDriver
 {
-	char id[7];
-	char data[4];
-	char idx[4];
-	char memo[4];
+	char id[9];
+	char data[6];
+	char idx[6];
+	char memo[6];
 } DBDriver;
+
+typedef struct SQLDriver
+{
+	char id[11];
+	char name[21];
+	char desc[101];
+	int (*connect)(struct ClipMachine*);
+} SQLDriver;
+
+typedef struct
+{
+		long hash;
+		char *procname;
+		char *filename;
+	struct timeval self;
+	struct timeval start;
+		unsigned long callno;
+		int started;
+#if 0
+	Coll callby;
+#endif
+}
+ProfileBucket;
+
+typedef struct
+{
+	ProfileBucket *bucket;
+		unsigned long count;
+}
+ProfileCount;
+
+extern int _clip_profiler;
 
 typedef struct ClipMachine
 {
 	struct ClipMachine *next;
 	int inited;
+	int deleted;
 
 	ClipVar *bp;
 	ClipFrame *fp;
@@ -1303,6 +1491,7 @@ typedef struct ClipMachine
 	struct _HashTable *spaces;
 
 	struct _HashTable *functions;
+	int main_func_level;
 	ClipVect dlls;
 	ClipBlock *exits;
 	int nexits;
@@ -1312,24 +1501,26 @@ typedef struct ClipMachine
 
 	int corba;
 
-	DBDriver *dbdrivers;
-	int ndbdrivers;
-	struct _RDD_DATA_VTBL_ **data_drivers;
-	int ndata_drivers;
-	struct _RDD_INDEX_VTBL_ **idx_drivers;
-	int nidx_drivers;
-	struct _RDD_MEMO_VTBL_ **memo_drivers;
-	int nmemo_drivers;
-	char def_data_driver[4];
-	char def_idx_driver[4];
-	char def_memo_driver[4];
-	char def_db_driver[7];
+	DBDriver **dbdrivers;
+	int *ndbdrivers;
+	struct _RDD_DATA_VTBL_ ***data_drivers;
+	int *ndata_drivers;
+	struct _RDD_INDEX_VTBL_ ***idx_drivers;
+	int *nidx_drivers;
+	struct _RDD_MEMO_VTBL_ ***memo_drivers;
+	int *nmemo_drivers;
+	char *def_data_driver;
+	char *def_idx_driver;
+	char *def_memo_driver;
+	char *def_db_driver;
 
-	int (*pg_connect)(struct ClipMachine* mp);
-	int (*ms_connect)(struct ClipMachine* mp);
-	int (*or_connect)(struct ClipMachine* mp);
-	int (*odbc_connect)(struct ClipMachine* mp);
-	int (*ib_connect)(struct ClipMachine* mp);
+	SQLDriver **sqldrivers;
+	int *nsqldrivers;
+
+	struct _HashTable *tasklocks;
+	struct _HashTable *fileopens;
+
+	int neterr;
 
 	struct _HashTable *aliases;
 	ClipVect *areas;
@@ -1345,6 +1536,8 @@ typedef struct ClipMachine
 	unsigned long flags;
 	unsigned long flags1;
 	int optimizelevel;
+	int m6_error;
+	int index_buffer_limit;
 	int lockstyle;
 	int mblocksize;
 	int autorder;
@@ -1357,7 +1550,7 @@ typedef struct ClipMachine
 	char *defaul;
 	int typeahead;
 	int *kbdbuf;
-	int *kbdptr;
+	int **kbdptr;
 	int lastkey;
 	int cursor;
 	char *altfile;
@@ -1368,6 +1561,7 @@ typedef struct ClipMachine
 	char *prfile;
 	char *real_prfile;
 	void *printer;
+	char *rootpath;
 	int margin;
 	char *delimchars;
 	int msgline;
@@ -1412,16 +1606,19 @@ typedef struct ClipMachine
 
 	struct _HashTable *fields;
 
-		/* if not null, all output come here */
-		struct OutBuf *obuf;
-		struct OutBuf *ebuf;
+	/* if not null, all output come here */
+	struct OutBuf *obuf;
+	struct OutBuf *ebuf;
 
 	ClipVar *obj;
+	struct _HashTable *profiler;
+		ProfileBucket *pbucket;
 }
 ClipMachine;
 
 #define CLIP_MAX_ERRORBLOCK_DEEP 128
 #define CLIP_MAX_PRINT_DEEP 32
+
 
 #define CLIP_MAX_HISTORY 32
 
@@ -1464,13 +1661,16 @@ extern long _hash_cur_dir[26];
 #define TRANSLATE_FLAG	0x4000000
 
 /* flags1 */
-#define AUTOPEN_FLAG	0x1
-#define OPTIMIZE_FLAG	0x2
-#define MAPERR_FLAG	0x4
-#define DISPBOX_FLAG	0x8
-#define NOEXPAND_MACRO_FLAG	0x10
-#define FOPENMODE_FLAG	0x20
-#define BUFFERING_FLAG	0x40
+#define AUTOPEN_FLAG        0x1
+#define OPTIMIZE_FLAG       0x2
+#define MAPERR_FLAG         0x4
+#define DISPBOX_FLAG        0x8
+#define NOEXPAND_MACRO_FLAG 0x10
+#define FOPENMODE_FLAG      0x20
+#define BUFFERING_FLAG      0x40
+#define MAP_FILE_FLAG       0x80
+#define MULTILOCKS_FLAG     0x100
+#define FLUSHOUT_FLAG		0x200
 
 #define DEFAULT_COLOR "W/N,N/W,N,N,N/W"
 
@@ -1531,13 +1731,20 @@ extern int _clip_argc;
 extern char **_clip_argv;
 extern char **_clip_envp;
 
+extern int _clip_raw_argc;
+extern char **_clip_raw_argv;
+
 int _clip_init(ClipMachine * mp, int argc, char **argv, char **envp);
 void _clip_exit(void);
 void _clip_signal(int sig);
+extern int _clip_sig_flag;
+void _clip_signal_real(int sig);
 
 long _clip_hashstr(const char *x);
 long _clip_casehashstr(const char *x);
 long _clip_hashbytes(long seed, const char *bytes, int len);
+long _clip_hashbytes16(long seed, const char *bytes, int len);
+long _clip_hashbytes32(long seed, const char *bytes, int len);
 long _clip_casehashbytes(long seed, const char *bytes, int len);
 /* trim head and tail spaces */
 long _clip_hashword(const char *x, int l);
@@ -1568,6 +1775,7 @@ void _clip_pop(ClipMachine * mp);
 void _clip_resume(ClipMachine * mp, int nlocals, int nreflocals);
 void _clip_vresume(ClipMachine * mp, int num, ClipVar * vect);
 void _clip_destroy(ClipMachine * mp, ClipVar * vp);
+ClipVar *_clip_ref_destroy(ClipMachine * mp, ClipVar * vp);
 void _clip_delete(ClipMachine * mp, ClipVar * vp);
 int _clip_iassign(ClipMachine * mp, void *lval);
 int _clip_assign(ClipMachine * mp, void *lval);
@@ -1614,6 +1822,9 @@ ClipVar *_clip_memvar_space(ClipMachine * mp, struct _HashTable *space, long has
 void _clip_remove_privates(ClipMachine * mp, int num,... /*long hash */ );
 void _clip_vremove_privates(ClipMachine * mp, int num, long *vect);
 int _clip_push(ClipMachine * mp, /*ClipVar */ void *vp);
+void _clip_push_nil(ClipMachine * mp);
+void _clip_push_true(ClipMachine * mp);
+void _clip_push_false(ClipMachine * mp);
 int _clip_push_static(ClipMachine * mp, /*ClipVar */ void *vp);
 void _clip_push_hash(ClipMachine * mp, long hash);
 void _clip_push_locale(ClipMachine * mp);
@@ -1702,6 +1913,7 @@ int _clip_register_block(ClipMachine * mp, ClipBlock block, long hash);
 
 void _clip_trap(ClipMachine * mp, const char *filename, int line);
 void _clip_trap_str(ClipMachine * mp, const char *filename, int line, const char *str);
+int _clip_trap_operation(ClipMachine * mp, const char *filename, int line, const char *oper, ClipVar *lval);
 void _clip_trap_printf(ClipMachine * mp, const char *filename, int line, const char *fmt,...);
 void _clip_trap_printv(ClipMachine * mp, const char *filename, int line, const char *fmt, void *vect);
 void _clip_trap_var(ClipMachine * mp, const char *filename, int line, ClipVar * var);
@@ -1715,8 +1927,8 @@ int _clip_trap_err(ClipMachine * mp, int genCode, int canDefault, int canRetry,
 struct Coll;
 int _clip_load(ClipMachine * mp, const char *name, struct Coll *names, ClipVar *res);
 
-int destroy_File(ClipMachine * mp, struct ClipFile *fp);
-void delete_File(ClipMachine * mp, struct ClipFile *fp);
+int destroy_ClipFile(ClipMachine * mp, struct ClipFile *fp);
+void delete_ClipFile(ClipMachine * mp, struct ClipFile *fp);
 int _clip_first_File(struct ClipFile *file, ClipCodeVar * dest, long *hash);
 int _clip_next_File(struct ClipFile *file, ClipCodeVar * dest, long *hash);
 
@@ -1945,7 +2157,7 @@ long _clip_str_to_date(char *str, char *format, int epoch);
 char *_clip_date_to_str(long date, char *format);
 void _clip_datetostr(long date, char *buf); /* as DTOS */
 
-int _clip_ctot(ClipMachine * mp, char* ctime, long *date, long *time);
+int _clip_ctot(ClipMachine * mp, char* ctime, long *date, long *time, char* format);
 char* _clip_ttoc(ClipMachine *mp, long julian, long time, int *retlen, char* date_format, int hours, int seconds);
 
 /* return size of matched portion; -1 if fail */
@@ -1971,6 +2183,7 @@ void _clip_log_init(char *filename);
 void _clip_out_log(char *buf, int len);
 
 int _clip_errorblock(ClipMachine * mp, ClipVar * vp, int genCode);
+int _clip_errorblock_res(ClipMachine * mp, ClipVar * vp, int genCode, ClipVar *res);
 
 int _clip_call_errblock(ClipMachine * mp, int r);
 
@@ -2010,6 +2223,7 @@ extern char *CLIP_LOCALE_ROOT;
 
 void _clip_add_locale(char *locale);
 void _clip_locale_msg(char *module, char *msg, char **dst);
+void _clip_locale_msg_plural(char *module, char *msg, char *pl, long n, char **dst);
 int _clip_module_locale(char *module, char *filename);
 
 
@@ -2020,6 +2234,7 @@ int _clip_line(ClipMachine *mp);
 int _clip_debug(ClipMachine *mp);
 void _clip_sigdebug(int sig);
 void _clip_sigint(int sig);
+void _clip_sigint_real(int sig);
 extern FILE *_clip_dbg_in;
 extern FILE *_clip_dbg_out;
 void _clip_print_dbg(ClipMachine * mp, ClipVar * vp);
@@ -2050,8 +2265,8 @@ char *_clip_type_name(ClipVar * vp);
 int _clip_uudecode(char *sstr, long l, char **strp, long *lenp);
 int _clip_uuencode(char *sstr, long l, char **strp, long *lenp, int without_newline);
 
-void _clip_var2str(ClipMachine * mp, ClipVar * vp, char **strp, long *lenp);
-void _clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len);
+void _clip_var2str(ClipMachine * mp, ClipVar * vp, char **strp, long *lenp, int method);
+void _clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len, int method);
 void _clip_dtos(double d, char *buf, int buflen, int *dp);
 int _clip_dtostr(char* buf,int len,int dec,double d,int zero);
 double _clip_strtod_base(char *str, int base);
@@ -2079,6 +2294,8 @@ int _clip_strncasecmp(const char *str1, const char *str2, int len);
 int _clip_strnncmp(const char *str1, const char *str2, int len1, int len2);
 int _clip_strnncasecmp(const char *str1, const char *str2, int len1, int len2);
 
+const char *_clip_strstr(const char *src, int slen, const char *dst, int dlen);
+
 extern char *_clip_hostcs;
 int _clip_translate_charset(char *p1, char *p2, unsigned char *str
 	, unsigned char *ostr, int len);
@@ -2090,8 +2307,17 @@ int _clip_translate_charset(char *p1, char *p2, unsigned char *str
 
 void _clip_init_localvars(ClipMachine *mp, ClipVarFrame **plocalvars, int num);
 
-int _clip_creat(char *file, int flags, mode_t mode, int exclusive);
-int _clip_open(char *file, int flags, mode_t mode, int exclusive);
+int _clip_creat(ClipMachine* cm,char *file, int flags, mode_t mode, int exclusive);
+int _clip_open(ClipMachine* cm,char *file, int flags, mode_t mode, int exclusive);
+int _clip_close(ClipMachine* cm,long hash,int fd);
+
+#ifdef OS_CYGWIN
+	struct timeval;
+#endif
+int _clip_select(int n, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timeval *tv);
+int _clip_read(C_FILE *cf, void *buf, size_t count);
+int _clip_write(C_FILE *cf, void *buf, size_t count);
+void destroy_c_file(void *item);
 
 char * _clip_host_charset();
 
@@ -2113,5 +2339,27 @@ void _clip_check_stack(ClipMachine *mp);
 
 void _clip_fullscreen(ClipMachine * mp);
 
+char *_clip_gettext(const char *msg);
+
+int _clip_start_profiler(ClipMachine *mp);
+int _clip_stop_profiler(ClipMachine *mp);
+
+/* for manual call */
+int _clip_start_profiler_name(ClipMachine *mp, const char *procname, const char *filename);
+int _clip_stop_profiler_name(ClipMachine *mp, const char *procname, const char *filename);
+
+ClipVar * _clip_add_tempvar(ClipMachine *mp, ClipVar *vp);
+
+#define CLIP_LOCK_FLOCK     0x01
+#define CLIP_LOCK_ONEBYTE   0x00
+#define CLIP_LOCK_WRITE     0x02
+#define CLIP_LOCK_READ      0x00
+#define CLIP_LOCK_HILEVEL   0x04
+#define CLIP_LOCK_LOWLEVEL  0x00
+#define CLIP_LOCK_WAIT      0x08
+#define CLIP_LOCK_NOWAIT    0x00
+
+int _clip_setlock(ClipMachine* cm,long hash,int fd,off_t pos,int flags);
+int _clip_unlock(ClipMachine* cm,long hash,int fd,off_t pos,int flags);
 
 #endif

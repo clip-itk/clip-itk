@@ -15,7 +15,7 @@ func TbColumnNew(head,bsearch,fieldName)
        obj:colorBlock:=NIL
        obj:colSep:=NIL
        obj:colSepH:=NIL
-       obj:defColor:={1,2}
+       obj:defColor:={1,2,1,1}
        obj:footing:=NIL
        obj:colorFooting:=NIL
        obj:footSep:=NIL
@@ -26,4 +26,8 @@ func TbColumnNew(head,bsearch,fieldName)
        obj:postBlock:=NIL
        obj:preBlock:=NIL
        obj:width:=NIL
+       /* recomended type of data*/
+       obj:type:=NIL
+       /* display len for varchar() SQL data and other unfixed data len */
+       obj:len:=NIL
 return obj

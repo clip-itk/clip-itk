@@ -8,17 +8,16 @@ MSLIBS	= $(CLIPROOT)/lib/libmsclip.a /usr/lib/libmysqlclient.a
 ORLIBS	= $(CLIPROOT)/lib/liborclip.a $(ORACLE_HOME)/lib/libclntsh.so
 POBJS  = menu.po getfile.po
 PAOBJS  = menu.po getfile.po
-CLIP_LOCALE_ROOT=./
+CLIP_LOCALE_ROOT=.
 export CLIP_LOCALE_ROOT
 .SUFFIXES: .prg .o .po
 
-all: menu fw_menu getfile tb_test big_num multilang
+all: menu fw_menu getfile tb_test big_num multilang pluralmsg
 
 clean:
-	rm -rf *.exe *.uri *.c *.o *.a *.so *.log *.pa *.b *.BAK *.bak *~ core* *core
-	rm -rf locale.pot locale.mo
-	rm -rf *.ex *.nm
-	rm menu getfile big_num tb_test fw_menu multilang
+	rm -rf *.exe *.uri *.c *.s *.o *.a *.so *.log *.pa *.b *.BAK *.bak *~ core* *core
+	rm -rf locale.pot locale.mo *.ex *.nm
+	rm -f menu getfile big_num tb_test fw_menu multilang pluralmsg
 
 menu:	menu.prg
 	$(CLIP) $(CLIPFLAGS) -e -M menu.prg $(CLIPLIBS)
@@ -37,6 +36,12 @@ big_num: big_num.prg
 
 multilang: multilang.prg
 	$(CLIP) $(CLIPFLAGS) -e -M -E CLIP_MODULE="ml1" multilang.prg $(CLIPLIBS)
+	clip_msgmerge
+	clip_msgfmt
+
+pluralmsg: pluralmsg.prg
+#	$(CLIP) $(CLIPFLAGS) -E CLIP_MODULE="ml2" pluralmsg.prg
+	$(CLIP) $(CLIPFLAGS) -e -M -E CLIP_MODULE="ml2" pluralmsg.prg $(CLIPLIBS)
 	clip_msgmerge
 	clip_msgfmt
 

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #define _MSG_F1 [Help]
@@ -11,7 +11,10 @@
 #define Brow_C_Keys {{||IF(IsShift(),[SaveAop],[Macro])},;
 		{||IF(m->_replay,[RstFlds],[SetFlds])},;
 		[Copy To],[Repl /V],[Set var],[Count],;
-		[Recall],[Delete],[Ap/from],[Ch.Dir],[Sort],[ReadIni]}
+		{||IF(IsShift(),[LocBack],[Recall])},;
+		{||IF(IsShift(),[Invert],[Delete])},;
+		[Ap/from],[Ch.Dir],;
+		{||IF(IsShift(),[Cur.Loc],[Sort])},[ReadIni]}
 #define Brow_S_Keys  {[SaveVue],[Modify],[Insert],[MakeEmp],[RestVue],;
 		[Compute],[TagNumb],[TagName],[MakeTag],[DelTag],[Set CDX],[Set Tag]}
 
@@ -23,6 +26,8 @@
 #define Get_M_Keys {[Help],[],{||IF(Select()=1,[Append],[])},[EntMode],[],;
 		[],[],[],[],[],[],[]}
 
+#define _MSG_GET_CF10 [ASCII]
+
 #define _MSG_GN_F4 [History]
 #define _MSG_GN_AF4 [Glb.Hst]
 #define _MSG_GN_F7 [InsFunc]
@@ -30,7 +35,7 @@
 #define _MSG_GN_AF2 [Fields]
 #define Val_M_Keys {[Help],[FdName],[Head],[History],[FdValue],;
 		    [DbfName],[],[],[],[InsMenu],[],[]}
-#define Val_C_Keys {[],[FdsName],[FdsHead],[Res.Hst],[],[],[],[],[],[],[],[]}
+#define Val_C_Keys {[],[FdsName],[FdsHead],[Res.Hst],[Quoted],[],[],[],[],[],[],[]}
 
 #define Print_M_Keys {[Help],[],[],[],[],[],[],[],[Config],[],[],[]}
 
@@ -44,11 +49,16 @@
 #define SaveF10Key [Save]
 
 #define Memo_M_Keys {[Help],[Print],[Write],[Load],{||IF(_lWrap,[UnWrap],[Wrap])},;
-		     IF(Is_ClipBrd(),[WinClpb],[]),[],[],[Config],[Save],[],[]}
+		     [SysClpb],[],[],[Config],[Save],[],[]}
 
 #define FB_M_Keys {[Help],[Print],[],[],[],[],;
-		  [Find],{||IF(lWasF8,[Dos],[Win])},[],[Exit],[],[]}
+		  [Find],{||IF(lWasF8,[Win],[Dos])},[],[Exit],[],[]}
 #define FB_A_Key [FindNxt]
+#define FB_C_Key [Sel.CP]
+
+#define EMAIL 'elb@lg.bank.gov.ua'
+#define EMAIL2 'Bondar_Eugen@yahoo.com'
+#define BDBF_VERSION [Bdbf-C,1.27a]
 
 #IFNDEF ENGLISH
 
@@ -65,12 +75,23 @@
 #define BYTE [ б]
 #define CALC_EXPR [, которое надо вычислить]
 #define CALC_FIELD [Это вычисляемое поле. Замена невозможна.]
+#define CHECK_DBF_FORCED {[Модифицированный Visual FoxPro],;
+			  [dBase IV  и выше],;
+			  [FlagShip],;
+			  [FlexMemo],;
+			  [dBase II  или Foxbase 1.0],;
+			  [Неизвестен]}
+#define CHECK_DBF_TRY { [Открытие этой базы в стандартном режиме невозможно],;
+			[Предположительный формат: ]+NeedForced,;
+			[],;
+			[Попытаться открыть в форсированном режиме?],;
+			[(См. также объяснения в п.34 bdbfs.txt)]}
 #define CLIPBOARD  [Буфер обмена]
 #define COLOR_COND [Условие подсветки]
 #define CONDITION [Условие:]
 #define COPYING [копирования]
-#define _CopyRight 'Запуск: Bdbfs <File>[.DBF|.MEM|.INI] [/bw] [/i=index] [Автодействия (см. п.33)]'+;
-		   _CRLF+'Поддержка: elb@lg.bank.gov.ua'
+#define _CopyRight 'Запуск: Bdbfs <File>[.DBF|.MEM|.INI] [/bw] [/i=index] [Автодействия (см. п.33 bdbfs.txt)]'+;
+		   _CRLF+'Поддержка: '+EMAIL
 #define CORRUPT_OR_LOCKED _corrupted+[ или блокирован]
 #define COUNTING [подсчета]
 #define DATEFORMAT [dd/mm/yyyy]
@@ -83,6 +104,7 @@
 #define EMPTY_BASE [ База пуста  ]
 #define EMPTY_IS_ALL [(Пусто - все записи)]
 #define ENVIR_F [сохраненной среды]
+#define EXPR_TOTAL [Выражение ключа]
 #define FIELD_ED [Редакция поля ]
 #define FIELD_ERR [Ошибочно задано: ]
 #define FLDS_COPYING [Поля ( Пусто - все )]
@@ -101,13 +123,13 @@
 #define F_SHOW {[Посмотреть],[Отказ]}
 #define F_SORTING [для сортировки]
 #define GET_PSW [Пароль:]
-#define GIVE_VAR _give+[переменную и выражение]
-#define GLOB_FIND [глобального поиска]
+#define GIVE_VAR _give+[переменную и выражение (xVar:=xVal)]
+#define GLOB_FIND [контекстного поиска]
 #define IND_FILE [Индексный файл ]
 #define INDEXING [индексация]
 #define INDEX_CHOICE [Выбирайте индекс]
 #define INDEX_CORRUPT [Индекс]+_corrupted
-#define INDEX_NO chr(254)+[ Без индекса]
+#define INDEX_NO L_A_SIGN+[ Без индекса]
 #define INDEX_NOT_MATCH [Индекс не соответствует базе. Реиндексировать?]
 #define INI_F [инициализации]
 #define INSERTING [вставка]
@@ -123,14 +145,15 @@
 #define MEMO_NO_MATCH {[Есть поле типа MEMO, а заголовок-обычный.],;
 		       [Исправить заголовок?]}
 #define MENU_MAX() Menu2({[Максимум],[Минимум]},1,WHAT_FIND+_ABORT)
-#define MENU_RECS() Menu2({ALL_RECS,[Оставшиеся]},;
-			   _scope,;
-			   [Выбирайте область действия])
+#translate MENU_RECS(<txt>) => Menu2({ALL_RECS,\[Оставшиеся]},;
+			   _scope,\[Выбирайте область ]+<txt>)
 #define MENU_SCOPE {[1-Да],[2-Все],[3-Пропустить],[4-Отказ]}
 #define MSG_MNU_YESNO Menu2({[1-ДА],[0-НЕТ]},_choice,_mess,[Правильно?])
 #define NEED_DEL_FILE [. Стереть его?]
 #define NEED_FINISH [Заканчиваем работу]
+#define NEED_OEM2ANSI [Преобразовывать текст в WIN-кодировку?]
 #define NEED_PACK [Уничтожаем отмеченные записи]
+#define NEED_REBUILD [Создадим все тэги заново]
 #define NEED_REINDEX [Переиндексируем базу]
 #define NEED_REPLACE [Заменить: ]
 #define NEED_ZAP [Уничтожаем все записи]
@@ -161,6 +184,7 @@
 #define RESULT_IS [Результат выражения: ]
 #define SEC_M [ с.]
 #define SELECT_BASE [Выбирайте базу]
+#define SELECT_CP [Выбирайте кодировку базы]
 #define SET_FIELDS [Установка полей]
 #define SET_OF_OEM  [АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў°∙]
 #define SET_OF_ANSI [└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀рстуфхцчшщъыьэюяЁёЄєЇїЎў°∙·√№¤* и╕е┤к║▓│п┐]
@@ -175,7 +199,7 @@
 #define TAG_HEAD PAD([ НАЗВАНИЕ],14)+PAD([ВЫРАЖЕНИЕ],45)+PAD([УСЛОВИЕ],18)
 #define TAG_NAME [имя тэга]
 #define TAG_NAME_DEL [имя удаляемого тэга]
-#define TAG_NO chr(254)+[ Без тэга]
+#define TAG_NO L_A_SIGN+[ Без тэга]
 #define TAG_NUMBER [номер тэга]
 #define TimerOff() [Затрачено времени:]+LTRIM(STR(Seconds()-m->_told,9,2))+ ;
 		   [ с. Обработано: ]+NTRIM(m->_tally) + [ записей]
@@ -185,7 +209,6 @@
 #define UNSUPPORT [ - неверный формат]
 #define USE_HISTORY [Используем историю]
 #define MSG_USERMENU_NO [Пользовательское меню не определено]
-#define BDBF_VERSION [Bdbf-C,1.22a]
 #define WAIT_WIND [Подождите,идет ]
 #define WHAT_COPY [Копируем запись: ]
 #define WHAT_FIND [Что ищем ?]
@@ -207,7 +230,7 @@
 	#define _STAT_END_EDIT [Выход с записью: F10, без записи: Esc]
 	#define _STAT_ERTIP [Несоответствие типов ]
 	#define _STAT_GIVE [Задайте ]
-	#define _STAT_GIVE_NAME chr(254)+[ Задать имя]
+	#define _STAT_GIVE_NAME L_A_SIGN+[ Задать имя]
 	#define _STAT_NFD [Выражение не найдено]
 	#define _STAT_NOINDEX [Индекс не установлен]
 	#define _STAT_ZE [Задайте выражение ]
@@ -217,11 +240,12 @@
 	#define MSG_cTitleIns [Вставим в позицию курсора: ]
 	#define MSG_aIns {[Название базы],[Значение из поля],[Имя поля],;
 		[Заголовок поля],MSG_ClpVal,;
-		[Имя любого поля],[Заголовок любого поля]}
+		'Имя любого поля','Заголовок любого поля',;
+		'Значение из поля в кавычках','Символ'}
 	#define MSG_PUTTITLE [Полученный результат: ]
 	#define MSG_PUTWHERE {[Запишем в текущее поле],;
 			      [Запишем в буфер обмена],;
-			      [Запишем в буфер обмена WINDOWS],;
+			      [Запишем в системный буфер обмена],;
 			      [Преобразуем в "денежный" формат]}
 	#define MSG_FLDHEAD_INS [Заголовок поля]
 	#define MSG_FLDNAME_INS [Имя поля]
@@ -232,7 +256,10 @@
 	#define BASE_STAT [ по состоянию на ]
 	#define CENTR_NEED [Центровка полей при выводе]
 	#define COUNTER_NAME [П/П]
-	#define DEF_BORDER [Разделитель полей]
+	#define DEF_HBORDER [Разделитель полей: в заголовке]
+	#define DEF_BORDER [в теле отчета]
+	#define DGT_HEAD_1ST [Номера колонок на: первом листе]
+	#define DGT_HEAD_ALL [последующих листах]
 	#define END_CHAR [Конечная]+_prn_seq
 	#define F_OUT_AP [Дописывать файл вывода]
 	#define F_OUT_PRINT [вывод в файл ]
@@ -244,7 +271,7 @@
 	#define MEM_NUM_LINE [Строк в мемо-полях]
 	#define MEM_WIDE_PRT [Ширина мемо-полей]
 	#define NEED_FF [Прогон между листами]
-	#define NEED_HEAD [Заголовок на каждом листе]
+	#define NEED_HEAD [Заголовки колонок на каждом листе]
 	#define NEED_SUM [Суммировать числовые]
 	#define NUM_LF [Переводов строки после каждой строки]
 	#define NUM_PAGE [Печать номеров листов]
@@ -258,8 +285,9 @@
 	#define REC_NEED [Печать номеров записей]
 	#define REC_RIGHT [Номера справа?]
 	#define SELECT_PRINT [Выбираем настройки печати]
-	#define STAND_HEAD [Стандартный заголовок]
+	#define STAND_HEAD [Стандартная шапка]
 	#define START_CHAR [Стартовая]+_prn_seq
+	#define TITLE_ALL [Шапка на каждом листе]
 	#define WHERE_DEV [В файл],[В HTML-файл],[На принтер]
 	#define WHERE_OUT [Куда выводить? (ESC-отказ, F9 - настройка)]
 	#define ZERO_NEED [Печать нулевых значений]
@@ -282,6 +310,7 @@
 	#define _MM_MAINMENU {[Система],[Файл],[База],[Поле],[Запись],[Поис~к],[Информация],[Про~чее]}
 
 	#define _MM_SYSMENU  {	[Драйвер баз по умолчанию ]+'',;
+				[Кодировка таблицы],;
 				[Установки ]+'',;
 				[Сохранить установки],;
 				[Вычислить выражение],;
@@ -293,7 +322,8 @@
 	#define _MM_SETMENU {	[Установки печати],;
 				[Цвета],;
 				[Установки SET],;
-				[Прочие установки]}
+				[Прочие установки-1],;
+				[Прочие установки-2]}
 
 	#define _MM_FILEMENU {	[Открыть базу],;
 				[Открыть предыдущую],;
@@ -308,7 +338,9 @@
 				[Сменить диск/каталог],;
 				[Работа с файлами],;
 				[Редактировать текст],;
-				[Создать HTML];
+				[Экспортировать в HTML],;
+				[Экспортировать в XML],;
+				[Экспортировать в XLS];
 				}
 
 	#define _MM_BASEMENU {	[Добавить из другой],;
@@ -325,7 +357,7 @@
 				[Установить индекс],;
 				[Работа с тэгами ]+'',;
 				[Обратный индекс],;
-				[Установить фильтр],;
+				[Установить фильтр ]+'',;
 				[Посчитать количество],;
 				[Напечатать],;
 				[Считать файл-отчет];
@@ -351,6 +383,7 @@
 				[Очистить],;
 				[Отменить исправление],;
 				[Преобразовать ]+'',;
+				[Выровнять ]+'',;
 				[Зашифровать],;
 				[Расшифровать],;
 				[Занести контрольную сумму строки],;
@@ -362,12 +395,14 @@
 				[Установить условие подсветки в поле],;
 				[Снять условие подсветки];
 				}
+	#define _MM_FIELDMENU_HK [П]
 
 	#define _MM_REPLMENU {[С подтверждением],[Без подтверждения]}
 
-	#define _MM_TRANSMENU { [в верхний регистр],;
-				[в нижний регистр],;
-				[c заглавной первой],;
+	#define _MM_TRANSMENU { [В ПРОПИСНЫЕ],;
+				[в строчные],;
+				[С Заглавной],;
+				[С Заглавной Во Всех Словах],;
 				[в кодировку Windows(1251)],;
 				[в кодировку DOS(866)],;
 				[QWERTY->ЙЦУКЕН],;
@@ -381,7 +416,8 @@
 				[По условию назад],;
 				[Продолжить назад],;
 				[По контексту],;
-				[В текущем поле],;
+				[По контексту (выражение)],;
+				[В текущем поле ]+'',;
 				[Максимум в поле],;
 				[Минимум в поле],;
 				[Самое длинное в поле],;
@@ -391,18 +427,21 @@
 	}
 
 	#define _MM_INFOMENU  {[Окружение,база,индексы],;
-		 		[Структура базы]}
+				[Структура базы],;
+				[Таблица ASCII]}
 
 	#define _MM_OTHERMENU  {[Проиграть макро],;
-		  		IF(m->_replay,[Восстановить все поля],[Установить нужные поля]),;
-		  		[Операции с буфером ]+'',;
-		  		[Меню пользователя ]+'',;
+				IF(m->_replay,[Восстановить все поля],[Установить нужные поля]),;
+				[Операции с буфером ]+'',;
+				[Меню пользователя ]+'',;
 				[Банковские операции ]+''}
 
 	#define _MM_TAGMENU    {[Установить тэг],;
 				[Удалить тэг],;
 				[Добавить тэг],;
-				[Установить другой CDX]}
+				[Установить другой CDX],;
+				[Создать все тэги заново];
+				}
 
 	#define _MM_COPYMENU   {[Сверху],;
 				[Снизу],;
@@ -410,8 +449,8 @@
 				[Справа],;
 				[Из буфера],;
 				[В буфер],;
-				[Из буфера Windows],;
-				[В буфер Windows]}
+				[Из буфера системы],;
+				[В буфер системы]}
 
 	#define _MM_CLIPBDMENU {[Из поля в буфер],;
 				[Показать буфер],;
@@ -434,6 +473,8 @@
 	#define FB_PRINT4 [Отказ]
 	#define FB_SRCH  [Что искать будем (ESC-отказ)]
 	#define FB_ALSO  [ раз найдено и больше нет (Нажмите любую клавишу) ]
+	#define SAVE_AND_EXIT [Изменения не сохранены! Действительно выйти?]
+	#define SAVE_AND_EXIT_ALT {[Нет], [Да], [Сохранить и выйти]}
 
 //ACTIONS
 	#define _MSG_A_AREINDEX [реиндексация (индекс устарел)]
@@ -473,27 +514,44 @@
 	#define _MSG_A_O_UNDO	[Размер буфера UNDO]
 	#define _MSG_A_O_PG	[Путь поиска плагинов]
 	#define _MSG_A_O_MAXF	[Максимальное число полей]
+	#define _MSG_A_O_PCKASK [Подтверждать упаковку]
+	#define _MSG_A_O_PCKFND [Искать удалённые перед упаковкой]
+*
 	#define _MSG_A_O_CLCH	[Выбор из внутреннего буфера]
-	#define _MSG_A_O_WCLCNV	[OEM/ANSI при работе с буфером WIN9x]
+	#define _MSG_A_O_WCLCH	[Выбор из системного буфера]
+	#define _MSG_A_O_WCLCNV	[OEM/ANSI при системным с WIN-буфером]
+	#define _MSG_A_O_EXOEM	[OEM->ANSI при экспорте по умолчанию]
+	#define _MSG_A_O_EXOEMQ	[Запрашивать OEM->ANSI при экспорте]
+	#define _MSG_A_O_GSEXP	[Раскрывать выражение контекстного поиска]
+	#define _MSG_A_O_GSCOND	[Дополнительное условие контекстного поиска]
+	#define _MSG_A_O_FASS	[Реакция на <Enter> в файлере]
+
+	#define _MSG_C_INI_H1	[Data Driver]
+	#define _MSG_C_INI_H2	[Системные переменные]
+	#define _MSG_C_INI_H3	[Цвета]
+	#define _MSG_C_INI_H4	[Принтер]
+	#define _MSG_C_INI_H5	[Стандартные Clipper SETs]
+	#define _MSG_C_INI_H6	[Пользовательское меню - заголовки]
+	#define _MSG_C_INI_H7	[Пользовательское меню - команды]
+	#define _MSG_C_INI_HAOP	[Поля, индексы, условия]
 
 	#define _MSG_A_MF_F3	[Зри!]
 	#define _MSG_A_MF_F4	[Правь!]
-	#define _MSG_A_MF_F10	[Что это]
-	#define _MSG_A_MF_DSCR	[Нет описания для этого файла]
 
 	#define _MSG_A_IF_TITLE [Выберите подходящую функцию: ]
 	#define _MSG_A_IF_TRANS [Преобразовать ]
 	#define _MSG_A_IF_AINS {;
 			[Заменить символы(StrTran)],;
 			[Транслировать символы(ChrTran)],;
-			cTrans+[в верхний регистр],;
+			cTrans+[В ВЕРХНИЙ РЕГИСТР],;
 			cTrans+[в нижний регистр],;
-			cTrans+[c заглавной первой],;
-			cTrans+[c заглавной первой во всех словах],;
+			cTrans+[C Заглавной],;
+			cTrans+[С Заглавной Во Всех Словах],;
 			cTrans+[в кодировку Windows(1251)],;
 			cTrans+[в кодировку DOS(866)],;
 			cTrans+[QWERTY->ЙЦУКЕН],;
 			cTrans+[ЙЦУКЕН->QWERTY],;
+			[Выровнять],;
 			[Зашифровать],;
 			[Расшифровать],;
 			[Занести контрольную сумму строки],;
@@ -504,14 +562,44 @@
 			[Фонетический эквивалент];
 		}
 
+	#define _MSG_A_JUSTH {[Выравниваем:]}
+	#define _MSG_A_JUSTA {[Влево],[По центру],[Вправо],;
+				[По ширине],[Разрядка],[Сжатие]}
+
+	#define _MSG_A_FILTH {[Установим фильтр:]}
+	#define _MSG_A_FILTA {[По условию],;
+				[Равным текущей ячейке],;
+				[Неравным текущей ячейке],;
+				[Большим текущей ячейки],;
+				[Меньшим текущей ячейки],;
+				[Большим или равным текущей ячейке],;
+				[Меньшим или равным текущей ячейке],;
+				[Без фильтра]}
+
+	#define _MSG_A_SIMPH {[Ищем выражение в текущем поле:]}
+	#define _MSG_A_SIMPA {	[Равное текущей ячейке],;
+				[Неравное текущей ячейке],;
+				[Большее текущей ячейки],;
+				[Меньшее текущей ячейки],;
+				[Большее или равное текущей ячейке],;
+				[Меньшее или равное текущей ячейке],;
+				[Другое]}
+
 	#define _MSG_A_DS_F2 [Print]
-	#define _MSG_A_DS_F3 [AddTag]
 	#define _MSG_A_DS_F4 [File]
 	#define _MSG_A_DS_F5 [Ext.Str]
 	#define _MSG_A_DS_F6 [Struct]
-	#define _MSG_A_DS_F8 [DelTag]
 	#define _MSG_A_DS_F9 [Config]
 	#define _MSG_A_DS_F10 [MakePrg]
+
+	#define _MSG_A_ST_F2 [Print]
+	#define _MSG_A_ST_F3 [AddTag]
+	#define _MSG_A_ST_F4 [MakePrg]
+	#define _MSG_A_ST_F5 [Reindex]
+	#define _MSG_A_ST_F6 [Rebuild]
+	#define _MSG_A_ST_F8 [DelTag]
+	#define _MSG_A_ST_F9 [Config]
+
 
 	#define _MSG_A_SDF_FILE_TYPE [Тип файла:]
 	#define _MSG_A_SDF_F_DELIM [Разделитель текстовых полей:]
@@ -528,47 +616,54 @@
 	#define _MSG_A_CSIZE_MENU2 [Заголовок]
 	#define _MSG_A_CSIZE_MENU3 [Дисковый]
 	#define _MSG_A_CSIZE_MENU4 [Отказ]
+
+	#define _MSG_A_NOPACK [Нет записей для удаления]
+
+	#define _MSG_A_GFCOND [Дополнительное условие поиска]
+
 //HELP
 	#define _MSG_H_NO	[Пока нет помощи для этого раздела...]
 	#define _MSG_H_TITLE	[Информация об индексах (RDD: ]
 	#define _MSG_H_TAGS	[Тэг     из ]
 	#define _MSG_H_TAGN	[Имя тэга]
-	#define _MSG_H_FE	[Выражение фильтра ]
+	#define _MSG_H_FE	[Выражение фильтра]
 	#define _MSG_H_ISU	[Уникальный ?]
 	#define _MSG_H_ISD	[Убывающий ?]
 	#define _MSG_H_RYO	[Типа RYO ?]
 	#define _MSG_H_KEYS	[Ключей в тэге]
-	#define _MSG_H_CK	[Номер ключа: ]
+	#define _MSG_H_CK	[Номер ключа]
 
 	#define _MSG_H_OKEY	{[Редактор баз данных формата DBF],;
 				BDBF_VERSION,[],;
 				[Автор: Евгений Бондарь],;
 				[Луганск, Ленинградская 8, (0642) 58-08-19(p)],;
-				[E-MAIL: elb@lg.bank.gov.ua],;
-				[Bondar_Eugen@yahoo.com];
+				[E-MAIL: ]+EMAIL,;
+				EMAIL2;
 				}
 
-	#define CODEPAGE	[Кодовая страница: ]
-	#define CURR_DIR	[Текущий каталог: ]
-	#define DATE_UPDATE	[Дата обновления базы: ]
-	#define DRV_CURRENT	[Драйвер (тип): ]
-	#define FILE_SIZE	[Размер файла на диске: ]
-	#define FREE_MEM	[Свободно памяти: ]
-	#define FREE_SPACE	[Свободно места на диске: ]
-	#define HEAD_SIZE	[Размер заголовка: ]
-	#define REC_SIZE	[Размер записи: ]
-	#define N_USER		[Пользователь: ]
-	#define ON_SERVER	[ на сервере ]
-	#define MEMO_BLOCK_SIZE [Размер блока MEMO: ]
-	#define MEMO_FILE_SIZE  [Размер текущего MEMO-файла: ]
-	#define MEMO_B_SIZE_C   [Размер блока в нем: ]
-	#define OS_VER		[Версия ОС: ]
-	#define TOTAL_FIELDS	[Всего полей в базе: ]
+	#define CODEPAGE	[Кодовая страница:]+CHR(0)
+	#define CURR_DIR	[Текущий каталог:]+CHR(0)
+	#define DATE_UPDATE	[Дата обновления базы:]+CHR(0)
+	#define DRV_CURRENT	[Драйвер (тип):]+CHR(0)
+	#define FILE_SIZE	[Размер файла на диске:]+CHR(0)
+	#define FREE_MEM	[Свободно памяти:]+CHR(0)
+	#define FREE_SPACE	[Свободно места на диске:]+CHR(0)
+	#define HEAD_SIZE	[Размер заголовка:]+CHR(0)
+	#define REC_SIZE	[Размер записи:]+CHR(0)
+	#define N_USER		[Пользователь:]+CHR(0)
+	#define ON_SERVER	[ на сервере ]+CHR(0)
+	#define MEMO_BLOCK_SIZE [Размер блока MEMO:]+CHR(0)
+	#define MEMO_FILE_SIZE  [Размер MEMO-файла:]+CHR(0)
+	#define MEMO_B_SIZE_C   [Размер блока в нем:]+CHR(0)
+	#define OS_VER		[Версия ОС:]+CHR(0)
+	#define TOTAL_FIELDS	[Всего полей в базе:]+CHR(0)
 
 
 // GetSys
 	#define _MSG_INSOVR	[Вставка],[Замена ]
 	#define _MSG_EMODE	{[Usual Enter],[Lock Enter ],[Enter /skip],[Enter /stop]}
+	#define _MSG_ASCII	'Таблица ASCII'
+	#define _MSG_ASC_SLCT	'Выбрано: '
 
 // ErrorSys
 	#define NOT_READY [Принтер не готов.Повторить]
@@ -579,7 +674,17 @@
 	#define _MSG_FI_F2	[Диск]
 	#define _MSG_FI_F5	[Домой]
 	#define _MSG_FI_F9	[Маска]
+	#define _MSG_FI_F10	[Инфо]
 	#define _MSG_FI_MASK	[Вводите маску отбора]
+	#define _MSG_FI_DSCR	[Нет описания для этого файла]
+
+	#define _MSG_FI_FILE	"Файл:"+CHR(0)
+	#define _MSG_FI_DIR	"Каталог:"+CHR(0)
+	#define _MSG_FI_SIZE	"Размер:"+CHR(0)
+	#define _MSG_FI_UPD	"Создан:"+CHR(0)
+	#define _MSG_FI_ATTR	"Атрибуты:"+CHR(0)
+	#define _MSG_FI_IND	"Индекс:"+CHR(0)
+	#define _MSG_FI_KEY	"<KEY>"+CHR(0)
 
 //ClipLib
 	#define _MSG_CL_NOF	[Внимание! При обработке были ошибки переполнения]
@@ -600,12 +705,23 @@
 #define BYTE [ b]
 #define CALC_EXPR [for calculating ]
 #define CALC_FIELD [Can not replace calculated field]
+#define CHECK_DBF_FORCED {[Модифицированный Visual FoxPro],;
+			  [dBase IV  and above],;
+			  [FlagShip],;
+			  [FlexMemo],;
+			  [dBase II  or Foxbase 1.0],;
+			  [Unknown]}
+#define CHECK_DBF_TRY  {[The opening of this base is unsupported in standard mode],;
+			[Possible format: ]+NeedForced,;
+			[],;
+			[Should we try open it in forced mode ?],;
+			[(See also ch.34 bdbfs.txt for explaining)]}
 #define CLIPBOARD  [Clipboard]
 #define COLOR_COND [Color separation condition]
 #define CONDITION [Condition:]
 #define COPYING [copying]
-#define _CopyRight 'Usage: Bdbfs <File>[.DBF|.MEM|.INI] [/bw] [/i=index] [Auto-actions (see ch.33)]'+;
-	_CRLF+'Support: elb@lg.bank.gov.ua'
+#define _CopyRight 'Usage: Bdbfs <File>[.DBF|.MEM|.INI] [/bw] [/i=index] [Auto-actions (see ch.33 bdbfs.txt)]'+;
+	_CRLF+'Support: '+EMAIL
 #define CORRUPT_OR_LOCKED _corrupted+[ or locked]
 #define COUNTING [counting]
 #define DATEFORMAT [mm/dd/yyyy]
@@ -618,6 +734,7 @@
 #define EMPTY_BASE [ EMPTY BASE  ]
 #define EMPTY_IS_ALL [ ( Empty means "ALL" )]
 #define ENVIR_F [of environment]
+#define EXPR_TOTAL [Key expression]
 #define FIELD_ED [Field redaction ]
 #define FIELD_ERR [Error field: ]
 #define FLDS_COPYING [Fields ( Empty means "ALL" )]
@@ -637,12 +754,12 @@
 #define F_SORTING [for sorting]
 #define GET_PSW [Password:]
 #define GIVE_VAR _Give +[the variable and expression (f.e. xVar:=xVal)]
-#define GLOB_FIND [global searching]
+#define GLOB_FIND [context searching]
 #define IND_FILE [Index file ]
 #define INDEXING [indexing]
 #define INDEX_CHOICE [Select index]
 #define INDEX_CORRUPT [index ]+_corrupted
-#define INDEX_NO chr(254)+[ No Index]
+#define INDEX_NO L_A_SIGN+[ No Index]
 #define INDEX_NOT_MATCH [Index does not match the base. Reindex?]
 #define INI_F [of initialization]
 #define INSERTING [inserting]
@@ -659,12 +776,15 @@
 #define MEMO_NO_MATCH {[MEMO-field exists, but it[s no signed in header],;
 		       [Correct header?]}
 #define MENU_MAX() Menu2({[Maximum],[Minimum]},1,WHAT_FIND+_ABORT)
-#define MENU_RECS() Menu2({ALL_RECS,[Rest]}, _scope, [Select the action scope])
+#translate MENU_RECS(<txt>) => Menu2({ALL_RECS,\[Rest]}, _scope,;
+			 \[Select the scope of ]+<txt>)
 #define MENU_SCOPE {[1-Yes],[2-No],[3-Skip],[0-Abort]}
 #define MSG_MNU_YESNO Menu2({[1-YES],[0-NO]},_choice,_mess,[ARE YOU SURE?])
 #define NEED_DEL_FILE [. Erase it?]
 #define NEED_FINISH [Finish working]
-#define NEED_PACK [Delete signed records]
+#define NEED_OEM2ANSI [Convert OEM to ANSI?]
+#define NEED_PACK [Delete marked records]
+#define NEED_REBUILD [Create all tags anew]
 #define NEED_REINDEX [Reindex the base]
 #define NEED_REPLACE [Replace: ]
 #define NEED_ZAP [ZAP the base]
@@ -695,6 +815,7 @@
 #define RESULT_IS [The result of: ]
 #define SEC_M [ s.]
 #define SELECT_BASE [Select the base]
+#define SELECT_CP [Select default codepage]
 #define SET_FIELDS [Set fields:]
 #define SET_OF_OEM  "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў°∙"
 #define SET_OF_ANSI "└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀рстуфхцчшщъыьэюяЁёЄєЇїЎў°∙·√№¤* и╕е┤к║▓│п┐"
@@ -709,7 +830,7 @@
 #define TAG_HEAD PAD([NAME],14)+PAD([EXPRESSION],45)+PAD([CONDITION],18)
 #define TAG_NAME [tag name]
 #define TAG_NAME_DEL [tag name for removing]
-#define TAG_NO chr(254)+[ No Order]
+#define TAG_NO L_A_SIGN+[ No Order]
 #define TAG_NUMBER [tag number]
 #define TimerOff()  [Time:]+LTRIM(STR(Seconds()-m->_told,9,2))+ ;
 	[ Processed: ]+NTRIM(m->_tally)
@@ -719,7 +840,6 @@
 #define UNSUPPORT [ - unsupported format]
 #define USE_HISTORY [Use history]
 #define MSG_USERMENU_NO [User-menu not defined]
-#define BDBF_VERSION [Bdbf-C,1.22a]
 #define WAIT_WIND [Waiting, ]
 #define WHAT_COPY [What record: ]
 #define WHAT_FIND [What do we need ?]
@@ -741,7 +861,7 @@
 	#define _STAT_END_EDIT [F10 - Exit and save, Esc - Abort]
 	#define _STAT_ERTIP [Wrong type ]
 	#define _STAT_GIVE [Enter ]
-	#define _STAT_GIVE_NAME chr(254)+[ Other name]
+	#define _STAT_GIVE_NAME L_A_SIGN+[ Other name]
 	#define _STAT_NFD [Not found]
 	#define _STAT_NOINDEX [No index set]
 	#define _STAT_ZE [Input the expression ]
@@ -750,9 +870,10 @@
 	#define MSG_ClpVal [Clipboard value]
 	#define MSG_cTitleIns [Insert at the cursor: ]
 	#define MSG_aIns {[Base name],[Field value],[Field name],;
-		[Field header],MSG_ClpVal,[Any field name],[Any field header]}
+		[Field header],MSG_ClpVal,[Any field name],;
+		[Any field header],[Quoted field value],[Symbol]}
 	#define MSG_PUTTITLE [Put this result into: ]
-	#define MSG_PUTWHERE {[Current field],[Clipboard],[WINDOWS clipboard]}
+	#define MSG_PUTWHERE {[Current field],[Clipboard],[System clipboard]}
 	#define MSG_FLDHEAD_INS [Insert header of field]
 	#define MSG_FLDNAME_INS [Insert name of field]
 
@@ -762,7 +883,10 @@
 	#define BASE_STAT [ : situation by ]
 	#define CENTR_NEED [Center justifying]
 	#define COUNTER_NAME [NN]
-	#define DEF_BORDER [Field delimiter]
+	#define DEF_HBORDER [Field's delimiter: in header]
+	#define DEF_BORDER [in body]
+	#define DGT_HEAD_1ST [Head's numbers: on 1st page]
+	#define DGT_HEAD_ALL [on next pages]
 	#define END_CHAR [Ending]+_prn_seq
 	#define F_OUT_AP [Append to output file?]
 	#define F_OUT_PRINT [printing to ]
@@ -772,9 +896,9 @@
 	#define LASTUPDATED [Last update: ]
 	#define LEFT_BORD [ Left margin]
 	#define MEM_NUM_LINE [Lines in memo-fields]
-	#define MEM_WIDE_PRT [Memo-fields wide]
+	#define MEM_WIDE_PRT [Memo-fields width]
 	#define NEED_FF [Page eject]
-	#define NEED_HEAD [Header on each page]
+	#define NEED_HEAD [Head's names on each page]
 	#define NEED_SUM [Summing of Numeric]
 	#define NUM_LF [Line feed number after each line]
 	#define NUM_PAGE [Page numbers]
@@ -788,8 +912,9 @@
 	#define REC_NEED [Record numbers print]
 	#define REC_RIGHT [At right side?]
 	#define SELECT_PRINT [Print tuning]
-	#define STAND_HEAD [Standard header]
+	#define STAND_HEAD [Standard title]
 	#define START_CHAR [Starting]+_prn_seq
+	#define TITLE_ALL [Title on each page]
 	#define WHERE_DEV [To file],[To HTML],[To printer]
 	#define WHERE_OUT [Device of output? (ESC-abort, F9-tune)]
 	#define ZERO_NEED [Print of zero values]
@@ -811,6 +936,7 @@
 // MainMenu
 	#define _MM_MAINMENU {[System],[File],[Base],[Fiel~d],[Record],[Fi~nd],[Info],[Other]}
 	#define _MM_SYSMENU  {  [Default RDD ]+'',;
+				[Default codepage],;
 				[Settings ]+'',;
 				[Save settings],;
 				[Calculate],;
@@ -822,7 +948,8 @@
 	#define _MM_SETMENU {	[Print],;
 				[Colors],;
 				[SET-s],;
-				[Other]}
+				[Other-1],;
+				[Other-2]}
 
 	#define _MM_FILEMENU {	[Open base],;
 				[Reopen last],;
@@ -837,7 +964,9 @@
 				[Change disk/directory],;
 				[Filer],;
 				[Modify text],;
-				[Create HTML];
+				[Export to HTML],;
+				[Export to XML],;
+				[Export to XLS];
 				}
 
 	#define _MM_BASEMENU {	[Append from],;
@@ -854,7 +983,7 @@
 				[Set index],;
 				[TAGS ]+'',;
 				[Descend index],;
-				[Set filter],;
+				[Set filter ]+'',;
 				[Count],;
 				[Print],;
 				[Read report template];
@@ -880,6 +1009,7 @@
 				[Clear],;
 				[Undo replace],;
 				[Translate ]+'',;
+				[Align ]+'',;
 				[Crypt],;
 				[DeCrypt],;
 				[Check sum of record],;
@@ -891,16 +1021,18 @@
 				[Set color condition for current field],;
 				[Reset normal color];
 				}
+	#define _MM_FIELDMENU_HK [D]
 
 	#define _MM_REPLMENU {[With confirming],[Without confirming]}
 
-	#define _MM_TRANSMENU {[Upper case],;
-			       [Lower case],;
-			       [Capitalize],;
-			       [OemToAnsi],;
-			       [AnsiToOem],;
-			       [To National keyboard],;
-			       [To USA keyboard];
+	#define _MM_TRANSMENU { [UPPER CASE],;
+				[lower case],;
+				[Proper],;
+				[All Words Proper],;
+				[OemToAnsi],;
+				[AnsiToOem],;
+				[To National keyboard],;
+				[To USA keyboard];
 			       }
 
 	#define _MM_FINDMENU   {[Go to],;
@@ -909,8 +1041,9 @@
 				[Continue],;
 				[Locate backwards],;
 				[Continue backwards],;
-				[Context(all fields)],;
-				[In current field only],;
+				[Context (all fields)],;
+				[Context with expression],;
+				[In current field only ]+'',;
 				[Maximum in field],;
 				[Minimum in field],;
 				[Longest in field],;
@@ -920,17 +1053,20 @@
 	}
 
 	#define _MM_INFOMENU  {[Environment,base,indexes],;
-		 		[Base structure]}
+				[Base structure],;
+				[ASCII-Table]}
 
 	#define _MM_OTHERMENU  {[Play macro],;
-		  		IF(m->_replay,[Restore fields],[Set fields]),;
-		  		[Clipboard operations ]+'',;
-		  		[User menu ]+''}
+				IF(m->_replay,[Restore fields],[Set fields]),;
+				[Clipboard operations ]+'',;
+				[User menu ]+''}
 
 	#define _MM_TAGMENU    {[Set tag],;
 				[Delete tag],;
 				[Add tag],;
-				[Set another CDX]}
+				[Set another CDX],;
+				[Create all tags anew];
+				}
 
 	#define _MM_COPYMENU   {[Upper field ],;
 				[Lower field],;
@@ -938,8 +1074,8 @@
 				[Right field],;
 				[From clipboard],;
 				[To clipboard],;
-				[From Windows clipboard],;
-				[To Windows clipboard]}
+				[From System clipboard],;
+				[To System clipboard]}
 
 	#define _MM_CLIPBDMENU {[Read field to clipboard],;
 				[Show clipboard],;
@@ -962,6 +1098,8 @@
 	#define FB_PRINT4 [Abort]
 	#define FB_SRCH  [Enter Search Phrase: ]
 	#define FB_ALSO  [ Occurrences Found - No More Finds (Press Any Key) ]
+	#define SAVE_AND_EXIT [File not saved! Are you sure you want to exit?]
+	#define SAVE_AND_EXIT_ALT {[No], [Yes], [Save and quit]}
 
 //ACTIONS
 	#define _MSG_A_AREINDEX [reindexing (index does not match)]
@@ -990,7 +1128,7 @@
 	#define _MSG_A_O_IND	[Indicator]
 	#define _MSG_A_O_FRQ	[Indicator refreshing frequency (in records)]
 	#define _MSG_A_O_MSK	[Default database mask]
-	#define _MSG_A_O_MAC	[Macro on Ctrl+F1]
+	#define _MSG_A_O_MAC	[Macro (called on Ctrl+F1)]
 	#define _MSG_A_O_TIME	[Command timing]
 	#define _MSG_A_O_ED	[Memo and wide fields editor (empty-embedded)]
 	#define _MSG_A_O_VF	[Print files viewer (empty-embedded)         ]
@@ -1002,35 +1140,75 @@
 	#define _MSG_A_O_UNDO	[Max UNDO count]
 	#define _MSG_A_O_PG	[Plugins search path]
 	#define _MSG_A_O_MAXF	[Max number of shown fields]
+	#define _MSG_A_O_PCKASK [PACK confirm]
+	#define _MSG_A_O_PCKFND [Locate for Deleted before PACK]
+*
 	#define _MSG_A_O_CLCH	[Choice from internal clipboard]
-	#define _MSG_A_O_WCLCNV	[OEM/ANSI with WIN9x clipboard]
+	#define _MSG_A_O_WCLH	[Choice fron Sys clipboard]
+	#define _MSG_A_O_WCLCNV	[OEM/ANSI with Sys clipboard]
+	#define _MSG_A_O_EXOEM	[OEM->ANSI during the exports]
+	#define _MSG_A_O_EXOEMQ	[Ask for OEM->ANSI before the exports]
+	#define _MSG_A_O_GSEXP	[Expand the context search expression]
+	#define _MSG_A_O_GSCOND	[Additional condition of context search]
+	#define _MSG_A_O_FASS	[File associations in FILER]
+
+	#define _MSG_C_INI_H1	[Data Driver]
+	#define _MSG_C_INI_H2	[System variables]
+	#define _MSG_C_INI_H3	[Colors]
+	#define _MSG_C_INI_H4	[Printer]
+	#define _MSG_C_INI_H5	[Clipper standard SETs]
+	#define _MSG_C_INI_H6	[User menu prompts]
+	#define _MSG_C_INI_H7	[User menu actions]
+	#define _MSG_C_INI_HAOP	[Fields, orders, conditions]
 
 	#define _MSG_A_MF_F3	[View]
 	#define _MSG_A_MF_F4	[Edit]
-	#define _MSG_A_MF_F10	[Decript]
-	#define _MSG_A_MF_DSCR	[There is not description for this file]
 
 	#define _MSG_A_IF_TITLE [Select function: ]
 	#define _MSG_A_IF_TRANS []
 	#define _MSG_A_IF_AINS {;
 			[Change symbols(StrTran)],;
 			[Translate symbols(ChrTran)],;
-			[To upper case],;
-			[To lower case],;
-			[Capitalize],;
+			[UPPER CASE],;
+			[lower case],;
 			[Proper],;
+			[All Words Proper],;
 			[OemToAnsi],;
 			[AnsiToOem],;
 			[To national keyboard],;
 			[To USA keyboard],;
+			[Align],;
 			[Crypt],;
 			[DeCrypt],;
+			[Check sum of record],;
 			[Descend],;
 			[Delete slim],;
 			[Compress],;
 			[DeCompress],;
 			[Soundex];
 		}
+
+	#define _MSG_A_JUSTH {[Align:]}
+	#define _MSG_A_JUSTA {[Left],[Center],[Right],[Justify],[Spread],[Reduce]}
+
+	#define _MSG_A_FILTH {[SET FILTER TO:]}
+	#define _MSG_A_FILTA {[Condition],;
+				[Equal to Current Cell],;
+				[Not Equal to Current Cell],;
+				[Greater Than Current Cell],;
+				[Less Than Current Cell],;
+				[Greater or Equal Than Current Cell],;
+				[Less or Equal Than Current Cell],;
+				[No Filter]}
+
+	#define _MSG_A_SIMPH {[Find Expression in Current Field:]}
+	#define _MSG_A_SIMPA {	[Equal to Current Cell],;
+				[Not Equal to Current Cell],;
+				[Greater Than Current Cell],;
+				[Less Than Current Cell],;
+				[Greater or Equal Than Current Cell],;
+				[Less or Equal Than Current Cell],;
+				[Another]}
 
 	#define _MSG_A_DS_F2 [Print]
 	#define _MSG_A_DS_F3 [AddTag]
@@ -1057,46 +1235,51 @@
 	#define _MSG_A_CSIZE_MENU3 [Disk]
 	#define _MSG_A_CSIZE_MENU4 [Abort]
 
+	#define _MSG_A_NOPACK [Deleted records are not found]
+
+	#define _MSG_A_GFCOND [Additional condition]
 //HELP
 	#define _MSG_H_NO	[Sorry, no help here]
 	#define _MSG_H_TITLE	[TAGS INFORMATION (RDD : ]
 	#define _MSG_H_TAGS	[TAG      /  ]
 	#define _MSG_H_TAGN	[Tag Name]
-	#define _MSG_H_FE	[Filter expression ]
+	#define _MSG_H_FE	[Filter expression]
 	#define _MSG_H_ISU	[Is unique ?]
 	#define _MSG_H_ISD	[Is descent ?]
 	#define _MSG_H_RYO	[RYO-type ?]
 	#define _MSG_H_KEYS	[Keys total]
-	#define _MSG_H_CK	[Current key: ]
+	#define _MSG_H_CK	[Current key]
 
 	#define _MSG_H_OKEY	{[DBF - editor],;
 				BDBF_VERSION,[],;
 				[Author: Eugen Bondar],;
 				[Lugansk, Ukraine],;
-				[E-MAIL: elb@lg.bank.gov.ua],;
-				[Bondar_Eugen@yahoo.com];
+				[E-MAIL: ]+EMAIL,;
+				EMAIL2;
 				}
 
-	#define CODEPAGE	[Code page: ]
-	#define CURR_DIR	[Current dir: ]
-	#define DATE_UPDATE	[Last update: ]
-	#define DRV_CURRENT	[Driver (type): ]
-	#define FILE_SIZE	[Disk size: ]
-	#define FREE_MEM	[Free memory: ]
-	#define FREE_SPACE	[Free disk space: ]
-	#define HEAD_SIZE	[Header size: ]
-	#define REC_SIZE	[Record size: ]
-	#define N_USER		[User: ]
-	#define ON_SERVER	[ on server ]
-	#define MEMO_BLOCK_SIZE [Memo block size: ]
-	#define MEMO_FILE_SIZE  [Current Memo-file size: ]
-	#define MEMO_B_SIZE_C   [Block size in it: ]
-	#define OS_VER		[OS version: ]
-	#define TOTAL_FIELDS	[Total fields: ]
+	#define CODEPAGE	[Code page:]+CHR(0)
+	#define CURR_DIR	[Current dir:]+CHR(0)
+	#define DATE_UPDATE	[Last update:]+CHR(0)
+	#define DRV_CURRENT	[Driver (type):]+CHR(0)
+	#define FILE_SIZE	[Disk size:]+CHR(0)
+	#define FREE_MEM	[Free memory:]+CHR(0)
+	#define FREE_SPACE	[Free disk space:]+CHR(0)
+	#define HEAD_SIZE	[Header size:]+CHR(0)
+	#define REC_SIZE	[Record size:]+CHR(0)
+	#define N_USER		[User:]+CHR(0)
+	#define ON_SERVER	[ on server]+CHR(0)
+	#define MEMO_BLOCK_SIZE [Memo block size:]+CHR(0)
+	#define MEMO_FILE_SIZE  [Memo-file size:]+CHR(0)
+	#define MEMO_B_SIZE_C   [Block size in it:]+CHR(0)
+	#define OS_VER		[OS version:]+CHR(0)
+	#define TOTAL_FIELDS	[Total fields:]+CHR(0)
 
 // GetSys
 	#define _MSG_INSOVR	[Ins],[Ovr]
 	#define _MSG_EMODE	{[Usual Enter],[Lock Enter ],[Enter /skip],[Enter /stop]}
+	#define _MSG_ASCII	[ASCII-Table]
+	#define _MSG_ASC_SLCT	[Selected: ]
 
 // ErrorSys
 	#define NOT_READY [Printer is not ready.Repeat]
@@ -1107,10 +1290,20 @@
 	#define _MSG_FI_F2	[Disk]
 	#define _MSG_FI_F5	[Go Home]
 	#define _MSG_FI_F9	[Mask]
+	#define _MSG_FI_F10	[Info]
+	#define _MSG_FI_DSCR	[There is no description for this file]
 	#define _MSG_FI_MASK	[Input file mask]
 
+	#define _MSG_FI_FILE	[File:]+CHR(0)
+	#define _MSG_FI_DIR	[Directory:]+CHR(0)
+	#define _MSG_FI_SIZE	[Size:]+CHR(0)
+	#define _MSG_FI_UPD	[Last updated:]+CHR(0)
+	#define _MSG_FI_ATTR	[Attributes:]+CHR(0)
+	#define _MSG_FI_IND	[Index information:]+CHR(0)
+	#define _MSG_FI_KEY	[<KEY>]+CHR(0)
+
 //ClipLib
-	#define _MSG_CL_NOF	[Warning! It was fixed numeric overflow.]
+	#define _MSG_CL_NOF	[Warning! It was fixed a numeric overflow.]
 	#define _MSG_CL_NOONE	[Any correct field or expression is not given]
 
 #ENDIF

@@ -8,8 +8,27 @@
 	#define D_MSG(t)
 #endif
 
+static Process
+static l, fsdialog, csdialog
+static rb1, rb2, rb3
+static pbut, pb
+
 function Main()
-	public Process:=map()
+	local w, vb, hb, sw, f, tt
+	local menubar, menu1i, menu1, item1, save_item, item2, en3, item3, item4, item5
+	local rmg, radioitem1, radioitem2, radioitem3, checkitem1, tearoffitem1
+	local menu2i, menu2, hitem, menubar2
+	local BFrame, BFx, rg, en, trbtn
+	local EFrame, EFx, en2, cb
+	local TFrame, TFx, vscr, text, txt, edbtn, wwbtn
+	local DFrame, DFx, dialog, dbtn, btn6, btn10, btn11
+	local MFrame, MFx, check1, opt_menu, optmenu, focbtn, cal
+	local CLFrame, CLFx, clscr, clist
+	local CTFrame, CTFx, ctree, node1, node2, node3, node4, ctscr
+	local PBFrame, PBFx, qbtn
+	local PxmFrame, PxmFx, pix, bmppix
+
+	Process:=map()
 
 	gtk_Init()
 
@@ -28,8 +47,9 @@ function Main()
 	gtk_WindowSetPolicy(w,.f.,.t.,.t.)
 	gtk_ContainerSetBorderWidth(w,0)
 	gtk_ContainerSetResizeMode(w, GTK_RESIZE_QUEUE)
-	gtk_SignalConnect(w,"delete-event",{|wid,e|qout("delete-event")})
-	gtk_SignalConnect(w,"delete-event",{|wid,e|gtk_WidgetDestroy(w),gtk_Quit()})
+	gtk_SignalConnect(w,"delete-event",{|wid,e|qout("delete-event"),.t.})
+	gtk_SignalConnect(w,"delete-event",{|wid,e|qout("buy"), .t.})
+	gtk_SignalConnect(w,"delete-event",{|wid,e|qout("try destroy"),gtk_WidgetDestroy(w),gtk_Quit()})
 
 	D_MSG("Create vertical box container")
 	vb:= gtk_VBoxNew()
@@ -63,7 +83,7 @@ function Main()
 	gtk_BoxPackStart (hb, menubar)
 
 	D_MSG("Create submenu item")
-	menu1i:=gtk_MenuItemNew(,"menu1")
+	menu1i:=gtk_MenuItemNew(,"&menu1")
 	gtk_WidgetAddAccelerator (menu1i, GTK_ACTIVATE_ITEM_SIGNAL, w, GDK_m, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE)
 
 	D_MSG("Create submenu")
@@ -80,7 +100,7 @@ function Main()
 	gtk_WidgetAddAccelerator (save_item, GTK_ACTIVATE_SIGNAL, w, GDK_s, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE)
 
 	D_MSG("Create menu item 2")
-	item2:=gtk_MenuItemNew(,"Item        2")
+	item2:=gtk_MenuItemNew(,"&Item        2")
 	gtk_MenuItemRightJustify(item1)
 
 	D_MSG("Create entry for menu item")
@@ -276,7 +296,8 @@ function Main()
 	gtk_FixedPut (TFx, text)
 	gtk_TooltipsSetTip(tt,text,"Text widget. It can display and edit text")
 
-	edbtn:=gtk_CheckButtonNew(,"Editable")
+	edbtn:=gtk_CheckButtonNew(,"Edi&table", "&")
+	gtk_WidgetAddAccelerator (edbtn, "clicked", w, edbtn:AccelKey, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE)
 	gtk_ToggleButtonSetActive(edbtn,gtk_TextGetEditable(text))
 	gtk_SignalConnect(edbtn, "clicked", {||gtk_TextSetEditable(text, !gtk_TextGetEditable(text))})
 	gtk_FixedPut (TFx, edbtn, 5, 250)
@@ -301,7 +322,7 @@ function Main()
 	D_MSG("Create dialog window")
 	dialog:=map()
 	dialog:=gtk_DialogNew(,"Dialog window")
-	gtk_WindowSetModal(dialog, .f.)
+	gtk_WindowSetModal(dialog, .F.)
 	gtk_WidgetSetPosition(dialog,200,300)
 	gtk_WidgetSetSize(dialog,400,100)
 	gtk_ContainerAdd(dialog:VBox,gtk_LabelNew(,"This is a dialog window"))
@@ -486,16 +507,23 @@ function Main()
 	gtk_ContainerAdd(CTFrame,CTFx)
 
 	D_MSG("Create CTree widget")
-	ctree:=gtk_CTreeNew(,1,1,{"Column1"})
-	//gtk_CListColumnTitlesShow(ctree)
+	ctree:=gtk_CTreeNew(,2,1,{"Column1", "Column2"})
+	gtk_SignalConnect(ctree, "tree-select-row", {|wid, ev| qout("tree-select-row", gtk_CTreeNodeGetText(wid, ev:NODE, ev:COLUMN))})
+	gtk_CListColumnTitlesShow(ctree)
 	gtk_CListSetColumnWidth(ctree,1,100)
 	gtk_CListSetSelectionMode(ctree,GTK_SELECTION_EXTENDED)
 
 	D_MSG("Insert CTree nodes")
-	node1:=gtk_CTreeInsertNode(ctree,,,{"Node1"},,,,.f.,.t.)
+	node1:=gtk_CTreeInsertNode(ctree,,,{"Node1", "node1111"},,,,.f.,.t.)
+	qout('c1=', gtk_CTreeNodeGetText(ctree, node1, 1))
+	qout('c2=', gtk_CTreeNodeGetText(ctree, node1, 2))
+	node11:=gtk_CTreeInsertNode(ctree,,,{"Node2"},,,,.f.,.t.)
 	node2:=gtk_CTreeInsertNode(ctree,node1,,{"Leaf1"},,,,.t.)
 	node3:=gtk_CTreeInsertNode(ctree,node1,,{"Leaf2"},,,,.t.)
+	gtk_CTreeInsertNode(ctree,node1,,{"русские", "не сдаются"},,,,.t.)
 	node4:=gtk_CTreeInsertNode(ctree,node1,node3,{"Leaf3"},,,,.t.)
+	node44:=gtk_CTreeInsertNode(ctree,node11,,{"Leaf333"},,,,.f.)
+	gtk_CTreeInsertNode(ctree,node44,,{"Leaf333"},,,,.t.)
 
 	D_MSG("Scrolled window for ctree")
 	ctscr:=gtk_ScrolledWindowNew()
@@ -681,7 +709,7 @@ return .t.
 
 function ProcessRun()
   local Counter := 0
-  local ButCap := gtk_ButtonGetLabel(pbut)
+  local ButCap := gtk_LabelGet(gtk_ButtonGetLabel(pbut))
 
   ::Runned = .t.
   gtk_ButtonSetLabel(pbut,"Stop process")
@@ -711,7 +739,7 @@ return
 ////////////////////////////////////////////////////
 
 function ColorNew(r, g, b, op)
-  obj  = map()
+  local obj := map()
 
   r  = iif(r ==nil,0,r)
   g  = iif(g ==nil,0,g)

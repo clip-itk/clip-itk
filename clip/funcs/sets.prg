@@ -10,27 +10,27 @@
 ****************************************
 function saveSets()
 	local i,__set_names:=setnames()
-        for i in __set_names KEYS
-              __set_names[i]:=set(i)
-        next
+	for i in __set_names KEYS
+	      __set_names[i]:=set(i)
+	next
 return __set_names
 
 ****************************************
 function restoreSets(m)
 	local i
-        if valtype(m)!="O"
-        	return .f.
-        endif
+	if valtype(m)!="O"
+		return .f.
+	endif
 
-        for i in m KEYS
-              set(i,m[i])
-        next
+	for i in m KEYS
+	      set(i,m[i])
+	next
 return .t.
 
 ****************************************
 function setnames()
 	local __set_names
-        #include "setnames.ch"
+	#include "setnames.ch"
 return __set_names
 
 ****************************************

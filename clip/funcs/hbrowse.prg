@@ -4,7 +4,9 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include <inkey.ch>
+#include <clipcfg.h>
 #include <box.ch>
+#define __CHARSET	"cp437"
 #define COLOR_BROWSER	"0/3,  14/3, 1/3, 14/3, 14/1, 11/3, 0/7, 15/1, 15/3,   1/3"
 #define COLOR_MENU 	"0/7,0/2,4/7,2/5,15/7,0/7"
 /*                      ____   ________  __________  ____   _________  _____   _____ */
@@ -69,6 +71,8 @@ local obj
 	obj:hRefer	:= ""
 	obj:nRefer	:= ""
 	obj:iRefer	:= ""
+	obj:charset	:= __CHARSET
+	obj:charsetOrig	:= __CHARSET
 
 	obj:open	:= @openBrowser()
 	obj:runing	:= @runing()
@@ -79,6 +83,8 @@ local obj
 	obj:goBack	:= @goBack()
 	obj:goNext	:= @goNext()
 	obj:addObject	:= @br_addObject()
+	obj:SetCodePage	:= @br_SetCodePage()
+	obj:reload	:= @br_reload()
 
 	obj:parse_H	:= @parse_H()
 	obj:parse_Head	:= @parse_Head()
@@ -101,8 +107,9 @@ local obj
 	obj:parse_Input	:= @parse_Input()
 	obj:parse_TextArea:= @parse_TextArea()
 
+	obj:parse_Meta	:= @parse_Meta()
+
 	obj:Browse_File := @Browse_File()
-	obj:menu	:= @br_menu_create()
 
 	obj:indTabCol	:= stackNew()
 	obj:indTabRow	:= stackNew()
@@ -117,14 +124,16 @@ local obj
 	obj:__setColor 	:= @__setcolor()
 	obj:__setcolor()
 
+	obj:menu	:= br_menu_create()
 	obj:open()
 return 0
 
 ***************
 static function openBrowser()
 local h, buf, s, scr, tag, i
+	clear screen
 	save screen to scr
-	::doc := dialogBox(::nTop, ::nLeft, ::nBottom, ::nRight)
+	::doc := dialogBox(::nTop, ::nLeft, ::nBottom-1, ::nRight)
 	::doc:marginLeft := MARGIN_LEFT
 	::width -= ::doc:marginLeft
 	if !empty(::urlName)
@@ -147,6 +156,14 @@ local h, buf, s, scr, tag, i
 	::parseNewUrl()
 	//::doc:handleKey(::doc, __self__)
 	::doc:drawBox()
+	@ ::nBottom, 0 say padr([<   >-go next item  i-info  <F5>-go line  <F6>-find  <F9>-menu  <ESC>,<F10>-exit], ::nRight) color "0/w"
+	@ ::nBottom, 1 say "Tab" color "r/w"
+	@ ::nBottom, 20 say "i" color "r/w"
+	@ ::nBottom, 29 say "F5" color "r/w"
+	@ ::nBottom, 43 say "F6" color "r/w"
+	@ ::nBottom, 54 say "F9" color "r/w"
+	@ ::nBottom, 65 say "ESC" color "r/w"
+	@ ::nBottom, 71 say "F10" color "r/w"
 	::runing()
 	::doc:close()
 	::url:close()
@@ -172,7 +189,7 @@ local i, j, num, oInfo, nchoice:=1, old_translate_path, k
 			oldrow := row()
 			oldcol := col()
 			wopen(::nTop , ::nLeft, ::nBottom, ::nRight, .f.)
-			oInfo := ::menu()
+			oInfo := ::menu
 			hKey := MenuModal(oInfo,nchoice,maxrow(),0,maxcol(),"r/w")
 			wclose()
 			setpos(oldrow, oldcol)
@@ -223,7 +240,7 @@ local i, j, num, oInfo, nchoice:=1, old_translate_path, k
 			alert("Das ist Gluck into Screen!!!")
 			readkeyb((::nBottom-::nTop)/2, ((::nRight-::nLeft)/2)-len([Where are you going?]), [Where are you going?], @num,,,"0/7,14/1", B_DOUBLE)
 			setcursor(1)
-			::goto(num)
+			::doc:goto(num)
 			/*
 		case hKey == HASH_Find
 			num := 0
@@ -264,6 +281,8 @@ local i, j, num, oInfo, nchoice:=1, old_translate_path, k
 			else
 				::doc:insert(chr(hKey))
 			endif
+		case hKey == HASH_SetCodePage
+			::SetCodePage()
 		otherwise
 			::doc:insert(hKey)
 
@@ -299,12 +318,14 @@ local buf, timeout:=60
 
 	sleep(0.1)
 	do while !::url:fileEof()
+		::url:kick()
 		buf:=::url:readstr(10000)
 		if empty(buf)
 			sleep(0.1)
 			loop
 		endif
-		::parser:put(buf+"&\n")
+		::parser:put(buf)
+		//outlog(buf)
 	enddo
 	::parser:end(::url:readStr(10000))
 	::url:close()
@@ -383,6 +404,9 @@ static function br_addObject(str, color, type, fnc, size, name, line, pos)
 local numb
 	line := iif(line==NIL, ::doc:n_Line, line)
 	pos := iif(pos==NIL, ::doc:n_Pos, pos)
+	if valtype(str)=="C"
+		str := translate_charset(::charset, host_charset(), str)
+	endif
 	if ::isRefer .and. type==NIL
 		::doc:Button(str, ::hRefer, line, pos, , , ::clr, ::nRefer, ::iRefer)
 		return .t.
@@ -408,7 +432,7 @@ local numb
 	case type == "Browse"
 		numb := ::doc:Get(line,pos,str,size,color,,,,name)
 		color := ::__colors[4]+"/"+::__colors[5]
-		::doc:Button("Browse", {|s, self| self:Browse_File(numb)}, line, pos+2,,,color,name)
+		::doc:Button("Browse", {|s, self| self:Browse_File(numb)}, line, ::doc:n_Pos+2,,,color,name)
 	endcase
 return
 ******************
@@ -556,6 +580,8 @@ local typ:=upper(tag:tagname), ret:=0
 		if ::isForm
 			ret := ::parse_TextArea(tag, ::width)
 		endif
+	case typ == "META"
+		::parse_Meta(tag)
 	endcase
 return ret
 *****************
@@ -809,7 +835,6 @@ tbl - items array
 	isCell := .f.
 	//aadd(::tblRow, {})
 	//aadd(::tblCol, {})
-
 	do while !::parser:empty()
 		tt := ::parser:get()
 		if empty(tt)
@@ -821,7 +846,10 @@ tbl - items array
 			loop
 		endif
 		if tt:tagname == "CAPTION"
-		     ::tbl[::numTable]:caption := ::parse_Tbl_Caption(tt)
+		     if "ALIGN" $ (tt:fields)
+			::tbl[::numtable]:captionAlign := tt:fields:ALIGN
+		     endif
+		     ::tbl[::numTable]:caption := ::parse_Tbl_Caption(@tt)
 		endif
 		do case
 		case tt:tagname == "TABLE"
@@ -907,6 +935,39 @@ tbl - items array
 */
 //	::add_table(caption)
 return .t.
+*************
+static function parse_Meta(tag)
+local arr, i
+	if "CONTENT"$tag:fields
+		arr := split(tag:fields:CONTENT, ";")
+		for i in arr
+			if lower(alltrim(i)) = "charset="
+				::charset := substr(i, at('=', i)+1)
+				exit
+			endif
+		next
+	endif
+return
+********************
+static function br_SetCodePage()
+	::charset := set("HV_CHARSET")
+	::reload()
+return .t.
+**********************
+static function br_reload()
+	::doc:close()
+	::doc:init()
+	::startHtml := .f.
+	(::lists):asize(0)
+	::url:open()
+	::url:goTop()
+
+	::getUrl()
+	::doc:marginLeft := MARGIN_LEFT
+	::parseNewUrl()
+	::doc:drawBox(.f.)
+	::doc:refresh()
+return
 *******************
 static function parse_Col_Table(tag, align)
 local curtag:=map()
@@ -923,61 +984,6 @@ local curtag:=map()
 		curtag:align := upper(tag:fields:ALIGN)
 	endif
 return curtag
-**************
-function symb_tbl(arr, row, col)
-local symb:=" ", elem, elemD, elemR, len
-local box:={"‚","€","ˆ","ƒ","","†","‡","Š","„","‰","…"}
-      //     1   2   3   4   5   6   7   8   9   0   1
-	len := len(arr[row])
-	elem := arr[row][max(1, min(col, len))]
-	if len(arr)>row
-		elemD := arr[row+1][max(1, min(col, len(row+1)))]
-	endif
-	if col < len
-		elemR := arr[row][col+1]
-	endif
-	if row<len(arr)
-		if col==0
-			symb := iif(elem:rowspan>1, box[5], box[6])
-		elseif col>=len
-			symb := iif(elem:colspan!=1 .or. elem:rowspan>1, box[5], box[7])
-/*
-		elseif col==1 .and. elem:colspan==1
-			symb := iif(elem:rowspan>1, box[6], box[8])
-			if elemD != NIL .and. elemD:colspan>1
-				symb := box[10]
-			endif
-*/
-		elseif col<len .and. elem:colspan>1 .and. row<len(arr) .and. elem:rowspan==1
-			symb := box[3]
-		elseif col>=1 .and. col<len
-			symb := iif(elem:rowspan==1, iif(elem:colspan==1, box[8], box[6]), box[6])
-			if elemR !=NIL .and. elemR:rowspan > 1
-				symb := box[7]
-			endif
-			if elemD != NIL .and. elemD:colspan>1
-				if elem:colspan>1
-					symb := " "
-				else
-					symb := box[10]
-				endif
-			endif
-
-		endif
-		return symb
-	endif
-	if row==len(arr)
-		if col==0
-			symb := box[9]
-		elseif col==1
-			symb := iif(elem:colspan==1, box[10], box[2])//box[9]
-		elseif col<len
-			symb := iif(elem:colspan==1, box[10], box[2])
-		else
-			symb := box[11]
-		endif
-	endif
-return symb
 **********************
 function replace_symbols(str, space_charone)
 local lsp
@@ -1181,7 +1187,6 @@ local box:={"‚","€","ˆ","ƒ","","†","‡","Š","„","‰","…"}
 				::doc:n_Pos := rc
 				for x=1 to y
 					if valtype(elem:text[x][1])=="O"
-						outlog(__FILE__, __LINE__, elem:text[x][1])
 						::parseTag(elem:text[x][1])
 					else
 						::doc:Text(elem:text[x][1], ::doc:n_Line, ::doc:n_Pos,,,::clr)
@@ -1259,7 +1264,7 @@ static function parse_Input(tag, insTag)
 local item:=map(), ind, clr, clrh, s_file, numb, str
 	ind := len(::form)
 	item:type := "TEXT"
-	item:value := ""
+	item:value := replicate(" ", 10)
 	item:name := ""
 	item:size := 0
 	item:maxlength := 0
@@ -1575,8 +1580,27 @@ static function goNext()
 return
 ************************************************
 static function br_menu_Create(enable)
+#define FA_NORMAL	0
+#define FA_READONLY	1
+#define FA_HIDDEN	2
+#define FA_SYSTEM	4
+#define FA_VOLUME	8
+#define FA_DIRECTORY	16
+#define FA_ARCHIVE	32
 local oTopBar, oPopUp, oPopUp1, oItem
 local keys:=HK_get("htmlBrowser"),kn
+local fchs:="", a, b:={}, i, oPopUp2
+	#ifdef OS_CYGWIN
+	fchs := "C:/cygwin"
+	#endif
+	fchs += cliproot()+"/charsets/"+"*.tbl"
+	a = fileseek(fchs, FA_ARCHIVE+FA_VOLUME+FA_SYSTEM+FA_HIDDEN+FA_READONLY)
+	while !empty(a)
+		a := left(a, len(a)-4)
+		aadd(b, a)
+		a = fileseek()
+	enddo
+	b := asort(b,,,{|x, y| x < y})
 
       oTopBar := TopBar( 0, 0, maxcol())
       oTopBar:ColorSpec := COLOR_MENU
@@ -1591,6 +1615,15 @@ local keys:=HK_get("htmlBrowser"),kn
       oItem :=MenuItem( [Load New URL   ]+kn ,{|| .t. }, ,[Load new URL], HASH_OpenNew)
       oPopUp:AddItem( oItem)
       */
+
+
+      oPopUp2 := PopUp()
+      oPopUp2:ColorSpec:= COLOR_MENU
+      for i=1 to len(b)
+	oItem :=MenuItem( b[i] ,{|| local(_1:=@b[i]), set("HV_CHARSET", _1) }, ,, HASH_SetCodePage)
+	oPopUp2:AddItem( oItem)
+      next
+      oPopUp:AddItem( MenuItem([&Charset], oPopUp2) )
 
       kn:=key_name(HK_get_key(keys,HASH_Exit))
       oItem :=MenuItem( [E&xit   ]+kn ,{|| .t. }, ,[End of application], HASH_Exit)

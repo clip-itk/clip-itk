@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
-    Author  : Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
@@ -27,16 +26,13 @@ ENDIF
 RETURN nLen
 **********
 FUNC AnsiToOem(cStr)
-RETURN ChrTran(cStr,m->_Ansi_Set,m->_Oem_Set)
+RETURN IF( VALTYPE(cStr)<>'C', '', ChrTran(cStr,m->_Ansi_Set,m->_Oem_Set))
 **********
 FUNC OemToAnsi(cStr)
-RETURN ChrTran(cStr,m->_Oem_Set,m->_Ansi_Set)
+RETURN IF( VALTYPE(cStr)<>'C', '', ChrTran(cStr,m->_Oem_Set,m->_Ansi_Set))
 **********
 FUNC AtC(cStr1,cStr2,nTh)
 RETURN FT_AT2(cStr1,cStr2,nTh,.F.)
-**********
-FUNC Between(_x,_x1,_x2)
-RETU (_x>=_x1 .AND. _x<=_x2)
 **********
 FUNC Cdx()
 RETURN m->__CdxName
@@ -50,7 +46,7 @@ FUNC DMY(dVal)
 #IFDEF ENGLISH
 	LOCAL cDate:=DTOS(dVal)
 	RETURN NTRIM(Day(dVal))+' '+Cmonth(dVal)+;
-		IF(__SetCentury(),SUBSTR(cDate,1,4),SUBSTR(cDate,3,2))
+		IF(__SetCentury(),LEFT(cDate,4),SUBSTR(cDate,3,2))
 #ELSE
 	RETURN SayData(dVal)
 #ENDIF
@@ -69,9 +65,6 @@ RETURN cI
 **********
 FUNC GoMonth(dExpr,nMth)
 RETURN FT_MADD(dExpr,nMth)
-**********
-FUNC InList(xSrch,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x20,x21,x22,x23,x24,x25)
-RETURN ASCAN({x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x20,x21,x22,x23,x24,x25},xSrch)<>0
 **********
 FUNC IsBlank(xPr)
 RETURN IF( VALTYPE(xPr)=='C',;
@@ -183,63 +176,13 @@ FUNC CpDBF()
 RETURN {0,437,620,737,850,852,857,861,865,866,895,;
 	1250,1251,1252,1253,1254,;
 	10000,10006,10007,10029;
-	}[AT(SUBSTR(m->__RealFlds,2,1),CHR(1)+'ij'+CHR(2)+'dkgfeh╚╔'+CHR(3)+'╦╩'+CHR(4)+'ШЦЧ')+1]
-/*
-DO CASE
-	CASE xCode==CHR(1)
-		xCode:=437	//x01	U.S. MS-DOS
-	CASE xCode=='i'
-		xCode:=620	//x69	Mazovia (Polish) MS-DOS
-	CASE xCode=='j'
-		xCode:=737	//x6A	Greek MS-DOS (437G)
-	CASE xCode==CHR(2)
-		xCode:=850	//x02	International MS-DOS
-	CASE xCode=='d'
-		xCode:=852	//x64	Eastern European MS-DOS
-	CASE xCode=='k'
-		xCode:=857	//x6B	Turkish MS-DOS
-	CASE xCode=='g'
-		xCode:=861	//x67	Icelandic MS-DOS
-	CASE xCode=='f'
-		xCode:=865	//x66	Nordic MS-DOS
-	CASE xCode=='e'
-		xCode:=866	//x65	Russian MS-DOS
-	CASE xCode=='h'
-		xCode:=895	//x68	Kamenicky (Czech) MS-DOS
-	CASE xCode=='╚'
-		xCode:=1250	//xC8	Eastern European Windows
-	CASE xCode=='╔'
-		xCode:=1251	//xC9	Russian Windows
-	CASE xCode==CHR(3)
-		xCode:=1252	//x03	Windows ANSI
-	CASE xCode=='╦'
-		xCode:=1253	//xCB	Greek Windows
-	CASE xCode=='╩'
-		xCode:=1254	//xCA	Turkish Windows
-	CASE xCode==CHR(4)
-		xCode:=10000	//x04	Standard Macintosh
-	CASE xCode=='Ш'
-		xCode:=10006	//x98	Greek Macintosh
-	CASE xCode=='Ц'
-		xCode:=10007	//x96	Russian Macintosh
-	CASE xCode=='Ч'
-		xCode:=10029	//x97	Macintosh EE
-	OTHER
-		xCode:=0
-ENDCASE
-
-RETURN xCode
-*/
+	}[AT(SUBSTR(m->__RealFlds,2,1),CHR(1)+'ij'+CHR(2)+'dkgfeh'+;
+		    CHR(200)+CHR(201)+CHR(3)+CHR(203)+CHR(202)+CHR(4)+'ШЦЧ')+1]
 *********
 FUNC ShowForced(xFld,nEl)
 LOCAL cType,nLen
+cType:=m->_FrType[nEl]
 DO CASE
-	CASE (cType:=m->_FrType[nEl]) =='Y'
-		xFld:=TRANSF(YToCurs(xFld),PictForced(cType))
-	CASE cType=='B'
-		xFld=TRANSF(CTOF(xFld),PictForced(cType,nEl))
-	CASE cType=='T'
-		xFld:=TTOC(xFld)
 	CASE cType $ 'MGP'
 		xFld:=IF(MemoEmpty(xFld),'memo','MEMO')
 	CASE cType=='2'
@@ -251,19 +194,14 @@ RETURN xFld
 **********
 FUNC xToForced(cVal,cType,cFld)
 IF ValType(cVal)=='C'
-	IF cType $ 'YBT2'
+	IF cType $ '2'
 		DO CASE
-			CASE cType=='Y'
-				cVal:=CursToY(cVal)
-			CASE cType=='B'
-				cVal:=FTOC(VAL(cVal))
-			CASE cType=='T'
-				cVal:=CTOT(cVal)
 			CASE cType=='2'
 				cVal:=I2BIN(cVal)
-			OTHER	//Memo
-				cVal:=MemoPut(cFld,cVal)
+*			OTHER
 		ENDCASE
+	ELSE 	//Memo
+		cVal:=MemoPut(cFld,cVal)
 	ENDIF
 ELSE
 	cVal:=NIL
@@ -271,62 +209,8 @@ ENDIF
 RETU cVal
 **********
 FUNC PictForced(cType,nEl)
-LOCAL _Pict:=REPL('9',16)+'.'
-RETURN IF(cType=='Y',_pict+'9999',;
-	  IF(cType=='B',_pict+REPL('9',m->_Fdr[nEl]),;
-	     IF(cType=='T',CHRTRAN(SET(_SET_DATEFORMAT),'DMY','999')+' 99:99:99',;
-		IF(cType=='2','999999',);
-	     );
-	  );
-	)
-//Эти функции нужны для VFP-Currency
-**********
-FUNC YToCurs( cStr )
-LOCAL i, nRetVal := 0
-*IF VALTYPE(cStr)=='N' THEN cStr:=NTRIM(cStr)
-*cStr:=FT_XTOY(cStr,'C')
-FOR i := 1 TO 8
-	nRetVal += ASC( SUBSTR( cStr, i, 1 ) ) * 256^( i - 1)
-NEXT
-RETURN INT(nRetVal)*0.0001
-*********
-FUNC CursToY( nVal )
-LOCAL i, cRetVal := '', nTemp, nDeg
-IF VALTYPE(nVal)=='C'
-	IF LEN(nVal)==8 .AND. SUBSTR(nVal,-1)==CHR(0)
-		RETURN nVal	//Уже оно и есть
-	ENDIF
-	nVal:=VAL(nVal)
-ENDIF
-nVal*=10000
-FOR i := 1 TO 8
-	nDeg:=256^( i - 1)
-	nTemp   := INT( nVal / nDeg ) % 256 // (byte)*(256^n) for
-	cRetVal += CHR( nTemp )
-	nVal  -= nTemp * nDeg
-NEXT
-RETURN cRetVal
+RETURN IF(cType=='2','999999',)
 
-**********
-FUNC TTOC(DateTime)
-IF VALTYPE(DateTime)<>'C' THEN DateTime:=''
-DateTime=PAD(DateTime,8,CHR(0))
-
-*RETURN	DTOC(SX_ValDate(Bin2L(DateTime)))+' '+;		 //Странно иногда
-RETURN	DTOC(FT_XTOY(Bin2L(DateTime)-1757585,"D"))+' '+;
-	TString(ROUND(Bin2L(SUBSTR(DateTime,5))*0.001,0))
-**********
-FUNC CTOT(cDateTime)
-LOCAL cRes
-IF VALTYPE(cDateTime)<>'C' THEN cDateTime:=''
-IF LEN(cDateTime)==8 .AND. !EMPTY(SX_ValDate(Bin2L(cDateTime)))
-	cRes:=cDateTime
-ELSE
-	cDateTime=PAD(cDateTime,19)
-	cRes:=L2BIN(FT_XTOY(CTOD(SUBSTR(cDateTime,1,10)),'N')+1757585)+;
-	      L2BIN(Secs(SUBSTR(cDateTime,12))*1000)
-ENDIF
-RETURN	cRes
 **********
 FUNC DateTime(nYear,nMonth,nDay,nHours,nMins,nSecs)
 LOCAL cDate
@@ -349,7 +233,7 @@ ENDIF
 RETURN cDate
 **********
 FUNC MemoSrc(cFld,nbSize,nPos,cType)	//"Ручное" чтение VFP-полей
-LOCAL h,cT,cf1,cf2
+LOCAL h,cT,cf1,cf2, cMemo
 IF MemoEmpty(cFld)
 	cFld:=''
 	nPos:=0
@@ -358,7 +242,9 @@ IF MemoEmpty(cFld)
 ELSEIF m->_aCommon[5]	//DbFlex
 	nPos:=Bin2L(SUBSTR(cFld,5))
 	nbSize:=Bin2L(cFld)
-	h:=FOPEN(ClearName()+'.DBV',64)
+	cMemo:=ClearName()
+	IsFileExist(@cMemo, '.DBV', , .F.)
+	h:=FOPEN(cMemo,64)
 	cType:=ReadBin(h,nPos+4,2)
 ELSE
 	*h:=m->_MainHandle+1
@@ -371,7 +257,7 @@ cFld:=ReadBin(h,0,MIN(nbSize,64512),1)
 IF m->_aCommon[5]
 	cT:=SUBSTR(cType,2)
 	IF cT==CHR(4)		//DATE
-		cFld:=SX_ValDate(Bin2L(cFld))
+		cFld:=SXDate(Bin2L(cFld))
 	*ELSEIF cT==CHR(3)		//CHAR
 	ELSEIF cT==CHR(12)	//LOGICAL
 		cFld:=(First(cFld)#CHR(0))
@@ -389,12 +275,14 @@ RETURN cFld
 **********
 #xtranslate NBlocks(<nLen>) => Ceiling(<nLen> / m->_MemoBlSize)* m->_MemoBlSize
 FUNC MemoPut(cFld,cNew)
-LOCAL nOldSize,nNewSize,nPos,cType,cT,lNew,h,nSize
+LOCAL nOldSize,nNewSize,nPos,cType,cT,lNew,h,nSize, cMemo
 
 IF cNew==NIL THEN RETURN NIL
 
 MemoSrc(cFld,@nOldSize,@nPos,@cType)
-IF (h:=FOPEN(IF( m->_aCommon[5],ClearName()+'.DBV',m->_MainMemoFile), ;
+cMemo:=ClearName()
+IsFileExist(@cMemo, '.DBV', , .F.)
+IF (h:=FOPEN(IF( m->_aCommon[5], cMemo, m->_MainMemoFile), ;
 		66)) < 0 THEN RETURN NIL
 
 nSize:=FSeek(h,0,2)
@@ -405,7 +293,7 @@ IF m->_aCommon[5]	//DbFlex
 		IF LEN(TRIM(cNew))==0 THEN RETU SPACE(10)
 		cType:='C'+CHR(3)
 	ELSEIF cT=='D'
-		cNew:=L2Bin(SX_DateVal(cNew))
+		cNew:=L2Bin(SXNum(cNew))
 		cType:='D'+CHR(4)
 	ELSEIF cT=='L'
 		cNew:=IF(cNew,'~',CHR(0))+REPL(CHR(0),3)
@@ -456,7 +344,7 @@ RETU nPos
 FUNC Bin2Arr(cStr)
 LOCAL nSize,i,xItem,cT,aRes,nLen
 
-nSize:=Bin2I(SUBSTR(cStr,1,2))
+nSize:=Bin2I(LEFT(cStr,2))
 aRes:=ARRAY(nSize)
 
 cStr:=SUBSTR(cStr,3)
@@ -480,7 +368,7 @@ FOR i:=1 TO nSize
 			xItem:=CTOF(SUBSTR(cStr,4,8))
 			cStr:=SUBSTR(cStr,12)
 		CASE ct==CHR(14)	//date
-			xItem:=SX_ValDate(Bin2L(SUBSTR(cStr,2,4)))
+			xItem:=SXDate(Bin2L(SUBSTR(cStr,2,4)))
 			cStr:=SUBSTR(cStr,6)
 		CASE ct==CHR(12)	//ARRAY
 			cStr:=SUBSTR(cStr,2)
@@ -520,7 +408,7 @@ FOR i:=1 TO LEN(aSrc)
 				xItem:=CHR(15)+CHR(10)+CHR(0)+FTOC(xItem)
 			ENDIF
 		CASE ct=='D'	//date
-			xItem:=CHR(14)+L2Bin(SX_DateVal(xItem))
+			xItem:=CHR(14)+L2Bin(SXNum(xItem))
 		CASE ct=="L"
 			xItem:=IF(xItem,CHR(25),CHR(26))
 		CASE ct=='A'	//ARRAY

@@ -100,9 +100,13 @@
 
 #command SET AUTOPEN <x:ON,OFF,&>       => Set( _SET_AUTOPEN, <(x)> )
 #command SET AUTOPEN (<x>)              => Set( _SET_AUTOPEN, <x> )
+#command SET AUTOOPEN <x:ON,OFF,&>      => Set( _SET_AUTOPEN, <(x)> )
+#command SET AUTOOPEN (<x>)             => Set( _SET_AUTOPEN, <x> )
 
 #command SET AUTORDER TO                => Set( _SET_AUTORDER,  0  )
 #command SET AUTORDER TO <x>            => Set( _SET_AUTORDER, <x> )
+#command SET AUTOORDER TO               => Set( _SET_AUTORDER,  0  )
+#command SET AUTOORDER TO <x>           => Set( _SET_AUTORDER, <x> )
 
 #command SET AUTOSHARE TO               => Set( _SET_AUTOSHARE,  0  )
 #command SET AUTOSHARE TO <x>           => Set( _SET_AUTOSHARE, <x> )

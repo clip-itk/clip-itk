@@ -1,15 +1,26 @@
 #INCLUDE <fwin/FiveWin.ch>
 
-STATIC oWnd, oFont
+STATIC oWnd, oFont, oName
 
 //-------------------------------------------------------------//
 
 FUNCTION Main()
-   LOCAL oBar
+   LOCAL oBar, cName
 
    DEFINE WINDOW oWnd						;
-      TITLE "Hello world!"					;
-      MENU BuildMenu()
+      TITLE "Hello world!"					//;
+//      MENU BuildMenu()
+
+
+      @ 2, 3 BUTTON "Browse" OF oWnd ;
+      ACTION (cName:=cGetFile("*.prg"),oName:refresh())   ;
+      MESSAGE "Call file dialog"
+
+      cName := "no file name"
+      @ 5, 3 GET oName VAR cName OF oWnd SIZE 100, 20 ;
+      MESSAGE "It is file from <Browse>"
+
+/*
 
 
    DEFINE BUTTONBAR oBar OF oWnd
@@ -21,10 +32,12 @@ FUNCTION Main()
       DEFINE BUTTON OF oBar FILENAME "bitmaps\exit.bmp"	;
       MESSAGE "Exit from here"				;
       ACTION oWnd:End()
+*/
 
-   SET MESSAGE OF oWnd TO "Clip for UNIX system";
-   DATE ;
-   CLOCK
+   SET MESSAGE OF oWnd TO "Clip for UNIX system" //;
+   //DATE// ;
+   //CLOCK
+
 
    ACTIVATE WINDOW oWnd					;
       VALID MsgYesNo( "Confirm exit" )

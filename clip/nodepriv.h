@@ -1,5 +1,10 @@
 /*
    $Log: nodepriv.h,v $
+   Revision 1.21  2002/11/27 13:40:44  clip
+   initial _CGET_ pseudofunction(bug 62):
+   _CGET_(var[i1,i2,i3,...]) -> __CGET__(@var[i1,i2,i3],{i1,i2,i3},"var",...)
+   paul
+
    Revision 1.20  2001/11/22 10:44:19  clip
    expr: '(' expr_list ')' stack fix
    paul
@@ -367,5 +372,13 @@ typedef struct
 	int last;
 }
 ExprListNode;
+
+typedef struct
+{
+	Node node;
+	Coll coll;
+        int last;
+}
+ExprArrNode;
 
 #endif

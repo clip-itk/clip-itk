@@ -1,11 +1,10 @@
 #  GNU make makefile
 #
-
-ifdef CLIPROOT
-include $(CLIPROOT)/include/Makefile.inc
-else
-CLIPROOT=/usr/local/clip
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
+
+include $(CLIPROOT)/include/Makefile.inc
 
 ifndef ORACLE_HOME
 ORACLE_HOME=/usr/local/oracle_home
@@ -34,14 +33,14 @@ or_clip.o: or_clip.c
 or.o: or.prg oracle.ch
 	$(CLIPROOT)/bin/clip -l or.prg
 
-install: all
-	$(CLIPROOT)/bin/clip_cp $(TARGET) $(CLIPROOT)/lib
-	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(CLIPROOT)/lib
-	mkdir -p $(CLIPROOT)/doc/clip-oracle
-	cp *.html $(CLIPROOT)/doc/clip-oracle
-	cp oracle.ch $(CLIPROOT)/include
-	mkdir -p $(CLIPROOT)/doc/example/clip-oracle
-	cp -R example/* $(CLIPROOT)/doc/example/clip-oracle/
+install:
+	$(CLIPROOT)/bin/clip_cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
+	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-oracle
+	cp *.html $(DESTDIR)$(CLIPROOT)/doc/clip-oracle
+	cp oracle.ch $(DESTDIR)$(CLIPROOT)/include
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-oracle
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-oracle/
 
 clean:
-	rm -rf *.o *.bak *.a *.so *.dll *.exe *.ex *.nm
+	rm -rf *.o or.c *.s *.bak *.a *.so *.dll *.exe *.ex *.nm

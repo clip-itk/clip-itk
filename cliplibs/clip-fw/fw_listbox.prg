@@ -75,7 +75,7 @@ function _recover_FWIN_TLISTBOX(obj)
 	obj:Modify	:= @fw_Modify()
 	obj:Insert	:= @fw_Insert()
 	obj:Del		:= @fw_Del()
-	obj:GetItem	:= {|self, nItem| LbxGetItem( self:hWnd, nItem )}
+	obj:GetItem	:= {|self, nItem| eval(Selector:LbxGetItem, self:hWnd, nItem )}
 	obj:Len		:= {|self| eval(Selector:SendMessage, self:hWnd, HASH_LB_GETCOUNT )}
 	obj:LostFocus	:= @fw_LostFocus()
 	obj:Reset	:= {|self| Eval( self:bSetGet,;
@@ -85,14 +85,14 @@ function _recover_FWIN_TLISTBOX(obj)
 	obj:FillMeasure	:= {|self, nPInfo| eval(Selector:LbxMeasure, nPInfo, self:nBmpHeight )}
 	obj:GetSelCount	:= {|self| If( self:IsMultipleSel(), self:SendMsg( HASH_LB_GETSELCOUNT ), 0 )}
 	obj:GetSelItems	:= {|self|  ;     // returns an array of numbers
-				If( self:IsMultipleSel(), LbxGetSelItems( self:hWnd ), 0 )}
+				If( self:IsMultipleSel(), eval(Selector:LbxGetSelItems, self:hWnd ), 0 )}
 	obj:SetSelItems	:= @fw_SetSelItems() // aItems is an array of numbers
 	obj:DrawItem	:= @fw_DrawItem()
 	obj:GetPos	:= ;             // it has to be a BLOCK
 			{ | Self, nPos | nPos := self:SendMsg( HASH_LB_GETCURSEL );
 				/*If( nPos == -1, 0, nPos + 1 )*/ }
 
-	obj:IsMultipleSel:= {|self| lAnd( GetWindowLong( self:hWnd, GWL_STYLE ),;
+	obj:IsMultipleSel:= {|self| lAnd( eval(Selector:GetWindowLong, self:hWnd, GWL_STYLE ),;
 				       LBS_MULTIPLESEL )}
 	obj:Default	:= @fw_Default()
 	obj:VScroll	:= @fw_VScroll()
@@ -463,8 +463,8 @@ static function fw_SetBitmaps( self, acBitmaps )
 	    self:aBitmaps[ n ] = acBitmaps[ n ]
 	 endif
       next
-      self:nBmpHeight = nBmpHeight( self:aBitmaps[ 1 ] )
-      self:nBmpWidth  = nBmpWidth( self:aBitmaps[ 1 ] )
+      //self:nBmpHeight = nBmpHeight( self:aBitmaps[ 1 ] )
+      //self:nBmpWidth  = nBmpWidth( self:aBitmaps[ 1 ] )
    endif
 
 return

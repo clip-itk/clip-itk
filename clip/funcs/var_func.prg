@@ -128,48 +128,48 @@ function varToString( var,len,dec, lAtype )
    lAtype:=iif(lAtype==NIL,.t.,lAtype)
    do case
 	  case sw=="A"
-           	if lAtype
-	   		ret="aclone({"
-           	else
-	   		ret="{"
-           	endif
-	   	for i:=1 to len(var)
-			ret += varToString(var[i], len, dec) + ","
-	   	next
-	   	if len(var) > 0
+		if lAtype
+			ret="aclone({"
+		else
+			ret="{"
+		endif
+		for i:=1 to len(var)
+			ret += varToString(var[i], len, dec, lAtype) + ","
+		next
+		if len(var) > 0
 			ret := substr(ret, 1, len(ret)-1)
-	   	endif
-           	if lAtype
-	   		ret += "})"
-           	else
-	   		ret += "}"
-           	endif
+		endif
+		if lAtype
+			ret += "})"
+		else
+			ret += "}"
+		endif
 	  case sw=="C"
-	   	ret='"'+var+'"'
+		ret='"'+var+'"'
 	  case sw=="D"
-	   	ret='"'+dtoc(var)+'"'
+		ret='"'+dtoc(var)+'"'
 	  case sw=="T"
-	   	ret='"'+ttoc(var)+'"'
+		ret='"'+ttoc(var)+'"'
 	  case sw=="L"
-	   	ret=iif(var,".T.",".F.")
+		ret=iif(var,".T.",".F.")
 	  case sw=="N"
-	   	ret=str(var,len,dec)
+		ret=str(var,len,dec)
 	  case sw=="M"
-	   	ret='"'+var+'"'
+		ret='"'+var+'"'
 	  case sw=="O"
-           	if lAtype
-	   		ret := "obj:=map()"
-	   		arr := mapkeys(var)
-	   		for i:= 1 to len(arr)
-				ret += ", obj:"+alltrim(hashname(arr[i]))+":="+varToString(var[arr[i]], len, dec)
-	   		next
-           	else
-	   		ret := "{object}"
-           	endif
+		if lAtype
+			ret := "obj:=map()"
+			arr := mapkeys(var)
+			for i:= 1 to len(arr)
+				ret += ", obj:"+alltrim(hashname(arr[i]))+":="+varToString(var[arr[i]], len, dec, lAtype)
+			next
+		else
+			ret := "{object}"
+		endif
 	  case sw=="U"
-	   	ret="NIL"
+		ret="NIL"
 	  otherwise
-	   	ret="NIL"
+		ret="NIL"
    end
 return ret
 
@@ -260,11 +260,11 @@ function oclone(Obj)
 
 	NewObj := map()
 	for k in Obj keys
-        	vt := valtype(Obj[k])
+		vt := valtype(Obj[k])
 		if vt=="O"
-                	newObj[k] := oClone(obj[k])
-                else
-		  	NewObj[k] := Obj[k]
+			newObj[k] := oClone(obj[k])
+		else
+			NewObj[k] := Obj[k]
 		endif
 	next
 return NewObj
@@ -276,11 +276,11 @@ function o2self(self,Obj)
 	if valtype(Obj)!="O"; return nil; endif
 
 	for k in Obj keys
-	      	if valtype(Obj[k])=="B"
+		if valtype(Obj[k])=="B"
 			self[k] := Obj[k]
-	      	else
+		else
 			self[k] := @Obj[k]
-	      	endif
+		endif
 	next
 return self
 
@@ -298,4 +298,46 @@ function o2update(newData,oldData)
 		ret[k] := newData[k]
 	next
 return ret
+
+**************************************
+function varChanged(newData,oldData)
+	local i,m1,m2,val1,val2
+	local t1:=valtype(newData), t2:=valtype(oldData)
+	if t1 == t2
+		if newData == oldData
+			return .f.
+		endif
+	else
+		return .t.
+	endif
+	if t1 == "A"
+		if len(newData) != len(oldData)
+			return .t.
+		endif
+		for i=1 to len(newData)
+			if varChanged(newData[i],oldData[i])
+				return .t.
+			endif
+		next
+		return .f.
+	endif
+	if t1 != "O" .or. t2!="O"
+		return .t.
+	endif
+	m1 := mapkeys(newData)
+	m2 := mapkeys(oldData)
+	if len(m1) != len(m2)
+		return .t.
+	endif
+	for i=1 to len(m1)
+		if m1[i] != m2[i]
+			return .t.
+		endif
+		val1 := newData[m1[i]]
+		val2 := oldData[m2[i]]
+		if varChanged(val1,val2)
+			return .t.
+		endif
+	next
+return .f.
 

@@ -4,48 +4,6 @@
 
 #include "set.ch"
 
-/*
-#command SAVE SCREEN            => private __XScreen:=savescreen()
-#command RESTORE SCREEN         => RestScreen(,,,,__XScreen)
-*/
-
-
-#command @ <row>, <col> GET <var>                                       ;
-			[PICTURE <pic>]                                 ;
-			[VALID <valid>]                                 ;
-			[WHEN <when>]                                   ;
-			[SEND <msg>]                                    ;
-			[<ro: READONLY>]                                ;
-									;
-	  => aadd(GetList,getnew(<row>,<col>,                           ;
-	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
-		  <(var)>,<pic>,setcolor(),<var>,<{valid}>,<{when}>) )  ;
-	   [; ATail(GetList):<msg>]                                     ;
-	   [; ATail(GetList):readOnly:=<.ro.>]				;
-			; ATail(GetList):Display()
-
-#command @ <row>, <col> GET <var>                                       ;
-			[PICTURE <pic>]                                 ;
-			[VALID <valid>]                                 ;
-			[WHEN <when>]                                   ;
-			[CAPTION <caption>]                             ;
-			[MESSAGE <message>]                             ;
-			[SEND <msg>]                                    ;
-			[<ro: READONLY>]                                ;
-									;
-	  => aadd(GetList,getnew(<row>,<col>,                               ;
-	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
-		  <(var)>,<pic>,setcolor(),<var>,<{valid}>,<{when}>) )  ;
-	  [; ATail(GetList):Caption := <caption>]                           ;
-	  [; ATail(GetList):CapRow  := ATail(Getlist):row                   ;
-	   ; ATail(GetList):CapCol  := ATail(Getlist):col -                 ;
-				  __CapLength(<caption>) - 1]               ;
-	  [; ATail(GetList):message := <message>]                           ;
-	  [; ATail(GetList):<msg>]                                          ;
-	  [; ATail(GetList):readOnly:=<.ro.>]                               ;
-	   ; ATail(GetList):Display()
-
-
 #command @ <row>, <col> GET <var>                                       ;
 			CHECKBOX                                        ;
 			[VALID <valid>]                                 ;
@@ -60,155 +18,18 @@
 			[GUISEND <guimsg>]                              ;
 			[BITMAPS <aBitmaps>]                            ;
 									;
-	  => aadd(GetList,getnew(<row>,<col>,                               ;
+	  => aadd(GetList,getnew(<row>,<col>,                           ;
 	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
 		  <(var)>,NIL,<color>,<var>,<{valid}>,<{when}>) )       ;
-	   ; ATail(GetList):Control := _CheckBox_( <var>, <caption>,        ;
+	   ; ATail(GetList):Control := _CheckBox_( <var>, <caption>,    ;
 			<message>, <color>, <{fblock}>, <{sblock}>,     ;
 			<style>, <aBitmaps>,<row>,<col>-1 )             ;
-	   ; ATail(GetList):reader  := { | a, b, c, d |                     ;
-					GuiReader( a, b, c, d ) }           ;
-	  [; ATail(GetList):<msg>]                                          ;
-	  [; ATail(GetList):Control:<guimsg>]                               ;
+	   ; ATail(GetList):reader  := { | a, b, c, d |                 ;
+					GuiReader( a, b, c, d ) }       ;
+	  [; ATail(GetList):<msg>]                                      ;
+	  [; ATail(GetList):Control:<guimsg>]                           ;
 	   ; ATail(GetList):Control:Display()
 
-#command @ <top>, <left>, <bottom>, <right> GET <var>                    ;
-			LISTBOX    <items>                               ;
-			[VALID <valid>]                                  ;
-			[WHEN <when>]                                    ;
-			[CAPTION <caption>]                              ;
-			[MESSAGE <message>]                              ;
-			[COLOR <color>]                                  ;
-			[FOCUS <fblock>]                                 ;
-			[STATE <sblock>]                                 ;
-			[<drop: DROPDOWN>]                               ;
-			[<notarrow: NOTUSEARROW>]                        ;
-			[<scroll: SCROLLBAR>]                            ;
-			[SEND <msg>]                                     ;
-			[GUISEND <guimsg>]                               ;
-			[BITMAP <cBitmap>]                               ;
-									 ;
-	  => aadd(GetList,getnew(<top>,<left>,				 ;
-	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },           ;
-		  <(var)>,NIL,<color>,<var>,<{valid}>,<{when}>) )        ;
-	   ; ATail(GetList):Control := _ListBox_( ATail(Getlist):row,    ;
-						  ATail(Getlist):col,    ;
-		<bottom>, <right>, <var>, <items>, <caption>, <message>, ;
-			  <color>, <{fblock}>, <{sblock}>, <.drop.>,     ;
-				   <.scroll.>, <cBitmap> )               ;
-	   ; ATail(GetList):reader  := { | a, b, c, d |                      ;
-					GuiReader( a, b, c, d ) }            ;
-	  [; ATail(GetList):<msg>]                                           ;
-	  [; ATail(GetList):control:usearrow := !<.notarrow.>]                       ;
-	  [; ATail(GetList):Control:<guimsg>]                                ;
-	   ; ATail(GetList):Control:Display()
-	   //; SetPos( <top>, <left> )                                         ;
-
-#command @ <row>, <col> GET <var>                                           ;
-			PUSHBUTTON                                          ;
-			[VALID <valid>]                                     ;
-			[WHEN <when>]                                       ;
-			[CAPTION <caption>]                                 ;
-			[MESSAGE <message>]                                 ;
-			[COLOR <color>]                                     ;
-			[FOCUS <fblock>]                                    ;
-			[STATE <sblock>]                                    ;
-			[STYLE <style>]                                     ;
-			[SEND <msg>]                                        ;
-			[GUISEND <guimsg>]                                  ;
-			[SIZE X <sizex> Y <sizey>]                          ;
-			[CAPOFF X <capxoff> Y <capyoff>]                    ;
-			[BITMAP <bitmap>]                                   ;
-			[BMPOFF X <bmpxoff> Y <bmpyoff>]                    ;
-										;
-	  => aadd(GetList,getnew(<row>,<col>,                                   ;
-	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
-		  <(var)>,NIL,<color>,<var>,<{valid}>,<{when}>) )           ;
-	   ; ATail(GetList):Control := _PushButt_( <caption>, <message>,        ;
-			   <color>, <{fblock}>, <{sblock}>, <style>,            ;
-			   <sizex>, <sizey>, <capxoff>, <capyoff>,              ;
-			   <bitmap>, <bmpxoff>, <bmpyoff>, <row>, <col> -1 )    ;
-	   ; ATail(GetList):reader  := { | a, b, c, d |                         ;
-					GuiReader( a, b, c, d ) }               ;
-	  [; ATail(GetList):<msg>]                                              ;
-	  [; ATail(GetList):Control:<guimsg>]                                   ;
-	   ; ATail(GetList):Control:Display()
-
-#command @ <top>, <left>, <bottom>, <right> GET <var>                     ;
-			RADIOGROUP <buttons>                              ;
-			[VALID <valid>]                                   ;
-			[WHEN <when>]                                     ;
-			[CAPTION <caption>]                               ;
-			[MESSAGE <message>]                               ;
-			[COLOR <color>]                                   ;
-			[FOCUS <fblock>]                                  ;
-			[STYLE <style>]                                   ;
-			[SEND <msg>]                                      ;
-			[GUISEND <guimsg>]                                ;
-									  ;
-	  => aadd(GetList,getnew(<top>,<left>,                                ;
-	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
-		  <(var)>,NIL,<color>,<var>,<{valid}>,<{when}>) )         ;
-	   ; SetPos( <top>, <left> )                                         ;
-	   ; ATail(GetList):Control := _RadioGrp_( ATail(Getlist):row,        ;
-						   ATail(Getlist):col,        ;
-	   <bottom>, <right>, <var>, <buttons>, <caption>, <message>,     ;
-			 <color>, <{fblock}>, <style> )                       ;
-	   ; ATail(GetList):reader  := { | a, b, c, d |                       ;
-					GuiReader( a, b, c, d ) }             ;
-	  [; ATail(GetList):<msg>]                                            ;
-	  [; ATail(GetList):Control:<guimsg>]                                 ;
-	   ; ATail(GetList):Control:Display()
-//       ; SetPos( <top>, <left> )                                         ;
-
-#command @ <top>, <left>, <bottom>, <right> GET <var>                   ;
-			TBROWSE <oBrowse>                               ;
-			[VALID <preBlock>]                              ;
-			[WHEN <postBlock>]                              ;
-			[MESSAGE <message>]                             ;
-			[SEND <msg>]                                    ;
-			[GUISEND <guimsg>]                              ;
-									;
-	  => aadd(GetList,getnew(<top>,<left>,                              ;
-	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
-	  <(var)>,NIL,setcolor(),<var> , <{preBlock}> , <{postBlock}>) )    ;
-	   ; <oBrowse>:ntop         := ATail(Getlist):row                   ;
-	   ; <oBrowse>:nleft        := ATail(Getlist):col                   ;
-	   ; <oBrowse>:nbottom      := <bottom>                             ;
-	   ; <oBrowse>:nright       := <right>                              ;
-	   ; <oBrowse>:Configure()                                          ;
-	   ; ATail(GetList):Control := <oBrowse>                            ;
-									;
-	   ; ATail(GetList):reader  := { | a, b, c, d |                     ;
-					TBReader( a, b, c, d ) }            ;
-	  [; ATail(GetList):Control:Message := <message>]                   ;
-	  [; ATail(GetList):<msg>]                                          ;
-	  [; ATail(GetList):Control:<guimsg>]
-
-#command @ <top>, <left>, <bottom>, <right> GET <var>                   ;
-			TBROWSE <oBrowse>                               ;
-			ALIAS <alias>                                   ;
-			[VALID <preBlock>]                              ;
-			[WHEN <postBlock>]                              ;
-			[MESSAGE <message>]                             ;
-			[SEND <msg>]                                    ;
-			[GUISEND <guimsg>]                              ;
-									;
-	  => aadd(GetList,getnew(<top>,<left>,                              ;
-	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
-	  <(var)>,NIL,setcolor(),<var> , <{preBlock}> , <{postBlock}>) )    ;
-	   ; <oBrowse>:ntop         := ATail(Getlist):row                   ;
-	   ; <oBrowse>:nleft        := ATail(Getlist):col                   ;
-	   ; <oBrowse>:nbottom      := <bottom>                             ;
-	   ; <oBrowse>:nright       := <right>                              ;
-	   ; <oBrowse>:Configure()                                          ;
-	   ; ATail(GetList):Control := <oBrowse>                            ;
-									;
-	   ; ATail(GetList):reader  := { | a, b, c, d |                     ;
-			   <alias>->( TBReader( a, b, c, d ) ) }            ;
-	  [; ATail(GetList):Control:Message := <message>]                   ;
-	  [; ATail(GetList):<msg>]                                          ;
-	  [; ATail(GetList):Control:<guimsg>]
 
 #command @ <top>, <left>, <bottom>, <right> GET <var>                   ;
 			TEXT						;
@@ -216,25 +37,21 @@
 			[WHEN <when>]                                   ;
 			[SEND <msg>]                                    ;
 									;
-	  => aadd(GetList,textgetnew(<top>,<left>,<bottom>,<right>,            ;
+	  => aadd(GetList,textgetnew(<top>,<left>,<bottom>,<right>,     ;
 	   {|_1| local(_p:=@<var>), iif(_1==NIL,_p,_p:=_1 ) },          ;
-		  <(var)>,setcolor(),<var>,<{valid}>,<{when}>) )  ;
+		  <(var)>,setcolor(),<var>,<{valid}>,<{when}>) )        ;
 	   [; ATail(GetList):<msg>]
 
-#xdefine __get(b,v,pic,valid,when)		(___get(__field__ b __field__,v,pic,valid,when) )
-#translate _GET_(<x1>,<x2>[,<x3>][,<x4>][,<x5>]) => __GET__(@<x1>,<x2>[,<x3>][,<x4>][,<x5>])
-
-
-#command SET LOGLEVEL TO <n>                                            ;
+#command SET LOGLEVEL TO <n>                                         ;
 	  => Set( _SET_LOGLEVEL, <n> )
 
 #command SET LOGLEVEL <n>                                            ;
 	  => Set( _SET_LOGLEVEL, <n> )
 
-#command SET LOGFILE TO <(fname)>                                       ;
+#command SET LOGFILE TO <(fname)>                                    ;
 	  => Set( _SET_LOGFILE, <(fname)> )
 
-#command SET DBF CHARSET TO <(csname)>                                       ;
+#command SET DBF CHARSET TO <(csname)>                               ;
 	  => Set( "DBF_CHARSET", <(csname)> )
 
 #command SET PRINTER CHARSET TO <(csname)>                                       ;
@@ -259,7 +76,7 @@
 
 
 #command DEFAULT <p> TO <v> [, <p2> TO <v2> ] => ;
-				 <p> := IF(<p> == NIL, <v>, <p>) ;
+				 <p> := IIF(<p> == NIL, <v>, <p>) ;
 				 [; <p2> := IF (<p2> == NIL, <v2>, <p2>) ]
 
 #command DEF <p> RANGE <x1> [,<x2>] TO <v> =>;
@@ -275,142 +92,147 @@
 #command EXTERNAL <vars,...>             =>
 
 #command SELECT <whatever>              => dbSelectArea( <(whatever)> )
+#command SELECT <f>([<list,...>])       => dbSelectArea( <f>(<list>) )
 
-#command REPLACE [ <f1> WITH <x1> [, <fn> WITH <xn>] ]                  ;
-		 [FOR <for>]                                                    ;
-		 [WHILE <while>]                                                ;
-		 [NEXT <next>]                                                  ;
-		 [RECORD <rec>]                                                 ;
-		 [<rest:REST>]                                                  ;
-		 [ALL]                                                          ;
-																		;
-	  => if ( set(_SET_OPTIMIZE) )                                      ;
-	   ;    DBEvalOptimize(                                             ;
-				 {|| _FIELD-><f1> := <x1> [, _FIELD-><fn> := <xn>]},    ;
-				 [codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
-			   )                                                        ;
-	   ; else                                                           ;
-	   ;    DBEval(                                                     ;
-				 {|| _FIELD-><f1> := <x1> [, _FIELD-><fn> := <xn>]},    ;
-				 <{for}>, <{while}>, <next>, <rec>, <.rest.>            ;
-			   )                                                        ;
-	   ; end
+#command REPLACE [ <f1> WITH <x1> [, <fn> WITH <xn>] ]                 ;
+		[FOR <for>]                                            ;
+		[WHILE <while>]                                        ;
+		[NEXT <next>]                                          ;
+		[RECORD <rec>]                                         ;
+		[<rest:REST>]                                          ;
+		[ALL]                                                  ;
+		[<noopt:NOOPTIMIZE>]                                   ;
+	=>                                                             ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.>)              ;
+		; DBEvalOptimize(                                      ;
+			{|| _FIELD-><f1> := <x1> [, _FIELD-><fn> := <xn>]},    ;
+			[codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
+			)                                                      ;
+		; else                                                         ;
+		;	DBEval(                                                ;
+			{|| _FIELD-><f1> := <x1> [, _FIELD-><fn> := <xn>]},    ;
+			 <{for}>, <{while}>, <next>, <rec>, <.rest.>           ;
+			)                                                      ;
+		; end
 
-#command REPLACE <f1> WITH <v1> [, <fN> WITH <vN> ]                     ;
+#command REPLACE <f1> WITH <v1> [, <fN> WITH <vN> ]                    ;
 	  => _FIELD-><f1> := <v1> [; _FIELD-><fN> := <vN>]
 
-#command DELETE                                                         ;
-		 [FOR <for>]                                                    ;
-		 [WHILE <while>]                                                ;
-		 [NEXT <next>]                                                  ;
-		 [RECORD <rec>]                                                 ;
-		 [<rest:REST>]                                                  ;
-		 [ALL]                                                          ;
-																		;
-	  => if ( set(_SET_OPTIMIZE) )                                      ;
-	   ;    DBEvalOptimize(                                             ;
-				 {|| dbDelete()},                                       ;
-				 [codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
-			   )                                                        ;
-	   ; else                                                           ;
-	   ;    DBEval(                                                     ;
-				 {|| dbDelete()},                                       ;
-				 <{for}>, <{while}>, <next>, <rec>, <.rest.>            ;
-			   )                                                        ;
-	   ; end
+#command DELETE                                                      ;
+		[FOR <for>]                                          ;
+		[WHILE <while>]                                      ;
+		[NEXT <next>]                                        ;
+		[RECORD <rec>]                                       ;
+		[<rest:REST>]                                        ;
+		[ALL]                                                ;
+		[<noopt:NOOPTIMIZE>]                                 ;
+	=>                                                           ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.>)            ;
+		; DBEvalOptimize(                                    ;
+			{|| dbDelete()},                             ;
+			[codestr( <for> )], 				 ;
+			<{while}>, <next>, <rec>, <.rest.>           ;
+			)                                            ;
+		; else                                               ;
+		; DBEval(                                            ;
+			{|| dbDelete()},                             ;
+			<{for}>, <{while}>, <next>, <rec>, <.rest.>  ;
+			)                                            ;
+		; end
 
 #command DELETE                 =>  dbDelete()
 
-#command RECALL                                                         ;
-		 [FOR <for>]                                                    ;
-		 [WHILE <while>]                                                ;
-		 [NEXT <next>]                                                  ;
-		 [RECORD <rec>]                                                 ;
-		 [<rest:REST>]                                                  ;
-		 [ALL]                                                          ;
-																		;
-	  => if ( set(_SET_OPTIMIZE) )                                      ;
-	   ;    DBEvalOptimize(                                             ;
-				 {|| dbRecall()},                                       ;
-				 [codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
-			   )                                                        ;
-	   ; else                                                           ;
-	   ;    DBEval(                                                     ;
-				 {|| dbRecall()},                                       ;
-				 <{for}>, <{while}>, <next>, <rec>, <.rest.>            ;
-			   )                                                        ;
-	   ; end
+#command RECALL                                                        ;
+		[FOR <for>]                                            ;
+		[WHILE <while>]                                        ;
+		[NEXT <next>]                                          ;
+		[RECORD <rec>]                                         ;
+		[<rest:REST>]                                          ;
+		[ALL]                                                  ;
+	=>                                                             ;
+		if ( set(_SET_OPTIMIZE) )                              ;
+		; DBEvalOptimize(                                      ;
+			{|| dbRecall()},                               ;
+			[codestr( <for> )],				   ;
+			<{while}>, <next>, <rec>, <.rest.>             ;
+			)                                              ;
+		; else                                                 ;
+		; DBEval(                                              ;
+			{|| dbRecall()},                               ;
+			<{for}>, <{while}>, <next>, <rec>, <.rest.>    ;
+			)                                              ;
+		; end
 
 #command RECALL                 =>  dbRecall()
 
 #command COUNT [TO <var>]                                               ;
-		 [FOR <for>]                                                    ;
-		 [WHILE <while>]                                                ;
-		 [NEXT <next>]                                                  ;
-		 [RECORD <rec>]                                                 ;
-		 [<rest:REST>]                                                  ;
-		 [ALL]                                                          ;
-																		;
-	  => <var> := 0                                                     ;
-	   ; if ( set(_SET_OPTIMIZE) )                                      ;
-	   ;    DBEvalOptimize(                                             ;
-				 {|| local( _count :=@ <var>), _count := _count + 1},                               ;
-				 [codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
-			   )                                                        ;
-	   ; else                                                           ;
-	   ;    DBEval(                                                     ;
-				 {|| local( _count :=@ <var>), _count := _count + 1},                               ;
-				 <{for}>, <{while}>, <next>, <rec>, <.rest.>            ;
-			   )                                                        ;
+		 [FOR <for>]                                            ;
+		 [WHILE <while>]                                        ;
+		 [NEXT <next>]                                          ;
+		 [RECORD <rec>]                                         ;
+		 [<rest:REST>]                                          ;
+		 [ALL]                                                  ;
+									;
+	  => <var> := 0                                                 ;
+	   ; if ( set(_SET_OPTIMIZE) )                                  ;
+	   ; DBEvalOptimize(                                            ;
+		 {|| local( _count :=@ <var>), _count := _count + 1},   ;
+		 [codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
+		   )                                                    ;
+	   ; else                                                       ;
+	   ;  DBEval(                                                   ;
+		 {|| local( _count :=@ <var>), _count := _count + 1},   ;
+		 <{for}>, <{while}>, <next>, <rec>, <.rest.>            ;
+		)                                                       ;
 	   ; end
 
 #command SUM [ <x1> [, <xn>]  TO  <v1> [, <vn>] ]                       ;
-		 [FOR <for>]                                                    ;
-		 [WHILE <while>]                                                ;
-		 [NEXT <next>]                                                  ;
-		 [RECORD <rec>]                                                 ;
-		 [<rest:REST>]                                                  ;
-		 [ALL]                                                          ;
-																		;
-	  => <v1> := [ <vn> := ] 0                                          ;
-	   ; if ( set(_SET_OPTIMIZE) )                                      ;
-	   ;    DBEvalOptimize(                                             ;
-			{|| local( <#v1#>:=@<v1> [, <#vn#>:=@<vn>]),		;
-			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn> ]},     ;
+		 [FOR <for>]                                            ;
+		 [WHILE <while>]                                        ;
+		 [NEXT <next>]                                          ;
+		 [RECORD <rec>]                                         ;
+		 [<rest:REST>]                                          ;
+		 [ALL]                                                  ;
+									;
+	  => <v1> := [ <vn> := ] 0                                      ;
+	   ; if ( set(_SET_OPTIMIZE) )                                  ;
+	   ;    DBEvalOptimize(                                         ;
+			{|| local( <#v1#>:=@<v1> [, <#vn#>:=@<vn>]),	;
+			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn> ]}, ;
 			[codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
-			   )                                                        ;
+			   )                                                   ;
 	   ; else                                                           ;
 	   ;    DBEval(                                                     ;
-			{|| local( <#v1#>:=@<v1> [, <#vn#>:=@<vn>]),		;
-			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn> ]},     ;
+			{|| local( <#v1#>:=@<v1> [, <#vn#>:=@<vn>]),        ;
+			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn> ]}, ;
 			<{for}>, <{while}>, <next>, <rec>, <.rest.>            ;
-			   )                                                        ;
+			   )                                                   ;
 	   ; end
 
 #command AVERAGE [ <x1> [, <xn>]  TO  <v1> [, <vn>] ]                   ;
-		 [FOR <for>]                                                    ;
-		 [WHILE <while>]                                                ;
-		 [NEXT <next>]                                                  ;
-		 [RECORD <rec>]                                                 ;
-		 [<rest:REST>]                                                  ;
-		 [ALL]                                                          ;
-																		;
-	  => M->__Avg := <v1> := [ <vn> := ] 0                              ;
-	   ; if ( set(_SET_OPTIMIZE) )                                      ;
-	   ;    DBEvalOptimize(                                             ;
-			{|| local( <#v1#>:=@<v1> [, <#vn#>:=@<vn>]),		;
-			M->__Avg := M->__Avg + 1,                           ;
-			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn>] },         ;
+		 [FOR <for>]                                            ;
+		 [WHILE <while>]                                        ;
+		 [NEXT <next>]                                          ;
+		 [RECORD <rec>]                                         ;
+		 [<rest:REST>]                                          ;
+		 [ALL]                                                  ;
+									;
+	  => M->__Avg := <v1> := [ <vn> := ] 0                          ;
+	   ; if ( set(_SET_OPTIMIZE) )                                  ;
+	   ;    DBEvalOptimize(                                         ;
+			{|| local( <#v1#>:=@<v1> [, <#vn#>:=@<vn>]),	;
+			M->__Avg := M->__Avg + 1,                       ;
+			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn>] }, ;
 			[codestr( <for> )], <{while}>, <next>, <rec>, <.rest.> ;
-			   )                                                        ;
-																		;
+			   )                                                   ;
+										;
 	   ; else                                                           ;
 	   ;    DBEval(                                                     ;
 			{|| local( <#v1#>:=@<v1> [, <#vn#>:=@<vn>]),		;
 			M->__Avg := M->__Avg + 1,                           ;
-			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn>] },         ;
+			<#v1#> := <#v1#> + <x1> [, <#vn#> := <#vn#> + <xn>] }, ;
 			<{for}>, <{while}>, <next>, <rec>, <.rest.>            ;
-			   )                                                        ;
+			   )                                                   ;
 	   ; end                                                            ;
 	   ; <v1> := <v1> / M->__Avg [; <vn> := <vn> / M->__Avg ]
 
@@ -421,8 +243,9 @@
 		 [RECORD <rec>]                                                 ;
 		 [<rest:REST>]                                                  ;
 		 [ALL]                                                          ;
+		 [<noopt:NOOPTIMIZE>]                                           ;
 																		;
-	  => if ( set(_SET_OPTIMIZE) )                                      ;
+	  => if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
 	   ;    __dbLocateOptimize( [codestr( <for> )], <{for}>, <{while}>, ;
 			   <next>, <rec>, <.rest.> )                                ;
 	   ; else                                                           ;
@@ -433,10 +256,12 @@
 #command ENDSWITCH <*x*>         => end
 
 #command SET FILTER TO <xpr>                                            ;
-	  => if ( set(_SET_OPTIMIZE) )                                      ;
+		[<noopt:NOOPTIMIZE>]                                            ;
+	=>                                                                  ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.>)                       ;
 	   ;    dbSetFilter( <{xpr}>, codestr( <xpr> ) )                    ;
 	   ; else                                                           ;
-	   ;    dbSetFilter( <{xpr}>, <"xpr"> )                             ;
+	   ;    dbSetFilter( <{xpr}>, <"xpr">, .t. )                        ;
 	   ; end
 
 #command SET FILTER TO <x:&>                                            ;
@@ -466,8 +291,8 @@
 /* usa */
 #command SET HOURS [TO] 24                       => Set( _SET_HOURS, 1 )
 /* euro */
-#command SET SECONDS OFF                         => Set( _SET_SECONDS, 0 )
-#command SET SECONDS ON                          => Set( _SET_SECONDS, 1 )
+#command SET SECONDS OFF                         => Set( _SET_SECONDS, .f. )
+#command SET SECONDS ON                          => Set( _SET_SECONDS, .t. )
 
 #command SET FOPEN MODE <x:ON,OFF,&>      => Set( _SET_FOPENMODE, <(x)> )
 #command SET FOPEN MODE (<x>)             => Set( _SET_FOPENMODE, <x> )
@@ -480,6 +305,12 @@
 #command SET FILEIO MODE RAW             => Set( _SET_BUFFERING, .f. )
 #command SET FILEIO MODE BUFFERING       => Set( _SET_BUFFERING, .t. )
 #command SET FILEIO MODE BUFFERED        => Set( _SET_BUFFERING, .t. )
+
+#command SET INDEX BUFFER LIMIT [TO] <x> => Set( _SET_INDEX_BUFFER_LIMIT, <x> )
+
+#command SET MAP FILE [TO] <x:ON,OFF,&>  => Set( _SET_MAP_FILE, <(x)> )
+
+#command SET MULTILOCKS [TO] <x:ON,OFF,&> => Set(_SET_MULTILOCKS, <(x)> )
 
 #command INDEX ON <key> [TAG <(cOrderName)> ] TO <(cOrderBagName)>  ;
 	 [FOR <for>]                                                    ;
@@ -524,5 +355,265 @@
 			 [<.rest.>], [<.descend.>],,, [<.custom.>])             ;
 	  ;  ordCreate(<(cOrderBagName)>, <(cOrderName)>,               ;
 		   <"key">, <{key}>, [<.unique.>]    )
+
+#command COPY [TO <(file)>] [DELIMITED [WITH <*delim*>]]               ;
+		[FIELDS <fields,...>]                                          ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__dbDelimOptimize(.t.,<(file)>, <(delim)>, { <(fields)> }, ;
+			[codestr( <for> )], <{for}>, <{while}>, <next>, <rec>,     ;
+			<.rest.> )                                                 ;
+	  ;	else                                                           ;
+	  ;		__dbDelim(.t.,<(file)>, <(delim)>, { <(fields)> },         ;
+			<{for}>, <{while}>, <next>, <rec>, <.rest.>	)              ;
+	  ;	endif
+
+#command COPY [TO <(file)>] [SDF]                                      ;
+		[FIELDS <fields,...>]                                          ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__dbSDFOptimize(.t.,<(file)>, { <(fields)> },              ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>, <rec>, ;
+				<.rest.> )                                             ;
+	  ;	else                                                           ;
+	  ;		__dbSDF(.t.,<(file)>, { <(fields)> },                      ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.> )          ;
+	  ;	endif
+
+#command COPY [TO <(file)>]                                            ;
+		[FIELDS <fields,...>]                                          ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[VIA <rdd>]                                                    ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__dbCopyOptimize(<(file)>, { <(fields)> },                 ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>, <rec>, ;
+				<.rest.>, <rdd> )                                      ;
+	  ;	else                                                           ;
+	  ;		__dbCopy(<(file)>, { <(fields)> },                         ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.>, <rdd> )   ;
+	  ;	endif
+
+#command COPY TO ARRAY <var>                                           ;
+		[FIELDS <fields,...>]                                          ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<x:OFF>]                                                      ;
+	=>                                                                 ;
+		<var>:={}                                                      ;
+	  ;	m6_CopyToArray( @<var>, { <(fields)> }, <"for">, <{for}>,      ;
+			<{while}>, <next>, <rec>, <.rest.>, !<.x.>)
+
+#command SORT [TO <(file)>] [ON <fields,...>]                          ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__dbSortOptimize( <(file)>, { <(fields)> },                ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>, <rec>, ;
+				<.rest.> )                                             ;
+	  ;	else                                                           ;
+	  ;		__dbSort(  <(file)>, { <(fields)> },                       ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.> )          ;
+	  ;	endif
+
+#command TOTAL [TO <(file)>] [ON <key>]                                ;
+		[FIELDS <fields,...>]                                          ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__dbTotalOptimize( <(file)>, <{key}>, { <(fields)> },      ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>, <rec>, ;
+				<.rest.> )                                             ;
+	  ;	else                                                           ;
+	  ;		__dbTotal( <(file)>, <{key}>, { <(fields)> },              ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.> )          ;
+	  ;	endif
+
+#command LIST [<list,...>]                                             ;
+		[<off:OFF>]                                                    ;
+		[<toPrint: TO PRINTER>]                                        ;
+		[TO FILE <(toFile)>]                                           ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__dbListOptimize(<.off.>, { <{list}> }, .t.,               ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>,        ;
+				<rec>, <.rest.>, <.toPrint.>, <(toFile)> )             ;
+	  ;	else                                                           ;
+	  ;		__dbList(<.off.>, { <{list}> }, .t.,                       ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.>,           ;
+				<.toPrint.>, <(toFile)> )                              ;
+	  ;	endif
+
+#command DISPLAY [<list,...>]                                          ;
+		[<off:OFF>]                                                    ;
+		[<toPrint: TO PRINTER>]                                        ;
+		[TO FILE <(toFile)>]                                           ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[<all:ALL>]                                                    ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__dbListOptimize(<.off.>, { <{list}> }, <.all.>,           ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>,        ;
+				<rec>, <.rest.>, <.toPrint.>, <(toFile)> )             ;
+	  ;	else                                                           ;
+	  ;		__dbList(<.off.>, { <{list}> }, <.all.>,                   ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.>,           ;
+				<.toPrint.>, <(toFile)> )                              ;
+	  ;	endif
+
+#command REPORT FORM <frm>                                             ;
+		[HEADING <heading>]                                            ;
+		[<plain: PLAIN>]                                               ;
+		[<noeject: NOEJECT>]                                           ;
+		[<summary: SUMMARY>]                                           ;
+		[<noconsole: NOCONSOLE>]                                       ;
+		[<print: TO PRINTER>]                                          ;
+		[TO FILE <(toFile)>]                                           ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__ReportFormOptimize(                                      ;
+				<(frm)>, <.print.>, <(toFile)>, <.noconsole.>,         ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>, <rec>, ;
+				<.rest.>, <.plain.>, <heading>,                        ;
+				<.noeject.>, <.summary.>                               ;
+			)                                                          ;
+	  ;	else                                                           ;
+	  ;		__ReportForm(                                              ;
+				<(frm)>, <.print.>, <(toFile)>, <.noconsole.>,         ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.>,           ;
+				<.plain.>, <heading>,                                  ;
+				<.noeject.>, <.summary.>                               ;
+			)                                                          ;
+	  ;	endif
+/*
+#command LABEL FORM <lbl>                                              ;
+		[<sample: SAMPLE>]                                             ;
+		[<noconsole: NOCONSOLE>]                                       ;
+		[<print: TO PRINTER>]                                          ;
+		[TO FILE <(toFile)>]                                           ;
+		[FOR <for>]                                                    ;
+		[WHILE <while>]                                                ;
+		[NEXT <next>]                                                  ;
+		[RECORD <rec>]                                                 ;
+		[<rest:REST>]                                                  ;
+		[ALL]                                                          ;
+		[<noopt:NOOPTIMIZE>]                                           ;
+	=>                                                                 ;
+		if ( set(_SET_OPTIMIZE) .and. !<.noopt.> )                     ;
+	  ;		__LabelFormOptimize(                                       ;
+				<(lbl)>, <.print.>, <(toFile)>, <.noconsole.>,         ;
+				[codestr( <for> )], <{for}>, <{while}>, <next>, <rec>, ;
+				<.rest.>, <.sample.>                                   ;
+			)                                                          ;
+	  ;	else                                                           ;
+	  ;		__LabelForm(                                               ;
+				<(lbl)>, <.print.>, <(toFile)>, <.noconsole.>,         ;
+				<{for}>, <{while}>, <next>, <rec>, <.rest.>,           ;
+				<.sample.>                                             ;
+			)                                                          ;
+	  ;	endif
+*/
+
+#command SEARCH [FOR <for>] [TO <var>]                                 ;
+	=>                                                                 ;
+		<var> := {}                                                    ;
+	  ;	m6_Search( <"for">, <{for}>, @<var> )
+
+#command CONNECT                                                        ;
+		[RDBMS <rdbms>]                                                 ;
+		[USER <user>]                                                   ;
+		[PASSWORD <password>]                                           ;
+		[DATABASE <(db)>]                                               ;
+		[CHARSET <cs>]                                                  ;
+		[ISOLATION LEVEL <trans>]                                       ;
+		[HOST <host>]                                                   ;
+		[PORT <port>]                                                   ;
+		[DUMP <tty>]                                                    ;
+		[OPTIONS <opts>]                                                ;
+		TO <conn>                                                       ;
+	=>                                                                  ;
+		<conn> := ConnectNew(<"rdbms">,<"host">,<"port">,<"user">,      ;
+			<"password">,<(db)>,<"tty">,<"opts">,<"cs">,<"trans">)
+
+#command CREATE ROWSET [FOR [CONNECT]] <conn>                           ;
+		[QUERY <select>]                                                ;
+		[PARAMETERS <pars>]                                             ;
+		[ON INSERT <insert>]                                            ;
+		[ON DELETE <delete>]                                            ;
+		[ON UPDATE <update>]                                            ;
+		[ON REFRESH <refresh>]                                          ;
+		[ID <id>]                                                       ;
+		[ORDERS <orders>]                                               ;
+		[ID_GENERATOR <idgen>]                                          ;
+		[<nofetch:NOFETCH>]                                             ;
+		[EVAL <eval>]                                                   ;
+		[EVERY <every>]                                                 ;
+		[TO <rs>]                                                       ;
+	=>                                                                  ;
+		<rs> := <conn>:createrowset(<select>,<pars>,                    ;
+			<insert>,<delete>,<update>,<refresh>,                       ;
+			<"id">,<orders>,<idgen>,<.nofetch.>,<{eval}>,<every>)
+
+#command SEEK EVAL <expB>                                               ;
+	=> clip_evalseek( <expB> )
+
+#command SEEK REGULAR <regexp>                                          ;
+		[<next:NEXT>]                                                   ;
+	=> clip_regexseek( <regexp>, <.next.> )
 
 #endif

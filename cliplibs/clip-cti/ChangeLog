@@ -1,8 +1,52 @@
-02.10.02 - method widget:realize() added, but not all widget corrected to use it
-12.09.02 - CTI_CHANGED_SIGNAL in CTI_OPTION_MENU
-01.10.02 - changed syntax:
+18/12/02 - BrowseCobmo finisehd.
+15/12/02 - added widget CTI_BROWSE_COMBO - a text entry field with a dropdown TBrowse.
+	   Allows to set automatic search by entering value in entry and automatic change
+	   entry value by moving up/down in TBrowse.
+
+06/12/02 - link obj:parent replaced with obj:parent_id for decrease probability
+	   of cyclic references.
+
+02/12/02 - set_size and set_position don`t sets real size/position in widget, but only
+	   requests methods __size_allocate(child) and __position_allocate(child)
+	   for widget`s parent, and parent handles size/position of children.
+	   Don`t use obj:__set_size() and obj:__set_position() now.
+
+	 - stabilize() in cti_tbrowse runs in background (uses tasks).
+
+25/11/02 - set_size and set_position modified for size/position handling in CTI_BOX.
+	   in widgets implementation use obj:__set_size() and obj:__set_position() now.
+14/11/02 - fixes in removing from app and focus settings.
+13/11/02 - fixes in destructors and removing from container and app
+12/11/02 - version number changed to 0.5
+	 - added classes CTI_CONTAINER, CTI_BIN, CTI_LAYOUT;
+	 - method cti_app:put() replaced with cti_app:add();
+	 - method add() removed from CTI_WINDOW and placed to CTI_CONTAINER;
+	 - CTI_WINDOW inherited from CTI_BIN now;
+	 - method set_focus removed from CTI_WINDOW and CTI_APP, use widget:set_focus()
+	   instead (or container:set_focus_child(widget));
+	 - in CTI_APP method focus_move(<nDirection>) added (see cticontainer.ch for
+	   nDirection values), but not yet implemented fully;
+	 - containers and CTI_APP now have method show_all() and hide_all();
+	 - some other small (and big) changes.
+
+01/11/02 - __is_enabled attribute moved from CTI_CONTROL to CTI_WIDGET.
+29/10/02 - CTI_CONTAINER and CTI_BIN widgets added, CTI_WINDOW and
+	    CTI_APPLICATION changed.
+28/10/02 - added new widget CTI_CALENDAR.
+28/10/02 - CTI_WIDGET - methods added:
+		set_key(<nKey>,<bAction>) ==> <bPrevAction>
+		apply_key(<nKey>) ==> <lKeyApplied>
+
+		other widgets now use these methods and they`s keys may be
+		reassigned in runtime
+25/10/02 - CTI_FILEDIALOG add new widget
+22/10/02 - method list:move_to(nRow,nCol,nRowAlign,nColAlign) added.
+02/10/02 - method widget:realize() added, but not all widget corrected to use it
+12/09/02 - CTI_CHANGED_SIGNAL in CTI_OPTION_MENU
+01/10/02 - changed syntax:
 	object:signal_connect(<signal>,<obj>,<handler>) ==>
 	object:signal_connect(<signal>,<handler>,<obj>)
-01.10.02 - signal-based mechanism implemented
-08.10.02 - nesting cti_main(),cti_quit()
-01.10.02 - centering windows
+01/10/02 - signal-based mechanism implemented
+08/10/02 - nesting cti_main(),cti_quit()
+01/10/02 - centering windows
+

@@ -3,17 +3,7 @@
 
 #include "six.ch"
 
-#define JOIN_UNION		1
-#define JOIN_INTERSECT  2
-#define JOIN_DIFFERENCE 3
-
-#define OPT_FULL		2
-#define OPT_PARTIAL		1
-#define OPT_NONE		0
-
 #xdefine SETRDD             RDDSETDEFAULT
-
-#xdefine ORDCONDSET					SIXCONDSET
 
 #xdefine SX_AUTOOPEN(bMode)			SET(_SET_AUTOPEN,bMode)
 #xdefine SX_AUTOSHARE(nMod)			SET(_SET_AUTOSHARE,nMod)

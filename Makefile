@@ -2,13 +2,13 @@
 # use make local NODBU=no to override this
 #
 NODBU=yes
-export NODBU
+export NODBU MAKE
 
 all:
 	cat Readme_src | more
 	@echo
 	@echo
-	@echo "choose target: local system deb rpm tgz tbz src"
+	@echo "choose target: local system deb rpm rpm-opt tgz tbz src"
 	exit 1
 
 install: all
@@ -16,8 +16,11 @@ install: all
 clean:
 	./clean.sh
 
+distclean:
+	./distclean.sh
+
 cleanroot: clean
-	[ -z "$CLIPROOT" ] || CLIPROOT=../cliproot; rm -rf $$CLIPROOT/*
+	rm -rf ../cliproot/*
 
 user local: clean
 	./mklocal
@@ -36,6 +39,9 @@ deb: clean
 rpm: clean
 	./mkrpm
 
+rpm-opt: clean
+	./mkrpm -opt
+
 tgz: clean
 	./mktgz
 
@@ -44,6 +50,9 @@ tbz tbz2 tar.bz2: clean
 
 src: clean
 	./mksrc
+
+doc: clean
+	./mkdoc
 
 src_p: clean
 	./mksrc_p
@@ -56,6 +65,9 @@ commit:
 
 update:
 	./cvs_update
+
+#doc:
+#	cd tdoc && $(MAKE)
 
 .PHONY: deb rpm
 

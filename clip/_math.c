@@ -5,6 +5,18 @@
 */
 /*
    $Log: _math.c,v $
+   Revision 1.35  2003/10/31 12:51:29  clip
+   uri: small fix in INT()
+
+   Revision 1.34  2003/06/25 09:53:56  clip
+   uri: fixed int(0.0012*10000)
+
+   Revision 1.33  2003/06/10 10:13:10  clip
+   uri: memory leak fixed in ntoc()
+
+   Revision 1.32  2003/03/26 14:20:19  clip
+   uri: small fix for round(0.644999999,2)
+
    Revision 1.31  2002/07/16 07:17:11  clip
    uri: bug in VAL() fixed
 
@@ -213,7 +225,10 @@ clip_INT(ClipMachine * mp)
 
 	_clip_parp(mp, 1, &len, &dec);
 	dec = 0;
-	_clip_retndp(mp, (long) d, len, dec);
+#ifdef ARCH_i386
+		(*(long long*)&d)++;
+#endif
+	_clip_retndp(mp, d - fmod(d,1.00), len, dec);
 	return 0;
 }
 
@@ -241,70 +256,74 @@ clip_ROUND(ClipMachine * mp)
 #if 1
 	int len, dec;
 	double d = _clip_parnd(mp, 1);
-        ClipVar *vp=_clip_par(mp,1);
+	ClipVar *vp=_clip_par(mp,1);
 	int de = _clip_parni(mp, 2);
+
+#ifdef ARCH_i386
+	(*(long long*)&d)++;
+#endif
 
 	_clip_parp(mp, 1, &len, &dec);
 	dec = de;
 	if (dec <= 0)
 		dec = 0;
-        if ( vp->t.memo )
-        {
-        	char *tmp=rational_toString(vp->r.r,10,dec,0);
-                _clip_retnr(mp,rational_fromString(tmp),len,dec);
-                free(tmp);
-                return 0;
-        }
-   	if( d == 0.0 )
-        {
+	if ( vp->t.memo )
+	{
+		char *tmp=rational_toString(vp->r.r,10,dec,0);
+		_clip_retnr(mp,rational_fromString(tmp),len,dec);
+		free(tmp);
+		return 0;
+	}
+	if( d == 0.0 )
+	{
 		_clip_retndp(mp, d, len, de);
-                return 0;
-        }
+		return 0;
+	}
 	if( de == 0 )
 	{
-   		if( d < 0.0 )
-      			d = ceil( d - 0.5 );
-   		else
-      			d = floor( d + 0.5 );
+		if( d < 0.0 )
+			d = ceil( d - 0.5 );
+		else
+			d = floor( d + 0.5 );
 		_clip_retndp(mp, d, len, dec);
-                return 0;
+		return 0;
 	}
 	if( de < 0 )
 	{
-   		double tmp = pow( 10, -de );
-   		if( d < 0.0 )
-      			d = ceil( ( d / tmp ) - 0.5 );
-   		else
-      			d = floor( ( d / tmp ) + 0.5 );
-   		d *= tmp;
+		double tmp = pow( 10, -de );
+		if( d < 0.0 )
+			d = ceil( ( d / tmp ) - 0.5 );
+		else
+			d = floor( ( d / tmp ) + 0.5 );
+		d *= tmp;
 	}
-        else
-        {
-         	double tmp = pow( 10, de );
-         	if( d < 0.0 )
-            		d = ceil( ( d * tmp ) - 0.5 );
-         	else
-            		d = floor( ( d * tmp ) + 0.5 );
-	         d /= tmp;
-         }
+	else
+	{
+		double tmp = pow( 10, de );
+		if( d < 0.0 )
+			d = ceil( ( d * tmp ) - 0.5 );
+		else
+			d = floor( ( d * tmp ) + 0.5 );
+		 d /= tmp;
+	 }
 	_clip_retndp(mp, d, len, dec);
-         return 0;
+	 return 0;
 #else
 	int len, dec, len1;
-        char buf[33],ch;
+	char buf[33],ch;
 	double ret, d = _clip_parnd(mp, 1);
 	int de = _clip_parni(mp, 2);
 	_clip_parp(mp, 1, &len, &dec);
 
 	buf[32]=0;
-        if (len > 30 )
-        	len=30;
+	if (len > 30 )
+		len=30;
 	_clip_dtostr(buf, len, de+1, d, 0);
-        len1 = strlen(buf)-1;
-        ch = buf[len1];
-        if ( ch >='5' )
-        	buf[len1-1] ++;
-        buf[len1] = 0;
+	len1 = strlen(buf)-1;
+	ch = buf[len1];
+	if ( ch >='5' )
+		buf[len1-1] ++;
+	buf[len1] = 0;
 	ret = _clip_strtod(buf, &dec);
 	_clip_retndp(mp, ret, len, de);
 	return 0;
@@ -570,10 +589,10 @@ int
 clip_RAND(ClipMachine * mp)
 {
 	double ret= ((double) random()) / 0x7FFFFFFF;
-        if ( ret < 0 )
-        	ret = 0-ret;
+	if ( ret < 0 )
+		ret = 0-ret;
 	_clip_retnd(mp, ret );
-        return 0;
+	return 0;
 }
 
 int
@@ -1026,20 +1045,20 @@ clip_NTOC(ClipMachine * mp)
 	int base = _clip_parni(mp, 2);
 	int len = _clip_parni(mp, 3);
 	char *str = _clip_parc(mp, 4);
-        int neg=0;
+	int neg=0;
 
 	if (base <= 0 || base > 36)
 		base = 10;
 	if (sdata != NULL)
 		data = strtol(sdata, NULL, 16);
-        if (data < 0 )
-        {
-        	neg=1;
-                data=0-data;
-        }
+	if (data < 0 )
+	{
+		neg=1;
+		data=0-data;
+	}
 	fill = str == NULL ? ' ' : (*str);
 	buf = malloc(i+1);
-        buf [i] = 0;
+	buf [i] = 0;
 	memset(buf, fill, i);
 	for (b = 1; i >= 0; i--, b++)
 	{
@@ -1049,26 +1068,28 @@ clip_NTOC(ClipMachine * mp)
 		if (data == 0)
 			break;
 	}
-        if (neg) i--;
+	if (neg) i--;
 	l = 256 - i + 1;
 	if (len <= 0)	len = l;
 	ret = calloc(len + 1, 1);
 	if (len < l)
 	{
 		memset(ret, '*', len);
+		free(buf);
 		_clip_retcn_m(mp, ret, len);
 		return 0;
 	}
 	memset(ret, fill, len);
 	memcpy(ret + len - l, buf + i, l);
-        if (neg)
-        {
-               	if ( fill==' ')
-                	ret[len-l]='-';
-                else
-                	*ret='-';
+	if (neg)
+	{
+		if ( fill==' ')
+			ret[len-l]='-';
+		else
+			*ret='-';
 
-        }
+	}
+	free(buf);
 	_clip_retcn_m(mp, ret, len);
 	return 0;
 }
@@ -1079,14 +1100,14 @@ clip_INFINITY(ClipMachine * mp)
 #ifdef FLT_MAX
 #else
 	#ifdef MAXFLOAT
-        	#define FLT_MAX MAXFLOAT
-        #else
+		#define FLT_MAX MAXFLOAT
+	#else
 		#ifdef FLOATMAX
-                	#define FLT_MAX FLOATMAX
-                #else
-                	#define FLT_MAX 3.40282347e+38F
-                #endif
-        #endif
+			#define FLT_MAX FLOATMAX
+		#else
+			#define FLT_MAX 3.40282347e+38F
+		#endif
+	#endif
 #endif
 	_clip_retnd(mp, FLT_MAX);
 	return 0;

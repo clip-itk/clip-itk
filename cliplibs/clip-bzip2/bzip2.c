@@ -6,6 +6,10 @@
 
 /*
   $Log: bzip2.c,v $
+  Revision 1.4  2003/07/03 07:15:56  clip
+  fix a lot of warnings
+  paul
+
   Revision 1.3  2002/01/30 08:20:07  clip
   cigwin PG_CHARS fixes
   bzip2 func prefix auto-configuration
@@ -19,6 +23,7 @@
 
 #include <errno.h>
 #include <limits.h>
+#include <string.h>
 
 #include "hashcode.h"
 #include "clip.h"

@@ -5,6 +5,32 @@
 */
 /*
  * $Log: clic.h,v $
+ * Revision 1.45  2003/05/16 11:08:01  clip
+ * initial support for using assembler instead C
+ * now activated if environment variable CLIP_ASM is defined to any value
+ * paul
+ *
+ * Revision 1.44  2003/03/25 14:20:59  clip
+ * uri: *gettext changed to _clic_*gettext
+ *
+ * Revision 1.43  2002/11/12 10:51:51  clip
+ * convert charset of output messages
+ * paul
+ *
+ * Revision 1.42  2002/10/31 10:33:59  clip
+ * plural form runtime messages support:
+ * gettext(cMsgid [,cModule])->cTranslated
+ * ngettext(cMsgid, cMsgid_plural, nNum, [,cModule]) ->cTranslated
+ * paul
+ *
+ * Revision 1.41  2002/10/30 12:17:26  clip
+ * support for plural forms in i18n messages
+ * paul
+ *
+ * Revision 1.40  2002/10/25 11:54:33  clip
+ * localized messages for clip itself
+ * paul
+ *
  * Revision 1.39  2002/10/11 10:27:11  clip
  * primary support for search of unresolved function names:
  * clip compler flag -N and/or envar CLIP_NAMES=yes will generate
@@ -212,13 +238,14 @@
 
 #include <stdio.h>
 #include <ctype.h>
+
 #include "clitypes.h"
 #include "coll.h"
 #include "node.h"
 #include "cliphash.h"
 
 extern int clic_errorcount, clic_warncount;
-extern int preproc_flag, pcode_flag, pc_flag;
+extern int preproc_flag, pcode_flag, pc_flag, asm_flag;
 extern int command_flag, main_flag;
 extern const char *std_ch_filename;
 extern Coll include_files;
@@ -238,6 +265,7 @@ int yywarning(const char *s,...);
 int yyparse();
 int yylex();
 int v_printf(int level, const char *fmt,...);
+int vr_printf(int level, const char *fmt,...); /* raw version */
 extern int v_neednl;
 
 void printVersion(FILE * file);
@@ -333,7 +361,7 @@ typedef struct File
 {
 	char *name;
 	char *cname;
-        char *s_cname;
+	char *s_cname;
 	char *mname;
 	char *origname;
 
@@ -342,7 +370,7 @@ typedef struct File
 	Coll externFunctions;
 	Coll undeclExternFunctions;
 	Coll externModules;
-        
+
 	Coll numbers;
 	Coll unsortedNumbers;
 	Coll strings;
@@ -436,6 +464,7 @@ void recodeString(char *str);
 extern char *sourceCharset;
 extern char *targetCharset;
 extern int changeCharset;
+extern char *out_charset;
 
 
 extern char *CC, *COMPILE_FLAG, *CFLAGS, *COPT, *CDBG, *OUT_FLAG, *INCLUDE_FLAG,
@@ -446,6 +475,7 @@ extern char *CLIP_MODULE;
 extern char *CLIP_LOCALE_ROOT;
 
 int put_locale_string(char *name);
+int put_locale_string_plural(char *singular, char *plural);
 int set_locale_name(char *filename);
 int resume_locale(void);
 int preprocCFile(char *iname, char *oname);
@@ -504,5 +534,7 @@ void lex_initial(void);
 
 extern int compat_as_word;
 extern int names_flag;
+extern char *_clic_gettext(const char *msg);
+extern char *_clic_ngettext(const char *msg, const char *nmsg, int n);
 
 #endif

@@ -3,7 +3,7 @@
 
 
 FUNCTION PG2CLIP(rowset,fieldno)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL data := SQLGetValue(rowset,fieldno)
 	LOCAL dec := SET(_SET_DECIMALS)
 	LOCAL ar
@@ -63,10 +63,10 @@ FUNCTION PG2CLIP(rowset,fieldno)
 					J += INT(ASC(SUBSTR(data,I+6,1))%16)*(10**(tmp-1))
 					tmp -= 2
 				NEXT
-				J := SQLSetlendec(J,0,dec)
+				J := SQLSetlendec(J,SQLFieldLen(rowset,fieldno),SQLFieldDec(rowset,fieldno))
 				RETURN IF(ASC(SUBSTR(data,6,1))==64,-J,J)
 			ELSE
-				RETURN VAL(data)
+				RETURN SQLSetlendec(VAL(data),SQLFieldLen(rowset,fieldno),SQLFieldDec(rowset,fieldno))
 			ENDIF
 		CASE PGT_OID8
 			IF PG_ISBINARY(rowset)
@@ -229,7 +229,7 @@ FUNCTION PG2CLIP(rowset,fieldno)
 RETURN
 
 FUNCTION CLIP2PG(rowset,fieldno,value,totext)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL dec := SET(_SET_DECIMALS)
 	LOCAL I,J,res,tmp
 	LOCAL year,mon,day,hour,min,sec
@@ -395,6 +395,9 @@ FUNCTION CLIP2PG(rowset,fieldno,value,totext)
 				RETURN IF(value,"t","f")
 			ENDIF
 		CASE PGT_VARCHAR,PGT_TEXT,PGT_BPCHAR,PGT_BYTEA,PGT_FILENAME,PGT_NAME
+			IF totext
+				RETURN ADDSLASH(value)
+			ENDIF
 			RETURN value
 		CASE PGT_BOX
 			IF !totext .AND. PG_ISBINARY(rowset)

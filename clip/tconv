@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ -x /usr/bin/konwert ]
+then
+	kname(){
+        	case "$1" in
+                iso*) echo "$1" | sed -e 's/-8859-//';;
+                *) echo "$1" | tr -d '-';;
+                esac
+        }
+        exec /usr/bin/konwert `kname $1`-`kname $2`
+elif [ -x /usr/bin/jconv ]
+then
+	exec /usr/bin/jconv -f "$1" -t "$2"
+elif [ -x /usr/bin/iconv ]
+then
+	exec /usr/bin/iconv -f "$1" -t "$2"
+else
+	exec cat
+fi

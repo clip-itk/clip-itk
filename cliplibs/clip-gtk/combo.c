@@ -312,7 +312,7 @@ clip_GTK_COMBOSETPOPDOWNSTRINGS(ClipMachine * cm)
 	for(i=0; i < astr->count; i++ )
 	{
 		if ( astr->items[i].t.type != CHARACTER_t ) continue;
-		s = (ClipStrVar*)&astr->items[i];
+		s = (ClipStrVar*)_clip_vptr(&astr->items[i]);
 		if (ccmb->objtype == GTK_WIDGET_COMBO_SIMPLE)
 			str_list = g_list_append( str_list,
 				gtk_list_item_new_with_label(s->str.buf) );
@@ -348,7 +348,7 @@ clip_GTK_COMBOSETPOPDOWNSTRINGS(ClipMachine * cm)
 	for(i=0; i < astr->count; i++ )
 	{
 		if ( astr->items[i].t.type != CHARACTER_t ) continue;
-		s = (ClipStrVar*)&astr->items[i];
+		s = (ClipStrVar*)_clip_vptr(&astr->items[i]);
 		text_utf = _clip_locale_to_utf8(s->str.buf);
 		if (ccmb->objtype == GTK_WIDGET_COMBO_SIMPLE)
 		{
@@ -358,7 +358,7 @@ clip_GTK_COMBOSETPOPDOWNSTRINGS(ClipMachine * cm)
 		}
 		else
 			str_list = g_list_append( str_list, text_utf );
-	}               
+	}
 	if (ccmb->objtype == GTK_WIDGET_COMBO_SIMPLE)
 	{
 		gtk_list_clear_items(GTK_LIST(GTK_COMBO(ccmb->widget)->list),0,-1);
@@ -386,6 +386,23 @@ clip_GTK_COMBODISABLEACTIVATE(ClipMachine * cm)
 	C_widget   *ccmb = _fetch_cw_arg(cm);
 	CHECKCWID(ccmb,GTK_IS_COMBO);
 	gtk_combo_disable_activate(GTK_COMBO(ccmb->widget));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOGETSELECTIONINDEX(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+	GtkList    *list;
+	GList *selection;
+	int index;
+	CHECKCWID(ccmb,GTK_IS_COMBO);
+	list = GTK_LIST(GTK_COMBO(ccmb->widget)->list);
+	selection = list->selection;
+	index = g_list_index(list->children,selection->data);
+        _clip_retni(cm, index+1);
 	return 0;
 err:
 	return 1;

@@ -16,15 +16,18 @@
  Для подключения к серверу используйте конструктор класса TConnect
  в следующем синтаксисе:
 <br> <br><b>
- ConnectNew("OR",NIL,NIL,&lt;login&gt;,&lt;pwd&gt;,[&lt;dbname&gt;])</b>, где
+ ConnectNew("OR",NIL,NIL,&lt;login&gt;,&lt;pwd&gt;,[&lt;dbname&gt;],
+ NIL,NIL,NIL,[&lt;cIsolation&gt;])</b>, где
 <br> <br>
  "OR" - строка, идентифицирующая СУБД Oracle;
 <br> <br>
  &lt;login&gt; - логин пользователя;
 <br> <br>
- &lt;pwd&gt; - пароль пользователя.
+ &lt;pwd&gt; - пароль пользователя;
 <br> <br>
  &lt;dbname&gt; - имя базы данных (connect string);
+<br> <br>
+ &lt;cIsolation&gt; - уровень изоляции по умолчанию.
 <br> <br>
  Для связи записей набора (TRowset) и физической таблицы базы данных
  Oracle испольуется поле с с именем ROWID. Для полноценной работы
@@ -72,6 +75,17 @@
  О сложностях работы с полями LOB читайте руководство Oracle. Эти типы, включая
  и тип FILE, тем не менее реализованы и вы можете их использовать,
  руководствуясь правилами, описанными Oracle.
+<br> <br>
+ Значения параметра &lt;cIsolation&gt; для ConnectNew() и TConnect:Start()
+ могут состоять из одной или нескольких из нижеследующих строк, разделенных
+ символом ';':<br> <br>
+ "READ COMMITTED"<br>
+ "SERIALIZABLE"<br>
+ "READ ONLY"<br>
+ "READ WRITE".<br><br>
+ Например:<br> <br>
+ // начать транзакцию только для чтения с высоким уровнем изоляции<br>
+ conn:Start("SERIALIZABLE;READ ONLY")
 <br> <br>
  Реализованы следующие типы Oracle:
 <pre>

@@ -6,6 +6,12 @@
 #DBGFLAGS	= -g #-DMEMDBG
 #WARNFLAGS	= -Wimplicit -Wall
 
+ifdef CLIPROOT
+	CLIP = $(CLIPROOT)/bin/clip
+else
+	CLIP = clip
+endif
+
 .SUFFIXES: .prg .c .po
 .PHONY:	test screen hash
 
@@ -13,36 +19,44 @@
 HDRS	= clip-gtk.ch clip-gtk.h
 
 GDK_SRC = gdk.c gdkfont.c gdkinput.c gdkcolor.c gdkgc.c gdkdraw.c \
-	  gdkwindow.c gdkregion.c
+	  gdkwindow.c gdkregion.c $(PIXBUFSRC)
 
-GTK_SRC = adjustment.c alignment.c bmpxpm.c box.c button.c buttonbox.c calendar.c \
+GTK_SRC = accelgroup.c adjustment.c alignment.c bmpxpm.c box.c button.c buttonbox.c calendar.c \
 	  checkbutton.c checkmenuitem.c clist.c colorsel.c combo.c common.c \
 	  container.c ctree.c curve.c dialog.c drawingarea.c editable.c entry.c \
 	  filesel.c fixed.c fontsel.c frame.c general.c gtkdraw.c handlebox.c item.c \
+	  itemfactory.c \
 	  label.c layout.c list.c listitem.c menu.c menubar.c menuitem.c \
 	  menushell.c misc.c notebook.c object.c optionmenu.c packer.c paned.c \
 	  pixmap.c progress.c progressbar.c radiobutton.c radiomenuitem.c \
 	  range.c rulers.c scale.c scrollbar.c scrolledwindow.c separator.c \
 	  spinbutton.c statusbar.c table.c text.c tipsquery.c togglebutton.c \
-	  toolbar.c tooltips.c tree.c treeitem.c viewport.c widget.c window.c
+	  toolbar.c tooltips.c tree.c treeitem.c viewport.c widget.c window.c \
+	  gtkermsg.prg
+
+GTK_EXTEXT_SRC = #gtkextext.c extext.c
 
 GDK_OBJ = gdk.o gdkfont.o gdkinput.o gdkcolor.o gdkgc.o gdkdraw.o \
-	  gdkwindow.o gdkregion.o
+	  gdkwindow.o gdkregion.o $(PIXBUFOBJ)
 
-GTK_OBJ = adjustment.o alignment.o bmpxpm.o box.o button.o buttonbox.o calendar.o \
+GTK_OBJ = accelgroup.o adjustment.o alignment.o bmpxpm.o box.o button.o buttonbox.o calendar.o \
 	  checkbutton.o checkmenuitem.o clist.o colorsel.o combo.o common.o \
 	  container.o ctree.o curve.o dialog.o drawingarea.o editable.o entry.o \
 	  filesel.o fixed.o fontsel.o frame.o general.o gtkdraw.o handlebox.o item.o \
+	  itemfactory.o \
 	  label.o layout.o list.o listitem.o menu.o menubar.o menuitem.o \
 	  menushell.o misc.o notebook.o object.o optionmenu.o packer.o paned.o \
 	  pixmap.o progress.o progressbar.o radiobutton.o radiomenuitem.o \
 	  range.o rulers.o scale.o scrollbar.o scrolledwindow.o separator.o \
 	  spinbutton.o statusbar.o table.o text.o tipsquery.o togglebutton.o \
-	  toolbar.o tooltips.o tree.o treeitem.o viewport.o widget.o window.o
+	  toolbar.o tooltips.o tree.o treeitem.o viewport.o widget.o window.o \
+	  gtkermsg.o
 
-SRCS = $(GDK_SRC) $(GTK_SRC)
+GTK_EXTEXT_OBJ = #gtkextext.o extext.o
 
-OBJS = $(GDK_OBJ) $(GTK_OBJ)
+SRCS = $(GDK_SRC) $(GTK_SRC) $(GTK_EXTEXT_SRC)
+
+OBJS = $(GDK_OBJ) $(GTK_OBJ) $(GTK_EXTEXT_OBJ)
 
 OBJDIR	= .
 EXTOBJS =
@@ -94,30 +108,44 @@ $(XSLIB): $(XLIB)
 
 clean:
 	rm -rf *.o *.a *.so *.dll *.po *.pa *.b *.BAK *.bak *~ core* \
-	*core Makefile.inc *.ex *.nm
+	*core Makefile.inc *.ex *.nm \
+	gtkermsg.c
 
 distclean: clean
 	rm -rf clip-gtkcfg.h hashcode.h _hashcode.h Makefile
 	-cd test &&  $(MAKE) clean
 	-cd example && $(MAKE) clean
 
-install: all
-	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(CLIPROOT)/lib
-	chmod 0644  $(CLIPROOT)/lib/$(XLIB)
-	chmod 0755  $(CLIPROOT)/lib/$(XSLIB)
-	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(CLIPROOT)/lib
-	cp clip-gtk.cliprc $(CLIPROOT)/cliprc/
-	chmod 0644  $(CLIPROOT)/cliprc/clip-gtk.cliprc
-	cp clip-gtk.ch $(CLIPROOT)/include/
-	cp clip-gtk.h $(CLIPROOT)/include/
+install:
+	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(DESTDIR)$(CLIPROOT)/lib
+	chmod 0644  $(DESTDIR)$(CLIPROOT)/lib/$(XLIB)
+	chmod 0755  $(DESTDIR)$(CLIPROOT)/lib/$(XSLIB)
+	#[ "$(XSLIBREAL)" = "$(XSLIB)" ] || cp $(XSLIBREAL) $(DESTDIR)$(CLIPROOT)/lib
+	cp clip-gtk.cliprc $(DESTDIR)$(CLIPROOT)/cliprc/
+	chmod 0644  $(DESTDIR)$(CLIPROOT)/cliprc/clip-gtk.cliprc
+	cp clip-gtk.ch $(DESTDIR)$(CLIPROOT)/include/
+	cp clip-gtk.h $(DESTDIR)$(CLIPROOT)/include/
 #	mkdir -p $(CLIPROOT)/doc/clip-gtk
 #	cp -R doc/* $(CLIPROOT)/doc/clip-gtk
 	mkdir -p $(CLIPROOT)/doc/example/clip-gtk
 	cp example/clipgtktest.prg example/Makefile example/clip.xpm example/basket.bmp $(CLIPROOT)/doc/example/clip-gtk
+	cp example/tbrow.prg example/tbrow.xpm $(CLIPROOT)/doc/example/clip-gtk
+	cp example/accel.prg $(CLIPROOT)/doc/example/clip-gtk
+	cp example/test.prg $(CLIPROOT)/doc/example/clip-gtk
+	cp example/note.prg $(CLIPROOT)/doc/example/clip-gtk
+	cp example/test_gtk.prg example/x.xpm $(CLIPROOT)/doc/example/clip-gtk
+	cp example/test_list.prg $(CLIPROOT)/doc/example/clip-gtk
+	cp example/test_image.prg $(CLIPROOT)/doc/example/clip-gtk
+	cp example/simple.prg $(CLIPROOT)/doc/example/clip-gtk
+	cp example/winpic.prg $(CLIPROOT)/doc/example/clip-gtk
+	cp example/window.prg $(CLIPROOT)/doc/example/clip-gtk
 
 .c.o:
 	@echo $(CC) $(CDBGFLAGS) $(CFLAGS) -c $<
 	@$(CC) $(CDBGFLAGS) $(CFLAGS) $(XCFLAGS) -c $<
+
+.prg.o:
+	$(CLIP) -Olnw -I. $<
 
 depend:
 	$(MAKE) hash

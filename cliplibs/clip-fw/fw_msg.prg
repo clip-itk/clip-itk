@@ -102,3 +102,6 @@ return lCancel
 ****************
 function ChooseColor()
 return  eval(Selector:__ChooseColor)
+****************
+function cGetFile(cMask, cTitle)
+return eval(Selector:FileDialog, cMask, cTitle)

@@ -1,0 +1,1013 @@
+# Module cliprt.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2003-11-21 10:29+0400\n"
+"PO-Revision-Date: 2002-11-29 11:53+0400\n"
+"Last-Translator: Paul Lasarev <paul@itk.ru>\n"
+"Language-Team: Russian <clip-devel@itk.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: clipbase.c:1039
+msgid "Open error"
+msgstr "Ошибка открытия"
+
+#: clipbase.c:1040
+msgid "Bad alias"
+msgstr "Неизвестный алиас"
+
+#: clipbase.c:1041 rdd/btree.c:141 rdd/rdd.c:785 rdd/rddclip.c:190
+#: rdd/six.c:392
+msgid "No such field"
+msgstr "Нет поля"
+
+#: clipbase.c:1042 rdd/six.c:395
+msgid "Workarea not in use"
+msgstr "Рабочая область не активна"
+
+#: clipbase.c:1043
+msgid "No alias"
+msgstr "Нет алиаса"
+
+#: clipbase.c:1044 rdd/rdd.c:784 rdd/rddclip.c:193 rdd/six.c:394
+msgid "No controlling order"
+msgstr "Нет управляющего ордера"
+
+#: clipbase.c:1045 rdd/cdx.c:524 rdd/ntx.c:340 rdd/rdd.c:779
+msgid "Bad FOR expression"
+msgstr "Неправильное выражение FOR"
+
+#: clipbase.c:1143
+#, c-format
+msgid "No driver linked: %s"
+msgstr "Нет подлинкованного драйвера: %s"
+
+#: clipbase.c:1262
+#, c-format
+msgid "no namespace %lx"
+msgstr "нет рабочей области %lx"
+
+#: clipbase.c:1269
+#, c-format
+msgid "no namespace var %lx"
+msgstr "нет переменной пространства имен %lx"
+
+#: clipbase.c:1892
+#, c-format
+msgid "Alias already in use: %s"
+msgstr "Алиас уже используется: %s"
+
+#: clipdbg.c:322
+#, c-format
+msgid "got debug signal %d"
+msgstr "получен сигнал отладчика %d"
+
+#: clipdbg.c:332
+#, c-format
+msgid "debug: cannot open debug input '%s': %s"
+msgstr "отладчик: невозможно открыть ввод '%s': %s"
+
+#: clipdbg.c:349
+#, c-format
+msgid "debug: cannot open debug output '%s': %s"
+msgstr "отладчик: невозможно открыть выход '%s': %s"
+
+#: clipdbg.c:394 clipdbg.c:416
+#, c-format
+msgid "sigint: file %s line %d proc %s"
+msgstr "sigint: файл %s строка %d процедура %s"
+
+#: clipdbg.c:463
+#, c-format
+msgid "dbg read cmd: %s"
+msgstr "dbg прочитана команда: %s"
+
+#: clipdbg.c:574
+#, c-format
+msgid "breakpoint reached: file %s line %d proc %s"
+msgstr "достигнута точка останова: файл %s строка %d процедура %s"
+
+#: clipdbg.c:606
+#, c-format
+msgid "watchpoint reached: expr '%s' file %s line %d proc %s"
+msgstr ""
+"достигнута точка просмотра: выражение '%s' файл %s строка %d процедура %s"
+
+#: clipdbg.c:702
+#, c-format
+msgid "process dbg cmd: '%s'"
+msgstr "обработка команды отладчика: '%s'"
+
+#: clipdbg.c:713
+#, c-format
+msgid "find dbg cmd: '%s', %d argc"
+msgstr "найдена команда отладчика: '%s', %d argc"
+
+#: clipdbg.c:736
+#, c-format
+msgid "end cmd: '%s'"
+msgstr "окончена команда: '%s'"
+
+#: cliprt.c:1923
+#, c-format
+msgid "init screen: %s"
+msgstr "инициализация экрана: %s"
+
+#: cliprt.c:2218
+msgid "exit"
+msgstr "выход"
+
+#: cliprt.c:2578
+msgid "start"
+msgstr "старт"
+
+#: cliprt.c:2594
+#, c-format
+msgid "process LANG environ '%s/%s'"
+msgstr "обработка переменной окружения LANG '%s/%s'"
+
+#: cliprt.c:2603
+#, c-format
+msgid "process CHARSET environ '%s/%s'"
+msgstr "обработка переменной окружения CHARSET '%s/%s'"
+
+#: cliprt.c:2612
+#, c-format
+msgid "process TERM environ '%s/%s'"
+msgstr "обработка переменной окружения TERM %s/%s"
+
+#: cliprt.c:2676
+#, c-format
+msgid "load charset tables '%s'"
+msgstr "загрузка таблиц кодировки '%s'"
+
+#: cliprt.c:2688
+#, c-format
+msgid "set stream io translation  %s -> %s"
+msgstr "установка трансляции потокового ввода-вывода  %s -> %s"
+
+#: cliprt.c:2692 cliprt.c:2697 set.c:1471 set.c:1478
+#, c-format
+msgid "cannot load charset file '%s': %s"
+msgstr "невозможно загрузить файл кодировки '%s': %s"
+
+#: cliprt.c:2940
+#, c-format
+msgid "got signal %s, exiting..."
+msgstr "получен сигнал %s, выход..."
+
+#: cliprt.c:2946 _io.c:3101
+#, c-format
+msgid "trace: file '%s' line %d"
+msgstr "трассировка: файл '%s' строка %d"
+
+#: cliprt.c:3216
+#, c-format
+msgid "C call: proc '%s' file '%s' line %d"
+msgstr "C вызов: процедура '%s' файл '%s' строка %d"
+
+#: cliprt.c:3241
+#, c-format
+msgid "%s: systerm errorblock: runtime error: %s"
+msgstr "%s: системный errorblock: ошибка времени выполнения: %s"
+
+#: cliprt.c:3245 cliprt.c:3260 cliprt.c:6651 cliprt.c:9163
+#, c-format
+msgid "trace: %s"
+msgstr "трассировка: %s"
+
+#: cliprt.c:3256
+#, c-format
+msgid "%s: errorblock nested too deep (%d): "
+msgstr "%s: errorblock вложен слишком глубоко (%d): "
+
+#: cliprt.c:3313
+#, c-format
+msgid "C call from: proc '%s' file '%s' line %d"
+msgstr "C вызов от: процедура '%s' файл '%s' строка %d"
+
+#: cliprt.c:3348
+#, c-format
+msgid "C return=%d to: proc '%s' file '%s' line %d"
+msgstr "C return=%d to: процедура '%s' файл '%s' строка %d"
+
+#: cliprt.c:3709
+msgid "clip_eval: non-code argument"
+msgstr "clip_eval: не-кодовый аргумент"
+
+#: cliprt.c:3899
+msgid "call by name not from CHARACTER_t or NUMERIC_t value"
+msgstr "вызов по имени не из CHARACTER_t или NUMERIC_t значения"
+
+#: cliprt.c:5352
+msgid "non-logical type in NOT operator"
+msgstr "нелогический тип в операции NOT"
+
+#: cliprt.c:5366
+msgid "non-numeric type in MINUS operator"
+msgstr "нечисловой тип в операции MINUS"
+
+#: cliprt.c:5534
+#, c-format
+msgid "macro assign with non-character argument (%s)"
+msgstr "макро присваивание с нестрочным аргументом (%s)"
+
+#: cliprt.c:5546 cliprt.c:7912 cliprt.c:11013
+#, c-format
+msgid "no variable name: '%.*s'"
+msgstr "нет имени переменной '%.*s'"
+
+#: cliprt.c:5625
+msgid "non-logical var in condition"
+msgstr "нелогический тип в условии"
+
+#: cliprt.c:6454 cliprt.c:6586
+#, c-format
+msgid "no memvar variable '%s'"
+msgstr "нет переменной '%s'"
+
+#: cliprt.c:6491 cliprt.c:6517 cliprt.c:6545 cliprt.c:6566
+#, c-format
+msgid "no variable '%s'"
+msgstr "нет переменной '%s'"
+
+#: cliprt.c:6604 cliprt.c:6621
+#, c-format
+msgid "try access to unknown public var '%s'"
+msgstr "попытка доступа к неизвестной public переменной '%s'"
+
+#: cliprt.c:6681
+#, c-format
+msgid "invalid arguments for  '%s' operation"
+msgstr "неправильные аргументы для операции '%s'"
+
+#: cliprt.c:6729
+msgid "invalid arguments"
+msgstr "неправильные аргументы"
+
+#: cliprt.c:6858
+msgid "adel for non-array object"
+msgstr "adel для не-массива"
+
+#: cliprt.c:6867
+#, c-format
+msgid "index for adel is out-of range: ind=%d, count=%d"
+msgstr "индекс для adel вне допустимого диапазона: ind=%d, count=%d"
+
+#: cliprt.c:6896
+msgid "asize for non-array object"
+msgstr "asize для не-массива"
+
+#: cliprt.c:6910
+#, c-format
+msgid "index for asize is out-of range: ind=%d, count=%d"
+msgstr "индекс для asize вне допустимого диапазона: ind=%d, count=%d"
+
+#: cliprt.c:6940
+msgid "ains for non-array object"
+msgstr "ains для не-массива"
+
+#: cliprt.c:6948
+#, c-format
+msgid "index for ains is out-of range: ind=%d, count=%d"
+msgstr "индекс для ains вне допустимого диапазона ind=%d, count=%d"
+
+#: cliprt.c:6998
+msgid "aget for non-array object"
+msgstr "aget для не-массива"
+
+#: cliprt.c:7013
+#, c-format
+msgid "index for aget is out-of range: ind=%d, count=%d"
+msgstr "индекс для aget вне допустимого диапазона: ind=%d, count=%d"
+
+#: cliprt.c:7052
+msgid "aset for non-array object"
+msgstr "aset для не-массива"
+
+#: cliprt.c:7067
+#, c-format
+msgid "index for aset is out-of range: ind=%d, count=%d"
+msgstr "индекс для aset вне допустимого диапазона: ind=%d, count=%d"
+
+#: cliprt.c:7232
+msgid "madd for non-map object"
+msgstr "madd для не-map объекта"
+
+#: cliprt.c:7267
+msgid "mdel for non-map object"
+msgstr "mdel для не-map объекта"
+
+#: cliprt.c:7287
+msgid "mind for non-map object"
+msgstr "mind для не-map объекта"
+
+#: cliprt.c:7388
+#, c-format
+msgid "try fetch element from non-array object%s%s"
+msgstr "попытка доступа к элементу не-массива %s%s"
+
+#: cliprt.c:7439
+#, c-format
+msgid "map fetch error: index %s"
+msgstr "ошибка доступа к map: индекс %s"
+
+#: cliprt.c:7462
+#, c-format
+msgid "out-of-bounds array %s, index=%d, count=%d"
+msgstr "индекс вне диапазона: массив %s, индекс=%d, размер=%d"
+
+#: cliprt.c:7548
+msgid "map/array fetch error"
+msgstr "ошибка доступа к элементу map/array"
+
+#: cliprt.c:8217
+msgid "undefined macro-variable in string"
+msgstr "неопределенная макро-переменная в строке"
+
+#: cliprt.c:8224
+msgid "non-character result of macro in string"
+msgstr "не-строчный результат макро в строке"
+
+#: cliprt.c:8336
+#, c-format
+msgid "macro operation with non-character argument (%s)"
+msgstr "макро операция с несимвольным аргументом (%s)"
+
+#: cliprt.c:8481
+#, c-format
+msgid "no method %s"
+msgstr "нет метода %s"
+
+#: cliprt.c:8504
+#, c-format
+msgid "method %s is not code"
+msgstr "метод %s не является выполнимым кодом"
+
+#: cliprt.c:9057
+msgid "invalid type in INCR/DECR operation"
+msgstr "неправильный тип в операции INCR/DECR"
+
+#: cliprt.c:9159
+#, c-format
+msgid "%s: runtime error: %s"
+msgstr "%s: ошибка времени выполнения: %s"
+
+#: cliprt.c:10279
+msgid "unknown error"
+msgstr "неизвестная ошибка"
+
+#: cliprt.c:10282 _util.c:2010
+msgid "invalid argument"
+msgstr "неправильный аргумент"
+
+#: cliprt.c:10285
+msgid "bound error"
+msgstr "ошибка выхода за границы"
+
+#: cliprt.c:10288
+msgid "string too long"
+msgstr "слишком длинная строка"
+
+#: cliprt.c:10291
+msgid "number too big"
+msgstr "слишком большое число"
+
+#: cliprt.c:10294
+msgid "divide by zero"
+msgstr "деление на ноль"
+
+#: cliprt.c:10297
+msgid "number error"
+msgstr "ошибка операции с числом"
+
+#: cliprt.c:10300
+msgid "syntax error"
+msgstr "синтаксическая ошибка"
+
+#: cliprt.c:10303
+msgid "syntax too complex"
+msgstr "синтаксис слишком сложен"
+
+#: cliprt.c:10307
+msgid "memory error"
+msgstr "ошибка памяти"
+
+#: cliprt.c:10310
+msgid "no function"
+msgstr "нет функции"
+
+#: cliprt.c:10313
+msgid "no method"
+msgstr "нет метода"
+
+#: cliprt.c:10316
+msgid "no variable"
+msgstr "нет переменной"
+
+#: cliprt.c:10319
+msgid "no alias"
+msgstr "нет алиаса"
+
+#: cliprt.c:10322
+msgid "no varmethod"
+msgstr "нет метода переменной"
+
+#: cliprt.c:10326
+msgid "create error"
+msgstr "ошибка создания"
+
+#: cliprt.c:10329
+msgid "open error"
+msgstr "ошибка открытия"
+
+#: cliprt.c:10332
+msgid "close error"
+msgstr "ошибка закрытия"
+
+#: cliprt.c:10335
+msgid "read error"
+msgstr "ошибка чтения"
+
+#: cliprt.c:10338
+msgid "write error"
+msgstr "ошибка записи"
+
+#: cliprt.c:10341
+msgid "print error"
+msgstr "ошибка печати"
+
+#: cliprt.c:10345
+msgid "unsupported"
+msgstr "не поддерживается"
+
+#: cliprt.c:10348
+msgid "limit exhaust"
+msgstr "лимит исчерпан"
+
+#: cliprt.c:10351
+msgid "corruption detected"
+msgstr "обнаружено разрушение данных"
+
+#: cliprt.c:10354
+msgid "wrong datatype"
+msgstr "неправильный тип данных"
+
+#: cliprt.c:10357
+msgid "wrong datawidth"
+msgstr "неправильная ширина данных"
+
+#: cliprt.c:10360
+msgid "no table"
+msgstr "нет таблицы"
+
+#: cliprt.c:10363
+msgid "no order"
+msgstr "нет ордера"
+
+#: cliprt.c:10366
+msgid "share violation"
+msgstr "ошибка разделения доступа"
+
+#: cliprt.c:10369
+msgid "unlocked"
+msgstr "разблокировано"
+
+#: cliprt.c:10372
+msgid "readonly"
+msgstr "только чтение"
+
+#: cliprt.c:10375
+msgid "appendlock"
+msgstr "блокировки добавления"
+
+#: cliprt.c:10378
+msgid "bad alias"
+msgstr "неправильный алиас"
+
+#: cliprt.c:10381
+msgid "locking error"
+msgstr "ошибка блокирования"
+
+#: cliprt.c:10384
+msgid "system signal"
+msgstr ""
+
+#: cliprt.c:10974
+#, c-format
+msgid "macro reference with non-character argument (%s)"
+msgstr "макро-ссылка с несимвольным аргументом (%s)"
+
+#: cliprt.c:11634 cliprt.c:11639
+#, c-format
+msgid "translate_charset: cannot load charset file '%s': %s"
+msgstr "translate_charset: невозможно загрузить файл кодировки '%s': %s"
+
+#: cliprt.c:11724
+#, c-format
+msgid "stack check failed at line %d file %d"
+msgstr "проверка стека не прошла на строке %d файл %d"
+
+#: clipvm.c:647
+#, c-format
+msgid "cannot stat file '%s': %s"
+msgstr "невозможно получить статус файла '%s': %s"
+
+#: clipvm.c:653
+#, c-format
+msgid "is not regular file '%s'"
+msgstr "не регулярный файл '%s'"
+
+#: clipvm.c:660
+#, c-format
+msgid "is not pobj file '%s'"
+msgstr "не pobj файл '%s'"
+
+#: clipvm.c:667
+#, c-format
+msgid "open file '%s' error: %s"
+msgstr "открытие файла '%s' ошибка: %s"
+
+#: clipvm.c:684
+#, c-format
+msgid "mmap file '%s' error: %s"
+msgstr "mmap файл '%s' ошибка: %s"
+
+#: clipvm.c:707
+#, c-format
+msgid "read file '%s' error: %s"
+msgstr "чтение файла '%s' ошибка: %s"
+
+#: clipvm.c:733
+#, c-format
+msgid " '%s' is not valid pobj file: invalid magic"
+msgstr " '%s' неправильный pobj файл: неправильное magic-число"
+
+#: clipvm.c:874
+#, c-format
+msgid "shared loading problem: %s: file %s"
+msgstr "ошибка разделяемой загрузки %s: файл %s"
+
+#: clipvm.c:915
+#, c-format
+msgid "shared '%s' fetch name '%s' problem: %s"
+msgstr "разделяемый ресурс '%s' имя доступа'%s' проблема: %s"
+
+#: clipvm.c:1014
+#, c-format
+msgid "unknown file type: '%s'"
+msgstr "неизвестный тип файла: '%s'"
+
+#: clipvm.c:1046
+#, c-format
+msgid "cannot load file: '%s'"
+msgstr "невозможно загрузить файл: '%s'"
+
+#: clipvm.c:1352
+#, c-format
+msgid "PCODE call from: proc '%s' file '%s' line %d"
+msgstr "PCODE call from: процедура '%s' файл '%s' строка %d"
+
+#: clipvm.c:1378
+#, c-format
+msgid "PCODE return=%d to: proc '%s' file '%s' line %d"
+msgstr "PCODE return=%d to: процедура '%s' файл '%s' строка %d"
+
+#: clipvm.c:1572
+#, c-format
+msgid "PCODE call: proc '%s' file '%s' line %d"
+msgstr "PCODE call: процедура '%s' файл '%s' строка %d"
+
+#: clipvm.c:2299
+#, c-format
+msgid "invalid bytecode %d"
+msgstr "неправильный байткод %d"
+
+#: _ctools_s.c:3496 _ctools_s.c:3514
+#, c-format
+msgid "Cannot take io permissons: %s"
+msgstr "Невозможно получить права ввода/вывода: %s"
+
+#: _dbg.c:204 _dbg.c:216
+#, c-format
+msgid "DBGCONNECT: cannot create FIFO '%s': %s\n"
+msgstr "DBGCONNECT: невозможно прочитать FIFO '%s': %s\n"
+
+#: _dbg.c:210 _dbg.c:221
+#, c-format
+msgid "fifo %s created successfully"
+msgstr "fifo %s успешно создан"
+
+#: _dbg.c:225
+#, c-format
+msgid "DBGCONNECT: cannot send signal SIGUSR1 to pid %lu: %s\n"
+msgstr "DBGCONNECT: невозможно послать сигнал SIGUSR1 процессу %lu: %s\n"
+
+#: _dbg.c:230
+#, c-format
+msgid "signal SIGUSR1 sent to pid %lu"
+msgstr "сигнал SIGUSR1 послан процессу %lu"
+
+#: _dbg.c:235 _dbg.c:248
+#, c-format
+msgid "DBGCONNECT: cannot open FIFO '%s': %s\n"
+msgstr "DBGCONNECT: невозможно открыть FIFO '%s': %s\n"
+
+#: _dbg.c:242
+#, c-format
+msgid "fifo %s opened for writing"
+msgstr "fifo %s открыта на запись"
+
+#: _dbg.c:255
+#, c-format
+msgid "fifo %s opened for reading"
+msgstr "fifo %s открыта на чтение"
+
+#: _dbg.c:263 _dbg.c:329 _dbg.c:367
+msgid "DBGCOMMAND: cannot read data"
+msgstr "DBGCOMMAND: невозможно прочитать данные"
+
+#: _dbg.c:300
+msgid "DBGCOMMAND: no connection"
+msgstr "DBGCOMMAND: нет соединения"
+
+#: _dbg.c:349
+#, c-format
+msgid "DBGCOMMAND: cannot send signal to PID %lu\n"
+msgstr "DBGCOMMAND: невозможно послать сигнал процессу %lu\n"
+
+#: gettext.c:75
+#, c-format
+msgid "add locale '%s'"
+msgstr "добавлена локаль '%s'"
+
+#: gettext.c:127
+#, c-format
+msgid "locale msg: %s -> %s: %s"
+msgstr "локализированная строка: %s -> %s: %s"
+
+#: gettext.c:135 gettext.c:231
+#, c-format
+msgid "localed msg: %s -> %s: %.*s -> %.*s"
+msgstr "локализированная строка: %s -> %s: %.*s -> %.*s"
+
+#: gettext.c:225
+#, c-format
+msgid "locale msg plural(%ld:%lu): %s -> %s: %s"
+msgstr "локализированная строка (множественное число): %s -> %s: %s"
+
+#: gettext.c:301
+#, c-format
+msgid "no access to file '%s': not a regular file"
+msgstr "нет доступа к файлу '%s': не регулярный файл"
+
+#: gettext.c:307
+#, c-format
+msgid "no access to file '%s': %s"
+msgstr "нет доступа к файлу '%s': %s"
+
+#: gettext.c:420
+#, c-format
+msgid "locale settings not found for module '%s'"
+msgstr "установки локали не найдены для модуля '%s'"
+
+#: gettext.c:425
+#, c-format
+msgid "no access to locale file '%s': %s"
+msgstr "нет доступа к файлу локали '%s': %s"
+
+#: gettext.c:432
+#, c-format
+msgid "cannot open locale file '%s': %s"
+msgstr "невозможно открыть файл локали. '%s': %s"
+
+#: gettext.c:436
+#, c-format
+msgid "open locale file '%s', charset '%s'"
+msgstr "открыт файл локали '%s', кодировка '%s'"
+
+#: gettext.c:441
+#, c-format
+msgid "cannot stat locale file '%s': %s"
+msgstr "невозможно получить статус файла локали '%s': %s"
+
+#: gettext.c:477
+#, c-format
+msgid "cannot read locale file '%s': %s"
+msgstr "невозможно прочитать файл локали '%s': %s"
+
+#: gettext.c:503
+#, c-format
+msgid "wrong magic number of locale file '%s'"
+msgstr "неправильный magic number в файле локали '%s'"
+
+#: gettext.c:526
+#, c-format
+msgid "illegal revision of locale file '%s': %d"
+msgstr "неправильная редакция файла локали '%s': %d"
+
+#: rt.y:1560
+#, c-format
+msgid "runtime codeblock compiler: '%.*s': %s"
+msgstr "runtime компилятор кодового блока: '%.*s': %s"
+
+#: set.c:639
+#, c-format
+msgid "close printer:%s"
+msgstr "закрыт принтер:%s"
+
+#: set.c:939 set.c:951 set.c:1004 set.c:1016
+#, c-format
+msgid "%s: '%s'"
+msgstr "%s: '%s'"
+
+#: set.c:1082
+#, c-format
+msgid "set print to:%s,%s"
+msgstr "установка печати в:%s,%s"
+
+#: set.c:1087
+#, c-format
+msgid "cannot open printer file '%s': %s"
+msgstr "невозможно открыть файл принтера '%s': %s"
+
+#: set.c:1467
+#, c-format
+msgid "set printer translation  %s -> %s"
+msgstr "установлена трансляция для принтера  %s -> %s"
+
+#: _thread.c:101
+#, c-format
+msgid "task_run: cannot start function '%s'"
+msgstr "task_run: невозможно стартовать функцию '%s'"
+
+#: _thread.c:194
+#, c-format
+msgid "TASK sheduler not implemented for OS %s"
+msgstr "TASK планировщик не реализован для OS %s"
+
+#: _util.c:621
+msgid "BREAK function requare argument"
+msgstr "BREAK функция требует аргумент"
+
+#: _util.c:732 _util.c:757
+#, c-format
+msgid "PROCNAME: invalid call level '%d'"
+msgstr "PROCNAME: неправильный уровень вызова '%d'"
+
+#: _util.c:781
+#, c-format
+msgid "FILENAME: invalid call level '%d'"
+msgstr "FILENAME: неправильный уровень вызова '%d'"
+
+#: _util.c:806
+msgid "COMPILE: non-character parameter"
+msgstr "COMPILE: несимвольный параметр"
+
+#: _util.c:844
+msgid "block2str: non-pcode parameter"
+msgstr "block2str: некодовый параметр"
+
+#: _util.c:1055 _util.c:1092 _util.c:1112
+msgid "no name given"
+msgstr "нет имени"
+
+#: _util.c:1120
+#, c-format
+msgid "ELF '%s' loading problem: %s"
+msgstr "ELF '%s' ошибка загрузки %s"
+
+#: rdd/btree.c:139
+msgid "Unknown data type or bad size of item"
+msgstr "Неизвестный тип или неправильный размер данных"
+
+#: rdd/btree.c:140
+msgid "Bad BTREE handle"
+msgstr "Неправильный дескриптор BTREE"
+
+#: rdd/btree.c:142
+msgid "Internal error in BTREE module"
+msgstr "Внутренняя ошибка в модуле BTREE"
+
+#: rdd/cdx.c:520 rdd/ntx.c:342
+msgid "MAX_BTREE_DEEP exceeded"
+msgstr "превышен MAX_BTREE_DEEP"
+
+#: rdd/cdx.c:521
+msgid "CDX internal error: bad root page"
+msgstr "внутренняя ошибка CDX : неправильная коренная страница"
+
+#: rdd/cdx.c:522
+msgid "CDX internal error: bad leaf page"
+msgstr "внутренняя ошибка CDX : неправильная листовая страница"
+
+#: rdd/cdx.c:523
+msgid "CDX internal error: no keys on the page"
+msgstr "внутненняя ошибка CDX: нет ключей на странице"
+
+#: rdd/cdx.c:525
+msgid "Bad header"
+msgstr "неправильный заголовок"
+
+#: rdd/cdx.c:526
+msgid "No such tag"
+msgstr "неизвестный тэг"
+
+#: rdd/cdx.c:527 rdd/dbf.c:624 rdd/ntx.c:343
+msgid "Bad data"
+msgstr "неправильные данные"
+
+#: rdd/cdx.c:528 rdd/ntx.c:345
+msgid "Bad WHILE expression"
+msgstr "неправильное выражение WHILE"
+
+#: rdd/cdx.c:529 rdd/ntx.c:346
+msgid "Bad EVAL expression"
+msgstr "неправильное выражение EVAL"
+
+#: rdd/dbf.c:616 rdd/ntx.c:337
+msgid "Unlock error"
+msgstr "ошибка разблокирования"
+
+#: rdd/dbf.c:617 rdd/ntx.c:338 rdd/six.c:396
+msgid "Shared lock error"
+msgstr "ошибка блокировки разделяемого доступа"
+
+#: rdd/dbf.c:618 rdd/ntx.c:339 rdd/six.c:397
+msgid "Exclusive lock error"
+msgstr "ошибка блокировки исключительного доступа"
+
+#: rdd/dbf.c:619
+msgid "Table header corrupted"
+msgstr "заголовок страницы разрушен"
+
+#: rdd/dbf.c:620 rdd/rdd.c:781
+msgid "Bad table structure"
+msgstr "неправильная структура таблицы"
+
+#: rdd/dbf.c:621 rdd/rdd.c:783 rdd/six.c:390
+msgid "Operation not permitted"
+msgstr "операция не разрешена"
+
+#: rdd/dbf.c:622
+msgid "Corruption detected"
+msgstr "обнаружено разрушение данных"
+
+#: rdd/dbf.c:623 rdd/six.c:391
+msgid "Memo file not opened"
+msgstr "Memo файл не открыт"
+
+#: rdd/dbf.c:625
+msgid "Type mismatch"
+msgstr "несоответствие типов"
+
+#: rdd/dbf.c:626 rdd/rdd.c:780
+msgid "I/O error"
+msgstr "ошибка ввода/вывода"
+
+#: rdd/ntx.c:341
+msgid "Index corrupted"
+msgstr "разрушение индекса"
+
+#: rdd/ntx.c:344
+msgid "Key length is too long"
+msgstr "слишком большая длина ключа"
+
+#: rdd/ntx.c:2727
+#, c-format
+msgid "Not CTX file (bad signature): %s"
+msgstr "не CTX файл (неправильная сигнатура): %s"
+
+#: rdd/rdd.c:776 rdd/rddclip.c:189
+msgid "Bad RDD instance"
+msgstr "неправильный объект RDD"
+
+#: rdd/rdd.c:777
+msgid "Bad filter expression"
+msgstr "неправильное выражение фильтра"
+
+#: rdd/rdd.c:778
+msgid "Bad relation expression"
+msgstr "неправильное выражение связи"
+
+#: rdd/rdd.c:782
+msgid "Bad field"
+msgstr "неправильное поле"
+
+#: rdd/rdd.c:857
+#, c-format
+msgid "No data file driver linked: %s"
+msgstr "нет драйвера файла данных: %s"
+
+#: rdd/rdd.c:874
+#, c-format
+msgid "No index file driver linked: %s"
+msgstr "нет драйвера индексного файла: %s"
+
+#: rdd/rdd.c:891
+#, c-format
+msgid "No memo file driver linked: %s"
+msgstr "нет драйвера memo файл: %s"
+
+#: rdd/rdd.c:1102
+#, c-format
+msgid "RDD layer error: %s/%d: %s: %s"
+msgstr "ошибка уровня RDD: %s/%d: %s: %s"
+
+#: rdd/rdd.c:3645
+msgid "no item DBF_CHARSET, revert to KOI charset"
+msgstr "нет элемента DBF_CHARSET, используется кодировка KOI8-R"
+
+#: rdd/rdd.c:3681
+msgid "dbf: cannot determine host charset, revert to koi_locale"
+msgstr "dbf: невозможно определить кодировку хоста, используется koi_locale"
+
+#: rdd/rdd.c:3685
+#, c-format
+msgid "load host charset '%s'"
+msgstr "загрузка кодировки хоста '%s'"
+
+#: rdd/rdd.c:3688 rdd/rdd.c:3696
+#, c-format
+msgid "dbf: cannot load charset '%s': %s, revert to koi_locale"
+msgstr "dbf: невозможно загрузить кодировку '%s': %s, используем koi_locale"
+
+#: rdd/rdd.c:3693
+#, c-format
+msgid "load dbf charset '%s'"
+msgstr "загрузка кодировки dbf '%s'"
+
+#: rdd/rddclip.c:191
+msgid "Bad argument (2)"
+msgstr "неправильный аргумент(2)"
+
+#: rdd/rddclip.c:192 rdd/six.c:388
+msgid "Bad filter handle"
+msgstr "неправильный дескриптор фильтра"
+
+#: rdd/six.c:389
+msgid "Invalid join type"
+msgstr "неправильный тип соединения"
+
+#: rdd/six.c:393
+msgid "Not memo field"
+msgstr "не мемо-поле"
+
+#: rdd/six.c:398
+msgid "Create file error"
+msgstr "ошибка создания файла"
+
+#: rdd/six.c:399
+msgid "Open file error"
+msgstr "ошибка открытия файла"
+
+#: rdd/six.c:400
+msgid "File write error"
+msgstr "ошибка записи файла"
+
+#: rdd/six.c:401
+msgid "File read error"
+msgstr "ошибка чтения файла"
+
+#: rdd/six.c:402
+msgid "Bad .flt file"
+msgstr "неправильный .flt файл"
+
+#: screen/screen.c:1499
+#, c-format
+msgid "set out translation: %s -> %s"
+msgstr "установлена выходная трансляция: %s -> %s"
+
+#: screen/screen.c:2703
+#, c-format
+msgid "got xterm mouse event: type=%d y=%d x=%d buttons=%d clicks=%d"
+msgstr "получено событие xterm mouse: type=%d y=%d x=%d buttons=%d clicks=%d"
+
+#: screen/screen.c:2952
+#, c-format
+msgid ""
+"got xterm rawmode mouse event: type=%d y=%d x=%d xt_buttons=%d buttons=%d "
+"clicks=%d"
+msgstr ""
+"got xterm rawmode mouse event: type=%d y=%d x=%d xt_buttons=%d buttons=%d "
+"clicks=%d"
+
+#: screen/screen.c:3080
+#, c-format
+msgid "got gp_get_event: %d type=%d y=%d x=%d buttons=%d m_buttons=%d"
+msgstr "got gp_get_event: %d type=%d y=%d x=%d buttons=%d m_buttons=%d"
+
+#: screen/screen.c:4232
+#, c-format
+msgid "Gpm_Open return %d"
+msgstr "Gpm_Open return %d"
+
+#~ msgid "Alias does not exist: %s"
+#~ msgstr "Алиас не существует: %s"

@@ -1,4 +1,5 @@
 #INCLUDE <fwin/FiveWin.ch>
+#INCLUDE <Inkey.ch>
 
 #define LTGRAY_BRUSH       1
 #define GRAY_BRUSH         2
@@ -226,11 +227,11 @@ local n := eval(Selector:GetDlgBaseUnits)
 		self:nId      := self:GetNewId(),;
 		self:nStyle   := numOR( WS_CHILD, WS_VISIBLE, WS_TABSTOP )
 
-return cCtrl2Chr( Int( 2 * 8 * self:nTop    / nHiWord( n ) ),;
+return /* cCtrl2Chr( Int( 2 * 8 * self:nTop    / nHiWord( n ) ),;
 		  Int( 2 * 4 * self:nLeft   / nLoWord( n ) ),;
 		  Int( 2 * 8 * self:nBottom / nHiWord( n ) ),;
 		  Int( 2 * 4 * self:nRight  / nLoWord( n ) ),;
-		  self:nId, self:nStyle, cCtrlClass, self:cCaption )
+		  self:nId, self:nStyle, cCtrlClass, self:cCaption )*/
 ***********
 static function fw_Initiate(self,  hDlg )
 
@@ -247,10 +248,6 @@ static function fw_Initiate(self,  hDlg )
 		else
 			self:GetFont()
 		endif
-	else
-	#define NOVALID_CONTROLID   1
-		Eval( ErrorBlock(), _FWGenError( NOVALID_CONTROLID, "No: " + ;
-				      Str( self:nId, 6 ) ) )
 	endif
 
 return
@@ -273,7 +270,7 @@ static function fw_Colors(self,  hDC )
 
 	DEFAULT self:nClrText := eval(Selector:GetTextColor, hDC ),;
 		self:nClrPane := eval(Selector:GetBkColor, hDC ),;
-		self:oBrush   := TBrush():New(, self:nClrPane )
+		self:oBrush   := nil //TBrush():New(, self:nClrPane )
 
 	eval(Selector:SetTextColor, hDC, self:nClrText )
 	eval(Selector:SetBkColor, hDC, self:nClrPane )
@@ -473,11 +470,18 @@ static function fw_End(self)
 
 return self:Super:End()
 ************
-static function fw_KeyChar( self, nKey, nFlags )
+static function fw_KeyChar( self, Event )
 
-   local nDefValue, nDefButton, hDef
+   local nDefValue, nDefButton, hDef, nKey, nState
 
+	if !eval(Selector:KeyboardEvent, Event:event)
+		return .f.
+	endif
+
+	nKey := Event:keyval
+	nState := Event:state
    do case
+      /*
       case nKey == VK_TAB .and. eval(Selector:GetKeyState, VK_SHIFT )
 	   self:oWnd:GoPrevCtrl( self:hWnd )
 	   return 0    // We don't want API default behavior
@@ -486,8 +490,16 @@ static function fw_KeyChar( self, nKey, nFlags )
 	   self:oWnd:GoNextCtrl( self:hWnd )
 	   return 0    // We don't want API default behavior
 
+      case nKey == K_UP
+	   self:oWnd:GoPrevCtrl( self:hWnd )
+	   return 0    // We don't want API default behavior
+
+      case nKey == K_DOWN
+	   self:oWnd:GoNextCtrl( self:hWnd )
+	   return 0    // We don't want API default behavior
+
       case nKey == VK_ESCAPE
-	   self:oWnd:KeyChar( nKey, nFlags )
+	   self:oWnd:KeyChar( nKey )
 	   return 0
 
       case nKey == VK_RETURN
@@ -499,10 +511,11 @@ static function fw_KeyChar( self, nKey, nFlags )
 	      eval(Selector:SendMessage, hDef, WM_KEYDOWN, VK_RETURN )
 	      return 0
 	   end
+      */
 
    endcase
 
-return self:Super:KeyChar( nKey, nFlags )
+return self:Super:KeyChar( nKey )
 **************
 static function fw_nTop( self, nNewTop )
 
@@ -554,7 +567,7 @@ static function fw_ForWhen(self)
       self:oWnd:nLastKey == VK_TAB
       self:oWnd:GoNextCtrl( self:hWnd )
    else
-      if Empty( GetFocus() )
+      if Empty( eval(Selector:GetFocus) )
 	 eval(Selector:SetFocus, self:hWnd )
       endif
    endif
@@ -571,7 +584,7 @@ static function fw_KeyDown( self, nKey, nFlags )
 	      if MsgYesNo( "Delete this control ?" )
 		 self:End()
 		 if Len( self:oWnd:aControls ) == 0
-		    ASend( self:aDots, "Hide" )
+		    Selector:ASend( self:aDots, "Hide" )
 		 endif
 	      endif
       endcase
@@ -690,7 +703,7 @@ static function fw_SysCommand( self, nType, nLoWord, nHiWord )
 		 return 0
 	      else
 		 if ( hCtrl := self:oWnd:GetHotPos( nLoWord, self:hWnd ) ) != 0
-		    SetFocus( hCtrl )
+		    eval(Selector:SetFocus, hCtrl )
 		 endif
 	      endif
 	   endif
@@ -698,16 +711,16 @@ static function fw_SysCommand( self, nType, nLoWord, nHiWord )
 
 return nil
 ***********
-static function fw___HelpTopic(self)
+static function fw_HelpTopic(self)
 
    if Empty( self:nHelpId )
       if self:oWnd != nil
 	 self:oWnd:HelpTopic()
       else
-	 HelpIndex()
+	 eval(Selector:HelpIndex)
       endif
    else
-      HelpPopup( self:nHelpId )
+      eval(Selector:HelpPopup, self:nHelpId )
    endif
 
 return nil
@@ -811,7 +824,7 @@ static function fw_CheckDots(self)
 
    self:aDots = { oDot1, oDot2, oDot3, oDot4, oDot5, oDot6, oDot7, oDot8 }
 
-   ASend( self:aDots, "Hide()" )
+   Selector:ASend( self:aDots, "Hide()" )
 
    oDot1:bLClicked = { | nRow, nCol | self:HideDots(), oWndParent:oCtlFocus:MResize( RES_NW, nRow, nCol, oDot1 ) }
    oDot2:bLClicked = { | nRow, nCol | self:HideDots(), oWndParent:oCtlFocus:MResize( RES_N, nRow, nCol, oDot2 )  }
@@ -825,12 +838,12 @@ static function fw_CheckDots(self)
 return nil
 *************
 static function fw_ShowDots(self)
-
+/*
    local n
 
    if self:aDots != nil
-      if GetParent( self:aDots[ 1 ]:hWnd  ) != self:oWnd:hWnd
-	 ASend( self:aDots, "Hide()" )
+      if eval(Selector:GetParent, self:aDots[ 1 ]:hWnd  ) != self:oWnd:hWnd
+	 eval(Selector:ASend, self:aDots, "Hide()" )
 	 self:aDots[ 1 ]:bLClicked = { | nRow, nCol | self:oWnd:oCtlFocus:MResize( RES_NW, nRow, nCol, self:aDots[ 1 ] ) }
 	 self:aDots[ 2 ]:bLClicked = { | nRow, nCol | self:oWnd:oCtlFocus:MResize( RES_N, nRow, nCol, self:aDots[ 2 ] )  }
 	 self:aDots[ 3 ]:bLClicked = { | nRow, nCol | self:oWnd:oCtlFocus:MResize( RES_NE, nRow, nCol, self:aDots[ 3 ] ) }
@@ -842,13 +855,13 @@ static function fw_ShowDots(self)
 	 AEval( self:aDots, { | o | o:oWnd := self:oWnd,;
 			 SetParent( o:hWnd, self:oWnd:hWnd ) } )
       endif
-      DotsAdjust( self:hWnd, self:aDots[ 1 ]:hWnd, self:aDots[ 2 ]:hWnd,;
+      /*??DotsAdjust( self:hWnd, self:aDots[ 1 ]:hWnd, self:aDots[ 2 ]:hWnd,;
 			  self:aDots[ 3 ]:hWnd, self:aDots[ 4 ]:hWnd,;
 			  self:aDots[ 5 ]:hWnd, self:aDots[ 6 ]:hWnd,;
-			  self:aDots[ 7 ]:hWnd, self:aDots[ 8 ]:hWnd )
-       ASend( self:aDots, "Show()" )
+			  self:aDots[ 7 ]:hWnd, self:aDots[ 8 ]:hWnd )*/
+       eval(Selector:ASend, self:aDots, "Show()" )
    endif
-
+*/
 return nil
 ***********
 static function fw_MResize( self, nType, nRow, nCol, oDot )
@@ -862,8 +875,8 @@ static function fw_MResize( self, nType, nRow, nCol, oDot )
    // The click is relative to the Dot Client
    // and we need it relative to the Control Client
 
-   aPoint = ClientToScreen( oDot:hWnd, aPoint )
-   aPoint = ScreenToClient( self:hWnd, aPoint )
+   aPoint = Selector:ClientToScreen( oDot:hWnd, aPoint )
+   aPoint = Selector:ScreenToClient( self:hWnd, aPoint )
    nRow = aPoint[ 1 ]
    nCol = aPoint[ 2 ]
 
@@ -874,7 +887,7 @@ static function fw_MResize( self, nType, nRow, nCol, oDot )
    self:nLastCol := nMCol := nCol
    self:nMResize = nType
 
-   CtrlDrawFocus( self:hWnd )
+   eval(Selector:CtrlDrawFocus, self:hWnd )
    self:lCaptured = .t.
    self:Capture()
 
@@ -990,14 +1003,14 @@ return
 ************
 static function fw_AdjBottom(self)
 	eval(Selector:WndAdjBottom, self:hWnd )
-	If self:lDrag .and. GetFocus() == self:hWnd
+	If self:lDrag .and. eval(Selector:GetFocus) == self:hWnd
 		self:ShowDots()
 	endif
 return
 ************
 static function fw_AdjTop(self)
 	eval(Selector:WndAdjTop, self:hWnd )
-	If self:lDrag .and. GetFocus() == self:hWnd
+	If self:lDrag .and. eval(Selector:GetFocus) == self:hWnd
 		self:ShowDots()
 	endif
 return
@@ -1010,7 +1023,7 @@ return self:oWnd:AEvalWhen()
 *************
 static function fw_HideDots(self)
 	If ! Empty( self:aDots )
-		ASend( self:aDots, "Hide()" )
+		Selector:ASend( self:aDots, "Hide()" )
 		SysRefresh()
 	endif
 return
@@ -1052,7 +1065,7 @@ static function fw_nHeight( self, nNewHeight )
 return
 **********
 static function fw_Set3DLook(self)
-return Ctl3DLook( self:hWnd )
+return //Ctl3DLook( self:hWnd )
 **********
 static function fw_Change() //VIRTUAL
 return

@@ -59,15 +59,15 @@ clip_GTK_FILESELECTIONNEW(ClipMachine * cm)
 	cfileop_del_file = _register_widget(cm, GTK_FILE_SELECTION(wid)->fileop_del_file, NULL);
 	cfileop_ren_file = _register_widget(cm, GTK_FILE_SELECTION(wid)->fileop_ren_file, NULL);
 
-        if (cfileop_dialog) _clip_madd(cm,&cwid->obj,HASH_FILEOPDIALOG,&cfileop_dialog->obj);
-        if (cdir_list) _clip_madd(cm,&cwid->obj,HASH_DIRLIST,&cdir_list->obj);
-        if (cfile_list) _clip_madd(cm,&cwid->obj,HASH_FILELIST,&cfile_list->obj);
-        if (cok_btn) _clip_madd(cm,&cwid->obj,HASH_OKBUTTON,&cok_btn->obj);
-        if (ccancel_btn) _clip_madd(cm,&cwid->obj,HASH_CANCELBUTTON,&ccancel_btn->obj);
-        if (chist_pulldown) _clip_madd(cm,&cwid->obj,HASH_HISTORYPULLDOWN,&chist_pulldown->obj);
-        if (cfileop_c_dir) _clip_madd(cm,&cwid->obj,HASH_FILEOPCDIR,&cfileop_c_dir->obj);
-        if (cfileop_del_file) _clip_madd(cm,&cwid->obj,HASH_FILEOPDELFILE,&cfileop_del_file->obj);
-        if (cfileop_ren_file) _clip_madd(cm,&cwid->obj,HASH_FILEOPRENFILE,&cfileop_ren_file->obj);
+	if (cfileop_dialog) _clip_madd(cm,&cwid->obj,HASH_FILEOPDIALOG,&cfileop_dialog->obj);
+	if (cdir_list) _clip_madd(cm,&cwid->obj,HASH_DIRLIST,&cdir_list->obj);
+	if (cfile_list) _clip_madd(cm,&cwid->obj,HASH_FILELIST,&cfile_list->obj);
+	if (cok_btn) _clip_madd(cm,&cwid->obj,HASH_OKBUTTON,&cok_btn->obj);
+	if (ccancel_btn) _clip_madd(cm,&cwid->obj,HASH_CANCELBUTTON,&ccancel_btn->obj);
+	if (chist_pulldown) _clip_madd(cm,&cwid->obj,HASH_HISTORYPULLDOWN,&chist_pulldown->obj);
+	if (cfileop_c_dir) _clip_madd(cm,&cwid->obj,HASH_FILEOPCDIR,&cfileop_c_dir->obj);
+	if (cfileop_del_file) _clip_madd(cm,&cwid->obj,HASH_FILEOPDELFILE,&cfileop_del_file->obj);
+	if (cfileop_ren_file) _clip_madd(cm,&cwid->obj,HASH_FILEOPRENFILE,&cfileop_ren_file->obj);
 
 	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
 	return 0;
@@ -82,12 +82,12 @@ int
 clip_GTK_FILESELECTIONSETFILENAME(ClipMachine *cm)
 {
 	C_widget       *cfsel = _fetch_cw_arg(cm);
-        gchar       *filename = _clip_parc(cm,2);
-        CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
-        CHECKOPT(2,CHARACTER_t);
-        if (_clip_parinfo(cm,2)==UNDEF_t) filename = "\0";
-        LOCALE_TO_UTF(filename);
-        gtk_file_selection_set_filename(GTK_FILE_SELECTION(cfsel->widget),filename);
+	gchar       *filename = _clip_parc(cm,2);
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+	CHECKOPT(2,CHARACTER_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t) filename = "\0";
+	LOCALE_TO_UTF(filename);
+	gtk_file_selection_set_filename(GTK_FILE_SELECTION(cfsel->widget),filename);
 	FREE_TEXT(filename);
 	return 0;
 err:
@@ -100,11 +100,11 @@ int
 clip_GTK_FILESELECTIONGETFILENAME(ClipMachine *cm)
 {
 	C_widget       *cfsel = _fetch_cw_arg(cm);
-        gchar *filename;
-        CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
-        filename = gtk_file_selection_get_filename(GTK_FILE_SELECTION(cfsel->widget));
-        LOCALE_FROM_UTF(filename);
-        _clip_retc(cm,(char*)filename);
+	gchar *filename;
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+	filename = gtk_file_selection_get_filename(GTK_FILE_SELECTION(cfsel->widget));
+	LOCALE_FROM_UTF(filename);
+	_clip_retc(cm,(char*)filename);
 	FREE_TEXT(filename);
 	return 0;
 err:
@@ -119,12 +119,12 @@ int
 clip_GTK_FILESELECTIONCOMPLETE(ClipMachine *cm)
 {
 	C_widget       *cfsel = _fetch_cw_arg(cm);
-        gchar  *pattern = _clip_parc(cm,2);
-        CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
-        CHECKOPT(2,CHARACTER_t);
-        if (_clip_parinfo(cm,2)==UNDEF_t) pattern = "\0";
-        LOCALE_TO_UTF(pattern);
-        gtk_file_selection_complete(GTK_FILE_SELECTION(cfsel->widget),pattern);
+	gchar  *pattern = _clip_parc(cm,2);
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+	CHECKOPT(2,CHARACTER_t);
+	if (_clip_parinfo(cm,2)==UNDEF_t) pattern = "\0";
+	LOCALE_TO_UTF(pattern);
+	gtk_file_selection_complete(GTK_FILE_SELECTION(cfsel->widget),pattern);
 	FREE_TEXT(pattern);
 	return 0;
 err:
@@ -137,8 +137,8 @@ int
 clip_GTK_FILESELECTIONSHOWFILEOPBUTTONS(ClipMachine *cm)
 {
 	C_widget       *cfsel = _fetch_cw_arg(cm);
-        CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
-        gtk_file_selection_show_fileop_buttons(GTK_FILE_SELECTION(cfsel->widget));
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+	gtk_file_selection_show_fileop_buttons(GTK_FILE_SELECTION(cfsel->widget));
 	return 0;
 err:
 	return 1;
@@ -151,8 +151,8 @@ int
 clip_GTK_FILESELECTIONHIDEFILEOPBUTTONS(ClipMachine *cm)
 {
 	C_widget       *cfsel = _fetch_cw_arg(cm);
-        CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
-        gtk_file_selection_hide_fileop_buttons(GTK_FILE_SELECTION(cfsel->widget));
+	CHECKCWID(cfsel,GTK_IS_FILE_SELECTION);
+	gtk_file_selection_hide_fileop_buttons(GTK_FILE_SELECTION(cfsel->widget));
 	return 0;
 err:
 	return 1;

@@ -10,7 +10,7 @@
 #include "config.ch"
 #include "dbedit.ch"
 
-
+#define DE_APPEND_SUPPORT
 
 function dbedit (top, left, down, right,;
 		 fields, user_func,;
@@ -25,6 +25,11 @@ function dbedit (top, left, down, right,;
     LOCAL cScreen,filter
     local row,col,ret
     local first:=.t.
+
+#ifdef DE_APPEND_SUPPORT
+    private __de_append_mode := .f.
+#endif
+
 
     user_func := iif( valtype(user_func) $ "CB", user_func, NIL)
     top  := iif( top  == NIL, 0, top )
@@ -51,65 +56,65 @@ function dbedit (top, left, down, right,;
 
     lMore := .T.
     DO WHILE lMore
-        IF browse:colPos <= browse:freeze
-            browse:colPos := browse:freeze + 1
-        ENDIF
+	IF browse:colPos <= browse:freeze
+	    browse:colPos := browse:freeze + 1
+	ENDIF
 
-        DO WHILE !browse:stable .and. nextkey()==0
-            browse:stabilize()
-        ENDDO
+	DO WHILE !browse:stable .and. nextkey()==0
+	    browse:stabilize()
+	ENDDO
 
-        nKey := InKey()
-        ret:=DE_CONT
+	nKey := InKey()
+	ret:=DE_CONT
 
-        if nkey==0 .or. first
-        	row:=row(); col:=col()
-        	ret=callUserFunc(browse,user_func,0)
-        	dispoutAt(row,col,"")
+	if nkey==0 .or. first
+		//row:=row(); col:=col()
+		ret=callUserFunc(browse,user_func,0)
+		//dispoutAt(row,col,"")
 
-        	if ret==DE_ABORT
-               		lmore:=.f.
-               		loop
-        	endif
-        	if ret==DE_REFRESH
-               		browse:refreshAll()
-                        //loop
-        	endif
-                first:=.f.
-                if nkey==0
-               		nKey := InKey(0)
-                endif
-        endif
+		if ret==DE_ABORT
+			lmore:=.f.
+			loop
+		endif
+		if ret==DE_REFRESH
+			browse:refreshAll()
+			//loop
+		endif
+		first:=.f.
+		if nkey==0
+			nKey := InKey(0)
+		endif
+	endif
 
 	if setKey(nKey)!=NIL
 		eval(setKey(nKey),procname(),procline(),readvar())
-               	loop
+		loop
 	endif
 
-        IF empty(user_func) .and. (nKey == K_ESC .or. nkey==K_ENTER)
-            lMore := .F.
-            loop
-        endif
-        filter:=dbfilter()
-        if !ApplyKey(browse, nKey)
-        	row:=row(); col:=col()
-        	ret=callUserFunc(browse,user_func,nkey)
-                first:=.t.
-        	dispoutAt(row,col,"")
-        endif
-        if ret==DE_ABORT
-        	lmore:=.f.
-        endif
-        if filter != dbfilter() .and. used()
-        	ret=DE_REFRESH
-        endif
-        if ret==DE_REFRESH
-        	browse:refreshAll()
-        endif
+	IF empty(user_func) .and. (nKey == K_ESC .or. nkey==K_ENTER)
+	    lMore := .F.
+	    loop
+	endif
+	filter:=dbfilter()
+	if !ApplyKey(browse, nKey)
+		//row:=row(); col:=col()
+		ret=callUserFunc(browse,user_func,nkey)
+		first:=.t.
+		//dispoutAt(row,col,"")
+	endif
+	if ret==DE_ABORT
+		lmore:=.f.
+	endif
+	if filter != dbfilter() .and. used()
+		ret=DE_REFRESH
+	endif
+	if ret==DE_REFRESH
+		browse:refreshAll()
+	endif
     ENDDO
 /*
     if used()
-    	browse:forcestable()
+	browse:forcestable()
     endif
 */
 
@@ -119,58 +124,109 @@ function dbedit (top, left, down, right,;
 return  NIL
 ********************
 STATIC FUNCTION callUserFunc( browse, user_func, nKey )
-   LOCAL Mode:=0,ret:=DE_CONT,s,i:=1
+   LOCAL Mode:=0,ret:=DE_CONT,s,i:=1,nTmp
 
-   DO CASE
-   CASE nKey != 0
-   	mode := DE_EXCEPT
-   CASE browse:hitEmpty
-   	mode := DE_EMPTY
-   CASE browse:hitBottom
-   	mode := DE_HITBOTTOM
-   CASE browse:hitTop
-   	mode := DE_HITTOP
-   OTHERWISE
-        mode := DE_IDLE
-   ENDCASE
-
-   if !empty(user_func)
-   	if "(" $ user_func
-   		ret:=&user_func
-   	else
-        	s:=user_func+"("+alltrim(str(mode))+","+alltrim(str(browse:ColPos()))+")"
-                ret=&s
-   		//ret:=clip( user_func, mode, browse:ColPos() )
-   	endif
-
-   	if ret==DE_CONT .and. mode==DE_EMPTY
-       		ret=DE_REFRESH
-   	endif
+   if empty(user_func)
+	return ret
    endif
 
+   DO CASE
+	CASE nKey != 0
+		mode := DE_EXCEPT
+	CASE browse:hitEmpty
+		mode := DE_EMPTY
+	CASE browse:hitBottom
+		mode := DE_HITBOTTOM
+	CASE browse:hitTop
+		mode := DE_HITTOP
+	OTHERWISE
+		mode := DE_IDLE
+   ENDCASE
+
+   nTmp = SELECT()
+   if "(" $ user_func
+	ret := &user_func
+   else
+	s := user_func+"("+alltrim(str(mode))+","+alltrim(str(browse:ColPos()))+")"
+	ret := &s
+	//ret:=clip( user_func, mode, browse:ColPos() )
+   endif
+
+   if ret==DE_CONT .and. mode==DE_EMPTY
+	ret := DE_REFRESH
+   endif
+#ifdef DE_APPEND_SUPPORT
+   if ret == DE_APPEND
+	ret := DE_REFRESH
+	m->__de_append_mode := .t.
+	 goto bottom
+	 browse:Down()
+	 browse:forceStable()
+   else
+	m->__de_append_mode := .f.
+	browse:refreshAll()
+	browse:forceStable()
+   endif
+#else
+   if ret == DE_APPEND
+	ret := DE_REFRESH
+   endif
+#endif
+   SELECT(nTmp)
+   browse:configure()
+   browse:forceStable()
+   if ret != 0
+	ret := -1
+   endif
 return ret
 ***********************************
 STATIC FUNCTION Skipper(n, browse)
     LOCAL i:=0
     IF n == 0 .OR. RECCOUNT() == 0
-    	SKIP 0
-    ELSEIF n > 0 //.and. RECNO() != RECCOUNT() + 1
-        DO WHILE i < n
-            SKIP 1
-            IF ( EOF() )
-                SKIP -1
-                EXIT
-            ENDIF
-            i++
-        ENDDO
+	SKIP 0
+	return 0
+    endif
+    if n == 0
+#ifdef DE_APPEND_SUPPORT
+	 if Eof() .and. !m->__de_append_mode
+		skip -1
+		i := -1
+	 else
+		skip 0
+	 endif
+#else
+	 skip 0
+#endif
+	 return i
+    endif
+    IF n > 0 .and. RECNO() != RECCOUNT() + 1
+	DO WHILE i < n
+	    SKIP 1
+#ifdef DE_APPEND_SUPPORT
+	    IF ( EOF() )
+		IF ( m->__de_append_mode )
+		    i++
+		ELSE
+		    SKIP -1
+		ENDIF
+		EXIT
+	    ENDIF
+#else
+	    IF ( EOF() )
+		SKIP -1
+		EXIT
+	    ENDIF
+#endif
+	    i++
+	ENDDO
     ELSEIF n < 0
-        DO WHILE i > n
-            SKIP -1
-            IF ( BOF() )
-                EXIT
-            ENDIF
-            i--
-        ENDDO
+	DO WHILE i > n
+	    SKIP -1
+	    IF ( BOF() )
+		EXIT
+	    ENDIF
+	    i--
+	ENDDO
     ENDIF
 RETURN i
 
@@ -178,8 +234,8 @@ STATIC PROCEDURE ApplyKey(browse, nKey)
     local ret:=.f. ,b
     b := browse:setkey(nKey)
     if b != NIL
-    	eval(b,browse,nkey)
-        ret := .t.
+	eval(b,browse,nkey)
+	ret := .t.
     endif
 RETURN ret
 
@@ -188,36 +244,45 @@ STATIC PROCEDURE FancyColors(browse)
     LOCAL xValue
     browse:colorSpec := setcolor()
     if empty(browse:colorSpec)
-         browse:colorSpec := DE_COLOR
+	 browse:colorSpec := DE_COLOR
     else
-         browse:colorSpec := setcolor()+","+DE_COLOR
+	 browse:colorSpec := setcolor()+","+DE_COLOR
     endif
     FOR n := 1 TO browse:colCount
-        column := browse:getColumn(n)
-        xValue := EVAL(column:block)
+	column := browse:getColumn(n)
+	xValue := EVAL(column:block)
 
-        column:defColor := {1, 2}
+	column:defColor := {1, 2}
     NEXT
 RETURN
 
 STATIC FUNCTION StockBrowseNew( browse, fields, headers, footers, msay, hSep, cSep, fSep )
-    LOCAL n, column, cType, strhead, strfoot, strpict, strcsep, strhsep, strfsep
+    LOCAL n, column, cType, strhead, strfoot, strpict
     local __cname
     if empty( fields )
-       fields:={}
-       asize(fields,fcount())
-       afields(fields)
+	fields:={}
+	asize(fields,fcount())
+	afields(fields)
     endif
-    if empty(headers)
-          headers:={}
+    if headers == NIL
+	  headers:={}
     endif
-    if empty(footers)
-          footers:={}
+    if footers == NIL
+	  footers:={}
     endif
-    if empty(msay); msay:=array(len(fields)); endif
-    if empty(hSep); hSep:=array(len(fields)); endif
-    if empty(cSep); cSep:=array(len(fields)); endif
-    if empty(fSep); fSep:=array(len(fields)); endif
+    if hSep == NIL
+	  hSep:={}
+    endif
+    if cSep == NIL
+	  cSep:={}
+    endif
+    if fSep == NIL
+	  fSep:={}
+    endif
+    if mSay == NIL
+	  mSay:={}
+    endif
+    *************
     if valtype(headers)=="C"
        strhead=headers
        headers:={}
@@ -226,7 +291,7 @@ STATIC FUNCTION StockBrowseNew( browse, fields, headers, footers, msay, hSep, cS
     endif
     if valtype(headers)=="A"
        for n = len(headers)+1 to len(fields)
-           aadd(headers,fields[n])
+	   aadd(headers,fields[n])
        next
     endif
     if valtype(footers)=="C"
@@ -237,41 +302,63 @@ STATIC FUNCTION StockBrowseNew( browse, fields, headers, footers, msay, hSep, cS
     endif
     if valtype(footers)=="A"
        for n = len(footers)+1 to len(fields)
-           aadd(footers,"")
+	   aadd(footers,"")
+       next
+    endif
+    if valtype(hSep)=="C"
+       strhead=hSep
+       hSep:={}
+       asize(hSep,len(fields))
+       afill(hSep,strhead)
+    endif
+    if valtype(hSep)=="A"
+       for n = len(hSep)+1 to len(fields)
+	   aadd(hSep,DE_HEADSEP)
+       next
+    endif
+    if valtype(cSep)=="C"
+       strhead=cSep
+       cSep:={}
+       asize(cSep,len(fields))
+       afill(cSep,strhead)
+    endif
+    if valtype(cSep)=="A"
+       for n = len(cSep)+1 to len(fields)
+	   aadd(cSep,DE_COLSEP)
+       next
+    endif
+    if valtype(fSep)=="C"
+       strhead=fSep
+       fSep:={}
+       asize(fSep,len(fields))
+       afill(fSep,strhead)
+    endif
+    if valtype(fSep)=="A"
+       for n = len(fSep)+1 to len(fields)
+	   aadd(fSep,'')
        next
     endif
     if valtype(msay)=="C"
-      strpict=msay; msay:=array(len(fields)); afill(msay,strpict)
+	strpict=msay
+	mSay:={}
+	asize(msay,len(fields))
+	afill(msay,strpict)
     elseif valtype(msay) != "A"
-    	msay:=array(len(fields))
-    endif
-    if valtype(hSep)=="C"
-      strhsep=hSep; hSep:=array(len(fields)); afill(hSep,strhsep)
-    endif
-    if valtype(cSep)=="C"
-      strcsep=cSep; cSep:=array(len(fields)); afill(cSep,strcsep)
-    endif
-    if valtype(fSep)=="C"
-      strfsep=fSep; fSep:=array(len(fields)); afill(fSep,strfsep)
+	msay:=array(len(fields))
     endif
     asize(msay,len(fields))
-    asize(hSep,len(fields))
-    asize(cSep,len(fields))
-    asize(fSep,len(fields))
-    asize(headers,len(fields))
-    asize(footers,len(fields))
     FOR n := 1 TO len(fields)
-        __cname:="{|| "+fields[n]+"}"
-        __cname:=&__cname
-        //column := TBColumnNew(Field(n), FieldWBlock(Field(n), Select()))
-        column := TBColumnNew(fields[n], __cname)
-        column:heading:=headers[n]
-        column:footing:=footers[n]
-        column:picture:=msay[n]
-        column:headSep:=hsep[n]
-        column:colSep:=csep[n]
-        column:footSep:=fsep[n]
-        browse:addColumn(column)
+	__cname:="{|| "+fields[n]+"}"
+	__cname:=&__cname
+	//column := TBColumnNew(Field(n), FieldWBlock(Field(n), Select()))
+	column := TBColumnNew(fields[n], __cname)
+	column:heading:=headers[n]
+	column:footing:=footers[n]
+	column:picture:=msay[n]
+	column:headSep:=hsep[n]
+	column:colSep:=csep[n]
+	column:footSep:=fsep[n]
+	browse:addColumn(column)
     next
 RETURN NIL
 

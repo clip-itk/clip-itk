@@ -4,9 +4,78 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rushmore.c,v $
+	Revision 1.57  2004/04/29 10:46:15  clip
+	rust: casecmp whith IC orders
+	
+	Revision 1.56  2004/04/08 13:04:50  clip
+	rust: fix in filter parsing; suppres generating error when expression is
+	not optimizable and contains syntax errors
+
+	Revision 1.55  2004/01/06 13:00:02  clip
+	rust: small typo
+
+	Revision 1.54  2003/11/20 13:23:26  clip
+	rust: small fix in lexem reader
+
+	Revision 1.53  2003/07/12 11:30:44  clip
+	rust: OL2 parsing bug fixed
+
+	Revision 1.52  2003/06/12 11:20:19  clip
+	rust: minor fix
+
+	Revision 1.51  2003/06/12 10:33:30  clip
+	rust: speed up set filter
+
+	Revision 1.50  2003/05/07 12:55:56  clip
+	rust: memory leak in optimizer
+
+	Revision 1.49  2003/02/26 10:22:56  clip
+	rust: unsuitable optimization try, reported by M&MS <berezniki@smtp.ru>
+
+	Revision 1.48  2003/01/19 07:43:07  clip
+	rust: .NOT. == !
+
+	Revision 1.47  2003/01/04 10:13:57  clip
+	rust: bug in parser
+
+	Revision 1.46  2003/01/03 15:49:29  clip
+	rust: parser fix
+
+	Revision 1.45  2002/12/18 13:07:20  clip
+	rust: small fix
+
+	Revision 1.44  2002/12/17 14:02:54  clip
+	rust: EXACT or NON-EXACT set scope
+
+	Revision 1.43  2002/12/17 13:05:17  clip
+	rust: .NOT. with non-optimizable expressions
+
+	Revision 1.42  2002/12/16 13:06:43  clip
+	rust: set scope for '<', '>' bug fixed
+
+	Revision 1.41  2002/12/02 13:48:33  clip
+	rust: ignoring case in CDX;
+	RDDCREATEINDEX(...,lIgnoreCase) (7th parameter)
+	ORDCONDSET(...,lIgnoreCase) (16th parameter)
+
+	Revision 1.40  2002/11/22 13:25:20  clip
+	rust: small fix
+
+	Revision 1.39  2002/11/21 10:56:33  clip
+	rust: bug in rm_prim() reported by Tatyana N Polyakova <ptn@secom.lg.ua>
+
+	Revision 1.38  2002/11/11 13:12:15  clip
+	rust: m6_Error(), m6_Set()
+
+	Revision 1.37  2002/11/04 10:44:07  clip
+	rust: small fixes
+
+	Revision 1.36  2002/10/31 12:02:19  clip
+	rust: bug in rddsetfilter()
+
 	Revision 1.35  2002/10/11 10:33:10  clip
 	rust: m6_IsOptimize()
-	
+
 	Revision 1.34  2002/10/09 11:35:47  clip
 	rust: some cleanups
 
@@ -102,10 +171,12 @@ static void astrcat(char** d,int* l,char* s){
 	*l += ls;
 }
 
-int rm_yylex(RDD_DATA* rd){
+int rm_yylex(RDD_DATA* rd,int nomove){
 	int r = 0;
 	char c = *rd->ptr;
 	char quote = 0;
+	int ps = 0;
+	char* oldptr = rd->ptr;
 
 	if(!c)
 		return RM_END_EXPR;
@@ -115,7 +186,10 @@ int rm_yylex(RDD_DATA* rd){
 		rd->yylval = NULL;
 	}
 
-	while(*(++rd->ptr)==' ');
+	if(c != '\'' && c != '"' && c != '[')
+		while(*(++rd->ptr)==' ');
+	else
+		rd->ptr++;
 	while(!r){
 		if(quote){
 			if(c==quote){
@@ -171,8 +245,12 @@ int rm_yylex(RDD_DATA* rd){
 				r = RM_AND;
 				rd->ptr += 4;
 				while(*rd->ptr==' ') rd->ptr++;
+			} else if(strncasecmp(rd->ptr,"NOT.",4)==0){
+				r = RM_NOT;
+				rd->ptr += 4;
+				while(*rd->ptr==' ') rd->ptr++;
 			}
-		} else if(!quote && (c == '=')){
+		} else if(!quote && (c == '=') && !ps){
 			if(rd->word){
 				rd->word = realloc(rd->word,rd->wlen+1);
 				rd->word[rd->wlen] = 0;
@@ -189,7 +267,7 @@ int rm_yylex(RDD_DATA* rd){
 				r = RM_EQU;
 				while(*rd->ptr==' ') rd->ptr++;
 			}
-		} else if(!quote && (c == '>')){
+		} else if(!quote && (c == '>') && !ps){
 			if(rd->word){
 				rd->word = realloc(rd->word,rd->wlen+1);
 				rd->word[rd->wlen] = 0;
@@ -206,7 +284,7 @@ int rm_yylex(RDD_DATA* rd){
 				r = RM_LAR;
 				while(*rd->ptr==' ') rd->ptr++;
 			}
-		} else if(!quote && (c == '<')){
+		} else if(!quote && (c == '<') && !ps){
 			if(rd->word){
 				rd->word = realloc(rd->word,rd->wlen+1);
 				rd->word[rd->wlen] = 0;
@@ -227,7 +305,7 @@ int rm_yylex(RDD_DATA* rd){
 				r = RM_LES;
 				while(*rd->ptr==' ') rd->ptr++;
 			}
-		} else if(!quote && (c == '!')){
+		} else if(!quote && (c == '!') && !ps){
 			if(rd->word){
 				rd->word = realloc(rd->word,rd->wlen+1);
 				rd->word[rd->wlen] = 0;
@@ -245,6 +323,10 @@ int rm_yylex(RDD_DATA* rd){
 				while(*rd->ptr==' ') rd->ptr++;
 			}
 		} else {
+			if(c=='(')
+				ps++;
+			else if(c==')')
+				ps--;
 			if(!rd->word){
 				rd->word = malloc(1);
 				rd->wlen = 1;
@@ -258,19 +340,22 @@ int rm_yylex(RDD_DATA* rd){
 			rd->ptr++;
 		}
 	}
+	if(nomove)
+		rd->ptr = oldptr;
 	return r;
 }
 
-static void rm_checkpar(char* c,char* end){
+static void rm_checkpar(char* c,char* end,int func){
 	int ps = 1;
 	char* b = c;
 	int squote = 0;
 	int dquote = 0;
+	int comma = 0;
 
 	while(ps && (++c < end)){
-		if(*c=='\"'){
+		if((*c=='\"') && !squote){
 			dquote = !dquote;
-		} else if(*c=='\''){
+		} else if((*c=='\'') && !dquote){
 			squote = !squote;
 		}
 		if(squote || dquote)
@@ -279,8 +364,10 @@ static void rm_checkpar(char* c,char* end){
 			ps--;
 		} else if(*c=='('){
 			ps++;
-		} else if(*c=='<' || (*c=='>' && *(c-1)!='-') || *c=='!' || *c=='=' ||
-			(*c=='.' && isalpha(*(c+1)))){
+		} else if(*c==',' && ps==1){
+			comma = 1;
+		} else if((*c=='<' || (*c=='>' && *(c-1)!='-') || *c=='!' || *c=='=' ||
+			(*c=='.' && isalpha(*(c+1)) && isalpha(*(c+2)))) && !func){
 			return;
 		}
 	}
@@ -294,17 +381,32 @@ int rm_init(ClipMachine* cm,RDD_DATA* rd,char* str,const char* __PROC__){
 	char* end = str+strlen(str);
 	int squote = 0;
 	int dquote = 0;
+	int ps = 0;
 
 	for(rd->ptr=str;rd->ptr<end;rd->ptr++){
-		if(*rd->ptr=='\"'){
+		if((*rd->ptr=='\"') && !squote){
 			dquote = !dquote;
-		} else if(*rd->ptr=='\''){
+		} else if((*rd->ptr=='\'') && !dquote){
 			squote = !squote;
 		}
 		if(squote || dquote)
 			continue;
 		if(*rd->ptr=='('){
-			rm_checkpar(rd->ptr,end);
+			if(!ps){
+				char* c = rd->ptr;
+				while(--c >=str && *c==' ');
+				rm_checkpar(rd->ptr,end,!(c<str || *c=='.' || *c=='!' || *c=='('));
+				if(*rd->ptr == RM_LP)
+					ps++;
+			} else {
+				*rd->ptr = RM_LP;
+				ps++;
+			}
+		} else if(*rd->ptr==RM_RP){
+			ps--;
+		} else if(*rd->ptr==')' && ps){
+			*rd->ptr = RM_RP;
+			ps--;
 		}
 	}
 	for(rd->ptr=str;rd->ptr<end;rd->ptr++){
@@ -322,7 +424,6 @@ int rm_init(ClipMachine* cm,RDD_DATA* rd,char* str,const char* __PROC__){
 	rd->ptr = str;
 	rd->word = 0;
 	rd->wlen = 0;
-	rd->yylval = 0;
 	return 0;
 }
 
@@ -377,71 +478,22 @@ static int rm_invoper(int oper){
 	return oper;
 }
 
-static void rm_inc(DbfLocale* loc,ClipVar* v,ClipVar* vv){
-	if(v->t.type!=vv->t.type)
-		return;
-	switch(v->t.type){
-		case CHARACTER_t:
-			v->s.str.buf = realloc(v->s.str.buf,vv->s.str.len+1);
-			if(v->s.str.len < vv->s.str.len)
-				memset(v->s.str.buf+v->s.str.len,' ',vv->s.str.len-v->s.str.len);
-			v->s.str.len = vv->s.str.len;
-			v->s.str.buf[v->s.str.len] = 0;
-			if((unsigned char)v->s.str.buf[v->s.str.len-1]<128)
-				v->s.str.buf[v->s.str.len-1]++;
-			break;
-		case NUMERIC_t:
-			v->n.d += pow(v->n.d,-v->t.dec);
-			break;
-		case DATE_t:
-			v->d.julian++;
-			break;
-		case LOGICAL_t:
-			v->l.val = !v->l.val;
-			break;
-		default:
-			break;
-	}
-}
-
-static void rm_dec(DbfLocale* loc,ClipVar* v,ClipVar* vv){
-	if(v->t.type!=vv->t.type)
-		return;
-	switch(v->t.type){
-		case CHARACTER_t:
-			v->s.str.buf = realloc(v->s.str.buf,vv->s.str.len+1);
-			if(v->s.str.len < vv->s.str.len)
-				memset(v->s.str.buf+v->s.str.len,' ',vv->s.str.len-v->s.str.len);
-			v->s.str.len = vv->s.str.len;
-			v->s.str.buf[v->s.str.len] = 0;
-			if((unsigned char)v->s.str.buf[v->s.str.len-1]<128)
-				v->s.str.buf[v->s.str.len-1]--;
-			break;
-		case NUMERIC_t:
-			v->n.d -= pow(v->n.d,-v->t.dec);
-			break;
-		case DATE_t:
-			v->d.julian--;
-			break;
-		case LOGICAL_t:
-			v->l.val = !v->l.val;
-			break;
-		default:
-			break;
-	}
-}
-
-static int rm_setscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigned int* map,int oper,char* lval,char* rval,int bytes,int* optimize,int test,const char* __PROC__){
-	int i,er;
-	ClipVar v,vv;
+static int rm_setscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigned int* map,int oper,char* lval,char* rval,int bytes,int* optimize,int test,int* ic,const char* __PROC__){
+	int i,j;
+	ClipVar v,vv,vt,vvt;
+	ClipVar *vp;
 	char* b = NULL;
 	char* e = NULL;
 	char* l = malloc(strlen(lval)+1);
 	char* r = malloc(strlen(rval)+1);
 	char *s,*d,*l1,*r1;
 
+	if(ic)
+		*ic = 0;
 	memset(&v,0,sizeof(ClipVar));
 	memset(&vv,0,sizeof(ClipVar));
+	memset(&vt,0,sizeof(ClipVar));
+	memset(&vvt,0,sizeof(ClipVar));
 	*optimize = 0;
 	for(s=lval,d=l;*s;s++){
 		if(*s != ' ')
@@ -477,58 +529,284 @@ static int rm_setscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigned int*
 			oper = rm_invoper(oper);
 		}
 		if(b){
-			cm->noerrblock++;
-			er = _clip_eval_macro(cm,b,strlen(b),&v);
-			cm->noerrblock--;
-			if(er)
+			char expr[1024];
+
+			if(!rd->orders[i]->vtbl->setscope){
+				*optimize = 0;
 				break;
-			if(_clip_vptr(&v)->t.type==UNDEF_t)
+			}
+
+			rdd_expandmacro(rd->area,rd->rdhandle,b,expr);
+			if(_clip_eval_macro(cm,expr,strlen(expr),&vv))
 				break;
-/*			{
-				char err[100];
-				sprintf(err,"Bad expression: %s",b);
-				rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,err);
-				goto err;
-			}*/
+			if(_clip_eval(cm,_clip_vptr(&vv),0,NULL,&v))
+				break;
+			vp = _clip_vptr(&v);
+
+			rdd_expandmacro(rd->area,rd->rdhandle,e,expr);
+			if(_clip_eval_macro(cm,expr,strlen(expr),&vvt))
+				break;
+			if(_clip_eval(cm,_clip_vptr(&vvt),0,NULL,&vt))
+				break;
+
+			if(ic)
+				*ic = rd->orders[i]->ic;
 			if(!test){
-				if(oper == RM_EQU || oper == RM_EEQU){
-					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],&v,&v,map,
-						fp->size,__PROC__)) goto err;
+				if(oper == RM_EQU){
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,map,
+						fp->size,cm->flags & EXACT_FLAG,__PROC__)) goto err;
+				} else if(oper == RM_EEQU){
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,map,
+						fp->size,1,__PROC__)) goto err;
 				} else if(oper == RM_NEQU){
 					unsigned int* tm = calloc(sizeof(unsigned int),bytes);
-					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],&v,&v,tm,
-						fp->size,__PROC__)) goto err;
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,tm,
+						fp->size,0,__PROC__)) goto err;
 					rm_not(map,tm,bytes);
 				} else if(oper == RM_LAR){
-					if(_clip_eval_macro(cm,e,strlen(e),&vv))
-						break;
-					rm_inc(rd->loc,&v,_clip_vptr(&vv));
-					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],&v,NULL,map,
-						fp->size,__PROC__)) goto err;
+					unsigned int* tm = calloc(sizeof(unsigned int),bytes);
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,NULL,map,
+						fp->size,0,__PROC__)) goto err;
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,tm,
+						fp->size,0,__PROC__)) goto err;
+					for(j=0;j<bytes;j++)
+						map[j] ^= tm[j];
+					free(tm);
 				} else if(oper == RM_LARE){
-					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],&v,NULL,map,
-						fp->size,__PROC__)) goto err;
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,NULL,map,
+						fp->size,0,__PROC__)) goto err;
 				} else if(oper == RM_LES){
-					if(_clip_eval_macro(cm,e,strlen(e),&vv))
-						break;
-					rm_dec(rd->loc,&v,_clip_vptr(&vv));
-					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],NULL,&v,map,
-						fp->size,__PROC__)) goto err;
+					unsigned int* tm = calloc(sizeof(unsigned int),bytes);
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],NULL,vp,map,
+						fp->size,0,__PROC__)) goto err;
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,tm,
+						fp->size,0,__PROC__)) goto err;
+					for(j=0;j<bytes;j++)
+						map[j] ^= tm[j];
+					free(tm);
 				} else if(oper == RM_LESE){
-					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],NULL,&v,map,
-						fp->size,__PROC__)) goto err;
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],NULL,vp,map,
+						fp->size,0,__PROC__)) goto err;
 				}
 			}
 			*optimize = 2;
 			break;
 		}
 	}
+	if(i==rd->ords_opened)
+		cm->m6_error = 2009;
+	_clip_destroy(cm,&v);
+	_clip_destroy(cm,&vv);
+	_clip_destroy(cm,&vt);
+	_clip_destroy(cm,&vvt);
+	free(l); free(r);
+	free(l1); free(r1);
+	if(!(*optimize))
+		memset(map,0xff,bytes << 2);
+	return 0;
+err:
 	_clip_destroy(cm,&v);
 	_clip_destroy(cm,&vv);
 	free(l); free(r);
 	free(l1); free(r1);
+	return 1;
+}
+
+static int rm_cmp(ClipMachine* cm,int oper,ClipVar* vp1,ClipVar* vp2,int ic){
+	int r;
+
+	if(ic && (vp1->t.type == CHARACTER_t) && (vp2->t.type == CHARACTER_t)){
+		if(oper == RM_EEQU)
+			r = _clip_strnncasecmp(vp1->s.str.buf,vp2->s.str.buf,vp1->s.str.len,vp2->s.str.len);
+		else
+			r = _clip_strncasecmp(vp1->s.str.buf,vp2->s.str.buf,min(vp1->s.str.len,vp2->s.str.len));
+	} else {
+		_clip_cmp(cm,vp1,vp2,&r,1);
+	}
+	switch(oper){
+		case RM_EQU:
+			return r;
+		case RM_EEQU:
+			return r;
+		case RM_NEQU:
+			return !r;
+		case RM_LAR:
+			return !(r>0);
+		case RM_LARE:
+			return !(r>=0);
+		case RM_LES:
+			return !(r<0);
+		case RM_LESE:
+			return !(r<=0);
+	}
+	return 0;
+}
+
+static int rm_checkscope(ClipMachine* cm,RDD_DATA* rd,unsigned int* map,int size,int oper,ClipVar* block,ClipVar* val,int ic,const char* __PROC__){
+	ClipVar key;
+	unsigned int bytes = ((size+1) >> 5) + 1;
+	int i,b,bb,t,tt;
+	unsigned int oldrecno = rd->recno;
+	int oldeof = rd->eof;
+	int er;
+
+	rd->eof = 0;
+	memset(&key,0,sizeof(ClipVar));
+	for(i=0;i<bytes;i++){
+		if(map[i]){
+			for(b=(i<<2),bb=0;bb<4;b++,bb++){
+				if(((char*)map)[b]){
+					for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
+						if(_rm_getbit(map,size,t)){
+							if((er = rd->vtbl->rawgo(cm,rd,t,0,__PROC__))) goto err;
+							if(_clip_eval(cm,block,0,NULL,&key)) goto err;
+							if(rm_cmp(cm,oper,_clip_vptr(&key),val,ic)){
+								_rm_clrbit(map,size,t);
+							}
+							_clip_destroy(cm,&key);
+						}
+					}
+				}
+			}
+		}
+	}
+	if((er = rd->vtbl->rawgo(cm,rd,oldrecno,1,__PROC__))) goto err;
+	rd->eof = oldeof;
+	return 0;
+err:
+	return 1;
+}
+
+static int rm_intersectscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigned int* map,int oper,char* lval,char* rval,int bytes,int* optimize,int test,int* ic,const char* __PROC__){
+	int i;
+	ClipVar v,vv,vt,vvt;
+	ClipVar *vp,*vpt;
+	char* b = NULL;
+	char* e = NULL;
+	char* l = malloc(strlen(lval)+1);
+	char* r = malloc(strlen(rval)+1);
+	char *s,*d,*l1,*r1;
+
+	if(ic)
+		*ic = 0;
+	memset(&v,0,sizeof(ClipVar));
+	memset(&vv,0,sizeof(ClipVar));
+	memset(&vt,0,sizeof(ClipVar));
+	memset(&vvt,0,sizeof(ClipVar));
+	*optimize = 0;
+	for(s=lval,d=l;*s;s++){
+		if(*s != ' ')
+			*(d++) = *s;
+	}
+	*d = 0;
+	while((d = strstr(l,"FIELD->")))
+		memmove(d,d+7,strlen(d+7)+1);
+	for(s=rval,d=r;*s;s++){
+		if(*s != ' ')
+			*(d++) = *s;
+	}
+	*d = 0;
+	while((d = strstr(r,"FIELD->")))
+		memmove(d,d+7,strlen(d+7)+1);
+	l1 = strdup(l);
+	l1[strlen(l1)-1]=0;
+	r1 = strdup(r);
+	r1[strlen(r1)-1]=0;
+	for(i=0;i<rd->ords_opened;i++){
+		if(rd->orders[i]->bforexpr.t.type != UNDEF_t)
+			continue;
+		if(rd->orders[i]->unique)
+			continue;
+		if((strcasecmp(rd->orders[i]->expr,l)==0) ||
+			(strcasecmp(rd->orders[i]->expr,l1+1)==0)){
+			b = rval;
+			e = lval;
+		} else if((strcasecmp(rd->orders[i]->expr,r)==0) ||
+			(strcasecmp(rd->orders[i]->expr,r1+1)==0)){
+			b = lval;
+			e = rval;
+			oper = rm_invoper(oper);
+		}
+		if(b){
+			char expr[1024];
+
+			if(!rd->orders[i]->vtbl->setscope){
+				*optimize = 0;
+				break;
+			}
+
+			rdd_expandmacro(rd->area,rd->rdhandle,b,expr);
+			if(_clip_eval_macro(cm,expr,strlen(expr),&vv))
+				break;
+			if(_clip_eval(cm,_clip_vptr(&vv),0,NULL,&v))
+				break;
+			vp = _clip_vptr(&v);
+
+			rdd_expandmacro(rd->area,rd->rdhandle,e,expr);
+			if(_clip_eval_macro(cm,expr,strlen(expr),&vvt))
+				break;
+			if(_clip_eval(cm,_clip_vptr(&vvt),0,NULL,&vt))
+				break;
+			vpt = _clip_vptr(&vvt);
+
+			if(ic)
+				*ic = rd->orders[i]->ic;
+			if(!test){
+				if(rm_checkscope(cm,rd,map,fp->size,oper,vpt,vp,*ic,__PROC__))
+					goto err;
+/*
+				if(oper == RM_EQU){
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,map,
+						fp->size,cm->flags & EXACT_FLAG,__PROC__)) goto err;
+				} else if(oper == RM_EEQU){
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,map,
+						fp->size,1,__PROC__)) goto err;
+				} else if(oper == RM_NEQU){
+					unsigned int* tm = calloc(sizeof(unsigned int),bytes);
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,tm,
+						fp->size,0,__PROC__)) goto err;
+					rm_not(map,tm,bytes);
+				} else if(oper == RM_LAR){
+					unsigned int* tm = calloc(sizeof(unsigned int),bytes);
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,NULL,map,
+						fp->size,0,__PROC__)) goto err;
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,tm,
+						fp->size,0,__PROC__)) goto err;
+					for(j=0;j<bytes;j++)
+						map[j] ^= tm[j];
+					free(tm);
+				} else if(oper == RM_LARE){
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,NULL,map,
+						fp->size,0,__PROC__)) goto err;
+				} else if(oper == RM_LES){
+					unsigned int* tm = calloc(sizeof(unsigned int),bytes);
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],NULL,vp,map,
+						fp->size,0,__PROC__)) goto err;
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],vp,vp,tm,
+						fp->size,0,__PROC__)) goto err;
+					for(j=0;j<bytes;j++)
+						map[j] ^= tm[j];
+					free(tm);
+				} else if(oper == RM_LESE){
+					if(rd->orders[i]->vtbl->setscope(cm,rd,rd->orders[i],NULL,vp,map,
+						fp->size,0,__PROC__)) goto err;
+				}
+*/
+			}
+			*optimize = 2;
+			break;
+		}
+	}
+	if(i==rd->ords_opened)
+		cm->m6_error = 2009;
+	_clip_destroy(cm,&v);
+	_clip_destroy(cm,&vv);
+	_clip_destroy(cm,&vt);
+	_clip_destroy(cm,&vvt);
+	free(l); free(r);
+	free(l1); free(r1);
 	if(!(*optimize))
-		memset(map,0xff,bytes >> 2);
+		memset(map,0xff,bytes << 2);
 	return 0;
 err:
 	_clip_destroy(cm,&v);
@@ -548,19 +826,36 @@ static char* rm_alias2name(int npseudo,RDD_PSEUDO* pseudo,char* alias){
 	return strdup(alias);
 }
 
-static unsigned int* rm_prim(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int bytes,int* optimize,int npseudo,RDD_PSEUDO* pseudo,int test,const char* __PROC__){
-	unsigned int* bm = calloc(sizeof(unsigned int),bytes);
+static unsigned int* rm_prim(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int bytes,int* optimize,int npseudo,RDD_PSEUDO* pseudo,int test,unsigned int* obm,const char* __PROC__){
+	unsigned int* bm;
 	int oper;
 	char* lval;
 	char* rval;
 	char* p;
 
-	rd->curlex = rm_yylex(rd);
+	if(!obm)
+		bm = calloc(sizeof(unsigned int),bytes);
+	else
+		bm = obm;
+	rd->curlex = rm_yylex(rd,0);
 	switch(rd->curlex){
 		case RM_NOT:
+		{
+			unsigned int* tm;
 			ADDLEX("!");
-			rm_not(bm,rm_prim(cm,rd,fp,bytes,optimize,npseudo,pseudo,test,__PROC__),bytes);
+			tm = rm_prim(cm,rd,fp,bytes,optimize,npseudo,pseudo,test,NULL,__PROC__);
+			if(!tm){
+				free(bm);
+				return NULL;
+			}
+			if(*optimize)
+				rm_not(bm,tm,bytes);
+			else {
+				memcpy(bm,tm,bytes*4);
+				free(tm);
+			}
 			return bm;
+		}
 		case RM_LP:
 			ADDLEX("(");
 			free(bm);
@@ -578,7 +873,7 @@ static unsigned int* rm_prim(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int byt
 			int er;
 
 			p = lval = rm_alias2name(npseudo,pseudo,rd->yylval);
-			oper = rd->curlex = rm_yylex(rd);
+			oper = rd->curlex = rm_yylex(rd,0);
 			while(*p){
 				if(*p==RM_AL)
 					*p = '>';
@@ -586,52 +881,101 @@ static unsigned int* rm_prim(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int byt
 			}
 			if(oper != RM_EQU && oper != RM_EEQU && oper != RM_NEQU
 				&& oper != RM_LAR && oper != RM_LARE
-				&& oper != RM_LES && RM_LESE)
+				&& oper != RM_LES && oper != RM_LESE)
 			{
 				rdd_expandmacro(rd->area,rd->rdhandle,lval,expr);
-				cm->noerrblock++;
 				er = _clip_eval_macro(cm,expr,strlen(expr),&lb);
-				cm->noerrblock--;
+				if(er){
+					cm->m6_error = 2219;
+					_clip_destroy(cm,&lb);
+					free(lval);
+					free(bm);
+					return NULL;
+				}
+				cm->noerrblock++;
 				er = _clip_eval(cm,_clip_vptr(&lb),0,NULL,&lv);
+				cm->noerrblock--;
 				_clip_destroy(cm,&lb);
 				_clip_destroy(cm,&lv);
 				if(er){
+					cm->m6_error = 2221;
 					ADDLEX(".T.");
-					memset(bm,0xff,bytes >> 2);
+					if(!obm)
+						memset(bm,0xff,bytes << 2);
 				} else {
 					ADDLEX(lval);
-					if(rm_setscope(cm,rd,fp,bm,RM_EEQU,lval,".T.",bytes,
-						optimize,test,__PROC__)) return NULL;
+					if(obm){
+						if(rm_intersectscope(cm,rd,fp,bm,RM_EEQU,lval,".T.",
+							bytes,optimize,test,NULL,__PROC__)) return NULL;
+					} else {
+						if(rm_setscope(cm,rd,fp,bm,RM_EEQU,lval,".T.",bytes,
+							optimize,test,NULL,__PROC__)) return NULL;
+					}
 				}
 				free(lval);
 				return bm;
 			}
-			rd->curlex = rm_yylex(rd);
+			rd->curlex = rm_yylex(rd,0);
 			if(rd->curlex != RM_WORD){
 				rdd_err(cm,EG_ARG,0,__FILE__,__LINE__,__PROC__,
 					"Expression expected");
 				return NULL;
 			}
-			rval = rm_alias2name(npseudo,pseudo,rd->yylval);
+			p = rval = rm_alias2name(npseudo,pseudo,rd->yylval);
+			while(*p){
+				if(*p==RM_AL)
+					*p = '>';
+				p++;
+			}
 			rdd_expandmacro(rd->area,rd->rdhandle,lval,expr);
+			if((er = _clip_eval_macro(cm,expr,strlen(expr),&lb))){
+				cm->m6_error = 2219;
+				_clip_destroy(cm,&lb);
+				free(lval);
+				free(rval);
+				free(bm);
+				return NULL;
+			}
 			cm->noerrblock++;
-			_clip_eval_macro(cm,expr,strlen(expr),&lb);
 			er = _clip_eval(cm,_clip_vptr(&lb),0,NULL,&lv);
+			cm->noerrblock--;
 			_clip_destroy(cm,&lb);
 			_clip_destroy(cm,&lv);
 			if(!er){
 				rdd_expandmacro(rd->area,rd->rdhandle,rval,expr);
-				_clip_eval_macro(cm,expr,strlen(expr),&rb);
+				if((er = _clip_eval_macro(cm,expr,strlen(expr),&rb))){
+					cm->m6_error = 2219;
+					_clip_destroy(cm,&rb);
+					free(lval);
+					free(rval);
+					free(bm);
+					return NULL;
+				}
+				cm->noerrblock++;
 				er = _clip_eval(cm,_clip_vptr(&rb),0,NULL,&rv);
+				cm->noerrblock--;
 				_clip_destroy(cm,&rb);
 				_clip_destroy(cm,&rv);
 			}
-			cm->noerrblock--;
 			if(er){
+				cm->m6_error = 2221;
 				ADDLEX(".T.");
-				memset(bm,0xff,bytes >> 2);
+				if(!obm)
+					memset(bm,0xff,bytes << 2);
 			} else {
+				int ic = 0;
+				if(obm){
+					if(rm_intersectscope(cm,rd,fp,bm,oper,lval,rval,
+						bytes,optimize,test,&ic,__PROC__)) return NULL;
+				} else {
+					if(rm_setscope(cm,rd,fp,bm,oper,lval,rval,bytes,
+						optimize,test,&ic,__PROC__)) return NULL;
+				}
+				if(ic)
+					ADDLEX("xupper(");
 				ADDLEX(lval);
+				if(ic)
+					ADDLEX(")");
 				switch(oper){
 					case RM_EQU:
 						ADDLEX("="); break;
@@ -648,9 +992,11 @@ static unsigned int* rm_prim(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int byt
 					case RM_LESE:
 						ADDLEX("<="); break;
 				}
+				if(ic)
+					ADDLEX("xupper(");
 				ADDLEX(rval);
-				if(rm_setscope(cm,rd,fp,bm,oper,lval,rval,bytes,
-					optimize,test,__PROC__)) return NULL;
+				if(ic)
+					ADDLEX(")");
 			}
 			free(lval);
 			free(rval);
@@ -659,20 +1005,46 @@ static unsigned int* rm_prim(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int byt
 		default:
 			return NULL;
 	}
-	rd->curlex = rm_yylex(rd);
+	rd->curlex = rm_yylex(rd,0);
 	return bm;
 }
 
 static unsigned int* rm_term(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int bytes,int* optimize,int npseudo,RDD_PSEUDO* pseudo,int test,const char* __PROC__){
-	unsigned int* bm = rm_prim(cm,rd,fp,bytes,optimize,npseudo,pseudo,test,__PROC__);
+	unsigned int* bm = rm_prim(cm,rd,fp,bytes,optimize,npseudo,pseudo,test,NULL,__PROC__);
 	unsigned int* bm2;
-	int opt2;
+	int opt2,recs;
 
+	if(!bm)
+		return NULL;
 	for(;;){
 		if(rd->curlex == RM_AND){
+			if(*optimize == 2){
+				unsigned int bytes = ((fp->size+1) >> 5) + 1;
+				int i,b,bb,t,tt;
+
+				recs = 0;
+				for(i=0;i<bytes;i++){
+					if(bm[i]){
+						for(b=(i<<2),bb=0;bb<4;b++,bb++){
+							if(((char*)bm)[b]){
+								for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
+									if(_rm_getbit(bm,fp->size,t))
+										recs++;
+								}
+							}
+						}
+					}
+				}
+			} else {
+				recs = fp->size;
+			}
 			ADDLEX(" .and. ");
-			if(!(bm2 = rm_prim(cm,rd,fp,bytes,&opt2,npseudo,pseudo,test,__PROC__))) return NULL;
-			rm_and(bm,bm2,optimize,opt2,bytes);
+			if( (recs < (fp->size>>10)) && (rm_yylex(rd,1) != RM_LP) ){
+				if(!(rm_prim(cm,rd,fp,bytes,&opt2,npseudo,pseudo,test,bm,__PROC__))) return NULL;
+			} else {
+				if(!(bm2 = rm_prim(cm,rd,fp,bytes,&opt2,npseudo,pseudo,test,NULL,__PROC__))) return NULL;
+				rm_and(bm,bm2,optimize,opt2,bytes);
+			}
 		} else
 			break;
 	}
@@ -684,6 +1056,8 @@ unsigned int* rm_expr(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int bytes,int*
 	unsigned int* bm2;
 	int opt2;
 
+	if(!bm)
+		return NULL;
 	for(;;){
 		if(rd->curlex == RM_OR){
 			ADDLEX(" .or. ");

@@ -23,8 +23,17 @@ return getnew(row(),col(),bBlock,varname,cPic,,eval(bBlock),bValid,bWhen)
 
 function __GET__(xData,cName,cPic,bValid,bWhen)
 	local block
-        block:={|_1|local(_2:=@xData), iif(_1==NIL,_2,_2:=_1)}
+	block:={|_1|local(_2:=@xData), iif(_1==NIL,_2,_2:=_1)}
 return getnew(row(),col(),block,cName,cPic,,,bValid,bWhen)
+
+**********************************************************************
+function __CGET__(block,aSubscript,cName,cRealName,cPic,bValid,bWhen)
+	local oget,row:=row(),col:=col()
+	oGet := getnew(row(),col(),block,cName,cPic,,,bValid,bWhen)
+	oGet:subscript := aSubscript
+	oGet:realName  := cRealName
+	setpos(row,col)
+return oGet
 
 **********************************************************************
 function GETNEW(row,col,block,varname,pic,color,var,vblock,wblock)
@@ -49,6 +58,7 @@ function GETNEW(row,col,block,varname,pic,color,var,vblock,wblock)
   obj:hasFocus	:= .f.
   obj:minus	:= .f.
   obj:name	:= varname
+  obj:realName	:= varName
   obj:picture	:= pic
   obj:control	:= NIL
   obj:pos	:= 1
@@ -59,28 +69,31 @@ function GETNEW(row,col,block,varname,pic,color,var,vblock,wblock)
   obj:rejected	:= .f.
   obj:subscript	:= NIL
   obj:type	:= "U"
-  obj:caption	:= NIL
+  obj:caption	:= ""
   obj:capRow	:= NIL
   obj:capCol	:= NIL
   obj:typeOut	:= .f.
   /* CLIP extension */
   obj:readOnly	:= .f.
+  obj:expand	:= .f.
 
   //this metods and attribute not exist in CA-Clipper
   obj:__oldReadVar:=""
 
   obj:__firstKey:= .f. 		   // pressed first key/metod
+
   obj:_original	:= NIL
   obj:__original:= NIL             // original in string mode
-  obj:__len:=NIL                   // only for numeric type
-  obj:__dec:=NIL
-  obj:__dateFormat:= NIL           // original date format
-
   obj:__flags:=""                  // PICTURE functions
   obj:__format:=""                 // PICTURE format string
   obj:__dataSay:=""                // ! format symbols for "R"-function
   obj:__posArr:={}                 // array of position Gets symbols
   obj:__winLen:=0                  // S-function parameter
+  obj:__maxLen:=0                  // S-function parameter really
+  obj:__len:=NIL                   // only for numeric type
+  obj:__dec:=NIL
+  obj:__dateFormat:= NIL           // original date format
+  obj:__fullScreen:=.t.
 
   obj:__first:=.t.
   obj:__colors:={}
@@ -93,12 +106,12 @@ function GETNEW(row,col,block,varname,pic,color,var,vblock,wblock)
   obj:setcolor()
 
   if block!=NIL
-  	dispbegin()
-        scr:=savescreen()
+	dispbegin()
+	scr:=savescreen()
 	obj:setFocus()
 	obj:killFocus()
-        restscreen(,,,,scr)
-        dispend()
+	restscreen(,,,,scr)
+	dispend()
   endif
 
 return obj
@@ -122,6 +135,7 @@ function _recover_get(obj)
   obj:varPut 		:= @varPut()
   obj:width 		:= @get_width()
 
+  obj:setPos 		:= @cur_setPos()
   obj:end 		:= @cur_end()
   obj:home 		:= @cur_home()
   obj:left 		:= @cur_left()
@@ -157,25 +171,21 @@ function _recover_get(obj)
 return obj
 
 **********************************************
-static function get_width()
-return ::__winlen
+static function get_width(new_width)
+	local ret:=::__winlen
+	if valtype(new_width)=="N" .and.new_width>0
+	   ::__winlen := new_width
+	endif
+return  ret
 **********************************************
 static function get_hitTest(mrow,mcol)
 	if ::row != mrow
 		return HTNOWHERE
 	endif
-	if mcol >= ::col .and. mrow <= ::col+::__winlen
+	if mcol >= ::col .and. mcol <= ::col+::__winlen
 		return HTCLIENT
 	endif
 return HTNOWHERE
-**********************************************
-static function get_undo(self)
-	eval(self:block,self:original)
-	self:reset()
-	self:__updateInfo()
-   	self:__fillbuffer()
-        self:_display()
-return self
 
 
 **********************************************
@@ -195,6 +205,8 @@ static func unTransform()
     endif
     do case
        case ::type=="C"
+       case ::type=="T"
+	    s:=CTOT(::buffer)
        case ::type=="D"
 	    s1:=""
 	    s4:=::__dateFormat
@@ -249,9 +261,13 @@ static function badDate()
 	  endif
       next
       d=ctod(s,::__dateFormat)
-      ret=(d!=ctod(dtoc(d,::__dateFormat),::__dateformat))
+      ret= ( !( s==dtoc(d,::__dateFormat) ) )
+      //ret=(d!=ctod(dtoc(d,::__dateFormat),::__dateformat))
    endif
    ::typeOut:=.f.
+#ifdef DEBUG
+	outlog(__FILE__,__LINE__,"baddate",::name,"return",ret)
+#endif
 return ret
 
 **********************************************
@@ -303,46 +319,6 @@ static func killFocus()
 return NIL
 
 **********************************************
-static function __updateInfo()
-local v,s
-#ifdef DEBUG
-	outlog(__FILE__,__LINE__,"__updateinfo",::name)
-#endif
-  if ::block!=NIL
-	::_original:=eval(::block)
-	s:=::_original
-  endif
-  ::type:=valtype(::_original)
-  //::changed:=.f.
-  v:=::_original
-  do case
-     case ::type=="A"
-	  v:=LANG_ARRAY_STRING
-     case ::type=="B"
-	  v:=LANG_CBLOCK_STRING
-     case ::type=="C"
-	  v:=v
-     case ::type=="D"
-	  v:=DTOC(v)
-     case ::type=="L"
-	  v:=iif(v,LANG_YES_STRING,LANG_NO_STRING)
-     case ::type=="M"
-	  v:=v
-     case ::type=="N"
-	  v:=str(v)
-     case ::type=="O"
-	  v:=LANG_OBJECT_STRING
-     case ::type=="U"
-	  v:=LANG_UNDEF_STRING
-     otherwise
-	  v:=LANG_UNKNOWN_STRING
-  endcase
-  ::__original=v
-  ::decpos:=0
-
-return
-
-**********************************************
 static func setFocus()
   local v
 #ifdef DEBUG
@@ -370,9 +346,31 @@ static func setFocus()
   if len(::__posArr)>0
      ::pos:=::__posArr[1]
   endif
+  if ::type=="U" .or. (::type=="C" .and. ::__original=="")
+	::typeOut:=.t.
+  endif
+
   ::_display()
 
 return NIL
+**********************************************
+static function get_undo(self)
+	eval(self:block,self:original)
+	self:reset()
+	self:__updateInfo()
+	self:__analizePic()
+	self:__winLen=min(self:__winlen,len(self:__format))
+
+	if self:type=="N"
+		self:__original:=str(self:_original,self:__len,self:__dec)
+		self:__original:=strtran(self:__original,".","")
+	endif
+	self:__fillbuffer()
+	if len(self:__posArr)>0
+		self:pos:=self:__posArr[1]
+	endif
+	self:_display()
+return self
 **********************************************
 static func reload()
   local v
@@ -400,6 +398,48 @@ static func reload()
   endif
 
 return NIL
+
+**********************************************
+static function __updateInfo()
+local v,s
+#ifdef DEBUG
+	outlog(__FILE__,__LINE__,"__updateinfo",::name)
+#endif
+  if ::block!=NIL
+	::_original:=eval(::block)
+	s:=::_original
+  endif
+  ::type:=valtype(::_original)
+  //::changed:=.f.
+  v:=::_original
+  do case
+     case ::type=="A"
+	  v:=LANG_ARRAY_STRING
+     case ::type=="B"
+	  v:=LANG_CBLOCK_STRING
+     case ::type=="C"
+	  v:=v
+     case ::type=="T"
+	  v:=TTOC(v)
+     case ::type=="D"
+	  v:=DTOC(v)
+     case ::type=="L"
+	  v:=iif(v,LANG_YES_STRING,LANG_NO_STRING)
+     case ::type=="M"
+	  v:=v
+     case ::type=="N"
+	  v:=str(v)
+     case ::type=="O"
+	  v:=LANG_OBJECT_STRING
+     case ::type=="U"
+	  v:="" //LANG_UNDEF_STRING
+     otherwise
+	  v:="" //LANG_UNKNOWN_STRING
+  endcase
+  ::__original=v
+  ::decpos:=0
+
+return
 **********************************************
 static func updateBuffer()
   local v
@@ -426,7 +466,7 @@ static func updateBuffer()
 return NIL
 **********************************************
 static func display(self)
-   local s:=self:buffer,modify:=.f.
+   local s:=self:buffer,modify:=.f.,newValue
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"display",self:name)
 #endif
@@ -434,11 +474,12 @@ static func display(self)
 	return self
    endif
    self:__fillbuffer()
-   if !(s==self:buffer)
+   if !(s==self:buffer) .and. s!=NIL
 	self:buffer:=s
 	modify:=.t.
    endif
-   if !modify .and. !self:hasFocus .and. (self:buffer==NIL .or. self:_original != eval(self:block) /* .or. !self:changed*/)
+   newValue := eval(self:block)
+   if !modify .and. !self:hasFocus .and. (self:buffer==NIL .or. valtype(self:_original) != valtype(newValue) .or. self:_original != newValue /* .or. !self:changed*/)
 	self:__updateInfo()
 
 	self:__analizePic()
@@ -454,7 +495,7 @@ static func display(self)
    self:_display()
    /*
    if self:winbuffer == nil
-   	devpos(self:row(),self:col+self:__winlen)
+	devpos(self:row(),self:col+self:__winlen)
    endif
    */
 return self
@@ -471,7 +512,7 @@ static func reset(obj)
      obj:pos:=1
      //obj:reader:=NIL
      obj:rejected:=.f.
-     obj:subscript:=NIL
+     //obj:subscript:=NIL
      obj:typeOut:=.f.
      obj:clear:=.f.
      obj:minus:=.f.
@@ -488,11 +529,15 @@ static func varGet
 	if ::block==NIL
 		return NIL
 	endif
+#ifndef _______
+	return eval(::block)
+#else
 	if ::type $ GETS_TYPES
 		s:=eval(::block)
 		return s
 	endif
 return ::_original
+#endif
 
 **********************************************
 static func varPut(value)
@@ -503,11 +548,35 @@ static func varPut(value)
 	if ::block==NIL
 		return NIL
 	endif
+#ifndef _______
+	return eval(::block,value)
+#else
 	if ::type $ GETS_TYPES
 		s:=eval(::block,value)
 		return s
 	endif
 return ::_original
+#endif
+
+**********************************************
+static func cur_setpos(nPos)
+   local p
+#ifdef DEBUG
+	outlog(__FILE__,__LINE__,"cur_setpos",::name)
+#endif
+   if valtype(nPos) != "N"
+	return NIL
+   endif
+   p:=ascan(::__posArr,nPos)
+   if p<=0
+	return NIL
+   endif
+   p:=min(p,len(::__posArr))
+   if p>0 .and. p<=len(::__posArr)
+      ::pos:=::__posArr[p]
+   endif
+  ::_display()
+return NIL
 
 **********************************************
 static func cur_end()
@@ -516,7 +585,7 @@ static func cur_end()
 	outlog(__FILE__,__LINE__,"cur_end",::name)
 #endif
    if len(::__posArr) == 0
-   	return NIL
+	return NIL
    endif
    ::pos:=atail(::__posArr)
    p:=ascan(::__posArr,::pos)
@@ -543,7 +612,7 @@ static func cur_home()
 	outlog(__FILE__,__LINE__,"cur_home",::name)
 #endif
    if len(::__posArr) >0
-  	::pos:=::__posArr[1]
+	::pos:=::__posArr[1]
    endif
   ::__firstKey:=.t.
   ::_display()
@@ -578,14 +647,24 @@ static func cur_right()
    p:=ascan(::__posArr,::pos)
    p++
    if p>len(::__posArr)
-      p:=len(::__posArr)
-      ::typeOut:=.t.
+	if ::expand
+		::pos:=atail(::__posArr)+1
+		aadd(::__posArr,::pos)
+		::__format+="X"
+		if ::__maxlen > 0
+			::__winLen++
+			::__winLen:=min(::__maxLen,::__winLen)
+		endif
+	else
+		::typeOut:=.t.
+	endif
+	p:=len(::__posArr)
    endif
    p:=max(1,p)
    if p>0 .and. p<=len(::__posArr)
-      ::pos:=::__posArr[p]
+		::pos:=::__posArr[p]
    endif
-  ::__firstKey:=.t.
+   ::__firstKey:=.t.
    ::_display()
 return NIL
 
@@ -619,7 +698,7 @@ static func toDecPos()
       return NIL
    endif
    if len(::__posarr) == 0
-   	return NIL
+	return NIL
    endif
    pos:=::pos
    for i=1 to len(::__posArr)
@@ -706,39 +785,10 @@ return NIL
 
 **********************************************
 static func backSpace()
-   local p,s1,s2
-#ifdef DEBUG
-	outlog(__FILE__,__LINE__,"backspace",::name)
-#endif
-   p:=ascan(::__posArr,::pos)
-   ::__firstKey:=.t.
-   p--
-   if p<1 .or. ::readOnly
-      return NIL
-   endif
-   if ::type=="C"
-      ::__original=substr(::__original,1,p-1)+substr(::__original,p+1)+" "
-   endif
-   if ::type=="N"
-	if ::decpos!=0
-		s1:=substr(::__original,1,::decpos-1)
-		s2:=substr(::__original,::decpos)
-		if p<::decpos
-			s1=substr(s1,1,p-1)+substr(s1,p+1)+" "
-		else
-			s2=substr(s2,1,p-::decpos)+substr(s2,p-::decpos+2)+" "
-		endif
-		::__original=s1+s2
-	else
-		::__original=substr(::__original,1,p-1)+substr(::__original,p+1)+" "
-	endif
-   endif
-   if ::type=="D"
-      ::__original=substr(::__original,1,p-1)+" "+substr(::__original,p+1)
-   endif
-   ::changed:=.t.
-   ::__fillBuffer()
-   ::left()
+  dispbegin()
+  ::left()
+  ::delRight()
+  dispend()
 return NIL
 
 **********************************************
@@ -753,7 +803,15 @@ static func delRight()
       return NIL
    endif
    if ::type=="C"
-      ::__original=substr(::__original,1,p-1)+substr(::__original,p+1)+" "
+      //::__original=substr(::__original,1,p-1)+substr(::__original,p+1)+" "
+      __get_split_by_picture(::__posarr,p,::__original,@s1,@s2)
+      ::__original=substr(s1,1,::pos-1)+substr(s1,::pos+1)+" "+s2
+   endif
+   if ::type=="D"
+      ::__original=substr(::__original,1,p-1)+" "+substr(::__original,p+1)
+   endif
+   if ::type=="T"
+      ::__original=substr(::__original,1,p-1)+" "+substr(::__original,p+1)
    endif
    if ::type=="N"
 	if ::decpos>0
@@ -768,9 +826,6 @@ static func delRight()
 	else
 		::__original=substr(::__original,1,p-1)+substr(::__original,p+1)+" "
 	endif
-   endif
-   if ::type=="D"
-      ::__original=substr(::__original,1,p-1)+" "+substr(::__original,p+1)
    endif
    ::changed:=.t.
    ::__fillBuffer()
@@ -798,34 +853,119 @@ return NIL
 
 **********************************************
 static func delWordLeft()
+   local p,p1:=0,p2:=0,ch,len
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"delWordLeft",::name)
 #endif
    ::__firstKey:=.t.
    ::changed:=.t.
+   p:=ascan(::__posArr,::pos)
+   ::__firstKey:=.t.
+   len:=len(::__original)
+   if p<1 .or. p>len .or. ::readOnly
+	return NIL
+   endif
+   if ::type!="C"
+	return NIL
+   endif
+   p--
+   ch := substr(::__original,p,1)
+   while ch==" " .and. p>0
+	p--
+	ch := substr(::__original,p,1)
+   end
+   p1:=p
+   p++
+   ch := substr(::__original,p,1)
+   while !(ch==" ") .and. p<=len
+	p++
+	ch := substr(::__original,p,1)
+   end
+   while ch==" " .and. p<=len
+	p++
+	ch := substr(::__original,p,1)
+   end
+   p2:=p-1
+   p:=p1
+   ch := substr(::__original,p,1)
+   while !(ch==" ") .and. p>0
+	p--
+	ch := substr(::__original,p,1)
+   end
+   p++
+
+   ::__original=padr(substr(::__original,1,p-1)+substr(::__original,p2+1),len)
+   if p>0 .and. p<=len(::__posArr)
+      ::pos:=::__posArr[p]
+   endif
+   ::changed:=.t.
+   ::__fillBuffer()
    ::_display()
 return NIL
 
 **********************************************
 static func delWordRight()
+   local p,p1:=0,p2:=0,ch,len
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"delWordRight",::name)
 #endif
    ::__firstKey:=.t.
    ::changed:=.t.
+   p:=ascan(::__posArr,::pos)
+   ::__firstKey:=.t.
+   len:=len(::__original)
+   if p<1 .or. p>len .or. ::readOnly
+	return NIL
+   endif
+   if ::type!="C"
+	return NIL
+   endif
+   //p++
+   ch := substr(::__original,p,1)
+   while ch==" " .and. p<=len
+	p++
+	ch := substr(::__original,p,1)
+   end
+   p2:=p
+   p--
+   ch := substr(::__original,p,1)
+   while !(ch==" ") .and. p>0
+	p--
+	ch := substr(::__original,p,1)
+   end
+   while ch==" " .and. p>=0
+	p--
+	ch := substr(::__original,p,1)
+   end
+   p1:=p+iif(p<=0,1,2)
+   p:=p2
+   ch := substr(::__original,p,1)
+   while !(ch==" ") .and. p<=len
+	p++
+	ch := substr(::__original,p,1)
+   end
+   p2 := p
+   p := p1
+
+   ::__original=padr(substr(::__original,1,p-1)+substr(::__original,p2+1),len)
+   if p>0 .and. p<=len(::__posArr)
+      ::pos:=::__posArr[p]
+   endif
+   ::changed:=.t.
+   ::__fillBuffer()
    ::_display()
 return NIL
 
 
 **********************************************
 static func Insert(sym)
-   local s,p
+   local s,p,s1,s2
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"insert",::name)
 #endif
    ::typeOut:=.f.
    p:=ascan(::__posArr,::pos)
-   if p<1 .or. p>len(::__original) .or. ::readOnly
+   if p<1 .or. (p>len(::__original) .and. !::expand) .or. ::readOnly
       ::__firstKey:=.t.
       return NIL
    endif
@@ -833,38 +973,60 @@ static func Insert(sym)
 
    s:=::__checkSym(sym)
 
-   if !::__firstKey .and. "K"$::__flags
+   if !::__firstKey .and. "K"$::__flags .and. ::type!="L"
       ::__original:=space(len(::__original))
       ::changed:=.t.
    endif
-   if len(s)>0
-      if ::type=="L"
-		if s==" "
-			::__original:=iif(::__original==LANG_YES_STRING,LANG_NO_STRING,LANG_YES_STRING)
-		else
-			::__original:=iif( (upper(s) $ ("TY"+LANG_YES_CHAR) ),LANG_YES_STRING,LANG_NO_STRING)
-			::__dataSay:=::__original
-		endif
-      else
-	if ::type=="D"
-		 ::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
-	else
-	  	::__original:=left(::__original,len(::__original)-1)
-        	if "R" $ ::__flags //::type=="C"
-	  		::__original:=substr(::__original,1,p-1)+s+substr(::__original,p)
-        	else
-	  		::__original:=substr(::__original,1,::pos-1)+s+substr(::__original,::pos)
-        	endif
-	endif
-      endif
-      ::__firstKey:=.t.
-      ::__fillBuffer()
-      ::changed:=.t.
-      ::right()
-   else
+   if len(s)<=0
       ::rejected:=.t.
+      return NIL
+   endif
+   if ::type=="L"
+	if s==" "
+		::__original:=iif(left(::__original,1)==left(LANG_YES_STRING,1),LANG_NO_STRING,LANG_YES_STRING)
+	else
+		::__original:=iif( (upper(s) $ ("TY"+LANG_YES_CHAR) ),LANG_YES_STRING,LANG_NO_STRING)
+	endif
+	::__dataSay:=::__original
+   elseif ::type=="C"
+	if "R" $ ::__flags //::type=="C"
+		if !::expand .and. p!=len(::__posArr)
+			::__original:=left(::__original,len(::__original)-1)
+		endif
+		::__original:=substr(::__original,1,p-1)+s+substr(::__original,p)
+	else
+		//::__original:=substr(::__original,1,::pos-1)+s+substr(::__original,::pos)
+		__get_split_by_picture(::__posarr,p,::__original,@s1,@s2)
+		s1:=left(s1,len(s1)-1)
+		::__original:=substr(s1,1,::pos-1)+s+substr(s1,::pos)+s2
+	endif
+     else
+	::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
+   endif
+   ::__firstKey:=.t.
+   ::__fillBuffer()
+   ::changed:=.t.
+   if ::type != "L"
+	::right()
+   else
+	::typeout := .t.
+	::_display()
    endif
 return NIL
+**********************************************
+static function __get_split_by_picture(arr,p,str,s1,s2)
+	local p1,p2
+	p1:=arr[p]
+	for p2=p to len(arr)
+	      if arr[p2] != (p1)
+		  exit
+	      endif
+	      p1++
+	next
+	p1--
+	s1:=substr(str,1,p1)
+	s2:=substr(str,p1+1)
+return
 
 **********************************************
 static func overStrike(sym)
@@ -874,7 +1036,7 @@ static func overStrike(sym)
 #endif
    ::typeOut:=.f.
    p:=ascan(::__posArr,::pos)
-   if p<1 .or. p>len(::__original) .or. ::readOnly
+   if p<1 .or. (p>len(::__original) .and. !::expand) .or. ::readOnly
       ::__firstKey:=.t.
       return NIL
    endif
@@ -882,35 +1044,44 @@ static func overStrike(sym)
    ::rejected:=.f.
    s:=::__checkSym(sym)
 
-   if !::__firstKey .and. "K"$::__flags
+   if !::__firstKey .and. "K"$::__flags .and. ::type!="L"
       ::__original:=space(len(::__original))
       ::changed:=.t.
    endif
 
-   if len(s)>0
-      if ::type=="L"
-		if s==" "
-			::__original:=iif(::__original==LANG_YES_STRING,LANG_NO_STRING,LANG_YES_STRING)
-		else
-			::__original:=iif( (upper(s) $ ("TY"+LANG_YES_CHAR) ),LANG_YES_STRING,LANG_NO_STRING)
-			::__dataSay:=::__original
-		endif
-      else
-	//::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
-
-        if "R" $ ::__flags //::type=="C"
-	      ::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
-        else
-	      //::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
-	      ::__original:=substr(::__original,1,::pos-1)+s+substr(::__original,::pos+1)
-        endif
-      endif
-      ::__firstKey:=.t.
-      ::__fillBuffer()
-      ::changed:=.t.
-      ::right()
-   else
+   if len(s)<=0
       ::rejected:=.t.
+      return NIL
+   endif
+   if ::type=="L"
+	if s==" "
+		::__original:=iif(left(::__original,1)==left(LANG_YES_STRING,1),LANG_NO_STRING,LANG_YES_STRING)
+	else
+		::__original:=iif( (upper(s) $ ("TY"+LANG_YES_CHAR) ),LANG_YES_STRING,LANG_NO_STRING)
+	endif
+	::__dataSay:=::__original
+   elseif ::type=="C"
+     if ::expand .and. p>=len(::__posArr)
+		::__original+=" "
+     endif
+
+     if "R" $ ::__flags //::type=="C"
+	 ::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
+     else
+	 //::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
+	 ::__original:=substr(::__original,1,::pos-1)+s+substr(::__original,::pos+1)
+     endif
+   else
+	::__original:=substr(::__original,1,p-1)+s+substr(::__original,p+1)
+   endif
+   ::__firstKey:=.t.
+   ::__fillBuffer()
+   ::changed:=.t.
+   if ::type != "L"
+	::right()
+   else
+	::typeout := .t.
+	::_display()
    endif
 return NIL
 
@@ -921,7 +1092,7 @@ static func __checkSym(sym)
 	outlog(__FILE__,__LINE__,"__checksym",::name)
 #endif
    sf:=substr(::__format,::pos,1)
-   if sf=="X"
+   if sf=="X" .or. sf==" "
       s=sym
    endif
    if sf=="A" .and. isalpha(sym)
@@ -933,16 +1104,18 @@ static func __checkSym(sym)
    if sf=="9" .and. ( isdigit(sym) .or. sym $ "-+" )
       s=sym
    endif
-   if sf=="#" .and. ( isdigit(sym) .or. sym $ "-+ " )
+   if sf=="#" .and. ( isdigit(sym) .or. sym $ "-+. " )
       s=sym
    endif
-   if sf=="L" .and. ( upper(sym) $ (" TFYN"+LANG_YES_CHAR+LANG_NO_CHAR) )
+   if sf $ "YL" .and. ( upper(sym) $ (" TFYN"+LANG_YES_CHAR+LANG_NO_CHAR) )
       s=sym
    endif
+   /*
    if sf=="Y" .and. ( upper(sym) $ (" YN"+LANG_YES_CHAR+LANG_NO_CHAR) )
       s=sym
    endif
-   if sf=="!" .or. "!"$::__flags
+   */
+   if sf=="!" .or. "!" $ ::__flags
       s=upper(sym)
    endif
 return s
@@ -950,7 +1123,7 @@ return s
 **********************************************
 static func __analizePic()
   local s1:="",s2:="",s3:="",s4,i,j,sf:=.f.,df
-  local len,p:="ANX9#LY!$*"
+  local len,p:="ANX9#LY!$* "
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"__analizePic",::name)
 #endif
@@ -959,15 +1132,17 @@ static func __analizePic()
   ::__posArr:={}
   ::__format:=""
   ::__dataSay:=""
-  if ::type=="N"
+  //if ::type=="N"
      ::__len:=0
      ::__dec:=0
      ::decpos:=0
+  /*
   else
      ::__len:=NIL
      ::__dec:=NIL
      ::decpos:=NIL
   endif
+  */
   if !empty(::picture)
 	  // разбор команд в PICTURE-строке
 	s1:=::picture
@@ -978,12 +1153,20 @@ static func __analizePic()
 		s1=upper(substr(s1,2,i-2))
 		for i=1 to len(s1)
 			s2=substr(s1,i,1)
-			if sf && isdigit(s2)
-				s3+=s2
+			if sf
+				if isdigit(s2)
+					s3+=s2
+					loop
+				else
+					sf := .f.
+				endif
+			endif
+			if s2=="@"
 				loop
 			endif
 			sf:=(s2=="S")
 			::__flags+=s2
+			if sf; s3 := ""; endif
 		next
 	else
 		s4:=::picture
@@ -992,9 +1175,10 @@ static func __analizePic()
 		::__winlen:=len(s4)
 	else
 		::__winLen:=val(s3)
+		::__maxLen:=::__winLen
 	endif
   endif
-  if ::type=="D"
+  if ::type $ "DT"
      if "E"$::__flags
 	 if __setCentury()
 	     s4:=DATE_BRITISH_FORMAT_CENTURY
@@ -1002,24 +1186,45 @@ static func __analizePic()
 	     s4:=DATE_BRITISH_FORMAT
 	 endif
      else
-	 s4:=lower(set(_SET_DATEFORMAT))
+	 s4:=upper(set(_SET_DATEFORMAT))
      endif
      ::__dateFormat:=s4
      df:=""
+     if ::type=="T"
+	s4 +=" hh:mm"
+	if set(_SET_SECONDS)
+		s4 +=":ss"
+	endif
+	s4 +="A"
+     endif
      for i=1 to len(s4)
 		s2=substr(s4,i,1)
 		if s2 $ DATE_DELIMITER_CHARS
 			::__format+=" "
 			::__dataSay+=s2
 		else
-			::__format+="9"
+			::__format+=iif(s2=="a","X","9")
 			::__dataSay+=" "
 			aadd(::__posArr,i)
-			df+=s2
+			if s2 $ "DMY"
+				df+=s2
+			endif
 		endif
      next
-     ::__original:=DTOC(::_original,df)
+     if ::type=="T"
+	::__original:=TTOC(::_original,df)
+	if "M" $ upper(::__original)
+		::__format +=" "
+		::__dataSay+="M"
+	endif
+	::__original:=strtran(::__original,":","")
+	//::__original:=strtran(::__original," ","")
+	::__original := left(::__original,len(df))+substr(::__original,len(df)+2)
+     else
+	::__original:=DTOC(::_original,df)
+     endif
      ::__winlen:=len(::__format)
+     ::__maxLen:=::__winLen
      //::__flags+="K"
      return NIL
   endif
@@ -1027,16 +1232,20 @@ static func __analizePic()
      // сделать шаблон по умолчанию
 	do case
 	case ::type=="C"
-		  len:=len(::__original)
-		  ::__format:=replicate("X",len)
-		  ::__dataSay:=space(len)
-		  for i=1 to len
+		  ::__len:=len(::__original)
+		  ::__format:=replicate("X",::__len)
+		  ::__dataSay:=space(::__len)
+		  for i=1 to ::__len
 		      aadd(::__posArr,i)
 		  next
+	case ::type=="T"
+		  ::__format:=""
+		  ::__dataSay:=""
 	case ::type=="D"
 		  ::__format:=""
 		  ::__dataSay:=""
 	case ::type=="L"
+		  ::__original:= left(::__original,1)
 		  ::__dataSay:=::__original
 		  ::__format:="Y"+space(len(::__original)-1)
 		  aadd(::__posArr,1)
@@ -1063,6 +1272,7 @@ static func __analizePic()
 		::__flags+="R"
 		::__winlen:=maxcol()-::col-1
 		::__format:=replicate("X",GETOBJ_MAX_MEMO_LEN)
+		::__maxLen:=GETOBJ_MAX_MEMO_LEN
 		::__dataSay:=space(GETOBJ_MAX_MEMO_LEN)
 		  for i=1 to GETOBJ_MAX_MEMO_LEN
 		      aadd(::__posArr,i)
@@ -1084,9 +1294,8 @@ static func __analizePic()
 		::__format:=space(len(::__original))
 	endcase
 	if !("S" $ ::__flags) .or. ::__winlen==0
-	   ::__winlen:=min(len(::__format),maxcol()-::col)
+	   ::__winlen:=min(len(::__format),iif(::__fullScreen,maxcol(),999)-::col)
 	endif
-	return NIL
 
   else
 	//  разбор шаблона вывода данных
@@ -1094,25 +1303,28 @@ static func __analizePic()
 	::__dataSay:=""
 	for i=1 to len(s4)
 		s2=substr(s4,i,1)
-		if s2=="." .and. ::type=="N"
+		if s2=="." //.and. ::type=="N"
 			::decpos:=i
 			::__len++
 		endif
-		if s2 $ p
-			::__format+=s2
+		if upper(s2) $ iif(::type=="N","9#",p)
+			::__format+=upper(s2)
 			::__dataSay+=" "
 			aadd(::__posArr,i)
-			if ::type=="N"
-				::__len++
-				if ::decpos>0
-					::__dec++
-				endif
+			//if ::type=="N"
+			::__len++
+			if ::decpos>0
+				::__dec++
 			endif
+			//endif
 		else
 			::__format+=" "
 			::__dataSay+=s2
 		endif
 	next
+	if ::type == "N" .and. ::__len == ::decpos .and. ::__dec==0
+		::__len--
+	endif
 	if ::type=="N"
 		::__flags+="K"
 	endif
@@ -1123,56 +1335,88 @@ static func __analizePic()
 				loop
 			endif
 			::__dataSay:=substr(::__dataSay,1,i-1)+;
-				iif(s2==".",",",".")+;
-				substr(::__dataSay,i+1)
+				iif(s2==".",",",".")+substr(::__dataSay,i+1)
 		next
 	endif
 	if ::__winlen==0
 		::__winlen:=min(len(::__format),maxcol()-::col)
 	endif
+	if ::type == "L"
+		  if "L" $ ::picture
+			::__original:= left(::__original,1)
+		  endif
+		  ::__dataSay:=::__original
+		  ::__format:="Y"+space(len(::__original)-1)
+		  ::__posArr := {1}
+	endif
+  endif
+  if len(::__posArr)==0 .and. ::expand
+	aadd(::__posArr,1)
+	::pos:=1
+	::__format+="X"
   endif
 return NIL
 
 **********************************************
 static func __fillBuffer()
-     local i,j:=0,k:=1,s1,s2,s3
+     local i,j:=0,k:=1,s1,s2,s3,len
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"__fillbuffer",::name)
 #endif
      ::__first:=.f.
      ::buffer:=""
-     for i=1 to len(::__posArr)
-	 k:=::__posArr[i]
-         s1:=substr(::__dataSay,j+1,k-j-1)
-         s2:=substr(::__original,i,1)
-         s3:=substr(::__format,i,1)
-	 ::buffer+=s1
-         if "R" $ ::__flags
-         	//if s1==s2
-         	//	::__original:=left(::__original,i-1)+substr(::__original,i+1)
-         	//	s2:=substr(::__original,i,1)
-         	//endif
-         else
-         	if ::type $ "CM"
-	 		s2:=substr(::__original,k,1)
-         	endif
-         endif
-         s2:=iif(s3=="!",upper(s2),s2)
-	 ::buffer+=s2
-	 j:=k
-     next
-     ::buffer+=substr(::__dataSay,j+1,len(::__dataSay))
+     if ::type=="L"
+	::buffer := ::__dataSay
+     else
+	if ::type=="C"
+		//::__original := padr(::__original,::__len)
+		::__original := left(::__original,max(::__len,len(::__format)))
+	endif
+	len := len(::__posArr)
+	if ::type=="C" .and. empty(::__dataSay) .and. !("!" $ ::__format)
+		//::buffer := ::__original
+		::buffer := padr(::__original,len(::__dataSay))
+	else
+		i:=1
+		while i<=len
+			k:=::__posArr[i]
+			s1:=substr(::__dataSay,j+1,k-j-1)
+			s2:=substr(::__original,i,1)
+			s3:=substr(::__format,i,1)
+			::buffer+=s1
+			if "R" $ ::__flags
+				//if s1==s2
+				//	::__original:=left(::__original,i-1)+substr(::__original,i+1)
+				//	s2:=substr(::__original,i,1)
+				//endif
+			else
+				if ::type $ "CM"
+					s2:=substr(::__original,k,1)
+				endif
+			endif
+			s2:=iif(s3=="!",upper(s2),s2)
+			::buffer+=s2
+			j:=k
+			i++
+		enddo
+		::buffer+=substr(::__dataSay,j+1,len(::__dataSay))
+	endif
+     endif
      if "!" $ ::__flags
-       ::buffer=upper(::buffer)
+	::buffer=upper(::buffer)
+     endif
+     if ::type=="N"
+	::buffer=strtran(::buffer,"-,"," -")
+	::buffer=strtran(::buffer,"- "," -")
      endif
 return NIL
 
 **********************************************
 static func get_setcolor(color)
 	if color != NIL
-        	::colorSpec := color
-        endif
-       	::__colors:=__splitColors(::colorSpec)
+		::colorSpec := color
+	endif
+	::__colors:=__splitColors(::colorSpec)
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"setcolor",::name)
 #endif
@@ -1186,25 +1430,26 @@ static func _display ()
 	outlog(__FILE__,__LINE__,"_display",::name)
 #endif
   if ::control != NIL
-  	return
+	return
   endif
   if ::__first
 	::setfocus()
 	::killfocus()
   endif
   if ::winbuffer == nil
-  	dispbegin()
+	dispbegin()
   endif
-  if ::caption!=NIL
+  //if ::caption!=NIL
+  if !empty(::caption)
      __sayCaption(::capRow,::capCol,::caption,::__colors[1])
   endif
   if !::hasFocus
       if ::winbuffer == nil
-      		dispOutAt(::row, ::col, iif(setd,substr(setdc,1,1),""), ::__colors[1] )
+		dispOutAt(::row, ::col, iif(setd,substr(setdc,1,1),""), ::__colors[1] )
       else
-      		s:= iif(setd,substr(setdc,1,1),"")
-      		winbuf_out_at(::winbuffer,::row,::col,s, ::__colors[1])
-      		y := ::row; x := ::col + len(s)
+		s:= iif(setd,substr(setdc,1,1),"")
+		winbuf_out_at(::winbuffer,::row,::col,s, ::__colors[1])
+		y := ::row; x := ::col + len(s)
       endif
       //ssay:=substr(::buffer,1,::__winlen)
       ssay:= ::__toString()
@@ -1212,18 +1457,18 @@ static func _display ()
 	 ssay=padr(replicate("*",len(rtrim(ssay))),len(ssay))
       endif
       if ::winbuffer == nil
-      		dispOut(ssay,::__colors[5])
-      		dispOut(iif(setd,substr(setdc,2,1),""),::__colors[1])
+		dispOut(ssay,::__colors[5])
+		dispOut(iif(setd,substr(setdc,2,1),""),::__colors[1])
       else
-      		winbuf_out_at(::winbuffer,y,x,ssay, ::__colors[5])
-      		x += len(ssay)
-      		s:= iif(setd,substr(setdc,2,1),"")
-      		winbuf_out_at(::winbuffer,y,x,s, ::__colors[1])
-      		y := ::row; x := ::col + len(s)
+		winbuf_out_at(::winbuffer,y,x,ssay, ::__colors[5])
+		x += len(ssay)
+		s:= iif(setd,substr(setdc,2,1),"")
+		winbuf_out_at(::winbuffer,y,x,s, ::__colors[1])
+		y := ::row; x := ::col + len(s)
       endif
       //setpos(::row,::col)
       if ::winbuffer == nil
-      		dispend()
+		dispend()
       endif
       return NIL
   endif
@@ -1233,28 +1478,29 @@ static func _display ()
   epos=max(epos,::__winLen)
   bpos=epos-::__winLen+1
   if ::winbuffer == nil
-  	dispOutAt(::row, ::col, iif(setd,substr(setdc,1,1),""), ::__colors[2] )
+	dispOutAt(::row, ::col, iif(setd,substr(setdc,1,1),""), ::__colors[2] )
   else
-  	s := iif(setd,substr(setdc,1,1),"")
-  	winbuf_out_at(::winbuffer,::row, ::col, s, ::__colors[2] )
-  	y := ::row; x := ::col + len(s)
+	s := iif(setd,substr(setdc,1,1),"")
+	winbuf_out_at(::winbuffer,::row, ::col, s, ::__colors[2] )
+	y := ::row; x := ::col + len(s)
   endif
   ssay:=substr(::buffer,bpos,epos-bpos+1)
   if "Q" $ ::__flags
 	 ssay=padr(replicate("*",len(rtrim(ssay))),len(ssay))
   endif
+  ssay := padr(ssay, ::__winlen)
   if ::winbuffer == nil
-  	dispOut(ssay,::__colors[2])
-  	dispOut(iif(setd,substr(setdc,2,1),""),::__colors[2])
+	dispOut(ssay,::__colors[2])
+	dispOut(iif(setd,substr(setdc,2,1),""),::__colors[2])
   else
-  	winbuf_out_at(::winbuffer,y,x,ssay,::__colors[2])
-  	x += len(ssay)
-  	winbuf_out_at(::winbuffer,y,x,iif(setd,substr(setdc,2,1),""),::__colors[2])
+	winbuf_out_at(::winbuffer,y,x,ssay,::__colors[2])
+	x += len(ssay)
+	winbuf_out_at(::winbuffer,y,x,iif(setd,substr(setdc,2,1),""),::__colors[2])
   endif
   ::cursorPos := ::__winLen-(epos-::pos)-iif(setd,0,1)+1
   if ::winbuffer == nil
-  	setpos(::row,::col+::cursorPos-1)
-  	dispend()
+	setpos(::row,::col+::cursorPos-1)
+	dispend()
   endif
 return NIL
 
@@ -1287,17 +1533,17 @@ function __sayCaption(nrow,ncol,str,ccolor,len,ncolor,winbuffer)
       s:=padr(s,len)
    endif
    if winbuffer == nil
-   	dispOutAt(nrow,ncol, s )
-   	if n!=0
+	dispOutAt(nrow,ncol, s )
+	if n!=0
 		n--
 		dispattr(nrow,ncol+n,nrow,ncol+n,ncolor)
-   	endif
+	endif
    else
-   	winbuf_out_at(winbuffer,nrow,ncol,s,ccolor)
-   	if n!=0
+	winbuf_out_at(winbuffer,nrow,ncol,s,ccolor)
+	if n!=0
 		n--
 		winbuf_attr_at(winbuffer,nrow,ncol+n,nrow,ncol+n,ncolor)
-   	endif
+	endif
    endif
    setcolor(oldcol)
 return .t.
@@ -1371,6 +1617,8 @@ static function __toString()
 	if ::_original==0 .and. "Z" $ ::__flags
 		ret:=space(len(ret))
 	endif
+	ret := strtran(ret,"-,"," -")
+	ret := strtran(ret,"- "," -")
   endif
 return ret
 
@@ -1385,6 +1633,8 @@ function transform(xValue,picture)
   obj:picture	:=picture
   obj:block	:=NIL
   obj:col	:=0
+  obj:expand	:=.f.
+  obj:__fullScreen := .f.
 
   __updateInfo(obj)
   __analizePic(obj)

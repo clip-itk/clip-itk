@@ -94,6 +94,7 @@ local nFntWidth, nFntHeight
 		oWnd:DefControl( Self )
 	endif
 
+	self:SetColor( self:nClrText, self:nClrPane )
 	if lDesign
 		self:CheckDots()
 	endif
@@ -186,7 +187,7 @@ static function fw_LostFocus(self)
       endif
    endif
 
-return self:Super:LostFocus()
+return .t.
 ***********
 static function fw_KeyDown( self, nKey, nFlags )
 
@@ -200,7 +201,7 @@ static function fw_KeyDown( self, nKey, nFlags )
 	   return 0
 
       case nKey == VK_RETURN
-	   PostMessage( self:hWnd, FM_CLICK )    // fire the button's action
+	   eval(Selector:PostMessage, self:hWnd, FM_CLICK )    // fire the button's action
 	   return 0
    endcase
 
@@ -210,7 +211,7 @@ static function fw_Initiate( self, hDlg )
 
    self:Super:Initiate( hDlg )
 
-   self:lDefault    = lAnd( GetWindowLong( self:hWnd, GWL_STYLE ),;
+   self:lDefault    = lAnd( eval(Selector:GetWindowLong, self:hWnd, GWL_STYLE ),;
 			 BS_DEFPUSHBUTTON )
    self:lProcessing = .f.
 

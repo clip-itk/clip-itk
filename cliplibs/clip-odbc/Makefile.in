@@ -1,11 +1,10 @@
 #  GNU make makefile
 #
 
-ifdef CLIPROOT
-include $(CLIPROOT)/include/Makefile.inc
-else
-CLIPROOT=/usr/local/clip
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
+include $(CLIPROOT)/include/Makefile.inc
 
 LIBODBC=@LIBODBC@
 LIBOOB=@LIBOOB@
@@ -14,15 +13,19 @@ C_FLAGS=-Wall -g -I.
 #CC=gcc
 
 TARGET=libclip-odbc$(DLLSUFF)
+ATARGET=libclip-odbc.a
 RTARGET=libclip-odbc$(DLLREALSUFF)
 TARGET1=libclip-oob$(DLLSUFF)
 RTARGET1=libclip-oob$(DLLREALSUFF)
 OBJS=odbc_clip.o odbc.o
 
-all:  $(TARGET) $(TARGET1)
+all:  $(TARGET) $(TARGET1) $(ATARGET)
 
 $(TARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBODBC)
+
+$(ATARGET): $(OBJS)
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBODBC)
 
 $(TARGET1): $(OBJS)
 	[ "$(LIBOOB)" = '' ] || $(CLIPROOT)/bin/clip_makeslib $(TARGET1) $(LIBOOB) $(OBJS)
@@ -33,19 +36,19 @@ odbc_clip.o: odbc_clip.c odbc.ch
 odbc.o: odbc.prg odbc.ch
 	$(CLIPROOT)/bin/clip odbc.prg
 
-install: all
-	$(CLIPROOT)/bin/clip_cp $(TARGET) $(CLIPROOT)/lib
-	$(CLIPROOT)/bin/clip_cp $(TARGET1) $(CLIPROOT)/lib
-	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(CLIPROOT)/lib
-	#[ "$(TARGET1)" = "$(RTARGET1)" ] || cp $(RTARGET1) $(CLIPROOT)/lib
-	mkdir -p $(CLIPROOT)/doc/clip-odbc
-	cp *.html $(CLIPROOT)/doc/clip-odbc
-	cp odbc.ch $(CLIPROOT)/include
-	mkdir -p $(CLIPROOT)/doc/example/clip-odbc
-	cp -R example/* $(CLIPROOT)/doc/example/clip-odbc/
+install:
+	$(CLIPROOT)/bin/clip_cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
+	$(CLIPROOT)/bin/clip_cp $(TARGET1) $(DESTDIR)$(CLIPROOT)/lib
+	#[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
+	#[ "$(TARGET1)" = "$(RTARGET1)" ] || cp $(RTARGET1) $(DESTDIR)$(CLIPROOT)/lib
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-odbc
+	cp *.html $(DESTDIR)$(CLIPROOT)/doc/clip-odbc
+	cp odbc.ch $(DESTDIR)$(CLIPROOT)/include
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-odbc
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-odbc/
 
 clean:
-	rm -rf *.o *.bak *.a *.so *.dll *.exe odbc_ref.c *.ex *.nm
+	rm -rf *.o odbc.c *.s *.bak *.a *.so *.dll *.exe odbc_ref.c *.ex *.nm
 
 distclean: clean
 	rm -f Makefile

@@ -258,7 +258,7 @@ static func tb_display(self)
   i:=1
   for i=1 to self:itemCount
       if x>=self:left
-         exit
+	 exit
       endif
       item:=self:__items[i]
       x+=__capLength(item:caption)+2
@@ -275,7 +275,7 @@ static func tb_display(self)
 	 item:data:__resize(self:row+1,xpos)
       endif
       if xpos>self:right
-         	exit
+		exit
       endif
       xpos+=__capLength(item:caption)+2
   next
@@ -294,23 +294,23 @@ static func pp_display(self)
     endif
     dispbegin()
     if self:border == NIL
-    	sSep:=SEPARATOR_SINGLE
-    	@ self:top,self:left TO self:bottom,self:right ;
+	sSep:=SEPARATOR_SINGLE
+	@ self:top,self:left TO self:bottom,self:right ;
 	   color self:__colors[6]
     else
-    	sSep:=substr(self:border,10)
-    	@ self:top,self:left,self:bottom,self:right ;
+	sSep:=substr(self:border,10)
+	@ self:top,self:left,self:bottom,self:right ;
 	   box substr(self:border,1,8) color self:__colors[6]
     endif
     self:__begItem:=  (self:top+self:current) - (maxrow()-2)+1
     if self:__begItem < 1
-    	self:__begItem:=1
+	self:__begItem:=1
     endif
     for i=self:__begItem to self:itemCount
-    	x:=self:top+i-self:__begItem+1
-        if x > maxrow()-2
-        	exit
-        endif
+	x:=self:top+i-self:__begItem+1
+	if x > maxrow()-2
+		exit
+	endif
 	item:=self:__items[i]
 	if item:caption==MENU_SEPARATOR
 	   s=substr(sSep,1,1)+;
@@ -350,8 +350,8 @@ static func __resize(nrow,ncol)
     ::right :=::left+::width+3
     i:=::right-maxcol()
     if i>0
-    	::right-=i
-        ::left-=i
+	::right-=i
+	::left-=i
     endif
     ::bottom:=min(::top+::itemCount+1,maxrow()-1)
 
@@ -359,37 +359,38 @@ return ::itemCount
 
 ******************************************
 static func pp_hitTest(mrow,mcol)
-   	local ret:=0,i,x,item
+	local ret:=0,i,x,item
 	if ! ( mCol>::left .and. mCol < (::left+::width)+2 )
-        	return 0
-        endif
-    	for i=::__begItem to ::itemCount
-    		x:=::top+i-::__begItem+1
+		return 0
+	endif
+	for i=::__begItem to ::itemCount
+		x:=::top+i-::__begItem+1
 		item:=::__items[i]
 		if item:caption!=MENU_SEPARATOR
-        		if x==mRow
-                        	ret:=i
-                        endif
-                endif
-    	next
+			if x==mRow
+				ret:=i
+				exit
+			endif
+		endif
+	next
 return ret
 ******************************************
 static func tb_hitTest(mrow,mcol)
 	local ret:=0,i,j,xpos:=::left,item
-        if mRow != ::row
-        	return 0
-        endif
-  	for i=::__begitem to ::itemCount
-      		item:=::__items[i]
-                j:=xpos+__capLength(item:caption)+2
-                if mcol > xpos .and. mcol < j
-                	ret:=i
-                endif
-      		if xpos>::right
-         		exit
-      		endif
-      		xpos+=__capLength(item:caption)+2
-  	next
+	if mRow != ::row
+		return 0
+	endif
+	for i=::__begitem to ::itemCount
+		item:=::__items[i]
+		j:=xpos+__capLength(item:caption)+2
+		if mcol > xpos .and. mcol < j
+			ret:=i
+		endif
+		if xpos>::right
+			exit
+		endif
+		xpos+=__capLength(item:caption)+2
+	next
 return ret
 
 ******************************************
@@ -409,10 +410,10 @@ static function m__status(self,member,id,newValue)
 	local o,ret
 	for o in self:__items
 		if valtype(o)=="O"
-                	ret := o:_status(member,id,newValue)
-                endif
-                if ret!=NIL
-                	exit
-                endif
-        next
+			ret := o:_status(member,id,newValue)
+		endif
+		if ret!=NIL
+			exit
+		endif
+	next
 return ret

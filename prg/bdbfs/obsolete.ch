@@ -19,8 +19,3 @@
 #xtranslate _sxCondSet( [<params,...>] )           => OrdCondSet( [<params>] )
 #xtranslate SetRDD( [<cRDDname>] )                 => RDDSetDefault( [<cRDDname>] )
 
-// SIx 2.0 Compatibity
-#command SET DIRTYREAD ON                          => Sx_SetTurbo(.T.)
-#command SET DIRTYREAD OFF                         => Sx_SetTurbo(.F.)
-#xtranslate Sx_SetDirty( [<param>] )               => Sx_SetTurbo( [<param>] )
-#xtranslate Sx_DirtyArea( [<param>] )              => Sx_TurboArea( [<param>] )

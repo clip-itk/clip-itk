@@ -1,15 +1,99 @@
 /*
-    Copyright (C) 2001  ITK
-    Authors  : Uri Hnykin <uri@itk.ru>, Paul Lasarev <paul@itk.ru>
-    License : (GPL) http://www.itk.ru/clipper/license.html
+	Copyright (C) 2001  ITK
+	Authors  : Uri Hnykin <uri@itk.ru>, Paul Lasarev <paul@itk.ru>
+	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
    $Log: _util.c,v $
+   Revision 1.130  2004/02/03 08:47:59  clip
+   uri: some fix in "run <cmd> and setcursor() restoring"
+
+   Revision 1.129  2003/11/26 13:58:17  clip
+   uri: small fix in __RUN for non-fullscreen mode
+
+   Revision 1.128  2003/10/29 11:40:03  clip
+   small fix for #160 (clear screen)
+   paul
+
+   Revision 1.127  2003/10/29 08:49:29  clip
+   fix terminal restoring in scanmode
+   fix restore screen after run
+   closes #160
+   paul
+
+   Revision 1.126  2003/10/13 06:08:48  clip
+   uri: fix for "errorlevel(3); quit" code
+
+   Revision 1.125  2003/09/09 15:10:02  clip
+   uri: USE_AS & CLIP_ASM is "yes" by default
+
+   Revision 1.124  2003/09/08 15:06:02  clip
+   uri: next step fixes for mingw from uri
+
+   Revision 1.123  2003/09/02 14:27:42  clip
+   changes for MINGW from
+   Mauricio Abre <maurifull@datafull.com>
+   paul
+
+   Revision 1.122  2003/09/02 08:57:04  clip
+   uri: glob() return logical value
+
+   Revision 1.121  2003/07/17 13:10:55  clip
+   uri: added cygwinroot()
+
+   Revision 1.120  2003/07/17 12:16:46  clip
+   uri: fix cliproot() for cygwin
+
+   Revision 1.119  2003/07/17 11:51:01  clip
+   uri: small fix for cygwin
+
+   Revision 1.118  2003/07/02 06:35:39  clip
+   uri: small fix
+
+   Revision 1.117  2003/06/24 07:23:06  clip
+   rust: minor fix
+
+   Revision 1.116  2003/06/24 07:19:49  clip
+   uri: memory leak in get_str()
+
+   Revision 1.115  2003/03/20 12:22:36  clip
+   uri: errorLevel() small fix.
+
+   Revision 1.114  2003/03/12 10:20:45  clip
+   call Task_killAll()
+   in clip__QUIT
+   paul
+
+   Revision 1.113  2003/03/10 14:45:25  clip
+   uri: strtod -> _clip_strtod in str2var()
+
+   Revision 1.112  2003/01/22 14:27:34  clip
+   uri: warning fix
+
+   Revision 1.111  2003/01/22 10:33:38  clip
+   dosparam() function
+   closes #111
+   paul
+
+   Revision 1.110  2002/12/02 09:24:08  clip
+   map obj fetch for simple name
+   closes #65
+   paul
+
+   Revision 1.109  2002/11/26 12:42:36  clip
+   rust: added parameter 'method' to _clip_var2str() and _clip_str2var()
+
+   Revision 1.108  2002/10/31 10:33:59  clip
+   plural form runtime messages support:
+   gettext(cMsgid [,cModule])->cTranslated
+   ngettext(cMsgid, cMsgid_plural, nNum, [,cModule]) ->cTranslated
+   paul
+
    Revision 1.107  2002/09/25 11:47:25  clip
    add function: loadModuleMsg(cModule, cFilename_mo) -> bResult
    predefined macro: __CLIP_MODULE__  expands to current module name as "modname"
    new accepted environment var: CLIP_LOCALE_ROOT
-   	used by clip, clip_msgmerge, clip_msgfmt, and at runtime
+	used by clip, clip_msgmerge, clip_msgfmt, and at runtime
    paul
 
    Revision 1.106  2002/09/16 09:36:59  clip
@@ -58,7 +142,6 @@
    ALTD(0) - disable debugging
    ALTD(1) - enable debugging
    ALTD(2) - enable debugging and wait connection
-
 
    paul
 
@@ -409,16 +492,21 @@
 
  */
 
+#include "clipcfg.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdarg.h>
-#include <dlfcn.h>
-#include <netinet/in.h>
 #include <sys/time.h>
-#include <sys/resource.h>
+#ifdef OS_MINGW
+	#include <ltdl.h>
+#else
+	#include <dlfcn.h>
+	#include <netinet/in.h>
+	#include <sys/resource.h>
+#endif
 #include <errno.h>
 
 #include "clip.h"
@@ -428,18 +516,18 @@
 #include "hashcode.h"
 #include "screen/charset.h"
 #include "screen/screen.h"
+#include "task/task.h"
 
 extern char *CLIPROOT;
-
 
 #define NEW(type) ((type*)calloc(sizeof(type),1))
 #define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
 
 #ifndef RTLD_NOW
-	#define RTLD_NOW DL_LAZY
+#define RTLD_NOW DL_LAZY
 #endif
 #ifndef RTLD_GLOBAL
-	#define RTLD_GLOBAL DL_LAZY
+#define RTLD_GLOBAL DL_LAZY
 #endif
 
 #if 0
@@ -466,17 +554,49 @@ clip_INIT_CLIPINIT(ClipMachine * mp)
 	return 0;
 }
 
+static char * _clip_cygwinroot()
+{
+#ifdef OS_CYGWIN
+	/* need change to WIN32 registry data*/
+	char * s = "c:\\cygwin";
+#else
+	char * s = "";
+#endif
+	return s;
+}
+
+int
+clip_CYGWINROOT(ClipMachine * mp)
+{
+	_clip_retc(mp,_clip_cygwinroot());
+	return 0;
+}
+
 int
 clip_CLIPROOT(ClipMachine * mp)
 {
-	_clip_retc(mp,CLIPROOT);
+	char * ret;
+	int len1,len2;
+	char * s1 = _clip_cygwinroot();
+	char * s2 = getenv("CLIPROOT");
+	if (s2 == NULL)
+		s2 = CLIPROOT;
+
+	len1 = strlen(s1);
+	len2 = strlen(s2);
+	ret = malloc(len1+len2+1);
+	memcpy(ret,s1,len1);
+	memcpy(ret+len1,s2,len2);
+	ret[len1+len2] = 0;
+
+	_clip_retcn_m(mp, ret,len1+len2);
 	return 0;
 }
 
 int
 clip_CLIP_HOSTCS(ClipMachine * mp)
 {
-	_clip_retc(mp,_clip_hostcs);
+	_clip_retc(mp, _clip_hostcs);
 	return 0;
 }
 
@@ -512,26 +632,6 @@ clip_BREAK(ClipMachine * mp)
 	_clip_trap_var(mp, mp->fp->filename, mp->fp->line, np);
 
 	return -1;
-}
-
-static int errorlevel = 0;
-
-int
-clip___QUIT(ClipMachine * mp)
-{
-	exit(1);
-}
-
-int
-clip_ERRORLEVEL(ClipMachine * mp)
-{
-	int level = errorlevel;
-
-	if (mp->argc > 0)
-		errorlevel = _clip_parni(mp, 1);
-
-	_clip_retni(mp, level);
-	return 0;
 }
 
 int
@@ -596,12 +696,11 @@ clip_TYPE(ClipMachine * mp)
 		char *s, *e;
 
 		for (s = str, e = str + len; s < e; ++s)
-			if ( *s == '(' || *s == ')' )
+			if (*s == '(' || *s == ')')
 			{
 				_clip_retc(mp, rc);
 				return 0;
 			}
-
 
 		var.t.type = UNDEF_t;
 		var.t.flags = F_NONE;
@@ -784,6 +883,7 @@ clip_LEN(ClipMachine * mp)
 		rn = vp->t.len;
 		break;
 	default:
+		;
 	}
 
 	_clip_retni(mp, rn);
@@ -802,6 +902,7 @@ clip_DEC(ClipMachine * mp)
 		rn = vp->t.dec;
 		break;
 	default:
+		;
 	}
 
 	_clip_retni(mp, rn);
@@ -818,7 +919,11 @@ clip_ARRAY(ClipMachine * mp)
 	rp = RETPTR(mp);
 
 	ndim = mp->argc;
+#ifdef OS_MINGW
+	dims = (long *) malloc(ndim * sizeof(long));
+#else
 	dims = (long *) alloca(ndim * sizeof(long));
+#endif
 
 	for (i = 1; i <= ndim; ++i)
 		dims[i - 1] = _clip_parni(mp, i);
@@ -827,6 +932,9 @@ clip_ARRAY(ClipMachine * mp)
 
 	/*decount(rp); */
 
+#ifdef OS_MINGW
+	free(dims);
+#endif
 	return r;
 }
 
@@ -919,23 +1027,22 @@ clip_MAPEVAL(ClipMachine * mp)
 {
 	ClipVar *obj = _clip_par(mp, 1);
 	ClipVar *bp = _clip_par(mp, 2);
-        ClipVar *sobj;
-        int ret;
+	ClipVar *sobj;
+	int ret;
 
 	if (!obj || (obj->t.type != MAP_t))
 		return EG_ARG;
 
-	if (!bp || (bp->t.type != CCODE_t && bp->t.type != PCODE_t
-		&& bp->t.type != CHARACTER_t) )
+	if (!bp || (bp->t.type != CCODE_t && bp->t.type != PCODE_t && bp->t.type != CHARACTER_t))
 		return EG_ARG;
 
 	sobj = mp->obj;
-        mp->obj = obj;
+	mp->obj = obj;
 	if (bp->t.type == CHARACTER_t)
 		ret = _clip_eval_macro(mp, bp->s.str.buf, bp->s.str.len, RETPTR(mp));
-        else
+	else
 		ret = _clip_eval(mp, bp, mp->argc - 2, ARGPTR(mp, 3), RETPTR(mp));
-        mp->obj = sobj;
+	mp->obj = sobj;
 
 	return ret;
 }
@@ -1001,10 +1108,10 @@ clip_LOADBLOCK(ClipMachine * mp)
 int
 clip_LOADLIB(ClipMachine * mp)
 {
-	/*void *hp;*/
+	/*void *hp; */
 	char *name = _clip_parc(mp, 1);
-        char buf[256], *e, *s;
-        int r;
+	char buf[256], *e, *s;
+	int r;
 
 	if (!name)
 	{
@@ -1021,13 +1128,13 @@ clip_LOADLIB(ClipMachine * mp)
 	}
 #else
 	snprintf(buf, sizeof(buf), "%s", name);
-        e = strrchr(buf, '.');
-        s = strrchr(buf, '/');
-        if (e && (!s || e>s))
-        	*e = 0;
+	e = strrchr(buf, '.');
+	s = strrchr(buf, '/');
+	if (e && (!s || e > s))
+		*e = 0;
 	else
-        	e = buf+strlen(buf);
-	strncpy(e, DLLREALSUFF, sizeof(buf)-strlen(buf));
+		e = buf + strlen(buf);
+	strncpy(e, DLLREALSUFF, sizeof(buf) - strlen(buf));
 
 	r = _clip_load(mp, buf, 0, 0);
 
@@ -1110,12 +1217,12 @@ clip_AADD(ClipMachine * mp)
 	ClipVar *vp3 = _clip_par(mp, 3);
 
 	if (!ap || !vp)
-        	return EG_ARG;
+		return EG_ARG;
 
 	if (vp3)
 		no = _clip_hash(mp, vp3);
 	else
-        	no = 0;
+		no = 0;
 
 	if (ap->t.type == ARRAY_t)
 	{
@@ -1147,7 +1254,7 @@ clip_ADEL(ClipMachine * mp)
 	ClipVar *vp = _clip_par(mp, 2);
 
 	if (!ap || !vp)
-        	return EG_ARG;
+		return EG_ARG;
 
 	n = _clip_hash(mp, vp);
 
@@ -1184,8 +1291,8 @@ clip_ASIZE(ClipMachine * mp)
 	if (!ap)
 		return 0;
 
-	if (nl<0)
-        	nl = 0;
+	if (nl < 0)
+		nl = 0;
 
 	if (ap->t.type == ARRAY_t)
 	{
@@ -1209,7 +1316,7 @@ clip_AINS(ClipMachine * mp)
 	ClipVar *vp1 = _clip_par(mp, 2);
 	ClipVar *vp = _clip_spar(mp, 3);
 	int r;
-        long n;
+	long n;
 
 	if (!ap || !vp1)
 		return 0;
@@ -1273,6 +1380,7 @@ clip_AFILL(ClipMachine * mp)
 	int count = _clip_parni(mp, 4);
 	int c, i, end, r;
 	ClipVar *retp = RETPTR(mp), *arrp = ARGPTR(mp, 1);
+
 	_clip_clone(mp, retp, arrp);
 
 	if (!ap || !vp || ap->t.type != ARRAY_t)
@@ -1284,7 +1392,7 @@ clip_AFILL(ClipMachine * mp)
 
 	if (start < 0)
 		start = 0;
-	if (_clip_parinfo(mp,0)<4 || count > (c - start))
+	if (_clip_parinfo(mp, 0) < 4 || count > (c - start))
 		count = c - start;
 
 	for (i = start, end = start + count; i < end; ++i)
@@ -1332,7 +1440,7 @@ clip_ACOPY(ClipMachine * mp)
 			count = c - start;
 		c = dp->a.count;
 		if (start >= c)
-			return 0; /*EG_ARG;*/
+			return 0;	/*EG_ARG; */
 		if (dstart < 0)
 			dstart = 0;
 		if (count > (c - dstart))
@@ -1419,10 +1527,10 @@ clip_AEVAL(ClipMachine * mp)
 			return 0;
 		if (start < 0)
 			start = 0;
-		if (count < 0 || count > (c - start) || _clip_parinfo(mp,4)==UNDEF_t)
+		if (count < 0 || count > (c - start) || _clip_parinfo(mp, 4) == UNDEF_t)
 			count = c - start;
 
-		for (i = start; i < start+count; ++i)
+		for (i = start; i < start + count; ++i)
 		{
 			ClipVar *app = ap->a.items + i;
 			ClipVar res, stack[2];
@@ -1691,7 +1799,7 @@ clip_ASCAN(ClipMachine * mp)
 		}
 	}
 
-      _ret:
+	  _ret:
 	_clip_retni(mp, no);
 
 	return 0;
@@ -1721,12 +1829,13 @@ compare_var(ClipVar * p1, ClipVar * p2, ClipMachine * mp, void *par)
 		switch (res.t.type)
 		{
 		case LOGICAL_t:
-			ret = ! res.l.val;
+			ret = !res.l.val;
 			break;
 		case NUMERIC_t:
 			ret = _clip_double(&res);
 			break;
 		default:
+			;
 		}
 		_clip_destroy(mp, &res);
 	}
@@ -1815,7 +1924,7 @@ q_sort(ClipVar * a, int n, q_cmp cmp, ClipMachine * mp, void *par)
 	ClipVar *pa, *pb, *pc, *pd, *pl, *pm, *pn;
 	int d, r, swap_cnt;
 
-      loop:
+	  loop:
 	swap_cnt = 0;
 	if (n < 7)
 	{
@@ -1874,8 +1983,7 @@ q_sort(ClipVar * a, int n, q_cmp cmp, ClipMachine * mp, void *par)
 	if (swap_cnt == 0)
 	{			/* Switch to insertion sort */
 		for (pm = a + 1; pm < a + n; pm += 1)
-			for (pl = pm; pl > a && cmp((pl - 1), pl, mp, par) > 0;
-			     pl -= 1)
+			for (pl = pm; pl > a && cmp((pl - 1), pl, mp, par) > 0; pl -= 1)
 				q_swap(pl, pl - 1);
 		return;
 	}
@@ -1895,12 +2003,13 @@ q_sort(ClipVar * a, int n, q_cmp cmp, ClipMachine * mp, void *par)
 		goto loop;
 	}
 }
-/* ] */
 
+/* ] */
 int
 clip___RUN(ClipMachine * mp)
 {
 	char *com = _clip_parc(mp, 1);
+	int old_cursor;
 
 	if (com == NULL)
 	{
@@ -1909,15 +2018,28 @@ clip___RUN(ClipMachine * mp)
 		return 1;
 	}
 
-        if (mp->fullscreen)
-		restore_tty(mp->screen_base);    	/* restore start mode */
+	if (mp->fullscreen)
+	{
+		old_cursor = mp->screen->cursor;
+		restore_tty(mp->screen_base);	/* restore start mode */
+	}
 
 	system(com);
 
-        if (mp->fullscreen)
-		restart_tty(mp->screen_base);    	/* set work mode */
+	if (mp->fullscreen)
+		restart_tty(mp->screen_base);	/* set work mode */
+	if (mp->fullscreen)
+	{
+		redraw_Screen(mp->screen);
+		mp->screen->cursor = !mp->screen->cursor;
+		sync_Screen(mp->screen);
+		mp->screen->cursor = old_cursor;
+		sync_Screen(mp->screen);
+	}
+
 	return 0;
 }
+
 
 int
 clip_CLONE(ClipMachine * mp)
@@ -1954,14 +2076,14 @@ clip_ISFUNCTION(ClipMachine * mp)
 int
 clip_GLOB(ClipMachine * mp)
 {
-	char *str     = _clip_parc(mp, 1);
+	char *str = _clip_parc(mp, 1);
 	char *pattern = _clip_parc(mp, 2);
-	int caseflag  = _clip_parl(mp, 3);
+	int caseflag = _clip_parl(mp, 3);
 
 	if (!str || !*pattern)
-		_clip_retni(mp, -1);
+		_clip_retl(mp, 0);
 	else
-		_clip_retni(mp, _clip_glob_match(str, pattern, caseflag));
+		_clip_retl(mp, _clip_glob_match(str, pattern, caseflag) >=0 );
 
 	return 0;
 }
@@ -1973,9 +2095,8 @@ put_str(OutBuf * bp, char *str, long len)
 	putBuf_Buf(bp, str, len);
 }
 
-
 static void
-put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll *refs)
+put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll * refs)
 {
 	vp = _clip_vptr(vp);
 
@@ -2011,7 +2132,13 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll *refs)
 				char buf[48];
 
 				if (vp->t.len < sizeof(buf))
+				{
+					char *s;
 					snprintf(buf, sizeof(buf), "%*.*f", vp->t.len, vp->t.dec, vp->n.d);
+					for (s = buf + strlen(buf); s > buf; --s)
+						if ((*s) == ',')
+							(*s) = '.';
+				}
 				else
 					_clip_dtos(vp->n.d, buf, sizeof(buf), 0);
 				put_str(bp, buf, strlen(buf));
@@ -2033,11 +2160,12 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll *refs)
 		break;
 	case PCODE_t:
 	case CCODE_t:
-		/*out_any(mp, "CODE", 4, attr, dev);*/
+		/*out_any(mp, "CODE", 4, attr, dev); */
 		break;
 	case ARRAY_t:
 		{
 			int i;
+
 			insert_Coll(refs, vp);
 			putLong_Buf(bp, htonl(vp->a.count));
 			for (i = 0; i < vp->a.count; ++i)
@@ -2058,22 +2186,23 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll *refs)
 		}
 		break;
 	default:
+		;
 	}
 }
 
 static int
 refcmp(const void *p1, const void *p2)
 {
-	if (p1<p2)
+	if (p1 < p2)
 		return -1;
-	else if (p1>p2)
+	else if (p1 > p2)
 		return 1;
 	else
 		return 0;
 }
 
 void
-_clip_var2str(ClipMachine * mp, ClipVar * vp, char **strp, long *lenp)
+_clip_var2str(ClipMachine * mp, ClipVar * vp, char **strp, long *lenp, int method)
 {
 	OutBuf buf;
 	Coll refs;
@@ -2082,9 +2211,21 @@ _clip_var2str(ClipMachine * mp, ClipVar * vp, char **strp, long *lenp)
 	init_Coll(&refs, 0, refcmp);
 
 	put_var(mp, vp, &buf, &refs);
-	_clip_uuencode(buf.buf, buf.ptr-buf.buf, strp, lenp, 1);
+	switch (method)
+	{
+	case 1:		/* uuencode */
+		_clip_uuencode(buf.buf, buf.ptr - buf.buf, strp, lenp, 1);
+		break;
+	case 2:		/* compress */
+	default:		/* no either uuencode nor compress */
+		*strp = buf.buf;
+		*lenp = buf.ptr - buf.buf;
+		break;
+	}
 
-	destroy_Buf(&buf);
+	if (method == 1 /*|| method == 2 */ )
+		destroy_Buf(&buf);
+
 	destroy_Coll(&refs);
 }
 
@@ -2104,18 +2245,18 @@ clip_VAR2STR(ClipMachine * mp)
 		return 0;
 	}
 
-	_clip_var2str(mp, vp, &str, &len);
+	_clip_var2str(mp, vp, &str, &len, 1);
 	_clip_retcn_m(mp, str, len);
 
 	return 0;
 }
 
 static int
-get_byte( char **buf, long *buflen, int *resp )
+get_byte(char **buf, long *buflen, int *resp)
 {
-	if (*buflen<1)
+	if (*buflen < 1)
 		return 0;
-	*resp = *((unsigned char*) *buf);
+	*resp = *((unsigned char *) *buf);
 
 	(*buf)++;
 	(*buflen)--;
@@ -2124,11 +2265,11 @@ get_byte( char **buf, long *buflen, int *resp )
 }
 
 static int
-get_long( char **buf, long *buflen, long *resp )
+get_long(char **buf, long *buflen, long *resp)
 {
-	if (*buflen<4)
+	if (*buflen < 4)
 		return 0;
-	*resp = ntohl(*((long*) *buf));
+	*resp = ntohl(*((long *) *buf));
 
 	(*buf) += 4;
 	(*buflen) -= 4;
@@ -2137,31 +2278,31 @@ get_long( char **buf, long *buflen, long *resp )
 }
 
 static int
-get_str( char **buf, long *buflen, char **strp, long *lenp )
+get_str(char **buf, long *buflen, char **strp, long *lenp)
 {
 	long l;
+
 	if (get_long(buf, buflen, &l) != 4)
 		return 0;
-	if ( *buflen < l)
+	if (*buflen < l)
 		return 0;
 
 	*lenp = l;
-	*strp = (char*) realloc(*strp, l+1);
+	*strp = (char *) calloc(1/**strp*/, l + 1);
 	memcpy(*strp, *buf, l);
-	(*strp)[l]=0;
+	(*strp)[l] = 0;
 
 	(*buf) += l;
 	(*buflen) -= l;
 
-	return l+4;
+	return l + 4;
 }
 
 static int
-null_func(ClipMachine *mp)
+null_func(ClipMachine * mp)
 {
 	return 0;
 }
-
 
 static int
 get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
@@ -2199,7 +2340,10 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			if (memo)
 				vp->r.r = rational_fromString(s);
 			else
-				vp->n.d = strtod(s,0);;
+			{
+				int dec;
+				vp->n.d = _clip_strtod(s, &dec);;
+			}
 			free(s);
 		}
 		break;
@@ -2213,6 +2357,11 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			vp->t.type = CHARACTER_t;
 			vp->t.flags = F_NONE;
 
+			/*
+			vp->s.str.buf = malloc(sl);
+			memcpy(vp->s.str.buf,s,sl);
+			free(s);
+			*/
 			vp->s.str.buf = s;
 			vp->s.str.len = sl;
 		}
@@ -2220,6 +2369,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 	case LOGICAL_t:
 		{
 			int n;
+
 			if (!get_byte(str, len, &n))
 				return -1;
 			vp->t.type = LOGICAL_t;
@@ -2230,6 +2380,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 	case DATE_t:
 		{
 			long n;
+
 			if (!get_long(str, len, &n))
 				return -1;
 			vp->t.type = DATE_t;
@@ -2244,21 +2395,21 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 
 			if (!get_str(str, len, &s, &sl))
 				return -1;
-			/*vp->o.rtti->print(mp, vp->o.obj, vp->o.rtti, &mp->buf, &mp->buflen);*/
+			/*vp->o.rtti->print(mp, vp->o.obj, vp->o.rtti, &mp->buf, &mp->buflen); */
 			free(s);
 		}
 		break;
 	case PCODE_t:
 	case CCODE_t:
 		{
-			/*ClipVar *sp = (ClipVar *) calloc(1, sizeof(ClipVar));*/
+			/*ClipVar *sp = (ClipVar *) calloc(1, sizeof(ClipVar)); */
 			/*
-			vp->t.flags = F_MPTR;
-			vp->t.type = CCODE_t;
-			vp->p.vp = sp;
-			*/
+			   vp->t.flags = F_MPTR;
+			   vp->t.type = CCODE_t;
+			   vp->p.vp = sp;
+			 */
 
-			/*sp->t.count = 1;*/
+			/*sp->t.count = 1; */
 			vp->t.type = CCODE_t;
 			vp->t.flags = F_NONE;
 			vp->c.u.func = null_func;
@@ -2272,7 +2423,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			if (!get_long(str, len, &size))
 				return -1;
 
-			ap = (ClipVar*) calloc(1, sizeof(ClipVar));
+			ap = (ClipVar *) calloc(1, sizeof(ClipVar));
 			vp->t.type = ARRAY_t;
 			vp->t.flags = F_MPTR;
 			vp->p.vp = ap;
@@ -2283,7 +2434,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			ap->a.count = size;
 
 			for (i = 0; i < size; ++i)
-				if (get_var(mp, ap->a.items + i, str, len)<0)
+				if (get_var(mp, ap->a.items + i, str, len) < 0)
 					return -1;
 		}
 		break;
@@ -2296,7 +2447,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			if (!get_long(str, len, &size))
 				return -1;
 
-			ap = (ClipVar*) calloc(1, sizeof(ClipVar));
+			ap = (ClipVar *) calloc(1, sizeof(ClipVar));
 			vp->t.type = MAP_t;
 			vp->t.flags = F_MPTR;
 			vp->p.vp = ap;
@@ -2310,12 +2461,13 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			{
 				if (!get_long(str, len, &(ap->m.items[i].no)))
 					return -1;
-				if (get_var(mp, &(ap->m.items[i].v), str, len)<0)
+				if (get_var(mp, &(ap->m.items[i].v), str, len) < 0)
 					return -1;
 			}
 		}
 		break;
 	default:
+		;
 	}
 	return 0;
 }
@@ -2324,12 +2476,23 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 #define RECOVER_PREFIX_LEN (sizeof(RECOVER_PREFIX)-1)
 
 void
-_clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len)
+_clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len, int method)
 {
 	char *buf = 0, *b;
 	long buflen = 0;
 
-	_clip_uudecode(str, len, &buf, &buflen);
+	switch (method)
+	{
+	case 1:		/* uuencode */
+		_clip_uudecode(str, len, &buf, &buflen);
+		break;
+	case 2:		/* compress */
+	default:		/* no either uuencode nor compress */
+		buf = str;
+		buflen = len;
+		break;
+	}
+
 	b = buf;
 	get_var(mp, vp, &buf, &buflen);
 
@@ -2343,7 +2506,7 @@ _clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len)
 		if (!_clip_str(mp, np, &s, &l) && l)
 		{
 			buflen = l + RECOVER_PREFIX_LEN + 1;
-			b = (char*) realloc(b, buflen);
+			b = (char *) realloc(b, buflen);
 			memcpy(b, RECOVER_PREFIX, RECOVER_PREFIX_LEN);
 			memcpy(b + RECOVER_PREFIX_LEN, s, l);
 			b[RECOVER_PREFIX_LEN + l] = 0;
@@ -2352,7 +2515,8 @@ _clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len)
 		}
 		free(s);
 	}
-	free(b);
+	if (method == 1 /*|| method == 2 */ )
+		free(b);
 }
 
 /*
@@ -2367,7 +2531,7 @@ clip_STR2VAR(ClipMachine * mp)
 	if (!str)
 		return EG_ARG;
 
-	_clip_str2var(mp, RETPTR(mp), str, len);
+	_clip_str2var(mp, RETPTR(mp), str, len, 1);
 
 	return 0;
 }
@@ -2377,8 +2541,7 @@ clip_STR2VAR(ClipMachine * mp)
 /* ENC is the basic 1 character encoding function to make a char printing.  */
 #define ENC(ch) (uu_std[(ch) & 077])
 
-const char uu_std[64] =
-{
+const char uu_std[64] = {
 	'`', '!', '"', '#', '$', '%', '&', '\'',
 	'(', ')', '*', '+', ',', '-', '.', '/',
 	'0', '1', '2', '3', '4', '5', '6', '7',
@@ -2404,10 +2567,10 @@ _clip_uuencode(char *sstr, long l, char **strp, long *lenp, int without_newline)
 		int nn;
 		unsigned char c1, c2;
 
-		ll = (l-n < 45) ? (l-n) : 45;
+		ll = (l - n < 45) ? (l - n) : 45;
 		putByte_Buf(&buf, ENC(ll));
 
-		for (nn = ll ; nn > 2 ; nn -= 3, p += 3)
+		for (nn = ll; nn > 2; nn -= 3, p += 3)
 		{
 			ch = *p >> 2;
 			ch = ENC(ch);
@@ -2468,7 +2631,7 @@ _clip_uuencode(char *sstr, long l, char **strp, long *lenp, int without_newline)
 }
 
 int
-_clip_uudecode( char *sstr, long l, char **strp, long *lenp)
+_clip_uudecode(char *sstr, long l, char **strp, long *lenp)
 {
 	OutBuf buf;
 	int n, ch;
@@ -2592,8 +2755,11 @@ clip_UUDECODE(ClipMachine * mp)
 	"AS"       address space (virtual memory) limit
 */
 int
-clip_ULIMIT(ClipMachine *mp)
+clip_ULIMIT(ClipMachine * mp)
 {
+#ifdef OS_MINGW
+	return EG_ARG;
+#else
 	char *res = _clip_parc(mp, 1);
 	long newval;
 	int resource;
@@ -2654,11 +2820,11 @@ clip_ULIMIT(ClipMachine *mp)
 	else
 		return EG_ARG;
 
-	if (mp->argc>1)
+	if (mp->argc > 1)
 	{
 		newval = _clip_parnl(mp, 2);
 		getrlimit(resource, &rlimit);
-		if (newval<0)
+		if (newval < 0)
 			rlimit.rlim_cur = RLIM_INFINITY;
 		else if (rlimit.rlim_max != RLIM_INFINITY && newval > rlimit.rlim_max)
 			newval = rlimit.rlim_max;
@@ -2673,34 +2839,37 @@ clip_ULIMIT(ClipMachine *mp)
 		_clip_retnl(mp, rlimit.rlim_cur);
 
 	return 0;
+#endif
 }
 
 int
-clip_MEMVARGET(ClipMachine *mp)
+clip_MEMVARGET(ClipMachine * mp)
 {
 	int l;
-	char *name = _clip_parcl(mp,1,&l);
-	ClipVar * var;
-	ClipVar * ret = RETPTR(mp);
+	char *name = _clip_parcl(mp, 1, &l);
+	ClipVar *var;
+	ClipVar *ret = RETPTR(mp);
+
 	var = _clip_ref_memvar_noadd(mp, _clip_casehashbytes(0, name, l));
 	if (var)
-		_clip_clone(mp, ret,var);
+		_clip_clone(mp, ret, var);
 	return 0;
 }
 
 int
-clip_MEMVARSET(ClipMachine *mp)
+clip_MEMVARSET(ClipMachine * mp)
 {
 	int l;
-	char *name = _clip_parcl(mp,1,&l);
-	ClipVar * var;
-	ClipVar * data = _clip_par(mp,2);
+	char *name = _clip_parcl(mp, 1, &l);
+	ClipVar *var;
+	ClipVar *data = _clip_par(mp, 2);
+
 	var = _clip_ref_memvar_noadd(mp, _clip_casehashbytes(0, name, l));
-	_clip_retl(mp,0);
+	_clip_retl(mp, 0);
 	if (var)
 	{
 		_clip_clone(mp, var, data);
-		_clip_retl(mp,1);
+		_clip_retl(mp, 1);
 	}
 	return 0;
 }
@@ -2768,16 +2937,14 @@ clip_HOST_CHARSET(ClipMachine * cm)
 	return 0;
 }
 
-
 int
 clip_TRANSLATE_CHARSET(ClipMachine * mp)
 {
 	int len = 0, r;
 	char *p1 = _clip_parc(mp, 1);
 	char *p2 = _clip_parc(mp, 2);
-	unsigned char *str = (unsigned char*) _clip_parcl(mp, 3, &len);
+	unsigned char *str = (unsigned char *) _clip_parcl(mp, 3, &len);
 	unsigned char *s;
-
 
 	if (!p1 || !p2 || !str)
 		return EG_ARG;
@@ -2788,11 +2955,10 @@ clip_TRANSLATE_CHARSET(ClipMachine * mp)
 		return 0;
 	}
 
-
-	s = (unsigned char *) malloc(len+1);
+	s = (unsigned char *) malloc(len + 1);
 	s[len] = 0;
 
-	if ( (r = _clip_translate_charset(p1, p2, str, s, len)) )
+	if ((r = _clip_translate_charset(p1, p2, str, s, len)))
 		return r;
 
 	_clip_retcn_m(mp, s, len);
@@ -2806,9 +2972,9 @@ clip_REFCOUNT(ClipMachine * mp)
 	ClipVar *vp = _clip_par(mp, 1);
 
 	if (!vp)
-        	_clip_retni(mp, 0);
+		_clip_retni(mp, 0);
 	else
-        	_clip_retni(mp, vp->t.count);
+		_clip_retni(mp, vp->t.count);
 
 	return 0;
 }
@@ -2823,18 +2989,104 @@ clip_HELP(ClipMachine * mp)
 	loadModuleMsg(cModule, cFilename_mo) -> bResult
 */
 int
-clip_LOADMODULEMSG(ClipMachine *mp)
+clip_LOADMODULEMSG(ClipMachine * mp)
 {
 	char *module = _clip_parc(mp, 1);
-        char *filename = _clip_parc(mp, 2);
+	char *filename = _clip_parc(mp, 2);
 	int r;
 
-        if (!module||!filename)
-        	return EG_ARG;
+	if (!module || !filename)
+		return EG_ARG;
 
-        r = _clip_module_locale(module, filename);
-	
+	r = _clip_module_locale(module, filename);
+
 	_clip_retl(mp, !r);
 	return 0;
 }
 
+/*
+	GETTEXT(cMsg [,cModule])->cTranslated
+*/
+int
+clip_GETTEXT(ClipMachine * mp)
+{
+	char *msgid = _clip_parc(mp, 1);
+	char *module = _clip_parc(mp, 2);
+
+	if (msgid && module)
+	{
+		char *rp = 0;
+		int l;
+
+		_clip_locale_msg(module, msgid, &rp);
+		l = strlen(rp);
+		_clip_retcn_m(mp, rp, l);
+	}
+	else
+		_clip_retc(mp, msgid);
+
+	return 0;
+}
+
+/*
+	NGETTEXT(cSingleMsg, cPluralMsg, nNum [,cModule])->cTranslated
+*/
+int
+clip_NGETTEXT(ClipMachine * mp)
+{
+	char *msgid = _clip_parc(mp, 1);
+	char *msgid_plural = _clip_parc(mp, 2);
+	long n = _clip_parnl(mp, 3);
+	char *module = _clip_parc(mp, 4);
+
+	if (msgid && msgid_plural && module)
+	{
+		char *rp = 0;
+		int l;
+
+		_clip_locale_msg_plural(module, msgid, msgid_plural, n, &rp);
+		l = strlen(rp);
+		_clip_retcn_m(mp, rp, l);
+	}
+	else if (msgid && msgid_plural)
+	{
+		if (n == 1)
+			_clip_retc(mp, msgid);
+		else
+			_clip_retc(mp, msgid_plural);
+	}
+	else if (msgid)
+		_clip_retc(mp, msgid);
+
+	return 0;
+}
+
+int
+clip_DOSPARAM(ClipMachine * mp)
+{
+	char *s;
+	int i, l;
+
+	for (i = 0, l = 0; i < _clip_raw_argc; i++)
+		l += strlen(_clip_raw_argv[i]) + 1;
+
+	s = (char *) malloc(l + 1);
+
+	for (i = 0, l = 0; i < _clip_raw_argc; i++)
+	{
+		char *p = _clip_raw_argv[i];
+		int l1 = strlen(p);
+
+		memcpy(s + l, p, l1);
+		s[l + l1] = ' ';
+		l += l1 + 1;
+	}
+
+	if (l)
+		l--;
+	s[l] = 0;
+
+	_clip_retcn_m(mp, s, l);
+
+	return 0;
+}

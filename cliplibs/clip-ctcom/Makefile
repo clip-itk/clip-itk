@@ -1,9 +1,9 @@
-CLIPINCLUDE=-I$(CLIPROOT)/include
-CLIPROOT ?= ../../../cliproot
-
-ifdef CLIPROOT
-include $(CLIPROOT)/include/Makefile.inc
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
+
+include $(CLIPROOT)/include/Makefile.inc
+CLIPINCLUDE=-I$(CLIPROOT)/include
 
 TARGET=libclip-ctcom$(DLLSUFF)
 RTARGET=libclip-ctcom$(DLLREALSUFF)
@@ -24,14 +24,14 @@ serial.o: serial.c ctcom.ch
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h
 
-install: all
-	cp $(TARGET) $(CLIPROOT)/lib
-	cp *.ch $(CLIPROOT)/include
-	[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(CLIPROOT)/lib
-	mkdir -p $(CLIPROOT)/doc/clip-ctcom
-	cp *.html $(CLIPROOT)/doc/clip-ctcom
-	mkdir -p $(CLIPROOT)/doc/example/clip-ctcom
-	cp -R example/* $(CLIPROOT)/doc/example/clip-ctcom/
+install:
+	cp $(TARGET) $(DESTDIR)$(CLIPROOT)/lib
+	cp *.ch $(DESTDIR)$(CLIPROOT)/include
+	[ "$(TARGET)" = "$(RTARGET)" ] || cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/clip-ctcom
+	cp *.html $(DESTDIR)$(CLIPROOT)/doc/clip-ctcom
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-ctcom
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ctcom/
 
 clean:
 	rm -rf *.o *.bak *.a *.so hashcode.h *.dll *.exe names.h *.ex *.nm

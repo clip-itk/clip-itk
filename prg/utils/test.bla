@@ -1,0 +1,23 @@
+aaa:="world"
+hello #aaa
+a:=dbusearea(.t.,,"test.dbf")
+alias= #alias()
+recno= #recno()
+dbS:=dbstruct()
+dbstructure is:
+*
+ii:=1
+#while ii<=len(dbS)
+	#ii #padr(dbs[ii][1],10) #dbs[ii][2] #dbs[ii][3] #dbs[ii][4]
+	ii:=ii+1
+#endwhile
+*
+record data:
+ii:=1
+#while ii<=len(dbS)
+	#ii #dbs[ii][1] = #fieldGet(ii)
+	ii:=ii+1
+#endwhile
+
+end
+

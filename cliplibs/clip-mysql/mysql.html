@@ -13,7 +13,7 @@
 <br> <br><b>
  ConnectNew("MS",[&lt;host&gt;],[&lt;port&gt;],[&lt;login&gt;],
  [&lt;pwd&gt;],[&lt;dbName&gt;],[&lt;socket&gt;],
- [&lt;flags&gt;])</b>, где
+ [&lt;flags&gt;],,[&lt;cIsolation&gt;])</b>, где
 <br> <br>
  "MS" - строка, идентифицирующая СУБД MySQL;
 <br> <br>
@@ -30,6 +30,8 @@
  &lt;socket&gt; - socket или pipe для соединения;
 <br> <br>
  &lt;flags&gt; - флаги соединения (обычно 0);
+<br> <br>
+ &lt;cIsolation&gt; - уровень изоляции по умолчанию.
 <br> <br>
  Подробнее о параметрах соединения смотрите документацию по MySQL.
 <br> <br>
@@ -61,6 +63,13 @@
  DELETE FROM mytable WHERE id=:id
 <br> <br>
  UPDATE mytable SET fname=:fname,lname=:lname WHERE id=:id
+<br> <br>
+ Возможные значения параметра &lt;cIsolation&gt; для ConnectNew()
+ и TConnect:Start():<br> <br>
+ "READ UNCOMMITTED"<br>
+ "READ COMMITTED"<br>
+ "REPEATABLE READ"<br>
+ "SERIALIZABLE"
 <br> <br>
  Реализованы следующие типы MySQL:
 <pre>

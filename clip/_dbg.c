@@ -5,10 +5,18 @@
 */
 /*
 	$Log: _dbg.c,v $
+	Revision 1.17  2003/09/09 14:36:14  clip
+	uri: fixes for mingw from Mauricio and Uri
+	
+	Revision 1.16  2003/09/02 14:27:42  clip
+	changes for MINGW from
+	Mauricio Abre <maurifull@datafull.com>
+	paul
+	
 	Revision 1.15  2001/10/29 06:51:21  clip
 	fix text fopen modes
 	paul
-	
+
 	Revision 1.14  2001/09/05 11:19:29  clip
 	cygwin
 	paul
@@ -66,6 +74,7 @@
 
 */
 
+#include "clip.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -79,19 +88,23 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
+#ifndef OS_MINGW
+	#include <sys/wait.h>
+#endif
 #include <sys/time.h>
 
-#include "clip.h"
 #include "error.ch"
 
-static pid_t pid = 0, tpid = 0;
+#ifndef _WIN32
 static char in_path[256] =
 {0};
 static char out_path[256] =
 {0};
 static FILE *fin = 0;
 static FILE *fout = 0;
+
+
+static pid_t pid = 0, tpid = 0;
 static int cleanup_installed = 0;
 
 static void
@@ -132,6 +145,7 @@ static void
 dbg_signal(int sig)
 {
 }
+#endif
 
 /*
 	dbgconnect(cProgramNname|nPid) -> lResult
@@ -139,7 +153,7 @@ dbg_signal(int sig)
 int
 clip_DBGCONNECT(ClipMachine *mp)
 {
-#ifdef OS_CYGWIN
+#ifdef _WIN32
 	return EG_ARG;
 #else
 	ClipVar *vp = _clip_par(mp,1);
@@ -272,6 +286,9 @@ clip_DBGCLOSE(ClipMachine *mp)
 int
 clip_DBGCOMMAND(ClipMachine *mp)
 {
+#ifdef _WIN32
+		return EG_ARG;
+#else
 	char *str = _clip_parc(mp, 1);
 	char *buf, *obuf=0;
 
@@ -366,6 +383,7 @@ clip_DBGCOMMAND(ClipMachine *mp)
 	_clip_retcn_m(mp, obuf, strlen(obuf));
 	free(buf);
 	return 0;
+#endif
 }
 
 

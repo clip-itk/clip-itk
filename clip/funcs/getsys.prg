@@ -125,15 +125,35 @@ PROCEDURE GetReader( oGet, GetList, oMenu, oMsg )
       ShowGetMsg( oGet, oMsg )
 
       oStatus:hitcode  := 0
-      oStatus:lastexit := 0
       oGet:setFocus()
 
       WHILE ( oGet:exitState == GE_NOEXIT .AND. !oStatus:killread )
 
+#ifdef __________
 	 IF ( oGet:typeOut )
 	    oGet:exitState := GE_ENTER
-	 ENDIF
+	 endif
+#else
+	 IF ( oGet:typeOut )
+	    //  oGet:exitState := GE_ENTER
 
+	    IF oStatus:Pos = NIL
+	      oGet:exitState := GE_ENTER
+	    ELSE
+	      IF oStatus:LastExit = GE_UP
+		IF oStatus:Pos-1 == 0
+		  oGet:exitState := GE_ENTER
+		ELSE
+		  oGet:exitState := GE_UP
+		ENDIF
+	      ELSE
+		oGet:exitState := GE_ENTER
+	      ENDIF
+
+	    ENDIF
+
+	 ENDIF
+#endif
 	 WHILE ( oGet:exitState == GE_NOEXIT .AND. !oStatus:killread )
 	    SETCURSOR( IIF( oStatus:svccursor == SC_NONE, ;
 		 SC_NORMAL, oStatus:svccursor ) )
@@ -153,6 +173,7 @@ PROCEDURE GetReader( oGet, GetList, oMenu, oMsg )
 	 ENDIF
 
       ENDDO
+      oStatus:lastexit := 0
 
       nRow    := ROW()
       nCol    := COL()
@@ -390,31 +411,33 @@ FUNCTION Accelerator( GetList, nKey, oMsg )
 	    IF ( VALTYPE( oGet:Control ) == "O" .AND. ;
 			  oGet:Control:ClassName() != "TBROWSE" )
 	       cCaption := oGet:Control:Caption
-	    ELSE
+	    ELSEIF "CAPTION" $ oGet
 	       cCaption := oGet:Caption
+	    else
+		cCaption := ""
 	    ENDIF
 
 	    IF ( ( nHotPos := AT( "&", cCaption ) ) == 0 )
 	    ELSEIF ( nHotPos == LEN( cCaption ) )
 	    ELSEIF ( LOWER( SUBSTR( cCaption, nHotPos + 1, 1 ) ) == cKey )
 
-                lGUI := ( VALTYPE( Getlist[ oStatus:pos ]:Control ) == "O" )
-                IF lGUI .AND. !( GUIPostValidate( GetList[ oStatus:pos ], ;
+		lGUI := ( VALTYPE( Getlist[ oStatus:pos ]:Control ) == "O" )
+		IF lGUI .AND. !( GUIPostValidate( GetList[ oStatus:pos ], ;
 		    GetList[ oStatus:pos ]:Control, oMsg  ) )
-	            RETURN 0
-                ELSEIF !lGUI .AND. !( GetPostValidate( GetList[ oStatus:pos ], ;
-	               oMsg ) )
-	               RETURN 0
-                ENDIF
+		    RETURN 0
+		ELSEIF !lGUI .AND. !( GetPostValidate( GetList[ oStatus:pos ], ;
+		       oMsg ) )
+		       RETURN 0
+		ENDIF
 
-                lGUI := ( VALTYPE( oGet:Control ) == "O" )
-                IF lGUI .AND. !( GUIPreValidate( oGet, oGet:Control, oMsg  ) )
-	            RETURN nGet
-                ELSEIF !lGUI .AND. !( GetPreValidate( oGet, oMsg ) )
-	            RETURN nGet
-                ENDIF
+		lGUI := ( VALTYPE( oGet:Control ) == "O" )
+		IF lGUI .AND. !( GUIPreValidate( oGet, oGet:Control, oMsg  ) )
+		    RETURN nGet
+		ELSEIF !lGUI .AND. !( GetPreValidate( oGet, oMsg ) )
+		    RETURN nGet
+		ENDIF
 
-	        RETURN ( nGet )
+		RETURN ( nGet )
 	    ENDIF
 	 NEXT
 
@@ -468,9 +491,9 @@ PROCEDURE GetApplyKey( oGet, nKey, GetList, oMenu, oMsg )
    CASE( nKey == K_UP )
       keyExit:=5
       if oGet:classname=="TEXTGET"
-         oget:up()
+	 oget:up()
       else
-         oGet:exitState := GE_UP
+	 oGet:exitState := GE_UP
       endif
 
    CASE( nKey == K_SH_TAB )
@@ -480,9 +503,9 @@ PROCEDURE GetApplyKey( oGet, nKey, GetList, oMenu, oMsg )
    CASE( nKey == K_DOWN )
       keyExit:=2
       if oGet:classname=="TEXTGET"
-         oget:down()
+	 oget:down()
       else
-         oGet:exitState := GE_DOWN
+	 oGet:exitState := GE_DOWN
       endif
 
    CASE( nKey == K_TAB )
@@ -492,9 +515,9 @@ PROCEDURE GetApplyKey( oGet, nKey, GetList, oMenu, oMsg )
    CASE( nKey == K_ENTER )
       keyExit:=15
       if oGet:classname=="TEXTGET"
-         oget:insertLine()
+	 oget:insertLine()
       else
-         oGet:exitState := GE_ENTER
+	 oGet:exitState := GE_ENTER
       endif
 
    CASE( nKey == K_ESC )
@@ -507,17 +530,17 @@ PROCEDURE GetApplyKey( oGet, nKey, GetList, oMenu, oMsg )
    CASE( nKey == K_PGUP )
       keyExit:=6
       if oGet:classname=="TEXTGET"
-         oget:pgup()
+	 oget:pgup()
       else
-         oGet:exitState := GE_WRITE
+	 oGet:exitState := GE_WRITE
       endif
 
    CASE( nKey == K_PGDN )
       keyExit:=7
       if oGet:classname=="TEXTGET"
-         oget:pgdn()
+	 oget:pgdn()
       else
-         oGet:exitState := GE_WRITE
+	 oGet:exitState := GE_WRITE
       endif
 
    CASE( nKey == K_CTRL_HOME )
@@ -555,25 +578,36 @@ PROCEDURE GetApplyKey( oGet, nKey, GetList, oMenu, oMsg )
       ELSEIF ( ( nButton := ;
 	 oGet:HitTest( MouseRow, MouseColumn ) ) == HTCLIENT )
 
-	 DO WHILE ( oGet:Col + oGet:Pos - 1 > MouseColumn )
-	    oGet:Left()
+	 if oGet:className == "TEXTGET"
+		DO WHILE ( oGet:Edit:nLeft+oGet:Edit:ColWin-1 > MouseColumn )
+			oGet:Edit:Left()
+		ENDDO
+		DO WHILE ( oGet:Edit:nLeft+oGet:Edit:ColWin-1 < MouseColumn )
+			oGet:Edit:right()
+		ENDDO
+		DO WHILE ( oGet:Edit:nTop+oGet:Edit:rowWin-1 > MouseRow )
+			oGet:Edit:up()
+		ENDDO
+		DO WHILE ( oGet:Edit:nTop+oGet:Edit:rowWin-1 < MouseRow )
+			oGet:Edit:down()
+		ENDDO
+	 else
+		DO WHILE ( oGet:Col + oGet:Pos - 1 > MouseColumn )
+			oGet:Left()
+			IF oGet:typeOut
+				oGet:Home()
+				EXIT
+			ENDIF
+		ENDDO
 
-	    IF oGet:typeOut
-	       oGet:Home()
-	       EXIT
-	    ENDIF
-
-	 ENDDO
-
-	 DO WHILE ( oGet:Col + oGet:Pos - 1 < MouseColumn )
-	    oGet:Right()
-
-	    IF oGet:typeOut
-	       oGet:End()
-	       EXIT
-	    ENDIF
-
-	 ENDDO
+		DO WHILE ( oGet:Col + oGet:Pos - 1 < MouseColumn )
+			oGet:Right()
+			IF oGet:typeOut
+				oGet:End()
+				EXIT
+			ENDIF
+		ENDDO
+	 endif
 
       ELSEIF !( nButton == HTNOWHERE )
       ELSEIF ( !( GetList == NIL ) .AND. ;
@@ -646,7 +680,7 @@ PROCEDURE GetApplyKey( oGet, nKey, GetList, oMenu, oMsg )
 	       ENDIF
 
 	       IF ( !SET( _SET_CONFIRM ) )
- 	 	  keyExit:=15
+		  keyExit:=15
 		  oGet:exitState := GE_ENTER
 	       ENDIF
 	    ENDIF
@@ -712,12 +746,12 @@ PROCEDURE GUIApplyKey( oGet, oGUI, GetList, nKey, oMenu, oMsg )
    IF ( nKey == 0 )
    ELSEIF ( ( TheClass := oGUI:ClassName() ) == "RADIOGROUP" )
       IF ( nKey == K_UP )
- 	 keyExit:=5
+	 keyExit:=5
 	 oGUI:PrevItem()
 	 nKey := 0
 
       ELSEIF ( nKey == K_DOWN )
- 	 keyExit:=2
+	 keyExit:=2
 	 oGUI:NextItem()
 	 nKey := 0
 
@@ -740,28 +774,28 @@ PROCEDURE GUIApplyKey( oGet, oGUI, GetList, nKey, oMenu, oMsg )
 	 oGUI:Select( K_SPACE )
 
       ELSEIF ( nKey == K_ENTER )
- 	 keyExit:=15
+	 keyExit:=15
 	 oGUI:Select()
 	 nKey := 0
       ENDIF
 
    ELSEIF ( TheClass == "LISTBOX" )
       IF ( nKey == K_UP )
- 	 keyExit:=5
-         if oGui:isOpen .or. oGui:useArrow
-      	 	oGUI:PrevItem()
-         else
-      		oGet:exitState := GE_UP
-         endif
+	 keyExit:=5
+	 if oGui:isOpen .or. oGui:useArrow
+		oGUI:PrevItem()
+	 else
+		oGet:exitState := GE_UP
+	 endif
 	 nKey := 0
 
       ELSEIF ( nKey == K_DOWN )
- 	 keyExit:=2
-         if oGui:isOpen .or. oGui:useArrow
-       	 	oGUI:NextItem()
-         else
-      		oGet:exitState := GE_DOWN
-         endif
+	 keyExit:=2
+	 if oGui:isOpen .or. oGui:useArrow
+		oGUI:NextItem()
+	 else
+		oGet:exitState := GE_DOWN
+	 endif
 	 nKey := 0
 
       ELSEIF ( nKey == K_SPACE )
@@ -772,21 +806,21 @@ PROCEDURE GUIApplyKey( oGet, oGUI, GetList, nKey, oMenu, oMsg )
 	 ENDIF
 
       ELSEIF ( nKey == K_ENTER .and. oGui:isOpen )
-      		oGui:select()
-                oGui:close()
-                nkey:=0
+		oGui:select()
+		oGui:close()
+		nkey:=0
 
       ELSEIF ( nKey == K_ESC .and. oGui:isOpen )
-                oGui:close()
-                nkey:=0
+		oGui:close()
+		nkey:=0
 
       ELSEIF ( nKey == K_PGUP .and. oGui:isOpen )
-                oGui:prevPage()
-                nkey:=0
+		oGui:prevPage()
+		nkey:=0
 
       ELSEIF ( nKey == K_PGDN .and. oGui:isOpen )
-                oGui:nextPage()
-                nkey:=0
+		oGui:nextPage()
+		nkey:=0
 
       ELSEIF ( ( nButton := oGUI:FindText( CHR( nKey ), oGUI:Value + 1, ;
 					   .F., .F. ) ) != 0 )
@@ -801,71 +835,71 @@ PROCEDURE GUIApplyKey( oGet, oGUI, GetList, nKey, oMenu, oMsg )
 
    DO CASE
    CASE( nKey == K_UP )
- 	 keyExit:=5
+	 keyExit:=5
       if oGet:classname=="TEXTGET"
-         oget:up()
+	 oget:up()
       else
-         oGet:exitState := GE_UP
+	 oGet:exitState := GE_UP
       endif
 
    CASE( nKey == K_SH_TAB )
- 	 keyExit:=5
+	 keyExit:=5
       oGet:exitState := GE_UP
 
    CASE( nKey == K_DOWN )
- 	 keyExit:=2
+	 keyExit:=2
       if oGet:classname=="TEXTGET"
-         oget:down()
+	 oget:down()
       else
-         oGet:exitState := GE_DOWN
+	 oGet:exitState := GE_DOWN
       endif
 
    CASE( nKey == K_TAB )
- 	 keyExit:=2
+	 keyExit:=2
       oGet:exitState := GE_DOWN
 
    CASE( nKey == K_ENTER )
- 	 keyExit:=15
+	 keyExit:=15
       if oGet:classname=="TEXTGET"
-         oget:insertLine()
+	 oget:insertLine()
       else
-         oGet:exitState := GE_ENTER
+	 oGet:exitState := GE_ENTER
       endif
       //oGet:exitState := GE_ENTER
 
    CASE( nKey == K_ESC )
- 	 keyExit:=12
+	 keyExit:=12
       IF ( SET( _SET_ESCAPE ) )
 	 oGet:exitState := GE_ESCAPE
       ENDIF
 
    CASE( nKey == K_PGUP )
- 	 keyExit:=6
+	 keyExit:=6
       if oGet:classname=="TEXTGET"
-         oget:pgup()
+	 oget:pgup()
       else
-         oGet:exitState := GE_WRITE
+	 oGet:exitState := GE_WRITE
       endif
 
    CASE( nKey == K_PGDN )
- 	 keyExit:=7
+	 keyExit:=7
       if oGet:classname=="TEXTGET"
-         oget:pgdn()
+	 oget:pgdn()
       else
-         oGet:exitState := GE_WRITE
+	 oGet:exitState := GE_WRITE
       endif
 
    CASE( nKey == K_CTRL_HOME )
- 	 keyExit:=15
+	 keyExit:=15
       oGet:exitState := GE_TOP
 
 #ifdef CTRL_END_SPECIAL
    CASE( nKey == K_CTRL_END )
- 	 keyExit:=14
+	 keyExit:=14
       oGet:exitState := GE_BOTTOM
 #else
    CASE( nKey == K_CTRL_W )
- 	 keyExit:=14
+	 keyExit:=14
       oGet:exitState := GE_WRITE
 
 #endif
@@ -966,35 +1000,35 @@ PROCEDURE TBApplyKey( oGet, oTB, GetList, nKey, oMenu, oMsg )
 
    DO CASE
    CASE( nKey == K_TAB )
- 	 keyExit:=2
+	 keyExit:=2
       oGet:exitState := GE_DOWN
 
    CASE( nKey == K_SH_TAB )
- 	 keyExit:=5
+	 keyExit:=5
       oGet:exitState := GE_UP
 
    CASE( nKey == K_ENTER )
- 	 keyExit:=15
+	 keyExit:=15
       if oGet:classname=="TEXTGET"
-         oget:insertLine()
+	 oget:insertLine()
       else
-         oGet:exitState := GE_ENTER
+	 oGet:exitState := GE_ENTER
       endif
       //oGet:exitState := GE_ENTER
 
    CASE( nKey == K_ESC )
- 	 keyExit:=12
+	 keyExit:=12
       IF ( SET( _SET_ESCAPE ) )
 	 oGet:exitState := GE_ESCAPE
       ENDIF
 
 #ifdef CTRL_END_SPECIAL
    CASE( nKey == K_CTRL_END )
- 	 keyExit:=14
+	 keyExit:=14
       oGet:exitState := GE_BOTTOM
 #else
    CASE( nKey == K_CTRL_W )
- 	 keyExit:=14
+	 keyExit:=14
       oGet:exitState := GE_WRITE
 #endif
    CASE( ( nKey == K_LBUTTONDOWN ) .OR. ( nKey == K_LDBLCLK ) )
@@ -1287,7 +1321,7 @@ STATIC FUNCTION ClearGetSysVars()
    LOCAL k, aSavSysVars  := map()
 
    for k in oStatus KEYS
-         aSavSysVars[k] := oStatus[k]
+	 aSavSysVars[k] := oStatus[k]
    next
    aSavSysVars:updated   := .F.
    aSavSysVars:readvar   := READVAR( "" )
@@ -1314,7 +1348,7 @@ STATIC FUNCTION ClearGetSysVars()
 STATIC PROCEDURE RestoreGetSysVars( aSavSysVars )
    LOCAL k,lUpdated         := oStatus:updated
    for k in aSavSysVars KEYS
-   	oStatus[k] := aSavSysVars[k]
+	oStatus[k] := aSavSysVars[k]
    next
    oStatus:updated := lUpdated
    READVAR( aSavSysVars:readvar )
@@ -1496,40 +1530,40 @@ RETURN ( bSavFormat )
 FUNCTION ReadStats( nStatic, xValue )
    LOCAL xSavStats, sStatic
    switch ( nStatic )
-   	case   1
-   		sStatic := "updated"
-   	case   2
-   		sStatic := "format"
-   	case   3
-   		sStatic := "killread"
-   	case   4
-   		sStatic := "bumptop"
-   	case   5
-   		sStatic := "bumpbot"
-   	case   6
-   		sStatic := "lastexit"
-   	case   7
-   		sStatic := "lastpos"
-   	case   8
-   		sStatic := "activeget"
-   	case   9
-   		sStatic := "readvar"
-   	case  10
-   		sStatic := "procname"
-   	case  11
-   		sStatic := "procline"
-   	case  12
-   		sStatic := "nextget"
-   	case  13
-   		sStatic := "hitcode"
-   	case  14
-   		sStatic := "pos"
-   	case  15
-   		sStatic := "scrvmsg"
-   	case  16
-   		sStatic := "menuid"
-   	case  17
-   		sStatic := "svccursor"
+	case   1
+		sStatic := "updated"
+	case   2
+		sStatic := "format"
+	case   3
+		sStatic := "killread"
+	case   4
+		sStatic := "bumptop"
+	case   5
+		sStatic := "bumpbot"
+	case   6
+		sStatic := "lastexit"
+	case   7
+		sStatic := "lastpos"
+	case   8
+		sStatic := "activeget"
+	case   9
+		sStatic := "readvar"
+	case  10
+		sStatic := "procname"
+	case  11
+		sStatic := "procline"
+	case  12
+		sStatic := "nextget"
+	case  13
+		sStatic := "hitcode"
+	case  14
+		sStatic := "pos"
+	case  15
+		sStatic := "scrvmsg"
+	case  16
+		sStatic := "menuid"
+	case  17
+		sStatic := "svccursor"
    end
    nStatic:=hashname(upper(sStatic))
    xSavStats := oStatus[nStatic]
@@ -1583,8 +1617,8 @@ FUNCTION EraseGetMsg( oGet, oMsg )
 ***********************************************
 FUNC UpDateGets( list )
 	local get, ppp
-        iif( pcount()==0, list:=memvar->getlist, NIL)
-        aeval(list,{|X|x:display()})
+	iif( pcount()==0, list:=memvar->getlist, NIL)
+	aeval(list,{|X|x:display()})
 RETURN NIL
 
 ***********************************************
@@ -1596,13 +1630,13 @@ return
 ***********************************************
 init procedure getSysInit()
    if oStatus==NIL
-   	__getSysInit()
+	__getSysInit()
    endif
 return
 ***********************************************
 static function __getSysInit()
    if oStatus==NIL
-   	oStatus=map()
+	oStatus=map()
 	oStatus:updated     := .f.
 	oStatus:format      := NIL
 	oStatus:killread    := NIL
@@ -1625,10 +1659,10 @@ return
 ************************************
 function _procreq_(fName)
 	static cFormat
-        local ret := cFormat
-        if fname !=NIL
-        	cFormat := fName
-        endif
+	local ret := cFormat
+	if fname !=NIL
+		cFormat := fName
+	endif
 return ret
 
 ************************************

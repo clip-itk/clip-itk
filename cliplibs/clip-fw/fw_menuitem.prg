@@ -254,16 +254,16 @@ return
 
 //----------------------------------------------------------------------------//
 
-static function fw___HelpTopic(self)
+static function fw_HelpTopic(self)
 
    if Empty( self:nHelpId )
       if self:oMenu != nil
 	 self:oMenu:HelpTopic()
       else
-	 HelpIndex()
+	 eval(Selector:HelpIndex)
       endif
    else
-      HelpTopic( self:nHelpId )
+      eval(Selector:HelpTopic, self:nHelpId )
    endif
 
 return

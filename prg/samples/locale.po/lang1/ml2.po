@@ -1,0 +1,33 @@
+# Module ml2.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2002.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-11-10 21:58+0400\n"
+"PO-Revision-Date: 2002-10-31 13:26+0400\n"
+"Last-Translator: Paul Lasarev <paul@itk.ru>\n"
+"Language-Team: Russian <clip-devel@itk.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: pluralmsg.prg:17 pluralmsg.prg:18 pluralmsg.prg:19 pluralmsg.prg:31
+#: pluralmsg.prg:32 pluralmsg.prg:33
+msgid "line"
+msgid_plural "lines"
+msgstr[0] "строка"
+msgstr[1] "строки"
+msgstr[2] "строк"
+
+#: pluralmsg.prg:22 pluralmsg.prg:23 pluralmsg.prg:24 pluralmsg.prg:36
+#: pluralmsg.prg:37 pluralmsg.prg:38
+msgid "warning"
+msgid_plural "warnings"
+msgstr[0] "предупреждение"
+msgstr[1] "предупреждения"
+msgstr[2] "предупреждений"

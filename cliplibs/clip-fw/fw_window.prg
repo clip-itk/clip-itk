@@ -333,9 +333,9 @@ local cH, cW
 
 	if valtype( oIcon ) == "C"  // oIcon - file name
 		if file( oIcon )
-			oIcon := TIcon():New(,,, oIcon)  // FILE
+			oIcon := nil//TIcon():New(,,, oIcon)  // FILE
 		else
-			oIcon := TIcon():New(,, oIcon)   // RESOURSE
+			oIcon := nil//TIcon():New(,, oIcon)   // RESOURSE
 
 		endif
 		self:oIcon := oIcon
@@ -502,8 +502,8 @@ return
 static function fw_command(self, nWParam, nLParam)
 local nNotifyCode, nID, hWndCtl
 
-	nNotifyCode = HiWord( nWParam )
-	nID         = LoWord( nWParam )
+	nNotifyCode = nHiWord( nWParam )
+	nID         = nLoWord( nWParam )
 	hWndCtl     = nLParam
 
 	do case
@@ -630,7 +630,7 @@ return
 static function fw_disable(self)
 	self:lActive := .f.
 	if self:hWnd > -1
-		eval(Selector:EnableWindow,self:hWnd, .f.)
+		//eval(Selector:EnableWindow,self:hWnd, .f.)
 	endif
 return
 ***************
@@ -673,7 +673,7 @@ return
 static function fw_Enable(self)
 	self:lActive := .t.
 	if self:hWnd > -1
-		eval(Selector:EnableWindow,self:hWnd, .t.)
+		//eval(Selector:EnableWindow,self:hWnd, .t.)
 	endif
 return
 ***************
@@ -875,7 +875,9 @@ local hCtlNext := eval(Selector:NextDlgTab, self, hCtrl )
 	endif
 
 	if hCtlNext != hCtrl
-		eval(Selector:SetFocus, hCtlNext )
+		if !(eval(Selector:SetFocus, hCtlNext ))
+                	eval(Selector:SetFocus, hCtrl )
+                endif
 	endif
 return
 ***************
@@ -1390,11 +1392,11 @@ local nAt, oItem
 
 	if nIdCtl == 0 // Menu
 		if self:oPopup != nil
-			oItem = self:oPopup:GetMenuItem( GetMeaItem( pMitStruct ) )
+			oItem = self:oPopup:GetMenuItem( /*GetMeaItem( pMitStruct )*/ )
 		endif
 		if oItem == nil
 			self:oPopup = nil
-			oItem = self:oMenu:GetMenuItem( GetMeaItem( pMitStruct ) )
+			oItem = self:oMenu:GetMenuItem( /*GetMeaItem( pMitStruct )*/ )
 		endif
 		if oItem != nil
 			eval(Selector:MenuMeasureItem, pMitStruct,;
@@ -1437,8 +1439,8 @@ static function fw_move(self, nTop, nLeft, nWidth, nHeight, lRepaint)
 return
 ***************
 static function fw_ncActivate(self, lOnOff)
-	if !lOnOff .and. self:bLostFocus != NIL .and.  GetFocus() != self:hWnd
-		self:bLostFocus( GetFocus() )
+	if !lOnOff .and. self:bLostFocus != NIL .and.  eval(Selector:GetFocus) != self:hWnd
+		self:bLostFocus( eval(Selector:GetFocus) )
 	endif
 return
 ***************
@@ -1520,7 +1522,7 @@ return
 ***************
 static function fw_register(self, nClsStyle)
 local hUser
-
+/*
 	DEFAULT self:lRegistered := .f. // XBPP workaround
 
 	if self:lRegistered
@@ -1531,7 +1533,7 @@ local hUser
 
 	DEFAULT nClsStyle  := numOr( CS_VREDRAW, CS_HREDRAW ),;
 	   self:nClrPane := GetSysColor( COLOR_WINDOW ),;
-	   self:oBrush   := TBrush():New( ,self:nClrPane )
+	   self:oBrush   := nil //TBrush():New( ,self:nClrPane )
 
 	nClsStyle = numOr( nClsStyle, CS_GLOBALCLASS, CS_DBLCLKS )
 
@@ -1541,6 +1543,7 @@ local hUser
 	else
 		self:lRegistered = .t.
 	endif
+	*/
 return
 ***************
 static function fw_reSize(self, nSizeType, nWidth, nHeight)
@@ -1588,8 +1591,8 @@ static function fw_say(self, nRow, nCol, cText, nClrFore, nClrBack, oFont, lPixe
 
 	if ValType( nClrFore ) == "C"      //  xBase Color string
 		nClrBack = nClrFore
-		nClrFore = nGetForeRGB( nClrFore )
-		nClrBack = nGetBackRGB( nClrBack )
+		nClrFore = eval(Selector:nGetForeRGB, nClrFore )
+		nClrBack = eval(Selector:nGetBackRGB, nClrBack )
 	endif
 
 	//self:GetDC()

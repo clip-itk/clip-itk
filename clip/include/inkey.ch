@@ -38,7 +38,8 @@
 #define K_ALT_ESC         257   /*   Alt-Esc                     */
 #define K_ALT_ENTER       284   /*   Alt-Enter                   */
 #define K_ALT_RETURN      284   /*   Alt-Return                  */
-#define K_CTRL_QUESTION   309   /*   Ctrl-?                      */
+#define K_ALT_QUESTION    309   /*   ALT-?                      */
+#define K_CTRL_QUESTION   309   /*   ALT-? -error in clipper    */
 #define K_ALT_EQUALS      387   /*   Alt-Equals                  */
 #define K_CTRL_PRTSCR     379   /*   Ctrl-Print Screen           */
 
@@ -141,6 +142,7 @@
 #define K_ALT_8           383   /*    Alt-8                      */
 #define K_ALT_9           384   /*    Alt-9                      */
 #define K_ALT_0           385   /*    Alt-0                      */
+#define K_ALT_TILDA       297   /*    Alt-`                      */
 
 /* Alt keys */
 #define K_A           65    /*    A                      */

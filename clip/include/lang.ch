@@ -1,6 +1,6 @@
 #include "config.ch"
 
-#ifndef _LAND_DEFINED
+#ifndef _LANG_DEFINED
 	#define LANG_ARRAY_STRING	[array]
 	#define LANG_CBLOCK_STRING	[Block]
 	#define LANG_YES_STRING		[Yes]

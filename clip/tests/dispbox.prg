@@ -1,5 +1,6 @@
 #include "box.ch"
 *charset koi8-r
+//function main()
 clear screen
 set dispbox off
 dispbox(1,1,4,10,2)

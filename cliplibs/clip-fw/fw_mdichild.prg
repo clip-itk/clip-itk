@@ -264,12 +264,12 @@ static function fw_KeyDown( self, nKey, nFlags )
    // There is no a standard behavior for WM_KEYDOWN messages so we have
    // to process them !
 
-   if nKey == VK_F4 .and. GetKeyState( VK_CONTROL )
+   if nKey == VK_F4 .and. eval(Selector:GetKeyState, VK_CONTROL )
       self:SendMsg( WM_SYSCOMMAND, SC_CLOSE )
       return 0
    endif
 
-   if nKey == VK_F6 .and. GetKeyState( VK_CONTROL )
+   if nKey == VK_F6 .and. eval(Selector:GetKeyState, VK_CONTROL )
       self:SendMsg( WM_SYSCOMMAND, SC_NEXT )
       return 0
    endif

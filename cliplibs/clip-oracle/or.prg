@@ -2,7 +2,7 @@
 #include "oracle.ch"
 
 FUNCTION OR2CLIP(rowset,fieldno)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL data := SQLGetValue(rowset,fieldno)
 	LOCAL dec := SET(_SET_DECIMALS)
 
@@ -23,7 +23,7 @@ FUNCTION OR2CLIP(rowset,fieldno)
 RETURN
 
 FUNCTION CLIP2OR(rowset,fieldno,value)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL dec := SET(_SET_DECIMALS)
 
 	IF value == NIL

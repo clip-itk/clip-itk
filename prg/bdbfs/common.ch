@@ -1,37 +1,39 @@
 /*
-    Copyright (C) 1998-2002 Yevgen Bondar <elb@lg.bank.gov.ua>
+    Copyright (C) 1998-2003 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
-#ifdef __CLIP__
-        #xdefine ismouse mpresent
-        #xdefine mousex  mrow
-        #xdefine mousey  mcol
-        #xdefine hidemouse mhide
-        #xdefine showmouse mshow
-        #xdefine setmousexy  msetpos
-	#xdefine makerealstruct  makerealstr
+#define M_SHARED .T.
+#define M_EXCL .F.
 
-	#xtranslate GetPath() => StartPath()
-	#xtranslate TimeSlice() =>
-	*#xdefine FT_STOD  STOD
-	#define _EMP CHR(0)	
+#xdefine ismouse mpresent
+#xdefine mousex  mcol
+#xdefine mousey  mrow
+#xdefine hidemouse mhide
+#xdefine showmouse mshow
+#xdefine setmousexy  msetpos
+#xdefine makerealstruct  makerealstr
+#xdefine center centerb		//çâ®¡ë ­¥  ¯ãâ âì CTools
+#xdefine FreezeFields FreezeField
+#xdefine d2bin ftoc
 
-	#define SCROLL_LEFT	translate_charset("cp866",host_charset(),CHR(17))
-	#define SCROLL_RIGHT	translate_charset("cp866",host_charset(),CHR(16))
-	#define SCROLL_UP	translate_charset("cp866",host_charset(),CHR(24))
-	#define SCROLL_DOWN	translate_charset("cp866",host_charset(),CHR(25))
-	#define SCROLL_MARK	translate_charset("cp866",host_charset(),CHR(219))
-	#define SCROLL_FILL	translate_charset("cp866",host_charset(),CHR(177))
+#xtranslate GetPath() => StartPath()
+#xtranslate TimeSlice() =>
+#define K_EMP 0	
+#define _EMP CHR(K_EMP)	
 
-	#xdefine KeyNo OrdKeyNo
-	#xdefine KeyGoTo OrdKeyGoTo
-	#xdefine KeyCount OrdKeyCount
-	#xdefine TagUnique OrdIsUnique
-#else
-	#define PATH_DELIM "\"
-	#define FILE_MASK "*.*"
-	#define _EMP CHR(255)
-#endif
+#define SCROLL_LEFT	translate_charset("cp866",host_charset(),CHR(17))
+#define SCROLL_RIGHT	translate_charset("cp866",host_charset(),CHR(16))
+#define SCROLL_UP	translate_charset("cp866",host_charset(),CHR(24))
+#define SCROLL_DOWN	translate_charset("cp866",host_charset(),CHR(25))
+#define SCROLL_MARK	translate_charset("cp866",host_charset(),CHR(219))
+#define SCROLL_FILL	translate_charset("cp866",host_charset(),CHR(177))
+
+#define L_A_SIGN	translate_charset("cp866",host_charset(),CHR(254))
+
+#xdefine KeyNo OrdKeyNo
+#xdefine KeyCount OrdKeyCount
+#xdefine TagUnique OrdIsUnique
+
 
 #define _ESC CHR(27)
 #define _INS CHR(22)
@@ -55,10 +57,7 @@
 #define _CTRLRIGHT CHR(2)
 #define _DUMMY CHR(1)
 #define _CRLF CHR(13)+CHR(10)
-#define FRAME2 'ÉÍ»º¼ÍÈº '
 #define FRAME1 'ÚÄ¿³ÙÄÀ³ '
-#define FRAME21 'ÖÄ·º½ÄÓº '
-#define FRAME12 'ÕÍ¸³¾ÍÔ³ '
 #define _HelpKey CHR(28)
 
 #define _AltLeft 411
@@ -74,10 +73,12 @@
 #define K_CTRL_GDIV 405
 #define K_CTRL_GPLUS 400
 #define K_CTRL_GMULT 406
+#define K_CTRL_2 259
 
-#xtranslate ADD_EXT(<name>,<ext>)=> (ALLTRIM(<name>))+if('.' $ <name>,'',<ext>)
+
 #xtranslate AMSCAN(<arr>,<nDim>,<xVal>) => (ASCAN(<arr>,{|x| x\[<nDim>\]==<xVal>}))
 #xtranslate BreakMess(<mess>)=> Nfind(<mess>) ; Break
+#xtranslate ChDir(<cPath>) => DirChange(<cPath>)
 #xtranslate CHG_EXT(<name>,<rt>,<ext>)=> Substr(<name>,1,Len(<name>)-<rt>)+<ext>
 #xtranslate DbfDskSize([<base>]) => Fseek(m->_MainHandle,0,2)
 #xtranslate DbfSize() => (Header()+RecSize()*LastRec())
@@ -90,7 +91,6 @@
 #xtranslate IsPBlock(<var>)=> (TYPE(<var>)=='B')
 #xtranslate IsPCharacter(<var>)=> (TYPE(<var>)=='C')
 #xtranslate IsPDATE(<var>)=> (TYPE(<var>)=='D')
-#xtranslate IsField(<name>)=> (!( '(' $ <name> .or. ('+' $ <name>) .or. ('- ' $ <name>) .or. ('*' $ <name>) .or. ('/' $ <name>) .or. ('=' $ <name>) .or. ('%' $ <name>) ))
 #xtranslate IsInFilter()=> ( Empty(DBFilter()) .or. &(DbFilter()) )
 #xtranslate IsPLogical(<var>)=> (TYPE(<var>)=='L')
 #xtranslate IsPNumeric(<var>)=> (TYPE(<var>)=='N')
@@ -105,10 +105,8 @@
 #xtranslate ReturnMess(<mess>) =>  Nfind(<mess>) ; RETURN
 #xtranslate ReversColor()=> (Substr(SetColor(),At(",",SetColor())+1))
 #xtranslate SavePos()=> _r:=Row() ; _c:=Col()
-#xtranslate Out(<r>,<c>,<xMsg>,<cClr>)=>;
-	SavePos(); DevPos(<r>,<c>); DevOut(<xMsg>,<cClr>); RestPos()
-#xtranslate Strip(<cStr>,<nRight>) => SUBSTR(<cStr>,1,LEN(<cStr>)-<nRight>)
-#xtranslate WaitMouse0()=> WHILE MouseStat()#0 ; ENDDO
+#xtranslate Strip(<cStr>,<nRight>) => LEFT(<cStr>,LEN(<cStr>)-<nRight>)
+#xtranslate WaitMouse0()=> WHILE MLeftDown() .OR. MRightDown(); inkey(); ENDDO
 
 #define PsevdoMemoryName(_memo) 'IF(EMPTY('+ _memo +'),"memo","MEMO")'
 #define RealMemoryName(_memo)  Substr(_memo,10, at( ')' ,_memo) - 10)
@@ -123,6 +121,7 @@
 #xtranslate TimerOn()=>m->_Told:=SECONDS()
 #xtranslate IsNTX() =>('NTX' $ RddSetDefault())
 #xtranslate IsMDX() =>('MDX' $ RddSetDefault())
+#xtranslate IsVFP() =>('VFP' $ RddSetDefault())
 #xtranslate IsTags() =>IF 'NTX' $ RddSetDefault(); NFIND(DRV_NTX);RETURN;ENDIF
 #xtranslate IsVMemo(<i>) => (_FType\[<i>\]=='V' .AND. _FLen\[<i>\]>5)
 
@@ -227,11 +226,3 @@
 *****************
 #include 'six2clip.ch'
 
-// ¨§ common.ch Clipper
-
-#define TRUE  .T.
-#define M_SHARED .T.
-#define FALSE .F.
-#define M_EXCL .F.
-#define YES   .T.
-#define NO    .F.

@@ -1,4 +1,3 @@
-CC = gcc
 CFLAGS += -I.. -I../include
 LIB = librdd.a
 OBJS = rddclip.o rdd.o dbf.o ntx.o cdx.o dbt.o fpt.o rushmore.o btree.o six.o hiper.o
@@ -6,7 +5,7 @@ OBJS = rddclip.o rdd.o dbf.o ntx.o cdx.o dbt.o fpt.o rushmore.o btree.o six.o hi
 all:	$(LIB)
 
 clean:
-	rm -f *.o *.a *.b *.bak *.BAK *.tmp \
+	rm -f *.o *.a *.b *.bak *.BAK *.tmp *.ex *.nm \
 	test_ref.c test.c test.log \
 	*.dbf *.ntx *.cdx *.dbt *.fpt \
 	$(LIB) test

@@ -36,10 +36,10 @@ __idle_task_yield(gpointer data)
 {
 	Task_sleep(10);
 	while (gtk_events_pending())
-	      	gtk_main_iteration();
-        while (gtk_events_pending())
-	      	gtk_main_iteration();
-        return 1;
+		gtk_main_iteration();
+	while (gtk_events_pending())
+		gtk_main_iteration();
+	return 1;
 }
 #endif
 
@@ -160,15 +160,15 @@ err:
 int
 clip_GTK_GRABGETCURRENT(ClipMachine * cm)
 {
-        GtkWidget *wid = gtk_grab_get_current();
-        if (wid)
+	GtkWidget *wid = gtk_grab_get_current();
+	if (wid)
 	{
 		C_widget *cwid = _list_get_cwidget(cm,wid);
 		if (!cwid)
-                	cwid = _register_widget(cm,wid,NULL);
-        	if (cwid)
-                	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
-        }
+			cwid = _register_widget(cm,wid,NULL);
+		if (cwid)
+			_clip_mclone(cm,RETPTR(cm),&cwid->obj);
+	}
 	return 0;
 }
 
@@ -193,11 +193,11 @@ _destroy__func(void* data)
 {
 	C_var *c = (C_var*) data;
 	if (c)
-        {
-		_clip_destroy(c->cm,c->cfunc);
-                free(c->cfunc);
+	{
+		_clip_destroy(c->cm, &(c->cfunc));
+		free(&c->cfunc);
 		free(c);
-        }
+	}
 }
 
 static gint
@@ -207,7 +207,7 @@ __func(void* data)
 	C_var *c = (C_var*)data;
 	int ret = TRUE;
 	memset( &res, 0, sizeof(ClipVar) );
-	_clip_eval( c->cm, c->cfunc, 0, NULL, &res );
+	_clip_eval( c->cm, &(c->cfunc), 0, NULL, &res );
 	if (res.t.type == LOGICAL_t)
 		ret = res.l.val;
 	_clip_destroy(c->cm, &res);
@@ -221,7 +221,7 @@ __timeout__func(void* data)
 	C_var *c = (C_var*)data;
 	int ret = TRUE;
 	memset( &res, 0, sizeof(ClipVar) );
-	_clip_eval( c->cm, c->cfunc, 0, NULL, &res );
+	_clip_eval( c->cm, &(c->cfunc), 0, NULL, &res );
 	if (res.t.type == LOGICAL_t)
 		ret = res.l.val;
 	_clip_destroy(c->cm, &res);
@@ -234,13 +234,13 @@ __timeout__func(void* data)
 int
 clip_GTK_INITADD(ClipMachine * cm)
 {
-        C_var *c;
+	C_var *c;
 
 	CHECKARG2(1,PCODE_t,CCODE_t);
 
 	c = NEW(C_var);
-	c->cm = cm; c->cfunc = NEW(ClipVar);
-        _clip_mclone(cm,c->cfunc, _clip_spar(cm,1));
+	c->cm = cm; //c->cfunc = NEW(ClipVar);
+	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,1));
 	gtk_init_add((GtkFunction)__func,c);
 	return 0;
 err:
@@ -251,23 +251,23 @@ err:
 int
 clip_GTK_QUITADDDESTROY(ClipMachine * cm)
 {
-        guint main_level = INT_OPTION(cm,1,gtk_main_level());
-        C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
-        C_object *cobj;
+	guint main_level = INT_OPTION(cm,1,gtk_main_level());
+	C_widget *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
+	C_object *cobj;
 
 	CHECKOPT(1,NUMERIC_t); CHECKARG2(2,MAP_t,NUMERIC_t);
 
-        if (cwid->objtype == GTK_OBJ_WIDGET)
-        {
-        	CHECKCWID(cwid, GTK_IS_OBJECT);
-                gtk_quit_add_destroy(main_level, GTK_OBJECT(cwid->widget));
-        }
-        if (cwid->objtype == GTK_OBJ_OBJECT)
-        {
-        	cobj = (C_object*)cwid;
-        	CHECKCOBJ(cobj, GTK_IS_OBJECT(cobj->object));
-                gtk_quit_add_destroy(main_level, GTK_OBJECT(cobj->object));
-        }
+	if (cwid->objtype == GTK_OBJ_WIDGET)
+	{
+		CHECKCWID(cwid, GTK_IS_OBJECT);
+		gtk_quit_add_destroy(main_level, GTK_OBJECT(cwid->widget));
+	}
+	if (cwid->objtype == GTK_OBJ_OBJECT)
+	{
+		cobj = (C_object*)cwid;
+		CHECKCOBJ(cobj, GTK_IS_OBJECT(cobj->object));
+		gtk_quit_add_destroy(main_level, GTK_OBJECT(cobj->object));
+	}
 	return 0;
 err:
 	return 1;
@@ -277,14 +277,14 @@ err:
 int
 clip_GTK_QUITADD(ClipMachine * cm)
 {
-        guint main_level = INT_OPTION(cm,1,gtk_main_level());
-        C_var *c;
+	guint main_level = INT_OPTION(cm,1,gtk_main_level());
+	C_var *c;
 
 	CHECKOPT(1,NUMERIC_t); CHECKARG2(2,PCODE_t,CCODE_t);
 
 	c = NEW(C_var);
-	c->cm = cm; c->cfunc = NEW(ClipVar);
-        _clip_mclone(cm,c->cfunc, _clip_spar(cm,2));
+	c->cm = cm; //c->cfunc = NEW(ClipVar);
+	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
 	_clip_retni(cm,gtk_quit_add_full(main_level,(GtkFunction)__func,NULL,c,
 		_destroy__func));
 	return 0;
@@ -320,8 +320,8 @@ clip_GTK_TIMEOUTADD(ClipMachine * cm)
 	CHECKARG(1,NUMERIC_t); CHECKARG2(2,PCODE_t,CCODE_t);
 
 	c = NEW(C_var);
-	c->cm = cm; c->cfunc = NEW(ClipVar);
-	_clip_mclone(cm,c->cfunc, _clip_spar(cm,2));
+	c->cm = cm; //c->cfunc = NEW(ClipVar);
+	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
 	c->id = gtk_timeout_add(interval,(GtkFunction)__timeout__func,c);
 	_clip_retni(cm,_clip_store_c_item(cm, c, _C_ITEM_TYPE_GTK_TIMEOUT, NULL));
 
@@ -358,15 +358,15 @@ int
 clip_GTK_IDLEADD(ClipMachine * cm)
 {
 	gint priority = INT_OPTION(cm,1,G_PRIORITY_DEFAULT_IDLE);
-        C_var *c;
+	C_var *c;
 
 	CHECKOPT(1,NUMERIC_t); CHECKARG2(2,PCODE_t,CCODE_t);
 
 	if (priority > G_PRIORITY_HIGH) priority = G_PRIORITY_HIGH;
 
 	c = NEW(C_var);
-	c->cm = cm; c->cfunc = NEW(ClipVar);
-        _clip_mclone(cm,c->cfunc, _clip_spar(cm,2));
+	c->cm = cm; //c->cfunc = NEW(ClipVar);
+	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
 	_clip_retni(cm,gtk_idle_add_full(priority,(GtkFunction)__func,NULL,
 		c,_destroy__func));
 	return 0;

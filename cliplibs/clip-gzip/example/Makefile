@@ -6,5 +6,5 @@ clean:
 		*~ core* *core $(PRG) *.gz *.ex *.nm
 
 gz: gz.prg
-	clip -e -M gz.prg -lclip-gzip
+	clip -e -s -l -M gz.prg -lclip-gzip
 

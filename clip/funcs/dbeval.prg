@@ -36,7 +36,9 @@ function dbeval(b,ufor,uwhile,nrec,rec,flag)
 	endif
  endif
  nrec:=iif(nrec==NIL,lastrec(),nrec)
-
+ if uwhile != NIL
+	flag := .t.
+ endif
  if valtype(flag)=="L" .and. flag
  else
 	goto top
@@ -68,6 +70,8 @@ function dbevaloptimize(b,cfor,bwhile,nrec,rec,flag)
  nrec:=iif(nrec==NIL,lastrec(),nrec)
  if valtype(bwhile) != "B"
 	bwhile := {||.t.}
+ else
+	flag := .t.
  endif
 
  if (f := isfiltered()) .and. !empty(cfor)

@@ -59,7 +59,7 @@ DO WHILE UPPER(sql := GetCommand()) != "Q"
 	IF UPPER(LEFT(sql,6))=="SELECT" .OR. UPPER(LEFT(sql,4))=="SHOW";
 		.OR. UPPER(LEFT(sql,8))=="DESCRIBE" .OR. UPPER(LEFT(sql,7))=="EXPLAIN"
 		BEGIN SEQUENCE
-			rs := conn:CreateRowset(sql)
+			rs := conn:CreateRowset(sql,,,,,,,,,.t.)
 		RECOVER USING e
 			LOOP
 		END SEQUENCE
@@ -88,9 +88,24 @@ DO WHILE UPPER(sql := GetCommand()) != "Q"
 		rs:Destroy()
 	ELSE
 		BEGIN SEQUENCE
-			?? LEFT(sql,LEN(sql)-1)+": "
-			conn:Command(sql)
-			?? "OK"
+			IF UPPER(LEFT(sql,5))=="START" .OR. UPPER(LEFT(sql,5))=="BEGIN"
+				?? (sql := LEFT(sql,LEN(sql)-1))+": "
+				trpars := SUBSTR(CHARONE(' ',sql),7)
+				conn:Start(IF(LEN(trpars)>0,trpars,NIL))
+				?? "OK"
+			ELSEIF UPPER(LEFT(sql,6))=="COMMIT"
+				?? LEFT(sql,LEN(sql)-1)+": "
+				conn:Commit(sql)
+				?? "OK"
+			ELSEIF UPPER(LEFT(sql,8))=="ROLLBACK"
+				?? LEFT(sql,LEN(sql)-1)+": "
+				conn:Rollback(sql)
+				?? "OK"
+			ELSE
+				?? LEFT(sql,LEN(sql)-1)+": "
+				conn:Command(sql)
+				?? "OK"
+			ENDIF
 		RECOVER USING e
 			LOOP
 		END SEQUENCE

@@ -67,6 +67,7 @@ return
 function GetSelectorGTK()
 local selector := map()
 
+selector:GetFwDriver 	:= @GetFwDriver()
 selector:isZoomed 	:= @isZoomed()
 selector:GetInstance 	:= @GetInstance()
 selector:RefreshObj 	:= @RefreshObj()
@@ -146,6 +147,7 @@ selector:NextDlgTab 	:= @NextDlgTab()
 selector:mGetCreate 	:= @mGetCreate()
 selector:SetText 	:= @SetText()
 selector:SetGetText 	:= @SetGetText()
+selector:GetText 	:= @GetText()
 selector:CreateLabel 	:= @CreateLabel()
 selector:SetWindowText 	:= @SetWindowText()
 selector:CreateProgressBar := @CreateProgressBar()
@@ -209,12 +211,22 @@ selector:SendMessage	:= @SendMessage()
 selector:GetParent	:= @GetParent()
 selector:ClientToScreen	:= @ClientToScreen()
 selector:GetSysMetrics	:= @GetSysMetrics()
+selector:FileDialog	:= @FileDialog()
+selector:KeyboardEvent	:= @KeyboardEvent()
 /* WBrowse functions */
 Selector:CreateWBrowse	:= @CreateWBrowse()
+Selector:ConfigureBrowse:= @ConfigureBrowse()
+Selector:CellConfigure	:= @CellConfigure()
+Selector:CellGet	:= @CellGet()
+Selector:Browser_size_allocate	:= @Browser_size_allocate()
 
 return selector
 
 
+************************
+static function GetFwDriver()
+return "GTK"
+******************************
 static function isZoomed(hWnd)
 // HZ it now1111
 return .f.
@@ -352,7 +364,7 @@ local val, low, up
 		gtk_WindowSetTransientFor(oWnd, hWndOwner)
 	endif
 
-	gtk_SignalConnect(oWnd, 'size-allocate', {|w, e|  CoorsUpdate(w)})
+	gtk_SignalConnect(oWnd, 'size-allocate', {|w, e| CoorsUpdate(w)})
 
 	gtk_WidgetAddEvents(oWnd:oClient, GDK_BUTTON_PRESS_MASK+GDK_BUTTON_RELEASE_MASK+GDK_POINTER_MOTION_MASK)
 	x:=0; y:=0
@@ -712,6 +724,9 @@ return ret
 * set focus new window and send KILL_FOCUS to prev window, return handle of prew window
 static function SetFocus(hCtrl)
 local ret
+	if hCtrl<0
+		return
+	endif
 	ret := gtk_WidgetSetFocus(hCtrl)
 return ret
 ****************
@@ -1261,11 +1276,11 @@ return
 ********************
 static function GetDefaultFont()
 local oFont
-	oFont := gtk_WidgetGetDefaulStyle()
+	oFont := gtk_WidgetGetDefaultStyle()
 return oFont
 ********************
 static function SetDefaultFont(oFont)
-	oFont := gtk_WidgetSetDefaulStyle(oFont)
+	oFont := gtk_WidgetSetDefaultStyle(oFont)
 return oFont
 ********************
 static function SizeFont(hFont)
@@ -1304,6 +1319,7 @@ return
 Dialog box function
 *****************************************************************************/
 static function CreateDlgBox(oDlg)
+
 	oDlg := gtk_DialogNew(oDlg, oDlg:cCaption)
 	oDlg:hWnd := oDlg:handle
 	gtk_WidgetSetPosition(oDlg, oDlg:nLeft, oDlg:nTop)
@@ -1362,7 +1378,7 @@ local i, nResult, hFocus
 return nResult
 **************
 static function NextDlgTab(oWnd, hControl, lPrev)
-local hCtrl, _step:=1, hC:=1, nLen
+local hCtrl, _step:=1, hC:=1, nLen, oControl1, oControl2
 	lPrev := iif(lPrev==NIL, .f., lPrev)
 	nLen := len(oWnd:aControls)
 	if lPrev
@@ -1377,7 +1393,14 @@ local hCtrl, _step:=1, hC:=1, nLen
 		hC := 1
 	endif
 	if hC <= nLen
-		hCtrl := oWnd:aControls[hC]:handle
+		oControl1 := gtk_getObjByHandle(hControl)
+		if oControl1:LostFocus()
+			hCtrl := oWnd:aControls[hC]:handle
+			oControl2 := gtk_getObjByHandle(hCtrl)
+			oControl2:setFocus()
+		else
+			hCtrl := hControl
+		endif
 	endif
 return hCtrl
 /*****************************************************************************
@@ -1393,14 +1416,14 @@ local hFunc := oEntry:KeyChar
 	gtk_EntrySetPosition(oEntry, oEntry:nPos-1)  // entry position started with 0
 	gtk_SignalConnect(oEntry, GTK_EVENT, {|wgt, ev| wgt:KeyChar(ev) })
 
-	if "CMSG"$oEntry .and. oEntry:cMsg != NIL
+	//if "CMSG"$oEntry .and. oEntry:cMsg != NIL
 		/* mouse cursor enters on button region */
-		gtk_SignalConnect(oEntry, "enter", {|w, e| w:GotFocus(GetActiveWindow())})
-		gtk_SignalConnect(oEntry, "focus-in-event", {|w, e| w:GotFocus(GetActiveWindow())})
+		//gtk_SignalConnect(oEntry, "enter", {|w, e| w:GotFocus(GetActiveWindow())})
+		//gtk_SignalConnect(oEntry, "focus-in-event", {|w, e| w:GotFocus(GetActiveWindow())})
 		/* mouse cursor leave button region */
-		gtk_SignalConnect(oEntry, "leave", {|w, e| w:LostFocus()})
-		gtk_SignalConnect(oEntry, "focus-out-event", {|w, e| w:LostFocus()})
-	endif
+		//gtk_SignalConnect(oEntry, "leave", {|w, e| w:LostFocus()})
+		//gtk_SignalConnectAfter(oEntry, "focus-out-event", {|w, e| (local(x), x:=w:hWnd, iif(gtk_widgetHasFocus(w) .and. w:LostFocus(), .t., gtk_WidgetSetFocus(x)), .t.)})
+	//endif
 return oEntry:handle
 *************
 static function SetText(oEntry, uVal)
@@ -1415,7 +1438,14 @@ static function SetGetText(hEntry, uVal, nPos)
 	if nPos != nil
 		gtk_EntrySetPosition(hEntry, nPos-1)
 	endif
-return
+return uVal
+******************
+static function GetText(oWnd)
+local str := ""
+	if oWnd:ClassName == "FW_TGET"
+        	str := gtk_EntryGetText(oWnd)
+        endif
+return str
 /*****************************************************************************
 Label function
 *****************************************************************************/
@@ -2408,7 +2438,7 @@ local ret, nS:=0, nE:=0, nRow
 		gtk_CListAppend(oWnd, {toString(nLParam)})
 		gtk_WidgetShowAll(oWnd)
 	case HASH_LB_INSERTSTRING
-		gtk_CListInsert(oWnd, {toSring(nLParam)}, nWParam)
+		gtk_CListInsert(oWnd, {toString(nLParam)}, nWParam)
 	case HASH_LB_DELETESTRING
 		gtk_CListRemove(oWnd, nWParam)
 	case HASH_LB_RESETCONTENT
@@ -2511,8 +2541,311 @@ local nValue
 	endswitch
 return nValue
 *******************************************************************************
+* FileDialog functions
+static function FileDialog(cMask, cTitle)
+local cFileName:="", fileSel, wnd, activeWnd
+	FWInitDriver()
+
+	cTitle := iif(empty(cTitle), [File selection], cTitle)
+	cMask := iif(empty(cMask), "*", cMask)
+
+	activeWnd := GetActiveWindow()
+	fileSel := gtk_FileSelectionNew(,cTitle)
+	gtk_FileSelectionComplete(fileSel, cMask)
+	gtk_FileSelectionSetFileName(filesel, cMask)
+
+	if activeWnd > -1
+		gtk_WindowSetTransientFor(fileSel, activeWnd)
+	endif
+
+	gtk_FileSelectionHideFileOpButtons(fileSel)
+
+	gtk_SignalConnect(fileSel, GTK_DELETE, {|w| gtk_WidgetHideOnDelete(w)})
+	gtk_SignalConnect(fileSel, GTK_HIDE_SIGNAL, {|w| gtk_WidgetDestroy(w), gtk_Quit()})
+	gtk_SignalConnect(fileSel:cancelButton, "clicked", {|w| gtk_WidgetHideOnDelete(fileSel), gtk_Quit()})
+	gtk_SignalConnect(fileSel:okButton, "clicked", {|w| cFileName := gtk_FileSelectionGetFileName(fileSel),gtk_WidgetHideOnDelete(fileSel), gtk_Quit()})
+
+	gtk_WidgetShowAll(fileSel)
+	gtk_main()
+
+return cFileName
+******************************************************************************
+*
+static function KeyboardEvent(event)
+return event == GTK_KEY_PRESS
+*******************************************************************************
 * WBrowse functions                                                           *
 *******************************************************************************
-static function CreateWBrowse()
-return
+static function CreateWBrowse(oBrow)
+	oBrow := gtk_HBoxNew(oBrow)
+	oBrow:hWnd := oBrow:handle
+	oBrow:vBox := gtk_VBoxNew()
+	oBrow:headBox := gtk_hBoxNew()
+	oBrow:itemBox := gtk_hBoxNew()
+	oBrow:footHeadBox := gtk_hBoxNew()
+	oBrow:paned := gtk_hPanedNew()
+	//gtk_WidgetSetSize(oBrow:paned, oBrow:nWidth, oBrow:nHeight)
 
+	oBrow:lVScroll := oBrow:nStyle == numOr(oBrow:nStyle, WS_VSCROLL)
+	oBrow:lHScroll := oBrow:nStyle == numOr(oBrow:nStyle, WS_HSCROLL)
+
+	gtk_BoxPackStart(oBrow:vbox, oBrow:headBox)
+	gtk_BoxPackStart(oBrow:vbox, oBrow:itemBox, .t., .t.)
+
+	gtk_BoxPackEnd(oBrow:vbox, oBrow:footHeadBox)
+	gtk_PanedPack2(oBrow:paned, oBrow:vbox, .f., .t.)
+	gtk_BoxPackStart(oBrow, oBrow:paned, .t., .t.)
+
+	/* add browser to client area of parent window  	*/
+	/*browser add to clien area - from function SHowWindow	*/
+	/*browser it is control for window/dialog		*/
+//	gtk_LayoutPut(oBrow:oWnd:oClient, oBrow, oBrow:nLeft, oBrow:nTop)
+
+return
+**************************************************************************
+* Configure browse headers & footHeaders if need
+static function configureBrowse(oBrow)
+local j, k, r, clr
+local vb, hFrame, hfbox, bpgup, bgotop
+local shFrame, shfbox, bpgdn, bgobottom
+local sw_width, sw_height, heightHeadBox, heightItemBox, heightFootHeadBox, heightScroll
+
+	oBrow:nCols := len(oBrow:aHeaders)
+	oBrow:nRows := 1
+	oBrow:nStartRec := 1
+
+	oBrow:entry := array(oBrow:nRows, oBrow:nCols)
+	oBrow:frameHb := array(oBrow:nCols) 	// header frame
+	oBrow:header := array(oBrow:nCols)  	// some header button
+	oBrow:nHeadLine := 0 			// line in header
+
+	oBrow:frame := array(oBrow:nCols)  	//
+	oBrow:box := array(oBrow:nCols)  	//
+
+	if oBrow:lVScroll
+		//oBrow:vAdj := gtk_AdjustmentNew(, 1.0, 1.0, oBrow:bLogicLen()+1.0, 1.0, oBrow:nRows*1.0, 1.0)
+		oBrow:vAdj := gtk_AdjustmentNew(, 1.0, 1.0, ordKeyCount()+1.0, 1.0, oBrow:nRows*1.0, 1.0)
+		gtk_SignalConnect(oBrow:vAdj, "value-changed", {|w, e| local (v:=-1, l:=-1, u:=-1), gtk_AdjustmentGetValue(w, @v, @l, @u),  changeRows(v), qout(v, l, u)},)
+		oBrow:vScroll := gtk_VScrollBarNew(, oBrow:vAdj)
+
+		vb := gtk_VBoxNew()
+
+		hFrame := gtk_FrameNew()
+		hfbox := gtk_VBoxNew()
+		bpgup := gtk_ButtonNew()
+		gtk_SignalConnect(bpgup, GTK_CLICKED_SIGNAL, {|btn| oBrow:PageUp()})
+		gtk_ContainerAdd(bpgup, gtk_PixmapCreateFromXPMd(, pgupXPM))
+		bgotop := gtk_ButtonNew()
+		gtk_SignalConnect(bgotop, GTK_CLICKED_SIGNAL, {|btn| oBrow:GoTop()})
+		gtk_ContainerAdd(bgotop, gtk_PixmapCreateFromXPMd(, gotopXPM))
+		gtk_ContainerAdd(hFrame, hfbox)
+		gtk_BoxPackStart(hfbox, bgotop)
+		gtk_BoxPackStart(hfbox, bpgup)
+		gtk_FrameSetShadowType(hFrame, GTK_SHADOW_NONE)
+
+		shFrame := gtk_FrameNew()
+		shfbox := gtk_VBoxNew()
+		bpgdn := gtk_ButtonNew()
+		gtk_SignalConnect(bpgdn, GTK_CLICKED_SIGNAL, {|btn| oBrow:PageDown()})
+		gtk_ContainerAdd(bpgdn, gtk_PixmapCreateFromXPMd(, pgdnXPM))
+		bgobottom := gtk_ButtonNew()
+		gtk_SignalConnect(bgobottom, GTK_CLICKED_SIGNAL, {|btn| oBrow:GoBottom()})
+		gtk_ContainerAdd(bgobottom, gtk_PixmapCreateFromXPMd(, gobottomXPM))
+		gtk_ContainerAdd(shFrame, shfbox)
+		gtk_BoxPackStart(shfbox, bpgdn)
+		gtk_BoxPackStart(shfbox, bgobottom)
+		gtk_FrameSetShadowType(shFrame, GTK_SHADOW_NONE)
+
+		gtk_BoxPackStart(vb, hFrame)
+		gtk_boxPackStart(vb, oBrow:vScroll, .t., .t.)
+		gtk_boxPackEnd(vb, shFrame)
+
+		gtk_boxPackEnd(oBrow, vb)
+	endif
+	if oBrow:lHScroll
+		oBrow:hAdj := gtk_AdjustmentNew(, 1.0, 1.0, oBrow:nCols+1.0, 1.0, 1.0, 1.0)
+		gtk_SignalConnect(oBrow:hAdj, "value-changed", {|w, e| local (v:=-1, l:=-1, u:=-1), gtk_AdjustmentGetValue(w, @v, @l, @u),  changeCols(v), qout(v, l, u)},)
+		oBrow:hScroll := gtk_HScrollBarNew(, oBrow:hAdj)
+		gtk_BoxPackEnd(oBrow:vbox, oBrow:hScroll)
+	endif
+/*
+	/* init header style */
+	oBrow:headStyle := gtk_WidgetGetStyle(oBrow)
+	if !("COLORMAP"$oBrow:headStyle)
+		oBrow:headStyle:colormap := gtk_WidgetGetColormap(oBrow)
+	endif
+	if oBrow:nClrForeHead != NIL
+		clr := gdk_ColorRGB(oBrow:nClrForeHead)
+		gdk_ColorMapAllocColor(oBrow:headStyle:colormap, clr)
+		oBrow:headStyle:FG_color := {clr, clr, clr, clr, clr}
+	endif
+
+	if oBrow:nClrBackHead != NIL
+		clr := gdk_ColorRGB(oBrow:nClrBackHead)
+		gdk_ColorMapAllocColor(oBrow:headStyle:colormap, clr)
+		oBrow:headStyle:BG_color := {clr, clr, clr, clr, clr}
+	endif
+*/
+	for j:=1 to oBrow:nCols
+		k := cscount(";", oBrow:aHeaders[j])+1
+		if k > oBrow:nHeadLine
+			oBrow:nHeadLine := k
+		endif
+	next
+
+	for j:= 1 to oBrow:nCols
+		/* init header boxes */
+		oBrow:frameHb[j] := gtk_frameNew()
+		gtk_frameSetShadowType(oBrow:frameHb[j], GTK_SHADOW_NONE)
+		oBrow:header[j] := gtk_ButtonNew()
+		oBrow:header[j]:id := j
+		gtk_SignalConnect(oBrow:header[j], GTK_CLICKED_SIGNAL, {|cln| freez(cln)})
+		vb := gtk_vBoxNew()
+
+		gtk_ButtonSetRelief(oBrow:header[j], GTK_RELIEF_NONE)
+		gtk_ContainerAdd(oBrow:header[j], vb)
+
+		oBrow:header[j]:label := array(oBrow:nHeadLine)
+		r := split(oBrow:aHeaders[j], ";")
+		for k=1 to oBrow:nHeadLine
+			oBrow:header[j]:label[k] := gtk_LabelNew(, r[k])
+			gtk_BoxPackStart(vb, oBrow:header[j]:label[k])
+		next
+
+		gtk_WidgetSetSize(oBrow:header[j], oBrow:aColSizes[j])
+    //		gtk_WidgetSetStyle(oBrow:header[j], oBrow:headstyle)
+
+		gtk_ContainerAdd(oBrow:frameHb[j], oBrow:header[j])
+		gtk_BoxPackStart(oBrow:headBox, oBrow:frameHb[j])
+/**************
+		/* init footHeader boxes */
+		frameFb[j] := gtk_frameNew()
+		gtk_frameSetShadowType(frameFb[j], GTK_SHADOW_IN)
+		footHeader[j] := gtk_vBoxNew()
+		footHeader[j]:label := array(1)
+		footHeaderName[j] := "footHead"+str(j,2)+";"
+		r := split(footHeaderName[j], ";")
+		for k=1 to 1
+			footHeader[j]:label[k] := gtk_LabelNew(, r[k])
+			gtk_BoxPackStart(footHeader[j], footHeader[j]:label[k])
+		next
+		gtk_widgetsetSize(footHeader[j], headerWidth[j])
+		gtk_WidgetSetStyle(footHeader[j], footHeadstyle)
+		gtk_ContainerAdd(frameFb[j], footHeader[j])
+		gtk_BoxPackStart(footHeadBox, frameFb[j])
+
+***********/
+		oBrow:frame[j] := gtk_frameNew()
+		oBrow:box[j] := gtk_vBoxNew()
+		gtk_frameSetShadowType(oBrow:frame[j], GTK_SHADOW_IN)
+		gtk_ContainerAdd(oBrow:frame[j], oBrow:box[j])
+		gtk_boxPackStart(oBrow:itemBox, oBrow:frame[j])
+	next
+
+	CellConfigure(oBrow)
+
+	gtk_WidgetGetSize(oBrow:paned, @sw_width, @sw_height)
+	oBrow:sw_width := sw_width; oBrow:sw_height := sw_height
+	gtk_WidgetGetSize(oBrow:headBox,,@heightHeadBox)
+	oBrow:heightHeadBox := heightHeadBox
+	gtk_WidgetGetSize(oBrow:itemBox, ,@heightItemBox)
+	oBrow:heightItemBox := heightItemBox
+	/*
+	gtk_WidgetGetSize(oBrow:footHeadBox,,@heightfootHeadBox)
+	oBrow:heightFootHeadBox := heightFootHeadBox
+	*/
+
+	//oBrow:heightScroll := oBrow:sw_height - oBrow:heightHeadBox - oBrow:heightItemBox - oBrow:heightfootHeadBox + 1
+	oBrow:heightScroll := oBrow:sw_height - oBrow:heightHeadBox - oBrow:heightItemBox + 1
+
+
+	Browser_size_allocate(oBrow)
+
+
+	gtk_SignalConnect(oBrow:paned, 'size-allocate', {|w| Browser_size_allocate(oBrow)})
+//qout('rows', oBrow:nRows, 'cols', oBrow:nCols)
+return
+**************************************************************************
+* Configure browser cells
+static function CellConfigure(oBrow, startR, startC, frRedraw)
+local i, j
+startR := iif(startR == NIL, 1, startR)
+startC := iif(startC==NIL, 1, startC)
+frRedraw := iif(frRedraw==NIL, .t., frRedraw)
+for i=startR to oBrow:nRows
+	for j:= startC to oBrow:nCols
+		oBrow:entry[i][j] := gtk_ButtonNew(, "")
+		oBrow:entry[i][j]:i := i
+		oBrow:entry[i][j]:j := j
+		gtk_SignalConnect(oBrow:entry[i][j], GTK_CLICKED_SIGNAL, {|w, br| br:nRowPos := w:i, br:nColPos := w:j, qout(gtk_buttonGetText(w))}, oBrow)
+		gtk_buttonsetrelief(oBrow:entry[i][j], GTK_RELIEF_NONE)
+		gtk_boxpackStart(oBrow:box[j], oBrow:entry[i][j])
+		gtk_WidgetSetSize(oBrow:box[j], oBrow:aColSizes[j])
+		//gtk_WidgetShow(oBrow:entry[i][j])
+	next
+next
+/*
+if fr_cols > 0 .and. frRedraw
+	InitFrozenPart(startR, 1)
+endif
+*/
+return
+**************************************************************************
+static function CellGet()
+return
+**************************************************************************
+static function Browser_size_allocate(oBrow)
+local oldrows := oBrow:nRows, w, h, w1, h1, i, j, r, sw_width, sw_height
+	/* width and height paned */
+	gtk_WidgetGetSize(oBrow:Paned, @sw_width, @sw_height)
+	oBrow:sw_width := sw_width
+	oBrow:sw_height := sw_height
+
+	//h := sw_height - oBrow:heightHeadBox - oBrow:heightfootHeadBox - oBrow:heightScroll + 1
+	h := sw_height - oBrow:heightHeadBox  - oBrow:heightScroll + 1
+	qout('itemBox height', h, sw_height, valtype(oBrow))
+	w1:=0; h1:=0
+	gtk_WidgetGetSize(oBrow:entry[1][1], @w1, @h1)
+	r := int(h/h1)
+	if r > oldrows
+		oBrow:nRows := r
+		asize(oBrow:entry, oBrow:nRows)
+		for i=oldrows+1 to oBrow:nRows
+			oBrow:entry[i] := array(oBrow:nCols)
+		next
+		/*
+		if fr_cols>0
+			asize(fr_entry, rows)
+			for i=oldrows+1 to rows
+				fr_entry[i] := array(fr_cols)
+			next
+		endif
+		*/
+		CellConfigure(oBrow, oldrows+1)
+		CellGet(oBrow, oBrow:nStartRec, oldrows+1)
+		//gtk_WidgetShow(oBrow:paned)
+	elseif r < oldrows
+		oBrow:nRows := r
+		for i=oldrows to oBrow:nRows+1 step -1
+			for j=1 to oBrow:nCols
+				gtk_WidgetDestroy(oBrow:entry[i][j])
+			next
+		next
+		asize(oBrow:entry, oBrow:nRows)
+		/*
+		if fr_cols>0
+			for i=oldrows to rows+1 step -1
+				for j=1 to fr_cols
+					gtk_WidgetDestroy(fr_entry[i][j])
+				next
+			next
+			asize(fr_entry, rows)
+		endif
+		*/
+		if oBrow:nRowPos > oBrow:nRows
+			oBrow:nRowPos := oBrow:nRows
+			gtk_WidgetSetFocus(oBrow:entry[oBrow:nRowPos][oBrow:nColPos])
+		endif
+	endif
+qout('size-allocate rows=', oBrow:nRows, len(oBrow:entry))
+return

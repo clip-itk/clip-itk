@@ -2,7 +2,7 @@
 #include "interbase.ch"
 
 FUNCTION IB2CLIP(rowset,fieldno)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL data := SQLGetValue(rowset,fieldno)
 	LOCAL dec := SQLFieldDec(rowset,fieldno)
 	LOCAL sd := SET(_SET_DECIMALS)
@@ -40,19 +40,22 @@ FUNCTION IB2CLIP(rowset,fieldno)
 RETURN
 
 FUNCTION CLIP2IB(rowset,fieldno,value,totext)
-	LOCAL type := SQLFieldType(rowset,fieldno)
+	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL dec := SQLFieldDec(rowset,fieldno)
 
 	IF value == NIL
 		RETURN NIL
 	ENDIF
 
-	IF totext .AND. type != IBT_ARRAY
+	IF totext .AND. type != IBT_ARRAY .AND. type != IBT_TEXT
 		RETURN value
 	ENDIF
 
 	SWITCH(type)
 		CASE IBT_TEXT
+			IF totext
+				RETURN ADDSLASH(value)
+			ENDIF
 			RETURN value
 		CASE IBT_INT64
 			RETURN IB_OUT_INT64(value*(10^dec))

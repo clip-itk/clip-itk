@@ -407,6 +407,8 @@ handle_events(GtkWidget *widget, GdkEvent *event, C_signal *cs)
 			_clip_mputn(cm, &stack[1], HASH_YTILT, event->button.ytilt);
 			_clip_mputn(cm, &stack[1], HASH_STATE, event->button.state);
 			_clip_mputn(cm, &stack[1], HASH_SOURCE, event->button.source);
+			_clip_mputn(cm, &stack[1], HASH_TYPE, event->button.type);
+			_clip_mputn(cm, &stack[1], HASH_TIME, event->button.time);
 			_clip_mputn(cm, &stack[1], HASH_DEVICIED, event->button.deviceid);
 			break;
 		case GDK_MOTION_NOTIFY:

@@ -26,6 +26,21 @@ then
 	cd utils; $MAKE install; cd ..
 fi
 
+if [ -d doc_utils ]
+then
+	cd doc_utils; $MAKE install; cd ..
+fi
+
+if [ -d cobra_serv ]
+then
+	cd cobra_serv; $MAKE install; cd ..
+fi
+
+if [ -d cobra_clnt ]
+then
+	cd cobra_clnt; $MAKE install; cd ..
+fi
+
 if [ -d debug ]
 then
 	cd debug; $MAKE install; cd ..
@@ -66,6 +81,25 @@ fi
 if [ -d bdbfs ]
 then
 	cd bdbfs
+	$MAKE install
+	cd ..
+fi
+
+if [ -d dbc ]
+then
+	cd dbc
+	$MAKE install
+	cd ..
+fi
+if [ -d udb ]
+then
+	cd udb
+	$MAKE install
+	cd ..
+fi
+if [ -d udbx ]
+then
+	cd udbx
 	$MAKE install
 	cd ..
 fi
