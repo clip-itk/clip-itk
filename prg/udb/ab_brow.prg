@@ -178,19 +178,20 @@ static function browse_handleKey(self,hkey)
 				self:reportWin := oBox
 			endif
 			ret:=0
-		case hkey==HASH_DeleteAll
+		case hkey==HASH_DeleteAll .or. hkey==HASH_EraseAll
 			if alert([Delete all objects, are you sure ?]) == 1
 				oDep := self:oIdList:depository()
 				tmp := self:oIdList:aID
 				for i=1 to len(tmp)
-					oDep:delete(tmp[i])
+					oDep:delete(tmp[i],hkey==HASH_EraseAll)
 				next
 				self:oIdList:refresh()
 				self:refreshAll()
 			endif
 			self:forceStable()
 
-		case hkey==HASH_Delete
+		case hkey==HASH_Delete .or. hkey==HASH_Erase
+			oDep := self:oIdList:depository()
 			obj:=self:oIdList:getValue()
 			tmp:=""
 			if "NAME" $ obj
@@ -202,8 +203,8 @@ static function browse_handleKey(self,hkey)
 			endif
 
 			if alert([Delete, are you sure ?]+";("+tmp+")") == 1
-				if ! self:oIdList:delete()
-					alert(self:oIdList:error)
+				if ! oDep:delete(obj:id,hkey==HASH_Erase)
+					alert(oDep:error)
 				endif
 				self:refreshAll()
 			endif

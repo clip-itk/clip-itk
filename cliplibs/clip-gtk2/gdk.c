@@ -323,7 +323,7 @@ clip_GDK_KEYVALTOUNICODE(ClipMachine * cm)
 	}
 
 	_clip_retc(cm, result);
-        //free(result);
+        free(result);
 	return 0;
 }
 

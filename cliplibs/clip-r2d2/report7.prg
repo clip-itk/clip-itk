@@ -116,12 +116,15 @@ local i,j,k,s,s1,s2,tmp,obj,col
 		endif
 		//? i, obj:accpost_list
 		for j=1 to len(obj:accpost_list)
-			aadd(post_list,obj:accpost_list[j])
+			if ascan(post_list,obj:accpost_list[j])<=0
+				aadd(post_list,obj:accpost_list[j])
+			endif
 		next
 		aadd(accounts,obj:account)
 		aadd(an_levels,obj:an_level)
 		//? tmp[i], obj:account, obj:an_value,obj:an_level
 	next
+	//? post_list
 	for i=1 to len(post_list)
 		obj := oDep:getValue(post_list[i])
 		if empty(obj)
@@ -170,6 +173,7 @@ local i,j,k,s,s1,s2,tmp,obj,col
 		endif
 		*/
 	next
+
 	for i=len(post_objs) to 1 step -1
 		tmp := ascan(post_objs,{|x|x:daccount==post_objs[i]:daccount ;
 			.and. x:kaccount==post_objs[i]:kaccount;
@@ -184,6 +188,7 @@ local i,j,k,s,s1,s2,tmp,obj,col
 		adel(post_objs,i)
 		asize(post_objs,len(post_objs)-1)
 	next
+
 
 	for i=1 to len(post_objs)
 		obj:=post_objs[i]
@@ -203,6 +208,8 @@ local i,j,k,s,s1,s2,tmp,obj,col
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
+	? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
 
 	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 	?

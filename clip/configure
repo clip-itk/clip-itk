@@ -15,6 +15,10 @@ NM_UNDERSCORE=''
 EXESUFF=''
 USE_WCHARS=yes
 USE_TASKS=yes
+if [ "$CLIP_TASKS" ]
+then
+	USE_TASKS=$CLIP_TASKS
+fi
 USE_LD=no
 USE_AS=yes
 XCLIP=''

@@ -5,6 +5,9 @@
 */
 /*
    $Log: _io.c,v $
+   Revision 1.277  2005/01/05 11:22:01  clip
+   uri: small fix
+
    Revision 1.276  2004/12/16 13:42:21  clip
    uri: small fix
 
@@ -1177,7 +1180,6 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 	{
 		int i;
 
-		/*
 		if (mp->obuf)
 		{
 			int i;
@@ -1186,7 +1188,6 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 				putByte_Buf(mp->obuf, _clip_outtbl[(unsigned char) buf[i]]);
 			return;
 		}
-		*/
 
 		for (i = 0; i < n; i++)
 			fputc(_clip_outtbl[(unsigned char) buf[i]], (FILE *) mp->out);
@@ -1252,7 +1253,6 @@ out_std(ClipMachine * mp, char *buf, int n, int attr)
 {
 	int i;
 
-	/*
 	if (mp->obuf)
 	{
 		int i;
@@ -1261,7 +1261,6 @@ out_std(ClipMachine * mp, char *buf, int n, int attr)
 			putByte_Buf(mp->obuf, _clip_outtbl[(unsigned char) buf[i]]);
 		return;
 	}
-	*/
 
 	for (i = 0; i < n; i++)
 		fputc(_clip_outtbl[(unsigned char) buf[i]], stdout);
@@ -1272,6 +1271,7 @@ out_err(ClipMachine * mp, char *buf, int n, int attr)
 {
 	int i;
 
+
 	if (mp->ebuf)
 	{
 		int i;
@@ -1280,6 +1280,7 @@ out_err(ClipMachine * mp, char *buf, int n, int attr)
 			putByte_Buf(mp->ebuf, _clip_outtbl[(unsigned char) buf[i]]);
 		return;
 	}
+
 
 	for (i = 0; i < n; i++)
 		fputc(_clip_outtbl[(unsigned char) buf[i]], stderr);
@@ -2897,7 +2898,6 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 	int y = sp->y;
 	int top = -1024, left = -1024, bottom = 1024, right = 1024;
 
-	/*
 	if (mp->obuf)
 	{
 		int i;
@@ -2906,7 +2906,6 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 			putByte_Buf(mp->obuf, _clip_outtbl[(unsigned char) buf[i]]);
 		return;
 	}
-	*/
 
 	clip_region(mp, &top, &left, &bottom, &right, 1, -1);
 

@@ -330,9 +330,10 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 				adel(::tobj, nWin)
 				adel(::tobjinfo, nWin)
 				nWin --
-				//::nWins --
-				asize(::tobj, nWin)
-				asize(::tobjinfo, nWin)
+				i --
+				::nWins --
+				asize(::tobj, len(::tobj)-1)
+				asize(::tobjinfo, len(::tobjinfo)-1)
 				wclose()
 				if nWin > 0
 					::curwin := nWin
@@ -1476,7 +1477,7 @@ local keys:=HK_get("edit"),kn
       kn:=key_name(HK_get_key(keys,HASH_FindReplace))
       oItem :=MenuItem( [&Replace        ]+kn ,{|| .t. }, ,[Find and replace string ], HASH_FindReplace)
       oPopUp:AddItem( oItem)
-				      
+
       kn:=key_name(HK_get_key(keys,HASH_MatchSymbolForward))
       oItem :=MenuItem( [&Match symbol forward  ]+kn ,{|| .t. }, ,[Match identity symbol in forward ], HASH_MatchSymbolForward)
       oPopUp:AddItem( oItem)

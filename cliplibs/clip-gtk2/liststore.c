@@ -35,7 +35,7 @@ clip_INIT___LISTSTORE(ClipMachine *cm)
 void
 __list_store_destroy(ClipMachine *cm, C_object *colist)
 {
-	printf("destroy list store \n");
+
 	_clip_destroy(cm, _clip_mget(cm, &colist->obj, HASH_UTYPES));
 	return;
 }
@@ -200,6 +200,7 @@ clip_GTK_LISTSTORENEW(ClipMachine * cm)
 			_clip_mclone(cm,RETPTR(cm),&clist->obj);
                 }
 	}
+	free(utypes);
 	return 0;
 err:
 	return 1;

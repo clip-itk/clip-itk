@@ -5,6 +5,9 @@
 */
 /*
    $Log: clip.h,v $
+   Revision 1.241  2005/01/05 11:22:01  clip
+   uri: small fix
+
    Revision 1.240  2004/10/28 11:47:33  clip
    uri: fix formatiing in STR(), pad*() for numeric data and constants.
 
@@ -1629,7 +1632,7 @@ typedef struct ClipMachine
 	struct _HashTable *fields;
 
 	/* if not null, all output come here */
-	//struct OutBuf *obuf;
+	struct OutBuf *obuf;
 	struct OutBuf *ebuf;
 
 	/* output to membuf (SET PRINTER TO MEMBUF) */

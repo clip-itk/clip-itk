@@ -300,6 +300,7 @@ clip_GTK_TOOLBARAPPENDELEMENT(ClipMachine * cm)
                 cchild->data = c;
 		_clip_mclone(cm,RETPTR(cm),&cchild->obj);
         }
+        free(c);
 	return 0;
 err:
 	return 1;

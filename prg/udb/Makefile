@@ -11,7 +11,7 @@ AB_OBJS  = ab_obj.o ab_menu.o ab_brow.o ab_init.o ab_funcs.o \
 .SUFFIXES: .prg .o .po
 
 PROGS = codb_pack codb_addobj codb_ab \
-	codb_make codb_load codb_export codb_reindex #test
+	codb_make codb_load codb_export codb_reindex codb_rcheck #test
 
 all: $(PROGS)
 
@@ -43,6 +43,7 @@ install: all
 	cp codb_load$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_pack$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_reindex$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
+	cp codb_rcheck$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_addobj$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_export$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 
@@ -66,6 +67,9 @@ codb_pack: codb_pack.prg
 
 codb_reindex: codb_reindex.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M codb_reindex.prg $(CLIPLIBS) $(LIBS)
+
+codb_rcheck: codb_rcheck.prg
+	$(CLIP) $(CLIPFLAGS) -s -e -M codb_rcheck.prg $(CLIPLIBS) $(LIBS)
 
 codb_addobj: codb_addobj.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M codb_addobj.prg $(CLIPLIBS) $(LIBS)

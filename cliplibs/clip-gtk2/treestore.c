@@ -199,6 +199,8 @@ clip_GTK_TREESTORENEW(ClipMachine * cm)
 			_clip_mclone(cm,RETPTR(cm),&ctree->obj);
                 }
 	}
+	free(utypes
+	);
 	return 0;
 err:
 	return 1;

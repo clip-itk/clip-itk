@@ -1309,14 +1309,15 @@ clip_GTK_WIDGETDESTROY (ClipMachine *cm)
 
 	if (cwid)
         {
-	/*
+        /*
 	WTypeTable *wt_item = NULL;
 	const char * cwtype_name = "GTK_WIDGET_UNKNOWN";
 		wt_item = _wtype_table_get(cwid->type);
 		if (wt_item && wt_item->ftype_name) cwtype_name = (const char *)wt_item->ftype_name();
-		printf("destroy widget %s \n", (char *)cwtype_name);
-                */
+		printf("start destroy widget %s \n", (char *)cwtype_name);
+        */
 		gtk_widget_destroy(cwid->widget);
+        //        printf("widget destroyed \n");
         }
 /*
 	if (cwid)

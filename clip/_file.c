@@ -5,6 +5,12 @@
 */
 /*
    $Log: _file.c,v $
+   Revision 1.165  2005/01/11 07:53:25  clip
+   uri: small fix for CLIP_TASKS=no
+
+   Revision 1.164  2004/12/29 11:54:45  clip
+   uri: small fix in setenv()
+
    Revision 1.163  2004/12/15 12:43:03  clip
    uri: small fix and add chmod(file,mode), mode can be "777","7777",0xFFF,4095.
 
@@ -2539,7 +2545,7 @@ int
 clip_SETENV(ClipMachine * mp)
 {
 	char *name = _clip_parc(mp, 1);
-	char *val = _clip_parc(mp, 1);
+	char *val = _clip_parc(mp, 2);
 
 	_clip_retl(mp,0);
 	if (!name)
@@ -3074,7 +3080,7 @@ _clip_fileStrModeToNumMode(char *mode)
 			{S_IXOTH,S_IWOTH,S_IROTH}
 			};
 	int ret = 0, cur,pos;
-	int tmp, beg, end=strlen(mode);
+	int tmp, end=strlen(mode);
 
 	for(cur = 4-end,pos=0; pos<=end; cur++,pos++)
 	{
@@ -3226,7 +3232,11 @@ int _clip_setlock(ClipMachine* cm,long hash,int fd,off_t pos,int flags){
 
 		if(ok || !(flags & CLIP_LOCK_WAIT))
 			break;
+#ifdef USE_TASKS
 		Task_sleep(1);
+#else
+		sleep(1);
+#endif
 	}
 	return !ok;
 }

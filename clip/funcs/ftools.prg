@@ -191,7 +191,7 @@ function tempfile(cDir,cExt,nAttr)
 	else
 		fclose(i)
 	endif
-return  ret
+return  s2
 **********************************************************
 function recursiveDirectory(cMask, cPath)
 local mDir, mD, i, j

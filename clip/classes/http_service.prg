@@ -169,7 +169,7 @@ static function HTTP_VMsetValues(self)
 	set deleted on
 	set device to printer
 	set printer to membuf
-	outlog(__FILE__,__LINE__,self:dateFormat)
+	//outlog(__FILE__,__LINE__,self:dateFormat)
 	set date format to (self:dateFormat)
 return
 /******************************/
@@ -351,6 +351,7 @@ static function HTTP_runModClip(self,url,cmd,postData)
 	local out:=space(0), err:=space(0)
 	local mod,oParams,cachable := .t., lastUpdated
 	file := makepath(self:modclip+PATH_DELIM+url+".po")
+	//outlog(__FILE__,__LINE__,file,file(file))
 	if !file(file)
 		self:sendError(HTTP_ERR_FILENOTFOUND,file)
 		return .f.
@@ -362,6 +363,7 @@ static function HTTP_runModClip(self,url,cmd,postData)
 	aadd(self:sets,{"SCRIPT_FILENAME",file})
 	*****
 	mod := loadBlock(file)
+	//outlog(__FILE__,__LINE__,mod)
 	if valtype(mod) != "B"
 		self:sendError(HTTP_ERR_INTERNALSERVERERROR,file+" is not CLIP module.")
 		return .f.
@@ -526,6 +528,7 @@ static function HTTP_runGet(self,cLine,postData)
 		return
 	endif
 	ver := val(substr(cLine,i+6))
+	//outlog(__FILE__,__LINE__,ver)
 	if ver < 1.0 .or. ver > 1.1
 		self:sendError(HTTP_ERR_BADVERSION,ver)
 		return
@@ -536,9 +539,10 @@ static function HTTP_runGet(self,cLine,postData)
 	aadd(self:sets,{"REQUEST_URI",url})
 	aadd(self:sets,{"UNIQUE_ID","CLIP"+ntoc(random(),32,10,"0")})
 	if len(postData) > 0
-	aadd(self:sets,{"CONTENT_LENGTH",alltrim(str(len(postData)))})
+		aadd(self:sets,{"CONTENT_LENGTH",alltrim(str(len(postData)))})
 	endif
 
+	//outlog(__FILE__,__LINE__,url)
 	i:=at("?",url)
 	if i > 0
 		cmd := substr(url,i+1)
@@ -552,6 +556,7 @@ static function HTTP_runGet(self,cLine,postData)
 			exit
 		endif
 	next
+	//outlog(__FILE__,__LINE__,alias)
 	if ! empty(alias) //left(url,7) == "/icons/" .and. !empty(self:icons)
 		set(_SET_ROOTPATH,path)
 		url := substr(url,len(alias))
@@ -572,6 +577,7 @@ static function HTTP_runGet(self,cLine,postData)
 		endif
 	elseif left(url,10) == "/mod-clip/"
 		url := substr(url,10)
+	//outlog(__FILE__,__LINE__,url,cmd,postdata)
 		self:runModClip(url,cmd,@postData)
 	else
 		set(_SET_ROOTPATH,self:DocRoot)
@@ -580,9 +586,11 @@ static function HTTP_runGet(self,cLine,postData)
 		for i =1 to len(m)
 			_url := url+m[i]
 			file := makepath(_url)
+	//outlog(__FILE__,__LINE__,_url,file,file(file))
 			if !file(file)
 				loop
 			endif
+	//outlog(__FILE__,__LINE__,"send",_url)
 			self:sendFile(_url)
 			flag := .t.
 			exit

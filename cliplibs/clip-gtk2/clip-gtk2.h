@@ -51,6 +51,7 @@ typedef struct _C_object
 	int		usersigenabled;
 	int		sigenabled;
 	int		evntenabled;
+	void		*data;
 
 } _C_object;
 

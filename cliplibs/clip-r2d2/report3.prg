@@ -5,9 +5,9 @@ function r2d2_report3_xml(_queryArr)
 local err, _query
 local oDict,oDep, oDep02,oDict02
 local accPost, acc_chart, osb_class
-local beg_date:=date(),end_date:=date(), account:="", document:=""
+local beg_date:=date(),end_date:=date(), account:="", document:="", an_value:=""
 local connect_id:="", connect_data
-local i,j,k,s1,s2,tmp,obj,col,columns
+local i,j,k,s,s1,s2,tmp,obj,col,columns
 local acc_list, acc_objs
 local d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
@@ -32,6 +32,9 @@ local urn,sprname,cache:=map()
 	endif
 	if "ACCOUNT" $ _query
 		account := upper(_query:account)
+	endif
+	if "AN_VALUE" $ _query
+		an_value := upper(_query:an_value)
 	endif
 	if "DOCUMENT" $ _query
 		document := upper(_query:document)
@@ -59,7 +62,7 @@ local urn,sprname,cache:=map()
 			?? "ACCOUNT not defined "
 		endif
 		? "Usage:"
-		? "    report3?beg_date=<date>& end_date=<date>& account=<account_code>& document=<primary_document_id>"
+		? "    report3?beg_date=<date>& end_date=<date>& account=<account_code>& document=<primary_document_id>& an_value=<an_value>"
 		?
 		return
 	endif
@@ -129,7 +132,7 @@ local urn,sprname,cache:=map()
 	for i=1 to len(acc_list)
 		s2 := ' .and. (daccount="'+acc_list[i]+'" .or. kaccount="'+acc_list[i]+'")'
 		if !empty(document)
-			s2+=' .and. primary_dcoument=="'+document+'"'
+			s2+=' .and. primary_document=="'+document+'"'
 		endif
 		tmp:=oDep:select(accpost:id,,,s1+s2)
 		for j=1 to len(tmp)
@@ -157,6 +160,19 @@ local urn,sprname,cache:=map()
 		endif
 		if !empty(document) .and. !(post:primary_document == document)
 			loop
+		endif
+		if !empty(an_value)
+			s := ""
+			for j=1 to len(post:an_debet)
+				s+= post:an_debet[j][2]+","
+			next
+			for j=1 to len(post:an_kredit)
+				s+= post:an_kredit[j][2]+","
+			next
+			if an_value $ s
+			else
+				loop
+			endif
 		endif
 		aadd(post_objs,post)
 	next

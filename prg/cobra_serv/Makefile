@@ -4,7 +4,7 @@ endif
 #CLIP	= clip
 CLIP	= $(CLIPROOT)/bin/clip
 CLIPFLAGS = -a -O -b -l -w
-CLIPLIBS  = -lclip-codb
+CLIPLIBS  = -lclip-codb -lclip-r2d2
 OBJS  = #cobra_conn.o
 CHS  = #corba_serv.ch
 MODULES = module1.po codbtview.po codbdlist.po

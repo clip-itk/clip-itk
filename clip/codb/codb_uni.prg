@@ -13,7 +13,7 @@ function codb_unify(cCmd,args,oAnswer)
 	elseif left(cCmd,3) == "DEP"
 		_unify_dep(substr(cCmd,5),args,oAnswer)
 	elseif left(cCmd,8) == "CODBLIST"
-		_unify_list(substr(cCmd,9),args,oAnswer)
+		_unify_list(substr(cCmd,10),args,oAnswer)
 	else
 	endif
 return
@@ -21,10 +21,12 @@ return
 static function _unify_list(cCmd,args,oAnswer)
 	local oList,ret,bl,len
 	local p1,p2,p3,p4,p5,p6,p7,p8,p9,p10
-	if ! __check_args(args,1,{"C"}) .or. len(args[1]) != DICT_ID_LEN+DEP_ID_LEN
+	/*
+	if ! __check_args(args,1,{"C"}) //.or. len(args[1]) != DICT_ID_LEN+DEP_ID_LEN
 		oAnswer:error := codb_error(1007)
 		return
 	endif
+	*/
 	oList := codbList():new()
 
 	if !(cCmd $ oList)

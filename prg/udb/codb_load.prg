@@ -8,27 +8,24 @@
 
 local dList,ret,ret2
 local xmlData,i,j,d,s:=""
-local fName,fBlock,err
+local fName,fBlock,err,pClass
 local fList,mdir,mdirs:={"data","data1","data2","data3","data4","data5","data6"}
 
-parameters pClass,p1,p2,p3,p4,p5
+//parameters _pClass,p1,p2,p3,p4,p5
 
-	if pClass == "--help"
+	if param(1) == "--help"
 		? "codb_load: util for loading objects fron file[s] and "
 		? "           append/update it on depositories"
 		?
-		? "Usage: codb_load [classname]"
+		? "Usage: codb_load [classname1]....[classnameN]"
 		?
 		? "Description of method loading: data[x]/codb_load.xml"
 		quit
 	endif
-
-	s+=iif(p1==NIL,"",p1)
-	s+=iif(p2==NIL,"",p2)
-	s+=iif(p3==NIL,"",p3)
-	s+=iif(p4==NIL,"",p4)
-	s+=iif(p5==NIL,"",p5)
-
+	pClass := {}
+	for i=1 to pcount()
+		aadd(pClass,lower(param(i)))
+	next
 
 	set exclusive on
 	set translate path off
@@ -59,15 +56,15 @@ parameters pClass,p1,p2,p3,p4,p5
 		endif
 
 		ret:=""
+		if "CODELOADER" $ xmlData
+			ret:=install_default_data(xmlData:codeloader,{})
+		else
+			? mdir, "don`t have default code loaders"
+		endif
 		if "DATALOADER" $ xmlData
 			ret:=install_default_data(xmlData:dataloader,pClass)
 		else
 			? mdir, "don`t have default data loaders"
-		endif
-		if "CODELOADER" $ xmlData
-			ret:=install_default_data(xmlData:codeloader,pClass)
-		else
-			? mdir, "don`t have default code loaders"
 		endif
 
 		if valtype(ret) == "C" // error
@@ -128,7 +125,7 @@ static function install_default_data(xmlData,pClass)
 		endif
 
 		if !empty(pClass)
-			if lower(oModule:classname) == lower(pClass)
+			if ascan(pClass,{|x| x== lower(oModule:classname)} ) > 0
 			else
 				loop
 			endif

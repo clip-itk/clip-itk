@@ -119,7 +119,7 @@ static function cdb_cbr_update(self,data)
 	endif
 return ret:return
 ************************************************************
-static function cdb_cbr_connect(ident,user,passwd)
+static function cdb_cbr_connect(self,ident,user,passwd)
 	local ret:=map()
 	local i,m,vfunc
 

@@ -29,9 +29,12 @@ init procedure ab_init
 	k[ K_F3 ] 	:=HASH_ViewCard
 	k[ K_F4 ] 	:=HASH_Edit
 	k[ K_F8 ] 	:=HASH_Delete
-	k[ K_CTRL_F8 ] 	:=HASH_UnDelete
-	k[ K_ALT_F8 ] 	:=HASH_DeleteAll
-	k[ K_F10] 	:=HASH_CloseWin
+	k[ K_ALT_F8 ]	:=HASH_DeleteAll
+	k[ K_ALT_U ] 	:=HASH_UnDelete
+	k[ K_CTRL_U ] 	:=HASH_UnDeleteAll
+	k[ K_F9 ]	:=HASH_Erase
+	k[ K_ALT_F9 ] 	:=HASH_EraseAll
+	//k[ K_F10] 	:=HASH_CloseWin
 	k[ K_ALT_X ]	:=HASH_Exit
 	//k[ K_F3 ] 	:=HASH_OpenDict
 	//k[ K_ALT_F3 ] 	:=HASH_OpenDep

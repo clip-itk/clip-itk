@@ -1,11 +1,10 @@
 #  GNU make makefile
 #
-
-ifdef CLIPROOT
-include $(CLIPROOT)/include/Makefile.inc
-else
-CLIPROOT=/usr/local/clip
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
+
+include $(CLIPROOT)/include/Makefile.inc
 
 CLIPINCLUDE=-I$(CLIPROOT)/include
 #C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)

@@ -1,5 +1,5 @@
 ifndef CLIPROOT
-	CLIPROOT=$(shell echo pwd; cd ../../../; pwd)/cliproot
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
 
 include $(CLIPROOT)/include/Makefile.inc

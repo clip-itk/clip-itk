@@ -5,6 +5,12 @@
 */
 /*
    $Log: diskutils.c,v $
+   Revision 1.113  2005/01/10 11:30:05  clip
+   uri: small fix in tempfile(), return path+tmpname
+
+   Revision 1.112  2005/01/10 11:11:28  clip
+   uri: small fix in fileDelete(path+pattern)
+
    Revision 1.111  2004/12/07 10:47:10  clip
    uri: small fix in error code for dirchange()
 
@@ -1685,7 +1691,7 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 #ifdef _WIN32
 			if (_clip_glob_match(entry->d_name, mask, 1) != strlen(entry->d_name))
 #else
-			if (_clip_glob_match(entry->d_name, mask, 0) != strlen(entry->d_name))
+			if (_clip_glob_match(entry->d_name, mask,  cm->flags & TRANSLATE_FLAG) != strlen(entry->d_name))
 #endif
 				continue;
 			strcpy(filename, entry->d_name);
@@ -2229,6 +2235,7 @@ clip_TEMPFILE(ClipMachine * cm)	/* Creates a file for temporary use */
 	char /**tmp=NULL,*/ *dosdelim = "\\";
 	mode_t mode = S_IRUSR | S_IRGRP | S_IROTH;
 
+	printf("\ntempfile");
 	if (uname == NULL)
 	{
 		getcwd(buf, MAXPATHLEN);
@@ -2271,6 +2278,7 @@ clip_TEMPFILE(ClipMachine * cm)	/* Creates a file for temporary use */
 		chmod(buf, mode);
 		if (retname[strlen(retname) - 1] != dosdelim[0])
 			strcat(retname, dosdelim);
+		printf("\nbuf=%s,%s\n",buf,retname);
 		strcat(retname, strrchr(buf, '/') + 1);
 		retname[0] = toupper(retname[0]);
 		_clip_retc(cm, retname);
@@ -2679,6 +2687,8 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 	   32        FA_ARCHIVE        ARCHIVE (Changed since last backup)
 */
 	char *s = NULL, *uname = NULL;
+	char path[MAXPATHLEN];
+	char buf[MAXPATHLEN];
 	int ret = 0, fattr = FA_ARCHIVE, plen = 0;
 	DIR *dir = NULL;
 	struct dirent *d;
@@ -2699,6 +2709,10 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 	{			/* current directory */
 		if ((dir = opendir(".")) == NULL)
 			goto end;
+		path[0] = '.';
+		path[1] = '/';
+		path[2] = 0;
+		plen = 2;
 	}
 	else if (*(s + 1) == 0)
 	{			/* file name/mask expected */
@@ -2706,12 +2720,10 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 	}
 	else
 	{
-		char buf[MAXPATHLEN];
-
 		plen = ++s - uname;
-		memcpy(buf, uname, plen);
-		buf[plen] = 0;
-		if ((dir = opendir(buf)) == NULL)
+		memcpy(path, uname, plen);
+		path[plen] = 0;
+		if ((dir = opendir(path)) == NULL)
 			goto end;
 	}
 
@@ -2720,21 +2732,27 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 
 	while ((d = readdir(dir)) != NULL)
 	{
+
+		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+			continue;
 #ifdef _WIN32
-		if (_clip_glob_match(d->d_name, s, 1) != strlen(d->d_name) ||
+		if (_clip_glob_match(d->d_name, s, 1) != strlen(d->d_name))
 #else
-		if (_clip_glob_match(d->d_name, s, 0) != strlen(d->d_name) ||
+		if (_clip_glob_match(d->d_name, s, cm->flags & TRANSLATE_FLAG) != strlen(d->d_name))
 #endif
-			!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
 			continue;
 		stat(d->d_name, &st);
+		/*
 		if (!(((fattr & FA_ARCHIVE) && S_ISREG(st.st_mode)) ||
 			  ((fattr & FA_READONLY) &&
 			   (st.st_mode & S_IRUSR) && !(st.st_mode & S_IWUSR)) || ((fattr & FA_HIDDEN) && d->d_name[0] == '.')))
 		{
 			continue;
 		}
-		if (unlink(d->d_name) == 0)	/* success */
+		*/
+		strncpy(buf,path,MAXPATHLEN);
+		strncpy(buf+plen,d->d_name,MAXPATHLEN-plen);
+		if (unlink(buf) == 0)	/* success */
 			ret = 1;
 	}
 

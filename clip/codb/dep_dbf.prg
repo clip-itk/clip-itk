@@ -37,8 +37,11 @@ function codb_depDbfNew(oDict,dep_id)
 return obj
 
 ************************************************************
-static function _dep_delete(self,cId)
+static function _dep_delete(self,cId,lErase)
 	local oData,old,class_id,class_desc,oExt,extent_id,idxData
+
+	lErase := iif(lErase == NIL, .f. , lErase)
+
 	self:error := ""
 	oData:=self:_getValue(cId)
 	adel(self:__objCache,cId)
@@ -79,7 +82,7 @@ static function _dep_delete(self,cId)
 		return .f.
 	endif
 	idxData := rddRead(self:hDbIdxTbl)
-	if empty(class_desc:unique_key)
+	if empty(class_desc:unique_key) .or. lErase
 		if ! oExt:delete(cId,idxData:version)
 			self:error := oExt:error
 		endif

@@ -30,7 +30,16 @@ clip_INIT___ITEMFACTORY(ClipMachine *cm)
 	_wtype_table_put(_clip_type_item_factory,  _clip_type_name_item_factory,  _gtk_type_item_factory,  NULL, NULL);
 	return 0;
 }
-
+/*
+static void
+__itemfactory_destroy_data(ClipMachine * cm, C_object * co)
+{
+	if (co && co->data)
+        {
+        	free (co->data);
+        }
+}
+*/
 static void
 _item_factory_callback1(gpointer data, guint callback_action, GtkWidget *wid)
 {
@@ -415,6 +424,8 @@ clip_GTK_ITEMFACTORYCREATEITEMS(ClipMachine * cm)
 
 		entry.callback_action = 1;
 		entry.item_type = (it->items[4].t.type==UNDEF_t)?0:it->items[4].s.str.buf;
+                //citem->destroy = __itemfactory_destroy_data;
+                //citem->data = c;
 		gtk_item_factory_create_item(GTK_ITEM_FACTORY(citem->object), &entry,
 			c, 1);
         }

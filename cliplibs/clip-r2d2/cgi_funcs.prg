@@ -254,6 +254,10 @@ function bal_summa(summa)
 	ret+=substr(str,10)
 return ret
 ***********************
+function sort_summa(summa,len,dec)
+	 local ret := padl(alltrim(str(summa,len,dec)),14,"0")
+return ret
+***********************
 function bal_num(num)
 	local str:=str(num,8,3)
 	if left(str,1)=="*"
@@ -1309,7 +1313,7 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 					sTmp := ""
 
 				elseif valtype(sTmp) == "N"
-					sTmp3 := padl(alltrim(str(sTmp,col:datalen,col:datadec)),10,"0")
+					sTmp3 := sort_summa(stmp,,col:datalen,col:datadec) //padl(alltrim(str(sTmp,col:datalen,col:datadec)),10,"0")
 					sTmp := alltrim(Str(sTmp,col:datalen,col:datadec))
 				elseif valtype(sTmp) == "D"
 					sTmp3 := dtos(sTmp)

@@ -5,9 +5,12 @@
 */
 /*
 	$Log: clipbase.c,v $
+	Revision 1.370  2005/01/10 11:50:10  clip
+	rust: DBSETFILTER() without parameters -> DBCLEARFILTER()
+	
 	Revision 1.369  2004/11/25 11:53:21  clip
 	rust: error message changed for DBUSEAREA("nosuchfile")
-	
+
 	Revision 1.368  2004/11/05 09:22:08  clip
 	uri: add ROUN(),FCOUN() - short func names
 
@@ -3741,11 +3744,14 @@ clip_DBSETFILTER(ClipMachine * cm)
 
 	CHECKWA(wa);
 
-	CHECKARG2(1,CCODE_t,PCODE_t);
+	CHECKOPT2(1,CCODE_t,PCODE_t);
 	CHECKOPT1(2,CHARACTER_t);
 	CHECKOPT1(3,LOGICAL_t);
 
 	if((er = rdd_clearfilter(cm,wa->rd,__PROC__))) goto err;
+
+	if(_clip_parinfo(cm,1) != CCODE_t && _clip_parinfo(cm,1) != PCODE_t)
+		return 0;
 
 	if((er = _clip_flushbuffer(cm, wa, __PROC__))) goto err;
 	READLOCK;

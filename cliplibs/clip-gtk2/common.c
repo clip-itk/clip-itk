@@ -115,10 +115,7 @@ CLIP_DLLEXPORT long
 _list_length_cwidget()
 {
 	if (widget_list->t.type == MAP_t)
-	{
-//		printf("is map \n");
 		return (long)widget_list->m.count;
-	}
 	else
 		return 0;
 }
@@ -144,12 +141,20 @@ _list_put_cobject(ClipMachine * cm, void *pointer, C_object * cobj)
 CLIP_DLLEXPORT void
 _list_remove_cobject(ClipMachine * cm)
 {
-	int i;
-        ClipVar *cv = (ClipVar *)&(widget_list->m.items[0]);
-	for(i=0; i<cv->m.count; i++)
+        ClipVar *cv;
+        if (widget_list->t.type != MAP_t)
+        	return;
+        cv = (ClipVar *)&(widget_list->m.items[0]);
+	while (cv)
         {
-        	C_object *cobj = (C_object *)((long)(((ClipVar*)&(cv->m.items[i]))->n.d));
-                C_widget *cwid = (C_widget *)((long)(((ClipVar*)&(cv->m.items[i]))->n.d));
+
+        	if (((ClipVar *)&(widget_list->m.items[0]))->m.count)
+        		cv = (ClipVar *)&(widget_list->m.items[0]);
+		else
+                	break;
+        	C_object *cobj = (C_object *)((long)(((ClipVar*)&(cv->m.items[0]))->n.d));
+                C_widget *cwid = (C_widget *)((long)(((ClipVar*)&(cv->m.items[0]))->n.d));
+
                 if (cobj->objtype)
                 	destroy_c_object(cobj);
                 else
@@ -311,10 +316,9 @@ destroy_c_widget(void *item)
 	_clip_destroy(cw->cmachine, &cw->obj);
 	for (cs = cw->siglist; cs;)
 	{
-//printf("destroy signal %s for widget %s\n",cs->signame, cw->type_name);
 		csnext = cs->next;
 		_clip_destroy(cw->cmachine, &cs->cfunc);
-		free(cs);
+		if (cs) free(cs);
 		cs = csnext;
 	}
         if (cs) free(cs);
@@ -634,16 +638,11 @@ _fetch_cobjectn(ClipMachine* cm, int h)
 void widget_destructor (C_widget *cw)
 {
 	if (cw)
-{
-/*
-	WTypeTable *wt_item = NULL;
-	const char * cwtype_name = "GTK_WIDGET_UNKNOWN";
-		wt_item = _wtype_table_get(cw->type);
-		if (wt_item && wt_item->ftype_name) cwtype_name = (const char *)wt_item->ftype_name();
-		printf(" TRY destroy widget %s \n", (char *)cwtype_name);
-*/
- destroy_c_widget(cw);
- }
+	{
+		double d;
+ 		if (_clip_mgetn(cw->cmachine, widget_list, (long) cw->widget, &d) == 0)
+ 			destroy_c_widget(cw);
+ 	}
 }
 
 void object_destructor (C_object *co)

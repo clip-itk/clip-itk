@@ -30,7 +30,7 @@ static aGetList
 static keyExit:=15
 
 ****************************************
-FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, ;
+FUNCTION ReadModal( _GetList, nPos, oMenu, nMsgRow, nMsgLeft, ;
 					  nMsgRight, cMsgColor )
    LOCAL oGet, aMode, oMsg
    LOCAL aSavGetSysVars
@@ -40,12 +40,13 @@ FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, ;
    if oStatus==NIL
       __getSysInit()
    endif
+   private getlist := {}
 
    IF ( VALTYPE( oStatus:format ) == "B" )
       EVAL( oStatus:format )
    ENDIF
 
-   IF ( EMPTY( GetList ) )
+   IF ( EMPTY( _GetList ) )
       SETPOS( MAXROW() - 1, 0 )
       RETURN (.F.)
    ENDIF
@@ -70,9 +71,9 @@ FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, ;
    oMsg:fontrow:= NIL
 
    IF ( VALTYPE( nPos ) == "N" )
-      oStatus:pos := Settle( GetList, nPos, .T. )
+      oStatus:pos := Settle( _GetList, nPos, .T. )
    ELSE
-      oStatus:pos := Settle( GetList, 0, .T. )
+      oStatus:pos := Settle( _GetList, 0, .T. )
    ENDIF
 
    IF ( oMsg:flag :=  ( VALTYPE( oMsg:row   ) + ;
@@ -97,16 +98,16 @@ FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, ;
 
    WHILE !( oStatus:pos == 0 )
 
-      oGet := GetList[ oStatus:pos ]
-      aGetList := GetList
+      oGet := _GetList[ oStatus:pos ]
+      aGetList := _GetList
 	 PostActiveGet( oGet )
 
       IF ( VALTYPE( oGet:reader ) == "B" )
-	 EVAL( oGet:reader, oGet, GetList, oMenu, oMsg )
+	 EVAL( oGet:reader, oGet, _GetList, oMenu, oMsg )
       ELSE
-	 GetReader( oGet, GetList, oMenu, oMsg ) // Use standard reader
+	 GetReader( oGet, _GetList, oMenu, oMsg ) // Use standard reader
       ENDIF
-      oStatus:pos := Settle( GetList, oStatus:pos, .F. )
+      oStatus:pos := Settle( _GetList, oStatus:pos, .F. )
 
    ENDDO
 

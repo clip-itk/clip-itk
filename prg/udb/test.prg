@@ -5,11 +5,15 @@ set exclusive off
 oDep01 := coDepository():new("GBL0101","sdfsd")
 oDep01:open()
 oDict := oDep01:dictionary()
-country:=oDict:classBodyByName("country")
+country:=oDict:classBodyByName("taxcode2")
 ? country
 //tmp:= oDep01:select(country:id,,,'(code="Ò" .or.  unit="Ò" .or.  name="Ò" .or.  smallname="Ò")')
-tmp:= oDep01:select(country:id,,,'smallname="Ò"')
+tmp:= oDep01:select(country:id)
 ? len(tmp)
+for i=1 to len(tmp)
+	obj:=oDep01:getValue(tmp[i])
+	? obj:fullcode,":",obj:fullname
+next
 ?
 return
 

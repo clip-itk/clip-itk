@@ -5,6 +5,15 @@
 */
 /*
    $Log: _string.c,v $
+   Revision 1.114  2005/01/10 10:33:59  clip
+   uri: small fix for RIGHT(NIL,n) and LEFT(NIL,n)
+
+   Revision 1.113  2005/01/10 10:21:37  clip
+   uri: small fix in padl(nData,len,"0")
+
+   Revision 1.112  2005/01/09 10:38:44  clip
+   uri: small fix
+
    Revision 1.111  2004/10/28 11:47:32  clip
    uri: fix formatiing in STR(), pad*() for numeric data and constants.
 
@@ -1051,34 +1060,6 @@ clip_ISWORD(ClipMachine * mp)
 	return 0;
 }
 
-int
-clip_LEFT(ClipMachine * mp)
-{
-	int vl = 0;
-	int i;
-	char *rp;
-	char *vp = _clip_parcl(mp, 1, &vl);
-	int nl = _clip_parni(mp, 2);
-
-	if (nl < 0)
-		nl = 0;
-	if (nl > vl)
-		nl = vl;
-
-	if (vp == NULL)
-	{
-		_clip_retc(mp, "");
-				return 0;
-	}
-	rp = malloc(nl + 1);
-	if (nl > vl)
-		nl = vl;
-	for (i = 0; i < nl; i++)
-		rp[i] = vp[i];
-	rp[i] = 0;
-	_clip_retcn_m(mp, rp, nl);
-	return 0;
-}
 
 int
 clip_MAX(ClipMachine * mp)
@@ -1487,7 +1468,7 @@ clip_PADL(ClipMachine * mp)
 	switch (t1)
 	{
 	case NUMERIC_t:
-		buf = _clip_strFunc(mp,vp,len,vp->t.dec,1);
+		buf = _clip_strFunc(mp,vp,len,vp->t.dec,2);
 		bl = strlen(buf);
 		break;
 	case DATE_t:
@@ -1628,6 +1609,33 @@ clip_REPLICAT(ClipMachine * mp)
 }
 
 int
+clip_LEFT(ClipMachine * mp)
+{
+	int vl = 0;
+	int i;
+	char *rp;
+	char *vp = _clip_parcl(mp, 1, &vl);
+	int nl = _clip_parni(mp, 2);
+
+	_clip_retc(mp, "");
+	if (vp == NULL)
+		return 0;
+	if (nl < 0)
+		nl = 0;
+	if (nl > vl)
+		nl = vl;
+
+	rp = malloc(nl + 1);
+	if (nl > vl)
+		nl = vl;
+	for (i = 0; i < nl; i++)
+		rp[i] = vp[i];
+	rp[i] = 0;
+	_clip_retcn_m(mp, rp, nl);
+	return 0;
+}
+
+int
 clip_RIGHT(ClipMachine * mp)
 {
 	int vl = 0;
@@ -1636,11 +1644,9 @@ clip_RIGHT(ClipMachine * mp)
 	char *vp = _clip_parcl(mp, 1, &vl);
 	int nl = _clip_parni(mp, 2);
 
+	_clip_retc(mp, "");
 	if (vp == NULL)
-	{
-		_clip_retc(mp, "");
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "RIGHT");
-	}
+		return 0;
 	if (nl < 0)
 		nl = 0;
 	if (nl > vl)
@@ -1791,6 +1797,7 @@ clip_STUFF(ClipMachine * mp)
 int
 clip_SUBSTR(ClipMachine * mp)
 {
+	/* sorry test */
 	int l;
 	char *ret;
 	char *str = _clip_parcl(mp, 1, &l);

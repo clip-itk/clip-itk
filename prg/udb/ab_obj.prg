@@ -177,9 +177,10 @@ static function ab_openDict()
 		return .f.
 	endif
 
-	x1:=""
+	x1:=""; x2:=""
 	if i>0 .and. i<len(m)
 		x1:=substr(m[i],1,at(":",m[i])-1)
+		x2:=substr(m[i],at(":",m[i])+1)
 	endif
 
 	if i==len(m) // create new dictionary
@@ -228,6 +229,7 @@ static function ab_openDict()
 		::dictionary:create()
 	endif
 	::dictionary:open()
+	::dictionary:name:=x2
 	if val(::dictionary:error)!=0
 		alert(::dictionary:error)
 		::dictionary:close()

@@ -102,6 +102,8 @@ local host:=""
 	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
+	//? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
 
 	oDep := codb_needDepository("ACC0101")
 	if empty(oDep)
@@ -148,6 +150,7 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+'" id="'+tmp:an_value+'_'+alltrim(str(random(10000)))+'" DOCUM:about="'+urn_id+':'+tmp:an_value+'"'
 		? '	DOCUM:_saldo_="an_data"'
 		? '	DOCUM:account="'+codb_essence(account)+'"'
+		? '	DOCUM:sort_account="'+codb_essence(account)+'"'
 		? '	DOCUM:ref_account="'+account+'"'
 		? '	DOCUM:account_name="'+tmp:essence+'"'
 		? ' 	DOCUM:an_value.id="'+tmp:an_value+'"'
@@ -165,17 +168,28 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 		next
 
 		? '	DOCUM:bd_summa="'+bal_summa(tmp:bd_summa)+'"'
+		? '	DOCUM:sort_bd_summa="'+sort_summa(tmp:bd_summa)+'"'
 		? '	DOCUM:bk_summa="'+bal_summa(tmp:bk_summa)+'"'
+		? '	DOCUM:sort_bk_summa="'+sort_summa(tmp:bk_summa)+'"'
 		? '	DOCUM:od_summa="'+bal_summa(tmp:od_summa)+'"'
+		? '	DOCUM:sort_od_summa="'+sort_summa(tmp:od_summa)+'"'
 		? '	DOCUM:ok_summa="'+bal_summa(tmp:ok_summa)+'"'
+		? '	DOCUM:sort_ok_summa="'+sort_summa(tmp:ok_summa)+'"'
 		? '	DOCUM:ed_summa="'+bal_summa(tmp:ed_summa)+'"'
+		? '	DOCUM:sort_ed_summa="'+sort_summa(tmp:ed_summa)+'"'
 		? '	DOCUM:ek_summa="'+bal_summa(tmp:ek_summa)+'"'
+		? '	DOCUM:sort_ek_summa="'+sort_summa(tmp:ek_summa)+'"'
 
 		? '	DOCUM:beg_num="' +alltrim(bal_num(tmp:beg_num))   +'"'
+		? '	DOCUM:sort_beg_num="' +sort_summa(tmp:beg_num)   +'"'
 		? '	DOCUM:in_num="'  +alltrim(bal_num(tmp:in_num))    +'"'
+		? '	DOCUM:sort_in_num="'  +sort_summa(tmp:in_num)    +'"'
 		? '	DOCUM:out_num="' +alltrim(bal_num(tmp:out_num))   +'"'
+		? '	DOCUM:sort_out_num="' +sort_summa(tmp:out_num)   +'"'
 		? '	DOCUM:end_num="' +alltrim(bal_num(tmp:end_num))   +'"'
+		? '	DOCUM:sort_end_num="' +sort_summa(tmp:end_num)   +'"'
 		? '	DOCUM:unit_num="'+tmp:unit_num  +'"'
+		? '	DOCUM:sort_unit_num="'+tmp:unit_num  +'"'
 
 		? '/>'
 
@@ -192,9 +206,11 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 		    loop
 		endif
 
+		/*
 		if tmp:an_value == 'total'
 			loop
 		endif
+		*/
 
 		? '	<RDF:li resource="'+urn_id+':'+tmp:an_value+'"/>'
 	next
