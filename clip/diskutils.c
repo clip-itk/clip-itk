@@ -5,6 +5,24 @@
 */
 /*
    $Log: diskutils.c,v $
+   Revision 1.111  2004/12/07 10:47:10  clip
+   uri: small fix in error code for dirchange()
+
+   Revision 1.110  2004/10/25 16:50:42  clip
+   uri: small fix in curDir() and dirChange()
+
+   Revision 1.109  2004/10/25 16:16:31  clip
+   uri: small fix in dirChange() for unset current drive if drive exist in path.
+
+   Revision 1.108  2004/10/20 07:11:52  clip
+   uri: small fix for curr drive detection
+
+   Revision 1.107  2004/09/25 17:13:48  clip
+   uri: small fix in DIRNAME()
+
+   Revision 1.106  2004/09/23 11:16:18  clip
+   uri: filecopy() from CT3 added.
+
    Revision 1.105  2004/07/12 13:45:39  clip
    rust: use cm->fileCreateMode for creating file in STRFILE()
 
@@ -531,8 +549,10 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 					*(ch + 1) = ':';
 
 					/* установка текущего диска */
+					/*
 					if (_clip_fetch_item(cm, CLIP_CUR_DRIVE) == NULL)
-						_clip_store_item(cm, CLIP_CUR_DRIVE, ch);
+					*/
+					_clip_store_item(cm, CLIP_CUR_DRIVE, ch);
 
 					if (path[j] == '/')
 						j++;
@@ -634,23 +654,28 @@ _get_path(const char *fname)
  */
 
 void
-_check_error(ClipMachine * cm, const char *fname)
+_check_error(ClipMachine * cm, const char *fname, int isdir)
 {
 #define NO_DISK_ERR		0
 #define ER_FILE_NOT_FOUND	-2
 #define ER_PATH_NOT_FOUND	-3
 #define ER_ACCESS_DENIED	-5
 
-	char *path = NULL;
+	char *path = NULL, *tmp;
 
 	switch (errno)
 	{
 	case ENOENT:
-		if ((path = _get_path(fname)) == NULL || access(path, F_OK))
+		path = _get_path(fname);
+		if ( isdir)
+			tmp = (char *) fname;
+		else
+			tmp = path;
+		if (tmp == NULL || access(tmp, F_OK))
 			_clip_retni(cm, ER_PATH_NOT_FOUND);
 		else
 			_clip_retni(cm, ER_FILE_NOT_FOUND);
-		if (path)
+		if (path != NULL )
 			free(path);
 		return;
 	case ENOTDIR:
@@ -737,7 +762,7 @@ clip_DELETEFILE(ClipMachine * cm)
 		return 1;
 	}
 	if (unlink(uname))
-		_check_error(cm, uname);	/* fail */
+		_check_error(cm, uname, 0);	/* fail */
 	else
 		_clip_retni(cm, NO_DISK_ERR);	/* success */
 	free(uname);
@@ -752,27 +777,23 @@ int
 clip_DIRCHANGE(ClipMachine * cm)
 {
 /*
-   0      NO_DISK_ERR         No error occurred
-   -2      ER_FILE_NOT_FOUND   File not found
-   -3      ER_PATH_NOT_FOUND   Path not found
-   -5      ER_ACCESS_DENIED    Access denied (e.g., in network)
- */
+	 0      NO_DISK_ERR         No error occurred
+	-2      ER_FILE_NOT_FOUND   File not found
+	-3      ER_PATH_NOT_FOUND   Path not found
+	-5      ER_ACCESS_DENIED    Access denied (e.g., in network)
+*/
 	char tmp[MAXPATHLEN], *uname;
 	char *drv = _clip_fetch_item(cm, CLIP_CUR_DRIVE);
 	long hash_dir = _hash_cur_dir[*drv - 65];
 	char *dname = _clip_parc(cm, 1);
 
+	_clip_retni(cm, ER_PATH_NOT_FOUND);
 	if (dname == NULL)
-	{
-		_clip_retni(cm, ER_PATH_NOT_FOUND);
 		return 0;
-	}
+
 #ifdef _WIN32
 	if (SetCurrentDirectory(dname) <= 0)
-	{
-		_clip_retni(cm, ER_PATH_NOT_FOUND);
 		return 0;
-	}
 #endif
 	if (strlen(dname) > 2 && *(dname + 1) == ':')
 	{
@@ -781,11 +802,11 @@ clip_DIRCHANGE(ClipMachine * cm)
 		if (drv[0] < 'A' || drv[0] > 'Z')
 			drv[0] = 'C';
 		drv[1] = ':';
-		_clip_store_item(cm, CLIP_CUR_DRIVE, drv);	/* смена текущего диска */
+	/*
+		_clip_store_item(cm, CLIP_CUR_DRIVE, drv);
+	*/
 		hash_dir = _hash_cur_dir[*drv - 65];
-		dname+=2;
-//		*dname = '/';
-//		printf("\ndname=%s\n",dname);
+		dname += 2;
 	}
 #ifdef _WIN32
 	{
@@ -848,9 +869,10 @@ clip_DIRCHANGE(ClipMachine * cm)
 	}
 
 	//printf("\nunix_dir=%s\n",uname);
+	_clip_retni(cm, NO_DISK_ERR);	/* success */
 	if (chdir(uname))
 	{
-		_check_error(cm, uname);	/* fail */
+		_check_error(cm, uname, 1);	/* fail */
 	}
 	else
 	{
@@ -859,10 +881,6 @@ clip_DIRCHANGE(ClipMachine * cm)
 		 * диск (если надо) и текущий досовский путь на этом диске
 		 */
 		char *dir = NULL, *ndir = NULL;
-
-#if 0
-		  next:
-#endif
 		if (*dname == '\\' || *dname == '/')
 		{		/* абсолютный путь dos */
 			int len;
@@ -873,20 +891,6 @@ clip_DIRCHANGE(ClipMachine * cm)
 				drv[len - 1] = 0;
 			_clip_store_item(cm, hash_dir, drv);
 		}
-#if 0
-		else if (*(dname + 1) == ':')
-		{		/* "C:\..." */
-			drv = calloc(1, 3);
-			drv[0] = toupper(*dname);
-			if (drv[0] < 'A' || drv[0] > 'Z')
-				drv[0] = 'C';
-			drv[1] = ':';
-			_clip_store_item(cm, CLIP_CUR_DRIVE, drv);	/* смена текущего диска */
-			hash_dir = _hash_cur_dir[*drv - 65];
-			dname += 2;
-			goto next;
-		}
-#endif
 		else
 		{		/* путь неабсолютный, склейка путей */
 			int dlen = 0;
@@ -955,7 +959,7 @@ clip_DIRMAKE(ClipMachine * cm)
 #else
 	if (mkdir(uname, cm->dirCreateMode))
 #endif
-		_check_error(cm, uname);	/* fail */
+		_check_error(cm, uname, 1);	/* fail */
 	else
 		_clip_retni(cm, NO_DISK_ERR);	/* success */
 
@@ -978,11 +982,12 @@ clip_DIRNAME(ClipMachine * cm)
 
 	if (dir == NULL)
 	{
-		buf[0] = 0;
+		buf[0] = '\\';
+		buf[1] = 0;
 	}
 	else
 	{
-		for (i = 1, n = 0; dir[i]; i++, n++)
+		for (i = 0, n = 0; dir[i]; i++, n++)
 			buf[n] = (dir[i] == '/' ? '\\' : dir[i]);
 		buf[n] = 0;
 	}
@@ -1497,14 +1502,14 @@ clip___COPYFILE(ClipMachine * cm)
 	int fdsrc = -1, fddst = -1;
 	FILE *fsrc = NULL;
 	FILE *fdst = NULL;
-	int c = 0, r = 0, ret = 1;
+	int c = 0, r = 0, ret = 0;
 	int *err = _clip_fetch_item(cm, HASH_ferror);
 	const char *funcname = "__COPYFILE";
 
 	*err = 0;
 	if (src == NULL || dst == NULL || *src == 0 || *dst == 0 || usrc == NULL || udst == NULL)
 	{
-		_clip_retni(cm, 0);
+		_clip_retni(cm, ret);
 		r = _clip_trap_err(cm, EG_ARG, 0, 0, __FILE__, __LINE__, "invalid argument");
 		goto end;
 	}
@@ -1540,15 +1545,15 @@ clip___COPYFILE(ClipMachine * cm)
 	{
 		if (fputc(c, fdst) == EOF)
 		{
-			ret = 0;
 			*err = errno;
 			r = _clip_trap_err(cm, EG_WRITE, 0, 0, __FILE__, __LINE__, "__COPYFILE");
 			break;
 		}
+		ret ++;
 	}
 
 	  end:
-	_clip_retl(cm, ret);
+	_clip_retni(cm, ret);
 
 	if (fsrc)
 		fclose(fsrc);
@@ -2049,7 +2054,7 @@ clip_SETFATTR(ClipMachine * cm)	/* Sets a file's attributes */
 	}
 	if (chmod(uname, mode) != 0)
 	{
-		_check_error(cm, uname);	/* fail */
+		_check_error(cm, uname, 0);	/* fail */
 	}
 	else
 	{
@@ -2421,7 +2426,7 @@ clip_FILEMOVE(ClipMachine * cm)	/* Moves files to another directory */
 	}
 	else
 	{
-		_check_error(cm, src);
+		_check_error(cm, src, 0);
 	}
 
 	  end:

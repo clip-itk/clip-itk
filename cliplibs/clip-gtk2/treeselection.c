@@ -3,11 +3,11 @@
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
 
-#include <string.h>
 #include <gtk/gtk.h>
 
 #include "clip-gtk2.ch"
@@ -166,6 +166,8 @@ clip_GTK_TREESELECTIONGETSELECTEDROWS(ClipMachine * cm)
                 if (!cmodel) cmodel = _register_object(cm, model, GTK_TYPE_TREE_MODEL, NULL, NULL);
                 if (cmodel) _clip_mclone(cm, mod, &cmodel->obj);
         }
+	g_list_foreach (list, (GFunc)(gtk_tree_path_free), NULL);
+        g_list_free (list);
 	return 0;
 err:
 	return 1;

@@ -1,6 +1,8 @@
 #include "set.ch"
 #include "r2d2lib.ch"
 
+//#define PUT_RDF_TREE
+
 static asdicts:={"GBL01","GBL02","ACC00","ACC01"}
 static asDeps:= {NIL,NIL,NIL,NIL}
 /************************************************/
@@ -39,7 +41,7 @@ return ""
 #include "r2d2lib.ch"
 /************************************************/
 function cgi_xml_error(str,ident)
-	? '<error description="'+toString(str)+'" num="'+toString(ident)+'"/>'
+//	? '<RDF:DOCUM description="error '+toString(str)+'" num="'+toString(ident)+'"/>'
 return
 *********************************************
 function cgi_error2xml(err)
@@ -907,7 +909,7 @@ return
 function cgi_make_select_string(columns,_query, wrap,err)
 	local i,j,j1,j2,k, lor, col, attrName
 	local ret, expr:=space(7), refExpr
-	local tmp,classDesc, refName,fName, attrDesc, value
+	local tmp,tmp1,tmp2,classDesc, refName,fName, attrDesc, value
 	local wName, nIndex:=0
 	local d1,d2,d3,d4
 	local s,s1,s2,e1,e2
@@ -921,7 +923,6 @@ function cgi_make_select_string(columns,_query, wrap,err)
 	err := ""
 	for i=1 to len(columns)
 		col := columns[i]
-		//outlog(__FILE__,__LINE__,col)
 		if empty(wrap) .and. !lor
 			attrName := upper(col:name)
 		else
@@ -1025,14 +1026,23 @@ function cgi_make_select_string(columns,_query, wrap,err)
 				fname := NIL
 			   endif
 		elseif col:dataType $ "SRC"
+			//outlog(__FILE__,__LINE__,col)
+			tmp1 := col:expr
+			if col:DataType == "R" .and. !empty(col:attr_id)
+				tmp1 := col:name
+			endif
 			if s1==s2 .or. lor
-				expr+= col:expr+'="'+s+'"'+iif(lor," .or.  "," .and. ")
+				if empty(s)
+					expr+= tmp1+'=="'+s+'"'+iif(lor," .or.  "," .and. ")
+				else
+					expr+= tmp1+'="'+s+'"'+iif(lor," .or.  "," .and. ")
+				endif
 			else
 				if !empty(s1)
-					expr+= col:expr+e1+'"'+s1+'" .and. '
+					expr+= tmp1+e1+'"'+s1+'" .and. '
 				endif
 				if !empty(s2)
-					expr+= col:expr+e2+'"'+s2+'" .and. '
+					expr+= tmp1+e2+'"'+s2+'" .and. '
 				endif
 			endif
 		elseif col:dataType $ "N"
@@ -1202,14 +1212,43 @@ return obj:value
 /************************************************/
 function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 	local s:=replicate("   ",level),sOut,col
-	local obj,obj2,i,j,k,tmp,sTmp,sTmp2,sTmp3
-	local dName := urn // "docum"
-	local ret := .f.
+	local obj,obj2,i,j,k,tmp,sTmp,sTmp2,sTmp3,stmp4
+	local sid,dName := urn // "docum"
+	local ret := .f., ltree:= .f.
 	local sdata,rerr,errblock:=errorBlock({|err|cgi_error2xml(err)})
+
+#ifdef PUT_RDF_TREE
+	for i=1 to len(aRefs)
+		if empty(aRefs[i][5])
+			loop
+		endif
+		lTree := .t.
+		exit
+	next
+	if level==0
+		? s+'<RDF:Seq about="'+dname+'">'
+		if lTree
+			? s+'<RDF:li>'
+		endif
+	endif
+#endif
 
 	for i=1 to len(Arefs)
 		tmp:=aRefs[i][4]
-		? s+'<RDF:Description about="urn:'+dname+sTree+':'+tmp:id+'" id="'+tmp:id+'"'
+		sid := ""
+		if "ID" $ tmp .and. !empty(tmp:id)
+			sid := tmp:id
+		else
+			sid := "XXXXXXXXXXXX"
+		endif
+#ifdef PUT_RDF_TREE
+		if lTree
+			? s+'<RDF:Seq about="'+dname+sTree+':'+sid+'">'
+		else
+			? s+'<RDF:li resource="'+dname+sTree+':'+sid+'">'
+		endif
+#endif
+		? s+'	<RDF:Description about="'+dname+sTree+':'+sid+'" id="'+sid+'" DOCUM:about="'+dname+sTree+':'+sid+'"'
 		begin sequence
 			sdata := ""
 			for j=1 to len(columns)
@@ -1217,11 +1256,10 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 				sTmp := mapEval(tmp,col:block)
 				sTmp3 := ""
 				if "DATATYPE" $ col .and.  col:datatype == "S"
-					//sData += "&\n"+s+ ' <DOCUM:ref_'+col:name+'>'+ stmp + '</DOCUM:ref_'+col:name+'>'
-					sData += "&\n"+s+ ' DOCUM:ref_'+col:name+'="'+ stmp + '"'
+					//sData += s+ ' <DOCUM:ref_'+col:name+'>'+ stmp + '</DOCUM:ref_'+col:name+'>'
+					? s+'    DOCUM:ref_'+col:name+'="'+ stmp + '"'
 				endif
-				//sData+="&\n"+s+' <DOCUM:'+col:name+'>'
-				sData+="&\n"+s+' DOCUM:'+col:name+'="'
+				//sData+=s+' <DOCUM:'+col:name+'>'
 				if "DATATYPE" $ col .and. col:datatype == "R"
 					if "OBJ_ID" $ col
 						sTmp2 := mapEval(tmp,col:obj_id)
@@ -1229,6 +1267,13 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 						sTmp2 := tmp[upper(col:name)]
 					else
 						sTmp2 := sTmp
+					endif
+					if empty(sTmp2)
+						sTmp3 := codb_getValue(stmp)
+						if !empty(stmp3)
+							sTmp2 := sTmp3:id
+						endif
+						sTmp3 := ""
 					endif
 					sTmp  := codb_essence(sTmp)
 				elseif "DATATYPE" $ col .and. col:datatype=="S"
@@ -1272,78 +1317,100 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 				else
 					sTmp := toString(sTmp)
 				endif
-				sData+=sTmp
-				//sData+='</DOCUM:'+col:name+'>'
-				sData+='"'
+				? s+'	 DOCUM:'+col:name+'="'+sTmp+'"'
 				if "DATATYPE" $ col .and.  col:datatype == "R"
-			   //		sData+= "&\n"+s+' <DOCUM:ref_'+col:name+'>'+ sTmp2 + '</DOCUM:ref_'+col:name+'>'
-					sData+= "&\n"+s+' DOCUM:ref_'+col:name+'="'+ sTmp2 + '"'
+			   //		sData+= s+' <DOCUM:ref_'+col:name+'>'+ sTmp2 + '</DOCUM:ref_'+col:name+'>'
+					? s+'	 DOCUM:ref_'+col:name+'="'+ sTmp2 + '"'
+					sTmp4 := codb_getValue(sTmp2)
+					if !empty(stmp4)
+					? s+'	 DOCUM:class_'+col:name+'="'+ stmp4:class_id + '"'
+					endif
 				endif
 				if "DATATYPE" $ col .and.  col:datatype == "A"
 					sTmp2 := tmp[upper(col:name)]
 					sTmp2 := alltrim(varToString( stmp2,,, .f.))
 					sTmp2 := substr(stmp2,2,len(sTmp2)-2)
 					sTmp2:=strtran(sTmp2,'"',"")
-			   //		sData+= "&\n"+s+' <DOCUM:ref_'+col:name+'>'+ sTmp2 + '</DOCUM:ref_'+col:name+'>'
-					//sData+= "&\n"+s+' DOCUM:ref_'+col:name+'="'+ sTmp2 + '"'
+			   //		sData+= s+' <DOCUM:ref_'+col:name+'>'+ sTmp2 + '</DOCUM:ref_'+col:name+'>'
+					//sData+= s+' DOCUM:ref_'+col:name+'="'+ sTmp2 + '"'
 				endif
 				if !empty(sTmp3)
-					sData+= "&\n"+s+' DOCUM:sort_'+col:name+'="'+ sTmp3 + '"'
+					? s+'	 DOCUM:sort_'+col:name+'="'+ sTmp3 + '"'
 				endif
 
 			next
-			?? sdata
 		recover using rerr
 			cgi_error2xml(rerr)
 			//quit
 		end sequence
 		//? s+'</RDF:Description>'
-		? s+'/>'
+		? s+'	/>'
 
-
-		if empty(aRefs[i][5])
-			loop
+		if !empty(aRefs[i][5])
+			ret := .t.
+			aRefs[i][3] := cgi_putArefs2Rdf1(aRefs[i][5],oDep,level+1,urn,columns,sTree+":"+tmp:id)
 		endif
-
-		ret := .t.
-		aRefs[i][3] := cgi_putArefs2Rdf1(aRefs[i][5],oDep,level+1,urn,columns,sTree+":"+tmp:id)
+#ifdef PUT_RDF_TREE
+		if lTree
+			? s+'</RDF:Seq>'
+		else
+			? s+'</RDF:li >'
+		endif
+#endif
 	next
 	errorBlock(errBlock)
+#ifdef PUT_RDF_TREE
+	if level==0
+		? s+'</RDF:Seq>'
+		if lTree
+			? s+'</RDF:li>'
+		endif
+	endif
+#endif
 	?
 return ret
 /************************************************/
 function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree)
 	local s:=replicate("   ",level),sOut,col
-	local obj,obj2,i,j,tmp,sTmp,tmp2
+	local obj,obj2,i,j,tmp,sTmp,tmp2,sid
 	local dName := urn //"docum"
 	local llTree := .f.
+#ifdef PUT_RDF_TREE
+	return
+#endif
 	*****
 	llTree := .f.
 	for j=1 to len(aRefs)
 		tmp2 := aRefs[j]
 		if !empty(tmp2[5])
 			llTree := .t.
+			exit
 		endif
 	next
 	****
 	if level==0
-		? s+'<RDF:Seq about="urn:'+dname+':data">'
+		? s+'<RDF:Seq about="'+dname+'">'
 	endif
 	if llTree
 		? s+'<RDF:li>'
 	endif
 	for i=1 to len(aRefs)
 		tmp:=aRefs[i][4]
+		if "ID" $ tmp .and. !empty(tmp:id)
+			sid := tmp:id
+		else
+			sid := "XXXXXXXXXXXX"
+		endif
 		if empty(aRefs[i][5])
 			if llTree
-				? s+'   <RDF:seq about="urn:'+dname+sTree+':'+tmp:id+'"/>'
+				? s+'   <RDF:seq about="'+dname+sTree+':'+sid+'"/>'
 			else
-				? s+'   <RDF:li resource="urn:'+dname+sTree+':'+tmp:id+'"/>'
+				? s+'   <RDF:li resource="'+dname+sTree+':'+sid+'"/>'
 			endif
 			loop
 		endif
-		? s+'   <RDF:Seq about="urn:'+dname+sTree+':'+tmp:id+'">'
-		cgi_putArefs2Rdf2(aRefs[i][5],oDep,level+1,urn,columns,sTree+":"+tmp:id)
+		? s+'   <RDF:Seq about="'+dname+sTree+':'+sid+'">'
+		cgi_putArefs2Rdf2(aRefs[i][5],oDep,level+1,urn,columns,sTree+":"+sid)
 		? s+'   </RDF:Seq>'
 	next
 	if llTree
@@ -1511,3 +1578,60 @@ function cgi_fillTreeRdf(aRefs,atree,owner_id,level)
 	next
 return
 
+/************************************************/
+function cgi_accpost_columns(oDict,sprname)
+	local columns,x,i,j,col,tmp
+	if empty(sprname)
+		sprname = "accpost"
+	endif
+	columns := cgi_make_columns(oDict,sprname)
+	//? "columns=", columns
+	i := ascan(columns,{|x|x:name == "an_debet"})
+	if i>0
+		col := oclone(columns[i])
+		col:datatype := "R"
+		col:dataref_to := ""
+		adel(columns,i)
+		asize(columns,len(columns)-1)
+		*
+		for j=6 to 1 step -1
+			tmp:=NIL; tmp := oclone(col)
+			tmp:name := "an_debet"+alltrim(str(j,2,0))
+			tmp:header := "áÎäÅÂÅÔ"+alltrim(str(j,2,0))
+			tmp:expr := "iif(len(an_debet)>="+alltrim(str(j,2,0))+",codb_essence(an_debet["+alltrim(str(j,2,0))+"][2]),'')"
+			tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
+
+			tmp:obj_id := "iif(len(an_debet)>="+alltrim(str(j,2,0))+",an_debet["+alltrim(str(j,2,0))+"][2],'')"
+			tmp:obj_id := &("{|p1,p2,p3,p4|"+tmp:obj_id+"}")
+
+			aadd(columns,"")
+			ains(columns,i)
+			columns[i] := tmp
+		next
+
+	endif
+	i := ascan(columns,{|x|x:name == "an_kredit"})
+	if i>0
+		col := oclone(columns[i])
+		col:datatype :="R"
+		col:dataref_to := ""
+		adel(columns,i)
+		asize(columns,len(columns)-1)
+		*
+		for j=6 to 1 step -1
+			tmp:=NIL; tmp := oclone(col)
+			tmp:name := "an_kredit"+alltrim(str(j,2,0))
+			tmp:header := "áÎëÒÅÄÉÔ"+alltrim(str(j,2,0))
+			tmp:expr := "iif(len(an_kredit)>="+alltrim(str(j,2,0))+",codb_essence(an_kredit["+alltrim(str(j,2,0))+"][2]),'')"
+			tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
+
+			tmp:obj_id := "iif(len(an_kredit)>="+alltrim(str(j,2,0))+",an_kredit["+alltrim(str(j,2,0))+"][2],'')"
+			tmp:obj_id := &("{|p1,p2,p3,p4|"+tmp:obj_id+"}")
+
+			aadd(columns,"")
+			ains(columns,i)
+			columns[i] := tmp
+		next
+
+	endif
+return columns

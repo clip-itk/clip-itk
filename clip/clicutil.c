@@ -1,5 +1,8 @@
 /*
  * $Log: clicutil.c,v $
+ * Revision 1.43  2004/11/17 12:42:43  clip
+ * uri: small fix for '-a' compiler switch
+ *
  * Revision 1.42  2003/05/16 11:08:02  clip
  * initial support for using assembler instead C
  * now activated if environment variable CLIP_ASM is defined to any value
@@ -574,12 +577,12 @@ new_File(char *name)
 	s = strrchr(buf, '.');
 	e = strrchr(buf, '/');
 	if (pc_flag)
-        {
-        	if (asm_flag)
-                	suf = ".s";
+	{
+		if (asm_flag)
+			suf = ".s";
 		else
-                	suf = ".c";
-        }
+			suf = ".c";
+	}
 	else if (pcode_flag)
 		suf = ".po";
 	else
@@ -1133,6 +1136,9 @@ installName(char *name)
 		yywarning("namespace of name '%s' undeclared, assumed as FIELD-MEMVAR", name);
 	vp = new_Var(strdup(name));
 
+	add_VarColl(curFunction->fmemvars, vp);
+	return new_FMemvarNode(vp);
+	/*
 	if (auto_memvar)
 		return new_MemvarFNode(vp);
 	else
@@ -1140,6 +1146,7 @@ installName(char *name)
 		add_VarColl(curFunction->fmemvars, vp);
 		return new_FMemvarNode(vp);
 	}
+	*/
 }
 
 /* add __SELF__ to parameters */

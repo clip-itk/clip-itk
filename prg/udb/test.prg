@@ -2,16 +2,28 @@ set optimize on
 set optimize level to 2
 set exclusive off
 
-oDep01 := coDepository():new("ACC0101","sdfsd")
+oDep01 := coDepository():new("GBL0101","sdfsd")
 oDep01:open()
+oDict := oDep01:dictionary()
+country:=oDict:classBodyByName("country")
+? country
+//tmp:= oDep01:select(country:id,,,'(code="Ò" .or.  unit="Ò" .or.  name="Ò" .or.  smallname="Ò")')
+tmp:= oDep01:select(country:id,,,'smallname="Ò"')
+? len(tmp)
+?
+return
+
+
 ? seconds()
-oDict01 := oDep01:dictionary()
-am_bal := oDict01:classBodyByName("os_balance")
-s:='odate==stod("'+dtos(date()-5)+'") .and. account=="GBL020100073"'
-tmp:= oDep01:select(am_bal:id,,,s)
-? oDep01:getValue("ACC010100TB6")
-? oDep01:undelete("ACC010100TB6")
-? oDep01:getValue("ACC010100TB6")
+tmp:=oDep01:getValue("ACC010101B2U")
+? tmp
+? '"'+tmp:owner_id+'"'
+?
+return
+s:='account=="GBL02010006A" .and. odate>stod("20040802") .and. an_value1=="GBL02010000F" .and. an_value2=="" .and. an_value3=="" .and. an_value4=="" .and. an_value5=="" .and. an_value6=="" .and. an_public1=="" .and. an_public2==""'
+//s:='account=="GBL02010006A" .and. odate>stod("20040802")'// .and. an_value1=="GBL02010000F" .and. an_value2=="" .and. an_value3=="" .and. an_value4=="" .and. an_value5=="" .and. an_value6=="" .and. an_public1=="" .and. an_public2==""'
+tmp:= oDep01:select("ACC01000008I",,,s)
+? tmp
 ? seconds()
 ?
 return

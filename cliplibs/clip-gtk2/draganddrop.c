@@ -3,12 +3,12 @@
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
-#include <string.h>
 
 #include "inkey.ch"
 #include "clip-gtk2.ch"
@@ -206,8 +206,10 @@ clip_GTK_DRAGGETDATA(ClipMachine * cm)
 
         gtk_drag_get_data(GTK_WIDGET(cwid->widget),
         	(GdkDragContext*)ccontext->object,
-                (GdkAtom)catom->object,
+                (GdkAtom)(catom->object),
                 time);
+
+
 	return 0;
 err:
 	return 1;
@@ -338,15 +340,14 @@ clip_GTK_DRAGSETICONPIXMAP(ClipMachine * cm)
         	goto err;
 	CHECKCOBJ(ccolormap, GDK_IS_COLORMAP(ccolormap->object));
 	CHECKCOBJ(cpixmap, GDK_IS_PIXMAP(cpixmap->object));
-	if (!cmask || cmask->type != GDK_TYPE_BITMAP)
-        	goto err;
+	CHECKCOBJ(cmask, GDK_IS_BITMAP(cmask));
 	CHECKARG(5, NUMERIC_t);
 	CHECKARG(6, NUMERIC_t);
 
         gtk_drag_set_icon_pixmap((GdkDragContext*)ccontext->object,
         	GDK_COLORMAP(ccolormap->object),
                 GDK_PIXMAP(cpixmap->object),
-                (GdkBitmap *)(cmask->object),
+                GDK_BITMAP(cmask->object),
         	hot_x, hot_y );
 
 	return 0;
@@ -426,14 +427,13 @@ clip_GTK_DRAGSETDEFAULTICON(ClipMachine * cm)
 
 	CHECKCOBJ(ccolormap, GDK_IS_COLORMAP(ccolormap->object));
 	CHECKCOBJ(cpixmap, GDK_IS_PIXMAP(cpixmap->object));
-	if (!cmask || cmask->type != GDK_TYPE_BITMAP)
-        	goto err;
+	CHECKCOBJ(cmask, GDK_IS_PIXMAP(cmask));
 	CHECKARG(5, NUMERIC_t);
 	CHECKARG(4, NUMERIC_t);
 
         gtk_drag_set_default_icon(GDK_COLORMAP(ccolormap->object),
                 GDK_PIXMAP(cpixmap->object),
-                (GdkBitmap *)(cmask->object),
+                GDK_BITMAP(cmask->object),
         	hot_x, hot_y );
 
 	return 0;
@@ -518,13 +518,12 @@ clip_GTK_DRAGSOURCESETICON(ClipMachine * cm)
 	CHECKCWID(cwid, GTK_IS_WIDGET);
 	CHECKCOBJ(ccolormap, GDK_IS_COLORMAP(ccolormap->object));
 	CHECKCOBJ(cpixmap, GDK_IS_PIXMAP(cpixmap->object));
-	if (!cmask || cmask->type != GDK_TYPE_BITMAP)
-        	goto err;
+	CHECKCOBJ(cmask, GDK_IS_BITMAP(cmask));
 
         gtk_drag_source_set_icon(GTK_WIDGET(cwid->widget),
         	GDK_COLORMAP(ccolormap->object),
                 GDK_PIXMAP(cpixmap->object),
-                (GdkBitmap *)(cmask->object));
+                GDK_BITMAP(cmask->object));
 
 	return 0;
 err:

@@ -1,5 +1,8 @@
 /*
   $Log: scankey.h,v $
+  Revision 1.6  2004/12/15 07:05:37  clip
+  uri: add KSET*()
+
   Revision 1.5  2002/05/28 06:48:27  clip
   scankey tricks
   paul
@@ -30,6 +33,7 @@ long scan_key(unsigned char scancode);
 int scan_push(unsigned char scancode);
 long scan_check(void);
 unsigned int scan_state(void);
+unsigned int set_scan_state(int value, int locktype);
 extern int scan_numlock_state;
 void scan_reset(void);
 

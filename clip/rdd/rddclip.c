@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rddclip.c,v $
+	Revision 1.95  2004/08/03 12:08:47  clip
+	rust: RDDFLOCK() added
+	
 	Revision 1.94  2004/02/05 13:34:12  clip
 	*** empty log message ***
-	
+
 	Revision 1.93  2004/02/05 13:21:28  clip
 	rust: rddcreateindex(...,cForCondition {8th parameter} )
 
@@ -1286,6 +1289,21 @@ clip_RDDRLOCK(ClipMachine* cm)
 	if((er = rdd_rlock(cm,rd,recno,&r,__PROC__))) goto err;
 
 	_clip_retl(cm,r);
+	return 0;
+err:
+	return er;
+}
+
+int
+clip_RDDFLOCK(ClipMachine* cm)
+{
+	const char* __PROC__ = "RDDFLOCK";
+	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
+	int er;
+
+	if(!rd) return EG_NOTABLE;
+
+	if((er = rdd_flock(cm,rd,__PROC__))) goto err;
 	return 0;
 err:
 	return er;

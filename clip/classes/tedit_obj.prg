@@ -438,11 +438,11 @@ return
 static function te_refresh()
 local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
 
-       ::line   := max(1, ::line)
-       ::pos    := max(1, ::pos)
+	::line   := max(1, ::line)
+	::pos    := max(1, ::pos)
 
-       ::rowWin := min(min(max(1,::rowWin),::nBottom-::nTop+1),::line)
-       ::colWin := min(min(max(1,::colWin),::nRight-::nLeft+1),::pos)
+	::rowWin := min(min(max(1,::rowWin),::nBottom-::nTop+1),::line)
+	::colWin := min(min(max(1,::colWin),::nRight-::nLeft+1),::pos)
 
        if ::mkblock
 	   ::koordblock[3] := ::line
@@ -2215,7 +2215,7 @@ local nfile, nbakfile, i, n, str, scr, newf, error
 
   if !empty(createbak) .and. createbak .and. !newf
 	nbakfile := __copyFile(filename, filename+".bak")
-	if !nbakfile
+	if nbakfile == 0
 		alert([Can't create ;]+filename+[.bak file], "OK")
 	endif
   endif
@@ -2505,8 +2505,8 @@ local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
 
 	lenbuf := len(buf)-1
 	::line := ::__check_line(::line+rowblock-1, .f.)
-	if ::pos > leftbl .and. mov
-		::pos -= iif( ::pos-leftbl < colblock, -(::pos-leftbl-1), colblock)
+	if ::pos > leftbl .and. mov .and. between(::line, stbl, endbl)
+		::pos -= iif( ::pos-leftbl < colblock, -(::pos-leftbl-3), colblock)
 	endif
 	for i=0 to lenbuf
 	     ::__check_line(::line+i, .f.)

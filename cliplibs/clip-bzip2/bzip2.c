@@ -6,6 +6,9 @@
 
 /*
   $Log: bzip2.c,v $
+  Revision 1.5  2004/11/03 13:00:59  clip
+  rust: a few bugs fixed
+
   Revision 1.4  2003/07/03 07:15:56  clip
   fix a lot of warnings
   paul
@@ -179,10 +182,10 @@ write_ulong(char *dst, unsigned long l)
 static unsigned long
 read_ulong(char *src)
 {
-	return ((unsigned long)src[0])
-		| (((unsigned long)src[1]) << 8)
-		| (((unsigned long)src[2]) << 16)
-		| (((unsigned long)src[3]) << 24)
+	return ((unsigned char)src[0])
+		| (((unsigned char)src[1]) << 8)
+		| (((unsigned char)src[2]) << 16)
+		| (((unsigned char)src[3]) << 24)
 		;
 }
 
@@ -222,7 +225,7 @@ clip_BZIP2(ClipMachine * mp)
 		return EG_MEM;
 	}
 
-	write_ulong(rp, rl);
+	write_ulong(rp, l);
 
 	rp = (char*) realloc(rp, rl+5);
 	rp[rl+4] = 0;
@@ -250,7 +253,7 @@ clip_BUNZIP2(ClipMachine * mp)
 
 
 	rl = read_ulong(s);
-	rp = (char *)malloc( rl );
+	rp = (char *)malloc( rl+1 );
 
 	r = BZPREF(bzBuffToBuffDecompress)( rp, &rl, s + 4, l - 4, 0, 0);
 

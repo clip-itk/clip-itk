@@ -185,7 +185,7 @@ IF !EMPTY(m->_aCommon[1]) .AND. m->lWasMemo
 	RETURN
 ENDIF
 
-IF m->_lPckNoAsk .OR. Continue(NEED_PACK)
+IF !m->_lPckAsk .OR. Continue(NEED_PACK)
 	TimerOn()
 	BEGIN SEQUENCE
 		IF m->_lPckCheck .AND. !(__DbLocate({||DELETED()} ))
@@ -400,13 +400,14 @@ PROC ClearRec()
 IF TryRlock() THEN AEVAL(DbStruct_(), {|_1| MakeEmpty(_1[1])})
 **********
 PROC ReplFor(_a,lQuest)
-LOCAL _rpl,_beval,_nCnt:=0,cFld,lEnd,lCnv
+LOCAL _rpl,_beval,_nCnt:=0,cFld,lCnv,lEnd
 IF !m->_IsField THEN ReturnMess(CALC_FIELD)
 PUSH KEYS
 
 BEGIN SEQUENCE
 
 	m->lCanFunc:=( __ContentType $ 'CM' )	// для возможности выбора
+
 	IF  !GetName(_ZE+REPL_EXPR+Alltrim(_Works[_ptr]),'_Repl',;
 		,,,,,,__ContentType, .T.) THEN Break
 
@@ -430,6 +431,7 @@ BEGIN SEQUENCE
 // dbeval нельзя из-за ошибок в размере данных
 			lEnd:=.F.
 			cFld:=RealFldName(_c_f)
+
 			DO WHILE !EOF()
 				IF EVAL(_bEval)
 				     IF _a=K_CTRL_F4 THEN _rpl:=ConvType(lCnv)
@@ -594,7 +596,6 @@ ENDIF
 **********
 PROC IndexFor
 LOCAL _idx_ext:=RDD_INFO(1)[4], nRec:=0,_if,_ifb
-m->_lMayBeEmpty:=.T.
 BEGIN SEQU
 	IF EMPTY(_NewIndF) THEN _NewIndF:=ClearName()
 	_NewInd:=RealFldName(_C_F)		//скорее всего
@@ -670,7 +671,7 @@ IF lChoice .OR. MakeFunc(F_FLTRING,'_FltrCond')
 ENDIF
 **********
 FUNC TestMacro(nKey,nRegion)
-LOCAL i, cm
+LOCAL i, cM
 IF ((i:=ASCAN(m->_MacroTable, {|x| x[1]==nKey .AND. x[3]==nRegion}))#0) .OR.;
    ((i:=ASCAN(m->_MacroTable, {|x| x[1]==nKey .AND. EMPTY(x[3])}))#0)
 	cM:=m->_MacroTable[i,2]
@@ -723,7 +724,6 @@ BEGIN SEQUENCE
 	ELSE
 		_NewFile:=_BaseTo
 	ENDIF
-	m->_lMayBeEmpty:=.T.
 	IF TestWriteFile(@_NewFile,'.DBF',.T.) .AND.;
 	   ((i:=DefineTxtDrv(@cRdd,@cDelim))#0) .AND.;
 	   GetName(FLDS_COPYING,'_ckField',,,.T.).AND.;
@@ -851,9 +851,6 @@ BEGIN SEQUENCE
 	ELSE
 		StripRight(@_var,':')
 		IF 'U' $ TYPE(_var) THEN Public &_var
-*		_Init:=Compile(Preproc(_Init))
-*		Nfind(_Init)
-*		&_var:=Aktion(_Init)
 		&_var:=Aktion(Compile(Preproc(_Init)))
 	ENDIF
 
@@ -1117,7 +1114,6 @@ __tagNom:=oldNom
 PROC AddTag(cTagName,cOn,cFor,lUniq,lDescend)
 LOCAL nRec:=0, _if, _ifb, lUniqSave:=Set(_SET_UNIQUE)
 IsTags()
-m->_lMayBeEmpty:=.T.
 IF PCOUNT()=0
 	__tagname:=_NewInd:=RealFldName(_c_f)
 	IF !(GetName(_Give+TAG_NAME,'__tagName',,,,,,,,.T.) .AND.;

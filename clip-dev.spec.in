@@ -44,20 +44,21 @@ pushd clip
 	make install DESTDIR=%{DESTDIR}
 popd
 
-if [ -d doc ]
-then
-    (
-	DOC_LANGS='en ru'
-	(  export CLIPROOT=%{DESTDIR}%{CLIPROOT}
-	   export LD_LIBRARY_PATH=%{DESTDIR}%{LIBDIR}:$LD_LIBRARY_PATH
-	   cd prg/doc_utils && make && make install DESTDIR=%{DESTDIR}
-	) || true
-	cd doc \
-	 && make html LANGS="$DOC_LANGS" CLIPROOT=%{DESTDIR}%{CLIPROOT} \
-	 && make install LANGS="$DOC_LANGS" DESTDIR=%{DESTDIR} \
-	 || true
-    )
-fi
+#if [ -d doc ]
+#then
+#    (
+#	DOC_LANGS='en ru'
+#	(
+##	export CLIPROOT=%{DESTDIR}%{CLIPROOT}
+#	   export LD_LIBRARY_PATH=%{DESTDIR}%{LIBDIR}:$LD_LIBRARY_PATH
+#	   cd prg/doc_utils && make && make install DESTDIR=%{DESTDIR}
+#	) || true
+#	cd doc \
+#	 && make html LANGS="$DOC_LANGS" CLIPROOT=%{DESTDIR}%{CLIPROOT} \
+#	 && make install LANGS="$DOC_LANGS" DESTDIR=%{DESTDIR} \
+#	 || true
+#    )
+#fi
 
 
 CLIPROOT=%{DESTDIR}%{CLIPROOT}

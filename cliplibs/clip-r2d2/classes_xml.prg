@@ -73,7 +73,7 @@ return
 
 **************************
 static function put_class2(oDict,class,tColumns,tIndexes)
-	local i,j,k,tmp,s1:="&\t",s2:="&\t&\t"
+	local i,j,k,l,tmp,s1:="&\t",s2:="&\t&\t"
 	local columns,col,attr,nIndex,lIndex
 	local attr_list,oEmp,tmp2,attrEmp
 	//columns := cgi_make_columns(oDict,class:name)
@@ -121,6 +121,7 @@ static function put_class2(oDict,class,tColumns,tIndexes)
 		? s2+'/>'
 	next
 
+
 #else
 	oEmp := oDict:padrBody(map(),class:id,.t.)
 	attr_list := class:attr_list
@@ -147,9 +148,16 @@ static function put_class2(oDict,class,tColumns,tIndexes)
 			tmp2 := upper(attr:name)
 			attrEmp := ""
 			if tmp2 $ oEmp
-				attrEmp := oEmp[tmp2]
+				attrEmp := toString(oEmp[tmp2])
+				l := len(attrEmp)
+				if (attr:type $ "SR" )
+					attrEmp := attr:defvalue
+				endif
+				if l > 0
+					attrEmp := padr(attrEmp,l)
+				endif
 			endif
-			? s1+s2+'defvalue="'+toString(attrEmp)+'"'
+			? s1+s2+'defvalue="'+attrEmp+'"'
 		endif
 		if "REFS" $ attr .and. !empty(attr:refs)
 			k:=""
@@ -176,6 +184,7 @@ static function put_class2(oDict,class,tColumns,tIndexes)
 	*/
 	? s2+'/>'
 #endif
+
 	? s1+'<tcol_list value="'
 	if "TCOL_LIST" $ class
 		tmp:=varToString( class:tcol_list,,, .f.)

@@ -5,6 +5,9 @@
  */
 /*
   $Log: gzip.c,v $
+  Revision 1.7  2004/11/03 12:34:50  clip
+  rust: a few bugs fixed
+
   Revision 1.6  2003/07/03 07:15:56  clip
   fix a lot of warnings
   paul
@@ -172,10 +175,10 @@ write_ulong(char *dst, unsigned long l)
 static unsigned long
 read_ulong(char *src)
 {
-	return ((unsigned long)src[0])
-		| (((unsigned long)src[1]) << 8)
-		| (((unsigned long)src[2]) << 16)
-		| (((unsigned long)src[3]) << 24)
+	return ((unsigned char)src[0])
+		| (((unsigned char)src[1]) << 8)
+		| (((unsigned char)src[2]) << 16)
+		| (((unsigned char)src[3]) << 24)
 		;
 }
 
@@ -215,7 +218,7 @@ clip_GZIP(ClipMachine * mp)
 		return EG_MEM;
 	}
 
-	write_ulong(rp, rl);
+	write_ulong(rp, l);
 
 	rp = (char*) realloc(rp, rl+5);
 	rp[rl+4] = 0;
@@ -243,7 +246,7 @@ clip_GUNZIP(ClipMachine * mp)
 
 
 	rl = read_ulong(s);
-	rp = (char *)malloc( rl );
+	rp = (char *)malloc( rl+1 );
 
 	r = uncompress( rp, &rl, s + 4, l - 4);
 
@@ -256,6 +259,7 @@ clip_GUNZIP(ClipMachine * mp)
 			return EG_MEM;
 	}
 
+	rp[rl] = 0;
 	_clip_retcn_m(mp, rp, rl);
 
 	return 0;

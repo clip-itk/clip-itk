@@ -255,5 +255,76 @@ clip_GDK_KEYVALTOLOWER(ClipMachine * cm)
 	return 0;
 }
 
+int
+clip_GDK_KEYVALTOUNICODE(ClipMachine * cm)
+{
+	//guint keyval = INT_OPTION(cm, 1,0);
+        wchar_t wc = INT_OPTION(cm, 1,0);
+        gchar *result ;
+        int total_len, first, clen ;
+	//wc  = keyval;//gdk_keyval_to_unicode(keyval);
+
+  	total_len = 0;
+      	if (wc < 0x80)
+		total_len += 1;
+      	else if (wc < 0x800)
+		total_len += 2;
+      	else if (wc < 0x10000)
+		total_len += 3;
+      	else if (wc < 0x200000)
+		total_len += 4;
+      	else if (wc < 0x4000000)
+		total_len += 5;
+      	else
+		total_len += 6;
+
+  	result = calloc(total_len+1, sizeof(char));
+
+      	if (wc < 0x80)
+	{
+		first = 0;
+		clen = 1;
+	}
+      	else if (wc < 0x800)
+	{
+		first = 0xc0;
+		clen = 2;
+	}
+      	else if (wc < 0x10000)
+	{
+		first = 0xe0;
+		clen = 3;
+	}
+      	else if (wc < 0x200000)
+	{
+		first = 0xf0;
+		clen = 4;
+	}
+      	else if (wc < 0x4000000)
+	{
+		first = 0xf8;
+		clen = 5;
+	}
+      	else
+	{
+		first = 0xfc;
+		clen = 6;
+	}
+
+      	switch (clen)
+	{
+		case 6: result[5] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+		case 5: result[4] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+		case 4: result[3] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+		case 3: result[2] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+		case 2: result[1] = (wc & 0x3f) | 0x80; wc >>= 6; /* Fall through */
+		case 1: result[0] = wc | first;
+
+	}
+
+	_clip_retc(cm, result);
+        //free(result);
+	return 0;
+}
 
 

@@ -10,7 +10,8 @@ AB_OBJS  = ab_obj.o ab_menu.o ab_brow.o ab_init.o ab_funcs.o \
 		ab_report.o
 .SUFFIXES: .prg .o .po
 
-PROGS = codb_make codb_pack codb_addobj codb_ab codb_export codb_reindex #test
+PROGS = codb_pack codb_addobj codb_ab \
+	codb_make codb_load codb_export codb_reindex #test
 
 all: $(PROGS)
 
@@ -39,6 +40,7 @@ install: all
 	#cp reports/*.po $(DESTDIR)$(CLIPROOT)/codb_ab/reports
 	cp codb_ab$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_make$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
+	cp codb_load$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_pack$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_reindex$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_addobj$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
@@ -52,6 +54,9 @@ test2: test2.prg
 
 codb_make: codb_make.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M codb_make.prg $(CLIPLIBS) $(LIBS)
+
+codb_load: codb_load.prg
+	$(CLIP) $(CLIPFLAGS) -s -e -M codb_load.prg $(CLIPLIBS) $(LIBS)
 
 codb_export: codb_export.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M codb_export.prg $(CLIPLIBS) $(LIBS)

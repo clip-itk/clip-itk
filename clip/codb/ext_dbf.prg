@@ -49,7 +49,7 @@ static function _ext_open(self)
 	self:hDbData:=rddUseArea(CODB_DDRIVER_DEFAULT,dbfile,,.f.)
 	if self:hDbData<=0
 		self:hDbData:=NIL
-		self:error:=codb_error(1251)+":"+str(ferror())+":"+ferrorstr()
+		self:error:=codb_error(1251)+":"+str(ferror(),3,0)+":"+ferrorstr()
 		return .f.
 	endif
 	rddSetMemo (self:hDBData,"FPT",dbFile)
@@ -95,10 +95,10 @@ static function _ext_getValue(cID,nLocks,version)
 				ret := tmp:body
 			endif
 		else
-			::error := codb_error(1253)+":"+cId+"-"+alltrim(str(version))
+			::error := codb_error(1253)+":"+cId+"-"+alltrim(str(version,3,0))
 		endif
 	else
-		::error := codb_error(1252)+":"+cId+"-"+alltrim(str(version))
+		::error := codb_error(1252)+":"+cId+"-"+alltrim(str(version,3,0))
 	endif
 	taskStart()
 return ret
@@ -123,11 +123,15 @@ static function _ext_delete(self,cId,version)
 	      rddSkip(self:hDbData)
 	enddo
 	if found
-		rddRlock(self:hDbData)
+		if !waitRddLock(self:hDbData)
+			self:error := codb_error(1005)+":"+cId
+			taskStart()
+			return .f.
+		endif
 		rddDelete(self:hDbData)
 		rddUnlock(self:hDbData)
 	else
-		self:error := codb_error(1252)+":"+cId+"-"+alltrim(str(version))
+		self:error := codb_error(1252)+":"+cId+"-"+alltrim(str(version,3,0))
 		taskStart()
 		return .f.
 	endif
@@ -175,11 +179,15 @@ static function _ext_update(self,oData,version)
 	      rddSkip(self:hDbData)
 	enddo
 	if found //rddGetValue(self:hDbData,"object_id") == oData:id
-		rddRlock(self:hDbData)
+		if !waitRddLock(self:hDbData)
+			self:error := codb_error(1005)+":"+oData:id
+			taskStart()
+			return .f.
+		endif
 		rddWrite(self:hDbData,rec)
 		rddUnlock(self:hDbData)
 	else
-		self:error := codb_error(1252)+":"+oData:id+"-"+alltrim(str(version))
+		self:error := codb_error(1252)+":"+oData:id+"-"+alltrim(str(version,3,0))
 		taskStart()
 		return .f.
 	endif
@@ -202,12 +210,16 @@ static function _ext_changeVersion(self,cId,old,new)
 	      rddSkip(self:hDbData)
 	enddo
 	if found
-		rddRlock(self:hDbData)
+		if !waitRddLock(self:hDbData)
+			self:error := codb_error(1005)+":"+cId
+			taskStart()
+			return .f.
+		endif
 		rec:version := new
 		rddWrite(self:hDbData,rec)
 		rddUnlock(self:hDbData)
 	else
-		self:error := codb_error(1252)+":"+cId+"-"+alltrim(str(old))
+		self:error := codb_error(1252)+":"+cId+"-"+alltrim(str(old,3,0))
 		taskStart()
 		return .f.
 	endif

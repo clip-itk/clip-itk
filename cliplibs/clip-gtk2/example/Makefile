@@ -1,7 +1,8 @@
 LIBS= -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangox-1.0 -lpangoxft-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0
 
 SRC =clipgtktest tbrow simple  test_stock test_image accel test_tree test_image \
-	test_gtk test_text winpic test note fonttest text container test_dnd drag_and_drop
+	test_gtk test_text winpic test note fonttest text container test_dnd drag_and_drop \
+        colorbtn pango entrytempl
 all: $(SRC)
 
 clean:
@@ -66,4 +67,14 @@ test_dnd: test_dnd.prg
 drag_and_drop: drag_and_drop.prg
 	clip -es drag_and_drop.prg -lclip-gtk2
 #	clip -esg drag_and_drop.prg ./libclip-gtk2.so $(LIBS)
+
+colorbtn: colorbtn.prg
+	clip -es colorbtn.prg -lclip-gtk2
+
+pango: pango.prg
+	clip -es pango.prg -lclip-gtk2
+
+entrytempl: entrytempl.prg
+	clip -es entrytempl.prg -lclip-gtk2
+
 

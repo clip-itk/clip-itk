@@ -1,16 +1,17 @@
 /*
     Copyright (C) 2001 - 2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
-              Elena V. Kornilova  <alena@itk.ru>
+	      Elena V. Kornilova  <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
 #include <gtk/gtkprivate.h>
-#include <string.h>
+
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
@@ -105,16 +106,16 @@ static gint handle_drag_motion_signal (GtkWidget *widget, GdkDragContext *drag_c
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
-        _clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_SUGGESTED_ACTION, drag_context->suggested_action);
-        _clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_ACTION, drag_context->action);
-        _clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_ACTIONS, drag_context->actions);
+	_clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_SUGGESTED_ACTION, drag_context->suggested_action);
+	_clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_ACTION, drag_context->action);
+	_clip_mputn(cs->cw->cmachine, &cdrag->obj, HASH_ACTIONS, drag_context->actions);
 	INVOKESIGHANDLER(widget,cs,cv);
 }
 static gint handle_drag_drop_signal (GtkWidget *widget, GdkDragContext *drag_context,
 				    gint x, gint y, guint time, C_signal *cs)
 {
 	C_object *cdrag;
-        C_object *ctargets;
+	C_object *ctargets;
 	PREPARECV(cs,cv);
 
 	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
@@ -122,13 +123,14 @@ static gint handle_drag_drop_signal (GtkWidget *widget, GdkDragContext *drag_con
 		cdrag = _register_object(cs->cw->cmachine, drag_context, GDK_TYPE_DRAG_CONTEXT, NULL, NULL);
 	_clip_madd(cs->cw->cmachine, &cv, HASH_DRAGCONTEXT, &cdrag->obj);
 	if (drag_context->targets)
-        {
+	{
 		ctargets = _list_get_cobject(cs->cw->cmachine, drag_context->targets);
 		if (!ctargets)
 			ctargets = _register_object(cs->cw->cmachine, drag_context->targets, GDK_TYPE_ATOM, NULL, NULL);
+//			ctargets = _register_object(cs->cw->cmachine, drag_context->targets->data, GDK_TYPE_ATOM, NULL, NULL);
 		_clip_madd(cs->cw->cmachine, &cdrag->obj, HASH_TARGETS, &ctargets->obj);
 	}
-        else
+	else
 		_clip_madd(cs->cw->cmachine, &cv, HASH_TARGETS, NULL);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_X, x);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_Y, y);
@@ -143,7 +145,7 @@ static gint handle_drag_data_get_signal (GtkWidget *widget, GdkDragContext *drag
 	C_object *ctarg;
 	C_object *ctype;
 	C_object *cdata;
-        ClipVar    seld;
+	ClipVar    seld;
 	PREPARECV(cs,cv);
 
 	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
@@ -176,7 +178,7 @@ static gint handle_drag_data_get_signal (GtkWidget *widget, GdkDragContext *drag
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_INFO, info);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
 	INVOKESIGHANDLER(widget,cs,cv);
-        _clip_destroy(cs->cw->cmachine, &seld);
+	_clip_destroy(cs->cw->cmachine, &seld);
 }
 static gint handle_drag_data_received_signal (GtkWidget *widget, GdkDragContext *drag_context,
 	    gint x, gint y, GtkSelectionData *data, guint info, guint time, C_signal *cs)
@@ -186,7 +188,7 @@ static gint handle_drag_data_received_signal (GtkWidget *widget, GdkDragContext 
 	C_object *ctarg;
 	C_object *ctype;
 	C_object *cdata;
-        ClipVar    seld;
+	ClipVar    seld;
 	PREPARECV(cs,cv);
 
 	cdrag = _list_get_cobject(cs->cw->cmachine, drag_context);
@@ -221,7 +223,7 @@ static gint handle_drag_data_received_signal (GtkWidget *widget, GdkDragContext 
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_INFO, info);
 	_clip_mputn(cs->cw->cmachine, &cv, HASH_TIME, time);
 	INVOKESIGHANDLER(widget,cs,cv);
-        _clip_destroy(cs->cw->cmachine, &seld);
+	_clip_destroy(cs->cw->cmachine, &seld);
 }
 static gint handle_debug_msg_signal (GtkWidget *widget, gchar *message, C_signal *cs)
   { return handle_signals (widget, cs, NULL); }
@@ -460,19 +462,19 @@ int
 clip_GTK_WIDGETGETSETTINGS(ClipMachine * cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
-        GtkSettings *settings ;
-        C_object   *csettings ;
+	GtkSettings *settings ;
+	C_object   *csettings ;
 
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 
 	settings = gtk_widget_get_settings(GTK_WIDGET(cwid->widget));
 
 	if (settings)
-        {
-        	csettings = _list_get_cobject(cm , settings);
-        	if (!csettings) csettings = _register_object(cm, settings, GTK_TYPE_SETTINGS, NULL, NULL);
-                if (csettings) _clip_mclone(cm, RETPTR(cm), &csettings->obj);
-        }
+	{
+		csettings = _list_get_cobject(cm , settings);
+		if (!csettings) csettings = _register_object(cm, settings, GTK_TYPE_SETTINGS, NULL, NULL);
+		if (csettings) _clip_mclone(cm, RETPTR(cm), &csettings->obj);
+	}
 
 	return 0;
 err:
@@ -485,8 +487,8 @@ int
 clip_GTK_WIDGETGETSIZEREQUEST(ClipMachine * cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
-        gint width;
-        gint height;
+	gint width;
+	gint height;
 
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 
@@ -713,21 +715,21 @@ err:
 int
 clip_GTK_WIDGETQUEUEDRAWAREA(ClipMachine * cm)
 {
-        C_widget *cwid = _fetch_cw_arg(cm);
-        gint         x = _clip_parni(cm, 2);
-        gint         y = _clip_parni(cm, 3);
-        gint     width = _clip_parni(cm, 4);
-        gint    height = _clip_parni(cm, 5);
+	C_widget *cwid = _fetch_cw_arg(cm);
+	gint         x = _clip_parni(cm, 2);
+	gint         y = _clip_parni(cm, 3);
+	gint     width = _clip_parni(cm, 4);
+	gint    height = _clip_parni(cm, 5);
 
-        CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKARG(2, NUMERIC_t);
-        CHECKARG(3, NUMERIC_t);
-        CHECKARG(4, NUMERIC_t);
-        CHECKARG(5, NUMERIC_t);
-        gtk_widget_queue_draw_area(cwid->widget, x, y, width, height);
-        return 0;
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+	CHECKARG(2, NUMERIC_t);
+	CHECKARG(3, NUMERIC_t);
+	CHECKARG(4, NUMERIC_t);
+	CHECKARG(5, NUMERIC_t);
+	gtk_widget_queue_draw_area(cwid->widget, x, y, width, height);
+	return 0;
 err:
-        return 1;
+	return 1;
 }
 
 
@@ -1009,9 +1011,9 @@ clip_GTK_WIDGETMODIFYFONT (ClipMachine *cm)
 	gchar *fontname = _clip_parc(cm,2);
 
 	CHECKARG(2, CHARACTER_t);
-        CHECKCWID(cwid, GTK_IS_WIDGET);
+	CHECKCWID(cwid, GTK_IS_WIDGET);
 
-        gtk_widget_modify_font(cwid->widget,pango_font_description_from_string(fontname));
+	gtk_widget_modify_font(cwid->widget, pango_font_description_from_string(fontname));
 
 	return 0;
 err:
@@ -1036,24 +1038,24 @@ clip_GTK_WIDGETMODIFYFG (ClipMachine *cm)
 {
 	C_widget *cwid  = _fetch_cw_arg(cm);
 	ClipVar *mstyle = _clip_par(cm,2);
-        GtkStateType state = _clip_parni(cm, 3);
-        GdkColor fgcolor;
-        double colors[4];
+	GtkStateType state = _clip_parni(cm, 3);
+	GdkColor fgcolor;
+	double colors[4];
 
 	CHECKARG2(2,MAP_t, ARRAY_t);
-        CHECKOPT(3, NUMERIC_t);
-        CHECKCWID(cwid, GTK_IS_WIDGET);
+	CHECKOPT(3, NUMERIC_t);
+	CHECKCWID(cwid, GTK_IS_WIDGET);
 
-         _map_get_colors(cm,  mstyle, colors);
-         fgcolor.red   = colors[0];
-         fgcolor.green = colors[1];
-         fgcolor.blue  = colors[2];
-         fgcolor.pixel = colors[3];
+	 _map_get_colors(cm,  mstyle, colors);
+	 fgcolor.red   = colors[0];
+	 fgcolor.green = colors[1];
+	 fgcolor.blue  = colors[2];
+	 fgcolor.pixel = colors[3];
 
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
-        	state = GTK_STATE_NORMAL;
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
+		state = GTK_STATE_NORMAL;
 
-        gtk_widget_modify_fg(cwid->widget, state, &fgcolor);
+	gtk_widget_modify_fg(cwid->widget, state, &fgcolor);
 	return 0;
 err:
 	return 1;
@@ -1065,24 +1067,24 @@ clip_GTK_WIDGETMODIFYBG (ClipMachine *cm)
 {
 	C_widget *cwid  = _fetch_cw_arg(cm);
 	ClipVar *mstyle = _clip_par(cm,2);
-        GtkStateType state = _clip_parni(cm, 3);
-        GdkColor bgcolor;
-        double colors[4];
+	GtkStateType state = _clip_parni(cm, 3);
+	GdkColor bgcolor;
+	double colors[4];
 
 	CHECKARG2(2,MAP_t, ARRAY_t);
-        CHECKOPT(3, NUMERIC_t);
-        CHECKCWID(cwid, GTK_IS_WIDGET);
+	CHECKOPT(3, NUMERIC_t);
+	CHECKCWID(cwid, GTK_IS_WIDGET);
 
-         _map_get_colors(cm,  mstyle, colors);
-         bgcolor.red   = colors[0];
-         bgcolor.green = colors[1];
-         bgcolor.blue  = colors[2];
-         bgcolor.pixel = colors[3];
+	 _map_get_colors(cm,  mstyle, colors);
+	 bgcolor.red   = colors[0];
+	 bgcolor.green = colors[1];
+	 bgcolor.blue  = colors[2];
+	 bgcolor.pixel = colors[3];
 
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
-        	state = GTK_STATE_NORMAL;
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
+		state = GTK_STATE_NORMAL;
 
-        gtk_widget_modify_bg(cwid->widget, state, &bgcolor);
+	gtk_widget_modify_bg(cwid->widget, state, &bgcolor);
 	return 0;
 err:
 	return 1;
@@ -1093,24 +1095,24 @@ clip_GTK_WIDGETMODIFYBASE(ClipMachine *cm)
 {
 	C_widget *cwid  = _fetch_cw_arg(cm);
 	ClipVar *mstyle = _clip_par(cm,2);
-        GtkStateType state = _clip_parni(cm, 3);
-        GdkColor basecolor;
-        double colors[4];
+	GtkStateType state = _clip_parni(cm, 3);
+	GdkColor basecolor;
+	double colors[4];
 
 	CHECKARG2(2,MAP_t, ARRAY_t);
-        CHECKOPT(3, NUMERIC_t);
-        CHECKCWID(cwid, GTK_IS_WIDGET);
+	CHECKOPT(3, NUMERIC_t);
+	CHECKCWID(cwid, GTK_IS_WIDGET);
 
-         _map_get_colors(cm,  mstyle, colors);
-         basecolor.red   = colors[0];
-         basecolor.green = colors[1];
-         basecolor.blue  = colors[2];
-         basecolor.pixel = colors[3];
+	 _map_get_colors(cm,  mstyle, colors);
+	 basecolor.red   = colors[0];
+	 basecolor.green = colors[1];
+	 basecolor.blue  = colors[2];
+	 basecolor.pixel = colors[3];
 
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
-        	state = GTK_STATE_NORMAL;
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
+		state = GTK_STATE_NORMAL;
 
-        gtk_widget_modify_base(cwid->widget, state, &basecolor);
+	gtk_widget_modify_base(cwid->widget, state, &basecolor);
 	return 0;
 err:
 	return 1;
@@ -1121,23 +1123,23 @@ clip_GTK_WIDGETMODIFYTEXT(ClipMachine *cm)
 {
 	C_widget *cwid  = _fetch_cw_arg(cm);
 	ClipVar *mstyle = _clip_par(cm,2);
-        GtkStateType state = _clip_parni(cm, 3);
-        GdkColor textcolor;
-        double colors[4];
+	GtkStateType state = _clip_parni(cm, 3);
+	GdkColor textcolor;
+	double colors[4];
 
 	CHECKARG2(2,MAP_t, ARRAY_t);
-        CHECKOPT(3, NUMERIC_t);
-        CHECKCWID(cwid, GTK_IS_WIDGET);
+	CHECKOPT(3, NUMERIC_t);
+	CHECKCWID(cwid, GTK_IS_WIDGET);
 
-         _map_get_colors(cm,  mstyle, colors);
-         textcolor.red   = colors[0];
-         textcolor.green = colors[1];
-         textcolor.blue  = colors[2];
-         textcolor.pixel = colors[3];
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
-        	state = GTK_STATE_NORMAL;
+	 _map_get_colors(cm,  mstyle, colors);
+	 textcolor.red   = colors[0];
+	 textcolor.green = colors[1];
+	 textcolor.blue  = colors[2];
+	 textcolor.pixel = colors[3];
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
+		state = GTK_STATE_NORMAL;
 
-        gtk_widget_modify_text(cwid->widget, state, &textcolor);
+	gtk_widget_modify_text(cwid->widget, state, &textcolor);
 	return 0;
 err:
 	return 1;
@@ -1289,6 +1291,15 @@ clip_GTK_WIDGETGETDEFAULTSTYLE (ClipMachine *cm)
 	return 0;
 }
 
+void
+static _remove_widget(GtkWidget *wid, gpointer data)
+{
+	ClipMachine *cm = (ClipMachine *)data;
+	if (GTK_IS_CONTAINER(wid))
+		gtk_container_foreach(GTK_CONTAINER(wid), (GtkCallback)_remove_widget, cm);
+	//printf("22 widget type %d %d \n", GTK_WIDGET_GET_CLASS(wid), GTK_TYPE_ENTRY);
+	_list_remove_cwidget(cm, wid);
+}
 
 /* Destroy widget and it`s shadow object in CLIP machine */
 int
@@ -1297,12 +1308,34 @@ clip_GTK_WIDGETDESTROY (ClipMachine *cm)
 	C_widget *cwid = _fetch_cw_arg(cm);
 
 	if (cwid)
+        {
+	/*
+	WTypeTable *wt_item = NULL;
+	const char * cwtype_name = "GTK_WIDGET_UNKNOWN";
+		wt_item = _wtype_table_get(cwid->type);
+		if (wt_item && wt_item->ftype_name) cwtype_name = (const char *)wt_item->ftype_name();
+		printf("destroy widget %s \n", (char *)cwtype_name);
+                */
+		gtk_widget_destroy(cwid->widget);
+        }
+/*
+	if (cwid)
 	{
 		if (cwid->widget)
+		{
+			if (GTK_IS_CONTAINER(cwid->widget))
+				gtk_container_foreach(GTK_CONTAINER(cwid->widget), (GtkCallback)_remove_widget, cm);
+			else
+			{
+				//printf("widget type %d %d \n", cwid->type, GTK_TYPE_ENTRY);
+				_list_remove_cwidget(cm, cwid->widget);
+			}
 			gtk_widget_destroy(cwid->widget);
+		}
 		else
 			destroy_c_widget(cwid);
 	}
+*/
 
 	return 0;
 }
@@ -1330,21 +1363,21 @@ int
 clip_GTK_WIDGETGETANCESTOR (ClipMachine *cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
-        gint      type = _clip_parni(cm, 2) ;
+	gint      type = _clip_parni(cm, 2) ;
 	GtkWidget *ancestor; C_widget *cancestor;
 	CHECKOPT(2,NUMERIC_t);
 	CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKARG(2, NUMERIC_t);
+	CHECKARG(2, NUMERIC_t);
 	switch (type)
-        {
-        	case HASH_GTK_TYPE_WINDOW:	type = GTK_TYPE_WINDOW; break;
-        	case HASH_GTK_TYPE_BOX:		type = GTK_TYPE_BOX; break;
-        	case HASH_GTK_TYPE_CONTAINER:	type = GTK_TYPE_CONTAINER; break;
-        	case HASH_GTK_TYPE_COMBO:	type = GTK_TYPE_COMBO; break;
-        	case HASH_GTK_TYPE_TOOLBAR:	type = GTK_TYPE_TOOLBAR; break;
-        	case HASH_GTK_TYPE_MENU:	type = GTK_TYPE_MENU; break;
-                default: 			type = GTK_TYPE_WIDGET; break;
-        }
+	{
+		case HASH_GTK_TYPE_WINDOW:	type = GTK_TYPE_WINDOW; break;
+		case HASH_GTK_TYPE_BOX:		type = GTK_TYPE_BOX; break;
+		case HASH_GTK_TYPE_CONTAINER:	type = GTK_TYPE_CONTAINER; break;
+		case HASH_GTK_TYPE_COMBO:	type = GTK_TYPE_COMBO; break;
+		case HASH_GTK_TYPE_TOOLBAR:	type = GTK_TYPE_TOOLBAR; break;
+		case HASH_GTK_TYPE_MENU:	type = GTK_TYPE_MENU; break;
+		default: 			type = GTK_TYPE_WIDGET; break;
+	}
 	ancestor = gtk_widget_get_ancestor(cwid->widget, type);
 	if (ancestor)
 	{
@@ -1554,8 +1587,8 @@ clip_GTK_WIDGETGETPARENT (ClipMachine *cm)
 	if (parent)
 	{
 		cparent = _list_get_cwidget(cm, parent);
-                if (!cparent) cparent = _register_widget(cm, parent, NULL);
-                if (cparent) _clip_mclone(cm, RETPTR(cm), &cparent->obj);
+		if (!cparent) cparent = _register_widget(cm, parent, NULL);
+		if (cparent) _clip_mclone(cm, RETPTR(cm), &cparent->obj);
 	}
 	return 0;
 err:
@@ -1567,7 +1600,7 @@ clip_GTK_WIDGETSETSIZEREQUEST (ClipMachine *cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
 	gint     width = _clip_parni(cm, 2);
-        gint    height = _clip_parni(cm, 3);
+	gint    height = _clip_parni(cm, 3);
 
 	CHECKOPT(2,NUMERIC_t); CHECKOPT(3, NUMERIC_t);
 	CHECKCWID(cwid,GTK_IS_WIDGET);
@@ -1587,9 +1620,9 @@ int
 clip_GTK_WIDGETSHAPECOMBINEMASK (ClipMachine *cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
-        C_object *cmask = _fetch_cobject(cm, _clip_spar(cm, 2));
+	C_object *cmask = _fetch_cobject(cm, _clip_spar(cm, 2));
 	gint  offset_x = _clip_parni(cm, 3);
-        gint  offset_y = _clip_parni(cm, 4);
+	gint  offset_y = _clip_parni(cm, 4);
 
 	CHECKOPT(3,NUMERIC_t); CHECKOPT(4, NUMERIC_t);
 	CHECKCWID(cwid,GTK_IS_WIDGET);
@@ -1617,6 +1650,82 @@ err:
 	return 1;
 }
 
+
+int
+clip_GTK_WIDGETCREATEPANGOCONTEXT(ClipMachine *cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+	PangoContext *context ;
+	C_object    *ccontext ;
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	context = gtk_widget_create_pango_context(cwid->widget);
+
+	if (context)
+	{
+		ccontext = _list_get_cobject(cm, context);
+		if (!ccontext) ccontext = _register_object(cm, context, GTK_TYPE_PANGO_CONTEXT, NULL, NULL);
+		if (ccontext) _clip_mclone(cm, RETPTR(cm), &ccontext->obj);
+	}
+
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETGETPANGOCONTEXT(ClipMachine *cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+	PangoContext *context ;
+	C_object    *ccontext ;
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	context = gtk_widget_get_pango_context(cwid->widget);
+
+	if (context)
+	{
+		ccontext = _list_get_cobject(cm, context);
+		if (!ccontext) ccontext = _register_object(cm, context, GTK_TYPE_PANGO_CONTEXT, NULL, NULL);
+		if (ccontext) _clip_mclone(cm, RETPTR(cm), &ccontext->obj);
+	}
+
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WIDGETCREATEPANGOLAYOUT(ClipMachine *cm)
+{
+	C_widget       *cwid = _fetch_cw_arg(cm);
+	gchar          *text = _clip_parc(cm, 2);
+	PangoLayout  *layout ;
+	C_object    *clayout ;
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+	CHECKOPT(2, CHARACTER_t);
+
+        if (text) LOCALE_TO_UTF(text);
+	layout = gtk_widget_create_pango_layout(cwid->widget, (text)?(const gchar *)text:NULL);
+
+	if (layout)
+	{
+		clayout = _list_get_cobject(cm, layout);
+		if (!clayout) clayout = _register_object(cm, layout, GTK_TYPE_PANGO_LAYOUT, NULL, NULL);
+		if (clayout) _clip_mclone(cm, RETPTR(cm), &clayout->obj);
+	}
+
+        if (text) FREE_TEXT(text);
+	return 0;
+err:
+	return 1;
+}
+
 #if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 
 int
@@ -1637,10 +1746,10 @@ int
 clip_GTK_WIDGETCANACTIVATEACCEL(ClipMachine *cm)
 {
 	C_widget  *cwid = _fetch_cw_arg(cm);
-        guint signal_id = _clip_parni(cm, 2);
+	guint signal_id = _clip_parni(cm, 2);
 
 	CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKARG(2, NUMERIC_t);
+	CHECKARG(2, NUMERIC_t);
 
 	gtk_widget_can_activate_accel(cwid->widget, signal_id);
 
@@ -1653,10 +1762,10 @@ int
 clip_GTK_WIDGETSETNOSHOWALL(ClipMachine *cm)
 {
 	C_widget  *cwid = _fetch_cw_arg(cm);
-        gboolean   show = _clip_parl(cm, 2);
+	gboolean   show = _clip_parl(cm, 2);
 
 	CHECKCWID(cwid,GTK_IS_WIDGET);
-        CHECKARG(2, LOGICAL_t);
+	CHECKARG(2, LOGICAL_t);
 
 	gtk_widget_set_no_show_all(cwid->widget, show);
 
@@ -1683,28 +1792,28 @@ int
 clip_GTK_WIDGETLISTMNEMONICLABELS(ClipMachine *cm)
 {
 	C_widget  *cwid = _fetch_cw_arg(cm);
-        ClipVar     *cv = RETPTR(cm);
-        GList     *list ;
-        long          l ;
+	ClipVar     *cv = RETPTR(cm);
+	GList     *list ;
+	long          l ;
 
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 
 	l = g_list_length(list);
 	_clip_array(cm, cv, 1, &l);
 	list = gtk_widget_list_mnemonic_labels(cwid->widget);
-        for (l=0; list; list=g_list_next(list), l++)
-        {
-        	C_widget *cwid;
-                GtkWidget *wid;
+	for (l=0; list; list=g_list_next(list), l++)
+	{
+		C_widget *cwid;
+		GtkWidget *wid;
 
 		wid = GTK_WIDGET(list->data);
-                if (wid)
-                {
-                	cwid = _list_get_cwidget(cm, wid);
-                        if (!cwid) cwid = _register_widget(cm, wid, NULL);
-                        if (cwid) _clip_aset(cm, cv, &cwid->obj, 1, &l);
-                }
-        }
+		if (wid)
+		{
+			cwid = _list_get_cwidget(cm, wid);
+			if (!cwid) cwid = _register_widget(cm, wid, NULL);
+			if (cwid) _clip_aset(cm, cv, &cwid->obj, 1, &l);
+		}
+	}
 
 	g_list_free(list);
 	return 0;

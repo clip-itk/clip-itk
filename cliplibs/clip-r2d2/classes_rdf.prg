@@ -55,7 +55,7 @@ static function put_rdf(m1,m2)
 	? ''
 	? ''
 	? ''
-	? '<RDF:Seq about="urn:'+dname+':data">'
+	? '<RDF:Seq about="urn:'+dname+'">'
 	? '<RDF:li>'
 	for i=1 to len(m1)
 		oDict := codb_dict_reference(m1[i])

@@ -5,6 +5,15 @@
  */
 /*
    $Log: _ctools_s.c,v $
+   Revision 1.69  2004/11/29 06:57:07  clip
+   uri: small fix in tokennext()
+
+   Revision 1.68  2004/11/25 10:04:07  clip
+   uri: fix in numtoken() about numeric parameters
+
+   Revision 1.67  2004/10/27 09:08:50  clip
+   uri: small fix for setPxlat()
+
    Revision 1.66  2004/05/19 08:32:17  clip
    rust: fix for ./configure -m
 
@@ -2764,7 +2773,10 @@ clip_NUMTOKEN(ClipMachine * mp)
 	if (str == NULL)
 	{
 		_clip_retni(mp, 0);
+		return 0;
+		/*
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "NUMTOKEN");
+		*/
 	}
 
 	if (sstr == NULL)
@@ -3084,7 +3096,7 @@ int
 clip_TOKENNEXT(ClipMachine * mp)
 {
 	int l1, nt, *tmp1, tlen;
-	unsigned char *e, *end, *ret, *tbeg, *tend, *tmp2;
+	unsigned char ch,*e, *end, *ret, *tbeg, *tend, *tmp2;
 	void *atsep = _clip_fetch_item(mp, HASH_token_atsep);
 	unsigned char *str = _clip_fetch_item(mp, HASH_token_string);
 	unsigned char *buf = (char *) _clip_fetch_item(mp, HASH_token_delimiters);
@@ -3115,7 +3127,7 @@ clip_TOKENNEXT(ClipMachine * mp)
 	for (; e < end && !buf[(int) (*e)]; e++);
 	*(tmp2 + 2) = *(e);
 	tend = e;
-//        for(nt=0; nt<tlen && e<end && buf[*e];  e++,nt++);
+/*        for(nt=0; nt<tlen && e<end && buf[*e];  e++,nt++);*/
 	*((int *) atsep) = e - str;
 
 	tbeg = tbeg > tend ? tend : tbeg;
@@ -3123,6 +3135,8 @@ clip_TOKENNEXT(ClipMachine * mp)
 	memcpy(ret, tbeg, tend - tbeg);
 	ret[tend - tbeg] = 0;
 	_clip_retcn_m(mp, ret, tend - tbeg);
+	for (ch=*e; e < end && ch == *e; e++);
+	tend = e;
 	*((int *) atsep) = tend - str;
 	tmp1 = (int *) atsep;
 	tmp1++;
@@ -3708,29 +3722,29 @@ clip_INWORD(ClipMachine * mp)
 int
 _clip_setxlat(ClipMachine * mp, unsigned char * data)
 {
-		int no = _clip_parni(mp,1) % 256;
-		unsigned char * s = _clip_parc(mp,1);
-		_clip_retl(mp,0);
-		if ( s!=NULL )
-			no = *s;
+	int no = _clip_parni(mp,1) % 256;
+	unsigned char * s = _clip_parc(mp,1);
+	_clip_retl(mp,0);
+	if ( s!=NULL )
+		no = *s;
 	if ( _clip_parinfo(mp,0) == 0)
-		{
-			int i;
-				for ( i = 0; i<256; i++)
-					data[i] = i;
-			_clip_retl(mp,1);
-			return 0;
-		}
+	{
+		int i;
+		for ( i = 0; i<256; i++)
+			data[i] = i;
+		_clip_retl(mp,1);
+		return 0;
+	}
 	if ( _clip_parinfo(mp,0) >= 2)
-		{
-			int len;
-				unsigned char * str = _clip_parcl(mp,2,&len);
-				if ( ( no + len) > 256 )
-					len = 256 - no;
-				memcpy(data+no, str, len);
-			_clip_retl(mp,1);
-			return 0;
-		}
+	{
+		int len;
+		unsigned char * str = _clip_parcl(mp,2,&len);
+		if ( ( no + len) > 256 )
+			len = 256 - no;
+		memcpy(data+no, str, len);
+		_clip_retl(mp,1);
+		return 0;
+	}
 	return 0;
 }
 

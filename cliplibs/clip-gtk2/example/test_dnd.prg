@@ -37,7 +37,7 @@ local  window, table, label, pixmap, button, drag_icon, drag_mask
   gtk_init ()
 
   window = gtk_WindowNew (, " Test drag and drop functions ",GTK_WINDOW_TOPLEVEL)
-  gtk_SignalConnect (window, "delete-event", {|| gtk_Quit()})
+  gtk_SignalConnect (window, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 
   table = gtk_TableNew (, 2, 2, FALSE)
   gtk_ContainerAdd (window, table)
@@ -106,6 +106,7 @@ local  window, table, label, pixmap, button, drag_icon, drag_mask
 		       target_table, n_targets, ;
 		       numor(GDK_ACTION_COPY, GDK_ACTION_MOVE))
 
+
   gtk_DragSourceSetIcon (button, gtk_WidgetGetColormap (window), ;
 			    drag_icon, drag_mask)
 
@@ -139,6 +140,7 @@ static function target_drag_leave(widget, event)
   qout("leave&\n")
   have_drag = FALSE
   gtk_PixmapSet (widget, trashcan_closed, trashcan_closed_mask)
+  qout("leave and set new pixmap")
 return FALSE
 
 static function target_drag_motion(widget, event)//context, x, y, time)

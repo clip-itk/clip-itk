@@ -1,5 +1,11 @@
 /*
 $Log: screen.h,v $
+Revision 1.22  2004/12/15 07:05:37  clip
+uri: add KSET*()
+
+Revision 1.21  2004/10/20 17:22:17  clip
+uri: add set(_SET_UTF8TERM) for terminal with UTF-8
+
 Revision 1.20  2002/11/20 09:18:16  clip
 SET(_SET_ESC_DELAY[, <nMilliseconds>]) -> nOldMilliseconds
 get/set Esc timeout in milliseconds; default == 300 ms
@@ -119,21 +125,21 @@ typedef struct ScreenBase
 	int fd;
 	char *terminalName;
 	Screen* realScreen;
-        int mouse_present;
-        int mouse_y;
-        int mouse_x;
-        int mouse_visible;
-        int mouse_auto_visible;
-        int mouse_top;
-        int mouse_bottom;
-        int mouse_left;
-        int mouse_right;
-        int mouse_buttons;
-        int mouse_dclick_speed;
-        int mouse_clicks_left;
-        int mouse_clicks_right;
-        int mouse_clicks_middle;
-        const char *mouse_driver;
+	int mouse_present;
+	int mouse_y;
+	int mouse_x;
+	int mouse_visible;
+	int mouse_auto_visible;
+	int mouse_top;
+	int mouse_bottom;
+	int mouse_left;
+	int mouse_right;
+	int mouse_buttons;
+	int mouse_dclick_speed;
+	int mouse_clicks_left;
+	int mouse_clicks_right;
+	int mouse_clicks_middle;
+	const char *mouse_driver;
 	unsigned char pg_chars[PG_SIZE];
 	void *data;
 }
@@ -144,8 +150,8 @@ Screen *new_Screen(ScreenBase *base);
 void clear_Screen(Screen *scr);
 void setCtrlBreak_Screen(Screen *scr, int val);
 void delete_Screen(Screen * scr);
-void sync_Screen(Screen * scr);
-void redraw_Screen(Screen * scr);
+void sync_Screen(Screen * scr, int utf8term);
+void redraw_Screen(Screen * scr, int utf8term);
 void addLine_Screen(Screen * scr, int line, unsigned char attr);
 void delLine_Screen(Screen * scr, int line, unsigned char attr);
 void scroll_Screen(Screen * scr, int beg, int end, int num, unsigned char attr);
@@ -162,6 +168,7 @@ unsigned long getWait_Key(ScreenBase *base, long milliseconds); /* 0 means nowai
 unsigned long getRaw_Key(ScreenBase *base);
 unsigned long getRawWait_Key(ScreenBase * base, long milliseconds);
 int getState_Key(ScreenBase *base);
+int setState_Key(ScreenBase *base, int value, int locktype);
 
 /* esc delay, milliseconds */
 extern int esc_delay_Screen;

@@ -66,13 +66,13 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 			anb_list[obj:an_value] := obj:an_value
 		next
 	endif
-	//outlog(anb_list)
+	//outlog("anb_list=",anb_list)
 
 	variants := calc_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
 	//outlog("variants =",variants)
 	for i=1 to len(variants)
 		j := calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,variants[i])
-//		outlog("summ=",j)
+		//outlog("summ=",j)
 		aadd(aOst,j)
 	next
 
@@ -80,18 +80,22 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		aObj := NIL
 		aObj:=map()
 		aObj:an_value := anb_list[i]
+		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		***** calc tcol_list
 		aObj:tCols := ""; aObj:essence := anb_list[i]
 		an_obj := codb_getValue(anb_list[i])
+		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		if empty(an_obj)
 			cgi_xml_error( "Object not readable:"+anb_list[i] )
-			loop
+			//loop
 		endif
 		class := NIL; tmpDict := NIL
+		/*
 		if !("CLASS_ID" $ an_obj)
-			quit
+			//quit
 		endif
-		if an_obj:class_id $ classes
+		*/
+		if !empty(an_obj) .and. "CLASS_ID" $ an_obj .and. an_obj:class_id $ classes
 			class := classes[an_obj:class_id]
 		else
 			if !empty(an_obj)
@@ -139,7 +143,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 						k := mapEval(an_obj,tCol:expr_block)
 					endif
 				recover
-					  k:= "error in expr:"+tCol:expr
+					  k:= "error in tcolumn expr:"+tCol:expr
 				end sequence
 				errorBlock(err)
 				if !empty(k)
@@ -160,7 +164,9 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		aObj:out_num  := 0
 		aObj:end_num  := 0
 		aObj:unit_num := ""
+		aObj:accpost_list := {}
 		for j=1 to len(variants)
+			//outlog(__FILE__,__LINE__, variants[j][an_level], anb_list[i])
 			if !(variants[j][an_level] == anb_list[i])
 				loop
 			endif
@@ -177,6 +183,10 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 			if !empty(aOst[j]:unit_num)
 				aObj:unit_num  := aOst[j]:unit_num
 			endif
+		//outlog(__FILE__,__LINE__,"add aOst",j,aOst[j])
+			for k=1 to len(aOst[j]:accpost_list)
+				aadd(aObj:accpost_list,aOst[j]:accpost_list[k])
+			next
 		next
 		//outlog(__FILE__,__LINE__,"add data",aObj)
 		aadd(data,aObj)
@@ -196,6 +206,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	aObj:out_num  := 0
 	aObj:end_num  := 0
 	aObj:unit_num := "all"
+	aObj:accpost_list := {}
 	if len(data) == 0
 		aObj:an_value := "EMPTY"
 		aObj:essence  := "πυστο"
@@ -214,6 +225,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 			aObj:out_num  += data[i]:out_num
 		next
 	endif
+	//outlog(__FILE__,__LINE__,"data=",data)
 	aadd(data,aObj)
 return data
 
@@ -429,6 +441,7 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 	ret:out_num  := 0
 	ret:end_num  := 0
 	ret:unit_num := ""
+	ret:accpost_list := {}
 
 	s := 'account="'+account+'" '
 	if an_level <= 1
@@ -456,6 +469,7 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 	endif
 	for j=1 to len(tmp)
 		tObj := oDep:getValue(tmp[j])
+		//outlog(__FILE__,__LINE__,an_balance:name,tmp[j],tObj)
 		if empty(tObj)
 			outlog("Error: can`t load object:",tmp[i])
 			loop
@@ -496,6 +510,10 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 				ret:unit_num  := tobj:unit
 			endif
 		endif
+		//outlog(__FILE__,__LINE__,an_balance:name,tmp[j],tObj)
+		for k=1 to len(tobj:accpost_list)
+			aadd(ret:accpost_list,tobj:accpost_list[k])
+		next
 	next
 return ret
 

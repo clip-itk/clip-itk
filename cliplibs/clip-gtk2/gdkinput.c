@@ -3,13 +3,13 @@
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
-#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"

@@ -8,7 +8,7 @@ local accPost, acc_chart, osb_class
 local beg_date:=date(),end_date:=date(), account:=""
 local connect_id:="", connect_data
 local i,j,k,s1,s2,tmp,obj
-local acc_list, acc_objs
+local acc_list, acc_objs,acc_s
 local post_list, d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
 local c_data
@@ -129,6 +129,8 @@ local cache:=map()
 			aadd(post_list,tmp[j])
 		next
 	next
+	outlog(__FILE__,__LINE__,len(post_list),post_list)
+//	return
 
 	d_data := {}; k_data := {}
 	d_list := {}; k_list := {}
@@ -241,7 +243,15 @@ local cache:=map()
 	//? k_res
 
 	**************
-	? '<div>Справка по оборотам проводок по счету(ам): '+account
+    acc_s := ""
+    j:=len(acc_objs)
+    for i=1 to j
+    	acc_s+=acc_objs[i]:code
+    	if i!=j
+        	acc_s+=","
+        endif
+    next
+	? '<div>Справка по оборотам проводок по счету(ам): '+acc_s //account
 	? 'за период с '+dtoc(beg_date)+' по '+dtoc(end_date)+'</div>'
 	? '<table cellpadding="2" cellspacing="0" border="1" width="80%" align="center">'
 	? '<tr>'
@@ -283,7 +293,6 @@ local cache:=map()
 	**********************
 	? '<div>Справка по оборотам:</div>'
 	? '<table cellpadding="2" cellspacing="2" border="1" width="80%" align="center">'
-	? '<tbody>'
 	? '<tr>'
 	? '	<th valign="top" width="10%">Счет</th>'
 	? '	<th valign="top">Начало дебет</th>'
@@ -293,6 +302,7 @@ local cache:=map()
 	? '	<th valign="top">Конец дебет</th>'
 	? '	<th valign="top">Конец кредит</th>'
 	? '</tr>'
+	? '<tbody>'
 
 	osb_class := oDict:classBodyByName("os_balance")
 	if empty(osb_class)

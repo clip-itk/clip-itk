@@ -4,9 +4,18 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rushmore.c,v $
+	Revision 1.60  2004/12/10 09:16:43  clip
+	rust: minor fix for hs_* functions
+	
+	Revision 1.59  2004/08/09 15:06:44  clip
+	rust: small fix in previous fix
+
+	Revision 1.58  2004/08/09 10:49:51  clip
+	rust: minor fix in creating filter with optimization
+
 	Revision 1.57  2004/04/29 10:46:15  clip
 	rust: casecmp whith IC orders
-	
+
 	Revision 1.56  2004/04/08 13:04:50  clip
 	rust: fix in filter parsing; suppres generating error when expression is
 	not optimizable and contains syntax errors
@@ -409,7 +418,19 @@ int rm_init(ClipMachine* cm,RDD_DATA* rd,char* str,const char* __PROC__){
 			ps--;
 		}
 	}
+	dquote = 0;
 	for(rd->ptr=str;rd->ptr<end;rd->ptr++){
+		if(!dquote)
+		{
+			if(*rd->ptr == '\"' || *rd->ptr == '\'')
+				dquote = *rd->ptr;
+		}
+		else if(*rd->ptr == dquote)
+		{
+			dquote = 0;
+		}
+		if(dquote)
+			continue;
 		if(*rd->ptr=='(')
 			*rd->ptr = RM_LP;
 		else if(*rd->ptr==')')
@@ -1195,6 +1216,7 @@ int rm_evalpartial(ClipMachine* cm,RDD_FILTER* fp,ClipVar* block,unsigned int* r
 	unsigned int oldrecno = fp->rd->recno;
 	int oldbof = fp->rd->bof;
 	int oldeof = fp->rd->eof;
+	int recno;
 
 	*ret = 0;
 	if(cnt)
@@ -1210,14 +1232,15 @@ int rm_evalpartial(ClipMachine* cm,RDD_FILTER* fp,ClipVar* block,unsigned int* r
 
 	memset(&v,0,sizeof(ClipVar));
 	fp->rd->bof = fp->rd->eof = 0;
-	for(fp->rd->recno=1;fp->rd->recno<=fp->size;fp->rd->recno++){
-		if(_rm_getbit(fp->rmap,fp->size,fp->rd->recno)){
+	for(recno=1;recno<=fp->size;recno++){
+		if(_rm_getbit(fp->rmap,fp->size,recno)){
 			if(fp->optimize==2){
 				if(cnt)
 					(*cnt)++;
 			} else {
 				int fok;
 
+				if(fp->rd->vtbl->rawgo(cm,fp->rd,recno,0,__PROC__)) goto err;
 				if(rdd_childs(cm,fp->rd,__PROC__)) return 1;
 				if(block){
 					ClipVar v,*vp;
@@ -1243,7 +1266,7 @@ int rm_evalpartial(ClipMachine* cm,RDD_FILTER* fp,ClipVar* block,unsigned int* r
 			(*ret)++;
 		}
 	}
-	fp->rd->recno = oldrecno;
+	if(fp->rd->vtbl->rawgo(cm,fp->rd,oldrecno,0,__PROC__)) goto err;
 	fp->rd->bof = oldbof;
 	fp->rd->eof = oldeof;
 	if(rdd_childs(cm,fp->rd,__PROC__)) return 1;

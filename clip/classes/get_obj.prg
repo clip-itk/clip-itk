@@ -18,6 +18,9 @@
 
 function ___get(bBlock,varname,cPic,bValid,bWhen)
 return getnew(row(),col(),bBlock,varname,cPic,,eval(bBlock),bValid,bWhen)
+/* may be it is vwry cool, but we don`t have docs for __GET() function */
+function __get(bBlock,varname,cPic,bValid,bWhen)
+return ___get(bBlock,varname,cPic,bValid,bWhen)
 
 **********************************************************************
 
@@ -29,6 +32,9 @@ return getnew(row(),col(),block,cName,cPic,,,bValid,bWhen)
 **********************************************************************
 function __CGET__(block,aSubscript,cName,cRealName,cPic,bValid,bWhen)
 	local oget,row:=row(),col:=col()
+	if empty(cName)
+		cName := upper(cRealName)
+	endif
 	oGet := getnew(row(),col(),block,cName,cPic,,,bValid,bWhen)
 	oGet:subscript := aSubscript
 	oGet:realName  := cRealName
@@ -114,7 +120,6 @@ function GETNEW(row,col,block,varname,pic,color,var,vblock,wblock)
 	restscreen(,,,,scr)
 	dispend()
   endif
-
 
 return obj
 
@@ -1317,7 +1322,7 @@ static func __analizePic()
 			::decpos:=i
 			::__len++
 		endif
-		if upper(s2) $ iif(::type=="N","9#",p)
+		if upper(s2) $ iif(::type=="N","9#X",p)
 			::__format+=upper(s2)
 			::__dataSay+=" "
 			aadd(::__posArr,i)
@@ -1427,6 +1432,7 @@ static func get_setcolor(color)
 		::colorSpec := color
 	endif
 	::__colors:=__splitColors(::colorSpec)
+	::colorSpec := ::__colors[5]+','+::__colors[2]
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"setcolor",::name)
 #endif
@@ -1569,9 +1575,6 @@ function __splitColors(s)
 	   i:=at(",",s)
 	   i=iif(i==0,len(s)+1,i)
 	   ss:=alltrim(substr(s,1,i-1))
-	   if (ss=="N/N")
-		ss:="w/n"
-	   endif
 	   aadd(__colors, ss )
 	   s:=substr(s,i+1)
        enddo

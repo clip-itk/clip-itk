@@ -1,5 +1,7 @@
 #!/bin/sh
 
+unset DESTDIR
+
 std_rpm_root=/usr/src/redhat
 
 LANG=C
@@ -12,8 +14,8 @@ then
 else
     rpm=`which rpm`
 fi
-	
-	
+
+
 name=clip-prg
 
 version=$(head -1 ../debian/changelog |cut -d'(' -f2|cut -d'-' -f1)

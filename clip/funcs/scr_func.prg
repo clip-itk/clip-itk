@@ -509,19 +509,26 @@ return
 Function dispboxSay(top, left, bottom, right, xType,color)
 	local ch,ch1,ch2,x,y,sStyle
 	local row:=row(),col:=col()
-	local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
+	//local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
+	local d_string := B_DOUBLE
+	local s_string := B_SINGLE
 	dispbegin()
 	if valtype(xType)=="N"
 		sStyle:=iif(xType==1,s_string,d_string)
 	else
 		sStyle:=iif(valtype(xType)=="C",xType,B_SINGLE)
-		sStyle := strtran(sStyle,B_DOUBLE,d_string)
-		sStyle := strtran(sStyle,B_SINGLE,s_string)
+		//sStyle := strtran(sStyle,B_DOUBLE,d_string)
+		//sStyle := strtran(sStyle,B_SINGLE,s_string)
+	endif
+	if empty(Color)
+		color := setcolor()
 	endif
 	bottom:=max(top,bottom)
 	right:=max(left,right)
-	if len(sStyle)<8
-		padr(sStyle,8,left(sStyle,1))
+	if len(sStyle) == 0
+		sStyle := space(9)
+	elseif len(sStyle)<8
+		sStyle := padr(sStyle,8,left(sStyle,1))
 	endif
 	if len(sStyle)>8
 		ch:=replicate(substr(sStyle,9,1),right-left+1)
@@ -557,13 +564,15 @@ return
 ***********************************
 Function winbuf_dispbox(winbuffer,top, left, bottom, right, xType,color)
 	local ch,ch1,ch2,x,y,sStyle
-	local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
+	//local d_string :=[•†®°Æ†´°], s_string :=[ÇÄÉÅÖÄÑÅ]
+	local d_string := B_DOUBLE
+	local s_string := B_SINGLE
 	if valtype(xType)=="N"
 		sStyle:=iif(xType==1,s_string,d_string)
 	else
-		sStyle:=xType
-		sStyle := strtran(sStyle,B_DOUBLE,d_string)
-		sStyle := strtran(sStyle,B_SINGLE,s_string)
+		sStyle:=iif(valtype(xType)=="C",xType,B_SINGLE)
+		//sStyle := strtran(sStyle,B_DOUBLE,d_string)
+		//sStyle := strtran(sStyle,B_SINGLE,s_string)
 	endif
 	bottom:=max(top,bottom)
 	right:=max(left,right)
@@ -606,3 +615,52 @@ function dbgshadow(x1,y1,x2,y2,attrib)
 	dispattr(x2+1,y1+2,x2+1,y2+2,attrib)
 return
 
+#include "ctwin.ch"
+***********************************
+Function wbox(xType)
+	local sStyle
+	if xType == NIL
+		xType := 0
+	endif
+	if !set(_SET_DISPBOX)
+		return wBoxTerm(xType)
+	endif
+	if valType(xType) != "N"
+		return wBoxTerm(xType)
+	endif
+	xType := xType % 16
+	do case
+		case xType == 0
+			sStyle := WB_0
+		case xType == 1
+			sStyle := WB_1
+		case xType == 2
+			sStyle := WB_2
+		case xType == 3
+			sStyle := WB_3
+		case xType == 4
+			sStyle := WB_4
+		case xType == 5
+			sStyle := WB_5
+		case xType == 6
+			sStyle := WB_6
+		case xType == 7
+			sStyle := WB_7
+		case xType == 8
+			sStyle := WB_8
+		case xType == 9
+			sStyle := WB_9
+		case xType == 10
+			sStyle := WB_10
+		case xType == 11
+			sStyle := WB_11
+		case xType == 12
+			sStyle := WB_12
+		case xType == 13
+			sStyle := WB_13
+		case xType == 14
+			sStyle := WB_14
+		case xType == 15
+			sStyle := WB_15
+	endcase
+return wBoxTerm(sStyle)

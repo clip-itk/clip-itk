@@ -6,6 +6,7 @@
 /* Fseek() modes */
 #define FS_SET             0     /* from BOF */
 #define FS_RELATIVE        1     /* from current position */
+#define FS_CUR             1     /* from current position */
 #define FS_END             2     /* from EOF */
 
 #ifdef __CLIP__
@@ -20,6 +21,7 @@
 #define FO_READ            0
 #define FO_WRITE           1
 #define FO_READWRITE       2
+#define FO_RDWR		   2
 
 /* access modes for FOPEN */
 #define FO_COMPAT          0

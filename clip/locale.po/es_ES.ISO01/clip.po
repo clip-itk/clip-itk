@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-11-21 10:28+0400\n"
+"POT-Creation-Date: 2004-11-17 18:06+0400\n"
 "PO-Revision-Date: 2002-11-29 11:53+0400\n"
 "Last-Translator: Mauricio Abre <maurifull@datafull.com>\n"
 "Language-Team: Spanish <clip-devel@itk.ru>\n"
@@ -15,8 +15,8 @@ msgstr ""
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Translated from rusian clip.po file\n"
 
-#: clicgt.c:257 clicgt.c:262 clic.lex:7059 clic.lex:7066 clic.lex:7128
-#: clic.lex:7135
+#: clicgt.c:257 clicgt.c:262 clic.lex:7089 clic.lex:7096 clic.lex:7158
+#: clic.lex:7165
 #, c-format
 msgid "cannot load charset '%s': %s"
 msgstr "no se puede cargar el juego de caracteres '%s': %s"
@@ -76,36 +76,36 @@ msgstr "revisión ilegal del archivo de localización '%s': %d\n"
 msgid "syntax error: cannot back up"
 msgstr "error de sintaxis: no se puede regresar"
 
-#: clic.y:619
+#: clic.y:625
 msgid "EXTERN after executable statements"
 msgstr "EXTERN luego de sentencias ejecutables"
 
-#: clic.y:784
+#: clic.y:790
 msgid "EXIT statement out of loop"
 msgstr "sentencia EXIT fuera de bucle"
 
-#: clic.y:791
+#: clic.y:797
 msgid "LOOP statement out of loop"
 msgstr "sentencia LOOP fuera de bucle"
 
-#: clic.y:847
+#: clic.y:853
 msgid "please, use IIF function (not IF) on operator level to avoid conflicts"
 msgstr ""
 "por favor, use función IIF (no IF) a nivel operador para evitar conflictos "
 
-#: clic.y:943
+#: clic.y:949
 msgid "unclosed BEGIN SEQUENCE"
 msgstr "BEGIN SEQUENCE no cerrado"
 
-#: clic.y:1117
+#: clic.y:1123
 msgid "invalid array call"
 msgstr "llamada a array inválida"
 
-#: clic.y:1370 clic.y:1375
+#: clic.y:1376 clic.y:1381
 msgid "only inline assign := allowed in initialisation"
 msgstr "unicamente asignador en línea (:=) permitido en inicialización"
 
-#: clic.y:1413
+#: clic.y:1419
 #, c-format
 msgid "name '%s' duplication"
 msgstr "nombre '%s' duplicado"
@@ -122,16 +122,16 @@ msgstr "error de análisis"
 msgid "parser stack overflow"
 msgstr "desborde de pila en el analizador"
 
-#: clic.y:1602
+#: clic.y:1659
 #, c-format
 msgid "cannot open file '%s'"
 msgstr "no se puede abrir el archivo '%s'"
 
-#: clic.y:1619
+#: clic.y:1676
 msgid "executable operator outside of function (-n flag is active)"
 msgstr "operador ejecutable fuera de función (opción -n activa)"
 
-#: clic.y:1630
+#: clic.y:1687
 #, c-format
 msgid ""
 "in file '%s',\n"
@@ -140,17 +140,17 @@ msgstr ""
 "en archivo '%s',\n"
 "\tincluido en línea %d "
 
-#: clic.y:1632
+#: clic.y:1689
 #, c-format
 msgid "in file '%s'\n"
 msgstr "en archivo '%s'\n"
 
-#: clic.y:1646
+#: clic.y:1703
 #, c-format
 msgid "error %d: "
 msgstr "error %d: "
 
-#: clic.y:1650
+#: clic.y:1707
 #, c-format
 msgid ""
 "\n"
@@ -159,17 +159,17 @@ msgstr ""
 "\n"
 "\tlínea %ld posición %ld (yychar=%d, '%c') "
 
-#: clic.y:1654
+#: clic.y:1711
 #, c-format
 msgid "error %d, (yychar=%d) "
 msgstr "error %d, (yychar=%d) "
 
-#: clic.y:1671
+#: clic.y:1728
 #, c-format
 msgid "warning %d: "
 msgstr "advertencia %d: "
 
-#: clic.y:1675
+#: clic.y:1732
 #, c-format
 msgid ""
 "\n"
@@ -178,28 +178,28 @@ msgstr ""
 "\n"
 "\tlínea %ld, posición %ld, "
 
-#: clic.y:1678
+#: clic.y:1735
 #, c-format
 msgid "warning %d, "
 msgstr "advertencia %d, "
 
-#: clic.y:1689
+#: clic.y:1746
 #, c-format
 msgid "unclosed loop statement (level %d, begin at line %d file %s)"
 msgstr "bucle loop sin cerrar (nivel %d, comienza en línea %d archivo %s)"
 
-#: clic.y:1695
+#: clic.y:1752
 #, c-format
 msgid "unclosed IF statement (level %d, begin at line %d file %s)"
 msgstr "sentencia IF sin cerrar (nivel %d, comienza en línea %d archivo %s)"
 
-#: clic.y:1701
+#: clic.y:1758
 #, c-format
 msgid "unclosed SEQUENCE statement (level %d, begin at line %d file %s)"
 msgstr ""
 "sentencia SEQUENCE sin cerrar (nivel %d, comienza en línea %d archivo %s)"
 
-#: clicutil.c:529
+#: clicutil.c:532
 #, c-format
 msgid ""
 "duplicate name '%s', previous name defined near line %d pos %d in file '%s'"
@@ -207,40 +207,40 @@ msgstr ""
 "nombre '%s' duplicado, nombre anterior definido cerca de la línea %d "
 "posición %d en archivo '%s'"
 
-#: clicutil.c:664
+#: clicutil.c:667
 #, c-format
 msgid "declaration function with module name '%s'; force -n flag"
 msgstr "declaración de función con nombre de módulo '%s'; forzar opción -n"
 
-#: clicutil.c:677
+#: clicutil.c:680
 #, c-format
 msgid "function '%s' already defined near line %d file %s"
 msgstr "función '%s' ya definida cerca de la línea %d archivo %s"
 
-#: clicutil.c:682
+#: clicutil.c:685
 #, c-format
 msgid "static function '%s' already declared as external"
 msgstr "función estática '%s' ya declarada como externa"
 
-#: clicutil.c:775 node.c:1371 node.c:1429 node.c:1472 node.c:1499 node.c:1894
+#: clicutil.c:778 node.c:1383 node.c:1441 node.c:1484 node.c:1511 node.c:1906
 msgid "macro variable name not allowed here"
 msgstr "nombre de variable macro no permitida aquí"
 
-#: clicutil.c:961
+#: clicutil.c:964
 #, c-format
 msgid "name '%s' already declared as LOCAL near line %d pos %d file '%s'"
 msgstr ""
 "nombre '%s' ya declarado como LOCAL cerca de la línea %d posición %d archivo "
 "'%s'"
 
-#: clicutil.c:967
+#: clicutil.c:970
 #, c-format
 msgid "name '%s' already declared as PARAMETER near line %d pos %d file '%s'"
 msgstr ""
 "nombre '%s' ya declarado como PARAMETER cerca de la línea %d posición %d "
 "archivo '%s'"
 
-#: clicutil.c:973
+#: clicutil.c:976
 #, c-format
 msgid ""
 "name '%s' already declared as MEMVAR near line %d pos %d file '%s' (previous "
@@ -249,21 +249,21 @@ msgstr ""
 "nombre '%s' ya declarado como MEMVAR cerca de la línea %d posición %d "
 "archivo '%s' (nombre anterior será escondido)"
 
-#: clicutil.c:979
+#: clicutil.c:982
 #, c-format
 msgid "name '%s' already declared as FIELD near line %d pos %d file '%s'"
 msgstr ""
 "nombre '%s' ya declarado como FIELD cerca de la línea %d posición %d archivo "
 "'%s'"
 
-#: clicutil.c:985
+#: clicutil.c:988
 #, c-format
 msgid "name '%s' already declared as STATIC near line %d pos %d file '%s'"
 msgstr ""
 "nombre '%s' ya declarado como STATIC cerca de la línea %d posición %d "
 "archivo '%s'"
 
-#: clicutil.c:1133
+#: clicutil.c:1136
 #, c-format
 msgid "namespace of name '%s' undeclared, assumed as FIELD-MEMVAR"
 msgstr "ámbito del nombre '%s' no declarado, asumido como FIELD-MEMVAR"
@@ -738,12 +738,12 @@ msgstr "generando archivo referencia '%s' .."
 msgid "make file '%s' .."
 msgstr "creando archivo '%s' .."
 
-#: clip.c:1902 file.c:1441 file.c:1473 file.c:1512 file.c:2500
+#: clip.c:1902 file.c:1454 file.c:1486 file.c:1525 file.c:2518
 #, c-format
 msgid "%s\n"
 msgstr "%s\n"
 
-#: clip.c:1904 file.c:1443 file.c:1475 file.c:1514
+#: clip.c:1904 file.c:1456 file.c:1488 file.c:1527
 #, c-format
 msgid "C level error in command: %s"
 msgstr "error de nivel C en comando: %s"
@@ -760,120 +760,120 @@ msgstr[0] "archivo"
 msgstr[1] "archivos"
 msgstr[2] "archivos"
 
-#: file.c:1158 file.c:1761 file.c:2522
+#: file.c:1166 file.c:1774 file.c:2540
 #, c-format
 msgid "cannot open output file '%s'"
 msgstr "no se puede abrir el archivo de salida '%s'"
 
-#: file.c:1754
+#: file.c:1767
 msgid "cannot write PCODE module with c-texts"
 msgstr "no se pude escribir módulo PCODE con textos-c"
 
-#: file.c:2118
+#: file.c:2136
 #, c-format
 msgid "error writing file '%s', %s"
 msgstr "error escribiendo archivo '%s', %s"
 
-#: file.c:2506
+#: file.c:2524
 #, c-format
 msgid "cannot open pipe '%s'"
 msgstr "no se puede abrir tubería '%s'"
 
-#: clic_c.lex:146 clic_c.lex:154
+#: clic_c.lex:146 clic_c.lex:154 clic_c.lex:150 clic_c.lex:158
 #, c-format
 msgid "cannot open file '%s': %s"
 msgstr "no se puede abrir el archivo '%s': %s"
 
-#: clic.lex:1586
+#: clic.lex:1613
 msgid "invalid chars in number"
 msgstr "caracteres inválidos en número"
 
-#: clic.lex:1745
+#: clic.lex:1772
 msgid "newline in string"
 msgstr "línea nueva en cadena de texto"
 
-#: clic.lex:1792
+#: clic.lex:1819
 msgid "end-of-comment without begin"
 msgstr "fin de comentario sin un principio"
 
-#: clic.lex:1903
+#: clic.lex:1930
 msgid "'@}' without '@{'"
 msgstr "'@}' sin '@{'"
 
-#: clic.lex:2090
+#: clic.lex:2120
 #, c-format
 msgid "id: non-matched command '%s'"
 msgstr "id: comando no encontrado '%s'"
 
-#: clic.lex:2110
+#: clic.lex:2140
 #, c-format
 msgid "non-matched command '%s'"
 msgstr "comando no encontrado '%s'"
 
-#: clic.lex:2192 clic.lex:2261
+#: clic.lex:2222 clic.lex:2291
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: clic.lex:2376
+#: clic.lex:2406
 msgid "#else without #ifdef or #ifndef"
 msgstr "#else sin #ifdef o #ifndef"
 
-#: clic.lex:2391
+#: clic.lex:2421
 msgid "#endif without #ifdef or #ifndef"
 msgstr "#endif sin #ifdef o #ifndef"
 
-#: clic.lex:2445 clic.lex:2451 clic.lex:2554 clic.lex:2560
+#: clic.lex:2475 clic.lex:2481 clic.lex:2584 clic.lex:2590
 msgid "invalid #define directive"
 msgstr "directiva #define inválida"
 
-#: clic.lex:2466 clic.lex:2495 clic.lex:2525
+#: clic.lex:2496 clic.lex:2525 clic.lex:2555
 msgid "macro function redefined"
 msgstr "función macro redefinida"
 
-#: clic.lex:2472 clic.lex:2489 clic.lex:2519
+#: clic.lex:2502 clic.lex:2519 clic.lex:2549
 msgid "macro redefined"
 msgstr "macro redefinida"
 
-#: clic.lex:2721
+#: clic.lex:2751
 msgid "invalid macro call"
 msgstr "llamada a macro inválida"
 
-#: clic.lex:2769
+#: clic.lex:2799
 #, c-format
 msgid "invalid number of macro arguments (%d instead %d)"
 msgstr "número inválido de argumetos de macro (%d en vez de %d)"
 
-#: clic.lex:2919
+#: clic.lex:2949
 msgid "unexpected EOL in SM_ENUM"
 msgstr "EOL inesperada in SM_ENUM"
 
-#: clic.lex:2936
+#: clic.lex:2966
 #, c-format
 msgid "bad symbol in SM_ENUM: '%s'"
 msgstr "símbolo inválido en SM_ENUM: '%s'"
 
-#: clic.lex:2954 clic.lex:3150 clic.lex:3164
+#: clic.lex:2984 clic.lex:3180 clic.lex:3194
 msgid "non-balanced '[' in #command"
 msgstr "'[' no balanceado en #command"
 
-#: clic.lex:3016
+#: clic.lex:3046
 msgid "unexpected end of #command directive"
 msgstr "fin inesperado de directiva #command"
 
-#: clic.lex:3392
+#: clic.lex:3422
 msgid "cmdstr: newline in string"
 msgstr "cmdstr: nueva línea en cadena de texto"
 
-#: clic.lex:3863
+#: clic.lex:3893
 msgid "too much errors"
 msgstr "demasiados errores"
 
-#: clic.lex:3880
+#: clic.lex:3910
 msgid "#ifdef or #ifndef without #endif"
 msgstr "#ifdef o #ifndef sin #endif"
 
-#: clic.lex:3886
+#: clic.lex:3916
 #, c-format
 msgid ""
 "unterminated string constant (possible begin at line %d pos %d file '%s')"
@@ -881,94 +881,94 @@ msgstr ""
 "constante de texto no terminada (posible comienzo en línea %d posición %d "
 "archivo '%s')"
 
-#: clic.lex:3890
+#: clic.lex:3920
 #, c-format
 msgid "unmatched bracket '%c' (possible begin at line %d pos %d file '%s')"
 msgstr ""
 "llave no coincidida '%c' (posible comienzo en línea %d posición %d archivo '%"
 "s')"
 
-#: clic.lex:3893
+#: clic.lex:3923
 #, c-format
 msgid "unclosed comment (possible begin at line %d pos %d file '%s')"
 msgstr ""
 "comentario no cerrado (posible comienzo en línea %d posición %d archivo '%s')"
 
-#: clic.lex:3896
+#: clic.lex:3926
 msgid "no ENDTEXT"
 msgstr "sin ENDTEXT"
 
-#: clic.lex:4251
+#: clic.lex:4281
 msgid "macro function with 0 count of arguments"
 msgstr "función macro con 0 argumentos"
 
-#: clic.lex:5136
+#: clic.lex:5166
 #, c-format
 msgid "no subst marker '%s' in pattern part of command"
 msgstr "sin marca de sustitución '%s' en patrón de comando"
 
-#: clic.lex:5229
+#: clic.lex:5259
 #, c-format
 msgid "unmatched bracket '%c' "
 msgstr "llave no coincidida '%c' "
 
-#: clic.lex:5487
+#: clic.lex:5517
 #, c-format
 msgid "skip_norm: match delim '%s', return at '%s'\n"
 msgstr "skip_norm: coincidencia delim '%s', devuelta en '%s'\n"
 
-#: clic.lex:6298
+#: clic.lex:6328
 msgid "bad command definition: OPTION have only literals"
 msgstr "definición de comando inválida: OPTION tiene sólo literales"
 
-#: clic.lex:6803
+#: clic.lex:6833
 msgid "endless subst loop detected"
 msgstr "bucle sin fin detectado"
 
-#: clic.lex:6810
+#: clic.lex:6840
 #, c-format
 msgid "too many entries in OPTIONAL list: > %d\n"
 msgstr "demasiadas entradas en lista OPTIONAL: > %d\n"
 
-#: clic.lex:6893
+#: clic.lex:6923
 msgid "bad #include directive"
 msgstr "directiva #include inválida"
 
-#: clic.lex:6929
+#: clic.lex:6959
 #, c-format
 msgid "cannot open include file '%s': %s"
 msgstr "no se puede abrir archivo de cabecera '%s': %s"
 
-#: clic.lex:7038
+#: clic.lex:7068
 #, c-format
 msgid "recodeString: subst %d: '%s'->'%s': '%s'\n"
 msgstr "recodeString: sust %d: '%s'->'%s': '%s'\n"
 
-#: clic.lex:7105
+#: clic.lex:7135
 #, c-format
 msgid "recode_string: subst %d: '%s'->'%s': '%s'\n"
 msgstr "recode_string: sust %d: '%s'->'%s': '%s'\n"
 
-#: clic.lex:7210
+#: clic.lex:7240
 msgid "circular loop in macro/command substitution detected"
 msgstr "bucle circular detectado en sustitución de macro/comando"
 
-#: clic.lex:7314
+#: clic.lex:7344
 #, c-format
 msgid "set file '%s' charset to '%s'\n"
 msgstr "puesto para el archivo '%s' juego de caracteres '%s'\n"
 
-#: clic.lex:7323
+#: clic.lex:7353
 #, c-format
 msgid "push charset '%s' %d\n"
 msgstr "promovido juego de caracteres '%s' %d\n"
 
-#: clic.lex:7332
+#: clic.lex:7362
 #, c-format
 msgid "pop charset '%s' %d\n"
 msgstr "traído juego de caracteres '%s' %d\n"
 
-#: clic.lex:8062 clic.lex:8075
+#: clic.lex:8092 clic.lex:8105
 msgid "too long string"
 msgstr "cadena de texto muy larga"
 
@@ -1001,100 +1001,100 @@ msgstr "escrita entrada de mensaje '%s'\n"
 msgid "wrote plural locale message '%s' '%s'\n"
 msgstr "escrita entrada de mensaje plural '%s' '%s'\n"
 
-#: node.c:677 node.c:693
+#: node.c:686 node.c:702
 #, c-format
 msgid "po code too large at line %d"
 msgstr ""
 
-#: node.c:1361
+#: node.c:1373
 msgid "LOCAL after executable statements"
 msgstr "LOCAL luego de sentencias ejecutables"
 
-#: node.c:1422
+#: node.c:1434
 msgid "STATIC after executable statements"
 msgstr "STATIC luego de sentencias ejecutables"
 
-#: node.c:1441
+#: node.c:1453
 msgid "only constant expression allowed for static variable initialisation"
 msgstr ""
 "solo expresiones constantes permitidas para inicialización de variables "
 "estáticas"
 
-#: node.c:1465
+#: node.c:1477
 msgid "MEMVAR after executable statements"
 msgstr "MEMVAR luego de sentencias ejecutables"
 
-#: node.c:1492
+#: node.c:1504
 msgid "FIELD after executable statements"
 msgstr "FIELD luego de sentencias ejecutables"
 
-#: node.c:1882
+#: node.c:1894
 msgid "PARAMETERS and '(' <paramlist> ')' are incompatible"
 msgstr "PARAMETERS y '(' <listaparam> ')' son incompatibles"
 
-#: node.c:1899
+#: node.c:1911
 msgid "init expression not allowed here"
 msgstr "expresión de inicio no permitida aquí"
 
-#: node.c:1904
+#: node.c:1916
 msgid "array declaration not allowed here"
 msgstr "declaración de array no permitida aquí"
 
-#: node.c:2927 node.c:3097
+#: node.c:2939 node.c:3109
 msgid "reference to constant"
 msgstr "referencia a constante"
 
-#: node.c:2929
+#: node.c:2941
 msgid "reference to temporary object"
 msgstr "referencia a objeto temporal"
 
-#: node.c:2961
+#: node.c:2973
 #, c-format
 msgid "reference to undeclared function '%s' near line %d"
 msgstr "referencia a función no declarada '%s' cerca de la línea %d"
 
-#: node.c:3102
+#: node.c:3114
 msgid "reference to macro not allowed"
 msgstr "no se permiten referencias a macros"
 
-#: node.c:3109
+#: node.c:3121
 msgid "reference to non-lvalue object"
 msgstr "referencia a objeto no-lvalor"
 
-#: node.c:3118
+#: node.c:3130
 msgid "reference to function with args not allowed"
 msgstr "referencia a función con argumentos no permitido"
 
-#: node.c:3456
+#: node.c:3468
 msgid "cannot GET constant"
 msgstr "no se puede hacer GET de constantes"
 
-#: node.c:3975
+#: node.c:3987
 msgid "assign to non-lvalue"
 msgstr "asignación a no-lvalor"
 
-#: node.c:3978
+#: node.c:3990
 msgid "reference to macro assign not allowed"
 msgstr "asignación de referencia a macro no permitido"
 
-#: node.c:5057
+#: node.c:5069
 msgid "CTEXT in pcode module"
 msgstr "CTEXT en módulo pcodigo"
 
-#: node.c:5116
+#: node.c:5128
 msgid "assign to element of local array conflicts with macro"
 msgstr "conflicto de asignación a elemento de array local con macro"
 
-#: node.c:5766
+#: node.c:5778
 msgid "INCR with non-lvalue"
 msgstr "INCR con no-lvalor"
 
-#: node.c:6338 node.c:6437 node.c:6509 node.c:6649 node.c:6789
+#: node.c:6350 node.c:6449 node.c:6521 node.c:6661 node.c:6801
 #, c-format
 msgid "%s not allowed in CODESTR"
 msgstr "%s no permitido en CODESTR"
 
-#: node.c:7830
+#: node.c:7842
 #, c-format
 msgid "CASE label duplication: '%s' at line %d and '%s' at line %d"
 msgstr "etiqueta CASE duplicada: '%s' en línea %d y '%s' en línea %d"

@@ -26,7 +26,6 @@ function codb_depDbfNew(oDict,dep_id)
 	obj:addExtent	:= @_dep_addExtent()
 	obj:close	:= @_dep_close()
 	//obj:destroy	:= @_dep_close()
-	obj:runTrigger	:= @_dep_runTrigger()
 
 	obj:_getValue	:= @_dep__getValue()
 	obj:select	:= @_dep_select()
@@ -37,18 +36,6 @@ function codb_depDbfNew(oDict,dep_id)
 
 return obj
 
-************************************************************
-static function _dep_runTrigger(self,cId,cTrigger,newData,oldData)
-	local ret:=.t.,i,m, tret
-	if self:oDict==NIL
-		return .t.
-	endif
-	m := self:oDict:getTriggers(cId,cTrigger)
-	for i=1 to len(m)
-		tret := eval(m[i],self,newData,oldData)
-		ret := ret .and. ( valtype(tret)=="L" .and. tret)
-	next
-return ret
 ************************************************************
 static function _dep_delete(self,cId)
 	local oData,old,class_id,class_desc,oExt,extent_id,idxData
@@ -86,7 +73,11 @@ static function _dep_delete(self,cId)
 		taskStart()
 		return .f.
 	endif
-	rddRlock(self:hDbIdxTbl)
+	if !waitRddLock(self:hDbIdxTbl)
+		self:error := codb_error(1005)+":"+cId
+		taskStart()
+		return .f.
+	endif
 	idxData := rddRead(self:hDbIdxTbl)
 	if empty(class_desc:unique_key)
 		if ! oExt:delete(cId,idxData:version)
@@ -155,7 +146,11 @@ static function _dep_unDelete(self,cId)
 		taskStart()
 		return .f.
 	endif
-	rddRlock(self:hDbIdxTbl)
+	if !waitRddLock(self:hDbIdxTbl)
+		self:error := codb_error(1005)+":"+cId
+		taskStart()
+		return .f.
+	endif
 	idxData := rddRead(self:hDbIdxTbl)
 	old := idxData:version
 	if old < 0
@@ -252,18 +247,20 @@ static function _dep_append(self,oData,class_id)
 	taskStop()
 	/* DATAx !!!! */
 	for i:=1 to len(class_desc:idx_list)
-		sdata:="DATA"+alltrim(str(i),2,0)
+		sdata:="DATA"+alltrim(str(i,2,0))
 		tmp:=self:oDict:getValue(class_desc:idx_list[i])
 		if empty(tmp)
-			outlog(3,"Index #",alltrim(str(i)),"for class",class_desc:name,"don`t have description")
+			outlog(3,"Index #",alltrim(str(i,2,0)),"for class",class_desc:name,"don`t have description")
 			loop
 		endif
 		tmp:=alltrim(tmp:expr)
 		tmp := self:eval(tmp,oData)
-		if tmp!=NIL
+		//if tmp!=NIL
 			rec[sdata]:=tmp
-		endif
+		//endif
+
 	next
+	//outlog(__FILE__,__LINE__,rec)
 	rddAppend(self:hDbIdxTbl,rec)
 	rddSkip(self:hDbIdxTbl,0)
 	taskStart()
@@ -350,7 +347,11 @@ static function _dep_update(self,oData)
 		outlog(0,"new object",oData)
 	endif
 	/* update data to IDXTABLE */
-	rddRlock(self:hDbIdxTbl)
+	if !waitRddLock(self:hDbIdxTbl)
+		self:error := codb_error(1005)+":"+oData:id
+		taskStart()
+		return .f.
+	endif
 	idxData := rddRead(self:hDbIdxTbl)
 	idxData:object_id := oData:id
 	idxData:class_id  := oData:class_id
@@ -358,10 +359,10 @@ static function _dep_update(self,oData)
 	idxData:crc32     := self:objCRC(oData)
 	/* DATAx !!!! */
 	for i:=1 to len(class_desc:idx_list)
-		sdata:="DATA"+alltrim(str(i),2,0)
+		sdata:="DATA"+alltrim(str(i,2,0))
 		tmp:=self:oDict:getValue(class_desc:idx_list[i])
 		if empty(tmp)
-			outlog(3,"Index #",alltrim(str(i)),"for class",class_desc:name,"don`t have description")
+			outlog(3,"Index #",alltrim(str(i,2,0)),"for class",class_desc:name,"don`t have description")
 			loop
 		endif
 		tmp:expr:=alltrim(tmp:expr)
@@ -618,7 +619,7 @@ static function _dep_select(self,class_Id,nIndex,sName,sWhere,nCount,deleted)
 				if !empty(tmp)
 					aadd(aWrapNames,{tmp:expr,sIndex})
 				else
-					outlog(3,"Index #",alltrim(str(i)),"for class",class_desc:name,"don`t have description")
+					outlog(3,"Index #",alltrim(str(i,2,0)),"for class",class_desc:name,"don`t have description")
 				endif
 				if valtype(nIndex) == "C" .and. nIndex==tmp:name
 					nIndex := i
@@ -757,7 +758,7 @@ static function _dep_open(self)
 	self:hDbIdxTbl:=rddUseArea(CODB_DDRIVER_DEFAULT,dbfile,,.f.)
 	if self:hDbIdxTbl<=0
 		self:hDbIdxTbl:=NIL
-		self:error:=codb_error(1128)+":"+str(ferror())+":"+ferrorstr()
+		self:error:=codb_error(1128)+":"+str(ferror(),3,0)+":"+ferrorstr()
 		return .f.
 	endif
 	rddSetIndex(self:hDBIdxTbl,CODB_IDRIVER_DEFAULT,dbFile)
@@ -843,7 +844,9 @@ static function _dep_make_IdxTable(self)
 	stru := CODB_IDXTABLE_STRUCTURE
 	for i=1 to CODB_IDX_PER_CLASS
 		str:="DATA"+alltrim(str(i,2,0))
-		if i<=5
+		if i<=2
+			aadd(stru,{str,"X",CODB_IDX_DATALENGTH+12,0} )
+		elseif i<=5
 			aadd(stru,{str,"X",CODB_IDX_DATALENGTH+2,0} )
 		else
 			aadd(stru,{str,"X",CODB_ID_LEN+2,0} )
@@ -873,7 +876,7 @@ static function _dep_make_version(self)
 	endif
 	hf:=fcreate(dbfile)
 	if hf<0
-		self:error := codb_error(1102)+":"+dbfile+":"+str(ferror())+":"+ferrorstr()
+		self:error := codb_error(1102)+":"+dbfile+":"+str(ferror(),2,0)+":"+ferrorstr()
 		return .f.
 	endif
 	fwrite(hf,CODB_VERSION)

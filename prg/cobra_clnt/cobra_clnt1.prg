@@ -157,7 +157,7 @@ static function clnt_codbGetTView()
 		return
 	endif
 	oQuery:=oConnect:QueryNew()
-	? "Send query:", oConnect:querySend(oQuery:id,"CODBTVIEW",tViewList[n]:id,".t.",cDepId), oQuery
+	? "Send query:", oConnect:querySend(oQuery:id,"CODBTVIEW",tViewList[n]:id,'.t.',cDepId), oQuery
 	? oConnect:error
 	? "Wait answer",oConnect:answerWait(oQuery:id)//, len(oQuery:answer)
 	? "return is=",oQuery:answer

@@ -25,29 +25,30 @@ return __cname
 
 ****************************************************************
 function __dbCopyStruct(fname,rfields)
-   local i,ret,fields:={},stru,err
-   if empty(rfields)
-	outlog(3,"copystruct",fname,dbstruct())
-	dbcreate(fname,dbstruct())
+	local i,ret,fields:={},stru,err
+	if empty(rfields)
+		rfields := {}
+		outlog(3,"copystruct",fname,dbstruct())
+		dbcreate(fname,dbstruct())
 		return
-   endif
-   outlog(3,"copystruct",fname,rfields)
-   stru:=dbstruct()
-   for i=1 to len(rfields)
-	rfields[i]:=upper(alltrim(rfields[i]))
-	ret:=ascan(stru,{|x|x[1]==rfields[i]})
+	endif
+	outlog(3,"copystruct",fname,rfields)
+	stru:=dbstruct()
+	for i=1 to len(rfields)
+		rfields[i]:=upper(alltrim(rfields[i]))
+		ret:=ascan(stru,{|x|x[1]==rfields[i]})
 		if ret!=0
 			aadd(fields,stru[ret])
 		endif
-   next
-   if len(fields)==0
-		   err=errorNew()
-		   err:description:="invalid argument"
-		   err:genCode:=EG_ARG
-		   eval(errorblock(),err)
-   else
-	dbcreate(fname,fields)
-   endif
+	next
+	if len(fields)==0
+		err=errorNew()
+		err:description:="invalid argument"
+		err:genCode:=EG_ARG
+		eval(errorblock(),err)
+	else
+		dbcreate(fname,fields)
+	endif
 return
 
 ****************************************************************
@@ -267,6 +268,7 @@ function __dbApp(file,rfields, ufor, uwhile, unext, rec, rest, rdd)
 
 		rstruct=dbstruct()
 		if empty(rfields)
+			rfields := {}
 			for i=1 to len(rstruct)
 				aadd(rfields, rstruct[i][1])
 			next
@@ -345,6 +347,7 @@ function __dbCopy(file,rfields, ufor, uwhile, unext, rec, rest,rdd)
 		rawFlag:=empty(rfields) .and. empty(rdd) .and. !clip_ismemo()
 		rstruct=dbstruct()
 		if empty(rfields)
+			rfields := {}
 			allFlag:=.t.
 			for i=1 to len(rstruct)
 				aadd(rfields, rstruct[i][1])
@@ -523,6 +526,7 @@ function __dbCopyDelim(file,fdelim,rfields, ufor, uwhile, unext, rec, rest)
 
 		rstruct=dbstruct()
 		if empty(rfields)
+			rfields := {}
 			for i=1 to len(rstruct)
 				aadd(rfields, rstruct[i][1])
 			next
@@ -694,6 +698,7 @@ function __dbAppDelim(file,fdelim,rfields, ufor, uwhile, unext, rec, rest, rdd)
 		endif
 
 		if empty(rfields)
+			rfields := {}
 			for i=1 to len(wstruct)
 				aadd(rfields,wstruct[i][1])
 			next
@@ -858,6 +863,7 @@ function __dbCopySDF(file,rfields, ufor, uwhile, unext, rec, rest)
 
 		rstruct=dbstruct()
 		if empty(rfields)
+			rfields := {}
 			for i=1 to len(rstruct)
 					aadd(rfields, rstruct[i][1])
 			next
@@ -1022,6 +1028,7 @@ function __dbAppSDF(file,rfields, ufor, uwhile, unext, rec, rest, rdd)
 		endif
 
 		if empty(rfields)
+			rfields := {}
 			for i=1 to len(wstruct)
 				aadd(rfields,wstruct[i][1])
 			next
@@ -1885,5 +1892,64 @@ function m6_Search(cfor,bfor,var)
 		m6_SetAreaFilter(o)
 	endif
 return NIL
+****************************************************************
+function __DBUPDATE( cAlias, bKey, lRandom, bWith )
+	local nSel, xKey, oErr, lErr := .F.
 
+	iif(lRandom==NIL, lRandom:= .F.,)
+	goto top
+	nSel := Select()
+	begin sequence
+		select (cAlias)
+		goto top
+		do while ( !EOF() )
+			xKey := eval(bKey)
+			select (nSel)
+			if ( lRandom )
+				dbSeek(xKey, iif( .F., .T., Nil ))
+				if ( Found() )
+					eval(bWith)
+				endif
+			else
+				do while ( eval(bKey) == xKey .AND. ! EOF() )
+					skip
+				enddo
+				if ( eval(bKey) == xKey .AND. ! EOF() )
+					eval(bWith)
+				endif
+			endif
+			select (cAlias)
+			skip
+		enddo
+	recover using oErr
+		lErr := .T.
+	end sequence
+	select (nSel)
+	if ( lErr )
+		break( oErr )
+	endif
+return .T.
+
+****************************************************************
+function waitRddLock(hRdd,nSeconds,lType)
+	local stop_time,locker
+
+	if valtype(nSeconds) != "N"
+		nSeconds := 10
+	endif
+	if valtype(lType) != "L"
+		lType := .f.
+	endif
+
+	locker=iif(lType,rddFlock(hRdd),rddRlock(hRdd))
+	if locker
+		return .t.
+	endif
+
+	stop_time := seconds()+nSeconds
+	do while seconds() < stop_time .and. !locker
+		locker=iif(lType,rddFlock(hRdd),rddRlock(hRdd))
+		sleep(0.1)
+	enddo
+return  locker
 

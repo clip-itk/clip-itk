@@ -290,6 +290,7 @@ clip_GTK_BUTTONMODIFYFONT(ClipMachine * cm)
 	CHECKARG(2,CHARACTER_t);
 
 	wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	//wid = GTK_WIDGET(cbtn->widget);
 	gtk_widget_modify_font (wid, pango_font_description_from_string(font));
 	return 0;
 err:
@@ -329,10 +330,11 @@ clip_GTK_BUTTONMODIFYFG (ClipMachine *cm)
          fgcolor.blue  = colors[2];
          fgcolor.pixel = colors[3];
 
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
         	state = GTK_STATE_NORMAL;
 
 	wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	//wid = GTK_WIDGET(cbtn->widget);
         gtk_widget_modify_fg(wid, state, &fgcolor);
 	return 0;
 err:
@@ -360,10 +362,11 @@ clip_GTK_BUTTONMODIFYBG (ClipMachine *cm)
          bgcolor.blue  = colors[2];
          bgcolor.pixel = colors[3];
 
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
         	state = GTK_STATE_NORMAL;
 
-	wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	//wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	wid = GTK_WIDGET(cbtn->widget);
         gtk_widget_modify_bg(wid, state, &bgcolor);
 	return 0;
 err:
@@ -390,10 +393,11 @@ clip_GTK_BUTTONMODIFYBASE(ClipMachine *cm)
          basecolor.blue  = colors[2];
          basecolor.pixel = colors[3];
 
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
         	state = GTK_STATE_NORMAL;
 
-	wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	//wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	wid = GTK_WIDGET(cbtn->widget);
         gtk_widget_modify_base(wid, state, &basecolor);
 	return 0;
 err:
@@ -419,10 +423,11 @@ clip_GTK_BUTTONMODIFYTEXT(ClipMachine *cm)
          textcolor.green = colors[1];
          textcolor.blue  = colors[2];
          textcolor.pixel = colors[3];
-	if (_clip_parinfo(cm, 3) == NUMERIC_t)
+	if (_clip_parinfo(cm, 3) != NUMERIC_t)
         	state = GTK_STATE_NORMAL;
 
-	wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	//wid = GTK_BIN(&(GTK_BUTTON(cbtn->widget)->bin))->child;
+	wid = GTK_WIDGET(cbtn->widget);
         gtk_widget_modify_text(wid, state, &textcolor);
 	return 0;
 err:

@@ -26,8 +26,8 @@ init procedure sys_init
   // for english - chr(1), for russin - chr(0)
   set("FIRST_DAY_WEEK",chr(1))
 
-  set century off
   set date format to _DDATEFMT()
+  set century off
   set(_SET_EVENTMASK, INKEY_ALL)
   set("PRINTER_EOL",chr(13)+chr(10))
   SET KEY K_F1 TO Help
@@ -59,10 +59,10 @@ init procedure sys_init
   if !drives_init(cliproot)
 	outlog(2,"add drive C: as /")
 	set("C:","/")
-	outlog(2,"add drive D: as /usr")
-	set("D:","/usr")
-	outlog(2,"add drive E: as /home")
-	set("E:","/home")
+	//outlog(2,"add drive D: as /usr")
+	//set("D:","/usr")
+	//outlog(2,"add drive E: as /home")
+	//set("E:","/home")
   endif
 #endif
 

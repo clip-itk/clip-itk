@@ -2,9 +2,9 @@
 #define _COMMON_DEFINED
 
 #ifdef __CLIP__
-#define MAX_STR 0xFFEF
+	#define MAX_STR 0xFFEF
 #else
-#define MAX_STR 0x7FFFFFFF
+	#define MAX_STR 0x7FFFFFFF
 #endif
 
 #define MAX_RECORDS 0x7FFFFFFF
@@ -35,3 +35,4 @@
 */
 
 #endif
+

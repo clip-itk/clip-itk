@@ -50,9 +50,3 @@
 		col_list="&({'code','unit','name','smallname'})"
 	>
 
-<dataloader_module
-	classname="currency"	todepository="MY00101" primary_key="code"
-	script="okv_b"  	type="clip_script"
-	datatype="sdf"		datafile="data/ru/okv_b.txt"
-	>
-

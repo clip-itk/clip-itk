@@ -26,9 +26,9 @@ long _clip_type_box() { return GTK_WIDGET_BOX; }
 long _clip_type_hbox() { return GTK_WIDGET_HBOX; }
 long _clip_type_vbox() { return GTK_WIDGET_VBOX; }
 
-const char * _clip_type_name_box()  { return "GTK_OBJECT_BOX"; }
-const char * _clip_type_name_hbox() { return "GTK_OBJECT_HBOX"; }
-const char * _clip_type_name_vbox() { return "GTK_OBJECT_VBOX"; }
+const char * _clip_type_name_box()  { return "GTK_WIDGET_BOX"; }
+const char * _clip_type_name_hbox() { return "GTK_WIDGET_HBOX"; }
+const char * _clip_type_name_vbox() { return "GTK_WIDGET_VBOX"; }
 
 /* Register boxes in global table */
 int

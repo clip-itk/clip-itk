@@ -213,7 +213,7 @@ __func(void* data)
 	_clip_destroy(c->cm, &res);
 	return ret;
 }
-
+/*
 static gint
 __timeout__func(void* data)
 {
@@ -227,6 +227,25 @@ __timeout__func(void* data)
 	_clip_destroy(c->cm, &res);
 	if (!ret)
 		_destroy__func(c);
+	return ret;
+}
+*/
+static gint
+__timeout__func(void* data)
+{
+	ClipVar res;
+	C_var *c = (C_var*)data;
+	ClipVar stack[1];
+	int ret = TRUE;
+	memset( &stack, 0, sizeof(stack) );memset( &res, 0, sizeof(ClipVar) );
+	_clip_mclone(c->cm, &stack[0], c->cv);
+	_clip_eval( c->cm, &c->cfunc, 1, stack, &res );
+	if (res.t.type == LOGICAL_t)
+		ret = res.l.val;
+	_clip_destroy(c->cm, &res);
+	_clip_destroy(c->cm, &stack[0]);
+//	if (!ret)
+  //		_destroy__func(c);
 	return ret;
 }
 
@@ -306,11 +325,61 @@ err:
 	return 1;
 }
 
+void
+_list_put_data(ClipMachine * cm, gint id, ClipVar * cdata)
+{
+	if (data_list->t.type != MAP_t)
+		_clip_map(cm, data_list);
+	if (id)
+		_clip_mputn(cm, data_list, (long) id, (long) cdata);
+}
+
+ClipVar *
+_list_get_data(ClipMachine * cm, gint id)
+{
+	double d;
+	if (id && data_list->t.type == MAP_t)
+		if (_clip_mgetn(cm, data_list, (long) id, &d) == 0)
+			return (ClipVar *) ((long) d);
+	return NULL;
+}
+void
+_list_remove_data(ClipMachine * cm, gint id)
+{
+	if (id && data_list->t.type == MAP_t)
+		_clip_mdel(cm, data_list, (long) id);
+}
+void
+_list_put_func(ClipMachine * cm, gint id, ClipVar * cfunc)
+{
+	if (func_list->t.type != MAP_t)
+		_clip_map(cm, func_list);
+	if (id)
+		_clip_mputn(cm, func_list, (long) id, (long) cfunc);
+}
+
+ClipVar *
+_list_get_func(ClipMachine * cm, gint id)
+{
+	double d;
+	if (id && func_list->t.type == MAP_t)
+		if (_clip_mgetn(cm, func_list, (long) id, &d) == 0)
+			return (ClipVar *) ((long) d);
+	return NULL;
+}
+void
+_list_remove_func(ClipMachine * cm, gint id)
+{
+	if (id && func_list->t.type == MAP_t)
+		_clip_mdel(cm, func_list, (long) id);
+}
+
 
 /* Registers a function to be called periodically.
  * The function will be called repeatedly after interval milliseconds
  * until it returns FALSE at which point the timeout is destroyed and
  * will not be called again. */
+/* gtkTimeoutAdd(interval, @func()[, userData]) */
 int
 clip_GTK_TIMEOUTADD(ClipMachine * cm)
 {
@@ -320,7 +389,56 @@ clip_GTK_TIMEOUTADD(ClipMachine * cm)
 	CHECKARG(1,NUMERIC_t); CHECKARG2(2,PCODE_t,CCODE_t);
 
 	c = NEW(C_var);
-	c->cm = cm; //c->cfunc = NEW(ClipVar);
+	c->cm = cm;
+	c->cv = NEW(ClipVar);
+	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
+	if (_clip_parinfo(cm, 0)>2)
+		_clip_mclone(cm, c->cv, _clip_spar(cm,3));
+	c->id = gtk_timeout_add(interval,(GtkFunction)__timeout__func,c);
+	_list_put_data(cm, c->id, c->cv);
+	_list_put_func(cm, c->id, &c->cfunc);
+	_clip_retni(cm,c->id);
+	return 0;
+err:
+	return 1;
+}
+
+/* Removes the given timeout destroying all information about it. */
+int
+clip_GTK_TIMEOUTREMOVE(ClipMachine * cm)
+{
+	guint timeout_handler_id = _clip_parni(cm,1);
+
+	CHECKARG(1,NUMERIC_t);
+
+	gtk_timeout_remove(timeout_handler_id);
+
+	_clip_destroy(cm, _list_get_data(cm, timeout_handler_id));
+	_clip_destroy(cm, _list_get_func(cm, timeout_handler_id));
+
+	_list_remove_data(cm, timeout_handler_id);
+	_list_remove_func(cm, timeout_handler_id);
+
+	return 0;
+err:
+	return 1;
+}
+
+/* Registers a function to be called periodically.
+ * The function will be called repeatedly after interval milliseconds
+ * until it returns FALSE at which point the timeout is destroyed and
+ * will not be called again. */
+/*
+int
+clip_GTK_TIMEOUTADD(ClipMachine * cm)
+{
+	guint32 interval = _clip_parnl(cm,1);
+	C_var *c;
+
+	CHECKARG(1,NUMERIC_t); CHECKARG2(2,PCODE_t,CCODE_t);
+
+	c = NEW(C_var);
+	c->cm = cm;
 	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
 	c->id = gtk_timeout_add(interval,(GtkFunction)__timeout__func,c);
 	_clip_retni(cm,_clip_store_c_item(cm, c, _C_ITEM_TYPE_GTK_TIMEOUT, NULL));
@@ -329,8 +447,9 @@ clip_GTK_TIMEOUTADD(ClipMachine * cm)
 err:
 	return 1;
 }
-
+*/
 /* Removes the given timeout destroying all information about it. */
+/*
 int
 clip_GTK_TIMEOUTREMOVE(ClipMachine * cm)
 {
@@ -351,6 +470,7 @@ err:
 	return 1;
 }
 
+*/
 /* Causes the mainloop to call the given function whenever no events
  * with higher priority are to be processed. The default priority is
  * GTK_PRIORITY_DEFAULT, which is rather low. */

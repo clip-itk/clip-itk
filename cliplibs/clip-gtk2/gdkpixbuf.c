@@ -5,6 +5,7 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
@@ -12,7 +13,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"

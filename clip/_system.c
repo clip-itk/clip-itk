@@ -6,6 +6,21 @@
 
 /*
    $Log: _system.c,v $
+   Revision 1.20  2004/11/30 13:45:48  clip
+   uri: added UNAME()
+
+   Revision 1.19  2004/10/09 12:38:53  clip
+   rust: minor fix for configure -m=...
+
+   Revision 1.18  2004/08/13 14:04:22  clip
+   uri: add command winexec
+
+   Revision 1.17  2004/08/13 13:54:37  clip
+   uri: wimexec(cCommand) added
+
+   Revision 1.16  2004/08/13 13:44:01  clip
+   *** empty log message ***
+
    Revision 1.15  2004/07/21 14:24:28  clip
    rust: minor fix
 
@@ -62,13 +77,13 @@
 
  */
 
+#include <string.h>
 #include "clip.h"
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <limits.h>
-#include <string.h>
 #ifndef OS_MINGW
 	#include <sys/wait.h>
 #endif
@@ -77,9 +92,6 @@
 
 #undef SYSTEM
 
-/*
- *    exitcode := system(command_str, stdin_str, @stdout_str[, @stderr_str])
- */
 int
 clip_SYSCMD(ClipMachine * mp)
 {
@@ -149,7 +161,6 @@ clip_SYSCMD(ClipMachine * mp)
 			_clip_destroy(mp, &r);
 		}
 	}
-/* FIXME!! figure how to run a command in mingw */
 #ifdef OS_MINGW
 	execlp("command.com", "/c", cmd, 0);
 #else
@@ -183,7 +194,6 @@ clip_SYSCMD(ClipMachine * mp)
 		for (i = 3; i < 256; i++)
 			close(i);
 
-		/*setsid(); */
 		setgid(getgid());
 		setuid(getuid());
 		if(pwd)
@@ -332,7 +342,6 @@ clip_SYSCMD(ClipMachine * mp)
 	putByte_Buf(&obuf, 0);
 	out->s.str.buf = obuf.buf;
 	out->s.str.len = obuf.ptr - obuf.buf - 1;
-	/*destroy_Buf(&obuf); */
 
 	if (have_err)
 	{
@@ -340,7 +349,6 @@ clip_SYSCMD(ClipMachine * mp)
 		putByte_Buf(&ebuf, 0);
 		err->s.str.buf = ebuf.buf;
 		err->s.str.len = ebuf.ptr - ebuf.buf - 1;
-		/*destroy_Buf(&ebuf); */
 	}
 #endif
 	return 0;
@@ -353,3 +361,62 @@ clip_PID(ClipMachine * mp)
 		return 0;
 }
 
+#ifdef OS_CYGWIN
+	#include <w32api/windows.h>
+	#include <w32api/winuser.h>
+
+int
+clip___WINEXEC(ClipMachine * mp)
+{
+	char *com = _clip_parc(mp, 1);
+
+	if (com == NULL)
+	{
+		_clip_trap_printf(mp, __FILE__, __LINE__, "invalid argument");
+		_clip_retni(mp, -1);
+		return 1;
+	}
+
+	_clip_retni(mp,WinExec(com,1));
+
+	return 0;
+}
+#endif
+
+#include <sys/utsname.h>
+
+int
+clip_UNAME(ClipMachine *mp) {
+	int val = _clip_parni(mp,1);
+	struct utsname namesys;
+
+	int ret=uname(&namesys);
+
+	_clip_retc(mp,"");
+	if ( ret < 0 )
+		return 0;
+	switch (val)
+	{
+		case 1:
+			_clip_retc(mp,namesys.sysname);
+			break;
+		case 2:
+			_clip_retc(mp,namesys.release);
+			break;
+		case 3:
+			_clip_retc(mp,namesys.version);
+			break;
+		case 4:
+			_clip_retc(mp,namesys.machine);
+			break;
+#ifdef _GNU_SOURCE
+		case 5:
+			_clip_retc(mp,namesys.domainname);
+			break;
+#endif
+		default:
+			_clip_retc(mp,namesys.nodename);
+			break;
+	}
+	return 0;
+}

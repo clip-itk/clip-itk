@@ -31,6 +31,8 @@ clean:
 install:
 	cp bdbf$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/bdbf$(EXESUFF)
 	cp *.hlp $(DESTDIR)$(CLIPROOT)/bin/
+	tar cf - locale.po | (cd $(DESTDIR)$(CLIPROOT) && tar xf -)
+	rm -rf `find $(DESTDIR)$(CLIPROOT)/locale.po -type d -name CVS -print`
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) $<

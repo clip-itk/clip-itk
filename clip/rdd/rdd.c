@@ -4,9 +4,18 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.314  2004/11/23 13:25:30  clip
+	rust: ORDLISTADD() compatiblity issue
+	
+	Revision 1.313  2004/10/08 10:07:48  clip
+	rust: minor fix in _rdd_parsepath() (no drive letter with non DOS-style paths)
+
+	Revision 1.312  2004/08/05 11:15:09  clip
+	rust: FOUND() with SET RELATION on recno
+
 	Revision 1.311  2004/05/28 13:47:20  clip
 	rust: minor fix in rdd_err() (showing OS error code)
-	
+
 	Revision 1.310  2004/05/26 09:52:24  clip
 	rust: some cleanings
 
@@ -1328,6 +1337,8 @@ int rdd_child_duty(ClipMachine* cm,RDD_DATA* child,const char* __PROC__){
 			goto err_unlock;
 		}
 		if((er = child->vtbl->go(cm,child,vp->n.d,__PROC__))) goto err_unlock;
+		if(child->area != -1)
+			((DBWorkArea*)(cm->areas->items[child->area]))->found = !child->eof;
 	}
 	if(!locked){
 		if((er = child->vtbl->_ulock(cm,child,__PROC__))) goto err;
@@ -1842,7 +1853,7 @@ int rdd_setindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX** rip,const char* driver
 			free(ri);
 			if(rip)
 				*rip = rd->indices[i];
-			return 0;
+			return rdd_setorder(cm,rd,rd->indices[i]->orders[0]->orderno+1,__PROC__);
 		}
 
 	ri->file.filehash = _clip_hashstr(ri->path);
@@ -4233,6 +4244,12 @@ int _rdd_parsepath(ClipMachine* cm,const char* toopen,const char* suff,char** pa
 	e = max(c,e);
 	if(!((c = strrchr(p,'.')) && (*(c+1) != '/') && (*(c+1) != '\\') && (c >= e))){
 		strncat(p,suff,sizeof(p)-strlen(p)-1);
+	}
+	strncpy(ret,p,PATH_MAX);
+	if((cm->flags & TRANSLATE_FLAG) && ((ret[0] == '\\')))
+	{
+		char *dname = _clip_fetch_item(cm, CLIP_CUR_DRIVE);
+		snprintf(p,PATH_MAX,"%c:%s",*dname,ret);
 	}
 	if(_clip_path(cm,p,ret,sizeof(ret),oper==EG_CREATE))
 		return rdd_err(cm,oper,errno,__FILE__,__LINE__,__PROC__,toopen);

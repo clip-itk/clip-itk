@@ -188,6 +188,8 @@ while nkey != 0
 					s := obj[focus]:varGet()
 				endif
 			endif
+			obj[focus]:setFocus()
+			obj[focus]:killFocus()
 			obj[focus]:varPut(s)
 			//obj[focus]:assign()
 			obj[focus]:setFocus()

@@ -393,7 +393,7 @@ inst_screen:
 
 inst_codb:
 	./clip_cp codb/libclip-codb $(DESTDIR)$(CLIPROOT)/lib
-	cd codb && tar cf - codb.ch codbcfg.ch | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
+	cd codb && tar cf - codb.ch codbcfg.ch codb_dbf.ch | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 
 inst_ch: $(INST_MEMDEBUG_H)
 	tar cf - clip.h _win32.h clipcfg.h hash.h Makefile.inc Makefile.tdoc clipcfg.sh \

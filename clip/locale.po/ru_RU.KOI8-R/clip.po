@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-11-21 10:28+0400\n"
+"POT-Creation-Date: 2004-11-17 18:06+0400\n"
 "PO-Revision-Date: 2002-11-29 11:53+0400\n"
 "Last-Translator: Paul Lasarev <paul@itk.ru>\n"
 "Language-Team: Russian <clip-devel@itk.ru>\n"
@@ -15,8 +15,8 @@ msgstr ""
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: KBabel 0.9.6\n"
 
-#: clicgt.c:257 clicgt.c:262 clic.lex:7059 clic.lex:7066 clic.lex:7128
-#: clic.lex:7135
+#: clicgt.c:257 clicgt.c:262 clic.lex:7089 clic.lex:7096 clic.lex:7158
+#: clic.lex:7165
 #, c-format
 msgid "cannot load charset '%s': %s"
 msgstr "невозможно загрузить кодировку '%s': %s"
@@ -75,37 +75,37 @@ msgstr "неизвестная версия файла локализации '%s': %d\n"
 msgid "syntax error: cannot back up"
 msgstr "синтаксическая ошибка: возврат невозможен"
 
-#: clic.y:619
+#: clic.y:625
 msgid "EXTERN after executable statements"
 msgstr "EXTERN после выполнимого оператора"
 
-#: clic.y:784
+#: clic.y:790
 msgid "EXIT statement out of loop"
 msgstr "оператор EXIT вне цикла"
 
-#: clic.y:791
+#: clic.y:797
 msgid "LOOP statement out of loop"
 msgstr "оператор LOOP вне цикла"
 
-#: clic.y:847
+#: clic.y:853
 msgid "please, use IIF function (not IF) on operator level to avoid conflicts"
 msgstr ""
 "пожалуйста, используйте функцию IIF (вместо IF) на уровне операторов, для "
 "избежания  конфликтов"
 
-#: clic.y:943
+#: clic.y:949
 msgid "unclosed BEGIN SEQUENCE"
 msgstr "незавершенный BEGIN SEQUENCE"
 
-#: clic.y:1117
+#: clic.y:1123
 msgid "invalid array call"
 msgstr "неверный вызов массива"
 
-#: clic.y:1370 clic.y:1375
+#: clic.y:1376 clic.y:1381
 msgid "only inline assign := allowed in initialisation"
 msgstr "только inline-присваивание ( :=) разрешено при инициализации"
 
-#: clic.y:1413
+#: clic.y:1419
 #, c-format
 msgid "name '%s' duplication"
 msgstr "повторное использование '%s'"
@@ -122,16 +122,16 @@ msgstr "ошибка разбора"
 msgid "parser stack overflow"
 msgstr "переполнение стека парсера"
 
-#: clic.y:1602
+#: clic.y:1659
 #, c-format
 msgid "cannot open file '%s'"
 msgstr "невозможно открыть файл '%s'"
 
-#: clic.y:1619
+#: clic.y:1676
 msgid "executable operator outside of function (-n flag is active)"
 msgstr "выполнимый оператор вне функции (включен флаг -n)"
 
-#: clic.y:1630
+#: clic.y:1687
 #, c-format
 msgid ""
 "in file '%s',\n"
@@ -140,17 +140,17 @@ msgstr ""
 "в файле '%s',\n"
 "\tвключенном на строке %d "
 
-#: clic.y:1632
+#: clic.y:1689
 #, c-format
 msgid "in file '%s'\n"
 msgstr "в файле '%s'\n"
 
-#: clic.y:1646
+#: clic.y:1703
 #, c-format
 msgid "error %d: "
 msgstr "ошибка %d: "
 
-#: clic.y:1650
+#: clic.y:1707
 #, c-format
 msgid ""
 "\n"
@@ -159,17 +159,17 @@ msgstr ""
 "\n"
 "\tстрока %ld позиция %ld (yychar=%d, '%c') "
 
-#: clic.y:1654
+#: clic.y:1711
 #, c-format
 msgid "error %d, (yychar=%d) "
 msgstr "ошибка %d, (yychar=%d) "
 
-#: clic.y:1671
+#: clic.y:1728
 #, c-format
 msgid "warning %d: "
 msgstr "предупреждение %d: "
 
-#: clic.y:1675
+#: clic.y:1732
 #, c-format
 msgid ""
 "\n"
@@ -178,28 +178,28 @@ msgstr ""
 "\n"
 "\tстрока %ld, позиция %ld, "
 
-#: clic.y:1678
+#: clic.y:1735
 #, c-format
 msgid "warning %d, "
 msgstr "предупреждение %d, "
 
-#: clic.y:1689
+#: clic.y:1746
 #, c-format
 msgid "unclosed loop statement (level %d, begin at line %d file %s)"
 msgstr "незавершенный оператор цикла (уровень %d, начало на строке %d file %s)"
 
-#: clic.y:1695
+#: clic.y:1752
 #, c-format
 msgid "unclosed IF statement (level %d, begin at line %d file %s)"
 msgstr "незавершенный оператор IF (уровень %d, начало на строке %d файл %s)"
 
-#: clic.y:1701
+#: clic.y:1758
 #, c-format
 msgid "unclosed SEQUENCE statement (level %d, begin at line %d file %s)"
 msgstr ""
 "незавершенный оператор SEQUENCE (уровень %d, начало на строке %d файл %s)"
 
-#: clicutil.c:529
+#: clicutil.c:532
 #, c-format
 msgid ""
 "duplicate name '%s', previous name defined near line %d pos %d in file '%s'"
@@ -207,37 +207,37 @@ msgstr ""
 "повторное определение имени '%s', предыдущее определение около строки %d "
 "позиция %d файл '%s'"
 
-#: clicutil.c:664
+#: clicutil.c:667
 #, c-format
 msgid "declaration function with module name '%s'; force -n flag"
 msgstr "объявление функции с именем модуля '%s';  установлен флаг -n "
 
-#: clicutil.c:677
+#: clicutil.c:680
 #, c-format
 msgid "function '%s' already defined near line %d file %s"
 msgstr "функция '%s' уже определена около строки %d файла %s"
 
-#: clicutil.c:682
+#: clicutil.c:685
 #, c-format
 msgid "static function '%s' already declared as external"
 msgstr "статическая функция '%s' уже определена как внешняя"
 
-#: clicutil.c:775 node.c:1371 node.c:1429 node.c:1472 node.c:1499 node.c:1894
+#: clicutil.c:778 node.c:1383 node.c:1441 node.c:1484 node.c:1511 node.c:1906
 msgid "macro variable name not allowed here"
 msgstr "имя макро-переменной здесь не разрешено"
 
-#: clicutil.c:961
+#: clicutil.c:964
 #, c-format
 msgid "name '%s' already declared as LOCAL near line %d pos %d file '%s'"
 msgstr "имя '%s' уже определено как LOCAL около строки %d позиция %d файл '%s'"
 
-#: clicutil.c:967
+#: clicutil.c:970
 #, c-format
 msgid "name '%s' already declared as PARAMETER near line %d pos %d file '%s'"
 msgstr ""
 "имя '%s' уже определено как PARAMETER около строки %d позиция %d файл '%s'"
 
-#: clicutil.c:973
+#: clicutil.c:976
 #, c-format
 msgid ""
 "name '%s' already declared as MEMVAR near line %d pos %d file '%s' (previous "
@@ -246,18 +246,18 @@ msgstr ""
 "имя '%s' уже определено как MEMVAR около строки %d позиция %d файл '%"
 "s' (предыдущее имя будет скрыто)"
 
-#: clicutil.c:979
+#: clicutil.c:982
 #, c-format
 msgid "name '%s' already declared as FIELD near line %d pos %d file '%s'"
 msgstr "имя '%s' уже определено как FIELD около строки %d позиция %d файл '%s'"
 
-#: clicutil.c:985
+#: clicutil.c:988
 #, c-format
 msgid "name '%s' already declared as STATIC near line %d pos %d file '%s'"
 msgstr ""
 "имя '%s' уже определено как STATIC около строки %d позиция %d файл '%s'"
 
-#: clicutil.c:1133
+#: clicutil.c:1136
 #, c-format
 msgid "namespace of name '%s' undeclared, assumed as FIELD-MEMVAR"
 msgstr "пространство имен для '%s' неопределено, установлено в FIELD-MEMVAR"
@@ -452,6 +452,10 @@ msgstr ""
 "\tсоздать разделяемый объект\n"
 " -r, --shared-exec\n"
 "\tвсегда когда возможно линковать с разделяемыми библиотеками\n"
+" --static\n"
+"\tstatic link CLIP libraries to executable\n"
+" --full-static\n"
+"\tstatic link all libraries to executable\n"
 " -I<path>, --include-path=<path>\n"
 "\tдобавить каталог для поиска включаемых файлов\n"
 " -L<path>, --library-path=<path>\n"
@@ -734,12 +738,12 @@ msgstr "генерируется файл ссылок '%s' .."
 msgid "make file '%s' .."
 msgstr "делаем файл '%s' .."
 
-#: clip.c:1902 file.c:1441 file.c:1473 file.c:1512 file.c:2500
+#: clip.c:1902 file.c:1454 file.c:1486 file.c:1525 file.c:2518
 #, c-format
 msgid "%s\n"
 msgstr "%s\n"
 
-#: clip.c:1904 file.c:1443 file.c:1475 file.c:1514
+#: clip.c:1904 file.c:1456 file.c:1488 file.c:1527
 #, c-format
 msgid "C level error in command: %s"
 msgstr "ошибки уровня C в команде.: %s"
@@ -756,120 +760,120 @@ msgstr[0] "файл"
 msgstr[1] "файла"
 msgstr[2] "файлов"
 
-#: file.c:1158 file.c:1761 file.c:2522
+#: file.c:1166 file.c:1774 file.c:2540
 #, c-format
 msgid "cannot open output file '%s'"
 msgstr "невозможно открыть выходной файл. '%s'"
 
-#: file.c:1754
+#: file.c:1767
 msgid "cannot write PCODE module with c-texts"
 msgstr "невозможно записать PCODE модуль с встроенным c-текстом"
 
-#: file.c:2118
+#: file.c:2136
 #, c-format
 msgid "error writing file '%s', %s"
 msgstr "ошибка записи файла '%s', %s"
 
-#: file.c:2506
+#: file.c:2524
 #, c-format
 msgid "cannot open pipe '%s'"
 msgstr "невозможно открыть канал '%s'"
 
-#: clic_c.lex:146 clic_c.lex:154
+#: clic_c.lex:146 clic_c.lex:154 clic_c.lex:150 clic_c.lex:158
 #, c-format
 msgid "cannot open file '%s': %s"
 msgstr "невозможно открыть файл '%s': %s"
 
-#: clic.lex:1586
+#: clic.lex:1613
 msgid "invalid chars in number"
 msgstr "неправильные символы в числе"
 
-#: clic.lex:1745
+#: clic.lex:1772
 msgid "newline in string"
 msgstr "символ новой строки внутри строки"
 
-#: clic.lex:1792
+#: clic.lex:1819
 msgid "end-of-comment without begin"
 msgstr "конец комментария без начала"
 
-#: clic.lex:1903
+#: clic.lex:1930
 msgid "'@}' without '@{'"
 msgstr "'@}' без '@{'"
 
-#: clic.lex:2090
+#: clic.lex:2120
 #, c-format
 msgid "id: non-matched command '%s'"
 msgstr "id: нераспознанная команда '%s'"
 
-#: clic.lex:2110
+#: clic.lex:2140
 #, c-format
 msgid "non-matched command '%s'"
 msgstr "нераспознанная команда '%s'"
 
-#: clic.lex:2192 clic.lex:2261
+#: clic.lex:2222 clic.lex:2291
 #, c-format
 msgid "%s"
 msgstr "%s"
 
-#: clic.lex:2376
+#: clic.lex:2406
 msgid "#else without #ifdef or #ifndef"
 msgstr "#else без #ifdef или #ifndef"
 
-#: clic.lex:2391
+#: clic.lex:2421
 msgid "#endif without #ifdef or #ifndef"
 msgstr "#endif без #ifdef или #ifndef"
 
-#: clic.lex:2445 clic.lex:2451 clic.lex:2554 clic.lex:2560
+#: clic.lex:2475 clic.lex:2481 clic.lex:2584 clic.lex:2590
 msgid "invalid #define directive"
 msgstr "неправильная директива #define"
 
-#: clic.lex:2466 clic.lex:2495 clic.lex:2525
+#: clic.lex:2496 clic.lex:2525 clic.lex:2555
 msgid "macro function redefined"
 msgstr "переопределение макро функции"
 
-#: clic.lex:2472 clic.lex:2489 clic.lex:2519
+#: clic.lex:2502 clic.lex:2519 clic.lex:2549
 msgid "macro redefined"
 msgstr "переопределение макро"
 
-#: clic.lex:2721
+#: clic.lex:2751
 msgid "invalid macro call"
 msgstr "неправильный вызов макро"
 
-#: clic.lex:2769
+#: clic.lex:2799
 #, c-format
 msgid "invalid number of macro arguments (%d instead %d)"
 msgstr "неправильное число аргументов макро-функции (%d вместо %d)"
 
-#: clic.lex:2919
+#: clic.lex:2949
 msgid "unexpected EOL in SM_ENUM"
 msgstr "неожиданный EOL в SM_ENUM"
 
-#: clic.lex:2936
+#: clic.lex:2966
 #, c-format
 msgid "bad symbol in SM_ENUM: '%s'"
 msgstr "неразрешенный символ в SM_ENUM: '%s'"
 
-#: clic.lex:2954 clic.lex:3150 clic.lex:3164
+#: clic.lex:2984 clic.lex:3180 clic.lex:3194
 msgid "non-balanced '[' in #command"
 msgstr "несбалансированная скобка '[' в #command"
 
-#: clic.lex:3016
+#: clic.lex:3046
 msgid "unexpected end of #command directive"
 msgstr "неожиданный конец директивы #command"
 
-#: clic.lex:3392
+#: clic.lex:3422
 msgid "cmdstr: newline in string"
 msgstr "cmdstr: символ новой строки в строке."
 
-#: clic.lex:3863
+#: clic.lex:3893
 msgid "too much errors"
 msgstr "слишком много ошибок"
 
-#: clic.lex:3880
+#: clic.lex:3910
 msgid "#ifdef or #ifndef without #endif"
 msgstr "#ifdef или #ifndef без #endif"
 
-#: clic.lex:3886
+#: clic.lex:3916
 #, c-format
 msgid ""
 "unterminated string constant (possible begin at line %d pos %d file '%s')"
@@ -877,93 +881,93 @@ msgstr ""
 "незаконченная строчная константа (возможное начало на строке %d позиция %d "
 "файл '%s')"
 
-#: clic.lex:3890
+#: clic.lex:3920
 #, c-format
 msgid "unmatched bracket '%c' (possible begin at line %d pos %d file '%s')"
 msgstr ""
 "непарная скобка '%c' (возможное начало на строке %d позиция %d файл '%s')"
 
-#: clic.lex:3893
+#: clic.lex:3923
 #, c-format
 msgid "unclosed comment (possible begin at line %d pos %d file '%s')"
 msgstr ""
 "незакрытый комментарий (возможное начало на строке %d позиция %d файл '%s')"
 
-#: clic.lex:3896
+#: clic.lex:3926
 msgid "no ENDTEXT"
 msgstr "нет ENDTEXT"
 
-#: clic.lex:4251
+#: clic.lex:4281
 msgid "macro function with 0 count of arguments"
 msgstr "макро-функция с нулевым числом аргументов"
 
-#: clic.lex:5136
+#: clic.lex:5166
 #, c-format
 msgid "no subst marker '%s' in pattern part of command"
 msgstr "нет маркера подстановки '%s' в части шаблона команды"
 
-#: clic.lex:5229
+#: clic.lex:5259
 #, c-format
 msgid "unmatched bracket '%c' "
 msgstr "непарная скобка '%c' "
 
-#: clic.lex:5487
+#: clic.lex:5517
 #, c-format
 msgid "skip_norm: match delim '%s', return at '%s'\n"
 msgstr "skip_norm: match delim '%s', return at '%s'\n"
 
-#: clic.lex:6298
+#: clic.lex:6328
 msgid "bad command definition: OPTION have only literals"
 msgstr "неправильное определение команды: OPTION состоит только из литералов"
 
-#: clic.lex:6803
+#: clic.lex:6833
 msgid "endless subst loop detected"
 msgstr "найден бесконечный цикл подстановки"
 
-#: clic.lex:6810
+#: clic.lex:6840
 #, c-format
 msgid "too many entries in OPTIONAL list: > %d\n"
 msgstr "слишком много вхождений в спискеOPTIONAL: > %d\n"
 
-#: clic.lex:6893
+#: clic.lex:6923
 msgid "bad #include directive"
 msgstr "неправильная директива #include"
 
-#: clic.lex:6929
+#: clic.lex:6959
 #, c-format
 msgid "cannot open include file '%s': %s"
 msgstr "невозможно открыть включаемый файл '%s': %s"
 
-#: clic.lex:7038
+#: clic.lex:7068
 #, c-format
 msgid "recodeString: subst %d: '%s'->'%s': '%s'\n"
 msgstr "recodeString: subst %d: '%s'->'%s': '%s'\n"
 
-#: clic.lex:7105
+#: clic.lex:7135
 #, c-format
 msgid "recode_string: subst %d: '%s'->'%s': '%s'\n"
 msgstr "recode_string: subst %d: '%s'->'%s': '%s'\n"
 
-#: clic.lex:7210
+#: clic.lex:7240
 msgid "circular loop in macro/command substitution detected"
 msgstr "найден бесконечный цикл  макро/командных подстановок"
 
-#: clic.lex:7314
+#: clic.lex:7344
 #, c-format
 msgid "set file '%s' charset to '%s'\n"
 msgstr "кодировка файла '%s' установлена в '%s'\n"
 
-#: clic.lex:7323
+#: clic.lex:7353
 #, c-format
 msgid "push charset '%s' %d\n"
 msgstr "push charset '%s' %d\n"
 
-#: clic.lex:7332
+#: clic.lex:7362
 #, c-format
 msgid "pop charset '%s' %d\n"
 msgstr "pop charset '%s' %d\n"
 
-#: clic.lex:8062 clic.lex:8075
+#: clic.lex:8092 clic.lex:8105
 msgid "too long string"
 msgstr "слишком длинная строка"
 
@@ -996,100 +1000,100 @@ msgstr "записано сообщение локализации '%s'\n"
 msgid "wrote plural locale message '%s' '%s'\n"
 msgstr "записано множественное сообщение локализации '%s' '%s'\n"
 
-#: node.c:677 node.c:693
+#: node.c:686 node.c:702
 #, c-format
 msgid "po code too large at line %d"
 msgstr "псевдокод слишком длинный начиная со строки %d"
 
-#: node.c:1361
+#: node.c:1373
 msgid "LOCAL after executable statements"
 msgstr "LOCAL после выполнимого оператора"
 
-#: node.c:1422
+#: node.c:1434
 msgid "STATIC after executable statements"
 msgstr "STATIC после выполнимого оператора"
 
-#: node.c:1441
+#: node.c:1453
 msgid "only constant expression allowed for static variable initialisation"
 msgstr ""
 "только константное выражение разрешено для инициализации статических "
 "переменных"
 
-#: node.c:1465
+#: node.c:1477
 msgid "MEMVAR after executable statements"
 msgstr "MEMVAR после выполнимых операторов"
 
-#: node.c:1492
+#: node.c:1504
 msgid "FIELD after executable statements"
 msgstr "FIELD после выполнимых операторов"
 
-#: node.c:1882
+#: node.c:1894
 msgid "PARAMETERS and '(' <paramlist> ')' are incompatible"
 msgstr "PARAMETERS и '(' <список_параметров> ')' несовместимы"
 
-#: node.c:1899
+#: node.c:1911
 msgid "init expression not allowed here"
 msgstr "выражение инициализации здесь недопустимо"
 
-#: node.c:1904
+#: node.c:1916
 msgid "array declaration not allowed here"
 msgstr "определение массива здесь недопустимо"
 
-#: node.c:2927 node.c:3097
+#: node.c:2939 node.c:3109
 msgid "reference to constant"
 msgstr "ссылка на константу"
 
-#: node.c:2929
+#: node.c:2941
 msgid "reference to temporary object"
 msgstr "ссылка на временный объект"
 
-#: node.c:2961
+#: node.c:2973
 #, c-format
 msgid "reference to undeclared function '%s' near line %d"
 msgstr "ссылка на неопределенную функцию '%s' около строки %d"
 
-#: node.c:3102
+#: node.c:3114
 msgid "reference to macro not allowed"
 msgstr "ссылка на макро не разрешена"
 
-#: node.c:3109
+#: node.c:3121
 msgid "reference to non-lvalue object"
 msgstr "ссылка на не-lvalue объект"
 
-#: node.c:3118
+#: node.c:3130
 msgid "reference to function with args not allowed"
 msgstr "ссылка на функцию с аргументами не разрешена"
 
-#: node.c:3456
+#: node.c:3468
 msgid "cannot GET constant"
 msgstr "невозможен ввод константы через GET"
 
-#: node.c:3975
+#: node.c:3987
 msgid "assign to non-lvalue"
 msgstr "присваивание для не-lvalue"
 
-#: node.c:3978
+#: node.c:3990
 msgid "reference to macro assign not allowed"
 msgstr "ссылка на макро-присваивание не разрешена"
 
-#: node.c:5057
+#: node.c:5069
 msgid "CTEXT in pcode module"
 msgstr "CTEXT в pcode модуле"
 
-#: node.c:5116
+#: node.c:5128
 msgid "assign to element of local array conflicts with macro"
 msgstr "присваивание элементу локального массива конфликтует с макро"
 
-#: node.c:5766
+#: node.c:5778
 msgid "INCR with non-lvalue"
 msgstr "INCR для не-lvalue"
 
-#: node.c:6338 node.c:6437 node.c:6509 node.c:6649 node.c:6789
+#: node.c:6350 node.c:6449 node.c:6521 node.c:6661 node.c:6801
 #, c-format
 msgid "%s not allowed in CODESTR"
 msgstr "%s не допустимо в CODESTR"
 
-#: node.c:7830
+#: node.c:7842
 #, c-format
 msgid "CASE label duplication: '%s' at line %d and '%s' at line %d"
 msgstr "повторение метки CASE: '%s' на строке %d и '%s' на строке %d"

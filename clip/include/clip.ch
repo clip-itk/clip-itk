@@ -283,6 +283,9 @@
 #command SET DISPBOX <x:ON,OFF,&>      => Set( _SET_DISPBOX, <(x)> )
 #command SET DISPBOX (<x>)             => Set( _SET_DISPBOX, <x> )
 
+#command SET UTF8TERM <x:ON,OFF,&>      => Set( _SET_UTF8TERM, <(x)> )
+#command SET UTF8TERM (<x>)             => Set( _SET_UTF8TERM, <x> )
+
 #command SET MACRO_IN_STRING <x:ON,OFF,&>      => Set( _SET_MACRO_IN_STRING, <(x)> )
 #command SET MACRO_IN_STRING (<x>)             => Set( _SET_MACRO_IN_STRING, <x> )
 
@@ -617,5 +620,8 @@
 	=> clip_regexseek( <regexp>, <.next.> )
 
 #command SET PRINTER TO MEMBUF			=> Set( _SET_PRINTFILE, "MEMBUF" )
+
+#command WINEXEC <*cmd*>            => __winexec( #<cmd> )
+#command WINEXEC ( <c> )            => __winexec( <c> )
 
 #endif

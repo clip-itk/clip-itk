@@ -28,10 +28,10 @@ GTK_SRC = accelgroup.c adjustment.c alignment.c bin.c bmpxpm.c box.c button.c\
 	  checkmenuitem.c clipboard.c clist.c colorsel.c combo.c common.c \
 	  container.c ctree.c curve.c dialog.c draganddrop.c drawingarea.c \
 	  editable.c entry.c  filesel.c fixed.c fontsel.c frame.c general.c \
-	   handlebox.c iconsource.c invisible.c \
+   	  handlebox.c iconsource.c invisible.c \
 	  image.c imagemenuitem.c imcontext.c item.c itemfactory.c \
 	  label.c layout.c list.c listitem.c liststore.c menu.c menubar.c menuitem.c \
-	  menushell.c misc.c notebook.c object.c optionmenu.c paned.c \
+	  menushell.c misc.c notebook.c object.c optionmenu.c paned.c pango.c\
 	  pixmap.c plug.c progress.c progressbar.c radiobutton.c radiomenuitem.c \
 	  range.c rulers.c scale.c scrollbar.c scrolledwindow.c separator.c \
           selections.c  sizegroup.c socket.c spinbutton.c statusbar.c stock.c \
@@ -40,7 +40,7 @@ GTK_SRC = accelgroup.c adjustment.c alignment.c bin.c bmpxpm.c box.c button.c\
 	  texttag.c texttagtable.c textview.c tipsquery.c togglebutton.c \
 	  toolbar.c tooltips.c treemodel.c treeselection.c treestore.c \
 	  treeview.c treeviewcolumn.c style.c viewport.c widget.c window.c windowgroup.c \
-	  gtkermsg.prg
+	  gtkermsg.prg gtkutil.prg
 
 GTK_EXTEXT_SRC = #gtkextext.c extext.c
 
@@ -58,7 +58,7 @@ GTK_OBJ = accelgroup.o adjustment.o alignment.o bin.o bmpxpm.o box.o button.o \
 	  handlebox.o iconsource.o invisible.o \
 	  image.o imagemenuitem.o imcontext.o item.o itemfactory.o \
 	  label.o layout.o list.o listitem.o liststore.o menu.o menubar.o menuitem.o \
-	  menushell.o misc.o notebook.o object.o optionmenu.o paned.o \
+	  menushell.o misc.o notebook.o object.o optionmenu.o paned.o pango.o\
 	  pixmap.o plug.o progress.o progressbar.o radiobutton.o radiomenuitem.o \
 	  range.o rulers.o scale.o scrollbar.o scrolledwindow.o separator.o \
 	  selections.o sizegroup.o socket.o spinbutton.o statusbar.o stock.o \
@@ -67,7 +67,7 @@ GTK_OBJ = accelgroup.o adjustment.o alignment.o bin.o bmpxpm.o box.o button.o \
 	  texttag.o texttagtable.o textview.o tipsquery.o togglebutton.o \
 	  toolbar.o tooltips.o treemodel.o treeselection.o treestore.o \
 	  treeview.o treeviewcolumn.o style.o viewport.o widget.o window.o windowgroup.o \
-	  gtkermsg.o
+	  gtkermsg.o gtkutil.o
 
 GTK_EXTEXT_OBJ = #gtkextext.o extext.o
 
@@ -143,7 +143,7 @@ $(XSLIB): $(XLIB)
 clean:
 	rm -rf *.o *.a *.so *.dll *.po *.pa *.b *.BAK *.bak *~ core* \
 	*core Makefile.inc *.ex *.nm \
-	gtkermsg.c
+	gtkermsg.c gtkutil.c
 
 distclean: clean
 	rm -rf clip-gtkcfg2.h hashcode.h _hashcode.h Makefile

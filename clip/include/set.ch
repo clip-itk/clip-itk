@@ -86,6 +86,7 @@
 #define _SET_MULTILOCKS           116
 #define _SET_FLUSHOUT             117
 #define _SET_ROOTPATH             118
+#define _SET_UTF8TERM             119 /* terminal support UTF-8 */
 
 #define _SET_LOGLEVEL            1000
 #define _SET_LOGFILE             1001

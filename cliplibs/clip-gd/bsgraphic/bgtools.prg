@@ -226,7 +226,7 @@ local lsign, widthLegend, highLegend
 	/* координаты оси Х и размер в пикселах обеих осей зависят от места */
 	/* заголовок к графику */
 	highTitle=10
-	if "title"$selfs
+	if "TITLE"$selfs
 		symb := int(::LX/::font_title_width)
 		m := splitLen(selfs:title, symb)
 		highTitle := len(m)*(::font_title_high+5)+6
@@ -274,7 +274,7 @@ local lsign, widthLegend, highLegend
 	/* подвал к графику */
 	highSubTitle := 10
 	if !selfs:onlyLegend
-		if "subtitle"$selfs
+		if "SUBTITLE"$selfs
 			symb := int(::LX/::font_subtitle_width)
 			m := splitLen(selfs:subtitle, symb)
 			highSubTitle := len(m)*(::font_subtitle_high+5)
@@ -289,7 +289,7 @@ local lsign, widthLegend, highLegend
     /* подпись к шкале Y */
 	highVrtTitle=0
 	if !selfs:onlyLegend
-		if "vrtTitle"$selfs .and. !empty(selfs:vrtTitle)
+		if "VRTTITLE"$selfs .and. !empty(selfs:vrtTitle)
 			symb := int(::Y/::font_sign_width)
 			m := splitLen(selfs:vrtTitle, symb)
 			highVrtTitle := len(m)*(::font_sign_high+5)+5  // ширина в пикселах подписи к оси Y
@@ -582,7 +582,7 @@ local lsign, widthLegend, highLegend
 	/* координаты оси Х и размер в пикселах обеих осей зависят от места */
 	/* заголовок к графику */
 	highTitle=10
-	if "title"$selfs
+	if "TITLE"$selfs
 		symb := int(::LX/::font_title_width)
 		m := splitLen(selfs:title, symb)
 		highTitle := len(m)*(::font_title_high+5)+6
@@ -630,7 +630,7 @@ local lsign, widthLegend, highLegend
 	/* подвал к графику */
 	highSubTitle := 10
 	if !selfs:onlyLegend
-		if "subtitle"$selfs
+		if "SUBTITLE"$selfs
 			symb := int(::LX/::font_subtitle_width)
 			m := splitLen(selfs:subtitle, symb)
 			highSubTitle := len(m)*(::font_subtitle_high+5)
@@ -645,7 +645,7 @@ local lsign, widthLegend, highLegend
     /* подпись к шкале Y */
 	highVrtTitle=0
 	if !selfs:onlyLegend
-		if "vrtTitle"$selfs .and. !empty(selfs:vrtTitle)
+		if "VRTTITLE"$selfs .and. !empty(selfs:vrtTitle)
 			symb := int(::Y/::font_sign_width)
 			m := splitLen(selfs:vrtTitle, symb)
 			highVrtTitle := len(m)*(::font_sign_high+5)+5  // ширина в пикселах подписи к оси Y

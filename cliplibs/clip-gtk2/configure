@@ -23,6 +23,39 @@ then
 	fi
 fi
 
+GTK_LIBRARYES=
+
+CalcRealDlls(){
+    # Nedded for CygWin and, i think, for Mingw,,, but for Mingw I'm not sure
+    # TODO: get one library name of more versions
+    REAL_LIBS=""
+    for Onelib in $LIBS; do
+	# skip non-libs
+	if test `echo $Onelib| grep -c '^-l'` -eq 0; then
+	    REAL_LIBS=$REAL_LIBS" "$Onelib
+	    continue
+	fi
+	# calc *.la name
+	lalib="/lib/lib"`echo $Onelib|sed 's/^\-l//'`".la"
+	# check if *.la exists
+	if test ! -f $lalib; then
+	    REAL_LIBS=$REAL_LIBS" "$Onelib
+	    continue
+	fi
+	# get real DLL from *.la
+	realdll=`grep 'dlname=' $lalib |grep -v '^#'|\
+	awk -F \= '{print $2;}'| sed s/\'//g`
+
+	if test -z "$realdll"; then
+	    REAL_LIBS=$REAL_LIBS" "$Onelib
+	else
+	    realdll=`echo $realdll| sed 's/^\.\.//'`
+	    REAL_LIBS=$REAL_LIBS" "$realdll
+	fi
+    done
+    LIBS=$REAL_LIBS
+}
+
 osname=UNIX
 case "$uname" in
 	BSD/OS*|bsdi*)
@@ -87,8 +120,10 @@ if [ $? -ne 0 ]; then
 fi
 
 LIBS=`$PKGCONFIG gtk+-2.0 --libs`
+
 if [ "$osname" = "CYGWIN" ]; then
-    EXTRACFLAGS='-fnative-struct'
+    CalcRealDlls
+    EXTRACFLAGS=''
 fi
 GTK_MAJOR=`$PKGCONFIG gtk+-2.0 --modversion|cut -d. -f1`
 GTK_MINOR=`$PKGCONFIG gtk+-2.0 --modversion|cut -d. -f2`
@@ -97,6 +132,8 @@ if [ ! \( "$GTK_MAJOR" -le 2  \) ]; then
     echo 'Warning: system must have installed GTK+ version 2.0 or above'
 fi
 
+PANGO_MAJOR=`$PKGCONFIG pango --modversion|cut -d. -f1`
+PANGO_MINOR=`$PKGCONFIG pango --modversion|cut -d. -f2`
 
 exec 3>clip-gtkcfg2.h
 
@@ -110,6 +147,8 @@ echo '#define OSNAME "'$osname'"' >&3
 echo "#define OS_$osname" >&3
 echo '#define GTK2_VER_MAJOR '$GTK_MAJOR >&3
 echo '#define GTK2_VER_MINOR '$GTK_MINOR >&3
+echo '#define PANGO_VER_MAJOR '$PANGO_MAJOR >&3
+echo '#define PANGO_VER_MINOR '$PANGO_MINOR >&3
 echo '#undef  SYSTEM ' >&3
 echo '#define SYSTEM "'$uname'"' >&3
 echo '' >&3

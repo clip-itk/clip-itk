@@ -128,6 +128,8 @@ function Main()
 return
 
 static function SetFont()
+	? gtk_FontSelectionDialogGetFontName(fsdialog)
+        ?
 	gtk_WidgetModifyFont(l, gtk_FontSelectionDialogGetFontName(fsdialog))
 return
 

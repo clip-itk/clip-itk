@@ -254,7 +254,7 @@ int or_oracletype(dvoid** ordata,ClipVar cldata,double* type,sb4* len,OR_STMT* s
 	} else if(*type==SQLT_DAT || *type==SQLT_ODT){
 		_clip_cdate(cldata.d.julian,&day,&mon,&year,&week);
 		sprintf(num,"%2d-%s-%4d",day,month[mon-1],year);
-		*len = strlen(num+1);
+		*len = strlen(num);
 		*ordata = malloc(*len+1);
 		*type = SQLT_CHR;
 		strcpy(*ordata,num);

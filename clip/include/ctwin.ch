@@ -33,16 +33,16 @@
 
 #ifdef __CLIP__
 
-#define __WB_0 chr(201)+chr(205)+chr(202)+chr(208)+chr(216)+chr(205)+chr(200)+chr(208)
+#define __WB_0 chr(201)+chr(205)+chr(187)+chr(186)+chr(188)+chr(205)+chr(200)+chr(186)
 #define WB_0     translate_charset("cp437",host_charset(),__WB_0+chr(32))
 #define WB_4     translate_charset("cp437",host_charset(),__WB_0)
 #define __WB_1 chr(218)+chr(196)+chr(191)+chr(179)+chr(217)+chr(196)+chr(192)+chr(179)
 #define WB_1     translate_charset("cp437",host_charset(),__WB_1+chr(32))
 #define WB_5     translate_charset("cp437",host_charset(),__WB_1)
-#define __WB_2 chr(213)+chr(205)+chr(203)+chr(179)+chr(206)+chr(205)+chr(212)+chr(179)
+#define __WB_2 chr(213)+chr(205)+chr(184)+chr(179)+chr(190)+chr(205)+chr(212)+chr(179)
 #define WB_2     translate_charset("cp437",host_charset(),__WB_2+chr(32))
 #define WB_6     translate_charset("cp437",host_charset(),__WB_2)
-#define __WB_3 chr(214)+chr(196)+chr(210)+chr(208)+chr(215)+chr(196)+chr(211)+chr(208)
+#define __WB_3 chr(214)+chr(196)+chr(183)+chr(186)+chr(189)+chr(196)+chr(211)+chr(186)
 #define WB_3     translate_charset("cp437",host_charset(),__WB_3+chr(32))
 #define WB_7     translate_charset("cp437",host_charset(),__WB_3)
 
@@ -55,7 +55,7 @@
 #define __WB_10 chr(222)+chr(219)+chr(221)+chr(221)+chr(221)+chr(219)+chr(222)+chr(222)
 #define WB_10    translate_charset("cp437",host_charset(),__WB_10+chr(32))
 #define WB_14    translate_charset("cp437",host_charset(),__WB_10)
-#define __WB11 chr(219)+chr(219)+chr(219)+chr(219)+chr(219)+chr(219)+chr(219)+chr(219)
+#define __WB_11 chr(219)+chr(219)+chr(219)+chr(219)+chr(219)+chr(219)+chr(219)+chr(219)
 #define WB_11    translate_charset("cp437",host_charset(),__WB_11+chr(32))
 #define WB_15    translate_charset("cp437",host_charset(),__WB_11)
 #endif

@@ -66,17 +66,10 @@ function codb_IdList(oDbm,metaName,nIndex,sName,whereExpr,nCount,deleted)
 	obj:depository	:= @list_dep()
 
 	/* initial select */
-	obj:setWhere(whereExpr)
 	if valtype(nIndex)=="A"
 		obj:aId		:= nIndex
-	else
-		obj:aId		:= oDbm:select(metaName,obj:nIndex,sName,obj:sWhere,obj:nCount,obj:deleted)
 	endif
-	//outlog(__FILE__,__LINE__,metaName,obj:nIndex,sName,obj:sWhere)
-	//obj:aId		:= oDbm:selectDebug(metaName,obj:nIndex,sName,obj:sWhere)
-	obj:skip(1)
-	obj:skip(-1)
-
+	obj:setWhere(whereExpr)
 return obj
 ************************************************************
 static function list_setWhere(whereExpr)
@@ -88,14 +81,21 @@ static function list_setWhere(whereExpr)
 		endif
 		errBl := errorBlock({|err|break(err)})
 		begin sequence
-			wblock := &s
+			::sWhere := ""
+			::wblock := &s
 		recover
 			::error := [Error compiling WHERE expression:]+s
 		end sequence
 		errorBlock(errBl)
 	endif
-	::sWhere	:= whereExpr
-	::wBlock	:= wBlock // codeblock for where expr
+	if !empty(::error) .or. empty(whereExpr)
+		::sWhere	:= ""
+		::wBlock	:= NIL
+	endif
+	::aId := ::oDbm:select(::metaName,::nIndex,::sname,::sWhere,::nCount,::deleted)
+	if !empty(::aId)
+		::gotoTop()
+	endif
 return
 ************************************************************
 static function list_dict()

@@ -53,6 +53,8 @@ local window, buffer, view, layout, bins
 	view := gtk_TextViewNewWithBuffer( , buffer:buffer )
 	gtk_TextViewSetWrapMode (view, GTK_WRAP_WORD)
         gtk_WidgetSetSizeRequest(view, 300, 50)
+        str := "И текст по-русски"
+        gtk_TextBufferSetText(buffer:buffer,str, len(str) )
 
         gtk_LayoutPut(layout, view, 10, 10)
 

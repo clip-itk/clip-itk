@@ -55,6 +55,10 @@ return ret
 static function hp_text(s)
        local i
        s=strtran(s,"&\r","")
+       if substr(s,1,8) == '<![CDATA'
+       		aadd(::tags,s)
+		return .t.
+       endif
        while .t.
 		i=at("&\n",s)
 		if i>0
@@ -78,7 +82,20 @@ static function hp_parse
 	     if tbeg>1
 		::__addText(substr(::buffer,1,tbeg-1))
 		::buffer:=substr(::buffer,tbeg)
-		tbeg=1
+		tbeg:=1
+	     endif
+	     // Check for DOCTYPE or CDATA
+	     if substr(::buffer,tbeg+1,8) == '!DOCTYPE' .or. substr(::buffer,tbeg+1,7) == '![CDATA'
+		tend:=at("]>",::buffer)
+		if tend>0
+			// Put as text without interpretation
+			::__addText(substr(::buffer,1,tend+1))
+	        	::buffer:=substr(::buffer,tend+2)
+			loop
+		else
+			// Missed end: wait for next portion
+			exit
+		endif
 	     endif
 	     for tend=tbeg to len(::buffer)
 		ch=substr(::buffer,tend,1)

@@ -5,6 +5,24 @@
 */
 /*
    $Log: _file.c,v $
+   Revision 1.163  2004/12/15 12:43:03  clip
+   uri: small fix and add chmod(file,mode), mode can be "777","7777",0xFFF,4095.
+
+   Revision 1.162  2004/11/26 11:07:08  clip
+   uri: small fix in fopen() about nonstring filename
+
+   Revision 1.161  2004/10/25 16:50:41  clip
+   uri: small fix in curDir() and dirChange()
+
+   Revision 1.160  2004/09/30 14:09:28  clip
+   rust: CYGWIN fix
+
+   Revision 1.159  2004/08/30 15:00:42  clip
+   uri: small fix
+
+   Revision 1.158  2004/08/05 11:18:36  clip
+   rust: minor fix in FILE()
+
    Revision 1.157  2004/05/27 10:23:06  clip
    rust: GETENVA() -> array of ENVVARs ({{"ENVVARNAME","value"},...})
 
@@ -804,7 +822,7 @@ _clip_open(ClipMachine* cm,char *file, int flags, mode_t mode, int exclusive)
 	int fd = -1;
 	DWORD access = GENERIC_READ | GENERIC_WRITE;
 
-	if(flags & O_RDONLY)
+	if(!(flags & (O_WRONLY|O_RDWR)))
 		access &= ~GENERIC_WRITE;
 	else if(flags & O_WRONLY)
 		access &= ~GENERIC_READ;
@@ -1155,9 +1173,20 @@ int
 clip_CURDIR(ClipMachine * mp)
 {
 	int i;
+	char drv[3], *tmp;
 	char *dir, *disk = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
+	if (_clip_parinfo(mp,1) == CHARACTER_t)
+	{
+		tmp = _clip_parc(mp,1);
+		drv[0] = toupper(*tmp);
+	}
+	else
+		drv[0] = *disk;
+	drv[1] = ':';
+	drv[2] = 0;
 
-	dir = _clip_fetch_item(mp, _hash_cur_dir[*disk - 65]);
+
+	dir = _clip_fetch_item(mp, _hash_cur_dir[drv[0] - 65]);
 	if (dir == NULL /* || *dir==0 */ )
 	{
 		_clip_retc(mp, "");
@@ -1215,6 +1244,36 @@ clip_EXENAME(ClipMachine * mp)
 {
 	return clip_STARTPATH(mp);
 }
+int
+clip_CHMOD(ClipMachine * mp)
+{
+	int lp = 0, *err = NULL;
+	char buf[PATH_MAX];
+	char *fname = _clip_parc(mp, 1);
+
+	_clip_retl(mp, 1);
+	err = _clip_fetch_item(mp, HASH_ferror);
+	*err = 0;
+
+	if (_clip_parinfo(mp, 2) == CHARACTER_t)
+		lp = _clip_fileStrModeToNumMode(_clip_parc(mp, 2));
+	if (_clip_parinfo(mp, 2) == NUMERIC_t)
+		lp = _clip_parni(mp, 2);
+	if (fname == NULL || lp == 0 )
+	{
+		_clip_retl(mp, 0);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "CHMOD");
+	}
+
+	_clip_translate_path(mp, fname, buf, sizeof(buf));
+	if (chmod(buf,lp) == 0)
+		return 0;
+
+	_clip_retl(mp, 0);
+	*err = errno;
+
+	return 0;
+}
 
 int
 clip_FOPEN(ClipMachine * mp)
@@ -1229,6 +1288,11 @@ clip_FOPEN(ClipMachine * mp)
 	int m = _clip_parni(mp, 2);
 	int lbuf, lposix;
 
+	if (fname == NULL)
+	{
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "FOPEN");
+	}
 	share_mode = m & 0xfff8;
 	m &= 7;		/* read/write access */
 
@@ -1716,6 +1780,29 @@ clip_FREAD(ClipMachine * mp)
 #endif
 
 	_clip_retnl(mp, ret);
+	return 0;
+}
+
+int clip___FILELOCK(ClipMachine *cm)
+{
+	int *err = _clip_fetch_item(cm, HASH_ferror);
+	int fd = _clip_parni(cm, 1);
+	C_FILE *cf = _clip_fetch_c_item(cm, fd, _C_ITEM_TYPE_FILE);
+
+	_clip_retl(cm,0);
+
+	*err = 0;
+	if (cf == NULL )
+	{
+		*err = EBADF;
+		return 0;
+	}
+
+	if(_clip_setlock(cm,cf->hash,cf->fileno,1000000000+1,
+			CLIP_LOCK_WRITE | CLIP_LOCK_FLOCK | CLIP_LOCK_HILEVEL))
+		*err = ENOLCK;
+	else
+		_clip_retl(cm,1);
 	return 0;
 }
 
@@ -2684,10 +2771,16 @@ clip_FERROR(ClipMachine * mp)
 int
 clip_FERRORSTR(ClipMachine * mp)
 {
-	int *err;
-
-	err = _clip_fetch_item(mp, HASH_ferror);
-	_clip_retc(mp, strerror(*err));
+	if (_clip_parinfo(mp,1) == NUMERIC_t)
+	{
+		_clip_retc(mp, strerror(_clip_parni(mp,1)));
+	}
+	else
+	{
+		int *err;
+		err = _clip_fetch_item(mp, HASH_ferror);
+		_clip_retc(mp, strerror(*err));
+	}
 	return 0;
 }
 
@@ -2731,6 +2824,11 @@ clip_FILE(ClipMachine * mp)
 		char * def_path;
 		def_path = _clip_fetch_item(mp, _hash_cur_dir[ toupper(*filename)-65 ]);
 		snprintf(fn,PATH_MAX,"%c:%s/%s",*filename,def_path,filename+2);
+	}
+	else if((mp->flags & TRANSLATE_FLAG) && ((filename[0] == '\\') || (filename[0] == '/')))
+	{
+		char *dname = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
+		snprintf(fn,PATH_MAX,"%c:%s",*dname,filename);
 	}
 	else
 	{
@@ -2967,54 +3065,31 @@ clip_DIRECTORY(ClipMachine * mp)
 int
 _clip_fileStrModeToNumMode(char *mode)
 {
-	int ret = 0;
-	int tmp, m1, m2, m3;
+	/* mode can formats "777" or "7777" */
+	/* sticky/user/group/other access mode */
+	int modes[4][3] = {
+			{S_ISUID,S_ISGID,S_ISVTX},
+			{S_IEXEC,S_IWRITE,S_IREAD},
+			{S_IXGRP,S_IWGRP,S_IRGRP},
+			{S_IXOTH,S_IWOTH,S_IROTH}
+			};
+	int ret = 0, cur,pos;
+	int tmp, beg, end=strlen(mode);
 
-	/* user access mode */
-	tmp = *mode - '0';
-	m1 = tmp & 0x0001;
-	tmp = tmp >> 1;
-	m2 = tmp & 0x0001;
-	tmp = tmp >> 1;
-	m3 = tmp & 0x0001;
-	if (m1)
-		ret += S_IEXEC;
-	if (m2)
-		ret += S_IWRITE;
-	if (m3)
-		ret += S_IREAD;
-
-#ifndef OS_MINGW
-	/* group access mode */
-	tmp = *(mode + 1) - '0';
-	m1 = tmp & 0x0001;
-	tmp = tmp >> 1;
-	m2 = tmp & 0x0001;
-	tmp = tmp >> 1;
-	m3 = tmp & 0x0001;
-	if (m1)
-		ret += S_IXGRP;
-	if (m2)
-		ret += S_IWGRP;
-	if (m3)
-		ret += S_IRGRP;
-
-	/* other access mode */
-	tmp = *(mode + 2) - '0';
-	m1 = tmp & 0x0001;
-	tmp = tmp >> 1;
-	m2 = tmp & 0x0001;
-	tmp = tmp >> 1;
-	m3 = tmp & 0x0001;
-	if (m1)
-		ret += S_IXOTH;
-	if (m2)
-		ret += S_IWOTH;
-	if (m3)
-		ret += S_IROTH;
-#endif
+	for(cur = 4-end,pos=0; pos<=end; cur++,pos++)
+	{
+		/* sticky/user/group/other access mode */
+		tmp = *(mode+pos) - '0';
+		if (tmp & 0x0001)
+			ret += modes[cur][0];
+		if (tmp & 0x0002)
+			ret += modes[cur][1];
+		if (tmp & 0x0004)
+			ret += modes[cur][2];
+	}
 	return ret;
 }
+
 
 static int _clip_wrlock(HashTable* locks,long hash,int fd,struct flock* fl,int lowlevel){
 	int i;
@@ -3193,3 +3268,4 @@ int _clip_unlock(ClipMachine* cm,long hash,int fd,off_t pos,int flags){
 	}
 	return 0;
 }
+

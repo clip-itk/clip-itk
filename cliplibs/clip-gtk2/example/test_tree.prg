@@ -196,7 +196,7 @@ local i
 	gtk_ContainerAdd(win, box)
 
 	gtk_WidgetShowAll(win)
-	gtk_SignalConnect(win, "delete-event", {|| gtk_Quit()})
+	gtk_SignalConnect(win, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 
 
 
@@ -285,7 +285,7 @@ local i
 	gtk_BoxPackEnd(tbox, tstbar)
 	gtk_ContainerAdd(twin, tbox)
 	gtk_WidgetShowAll(twin)
-	gtk_SignalConnect(twin, "delete-event", {|| gtk_Quit()})
+	gtk_SignalConnect(twin, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 
 
 

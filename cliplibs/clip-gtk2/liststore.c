@@ -3,11 +3,11 @@
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
 
-#include <string.h>
 #include <gtk/gtk.h>
 
 #include "clip-gtk2.ch"
@@ -35,6 +35,7 @@ clip_INIT___LISTSTORE(ClipMachine *cm)
 void
 __list_store_destroy(ClipMachine *cm, C_object *colist)
 {
+	printf("destroy list store \n");
 	_clip_destroy(cm, _clip_mget(cm, &colist->obj, HASH_UTYPES));
 	return;
 }

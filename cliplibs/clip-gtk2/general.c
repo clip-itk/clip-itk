@@ -3,6 +3,7 @@
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "task.h"
@@ -11,10 +12,22 @@
 
 #undef MAXPATHLEN
 #include <gtk/gtk.h>
-#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
+
+static ClipVar _data_list;
+static ClipVar *data_list = &_data_list;
+
+static ClipVar _func_list;
+static ClipVar *func_list = &_func_list;
+
+
+static ClipVar _data_idle_list;
+static ClipVar *data_idle_list = &_data_idle_list;
+
+static ClipVar _func_idle_list;
+static ClipVar *func_idle_list = &_func_idle_list;
 
 /* Sets the current locale according to the program environment.
  * This is the same as calling the libc function setlocale(LC_ALL, "")
@@ -135,6 +148,8 @@ clip_GTK_MAINITERATIONDO(ClipMachine * cm)
 int
 clip_GTK_QUIT(ClipMachine * cm)
 {
+	if (gtk_main_level() == 1)
+        	_wtype_table_destroy(_wtype_table_get_first());
 	gtk_main_quit();
 	return 0;
 }
@@ -214,17 +229,21 @@ __func(void* data)
 	return ret;
 }
 
+
 static gint
 __timeout__func(void* data)
 {
 	ClipVar res;
 	C_var *c = (C_var*)data;
+	ClipVar stack[1];
 	int ret = TRUE;
-	memset( &res, 0, sizeof(ClipVar) );
-	_clip_eval( c->cm, &c->cfunc, 0, NULL, &res );
+	memset( &stack, 0, sizeof(stack) );memset( &res, 0, sizeof(ClipVar) );
+	_clip_mclone(c->cm, &stack[0], c->cv);
+	_clip_eval( c->cm, &c->cfunc, 1, stack, &res );
 	if (res.t.type == LOGICAL_t)
 		ret = res.l.val;
 	_clip_destroy(c->cm, &res);
+	_clip_destroy(c->cm, &stack[0]);
 //	if (!ret)
   //		_destroy__func(c);
 	return ret;
@@ -306,11 +325,61 @@ err:
 	return 1;
 }
 
+void
+_list_put_data(ClipMachine * cm, gint id, ClipVar * cdata)
+{
+	if (data_list->t.type != MAP_t)
+		_clip_map(cm, data_list);
+	if (id)
+		_clip_mputn(cm, data_list, (long) id, (long) cdata);
+}
+
+ClipVar *
+_list_get_data(ClipMachine * cm, gint id)
+{
+	double d;
+	if (id && data_list->t.type == MAP_t)
+		if (_clip_mgetn(cm, data_list, (long) id, &d) == 0)
+			return (ClipVar *) ((long) d);
+	return NULL;
+}
+void
+_list_remove_data(ClipMachine * cm, gint id)
+{
+	if (id && data_list->t.type == MAP_t)
+		_clip_mdel(cm, data_list, (long) id);
+}
+void
+_list_put_func(ClipMachine * cm, gint id, ClipVar * cfunc)
+{
+	if (func_list->t.type != MAP_t)
+		_clip_map(cm, func_list);
+	if (id)
+		_clip_mputn(cm, func_list, (long) id, (long) cfunc);
+}
+
+ClipVar *
+_list_get_func(ClipMachine * cm, gint id)
+{
+	double d;
+	if (id && func_list->t.type == MAP_t)
+		if (_clip_mgetn(cm, func_list, (long) id, &d) == 0)
+			return (ClipVar *) ((long) d);
+	return NULL;
+}
+void
+_list_remove_func(ClipMachine * cm, gint id)
+{
+	if (id && func_list->t.type == MAP_t)
+		_clip_mdel(cm, func_list, (long) id);
+}
+
 
 /* Registers a function to be called periodically.
  * The function will be called repeatedly after interval milliseconds
  * until it returns FALSE at which point the timeout is destroyed and
  * will not be called again. */
+/* gtkTimeoutAdd(interval, @func()[, userData]) */
 int
 clip_GTK_TIMEOUTADD(ClipMachine * cm)
 {
@@ -320,10 +389,14 @@ clip_GTK_TIMEOUTADD(ClipMachine * cm)
 	CHECKARG(1,NUMERIC_t); CHECKARG2(2,PCODE_t,CCODE_t);
 
 	c = NEW(C_var);
-	c->cm = cm; //c->cfunc = NEW(ClipVar);
+	c->cm = cm;
+	c->cv = NEW(ClipVar);
 	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
+	if (_clip_parinfo(cm, 0)>2)
+		_clip_mclone(cm, c->cv, _clip_spar(cm,3));
 	c->id = gtk_timeout_add(interval,(GtkFunction)__timeout__func,c);
-	_clip_retni(cm,_clip_store_c_item(cm, c, _C_ITEM_TYPE_GTK_TIMEOUT, NULL));
+	_list_put_data(cm, c->id, c->cv);
+	_list_put_func(cm, c->id, &c->cfunc);
 	_clip_retni(cm,c->id);
 	return 0;
 err:
@@ -335,26 +408,135 @@ int
 clip_GTK_TIMEOUTREMOVE(ClipMachine * cm)
 {
 	guint timeout_handler_id = _clip_parni(cm,1);
-	C_var *c;
 
 	CHECKARG(1,NUMERIC_t);
 
-	c = _clip_fetch_c_item(cm, timeout_handler_id, _C_ITEM_TYPE_GTK_TIMEOUT);
-	if (c)
-		gtk_timeout_remove(timeout_handler_id);
-	  //	gtk_timeout_remove(c->id);
+	gtk_timeout_remove(timeout_handler_id);
 
-	_clip_destroy_c_item(cm, timeout_handler_id, _C_ITEM_TYPE_GTK_TIMEOUT);
-	_destroy__func(c);
+	_clip_destroy(cm, _list_get_data(cm, timeout_handler_id));
+	_clip_destroy(cm, _list_get_func(cm, timeout_handler_id));
+
+	_list_remove_data(cm, timeout_handler_id);
+	_list_remove_func(cm, timeout_handler_id);
 
 	return 0;
 err:
 	return 1;
 }
 
+
+static gint
+__idle__func(void* data)
+{
+	ClipVar res;
+	C_var *c = (C_var*)data;
+	ClipVar stack[1];
+	int ret = TRUE;
+	memset( &stack, 0, sizeof(stack) );memset( &res, 0, sizeof(ClipVar) );
+	_clip_mclone(c->cm, &stack[0], c->cv);
+	_clip_eval( c->cm, &c->cfunc, 1, stack, &res );
+	if (res.t.type == LOGICAL_t)
+		ret = res.l.val;
+	_clip_destroy(c->cm, &res);
+	_clip_destroy(c->cm, &stack[0]);
+	return ret;
+}
+void
+_list_idle_put_data(ClipMachine * cm, gint id, ClipVar * cdata)
+{
+	if (data_idle_list->t.type != MAP_t)
+		_clip_map(cm, data_idle_list);
+	if (id)
+		_clip_mputn(cm, data_idle_list, (long) id, (long) cdata);
+}
+
+ClipVar *
+_list_idle_get_data(ClipMachine * cm, gint id)
+{
+	double d;
+	if (id && data_idle_list->t.type == MAP_t)
+		if (_clip_mgetn(cm, data_idle_list, (long) id, &d) == 0)
+			return (ClipVar *) ((long) d);
+	return NULL;
+}
+void
+_list_idle_remove_data(ClipMachine * cm, gint id)
+{
+	if (id && data_idle_list->t.type == MAP_t)
+		_clip_mdel(cm, data_idle_list, (long) id);
+}
+void
+_list_idle_put_func(ClipMachine * cm, gint id, ClipVar * cfunc)
+{
+	if (func_idle_list->t.type != MAP_t)
+		_clip_map(cm, func_idle_list);
+	if (id)
+		_clip_mputn(cm, func_idle_list, (long) id, (long) cfunc);
+}
+
+ClipVar *
+_list_idle_get_func(ClipMachine * cm, gint id)
+{
+	double d;
+	if (id && func_idle_list->t.type == MAP_t)
+		if (_clip_mgetn(cm, func_idle_list, (long) id, &d) == 0)
+			return (ClipVar *) ((long) d);
+	return NULL;
+}
+void
+_list_idle_remove_func(ClipMachine * cm, gint id)
+{
+	if (id && func_idle_list->t.type == MAP_t)
+		_clip_mdel(cm, func_idle_list, (long) id);
+}
 /* Causes the mainloop to call the given function whenever no events
  * with higher priority are to be processed. The default priority is
  * GTK_PRIORITY_DEFAULT, which is rather low. */
+/* gtk_IdleAdd(@func()[, userData ]) --> idleHandle */
+int
+clip_GTK_IDLEADD(ClipMachine * cm)
+{
+	C_var *c;
+	guint id;
+
+	CHECKARG2(1, PCODE_t,CCODE_t);
+
+	c = NEW(C_var);
+	c->cm = cm;
+	c->cv = NEW(ClipVar);
+	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,1));
+	if (_clip_parinfo(cm, 0)>1)
+		_clip_mclone(cm, c->cv, _clip_spar(cm,2));
+	id = gtk_idle_add((GtkFunction)__idle__func,c);
+	_list_idle_put_data(cm, id, c->cv);
+	_list_idle_put_func(cm, id, &c->cfunc);
+	_clip_retni(cm, id);
+
+	return 0;
+err:
+	return 1;
+}
+/* Removes the idle function with the given id. */
+int
+clip_GTK_IDLEREMOVE(ClipMachine * cm)
+{
+	guint idle_handler_id = _clip_parni(cm,1);
+
+	CHECKARG(1,NUMERIC_t);
+
+	gtk_idle_remove(idle_handler_id);
+
+	_clip_destroy(cm, _list_idle_get_data(cm, idle_handler_id));
+	_clip_destroy(cm, _list_idle_get_func(cm, idle_handler_id));
+
+	_list_idle_remove_data(cm, idle_handler_id);
+	_list_idle_remove_func(cm, idle_handler_id);
+
+	return 0;
+err:
+	return 1;
+}
+/*
 int
 clip_GTK_IDLEADD(ClipMachine * cm)
 {
@@ -366,7 +548,7 @@ clip_GTK_IDLEADD(ClipMachine * cm)
 	if (priority > G_PRIORITY_HIGH) priority = G_PRIORITY_HIGH;
 
 	c = NEW(C_var);
-	c->cm = cm; //c->cfunc = NEW(ClipVar);
+	c->cm = cm;
 	_clip_mclone(cm,&c->cfunc, _clip_spar(cm,2));
 	_clip_retni(cm,gtk_idle_add_full(priority,(GtkFunction)__func,NULL,
 		c,_destroy__func));
@@ -374,8 +556,6 @@ clip_GTK_IDLEADD(ClipMachine * cm)
 err:
 	return 1;
 }
-
-/* Removes the idle function with the given id. */
 int
 clip_GTK_IDLEREMOVE(ClipMachine * cm)
 {
@@ -388,4 +568,5 @@ clip_GTK_IDLEREMOVE(ClipMachine * cm)
 err:
 	return 1;
 }
+*/
 

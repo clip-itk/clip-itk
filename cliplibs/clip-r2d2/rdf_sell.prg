@@ -32,7 +32,7 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 		URN := _query:URN
 	endif
 	if empty(urn)
-		urn := sprname
+		urn := 'urn:'+sprname
 	endif
 
 	lang := cgi_choice_lang(lang)
@@ -65,6 +65,10 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 	endif
 
 	cgi_xml_header()
+	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
+	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	?
 
 	oDep := codb_needDepository(sDict+sDep)
 	if empty(oDep)
@@ -374,10 +378,6 @@ static function print_sell(urn,doc_id,oDep,columns)
 	cgi_checkTreeArefs(arefs,oDep)
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
 
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
 
 	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 	?

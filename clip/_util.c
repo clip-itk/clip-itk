@@ -5,6 +5,33 @@
 */
 /*
    $Log: _util.c,v $
+   Revision 1.141  2004/12/01 08:13:05  clip
+   alena: fix return value for _clip_translate_toutf
+
+   Revision 1.140  2004/11/30 13:51:31  clip
+   alena: fix convert to utf and from utf
+
+   Revision 1.139  2004/11/23 13:15:58  clip
+   alena: add to clip_TTRANSLATE_CHARSET translating to/from utf8
+
+   Revision 1.138  2004/11/03 10:22:49  clip
+   uri: small fix in len() without params
+
+   Revision 1.137  2004/10/28 11:47:33  clip
+   uri: fix formatiing in STR(), pad*() for numeric data and constants.
+
+   Revision 1.136  2004/10/20 17:22:16  clip
+   uri: add set(_SET_UTF8TERM) for terminal with UTF-8
+
+   Revision 1.135  2004/08/13 13:54:37  clip
+   uri: wimexec(cCommand) added
+
+   Revision 1.134  2004/08/13 13:42:53  clip
+   *** empty log message ***
+
+   Revision 1.133  2004/08/09 15:51:37  clip
+   uri: small fix
+
    Revision 1.132  2004/07/06 09:48:15  clip
    uri: small fix in acopy()
 
@@ -877,7 +904,15 @@ int
 clip_LEN(ClipMachine * mp)
 {
 	ClipVar *vp = _clip_par(mp, 1);
-	int rn = 0;
+	int rn = 0,l,d;
+
+	if (_clip_parinfo(mp,0) == 0)
+	{
+		_clip_retndp(mp, 0,10,0);
+		return 0;
+	}
+
+	vp = _clip_par(mp, 1);
 
 	switch (vp->t.type)
 	{
@@ -892,12 +927,20 @@ clip_LEN(ClipMachine * mp)
 		break;
 	case NUMERIC_t:
 		rn = vp->t.len;
+		if (_clip_parinfo(mp,2) == NUMERIC_t)
+			vp->t.len = _clip_parni(mp, 2);
 		break;
 	default:
 		;
 	}
 
-	_clip_retni(mp, rn);
+	l = 10; d=0;
+	if (mp->flags & FIXED_FLAG)
+	{
+		d = mp->decimals;
+		l += mp->decimals+1;
+	}
+	_clip_retndp(mp, rn,l,d);
 	return 0;
 }
 
@@ -2015,7 +2058,6 @@ q_sort(ClipVar * a, int n, q_cmp cmp, ClipMachine * mp, void *par)
 	}
 }
 
-/* ] */
 int
 clip___RUN(ClipMachine * mp)
 {
@@ -2041,16 +2083,15 @@ clip___RUN(ClipMachine * mp)
 		restart_tty(mp->screen_base);	/* set work mode */
 	if (mp->fullscreen)
 	{
-		redraw_Screen(mp->screen);
+		redraw_Screen(mp->screen, mp->flags1 & UTF8TERM_FLAG );
 		mp->screen->cursor = !mp->screen->cursor;
-		sync_Screen(mp->screen);
+		sync_Screen(mp->screen, mp->flags1 & UTF8TERM_FLAG );
 		mp->screen->cursor = old_cursor;
-		sync_Screen(mp->screen);
+		sync_Screen(mp->screen, mp->flags1 & UTF8TERM_FLAG );
 	}
 
 	return 0;
 }
-
 
 int
 clip_CLONE(ClipMachine * mp)
@@ -2514,7 +2555,7 @@ _clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len, int method)
 		int l = 0;
 
 		np = _clip_mget(mp, vp, HASH_CLASSNAME);
-		if (!_clip_str(mp, np, &s, &l) && l)
+		if (!_clip_strFromVar(mp, np, &s, &l) && l)
 		{
 			buflen = l + RECOVER_PREFIX_LEN + 1;
 			b = (char *) realloc(b, buflen);
@@ -2948,6 +2989,248 @@ clip_HOST_CHARSET(ClipMachine * cm)
 	return 0;
 }
 
+/* Translate_ToUtf8([source codepage], string) */
+int
+_clip_translate_toutf8(char *p1, unsigned char *str, int len, char **result)
+{
+	int i, j, clen, total_len, wclen, first, len1=0;
+	unsigned long *wcs, wc;
+	char  *res, *bp;
+	const unsigned long *wcp;
+	cons_CharsetEntry *cs1 = 0;
+
+
+	if (!p1 || !str)
+		return EG_ARG;
+
+
+	wclen = strlen(str);
+	wcs = calloc(wclen,sizeof(unsigned long));
+	if (load_charset_name(p1, &cs1, &len1))
+	{
+		_clip_logg(2, "translate_charset: cannot load charset file '%s': %s", p1, strerror(errno));
+	}
+	if (cs1)
+	{
+		for(i=0; i<wclen; i++)
+		{
+			for(j=0; j<len1; j++)
+			{
+				cons_CharsetEntry *cp;
+
+				cp = cs1 + j;
+				if (cp->ch == str[i])
+					wcs[i] = cp->unich;
+			}
+		}
+		free(cs1);
+	}
+	else
+	{
+		free(wcs);
+		return -1;
+	}
+
+	wcp = wcs;
+	total_len = 0;
+	for (i = 0; i < wclen; i++)
+	{
+		wc = *wcp++;
+		if (wc < 0x80)
+			total_len += 1;
+		else if (wc < 0x800)
+			total_len += 2;
+		else if (wc < 0x10000)
+			total_len += 3;
+		else if (wc < 0x200000)
+			total_len += 4;
+		else if (wc < 0x4000000)
+			total_len += 5;
+		else
+			total_len += 6;
+	}
+
+	*result = calloc(total_len+1, sizeof(char));
+	res = *result;
+
+	wcp = wcs;
+	bp = res;
+	for (i = 0; i < wclen; i++)
+	{
+		wc = *wcp++;
+
+		if (wc < 0x80)
+		{
+			first = 0;
+			clen = 1;
+		}
+		else if (wc < 0x800)
+		{
+			first = 0xc0;
+			clen = 2;
+		}
+		else if (wc < 0x10000)
+		{
+			first = 0xe0;
+			clen = 3;
+		}
+		else if (wc < 0x200000)
+		{
+			first = 0xf0;
+			clen = 4;
+		}
+		else if (wc < 0x4000000)
+		{
+			first = 0xf8;
+			clen = 5;
+		}
+		else
+		{
+			first = 0xfc;
+			clen = 6;
+		}
+
+		switch (clen)
+		{
+			case 6: bp[5] = (wc & 0x3f) | 0x80; wc >>= 6;
+			case 5: bp[4] = (wc & 0x3f) | 0x80; wc >>= 6;
+			case 4: bp[3] = (wc & 0x3f) | 0x80; wc >>= 6;
+			case 3: bp[2] = (wc & 0x3f) | 0x80; wc >>= 6;
+			case 2: bp[1] = (wc & 0x3f) | 0x80; wc >>= 6;
+			case 1: bp[0] = wc | first;
+		}
+
+		bp += clen;
+	}
+	*bp = 0;
+
+	free (wcs);
+
+	return 0;
+}
+
+/* Translate_FromUtf8(string, [source codepage]) */
+int
+_clip_translate_fromutf8(char * p1, char * str, int len, char **result)
+{
+	int i, j, mask, clen, len1 = 0;
+	unsigned long *wcs, *wcp;
+	unsigned char *cp, *end, c;
+	char *res;
+	int n;
+	cons_CharsetEntry *cs1 = 0;
+
+
+	if (!p1 || !str)
+		return EG_ARG;
+
+
+	cp = (unsigned char *) str;
+	end = cp + len;
+	n = 0;
+	wcs = calloc(len + 1, sizeof(unsigned long));
+	wcp = wcs;
+	while (cp != end)
+	{
+		mask = 0;
+		c = *cp;
+		if (c < 0x80)
+		{
+			clen = 1;
+			mask = 0x7f;
+		}
+		else if ((c & 0xe0) == 0xc0)
+		{
+			clen = 2;
+			mask = 0x1f;
+		}
+		else if ((c & 0xf0) == 0xe0)
+		{
+			clen = 3;
+			mask = 0x0f;
+		}
+		else if ((c & 0xf8) == 0xf0)
+		{
+			clen = 4;
+			mask = 0x07;
+		}
+		else if ((c & 0xfc) == 0xf8)
+		{
+			clen = 5;
+			mask = 0x03;
+		}
+		else if ((c & 0xfc) == 0xfc)
+		{
+			clen = 6;
+			mask = 0x01;
+		}
+		else
+		{
+			free (wcs);
+			return -1;
+		}
+
+		if (cp + clen > end)
+		{
+			free (wcs);
+			return -1;
+		}
+
+		*wcp = (cp[0] & mask);
+		for (i = 1; i < clen; i++)
+		{
+			if ((cp[i] & 0xc0) != 0x80)
+			{
+				free (wcs);
+				return -1;
+			}
+			*wcp <<= 6;
+			*wcp |= (cp[i] & 0x3f);
+		}
+
+		cp += clen;
+		wcp++;
+		n++;
+	}
+	if (cp != end)
+	{
+		free (wcs);
+		return -1;
+	}
+
+	/* n is the number of wide chars constructed */
+
+	*result = calloc(n + 1, sizeof(char));
+	res = *result;
+	res[n] = 0;
+
+	if (load_charset_name(p1, &cs1, &len1))
+	{
+		_clip_logg(2, "translate_charset: cannot load charset file '%s': %s", p1, strerror(errno));
+	}
+	wcp = wcs;
+	if (cs1)
+	{
+		for(i=0; i<n; i++)
+			for(j=0; j<len1; j++)
+			{
+				cons_CharsetEntry *cp;
+				cp = cs1 + j;
+				if (wcs[i] == cp->unich)
+				{
+					res[i] = cp->ch;
+					break;
+				}
+			}
+	}
+	else
+		strcpy(res, str);
+	free (cs1);
+	free (wcs);
+
+	return 0;
+}
+
 int
 clip_TRANSLATE_CHARSET(ClipMachine * mp)
 {
@@ -2963,6 +3246,33 @@ clip_TRANSLATE_CHARSET(ClipMachine * mp)
 	if (!strcasecmp(p1, p2))
 	{
 		_clip_retcn(mp, str, len);
+		return 0;
+	}
+
+
+	if (!strcasecmp(p1, "utf-8"))
+	{
+		char *result;
+		if (!_clip_translate_fromutf8(p2, str, len, &result))
+		{
+			_clip_retc(mp, result);
+			free(result);
+		}
+		else
+			_clip_retc(mp, str);
+		return 0;
+	}
+
+	if (!strcasecmp(p2, "utf-8"))
+	{
+		char *result;
+		if (!_clip_translate_toutf8(p1, str, len, &result))
+		{
+			_clip_retc(mp, result);
+			free(result);
+		}
+		else
+			_clip_retc(mp, str);
 		return 0;
 	}
 
@@ -3101,3 +3411,5 @@ clip_DOSPARAM(ClipMachine * mp)
 
 	return 0;
 }
+
+

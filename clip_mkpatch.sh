@@ -4,7 +4,7 @@ if [ $# == 0 ]
 then
 	echo "usage: $0 from_tags -- to_tags"
 	echo "for example: $0 -D 2002-01-01 -- -D 2002-02-01"
-        echo "environment variables CVS_RSH and CVSROOT are used"
+	echo "environment variables CVS_RSH and CVSROOT are used"
 	exit 1
 fi
 
@@ -22,11 +22,11 @@ for opt in $*
 do
 	case "$opt" in
 	--)
-        	tags='to_tags'
+		tags='to_tags'
 		;;
 	*)
-        	eval "$tags=\"\$$tags \$opt\""
-        	;;
+		eval "$tags=\"\$$tags \$opt\""
+		;;
 	esac
 done
 
@@ -50,7 +50,7 @@ clean()
 {
 	cd $pwd
 	rm -rf $from_name $to_name $tmp
-        exit $1
+	exit $1
 }
 
 set -e
@@ -66,10 +66,11 @@ checkout()
 	name="$2"
 	echo "checkout $name"
 
-        cd $wd
+	cd $wd
 	mkdir -p $name
 	cd $name
 
+	echo "checkout" $tags $dir
 	cvs checkout $tags clip-prg >/dev/null 2>&1
 	cd clip-prg
 
@@ -83,6 +84,10 @@ checkout()
 
 checkout "$from_tags" "$from_name"
 checkout "$to_tags" "$to_name"
+cd $wd
+pwd
+cd $to_name/clip-prg/clip; ./seq_no.sh > seq_no.txt; cd $wd
+pwd
 
 ################################
 
@@ -96,9 +101,9 @@ exec 3>$tmp/p_list
 while read name
 do
 	if ! cmp $from_name/$name $to_name/$name >/dev/null 2>&1
-        then
+	then
 		echo $name >&3
-        fi
+	fi
 done < $tmp/to_list
 
 exec 3>&-

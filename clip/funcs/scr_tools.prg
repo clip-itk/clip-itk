@@ -250,6 +250,7 @@ Function ColorRepl(xNewAttr, xOldAttr)
 	RestScreen(0, 0, MaxRow(), MaxCol(), cScr)
 Return ''
 
+/*
 ***************************************************************
 Function ScreenMix(cStr, cAttr, nRow, nCol)
 	Local nLen := Min(len(cStr), len(cAttr))
@@ -265,6 +266,7 @@ Function ScreenMix(cStr, cAttr, nRow, nCol)
 	next
 	RestScreen(nRow, nCol, nRow, nCol+nLen-1, cScr)
 Return ''
+*/
 
 ***************************************************************
 func ClearWin(nTop, nLeft, nBottom, nRight, xAttr, xChar)

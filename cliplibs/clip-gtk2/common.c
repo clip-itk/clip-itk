@@ -1,9 +1,10 @@
 /*
     Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
-              Elena V. Kornilova  <alena@itk.ru>
+	      Elena V. Kornilova  <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
@@ -11,7 +12,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <pango/pango.h>
-#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
@@ -34,9 +34,12 @@ static ClipVar *action_list = &_action_list;
 CLIP_DLLEXPORT unsigned char *
 _clip_locale_to_utf8(unsigned char *text)
 {
+
 #ifdef OS_CYGWIN
 	unsigned char *buf;
 	unsigned char *utf_text;
+	gsize br, bw;
+	GError *ge;
 	int len;
 
 	if (!WinCharset)
@@ -53,16 +56,17 @@ _clip_locale_to_utf8(unsigned char *text)
 	len = strlen(text);
 	buf = (unsigned char *) malloc(len+1); buf[len] = 0;
 	_clip_translate_charset(ClipHostCharset,WinCharset,text,buf,len);
-	utf_text = g_locale_to_utf8(buf,NULL);
+	utf_text = g_locale_to_utf8(buf, strlen(buf), &br, &bw, &ge);
 	free(buf);
 
 	return utf_text;
 #else
-	gsize br, bw;
-        GError *ge;
-        gchar *t_utf;
 
-        t_utf = g_locale_to_utf8(text, strlen(text), &br, &bw, &ge);
+	gsize br, bw;
+	GError *ge;
+	gchar *t_utf;
+
+	t_utf = g_locale_to_utf8(text, strlen(text), &br, &bw, &ge);
 
 	return t_utf;
 #endif
@@ -74,6 +78,8 @@ _clip_locale_from_utf8(unsigned char *text)
 #ifdef OS_CYGWIN
 	unsigned char *buf;
 	unsigned char *locale_text;
+	gsize br, bw;
+	GError *ge;
 	int len;
 
 	if (!WinCharset)
@@ -87,7 +93,7 @@ _clip_locale_from_utf8(unsigned char *text)
 	if (!WinCharset || !ClipHostCharset || !text)
 		return text;
 
-	locale_text = g_locale_from_utf8(text,NULL);
+	locale_text = g_locale_from_utf8(text, strlen(text), &br, &bw, &ge);
 	len = strlen(locale_text);
 	buf = (unsigned char *) malloc(len+1); buf[len] = 0;
 	_clip_translate_charset(WinCharset,ClipHostCharset,locale_text,buf,len);
@@ -95,16 +101,28 @@ _clip_locale_from_utf8(unsigned char *text)
 	return buf;
 #else
 	gsize br, bw;
-        GError *ge;
-        gchar *t_utf;
+	GError *ge;
+	gchar *t_utf;
 
-       	t_utf = g_locale_from_utf8(text, strlen(text), &br, &bw, &ge);
+	t_utf = g_locale_from_utf8(text, strlen(text), &br, &bw, &ge);
 	return t_utf;
 #endif
 }
 
 
 /****************************************************************/
+CLIP_DLLEXPORT long
+_list_length_cwidget()
+{
+	if (widget_list->t.type == MAP_t)
+	{
+//		printf("is map \n");
+		return (long)widget_list->m.count;
+	}
+	else
+		return 0;
+}
+
 CLIP_DLLEXPORT void
 _list_put_cwidget(ClipMachine * cm, void *pointer, C_widget * cwid)
 {
@@ -254,26 +272,38 @@ _wtype_table_get_first()
 	return wtype_table;
 }
 
+CLIP_DLLEXPORT void
+_wtype_table_destroy(WTypeTable *wt_item)
+{
+	if  (wt_item->next)
+		_wtype_table_destroy(wt_item->next);
+	free(wt_item);
+}
 /****************************************************************/
 CLIP_DLLEXPORT void
 destroy_c_widget(void *item)
 {
 	C_widget *cw = (C_widget *) item;
 	C_signal *cs, *csnext;
+
+//printf("destroy widget %s\n", cw->type_name);
 	if (!cw) return;
 	if (cw->destroy)
 		cw->destroy(cw->cmachine, cw);
+	if (cw->widget)
+		_list_remove_cwidget(cw->cmachine, cw->widget);
 	_clip_destroy(cw->cmachine, &cw->obj);
 	for (cs = cw->siglist; cs;)
 	{
+//printf("destroy signal %s for widget %s\n",cs->signame, cw->type_name);
 		csnext = cs->next;
 		_clip_destroy(cw->cmachine, &cs->cfunc);
 		free(cs);
 		cs = csnext;
 	}
+        if (cs) free(cs);
 
-	if (cw->widget)
-		_list_remove_cwidget(cw->cmachine, cw->widget);
+	_clip_destroy_c_item(cw->cmachine, cw->handle, _C_ITEM_TYPE_WIDGET);
 	free(cw);
 }
 
@@ -284,12 +314,14 @@ destroy_c_object(void *item)
 	/* alena add for some object*/
 	C_signal *cs, *csnext;
 
+//printf("destroy object %s\n", co->type_name);
 	if (!co) return;
 	if (co->destroy)
 		co->destroy(co->cmachine, co);
+	if (co->object)
+		_list_remove_cwidget(co->cmachine, co->object);
 	_clip_destroy(co->cmachine, &co->obj);
 
-	/* alena add for some object*/
 	for (cs = co->siglist; cs;)
 	{
 		csnext = cs->next;
@@ -298,8 +330,7 @@ destroy_c_object(void *item)
 		cs = csnext;
 	}
 
-	if (co->object)
-		_list_remove_cwidget(co->cmachine, co->object);
+	_clip_destroy_c_item(co->cmachine, co->handle, _C_ITEM_TYPE_WIDGET);
 	free(co);
 }
 
@@ -308,6 +339,7 @@ clip_GTK_OBJECTDESTROY(ClipMachine * cm)
 {
 	C_object *co = _fetch_co_arg(cm);
 	destroy_c_object(co);
+
 	return 0;
 }
 
@@ -583,9 +615,24 @@ _fetch_cobjectn(ClipMachine* cm, int h)
 	return cobj;
 }
 
-void object_destructor (C_widget *cw)
+void widget_destructor (C_widget *cw)
 {
-	if (cw) destroy_c_widget(cw);
+	if (cw)
+{
+/*
+	WTypeTable *wt_item = NULL;
+	const char * cwtype_name = "GTK_WIDGET_UNKNOWN";
+		wt_item = _wtype_table_get(cw->type);
+		if (wt_item && wt_item->ftype_name) cwtype_name = (const char *)wt_item->ftype_name();
+		printf(" TRY destroy widget %s \n", (char *)cwtype_name);
+*/
+ destroy_c_widget(cw);
+ }
+}
+
+void object_destructor (C_object *co)
+{
+	if (co) destroy_c_object(co);
 }
 
 CLIP_DLLEXPORT C_widget *
@@ -610,8 +657,8 @@ _register_widget(ClipMachine * cm, GtkWidget * wid, ClipVar * cv)
 	cwid->destroy = NULL;
 
 	if (cv && cv->t.type == MAP_t)
-		_clip_mclone(cm, &cwid->obj, cv);
-		//cwid->obj = *cv;
+		//_clip_mclone(cm, &cwid->obj, cv);
+		cwid->obj = *cv;
 	else
 		_clip_map(cm, &cwid->obj);
 	/* Saving widget info into CLIP state machine
@@ -622,9 +669,10 @@ _register_widget(ClipMachine * cm, GtkWidget * wid, ClipVar * cv)
 	_clip_mputn(cm, &cwid->obj, HASH_TYPE, clip_wtype);
 	/* Store C_widget pointer in list of widgets */
 	_list_put_cwidget(cm, wid, cwid);
-     	if (wid && GTK_IS_OBJECT(wid))
+	//if (wid && GTK_IS_OBJECT(wid))
+	if (wid && GTK_IS_WIDGET(wid))
 		g_object_set_data_full(G_OBJECT(wid),"destructor",cwid,
-			(GDestroyNotify)object_destructor);
+			(GDestroyNotify)widget_destructor);
 	return cwid;
 }
 
@@ -632,7 +680,7 @@ CLIP_DLLEXPORT C_object *
 _register_object(ClipMachine * cm, void * data, long clip_type, ClipVar * cv, coDestructor fDestroy)
 {
 	int handle = -1;
-	C_object * cobj = (C_object*)calloc(1,sizeof(C_widget));
+	C_object * cobj = (C_object*)calloc(1,sizeof(C_object));
 	WTypeTable *wt_item;
 	long clip_wtype = GTK_WIDGET_UNKNOWN;
 
@@ -664,6 +712,10 @@ _register_object(ClipMachine * cm, void * data, long clip_type, ClipVar * cv, co
 	_clip_mputn(cm, &cobj->obj, HASH_TYPE, clip_wtype);
 	/* Store C_object pointer in list of widgets */
 	_list_put_cobject(cm, data, cobj);
+/*  	if (data && clip_type != GDK_TYPE_ATOM)
+
+  		g_object_set_data_full(G_OBJECT(data),"destructor",cobj,
+			(GDestroyNotify)object_destructor);*/
 	return cobj;
 }
 
@@ -830,10 +882,10 @@ _map_to_gdk_color (ClipMachine *cm, GdkColor *gdk_color, ClipVar *col)
 	_clip_mgetn(cm, col, HASH_BLUE, &b);
 	_clip_mgetn(cm, col, HASH_PIXEL, &p);
 
-        gdk_color->red   = r;
-        gdk_color->green = g;
-        gdk_color->blue  = b;
-        gdk_color->pixel = p;
+	gdk_color->red   = r;
+	gdk_color->green = g;
+	gdk_color->blue  = b;
+	gdk_color->pixel = p;
 }
 
 /* Get array of GCs and store it to array of maps */
@@ -876,8 +928,8 @@ _style_to_map(ClipMachine *cm, GtkStyle *style, ClipVar *m_style)
 	ClipVar *c = NEW(ClipVar);
 	ClipVar *a = NEW(ClipVar);
 	C_object *cgc;
-        ClipVar cfont;
-        gchar *font;
+	ClipVar cfont;
+	gchar *font;
 	if (!style || !m_style || m_style->t.type!=MAP_t) return;
 	/* Get colors of widget */
 
@@ -957,10 +1009,10 @@ _style_to_map(ClipMachine *cm, GtkStyle *style, ClipVar *m_style)
 		if (font)
 		{
 			memset(&cfont, 0, sizeof(cfont));
-                        _clip_var_str(font, strlen(font), &cfont);
+			_clip_var_str(font, strlen(font), &cfont);
 
 			_clip_madd(cm,m_style,HASH_FONT,&cfont);
-                        _clip_destroy(cm, &cfont);
+			_clip_destroy(cm, &cfont);
 		}
 	}
 	if (style->colormap)
@@ -983,8 +1035,8 @@ CLIP_DLLEXPORT void
 _rc_style_to_map(ClipMachine *cm, GtkRcStyle *style, ClipVar *m_style)
 {
 	ClipVar *a = NEW(ClipVar);
-        ClipVar cfont;
-        gchar *font;
+	ClipVar cfont;
+	gchar *font;
 
 	if (!style || !m_style || m_style->t.type!=MAP_t) return;
 	/* Get colors of widget */
@@ -1011,10 +1063,10 @@ _rc_style_to_map(ClipMachine *cm, GtkRcStyle *style, ClipVar *m_style)
 		if (font)
 		{
 			memset(&cfont, 0, sizeof(cfont));
-                        _clip_var_str(font, strlen(font), &cfont);
+			_clip_var_str(font, strlen(font), &cfont);
 
 			_clip_madd(cm,m_style,HASH_FONT,&cfont);
-                        _clip_destroy(cm, &cfont);
+			_clip_destroy(cm, &cfont);
 		}
 	}
 
@@ -1073,15 +1125,15 @@ _map_to_style(ClipMachine *cm, ClipVar *m_style, GtkStyle *style)
 
 /* Set font of widget */
 	c = _clip_mget(cm,m_style,HASH_FONT);
-        if (c != NULL)
-        {
+	if (c != NULL)
+	{
 		font = pango_font_description_from_string(c->s.str.buf);
 
 		if (font)
 		{
 			style->font_desc = font;
 		}
-        }
+	}
 /* Set colormap of widget */
 	c = _clip_mget(cm,m_style,HASH_COLORMAP);
 	if (c && (c->t.type == MAP_t || c->t.type == NUMERIC_t))
@@ -1102,37 +1154,37 @@ _map_to_rc_style(ClipMachine *cm, ClipVar *m_style, GtkRcStyle *style, GtkStateT
 
 	/* Colors */
 	if ( (c = _clip_mget( cm, m_style, HASH_FG_COLOR )) != NULL )
-        {
+	{
 		_map_colors_to_gdk_array(cm, c, style->fg);
-        	style->color_flags[state] |= GTK_RC_FG;
-        }
+		style->color_flags[state] |= GTK_RC_FG;
+	}
 	if ( (c = _clip_mget( cm, m_style, HASH_BG_COLOR )) != NULL )
-        {
+	{
 		_map_colors_to_gdk_array(cm, c, style->bg);
-        	style->color_flags[state] |= GTK_RC_BG;
+		style->color_flags[state] |= GTK_RC_BG;
 	}
 	if ( (c = _clip_mget( cm, m_style, HASH_TEXT_COLOR )) != NULL )
-        {
+	{
 		_map_colors_to_gdk_array(cm, c, style->text);
-        	style->color_flags[state] |= GTK_RC_TEXT;
+		style->color_flags[state] |= GTK_RC_TEXT;
 	}
 	if ( (c = _clip_mget( cm, m_style, HASH_BASE_COLOR )) != NULL )
-        {
+	{
 		_map_colors_to_gdk_array(cm, c, style->base);
-        	style->color_flags[state] |= GTK_RC_BASE;
+		style->color_flags[state] |= GTK_RC_BASE;
 	}
 
 /* Set font of widget */
 	c = _clip_mget(cm,m_style,HASH_FONT);
-        if (c != NULL)
-        {
+	if (c != NULL)
+	{
 		font = pango_font_description_from_string(c->s.str.buf);
 
 		if (font)
 		{
 			style->font_desc = font;
 		}
-        }
+	}
 }
 
 
@@ -1140,58 +1192,58 @@ CLIP_DLLEXPORT gint
 _map_to_gdk_geometry(ClipMachine *cm, ClipVar *m_geom, GdkGeometry *geom)
 {
 	ClipVar *c;
-        gint  mask =0;
+	gint  mask =0;
 
 	if ( (c = _clip_mget( cm, m_geom, HASH_MIN_WIDTH )) != NULL )
-        {
-        	geom->min_width = c->n.d;
-                mask |= GDK_HINT_MIN_SIZE;
-        }
+	{
+		geom->min_width = c->n.d;
+		mask |= GDK_HINT_MIN_SIZE;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_MIN_HEIGHT )) != NULL )
-        {
-        	geom->min_height = c->n.d;
-                mask |= GDK_HINT_MIN_SIZE;
-        }
+	{
+		geom->min_height = c->n.d;
+		mask |= GDK_HINT_MIN_SIZE;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_MAX_WIDTH )) != NULL )
-        {
-        	geom->max_width = c->n.d;
-                mask |= GDK_HINT_MAX_SIZE;
-        }
+	{
+		geom->max_width = c->n.d;
+		mask |= GDK_HINT_MAX_SIZE;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_MAX_HEIGHT )) != NULL )
-        {
-        	geom->max_height = c->n.d;
-                mask |= GDK_HINT_MAX_SIZE;
-        }
+	{
+		geom->max_height = c->n.d;
+		mask |= GDK_HINT_MAX_SIZE;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_BASE_WIDTH )) != NULL )
-        {
-        	geom->base_width = c->n.d;
-                mask |= GDK_HINT_BASE_SIZE;
-        }
+	{
+		geom->base_width = c->n.d;
+		mask |= GDK_HINT_BASE_SIZE;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_BASE_HEIGHT )) != NULL )
-        {
-        	geom->base_height = c->n.d;
-                mask |= GDK_HINT_BASE_SIZE;
-        }
+	{
+		geom->base_height = c->n.d;
+		mask |= GDK_HINT_BASE_SIZE;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_WIDTH_INC )) != NULL )
-        {
-        	geom->width_inc = c->n.d;
-                mask |= GDK_HINT_RESIZE_INC;
-        }
+	{
+		geom->width_inc = c->n.d;
+		mask |= GDK_HINT_RESIZE_INC;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_HEIGHT_INC )) != NULL )
-        {
-        	geom->height_inc = c->n.d;
-                mask |= GDK_HINT_RESIZE_INC;
-        }
+	{
+		geom->height_inc = c->n.d;
+		mask |= GDK_HINT_RESIZE_INC;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_MIN_ASPECT )) != NULL )
-        {
-        	geom->min_aspect = c->n.d;
-                mask |= GDK_HINT_ASPECT;
-        }
+	{
+		geom->min_aspect = c->n.d;
+		mask |= GDK_HINT_ASPECT;
+	}
 	if ( (c = _clip_mget( cm, m_geom, HASH_MAX_ASPECT )) != NULL )
-        {
-        	geom->max_aspect = c->n.d;
-                mask |= GDK_HINT_ASPECT;
-        }
+	{
+		geom->max_aspect = c->n.d;
+		mask |= GDK_HINT_ASPECT;
+	}
 	return mask;
 }
 
@@ -1199,56 +1251,56 @@ _map_to_gdk_geometry(ClipMachine *cm, ClipVar *m_geom, GdkGeometry *geom)
 CLIP_DLLEXPORT gint
 _arr_to_valist(ClipMachine *cm, ClipVar *marg, va_list valist)
 {
-        /*
-        unsigned long n = marg->a.count;
-        GValue value;
+	/*
+	unsigned long n = marg->a.count;
+	GValue value;
 	gint i;
 	for (i=0; i<n; i++)
-        {
+	{
 		ClipVar c;
-        	ClipVar *elem;
+		ClipVar *elem;
 
 		memset(&value, 0, sizeof(value));
-        	elem = marg->a.items+i;
+		elem = marg->a.items+i;
 		switch (_clip_type(elem))
 		{
 		case NUMERIC_t:
 			g_value_init(&value, G_TYPE_LONG);
-                        g_value_set_long(&value, elem->lv.l);
+			g_value_set_long(&value, elem->lv.l);
 			break;
 		case CHARACTER_t:
 			g_value_init(&value, G_TYPE_STRING);
-                        g_value_set_string(&value, elem->s.str.buf);
+			g_value_set_string(&value, elem->s.str.buf);
 			break;
 		case LOGICAL_t:
 			g_value_init(&value, G_TYPE_BOOLEAN);
-                        g_value_set_boolean(&value, elem->l.val);
+			g_value_set_boolean(&value, elem->l.val);
 			break;
 
-	       	case DATE_t:
-	       		value[0] = G_TYPE_LONG;
-                        value[1] = elemv.d.julian;
-	       		break;
-	       	case DATETIME_t:
-	       		rc = "T";
-	       		break;
-	       	case OBJECT_t:
-	       		value[0] = G_TYPE_LONG;
-                        value[1] = elem.d.julian;
-	       		break;
-	       	case PCODE_t:
-	       	case CCODE_t:
-	       		rc = "B";
-	       		break;
-	       	case ARRAY_t:
-	       		rc = "A";
-	       		break;
-	       	case MAP_t:
-	       		rc = "O";
-	       		break;
+		case DATE_t:
+			value[0] = G_TYPE_LONG;
+			value[1] = elemv.d.julian;
+			break;
+		case DATETIME_t:
+			rc = "T";
+			break;
+		case OBJECT_t:
+			value[0] = G_TYPE_LONG;
+			value[1] = elem.d.julian;
+			break;
+		case PCODE_t:
+		case CCODE_t:
+			rc = "B";
+			break;
+		case ARRAY_t:
+			rc = "A";
+			break;
+		case MAP_t:
+			rc = "O";
+			break;
 		}
 		_clip_aget(cm, marg, &c, 2, value);
-        }
+	}
 */
 	return 0;
 }
@@ -1263,16 +1315,16 @@ _map_to_gtk_accel_key (ClipMachine *cm, ClipVar *cv, GtkAccelKey *key)
 	_clip_mgetn(cm, cv, HASH_ACCEL_FLAGS, &accel_flags);
 
 	key->accel_key = (guint)accel_key;
-        key->accel_mods = (GdkModifierType)accel_mods;
-        key->accel_flags = (guint)accel_flags;
+	key->accel_mods = (GdkModifierType)accel_mods;
+	key->accel_flags = (guint)accel_flags;
 }
 
 CLIP_DLLEXPORT void
 _array_to_target_entry (ClipMachine *cm, ClipVar *cv, GtkTargetEntry *target)
 {
 	target->target = cv->a.items[0].s.str.buf;
-        target->flags  = (guint)cv->a.items[1].n.d;
-        target->info   = (guint)cv->a.items[2].n.d;
+	target->flags  = (guint)cv->a.items[1].n.d;
+	target->info   = (guint)cv->a.items[2].n.d;
 }
 
 CLIP_DLLEXPORT void
@@ -1311,6 +1363,7 @@ _stock_item_to_map(ClipMachine *cm, ClipVar *cv, GtkStockItem *item)
 
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 static void callback_action(GtkAction *action, gpointer data)
 {
 
@@ -1416,11 +1469,11 @@ CLIP_DLLEXPORT void
 _file_filter_info_to_map (ClipMachine *cm, GtkFileFilterInfo *info, ClipVar *cv)
 {
 
-        _clip_mputn(cm, cv, HASH_CONTAINS, info->contains);
-        _clip_mputc(cm, cv, HASH_FILENAME, (gchar *)info->filename, strlen(info->filename));
-        _clip_mputc(cm, cv, HASH_URI, (gchar *)info->uri, strlen(info->uri));
-        _clip_mputc(cm, cv, HASH_DISPLAY_NAME, (gchar *)info->display_name, strlen(info->display_name));
-        _clip_mputc(cm, cv, HASH_MIME_TYPE, (gchar *)info->mime_type, strlen(info->mime_type));
+	_clip_mputn(cm, cv, HASH_CONTAINS, info->contains);
+	_clip_mputc(cm, cv, HASH_FILENAME, (gchar *)info->filename, strlen(info->filename));
+	_clip_mputc(cm, cv, HASH_URI, (gchar *)info->uri, strlen(info->uri));
+	_clip_mputc(cm, cv, HASH_DISPLAY_NAME, (gchar *)info->display_name, strlen(info->display_name));
+	_clip_mputc(cm, cv, HASH_MIME_TYPE, (gchar *)info->mime_type, strlen(info->mime_type));
 }
 
 CLIP_DLLEXPORT void
@@ -1445,4 +1498,4 @@ _map_to_file_filter_info(ClipMachine *cm, ClipVar *cv, GtkFileFilterInfo *info)
 	info->mime_type = c->s.str.buf;
 }
 
-
+#endif

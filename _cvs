@@ -1,5 +1,5 @@
 #!/bin/sh
 CVS_RSH=ssh
 export CVS_RSH
-exec cvs $*
+exec cvs -z 9 $*
 

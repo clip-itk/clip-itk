@@ -4,6 +4,7 @@
               Elena V. Kornilova  <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
@@ -11,7 +12,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <string.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
@@ -98,8 +98,8 @@ clip_GTK_WINDOWNEW(ClipMachine * cm)
 		}
 	//cwid = (C_widget*)calloc( 1, sizeof(C_widget) );
 	cwid = _register_widget(cm, wid, cv);
-	cwid->accel_group = gtk_accel_group_new();
-	gtk_window_add_accel_group (GTK_WINDOW (wid), cwid->accel_group);
+	//cwid->accel_group = gtk_accel_group_new();
+	//gtk_window_add_accel_group (GTK_WINDOW (wid), cwid->accel_group);
 //	gtk_signal_connect( GTK_OBJECT( wid ), "delete-event",
 //		GTK_SIGNAL_FUNC( delete_window_handler ), NULL );
 

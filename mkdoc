@@ -2,7 +2,8 @@
 
 pwd=`pwd`
 
-formats='html txt pdf'
+#formats='html txt pdf'
+formats='html'
 ver=$(head -1 debian/changelog |cut -d'(' -f2|cut -d')' -f1)
 path=../clip_distrib/$ver/doc
 rm -rf $path

@@ -23,7 +23,9 @@
 #define FA_DIRECTORY	16
 #define FA_ARCHIVE	32
 //#define FD_DELIM	translate_charset(__CHARSET__, host_charset(), "Å")
-#define FD_DELIM 	chr(PGCH_VLINE)
+/*#define FD_DELIM 	chr(PGCH_VLINE)*/
+#define FD_DELIM	iif(set(_SET_DISPBOX),translate_charset("cp437", host_charset(), CHR(179)),chr(PGCH_VLINE))
+
 
 function DiskFileDialog(Driver, Curdrv, Curdir, pMask)
 local i, gi, retvalue, scr, k, item, r, f, nkey:=1, gfocus, lbopen:=.f., c[2], s
@@ -69,6 +71,7 @@ fdp:lbobj:display()
 
 showview(fdp)
 fdp:getobj:setFocus()
+fdp:getobj:gotopos(len(alltrim(fdp:getobj:varGet()))+1)
 gfocus := 1
 
 while nkey!=0
@@ -242,6 +245,8 @@ while nkey!=0
 				    showview(fdp)
 				else
 				    gfocus := 1
+				    fdp:getobj:setFocus()
+				    fdp:getobj:killFocus()
 				    fdp:getobj:varPut(padr(alltrim(fdp:current) + item, 256))
 				    fdp:getobj:setFocus()
 				    fdp:getobj:gotopos(len(alltrim(fdp:getobj:varGet()))+1)
@@ -332,6 +337,8 @@ static function initItem(fdp)
 	aadd(fdp:viewitem, b[i][2])
     next
 
+    fdp:getobj:setFocus()
+    fdp:getobj:killFocus()
     fdp:getobj:varPut(fdp:current+fdp:mask+DOP)
     fdp:getobj:setFocus()
     fdp:listobj:refresh()

@@ -1,4 +1,4 @@
-STATIC sRootPath := "/var/www/htdocs"
+STATIC sRootPath := "/var/www"
 STATIC sSrcDir := "."
 STATIC sHtml
 
@@ -7,6 +7,8 @@ PROCEDURE Main
 	LOCAL str := ""
 	LOCAL i := 0
 	LOCAL t
+
+	SET TRANSLATE PATH OFF
 
 	ErrorBlock({|e| break(e)})
 
@@ -81,7 +83,7 @@ PROCEDURE Usage
 	? "  -h, --help       Display this help and exit"
 	? "  -r <www-root>    The path for the WWW-root"
 	? "                   (must be the same as one used in clip_hindex)"
-	? "                   default is /var/www/htdocs"
+	? "                   default is /var/www"
 	? "  -s <index_path>  Directory containing hindex.dbf(fpt,htx) files"
 	? "                   default is ./"
 	? "  -t               HTML output (default text)"

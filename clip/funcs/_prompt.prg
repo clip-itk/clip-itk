@@ -137,11 +137,11 @@ function __menuTo(choice,_varname)
 				exit
 			endif
 		enddo
-		dispbegin()
 		if mRightDown()
 			nKey := 27
 			loop
 		endif
+		dispbegin()
 		if mLeftDown() .and. mRow() == massprompt[1][1]
 			mChoice := 0
 			mCol := mCol()

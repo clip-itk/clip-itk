@@ -114,4 +114,7 @@ FUNCTION ISEGA()
 *****************************************************
 	function fontreset
 	return .t.
+*****************************************************
+	function dosidle
+	return .t.
 

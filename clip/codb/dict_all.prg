@@ -22,6 +22,7 @@ function codb_dictAll_Methods(path,dict_id,user,passwd)
 	obj:counters	:= NIL
 	obj:hDbMeta	:= NIL
 	obj:hDbMetaIdx	:= NIL
+	obj:__enableTriggers := .t.
 	obj:__objCache	:= map()
 	obj:__plugCache	:= map()
 	obj:__modCache	:= map()
@@ -30,6 +31,9 @@ function codb_dictAll_Methods(path,dict_id,user,passwd)
 	obj:objCRC	:= @_dict_objCRC()
 	obj:depository	:= @_dict_depository()
 	obj:padrBody	:= @_dict_padrBody()
+	obj:runTrigger  := @_dict_runTrigger()
+	obj:stopTriggers  := @_dict_stopTriggers()
+	obj:startTriggers  := @_dict_startTriggers()
 
 return obj
 ************************************************************
@@ -44,6 +48,26 @@ return ntoc(crc32(var2str(obj)),32,8,"0")
 ************************************************************
 static function _dict_padrBody(self,oData,metaName)
 return	self:checkBody(oData,metaName,.t.)
+************************************************************
+static function _dict_stopTriggers(self)
+	self:__enableTriggers := .f.
+return
+************************************************************
+static function _dict_startTriggers(self)
+	self:__enableTriggers := .t.
+return
+************************************************************
+static function _dict_runTrigger(self,cId,cTrigger,oldBody,NewBody)
+	local i,m,ret:=.t., tret
+	if !self:__enableTriggers
+		return ret
+	endif
+	m:=self:getTriggers(cId,cTrigger)
+	for i=1 to len(m)
+		tret := eval(m[i],self,oldBody,newBody)
+		ret := ret .and. ( valtype(tret)=="L" .and. tret)
+	next
+return ret
 ************************************************************
 static function _dict_depository(self,sDep)
 	local sDeposit:=sDep, depName :=""

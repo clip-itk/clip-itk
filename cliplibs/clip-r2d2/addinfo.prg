@@ -9,7 +9,7 @@ local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc
 local columns,col,mas:={},objs:={}
 local err_desc:="",keyValue
-local a,b
+local urn,a,b
 
 local p_list,pdoc_del:=map()
 local sprname:=""
@@ -29,6 +29,9 @@ local sprname:=""
 	endif
 	if "ID" $ _query
 		id := _query:id
+	endif
+	if "URN" $ _query
+		URN := _query:URN
 	endif
 
 	lang := cgi_choice_lang(lang)
@@ -217,6 +220,7 @@ local sprname:=""
 				for i=1 to len(tmp)
 					k := oDep:getValue(tmp[i])
 					if !empty(k)
+						aadd(aRefs,{k:id,"",.f.,k})
 						aadd(objs,k)
 					endif
 				next
@@ -228,15 +232,33 @@ local sprname:=""
 				for i=1 to len(p_list)
 					k := oDep:getValue(p_list[i])
 					if !empty(k)
+						aadd(aRefs,{k:id,"",.f.,k})
 						aadd(objs,k)
 					endif
 				next
 			else
 				obj := oDep:getValue(id)
+				aadd(aRefs,{obj:id,"",.f.,obj})
 				aadd(objs,obj)
 			endif
 		endif
 	next
+
+#ifndef __1
+	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
+	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	?
+	cgi_fillTreeRdf(aRefs,aTree,"",1)
+
+	if empty(urn)
+		urn := 'urn:'+sprname
+	endif
+	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+	?
+	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+	? '</RDF:RDF>'
+#else
 	/* put xml-header */
 	?
 	? '<overlay '
@@ -291,6 +313,7 @@ local sprname:=""
 	? '</tree>'
 //	? '</box>'
 	? '</overlay>'
+#endif
 
 ?
 return

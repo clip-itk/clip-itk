@@ -23,7 +23,7 @@ OBJS  = aading.o aavg.o acctadj.o acctmnth.o acctqtr.o acctweek.o \
 	xbox.o year.o \
 	dosver.o floptst.o isshare.o mouse1.o nwlstat.o nwsem.o \
 	page.o scancode.o  vidcur.o  vidmode.o \
-	clrsel.o menuto.o
+	clrsel.o menuto.o ftext.o
 	# dfile.o
 
 

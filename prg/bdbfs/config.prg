@@ -13,7 +13,7 @@ STATIC aOther:={'_lForced','_timing','_lMeter','_sx_step','_mask','_UndoSize',;
 		'_macro','_MemoEditor','_textViewer','_PlugDir',;
 		'_nMemoTab','_nMemoWrap',;
 		'_DirShow','_AutoSave','_AutoRestore',;
-		'_nBrowMaxField','_lPckNoAsk','_lPckCheck'}
+		'_nBrowMaxField','_lPckAsk','_lPckCheck'}
 
 STATIC aOth1 :={'_ClipChoice','_ClipWChoice','_lCnvWClip',;
 		'_lexp_o2a','_lexp_o2aq',;
@@ -181,7 +181,7 @@ Gets:={ {05,05,_MSG_A_O_CLCH},;
 IF ConfigWindow(Gets,Sets,_MSG_A_O_TOP,{{17,_MSG_A_O_FASS}})
 	FOR i:=1 TO LEN(Sets)
 		aS:=Sets[i]
-		&(aOther[i]):=IF(VALTYPE(aS)='C',ALLTRIM(as),as)
+		&(aOth1[i]):=IF(VALTYPE(aS)='C',ALLTRIM(as),as)
 	NEXT
 	__aExt:=&(Sets[8])
 ENDIF
@@ -340,7 +340,7 @@ ChDir(HomeDir)
 IF aNames[1]#0
 	IF EMPTY(xCp)
 		m->_req:=0
-		Set("DBF_CHARSET", aNames[2])
+		Set("DBF_CHARSET", Sx_FNameParser(aNames[2]))
 	ELSE
 		xCp:=aNames[2]	//по ссылке
 	ENDIF

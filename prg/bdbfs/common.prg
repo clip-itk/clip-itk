@@ -15,6 +15,7 @@ MEMVAR	__mcol,__mrow,_middlerow,_middlecol,_mins,_ms,;
 	_timing,_told,_tally,main_keys,;
 	_c_F,_scatter,_works,_pole,__sum,__count,;
 	_req,__go,_tmr,alSelect,_pushkeys,_pushfkeys
+
 ***********
 PROC Devices
 PUBLIC _mins:=IsMouse(),__mcol:=MaxCol(),__mrow:=MaxRow(),_ms:=0
@@ -436,7 +437,7 @@ LOCAL i,xRes,cType
 
 xRes:=&_Fld
 xRes:={'','','','','','','',0,0,0,0,0,ctod(''),.f.,NIL};
-	[AT(ValType(xRes),'CMVXGPTNFBIYDLU')]
+ 	[AT(ValType(xRes),'CMVXGPTNFBIYDLU')]
 IF m->_CurRType=='X' THEN xRes:=NIL
 IF Select()==1
 	_fld:=RealFldName(_fld)
@@ -457,15 +458,19 @@ RETU IF(_i#0, &(_Pole[_i]), BAD_EXPR+_head)
 FUNC ForAch
 LOCAL _oldc:=SetColor(m->_im),_i
 PARAM _awt,_Whead,_acItems,_Current,_Hlp,anKeys,aDescr
-PRIVATE _aWl,_aWr
+PRIVATE _aWl,_aWr,_lHist:=.F.
 
 m->_awt:=MAX(m->_awt,5)
 
 _i:=INT(Max(A_MaxLen(m->_acItems),LEN(m->_wHead))/2)+1
 m->_aWl:=MAX(_middlecol-_i,2)-1
 m->_aWr:=MIN(_middlecol+_i,__mcol-2)+1
-
 SaveAllKeys(m->anKeys)
+
+IF 'HIST' $ ProcName(1)
+	m->Main_Keys[8]:=_MSG_DEL_F8
+	m->_lHist:=.T.
+ENDIF
 
 Panel(m->_awt-2,m->_awl-1,;
 	m->_awb:=MIN(m->_awt+2+MIN(Len(m->_acItems),m->__mrow-9),m->__mrow),;
@@ -484,7 +489,7 @@ WHILE m->lRepeat
 		   m->_acItems,,'L_Ach',IF(PCount()<6,1,m->_Current))
 END
 IF _i > 0
-	DO WHILE First(_acItems[_i])=='>'
+	DO WHILE First(m->_acItems[_i])=='>'
 		_i--
 	ENDDO
 ENDIF
@@ -533,8 +538,9 @@ DO CASE
 		RETU 1
 
 	CASE _a=K_F8 .OR. (_a=K_CTRL_D .AND. Altf()=2)	//Отличать от ->
-		IF 'HISTORY' $ CalledFrom()
+		IF m->_lHist
 			A_Del(m->_acItems,_numb)
+			IF m->_lOwn THEN A_Del(m->_ClipText,_numb)
 			RETU 5
 		ELSEIF	'SETTAG' $ CalledFrom()
 			DelTag(1,_numb)
@@ -551,15 +557,17 @@ DO CASE
 		m->lRepeat:=.T.
 		m->_Current:=_numb
 		FT_PUTKEY(260)
-		@ cRowMark,m->_awr say '▒'
+		@ cRowMark,m->_awr say SCROLL_FILL
 		RETU 1
 
-	CASE _a=K_CTRL_UP .AND. _numb<>1
+	CASE _a=K_CTRL_UP .AND. m->_lHist .AND. _numb<>1
 		SwapAItems(m->_acItems,_numb,_numb-1)
+		IF m->_lOwn THEN SwapAItems(m->_ClipText,_numb,_numb-1)
 		KEYB _UP
 
-	CASE _a=K_CTRL_DOWN  .AND. _numb<>_la
+	CASE _a=K_CTRL_DOWN .AND. m->_lHist .AND. _numb<>_la
 		SwapAItems(m->_acItems,_numb,_numb+1)
+		IF m->_lOwn THEN SwapAItems(m->_ClipText,_numb,_numb+1)
 		KEYB _DOWN
 
 	CASE BETWEEN(_a,32,255) .OR. _a==299	//ALT+\
@@ -580,7 +588,7 @@ DO CASE
 		IF _nMoves==0
 			KEYB _a
 		ELSE
-			Eval(oTb:SkipBlock, _nMoves)
+	                Eval(oTb:SkipBlock, _nMoves)
 			oTb:RefreshAll()
 			@ _top+Int((_numb-1)*_Length/(_la-1)),m->_awr say SCROLL_FILL
 			KEYB _EMP
@@ -896,7 +904,7 @@ DispBegin()
 
 DO CASE
 // Сначала - частая проверка
-	CASE lWas .AND. nStep=2 .AND. !EMPTY(m->_lMeter) .AND. nCurr>=(nLast+_sx_step)
+	CASE lWas .AND. nStep=2 .AND. nCurr>=nLast .AND. !EMPTY(m->_lMeter)
 		nLast:=nCurr
 		IF nMuch==0 THEN nMuch:=KeyCount()	//В Append может проявиться
 		IF !EMPTY(nTotal) THEN nMuch:=nTotal
@@ -906,7 +914,7 @@ DO CASE
 		SAY_HERE '│' COLOR _HdColor
 		@ 15,nL+14  SAY NTRIM(nCurr)+'/'+NTRIM(nMuch) +;
 				' ( '+NTRIM(nCurr*100/nMuch)+ ' % ) '+;
-				IF(!EMPTY(_timing),Ntrim(Seconds()-_tOld)+SEC_M,'');
+				IF(EMPTY(_timing),'',Ntrim(Seconds()-_tOld)+SEC_M);
 				COLOR _HdColor
 
 	CASE nStep==1
@@ -1032,7 +1040,7 @@ IF_NIL bFor IS {||.T.}
 bFor:=Compile(bFor)
 bEval:=Compile(bEval)
 FOR i:=xFrom TO xTo
-	IF EVAL(bFor, i) THEN xRet:=Eval(bEval,i)
+	IF Eval(bFor, i) THEN xRet:=Eval(bEval,i)
 NEXT
 RETURN xRet
 **********
@@ -1119,6 +1127,8 @@ DO WHILE .T.
 				key:=m->_hlp
 			ENDIF
 			HELP(key)
+		CASE (key=K_ALT_F10)
+			BliRun()
 		CASE ( (keyBlock := SetKey(key)) <> NIL )
 			Eval(keyBlock)
 
@@ -1276,13 +1286,15 @@ PROC Fkeys(_alt)
 LOCAL _i:=1,keys,_r,_c
 HideMouse()
 SavePos()
-_alt:=AltF()
+_alt:=ALTF()
 DO CASE
   CASE EMPTY(_alt)
 	keys:=m->Main_Keys
+	keys[1]:=_MSG_F1
 
   CASE _alt=1	//Alt_Pressed
 	keys:=m->Alt_keys
+	keys[10]:=_MSG_AF10
 
   CASE _alt=2	//Ctrl_Pressed
 	keys:=m->Ctrl_keys
@@ -1331,10 +1343,11 @@ ENDIF
 RETURN cDest
 **********
 FUNC BliRun(process, cmd_stdin)
-LOCAL cursor,out:=space(0), error:=space(0),scr
+LOCAL cursor,out:=space(0), error:=space(0),scr, _r, _c
 IF_NIL cmd_stdin IS ''
 IF_NIL process IS GETE("COMSPEC")
 ScrSave(@scr)
+SavePos()
 Scroll() ; DevPos(0,0)
 cursor:=SetCursor(1)
 COMMIT
@@ -1344,6 +1357,7 @@ BEGIN SEQU
 END
 __KeyBoard()
 SetCursor(cursor)
+RestPos()
 ScrRest(scr)
 SetBlink(.F.)	// почему-то портится
 RETURN error
@@ -1366,7 +1380,7 @@ ENDIF
 
 IF !EMPTY(m->_ClipWText)
 	IF (LEN(m->_ClipWText) > 1) .AND. m->_ClipWChoice
-		i:=ForAch(10,USE_HISTORY,m->_ClipWText,1,'H5')
+		i:=HistClip(m->_ClipWText)
 	ENDIF
 	IF i<>0 THEN cBuf:=m->_ClipWText[i]
 ENDIF
@@ -1384,12 +1398,15 @@ IF !EMPTY(m->_ClipText)
 	IF (LEN(m->_ClipText) > 1) .AND. m->_ClipChoice
 		AEVAL(m->_ClipText,{|_1| AADD(aClip,PAD(FT_XTOY(_1,'C'),60)+ ;
 					' ('+VALTYPE(_1)+ ')' ) } )
-		i:=ForAch(10,USE_HISTORY,aClip,1,'H5')
-		*i:=History(aClip,.T.)	//После уничтожения неясно как уничтожать в {CLipText}
+		i:=HistClip(aClip,.T.)
 	ENDIF
 	IF i<>0 THEN xRes:=m->_ClipText[i]
 ENDIF
 RETURN xRes
+**********
+FUNC HistClip(aClip,lInClip)
+m->_lOwn:=!EMPTY(lInClip)	//Признак вызова GetClipboard
+RETURN ForAch(10,USE_HISTORY,aClip,1,'H1')
 **********
 FUNC Compile(cBlock)
 ErrorBlock({|e|Break(.T.)})	//Из-за ошибки вложенных блоков
@@ -1442,7 +1459,7 @@ LOCAL i:=LEN(cShort)
 IF IsNILorTRUE(lNeedTrim) THEN cLong:=LTRIM(cLong)
 RETURN (LEFT(cLong,i)==cShort)
 **********
-FUNC Out(r,c,xMsg,cClr)
+PROC Out(r,c,xMsg,cClr)
 LOCAL _r, _c
 SavePos(); DispOutAt(r,c,xMsg,cClr); RestPos()
 **********
@@ -1568,10 +1585,10 @@ FUNC Rand (nStart)
  Если указан параметр nStart,то последовательность начинается заново.
  От каждого nStart всегда возвращается одинаковая последовательность.
  Пример:
-	? Rand(seconds()) - первый элемент
-	While !Waitkey(3)<>xbeK_ESC
+ 	? Rand(seconds()) - первый элемент
+ 	While !Waitkey(3)<>xbeK_ESC
 		? Rand()
-	end
+ 	end
 */
 
 static r_iy:=100001

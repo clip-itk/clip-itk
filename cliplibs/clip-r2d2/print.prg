@@ -1,13 +1,14 @@
 #include "r2d2lib.ch"
 
-static m_objs:=map(), m_class:={}
+static m_objs:=map(), m_class:={}, m_refs:=map()
+static sprID:=""
 
 function r2d2_printobj_xml(_queryArr)
 
 local err,_query
 local lang:="",sDep:="",sDict,obj_id:="",id_list:={}
 local i,j,k,sTmp,obj,classDesc
-local sprname := "", sErr, s_obj
+local sprName,sErr, s_obj
 local columns,oDep,oDict
 
 
@@ -25,6 +26,8 @@ local columns,oDep,oDict
 	if "SPR" $ _query
 		sprname := _query:spr
 	endif
+	lang := cgi_choice_lang(lang)
+	sDep := cgi_choice_sDep(lang)
 	sprname := lower(sprname)
 	sDict:= cgi_choice_sDict(@sprname)
 
@@ -60,6 +63,7 @@ local columns,oDep,oDict
 			cgi_xml_error("Class definition not found for:"+sprname)
 			return
 		endif
+		sprID := classDesc:id
 
 		columns := cgi_make_columns(oDict,sprname)
 
@@ -77,6 +81,7 @@ local columns,oDep,oDict
 			id_list:=oDep:select(classDesc:id,,,s_obj:expr)
 			set exact on
 		endif
+		sprID := ""
 	endif
 
 	calc_objs(id_list)
@@ -86,18 +91,52 @@ local columns,oDep,oDict
 	sTmp:=strtran(sTmp,'"',"")
 	//? '<body>'
 	?
+	//? '<print id="'+sTmp+'">'
 	? '<print id="'+sTmp+'">'
+
+	for i=1 to len(m_class)
+		print_table(m_class[i][1],m_class[i][2])
+	next
+	//? '</print>'
+	?
+
+	sDep:="ACC00"
+	oDep := codb_needDepository(sDep+"01")
+	if empty(oDep)
+		cgi_xml_error( "Depository not found: "+sDep+"01" )
+		return
+	endif
+	oDict := oDep:dictionary()
+	sprname:="myfirm_constant"
+	classDesc:=oDict:classBodyByName(sprname)
+	if empty(classDesc)
+		cgi_xml_error("Class definition not found for:"+sprname)
+		return
+	endif
+	//sprID := classDesc:id
+
+	columns := cgi_make_columns(oDict,sprname)
+
+	if empty(columns)
+		cgi_xml_error("Empty table description for "+sprname)
+		return
+	endif
+
+	id_list:=oDep:select(classDesc:id)
+
+	m_class := {}
+	calc_objs(id_list)
+	//? '<print id="myfirm_constant">'
 	for i=1 to len(m_class)
 		print_table(m_class[i][1],m_class[i][2])
 	next
 	? '</print>'
 	?
-	//cgi_xml_footer()
 
 
 /********************************************/
 static function print_table(class_id,_id_list)
-	local i,j,k,x,id_list
+	local i,j,k,x,id_list, s:=space(4)
 	local obj_id,obj,attr,classDesc,columns
 	local idDict,oDict
 
@@ -139,21 +178,36 @@ static function print_table(class_id,_id_list)
 	    adel(m_class[j][2],k)
 	    asize(m_class[j][2],len(m_class[j][2])-1)
 	next
-	? '</table>'
+
+	k := atl(".",classDesc:name)
+	s:=classDesc:name
+	if k>0
+		s := left(classDesc:name,k-1)
+	endif
+	? '</'+s+'>'
+	//? '</table>'
 	?
 return
 /********************************************/
 static function print_obj(obj,columns)
-	local i,j,col,k,obj2,sTmp,id_ref, s:=space(4)
-	? s+'<tr name="object" id="'+obj:id+'">'
+	local i,j,col,k,obj2,sTmp,id_ref, s:=space(4), midref:=""
+	//? s+'<tr name="object" id="'+obj:id+'">'
+	? s+'<object id="'+obj:id+'" '
+	if "VALUE" $ obj
+		?? 'value="'+obj:value+'"'
+	endif
+	?? '>'
 	for i=1 to len(columns)
+		midref:=""
 		id_ref := ""
 		col:=columns[i]
-		? s+'<td name="'+col:name+'"'
+		//? s+'<td name="'+col:name+'"'
+		? space(4)+s+'<'+col:name+' '
 		sTmp := mapEval(obj,col:block)
 		if "DATATYPE" $ col .and. col:datatype == "R"
 			id_ref := obj[upper(col:name)]
 			sTmp  := codb_essence(sTmp)
+			midref:= 'idref="'+id_ref+'"'
 		elseif "DATATYPE" $ col .and. col:datatype=="S"
 			//id_ref := obj[upper(col:name)]
 			obj2:=codb_getValue(sTmp)
@@ -161,7 +215,8 @@ static function print_obj(obj,columns)
 				k:= codb_tColumnBody(obj2:id)
 				if !empty(k)
 					sTmp := k:header //+':'+obj2:name
-					id_ref := obj2:name
+					//id_ref := obj2:name
+					midref:= 'idref="'+obj2:name+'"'
 				else
 					sTmp := obj2:name+":"+obj2:id
 				endif
@@ -176,15 +231,21 @@ static function print_obj(obj,columns)
 		elseif valtype(sTmp) == "A"
 			sTmp := alltrim(varToString( stmp,,, .f.))
 			sTmp := substr(stmp,2,len(sTmp)-2)
-			sTmp:=strtran(sTmp,'"',"")
-			id_ref := sTmp
+			sTmp := strtran(sTmp,'"',"")
+			sTmp := strtran(sTmp,','," ")
+			midref:= 'idrefs="'+sTmp+'"'
+			//id_ref := sTmp
 			sTmp:=""
 		else
 			sTmp := toString(sTmp)
 		endif
-		?? ' id_ref="'+id_ref+'">'+sTmp+' </td>'
+
+		//midref := iif(valtype(sTmp) == "A", 'idrefs', 'idref')
+		//?? midref+'="'+id_ref+'">'+alltrim(sTmp)+'</'+col:name+'>'
+		?? midref+'>'+alltrim(sTmp)+'</'+col:name+'>'
+
 	next
-	? s+'</tr>'
+	? s+'</object>'
 return
 
 /************************************************/
@@ -196,12 +257,13 @@ static function print_tableHeader(classDesc,columns)
 	if k>0
 		s := left(classDesc:name,k-1)
 	endif
-	? '<table id="'+classDesc:id+'" name="'+s+'">'
+	//? '<table id="'+classDesc:id+'" name="'+s+'">'
+	? '<'+s+' id="'+classDesc:id+'" name="'+s+'">'
 	s:=space(4)
-	? s+'<tr name="description">'
+	? s+'<headers>'
 	for i=1 to len(columns)
 		col:=columns[i]
-		? s+'<th name="'+col:name+'"'
+		? s+'<col name="'+col:name+'"'
 		if "ATTR_ID" $ col
 			?? ' id="'+col:attr_id+'"'
 		endif
@@ -219,28 +281,39 @@ static function print_tableHeader(classDesc,columns)
 			if "DATAREFTO" $ col
 				?? ' dataRefTo="'+col:dataRefTo+'"'
 			endif
+			if "DATALEN" $ col
+			 //	?? ' datalen="'+col:datalen+'"'
+			endif
+
 		endif
-		?? '>'+col:header+'</th>'
+		?? '>'+col:header+'</col>'
 	next
-	? s+'</tr>'
+	? s+'</headers>'
 return
 /********************************************/
 static function calc_objs(id_list)
 	local i,j,k,m:={},x,obj,attr,classDesc
+	local s1,s2
 
 	for i=1 to len(id_list)
+		if id_list[i] $ m_objs
+			loop
+		endif
 		obj := codb_getValue(id_list[i])
 		if empty(obj)
 			outlog("Object not readable:",id_list[i])
 			loop
 		endif
-		if obj:id $ m_objs
+		if obj:class_id == sprID
 			loop
 		endif
 		classDesc := codb_getValue(obj:class_id)
 		if empty(classDesc)
 			outlog("Object not readable:",obj:class_id)
 			loop
+		endif
+		if len(id_list) == 1 .and. empty(sprID)
+			sprId := classDesc:id
 		endif
 		m_objs[obj:id] := obj
 		j := ascan(m_class,{|x|x[1] == obj:class_id})
@@ -257,6 +330,22 @@ static function calc_objs(id_list)
 				outlog("Object not readable:",classDesc:attr_list[j])
 				loop
 			endif
+			if !empty(attr:ref_to)
+				s1:=classDesc:id+attr:ref_to
+				s2:=attr:ref_to+classDesc:id
+				//? obj:id,s1,s2,s1 $ m_refs,s2 $ m_refs
+				if ! (s1 $ m_refs)
+					m_refs[s1] := s1
+				endif
+				if s2 $ m_refs
+					loop
+				endif
+			endif
+
+			if attr:ref_to == sprID
+				loop
+			endif
+			//? obj:id, obj[upper(attr:name)],classDesc:name,attr:name,attr:ref_to,sprID,attr:ref_to == sprID
 			if attr:type=="R"
 				aadd(m, obj[upper(attr:name)])
 				loop
@@ -265,7 +354,6 @@ static function calc_objs(id_list)
 				calc_array(obj[upper(attr:name)],m)
 			endif
 		next
-
 	next
 	if !empty(m)
 		calc_objs(m)

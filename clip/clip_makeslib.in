@@ -73,7 +73,11 @@ done
 
 echo
 
-/bin/ls *.o *.so 2>/dev/null >_olist
+if test "$OSNAME" = "CYGWIN"; then
+    /bin/ls *.o *.dll 2>/dev/null >_olist
+else
+    /bin/ls *.o *.so 2>/dev/null >_olist
+fi
 if [ -z "$NM_UNDERSCORE" ]
 then
 	$NM_PRG `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b6- |sort -u>_lst
@@ -269,17 +273,17 @@ case "$OSNAME" in
 CYGWIN)
 	if [ "$target" != libclip ]
 	then
-		if [ -f $CLIPROOT/lib/libclip.dll.a ]
+		if [ -f $CLIPROOT/lib/libclip.dll ]
 		then
-			addlib="$addlib $CLIPROOT/lib/libclip.dll.a"
-		elif [ -f $CLIPROOT/libclip.dll.a ]
+			addlib="$addlib $CLIPROOT/lib/libclip.dll"
+		elif [ -f $CLIPROOT/libclip.dll ]
 		then
-			addlib="$addlib $CLIPROOT/libclip.dll.a"
-		elif [ -f $CLIP_ROOT/lib/libclip.dll.a ]
+			addlib="$addlib $CLIPROOT/libclip.dll"
+		elif [ -f $CLIP_ROOT/lib/libclip.dll ]
 		then
-			addlib="$addlib $CLIP_ROOT/lib/libclip.dll.a"
+			addlib="$addlib $CLIP_ROOT/lib/libclip.dll"
 		else
-			addlib="$addlib -lclip"
+			addlib="$addlib /usr/local/clip/lib/libclip.dll"
 		fi
 	fi
 	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -c $target_ref || cleanup 1

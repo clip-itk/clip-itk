@@ -5,6 +5,12 @@
  */
 /*
    $Log: file.c,v $
+   Revision 1.94  2004/11/02 12:05:54  clip
+   uri: small fix for 13.2 format detecting for numeric constants.
+
+   Revision 1.93  2004/10/28 11:47:33  clip
+   uri: fix formatiing in STR(), pad*() for numeric data and constants.
+
    Revision 1.92  2004/05/26 09:52:23  clip
    rust: some cleanings
 
@@ -1324,7 +1330,12 @@ write_File(File * file)
 		if (!s)
 			s = strchr(sp->val, 'E');
 		if (len < 10)
-			len = 10;
+		{
+			if ( dec > 0 )
+				len = 11+dec;
+			else
+				len = 10;
+		}
 		/*if (dec < 2)
 		   dec = 2; */
 		if (dec > len)
@@ -1841,7 +1852,12 @@ write_OFile(File * file, long *len)
 		if (s)
 			dec = len - (s - sp->val) - 1;
 		if (len < 10)
-			len = 10;
+		{
+			if ( dec > 0 )
+				len = 11+dec;
+			else
+				len = 10;
+		}
 		/*if (dec < 2)
 		   dec = 2; */
 		if (dec > len)
@@ -2219,9 +2235,9 @@ read_names(char *s, Coll * ex, Coll * nm)
 typedef struct
 {
 	long hash;
-        int label;
-        int branch;
-        char *str;
+	int label;
+	int branch;
+	char *str;
 }
 Label;
 
@@ -2232,11 +2248,11 @@ cmp_Label(void *p1, void *p2)
 	Label *l2 = (Label *)p2;
 
 	if (l1->hash < l2->hash)
-        	return -1;
+		return -1;
 	else if (l1->hash > l2->hash)
-        	return 1;
-        else
-        	return 0;
+		return 1;
+	else
+		return 0;
 }
 
 static Label *
@@ -2245,8 +2261,8 @@ new_Label(char *str)
 	Label *ret;
 
 	ret = (Label *)calloc(1, sizeof(Label));
-        ret->hash = hashstr(str + 5);
-        ret->str = str;
+	ret->hash = hashstr(str + 5);
+	ret->str = str;
 
 
 	return ret;
@@ -2257,7 +2273,7 @@ static void
 print_tree(FILE *out, Coll *tree, int beg, int end)
 {
 	int med;
-        Label *lp, *rp, *cp;
+	Label *lp, *rp, *cp;
 
 	if (beg>end)
 		return;
@@ -2266,22 +2282,22 @@ print_tree(FILE *out, Coll *tree, int beg, int end)
 
 	fprintf(out, "#%d/%d/%d\n", beg, med, end);
 
-        if (beg == end)
-        {
-        	cp = (Label*) tree->items[beg];
+	if (beg == end)
+	{
+		cp = (Label*) tree->items[beg];
 
 		/*fprintf(out, "\t.p2align 4,,7\n");*/
 		fprintf(out, ".L%d:\n", cp->branch);
 		fprintf(out, "\tcmpl $%ld,%%eax\n", cp->hash );
 		fprintf(out, "\tje .L%d\n", cp->label);
 		fprintf(out, "\tjmp .L1\n");
-                return;
-        }
-        else if ( (beg+1) == med && (end-1) == med )
-        {
-        	cp = (Label*) tree->items[med];
-        	lp = (Label*) tree->items[beg];
-        	rp = (Label*) tree->items[end];
+		return;
+	}
+	else if ( (beg+1) == med && (end-1) == med )
+	{
+		cp = (Label*) tree->items[med];
+		lp = (Label*) tree->items[beg];
+		rp = (Label*) tree->items[end];
 
 		/*fprintf(out, "\t.p2align 4,,7\n");*/
 		fprintf(out, ".L%d:\n", cp->branch);
@@ -2293,12 +2309,12 @@ print_tree(FILE *out, Coll *tree, int beg, int end)
 		fprintf(out, "\tje .L%d\n", rp->label);
 
 		fprintf(out, "\tjmp .L1\n");
-                return;
-        }
-        else if (beg == (end-1))
-        {
-        	cp = (Label*) tree->items[beg];
-        	rp = (Label*) tree->items[end];
+		return;
+	}
+	else if (beg == (end-1))
+	{
+		cp = (Label*) tree->items[beg];
+		rp = (Label*) tree->items[end];
 
 		/*fprintf(out, "\t.p2align 4,,7\n");*/
 		fprintf(out, ".L%d:\n", cp->branch);
@@ -2308,13 +2324,13 @@ print_tree(FILE *out, Coll *tree, int beg, int end)
 		fprintf(out, "\tje .L%d\n", rp->label);
 
 		fprintf(out, "\tjmp .L1\n");
-                return;
-        }
-        else
-        {
-        	cp = (Label*) tree->items[med];
-        	lp = (Label*) tree->items[(beg+med-1)/2];
-        	rp = (Label*) tree->items[(med+1+end)/2];
+		return;
+	}
+	else
+	{
+		cp = (Label*) tree->items[med];
+		lp = (Label*) tree->items[(beg+med-1)/2];
+		rp = (Label*) tree->items[(med+1+end)/2];
 
 		/*fprintf(out, "\t.p2align 4,,7\n");*/
 		fprintf(out, ".L%d:\n", cp->branch);
@@ -2326,7 +2342,7 @@ print_tree(FILE *out, Coll *tree, int beg, int end)
 		fprintf(out, "\tjg .L%d\n", rp->branch);
 
 		fprintf(out, "\tjmp .L1\n");
-        }
+	}
 
 	print_tree(out, tree, beg, med-1);
 	print_tree(out, tree, med+1, end);
@@ -2337,14 +2353,14 @@ print_labels(FILE *out, Coll *tree)
 {
 	int i, count;
 
-        for(i = 0, count = tree->count; i<count; i++)
-        {
-        	Label *cp = (Label*) tree->items[i];
+	for(i = 0, count = tree->count; i<count; i++)
+	{
+		Label *cp = (Label*) tree->items[i];
 		/*fprintf(out, "\t.p2align 4,,7\n");*/
 		fprintf(out, ".L%d:\n", cp->label);
 		fprintf(out, "\tmovl $%s%s,%%eax\n", US, cp->str );
 		fprintf(out, "\tjmp .L2\n");
-        }
+	}
 }
 
 void
@@ -2698,29 +2714,29 @@ write_Cfunc(const char *name, int argc, char **argv, Coll * ex, Coll * nm)
 				labn++;
 			}
 		}
-                if (names.count)
-                {
+		if (names.count)
+		{
 			/* tree create */
-                        Coll tree;
-                        int i;
+			Coll tree;
+			int i;
 
 			init_Coll(&tree, free, cmp_Label);
 
 			fprintf(out, "\tmovl 8(%%ebp),%%eax\n");
 
-                        for(i=0; i<names.count; i++)
-                        	insert_Coll(&tree, new_Label((char*)(names.items[i])));
+			for(i=0; i<names.count; i++)
+				insert_Coll(&tree, new_Label((char*)(names.items[i])));
 
-                        for(i=0; i<tree.count; i++)
-                        	((Label*)(tree.items[i]))->branch = labn++;
-                        for(i=0; i<tree.count; i++)
-                        	((Label*)(tree.items[i]))->label = labn++;
+			for(i=0; i<tree.count; i++)
+				((Label*)(tree.items[i]))->branch = labn++;
+			for(i=0; i<tree.count; i++)
+				((Label*)(tree.items[i]))->label = labn++;
 
-                        print_tree(out, &tree, 0, names.count-1);
-                        print_labels(out, &tree);
+			print_tree(out, &tree, 0, names.count-1);
+			print_labels(out, &tree);
 
-                        destroy_Coll(&tree);
-                }
+			destroy_Coll(&tree);
+		}
 		fprintf(out, "\t.p2align 4,,7\n");
 		fprintf(out, ".L1:\n");
 		fprintf(out, "\txorl %%eax,%%eax\n");

@@ -54,7 +54,11 @@ cd $dir
 
 echo
 
-/bin/ls *.o *.so 2>/dev/null >_olist
+if test "$OSNAME" = "CYGWIN"; then
+    /bin/ls *.o *.dll 2>/dev/null >_olist
+else
+    /bin/ls *.o *.so 2>/dev/null >_olist
+fi
 if [ -z "$NM_UNDERSCORE" ]
 then
 	$NM_PRG `cat _olist` | grep  '[ 	][	]*[TD][ 	][ 	]*clip_[A-Z_][A-Z_]*' | cut -d' ' -f 3 | cut -b6- |sort -u>_lst

@@ -59,11 +59,11 @@ FUNCTION SQLBrowse(r,top,left,bottom,right,columns,headers,widths,pictures)
 		IF widths != NIL
 			column:width := widths[i]
 		ENDIF
-        IF pictures != NIL
-        	column:picture := pictures[i]
-        ENDIF
+		IF pictures != NIL
+			column:picture := pictures[i]
+		ENDIF
 		column:type := r:FieldType(columns[i])
-		column:len := r:FieldLen(columns[i])
+		column:_len := r:FieldLen(columns[i])
 		column:dec := r:FieldDec(columns[i])
 		browse:addColumn(column)
 	NEXT
@@ -180,7 +180,7 @@ STATIC PROCEDURE DoGet(browse)
 	if eval(col:block) == NIL
 		switch(col:type)
 			case 'C'
-				eval(col:block,space(col:len))
+				eval(col:block,space(col:_len))
 			case 'N'
 				eval(col:block,0)
 			case 'D'

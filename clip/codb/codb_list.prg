@@ -191,7 +191,7 @@ static function cdb_new(self,readOnly)
 	rddSetMemo(self:hDb,"FPT",path)
 	self:__readOnly := readOnly
 	if self:hDB<=0
-		self:error:=codb_error(1008)+":"+str(ferror())+":"+ferrorstr()
+		self:error:=codb_error(1008)+":"+str(ferror(),3,0)+":"+ferrorstr()
 	endif
 return self
 
@@ -356,7 +356,7 @@ static function cdb_update(data)
 		rec:=map()
 		rec:id := data:id
 		rec:body:=data
-		if rddRLock(::hDb)
+		if waitRddLock(::hDb)
 			rddWrite(::hDb,rec)
 		else
 			::error := codb_error(1005)

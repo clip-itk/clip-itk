@@ -261,6 +261,17 @@ static function browse_handleKey(self,hkey)
 			self:configure()
 			self:invalidate()
 			ret := 0
+		case hkey == 32 // space pressed
+			self:oIdList:setWhere()
+			self:refreshAll()
+		case hkey > 32 .and. hkey<255
+			i := self:getColumn(self:colpos)
+			if !empty(i:fieldName)
+				tmp := i:fieldName+'="'+chr(hKey)+'"'
+				self:oIdList:setWhere(tmp)
+				self:refreshAll()
+			endif
+			ret := 0
 		otherwise
 			ret1=self:applykey(hkey)
 			if ret1==0

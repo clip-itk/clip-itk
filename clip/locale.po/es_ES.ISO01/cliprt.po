@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-11-21 10:29+0400\n"
+"POT-Creation-Date: 2004-11-17 18:08+0400\n"
 "PO-Revision-Date: 2002-11-29 11:53+0400\n"
 "Last-Translator: Mauricio Abrev <maurifull@datafull.com>\n"
 "Language-Team: Spanish <clip-devel@itk.ru>\n"
@@ -13,631 +13,636 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: translated from rusian cliprt.po file\n"
 
-#: clipbase.c:1039
+#: clipbase.c:1074
 #, fuzzy
 msgid "Open error"
 msgstr "error de apertura"
 
-#: clipbase.c:1040
+#: clipbase.c:1075
 msgid "Bad alias"
 msgstr "Alias inválido"
 
-#: clipbase.c:1041 rdd/btree.c:141 rdd/rdd.c:785 rdd/rddclip.c:190
-#: rdd/six.c:392
+#: clipbase.c:1076 rdd/btree.c:143 rdd/rdd.c:827 rdd/rddclip.c:205
+#: rdd/six.c:394
 msgid "No such field"
 msgstr "No existe el campo"
 
-#: clipbase.c:1042 rdd/six.c:395
+#: clipbase.c:1077 rdd/six.c:397
 msgid "Workarea not in use"
 msgstr "Area de trabajo inactiva"
 
-#: clipbase.c:1043
+#: clipbase.c:1078
 msgid "No alias"
 msgstr "No hay alias"
 
-#: clipbase.c:1044 rdd/rdd.c:784 rdd/rddclip.c:193 rdd/six.c:394
+#: clipbase.c:1079 rdd/rdd.c:826 rdd/rddclip.c:208 rdd/six.c:396
 msgid "No controlling order"
 msgstr "No hay orden de control"
 
-#: clipbase.c:1045 rdd/cdx.c:524 rdd/ntx.c:340 rdd/rdd.c:779
+#: clipbase.c:1080 rdd/cdx.c:547 rdd/ntx1.c:111 rdd/ntx.c:366 rdd/rdd.c:821
 msgid "Bad FOR expression"
 msgstr "Expresión FOR inválida"
 
-#: clipbase.c:1143
+#: clipbase.c:1178
 #, c-format
 msgid "No driver linked: %s"
 msgstr "Driver no enlazado: %s"
 
-#: clipbase.c:1262
+#: clipbase.c:1297
 #, c-format
 msgid "no namespace %lx"
 msgstr "ámbito de nombre %lx no existe"
 
-#: clipbase.c:1269
+#: clipbase.c:1304
 #, c-format
 msgid "no namespace var %lx"
 msgstr "ámbito de nombre de variable %lx no existe"
 
-#: clipbase.c:1892
+#: clipbase.c:1928
 #, c-format
 msgid "Alias already in use: %s"
 msgstr "Alias actualmente en uso: %s"
 
-#: clipdbg.c:322
+#: clipdbg.c:328
 #, c-format
 msgid "got debug signal %d"
 msgstr "obtenida señal de depuración %d"
 
-#: clipdbg.c:332
+#: clipdbg.c:338
 #, c-format
 msgid "debug: cannot open debug input '%s': %s"
 msgstr "depuración: no se puede abrir entrada de depuración '%s': %s"
 
-#: clipdbg.c:349
+#: clipdbg.c:355
 #, c-format
 msgid "debug: cannot open debug output '%s': %s"
 msgstr "depuración: no se puede abrir salida de depuración '%s': %s"
 
-#: clipdbg.c:394 clipdbg.c:416
+#: clipdbg.c:400 clipdbg.c:422
 #, c-format
 msgid "sigint: file %s line %d proc %s"
 msgstr "sigint: archivo %s línea %d proc %s"
 
-#: clipdbg.c:463
+#: clipdbg.c:469
 #, c-format
 msgid "dbg read cmd: %s"
 msgstr "dbg leer cmd: %s"
 
-#: clipdbg.c:574
+#: clipdbg.c:580
 #, c-format
 msgid "breakpoint reached: file %s line %d proc %s"
 msgstr "punto de parada alcanzado: archivo %s línea %d proc %s"
 
-#: clipdbg.c:606
+#: clipdbg.c:612
 #, c-format
 msgid "watchpoint reached: expr '%s' file %s line %d proc %s"
 msgstr "punto de observación alcanzado: expr '%s' archivo  %s línea %d proc %s"
 
-#: clipdbg.c:702
+#: clipdbg.c:708
 #, c-format
 msgid "process dbg cmd: '%s'"
 msgstr "procesar cmd dbg: '%s'"
 
-#: clipdbg.c:713
+#: clipdbg.c:719
 #, c-format
 msgid "find dbg cmd: '%s', %d argc"
 msgstr "buscar cmd dbg: '%s', %d argc"
 
-#: clipdbg.c:736
+#: clipdbg.c:742
 #, c-format
 msgid "end cmd: '%s'"
 msgstr "fin cmd: '%s'"
 
-#: cliprt.c:1923
+#: cliprt.c:2037
 #, c-format
 msgid "init screen: %s"
 msgstr "inicializando pantalla: %s"
 
-#: cliprt.c:2218
+#: cliprt.c:2353
 msgid "exit"
 msgstr "saliendo"
 
-#: cliprt.c:2578
+#: cliprt.c:2713
 msgid "start"
 msgstr "comenzando"
 
-#: cliprt.c:2594
+#: cliprt.c:2729
 #, c-format
 msgid "process LANG environ '%s/%s'"
 msgstr "procesando entorno LANG '%s/%s'"
 
-#: cliprt.c:2603
+#: cliprt.c:2738
 #, c-format
 msgid "process CHARSET environ '%s/%s'"
 msgstr "procesando entorno CHARSET '%s/%s'"
 
-#: cliprt.c:2612
+#: cliprt.c:2747
 #, c-format
 msgid "process TERM environ '%s/%s'"
 msgstr "procesando entorno TERM %s/%s"
 
-#: cliprt.c:2676
+#: cliprt.c:2811
 #, c-format
 msgid "load charset tables '%s'"
 msgstr "cargando tablas de juego de caracteres '%s'"
 
-#: cliprt.c:2688
+#: cliprt.c:2823
 #, c-format
 msgid "set stream io translation  %s -> %s"
 msgstr "puesto traducción de flujo e/s\t%s -> %s"
 
-#: cliprt.c:2692 cliprt.c:2697 set.c:1471 set.c:1478
+#: cliprt.c:2827 cliprt.c:2832 set.c:1582 set.c:1589
 #, c-format
 msgid "cannot load charset file '%s': %s"
 msgstr "no se puede cargar archivo de juego de caracteres '%s': %s"
 
-#: cliprt.c:2940
+#: cliprt.c:3027
+#, fuzzy, c-format
+msgid "CLIP VM debug signal %d #%d"
+msgstr "obtenida señal de depuración %d"
+
+#: cliprt.c:3086
 #, c-format
 msgid "got signal %s, exiting..."
 msgstr "obtenida señal %s, terminando..."
 
-#: cliprt.c:2946 _io.c:3101
+#: cliprt.c:3092 _io.c:3243
 #, c-format
 msgid "trace: file '%s' line %d"
 msgstr "trazado: archivo '%s' línea %d"
 
-#: cliprt.c:3216
+#: cliprt.c:3375
 #, c-format
 msgid "C call: proc '%s' file '%s' line %d"
 msgstr "llamada C: proc '%s' archivo '%s' línea %d"
 
-#: cliprt.c:3241
+#: cliprt.c:3420
 #, c-format
 msgid "%s: systerm errorblock: runtime error: %s"
 msgstr "%s: errorblock del sistema: error de ejecución: %s"
 
-#: cliprt.c:3245 cliprt.c:3260 cliprt.c:6651 cliprt.c:9163
+#: cliprt.c:3424 cliprt.c:3439 cliprt.c:6917 cliprt.c:9493
 #, c-format
 msgid "trace: %s"
 msgstr "trazado: %s"
 
-#: cliprt.c:3256
+#: cliprt.c:3435
 #, c-format
 msgid "%s: errorblock nested too deep (%d): "
 msgstr "%s: errorblock anidado demasiado profundo (%d): "
 
-#: cliprt.c:3313
+#: cliprt.c:3485
 #, c-format
 msgid "C call from: proc '%s' file '%s' line %d"
 msgstr "llamada C desde: proc '%s' archivo '%s' línea %d"
 
-#: cliprt.c:3348
+#: cliprt.c:3520
 #, c-format
 msgid "C return=%d to: proc '%s' file '%s' line %d"
 msgstr "C retorna=%d a: proc '%s' archivo '%s' línea %d"
 
-#: cliprt.c:3709
+#: cliprt.c:3881
 msgid "clip_eval: non-code argument"
 msgstr "clip_eval: argumento no-código"
 
-#: cliprt.c:3899
+#: cliprt.c:4095
 msgid "call by name not from CHARACTER_t or NUMERIC_t value"
 msgstr "llamada por nombre no desde valor CHARACTER_t o NUMERIC_t"
 
-#: cliprt.c:5352
+#: cliprt.c:5616
 msgid "non-logical type in NOT operator"
 msgstr "tipo no-lógico en operador 'NO'"
 
-#: cliprt.c:5366
+#: cliprt.c:5630
 msgid "non-numeric type in MINUS operator"
 msgstr "tipo no-numérico en operador 'MENOS'"
 
-#: cliprt.c:5534
+#: cliprt.c:5798
 #, c-format
 msgid "macro assign with non-character argument (%s)"
 msgstr "asignación de macro con argumento no-caracter (%s)"
 
-#: cliprt.c:5546 cliprt.c:7912 cliprt.c:11013
+#: cliprt.c:5810 cliprt.c:8191 cliprt.c:11471
 #, c-format
 msgid "no variable name: '%.*s'"
 msgstr "no hay nombre de variable '%.*s'"
 
-#: cliprt.c:5625
+#: cliprt.c:5889
 msgid "non-logical var in condition"
 msgstr "variable no-lógica en condición"
 
-#: cliprt.c:6454 cliprt.c:6586
+#: cliprt.c:6720 cliprt.c:6852
 #, fuzzy, c-format
 msgid "no memvar variable '%s'"
 msgstr "no hay variable '%s'"
 
-#: cliprt.c:6491 cliprt.c:6517 cliprt.c:6545 cliprt.c:6566
+#: cliprt.c:6757 cliprt.c:6783 cliprt.c:6811 cliprt.c:6832
 #, c-format
 msgid "no variable '%s'"
 msgstr "no hay variable '%s'"
 
-#: cliprt.c:6604 cliprt.c:6621
+#: cliprt.c:6870 cliprt.c:6887
 #, c-format
 msgid "try access to unknown public var '%s'"
 msgstr "intentando acceder a variable pública desconocida '%s'"
 
-#: cliprt.c:6681
+#: cliprt.c:6949
 #, c-format
 msgid "invalid arguments for  '%s' operation"
 msgstr "argumentos inválidos para operación '%s'"
 
-#: cliprt.c:6729
+#: cliprt.c:7008
 msgid "invalid arguments"
 msgstr "argumentos inválidos"
 
-#: cliprt.c:6858
+#: cliprt.c:7137
 msgid "adel for non-array object"
 msgstr "adel para un objeto no-tabla"
 
-#: cliprt.c:6867
+#: cliprt.c:7146
 #, c-format
 msgid "index for adel is out-of range: ind=%d, count=%d"
 msgstr "índice para adel fuera de rango: ind=%d, cont=%d"
 
-#: cliprt.c:6896
+#: cliprt.c:7175
 msgid "asize for non-array object"
 msgstr "asize para objeto no-tabla"
 
-#: cliprt.c:6910
+#: cliprt.c:7189
 #, c-format
 msgid "index for asize is out-of range: ind=%d, count=%d"
 msgstr "índice para asize fyera de rango: ind=%d, cont=%d"
 
-#: cliprt.c:6940
+#: cliprt.c:7219
 msgid "ains for non-array object"
 msgstr "ains para objeto no-tabla"
 
-#: cliprt.c:6948
+#: cliprt.c:7227
 #, c-format
 msgid "index for ains is out-of range: ind=%d, count=%d"
 msgstr "índice para ains fuera de rango: ind=%d, cont=%d"
 
-#: cliprt.c:6998
+#: cliprt.c:7277
 msgid "aget for non-array object"
 msgstr "aget para objeto no-tabla"
 
-#: cliprt.c:7013
+#: cliprt.c:7292
 #, c-format
 msgid "index for aget is out-of range: ind=%d, count=%d"
 msgstr "índice para aget fuera de rango: ind=%d, cont=%d"
 
-#: cliprt.c:7052
+#: cliprt.c:7331
 msgid "aset for non-array object"
 msgstr "aset para objeto no-tabla"
 
-#: cliprt.c:7067
+#: cliprt.c:7346
 #, c-format
 msgid "index for aset is out-of range: ind=%d, count=%d"
 msgstr "índice para aset fuera de rango: ind=%d, cont=%d"
 
-#: cliprt.c:7232
+#: cliprt.c:7511
 msgid "madd for non-map object"
 msgstr "madd para objeto no-map"
 
-#: cliprt.c:7267
+#: cliprt.c:7546
 msgid "mdel for non-map object"
 msgstr "mdel para objeto no-map"
 
-#: cliprt.c:7287
+#: cliprt.c:7566
 msgid "mind for non-map object"
 msgstr "mind para objeto no-map"
 
-#: cliprt.c:7388
+#: cliprt.c:7667
 #, c-format
 msgid "try fetch element from non-array object%s%s"
 msgstr "intentando obtener elemento de objeto no-tabla %s%s"
 
-#: cliprt.c:7439
+#: cliprt.c:7718
 #, c-format
 msgid "map fetch error: index %s"
 msgstr "map obtuvo error: índice %s"
 
-#: cliprt.c:7462
+#: cliprt.c:7741
 #, c-format
 msgid "out-of-bounds array %s, index=%d, count=%d"
 msgstr "fuera de límites, tabla %s, índice=%d, cont=%d"
 
-#: cliprt.c:7548
+#: cliprt.c:7827
 msgid "map/array fetch error"
 msgstr "erros obteniendo map/tabla"
 
-#: cliprt.c:8217
+#: cliprt.c:8505
 msgid "undefined macro-variable in string"
 msgstr "macro-variable indefinida en cadena de texto"
 
-#: cliprt.c:8224
+#: cliprt.c:8512
 msgid "non-character result of macro in string"
 msgstr "resultado no-caracter en resultado de macro en cadena de texto"
 
-#: cliprt.c:8336
+#: cliprt.c:8624
 #, c-format
 msgid "macro operation with non-character argument (%s)"
 msgstr "operación macro con argumento no caracter (%s)"
 
-#: cliprt.c:8481
+#: cliprt.c:8769
 #, c-format
 msgid "no method %s"
 msgstr "no hay método %s"
 
-#: cliprt.c:8504
+#: cliprt.c:8792
 #, c-format
 msgid "method %s is not code"
 msgstr "método %s no es código"
 
-#: cliprt.c:9057
+#: cliprt.c:9387
 msgid "invalid type in INCR/DECR operation"
 msgstr "tipo inválido en operación INCR/DECR"
 
-#: cliprt.c:9159
+#: cliprt.c:9489
 #, c-format
 msgid "%s: runtime error: %s"
 msgstr "%s: error de ejecución: %s"
 
-#: cliprt.c:10279
+#: cliprt.c:10729
 msgid "unknown error"
 msgstr "error desconocido"
 
-#: cliprt.c:10282 _util.c:2010
+#: cliprt.c:10732 _system.c:372 _util.c:2060
 msgid "invalid argument"
 msgstr "argumento inválido"
 
-#: cliprt.c:10285
+#: cliprt.c:10735
 msgid "bound error"
 msgstr "error de límite"
 
-#: cliprt.c:10288
+#: cliprt.c:10738
 msgid "string too long"
 msgstr "cadena de texto demasiado larga"
 
-#: cliprt.c:10291
+#: cliprt.c:10741
 msgid "number too big"
 msgstr "número demasiado grande"
 
-#: cliprt.c:10294
+#: cliprt.c:10744
 msgid "divide by zero"
 msgstr "división por cero"
 
-#: cliprt.c:10297
+#: cliprt.c:10747
 msgid "number error"
 msgstr "error de número"
 
-#: cliprt.c:10300
+#: cliprt.c:10750
 msgid "syntax error"
 msgstr "error de sintaxis"
 
-#: cliprt.c:10303
+#: cliprt.c:10753
 msgid "syntax too complex"
 msgstr "sintaxis demasiado compleja"
 
-#: cliprt.c:10307
+#: cliprt.c:10757
 msgid "memory error"
 msgstr "error de memoria"
 
-#: cliprt.c:10310
+#: cliprt.c:10760
 msgid "no function"
 msgstr "no hay función"
 
-#: cliprt.c:10313
+#: cliprt.c:10763
 msgid "no method"
 msgstr "no hay método"
 
-#: cliprt.c:10316
+#: cliprt.c:10766
 msgid "no variable"
 msgstr "no hay variable"
 
-#: cliprt.c:10319
+#: cliprt.c:10769
 msgid "no alias"
 msgstr "no hay alias"
 
-#: cliprt.c:10322
+#: cliprt.c:10772
 msgid "no varmethod"
 msgstr "no hay método de variable"
 
-#: cliprt.c:10326
+#: cliprt.c:10776
 msgid "create error"
 msgstr "error de creación"
 
-#: cliprt.c:10329
+#: cliprt.c:10779
 msgid "open error"
 msgstr "error de apertura"
 
-#: cliprt.c:10332
+#: cliprt.c:10782
 msgid "close error"
 msgstr "error de cierre"
 
-#: cliprt.c:10335
+#: cliprt.c:10785
 msgid "read error"
 msgstr "error de lectura"
 
-#: cliprt.c:10338
+#: cliprt.c:10788
 msgid "write error"
 msgstr "error de escritura"
 
-#: cliprt.c:10341
+#: cliprt.c:10791
 msgid "print error"
 msgstr "error de impresión"
 
-#: cliprt.c:10345
+#: cliprt.c:10795
 msgid "unsupported"
 msgstr "no soportado"
 
-#: cliprt.c:10348
+#: cliprt.c:10798
 msgid "limit exhaust"
 msgstr "límite exhausto"
 
-#: cliprt.c:10351
+#: cliprt.c:10801
 msgid "corruption detected"
 msgstr "corrupción detectada"
 
-#: cliprt.c:10354
+#: cliprt.c:10804
 msgid "wrong datatype"
 msgstr "tipo de datos erróneo"
 
-#: cliprt.c:10357
+#: cliprt.c:10807
 msgid "wrong datawidth"
 msgstr "tamaño de datos erróneo"
 
-#: cliprt.c:10360
+#: cliprt.c:10810
 msgid "no table"
 msgstr "no hay base de datos"
 
-#: cliprt.c:10363
+#: cliprt.c:10813
 msgid "no order"
 msgstr "no hay orden"
 
-#: cliprt.c:10366
+#: cliprt.c:10816
 msgid "share violation"
 msgstr "error de compartición"
 
-#: cliprt.c:10369
+#: cliprt.c:10819
 msgid "unlocked"
 msgstr "no bloqueado"
 
-#: cliprt.c:10372
+#: cliprt.c:10822
 msgid "readonly"
 msgstr "sólo lectura"
 
-#: cliprt.c:10375
+#: cliprt.c:10825
 msgid "appendlock"
 msgstr "bloqueo de agregado"
 
-#: cliprt.c:10378
+#: cliprt.c:10828
 msgid "bad alias"
 msgstr "alias inválido"
 
-#: cliprt.c:10381
+#: cliprt.c:10831
 #, fuzzy
 msgid "locking error"
 msgstr "Error de desbloqueo"
 
-#: cliprt.c:10384
+#: cliprt.c:10834
 msgid "system signal"
 msgstr ""
 
-#: cliprt.c:10974
+#: cliprt.c:11432
 #, c-format
 msgid "macro reference with non-character argument (%s)"
 msgstr "referencia a macro con argumento no-caracter (%s)"
 
-#: cliprt.c:11634 cliprt.c:11639
+#: cliprt.c:12093 cliprt.c:12098
 #, c-format
 msgid "translate_charset: cannot load charset file '%s': %s"
 msgstr "translate_charset: no se puede cargar archivo '%s': %s"
 
-#: cliprt.c:11724
+#: cliprt.c:12183
 #, c-format
 msgid "stack check failed at line %d file %d"
 msgstr "fallo en chequeo de pila en línea %d archivo %d"
 
-#: clipvm.c:647
+#: clipvm.c:696
 #, c-format
 msgid "cannot stat file '%s': %s"
 msgstr "no se puede acceder al archivo '%s': %s"
 
-#: clipvm.c:653
+#: clipvm.c:702
 #, c-format
 msgid "is not regular file '%s'"
 msgstr "no es un archivo regular '%s'"
 
-#: clipvm.c:660
+#: clipvm.c:709
 #, c-format
 msgid "is not pobj file '%s'"
 msgstr "no es archivo pobj '%s'"
 
-#: clipvm.c:667
+#: clipvm.c:716
 #, c-format
 msgid "open file '%s' error: %s"
 msgstr "abriendo archivo '%s' error: %s"
 
-#: clipvm.c:684
+#: clipvm.c:733
 #, c-format
 msgid "mmap file '%s' error: %s"
 msgstr "mmap en archivo '%s' error: %s"
 
-#: clipvm.c:707
+#: clipvm.c:756
 #, c-format
 msgid "read file '%s' error: %s"
 msgstr "lectura de archivo '%s' error: %s"
 
-#: clipvm.c:733
+#: clipvm.c:782
 #, c-format
 msgid " '%s' is not valid pobj file: invalid magic"
 msgstr " '%s' no es un archivo pobj válido: identificación inválida"
 
-#: clipvm.c:874
+#: clipvm.c:923
 #, c-format
 msgid "shared loading problem: %s: file %s"
 msgstr "problema de carga dinámica %s: archivo %s"
 
-#: clipvm.c:915
+#: clipvm.c:964
 #, c-format
 msgid "shared '%s' fetch name '%s' problem: %s"
 msgstr "dinámica '%s' obtención de '%s' problema: %s"
 
-#: clipvm.c:1014
+#: clipvm.c:1063
 #, c-format
 msgid "unknown file type: '%s'"
 msgstr "tipo de archivo desconocido: '%s'"
 
-#: clipvm.c:1046
+#: clipvm.c:1095
 #, c-format
 msgid "cannot load file: '%s'"
 msgstr "no se puede cargar archivo: '%s'"
 
-#: clipvm.c:1352
+#: clipvm.c:1403
 #, c-format
 msgid "PCODE call from: proc '%s' file '%s' line %d"
 msgstr "llamada PCODE desde: proc '%s' archivo '%s' línea %d"
 
-#: clipvm.c:1378
+#: clipvm.c:1429
 #, c-format
 msgid "PCODE return=%d to: proc '%s' file '%s' line %d"
 msgstr "PCODE retorna=%d a: proc '%s' archivo '%s' línea %d"
 
-#: clipvm.c:1572
+#: clipvm.c:1623
 #, c-format
 msgid "PCODE call: proc '%s' file '%s' line %d"
 msgstr "llamada PCODE: proc '%s' archivo '%s' línea %d"
 
-#: clipvm.c:2299
+#: clipvm.c:2354
 #, c-format
 msgid "invalid bytecode %d"
 msgstr "bytecode inválido %d"
 
-#: _ctools_s.c:3496 _ctools_s.c:3514
+#: _ctools_s.c:3503 _ctools_s.c:3521
 #, c-format
 msgid "Cannot take io permissons: %s"
 msgstr "No se puede obtener permiso de e/s: %s"
 
-#: _dbg.c:204 _dbg.c:216
+#: _dbg.c:207 _dbg.c:219
 #, c-format
 msgid "DBGCONNECT: cannot create FIFO '%s': %s\n"
 msgstr "DBGCONNECT: no se puede crear FIFO '%s': %s\n"
 
-#: _dbg.c:210 _dbg.c:221
+#: _dbg.c:213 _dbg.c:224
 #, c-format
 msgid "fifo %s created successfully"
 msgstr "fifo %s creado con éxito"
 
-#: _dbg.c:225
+#: _dbg.c:228
 #, c-format
 msgid "DBGCONNECT: cannot send signal SIGUSR1 to pid %lu: %s\n"
 msgstr "DBGCONNECT: no se puede enviar señal SIGUSR1 al pid %lu: %s\n"
 
-#: _dbg.c:230
+#: _dbg.c:233
 #, c-format
 msgid "signal SIGUSR1 sent to pid %lu"
 msgstr "señal SIGUSR1 enviada al pid %lu"
 
-#: _dbg.c:235 _dbg.c:248
+#: _dbg.c:238 _dbg.c:251
 #, c-format
 msgid "DBGCONNECT: cannot open FIFO '%s': %s\n"
 msgstr "DBGCONNECT: no se puede abrir FIFO '%s': %s\n"
 
-#: _dbg.c:242
+#: _dbg.c:245
 #, c-format
 msgid "fifo %s opened for writing"
 msgstr "fifo %s abierto para escritura"
 
-#: _dbg.c:255
+#: _dbg.c:258
 #, c-format
 msgid "fifo %s opened for reading"
 msgstr "fifo %s abierto para lectura"
 
-#: _dbg.c:263 _dbg.c:329 _dbg.c:367
+#: _dbg.c:266 _dbg.c:332 _dbg.c:370
 msgid "DBGCOMMAND: cannot read data"
 msgstr "DBGCOMMAND: no se puede leer datos"
 
-#: _dbg.c:300
+#: _dbg.c:303
 msgid "DBGCOMMAND: no connection"
 msgstr "DBGCOMMAND: no hay conexión"
 
-#: _dbg.c:349
+#: _dbg.c:352
 #, c-format
 msgid "DBGCOMMAND: cannot send signal to PID %lu\n"
 msgstr "DBGCOMMAND: no se puede enviar señal a PID %lu\n"
@@ -647,67 +652,67 @@ msgstr "DBGCOMMAND: no se puede enviar señal a PID %lu\n"
 msgid "add locale '%s'"
 msgstr "agregada localización '%s'"
 
-#: gettext.c:127
-#, c-format
-msgid "locale msg: %s -> %s: %s"
-msgstr "mens de localización: %s -> %s: %s"
-
-#: gettext.c:135 gettext.c:231
+#: gettext.c:100 gettext.c:137 gettext.c:233
 #, c-format
 msgid "localed msg: %s -> %s: %.*s -> %.*s"
 msgstr "mens localizado: %s -> %s: %.*s -> %.*s"
 
-#: gettext.c:225
+#: gettext.c:129
+#, c-format
+msgid "locale msg: %s -> %s: %s"
+msgstr "mens de localización: %s -> %s: %s"
+
+#: gettext.c:227
 #, c-format
 msgid "locale msg plural(%ld:%lu): %s -> %s: %s"
 msgstr "mens de localización plural (%ld:%lu): %s -> %s: %s"
 
-#: gettext.c:301
+#: gettext.c:303
 #, c-format
 msgid "no access to file '%s': not a regular file"
 msgstr "no hay acceso al archivo '%s': no es un archivo regular"
 
-#: gettext.c:307
+#: gettext.c:309
 #, c-format
 msgid "no access to file '%s': %s"
 msgstr "no hay acceso al archivo '%s': %s"
 
-#: gettext.c:420
+#: gettext.c:422
 #, c-format
 msgid "locale settings not found for module '%s'"
 msgstr "seteos de localización no encontrados para el módulo '%s'"
 
-#: gettext.c:425
+#: gettext.c:427
 #, c-format
 msgid "no access to locale file '%s': %s"
 msgstr "no hay acceso al archivo de localización  '%s': %s"
 
-#: gettext.c:432
+#: gettext.c:434
 #, c-format
 msgid "cannot open locale file '%s': %s"
 msgstr "no se puede abrir archivo de localización '%s': %s"
 
-#: gettext.c:436
+#: gettext.c:438
 #, c-format
 msgid "open locale file '%s', charset '%s'"
 msgstr "abierto archivo de localización '%s', juego de caracteres '%s'"
 
-#: gettext.c:441
+#: gettext.c:443
 #, c-format
 msgid "cannot stat locale file '%s': %s"
 msgstr "no se puede acceder al archivo de localización '%s': %s"
 
-#: gettext.c:477
+#: gettext.c:479
 #, c-format
 msgid "cannot read locale file '%s': %s"
 msgstr "no se puede leer archivo de localización '%s': %s"
 
-#: gettext.c:503
+#: gettext.c:505
 #, c-format
 msgid "wrong magic number of locale file '%s'"
 msgstr "número de identificación erróneo del archivo de localización '%s'"
 
-#: gettext.c:526
+#: gettext.c:528
 #, c-format
 msgid "illegal revision of locale file '%s': %d"
 msgstr "revisión ilegal del archivo de localización '%s': %d"
@@ -717,282 +722,286 @@ msgstr "revisión ilegal del archivo de localización '%s': %d"
 msgid "runtime codeblock compiler: '%.*s': %s"
 msgstr "compilador de bloque de código en ejecución: '%.*s': %s"
 
-#: set.c:639
+#: set.c:706
 #, c-format
 msgid "close printer:%s"
 msgstr "cerrando impresora: %s"
 
-#: set.c:939 set.c:951 set.c:1004 set.c:1016
+#: set.c:1006 set.c:1018 set.c:1071 set.c:1083
 #, c-format
 msgid "%s: '%s'"
 msgstr "%s: '%s'"
 
-#: set.c:1082
+#: set.c:1168
 #, c-format
 msgid "set print to:%s,%s"
 msgstr "poniendo impresora a: %s,%s"
 
-#: set.c:1087
+#: set.c:1173
 #, c-format
 msgid "cannot open printer file '%s': %s"
 msgstr "no se puede abrir archivo de impresora '%s': %s"
 
-#: set.c:1467
+#: set.c:1578
 #, fuzzy, c-format
 msgid "set printer translation  %s -> %s"
 msgstr "puesto traducción de impresora\t%s -> %s"
 
-#: _thread.c:101
+#: _thread.c:107
 #, c-format
 msgid "task_run: cannot start function '%s'"
 msgstr "task_run: no se puede iniciar función '%s'"
 
-#: _thread.c:194
+#: _thread.c:200
 #, c-format
 msgid "TASK sheduler not implemented for OS %s"
 msgstr "manejador de TAREAS no implementado para SO %s"
 
-#: _util.c:621
+#: _util.c:651
 msgid "BREAK function requare argument"
 msgstr "función BREAK requiere argumento"
 
-#: _util.c:732 _util.c:757
+#: _util.c:767 _util.c:792
 #, c-format
 msgid "PROCNAME: invalid call level '%d'"
 msgstr "PROCNAME: nivel de llamada inválido '%d'"
 
-#: _util.c:781
+#: _util.c:816
 #, c-format
 msgid "FILENAME: invalid call level '%d'"
 msgstr "FILENAME: nivel de llamada inválido '%d'"
 
-#: _util.c:806
+#: _util.c:841
 msgid "COMPILE: non-character parameter"
 msgstr "COMPILE: parámetro no-caracter"
 
-#: _util.c:844
+#: _util.c:879
 msgid "block2str: non-pcode parameter"
 msgstr "block2str: parámetro no-pcode"
 
-#: _util.c:1055 _util.c:1092 _util.c:1112
+#: _util.c:1106 _util.c:1143 _util.c:1163
 msgid "no name given"
 msgstr "no se ha dado nombre"
 
-#: _util.c:1120
+#: _util.c:1171
 #, c-format
 msgid "ELF '%s' loading problem: %s"
 msgstr "ELF '%s' error de carga: %s"
 
-#: rdd/btree.c:139
+#: rdd/btree.c:141
 msgid "Unknown data type or bad size of item"
 msgstr "Tipo de datos desconocido o tamaño inválido de item"
 
-#: rdd/btree.c:140
+#: rdd/btree.c:142
 msgid "Bad BTREE handle"
 msgstr "Manejador BTREE inválido"
 
-#: rdd/btree.c:142
+#: rdd/btree.c:144
 msgid "Internal error in BTREE module"
 msgstr "Error interno en módulo BTREE"
 
-#: rdd/cdx.c:520 rdd/ntx.c:342
+#: rdd/cdx.c:543 rdd/ntx1.c:113 rdd/ntx.c:368
 msgid "MAX_BTREE_DEEP exceeded"
 msgstr "MAX_BTREE_DEEP excedido"
 
-#: rdd/cdx.c:521
+#: rdd/cdx.c:544
 msgid "CDX internal error: bad root page"
 msgstr "Error interno CDX: página raíz inválida"
 
-#: rdd/cdx.c:522
+#: rdd/cdx.c:545
 msgid "CDX internal error: bad leaf page"
 msgstr "Error interno CDX: página hoja inválida"
 
-#: rdd/cdx.c:523
+#: rdd/cdx.c:546
 msgid "CDX internal error: no keys on the page"
 msgstr "Error interno CDX: no hay claves en la página"
 
-#: rdd/cdx.c:525
+#: rdd/cdx.c:548
 msgid "Bad header"
 msgstr "Cabecera inválida"
 
-#: rdd/cdx.c:526
+#: rdd/cdx.c:549
 msgid "No such tag"
 msgstr "Rótulo inexistente"
 
-#: rdd/cdx.c:527 rdd/dbf.c:624 rdd/ntx.c:343
+#: rdd/cdx.c:550 rdd/dbf.c:646 rdd/ntx1.c:114 rdd/ntx.c:369
 msgid "Bad data"
 msgstr "Datos inválidos"
 
-#: rdd/cdx.c:528 rdd/ntx.c:345
+#: rdd/cdx.c:551 rdd/ntx1.c:116 rdd/ntx.c:371
 msgid "Bad WHILE expression"
 msgstr "Expresión WHILE inválida"
 
-#: rdd/cdx.c:529 rdd/ntx.c:346
+#: rdd/cdx.c:552 rdd/ntx1.c:117 rdd/ntx.c:372
 msgid "Bad EVAL expression"
 msgstr "Expresión EVAL inválida"
 
-#: rdd/dbf.c:616 rdd/ntx.c:337
+#: rdd/dbf.c:637 rdd/ntx1.c:108 rdd/ntx.c:363
 msgid "Unlock error"
 msgstr "Error de desbloqueo"
 
-#: rdd/dbf.c:617 rdd/ntx.c:338 rdd/six.c:396
+#: rdd/dbf.c:638 rdd/ntx1.c:109 rdd/ntx.c:364 rdd/six.c:398
 msgid "Shared lock error"
 msgstr "Error de bloqueo compartido"
 
-#: rdd/dbf.c:618 rdd/ntx.c:339 rdd/six.c:397
+#: rdd/dbf.c:639 rdd/ntx1.c:110 rdd/ntx.c:365 rdd/six.c:399
 msgid "Exclusive lock error"
 msgstr "Error de bloqueo exclusivo"
 
-#: rdd/dbf.c:619
+#: rdd/dbf.c:640
 msgid "Table header corrupted"
 msgstr "Cabecera de tabla corrupta"
 
-#: rdd/dbf.c:620 rdd/rdd.c:781
+#: rdd/dbf.c:641 rdd/rdd.c:823
 msgid "Bad table structure"
 msgstr "Estructura de tabla inválida"
 
-#: rdd/dbf.c:621 rdd/rdd.c:783 rdd/six.c:390
+#: rdd/dbf.c:642
+msgid "Duplicate field name"
+msgstr ""
+
+#: rdd/dbf.c:643 rdd/rdd.c:825 rdd/six.c:392
 msgid "Operation not permitted"
 msgstr "Operación no permitida"
 
-#: rdd/dbf.c:622
+#: rdd/dbf.c:644
 msgid "Corruption detected"
 msgstr "Corrupción detectada"
 
-#: rdd/dbf.c:623 rdd/six.c:391
+#: rdd/dbf.c:645 rdd/six.c:393
 msgid "Memo file not opened"
 msgstr "Archivo Memo no abierto"
 
-#: rdd/dbf.c:625
+#: rdd/dbf.c:647
 msgid "Type mismatch"
 msgstr "Tipos no coincidentes"
 
-#: rdd/dbf.c:626 rdd/rdd.c:780
+#: rdd/dbf.c:648 rdd/rdd.c:822
 msgid "I/O error"
 msgstr "Error de E/S"
 
-#: rdd/ntx.c:341
+#: rdd/ntx1.c:112 rdd/ntx.c:367
 msgid "Index corrupted"
 msgstr "Indice corrupto"
 
-#: rdd/ntx.c:344
+#: rdd/ntx1.c:115 rdd/ntx.c:370
 msgid "Key length is too long"
 msgstr "Longitud de clave demasiado larga"
 
-#: rdd/ntx.c:2727
+#: rdd/ntx.c:2816
 #, c-format
 msgid "Not CTX file (bad signature): %s"
 msgstr "No es un archivo CTX (marca inválida): %s"
 
-#: rdd/rdd.c:776 rdd/rddclip.c:189
+#: rdd/rdd.c:818 rdd/rddclip.c:204
 msgid "Bad RDD instance"
 msgstr "Estancia RDD inválida"
 
-#: rdd/rdd.c:777
+#: rdd/rdd.c:819
 msgid "Bad filter expression"
 msgstr "Expresión de filtro inválida"
 
-#: rdd/rdd.c:778
+#: rdd/rdd.c:820
 msgid "Bad relation expression"
 msgstr "Expresión de relación inválida"
 
-#: rdd/rdd.c:782
+#: rdd/rdd.c:824
 msgid "Bad field"
 msgstr "Campo inválido"
 
-#: rdd/rdd.c:857
+#: rdd/rdd.c:899
 #, c-format
 msgid "No data file driver linked: %s"
 msgstr "No hay manejador enlazado para archivo de datos: %s"
 
-#: rdd/rdd.c:874
+#: rdd/rdd.c:916
 #, c-format
 msgid "No index file driver linked: %s"
 msgstr "No hay manejador enlazado para archivo índice: %s"
 
-#: rdd/rdd.c:891
+#: rdd/rdd.c:933
 #, c-format
 msgid "No memo file driver linked: %s"
 msgstr "No hay manejador enlazado para archivo memo: %s"
 
-#: rdd/rdd.c:1102
-#, c-format
-msgid "RDD layer error: %s/%d: %s: %s"
-msgstr "Error en capa RDD: %s/%d: %s: %s"
-
-#: rdd/rdd.c:3645
+#: rdd/rdd.c:3842
 msgid "no item DBF_CHARSET, revert to KOI charset"
 msgstr "No hay item DBF_CHARSET, volviendo a juego de caracteres KOI8-R"
 
-#: rdd/rdd.c:3681
+#: rdd/rdd.c:3878
 msgid "dbf: cannot determine host charset, revert to koi_locale"
 msgstr ""
 "dbf: no se puede determinar juego de caracteres del ordenador, volviendo a "
 "koi_locale"
 
-#: rdd/rdd.c:3685
+#: rdd/rdd.c:3882
 #, c-format
 msgid "load host charset '%s'"
 msgstr "cargando juego de caracteres del ordenador '%s'"
 
-#: rdd/rdd.c:3688 rdd/rdd.c:3696
+#: rdd/rdd.c:3885 rdd/rdd.c:3893
 #, c-format
 msgid "dbf: cannot load charset '%s': %s, revert to koi_locale"
 msgstr ""
 "dbf: no se puede cargar juego de caracteres '%s': %s, volviendo a koi_locale"
 
-#: rdd/rdd.c:3693
+#: rdd/rdd.c:3890
 #, c-format
 msgid "load dbf charset '%s'"
 msgstr "cargando juego de caracteres dbf '%s'"
 
-#: rdd/rddclip.c:191
+#: rdd/rddclip.c:206
 msgid "Bad argument (2)"
 msgstr "Argumento inválido (2)"
 
-#: rdd/rddclip.c:192 rdd/six.c:388
+#: rdd/rddclip.c:207 rdd/six.c:390
 msgid "Bad filter handle"
 msgstr "Manejador de filtro inválido"
 
-#: rdd/six.c:389
+#: rdd/six.c:391
 msgid "Invalid join type"
 msgstr "Tipo de unión inválida"
 
-#: rdd/six.c:393
+#: rdd/six.c:395
 msgid "Not memo field"
 msgstr "No es campo memo"
 
-#: rdd/six.c:398
+#: rdd/six.c:400
 msgid "Create file error"
 msgstr "Error de creación de archivo"
 
-#: rdd/six.c:399
+#: rdd/six.c:401
 msgid "Open file error"
 msgstr "Error de apertura de archivo"
 
-#: rdd/six.c:400
+#: rdd/six.c:402
 msgid "File write error"
 msgstr "Error de escritura de archivo"
 
-#: rdd/six.c:401
+#: rdd/six.c:403
 msgid "File read error"
 msgstr "Error de lectura de archivo"
 
-#: rdd/six.c:402
+#: rdd/six.c:404
 msgid "Bad .flt file"
 msgstr "Archivo .flt inválido"
 
-#: screen/screen.c:1499
+#: screen/screen.c:1534
+#, fuzzy
+msgid "UTF terminal detected"
+msgstr "Corrupción detectada"
+
+#: screen/screen.c:1545
 #, c-format
 msgid "set out translation: %s -> %s"
 msgstr "puesta traducción de salida: %s -> %s"
 
-#: screen/screen.c:2703
+#: screen/screen.c:2762
 #, c-format
 msgid "got xterm mouse event: type=%d y=%d x=%d buttons=%d clicks=%d"
 msgstr "obtenido evento de ratón xterm: tipo=%d y=%d x=%d botones=%d clicks=%d"
 
-#: screen/screen.c:2952
+#: screen/screen.c:3011
 #, c-format
 msgid ""
 "got xterm rawmode mouse event: type=%d y=%d x=%d xt_buttons=%d buttons=%d "
@@ -1001,13 +1010,15 @@ msgstr ""
 "obtenido evento de ratón xterm modo plano: tipo=%d y=%d x=%d botones_xt=%d "
 "botones=%d clicks=%d"
 
-#: screen/screen.c:3080
+#: screen/screen.c:3139
 #, c-format
 msgid "got gp_get_event: %d type=%d y=%d x=%d buttons=%d m_buttons=%d"
 msgstr "obtenido gp_get_event: %d tipo=%d y=%d x=%d botones=%d botones_m=%d"
 
-#: screen/screen.c:4232
+#: screen/screen.c:4297
 #, c-format
 msgid "Gpm_Open return %d"
 msgstr "Gpm_Open retorna %d"
 
+#~ msgid "RDD layer error: %s/%d: %s: %s"
+#~ msgstr "Error en capa RDD: %s/%d: %s: %s"

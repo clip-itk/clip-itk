@@ -7,11 +7,14 @@
 
 static have_drag := FALSE
 
-
+/*
 static target_table := { ;
   { "STRING", 0, 1 }, ;
   { "text/plain", 0, TARGET_STRING },  ;
   { "application/x-rootwin-drop", 0, TARGET_ROOTWIN }}
+*/
+static target_table := { ;
+  { "frame", 1, 1 }}
 
 static n_targets := len(target_table)
 
@@ -26,21 +29,21 @@ local drag_icon, drag_mask
   window = gtk_WindowNew (, " Test drag and drop functions ",GTK_WINDOW_TOPLEVEL)
   gtk_SignalConnect (window, "delete-event", {|| gtk_Quit()})
 
-  ebox := gtk_EventBoxNew()
+  //ebox := gtk_EventBoxNew()
   layout := gtk_LayoutNew()
   //gtk_WIdgetSetSizeRequest(layout, 800, 600)
   gtk_WIdgetSetSizeRequest(layout, 400, 400)
-  //gtk_ContainerAdd (window, layout)
-  gtk_ContainerAdd (window, ebox)
-  gtk_ContainerAdd (ebox, layout)
+  gtk_ContainerAdd (window, layout)
+  //gtk_ContainerAdd (window, ebox)
+  //gtk_ContainerAdd (ebox, layout)
 
   frame := gtk_FrameNew(, " Frame 1")
   gtk_WidgetSetEvents(frame, GDK_BUTTON_PRESS_MASK)
   //gtk_WidgetSetState(frame, GTK_STATE_PRELIGHT)
-  gtk_LayoutPut(layout, frame, 10, 10)
   f1 := gtk_FixedNew()
   gtk_WidgetSetSizeRequest(f1, 300, 100)
   gtk_ContainerAdd(frame, f1)
+  gtk_LayoutPut(layout, frame, 10, 10)
 
   label := gtk_LabelNew(, "Enter Your Name ")
   gtk_FixedPut(f1, label, 10, 10)
@@ -49,20 +52,24 @@ local drag_icon, drag_mask
   button := gtk_ButtonNewWithMnemonic(,"_Press me!" )
   gtk_FixedPut(f1, button, 10, 70)
 
-  gtk_DragSourceSet (frame, numor(GDK_BUTTON1_MASK , GDK_BUTTON3_MASK), ;
-  		       target_table, n_targets, ;
-  		       numor(GDK_ACTION_COPY, GDK_ACTION_MOVE))
-  gtk_DragSourceSet (label, numor(GDK_BUTTON1_MASK , GDK_BUTTON3_MASK), ;
+/*  tlist := gtk_TargetListNew(target_table)
+  gtk_DragBegin(frame, tlist, GDK_ACTION_MOVE, )  */
+
+  gtk_DragSourceSet (layout, numor(GDK_BUTTON1_MASK , GDK_BUTTON3_MASK), ;
   		       target_table, n_targets, ;
   		       numor(GDK_ACTION_COPY, GDK_ACTION_MOVE))
   drag_icon = gdk_PixmapColormapCreateFromXpm(NIL, ;
 					      gtk_WidgetGetColormap (window), ;
 					      @drag_mask, ;
 					      NIL, "drag_icon.xpm")
-  gtk_DragSourceSetIcon (frame, gtk_WidgetGetColormap (window), ;
-			    drag_icon, drag_mask)
+  gtk_DragSourceSetIcon (layout, gtk_WidgetGetColormap (window), ;
+  			    drag_icon, drag_mask)
 
-  gtk_SignalConnect (frame, "drag-data-get", {|w, e|  source_drag_data_get(w, e)})
+  gtk_SignalConnect (layout, "drag-data-get", {|w, e|  source_drag_data_get(w, e)})
+  gtk_DragDestSet (layout, ;
+		     GTK_DEST_DEFAULT_ALL, ;
+		     target_table, n_targets , /* no rootwin */ ;
+		     numor(GDK_ACTION_COPY , GDK_ACTION_MOVE))
 /*
 
   label = gtk_LabelNew (, "Drop Here&\n")
@@ -76,6 +83,7 @@ local drag_icon, drag_mask
   gtk_SignalConnect( label, "drag-data-received", {|w, e| label_drag_data_received(w, e)})
 
   gtk_TableAttach (table, label, 1, 2, 1, 2, ;
+
 		    numor(GTK_EXPAND , GTK_FILL), numor(GTK_EXPAND , GTK_FILL), ;
 		    1, 1)
 

@@ -4,12 +4,18 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log: cdx.c,v $
+	Revision 1.153  2004/11/22 12:56:13  clip
+	rust: reset stack validity flag in cdx_setscope()
+	
+	Revision 1.152  2004/09/10 09:21:37  clip
+	rust: minor fix in SCOPES
+
 	Revision 1.151  2004/05/26 09:52:24  clip
 	rust: some cleanings
-	
+
 	Revision 1.150  2004/04/20 12:18:49  clip
 	rust: minor fix
-	
+
 	Revision 1.149  2004/04/20 10:17:08  clip
 	rust: fixed bug in SEEK ... LAST
 
@@ -3078,7 +3084,7 @@ static int cdx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 		if(outrange || ok){
 			unsigned int lastrec;
 			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
-			rd->bof = rd->v_bof = rd->eof = 1;
+			rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
 		}
@@ -3209,6 +3215,7 @@ static int cdx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	void* key;
 	int ok = 1, fok = 0, deleted, lastrec, er;
 
+	rd->bof = rd->v_bof = 0;
 	if(rd->eof)
 		return 0;
 
@@ -4087,12 +4094,14 @@ static int cdx_setscope(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* top,
 		_rm_setbit(map,bytes,recno);
 /* --------------------------- */
 e:
+	ro->valid_stack = 0;
 	if(t)
 		free(t);
 	if(b)
 		free(b);
 	return 0;
 err:
+	ro->valid_stack = 0;
 	if(t)
 		free(t);
 	if(b)

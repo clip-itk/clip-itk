@@ -12,6 +12,15 @@ local fName,fBlock,err
 local fList,mdir,mdirs:={"data","data1","data2","data3","data4","data5","data6"}
 
 parameters p1,p2,p3,p4,p5
+	if p1 == "--help"
+		? "codb_make: util for loading meta data fron file[s] and "
+		? "           append/update it on dictionaries"
+		?
+		? "Usage: codb_make"
+		?
+		? "Description of meta data will load from data[x]/codb_list.xml"
+		quit
+	endif
 
 	s+=iif(p1==NIL,"",p1)
 	s+=iif(p2==NIL,"",p2)

@@ -39,26 +39,6 @@ function codb_install(dict_id,xmlFile)
 		return .f.
 	endif
 
-	ret:=""
-	if empty(set("CODB_INSTALL_NODATA"))
-		if "DATALOADER_MODULE" $ xmlData
-			ret:=install_default_data(xmlData:dataloader_module,dict)
-		else
-			? "Dictionary ",dict_id, "don`t have default data loaders"
-		endif
-	endif
-	if "CODELOADER_MODULE" $ xmlData
-		ret:=install_default_data(xmlData:codeloader_module,dict)
-	else
-		? "Dictionary ",dict_id, "don`t have default code loaders"
-	endif
-
-	if valtype(ret) == "C" // error
-		? ret
-		?
-		return .f.
-	endif
-
 return .t.
 /**********************************************/
 static function install_default_dictionary(dict,xmlData)
@@ -109,14 +89,14 @@ static function install_default_dictionary(dict,xmlData)
 			for k=1 to len(obj) // all attributes in obj
 				metakey :=alltrim(upper(obj[k][1]))
 				metadata:=obj[k][2]
-				if left(metadata,1) =="&"
+				if !empty(metadata) .and. left(metadata,1) $ "&^"
 					metadata := substr(metadata,2)
 					metadata := strtran(metadata,"&\n","")
 					bErr:=errorblock({|err|break(err)})
 					begin sequence
 						metadata := &metadata
 					recover
-						?? "Error in expression:"+toString(metadata)
+						?? "Error in expression:"+toString(metadata)+" "
 					end sequence
 					errorBlock(bErr)
 				endif
@@ -187,101 +167,4 @@ static function install_default_dictionary(dict,xmlData)
 		next
 	next
 return .t.
-
-/**********************************************/
-static function install_default_data(xmlData,dict)
-
-	local tm,i,j,fname,fBlock,tmp,count:=0
-	local err,ret,odep
-	local modules:={},aModule,oModule
-	local bErr,attrName,attrData
-
-	for i=1 to len(xmlData)
-		aModule:=xmlData[i]
-		oModule:=map()
-		for j=1 to len(aModule)
-			attrName:=alltrim(upper(aModule[j][1]))
-			attrData:=aModule[j][2]
-			if left(attrData,1) == "&"
-				attrData := substr(attrData,2)
-				bErr:=errorblock({|err|break(err)})
-				begin sequence
-					attrData := &attrData
-				recover
-					?? "Error in expression:"+toString(attrData)
-				end sequence
-				errorBlock(bErr)
-			endif
-			oModule[attrName] := attrData
-		next
-		aadd(modules,oModule)
-	next
-
-	/* called modules added data from TXT files */
-	tm:=seconds()
-	for i=1 to len(modules)
-		oModule:=modules[i]
-		if !("TYPE" $ oModule)
-			? "Undefine type in "+alltrim(str(i))+"loader module"
-			loop
-		endif
-
-		if lower(oModule:type) == "clip_script"
-			ret:=install_default_data_with_script(oModule,dict)
-		else
-			ret:=install_default_data_from_xmlfile(oModule,dict)
-		endif
-		if valtype(ret) == "N"
-			count += ret
-			? "Module install OK:"+oModule:script
-		else
-			? "Module install error:"+oModule:script+":"+toString(ret)
-		endif
-	next
-	tm:=seconds()-tm
-	? "Loaded all objects:",count,", time:",tm,"seconds"
-
-return .t.
-/**********************************************/
-static function install_default_data_from_xmlfile(oModule,dict)
-/**********************************************/
-static function install_default_data_with_script(oModule,dict)
-	local err,fname,fBlock,tmp,count:=0
-	local ret,odep
-
-	//fName:=lower(dict:id+PATH_DELIM+oModule:script)
-	fName:=lower("loaders"+PATH_DELIM+oModule:script)
-
-	if !compileFile(fName+".prg","-p", @err)
-		return "Error load plugins: "+fName+".prg "+err
-	endif
-	fBlock := loadBlock(fName+".po")
-	if valType(fBlock) != "B"
-		return "Error load codeblock from: "+fName+".po"
-	endif
-
-	if "DATAFILE" $ oModule
-		fName:=oModule:dataFile
-	else
-		return "Not defined datafile for loading data:"+oModule:script
-	endif
-
-	oDep := coDepository():new(oModule:todepository)
-	if !empty(oDep:error)
-		ret:=oDep:error
-		return ret
-	endif
-	oDep:open()
-	if !empty(oDep:error)
-		ret:=oDep:error
-		oDep:close()
-		return ret
-	endif
-
-	ret:= eval(fBlock,oDep,fName)
-
-
-	oDep:close()
-
-return ret
 

@@ -5,6 +5,9 @@
 */
 /*
    $Log: _thread.c,v $
+   Revision 1.15  2004/10/13 14:49:19  clip
+   uri: small fix
+
    Revision 1.14  2004/01/25 10:23:40  clip
    uri: fix bug in exit procedures and inkey()
 
@@ -244,8 +247,8 @@ clip_TASKID(ClipMachine *mp)
 
 	if (!tp)
 		_clip_retni(mp, -1);
-
-	_clip_retnl(mp, Task_get_id(tp));
+	else
+		_clip_retnl(mp, Task_get_id(tp));
 #endif
 	return 0;
 }

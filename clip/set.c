@@ -5,6 +5,33 @@
 */
 /*
    $Log: set.c,v $
+   Revision 1.97  2004/12/07 09:14:03  clip
+   uri: added invertAttr()
+
+   Revision 1.96  2004/10/27 09:43:09  clip
+   uri: fix in setcolor() about sync 2&5 pairs, and clear all pairs for "X".
+
+   Revision 1.95  2004/10/26 07:21:47  clip
+   uri: small fix in setcolor()
+
+   Revision 1.94  2004/10/20 17:22:17  clip
+   uri: add set(_SET_UTF8TERM) for terminal with UTF-8
+
+   Revision 1.93  2004/10/07 07:52:26  clip
+   uri: some fixes and few short func names
+
+   Revision 1.92  2004/09/28 08:25:27  clip
+   uri: small fix
+
+   Revision 1.91  2004/09/03 07:17:54  clip
+   uri: small fix
+
+   Revision 1.90  2004/09/03 07:04:01  clip
+   uri: small fixes from John Smyth <js@w-e.ru>
+
+   Revision 1.89  2004/08/12 12:32:14  clip
+   uri: small fix
+
    Revision 1.88  2004/06/11 14:05:21  clip
    uri: small fix
 
@@ -453,15 +480,15 @@ set_flag1(ClipMachine * mp, int flag, int beg, int inverse)
 
 		if (lp != -1)
 		{
-					if (inverse)
-						{
+			if (inverse)
+			{
 				if (lp)
 					mp->flags1 &= ~flag;
 				else
 					mp->flags1 |= flag;
 			}
-						else
-						{
+			else
+			{
 				if (lp)
 					mp->flags1 |= flag;
 				else
@@ -514,6 +541,19 @@ set_color(ClipMachine * mp, char *str)
 	char *s;
 	int no = 0, attr, ls, l;
 
+	if ( strchr(str,'X') || strchr(str,'x') )
+	{
+		mp->attr.standard = 0;
+		mp->attr.enhanced = 0;
+		mp->attr.border = 0;
+		mp->attr.background = 0;
+		mp->attr.unselected = 0;
+		mp->attr.u1 = 0;
+		mp->attr.u2 = 0;
+		mp->attr.u3 = 0;
+		mp->attr.u4 = 0;
+		mp->attr.u5 = 0;
+	}
 	for (s = str; s && *s && no < 10; ++no)
 	{
 		ls = strspn(s, " \t\n\r");
@@ -541,6 +581,7 @@ set_color(ClipMachine * mp, char *str)
 			break;
 		case 1:
 			mp->attr.enhanced = attr;
+			mp->attr.unselected = attr;
 			break;
 		case 2:
 			mp->attr.border = attr;
@@ -640,17 +681,27 @@ _clip_close_printer(ClipMachine * mp)
 		char buf[256], *sp = mp->prfile;
 		int prno;
 
+		char *p_prog;
+		/*setenv("CLIP_PRINT_PROG","lpr",0);*/
+		p_prog = getenv("CLIP_PRINT_PROG");
+		if (!p_prog || !*p_prog)
+			p_prog = "lpr";
+
 		if (!strcasecmp(sp, "lpt2") || !strcasecmp(sp, "lpt2:"))
 			prno = 2;
 		else if (!strcasecmp(sp, "lpt3") || !strcasecmp(sp, "lpt3:"))
 			prno = 3;
+/*
+		elseif (!strcasecmp(sp, "lpt1") || !strcasecmp(sp, "lpt1:"))
+			prno = 1;
+*/
 		else
 			prno = 0;
 #ifndef __WIN32
 		if (prno)
-			snprintf(buf, sizeof(buf), "lpr -P lp%d %s 2>&1 >/dev/null", prno, mp->real_prfile);
+		       snprintf(buf, sizeof(buf), "%s -P lp%d %s 2>&1 >/dev/null", p_prog, prno, mp->real_prfile);
 		else
-			snprintf(buf, sizeof(buf), "lpr %s 2>&1 >/dev/null", mp->real_prfile);
+		       snprintf(buf, sizeof(buf), "%s %s 2>&1 >/dev/null", p_prog, mp->real_prfile);
 #else
 		snprintf(buf, sizeof(buf), "copy /b %s %s >null", mp->real_prfile, mp->prfile);
 #endif
@@ -1220,6 +1271,9 @@ clip_SET(ClipMachine * mp)
 	case _SET_MAPERR:
 		set_flag1(mp, MAPERR_FLAG, 1, 0);
 		break;
+	case _SET_UTF8TERM:
+		set_flag1(mp, UTF8TERM_FLAG, 1, 0);
+		break;
 	case _SET_DISPBOX:
 		set_flag1(mp, DISPBOX_FLAG, 1, 0);
 		if (mp->fullscreen)
@@ -1245,8 +1299,10 @@ clip_SET(ClipMachine * mp)
 		break;
 	case _SET_MULTILOCKS:
 		set_flag1(mp, MULTILOCKS_FLAG, 1, 0);
+		break;
 	case _SET_FLUSHOUT:
 		set_flag1(mp, FLUSHOUT_FLAG, 1, 0);
+		break;
 	case _SET_OPTIMIZELEVEL:
 		_clip_retni(mp, mp->optimizelevel + 1);
 		if (argc > 1)
@@ -1408,6 +1464,7 @@ clip_COLORTON(ClipMachine * mp)
 	return 0;
 }
 
+
 int
 clip_FT_COLOR2N(ClipMachine * mp)
 {
@@ -1430,6 +1487,24 @@ clip_NTOCOLOR(ClipMachine * mp)
 	_clip_attr2str(attr, buf, 31, !num_format);
 	_clip_retc(mp, buf);
 		free(buf);
+	return 0;
+}
+
+int
+clip_INVERTATTR(ClipMachine * mp)
+{
+	int l,t, attr = _clip_parni(mp, 1);
+	char *s = _clip_parcl(mp, 1, &l);
+
+	_clip_retni(mp, 0);
+	t = _clip_parinfo(mp,1);
+
+	if (t != NUMERIC_t && t != CHARACTER_t)
+		return 0;
+	if (t == CHARACTER_t)
+		attr = _clip_str2attr(s, l);
+	attr = ((attr&0x0F) << 4) + ((attr&0xF0)>>4);
+	_clip_retni(mp, attr);
 	return 0;
 }
 

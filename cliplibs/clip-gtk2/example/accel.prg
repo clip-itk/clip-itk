@@ -4,7 +4,7 @@ win := gtk_windowNew(, "Test accelerators")
 qout()
 gtk_WindowSetPosition(win, GTK_WIN_POS_CENTER)
 gtk_WindowSetDefaultSize(win, 300, 200)
-gtk_signalConnect(win, "delete-event", {|| gtk_quit()})
+gtk_signalConnect(win, "delete-event", {|w| gtk_WidgetDestroy(w), gtk_quit()})
 
 
 /* create button */

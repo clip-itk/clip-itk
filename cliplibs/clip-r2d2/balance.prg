@@ -8,9 +8,10 @@ local oDict,oDep, classDesc
 local connect_id:="", connect_data
 local beg_date:=date(),end_date:=date()
 local i,j,k,x,tmp,col,obj,bal_data,aBal_data:={}
-local acc_chartt_class,acc_chartt_list,balance:=""
+local acc_chartt_class,acc_chartt_list,balance:="",account:=""
 local columns,sprname,atree,nnnn
-
+local xslt:=""
+local host:=""
 private oDep02,oDict02,start_id:=1
 
 errorblock({|err|error2html(err)})
@@ -25,11 +26,24 @@ errorblock({|err|error2html(err)})
 	if "BEG_DATE" $ _query
 		beg_date := ctod(_query:beg_date,"dd.mm.yyyy")
 	endif
+
+	if "XSLT" $ _query
+		xslt := _query:xslt
+	endif
+
 	if "END_DATE" $ _query
 		end_date := ctod(_query:end_date,"dd.mm.yyyy")
 	endif
+
+	if "HOST" $ _query
+		host := _query:host
+	endif
+
 	if "BALANCE" $ _query
 		balance := _query:balance
+	endif
+	if "ACCOUNT" $ _query
+		account := _query:account
 	endif
 
 	if !empty(connect_id)
@@ -50,7 +64,7 @@ errorblock({|err|error2html(err)})
 			?? "PERIOD not defined "
 		endif
 		? "Usage:"
-		? "    balance?beg_date=<date>& end_date=<date>"
+		? "    balance?beg_date=<date>& end_date=<date>& account=<code|id>"
 		?
 		return
 	endif
@@ -86,7 +100,7 @@ errorblock({|err|error2html(err)})
 		endif
 	endif
 	for i=1 to len(acc_chartt_list)
-		bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i])
+		bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i],account)
 		aadd(aBal_data,bal_data)
 	next
 
@@ -94,12 +108,15 @@ errorblock({|err|error2html(err)})
 	put_tree_header()
 	put_bal_tree(aBal_data,acc_chartt_list)
 #else
+	if len(xslt)>0
+	? '<?xml-stylesheet type="text/xsl" href="http://'+host+'/xslt/'+xslt+'"?>'
+	endif
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
 	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+
 	sprname:="os_balance"
 	columns := cgi_make_columns(oDict,sprname)
 	nnnn := {"odate","ndate","an_public1","an_public2",;
@@ -135,9 +152,12 @@ errorblock({|err|error2html(err)})
 
 	for i=1 to len(aBal_data)
 		aTree := aBal_data[i]
-		cgi_putArefs2Rdf1(aTree,oDep,0,sprname,columns,"")
+		if empty(atree)
+			loop
+		endif
+		cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+sprname,columns,"")
 		?
-		cgi_putArefs2Rdf2(aTree,oDep,0,sprname,columns,"")
+		cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+sprname,columns,"")
 	next
 	? '</RDF:RDF>'
 #endif
@@ -231,7 +251,7 @@ static function putTree(bal_data)
 return
 
 ***********************
-static function	make_balance(beg_date,end_date,oDep,cType)
+static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
 	local acc_chart_class,acc_chart_list
 	local oDict,osb_class
 	local aData := {},data,adata1,account
@@ -258,6 +278,15 @@ static function	make_balance(beg_date,end_date,oDep,cType)
 	acc_chart_list := m->oDep02:select(acc_chart_class:id,,,'acc_chart_type="'+cType+'"')
 	for i=1 to len(acc_chart_list)
 		account := m->oDep02:getValue(acc_chart_list[i])
+		if empty(account)
+			loop
+		endif
+		if !empty(cAccount)
+			if account:id == cAccount .or. cAccount $ account:code
+			else
+				loop
+			endif
+		endif
 		//if account:code=="41.1"
 		data := r2d2_get_osb_data(oDep,osb_class:id,account,beg_date,end_date,s1,s2)
 		//	outlog(__FILE__,__LINE__,data)
@@ -267,25 +296,31 @@ static function	make_balance(beg_date,end_date,oDep,cType)
 		data:id := account:id //"ID_TMP_LINE_"+ntoc(m->start_id,32,4,"0")
 		m->start_id++
 		aadd(aData,data)
-		aadd(aRefs,{account:id,account:owner_id,account:code,atail(adata)})
+		if empty(cAccount)
+			aadd(aRefs,{account:id,account:owner_id,account:code,atail(adata)})
+		else
+			aadd(aRefs,{account:id,"",account:code,atail(adata)})
+		endif
 	next
 	asort(aRefs,,,{|x,y| x[3] <= y[3] })
 	fillTree(aRefs,atree,"",1)
-	adata1:=reSummTree(aTree,0)
-	data:=map()
-	data:account	:= cType
-	data:smallname	:= codb_essence(cType)
-	data:code	:= [Total]
-	data:owner_id	:= ""
-	data:bd_summa	:= aData1[1]
-	data:bk_summa	:= aData1[2]
-	data:od_summa	:= aData1[3]
-	data:ok_summa	:= aData1[4]
-	data:ed_summa	:= aData1[5]
-	data:ek_summa	:= aData1[6]
-	data:id 	:= "ID_TMP_LINE_"+ntoc(m->start_id,32,4,"0")
-	m->start_id++
-	aadd(aTree,{[Total]+cType,"",[Total],data,{}})
+	if empty(cAccount)
+		adata1:=reSummTree(aTree,0)
+		data:=map()
+		data:account	:= cType
+		data:smallname	:= codb_essence(cType)
+		data:code	:= [Total]
+		data:owner_id	:= ""
+		data:bd_summa	:= aData1[1]
+		data:bk_summa	:= aData1[2]
+		data:od_summa	:= aData1[3]
+		data:ok_summa	:= aData1[4]
+		data:ed_summa	:= aData1[5]
+		data:ek_summa	:= aData1[6]
+		data:id 	:= "ID_TMP_LINE_"+ntoc(m->start_id,32,4,"0")
+		m->start_id++
+		aadd(aTree,{[Total]+cType,"",[Total],data,{}})
+	endif
 return aTree
 /************************************************/
 static function reSummTree(aTree,level)

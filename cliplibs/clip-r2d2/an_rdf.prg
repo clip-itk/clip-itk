@@ -10,6 +10,8 @@ local beg_date:=date(),end_date:=date(),account:=""
 local i,j,k,tmp,obj
 local an_data,an_level:=1, an_values:={" "," "," "," "," "," "}
 local urn:=""
+local xslt:=""
+local host:=""
 
 	errorblock({|err|error2html(err)})
 
@@ -26,6 +28,14 @@ local urn:=""
 	if "END_DATE" $ _query
 		end_date := ctod(_query:end_date,"dd.mm.yyyy")
 	endif
+	if "XSLT" $ _query
+		xslt := _query:xslt
+	endif
+
+	if "HOST" $ _query
+		host := _query:host
+	endif
+
 	if "ACCOUNT" $ _query
 		account := _query:account
 	endif
@@ -85,18 +95,23 @@ local urn:=""
 
 	cgi_xml_header()
 
+	if len(xslt)>0
+	? '<?xml-stylesheet type="text/xsl" href="http://'+host+'/xslt/'+xslt+'"?>'
+	endif
+	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
+	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+
 	oDep := codb_needDepository("ACC0101")
 	if empty(oDep)
-		cgi_xml_error( "Depository not found: ACC0101" )
+//		cgi_xml_error( "Depository not found: ACC0101" )
 		return
 	endif
 	oDict := oDep:dictionary()
 
 	an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	asort(an_data,,,{|x,y| x:essence <= y:essence })
-
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
 
 	putRdf1(an_data,account,an_level,urn)
 	//putRdf2(an_data,account,an_level)
@@ -124,13 +139,13 @@ static function putRdf1(bal_data,account,an_level,urn)
 		   .and. tmp:out_num == 0 .and. tmp:end_num==0
 			loop
 		endif
-
+	/*
 		if tmp:an_value == 'total'
 			loop
 		endif
-
+	*/
 		urn_id := urn
-		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+'" id="'+tmp:an_value+'"'
+		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+'" id="'+tmp:an_value+'" DOCUM:about="'+urn_id+':'+tmp:an_value+'"'
 		? '	DOCUM:ref_account="'+account+'"'
 		? '	DOCUM:account_name="'+tmp:essence+'"'
 		? ' 	DOCUM:an_value.id="'+tmp:an_value+'"'
@@ -174,9 +189,11 @@ static function putRdf1(bal_data,account,an_level,urn)
 		   .and. tmp:out_num == 0 .and. tmp:end_num==0
 		    loop
 		endif
+		
 		if tmp:an_value == 'total'
 			loop
 		endif
+		
 		? '	<RDF:li resource="'+urn_id+':'+tmp:an_value+'"/>'
 	next
 	? '</RDF:Seq>'

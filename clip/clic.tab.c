@@ -104,7 +104,7 @@
 
 /*
  * $Log: clic.tab.c,v $
- * Revision 1.5  2004/07/19 13:59:10  clip
+ * Revision 1.7  2004/08/20 12:50:29  clip
  * uri: small fix
  *
  * Revision 1.81  2004/07/19 13:41:31  clip

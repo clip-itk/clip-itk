@@ -125,6 +125,17 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_ENTRYGETPOSITION(ClipMachine * cm)
+{
+	C_widget *centry = _fetch_cw_arg(cm);
+        CHECKCWID(centry,GTK_IS_ENTRY);
+        _clip_retni(cm, GTK_ENTRY(centry->widget)->current_pos+1);
+	return 0;
+err:
+	return 1;
+}
+
 /* Returns a text in entry */
 int
 clip_GTK_ENTRYGETTEXT(ClipMachine * cm)

@@ -139,7 +139,8 @@ function codb_padrBody(oData,aBodyDesc)
 		*/
 		name := hashStr(upper(aBodyDesc[i][1]))
 		if !(name $ oData)
-			oData[name] := aBodyDesc[i][6]
+			oData[ name ] := attrBlank ( aBodyDesc[i] )
+			//oData[name] := aBodyDesc[i][6]
 		endif
 		if valtype(oData[name]) $ "C"
 			oData[name] := padr(oData[name],aBodyDesc[i][3])
@@ -190,6 +191,7 @@ static function attrBlank ( attrDesc )
 		else
 			ret := val("0",attrDesc[3],attrDesc[4])
 		endif
+		len(@ret,attrDesc[3])
 	case 'L'
 		ret := .f.
 	case 'A'
@@ -253,6 +255,7 @@ static function attrCheck (attrData, attrDesc )
 		else
 			ret := val("0",attrDesc[3],attrDesc[4])
 		endif
+		len(@ret,attrDesc[3])
 		//outlog(__FILE__,__LINE__,attrData,ret,attrDesc[3],attrDesc[4])
 	case 'L'
 		if cType=="L"
@@ -527,7 +530,7 @@ function codb_essence(ObjId)
 	else
 		obj := objId
 	endif
-	if "CLASS_ID" $ obj
+	if valtype(obj)== "O" .and. "CLASS_ID" $ obj
 		cClass := codb_getValue(obj:class_id)
 		if !empty(cClass)
 			essence := cClass:essence(obj)

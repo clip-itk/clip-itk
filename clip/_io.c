@@ -5,6 +5,57 @@
 */
 /*
    $Log: _io.c,v $
+   Revision 1.276  2004/12/16 13:42:21  clip
+   uri: small fix
+
+   Revision 1.275  2004/12/16 12:42:20  clip
+   uri: small fix for lastkey() with inkey() without timeout
+
+   Revision 1.274  2004/12/15 08:08:24  clip
+   uri: small fix
+
+   Revision 1.273  2004/12/15 07:05:36  clip
+   uri: add KSET*()
+
+   Revision 1.272  2004/12/14 13:34:35  clip
+   uri: small fix for inkey()+lastkey() with empty keyboard buffer.
+
+   Revision 1.271  2004/12/10 10:43:28  clip
+   uri: fixed memory leak in _clip_ret*() with twice call.
+
+   Revision 1.270  2004/12/07 09:14:03  clip
+   uri: added invertAttr()
+
+   Revision 1.269  2004/11/17 08:57:21  clip
+   uri: small about str()
+
+   Revision 1.268  2004/11/16 09:19:29  clip
+   uri: small fix in str() for len==-1 and in get object for numeric data and picture "X"
+
+   Revision 1.267  2004/10/28 11:47:32  clip
+   uri: fix formatiing in STR(), pad*() for numeric data and constants.
+
+   Revision 1.266  2004/10/27 09:08:50  clip
+   uri: small fix for setPxlat()
+
+   Revision 1.265  2004/10/20 17:22:16  clip
+   uri: add set(_SET_UTF8TERM) for terminal with UTF-8
+
+   Revision 1.264  2004/10/13 15:03:25  clip
+   uri: small fix for PG under cygwin in WBOX()
+
+   Revision 1.263  2004/10/07 07:52:25  clip
+   uri: some fixes and few short func names
+
+   Revision 1.262  2004/09/30 12:07:04  clip
+   uri: small fix for str(-1234567890,10)
+
+   Revision 1.261  2004/09/03 07:04:00  clip
+   uri: small fixes from John Smyth <js@w-e.ru>
+
+   Revision 1.260  2004/08/27 11:34:26  clip
+   rust: minor fixes
+
    Revision 1.259  2004/06/15 13:56:44  clip
    rust: screenchar(),screenattr(),screenstr() (with attrs),screenstring() (w/o attrs)
 
@@ -1190,7 +1241,7 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 				for (i = 0; i < mp->margin; ++i)
 					fputc(' ', printer);
 				for (i = 0; i < n; i++)
-					fputc(mp->prn_xlat[mp->prntbl[((unsigned char *) buf)[i]]], printer);
+					fputc(mp->prntbl[( mp->prn_xlat[(unsigned char)(buf[i])])], printer);
 			}
 		}
 	}
@@ -1604,80 +1655,85 @@ clip_NDATE(ClipMachine * mp)
 	return 0;
 }
 
-#if 0
-int
-clip_SPACE(ClipMachine * mp)
+char *
+_clip_strFunc(ClipMachine * mp,ClipVar *v,int len, int dec, int pad)
 {
-	int len = _clip_parni(mp, 1);
-	char *s;
-	ClipVar *rp;
+	char *buf = NULL;
+	int lend = 10, decd;
+	char *a, *b;
 
-	s = (char *) malloc(len + 1);
-	memset(s, ' ', len);
-
-	rp = RETPTR(mp);
-	rp->t.type = CHARACTER_t;
-	rp->t.flags = F_NONE;
-	rp->s.str.len = len;
-	rp->s.str.buf = s;
-
-	return 0;
+	lend = v->t.len;
+	decd = v->t.dec;
+	if (lend <= 0)
+		lend = 10;
+	if ( len != -999 )
+	{
+		if(len)
+			lend = len;
+		if ( dec >= 0 )
+			decd = dec;
+		else
+			decd = 0;
+	}
+	else
+	{
+		if ( mp->flags & FIXED_FLAG)
+		{
+			if ( decd == 0 )
+				lend += mp->decimals+1;
+			else
+				lend += (mp->decimals-decd);
+			decd = mp->decimals;
+		}
+	}
+	if ( v->t.memo)
+		buf = rational_toString(v->r.r, lend, decd, 0);
+	else
+	{
+		buf = malloc(lend+1);
+		_clip_dtostr(buf, lend, decd, v->n.d, 0);
+	}
+	buf[lend] = 0;
+	/* padr() ==2 & padc() ==3 need left orientation */
+	/* padl() ==1 & str() == 0 need right orientation*/
+	if ( pad < 2 )
+		return buf;
+	/* formatiing to left */
+	for(a=buf,b=buf; *b; b++)
+	{
+		if ( *b !=' ')
+		{
+			*a = *b;
+			a++;
+		}
+	}
+	*a =0;
+	return buf;
 }
-#endif
 
 int
 clip_STR(ClipMachine * mp)
 {
-	int lend = 10, decd;
-	char *s;
 	ClipVar *v = _clip_par(mp, 1);
 	int len = _clip_parni(mp, 2);
 	int dec = _clip_parni(mp, 3);
 	char *buf;
 
+	_clip_retc(mp, "");
 	if ( _clip_parinfo(mp,1) != NUMERIC_t )
-	{
-		_clip_retc(mp, "");
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "STR");
-	}
 
-	_clip_parp(mp, 1, &lend, &decd);
-	if (!lend)
-		lend = 10;
-	if ( v->t.memo)
-	{
-		if (len)
-			s = rational_toString(v->r.r, 10, dec, 0);
-		else
-		{
-			if (lend)
-				s = rational_toString(v->r.r, 10, decd, 0);
-			else
-				s = rational_toString(v->r.r, 10, mp->decimals, 0);
-		}
-		_clip_retcn_m(mp, s, strlen(s));
-	}
-	else
-	{
+	if ( len < 0)
+		return 0;
 
-#if 1 /* Uri, 20040122: fix for str(10.2,5) */
-		if ( _clip_parinfo(mp,2) == NUMERIC_t )
-		{
-			lend = len;
-			if ( _clip_parinfo(mp,3) == NUMERIC_t )
-				decd = dec;
-			else
-				decd = 0;
-		}
-		buf = malloc(lend+1);
-		_clip_dtostr(buf, lend, decd, v->n.d, 0);
-		_clip_retcn_m(mp, buf, lend );
-#else
-		buf = malloc(( len ? len : lend) + 1);
-		_clip_dtostr(buf, len ? len : lend, _clip_parinfo(mp, 3) != UNDEF_t ? dec : decd, v->n.d, 0);
-		_clip_retcn_m(mp, buf, len ? len : lend);
-#endif
-	}
+	if ( _clip_parinfo(mp,2) != NUMERIC_t )
+		len = -999;
+	if ( _clip_parinfo(mp,3) != NUMERIC_t )
+		dec = -999;
+
+
+	buf = _clip_strFunc(mp,v,len,dec,0);
+	_clip_retcn_m(mp, buf, strlen(buf) );
 	return 0;
 }
 
@@ -2189,8 +2245,20 @@ _clip_dtostr(char *buf, int len, int dec, double d, int zero)
 #endif
 	if (snp)
 	{
+#if 1 /* Uri added for str(-1234567890,10)*/
+		double diff;
+		snprintf(buf, len + 1, zero ? "%0*.*f" : "%*.*f", len, dec, neg ? -d : d);
+		diff = fabs(fabs(atof(buf)) - d);
+		if (diff > (d * MIN_NUMERIC_DIFF))
+			goto err;
+		/*
+		if (fabs(atof(buf)) != d)
+			goto err;
+		*/
+#else
 		if (snprintf(buf, len + 1, zero ? "%0*.*f" : "%*.*f", len, dec, neg ? -d : d) < 0)
 			goto err;
+#endif
 		s = strchr(buf, ',');
 		if (s)
 			*s = '.';
@@ -3253,7 +3321,7 @@ sync_mp(ClipMachine * mp)
 	if (!mp->update && !mp->inkey)
 	{
 		if (mp->fullscreen)
-			sync_Screen(mp->screen);
+			sync_Screen(mp->screen, mp->flags1 & UTF8TERM_FLAG );
 		else if (mp->flags1 & FLUSHOUT_FLAG)
 			fflush((FILE *) mp->out);
 	}
@@ -3600,12 +3668,12 @@ clip_DISPEND(ClipMachine * mp)
 {
 	mp->update--;
 	if (_clip_debuglevel)
-		sync_Screen(mp->screen);
+		sync_Screen(mp->screen, mp->flags1 & UTF8TERM_FLAG );
 	if (mp->update <= 0)
 	{
 		mp->update = 0;
 		if (mp->fullscreen)
-			sync_Screen(mp->screen);
+			sync_Screen(mp->screen, mp->flags1 & UTF8TERM_FLAG );
 #ifdef USE_TASKS
 		clip_TASKSTART(mp);
 #endif
@@ -4267,8 +4335,11 @@ clip___KEYBOARD(ClipMachine * mp)
 
 	if (!_clip_parl(mp, 2) || _clip_parinfo(mp, 0) == 0)
 	{
+		int tmp = mp->lastkey;
 		while (_clip_key(mp, 0, 0xFF));
+		mp->lastkey = tmp ;
 		*mp->kbdptr = mp->kbdbuf;
+		/*_clip_logg(0,"aaa1 clear kbdbuf,%p,%p",*mp->kbdptr,mp->kbdbuf);*/
 	}
 
 	if (vp == NULL)
@@ -4281,6 +4352,7 @@ clip___KEYBOARD(ClipMachine * mp)
 		int i;
 		int n = *mp->kbdptr - mp->kbdbuf;
 
+		/*_clip_logg(0,"aaa2 clear kbdbuf,%p,%p,%s",*mp->kbdptr,mp->kbdbuf,s);*/
 		if ((l - n) > mp->typeahead)
 			l = mp->typeahead - n;
 
@@ -4292,6 +4364,7 @@ clip___KEYBOARD(ClipMachine * mp)
 		int key = _clip_parni(mp, 1);
 		int n = *mp->kbdptr - mp->kbdbuf;
 
+		/*_clip_logg(0,"aaa3 clear kbdbuf,%p,%p,%d",*mp->kbdptr,mp->kbdbuf,key);*/
 		if (n < mp->typeahead)
 		{
 			**mp->kbdptr = key;
@@ -4299,6 +4372,7 @@ clip___KEYBOARD(ClipMachine * mp)
 		}
 
 	}
+	/*_clip_logg(0,"aaa3 clear kbdbuf,%p,%p",*mp->kbdptr,mp->kbdbuf);*/
 
 	return 0;
 }
@@ -4419,8 +4493,10 @@ _clip_key(ClipMachine * mp, int timeout_ms, int mask)
 	int ckey = 0;
 
 	/*_clip_fullscreen(mp); */
-	if (*mp->kbdptr != mp->kbdbuf)
+	/*_clip_logg(0,"bbb1 clip_key,%p,%p",*mp->kbdptr, mp->kbdbuf);*/
+	if (*mp->kbdptr != mp->kbdbuf )
 	{
+		/*_clip_logg(0,"bbb2 clear lastkey,%p,%p",*mp->kbdptr, mp->kbdbuf);*/
 		(*mp->kbdptr)--;
 		ckey = mp->lastkey = **mp->kbdptr;
 		return ckey;
@@ -4446,7 +4522,9 @@ _clip_key(ClipMachine * mp, int timeout_ms, int mask)
 
 		if (ckey != 0)
 		{
-			mp->lastkey = ckey;
+			if (timeout_ms!=0)
+				mp->lastkey = ckey;
+
 			break;
 		}
 
@@ -4528,6 +4606,44 @@ clip_KBDSTAT(ClipMachine * mp)
 	_clip_retni(mp, r);
 
 	return 0;
+}
+
+int
+clip___KSETSTATE(ClipMachine * mp, int locktype)
+{
+	int newvalue = _clip_parl(mp,1);
+
+	_clip_fullscreen(mp);
+
+	if (_clip_parinfo(mp,1) != LOGICAL_t)
+		newvalue = -1;
+	_clip_retl(mp,setState_Key(mp->screen->base,newvalue,locktype));
+
+	return 0;
+}
+
+int
+clip_KSETNUM(ClipMachine * mp)
+{
+	return clip___KSETSTATE(mp,1);
+}
+
+int
+clip_KSETCAPS(ClipMachine * mp)
+{
+	return clip___KSETSTATE(mp,2);
+}
+
+int
+clip_KSETSCROLL(ClipMachine * mp)
+{
+	return clip___KSETSTATE(mp,3);
+}
+
+int
+clip_KSETINS(ClipMachine * mp)
+{
+	return clip___KSETSTATE(mp,4);
 }
 
 int
@@ -4926,8 +5042,8 @@ clip_region(ClipMachine * mp, int *ptop, int *pleft, int *pbottom, int *pright, 
 
 	if (right < Left)
 		right = Left;
-	else if (right == Left)
-		right = Right;
+/*	else if (right == Left)
+		right = Right;*/
 	else if (right > Right)
 		right = Right;
 
@@ -5568,7 +5684,7 @@ clip_WBOARD(ClipMachine * mp)
    Places a frame around the active window
  */
 int
-clip_WBOX(ClipMachine * mp)
+clip_WBOXTERM(ClipMachine * mp)
 {
 	int cl = 0;
 	unsigned char *chars = (unsigned char *) _clip_parcl(mp, 1, &cl);
@@ -7245,6 +7361,10 @@ clip_SCREENATTR(ClipMachine *mp)
 	int left = _clip_parni(mp,2);
 	Screen *sp = mp->screen;
 	int r;
+
+	_clip_retni(mp,0);
+	if (!mp->fullscreen)
+		return 0;
 
 	if((_clip_parinfo(mp,1) != NUMERIC_t) || (top < 0) || (top >= sp->base->Lines))
 		top = sp->y;

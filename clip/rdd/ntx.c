@@ -4,9 +4,15 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: ntx.c,v $
+	Revision 1.118  2004/09/20 14:23:57  clip
+	rust: minor fix in dbseek()
+	
+	Revision 1.117  2004/09/10 09:21:37  clip
+	rust: minor fix in SCOPES
+
 	Revision 1.116  2004/05/26 09:52:24  clip
 	rust: some cleanings
-	
+
 	Revision 1.115  2004/03/15 10:53:43  clip
 	rust: GO TOP before processing INDEX ... ALL
 
@@ -443,10 +449,10 @@ static int _ntx_checkscope(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* res,c
 	if(ro->scopetop || ro->scopebottom)
 		if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
 	if(ro->scopetop)
-		if(memcmp(ro->scopetop,ro->key,ro->keysize)>0)
+		if(memcmp(ro->scopetop,ro->key,ro->stoplen)>0)
 			*res = 0;
 	if(ro->scopebottom)
-		if(memcmp(ro->scopebottom,ro->key,ro->keysize)<0)
+		if(memcmp(ro->scopebottom,ro->key,ro->sbotlen)<0)
 			*res = 0;
 	return 0;
 }
@@ -2191,6 +2197,7 @@ static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	int res = 0,sok,er;
 	unsigned int lastrec;
 
+	rd->bof = rd->v_bof = 0;
 	if(rd->eof) return 0;
 	rd->bof = rd->v_bof = rd->eof = 0;
 /*	printf("skip 1\n? 'skip 1',recno(),bof()\n");*/
@@ -2248,6 +2255,7 @@ static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	int res = 0,sok,out,er;
 	int oldrecno = rd->recno;
 	int oldeof = rd->eof;
+	int lastrec;
 
 	if(rd->bof) return 0;
 /*	printf("skip -1\n? 'skip -1',recno(),bof()\n");*/
@@ -2255,7 +2263,14 @@ static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 		rd->eof = 0;
 		if((er = ro->vtbl->gobottom(cm,rd,ro,__PROC__))) return er;
 		rd->eof = rd->bof;
-		ro->valid_stack = 1;
+		if(rd->eof){
+			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
+			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
+				return er;
+			ro->valid_stack = 0;
+		}
+		else
+			ro->valid_stack = 1;
 		return 0;
 	}
 	rd->bof = rd->v_bof = rd->eof = 0;
@@ -2357,6 +2372,10 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 					oldrecno = rd->recno;
 					if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
 					if(rd->eof){
+						if(rd->bof){
+							*found = 0;
+							break;
+						}
 						rd->eof = 0;
 						if((er = rd->vtbl->rawgo(cm,rd,oldrecno,0,__PROC__)))
 							return er;
@@ -2394,6 +2413,10 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 					oldrecno = rd->recno;
 					if((er = ntx_prev(cm,rd,ro,__PROC__))) return er;
 					if(rd->bof){
+						if(rd->eof){
+							*found = 0;
+							break;
+						}
 						rd->bof = rd->v_bof = 0;
 						if((er = rd->vtbl->rawgo(cm,rd,oldrecno,0,__PROC__)))
 							return er;

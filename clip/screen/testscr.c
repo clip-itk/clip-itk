@@ -1,6 +1,9 @@
 
 /*
    $Log: testscr.c,v $
+   Revision 1.8  2004/10/20 17:22:17  clip
+   uri: add set(_SET_UTF8TERM) for terminal with UTF-8
+
    Revision 1.7  2001/11/26 15:39:50  clip
    Linux console GPM mouse handling
    paul
@@ -125,29 +128,29 @@ main()
 		memset(scr->colors[i + 16] + 10, COLOR_HI_WHITE | (i << 4), l);
 		scr->touched[i + 16] = 1;
 	}
-	sync_Screen(scr);
+	sync_Screen(scr,0);
 	write(1, "asdf", 4);
 	key = get_Key(&base);
 
-	redraw_Screen(scr);
+	redraw_Screen(scr,0);
 	sprintf(scr->chars[0], "%lx", key);
 	scr->touched[0] = 1;
 	beep_Screen(scr);
-	sync_Screen(scr);
+	sync_Screen(scr,0);
 
 	key = get_Key(&base);
 
 	sprintf(scr->chars[0], "%lx", key);
 	scr->touched[0] = 1;
 	beep_Screen(scr);
-	sync_Screen(scr);
+	sync_Screen(scr,0);
 
 	key = get_Key(&base);
 
 	sprintf(scr->chars[0], "%lx; press any key...", key);
 	scr->touched[0] = 1;
 	beep_Screen(scr);
-	sync_Screen(scr);
+	sync_Screen(scr,0);
 	key = get_Key(&base);
 
 	destroy_tty(&base);

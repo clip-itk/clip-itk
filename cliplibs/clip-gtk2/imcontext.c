@@ -3,11 +3,11 @@
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
 
-#include <string.h>
 #include <gtk/gtk.h>
 
 #include "clip-gtk2.ch"
@@ -125,7 +125,7 @@ clip_GTK_IMCONTEXTGETPREEDITSTRING(ClipMachine * cm)
 
 	if (list)
         {
-		clist = _register_object(cm, list, GTK_PANGO_ATTR_LIST_OBJECT, NULL, NULL);
+		clist = _register_object(cm, list, GTK_OBJECT_PANGO_ATTR_LIST, NULL, NULL);
 		if (clist) _clip_mclone(cm, cvlist, &clist->obj);
         }
 

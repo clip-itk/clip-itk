@@ -5,6 +5,18 @@
 */
 /*
    $Log: clip.h,v $
+   Revision 1.240  2004/10/28 11:47:33  clip
+   uri: fix formatiing in STR(), pad*() for numeric data and constants.
+
+   Revision 1.239  2004/10/20 17:22:17  clip
+   uri: add set(_SET_UTF8TERM) for terminal with UTF-8
+
+   Revision 1.238  2004/09/30 12:07:04  clip
+   uri: small fix for str(-1234567890,10)
+
+   Revision 1.237  2004/09/03 07:17:54  clip
+   uri: small fix
+
    Revision 1.236  2004/07/05 08:31:14  clip
    uri: small fix in _storni()
 
@@ -997,12 +1009,13 @@
 #define CLIP_H
 
 #include "clipcfg.h"
+/*
 #if defined(OS_MINGW)
-	/* #define INT64 __int64 */
 	#include "_win32.h"
 #else
 	#define INT64 long long
 #endif
+*/
 
 /*#define MEMDEBUG */
 
@@ -1634,6 +1647,8 @@ ClipMachine;
 
 #define CLIP_MAX_HISTORY 32
 
+#define MIN_NUMERIC_DIFF 0.00000000000001
+
 extern long _hash_cur_dir[26];
 
 #define CLIP_OS_NAME "Linux"
@@ -1682,7 +1697,8 @@ extern long _hash_cur_dir[26];
 #define BUFFERING_FLAG      0x40
 #define MAP_FILE_FLAG       0x80
 #define MULTILOCKS_FLAG     0x100
-#define FLUSHOUT_FLAG		0x200
+#define FLUSHOUT_FLAG	    0x200
+#define UTF8TERM_FLAG	    0x400
 
 #define DEFAULT_COLOR "W/N,N/W,N,N,N/W"
 
@@ -1817,7 +1833,7 @@ void _clip_var_log(int val, ClipVar * vp);
 
 int _clip_macro(ClipMachine * mp);
 int _clip_expand(ClipMachine * mp, ClipBuf * dest, ClipBuf * src);
-int _clip_str(ClipMachine * mp, ClipVar * vp, char **newstr, int *lenp);	/* return new str */
+int _clip_strFromVar(ClipMachine * mp, ClipVar * vp, char **newstr, int *lenp);	/* return new str */
 void _clip_var_str(const char *str, int len, ClipVar * vp);
 int _clip_expand_var(ClipMachine * mp, ClipVar * vp);
 
@@ -2280,6 +2296,7 @@ int _clip_uuencode(char *sstr, long l, char **strp, long *lenp, int without_newl
 void _clip_var2str(ClipMachine * mp, ClipVar * vp, char **strp, long *lenp, int method);
 void _clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len, int method);
 void _clip_dtos(double d, char *buf, int buflen, int *dp);
+char * _clip_strFunc(ClipMachine * mp,ClipVar *v,int len, int dec, int pad);
 int _clip_dtostr(char* buf,int len,int dec,double d,int zero);
 double _clip_strtod_base(char *str, int base);
 double _clip_strtod(char *str, int *decpos);

@@ -1,7 +1,7 @@
 /*
     Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
-    	      Elena V. Kornilova <alena@itk.ru>
+	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #ifndef __CLIP_GTK_H__
@@ -299,6 +299,7 @@ void _wtype_table_put(ClipTypeFunc CWType, TypeNameFunc TypeName, TypeFunc WType
 WTypeTable * _wtype_table_get(GtkType WType);
 WTypeTable * _wtype_table_get_by_clip_type(long WClipType);
 WTypeTable * _wtype_table_get_first(void);
+void _wtype_table_destroy(WTypeTable *wt_item);
 char * _sig_name_by_id(long id);
 // Get colors for GTK+ from a map
 void _map_get_colors (ClipMachine *cm, ClipVar *map, double colors[]);
@@ -321,6 +322,7 @@ gint _map_to_gdk_geometry(ClipMachine *cm, ClipVar *m_geom, GdkGeometry *geom);
 gint _arr_to_valist(ClipMachine *cm, ClipVar *marg, va_list valist);
 int _map_put_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region);
 void _list_put_cwidget(ClipMachine * cm, void *pointer, C_widget * cwid);
+long _list_length_cwidget(void);
 C_widget * _list_get_cwidget(ClipMachine * cm, void *pointer);
 C_widget * _list_get_cwidget_by_data(ClipMachine * cm, void *data);
 void _list_put_cobject(ClipMachine * cm, void *pointer, C_object * cobj);
@@ -344,9 +346,12 @@ void _map_to_gtk_accel_key (ClipMachine *cm, ClipVar *cv, GtkAccelKey *key);
 void _array_to_target_entry (ClipMachine *cm, ClipVar *cv, GtkTargetEntry *target);
 void _map_to_stock_item (ClipMachine *cm, ClipVar *cv, GtkStockItem *item);
 void _stock_item_to_map(ClipMachine *cm, ClipVar *cv, GtkStockItem *item);
+
+int _map_to_pango_rectangle (ClipMachine *cm, ClipVar *map, PangoRectangle *pos);
+int _pango_rectangle_to_map (ClipMachine *cm, ClipVar *map, PangoRectangle *pos);
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 void _file_filter_info_to_map (ClipMachine *cm, GtkFileFilterInfo *info, ClipVar *cv);
 void _map_to_file_filter_info(ClipMachine *cm, ClipVar *cv, GtkFileFilterInfo *info);
-
 
 void _list_put_action(ClipMachine * cm, void *pointer, ClipVar *cv);
 ClipVar * _list_get_action(ClipMachine * cm, void *pointer);
@@ -355,6 +360,7 @@ void _map_to_action_entry (ClipMachine *cm, ClipVar *cv, GtkActionEntry *act);
 void _map_to_toggle_action_entry (ClipMachine *cm, ClipVar *cv, GtkToggleActionEntry *act);
 void _map_to_radio_action_entry (ClipMachine *cm, ClipVar *cv, GtkRadioActionEntry *act);
 
+#endif
 
 
 GtkType _gtk_type_action();
@@ -511,4 +517,73 @@ struct _GtkNotebookPage
 
 #define GTK_ICON_SOURCE(obj)           ((GtkIconSource *)(obj))
 #define GTK_IS_ICON_SOURCE(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_ICON_SOURCE)
+
+#ifndef GTK_IS_PANGO_CONTEXT
+
+#define GTK_IS_PANGO_CONTEXT(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_CONTEXT)
+
+#endif
+
+#ifndef GTK_IS_PANGO_LAYOUT
+
+#define GTK_IS_PANGO_LAYOUT(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_LAYOUT)
+
+#endif
+
+#ifndef GTK_IS_PANGO_ATTR_LIST
+
+#define PANGO_ATTR_LIST(obj)           ((PangoAttrList *)(obj))
+#define GTK_IS_PANGO_ATTR_LIST(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_ATTR_LIST)
+
+#endif
+
+#ifndef GTK_IS_PANGO_FONT_DESCRIPTION
+
+#define PANGO_FONT_DESCRIPTION(obj)           ((PangoFontDescription *)(obj))
+#define GTK_IS_PANGO_FONT_DESCRIPTION(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_FONT_DESCRIPTION)
+
+#endif
+
+#ifndef GTK_IS_PANGO_TAB_ARRAY
+
+#define PANGO_TAB_ARRAY(obj)           ((PangoTabArray *)(obj))
+#define GTK_IS_PANGO_TAB_ARRAY(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_TAB_ARRAY)
+
+#endif
+
+#ifndef GTK_IS_PANGO_LOG_ATTR
+
+#define PANGO_LOG_ATTR(obj)           ((PangoLogAttr *)(obj))
+#define GTK_IS_PANGO_LOG_ATTR(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_LOG_ATTR)
+
+#endif
+
+#ifndef GTK_IS_PANGO_LAYOUT_LINE
+
+#define PANGO_LAYOUT_LINE(obj)           ((PangoLayoutLine *)(obj))
+#define GTK_IS_PANGO_LAYOUT_LINE(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_LAYOUT_LINE)
+
+#endif
+
+
+#ifndef GTK_IS_PANGO_LAYOUT_ITER
+
+#define PANGO_LAYOUT_ITER(obj)           ((PangoLayoutIter *)(obj))
+#define GTK_IS_PANGO_LAYOUT_ITER(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_LAYOUT_ITER)
+
+#endif
+
+#ifndef GTK_IS_PANGO_LAYOUT_RUN
+
+#define PANGO_LAYOUT_RUN(obj)           ((PangoLayoutRun *)(obj))
+#define GTK_IS_PANGO_LAYOUT_RUN(obj)        (obj && ((C_object*)obj)->type == GTK_TYPE_PANGO_LAYOUT_RUN)
+
+#endif
+
+#ifndef GDK_IS_BITMAP
+
+#define GDK_BITMAP(obj)           ((GdkBitmap *)(obj))
+#define GDK_IS_BITMAP(obj)        (obj && ((C_object*)obj)->type == GDK_TYPE_BITMAP)
+
+#endif
 

@@ -3,13 +3,15 @@
 STATIC sExt := {".HTML",".HTM",".SHTML"}
 STATIC sSize := 0
 STATIC sFiles := 0
-STATIC sRootPath := "/var/www/htdocs"
+STATIC sRootPath := "/var/www"
 STATIC sDestDir := "."
 STATIC sQuiet := .F.
 
 PROCEDURE Main
 	LOCAL path := ""
 	LOCAL h,t,c,i:=0,j
+
+	SET TRANSLATE PATH OFF
 
 	WHILE param(++i) != NIL
 		IF param(i) == "--help" .OR. param(i) == "-h"
@@ -61,7 +63,9 @@ PROCEDURE DirReview(path,h)
 	LOCAL i,j,p,o,str
 
 	FOR i:=1 TO LEN(dir)
-		IF dir[i][F_ATTR] == 'D' .AND. LEFT(@dir[i][F_NAME],1) != '.'
+		IF dir[i][F_ATTR] == 'D' .AND. LEFT(@dir[i][F_NAME],1) != '.';
+			.AND. LEFT(@dir[i][F_NAME],2) != ".."
+			? "Entering",path+"/"+dir[i][F_NAME]
 			DirReview(path+"/"+dir[i][F_NAME],h)
 		ENDIF
 		IF dir[i][F_ATTR] == 'A'
@@ -78,6 +82,9 @@ PROCEDURE DirReview(path,h)
 			html->(DBAPPEND())
 			html->NAME := path+"/"+dir[i][F_NAME]
 
+			IF !sQuiet
+				? html->(recno()),CHR(9),dir[i][F_SIZE],CHR(9),path+"/"+dir[i][F_NAME]
+			ENDIF
 			p := htmlParserNew()
 			p:put(FILESTR(sRootPath+html->NAME))
 			str := ""
@@ -92,11 +99,7 @@ PROCEDURE DirReview(path,h)
 					ENDIF
 				ENDIF
 			ENDDO
-			IF !sQuiet
-				? hs_Add(h,str),CHR(9),dir[i][F_SIZE],CHR(9),path+"/"+dir[i][F_NAME]
-			ELSE
-				hs_Add(h,str)
-			ENDIF
+			hs_Add(h,str)
 			sSize += dir[i][F_SIZE]
 			sFiles++
 		ENDIF
@@ -113,7 +116,7 @@ PROCEDURE Usage
 	? "  -e <suffix>      File name's suffixes separated with ','"
 	? "                   default is html,htm,shtml"
 	? "  -r <www-root>    The path for the WWW-root"
-	? "                   default is /var/www/htdocs"
+	? "                   default is /var/www"
 	? "  -d <destination> The destination directory"
 	? "                   default is ./"
 	? "  -q               Quiet mode"

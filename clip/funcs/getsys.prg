@@ -26,6 +26,7 @@
 #define _GET_RANGE_TO    11    // " - "
 
 STATIC oStatus
+static aGetList
 static keyExit:=15
 
 ****************************************
@@ -97,6 +98,7 @@ FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, ;
    WHILE !( oStatus:pos == 0 )
 
       oGet := GetList[ oStatus:pos ]
+      aGetList := GetList
 	 PostActiveGet( oGet )
 
       IF ( VALTYPE( oGet:reader ) == "B" )
@@ -1384,12 +1386,26 @@ RETURN
 
 ***********************************************
 FUNCTION GetActive( g )
-   LOCAL oldActive := oStatus:activeget
-   IF ( PCOUNT() > 0 )
-      oStatus:activeget := g
-   ENDIF
+	LOCAL oldActive := oStatus:activeget
+	IF ( PCOUNT() > 0 )
+		oStatus:activeget := g
+	ENDIF
 RETURN ( oldActive )
-
+***********************************************
+FUNCTION GetFldVar(nField)
+	LOCAL name := -1
+	local oGet := oStatus:activeget
+	if valType(nField) == "N"
+		if nField > 0  .and. nField <= len(aGetList)
+			oGet := agetList[nField]
+		else
+			return ( name )
+		endif
+	endif
+	if valtype(oGet) == "O"
+		name := oGet:name
+	endif
+RETURN ( name )
 ***********************************************
 FUNCTION GetActivePos( pos )
    LOCAL oldActive := oStatus:pos
@@ -1672,5 +1688,9 @@ return ostatus
 ************************************
 function restGets(obj)
 return RestoreGetSysVars(obj)
+
+************************************
+function CurrentGet()
+return ostatus:pos
 
 

@@ -32,7 +32,6 @@ function codb_dictdbf_Methods(path,dict_id,user,passwd)
 	obj:loadPluginses:= @_dict_LoadPluginses()
 	obj:loadModule	:= @_dict_LoadModule()
 	obj:getModule	:= @_dict_getModule()
-	obj:runTrigger  := @_dict_runTrigger()
 	obj:getTriggers := @_dict_getTriggers()
 	obj:hashName	:= @_dict_hashName() // return string for hashcode
 	obj:checkBody	:= @_dict_checkBody()
@@ -150,7 +149,7 @@ static function _dict_open(self)
 	self:hDbMeta:=rddUseArea(CODB_DDRIVER_DEFAULT,dbfile,,.f.)
 	if self:hDbMeta<=0
 		self:hDbMeta:=NIL
-		self:error:=codb_error(1027)+":"+str(ferror())+":"+ferrorstr()
+		self:error:=codb_error(1027)+":"+str(ferror(),3,0)+":"+ferrorstr()
 		return .f.
 	endif
 	rddSetMemo (self:hDBMeta,"FPT",dbFile)
@@ -162,8 +161,8 @@ static function _dict_open(self)
 	self:hDbMetaIdx:=rddUseArea(CODB_DDRIVER_DEFAULT,dbfile,,.f.)
 	if self:hDbMetaIdx<=0
 		self:hDbMetaIdx:=NIL
-		self:error:=codb_error(1028)+":"+str(ferror())+":"+ferrorstr()
-		[1028:Error open meta index table:]+str(ferror())+":"+ferrorstr()
+		self:error:=codb_error(1028)+":"+str(ferror(),3,0)+":"+ferrorstr()
+		[1028:Error open meta index table:]+str(ferror(),3,0)+":"+ferrorstr()
 		return .f.
 	endif
 	rddSetIndex(self:hDBMetaIdx,CODB_IDRIVER_DEFAULT,dbFile)
@@ -247,7 +246,7 @@ return NIL
 static function _dict_loadPluginses(cID)
 	local i,j,s,rec,tmp,body, m:={}
 	local bCode,file,bNames := {}
-	local cExt,eblock,lErr:=.f.
+	local cExt,eblock,lErr:=.f.,lError
 	if cId $ ::__PlugCache
 		return .t.
 	endif
@@ -257,7 +256,9 @@ static function _dict_loadPluginses(cID)
 	rddGoTop(::hDbMetaIdx)
 	tmp:={}
 	while !rddEof(::hDbMetaIdx)
-		aadd(tmp,rddGetValue(::hDbMetaIdx,"ID"))
+		if rddGetvalue(::hDbMetaIdx,"VERSION") >=0
+			aadd(tmp,rddGetValue(::hDbMetaIdx,"ID"))
+		endif
 		rddSkip(::hDbMetaIdx)
 	end
 	rddClearFilter(::hDbMetaIdx)
@@ -281,18 +282,20 @@ static function _dict_loadPluginses(cID)
 	::__PlugCache[ cId ] := map()
 	for i=1 to len(m)
 		body:=m[i]
+		file := ""
+		lError := .f.
 		if body:type $ "CS" .and. empty(body:filename)
 			::error := codb_error(1031)+":"+"("+body:id+")"+body:name
-			exit
+			lError:=.t. ;loop
 		endif
 		if body:type $ "SL" .and. empty(body:mainfunc)
 			::error := codb_error(1032)+":"+"("+body:id+")"+body:name
-			exit
+			lError:=.t. ;loop
 		endif
 		file:=::path+PATH_DELIM+"plugins"+PATH_DELIM+body:filename
 		if body:type $ "CS" .and. !(file(file) .or. file(file+".prg"))
 			::error := codb_error(1033)+":"+file
-			exit
+			lError:=.t. ;loop
 		endif
 		do case
 			case body:type=="C"
@@ -300,6 +303,7 @@ static function _dict_loadPluginses(cID)
 				bCode := __loadPlugIns(file)
 				if valtype(bCode) =="C"
 					::error := codb_error(1034)+":"+bCode
+					lError:=.t. ;loop
 				endif
 			case body:type=="S"
 				// Shared library
@@ -312,9 +316,11 @@ static function _dict_loadPluginses(cID)
 				errorblock(eBlock)
 				if lErr
 					::error := codb_error(1037)+":"+file
+					lError:=.t. ;loop
 				else
 					if ! isfunction(body:mainfunc)
 						::error := codb_error(1038)+":"+body:mainfunc+[ in ]+file
+						lError:=.t. ;loop
 					else
 						bcode:= &("{|p1|"+body:mainfunc+"(p1)}")
 					endif
@@ -323,12 +329,13 @@ static function _dict_loadPluginses(cID)
 				// linked mainfunc procedure
 				if ! isfunction(body:mainfunc)
 					::error := codb_error(1039)+":"+body:mainfunc
+					lError:=.t. ;loop
 				else
 					bcode:= &("{|p1|"+body:mainfunc+"(p1)}")
 				endif
 		endcase
-		if !empty(::error)
-			exit
+		if lError
+			loop
 		endif
 		bNames := eval(bCode,"MEMBERS")
 		if valtype(bNames) == "C" .or. empty(bNames)
@@ -336,7 +343,7 @@ static function _dict_loadPluginses(cID)
 			if valtype(bNames) =="C"
 				::error += "("+bNames+")"
 			endif
-			exit
+			lError:=.t. ;loop
 		endif
 		for j=1 to len(bnames)
 			if bnames[j] $ ::__PlugCache[ cId ]
@@ -364,15 +371,6 @@ static function _dict_getTriggers(self,cId,cTrigger)
 		return {}
 	endif
 return  self:__PlugCache[cId][cTrigger]
-************************************************************
-static function _dict_runTrigger(self,cId,cTrigger,oldBody,NewBody)
-	local i,m,ret:=.t., tret
-	m:=self:getTriggers(cId,cTrigger)
-	for i=1 to len(m)
-		tret := eval(m[i],self,oldBody,newBody)
-		ret := ret .and. ( valtype(tret)=="L" .and. tret)
-	next
-return ret
 ************************************************************
 static function _dict_getValue(cID)
 	local ret:=map(),nId, rec
@@ -523,7 +521,11 @@ static function _dict_delete(self,cId)
 			idxData:version --
 		endif
 		idxData:version :=max(idxData:version,-90)
-		rddRLock(self:hDbMetaIdx)
+		if !waitRddLock(self:hDbMetaIdx)
+			self:error := codb_error(1005)+":"+cId
+			taskStart()
+			return .f.
+		endif
 		rddWrite(self:hDbMetaIdx,idxData)
 		rddUnLock(self:hDbMetaIdx)
 	else
@@ -546,7 +548,11 @@ static function _dict_delete(self,cId)
 	*/
 	rec := rddRead(self:hDbMeta)
 	if rec:id == cID
-		rddRLock(self:hDbMeta)
+		if !waitRddLock(self:hDbMeta)
+			self:error := codb_error(1005)+":"+cId
+			taskStart()
+			return .f.
+		endif
 		rec := rddRead(self:hDbMeta)
 		oData := rec:body
 		rec:version := idxData:version
@@ -583,7 +589,11 @@ static function _dict_undelete(self,cId)
 	rddSeek(self:hDbMeta,cID,.f.,.t.)
 	rec := rddRead(self:hDbMeta)
 	if rec:id == cID
-		rddRLock(self:hDbMeta)
+		if !waitRddLock(self:hDbMeta)
+			self:error := codb_error(1005)+":"+cId
+			taskStart()
+			return .f.
+		endif
 		oData := rec:body
 		rec := map()
 		if prevRec != NIL
@@ -603,7 +613,11 @@ static function _dict_undelete(self,cId)
 	if idxData:id == cId
 		idxData := map()
 		idxData:version := rec:version
-		rddRLock(self:hDbMetaIdx)
+		if !waitRddLock(self:hDbMetaIdx)
+			self:error := codb_error(1005)+":"+cId
+			taskStart()
+			return .f.
+		endif
 		rddWrite(self:hDbMetaIdx,idxData)
 		rddUnLock(self:hDbMetaIdx)
 	else
@@ -913,7 +927,11 @@ static function _dict_update(self,oData,metaName,aRecursive)
 		taskstart()
 		return .f.
 	endif
-	rddRlock(self:hDbMeta)
+	if !waitRddLock(self:hDbMeta)
+		self:error := codb_error(1005)+":"+cId
+		taskStart()
+		return .f.
+	endif
 	rec:body := oData
 	if rec:version < 0 .or. rec:version >= 900
 		rddWrite(self:hDbMeta,rec)
@@ -932,7 +950,11 @@ static function _dict_update(self,oData,metaName,aRecursive)
 		taskstart()
 		return .f.
 	endif
-	rddRlock(self:hDbMetaIdx)
+	if !waitRddLock(self:hDbMetaIdx)
+		self:error := codb_error(1005)+":"+cId
+		taskStart()
+		return .f.
+	endif
 	idxData:version := rec:version
 	if "SUPER_ID" $ oData
 		idxData:super_id := oData:super_id
@@ -1140,7 +1162,7 @@ static function make_version(self)
 	endif
 	hf:=fcreate(dbfile)
 	if hf<0 .or. !file(dbfile)
-		self:error := codb_error(1022)+":"+dbFile+":"+str(ferror())+":"+ferrorstr()
+		self:error := codb_error(1022)+":"+dbFile+":"+str(ferror(),3,0)+":"+ferrorstr()
 		return .f.
 	endif
 	fwrite(hf,CODB_VERSION)
@@ -1270,16 +1292,11 @@ static function _dict_counter(name,deposit,value)
 	if !rddSeek(::hDbMeta,cID,.f.)
 		return ret
 	endif
-	for i=1 to 20
-		if rddRlock(::hDbMeta)
-			exit
-		endif
-		sleep(0.1)
-	next
-	if i>20
-		return ret
-	endif
 	taskstop()
+	if !waitRddLock(::hDbMeta)
+		::error := codb_error(1005)+":"+cId
+		return 0
+	endif
 	rec := rddRead(::hDbMeta)
 	obj := rec:body
 	do case

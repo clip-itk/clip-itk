@@ -98,6 +98,7 @@ Set(_SET_WRAP, .t.)
 SetBlink(.F.)
 SetCursor(0)
 SetCancel(.F.)
+SetKey(K_ALT_F10, {||BliRun()})
 
 #IFDEF __CLIP__
 #IFDEF ENGLISH
@@ -176,10 +177,10 @@ STORE '' TO m->_Lcondit,m->_fcondit,m->_sumCond,m->_pcond,m->_Econd,;
 
 STORE .t. TO m->_NeedRec,m->_NeedPrPage,m->_NeedHeadPage,m->_NeedEject,;
 	m->_NeedMainHead,m->_RecRight,m->_NeedSum,m->_lexp_o2a,m->_lexp_o2aq,;
-	m->_lGFCond
+	m->_lGFCond, m->_lPckAsk
 STORE .f. TO m->_replay,m->_ResetFields,m->_NeedCentr,m->_NeedRestIni,;
 	     m->_NeedApFile, m->_PrintZero,m->_lDgtHdr,m->_lDhAll,;
-	     m->_lPckNoAsk,m->_lPckCheck,;
+	     m->_lPckCheck,;
 	     m->_lTitleAll,m->_lGSExp //,_lHasMemo
 m->_ClipText:={}	//Внутренний буфер
 m->_ClipChoice:=.T.	//Если .T. - будем предлагать выбор.
@@ -398,15 +399,6 @@ IF EMPTY(_i) THEN;
 	RETURN IF(EMPTY(m->bAutoExec),!SelectBase(),.T.)
 RDDSetDefault(_i)
 
-IF CpDBF()=1251
-	SET("DBF_CHARSET", "cp1251")
-ELSE
-#IFDEF ENGLISH
-	Set("DBF_CHARSET", "cp437")
-#ELSE
-	Set("DBF_CHARSET", "cp866")
-#ENDIF
-ENDIF
 
 BEGIN SEQU
 	dbUseArea( .F.,, (m->_base), "_mBase", M_SHARED)
@@ -420,6 +412,15 @@ BEGIN SEQU
 		ENDIF
 	  ELSE
 		Sx_SetPass("")
+	  ENDIF
+	  IF CpDBF()=1251
+		SET("DBF_CHARSET", "cp1251")
+	  ELSE
+#IFDEF ENGLISH
+		Set("DBF_CHARSET", "cp437")
+#ELSE
+		Set("DBF_CHARSET", "cp866")
+#ENDIF
 	  ENDIF
 	ELSE
 		MainUse(M_SHARED)
@@ -610,12 +611,10 @@ ENDIF
 RETURN vFld
 *********
 PROC History(aHist)
-LOCAL _val,hk
+LOCAL _val
 IF_NIL aHist IS &(m->_aar)
-hk:=AchKeys(.T.,)
-hk[8]:=_MSG_DEL_F8
 IF (_val:=Len(aHist))>0
-	IF (_val:=ForAch(5,USE_HISTORY,aHist,_val,'H1',hk))<>0
+	IF (_val:=HistClip(aHist))<>0
 		_val:=aHist[_val]
 		&(m->_Vars):=;
 			IF(m->_tv,Pad(_val,255),;
@@ -627,11 +626,9 @@ IF (_val:=Len(aHist))>0
 			     );
 			  )
 		m->GetList[1]:UpdateBuffer()
-*		KEYBOARD _RIGHT+_LEFT
 		HideMouse()
 	ENDIF
 ENDIF
-AchKeys(.F.)
 *********
 FUNC GetName
 #define Dialog() (m->_vars#'_SIMPLELOC' .AND. EMPTY(m->_cGetMask))
@@ -906,9 +903,6 @@ DO CASE
 
 	CASE nKey=K_ALT_F9
 		IndexFor()
-
-	CASE nKey=K_ALT_F10
-		BliRun()
 
 	CASE (nKey=K_ALT_F11 .OR. nKey=K_ALT_F)
 		SetFilter(!IsShift())

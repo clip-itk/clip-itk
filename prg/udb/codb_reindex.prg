@@ -15,6 +15,7 @@ local i,j,k,id,tmp,key
 local dictlist:={}, oDicts:={}, dictId, oDict
 local deplist:={} , oDeps:={},  depId, oDep
 local classes,class,a,b,c,obj
+local plugins,oPlug,m
 
 
 	set exclusive on
@@ -107,6 +108,7 @@ local classes,class,a,b,c,obj
 		? "Check indexes for classes and objects:"
 		oDep  := oDeps[i]
 		oDict := oDep:dictionary()
+		oDict:stopTriggers()
 		classes := oDict:select("CLASS")
 		for a=1 to len(classes)
 			class := oDict:getValue(classes[a])
@@ -118,6 +120,15 @@ local classes,class,a,b,c,obj
 				?? "","stable"
 				loop
 			endif
+			/*
+			plugins := oDict:select("PLUGINS",,,'class_id=="'+classes[a]+'"')
+			for m=1 to len(plugins)
+				oPlug := map()
+				oPlug:class_id := ""
+				oPlug:id := plugins[m]
+				oDict:update(oPlug)
+			next
+			*/
 			tmp := oDep:select(classes[a])
 			?? space(CODB_ID_LEN+1)
 			for b=1 to len(tmp)
@@ -129,9 +140,18 @@ local classes,class,a,b,c,obj
 				oDep:update(obj)
 			next
 			?? "",len(tmp),"objects"
+			/*
+			for m=1 to len(plugins)
+				oPlug := map()
+				oPlug:class_id := classes[a]
+				oPlug:id := plugins[m]
+				oDict:update(oPlug)
+			next
+			*/
 			class:unstable := .f.
 			oDict:update(class)
 		next
+		oDict:startTriggers()
 
 	next
 	?

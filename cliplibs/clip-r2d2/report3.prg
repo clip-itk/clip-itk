@@ -5,13 +5,14 @@ function r2d2_report3_xml(_queryArr)
 local err, _query
 local oDict,oDep, oDep02,oDict02
 local accPost, acc_chart, osb_class
-local beg_date:=date(),end_date:=date(), account:=""
+local beg_date:=date(),end_date:=date(), account:="", document:=""
 local connect_id:="", connect_data
 local i,j,k,s1,s2,tmp,obj,col,columns
 local acc_list, acc_objs
-local post_list, d_data,k_data, d_list,k_list, d_res,k_res
+local d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
 local c_data, aRefs:={},aTree:={}
+local post,post_list,post_objs
 local urn,sprname,cache:=map()
 
 	errorblock({|err|error2html(err)})
@@ -31,6 +32,9 @@ local urn,sprname,cache:=map()
 	endif
 	if "ACCOUNT" $ _query
 		account := upper(_query:account)
+	endif
+	if "DOCUMENT" $ _query
+		document := upper(_query:document)
 	endif
 	if "URN" $ _query
 		URN := _query:URN
@@ -55,7 +59,7 @@ local urn,sprname,cache:=map()
 			?? "ACCOUNT not defined "
 		endif
 		? "Usage:"
-		? "    report3?beg_date=<date>& end_date=<date>& account=<account_code>"
+		? "    report3?beg_date=<date>& end_date=<date>& account=<account_code>& document=<primary_document_id>"
 		?
 		return
 	endif
@@ -118,71 +122,64 @@ local urn,sprname,cache:=map()
 		return
 	endif
 
-	columns := cgi_make_columns(oDict,sprname)
-	i := ascan(columns,{|x|x:name == "an_debet"})
-	if i>0
-		col := oclone(columns[i])
-		col:datatype := "R"
-		col:dataref_to := ""
-		adel(columns,i)
-		asize(columns,len(columns)-1)
-		*
-		for j=6 to 1 step -1
-			tmp:=NIL; tmp := oclone(col)
-			tmp:name := "an_debet"+alltrim(str(j,2,0))
-			tmp:header := "АнДебет"+alltrim(str(j,2,0))
-			tmp:expr := "iif(len(an_debet)>="+alltrim(str(j,2,0))+",codb_essence(an_debet["+alltrim(str(j,2,0))+"][2]),'')"
-			tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
-
-			tmp:obj_id := "iif(len(an_debet)>="+alltrim(str(j,2,0))+",an_debet["+alltrim(str(j,2,0))+"][2],'')"
-			tmp:obj_id := &("{|p1,p2,p3,p4|"+tmp:obj_id+"}")
-
-			aadd(columns,"")
-			ains(columns,i)
-			columns[i] := tmp
-		next
-
-	endif
-	i := ascan(columns,{|x|x:name == "an_kredit"})
-	if i>0
-		col := oclone(columns[i])
-		col:datatype :="R"
-		col:dataref_to := ""
-		adel(columns,i)
-		asize(columns,len(columns)-1)
-		*
-		for j=6 to 1 step -1
-			tmp:=NIL; tmp := oclone(col)
-			tmp:name := "an_kredit"+alltrim(str(j,2,0))
-			tmp:header := "АнКредит"+alltrim(str(j,2,0))
-			tmp:expr := "iif(len(an_kredit)>="+alltrim(str(j,2,0))+",codb_essence(an_kredit["+alltrim(str(j,2,0))+"][2]),'')"
-			tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
-
-			tmp:obj_id := "iif(len(an_kredit)>="+alltrim(str(j,2,0))+",an_kredit["+alltrim(str(j,2,0))+"][2],'')"
-			tmp:obj_id := &("{|p1,p2,p3,p4|"+tmp:obj_id+"}")
-
-			aadd(columns,"")
-			ains(columns,i)
-			columns[i] := tmp
-		next
-
-	endif
+	columns := cgi_accpost_columns(oDict,sprname)
 	post_list := {}
 	aRefs := {}
 	s1 := 'odate>=stod("'+dtos(beg_date)+'") .and. odate<=stod("'+dtos(end_date)+'")'
 	for i=1 to len(acc_list)
 		s2 := ' .and. (daccount="'+acc_list[i]+'" .or. kaccount="'+acc_list[i]+'")'
+		if !empty(document)
+			s2+=' .and. primary_dcoument=="'+document+'"'
+		endif
 		tmp:=oDep:select(accpost:id,,,s1+s2)
 		for j=1 to len(tmp)
-			obj := oDep:getValue(tmp[j])
-			if empty(obj)
-				outlog(__FILE__,__LINE__,"Can`t load object:",tmp[i])
+			aadd(post_list,tmp[j])
+		next
+	next
+	tmp := map()
+	post_objs:={}
+	for i=1 to len(post_list)
+		/* не показывать дубликаты проводок */
+		if post_list[i] $ tmp
+			loop
+		endif
+		tmp[ post_list[i] ] := post_list[i]
+		/* */
+		post:=oDep:getValue(post_list[i])
+		if empty(post)
+			loop
+		endif
+		if ! ("DACCOUNT" $ post .and. "KACCOUNT" $ post)
+			loop
+		endif
+		if post:odate < beg_date .or. post:odate > end_date
+			loop
+		endif
+		if !empty(document) .and. !(post:primary_document == document)
+			loop
+		endif
+		aadd(post_objs,post)
+	next
+	if empty(document)
+		for i=len(post_objs) to 1 step -1
+			tmp := ascan(post_objs,{|x|x:daccount==post_objs[i]:daccount ;
+				.and. x:kaccount==post_objs[i]:kaccount;
+				.and. x:odate==post_objs[i]:odate;
+				.and. x:primary_document==post_objs[i]:primary_document;
+				})
+			if tmp < 0 .or. tmp == i
 				loop
 			endif
-			aadd(aRefs,{obj:id,"",dtos(obj:odate)+":"+obj:primary_document,obj})
-			//aadd(aRefs,{obj:id,{},obj})
-			//aadd(aTree,{aRefs[i][1],{},aRefs[i][4]})
+			//outlog(__FILE__,__LINE__,tmp,post_objs[i])
+			post_objs[tmp]:summa += post_objs[i]:summa
+			adel(post_objs,i)
+			asize(post_objs,len(post_objs)-1)
 		next
+	endif
+
+	for i=1 to len(post_objs)
+		obj:=post_objs[i]
+		aadd(aRefs,{obj:id,"",dtos(obj:odate)+":"+obj:primary_document,obj})
 	next
 
 #ifndef ___1

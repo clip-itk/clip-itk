@@ -13,7 +13,7 @@ OBJS  = _prompt.o a2edit.o achoice.o bl_func.o blank.o box.o browse.o \
 	hbrowse.o ct_shtm.o dbtotal.o browsys.o sqlbrows.o \
 	foxsel.o foxsql.o foxscope.o foxdbfunc.o foxkey.o foxsys.o foxwin.o\
 	hbrowtbl.o sys_prn.o scr_func.o scr_tools.o pv_fv.o ft_ontick.o \
-	mimetype.o
+	mimetype.o print_funcs.o
 
 OBJS2 =  key_func.o key_func2.o
 

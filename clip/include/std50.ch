@@ -283,6 +283,16 @@
 			VALID {|_1| RangeCheck(_1,, <lo>, <hi>)}        ;
 			[<moreClauses>]
 
+#command @ <row>, <col> GET <var>                                       ;
+			[<clauses,...>]                                 ;
+			RANG <lo>, <hi>                                ;
+			[<moreClauses,...>]                             ;
+									;
+      => @ <row>, <col> GET <var>                                       ;
+			[<clauses>]                                     ;
+			VALID {|_1| RangeCheck(_1,, <lo>, <hi>)}        ;
+			[<moreClauses>]
+
 
 #command @ <row>, <col> GET <var>                                       ;
 			[<clauses,...>]                                 ;

@@ -33,6 +33,10 @@ local i,j,k,x,tcol,rname,ind_list
 
 
 	cgi_xml_header()
+	? ' <window name="object_body"'
+	? 'xmlns:html="http://www.w3.org/1999/xhtml"'
+	? 'xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">'
+
 	sDep := substr(obj_id,1,codb_info("DICT_ID_LEN")+codb_info("DEPOSIT_ID_LEN"))
 	oDep := codb_needDepository(sDep)
 	if empty(oDep)
@@ -46,9 +50,6 @@ local i,j,k,x,tcol,rname,ind_list
 	else
 		aadd(objs_id,obj_id)
 	endif
-	? ' <window name="object_body"'
-	? 'xmlns:html="http://www.w3.org/1999/xhtml"'
-	? 'xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">'
 
 
 	for x=1 to len(objs_id)

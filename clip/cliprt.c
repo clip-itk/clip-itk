@@ -5,6 +5,45 @@
  */
 /*
    $Log: cliprt.c,v $
+   Revision 1.438  2004/12/10 10:43:28  clip
+   uri: fixed memory leak in _clip_ret*() with twice call.
+
+   Revision 1.437  2004/11/25 08:28:28  clip
+   uri: fix for deleting spaces from filenames for DOS-mode files.
+
+   Revision 1.436  2004/11/04 07:37:27  clip
+   uri: some fix in numeric format with "+-" operation
+
+   Revision 1.435  2004/11/03 10:12:35  clip
+   uri: small fix about "" $ "1234"
+
+   Revision 1.434  2004/11/01 06:39:45  clip
+   uri: delete logg.
+
+   Revision 1.433  2004/10/29 09:15:42  clip
+   uri: small fix
+
+   Revision 1.432  2004/10/28 11:47:33  clip
+   uri: fix formatiing in STR(), pad*() for numeric data and constants.
+
+   Revision 1.431  2004/10/27 14:43:56  clip
+   rust: debugging SIG handler
+
+   Revision 1.430  2004/10/25 09:24:12  clip
+   uri: small fix for oget:colorSpec
+
+   Revision 1.429  2004/10/13 12:47:37  clip
+   uri: small fix for cygwin
+
+   Revision 1.428  2004/09/30 14:37:17  clip
+   rust: path parse fix
+
+   Revision 1.426  2004/08/12 12:32:14  clip
+   uri: small fix
+
+   Revision 1.425  2004/08/12 10:21:48  clip
+   uri: disable stdout buffering by default
+
    Revision 1.424  2004/07/05 10:12:20  clip
    alena: small bug in _storc()
 
@@ -2161,11 +2200,14 @@ new_ClipMachine(struct Screen *screen)
 	ret->decimals = 2;
 	ret->fileCreateMode = _clip_fileStrModeToNumMode("664");
 	ret->dirCreateMode = _clip_fileStrModeToNumMode("753");
-	ret->flags = CONSOLE_FLAG;
+	ret->flags = CONSOLE_FLAG+INTENSITY_FLAG;
 	ret->date_format = strdup(CLIP_DATEFORMAT_DEFAULT);
 	ret->rootpath = NULL;
 	if (CLIP_CENTURY_DEFAULT)
 		ret->flags += CENTURY_FLAG;
+#ifdef _WIN32
+	ret->flags1 += DISPBOX_FLAG;
+#endif
 	ret->epoch = CLIP_EPOCH_DEFAULT;
 	ret->path = strdup(".");
 	ret->defaul = strdup(".");
@@ -2274,10 +2316,13 @@ new_ClipMachine(struct Screen *screen)
 	ret->flags |= TRANSLATE_FLAG;
 	ret->flags1 |= OPTIMIZE_FLAG;
 
+	/*
 #ifdef OS_LINUX
 	if (ret->out && isatty(fileno(ret->out)))
 		ret->flags1 |= FLUSHOUT_FLAG;
 #endif
+	*/
+	ret->flags1 |= FLUSHOUT_FLAG;
 
 
 	return ret;
@@ -2975,6 +3020,17 @@ _clip_logg(int level, const char *fmt, ...)
 void
 _clip_signal(int sig)
 {
+	static int oldsig = 0;
+	static int cnt = 0;
+
+	if(cnt >= 100)
+		exit(100+sig);
+	if(sig == oldsig)
+		cnt++;
+	else
+		cnt = 0;
+	oldsig = sig;
+	_clip_logg(0, "CLIP VM debug signal %d #%d",sig,cnt);
 	_clip_sig_flag = sig;
 }
 
@@ -3030,7 +3086,7 @@ _clip_signal_real(int sig)
 	}
 	mp = first_mp; /*cur_ClipMachine();*/
 	_clip_sig_flag = 0;
-	_clip_trap_err(mp, EG_SIGNAL, 0, 0, "SIGNAL", sig, "system signal");
+	_clip_trap_err(mp, EG_SIGNAL, 0, 0, "SIGNAL", sig, msg);
 	_clip_call_errblock(mp, EG_SIGNAL);
 
 	_clip_logg(0, "got signal %s, exiting...", msg);
@@ -4887,8 +4943,10 @@ _clip_strstr(const char *src, int slen, const char *dst, int dlen)
 {
 	const char *end, *de, *s = src, *d = dst;
 
+	/*
 	if(!dlen)
 		return src;
+	*/
 	for (end = src + slen, de = dst + dlen - 1; src < end; src++)
 		if (*src == *d)
 		{
@@ -8021,7 +8079,7 @@ descr_str(ClipMachine * mp, ClipVar * vp, char **str)
 	switch (vp->t.type)
 	{
 	case CHARACTER_t:
-		return _clip_str(mp, vp, str, &l);
+		return _clip_strFromVar(mp, vp, str, &l);
 		break;
 	case MAP_t:
 		{
@@ -8034,7 +8092,7 @@ descr_str(ClipMachine * mp, ClipVar * vp, char **str)
 				ap = _clip_vptr(vp);
 
 				ep = &(ap->m.items[ind].v);
-				return _clip_str(mp, ep, str, &l);
+				return _clip_strFromVar(mp, ep, str, &l);
 			}
 		}
 		break;
@@ -8046,7 +8104,7 @@ descr_str(ClipMachine * mp, ClipVar * vp, char **str)
 }
 
 CLIP_DLLEXPORT int
-_clip_str(ClipMachine * mp, ClipVar * vp, char **str, int *lenp)
+_clip_strFromVar(ClipMachine * mp, ClipVar * vp, char **str, int *lenp)
 {
 	if (!vp)
 		return 0;
@@ -9086,6 +9144,9 @@ _clip_retndp(ClipMachine * mp, double n, int len, int dec)
 {
 	ClipVar *vp = mp->bp - mp->argc - 1;
 
+	if (vp->t.type==CHARACTER_t && vp->s.str.buf != NULL )
+		free(vp->s.str.buf);
+
 	vp->t.type = NUMERIC_t;
 	vp->t.flags = F_NONE;
 	vp->t.memo = 0;
@@ -9119,6 +9180,9 @@ _clip_retnr(ClipMachine * mp, rational * r, int len, int dec)
 {
 	ClipVar *vp = mp->bp - mp->argc - 1;
 
+	if (vp->t.type==CHARACTER_t && vp->s.str.buf != NULL )
+		free(vp->s.str.buf);
+
 	vp->t.type = NUMERIC_t;
 	vp->t.flags = F_NONE;
 	vp->t.len = len;
@@ -9132,6 +9196,9 @@ _clip_retl(ClipMachine * mp, int n)
 {
 	ClipVar *vp = mp->bp - mp->argc - 1;
 
+	if (vp->t.type==CHARACTER_t && vp->s.str.buf != NULL )
+		free(vp->s.str.buf);
+
 	vp->t.type = LOGICAL_t;
 	vp->t.flags = F_NONE;
 	vp->l.val = n;
@@ -9141,6 +9208,9 @@ CLIP_DLLEXPORT void
 _clip_retcn(ClipMachine * mp, char *s, int l)
 {
 	ClipVar *vp = mp->bp - mp->argc - 1;
+
+	if (vp->t.type==CHARACTER_t && vp->s.str.buf != NULL )
+		free(vp->s.str.buf);
 
 	vp->t.type = CHARACTER_t;
 	vp->t.flags = F_NONE;
@@ -9160,6 +9230,8 @@ _clip_retcn_m(ClipMachine * mp, char *s, int l)
 {
 	ClipVar *vp = RETPTR(mp);
 
+	if (vp->t.type==CHARACTER_t && vp->s.str.buf != NULL )
+		free(vp->s.str.buf);
 	memset(vp, 0, sizeof(ClipVar));
 	vp->t.type = CHARACTER_t;
 	vp->t.flags = F_NONE;
@@ -9687,6 +9759,9 @@ _clip_retdj(ClipMachine * mp, long julian)
 {
 	ClipVar *vp = RETPTR(mp);
 
+	if (vp->t.type==CHARACTER_t && vp->s.str.buf != NULL )
+		free(vp->s.str.buf);
+
 	vp->t.type = DATE_t;
 	vp->t.flags = F_NONE;
 	vp->t.len = 8;
@@ -9698,6 +9773,9 @@ CLIP_DLLEXPORT void
 _clip_retdtj(ClipMachine * mp, long julian, long time)
 {
 	ClipVar *vp = RETPTR(mp);
+
+	if (vp->t.type==CHARACTER_t && vp->s.str.buf != NULL )
+		free(vp->s.str.buf);
 
 	vp->t.type = DATETIME_t;
 	vp->t.flags = F_NONE;
@@ -10531,11 +10609,23 @@ _clip_translate_path(ClipMachine * mp, const char *str, char *buf, int buflen)
 	bl = strlen(buf);
 	if (mp->flags & TRANSLATE_FLAG)
 	{
+#if 1
+		int i,j;
+		for (i=0,j=0; i<bl; i++)
+		{
+			if (buf[i] == ' ')
+				continue;
+			buf[j] = tolower((unsigned char) (buf[i]));
+			j ++;
+		}
+		buf[j] = 0;
+#else
 		char *tmp;
 		for (e = buf + bl, s = buf; s < e; ++s)
 			*s = tolower(*(unsigned char *) s);
 		for (tmp=buf+strlen(buf)-1; *tmp == ' ' && tmp>=buf; tmp--);
 		tmp++; *tmp=0;
+#endif
 	}
 	return 0;
 #endif
@@ -10894,7 +10984,7 @@ _clip_mgetc(ClipMachine * mp, ClipVar * vp, long no, char **strp, int *lenp)
 		ap = _clip_vptr(vp);
 
 		ep = &(ap->m.items[ind].v);
-		r = _clip_str(mp, ep, strp, lenp);
+		r = _clip_strFromVar(mp, ep, strp, lenp);
 		return r;
 	}
 	return -1;
@@ -11086,27 +11176,35 @@ _clip_math_operation(ClipMachine * mp, int op, ClipVar * Lval, ClipVar * Rval)
 	switch (op)
 	{
 	case '-':
-		Lval->t.len = (llen < rlen ? rlen : llen);
-		Lval->t.dec = (ldec < rdec ? rdec : ldec);
+		llen = (llen < rlen ? rlen : llen);
+		ldec = (ldec < rdec ? rdec : ldec);
 		break;
 	case '+':
-		Lval->t.len = (llen < rlen ? rlen : llen);
-		Lval->t.dec = (ldec < rdec ? rdec : ldec);
+		llen = (llen < rlen ? rlen : llen);
+		ldec = (ldec < rdec ? rdec : ldec);
 		break;
 	case '/':
-		Lval->t.dec += rlen;
+		if ( ldec == 0 )
+		{
+			ldec += mp->decimals;
+			llen += mp->decimals+1;
+		}
 		break;
 	case '*':
-		Lval->t.len += Rval->t.len;
-		Lval->t.dec += Rval->t.dec;
+		llen += Rval->t.len;
+		ldec += Rval->t.dec;
 		break;
 	}
-	if (Lval->t.len > 20)
-		Lval->t.len = 20;
-	if (Lval->t.dec > 5)
-		Lval->t.dec = 5;
+	if (ldec > 5)
+		ldec = 5;
 	if (mp->flags & FIXED_FLAG)
-		Lval->t.dec = mp->decimals;
+		ldec = mp->decimals;
+	if (ldec > 0 && llen <= 10+ldec )
+		llen = 11+ldec;
+	if (llen > 20)
+		llen = 20;
+	Lval->t.len = llen;
+	Lval->t.dec = ldec;
 	return;
 }
 
@@ -11733,8 +11831,23 @@ _clip_strnncasecmp(const char *str1, const char *str2, int len1, int len2)
 }
 
 void
-_clip_unix_path(char *p, int tolow)
+_clip_unix_path(char *p, int doslike)
 {
+#if 1
+	int i,j,len=strlen(p);
+	char * buf = p;
+	for (i=0,j=0; i<len; i++)
+	{
+		if (doslike && buf[i] == ' ')
+			continue;
+		if (buf[i] == '\\')
+			buf[j] = '/';
+		if (doslike)
+			buf[j] = tolower((unsigned char) (buf[i]));
+		j ++;
+	}
+	buf[j] = 0;
+#else
 	while (*p)
 	{
 		if (*p == '\\')
@@ -11743,6 +11856,7 @@ _clip_unix_path(char *p, int tolow)
 			*p = tolower(*p);
 		p++;
 	}
+#endif
 }
 
 int
@@ -11806,8 +11920,9 @@ _clip_absolute_path(ClipMachine * cm, const char *path, char *p, int len)
 	if (errno)
 		return 1;
 	chdir(p);
-	if (errno)
-		return 1;
+/*	if (errno)
+		return 1;*/
+	errno = 0;
 	getcwd(p, len);
 	if (errno)
 		return 1;

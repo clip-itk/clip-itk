@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: dbf.c,v $
+	Revision 1.182  2004/11/17 14:08:20  clip
+	rust: "Duplicate field name" error message added
+	
 	Revision 1.181  2004/07/12 11:04:43  clip
 	rust: unlink(filename) before creat() (fixes file permissions)
-	
+
 	Revision 1.180  2004/05/06 11:28:34  clip
 	rust: fixed typo in dbf_close()
 
@@ -636,6 +639,7 @@ static int dbf_verify(ClipMachine* cm,RDD_DATA* rd,int* r,const char* __PROC__);
 #define  er_writelock       _clip_gettext("Exclusive lock error")
 #define  er_badheader       _clip_gettext("Table header corrupted")
 #define  er_badstructure    _clip_gettext("Bad table structure")
+#define  er_fielduplicate	_clip_gettext("Duplicate field name")
 #define  er_notpermitted    _clip_gettext("Operation not permitted")
 #define  er_corruption      _clip_gettext("Corruption detected")
 #define  er_nomemo          _clip_gettext("Memo file not opened")
@@ -1120,7 +1124,7 @@ static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 		}
 		if(!HashTable_insert(hashes,fld,_clip_casehashword(fld->name,strlen(fld->name)))){
 			er = rdd_err(cm,EG_CREATE,0,__FILE__,__LINE__,__PROC__,
-				er_badstructure);
+				er_fielduplicate);
 			goto err;
 		}
 	}
@@ -1235,7 +1239,7 @@ static int vfp_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 		fld->flags = (stru[i].binary?0x04:0)|(stru[i].nullable?0x02:0);
 		if(!HashTable_insert(hashes,fld,_clip_casehashword(fld->name,strlen(fld->name)))){
 			er = rdd_err(cm,EG_CREATE,0,__FILE__,__LINE__,__PROC__,
-				er_badstructure);
+				er_fielduplicate);
 			goto err;
 		}
 	}

@@ -30,6 +30,7 @@ function httpServiceNew(oIni)
 	obj:admin	:= "webmaster@"+obj:hostname
 	obj:serverSoft	:= ""
 	obj:serverSign	:= ""
+	obj:dateFormat	:= "dd.mm.yyyy"
 
 	obj:nConnect	:= -1
 	obj:cLine	:= ""
@@ -168,6 +169,8 @@ static function HTTP_VMsetValues(self)
 	set deleted on
 	set device to printer
 	set printer to membuf
+	outlog(__FILE__,__LINE__,self:dateFormat)
+	set date format to (self:dateFormat)
 return
 /******************************/
 static function HTTP_waitRequest(self)
@@ -848,6 +851,10 @@ static function HTTP_fromIni(obj,oIni,vHost)
 	endif
 	if !empty(vHost)
 		return
+	endif
+	tmp := oIni:getValue("HTTP","DATEFORMAT")
+	if !empty(tmp)
+		obj:dateFormat := tmp
 	endif
 	tmp := oIni:getValue("HTTP","SSI")
 	if !empty(tmp)

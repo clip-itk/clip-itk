@@ -8,6 +8,7 @@
 
 #include "six2clip.ch"
 #include "codbcfg.ch"
+#include "codb_dbf.ch"
 
 local dList,list
 local i,j,k,l,id, paths:={},all:={},dir
@@ -16,11 +17,22 @@ local hdb,dbfile,str
 local h,version,vFile,dFile1,dFile2
 local remake,dStr1,dStr2
 local mFiles := {;
-	{"dataidx","CODB_IDXTABLE_STRUCTURE"},;
-	{"metaidx","CODB_DICTINDEX_STRUCTURE"},;
-	{"metadata","CODB_DICT_STRUCTURE"};
+	{"dataidx",CODB_IDXTABLE_STRUCTURE},;
+	{"metaidx",CODB_DICTINDEX_STRUCTURE},;
+	{"metadata",CODB_DICT_STRUCTURE};
 	}
 
+	k := mFiles[1][2]
+	for i=1 to CODB_IDX_PER_CLASS
+		str:="DATA"+alltrim(str(i,2,0))
+		if i<=2
+			aadd(k,{str,"X",CODB_IDX_DATALENGTH+12,0} )
+		elseif i<=5
+			aadd(k,{str,"X",CODB_IDX_DATALENGTH+2,0} )
+		else
+			aadd(k,{str,"X",CODB_ID_LEN+2,0} )
+		endif
+	next
 
 	set exclusive on
 	set translate path off
@@ -79,7 +91,7 @@ local mFiles := {;
 				use (dFile1)
 				dStr1 := dbstruct()
 				use
-				dStr2 := codb_info(mfiles[l][2])
+				dStr2 := mfiles[l][2]
 				for j=1 to len(dStr2)
 					k := ascan(dStr1,{|x|x[1]==dStr2[j][1]})
 					if k>0 .and. dstr2[j][3] > dStr1[k][3]

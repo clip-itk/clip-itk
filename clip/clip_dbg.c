@@ -5,6 +5,12 @@
 */
 /*
    $Log: clip_dbg.c,v $
+   Revision 1.23  2004/10/09 12:38:53  clip
+   rust: minor fix for configure -m=...
+
+   Revision 1.22  2004/09/03 07:04:00  clip
+   uri: small fixes from John Smyth <js@w-e.ru>
+
    Revision 1.21  2004/05/19 08:32:18  clip
    rust: fix for ./configure -m
 
@@ -83,8 +89,10 @@
    debug links
    paul
 */
-
 #include <string.h>
+
+#include "clip.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -111,7 +119,6 @@
 
 #undef select
 
-#include "clip.h"
 
 extern char *optarg;
 extern int optind, opterr, optopt;

@@ -61,9 +61,9 @@ function codbtview(oConnect,oIni,oAnswer,tViewId,cCond,DepId)
 	else
 		tmp := oDep:select(class_id,,,cCond,MAX_TVIEW)
 	endif
-	if empty(tmp)
+	if empty(tmp) .and. !empty(oDep:error)
 		oAnswer:errno := COBRA_ERR_BADDATA
-		oAnswer:error := [Bad condition]
+		oAnswer:error := oDep:error
 		oAnswer:return := ret
 	endif
 	/**/

@@ -54,14 +54,14 @@ FUNCTION CLIP2MS(rowset,fieldno,value,totext)
 		CASE type==MST_DECIMAL;
 			.OR. type==MST_FLOAT;
 			.OR. type==MST_DOUBLE
-			RETURN STR(value,0,dec)
+			RETURN STR(value,SQLFieldLen(rowset,fieldno),SQLFieldDec(rowset,fieldno))
 		CASE type==MST_TINY;
 			.OR. type==MST_SHORT;
 			.OR. type==MST_INT24;
 			.OR. type==MST_LONG;
 			.OR. type==MST_LONGLONG;
 			.OR. type==MST_YEAR
-			RETURN STR(value)
+			RETURN STR(value,SQLFieldLen(rowset,fieldno))
 		CASE type==MST_TIMESTAMP
 			RETURN STRZERO(YEAR(value),4,0)+STRZERO(MONTH(value),2,0)+;
 				STRZERO(DAY(value),2,0)

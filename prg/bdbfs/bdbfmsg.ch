@@ -3,11 +3,12 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #define _MSG_F1 [Help]
-#define Brow_M_Keys {[Help],[Print],[Append],[Set Dbf],[Set IDX],[Go To],[Locate],;
+#define _MSG_AF10 [Os Exit]
+#define Brow_M_Keys {[],[Print],[Append],[Set Dbf],[Set IDX],[Go To],[Locate],;
 		     [Pack],[Seek],[Menu],[S/Locat],[UsrMenu]}
 #define Brow_A_Keys {[Info],[Struct.],[Copy],[Repl /C],[Reindex],;
 		{||IF(IsShift(),[Total],[Sum])},;
-		[Contin.],[Zap],[MakeInd],[Os Exit],[Filter],[Filer]}
+		[Contin.],[Zap],[MakeInd],[],[Filter],[Filer]}
 #define Brow_C_Keys {{||IF(IsShift(),[SaveAop],[Macro])},;
 		{||IF(m->_replay,[RstFlds],[SetFlds])},;
 		[Copy To],[Repl /V],[Set var],[Count],;
@@ -18,12 +19,12 @@
 #define Brow_S_Keys  {[SaveVue],[Modify],[Insert],[MakeEmp],[RestVue],;
 		[Compute],[TagNumb],[TagName],[MakeTag],[DelTag],[Set CDX],[Set Tag]}
 
-#define Modi_M_Keys  {[Help],[],[Append],[],[Insert],;
+#define Modi_M_Keys  {[],[],[Append],[],[Insert],;
 		[],[],[Delete],[MakeOpt],[Q/Save],[],[]}
 
-#define Setf_M_Keys {[Help],[],[New],[],[Restore],;
+#define Setf_M_Keys {[],[],[New],[],[Restore],;
 		[],[Rec.Rst],[Del.Rst],[],[Set],[],[]}
-#define Get_M_Keys {[Help],[],{||IF(Select()=1,[Append],[])},[EntMode],[],;
+#define Get_M_Keys {[],[],{||IF(Select()=1,[Append],[])},[EntMode],[],;
 		[],[],[],[],[],[],[]}
 
 #define _MSG_GET_CF10 [ASCII]
@@ -33,25 +34,25 @@
 #define _MSG_GN_F7 [InsFunc]
 #define _MSG_GN_F9 [Select]
 #define _MSG_GN_AF2 [Fields]
-#define Val_M_Keys {[Help],[FdName],[Head],[History],[FdValue],;
+#define Val_M_Keys {[],[FdName],[Head],[History],[FdValue],;
 		    [DbfName],[],[],[],[InsMenu],[],[]}
 #define Val_C_Keys {[],[FdsName],[FdsHead],[Res.Hst],[Quoted],[],[],[],[],[],[],[]}
 
-#define Print_M_Keys {[Help],[],[],[],[],[],[],[],[Config],[],[],[]}
+#define Print_M_Keys {[],[],[],[],[],[],[],[],[Config],[],[],[]}
 
 #define _MSG_DEL_F8 [Delete]
 
-#define Str_M_Keys {[Help],[Print],[],[File],[Ext.Str],[Struct],[],[],[Config],[],[],[]}
+#define Str_M_Keys {[],[Print],[],[File],[Ext.Str],[Struct],[],[],[Config],[],[],[]}
 
-#define Reslt_M_Keys {[Help],[To Calc],[],[],[ToField],[],[],[],[],[InsMenu],[],[]}
+#define Reslt_M_Keys {[],[To Calc],[],[],[ToField],[],[],[],[],[InsMenu],[],[]}
 
-#define Base_M_Keys {[Help],[],[],[],[],[],[],[],[],[],[],[]}
+#define Base_M_Keys {[],[],[],[],[],[],[],[],[],[],[],[]}
 #define SaveF10Key [Save]
 
-#define Memo_M_Keys {[Help],[Print],[Write],[Load],{||IF(_lWrap,[UnWrap],[Wrap])},;
+#define Memo_M_Keys {[],[Print],[Write],[Load],{||IF(_lWrap,[UnWrap],[Wrap])},;
 		     [SysClpb],[],[],[Config],[Save],[],[]}
 
-#define FB_M_Keys {[Help],[Print],[],[],[],[],;
+#define FB_M_Keys {[],[Print],[],[],[],[],;
 		  [Find],{||IF(lWasF8,[Win],[Dos])},[],[Exit],[],[]}
 #define FB_A_Key [FindNxt]
 #define FB_C_Key [Sel.CP]

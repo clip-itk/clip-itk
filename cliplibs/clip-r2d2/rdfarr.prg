@@ -48,6 +48,10 @@ local urn, sprname:=""
 	endif
 
 	cgi_xml_header()
+	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
+	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	?
 
 	sDep := left(id,codb_info("DICT_ID_LEN")+codb_info("DEPOSIT_ID_LEN"))
 	oDep := codb_needDepository(sDep)
@@ -141,13 +145,9 @@ local urn, sprname:=""
 	cgi_checkTreeArefs(arefs,oDep)
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
 
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
 
 	if empty(urn)
-		urn := sprname
+		urn := 'urn:'+sprname
 	endif
 	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 	?

@@ -238,15 +238,15 @@ int clip_HS_FILTER(ClipMachine* cm){
 	} else {
 		fexpr = calloc(1,1);
 		for(i=0;i<nvals;i++){
-			fexpr = realloc(fexpr,strlen(fexpr)+elen+strlen(vals[i])+20);
+			fexpr = realloc(fexpr,strlen(fexpr)+elen+strlen(vals[i])+27);
 			if(hs->lcase){
 				if(i==0){
-					sprintf(fexpr+strlen(fexpr),"'%s' $ UPPER(%s)",vals[i],expr);
+					sprintf(fexpr+strlen(fexpr),"UPPER('%s') $ UPPER(%s)",vals[i],expr);
 				} else {
 					if(land)
-						sprintf(fexpr+strlen(fexpr)," .AND. '%s' $ UPPER(%s)",vals[i],expr);
+						sprintf(fexpr+strlen(fexpr)," .AND. UPPER('%s') $ UPPER(%s)",vals[i],expr);
 					else
-						sprintf(fexpr+strlen(fexpr)," .OR. '%s' $ UPPER(%s)",vals[i],expr);
+						sprintf(fexpr+strlen(fexpr)," .OR. UPPER('%s') $ UPPER(%s)",vals[i],expr);
 				}
 			} else {
 				if(i==0){
@@ -261,8 +261,6 @@ int clip_HS_FILTER(ClipMachine* cm){
 		}
 	}
 
-	if(hs->lcase)
-		_clip_upstr(fexpr,strlen(fexpr));
 	if((er = rdd_createfilter(cm,wa->rd,&fp,NULL,fexpr,NULL,0,__PROC__))) goto err_unlock;
 	free(fexpr); fexpr = NULL;
 	fp->active = 1;

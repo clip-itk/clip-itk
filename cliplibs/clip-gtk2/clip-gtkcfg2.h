@@ -8,6 +8,8 @@
 #define OS_LINUX
 #define GTK2_VER_MAJOR 2
 #define GTK2_VER_MINOR 4
+#define PANGO_VER_MAJOR 1
+#define PANGO_VER_MINOR 4
 #undef  SYSTEM 
 #define SYSTEM "Linux"
 

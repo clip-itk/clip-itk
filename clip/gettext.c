@@ -84,29 +84,31 @@ _clip_gettext(const char *msg)
 	locale = find_locale("cliprt");
 
 	if (locale)
-        {
+	{
 		char *s;
 
 		s = find_msg(locale, msg, 0);
-                if (s)
-                {
+		if (s)
+		{
 			if (locale->charset && strcasecmp(locale->charset, _clip_hostcs))
 			{
-                        	static char buf[1024];
+				static char buf[1024];
 
 				int l = sizeof(buf) - 1;
-                                buf[l] = 0;
+				buf[l] = 0;
 				_clip_translate_charset(locale->charset, _clip_hostcs, s, buf, l);
+				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
+					   locale->charset, _clip_hostcs, l, s, l, buf);
 				return buf;
 			}
-                        else
-                        	return s;
-                }
-                else
-                	return (char*)msg;
-        }
-        else
-        	return (char *)msg;
+			else
+				return s;
+		}
+		else
+			return (char*)msg;
+	}
+	else
+		return (char *)msg;
 }
 
 
@@ -132,7 +134,7 @@ _clip_locale_msg(char *module, char *msg, char **dst)
 				*dst = (char *) malloc(l + 1);
 				(*dst)[l] = 0;
 				_clip_translate_charset(locale->charset, _clip_hostcs, s, *dst, l);
-				_clip_logg(4, "localed msg: %s -> %s: %.*s -> %.*s",
+				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
 					   locale->charset, _clip_hostcs, l, s, l, *dst);
 				return;
 			}
@@ -159,25 +161,25 @@ _clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, c
 
 #ifdef PO_COMPAT
 		{
-        		int l1, l2;
-        		char *buf;
+			int l1, l2;
+			char *buf;
 
 			l1 = strlen(msgid);
-        		l2 = strlen(msgid_plural);
-        		buf = alloca(l1+l2+2);
+			l2 = strlen(msgid_plural);
+			buf = alloca(l1+l2+2);
 
-        		memcpy(buf, msgid, l1);
-        		memcpy(buf+l1+1, msgid_plural, l2);
-        		buf[l1] = PO_COMPAT_CHAR;
-        		buf[l1+l2+1] = 0;
+			memcpy(buf, msgid, l1);
+			memcpy(buf+l1+1, msgid_plural, l2);
+			buf[l1] = PO_COMPAT_CHAR;
+			buf[l1+l2+1] = 0;
 
 			sp = find_msg(lp, buf, &l);
-        	}
+		}
 #endif
 		if (!sp)
 			sp = find_msg(lp, msgid, &l);
-                if (!sp)
-                	goto ret;
+		if (!sp)
+			goto ret;
 
 		if (!lp->pd)
 		{
@@ -187,7 +189,7 @@ _clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, c
 			if (sp)
 				goto retok;
 			else
-                        	goto ret;
+				goto ret;
 		}
 
 		nn = plural_eval(lp->pd, n);
@@ -198,14 +200,14 @@ _clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, c
 
 #ifdef PO_COMPAT
 			p = strchr(sp, PO_COMPAT_CHAR);
-                        if (!p)
-                        {
-                        	l = strlen(sp);
-                        	break;
+			if (!p)
+			{
+				l = strlen(sp);
+				break;
 			}
 			else
-                        {
-                        	l = p - sp;
+			{
+				l = p - sp;
 				p++;
 			}
 #else
@@ -228,16 +230,16 @@ _clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, c
 				*dst = (char *) malloc(l + 1);
 				(*dst)[l] = 0;
 				_clip_translate_charset(lp->charset, _clip_hostcs, sp, *dst, l);
-				_clip_logg(4, "localed msg: %s -> %s: %.*s -> %.*s",
+				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
 					   lp->charset, _clip_hostcs, l, sp, l, *dst);
 			}
 			else
-                        {
+			{
 				*dst = (char *) malloc(l + 1);
 				(*dst)[l] = 0;
 				memcpy(*dst, sp, l);
 			}
-                        return;
+			return;
 		}
 	}
 
@@ -570,17 +572,17 @@ add_locale(char *module, char *filename)
 		}
 	      no_plural:
 		charset = strstr(lp->nullentry, "charset=");
-                if (charset)
-                	{
-                	int l;
-                        charset += 8;
-                        l = strcspn(charset, ";\n\r \t");
-                        if (lp->charset)
-                        	free(lp->charset);
+		if (charset)
+			{
+			int l;
+			charset += 8;
+			l = strcspn(charset, ";\n\r \t");
+			if (lp->charset)
+				free(lp->charset);
 			lp->charset = (char*) malloc(l+1);
-                        memcpy(lp->charset, charset, l);
-                        lp->charset[l] = 0;
-                }
+			memcpy(lp->charset, charset, l);
+			lp->charset[l] = 0;
+		}
 	}
 
 	if (lp->charset)
@@ -621,8 +623,8 @@ delete_Locale(void *item)
 	free(lp->name);
 	free(lp->module);
 	free(lp->charset);
-        if (lp->pd)
-        	plural_delete(lp->pd);
+	if (lp->pd)
+		plural_delete(lp->pd);
 
 	free(lp);
 }

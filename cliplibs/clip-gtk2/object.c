@@ -1,15 +1,15 @@
 /*
     Copyright (C) 2001-2004  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
-    	      Elena V. Kornilova <alena@itk.ru>
+	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
+#include <string.h>
 #include "hashcode.h"
 #include "clip.h"
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
-#include <string.h>
 
 #include "inkey.ch"
 #include "clip-gtk2.ch"
@@ -17,8 +17,12 @@
 
 /**********************************************************/
 /* Signal handlers */
-gint handle_destroy_signal (GtkObject *wid, C_signal *cs)
-  { return handle_signals (cs->cw->widget, cs, NULL); }
+gint handle_destroy_signal (GtkObject *obj, C_signal *cs)
+{
+	OBJECTPREPARECV(cs,cv);
+	OBJECTINVOKESIGHANDLER(cs,cv);
+}
+/*  { return handle_signals (cs->cw->widget, cs, NULL); }*/
 
 
 
@@ -166,6 +170,21 @@ x_inkey( GdkEventKey *k, double *d )
 		case GDK_KP_Add:	*d = KP_ALT_PLUS;	return 0;
 	    }
 	}
+
+	if ( (k->state & GDK_MOD2_MASK) )
+	    switch( k->keyval ) {
+		case GDK_KP_Decimal:
+		case GDK_KP_0:
+		case GDK_KP_1:
+		case GDK_KP_2:
+		case GDK_KP_3:
+		case GDK_KP_4:
+		case GDK_KP_5:
+		case GDK_KP_6:
+		case GDK_KP_7:
+		case GDK_KP_8:
+		case GDK_KP_9:	*d = k->keyval - 65408;	return 0;
+	    }
 
 	if ( k->state & GDK_CONTROL_MASK ) {
 	    switch( k->keyval ) {
@@ -339,7 +358,7 @@ handle_signals( GtkWidget *widget, C_signal *cs, ClipVar *cv )
 
 	_clip_destroy(cs->cw->cmachine, &stack[0]);
 	_clip_destroy(cs->cw->cmachine, &stack[1]);
-	return TRUE;
+	return ret;
 }
 /* Common object signal handlers. It called from signal handler in C and passes it to CLIP */
 CLIP_DLLEXPORT gint
@@ -373,7 +392,7 @@ object_handle_signals( C_signal *cs, ClipVar *cv )
 
 	_clip_destroy(cs->co->cmachine, &stack[0]);
 	_clip_destroy(cs->co->cmachine, &stack[1]);
-	return TRUE;
+	return ret;
 }
 
 
@@ -418,7 +437,7 @@ handle_events(GtkWidget *widget, GdkEvent *event, C_signal *cs)
 		case GDK_EXPOSE:
 			{
 			ClipVar area;
-                        C_object *cwin;
+			C_object *cwin;
 			memset(&area,0,sizeof(area)); _clip_map(cm,&area);
 
 /*printf("Widget name: %s, event: GDK_EXPOSE \n",gtk_widget_get_name(widget));*/
@@ -433,8 +452,8 @@ handle_events(GtkWidget *widget, GdkEvent *event, C_signal *cs)
 
 			cwin = _list_get_cobject(cm, event->expose.window);
 			if (!cwin) cwin = _register_object(cm, event->expose.window, GDK_TYPE_WINDOW, NULL, NULL);
-                        if (cwin) _clip_madd(cm, &stack[1], HASH_WINDOW, &cwin->obj);
-                        _clip_destroy(cm, &area);
+			if (cwin) _clip_madd(cm, &stack[1], HASH_WINDOW, &cwin->obj);
+			_clip_destroy(cm, &area);
 			break;
 			}
 		case GDK_BUTTON_PRESS:
@@ -467,6 +486,7 @@ handle_events(GtkWidget *widget, GdkEvent *event, C_signal *cs)
 				_clip_mputn(cm, &stack[1], HASH_STATE, event->key.state);
 				_clip_mputn(cm, &stack[1], HASH_LENGTH, event->key.length);
 				_clip_mputc(cm, &stack[1], HASH_STRING, event->key.string, event->key.length);
+				_clip_mputn(cm, &stack[1], HASH_HARDWARE_KEYCODE, event->key.hardware_keycode);
 			}
 			break;
 		default:
@@ -629,7 +649,7 @@ _signal_connect(ClipMachine *cm, gboolean after)
 
 
 	if (_clip_parinfo(cm,2) == CHARACTER_t)
-        {
+	{
 		//sig_table = _sig_table_by_name(cwid, _clip_parc(cm,2));
 		sig_table = _sig_table_by_name(cwid->type, _clip_parc(cm,2));
 	}
@@ -684,7 +704,7 @@ _signal_connect(ClipMachine *cm, gboolean after)
 		if (sigfound && sid != GTK_BUTTON_PRESS)
 		{
 			if (after)
-                        {
+			{
 				ret = g_signal_connect_after(GTK_OBJECT(cwid->widget),
 					signame,GSF(sfunc),cs);
 				//ret = gtk_signal_connect_after(GTK_OBJECT(cwid->widget),
@@ -721,7 +741,7 @@ _object_signal_connect(ClipMachine *cm, gboolean after)
 
 
 	if (_clip_parinfo(cm,2) == CHARACTER_t)
-        {
+	{
 		sig_table = _sig_table_by_name(cobj->type, _clip_parc(cm,2));
 	}
 	else
@@ -758,7 +778,7 @@ _object_signal_connect(ClipMachine *cm, gboolean after)
 		if (sigfound)
 		{
 			if (after)
-                        {
+			{
 				ret = g_signal_connect_after(GTK_OBJECT(cobj->object),
 					signame,GSF(sfunc),cs);
 			}
@@ -781,12 +801,12 @@ int
 clip_GTK_SIGNALCONNECT(ClipMachine *cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
-        C_object *cobj = _fetch_co_arg(cm);
+	C_object *cobj = _fetch_co_arg(cm);
 
 	if (cwid->type != 0)
 		return _signal_connect(cm,FALSE);
-        else if (cobj->type != 0)
-        	return _object_signal_connect(cm, FALSE);
+	else if (cobj->type != 0)
+		return _object_signal_connect(cm, FALSE);
 
 	return 1;
 }
@@ -795,12 +815,12 @@ int
 clip_GTK_SIGNALCONNECTAFTER(ClipMachine *cm)
 {
 	C_widget *cwid = _fetch_cw_arg(cm);
-        C_object *cobj = _fetch_co_arg(cm);
+	C_object *cobj = _fetch_co_arg(cm);
 
 	if (cwid->type != 0)
 		return _signal_connect(cm,TRUE);
-        else if (cobj->type != 0)
-        	return _object_signal_connect(cm, TRUE);
+	else if (cobj->type != 0)
+		return _object_signal_connect(cm, TRUE);
 
 	return 1;
 }

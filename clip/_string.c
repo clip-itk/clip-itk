@@ -5,6 +5,18 @@
 */
 /*
    $Log: _string.c,v $
+   Revision 1.111  2004/10/28 11:47:32  clip
+   uri: fix formatiing in STR(), pad*() for numeric data and constants.
+
+   Revision 1.110  2004/10/07 07:52:25  clip
+   uri: some fixes and few short func names
+
+   Revision 1.109  2004/09/06 14:02:55  clip
+   uri: added strFindBOL(cData,nBegPos) -> backward search BOL in string
+
+   Revision 1.108  2004/08/30 11:51:41  clip
+   uri: add strFinfEol(sData,nBegPos) return position of next line
+
    Revision 1.107  2004/04/30 14:33:38  clip
    rust: buffer overflow in clip_BASE64ENCODE() fixed
 
@@ -619,6 +631,62 @@ clip_ATALPHA(ClipMachine * mp)
 }
 
 int
+clip_STRFINDEOL(ClipMachine * mp)
+{
+	int i,sl;
+	char *s = _clip_parcl(mp, 1, &sl);
+	int begpos = _clip_parni(mp, 2);
+
+	if (s == NULL)
+	{
+		_clip_retni(mp, 0);
+		return 0;
+	}
+	if (begpos < 1)
+		begpos = 1;
+	for (i = begpos-1; i < sl; i++)
+	{
+		if ( s[i] == '\n')
+		{
+			i++;
+			break;
+		}
+	}
+	_clip_retni(mp,i+1);
+	return 0;
+}
+
+int
+clip_STRFINDBOL(ClipMachine * mp)
+{
+	int i,sl;
+	char *s = _clip_parcl(mp, 1, &sl);
+	int begpos = _clip_parni(mp, 2);
+
+	if (s == NULL)
+	{
+		_clip_retni(mp, 0);
+		return 0;
+	}
+	if (begpos < 1 || begpos > sl)
+		begpos = sl+1;
+
+	begpos--;
+	if (s[begpos] == '\n')
+		begpos--;
+	for (i=begpos; i>=0 ; i--)
+	{
+		if ( s[i] == '\n')
+		{
+			i++;
+			break;
+		}
+	}
+	_clip_retni(mp,i+1);
+	return 0;
+}
+
+int
 clip_BIN2I(ClipMachine * mp)
 {
 	int vl = 0;
@@ -851,6 +919,11 @@ clip_UPPER(ClipMachine * mp)
 
 	return 0;
 }
+int
+clip_UPPE(ClipMachine * mp)
+{
+	return clip_UPPER(mp);
+}
 
 int
 clip_XUPPER(ClipMachine * mp)
@@ -899,6 +972,12 @@ clip_LOWER(ClipMachine * mp)
 		_clip_retcn_m(mp, r, l);
 
 	return 0;
+}
+
+int
+clip_LOWE(ClipMachine * mp)
+{
+	return clip_LOWER(mp);
 }
 
 int
@@ -1336,7 +1415,6 @@ clip_PADR(ClipMachine * mp)
 	int len = _clip_parni(mp, 2);
 	char *s = _clip_parc(mp, 3);
 	char *buf, *ret, ch;
-	double v;
 	int t1 = _clip_parinfo(mp, 1);
 	ClipVar *vp = _clip_par(mp, 1);
 
@@ -1353,18 +1431,8 @@ clip_PADR(ClipMachine * mp)
 	switch (t1)
 	{
 	case NUMERIC_t:
-		if (vp->t.memo)
-		{
-			buf = rational_toString(vp->r.r, 10, vp->t.dec, 0);
-			bl = strlen(buf);
-		}
-		else
-		{
-			buf = malloc(30);
-			v = _clip_parnd(mp, 1);
-			snprintf(buf, 29, "%g", v);
-			bl = strlen(buf);
-		}
+		buf = _clip_strFunc(mp,vp,len,vp->t.dec,2);
+		bl = strlen(buf);
 		break;
 	case DATE_t:
 		buf = _clip_date_to_str(_clip_pardj(mp, 1), mp->date_format);
@@ -1403,7 +1471,6 @@ clip_PADL(ClipMachine * mp)
 	int len = _clip_parni(mp, 2);
 	char *s = _clip_parc(mp, 3);
 	char *buf, *ret, ch;
-	double v;
 	int t1 = _clip_parinfo(mp, 1);
 	ClipVar *vp = _clip_par(mp, 1);
 
@@ -1420,18 +1487,8 @@ clip_PADL(ClipMachine * mp)
 	switch (t1)
 	{
 	case NUMERIC_t:
-		if (vp->t.memo)
-		{
-			buf = rational_toString(vp->r.r, 10, vp->t.dec, 0);
-			bl = strlen(buf);
-		}
-		else
-		{
-			buf = malloc(30);
-			v = _clip_parnd(mp, 1);
-			snprintf(buf, 29, "%g", v);
-			bl = strlen(buf);
-		}
+		buf = _clip_strFunc(mp,vp,len,vp->t.dec,1);
+		bl = strlen(buf);
 		break;
 	case DATE_t:
 		buf = _clip_date_to_str(_clip_pardj(mp, 1), mp->date_format);
@@ -1445,22 +1502,10 @@ clip_PADL(ClipMachine * mp)
 		return 0;
 	}
 	ret = malloc(len + 1);
-		/*
-	if ( bl<len )
-	{
-		*/
-		for (i = 0; i < len - bl; i++)
-			ret[i] = ch;
-		for (j = 0; i < len && j < bl; i++, j++)
-			ret[i] = buf[j];
-		/*
-	}
-	else
-	{
-		for( i=0, j=bl-len; i<len; i++,j++)
-			ret[i] = buf[j];
-	}
-		*/
+	for (i = 0; i < len - bl; i++)
+		ret[i] = ch;
+	for (j = 0; i < len && j < bl; i++, j++)
+		ret[i] = buf[j];
 	ret[len] = 0;
 	_clip_retcn_m(mp, ret, len);
 
@@ -1476,7 +1521,6 @@ clip_PADC(ClipMachine * mp)
 	int len = _clip_parni(mp, 2);
 	char *s = _clip_parc(mp, 3);
 	char *buf, *ret, ch;
-	double v;
 	int t1 = _clip_parinfo(mp, 1);
 	ClipVar *vp = _clip_par(mp, 1);
 
@@ -1493,18 +1537,8 @@ clip_PADC(ClipMachine * mp)
 	switch (t1)
 	{
 	case NUMERIC_t:
-		if (vp->t.memo)
-		{
-			buf = rational_toString(vp->r.r, 10, vp->t.dec, 0);
-			bl = strlen(buf);
-		}
-		else
-		{
-			buf = malloc(30);
-			v = _clip_parnd(mp, 1);
-			snprintf(buf, 29, "%g", v);
-			bl = strlen(buf);
-		}
+		buf = _clip_strFunc(mp,vp,len,vp->t.dec,3);
+		bl = strlen(buf);
 		break;
 	case DATE_t:
 		buf = _clip_date_to_str(_clip_pardj(mp, 1), mp->date_format);
@@ -1633,6 +1667,11 @@ clip_SPACE(ClipMachine * mp)
 	ret[kol] = 0;
 	_clip_retcn_m(mp, ret, kol);
 	return 0;
+}
+int
+clip_SPAC(ClipMachine * mp)
+{
+	return clip_SPACE(mp);
 }
 
 int

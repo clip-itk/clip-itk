@@ -21,8 +21,8 @@
  */
 
 //#include <config.h>
-#include <ctype.h>
 #include <string.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <gtk/gtk.h>

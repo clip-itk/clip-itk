@@ -10,13 +10,13 @@ function r2d2_report5_xml(_queryArr)
 local err, _query
 local oDict,oDep, oDep02,oDict02
 local accPost, acc_chart
-local beg_date:=date(),end_date:=date()
+local beg_date:=date(),end_date:=date(),document:=""
 local post,account:="",account_desc, subj, subj_desc, obj, obj_desc
 local an_value:="",an_obj:=NIL,an_level:=0,an_heritage:=""
 local beg_data:={},end_data:={}
 local connect_id:="", connect_data, summa_all1,summa_all2
 local i,j,k,c1,c2,s,s1,s2,tmp,tmp2
-local acc_list, acc_objs, post_list, _c_data
+local acc_list, acc_objs, post_list,post_objs, _c_data
 local osb_class,ani_class,c_data
 local cashe:=map()
 
@@ -36,6 +36,9 @@ local cashe:=map()
 	endif
 	if "ACCOUNT" $ _query
 		account := upper(_query:account)
+	endif
+	if "DOCUMENT" $ _query
+		document := upper(_query:document)
 	endif
 	if "AN_VALUE" $ _query
 		an_value := upper(_query:an_value)
@@ -62,7 +65,7 @@ local cashe:=map()
 			?? "AN_VALUE not defined "
 		endif
 		? "Usage:"
-		? "    report5?beg_date=<date>& end_date=<date>&account=<account_code>&an_value=<an_value>"
+		? "    report5?beg_date=<date>& end_date=<date>&account=<account_code>&an_value=<an_value>&document=<primary_document_id>"
 		?
 		return
 	endif
@@ -186,7 +189,6 @@ local cashe:=map()
 	? '<br/>'
 	? '<table cellpadding="0" cellspacing="0" border="1" style="width: 90%;"  xmlns:html="http://www.w3.org/1999/xhtml">'
 //	? '<table id="account_ved" cellpadding="2" cellspacing="0" border="1" width="80%" align="center">'
-	? '<tbody>'
 	? '<tr>'
 	? '	<th valign="top"  align="left"  >Дата</th>'
 	? '	<th valign="top"  align="left"  >Дебет</th>'
@@ -200,6 +202,7 @@ local cashe:=map()
 	? '	<th valign="top"  align="left"  width="20%">Объект</th>'
 #endif
 	? '</tr>'
+	? '<tbody>'
 
 	if empty(an_value)
 		for i=1 to len(acc_list)
@@ -314,14 +317,20 @@ local cashe:=map()
 		s1 := 'odate>=stod("'+dtos(beg_date)+'") .and. odate<=stod("'+dtos(end_date)+'")'
 		for i=1 to len(acc_list)
 			s2 := ' .and. daccount="'+acc_list[i]+'"'
+			if !empty(document)
+				s2+=' .and. primary_dcoument=="'+document+'"'
+			endif
 			tmp:=oDep:select(accpost:id,,,s1+s2)
-			outlog(__FILE__,__LINE__,acc_objs[i]:code,s1+s2,tmp)
+			//outlog(__FILE__,__LINE__,acc_objs[i]:code,s1+s2,tmp)
 			for j=1 to len(tmp)
 				aadd(post_list,tmp[j])
 			next
 			s2 := ' .and. kaccount="'+acc_list[i]+'"'
+			if !empty(document)
+				s2+=' .and. primary_dcoument=="'+document+'"'
+			endif
 			tmp:=oDep:select(accpost:id,,,s1+s2)
-			outlog(__FILE__,__LINE__,acc_objs[i]:code,s1+s2,tmp)
+			//outlog(__FILE__,__LINE__,acc_objs[i]:code,s1+s2,tmp)
 			for j=1 to len(tmp)
 				aadd(post_list,tmp[j])
 			next
@@ -356,6 +365,7 @@ local cashe:=map()
 	endif
 	summa_all1:=summa_all2:=0.00
 	tmp := map()
+	post_objs:={}
 	for i=1 to len(post_list)
 		/* не показывать дубликаты проводок */
 		if post_list[i] $ tmp
@@ -364,17 +374,42 @@ local cashe:=map()
 		tmp[ post_list[i] ] := post_list[i]
 		/* */
 		post:=oDep:getValue(post_list[i])
-		outlog(__FILE__,__LINE__,post:id,post:class_id)
+		if empty(post)
+			loop
+		endif
 		if ! ("DACCOUNT" $ post .and. "KACCOUNT" $ post)
 			loop
 		endif
 		if post:odate < beg_date .or. post:odate > end_date
 			loop
 		endif
+		if !empty(document) .and. !(post:primary_document == document)
+			loop
+		endif
+		aadd(post_objs,post)
+	next
+	if empty(document)
+		for i=len(post_objs) to 1 step -1
+			tmp := ascan(post_objs,{|x|x:daccount==post_objs[i]:daccount ;
+				.and. x:kaccount==post_objs[i]:kaccount;
+				.and. x:odate==post_objs[i]:odate;
+				.and. x:primary_document==post_objs[i]:primary_document;
+				})
+			if tmp < 0 .or. tmp == i
+				loop
+			endif
+			//outlog(__FILE__,__LINE__,tmp,post_objs[i])
+			post_objs[tmp]:summa += post_objs[i]:summa
+			adel(post_objs,i)
+			asize(post_objs,len(post_objs)-1)
+		next
+	endif
+	for i=1 to len(post_objs)
+		post:= post_objs[i] //oDep:getValue(post_list[i])
+		//outlog(__FILE__,__LINE__,post:id,post:class_id)
 
 		c1:=accountBody(oDep02,post:daccount)
 		c2:=accountBody(oDep02,post:kaccount)
-
 
 //*------------------
 	if (c2:code!=c1:code)

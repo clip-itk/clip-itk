@@ -1,6 +1,12 @@
 
 /*
    $Log: screen.c,v $
+   Revision 1.104  2004/12/15 07:05:37  clip
+   uri: add KSET*()
+
+   Revision 1.103  2004/10/20 17:22:17  clip
+   uri: add set(_SET_UTF8TERM) for terminal with UTF-8
+
    Revision 1.102  2004/06/21 04:43:03  clip
    uri: small fix
 
@@ -778,7 +784,7 @@ static void destroy_ScreenData(ScreenData * dp);
 static void initKey(ScreenData * dp);
 static void termcap_clear_screen(ScreenData * dp);
 static void termcap_scroll(ScreenBase * base, int top, int bottom, int n);
-static void termcap_put_char(ScreenData * dp, int ch);
+static void termcap_put_char(ScreenData * dp, int ch, int utf8term);
 static void termcap_put_graph_char(ScreenData * dp, int ch);
 
 static int termcap_put_raw_char(int c, void *p);
@@ -1525,8 +1531,11 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 			 ((pp = get_env(envp, "LC_ALL")) && (strstr(pp, ".UTF-8") != 0)) ||
 			 ((pp = get_env(envp, "LC_CTYPE")) && (strstr(pp, ".UTF-8") != 0)) )
 		{
+			/*
 			if ((pp = get_env(envp, "TERM")) && (strncasecmp(pp, "xterm",5) == 0))
-				dp->utf8_mode = 0; //1;
+			*/
+			_clip_logg(3,"UTF terminal detected");
+			dp->utf8_mode = 1;
 		}
 
 		if (!cs2 && load_charset_name(p2, &cs2, &len2))
@@ -2252,7 +2261,7 @@ initKey(ScreenData * dp)
 /* termcap init ][ termcap capabilities  */
 
 static void
-termcap_put_char(ScreenData * dp, int ch)
+termcap_put_char(ScreenData * dp, int ch, int utf8term)
 {
 	if (dp->lineDrawMode)
 	{
@@ -2267,7 +2276,7 @@ termcap_put_char(ScreenData * dp, int ch)
 	{
 		int pg;
 
-		if (dp->utf8_mode)
+		if (dp->utf8_mode && utf8term)
 		{
 			char utfch[7];
 			int n;
@@ -2906,6 +2915,16 @@ getState_Key(ScreenBase * base)
 			r |= (1 << KEY_CTRL);
 		return r;
 	}
+}
+
+int
+setState_Key(ScreenBase * base,int value,int locktype)
+{
+	int ret = 0 ;
+	/* if (scr_scan_mode) */
+	ret = set_scan_state(value,locktype);
+
+	return ret;
 }
 
 static int
@@ -3643,7 +3662,7 @@ scrollw_Screen(Screen * scr, int beg, int left, int end, int right, int num, uns
 }
 
 static void
-syncLine(Screen * scr, int y)
+syncLine(Screen * scr, int y, int utf8term)
 {
 	int Lines = scr->base->Lines;
 	int Columns = scr->base->Columns;
@@ -3746,7 +3765,7 @@ syncLine(Screen * scr, int y)
 		if (attrs[i] & PG_ATTR)
 			termcap_put_graph_char(dp, chars[i]);
 		else
-			termcap_put_char(dp, chars[i]);
+			termcap_put_char(dp, chars[i], utf8term);
 		ocolors[i] = colors[i];
 		ochars[i] = chars[i];
 		oattrs[i] = attrs[i];
@@ -3772,7 +3791,7 @@ syncLine(Screen * scr, int y)
 }
 
 void
-sync_Screen(Screen * scr)
+sync_Screen(Screen * scr, int utf8term)
 {
 	int y;
 	int line, n, topline, botline;
@@ -3843,7 +3862,7 @@ sync_Screen(Screen * scr)
 
 /* update contens */
 	for (y = 0; y < Lines; y++)
-		syncLine(scr, y);
+		syncLine(scr, y, utf8term);
 
 #ifdef _WIN32
 	if (w32_console)
@@ -3877,7 +3896,7 @@ sync_Screen(Screen * scr)
 }
 
 void
-redraw_Screen(Screen * scr)
+redraw_Screen(Screen * scr, int utf8term)
 {
 	int i, j;
 	int Lines;
@@ -3912,7 +3931,7 @@ redraw_Screen(Screen * scr)
 	termcap_clear_screen(dp);
 	termcap_flush(dp);
 
-	sync_Screen(scr);
+	sync_Screen(scr,utf8term);
 
 }
 

@@ -139,14 +139,14 @@ clip_GTK_IMAGEGETIMAGE(ClipMachine * cm)
 	if (gdkimg)
         {
         	cgdkimg = _list_get_cobject(cm, gdkimg);
-		if (!cgdkimg) cgdkimg = _register_object(cm,gdkimg,GDK_OBJECT_IMAGE, cvgdkimg, NULL);
+		if (!cgdkimg) cgdkimg = _register_object(cm,gdkimg,GDK_TYPE_IMAGE, cvgdkimg, NULL);
 		if (cgdkimg) _clip_mclone(cm, cvgdkimg,&cgdkimg->obj);
         }
 
 	if (mask)
         {
         	cbitmap = _list_get_cobject(cm, mask);
-		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_OBJECT_BITMAP, cvbitmap, NULL);
+		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_TYPE_BITMAP, cvbitmap, NULL);
 		if (cbitmap) _clip_mclone(cm, cvbitmap, &cbitmap->obj);
         }
 
@@ -176,14 +176,14 @@ clip_GTK_IMAGEGETPIXMAP(ClipMachine * cm)
 	if (pixmap)
         {
         	cpixmap = _list_get_cobject(cm, pixmap);
-		if (!cpixmap) cpixmap = _register_object(cm,pixmap,GDK_OBJECT_PIXMAP, cvpixmap, NULL);
+		if (!cpixmap) cpixmap = _register_object(cm,pixmap,GDK_TYPE_PIXMAP, cvpixmap, NULL);
 		if (cpixmap) _clip_mclone(cm, cvpixmap,&cpixmap->obj);
         }
 
 	if (mask)
         {
         	cbitmap = _list_get_cobject(cm, mask);
-		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_OBJECT_BITMAP, cvbitmap, NULL);
+		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_TYPE_BITMAP, cvbitmap, NULL);
 		if (cbitmap) _clip_mclone(cm, cvbitmap, &cbitmap->obj);
         }
 
@@ -209,4 +209,75 @@ err:
 	return 1;
 }
 
+int
+clip_GTK_IMAGESETFROMFILE(ClipMachine * cm)
+{
+	C_widget *cimg = _fetch_cw_arg(cm);
+        gchar    *file = _clip_parc(cm, 2);
+
+	CHECKCWID(cimg,GTK_IS_IMAGE);
+        CHECKARG(2, CHARACTER_t);
+
+	gtk_image_set_from_file(GTK_IMAGE(cimg->widget), file);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_IMAGESETFROMIMAGE(ClipMachine * cm)
+{
+	C_widget *cimg = _fetch_cw_arg(cm);
+	C_object *cgdkimg = _fetch_cobject(cm, _clip_par(cm, 2));
+	C_object *cbitmap = _fetch_cobject(cm, _clip_par(cm, 3));
+
+	CHECKCWID(cimg,GTK_IS_IMAGE);
+        CHECKCOBJOPT(cgdkimg, GDK_IS_IMAGE(cgdkimg->object));
+        CHECKCOBJOPT(cbitmap, GDK_IS_BITMAP(cbitmap));
+
+	gtk_image_set_from_image(GTK_IMAGE(cimg->widget),
+        	(cgdkimg)?GDK_IMAGE(cgdkimg->object):NULL,
+                (cbitmap)?GDK_BITMAP(cbitmap->object):NULL);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_IMAGESETFROMPIXBUF(ClipMachine * cm)
+{
+	C_widget *cimg = _fetch_cw_arg(cm);
+	C_object *cpixbuf = _fetch_cobject(cm, _clip_par(cm, 2));
+
+	CHECKCWID(cimg,GTK_IS_IMAGE);
+        CHECKCOBJOPT(cpixbuf, GDK_IS_PIXBUF(cpixbuf->object));
+
+
+	gtk_image_set_from_pixbuf(GTK_IMAGE(cimg->widget),
+        	(cpixbuf)?GDK_PIXBUF(cpixbuf->object):NULL);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_IMAGESETFROMSTOCK(ClipMachine * cm)
+{
+	C_widget *cimg   = _fetch_cw_arg(cm);
+	gchar *stock_id  = _clip_parc(cm, 2);
+	GtkIconSize size = _clip_parni(cm, 3);
+
+	CHECKCWID(cimg,GTK_IS_IMAGE);
+        CHECKARG(2, CHARACTER_t);
+        CHECKARG(3, NUMERIC_t);
+
+
+	gtk_image_set_from_stock(GTK_IMAGE(cimg->widget),
+        	stock_id, size);
+	return 0;
+err:
+	return 1;
+}
 

@@ -29,7 +29,7 @@ return .f.
 ************************************************************
 function makeDirectory(path)
 	local curdir:=curDir()
-	local r1,r3, p:=path, i, s
+	local r3, p:=path, i, s
 	if dirChange(path) >= 0
 		dirChange(PATH_DELIM+curDir)
 		return .t.
@@ -46,7 +46,6 @@ function makeDirectory(path)
 		i:=iif(i==0,len(p)+1,i)
 		s:=substr(p,1,i-1)
 		p:=substr(p,i+1)
-		r1:=curDir(s)
 		if dirMake(s)<0 .and. empty(p)
 			dirChange(PATH_DELIM+curDir)
 			return .f.
@@ -227,3 +226,9 @@ local mDir, mD, i, j
 		endif
 	next
 return mDir
+**********************************************************
+function fileCopy(f1, f2,lMode)
+return __copyFile(f1,f2)
+**********************************************************
+function copyFile(f1, f2,lMode)
+return __copyFile(f1,f2)

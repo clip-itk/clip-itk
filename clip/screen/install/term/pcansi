@@ -1,4 +1,4 @@
-# stelnet scanmode client with linux emulation
+# KA9Q scanmode client with linux emulation
 # all lines except empty and started with '#'
 # are added to environment
 # vars, started with '+', overwrite envars

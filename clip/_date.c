@@ -6,6 +6,18 @@
 
 /*
    $Log: _date.c,v $
+   Revision 1.61  2004/12/03 09:07:27  clip
+   uri: small fix
+
+   Revision 1.60  2004/11/05 08:16:31  clip
+   uri: some fix in stod() without params.
+
+   Revision 1.59  2004/10/18 08:29:39  clip
+   uri: second() == seconds()
+
+   Revision 1.58  2004/09/24 10:44:41  clip
+   uri: small fix in addmonth()
+
    Revision 1.57  2004/06/17 13:38:16  clip
    uri: add dt_cmp()
 
@@ -215,7 +227,10 @@ clip_STOD(ClipMachine * mp)
 	if (str == NULL)
 	{
 		_clip_retdj(mp, 0);
+		return 0;
+		/*
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "STOD");
+		*/
 	}
 	if (str[0] == ' ' || str[0] == '\t')
 	{
@@ -467,6 +482,12 @@ clip_SECONDS(ClipMachine * mp)
 	_clip_retndp(mp, _clip_seconds(), 10, 2);
 	return 0;
 }
+int
+clip_SECOND(ClipMachine * mp)
+{
+	_clip_retndp(mp, _clip_seconds(), 10, 2);
+	return 0;
+}
 
 static int
 _clip_timezone()
@@ -569,7 +590,8 @@ clip_YEAR(ClipMachine * mp)
 int
 clip_ADDMONTH(ClipMachine * mp)
 {
-	int dd, mm, yy, ww;
+	int dd, mm, yy, ww,old_mm,i;
+	long jdate;
 	struct tm *sysTime;
 	int numpar = _clip_parinfo(mp, 0);
 	int nummon = _clip_parni(mp, 1);
@@ -587,10 +609,23 @@ clip_ADDMONTH(ClipMachine * mp)
 		mm = sysTime->tm_mon + 1;
 		dd = sysTime->tm_mday;
 		free(sysTime);
+		nummon = 1;
 	}
 	if (numpar > 1)
 		nummon = _clip_parni(mp, 2);
+	old_mm = mm+yy*12;
 	mm += nummon;
+	if (nummon!=0)
+	{
+		for(i=4; i!=0; i--)
+		{
+			jdate = _clip_jdate(dd,mm,yy);
+			_clip_cdate(jdate, &dd, &mm, &yy, &ww);
+			if ( ((mm+yy*12) - old_mm) == nummon)
+				break;
+			dd--;
+		}
+	}
 	_clip_retdc(mp, yy, mm, dd);
 	return 0;
 }

@@ -51,6 +51,10 @@ local urn, sprname:=""
 	endif
 
 	cgi_xml_header()
+	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
+	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	?
 
 	oDep := codb_needDepository(sDict+sDep)
 	if empty(oDep)
@@ -63,7 +67,11 @@ local urn, sprname:=""
 		cgi_xml_error("Class definition not found for:"+sprname)
 		return
 	endif
-	columns := cgi_make_columns(oDict,sprname)
+	if lower(sprname) == "accpost"
+		columns := cgi_accpost_columns(oDict)
+	else
+		columns := cgi_make_columns(oDict,sprname)
+	endif
 
 	if empty(columns)
 		cgi_xml_error("Empty table description for "+sprname)
@@ -106,13 +114,9 @@ local urn, sprname:=""
 	cgi_checkTreeArefs(arefs,oDep)
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
 
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
 
 	if empty(urn)
-		urn := sprname
+		urn := 'urn:'+sprname
 	endif
 	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 	?

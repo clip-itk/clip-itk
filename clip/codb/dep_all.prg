@@ -47,6 +47,7 @@ function codb_depAll_Methods(oDict,dep_id)
 	obj:checkObjBody:= @_dep_checkObjBody()
 	obj:padrBody	:= @_dep_padrBody()
 	obj:checkBody	:= @_dep_checkBody()
+	obj:runTrigger	:= @_dep_runTrigger()
 	obj:__check_counters:= @__check_counters()
 
 return obj
@@ -149,3 +150,16 @@ static function __check_counters(self,class_desc,oData)
 		oData[name] := oDict:counter(attr:counter,self:number,oData[name])
 	next
 return
+************************************************************
+static function _dep_runTrigger(self,cId,cTrigger,newData,oldData)
+	local ret:=.t.,i,m, tret
+	if self:oDict==NIL .or. !self:oDict:__enableTriggers
+		return .t.
+	endif
+	m := self:oDict:getTriggers(cId,cTrigger)
+	for i=1 to len(m)
+		tret := eval(m[i],self,newData,oldData)
+		ret := ret .and. ( valtype(tret)=="L" .and. tret)
+	next
+return ret
+

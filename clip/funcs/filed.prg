@@ -26,8 +26,8 @@
 #define LIST_COLORS	"0/3,0/2,15/3,0/3,0/2,15/2,15/2"
 #define CNT_COLUMNS	3
 /*#define DELIMITER	translate_charset(__CHARSET__, host_charset(), "Å")*/
-
-#define DELIMITER 	chr(PGCH_VLINE)
+/*#define DELIMITER 	chr(PGCH_VLINE)*/
+#define DELIMITER	iif(set(_SET_DISPBOX),translate_charset("cp437", host_charset(), CHR(179)),chr(PGCH_VLINE))
 
 
 /***********************************/
@@ -94,6 +94,8 @@ gi := ""
 fdp:getobj  := getnew(fdp:nTop-2, fdp:nLeft,{|_1| iif(_1==NIL, gi,gi:=_1)}, "gi", "@kS"+alltrim(str(fdp:length-1)), "w+/b")
 fdp:listobj := listitemnew(fdp:nTop, fdp:nLeft, fdp:nBottom, fdp:nRight, CNT_COLUMNS, DELIMITER, LIST_COLORS)
 initItem(fdp)
+fdp:getobj:setFocus()
+fdp:getobj:killFocus()
 fdp:getobj:varPut(fdp:current+fdp:mask+DOP)
 
 showview(fdp)
@@ -104,6 +106,7 @@ dispbegin()
 dispend()
 
 fdp:getobj:setFocus()
+fdp:getobj:gotopos(len(alltrim(fdp:getobj:varGet()))+1)
 gfocus := .t.
 lenCol := {}
 lItem := fdp:ListObj
@@ -188,6 +191,8 @@ local mCol, mRow, i, curCol, curRow, f, r, s, k, error
 			else
 				s := fdp:getobj:varGet()
 			endif
+			fdp:getobj:setFocus()
+			fdp:getobj:killFocus()
 			fdp:getobj:varPut(padr(s, 256))
 			//fdp:getobj:assign()
 			fdp:getobj:setFocus()
@@ -362,6 +367,8 @@ local mCol, mRow, i, curCol, curRow, f, r, s, k, item, error
 			else
 			    gfocus := .t.
 			    fdp:listobj:killFocus()
+			    fdp:getobj:setFocus()
+			    fdp:getobj:killFocus()
 			    fdp:getobj:varPut(padr(alltrim(fdp:current) + item, 256))
 			    fdp:getobj:setFocus()
 			    fdp:getobj:gotopos(len(alltrim(fdp:getobj:varGet()))+1)
@@ -427,6 +434,8 @@ local s, c, a, b, i, error
 	aadd(fdp:viewitem, b:getData(i))
     next
 
+    fdp:getobj:setFocus()
+    fdp:getobj:killFocus()
     fdp:getobj:varPut(fdp:current+fdp:mask+DOP)
     fdp:getobj:setFocus()
     fdp:listobj:refresh()

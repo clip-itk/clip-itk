@@ -77,7 +77,7 @@ then
 	echo "*****************************************************************"
 	USE_GTK=no
 else
-	gtkincpath=`find $gtkprefix/include -name 'gtk.h' -printf '%h'`
+	gtkincpath=`find $gtkprefix/include/gtk-1.2 -name 'gtk.h' -printf '%h'`
 	cd $gtkincpath/..
 	gtkincpath=`pwd`
 	cd $oldpwd
@@ -115,7 +115,7 @@ then
 	echo "****************************************************************************"
 	USE_GTK_EXTRA=no
 else
-	gtkextraincpath=`find $gtkprefix/include -name 'gtk.h' -printf '%h'`
+	gtkextraincpath=`find $gtkextraprefix/include -name 'gtkextra.h' -printf '%h'`
 	cd $gtkextraincpath/..
 	gtkextraincpath=`pwd`
 	cd $oldpwd

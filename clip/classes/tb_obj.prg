@@ -2,6 +2,17 @@
 	Copyright (C) 2001  ITK
 	Author   : Uri (uri@itk.ru)
 	License : (GPL) http://www.itk.ru/clipper/license.html
+
+	Изменения в функциях
+	    refreshCurrent
+	    refreshAll
+	    cleft
+	    cright
+	    stabilize
+	    функция  panRight работает не совсем правильно
+
+	20.07.2004 john (sneshka@online.bryansk.ru)
+
 */
 
 #include "tbrowse.ch"
@@ -80,10 +91,6 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	   obj:cursorLen:=0
 
 	  *************************************
-	  obj:_stableRowPos	:=NIL
-	  obj:_stableColPos	:=NIL
-	  obj:_stablefreeze	:=NIL
-
 	  obj:__firstStab	:=.f.  // был ли первый stabilize
 	  obj:__rect	:={0,0,0,0}
 
@@ -96,24 +103,21 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	  obj:__lRedrawTable    := .t. // need redraw headers & footers
 	  obj:__columnsLen	:={} // длины колонок
 	  obj:__colVisible	:={} // видимые колонки
-	  obj:__colpos	:=1  // текущая колонка из числа видимых
-	  obj:__whereVisible:={} // row для каждой видимой колонки
+	  obj:__colpos		:=1  // текущая колонка из числа видимых
+	  obj:__whereVisible	:={} // row для каждой видимой колонки
 	  obj:__headStrings	:={} // надписи заголовков по строкам
 	  obj:__footStrings	:={} // надписи подвалов по строкам
 
 	  obj:__colors	:={} // палитры цветов
 	  obj:__keys	:=map() // array for ::setkey()
 
+	  obj:__refreshLine     :={}
 	  obj:__headRows	:=0  // строк в заголовке
 	  obj:__footRows	:=0  // строк в подвале
-	  obj:__dummyRows	:=0
 
-	  obj:__stablePos	:=0  // скока записей уже отрисовалось во время стабилизации
-	  obj:__stableSkips	:=0  // скока надо сделать skip чтобы вернуться на текущую
-				 // запись после стабилизации
 	  obj:__rightAll	:=.f. // больше справа никого нет
 
-	  obj:winbuffer		:= nil
+	  obj:winbuffer		:= NIL
 
 	  _recover_tbrowse(obj)
 
@@ -166,7 +170,7 @@ function _recover_tbrowse(obj)
 	   obj:__dummyRow	:= @__dummyRow()
 	   obj:__sayTable	:= @__sayTable() // рисовать обрамление, заголовки, подвалы
 	   obj:__setColor	:= @__setcolor()
-	   obj:__checkRow	:= @__checkRow()
+//	   obj:__checkRow	:= @__checkRow()
 
 	tb_set_default_keys(obj)
 
@@ -183,7 +187,7 @@ static func __whoVisible(num)
 	   endif
 	   cnum=iif(num==NIL,0,num)
 	   lenSep:=len(::colsep)
-	   //lenSep:=min(iif(lensep==3,3,1),lensep)
+
 	   ::freeze:=max(::freeze,0)
 	   ::freeze:=min(::freeze,::colCount)
 	   if (empty(::__colVisible))
@@ -285,7 +289,6 @@ static func __whoVisible(num)
 	   ::__colPos:=min(::__colPos,len(::__colVisible))
 	   ::__colPos:=max(::__colPos,1)
 	   ::colpos:=::__colVisible[::__colpos]
-	   ::_stableColPos:=::colpos
 	   ::__lRedrawTable := .t.
 return NIL
 
@@ -463,7 +466,7 @@ static func __sayTable
    next
    ::rowCount:=::__rect[3]-::__rect[1]+1
    if ::winbuffer==nil
-	  dispEnd()
+	dispEnd()
    endif
    ::__lRedrawTable := .f.
 
@@ -554,14 +557,17 @@ static func __remakeColumns
    for i=1 to len(::__colorCells)
 	::__colorCells[i]={}
 	asize(::__colorCells[i],len(::__columns))
+	afill(::__colorCells[i],NIL)
 	//afill(::__colorCells[i],{1,2})
+	/*
 	for j=1 to len(::__colorCells[i])
-		::__colorCells[i][j]:=::__columns[j]:defColor
+		::__colorCells[i][j]:= ::__columns[j]:defColor
 	next
+	*/
    next
 #ifdef TBR_CACHED
    asize(::__dataCache,::rowCount)
-   for i=1 to len(::__colorCells)
+   for i=1 to len(::__dataCache)
 	::__dataCache[i]={}
 	asize(::__dataCache[i],len(::__columns))
 	for j=1 to len(::__dataCache[i])
@@ -571,7 +577,10 @@ static func __remakeColumns
 	next
    next
 #endif
-   ::refreshAll()
+
+    ::__refreshLine:=array(::rowCount)
+    afill(::__refreshLine,0)
+
 return NIL
 
 *********************************
@@ -601,7 +610,7 @@ static func addColumn(self,col)
 	aadd(self:__columns,col)
 	self:colCount++
 	if self:__firstStab
-	   self:__remakeColumns()
+		self:__remakeColumns()
 	endif
 return self
 
@@ -615,7 +624,7 @@ static func insColumn(pos,col)
 	::__columns[pos]:=col
 	::colcount++
 	if ::__firstStab
-	   ::__remakeColumns()
+		::__remakeColumns()
 	endif
 return col
 
@@ -645,7 +654,7 @@ static func delColumn(pos)
 	::colCount--
 	asize(::__columns,::colCount)
 	if ::__firstStab
-	   ::__remakeColumns()
+		::__remakeColumns()
 	endif
 return oldcol
 *********************************
@@ -664,193 +673,128 @@ static func getColumn(pos)
 #endif
 return ::__columns[pos]
 
-
-*********************************
-static func down(self)
-   local nskip
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"down",self:stable,self:__stablePos)
-#endif
-   /*
-   if !self:stable
-	  return self
-   endif
-   */
-   self:__checkRow()
-   self:hitTop:=self:hitBottom:=.f.
-   if self:rowpos >= self:rowCount
-	nskip:=eval(self:skipBlock,1)
-	if nskip==0
-	  self:_outCurrent()
-	  self:hitBottom=.t.
-	  return self
-	endif
-	/*
-	dispbegin()
-	scroll(self:__rect[1],self:__rect[2],self:__rect[3],self:__rect[4],1)
-	dispend()
-	*/
-	self:refreshAll()
-	return self
-   else
-	if self:winbuffer==nil
-		dispBegin()
-	endif
-	self:refreshCurrent()
-	self:forceStable()
-	self:_outCurrent(0)
-	if self:winbuffer==nil
-		dispEnd()
-	endif
-	self:rowpos++
-	nskip:=eval(self:skipBlock,1)
-	if nskip==0
-		self:rowPos--
-		self:_outCurrent()
-		self:hitBottom=.t.
-		return self
-	endif
-   endif
-   if self:_stableRowPos!=NIL
-	self:_stableRowPos:=self:rowPos
-   endif
-   //self:__stableSkips= eval(self:skipBlock,1)
-   self:__stablePos:=-999
-   self:stable:=.f.
-return self
-
-*********************************
-static func up(self)
-   local oldrow,nskip
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"up")
-#endif
-   if !self:__firststab
-	  return self
-   endif
-   /*
-   if !self:stable
-	  return self
-   endif
-   */
-   self:__checkRow()
-   self:hitTop:=self:hitBottom:=.f.
-   if self:rowpos<2
-	nskip:=eval(self:skipBlock,-1)
-	if nskip==0
-	   self:hitTop:=.t.
-	   self:_outCurrent()
-	   return self
-	endif
-	/*
-	dispbegin()
-	scroll(self:__rect[1],self:__rect[2],self:__rect[3],self:__rect[4],-1)
-	dispend()
-	*/
-	self:refreshAll()
-   else
-	if self:winbuffer==nil; dispBegin(); endif
-	self:refreshCurrent()
-	self:forcestable()
-	self:_outcurrent(0)
-	if self:winbuffer==nil; dispEnd(); endif
-
-	self:rowpos--
-	nskip:=eval(self:skipBlock,-1)
-
-	if nskip==0
-	   self:rowPos++
-	   self:hitTop:=.t.
-	   self:_outCurrent()
-	   return self
-	endif
-
-   endif
-   if self:_stableRowPos!=NIL
-	self:_stableRowPos:=self:rowPos
-   endif
-   self:__stablePos==-1
-   self:stable:=.f.
-return self
-
 *********************************
 static func refreshCurrent(self)
-	local j,i
+	local i,j
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"refreshCurrent")
 #endif
+	i:=self:rowpos
 	self:hitTop:=self:hitBottom:=.f.
-	if !self:__firstStab
+	if !self:__firstStab .or. i < 1
 		return self
 	endif
-	self:__checkRow()
+	self:__refreshLine[i] := 0
 	//afill(self:__colorCells[self:rowPos],{1,2})
-	i:=self:rowpos
-	if i>=1
-		for j=1 to len(self:__colorCells[i])
-			self:__colorCells[i][j]:=self:__columns[j]:defColor
-		next
-	endif
-#ifdef TBR_CACHED
-	i:=self:rowpos
-	for j=1 to len(self:__dataCache[i])
-		self:__dataCache[i][j][1]:=NIL
+	afill(self:__colorCells[i],NIL)
+	/*
+	for j=1 to len(self:__colorCells[i])
+		self:__colorCells[i][j]:=self:__columns[j]:defColor
 	next
-#endif
-	if self:__stablePos!=-1
-		self:__stablePos=-999
-	endif
+	*/
 	self:stable:=.f.
 return self
 
 *********************************
 static func refreshAll(self)
-	   local i,j,tmp
+	local i,j,tmp
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"refreshAll")
 #endif
-	   self:hitTop:=self:hitBottom:=.f.
-	   if !self:__firstStab
-		self:stabilize()
-		return self
-	   endif
-	   eval(self:refreshBlock)
-	   self:__checkRow()
-	   if !self:stable
-		  eval(self:skipBlock,0-self:__stableSkips)
-		  self:__stableSkips:=0
-		  self:__stablePos:=0
-	   endif
+
+	self:hitTop:=self:hitBottom:=.f.
+	if(  self:__firstStab )
+		afill(self:__refreshLine,0)
+	endif
+	self:stable:=.f.
 	   for i=1 to len(self:__colorCells)
 		tmp := self:__colorCells[i]
+		afill(tmp,NIL)
+		/*
 		for j=1 to len(tmp)
 			tmp[j]:=self:__columns[j]:defColor
 		next
+		*/
 	   next
-#ifdef TBR_CACHED
-	   for i=1 to len(self:__dataCache)
-		tmp := self:__dataCache[i]
-		for j=1 to len(tmp)
-			tmp[j][1]:=NIL
-		next
-	   next
-#endif
-	   self:stable:=.f.
-	   i=eval(self:skipBlock,-1)
-	   i+=eval(self:skipBlock,1)
-	   if i!=0
-		i+=eval(self:skipBlock,0-i)
-		self:rowPos+=i
-		self:rowpos:=max(1,self:rowpos)
-		if self:_stableRowPos!=NIL
-			self:_stableRowPos:=self:rowPos
+
+return self
+
+*********************************
+static func down(self)
+	local nskip
+
+	self:hitTop:=self:hitBottom:=.f.
+	nskip:=eval(self:skipBlock,1)
+	if nskip=0
+		self:hitBottom=.t.
+	else
+		if self:rowpos >= self:rowCount
+			self:refreshAll()
+		else
+			self:refreshCurrent()
+			self:rowpos++
+			self:refreshCurrent()
 		endif
-	   endif
-	   i:=1-self:rowPos
-	   self:__stableSkips=eval(self:skipBlock,i)
-	   self:rowPos=0-self:__stableSkips+1
-	   self:_stableRowPos:=self:rowPos
-	   self:__stablePos:=-1
+	endif
+return self
+
+*********************************
+static func up(self)
+	local oldrow,nskip
+
+	self:hitTop:=self:hitBottom:=.f.
+	nskip:=eval(self:skipBlock,-1)
+	if nskip==0
+		self:hitTop:=.t.
+	else
+		if self:rowpos<2
+			self:refreshAll()
+		else
+			self:refreshCurrent()
+			self:rowpos--
+			self:refreshCurrent()
+		endif
+	endif
+return self
+
+*********************************
+static func cleft(self)
+
+	self:hitTop:=self:hitBottom:=.f.
+	if self:__colpos==1
+		if self:__colVisible[1] > 1
+			self:__whoVisible(-1)
+			self:refreshAll()
+		endif
+	else
+		self:__colPos--
+		if len(self:__colVisible) > self:freeze .and. ;
+		    self:__colVisible[self:freeze+1] > self:freeze+1 .and. ;
+		    self:__colPos <= self:freeze
+			self:__colPos++
+			self:__whoVisible(-1)
+			self:refreshAll()
+		else
+			self:colpos:=self:__colVisible[self:__colpos]
+			self:_outCurrent()
+		endif
+	endif
+return self
+
+*********************************
+static func cright(self)
+
+	self:hitTop:=self:hitBottom:=.f.
+	if self:__colpos==len(self:__colVisible)
+		if ! self:__rightAll
+			self:__whoVisible(1)
+			self:refreshAll()
+		endif
+	else
+		self:__colPos++
+		self:colpos:=self:__colVisible[self:__colpos]
+		self:_outCurrent()
+	endif
 return self
 
 *********************************
@@ -858,28 +802,24 @@ static func goBottom(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"goBottom")
 #endif
-	   self:__checkRow()
-
 	self:hitTop:=self:hitBottom:=.f.
-	   if self:gobottomBlock!=NIL
-		  self:rowPos=self:rowCount
-		  eval(self:gobottomBlock)
-		  self:refreshAll()
-	   endif
+	if self:gobottomBlock!=NIL
+		self:rowPos=self:rowCount
+		eval(self:gobottomBlock)
+		self:refreshAll()
+	endif
 return self
-
 *********************************
 static func goTop(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"goTop")
 #endif
 	self:hitTop:=self:hitBottom:=.f.
-	   self:__checkRow()
-	   if self:gotopBlock!=NIL
-		  self:rowPos=1
-		  eval(self:gotopBlock)
-		  self:refreshAll()
-	   endif
+	if self:gotopBlock!=NIL
+		self:rowPos=1
+		eval(self:gotopBlock)
+		self:refreshAll()
+	endif
 return self
 
 *********************************
@@ -888,24 +828,18 @@ static func pageDown(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"pageDown")
 #endif
-	   if !self:stable
-		eval(self:skipBlock,0-self:__stableSkips)
-		self:__stableSkips:=0
-		self:__stablePos:=0
-	   endif
-	   self:__checkRow()
-	   self:hitTop:=self:hitBottom:=.f.
-	   xskip=self:rowCount
-	   nskip=eval(self:skipBlock,xskip)
-	   if nskip<xskip
-		self:hitBottom := .t.
-		self:rowPos+=nskip
-		self:rowPos=max(min(self:rowPos,self:__rect[3]-self:__rect[1]+1),1)
-		if self:_stableRowPos!=NIL
-			self:_stableRowPos:=self:rowPos
+	self:hitTop:=self:hitBottom:=.f.
+	xskip=self:rowCount
+	nskip=eval(self:skipBlock,xskip)
+
+	if nskip <> 0
+		if nskip < xskip
+			self:hitBottom := .t.
+			self:rowPos+=nskip
+			self:rowPos=max(min(self:rowPos,self:__rect[3]-self:__rect[1]+1),1)
 		endif
-	   endif
-	   self:refreshAll()
+		self:refreshAll()
+	endif
 return self
 
 *********************************
@@ -914,29 +848,17 @@ static func pageUp(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"pageUp")
 #endif
-	   if !self:stable
-		eval(self:skipBlock,0-self:__stableSkips)
-		self:__stableSkips:=0
-		self:__stablePos:=0
-	   endif
-	   self:__checkRow()
-	   self:hitTop:=self:hitBottom:=.f.
-	   //xskip=0-(self:rowcount+self:rowPos)
-	   xskip=0-self:rowcount
-	   nskip=eval(self:skipBlock,xskip)
-	   if nskip>xskip
-		self:hitTop := .t.
-		//self:rowPos:=self:rowCount-nskip+xskip+1
-		self:rowPos:=self:rowpos-nskip+xskip
-		self:rowpos:=max(1,self:rowpos)
-		if self:_stableRowPos!=NIL
-			self:_stableRowPos:=self:rowPos
+	self:hitTop:=self:hitBottom:=.f.
+	xskip=0-self:rowCount
+	nskip=eval(self:skipBlock,xskip)
+	if nskip<>0
+		if nskip>xskip
+			self:hitTop := .t.
+			self:rowPos:=self:rowpos-nskip+xskip
+			self:rowpos:=max(1,self:rowpos)
 		endif
-		//nskip=eval(self:skipBlock,self:rowPos-1)
-	   else
-		//nskip=eval(self:skipBlock,self:rowPos)
-	   endif
-	   self:refreshAll()
+		self:refreshAll()
+	endif
 return self
 
 *********************************
@@ -945,11 +867,10 @@ static func home(self)
 	outlog(__FILE__,__LINE__,"Home")
 #endif
 	self:hitTop:=self:hitBottom:=.f.
-	   self:__checkRow()
-	   self:__colPos:=1
-	   self:colpos:=self:__colVisible[self:__colpos]
-	   self:_stableColPos:=self:colpos
-	   self:_outCurrent()
+	self:__colPos:=min(max(1,self:freeze+1),self:colCount)
+	self:colpos:=self:__colVisible[self:__colpos]
+	self:_outCurrent()
+
 return self
 
 *********************************
@@ -958,174 +879,75 @@ static func end(self)
 	outlog(__FILE__,__LINE__,"End")
 #endif
 	self:hitTop:=self:hitBottom:=.f.
-	   self:__checkRow()
-	   self:__colPos:=len(self:__colVisible)
-	   self:colpos:=self:__colVisible[self:__colpos]
-	   self:_stableColPos:=self:colpos
-	   self:_outCurrent()
-return self
-
-*********************************
-static func cleft(self)
-	local fl:=.f.
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"Left")
-#endif
-	self:hitTop:=self:hitBottom:=.f.
-	self:__checkRow()
-	if self:__colpos==1
-	   if self:__colVisible[1]==1
-		if ! self:stable
-			self:refreshall()
-		endif
-		return self
-	   endif
-	   fl:=.t.
-	else
-	   self:__colPos--
-	   if self:__colPos > self:freeze
-		  self:colpos:=self:__colVisible[self:__colpos]
-		  self:_stableColPos:=self:colpos
-		  self:_outCurrent()
-		  return self
-	   else
-		  if len(self:__colVisible) > self:freeze .and. ;
-			 self:__colVisible[self:freeze+1] > self:freeze+1
-			self:__colPos++
-		  endif
-	   endif
-	   fl:=.t.
-	endif
-	if !self:stable
-	   eval(self:skipBlock,0-self:__stableSkips)
-	   self:__stableSkips:=0
-	   self:__stablePos:=0
-	endif
-	if fl
-		self:__whoVisible(-1)
-		//self:__sayTable()
-		self:refreshAll()
-	endif
-return self
-
-*********************************
-static func cright(self)
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"Right")
-#endif
-	self:hitTop:=self:hitBottom:=.f.
-	self:__checkRow()
-	if self:__colpos==len(self:__colVisible)
-	   if self:__rightAll
-		if ! self:stable
-			self:refreshall()
-		endif
-		return self
-	   endif
-	   if !self:stable
-		eval(self:skipBlock,0-self:__stableSkips)
-		self:__stableSkips:=0
-		self:__stablePos:=0
-	   endif
-	   self:__whoVisible(1)
-	   //self:__sayTable()
-	   self:refreshAll()
-	else
-	   self:__colPos++
-	   self:colpos:=self:__colVisible[self:__colpos]
-	   self:_stableColPos:=self:colpos
-	   if !self:stable
-		self:refreshall()
-	   else
+	if self:__colPos <> len(self:__colVisible)
+		self:__colPos:=len(self:__colVisible)
+		self:colpos:=self:__colVisible[self:__colpos]
 		self:_outCurrent()
-	   endif
 	endif
 return self
 
 *********************************
 static func panHome(self)
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"panHome")
-#endif
+
 	self:hitTop:=self:hitBottom:=.f.
-	self:__checkRow()
-	if self:__colpos==1
-	   if self:__colVisible[1]==1
-	  return self
-	   endif
+	if self:__colpos <> 1 .or.  self:__colVisible[1] <> 1
+		self:__colpos:=1
+		self:__whoVisible(0-self:colCount)
+		self:refreshAll()
 	endif
-	if !self:stable
-	  eval(self:skipBlock,0-self:__stableSkips)
-	  self:__stableSkips:=0
-	  self:__stablePos:=0
-	endif
-	self:__colpos:=1
-	self:__whoVisible(0-self:colCount)
-	//self:__sayTable()
-	self:refreshAll()
+
 return self
 
 *********************************
 static func panEnd(self)
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"panEnd")
-#endif
-	self:__checkRow()
-	if self:__colpos==len(self:__colVisible)
-	   if self:__rightAll
-		return self
-	   endif
+
+	if self:__colpos <> len(self:__colVisible) .or.	! self:__rightAll
+		self:__colpos:=self:colcount+1
+		self:__whoVisible(self:__colPos)
+		self:__colpos:=len(self:__colVisible)
+		self:colPos=self:__colVisible[self:__colPos]
+		self:refreshAll()
 	endif
-	if !self:stable
-		eval(self:skipBlock,0-self:__stableSkips)
-		self:__stableSkips:=0
-		self:__stablePos:=0
-		self:stable := .t.
-	endif
-	self:__colpos:=self:colcount+1 //len(self:__colVisible)
-	self:__whoVisible(self:colCount+1)
-	//self:__sayTable()
-	self:refreshAll()
+
 return self
 
 *********************************
 static func panLeft(self)
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"panLeft")
-#endif
-	self:__checkRow()
-	if self:__colVisible[1]==1
-	  return self
+	local i,j
+	if self:__colPos > self:freeze
+		i=self:colPos
+		self:__colPos=self:freeze+1
+		self:__whoVisible(-1)
+
+		for j=1 to len(self:__colVisible)
+			if i = self:__colVisible[j]
+				self:__colPos=j
+				exit
+			endif
+		next
+		self:colPos=self:__colVisible[self:__colPos]
+		self:refreshAll()
 	endif
-	if !self:stable
-	  eval(self:skipBlock,0-self:__stableSkips)
-	  self:__stableSkips:=0
-	  self:__stablePos:=0
-	endif
-	self:__whoVisible(-1)
-	//self:__sayTable()
-	self:refreshAll()
 return self
 
 *********************************
 static func panRight(self)
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"panRight")
-#endif
-	self:__checkRow()
-	if self:__rightAll
-	   return self
-	endif
-	if !self:stable
-	  eval(self:skipBlock,0-self:__stableSkips)
-	  self:__stableSkips:=0
-	  self:__stablePos:=0
-	endif
-	self:__whoVisible(1)
-	//self:__sayTable()
-	self:refreshAll()
-return self
+	local i,j
+	if ! self:__rightAll
+		i=self:colpos
+		self:__colPos=len(self:__colVisible)
+		self:__whoVisible(1)
+		for j=1 to len(self:__colVisible)
+			if i = self:__colVisible[j]
+				self:__colPos=j
+				exit
+			endif
+		next
 
+		self:colPos=self:__colVisible[self:__colPos]
+		self:refreshAll()
+	endif
+return self
 
 *********************************
 static func deHilite(self)
@@ -1133,7 +955,6 @@ static func deHilite(self)
 	outlog(__FILE__,__LINE__,"dehilite")
 #endif
 	self:_outCurrent(NIL,.f.)
-	self:__checkRow()
 return self
 
 *********************************
@@ -1142,38 +963,35 @@ static func hilite(self)
 	outlog(__FILE__,__LINE__,"hilite")
 #endif
 	self:_outCurrent(NIL,.t.)
-	self:__checkRow()
 return self
 
-
 *********************************
-static func colorRect(self,rect,block)
+static func colorRect(self,rect,block)   /////  ?????????
 	local i,j,m1,m2,m3,m4
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"colorRect",block,rect)
 #endif
-		self:__checkRow()
-		if !(valtype(rect)=="A" .and. len(rect)==4)
-			return self
-		endif
-		if empty(block)
-			block:={1,2}
-		endif
-		m1:=min(max(1,rect[1]),len(self:__colorCells))
-		m2:=min(max(1,rect[3]),len(self:__colorCells))
-		for i=m1 to m2
-			m3:=min(max(1,rect[2]),len(self:__colorCells[i]))
-			m4:=min(max(1,rect[4]),len(self:__colorCells[i]))
-			for j=m3 to m4
-				self:__colorCells[i][j]:=block
-			next
-			self:_outCurrent(i,.t.)
+	if !(valtype(rect)=="A" .and. len(rect)==4)
+		return self
+	endif
+	if empty(block)
+		block:={1,2}
+	endif
+	m1:=min(max(1,rect[1]),len(self:__colorCells))
+	m2:=min(max(1,rect[3]),len(self:__colorCells))
+	for i=m1 to m2
+		m3:=min(max(1,rect[2]),len(self:__colorCells[i]))
+		m4:=min(max(1,rect[4]),len(self:__colorCells[i]))
+		for j=m3 to m4
+			self:__colorCells[i][j]:=block
 		next
+		self:_outCurrent(i,.t.)
+	next
 return self
 
 *********************************
 static func colWidth(self,col)
-	   local ret:=0,x
+	local ret:=0,x
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"colWidth")
 #endif
@@ -1191,7 +1009,6 @@ static func invalidate(self)
 	 self:__setColor()
 	 self:__remakeColumns()
 	 self:__whoVisible()
-	 //self:__sayTable()
 	 self:refreshAll()
 return self
 
@@ -1199,25 +1016,68 @@ return self
 static func configure(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"configure")
-	outlog(__FILE__,__LINE__,procname(1),procline(1))
-	outlog(__FILE__,__LINE__,procname(2),procline(2))
-	outlog(__FILE__,__LINE__,procname(3),procline(3))
 #endif
 	 self:stable := .f.
 	 self:__firstStab := .f.
 	 self:__setColor()
-/*
+return self
+*********************************
+static func stabilize(self)
+  local i,nskip,row,col,nstab,j,k
+#ifdef DEBUG_CALL
+	outlog(__FILE__,__LINE__,"stabilize")
+#endif
+   if empty(self:__columns)
+	return .t.
+   endif
+
+  if !self:__firstStab
+	 self:__setcolor()
+	 self:rowPos=min(self:rowPos,self:rowCount)
 	 self:__remakeColumns()
 	 self:__whoVisible()
-*/
-/*
-	 //self:__sayTable()
-	 self:refreshAll()
-	 self:forcestable()
-*/
-return self
+	 self:__firstStab:=.t.
+  endif
 
+  if self:__lRedrawTable
+	self:__sayTable()
+  endif
 
+  if !self:stable
+     nstab=0
+     for j=1 to self:rowCount
+       if self:__refreshLine[j]=0
+	  nstab=1
+	  self:__refreshLine[j]=1
+	  nskip=j-self:rowPos
+	  k:=eval(self:skipBlock,nskip)
+
+	  if k == nskip
+	     self:_outCurrent(j)
+	  elseif nskip>0
+	    row:=row()-1; col:=col()
+	     for i=j to self:rowCount
+		self:__dummyRow(i)
+		self:__refreshLine[i]=1
+	     next
+	     //devpos(row,col)   // ?????
+
+	  elseif nskip<0
+	     self:rowPos=1
+	     self:refreshAll()
+	  endif
+
+	  eval(self:skipBlock,-k)
+
+	  exit
+       endif
+     next
+   if nstab=0
+	self:stable=.t.
+   endif
+  endif
+  self:_outCurrent()
+return self:stable
 *********************************
 static func _outCurrent ( row, hilite, fSay )
    local i,col,vislen,data,datat,srow,cblock
@@ -1245,7 +1105,8 @@ static func _outCurrent ( row, hilite, fSay )
 	  colsep:=iif(colSep==NIL,::colSep,colSep)
 	  lenSep:=len(colSep)
 	  scol=::__whereVisible[i]
-	  ccolors:=::__colorCells[srow][col]
+	  ccolors:=::__columns[col]:defcolor
+	  //ccolors:=::__colorCells[srow][col]
 #ifdef TBR_CACHED
 	  if ::__dataCache[sRow][col][1] == NIL
 		if ::__columns[col]:fieldName == NIL
@@ -1268,7 +1129,8 @@ static func _outCurrent ( row, hilite, fSay )
 		elseif valtype(::__columns[col]:len)=="N"
 			switch valtype(data)
 				case "N"
-					data := padl( toString(data), ::__columns[col]:len )
+					data := str(data, ::__columns[col]:len)
+					//data := padl( toString(data), ::__columns[col]:len )
 				case "U"
 					data := space( ::__columns[col]:len )
 				otherwise
@@ -1307,7 +1169,8 @@ static func _outCurrent ( row, hilite, fSay )
 	  elseif valtype(::__columns[col]:len)=="N"
 		switch valtype(data)
 			case "N"
-				data := padl( toString(data), ::__columns[col]:len )
+				data := str(data, ::__columns[col]:len )
+				//data := padl( toString(data), ::__columns[col]:len )
 			case "U"
 				data := space( ::__columns[col]:len )
 			otherwise
@@ -1325,6 +1188,9 @@ static func _outCurrent ( row, hilite, fSay )
 		endif
 	  endif
 #endif
+	  if !empty(::__colorCells[srow][col])
+		ccolors:=::__colorCells[srow][col]
+	  endif
 	  len=min(::__columnsLen[col],len(data))
 	  lenc=max(::__columnsLen[col],len)
 	  len=min(len,::nright-scol)
@@ -1460,163 +1326,6 @@ static func __dummyRow( row )
 return NIL
 
 *********************************
-static func stabilize(self)
-  local i,nskip,row,col
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"stabilize")
-#endif
-   if empty(self:__columns)
-	return .t.
-   endif
-  if !self:__firstStab
-	 self:__firstStab:=.t.
-	 self:stable:=.f.
-	 self:__setcolor()
-	 self:rowPos=min(self:rowPos,self:rowCount)
-	 self:__stableSkips=eval(self:skipBlock,1-self:rowPos)
-	 self:rowPos=0-self:__stableSkips+1
-	 self:__stablePos:=-1
-	 self:__remakeColumns()
-	 self:__whoVisible()
-	 self:__sayTable()
-#ifdef DEBUG_CALL
-	 outlog(__FILE__,__LINE__,"stabilize return 1")
-#endif
-	 self:__firstStab:=.t.
-	 return self:stable
-  endif
-  if self:__lRedrawTable
-	self:__sayTable()
-  endif
-  if self:stable
-	self:_outCurrent(,,.f.)
-	self:_stableRowPos:=self:rowPos
-	self:_stableColPos:=self:colPos
-	self:_stablefreeze:=self:freeze
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"stabilize return 2")
-#endif
-	return self:stable
-  endif
-  self:__checkRow()
-	// нуль-стабилизация
-  if self:__stablePos==-1
-	eval(self:skipBlock,0)
-		self:__stablePos:=0
-#ifdef DEBUG_CALL
-	 outlog(__FILE__,__LINE__,"stabilize return 3")
-#endif
-		return self:stable
-  endif
-  //if self:__stablePos==(0-self:rowcount)
-  if self:__stablePos==-999
-	eval(self:skipBlock,0)
-		self:__stablePos:=self:rowcount
-#ifdef DEBUG_CALL
-	 outlog(__FILE__,__LINE__,"stabilize return 4")
-#endif
-		return self:stable
-  endif
-	// конец стабилизации
-  if self:__stablePos >= self:rowcount
-		// возврат на текущую запись
-		if self:__stableSkips<0
-			self:rowPos+=self:__stableSkips
-			self:__stableSkips=0
-		endif
-		i:=eval(self:skipBlock,0-self:__stableSkips)
-		self:__stableSkips:=0
-		self:stable:=.t.
-		if self:bofBlock!=NIL .and. self:eofBlock!=NIL
-			i:=eval(self:skipBlock,-1)
-			self:hitEmpty:= ( eval(self:bofBlock) .and. eval(self:eofBlock) )
-			//self:hitTop:=eval(self:bofBlock)
-			//self:hitBottom:=eval(self:eofBlock)
-			if i==0 .and. !self:hitEmpty
-				i:=eval(self:skipBlock,1)
-				eval(self:skipBlock,0-i)
-			else
-				i=eval(self:skipBlock,0-i)
-			endif
-		endif
-		self:_outCurrent()
-		self:_stableRowPos:=self:rowPos
-		self:_stableColPos:=self:colPos
-		self:_stablefreeze:=self:freeze
-#ifdef DEBUG_CALL
-	 outlog(__FILE__,__LINE__,"stabilize return 5")
-#endif
-		return self:stable
-  endif
-  if self:__stablePos==0
-	eval(self:skipBlock,0)
-	nskip=0
-  else
-	nskip:=eval(self:skipBlock,1)
-	self:__stableSkips+=nskip
-  endif
-  self:__stablePos++
-  self:_outCurrent(self:__stablepos)
-  if nskip==0 .and. self:__stablePos>1
-	 // дорисовать остаток экрана
-	 row:=row()-1; col:=col()
-	 self:dummyRows:=0
-	 for i=self:__stablePos to self:rowcount
-	self:__dummyRow(i)
-		self:dummyRows++
-	 next
-	 devpos(row,col)
-	 self:__stablePos:=i
-  endif
-#ifdef DEBUG_CALL
-	 outlog(__FILE__,__LINE__,"stabilize return 6")
-#endif
-return self:stable
-*********************************
-static function __checkRow()
-	   local nskip,xskip
-	   if funcname("__CHECKROW") // recursive call
-			return
-	   endif
-#ifdef DEBUG_CALL
-	outlog(__FILE__,__LINE__,"_checkRow")
-#endif
-	if ::_stablefreeze!=NIL .and. ::_stablefreeze!=::freeze
-		::invalidate()
-		::_stablefreeze:=NIL
-	endif
-	if ::_stableColPos!=NIL .and. ::_stableColPos!=::colPos
-		::__colpos:=ascan(::__colVisible,::colpos)
-		::_stableColPos:=NIL
-		if ::__colpos==0
-			::invalidate()
-		else
-			::__whoVisible(0)
-			::__sayTable()
-			::refreshAll()
-		endif
-	endif
-	if ::_stableRowPos!=NIL .and. ::_stableRowPos!=::rowPos
-		// user program run "::rowPos:=newValue"
-		xskip:=::rowPos-::_stableRowPos
-		nskip:=xskip
-		if !::stable
-			if xskip<0
-				nskip-=::__stableSkips
-				::__stableSkips-=xskip
-			else
-				nskip=0-::__stableSkips
-				::__stableSkips-=xskip
-			endif
-		endif
-		eval(::skipBlock,nskip)
-		::_stableRowPos:=NIL
-		if ::stable
-			::refreshAll()
-		endif
-	endif
-return
-*********************************
 static function  forceStable
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"forceStable")
@@ -1725,4 +1434,4 @@ static func __applykey(browse,nkey)
 		endif
 	endif
 return ret
-
+***********************************

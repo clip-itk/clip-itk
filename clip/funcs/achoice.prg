@@ -133,10 +133,10 @@ memvar __ac_data
     scr:=savescreen(__ac_data:nT+1,__ac_data:nR,__ac_data:nT+1,__ac_data:nR)
     while ( lmore )
 
-       dispbegin()
+       //dispbegin()
        while ( !bb:stabilize() )
        enddo
-       dispend()
+       //dispend()
 
        mode:=4
        if __ac_data:exit
@@ -235,29 +235,31 @@ memvar __ac_data
 	    bb:hitTop := bb:hitBottom := .f.
 	    xskip=0-(__ac_data:nB-__ac_data:nT-2)
 	    nskip := eval(bb:skipBlock,xskip)
-	    if nskip == 0
-		bb:rowPos:=bb:rowpos-nskip+xskip
-	    endif
 	    if nskip>xskip
-		bb:rowPos:=bb:rowpos-nskip+xskip
+		bb:rowPos:= max(1,bb:rowpos-nskip+xskip)
 	    endif
 	    bb:refreshAll()
+	    if nskip == 0
+		bb:hitTop := .t.
+	    endif
        case ( nKey == K_PGDN )
 	    mode:=0
 	    bb:hitTop := bb:hitBottom := .f.
 	    xskip := __ac_data:nB-__ac_data:nT-2
+	    nskip := eval(bb:skipBlock,xskip+1)
+	    nskip := eval(bb:skipBlock,0-nskip)
 	    nskip := eval(bb:skipBlock,xskip)
-	    if nskip == 0
-		bb:hitBottom := .t.
-	    endif
 	    if nskip<xskip
-		bb:rowPos:=bb:rowpos+nskip-xskip
+		bb:rowPos:=min(bb:rowpos+nskip-xskip,__ac_data:nRowMass)
 	    endif
 	    if __ac_data:nRowMass == len(__ac_data:massp)
 		bb:rowPos := __ac_data:nB-__ac_data:nT-1
 	    endif
 	    bb:rowPos := max(1,bb:rowpos)
 	    bb:refreshAll()
+	    if nskip == 0
+		bb:hitBottom := .t.
+	    endif
        case ( nKey == K_CTRL_HOME ) .or. nKey==K_HOME .or. nKey==K_CTRL_PGUP
 	    mode:=0
 	    __ac_data:nRowMass:=1

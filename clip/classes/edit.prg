@@ -577,7 +577,7 @@ do while .t.
 
 
 	if (::single_mode .or. ::double_mode) .and. numAnd(kbdstat(), 0x3)>0 .and. ;
-		!::tobj[::curwin]:readOnly .and. ::tobj[::curwin]:draw(::single_mode, hKey)
+		!::tobjinfo[::curwin]:readOnly .and. ::tobj[::curwin]:draw(::single_mode, hKey)
 		hKey := 0
 		loop
 	endif
@@ -1476,7 +1476,7 @@ local keys:=HK_get("edit"),kn
       kn:=key_name(HK_get_key(keys,HASH_FindReplace))
       oItem :=MenuItem( [&Replace        ]+kn ,{|| .t. }, ,[Find and replace string ], HASH_FindReplace)
       oPopUp:AddItem( oItem)
-
+				      
       kn:=key_name(HK_get_key(keys,HASH_MatchSymbolForward))
       oItem :=MenuItem( [&Match symbol forward  ]+kn ,{|| .t. }, ,[Match identity symbol in forward ], HASH_MatchSymbolForward)
       oPopUp:AddItem( oItem)

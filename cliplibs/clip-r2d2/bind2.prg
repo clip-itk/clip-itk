@@ -26,6 +26,10 @@ errorblock({|err|error2html(err)})
 	if "SPR" $ _query
 		sprname := _query:spr
 	endif
+	if "URN" $ _query
+		urn := _query:urn
+	endif
+
 	if "CLASS_NAME" $ _query
 		sprname := _query:class_name
 	endif
@@ -90,6 +94,11 @@ errorblock({|err|error2html(err)})
 
 	cgi_xml_header()
 
+	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
+	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	?
+
 	oDep := codb_needDepository(sDict+sDep)
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: "+sDict+sDep )
@@ -126,8 +135,8 @@ errorblock({|err|error2html(err)})
 	elseif empty(id)
 		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.,.f.)
 	else
+		aRefs := {}
 		if empty(path_obj)
-			aRefs := {}
 			aadd(aRefs,{id,"","",codb_getValue(id)})
 		else
 			aRefs := parse_path_obj(oDep,path_obj,id)
@@ -139,6 +148,20 @@ errorblock({|err|error2html(err)})
 	endif
 
 	//asort(aRefs,,,{|x,y| x[3] <= y[3] })
+	if valtype(aRefs) != "A"
+		aRefs := {}
+	endif
+	tmp := oDict:padrBody(map(),classDesc:id,.t.)
+	for i in tmp keys
+		if valtype(tmp[i]) == "C"
+			tmp[i] := replicate("Ñ",len(tmp[i]))
+		endif
+	next
+	tmp:id := ""
+	aadd(aRefs,{tmp:id,"","",tmp})
+	for i=1 to len(aRefs)
+		arefs[i][2] := ""   // owner_id
+	next
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
 	if !empty(aRefs) .and. empty(aTree)
 		for i=1 to len(aRefs)
@@ -147,13 +170,8 @@ errorblock({|err|error2html(err)})
 		cgi_fillTreeRdf(aRefs,aTree,"",1)
 	endif
 
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
-
 	if empty(urn)
-		urn := sprname
+		urn := 'urn:'+sprname
 	endif
 	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns2,"")
 	?

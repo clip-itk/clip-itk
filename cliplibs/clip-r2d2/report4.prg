@@ -57,6 +57,11 @@ local k_list, d_list, arefs:={}, atree:={}
 
 	cgi_xml_header()
 
+	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
+	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	?
+
 	oDep := codb_needDepository("ACC0101")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: ACC0101" )
@@ -187,11 +192,6 @@ local k_list, d_list, arefs:={}, atree:={}
 	next
 */
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
-
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
 
 	cgi_putArefs2Rdf1(aTree,oDep,0,"report4",columns,"")
 	?

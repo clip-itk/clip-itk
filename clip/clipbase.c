@@ -5,9 +5,24 @@
 */
 /*
 	$Log: clipbase.c,v $
+	Revision 1.369  2004/11/25 11:53:21  clip
+	rust: error message changed for DBUSEAREA("nosuchfile")
+	
+	Revision 1.368  2004/11/05 09:22:08  clip
+	uri: add ROUN(),FCOUN() - short func names
+
+	Revision 1.367  2004/10/09 12:38:25  clip
+	rust: SIGSEGV in ORDCREATE() fixed
+
+	Revision 1.366  2004/10/07 07:52:25  clip
+	uri: some fixes and few short func names
+
+	Revision 1.365  2004/09/30 12:44:16  clip
+	rust: minor fix in ORDCREATE()
+
 	Revision 1.364  2004/05/26 09:52:23  clip
 	rust: some cleanings
-	
+
 	Revision 1.363  2004/04/26 10:09:44  clip
 	rust: clip_DBCLEARIND() == clip_DBCLEARINDEX()
 
@@ -1843,7 +1858,7 @@ clip_DBUSEAREA(ClipMachine * cm)
 			cm->neterr = 1;
 			return 0;
 		} else {
-			rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,er_open);
+//			rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,er_open);
 			goto err;
 		}
 	}
@@ -2143,6 +2158,8 @@ clip_ORDCREATE(ClipMachine * cm)
 	const char *expr = _clip_parc(cm, 3);
 	ClipVar* block = _clip_spar(cm,4);
 	int unique = _clip_parl(cm, 5);
+	char* nm = NULL;
+	char* s = NULL;
 	int er;
 
 	CHECKWA(wa);
@@ -2155,8 +2172,11 @@ clip_ORDCREATE(ClipMachine * cm)
 	if (_clip_parinfo(cm, 4) == UNDEF_t)
 		unique = cm->flags & UNIQUE_FLAG;
 
-	if(!name)
-		name = wa->rd->name;
+	if(!name){
+		nm = strdup(wa->rd->path);
+		s = strrchr(nm,'/');
+		strcpy(s+1,wa->rd->name);
+	}
 
 	if((er = _clip_flushbuffer(cm, wa, __PROC__))) goto err;
 	if(wa->rd->readonly){
@@ -2164,11 +2184,15 @@ clip_ORDCREATE(ClipMachine * cm)
 	} else {
 		WRITELOCK;
 	}
-	if ((er = rdd_createindex(cm, wa->rd, wa->idx_driver, name, tag, expr, block, unique, __PROC__)))
+	if ((er = rdd_createindex(cm, wa->rd, wa->idx_driver, nm?nm:name, tag, expr, block, unique, __PROC__)))
 		goto err_unlock;
 	UNLOCK;
+	if(nm)
+		free(nm);
 	return 0;
 err_unlock:
+	if(nm)
+		free(nm);
 	wa->rd->vtbl->_ulock(cm,wa->rd,__PROC__);
 err:
 	return er;
@@ -2761,6 +2785,12 @@ err:
 }
 
 int
+clip_RECC(ClipMachine * cm)
+{
+	return clip_RECCOUNT(cm);
+}
+
+int
 clip_LASTREC(ClipMachine * cm)
 {
 	const char *__PROC__ = "LASTREC";
@@ -2945,7 +2975,8 @@ clip_AFIELDS(ClipMachine * cm)
 	return 0;
 }
 
-int clip_FCOUNT(ClipMachine * cm){
+int clip_FCOUNT(ClipMachine * cm)
+{
 	DBWorkArea* wa = cur_area(cm);
 
 	_clip_retni(cm,0);
@@ -2953,6 +2984,16 @@ int clip_FCOUNT(ClipMachine * cm){
 
 	_clip_retni(cm,wa->rd->nfields);
 	return 0;
+}
+
+int clip_FCOU(ClipMachine * cm)
+{
+	return clip_FCOUNT(cm);
+}
+
+int clip_FCOUN(ClipMachine * cm)
+{
+	return clip_FCOUNT(cm);
 }
 
 int
@@ -3451,6 +3492,11 @@ clip_SELECT(ClipMachine * cm)
 	_clip_retni(cm, ret);
 	return 0;
 }
+int
+clip_SELE(ClipMachine * cm)
+{
+	return clip_SELECT(cm);
+}
 
 int
 clip_INDEXKEY(ClipMachine * cm)
@@ -3785,6 +3831,12 @@ clip_FOUND(ClipMachine * cm)
 
 	_clip_retl(cm, wa->found ? 1 : 0);
 	return 0;
+}
+
+int
+clip_FOUN(ClipMachine * cm)
+{
+	return clip_FOUND(cm);
 }
 
 int
