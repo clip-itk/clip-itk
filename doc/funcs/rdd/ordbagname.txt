@@ -1,0 +1,28 @@
+$FUNCNAME$
+  ORDBAGNAME()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the order bag name of a specific order
+$SYNTAX$
+     ORDBAGNAME(<nOrder> | <cOrderName>) --> cOrderBagName
+$ARGUMENTS$
+     <nOrder> is an integer that identifies the position in the order
+     list of the target order whose order bag name is sought.
+
+     <cOrderName> is a character string that represents the name of the
+     target order whose order bag name is sought.
+$RETURNS$
+     ORDBAGNAME() returns a character string, the order bag name of the
+     specific order.
+$DESCRIPTION$
+     ORDBAGNAME() is an order management function that lets you access the
+     name of the order bag in which <cOrderName> resides.  You may identify
+     the order as a character string or with an integer that represents its
+     position in the order list.  In case of duplicate names, ORDBAGNAME()
+     only recognizes the first matching name.
+
+     Note:  ORDBAGNAME(0) works as ORDBAGNAME(INDEXORD())
+$SEEALSO$
+  ORDBAGEXT()
+$END$

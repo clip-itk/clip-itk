@@ -1,0 +1,112 @@
+$FUNCNAME$
+  BOF()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Determine when beginning of file is encountered
+$LANG_RU$
+   Определяет достижение начала файла.
+$SYNTAX$
+     BOF() --> lBoundary
+$LANG_RU$
+     BOF() --> признак начала файла
+$RETURNS$
+     BOF() returns true (.T.) after an attempt to SKIP backward beyond the
+     first logical record in a database file; otherwise, it returns false
+     (.F.).  If there is no database file open in the current work area,
+     BOF() returns false (.F.).  If the current database file contains no
+     records, BOF() returns true (.T.).
+$LANG_RU$
+     BOF() возвращает значение "истина" (.T.) после того, как была
+     сделана попытка перемещения указателя записи в обратном направлении
+     за первую логическую запись файла базы данных. В остальных случаях
+     она возвращает значение "ложь" (.F.).
+
+     Если в рабочей области нет открытого файла базы данных, BOF()
+     возвращает значение "ложь" (.F.). Если файл текущей базы данных
+     не содержит ни одной записи, BOF() возвращает значение "истина"
+     (.T.).
+$DESCRIPTION$
+     BOF() is a database function used to test for a boundary condition when
+     you are moving the record pointer backward through a database file using
+     the SKIP command.  A simple usage example is a descending order record
+     list with an ascending order index file.  A more sophisticated example
+     is a screen paging routine that pages forward or backward through the
+     current database file based on the key the user presses.  When the user
+     attempts to page backward, you would use BOF() to test for a beginning
+     of file condition before using the SKIP command to move the record
+     pointer and repaint the screen.
+
+     Once BOF() is set to true (.T.), it retains its value until there is
+     another attempt to move the record pointer.
+
+     By default, BOF() operates on the currently selected work area.  It can
+     be made to operate on an unselected work area by specifying it within an
+     aliased expression (see example below).
+
+     The SKIP command is the only record movement command that can set BOF()
+     to true (.T.).
+$LANG_RU$
+     BOF() - функция работы с базами данных, которая используется для
+     проверки условия достижения границ файла при перемещении указателя
+     записи в обратном направлении при помощи команды SKIP. Простой
+     пример использования - это просмотр по убыванию значения ключа
+     записей при индексации по возрастанию. Более наглядным примером
+     может служить программа работы с экранными страницами, которая
+     выдает на экран страницы изображения в прямом или обратном порядке
+     в зависимости от нажатой пользователем клавиши. Когда пользователь
+     начинает просматривать страницы в обратном порядке, можно
+     использовать функцию BOF() для проверки условия достижения указателя
+     записи начала файла перед использованием команды SKIP для
+     передвижения указателя записи и перерисовки экрана.
+
+     После того, как функцией BOF() будет установлено значение "истина"
+     (.T.), оно остается до тех пор, пока не будет сделана очередная
+     попытка передвижения указателя записи.
+
+     По умолчанию функция BOF() выполняется для текущей активной рабочей
+     области. Однако ее можно применить и для пассивной рабочей области,
+     используя ее в выражении, уточненном алиасом ( см. пример ниже ).
+
+     Команда SKIP является единственной командой, которая может установить
+     значение BOF() "истина" (.T.).
+$EXAMPLES$
+
+       This example demonstrates BOF() by attempting to move the
+	record pointer before the first record:
+
+	USE Sales NEW
+	? RECNO(), BOF()               // Result: 1 .F.
+	SKIP -1
+	? RECNO(), BOF()               // Result: 1 .T.
+
+       This example uses aliased expressions to query the value of
+	BOF() in unselected work areas:
+
+	USE Sales NEW
+	USE Customer NEW
+	USE Invoices NEW
+
+	? Sales->(BOF()), Customer->(BOF())
+$LANG_RU$
+
+      В этом примере демонстрируется использование BOF() при попытке
+       перемещения указателя записи за первую запись:
+
+       USE Sales NEW
+       ? RECNO(), BOF()       // Результат: 1 .F.
+       SKIP -1
+       ? RECNO(), BOF()       // Результат: 1 .T.
+
+      В этом примере используется выражение, уточненное алиасом при
+       использовании BOF() для пассивной рабочей области:
+
+       USE Sales NEW
+       USE Customer NEW
+       USE Invoices NEW
+       ? Sales->(BOF()), Customer->(BOF())
+
+
+$SEEALSO$
+  EOF()
+$END$

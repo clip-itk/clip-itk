@@ -1,0 +1,60 @@
+$FUNCNAME$
+  COLORSELECT()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Activate attribute in current color settings
+$SYNTAX$
+     COLORSELECT(<nColorIndex>) --> NIL
+$ARGUMENTS$
+     <nColorIndex> is a number corresponding to the ordinal positions in
+     the current list of color attributes, as set by SETCOLOR().
+$RETURNS$
+     Always returns NIL.
+$DESCRIPTION$
+     COLORSELECT() activates the specified color pair from the current list
+     of color attributes (established by SETCOLOR()).  Manifest constants for
+     <nColorIndex> are defined in Color.ch.
+
+     <PRE> Color.ch constants
+     ------------------------------------------------------------------------
+     Constant          Value
+     ------------------------------------------------------------------------
+     CLR_STANDARD      0
+     CLR_ENHANCED      1
+     CLR_BORDER        2
+     CLR_BACKGROUND    3
+     CLR_UNSELECTED    4
+     ------------------------------------------------------------------------
+     </PRE>
+
+     COLORSELECT() does not alter the current SET Color setting.
+
+     This table describes the scope of the xClipper color settings affected
+     by SETCOLOR():
+
+     <PRE> Color settings
+     ------------------------------------------------------------------------
+     Setting        Scope
+     ------------------------------------------------------------------------
+     Standard       All screen output commands and functions
+     Enhanced       GETs and selection highlights
+     Border         Screen border (not supported on EGA and VGA monitors)
+     Background     Not supported
+     Unselected     Unselected GETs
+     ------------------------------------------------------------------------
+     </PRE>
+$EXAMPLES$
+       This example demonstrates use of COLORSELECT() with the
+	Color.ch manifest constants:
+
+	USE Sales NEW
+	? SETCOLOR()                   // displays "W/B,N/B,W/N,W/N,W/N"
+				       // in white on blue
+
+	COLORSELECT(CLR_ENHANCED)      // enhanced is active color pair
+	? "I'm black and blue"         // displayed in black on blue
+	COLORSELECT(CLR_STANDARD)      // restore standard color
+$SEEALSO$
+  SETCOLOR()
+$END$

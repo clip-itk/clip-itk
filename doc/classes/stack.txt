@@ -1,0 +1,148 @@
+$CLASSNAME$
+	STACK
+$SUMMARY$
+	Class are destined to control stack arbitrary data.
+$LANG_RU$
+	Класс предназначен для управления стеком.
+$ABOUT$
+	Class are destined to control stack arbitrary data.
+$LANG_RU$
+	Класс предназначен для управления стеком.
+$SYNTAX$
+	StackNew() 	--> new Stack object
+$ATTRIBUTES$
+	<Data> Array, an array of data.
+$LANG_RU$
+	<Data> Array, стек
+
+$METHODNAME$
+	StackNew()
+$SUMMARY$
+	STACK object constructor.
+$LANG_RU$
+	Конструктор объекта STACK.
+$SYNTAX$
+	StackNew() 	--> new Stack object
+$ARGUMENTS$
+
+$RETURNS$
+	Method returns new STACK object.
+$LANG_RU$
+	Возвращает объект класса STACK.
+$DESCRIPTION$
+	StackNew() is constructs and returns new stack object.
+	That class can be used to storage, access, control arbitrary data.
+$LANG_RU$
+	StackNew() создает и возвращает новый объект класса STACK.
+	Объект может быть использован для хранения, управления разнотипными данными в стеке.
+$ENDMETHOD$
+
+$METHODNAME$
+	Push()
+$SUMMARY$
+	Push data to the stack.
+$LANG_RU$
+	Поместить данные в стек.
+$SYNTAX$
+	Push(<vData>) 	--> nLenStack
+$ARGUMENTS$
+	<vData> - a data to be insert.
+$LANG_RU$
+	<vData> - данные, для помещения в стек
+$RETURNS$
+	Returns numeric value is a number pushed element in to stack.
+$LANG_RU$
+	Возвращает номер помещенного в стек элемента.
+$DESCRIPTION$
+	Push() is inserted arbitrary data to the end of stack.
+$LANG_RU$
+	Push() помещает разнотипные данные в стек.
+$ENDMETHOD$
+
+$METHODNAME$
+	Pop()
+$SUMMARY$
+	Get last pushed data.
+$LANG_RU$
+	Извлечь из стека.
+$SYNTAX$
+	Pop() 	--> vData
+$ARGUMENTS$
+
+$RETURNS$
+	Returns a last pushed element.
+$LANG_RU$
+	Возвращает последний элемент, помещенный в стек.
+$DESCRIPTION$
+	Pop() is return last pushed data in to stack. If stack has no
+	elements function return NIL
+$LANG_RU$
+	Pop() возвращает последний, помещенный в стек элемент. Этот элемент
+	извлекается из стека.
+
+	Если стек пуст, Pop() возвращает NIL.
+$ENDMETHOD$
+
+$METHODNAME$
+	Len()
+$SUMMARY$
+	Get stack length.
+$LANG_RU$
+	Вернуть длину стека.
+$SYNTAX$
+	Len() 	--> nLenStack
+$ARGUMENTS$
+
+$RETURNS$
+	Returns a numeric value - elements count of stack.
+$LANG_RU$
+	Возвращает число - длину стека.
+$DESCRIPTION$
+	Len() is return  elements count of stack.
+$LANG_RU$
+	Len() возвращает длину стека - количество элементов в массиве <::Data>
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Free()
+$SUMMARY$
+	Free stack.
+$LANG_RU$
+	Очистить стек.
+$SYNTAX$
+	Free() 	--> .t.
+$ARGUMENTS$
+
+$RETURNS$
+	Always returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	Free() is removed all elements from stack.
+$LANG_RU$
+	Free() удаляет все данные из стека.
+$ENDMETHOD$
+
+$EXAMPLES$
+
+st := StackNew()
+st:push("Some value")	// --> 1
+st:push(123)		// --> 2
+? st:Len()	// -->2
+? st:pop()	// 123
+? st:Len()	// --> 1
+st:Free()	// --> .T.
+? st:Len()	// --> 0
+
+$PLATFORMS$
+   No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+

@@ -12,7 +12,7 @@ local an_data,an_level:=1, an_values:={" "," "," "," "," "," "}
 local urn:=""
 local xslt:=""
 local host:=""
-
+local total:=""
 	errorblock({|err|error2html(err)})
 
 	_query := d2ArrToMap(_queryArr)
@@ -66,7 +66,9 @@ local host:=""
 	if "URN" $ _query
 		URN := _query:URN
 	endif
-
+	if "TOTAL" $ _query
+    		total := _query:total
+	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
@@ -115,13 +117,13 @@ local host:=""
 	an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	asort(an_data,,,{|x,y| x:essence <= y:essence })
 
-	cgi_an_putRdf1(an_data,account,an_level,urn)
+	cgi_an_putRdf1(an_data,account,an_level,urn,total)
 	//putRdf2(an_data,account,an_level)
 
 	? '</RDF:RDF>'
 	return
 ******************************
-function cgi_an_putRdf1(bal_data,account,an_level,urn)
+function cgi_an_putRdf1(bal_data,account,an_level,urn,total)
 	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
 	acc := codb_getValue(account)
@@ -209,12 +211,12 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn)
 		    loop
 		endif
 
-
-		/*
-		if tmp:an_value == 'total'
-			loop
+		if tmp:an_value == 'total' .and. total!='yes'
+                        loop
 		endif
-		*/
+		if  tmp:an_value=='EMPTY'
+		        loop
+		endif
 
 		? '	<RDF:li resource="'+urn_id+':'+tmp:an_value+'"/>'
 	next

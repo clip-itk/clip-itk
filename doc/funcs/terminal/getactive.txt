@@ -1,0 +1,72 @@
+$FUNCNAME$
+  GETACTIVE()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return the currently active Get object
+$LANG_RU$
+   Возвращает текущий активный Get объект.
+$SYNTAX$
+     GETACTIVE([<oGet>]) --> objGet
+$LANG_RU$
+     GETACTIVE() --> Get объект
+$ARGUMENTS$
+     <oGet> is a reference to a Get object.
+$RETURNS$
+     GETACTIVE() returns the Get object referenced by <oGet>.  If <oGet> is
+     not specified, then the current active Get object within the current
+     READ is used.  If there is no READ active when GETACTIVE() is called, it
+     returns NIL.
+$LANG_RU$
+     GETACTIVE() - возвращает текущий активный Get объект текущего
+     выполняемого READ. Если не существует активного READ, когда
+     вызывается GETACTIVE(), то функция возвращает NIL.
+$DESCRIPTION$
+     GETACTIVE() is an environment function that provides access to the
+     active Get object during a READ.  The current active Get object is the
+     one with input focus at the time GETACTIVE() is called.
+$LANG_RU$
+     GETACTIVE() - функция среды, предоставляет доступ к активному
+     Get-объекту в процессе выполнения READ. Текущим активным Get-объектом
+     является тот, который имеет фокус ввода во время вызова функции
+     GETACTIVE().
+$EXAMPLES$
+       This code uses a WHEN clause to force control to branch to a
+	special reader function.  Within this function, GETACTIVE() retrieves
+	the active Get object:
+
+	@ 10, 10 GET x
+	@ 11, 10 GET y WHEN MyReader()
+	@ 12, 10 GET z
+	READ
+
+	// Called just before second get (above)
+	// becomes current
+	FUNCTION MyReader
+	   LOCAL objGet               // Active Get holder
+	   objGet := GETACTIVE()      // Retrieve current
+
+				      // active Get
+	   BarCodeRead( objGet )
+	   RETURN (.F.)               // Causes Get to be
+				      // skipped in READ
+$LANG_RU$
+      Следующая программа использует предложение WHEN для
+       переключения управления на специальную считывающую функцию.
+       Внутри этой функции GETACTIVE() используется для получения
+       активного Get объекта:
+
+       @ 10, 10 GET x
+       @ 11, 10 GET y WHEN MyReader()
+       @ 12, 10 GET z
+       READ
+
+       // Вызывается только перед тем, как второй get становится текущим
+       FUNCTION MyReader
+	  LOCAL objGet
+	  objGet := GETACTIVE()     // Возвращает текущий активный Get
+	  BarCodeRead( objGet )
+	  RETURN (.F.)              // Заставляет пропустить Get
+$SEEALSO$
+  READMODAL()
+$END$

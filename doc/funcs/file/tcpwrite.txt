@@ -1,0 +1,66 @@
+$FUNCNAME$
+	TCPWRITE()
+$CATEGORY$
+	TCP,FILE/IO
+$SUMMARY$
+	Commit data from buffer to connection.
+$LANG_RU$
+	Передать данные из буфера в соединения.
+$SYNTAX$
+	TCPWRITE(<nConnection>, <sBuffer>, <nLen>[, <nTimeout>])	--> <nLenBuf>
+$ARGUMENTS$
+	<nConnection>	Numeric, is the connection number.
+	<sBuffer>	String, is the source buffer.
+	<nLen>		Numeric, is the buffer size.
+	<nTimeout>	NUmeric, is the timeout.
+$LANG_RU$
+	<nConnection>	Numeric, номер соединения.
+	<sBuffer>	String, буфер данных.
+	<nLen>		Numeric, размер буфера.
+	<nTimeout>	NUmeric, время ожидания.
+$RETURNS$
+	Returns numeric value - is the realy number of bytes commited, or -1
+	if an error occurred.
+$DESCRIPTION$
+	TCPWRITE() trys write some data <sBuffer> (with length <nLen> bytes)to connection <nConnection>.
+	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
+$LANG_RU$
+	TCPWRITE() пытается передать некоторые данные <sBuffer> (длиной <nLen> байт) в соединение <nConnection> данные (не больше <nLen> байт).
+	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+$EXAMPLES$
+
+local cBuf := space(5), nL, cTxt, nH, nPort
+
+nPort := DEFPORT
+
+if (nH := TCPLISTEN( nPort, 10 )) == -1
+	? "tcpsrv: Error listen on port ", nPort
+	?
+	return( 1 )
+endif
+
+do while( .t. )
+	if( (nL := TCPREAD( nH, @cBuf, len(cBuf), 60000 )) > 0 )
+		? "tcpsrv, read : ", nL
+		if( nL == 1 .and. upper( substr(cbuf,1,1)) == "Q" )
+			exit
+		endif
+		cTxt := "tcpsrv:" + substr(cBuf, 1, nL)
+		TCPWRITE( nH, cTxt )
+	elseif ferror() == 32
+		? "Error:",ferrorstr()+":","closed task:",nh
+		exit
+	endif
+	//? "tcpsrv, read : ", nL,nh,time()
+enddo
+TCPCLOSE( nH )
+
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+$AUTHOR$
+	ITK
+$LASTDATE$
+$END$
+

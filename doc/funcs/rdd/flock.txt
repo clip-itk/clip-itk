@@ -1,0 +1,156 @@
+$FUNCNAME$
+  FLOCK()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Lock an open and shared database file
+$LANG_RU$
+   Ограничивает доступ к открытому и совместно используемому файлу базы
+$SYNTAX$
+     FLOCK() --> lSuccess
+$LANG_RU$
+     FLOCK() --> признак завершения
+$RETURNS$
+     FLOCK() returns true (.T.) if an attempt to lock a database file in USE
+     in the current work area succeeds; otherwise, it returns false (.F.).
+     For more information on file locking, refer to the "Network Programming"
+     chapter in the Programming and Utilities Guide.
+$LANG_RU$
+     FLOCK() возвращает значение "истина"(.Т.), если попытка захватить
+     открытый файл базы данных в текущей (активной) рабочей области
+     успешна; в противном случае она возвращает значение "ложь"(.F.). Для
+     получения дополнительной информации по захвату файлов читайте главу
+     "Программирование в сети" в книге "Программирование и утилиты".
+$DESCRIPTION$
+     FLOCK() is a database function used in network environments to lock an
+     open and shared database file, preventing other users from updating the
+     file until the lock is released.  Records in the locked file are
+     accessible for read-only operations.
+
+     FLOCK() is related to USE...EXCLUSIVE and RLOCK().  USE...EXCLUSIVE
+     opens a database file so that no other user can open the same file at
+     the same time and is the most restrictive locking mechanism in
+     xClipper.  RLOCK() is the least restrictive and attempts to place an
+     update lock on a shared record, precluding other users from updating the
+     current record.  FLOCK() falls in the middle.
+
+     FLOCK() is used for operations that access the entire database file.
+     Typically, these are commands that update the file with a scope or a
+     condition such as DELETE or REPLACE ALL.  The following is a list of
+     such commands:
+
+     <PRE>Commands that require an FLOCK()
+     ------------------------------------------------------------------------
+     Command                       Mode
+     ------------------------------------------------------------------------
+     APPEND FROM                   FLOCK() or USE...EXCLUSIVE
+     DELETE (multiple records)     FLOCK() or USE...EXCLUSIVE
+     RECALL (multiple records)     FLOCK() or USE...EXCLUSIVE
+     REPLACE (multiple records)    FLOCK() or USE...EXCLUSIVE
+     UPDATE ON                     FLOCK() or USE...EXCLUSIVE
+     ------------------------------------------------------------------------
+     </PRE>
+
+     For each invocation of FLOCK(), there is one attempt to lock the
+     database file, and the result is returned as a logical value.  A file
+     lock fails if another user currently has a file or record lock for the
+     same database file or EXCLUSIVE USE of the database file.  If FLOCK() is
+     successful, the file lock remains in place until you UNLOCK, CLOSE the
+     DATABASE, or RLOCK().
+
+     By default, FLOCK() operates on the currently selected work area as
+     shown in the example below.
+$LANG_RU$
+
+     FLOCK() является функцией обработки баз данных, которая используется
+     в сетевой среде для захвата открытого и совместно используемого
+     файла базы данных, чтобы не давать другим пользователям возможности
+     изменить файл до тех пор, пока не будет снят запрет. Однако записи в
+     захваченном файле остаются доступными другим пользователям только для
+     чтения.
+
+     По своим действиям FLOCK() похожа на команду USE...EXCLUSIVE и
+     функцию RLOCK(). USE...EXCLUSIVE открывает файл базы данных так,
+     чтобы никакой другой пользователь не мог открыть тот же самый файл
+     в то же самое время, и является наиболее грубым механизмом захвата
+     базы данных в xClipper.  Функция RLOCK() - в этом смысле более
+     гибкая, так как распространяет запрет на изменение только одной
+     совместно используемой записи. FLOCK() находится посередине.
+
+     Как правило, FLOCK() используется совместно с операциями,
+     обрабатывающими все записи файла базы данных. Обычно это команды,
+     которые имеют дело с группой записей или выбирают их по условию,
+     такие, например, как DELETE или REPLACE ALL. Ниже приводится список
+     таких команд:
+
+     <PRE>Команды, которые требуют FLOCK().
+     ---------------------------------------------------------------------
+     Команда                         Режим
+     ---------------------------------------------------------------------
+     APPEND FROM                     FLOCK() или USE...EXCLUSIVE
+     DELETE (несколько записей)      FLOCK() или USE...EXCLUSIVE
+     RECALL (несколько записей)      FLOCK() или USE...EXCLUSIVE
+     REPLACE (несколько записей)     FLOCK() или USE...EXCLUSIVE
+     UPDATE ON                       FLOCK() или USE...EXCLUSIVE
+     ---------------------------------------------------------------------
+     </PRE>
+
+     При каждом вызове функция FLOCK() предпринимает попытку заблокировать
+     файл базы данных и возвращает логическое значение результата этой
+     попытки.
+
+     Захват файла не может быть осуществлен, если в это же время другой
+     пользователь захватил весь файл или какую-либо запись этого файла
+     базы данных, или при открытии файла была применена команда EXCLUSIVE
+     USE. Если функция FLOCK() завершилась успешно, блокировка файла
+     сохраняется до тех пор, пока вы не выполните команды UNLOCK, CLOSE,
+     DATABASE или функцию RLOCK().
+
+     По умолчанию FLOCK() действует в текущей (активной) рабочей области,
+     но может действовать и в пассивной рабочей области путем включения ее
+     в выражение, уточненное алиасом, как показано в примере, приведенном
+     ниже.
+$EXAMPLES$
+       This example uses FLOCK() for a batch update of prices in
+	Inventory.dbf:
+
+	USE Inventory NEW
+	IF FLOCK()
+	   REPLACE ALL Inventory->Price WITH ;
+		 Inventory->Price * 1.1
+	ELSE
+	   ? "File not available"
+	ENDIF
+
+       This example uses an aliased expression to attempt a file lock
+	in an unselected work area:
+
+	USE Sales NEW
+	USE Customer NEW
+	//
+	IF !Sales->(FLOCK())
+	   ? "Sales is in use by another"
+	ENDIF
+$LANG_RU$
+      Данный пример демонстрирует использование FLOCK() для группового
+       изменения цен в Inventory.dbf:
+
+       USE Inventory NEW
+       IF FLOCK()
+	  REPLACE ALL Inventory->Price WITH Inventory->Price * 1.1
+       ELSE
+	  ? "Файл недоступен"
+       ENDIF
+
+      В данном примере показано использование выражения уточненного
+       алиасом для блокировки файла в пассивной рабочей области:
+
+       USE Sales NEW
+       USE Customer NEW
+       //
+       IF Sales->(FLOCK())
+	  ? "Sales используется другим пользователем"
+       ENDIF
+$SEEALSO$
+  RLOCK()
+$END$

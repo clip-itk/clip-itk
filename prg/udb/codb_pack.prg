@@ -19,7 +19,8 @@ local remake,dStr1,dStr2
 local mFiles := {;
 	{"dataidx",CODB_IDXTABLE_STRUCTURE},;
 	{"metaidx",CODB_DICTINDEX_STRUCTURE},;
-	{"metadata",CODB_DICT_STRUCTURE};
+	{"metadata",CODB_DICT_STRUCTURE},;
+	{"counters",CODB_COUNTER_STRUCTURE};
 	}
 
 	k := mFiles[1][2]

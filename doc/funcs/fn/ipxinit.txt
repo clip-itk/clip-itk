@@ -1,0 +1,44 @@
+$FUNCNAME$
+   Fn_IPXInit()
+$CATEGORY$
+   Miscellaneous
+$ONELINER$
+    This function gets the entry address for the IPX interface.
+$SYNTAX$
+
+    Fn_IPXInit() -> lInit
+
+$ARGUMENTS$
+
+$RETURNS$
+
+    <lInit> - Whether IPX has been initialised.  If <lInit> is false
+    check Fn_Error() for the error code which could be one of:
+
+     [ Error codes here ]
+
+$DESCRIPTION$
+
+    This function initializes an array in the library
+    with the address of the IPX services. This function must be
+    called before any of the IPX functions in this library can be
+    performed.
+
+    [This function is meant to be part of a larger suite but 
+    the code wasn't ready by the release date.  In its present
+    form, it can be used to determine if IPX is installed, 
+    which might be useful.]
+
+$EXAMPLES$
+
+    If ( Fn_IPXInit())
+	? "IPX installed"
+    EndIf
+
+$SEEALSO$
+    
+$INCLUDE$
+
+$Author: clip $
+   Sheldon Easterbrook
+$END$

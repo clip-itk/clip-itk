@@ -1,0 +1,65 @@
+$FUNCNAME$
+  ASC()
+$CATEGORY$
+  STRING,NUMERIC,KEYBOARD/MOUSE
+$SUMMARY$
+   Convert a character to its ASCII value
+$LANG_RU$
+   Преобразует символ в его код ASCII.
+$SYNTAX$
+     ASC(<cExp>) --> nCode
+$LANG_RU$
+     ASC(<символьное выражение>) --> значение кода ASCII
+$ARGUMENTS$
+     <cExp> is the character expression to be converted to a number.
+$LANG_RU$
+     <символьное выражение> - символьное выражение, преобразуемое в число.
+$RETURNS$
+     ASC() returns an integer numeric value in the range of zero to 255,
+     representing the ASCII value of <cExp>.
+$LANG_RU$
+     ASC() возвращает целое число в пределах от 0 до 255, представляющее
+     значение кода ASCII <символьное выражение>.
+$DESCRIPTION$
+
+     ASC() is a character conversion function that returns the ASCII value of the
+     leftmost character in a character string.  ASC() is used primarily on
+     expressions requiring numeric calculations on the ASCII value of a
+     character.  CHR() and ASC() are inverse functions.
+
+
+$LANG_RU$
+
+     ASC() - это функция преобразования символов, которая возвращает
+     значение кода ASCII самого первого символа в строке. ASC() в основном
+     используется с выражениями, в которых ведутся арифметические расчеты
+     над числовыми значениями кодов ASCII символов. CHR() и ASC() - это
+     функции, противоположные по действию друг другу.
+
+
+$EXAMPLES$
+
+       These examples illustrate various results of ASC():
+
+	? ASC("A")                     // Result: 65
+	? ASC("Apple")                 // Result: 65
+	? ASC("a")                     // Result: 97
+	? ASC("Z") - ASC("A")          // Result: 25
+	? ASC("")                      // Result: 0
+
+
+$LANG_RU$
+
+      Этот пример иллюстрирует различные результаты выполнения функции
+       ASC():
+
+       ? ASC("A")             // Результат: 65
+       ? ASC("Apple")         // Результат: 65
+       ? ASC("a")             // Результат: 97
+       ? ASC("Z") - ASC("A")  // Результат: 25
+       ? ASC("")              // Результат: 0
+
+
+$SEEALSO$
+  CHR(),INKEY(),STR(),VAL()
+$END$

@@ -1,0 +1,46 @@
+$FUNCNAME$
+	TCPCLOSE()
+$CATEGORY$
+	TCP,FILE/IO
+$SUMMARY$
+	Close connection.
+$LANG_RU$
+	Закрыть соединение.
+$SYNTAX$
+	TCPCLOSE(<nConnection>)		--> TRUE || FALSE
+$ARGUMENTS$
+	<nConnaction>	Numeric, is the connection number.
+$LANG_RU$
+	<nConnection>	Numeric, номер соединения.
+$RETURNS$
+	Returns TRUE if connection was successfully closed.
+$LANG_RU$
+	Возвращает TRUE, если соединение успешно закрыто.
+$DESCRIPTION$
+	TCPCLOSE() closes opened connections and returns TRUE if operation was
+	successfully.
+$LANG_RU$
+	TCPCLOSE() закрывает открытое соединене и возвращает TRUE в случае
+	успешного завершения операции.
+$EXAMPLES$
+
+nH := TCPLISTEN(3000)
+
+If nH > 0
+
+	....
+
+	TCPCLOSE(nH)
+endif
+
+
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+	TCPCONNECT(), TCPLISTEN()
+$AUTHOR$
+ITK
+$LASTDATE$
+$END$
+

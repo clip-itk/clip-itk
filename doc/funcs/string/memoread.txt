@@ -1,0 +1,103 @@
+$FUNCNAME$
+  MEMOREAD()
+$CATEGORY$
+  STRING,DATABASE,FILE/IO
+$SUMMARY$
+   Return the contents of a disk file as a character string
+$LANG_RU$
+   Возвращает содержимое дискового файла как строку символов.
+$SYNTAX$
+     MEMOREAD(<cFile>) --> cString
+$LANG_RU$
+     MEMOREAD(<имя файла>) --> строка символов
+$ARGUMENTS$
+     <cFile> is the name of the file to read from disk.  It must include
+     an extension, if there is one, and can optionally include a path.
+$LANG_RU$
+     <имя файла> - имя считываемого с диска файла. Если имя файла содержит
+     расширение, оно должно быть указано. Задание маршрута доступа не
+     обязательно.
+$RETURNS$
+     MEMOREAD() returns the contents of a text file as a character string.
+     The maximum file size that can be read is 65,535 characters (64K)--the
+     maximum size of a character string.  If <cFile> cannot be found,
+     MEMOREAD() returns a null string ("").
+$LANG_RU$
+     MEMOREAD() возвращает содержимое текстового файла как символьную
+     строку. Максимальный размер файла, который может быть считан - 65 535
+     символов (64K) - это максимальный размер символьной переменной. Если
+     файл с именем, указанным в аргументе <имя файла>, не может быть
+     найден, MEMOREAD() возвращает строку нулевой длины ("").
+$DESCRIPTION$
+     MEMOREAD() is a memo function that reads a disk file into memory where
+     it can be manipulated as a character string or assigned to a memo field.
+     MEMOREAD() is used with MEMOEDIT() and MEMOWRIT() to edit an imported
+     disk file, and then write it back to disk.  MEMOREAD() searches for
+     <cFile> beginning with the current DOS directory.  If the file is not
+     found, MEMOREAD() searches the DOS path.  MEMOREAD() does not use the
+     xClipper DEFAULT or PATH to search for <cFile>.
+
+     In a network environment, MEMOREAD() attempts to open the specified file
+     shared and read--only.  If the file is opened exclusive by another
+     process, MEMOREAD() returns a null string ("").
+$LANG_RU$
+     MEMOREAD() - функция обработки memo-полей, считывающая содержимое
+     дискового файла в память, где оно может быть обработано как
+     символьная строка или memo-поле. MEMOREAD() используется в сочетании
+     с функциями MEMOEDIT() и MEMOWRIT() для чтения дисковых файлов,
+     их редактирования и записи на диск. MEMOREAD() ищет файл с именем,
+     заданным в аргументе <имя файла>, начиная с текущей директории;
+     если искомый файл не обнаружен, то поиск продолжается в директориях,
+     определенных командой PATH операционной системы DOS. В процессе
+     поиска файла, заданного аргументом <имя файла>, функция MEMOREAD()
+     не использует установок команд xClipper SET DEFAULT и SET PATH.
+
+     В сетях MEMOREAD() пытается открыть файл для совместного
+     использования и только для чтения. Если файл уже захвачен другим
+     процессом для индивидуального пользования, MEMOREAD() возвращает
+     нулевую строку ("").
+$EXAMPLES$
+
+       This example uses MEMOREAD() to assign the contents of a text
+	file to the Notes memo field and to a character variable:
+
+	REPLACE Notes WITH MEMOREAD("Temp.txt")
+	cString = MEMOREAD("Temp.txt")
+
+       This example defines a function that edits a disk file:
+
+	FUNCTION Editor( cFile )
+	   LOCAL cString
+	   IF (cString := MEMOREAD(cFile)) == ""
+	      ? "Error reading " + cFile
+	      RETURN .F.
+	   ELSE
+	      MEMOWRIT(cFile, MEMOEDIT(cString))
+	      RETURN .T.
+	   ENDIF
+
+
+$LANG_RU$
+
+      Следующий пример использует MEMOREAD() для присвоения содержимого
+       текстового файла memo-полю Note и символьной переменной.
+
+       REPLACE Notes WITH MEMOREAD("Temp.txt")
+       cString = MEMOREAD("Temp.txt")
+
+      В этом примере показана функция, которая редактирует дисковый файл.
+
+       FUNCTION Editor( cFile)
+	  LOCAL cString
+	  IF (cString := MEMOREAD(cFile)) == ""
+	     ? "Ошибка чтения "+ cFile
+	     RETURN .F.
+	  ELSE
+	     MEMOWRIT( cFile, MEMOEDIT( cString ))
+	     RETURN .T.
+	  ENDIF
+
+
+$SEEALSO$
+  MEMOEDIT(),MEMOWRIT()
+$END$

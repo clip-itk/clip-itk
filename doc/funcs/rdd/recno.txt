@@ -1,0 +1,62 @@
+$FUNCNAME$
+  RECNO()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the identity at the position of the record pointer
+$LANG_RU$
+   Возвращает номер текущей записи рабочей области.
+$SYNTAX$
+     RECNO() --> Identity
+$LANG_RU$
+     RECNO() --> номер текущей записи
+$RETURNS$
+     RECNO() returns the identity found at the position of the record
+     pointer.
+$LANG_RU$
+     RECNO() возвращает номер текущей записи в виде целого числа. Если в
+     рабочей области содержится файл базы данных с нулевыми количеством
+     записей, RECNO() возвращает (1), BOF() и EOF() возвращают значение
+     "истина" (.Т.), LASTREC() возвращает ноль.
+
+     Если указатель записи перемещается за последнюю запись, то RECNO()
+     возвращает значение (LASTREC()+1), а EOF() - значение "истина" (.T.).
+     При попытке установить указатель записи перед первой записью, функция
+     RECNO() возвращает номер первой логической записи, а BOF() возвращает
+     значение "истина"(.Т.).
+$DESCRIPTION$
+     RECNO() is a database function that returns the identity found at the
+     current position of the record pointer.  Identity is a unique value
+     guaranteed by the structure of the data file to reference a specific
+     record of a data file.  The data file need not be a traditional Xbase
+     file.  Therefore, unlike earlier versions of xClipper, the value
+     returned need not be a numeric data type.
+
+     Under all RDDs, RECNO() returns the value at the position of the record
+     pointer; the data type and other characteristics of this value are
+     determined by the content of the accessed data and the RDD active in the
+     current work area.  In an Xbase database this value is the record
+     number.
+$LANG_RU$
+     RECNO() - это функция обработки баз данных, которая возвращает
+     текущий номер записи в рабочей области. В файловой схеме базы данных
+     xClipper каждый файл базы данных упорядочен по физическим номерам
+     записей. В каждой рабочей области указатель записи выделяет текущую
+     запись в открытом файле базы данных. Этот номер записи и возвращает
+     функция RECNO(). Организация нумерации записей позволяет осуществлять
+     прямой доступ к каждой записи без последовательного просмотра всего
+     файла базы данных.
+
+     RECNO() обычно используется в программах, которые обрабатывают
+     записи, выбирая их по номерам. Примером может служить команда
+     SET RELATION...  TO RECNO(), связывающая файлы баз данных по их
+     номерам записей. Команду GO RECNO() также можно использовать для
+     восстановления текущей записи с диска.
+
+     По умолчанию RECNO() обрабатывает текущую (активную) рабочую область.
+     Для обработки пассивной рабочей области ее необходимо использовать
+     как элемент выражения, уточненного алиасом (как показано в примере
+     ниже).
+$SEEALSO$
+  BOF(),EOF(),LASTREC()
+$END$

@@ -1,0 +1,651 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/install.sgml:1
+msgid "Clip installation"
+msgstr ""
+
+#: template/./doc/install.sgml:4
+msgid "Before install"
+msgstr ""
+
+#: template/./doc/install.sgml:6
+msgid ""
+"Clip is distributing in a source and binaries variants from the main ftp\n"
+"server and mirrors."
+msgstr ""
+
+#: template/./doc/install.sgml:8
+msgid ""
+"Binaries variant (except Cygwin) depends on a distributive\n"
+"and not available from ftp servers."
+msgstr ""
+
+#: template/./doc/install.sgml:11
+msgid ""
+"Source distributions present in two variants: splitted by packages and\n"
+"all-in-one variant."
+msgstr ""
+
+#: template/./doc/install.sgml:14
+msgid ""
+"You can download all that you need from the main ftp server\n"
+"ftp://ftp.itk.ru/pub/clip or from mirrors:"
+msgstr ""
+
+#: template/./doc/install.sgml:17
+msgid "very fast, every night updated ftp://ftp.linux.ru.net/mirrors/clip"
+msgstr ""
+
+#: template/./doc/install.sgml:18
+msgid "another good server ftp://ftp.lastik.ru/clip"
+msgstr ""
+
+#: template/./doc/install.sgml:19
+msgid "or from sourceforge.net server http://sourceforge.net/projects/x-clip"
+msgstr ""
+
+#: template/./doc/install.sgml:22
+msgid "There you can find many files:"
+msgstr ""
+
+#: template/./doc/install.sgml:25
+msgid "clip-prg-&lt;version&gt;.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:26
+msgid "SRC: all source packages and documentation"
+msgstr ""
+
+#: template/./doc/install.sgml:27
+msgid "clip_dev.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:28
+msgid "SRC: base package, == CA-Clipper 5.3"
+msgstr ""
+
+#: template/./doc/install.sgml:29
+msgid "clip_docs.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:30
+msgid ""
+"HTML: base documentation, all packages including private documentation of "
+"private functions."
+msgstr ""
+
+#: template/./doc/install.sgml:31
+msgid "clip_mysql.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:32
+msgid "SRC: MySQL client"
+msgstr ""
+
+#: template/./doc/install.sgml:33
+msgid "clip_oracle.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:34
+msgid "SRC: Oracle client"
+msgstr ""
+
+#: template/./doc/install.sgml:35
+msgid "clip_odbc.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:36
+msgid "SRC: ODBC client"
+msgstr ""
+
+#: template/./doc/install.sgml:37
+msgid "clip_postgres.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:38
+msgid "SRC: Postgres client"
+msgstr ""
+
+#: template/./doc/install.sgml:39
+msgid "clip_interbase.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:40
+msgid "SRC: Interbase & FireBird client"
+msgstr ""
+
+#: template/./doc/install.sgml:41
+msgid "clip_gtk.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:42
+msgid "SRC: GUI library over GTK"
+msgstr ""
+
+#: template/./doc/install.sgml:43
+msgid "clip_gtkextra.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:44
+msgid "SRC: GUI library over GTKextra"
+msgstr ""
+
+#: template/./doc/install.sgml:45
+msgid "clip_fw.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:46
+msgid "SRC: FiveWin-like classes & commands"
+msgstr ""
+
+#: template/./doc/install.sgml:47
+msgid "clip_gd.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:48
+msgid "SRC: library for PNG (and more) files and business histograms"
+msgstr ""
+
+#: template/./doc/install.sgml:49
+msgid "clip_gzip.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:50
+msgid "SRC: library for supprt gz files"
+msgstr ""
+
+#: template/./doc/install.sgml:51
+msgid "clip_bzip2.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:52
+msgid "SRC: library for supprt bz2 files"
+msgstr ""
+
+#: template/./doc/install.sgml:53
+msgid "clip_com.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:54
+msgid "SRC: COM_*() functions from Tools"
+msgstr ""
+
+#: template/./doc/install.sgml:55
+msgid "clip_crypto.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:56
+msgid "SRC: Simmetric block ciphers encrypt/decrypt functions"
+msgstr ""
+
+#: template/./doc/install.sgml:57
+msgid "clip_rtf.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:58
+msgid "SRC: Rich text format library by Thomas Marchione"
+msgstr ""
+
+#: template/./doc/install.sgml:59
+msgid "clip_cti.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:60
+msgid ""
+"SRC: Clip text interface library, base for text FiveWin and FoxPro-like "
+"windows"
+msgstr ""
+
+#: template/./doc/install.sgml:61
+msgid "clip_udb.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:62
+msgid "SRC: Clip universal (object) data base, the object orientired data base"
+msgstr ""
+
+#: template/./doc/install.sgml:63
+msgid "clip_oasis.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:64
+msgid "SRC: libraries from the-oasis.net"
+msgstr ""
+
+#: template/./doc/install.sgml:65
+msgid "clip_prg.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:66
+msgid ""
+"SRC: base utils - debugger, text editor, ... include preprocessor (PP) by "
+"Ron Pinkas, bdbf by Yevgen Bondar, ...."
+msgstr ""
+
+#: template/./doc/install.sgml:67
+msgid "clip_dbu.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:68
+msgid "SRC: CA_DBU & CA_DBU53 adapted for Clip"
+msgstr ""
+
+#: template/./doc/install.sgml:69
+msgid "clip_fcgi.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:70
+msgid "SRC: FastCGI Clip library"
+msgstr ""
+
+#: template/./doc/install.sgml:71
+msgid "dbc.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:72
+msgid "SRC: DBU (C) Aleksandr Kresin"
+msgstr ""
+
+#: template/./doc/install.sgml:73
+msgid "cygwin_trunc.rar"
+msgstr ""
+
+#: template/./doc/install.sgml:74
+msgid ""
+"BIN: Cygwin developer tools for migration from unix to win32 platforms "
+"(trunc - it`s truncated by ITK distribution)"
+msgstr ""
+
+#: template/./doc/install.sgml:75
+msgid "clip_win32_bin.rar"
+msgstr ""
+
+#: template/./doc/install.sgml:76
+msgid "BIN: Clip and base libraries for Win32+Cygwin"
+msgstr ""
+
+#: template/./doc/install.sgml:77
+msgid "gtk_std_win32.rar"
+msgstr ""
+
+#: template/./doc/install.sgml:78
+msgid ""
+"BIN: GTK+ standart libraries for Windows, installing after Cygwin and before "
+"Clip"
+msgstr ""
+
+#: template/./doc/install.sgml:79
+msgid "gtkextra_std_win32.rar"
+msgstr ""
+
+#: template/./doc/install.sgml:80
+msgid ""
+"BIN: extension for GTK+ libraries for Windows, installing after Cygwin and "
+"GTK+, and before Clip"
+msgstr ""
+
+#: template/./doc/install.sgml:81
+msgid "clip_gtk_win32.rar"
+msgstr ""
+
+#: template/./doc/install.sgml:82
+msgid "BIN: Clip library over GTK+, generated from clip_gtk package"
+msgstr ""
+
+#: template/./doc/install.sgml:83
+msgid "clip_gtkextra_win32.rar"
+msgstr ""
+
+#: template/./doc/install.sgml:84
+msgid "BIN: Clip library over GTK+ extra, generated from clip_gtkextra package"
+msgstr ""
+
+#: template/./doc/install.sgml:85
+msgid "cygwin_patch.rar"
+msgstr ""
+
+#: template/./doc/install.sgml:86
+msgid "BIN: fixing some problems with Cygwin"
+msgstr ""
+
+#: template/./doc/install.sgml:87
+msgid "patch.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:88
+msgid "SRC: latest fixes and addons for Clip base packages (dev & doc)"
+msgstr ""
+
+#: template/./doc/install.sgml:91
+msgid ""
+"The easiest way to install the whole Clip is getting all-in-one package\n"
+"clip-prg-&lt;version&gt;.tgz unpack it and compile."
+msgstr ""
+
+#: template/./doc/install.sgml:95
+msgid "To download and unpack:"
+msgstr ""
+
+#: template/./doc/install.sgml:96
+msgid ""
+"Download file(s) from ITK's ftp server or it mirrors and save it in a safe "
+"place."
+msgstr ""
+
+#: template/./doc/install.sgml:97
+msgid ""
+"Untar it with the command #tar xzf clip-prg-&lt;version&gt;.tgz Now you have "
+"directory clip-prg-&lt;version&gt;."
+msgstr ""
+
+#: template/./doc/install.sgml:98
+msgid "#cd clip-prg-&lt;version&gt; Now you are in your new directory"
+msgstr ""
+
+#: template/./doc/install.sgml:101
+msgid ""
+"You have two choices for the next step: you may install in local or system\n"
+"variant. What is that means?"
+msgstr ""
+
+#: template/./doc/install.sgml:105
+msgid ""
+"in local installation the all Clip-related files will be in your own home  "
+"directory, binaries will be linked into $HOME/bin, CLIPROOT defaults to ../"
+"cliproot, shared libraries would be with the full path in executable. This "
+"variant is easier and not need to act as root."
+msgstr ""
+
+#: template/./doc/install.sgml:106
+msgid ""
+"in system-wide installation by default binaries linked into /usr/local/bin,  "
+"CLIPROOT points to /usr/local/clip, shared libraries without path in "
+"executable are linked into /usr/lib. This type of installation requires is "
+"action with superuser rights."
+msgstr ""
+
+#: template/./doc/install.sgml:109
+msgid ""
+"Clip local variant may be best for you (especially due to frequently "
+"patches\n"
+"and new versions) if you make a test or working on your system as a single "
+"person."
+msgstr ""
+
+#: template/./doc/install.sgml:114
+msgid "Local installation."
+msgstr ""
+
+#: template/./doc/install.sgml:116
+msgid "Firstly you must set up CLIPROOT environment variable."
+msgstr ""
+
+#: template/./doc/install.sgml:116
+msgid ""
+"Also you must add\n"
+"$CLIPROOT/bin to your path."
+msgstr ""
+
+#: template/./doc/install.sgml:117
+msgid ""
+"You can do this (if your command interpreter is bash) by\n"
+"adding following lines at the end of your local bash_profile:"
+msgstr ""
+
+#: template/./doc/install.sgml:120
+msgid "export CLIPROOT=$HOME/cliproot"
+msgstr ""
+
+#: template/./doc/install.sgml:121
+msgid "export PATH=$CLIPROOT/bin:$PATH"
+msgstr ""
+
+#: template/./doc/install.sgml:123
+msgid "and relogin to make this settings actual."
+msgstr ""
+
+#: template/./doc/install.sgml:125
+msgid ""
+"You may not want to set CLIPROOT environment variable. In this case "
+"CLIPROOT\n"
+"will be in the same level as your clip-prg-&lt;version&gt; directory (\"make "
+"local\"\n"
+"will make ../cliproot directory). Binaries from the clip_dev package will "
+"be\n"
+"soft-linked in your $HOME/bin."
+msgstr ""
+
+#: template/./doc/install.sgml:131
+msgid "Some notes:"
+msgstr ""
+
+#: template/./doc/install.sgml:132
+msgid ""
+"In OS Solaris must be installed \"GNU bin utils\" and path for it must be "
+"in  first: export PATH=/usr/local/bin;..."
+msgstr ""
+
+#: template/./doc/install.sgml:133
+msgid ""
+"If GNU maker in your system have name \"gmake\", add to environment variable "
+"MAKE=gmake"
+msgstr ""
+
+#: template/./doc/install.sgml:136
+msgid "Now you can go in your clip-prg-&lt;version&gt; and"
+msgstr ""
+
+#: template/./doc/install.sgml:138
+msgid "#make local"
+msgstr ""
+
+#: template/./doc/install.sgml:140
+msgid "If your PATH is setted, you can start working with Clip immediately."
+msgstr ""
+
+#: template/./doc/install.sgml:144
+msgid "System-wide installation"
+msgstr ""
+
+#: template/./doc/install.sgml:146
+msgid "Just go in your clip-prg-&lt;version&gt; and"
+msgstr ""
+
+#: template/./doc/install.sgml:148
+msgid "#make system"
+msgstr ""
+
+#: template/./doc/install.sgml:150
+msgid "Remember, that CLIPROOT points to /usr/local/clip by default."
+msgstr ""
+
+#: template/./doc/install.sgml:150
+msgid ""
+"Don't forget\n"
+"to set CLIPROOT variable in your .profile"
+msgstr ""
+
+#: template/./doc/install.sgml:153
+msgid "Now you can use your Clip."
+msgstr ""
+
+#: template/./doc/install.sgml:157
+msgid "Selective installation"
+msgstr ""
+
+#: template/./doc/install.sgml:159
+msgid ""
+"You can install only needed packages. In this case you must download and\n"
+"install clip_dev.tgz  It contains Clip compiler itself, some utils and\n"
+"standard debugger. For installing this package you need to download it from\n"
+"ftp server and unpack in convenient directory."
+msgstr ""
+
+#: template/./doc/install.sgml:164
+msgid ""
+"Now, if you want a local installation, you needing to set CLIPROOT\n"
+"environment variable (for example: export CLIPROOT=~/cliproot) and start\n"
+"./configure from where you unpack your file."
+msgstr ""
+
+#: template/./doc/install.sgml:168
+msgid ""
+"If you want to make system-wide installation start ./configure -r (that key\n"
+"means \"release\"; other keys you can get by ./configure -h)."
+msgstr ""
+
+#: template/./doc/install.sgml:171
+msgid "After this run \"make\" and (with appropriate rights) \"make install\"."
+msgstr ""
+
+#: template/./doc/install.sgml:173
+msgid ""
+"For correct working you are still needing to add CLIPROOT in your .profile "
+"as\n"
+"described above."
+msgstr ""
+
+#: template/./doc/install.sgml:176
+msgid "Each other clip_* package can be installed by the same way."
+msgstr ""
+
+#: template/./doc/install.sgml:180
+msgid "Patching your distribution"
+msgstr ""
+
+#: template/./doc/install.sgml:182
+msgid "On ftp server you can find patch.tgz"
+msgstr ""
+
+#: template/./doc/install.sgml:182
+msgid ""
+"That file contains the last cumulative\n"
+"patch for clip_dev package."
+msgstr ""
+
+#: template/./doc/install.sgml:183
+msgid ""
+"Just unpack it (this will overwrite some file)\n"
+"and remake (by the same way as described in \"Selective installation\" "
+"section)."
+msgstr ""
+
+#: template/./doc/install.sgml:186
+msgid "Other libraries and packages some time updating also."
+msgstr ""
+
+#: template/./doc/install.sgml:186
+msgid ""
+"Their installation not\n"
+"different from described in \"Selective installation\"."
+msgstr ""
+
+#: template/./doc/install.sgml:191
+msgid "Cygwin installation"
+msgstr ""
+
+#: template/./doc/install.sgml:193
+msgid ""
+"Firstly you have need to install a Cygwin package. Better way is taking the\n"
+"full version from Cygwin main site (cygwin.com)."
+msgstr ""
+
+#: template/./doc/install.sgml:194
+msgid ""
+"But it has a very big size.\n"
+"Alternative way has taken cygwin_trunc.tgz from ITK's ftp site or from the\n"
+"mirrors."
+msgstr ""
+
+#: template/./doc/install.sgml:196
+msgid ""
+"It's truncated version, but this is quite enough for using Clip (even\n"
+"for building Clip from sources)."
+msgstr ""
+
+#: template/./doc/install.sgml:199
+msgid ""
+"You must unpack cygwin_trunc.tgz in C:\\ (root directory of disk C:), "
+"unpack\n"
+"cygwin_patch.tgz to the same place (this file contains some fixes for "
+"correct\n"
+"work), add c:\\cygwin\\bin in your PATH and add cygwin.reg in your system\n"
+"registry. After rebooting you can use Cygwin."
+msgstr ""
+
+#: template/./doc/install.sgml:204
+msgid ""
+"In addition you may install GTK+ packages (gtk_std_win32.rar and\n"
+"gtkextra_std_win32.rar) if you planing to work with GUI."
+msgstr ""
+
+#: template/./doc/install.sgml:207
+msgid ""
+"More information about working with Cygwin you can find in \"Beginner's guide"
+"\"."
+msgstr ""
+
+#: template/./doc/install.sgml:212
+msgid "Clip Cygwin binaries"
+msgstr ""
+
+#: template/./doc/install.sgml:214
+msgid ""
+"For introduction to Clip you can just install bineries win32 version of "
+"Clip.\n"
+"Needed file named clip_win32_bin.rar and it be precompiled equivalent of\n"
+"current release (clip-prg-&lt;version&gt;.tgz)"
+msgstr ""
+
+#: template/./doc/install.sgml:218
+msgid ""
+"Just go by the same way as Cygwin installation and set some variables "
+"through\n"
+"c:\\autoexec.bat:"
+msgstr ""
+
+#: template/./doc/install.sgml:221
+msgid "set CLIPROOT=/clip"
+msgstr ""
+
+#: template/./doc/install.sgml:222
+msgid "set LANG=ru_RU.CP1251"
+msgstr ""
+
+#: template/./doc/install.sgml:223
+msgid "#or"
+msgstr ""
+
+#: template/./doc/install.sgml:224
+msgid "set CLIP_LANG=ru_RU.CP1251"
+msgstr ""
+
+#: template/./doc/install.sgml:225
+msgid "If you use truncated CygWin from ftp.itk.ru - add to autoexec.bat:"
+msgstr ""
+
+#: template/./doc/install.sgml:226
+msgid "set PATH= c:\\cygwin\\bin;c:\\cygwin\\clip\\bin;"
+msgstr ""
+
+#: template/./doc/install.sgml:232
+msgid "Building Clip for Cygwin from the sources"
+msgstr ""
+
+#: template/./doc/install.sgml:234
+msgid ""
+"If you have planning to work with Clip on win32 you will compile it from\n"
+"sources. Mostly this process will be flows as describe above in local or\n"
+"system-wide installation sections."
+msgstr ""

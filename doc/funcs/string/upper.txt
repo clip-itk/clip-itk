@@ -1,0 +1,100 @@
+$FUNCNAME$
+  UPPER()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Convert lowercase characters to uppercase
+$LANG_RU$
+   Преобразует алфавитные символы нижнего регистра в символы верхнего
+$SYNTAX$
+     UPPER(<cString>) --> cUpperString
+$LANG_RU$
+     UPPER(<символьная строка>) --> символьная строка в верхнем регистре
+$ARGUMENTS$
+     <cString> is the character string to be converted.
+$LANG_RU$
+     <символьная строка> - строка символов для преобразования.
+$RETURNS$
+     UPPER() returns a copy of <cString> with all alphabetical characters
+     converted to uppercase.  All other characters remain the same as in the
+     original string.
+$DESCRIPTION$
+     UPPER() is a character function that converts lowercase and mixed case
+     strings to uppercase.  It is related to LOWER() which converts uppercase
+     and mixed case strings to lowercase.  UPPER() is related to the
+     ISUPPER() and ISLOWER() functions which determine whether a string
+     begins with an uppercase or lowercase letter.
+
+     UPPER() is generally used to format character strings for display
+     purposes.  It can, however, be used to normalize strings for case-
+     independent comparison or INDEXing purposes.
+$LANG_RU$
+     UPPER() - функция обработки символьных строк. Используется для
+     преобразования строк с символами в нижнем и верхнем регистрах в
+     строки символов верхнего регистра. Она связана с функцией LOWER(),
+     которая преобразует строки символов верхнего регистра и смешанные
+     строки в строки символов нижнего регистра. Функция UPPER() также
+     связана с функциями ISUPPER() и ISLOWER(), которые определяют,
+     начинается ли строка с буквы верхнего или нижнего регистров.
+
+     UPPER() обычно используется для форматирования символьных строк.
+     Однако UPPER() может быть полезна для создания индексных ключей,
+     независимых от значений регистра.
+$EXAMPLES$
+
+       These examples illustrate the effects of UPPER():
+
+	? UPPER("a string")           // Result: A STRING
+	? UPPER("123 char = <>")      // Result: 123 CHAR = <>
+
+       This example uses UPPER() as part of a case-independent
+	condition:
+
+	USE Customer INDEX CustName NEW
+	LIST CustName FOR "KATE" $ UPPER(Customer)
+
+       UPPER() is also useful for creating case-independent index key
+	expressions:
+
+	USE Customer NEW
+	INDEX ON UPPER(Last) TO CustLast
+
+       Later, use the same expression to look up Customers:
+
+	MEMVAR->Last = SPACE(15)
+	@ 10, 10 GET MEMVAR->Last
+	READ
+
+	SEEK UPPER(MEMVAR->Last)
+
+
+$LANG_RU$
+
+      Следующий пример иллюстрирует эффект от применения UPPER():
+
+       ? UPPER("строка")                     // Результат: СТРОКА
+       ? UPPER("123 буква =<>")              // Результат: 123 БУКВА =<>
+
+      Этот пример использует UPPER() как часть условия, независимого от
+       регистра:
+
+       USE Customer INDEX CustName NEW
+       LIST CustNum FOR "KATE" $ UPPER(Customer)
+
+      UPPER() также полезна для создания индексных ключевых выражений,
+       независимых от значения регистра:
+
+       USE Customer NEW
+       INDEX ON UPPER(last) TO CustLst
+
+      Далее, используйте также выражения для преобразования Customer:
+
+       MEMVAR->Last = SPACE(15)
+       @ 10, 10 GET MEMVAR->Last
+       READ
+       SEEK UPPER(MEMVAR->Last)
+
+
+$SEEALSO$
+  ISLOWER(),ISUPPER(),LOWER()
+$END$

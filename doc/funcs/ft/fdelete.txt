@@ -1,0 +1,41 @@
+$FUNCNAME$
+   FT_FDELETE()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Deletes a line from the currently selected text file
+$SYNTAX$
+
+   FT_FDELETE( [ < nLines > ] ) -> lSuccess
+
+$ARGUMENTS$
+
+   ^b<nLines>^n is the number of lines to be eliminated, beginning with
+   the current record position.
+
+   If ^b<nLines>^n is omitted, the current record is deleted only.
+
+$RETURNS$
+
+   TRUE if successful, otherwise check ^ft_fError()^n for error code.
+
+$DESCRIPTION$
+
+   This function deletes one or several lines of text from the file
+   in the currently selected text file workarea.  Text lines are
+   delimited with a CRLF pair.  The record pointer is not moved,
+   unless the deleted lines occur at the end of the file, in which
+   case ^bft_fRecno()^n will equal ^bft_fLastRe()^n and ^bft_fEOF()^n
+   will be set to TRUE.
+
+$EXAMPLES$
+
+   // delete the next 4 lines from a file
+   FT_FUSE( "test.txt" )
+
+   FT_FDELETE( 4 )
+
+$SEEALSO$
+   FT_FAPPEND(),FT_FRECNO(),FT_FINSERT()
+$END$
+

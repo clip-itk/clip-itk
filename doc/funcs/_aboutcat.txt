@@ -1,0 +1,22 @@
+$ABOUTCATEG$
+	INFO
+$DESCRIPTION$
+	Categories <command>INFO</command> is the set of functions for getting
+	some information about values, functions, parameters, and so.
+$LANG_RU$
+	К категории <command>INFO</command> относятся функции, предназначенные
+	для получения информации о переменных, функциях, параметрах и тп.
+
+$ABOUTCATEG$
+	TCP
+$DESCRIPTION$
+	Categories <command>TCP</command> is the set of functions for work with
+	sockets.
+
+	For functions TCPListen() and TCPAccept() many thanks to Sergio Zayas.
+$LANG_RU$
+	Категория <command>TCP</command> представляет собой набор функция для работы
+	с сокетами.
+
+	Благодарим Sergio Zayas за помощь в создании функций TCPListen() и TCPAccept().
+

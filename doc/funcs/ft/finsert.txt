@@ -1,0 +1,46 @@
+$FUNCNAME$
+   FT_FINSERT()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Inserts a line in the currently selected text file
+$SYNTAX$
+
+   FT_FINSERT( [ < nLines > ] ) -> lSuccess
+
+$ARGUMENTS$
+
+   ^b<nLines>^n is the number of lines that should be inserted at the
+   current record position.
+
+   If ^b<nLines>^n is omitted, one record is inserted.
+
+$RETURNS$
+
+   ^blSuccess^n is TRUE if the insert succeeded, FALSE if not.  If
+   false check the return value of ^bft_fError()^n for the reason.
+
+$DESCRIPTION$
+
+   This function inserts a line of text in the file in the currently
+   selected text file workarea.  Text lines are delimited with a
+   CRLF pair.
+
+   The record pointer is not moved.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+   Each line inserted with this function will be empty.
+
+$EXAMPLES$
+
+   // add a couple of blank lines of text to a file
+   ft fUse( "test.txt" )
+
+   ft_fGoTo( 10 )
+
+   ft_fInsert( 5 )
+
+$SEEALSO$
+   FT_FAPPEND(),FT_FRECNO(),FT_FDELETE(),FT_FLASTRE()
+$END$
+

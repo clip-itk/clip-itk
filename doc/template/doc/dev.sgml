@@ -1,0 +1,201 @@
+<chapter id="dev">
+
+<TITLE>_(Terminals, keyboard, mouse, localization)_</TITLE>
+
+<section id="devterminals"><title>_(Terminals)_</title>
+<para>_(
+CLIP applications are able to work with all kind of terminals and emulators.
+Terminal abilities descriptions are available at
+<emphasis>terminfo</emphasis> database or
+(if environment variable TERMCAP is set) at the file TERMCAP is indicating on.
+On addition to this descriptions there are some extended possibilities
+to indicate for CLIP application some special capabilities of terminal.
+These descriptions are in directory $CLIPROOT/term and looking as
+)_</para>
+<programlisting>
+file term/linux-stelnet
+# _(to work with description of linux terminal in terminfo)_
++TERM=linux
+# _(whether yielding scan-codes instead of ansi-codes terminal ability;
+# options are: terminal, ioctl, no)_
+CLIP_SCANMODE=terminal
+# _(ESC-sequence to switch scan-codes transfer mode on)_
+CLIP_SCANSTART=\033[S
+# _(ESC-sequence to switch scan-codes transfer mode off)_
+CLIP_SCANSTOP=\033[R
+# _(keyboard layout for keyboard driver of CLIP application)_
+CLIP_KEYMAP=rustelnet
+# _(charset used by CLIP VM at run time // unicode - file)_
+CLIP_HOSTCS=koi8-r
+# _(charset used by client for display // unicode - file)_
+CLIP_CLIENTCS=cp866
+# _(single pseudo-graphics symbols)_
+CLIP_LINECHARS=\200\201\204\211\205\206\212\207\202\210\203
+# _(double pseudo-graphics symbols)_
+CLIP_DLINECHARS=\240\241\253\273\256\261\276\265\245\270\250
+# _(color translation table)_
+CLIP_COLORMAP=0123456789ABCDEF
+</programlisting>
+<para>_(
+All "advanced" terminal names have to be registered in your
+<emphasis>terminfo/termcap</emphasis> database.
+)_</para>
+<para>_(
+Linux standard <emphasis>unicode-tables</emphasis> located in
+/usr/share/consoletrans directory are used for translation of
+terminal output.
+)_<para>
+<para>_(
+Necessary unicode-tables have to be unpacked and put into $CLIPROOT/charsets
+directory. CLIP distribution contains some unicode-tables also.
+)_</para>
+</section>
+
+<section id="devkeyboard"><title>_(Keyboard)_</title>
+<para>_(
+CLIP applications have two keyboard drivers: <emphasis>ANSI-mode</emphasis>
+and <emphasis>scan-mode</emphasis>.
+)_</para><para>_(
+In the ANSI-mode ansi-codes of the keys are accepted from terminal,
+and two modificators - Ctrl-J, Ctrl-K are used for extended possibilities.
+)_</para>
+<para>_(
+Modificator change key code for CLIP application. For example:
+pushing key 1 yield code 49, pushing Ctrl-J,1 yield code 376,
+pushing Ctrl-K,1 also yield code 376. Modificator Ctrl-J works the same as
+ALT, and modificator Ctrl-K works the same as CTRL but not with all keys.
+)_</para><para>_(
+More advanced keyboard mode is <emphasis>scan-mode</emphasis>.
+In this mode terminal passes to the host scan-codes
+of pushed and released keys.
+All key combinations are available in the case of correct keymap description.
+There is even possibility to enlist code of symbol using
+"Alt+enlisted_at_digital_keyboard_code"!
+In this case description of used console layout (/usr/share/keymaps/*) is used.
+)_</para>
+<para>_(
+In order for CLIP application to be able to use scan-mode it is necessary to
+generate keyboard description for desired keymap using
+$CLIPROOT/keymaps/genmap.sh utility; to put this description
+in $CLIPROOT/keymaps and to register CLIP_KEYMAP in the file with used
+terminal description in $CLIPROOT/term directory (see above about
+<link linkend="devterminals">terminals</link>).
+)_</para>
+<para>_(
+As terminal with scan-mode capability one may use linux-console or our
+terminal emulator <command>STelnel</command> (download at
+<ulink url="ftp://ftp.itk.ru/pub/telnet">ftp://ftp.itk.ru/pub/telnet</ulink>)
+)_</para>
+<para>_(
+In order to use capabilities of "advanced" terminal run stelnet as follows:
+)_</para><programlisting>
+stelnet -s -t linux-stelnet host_name
+</programlisting><para>_(
+and launch CLIP application as follows:
+)_</para>
+<programlisting>
+export TERM=linux-stelnet
+my_clip_app
+export TERM=linux
+</programlisting>
+</section>
+
+<section id="devmouse"><title>_(Mouse)_</title>
+<para>_(
+Mouse is supported in the following cases:
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+on console with standard terminal mode using daemon gpm
+)_</para></listitem>
+<listitem><para>_(
+on X-Windows terminals with TERM==xterm or TERM==rxwt terminals
+)_</para></listitem>
+<listitem><para>_(
+on another X-Windows terminals in the case of environment
+variable XTERM_MOUSE is set to <emphasis>ON</emphasis>
+)_</para></listitem>
+<listitem><para>_(
+from stelnet terminal emulator in the case of environment
+variable XTERM_MOUSE is set to <emphasis>ON</emphasis>
+)_</para></listitem>
+<listitem><para>_(
+from console through ssh on another host (trans_1.2 package is required)
+)_</para></listitem>
+<listitem><para>_(
+on the Windows host
+)_</para></listitem>
+</itemizedlist>
+</section>
+
+<section id="devlocalization"><title>_(Localization)_</title>
+<para>_(
+Localization of CLIP application includes localization of display devices,
+keyboard, string constants and embedded functions.
+)_</para>
+<para>_(
+Display devices are console, terminal, terminal emulator.
+One can execute their localization by standard for OS means, i.e.
+font loading, terminal localization by burning the BIOS,
+or by loading a special display/keyboard driver.
+)_</para>
+<para>_(
+In the case of scan-mode keyboard layout and encoding
+are made up by means of creating keymap-file and generation
+on its base file - description for CLIP's builtin keyboard driver.
+)_</para>
+<para>_(
+Some clipper-functions (such as upper,lower,isalpha, isdigit) have
+national features - pseudographics, weight coefficients for string
+indexing and comparison etc.
+Utility $CLIPROOT/bin/gen_tbl is intended for creating the file - description
+of national features of that functions.
+For the more details see <link linkend="localisation">Localisation</link>
+chapter.
+)_</para>
+<para>_(
+CLIP has special setting for the using DBF data by different users with
+different charsets simultaneously:
+)_</para>
+<programlisting>
+set("DBF_CHARSET","cp866")
+</programlisting>
+<para>_(
+or in the command form:
+)_</para>
+<programlisting>
+set dbf charset to cp866
+</programlisting>
+<para>_(
+where cp866 is name of tbl-file with national features description.
+)_</para>
+<para>_(
+May be so that data stored in DBF with one charset, program operates in
+another and client displays in third (see above about
+<link linkend="devterminals">terminals</link>).
+)_</para>
+<para>_(
+There is possibility to set charset used by printer too:
+)_</para>
+<programlisting>
+set("PRINTER_CHARSET","cp866")
+</programlisting>
+<para>_(
+or in the command form:
+)_<para>
+<programlisting>
+set printer charset to cp866
+</programlisting>
+<para>_(
+CLIP compiler stores all string constants defined as [string_data]
+at the $CLIPROOT/locale.pot subdirectories.
+So there is possibility for all these constants to make the
+translations for another languages.
+)_</para>
+<para>_(
+At run time CLIP application reads environment variable LANG
+and then gets appropriate constants from $CLIPROOT/locale.po subdirectories.
+)_</para>
+</section>
+
+</chapter>

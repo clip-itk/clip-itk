@@ -1,0 +1,62 @@
+$FUNCNAME$
+  MIN()
+$CATEGORY$
+  NUMERIC,DATE/TIME
+$SUMMARY$
+   Return the smaller of two numeric or date values
+$LANG_RU$
+   Возвращает меньшее из двух чисел или значения дат.
+$SYNTAX$
+     MIN(<nExp1>, <nExp2>) --> nSmaller
+     MIN(<dExp1>, <dExp2>) --> dSmaller
+$LANG_RU$
+     МIN(<арифметическое выражение1>,<арифметическое выражение2>) --> меньшее число
+     MIN(<дата 1>,<дата 2>) --> меньшая дата
+$ARGUMENTS$
+     <nExp1> and <nExp2> are the numeric values to be compared.
+     <dExp1> and <dExp2> are the date values to be compared.
+$LANG_RU$
+     <арифметическое выражение1>, <арифметическое выражение2> -
+     сравниваемые числовые значения.
+     <дата 1>, <дата 2> - сравниваемые значения дат.
+$RETURNS$
+     MIN() returns the smaller of the two arguments.  The value returned is
+     the same data type as the arguments.
+$LANG_RU$
+     MIN() возвращает наименьший из двух аргументов. Возвращаемое значение
+     того же типа данных, что и аргументы.
+$DESCRIPTION$
+     MIN() is a numeric and date function that ensures the value of an
+     expression is smaller than a specified minimum.  The inverse of MIN() is
+     MAX() which returns the greater of two numeric or date values.
+$LANG_RU$
+     MIN() - функция обработки чисел и дат, используемая для выделения
+     значения выражения меньшего, чем заданный минимум. Обратной функцией
+     для MIN() является MAX(), которая возвращает большее из двух числовых
+     значений или дат.
+$EXAMPLES$
+       In these examples MIN() returns the smaller of two numeric
+	values:
+
+	? MIN(99, 100)                  // Result: 99
+	? MIN(100, 99)                  // Result: 99
+
+       In these examples MIN() compares date values:
+
+	? DATE()                        // Result: 09/01/90
+	? MIN(DATE(), DATE() + 30)      // Result: 09/01/90
+$LANG_RU$
+      Этот пример демонстрирует функцию MIN(), которая возвращает
+       наименьшее из двух числовых значений.
+
+       ? MIN(99,100)                // Результат: 99
+       ? MIN(100,99)                // Результат: 99
+
+      Этот пример демонстрирует функцию MIN(), сравнивающую два значения
+       даты.
+
+       ? DATE()                     // Результат: 09/01/90
+       ? MIN(DATE(), DATE()+30)     // Результат: 09/01/90
+$SEEALSO$
+  MAX()
+$END$

@@ -1,0 +1,48 @@
+<chapter id="Introduction">
+<title> _(Introduction)_</title>
+<important>
+<title>_(Clip team searches for sponsor or investor)_</title>
+<para>_(clip future notes)_</para>
+</important>
+
+<itemizedlist>
+<listitem><para><link  linkend="about">_(Introduction)_</link></para></listitem>
+</itemizedlist>
+
+<formalpara>
+<title>_(Download and mirrors)_</title>
+<para>
+<itemizedlist>
+<listitem><para>
+<ulink url="ftp://ftp.linux.ru.net/mirrors/clip">_(Very fast mirror linux.ru.net)_</ulink>
+</para></listitem>
+<listitem><para>
+<ulink url="ftp://ftp.itk.ru/pub/clip">_(Home ftp ftp.itk.ru)_</ulink>
+</para></listitem>
+<listitem><para>
+<ulink url="ftp://ftp.lastik.ru/clip">_(Irkutsk mirror ftp.lastik.ru)_</ulink>
+</para></listitem>
+<listitem><para>
+<ulink url="http://sourceforge.net/projects/clip">sourceforge.net</ulink>
+</para></listitem>
+
+</itemizedlist>
+</para>
+</formalpara>
+
+
+<note>
+<para>
+_(Trademarks)_&reg;
+</para><para>
+_(Clipper - trademark of Computer Associates International Inc)_
+</para><para>
+_(UNIX - trademark of SCO Inc)_
+</para><para>
+_(Linux - trademark of  Linus Torwalds)_
+</para><para>
+_(DOS, Windows, FoxPro - are  trademarks of Microsoft Corporation)_
+</para>
+</note>
+
+</chapter>

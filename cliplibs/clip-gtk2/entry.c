@@ -116,7 +116,7 @@ int
 clip_GTK_ENTRYSETPOSITION(ClipMachine * cm)
 {
 	C_widget *centry = _fetch_cw_arg(cm);
-        gint    position = _clip_parni(cm,2);
+        gint    position = _clip_parni(cm,2)-1;
         CHECKCWID(centry,GTK_IS_ENTRY);
         CHECKOPT(2,NUMERIC_t);
         gtk_entry_set_position(GTK_ENTRY(centry->widget),position);
@@ -157,8 +157,8 @@ int
 clip_GTK_ENTRYSELECTREGION(ClipMachine * cm)
 {
 	C_widget *centry = _fetch_cw_arg(cm);
-        gint   start_pos = _clip_parni(cm,2);
-        gint     end_pos = _clip_parni(cm,3);
+        gint   start_pos = _clip_parni(cm,2)-1;
+        gint     end_pos = _clip_parni(cm,3)-1;
         CHECKCWID(centry,GTK_IS_ENTRY);
         CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
         if (_clip_parinfo(cm,3)==UNDEF_t) end_pos = -1;

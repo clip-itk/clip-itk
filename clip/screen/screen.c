@@ -1,6 +1,9 @@
 
 /*
    $Log: screen.c,v $
+   Revision 1.107  2005/03/01 11:44:58  clip
+   uri: small fix
+
    Revision 1.106  2005/02/22 08:09:43  clip
    uri: small fix
 
@@ -1381,9 +1384,9 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 #ifndef OS_MINGW
 	if (ioctl(fd, TIOCGWINSZ, &ws) != -1)
 	{
-		if (ws.ws_row > 0)
+		if (!base->Lines && ws.ws_row > 0)
 			base->Lines = ws.ws_row;
-		if (ws.ws_col > 0)
+		if (!base->Columns && ws.ws_col > 0)
 			base->Columns = ws.ws_col;
 	}
 #endif

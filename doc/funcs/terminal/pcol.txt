@@ -1,0 +1,123 @@
+$FUNCNAME$
+  PCOL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return the current column position of the printhead
+$LANG_RU$
+   Возвращает текущую позицию головки печатающего устройства.
+$SYNTAX$
+     PCOL() --> nColumn
+$LANG_RU$
+     PCOL() --> номер колонки
+$RETURNS$
+     PCOL() returns an integer numeric value representing the last printed
+     column position, plus one.  The beginning column position is zero.
+$LANG_RU$
+     PCOL() возвращает целое число, значение которого представляет собой
+     номер последней колонки положения головки печатающего устройства плюс
+     одна позиция. Номер начальной колонки - ноль.
+$DESCRIPTION$
+     PCOL() is a printer function that reports the column position of the
+     printhead after the last print operation.  PCOL() is updated only if
+     either SET DEVICE TO PRINTER or SET PRINTER ON is in effect.  PCOL() is
+     the same as COL() except that it relates to the printer rather than the
+     screen.  PCOL() is updated in the following ways:
+
+       Application startup sets PCOL() to zero
+
+       EJECT resets PCOL() to zero
+
+       A print operation sets PCOL() to the last column print
+	position plus one
+
+       SETPRC() sets PCOL() to the specified column position
+
+     PCOL(), used with PROW(), prints a value relative to the last value
+     printed on the same line.  This makes it easier to align columns when
+     printing a columnar report.  A value is printed in the next column by
+     specifying its position as PCOL() + <column offset>.  Note that PCOL()
+     is effective for alignment only if the column values are fixed-width.
+     To guarantee fixed-width column values, format the output using
+     TRANSFORM(), the PICTURE clause of @...SAY, or any of the PAD()
+     functions.
+$LANG_RU$
+     PCOL() - функция управления печатающим устройством, которая сообщает
+     номер столбца расположения головки печатающего устройства после
+     последней позиции печати. PCOL() эффективна только после установок
+     SET DEVICE TO PRINTER или SET PRINTER ON. Функция PCOL() работает
+     аналогично функции COL(), только с принтером, а не с экраном.
+
+     Функция PCOL() изменяет свое значение в следующих случаях:
+
+      В начале программы PCOL() устанавливается на ноль.
+
+      Команда EJECT устанавливает PCOL() на ноль.
+
+      После операции печати значение PCOL() соответствует номеру колонки
+       последней отпечатанной позиции плюс один.
+
+      Функция SETPRC() присваивает PCOL() заданное значение.
+
+     PCOL() используется в сочетании с PROW() для печати данных
+     относительно последнего напечатанного значения на той же строке.
+     Это значительно облегчает процесс выравнивания колонок при печати
+     отчетов в виде таблиц. Значение печатается в следующей колонке,
+     номер которой определяется как (PCOL() - <смещение>). Заметим, что
+     PCOL() эффективна только для выравнивания колонок при печати данных
+     фиксированной длины.  Для того, чтобы гарантировать фиксированную
+     ширину колонок, формируйте вывод, используя функцию TRANSFORM(),
+     команду @...SAY...PICTURE или любую из PAD функций.
+$EXAMPLES$
+       In this example, PCOL() creates a simple report that prints a
+	listing of Customer names, addresses, and phone numbers:
+
+	LOCAL nLine := 99, nPage := 1
+	USE Customer INDEX CustName NEW
+	SET DEVICE TO PRINTER
+	DO WHILE !EOF()
+	   IF nLine > 55
+	      PageTop(nPage)
+	      nLine := 1
+	      nPage++
+	   ENDIF
+	   @ nLine, 10 SAY CustName
+	   @ nLine, PCOL() + 2;
+	      SAY RTRIM(City) + ", " + RTRIM(State) + ZipCode;
+		    PICTURE REPLICATE("X", 35)
+	   @ nLine, PCOL() + 2;
+	      SAY Phone;
+		    PICTURE "@R (999) 999-9999"
+	   nLine++
+	   SKIP
+	ENDDO
+	SET DEVICE TO SCREEN
+	CLOSE
+$LANG_RU$
+      Этот пример использует PCOL() для создания простого отчета, который
+       печатает список имен, адресов и телефонных номеров:
+
+       LOCAL nLine := 1
+       USE Customer INDEX CustName NEW
+       SET DEVICE TO PRINTER
+       DO WHILE !EOF()
+	  IF nLine > 55
+	     PageTop(nPage)
+	     nLine := 1
+	     nPage++
+	  ENDIF
+	  @ nLine, 10 SAY CustName
+	  @ nLine, PCOL() + 2
+	  SAY RTRIM(City) + "," + RTRIM(State) + ZipCode;
+	  PICTURE REPLICATE("X", 35)
+	  @ nLine, PCOL() + 2;
+	  SAY Phone;
+	  PICTURE "@R (999) 999-9999"
+	  nLine++
+	  SKIP
+       ENDDO
+       SET DEVICE TO SCREEN
+       CLOSE
+$SEEALSO$
+  PAD(),PROW(),QOUT(),COL(),ROW(),SETPRC()
+$END$

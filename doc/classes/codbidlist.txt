@@ -1,0 +1,595 @@
+$CLASSNAME$
+	CODBIDLIST
+$SUMMARY$
+	CODB class are destined to select objects by assertion and represenation
+	its in table-navigationy mode.
+$LANG_RU$
+	CODB класс предназначен для отбора объектов удовлетворяющих условию и
+	представления их в таблично-навигационном виде.
+$ABOUT$
+	CODB class are destined to select objects by assertion and represenation
+	its in table-navigationy mode.
+$LANG_RU$
+	CODB класс предназначен для отбора объектов удовлетворяющих условию и
+	представления их в таблично-навигационном виде.
+$SYNTAX$
+	CODB_IdList(<oDbm>,<sMetaName>,<nIndex>,<sName>,<sWhereExpr>,<nCount>) --> CODBIDLIST object
+$ATTRIBUTES$
+	<ClassName> 	CODBIDLIST
+	<Error>		String, the error description what araised within running last operation.
+$LANG_RU$
+	<ClassName> 	CODBIDLIST
+	<Error>		String, описание ошибки, возникшей при выполнении последней операции.
+
+$METHODNAME$
+	CODB_IdList()
+$SUMMARY$
+	Constructor CODBIDLIST class.
+$LANG_RU$
+	Конструктор класса CODBIDLIST.
+$SYNTAX$
+	CODB_IdList(<oDbm>,<sMetaName>,<nIndex>,<sName>,<sWhereExpr>,<nCount>) --> CODBIDLIST object
+$ARGUMENTS$
+	<oDbm>		Object, object of class CODBDICTIONARY or CODBDEPOSITORY
+	<sMetaName>	String, the metaclass name or identifier of keeping class.
+	<nIndex>	Numeric, the index number
+	<sName>		String, the value of attribute <Name>; list kept objects whouse
+			propoerties <Name>  is equal <sName>
+	<sWhereExpr>	String, the searching condition
+	<nCount>	Numeric, the maximize count objects in list
+$LANG_RU$
+	<oDbm>		Object, объект класса CODBDICTIONARY или CODBDEPOSITORY
+	<sMetaName>	String, имя метакласса или идентификатор хранимого объекта
+	<nIndex>	Numeric, порядковый номер индекса
+	<sName>		String, значение атрибута <Name>; список хранит только те объекты,
+			свойство <Name> которых равно <sName>
+	<sWhereExpr>	String, выражение условия
+	<nCount>	Numeric, максимальное количество объектов в списке
+$RETURNS$
+	Method returns new CODBIDLIST object.
+$LANG_RU$
+	Метод возвращает новый объект CODBIDLIST.
+$DESCRIPTION$
+	CODB_IdList() inits new CODBIDLIST object and returns it.
+$LANG_RU$
+	CODB_IdList() инициализирует новый объект CODBIDLIST возвращает его.
+$ENDMETHOD$
+
+$METHODNAME$
+	Dictionary()
+$SUMMARY$
+	Returns object CDOBDICTIONARY, what <::sMetaName> belong.
+$LANG_RU$
+	Возвращает объект CODBDITIONARY, которому принадлежит <::sMetaName>
+$SYNTAX$
+	Dictionary() 	--> <oDict>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns object CDOBDICTIONARY, what <::sMetaName> belong.
+$LANG_RU$
+	Возвращает объект CODBDITIONARY, которому принадлежит <::sMetaName>
+$DESCRIPTION$
+	Dictionary() returns <oDict> object <link linkend="classCODBDICTIONARY">CDOBDICTIONARY</link>, what <::sMetaName> belong.
+$LANG_RU$
+	Dictionary() возвращает <oDict> объект <link linkend="classCODBDICTIONARY">CODBDITIONARY</link>, которому принадлежит <::sMetaName>
+$ENDMETHOD$
+
+$METHODNAME$
+	Depository()
+$SUMMARY$
+	Returns object CDOBDEPOSITORY, what <::sMetaName> belong.
+$LANG_RU$
+	Возвращает объект CODBDEPOSITORY, которому принадлежит <::sMetaName>
+$SYNTAX$
+	Depository() 	--> <oDep>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns object CDOBDEPOSITORY, what <::sMetaName> belong.
+$LANG_RU$
+	Возвращает объект CODBDITIONARY, которому принадлежит <::sMetaName>
+$DESCRIPTION$
+	Depository() returns <oDep> object <link linkend="classCODBDEPOSITORY">CDOBDEPOSITORY</link>, what <::sMetaName> belong.
+$LANG_RU$
+	Depository() возвращает <oDep> объект <link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, которому принадлежит <::sMetaName>
+$ENDMETHOD$
+
+$METHODNAME$
+	Close()
+$SUMMARY$
+	Cancel job.
+$LANG_RU$
+	Закончить работу.
+$SYNTAX$
+	Close() 	--> TRUE
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	Close() closes dictionary or depository and canceles job.
+$LANG_RU$
+	Close() закрывает словарь или депозитарий и заканчивает работу.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GoTop()
+$SUMMARY$
+	Goes to first position.
+$LANG_RU$
+	Перейти на начало.
+$SYNTAX$
+	GoTop() 	--> FALSE
+	GotoTop() 	--> FALSE
+$ARGUMENTS$
+
+$RETURNS$
+	Returns FALSE.
+$LANG_RU$
+	Возвращает FALSE.
+$DESCRIPTION$
+	GoTop() and GotoTop() goes to first position.
+$LANG_RU$
+	GoTop() и GotoTop() перемещают указатель на первую позицию списка.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GoBottom()
+$SUMMARY$
+	Goes to last position.
+$LANG_RU$
+	Перейти вм конец.
+$SYNTAX$
+	GoBottom() 	--> FALSE
+	GotoBottom() 	--> FALSE
+$ARGUMENTS$
+
+$RETURNS$
+	Returns FALSE.
+$LANG_RU$
+	Возвращает FALSE.
+$DESCRIPTION$
+	GoBottom() and GotoBottom() goes to last position.
+$LANG_RU$
+	GoBottom() и GotoBottom() перемещают указатель на последнюю позицию списка.
+$ENDMETHOD$
+
+$METHODNAME$
+	Skip()
+$SUMMARY$
+	Move relative to the current position.
+$LANG_RU$
+	Переместить относительно текущей позиции.
+$SYNTAX$
+	Skip([<nSkip>]) 	--> NIL
+$ARGUMENTS$
+	<nSkip>		Numeric, the numer of position move relative to the current position.
+			If <nSkip> > 0 skip to forward, else backward.
+$LANG_RU$
+	<nSkip>		Numeric, количество позиций, на которое перемещается указатель.
+			Если <nSkip> > 0 перемещение вперед, иначе назад.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Skip() moves either forward or backward relative to the current position.
+
+	If <nSkip> not specified, it is 1.
+$LANG_RU$
+	Skip() перемещает вперед или назад указатель на <nSkip> позиций относительно
+	текущей.
+
+	Если <nSkip> не определено, <nSkip> == 1.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Goto()
+$SUMMARY$
+	Goes to the new position.
+$LANG_RU$
+	Перейти на новую позицию.
+$SYNTAX$
+	Goto(<nPos>]) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<nPos>		Numeric, the new position
+$LANG_RU$
+	<nPos>		Numeric, новая позиция
+$RETURNS$
+	Returns FALSE if goes unfortunately.
+$LANG_RU$
+	Возвращает FALSE, если переход  не состоялся.
+$DESCRIPTION$
+	Goto() goes to the new position <nPos>.
+$LANG_RU$
+	Goto() перемещает указатель на новую позицию <nPos>.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Recno()
+$SUMMARY$
+	Returns current position.
+$LANG_RU$
+	Вернуть текущую позицию.
+$SYNTAX$
+	Recno() 	--> <nPos>
+$ARGUMENTS$
+$RETURNS$
+	Returns <nPos> the current position.
+$LANG_RU$
+	Возвращает <nPos> текущую позицию.
+$DESCRIPTION$
+	Recno() returns <nPos> the current position.
+$LANG_RU$
+	Recno() возвращает <nPos> текущую позицию.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Bof()
+$SUMMARY$
+	Check BOF.
+$LANG_RU$
+	Проверить на начало файла.
+$SYNTAX$
+	Bof() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if arrive at bottom of file.
+$LANG_RU$
+	Возвращает TRUE если достигнуто начало файла.
+$DESCRIPTION$
+	Bof() returns TRUE if arrive at top of file.
+$LANG_RU$
+	Bof() возвращает TRUE если достигнуто начало файла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Eof()
+$SUMMARY$
+	Check EOF.
+$LANG_RU$
+	Проверить на конец файла.
+$SYNTAX$
+	Eof() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if arrive at bottom of file.
+$LANG_RU$
+	Возвращает TRUE если достигнут конец файла.
+$DESCRIPTION$
+	Eof() returns TRUE if arrive at bottom of file.
+$LANG_RU$
+	Eof() возвращает TRUE если достигнут конец файла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Locate()
+$SUMMARY$
+	Locate first object, what equal some condition.
+$LANG_RU$
+	Найти первый объект, удовлетворяющий выражению.
+$SYNTAX$
+	Locate(Expr) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<Expr>	String or block code - the locate condition.
+$LANG_RU$
+	<Expr>	String or block code - условия поиска
+$RETURNS$
+	Returns TRUE if locate.
+$LANG_RU$
+	Возвращает TRUE если объект найден.
+$DESCRIPTION$
+	Locate() returns TRUE if object, what equal condition <Expr> is locate.
+$LANG_RU$
+	Locate() возвращает TRUE если объект, удовлетворяющий условию <Expr> найден.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	LocateRest()
+$SUMMARY$
+	Restore locate with old condition.
+$LANG_RU$
+	Продолжить поиск с прежними условиями.
+$SYNTAX$
+	LocateRest() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if locate.
+$LANG_RU$
+	Возвращает TRUE если объект найден.
+$DESCRIPTION$
+	LocateRest() returns TRUE if object, what equal previouse condition is locate.
+$LANG_RU$
+	LocateRest() возвращает TRUE если объект, удовлетворяющий предыдущему условию найден.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	SetWhere()
+$SUMMARY$
+	Set new condition to object selection.
+$LANG_RU$
+	Задать новые условия для выбора объектов.
+$SYNTAX$
+	SetWhere(<sWhereExpr>) 	--> NIL
+$ARGUMENTS$
+	<sWhereExpr>  String, condition of select.
+$LANG_RU$
+	<sWhereExpr>	String, условия отбора
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	SetWhere() sets new condition <sWhereExpr> to object selection.
+$LANG_RU$
+	SetWhere() задает новые условия <sWhereExpr> отбора объектов.
+$ENDMETHOD$
+
+$METHODNAME$
+	GetValue()
+$SUMMARY$
+	Get values of attribute.
+$LANG_RU$
+	Получить значение атрибута.
+$SYNTAX$
+	GetValue([<sAttrName>]) 	--> <vData>
+$ARGUMENTS$
+	<sAttrName>  String, the attribute name
+$LANG_RU$
+	<sAttrName>	String, название атрибута
+$RETURNS$
+	Returns attribute value <vData>.
+$LANG_RU$
+	Возвращает значение атрибута <vData>.
+$DESCRIPTION$
+	GetValue() returns attribute value <vData> or if <sAttrName> not
+	specified returns whole object.
+$LANG_RU$
+	GetValue() возвращает значение атрибута <vData> или, если атрибут <sAttrName>
+	не задан - весь объект.
+$ENDMETHOD$
+
+$METHODNAME$
+	GetExpr()
+$SUMMARY$
+	Compute expression for current object.
+$LANG_RU$
+	Вычислить выражение для текущего объекта.
+$SYNTAX$
+	GetExpr(<sExpr>) 	--> <vData>
+$ARGUMENTS$
+	<sExpr>  String, the expression for computing.
+$LANG_RU$
+	<sExpr>	String, выражение для вычисления.
+$RETURNS$
+	Returns the result of computing <sExpr>.
+$LANG_RU$
+	Возвращает результат вычисления выражения <sExpr>.
+$DESCRIPTION$
+	GetExpr() compute expression for current object and returns result <vData>.
+$LANG_RU$
+	GetExpr() вычисляет выражение <sExpr> для текущего объекта и возвращает
+	не задан - весь объект.
+$ENDMETHOD$
+
+$METHODNAME$
+	GetBlank()
+$SUMMARY$
+	Returns object of class <sMetaName>
+$LANG_RU$
+	Вернуть объект класса <sMetaName>.
+$SYNTAX$
+	GetBlank() 	--> <oData>
+$ARGUMENTS$
+$RETURNS$
+	Returns <oData> - the object of class <sMetaName>.
+$LANG_RU$
+	Возвращает <oData> - объект класса <sMetaName>.
+$DESCRIPTION$
+	GetBlank() returns <oData> - the object of class <sMetaName>.
+	All atributes <oData> filled values by default.
+
+	Class <sMetaName> - that class what was passed to constructor of CODBIDLIST.
+$LANG_RU$
+	GetBlank() возвращает <oData> - объект класса <sMetaName>. Все атрибуты
+	объекта заполняются значениями по умолчанию.
+
+	Класс <sMetaName> - это класс, который был передан в конструктор CODBIDLIST.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetIndex()
+$SUMMARY$
+	Set index.
+$LANG_RU$
+	Установить индекс.
+$SYNTAX$
+	SetIndex(<vIndex>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<vIndex>	The number or name of index.
+$LANG_RU$
+	<vIndex>	Номер или название индекса.
+$RETURNS$
+	Returns TRUE if index setted.
+$LANG_RU$
+	Возвращает TRUE если индекс устаовлен.
+$DESCRIPTION$
+	SetIndex() returns TRUE if index with number <vIndex> or with
+	name <vIndex> setted. In other returns FALSE.
+$LANG_RU$
+	SetIndex() возвращает TRUE если индекс с номером <vIndex> или названием
+	<vIndex> установлен. Иначе - возвращает FALSE.
+$ENDMETHOD$
+
+$METHODNAME$
+	Delete()
+$SUMMARY$
+	Delete current object.
+$LANG_RU$
+	Удалить текущий объект.
+$SYNTAX$
+	Delete() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if current object deleted.
+$LANG_RU$
+	Возвращает TRUE если текущий объект удален.
+$DESCRIPTION$
+	Delete() returns TRUE if current object deleted from a dictionary or
+	from a depository. In other returns FALSE.
+$LANG_RU$
+	Delete() возвращает TRUE если текущий объект удален из словаря или
+	депозитария. Иначе - возвращает FALSE.
+$ENDMETHOD$
+
+$METHODNAME$
+	Append()
+$SUMMARY$
+	Append new object.
+$LANG_RU$
+	Добавить новый объект.
+$SYNTAX$
+	Append(<oData>) 	--> <sDataID>
+$ARGUMENTS$
+	<oData> 	Object, new object to keeping
+$LANG_RU$
+	<oData> 	Object, новый объект для хранения.
+$RETURNS$
+	Returns <sDataID> - identifier registered object.
+$LANG_RU$
+	Возвращает <sDataID> - идентификатор добавленного объекта.
+$DESCRIPTION$
+	Append() appends new object <oData> to storehouse as object of
+	class <sMetaName> and returns objects identifier <sDataID>.
+
+	Class <sMetaName> - that class what was passed to constructor of CODBIDLIST.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Append() добавляет новый объект <oData> в хранилище как объект класса
+	<sMetaName> и возвращает идентификатор зарегистрированного
+	объекта <sDataID>.
+
+	Класс <sMetaName> - это класс, который был передан в конструктор CODBIDLIST.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Update()
+$SUMMARY$
+	Update object.
+$LANG_RU$
+	Обновить объект.
+$SYNTAX$
+	Update(<oData>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<oData> 	Object, object to updating
+$LANG_RU$
+	<oData> 	Object, объект для обновления
+$RETURNS$
+	Returns TRUE if object updated.
+$LANG_RU$
+	Возвращает TRUE если объект обновлен.
+$DESCRIPTION$
+	Update() updates object <oData> into storehouse. If dictionary or depository have not
+	object with identifier <oData:ID>, Update() returns FALSE.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Update() обновляет объект <oData> в хранилище. Если словарь или депозитарий не содержит
+	объект с идентификатором <oData:ID>, Update() возвращает FALSE.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Refresh()
+$SUMMARY$
+	Refresh object list.
+$LANG_RU$
+	Перечитать список объектов.
+$SYNTAX$
+	Refresh() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Refresh() updates object list. Every object in this list is content
+	strart conditions <sName> and <sWhereExpr>.
+
+	<sName> and <sWhereExpr> - that parameters what was passed to constructor of CODBIDLIST.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Refresh() обновляет список объектов. Каждый элемент списка удовлетворяет
+	начальным условиям <sName> и <sWhereExpr>.
+
+	<sName> и <sWhereExpr> - это параметры, которые были переданы в конструктор CODBIDLIST.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	IdExist()
+$SUMMARY$
+	Check object a existence storehouse.
+$LANG_RU$
+	Проверить объект на существование в хранилище.
+$SYNTAX$
+	IdExist(<sDataID>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<sDataID>	String, object identifier
+$LANG_RU$
+	<sDataID>	String, идентификатор объекта.
+$RETURNS$
+	Returns TRUE if object exist into storehouse.
+$LANG_RU$
+	Возвращает TRUE если объект существует в хранилище.
+$DESCRIPTION$
+	IdExist() returns TRUE if object with identifier <sDataID> exist into dictionary
+	or depository.
+$LANG_RU$
+	IdExist() возвращает TRUE если объект с идентификатором <sDataID> зарегистрирован в словаре
+	или депозитарии.
+$ENDMETHOD$
+
+
+$EXAMPLES$
+oDep := coDepository():new("MY00101")
+oDict := oDep:dictionary()
+currency := oDict:classBodyByName("currency")
+
+* select all objects of currency class whose attribute <CODE> begin with "U"
+idList:= codb_idList(currency:id,,,'code="U"')
+while !idList:eof()
+	obj := idList:getValue()
+	? obj:code, obj:name
+	idList:skip()
+end
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+	CODBDICTIONARY, CODBDEPOSITORY
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+

@@ -1,0 +1,67 @@
+$FUNCNAME$
+	TCPACCEPT()
+$CATEGORY$
+	TCP,FILE/IO
+$SUMMARY$
+	Accept a connection on a socket.
+$LANG_RU$
+	Accept a connection on a socket.
+$SYNTAX$
+	TCPACCEPT(<nSock>[, <nTimeout>])	--> <nNewSocket>
+$ARGUMENTS$
+	<nSock>		Numeric, is the source socket.
+	<nTimeout>	Numeric, is the timeout.
+$LANG_RU$
+	<nSock>		Numeric, исходный сокет.
+	<nTimeout>	Numeric, время ожидания.
+$RETURNS$
+	Returns numeric value <nNewSocket> handler of new socket or -1 if error occurced.
+$LANG_RU$
+	Возвращает числовое значение <nNewSocket> дескриптор нового сокета или -1,
+	если произошла ошибка.
+$DESCRIPTION$
+	TCPACCEPT() extracts the first connection  request  on  the  queue  of
+	pending  connections,  creates a new connected socket with
+	mostly the same properties as <nSock>, and allocates a new  file
+	descriptor <nNewSocket> for  the socket, which is returned.
+
+	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
+$LANG_RU$
+	TCPACCEPT() выбирает первый запрос на соединение из очереди ожидающих,
+	создает новый сокет со свойствами исходного <nSock>, и возвращает
+	новый дескриптор файла <nNewSocket>.
+
+	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+$EXAMPLES$
+
+#define DEFPORT	3000
+
+local nH, nPort, nCon
+nPort := DEFPORT
+
+if (nH := TCPLISTEN( nPort, 10 )) == -1
+	? "tcpsrv: Error listen on port ", nPort
+	?
+	return( 1 )
+endif
+
+//? "wait client connection"
+do while( .t. )
+	? "wait client connection",time()
+	if (nCon := TCPACCEPT( nH, 5000 )) != -1
+		? "start",nH,nCon
+		start( {|nC| /* reading data from connection */ TCPREAD(nC....)}, nCon )
+	endif
+	sleep(0.01)
+enddo
+TCPCLOSE( nH )
+
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+$END$
+

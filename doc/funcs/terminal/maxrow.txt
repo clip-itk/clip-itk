@@ -1,0 +1,44 @@
+$FUNCNAME$
+  MAXROW()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Determine the maximum visible screen row
+$LANG_RU$
+   Определяет наибольший номер видимой строки на экране.
+$SYNTAX$
+     MAXROW() --> nRow
+$LANG_RU$
+     MAXROW() --> номер строки
+$RETURNS$
+     MAXROW() returns the row number of the bottommost visible row for
+     display purposes.
+$LANG_RU$
+     MAXROW() возвращает номер самой нижней строки экрана
+$DESCRIPTION$
+     MAXROW() is a screen function that determines the maximum visible row of
+     the screen.  Row and column numbers start at zero in xClipper.
+
+     If you use a C or other extended function to set the video mode, use the
+     SETMODE() function so your xClipper application returns the correct
+     value for MAXCOL().
+$LANG_RU$
+     MAXROW() является функцией работы с экраном, используемой для
+     определения максимального номера видимой строки на экране. Номера
+     строк и колонок в xClipper начинаются с нуля.
+$EXAMPLES$
+       This user-defined function, ScreenSize(), uses MAXROW() and
+	MAXCOL() to return an array containing the current screen size:
+
+	FUNCTION ScreenSize
+	   RETURN { MAXROW(), MAXCOL() }
+$LANG_RU$
+      В следующем примере функция пользователя ScreenSize() использует
+       MAXROW() и MAXCOL() для того, чтобы возвратить массив, содержащий
+       текущие размеры экрана:
+
+       FUNCTION ScreenSize
+	  RETURN { MAXROW(), MAXCOL() }
+$SEEALSO$
+  COL(),MAXCOL(),ROW()
+$END$

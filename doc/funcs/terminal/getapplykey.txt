@@ -1,0 +1,43 @@
+$FUNCNAME$
+  GETAPPLYKEY()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Apply a key to a Get object from within a  reader
+$SYNTAX$
+     GETAPPLYKEY(<oGet>, <nKey>, <GetList>, <oMenu>,
+	<nMsgRow>, <nMsgLeft>, <nMsgRight>, <cMsgColor>)
+	--> NIL
+$ARGUMENTS$
+     <oGet> is a reference to a Get object.
+     <nKey> is the INKEY() value to apply to <oGet>.
+     <GetList> is a reference to the current list of Get objects.
+     <oMenu> is a reference to any top bar menu.
+     <nMsgRow> is a numeric value representing the row of the message
+     bar.
+     <nMsgLeft> is a numeric value representing the left column of the
+     message bar.
+     <nMsgRight> is a numeric value representing the right column of the
+     message bar.
+     <cMsgColor> is a character string representing the colors to be used
+     for the message bar text.
+$RETURNS$
+     GETAPPLYKEY() always returns NIL.
+$DESCRIPTION$
+     GETAPPLYKEY() is a Get system function that applies an INKEY() value to
+     a Get object.  Keys are applied in the default way.  That is, cursor
+     movement keys change the cursor position within the GET, data keys are
+     entered into the GET, etc.
+
+     If the key supplied to GETAPPLYKEY() is a SET KEY, GETAPPLYKEY() will
+     execute the set key and return; the key is not applied to the Get
+     object.
+$EXAMPLES$
+     This example will apply keystrokes until Exit:
+	WHILE (oGet:exitState == GE_NOEXIT)
+	   GETAPPLYKEY (oGet, INKEY(0), GetList, oMenu, nMsgRow,;
+	nMsgLeft, nMsgRight, nMsgColor)
+	ENDDO
+$SEEALSO$
+  GETDOSETKEY(),GETPOSTVALIDATE(),GETPREVALIDATE()
+$END$

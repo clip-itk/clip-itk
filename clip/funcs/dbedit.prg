@@ -161,11 +161,8 @@ STATIC FUNCTION callUserFunc( browse, user_func, nKey )
 	m->__de_append_mode := .t.
 	 goto bottom
 	 browse:Down()
-	 browse:forceStable()
    else
 	m->__de_append_mode := .f.
-	browse:refreshAll()
-	browse:forceStable()
    endif
 #else
    if ret == DE_APPEND
@@ -173,8 +170,10 @@ STATIC FUNCTION callUserFunc( browse, user_func, nKey )
    endif
 #endif
    SELECT(nTmp)
-   browse:configure()
-   browse:forceStable()
+   if used()
+	browse:configure()
+	browse:forceStable()
+   endif
    if ret != 0
 	ret := -1
    endif

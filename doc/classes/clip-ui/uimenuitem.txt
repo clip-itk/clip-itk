@@ -22,7 +22,7 @@ $SUMMARY$
 $LANG_RU$
 	Установить пиктограмму пункта меню.
 $SYNTAX$
-	setAction(<icon>)
+	setIcon(<icon>)
 $ARGUMENTS$
 	<icon>		- Object of class <link linkend="classuiimage">UIImage</link>. Icon of menu item.
 $LANG_RU$

@@ -1,0 +1,80 @@
+$FUNCNAME$
+  COL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return the screen cursor column position
+$LANG_RU$
+   Возвращает номер колонки позиции курсора на экране.
+$SYNTAX$
+     COL() --> nCol
+$LANG_RU$
+     COL() --> номер колонки
+$RETURNS$
+     COL() returns an integer numeric value.  The range of the return value
+     is zero to MAXCOL().
+$LANG_RU$
+     COL() возвращает целое числовое значение, лежащее в интервале
+     от 0 до MAXCOL().
+$DESCRIPTION$
+     COL() is a screen function that returns the current column position of
+     the cursor.  The value of COL() changes whenever the cursor position
+     changes on the screen.  Both console and full-screen commands can change
+     the cursor position.  In addition, COL() is automatically set to zero
+     whenever a CLEAR, CLEAR SCREEN, or CLS command is executed.
+
+     Use COL() to position the cursor to a column relative to the current
+     column.  It is generally used in combination with ROW() and all
+     variations of the @ command.  In particular, use COL() and ROW() to
+     create screen position-independent procedures or functions that pass the
+     upper-left row and column as parameters.
+
+     If DEVICE is SET TO PRINTER, all the output of @...SAY commands is
+     directed to the printer and PROW() and PCOL() are updated instead of
+     ROW() and COL().  Use these functions when you need to determine the
+     position of the printhead.
+$LANG_RU$
+     COL() - экранная функция, которая возвращает текущий номер колонки
+     позиции курсора на экране. Значение, возвращаемое COL(), изменяется,
+     как только изменяется позиция курсора. Все команды работы с экраном
+     могут изменять позицию курсора. В дополнение к сказанному, команды
+     CLEAR, CLEAR SCREEN или CLS автоматически устанавливают значение
+     COL() в 0.
+
+     Функцию COL() можно использовать для установки новой позиции курсора
+     относительно его текущей позиции. COL() чаще всего используется в
+     сочетании с функцией ROW() и всех модификациях команды @. Можно
+     использовать функции COL() и ROW() для создания процедур или функций
+     формирования экранных изображений, не связанных конкретным их
+     размещением на экране. Таким процедурам или функциям обычно в
+     качестве параметров передаются координаты левого верхнего угла
+     изображения.
+
+     Если в качестве устройства выдачи информации установлен принтер, все
+     команды @...SAY изменяют значение функций PCOL() и PROW(), а функции
+     COL() и ROW() своих значений не меняют. Если необходимо получить
+     координаты при выдаче информации на принтер, пользуйтесь функциями
+     PCOL() и PROW().
+$EXAMPLES$
+       This example displays a Customer name beginning at column 10.
+	The customer's account status is then displayed to the right of the
+	last character of the customer name using COL():
+
+     USE Sales NEW
+
+	CLS
+	@ 1, 10 SAY "Customer Name: " + TRIM(Customer)
+	@ ROW(), COL() + 1 SAY "Account status: " + Status
+
+
+$LANG_RU$
+      В этом примере имя получателя выдается начиная с 10-й колонки.
+       Состояние счета получателя затем выдается за последним символом
+       имени получателя, при помощи функции COL():
+
+       USE Sales NEW
+       @ 1, 10 SAY "Имя получателя :" + TRIM(Customer)
+       @ ROW(), COL() + 1 SAY "Состояние счета :" + Status
+$SEEALSO$
+  MAXCOL(),PCOL(),PROW(),ROW(),QOUT()
+$END$

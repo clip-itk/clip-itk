@@ -1,0 +1,70 @@
+$FUNCNAME$
+  ISDIGIT()
+$CATEGORY$
+  STRING,NUMERIC
+$SUMMARY$
+   Determine if the leftmost character in a character string is a digit
+$LANG_RU$
+   Определяет, является ли первый символ в строке цифрой.
+$SYNTAX$
+     ISDIGIT(<cString>) --> lBoolean
+$LANG_RU$
+     ISDIGIT(<символьная строка>) --> признак цифры
+$ARGUMENTS$
+     <cString> is the character string to be examined.
+$LANG_RU$
+     <символьная строка> - символьная строка.
+$RETURNS$
+     ISDIGIT() returns true (.T.) if the first character of the character
+     string is a digit between zero and nine; otherwise, it returns false
+     (.F.).
+$LANG_RU$
+     ISDIGIT() возвращает значение "истина" (.T.), если первый символ в
+     строке является цифрой от 0 до 9, в противном случае - значение
+     "ложь" (.F.).
+$DESCRIPTION$
+
+     ISDIGIT() is a character function that determines whether the first
+     character in a string is a numeric digit between zero and nine.  If any
+     other character is the first character of the <cString>, ISDIGIT()
+     returns false (.F.).
+
+     ISDIGIT() is useful where you need to know if the current character
+     string is a number before converting it to a numeric value with the
+     VAL() function.
+
+
+$LANG_RU$
+
+     ISDIGIT() является функцией обработки символьных строк, которая
+     определяет, является ли первый символ аргумента <символьная строка>
+     цифрой от 0 до 9. Если первый символ является любым другим символом,
+     то функция возвратит значение "ложь" (.F.).
+
+     ISDIGIT() используется тогда, когда необходимо определить, является
+     ли текущая символьная строка числом перед тем, как превратить ее в
+     числовую величину функцией VAL().
+
+
+$EXAMPLES$
+
+       These examples demonstrate various results of ISDIGIT():
+
+	? ISDIGIT("AbcDe")         // Result: .F.
+	? ISDIGIT("1abcd")         // Result: .T.
+	? ISDIGIT(".12345")         // Result: .F.
+
+
+$LANG_RU$
+
+      Следующие примеры демонстрируют различные результаты функции
+       ISDIGIT():
+
+       ? ISDIGIT("AbcDe")        // Результат : .F.
+       ? ISDIGIT("1abcd")        // Результат : .T.
+       ? ISDIGIT(".12345")       // Результат : .F.
+
+
+$SEEALSO$
+  ISALPHA(),ISLOWER(),ISUPPER(),LOWER(),UPPER()
+$END$

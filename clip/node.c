@@ -1,6 +1,9 @@
 
  /*
  * $Log: node.c,v $
+ * Revision 1.142  2005/02/25 06:29:02  clip
+ * uri: small fix for "12->f := val"
+ *
  * Revision 1.141  2005/02/21 11:07:24  clip
  * uri: small fix about "12->fieldname := value"
  *
@@ -4285,7 +4288,7 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 						{
 						putByte_StrBuf(out, CLIP_ASSIGN_PFIELD);
 						if (np->area)
-							putLong_StrBuf(out, hashstr(np->area));
+							putLong_StrBuf(out, n_hashstr(np->area));
 						else
 							putLong_StrBuf(out, -1);
 						}
@@ -4300,7 +4303,7 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 						{
 						putByte_StrBuf(out, CLIP_IASSIGN_PFIELD);
 						if (np->area)
-							putLong_StrBuf(out, hashstr(np->area));
+							putLong_StrBuf(out, n_hashstr(np->area));
 						else
 							putLong_StrBuf(out, -1);
 						}
@@ -4313,7 +4316,7 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 						putByte_StrBuf(out, CLIP_ASSIGN_FIELD);
 						putLong_StrBuf(out, hashstr(np->name));
 						if (np->area)
-							putLong_StrBuf(out, hashstr(np->area));
+							putLong_StrBuf(out, n_hashstr(np->area));
 						else
 							putLong_StrBuf(out, -1);
 					}
@@ -4322,7 +4325,7 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 						putByte_StrBuf(out, CLIP_IASSIGN_FIELD);
 						putLong_StrBuf(out, hashstr(np->name));
 						if (np->area)
-							putLong_StrBuf(out, hashstr(np->area));
+							putLong_StrBuf(out, n_hashstr(np->area));
 						else
 							putLong_StrBuf(out, -1);
 					}

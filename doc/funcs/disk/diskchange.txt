@@ -1,0 +1,38 @@
+$FUNCNAME$
+  DISKCHANGE()
+$CATEGORY$
+  DISKUTILS
+$SUMMARY$
+   Change the current DOS disk drive
+$SYNTAX$
+     DISKCHANGE(<cDrive>) --> lSuccess
+$ARGUMENTS$
+     <cDrive> specifies the letter of the disk drive to change to.
+$RETURNS$
+     DISKCHANGE() returns true (.T.) if successful; otherwise, it returns
+     false (.F.).
+$EXAMPLES$
+       This example uses DISKCHANGE() to change to drive "D":
+
+	IF DISKCHANGE("D:")
+	   ? "Successfully changed"
+	ELSE
+	   ? "Not changed"
+	ENDIF
+
+
+       This example builds a string that contains all currently
+	available drives on your system:
+
+	FUNCTION AllDrives()
+	   LOCAL wI, cDrives := ""
+
+	   FOR wI := 1 TO 26
+	      IF DISKCHANGE( Chr(wI + 64) )
+		 cDrives := cDrives + Chr(wI + 64)
+	      ENDIF
+	   NEXT
+	RETURN cDrives
+$SEEALSO$
+  DIRCHANGE(),DISKNAME()
+$END$

@@ -1,0 +1,298 @@
+<chapter id="prb">
+<title>_(Possible problems and uncompatibilities)_</title>
+
+<para>_(
+One of the most important targets of CLIP is Clipper compatibility.
+But when the compatibility gets in contradiction with the functionality,
+the latter is chosen as more important. This is the cause of the part of
+uncompatibilities. Cause of another part of uncompatibilities is
+distinction of the Unix platform (e.g. different file systems
+and terminal capabilities).
+)_</para>
+
+<itemizedlist>
+
+<listitem><para>_(
+GCC 3.2.x have bugs, CLIP does not support it.
+)_</para></listitem>
+
+<listitem><para>_(
+As a rule, in Unix user should press <emphasis>ESC</emphasis> key twice.
+CLIP makes possible to avoid that inconvenience by emulating second
+<emphasis>ESC</emphasis> in some interval of keyboard quietness.
+The length of that interval is controlled by
+<command>SET(_SET_ESC_DELAY,<![CDATA[<nMilliseconds>]]>)</command>.
+See also about <link linkend="devkeyboard">SCANMODE</link>.
+)_</para></listitem>
+
+<listitem><para>_(
+<command>SETBLINK()</command> function does not work with CLIP under Unix
+(it always returns .T.). When you use <emphasis>BLINK</emphasis>
+attribute ('*' in clipper color definition) some terminals display
+blinking text others highlight background. Linux console in VGA text mode
+blinks, in FB mode highlights background. If you are using text mode console
+you can use SVGATextMode program to switch VGA adapter in BG-HI mode
+(look at option "16color" in <emphasis>/etc/TextConfig</emphasis>).
+If you are using other terminal you have to find a way how to switch them
+into proper mode.
+)_</para><para>_(
+Because it cannot be controlled from server side maybe you will find
+interesting this function:
+)_</para><programlisting>
+blinkattr( [lEnable] ) -> lPrevState
+</programlisting><para>_(
+which allow to block sending <emphasis>BLINK</emphasis> attribute
+from a CLIP application to the terminal. So if you won't be able to
+set terminal in BG-HI mode you can disable using
+<emphasis>BLINK</emphasis> attribute (<command>blinkattr(.f.)</command>)
+and the text won't blink (but their background won't be highlighted too).
+<emphasis>Thanks for the info to Przemyslaw Czerpak.</emphasis>
+)_</para></listitem>
+
+<listitem><para>_(
+Some RDD functions (e.g. <command>DBSKIP()</command>) don't generate
+<emphasis>EG_NOTABLE</emphasis> error when there are no work areas
+in use with Clipper 5.01. But with Clipper 5.3 (and Clipper 5.2)
+error is generated. In such case CLIP works like Clipper 5.3.
+)_</para></listitem>
+
+<listitem><para>_(
+It is impossible to open a table in <command>EXCLUSIVE READONLY</command>
+mode with CLIP under Unix. In such case table is opened in
+<command>SHARED READONLY</command> mode. The cause is the difference
+between DOS's and Unix file locking mechanism.
+)_</para></listitem>
+
+<listitem><para>_(
+<emphasis>AS</emphasis> and <emphasis>REF</emphasis> are reserved keywords
+in CLIP. See description of the <command>-q</command> switch in the
+<link linkend="compoptions">compiler options</link> section.
+)_</para></listitem>
+
+<listitem><para>_(
+In Clipper, <command>CHR(<![CDATA[<nConst>]]>)</command> is constant (translated
+at compile time). In CLIP <command>CHR()</command> is as usual function
+as others, it is always evaluated at run time.
+)_</para></listitem>
+
+<listitem>
+<para>_(
+CLIP can work in two modes: <emphasis>fullscreen</emphasis> and
+<emphasis>stream</emphasis>. Just started, a CLIP application is working
+in the <emphasis>stream</emphasis> mode, i.e. all application's output is
+placed in the <emphasis>stdout</emphasis> stream. An application
+works in this mode until any full screen operation (e.g. displaying a window,
+displaying data at a specified screen row and column or polling keyboard)
+is performed (this mode is useful for <emphasis>CGI</emphasis> applications,
+for example). When any full screen operation is performed, application
+initializes terminal, switches to <emphasis>fullscreen</emphasis>
+mode and stops output to the <emphasis>stdout</emphasis> stream.
+)_</para>
+<tip>
+<para>_(
+Follow these two simple rules:
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+full screen application should start with <command>CLEAR SCREEN</command>
+command.
+)_</para></listitem>
+<listitem>
+<para>_(
+stream application (<emphasis>CGI</emphasis>) should redefine the standard
+<emphasis>error block</emphasis> (by <command>ERRORBLOCK()</command>
+function) to avoid turning into <emphasis>fullscreen</emphasis> mode
+(standard <emphasis>error block</emphasis> performs full screen operations).
+For example:
+)_</para>
+<programlisting>
+errorblock({|err| myerr(err)})
+function myerr(err)
+	outerr("Error:",err) // outerr() outputs to the stderr
+	exit
+return
+</programlisting>
+</listitem>
+</itemizedlist>
+</tip>
+</listitem>
+
+<listitem><para>_(
+In the Unix file system, file mask <emphasis>*.*</emphasis> means all files
+with a dot ('.') in their names. Use the <emphasis>FILE_MASK</emphasis>
+macro instead of '<emphasis>*.*</emphasis>'. <emphasis>FILE_MASK</emphasis>
+is platform dependent constant ('<emphasis>*</emphasis>' in Unix,
+'<emphasis>*.*</emphasis>' in Windows).
+)_</para></listitem>
+
+<listitem><para>_(
+Do not use the keywords (<command>FIELD</command>, <command>WHILE</command>,
+<command>FOR</command>, <command>CASE</command>, <command>END</command>, etc)
+as the names of variables.
+)_</para></listitem>
+
+<listitem><para>_(
+In some circumstances, the <command>IF(,,)</command> function is discerned
+as <command>IF ... ELSE ... ENDIF</command> statement. In such cases
+compiler generates a warning.
+)_</para></listitem>
+
+<listitem><para>_(
+With Clipper, the <command>TYPE()</command> function invokes some functions
+(e.g. <command>SUBSTR()</command>) and does not invoke anothers
+(e.g. <command>ALERT()</command>). CLIP does not invoke any function
+and returns '<emphasis>UI</emphasis>' for expressions containing any
+function calls.
+)_</para></listitem>
+
+<listitem><para>_(
+Clipper have an odd feature:
+)_</para><programlisting>
+if NIL==0   // generates run-time error
+if (NIL==0) // OK
+</programlisting>
+<para>_(
+This <emphasis>feature</emphasis> is <emphasis>not supported</emphasis>
+by CLIP (both examples are OK).
+)_</para></listitem>
+
+<listitem><para>_(
+Unix file system does differentiate the case of letters in the file names
+(<command>USE table.dbf</command> and <command>USE TABLE.DBF</command>
+are not equivalent commands). To help porting DOS-applications to Unix
+<command>SET TRANSLATE PATH ON</command> command is intended.
+When <command>ON</command> all file (and directory) names are translated
+to the lower case. In this case the full path to the file and the file itself
+<emphasis>must</emphasis> be in the lower case on the disk.
+When <command>OFF</command> the translation is not performed. In this case
+names of the files on the disk must correspond to the names they are
+addressed by.
+)_</para><para>_(
+Disk names (C:, D:, etc) can be assigned to the directories in the following
+manner:
+)_</para><programlisting>
+SET("C:","/home/rust/diskC")
+SET("D:","/home/rust/diskD")
+</programlisting><para>_(
+By default, disk C: is assigned to the root directory (/).
+)_</para></listitem>
+
+<listitem><para>_(
+The <command>INDEXEXT()</command> function returns the index's suffix
+in the lower case.
+)_</para></listitem>
+
+<listitem><para>_(
+Displaying of double pseudographic symbols is not possible on some types of
+terminals. It is possible by using <emphasis>termcap</emphasis> instead
+of <emphasis>terminfo</emphasis> (export TERMCAP=/etc/termcap and
+look at <emphasis>g1</emphasis> entry for single graphic chars and
+<emphasis>g2</emphasis> entry for double graphic chars in
+<emphasis>/etc/termcap</emphasis>).
+)_</para></listitem>
+
+<listitem><para>_(
+Displaying of the chars with codes less than 32 is impossible on Unix
+terminals. These chars are displayed as highlighted char with the code
+<emphasis><![CDATA[<nSymbol>]]> + 32</emphasis>.
+)_</para></listitem>
+
+<listitem><para>_(
+You should recollect <command>DISPBEGIN()</command>,
+<command>DISPEND()</command> functions. Those who have
+long been working with terminals must understand well why it is
+necessary. As for novices, they should read attentively the description
+of these functions and imagine how information runs via narrow
+commiunication channels from the server to terminals and how the
+processor is loaded, while outputting information. To use them is not
+necessary, but it's desirable, particularly in those places where you
+display and process the input from the keyboard themselves. In those
+functions and commands (<command>PROMPT/MENU</command>,
+<command>GET/READ</command>, etc) where the processing
+of the display and keyboard is executed independently, an optimal output
+mode has been already used, and so enclosing them by
+<command>DISPBEGIN()</command> & <command>DISPEND()</command>
+is unnecessary.
+)_</para></listitem>
+
+<listitem><para>_(
+The restriction of the function/procedure name size of 10 chars has
+been removed. It applies equally to variable names. To simplify the
+transition to a length of more than 10 symbols, you can use
+<command>#xdefine</command> directive (case-insensitive
+<command>#define</command>).
+)_</para></listitem>
+
+<listitem><para>_(
+The restriction of the string size of 64k has been removed.
+)_</para></listitem>
+
+<listitem><para>_(
+The restriction of the array size of 4096/8192 elements has been removed.
+)_</para></listitem>
+
+<listitem><para>_(
+The <command>MEMOEDIT()</command> function is based on the
+<command>TEXTEDIT</command> class, and there may be some problems with
+user functions for <command>MEMOEDIT()</command>.
+)_</para></listitem>
+
+<listitem><para>_(
+get:baddate() is a method, not an attribute.
+)_</para></listitem>
+
+<listitem><para>_(
+<command>TBrowse</command> object is visualised not quite so as a standard
+one is, which eliminates problems with number of displayed fields and cursor
+positioning, when navigating over the table in user functions.
+)_</para></listitem>
+
+<listitem><para>_(
+<command>RUN</command> command output damages current screen contents.
+When outputting to the terminal, this problem cannot be completely solved
+without resorting to tricks, as it turns out that several programs output
+independently to one device, in the same way as if several programs,
+independent of each other, output information to one COM port. We recommend
+to use something like:
+)_</para><programlisting>
+run <![CDATA[&command]]>
+wait "Press any key"
+clear screen // or restore screen
+</programlisting><para>_(
+And one more peculiarity of the <command>RUN</command> command - in Unux,
+it runs the shell, then shell executes the program. Though
+<command>run cd mydir</command> will operate, but after exiting from the shell
+the current directory will remain the same.
+)_</para></listitem>
+
+<listitem><para>_(
+In error object, there is some incompatibility.
+)_</para></listitem>
+
+<listitem><para>_(
+It is preferable to use <command>inkey(0.1)</command> instead of
+<command>inkey()</command>, otherwise an application will use too much
+of processor time. In particular, we had to make some changes in DBU
+concerning <command>INKEY()</command> and stabilization in
+<command>TBrowse</command>; these changes are enclosed by
+<command>#ifdef __CLIP__</command>.
+)_</para></listitem>
+
+<listitem><para>_(
+<command>RESTORE FROM</command> always operates as with
+<command>ADDITIVE</command>.
+)_</para></listitem>
+
+<listitem><para>_(
+The <command>SET PROCEDURE</command> command is not and probably
+will not be supported. Link the whole program from object files by
+using CLIP or use the new features relating to PO-files;
+read about <link linkend="functionload">LOAD()</link> function.
+)_</para></listitem>
+
+<listitem><para>_(
+The <command>SETCOLOR()</command> function have 10 pair colors, new 5 pair
+don`t have any special meaning.
+)_</para></listitem>
+
+</itemizedlist>

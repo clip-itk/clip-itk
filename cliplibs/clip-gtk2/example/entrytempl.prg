@@ -1,6 +1,7 @@
 #include <clip-gtk2.ch>
 function main()
 local oGet
+clear screen
 gtk_init()
 
 win := gtk_windowNew(, "Test templates for entry")
@@ -14,10 +15,8 @@ gtk_signalConnect(win, "delete-event", {|| gtk_quit()})
 ?
 
 /* create Entry */
-x := "qaaa-bbb-ccc"
-oGet := gtk_GetNew(,x,"!AAA-AAA-AAA")//, @after(), @before())
-
-
+x := "qaaa,bbb,ccc"
+oGet := gtk_GetNew(,@x,"!AAA,AAA,AAA")//, @after(), @before())
 
 vbox := gtk_VboxNew()
 
@@ -27,7 +26,7 @@ btn := gtk_ButtonNew(, "Get entry value")
 gtk_SignalConnect(btn, "clicked", {|w, e| qout(gtk_GetVarGet(oGet))})
 
 btn1 := gtk_ButtonNew(, "Set Value!")
-gtk_SignalConnect(btn1, "clicked", {|w, e| qout(gtk_GetVarPut(oGet, "1qqq-qqq-qqq"))})
+gtk_SignalConnect(btn1, "clicked", {|w, e| qout(gtk_GetVarPut(oGet, "1qqq,qqq,qqq"))})
 gtk_BoxPackEnd(vbox, btn)
 gtk_BoxPackEnd(vbox, btn1)
 
@@ -36,6 +35,10 @@ gtk_containerAdd(win, vbox)
 gtk_WidgetShowAll(win)
 
 gtk_main()
+
+
+? "resul x is ", x
+?
 
 return
 

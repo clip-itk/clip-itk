@@ -1,0 +1,36 @@
+$FUNCNAME$
+   FT_FLASTRE()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Get the no. of records in the currently selected text file
+$SYNTAX$
+
+   FT_FLASTRE() -> nLastRecordNum
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   An integer containing the number of records in the text file in
+   the currently selected text file workarea, or zero if no file
+   is currently open in the workarea.
+
+$DESCRIPTION$
+
+   This function returns the number of the last record in a text file.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+$EXAMPLES$
+
+   FT_FUSE( "text.c" )
+
+   ? FT_FLASTRE()
+
+$SEEALSO$
+   FT_FUSE(),FT_FRECNO()
+$END$
+

@@ -930,7 +930,7 @@ static function ui_createTable(self, columns)
 	local o, i, cc, store, model, renderer, c
 	
 	cc := len(columns)
-	store := gtk_ListStoreNew(, cc )
+	store := gtk_ListStoreNew(, cc)
 	if empty(store) 
 		return NIL
 	endif
@@ -949,6 +949,7 @@ static function ui_createTable(self, columns)
 		gtk_TreeViewColumnSetResizable(gtk_TreeViewGetColumn(o, c), .T.)
 		gtk_TreeViewColumnSetSizing(gtk_TreeViewGetColumn(o, c), CLIP_GTK_TREE_VIEW_COLUMN_AUTOSIZE)
 	next
+
 return o
 
 static function ui_addTableRow(self, table, data)
@@ -1113,38 +1114,9 @@ static function ui_setStyle(self, o, style, value, element)
 	local a, n, align, ost, st, font
 	
 	// ?? "STYLE ",style,":",value,chr(10)
-	ost := gtk_WidgetGetStyle( o )
+//	ost := gtk_WidgetGetStyle( o )
 	st := map()
 	
-	if "FONT" $ o
-		st:font := ost:font
-	else
-		font := UIFont(ost:font)
-		st:font := font:font
-	endif
-/*	
-struct GtkStyle
-{
-  GtkStyleClass *klass;
-
-  GdkColor fg[5];
-  GdkColor bg[5];
-  GdkColor light[5];
-  GdkColor dark[5];
-  GdkColor mid[5];
-  GdkColor text[5];
-  GdkColor base[5];
-  GdkColor black;
-  GdkColor white;
-  
-  GdkFont *font;
-  
-  GdkPixmap *bg_pixmap[5];
-};	
-	
-	
-	
-*/	
 	// Alignment
 	if style == "align"
 		align := map()
@@ -1156,7 +1128,8 @@ struct GtkStyle
 			a := split(element,"\.")
 			if len(a) > 1 .and. a[1] == "column"
 				n := val(a[2])
-				gtk_CListSetColumnJustification(o, n, mapget(align,upper(value),GTK_JUSTIFY_LEFT))
+//TODO: deprecated in GTK+ 2.x
+//				gtk_CListSetColumnJustification(o, n, mapget(align,upper(value),GTK_JUSTIFY_LEFT))
 				return .T.
 			endif
 		endif
@@ -1170,8 +1143,8 @@ struct GtkStyle
 		endif
 		o:font:setProperty(style,value)
 		st:font := o:font:font
-		// ?? st:font,chr(10)
 		gtk_WidgetSetStyle(o, st)
+//TODO:??	gtk_WidgetModifyFont(o, o:font:font)
 		return .T.
 	endif
 	

@@ -1,0 +1,57 @@
+$FUNCNAME$
+  HARDCR()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Replace all soft carriage returns in a character string with hard carriage
+$LANG_RU$
+   Заменяет все мягкие возвраты каретки в символьной строке жесткими
+$SYNTAX$
+     HARDCR(<cString>) --> cConvertedString
+$LANG_RU$
+     HARDCR(<строка>) --> преобразованная строка
+$ARGUMENTS$
+     <cString> is the character string or memo field to be converted.
+$LANG_RU$
+     <строка> - это символьная строка или memo-поле, которое должно быть
+     преобразовано.
+$RETURNS$
+     HARDCR() returns a character string up to 65,535 (64K) characters in
+     length.
+$LANG_RU$
+     HARDCR() возвращает символьную строку длиной до 65 535 (64К)
+     символов.
+$DESCRIPTION$
+     HARDCR() is a memo function that replaces all soft carriage returns
+     (CHR(141)) with hard carriage returns (CHR(13)).  It is used to display
+     long character strings and memo fields containing soft carriage returns
+     with console commands.  In xClipper, console commands (including
+     REPORT and LABEL FORM) do not automatically convert soft carriage
+     returns to hard carriage returns, making it necessary for you to
+     explicitly make the conversion.  Soft carriage returns are added by
+     MEMOEDIT() when lines wrap.
+$LANG_RU$
+     HARDCR() - это функция обработки memo-полей, которая заменяет все
+     мягкие возвраты каретки (CHR(141)) жесткими возвратами каретки
+     (CHR(13)).  Она используется для вывода длинных символьных строк и
+     memo-полей, содержащих мягкие возвраты каретки с помощью консольных
+     команд. В xClipper консольные команды ( включая REPORT и LABEL FORM)
+     не выполняют автоматического преобразования мягких возвратов каретки
+     в жесткие, вынуждая вас делать эти преобразования. Мягкие возвраты
+     каретки добавляются в memo-поля функцией MEMOEDIT() при переносе
+     строк.
+$EXAMPLES$
+       To display a memo field formatted with the automatic word
+	wrapping of MEMOEDIT():
+
+	USE Sales NEW
+	? HARDCR(Sales->Notes)
+$LANG_RU$
+      Вывести memo-поле, отформатированное с помощью автоматического
+       переноса слов функцией MEMOEDIT():
+
+       USE sales NEW
+       ? HARDCR(Sales -> Notes)
+$SEEALSO$
+  MEMOTRAN(),STRTRAN()
+$END$

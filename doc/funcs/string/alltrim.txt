@@ -1,0 +1,66 @@
+$FUNCNAME$
+  ALLTRIM()
+$CATEGORY$
+  String
+$SUMMARY$
+   Remove leading and trailing spaces from a character string
+$LANG_RU$
+   Удаляет ведущие и замыкающие пробелы в строке символов.
+$SYNTAX$
+     ALLTRIM(<cString>) --> cTrimString
+$LANG_RU$
+     ALLTRIM(<символьное выражение>) --> строка символов
+$ARGUMENTS$
+     <cString> is the character expression to be trimmed.
+$LANG_RU$
+     <символьное выражение> - символьное выражение.
+$RETURNS$
+     ALLTRIM() returns a character string with leading and trailing spaces
+     removed.
+$LANG_RU$
+     ALLTRIM() возвращает строку символов с удаленными пробелами в начале
+     и в конце строки.
+$DESCRIPTION$
+
+     ALLTRIM() is a character function that removes both leading and trailing
+     spaces from a string.  It is related to LTRIM() and RTRIM() which remove
+     leading and trailing spaces, respectively.  The inverse of ALLTRIM(),
+     LTRIM(), and RTRIM() are the PADC(), PADL(), and PADR() functions which
+     center, left-justify, or right-justify character strings by padding them
+     with fill characters.
+
+
+$LANG_RU$
+
+     ALLTRIM() - функция работы с символьными строками, которая удаляет
+     ведущие и завершающие пробелы из строки. Она выполняет действие сразу
+     двух функций - LTRIM() и RTRIM(), которые удаляют из строки ведущие и
+     заключающие пробелы соответственно. Функции ALLTRIM(), LTRIM() и
+     RTRIM() являются противоположными по действию функциям PADC(), PADR()
+     и PADL(), которые центрируют строки, выравнивают их справа или слева,
+     добавляя в них пробелы.
+
+
+$EXAMPLES$
+
+       This example creates a string with both leading and trailing
+	spaces, and then trims them with ALLTRIM():
+
+	cString := SPACE(10) + "string" + SPACE(10)
+	? LEN(cString)                     // Result: 26
+	? LEN(ALLTRIM(cString))            // Result: 6
+
+
+$LANG_RU$
+
+      Этот пример создает строку, содержащую ведущие и завершающие
+       пробелы и затем удаляет их при помощи функции ALLTRIM():
+
+       cString = SPACE(10) + "Строка" + SPACE(10)
+       ? LEN(cString)                           // Результат: 26
+       ? LEN(ALLTRIM(cString))                  // Результат: 6
+
+
+$SEEALSO$
+  LTRIM(),PAD(),RTRIM(),TRIM(),
+$END$

@@ -81,6 +81,7 @@ clip_GTK_IMAGEMENUITEMNEW(ClipMachine * cm)
 
 	if (image)
         {
+        	cimage = _list_get_cwidget(cm, image);
                 if (!cimage) cimage = _register_widget(cm, image, cv);
                 if (cimage) _clip_mclone(cm, RETPTR(cm), &cimage->obj);
         }
@@ -107,6 +108,7 @@ clip_GTK_IMAGEMENUITEMNEWFROMSTOCK(ClipMachine * cm)
 
 	if (image)
         {
+        	cimage = _list_get_cwidget(cm, image);
                 if (!cimage) cimage = _register_widget(cm, image, cv);
                 if (cimage) _clip_mclone(cm, RETPTR(cm), &cimage->obj);
         }
@@ -131,6 +133,7 @@ clip_GTK_IMAGEMENUITEMNEWWITHLABEL(ClipMachine * cm)
 
 	if (image)
         {
+        	cimage = _list_get_cwidget(cm, image);
                 if (!cimage) cimage = _register_widget(cm, image, cv);
                 if (cimage) _clip_mclone(cm, RETPTR(cm), &cimage->obj);
         }
@@ -156,6 +159,7 @@ clip_GTK_IMAGEMENUITEMNEWWITHMNEMONIC(ClipMachine * cm)
 
 	if (image)
         {
+        	cimage = _list_get_cwidget(cm, image);
                 if (!cimage) cimage = _register_widget(cm, image, cv);
                 if (cimage) _clip_mclone(cm, RETPTR(cm), &cimage->obj);
         }

@@ -1,0 +1,54 @@
+$FUNCNAME$
+  DBUNLOCK()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Release all locks for the current work area
+$LANG_RU$
+   Снимает все блокировки в текущей рабочей области.
+$SYNTAX$
+     DBUNLOCK() --> NIL
+$LANG_RU$
+     DBUNLOCK() --> NIL
+$RETURNS$
+     DBUNLOCK() always returns NIL.
+$LANG_RU$
+     DBUNLOCK() всегда возвращает NIL.
+$DESCRIPTION$
+     DBUNLOCK() releases any record or file locks obtained by the current
+     process for the current work area.  DBUNLOCK() is only meaningful on a
+     shared database in a network environment.
+
+     DBUNLOCK() performs the same function as the standard UNLOCK command.
+     For more information, refer to the UNLOCK command.
+$LANG_RU$
+     DBUNLOCK() снимает блокировку записи или всей базы данных,
+     установленную текущим процессом в текущей рабочей области.
+     DBUNLOCK() используется только для баз данных, открытых для
+     совместного использования в сетевой среде.
+
+     DBUNLOCK() выполняет те же функции, что и стандартная команда UNLOCK.
+     Более подробную информацию смотрите в команде UNLOCK.
+$EXAMPLES$
+       The following example illustrates a basic use of the
+	DBUNLOCK() function:
+
+	cLast := "Winston"
+	USE Sales SHARED NEW VIA "DBFNTX"
+	DBSETINDEX( "LASTNAME" )
+	//
+	IF ( Sales->(DBSEEK(cLast)) )
+	   IF Sales->( RLOCK() )
+	      Sales->( DBDELETE() )
+
+	      ? "Record deleted: ", Sales( DELETED() )
+	      Sales->( DBUNLOCK() )
+	   ELSE
+	      ? "Unable to lock record..."
+	   ENDIF
+	ELSE
+	   ? "Not found"
+	ENDIF
+$SEEALSO$
+  DBUNLOCKALL(),FLOCK(),RLOCK()
+$END$

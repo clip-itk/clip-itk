@@ -108,22 +108,34 @@ err:
 int
 static __tree_store_set_types(ClipMachine * cm, gint ncolumns, GType * types, ClipVar * utypes)
 {
+	ClipArrVar *cvcol = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 3));
 	gint i;
         long d;
+	char is_array;
+	int dtype;
+
+	is_array = ( _clip_parinfo(cm,3) == ARRAY_t ? 1 : 0 );
 
 	d = ncolumns;
 	_clip_array(cm, utypes, 1, &d);
 	for (i=0, d = 0; i<ncolumns; i++, d++)
         {
-        	ClipVar type;
+		ClipVar type;
+        	if (is_array) { //column type as array item
+			memset(&type, 0, sizeof(type));
+			type.t.type = NUMERIC_t;
+			type.n.d = (int)cvcol->items[i].n.d;
+			dtype = (int)type.n.d;
+		} else { // column type as parameter
+			CHECKARG(i+3, NUMERIC_t);
 
-        	CHECKARG(i+3, NUMERIC_t);
+			memset(&type, 0, sizeof(type));
+			type.t.type = NUMERIC_t;
+			type.n.d = _clip_parnd(cm, i+3);
+			dtype = (int)type.n.d;
+		}
 
-                memset(&type, 0, sizeof(type));
-                type.t.type = NUMERIC_t;
-                type.n.d = _clip_parnd(cm, i+3);
-
-        	switch ((int)type.n.d)
+        	switch (dtype)
                 {
                 case TREE_TYPE_STRING:
         		types[i] = G_TYPE_STRING;
@@ -172,8 +184,11 @@ clip_GTK_TREESTORENEW(ClipMachine * cm)
 {
 	ClipVar * cv   = _clip_spar(cm, 1);
 	gint ncolumns  = _clip_parni(cm, 2);
+	ClipArrVar *cvcol = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 3));
         ClipVar *utypes;
         GType types[ncolumns];
+	int i;
+	long d;
 
         GtkTreeStore *tree;
         C_object *ctree;
@@ -184,7 +199,23 @@ clip_GTK_TREESTORENEW(ClipMachine * cm)
 	memset(types, 0, sizeof(types));
         utypes = NEW(ClipVar);
 
-        __tree_store_set_types(cm, ncolumns, types, utypes);
+       	if ( _clip_parinfo(cm,3)==ARRAY_t && cvcol->count != ncolumns ) return 1;
+	if ( _clip_parinfo(cm,3) != UNDEF_t ) // defined column types as parameters or in array
+		__tree_store_set_types(cm, ncolumns, types, utypes);
+	else  { // if third parameter is empty - use column with G_TYPE_STRING type
+		ClipVar type;
+		d = ncolumns;
+		memset(&type, 0, sizeof(type));
+		type.t.type = NUMERIC_t;
+		type.n.d = 0;
+		_clip_array(cm, utypes, 1, &d);
+		for ( i=0, d=0; i<ncolumns; i++, d++ )
+                {
+			types[i] = G_TYPE_STRING;
+                	_clip_aset(cm, utypes, &type, 1, &d);
+                }
+                _clip_destroy(cm, &type);
+	}
 
         tree = gtk_tree_store_newv(ncolumns, types);
 
@@ -269,17 +300,61 @@ clip_GTK_TREESTORESETVALUE(ClipMachine * cm)
 {
 	C_object *cstree = _fetch_co_arg(cm);
         gchar      *path = _clip_parc(cm, 2);
-        GtkTreeIter iter;
+        gint	  column = _clip_parni(cm, 3);
+	ClipVar     *val = _clip_par(cm, 4);;
+	GtkTreeIter iter;
+        ClipArrVar *utypes;
+	GValue value;
+	gchar *str;
+	int j;
+	double d;
 
         CHECKARG2(1, MAP_t, NUMERIC_t);CHECKCOBJ(cstree, GTK_IS_TREE_STORE(cstree->object));
         CHECKARG(2, CHARACTER_t);
+        CHECKARG(3, NUMERIC_t);
 
         gtk_tree_model_get_iter(GTK_TREE_MODEL(GTK_TREE_STORE(cstree->object)),
         	&iter, gtk_tree_path_new_from_string(path));
 
-	__tree_store_set(cm, &iter, 3);
+        utypes = (ClipArrVar *)_clip_vptr(_clip_mget(cm, &cstree->obj, HASH_UTYPES));
+	column --;
 
-	return 0;
+	memset(&value, 0, sizeof(value));
+	switch ((int)utypes->items[column].n.d)
+	{
+	case TREE_TYPE_NUMERIC:
+		g_value_init(&value, G_TYPE_FLOAT);
+		if (val->t.type == NUMERIC_t)
+			g_value_set_float(&value, val->n.d);
+		else
+		{
+			d = _clip_strtod(val->s.str.buf, &j);
+			g_value_set_float(&value, d);
+		}
+		break;
+	case TREE_TYPE_STRING:
+		str = val->s.str.buf;
+		LOCALE_TO_UTF(str);
+		g_value_init(&value,  G_TYPE_STRING);
+		g_value_set_string(&value, str);
+		FREE_TEXT(str);
+		break;
+	case TREE_TYPE_LOGICAL:
+		g_value_init(&value,  G_TYPE_BOOLEAN);
+		g_value_set_boolean(&value, val->l.val);
+		break;
+	case TREE_TYPE_DATE:
+		g_value_init(&value,  G_TYPE_STRING);
+		if (val->t.type == DATE_t)
+			str = _clip_date_to_str(val->lv.l, cm->date_format);
+		else
+			str = _clip_date_to_str(_clip_str_to_date(val->s.str.buf, cm->date_format, cm->epoch), cm->date_format);
+		g_value_set_string(&value, str);
+		break;
+	}
+	gtk_tree_store_set_value(GTK_TREE_STORE(cstree->object), &iter, column, &value);
+
+		return 0;
 err:
 	return 1;
 }

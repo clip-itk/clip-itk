@@ -1,0 +1,74 @@
+$FUNCNAME$
+  FCLOSE()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Close an open binary file and write DOS buffers to disk
+$LANG_RU$
+   Закрывает открытый файл и записывает на диск буфер DOS.
+$SYNTAX$
+     FCLOSE(<nHandle>) --> lError
+$LANG_RU$
+     FCLOSE(<номер файла>) --> признак ошибки
+$ARGUMENTS$
+     <nHandle> is the file handle obtained previously from FOPEN() or
+     FCREATE().
+$LANG_RU$
+     <номер файла> является номером файла, предварительно полученным из
+     FOPEN() и FCREATE().
+$RETURNS$
+     FCLOSE() returns false (.F.) if an error occurs while writing;
+     otherwise, it returns true (.T.).
+$LANG_RU$
+     FCLOSE() возвращает "ложь"(.F.), если происходит ошибка при записи, в
+     противном случае она возвращает "истину"(.Т.).
+$DESCRIPTION$
+     FCLOSE() is a low-level file function that closes binary files and
+     forces the associated DOS buffers to be written to disk.  If the
+     operation fails, FCLOSE() returns false (.F.).  FERROR() can then be
+     used to determine the reason for the failure.  For example, attempting
+     to use FCLOSE() with an invalid handle returns false (.F.), and FERROR()
+     returns DOS error 6, invalid handle.  See FERROR() for a complete list
+     of error numbers.
+
+     Warning!  This function allows low-level access to DOS files and
+     devices.  It should be used with extreme care and requires a thorough
+     knowledge of the operating system.
+$LANG_RU$
+     FCLOSE() является функцией обработки файлов низшего уровня, которая
+     используется для закрытия двоичных файлов и чтобы обеспечить запись
+     буферов DOS на диск. Если операция "неуспешна", FCLOSE() возвращает
+     ложь" (.F.).  Для установления точной причины "неуспеха" может быть
+     использована функция FERROR(). Например, при попытке использовать
+     FCLOSE() с неправильным значением номера файла возвращает "ложь"
+     (.F.), a FERROR() возвращает код ошибки 6 DOS, "invalid handle".
+     Смотрите полный список кодов ошибок в описании FERROR().
+
+     Предупреждение:
+     Данная функция позволяет осуществлять доступ низкого уровня к файлам
+     и устройствам DOS. Она должна использоваться чрезвычайно осторожно и
+     требует хороших знаний операционной системы.
+$EXAMPLES$
+       This example uses FCLOSE() to close a newly created binary
+	file and displays an error message if the close fails:
+
+	#include "Fileio.ch"
+	//
+	nHandle := FCREATE("Testfile", FC_NORMAL)
+	IF !FCLOSE(nHandle)
+	   ? "Error closing file, error number: ", FERROR()
+	ENDIF
+$LANG_RU$
+      В следующем примере показано использование FCLOSE() для закрытия
+       недавно созданного файла и выведение сообщения об ошибке, если его
+       закрытие завершилось аварийно.
+
+       #include "Fileio.ch"
+       //
+       nHandle = FCREATE("Testfile", FC_NORMAL)
+       IF !FCLOSE(nHandle)
+	  ? "Ошибка закрытия файла, номер ошибки : ", FERROR()
+       ENDIF
+$SEEALSO$
+  FCREATE(),FERROR(),FOPEN()
+$END$

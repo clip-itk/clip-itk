@@ -1,0 +1,33 @@
+$CLASSNAME$
+	FIND
+$SUMMARY$
+	Class underconstruction
+$LANG_RU$
+	Class underconstruction
+$ABOUT$
+$SYNTAX$
+	FindNew()
+$ATTRIBUTES$
+$METHODNAME$
+	FindNew()
+$SUMMARY$
+	FIND object constructor.
+$SYNTAX$
+$ARGUMENTS$
+
+$RETURNS$
+	FIND object constructor.
+$DESCRIPTION$
+	FIND object constructor.
+$ENDMETHOD$
+
+$EXAMPLES$
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+

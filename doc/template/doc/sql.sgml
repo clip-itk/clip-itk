@@ -1,0 +1,3118 @@
+<chapter id="sql">
+<title>_(Working with SQL servers)_</title>
+
+<para>
+<author>
+<firstname>_(Rushad)_</firstname><surname>_(Nabiullin)_</surname>
+</author>
+<email>rust@itk.ru</email>
+</para>
+
+<para>_(
+CLIP provides simple but powerful tools for access to the various SQL
+servers. The underlying principles of this tools are considered in this
+chapter. Some features and possibilities and related classes and functions
+are described below.
+)_</para>
+
+<section><title>_(Features)_</title>
+
+<para>_(
+Some of the features and possibilities are listed below.
+)_</para>
+
+<itemizedlist>
+
+<listitem>
+<para>_(
+CLIP unifies use of the various SQL servers thus hiding individual
+peculiarities of their APIs from developers as many as possible.
+Nevertheless you should know SQL dialect of desired RDBMS.
+)_</para>
+</listitem>
+
+<listitem><para>_(
+Transactions are supported. By default each SQL statement works
+in it's own transaction (each statement is enclosed in pair of START/COMMIT
+implicitly).
+Nevertheless it is possible to accomplish a sequence of the statements
+in one transaction by calling explicitly START and COMMIT or ROLLBACK
+functions in appropriate points.
+)_</para></listitem>
+
+<listitem><para>_(
+Local ordering allow change the order of rows locally, no more need to charge
+the server by almost the same query with different ORDER BY clause. Also, local
+orders allow fast seek for desired row in huge the result set.
+)_</para></listitem>
+
+<listitem><para>_(
+Automation of mirroring updates in database. You may provide appropriate
+UPDATE, DELETE, INSERT statements which will be executed automaticly after
+update of the local set of the selected rows.
+)_</para></listitem>
+
+<listitem><para>_(
+Two fetch modes - full fetch and fetch on demand. In first mode all result
+rows are fetched after execution of SELECT statement. The fetching process
+can be observed and cancelled by user defined function. In second mode
+the fetching is accomplished as far as particular row has been addressed.
+Such kind of execution is helpful when amount of result rows can't
+be estimated.
+)_</para></listitem>
+
+</itemizedlist>
+
+</section>
+
+<section id="sqlquickstart"><title>_(Quick start)_</title>
+
+<section><title>_(Building an application)_</title>
+
+<para>_(
+To build an application working with desired SQL server you have to
+install appropriate <![CDATA[clip-<rdbms>]]> package.
+The following packages are available currently:
+)_</para>
+
+<variablelist>
+
+<varlistentry>
+<term>clip-postgres</term>
+<listitem><para>
+PostgreSQL by (c) The PostgreSQL Global Development Group
+<ulink url="http://www.postgresql.org">http://www.postgresql.org</ulink>
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>clip-mysql</term>
+<listitem><para>
+MySQL
+<ulink url="http://www.mysql.com">http://www.mysql.com</ulink>
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>clip-oracle</term>
+<listitem><para>
+Oracle 8i by (c) Oracle Corporation
+<ulink url="http://www.oracle.com">http://www.oracle.com</ulink>
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>clip-odbc</term>
+<listitem><para>
+ODBC driver manager
+<ulink url="http://www.microsoft.com">http://www.microsoft.com</ulink>
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>clip-interbase</term>
+<listitem><para>
+Interbase/Firebird by (c) Borland/Inprise
+<ulink url="http://www.interbase.com">http://www.interbase.com</ulink>
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>clip-dbtcp</term>
+<listitem><para>
+_(DBTCP proxy server for ODBC connections)_
+<ulink url="http://www.fastflow.it/dbftp">http://www.fastflow.it/dbftp</ulink>
+</para></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para>_(
+Once installed desired package you can build an application like this:
+)_</para>
+<screen>
+<prompt>bash$ </prompt><command>clip -e test.prg -lclip-mysql</command>
+</screen>
+
+</section>
+
+<section><title>_(Step by step)_</title>
+
+<para>_(
+Before you will be able to make something you should create a connect to
+the server. The function <link linkend="sqlconnectnew">ConnectNew()</link>
+is intended for that purpose. ConnectNew() - is a constructor of the class
+<link linkend="sqltconnect">TConnect</link>, i.e. it returns
+a TConnect object on success. Once obtained that object can be used to
+execute SQL statements, to select a set of desired rows, to start and
+end transactions. For example:
+)_</para>
+
+<programlisting>
+conn := ConnectNew(...)  // obtain a connection
+conn:Start()             // start a transaction
+
+conn:Command("UPDATE emp SET name='Total' WHERE name='Rust'")
+// next time, in pay office i'll say: "My name is Total"
+
+conn:Rollback()          // just kidding :) cancel the change
+</programlisting>
+
+<note><para>_(
+Several connections can be made simultaneously. Moreover,
+it is possible to connect to several various servers simultaneously.
+)_</para></note>
+
+<para>_(
+SQL statements and queries can have parameters. Parameter names must be
+preceded with ':'. Parameter values are passed in the bidimensional array -
+one row per parameter. First column contains parameter name, second - the value.
+For example:
+)_</para>
+
+<programlisting>
+conn:Command("UPDATE emp SET fname=:fname,lname=:lname",;
+	{{"fname","John"},{"lname","Smith"}})
+</programlisting>
+
+<para>_(
+TConnect member function <link linkend="sqlcreaterowset">CreateRowset()</link>
+is used to obtain a set of rows - result of SELECT statement. It returns
+an object of TRowset class. For example:
+)_</para>
+
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM emp WHERE fname=:fname",{{"fname","John"}})
+rs:Browse()    // simple BROWSE for TRowset
+</programlisting>
+
+<para>_(
+TRowset member functions allow you to navigate through the set of result rows.
+Here they are:
+<link linkend="sqlbof">Bof()</link>, <link linkend="sqleof">Eof()</link>,
+<link linkend="sqlskip">Skip()</link>, <link linkend="sqlgoto">Goto()</link>,
+<link linkend="sqlgotop">GoTop()</link>, <link linkend="sqlgobottom">GoBottom()</link>,
+<link linkend="sqllastrec">Lastrec()</link>, <link linkend="sqlrecno">Recno()</link>.
+)_</para>
+
+<para>_(
+Two functions are intended to read/write the current row:
+<link linkend="sqlread">Read()</link> and <link linkend="sqlwrite">Write()</link>.
+Read() returns an object whose structure is the same as the structure of the
+row. For example:
+)_</para>
+
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM emp")
+? rs:Recno(), rs:Read() // 1 {FNAME: John, LNAME: Smith}
+</programlisting>
+
+<para>_(
+Write() function receives an object and sets the values of fields
+whose names are in compliance with the attribute names of that object.
+For example:
+)_</para>
+
+<programlisting>
+? rs:Read()            // {FNAME: John, LNAME: Smith}
+obj := map()
+obj:fname := "Robert"
+obj:salary := 10000
+rs:Write(obj)
+? rs:Read()            // {FNAME: Robert, LNAME: Smith}
+</programlisting>
+
+<para>_(You can add row to the set (<link linkend="sqlappend">Append()</link>)
+and delete (<link linkend="sqldelete">Delete()</link>).
+Append() receives parameter - obj. For example:
+)_</para>
+
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM emp")
+? rs:Lastrec() // 100
+obj := map()
+obj:fname := "Homer"
+obj:lname := "Simpson"
+rs:Append(obj)
+? rs:Lastrec() // 101
+? rs:Read()    // {FNAME: Homer, LNAME: Simpson}
+rs:Delete()
+? rs:Lastrec() // 100
+</programlisting>
+
+<note><para>_(
+All changes performed by Write(), Append(), Delete() are applied to the set
+only. However, three additional parameters (<![CDATA[<cInsertSQL>, <cDeleteSQL>,
+<cUpdateSQL>]]>) can be passed to CreateRowset(). If passed,
+<![CDATA[<cInsertSQL>]]>
+will be executed implicitly by invoking Append() method. Likewise,
+<![CDATA[<cDeleteSQL>]]> and <![CDATA[<cUpdateSQL>]]> will be used when
+Delete() and Write() have been invoked. An unique ID of the row should be
+SELECTed in the case of Write() and Delete(). (Read about this issue
+documentation on the driver of desired <link linkend="sqlrdbms">RDBMS</link>.)
+For example:
+)_</para></note>
+
+<programlisting>
+rs := conn:CreateRowset("SELECT rowid,fname,lname FROM emp",,;
+	"INSERT INTO emp values (:fname,:lname)",;
+	"DELETE FROM emp WHERE rowid=:rowid",;
+	"UPDATE emp SET fname=:fname,lname=:lname WHERE rowid=:rowid")
+</programlisting>
+
+<para>_(
+If amount of matched rows can't be estimated two parameters <![CDATA[
+<bEval> and <nEvery>]]> will be helpful. Code block <![CDATA[<bEval>]]>
+will be executed during fetching process after each fetched <![CDATA[<nEvery>]]>
+rows. If it returns .F. the process breaks. Thus you could make
+a progressbar for huge result sets and cancel fetching.
+This example prints '.' per 100 rows and can be cancelled by pressing ESC.
+)_</para>
+
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM hugetable",,,,,,,,,,;
+	{|| qqout("."), inkey() != K_ESC},100)
+</programlisting>
+
+<para>_(
+For the same reason (when amount of matched rows can't be estimated)
+you may direct TRowset to not fetch all found rows immediately,
+but fetch them on demand.
+There is another one parameter <![CDATA[<lNoFetch>]]> for this purpose.
+If passed .T., CreateRowset() terminates at once. But number of matched rows
+can't be obtained while not fetched rows are remained. To fetch the rest
+of them <link linkend="sqlfetchall">TRowset:FetchAll()</link> function could
+be used. <link linkend="sqlfetched">TRowset:Fetched()</link> returns number
+of rows fetched at the moment. For example:
+)_</para>
+
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM hugetable",,,,,,,,,.T.)
+rs:Gotop()
+? rs:Fetched() // 1
+? rs:Lastrec() // 0
+for i:=1 to 100
+	rs:Skip()
+	? rs:Fetched() // 2,3,...,101
+next
+rs:FetchAll()
+? rs:Lastrec() == rs:Fetched() // .T.
+</programlisting>
+
+<para>_(
+TRowset supports so-called 'local orders'. 'Local order' is an index created
+on the client side and it allows to change an order of rows in the set. It is
+mostly the same as standard RDD indices, but it's time life is limited by
+row set's life time, i.e. it is located in the memory and does not
+occupy any files. <link linkend="sqlcreateorder">TRowset:CreateOrder()</link>
+creates an order with given name,
+<link linkend="sqlsetorder">TRowset:SetOrder()</link> activates an order.
+For example:
+)_</para>
+
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM emp")
+
+// create an order 'Firstname' on the 'fname' field. Key length is 20 chars.
+rs:CreateOrder("Firstname","fname",20)
+
+// create an order 'Lastname' on the 'lname' field. Key length is 20 chars.
+rs:CreateOrder("Lastname","lname",20)
+
+// create an order 'Fullname' on the both 'fname' and 'lname' fields.
+// Key length is 40 chars.
+rs:CreateOrder("Fullname",{|rs| rs:GetValue("fname")+rs:GetValue("lname")},20)
+
+rs:SetOrder("Firstname")
+rs:Browse() // show rows sorted by first name
+
+rs:SetOrder("Lastname")
+rs:Browse() // show rows sorted by last name
+
+rs:SetOrder("Fullname")
+rs:Browse() // show rows sorted by fname and lname
+</programlisting>
+
+<para>_(
+Now we shall proceed to the description of SQL related classes and functons.
+)_</para>
+
+</section>
+
+</section>
+
+<section id="sqlapi"><title>_(SQL API reference)_</title>
+
+<section id="sqlsqllist"><title>SQLList()</title>
+<programlisting><![CDATA[
+SQLList() --> aAvailableDrivers
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+An array of drivers as series of subarrays, one per available driver.
+The first element of subarray contains short ID of driver;
+the second - the name of RDBMS accessed by driver;
+the third - driver description.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>SQLList()</command> is used to obtain the list of available
+SQL drivers. The driver is available when it's library is linked with
+an application. If there are no linked SQL drivers an empty array
+is returned.
+)_</para>
+<para>_(
+The first element of subarray representing a driver contains RDBMS's ID
+(short CHARACTER value associated with driver), which is used as
+<![CDATA[<cRDBMS>]]> parameter of TConnect constructor
+<link linkend="sqlconnectnew">ConnectNew()</link>.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+$cat test.prg
+// test.prg
+procedure Main()
+? SQLList()[1]
+? SQLList()[2]
+return NIL
+
+$clip -e test.prg -lclip-mysql -lclip-postgres
+$./test
+{MS, MySQL, Generic MySQL for CLIP driver, v.1.0},
+{PG, PostgreSQL, Generic PostgreSQL for CLIP driver v.1.0}
+</programlisting>
+</section>
+</section>
+
+<section id="sqlconnectnew"><title>ConnectNew()</title>
+<programlisting><![CDATA[
+ConnectNew(<cRDBMS>,[<RDBMS specific>,...],[<cCharset>],[<cIsolation>])
+	--> TConnect object
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<cRDBMS>]]></command></term>
+<listitem><para>_(
+RDBMS identifier; see desired <link linkend="sqlrdbms">RDBMS</link> information
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<RDBMS specific>]]></command></term>
+<listitem><para>_(
+a number of RDBMS specific parameters; see desired
+<link linkend="sqlrdbms">RDBMS</link> information
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cCharset>]]></command></term>
+<listitem><para>_(
+(9th parameter) backend charset
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cIsolation>]]></command></term>
+<listitem><para>_(
+(10th parameter) default transaction isolation level; see desired
+<link linkend="sqlrdbms">RDBMS</link> information
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+TConnect object.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>ConnectNew()</command> connects to a SQL server, constructs and
+returns TConnect object.
+That object can be used to start/stop transactions, to execute SQL statements,
+and to obtain a set of rows by SELECT statement.
+)_</para>
+<para>_(
+Optional parameter <command><![CDATA[<cCharset>]]></command> is used to
+indicate that server uses different from client charset. All string
+transformations are made then automatically.
+If not passed, SET("SQL_CHARSET") is used. Note, that changing
+SET("SQL_CHARSET") after connection to the server has no effect for this
+connection.
+)_</para>
+<para>_(
+If optional parameter <command><![CDATA[<cIsolation>]]></command>
+is not passed, an appropriate SET variable is used, for example
+SET("OR_ISOLATION_LEVEL") for Oracle. If there is no such SET variable, the
+SET("SQL_ISOLATION_LEVEL") is used.
+)_</para>
+<note><para>_(
+Default isolation level can be overrided by
+<link linkend="sqlstart">TConnect:Start()</link> parameters. Changing value
+of an appropriate SET variable after connect wouldn't help.
+)_</para></note>
+<para>_(
+When an application completes access to the SQL server it should disconnect
+from the server and release system resources by calling
+<link linkend="sqlconndestroy">TConnect:Destroy()</link>.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<para>_(
+In this example the connection to the local PostgreSQL server is performed.
+)_</para>
+<programlisting>
+conn := ConnectNew("PG",,,,,"template1")
+...
+conn:Destroy()
+</programlisting>
+</section>
+</section>
+
+<section id="sqltconnect"><title>_(TConnect class)_</title>
+
+<para>_(
+TConnect class constructor and member functions are listed below:
+)_</para>
+
+<informaltable frame="none"><tgroup cols="2"><tbody>
+
+<row><entry><link linkend="sqlconnectnew">ConnectNew()</link></entry>
+<entry>_(TConnect constructor)_</entry></row>
+
+<row><entry></entry><entry></entry></row>
+
+<row><entry><link linkend="sqlcommand">TConnect:Command()</link></entry>
+<entry>_(execute SQL statement)_</entry></row>
+
+<row><entry><link linkend="sqlcommit">TConnect:Commit()</link></entry>
+<entry>_(commit transaction)_</entry></row>
+
+<row><entry><link linkend="sqlconndestroy">TConnect:Destroy()</link></entry>
+<entry>_(disconnect from the server and destroy TConnect object)_</entry></row>
+
+<row><entry><link linkend="sqlcreaterowset">TConnect:CreateRowset()</link></entry>
+<entry>_(TRowset constructor)_</entry></row>
+
+<row><entry><link linkend="sqlrollback">TConnect:Rollback()</link></entry>
+<entry>_(rollback transaction)_</entry></row>
+
+<row><entry><link linkend="sqlstart">TConnect:Start()</link></entry>
+<entry>_(start transaction)_</entry></row>
+
+</tbody></tgroup></informaltable>
+
+<section id="sqlcommand"><title>TConnect:Command()</title>
+<programlisting><![CDATA[
+Command(<cSQL>,[<aParameters>]) --> nAffectedRows
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<cSQL>]]></command></term>
+<listitem><para>_(
+a string containing SQL statement to be executed
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<aParameters>]]></command></term>
+<listitem><para>_(
+an array contaning SQL parameters as a series of subarrays,
+one per parameter. Each subarray must contain at least two elements. The first
+is parameter name, the second is the parameter value. Third element
+is used only with <link linkend="sqloracle">Oracle</link> (and is required),
+and contains a numeric data type identifier.
+Optional fourth element is used to indicate a binary value;
+if passed .T. no charset transformations take place
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+A number of affected rows.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Command()</command> is used to execute non-SELECT statements.
+'Non-SELECT' means any SQL statement that does not return rows. To execute
+a statement that returns rows use
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> even if you are
+not interested in the results.
+)_</para>
+<para>_(
+SQL statement may have parameters. Parameter names in
+<command><![CDATA[<cSQL>]]></command> must be preceded with ':' character.
+Parameter values are passed in two dimensional array
+<command><![CDATA[<aParameters>]]></command>.
+)_</para>
+<para>_(
+If there is no active transaction, changes made by executing
+<command><![CDATA[<cSQL>]]></command> are committed implicitly.
+If you need another behavior you have to start transaction
+explicitly by invoking <link linkend="sqlstart">TConnect:Start()</link>.
+)_</para>
+<para>_(
+Return value is a number of affected rows, for example number of deleted rows
+in the case of DELETE statement.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+conn:Command("CREATE TABLE mytable (fname char(20),lname char(20))")
+conn:Command("INSERT INTO mytable VALUES (:firstname,:lastname)",;
+	{{"firstname","John"},{"lastname","Smith"}})
+? conn:Command("DELETE FROM mytable WHERE fname=:fname",;
+	{{"fname","John"}}) // 1
+</programlisting>
+</section>
+</section>
+
+<section id="sqlcommit"><title>TConnect:Commit()</title>
+<programlisting><![CDATA[
+Commit() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Commit()</command> commit all changes made after
+invoking <link linkend="sqlstart">TConnect:Start()</link> and ends transaction.
+If there is no active transaction an error is generated.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+conn:Start()
+// ...
+// some changes
+// ...
+conn:Commit()
+</programlisting>
+</section>
+</section>
+
+<section id="sqlconndestroy"><title>TConnect:Destroy()</title>
+<programlisting><![CDATA[
+Destroy() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+When an application completes access to the SQL server it should disconnect
+from the server and release system resources by calling
+<command>Destroy()</command>.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+conn := ConnectNew("PG",,,,,"template1")
+// ...
+// do some work
+// ...
+conn:Destroy()
+</programlisting>
+</section>
+</section>
+
+<section id="sqlcreaterowset"><title>TConnect:CreateRowset()</title>
+<programlisting><![CDATA[
+CreateRowset(;
+	<cSelectSQL>,;
+	[<aParameters>],;
+	[<cInsertSQL>],;
+	[<cDeleteSQL>],;
+	[<cUpdateSQL>],;
+	[<cRefreshSQL>],;
+	[<cIdName>],;
+	[<aOrders>],;
+	[<cGenIdSQL>],;
+	[<lNoFetch>],;
+	[<bEval>],;
+	[<nEvery>];
+) --> TRowset object
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<cSelectSQL>]]></command></term>
+<listitem><para>_(
+a string containing SQL query to be executed
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<aParameters>]]></command></term>
+<listitem><para>_(
+an array contaning SQL parameters as a series of subarrays,
+one per parameter. Each subarray must contain at least two elements. The first
+is parameter name, the second is the parameter value. Third element
+is used only with <link linkend="sqloracle">Oracle</link> (and is required),
+and contains a numeric data type identifier.
+Optional fourth element is used to indicate a binary value;
+if passed .T. no charset transformations take place. Parameters and their
+values passed in <![CDATA[<aParameters>]]> can be used in any of
+SQL statements described below
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cInsertSQL>]]></command></term>
+<listitem><para>_(
+SQL statement to be executed when a new row is added to the set
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cDeleteSQL>]]></command></term>
+<listitem><para>_(
+SQL statement to be executed when a row is deleted from the set
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cUpdateSQL>]]></command></term>
+<listitem><para>_(
+SQL statement to be executed when a row is changed
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cRefreshSQL>]]></command></term>
+<listitem><para>_(
+SQL query to be executed to refresh the current row in the set
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cIdName>]]></command></term>
+<listitem><para>_(
+name of the 'row ID' field (only for <link linkend="sqlinterbase">Interbase</link>,
+<link linkend="sqlodbc">ODBC</link> and <link linkend="sqldbtcp">DBTCP</link>)
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<aOrders>]]></command></term>
+<listitem><para>_(
+an array with definitions of the local orders to be created as a series
+of subarrays, one per order. First element of subarray defines the name of
+the order, second - a field name or code block to be evaluated to get the
+key value. Third element is required only for character keys and defines
+the length of the key.
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cGenIdSQL>]]></command></term>
+<listitem><para>_(
+SQL statement to be executed for getting a new unique row ID value,
+which will be used with <![CDATA[<cInsertSQL>]]> (only for
+<link linkend="sqlinterbase">Interbase</link>)
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<lNoFetch>]]></command></term>
+<listitem><para>_(
+logical value defining the fetching mode. If passed .F. all rows
+are fetched immediately, if .T. - rows are fetched later on demand.
+Default is .F.
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<bEval>]]></command></term>
+<listitem><para>_(
+a code block to be evaluated during fetching process. TRowset object
+is passed to the code block as a parameter.
+If <![CDATA[<bEval>]]> returns .F. fetching process aborts. It is ignored in
+'fetch on demand' mode (when <![CDATA[<lNoFetch>]]> is .T.)
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<nEvery>]]></command></term>
+<listitem><para>_(
+an interval of rows when <![CDATA[<bEval>]]> should be evaluated (if passed).
+Default is 1, i.e. <![CDATA[<bEval>]]> is evaluated after each fetched row
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+<link linkend="sqltrowset">TRowset</link> object.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>CreateRowset()</command> executes SELECT query, builds
+a set of resulting rows and returns a TRowset object. Thus it may be
+considered as a TRowset class constructor. 'SELECT query' means any
+valid SQL statement returning rows. Usage of any other kind of SQL statement
+in <![CDATA[<cSelectSQL>]]> will result in an error.
+)_</para>
+<para>_(
+<![CDATA[<cInsertSQL>, <cDeleteSQL>, <cUpdateSQL>]]>
+are optional parameters that make easier modification of data in the database.
+If not passed, corresponding changes in the set don't reflect in the tables
+of database. <![CDATA[<cInsertSQL>]]> is executed automatically by
+<link linkend="sqlappend">TRowset:Append()</link> method. In the same way
+<![CDATA[<cDeleteSQL>]]> is executed by
+<link linkend="sqldelete">TRowset:Delete()</link> method, and
+<![CDATA[<cUpdateSQL>]]> is executed by
+<link linkend="sqlwrite">TRowset:Write()</link> method.
+)_</para>
+<para>_(
+<![CDATA[<cRefreshSQL>]]> is automatically executed by
+<link linkend="sqlrefreshcurrent">TRowset:RefreshCurrent()</link> method.
+It must have the same list of fields as <![CDATA[<cSelectSQL>]]>.
+)_</para>
+<para>_(
+The row set intended to modifying must contain an unique field (row ID),
+which is used to bind rows in the database tables and rows in the set.
+You should explicitly include that field to the list of requesting fields
+in the SELECT query. There is various approach to that issue in
+various RDBMS's.
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+Some RDBMS's provide a 'hidden' field for that purpose (ROWID in
+<link linkend="sqloracle">Oracle</link>, OID in
+<link linkend="sqlpostgresql">PostgreSQL</link>).
+Such field is created for any table by default,
+even if you did not describe it in the CREATE TABLE statement.
+PostgreSQL understands such syntax:
+)_</para>
+<programlisting>
+SELECT oid,* FROM mytable
+</programlisting>
+<para>_(
+In the contrast, Oracle does not allow such syntax. You should enumerate
+all fields by the name:
+)_</para>
+<programlisting>
+SELECT rowid,fname,lname FROM mytable
+</programlisting>
+</listitem>
+<listitem><para>_(
+Some RDBMS's provide autoincremental fields for that purpose.
+<link linkend="sqlmysql">MySQL</link>'s CREATE TABLE syntax allows to
+create table with such field by
+using AUTO_INCREMENT clause in the field's definition. CLIP discerns
+such field and uses it as row ID. You don't need to do anything more to
+indicate a field as row ID except for definition a field with AUTO_INCREMENT
+clause in CREATE TABLE statement.
+)_</para></listitem>
+<listitem><para>_(
+Some RDBMS's (<link linkend="sqlinterbase">Interbase</link>)
+provide triggers and unique number generators.
+A typical approach in such case is to define a trigger BEFORE INSERT,
+which gets an unique ID from generator and assigns it to the 'row ID' field.
+But there is no way to determine 'row ID' value of newly inserted row.
+I.e., you can't UPDATE or DELETE just INSERTed row (a row INSERTed
+after TRowset object was created). You have two choices:
+)_</para>
+<orderedlist>
+<listitem><para>_(
+design your application considering this limitation (never UPDATE
+a newly INSERTed rows);
+)_</para></listitem>
+<listitem><para>_(
+don't use trigger BEFORE INSERT, but provide <![CDATA[<cGenIdSQL>]]>
+parameter containing SQL query to the generator. That statement must
+return an unique ID from generator which then will be assigned to the field
+with name <![CDATA[<cIdName>]]> during executing <![CDATA[<cInsertSQL>]]>
+statement.
+)_</para></listitem>
+</orderedlist>
+<note><para>_(
+Interbase's RDB$DB_KEY attribute intended to be a 'row ID' is not actually.
+It is rather a 'row address' which can be changed (like RECNO() which
+can be changed after PACK). Therefore it's not used as 'row ID'.
+)_</para></note>
+</listitem>
+<listitem><para>_(
+In the case of RDBMS's not providing any of features described above (ODBC,
+DBTCP),
+you should pass <![CDATA[<cIdName>]]> parameter with the name of 'row ID'
+field and should design your application so that a newly INSERTed row never
+is changed or deleted.
+)_</para></listitem>
+</itemizedlist>
+<para>_(
+SQL statements <![CDATA[<cInsertSQL>, <cDeleteSQL>, <cUpdateSQL>
+and <cRefreshSQL>]]> get values of current row fields through parameters
+with the same name as row set's field name. For example:
+)_</para>
+<programlisting><![CDATA[
+<cSelectSQL>  - SELECT DriverID AS id,fname,lname FROM mytable
+<cInsertSQL>  - INSERT INTO mytable (fname,lname) VALUES (:fname,:lname)
+<cUpdateSQL>  - UPDATE mytable SET fname=:fname,lname=:lname WHERE DriverId=:id
+<cDeleteSQL>  - DELETE FROM mytable WHERE DriverId=:id
+<cRefreshSQL> - SELECT DriverID,fname,lname FROM mytable WHERE DriverId=:id
+]]></programlisting>
+<para>_(
+There are three macros: %FIELDS, %VALUES for use in
+<![CDATA[<cInsertSQL>]]>; %LIST for use in <![CDATA[<cUpdateSQL>]]>.
+%FIELDS is expanded as list of field names; %VALUES - as parameter names;
+%LIST - as list of fields and corresponding parameters. For example:
+)_</para>
+<programlisting>
+INSERT INTO mytable (%FIELDS) VALUES (%VALUES)
+UPDATE mytable SET %LIST
+</programlisting>
+<para>_(
+There are two modes of fetching rows controlled by
+<![CDATA[<lNoFetch>]]> parameter: full fetching and fetching on demand.
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+In the first mode (<![CDATA[<lNoFetch>]]>==.F.)
+all selected rows have been fetched before
+<command>CreateRowset()</command> terminates. You can immediately
+use <link linkend="sqllastrec">TRowset:Lastrec()</link> to determine the number
+of selected rows in this mode. You can use <![CDATA[<bEval>]]> code block
+to observe and to manage fetching process.
+)_</para></listitem>
+<listitem><para>_(
+In the second mode (<![CDATA[<lNoFetch>]]>==.T.)
+rows are fetched later on demand (during the navigation
+through the set). This mode is more faster but
+<command>Lastrec()</command> returns actual number
+of selected rows only after all rows have been fetched. <![CDATA[<bEval>]]>
+parameter is ignored in this mode.
+)_</para></listitem>
+</itemizedlist>
+<para>_(
+When an application completes using the row set, it should release
+the set by calling <link linkend="sqlrsdestroy">TRowset:Destroy()</link>.
+)_</para>
+</section>
+<section><title>_(Examples)_</title>
+<itemizedlist>
+<listitem>
+<para>_(
+Simple example which creates a row set not intended to modifying:
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable WHERE fname = 'John'")
+rs:Browse()
+</programlisting>
+</listitem>
+<listitem>
+<para>_(
+Creating a row set using SQL parameters in SELECT query:
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable WHERE fname = :par1",;
+	{{"par1","John"}})
+rs:Browse()
+</programlisting>
+</listitem>
+<listitem>
+<para>_(
+Creating a row set intended to modifying:
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT id,fname,lname FROM mytable",NIL,;
+	"INSERT INTO mytable (%FIELDS) VALUES (%VALUES)",;
+	"DELETE FROM mytable WHERE id=:id",;
+	"UPDATE mytable SET fname=:fname,lname=:lname",;
+	"SELECT id,fname,lname FROM mytable WHERE id=:id",;
+	"id")
+</programlisting>
+</listitem>
+<listitem>
+<para>_(
+Creating a row set with local orders 'id' and 'fullname':
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT id,fname,lname FROM mytable",,,,,,,;
+	{{"id","id"},;
+	{"fullname",{|rs| rs:GetValue("fname")+rs:GetValue("lname")},40}})
+rs:Browse()                 // show rows in natural order
+rs:SetOrder("id")
+rs:Browse()                 // show rows ordered by id
+rs:SetOrder("fullname")
+rs:Browse()                 // show rows ordered by fname and lname
+</programlisting>
+</listitem>
+<listitem>
+<para>_(
+Using <![CDATA[<bEval>]]> to observe fetching process (printing a dot every
+100 rows), which can be stopped by pressing ESC:
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM hugetable",,,,,,,,,,;
+	{|| qqout("."),inkey() != K_ESC}, 100)
+rs:browse()
+</programlisting>
+</listitem>
+<listitem>
+<para>_(
+Fetching rows on demand:
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM hugetable",,,,,,,,,.T.)
+rs:Gotop()
+? rs:Fetched() // 1
+? rs:Lastrec() // 0
+for i:=1 to 100
+	rs:Skip()
+	? rs:Fetched() // 2,3,...,101
+next
+rs:FetchAll()
+? rs:Lastrec() == rs:Fetched() // .T.
+</programlisting>
+</listitem>
+</itemizedlist>
+</section>
+</section>
+
+<section id="sqlrollback"><title>TConnect:Rollback()</title>
+<programlisting><![CDATA[
+Rollback() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Rollback()</command> discards all changes made after
+invoking <link linkend="sqlstart">TConnect:Start()</link> and ends transaction.
+If there is no active transaction an error is generated.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+conn:Start()
+// ...
+// some changes
+// ...
+conn:Rollback()
+</programlisting>
+</section>
+</section>
+
+<section id="sqlstart"><title>TConnect:Start()</title>
+<programlisting><![CDATA[
+Start([<cIsolation>],[<cLockTables>]) --> NIL
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<cIsolation>]]></command></term>
+<listitem><para>_(
+a string defining isolation level to be used during transaction. This
+parameter overrides default isolation level defined by
+<![CDATA[<cIsolation>]]> parameter of
+<link linkend="sqlconnectnew">ConnectNew()</link> function.
+See desired <link linkend="sqlrdbms">RDBMS</link> section about what
+values can be passed with this parameter
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cLockTables>]]></command></term>
+<listitem><para>_(
+this parameter is used only with <link linkend="sqlinterbase">Interbase</link>
+and defines which tables should be locked and how
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Start()</command> starts new transaction. There must be
+no active transaction, otherwise an error is generated. Transaction should
+be sometime stopped (either must be commited or must be rolled back by invoking
+<link linkend="sqlcommit">TConnect:Commit()</link> or
+<link linkend="sqlrollback">TConnect:Rollback()</link> function).
+)_</para>
+<para>_(
+If there is no active transaction all changes to the database are commited
+immediately after executing each SQL statement.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+conn:Start()
+// ...
+// some changes
+// ...
+conn:Commit() // commit changes
+</programlisting>
+</section>
+</section>
+
+</section>
+
+<section id="sqltrowset"><title>_(TRowset class)_</title>
+
+<para>_(
+TRowset class constructor and member functions are listed below:
+)_</para>
+
+<informaltable frame="none"><tgroup cols="2"><tbody>
+
+<row><entry><link linkend="sqlcreaterowset">TConnect:CreateRowset()</link></entry>
+<entry>_(TRowset constructor)_</entry></row>
+
+<row><entry></entry><entry></entry></row>
+
+<row><entry><link linkend="sqlappend">TRowset:Append()</link></entry>
+<entry>_(append a new row to the row set)_</entry></row>
+
+<row><entry><link linkend="sqlbof">TRowset:Bof()</link></entry>
+<entry>_(determine when beginning of set is encountered)_</entry></row>
+
+<row><entry><link linkend="sqlbrowse">TRowset:Browse()</link></entry>
+<entry>_(browse rows within a window)_</entry></row>
+
+<row><entry><link linkend="sqlcreateorder">TRowset:CreateOrder()</link></entry>
+<entry>_(create new local order)_</entry></row>
+
+<row><entry><link linkend="sqldelete">TRowset:Delete()</link></entry>
+<entry>_(delete a row from the row set)_</entry></row>
+
+<row><entry><link linkend="sqlrsdestroy">TRowset:Destroy()</link></entry>
+<entry>_(destroy TRowset object)_</entry></row>
+
+<row><entry><link linkend="sqleof">TRowset:Eof()</link></entry>
+<entry>_(determine when end of set is encountered)_</entry></row>
+
+<row><entry><link linkend="sqlfetchall">TRowset:FetchAll()</link></entry>
+<entry>_(fetch all unfetched rows)_</entry></row>
+
+<row><entry><link linkend="sqlfetched">TRowset:Fetched()</link></entry>
+<entry>_(determine the number of fetched rows)_</entry></row>
+
+<row><entry><link linkend="sqlfieldbinary">TRowset:FieldBinary()</link></entry>
+<entry>_(determine if a given field is binary)_</entry></row>
+
+<row><entry><link linkend="sqlfieldblock">TRowset:FieldBlock()</link></entry>
+<entry>_(return a set/get code block for a given field)_</entry></row>
+
+<row><entry><link linkend="sqlfielddec">TRowset:FieldDec()</link></entry>
+<entry>_(determine number of decimal digits in a given field)_</entry></row>
+
+<row><entry><link linkend="sqlfieldlen">TRowset:FieldLen()</link></entry>
+<entry>_(determine length of a given field)_</entry></row>
+
+<row><entry><link linkend="sqlfieldname">TRowset:FieldName()</link></entry>
+<entry>_(return the name of a field with a given position)_</entry></row>
+
+<row><entry><link linkend="sqlfieldno">TRowset:FieldNo()</link></entry>
+<entry>_(return the position of a field with a given name)_</entry></row>
+
+<row><entry><link linkend="sqlfieldnullable">TRowset:FieldNullable()</link></entry>
+<entry>_(determine if a given field is nullable)_</entry></row>
+
+<row><entry><link linkend="sqlfieldtype">TRowset:FieldType()</link></entry>
+<entry>_(return XBase type of the field)_</entry></row>
+
+<row><entry><link linkend="sqlfieldtypesql">TRowset:FieldTypeSQL()</link></entry>
+<entry>_(return RDBMS type of the field)_</entry></row>
+
+<row><entry><link linkend="sqlfieldunsigned">TRowset:FieldUnsigned()</link></entry>
+<entry>_(determine if a given field is unsigned)_</entry></row>
+
+<row><entry><link linkend="sqlgetvalue">TRowset:GetValue()</link></entry>
+<entry>_(retrieve the value of a field in the current row)_</entry></row>
+
+<row><entry><link linkend="sqlgobottom">TRowset:GoBottom()</link></entry>
+<entry>_(move to the last logical row)_</entry></row>
+
+<row><entry><link linkend="sqlgoto">TRowset:Goto()</link></entry>
+<entry>_(move to the specified row)_</entry></row>
+
+<row><entry><link linkend="sqlgotop">TRowset:GoTop()</link></entry>
+<entry>_(move to the first logical row)_</entry></row>
+
+<row><entry><link linkend="sqlkeyno">TRowset:KeyNo()</link></entry>
+<entry>_(determine logical position of the current row)_</entry></row>
+
+<row><entry><link linkend="sqllastrec">TRowset:Lastrec()</link></entry>
+<entry>_(determine the number of rows in the set)_</entry></row>
+
+<row><entry><link linkend="sqlnfields">TRowset:NFields()</link></entry>
+<entry>_(return the number of fields in the set)_</entry></row>
+
+<row><entry><link linkend="sqlread">TRowset:Read()</link></entry>
+<entry>_(read the current row)_</entry></row>
+
+<row><entry><link linkend="sqlrecno">TRowset:Recno()</link></entry>
+<entry>_(return the position of the current row)_</entry></row>
+
+<row><entry><link linkend="sqlrefreshall">TRowset:RefreshAll()</link></entry>
+<entry>_(refresh the set by repeated executing the SELECT query)_</entry></row>
+
+<row><entry><link linkend="sqlrefreshcurrent">TRowset:RefreshCurrent()</link></entry>
+<entry>_(refresh the current row by executing <![CDATA[<cRefreshSQL>]]>)_</entry></row>
+
+<row><entry><link linkend="sqlseek">TRowset:Seek()</link></entry>
+<entry>_(move to the row having the specified key value)_</entry></row>
+
+<row><entry><link linkend="sqlsetorder">TRowset:SetOrder()</link></entry>
+<entry>_(set the controlling order)_</entry></row>
+
+<row><entry><link linkend="sqlsetvalue">TRowset:SetValue()</link></entry>
+<entry>_(set the value of a field in the current row)_</entry></row>
+
+<row><entry><link linkend="sqlskip">TRowset:Skip()</link></entry>
+<entry>_(move relative to the current row)_</entry></row>
+
+<row><entry><link linkend="sqlwrite">TRowset:Write()</link></entry>
+<entry>_(write the current row)_</entry></row>
+
+</tbody></tgroup></informaltable>
+
+<section id="sqlappend"><title>TRowset:Append()</title>
+<programlisting><![CDATA[
+Append(<oRow>) --> NIL
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<oRow>]]></command></term>
+<listitem><para>_(
+an object with fields values
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Append()</command> appends a new row to the row set and
+assigns <![CDATA[<oRow>]]> attributes values to the approprate fields of
+newly inserted row.
+)_</para>
+<para>_(
+If row set was created with <![CDATA[<cInsertSQL>]]> parameter,
+the latter is executed on the SQL server with newly inserted values.
+)_</para>
+<para>_(
+If the row set was created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]>
+parameter of <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> is .T.),
+all unfetched rows are fetched before processing.
+)_</para>
+<para>_(
+<command>Append()</command> increases rows count returning by
+<link linkend="sqllastrec">TRowset:Lastrec()</link>.
+)_</para>
+<para>_(
+Current row position moves to the new row.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT id,fname,lname FROM mytable",,;
+	"INSERT INTO mytable (fname,lname) VALUES (:fname,:lname)")
+obj := map()          // create an empty object
+obj:fname := "John"   // set attributes with the same names as fields
+obj:lname := "Smith"  // ...
+// add new row and execute
+// INSERT INTO mytable (fname,lname) VALUES ('John','Smith')
+rs:Append(obj)
+</programlisting>
+</section>
+</section>
+
+<section id="sqlbof"><title>TRowset:Bof()</title>
+<programlisting><![CDATA[
+Bof() --> lBoundary
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+True (.T.) after an attempt to skip backward beyond the first logical row in
+the set; otherwise it returns false (.F.). If the set contains no rows
+it returns true (.T.).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Bof()</command> is used to test for a boundary condition when
+you are moving the row pointer backward through a set using
+<link linkend="sqlskip">TRowset:Skip()</link> function.
+)_</para>
+<para>_(
+Once <command>Bof()</command> is set to true (.T.), it retains its value
+until there is another attempt to move the row pointer.
+)_</para>
+<para>_(
+<command>TRowset:Skip()</command> is the only row movement function
+that can set <command>Bof()</command> to true (.T.).
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable")
+? rs:Recno() // 1
+? rs:Bof()   // .F.
+rs:Skip(-1)
+? rs:Recno() // 1
+? rs:Bof()   // .T.
+</programlisting>
+</section>
+</section>
+
+<section id="sqlbrowse"><title>TRowset:Browse()</title>
+<programlisting><![CDATA[
+Browse([<nTop>],[<nLeft>],[<nBottom>],[<nRight>],;
+	[<asColumns>],[<asHeaders>],[<anWidths>]) --> NIL
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nTop>,<nLeft>,<nBottom>,<nRight>]]></command></term>
+<listitem><para>_(
+define the window coordinates. If not specified, the default window coordinates
+are 1, 0 to MAXROW(), and MAXCOL().
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<asColumns>]]></command></term>
+<listitem><para>_(
+an array of strings containing field names to use as column values
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<asHeaders>]]></command></term>
+<listitem><para>_(
+a parallel array of strings contaning headings for each column
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<anWidths>]]></command></term>
+<listitem><para>_(
+a parallel array containing widths for each column
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Browse()</command> is a user interface function
+that provides a simple browser for rows in the set.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT id,fname,lname FROM mytable",,,,,,,,,.T.)
+rs:Browse(,,,,{"fname","lname"},{"First name","Last name"},{20,20})
+</programlisting>
+</section>
+</section>
+
+<section id="sqlcreateorder"><title>TRowset:CreateOrder()</title>
+<programlisting><![CDATA[
+CreateOrder(<cOrderName>,<cFieldName>|<bExpression>,[<nKeyLength>]) --> NIL
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<cOrderName>]]></command></term>
+<listitem><para>_(
+defines the name of an order to be created
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+a name of the field which values are used as keys
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<bExpression>]]></command></term>
+<listitem><para>_(
+a code block used to evaluate keys; it receives TRowset object as parameter
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<nKeyLength>]]></command></term>
+<listitem><para>_(
+a length of the key; it is required for character keys
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>CreateOrder()</command> is used to create a local order.
+Under 'local order' is meant an index in memory controlling logical order of
+rows in the set. Once created, order can be set as controlling by
+<link linkend="sqlsetorder">TRowset:SetOrder()</link> function. Besides,
+controlling order can be used to locate row having a given key by
+<link linkend="sqlseek">TRowset:Seek()</link> function.
+)_</para>
+<para>_(
+If rowset is created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]>
+parameter of <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>
+is .T.), all rows are fetched implicitly before processing.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<para>_(
+This example creates two orders ('birthdate' and 'fullname');
+shows rows ordered by birth date and full name, and seeks for a person
+whose name begins with 'Joh':
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT bdate,fname,lname FROM employee")
+rs:CreateOrder("birthdate","bdate")
+rs:CreateOrder("fullname",{|rs| rs:GetValue("fname")+rs:GetValue("lname")},40)
+rs:SetOrder("birthdate")
+rs:Browse()
+rs:SetOrder("fullname")
+rs:Browse()
+? rs:Seek("Joh") // .T.
+row := rs:Read()
+? row:fname       // John
+</programlisting>
+</section>
+</section>
+
+<section id="sqldelete"><title>TRowset:Delete()</title>
+<programlisting><![CDATA[
+Delete() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Delete()</command> deletes the current row from the set.
+)_</para>
+<para>_(
+If row set was created with <![CDATA[<cDeleteSQL>]]> parameter,
+the latter is executed on the SQL server with the value of 'row id' field
+of the current record.
+)_</para>
+<para>_(
+If the row set was created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]>
+parameter of <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> is .T.),
+all unfetched rows are fetched before processing.
+)_</para>
+<para>_(
+<command>Delete()</command> decreases rows count returning by
+<link linkend="sqllastrec">TRowset:Lastrec()</link>.
+)_</para>
+<para>_(
+If there is no controlling order the current row position remains the same,
+or moves to the last row (when deleted a row with Recno()==Lastrec()).
+)_</para>
+<para>_(
+If there is controlling order (set using
+<link linkend="sqlsetorder">TRowset:SetOrder()</link>)
+the current row position moves to the row having the next key, or
+moves to the last logical row (when a row having biggest key value is deleted).
+)_</para>
+<para>_(
+If the last remained row is deleted, both <link linkend="sqlbof">Bof()</link>
+and <link linkend="sqleof">Eof()</link> status are switched to true (.T.)
+and <link linkend="sqlrecno">TRowset:Recno()</link> returns zero (0).
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT id,fname,lname FROM mytable",,,;
+	"DELETE FROM mytable WHERE id=:id")
+? rs:Lastrec() // 10
+// delete a row and execute
+// DELETE FROM mytable WHERE id=...
+rs:Delete()
+? rs:Lastrec() // 9
+</programlisting>
+</section>
+</section>
+
+<section id="sqlrsdestroy"><title>TRowset:Destroy()</title>
+<programlisting><![CDATA[
+Destroy() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+When an application completes using the row set, it should release
+the set by calling <command>TRowset:Destroy()</command>.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable")
+// ...
+// do some work
+// ...
+rs:Destroy()
+</programlisting>
+</section>
+</section>
+
+<section id="sqleof"><title>TRowset:Eof()</title>
+<programlisting><![CDATA[
+Eof() --> lBoundary
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+True (.T.) after an attempt to skip forward beyond the last logical row
+in the set; otherwise it returns false (.F.). If the set contains no rows
+it returns true (.T.).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Eof()</command> is used to test for a boundary condition when
+you are moving the row pointer forward through a set using
+<link linkend="sqlskip">TRowset:Skip()</link> function.
+)_</para>
+<para>_(
+Once <command>Eof()</command> is set to true (.T.), it retains its value
+until there is another attempt to move the row pointer.
+)_</para>
+<para>_(
+TRowset:Skip() is the only row movement function that can set
+<command>Eof()</command> to true (.T.).
+)_</para>
+<note><para>_(
+Unlike standard XBase's command <command>SKIP</command>,
+<link linkend="sqlskip">TRowset:Skip()</link> never moves beyond the last
+logical row. When <command>TRowset:Eof()</command> returns .T. the
+current row position is certainly the last logical row, not
+<command>Lastrec()</command>+1.
+)_</para></note>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable")
+rs:GoBottom()
+? rs:Recno() // 100
+? rs:Eof()   // .F.
+rs:Skip()
+? rs:Recno() // 100
+? rs:Eof()   // .T.
+rs:Skip(-1)
+? rs:Recno() // 99
+? rs:Eof()   // .F.
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfetchall"><title>TRowset:FetchAll()</title>
+<programlisting><![CDATA[
+FetchAll() --> nLastrec
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+The number of rows in the set.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FetchAll()</command> fetches all unfetched rows. It is useful
+when row set has been created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]>
+parameter of <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>
+is .T.). If there is no unfetched rows <command>FetchAll()</command>
+has no effect.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable",,,,,,,,,.T.)
+? rs:Lastrec()  // 0
+? rs:Fetched()  // 1
+? rs:FetchAll() // number of selected rows
+? rs:Lastrec()  //         - " -
+? rs:Fetched()  //         - " -
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfetched"><title>TRowset:Fetched()</title>
+<programlisting><![CDATA[
+Fetched() --> nNumberOfFetchedRows
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+Number of already fetched rows.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Fetched()</command> is used to determine how much rows are fetched
+already. It is useful in <![CDATA[<bEval>]]> code block parameter of
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>, and when
+row set has been created in 'fetch on demand' mode.
+)_</para>
+</section>
+<section><title>_(Examples)_</title>
+<itemizedlist>
+<listitem>
+<para>_(
+Print the number of already fetched rows during fetching process:
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM hugetable",,,,,,,,,,;
+	{|rs| qout(rs:Fetched())},100)
+</programlisting>
+</listitem>
+<listitem>
+<para>_(
+Using <command>Fetched()</command> with row set created in 'fetch on demand'
+mode:
+)_</para>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM hugetable",,,,,,,,,.T.)
+? rs:Fetched() // 1
+rs:Skip()
+? rs:Fetched() // 2
+rs:Skip(100)
+? rs:Fetched() // 102
+</programlisting>
+</listitem>
+</itemizedlist>
+</section>
+</section>
+
+<section id="sqlfieldbinary"><title>TRowset:FieldBinary()</title>
+<programlisting><![CDATA[
+FieldBinary(<nFieldNo> | <cFieldName>) --> lBinary
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+True (.T.) if the given field is binary; false (.F.) otherwise.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldBinary()</command> is used to determine if a character field
+is binary. Charset transformations don't take place with the values of
+binary field.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldBinary("fname") // .F.
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldblock"><title>TRowset:FieldBlock()</title>
+<programlisting><![CDATA[
+FieldBlock(<nFieldNo> | <cFieldName>) --> bBlock
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+A code block that, when evaluated, sets (assigns) or gets (retrieves)
+the value of the given field.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldBlock()</command> builds a set/get code block for a given field.
+When executed with an argument, the code block created by this function
+assigns the value of the argument to a given field.  When executed
+without an argument, the code block retrieves the value of a given field.
+)_</para>
+<note><para>_(
+Change the set using that code block does not cause immediate execution of
+<![CDATA[<cUpdateSQL>]]> (parameter passed to
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>).
+<link linkend="sqlwrite">Write()</link> and all row movement functions
+(<link linkend="sqlgotop">Gotop()</link>,
+<link linkend="sqlgobottom">Gobottom()</link>,
+<link linkend="sqlgoto">Goto()</link> and <link linkend="sqlskip">Skip()</link>)
+are only functions that initiate reflection the change on the SQL server.
+)_</para></note>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+cb := rs:FieldBlock("fname")
+? eval(cb)   // 'John'
+eval(cb,'Richard')
+? eval(cb)   // 'Richard'
+rs:Write(rs:Read()) // cause UPDATE-ing on the server
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfielddec"><title>TRowset:FieldDec()</title>
+<programlisting><![CDATA[
+FieldDec(<nFieldNo> | <cFieldName>) --> nDec
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+A number of decimal digits used in a given numeric field.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldDec()</command> is used to determine the number of decimal
+digits in a given field.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldDec("salary")
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldlen"><title>TRowset:FieldLen()</title>
+<programlisting><![CDATA[
+FieldLen(<nFieldNo> | <cFieldName>) --> nDec
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+A length of the field (in terms of used RDBMS).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldLen()</command> is used to determine the length of a given field,
+in terms of used RDBMS. For example, the length of a field of type 'FLOAT' is 4.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldLen("salary")
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldname"><title>TRowset:FieldName()</title>
+<programlisting><![CDATA[
+FieldName(<nFieldNo>) --> cFieldName
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+The name of field.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldName()</command> is used to determine the name of a field with
+a given position.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldName(1) // fname
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldno"><title>TRowset:FieldNo()</title>
+<programlisting><![CDATA[
+FieldName(<cFieldName>) --> nFieldNo
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+The position of the field.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldNo()</command> is used to determine the position of a field with
+a given name.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldName('fname') // 1
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldnullable"><title>TRowset:FieldNullable()</title>
+<programlisting><![CDATA[
+FieldNullable(<nFieldNo> | <cFieldName>) --> lNullable
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+True (.T.) if the given field is nullable; false (.F.) otherwise (NOT NULL).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldNullable()</command> is used to determine if a field is nullable,
+i.e. not 'NOT NULL'.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldNullable("fname") // .T.
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldtype"><title>TRowset:FieldType()</title>
+<programlisting><![CDATA[
+FieldType(<nFieldNo> | <cFieldName>) --> cType
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+Type of a field (in terms of XBase).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldType()</command> is used to determine the type of a given field.
+It returns a single character that designates the data type of
+the data field. <command>FieldType()</command> returns the following
+characters for the various data field types:
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+<emphasis>C</emphasis> - character string
+)_</para></listitem>
+<listitem><para>_(
+<emphasis>N</emphasis> - numeric
+)_</para></listitem>
+<listitem><para>_(
+<emphasis>D</emphasis> - date
+)_</para></listitem>
+<listitem><para>_(
+<emphasis>T</emphasis> - datetime
+)_</para></listitem>
+<listitem><para>_(
+<emphasis>L</emphasis> - logical
+)_</para></listitem>
+</itemizedlist>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldType("salary") // 'N'
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldtypesql"><title>TRowset:FieldTypeSQL()</title>
+<programlisting><![CDATA[
+FieldTypeSQL(<nFieldNo> | <cFieldName>) --> nType
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+Numeric type of a field (in terms of used RDBMS).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldTypeSQL()</command> is used to determine the type of a given field,
+in terms of used RDBMS. Specific RDBMS types are defined in corresponding *.ch
+files.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldTypeSQL("salary")
+</programlisting>
+</section>
+</section>
+
+<section id="sqlfieldunsigned"><title>TRowset:FieldUnsigned()</title>
+<programlisting><![CDATA[
+FieldUnsigned(<nFieldNo> | <cFieldName>) --> lUnsigned
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+True (.T.) if the given field is unsigned; false (.F.) otherwise.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>FieldUnsigned()</command> is used to determine if a numeric field
+is unsigned.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:FieldUnsigned("salary") // .T.
+</programlisting>
+</section>
+</section>
+
+<section id="sqlgetvalue"><title>TRowset:GetValue()</title>
+<programlisting><![CDATA[
+GetValue(<nFieldNo> | <cFieldName>) --> xValue
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+A value of current row's field.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>GetValue()</command> is used to retrieve the value of a field
+in the current row.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+? rs:GetValue('fname') // John
+</programlisting>
+</section>
+</section>
+
+<section id="sqlgobottom"><title>TRowset:GoBottom()</title>
+<programlisting><![CDATA[
+GoBottom() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+<command>GoBottom()</command> moves the row position to the last logical row.
+)_</para>
+<para>_(
+If the row set was created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]>
+parameter of <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>
+is .T.), all unfetched rows are fetched before processing.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs:CreateRowset("SELECT * FROM mytable",,,,,,,,,.T.)
+? rs:Recno()   // 1
+? rs:Lastrec() // 0 (there remain unfetched rows)
+rs:GoBottom()
+? rs:Recno()   // number of selected rows
+? rs:Lastrec() // number of selected rows (no unfetched rows remain)
+</programlisting>
+</section>
+</section>
+
+<section id="sqlgoto"><title>TRowset:Goto()</title>
+<programlisting><![CDATA[
+Goto(<nRowPosition>) --> nNewPosition
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nRowPosition>]]></command></term>
+<listitem><para>_(
+the position to move to
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+New position of current row.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Goto()</command> is used to move to the specified physical
+row position. If controlling order is not physical (set by
+<link linkend="sqlsetorder">TRowset:SetOrder()</link>),
+physical position can be different from logical position.
+)_</para>
+<para>_(
+If <![CDATA[<nRowPosition>]]> is less than 1, <command>Goto()</command>
+moves to the first physical row, and <link linkend="sqlbof">Bof()</link>
+state is set to true (.T.). If <![CDATA[<nRowPosition>]]> is larger than
+<link linkend="sqllastrec">Lastrec()</link>, <command>Goto()</command> moves
+to the last physical row, and <link linkend="sqleof">Eof()</link> state
+is set to true (.T.).
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+for i:=1 to rs:Lastrec()
+	rs:goto(i)
+	? rs:Read()
+next
+</programlisting>
+</section>
+</section>
+
+<section id="sqlgotop"><title>TRowset:GoTop()</title>
+<programlisting><![CDATA[
+GoTop() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+<command>GoTop()</command> moves the row position to the first logical row.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs:CreateRowset("SELECT fname,lname FROM mytable")
+? rs:Recno()   // 1
+rs:CreateOrder("fname","fname",20)
+rs:SetOrder("fname")
+rs:GoTop()
+? rs:Recno()   // the position of first logical row
+</programlisting>
+</section>
+</section>
+
+<section id="sqlkeyno"><title>TRowset:KeyNo()</title>
+<programlisting><![CDATA[
+KeyNo() --> nPosition
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+The logical position of the current row.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>KeyNo()</command> is used to determine the logical number of
+the current row. If there is no controlling order (created by
+<link linkend="sqlcreateorder">TRowset:CreateOrder()</link> and set by
+<link linkend="sqlsetorder">TRowset:SetOrder()</link>), <command>KeyNo()</command>
+returns the physical row position, i.e. it works just like
+<link linkend="sqlrecno">TRowset:Recno()</link>.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM mytable")
+rs:CreateOrder("fname","fname",20)
+? rs:KeyNo(), rs:Recno() // 1, 1 (no controlling order)
+rs:SetOrder("fname")     // set controlling order by fname
+? rs:KeyNo(), rs:Recno() // N, 1
+rs:GoTop()
+? rs:KeyNo(), rs:Recno() // 1, M
+</programlisting>
+</section>
+</section>
+
+<section id="sqllastrec"><title>TRowset:Lastrec()</title>
+<programlisting><![CDATA[
+Lastrec() --> nLastrec
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+The number of rows in the set.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Lastrec()</command> determines the number of rows in the set.
+)_</para>
+<para>_(
+If the row set was created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]>
+parameter of <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> is .T.),
+<command>Lastrec()</command> can return 0 (if there remain unfetched rows).
+The number of fetched rows can be determined using
+<link linkend="sqlfetched">TRowset:Fetched()</link> function.
+<link linkend="sqlfetchall">TRowset:FetchAll()</link> can be used to fetch
+the remainder of unfetched rows. After that, <command>Lastrec()</command>
+will return actual number of rows.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable",,,,,,,,,.T.)
+? rs:Lastrec() // 0
+rs:FetchAll()
+? rs:Lastrec() // number of selected rows
+</programlisting>
+</section>
+</section>
+
+<section id="sqlnfields"><title>TRowset:NFields()</title>
+<programlisting><![CDATA[
+NFields() --> nFields
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+The number of fields in the row set.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>NFields()</command> determines the number of fields in the row set.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM mytable")
+? rs:NFields() // 2
+</programlisting>
+</section>
+</section>
+
+<section id="sqlread"><title>TRowset:Read()</title>
+<programlisting><![CDATA[
+Read() --> oRow
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+An object containing all fields of current row.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Read()</command> retrieves the current row values into an object.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM mytable")
+? rs:Read():fname // John
+? rs:Read():lname // Smith
+</programlisting>
+</section>
+</section>
+
+<section id="sqlrecno"><title>TRowset:Recno()</title>
+<programlisting><![CDATA[
+Recno() --> nPosition
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+The physical position of the current row.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Recno()</command> used to determine the physical position of
+the current row. If there are no rows in the set, it returns 0.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable")
+? rs:Recno() // 1
+rs:Skip()
+? rs:Recno() // 2
+rs:Goto(100)
+? rs:Recno() // 100
+</programlisting>
+</section>
+</section>
+
+<section id="sqlrefreshall"><title>TRowset:RefreshAll()</title>
+<programlisting><![CDATA[
+RefreshAll() --> nLastrec
+]]></programlisting>
+<section><title>_(Return value)_</title>
+<para>_(
+The number of rows in the set.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>RefreshAll()</command> refreshes the row set by repeatedly
+executing <![CDATA[<cSelectSQL>]]> passed to the TRowset constructor
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> with
+SQL parameters passed in <![CDATA[<aParameters>]]>. The physical
+row position remains the same, or moves to the last physical row.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable")
+rs:Browse()
+rs:RefreshAll()
+rs:Browse()
+</programlisting>
+</section>
+</section>
+
+<section id="sqlrefreshcurrent"><title>TRowset:RefreshCurrent()</title>
+<programlisting><![CDATA[
+RefreshCurrent() --> NIL
+]]></programlisting>
+<section><title>_(Description)_</title>
+<para>_(
+<command>RefreshCurrent()</command> refreshes the current row of the set
+by executing <![CDATA[<cRefreshSQL>]]> passed to the TRowset constructor
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>.
+If <![CDATA[<cRefreshSQL>]]> not passed, <command>RefreshCurrent()</command>
+has no effect.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT id,fname,lname FROM mytable",,,,,;
+	"SELECT id,fname,lname FROM mytable WHERE id=:id")
+? rs:Read()
+rs:RefreshCurrent()
+? rs:Read()
+</programlisting>
+</section>
+</section>
+
+<section id="sqlseek"><title>TRowset:Seek()</title>
+<programlisting><![CDATA[
+Seek(<xKeyValue>,[<lSoft>]) --> lFound
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<xKeyValue>]]></command></term>
+<listitem><para>_(
+a value of the key associated with the desired row
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<lSoft>]]></command></term>
+<listitem><para>_(
+logical value that specifies whether a soft seek is to be performed.
+This determines how the work area is positioned if the specified key
+value is not found (see below)
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+True (.T.) if the specified key value was found; otherwise, false (.F.).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Seek()</command> moves to the first logical row whose key
+value is equal to <![CDATA[<xKeyValue>]]>. If such row is found, it becomes
+the current row and <command>Seek()</command> returns true (.T.);
+otherwise, it returns false (.F.). For a normal (not soft) seek,
+the row set is positioned to the last logical row
+and <link linkend="sqleof">TRowset:Eof()</link> returns true (.T.);
+for a soft seek, the row set is positioned to the first row whose key
+value is greater than the specified key value.  If no such row exists,
+the row set is positioned to the last logical row and
+<command>TRowset:Eof()</command> returns true (.T.).
+)_</para>
+<para>_(
+For a row set with no controlling order (created by
+<link linkend="sqlcreateorder">TRowset:CreateOrder()</link> and prescribed controlling
+by <link linkend="sqlsetorder">TRowset:SetOrder()</link>),
+<command>Seek()</command> has no effect.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM mytable")
+rs:CreateOrder("fname","fname",20)
+rs:SetOrder("fname")
+? rs:Seek("John")
+</programlisting>
+</section>
+</section>
+
+<section id="sqlsetorder"><title>TRowset:SetOrder()</title>
+<programlisting><![CDATA[
+SetOrder([<cOrderName>]) --> cOrderName
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<cOrderName>]]></command></term>
+<listitem><para>_(
+the name of the order to be set controlling
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+The name of previously controlling order or NIL (physical order).
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>SetOrder()</command> activates an order created by
+<link linkend="sqlcreateorder">TRowset:CreateOrder()</link>
+(makes it controlling). It returns the name of previously controlling
+order.
+)_</para>
+<para>_(
+If passed an empty string, <command>SetOrder()</command> causes the row set
+to be accessed in physical (<link linkend="sqlrecno">TRowset:Recno()</link>)
+order.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM mytable")
+rs:CreateOrder("fname","fname",20)
+rs:Browse() // browse rows in physical order
+rs:SetOrder("fname")
+rs:Browse() // browse rows ordered by first name
+rs:SetOrder("")
+rs:Browse() // browse in physical order again
+</programlisting>
+</section>
+</section>
+
+<section id="sqlsetvalue"><title>TRowset:SetValue()</title>
+<programlisting><![CDATA[
+SetValue(<nFieldNo> | <cFieldName>, <xValue>) --> NIL
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nFieldNo>]]></command></term>
+<listitem><para>_(
+the position of the field in the list of fields
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<cFieldName>]]></command></term>
+<listitem><para>_(
+the name of the field
+)_</para></listitem></varlistentry>
+<varlistentry><term><command><![CDATA[<xValue>]]></command></term>
+<listitem><para>_(
+the value to be assigned to the field
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>SetValue()</command> assignes <![CDATA[<xValue>]]> to the field
+in the current row.
+)_</para>
+<note><para>_(
+Unlike <link linkend="sqlwrite">TRowset:Write()</link> function,
+<command>SetValue()</command> does not cause immediate reflection the change
+on the SQL server. One of the row movement functions must arise
+to cause reflection (executing <![CDATA[<cUpdateSQL>]]> statement,
+passed to the TRowset constructor
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>).
+)_</para></note>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT fname,lname FROM mytable")
+? rs:GetValue("fname") // John
+rs:SetValue("fname","Sean")
+? rs:GetValue("fname") // Sean
+</programlisting>
+</section>
+</section>
+
+<section id="sqlskip"><title>TRowset:Skip()</title>
+<programlisting><![CDATA[
+Skip([<nRows>]) --> nRows
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<nRows>]]></command></term>
+<listitem><para>_(
+the number of logical rows to move, relatively to the current row.
+A positive value means to skip forward, and a negative value means
+to skip backward.  If omitted, a value of 1 is assumed
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Return value)_</title>
+<para>_(
+Actual number of rows skipped.
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Skip()</command> moves either forward or backward relatively
+to the current row. Attempting to skip forward beyond the last logical
+row positions the row set to the last logical row and
+<link linkend="sqleof">TRowset:Eof()</link> returns true (.T.).
+Attempting to skip backward beyond the first logical row positions
+the row set to the first logical row and
+<link linkend="sqlbof">TRowset:Bof()</link> returns true (.T.).
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT * FROM mytable")
+while !rs:Eof()
+	? rs:Read()
+	rs:Skip()
+enddo
+</programlisting>
+</section>
+</section>
+
+<section id="sqlwrite"><title>TRowset:Write()</title>
+<programlisting><![CDATA[
+Write(<oRow>) --> NIL
+]]></programlisting>
+<section><title>_(Parameters)_</title>
+<variablelist>
+<varlistentry><term><command><![CDATA[<oRow>]]></command></term>
+<listitem><para>_(
+an object containing new field values
+)_</para></listitem></varlistentry>
+</variablelist>
+</section>
+<section><title>_(Description)_</title>
+<para>_(
+<command>Write()</command> assigns new values to the current row's fields.
+It tries then to reflect the changes on the SQL server by executing
+<![CDATA[<cUpdateSQL>]]> statement passed to the TRowset constructor
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>.
+)_</para>
+</section>
+<section><title>_(Example)_</title>
+<programlisting>
+rs := conn:CreateRowset("SELECT id,fname,lname FROM mytable",,,,;
+	"UPDATE mytable SET fname=:fname,lname=:lname WHERE id=:id")
+oRow := map()
+oRow:fname := "John"
+oRow:lname := "Smith"
+rs:Write(oRow)
+? rs:GetValue("fname") // John
+? rs:GetValue("lname") // Smith
+</programlisting>
+</section>
+</section>
+
+
+</section>
+
+</section>
+
+<section id="sqlrdbms"><title>_(RDBMS specific)_</title>
+<para>_(
+Peculiarities of using particular RDBMS with CLIP are described below.
+)_</para>
+
+<section id="sqlmysql"><title>MySQL</title>
+<section><title>_(Building an application)_</title>
+<para>_(
+To be able to build an application using MySQL data base, appropriate packages
+must be installed. It includes MySQL development files and
+<command>clip-mysql</command> package. See
+<link linkend="installation">Installation</link> chapter for details.
+)_</para>
+<para>_(
+Link your application with MySQL driver by adding
+<command>-lclip-mysql</command> to the end of <command>clip</command> command:
+)_</para>
+<programlisting>
+$clip -e test.prg -lclip-mysql
+</programlisting>
+</section>
+<section><title>_(ConnectNew() syntax)_</title>
+<para>_(
+To obtain a connect to the MySQL server use
+<link linkend="sqlconnectnew">ConnectNew()</link> with the following syntax:
+)_</para>
+<programlisting><![CDATA[
+ConnectNew("MS",[<cHost>],[<cPort>],[<cLogin>],[<cPassword>],[<cDB>],;
+	[<cSocket>],[<cFlags>],[<cCharset>],[<cIsolation>])
+]]></programlisting>
+<para>_(
+where
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+"MS" - identifier of MySQL driver; see also
+<link linkend="sqlsqllist">SQLList()</link>
+)_</para></listitem>
+<listitem><para>_(
+cHost - a string containing the name of the host MySQL server is running on
+)_</para></listitem>
+<listitem><para>_(
+cPort - server port number as string
+)_</para></listitem>
+<listitem><para>_(
+cLogin - a string containing user login
+)_</para></listitem>
+<listitem><para>_(
+cPassword - a string containing user's password
+)_</para></listitem>
+<listitem><para>_(
+cDB - a string containing the name of the database to be used
+)_</para></listitem>
+<listitem><para>_(
+cSocket - a string containing UNIX socket or pipe name to be used as transport
+)_</para></listitem>
+<listitem><para>_(
+cFlags - flags to be used with this connection as string; see MySQL manual
+for details
+)_</para></listitem>
+<listitem><para>_(
+cCharset - charset used by server; if not passed, SET("SQL_CHARSET") is used
+)_</para></listitem>
+<listitem><para>_(
+cIsolation - a string containing the name of isolation level to be used
+by default (see MySQL manual for details); if not passed,
+SET("MS_ISOLATION_LEVEL") value is used; possible values:
+)_</para>
+<itemizedlist>
+<listitem><para>
+READ UNCOMMITTED
+</para></listitem>
+<listitem><para>
+READ COMMITTED
+</para></listitem>
+<listitem><para>
+REPEATABLE READ
+</para></listitem>
+<listitem><para>
+SERIALIZABLE
+</para></listitem>
+</itemizedlist>
+<para>_(
+the same values are possible for <![CDATA[<cIsolation>]]> parameter
+of <link linkend="sqlstart">TRowset:Start()</link>.
+)_</para></listitem>
+</itemizedlist>
+</section>
+<section><title>_(Rows binding)_</title>
+<para>_(
+To bind rows in the data base and rows in the local set a field with
+AUTO_INCREMENT clause is used (see description of CREATE TABLE statement
+in the MySQL manual). See also
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> description
+for details.
+)_</para>
+</section>
+<section><title>_(Implemented data types)_</title>
+<para>_(
+The following table shows implemented MySQL data types and their XBase
+equivalents.
+)_</para>
+<table frame="all"><title>_(Implemented MySQL data types)_</title><tgroup cols="2">
+<thead>
+<row><entry>_(MySQL data type)_</entry><entry>_(CLIP data type)_</entry></row>
+</thead>
+<tbody>
+<row><entry>DECIMAL     </entry><entry>NUMERIC</entry></row>
+<row><entry>TINY        </entry><entry>NUMERIC</entry></row>
+<row><entry>SHORT       </entry><entry>NUMERIC</entry></row>
+<row><entry>LONG        </entry><entry>NUMERIC</entry></row>
+<row><entry>FLOAT       </entry><entry>NUMERIC</entry></row>
+<row><entry>DOUBLE      </entry><entry>NUMERIC</entry></row>
+<row><entry>LONGLONG    </entry><entry>NUMERIC</entry></row>
+<row><entry>INT24       </entry><entry>NUMERIC</entry></row>
+<row><entry>TIMESTAMP   </entry><entry>DATE</entry></row>
+<row><entry>DATE        </entry><entry>DATE</entry></row>
+<row><entry>TIME        </entry><entry>ARRAY {h,m,s}; h,m,s - NUMERIC</entry></row>
+<row><entry>DATETIME    </entry><entry>DATE</entry></row>
+<row><entry>YEAR        </entry><entry>NUMERIC</entry></row>
+<row><entry>ENUM        </entry><entry>CHARACTER</entry></row>
+<row><entry>SET         </entry><entry>CHARACTER</entry></row>
+<row><entry>TINY_BLOB   </entry><entry>CHARACTER</entry></row>
+<row><entry>MEDIUM_BLOB </entry><entry>CHARACTER</entry></row>
+<row><entry>LONG_BLOB   </entry><entry>CHARACTER</entry></row>
+<row><entry>BLOB        </entry><entry>CHARACTER</entry></row>
+<row><entry>VAR_STRING  </entry><entry>CHARACTER</entry></row>
+<row><entry>STRING      </entry><entry>CHARACTER</entry></row>
+</tbody>
+</tgroup></table>
+</section>
+</section>
+
+<section id="sqlpostgresql"><title>PostgreSQL</title>
+<section><title>_(Building an application)_</title>
+<para>_(
+To be able to build an application using PostgreSQL data base,
+appropriate packages must be installed. It includes PostgreSQL
+development files and <command>clip-postgres</command> package. See
+<link linkend="installation">Installation</link> chapter for details.
+)_</para>
+<para>_(
+Link your application with PostgreSQL driver by adding
+<command>-lclip-postgres</command> to the end of <command>clip</command>
+command:
+)_</para>
+<programlisting>
+$clip -e test.prg -lclip-postgres
+</programlisting>
+</section>
+<section><title>_(ConnectNew() syntax)_</title>
+<para>_(
+To obtain a connect to the PostgreSQL server use
+<link linkend="sqlconnectnew">ConnectNew()</link> with the following syntax:
+)_</para>
+<programlisting><![CDATA[
+ConnectNew("PG",[<cHost>],[<cPort>],[<cLogin>],[<cPassword>],[<cDB>],;
+	[<cTTY>],[<cOptions>],[<cCharset>],[<cIsolation>])
+]]></programlisting>
+<para>_(
+where
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+"PG" - identifier of PostgreSQL driver; see also
+<link linkend="sqlsqllist">SQLList()</link>
+)_</para></listitem>
+<listitem><para>_(
+cHost - a string containing the name of the host PostgreSQL server is running on
+)_</para></listitem>
+<listitem><para>_(
+cPort - server port number as string
+)_</para></listitem>
+<listitem><para>_(
+cLogin - a string containing user login
+)_</para></listitem>
+<listitem><para>_(
+cPassword - a string containing user's password
+)_</para></listitem>
+<listitem><para>_(
+cDB - a string containing the name of the database to be used
+)_</para></listitem>
+<listitem><para>_(
+cTTY - the name of debug tty
+)_</para></listitem>
+<listitem><para>_(
+cOptions - optional parameters of the connection; see PostgreSQL manual
+for details
+)_</para></listitem>
+<listitem><para>_(
+cCharset - charset used by server; if not passed, SET("SQL_CHARSET") is used
+)_</para></listitem>
+<listitem><para>_(
+cIsolation - a string containing the name of isolation level to be used by default
+(see PostgreSQL manual for details); if not passed, SET("PG_ISOLATION_LEVEL")
+value is used; possible values:
+)_</para>
+<itemizedlist>
+<listitem><para>
+READ COMMITTED
+</para></listitem>
+<listitem><para>
+SERIALIZABLE
+</para></listitem>
+</itemizedlist>
+<para>_(
+the same values are possible for <![CDATA[<cIsolation>]]> parameter
+of <link linkend="sqlstart">TRowset:Start()</link>.
+)_</para></listitem>
+</itemizedlist>
+</section>
+<section><title>_(Rows binding)_</title>
+<para>_(
+To bind rows in the data base and rows in the local set a <command>oid</command>
+field is used. See
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> description
+and PostgreSQL manual for details.
+)_</para>
+</section>
+<section><title>_(Implemented data types)_</title>
+<para>_(
+The following table shows implemented PostgreSQL data types and their XBase
+equivalents.
+)_</para>
+<table frame="all"><title>_(Implemented PostgreSQL data types)_</title><tgroup cols="2">
+<thead>
+<row><entry>_(PostgreSQL data type)_</entry><entry>_(CLIP data type)_</entry></row>
+</thead>
+<tbody>
+<row><entry>DECIMAL   </entry><entry>NUMERIC</entry></row>
+<row><entry>ABSTIME   </entry><entry>DATE</entry></row>
+<row><entry>BOOL      </entry><entry>LOGICAL</entry></row>
+<row><entry>BOX       </entry><entry>ARRAY {{x1,y1},{x2,y2}}; x1,y1,x2,y2 - NUMERIC</entry></row>
+<row><entry>BPCHAR    </entry><entry>CHARACTER</entry></row>
+<row><entry>BYTEA     </entry><entry>CHARACTER</entry></row>
+<row><entry>CHAR      </entry><entry>CHARACTER</entry></row>
+<row><entry>CID       </entry><entry>NUMERIC</entry></row>
+<row><entry>CIDR      </entry><entry>ARRAY {x1,...}; x1,... - NUMERIC</entry></row>
+<row><entry>CIRCLE    </entry><entry>ARRAY {x1,x2,x3}; x1,x2,x3 - NUMERIC</entry></row>
+<row><entry>DATE      </entry><entry>DATE</entry></row>
+<row><entry>FILENAME  </entry><entry>CHARACTER</entry></row>
+<row><entry>FLOAT4    </entry><entry>NUMERIC</entry></row>
+<row><entry>FLOAT8    </entry><entry>NUMERIC</entry></row>
+<row><entry>INET      </entry><entry>ARRAY {x1,x2,x3,x4,x5}; x1,x2,x3,x4,x5 - NUMERIC</entry></row>
+<row><entry>INT2      </entry><entry>NUMERIC</entry></row>
+<row><entry>INT28     </entry><entry>ARRAY {x1,x2,...,x8}; x1,x2,...,x8 - NUMERIC</entry></row>
+<row><entry>INT4      </entry><entry>NUMERIC</entry></row>
+<row><entry>LSEG      </entry><entry>ARRAY {{x1,y1},{x2,y2}}; x1,y1,x2,y2 - NUMERIC</entry></row>
+<row><entry>MONEY     </entry><entry>NUMERIC</entry></row>
+<row><entry>NAME      </entry><entry>CHARACTER</entry></row>
+<row><entry>NUMERIC   </entry><entry>NUMERIC</entry></row>
+<row><entry>OID       </entry><entry>NUMERIC</entry></row>
+<row><entry>OID8      </entry><entry>ARRAY {x1,x2,...,x8}; x1,x2,...,x8 - NUMERIC</entry></row>
+<row><entry>PATH      </entry><entry>CHARACTER</entry></row>
+<row><entry>POINT     </entry><entry>ARRAY {x,y}; x,y - NUMERIC</entry></row>
+<row><entry>POLYGON   </entry><entry>ARRAY {{x1,y1},...{xn,yn}}; x1..xn, y1...yn - NUMERIC</entry></row>
+<row><entry>RELTIME   </entry><entry>NUMERIC</entry></row>
+<row><entry>TEXT      </entry><entry>CHARACTER</entry></row>
+<row><entry>TIMESTAMP </entry><entry>DATE</entry></row>
+<row><entry>VARCHAR   </entry><entry>CHARACTER</entry></row>
+<row><entry>XID       </entry><entry>NUMERIC</entry></row>
+</tbody>
+</tgroup></table>
+</section>
+</section>
+
+<section id="sqloracle"><title>Oracle 8i</title>
+<section><title>_(Building an application)_</title>
+<para>_(
+To be able to build an application using Oracle data base, appropriate packages
+must be installed. It includes Oracle development files and
+<command>clip-oracle</command> package. See
+<link linkend="installation">Installation</link> chapter for details.
+)_</para>
+<para>_(
+Link your application with Oracle driver by adding
+<command>-lclip-oracle</command> to the end of <command>clip</command> command:
+)_</para>
+<programlisting>
+$clip -e test.prg -lclip-oracle
+</programlisting>
+</section>
+<section><title>_(ConnectNew() syntax)_</title>
+<para>_(
+To obtain a connect to the Oracle server use
+<link linkend="sqlconnectnew">ConnectNew()</link> with the following syntax:
+)_</para>
+<programlisting><![CDATA[
+ConnectNew("OR",NIL,NIL,<cLogin>,<cPassword>,[<cDB>],NIL,NIL,[<cCharset>],[<cIsolation>])
+]]></programlisting>
+<para>_(
+where
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+"OR" - identifier of Oracle driver; see also
+<link linkend="sqlsqllist">SQLList()</link>
+)_</para></listitem>
+<listitem><para>_(
+cLogin - a string containing user login
+)_</para></listitem>
+<listitem><para>_(
+cPassword - a string containing user's password
+)_</para></listitem>
+<listitem><para>_(
+cDB - a string containing the name of the database to be used (connect string)
+)_</para></listitem>
+<listitem><para>_(
+cCharset - charset used by server; if not passed, SET("SQL_CHARSET") is used
+)_</para></listitem>
+<listitem><para>_(
+cIsolation - a string containing the name of isolation level to be used by default
+(see Oracle manual for details); if not passed, SET("OR_ISOLATION_LEVEL")
+value is used; values containing one or more of the following strings
+divided by ';' are possible:
+)_</para>
+<itemizedlist>
+<listitem><para>
+READ COMMITTED
+</para></listitem>
+<listitem><para>
+SERIALIZABLE
+</para></listitem>
+<listitem><para>
+READ ONLY
+</para></listitem>
+<listitem><para>
+READ WRITE
+</para></listitem>
+</itemizedlist>
+<para>_(
+the same values are possible for <![CDATA[<cIsolation>]]> parameter
+of <link linkend="sqlstart">TRowset:Start()</link>.
+)_</para></listitem>
+</itemizedlist>
+</section>
+<section><title>_(Rows binding)_</title>
+<para>_(
+To bind rows in the data base and rows in the local set a
+<command>rowid</command> field is used (see Oracle manual). See also
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> description
+for details.
+)_</para>
+</section>
+<section><title>_(Other peculiarities)_</title>
+<para>_(
+An array with SQL parameters (used in <![CDATA[<aParameters>]]> parameter of
+<link linkend="sqlcommand">TConnect:Command()</link> and
+<link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> functions)
+must have third element (SQL data type) in each row with Oracle.
+Data types are defined in <command>oracle.ch</command> include file.
+For example:
+)_</para>
+<programlisting>
+#include "oracle.ch"
+// ...
+conn:Command("INSERT INTO mytable (fname,lname) VALUES (:fname,:lname)",;
+	{{"fname","John",ORT_VARCHAR2},{"lname","Smith",ORT_VARCHAR2}})
+</programlisting>
+<para>_(
+INSERT statement passed in <![CDATA[<cInsertSQL>]]> parameter to
+TRowset constructor <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link>
+must have <command>RETURNING rowid</command> clause. For example:
+)_</para>
+<programlisting>
+INSERT INTO mytable (fname,lname) VALUES (:fname,:lname) RETURNING rowid INTO :rowid
+</programlisting>
+</section>
+<section><title>_(Implemented data types)_</title>
+<para>_(
+The following table shows implemented Oracle data types and their XBase
+equivalents.
+)_</para>
+<table frame="all"><title>_(Implemented Oracle data types)_</title><tgroup cols="2">
+<thead>
+<row><entry>_(Oracle data type)_</entry><entry>_(CLIP data type)_</entry></row>
+</thead>
+<tbody>
+<row><entry>VARCHAR2     </entry><entry>CHARACTER</entry></row>
+<row><entry>CHAR         </entry><entry>CHARACTER</entry></row>
+<row><entry>RAW          </entry><entry>CHARACTER</entry></row>
+<row><entry>NUMBER       </entry><entry>NUMERIC</entry></row>
+<row><entry>INTEGER      </entry><entry>NUMERIC</entry></row>
+<row><entry>FLOAT        </entry><entry>NUMERIC</entry></row>
+<row><entry>LONG         </entry><entry>CHARACTER</entry></row>
+<row><entry>LONG VARCHAR </entry><entry>CHARACTER</entry></row>
+<row><entry>LONG RAW     </entry><entry>CHARACTER</entry></row>
+<row><entry>DATE         </entry><entry>DATE</entry></row>
+<row><entry>CLOB         </entry><entry>CHARACTER</entry></row>
+<row><entry>BLOB         </entry><entry>CHARACTER</entry></row>
+<row><entry>FILE         </entry><entry>CHARACTER</entry></row>
+</tbody>
+</tgroup></table>
+</section>
+</section>
+
+<section id="sqlinterbase"><title>Interbase/Firebird</title>
+<section><title>_(Building an application)_</title>
+<para>_(
+To be able to build an application using Interbase data base,
+appropriate packages must be installed. It includes Interbase development files
+and <command>clip-interbase</command> package. See
+<link linkend="installation">Installation</link> chapter for details.
+)_</para>
+<para>_(
+Link your application with Interbase driver by adding
+<command>-lclip-interbase</command> to the end of <command>clip</command>
+command:
+)_</para>
+<programlisting>
+$clip -e test.prg -lclip-interbase
+</programlisting>
+</section>
+<section><title>_(ConnectNew() syntax)_</title>
+<para>_(
+To obtain a connect to the Interbase server use
+<link linkend="sqlconnectnew">ConnectNew()</link> with the following syntax:
+)_</para>
+<programlisting><![CDATA[
+ConnectNew("IB",NIL,NIL,<cLogin>,<cPassword>,<cDB>,NIL,NIL,[<cCharset>],[<cIsolation>])
+]]></programlisting>
+<para>_(
+where
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+"IB" - identifier of Interbase driver; see also
+<link linkend="sqlsqllist">SQLList()</link>
+)_</para></listitem>
+<listitem><para>_(
+cLogin - a string containing user login
+)_</para></listitem>
+<listitem><para>_(
+cPassword - a string containing user's password
+)_</para></listitem>
+<listitem><para>_(
+cDB - a string containing the name of the database to be used (the file name)
+)_</para></listitem>
+<listitem><para>_(
+cCharset - charset used by server; if not passed, SET("SQL_CHARSET") is used
+)_</para></listitem>
+<listitem><para>_(
+cIsolation - a string containing the name of isolation level to be used by default
+(see Interbase manual for details); if not passed, SET("IB_ISOLATION_LEVEL")
+value is used; values containing one or more of the following strings
+divided by ';' are possible:
+)_</para>
+<itemizedlist>
+<listitem><para>
+CONCURRENCY
+</para></listitem>
+<listitem><para>
+READ COMMITTED or READ_COMMITTED
+</para></listitem>
+<listitem><para>
+REC VERSION or REC_VERSION
+</para></listitem>
+<listitem><para>
+NO REC VERSION or NO_REC_VERSION
+</para></listitem>
+<listitem><para>
+CONSISTENCY
+</para></listitem>
+<listitem><para>
+WAIT
+</para></listitem>
+<listitem><para>
+NOWAIT
+</para></listitem>
+<listitem><para>
+READ
+</para></listitem>
+<listitem><para>
+WRITE
+</para></listitem>
+</itemizedlist>
+<para>_(
+the same values are possible for <![CDATA[<cIsolation>]]> parameter
+of <link linkend="sqlstart">TRowset:Start()</link>.
+)_</para></listitem>
+</itemizedlist>
+</section>
+<section><title>_(Rows binding)_</title>
+<para>_(
+To bind rows in the data base and rows in the local set a field with the name
+passed in <![CDATA[<cIdName>]]> parameter to TRowset constructor is used.
+See <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> description
+for details.
+)_</para>
+</section>
+<section><title>_(Other peculiarities)_</title>
+<para>_(
+With Interbase, <link linkend="sqlstart">TConnect:Start()</link>
+may receive the second parameter <![CDATA[<cLockTables>]]> describing
+what tables and how they should be locked during transaction.
+The string being contained in <![CDATA[<cLockTables>]]> should have
+the following form:
+)_</para>
+<programlisting><![CDATA[
+<table_name>=<lock_type>[;<table_name>=<lock_type>,...]
+]]></programlisting>
+<para>_(
+where <![CDATA[<table_name>]]> - the name of the table to be locked;
+<![CDATA[<lock_type>]]> - lock type; the following types are possible:
+)_</para>
+<itemizedlist>
+<listitem><para>
+SHARED_READ
+</para></listitem>
+<listitem><para>
+SHARED_WRITE
+</para></listitem>
+<listitem><para>
+PROTECTED_READ
+</para></listitem>
+<listitem><para>
+PROTECTED_WRITE
+</para></listitem>
+</itemizedlist>
+<para>_(
+See Interbase manual for details.
+)_</para>
+</section>
+<section><title>_(Implemented data types)_</title>
+<para>_(
+The following table shows implemented Interbase data types and their XBase
+equivalents.
+)_</para>
+<table frame="all"><title>_(Implemented Interbase data types)_</title><tgroup cols="2">
+<thead>
+<row><entry>_(Interbase data type)_</entry><entry>_(CLIP data type)_</entry></row>
+</thead>
+<tbody>
+<row><entry>ARRAY			</entry><entry>ARRAY</entry></row>
+<row><entry>BLOB			</entry><entry>CHARACTER</entry></row>
+<row><entry>CHAR			</entry><entry>CHARACTER</entry></row>
+<row><entry>DATE			</entry><entry>DATE</entry></row>
+<row><entry>DECIMAL			</entry><entry>NUMERIC</entry></row>
+<row><entry>DOUBLE PRECISON </entry><entry>NUMERIC</entry></row>
+<row><entry>INTEGER			</entry><entry>NUMERIC</entry></row>
+<row><entry>FLOAT			</entry><entry>NUMERIC</entry></row>
+<row><entry>NUMERIC			</entry><entry>NUMERIC</entry></row>
+<row><entry>SMALLINT		</entry><entry>NUMERIC</entry></row>
+<row><entry>TIME			</entry><entry>DATETIME</entry></row>
+<row><entry>TIMESTAMP		</entry><entry>DATETIME</entry></row>
+<row><entry>VARCHAR			</entry><entry>CHARACTER</entry></row>
+</tbody>
+</tgroup></table>
+</section>
+</section>
+
+<section id="sqlodbc"><title>ODBC driver manager</title>
+<section><title>_(Building an application)_</title>
+<para>_(
+To be able to build an application using ODBC manager,
+appropriate packages must be installed. It includes ODBC development files
+(iODBC2 or unixodbc) and <command>clip-odbc</command> package. See
+<link linkend="installation">Installation</link> chapter for details.
+)_</para>
+<para>_(
+Link your application with ODBC driver by adding
+<command>-lclip-odbc</command> to the end of <command>clip</command>
+command:
+)_</para>
+<programlisting>
+$clip -e test.prg -lclip-odbc
+</programlisting>
+</section>
+<section><title>_(ConnectNew() syntax)_</title>
+<para>_(
+To obtain a connect to the database server through ODBC manager use
+<link linkend="sqlconnectnew">ConnectNew()</link> with the following syntax:
+)_</para>
+<programlisting><![CDATA[
+ConnectNew("ODBC",<cDSN>,[<cLogin>],[<cPassword>],NIL,NIL,NIL,NIL,[<cCharset>])
+]]></programlisting>
+<para>_(
+where
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+"ODBC" - identifier of ODBC driver; see also
+<link linkend="sqlsqllist">SQLList()</link>
+)_</para></listitem>
+<listitem><para>_(
+cDSN - a string containing Data Source Name (see ODBC manual and odbc.ini)
+)_</para></listitem>
+<listitem><para>_(
+cLogin - a string containing user login
+)_</para></listitem>
+<listitem><para>_(
+cPassword - a string containing user's password
+)_</para></listitem>
+<listitem><para>_(
+cCharset - charset used by server; if not passed, SET("SQL_CHARSET") is used
+)_</para></listitem>
+</itemizedlist>
+</section>
+<section><title>_(Rows binding)_</title>
+<para>_(
+To bind rows in the data base and rows in the local set a field with the name
+passed in <![CDATA[<cIdName>]]> parameter to TRowset constructor is used.
+See <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> description
+for details.
+)_</para>
+</section>
+<section><title>_(Other peculiarities)_</title>
+<para>_(
+With ODBC you have to set appropriate transactions isolation level manually.
+<link linkend="sqlstart">TConnect:Start()</link> ignores passed parameters.
+)_</para>
+</section>
+<section><title>_(Implemented data types)_</title>
+<para>_(
+The following table shows implemented ODBC data types and their XBase
+equivalents.
+)_</para>
+<table frame="all"><title>_(Implemented ODBC data types)_</title><tgroup cols="2">
+<thead>
+<row><entry>_(ODBC data type)_</entry><entry>_(CLIP data type)_</entry></row>
+</thead>
+<tbody>
+<row><entry>TINYINT         </entry><entry>NUMERIC</entry></row>
+<row><entry>SMALLINT        </entry><entry>NUMERIC</entry></row>
+<row><entry>INTEGER         </entry><entry>NUMERIC</entry></row>
+<row><entry>BIGINT          </entry><entry>NUMERIC</entry></row>
+<row><entry>DECIMAL         </entry><entry>NUMERIC</entry></row>
+<row><entry>DOUBLE          </entry><entry>NUMERIC</entry></row>
+<row><entry>NUMERIC         </entry><entry>NUMERIC</entry></row>
+<row><entry>FLOAT           </entry><entry>NUMERIC</entry></row>
+<row><entry>REAL            </entry><entry>NUMERIC</entry></row>
+<row><entry>CHAR            </entry><entry>CHARACTER</entry></row>
+<row><entry>VARCHAR         </entry><entry>CHARACTER</entry></row>
+<row><entry>LONGVARCHAR     </entry><entry>CHARACTER</entry></row>
+<row><entry>DATE            </entry><entry>DATE</entry></row>
+<row><entry>TIME            </entry><entry>ARRAY {h,m,s}; h,m,s - NUMERIC</entry></row>
+<row><entry>TIMESTAMP       </entry><entry>DATETIME</entry></row>
+<row><entry>LONGVARBINARY   </entry><entry>CHARARCTER</entry></row>
+</tbody>
+</tgroup></table>
+</section>
+</section>
+
+<section id="sqldbtcp"><title>DBTCP proxy server for ODBC connections</title>
+<section><title>_(Building an application)_</title>
+<para>_(
+To be able to build an application using DBTCP proxy,
+appropriate packages must be installed. It includes DBTCP development files
+and <command>clip-dbtcp</command> package. See
+<link linkend="installation">Installation</link> chapter for details.
+)_</para>
+<para>_(
+Link your application with DBTCP driver by adding
+<command>-lclip-dbtcp</command> to the end of <command>clip</command>
+command:
+)_</para>
+<programlisting>
+$clip -e test.prg -lclip-dbtcp
+</programlisting>
+</section>
+<section><title>_(ConnectNew() syntax)_</title>
+<para>_(
+To obtain a connect to the database server through DBTCP proxy use
+<link linkend="sqlconnectnew">ConnectNew()</link> with the following syntax:
+)_</para>
+<programlisting><![CDATA[
+ConnectNew("DBTCP",[<cHost>],[<cPort>],[<cLogin>],[<cPassword>],<cDSN>,NIL,NIL,[<cCharset>])
+]]></programlisting>
+<para>_(
+where
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+"DBTCP" - identifier of DBTCP driver; see also
+<link linkend="sqlsqllist">SQLList()</link>
+)_</para></listitem>
+<listitem><para>_(
+cHost - host name DBTCP server running on
+)_</para></listitem>
+<listitem><para>_(
+cPort - server port number as string
+)_</para></listitem>
+<listitem><para>_(
+cLogin - a string containing user login
+)_</para></listitem>
+<listitem><para>_(
+cPassword - a string containing user's password
+)_</para></listitem>
+<listitem><para>_(
+cDSN - a string containing Data Source Name
+)_</para></listitem>
+<listitem><para>_(
+cCharset - charset used by server; if not passed, SET("SQL_CHARSET") is used
+)_</para></listitem>
+</itemizedlist>
+</section>
+<section><title>_(Rows binding)_</title>
+<para>_(
+To bind rows in the data base and rows in the local set a field with the name
+passed in <![CDATA[<cIdName>]]> parameter to TRowset constructor is used.
+See <link linkend="sqlcreaterowset">TConnect:CreateRowset()</link> description
+for details.
+)_</para>
+</section>
+<section><title>_(Other peculiarities)_</title>
+<para>_(
+With DBTCP you have to set appropriate transactions isolation level manually.
+<link linkend="sqlstart">TConnect:Start()</link> ignores passed parameters.
+)_</para>
+</section>
+</section>
+
+</section>
+
+</chapter>

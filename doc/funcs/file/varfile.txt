@@ -1,0 +1,136 @@
+$FUNCNAME$
+  FERRORSTR()
+$CATEGORY$
+	FILE/IO
+$SUMMARY$
+  Under construction
+$SYNTAX$
+$ARGUMENTS$
+$RETURNS$
+$DESCRIPTION$
+$EXAMPLES$
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+$AUTHOR$
+$LASTDATE$
+$END$
+
+$FUNCNAME$
+	FILEATTR()
+$CATEGORY$
+	FILE/IO
+$SUMMARY$
+  Under construction
+$SYNTAX$
+$ARGUMENTS$
+$RETURNS$
+$DESCRIPTION$
+$EXAMPLES$
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+$AUTHOR$
+$LASTDATE$
+$END$
+
+$FUNCNAME$
+	FILEATTRS()
+$CATEGORY$
+	FILE/IO
+$SUMMARY$
+	Returns string - file attributes.
+$LANG_RU$
+	Возвращает строку - атрибуты файла.
+$SYNTAX$
+
+     FILEATTRS(<sFileName>) 	--> <sFileAttrs>
+
+$ARGUMENTS$
+     <sFileName>	String, is the file name.
+
+$LANG_RU$
+     <sFileName>	String, имя файла.
+
+$RETURNS$
+
+     Returns string <sFileAttrs>, what contents file attributes.
+
+$LANG_RU$
+
+	Возвращает строку <sFileAttrs>, содержащую атрибуты файла.
+
+$DESCRIPTION$
+
+     FILEATTRS() lakes <link linkend="functionFILEATTR">FILEATTR()</link>, but
+     returns string <sFileAttrs>, what contents file attributes.
+$LANG_RU$
+
+     FILEATTRS() подобна функции <link linkend="functionFILEATTR">FILEATTR()</link>, но
+     возвращает строку <sFileAttrs>, содержащую атрибуты файла.
+$EXAMPLES$
+
+SET("C:", "/usr/home/user1")
+sUnixFileName := "/usr/home/user1/test.prg"
+
+? FILEATTR(sUnixFileName) 	// --> 32
+? FILEATTRS(sUnixFileName) 	// --> A
+
+$PLATFORMS$
+$SEEALSO$
+	FILEATTR()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+
+$FUNCNAME$
+	MAKEPATH()
+$CATEGORY$
+	FILE/IO, DISKUTILS
+$SUMMARY$
+	Returns path to file in UNIX style.
+$LANG_RU$
+	Возвращает путь к файлу в UNIX стиле.
+$SYNTAX$
+
+     MAKEPATH(<sDosPath>) 	--> <sUnixPath>
+
+$ARGUMENTS$
+     <sDosPath>		String, is the path to file in DOS style.
+$LANG_RU$
+     <sDosPath>		String, путь к файлу в DOS стиле.
+$RETURNS$
+
+     Returns string <sUnixPath>, what equal the DOS-style path to file <sDosPath>
+
+$LANG_RU$
+
+	Возвращает строку <sUnixPath>, соответствующую  пути к файлу в DOS-стиле.
+
+$DESCRIPTION$
+
+     MAKEPATH() converts string with path to file in DOS-style <sDosPath> to string with path in UNIX-style <sUnixPath>
+$LANG_RU$
+     MAKEPATH() преобразует строку, содержащую путь к файлу в DOS стиле <sDosPath> в строку, содержащую путь к файлу в UNIX стиле <sUnixPath>
+
+$EXAMPLES$
+
+SET("C:\", "/usr/home/user1/")
+sFileName := "C:\clip\include\clip.ch"
+
+? MAKEPATH(sFileName)		// --> /usr/home/user1/clip/include/clip.ch
+
+$PLATFORMS$
+$SEEALSO$
+	FOPEN()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$

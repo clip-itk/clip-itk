@@ -1,0 +1,41 @@
+$FUNCNAME$
+  DBCLEARFILTER()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Clear a filter condition
+$LANG_RU$
+   Снимает условие фильтрации базы данных, установленное командой SET FILTER.
+$SYNTAX$
+     DBCLEARFILTER() --> NIL
+$LANG_RU$
+     DBCLEARFILTER() --> NIL
+$RETURNS$
+     DBCLEARFILTER() always returns NIL.
+$LANG_RU$
+     DBCLEARFILTER() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCLEARFILTER() clears the logical filter condition, if any, for the
+     current work area.
+
+     DBCLEARFILTER() performs the same function as the standard SET FILTER
+     command with no expression specified.  For more information, refer to
+     the SET FILTER command.
+$LANG_RU$
+     DBCLEARFILTER() снимает условие фильтрации, если оно установлено в
+     текущей рабочей области.
+
+     DBCLEARFILTER() выполняет те же функции, что и стандартная команда
+     SET FILTER TO без логического выражения. Более подробную информацию
+     смотрите в команде SET FILTER.
+$EXAMPLES$
+       The following example sets a filter, lists data as filtered,
+	and then clears the filter:
+
+	USE Employee NEW
+	DBSETFILTER( {|| Age < 40}, "Age < 40" )
+	LIST Employee->Name
+	DBCLEARFILTER()
+$SEEALSO$
+  DBFILTER(),DBSETFILTER()
+$END$

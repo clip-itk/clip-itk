@@ -1,0 +1,17 @@
+$FUNCNAME$
+  MDBLCLK()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Determine the double-click speed threshold of the mouse
+$SYNTAX$
+     MDBLCLK([<nNewSpeed>]) --> nSpeed
+$ARGUMENTS$
+     <nNewSpeed> is the maximum allowable amount of time between mouse
+     key presses for a double-click to be detected.  This is measured in
+     milliseconds.
+$RETURNS$
+     MDBLCLK() returns the current double-click speed threshold.
+$SEEALSO$
+
+$END$

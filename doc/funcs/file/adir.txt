@@ -1,0 +1,112 @@
+$FUNCNAME$
+  ADIR()
+$CATEGORY$
+  FILE/IO,DISKUTILS
+$SUMMARY$
+   Fill a series of arrays with directory information
+$LANG_RU$
+   Заполняет группу массивов информацией директории.
+$SYNTAX$
+     ADIR([<cFilespec>],[<aFilenames>],[<aSizes>],[<aDates>],
+	[<aTimes>],[<aAttributes>]) --> nFiles
+$LANG_RU$
+     ADIR( [<шаблон имен файлов>], [<массив имен файлов>], [<массив размеров файлов>],
+	 [<массив дат>], [<массив времен>], [<массив атрибутов>] ) --> количество файлов
+$ARGUMENTS$
+     <cFilespec> is the path specification of files to include in the
+     scan of the DEFAULT directory.  It is a standard file specification that
+     can include the wildcard characters * and ?, as well as a drive and path
+     reference.  If omitted, the default specification is *.*.
+
+     <aFilenames> is the array to fill with the file names matching
+     <cFilespec>.  Each element contains the file name and extension as a
+     character string in all uppercase letters.
+
+     <aSizes> is the array to fill with the sizes of the corresponding
+     files in the <aFilenames> array.  Each element is a numeric data type.
+
+     <aDates> is the array to fill with the dates of the corresponding
+     files in the <aFilenames> array.  Each element is a date data type.
+
+     <aTimes> is the array to fill with the times of the corresponding
+     files in the <aFilenames> array.  Each element filled contains a
+     character string of the form: hh:mm:ss.
+
+     <aAttributes> is the array to fill with attributes of the
+     corresponding files in the <aFilenames> array.  Each element is a
+     character string.  If <aAttributes> is specified, hidden, system, and
+     directory files are included as well as normal files.  If <aAttributes>
+     is not specified, only normal files are included.
+$LANG_RU$
+     <шаблон имен файлов> - шаблон, определяющий группу файлов для поиска
+     в директории, задаваемой командой DEFAULT. Это обычное определение
+     файлов, которое может включать в себя символы (*) и (?), так же, как
+     имя устройства и путь доступа к директории. Если шаблон не задан, то
+     по умолчанию принимается *.* .
+
+     <массив имен файлов> - массив, заполняемый именами файлов,
+     соответствующих шаблону <шаблон имен файлов>. Каждый элемент содержит
+     имя файла и его расширение в виде строки символов в верхнем регистре.
+
+     <массив размеров файлов> - массив, заполняемый информацией о размерах
+     соответствующих файлов массива <массив имен файлов>. Он содержит
+     элементы арифметического типа.
+
+     <массив дат> - массив, заполняемый датами создания соответствующих
+     файлов массива <массив имен файлов>. Все элементы содержат тип DATE.
+
+     <массив времен> - массив, заполняемый информацией о времени создания
+     соответствующих файлов массива <массив имен файлов>. Каждый его
+     элемент представлен в виде строки символов в формате чч:мм:сс.
+
+     <массив атрибутов> - массив, заполняемый информацией о файлах массива
+     <массив имен файлов>. Каждый его элемент - это строка символов. Если
+     массив <массив атрибутов> определен, то в него выводится информация
+     как об обычных файлах, так и о системных, скрытых файлах и именах
+     поддиректорий. Если массив <массив атрибутов> не определен, выводится
+     только информация об обычных файлах.
+$RETURNS$
+     ADIR() returns the number of files matching the directory skeleton
+     described in <cFilespec>.
+$LANG_RU$
+     ADIR() возвращает количество файлов, имена которых совпадают с
+     указанным шаблоном.
+$DESCRIPTION$
+     ADIR() is an array function that performs two basic operations.  First,
+     it returns the number of files matching the file specification.  Second,
+     it fills a series of arrays with file names, sizes, dates, times, and
+     attributes.
+
+     ADIR() is a compatibility function and therefore not recommended.  It is
+     superseded by the DIRECTORY() function which returns all file
+     information in a multidimensional array.
+$LANG_RU$
+     ADIR() - функция работы с массивами, выполняющая две основные
+     операции. Во-первых, она возвращает количество файлов, имена
+     которых совпадают с заданным шаблоном. Во-вторых, она заполняет
+     группу массивов информацией об именах файлов, их размере, дате и
+     времени их создания и атрибутах.
+
+     ADIR() - это функция, применяемая для совместимости с предыдущими
+     версиями xClipper и потому ее использование в новых программах не
+     рекомендуется. Ее можно заменить функцией DIRECTORY(), которая
+     возвращает полную информацию о файлах в многомерном массиве.
+$EXAMPLES$
+       This example creates an array to hold the names of all .txt
+	files in the current DEFAULT directory, then uses AEVAL() to list
+	them to the console:
+
+	LOCAL aFiles[ADIR("*.TXT")]
+	ADIR("*.TXT", aFiles)
+	AEVAL(aFiles, { |element| QOUT(element) })
+$LANG_RU$
+      Этот пример создает массив для хранения имен всех файлов с
+       расширением (.txt) в текущей директории и выдает их имена на
+       консоль при помощи функции AEVAL():
+
+       LOCAL aFiles[ADIR("*.txt")]
+       ADIR("*.txt", aFiles)
+       AEVAL(aFiles, {|element| QOUT(element) })
+$SEEALSO$
+  ACHOICE(),AEVAL(),ASCAN(),ASORT(),DIRECTORY(),
+$END$

@@ -1,0 +1,28 @@
+$FUNCNAME$
+  MSETBOUNDS()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Set screen boundaries for the mouse cursor
+$SYNTAX$
+     MSETBOUNDS( [<nTop>], [<nLeft>], [<nBottom>], [<nRight>] ) --> NIL
+$ARGUMENTS$
+     <nTop> defines the uppermost allowable screen row for the mouse
+     cursor or 0 if omitted.  This value may range from 0 to the value of
+     <nBottom>.
+
+     <nLeft> defines the leftmost allowable screen column for the mouse
+     or 0 if omitted.  This value may range from 0 to the value of <nRight>.
+
+     <nBottom> defines the bottommost screen row for the mouse cursor or
+     MaxRow() if omitted.  This value may range from the value of <nTop> to
+     MaxRow().
+
+     <nRight> defines the rightmost allowable screen column for the mouse
+     or MaxCol() if omitted.  This value may range from the value of <nLeft>
+     to MaxCol().
+$RETURNS$
+     MSETBOUNDS() always returns NIL.
+$SEEALSO$
+
+$END$

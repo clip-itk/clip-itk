@@ -1,0 +1,41 @@
+$FUNCNAME$
+   Fn_SSFromP()
+$CATEGORY$
+   Miscellaneous
+$ONELINER$
+    Remove the file server name from a path string
+$SYNTAX$
+
+    Fn_SSFromP( <cFullPath>,<@cServerName> ) -> cStrippedPath
+
+$ARGUMENTS$
+
+    <cFullPath>   - The path from which the server name is to be
+		    stripped.
+
+    <cServerName> - The stripped file server name (MUST BE PASSED BY
+		    REFERENCE!)
+
+$RETURNS$
+
+   <cStrippedPath> - <cFullPath> less <cServerName>.
+
+$DESCRIPTION$
+
+    This function strips the server name from the specified path.
+    If the path does not include a file server specification, then
+    the function returns the original path.
+
+$EXAMPLES$
+
+    cStripped := Fn_SSFromP( "FS1/SYS:\PUBLIC",@cServer )
+    ? cStripped     // "SYS:\PUBLIC"
+    ? cServer       // "FS1"
+
+$SEEALSO$
+
+$INCLUDE$
+
+$Author: clip $
+   Sheldon Easterbrook
+$END$

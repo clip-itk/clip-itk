@@ -1,0 +1,454 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/clip_we.sgml:1
+msgid "CLIP_WE - CLIP text editor."
+msgstr ""
+
+#: template/./doc/clip_we.sgml:4
+msgid ""
+" is a multiwindow text editor. The base constructions\n"
+"are <link linkend=\"class-tedit\">TEDIT</link> and <link linkend=\"class-"
+"medit\">MEDIT</link> CLIP classes."
+msgstr ""
+
+#: template/./doc/clip_we.sgml:9
+msgid "The <command>CLIP_WE</command> functions:"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:12
+msgid ""
+"editing text with 2 mode <command>Insert</command> and <command>Owerview</"
+"command>"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:13
+msgid ""
+"functions with blocks (strings block and columns block): moving(between "
+"windows such), copying(between windows such), removing "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:14
+msgid ""
+"searching, searching with replace, searching by regular extension, case "
+"sensitive searching"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:15
+msgid "searching (forward/backward) CLIP structure items"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:16
+msgid "undo function"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:17
+msgid "highlighting some strings of text"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:18
+msgid "formatting text"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:19
+msgid ""
+"insert string by <link linkend=\"appl-clipwe-template\">templates</link> "
+"(user-depending list of template) "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:20
+msgid ""
+"run <link linkend=\"appl-clipwe-macro\">macro</link> expression and insert "
+"result as string (user-depending list of macro command) "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:21
+msgid "drawing symbols psevdographics (double and simple) "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:22
+msgid "load unfixed length files"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:23
+msgid "user-depended <link linkend=\"appl-clipwe-keymap\">keymap</link>"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:24
+msgid ""
+"user-depended <link linkend=\"appl-clipwe-extend\">extending functions</"
+"link> (load CLIP .po files and run it) "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:31
+msgid ""
+"The personal keymap set store in directory <command>~/.clip</command>\n"
+"For redefine standart keymap set create file <command>~/.clip/keymaps.prg</"
+"command> with\n"
+"functions <command>init_user_key(keymap)</command>. Compile this file :"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:40
+msgid "There is example of user keymaps.prg"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:65
+msgid "The keymap set by default"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:67
+msgid "Key code"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:68
+msgid "CLIP_WE command"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:69 template/./doc/clip_we.sgml:230
+msgid "Description"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:70
+msgid "Call CLIP_WE menu"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:71
+msgid "Exit from editor witch save"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:72
+msgid "Exit from editor witchout save "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:73
+msgid "Call help page"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:74
+msgid "Save text"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:75
+msgid "Open file"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:76
+msgid "Create new file"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:77
+msgid "Show next window"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:78
+msgid "Show previous window"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:79
+msgid "Find string"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:80
+msgid "Find and replace string"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:81
+msgid "Find string to forward"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:82
+msgid "Matching symbol to forward"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:83
+msgid "Matching symbol to backward"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:84
+msgid "Goto string"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:85
+msgid "Save current string position"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:86
+msgid "Go top text"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:87
+msgid "Go bottom text"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:88
+msgid "Insert text by template"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:89
+msgid "Run macro and insert result"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:90
+msgid "Delete string from current position to end"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:91
+msgid "Delete string from current position to begin string"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:92
+msgid "Delete line"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:93
+msgid "Mark/unmark strings block"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:94
+msgid "Mark/unmark rectangle block"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:95
+msgid "Copy marked block"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:96
+msgid "Move marked block"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:97
+msgid "Unmark block"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:98
+msgid "Delete marked block"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:99
+msgid "Undo operation"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:100
+msgid "Reload file"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:101
+msgid "Set ReadOnly flags"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:102
+msgid "Show file list"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:103
+msgid "Close current window"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:104
+msgid "Save file with new name"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:105
+msgid "Find string to backward"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:106
+msgid "Matching structure to forward"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:107
+msgid "Matching structure to backward"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:108
+msgid "Formating line"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:109
+msgid "Formatig part of text"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:110
+msgid "On/off single graphics"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:111
+msgid "On/off double graphics"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:112
+msgid "Choose code page"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:113
+msgid "Print file"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:114
+msgid "Copy block to clipboard"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:115
+msgid "Paste block from clipboard"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:116
+msgid "Save marked block as file"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:117
+msgid "Load block from file"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:118
+msgid "Print marked block"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:128
+msgid ""
+"CLIP_WE allow to use personal templates for each user. Templates stored\n"
+"in $USER/.clip/.templ. Common templates stored in $CLIPROOT/etc/.templ\n"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:133
+msgid ""
+"The every line of template file contain two strings: template and result "
+"string\n"
+"what separated with <command>TAB</command>. Template string is case "
+"sensitive.\n"
+"Result string can include several substrings with delimiter <command>\"/\"</"
+"command>.\n"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:139
+msgid "The example of file <command>.templ</command>"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:167
+msgid ""
+"CLIP_WE allow to run macro expression and insert result to editing text. The "
+"personal\n"
+"macro expressions stored\n"
+"in $USER/.clip/.macro. Common macro expressions  stored in $CLIPROOT/etc/."
+"macro\n"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:173
+msgid ""
+"The every line of file .macro contain two substrings: template and CLIP "
+"expressions\n"
+"what separated with <command>TAB</command>. Template string is case "
+"sensitive.\n"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:178
+msgid "The example of file <command>.macro</command>"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:190
+msgid ""
+"CLIP_WE have extend possibilities without recompilation. It is loading "
+"<command>.po</command> files and running functions\n"
+"what contain these files. The user defined action add automaticaly to "
+"general menu CLIP_WE"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:195
+msgid ""
+"In $USER/.clip or in $CLIPROOT/etc create file with name <command>clip_we."
+"ini</command>\n"
+"It is initial text file what contain label and parameters set for this "
+"label.\n"
+"Label is string in upper case by CLIP style in square parenthesis - label of "
+"users action. The followed\n"
+"for it parameters descript this action.\n"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:202
+msgid "For example:"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:204
+msgid "The example of simple clip_we.ini"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:223
+msgid ""
+"There are <command>SAVEALL</command> and <command>INSTTIME</command> label "
+"usre\n"
+"actions: saving text in all windows and insert current time value to text.\n"
+"The text user functions see below"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:228
+msgid "The parameters value"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:230
+msgid "Parameter"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:230
+msgid "Value by default"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:231
+msgid "User function name"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:232
+msgid ""
+"Logical value, if TRUE user function take first parameter MEDIT, else TEDIT"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:233
+msgid "Hot key value"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:234
+msgid "Action command "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:235
+msgid "Full .po file name what contain function"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:236
+msgid "Text menu item"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:237
+msgid "Small description menu item"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:242
+msgid "User function take two parameters:"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:245
+msgid ""
+"TEDIT(reference to TEDIT object what equal current window) or MEDIT object"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:248
+msgid "location for next command to make (optional parameters) "
+msgstr ""
+
+#: template/./doc/clip_we.sgml:253
+msgid "User function return TRUE if command processed and FALSE in other case"
+msgstr ""
+
+#: template/./doc/clip_we.sgml:256
+msgid "Look examples user functions what we describe in clip_we.ini"
+msgstr ""

@@ -1,0 +1,98 @@
+$FUNCNAME$
+  PROCLINE()
+$CATEGORY$
+  SYSTEM,MISCELLANEOUS,INFO
+$SUMMARY$
+   Return the source line number of the current or previous activation
+$LANG_RU$
+   Возвращает номер строки исходной программы текущего или предыдущего вызова.
+$SYNTAX$
+     PROCLINE([<nActivation>]) --> nSourceLine
+$LANG_RU$
+     PROCLINE([<номер вызова>]) --> номер строки исходной программы
+$ARGUMENTS$
+     <nActivation> is a numeric value that specifies which activation to
+     query.  Zero refers to the current activation, one refers to the
+     previous activation, etc.  If not specified, the default value is zero.
+$LANG_RU$
+     <номер вызова> - числовое значение, которое задает, какой вызов
+     запрашивается. Ноль - указывает на текущий вызов, 1 - предыдущий и
+     т.д.  Если аргумент не определен, по умолчанию принимается ноль.
+$RETURNS$
+     PROCLINE() returns the line number of the last line executed in a
+     currently executing procedure, function, or code block as an integer
+     numeric value.  If the /L compiler option suppresses line number
+     information, PROCLINE() always returns zero.
+$LANG_RU$
+     PROCLINE() возвращает номер строки последней выполняемой команды в
+     текущей процедуре, функции пользователя или блоке кода в виде целого
+     числа.  Если при компиляции была использована опция /L компилятора,
+     то функция PROCLINE() всегда возвратит ноль.
+$DESCRIPTION$
+     PROCLINE() queries the xClipper activation stack to determine the last
+     line executed in a currently executing procedure, user-defined function,
+     or code block.  The activation stack is an internal structure that
+     maintains a record of each procedure, function, or code block
+     invocation.  A line number is relative to the beginning of the original
+     source file.  A line includes a comment, blank line, preprocessor
+     directive, and a continued line.  A multistatement line is counted as a
+     single line.
+
+     For the current activation, PROCLINE() returns the number of the current
+     line.  For a previous activation, PROCLINE() returns the number of the
+     line that invoked the procedure or a user-defined function in which
+     PROCLINE() is invoked.
+
+     If the activation being queried is a code block evaluation, PROCLINE()
+     returns the line number of the procedure in which the code block was
+     originally defined.
+
+     PROCLINE() is used with PROCNAME() to report debugging information.
+$LANG_RU$
+     PROCLINE() запрашивает стек вызова xClipper для определения последней
+     выполняемой строки в текущей процедуре, функции пользователя или
+     блоке кода. Стек вызова - это внутренняя структура, которая
+     поддерживает запись каждого вызова процедуры, функции пользователя,
+     блока кода. Номер строки считывается относительно начала исходного
+     файла программы. Строка содержит в себе комментарии, пустые строки,
+     директивы компилятору и препроцессору, продолжение строки. Строка
+     может содержать несколько операторов.
+
+     Текущий вызов - это номер строки вызова PROCLINE().
+
+     Предыдущий вызов - это номер строки процедуры или функции
+     пользователя, откуда была вызвана процедура или функция пользователя,
+     содержащая функцию PROCLINE().
+
+     Если вызов требует вычисления блока кода, то PROCLINE() возвращает
+     номер строки процедуры, где этот блок кода был определен. PROCLINE()
+     используется в сочетании с функцией PROCNAME() для выдачи отладочной
+     информации.
+$EXAMPLES$
+       In this example, PROCLINE() returns the line number for the
+	current activation, followed by the line number of the previous
+	activation:
+
+	// First line of source file
+	MyFunction()
+	   RETURN
+
+	FUNCTION MyFunction
+	   ? PROCLINE()      // Result: 6 (current activation)
+	   ? PROCLINE(1)      // Result: 2 (previous activation)
+	   RETURN NIL
+$LANG_RU$
+      В этом примере определяется номер строки, возвращаемый функцией
+       PROCLINE() для текущего и предыдущего вызовов:
+
+       //Первая строка исходной программы
+       MyFunction()
+       RETURN
+
+       FUNCTION MyFunction
+	  ? PROCLINE()           // Результат: 6 (текущий вызов)
+	  ? PROCLINE(1)          // Результат: 2 (предыдущий вызов)
+	  RETURN NIL
+$SEEALSO$
+  PROCNAME()
+$END$

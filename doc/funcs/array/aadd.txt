@@ -1,0 +1,225 @@
+$FUNCNAME$
+  AADD()
+$CATEGORY$
+  Array, Object
+$SUMMARY$
+   Add a new element to the end of an array
+$LANG_RU$
+   Добавляет новый элемент в конец массива.
+$LANG_HU$
+    HozzАad egy elemet egy tЖmbhЖz.
+$LANG_ES$
+   Adiciona un elemento a una matriz
+$LANG_PT$
+   Adiciona um elemento a uma matriz
+$LANG_UA$
+   Додати елемент до масиву
+$SYNTAX$
+     AADD(<aTarget>, <expValue>[, <keyValue>]) --> Value
+$LANG_RU$
+
+     AADD(<имя массива>, <выражение>[, <keyValue>]) --> значение
+$ARGUMENTS$
+     <aTarget> is the array to which a new element is to be added.
+
+     <expValue> is the value assigned to the new element.
+
+     <keyValue> is the new element key value .
+
+$LANG_RU$
+
+     <имя массива> - имя массива, к которому добавляется новый
+     элемент.
+
+     <выражение> - это значение, присваиваемое новому элементу.
+
+     <keyValue>  - ключевое значение добавляемого элемента. Если параметр
+     отсутствует, то новый элемент добавляется в конец массива.
+$LANG_HU$
+   <aTarget> A tЖmb, amelyhez hozzАadunk egy Зj elemet.
+
+   <expValue> Az ИrtИk, amelyet hozzАadunk a tЖmbhЖz.
+
+   <keyValue> Az Зj elem elИrИsi kulcsa (sorszАma). Ha nincs megadva, akkor az Зj
+   elem lesz a tЖmb utolsС eleme.
+
+$LANG_ES$
+   <aTarget> Matriz a la que se le a?ade un nuevo elemento
+
+   <expValue> Valor que se a?ade a la matriz
+
+   <keyValue> Es la posici?n del nuevo elemento. Si se omite el nuevo elemento se
+   a?ade al final de la matriz
+
+$LANG_PT$
+  <aTarget>  Matriz onde serА adicionado o novo elemento
+
+  <expValue> Valor que serА atribuido a matriz
+
+  <keyValue> и a posiГЦo do novo elemento. Se nЦo for especificada, o novo elemento
+   serА acidionado no final da matriz
+
+$LANG_UA$
+   <aTarget> масив, до якого дода╨ться новий елемент.
+
+   <expValue> значення, яке отриму╨ новий елемент.
+
+   <keyValue> позицЁя в масивЁ <aTarget>, в яку дода╨ться новий елемент. Якщо параметр
+   невизначений, елемент дода╨ться наприкЁнцЁ масиву.
+$RETURNS$
+
+     AADD() evaluates <expValue> and returns its value.  If <expValue> is not
+     specified, AADD() returns NIL.
+$LANG_RU$
+     AADD преобразует <выражение> и возвращает его значение. Если
+     <выражение> не задано, AADD() возвращает NIL.
+
+$LANG_HU$
+    Az AADD() fЭggvИny kiИrtИkeli a <expValue> ИrtИkИt Иs visszatИr a hМvС
+   helyre. A <expValue> ИrtИk nincs meghatАrozva, az AADD() NIL ИrtИkkel
+   tИr vissza.
+
+$LANG_ES$
+   AADD() retorna <expValue>. Si se omite <expValue>  AADD() retorna NIL
+
+$LANG_PT$
+   AADD() retorna <expvalue>. Se for omitido <expvalue> AADD() retorna NIL
+
+$LANG_UA$
+   AADD() ОцЁню╨ <expValue>,  вЁдповЁдно змЁню╨ <aTarget> та поверта╨ новий
+<aTarget>.
+   Якщо параметр <expValue> не визначений, AADD() поверта╨ NIL.
+$DESCRIPTION$
+
+     AADD() is an array function that increases the actual length of the
+     target array by one.  The newly created array element is assigned the
+     value specified by <expValue>.
+
+     AADD() is used to dynamically grow an array.  It is useful for building
+     dynamic lists or queues.  A good example of this is the GetList array
+     used by the Get system to hold Get objects.  After a READ or CLEAR GETS,
+     GetList becomes an empty array.  Each time you execute an @...GET
+     command, the Get system uses AADD() to add a new element to the end of
+     the GetList array, and then assigns a new Get object to the new element.
+
+     AADD() is similar to ASIZE() but only adds one element at a time;
+     ASIZE() can grow or shrink an array to a specified size.  AADD(),
+     however, has the advantage that it can assign a value to the new
+     element, while ASIZE() cannot.  AADD() may also seem similar to AINS(),
+     but they are different:  AINS() moves elements within an array, but it
+     does not change the array's length.
+
+     Note:  If <expValue> is another array, the new element in the target
+     array will contain a reference to the array specified by <expValue>.
+
+
+$LANG_RU$
+
+     AADD() - это функция обработки массивов, которая увеличивает
+     текущую длину указанного массива на единицу. Вновь созданному
+     элементу присваивается значение, заданное аргументом <выражение>.
+
+     AADD() используется для динамического наращивания массивов. Это
+     полезно для построения динамических списков и очередей. Примером
+     может служить массив Getlist, используемый системой GET для хранения
+     GET- объектов. После команд READ или CLEAR GETS, Getlist становится
+     пустым массивом. Каждый раз, когда выполняется команда @...GET,
+     система GET использует функцию AADD() для добавления нового элемента
+     в конец массива Getlist и затем назначает новый GET-объект новому
+     элементу.
+
+     AADD() похожа на ASIZE(), но добавляет только один элемент за
+     вызов; ASIZE() может нарастить или сжать массив до заданного
+     размера.  AADD(), однако, имеет то преимущество, что может
+     присваивать значение новому элементу, в то время как ASIZE()
+     этого сделать не может.  AADD() так же кажется похожей на функцию
+     AINS(), однако они различны.  AINS() перемещает элементы внутри
+     массива, но она не может изменять длину массива.
+
+     Примечание. Если аргумент <выражение> - это тоже массив, то новый элемент в
+     указанном массиве будет содержать ссылку на массив, заданный
+     аргументом <выражение>.
+
+$LANG_HU$
+    Az AADD() egy tЖmbkezelУ fЭggvИny, amely eggyel megnЖveli a tЖmb
+   aktuАlis hosszАt. Az Зjonnan lИtrejЖvУ elem a <expValue> ИrtИke lesz.
+
+$LANG_ES$
+   AADD() es una funci?n que a?ade un elemento a la matriz dada. Al nuevo
+   elemento creado se le asigna el valor especificado por <expValue>
+
+$LANG_PT$
+   AADD() И uma funГЦo que adiciona um elemento a matriz informada. Ao novo
+   elemento adicionado serА atribuido o valor especificado em  <expValue>
+
+$LANG_UA$
+   AADD() - це функцЁя обробки масивЁв, яка збЁльшу╨ поточну довжину
+   масиву на одиницю. Створеному елементу присвою╨ться значення <expValue>.
+$EXAMPLES$
+
+       These examples demonstrate the effects of multiple invocations
+	of AADD() to an array:
+
+	aArray := {}                  // Result: aArray is an empty array
+	AADD(aArray, 5)               // Result: aArray is { 5 }
+	AADD(aArray, 10)              // Result: aArray is { 5, 10 }
+	AADD(aArray, { 12, 10 })      // Result: aArray is
+				      // { 5, 10, { 12, 10 } }
+
+
+$LANG_RU$
+
+      Следующие примеры демонстрируют результаты многократных вызовов
+       AADD() для массива.
+
+       aArray := {}           // Результат: aArray - пустой массив
+       AADD(aArray, 5)        // Результат: aArray - { 5 }
+       AADD(aArray, 10)       // Результат: aArray - {5,10}
+       AADD(aArray, {12,10})  // Результат: aArray - {5,10,{12,10}}
+
+
+$PECULIARITIES$
+   AADD() can be take map as parametr <aTarget>. In this case <keyValue> it is
+   hash key newly element.
+   $LANG_RU$
+   AADD() может принимать в качестве параметра <имя массива> объект.  В этом случае <keyValue>
+   это хэш-код нового элемента.
+   $LANG_HU$
+   Az AADD() fЭggvИny paramИterkИnt kapja meg az <aTarget> tЖmbЖt. Ebben az
+esetben az <keyValue> az Зj elem elИrИsi kulcsa (sorszАma) lesz.
+   $LANG_ES$
+   AADD() puede recibir una variable de tipo "map", como par?metro <aTarget> .
+	En este caso <keyValue> representa la clave "hash" del nuevo elemento
+   $LANG_PT$
+   AADD() pode receber uma variavel tipo "map", como parБmetro <aTarget> .
+   Neste caso, <keyValue> representa a clave "hash" do novo elemento
+   $LANG_UA$
+   AADD() може приймати в якостЁ параметру <aTarget> об'╨кт.  В цьому
+   випадку <keyValue> розгляда╨ться, як хеш-код нового елементу.
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+   $LANG_HU$
+   Nincs platform fЭggУ tulajdonsАg.
+   $LANG_ES$
+   No es dependiente de la plataforma
+   $LANG_PT$
+   NЦo И dependente de plataforma
+   $LANG_UA$
+   Не залежить вЁд платформи.
+$SEEALSO$
+  AINS(),ASIZE(),
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+   $LANG_HU$
+ITK
+   $LANG_ES$
+ITK
+$LANG_PT$
+Nogueira, nogueira_jr@ig.com.br
+   $LANG_UA$
+   Евгений Бондарь
+$END$

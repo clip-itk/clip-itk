@@ -1,0 +1,53 @@
+$FUNCNAME$
+  ASCAN()
+$CATEGORY$
+  ARRAY
+$SUMMARY$
+  Scan an array
+$LANG_RU$
+	Просмотр массива
+$SYNTAX$
+	ASCAN(<aArr>, <Expression>, [<nStart>], [<nCount>], [lBack])	--> <nStoppedAt>
+$ARGUMENTS$
+	<aArr>		Array, is the target array
+	<Expression>	is either a simple value to scan for, or code block
+	<nStart>	Numeric, is the start element to scan.
+	<nCount>	Numeric, is the number element to scan from the starting position.
+	<lBack>		Logical, if TRUE - scan from end of array (default FALSE)
+$LANG_RU$
+	<aArr>		Array, исходный массив
+	<Expression>	простое значение для поиска или кодовый блок.
+	<nStart>	Numeric, стартовая позиция просмотра.
+	<nCount>	Numeric, количество элементов для просмотра, начиная со стартовой позиции.
+	<lBack>		Logical, если TRUE - просмор массива с конца (по умолчанию FALSE).
+$RETURNS$
+	Returns a numeric value representing the array position of the last
+	element scanned.
+$LANG_RU$
+	Возвращает числовое значение, соответствующее позиции в массиве последнего
+	просмотренного элемента.
+$DESCRIPTION$
+	ASCAN() scanns an array  <aArr> for a value <Expression> or until a code block <Expression> returns TRUE
+	and uses for comparions operator (=).
+$LANG_RU$
+	ASCAN() просматривает массив <aArr> до совпадения со значением <Expression> или
+	пока кодовый блок <Expression > возвращает TRUE.
+	ASCAN() использует для сравнения оператор (=).
+
+$EXAMPLES$
+	arr := {"Ann", "Mary", "Jhon", "Suzi"}
+	ASCAN(arr, "Mary")    //	--> 2
+$PECULIARITIES$
+	In CLIP add new parameters <lBack> for scanning array from back.
+$LANG_RU$
+	В CLIP добавлен новый параметр <lBack> для просмотра массива с конца.
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$

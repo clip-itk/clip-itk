@@ -1,0 +1,400 @@
+<chapter id="codb">
+<title>_(CODB- CLIP Object Data Base.)_</title>
+
+<para>_(
+For better understanding of this document it is necessary to read sections
+of the documentation <link linkend="leintroduction">language extensions</link> and especially attentively
+the chapter <link linkend="leoomodel">OO-model</link>. If you won't understand them - further reading
+has no sense.
+)_</para>
+
+<para>_(
+<command>CODB</command> consists of the dictionary ( metadata storehouse ) and a number of
+depositories for data objects.
+)_</para>
+
+<para>_(
+<command>CODB</command> is not OO storehouse as it is in classical OO-programming (C ++, SmallTalk...).
+<command>CODB</command> is an object database, i.e. storehouse of objects with some OO elements.
+)_</para>
+
+<para>_(
+In particular, the "private" properties is not supported - for the simple reason that
+<command>CODB</command> core must know about all properties of an object. But instead of
+"private" there is an opportunity to store objects with properties,
+which aren't described in metadata.
+)_</para>
+
+<para>_(
+Thus, if the object with extra properties will be stored, using the method
+method depository:append(obj), all those extra properties will be kept
+completely, but the type checking, content checking and indexation will not
+work for them.
+)_</para>
+
+<para>_(
+While reading such an object all properties will be accessible and
+the programmer is fully responsible for the content of those extra properties.
+If he will not describe them in the documentation, they may be considered
+as "private" :).
+)_</para>
+
+<para>_(
+Inheritance is supported, but only from one superclass, and the properties
+ and indexes are inherited only.
+ )_</para>
+
+<para>_(
+Polymorphism currently is not supported, because object methods are not kept.
+Possibly, the following versions of <command>CODB</command> will support object methods keeping
+and polymorphism. Currently only event handlers ( analogues of triggers in
+ RDBMS ) are available - it is possible to realize polymorphism partially
+using them, if necessary.
+)_</para>
+
+<para>_(
+Main concepts:
+)_</para>
+
+<informaltable frame="none"><tgroup cols="2"><tbody>
+<row><entry align="right"><command>_(Class)_</command></entry>
+<entry>_(the set of substances with identical properties)_</entry></row>
+
+<row><entry align="right"><command>_(Object)_</command></entry>
+<entry>_(the substance belonging to any class)_</entry></row>
+
+<row><entry align="right"><command>_(The stored object)_</command></entry>
+<entry>_(object which is kept in storehouse, there is other name
+for such objects - "permanent" or "constant")_</entry></row>
+
+<row><entry align="right"> </entry>
+<entry>_(The comment:)_</entry></row>
+<row><entry align="right"> </entry>
+<entry>_(In some ODB, especially based on C ++, the metadata are not permanent.
+In such ODB metadata are known only at compile time and are not kept
+in dictionaries. In <command>CODB</command> both metadata and the stored data are permanent
+because they are kept in DB and are accessible at run-time)_</entry></row>
+
+<row><entry align="right"><command>_(Property)_</command></entry>
+<entry>_(a part of an object, the attribute of an object, it may be of any type)_</entry></row>
+
+<row><entry align="right"><command>_(Method)_</command></entry>
+<entry>_(a program code which an object may execute)_</entry></row>
+
+<row><entry align="right"><command>_(Metadata)_</command></entry>
+<entry>_(objects which describes the structure of other objects)_</entry></row>
+
+<row><entry align="right"><command>_(Dictionary)_</command></entry>
+<entry>_(storehouse of metadata)_</entry></row>
+
+<row><entry align="right"><command>_(Depository)_</command></entry>
+<entry>_(a place where stored objects are kept ( the structure of these
+ objects is described in the dictionary ))_</entry></row>
+
+<row><entry align="right"><command>_(Essence)_</command></entry>
+<entry>_(a string which describes the content of stored object)_</entry></row>
+
+<row><entry align="right"><command>_(Extent)_</command></entry>
+<entry>_(a part of depository for storage of related objects belonging to
+different classes. The fragmentation of depositry on extents depends on
+the essence of the whole data kept, the number of stored objects, their relations
+etc. It is defined at a design time)_</entry></row>
+</tbody></tgroup></informaltable>
+
+<para>_(
+If to consider these concepts from the point of RDBMS:
+)_</para>
+<informaltable frame="none"><tgroup cols="2"><tbody>
+<row><entry><command>CODB</command></entry>
+<entry>RDBMS</entry></row>
+
+<row><entry><command>_(Dictionary)_</command></entry>
+<entry>_(a place where descriptions of databases, tables, fields, users,
+views, triggers and others is stored)_</entry></row>
+
+<row><entry><command>_(Metadata)_</command></entry>
+<entry>_(the data used by RDBMS for the internal needs)_</entry></row>
+
+<row><entry><command>_(Depository)_</command></entry>
+<entry>_(database)_</entry></row>
+
+<row><entry><command>_(Extent)_</command></entry>
+<entry>_(this concept is not present in RDBMS, but it may
+be a part of database, which keeps some tables. For example, tables which names
+ begins with a letter "A", a letter "B", .....)_</entry></row>
+
+<row><entry><command>_(Class)_</command></entry>
+<entry>_(the table)_</entry></row>
+
+<row><entry><command>_(Object)_</command></entry>
+<entry>_(a record of the table)_</entry></row>
+
+<row><entry><command>_(Property)_</command></entry>
+<entry>_(a field of a record)_</entry></row>
+</tbody></tgroup></informaltable>
+
+<section id="codbspecification"><title>_(Specification)_</title>
+<orderedlist numeration="arabic">
+<listitem><para>_(
+Theoretically <command>CODB</command> may keep the data in any low level storehouse:
+ TXT, SDF, XML, DBF, SQL, others ODB, CORBA...
+At the present time only a driver for DBF+CDX files is implemented.
+The driver is written on CLIP, it's sources are about 60k.
+)_</para></listitem>
+
+<listitem><para>_(
+Identification of all objects is global, i.e. using the identifier of an
+object it is possible to determine the dictionary and depository it is related to.
+The length of the identifier of an object is defined at compile time,
+the configuration is in codbcfg.ch. In a standard configuration the identifier
+of any object ( meta or stored ) occupies 12 bytes and consists of:
+)_</para>
+<itemizedlist>
+<listitem><para>_(The identifier of the dictionary - 5 bytes.)_</para></listitem>
+<listitem><para>_(The identifier of the depository - 2 bytes.)_</para></listitem>
+<listitem><para>_(The identifier of an object in depository - 5 bytes.)_</para></listitem>
+</itemizedlist>
+
+<para>_(
+Only Latin letters and digits are used in the identifier, so the number of
+dictionaries is no more than 32^5 = 2^25 = ~32 000 000.
+At each dictionary there may be 32^2 = ~1000 depositories.
+The number of extents inside the depository is limited only by the number of
+files in the directory or number of tables supported by RDBMS.
+The number of objects in one depository is no more than 32^5 = ~32 000 000.
+)_</para></listitem>
+
+<listitem><para>_(
+The speed of objects recording to the database using the DBF driver is about
+200 per second ( Celeron 400/128M ), it depends on the size of object slightly.
+The speed of reading without caching is about 2000 per second.
+If an application server and objects caching will be used, the speed of
+reading will increase presumably in 3-4 times.
+)_</para></listitem>
+</orderedlist>
+</section>
+
+
+<section id="CODBMETADATA"><title>_(
+Metadata classes)_</title>
+<para>_(Metadata it is objects what describe other object and so objects needdes
+to control of ODB kernel.
+)_</para>
+<para>_(
+Any metadata have obligatory attribute <![CDATA[<ID>]]>. This attribute use for access to
+keeping objects. <![CDATA[<ID>]]> created ODB kernel when object append to dictionary.
+)_</para>
+<para>_(
+The metadata counts and names are limited and determine by ODB kernel.
+The dictionary have object only classes:)_</para>
+<para><command><link linkend="codbDEPOSIT">DEPOSIT</link> <link linkend="codbEXTENT">EXTENT</link> <link linkend="codbATTR">ATTR</link> <link linkend="codbCOUNTER">COUNTER</link> <link linkend="codbINDEX">INDEX</link> <link linkend="codbCLASS">CLASS</link> <link linkend="codbTCOLUMN">TCOLUMN</link> <link linkend="codbTVIEW">TVIEW</link> <link linkend="codbREPORT">REPORT</link> <link linkend="codbPLUGINS">PLUGINS</link> <link linkend="codbUSER">USER</link> <link linkend="codbGROUP">GROUP</link></command></para>
+<para>_(In the dictionary mast be at least one object of each metaclass.
+)_</para>
+<section id="codbDEPOSIT"><title><command>DEPOSIT</command>_( the description of metadata "depository")_</title>
+	<para>_(Attributes:)_</para>
+	<itemizedlist>
+	<listitem><para>_(ID - metadata identifier)_</para></listitem>
+	<listitem><para>_(NAME - depository name)_</para></listitem>
+	</itemizedlist>
+	<para>_(Example: create DEPOSIT metadata)_</para>
+	<programlisting>
+	oDict := coDictionary():new("MY001")
+	oDict:open()
+	....
+	depBody := map()
+	depBody:name := "depository for Russian global information"
+	...
+	dep_id := oDict:append(depBody,"DEPOSIT")
+	if !empty(oDict:error)
+	   ? "Error:",oDict:error
+	endif
+	</programlisting>
+</section>
+<section id="codbEXTENT"><title><command>EXTENT</command>_( the description of metadata "extent")_</title>
+	<para>_(Attributes:)_</para>
+	<itemizedlist>
+	<listitem><para>_(ID - metadata identifier)_</para></listitem>
+	<listitem><para>_(NAME - extent name)_</para></listitem>
+	<listitem><para>_(HELP - description)_</para></listitem>
+	</itemizedlist>
+	<para>_(Example: create EXTENT metadata)_</para>
+	<programlisting>
+		extBody := map()
+		extBody:name := "statedep"
+		extBody:help := "information from state department of statistic"
+		...
+		ext_id := oDict:append(extBody,"EXTENT")
+		....
+	</programlisting>
+</section>
+<section id="codbATTR"><title><command>ATTR</command>_( the attribute description of keeping object)_</title>
+	<para>_(Attributes:)_</para>
+	<itemizedlist>
+	<listitem><para>_(ID - metadata identifier)_</para></listitem>
+	<listitem><para>_(NAME - keeping object attribute name)_</para></listitem>
+	<listitem><para>_(TYPE - keeping object attribute type)_</para></listitem>
+	<listitem><para>_(LEN - length)_</para></listitem>
+	<listitem><para>_(DEC - characters after point (for numeric attributes))_</para></listitem>
+	<listitem><para>_(LENTYPE - formatting type (for string attributes))_</para></listitem>
+	<listitem><para>_(REF_TO - class identifier (for attributes with type "R") if empty, then reference to object any classes)_</para></listitem>
+	<listitem><para>_(DEFVALUE - the value by default)_</para></listitem>
+	</itemizedlist>
+	<para>_(The TYPE values:)_
+	<itemizedlist>
+	<listitem><para>_("C" - characters string with limit by length)_</para></listitem>
+	<listitem><para>_("N" - numeric)_</para></listitem>
+	<listitem><para>_("D" - date)_</para></listitem>
+	<listitem><para>_("L" - logical)_</para></listitem>
+	<listitem><para>_("M" - characters string without limit by length)_</para></listitem>
+	<listitem><para>_("O" - object)_</para></listitem>
+	<listitem><para>_("X" - any data of simple type: string, numeric, date, logical, reference)_</para></listitem>
+	<listitem><para>_("R" - reference to object)_</para></listitem>
+	<listitem><para>_("S" - reference to class)_</para></listitem>
+	<listitem><para>_("A" - array of reference)_</para></listitem>
+	<listitem><para>_("B" - code block)_</para></listitem>
+	</itemizedlist>
+	<para>_(The LENTYPE values:)_
+	<itemizedlist>
+	<listitem><para>_(1 - "As is")_</para></listitem>
+	<listitem><para>_(2 - "Right trim")_</para></listitem>
+	<listitem><para>_(3 - "Right & Left trim")_</para></listitem>
+	<listitem><para>_(4 - "Right pad length")_</para></listitem>
+	</itemizedlist>
+	<para>_(Example: create ATTR metadata)_</para>
+	<programlisting>
+	attr:=map()
+	attr:name := "code"
+	attr:type := "C"
+	attr:len  := 7
+	attr:lentype := 3
+	....
+	code_id := oDict:append(attr,"ATTR")
+	....
+	attr:=map()
+	attr:name := "name"
+	attr:type := "C"
+	attr:len  := 20
+	attr:lentype := 2
+	....
+	name_id := oDict:append(attr,"ATTR")
+	</programlisting>
+</section>
+<section id="codbCOUNTER"><title><command>COUNTER</command>_(the counter description)_</title>
+	<para>_(Attributes:)_</para>
+</section>
+<section id="codbINDEX"><title><command>INDEX</command>_( the index description )_</title>
+	<para>_(Attributes:)_</para>
+	<itemizedlist>
+	<listitem><para>_(ID - metadata identifier)_</para></listitem>
+	<listitem><para>_(NAME - index name)_</para></listitem>
+	<listitem><para>_(EXPR - index expression)_</para></listitem>
+	</itemizedlist>
+	<para>_(Example: create INDEX metadata)_</para>
+	<programlisting>
+	indBody := map()
+	indBody:name := "code"
+	indBody:expr := "code"
+	ind1_id := oDict:append(indBody,"INDEX")
+	....
+	indBody := map()
+	indBody:name := "name"
+	indBody:expr := "name"
+	ind2_id := oDict:append(indBody,"INDEX")
+	....
+	</programlisting>
+</section>
+<section id="codbCLASS"><title><command>CLASS</command>_( the structure description )_</title>
+	<para>_(Attributes:)_</para>
+	<itemizedlist>
+	<listitem><para>_(ID - metadata identifier)_</para></listitem>
+	<listitem><para>_(NAME - keeling object name)_</para></listitem>
+	<listitem><para>_(SUPER_ID - super class identifier)_</para></listitem>
+	<listitem><para>_(EXTENT_ID - extent identifier)_</para></listitem>
+	<listitem><para>_(EXPR_ESSENCE - expression for short appeares)_</para></listitem>
+	<listitem><para>_(UNSTABLE - the characteristic of object stably (service parameter))_</para></listitem>
+	<listitem><para>_(ATTR_LIST - array of attribute identifiers)_</para></listitem>
+	<listitem><para>_(IDX_LIST - array of index identifiers)_</para></listitem>
+	</itemizedlist>
+	<para>_(Example: create CLASS metadata)_</para>
+	<programlisting>
+	classBody:=map()
+	/* information about coding world currencies */
+	classBody:name := "currency"
+	/* from state department of statistic */
+	classBody:extent_id := ext_id
+	/* return via "USD:USA dollar" */
+	classBody:expr_essence := "code+':'+name"
+	/* two attributes "code" and "name" */
+	classBody:attr_list := {code_id,name_id}
+	/* two index "code" and "name" */
+	classBody:idx_list := {ind1_id,ind2_id}
+
+	currency_id := oDict:append(classBody,"CLASS")
+	if !empty(oDict:error)
+	   ? "Error:",oDict:error
+	endif
+	 </programlisting>
+</section>
+<section id="codbTCOLUMN"><title><command>TCOLUMN</command>_(the table column description)_</title>
+	<para>_(Attributes:)_</para>
+</section>
+<section id="codbTVIEW"><title><command>TVIEW</command>_(the table view description )_</title>
+	<para>_(Attributes:)_</para>
+</section>
+<section id="codbREPORT"><title><command>REPORT</command>_(the report description )_</title>
+	<para>_(Attributes:)_</para>
+</section>
+<section id="codbPLUGINS"><title><command>PLUGINS</command>_(the plugins modules description)_</title>
+	<para>_(Attributes:)_</para>
+</section>
+<section id="codbUSER"><title><command>USER</command>_(the user description )_</title>
+	<para>_(Attributes:)_</para>
+</section>
+<section id="codbGROUP"><title><command>GROUP</command>_(the description of users group )_</title>
+	<para>_(Attributes:)_</para>
+</section>
+
+</section>
+
+<section id="codbclasses"><title>_(
+Controling classes.)_</title>
+
+<para>_(
+There are three classes for creation and management of dictionaries and depositories:
+)_</para>
+<itemizedlist>
+<listitem><para>_(<link linkend="classCODBLIST">CODBLIST  </link> - handles the list of accessible dictionaries.)_</para></listitem>
+<listitem><para>_(<link linkend="classCODBDICTIONARY">CODBDICTIONARY</link> - handles the content of the dictionary.)_</para></listitem>
+<listitem><para>_(<link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link> - handles the content of depository.)_</para></listitem>
+</itemizedlist>
+
+<para>_(
+And one service class:
+)_</para>
+<itemizedlist>
+<listitem><para>_(<link linkend="classCODBIDLIST">CODBIDLIST</link> - a service class for a work with stored objects in navigating style.)_</para></listitem>
+</itemizedlist>
+</section>
+
+<section id="codbexample"><title>_(Examples)_</title>
+<para>_(
+The first full example of using the <command>CODB</command> (prg/udb/sample/my001.prg), it is for
+the subsequent descriptions of classes were visible in a whole.
+To execute it you need to build the program with the command
+ " clip-eslM my001.prg-lclip-codb "
+ )_</para>
+ </section>
+
+<section id="codbUtils"><title>_(Utilities)_</title>
+<para>_(
+There are two utilities:)_</para>
+<itemizedlist>
+<listitem><para>_(codb_make - to creat dictionaries and depositories using the
+    description in XML format.)_</para></listitem>
+<listitem><para>_(codb_ab   - to work with dictionaries, etc. in an interactive mode.)_</para></listitem>
+</itemizedlist>
+</section>
+
+
+</chapter>
+

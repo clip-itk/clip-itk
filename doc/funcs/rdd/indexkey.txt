@@ -1,0 +1,185 @@
+$FUNCNAME$
+  INDEXKEY()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the key expression of a specified index
+$LANG_RU$
+   Возвращает ключевое выражение для заданного индекса.
+$SYNTAX$
+     INDEXKEY(<nOrder>) --> cKeyExp
+$LANG_RU$
+     INDEXKEY(<номер индекса>) --> выражение ключа
+$ARGUMENTS$
+     <nOrder> is the ordinal position of the index in the list of index
+     files opened by the last USE...INDEX or SET INDEX TO command for the
+     current work area.  A zero value specifies the controlling index,
+     without regard to its actual position in the list.
+$LANG_RU$
+     <номер индекса> - это позиция индекса по порядку в списке индексных
+     файлов, которые были открыты при последнем выполнении команд
+     USE...INDEX или SET INDEX TO для текущей рабочей области. Нулевое
+     значение задает управляющий индекс вне зависимости от его реальной
+     позиции в списке.
+$RETURNS$
+     INDEXKEY() returns the key expression of the specified index as a
+     character string.  If there is no corresponding index or if no database
+     file is open, INDEXKEY() returns a null string ("").
+$LANG_RU$
+     INDEXKEY() возвращает ключевое выражение для заданного индекса в виде
+     символьной строки. Если соответствующего индекса нет, то INDEXKEY()
+     возвращает пустую строку ("").
+$DESCRIPTION$
+     INDEXKEY() is a database function that determines the key expression of
+     a specified index in the current work area and returns it as a character
+     string.  To evaluate the key expression, specify INDEXKEY() as a macro
+     expression like this: &amp;(INDEXKEY(<nOrder>)).
+
+     INDEXKEY() has a number of applications, but two specific instances are
+     important.  Using INDEXKEY(), you can TOTAL on the key expression of the
+     controlling index without having to specify the key expression in the
+     source code.  The other instance occurs within a DBEDIT() user function.
+     Here, you may want to determine whether or not to update the screen
+     after the user has edited a record.  Generally, it is only necessary to
+     update the screen if the key expression of the controlling index has
+     changed for the current record.  Both of these examples are illustrated
+     below.
+
+     By default, INDEXKEY() operates on the currently selected work area.  It
+     can be made to operate on an unselected work area by specifying it
+     within an aliased expression (see example below).
+$LANG_RU$
+     INDEXKEY() - это функция обработки баз данных, определяющая ключевое
+     выражение заданного индекса в текущей рабочей области и возвращающая
+     его как символьную строку. Для расчета ключевого выражения задайте
+     INDEXKEY() как макровыражение:
+
+     INDEXKEY(<номер индекса>).
+
+     INDEXKEY() имеет ряд приложений, но на ум сразу же приходят два
+     специфических примера. Используя INDEXKEY(), вы можете выполнить
+     команду TOTAL по ключевому выражению управляющего индекса, не задавая
+     ключевого выражения в исходном тексте. Другой пример вы найдете,
+     рассматривая функцию пользователя DBEDIT(). Здесь вы можете
+     определить, обновлять экран или нет после того, как пользователь
+     отредактирует запись. Обычно необходимо обновить экран только если
+     изменилось ключевое выражение управляющего индекса для текущей
+     записи.  Оба эти примера иллюстрируются ниже.
+
+     По умолчанию INDEXKEY() действует в выбранной (активной) в текущий
+     момент рабочей области. Можно сделать так, чтобы эта функция
+     действовала в пассивной рабочей области, используя ее как элемент
+     выражения, уточненного алиасом( смотри пример ниже ).
+$EXAMPLES$
+       This example accesses the key expression of open indexes in
+	the current work area:
+
+	#define ORD_NATURAL      0
+	#define ORD_NAME         1
+	#define ORD_SERIAL      2
+	//
+	USE Customer INDEX Name, Serial NEW
+	SET ORDER TO ORD_SERIAL
+	? INDEXKEY(ORD_NAME)         // Result: Name index exp
+	? INDEXKEY(ORD_SERIAL)      // Result: Serial index exp
+	? INDEXKEY(ORD_NATURAL)      // Result: Serial index exp
+
+       This example accesses the key expression of the controlling
+	index in an unselected work area:
+
+	USE Customer INDEX Name, Serial NEW
+	USE Sales INDEX Salesman NEW
+	? INDEXKEY(0), Customer->(INDEXKEY(0))
+
+       This example uses INDEXKEY() as part of a TOTAL ON key
+	expression.  Notice that INDEXKEY() is specified using a macro
+	expression to force evaluation of the expression:
+
+	USE Sales INDEX Salesman NEW
+	TOTAL ON &amp;(INDEXKEY(0)) FIELDS SaleAmount TO ;
+	      SalesSummary
+
+       This example uses INDEXKEY() to determine whether the DBEDIT()
+	screen should be updated after the user has edited the current field
+	value.  Generally, you must update the DBEDIT() screen if the user
+	changes a field that is part of the controlling index key.
+	FieldEdit() is a user-defined function called from a DBEDIT() user
+	function to edit the current field if the user has pressed an edit
+	key.
+
+	#include "Dbedit.ch"
+	#define ORD_NATURAL   0
+	FUNCTION FieldEdit()
+	   LOCAL indexVal
+	   // Save current key expression and value
+	   indexVal = &amp;(INDEXKEY(ORD_NATURAL))
+	   .
+	   . <code to GET current field value>
+	   .
+	   // Refresh screen if key value has changed
+	   IF indexVal != &amp;(INDEXKEY(ORD_NATURAL))
+	      nRequest = DE_REFRESH
+	   ELSE
+	      nRequest = DE_CONT
+	   ENDIF
+	   RETURN nRequest
+$LANG_RU$
+      Этот пример демонстрирует, как получить доступ к ключевым
+       выражениям индексов, открытых в текущей рабочей области:
+
+       #define ORD_NATURAL    0
+       #define ORD_NAME       1
+       #define ORD_SERIAL     2
+       //
+       USE Customer INDEX Name, Serial NEW
+       SET ORDER TO ORD_SERIAL
+       ? INDEXKEY(ORD_NAME)            // Результат: Name index exp
+       ? INDEXKEY(ORD_SERIAL)          // Результат: Serial index exp
+       ? INDEXKEY(ORD_NATURAL)         // Результат: Serial index exp
+
+      Этот пример показывает, как получить доступ к ключевому выражению
+       управляющего индекса в пассивной рабочей области:
+
+       USE Customer INDEX Name, Serial NEW
+       USE Sales INDEX Salesman NEW
+       INDEXKEY(0), Customer-> (INDEXKEY(0))
+
+      Этот пример иллюстрирует использование INDEXKEY() в качестве части
+       ключевого выражения в команде TOTAL. Заметим, что INDEXKEY() задана
+       с использованием макровыражения, чтобы вызвать вычисление этого
+       выражения:
+
+       USE Sales INDEX Salesman NEW
+       TOTAL ON &amp;(INDEXKEY(0)) FIELDS SaleAmount TO SalesSummary
+
+      Этот пример демонстрирует, как можно использовать функцию
+       INDEXKEY() для определения, должен ли обновляться экран в процессе
+       выполнения функции DBEDIT() после того, как пользователь
+       отредактировал текущее значение поля.  Обычно необходимо обновлять
+       экран, если пользователь заменяет поле, которое является частью
+       управляющего индексного ключа. FieldEdit() - это функция
+       пользователя, которая может быть вызвана из функции пользователя
+       DBEDIT(), чтобы отредактировать текущее поле, если пользователь
+       нажал редактирующую клавишу :
+
+       #include "Dbedit.ch"
+       #define ORD_NATURAL 0
+       //
+       FUNCTION FieldEdit()
+	  LOCAL indexVal
+	  // Сохранить текущее значение выражения ключа
+	  // и его значение
+	  indexVal = &amp;(INDEXKEY(ORD_NATURAL))
+	  .
+	  . <команды ввода значения в текущее поле>
+	  .
+	  // Обновить экран, если изменено значение ключа
+	  IF indexVal != &amp;(INDEXKEY(ORD_NATURAL))
+	     nRequest = DE_REFRESH
+	  ELSE
+	     nRequest = DE_CONT
+	  ENDIF
+	  RETURN nRequest
+$SEEALSO$
+  INDEXEXT(),INDEXORD()
+$END$

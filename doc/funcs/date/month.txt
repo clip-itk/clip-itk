@@ -1,0 +1,63 @@
+$FUNCNAME$
+  MONTH()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Convert a date value to the number of the month
+$LANG_RU$
+   Определяет по значению даты номер месяца.
+$SYNTAX$
+     MONTH(<dDate>) --> nMonth
+$LANG_RU$
+     MONTH(<дата>) --> номер месяца
+$ARGUMENTS$
+     <dDate> is the date value to be converted.
+$LANG_RU$
+     <дата> - значение даты.
+$RETURNS$
+     MONTH() returns an integer numeric value in the range of zero to 12.
+     Specifying a null date (CTOD("")) returns zero.
+$LANG_RU$
+     MONTH() возвращает целое число, которое находится в интервале от 0 до
+     12. Ноль получается при обработке нулевой даты (CTOD("")).
+$DESCRIPTION$
+     MONTH() is a date conversion function that is useful when you require a
+     numeric month value during calculations for such things as periodic
+     reports.  MONTH() is a member of a group of functions that return
+     components of a date value as numeric values.  The group includes DAY()
+     and YEAR() to return the day and year values as numerics.  CMONTH() is a
+     related function that allows you to return the name of the month from a
+     date value.
+$LANG_RU$
+     MONTH() - функция обработки даты, которая может быть полезна, если в
+     процессе вычислений необходимо числовое значение месяца. MONTH()
+     входит в группу функций, которые возвращают компоненты даты как целое
+     число. В эту группу также входят функции DAY() и YEAR(), которые
+     возвращают числовые значения дня и года. Функция CMONTH() позволяет
+     по значению даты определить название месяца.
+$EXAMPLES$
+       These examples return the month of the system date:
+
+	? DATE()                        // Result: 09/01/90
+	? MONTH(DATE())                 // Result: 9
+	? MONTH(DATE()) + 1             // Result: 10
+
+       This example demonstrates MONTH() acting on a null date:
+
+	#define NULL_DATE   (CTOD(""))
+	? MONTH(NULL_DATE)              // Result: 0
+$LANG_RU$
+      Этот пример определяет номер месяца для системной даты.
+
+       ? DATE()                  // Результат: 09/01/90
+       ? MONTH(DATE())           // Результат: 9
+       ? MONTH(DATE()+1)         // Результат: 10
+
+      Следующий пример демонстрирует, как MONTH() обрабатывает нулевую
+       дату.
+
+       #define NULL DATE (CTOD(""))
+       ? MONTH(NULL DATE)        // Результат: 0
+$SEEALSO$
+  CMONTH(),DAY(),DOW(),YEAR()
+$END$

@@ -1,0 +1,164 @@
+$FUNCNAME$
+	SLEEP()
+$CATEGORY$
+	DATE/TIME, SYSTEM
+$SUMMARY$
+	Sleep for the specified number of seconds and milliseconds.
+$LANG_RU$
+	Остановить выполнение программы на заданное количество секунд и(или) милисекунд.
+$SYNTAX$
+     SLEEP(<nSec>) 	--> NIL
+$ARGUMENTS$
+	<nSec>		Numeric, is the number os seconds and/or milliseconds.
+$LANG_RU$
+	<nSec>		Numeric, количество секунд и/или милисекунд ожидания.
+$RETURNS$
+     Returns NIL.
+$LANG_RU$
+     Возвращает NIL.
+$DESCRIPTION$
+	SLEEP() makes the program sleep until seconds have  elapsed.
+$LANG_RU$
+	SLEEP() останавливает программу на время, пока не истекли указанные секунды.
+$EXAMPLES$
+
+do while 100
+	? time()
+	SLEEP(10.50)
+enddo
+
+$PLATFORMS$
+   Nothing guarantee for the specified MILLISECONDS, if this guarantee have't
+   OS.
+   $LANG_RU$
+   Никаких гарантий на заданное количество МИЛИСЕКУНД нет, если такой гарантии
+   не дает операционная система.
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+$FUNCNAME$
+	SYSCMD()
+$CATEGORY$
+	SYSTEM
+$SUMMARY$
+	Run system command.
+$LANG_RU$
+	Выполнить системную команду.
+$SYNTAX$
+     SYSCMD(<sCmd>, <sStdin>, @<sResult>, @<sError>) 	--> <nResultCode>
+$ARGUMENTS$
+	<sCmd>		String, is the command.
+	<sStdin>	String, is the input string.
+	<sResult>	String, is the string of result.
+	<sErrot>	String, is the error description.
+$LANG_RU$
+	<sCmd>		String, команда.
+	<sStdin>	String, входящая строка.
+	<sResult>	String, строка результата.
+	<sErrot>	String, описание ошибки.
+$RETURNS$
+     Returns -1 on error or returns status of command.
+$LANG_RU$
+     Возвращает -1 если произошла ошибка или возвращает статус завершения команды.
+$DESCRIPTION$
+	SYSCMD() runs system command <sCmd> and sends to this command string <sStdin>
+	to a standart input. All output stream will be write to <sResult>, and
+	all error stream to <sError>.
+
+	<sResult> and <sError> can't be constants.
+$LANG_RU$
+	SYSCMD() выполняет системную команду <sCmd>, посылая ей на входной
+	стандартный поток строку <sStdin>. Весь stdout будет записан
+	в буфер <sResult>, а весь stderr - в <sErr>.
+
+	<sResult> и <sError> не могут быть объявлены как константы.
+$EXAMPLES$
+
+err_buf1=space(0)
+res_buf1=space(0)
+
+err_buf2=space(0)
+res_buf2=space(0)
+
+result_code1 := SYSCMD("ls -l", "", @res_buf1, @err_buf1)
+
+? result_code1
+? res_buf1
+? err_bus1
+?
+
+result_code2 := SYSCMD("grep test ", res_buf1, @res_buf2, @err_buf2)
+
+? result_code2
+? res_buf2
+? err_bus2
+?
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+$FUNCNAME$
+	ULIMIT()
+$CATEGORY$
+	SYSTEM
+$SUMMARY$
+	Set limit to use system resources.
+$LANG_RU$
+	Установить лимит на использование системных ресурсов.
+$SYNTAX$
+     ULIMIT(<sResName>, <vLimitVal>) 	--> <vOldLimitValue>
+$ARGUMENTS$
+	<sResName>	String, is the resource name.
+	<vLimitVal>	is the new limit value.
+$LANG_RU$
+	<sResName>	String, название ресурса.
+	<vLimitVal>	новое значение.
+$RETURNS$
+     Returns old limit value for system resource <sResName>.
+$LANG_RU$
+     Возвращает старое значение предельной величины для системного ресурса <sResName>.
+$DESCRIPTION$
+	ULIMIT() sets new limit value <vLimitVal> to use system resource with name <sResName>
+	 and returns old value for this resource.
+
+	The list of resource names see in ulimit.ch
+$LANG_RU$
+	ULIMIT() устанавливает новое значение <vLimitVal> на использование
+	системного ресурса с именем <sResName> и возвращает старое значение
+	этого ресурса.
+
+	Список возможных значений ресурсов см. в ulimit.ch
+$EXAMPLES$
+
+#include <ulimit.ch>
+
+/* set the max size for stack */
+
+? ULIMIT( ULIMIT_STACK, 1024 )
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+

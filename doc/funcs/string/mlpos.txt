@@ -1,0 +1,74 @@
+$FUNCNAME$
+  MLPOS()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Determine the position of a line in a character string or memo field
+$LANG_RU$
+   Определяет номер первого символа подстроки в символьной строке или
+$SYNTAX$
+     MLPOS(<cString>, <nLineLength>, <nLine>, [<nTabSize>], [<lWrap>]) --> nPosition
+$LANG_RU$
+     MLPOS(<символьная строка>,<длина строки>,<номер строки>, [<шаг табуляции>],
+	  [<переключатель переноса>]) --> номер символа
+$ARGUMENTS$
+     <cString> is a character string or memo field.
+
+     <nLineLength> specifies the number of characters per line.
+
+     <nLine> specifies the line number.
+
+     <nTabSize> defines the tab size.  The default is four.  If
+     <nTabSize> is greater than or equal to <nLineLength>, then the tab size
+     is adjusted to <nLineLength> - 1.
+
+     <lWrap> toggles word wrap on and off.  Specifying true (.T.) toggles
+     word wrap on, and false (.F.) toggles it off.  The default is true
+     (.T.).
+$LANG_RU$
+     <символьная строка> - строка символов или memo-поле.
+
+     <длина строки> - определяет количество символов в строке.
+
+     <шаг табуляции> - определяет размер шага табуляции. Если аргумент не
+     задан, по умолчанию величина шага принимается равной 4. Если значение
+     аргумента <шаг табуляции> больше или равно значению аргумента <длина
+     строки>, то тогда размер шага табуляции принимается равным значению
+     выражения (<длина строки> - 1).
+
+     <переключатель переноса> - переключает (включает и выключает) режим
+     переноса слов. Если его значение "истина" (.T.) - режим включен, если
+     "ложь" (.F.) - режим отключен. Если аргумент не задан, по умолчанию
+     его значение - "истина" (.T.).
+$RETURNS$
+     MLPOS() returns the character position of <nLine> in <cString> as an
+     integer numeric value.  If <nLine> is greater than the number of lines
+     in <cString>, MLPOS() returns the length of <cString>.
+$LANG_RU$
+     MLPOS() возвращает номер символа аргумента <символьная строка>
+     начала подстроки с порядковым номером, равным значению аргумента
+     <номер строки>, в виде целого числа. Если значение аргумента
+     <номер строки> больше, чем количество строк в заданной символьной
+     строке, MLPOS() возвращает длину всей символьной строки.
+$EXAMPLES$
+       This example uses MLPOS() to find the position of a specific
+	line, given a line length:
+
+	cString = MEMOREAD("Temp.txt")
+	nLineLength = 40
+	nLine = 5
+	nPosition = MLPOS(cString, nLineLength, nLine)
+	? SUBSTR(cString, nPosition, 12)
+$LANG_RU$
+      Этот пример демонстрирует использование функции MLPOS() для
+       определения в текстовом файле номера символа начала пятой строки,
+       при длине строк 40 символов:
+
+       cString = MEMOREAD("Temp.txt")
+       nLinelength = 40
+       nLine = 5
+       nPosition = MLPOS(cString, nLinelength, nLine)
+       ? SUBSTR(cString, nPosition, 12)
+$SEEALSO$
+  MEMOLINE(),MEMOTRAN(),MLCOUNT()
+$END$

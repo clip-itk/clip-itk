@@ -1,0 +1,140 @@
+$FUNCNAME$
+  TYPE()
+$CATEGORY$
+  STRING,NUMERIC,DATE/TIME,LOGICAL,ARRAY,OBJECT,INFO
+$SUMMARY$
+   Determine the type of an expression
+$LANG_RU$
+   Определяет тип выражения.
+$SYNTAX$
+     TYPE(<cExp>) --> cType
+$LANG_RU$
+     TYPE(<символьное выражение>) --> тип
+$ARGUMENTS$
+     <cExp> is a character expression whose type is to be determined.
+     <cExp> can be a field, with or without the alias, a private or public
+     variable, or an expression of any type.
+$LANG_RU$
+     <символьное выражение> - символьное выражение, для которого должен
+     быть определен тип его значения. <символьное выражение> может
+     представлять собой поле, уточненное алиасом или без него, PRIVATE или
+     PUBLIC переменные, или выражение любого типа.
+$RETURNS$
+     TYPE() returns one of the following characters:
+
+     <PRE>TYPE() Return Values
+     ------------------------------------------------------------------------
+     Returns   Meaning
+     ------------------------------------------------------------------------
+     A         Array
+     B         Block
+     C         Character
+     D         Date
+     L         Logical
+     M         Memo
+     N         Numeric
+     O         Object
+     U         NIL, local, or static
+     UE        Error syntactical
+     UI        Error indeterminate
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     Функция TYPE() возвращает один из следующих символов:
+
+     <PRE>Возвращаемое значение TYPE().
+     ---------------------------------------------------------------------
+     Результат        Значение
+     ---------------------------------------------------------------------
+     A                Массив
+     B                Блок
+     C                Символ
+     D                Дата
+     L                Логическое значение
+     M                Меню поля
+     N                Число
+     O                Объект
+     U                NIL, LOCAL или STATIC переменная
+     UE               Синтаксическая ошибка
+     UI               Неопределенная ошибка
+     ---------------------------------------------------------------------
+     </PRE>
+$DESCRIPTION$
+
+     TYPE() is a system function that returns the type of the specified
+     expression.  It can test expression validity as long as the expression
+     uses xCLIPPER.LIB functions and does not reference local or static
+     variables, user-defined functions, or built-in functions supplied in
+     EXTEND.LIB.
+
+     TYPE() is like VALTYPE() but uses the macro operator (&amp;) to determine
+     the type of the argument.  This precludes the use of TYPE() to determine
+     the type of local and static variables.  VALTYPE(), by contrast,
+     evaluates an expression and determines the data type of the return
+     value.  This lets you determine the type of user-defined functions as
+     well as local and static variables.
+$LANG_RU$
+     TYPE() - системная функция, возвращающая тип заданного выражения. Она
+     может быть использована для проверки корректности типов выражений в
+     которые могут входить функции библиотеки xCLIPPER.LIB . Однако в
+     выражения не должны включаться ссылки на LOCAL или STATIC переменные,
+     функции пользователя или встроенные функции библиотеки EXTEND.LIB.
+
+     Функция TYPE() похожа на функцию VALTYPE(), но отличается
+     использованием оператора макроподстановки (&amp;) для определения типа
+     предмета. Это мешает использовать TYPE() для определения типа LOCAL и
+     STATIC переменных. VALTYPE() вычисляет выражение и определяет тип
+     данных возвращаемых значений. Это позволяет вам определять тип
+     функций пользователя так же, как LOCAL и STATIC переменных.
+$EXAMPLES$
+       These examples demonstrate various results from invocations of
+	TYPE():
+
+	? TYPE('SUBSTR("Hi There", 4, 5)')      // Result: C
+	? TYPE("UDF()")                         // Result: UI
+	? TYPE('IF(.T., "true", 12)')           // Result: C
+
+       This example shows two methods for testing for the existence
+	and type of declared parameters:
+
+	FUNCTION TestParams
+	   PARAMETERS cParam1, nParam2
+	   IF cParam1 = NIL
+	      ? "First parameter was not passed"
+	      cParam1 := "Default value"
+	   ENDIF
+
+	   IF TYPE('nParam2') == "U"
+	      ? "Second parameter was not passed"
+	   ENDIF
+	   .
+	   . <statements>
+	   .
+	   RETURN NIL
+$LANG_RU$
+      Следующий пример демонстрирует различные результаты при вызове
+       TYPE():
+
+       ? TYPE('SUBSTR("Всем Привет", 4, 5)')    // Результат: C
+       ? TYPE("UDF()")                          // Результат: UI
+       ? TYPE('IF(.T., "истина", 12)')          // Результат: C
+
+      Этот пример показывает два способа проверки существования и типа
+       объявленных параметров:
+
+       FUNCTION TestParams( cParam1, nParam2 )
+	  IF cParam1 = NIL
+	     ? "Параметр не был передан"
+	     cParam1 := "Значение по умолчанию"
+	  ENDIF
+	  //
+	  IF VALTYPE(nParam2) !== "N"
+	     ? "Параметр не был передан или недопустимый тип"
+	  ENDIF
+	  .
+	  . <операторы>
+	  .
+	  RETURN NIL
+$SEEALSO$
+  VALTYPE()
+$END$

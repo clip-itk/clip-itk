@@ -1,0 +1,84 @@
+$FUNCNAME$
+  MEMORY()
+$CATEGORY$
+  SYSTEM,ENVIRONMENT
+$SUMMARY$
+   Determine the amount of available free pool memory
+$LANG_RU$
+   Определяет количество байтов свободной оперативной памяти.
+$SYNTAX$
+     MEMORY(<nExp>) --> nKbytes
+$LANG_RU$
+     MEMORY(<арифметическое выражение>) --> к-во байтов
+$ARGUMENTS$
+     <nExp> is a numeric value that determines the type of value MEMORY()
+     returns as follows:
+
+     <PRE> MEMORY() Argument Values
+     ------------------------------------------------------------------------
+     Value     Meaning
+     ------------------------------------------------------------------------
+     0         Estimated total space available for character values
+     1         Largest contiguous block available for character values
+     2         Area available for RUN commands
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     <арифметическое выражение> - арифметическое выражение, определяющее
+     тип значения, которое возвращает MEMORY(), согласно таблице.
+
+     <PRE> Значения аргументов MEMORY()
+     ---------------------------------------------------------------------
+     Значение Описание
+     ---------------------------------------------------------------------
+      0       Оценивает общий доступный объем для символьных значений
+      1       Наибольший непрерывный блок, доступный для символьных значений
+      2       Область, доступная для программ, вызываемых командой RUN
+     ---------------------------------------------------------------------
+     </PRE>
+$RETURNS$
+     MEMORY() returns an integer numeric value representing the amount of
+     memory available, in one -kilobyte increments.
+$LANG_RU$
+     MEMORY() возвращает количество доступной памяти в виде целого числа с
+     дискретностью 1 килобайт.
+$DESCRIPTION$
+     MEMORY() is an environment function that reports various states of free
+     pool memory.  (Free pool is the dynamic region of memory that stores
+     character strings and executes RUN commands.)
+$LANG_RU$
+     MEMORY() - функция среды, которая сообщает различные состояния пула
+     свободной оперативной памяти. В этой области располагаются символьные
+     строки и программы, вызываемые командой RUN.
+$EXAMPLES$
+       This example uses MEMORY() before a RUN command to determine
+	if there is enough memory available to execute the external program:
+
+	#define MEM_CHAR   0
+	#define MEM_BLOCK   1
+	#define MEM_RUN      2
+	//
+	IF MEMORY(MEM_RUN) >= 128
+	   RUN MYPROG
+	ELSE
+	   ? "Not enough memory to RUN"
+	   BREAK
+	ENDIF
+$LANG_RU$
+      Этот пример демонстрирует, как MEMORY() можно использовать перед
+       командой RUN для определения достаточного количества доступной
+       памяти для выполнения внешней программы:
+
+       #define MEM_CHAR    0
+       #define MEM_BLOCK   1
+       #define MEM_RUN     2
+       //
+       IF MEMORY(MEM_RUN) >= 128
+	  RUN MYPROG
+       ELSE
+	  ? "Не достаточно памяти для RUN"
+	  BREAK
+       ENDIF
+$SEEALSO$
+
+$END$

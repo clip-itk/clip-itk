@@ -1,0 +1,45 @@
+$FUNCNAME$
+	VAR2STR()
+$CATEGORY$
+	STRING, CONVERSION
+$SUMMARY$
+	Convert data to uucode string.
+$LANG_RU$
+	Конвертировать данные в uucode строку.
+$SYNTAX$
+     VAR2STR(<vData>) 	--> <sUucodeStr>
+$ARGUMENTS$
+     <vData>	Data to convert.
+$LANG_RU$
+     <vData> 	Данные для преобразования.
+$RETURNS$
+     Returns uucode string <sUucodeStr>.
+$LANG_RU$
+     Возвращает uucode строку <sUucodeStr>.
+$DESCRIPTION$
+	VAR2STR() converts source data <vData> to uucode string <sUucodeStr> and returns it.
+$LANG_RU$
+	VAR2STR() возвращает исходную строку <vData> в uucode строку <sUucodeStr> и
+	возвращает ее.
+$EXAMPLES$
+
+f1 := fopen("test.txt")
+f2 := fcreare("test_uucode.txt")
+do while !feof(f1)
+	uStr := VAR2STR(str)
+	fwrite(f2, uStr, len(uStr))
+enddo
+fclose(f2)
+fclose(f1)
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	STR2VAR()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

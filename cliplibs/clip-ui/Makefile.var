@@ -1,3 +1,0 @@
-# Makefile for clip-ui custom variables
-RBINDIR=/m6/uri/cliproot/bin
-RLIBDIR=/m6/uri/cliproot/lib

@@ -2,7 +2,7 @@
 
 function r2d2_report7_xml(_queryArr)
 
-local err, _query
+local err, _query, huddle := .f.
 local oDict,oDep, oDep02,oDict02
 local beg_date:=date(),end_date:=date(), account:=""
 local an_value:="", an_obj, an_class:="XXXXXXXXXXXX"
@@ -12,6 +12,7 @@ local acc_obj,acc_list:={}, acc_objs:={}
 local urn:="",connect_id:="", connect_data, sprname:="accpost"
 local k_list, d_list, arefs:={}, atree:={}
 local post_list:={},post_objs:={}
+local paraSumm:={}
 local i,j,k,s,s1,s2,tmp,obj,col
 
 	errorblock({|err|error2html(err)})
@@ -38,6 +39,13 @@ local i,j,k,s,s1,s2,tmp,obj,col
 	if "AN_VALUE" $ _query
 		an_value := upper(_query:an_value)
 	endif
+	if "HUDDLE" $ _query
+		huddle := upper(_query:huddle)
+		if upper(left(huddle,1)) $ "TYä"
+			huddle := .t.
+		endif
+	endif
+
 
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
@@ -120,8 +128,10 @@ local i,j,k,s,s1,s2,tmp,obj,col
 				aadd(post_list,obj:accpost_list[j])
 			endif
 		next
-		aadd(accounts,obj:account)
-		aadd(an_levels,obj:an_level)
+		if ascan(accounts,obj:account)<=0
+			aadd(accounts,obj:account)
+			aadd(an_levels,obj:an_level)
+		endif
 		//? tmp[i], obj:account, obj:an_value,obj:an_level
 	next
 	//? post_list
@@ -134,65 +144,39 @@ local i,j,k,s,s1,s2,tmp,obj,col
 			loop
 		endif
 		aadd(post_objs,obj)
-		/*
-		acc_obj:=oDep02:getValue(obj:daccount)
-		//? i, obj:daccount,an_class,acc_obj
-		if empty(acc_obj)
-			cgi_xml_error( "Object not readable: "+obj:daccount )
-		else
-			for j=1 to 99
-				s := "AN_VALUE"+alltrim(str(j,2,0))
-				if ! ( S $ acc_obj )
-					exit
-				endif
-				if ! (acc_obj[s] == an_class)
-					loop
-				endif
-				aadd(accounts,acc_obj)
-				aadd(an_levels,j)
-				exit
-			next
-		endif
-		acc_obj:=oDep02:getValue(obj:kaccount)
-		//? i, obj:kaccount,an_class,acc_obj
-		if empty(acc_obj)
-			cgi_xml_error( "Object not readable: "+obj:daccount )
-		else
-			for j=1 to 99
-				s := "AN_VALUE"+alltrim(str(j,2,0))
-				if ! ( S $ acc_obj )
-					exit
-				endif
-				if ! (acc_obj[s] == an_class)
-					loop
-				endif
-				aadd(accounts,acc_obj)
-				aadd(an_levels,j)
-				exit
-			next
-		endif
-		*/
 	next
 
-	for i=len(post_objs) to 1 step -1
-		tmp := ascan(post_objs,{|x|x:daccount==post_objs[i]:daccount ;
-			.and. x:kaccount==post_objs[i]:kaccount;
-			.and. x:odate==post_objs[i]:odate;
-			.and. x:primary_document==post_objs[i]:primary_document;
-			})
-		if tmp < 0 .or. tmp == i
-			loop
-		endif
-		//outlog(__FILE__,__LINE__,tmp,post_objs[i])
-		post_objs[tmp]:summa += post_objs[i]:summa
-		adel(post_objs,i)
-		asize(post_objs,len(post_objs)-1)
-	next
+	if !huddle
+		for i=len(post_objs) to 1 step -1
+			tmp := ascan(post_objs,{|x|x:daccount==post_objs[i]:daccount ;
+				.and. x:kaccount==post_objs[i]:kaccount;
+				.and. x:odate==post_objs[i]:odate;
+				.and. x:primary_document==post_objs[i]:primary_document;
+				})
+			if tmp < 0 .or. tmp == i
+				loop
+			endif
+			//outlog(__FILE__,__LINE__,tmp,post_objs[i])
+			post_objs[tmp]:summa += post_objs[i]:summa
+			adel(post_objs,i)
+			asize(post_objs,len(post_objs)-1)
+		next
+	endif
 
+	asize(paraSumm,len(accounts))
+	afill(paraSumm,0.00)
 
 	for i=1 to len(post_objs)
 		obj:=post_objs[i]
 		aadd(aRefs,{obj:id,"",dtos(obj:odate)+":"+obj:primary_document,obj})
+		if !(obj:daccount == obj:kaccount)
+			loop
+		endif
+		j := ascan(accounts,obj:daccount)
+		if j<=0
+			loop
+		endif
+		paraSumm[j] += obj:summa
 	next
 
 	columns := cgi_accpost_columns(oDict)
@@ -221,8 +205,12 @@ local i,j,k,s,s1,s2,tmp,obj,col
 		//? "acc=",accounts[i],an_levels[i]
 		an_values:={" "," "," "," "," "," "}
 		an_values[ an_levels[i] ] := an_value
-		an_data := cgi_an_make_data(beg_date,end_date,oDep,accounts[i],an_values,an_levels[i]+1)
-		cgi_an_putRdf1(an_data,accounts[i],an_levels[i]+1,urn)
+		an_data := cgi_an_make_data(beg_date,end_date,oDep,accounts[i],an_values,an_levels[i])
+		for j=1 to len(an_data)
+			an_data[j]:od_summa -= paraSumm[i]
+			an_data[j]:ok_summa -= paraSumm[i]
+		next
+		cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn)
 	next
 	? '</RDF:RDF>'
 

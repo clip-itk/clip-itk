@@ -1,0 +1,51 @@
+$FUNCNAME$
+  ORDLISTADD()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Add orders to the order list
+$SYNTAX$
+     ORDLISTADD(<cOrderBagName> [, <cOrderName>]) --> NIL
+$ARGUMENTS$
+     <cOrderBagName> is the name of a disk file containing one or more
+     orders.  You may specify <cOrderBagName> as the file name with or
+     without the path name or appropriate extension.  If you do not include
+     the extension as part of <cOrderBagName>, xClipper uses the default
+     extension of the current RDD.
+
+     <cOrderName> the name of the specific order from the order bag to be
+     added to the order list of the current work area.  If you do not specify
+     <cOrderName>, all orders in the order bag are added to the order list of
+     the current work area.
+$RETURNS$
+     ORDLISTADD() always returns NIL.
+$DESCRIPTION$
+     ORDLISTADD() is an order management function that adds the contents of
+     an order bag, or a single order in an order bag, to the order list.
+     This function lets you extend the order list without issuing a SET INDEX
+     command that, first, clears all the active orders from the order list.
+
+     Any orders already associated with the work area continue to be active.
+     If the newly opened order bag contains the only order associated with
+     the work area, it becomes the controlling order; otherwise, the
+     controlling order remains unchanged.
+
+     After the new orders are opened, the work area is positioned to the
+     first logical record in the controlling order.
+
+     ORDLISTADD() is similar to the SET INDEX command or the INDEX clause of
+     the USE command, except that it does not clear the order list prior to
+     adding the new order(s).
+
+     ORDLISTADD() supersedes the DBSETINDEX() function.
+
+     The active RDD determines the order capacity of an order bag.  The
+     default  DBFNTX and the DBFNDX drivers only support single-order bags,
+     while other RDDs may support multiple-order bags (e.g., the DBFCDX
+     driver).  When using RDDs that support multiple-order bags, you must
+     explicitly SET ORDER (or ORDSETFOCUS()) to the desired controlling
+     order.  If you do not specify a controlling order, the data file will be
+     viewed in first order.
+$SEEALSO$
+     DBSETINDEX()
+$END$

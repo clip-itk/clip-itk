@@ -1,0 +1,469 @@
+$CLASSNAME$
+	SORTEDARRAY
+$SUMMARY$
+	Class are destined to control of sorted data.
+$LANG_RU$
+	Класс предназначен для управления сортированными данными.
+$ABOUT$
+	Class are destined to control of sorted data.
+$LANG_RU$
+	Класс предназначен для управления сортированными данными.
+$SYNTAX$
+	tSortedArrayNew() 	--> SortedArray object
+	tSortedArray() 		--> SortedArray object
+$ATTRIBUTES$
+	<Items> Array, an array of items for sorting
+	<Error> String, when error arisen, <Error> contains error description
+	<Found> Logical, if TRUE, then item founded by seeking.
+$LANG_RU$
+	<Items> Array, массив
+	<Error> String, содержит описание ошибки, если она произошла.
+	<Found> Logical, если TRUE, то поиск был успешен.
+
+$METHODNAME$
+	tSortedArrayNew()
+$SUMMARY$
+	SORTEDARRAY constructor.
+$LANG_RU$
+	Конструктор класса SORTEDARRAY.
+$SYNTAX$
+	tSortedArrayNew() 	--> SortedArray object
+	tSortedArray() 		--> SortedArray object
+$ARGUMENTS$
+
+$RETURNS$
+	Returns new SORTEDARRAY object
+$LANG_RU$
+	Возвращает новый объект класса SORTEDARRAY
+$DESCRIPTION$
+	tSortedArrayNew() is constructs and returns new sorted array object.
+	That class can be used to storage, access, control sorted data.
+$LANG_RU$
+	tSortedArrayNew() создает и возвращает новый объект класса SORTEDARRAY.
+	Этот класс может быть использован для хранения, быстрого доступа, управления
+	сортированными данными.
+$ENDMETHOD$
+
+$METHODNAME$
+	Add()
+$SUMMARY$
+	Add new element to sorted array.
+$LANG_RU$
+	Добавить новый элемент.
+$SYNTAX$
+	Add(<nKey>, <Value>) 	--> .T./.F.
+$ARGUMENTS$
+	<nKey> Numeric, a sorting key
+	<Value>	a value to be added in to <Items>.
+$LANG_RU$
+	<nKey> Numeric, ключ сортировки
+	<Value>	добавляемые данные
+$RETURNS$
+	If adding is success then returns value is TRUE , else is FALSE
+$LANG_RU$
+	Если добавление прошло успешно возвращает TRUE, иначе FALSE.
+$DESCRIPTION$
+	Add() is added new item to class SortedArray with key
+	<nKey> and value <Value>. Every item
+	of sorted array is array containes only two elements: key (<nKey>)
+	and value (<Value>).
+	Items with
+	low keys <nKey> are sorted toward the top of the array.
+	If <nKey> or <Value> not specified then
+	attribute <Error> will be contain error description.
+
+	You can add several items with identical keys. In this case class SortedArray
+	will contain all these items and item can be inserted at suitable place.
+$LANG_RU$
+	Add() добавляет в массив <::Item> новый элемент с ключом
+	<nKey> и значением <Value>. Элементы с наименьшим значением ключа
+	<nKey> будут вставлены в начало массива <::Item>.
+	Если <nKey> или <Value> не определены, атрибут <Error> будет содержать описание
+	ошибки и Add() вернет FALSE.
+
+	Вы можете добавить в массив <::Item> несколько элементов с одинаковым
+	ключом, при этом расположение элементов с одинаковым ключом трудно
+	предсказуемо.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Len()
+$SUMMARY$
+	Returns count items into SORTEDARRAY.
+$LANG_RU$
+	Вернуть длину отсортированного массива.
+$SYNTAX$
+	Len() 	--> nCount
+$ARGUMENTS$
+$RETURNS$
+	Returns sorted array length.
+$LANG_RU$
+	Возвращает длину сортированного массива
+$DESCRIPTION$
+	Len() is returned sorted array length what equal lenght of <Items>.
+
+	If sorted array is empty, then method returns zero.
+$LANG_RU$
+	Len() возвращает длину сортированного массива, равную количеству элементов
+	в <::Item>.
+
+	Если массив <::Item> пуст, Add() возвращает 0.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Del()
+$SUMMARY$
+	Removes some data from SORTEDARRAY.
+$LANG_RU$
+	Удалить элемент из массива.
+$SYNTAX$
+	Del(<nKey>, <Value>)    --> .T. || .F.
+	Delete(<nKey>, <Value>) --> .T. || .F.
+	DelKey(<nKey>, <Value>) --> .T. || .F.
+$ARGUMENTS$
+	<nKey>  Numeric, a specified key value.
+	<Value> a data value to be delete from sorted array.
+$LANG_RU$
+	<nKey>  Numeric, ключ сортировки
+	<Value> значение, которое должно быть удалено по ключу.
+$RETURNS$
+	In successfully returns value is TRUE else is FALSE.
+$LANG_RU$
+	В случае успеха возвращает TRUE, иначе FALSE.
+$DESCRIPTION$
+	Del(), Delete(), DelKey() is deleted item from
+	 sorted array by key and value.
+
+	If parameters <nKey> or <Value> not
+	 spacified then methods returns FALSE and write error description to
+	 attribute <Error>.
+
+	 When element with <nKey> and <Value> not
+	 found methods returns FALSE and write error description to attribute <Error>.
+$LANG_RU$
+	Del(), Delete(), DelKey() удаляют из массива <::Item> элемент с ключом
+	<nKey> и значением <Value>ю
+
+	Если параметры <nKey> или <Value> не определены или же в <::Item> отсутствует
+	элемент с ключом <nKey> и значением <Value>, Add() возвращает FALSE, а атрибут
+	<::Error> содержит описание ошибки.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	DelItem()
+$SUMMARY$
+	Delete element from sorted array by index.
+$LANG_RU$
+	Удалить элемент по индексу.
+$SYNTAX$
+	DelItem(<nPos>)    --> .T. || .F.
+$ARGUMENTS$
+	<nPos> Numeric, items index in sorted array.
+$LANG_RU$
+	<nPos> Numeric, индекс элемента в массиве
+$RETURNS$
+	In successfully  returns value is TRUE else FALSE.
+$LANG_RU$
+	В случае успеха возвращает TRUE, иначе FALSE.
+$DESCRIPTION$
+	DelItem() is removed item from sorted array by index and returns TRUE.
+
+	If <nPos> without of bound sorted array then
+	method return FALSE and write to attribute
+	<Error> error descriptions.
+$LANG_RU$
+	DelItem() удаляет из массива <::Item> элемент с индексом <nPos> и
+	возвращает TRUE. Все элементы ниже удаленного сдвигаются вверх на
+	одну позицию.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	Seek()
+$SUMMARY$
+	Seek element in sorted array.
+$LANG_RU$
+	Поиск элемента в массиве
+$SYNTAX$
+	Seek(<nKey>[, <lSoft>])    --> nPos
+$ARGUMENTS$
+	<nKey> Numeric, a specified key value that you search.
+
+	<lSoft>	Logical, is an optional logical value that specifies whether a soft seek
+		is to be perfomed. This determines how the sorted array is
+		positioned if the specified key not found.
+
+		By default <lSoft> is .F.
+$LANG_RU$
+	<nKey> Numeric, ключ сортировки
+
+	<lSoft>	Logical, если TRUE, параметр определяет режим мягкого поиска.
+		Этот ключ используется для реакции на ситуацию, когда элемент не
+		найден. По умолчанию <lSoft> - FALSE
+$RETURNS$
+	Is returns item index whose key value is equal <nKey> if specified
+	key value was found, otherwise it returns Len()+1.
+$LANG_RU$
+	Возвращает индекс элемента, ключ сортировки которого равен <nKey>, иначе
+	возвращает <::Len()+1>
+$DESCRIPTION$
+	Seek() moves to the first item whose key is
+	equal to <nKey>. If such a item is found, it becomes to current
+	item and Seek() returns item index in sorted array,
+	attribute <Found> sets to TRUE, otherwise it returns
+	Len() +1 position and attribute <Found> sets to FALSE The
+	positioning in sorted array is as followes: for normal (hard) seek (lSoft is .F.),
+	the sorted array is positioned to Len() + 1; for a soft seek,
+	the sorted array positioned to the first item whose key value is
+	greather than specified key <nKey>. If no such item exist, the
+	sorted array positioned to Len()+1 and returns Len() + 1 and
+	sets attribute <Found> sets to FALSE.
+$LANG_RU$
+	Seek() перемещает указатель на первый элемент, ключ которого равен
+	<nKey>. Если такой элемент найден, он становится текущим и Seek()
+	возвращает индекс(порядковый номер) этого элемента в массиве <::Item>,
+	атрибут <::Found> устанавливается в TRUE, иначе Seek() возвращает
+	Len() +1 позицию и атрибут <::Found> устанавливается в  FALSE.
+
+	Позиционирование в сортированном массиве следующее: для нормальной
+	(жесткой) сортировки (<::lSoft> == FALSE), указатель в массиве позиционируется
+	на  Len() + 1; для мягкого поиска (<::lSoft> == TRUE), позиционируется на
+	первый элемент, чей ключ больше, чем <nKey>. Если такого элемента нет,
+	позиционируется на Len()+1 и возвращает Len() + 1, а атрибут <::Found> устанавливается в  FALSE.
+$ENDMETHOD$
+
+$METHODNAME$
+	SoftSeek()
+$SUMMARY$
+	Soft seek element in sorted array.
+$LANG_RU$
+	Мягкий поиск элемента.
+$SYNTAX$
+	SoftSeek(<nKey>)    --> nPos
+$ARGUMENTS$
+	<nKey> Numeric, a specified key value that you search.
+$LANG_RU$
+	<nKey> Numeric, ключ сортировки
+$RETURNS$
+	Is returns item index whose key value is equal <nKey> if specified
+	key value was found, otherwise it returns the first item whose key value is
+	greather than specified key <nKey>.
+$LANG_RU$
+	Возвращает индекс элемента, ключ сортировки которого равен <nKey>, иначе
+	возвращает индекс элемента, ключ сортировки которого больше <nKey>.
+$DESCRIPTION$
+	SoftSeek() calls method <link linkend="class-sortedarray-seek">Seek()</link> as
+	Seek(<nKey>, .T.)
+$LANG_RU$
+	SoftSeek() вызывает метод Seek() с параметрами:
+	Seek(<nKey>, .T.)
+$ENDMETHOD$
+
+
+$METHODNAME$
+	HardSeek()
+$SUMMARY$
+	Hard seek element in sorted array.
+$LANG_RU$
+	Жесткий поиск.
+$SYNTAX$
+	HardSeek(<nKey>)    --> nPos
+$ARGUMENTS$
+	<nKey> Numeric, a specified key value that you search.
+$LANG_RU$
+	<nKey> Numeric, ключ сортировки
+$RETURNS$
+	Is returns item index whose key value is equal <nKey> if specified
+	key value was found, otherwise it returns Len()+1.
+$LANG_RU$
+	Возвращает индекс элемента, ключ сортировки которого равен <nKey>, иначе
+	возвращает <::Len()+1>
+$DESCRIPTION$
+	HardSeek() calls method <link linkend="class-sortedarray-seek">Seek()</link> as
+	Seek(<nKey>, .F.)
+$LANG_RU$
+	HardSeek() вызывает метод Seek() с параметрами:
+	Seek(<nKey>, .F.)
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GetKey()
+$SUMMARY$
+	Get element keys by index in sorted array.
+$LANG_RU$
+	Получить ключ элемента по индексу.
+$SYNTAX$
+	GetKey(<nPos>)    --> nKeyValue
+$ARGUMENTS$
+	<nPos> Numeric, item index in sorted array
+$LANG_RU$
+	<nPos> Numeric, индекс элемента в массиве
+$RETURNS$
+	Is returns key value by item index.
+$LANG_RU$
+	Возвращает ключевое выражение по индексу.
+$DESCRIPTION$
+	GetKey() gets key value by item index in sorted array and returns it if
+	found, otherwise it returns NIL. If index is without of
+	bound sorted array or is NIL then attribute <Error>
+	to be keep error description.
+$LANG_RU$
+	GetKey() возвращает ключ сортировки элемента с индексом <nPos> или,
+	если элемента с индексом <nPos> не существует возвращает NIL.
+
+	В случае возникновения ошибки атрибут <::Error> содержит описание ошибки.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GetData()
+$SUMMARY$
+	Get element data by index in sorted array.
+$LANG_RU$
+	Вернуть по индексу значение.
+$SYNTAX$
+	GetData(<nPos>)    --> data
+$ARGUMENTS$
+	<nPos> Numeric, item index in sorted array
+$LANG_RU$
+	<nPos> Numeric, индекс элемента в массиве
+$RETURNS$
+	Is returns data value by item index.
+$LANG_RU$
+	Возвращает по индексу значение.
+$DESCRIPTION$
+	GetData() gets data value by item index in sorted array and returns it if
+	found, otherwise it returns NIL. If index is without of
+	bound sorted array or is NIL then attribute <Error>
+	to be keep error description.
+$LANG_RU$
+	GetData() возвращает значение элемента с индексом <nPos> или,
+	если элемента с индексом <nPos> не существует возвращает NIL.
+
+	В случае возникновения ошибки атрибут <::Error> содержит описание ошибки.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GetItem()
+$SUMMARY$
+	Get item are sorted array by index.
+$LANG_RU$
+	Вернуть элемент по индексу.
+$SYNTAX$
+	GetItem(<nPos>)    --> aItem
+$ARGUMENTS$
+	<nPos> Numeric, item index in sorted array
+$LANG_RU$
+	<nPos> Numeric, индекс элемента в массиве
+$RETURNS$
+	Is returns array that contain key value and data value.
+$LANG_RU$
+	Возвращает массив, содержащий ключ и значение элемента с индексом <nPos>
+$DESCRIPTION$
+	GetItem() gets key value and data value by item index in sorted array
+	and returns array containes it.
+	In other case it returns NIL. If index is without of
+	bound sorted array or is NIL then attribute <Error>
+	to be keep error description.
+$LANG_RU$
+	GetItem() возвращает массив, содержащий ключ сортировки и значение элемента
+	массива <::Item> по индексу <nPos>
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GetFirst()
+$SUMMARY$
+	Get first item data are sorted array.
+$LANG_RU$
+	Вернуть значение первого элемента сортированного массива
+$SYNTAX$
+	GetFirst()    --> data value
+$ARGUMENTS$
+$RETURNS$
+	Is returns data value of first item sorted array.
+$LANG_RU$
+	Возвращает значение первого элемента.
+$DESCRIPTION$
+	GetFirst() gets data value first items sorted array
+	and returns it.
+
+	If no items in sorted array it returns NIL.
+$LANG_RU$
+	GetFirst() Возвращает значение первого элемента массива <::Item>.
+
+	Если <::Item> пуст, GetFirst() возаращает NIL.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GetLast()
+$SUMMARY$
+	Get last item data are sorted array.
+$LANG_RU$
+	Вернуть значение последнего элемента сортированного массива
+$SYNTAX$
+	GetLast()    --> data value
+$ARGUMENTS$
+$RETURNS$
+	Is returns data value of last item sorted array.
+$LANG_RU$
+	Возвращает значение последнего элемента.
+$DESCRIPTION$
+	GetLast() gets data value last added items in to sorted array
+	and returns it.
+	If no items in sorted array it returns NIL.
+$LANG_RU$
+	GetLast() Возвращает значение последнего элемента массива <::Item>.
+
+	Если <::Item> пуст, GetFirst() возаращает NIL.
+$ENDMETHOD$
+
+$EXAMPLES$
+
+sArr := tSortedArrayNew()
+sArr:Add("January"  , {1 , "January"  })
+sArr:Add("February" , {2 , "February" })
+sArr:Add("March"    , {3 , "March"    })
+sArr:Add("April"    , {4 , "April"    })
+sArr:Add("May"	    , {5 , "May"      })
+sArr:Add("June"	    , {6 , "June"     })
+sArr:Add("July"	    , {7 , "July"     })
+sArr:Add("August"   , {8 , "August"   })
+sArr:Add("September", {9 , "September"})
+sArr:Add("October"  , {10, "October"  })
+sArr:Add("November" , {11, "November" })
+sArr:Add("December" , {12, "December" })
+
+? sArr:Len()			// 12
+
+? sArr:GetFirst()		// {         4, April}
+? sArr:GetLast()		// {         9, September}
+
+? sArr:Seek("May")		// 9
+? sArr:Seek("Monday")		// 13
+? sArr:SoftSeek("Monday")	// 10
+? sArr:HardSeek("Monday")	// 13
+
+? sArr:GetItem(3)		// {December, {        12, December}}
+? sArr:GetData(3)		// {        12, December}
+
+? sArr:DelItem(3)		// .T.
+? sArr:Len()			// 11
+
+? sArr:GetItem(3)		// {February, {         2, February}}
+? sArr:GetData(3)		// {         2, February}
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+

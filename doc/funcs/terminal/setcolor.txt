@@ -1,0 +1,283 @@
+$FUNCNAME$
+  SETCOLOR()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return the current colors and optionally set new colors
+$LANG_RU$
+   Возвращает текущие цвета и необязательно устанавливает новые цвета.
+$SYNTAX$
+     SETCOLOR([<cColorString>]) --> cColorString
+$LANG_RU$
+     SETCOLOR([<цвета>]) --> текущие цвета
+$ARGUMENTS$
+     <cColorString> is a character string containing a list of color
+     attribute settings for subsequent screen painting.  The following is a
+     list of settings and related scopes:
+
+     <PRE> Color Settings
+     ------------------------------------------------------------------------
+     Setting        Scope
+     ------------------------------------------------------------------------
+     Standard       All screen output commands and functions
+     Enhanced       GETs and selection highlights
+     Border         Border around screen, not supported on EGA and VGA
+     Background     Not supported
+     Unselected     Unselected GETs
+     ------------------------------------------------------------------------
+     </PRE>
+
+     Each setting is a foreground and background color pair separated by the
+     slash (/) character and followed by a comma.  All settings are optional.
+     If a setting is skipped, its previous value is retained with only new
+     values set.  Settings may be skipped within the list or left off the end
+     as illustrated in the examples below.
+$LANG_RU$
+     Аргумент <цвета> - является символьной строкой, содержащей список
+     цветовых атрибутов для последующего окрашивания экрана. Ниже дается
+     список цветовых атрибутов и область видимости режима.
+
+     <PRE> Цветовые атрибуты.
+     ---------------------------------------------------------------------
+     Режим            Область применения
+     ---------------------------------------------------------------------
+     Стандартный      Используется во всех командах и функциях вывода
+     Выделенный       Используется в команде GET и для выделения при выборе
+     Окаймления       Устанавливает фон окаймления экрана, не
+		      поддерживается EGA и VGA
+     Фоновый          Не поддерживается
+     Невыделенный     Высвечивает недоступные поля GET
+     ---------------------------------------------------------------------
+     </PRE>
+
+     Каждый атрибут - это цвет символа и цвет фона, разделенные символом
+     /, а за ними следует запятая. Все режимы необязательны. Если режим
+     пропускается, сохраняется его предшествующее значение. Атрибуты в
+     списке могут пропускаться или опускаться в конце, как показано ниже в
+     примере.
+$RETURNS$
+     SETCOLOR() returns the current color settings as a character string.
+$LANG_RU$
+     SETCOLOR() возвращает текущие цветовые атрибуты в виде символьной
+     строки.
+$DESCRIPTION$
+     SETCOLOR() is a screen function that saves the current color setting or
+     sets new colors for subsequent screen painting.  A color string is made
+     from several color settings, each color corresponding to different
+     regions of the screen.  As stated above, each setting is made up of a
+     foreground and background color.  Foreground defines the color of
+     characters displayed on the screen.  Background defines the color
+     displayed behind the character.  Spaces and nondisplay characters
+     display as background.
+
+     In xClipper, the settings that define color behavior are:
+
+     Standard: The standard setting governs all console, full-screen, and
+     interface commands and functions when displaying to the screen.  This
+     includes commands such as @...PROMPT, @...SAY, and ?, as well as
+     functions such as ACHOICE(), DBEDIT(), and MEMOEDIT().
+
+     Enhanced: The enhanced setting governs highlighted displays.  This
+     includes GETs with INTENSITY ON, and the MENU TO, DBEDIT(), and
+     ACHOICE() selection highlight.
+
+     Border: The border is an area around the screen that cannot be
+     written to.
+
+     Background: The background is not supported.
+
+     Unselected: The unselected setting indicates input focus by
+     displaying the current GET in the enhanced color while other GETs are
+     displayed in the unselected color.
+
+     In addition to colors, foreground settings can have high intensity
+     and/or blinking attributes.  With a monochrome display, high intensity
+     enhances brightness of painted text.  With a color display, high
+     intensity changes the hue of the specified color.  For example, "N"
+     displays foreground text as black where "N+" displays the same text as
+     gray.  High intensity is denoted by "+".  The blinking attribute causes
+     the foreground text to flash on and off at rapid intervals.  Blinking is
+     denoted with "*".  The attribute character can occur anywhere in the
+     setting string, but is always applied to the foreground color regardless
+     where it occurs.  See SETBLINK() for additional information.
+
+     The following colors are supported:
+
+     <PRE> List of Colors
+     ------------------------------------------------------------------------
+     Color          Letter    Monochrome
+     ------------------------------------------------------------------------
+     Black          N, Space  Black
+     Blue           B         Underline
+     Green          G         White
+     Cyan           BG        White
+     Red            R         White
+     Magenta        RB        White
+     Brown          GR        White
+     White          W         White
+     Gray           N+        Black
+     Bright Blue    B+        Bright Underline
+     Bright Green   G+        Bright White
+     Bright Cyan    BG+       Bright White
+     Bright Red     R+        Bright White
+     Bright Magenta RB+       Bright White
+     Yellow         GR+       Bright White
+     Bright White   W+        Bright White
+     Black          U         Underline
+     Inverse Video  I         Inverse Video
+     Blank          X         Blank
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     SETCOLOR() является функцией работы с экраном, используемой для
+     сохранения текущего цветового режима и необязательной установки новых
+     цветов для последующего окрашивания экрана. Цветовая строка
+     составляется из нескольких цветовых атрибутов, при этом каждый цвет
+     соответствует разным областям экрана. Как сказано выше, каждый
+     атрибут составляется из цвета переднего плана и цвета фона. Цвет
+     переднего плана определяет цвет символов, выводимых на экран. Цвет
+     фона определяет цвет, на котором отображаются символы. Пробелы и
+     неотображаемые символы выводятся в цвете фона.
+
+     В xClipper имеется несколько цветовых атрибутов, которые определяют
+     отображение цвета:
+
+     Стандартный. Этот атрибут используется всеми консольными, экранными и
+     интерфейсными командами и функциями при выводе информации на экран.
+     Сюда входят такие команды, как @...PROMPT, @...SAY, ? и такие
+     функции, как ACHOICE(), DBEDIT() и MEMOEDIT().
+
+     Выделенный. Этот атрибут используется для выделенных изображений.
+     В этой группе -  команды GET (если значение установки INTENSITY равно
+     ON), также MENU TO, DBEDIT() и ACHOICE().
+
+     Окаймление. Окаймление - это область вокруг экрана, на которую нельзя
+     осуществлять вывод.
+
+     Фоновый. Не поддерживается.
+
+     Невыделенный. Этот атрибут обеспечивает необходимый эффект ввода
+     информации путем выделения на дисплее текущего текста, выводимого
+     командой GET, в цвете ENCHANCED, в то время как информация других
+     команд GET изображается в невыбранном цвете.
+
+     В дополнение к цветовым атрибутам цвета символов имеют атрибуты
+     повышенной яркости и/или мигания. При монохромном дисплее повышенная
+     яркость просто увеличивает яркость выводимого текста. При цветном
+     дисплее повышенная яркость изменяет оттенок заданного цвета,
+     превращая его в другой цвет. Например, "N" определяет черный цвет при
+     выводе текста переднего плана, а "N+" - серый цвет. Повышенная
+     яркость обозначается символом "+".  Атрибут мерцания- это вспыхивание
+     и погасание текста переднего плана через короткие интервалы. Мерцание
+     обозначается символом "*". Символ атрибута может быть в любом месте
+     строки установки атрибутов, но он всегда используется с цветом
+     символа, независимо от его местонахождения.
+
+     Поддерживаются следующие цвета:
+
+     <PRE> Список цветов.
+     ---------------------------------------------------------------------
+     Цветной дисплей           Код-буква            Черно-белый
+     ---------------------------------------------------------------------
+     Черный                    N, Пробел            Черный
+     Синий                     B                    Подчеркивание
+     Зеленый                   G                    Белый
+     Бирюзовый                 BG                   Белый
+     Красный                   R                    Белый
+     Фиолетовый                RB                   Белый
+     Коричневый                GR                   Белый
+     Белый                     W                    Белый
+     Серый                     N+                   Черный
+     Ярко-синий                B+                   Яркое подчеркивание
+     Ярко-зеленый              G+                   Ярко-белый
+     Ярко-бирюзовый            BG+                  Ярко-белый
+     Ярко-красный              R+                   Ярко-белый
+     Ярко-малиновый            RB+                  Ярко-белый
+     Желтый                    GR+                  Ярко-белый
+     Ярко-белый                W+                   Ярко-белый
+     Черный                    U                    Подчеркивание
+     Обратный                  I                    Обратный
+     Пустой                    X                    Пустой
+     ---------------------------------------------------------------------
+     </PRE>
+$EXAMPLES$
+       This example assigns the current color setting to the
+	variable, cColor:
+
+	cColor:= SETCOLOR()
+
+       This example uses SETCOLOR() to save the current color setting
+	and set a new one.
+
+	cNewColor:= "BR+/N, R+/N"
+	cOldColor:= SETCOLOR(cNewColor)
+
+       This example uses SET COLOR TO to reset the default colors:
+
+	SET COLOR TO
+	? SETCOLOR()            // Result: W/N, N/W, N, N, N/W
+
+       These two examples specify SETCOLOR() with missing settings:
+
+	// Settings left off the end
+	SETCOLOR("W/N, BG+/B")
+	//
+	// Settings skipped within the list
+	SETCOLOR("W/N, BG+/B,,,W/N")
+
+       This example uses SETCOLOR() with ISCOLOR() to set the colors,
+	depending on the screen type:
+
+	FUNCTION DefaultColors
+	   IF ISCOLOR()
+	      cForm := "W+/N, BG+/B,,,W/N"
+	      cDialog := "N/N+, BG+/B,,,N/N+"
+	      cAlert := "W+/R, BG+/B,,,W+/R"
+	   ELSE
+	      cForm := "W+/N, N/W,,,W/N"
+	      cDialog := "W+/N, N/W,,,W/N"
+	      cAlert := "W+/N, N/W,,,W/N"
+	   ENDIF
+	   RETURN NIL
+$LANG_RU$
+      Этот пример показывает присвоение текущих цветовых атрибутов
+       переменной cColor:
+
+       cColor = SETCOLOR()
+
+      Этот пример демонстрирует использование SETCOLOR() для сохранения
+       текущих цветовых атрибутов и установки новых:
+
+       cNewColor = "BR+/N, R+/N"
+       cOldColor = SETCOLOR(cNewColor)
+
+      Этот пример показывает использование SET COLOR TO для
+       восстановления цветов по умолчанию:
+
+       SET COLOR TO
+       ? SETCOLOR()        // Результат: W/N, N/W, N, N, N/W
+
+      В двух следующих примерах демонстрируется задание SETCOLOR() с
+       отсутствующими атрибутами:
+
+       SETCOLOR("W/N, BG+/B")
+       //
+       SETCOLOR("W/N, BG+/B,,,W/N")
+
+      Этот пример показывает, как использовать SETCOLOR() в сочетании с
+       ISCOLOR() для установления цветов в зависимости от типа экрана:
+
+       FUNCTION DefaultColors
+	  IF ISCOLOR()
+	     cForm := "W+/N, BG+/B,,, W/N"
+	     cDialog := "N/N+, BG+/B,,,W+/R"
+	     cAlert := "W+/R, BG+/B,,,W+/R"
+	  ELSE
+	     cForm := "W+/N, N/W,,,W/N"
+	     cDialog := "W+/N, N/W,,,W/N"
+	     cAlert := "W+N/, N/W,,,W/N"
+	  ENDIF
+	  RETURN NIL
+$SEEALSO$
+  ISCOLOR()
+$END$

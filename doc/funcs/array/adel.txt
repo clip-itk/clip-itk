@@ -1,0 +1,82 @@
+$FUNCNAME$
+  ADEL()
+$CATEGORY$
+  Array, Object
+$SUMMARY$
+   Delete an array element
+$LANG_RU$
+   Удаляет элемент массива.
+$SYNTAX$
+     ADEL(<aTarget>, <nPosition>) --> aTarget
+$LANG_RU$
+     ADEL(<принимающий массив>, <номер элемента>) --> принимающий массив
+$ARGUMENTS$
+     <aTarget> is the array to delete an element from.
+     <nPosition> is the position of the target array element to be
+     deleted.
+$LANG_RU$
+     <принимающий массив> - массив, в котором удаляются элементы.
+     <номер элемента> - позиция элемента в массиве, подлежащего удалению.
+$RETURNS$
+     ADEL() returns a reference to the target array, <aTarget>.
+$LANG_RU$
+     ADEL() возвращает ссылку на указанный <принимающий массив>.
+
+
+$DESCRIPTION$
+
+     ADEL() is an array function that deletes an element from an array.  The
+     contents of the specified array element is lost, and all elements from
+     that position to the end of the array are shifted up one element.  The
+     last element in the array becomes NIL.
+
+     Warning!  xClipper implements multidimensional arrays by nesting
+     arrays within other arrays.  If the <aTarget> array is a
+     multidimensional array, ADEL() can delete an entire subarray specified
+     by <nPosition>, causing <aTarget> to describe an array with a different
+     structure than the original.
+
+
+$LANG_RU$
+
+     ADEL() - функция обработки массивов удаляет один элемент массива.
+     Значение указанного элемента пропадает и все следующие за ним
+     элементы сдвигаются на одну позицию вверх. Последний элемент
+     массива принимает значение NIL.
+
+     ---------------------------------------------------------------------
+      Предупреждение
+
+     В xClipper многомерные массивы создаются путем вложения одних массивов
+     в другие. Если массив <принимающий массив> является многомерным,
+     ADEL() удалит весь подмассив, определенный в <номер элемента>.
+     ---------------------------------------------------------------------
+
+
+$EXAMPLES$
+
+       This example creates a constant array of three elements, and
+	then deletes the second element.  The third element is moved up one
+	position, and the new third element is assigned a NIL:
+
+	LOCAL aArray
+	aArray := { 1, 2, 3 }      // Result: aArray is
+				   // now { 1, 2, 3 }
+	ADEL(aArray, 2)            // Result: aArray is
+				   // now { 1, 3, NIL }
+
+
+$LANG_RU$
+
+      Этот пример создает массив констант из трех элементов и затем
+       удаляет второй элемент. Значение третьего элемента перемещается
+       вверх на одну позицию, а новый третий элемент принимает значение
+       NIL:
+
+       LOCAL aArray := { 1, 2, 3 }  // Результат: { 1, 2, 3 }
+       ADEL(aArray, 2)              // Результат: { 1, 3, NIL }
+
+
+$SEEALSO$
+  ACOPY(),AFILL(),AINS(),
+$END$

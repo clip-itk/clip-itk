@@ -1,0 +1,44 @@
+$FUNCNAME$
+  DBGOTOP()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Move to the first logical record
+$LANG_RU$
+   Перемещает указатель на первую логическую запись.
+$SYNTAX$
+     DBGOTOP() --> NIL
+$LANG_RU$
+     DBGOTOP() --> NIL
+$RETURNS$
+     DBGOTOP() always returns NIL.
+$LANG_RU$
+     DBGOTOP() всегда возвращает NIL.
+$DESCRIPTION$
+     DBGOTOP() moves to the first logical record in the current work area.
+
+     DBGOTOP() performs the same function as the standard GO TOP command.
+     For more information, refer to the GO TOP command.
+$LANG_RU$
+     DBGOTOP() Перемещает указатель на первую логическую запись в текущей
+     рабочей области.
+
+     DBGOTOP() выполняет те же функции, что и стандартная команда GO TOP.
+     Более подробную информацию смотрите в команде GO.
+$EXAMPLES$
+       This example demonstrates the typical use of DBGOTOP():
+
+	DBGOTOP()
+	WHILE ( !EOF() )
+	   ? FIELD->Name
+	   DBSKIP()
+	END
+$LANG_RU$
+	  DBGOTOP()
+	  WHILE ( !EOF() )
+	     ? FIELD->Name
+	     DBSKIP()
+	  END
+$SEEALSO$
+  BOF(),DBGOBOTTOM(),DBSEEK(),DBSKIP(),EOF()
+$END$

@@ -1,0 +1,557 @@
+$FUNCNAME$
+  DBEDIT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Browse records in a table layout
+$LANG_RU$
+   Просматривает информацию записей в табличной форме.
+$SYNTAX$
+     DBEDIT([<nTop>], [<nLeft>],
+	[<nBottom>], <nRight>],
+	[<acColumns>],
+	[<cUserFunction>],
+	[<acColumnSayPictures> | <cColumnSayPicture>],
+	[<acColumnHeaders> | <cColumnHeader>],
+	[<acHeadingSeparators> | <cHeadingSeparator>],
+	[<acColumnSeparators> | <cColumnSeparator>],
+	[<acFootingSeparators> | <cFootingSeparator>],
+	[<acColumnFootings> | <cColumnFooting>]) --> NIL
+$LANG_RU$
+     DBEDIT([<верхняя строка>],[<левая колонка>],
+	  [<нижняя строка>],[<правая колонка>],
+	  [<массив колонок>],
+	  [<функция пользователя>],
+	  [<массив SAY-шаблонов>] | [<SAY-шаблон>],
+	  [<массив заголовков колонок>] | [<заголовок колонок>],
+	  [<массив гор. разделителей>] | [<гор. разделитель>],
+	  [<массив верт. разделителей>] | [<верт. разделитель>],
+	  [<массив под. разделителей>] | [<под. разделитель>],
+	  [<массив строк подписей>] | [<строка подписей>] ) --> NIL
+$ARGUMENTS$
+     <nTop>, <nLeft>, <nBottom>, and <nRight> define the
+     upper-left and lower-right coordinates of the DBEDIT() window.  Row
+     values can range from zero to MAXROW() and column positions can range
+     from zero to MAXCOL().  If not specified, the default coordinates are 0,
+     0, MAXROW(), and MAXCOL().
+
+     <acColumns> is an array of character expressions containing database
+     field names or expressions to use as column values for each row
+     displayed.  If this argument is not specified, DBEDIT() displays all
+     fields in the current work area as columns.
+
+     <cUserFunction> is the name of a user-defined function that executes
+     when an unrecognizable key is pressed or there are no keys pending in
+     the keyboard buffer.  Specify the function name as a character
+     expression without parentheses or arguments.  Note that the behavior of
+     DBEDIT() is affected by the presence of this argument.  Refer to the
+     discussion below for more information.
+
+     <acColumnSayPictures> is a parallel array of picture clauses to
+     format each column.  Specifying <cColumnSayPicture> instead of an array
+     displays all columns with the same format.  Refer to TRANSFORM() or
+     @...SAY for more information on pictures.
+
+     <acColumnHeaders> is a parallel array of character expressions that
+     define the headings for each column.  Specifying <cColumnHeader> gives
+     the same heading for all columns.  To display a multi-line heading,
+     embed a semicolon in the heading expression where you want the string to
+     break.  If not specified, column headings are taken from the <acColumns>
+     array or the field names in the current work area, if the <acColumns>
+     argument is not specified.
+
+     <acHeadingSeparators> is a parallel array of character expressions
+     that define the characters used to draw horizontal lines separating
+     column headings from the field display area. Specifying
+     <cHeadingSeparator> instead of an array uses the same heading separator
+     for all columns.  If this argument is not specified, the default
+     separator is a double graphics line.
+
+     <acColumnSeparators> is a parallel array of character expressions
+     that define the characters used to draw vertical lines separating the
+     columns.  Specifying <cColumnSeparator> instead of an array uses the
+     same separator for all columns.  If this argument is not specified, the
+     default separator is a single graphics line.
+
+     <acFootingSeparators> is a parallel array of character expressions
+     that define the characters used to draw horizontal lines separating
+     column footings from the field display area.  Specifying
+     <cFootingSeparator> instead of an array uses the same footing separator
+     for all columns.  If this argument is not specified, there is no footing
+     separator.
+
+     <acColumnFootings> is a parallel array of character expressions that
+     define footings for each column.  Specifying <cColumnFooting> instead of
+     an array gives the same footing for all columns.  To display a multi-
+     line footing, embed a semicolon in the footing expression where you want
+     the string to break.  If this argument is not specified, there are no
+     column footings.
+$LANG_RU$
+     <верхняя строка>, <левая колонка>, <нижняя строка>, <правая колонка>
+     определяют координаты верхнего левого и нижнего правого углов окна
+     работы функции DBEDIT(). Значения номеров строк могут изменяться в
+     пределах от 0 до MAXROW(). Если эти параметры опущены, то по
+     умолчанию принимается, что координаты окна - 0, 0, MAXROW() и
+     MAXCOL().
+
+     <массив колонок> - массив, содержащий символьные выражения,
+     представляющие собой имена полей базы данных или, другими словами,
+     выражения, используемые как значения колонок для каждой выводимой
+     строки.  Если этот аргумент не определен, DBEDIT() выводит информацию
+     всех полей базы данных текущей рабочей области, размещая ее по
+     колонкам.
+
+     <функция пользователя> - имя функции пользователя, которой передается
+     управление при нажатии неопределенной клавиши или если клавиша не
+     нажата.  Имя функции определяется в виде символьного выражения без
+     круглых скобок и аргументов. Отметим, что поведение функции DBEDIT()
+     зависит от того, определена функция пользователя или нет. Более
+     подробно этот вопрос рассматривается ниже.
+
+     <массив SAY-шаблонов> - это параллельный массив, содержащий
+     предложения PICTURE для форматирования каждой колонки. Если
+     определить <массив SAY-шаблонов> не в виде массива, а в виде строки
+     (<SAY-шаблон>), информация всех колонок будет выводиться в одном и
+     том же формате. Более подробная информация о предложении PICTURE
+     находится в описании функции TRANSFORM() и команды @...SAY.
+
+     <массив заголовков колонок> - параллельный массив, содержащий
+     символьные выражения, которые определяют заголовки каждой колонки.
+     Для выдачи заголовков для отдельных колонок необходимо включить точку
+     с запятой в выражение заголовка там, где требуется разорвать
+     последовательность. Если параметр не задан, заголовки колонок
+     выбираются из массива <массив колонок> или заполняются именами полей
+     текущей рабочей области, если массив <массив колонок> также не задан.
+
+     <массив гор. разделителей> - параллельный массив, состоящий из
+     символьных выражений, который определяет символы, используемые для
+     рисования горизонтальных линий, отделяющих заголовки колонок от
+     области выдачи информации полей. Если <гор. разделитель> задать не в
+     виде массива, для отделения всех колонок будет использован один и тот
+     же разделитель. Если аргумент не задан, по умолчанию принимается
+     разделителем двойная линия.
+
+     <массив верт. разделителей> - это параллельный массив, содержащий
+     символьные выражения, символы, используемые для рисования
+     вертикальных линий, разделяющих колонки. Если задать <верт.
+     разделитель> не в виде массива, будет использован один и тот же
+     разделитель для всех колонок.  Если аргумент не задан, по умолчанию
+     принимается вертикальная линия.
+
+     <массив под. разделителей> - параллельный массив, содержащий
+     символьные выражения, которые определяют символы, используемые для
+     рисования разделителей между завершающими колонки подписями и
+     информацией полей. Если параметр задается не в виде массива, для всех
+     колонок используется один и тот же разделитель. Если аргумент не
+     задан, по умолчанию принимается отсутствие разделителя (пробел).
+
+     <массив строк подписей> - параллельный массив, содержащий символьные
+     выражения, завершающие подписи для каждой колонки. Если аргумент
+     задать не в виде массива, в качестве завершающей подписи для всех
+     колонок будет использоваться одно и то же значение.
+$RETURNS$
+     DBEDIT() always returns NIL.
+$LANG_RU$
+     DBEDIT() всегда возвращает NIL.
+$DESCRIPTION$
+     DBEDIT() is a user interface and compatibility function that displays
+     records from one or more work areas in a table form.  The DBEDIT()
+     window display is a grid of cells divided into columns and rows.
+     Columns correspond to database fields and rows correspond to database
+     records.  Each column is defined by an element of the <acColumns> array.
+     The display width of each column is determined by the evaluation of the
+     column expression in <acColumns> array or the column picture specified
+     in the <acColumnSayPictures> array.
+
+     All cursor movement keys are handled within DBEDIT(), including Page up,
+     Page down, Home, End, the four arrow keys, and all Ctrl key combinations
+     that produce cursor movement.  The navigation keys that DBEDIT()
+     responds to when a user function argument is not specified are listed in
+     the Active Keys table below:
+
+     <PRE>DBEDIT() Active Keys
+     ------------------------------------------------------------------------
+     Key                 Action
+     ------------------------------------------------------------------------
+     Up arrow            Up one row
+     Down arrow          Down one row
+     Left arrow          Column left
+     Right arrow         Column right
+     Ctrl+Left arrow     Pan left one column
+     Ctrl+Right arrow    Pan right one column
+     Home                Leftmost current screen column
+     End                 Rightmost current screen column
+     Ctrl+Home           Leftmost column
+     Ctrl+End            Rightmost column
+     PgUp                Previous screen
+     PgDn                Next screen
+     Ctrl+PgUp           First row of current column
+     Ctrl+PgDn           Last row of current column
+     Return              Terminate DBEDIT()
+     Esc                 Terminate DBEDIT()
+     ------------------------------------------------------------------------
+     </PRE>
+
+     When the user function argument (<cUserFunction>) is specified, all keys
+     indicated in the Active Keys table are active with the exception of Esc
+     and Return.  When DBEDIT() calls the user function, it automatically
+     passes two arguments:
+
+       The current mode passed as a numeric value
+
+       The index of the current column in <acColumns> passed as a
+	numeric value
+
+     The mode parameter indicates the current state of DBEDIT() depending on
+     the last key executed.  The possible mode values are listed in the
+     DBEDIT() Modes table below:
+
+     <PRE>DBEDIT() Modes
+     ------------------------------------------------------------------------
+     Status  Dbedit.ch      Description
+     ------------------------------------------------------------------------
+     0       DE_IDLE        Idle, any cursor movement keystrokes have been
+			    handled and no keystrokes are pending
+     1       DE_HITTOP      Attempt to cursor past top of file
+     2       DE_HITBOTTOM   Attempt to cursor past bottom of file
+     3       DE_EMPTY       No records in work area
+     4       DE_EXCEPT      Key exception
+     ------------------------------------------------------------------------
+     </PRE>
+
+     The index parameter points to the position of the current column
+     definition in the <acColumns> array.  If <acColumns> is not specified,
+     the index parameter points to the position of the field in the current
+     database structure.  Access the field name using FIELD().
+
+     A user-defined function must return a value that indicates to DBEDIT()
+     the action to perform.  The User Function Return Values table below
+     lists the possible return values and the corresponding actions:
+
+     <PRE>DBEDIT() User Function Return Values
+     ------------------------------------------------------------------------
+     Value   Dbedit.ch      Description
+     ------------------------------------------------------------------------
+     0       DE_ABORT       Abort DBEDIT()
+     1       DE_CONT        Continue DBEDIT()
+     2       DE_REFRESH     Force reread/repaint and continue; after repaint,
+			    process keys and go to idle
+     ------------------------------------------------------------------------
+     </PRE>
+
+     A number of instances affect calls to the user function:
+
+       A key exception occurs.  This happens when DBEDIT() fetches a
+	keystroke that it does not recognize from the keyboard.  Any pending
+	keys remain in the keyboard buffer until fetched within the user
+	function or until DBEDIT() continues.
+
+       DBEDIT() enters the idle mode (i.e., all pending keys have
+	been processed).  This happens when the keyboard is empty or after a
+	screen refresh.  In this instance, there is one call to the user
+	function and then DBEDIT() waits for a key.
+
+       Beginning or end of file is encountered.  This is the same as
+	idle.  All executable keys are performed, and there is one call to
+	the user function with the appropriate status message.
+
+     Note that when DBEDIT() is first executed, all keys pending in the
+     keyboard buffer are executed and then DBEDIT() enters the idle mode with
+     a user function call.  If no keys are pending, the idle mode is
+     immediate.
+
+     The user function should handle all modes and status messages received
+     from DBEDIT().
+
+     A user-defined function must ensure that the DBEDIT() status is
+     equivalent to DE_EXCEPT (4); otherwise, the value of LASTKEY() is
+     meaningless and a Return value of DE_REFRESH (2) will place the
+     application into an endless loop.  For example:
+
+     FUNCTION DBEditFunc ( nMode, nColumnPos )
+	LOCAL RetVal := DE_CONT
+
+	IF ( nMode == DE_EXCEPT )
+	   IF ( LASTKEY() == K_F5 )
+		    RetVal := DE_REFRESH
+	   ENDIF
+	ENDIF
+	RETURN(  RetVal )
+
+     DBEDIT() is fully re-entrant, which means you can make nested calls to
+     it.  Using this feature, you can have multiple browse windows on the
+     screen at the same time.
+
+     DBEDIT() is a compatibility function and, therefore, no longer
+     recommended as a programmable browse facility.  As such, it is
+     superseded by the TBrowse object class.  For more information, refer to
+     TBrowse class in this chapter.
+$LANG_RU$
+     DBEDIT() - это функция взаимодействия программы с пользователем,
+     которая выдает информацию записей из одной или более рабочих областей
+     в табличной форме. Окно для выдачи информации функцией DBEDIT()
+     делится на ячейки, формирующие колонки и строки. Колонки
+     соответствуют полям баз данных, строки соответствуют записям.
+
+     Каждая колонка определена элементом массива <массив колонок>.
+     Ширина каждой колонки определяется значением соответствующего
+     элемента <массив колонок> или заданным значением предложения
+     PICTURE в массиве <массив SAY-шаблонов>.
+
+     DBEDIT() поддерживает все клавиши управления курсором, включая
+     <PgDn>, <PgUp>, <Home>, <End>, четыре клавиши со стрелками и все
+     комбинации клавиши <Ctrl>, при помощи которых осуществляется
+     управление курсором. Список клавиш управления курсором, если не
+     задана функция пользователя, представлен в таблице 5-8. Если задан
+     аргумент, определяющий имя функции пользователя (<функция
+     пользователя>), все клавиши, представленные в таблице 5-8 активны
+     также в сочетании с клавишами <Esc> и <Enter>.  Когда DBEDIT()
+     вызывает функцию пользователя, ей автоматически передается два
+     аргумента:
+
+      Текущий режим, передаваемый как арифметическое выражение.
+
+      Индекс текущей колонки в <массив колонок>, передаваемый как
+       арифметическое значение.
+
+     Первый параметр определяет текущее состояние DBEDIT() в зависимости
+     от последней нажатой клавиши. Перечень возможных состояний приведен
+     в таблице 5-9.
+
+     Второй параметр указывает на позицию описания в массиве <массив
+     колонок>. Если массив <массив колонок> не определен, параметр
+     указывает на позицию поля в структуре текущей базы данных. Получить
+     имя поля можно при помощи функции FIELDNAME().
+
+     <PRE>Активные клавиши DBEDIT().
+     ---------------------------------------------------------------------
+     Ключ                       Действие
+     ---------------------------------------------------------------------
+     <Стрелка вверх>            Вверх на одну строку
+     <Стрелка вниз>             Вниз на одну строку
+     <Стрелка влево>            Влево на колонку
+     <Стрелка вправо>           Вправо на колонку
+     <Ctrl>-<Стрелка влево>     Влево в пределах колонки
+     <Ctrl>-<Стрелка вправо>    Вправо в пределах колонки
+     <Home>                     Крайняя левая колонка текущего экрана
+     <End>                      Крайняя правая колонка текущего экрана
+     <Ctrl>-<Home>              Крайняя левая колонка
+     <Ctrl>-<End>               Крайняя правая колонка
+     <PgUp>                     Предыдущий экран
+     <PgDn>                     Следующий экран
+     <Ctrl>-<PgUp>              Первая строка текущей колонки
+     <Ctrl>-<PgDn>              Последняя строка колонки
+     <Enter>                    Завершить DBEDIT()
+     <Esc>                      Завершить DBEDIT()
+     ---------------------------------------------------------------------
+     </PRE>
+
+     <PRE>Режимы DBEDIT().
+     ---------------------------------------------------------------------
+     Статус  Dbedit.ch      Описание
+     ---------------------------------------------------------------------
+     0       DE_IDLE        Режим ожидания, все коды клавиш обработаны
+			    и буфер пуст
+     1       DE_HITTOP      Попытка перевода курсора выше начала файла
+     2       DE_HITBOTTOM   Попытка перевода курсора ниже конца файла
+     3       DE_EMPTY       Нет записей в рабочей области
+     4       DE_EXCEPT      Ключ прерывания
+     ---------------------------------------------------------------------
+     </PRE>
+
+     <PRE>Значения, возвращаемые функцией пользователя.
+     ---------------------------------------------------------------------
+     Значение   Dbedit.ch      Описание
+     ---------------------------------------------------------------------
+     0          DE_ABORT       Прервать DBEDIT()
+     1          DE_CONT        Продолжить DBEDIT()
+     2          DE_REFRESH     Обновить экран, обработать нажатые клавиши,
+			       затем перейти в режим ожидания
+     ---------------------------------------------------------------------
+     </PRE>
+
+     После вызова функции пользователя DBEDIT() ожидает от нее возврата
+     значения, которое укажет, как действовать дальше. В таблице 5-10
+     сведены все возможные значения, возвращаемые функцией пользователя,
+     и соответствующие им действия. Функция пользователя вызывается в
+     следующих случаях:
+
+      Возникло прерывание по нажатию клавиши. Это происходит, когда
+       DBEDIT() получает из буфера клавиатуры нераспознаваемую
+       последовательность кодов. Эта последовательность остается в буфере
+       клавиатуры до тех пор, пока не считана функцией пользователя или
+       пока DBEDIT() не продолжит свою работу.
+
+      DBEDIT() перешла в режим ожидания (Idle), т.е. когда все коды
+       буфера клавиатуры обработаны. Это происходит, когда буфер
+       клавиатуры пуст или после обновления изображения на экране.
+       В этом случае происходит один вызов функции пользователя и
+       затем DBEDIT() ожидает нажатия клавиши.
+
+      Обнаружены начало или конец файла. Это тот же режим, что и режим
+       ожидания. Все выполнимые клавиши обрабатываются и производится один
+       вызов функции пользователя с передачей ей текущего статуса.
+
+     Когда DBEDIT() выполняется первый раз, обрабатываются все ключи
+     буфера клавиатуры, и DBEDIT() выходит в режим ожидания с вызовом
+     функции пользователя. Если буфер клавиатуры при вызове DBEDIT()
+     пуст, она сразу же выходит в режим ожидания.
+
+     При разработке функции пользователя необходимо предусмотреть анализ
+     всех режимов работы DBEDIT() с организацией соответствующих реакций
+     на них.
+
+     Функция DBEDIT() полностью реентерабельна, т.е. можно организовывать
+     ее вложенный вызов. Благодаря этому возможен многооконный просмотр
+     информации.
+
+     Функция DBEDIT() оставлена для совместимости с предыдущими версиями
+     xClipper и потому ее использование в программах не рекомендуется.
+     Для этих целей она должна быть заменена классом объектов TBrowse.
+     Более подробную информацию вы найдете в главе "Стандартные классы".
+$EXAMPLES$
+       This example demonstrates a generic call to DBEDIT():
+
+	USE Names NEW
+	DBEDIT()
+
+       This example demonstrates calling DBEDIT() with a user
+	function:
+
+	#include "dbedit.ch"
+	#include "inkey.ch"
+
+	// Array must be visible to other user-defined programs in
+	// program
+
+	STATIC acColumns := {}
+
+	PROCEDURE Main()
+
+	   USE Names NEW
+	   INDEX ON Names->Lastname + Names->FirstName TO Names
+
+	   CLS
+
+	   acColumns := { "LastName", "FirstName" }
+
+	   DBEDIT( 5, 5, 20, 70, acColumns, "UserFunc" )
+
+	RETURN
+
+
+	FUNCTION UserFunc( nMode, nCol )
+	   LOCAL nKey := LASTKEY()
+	   LOCAL nRetVal := DE_CONT         // Default return value
+
+	   DO CASE
+	   CASE nMode == DE_IDLE
+	      nRetVal := IdleFunc()
+	   CASE nMode == DE_HITTOP
+	      TONE( 100, 3 )
+	   CASE nMode == DE_HITBOTTOM
+	      TONE( 100, 3 )
+	      nRetVal := AppendFunc( nKey )
+	   CASE nMode == DE_EMPTY
+	      nRetVal := EmptyFunc()
+	   CASE nMode == DE_EXCEPT
+	      nRetVal := ExceptFunc( nKey, nCol )
+	   OTHERWISE
+	      TONE( 100, 3 )
+	   ENDCASE
+
+	RETURN nRetVal
+
+	FUNCTION AppendFunc( nKey )
+	   LOCAL nRetVal := DE_CONT         // Default return value
+
+	   IF nKey == K_DOWN                  // If DOWN ARROW
+	      APPEND BLANK                  // Append blank record
+	// Note: The appended record will appear at the top of the
+	//       DBEDIT() screen when the database file is indexed.
+
+	      nRetVal := DE_REFRESH         // Refresh screen
+	   ENDIF
+
+
+	RETURN nRetVal
+
+	FUNCTION ExceptFunc( nKey, nCol )
+	   LOCAL nRetVal := DE_CONT         // Default return value
+
+	   DO CASE
+	   CASE nKey == K_ESC                  // If ESCAPE
+	      nRetVal := DE_ABORT               // Exit
+	   CASE nKey == K_RETURN               // If RETURN
+	      nRetVal := EditFunc( nCol )      // Function to edit
+					       // field
+
+	   // Toggle DELETED status
+	   CASE nKey == K_DEL .AND. LASTREC() != 0  // DELETE pressed
+	      IF DELETED()
+		 RECALL
+	      ELSE
+		 DELETE
+	      ENDIF
+	   OTHERWISE
+		 TONE( 100, 1 )
+	   ENDCASE
+
+	RETURN nRetVal
+
+
+	FUNCTION EditFunc( nCol )
+	   LOCAL cIndexVal         // Value of current key expression
+	   LOCAL nRetVal            // Return value
+	   LOCAL nField            // Position of current field
+	   LOCAL cFieldVal         // Value of current field
+	   LOCAL nCursSave         // Preserve state of cursor
+
+	   // This will return an error if no index is open
+	   cIndexVal := &amp;( INDEXKEY(0) )
+
+	   nField := FIELDPOS( acColumns[nCol] )
+
+	   IF nField != 0
+	      nCursSave := SETCURSOR()         // Save state of cursor
+	      SETCURSOR(1)                     // Change cursor shape
+	      cFieldVal := FIELDGET( nField )         // Save contents
+						     // of field
+	      @ ROW(), COL() GET cFieldVal            // GET new value
+	      READ
+	      FIELDPUT( nField, cFieldVal )            // REPLACE with
+						     // new value
+	      SETCURSOR( nCursSave )                  // Restore cursor
+						     // shape
+	   ENDIF
+
+
+	   IF cIndexVal != &amp;( INDEXKEY(0) )         // If key expression
+
+						  // changed
+	      nRequest := DE_REFRESH               // Refresh screen
+	   ELSE                                    // Otherwise
+	      nRequest := DE_CONT                  // Continue
+	   ENDIF
+
+	RETURN nRequest
+
+	FUNCTION IdleFunc()
+	   // Idle routine
+	RETURN DE_CONT
+
+	FUNCTION EmptyFunc()
+	   // Empty Records routine
+	RETURN DE_CONT
+$LANG_RU$
+      Этот пример демонстрирует вызов DBEDIT() с функцией пользователя:
+
+       USE Customer INDEX Customer NEW
+       USE Sales INDEX Sales NEW
+       SET RELATION TO CustNum INTO Customer
+       //
+       acColumns = {"Branch", "Salesman", "Amount", "Customer->Customer"}
+       DBEDIT( 4, 0, 22, 79, acColumns, "UserFunc")
+$SEEALSO$
+  ACHOICE(),BROWSE(),MEMOEDIT(),TRANSFORM()
+$END$

@@ -1,0 +1,83 @@
+$FUNCNAME$
+  DISKSPACE()
+$CATEGORY$
+  DISKUTILS
+$SUMMARY$
+   Return the space available on a specified disk
+$LANG_RU$
+   Возвращает размер свободного пространства на указанном диске.
+$SYNTAX$
+     DISKSPACE([<nDrive>]) --> nBytes
+$LANG_RU$
+     DISKSPACE([<номер устройства>]) --> к-во байтов
+$ARGUMENTS$
+     <nDrive> is the number of the drive to query, where one is drive A,
+     two is B, three is C, etc.  The default is the current DOS drive if
+     <nDrive> is omitted or specified as zero.
+$LANG_RU$
+     <номер устройства> - это номер устройства, где 1 - это дисковод A, 2
+     - B, 3 - C и так далее. Если <номер устройства> не задан или равен 0,
+     то предполагается текущее устройство.
+$RETURNS$
+     DISKSPACE() returns the number of bytes of empty space on the specified
+     disk drive as an integer numeric value.
+$LANG_RU$
+     DISKSPACE() возвращает количество свободных байтов на заданном диске
+     в виде целого арифметического значения.
+$DESCRIPTION$
+     DISKSPACE() is an environment function that determines the number of
+     available bytes remaining on the specified disk drive.  It is useful
+     when COPYing or SORTing to another drive to determine if there is enough
+     space available before initiating the operation.  You may also use
+     DISKSPACE() with RECSIZE() and RECCOUNT() to create a procedure to back
+     up database files.
+
+     DISKSPACE() ignores the SET DEFAULT drive setting.
+$LANG_RU$
+     DISKSPACE() - это функция среды, которая определяет количество
+     оставшихся доступных байтов на указанном диске. Она удобна, когда
+     производится копирование или сортировка на другой дисковод для
+     определения, имеется ли достаточно свободного места на диске для
+     выполнения указанных команд. Другое применение - это использование
+     функции DISKSPACE() в комбинации с функциями RECSIZE() и RECCOUNT()
+     для создания процедуры сохранения файлов баз данных.
+
+     Функция DISKSPACE() игнорирует значение устройства по умолчанию,
+     установленное командой SET DEFAULT.
+$EXAMPLES$
+       This example is a user-defined function that demonstrates the
+	use of DISKSPACE() to back up a database file to another drive:
+
+	FUNCTION BackUp( cTargetFile, cTargetDrive )
+	   LOCAL nSpaceNeeded, nTargetDrive
+	   //
+	   nSpaceNeeded := INT((RECSIZE() * ;
+	      LASTREC()) + HEADER() + 1)
+	   nTargetDrive := ASC(UPPER(cTargetDrive)) - 64
+	   //
+	   IF DISKSPACE(nTargetDrive) < nSpaceNeeded
+	      RETURN .F.
+	   ENDIF
+	   COPY TO (cTargetDrive + ":" + cTargetFile)
+	   //
+	   RETURN .T.
+$LANG_RU$
+      В этом примере показана функция пользователя, которая демонстрирует
+       использование функции DISKSPACE() для сохранения файла базы данных
+       на другом устройстве:
+
+       FUNCTION BackUp( cTargetFile, cTargetDrive )
+	  LOCAL nSpaceNeeded, nTargetDrive
+	  //
+	  nSpaceNeeded = INT( RECSIZE() * LASTREC()) + HEADER() + 1)
+	  nTargetDrive := ASC( UPPER(cTargetDrive)) - 64
+	  //
+	  IF DISKSPACE(nTargetDrive) < nSpaceNeeded
+	     RETURN .F.
+	  ENDIF
+	     COPY TO (cTargetDrive + ":" + cTargetFile)
+	     //
+	  RETURN .T.
+$SEEALSO$
+  LASTREC(),LUPDATE(),RECSIZE()
+$END$

@@ -1,0 +1,83 @@
+$FUNCNAME$
+  I2BIN()
+$CATEGORY$
+  CONVERSION,MISCELLANEOUS,NUMERIC
+$SUMMARY$
+   Convert a xClipper numeric to a 16-bit binary integer
+$LANG_RU$
+   Преобразует числовую величину в двухбайтное двоичное целое.
+$SYNTAX$
+     I2BIN(<nInteger>) --> cBinaryInteger
+$LANG_RU$
+     I2BIN(<целое число>) --> символьная строка
+$ARGUMENTS$
+     <nInteger> is an integer numeric value to be converted.  Decimal
+     digits are truncated.
+$LANG_RU$
+     <целое число> - целое число. Дробная часть не учитывается.
+$RETURNS$
+     I2BIN() returns a two-byte character string containing a 16-bit binary
+     integer.
+$LANG_RU$
+     I2BIN() возвращает двухбайтную символьную строку, содержащую
+     16-битовое двоичное целое число.
+$DESCRIPTION$
+     I2BIN() is a low-level file function that converts an integer numeric
+     value to a character string formatted as a binary integer--least
+     significant byte first.  I2BIN() is used with FWRITE() to convert a
+     xClipper numeric to a standard binary form.  The inverse of I2BIN() is
+     BIN2I().
+$LANG_RU$
+     I2BIN() является функцией обработки файлов низкого уровня, которая
+     преобразует числовую величину в символьную строку в формате двоичного
+     целого - младший байт располагается первым. I2BIN() используется
+     вместе с FWRITE() для преобразования числовой величины в формате
+     xClipper в стандартную двоичную форму. Обратной функцией к I2BIN()
+     является BIN2I().
+$EXAMPLES$
+       This example opens a database file using low-level file
+	functions and writes a new date of the last update to bytes 1-3:
+
+	#include "Fileio.ch"
+	//
+	nHandle = FOPEN("Sales.dbf", FO_READWRITE)
+	//
+	// Convert date of last update to int
+	nYear = I2BIN(90)
+	nMonth = I2BIN(12)
+	nDay = I2BIN(15)
+	//
+	// Point to the date of last update
+	FSEEK(nHandle, 1, FS_SET)
+	//
+	// Write the new update date using only the first byte
+	FWRITE(nHandle, nYear, 1)
+	FWRITE(nHandle, nMonth, 1)
+	FWRITE(nHandle, nDay, 1)
+	FCLOSE(nHandle)
+$LANG_RU$
+      Этот пример открывает файл базы данных, используя файловые функции
+       низкого уровня, и записывает новую дату последнего изменения в
+       байты с 1 по 3:
+
+       #include "Fileio.ch"
+       //
+       nHandle = FOPEN("Sales.dbf", FO_READWRITE)
+       //
+       // Преобразует дату последнего изменения в целое.
+       nYear = I2BIN(90)
+       nMonth = I2BIN(12)
+       nDay = I2BIN(15)
+       //
+       // Указатель на дату последнего изменения.
+       FSEEK( nHandle, 1, FS_SET )
+       //
+       // Запись новой даты последнего изменения
+       // с использованием только одного байта.
+       FWRITE( nHandle, nYear, 1)
+       FWRITE( nHandle, nMonth, 1)
+       FWRITE( nHandle, nDay, 1)
+       FCLOSE( nHandle)
+$SEEALSO$
+  BIN2I(),BIN2L(),BIN2W(),CHR(),FWRITE(),L2BIN()
+$END$

@@ -1,0 +1,47 @@
+$FUNCNAME$
+  MAXCOL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Determine the maximum visible screen column
+$LANG_RU$
+   Определяет максимальный номер колонки, видимой на экране.
+$SYNTAX$
+     MAXCOL() --> nColumn
+$LANG_RU$
+     MAXCOL() --> номер колонки
+$RETURNS$
+     MAXCOL() returns the column number of the rightmost visible column for
+     display purposes.
+$LANG_RU$
+     MAXCOL() возвращает номер самой правой колонки экрана.
+$DESCRIPTION$
+     MAXCOL() is a screen function that determines the maximum visible column
+     of the screen.  Row and column numbers start at zero in xClipper.
+
+     If you use a C or other extended function to set the video mode, use the
+     SETMODE() function so your xClipper application returns the correct
+     value for MAXCOL().
+$LANG_RU$
+     MAXCOL() является функцией работы с экраном, используемой для
+     определения максимального номера видимой колонки на экране.
+     В xClipper номера строк и колонок начинаются с нуля.
+$EXAMPLES$
+       This example uses MAXROW() and MAXCOL() to determine the area
+	in which to draw a box, and then executes DBEDIT() within the box
+	region:
+
+	CLS
+	@ 0, 0 TO MAXROW(), MAXCOL() DOUBLE
+	DBEDIT(1, 1, MAXROW() + 1, MAXCOL() - 1)
+$LANG_RU$
+      Следующий пример демонстрирует использование MAXROW() и MAXCOL()
+       для того, чтобы определить координаты для рисования прямоугольника
+       и задания области для DBEDIT():
+
+       CLS
+       @ 0, 0 TO MAXCOL(), MAXROW() DOUBLE
+       DBEDIT( 1, 1, MAXROW() + 1, MAXCOL() - 1)
+$SEEALSO$
+  COL(),MAXROW(),ROW()
+$END$

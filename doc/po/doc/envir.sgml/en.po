@@ -1,0 +1,359 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-10-24 14:58+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/envir.sgml:2
+msgid "Title"
+msgstr "Environment variables"
+
+#: template/./doc/envir.sgml:5
+msgid "first_p"
+msgstr ""
+"The administration of the compilation and linking processes is possible with "
+"the help of environment variables. Often CLIP is using in C+PO (C+PO "
+"programs - pseudocode inside C program - quickly compilated, small size, "
+"slow operation, but managed by standard tools of C developer. Theoretically, "
+"decompilation is possible, though this is much more complex than for PO "
+"files) mode. Thats why the part of variables relate to the C-compiler. You "
+"must know - CLIP (like CA-Clipper) not a compiler itself. Mostly it's "
+"translate to pseudocode (bytecode) with a C-wrapper. So, there is no needing "
+"to change the default values of thats kind of variables."
+
+#: template/./doc/envir.sgml:6
+msgid "second_p"
+msgstr "This variables are standart, but here is their description:"
+
+#: template/./doc/envir.sgml:9
+msgid "cc"
+msgstr "CC"
+
+#: template/./doc/envir.sgml:12
+msgid "cc description"
+msgstr "name of C compiler (default=='gcc')"
+
+#: template/./doc/envir.sgml:17
+msgid "cflags"
+msgstr "CFLAGS"
+
+#: template/./doc/envir.sgml:20
+msgid "cflags description"
+msgstr "options for C compiler (default=='')"
+
+#: template/./doc/envir.sgml:25
+msgid "compileflag"
+msgstr "COMPILE_FLAG"
+
+#: template/./doc/envir.sgml:28
+msgid "compileflag description"
+msgstr "'compile-only' flag for C compiler (default=='-c')"
+
+#: template/./doc/envir.sgml:33
+msgid "copt"
+msgstr "COPT"
+
+#: template/./doc/envir.sgml:36
+msgid "optimiz"
+msgstr "optimisation flag for C compiler (default=='-O2')"
+
+#: template/./doc/envir.sgml:41
+msgid "cdbg"
+msgstr "CDBG"
+
+#: template/./doc/envir.sgml:44
+msgid "debug-descr"
+msgstr "debug flag for C compiler (default=='-g') "
+
+#: template/./doc/envir.sgml:49
+msgid "outflag"
+msgstr "OUT_FLAG"
+
+#: template/./doc/envir.sgml:52
+msgid "outflag-descr"
+msgstr "output flag for C compiler (default=='-o')"
+
+#: template/./doc/envir.sgml:57
+msgid "inc-flag"
+msgstr "INCLUDE_FLAG"
+
+#: template/./doc/envir.sgml:60
+msgid "incl-descr"
+msgstr "include flag for C compiler (default=='-I')"
+
+#: template/./doc/envir.sgml:65
+msgid "objsuf"
+msgstr "OBJSUF"
+
+#: template/./doc/envir.sgml:68
+msgid "objsuf-descr"
+msgstr "suffix for output object files (default=='.o')"
+
+#: template/./doc/envir.sgml:73
+msgid "sobjsuf"
+msgstr "SOBJSUF"
+
+#: template/./doc/envir.sgml:76
+msgid "sobjsuf-descr"
+msgstr "suffix for output shared files (default=='.so')"
+
+#: template/./doc/envir.sgml:81
+msgid "libsuf"
+msgstr "LIBSUF"
+
+#: template/./doc/envir.sgml:84
+msgid "libsuf-descr"
+msgstr "suffix for library files (default=='.a')"
+
+#: template/./doc/envir.sgml:89
+msgid "slibsuf"
+msgstr "SLIBSUF"
+
+#: template/./doc/envir.sgml:92
+msgid "slibsuf-descr"
+msgstr "suffix for shared library files (default=='.so')"
+
+#: template/./doc/envir.sgml:97
+msgid "sflags"
+msgstr "SFLAGS"
+
+#: template/./doc/envir.sgml:100
+msgid "sflags-descr"
+msgstr "options for C compiler - shared version (default=='-shared')"
+
+#: template/./doc/envir.sgml:107
+msgid "div_1"
+msgstr "Following environment variables are defines libraries names:"
+
+#: template/./doc/envir.sgml:110
+msgid "cliplib"
+msgstr "CLIPLIB"
+
+#: template/./doc/envir.sgml:113
+msgid "cliplib description"
+msgstr "runtime support library (default=='libclip.a')"
+
+#: template/./doc/envir.sgml:118
+msgid "clibslib"
+msgstr "CLIPSLIB"
+
+#: template/./doc/envir.sgml:121
+msgid "clislib description"
+msgstr "runtime support shared library (default=='libclip.so')"
+
+#: template/./doc/envir.sgml:126
+msgid "cliplibs"
+msgstr "CLIPLIBS"
+
+#: template/./doc/envir.sgml:129
+msgid "cliplibs description"
+msgstr "additional libs (default=='')"
+
+#: template/./doc/envir.sgml:138
+msgid "div_2"
+msgstr ""
+"Environment variables are using for defines, where CLIP-files are placed:"
+
+#: template/./doc/envir.sgml:141
+msgid "cliproot"
+msgstr "CLIPROOT"
+
+#: template/./doc/envir.sgml:144
+msgid "cliproot description"
+msgstr ""
+"root for all CLIP-related files (default== '$HOME/cliproot' in case of local "
+"installation) "
+
+#: template/./doc/envir.sgml:149
+msgid "cliblocaleroot"
+msgstr "CLIP_LOCALE_ROOT"
+
+#: template/./doc/envir.sgml:152
+msgid "cliplocaleroot description"
+msgstr "root for the locale messages (default == CLIPROOT)"
+
+#: template/./doc/envir.sgml:157
+msgid "clipmodule"
+msgstr "CLIP_MODULE"
+
+#: template/./doc/envir.sgml:160
+msgid "clipmodule description"
+msgstr ""
+"current locale module (default=='environ'). In a runtime it's value can be "
+"accessed through the predefined macros __CLIP_MODULE__"
+
+#: template/./doc/envir.sgml:168
+msgid "div_3"
+msgstr ""
+"Environment variables are useful for localization and working with the "
+"different codepages:"
+
+#: template/./doc/envir.sgml:171
+msgid "cliplang"
+msgstr "CLIP_LANG"
+
+#: template/./doc/envir.sgml:174
+msgid "cliplang description"
+msgstr ""
+"use for setting codepage of constant-string in sources during the "
+"compilation (if the command line switches -T and -S are not set and the "
+"file .clipcharset is not present). If this variable isn't set, the "
+"consindent value takes from LANG variable"
+
+#: template/./doc/envir.sgml:179
+msgid "cliphostcs"
+msgstr "CLIP_HOSTCS"
+
+#: template/./doc/envir.sgml:182
+msgid "cliphostcs description"
+msgstr ""
+"is specifies an inner representation of the strings (default - value of "
+"CLIP_LANG in compilation time)"
+
+#: template/./doc/envir.sgml:187
+msgid "clipclient"
+msgstr "CLIP_CLIENTCS"
+
+#: template/./doc/envir.sgml:190
+msgid "clipclient description"
+msgstr ""
+"is defines an output codepage for terminal (default - value of CLIP_LANG in "
+"compilation time). If in runtime it's don't match with CLIP_HOSTCS, then the "
+"output will be recoded"
+
+#: template/./doc/envir.sgml:195
+msgid "cliplocale"
+msgstr "CLIP_LOCALE"
+
+#: template/./doc/envir.sgml:198
+msgid "cliplocale description"
+msgstr ""
+"main variable, which defines a charset, using by CLIP-program.If it isn't "
+"set, then CLIP_CLIENTCS, CLIP_CHARSET and CHARSET will be checked"
+
+#: template/./doc/envir.sgml:206
+msgid "div_4"
+msgstr "Other environment variables:"
+
+#: template/./doc/envir.sgml:209
+msgid "cmdstr"
+msgstr "CLIP_CMDSTR"
+
+#: template/./doc/envir.sgml:212
+msgid "cmdstr description"
+msgstr "comma-separated list of command line options"
+
+#: template/./doc/envir.sgml:217
+msgid "names"
+msgstr "CLIP_NAMES"
+
+#: template/./doc/envir.sgml:220
+msgid "names description"
+msgstr ""
+"generate .ex, .nm files (possible values yes/no|on/off|0/1). C-linker can't "
+"see, all needed functions in library are available, or not. That's why the "
+"generated .ex & .nm files, which are placing near the corresponding  "
+"objective files and libraries, gives the possibility to the CLIP-compiler, "
+"during the generation of executable, to compare the content of that files "
+"and to ascertain which functions would be missing in runtime."
+
+#: template/./doc/envir.sgml:225
+msgid "loglevel"
+msgstr "CLIP_LOGLEVEL"
+
+#: template/./doc/envir.sgml:228
+msgid "loglevel description"
+msgstr ""
+" is defines the level of log. The values 1,2 and 3 give the more detailing "
+"information for user. 4 - shows the all functions calls. 5 - shows the "
+"maximum detailed information for analize of the program runtime without "
+"using the debugger"
+
+#: template/./doc/envir.sgml:233
+msgid "scanmode"
+msgstr "CLIP_SCANMODE"
+
+#: template/./doc/envir.sgml:236
+msgid "scanmode_descript"
+msgstr ""
+"defines the working mode for terminal (possible values: no, ioctl, terminal)"
+
+#: template/./doc/envir.sgml:241
+msgid "scanstart"
+msgstr "CLIP_SCANSTART"
+
+#: template/./doc/envir.sgml:244
+msgid "scanstart-descr"
+msgstr ""
+"defines the sequence for turn-off scancodes passong (for example \\033[R)"
+
+#: template/./doc/envir.sgml:249
+msgid "scanstop"
+msgstr "CLIP_SCANSTOP"
+
+#: template/./doc/envir.sgml:252
+msgid "scanstop-descr"
+msgstr ""
+"defines the sequence for turn-off scancodes passong (for example \\033[S)"
+
+#: template/./doc/envir.sgml:257
+msgid "keymap"
+msgstr "CLIP_KEYMAP"
+
+#: template/./doc/envir.sgml:260
+msgid "keymap-descr"
+msgstr "keyboard-map description for the CLIP keyboard driver"
+
+#: template/./doc/envir.sgml:265
+msgid "linechars"
+msgstr "CLIP_LINECHARS"
+
+#: template/./doc/envir.sgml:268
+msgid "linechars-descr"
+msgstr "symbols for the single pseudographics"
+
+#: template/./doc/envir.sgml:273
+msgid "dline"
+msgstr "CLIP_DLINECHARS"
+
+#: template/./doc/envir.sgml:276
+msgid "dline-descr"
+msgstr "symbols for the double pseudographics"
+
+#: template/./doc/envir.sgml:281
+msgid "colormap"
+msgstr "CLIP_COLORMAP"
+
+#: template/./doc/envir.sgml:284
+msgid "colormap-descr"
+msgstr "recode table for the colours"
+
+#: template/./doc/envir.sgml:292
+msgid "end_title"
+msgstr "Setting of environment variables."
+
+#: template/./doc/envir.sgml:293
+msgid "end_1"
+msgstr ""
+"Environment variables could be set by usual OS- or command interpreter-way "
+"or  list in $CLIPROOT/etc/environment file, and in the language and the "
+"terminal dependance files: lang/$LANG, lang/$LC_ALL, lang/$CHARSET, term/"
+"$TERM."
+
+#: template/./doc/envir.sgml:294
+msgid "end_2"
+msgstr ""
+"Some variables have duplicates in the command line switches. Settings on the "
+"command line override like settings in the environment variable."
+
+#~ msgid "LANG"
+#~ msgstr "en"

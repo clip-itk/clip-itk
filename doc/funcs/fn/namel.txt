@@ -1,0 +1,41 @@
+$FUNCNAME$
+   fn_NameL()
+$CATEGORY$
+   Miscellaneous
+$ONELINER$
+   General purpose string to length+string packet function
+$SYNTAX$
+
+   fn_NameL( cName, nRequiredLength)  => cReturn
+
+$ARGUMENTS$
+
+   <cName>	 - the character string to be used (shouldn't be longer
+		than 255 characters
+   <nLength> -  if specified, the String is padded with NULLs
+		    to this length
+
+$RETURNS$
+
+   <cReturn> - a character string with a one byte word at the beginning
+  which indicates the string length, including a null terminator
+  which is added if it does not exist.
+
+$DESCRIPTION$
+
+   There are numerous places where a character string that is sent
+   needs to be encoded with a leading BYTE specifying the length
+   and may also need to be padded with NULLs.
+
+   A terminating null is guaranteed.
+
+   If the Length of cName is greater than nRequiredLength -1,
+   it is truncated to leave room for the terminator.
+
+$EXAMPLES$
+
+$SEEALSO$
+
+$Author: clip $
+   Steven Tyrakowski
+$END$

@@ -1,0 +1,48 @@
+$FUNCNAME$
+  GLOB()
+$CATEGORY$
+  STRING
+$SUMMARY$
+	Check confirmity string to regular expression.
+$LANG_RU$
+	Проверка на соответствие строки регулярному выражению.
+$SYNTAX$
+     GLOB(<sString>, <sReg>, [<lIgnoreCase>]) 	--> TRUE || FALSE
+$ARGUMENTS$
+     <sString>	String, is the source string.
+     <sReg>	String, is the simple regular expression.
+     <lIgnoreCase>	Logical, is TRUE if ignore case sensitive (by default FALSE)
+$LANG_RU$
+     <sString>	String, исходная строка
+     <sReg>	String, простое регулярное выражение
+     <lIgnoreCase>	Logical, TRUE, если не учитывать регистр (по умолчанию FALSE)
+$RETURNS$
+     Returns TRUE if string corresponding to regular expression.
+$LANG_RU$
+     Возвращает TRUE, если строка соответствует регулярному выражению.
+$DESCRIPTION$
+     GLOB() returns TRUE if string corresponding to regular expression.
+     The expression <sReg> is the simple regular expression by DOS rules.
+$LANG_RU$
+     GLOB() возвращает TRUE, если строка соответствует регулярному выражению.
+     Выражение <sReg>  это простое регулярное выражение, принятое в DOS.
+$EXAMPLES$
+
+? GLOB("aaa", "aaa") 		// --> TRUE
+? GLOB("aaa", "[a-z]*")		// --> TRUE
+? GLOB("aaa", "a*") 		// --> TRUE
+? GLOB("aaa", "*") 		// --> TRUE
+? GLOB("aaa", "a") 		// --> FALSE
+? GLOB("", "a") 		// --> FALSE
+? GLOB("", "*") 		// --> TRUE
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

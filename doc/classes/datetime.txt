@@ -1,0 +1,414 @@
+$CLASSNAME$
+	DATETIME
+$SUMMARY$
+	Class are destined to control of date and time values.
+$LANG_RU$
+	Класс предназначен для управления датами и временем.
+$ABOUT$
+	Class are destined to control of date and time values.
+$LANG_RU$
+	Класс предназначен для управления датами и временем.
+$SYNTAX$
+	DateTimeNew([<nYear>,[<nMonth>,[<nDay>,[<nHour>[,<nMin>[,<nSec>[,<nMsec>]]]]]]]) --> DATETIME object
+$ATTRIBUTES$
+	<ClassName> 	DATETIME
+	<Data>		Date, are some date value
+$LANG_RU$
+	<ClassName> 	DATETIME
+	<Data>		Date, дата
+
+$METHODNAME$
+	DateTimeNew()
+$SUMMARY$
+	DATETIME object constructor.
+$LANG_RU$
+	Конструктор объекта DATETIME.
+$SYNTAX$
+	DateTimeNew([<nYear>,[<nMonth>,[<nDay>,[<nHour>[,<nMin>[,<nSec>[,<nMsec>]]]]]]]) --> DATETIME object
+$ARGUMENTS$
+	<nYear>	 - Numeric, contain years value
+	<nMonth> - Numeric, contain months value
+	<nDay>   - Numeric, contain days value
+	<nHour>  - Numeric, contain hours value
+	<nMin>   - Numeric, contain minutes value
+	<nSec>   - Numeric, contain secundes value
+	<nMsec>  - Numeric, contain millisecundes value
+$LANG_RU$
+	<nYear>	 - Numeric, определяет год
+	<nMonth> - Numeric, определяет месяц
+	<nDay>   - Numeric, определяет день
+	<nHour>  - Numeric, определяет часы
+	<nMin>   - Numeric, определяет минуты
+	<nSec>   - Numeric, определяет секунды
+	<nMsec>  - Numeric, определяет миллисекунды
+
+$RETURNS$
+	Method returns new DATETIME object.
+$LANG_RU$
+	Метод возвращает новый объект DATETIME.
+$DESCRIPTION$
+	DateTimeNew() is constructs and returns new DATETIME object.
+	That class can be used to control date and time values.
+
+	If some parameters not specified then date set to zero-date.
+
+	Attention! Object contain not normalized date.
+$LANG_RU$
+	DateTimeNew() создает и возвращает объект DATETIME.
+	Объект этого класса может быть использован для создания, управления
+	данными типа дата и время.
+
+	Если параметры не переданы, объект создастся с нулевой датой.
+
+	Внимаение! Объект содержит не нормализованную дату.
+$ENDMETHOD$
+
+$METHODNAME$
+	Date()
+$SUMMARY$
+	Gets date values.
+$LANG_RU$
+	Получить дату.
+$SYNTAX$
+	Date() 	--> <dData>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns <Data> value as date value.
+$LANG_RU$
+	Возвращает <Data> как переменную типа дата.
+$DESCRIPTION$
+	Date() converts DATETIME data value to normal calendar date
+	and returns  it as date values.
+$LANG_RU$
+	Date() преобразует DATETIME атрибут <::Data> в нормализованную
+	календарную дату и возвращает полученное значение типа дата.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Time()
+$SUMMARY$
+	Gets the string in time format.
+$LANG_RU$
+	Получить строку в формате "время".
+$SYNTAX$
+	Time() 	--> <sTime>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the string in time format.
+$LANG_RU$
+	Возвращает строку в формате "время".
+$DESCRIPTION$
+	Time() returns the normalized time value of the specified <Data>
+	as string value in the format <hh:mm:ss:ms>
+	or returns "00:00:00:00" if DateTime object contained zero-date.
+	When <hh> is two-digit hours value, <mm>
+	is two-digit minutes value, <ss> is two-digit secundes value and
+	<ms> is two-digit milisecundes value.
+$LANG_RU$
+	Time() возвращает нормализованное значение времени, определенное в <::Data>
+	объекта DATETIME, в виде строки формата <hh:mm:ss:ms> или возвращает
+	"00:00:00:00" , если DATETIME объект содержит нулевую дату.
+	Где <hh> двухзначное значение час, <mm> - двухзначное згачение минуты,
+	<ss> двухзначное значение секундыи <ms> двухзначное значение миллисекунды.
+$ENDMETHOD$
+
+$METHODNAME$
+	Year()
+$SUMMARY$
+	Gets year value.
+$LANG_RU$
+	Получить значение "год"
+$SYNTAX$
+	Year() 	--> <nYear>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the numeric value specified year value.
+$LANG_RU$
+	Возвращает число - год.
+$DESCRIPTION$
+	Year() returns year of the specified <::Data>
+	as four-digit numeric value. Not normalized.
+$LANG_RU$
+	Year() возвращает числовое значение (4 цифры): год, определенное в <::Data> объекта
+	DATETIME. Возвращаемое значение не нормализовано.
+$ENDMETHOD$
+
+$METHODNAME$
+	Month()
+$SUMMARY$
+	Gets month value.
+$LANG_RU$
+	Получить значение "месяц"
+$SYNTAX$
+	Month() 	--> <nMonth>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the numeric value specified month value.
+$LANG_RU$
+	Возвращает число - месяц.
+$DESCRIPTION$
+	Month() returns month of the specified <Data>
+	as numeric value. Not normalized.
+$LANG_RU$
+	Month() возвращает числовое значение: месяц, определенное в <::Data> объекта
+	DATETIME. Возвращаемое значение не нормализовано.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Day()
+$SUMMARY$
+	Gets day value.
+$LANG_RU$
+	Получить значение "день"
+$SYNTAX$
+	Day() 	--> <nDay>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the numeric value specified day value.
+$LANG_RU$
+	Возвращает число - день.
+$DESCRIPTION$
+	Day() returns day of the specified <Data>
+	as numeric value. Not normalized.
+$LANG_RU$
+	Day() возвращает числовое значение: день, определенное в <::Data> объекта
+	DATETIME. Возвращаемое значение не нормализовано.
+$ENDMETHOD$
+
+$METHODNAME$
+	Hour()
+$SUMMARY$
+	Gets hour value.
+$LANG_RU$
+	Получить значение "часы"
+$SYNTAX$
+	Hour() 	--> <nHour>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the numeric value specified hour value.
+$LANG_RU$
+	Возвращает число - часы.
+$DESCRIPTION$
+	Hour() returns hour of the specified <Data>
+	as numeric value. Not normalized.
+$LANG_RU$
+	Hour() возвращает числовое значение: часы, определенное в <::Data> объекта
+	DATETIME. Возвращаемое значение не нормализовано.
+$ENDMETHOD$
+
+$METHODNAME$
+	Min()
+$SUMMARY$
+	Gets minutes value.
+$LANG_RU$
+	Получить значение "минуты"
+$SYNTAX$
+	Min() 	--> <nMin>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the numeric value specified minutes value.
+$LANG_RU$
+	Возвращает число - минуты.
+$DESCRIPTION$
+	Min() returns minutes of the specified <Data>
+	as numeric value. Not normalized.
+$LANG_RU$
+	Min() возвращает числовое значение: минуты, определенное в <::Data> объекта
+	DATETIME. Возвращаемое значение не нормализовано.
+$ENDMETHOD$
+
+$METHODNAME$
+	Sec()
+$SUMMARY$
+	Gets secundes value.
+$LANG_RU$
+	Получить значение "секунды"
+$SYNTAX$
+	Sec() 	--> <nSec>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the numeric value specified secundes value.
+$LANG_RU$
+	Возвращает число - секунды.
+$DESCRIPTION$
+	Sec() returns secundes of the specified <Data>
+	as numeric value. Not normalized.
+$LANG_RU$
+	Sec() возвращает числовое значение: секунды, определенное в <::Data> объекта
+	DATETIME. Возвращаемое значение не нормализовано.
+$ENDMETHOD$
+
+$METHODNAME$
+	Msec()
+$SUMMARY$
+	Gets millisecundes value.
+$LANG_RU$
+	Получить значение "миллисекунды"
+$SYNTAX$
+	Msec() 	--> <nMsec>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns the numeric value specified millisecundes value.
+$LANG_RU$
+	Возвращает число - миллисекунды.
+$DESCRIPTION$
+	Msec() returns millisecundes of the specified <Data>
+	as numeric value. Not normalized.
+$LANG_RU$
+	Msec() возвращает числовое значение: миллисекунды, определенное в <::Data> объекта
+	DATETIME. Возвращаемое значение не нормализовано.
+$ENDMETHOD$
+
+$METHODNAME$
+	Normalize()
+$SUMMARY$
+	Normalize object DATETIME.
+$LANG_RU$
+	Нормализовать объект DATETIME.
+$SYNTAX$
+	Normalize() 	--> <oDateTime>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns normalized object DATETIME.
+$LANG_RU$
+	Возвращает нормализованный объект DATETIME.
+$DESCRIPTION$
+	Normalize() converts DATETIME-data to normal calendar date and
+	returns some one object.
+$LANG_RU$
+	Normalize() преобразует DATETIME <::Data> в нормальную календарную
+	дату и возвращает преобразованный объект.
+$ENDMETHOD$
+
+$METHODNAME$
+	Add()
+$SUMMARY$
+	Addition two DateTime date-object
+$LANG_RU$
+	Сложить два объекта DATETIME.
+$SYNTAX$
+	Add(<oDt>) 	--> <oDateTime>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns  object DATETIME.
+$LANG_RU$
+	Возвращает измененный объект DATETIME.
+$DESCRIPTION$
+	Add() addes <oDt> to DDATETIME-data and returns some one witch
+	increased data. New DATETIME-data is't normalize.
+$LANG_RU$
+	Add() добавляет <oDt> к содержимому объекта DATETIME и возвращает последний.
+	Полученный объект содержит не нормализованное значение даты.
+$ENDMETHOD$
+
+$METHODNAME$
+	Sub()
+$SUMMARY$
+	Subtraction two DateTime date-object
+$LANG_RU$
+	Вычесть из объекта DATETIME другой.
+$SYNTAX$
+	Sub(<oDt>) 	--> <oDateTime>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns  object DATETIME.
+$LANG_RU$
+	Возвращает измененный объект DATETIME.
+$DESCRIPTION$
+	Sub() subtracts <oDt> from DATETIME-data and returns some one
+	witch decreased data. New DATETIME-data is't normalize.
+	</para>
+$LANG_RU$
+	Sub() вычитает <oDt> из содержимого объекта DATETIME и возвращает последний.
+	Полученный объект содержит не нормализованное значение даты.
+$ENDMETHOD$
+
+
+
+$EXAMPLES$
+/* Create */
+dt := DateTimeNew(2003, 01, 01) //
+? dt:Year()	// --> 2003
+? dt:Month()	// --> 01
+? dt:Day()	// --> 01
+
+dt := DateTimeNew()
+? dt:Year()	// --> 0
+? dt:Month()	// --> 0
+? dt:Day()	// --> 0
+? dt:Date()     // --> 02-12-0001
+
+dt := DateTimeNew(2000)
+? dt:Year()	// --> 2000
+? dt:Month()	// --> 0
+? dt:Day()	// --> 0
+? dt:Date()     // --> 30-11-1999
+
+
+
+/* Normalize */
+dt := DateTimeNew(2003, 03, 41)
+? dt:Day()		// --> 41
+? dt:Normalize()	// --> DateTime object
+? dt:Day()		// --> 10
+? dt:Date()		// --> 10-04-2003
+
+dt := DateTimeNew(0, 0, 0)
+? dt:Year()		// --> 0
+? dt:Month()		// --> 0
+? dt:Day()		// --> 0
+? dt:Normalize()	// --> DateTime object
+
+? dt:Year()		// --> 0001
+? dt:Month()		// --> 12
+? dt:Day()		// --> 02
+? dt:Date()		// --> 02-12-0001
+
+/* Control */
+dt := DateTimeNew(2003, 03, 01)
+? dt:Year()	// --> 2003
+? dt:Month()	// --> 03
+? dt:Day()	// --> 01
+dt2 := DateTimeNew(0, 0, 54)
+
+dt:Add(dt2)
+? dt:Year()	// --> 2003
+? dt:Month()	// --> 03
+? dt:Day()	// --> 55
+? dt:Date()	// --> 24-04-2003
+
+
+dt := DateTimeNew(2003, 03, 01)
+? dt:Year()	// --> 2003
+? dt:Month()	// --> 03
+? dt:Day()	// --> 01
+dt2 := DateTimeNew(0, 0, 54)
+
+dt:Sub(dt2)
+? dt:Year()	// --> 2003
+? dt:Month()	// --> 03
+? dt:Day()	// --> -53
+? dt:Date()	// --> 06-01-2003
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+

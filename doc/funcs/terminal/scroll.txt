@@ -1,0 +1,105 @@
+$FUNCNAME$
+  SCROLL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Scroll a screen region up or down, right or left
+$LANG_RU$
+   Прокручивает область экрана вверх или вниз.
+$SYNTAX$
+     SCROLL([<nTop>], [<nLeft>],[<nBottom>], [<nRight>],
+	[<nVert>] [<nHoriz>]) --> NIL
+$LANG_RU$
+     SCROLL([<верхняя строка>], [<левая колонка>], [<нижняя строка>],
+	  [<правая колонка>], [<кол-во строк>]) --> NIL
+$ARGUMENTS$
+     <nTop>, <nLeft>, <nBottom>, and <nRight> define the
+     scroll region coordinates.  Row and column values can range from 0, 0 to
+     MAXROW(), MAXCOL().  If you do not specify coordinate arguments, the
+     dimensions of the visible display are used.
+
+     <nVert> defines the number of rows to scroll vertically.  A positive
+     value scrolls up the specified number of rows.  A negative value scrolls
+     down the specified number of rows.  A value of zero disables vertical
+     scrolling.  If <nVert> is not specified, zero is assumed.
+
+     <nHoriz> defines the number of rows to scroll horizontally.  A
+     positive value scrolls left the specified number of columns.  A negative
+     value scrolls right the specified number of columns.  A value of zero
+     disables horizontal scrolling.  If <nHoriz> is not specified, zero is
+     assumed.
+
+     If you supply neither the <nVert> nor <nHoriz> parameters to SCROLL(),
+     the area specified by the first four parameters will be blanked.
+
+     Warning!  Horizontal scrolling is not supported on all of the
+     alternate terminal drivers (i.e., ANSITERM, NOVTERM, PCBIOS).
+$LANG_RU$
+     <верхняя строка>, <левая колонка>, <нижняя строка> и <правая колонка>
+     определяют координаты обрабатываемой области. Значения строк и
+     колонок могут находиться в диапазоне от 0, 0 до MAXROW(), MAXCOL().
+     Если аргументы координат не заданы, то используются размеры видимого
+     экрана.
+
+     <кол-во строк> определяет количество строк, на которое необходимо
+     прокрутить содержимое окна. Когда значение аргумента <кол-во строк>
+     больше нуля, перемещение происходит вверх, когда меньше нуля - вниз.
+     Значение, равное нулю, заполняет заданное окно пробелами. Если
+     <кол-во строк> не задано, то принимается значение ноль.
+$RETURNS$
+     SCROLL() always returns NIL.
+$LANG_RU$
+     SCROLL() всегда возвращает NIL.
+$DESCRIPTION$
+     SCROLL() is a screen function that scrolls a screen region up or down a
+     specified number of rows.  When a screen scrolls up, the first line of
+     the region is erased, all other lines are moved up, and a blank line is
+     displayed in the current standard color on the bottom line of the
+     specified region.  If the region scrolls down, the operation is
+     reversed.  If the screen region is scrolled more than one line, this
+     process is repeated.
+
+     SCROLL() is used primarily to display status information into a defined
+     screen region.  Each time a new message is displayed, the screen region
+     scrolls up one line and a new line displays at the bottom.
+$LANG_RU$
+     SCROLL() - это функция работы с экраном, которая перемещает
+     содержимое заданной области экрана вверх или вниз на заданное
+     количество строк. Если содержимое области экрана перемещается вверх,
+     строки, уходящие за верхнюю границу области, стираются, все другие
+     строки передвигаются вверх, а освобождающиеся снизу строки
+     заполняются пробелами в стандартном цвете.  Если содержимое области
+     экрана перемещается вниз, нижние строки, уходящие за нижнюю границу
+     области стираются, все остальные строки передвигаются вниз, а
+     освобождающиеся сверху строки заполняются пробелами в стандартном
+     цвете.
+
+     SCROLL() чаще всего используют для вывода информации о режиме работы
+     в определенную область экрана. Каждый раз, когда выводится новое
+     сообщение, область экрана перемещается на одну строку, а внизу
+     освобождается строка.
+$EXAMPLES$
+       This user-defined function displays a message string at the
+	bottom of a screen region after scrolling the region up one line:
+
+	FUNCTION ScrollUp( nTop, nLeft, nBottom, nRight, ;
+			     expDisplay )
+	   //
+	   SCROLL(nTop, nLeft, nBottom, nRight, 1)
+	   @ nBottom, nLeft SAY expDisplay
+	   //
+	   RETURN NIL
+$LANG_RU$
+      Следующая функция пользователя выводит сообщение в нижнюю
+       строку области на экране, после прокрутки этой области вверх на
+       одну строку:
+
+       FUNCTION ScrollUp( nTop, nLeft, nBottom, nRight, expDisplay )
+	  //
+	  SCROLL(nTop, nLeft, nBottom, nRight, 1)
+	  @ nBottom, nLeft SAY expDisplay
+	  //
+	  RETURN NIL
+$SEEALSO$
+   DISPBOX()
+$END$

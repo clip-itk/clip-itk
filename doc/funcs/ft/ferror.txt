@@ -1,0 +1,39 @@
+$FUNCNAME$
+   FT_FERROR()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Return the error code for a text file operation
+$SYNTAX$
+
+   FT_FERROR() -> nErrorNo
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   The DOS error code if one occurred.  See a reference on DOS error
+   codes for an explanation of what the code means.
+
+$DESCRIPTION$
+
+   This function returns the DOS error code associated with a file
+   operation on the currently selected text file.
+
+   Errors could stem from any open, create, read or write operation,
+   among others.
+
+$EXAMPLES$
+
+   if ft_fUse( "text.c" ) < 0     // open text file
+      err := ft_fError();
+      QOUT( 'Error opening file "Text.c", error code (' + ;
+		LTRIM( STR( err ) ) + ')' )
+   endif
+
+$SEEALSO$
+
+$END$
+

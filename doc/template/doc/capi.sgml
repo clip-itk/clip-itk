@@ -1,0 +1,1179 @@
+<chapter id="capi"><title>_(Extend System)_</title>
+<para>_(
+Really 90% of the CLIP functional capabilities made up on its extend system
+base.
+)_</para>
+<para>_(
+Extend system is the set of functions to retrieve the calling parameters,
+to retrieve data, to generate errors, some arrays, objects and another types
+execution functions in C/C++ representation.
+)_</para>
+<para>_(
+For example, the simpliest function may be represented in C like that,
+orientally:
+)_</para>
+<programlisting>
+#include "clip.h"
+#include "error.ch" // _(also here must be stdlib, stdio, etc.)_
+
+int
+clip_SUBSTR(ClipMachine * mp)
+// _(The name of jointed function must be begining from "clip_" and then
+// it must be the name of CLIPPER-function on upper register.
+// Such names CLIP-compilier put on the special list of the
+// run-time available functions.
+// mp is the current CLIP-machine state description; it's better to see its
+// structure in clip.h directly.
+// If this function returns 0 there are no error;
+// if it returns not 0 it is error code.)_
+{
+	int l;
+	char *ret;
+	char *str = _clip_parcl(mp, 1, <![CDATA[&]]>l);
+// _(We get first parameter as fix length string.)_
+	int from = _clip_parni(mp, 2);
+	int kol = _clip_parni(mp, 3);
+// _(We get second and third parameter as the automatical converting to int-number)_
+// _(If the pass parameters were incorect types)_
+// _(it will be retrieved NULL as C-values.)_
+	if (str == NULL)
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "SUBSTR");
+// _(Test of retrieved string and error generation in case of
+// the incorrect passing parameter.)_
+	}
+// _(The execution algorithm itself.)_
+// _(It's not necessary to pay your attention to it.)_
+	if (kol &lt;= 0)
+		kol = 0;
+	if (from &lt;= 0)
+	{
+		from = l+from;
+		if (from&lt;0)    	from=0;
+	}
+	else
+		from--;
+	if (_clip_parinfo(mp, 0) &lt; 3)
+		kol = l - from;
+	if ((kol + from) &gt; l)
+		kol = l - from;
+	if (kol &lt; 0)
+		kol = 0;
+	ret = malloc(kol + 1);
+	memcpy(ret, str + from, kol);
+	ret[kol] = 0;
+	_clip_retcn_m(mp, ret, kol);
+// _(The returning of the value to the CLIP-machine as the string
+// (with the allocated memory)
+// with fix length (because of clipper-strings may have the zero bytes!)
+// If it nothing returns by _CLIP_.... , then NIL will returns.)_
+	return 0;
+// _(The message to CLIP-machine is that function terminates correct.)_
+}
+</programlisting>
+<para>_(
+Well, now let's look at such expent functions that you need for
+the new CLIP capabilities using.
+If you easy read and write in C it's better to see in clip.h file.
+)_</para>
+
+
+<section id="capipprf"><title>_(The passed parameters retrieving functions)_</title>
+
+<section id="parinfo"><title>_clip_parinfo()</title>
+<section>
+<programlisting>
+int _clip_parinfo(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine state description.
+)_</para>
+<para>_(
+<emphasis>num</emhpasis> is the position of parameter.
+)_</para>
+</section>
+<section><title>_(Description)_<title>
+<para>_(
+If)_ num==0 <command>_clip_parinfo()</command> _(returns the number of
+parameters, if non zero it returns type of passed parameter with num number.
+)_</para>
+</section>
+</section>
+
+<section id="capiparni"><title>_clip_parni()</title>
+<section>
+<programlisting>
+int _clip_parni(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_<title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine state description
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_parni()</command>
+_(
+ retrieves a numeric value passed as parameter;
+returns converted to int type value of parameter with num number
+)_</para>
+</section>
+</section>
+
+<section id="capiparnl"><title>_clip_parnl()</title>
+<section>
+<programlisting>
+long _clip_parnl(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_parnl()</command>
+_(
+ retrieves a numeric value passed as parameter;
+ returns converted to long type value of parameter with num number
+ )_</para>
+</section>
+</section>
+
+<section id="capiparnd"><title>_clip_parnd()</title>
+<section>
+<programlisting>
+double _clip_parnd(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_parnd()</command>
+_(
+ retrieves a numeric value passed as parameter;
+ returns converted to double type value of parameter with num number
+)_</para>
+</section>
+</section>
+
+<section id="capiparp"><title>_clip_parp()</title>
+<section>
+<programlisting>
+int _clip_parp(ClipMachine * mp, int num, int *len, int *dec)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+<para>_(
+<emphasis>len</emphasis>  is the parameter length
+)_</para>
+<para>_(
+<emphasis>dec</emphasis>  is the parameter precision
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_parp()</command>
+_(
+
+ retrieves a numeric value passed as parameter
+ with <emphasis>len</emphasis> length and <emphasis>dec</emphasis> precision;
+ returns converted to int type value of parameter with num number
+)_</para>
+</section>
+</section>
+
+<section id="capiparc"><title>_clip_parc()</title>
+<section>
+<programlisting>
+char *_clip_parc(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_parc()</command>
+_(
+ retrieves a numeric value passed as parameter;
+ returns converted to character type value of parameter with num number
+)_</para>
+</section>
+</section>
+
+<section id="capiparcl"><title>_clip_parcl()</title>
+<section>
+<programlisting>
+char *_clip_parcl(ClipMachine * mp, int num, int *len)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+<para>_(
+<emphasis>len</emphasis>  is the parameter length
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>*_clip_parcl()</command>
+_(
+ retrieves a numeric value passed as parameter and its length;
+ returns converted to string with length type value of parameter with num number
+ (clipper-strings may has bytes of 0!)
+ )_</para>
+</section>
+</section>
+
+<section id="capiparl"><title>_clip_parl()</title>
+<section>
+<programlisting>
+int _clip_parl(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_parl()</command>
+_(
+ retrieves a numeric value passed as parameter;
+ returns converted to logical (0/1) type
+ value of parameter with num number
+)_</para>
+</section>
+</section>
+
+<section id="capipar"><title>_clip_par()</title>
+<section>
+<programlisting>
+ClipVar *_clip_par(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_par()</command>
+_(
+ retrieves a numeric value passed as parameter;
+ returns converted to clipper-avaible type
+ value of parameter with num number
+)_</para>
+</section>
+</section>
+
+<section id="capipardj"><title>_clip_pardj()</title>
+<section>
+<programlisting>
+long _clip_pardj(ClipMachine * mp, int num)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_pardj()</command>
+_(
+ retrieves a numeric value passed as parameter and
+ returns converted to julian-representation date
+ value of parameter with num number
+)_</para>
+</section>
+</section>
+
+<section id="capipardc"><title>_clip_pardc()</title>
+<section>
+<programlisting>
+long _clip_pardc(ClipMachine * mp, int num, int *yy, int *mm, int *dd, int *ww)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>num</emphasis>  is the position of parameter
+)_</para>
+<para>_(
+<emphasis>yy</emphasis>  is pointing to int contained year value
+)_</para>
+<para>_(
+<emphasis>mm</emphasis>  is pointing to int contained month value
+)_</para>
+<para>_(
+<emphasis>dd</emphasis>  is pointing to int contained day value
+)_</para>
+<para>_(
+<emphasis>ww</emphasis>  is pointing to int contained millenium format
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_pardc()</command>
+_(
+ retrieves a numeric value passed as parameter;
+ returns converted to year,month,day,millenium-representation date
+ value of parameter with num number
+)_</para>
+</section>
+</section>
+</section>
+
+<section id="clipdCmf"><title>_(The data post to CLIP-machine functions)_</title>
+
+<section id="capiretni"><title>_clip_retni()</title>
+<section>
+<programlisting>
+void _clip_retni(ClipMachine * mp, int n)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>n</emphasis>  is a numerical expression of type int
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retni()</command>
+_(
+ post a int type value to a CLIP return value area
+)_</para>
+</section>
+</section>
+
+<section id="capiretnl"><title>_clip_retnl()</title>
+<section>
+<programlisting>
+void _clip_retnl(ClipMachine * mp, long n)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>n</emphasis>  is a numerical expression of type long
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retnl()</command>
+_(
+ post a long type value to a CLIP return value area
+)_</para>
+</section>
+</section>
+
+<section id="capiretnd"><title>_clip_retnd()</title>
+<section>
+<programlisting>
+void _clip_retnd(ClipMachine * mp, double n)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>n</emphasis>  is a numerical expression of type double
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retnd()</command>
+_(
+ post a double type value to a CLIP return value area
+)_</para>
+</section>
+</section>
+<section id="capiretndp"><title>_clip_retndp()</title>
+<section>
+<programlisting>
+void _clip_retndp(ClipMachine * mp, double n, int len, int dec)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>n</emphasis>  is a numerical expression of type double
+)_</para>
+<para>_(
+<emphasis>len</emphasis>  is a string length parameter
+)_</para>
+<para>_(
+<emphasis>dec</emphasis>  is a string precision parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retndp()</command>
+_(
+ post a double type with len length and dec precision value
+ to a CLIP return value area
+)_</para>
+</section>
+</section>
+
+<section id="capiretc"><title>_clip_retc()</title>
+<section>
+<programlisting>
+void _clip_retc(ClipMachine * mp, char *str)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>str</emphasis>  is a string of type char
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retc()</command>
+_(
+ post a  string to a CLIP return value area;
+ data from str must be copied before;
+ Str must be released without CLIP-machine taking part!
+)_</para>
+</section>
+</section>
+
+<section id="capiretcn"><title>_clip_retcn()</title>
+<section>
+<programlisting>
+void _clip_retcn(ClipMachine * mp, char *str, int len)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>str</emphasis>  is a string of type char
+)_</para>
+<para>_(
+<emphasis>len</emphasis>  is a string length
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retc()</command>
+_(
+ post a  string with len length; data from str must be copied before;
+ Str must be released without CLIP-machine taking part!
+)_</para>
+</section>
+</section>
+
+<section id="capiretcnm"><title>_clip_retcn_m()</title>
+<section>
+<programlisting>
+void _clip_retcn_m(ClipMachine * mp, char *str, int len)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>str</emphasis>  is  pointing  to string
+)_</para>
+<para>_(
+<emphasis>len</emphasis>  is a string length
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retc()</command>
+_(
+ post a  string with len length without the coping of data from str;
+ Str will be released by CLIP-machine when this string be not used more
+ (i.e when number of references on this string will become equal to zero)
+)_</para>
+</section>
+</section>
+
+<section id="capiretl"><title>_clip_retl()</title>
+<section>
+<programlisting>
+void _clip_retl(ClipMachine * mp, int l)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>l</emphasis>  is a numerical expression of type logic
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retnl()</command>
+_(
+ post a logic type number to a CLIP return value area
+)_</para>
+</section>
+</section>
+
+<section id="capiretdj"><title>_clip_retdj()</title>
+<section>
+<programlisting>
+void _clip_retdj(ClipMachine * mp, long julian)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>l</emphasis>  is a julian parameter of type long
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retdj()</command>
+_(
+ post a julian format date to a CLIP return value area
+)_</para>
+</section>
+</section>
+<section id="capiretdc"><title>_clip_retdc()</title>
+<section>
+<programlisting>
+void _clip_retdc(ClipMachine * mp, int yy, int mm, int dd)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>yy</emphasis>  is a parameter contained year
+)_</para>
+<para>_(
+<emphasis>len</emphasis>  is a parameter contained month
+)_</para>
+<para>_(
+<emphasis>dec</emphasis>  is a parameter contained day
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retndp()</command>
+_(
+ post a year,month,day format date to a CLIP return value area
+ )_</para>
+</section>
+</section>
+
+<section id="capiretnr"><title>_clip_retnr()</title>
+<section>
+<programlisting>
+void _clip_retnr(ClipMachine * mp, struct rational *r, int len, int dec)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>r</emphasis>  is a numerical expression of type double
+)_</para>
+<para>_(
+<emphasis>len</emphasis>  is a string length parameter
+)_</para>
+<para>_(
+<emphasis>dec</emphasis>  is a string precision parameter
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_retnr()</command>
+_(
+ post a rational type with len length and dec precision number
+ to a CLIP return value area
+)_</para>
+</section>
+</section>
+</section>
+
+<section id="capihcef"><title>_(The hash-codes evaluation functions)_</title>
+<para>_(
+Hash-codes are used everwhere in CLIP-machine, hence there is necessity
+to evaluate them often.
+)_</para>
+
+<section id="capihashstr"><title>_clip_hashstr()</title>
+<section>
+<programlisting>
+long _clip_hashstr(const char *x)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>x</emphasis> is a pointer to the string to be hashed
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_hashstr()</command>
+_(
+hash a string without register accounting.
+)_</para>
+</section>
+</section>
+
+<section id="capicasehashstr"><title>_clip_casehashstr()</title>
+<section>
+<programlisting>
+long _clip_casehashstr(const char *x)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>x</emphasis> is a pointer to the string to be hashed
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_casehashstr()</command>
+_(
+hash a string with register accounting.
+)_</para>
+</section>
+</section>
+
+<section id="capihashbytes"><title>_clip_hashbytes()</title>
+<section>
+<programlisting>
+long _clip_hashbytes(long seed, const char *bytes, int len)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>seed</emphasis> is the down boundary hash beginned from
+)_</para>
+<para>_(
+<emphasis>bytes</emphasis> is a pointer to the len object
+)_</para>
+<para>_(
+<emphasis>len</emphasis> is the object to be hashed
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_hashbytes()</command>
+_(
+hash object len without register accounting.
+)_</para>
+</section>
+</section>
+
+<section id="capicasehashbytes"><title>_clip_casehashbytes()</title>
+<section>
+<programlisting>
+long _clip_casehashbytes(long seed, const char *bytes, int len)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>seed</emphasis> is the down boundary hash beginned from
+)_</para>
+<para>_(
+<emphasis>bytes</emphasis> is a pointer to the obect len
+)_</para>
+<para>_(
+<emphasis>len</emphasis> is the object to be hashed
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_casehashbytes()</command>
+_(
+hash  object len with register accounting.
+)_</para>
+</section>
+</section>
+
+<section id="capihash"><title>_clip_hash()</title>
+<section>
+<programlisting>
+long _clip_hash(ClipMachine * mp, ClipVar * vp)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>vp</emphasis> is a pointer to the object of ClipVar type to be hashed
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_hash()</command>
+_(
+hash the object of ClipVar type with register accounting.
+)_</para>
+</section>
+</section>
+
+<section id="capicasehash"><title>_clip_casehash()</title>
+<section>
+<programlisting>
+long _clip_casehash(ClipMachine * mp, ClipVar * vp)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>vp</emphasis> is pointing to the object of ClipVar type to be hashed
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_casehash()</command>
+_(
+hash  the object of ClipVar type to be hashed without register accounting.
+)_</para>
+</section>
+</section>
+</section>
+
+<section id="capirtegf"><title>_(The run-time errors generation functions)_</title>
+<para>_(
+For the more insighting to the "error" entity read the error class description.
+)_</para>
+<section id="capitraperr"><title>_clip_trap_err()</title>
+<section>
+<programlisting>
+int _clip_trap_err(ClipMachine * mp, int genCode, int canDefault, int canRetry,
+		   const char *subSystem, int subCode,
+		   const char *operation)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>genCode</emphasis> is an error code number
+)_</para>
+<para>_(
+<emphasis>canDefault</emphasis>  indicates if default recovery is available
+)_</para>
+<para>_(
+<emphasis>canRetry</emphasis>  indicates if a retry is possible after an error
+)_</para>
+<para>_(
+<emphasis>subSystem</emphasis> is character describtion of the subsystem generation the error
+)_</para>
+<para>_(
+<emphasis>subCode</emphasis> is subsystem-cpecific error code number
+)_</para>
+<para>_(
+<emphasis>operation</emphasis> is character describtion of the failed operation
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_trap_err()</command>
+_(
+provides with information about runtime errors
+)_</para>
+</section>
+</section>
+
+<para>_(
+In more simple cases one can use:
+)_<para>
+<programlisting>
+void _clip_trap(ClipMachine * mp, const char *filename, int line)
+void _clip_trap_str(ClipMachine * mp, const char *filename, int line, const char *str)
+void _clip_trap_printf(ClipMachine * mp, const char *filename, int line, const char *fmt,...)
+void _clip_trap_printv(ClipMachine * mp, const char *filename, int line, const char *fmt, void *vect)
+void _clip_trap_var(ClipMachine * mp, const char *filename, int line, ClipVar * var)
+void _clip_trap_pop(ClipMachine * mp)
+void _clip_trap_invargv(ClipMachine * mp, const char *filename, int line)
+</programlisting>
+</section>
+
+<section id="capisdof"><title>_(The static data operating functions)_</title>
+<para>_(
+There is a set of functions for the necessity to store any static data
+(for example set(_MY_SET_1,MY_DATA)) in CLIP-machine.
+Attention! It's prohibited in C to declare explicitly constractoins like that
+"static my_type var_name". Such data may lead to conflict between different
+CLIP-processes!
+)_</para>
+
+<section id="capistore"><title>_clip_store()</title>
+<section>
+<programlisting>
+void _clip_store_item(ClipMachine * mp, long hash, void *item)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>hash</emphasis>  is the identificator of item data to be stored
+)_</para>
+<para>_(
+<emphasis>item</emphasis>  is the pointer  to item data to be stored
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_store()</command>
+_(
+ store )_ <emphasis>item</emphasis> _( data with )_<emphasis>hash</emphasis>_( identificator,
+ the best way to generate it is to use)_<emphasis>*_hash_*</emphasis>_( functions.
+ A memory for)_ <emphasis>item</emphasis> _(must be allocated explicitly.
+)_</para>
+</section>
+</section>
+
+<section id="capistoreitemdestroy"><title>_clip_store_item_destroy()</title>
+<section>
+<programlisting>
+void _clip_store_item_destroy(ClipMachine * mp, long hash, void *item, void (*destroy) (void *))
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>hash</emphasis>  is the identificator of item data
+)_</para>
+<para>_(
+<emphasis>item</emphasis>  is the pointer to  data
+)_</para>
+<para>_(
+<emphasis>destroy</emphasis>  is the destroy function
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_store_item_destroy()</command>
+_(
+ set a function of the memory release for the static data with a )_
+ <emphasis>hash</emphasis>_(identificator
+)_</para>
+</section>
+</section>
+
+<section id="capifreeitem"><title>_clip_free_item()</title>
+<section>
+<programlisting>
+void _clip_free_item(ClipMachine * mp, long hash)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>hash</emphasis>  is the identificator  of item data
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_free_item()</command>
+_(
+ release the memory for )_<emphasis>hash</emphasis>_(identificator
+)_</para>
+</section>
+</section>
+
+<section id="capiremoveitem"><title>_clip_remove_item()</title>
+<section>
+<programlisting>
+void _clip_remove_item(ClipMachine * mp, long hash)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>hash</emphasis>  is the identificator of item data
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_remove_item()</command>
+_(
+ destroy all information about )_<emphasis>hash</emphasis>_(identificator
+)_</para>
+</section>
+</section>
+
+<section id="capifetchitem"><title>_clip_fetch_item()</title>
+<section>
+<programlisting>
+void _clip_fetch_item(ClipMachine * mp, long hash)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>mp</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>hash</emphasis>  is the identificator of item data
+)_</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_fetch_item()</command>
+_(
+ return pointer to  )_<emphasis>hash</emphasis>_(identificator memory
+)_</para>
+</section>
+</section>
+</section>
+
+<section id="capicof"><title>_(The containers operating functions)_</title>
+<para>_(
+Container is a one more way to store the static data.
+For example it's difficalt to return any C-pointer on structure to CLIP-machine:
+)_<para>
+<programlisting>
+FILE * fh
+fh=open(filename,...)
+</programlisting>
+<para>_(
+Where the pointer "FILE * fh" mast be put to?
+Well known that return value in clipper-function <command>fopen()</command> is
+simple number.
+And for instance what about structure of open connection whith ORACLE,MYSQL etc?
+It's desired to operate with a number inside of CLIP-application.
+To store that structures a container is intend for.
+)_</para>
+
+<section id="capifetchcitem"><title>_clip_fetch_c_item()</title>
+<section>
+<programlisting>
+void *_clip_fetch_c_item( ClipMachine *cm, int key, int type )
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>cm</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>key</emphasis> is file, connection etc. number
+)_</para>
+<para>
+<emphasis>type</emphasis> _(is a stored information type
+(it's for impossibility to set file number instead of connection one)
+)_<para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_fetch_c_item()</command>
+_(
+ fetch item object with key number
+)_</para>
+</section>
+</section>
+
+<section id="capidestroycitem"><title>_clip_destroy_c_item()</title>
+<section>
+<programlisting>
+int _clip_destroy_c_item( ClipMachine *cm, int key, int type )
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>cm</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>key</emphasis> is file, connection etc. number
+)_</para>
+<para>
+<emphasis>type</emphasis> _(is a stored information type
+(it's for impossibility to set file number instead of connection one)
+)_<para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_destroy_c_item()</command>
+_(
+ destroy item object with key number
+ )_</para>
+ </section>
+ </section>
+<section id="capistorecitem"><title>_clip_store_c_item()</title>
+<section>
+<programlisting>
+int _clip_store_c_item( ClipMachine *cm, void *item, int type, void (*destroy)(void*) )
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>_(
+<emphasis>cm</emphasis> is pointing to the current CLIP-machine task context
+)_</para>
+<para>_(
+<emphasis>item</emphasis> is file, connection etc. number
+)_</para>
+<para>
+<emphasis>type</emphasis> _(is a stored information type
+(it's for impossibility to set file number instead of connection one)
+)_</para>
+<para>
+<emphasis>destroy</emphasis> _(is a stored structure destroy/close function)_
+</para>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_store_c_item()</command>
+_(
+ store item object with key number
+)_</para>
+</section>
+</section>
+</section>
+
+<section id="capicfpcc"><title>_(The CLIP function/procedure calling from C)_</title>
+
+<section id="capiclip"><title>_clip_clip()</title>
+<section>
+<programlisting>
+int _clip_clip(ClipMachine * mp, const char *funcname,int argc,ClipVar * stackp, ClipVar * retp)
+</programlisting>
+</section>
+<section><title>_(Parameters)_</title>
+<para>
+<emphasis>mp</emphasis> _(is pointing to a current CLIP-machine task context)_
+</para>
+<para>
+<emphasis>funcname</emphasis> _(is a function name in CLIP)_
+</para>
+<para>
+<emphasis>argc</emphasis> _(is a number of arguments
+)_</para>
+<emphasis>stackp</emphasis> _(is pointing to array of argc ClipVar type elements
+)_</para>
+<para>
+<emphasis>retp</emphasis> _(is a pointer to stack cell
+in wich returned value will be located.
+One can use macros RETPTR to get that pointer.
+)_</para>
+<para>_(
+For example :
+)_</para>
+<programlisting>
+int clip_MY_C_FUNC(ClipMachine* mp)
+{
+    ClipVar pars[2];
+    ClipVar* retp = RETPTR(mp); // _(RETPTR is macros that returns pointer to)_
+				// _(stack cell returned value will be in)_
+
+    memset(pars,0,sizeof(ClipVar)*2); // _(to be on a safe side)_
+
+    pars[0].t.type = CHARACTER_t; // _(first argument is a string ("Baby"))_
+    pars[0].s.str.buf = "Baby"; // _(element s of union ClipVar is for strings)_
+    pars[0].s.str.len = strlen("Baby");
+
+    pars[1].t.type = NUMERIC_t; // _(second argument is number)_ (123.45)
+    pars[1].n.d = 123.45; // _(element n of union ClipVar is for numbers)_
+
+    _clip_clip(mp,"MY_CLIP_FUNC",2,pars,retp);
+    return 0;
+}
+</programlisting>
+</section>
+<section><title>_(Description)_</title>
+<para><command>_clip_clip()</command>
+<para>_(
+allow to call a written in CLIP function/procedure from C
+)_</para>
+</section>
+</section>
+</section>
+
+<section id="capiCdlmc"><title>_(The CLIP dynamics loading modules creating)_</title>
+<para>_(
+There is function <command>load()</command> in CLIP, that load dynamics modules (*.so)
+or byte-code (*.po) and libraries of byte-codes (*.pa).
+)_</para>
+<para>_(
+It's easy to make byte-code and so-modules from prg-files by commands:
+)_</para>
+<para><command>clip -p module.prg  -&gt; module.po</command></para>
+<para><command>clip -s module.prg  -&gt; module.c -&gt; module.so</command></para>
+<para>_(
+And it's possible to write the same loading module in C in such way:
+)_</para>
+<para>_(
+To create module.prg and then to describe all necessary empty functions in it:
+)_</para>
+<programlisting>
+function my_func1()
+return
+function my_func2()
+return
+</programlisting>
+<para>_(
+Then this module is compilied
+)_</para>
+<command>clip -s  module.prg</command>
+<para>_(
+As resalt we have C-text in file <emphasis>module.c.</emphasis>
+This text has storeges for described functions  my_func1,my_func2,....
+Now we need simply to change function body by described above rules for C-API
+and so-module in C is done. Then it must be compilied by C-compilier
+whith key -shared or with analogous one (it depends on compilier).
+)_</para>
+</section>
+
+<section id="capiof"> <title>_(Other features)_</title>
+<para>_(
+In addition to described above there are much more functions in C-API
+to operate whith arrays, objects, input-output process,
+code blocks calling and others.
+)_</para>
+<para>_(
+But that informations will be given them only who has appropriate
+qualification, because of incorrect and inqualificating using of these
+capabilities may lead to misunderstanding "falling"  of applications,
+memory losing etc.
+)_</para>
+<para>_(
+Who wants to add something serious to CLIP please contact to us)_
+<email>uri@itk.ru</email>
+_(and we will give you information and examples; help in learning
+of inner structure of CLIP-machine garantee.
+)_</para>
+</section>
+
+</chapter>

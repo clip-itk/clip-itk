@@ -1,0 +1,72 @@
+$FUNCNAME$
+  FIELDBLOCK()
+$CATEGORY$
+  DATABASE,CODEBLOCK
+$SUMMARY$
+   Return a set-get code block for a given field
+$LANG_RU$
+   Создает блок кода для данного поля базы данных.
+$SYNTAX$
+     FIELDBLOCK(<cFieldName>) --> bFieldBlock
+$LANG_RU$
+     FIELDBLOCK(<поле базы>)  --> блок кода
+$ARGUMENTS$
+     <cFieldName> is the name of the field to which the set-get block
+     will refer.
+$LANG_RU$
+     <поле базы> - имя поля базы данных.
+$RETURNS$
+     FIELDBLOCK() returns a code block that, when evaluated, sets (assigns)
+     or gets (retrieves) the value of the given field.  If <cFieldName> does
+     not exist in the specified work area, FIELDBLOCK() returns an empty
+     block.
+$LANG_RU$
+     FIELDBLOCK() возвращает блок кода, предназначенный для либо
+     присваивания нового значения, либо считывания текущего значение
+     данного поля.
+$DESCRIPTION$
+     FIELDBLOCK() is a database function that builds a code block.  When
+     executed with an argument, the code block created by this function
+     assigns the value of the argument to <cFieldName>.  When executed
+     without an argument, the code block retrieves the value of <cFieldName>.
+
+     Note that the specified field variable may not exist when the code block
+     is created, but must exist before the code block is executed.
+$LANG_RU$
+     FIELDBLOCK() - функция баз данных, создающая блок кода, при
+     выполнении которого функцией EVAL() с аргументом, значение аргумента
+     присваивается <поле базы>. При выполнении без аргумента кодовый блок
+     возвращает текущее значение <поле базы>.
+
+     Существование <поле базы> не требуется при создании блока кода, но
+     необходима его доступность в текущей либо указанной алиасом рабочей
+     области при вызове функции EVAL() для выполнения блока кода.
+$EXAMPLES$
+       This example compares FIELDBLOCK() to a code block created
+	using the macro operator.  Note that using FIELDBLOCK() avoids the
+	speed and size overhead of the macro operator:
+
+	// Set-Get block defined using macro operator
+	bSetGet := &amp;( "{ |setVal| IF( setVal == NIL,;
+			FName, FName := setVal ) }" )
+	// Set-Get block defined using FIELDBLOCK()
+
+	// bSetGet created here is the functional
+	// equivalent of bSetGet above
+	bSetGet := FIELDBLOCK("FName")
+$LANG_RU$
+      Следующий пример сравнивает функцию FIELDBLOCK() и создание блока
+       кода с помощью оператора макроподстановки. Заметим, что
+       использование FIELDBLOCK() позволяет вам избежать потерь в скорости
+       и объеме от макроподстановки:
+
+       // Блок кода определяется с использованием оператора макроподстановки
+       bSetGet := &amp;("{ |setVal| IF(setVal == NIL, FName, FName := setVal)}")
+
+       // Блок кода определяется с помощью FIELDBLOCK()
+       // Созданный здесь блок кода функционально эквивалентен блоку кода
+       // bSetGet, созданному выше
+       bSetGet := FIELDBLOCK("FName")
+$SEEALSO$
+  FIELDWBLOCK(),MEMVARBLOCK()
+$END$

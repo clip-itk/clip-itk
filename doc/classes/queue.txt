@@ -1,0 +1,228 @@
+$CLASSNAME$
+	QUEUE
+$SUMMARY$
+	Class  are destined to control queues make from arbitrary data.
+$LANG_RU$
+	Класс предназначен для управления разнотипными данными, организованными в очередь.
+$ABOUT$
+	Class  are destined to control queues make from arbitrary data.
+$LANG_RU$
+	Класс предназначен для управления разнотипными данными, организованными в очередь.
+$SYNTAX$
+	QueueNew() --> QUEUE object
+$ATTRIBUTES$
+	<ClassName> 	QUEUE
+	<Data>		Array, array of arbitrary data.
+$LANG_RU$
+	<ClassName> 	QUEUE
+	<Data>		Array, массив разнотипных данных.
+
+$METHODNAME$
+	QueueNew()
+$SUMMARY$
+	QUEUE object constructor.
+$LANG_RU$
+	Конструктор объекта QUEUE.
+$SYNTAX$
+	QueueNew() --> QUEUE object
+$ARGUMENTS$
+
+$RETURNS$
+	Method returns new QUEUE object.
+$LANG_RU$
+	Метод возвращает новый объект QUEUE.
+$DESCRIPTION$
+	QueueNew() is constructs and returns new QUEUE object.
+	That class can be use to manipulating( put, get, read) queues
+	made from arbitrary types data.
+$LANG_RU$
+	QueueNew() создает и возвращает новый объект класса QUEUE.
+	Этот объект может использоваться для манипуляций ( положить, достать,
+	прочитать) очередью, организованной из разнотипных данных.
+$ENDMETHOD$
+
+$METHODNAME$
+	Put()
+$SUMMARY$
+	Put data to queue.
+$LANG_RU$
+	Положить данные в очередь.
+$SYNTAX$
+	Put(<vData>) --> <nItem>
+$ARGUMENTS$
+	<vData>  - data to putting
+$LANG_RU$
+	<vData>	 - данные, которые должны быть положены в очередь.
+$RETURNS$
+	Returns the number newly element of <::Data>
+$LANG_RU$
+	Возвращает порядковый номер добавленного элемента.
+$DESCRIPTION$
+	Put() is inserts new element into queue immediately after
+	to the last element and returns it number.
+$LANG_RU$
+	Put() вставляет в конец очереди новый элемент <vData> и возвращвет
+	его порядковый номер в очереди.
+$ENDMETHOD$
+
+$METHODNAME$
+	Get()
+$SUMMARY$
+	Get data from queue.
+$LANG_RU$
+	Извлечь данные из очереди.
+$SYNTAX$
+	Get() --> <vData>
+$ARGUMENTS$
+$RETURNS$
+	Returns the first element into queue.
+$LANG_RU$
+	Возвращает первый элемент в очереди.
+$DESCRIPTION$
+	Get() is returns first queues element and removes it from queue.
+
+	If queue is empty Get() returns NIL.
+$LANG_RU$
+	Get() возвращает первый на очереди элемент и удаляет его из очереди.
+
+	Если очердь пуста, Get() возвращает NIL.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Head()
+$SUMMARY$
+	Get first data from queue.
+$LANG_RU$
+	Извлечь первый элемент из очереди.
+$SYNTAX$
+	Head() --> <vData>
+$ARGUMENTS$
+$RETURNS$
+	Returns the first element into queue.
+$LANG_RU$
+	Возвращает первый элемент в очереди.
+$DESCRIPTION$
+	Head() is returns first queues element but not removes it from queue.
+
+	If queue is empty Head() returns NIL.
+$LANG_RU$
+	Head() возвращает первый на очереди элемент не удаляя его из очереди.
+
+	Если очердь пуста, Head() возвращает NIL.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Tail()
+$SUMMARY$
+	Get last data from queue.
+$LANG_RU$
+	Извлечь последний элемент из очереди.
+$SYNTAX$
+	Tail() --> <vData>
+$ARGUMENTS$
+$RETURNS$
+	Returns the last element into queue.
+$LANG_RU$
+	Возвращает последний элемент в очереди.
+$DESCRIPTION$
+	Tail() is returns last queues element but not removes it from queue.
+
+	If queue is empty Tail() returns NIL.
+$LANG_RU$
+	Tail() возвращает последний на очереди элемент не удаляя его из очереди.
+
+	Если очердь пуста, Tail() возвращает NIL.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Len()
+$SUMMARY$
+	Get queue length.
+$LANG_RU$
+	Вернуть длину очереди.
+$SYNTAX$
+	Len() --> <nLen>
+$ARGUMENTS$
+$RETURNS$
+	Returns the queue length.
+$LANG_RU$
+	Возвращает длину очереди.
+$DESCRIPTION$
+	Len() is returns queue length - the count elements into queue.
+
+	If queue is empty Len() returns 0.
+$LANG_RU$
+	Len() возвращает длину очереди - количество элементов в ней.
+
+	Если очердь пуста, Len() возвращает 0.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Free()
+$SUMMARY$
+	Free queue.
+$LANG_RU$
+	Очистить очередь.
+$SYNTAX$
+	Free() --> TRUE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	Free() is removes all items from queue and returns TRUE.
+$LANG_RU$
+	Free() удаляет из очереди все элементы и возвращает TRUE.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Empty()
+$SUMMARY$
+	Check queue.
+$LANG_RU$
+	Проверить очередь.
+$SYNTAX$
+	Empty() --> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if queue is empty and FALSE if other.
+$LANG_RU$
+	Возвращает TRUE если очередь пуста и FALSE в противном случае.
+$DESCRIPTION$
+	Empty() returns TRUE if queue is empty and FALSE if other.
+$LANG_RU$
+	Empty() возвращает TRUE если очередь пуста и FALSE в противном случае.
+$ENDMETHOD$
+
+$EXAMPLES$
+
+que := QueueNew()	// --> new Queue object
+que:Put( Time() )	// --> 1
+que:Put( Date() )	// --> 2
+
+? que:Len()		// --> 2
+
+? que:Tail()		// --> 17-03-2003
+? que:Len()		// --> 2
+
+que:Get()		// --> "12:14:56:01"
+? que:Len()		// --> 1
+
+que:Free()
+? que:Len()		// --> 0
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+

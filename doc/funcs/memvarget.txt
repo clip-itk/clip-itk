@@ -1,0 +1,42 @@
+$FUNCNAME$
+	MEMVARGET()
+$CATEGORY$
+	INFO
+$SUMMARY$
+	Returns MEMVAR value.
+$LANG_RU$
+	Возвращает значение переменной MEMVAR.
+$SYNTAX$
+     MEMVARGET(<sVarName>) 	--> <vVarValue>
+$ARGUMENTS$
+     <sVarName>	String, is the variable name.
+$LANG_RU$
+     <sVarName>	String, имя переменной.
+$RETURNS$
+     Returns of MEMVAR value with name <sVarName>.
+$LANG_RU$
+     Возвращает значение переменной MEMVAR с именем <sVarName>.
+$DESCRIPTION$
+
+	MEMVARGET() returns MEMVAR value with name <sVarName>.
+$LANG_RU$
+
+	MEMVARGET() возвращает значение переменной MEMVAR с именем <sVarName>.
+$EXAMPLES$
+
+MEMVARSET(Mem, "asdf")
+
+? MEMVARGET(Mem) 	// --> asdf
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	MEMVARSET()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

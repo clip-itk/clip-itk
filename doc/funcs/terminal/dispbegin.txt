@@ -1,0 +1,70 @@
+$FUNCNAME$
+  DISPBEGIN()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Begin buffering screen output
+$LANG_RU$
+   Начинает вывод из буфера на экран.
+$SYNTAX$
+     DISPBEGIN() --> NIL
+$LANG_RU$
+     DISPBEGIN() --> NIL
+$RETURNS$
+     DISPBEGIN() always returns NIL.
+$LANG_RU$
+     DISPBEGIN() всегда возвращает NIL.
+$DESCRIPTION$
+     DISPBEGIN() is a screen function that informs the xClipper display
+     output system that the application is about to perform a series of
+     display operations.
+
+     Use DISPBEGIN() with DISPEND() to allow the display output system to
+     buffer display updates.  Display output which occurs after DISPBEGIN()
+     but before DISPEND() is allowed to accumulate in internal buffers.  When
+     DISPEND() executes, any pending updates appear on the physical display.
+     This is useful in applications where complex screen displays are slow
+     and the appearance of performance is desired.
+
+     DISPBEGIN() and DISPEND() calls are optional.  They are not required for
+     normal output.
+$LANG_RU$
+     DISPBEGIN() - экранная функция, сообщающая системе вывода xClipper,
+     что прикладная программа собирается выполнить ряд действий на экране.
+
+     DISPBEGIN(), используемая в сочетании с DISPEND(), позволяет системе
+     вывода на экран буферизировать экранные изменения данных. Вывод на
+     экран, который осуществляется после DISPBEGIN(), но перед DISPEND(),
+     может накапливаться во внутренних буферах. При исполнении функции
+     DISPEND() любые отложенные изменения выполняются на экране.
+     Это удобно в программах, где сложные экранные изображения медленны
+     и нежелательно изображение хода действий. Вызов функций DISPBEGIN()
+     и DISPEND() необязателен. В них нет необходимости при нормальном
+     выводе.
+$EXAMPLES$
+       This example buffers screen output, updates the screen, and
+	then displays the buffered screen output:
+
+	DISPBEGIN()            // Start screen buffering
+	//
+	SETPOS(10, 10)
+	DISPOUT("A display update")
+	SETPOS(11, 10)
+	DISPOUT("Another display update")
+	//
+	DISPEND()               // Display buffered screen data
+$LANG_RU$
+      В этом примере буферизируется экранный вывод, модифицирующий
+       изображение, а затем выводятся буферизированные данные:
+
+       DISPBEGIN()            // Начало экранной буферизации
+       //
+       SETPOS(10,10)
+       DISPOUT("Модификация экрана")
+       SETPOS(11,10)
+       DISPOUT("Еще одна модификация экрана")
+       //
+       DISPEND()             // Вывод буферизированной экранной информации
+$SEEALSO$
+  DISPEND(),DISPCOUNT()
+$END$

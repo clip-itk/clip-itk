@@ -1,0 +1,74 @@
+$FUNCNAME$
+  DBCREATEINDEX()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Create an index file
+$LANG_RU$
+   Создает индексный файл
+$SYNTAX$
+     DBCREATEINDEX(<cIndexName>, <cKeyExpr>,
+	[<bKeyExpr>], [<lUnique>]) --> NIL
+$LANG_RU$
+     DBCREATEINDEX( <имя индексного файла>,<ключевое выражение>
+	     ,[<блок кода>],[<признак индексации>] ) --> NIL
+$ARGUMENTS$
+     <cIndexName> is a character value that specifies the file name of
+     the index file to be created.
+
+     <cKeyExpr> is a character value that expresses the index key
+     expression in textual form.
+
+     <bKeyExpr> is a code block that expresses the index key expression
+     in executable form.
+
+     <lUnique> is an optional logical value that specifies whether a
+     unique index is to be created.  If <lUnique> is omitted, the current
+     global _SET_UNIQUE setting is used.
+$LANG_RU$
+     <имя индексного файла> - символьная величина, которая определяет имя
+     создаваемого индексного файла.
+
+     <ключевое выражение> - символьная величина, задающая индексное
+     ключевое выражение в текстовой форме.
+
+     <блок кода> - необязательный блок кода, который задает индексное
+     ключевое выражение в исполняемой форме.
+
+     <признак индексации> - необязательное логическое выражение, которое
+     определяет, будет ли иметь создаваемый индексный файл атрибут
+     уникальности. Если <признак индексации> опущен, то используется
+     режим, установленный функцией SET с параметром _SET_UNIQUE.
+$RETURNS$
+     DBCREATEINDEX() always returns NIL.
+$LANG_RU$
+     DBCREATEINDEX() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCREATEINDEX() creates an index for the database (.dbf) file associated
+     with the current work area.  If the work area has active indexes, they
+     are closed.  After the new index is created, it becomes the controlling
+     index for the work area and is positioned to the first logical record.
+
+     DBCREATEINDEX() performs the same function as the standard INDEX
+     command.  For more information, refer to the INDEX command.
+$LANG_RU$
+     DBCREATEINDEX() создает индексный файл для базы данных, открытой в
+     текущей рабочей области. Если в рабочей области уже открыты активные
+     индексные файлы, то они закрываются. После того, как новый индексный
+     файл создан, он становится управляющим индексом для рабочей области,
+     и указатель записи перемещается на первую логическую запись.
+
+     DBCREATEINDEX() выполняет те же функции, что и стандартная команда
+     INDEX. Более подробную информацию смотрите в команде INDEX.
+$EXAMPLES$
+       This example creates an index file, Name, indexed on the Name
+	field:
+
+	USE Employees NEW
+	DBCREATEINDEX( "Name", "Name", { || Name })
+$LANG_RU$
+	  USE Employees NEW
+	  DBCREATEINDEX( "Name","Name")
+$SEEALSO$
+  DBCLEARINDEX(),DBREINDEX(),DBSETINDEX(),DBSETORDER(),AFIELDS(),DBSTRUCT()
+$END$

@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/sockets.sgml:0
+msgid "Working with sockets"
+msgstr ""
+
+#: template/./doc/sockets.sgml:2
+msgid "Introduction"
+msgstr ""
+
+#: template/./doc/sockets.sgml:4
+msgid ""
+"\n"
+"CLIP has the set of functions for work with sockets through TCP protocol.\n"
+"In combination with multitasking capability they can be used for\n"
+"writing application servers and clients.\n"
+msgstr ""
+
+#: template/./doc/sockets.sgml:10
+msgid "TCP functions"
+msgstr ""
+
+#: template/./doc/sockets.sgml:14
+msgid "Listen for connections from a client"
+msgstr ""
+
+#: template/./doc/sockets.sgml:17
+msgid "Accept a connection from a client"
+msgstr ""
+
+#: template/./doc/sockets.sgml:20
+msgid "Initiate a connection to the server"
+msgstr ""
+
+#: template/./doc/sockets.sgml:23
+msgid "Close a socket"
+msgstr ""
+
+#: template/./doc/sockets.sgml:26
+msgid "Send a message to the connected peer"
+msgstr ""
+
+#: template/./doc/sockets.sgml:29
+msgid "Receive a message from the connected peer"
+msgstr ""
+
+#: template/./doc/sockets.sgml:34
+msgid "Example"
+msgstr ""
+
+#: template/./doc/sockets.sgml:36
+msgid ""
+"\n"
+"Below are the codes of simple application server and client.\n"
+"Server waits for a connection from client, reads messages from client,\n"
+"and sends them back. Client connects to the server, reads data from "
+"keyboard,\n"
+"sends them to the server, and prints what server returns.\n"
+msgstr ""
+
+#: template/./doc/sockets.sgml:44
+msgid "Server source:"
+msgstr ""
+
+#: template/./doc/sockets.sgml:100
+msgid "Client source:"
+msgstr ""

@@ -1,0 +1,83 @@
+$FUNCNAME$
+  DELETED()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the deleted status of the current record
+$LANG_RU$
+   Возвращает признак, определяющий, подлежит запись удалению или нет.
+$SYNTAX$
+     DELETED() --> lDeleted
+$LANG_RU$
+     DELETED() --> признак удаления
+$RETURNS$
+     DELETED() returns true (.T.) if the current record is marked for
+     deletion; otherwise, it returns false (.F.).  If there is no database
+     file in USE in the current work area, DELETED() returns false (.F.).
+$LANG_RU$
+     DELETED() возвращает значение "истина" (.T.), если текущая запись
+     помечена как удаляемая, в противном случае она возвращает значение
+     "ложь" (.F.). Если в текущей рабочей области нет открытой базы
+     данных, DELETED() возвращает значение "ложь" (.F.).
+$DESCRIPTION$
+     DELETED() is a database function that determines if the current record
+     in the active work area is marked for deletion.  Since each work area
+     with an open database file can have a current record, each work area has
+     its own DELETED() value.
+
+     By default, DELETED() operates on the currently selected work area.  It
+     will operate on an unselected work area if you specify it as part of an
+     aliased expression (see example below).
+
+     In applications, DELETED() is generally used to query the deleted status
+     as a part of record processing conditions, or to display the deleted
+     status as a part of screens and reports.
+$LANG_RU$
+     DELETED() - это функция работы с базами данных, которая определяет,
+     не отмечена ли текущая запись в активной рабочей области как
+     удаляемая.  Так как каждая рабочая область, имеющая открытую базу
+     данных, всегда имеет текущую запись, каждая рабочая область имеет
+     свое значение функции DELETED().
+
+     По умолчанию DELETED() работает с текущей (активной) рабочей
+     областью.  Однако она может работать и с пассивной рабочей областью,
+     если DELETED() поместить в выражение, уточненное алиасом (смотри
+     пример ниже).
+
+     В программах функция DELETED() чаще всего используется для получения
+     признака удаления записи как части условия обработки записей или для
+     выдачи признака удаления как части экранной информации или данных
+     отчетов.
+$EXAMPLES$
+       This example uses DELETED() in the current and in an
+	unselected work area:
+
+	USE Customer NEW
+	USE Sales NEW
+	? DELETED()                     // Result: .F.
+	DELETE
+	? DELETED()                     // Result: .T.
+	? Customer->(DELETED())         // Result: .F.
+
+       This example uses DELETED() to display a record's deleted
+	status in screens and reports:
+
+	@ 1, 65 SAY IF(DELETED(), "Inactive", "Active")
+$LANG_RU$
+      В этом примере показано использование функции DELETED() в активной
+       и пассивной рабочих областях:
+
+       USE Customer NEW
+       USE Sales NEW
+       ? DELETED()                     // Результат: .F.
+       DELETE
+       ? DELETED()                     // Результат: .T.
+       ? Customer->(DELETED())         // Результат: .F.
+
+      Этот пример демонстрирует, как функция DELETED() может быть
+       использована для выдачи признака удаления на экран и в отчет:
+
+       @ 1, 65 SAY IF(DELETED(), "Удалена", "Активна" )
+$SEEALSO$
+  DBDELETE(),DBRECALL()
+$END$

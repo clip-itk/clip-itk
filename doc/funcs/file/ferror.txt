@@ -1,0 +1,63 @@
+$FUNCNAME$
+  FERROR()
+$CATEGORY$
+  FILE/IO,SYSTEM,DATABASE
+$SUMMARY$
+   Test for errors after a binary file operation
+$LANG_RU$
+   Проверяет наличие ошибок обработки двоичных файлов.
+$SYNTAX$
+     FERROR() --> nErrorCode
+$LANG_RU$
+     FERROR() --> код ошибки
+$RETURNS$
+     FERROR() returns the DOS error from the last file operation as an
+     integer numeric value.  If there is no error, FERROR() returns zero.
+$LANG_RU$
+     FERROR() возвращает код ошибки DOS выполнения последней операции над
+     файлом в виде целого числа. Если ошибки не было, FERROR() возвращает
+     0.
+$DESCRIPTION$
+     FERROR() is a low-level file function that indicates a DOS error after a
+     file function is used.  These functions include FCLOSE(), FCREATE(),
+     FERASE(), FOPEN(), FREAD(), FREADSTR(), and FRENAME().  FERROR() retains
+     its value until the next execution of a file function.
+
+     Warning!  This function allows low-level access to DOS files and
+     devices.  It should be used with extreme care and requires a thorough
+     knowledge of the operating system.
+$LANG_RU$
+     FERROR() является функцией обработки файлов низкого уровня. Она
+     используется для уточнения ошибки DOS после применения какой-либо из
+     функций обработки файлов. К этим функциям относятся: FCLOSE(),
+     FCREATE(), FERASE(), FOPEN(), FREAD(), FREADSTR() и FRENAME().
+     Функция FERROR() сохраняет свое значение до следующего выполнения
+     вышеуказанных функций.
+
+     Предупреждение:
+     Данная функция позволяет осуществлять доступ низкого уровня к файлам
+     и устройствам DOS. Она должна использоваться чрезвычайно осторожно и
+     требует хороших знаний операционной системы.
+$EXAMPLES$
+       This example tests FERROR() after the creation of a binary
+	file and displays an error message if the create fails:
+
+	#include "Fileio.ch"
+	//
+	nHandle := FCREATE("Temp.txt", FC_NORMAL)
+	IF FERROR() != 0
+	   ? "Cannot create file, DOS error ", FERROR()
+	ENDIF
+$LANG_RU$
+      В следующем примере показано, как проверить при помощи функции
+       FERROR() успешность создания файла:
+
+       #include "Fileio.ch"
+       //
+       nHandle = FCREATE("Temp.txt", FC_NORMAL)
+       IF FERROR() != 0
+	  ? "Невозможно открыть файл, ошибка DOS: ", FERROR()
+       ENDIF
+$SEEALSO$
+  DOSERROR(),FCLOSE(),FCREATE(),FERASE(),FOPEN(),FWRITE()
+$END$

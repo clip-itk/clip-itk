@@ -1,0 +1,85 @@
+$FUNCNAME$
+  RAT()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Return the position of the last occurrence of a substring
+$LANG_RU$
+   Возвращает позицию последнего вхождения подстроки.
+$SYNTAX$
+     RAT(<cSearch>, <cTarget>) --> nPosition
+$LANG_RU$
+     RAT(<подстрока поиска>, <строка>) --> номер позиции
+$ARGUMENTS$
+     <cSearch> is the character string to be located.
+     <cTarget> is the character string to be searched.
+$LANG_RU$
+     <подстрока поиска> - это символьная строка, месторасположение которой
+     нужно определить.
+     <строка> - это символьная строка, в которой осуществляется поиск.
+$RETURNS$
+     RAT() returns the position of <cSearch> within <cTarget> as an integer
+     numeric value.  If <cSearch> is not found, RAT() returns zero.
+$LANG_RU$
+     RAT() возвращает позицию подстроки, заданной аргументом <подстрока
+     поиска> внутри строки, заданной аргументом <строка> в виде целого
+     числа.  Если подстрока поиска не найдена, то RAT() возвращает ноль.
+$DESCRIPTION$
+     RAT() is a character function that returns the position of the last
+     occurrence of a character substring within another character string.  It
+     does this by searching the target string from the right.  RAT() is like
+     the AT() function, which returns the position of the first occurrence of
+     a substring within another string.  RAT() is also like the $ operator,
+     which determines whether a substring is contained within a string.
+
+     Both the RAT() and AT() functions are used with SUBSTR(), LEFT(), and
+     RIGHT() to extract substrings.
+$LANG_RU$
+     RAT() - это символьная функция, которая возвращает позицию последнего
+     вхождения символьной подстроки в другую символьную строку. Поиск
+     вхождения осуществляется просмотром справа. RAT() похожа на функцию
+     AT(), которая возвращает позицию первого вхождения подстроки в другую
+     строку. RAT() похожа также на оператор $, который определяет,
+     содержится ли подстрока в строке.
+
+     Обе функции - и RAT(), и AT(), используют в сочетании с функциями
+     SUBSTR(), LEFT() и RIGHT() для выделения подстрок.
+$EXAMPLES$
+
+       This example uses RAT() to create a user-defined function,
+	FilePath(), that extracts the path from a file specification.  If the
+	path is unspecified, FilePath() returns a null string (""):
+
+	? FilePath("C:\DBF\Sales.dbf")      // Result: C:\DBF\
+
+	FUNCTION FilePath( cFile )
+	   LOCAL nPos, cFilePath
+	   IF (nPos := RAT("\", cFile)) != 0
+	      cFilePath = SUBSTR(cFile, 1, nPos)
+	   ELSE
+	      cFilePath = ""
+	   ENDIF
+	   RETURN cFilePath
+
+
+$LANG_RU$
+
+      Этот пример иллюстрирует создание функции пользователя FilePath(),
+       которая выделяет маршрут доступа из спецификации файла. Если
+       маршрут не задан, FilePath() возвращает пустую строку (""):
+
+       ? FilePath("C:\DBF\Sales.dbf")     //Результат: C:\DBF\
+
+       FUNCTION FilePath(cFile)
+	  LOCAL nPos, cFilePath
+	  IF (nPos := RAT("\", cFile)) != 0
+	     cFilePath=SUBSTR(cFile, 1, nPos)
+	  ELSE
+	     cFilePath = ""
+	  ENDIF
+	  RETURN cFilePath
+
+
+$SEEALSO$
+  RIGHT(),STRTRAN(),SUBSTR(),AT(),LEFT()
+$END$

@@ -1,0 +1,124 @@
+$FUNCNAME$
+  READVAR()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return the current GET/MENU variable name
+$LANG_RU$
+   Возвращает текущее имя переменной GET/MENU
+$SYNTAX$
+     READVAR() --> cVarName
+$LANG_RU$
+     READVAR() --> имя переменной
+$RETURNS$
+     READVAR() returns the name of the variable associated with the current
+     Get object or the variable being assigned by the current MENU TO command
+     as an uppercase character string.
+$LANG_RU$
+     READVAR() возвращает имя переменной, связанной с текущим GET-объектом
+     или переменной текущей команды MENU TO, в виде символьной строки в
+     верхнем регистре.
+$DESCRIPTION$
+     READVAR() is an environment function that primarily implements context-
+     sensitive help for Get objects and lightbar menus.  READVAR() only works
+     during a READ or MENU TO command.  If used during any other wait states,
+     such as ACCEPT, INPUT, WAIT, ACHOICE(), DBEDIT(), or MEMOEDIT(), it
+     returns a null string ("").  Access it within a SET KEY procedure, or
+     within a user-defined function invoked from a WHEN or VALID clause of a
+     Get object.
+$LANG_RU$
+     READVAR() - функция среды, прежде всего используемая для организации
+     контекстно-зависимых подсказок (help) связанных с GET-объектами и
+     меню c выделенной строкой.
+
+     READVAR() действует только во время реализации команд READ и MENU TO.
+     При использовании каких-либо других команд или функций, переводящих
+     программу в режим ожидания, таких как ACCEPT, INPUT, WAIT, ACHOICE(),
+     DBEDIT() или MEMOEDIT(), она возвращает нулевую строку (""). Она
+     может быть включена либо в процедуру, заданную в команде SET KEY,
+     либо в функцию пользователя, вызываемую из предложений WHEN или VALID
+     GET-объекта.
+$EXAMPLES$
+       This example implements a simple help system for Get objects
+	using a database file to store the help text.  When the user presses
+	F1, the help database file is searched using READVAR() as the key
+	value.  If there is help text available, it is displayed in a window:
+
+	#include "Inkey.ch"
+	//
+	SET KEY K_F1 TO HelpLookup
+	cString = SPACE(10)
+	@ 5, 5 SAY "Enter:" GET cString
+	READ
+	RETURN
+
+	FUNCTION HelpLookup
+	   USE Help INDEX Help NEW
+	   SEEK READVAR()
+	   IF FOUND()
+	      DisplayHelp(Help->Topic)
+	   ELSE
+	      DisplayHelp("No help for " + READVAR())
+	   ENDIF
+	   CLOSE Help
+	   RETURN NIL
+
+	FUNCTION DisplayHelp( cTopic )
+	   LOCAL cScreen := SAVESCREEN(5,5,15,70),;
+		  cColor := SETCOLOR("BG+/B")
+	   //
+	   SET CURSOR OFF
+	   @ 5, 5 CLEAR TO 15, 70
+	   @ 5, 5 TO 15, 70 DOUBLE
+	   @ 5, 30 SAY " Help for " + READVAR() + " "
+	   MEMOEDIT(cTopic, 6, 7, 14, 68, .F.)
+	   //
+	   RESTSCREEN(5, 5, 15, 70, cScreen)
+	   SETCOLOR(cColor)
+	   SET CURSOR ON
+	   //
+	   RETURN NIL
+$LANG_RU$
+      Этот пример обеспечивает простую систему подсказки для
+       GET-объектов, используя файл базы данных для хранения текстов
+       подсказок. После нажатия пользователем клавиши F1 производится
+       поиск нужной записи в файле подсказки при помощи возвращаемого
+       значения функции READVAR() в качестве ключа поиска:
+
+       #include "Inkey.ch"
+       //
+       SET KEY K_F1 TO HelpLookup
+       cString = SPACE(10)
+       @ 5, 5 SAY "Введите:" GET cString
+       READ
+       RETURN
+
+       FUNCTION HelpLookup
+	  USE Help INDEX Help NEW
+	  SEEK READVAR()
+	  IF FOUND()
+	     DisplayHelp(Help->Topic)
+	  ELSE
+	     DisplayHelp("Нет подсказки для" + READVAR())
+	  ENDIF
+	  CLOSE Help
+	  RETURN NIL
+
+       FUNCTION DisplayHelp (cTopic)
+	  LOCAL cScreen := SAVESCREEN(5,5,15,70)
+	  LOCAL cColor := SETCOLOR("BG+/B")
+	  //
+	  SET CURSOR OFF
+	  @ 5, 5 CLEAR TO 15, 70
+	  @ 5, 5 TO 15, 70 DOUBLE
+	  @ 5, 30 SAY "Подсказка для" + READVAR() + " "
+	  MEMOEDIT(cTopic, 6, 7, 14, 68, .F.)
+	  //
+	  RESTSCREEN(5, 5, 15, 70, cScreen)
+	  SETCOLOR(cColor)
+	  SET CURSOR ON
+	  //
+	  RETURN NIL
+$SEEALSO$
+   READMODAL(),READKILL()
+$END$

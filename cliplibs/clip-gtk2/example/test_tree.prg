@@ -39,6 +39,7 @@ local i
 
 	gtk_ListStoreSet(list, "3", 3, 23.2323)
 	gtk_ListStoreSet(list, "9", 3, 11.0)
+	gtk_ListStoreSetValue(list, "1", 3, 999999.0)
 
 	model = gtk_TreeModel(list)
 	view = gtk_TreeViewNewWithModel(,model)
@@ -288,7 +289,6 @@ local i
 	gtk_SignalConnect(twin, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 
 
-
 	gtk_main()
 return .t.
 
@@ -299,11 +299,7 @@ local model, value, iter, path, pathstr, log, num, dat
 	model = GTK_TREEMODEL (data)
 
 	selection := gtk_TreeViewGetSelection(wid)
-        ? "111111111"
-        ?
         if selection != NIL .and. gtk_TreeSelectionGetSelected(selection, NIL, @iter)
-        	? "2222222222"
-                ?
         	path := gtk_TreeModelGetPath(model, iter)
         	pathstr := gtk_TreePathToString(path)
   	 	gtk_TreeModelGetFromPathString (model, pathstr, 1, @value, 2, @log, ;
@@ -343,8 +339,12 @@ local model, value
         isListStore := iif(isListStore == NIL, .t., isListStore)
 
   	if isListStore
+	? "edited list"
+       ?
   		gtk_ListStoreSetValue(model, ev:PATHSTRING, num, ev:NEWTEXT)
         else
+	? "edited tree"
+       ?
   		gtk_TreeStoreSetValue(model, ev:PATHSTRING, num, ev:NEWTEXT)
         endif
 

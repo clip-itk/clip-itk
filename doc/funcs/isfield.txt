@@ -1,0 +1,46 @@
+$FUNCNAME$
+	ISFIELD()
+$CATEGORY$
+	INFO
+$SUMMARY$
+	Checks if a varialbe name is a field name of DB.
+$LANG_RU$
+	Проверка, является ли имя переменной именем поля БД.
+$SYNTAX$
+     ISFIELD(<sVarName>) 	--> TRUE || FALSE
+$ARGUMENTS$
+     <sVarName>	String, is the variable name.
+$LANG_RU$
+     <sVarName>	String, имя переменной.
+$RETURNS$
+     Returns TRUE if a varialbe name is a field name of DB.
+$LANG_RU$
+     Возвращает TRUE, если имя переменной является именем поля БД.
+$DESCRIPTION$
+
+	ISFIELD() returns TRUE if a varialbe name <sVarName> is a field name of DB.
+$LANG_RU$
+
+	ISFIELD() возвращает TRUE, если имя переменной <sVarName> является именем поля БД.
+$EXAMPLES$
+
+USE adressbook.dbf
+...
+
+if ISFIELD("NAME")
+	qout('"NAME" is field of DB')
+else
+	qout("Error")
+endif
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

@@ -1,0 +1,56 @@
+$FUNCNAME$
+   FT_FAPPEND()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Appends a line to the currently selected text file
+$SYNTAX$
+
+   FT_FAPPEND( [ < nLines > ] ) -> NIL
+
+$ARGUMENTS$
+
+   <nLines> is the number of lines that should be appended to the
+   end of the currently selected text file.
+
+   If <nLines> is omitted, one record is appended.
+
+$RETURNS$
+
+   lSuccess.  If FALSE, check ^bft_fError()^n for the error code.
+
+$DESCRIPTION$
+
+   This function appends a line of text to the file in the currently
+   selected text file workarea.  Text lines are delimited with a
+   CRLF pair.  The record pointer is moved to the last appended
+   record.
+
+   Multiple lines may be appended with one call to FT_FAPPEND().
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+   Each line appended with this function will be empty.
+
+   NOTE:  Occasionally a text file may contain a non-CRLF terminated
+   line, at the end of the file ("stragglers").  This function assumes
+   these stragglers to be the last line of the file, and begins
+   appending the new lines after this line.  In other words, if the
+   last line in the text file is not terminated with a CRLF pair prior
+   to calling FT_FAPPEND(), the function will terminate that last line
+   before appending any new lines.
+
+$EXAMPLES$
+
+   // add a blank line of text to a file
+   FT_FUSE( "test.txt" )
+
+   ?FT_FRECNO()           // displays 5
+
+   FT_FAPPEND()
+
+   ?FT_FRECNO()           // displays 6
+
+$SEEALSO$
+   FT_FRECNO(),FT_FDELETE(),FT_FINSERT(),FT_FLASTRE()
+$END$
+

@@ -1,0 +1,94 @@
+$FUNCNAME$
+  FREADSTR()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Read characters from a binary file
+$LANG_RU$
+   Считывает символы из двоичного файла.
+$SYNTAX$
+     FREADSTR(<nHandle>, <nBytes>) --> cString
+$LANG_RU$
+     FREADSTR(<номер обраб. файла>,
+	  <к-во байтов>) --> строка символов
+$ARGUMENTS$
+     <nHandle> is the file handle obtained from FOPEN(), FCREATE(), or
+     predefined by DOS.
+
+     <nBytes> is the number of bytes to read, beginning at the current
+     DOS file pointer position.
+$LANG_RU$
+     <номер обраб. файла> - номер обрабатываемого файла, полученный с
+     помощью функций FOPEN(), FCREATE() или предварительно определенный в
+     DOS.
+
+     <к-во байтов> - это количество байтов, которое должно быть считано,
+     начиная с текущей позиции указателя файла DOS.
+$RETURNS$
+     FREADSTR() returns a character string up to 65,535 (64K) bytes.  A null
+     return value ("") indicates an error or end of file.
+$LANG_RU$
+     FREADSTR() возвращает символьную строку длиной до 65 535 байтов
+     (64К).  Нулевое возвращаемое значение ("") указывает на ошибку
+     или конец файла.
+$DESCRIPTION$
+     FREADSTR() is a low-level file function that reads characters from an
+     open binary file beginning with the current DOS file pointer position.
+     Characters are read up to <nBytes> or until a null character (CHR(0)) is
+     encountered.  All characters are read including control characters
+     except for CHR(0).  The file pointer is then moved forward <nBytes>.  If
+     <nBytes> is greater than the number of bytes from the pointer position
+     to the end of the file, the file pointer is positioned to the last byte
+     in the file.
+
+     Warning!  This function allows low-level access to DOS files and
+     devices.  It should be used with extreme care and requires a thorough
+     knowledge of the operating system.
+$LANG_RU$
+     FREADSTR() - это функция обработки файлов низкого уровня, которая
+     считывает символы из открытого двоичного файла, начиная с текущей
+     позиции указателя файла DOS. Символы считываются до достижения
+     значения аргумента <к-во байтов> или пока не будет встречен нулевой
+     символ (CHR(0)). Затем указатель файла передвигается вперед на
+     величину аргумента <к-во байтов>.  Если <к-во байтов> больше, чем
+     количество байтов от позиции указателя до конца файла, то указатель
+     файла устанавливается на последний байт файла.
+
+     Предупреждение:
+     Данная функция позволяет осуществлять доступ низкого уровня к файлам
+     и устройствам DOS. Она должна использоваться чрезвычайно осторожно и
+     требует хороших знаний операционной системы.
+$EXAMPLES$
+       This example displays the ASCII values of the first 16 bytes
+	of a text file:
+
+	#include "Fileio.ch"
+	//
+	nHandle := FOPEN("New.txt", FC_NORMAL)
+	IF FERROR() != 0
+	   ? "File open error:", FERROR()
+	ELSE
+	   cString := FREADSTR(nHandle, 16)
+	   ? cString
+	   FCLOSE(nHandle)
+	ENDIF
+$LANG_RU$
+      Следующий пример выводит значения кодов ASCII первых 16 байтов
+       текстового файла:
+
+       #include "Fileio.ch"
+       //
+       nHandle = FOPEN("New.txt", FC_NORMAL)
+       IF FERROR() != 0
+	  ? "Ошибка открытия файла:" FERROR()
+	  BREAK
+       ELSE
+	  cString = FREADSTR(nHandle, 16)
+	  ? cString
+	  FCLOSE(nHandle)
+       ENDIF
+
+
+$SEEALSO$
+  BIN2I(),BIN2L(),BIN2W(),FERROR(),FOPEN(),FREAD(),FSEEK()
+$END$

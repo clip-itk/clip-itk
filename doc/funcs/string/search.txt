@@ -1,0 +1,74 @@
+$FUNCNAME$
+	SEARCH()
+$CATEGORY$
+	STRING
+$SUMMARY$
+	Search a substring into string by regular expression.
+$LANG_RU$
+	Поиск подстроки в строке по регулярному выражению.
+$SYNTAX$
+     SEARCH(<sPattern>, <sString>, [@aReg], [<nFrom>], [<nRange>]) --> TRUE || FALSE
+$ARGUMENTS$
+	<sPattern>	String, is the pattern for search.
+	<sString>	String, is the source string.
+	<aReg>		Array, is the registr, where will be stored result of search.
+	<nFrom>		Numeric, is the start search position.
+	<nRange>	Numeric, is the range of search.
+$LANG_RU$
+	<sPattern>	String, шаблон поиска.
+	<sString>	String, исходная строка.
+	<aReg>		Array, регистр, в который записывается результат поиска.
+	<nFrom>		Numeric, стартовая позиция поиска.
+	<nRange>	Numeric, граница поиска.
+$RETURNS$
+     Returns TRUE in successfully searching.
+$LANG_RU$
+     Возвращает TRUE в случае успешного поиска.
+$DESCRIPTION$
+     SEARCH() searches substring into string <sString> by regular expression <sPattern>
+     begin with position <nFrom> and in range <nRange>. The result of search will be
+     wrote to <aReg> if this parameter specified.
+
+     <nRange> it is the shifting value, when will be checked concidence about <nFrom>.
+     If <nRange>==0 - checked only position <nFrom>; if <nRange>==1 - checked
+     positions <nFrom> and <nFrom>+1; if <nRange>==-1 - checked positions <nFrom> and <nFrom>-1.
+
+     Every element <aReg> is the array of 3 elementes: 1-st element - is the starting
+     position founded substring; 2-d element - is the end founded substring; 3-d element -
+     is the substring length.
+$LANG_RU$
+     SEARCH() ищет подстроку в строке <sString> по регулярному выражению <sPattern>
+     начиная с позиции <nFrom> и с учетом значения <nRange>. Результат поиска будет
+     записан в <aReg>, если этот параметр передан в функцию.
+
+     <nRange> это значение сдвигов, при которых проверяется совпадение относительно <nFrom>.
+     Если <nRange>==0 - проверяется только позиция <nFrom>; если <nRange>==1 - проверяются позиции
+     <nFrom> и <nFrom>+1; если <nRange>==-1 - проверяются позиции <nFrom> и <nFrom>-1.
+
+     Каждый элемент <aReg> это массив из 3-х элементов: 1-й элемент - начальная позиция
+     найденной подстроки; 2-й элемент - конечная позиция подстроки; 3-й -
+     длина найденной подстроки.
+$EXAMPLES$
+
+str := "int clip_SEARCH(ClipMachine * mp)"
+reg := {}
+
+if SEARCH("clip_[_A-Z]*", str, @reg)
+	qout("start :" +str(reg[1][1]))
+	qout("end   :" +str(reg[1][2]))
+	qout("length:" +str(reg[1][3]))
+else
+	qout("Regular expression not found!")
+endif
+
+
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+

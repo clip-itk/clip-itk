@@ -1,0 +1,119 @@
+$FUNCNAME$
+  SETKEY()
+$CATEGORY$
+  TERMINAL/IO,KEYBOARD/MOUSE
+$SUMMARY$
+   Assign an action block to a key
+$LANG_RU$
+   Присваивает клавише блок кода.
+$SYNTAX$
+     SETKEY(<nInkeyCode>, [<bAction>]) --> bCurrentAction
+$LANG_RU$
+     SETKEY(<INKEY-код>, [<блок кода>]) --> текущий блок кода
+$ARGUMENTS$
+     <nInkeyCode> is the INKEY() value of the key to be associated or
+     queried.
+
+     <bAction> specifies a code block that is automatically executed
+     whenever the specified key is pressed during a wait state.
+$LANG_RU$
+     <INKEY-код> - значение INKEY()-кода клавиши, связываемой с
+     выполнением блока кода.
+
+     <блок кода> - задает блок кода, автоматически выполняемого при
+     нажатии заданной клавиши в режиме ожидания.
+$RETURNS$
+     SETKEY() returns the action block currently associated with the
+     specified key, or NIL if the specified key is not currently associated
+     with a block.
+$LANG_RU$
+     SETKEY() возвращает блок кода, связанный в текущий момент с заданной
+     клавишей или NIL, если заданная клавиша не связана ни с каким блоком
+     кода.
+$DESCRIPTION$
+     SETKEY() is a keyboard function that sets or queries the automatic
+     action associated with a particular key during a wait state.  A wait
+     state is any mode that extracts keys from the keyboard except for
+     INKEY(), but including ACHOICE(), DBEDIT(), MEMOEDIT(), ACCEPT, INPUT,
+     READ and WAIT.  Up to 32 keys may be assigned at any one time.  At
+     startup, the system automatically assigns the F1 key to execute a
+     procedure or user-defined function named Help.
+
+     When an assigned key is pressed during a wait state, the EVAL() function
+     evaluates the associated <bAction> and the parameters, PROCNAME(),
+     PROCLINE(), and READVAR().  It is, however, not necessary to list
+     arguments when specifying <bAction> if you do not plan to use them
+     within the action block.
+
+     SETKEY() is like the SET KEY command which associates a procedure
+     invocation with a key.
+$LANG_RU$
+     SETKEY() является функцией работы с клавиатурой, используемой для
+     установки или запроса автоматического действия, связанного с нажатием
+     конкретной клавиши в режиме ожидания. Режим ожидания - это любой
+     режим, при котором программа ожидает ввода информации с клавиатуры.
+     Режим ожидания создается функциями ACHOICE(), DBEDIT(), MEMOEDIT(), и
+     командами ACCEPT, INPUT, READ и WAIT.  Функция INKEY() в эту группу
+     не входит.  Одновременно может назначаться до 32 клавиш. По умолчанию
+     система автоматически назначает клавишу F1 для выполнения процедуры
+     или функции пользователя с названием Help.
+
+     Когда назначенная клавиша нажимается во время состояния ожидания,
+     соответствующему блоку кода в качестве параметров передаются значения
+     PROCNAME(), PROCLINE() и READVAR(), и он выполняется путем передачи
+     его функции EVAL(). Однако нет необходимости перечислять эти
+     аргументы при задании значения аргумента <блок кода>, если вы не
+     планируете их использование.
+
+     SETKEY() подобна команде SET KEY, которая связывает вызов процедуры с
+     определенной клавишей.
+$EXAMPLES$
+       This code fragment associates an action block with a key, and
+	then, after getting a key using INKEY(), executes it with the EVAL()
+	function:
+
+	#include "Inkey.ch"
+	SETKEY(K_DN, {|cProc, nLine, cVar| MyProc(cProc, ;
+			  nLine, cVar)})
+	.
+	. <statements>
+	.
+	DO WHILE .T.
+	   nKey := INKEY(0)
+	   DO CASE
+	   CASE (bAction := SETKEY(nKey)) != NIL
+	      EVAL(bAction, PROCNAME(), PROCLINE(), READVAR())
+	   CASE nKey = K_PGUP
+	      Previous()
+	   CASE nKey = K_PGDN
+	      Next()
+	   CASE nKey = K_ESC
+	      EXIT
+	   ENDCASE
+	ENDDO
+$LANG_RU$
+      В данном фрагменте программы показано, как связать блок кода с
+       клавишей, чтобы позднее выполнить его с помощью функции EVAL()
+       после получения кода клавиши путем использования INKEY():
+
+       #include "Inkey.ch"
+       SETKEY(K_DN, { |cProc, nLine, cVar| MyProc(cProc, nLine, cVar) })
+       ...
+       ...<операторы>
+       ...
+       DO WHILE .T.
+	  nKey := INKEY(0)
+	  DO CASE
+	  CASE (bAction := SETKEY(nKey)) != NIL
+	     EVAL( bAction, PROCNAME(), PROCLINE(), READVAR())
+	  CASE nKey = K_PGUP
+	     Previous()
+	  CASE nKey = K_PGDN
+	     Next()
+	  CASE nKey = K_ESC
+	     EXIT
+	  ENDCASE
+       ENDDO
+$SEEALSO$
+  EVAL(),INKEY()
+$END$

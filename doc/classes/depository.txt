@@ -1,0 +1,457 @@
+$CLASSNAME$
+	CODBDEPOSITORY
+$SUMMARY$
+	The essence this CODB class is storehouse of stored objects - objects
+	whouse structure descript into dictionary.
+$LANG_RU$
+	Суть этого CODB класса - хранилище объектов, чья структура описана в словаре.
+$ABOUT$
+	The essence this CODB class is storehouse of stored objects - objects
+	whouse structure descript into dictionary.
+$LANG_RU$
+	Суть этого CODB класса - хранилище объектов, чья структура описана в словаре.
+$SYNTAX$
+	coDepositioryNew(<sDictID>, <sUser>, <sPasswd>) --> CODBDEPOSITORY object
+	coDepository:New(<sDictID>, <sUser>, <sPasswd>)  --> CODBDEPOSITORY object
+$ATTRIBUTES$
+	<ClassName> 	CODBDEPOSITORY
+	<Error>		String, the error description what araised within running last operation.
+$LANG_RU$
+	<ClassName> 	CODBDEPOSITORY
+	<Error>		String, описание ошибки, возникшей при выполнении последней операции.
+
+$METHODNAME$
+	New()
+$SUMMARY$
+	Initiation new CODBDEPOSITORY object.
+$LANG_RU$
+	Инициализация нового объекта CODBDEPOSITORY.
+$SYNTAX$
+	New(<sDepID>, <sUser>, <sPasswd>) --> CODBDEPOSITORY object
+$ARGUMENTS$
+	<sDepID>	Stirng, the depository identifier
+	<sUser>		String, the user name
+	<sPasswd>       String, the password to access
+$LANG_RU$
+	<sDepID>	Stirng, идентификатор депозитария
+	<sUser>		String, имя пользователя
+	<sPasswd>       String, пароль доступа
+$RETURNS$
+	Method returns new CODBDEPOSITORY object.
+$LANG_RU$
+	Метод возвращает новый объект CODBDEPOSITORY.
+$DESCRIPTION$
+	New() inits new CODBDEPOSITORY object and returns it.
+
+	If object <sDepID> already exist, New() openes and returns this
+	ddepository.
+$LANG_RU$
+	New() инициализирует новый объект CODBDEPOSITORY возвращает его.
+
+	Если объект <sDepID> уже существует, New() открывает и возвращает
+	этот депозитарий.
+$ENDMETHOD$
+
+$METHODNAME$
+	Create()
+$SUMMARY$
+	Create empty depository.
+$LANG_RU$
+	Создать пустой депозитарий.
+$SYNTAX$
+	Create() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if new empty depository created.
+$LANG_RU$
+	Возвращает TRUE если создан пустой новый депозитарий.
+$DESCRIPTION$
+	Create() returns TRUE if new empty depository created.
+	Usualy, this method do not needy to direct invitation. It's call automaticaly
+	when new depository appending to CODBDICTIONARY.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Create() возвращает TRUE если создан пустой новый депозитарий.
+	Обычно, этот метод не требует прямого вызова, а вызывается автоматически
+	при добавлении нового словаря в CODBDICTIONARY.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Open()
+$SUMMARY$
+	Open all necessary files.
+$LANG_RU$
+	Открыть все необходимые файлы.
+$SYNTAX$
+	Open() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if files opened.
+$LANG_RU$
+	Возвращает TRUE если файлы открыты.
+$DESCRIPTION$
+	Open() openes all necessary files or openes connection with SQL server.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Open() открывает все необходимые для работы словаря файлы или соединение
+	с SQL сервером.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Close()
+$SUMMARY$
+	Close opened files.
+$LANG_RU$
+	Закрыть открытые файлы.
+$SYNTAX$
+	Close() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if files closed.
+$LANG_RU$
+	Возвращает TRUE если файлы закрыты.
+$DESCRIPTION$
+	Close() is close files or connection with SQL server.
+$LANG_RU$
+	Open() закрывает все необходимые для работы словаря файлы или соединение
+	с SQL сервером.
+$ENDMETHOD$
+
+$METHODNAME$
+	Append()
+$SUMMARY$
+	Append object to storehouse.
+$LANG_RU$
+	Добавить объект в хранилище.
+$SYNTAX$
+	Append(<oData>, <sClassID>) 	--> <sDataID>
+$ARGUMENTS$
+	<oData> 	Object, new object to keeping
+	<sClassID>	String, class identifier
+
+$LANG_RU$
+	<oData> 	Object, новый объект для хранения.
+	<sClassID>	String, идентификатор классаю
+$RETURNS$
+	Returns <sDataID> - identifier registered object.
+$LANG_RU$
+	Возвращает <sDataID> - идентификатор добавленного объекта.
+$DESCRIPTION$
+	Append() appends new object <oData> to storehouse as object of
+	class <sClassID> and returns objects identifier <sDataID>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Append() добавляет новый объект <oData> в хранилище как объект класса
+	<sClassID> и возвращает идентификатор зарегистрированного
+	объекта <sDataID>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Update()
+$SUMMARY$
+	Update object into storehouse.
+$LANG_RU$
+	Обновить объект в хранилище.
+$SYNTAX$
+	Update(<oData>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<oData> 	Object, object to updating
+$LANG_RU$
+	<oData> 	Object, объект для обновления
+$RETURNS$
+	Returns TRUE if object updated.
+$LANG_RU$
+	Возвращает TRUE если объект обновлен.
+$DESCRIPTION$
+	Update() updates object <oData> into storehouse. If depositoy have not
+	object with identifier <oData:ID>, Update() returns FALSE.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Update() обновляет объект <oData> в хранилище. Если депозитарий не содержит
+	объект с идентификатором <oData:ID>, Update() возвращает FALSE.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Delete()
+$SUMMARY$
+	Delete object from storehouse.
+$LANG_RU$
+	Удалить объект из хранилища.
+$SYNTAX$
+	Delete(<sDataID>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<sDataID> 	String, the objects identifier
+
+$LANG_RU$
+	<sDataID> 	String, идентификатор объекта
+$RETURNS$
+	Returns TRUE if object was deleted.
+$LANG_RU$
+	Возвращает TRUE если объект был удален.
+$DESCRIPTION$
+	Delete() deletes object with identifier <sDataID> from depository.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Delete() удаляет объект с идентификатором <sDataID> из депозитария.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GetValue()
+$SUMMARY$
+	Get object from storehouse.
+$LANG_RU$
+	Получить объект из хранилища.
+$SYNTAX$
+	GetValue(<sDataID>) 	--> <oData>
+$ARGUMENTS$
+	<sDataID> 	String, the objects identifier
+
+$LANG_RU$
+	<sDataID> 	String, идентификатор объекта
+$RETURNS$
+	Returns object <oData> with identifier <sDataID>.
+$LANG_RU$
+	Возвращает объект <oData> с идентификатором <sDataID>.
+$DESCRIPTION$
+	GetValue() gets form depository and returns object <oData> with
+	identifier <sDataID>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	GetValue() достает из депозитария и возвращает объект <oData> с
+	идентификатором <sDataID>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	CheckBody()
+$SUMMARY$
+	Checks object a valid class.
+$LANG_RU$
+	Проверить объект на принадлежность к классу.
+$SYNTAX$
+	CheckBody(<oData>, <sClassID>) 	--> <oData>
+$ARGUMENTS$
+	<oData> 	Object, object to check
+	<sClassID>	String, class identifier
+
+$LANG_RU$
+	<oData> 	Object, объект для проверки.
+	<sClassID>	String, идентификатор класса
+$RETURNS$
+	Returns object <oData>.
+$LANG_RU$
+	Возвращает объект <oData>.
+$DESCRIPTION$
+	CheckBody() checks object <oData> a valid class <sClassID>.
+	If object is a valid, CheckBody() fills <oData> properties the default values
+	 if necessary.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	CheckBody() проверяет объект <oData> на принадлежность к классу <sClassID>
+	и при необходимости заполняет атрибуты <oData> значениями по умолчанию.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	PadrBody()
+$SUMMARY$
+	Makes data representation.
+$LANG_RU$
+	Привести объект в соответствие классу.
+$SYNTAX$
+	PadrBody(<oData>, <sClassID>) 	--> <oData>
+$ARGUMENTS$
+	<oData> 	Object, source object
+	<sClassID>	String, class identifier
+
+$LANG_RU$
+	<oData> 	Object, исходный объект
+	<sClassID>	String, идентификатор класса
+$RETURNS$
+	Returns object <oData>.
+$LANG_RU$
+	Возвращает объект <oData>.
+$DESCRIPTION$
+	PadrBody() makes data representation for <oData> to class <sClassID>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	PadrBody() приводит объект <oData> в соответствие классу <sClassID>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Select()
+$SUMMARY$
+	Returns identifier list of selected objects.
+$LANG_RU$
+	Вернуть список идентификаторов выбранных объектов.
+$SYNTAX$
+	Select(<sClassID>[, <nOrder>][, <sName>][, <sWhere>]) 	--> <aIdent>
+$ARGUMENTS$
+	<sClassID>	String, class identifier
+	<nOrder>	Numeric, the index number
+	<sName>		String, value <Name> attribute to search
+	<sWhere>	String, the searching condition
+$LANG_RU$
+	<sClassID>	String, идентификатор класса
+	<nOrder>	Numeric, the index number
+	<sName>		String, значение атрибута <Name>
+	<sWhere>	String, условие поиска
+$RETURNS$
+	Returns <aIdent> array of object identifier what equal searching condition.
+$LANG_RU$
+	Возвращает <aIdent> массив идентификаторов объектов, соответствующих заданным условиям.
+$DESCRIPTION$
+	Select() returns for class <sClassID> identifier list <aIdent> selected objects in order <nOrder>
+	whose attribute <Name> == <sName> and attributes equal <sWhere>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Select() возвращает список идентификаторов объектов, принадлежащих классу <sClassID> в порядке <nOrder>,
+	у которых аттрибут <Name> точно равен <sName> и содержимое аттрибутов
+	соответсвует выражению <sWhere>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	IdList()
+$SUMMARY$
+	Returns object of class IDLIST.
+$LANG_RU$
+	Вернуть объект класса IDLIST.
+$SYNTAX$
+	IdList(<sClassID>[, <nOrder>][, <sName>][, <sWhere>]) 	--> <oIDList>
+$ARGUMENTS$
+	<sClassID>	String, class identifier
+	<nOrder>	Numeric, the index number
+	<sName>		String, value <Name> attribute to search
+	<sWhere>	String, the searching condition
+$LANG_RU$
+	<sClassID>	String, идентификатор класса
+	<nOrder>	Numeric, the index number
+	<sName>		String, значение атрибута <Name>
+	<sWhere>	String, условие поиска
+$RETURNS$
+	Returns <oIDList> - object of class IDLIST.
+$LANG_RU$
+	Возвращает <oIDList> - объект класса IDLIST.
+$DESCRIPTION$
+	IdList() returns <oIDList> - object of class <link linkend="classCODBIDLIST">CODBIDLIST</link>.
+$LANG_RU$
+	IdList() возвращает <oIDList> - объект класса <link linkend="classCODBIDLIST">IDLIST</link>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Id4PrimaryKey()
+$SUMMARY$
+	Returns object identifier.
+$LANG_RU$
+	Вернуть идентификатор объекта.
+$SYNTAX$
+	Id4PrimaryKey(<sClassName>, <sKeyName>, <KeyValue>) 	--> <sDataID>
+$ARGUMENTS$
+	<sClassName>	String, class name
+	<sKeyName>	String, the properties name
+	<KeyValue> 	the value of properties
+$LANG_RU$
+	<sClassName>	String, имя класса
+	<sKeyName>	String, название атрибута
+	<KeyValue> 	значение атрибута
+$RETURNS$
+	Returns <sDataID> - identifier of founded object.
+$LANG_RU$
+	Возвращает <sDataID> - идентификатор найденного объекта.
+$DESCRIPTION$
+	Id4ProperyKey() returns <sDataID> - identifier of founded object
+	whouse properties with name <sKeyName> is equal <KeyValue>.
+$LANG_RU$
+	Id4ProperyKey() возвращает <sDataID> - идентификатор найденног объекта,
+	у которого свойство с именем <sKeyName> равно <KeyValue>.
+$ENDMETHOD$
+
+
+
+$EXAMPLES$
+* open first depository from MY001
+oDep:=coDepository():new("MY00101")
+oDep:open()
+oDict:=oDep:dictionary()
+* get currency metadata
+currBody:=oDict:classBodyByName("currency")
+if empty(currBody)
+   ? "Class 'currency' not found in dictionary"
+   quit
+endif
+*this data may be load from txt or dbf source file
+data:={;
+	{"USD","USA dollar"},;
+	{"UUU","UUU dollar"},;
+	{"RUR","Russian rubl"},;
+	{"RUA","Ukraina rubl :)"};
+      }
+* add currency objects
+for i=1 to len(data)
+	obj:=map()
+	obj:code := data[i][1]
+	obj:name := data[i][2]
+	obj_id := oDep:id4primaryKey("currency","code",obj:code)
+	if empty(obj_id)
+		oDep:append(obj,currBody:id)
+	else
+		/* object exist in depository */
+		obj:id := obj_id
+		oDep:update(obj)
+	endif
+	if !empty(oDep:error)
+		? "Error:",oDep:error
+	else
+		? "currency object '"+obj:code+"' added to depository"
+	endif
+next
+? "To depository added ",len(data)," objects"
+c_list:=oDep:select(currBody:id,,,'code="U"')
+? "Select currency objects with code='U':",c_list
+c_list:=oDep:select(currBody:id)
+? "Select all currency objects:",c_list
+? "Loading objects body:"
+for i=1 to len(c_list)
+	obj:=oDep:getValue(c_list[i])
+	? "code=",obj:code, "name=",obj:name
+next
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+	CODBLIST
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+
+

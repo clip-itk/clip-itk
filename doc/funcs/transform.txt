@@ -1,0 +1,182 @@
+$FUNCNAME$
+  TRANSFORM()
+$CATEGORY$
+  STRING,NUMERIC,DATE/TIME,LOGICAL
+$SUMMARY$
+   Convert any value into a formatted character string
+$LANG_RU$
+   Преобразует заданное выражение в форматированную строку символов.
+$SYNTAX$
+     TRANSFORM(<exp>, <cSayPicture>) --> cFormatString
+$LANG_RU$
+     TRANSFORM(<выражение>,<SAY-шаблон> --> строка символов
+$ARGUMENTS$
+     <exp> is the value to be formatted.  This expression can be any
+     valid xClipper data type except array, code block, and NIL.
+
+     <cSayPicture> is a string of picture and template characters that
+     describes the format of the returned character string.
+$LANG_RU$
+     <выражение> - выражение для форматирования, может быть любого
+     допустимого в xClipper типа, кроме массива, блока кода и NIL.
+
+     <SAY-шаблон> - строка символов шаблона, которая описывает формат
+     возвращаемой строки.
+$RETURNS$
+     TRANSFORM() converts <exp> to a formatted character string as defined by
+     <cSayPicture>.
+$LANG_RU$
+     TRANSFORM() форматирует <выражение> в символьную строку, определенную
+     при помощи шаблона, заданного аргументом <SAY-шаблон>.
+$DESCRIPTION$
+     TRANSFORM() is a conversion function that formats character, date,
+     logical, and numeric values according to a specified picture string that
+     includes a combination of picture function and template strings.
+     TRANSFORM() formats data for output to the screen or the printer in the
+     same manner as the PICTURE clause of the @...SAY command.
+
+       Function string:  A picture function string specifies
+	formatting rules that apply to the TRANSFORM() return value as a
+	whole, rather than to particular character positions within <exp>.
+	The function string consists of the @ character, followed by one or
+	more additional characters, each of which has a particular meaning
+	(see table below).  If a function string is present, the @ character
+	must be the leftmost character of the picture string, and the
+	function string must not contain spaces.  A function string may be
+	specified alone or with a template string.  If both are present, the
+	function string must precede the template string, and the two must be
+	separated by a single space.
+
+	<PRE>TRANSFORM() Functions
+	---------------------------------------------------------------------
+	Function     Action
+	---------------------------------------------------------------------
+	B            Displays numbers left-justified
+	C            Displays CR after positive numbers
+	D            Displays date in SET DATE format
+	E            Displays date in British format
+	R            Nontemplate characters are inserted
+	X            Displays DB after negative numbers
+	Z            Displays zeros as blanks
+	(            Encloses negative numbers in parentheses
+	!            Converts alphabetic characters to uppercase
+	---------------------------------------------------------------------
+	</PRE>
+
+       Template string:  A picture template string specifies
+	formatting rules on a character-by-character basis.  The template
+	string consists of a series of characters, some of which have special
+	meanings (see table below).  Each position in the template string
+	corresponds to a position in the value of the <exp> argument.
+	Because TRANSFORM() uses a template, it can insert formatting
+	characters such as commas, dollar signs, and parentheses.
+
+	Characters in the template string that have no assigned meanings are
+	copied literally into the return value.  If the @R picture function
+	is used, these characters are inserted between characters of the
+	return value; otherwise, they overwrite the corresponding characters
+	of the return value.  A template string may be specified alone or
+	with a function string.  If both are present, the function string
+	must precede the template string, and the two must be separated by a
+	single space.
+
+	<PRE>TRANSFORM() Templates
+	---------------------------------------------------------------------
+	Template     Action
+	---------------------------------------------------------------------
+	A,N,X,9,#    Displays digits for any data type
+	L            Displays logicals as "T" or "F"
+	Y            Displays logicals as "Y" or "N"
+	!            Converts an alphabetic character to uppercase
+	$            Displays a dollar sign in place of a leading space in a
+		     numeric
+	*            Displays an asterisk in place of a leading space in a
+		     numeric
+	.            Specifies a decimal point position
+	,            Specifies a comma position
+	---------------------------------------------------------------------
+	</PRE>
+$LANG_RU$
+     TRANSFORM() - функция преобразования, которая форматирует CHARACTER,
+     DATE, LOGICAL и NUMERIC значения в соответствии со строкой шаблона,
+     включающей комбинацию форматных функций и шаблонов. TRANSFORM()
+     форматирует таким же образом, как и предложение PICTURE в команде
+     @...SAY.  TRANSFORM() используется для форматирования данных при
+     выводе на экран или печатающее устройство.
+
+      Строка функций. Строка функций определяет правила форматирования,
+       которые в общем использовать предпочтительнее, чем особые символы
+       внутри аргумента <выражение>. Строка функций состоит из символа @ и
+       следующих за ним одного или более дополнительных символов, каждый
+       из которых имеет особое назначение (смотрите таблицу ниже). В строке
+       функций символ @ должен быть крайним левым.Строка функций не должна
+       содержать пробелов. Строка функций может быть задана одна или со
+       строкой шаблона. В последнем случае строка функций должна
+       предшествовать строке шаблона и они должны разделяться одним
+       пробелом.
+
+      Строка шаблона. Строка шаблона определяет правила форматирования
+       по принципу символ за символом. Строка шаблона состоит из серии
+       символов, некоторые из которых имеют специальное назначение (смотри
+       таблицу ниже).  Каждая позиция в строке шаблона соответствует
+       позиции аргумента <выражение>. Символы в строке шаблона, которые не
+       имеют специального назначения, непосредственно копируются в
+       результирующую строку. Если используется функция шаблона @R, эти
+       символы вставляются между символами возвращаемого значения, в
+       противном случае они записываются вместо соответствующих символов
+       возвращаемого значения. Строка шаблона может быть задана одна или
+       со строкой функции. В этом случае строка функций должна
+       предшествовать строке шаблона и они должны разделяться одним
+       пробелом.
+
+       <PRE>Функции TRANSFORM()
+       -------------------------------------------------------------------
+       Функция     Действие
+       -------------------------------------------------------------------
+       B           Выводит числа, выравненные слева
+       C           Выводит CR после положительных чисел
+       D           Выводит дату в формате SET DATE
+       E           Выводит дату в формате BRITISH (английском)
+       R           Вставляет символы, не относящиеся к шаблону
+       X           Выводит DB после отрицательных чисел
+       Z           Выводит пробелы вместо нулей
+       (           Заключает отрицательные числа в скобки
+       !           Переводит алфавитные символы в верхний регистр
+       -------------------------------------------------------------------
+       </PRE>
+
+	<PRE>Шаблоны TRANSFORM()
+       -------------------------------------------------------------------
+       Шаблон         Действия
+       -------------------------------------------------------------------
+       A.N.X.9.#      Выводит цифры для данных любого типа
+       |              Выводит логические величины: "Т" или "F"
+       Y              Выводит логические величины: "Y" или "N"
+       !              Переводит алфавитные символы в верхний регистр
+       $              Выводит знак доллара вместо ведущего пробела в числах
+       *              Выводит звездочку вместо ведущего пробела в числах
+       .              Указывает позицию десятичной точки
+       ,              Указывает позицию запятой
+       -------------------------------------------------------------------
+       </PRE>
+$EXAMPLES$
+       This example formats a number into a currency format using a
+	template:
+
+	? TRANSFORM(123456, "$999,999")    // Result: $123,456
+
+       This example formats a character string using a function:
+
+	? TRANSFORM("to upper", "@!")      // Result: TO UPPER
+$LANG_RU$
+      Следующий пример форматирует число в денежный формат, используя
+       шаблон:
+
+       ? TRANSFORM(123456, "$999,999")       // Результат: $123,456
+
+      Следующий пример преобразует символьную строку, используя функцию:
+
+       ? TRANSFORM("to upper", "@!")         // Результат: TO UPPER
+$SEEALSO$
+  PAD(),STR(),UPPER(),LOWER()
+$END$

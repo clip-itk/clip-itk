@@ -1,0 +1,75 @@
+$FUNCNAME$
+  YEAR()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Convert a date value to the year as a numeric value
+$LANG_RU$
+   Преобразует значение даты в номер года в числовом виде.
+$SYNTAX$
+     YEAR(<dDate>) --> nYear
+$LANG_RU$
+     YEAR (<дата>) --> год
+$ARGUMENTS$
+     <dDate> is the date value to be converted.
+$LANG_RU$
+     <дата> - значение даты.
+$RETURNS$
+     YEAR() returns the year of the specified date value including the
+     century digits as a four-digit numeric value.  The value returned is not
+     affected by the current DATE or CENTURY format.  Specifying a null date
+     (CTOD("")) returns zero.
+$LANG_RU$
+     YEAR() возвращает номер года, заданного значением даты в виде
+     четырехзначного числового значения. На возвращаемое значение не
+     влияют установки форматов DATE и CENTURY. Заданная нулевая дата
+     (CTOD("")) возвращает ноль.
+$DESCRIPTION$
+     YEAR() is a date conversion function that converts a date value to a
+     numeric year value.  Use it in calculations for things like periodic
+     reports or for formatting date displays.
+
+     YEAR() is a member of a group of functions that return components of a
+     date value as numeric values.  The group includes DAY() and MONTH()
+     which return the day and month values as numeric values.
+$LANG_RU$
+     YEAR() - функция преобразования даты, которая используется для
+     перевода заданной даты в числовое значение года. Функция может
+     быть использована при вычислениях или для форматирования дат.
+     YEAR() входит в группу функций, которые возвращают компоненты дат
+     в виде чисел. К этой группе относятся также функции DAY() и MONTH(),
+     которые возвращают значения дня и месяца в виде числовых значений.
+$EXAMPLES$
+       These examples illustrate YEAR() using the system date:
+
+	? DATE()                    // Result: 09/20/90
+	? YEAR(DATE())              // Result: 1990
+	? YEAR(DATE()) + 11         // Result: 2001
+
+       This example creates a user-defined function using YEAR() to
+	format a date value in the following form: month day, year.
+
+	? Mdy(DATE())               // Result: September 20, 1990
+
+	FUNCTION Mdy( dDate )
+	   RETURN CMONTH(dDate) + " " + ;
+		 LTRIM(STR(DAY(dDate)));
+	      + "," + STR(YEAR(dDate))
+$LANG_RU$
+      Следующий пример демонстрирует использование функции YEAR().
+
+       ? DATE() // Результат: 09/01/90
+       ? YEAR (DATE() ) // Результат: 1990
+       ? YEAR (DATE () ) + 11 // Результат: 2001
+
+      Этот пример создает функцию пользователя, применяющую функцию
+       YEAR() для форматирования значения даты в форме месяц, день, год:
+
+       ? Mdy(DATE () ) // Результат; September 20,1990
+
+       FUNCTION Mdy ( dDate )
+	  RETURN Mdy ( dDate ) + " " + LTRIM(STR(DAY(dDate)));
+				      + "," + STR(YEAR(dDate))
+$SEEALSO$
+  DAY(),MONTH()
+$END$

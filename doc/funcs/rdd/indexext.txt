@@ -1,0 +1,53 @@
+$FUNCNAME$
+  INDEXEXT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the default index extension based on the database driver currently
+$LANG_RU$
+   Возвращает расширение имени индексного файла, принятое по умолчанию
+$SYNTAX$
+     INDEXEXT() --> cExtension
+$LANG_RU$
+     INDEXEXT() --> расширение имени индекса
+$RETURNS$
+     Unless you have linked another database driver, INDEXEXT() returns
+     ".ntx" to indicate that the default xClipper driver is in effect.  If
+     the dBASE III PLUS compatible database driver is linked, the function
+     returns ".ndx".
+$LANG_RU$
+     Пока не скомпонован другой драйвер базы данных, INDEXEXT() возвращает
+     значение ".NTX.", означающее, что по умолчанию действует штатный
+     драйвер xClipper. Если скомпонован драйвер баз данных, совместимых с
+     dBASEIII PLUS, функция возвратит значение ".NDX.".
+$DESCRIPTION$
+     INDEXEXT() returns the default index file extension by determining which
+     database driver is currently linked. Note that it is preferable to use
+     ORDBAGEXT() than INDEXEXT().
+$LANG_RU$
+     INDEXEXT() возвращает расширение имени индексного файла, принятое по
+     умолчанию определяя, какой драйвер базы данных скомпонован в текущий
+     момент.
+$EXAMPLES$
+       In this example, INDEXEXT() creates an existence test for the
+	Customer index file independent of the database driver linked into
+	the current program:
+
+	USE Customer NEW
+	//
+	IF .NOT. FILE("Customer" + INDEXEXT())
+	   INDEX ON CustName TO Customer
+	ENDIF
+$LANG_RU$
+      В этом примере INDEXEXT() используется для проверки на
+       существование индексного файла Customer независимо от того, какой
+       драйвер используется в текущей программе:
+
+       USE Customer NEW
+       //
+       IF .NOT. FILE("Customer" + INDEXEXT())
+	  INDEX ON CustName TO Customer
+       ENDIF
+$SEEALSO$
+  INDEXKEY(),INDEXORD(),ORDBAGEXT()
+$END$

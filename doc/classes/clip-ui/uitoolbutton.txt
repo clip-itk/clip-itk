@@ -20,7 +20,7 @@ $SUMMARY$
 $LANG_RU$
 	Установить значок, отображаемый на кнопке панели инструментов.
 $SYNTAX$
-	setAction(<icon>)
+	setIcon(<icon>)
 $ARGUMENTS$
 	<icon>		- Object of class <link linkend="classuiimage">UIImage</link>. Icon on the button.
 $LANG_RU$

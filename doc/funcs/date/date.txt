@@ -1,0 +1,51 @@
+$FUNCNAME$
+  DATE()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Return the system date as a date value
+$LANG_RU$
+   Возвращает системную дату в виде значения типа DATE.
+$SYNTAX$
+     DATE() --> dSystem
+$LANG_RU$
+     DATE() --> системная дата
+$RETURNS$
+     DATE() returns the system date as a date value.
+$LANG_RU$
+     DATE() возвращает системную дату в виде значения типа DATE.
+$DESCRIPTION$
+     DATE() is a date function that provides a means of initializing memory
+     variables to the current date, comparing other date values to the
+     current date, and performing date arithmetic relative to the current
+     date.
+
+     The display format for dates is controlled by the SET DATE command.  The
+     default format is mm/dd/yy.
+$LANG_RU$
+     DATE() - функция получения дат, которая дает возможность
+     устанавливать начальные значения переменных памяти в виде
+     текущей даты, сравнивать другие даты с текущей датой, производить
+     арифметические вычисления над датами с участием текущей даты.
+     Формат вывода даты на дисплей устанавливается командой SET DATE.
+
+     Формат, установленный по умолчанию мм/дд/гг.
+$EXAMPLES$
+       These examples show the DATE() function used in various ways:
+
+	? DATE()                 // Result: 09/01/90
+	? DATE() + 30            // Result: 10/01/90
+	? DATE() - 30            // Result: 08/02/90
+	dDate := DATE()
+	? CMONTH(dDate)          // Result: September
+$LANG_RU$
+      В следующем примере показано использование функции DATE():
+
+       ? DATE()               // Результат: 09/01/90
+       ? DATE() + 30          // Результат: 10/01/90
+       ? DATE() - 30          // Результат: 08/02/90
+       dDate = DATE()
+       ? CMONTH(dDate)        // Результат: Сентябрь
+$SEEALSO$
+  CTOD(),DTOC(),DTOS()
+$END$

@@ -270,7 +270,7 @@ memvar __ac_data
 	    bb:goBottom()
     //	    bb:refreshAll()
        case (nKey>32 .and. nKey<255) .and. !__ac_data:flagUserF
-	    mode:=firstChr(nKey)
+	    mode:=firstChr(nKey,bb)
 	    do case
 		   case mode==2
 		       bb:refreshCurrent()
@@ -302,7 +302,7 @@ memvar __ac_data
 	       lmore:=.f.
 	    endif
 	    if mode==3
-		 mode:=FirstChr(lastkey())
+		 mode:=FirstChr(lastkey(),bb)
 	    endif
 	    if mode==1
 	       retval:=__ac_data:nRowMass
@@ -333,7 +333,7 @@ static func Skipper(n)
 return __ac_data:nRowmass-i
 *****************************************************
 * по 1-му символу
-static func firstChr(chrKey)
+static func firstChr(chrKey,bb)
 local ccc,retVal
 ccc:=upper(chr(chrKey))
 retVal:=ascan(__ac_data:massP,{|elem|iif(upper(substr(ltrim(elem),1,1))==ccc,.t.,.f.)},__ac_data:nRowmass+1)
@@ -342,6 +342,9 @@ if retVal==0 .and. __ac_data:nRowMass >= 1
 endif
 if retVal!=0
    __ac_data:nrowMass:=retVal
+   if retVal < __ac_data:nB-__ac_data:nT
+	bb:rowPos := retVal
+   endif
 endif
 return 3
 

@@ -1,0 +1,24 @@
+$FUNCNAME$
+  READUPDATED()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Determine whether any GET variables changed during a READ and optionally
+$SYNTAX$
+     READUPDATED([<lChanged>]) --> lCurrentSetting
+$ARGUMENTS$
+     <lChanged> sets the READUPDATED() flag.  A value of true (.T.)
+     indicates that data has changed, and a value of false (.F.) indicates
+     that no change has occurred.
+$RETURNS$
+     READUPDATED() returns the current setting as a logical value.
+$DESCRIPTION$
+     READUPDATED() is a Get system function intended primarily for creating
+     new READ Layers.  It is identical in functionality to UPDATED() (see the
+     UPDATED() entry ), except that it allows the UPDATED() flag to be set.
+
+     READUPDATED() enables you to manipulate the UPDATED() flag from outside
+     of the Get system's source code.
+$SEEALSO$
+  READFORMAT(),READKILL(),UPDATED()
+$END$

@@ -1,0 +1,57 @@
+$FUNCNAME$
+  MSETCLIP()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Define an inclusion region
+$SYNTAX$
+     MSETCLIP([<nCoord list>], [<nMode>])
+$ARGUMENTS$
+     <nCoord List> contains the coordinates of the inclusion region which
+     is represented as a comma-separated list of four coordinates whose
+     interpretation differs depending on mode.  If <nMode> is LLM_COOR_TEXT,
+     the coordinates look like this:  <nTop>, <nLeft>, <nBottom>, <nRight>.
+     If <nMode> is LLM_COOR_GRAPH, the coordinates are <nX1>, <nY1>, <nX2>,
+     <nY2>.
+
+     <nMode> is one of the following two constants:
+
+     <PRE> Coordinate Type Constants
+     ------------------------------------------------------------------------
+     Constant       Description
+     ------------------------------------------------------------------------
+     LLM_COOR_TEXT  Specifies that the coordinates are given in lines and
+		    columns of text
+     LLM_COOR_GRAPH Specifies that the coordinates are given in pixels
+     ------------------------------------------------------------------------
+     </PRE>
+$RETURNS$
+     MSETCLIP() returns an array of coordinate information.  The coordinates
+     of the inclusion area are given in pixels and then in row/col format:
+
+     aRegions := {nIncX1, nIncY1, nIncX2, nIncY2,;
+	nIncR1, nIncC1, nIncR2, nIncC2,;
+	nCoorType}
+$DESCRIPTION$
+     MSETCLIP() controls mouse pointer movements.  It allows you to restrict
+     movement to a region.  When an inclusion is defined and the user tries
+     to move the mouse pointer out of the rectangle, it remains stuck at the
+     edge of the area, but is still visible.  This mode should be used to
+     restrict the range of user choices for moving or clicking the mouse.
+$EXAMPLES$
+       This example shows how the MSETCLIP() function works:
+
+	// Define an inclusion region and save the current
+	// inclusion region in the array aOldInc
+
+	   aOldInc := MSETCLIP(5, 5, 20, 75,LLM_COOR_TEXT)
+	// Code for selecting objects and buttons
+	// Restore old inclusion region
+	MSETCLIP(aOldInc[5],;
+	   aOldInc[6],;
+	   aOldInc[7],;
+	   aOldInc[8],;
+	LLG_VIDEO_TEXT)
+$SEEALSO$
+  MHIDE(),MSETCURSOR(),MSHOW()
+$END$

@@ -1,0 +1,511 @@
+$CLASSNAME$
+	CODBDICTIONARY
+$SUMMARY$
+	The essence this CODB class is storehouse of metadata - objects
+	what keeping specifier other objects of classes: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
+$LANG_RU$
+	Суть этого CODB класса - хранилище метаданных - объектов,
+	хранящих описание других объектов классов: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
+$ABOUT$
+	The essence this CODB class is storehouse of metadata - objects
+	what keeping specifier other objects of classes: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
+$LANG_RU$
+	Суть этого CODB класса - хранилище метаданных - объектов,
+	хранящих описание других объектов классов: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
+$SYNTAX$
+	coDictionaryNew(<sDictID>, <sUser>, <sPasswd>) --> CODBDICTIONARY object
+	coDictionary:New(<sDictID>, <sUser>, <sPasswd>)  --> CODBDICTIONARY object
+$ATTRIBUTES$
+	<ClassName> 	CODBDICTIONARY
+	<Error>		String, the error description what araised within running last operation.
+$LANG_RU$
+	<ClassName> 	CODBDICTIONARY
+	<Error>		String, описание ошибки, возникшей при выполнении последней операции.
+
+$METHODNAME$
+	New()
+$SUMMARY$
+	Initiation new CODBDICTIONARY object.
+$LANG_RU$
+	Инициализация нового объекта CODBDICTIONARY.
+$SYNTAX$
+	New(<sDictID>, <sUser>, <sPasswd>) --> CODBDICTIONARY object
+$ARGUMENTS$
+	<sDictID>	Stirng, the dictionary identifier
+	<sUser>		String, the user name
+	<sPasswd>       String, the password to access
+$LANG_RU$
+	<sDictID>	Stirng, идентификатор словаря
+	<sUser>		String, имя пользователя
+	<sPasswd>       String, пароль доступа
+$RETURNS$
+	Method returns new CODBDICTIONARY object.
+$LANG_RU$
+	Метод возвращает новый объект CODBDICTIONARY.
+$DESCRIPTION$
+	New() inits new CODBDICTIONARY object and returns it.
+
+	If object <sDictID> already exist, New() openes and returns this
+	dictionary.
+$LANG_RU$
+	New() инициализирует новый объект CODBDICTIONARY возвращает его.
+
+	Если объект <sDictID> уже существует, New() открывает и возвращает
+	этот словарь.
+$ENDMETHOD$
+
+$METHODNAME$
+	Create()
+$SUMMARY$
+	Create empty dictionary.
+$LANG_RU$
+	Создать пустой словарь.
+$SYNTAX$
+	Create() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if new empty dictionary created.
+$LANG_RU$
+	Возвращает TRUE если создан пустой новый словарь.
+$DESCRIPTION$
+	Create() returns TRUE if new empty ditionary created.
+	Usualy, this method do not needy to direct invitation. It's call automaticaly
+	when new dictionary appending into CODBLIST.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Create() возвращает TRUE если создан пустой новый словарь.
+	Обычно, этот метод не требует прямого вызова, а вызывается автоматически
+	при добавлении нового словаря в CODBLIST.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Open()
+$SUMMARY$
+	Open all necessary files.
+$LANG_RU$
+	Открыть все необходимые файлы.
+$SYNTAX$
+	Open() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if files opened.
+$LANG_RU$
+	Возвращает TRUE если файлы открыты.
+$DESCRIPTION$
+	Open() openes all necessary files or openes connection with SQL server.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Open() открывает все необходимые для работы словаря файлы или соединение
+	с SQL сервером.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Close()
+$SUMMARY$
+	Close opened files.
+$LANG_RU$
+	Закрыть открытые файлы.
+$SYNTAX$
+	Close() 	--> TRUE || FALSE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE if files closed.
+$LANG_RU$
+	Возвращает TRUE если файлы закрыты.
+$DESCRIPTION$
+	Close() is close files or connection with SQL server.
+$LANG_RU$
+	Open() закрывает все необходимые для работы словаря файлы или соединение
+	с SQL сервером.
+$ENDMETHOD$
+
+$METHODNAME$
+	Append()
+$SUMMARY$
+	Append object to storehouse.
+$LANG_RU$
+	Добавить объект в хранилище.
+$SYNTAX$
+	Append(<oData>, <sClassName>) 	--> <sDataID>
+$ARGUMENTS$
+	<oData> 	Object, new object to keeping
+	<sClassName>	String, class name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+
+$LANG_RU$
+	<oData> 	Object, новый объект для хранения.
+	<sClassName>	String, название класса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+$RETURNS$
+	Returns <sDataID> - identifier registered object.
+$LANG_RU$
+	Возвращает <sDataID> - идентификатор добавленного объекта.
+$DESCRIPTION$
+	Append() appends new object <oData> to storehouse as object of
+	class <sClassName> and returns objects identifier <sDataID>.
+
+	The structure description of added metadata see in section <link linkend="codbMETADATA">CODB metadata</link>
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Append() добавляет новый объект <oData> в хранилище как объект класса
+	<sClassName> и возвращает идентификатор зарегистрированного
+	объекта <sDataID>.
+
+	Описание структур добавляемых метаданных смотрите в разделе <link linkend="codbMETADATA">CODB метаданные</link>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Update()
+$SUMMARY$
+	Update object into storehouse.
+$LANG_RU$
+	Обновить объект в хранилище.
+$SYNTAX$
+	Update(<oData>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<oData> 	Object, object to updating
+
+$LANG_RU$
+	<oData> 	Object, объект для обновления
+$RETURNS$
+	Returns TRUE if object updated.
+$LANG_RU$
+	Возвращает TRUE если объект обновлен.
+$DESCRIPTION$
+	Update() updates object <oData> into storehouse. If dictinary have not
+	object with identifier <oData:ID>, Update() returns FALSE.
+
+	The structure description of metadata see in section <link linkend="codbMETADATA">CODB metadata</link>
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Update() обновляет объект <oData> в хранилище. Если словарь не содержит
+	объект с идентификатором <oData:ID>, Update() возвращает FALSE.
+
+	Описание структур метаданных смотрите в разделе <link linkend="codbMETADATA">CODB метаданные</link>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Delete()
+$SUMMARY$
+	Delete object from storehouse.
+$LANG_RU$
+	Удалить объект из хранилища.
+$SYNTAX$
+	Delete(<sDataID>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<sDataID> 	String, the objects identifier
+
+$LANG_RU$
+	<sDataID> 	String, идентификатор объекта
+$RETURNS$
+	Returns TRUE if object was deleted.
+$LANG_RU$
+	Возвращает TRUE если объект был удален.
+$DESCRIPTION$
+	Delete() deletes object with identifier <sDataID> from dictionary.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Delete() удаляет объект с идентификатором <sDataID> из словаря.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	GetValue()
+$SUMMARY$
+	Get object from storehouse.
+$LANG_RU$
+	Получить объект из хранилища.
+$SYNTAX$
+	GetValue(<sDataID>) 	--> <oData>
+$ARGUMENTS$
+	<sDataID> 	String, the objects identifier
+
+$LANG_RU$
+	<sDataID> 	String, идентификатор объекта
+$RETURNS$
+	Returns object <oData> with identifier <sDataID>.
+$LANG_RU$
+	Возвращает объект <oData> с идентификатором <sDataID>.
+$DESCRIPTION$
+	GetValue() gets form dictionary and returns object <oData> with
+	identifier <sDataID>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	GetValue() достает из словаря и возвращает объект <oData> с
+	идентификатором <sDataID>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	CheckBody()
+$SUMMARY$
+	Checks object a valid metaclass.
+$LANG_RU$
+	Проверить объект на принадлежность к метаклассу.
+$SYNTAX$
+	CheckBody(<oData>, <sClassName>) 	--> <oData>
+$ARGUMENTS$
+	<oData> 	Object, object to check
+	<sClassName>	String, metaclass name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+
+$LANG_RU$
+	<oData> 	Object, объект для проверки.
+	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+$RETURNS$
+	Returns object <oData>.
+$LANG_RU$
+	Возвращает объект <oData>.
+$DESCRIPTION$
+	CheckBody() checks object <oData> a valid metaclass <sClassName>.
+	If object is a valid, CheckBody() fills <oData> properties the default values
+	 if necessary.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	CheckBody() проверяет объект <oData> на принадлежность к классу <sClassName>
+	и при необходимости заполняет атрибуты <oData> значениями по умолчанию.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	PadrBody()
+$SUMMARY$
+	Makes data representation.
+$LANG_RU$
+	Привести объект в соответствие классу.
+$SYNTAX$
+	PadrBody(<oData>, <sClassName>) 	--> <oData>
+$ARGUMENTS$
+	<oData> 	Object, source object
+	<sClassName>	String, metaclass name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+
+$LANG_RU$
+	<oData> 	Object, исходный объект
+	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+$RETURNS$
+	Returns object <oData>.
+$LANG_RU$
+	Возвращает объект <oData>.
+$DESCRIPTION$
+	PadrBody() makes data representation for <oData> to metaclass <sClassName>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	PadrBody() приводит объект <oData> в соответствие метаклассу <sClassName>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Select()
+$SUMMARY$
+	Returns identifier list of selected objects.
+$LANG_RU$
+	Вернуть список идентификаторов выбранных объектов.
+$SYNTAX$
+	Select(<sClassName>[, <nOrder>][, <sName>][, <sWhere>]) 	--> <aIdent>
+$ARGUMENTS$
+	<sClassName>	String, metaclass name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<nOrder>	Numeric, the index number
+	<sName>		String, value <Name> attribute to search
+	<sWhere>	String, the searching condition
+$LANG_RU$
+	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<nOrder>	Numeric, the index number
+	<sName>		String, значение атрибута <Name>
+	<sWhere>	String, условие поиска
+$RETURNS$
+	Returns <aIdent> array of object identifier what equal searching condition.
+$LANG_RU$
+	Возвращает <aIdent> массив идентификаторов объектов, соответствующих заданным условиям.
+$DESCRIPTION$
+	Select() returns for class <sClassName> identifier list <aIdent> selected objects in order <nOrder>
+	whose attribute <Name> == <sName> and attributes equal <sWhere>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Select() возвращает список идентификаторов объектов, принадлежащих классу <sClassName> в порядке <nOrder>,
+	у которых аттрибут <Name> точно равен <sName> и содержимое аттрибутов
+	соответсвует выражению <sWhere>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	IdList()
+$SUMMARY$
+	Returns object of class IDLIST.
+$LANG_RU$
+	Вернуть объект класса IDLIST.
+$SYNTAX$
+	IdList(<sClassName>[, <nOrder>][, <sName>][, <sWhere>]) 	--> <oIDList>
+$ARGUMENTS$
+	<sClassName>	String, metaclass name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<nOrder>	Numeric, the index number
+	<sName>		String, value <Name> attribute to search
+	<sWhere>	String, the searching condition
+$LANG_RU$
+	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<nOrder>	Numeric, the index number
+	<sName>		String, значение атрибута <Name>
+	<sWhere>	String, условие поиска
+$RETURNS$
+	Returns <oIDList> - object of class IDLIST.
+$LANG_RU$
+	Возвращает <oIDList> - объект класса IDLIST.
+$DESCRIPTION$
+	IdList() returns <oIDList> - object of class <link linkend="classCODBIDLIST">CODBIDLIST</link>.
+$LANG_RU$
+	IdList() возвращает <oIDList> - объект класса <link linkend="classCODBIDLIST">CODBIDLIST</link>.
+$ENDMETHOD$
+
+$METHODNAME$
+	ClassBodyByName()
+$SUMMARY$
+	Returns object of metaclass CLASS.
+$LANG_RU$
+	Вернуть объект метакласса CLASS
+$SYNTAX$
+	ClassBodyByName(<sObjClassName>) 	--> <oData>
+$ARGUMENTS$
+	<sClassObjName>	String, class name.
+$LANG_RU$
+	<sClassObjName>	String, название класса.
+$RETURNS$
+	Returns <oData> - object of class CLASS.
+$LANG_RU$
+	Возвращает <oData> - объект класса CLASS.
+$DESCRIPTION$
+	ClassBodyByName() returns <oData> - object of class CLASS with name <sClassObjName>.
+$LANG_RU$
+	ClassBodyByName() возвращает <oData> - объект класса CLASS с именем <sClassObjName>.
+$ENDMETHOD$
+
+$METHODNAME$
+	AttrBodyByName()
+$SUMMARY$
+	Returns object of metaclass ATTR.
+$LANG_RU$
+	Вернуть объект метакласса ATTR.
+$SYNTAX$
+	AttrBodyByName(<sObjClassName>) 	--> <oData>
+$ARGUMENTS$
+	<sClassObjName>	String, class name.
+$LANG_RU$
+	<sClassObjName>	String, название класса.
+$RETURNS$
+	Returns <oData> - object of class ATTR.
+$LANG_RU$
+	Возвращает <oData> - объект класса ATTR.
+$DESCRIPTION$
+	AttrBodyByName() returns <oData> - object of class ATTR with name <sClassObjName>.
+$LANG_RU$
+	AttrBodyByName() возвращает <oData> - объект класса ATTR с именем <sClassObjName>.
+$ENDMETHOD$
+
+$METHODNAME$
+	HashName()
+$SUMMARY$
+	Returns properties name by hashcode.
+$LANG_RU$
+	Вернуть название свойства по хэш-коду.
+$SYNTAX$
+	HashName(<nHashCode>) 	--> <sName>
+$ARGUMENTS$
+	<nHashCode>	Numeric, hashcode
+$LANG_RU$
+	<nHashCode>	Numeric, хэш-код
+$RETURNS$
+	Returns properties name by hashcode.
+$LANG_RU$
+	Возвращает название свойства по хэш-коду.
+$DESCRIPTION$
+	HashName() returns <sName> properties name by hashcode <nHashCode> or
+	empty string if unfortunately.
+$LANG_RU$
+	HashName() возвращает <sName> название свойства по хэш-коду <nHashCode> или
+	пустую строку в случае неуспеха.
+$ENDMETHOD$
+
+$METHODNAME$
+	Counter()
+$SUMMARY$
+	Returns counter value.
+$LANG_RU$
+	Вернуть значение счетчика.
+$SYNTAX$
+	Counter(<sCounterName>, <nDep>[, <nValue>]) 	--> <nCounter>
+$ARGUMENTS$
+	<sCounterName>	String, counter name
+	<nDep>		Numeric, the depository number
+	<nValue>	Numeric, the new counter value
+$LANG_RU$
+	<sCounterName>	String, название счетчика
+	<nDep>		Numeric, номер депозитария
+	<nValue>	Numeric, новое значение счетчика
+$RETURNS$
+	Returns current counter value.
+$LANG_RU$
+	Возвращает текущее значение счетчика.
+$DESCRIPTION$
+	Counter() returns <nCounter> the current value for counter with name
+	<sCounterName> into depository with number <nDep>.
+
+	If specified <nValue>, then counter <sCounterName> takes new value <nValue>.
+$LANG_RU$
+	Counter() возвращает <nCounter> текущее значение счетчика с именем
+	<sCounterName> для депозитария с номером <nDep>.
+
+	Если определено значение <nValue>, счетчик <sCounterName> устанавливается
+	в <nValue>.
+$ENDMETHOD$
+
+
+
+$EXAMPLES$
+/* create new object of class CODICTIONARY */
+oDict := coDictionary():new("MY001")
+oDict:open()
+....
+
+/* create new object specifier */
+depBody := map()
+depBody:name := "depository for Russian global information"
+...
+/* append object to dictionary */
+dep_id := oDict:append(depBody,"DEPOSIT")
+
+/* check error */
+if !empty(oDict:error)
+   ? "Error:",oDict:error
+endif
+
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+	CODBLIST
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+

@@ -3,7 +3,7 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
 /*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 22 Feb 2005						   */
+/*   Last change: 25 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -76,8 +76,8 @@
 #define IMG_QUESTION	4
 
 /* FRAME TYPES */
-#define FRAME_PLAIN	GTK_SHADOW_NONE
-#define FRAME_SUNKEN	GTK_SHADOW_IN
-#define FRAME_RAISED	GTK_SHADOW_OUT
-#define FRAME_IN	GTK_SHADOW_ETCHED_IN
-#define FRAME_OUT	GTK_SHADOW_ETCHED_OUT
+#define FRAME_PLAIN	0
+#define FRAME_SUNKEN	1
+#define FRAME_RAISED	2
+#define FRAME_IN	3
+#define FRAME_OUT	4

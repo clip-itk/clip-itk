@@ -1,0 +1,44 @@
+$FUNCNAME$
+  MAP()
+$CATEGORY$
+	ARRAY, OBJECT
+$SUMMARY$
+	Create new empty object (associative array)
+$LANG_RU$
+	Создает новый пустой объект (ассоциативный массив)
+$SYNTAX$
+     MAP() 	--> <oObject>
+$ARGUMENTS$
+$RETURNS$
+     Returns empty object.
+$LANG_RU$
+     Возвращает пустой объект.
+$DESCRIPTION$
+     MAP() createst new empty object (associative array) and returns it.
+$LANG_RU$
+     Map() создает новый пустой объект (ассоциативный массив) и возвращает его.
+$EXAMPLES$
+aMap := MAP()
+aMap:Name := "User1"
+aMap:Phone := "111-11-11"
+aMap:PhoneCount := 12
+
+PrintInfo(aMap)	     // Users name: User1
+		     // Phone     : 111-11-11
+		     // Count     :  13
+////////////////
+static function PrintInfo( Obj )
+	qout ("Users name: "+Obj:Name)
+	qout ("Phone     : "+Obj:Phone)
+	Obj:PhoneCount ++
+	qout ("Count     : "+str(Obj:PhoneCount, 3))
+return .t.
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+

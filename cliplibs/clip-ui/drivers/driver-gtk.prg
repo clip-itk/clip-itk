@@ -529,11 +529,11 @@ return 0
 static function ui_createImage(self, file, isString)
 	local o
         if .not. empty(isString) .and. isString
-		o := gtk_PixmapCreateFromXPMD(,file,)
+		o := gdk_PixmapCreateFromXPMD(,file,)
         elseif empty(file) .or. FILEATTR(file) == 0
-		o := gtk_PixmapCreateFromXPMD(,getSysImage( IMG_EMPTY ),)
+		o := gdk_PixmapCreateFromXPMD(,getSysImage( IMG_EMPTY ),)
 	else
-		o := gtk_PixmapFromXPMNew(, file )
+		o := gdk_PixmapFromXPMNew(, file )
 	endif
 return o
 

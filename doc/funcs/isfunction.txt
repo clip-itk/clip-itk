@@ -1,0 +1,53 @@
+$FUNCNAME$
+	ISFUNCTION()
+$CATEGORY$
+	INFO
+$SUMMARY$
+	Checks if a varialbe name is a function name.
+$LANG_RU$
+	Проверка, является ли имя переменной именем функции.
+$SYNTAX$
+     ISFUNCTION(<sVarName>) 	--> TRUE || FALSE
+$ARGUMENTS$
+     <sVarName>	String, is the variable name.
+$LANG_RU$
+     <sVarName>	String, имя переменной.
+$RETURNS$
+     Returns TRUE if a varialbe name is a function name.
+$LANG_RU$
+     Возвращает TRUE, если имя переменной является именем функции.
+$DESCRIPTION$
+
+	ISFUNCTION() returns TRUE if a varialbe name <sVarName> is a
+	function name.
+$LANG_RU$
+
+	ISFUNCTION() возвращает TRUE, если имя переменной <sVarName> является именем
+	функции.
+$EXAMPLES$
+
+PRIVATE VarName
+....
+
+static function Fnc()
+.....
+return
+
+...
+
+? ISFUNCTION("Fnc") 	// --> TRUE
+? ISFUNCTION("VarName") 	// --> FALSE
+VarName := "Fnc"
+? ISFUNCTION(VarName) 	// --> TRUE
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

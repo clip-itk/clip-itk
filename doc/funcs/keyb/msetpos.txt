@@ -1,0 +1,13 @@
+$FUNCNAME$
+  MSETPOS()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Set a new position for the mouse cursor
+$SYNTAX$
+     MSETPOS( <nRow>, <nCol> ) --> NIL
+$RETURNS$
+     MSETPOS() always returns NIL.
+$SEEALSO$
+  MSETCURSOR(),MROW(),MCOL()
+$END$

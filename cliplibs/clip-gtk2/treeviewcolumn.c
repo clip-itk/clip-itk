@@ -77,7 +77,7 @@ clip_GTK_TREEVIEWCOLUMNNEWWITHATTRIBUTES(ClipMachine * cm)
         gint  attrn[34];
         gchar *attrs[34];
 
-	CHECKARG2(1,MAP_t,NUMERIC_t);
+	CHECKOPT2(1,MAP_t,NUMERIC_t);
 	CHECKARG(2,CHARACTER_t);
 	CHECKARG2(3,MAP_t,NUMERIC_t); CHECKCOBJOPT(ccell, GTK_IS_CELL_RENDERER(ccell->object));
 
@@ -196,8 +196,9 @@ clip_GTK_TREEVIEWCOLUMNADDATTRIBUTE(ClipMachine * cm)
         CHECKARG(3, CHARACTER_t);
         CHECKARG(4, NUMERIC_t);
 
+	position --;
 	gtk_tree_view_column_add_attribute(GTK_TREE_VIEW_COLUMN(ccolumn->object),
-		GTK_CELL_RENDERER(crenderer->object), attribute, position-1);
+		GTK_CELL_RENDERER(crenderer->object), attribute, position);
 
 	return 0;
 err:

@@ -1,0 +1,38 @@
+$FUNCNAME$
+  OS()
+$CATEGORY$
+  SYSTEM,ENVIRONMENT,INFO
+$SUMMARY$
+   Return the operating system name
+$LANG_RU$
+   Возвращает имя операционной системы.
+$SYNTAX$
+     OS() --> cOsName
+$LANG_RU$
+     OS() --> имя операционной системы
+$RETURNS$
+     OS() returns the operating system name as a character string.
+$LANG_RU$
+     OS() возвращает имя операционной системы в виде символьной строки.
+$DESCRIPTION$
+     OS() is an environment function that returns the name of the disk
+     operating system under which the current workstation is operating.  The
+     name is returned in the form of the operating system name followed by
+     the version number.
+$LANG_RU$
+     OS() - функция среды, которая возвращает имя дисковой операционной
+     системы, под управлением которой работает данный компьютер. Имя,
+     которое возвращает функция OS(), состоит из двух частей: названия
+     операционной системы и номера версии.
+$EXAMPLES$
+       This example uses OS() to report the operating system under
+	which the current workstation is running:
+
+	? OS()                  // Result: LINUX
+$LANG_RU$
+      В этом примере функция OS() возвращает имя операционной системы.
+
+       ? OS()                 // Результат: LINUX
+$SEEALSO$
+  VERSION(),GETENV()
+$END$

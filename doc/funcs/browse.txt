@@ -1,0 +1,48 @@
+$FUNCNAME$
+  BROWSE()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Browse records within a window
+$LANG_RU$
+   Просматривает записи в заданном окне.
+$SYNTAX$
+     BROWSE([<nTop>], [<nLeft>], [<nBottom>], [<nRight>]) lSuccess
+$LANG_RU$
+     BROWSE([<верхняя строка>],[<левая колонка>], [<нижняя строка>],[<правая колонка>]) --> NIL
+$ARGUMENTS$
+     <nTop>, <nLeft>, <nBottom>, and <nRight> define the
+     window coordinates.  If not specified, the default window coordinates
+     are 1, 0 to MAXROW(), and MAXCOL().
+$LANG_RU$
+     <верхняя строка>,<левая колонка>,<нижняя строка> и <правая колонка> -
+     определяют координаты окна.
+
+     Если они не заданы, то по умолчанию принимаются координаты 1, 0,
+     MAXROW(), MAXCOL().
+$RETURNS$
+     BROWSE() always return NIL.
+$LANG_RU$
+     Функция BROWSE() всегда возвращает NIL.
+$DESCRIPTION$
+     BROWSE() is a user interface function that invokes a general purpose
+     table-oriented browser and editor for records in the current work area.
+     For a list of the navigation keys which are used by BROWSE(), refer to
+     the DBEDIT() function.  Note that Browse() is a compatibility function.
+     DBEDIT() should be used in its place.  For a more complicated BROWSE(),
+     TBROWSE() should be used.
+$LANG_RU$
+     BROWSE() - это функция для организации интерфейса с пользователем.
+     Список клавиш управления курсором, используемых в функции, приведен
+     в описании функции DBEDIT().
+$EXAMPLES$
+
+       This is an example of browsing a file:
+
+	USE File1 NEW
+	BROWSE()
+
+
+$SEEALSO$
+  DBEDIT()
+$END$

@@ -1,0 +1,13 @@
+$FUNCNAME$
+  MCOL()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Determine the mouse cursor's screen column position
+$SYNTAX$
+     MCOL() --> nCurrentMouseColumn
+$RETURNS$
+     MCOL() returns the mouse cursor's current screen column position.
+$SEEALSO$
+  MROW()
+$END$

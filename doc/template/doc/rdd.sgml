@@ -1,0 +1,316 @@
+<chapter id="rdd"><title>_(Replaceable Database Drivers (RDD))_</title>
+
+<section id="rddoverview"><title>_(Overview)_</title>
+<para>_(
+RDD is an abbreviation for Replaceable Database Drivers, that are
+used for processing a particular database format. RDD is an intermediate
+layer, that translates CLIP API calls to the low level file operations.
+)_</para><para>_(
+RDD architecture used in CLIP differs from those used in Clipper.
+CLIP RDD (in conception of Clipper) consist of three different
+<emphasis>subdrivers</emphasis>: table driver, index driver and memo driver.
+These drivers can be easily combined in any way.
+)_</para><para>_(
+Besides, CLIP have additional developer interface - a set of RDD*()
+functions, that operate with the database <emphasis>descriptors</emphasis>,
+instead of <emphasis>work areas</emphasis>.
+)_</para><para>_(
+Some of the most interesting features of CLIP RDD subsystem are listed below:
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+query optimizer (Rushmore/MachSIx like technology)
+)_</para></listitem>
+<listitem><para>_(
+VARCHAR fields (compact storing of strings with length up to 64K)
+)_</para></listitem>
+<listitem><para>_(
+VARIANT fields, allowing to store data of any basic XBase type
+(CHARACTER, NUMERIC, DATE, DATETIME or LOGIC)
+)_</para></listitem>
+<listitem><para>_(
+storing data of any type (including objects) in memo-fields
+)_</para></listitem>
+<listitem><para>_(
+Roll-Your-Own filters
+)_</para></listitem>
+<listitem><para>_(
+MEMOPACK and Flexible FPT (reusing discarded blocks, that reduces memo bloat)
+)_</para></listitem>
+<listitem><para>_(
+support of "scoped" SET RELATION (only "right" child table records are visible)
+)_</para></listitem>
+<listitem><para>_(
+Roll-Your-Own indexes
+)_</para></listitem>
+<listitem><para>_(
+multiple record locking
+)_</para></listitem>
+<listitem><para>_(
+database event triggers
+)_</para></listitem>
+<listitem><para>_(
+record edit rollbacks
+)_</para></listitem>
+<listitem><para>_(
+"temporary" tables (that are deleted on CLOSE automatically)
+)_</para></listitem>
+</itemizedlist>
+</section>
+
+<section id="rddrdds"><title>_(RDDs peculiarities)_</title>
+<para>_(
+There are following subdrivers:
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+table drivers: DBF, FOX and VFP
+)_</para></listitem>
+<listitem><para>_(
+index drivers: NTX, CTX, CDX, IDX
+)_</para></listitem>
+<listitem><para>_(
+memo drivers: DBT, FPT
+)_</para></listitem>
+</itemizedlist>
+<para>_(
+The following RDDs (in conception of Clipper) consist of these subdrivers:
+)_</para>
+<itemizedlist>
+<listitem><para>
+DBFNTX: DBF + NTX + DBT
+</para></listitem>
+<listitem><para>
+DBFCTX: DBF + CTX + DBT
+</para></listitem>
+<listitem><para>
+DBFCDX: FOX + CDX + FPT
+</para></listitem>
+<listitem><para>
+DBFIDX: FOX + IDX + FPT
+</para></listitem>
+<listitem><para>
+SIXCDX: FOX + CDX + FPT _(synonym for DBFCDX)_
+</para></listitem>
+<listitem><para>
+VFPCDX: VFP + CDX + FPT
+</para></listitem>
+</itemizedlist>
+
+<section id="rddtables"><title>_(Table drivers)_</title>
+<para>_(
+CLIP discerns the type of table to be opened using file signature,
+i.e. the table is opened successfully even if specified table RDD
+is different. But that does not apply to memo files and indexes.
+)_</para><para>_(
+DBF and FOX drivers are mostly the same. The only difference is
+file signature for tables with memo (0xF5 with FOX, 0x83 with DBF).
+VFP driver operates with Visual FoxPro tables. VFP table have
+different header, and provides some possibilities that are missing
+in usual DBF format, e.g. possibility of creating binary fields and
+nullable fields (5th and 6th elements in the field description,
+used in DBCREATE() and DBSTRUCT()).
+)_</para><para>_(
+All table drivers support all field types, described below.
+)_</para>
+<table id="rddfieldtypes"><title>_(Field types)_</title>
+<tgroup cols="4">
+<thead>
+<row>
+<entry>_(Field type)_</entry>
+<entry>_(Identifier(s))_</entry>
+<entry>_(Size in table)_</entry>
+<entry>_(Description)_</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>CHARACTER</entry>
+<entry>'C'</entry>
+<entry>1 ... 65534</entry>
+<entry>_(Character strings)_</entry>
+</row>
+<row>
+<entry>VARCHAR<footnote id="rddfn1"><para>_(
+VARCHAR type allows to store character data of any size. At that,
+the first <![CDATA[<size_of_field>]]> - 6 bytes are stored in .DBF file itself,
+remaining are stored in MEMO file. In the time of indexing,
+only those bytes stored in .DBF are used.
+)_</para></footnote></entry>
+<entry>'V'
+<footnote id="rddfn2"><para>_(Borrowed from SIx library)_</para></footnote>
+</entry>
+<entry>1 ... 65534</entry>
+<entry>_(Variable length character strings)_</entry>
+</row>
+<row>
+<entry>NUMERIC</entry>
+<entry>'N', 'F'
+<footnote id="rddfn3"><para>_(Borrowed from VFP)_</para></footnote>
+</entry>
+<entry>1 ... 20</entry>
+<entry>_(Integers or fractions)_</entry>
+</row>
+<row>
+<entry>CURRENCY</entry>
+<entry>'Y'<footnoteref linkend="rddfn3"/></entry>
+<entry>8</entry>
+<entry>_(Monetary amounts)_</entry>
+</row>
+<row>
+<entry>DOUBLE</entry>
+<entry>'B'<footnoteref linkend="rddfn3"/></entry>
+<entry>8</entry>
+<entry>_(Double precision floating point numbers)_</entry>
+</row>
+<row>
+<entry>INTEGER</entry>
+<entry>'I'<footnoteref linkend="rddfn3"/>,
+'V(4)'<footnoteref linkend="rddfn2"/></entry>
+<entry>4</entry>
+<entry>_(Integer values)_</entry>
+</row>
+<row>
+<entry>DATE</entry>
+<entry>'D', 'V(3)'<footnoteref linkend="rddfn2"/></entry>
+<entry>_(8 (3 bytes with V(3)))_</entry>
+<entry>_(Chronological data consisting of year, month, day)_</entry>
+</row>
+<row>
+<entry>DATETIME</entry>
+<entry>'T'<footnoteref linkend="rddfn3"/></entry>
+<entry>8</entry>
+<entry>_(Chronological data consisting of year, month, day and time)_</entry>
+</row>
+<row>
+<entry>LOGICAL</entry>
+<entry>'L'</entry>
+<entry>1</entry>
+<entry>_(Boolean values of true or false)_</entry>
+</row>
+<row>
+<entry>MEMO</entry>
+<entry>'M'</entry>
+<entry>10 (4 with VFP)</entry>
+<entry>_(Data of any type)_
+<footnote id="rddfn4">
+<para>_(Available with FPT memo driver, only CHARACTER with DBT)_</para>
+</footnote>
+_( with no size limits)_</entry>
+</row>
+<row>
+<entry>BLOB<footnote><para>_(
+BLOB type is always binary, regardless of binary status in field description,
+passed to DBCREATE() function.
+)_</para></footnote></entry>
+<entry>'P'<footnoteref linkend="rddfn3"/>,
+'G'<footnoteref linkend="rddfn3"/></entry>
+<entry>10 (4 with VFP)</entry>
+<entry>_(Binary data of any type)_
+<footnoteref linkend="rddfn4"/>
+_( with no size limits)_</entry>
+</row>
+<row>
+<entry>VARIANT<footnote><para>_(
+VARIANT type allows to store the data of any basic xBase type. Character
+strings can be of size <![CDATA[<size_of_field>]]> - 2 (two bytes are
+reserved for storing type and length). VARIANT fields can be indexed.
+The order of values of various types in index is as the following:
+CHARACTER, LOGICAL, DATE, DATETIME, NUMERIC.
+)_</para></footnote></entry>
+<entry>'X'</entry>
+<entry>10 ... 127</entry>
+<entry>_(Data of any xBase type (CHARACTER, NUMERIC, DATE, DATETIME or LOGICAL))_</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+</section>
+
+<section id="rddindexes"><title>_(Index drivers)_</title>
+<para>_(
+The following table summarizes the availability of key features across
+index drivers.
+)_</para>
+<table id="rddindexfeatures"><title>_(Index features summary)_</title>
+<tgroup cols="5">
+<thead>
+<row>
+<entry>_(Item)_</entry>
+<entry>NTX</entry>
+<entry>CTX</entry>
+<entry>IDX</entry>
+<entry>CDX</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>_(Order management (tag support))_</entry>
+<entry>_(No)_</entry><entry>_(Yes)_</entry>
+<entry>_(No)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(Number of orders (tags) per file)_</entry>
+<entry>1</entry><entry>63</entry>
+<entry>1</entry><entry>No limit</entry>
+</row><row>
+<entry>_(Number of order bags (files) per work area)_</entry>
+<entry>_(No limit)_</entry><entry>_(No limit)_</entry>
+<entry>_(No limit)_</entry><entry>_(No limit)_</entry>
+</row><row>
+<entry>_(Conditional indexes (FOR clause))_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(Temporary (partial) indexes (WHILE clause))_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(Descending via DESCENDING clause)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(Unique via the UNIQUE clause)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(EVAL and EVERY clause support)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(Structural indexes)_</entry>
+<entry>_(No)_</entry><entry>_(Yes)_</entry>
+<entry>_(No)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(Maximum key expression length (bytes))_</entry>
+<entry>256</entry><entry>256</entry>
+<entry>255</entry><entry>255</entry>
+</row><row>
+<entry>_(Maximum FOR condition length (bytes))_</entry>
+<entry>256</entry><entry>256</entry>
+<entry>255</entry><entry>255</entry>
+</row><row>
+<entry>_(Scoped relations support)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+</row><row>
+<entry>_(Filter and FOR clause optimization (MachSIx/Rushmore technology))_</entry>
+<entry>_(No)_</entry><entry>_(No)_</entry>
+<entry>_(Yes)_</entry><entry>_(Yes)_</entry>
+</row>
+</tbody></tgroup></table>
+</section>
+
+<section id="rddmemo"><title>_(Memo drivers)_</title>
+<para>_(
+There are two memo drivers DBT and FPT. DBT memo files are used with
+DBFNTX and DBFCTX RDDs. DBT file format is fully compatible with Clipper.
+FPT memo files used with DBFCDX and DBFIDX RDDs have more powerful format,
+that can store not only textual data, but any other data. FPT
+file can store any CLIP data type, including objects, binary data
+(e.g. images), etc.
+)_</para>
+</section>
+
+</section>
+
+</chapter>

@@ -1,0 +1,95 @@
+$FUNCNAME$
+  SAVESCREEN()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Save a screen region for later display
+$LANG_RU$
+   Сохраняет область экрана для дальнейшего вывода.
+$SYNTAX$
+     SAVESCREEN([<nTop>], [<nLeft>], [<nBottom>], [<nRight>]) --> cScreen
+$LANG_RU$
+     SAVESCREEN(<верхняя строка>,<левая колонка>,<нижняя строка>,
+	  <правая колонка>) --> образ экрана
+$ARGUMENTS$
+     <nTop>, <nLeft>, <nBottom>, and <nRight> define the
+     coordinates of the screen region to be saved.  If either <nBottom> or
+     <nRight> is greater than MAXROW() or MAXCOL(), the screen is clipped.
+     If you specify no coordinates, the entire screen (i.e., from 0,0 to
+     MAXROW(), MAXCOL()) is saved.
+$LANG_RU$
+     <верхняя строка>,<левая колонка>,<нижняя строка> и <правая колонка>
+     определяют координаты области экрана, которую надо сохранить. Если
+     <нижняя строка> или <правая колонка> больше, чем MAXROW() или
+     MAXCOL(), то экран усекается.
+$RETURNS$
+     SAVESCREEN() returns the specified screen region as a character string.
+$LANG_RU$
+     SAVESCREEN() возвращает заданную область экрана в виде символьной
+     строки.
+$DESCRIPTION$
+     SAVESCREEN() is a screen function that saves a screen region to a
+     variable of any storage class including a field variable.  Later, you
+     can redisplay the saved screen image to the same or a new location using
+     RESTSCREEN().  Screen regions are usually saved and restored when using
+     a pop-up menu routine or dragging a screen object.
+
+     Warning!  SAVE SCREEN, RESTORE SCREEN, SAVESCREEN(), and
+     RESTSCREEN() are supported when using the default (IBM PC memory mapped)
+     screen driver.  Other screen drivers may not support saving and
+     restoring screens.
+$LANG_RU$
+     SAVESCREEN() - это функция работы с экраном, используемая для
+     сохранения области экрана в переменной любого класса памяти, включая
+     поле. Позднее вы можете "перерисовать" изображение сохраненного
+     экрана в том же самом или в другом месте экрана с помощью
+     RESTSCREEN().
+
+     Обычно области экрана сохраняются и восстанавливаются, когда
+     используется программа с "всплывающим" (pop-up) меню или для
+     перемещения объекта экрана.
+
+     Предупреждение:
+     Команды SAVE SCREEN и RESTORE SCREEN и функции SAVESCREEN() и
+     RESTSCREEN() поддерживаются только при использовании стандартного
+     заданного по умолчанию экранного драйвера ( IBM-PC карта памяти ).
+     Использование других экранных драйверов не гарантирует поддержку
+     работы этих функций.
+$EXAMPLES$
+       The following user-defined function creates a pop-up menu
+	using ACHOICE() with SAVESCREEN() and RESTSCREEN(), returning the
+	selection in the array of choices:
+
+	FUNCTION PopMenu( nTop, nLeft, nBottom, nRight, ;
+			     aItems, cColor )
+	   LOCAL cScreen, nChoice, cLastColor := ;
+		 SETCOLOR(cColor)
+	   //
+	   cScreen:= SAVESCREEN(nTop, nLeft, nBottom, nRight)
+	   @ nTop, nLeft TO nBottom, nRight DOUBLE
+	   //
+	   nChoice:= ACHOICE(++nTop, ++nLeft, ;
+			--nBottom, --nRight, aItems)
+	   //
+	   RESTSCREEN(--nTop, --nLeft, ++nBottom, ++nRight, ;
+			  cScreen)
+	   SETCOLOR(cLastColor)
+	   RETURN nChoice
+$LANG_RU$
+      Следующая функция пользователя создает всплывающее (pop-up) меню с
+       помощью ACHOICE() в сочетании с SAVESCREEN() и RESTSCREEN():
+
+       FUNCTION PopMenu( nTop, nLeft, nBottom, nRight, aItems, cColor )
+	  LOCAL cScreen, nChoice, cLastColor := SETCOLOR(cColor)
+	  //
+	  cScreen = SAVESCREEN( nTop, nLeft, nBottom, nRight)
+	  @ nTop, nLeft TO nBottom, nRight DOUBLE
+	  //
+	  nChoice = ACHOICE(++nTop, ++nLeft, --nBottom, --nRight, aItems)
+	  //
+	  RESTSCREEN( --nTop, --nLeft, ++nBottom, ++nRight, cScreen)
+	  SETCOLOR(cLastColor)
+	  RETURN nChoice
+$SEEALSO$
+  RESTSCREEN()
+$END$

@@ -40,7 +40,7 @@ FUNCTION ReadModal( _GetList, nPos, oMenu, nMsgRow, nMsgLeft, ;
    if oStatus==NIL
       __getSysInit()
    endif
-   private getlist := {}
+   //private getlist := {}
 
    IF ( VALTYPE( oStatus:format ) == "B" )
       EVAL( oStatus:format )

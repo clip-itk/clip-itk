@@ -1,0 +1,45 @@
+$FUNCNAME$
+  GETPREVALIDATE()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Prevalidate a Get object
+$SYNTAX$
+     GETPREVALIDATE(<oGet>) --> lSuccess
+$ARGUMENTS$
+     <oGet> is a reference to the current Get object.
+$RETURNS$
+     GETPREVALIDATE() returns a logical value indicating whether the Get
+     object has been prevalidated successfully.
+$DESCRIPTION$
+     GETPREVALIDATE() is a function that validates the Get object for
+     editing, including evaluating Get:preBlock (the WHEN clause) if it is
+     present.  The logical return value indicates whether the GET has been
+     prevalidated successfully.
+
+     Get:exitState is also set to reflect the outcome of the prevalidation:
+
+     <PRE> Get:exitState Values
+     ------------------------------------------------------------------------
+     Getexit.ch   Meaning
+     ------------------------------------------------------------------------
+     GE_NOEXIT    Indicates prevalidation success, okay to edit
+     GE_WHEN      Indicates prevalidation failure
+     GE_ESCAPE    Indicates that a CLEAR GETS was issued
+     ------------------------------------------------------------------------
+     </PRE>
+
+     Note that in the default system, a Get:exitState of GE_ESCAPE cancels
+     the current GET and terminates READMODAL().
+$EXAMPLES$
+       This example demonstrates the GETPREVALIDATE() function.
+
+	IF GETPREVALIDATE (oGet)
+	   // process the get
+	ELSE
+	   // WHEN clause not satisfied
+	   // give a warning to the user
+	ENDIF
+$SEEALSO$
+  GETAPPLYKEY(),GETDOSETKEY(),GETPOSTVALIDATE()
+$END$

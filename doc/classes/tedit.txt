@@ -1,0 +1,2446 @@
+$CLASSNAME$
+	TEXTEDIT
+$SUMMARY$
+	Class are destined to manipulating text data - load/save from
+	file/string, insert, delete, manipulation with marked data and
+	clipboard, formated text and more. TEXTEDIT is a base class for
+	function memoedit and class MEDIT.
+$LANG_RU$
+	Класс предназначен для работы с текстом. Чтение/запись в файл или
+	строку, редактирование данных, манипуляции с блоками, форматирование
+	текста. TEXTEDIT используется как базовый класс для функции
+	memoedit() и для класса MEDIT.
+$ABOUT$
+	Class are destined to manipulating text data - load/save from
+	file/string, insert, delete, manipulation with marked data and
+	clipboard, formated text and more. TEXTEDIT is a base class for
+	function memoedit and class MEDIT.
+$LANG_RU$
+	Класс предназначен для работы с текстом. Чтение/запись в файл или
+	строку, редактирование данных, манипуляции с блоками, форматирование
+	текста. TEXTEDIT используется как базовый класс для функции
+	memoedit() и для класса MEDIT.
+$SYNTAX$
+	TextEditNew(<Lrow>, <Lcol>, <Rrow>, <Rcol>, [<color>]) 	--> new TEXTEDIT object
+$ATTRIBUTES$
+	<ClassName> TEXTEDIT
+	<Path>		String, path to editing file
+	<FileName>   	String, file name of editing file
+	<ColorSpec>	String, color specification. If parameters <color> not specified,
+			this attributes take value from SetColor()
+
+			"clr1, clr2, clr3, clr4"
+			clr1 - symbols base color
+			clr2 - EOF-string color
+			clr3 - mark symbols color
+			clr4 - mark founded symbols color
+
+	<nTop> 		a TEXTEDIT viewport coordinates, specified by <Lrow> parameters
+	<nLeft>         a TEXTEDIT viewport coordinates, specified by <Lcol> parameters
+	<nBottom>       a TEXTEDIT viewport coordinates, specified by <Rrow> parameters
+	<nRight>        a TEXTEDIT viewport coordinates, specified by <Rcol> parameters
+	<Lines>		Numeric, lines in TEXTEDIT
+	<Line>		Numeric, current line
+	<Pos>		Numeric, cursor position into current line
+	<ColWin>	Numeric, cursor position into TEXTEDIT viewport
+	<RowWin>	Numeric, cursor position into TEXTEDIT viewport
+	<Updated>	Logical, is TRUE if data changed
+	<MarginLeft>	Numeric, the left margin value, specified as TE_MARGIN_LEFT
+	<MarginRight>	Numeric, the right margin value, specified as TE_MARGIN_RIGHT
+	<TabSize>	Numeric, the tabulation size value, specified as TE_TABSIZE
+	<Hyphen>	Logical, if TRUE, then hyphen, specified as TE_HYPHEN
+	<MaxStrings>	Numeric, the max strings value in TEXTEDIT, specified as TE_MAXSTRINGS
+	<TabPack>	Logical, if TRUE, all symbols Tab will be packing by load and save string/file.
+			By default specified as set("edit_tabpack")
+	<InFocus>	Logical, if TRUE object in focus.
+	<MkBlock>	Logical, if TRUE then block is marked.
+	<StrBlock>	Logical, if TRUE then string block  is marked.
+	<RectBlock>	Logical, if TRUE then rectangle block  is marked.
+	<KoordBlock>	Array of numeric value, the block coordinates {<nTop>, <nLeft>, <nBottom>, <nRight>} or
+			{<nBottom>, <nRight>, <nTop>, <nLeft>}
+	<LenUndo>	Numeric, the length undo buffer. By default is 100.
+	<Charset>	String, data charset.
+	<EofString>	String, the text of <end of file>. By default is <EOF>
+	<lEofString>	Logical, if TRUE, showing string <EofString> as last string
+			of viewing data.
+	<HighLightColor>MAP, the map includes string numer what selected special color.
+	<Nstyle>	Logical, is TRUE if every line into TEXTEDIT viewport has string
+			number.
+	<EdBuffer>	Array, array of string to edit. It is editor buffer.
+
+$LANG_RU$
+	<ClassName> 	TEXTEDIT
+	<Path>		String, путь к редактируемому файлую
+	<FileName>   	String, имя файла.
+	<ColorSpec>	String, цветовая спецификация. Если параметр <color> не задан,
+			атрибут принимает значение SetColor()
+
+			"clr1, clr2, clr3, clr4"
+			clr1 - основной цвет символа
+			clr2 - цвет строки EOF
+			clr3 - цвет выделенных строк/подстрок
+			clr4 - цвет найденой подстроки
+
+	<nTop> 		координаты области редакторования TEXTEDIT, задается параметром <Lrow>
+	<nLeft>         координаты области редакторования TEXTEDIT, задается параметром <Lcol>
+	<nBottom>       координаты области редакторования TEXTEDIT, задается параметром <Rrow>
+	<nRight>        координаты области редакторования TEXTEDIT, задается параметром <Rcol>
+	<Lines>		Numeric, количество строк в редактируемом объекте TEXTEDIT
+	<Line>		Numeric, номер текущей строки.
+	<Pos>		Numeric, позиция курсора в строке.
+	<ColWin>	Numeric, позиция курсора в строке в области редактирования.
+	<RowWin>	Numeric, позиция курсора - строка - в области редактирования.
+	<Updated>	Logical, TRUE, если данные изменены и изменения не сохранены.
+	<MarginLeft>	Numeric, левая граница текста, по умолчанию TE_MARGIN_LEFT
+	<MarginRight>	Numeric, правая граница, по умолчанию TE_MARGIN_RIGHT
+	<TabSize>	Numeric, шаг табуляции, по умолчанию TE_TABSIZE
+	<Hyphen>	Logical, если TRUE, то при форматировании текства в словах возможен перено, по умолчанию TE_HYPHEN
+	<MaxStrings>	Numeric, максимальное количество строк в буфере редактирования TEXTEDIT, по умолчанию TE_MAXSTRINGS
+	<TabPack>	Logical, если TRUE, символы "пробел" по возможности упакуются в <Tab>
+			По умолчанию set("edit_tabpack")
+	<InFocus>	Logical, если  TRUE, объект в фокусе.
+	<MkBlock>	Logical, если TRUE, отмечен какой-либо блок.
+	<StrBlock>	Logical, если TRUE, отмечен строчный блок.
+	<RectBlock>	Logical, если TRUE, отмечен прямоугольный блок.
+	<KoordBlock>	Array of numeric value, координаты блока в буфере редактирования  {<nTop>, <nLeft>, <nBottom>, <nRight>} или
+			{<nBottom>, <nRight>, <nTop>, <nLeft>}
+	<LenUndo>	Numeric, размер буфера отката (undo). По умолчанию 100.
+	<Charset>	String, кодировка.
+	<EofString>	String, текст строки <end of file>. По умолчанию <EOF>
+	<lEofString>	Logical, если TRUE, показывать строку <EofString> по достижени
+			конца буфера редактирования.
+	<HighLightColor>MAP, АМ, содержаший номера строк отображаемых специально заданным цветом.
+	<Nstyle>	Logical, если TRUE, каждая строка текста в области редактирования содержит порядковый номер.
+	<EdBuffer>	Array, array of string to edit. Буфер редактирования.
+
+$METHODNAME$
+	TextEditNew()
+$SUMMARY$
+	TEXTEDIT object constructor.
+$LANG_RU$
+	Конструктор объекта TEXTEDIT.
+$SYNTAX$
+	TextEditNew(<Lrow>, <Lcol>, <Rrow>, <Rcol>, [<color>]) 	--> new TEXTEDIT object
+$ARGUMENTS$
+
+	<Lrow> a TEXTEDIT coordinates.
+	<Lcol> a TEXTEDIT coordinates.
+	<Rrow> a TEXTEDIT coordinates.
+	<Rcol> a TEXTEDIT coordinates.
+	<color> a TEXTEDIT color string.
+$LANG_RU$
+	<Lrow>  координаты TEXTEDIT.
+	<Lcol>  координаты TEXTEDIT.
+	<Rrow>  координаты TEXTEDIT.
+	<Rcol>  координаты TEXTEDIT.
+	<color> TEXTEDIT цветовая спецификация.
+$RETURNS$
+	Method returns new TEXTEDIT object.
+$LANG_RU$
+	Метод возвращает новый объект TEXTEDIT.
+$DESCRIPTION$
+	TextEditNew() is constructs and returns new TEXTEDIT object.
+	That class can be used to edit, view, control some data - string or
+	file.
+$LANG_RU$
+	TextEditNew() создает и возвращает объект TEXTEDIT.
+	Объект этого класса может быть использован для просмотра, редактирования,
+	управления текстовыми данными.
+$ENDMETHOD$
+
+$METHODNAME$
+	Down()
+$SUMMARY$
+	Goes down one line.
+$LANG_RU$
+	Перемещение вниз на одну строку.
+$SYNTAX$
+	Down([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Down() is skipped editor buffer on the new position <::Line>+1.
+	The <::Line> and <::RowWin> attributes increased by 1. If <::RowWin>
+	is more then  bottom boundary of viewport, <::RowWin> take value
+	<::nBottom>-<::nTop>+1 and text in viewport scrolled up on 1 line.
+$LANG_RU$
+	Down() перемещает курсор на новую строку <::Line>+1.
+	Атрибуты <::Line> и <::RowWin> увеличиваются на 1. Если <::RowWin>
+	больше чем нижняя граница области редактирования, то <::RowWin> принимает значение
+	<::nBottom>-<::nTop>+1 и текст в области редактирования скроллируется вверх на 1 строку.
+$ENDMETHOD$
+
+$METHODNAME$
+	Up()
+$SUMMARY$
+	Goes up one line.
+$LANG_RU$
+	Перемещение вверх на одну строку.
+$SYNTAX$
+	Up([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Up() is skipped editor buffer on the new position <::Line>-1.
+	The <::Line> and <::RowWin> attributes decreased by 1. If <::RowWin>
+	is less then  1, <::RowWin> take value 1
+	and text in viewport scrolled down on 1 line.
+
+$LANG_RU$
+	Up() перемещает курсор на новую строку <::Line>-1.
+	Атрибуты <::Line> и <::RowWin> уменьшаются на 1. Если <::RowWin>
+	меньше 1, <::RowWin> принимает значение 1 и текст в области редактирования
+	скроллируется вниз на 1 строку.
+$ENDMETHOD$
+
+$METHODNAME$
+	Left()
+$SUMMARY$
+	Goes left one column.
+$LANG_RU$
+	Перемещение влево на одну позицию.
+$SYNTAX$
+	Left([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Left() goes left one column.
+	The <::Pos> and <::ColWin> attributes decreased by 1. If <::ColWin>
+	is less then  1, <::ColWin> take value 1
+	and text in viewport scrolled one column to right.
+
+$LANG_RU$
+	Left() перемещает курсор на 1 позицию влево.
+	Атрибуты <::Pos> и <::ColWin> уменьшаются на  1. если <::ColWin>
+	меньше 1, <::ColWin> принимает значение  1  и текст в области редактирования
+	скроллируется вправо на 1.
+$ENDMETHOD$
+
+$METHODNAME$
+	Right()
+$SUMMARY$
+	Goes right one column.
+$LANG_RU$
+	Перемещение вправо на 1 позицию.
+$SYNTAX$
+	Right([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Вовращает NIL.
+$DESCRIPTION$
+	Right() goes right one column.
+	The <::Pos> and <::ColWin> attributes increased by 1. If <::ColWin>
+	is more then  right boundary viewport, <::ColWin> take value
+	<::nRight>-<nLeft> + 1 and text in viewport scrolled one column to left.
+
+$LANG_RU$
+	Right() перемещает курсор вправо на 1 позицию.
+	Атрибуты <::Pos> и <::ColWin> увеличиваются на 1. Если <::ColWin>
+	больше чем правая граница области редактирования, <::ColWin> принимает значение
+	<::nRight>-<nLeft> + 1 и текст в области редактирования скроллируется влево на 1 колонку.
+$ENDMETHOD$
+
+$METHODNAME$
+	WordLeft()
+$SUMMARY$
+	Goes left one word.
+$LANG_RU$
+	Перемещение влево на одно слово.
+
+$SYNTAX$
+	WordLeft([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	WordLeft() moves cursor to begin left word from current word.
+	The <::Pos> and <::ColWin> attributes takes new value corresponded
+	first character new word.
+
+$LANG_RU$
+	WordLeft() перемещает курсор на начало левого слова от текущего.
+	Атрибуты <::Pos> и <::ColWin> принимают значения соответстующие
+	позиции первого символа в слове.
+$ENDMETHOD$
+
+$METHODNAME$
+	WordRight()
+$SUMMARY$
+	Goes right one word.
+$LANG_RU$
+	Перемещение вправо на одно слово.
+$SYNTAX$
+	WordRight([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	WordRight() moves cursor to begin right word from current word.
+	The <::Pos> and <::ColWin> attributes takes new value corresponded
+	first character new word.
+
+$LANG_RU$
+	WordRight() перемещает курсор на начало правого слова от текущего.
+	Атрибуты <::Pos> и <::ColWin> принимают значения соответстующие
+	позиции первого символа в новом слове.
+$ENDMETHOD$
+
+$METHODNAME$
+	Bottom()
+$SUMMARY$
+	Goes to the last string of editor buffer.
+$LANG_RU$
+	Перемещение на последнюю строку буфера редактирования.
+$SYNTAX$
+	Bottom([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Bottom() is scrolled data to the last string of editor buffer
+	(last element of <::EdBuffer>).
+	The <::Line> attribute set to <::Lines>
+	 and <::RowWin>  set to <::nBottom>-<::nTop>.
+$LANG_RU$
+	Bottom() перемещает указатель на последнюю строку
+	буфера редактирования.
+	Атрибут <::Line> принимает значение равное <::Lines>,
+	а <::RowWin> значение, равное <::nBottom>-<::nTop>.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	Top()
+$SUMMARY$
+	Goes to the first string of editor buffer.
+$LANG_RU$
+	Перемещение на начало.
+$SYNTAX$
+	Top([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Top() is scrolled data to the first string of editor buffer.
+	The <::Line> and <::RowWin> attributes set to 1.
+$LANG_RU$
+	Top() перемещает указатель на первую строку буфера редактирования.
+	Атрибуты  <::Line> и <::RowWin> устанавливаются равными 1.
+$ENDMETHOD$
+
+$METHODNAME$
+	Home()
+$SUMMARY$
+	Goes to the first line postion.
+$LANG_RU$
+	Перемещение на начало строки.
+$SYNTAX$
+	Home([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Home() is scrolled data to the first character not equal <space> of current line <::Line>.
+
+	The second call this method moves cursor to begin line.
+$LANG_RU$
+	Home() скроллирует текст на первый отличный от пробела символ текущей строки <::Line>.
+
+	Повторный вызов метода для этой же строки приводит к перемещению курсора
+	на начало строки.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	End()
+$SUMMARY$
+	Goes to the last line postion.
+$LANG_RU$
+	Перемещение в конец строки.
+$SYNTAX$
+	End([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	End() is scrolled data to the end current line <::Line>.
+	The <::Pos> attribute sets to len(<::Edbuffer[::Line]>)+1.
+$LANG_RU$
+	End() перемещает курсор в конец текущей строки <::Line>.
+	Атрибут <::Pos> принимает значение len(<::Edbuffer[::Line]>)+1.
+$ENDMETHOD$
+
+$METHODNAME$
+	PageDown()
+$SUMMARY$
+	Goes down one page.
+$LANG_RU$
+	Перемещение вниз на одну страницу.
+$SYNTAX$
+	PageDown([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	PageDown() is skipped editor buffer on the new position <::Line>+<::nBottom>-<nTop>.
+	The <::Line> attribute increased by <::nBottom>-<nTop>.
+	Data in viewport scrolled up on <::nBottom>-<nTop> line.
+$LANG_RU$
+	PageDown() перемещает курсор с текущей строки на новую строку
+	с номером <::Line>+<::nBottom>-<nTop>.
+
+	Атрибут <::Line> увеличивается на  <::nBottom>-<nTop> и текст в окне
+	редактирования скроллируется вверх на <::nBottom>-<nTop> строк.
+$ENDMETHOD$
+
+$METHODNAME$
+	PageUp()
+$SUMMARY$
+	Goes up one page.
+$LANG_RU$
+	Перемещение вверх на одну страницу.
+$SYNTAX$
+	PageUp([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	PageUp() is skipped editor buffer on the new position <::Line>-<::nBottom>-<nTop>.
+	The <::Line> attribute decreased by <::nBottom>-<nTop>.
+	Data in viewport scrolled down on <::nBottom>-<nTop> line.
+
+$LANG_RU$
+	PageUp() перемещает курсор с текущей строки на новую строку
+	с номером <::Line>-<::nBottom>-<nTop>.
+
+	Атрибут <::Line> уменьшается на  <::nBottom>-<nTop> и текст в окне
+	редактирования скроллируется вниз на <::nBottom>-<nTop> строк.
+$ENDMETHOD$
+
+$METHODNAME$
+	HandleKey()
+$SUMMARY$
+	Simple handle key.
+$LANG_RU$
+	Обработчик кодов.
+$SYNTAX$
+	HandleKey(<nKey>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<nKey> - Numeric, specified in <inkey.ch> key code
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<nKey> - Numeric, описанный в <inkey.ch> код клавиши.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if key will be processed else returns FALSE.
+$LANG_RU$
+	Возвращает TRUE если код был обработан и FALSE в противном случае.
+$DESCRIPTION$
+	HandleKey() is taked key code and try processed operation equal this
+	code (Moves up, down, left, right and more).
+$LANG_RU$
+	HandleKey() получает код клавиши и пытается выполнить операцию,
+	соответствующую коду(например, перемещение вверх, вниз и прочее)
+
+$ENDMETHOD$
+
+$METHODNAME$
+	GotoLine()
+$SUMMARY$
+	Goes to specified line.
+$LANG_RU$
+	Перемещение на заданную строку.
+$SYNTAX$
+	GotoLine(<nLine>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<nLine> - Numeric, the new line number.
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<nLine> - Numeric, номер строки.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns TRUE if <nLine> >=1 and <nLine> <= <::Lines> else return FALSE.
+$LANG_RU$
+	Возвращает TRUE если <nLine> >=1 и <nLine> <= <::Lines>, иначе возвращает FALSE.
+$DESCRIPTION$
+	GotoLine() is moved cursor to the new row position <nLine>
+	if <nLine> between 1 and <::Lines>. editor buffer scrolled to the new
+	line. Attribute <::Line> sets to <nLine>.
+
+	In other cursor not moved and method returns FALSE.
+$LANG_RU$
+	GotoLine() перемещает курсор на новую строку с номером <nLine>
+	если <nLine> в пределах  1 и <::Lines>.
+	Атрибут  <::Line> принимает значение <nLine>.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	GotoPos()
+$SUMMARY$
+	Goes to specified column.
+$LANG_RU$
+	Перемещение на новую колонку.
+$SYNTAX$
+	GotoPos(<nPos>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<nPos> - Numeric, the new column number.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<nPos> - Numeric, номер новой колонки.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns TRUE if <nPos> >1 else return FALSE.
+$LANG_RU$
+	Возвращает TRUE если <nPos> >1, иначе FALSE.
+$DESCRIPTION$
+	GotoPos() is moved cursor to the new column position <nPos>.
+	editor buffer scrolled to the new position.
+	Attribute <::Pos> sets to <nPos>.
+
+	In other cursor not moved and method returns FALSE.
+$LANG_RU$
+	GotoPos() перемещает курсор в текущей строке <::Line> на новую колонку <nPos>.
+	Атрибут <::Pos> принимает значение <nPos>.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	Find()
+$SUMMARY$
+	Finds string into editor buffer.
+$LANG_RU$
+	Поиск подстроки.
+$SYNTAX$
+	Find(<oFind>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<oFind> - FIND object, the object contain searches string and parameters.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
+	выражение, а также параметры поиска.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns TRUE if searches string is found.
+$LANG_RU$
+	Возвращает TRUE если искомая строка/выражение найдена.
+$DESCRIPTION$
+	Find() is make the search string or regular expression in editor buffer.
+	The <oFind> contain searching parameters(expression, direct, case-sensitive and the like).
+	If expression found cursor moved to the founded word. This word will be
+	marked special color (<clr4> from <::ColorSpec>).
+
+	If find is success, method returns TRUE. In other returns FALSE.
+
+$LANG_RU$
+	Find() осуществляет поиск подстроки или регулярного выражения в тексте.
+	<oFind> содержит параметры поиска(выражение, направление, регистр и прочие).
+	Если выражение найдено, курсор перемещается на начало найденого слова.
+	Это слово выделяется специальным цветом  (<clr4> из <::ColorSpec>).
+
+	Если поиск был успешен, метод возвращает TRUE, иначе возвращает FALSE.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	FindNext()
+$SUMMARY$
+	Continue search forward.
+$LANG_RU$
+	Продолжение поиска вперед по тексту.
+$SYNTAX$
+	FindNext(<oFind>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<oFind> - FIND object, the object contain searches string and parameters.
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
+	выражение, а также параметры поиска.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if searches string is found.
+$LANG_RU$
+	Возвращает TRUE если строка/выражение найдена.
+$DESCRIPTION$
+	FindNext() is continued search started in <::Find()> to forward.
+	The <oFind> contain searching parameters(expression, case-sensitive and the like).
+	The attribute <::Direct> of <oFind> sets to 1.
+	If expression found cursor moved to the founded word.
+$LANG_RU$
+	FindNext() продолжает поиск начатый методом <::Find()> вперед по тексту.
+	<oFind> содержит параметры поиска(выражение, регистр и прочие).
+	Атрибут <::Direct> объекта <oFind> устанавливается равным 1.
+	Если выражение найдено, курсор перемещается на начало найденого слова.
+	Это слово выделяется специальным цветом  (<clr4> из <::ColorSpec>).
+$ENDMETHOD$
+
+$METHODNAME$
+	FindPrev()
+$SUMMARY$
+	Continue search backward.
+$LANG_RU$
+	Продолжение поиска назад по тексту.
+$SYNTAX$
+	FindPrev(<oFind>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<oFind> - FIND object, the object contain searches string and parameters.
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
+	выражение, а также параметры поиска.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if searches string is found.
+$LANG_RU$
+	Возвращает TRUE если строка/выражение найдена.
+$DESCRIPTION$
+	FindNext() is continued search started in <::Find()> to forward.
+	The <oFind> contain searching parameters(expression, case-sensitive and the like).
+	The attribute <::Direct> of <oFind> sets to 2.
+	If expression found cursor moved to the founded word.
+
+$LANG_RU$
+	FindPrev() продолжает поиск начатый методом <::Find()> назад по тексту.
+	<oFind> содержит параметры поиска(выражение, регистр и прочие).
+	Атрибут <::Direct> объекта <oFind> устанавливается равным 2.
+	Если выражение найдено, курсор перемещается на начало найденого слова.
+	Это слово выделяется специальным цветом  (<clr4> из <::ColorSpec>).
+$ENDMETHOD$
+
+$METHODNAME$
+	Replace()
+$SUMMARY$
+	Find with replace string into editor buffer.
+$LANG_RU$
+	Поиск с заменой.
+$SYNTAX$
+	Replace(<oFind>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<oFind> - FIND object, the object contain searches string and parameters.
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
+	выражение, а также параметры поиска.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if searches string is found.
+$LANG_RU$
+	Возвращает TRUE если строка/выражение найдена.
+$DESCRIPTION$
+	Replace() is make the search string or regular expression in editor buffer.
+	The <oFind> contain searching parameters(searchin expression, replaced string, direct, case-sensitive and the like).
+	If expression found, it will be replace on string to replace <oFind:Rstring>. This substring will be
+	marked special color (<clr4> from <::ColorSpec>).
+
+	If operation is success, method returns TRUE. In other returns FALSE.
+
+$LANG_RU$
+	Replace() ищет строку или выражение в тексте.
+	Объект <oFind> содержит параметры поиска (искомое выражение, выражение для замены, направление поиска и прочее).
+	Если выражение найдено, оно будет заменено на строку или выражение <oFind:Rstring>. Эта подстрока
+	будет отмечена специальным цветом (<clr4> из <::ColorSpec>).
+
+$ENDMETHOD$
+
+$METHODNAME$
+	CurWord()
+$SUMMARY$
+	Take word specified by position line and column.
+$LANG_RU$
+	Дать текущее слово.
+$SYNTAX$
+	CurWord([<nPos>], [nLine>],[ <lUndo>]) 	--> sCurrentWord
+$ARGUMENTS$
+	<nPos> - Numeric, starting column to search in line <nLine>. If not specified
+		sets to <::Pos>
+	<nLine> - Numeric, starting line to search. If not specified
+		sets to <::Line>
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<nPos> - Numeric, исходная колонка в строке <nLine>. Если не передан, то		<::Pos>
+	<nLine> - Numeric, исходная строка. Если параметр не передан, то <::Line>
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns curren word in specified position column and line.
+$LANG_RU$
+	Возвращает слово, определенное <nLine> и <nPos>.
+$DESCRIPTION$
+	CurWord() is searched word by position <nLine> and <nPos> and return it if
+	found. Oher return empty string.
+
+	Word it is sequential of symbols without space and comma <,> and point <.>
+
+$LANG_RU$
+	CurWord() ищет слово в заданных координатах <nLine>, <nPos>  и возвращает
+	его если найдет. В противном случае возвращается пустая строка.
+
+	"Слово" определяется как последовательность символов исключая пробелы,
+	запятые и точки.
+$ENDMETHOD$
+
+$METHODNAME$
+	PrevWord()
+$SUMMARY$
+	Take previous word of word specified by position line and column.
+$LANG_RU$
+	Предыдущее слово.
+$SYNTAX$
+	PrevWord([<nPos>], [nLine>],[ <lUndo>]) 	--> sPrevWord
+$ARGUMENTS$
+	<nPos> - Numeric, starting column to search in line <nLine>. If not specified
+		sets to <::Pos>
+	<nLine> - Numeric, starting line to search. If not specified
+		sets to <::Line>
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<nPos> - Numeric, исходная колонка в строке <nLine>. Если не передан, то		<::Pos>
+	<nLine> - Numeric, исходная строка. Если параметр не передан, то <::Line>
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns previous word of word specified with column and line.
+$LANG_RU$
+	Возвращает слово, предшествующее заданному слову в координатах <nLine>, <nPos>
+$DESCRIPTION$
+	PrevWord() is searched word preceding of word specified <nLine> and <nPos>
+	and return it if found. Oher return empty string.
+$LANG_RU$
+	PrevWord() ищет  предшествующее слово заданному в координатах <nLine>, <nPos>
+	и возвращает его если найдет. В противном случае PrevWord() возвращает пустую
+	строку.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	NextWord()
+$SUMMARY$
+	Take next word of word specified by position line and column.
+$LANG_RU$
+	Следующее слово.
+$SYNTAX$
+	NextWord([<nPos>], [nLine>],[ <lUndo>]) 	--> sPrevWord
+$ARGUMENTS$
+	<nPos> - Numeric, starting column to search in line <nLine>. If not specified
+		sets to <::Pos>
+	<nLine> - Numeric, starting line to search. If not specified
+		sets to <::Line>
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<nPos> - Numeric, исходная колонка в строке <nLine>. Если не передан, то		<::Pos>
+	<nLine> - Numeric, исходная строка. Если параметр не передан, то <::Line>
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns next word of word specified with column and line.
+$LANG_RU$
+	Возвращает слово, следующее за заданным в координатах <nLine>, <nPos> словом
+$DESCRIPTION$
+	NextWord() is searched word following for word specified <nLine> and <nPos>
+	and return it if found. Oher return empty string.
+
+$LANG_RU$
+	NextWord() ищет следующее слово за заданным в координатах <nLine>, <nPos>
+	и возвращает его если найдет. В противном случае NextWord() возвращает пустую
+	строку.
+$ENDMETHOD$
+
+$METHODNAME$
+	Identity()
+$SUMMARY$
+	Search identity alpha character.
+$LANG_RU$
+	Поиск парного( или идентичного) символа.
+$SYNTAX$
+	Identity(<sSymb>, [<lDirect>],[ <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<sSymb> - Char, alpha character for search.
+	<lDirect> - Logical, if TRUE, make search to forward. By default TRUE.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<sSymb> - Char, символ.
+	<lDirect> - Logical, если TRUE, поик вперед по тексту. По умолчанию TRUE.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if search is success.
+$LANG_RU$
+	Возвращает TRUE если парный или идентичный символ найден.b
+$DESCRIPTION$
+	Identity() is searched identical or pair symbols: (), <>, {}, [];
+	and set cursor to founded symbol if search is success.
+
+$LANG_RU$
+	Identity() ищет идентичный заданному или парный символ: (), <>, {}, [];
+	и устанавливает курсор на найденный символ возвращая при этом TRUE.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	MatchStruct()
+$SUMMARY$
+	Matching structure.
+$LANG_RU$
+	Поиск элементов структуры.
+$SYNTAX$
+	MatchStruct(<sWord>, [<lDirect>],[ <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<sWord> - String, key words.
+	<lDirect> - Logical, if TRUE, make search to forward. By default TRUE.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<sWord> - String, ключевое слово.
+	<lDirect> - Logical, направление поиска TRUE(по умолчанию) поиск вперед по тексту.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if search is success.
+$LANG_RU$
+	Возвращает TRUE если поиск был успешен.
+$DESCRIPTION$
+	MatchStruct() is searched item of Clipper-like structures:
+
+	DO CASE; CASE; OTHERWISE; END[CASE]
+
+	DO[ WHILE]; LOOP; END[DO]
+
+	IF; ELSE; [ELSEIF]; END[IF]
+
+	...
+
+	and set cursor to founded item if search is success.
+
+	All  items can be lower/upper case. Every structure can be embedded to
+	others.
+
+$LANG_RU$
+	MatchStruct() ищет в тексте элементы Clipper структур:
+
+	DO CASE; CASE; OTHERWISE; END[CASE]
+
+	DO[ WHILE]; LOOP; END[DO]
+
+	IF; ELSE; [ELSEIF]; END[IF]
+
+	...
+
+	и устанавливает курсор на найденный элемент.
+
+	Поиск не зависит от регистра, в каком были набраны символы. Структуры
+	могут быть вложенными.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	Clear()
+$SUMMARY$
+	Clear editor buffer.
+$LANG_RU$
+	Очистка буфера редактирования.
+$SYNTAX$
+	Clear() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL
+$LANG_RU$
+	Возвращает NIL
+$DESCRIPTION$
+	Clear() is cleared editor buffer and init all counters to zero.
+	Size array <::EdBuffer> trucate to 1 and it element sets to
+	empty string.
+
+	Attention! This method not writing undo information.
+
+$LANG_RU$
+	Clear() очищает буфер редактирования и сбрасывает все счетчики.
+	Размер массива <::EdBuffer> усекается то 1 и этому элементу
+	присваивается значение - пустая строка.
+
+	Внимание! Этот метод не сохраняет данные для операции отката.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	LoadString()
+$SUMMARY$
+	Load string to editor buffer.
+$LANG_RU$
+	Загрузка строки.
+$SYNTAX$
+	LoadString(<sStr>) 	--> .T.
+$ARGUMENTS$
+	<sStr> - String, string to edit.
+$LANG_RU$
+	<sStr> - String, строка для редактирования.
+$RETURNS$
+	Returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	LoadString() is loaded string to editor buffer.
+	Method splitted input string on substring with delimiter - hard carriage.
+	Substrings translated from <::CharSet> to host charset
+	and stored in <::Edbuffer>. Previous data of <::EdBuffer> removes.
+
+	Attention! This method not writing undo information.
+
+$LANG_RU$
+	LoadString() загружает строку в буфер редактирования.
+	Строка разбивается на подстроки, в качестве разделителя используется
+	жесткий возврат каретки.
+	Подстроки транслируются из кодировки <::CharSet> в кодировку CLIP-машины
+	и записываются в <::Edbuffer>.  Прежнее содержимое <::EdBuffer> уничтожается.
+
+	Внимание! Этот метод не сохраняет данные для операции отката.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	LoadFile()
+$SUMMARY$
+	Load file.
+$LANG_RU$
+	Загрузка файла.
+$SYNTAX$
+	LoadFile(<sFileName>) 	--> .T.
+$ARGUMENTS$
+	<sFileName> - String, files name.
+$LANG_RU$
+	<sFileName> - String, полный путь к файлу.
+$RETURNS$
+	Returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	LoadFile() is loaded file to editor buffer.
+	Method splitted input string on substring with delimiter - hard carriage.
+	Substrings translated from <::CharSet> to host charset
+	and stored in <::Edbuffer>. Previous data of <::EdBuffer> removes.
+
+	If file not exist or not opened (access denied) method returns FALSE.
+	<::EdBuffer> not changed.
+
+	Attention! This method not writing undo information.
+
+$LANG_RU$
+	LoadFile() загружает файл в буфер редактирования.
+	Содержимое файла разбивается на подстроки, в качестве разделителя используется
+	жесткий возврат каретки.
+	Подстроки транслируются из кодировки <::CharSet> в кодировку CLIP-машины
+	и записываются в <::Edbuffer>. Прежнее содержимое <::EdBuffer> уничтожается.
+
+	Если файл не существует или не доступен для чтения метод возвращает FALSE.
+	<::EdBuffer> не изменяется.
+
+	Внимание! Этот метод не сохраняет данные для операции отката.
+$ENDMETHOD$
+
+$METHODNAME$
+	SaveFile()
+$SUMMARY$
+	Save to file.
+$LANG_RU$
+	Сохранение в файл.
+$SYNTAX$
+	SaveFile(<sFileName>[, <lCreateBak>]) 	--> .T.
+$ARGUMENTS$
+	<sFileName> - String, full file name.
+	<lCreateBak> - Logical, if TRUE, make .bak file. By default FALSE.
+$LANG_RU$
+	<sFileName> - String, полный путь к файлу.
+	<lCreateBak> - Logical, если TRUE, создать .bak файл. По умолчанию FALSE.
+$RETURNS$
+	Returns TRUE in success.
+$LANG_RU$
+	Возвращает TRUE если данные успешно записаны в файл.
+$DESCRIPTION$
+	SaveFile() is saved editor buffer to file.
+
+	If file <sFileName> not exist, method created it. In other file
+	rewrited from editor buffer. <::Updated> set to FALSE.
+
+	If access denied, editor buffer not saved and method
+	returns FALSE.
+
+	Attention! This method not writing undo information.
+
+$LANG_RU$
+	SaveFile() записывает содержимое буфера редактирования <::EdBuffer> в файл.
+
+	Если файл <sFileName> не существует, он создается. В противном случае
+	переписывается. Атрибут <::Updated> принимает значение FALSE.
+
+	Если при записи/создании файла произошла ошибка, SaveFile() возвращает FALSE.
+
+	Внимание! Этот метод не сохраняет данные для операции отката.
+$ENDMETHOD$
+
+$METHODNAME$
+	SaveString()
+$SUMMARY$
+	Save editor buffer to string.
+$LANG_RU$
+	Запись в строку
+$SYNTAX$
+	SaveString() 	--> sStr
+$ARGUMENTS$
+$RETURNS$
+	Returns string created from editor buffer.
+$LANG_RU$
+	Возвращает содержимое буфера редактирования, записанного в строку.
+$DESCRIPTION$
+	SaveString() is packed editor buffer to string and returns it.
+	Substrins tranlated to <::Charset> and write to result string with
+	delimiters CR.
+
+	Attention! This method not writing undo information.
+
+$LANG_RU$
+	SaveString() записывает содержимое буфера редактирования в строку и
+	возвращает ее. Подстроки транслируются из кодировки CLIP-машины в
+	<::Charset> и записываются в результирующую строку через символ CR.
+
+	Внимание! Этот метод не сохраняет данные для операции отката.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	LoadBlock()
+$SUMMARY$
+	Make load block from file.
+$LANG_RU$
+	Загрузка блока.
+$SYNTAX$
+	LoadBlock(<sFileName>[, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<sFileName> - String, file name.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<sFileName> - String, полное имя файла.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if block was load.
+$LANG_RU$
+	Возвращает TRUE если блок был загружен.
+$DESCRIPTION$
+	LoadBlock() is loaded data from file <sFileName> to block and inserted
+	block to editor buffer from a current line <::Line> and marked block.
+
+	The size editor buffer <::EdBuffer> increased by size of block.
+
+$LANG_RU$
+	LoadBlock() читает содержимое файла <sFileName> и вставляет его
+	в буфер редактирования начиная с текущей строки <::Line>. Вставленные
+	строки помечаются как строчный блок.
+
+	Размер буфера редактирования <::EdBuffer> увеличивается на количество вставленных строк.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	SaveBlock()
+$SUMMARY$
+	Make save block to file.
+$LANG_RU$
+	Записать блок в файл.
+$SYNTAX$
+	SaveBlock(<sFileName>[, <lCreateBak>[, <lUndo>]]) 	--> .T. || .F.
+$ARGUMENTS$
+	<sFileName> - String, full file name.
+	<lCreateBak> - Logical, if TRUE, make .bak file. By default FALSE.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<sFileName> - String, имя файла с полным путем.
+	<lCreateBak> - Logical, если TRUE, создать .bak файл. По умолчанию FALSE.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if block saved.
+$LANG_RU$
+	Возвращает TRUE если блок был успешно записан.
+$DESCRIPTION$
+	SaveBlock() is saved  marked string/rectangle block to
+	file <sFileName>. If file <sFileName> not exist, method created it.
+	In other, rewrited.
+
+	If block not marked or error emerge by creating file, method returns FALSE.
+$LANG_RU$
+	SaveBlock() записывает отмеченный строчный или прямоугольный блок в
+	файл <sFileName>. Если  файл <sFileName> ранее не существовал, он будет
+	создан, иначе переписан.
+
+	Если блок не был отмечен или произошла ошибка при записи/создании
+	файла, метод вернет FALSE.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	BeginBlock()
+$SUMMARY$
+	Start block hightlighting.
+$LANG_RU$
+	Начать отметку блока.
+$SYNTAX$
+	BeginBlock(<lType>[, <lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lType> - Logical, if TRUE, do string block, else do rectangle block. By default TRUE.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lType> - Logical, тип блока: TRUE строчный,FALSE прямоугольный. По умолчанию TRUE.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	BeginBlock() is canceled old highlight and  started  new string/rectangle block.
+$LANG_RU$
+	BeginBlock() снимает отметку блока (если он был уже отмечен) и отмечает начало
+	нового строчноги или прямоугольного блока.
+$ENDMETHOD$
+
+$METHODNAME$
+	EndBlock()
+$SUMMARY$
+	Stop block hightlighting.
+$LANG_RU$
+	Закончить отметку блока.
+$SYNTAX$
+	EndBlock(<lType>[, <lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lType> - Logical, if TRUE, do string block, else do rectangle block. By default TRUE.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lType> - Logical, тип блока: TRUE строчный,FALSE прямоугольный. По умолчанию TRUE.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	EndBlock() is complited text highlighting.
+$LANG_RU$
+	EndBlock() заканчивает отметку блока - строчного или прямоугольного.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	CancelBlock()
+$SUMMARY$
+	Unmarking block.
+$LANG_RU$
+	Снять отметку блока.
+$SYNTAX$
+	CancelBlock([<lUndo>]) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	CancelBlock() is unmarked text highlight.
+$LANG_RU$
+	CancelBlock() снимает отметку блока. Атрибуты <::MkBlock>, <::StrBlock>,
+	<::RectBlock> принимают значение FALSE.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	CopyBlock()
+$SUMMARY$
+	Make copy block.
+$LANG_RU$
+	Копировать блок.
+$SYNTAX$
+	CopyBlock([<lMove>[, <lUndo>]]) 	--> .T. || .F.
+$ARGUMENTS$
+	<lMove> - Logical, is TRUE if operation block moving. By default FALSE.
+	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lMove> - Logical, если TRUE блок будет перемещен на новое место, иначе скопирован. По умолчанию FALSE.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if block copied or moved.
+$LANG_RU$
+	Возвращает TRUE если блок скопирован или перемещен.
+$DESCRIPTION$
+	CopyBlock() moved cursor to begin marked block (line and column) and
+	copied or moved (if <lMove> is TRUE) marked block
+	to new positon specified current cursor position line <::Line>
+	and column <::Pos> in editor buffer.
+
+	If block not marked method returns FALSE.
+
+	When do operation copy, block copied into new position and size
+	editor buffer <::EdBuffer> increased by size block(lines in block).
+
+	Move is equaled to copy, but in the previous place the block is removed.
+$LANG_RU$
+	CopyBlock() перемещает курсор на начало(строка и колонка) блока
+	и копирует или перемещает отмеченный блок на новое место,
+	определенное текущим положением курсора: строка <::Line> и колонка
+	<::Pos>.
+
+	Если блок не отмечен, CopyBlock() возвращает FALSE.
+
+	Когда выполняется операция "копирование", блок копируется в заданную
+	точку и длина буфера редактирования увеличивается на длину блока(количество строк в блоке)
+
+	Операция "перемещение" аналогична опереции копирования, но блок удаляется
+	со старого места и длина буфера редактирования не изменяется.
+$ENDMETHOD$
+
+$METHODNAME$
+	MoveBlock()
+$SUMMARY$
+	Make move block.
+$LANG_RU$
+	Переместить блок.
+$SYNTAX$
+	MoveBlock([<lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if block moved.
+$LANG_RU$
+	Возвращает TRUE если блок успешно перемещен.
+$DESCRIPTION$
+	MoveBlock() is called method CopyBlock() with first parameters TRUE.
+$LANG_RU$
+	MoveBlock() вызывает метод CopyBlock() с первым параметром TRUE.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	DeleteBlock()
+$SUMMARY$
+	Make remove block.
+$LANG_RU$
+	Удалить блок.
+$SYNTAX$
+	DeleteBlock([<lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if block removed.
+$LANG_RU$
+	Возвращает TRUE если блок был удален.
+$DESCRIPTION$
+	DeleteBlock() moved cursor to begin marked block (line and column) and
+	removed marked block from editor buffer. The size
+	of <::Edbuffer> decreased by size removes block(lines in block).
+
+	If block not marked, DeleteBlock() returns FALSE.
+$LANG_RU$
+	DeleteBlock() перемещает курсор на начало(строка и колонка) блока и
+	удаляет отмеченный блок из буфера редактирования. Размер
+	<::Edbuffer> уменьшается на размер(количество строк) удаленного блока.
+	перемещает курсор на начало(строка и колонка) блока
+
+	Если блок не был отмечен, DeleteBlock() возвращает FALSE.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	CopyToClipboard()
+$SUMMARY$
+	Copy block to clipboard.
+$LANG_RU$
+	Копировать блок в буфер.
+$SYNTAX$
+	CopyToClipboard(<aClipbrd>) 	--> NIL
+$ARGUMENTS$
+	<aClipbrd> - Array, array of block what equal block.
+$LANG_RU$
+	<aClipbrd> - Array, буфер.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	CopyToClipboard() is copied marked block from editor buffer to array
+	<aClipbrd>. <aClipbrd> - it is not system clipboard.
+	The size of <::Edbuffer> not changed. Mark block not unmarked.
+$LANG_RU$
+	CopyToClipboard() копирует отмеченный блок(строчный или прямоугольный) в буфер
+	<aClipbrd>, замещая при этом содержимое буфера. <aClipbrd> - это не системный буфер.
+	Размер буфера редактирования  <::Edbuffer> не изменяется. Отметка блока не снимается.
+	Позиция курсора не меняется.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	AddToClipboard()
+$SUMMARY$
+	Add block to clipboard.
+$LANG_RU$
+	Добавить блок в буфер.
+$SYNTAX$
+	AddToClipboard(<aClipbrd>) 	--> NIL
+$ARGUMENTS$
+	<aClipbrd> - Array, array of block what equal block.
+$LANG_RU$
+	<aClipbrd> - Array, буфер.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	AddToClipboard() is added marked block from editor buffer to the end of array
+	<aClipbrd>. <aClipbrd> - it is not system clipboard.
+	The size of <::Edbuffer> not changed. Mark block not unmarked.
+$LANG_RU$
+	AddToClipboard() добавляет отмеченный блок(строчный или прямоугольный) в конец буфер
+	<aClipbrd>, не замещая при этом содержимое буфера. <aClipbrd> - это не системный буфер.
+	Размер буфера редактирования  <::Edbuffer> не изменяется. Отметка блока не снимается.
+	Позиция курсора не меняется.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	MoveToClipboard()
+$SUMMARY$
+	Move block to clipboard.
+$LANG_RU$
+	Переместить блок в буфер.
+$SYNTAX$
+	MoveToClipboard(<aClipbrd>) 	--> NIL
+$ARGUMENTS$
+	<aClipbrd> - Array, array of block what equal block.
+$LANG_RU$
+	<aClipbrd> - Array, буфер.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	MoveToClipboard() is moved marked block from editor buffer to array
+	<aClipbrd>. <aClipbrd> - it is not system clipboard.
+
+	Cursor moved to begin marked block and block removed from editor buffer.
+	The size of <::Edbuffer> is decreased by size block (block lines).
+$LANG_RU$
+	AddToClipboard() перемещает отмеченный блок(строчный или прямоугольный) в конец буфер
+	<aClipbrd>, замещая при этом содержимое буфера. <aClipbrd> - это не системный буфер.
+
+	Курсор помещается на начало блока и блок удаляется. Размер буфера редактирования  <::Edbuffer>
+	уменьшается на размер удаленного блока.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	PasteFromClipboard()
+$SUMMARY$
+	Paste block from clipboard.
+$LANG_RU$
+	Вставить блок из буфера.
+$SYNTAX$
+	PasteFromClipboard(<aClipbrd>[, <nItem>][, <lUndo>]) 	--> .T. || .F.
+$ARGUMENTS$
+	<aClipbrd> - Array, array of block what equal block.
+	<nItem> - Numeric, numer item in clipboard. By default it is 1.
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<aClipbrd> - Array, буфер.
+	<nItem> - Numeric, порядковый номер блока в буфере. По умолчанию 1.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns TRUE if block inserted.
+$LANG_RU$
+	Возвращает TRUE если блок был вставлен.
+$DESCRIPTION$
+	PasteFromClipboard() is pasted block from clipboard to
+	current <::Line> and <::Pos> into editor buffer.
+
+	Block not removed from editor buffer.
+	The size of <::Edbuffer> is increased by size block (block lines).
+
+	If array <aClipbrd>  is empty, then PasteFromClipboard() returns FALSE;
+	in other returns TRUE.
+
+$LANG_RU$
+	PasteFromClipboard() вставляет блок ихз буфера в текущую позицию курсора
+	<::Line> и <::Pos>.
+
+	Блок не удаляется из буфера <aClipbrd>.
+	Размер <::Edbuffer> увеличивается на размер вставленного блока (количество строк).
+
+	Если массив <aClipbrd> пуст, PasteFromClipboard() возвращает FALSE;
+	иначе возвращает TRUE.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Refresh()
+$SUMMARY$
+	Refresh TEXTEDIT viewport.
+$LANG_RU$
+	Обновить область редактирования TEXTEDIT.
+$SYNTAX$
+	Refresh() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Refresh() is refreshed TEXTEDIT viewport and positioned cursor on the
+	screen to new position if it need.
+
+	Refresh() invoked automaticaly from all methods of TEXTEDIT.
+$LANG_RU$
+	Refresh() обновляет область редактирования TEXTEDIT.
+
+	Метод Refresh()вызывается автоматически из остальных методов класса TEXTEDIT
+	и не требует прямого вызова.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	BackSpace()
+$SUMMARY$
+	Delete left letter.
+$LANG_RU$
+	Удалить символ слева от курсора.
+$SYNTAX$
+	BackSpace( [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	BackSpace() is deleted one left letter from are current cursor position
+	<::Line> and <::Pos>.
+$LANG_RU$
+	BackSpace() удаляет в текущей строке <::Line> символ слева от <::Pos>.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	DelLeft()
+$SUMMARY$
+	Delete left letter.
+$LANG_RU$
+	Удалить символ слева от курсора.
+$SYNTAX$
+	DelLeft( [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	DelLeft() is called method BackSpace().
+$LANG_RU$
+	DelLeft() вызывает метод BackSpace().
+
+$ENDMETHOD$
+
+$METHODNAME$
+	DelHome()
+$SUMMARY$
+	Delete letters to begin of string.
+$LANG_RU$
+	Удалить все символы до начала строки.
+$SYNTAX$
+	DelHome( [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	DelHome() is deleted all letters in line <::Line> with string begin to
+	column <::Pos>. The attribute <::Pos> and <::ColWin>  sets to 1.
+$LANG_RU$
+	DelHome() удаляет все символы в строке <::Line> начиная с колонки
+	<::Pos> до начала строки <::Line>. Атрибуты <::Pos> и <::ColWin>
+	принимают значение 1.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	DelRight()
+$SUMMARY$
+	Delete letter.
+$LANG_RU$
+	Удалить символ.
+$SYNTAX$
+	DelRight( [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	DelRight() is deleted letter in line <::Line> and column <::Pos>.
+	The attribute <::Pos> and <::ColWin>  not changes.
+$LANG_RU$
+	DelRight() удаляет символ в строке <::Line> и колоне <::Pos>.
+	Атрибуты <::Pos> и <::ColWin> не изменяются.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	Delete()
+$SUMMARY$
+	Delete letter.
+$LANG_RU$
+	Удалить символ.
+$SYNTAX$
+	Delete( [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Delete() is called method DelRight().
+$LANG_RU$
+	Delete() вызывает метод DelRight().
+$ENDMETHOD$
+
+$METHODNAME$
+	DeleteLine()
+$SUMMARY$
+	Delete line.
+$LANG_RU$
+	Удалить строку.
+$SYNTAX$
+	DeleteLine( [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	DeleteLine() is removed from editor buffer line specified <::Line> and
+	decreased size of <::Edbuffer> by 1.
+$LANG_RU$
+	DeleteLine() удаляет текущую строку <::Line>, размер буфера редактирования
+	<::Edbuffer> уменьшается <::Edbuffer> на 1.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	DelEnd()
+$SUMMARY$
+	Delete letters to the end of string.
+$LANG_RU$
+	Удалить все символы до конца строки.
+$SYNTAX$
+	DelEnd( [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	DelEnd() is deleted all letters begin with column specified <::Pos> to the
+	end of string <::Line>.
+$LANG_RU$
+	DelEnd() удаляет в строке <::Line> все символы, начиная с <::Pos> и до конца.
+$ENDMETHOD$
+
+$METHODNAME$
+	Insert()
+$SUMMARY$
+	Insert alpha character or substring to the editor buffer.
+$LANG_RU$
+	Вставить символ или подстроку.
+$SYNTAX$
+	Insert( <sStr>, [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<sStr> - String, alpha character or substring to be inserting
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<sStr> - String, символ или подстрока для вставки.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Insert() is inserted substring <sStr> to the editor buffer begin of <::Pos>
+	and in line <::Line>.
+
+	If <::Line> is more then size of editor buffer <::Lines>, then size of
+	<::EdBuffer> increased to <::Line>.
+
+	The new cursor position into editor buffer is <::Line> and <::Pos>+len(sStr).
+$LANG_RU$
+	Insert() вставляет подстроку <sStr> в текущую строку <::Line> начиная
+	с колонки <::Pos>.
+
+	Если <::Line> больше чем размер буфера редактирования <::Lines>, то
+	<::EdBuffer> увеличивается до <::Line> строк.
+
+	Новая позиция курсора после операции: строка <::Line> и колонка <::Pos>+len(sStr).
+$ENDMETHOD$
+
+$METHODNAME$
+	OverStrike()
+$SUMMARY$
+	Replace alpha character or substring into editor buffer.
+$LANG_RU$
+	Заменить символ или подстроку.
+$SYNTAX$
+	OverStrike( <sStr>, [<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<sStr> - String, alpha character or substring to be replacing.
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<sStr> - String, строка или символ для замены.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	OverStrike() is replaced substring with length len(sStr)
+	to <sStr>  into line <::Line> and begining with <::Pos> .
+
+	The new cursor position into editor buffer is <::Line> and <::Pos>+len(sStr).
+$LANG_RU$
+	OverStrike() заменяетв текщей строке <::Line> подстроку длиной len(sStr)
+	на <sStr> начиная с колонки <::Pos> .
+
+	Новая позиция курсора: строка<::Line> и колонка <::Pos>+len(sStr).
+$ENDMETHOD$
+
+$METHODNAME$
+	InsertLine()
+$SUMMARY$
+	Insert new line.
+$LANG_RU$
+	Вставить новую строку.
+$SYNTAX$
+	InsertLine([<lUndo>][, [lAuto]] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+	<lAuto> - Logical, is TRUE(by default) if new cursor position equal to
+	column first not empty symbols  into previouse line.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lAuto> - Logical, если TRUE(по умолчанию) курсор будет установлен под первым
+	отличным от пробела символом предыдущей строки.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	InsertLine() is inserted new line into editor buffer after line <::Line>-1.
+	The size editor buffer increased by 1 and lines begin with <::Line>+1 moved
+	down by one.
+
+	The current line kept previouse - <::Line>.
+
+	If <lAuto>, then <::Pos> sets to first column with not empty alpha character of
+	previouse line <::Line>-1.
+
+	In other, <::Pos> sets to value <::MarginLeft>
+$LANG_RU$
+	InsertLine() вставляет в буфер редактирования новую строку сразу после строки <::Line>-1.
+	Размер буфера редактирования <::EdBuffer> увеличивается на 1.
+
+	Номер текущей строки остается прежним <::Line>.
+
+	Если <lAuto>, курсор позиционируется в колонку, соответствующую первому,
+	отличному от пробела, символу предыдущей строки <::Line>-1. Иначе, курсор
+	позиционируется в колонку <::MarginLeft>
+$ENDMETHOD$
+
+$METHODNAME$
+	NewLine()
+$SUMMARY$
+	Goes new line.
+$LANG_RU$
+	Переход на новую строку.
+$SYNTAX$
+	NewLine([<lUndo>][, <lAuto>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+	<lAuto> - Logical, is TRUE(by default) if new cursor position equal to
+	column first not empty symbols  into previouse line.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lAuto> - Logical, если TRUE(по умолчанию) курсор будет установлен под первым
+	отличным от пробела символом предыдущей строки.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	NewLine() is moved cursor to new line <::Line>+1.
+	The size editor buffer not changed.
+
+	The current line <::Line> increased by 1.
+
+	If <lAuto> is TRUE, then <::Pos> sets to column value of start not empty symbol.
+	In other, <::Pos> sets to value <::MarginLeft>.
+$LANG_RU$
+	InsertLine() перемещает курсор на новую строку <::Line>+1.
+	Размер буфера редактирования <::EdBuffer> не изменяется.
+
+	Номер текущей строки остается прежним <::Line>.
+
+	Если <lAuto>, курсор позиционируется в колонку, соответствующую первому,
+	отличному от пробела, символу предыдущей строки <::Line>-1. Иначе, курсор
+	позиционируется в колонку <::MarginLeft>
+$ENDMETHOD$
+
+$METHODNAME$
+	Draw()
+$SUMMARY$
+	Draw one of box characters.
+$LANG_RU$
+	Вставить один из символов псевдографики.
+$SYNTAX$
+	Draw(<lDrawMode>, <nKey>[, <lUndo>] ) 	--> .T. || .F.
+$ARGUMENTS$
+	<lDrawMode> - Logical, is TRUE if single mode, oher double mode.
+	<nKey>  - Numeric, key code - draw direction. One of K_UP, K_DOWN, K_LEFT, K_RIGHT.
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lDrawMode> - Logical, если TRUE, одинарные символы, иначе - двойные.
+	<nKey>  - Numeric, код клавиши - направление рисования. Один из K_UP, K_DOWN, K_LEFT, K_RIGHT.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns TRUE if symbol is drew.
+$LANG_RU$
+	Возвращает TRUE если символ нарисован.
+$DESCRIPTION$
+	Draw() is drew box symbols in current position <::Line> and <::Pos>.
+$LANG_RU$
+	Draw() рисует символы псевдографики в текущей позиции строки <::Line> и
+	колонки <::Pos> в зависимости от кода нажатой клавиши, направления рисования
+	и окружающих уже нарисованных символов.
+$ENDMETHOD$
+
+$METHODNAME$
+	FormatLine()
+$SUMMARY$
+	Formatting line.
+$LANG_RU$
+	Форматировать строку.
+$SYNTAX$
+	FormatLine([<lAutoMargin>],[ <nMarginLeft>],[ <nMarginRight>],[ <nTabSize>],[ <lHyphen>][, <lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lAutoMargin> - Logical, is TRUE(by default) if need make automaticaly left margin.
+	<nMarginLeft> - Numeric, the left margin value (by default <::MarginLeft>)
+	<nMarginRight> - Numeric, the right margin value (by default <::MarginRight>)
+	<nTabSize> - Numeric, the tabulation value (by default <::TabSize>)
+	<lHyphen> - Logical, is TRUE if hyphen (by default <::Hyphen>).
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lAutoMargin> - Logical, TRUE(по умолчанию) если автоматически выставляется левая граница.
+	<nMarginLeft> - Numeric, левая граница строки(по умолчанию <::MarginLeft>)
+	<nMarginRight> - Numeric, правая граница строки (по умолчанию <::MarginRight>)
+	<nTabSize> - Numeric, размер табуляции (по умолчанию <::TabSize>)
+	<lHyphen> - Logical, TRUE если допускается перенос в словах (по умолчанию <::Hyphen>).
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	FormatLine() is formatted current line <::Line> editor buffer.
+$LANG_RU$
+	FormatLine() форматирует текущую строку <::Line> в соответствии с
+	переданными параметрами.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	FormatPart()
+$SUMMARY$
+	Formatting part.
+$LANG_RU$
+	Форматировать абзац.
+$SYNTAX$
+	FormatPart([<lAutoMargin>],[ <nMarginLeft>],[ <nMarginRight>],[ <nTabSize>],[ <lHyphen>][, <lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lAutoMargin> - Logical, is TRUE(by default) if need make automaticaly left margin.
+	<nMarginLeft> - Numeric, the left margin value (by default <::MarginLeft>)
+	<nMarginRight> - Numeric, the right margin value (by default <::MarginRight>)
+	<nTabSize> - Numeric, the tabulation value (by default <::TabSize>)
+	<lHyphen> - Logical, is TRUE if hyphen (by default <::Hyphen>).
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lAutoMargin> - Logical, TRUE(по умолчанию) если автоматически выставляется левая граница.
+	<nMarginLeft> - Numeric, левая граница строки(по умолчанию <::MarginLeft>)
+	<nMarginRight> - Numeric, правая граница строки (по умолчанию <::MarginRight>)
+	<nTabSize> - Numeric, размер табуляции (по умолчанию <::TabSize>)
+	<lHyphen> - Logical, TRUE если допускается перенос в словах (по умолчанию <::Hyphen>).
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	FormatPart() is part formatted begin from <::Line> to the line whose
+	position first character in line not equal posiiotn first character formatted
+	part or to the end of editor buffer.
+$LANG_RU$
+	FormatPart() форматирует часть текста начиная со строки <::Line> до
+	следующего абзаца.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	CenterLine()
+$SUMMARY$
+	Centering line.
+$LANG_RU$
+	Центрировать строку.
+$SYNTAX$
+	CenterLine([<lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	CenterLine() is centered current line <::Line>. The <::Pos> is rested
+	previouse.
+$LANG_RU$
+	CenterLine() сентрирует текущую строку <::Line>. Позиция курсора в строке
+	не меняется.
+$ENDMETHOD$
+
+$METHODNAME$
+	InsTempl()
+$SUMMARY$
+	Insert substring by template.
+$LANG_RU$
+	Заменить шаблон на подстроку.
+$SYNTAX$
+	InsTempl(<aTempl>[, <lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<aTempl> - Map, with key <sTm> and value <sStr>. Where <sTm> is template word
+	and <sStr> - string to insert.
+
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<aTempl> - Map, массив строк. Ключ массива <sTm> есть шаблон, а значение по ключу <sStr>-
+	строка для замены.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	InsTempl() is replaced current word (template word) to value from a <aTempl>
+	whose key equal template.
+
+	<sStr> can include symbol </> it is line delimiter. In this case will be
+	inserted some string begin with column <::Pos>.
+$LANG_RU$
+	Если текущее слово в строке <::Line> и колонке <::Pos> является одним
+	из ключей массива <aTempl>, InsTempl() заменит слово - шаблон на соответствующую
+	строку.
+
+	<sStr> может содержать символы </>, они используются как разделители строк.
+	В этом случае в буфер редактирования мложет быть вставлено
+	сразу несколько строк, начиная с колонки <::Pos>.
+$ENDMETHOD$
+
+$METHODNAME$
+	InsMacro()
+$SUMMARY$
+	Make macro and insert result to editor buffer.
+$LANG_RU$
+	Выполнить макро-команду и вставить результат в буфер редактирования.
+$SYNTAX$
+	InsMacro(<aTempl>[, <lUndo>] ) 	--> NIL
+$ARGUMENTS$
+	<aTempl> - Map, with key <sTm> and value <sStr>. Where <sTm> is template word
+	and <sStr> - macro expression.
+
+	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
+$LANG_RU$
+	<aTempl> - Map, массив макрокоманд. Ключ массива <sTm> есть шаблон, а значение по ключу <sStr>-
+	макро выражение.
+	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	InsMacro() made macro specified some template and replace this
+	template to result expression.  In this case  template
+	is word in line <::Line> and column <::Pos>.
+$LANG_RU$
+	Если текущее слово в строке <::Line> и колонке <::Pos> является одним
+	из ключей массива <aTempl>, InsMacro() заменит слово - шаблон на результат
+	макрокоманды.
+$ENDMETHOD$
+
+$METHODNAME$
+	Undo()
+$SUMMARY$
+	Make undo operation.
+$LANG_RU$
+	Выпольнить откат.
+$SYNTAX$
+	Undo() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Undo() made last operation what be saved into undo buffer. The size of undo
+	buffer specified attribute <::LenUndo>.
+$LANG_RU$
+	Undo() выполняет операцию "откат" по данным, сохраненным в буфере
+	отката. Размер этого буфера задается атрибутом <::LenUndo>.
+
+	Почти все методы класса по умолчанию сохраняют данные для выполнения отката если
+	пераметр <lUndo> TRUE.
+$ENDMETHOD$
+
+$METHODNAME$
+	WriteUndo()
+$SUMMARY$
+	Save undo information.
+$LANG_RU$
+	Сохранить данные для операции "откат".
+$SYNTAX$
+	WriteUndo(<nCMD>, <vData>) 	--> NIL
+$ARGUMENTS$
+	<nCMD> - Numeric, hash code operation.
+	<vData> - Data to saving.
+$LANG_RU$
+	<nCMD> - Numeric, хэш-код операции.
+	<vData> - данные для сохранения..
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	WriteUndo() is saved some data into undo buffer for undo operation.
+
+	WriteUndo() invoked automaticaly from  methods TEXTEDIT and not
+	required direct activation.
+$LANG_RU$
+	WriteUndo() сохраняет данные для операции "откат".
+
+	WriteUndo() вызывается автоматически из всех методов класса TEXTEDIT.
+$ENDMETHOD$
+
+$METHODNAME$
+	Print()
+$SUMMARY$
+	Print.
+$LANG_RU$
+	Печать.
+$SYNTAX$
+	Print() 	--> .T.
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	Print() is printed editor buffer.
+$LANG_RU$
+	Print() осуществляет печать всего текста из буфера редактирования.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	PrintBlock()
+$SUMMARY$
+	Print marked block.
+$LANG_RU$
+	Печать блока.
+$SYNTAX$
+	PrintBlock() 	--> .T. || .F.
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE if block marked and FALSE in other.
+$LANG_RU$
+	Возвращает TRUE если блок отмечен и отправлен на печать.
+$DESCRIPTION$
+	PrintBlock() is printed block if it marked.
+$LANG_RU$
+	PrintBlock() осуществляет печать отмеченного блока (строчного или прямоугольного)
+
+$ENDMETHOD$
+
+$METHODNAME$
+	HighLightAdd()
+$SUMMARY$
+	Mark highlight line some colors.
+$LANG_RU$
+	Выделить строку цветом.
+$SYNTAX$
+	HighLightAdd(<nLine>, <nColorItem>) 	--> .T. || .F.
+$ARGUMENTS$
+	<nLine> - Numeric, the line number to highlighting.
+
+	<nColorItem> - Numeric, the number color item in <::ColorSpec>
+$LANG_RU$
+	<nLine> - Numeric, номер строки.
+
+	<nColorItem> - Numeric, порядковый номер цвета в спецификации <::ColorSpec>
+$RETURNS$
+	Returns TRUE if line marked and FALSE in other.
+$LANG_RU$
+	Возвращает TRUE если строка выделена.
+$DESCRIPTION$
+	HighLightAdd() is highlighted line <nLine> and added information about
+	color highlighting to map <::HighLightColor>.
+
+	One line can take a few colors to highlighting.
+$LANG_RU$
+	HighLightAdd() выделяет строку <nLine> цветом <nColorItem> из спецификации
+	<::ColorSpec> и сохраняет эту информацию в массиве <::HighLightColor>.
+
+	Для одной строки метод может быть вызван несколько раз с разными цветами.
+	В этом случае, строка отображается последним из заданных цветов.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	HighLightDel()
+$SUMMARY$
+	Unmark highlight line some color.
+$LANG_RU$
+	Отказаться от выделения строки заданным цветом.
+$SYNTAX$
+	HighLightDel(<nLine>, <nColorItem>) 	--> .T. || .F.
+$ARGUMENTS$
+	<nLine> - Numeric, the line number to highlighting.
+	<nColorItem> - Numeric, the number color item in <::ColorSpec>
+$LANG_RU$
+	<nLine> - Numeric, номер строки.
+	<nColorItem> - Numeric, порядковый номер цвета в спецификации <::ColorSpec>
+$RETURNS$
+$LANG_RU$
+	Возвращает TRUE если выделение строки цветом снято.
+$DESCRIPTION$
+	HighLightDel() is undo highlight line <nLine> with color specified <nColorItem>.
+	and removed information about this color highlighting from map <::HighLightColor>.
+$LANG_RU$
+	HighLightDel() снимает для строки выделение <nLine> цветом с номером <nColorItem> в
+	спецификации <::ColorSpec> и удаляет информацию из массива <::HighLightColor>.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	SetNumStyle()
+$SUMMARY$
+	On/Off the draw style "NUMERIC"
+$LANG_RU$
+	Установить/снять стиль "NUMERIC"
+$SYNTAX$
+	SetNumStyle([<lNum>]) 	--> NIL
+$ARGUMENTS$
+	<lNum> - Logical, if TRUE(default), numeric style ON.
+$LANG_RU$
+	<lNum> - Logical, TRUE(по умолчанию), стиль "NUMERIC" включен.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	SetNumStyle() is sets to ON/OFF numeric style. If ON, then every line
+	of editor buffer draw into viewport with same number.
+$LANG_RU$
+	SetNumStyle() устанавливает/снимает режим отображения строк в области
+	редактирования. Если <lNum> TRUE, в левой части области редактирования
+	отображаются порядковые номера строк в буфере редактирования.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	KillNumStyle()
+$SUMMARY$
+	Off the style "NUMERIC"
+$LANG_RU$
+	Снять стиль "NUMERIC"
+$SYNTAX$
+	KillNumStyle() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	KillNumStyle() is sets to OFF numeric style.
+$LANG_RU$
+	KillNumStyle() снимает режим отображения порядковых номеров строк.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetNewColor()
+$SUMMARY$
+	Set new colors TEXTEDIT.
+$LANG_RU$
+	Установить новую цветовую спецификацию.
+$SYNTAX$
+	SetNewColor(<sNewColor>) 	--> NIL
+$ARGUMENTS$
+	<sNewColor> - String, the color specification.
+$LANG_RU$
+	<sNewColor> - String, строка - цветовая палитра.b
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	SetNewColor() is sets new color specification to TEXTEDIT.
+	The method Refresh() used 4 colors item to draw editor buffer:
+
+	<sNewColor> := "<clr1>, <clr2>, <clr3>, <clr4>[, ...<clrN>]"
+	<clr1> - symbols base color
+	<clr2> - EOF-string color
+	<clr3> - mark symbols color
+	<clr4> - mark founded symbols color
+	 ...
+	<clrN> - users color
+$LANG_RU$
+	SetNewColor() устанавливает новую цветовую спецификацию.
+	Метод Refresh() использует первые 4 цвета для прорисовки данных:
+
+	<sNewColor> := "<clr1>, <clr2>, <clr3>, <clr4>[, ...<clrN>]"
+	<clr1> - основной цвет символов
+	<clr2> - цвет строки EOF
+	<clr3> - цвет выделенного текста
+	<clr4> - цвет текста, выделенного операциями поиска
+	 ...
+	<clrN> - пользовательский цвет
+$ENDMETHOD$
+
+
+$METHODNAME$
+	SetCharset()
+$SUMMARY$
+	Set charset to translate editor data.
+$LANG_RU$
+	Установить новую колировку.
+$SYNTAX$
+	SetCharset(<sCharset>) 	--> NIL
+$ARGUMENTS$
+	<sCharset> - String, the charset.
+$LANG_RU$
+	<sCharset> - String, кодировка.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	SetCharset() set a new charset  <sCharset> and translated data of
+	editor buffer to host charset.
+$LANG_RU$
+	SetCharset() устанавливает кодировку <sCharset> и транслирует данные
+	в буфере редактирования (если он не пуст) в кодировку CLIP-машины.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	SetKey()
+$SUMMARY$
+	Set a code block associated with code key value.
+$LANG_RU$
+	Установить блок кода, связанный с кодом клавиши.
+$SYNTAX$
+	SetKey(<nKey>[, <bData>]) 	--> bPreviouse
+$ARGUMENTS$
+	<nKey> - Numeric, the key code.
+	<bData> - Block code, block to runing.
+$LANG_RU$
+	<nKey> - Numeric, код клавиши.
+	<bData> - Block code, кодовый блок.
+$RETURNS$
+	Returns the previouse block code if exist or returns current one <bData>.
+$LANG_RU$
+	Возвращает предыдущий кодовый блок ассоциированный с кодом <nKey>(если такой имеется)
+	или возвращает блок <bData>.
+$DESCRIPTION$
+	SetKey() is sets a new code block associated with code <nKey>.
+	When replacing an existing code block definition, it returns previous
+	code block, in other returns current one.
+	Its associated key code will be evaluated ApplyKey() methods.
+
+	If <bData>  is NIL, SetKey() returns old block code and remove
+	keypress/code block definition.
+
+
+	A default key code is cursor moves(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
+	K_PGDN, K_HOME, K_END ....) associates with corresponded methods Left(),
+	Right(), Up(), Down() and more.
+$LANG_RU$
+	SetKey() устанавливает новый кодовый блок, ассоциированный с кодом <nKey>.
+	Когда при этом замещается существующий блок кода, метод возвращает этот
+	существующий блок, иначе возвращает вновь установленный.
+	Коды клавиш и связанные с ними кодовые блоки обрабатываются методом
+	ApplyKey().
+
+	Если <bData> NIL, SetKey() возвращает старый кодовый блок
+	и удаляет код клавиши с ассоциированым с ним кодовым блоком.
+
+	По умолчанию с клавишами перемещения курсора(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
+	K_PGDN, K_HOME, K_END ....) ассоциированы соответствующие методы Left(),
+	Right(), Up(), Down() и тд.
+$ENDMETHOD$
+
+$METHODNAME$
+	ApplyKey()
+$SUMMARY$
+	Evalute the code block.
+$LANG_RU$
+	Выполнить кодовый блок.
+$SYNTAX$
+	ApplyKey(<nKey>) 	--> nResult
+$ARGUMENTS$
+	<nKey> - Numeric, the key code.
+$LANG_RU$
+	<nKey> - Numeric, код клавиши.
+$RETURNS$
+	Returns one of numeric value what definited in edit.ch.
+
+	TE_EXIT		-1 User request for the TEXTEDIT to lose input focus
+
+	TE_CONTINUE	0  Code block associated with <nKey> was evaluated
+
+	TE_EXCEPTION	1  Unable to locate <nKey> in the dictionary, key was not processed
+$LANG_RU$
+	Возвращает одно из определенных в edit.ch кодов:
+
+	TE_EXIT		-1 Пользовательский запрос к TEXTEDIT потерять фокус
+
+	TE_CONTINUE	0  Кодовый блок, ассоциированный с кодом <nKey>, был выполнен
+
+	TE_EXCEPTION	1  Неопределенный в словаре код <nKey>, код не был обработан
+$DESCRIPTION$
+	ApplyKey() evaluates the code block associeated with key code <nKey>
+	that is contained whithin SetKey() dictionary and returns <nResult>.
+$LANG_RU$
+	ApplyKey() выполняет кодовый блок ассоциированный с кодом <nKey>,
+	который содержится в словаре, созданном в SetKey(), и возвращает <nResult>.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	SetFocus()
+$SUMMARY$
+	Set/kill focus.
+$LANG_RU$
+	Установить/снять фокус
+$SYNTAX$
+	SetFocus([<lFocus>]) 	--> lNewFocus
+$ARGUMENTS$
+	<lFocus> - Logical, if TRUE object take focus.
+$LANG_RU$
+	<lFocus> - Logical, если TRUE объект в фокусе.
+$RETURNS$
+	Returns new focused value TRUE or FALSE.
+$LANG_RU$
+	Возвращает состояние объекта - в фокусе или нет - TRUE или FALSE.
+$DESCRIPTION$
+	SetFocus() sets or kills focus.
+	If <lFocus> not specifyed, then <::InFocus> take new value !<::InFocus>
+$LANG_RU$
+	SetFocus() устанавливает или снимает фокус.
+	Если <lFocus> не определен, <lFocus> принимает значение !<::InFocus>
+$ENDMETHOD$
+
+$EXAMPLES$
+
+#include <inkey.ch>
+local te, nKey, str
+
+clear screen
+wopen(2, 2, 20, 40)
+te := textEditNew(0, 0, maxrow(), maxcol(), "11/1,0/2,0/3,0/7")
+te:EofString := "  ******* The happy end  ******* "
+te:lEofString := .t.
+te:LoadString("This is test string!&\n&\tThis is test string!&\n&\t&\tThis is test string!&\n")
+while .T.
+	nKey := inkey(0)
+	do case
+		case nKey == K_ESC
+			str := te:SaveString()
+			exit
+		case nKey == K_UP
+			te:up()
+		case nKey == K_DOWN
+			te:down()
+		case nKey == K_LEFT
+			te:left()
+		case nKey == K_RIGHT
+			te:right()
+		otherwise
+			if (nKey>=32 .and. nKey<=256)
+				if ( Set(_SET_INSERT) )
+					te:insert(chr(nKey))
+				else
+					te:overStrike(chr(nKey))
+				endif
+			endif
+	endcase
+enddo
+
+wclose()
+
+? str
+?
+
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+	Find
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+
+

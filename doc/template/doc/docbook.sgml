@@ -1,0 +1,957 @@
+<sect2 id="writing-docbook">
+<title>_(Writing Documentation with DocBook)_</title>
+
+<para>
+_(DocBook is a flavor of <acronym>SGML</acronym>
+(<firstterm>Standard Generalized Markup
+Language</firstterm>), a syntax for marking up the contents
+of documents.  HTML is another very common flavor of SGML;
+DocBook markup looks very similar to HTML markup, although
+the names of the markup tags differ.)_
+</para>
+
+<sect3>
+<title>_(Terminology)_</title>
+
+<para>
+_(SGML markup contains a number of syntactical elements that
+serve different purposes in the markup.  We'll run through
+the basics here to make sure we're on the same page when
+we refer to SGML semantics.)_
+</para>
+<para>
+_(The basic currency of SGML is the
+<firstterm>tag</firstterm>.  A simple tag consists of a
+pair of angle brackets and the name of the tag.  For
+example, the <sgmltag>para</sgmltag> tag would appear in
+an SGML document as <sgmltag
+class="starttag">para</sgmltag>.  This start tag indicates
+that the immediately following text should be classified
+according to the tag.  In regular SGML, each opening tag
+must have a matching end tag to show where the start tag's
+contents end.  End tags begin with
+<quote><literal>&lt;/</literal></quote> markup, e.g.,
+<sgmltag class="endtag">para</sgmltag>.)_
+</para>
+<para>
+_(The combination of a start tag, contents, and an end tag
+is called an <firstterm>element</firstterm>.  SGML
+elements can be nested inside of each other, or contain
+only text, or may be a combination of both text and other
+elements, although in most cases it is better to limit
+your elements to one or the other.)_
+</para>
+<para>
+_(The <acronym>XML</acronym> (<firstterm>eXtensible Markup
+Language</firstterm>) specification, a modern subset of
+the SGML specification, adds a so-called <firstterm>empty
+tag</firstterm>, for elements that contain no text
+content.  The entire element is a single tag, ending with
+<quote><literal>/&gt;</literal></quote>, e.g.,
+<sgmltag>&lt;xref/&gt;</sgmltag>.  However, use of this
+tag style restricts you to XML DocBook processing, and
+your document may no longer compile with SGML-only
+processing systems.)_
+</para>
+<para>
+_(Often a processing system will need more information about
+an element than you can provide with just tags.  SGML
+allows you to add extra <quote>hints</quote> in the form
+of SGML <firstterm>attributes</firstterm> to pass along
+this information.  The most common use of attributes in
+DocBook is giving specific elements a name, or an ID, so
+you can refer to it from elsewhere.  This ID can be used
+for many things, including file-naming for HTML output,
+hyper-linking to specific parts of the document, and even
+pulling text from that element (see the <sgmltag
+class="starttag">xref</sgmltag> tag).)_
+</para>
+<para>
+_(An SGML attribute appears inside the start tag, between
+the &lt; and &gt; brackets.  For example, if you wanted to
+set the <sgmltag class="attribute">id</sgmltag> attribute
+of the <sgmltag class="starttag">book</sgmltag> element to
+<quote>mybook</quote>, you would create a start tag like
+this: <programlisting>&lt;book id="mybook"></programlisting>)_
+</para>
+<para>
+_(Notice that the contents of the attribute are enclosed in
+quote marks.  These quotes are optional in SGML, but
+mandatory in XML.  It's a good habit to use quotes, as it
+will make it much easier to migrate your documents to an
+XML processing system later on.)_
+</para>
+<para>
+_(You can also specify more than one attribute in a single
+tag: <programlisting>&lt;book id="mybook" status="draft"></programlisting>)_
+</para>
+<para>
+_(Another commonly used type of SGML markup is the
+<firstterm>entity</firstterm>.  An entity lets you
+associate a block of text with a name.  You declare the
+entity once, at the beginning of your document, and can
+invoke it as many times as you like throughout the
+document.  You can use entities as shorthand, or to make
+it easier to maintain certain phrases in a central
+location, or even to insert the contents of an entire file
+into your document.)_
+</para>
+<para>
+_(An entity in your document is always surrounded by the
+<quote>&amp;</quote> and <quote>;</quote> characters.  One
+entity you'll need sooner or later is the one for the
+<quote>&lt;</quote> character.  Since SGML expects all
+tags to begin with a <quote>&lt;</quote>, the
+<quote>&lt;</quote> is a reserved character.  To use it in
+your document (as I am doing here), you must insert it
+with the <literal>&amp;lt;</literal> entity.  Each time
+the SGML processor encounters <literal>&amp;lt;</literal>,
+it will place a literal <quote>&lt;</quote> in the output
+document. Similarly you must use the <literal>&amp;gt;</literal> 
+and <literal>&amp;amp;</literal> entities for the 
+<quote>&gt;</quote> and <quote>&amp;</quote> characters.)_
+</para>
+<para>
+_(The final term you'll need to know when writing simple
+DocBook documents is the <acronym>DTD</acronym>
+(<firstterm>Document Type Declaration</firstterm>).  The
+DTD defines the flavor of SGML a given document is written
+in.  It lists all the legal tag names, like <sgmltag
+class="starttag">book</sgmltag>, <sgmltag
+class="starttag">para</sgmltag>, and so on, and declares
+how those tags are allowed to be used together.  For
+example, it doesn't make sense to put a <sgmltag
+class="starttag">book</sgmltag> element inside a <sgmltag
+class="starttag">para</sgmltag> paragraph element -- only
+the reverse.)_
+</para>
+<para>
+_(The DTD thus defines the legal structure of the document.
+It also declares which attributes can be used with which
+tags.  The SGML processing system can use the DTD to make
+sure the document is laid out properly before attempting
+to process it.  SGML-aware text editors like 
+can also use the DTD to
+guide you while you write, offering you choices about
+which tags you can add in different places in the
+document, and beeping at you when you try to add a tag
+where it doesn't belong.)_
+</para>
+<para>
+_(Generally, you will declare which DTD you want to use as
+the first line of your SGML document.  In the case of
+DocBook, you will use something like this:)_
+<programlisting>&lt!doctype book PUBLIC "-//OASIS//DTD
+DocBook V3.1//EN" []> &lt;book> ...
+&lt;/book></programlisting>
+</para>
+<para>
+_(Note that you must specify your toplevel element inside
+the doctype declaration.  If you were writing an article
+rather than a book, you might use this declaration instead:)_
+<programlisting>&lt!doctype article PUBLIC "-//OASIS//DTD DocBook V3.1//EN" []>
+&lt;article>
+...
+&lt;/article></programlisting>
+</para>
+</sect3>
+
+<sect3 id="sgml-document">
+          <title>The Document</title>
+          <para>
+_(Once you're comfortable with SGML, creating a DocBook
+document is quite simple and straightforward.  Even
+though DocBook contains over 300 different tags, you can
+usually get by with only a small subset of those tags.
+Most of them are for inline formatting, rather than for
+document structuring.  Furthermore, the common tags have
+short, intuitive names.)_
+          </para>
+          <para>
+_(Below is a (completely nonsensical) example to illustrate
+how a simple document might be laid out.  Notice that all
+<sgmltag class="starttag">chapter</sgmltag> and <sgmltag
+class="starttag">sect1</sgmltag> elements have <sgmltag
+class="attribute">id</sgmltag> attributes.  This is not
+mandatory, but is a good habit to get into, as DocBook is
+commonly converted into HTML, with a separate generated
+file for each <sgmltag class="starttag">book</sgmltag>,
+<sgmltag class="starttag">chapter</sgmltag>, and/or <sgmltag
+class="starttag">sect1</sgmltag> element.  If the given
+element has an <sgmltag class="attribute">id</sgmltag>
+attribute, the processor will typically name the file
+accordingly.  Thus, the below document might result in
+<filename>index.html</filename>,
+<filename>chapter-one.html</filename>,
+<filename>blobs.html</filename>, and so on.)_
+          </para>
+          <para>
+_(Also notice the text marked off with <quote>&lt;!--
+</quote> and <quote> --&gt;</quote> characters.  These
+denote SGML comments.  SGML processors will completely
+ignore anything between these markers, similar to
+<quote>/*</quote> and <quote>*/</quote> comments in C
+source code.)_
+          </para>
+
+          <!-- Encase the following SGML excerpt inside a CDATA
+               block so we don't have to bother converting all
+               brackets to entities
+          -->
+          <programlisting>
+<![CDATA[
+<!doctype book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" []>
+<book id="index">
+  <bookinfo>
+    <title>A Poet's Guide to Nonsense</title>
+  </bookinfo>
+
+  <chapter id="chapter-one">
+    <title>Blobs and Gribbles</title>
+
+    <!-- This section contains only one major topic -->
+    <sect1 id="blobs">
+      <title>The Story Behind Blobs</title>
+      <para>
+        Blobs are often mistaken for ice cubes and rain
+        puddles...
+      </para>
+    </sect1>
+
+    <!-- This section contains embedded sub-sections -->
+    <sect1 id="gribbles">
+      <title>Your Friend the Gribble</title>
+      <para>
+        A Gribble is a cute, unassuming little fellow...
+      </para>
+
+      <sect2 id="gribble-temperament">
+        <title>Gribble Temperament</title>
+        <para>
+          When left without food for several days...
+        </para>
+      </sect2>
+
+      <sect2 id="gribble-appearance">
+        <title>Gribble Appearance</title>
+        <para>
+          Most Gribbles have a shock of white fur running from...
+        </para>
+      </sect2>
+    </sect1>
+  </chapter>
+
+  <chapter id="chapter-two">
+    <title>Phantasmagoria</title>
+
+    <sect1 id="dretch-pools">
+      <title>Dretch Pools</title>
+
+      <para>
+        When most poets think of Dretch Pools, they tend to...
+      </para>
+    </sect>
+  </chapter>
+</book>
+]]>
+</programlisting>
+        </sect3>
+
+        <sect3>
+          <title>_(Common Elements)_</title>
+          <para>
+_(Once you get used to the syntax of SGML, the next hurdle
+in writing DocBook documentation is to learn the many
+DocBook-specific tag names, and when to use them.  DocBook
+was created for technical documentation, and as such, the
+tag names and document structure are slanted towards the
+needs of such documentation.)_
+          </para>
+          <para>
+_(To cover its target audience, DocBook declares a wide
+variety of specialized tags, including tags for formatting
+source code (with somewhat of a C/C++ bias), computer
+prompts, GUI application features, keystrokes, and so on.
+DocBook also includes tags for universal formatting needs,
+like headers, footnotes, tables, and graphics.)_
+          </para>
+          <para>
+_(We won't cover all of these elements here (over 300
+DocBook tags exist!), but we will cover the basics.  To
+learn more about the other tags, check out the official
+DocBook guide, at <ulink
+url="http://docbook.org">http://docbook.org</ulink>)_.
+          </para>
+          <para>
+_(There are often many correct ways to mark up a given piece
+of text, and you may have to make guesses about which tag
+to use.  Sometimes you'll have to make compromises.
+If you don't like the way a certain
+tag looks in HTML, that doesn't mean you should choose a
+different tag based on its output formatting.  The
+processing stylesheets can be altered to fix the
+formatting of that same tag everywhere in the document
+(not just in the place you're working on).  For example,
+if you're frustrated that the <sgmltag
+class="starttag">systemitem</sgmltag> tag doesn't produce
+any formatting by default, you should fix the stylesheets,
+not change the valid <sgmltag
+class="starttag">systemitem</sgmltag> tag to, for example,
+an <sgmltag class="starttag">emphasis</sgmltag> tag.)_
+          </para>
+          <para>
+            _(Here are the common SGML elements:)_
+          </para>
+
+          <variablelist>
+            <title>_(Structural Elements)_</title>
+            <varlistentry>
+              <term><sgmltag class="starttag">book</sgmltag></term>
+              <listitem>
+                <para>
+_(The book is the most common toplevel element, and is
+probably the one you should use for your document.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">set</sgmltag></term>
+              <listitem>
+                <para>
+_(If you want to group more than one book into a
+single unit, you can place them all inside a set.
+This is useful when you want to bundle up
+documentation in alternate ways.  We do this with
+the documentation, using a <sgmltag
+class="starttag">set</sgmltag> to put everything
+into a single directory,
+and a <sgmltag class="starttag">book</sgmltag> to
+put each Wine guide into a separate directory.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">chapter</sgmltag></term>
+              <listitem>
+                <para>
+_(A <sgmltag class="starttag">chapter</sgmltag>
+element includes a single entire chapter of the
+book.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">part</sgmltag></term>
+              <listitem>
+                <para>
+_(If the chapters in your book fall into major
+categories or groupings, you can place each 
+collection of chapters
+into a <sgmltag class="starttag">part</sgmltag>
+element.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">sect?</sgmltag></term>
+              <listitem>
+                <para>
+_(DocBook has many section elements to divide the
+contents of a chapter into smaller chunks.  The
+encouraged approach is to use the numbered section
+tags, <sgmltag class="starttag">sect1</sgmltag>,
+<sgmltag class="starttag">sect2</sgmltag>, <sgmltag
+class="starttag">sect3</sgmltag>, <sgmltag
+class="starttag">sect4</sgmltag>, and <sgmltag
+class="starttag">sect5</sgmltag> (if necessary).
+These tags must be nested in order: you can't place
+a <sgmltag class="starttag">sect3</sgmltag> directly
+inside a <sgmltag class="starttag">sect1</sgmltag>.
+You have to nest the <sgmltag
+class="starttag">sect3</sgmltag> inside a <sgmltag
+class="starttag">sect2</sgmltag>, and so forth.
+Documents with these explicit section groupings are
+easier for SGML processors to deal with, and lead to
+better organized documents.  DocBook also supplies a
+<sgmltag class="starttag">section</sgmltag> element
+which you can nest inside itself, but its use is
+discouraged in favor of the numbered section tags.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">title</sgmltag></term>
+              <listitem>
+                <para>
+_(The title of a book, chapter, part, section, etc.
+In most of the major structural elements, like
+<sgmltag class="starttag">chapter</sgmltag>,
+<sgmltag class="starttag">part</sgmltag>, and the
+various section tags, <sgmltag
+class="starttag">title</sgmltag> is mandatory.  In
+other elements like <sgmltag
+class="starttag">book</sgmltag> and <sgmltag
+class="starttag">note</sgmltag>, it's optional.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">para</sgmltag></term>
+              <listitem>
+                <para>
+_(The basic unit of text is the paragraph, represented
+by the <sgmltag class="starttag">para</sgmltag> tag.
+This is probably the tag you'll use most often.  In
+fact, in a simple document, you can probably get
+away with using only <sgmltag
+class="starttag">book</sgmltag>, <sgmltag
+class="starttag">chapter</sgmltag>, <sgmltag
+class="starttag">title</sgmltag>, and <sgmltag
+class="starttag">para</sgmltag>.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">article</sgmltag></term>
+              <listitem>
+                <para>
+_(For shorter, more targeted documents, like topic
+pieces and whitepapers, you can use <sgmltag
+class="starttag">article</sgmltag> as your toplevel
+element.)_
+                </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <variablelist>
+            <title>_(Inline Formatting Elements)_</title>
+            <varlistentry>
+              <term><sgmltag class="starttag">filename</sgmltag></term>
+              <listitem>
+                <para>
+_(The name of a file.  You can optionally set the
+<sgmltag class="attribute">class</sgmltag> attribute
+to <literal>Directory</literal>,
+<literal>HeaderFile</literal>, and
+<literal>SymLink</literal> to further classify the
+filename.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">userinput</sgmltag></term>
+              <listitem>
+                <para>
+                  _(Literal text entered by the user.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">computeroutput</sgmltag></term>
+              <listitem>
+                <para>
+                  _(Literal text output by the computer.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">literal</sgmltag></term>
+              <listitem>
+                <para>
+_(A catch-all element for literal computer data.  Its
+use is somewhat vague; try to use a more specific
+tag if possible, like <sgmltag
+class="starttag">userinput</sgmltag> or <sgmltag
+class="starttag">computeroutput</sgmltag>.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">quote</sgmltag></term>
+              <listitem>
+                <para>
+_(An inline quotation.  This tag typically inserts
+quotation marks for you, so you would write <sgmltag
+class="starttag">quote</sgmltag>This is a
+quote<sgmltag class="endtag">quote</sgmltag> rather
+than "This is a quote".  This usage may be a little
+bulkier, but it does allow for automated formatting
+of all quoted material in the document.  Thus, if
+you wanted all quotations to appear in italic, you
+could make the change once in your stylesheet,
+rather than doing a search and replace throughout
+the document.  For larger chunks of quoted text, you
+can use <sgmltag
+class="starttag">blockquote</sgmltag>.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">note</sgmltag></term>
+              <listitem>
+                <para>
+_(Insert a side note for the reader.  By default, the
+SGML processor usually prefixes the content with
+"Note:".  You can change this text by adding a
+<sgmltag class="starttag">title</sgmltag> element.
+Thus, to add a visible FIXME comment to the
+documentation, you might write:)_
+                </para>
+<programlisting>
+<![CDATA[
+<note>
+  <title>FIXME</title>
+  <para>This section needs more info about...</para>
+</note>
+]]></programlisting>
+                <para>
+                  _(The results will look something like this:)_
+                </para>
+                  <note>
+                    <title>FIXME</title>
+                    <para>This section needs more info about...</para>
+                  </note>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">sgmltag</sgmltag></term>
+              <listitem>
+                <para>
+_(Used for inserting SGML tags, etc., into a SGML
+document without resorting to a lot of entity
+quoting, e.g., &amp;lt;.  You can change the
+appearance of the text with the <sgmltag
+class="attribute">class</sgmltag> attribute.  Some
+common values of this are
+<literal>starttag</literal>,
+<literal>endtag</literal>,
+<literal>attribute</literal>,
+<literal>attvalue</literal>, and even
+<literal>sgmlcomment</literal>.  See this SGML file,
+<filename>documentation/documentation.sgml</filename>,
+for examples.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">prompt</sgmltag></term>
+              <listitem>
+                <para>
+_(The text used for a computer prompt, for example a
+shell prompt, or command-line application prompt.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">replaceable</sgmltag></term>
+              <listitem>
+                <para>
+_(Meta-text that should be replaced by the user, not
+typed in literally, e.g., in command descriptions
+and <parameter>--help</parameter> outputs.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">constant</sgmltag></term>
+              <listitem>
+                <para>
+                  _(A programming constant, e.g.,)_
+                  <constant>MAX_PATH</constant>.
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">symbol</sgmltag></term>
+              <listitem>
+                <para>
+_(A symbolic value replaced, for example, by a
+pre-processor.  This applies primarily to C macros,
+but may have other uses.  Use the <sgmltag
+class="starttag">constant</sgmltag> tag instead of
+<sgmltag class="starttag">symbol</sgmltag> where
+appropriate.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">function</sgmltag></term>
+              <listitem>
+                <para>
+                  _(A programming function name.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">parameter</sgmltag></term>
+              <listitem>
+                <para>
+                  _(Programming language parameters you pass with a function.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">option</sgmltag></term>
+              <listitem>
+                <para>
+                  _(Parameters you pass to a command-line executable.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">varname</sgmltag></term>
+              <listitem>
+                <para>
+                  _(Variable name, typically in a programming language.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">type</sgmltag></term>
+              <listitem>
+                <para>
+_(Programming language types, e.g., from a typedef
+definition.  May have other uses, too.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">structname</sgmltag></term>
+              <listitem>
+                <para>
+_(The name of a C-language <type>struct</type>
+declaration, e.g., <structname>sockaddr</structname>.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">structfield</sgmltag></term>
+              <listitem>
+                <para>
+                  _(A field inside a C <type>struct</type>.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">command</sgmltag></term>
+              <listitem>
+                <para>
+_(An executable binary, e.g., <command>/bin/sh</command>
+or <command>ls</command>.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">envar</sgmltag></term>
+              <listitem>
+                <para>
+                  _(An environment variable, e.g, <envar>$PATH</envar>.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">systemitem</sgmltag></term>
+              <listitem>
+                <para>
+_(A generic catch-all for system-related things, like
+OS names, computer names, system resources, etc.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">email</sgmltag></term>
+              <listitem>
+                <para>
+_(An email address.  The SGML processor will typically
+add extra formatting characters, and even a
+<literal>mailto:</literal> link for HTML pages.
+Usage: <sgmltag
+class="starttag">email</sgmltag>user@host.com<sgmltag
+class="endtag">email</sgmltag>)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">firstterm</sgmltag></term>
+              <listitem>
+                <para>
+_(Special emphasis for introducing a new term.  Can
+also be linked to a <sgmltag
+class="starttag">glossary</sgmltag> entry, if
+desired.)_
+                </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <variablelist>
+            <title>_(Item Listing Elements)_</title>
+            <varlistentry>
+              <term><sgmltag class="starttag">itemizedlist</sgmltag></term>
+              <listitem>
+                <para>
+_(For bulleted lists, no numbering.  You can tweak the
+layout with SGML attributes.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">orderedlist</sgmltag></term>
+              <listitem>
+                <para>
+_(A numbered list; the SGML processor will insert the
+numbers for you.  You can suggest numbering styles
+with the <sgmltag
+class="attribute">numeration</sgmltag> attribute.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">simplelist</sgmltag></term>
+              <listitem>
+                <para>
+_(A very simple list of items, often inlined.  Control
+the layout with the <sgmltag
+class="attribute">type</sgmltag> attribute.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">variablelist</sgmltag></term>
+              <listitem>
+                <para>
+_(A list of terms with definitions or descriptions,
+like this very list!)_
+                </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <variablelist>
+            <title>_(Block Text Quoting Elements)_</title>
+            <varlistentry>
+              <term><sgmltag class="starttag">programlisting</sgmltag></term>
+              <listitem>
+                <para>
+_(Quote a block of source code. Typically highlighted
+in the output and set off from normal text.)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">screen</sgmltag></term>
+              <listitem>
+                <para>
+_(Quote a block of visible computer output, like the
+output of a command or chunks of debug logs.)_
+                </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <variablelist>
+            <title>_(Hyperlink Elements)_</title>
+            <varlistentry>
+              <term><sgmltag class="starttag">link</sgmltag></term>
+              <listitem>
+                <para>
+
+_(Generic hypertext link, used for pointing to other
+sections within the current document.  You supply
+the visible text for the link, plus the name of the <sgmltag
+class="attribute">id</sgmltag> attribute of the
+element that you want to link to.  For example:)_
+
+<programlisting>&lt;link linkend="configuring">the section on configuring wine&lt;/link>
+...
+&lt;sect2 id="configuring">
+...</programlisting>
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">xref</sgmltag></term>
+              <listitem>
+                <para>
+_(In-document hyperlink that can generate its own
+text.  Similar to the <sgmltag
+class="starttag">link</sgmltag> tag, you use the
+<sgmltag class="attribute">linkend</sgmltag>
+attribute to specify which target element you want
+to jump to:)_
+                </para>
+                <para>
+<programlisting>&lt;xref linkend="configuring">
+...
+&lt;sect2 id="configuring">
+...</programlisting>
+                </para>
+                <para>
+_(By default, most SGML processors will autogenerate
+some generic text for the <sgmltag
+class="starttag">xref</sgmltag> link, like
+<quote>Section 2.3.1</quote>.  You can use the
+<sgmltag class="attribute">endterm</sgmltag>
+attribute to grab the visible text content of the
+hyperlink from another element:)_
+                </para>
+                <para>
+<programlisting>&lt;xref linkend="configuring" endterm="config-title">
+...
+&lt;sect2 id="configuring">
+  &lt;title id="config-title">Configuring&lt;/title>
+...</programlisting>
+                </para>
+                <para>
+_(This would create a link to the
+<symbol>configuring</symbol> element,
+displaying the text of the
+<symbol>config-title</symbol> element for the
+hyperlink.  Most often, you'll add an <sgmltag
+class="attribute">id</sgmltag> attribute to the
+<sgmltag class="starttag">title</sgmltag> of the
+section you're linking to, as above, in which case
+the SGML processor will use the target's title text
+for the link text.)_
+                </para>
+                <para>
+_(Alternatively, you can use an <sgmltag
+class="attribute">xreflabel</sgmltag> attribute in
+the target element tag to specify the link text:)_
+                </para>
+<programlisting>&lt;sect1 id="configuring" xreflabel="Configuring"></programlisting>
+                <note>
+                  <para>
+_(<sgmltag class="starttag">xref</sgmltag> is an
+empty element.  You don't need a closing tag for
+it (this is defined in the DTD).  In SGML
+documents, you should use the form <sgmltag
+class="starttag">xref</sgmltag>, while in XML
+documents you should use
+<sgmltag>&lt;xref/></sgmltag>.)_
+                  </para>
+                </note>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">anchor</sgmltag></term>
+              <listitem>
+                <para>
+_(An invisible tag, used for inserting <sgmltag
+class="attribute">id</sgmltag> attributes into a
+document to link to arbitrary places (i.e., when
+it's not close enough to link to the top of an
+element).)_
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">ulink</sgmltag></term>
+              <listitem>
+                <para>
+                  _(Hyperlink in URL form, e.g.,)_ <ulink
+                  url="http://www.itk.ru">http://www.itk.ru</ulink>.
+                </para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><sgmltag class="starttag">olink</sgmltag></term>
+              <listitem>
+                <para>
+_(Indirect hyperlink; can be used for linking to
+external documents.  Not often used in practice.)_
+                </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </sect3>
+
+        <sect3>
+          <title>_(Multiple SGML files)_</title>
+          <para>
+            How to split an SGML document into multiple files...
+          </para>
+        </sect3>
+      </sect2>
+
+      <sect2 id="sgml-environment">
+        <title>_(The SGML Environment)_</title>
+
+        <para>
+_(You can write SGML/DocBook documents in any text editor you
+might find (although as we'll find in
+, some editors are more friendly for
+this task than others).  However, if you want to convert
+those documents into a more friendly form for reading, such
+as HTML, PostScript, or PDF, you will need a working SGML
+environment.  This section attempts to lay out the various
+SGML rendering systems, and how they are set up on the
+popular Linux distributions.)_
+        </para>
+
+	<para>
+_(There are two main environments, which can provide transformation
+from your .sgml files into target (HTML,Postsript,TeX,text,pdf,...)
+formats.)_
+        </para>
+
+        <sect3>
+          <title>_(DSSSL Environment)_</title>
+          <para>
+_(This is the old and stable modular stylesheet system.
+In most cases that is what you need.)_
+          </para>
+        </sect3>
+
+        <sect3>
+          <title>_(XSLT Environment)_</title>
+          <para>
+_(This is new, less stable environment, use .xml files
+instead .sgml.)_
+          </para>
+        </sect3>
+
+        <sect3>
+          <title>_(SGML on Redhat)_</title>
+          <para>
+_(Most Linux distributions have everything you need already
+bundled up in package form.  Unfortunately, each
+distribution seems to handle its SGML environment
+differently, installing it into different paths, and
+naming its packages according to its own whims.)_
+          </para>
+          <para>
+_(The following packages seems to be sufficient for RedHat 7.1.  You
+will want to be careful about the order in which you install the
+rpms.)_
+            <itemizedlist>
+              <listitem><para>sgml-common-*.rpm</para></listitem>
+              <listitem><para>openjade-*.rpm</para></listitem>
+              <listitem><para>perl-SGMLSpm-*.rpm</para></listitem>
+              <listitem><para>docbook-dtd*.rpm</para></listitem>
+              <listitem><para>docbook-style-dsssl-*.rpm</para></listitem>
+              <listitem><para>tetex-*.rpm</para></listitem>
+              <listitem><para>jadetex-*.rpm</para></listitem>
+              <listitem><para>docbook-utils-*.rpm</para></listitem>
+            </itemizedlist>
+_(You can also use ghostscript to view the ps format output and 
+Adobe Acrobat 4 to view the pdf file.)_
+          </para>
+        </sect3>
+
+        <sect3>
+          <title>_(SGML on Debian)_</title>
+          <para>
+_(The following packages seems to be sufficient for Debian 3.0.
+Just install them via apt-get.)_
+            <itemizedlist>
+              <listitem><para>sgmltools-2</para></listitem>
+              <listitem><para>docbook-utils</para></listitem>
+            </itemizedlist>
+           _(You can also use <command>gv</command> to view the ps format output.)_
+          </para>
+        </sect3>
+
+      </sect2>
+

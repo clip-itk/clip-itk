@@ -1,0 +1,111 @@
+$FUNCNAME$
+  READMODAL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Activate a full-screen editing mode for a GetList
+$LANG_RU$
+   Активизирует режим полно-экранного редактирования GetList
+$SYNTAX$
+     READMODAL(<aGetList>, [<nGet>], [<oMenu>], [<nMsgRow>,
+	<nMsgLeft>, <nMsgRight>, <cMsgColor>])
+	--> <lUpdated>
+$LANG_RU$
+     READMODAL(<массив GET-объектов>) --> NIL
+$ARGUMENTS$
+     <aGetList> is an array containing a list of Get objects to edit.
+     <nGet> is an optional numeric value that indicates which Get object
+     within <aGetList> should initially receive input focus.
+     <oMenu> is an optional Topbarmenu object that, when supplied,
+     permits menu selection during data entry.
+     <nMsgRow>, <nMsgLeft>, and <nMsgRight> specify the row,
+     left, and right margins where the Get object messages appear on the
+     screen.
+     <cMsgColor> defines the color setting of the message area.  It
+     consists of a single foreground/background color pair.
+$LANG_RU$
+     <массив GET-объектов> - это массив, содержащий описатель GET-объекта
+     для редактирования.
+$RETURNS$
+     READMODAL() returns true (.T.) when GetList is updated, false (.F.) when
+     it is not.
+$LANG_RU$
+     READMODAL() всегда возвращает NIL.
+$DESCRIPTION$
+     READMODAL() is a user interface function that implements the full-screen
+     editing mode for GETs, and is part of the open architecture Get system
+     of xClipper.  READMODAL() is like the READ command, but takes a
+     GetList array as an argument and does not reinitialize the GetList array
+     when it terminates.  Because of this, you can maintain multiple lists of
+     Get objects and activate them any time in a program's execution as long
+     as the array to activate is visible.
+
+     In order to retain compatibility with previous versions of xClipper,
+     the GET system in xClipper is implemented using a public array called
+     GetList.  Each time an @...GET command executes, it creates a Get object
+     and adds to the currently visible GetList array.  The standard READ
+     command is preprocessed into a call to READMODAL() using the GetList
+     array as its argument.  If the SAVE clause is not specified, the
+     variable GetList is assigned an empty array after the READMODAL()
+     function terminates.
+
+     Some of the functions in the Getsys.prg have been made public so that
+     they can be used when implementing customized GET readers.  These
+     functions are listed in the table below.
+
+     <PRE> Get System functions
+     ------------------------------------------------------------------------
+     Function            Description
+     ------------------------------------------------------------------------
+     GETACTIVE()         Return the currently active Get object
+     GETAPPLYKEY()       Apply a key to a Get object from within a GET reader
+     GETDOSETKEY()       Process SET KEY during GET editing
+     GETPOSTVALIDATE()   Postvalidate the current Get object
+     GETPREVALIDATE()    Prevalidate a Get object
+     GETREADER()         Execute standard READ behavior for a Get object
+     READFORMAT()        Return and, optionally, set the code block that
+			 implements a format (.fmt) file
+     READKILL()          Return and, optionally, set whether the current Read
+			 should be exited
+     READUPDATED()       Return and, optionally, set whether a GET has
+			 changed during a Read
+     ------------------------------------------------------------------------
+     </PRE>
+
+     For reference information on the Get objects and functions listed above,
+     refer to the "Get System" chapter in the Programming and Utilities
+     Guide.
+
+     For more information on the supported keys in the default READMODAL()
+     function, refer to the READ command reference in this chapter.
+$LANG_RU$
+
+     READMODAL() - функция интерфейса пользователя, которая реализует
+     режим полноэкранного редактирования для команды GET и поставляется
+     как часть открытой архитектуры GET-системы xClipper. READMODAL()
+     похожа на команду READ, но принимает массив GetList как аргумент и
+     не инициализирует его повторно в момент завершения. Поэтому Вы можете
+     создавать множественные списки GET-объектов и активизировать их в
+     любое время выполнения программы, пока массив активации видим.
+
+     Для сохранения совместимости с предыдущими версиями xClipper, GET-
+     система в xClipper реализуется с помощью общего массива,
+     называемого GetList. Каждый раз при выполнении команды GET,
+     GET-объект создается и добавляется к текущему видимому массиву
+     GetList. Стандартная команда READ преобразуется в вызов READMODAL(),
+     используя массив GetList в качестве своего аргумента. Если
+     предложение SAVE не задано, то после завершения функции READMODAL()
+     переменной GetList присваивается пустой массив.
+
+     За дальнейшей информацией о GET-системе обратитесь к разделу
+     "GET-система" в главе "Основные концепции".
+
+     За справочной информацией по GET-объектам обратитесь в раздел
+     "GET-класс" главы "Стандартные классы".
+
+     За дальнейшей информацией по составу используемых по умолчанию клавиш
+     функцией READMODAL() обратитесь к ссылке на команду READ в главе
+     "Стандартные команды".
+$SEEALSO$
+     UPDATED()
+$END$

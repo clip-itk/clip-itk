@@ -1,0 +1,90 @@
+$FUNCNAME$
+  DISPOUT()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Write a value to the display
+$LANG_RU$
+   Выводит значение на экран.
+$SYNTAX$
+     DISPOUT(<exp>, [<cColorString>]) --> NIL
+$LANG_RU$
+     DISPOUT(<выражение>, [<строка цвета>]) --> NIL
+$ARGUMENTS$
+     <exp> is the value to display.
+     <cColorString> is an optional argument that defines the display
+     color of <exp>.  If unspecified, <exp> is displayed as the standard
+     color of the current system color as defined by SETCOLOR().
+     <cColorString> is a character expression containing the standard color
+     setting.  You can specify a literal color setting, if you enclose it in
+     quote marks.
+$LANG_RU$
+     <выражение> - значение для вывода.
+     <строка цвета> - необязательный аргумент, который определяет цвет для
+     вывода результата вычисления <выражение>.  При его отсутствии
+     <выражение> выводится с использованием стандартного цвета текущей
+     цветовой спецификации, заданной функцией SETCOLOR(). <строка цвета> -
+     символьное выражение, определяющее стандартный цвет. При задании
+     цвета в литеральной форме строка должна быть заключена в кавычки.
+$RETURNS$
+     DISPOUT() always returns NIL.
+$LANG_RU$
+     DISPOUT() всегда возвращает NIL.
+$DESCRIPTION$
+     DISPOUT() is a simple output function that writes the value of a single
+     expression to the display at the current cursor position.  This function
+     ignores the SET DEVICE setting; output always goes to the screen.  You
+     can only use this function within a procedure or function.
+$LANG_RU$
+     DISPOUT() - функция простого вывода, выводящая значение вычисляемого
+     выражения на экран в текущую позицию курсора. Эта функция не зависит
+     от режима, установленного командой SET DEVICE - вывод всегда
+     производится на экран.
+$EXAMPLES$
+       This example performs screen output at a specified location in
+	different colors.  Note how the cursor position is saved and restored
+	using ROW(), COL(), and SETPOS():
+
+	PROCEDURE Showit
+	   LOCAL nRow, nCol
+	   ? nCol := COL()            // save original
+	   ?? nRow := ROW()            // cursor position
+
+	   INKEY(2)
+
+	   SETPOS(nRow, nCol)
+	   DISPOUT("This is a test of DISPOUT()")
+	   ? COL()                     // display current
+	   ?? ROW()                     // cursor position
+
+	   INKEY(2)
+
+	   SETPOS(nRow, nCol)
+	   DISPOUT(space(26))         // clear original position
+	   SET DEVICE TO PRINTER      // ignores SET DEVICE
+
+	   SETPOS(nRow, nCol)         // display at
+	   DISPOUT("           all through")
+				      // original position
+
+	   RETURN
+$LANG_RU$
+      Следующий пример, взятый из файла Getsys.prg, демонстрирует, как
+       DISPOUT() может быть использована для выполнения полноэкранного
+       вывода, не зависящего от установки SET DEVICE. Заметим, что позиция
+       курсора сохраняется и восстанавливается использованием функций
+       ROW(), COL() и SETPOS():
+
+	  STATIC PROCEDURE ShowScoreboard
+	     LOCAL nRow, nCol
+	     IF ( SET(_SET_SCOREBOARD) )
+		nRow := ROW()
+		nCol := COL()
+		SETPOS( SCORE_ROW, SCORE_COL )
+		DISPOUT( IF(SET(_SET_INSERT), "Ins", "  ") )
+		SETPOS(nRow, nCol)
+	     ENDIF
+	     RETURN
+$SEEALSO$
+  COL(),OUTSTD(),QOUT(),ROW(),SETCOLOR(),SETPOS()
+$END$

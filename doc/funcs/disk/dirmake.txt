@@ -1,0 +1,37 @@
+$FUNCNAME$
+  DIRMAKE()
+$CATEGORY$
+  DISKUTILS
+$SUMMARY$
+   Create a directory
+$SYNTAX$
+     DIRMAKE(<cNewDir>) --> nSuccess
+$ARGUMENTS$
+     <cNewDir> is the name of the directory to be created, including an
+     optional drive.  If you do not specify a drive, the current one is used.
+$RETURNS$
+     DIRMAKE() returns 0 if successful; -1 if there is an argument error.
+     Otherwise, DIRMAKE() returns the DOS error code.
+$DESCRIPTION$
+     DIRMAKE() creates a specified directory.  Note that first you must have
+     sufficient rights to create a directory.  To create nested
+     subdirectories, you must create each subdirectory separately, starting
+     from the top-level directory that you want to create (see example
+     below.)
+$EXAMPLES$
+       This example assumes that C:\TEST exists and uses DIRMAKE()
+	twice to create a nested subdirectory under it:
+
+	DIRMAKE("c:\test\one")    // Create top-most one
+	nResult := DIRMAKE("c:\test\one\two")
+	IF nResult != 0
+	   ? "Cannot make directory, DOS error ", nResult
+	   BREAK
+	ENDIF
+
+       You may also use something like this:
+
+	DIRMAKE( ".\test" )
+$SEEALSO$
+  DIRCHANGE(),DIRREMOVE()
+$END$

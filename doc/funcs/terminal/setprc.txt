@@ -1,0 +1,121 @@
+$FUNCNAME$
+  SETPRC()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Set PROW() and PCOL() values
+$LANG_RU$
+   Устанавливает значения PROW() и PCOL().
+$SYNTAX$
+     SETPRC(<nRow>, <nCol>) --> NIL
+$LANG_RU$
+     SETPRC(<номер строки>,<номер колонки>) --> NIL
+$ARGUMENTS$
+     <nRow> is the new PROW() value.
+     <nCol> is the new PCOL() value.
+$LANG_RU$
+     <номер строки> - является новым значением PROW().
+     <колонка> - является новым значением PCOL().
+$RETURNS$
+     SETPRC() always returns NIL.
+$LANG_RU$
+     SETPRC() всегда возвращает NIL.
+$DESCRIPTION$
+     SETPRC() is a printer function that sends control codes to the printer
+     without changing the tracking of the printhead position.  When
+     xClipper prints, it updates the PCOL() value with the number of
+     characters sent to the printer.  There is no discrimination between
+     printable or nonprintable characters.  If, for example, a string of ten
+     characters sent to the printer contains two characters interpreted by
+     the printer as a control code, the xClipper PCOL() value is
+     incremented by ten, while the true printhead position is moved only by
+     eight.  This can lead to alignment problems.  Using SETPRC(), you can
+     compensate for control codes by resetting PCOL() as shown in the example
+     below.
+
+     SETPRC() also suppresses page ejects when printing with @...SAY.  This
+     is important when the next row position is smaller than the current row
+     and an EJECT has not been issued.  In this situation, xClipper issues
+     an automatic page eject if the next row print position is less than the
+     current PROW() value.  Using SETPRC(), you can set PROW() to a number
+     less than the current row, thus suppressing the automatic EJECT.
+$LANG_RU$
+     SETPRC() является функцией принтера, используемой для посылки
+     управляющих кодов на принтер без изменения трассировки позиции
+     печатающей головки. Когда xClipper печатает, он корректирует значение
+     PCOL() с помощью ряда символов, посылаемых на принтер. Между
+     печатаемыми и непечатаемыми символами не устанавливается никакого
+     различия. Если, например, строка из десяти символов, посылаемая на
+     принтер, содержит два символа, которые интерпретируются как
+     управляющий код, значение PCOL() xClipper увеличивается на 10, в то
+     время как истинная позиция печатающей головки перемещается только на
+     8. Это может привести к проблемам выравнивания. Используя SETPRC(),
+     можно компенсировать управляющие коды путем установки PCOL(), как
+     показано ниже.
+
+     SETPRC() может также использоваться для подавления перехода на новую
+     страницу при печати с помощью @...SAY. Это важно, когда позиция
+     следующей строки меньше текущей строки и не было дано команды EJECT.
+     В таком случае xClipper производит автоматический переход на новую
+     страницу, если позиция следующей строки меньше текущего значения
+     PROW(). Используя SETPRC(), Вы можете установить PROW() на число,
+     меньшее текущей строки, подавляя таким образом автоматический переход
+     на новую строку.
+$EXAMPLES$
+       This user-defined function, PrintCodes(), uses SETPRC() to
+	send control codes to the printer without affecting PROW() and PCOL()
+	values:
+
+	#include "Set.ch"
+	#define ITALICS_ON   CHR(27) + "I"
+	#define ITALICS_OFF   CHR(27) + "E"
+	//
+	SET DEVICE TO PRINTER
+	@ 12, 10 SAY "This is an"
+	@ PROW(), PCOL() + 2 SAY PrintCodes(ITALICS_ON) + ;
+		 "important"
+	@ PROW(), PCOL() + 2 SAY PrintCodes(ITALICS_OFF) + ;
+		 "meeting"
+	SET DEVICE TO SCREEN
+	RETURN
+
+	FUNCTION PrintCodes( cCtrlCode )
+	   LOCAL nRow, nCol, lPrinter
+	   lPrinter := SET(_SET_PRINTER, .T.)    // SET PRINTER ON
+	   nRow:= PROW()                         // Save printhead position
+	   nCol:= PCOL()
+	   //
+	   ?? cCtrlCode                          // Send control code
+	   //
+	   SETPRC(nRow, nCol)
+	   SET(_SET_PRINTER, lPrinter)           // Restore printer setting
+	   RETURN ""                             // Return a null string
+$LANG_RU$
+      В этом примере функция пользователя PrintCodes() показывает, как
+       SETPRC() может использоваться для посылки управляющих кодов на
+       принтер, не оказывая воздействия на значения PROW() и PCOL():
+
+       #include "Set.ch"
+       #define ITALICS_ON CHR(27) + "I"
+       #define ITALICS_OFF CHR(27) + "E"
+       //
+       SET DEVICE TO PRINTER
+       @ 12, 10 SAY "Это "
+       @ PROW(), PCOL() + 2 SAY PrintCodes(ITALICS_ON) + "Важная"
+       @ PROW(), PCOL() + 2 SAY PrintCodes(ITALICS_OFF) + "Встреча"
+       SET DEVICE TO SCREEN
+
+       FUNCTION PrintCodes( cCtrlCode )
+	  LOCAL nRow, nCol, lPrinter
+	  lPrinter := SET(_SET_PRINTER, .T.) // SET PRINTER ON
+	  nRow = PROW()                      // Сохранить позицию головки
+	  nCol = PCOL()
+	  //
+	  ?? cCtrlCode                       // Посылка управляющего кода
+	  //
+	  SETPRC(nRow, nCol)
+	  SET(_SET_PRINTER, lPrinter)        // Восстановить статус принтера
+	  RETURN ""                          // Возврат пустой ("") строки
+$SEEALSO$
+  PCOL(),PROW(),SET()
+$END$

@@ -1,0 +1,138 @@
+$FUNCNAME$
+  INKEY()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Extract a character from the keyboard buffer or a mouse event
+$LANG_RU$
+   Выделяет символ из буфера клавиатуры.
+$SYNTAX$
+     INKEY([<nSeconds>] [,<nEventMask>]) --> nInkeyCode
+$LANG_RU$
+     INKEY([<время ожидания в секундах>] [,<маска событий>]) --> код клавиши
+$ARGUMENTS$
+     <nSeconds> specifies the number of seconds INKEY() waits for a
+     keypress or mouse event.  You can specify the value in increments as
+     small as one-tenth of a second.  Specifying zero halts the program until
+     a key is pressed or an unmasked event occurs.  If <nSeconds> is omitted,
+     INKEY() does not wait for a keypress or mouse event.
+
+     <nEventMask> specifies which events should be returned.  If
+     <nEventMask> is omitted, the value represented by the
+     SET EVENTMASK command will be used.  If there is no
+     SET EVENTMASK command issued, the default value that will be used is 128
+     (keyboard events only).
+
+     This parameter can be any combination of the following values.  The
+     constant values listed below are defined in Inkey.ch.
+
+     Inkey Constants
+     ------------------------------------------------------------------------
+     Constant       Value     Descripiton
+     ------------------------------------------------------------------------
+     INKEY_MOVE     1         Mouse Events
+     INKEY_LDOWN    2         Mouse Left Click Down
+     INKEY_LUP      4         Mouse Left Click Up
+     INKEY_RDOWN    8         Mouse Right Click Down
+     INKEY_RUP      16        Mouse Right Click Up
+     INKEY_KEYBOARD 128       Keyboard Events
+     INKEY_ALL      159       All Mouse and Keyboard Events
+     ------------------------------------------------------------------------
+
+
+$LANG_RU$
+     <время ожидания в секундах> задает количество секунд, которое
+     INKEY() ждет нажатия клавиши. Значение может быть задано с точностью
+     до десятых долей секунды. Нулевое значение времени приостанавливает
+     программу до тех пор, пока не будет нажата клавиша. Если аргумент
+     <время ожидания в секундах> опущен, то INKEY() не ждет нажатия
+     клавиши.
+
+     <маска событий> определяет какие события обслуживать.
+
+     Возможные значения или их комбинации:
+     ------------------------------------------------------------------------
+     Constant       Value     Descripiton
+     ------------------------------------------------------------------------
+     INKEY_MOVE     1         Mouse Events
+     INKEY_LDOWN    2         Mouse Left Click Down
+     INKEY_LUP      4         Mouse Left Click Up
+     INKEY_RDOWN    8         Mouse Right Click Down
+     INKEY_RUP      16        Mouse Right Click Up
+     INKEY_KEYBOARD 128       Keyboard Events
+     INKEY_ALL      159       All Mouse and Keyboard Events
+     ------------------------------------------------------------------------
+$RETURNS$
+     INKEY() returns an integer value from -39 to 386 for keyboard events and
+     integer values from 1001 to 1007 for mouse events.  This value
+     identifies either the key extracted from the keyboard buffer or the
+     mouse event that last occurred.  If the keyboard buffer is empty, and no
+     mouse events are taking place, INKEY() returns 0.  INKEY() returns
+     values for all ASCII characters, function, Alt+Function, Ctrl+Function,
+     Alt+Letter, and Ctrl+Letter key combinations.
+$LANG_RU$
+     INKEY() возвращает целое числовое значение в диапазоне от -39 до 386,
+     идентифицируя клавишу, принятую из буфера клавиатуры или от 1001 до 1007
+     для событий мыши. Если буфер  клавиатуры пуст, то INKEY() возвращает нуль.
+     INKEY() возвращает значения для всех символов ASCII, функциональных
+     клавиш, <Alt>-функциональных клавиш, <Ctrl>-функциональных клавиш
+     и сочетаний клавиш <Alt>-буква и <Ctrl>-буква.
+
+$DESCRIPTION$
+
+     INKEY() is a keyboard function that extracts the next key pending in the
+     keyboard buffer or the next mouse event and returns a value representing
+     the appropriate event.  The value is also saved internally and can be
+     accessed using LASTKEY().  If the <nSeconds> argument is specified and
+     there are no pending keys in the buffer, program execution pauses until
+     a key appears in the keyboard buffer, or an appropriate mouse event
+     occurs, or <nSeconds> has elapsed.  The time INKEY() waits is based on
+     the operating system clock and is not related to the microprocessor
+     speed.  If <nSeconds> is zero, program execution pauses until a key is
+     pressed or an unmasked mouse event occurs.  Note that INKEY() is not a
+     wait state and, therefore, SET KEYs are not active.
+
+     INKEY() is similar to the NEXTKEY() function.  Unlike INKEY(), however,
+     NEXTKEY() reads, but does not extract the key or mouse event.  This is
+     useful when you need to test for a key or mouse event without processing
+     it.
+
+     INKEY() is the basic primitive of the xClipper system for fetching
+     keys and mouse events.  It is used for polling the keyboard, polling the
+     mouse, or pausing program execution.  As an example, you can use INKEY()
+     to terminate commands with a record scope such as LIST, LABEL FORM, and
+     REPORT FORM by including it in a WHILE condition.
+
+
+$LANG_RU$
+
+     INKEY() - это функция работы с клавиатурой, которая выбирает код
+     очередной клавиши из буфера клавиатуры и возвращает значение этого
+     кода.  Код этот, однако, запоминается и может быть прочитан с помощью
+     функции LAST KEY(). Если задано ненулевое значение аргумента <время
+     ожидания в секундах> и буфер пуст, то выполнение программы
+     приостанавливается до тех пор, пока либо не будет нажата клавиша,
+     либо не истечет заданное время ожидания. Время ожидания INKEY()
+     определяется при помощи системного таймера и не зависит от скорости
+     микропроцессора. Если аргумент <время ожидания в секундах> равен
+     нулю, выполнение программы приостанавливается до тех пор, пока не
+     будет нажата клавиша. Отметим, что INKEY() не переводит программу в
+     состояние ожидания и поэтому в данной ситуации установки SET KEY не
+     активны.
+
+     INKEY() подобна функции NEXTKEY(). Однако в отличие от INKEY()
+     функция NEXTKEY() считывает, но не удаляет код клавиши из буфера
+     клавиатуры. Это полезно, когда нужно проверить нажатие клавиши без
+     ее обработки.
+
+     INKEY() - это основной примитив системы xClipper для получения кодов
+     клавиш из буфера клавиатуры. Функция служит для опроса клавиатуры или
+     приостановки исполнения программы, чтобы дождаться нажатия клавиши.
+     Например, можно использовать INKEY(), чтобы завершить команды,
+     работающие со списками, такие, как LIST, LABEL FORM и REPORT FORM,
+     включая INKEY() в условие WHILE. Обратитесь к примеру ниже.
+
+
+$SEEALSO$
+  CHR(),LASTKEY(),NEXTKEY()
+$END$

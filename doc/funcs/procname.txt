@@ -1,0 +1,92 @@
+$FUNCNAME$
+  PROCNAME()
+$CATEGORY$
+  SYSTEM,MISCELLANEOUS,INFO
+$SUMMARY$
+   Return the name of the current or previous procedure or user-defined function
+$LANG_RU$
+   Возвращает имя текущей или предыдущей процедуры или функции
+$SYNTAX$
+     PROCNAME([<nActivation>]) --> cProcedureName
+$LANG_RU$
+     PROCNAME([<номер вызова>]) --> имя процедуры
+$ARGUMENTS$
+     <nActivation> specifies which activation to query.  A value of zero
+     refers to the current activation, a value of one refers to the previous
+     activation, etc.  If unspecified, the default value is zero.
+$LANG_RU$
+     <номер вызова> определяет, какой вызов следует запросить. Значение
+     нуля относится к текущему вызову, значение 1 - к предыдущему и т.д.
+     Если аргумент не определен, то значение по умолчанию - ноль.
+$RETURNS$
+     PROCNAME() returns the name of a currently executing procedure,
+     function, or code block, as a character string.
+$LANG_RU$
+     PROCNAME() возвращает имя процедуры, выполняемой в текущий момент,
+     функции или блока кода в виде символьной строки.
+$DESCRIPTION$
+     PROCNAME() queries the xClipper activation stack to determine the name
+     of a currently executing procedure, user-defined function, or code
+     block.  The activation stack is an internal structure that maintains a
+     record of each procedure, function, or code block invocation.
+
+     For the current activation, PROCNAME() returns the name of the current
+     procedure or user-defined function.  For a previous activation,
+     PROCNAME() returns the name of the procedure or user-defined function
+     that invoked the current procedure.
+
+     If the activation being queried is a code block evaluation, PROCNAME()
+     returns the name of the procedure or user-defined function that defined
+     the code block, preceded by "b".  If the activation being queried is a
+     memvar, PROCNAME() returns the name preceded by "M->".
+
+     PROCNAME() is used with PROCLINE() to report debugging information.
+$LANG_RU$
+     PROCNAME() запрашивает стек вызовов активации xClipper для определения
+     имени выполняемых в текущий момент процедуры, функции пользователя
+     или блока кодов. Стек вызовов активации - это внутренняя структура,
+     хранящая запись о каждом вызове процедуры, функции или блока кодов.
+
+     Для текущего вызова PROCNAME() возвращает имя текущей процедуры или
+     функции пользователя. Для предыдущего вызова PROCNAME() возвращает
+     имя процедуры или функции пользователя, вызвавшей текущую процедуру.
+
+     Если запрошенный вызов является блоком кода, то PROCNAME() возвращает
+     имя процедуры или функции пользователя, которые определили этот блок
+     кода.
+
+     PROCNAME() используется в комбинации с функцией PROCLINE() для выдачи
+     отладочной информации.
+$EXAMPLES$
+       This example is a user-defined function you can call during a
+	debugging phase of program development in order to display the
+	activation stack with line numbers:
+
+	FUNCTION ListStack( cMessage )
+	   LOCAL nActivation := 1
+	   ? cMessage
+	   DO WHILE !(PROCNAME(nActivation) == "")
+	      ? "Called from:", PROCNAME(nActivation),;
+		 "(" + LTRIM(STR(PROCLINE(nActivation))) + ")"
+	      nActivation++
+	   ENDDO
+	   QUIT
+	   RETURN NIL
+$LANG_RU$
+      Этот пример является функцией пользователя, которую можно вызвать
+       во время отладочной фазы разработки программы для выдачи стека
+       активации с номерами строк:
+
+       FUNCTION ListStack( cMessage )
+	  LOCAL nActivation := 1
+	  ? cMessage
+	  DO WHILE !(PROCNAME(nActivation) == "")
+	     ? "Вызвана из :", PROCNAME(nActivation),;
+	     "(" + LTRIM(STR(PROCLINE(nActivation))) +")"
+	     nActivation++
+	  ENDDO
+	  QUIT
+	  RETURN NIL
+$SEEALSO$
+  PROCLINE()
+$END$

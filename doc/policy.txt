@@ -1,0 +1,85 @@
+Clip documentation policy.
+
+1. Introduction.
+
+In order to make the documentation easy to write,
+understand, and using, we decide that the primary
+documentation format MUST be DocBook.
+
+DocBook allow easy generation of various output document
+formats, such as HTML, TEXT, MAN, PDF, PS, RTF, and other.
+
+DocBook is a factical standart for programming documentation
+writing, is used in many projects, and is heavely documented itself.
+
+DocBook 'The Definition Guide' document is available at
+http://www.docbook.org/tdg/index.html
+
+A good introduce into DocBook creating is at
+http://opensource.bureau-cornavin.com/crash-course
+
+We suggest to use at least version 3.1 of SGML DocBook. That means,
+document first line must be something like this:
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V3.1//EN">
+
+Current stable DocBook version is 4.1.5, but version 3.1 have enougth
+features.
+
+The short guide to DocBook using is available in 'quide' directory.
+
+The short example (sgml file itself and Makefile) is available in 'sample'
+directory.
+
+2. The Makefile layout.
+
+Makefile must have Documentation prepare targets  'sgml:', 'html:', 'ps:', 'text:'
+This targets must do all what need without installation.
+
+Makefile installation targets, must be 'install-sgml:', 'install-html:',
+'install-ps:', 'install-txt' ,
+and it must install all docs into 
+$(DOCDIR)/<doctype>/<language>/<section>/<package_name>
+directory.
+
+The <doctype> may be one of 'sgml' 'html' 'ps' 'pdf' 'txt' 'rtf'
+
+The <language> must be low-case two-letter language identifier,
+for example, 'en' or 'ru'.
+ 
+The <section> must be a name of package's section, for now, 
+'clip', 'libs', 'utils', 'apps', 'other'.
+
+The <package_name> must be a name of documented package,
+for example, 'clip-bzip2'.
+
+The targets 'install-*' must not have any depends on 'install' or
+'all' targets.
+
+Installed SGMLs must be in UTF-8 charset.
+
+The absent targets must always be true:
+
+ps pdf txt:
+        true
+
+
+3. The DocBook layout.
+
+The preferred DocBook layout must be 'book' for long, multipart documents,
+and 'article' for more simple documents.
+
+The DocBook layout 'set' must not be used, it is reserverd for top level
+generation.
+
+4. The required packages.
+
+Docbook sgmls may be transformed into target format by two (at least)
+main toolkits:
+
+- sgmltools-2 package uses DSSSL stylesheets
+  docbook-utils contail docbook2html and other utils.
+
+- docbook-xsl uses XSLT transformations and work with XML Docbooks.
+
+
+

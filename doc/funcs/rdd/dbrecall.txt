@@ -1,0 +1,51 @@
+$FUNCNAME$
+  DBRECALL()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Reinstate a record marked for deletion
+$LANG_RU$
+   Восстанавливает запись, помеченную для удаления.
+$SYNTAX$
+     DBRECALL() --> NIL
+$LANG_RU$
+     DBRECALL() --> NIL
+$RETURNS$
+     DBRECALL() always returns NIL.
+$LANG_RU$
+     DBRECALL() всегда возвращает NIL.
+$DESCRIPTION$
+     DBRECALL() causes the current record to be reinstated if it is marked
+     for deletion.
+
+     DBRECALL() performs the same function as the RECALL command.  For more
+     information, refer to the DELETE and RECALL commands.
+$LANG_RU$
+     DBRECALL() восстанавливает текущую запись, если она помечена для
+     удаления.
+
+     DBRECALL() выполняет те же функции, что и стандартная команда RECALL.
+     Более подробную информацию смотрите в команде RECALL.
+$EXAMPLES$
+       The following example recalls a record if it is deleted and
+	attempts to lock the record if successful:
+
+	cLast := "Winston"
+	DBUSEAREA( .T., "DBFNTX", "Sales", "Sales", .T. )
+	DBSETINDEX( "LASTNAME" )
+	//
+	IF ( Sales->(DBSEEK(cLast)) )
+	   IF Sales->( DELETED() )
+	      IF Sales( RLOCK() )
+		 Sales( DBRECALL() )
+		 ? "Record recalled"
+	      ELSE
+		 "Unable to lock record..."
+	      ENDIF
+	   ENDIF
+	ELSE
+	   ? "Not found"
+	ENDIF
+$SEEALSO$
+  DBDELETE()
+$END$

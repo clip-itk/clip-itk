@@ -191,6 +191,12 @@ function tempfile(cDir,cExt,nAttr)
 	else
 		fclose(i)
 	endif
+	if valtype(cDir)=="C"
+		i := atr(cDir+PATH_DELIM,s2)
+		if i>0
+			s2 := substr(s2,i)
+		endif
+	endif
 return  s2
 **********************************************************
 function recursiveDirectory(cMask, cPath)

@@ -1,0 +1,67 @@
+$FUNCNAME$
+  ACLONE()
+$CATEGORY$
+  Array, Object
+$SUMMARY$
+   Duplicate a nested or multidimensional array
+$LANG_RU$
+   Дублирует вложенный или многомерный массив.
+$SYNTAX$
+     ACLONE(<aSource>) --> aDuplicate
+$LANG_RU$
+     ACLONE(<массив>) --> дублированный массив
+$ARGUMENTS$
+     <aSource> is the array to be duplicated.
+$LANG_RU$
+     <массив> - это массив, который дублируется
+$RETURNS$
+     ACLONE() returns a duplicate of <aSource>.
+$LANG_RU$
+     ACLONE() возвращает дубликат массива <массив>.
+$DESCRIPTION$
+
+     ACLONE() is an array function that creates a complete duplicate of the
+     <aSource> array.  If <aSource> contains subarrays, ACLONE() creates
+     matching subarrays and fills them with copies of the values in the
+     <aSource> subarrays.  ACLONE() is similar to ACOPY(), but ACOPY() does
+     not duplicate nested arrays.
+
+
+$LANG_RU$
+
+     ACLONE() - это функция обработки массивов, создающая полный дубликат
+     массива <массив>. Если массив <массив> содержит подмассивы, ACLONE()
+     создает соответствующие подмассивы и заполняет их копиями значений
+     подмассивов массива <массив>. ACLONE() подобна ACOPY(), но ACOPY() не
+     может дублировать вложенные массивы.
+
+
+$EXAMPLES$
+
+       This example creates an array then duplicates it using
+	ACLONE().  The first array is then altered, but the duplicate copy is
+	unaffected:
+
+	LOCAL aOne, aTwo
+	aOne := { 1, 2, 3 }         // Result: aOne is {1, 2, 3}
+	aTwo := ACLONE(aOne)        // Result: aTwo is {1, 2, 3}
+	aOne[1] := 99               // Result: aOne is {99, 2, 3}
+				   // aTwo is still {1, 2, 3}
+
+
+$LANG_RU$
+
+      Этот пример создает массив, и затем дублирует его с помощью функции
+       ACLONE(). Первый массив затем изменяется, но на копию это не
+       влияет:
+
+       LOCAL aOne, aTwo
+       aOne := { 1, 2, 3 }       // Результат: aOne - {1, 2, 3}
+       aTwo := ACLONE(aOne)      // Результат: aTwo - {1, 2, 3}
+       aOne[1]:= 99              // Результат: aOne - {99, 2, 3}
+				 // а Two по-прежнему { 1, 2, 3}
+
+
+$SEEALSO$
+  ACOPY(),ADEL(),AINS(),ASIZE(),
+$END$

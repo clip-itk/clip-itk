@@ -1,0 +1,91 @@
+$FUNCNAME$
+  READKEY()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Determine what key terminated a READ
+$LANG_RU$
+   Определяет, какая клавиша была нажата для завершения READ
+$SYNTAX$
+     READKEY() --> nReadkeyCode
+$LANG_RU$
+     READKEY() --> код клавиши
+$RETURNS$
+     READKEY() returns a code representing the key pressed to exit a READ.
+     In xClipper, the following keys are the standard READ exit keys and
+     their READKEY() return codes:
+
+     <PRE> READKEY() Return Codes
+     ------------------------------------------------------------------------
+     Exit Key            Return Code
+     ------------------------------------------------------------------------
+     Up arrow             5
+     Down arrow           2
+     PgUp                 6
+     PgDn                 7
+     Ctrl+PgUp           31
+     Ctrl+PgDn           30
+     Esc                 12
+     Ctrl+End, Ctrl+W    14
+     Type past end       15
+     Return              15
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     READKEY() возвращает код, соответствующий клавише, нажатой для выхода
+     из команды READ. В таблице 5-27 приведены состав клавиш, являющихся
+     стандартными в xClipper для выхода из READ, и коды возврата READKEY().
+
+     <PRE> Коды возврата READKEY()
+     ---------------------------------------------------------------------
+     Клавиша выхода              Код возврата
+     ---------------------------------------------------------------------
+     <стрелка вверх>               5
+     <стрелка вниз>                2
+     <PgUp>                        6
+     <PgDn>                        7
+     <Ctrl>-<PgUp>                 31
+     <Ctrl>-<PgDn>                 30
+     <Esc>                         12
+     <Ctrl>-<End>, <Ctrl>-<W>      14
+     Ввод после конца файла        15
+     <Return>                      15
+     ---------------------------------------------------------------------
+     </PRE>
+$DESCRIPTION$
+     READKEY() is a keyboard function that emulates the READKEY() function in
+     dBASE III PLUS.  Its purpose is to determine what key the user pressed
+     to terminate a READ.  If UPDATED() is true (.T.), READKEY() returns the
+     code plus 256.  Up arrow and Down arrow exit a READ only if READEXIT()
+     returns true (.T.).  The default value is false (.F.).  To provide
+     complete compatibility for these keys, execute a READEXIT (.T.) at the
+     beginning of your main procedure.
+
+     READKEY() is supplied as a compatibility function and, therefore, its
+     use is strongly discouraged.  It is superseded entirely by LASTKEY()
+     which determines the last keystroke fetched from the keyboard buffer.
+     If the keystroke was a READ exit key, LASTKEY() will return the INKEY()
+     code for that key.  To determine whether any Get object's buffer was
+     modified during a READ, it is superseded by the UPDATED() function.
+$LANG_RU$
+     READKEY() - функция работы с клавиатурой, которая эмулирует функцию
+     READKEY() в dBASE III PLUS. Ее цель - определить, какую клавишу нажал
+     пользователь для завершения команды READ. Если возвращаемое значение
+     функции UPDATED() - "истина" (.T.), то READKEY() возвращает код + 256.
+
+     Клавиши <стрелка вверх> и <стрелка вниз> могут быть использованы для
+     выхода из команды READ только в том случае, если функция READEXIT()
+     имеет значение "истина"(.Т.). Ее значение по умолчанию - "ложь"(.F.).
+     Для наиболее полного использования функции READKEY() в начале
+     программы необходимо выполнить функцию READEXIT(.T.).
+
+     Функция READKEY() оставлена для обеспечения совместимости со
+     старыми версиями xClipper, и ее использование не рекомендуется. Для
+     определения последней клавиши, полученной из буфера клавиатуры, лучше
+     использовать функцию LASTKEY(). Если нажатая клавиша - клавиша выхода
+     из команды READ, то LASTKEY() вернет INKEY-код для этой клавиши.
+     Чтобы определить, был ли во время выполнения READ изменен какой-либо
+     буфер GET-объекта, более предпочтительна функция UPDATED().
+$SEEALSO$
+  NEXTKEY(),READEXIT(),LASTKEY(),UPDATED()
+$END$

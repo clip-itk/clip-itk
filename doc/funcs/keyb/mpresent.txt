@@ -1,0 +1,14 @@
+$FUNCNAME$
+  MPRESENT()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Determine if a mouse is present
+$SYNTAX$
+     MPRESENT() --> lIsPresent
+$RETURNS$
+     MPRESENT() returns true (.T.) if a mouse is present; otherwise, it
+     returns false (.F.).
+$SEEALSO$
+
+$END$

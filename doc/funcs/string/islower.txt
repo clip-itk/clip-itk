@@ -1,0 +1,70 @@
+$FUNCNAME$
+  ISLOWER()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Determine if the leftmost character is a lowercase letter
+$LANG_RU$
+   Определяет, является ли первый символ в строке строчной буквой.
+$SYNTAX$
+     ISLOWER(<cString>) --> lBoolean
+$LANG_RU$
+     ISLOWER(<символьная строка>) --> признак строчной буквы
+$ARGUMENTS$
+     <cString> is the character string to be examined.
+$LANG_RU$
+     <символьная строка> - символьная строка
+$RETURNS$
+     ISLOWER() returns true (.T.) if the first character of the character
+     string is a lowercase letter; otherwise, it returns false (.F.).
+$LANG_RU$
+     ISLOWER() возвращает значение "истина" (.T.), если первый символ в
+     строке является строчной буквой, в противном случае - значение "ложь"
+     (.F.).
+$DESCRIPTION$
+
+     ISLOWER() is a character function that determines whether the first
+     character of a character string is lowercase.  It is the inverse of
+     ISUPPER() which determines whether a character begins with an uppercase
+     character.
+
+     Both ISLOWER() and ISUPPER() relate to the LOWER() and UPPER() functions
+     which actually convert lowercase characters to uppercase, and vice
+     versa.
+
+
+$LANG_RU$
+
+     ISLOWER() является функцией обработки символьных строк, которая
+     определяет, является ли первый символ в строке строчной буквой.
+     Эта функция противоположна функции ISUPPER(), которая определяет,
+     является ли первый символ в строке прописной буквой.
+
+     Функции ISLOWER() и ISUPPER() связаны с функциями LOWER() и UPPER(),
+     которые переводят символы из верхнего регистра в нижний и наоборот.
+
+
+$EXAMPLES$
+
+       These examples demonstrate various results of ISLOWER():
+
+	? ISLOWER("aBcDe")         // Result: .T.
+	? ISLOWER("AbcDe")         // Result: .F.
+	? ISLOWER("1abcd")         // Result: .F.
+	? ISLOWER("abcd")            // Result: .T.
+
+
+$LANG_RU$
+
+      Следующие примеры демонстрируют различные результаты использования
+       функции ISLOWER():
+
+       ? ISLOWER("aBcDe")        // Результат: .T.
+       ? ISLOWER("AbcDe")        // Результат: .F.
+       ? ISLOWER("1abcd")        // Результат: .F.
+       ? ISLOWER("abcde")        // Результат: .T.
+
+
+$SEEALSO$
+  ISALPHA(),ISDIGIT(),ISUPPER(),LOWER(),UPPER()
+$END$

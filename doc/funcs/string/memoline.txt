@@ -1,0 +1,158 @@
+$FUNCNAME$
+  MEMOLINE()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Extract a line of text from a character string or memo field
+$LANG_RU$
+   Выделяет строку текста из символьной строки или memo-поля.
+$SYNTAX$
+     MEMOLINE(<cString>,[<nLineLength>],[<nLineNumber>],
+	[<nTabSize>],[<lWrap>]) --> cLine
+$LANG_RU$
+     MEMOLINE(<символьная строка>,[<длина строки>],
+       [<номер строки>], [<шаг табуляции>],
+       [<переключатель переноса>]) --> символьная строка
+$ARGUMENTS$
+     <cString> is the memo field or character string from which a line of
+     text is to be extracted.
+
+     <nLineLength> specifies the number of characters per line and can be
+     between four and 254.  If not specified, the default line length is 79.
+
+     <nLineNumber> is the line number to be extracted.  If not specified,
+     the default value is one.
+
+     <nTabSize> defines the tab size.  If not specified, the default
+     value is four.  If <nTabSize> is greater than or equal to <nLineLength>,
+     then the tab size is automatically converted to <nLineLength> - 1.
+
+     <lWrap> toggles word wrap on and off.  Specifying true (.T.) toggles
+     word wrap on; false (.F.) toggles it off.  If not specified, the default
+     value is true (.T.).
+$LANG_RU$
+     <символьная строка> - memo-поле или строка символов, из которой
+     выделяется строка текста.
+
+     <длина строки> - определяет количество символов в выделяемой строке и
+     может принимать значения от 4 до 254. По умолчанию - 79.
+
+     <номер строки> - определяет номер строки для выделения. По умолчанию
+     принимается 1.
+
+     <шаг табуляции> - определяет размер табуляции. Если он не определен,
+     то по умолчанию принимается 4. Если <шаг табуляции> больше, чем
+     значение параметра <длина строки>, то шаг табуляции автоматически
+     принимается равным значению параметра <длина строки> - 1.
+
+     <переключатель переноса> - включает или выключает режим переноса
+     слов.  Если его значение "истина" (.T.) - режим включен; значение
+     "ложь"(.F.) - означает, что режим отключен. По умолчанию принимается
+     значение "истина" (.T.)
+$RETURNS$
+     MEMOLINE() returns the line of text specified by <nLineNumber> in
+     <cString> as a character string.  If the line has fewer characters than
+     the indicated length, the return value is padded with blanks.  If the
+     line number is greater than the total number of lines in <cString>,
+     MEMOLINE() returns a null string ("").
+
+     If <lWrap> is true (.T.) and the indicated line length breaks the line
+     in the middle of a word, that word is not included as part of the return
+     value but shows up at the beginning of the next line extracted with
+     MEMOLINE().
+
+     If <lWrap> is false (.F.), MEMOLINE() returns only the number of
+     characters specified by the line length.  The next line extracted by
+     MEMOLINE() begins with the character following the next hard carriage
+     return, and all intervening characters are not processed.
+$LANG_RU$
+     MEMOLINE() возвращает подстроку текста с номером <номер строки>,
+     длиной <длина строки> из заданной аргументом <символьная строка>
+     строки. Если в заданной строке меньше символов, чем указано в
+     аргументе <длина строки>, то результирующая строка дополняется
+     пробелами. Если значение аргумента <номер строки> больше, чем
+     количество строк в аргументе <символьная строка>, то MEMOLINE()
+     возвращает пустую строку ("").
+
+     Если значение аргумента <переключатель переноса> равно "истина" (.T.)
+     и конец строки попадает внутрь слова, то это слово переносится на
+     следующую строку (ее начало). Если значение аргумента <переключатель
+     переноса> имеет значение "ложь" (.F.), MEMOLINE() возвращает то
+     количество символов, которое определено в аргументе <длина строки>.
+     Следующая строка начинается с символа, следующего за символом
+     "жесткий возврат каретки". Это означает, что промежуточные символы
+     отбрасываются.
+$DESCRIPTION$
+
+     MEMOLINE() is a memo function used with MLCOUNT() to extract lines of
+     text from character strings and memo fields based on the number of
+     characters per line.  It is the most basic facility provided by
+     xClipper to display memo fields and long strings.
+
+     The basic method of operation is to determine the number of lines in the
+     memo field or character string using MLCOUNT() with the same number of
+     characters per line, tab size, and wrapping behavior as you intend to
+     use with MEMOLINE().  Using this value as the upper boundary of a
+     FOR...NEXT, each line of the memo field or character string can be
+     extracted with MEMOLINE() and processed with any combination of output
+     commands and functions required.
+
+
+$LANG_RU$
+
+     MEMOLINE() - функция работы с memo-полями, которая обычно
+     используется в сочетании с MLCOUNT() для выделения строк текста из
+     memo-полей и символьных строк, основываясь на заданном количестве
+     символов в строке.
+
+     Способ действия заключается в том, что сначала с помощью MLCOUNT() в
+     memo-поле или символьной строке с учетом наличия режима переноса и
+     табуляции определяется количество строк. Применяя это значение как
+     верхнюю границу для оператора цикла FOR...NEXT, каждую подстроку
+     memo-поля или символьной строки можно извлечь с помощью функции
+     MEMOLINE() и использовать в любой комбинации команд и функций.
+
+
+$EXAMPLES$
+
+       This example demonstrates the general method for displaying
+	memo fields and long character strings using the combination of
+	MLCOUNT() and MEMOLINE():
+
+	LOCAL nLineLength := 40, nTabSize := 3, lWrap := .T.
+	LOCAL nLines, nCurrentLine
+	USE Customer INDEX CustName NEW
+	//
+	nLines := MLCOUNT(CustNotes, nLineLength,;
+	      nTabSize, lWrap)
+	//
+	SET PRINTER ON
+	FOR nCurrentLine := 1 TO nLines
+	   ? MEMOLINE(CustNotes, nLineLength, nCurrentLine,;
+		  nTabSize, lWrap)
+	NEXT
+	SET PRINTER OFF
+
+
+$LANG_RU$
+
+      Этот пример демонстрирует обычный метод обработки memo-полей и
+       длинных символьных строк, используя комбинацию MLCOUNT() и
+       MEMOLINE():
+
+       LOCAL nLineLenght := 40, nTabSize := 3, IWrap := .T.
+       LOCAL nLines, nCurrentLine
+       USE Customer INDEX CustName NEW
+       //
+       nLines := MLCOUNT(CustNotes, nLineLength, nTabSize, lWrap)
+       //
+       SET PRINTER ON
+       FOR nCurrentLine := 1 TO nLines
+	  ? MEMOLINE(CustNotes, nLineLength, nCurrentLine, nTabSize, lWrap)
+       NEXT
+       SET PRINTER OFF
+
+
+$SEEALSO$
+  MEMOEDIT(),MLCOUNT(),MLPOS()
+$END$

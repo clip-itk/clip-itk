@@ -1,0 +1,45 @@
+$FUNCNAME$
+	LIKE()
+$CATEGORY$
+	STRING
+$SUMMARY$
+	Check confirmity string to simple mask.
+$LANG_RU$
+	Проверка на соответствие строки простой маске.
+$SYNTAX$
+     LIKE(<sMask>, <sString>) 	--> TRUE || FALSE
+$ARGUMENTS$
+     <sMask>	String, is the mask.
+     <sString>	String, is the source string.
+$LANG_RU$
+     <sMask>	String, маска
+     <sString>	String, исходная строка
+$RETURNS$
+     Returns TRUE if string corresponding to mask.
+$LANG_RU$
+     Возвращает TRUE, если строка соответствует маске.
+$DESCRIPTION$
+     LIKE() returns TRUE if string corresponding to mask.
+     The string <sMask> can contents special symbols: <?>, <*>, <.>
+$LANG_RU$
+     LIKE() возвращает TRUE, если строка соответствует маске.
+     Строка <sMask> может содержать специальные символы: <?>, <*>, <.>
+$EXAMPLES$
+
+? LIKE("aaa", "aaa") 		// --> TRUE
+? LIKE("aaa", "a*") 		// --> TRUE
+? LIKE("aaa", "*") 		// --> TRUE
+? LIKE("aaa", "a") 		// --> FALSE
+? LIKE("", "a") 		// --> FALSE
+? LIKE("", "*") 		// --> TRUE
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

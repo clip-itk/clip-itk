@@ -357,10 +357,17 @@ function r2d2_get_osb_data(oDep,bal_id,account,beg_date,end_date,s1,s2)
 	endif
 	s:=' account=="'+account:id+'"'
 	tmp := oDep:select(bal_id,1,,s+s1)
-	//outlog(__FILE__,__LINE__,s+s1,tmp)
+	outlog(__FILE__,__LINE__,s+s1,tmp)
 
 	for j=1 to len(tmp)
 		obj:=oDep:getValue(tmp[j])
+		/*
+		outlog(__FILE__,__LINE__,j,obj:odate,obj)
+		outlog(__FILE__,__LINE__,j,obj:bd_summa,obj:bk_summa)
+		outlog(__FILE__,__LINE__,j,obj:od_summa,obj:ok_summa)
+		outlog(__FILE__,__LINE__,j,obj:ed_summa,obj:ek_summa)
+		outlog(__FILE__,__LINE__)
+		*/
 		if empty(obj) .or. obj:odate<beg_date
 			loop
 		endif
@@ -379,6 +386,7 @@ function r2d2_get_osb_data(oDep,bal_id,account,beg_date,end_date,s1,s2)
 			data:ek_summa := obj:ek_summa
 			max_date := obj:odate
 		endif
+		//outlog(__FILE__,__LINE__,j,data)
 	next
 	if empty(tmp)
 		if empty(s2)

@@ -1,0 +1,79 @@
+$FUNCNAME$
+  AFILL()
+$CATEGORY$
+  Array
+$SUMMARY$
+   Fill an array with a specified value
+$LANG_RU$
+   Заполняет массив заданным значением.
+$SYNTAX$
+     AFILL(<aTarget>, <expValue>,[<nStart>], [<nCount>]) --> aTarget
+$LANG_RU$
+     AFILL(<принимающий массив>, <выражение>,[<начальный элемент>],
+	[<кол-во элементов>]) --> принимающий массив
+$ARGUMENTS$
+     <aTarget> is the array to be filled.
+     <expValue> is the value to be placed in each array element.  It can
+     be an expression of any valid data type.
+     <nStart> is the position of the first element to be filled.  If this
+     argument is omitted, the default value is one.
+     <nCount> is the number of elements to be filled starting with
+     element <nStart>.  If this argument is omitted, elements are filled from
+     the starting element position to the end of the array.
+$LANG_RU$
+     <принимающий массив> - массив, подлежащий заполнению.
+     <выражение> - значение, которое заносится в каждый элемент массива
+     <принимающий массив>. Может быть выражением любого допустимого типа.
+     <начальный элемент> - номер первого заполняемого элемента. Если не
+     указан, по умолчанию заполняется с первого элемента.
+     <кол-во элементов> - количество заполняемых элементов, начиная с
+     элемента с номером <начальный элемент> и до конца массива.
+$RETURNS$
+     AFILL() returns a reference to <aTarget>.
+$LANG_RU$
+     AFILL() возвращает ссылку на массив <принимающий массив>.
+$DESCRIPTION$
+     AFILL() is an array function that fills the specified array with a
+     single value of any data type (including an array, code block, or NIL)
+     by assigning <expValue> to each array element in the specified range.
+
+     Warning!  AFILL() cannot be used to fill multidimensional arrays.
+     xClipper implements multidimensional arrays by nesting arrays within
+     other arrays.  Using AFILL() with a multidimensional array will
+     overwrite subarrays used for the other dimensions of the array.
+$LANG_RU$
+     AFILL() - функция обработки массивов, которая заполняет указанный
+     массив одним значением любого допустимого типа ( включая массивы
+     блоков кода, NIL ) путем присвоения значения <выражение> каждому его
+     элементу в заданных границах.
+
+     Предупреждение:
+     AFILL() нельзя использовать для заполнения многомерных массивов.
+     Многомерные массивы в xClipper формируются путем вложения одних
+     массивов в другие. Чтобы использовать функцию AFILL() для многомерных
+     массивов, перепишите подмассивы, используемые для других измерений
+     массива.
+$EXAMPLES$
+       This example, creates a three-element array.  The array is
+	then filled with the logical value, (.F.).  Finally, elements in
+	positions two and three are assigned the new value of true (.T.):
+
+	LOCAL aLogic[3]
+	// Result: aLogic is { NIL, NIL, NIL }
+
+	AFILL(aLogic, .F.)
+	// Result: aLogic is { .F., .F., .F. }
+
+	AFILL(aLogic, .T., 2, 2)
+	// Result: aLogic is { .F., .T., .T. }
+$LANG_RU$
+      В этом примере создается массив из трех элементов. Затем он
+       заполняется значением "ложь" (.F.), после чего элементы на второй
+       и третьей позициях заполняются значением "истина" (.T.):
+
+       LOCAL aLogic[3]           // Результат: { NIL, NIL, NIL }
+       AFILL(aLogic,.F.)         // Результат: { .F., .F., .F. }
+       AFILL(aLogic,.T., 2, 2)   // Результат: { .F., .T., .T. }
+$SEEALSO$
+  AADD(),AEVAL(),DBSTRUCT(),DIRECTORY(),
+$END$

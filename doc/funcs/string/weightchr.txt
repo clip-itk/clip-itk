@@ -1,0 +1,44 @@
+$FUNCNAME$
+	WEIGHTCHR()
+$CATEGORY$
+	INFO
+$SUMMARY$
+	Returns character by weight characterics.
+$LANG_RU$
+	Возвращает символ по весовой характеристике.
+$SYNTAX$
+	WEIGHTCHR(<nCode>) 	--> <sChar>
+$ARGUMENTS$
+	<nCode>		Numeric, is the weight charateristic.
+$LANG_RU$
+	<nCode>		Numeric, весовая характеристика.
+$RETURNS$
+     Returns the character <sChar>.
+$LANG_RU$
+     Возвращает символ <sChar>.
+$DESCRIPTION$
+	WEIGHTCHR() returns the character <sChar> by them weight characterictics <nCode>.
+$LANG_RU$
+	WEIGHTCHR() возвращает символ <sChar> по его весовой характеристике <nCode>.
+$EXAMPLES$
+
+str := "asdf"
+wa := WEIGHTASC(str) 	// --> 66
+
+? WEIGHTCHR(wa)		// --> a
+? WEIGHTCHR(wa+1)	// --> b
+? WEIGHTCHR(wa+10)	// --> k
+
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформ
+$SEEALSO$
+	WEIGHTTABLE(), WEIGHTASC()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

@@ -1,0 +1,65 @@
+$FUNCNAME$
+  ISALPHA()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Determine if the leftmost character in a string is alphabetic
+$LANG_RU$
+   Определяет, является ли самый левый символ в строке алфавитным.
+$SYNTAX$
+     ISALPHA(<cString>) --> lBoolean
+$LANG_RU$
+     ISALPHA(<строка символов>) --> признак буквы
+$ARGUMENTS$
+     <cString> is the character string to be examined.
+$LANG_RU$
+     <строка символов> - это символьная строка, которую нужно проверить.
+$RETURNS$
+     ISALPHA() returns true (.T.) if the first character in <cString> is
+     alphabetic; otherwise, it returns false (.F.).
+$LANG_RU$
+     ISALPHA() возвращает значение "истина" (.Т.), если первый символ
+     аргумента <строка символов> - буква, в противном случае она
+     возвращает значение "ложь" (.F.).
+$DESCRIPTION$
+
+     ISALPHA() is a character function that determines if the specified
+     string begins with an alphabetic character.  An alphabetic character
+     consists of any uppercase or lowercase letter from A to Z.  ISALPHA()
+     returns false (.F.) if the string begins with a digit or any other
+     character.
+
+
+$LANG_RU$
+
+     ISALPHA() - это функция обработки символьных строк, определяющая,
+     начинается ли заданная строка с буквенного символа. Буквенный символ
+     - это любая буква от А до Z верхнего или нижнего регистра. ISALPHA()
+     возвращает значение "ложь" (.F.), если строка начинается с цифры или
+     какого-либо другого символа.
+
+
+$EXAMPLES$
+
+       These examples demonstrate various results of ISALPHA():
+
+	? ISALPHA("AbcDe")               // Result: .T.
+	? ISALPHA("aBcDE")               // Result: .T.
+	? ISALPHA("1BCde")               // Result: .F.
+	? ISALPHA(".FRED")               // Result: .F.
+
+
+$LANG_RU$
+
+      Следующий пример демонстрирует различные результаты вызовов
+       ISALPHA():
+
+       ? ISALPHA("AbcDe")        // Результат: .T.
+       ? ISALPHA("фBcЛе")        // Результат: .T.
+       ? ISALPHA("1BCde")        // Результат: .F.
+       ? ISALPHA(".FRED")        // Результат: .F.
+
+
+$SEEALSO$
+  ISDIGIT(),ISLOWER(),ISUPPER(),LOWER(),UPPER()
+$END$

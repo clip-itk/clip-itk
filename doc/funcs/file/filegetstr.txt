@@ -1,0 +1,52 @@
+$FUNCNAME$
+	FILEGETSTR()
+$CATEGORY$
+	FILE/IO
+$SUMMARY$
+	Returns string.
+$LANG_RU$
+	Возвращает строку.
+$SYNTAX$
+
+     FILEGETSTR(<nFileHandle>, <nSize>) 	--> <sFileStr>
+
+$ARGUMENTS$
+     <nFileHandle>	Numeric, is the file handler.
+     <nSize>		Numeric, is the size string.
+
+$LANG_RU$
+     <nFileHandle>	Numeric, дескриптор файла.
+     <nSize>		Numeric, размер строки.
+
+$RETURNS$
+
+     Returns string <sFileStr>, what was read from file <nFileHandle>.
+
+$LANG_RU$
+
+	Возвращает строку <sFileStr>, прочитанную из файла <nFileHandle>.
+
+$DESCRIPTION$
+
+     FILEGETSTR() reads string from opened file. The size result string restrict
+     <CRLF> or <CR>, but no more then <nSize> symbols.
+$LANG_RU$
+
+     FILEGETSTR() читает строку из ранее открытого файла. Размер строки ограничивается
+     <CRLF> или <CR>, но не белее чем <nSize> символов.
+$EXAMPLES$
+nFile := FOPEN("test.txt")
+do while !feof(nFile)
+	? FILEGETSTR(nFile, 1024)
+	?
+enddo
+fclose()
+$PLATFORMS$
+$SEEALSO$
+	FOPEN()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

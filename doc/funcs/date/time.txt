@@ -1,0 +1,50 @@
+$FUNCNAME$
+  TIME()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Return the system time
+$LANG_RU$
+   Возвращает системное время.
+$SYNTAX$
+     TIME() --> cTimeString
+$LANG_RU$
+     TIME() --> системное время.
+$RETURNS$
+     TIME() returns the system time as a character string in the form
+     hh:mm:ss.  hh is hours in 24-hour format, mm is minutes, and ss is
+     seconds.
+$LANG_RU$
+     TIME() возвращает системное время в виде символьной строки в формате
+     чч:мм:сс, где чч - часы, мм - минуты, сс - секунды. Часы, минуты и
+     секунды разделяются двоеточием.
+$DESCRIPTION$
+     TIME() is a time function that displays the system time on the screen or
+     prints it on a report.  TIME() is related to SECONDS() which returns the
+     integer value representing the number of seconds since midnight.
+     SECONDS() is generally used in place of TIME() for time calculations.
+$LANG_RU$
+     TIME() - функция получения времени, используемая для вызова на экран
+     или печатающее устройство системного времени. TIME() связана с
+     функцией SECONDS(), которая возвращает количество секунд с начала
+     суток. Вместо TIME() для вычислений обычно используется SECONDS().
+$EXAMPLES$
+       These examples show the results of TIME() used with SUBSTR()
+	to extract the hour, minutes, and seconds digits:
+
+	? TIME()                       // Result: 10:37:17
+	? SUBSTR(TIME(), 1, 2)         // Result: 10
+	? SUBSTR(TIME(), 4, 2)         // Result: 37
+	? SUBSTR(TIME(), 7, 2)         // Result: 17
+$LANG_RU$
+      Следующие примеры показывают результаты работы функции TIME() в
+       сочетании с SUBSTR() для выделения количества часов, минут и
+       секунд:
+
+       ? TIME()                     // Результат: 10:37:17
+       ? SUBSTR(TIME(), 1, 2)       // Результат: 10
+       ? SUBSTR(TIME(), 4, 2)       // Результат: 37
+       ? SUBSTR(TIME(), 7, 2)       // Результат: 17
+$SEEALSO$
+  SECONDS(),SUBSTR(),DATE()
+$END$

@@ -1,0 +1,54 @@
+$FUNCNAME$
+  DBDELETE()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Mark a record for deletion
+$LANG_RU$
+   Помечает запись для удаления.
+$SYNTAX$
+     DBDELETE() --> NIL
+$LANG_RU$
+     DBDELETE() --> NIL
+$RETURNS$
+     DBDELETE() always returns NIL.
+$LANG_RU$
+     DBDELETE() всегда возвращает NIL.
+$DESCRIPTION$
+     DBDELETE() marks the current record as deleted.  Records marked for
+     deletion can be filtered using SET DELETED or removed from the file
+     using the PACK command.
+
+     DBDELETE() performs the same function as the standard DELETE command
+     with a scope of the current record.  For more information, refer to the
+     DELETE command.
+$LANG_RU$
+     DBDELETE() помечает текущую запись как удаленную. Записи, помеченные
+     для удаления, могут быть отфильтрованы с помощью команды SET DELETE
+     или удалены из файла командой PACK.
+
+     DBDELETE() выполняет те же функции, что и стандартная команда DELETE,
+     область действия которой - текущая запись. Более подробную информацию
+     смотрите в команде DELETE.
+$EXAMPLES$
+       The following example deletes a record after a successful
+	record lock:
+
+	cLast := "Winston"
+	DBUSEAREA( .T., "DBFNTX", "Sales", "Sales", .T. )
+	DBSETINDEX( "LASTNAME" )
+	//
+	IF ( Sales->(DBSEEK(cLast)) )
+	   IF Sales->( RLOCK() )
+	      Sales->( DBDELETE() )
+	      ? "Record deleted: ", Sales->( DELETED() )
+	   ELSE
+	      ? "Unable to lock record..."
+	   ENDIF
+	ELSE
+	   ? "Not found"
+	ENDIF
+
+$SEEALSO$
+  DBRECALL()
+$END$

@@ -1,0 +1,68 @@
+$FUNCNAME$
+  SETMODE()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Change display mode to a specified number of rows and columns
+$LANG_RU$
+   Изменяет режим работы экрана, определяя количество строк и столбцов.
+$SYNTAX$
+     SETMODE(<nRows>, <nCols>) --> lSuccess
+$LANG_RU$
+     SETMODE(<кол-во строк>, <кол-во колонок>) --> признак завершения
+$ARGUMENTS$
+     <nRows> is the number of rows in the desired display mode.
+     <nCols> is the number of columns in the desired display mode.
+$LANG_RU$
+     <кол-во строк> - количество строк в устанавливаемом режиме работы
+     экрана.
+     <кол-во столбцов> - количество столбцов в устанавливаемом режиме
+     работы экрана.
+$RETURNS$
+     SETMODE() returns true (.T.) if the mode change was successful;
+     otherwise, it returns false (.F.).
+$LANG_RU$
+     SETMODE() возвращает значение "истина" (.T.), если изменение режима
+     было успешным, в противном случае, возвращает "ложь" (.F.).
+$DESCRIPTION$
+     SETMODE() is an environment function that attempts to change the mode of
+     the display hardware to match the number of rows and columns specified.
+     The change in screen size is reflected in the values returned by
+     MAXROW() and MAXCOL().
+
+     Note:  In LLG_VIDEO_TXT mode, and when a VESA driver is present, it
+     is possible to use the following values :
+     25,80 | 43,80 | 50,80 | 60,80 | 25,132 | 43,132 | 50,132 | 60,132
+$LANG_RU$
+     SETMODE() - функция среды окружения, которая пытается изменить
+     режим работы экрана, соответствующий определенному значению
+     количества строк и столбцов. Изменение размеров экрана отражается
+     на возвращаемых функциями MAXROW() и MAXCOL() значениях.
+$EXAMPLES$
+       This example switches to a 43-line display mode:
+
+	IF SETMODE(43, 80)
+	   ? "43-line mode successfully set"
+	ELSE
+	   ? "43-line mode not available"
+	ENDIF
+
+       This example switches the video mode to regular text mode with
+	60 rows and 132 columns:
+
+	// Switch to text mode
+	SET VIDEOMODE( LLG_VIDEO_TXT )
+	// Set the video mode to the largest number of characters
+	SETMODE( 60,132 )
+$LANG_RU$
+      В следующем примере экран переключается в режим отображения 43
+       строк:
+
+       IF SETMODE(43,80)
+	  ? "Режим работы 43 строки успешно установлен"
+       ELSE
+	  ? "Режим работы 43 строки не доступен"
+       END
+$SEEALSO$
+  MAXCOL(),MAXROW()
+$END$

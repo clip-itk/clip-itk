@@ -1,0 +1,80 @@
+$FUNCNAME$
+  FILE()
+$CATEGORY$
+  FILE/IO,DATABASE
+$SUMMARY$
+   Determine if files exist in the xClipper default directory or path
+$LANG_RU$
+   Определяет, существует ли файл в текущей xClipper директории или по
+$SYNTAX$
+     FILE(<cFilespec>) --> lExists
+$LANG_RU$
+     FILE(<шаблон поиска>) --> признак наличия
+$ARGUMENTS$
+     <cFilespec> is in the current xClipper default directory and path.
+     It is a standard file specification that can include the wildcard
+     characters * and ? as well as a drive and path reference.  Explicit
+     references to a file must also include an extension.
+$LANG_RU$
+     <шаблон поиска> является спецификацией имен файлов, подлежащих
+     поиску в текущей директории по умолчанию или по заданному маршруту.
+     Спецификация может включать в себя произвольные символы * и ?, а
+     также имя дисковода и маршрут. Явные ссылки на имя файла должны также
+     включать его расширение.
+$RETURNS$
+     FILE() returns true (.T.) if there is a match for any file matching the
+     <cFilespec> pattern; otherwise, it returns false (.F.).
+$LANG_RU$
+     FILE() возвращает значение "истина"(.Т.), если найден хотя бы один
+     файл, имя которого удовлетворяет шаблону поиска; в противном случае
+     возвращается значение "ложь"(.F.).
+$DESCRIPTION$
+     FILE() is an environment function that determines whether any file
+     matching a file specification pattern is found.  FILE() searches the
+     specified directory if a path is explicitly specified.
+
+     If a path is not specified,  FILE() searches the current xClipper
+     default directory and then the xClipper path.  In no case is the DOS
+     path searched.  Note also that FILE() does not recognize hidden or
+     system files in its search.
+$LANG_RU$
+     FILE() является функцией среды и используется для определения,
+     обнаружен ли какой-либо файл, имя которого соответствует заданному
+     шаблону.  Поиск производится в текущей директории или в соответствии
+     с заданными явно именем устройства и маршрутом доступа. Если маршрут
+     не задан, то FILE() просматривает текущую директорию, заданную в
+     xClipper по умолчанию, а затем определенный в xClipper маршрут. Маршрут
+     поиска, заданный в DOS, функцией ни в коем случае не учитывается.
+     Следует также помнить, что FILE() не распознает в процессе поиска
+     невидимые или системные файлы.
+$EXAMPLES$
+       In this example FILE() attempts to find Sales.dbf in other
+	than the current xClipper default:
+
+	? FILE("Sales.dbf")               // Result: .F.
+	? FILE("\APPS\DBF\Sales.dbf")     // Result: .T.
+	//
+	SET PATH TO \APPS\DBF
+	? FILE("Sales.dbf")               // Result: .T.
+	//
+	SET PATH TO
+	SET DEFAULT TO \APPS\DBF\
+	? FILE("Sales.dbf")               // Result: .T.
+	? FILE("*.dbf")                   // Result: .T.
+$LANG_RU$
+      В данном примере показано, как FILE() пытается найти Sales.dbf в
+       директории, которая не является текущей по умолчанию:
+
+       ? FILE("Sales.dbf")                   // Результат: .F.
+       ? FILE("\APPS\DBF\Sales.dbf")         // Результат: .T.
+       //
+       SET PATH TO \APPS\DBF
+       ? FILE("Sales.dbf")                   // Результат: .T.
+       //
+       SET PATH TO
+       SET DEFAULT TO \APPS\DBF\
+       ? FILE("Sales.dbf")                   // Результат: .T.
+       ? FILE("*.dbf")                       // Результат: .T.
+$SEEALSO$
+
+$END$

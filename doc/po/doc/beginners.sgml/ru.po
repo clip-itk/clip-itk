@@ -1,0 +1,218 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/beginners.sgml:1
+msgid "Beginner's guide"
+msgstr ""
+
+#: template/./doc/beginners.sgml:4
+msgid "In the beginning was..."
+msgstr ""
+
+#: template/./doc/beginners.sgml:6
+msgid ""
+"In the beginning was the CA-Clipper. Many peoples got used to it. \n"
+"Got used to it's compilation system (compile --&gt; link --&gt; run). "
+"Compiler \n"
+"was the same, but linker could be change (rtlink, exospace, blinker, etc.)."
+msgstr ""
+
+#: template/./doc/beginners.sgml:9
+msgid ""
+"When you come to Clip you not just change the compiler. You change the \n"
+"whole ideology of making programs. Why?"
+msgstr ""
+
+#: template/./doc/beginners.sgml:11
+msgid ""
+"Clip developed in Linux and this is main platform for compiler and client \n"
+"applications."
+msgstr ""
+
+#: template/./doc/beginners.sgml:12
+msgid ""
+"Clip can be compiled and used in many platforms (for example \n"
+"Linux, FreeBSD, Solaris)."
+msgstr ""
+
+#: template/./doc/beginners.sgml:13
+msgid ""
+"This can be done by using so called GNU tools:\n"
+"make, gcc, flex, bison and many others. GNU tools natively ported on all of "
+"that\n"
+"platforms, because all of that are POSIX-compatible."
+msgstr ""
+
+#: template/./doc/beginners.sgml:15
+msgid ""
+"But Win32 platform is\n"
+"very different. For this reason using Clip under Win32 is not a trivial."
+msgstr ""
+
+#: template/./doc/beginners.sgml:17
+msgid "Working with Clip under Win32 is possible through Cygwin. What is this?"
+msgstr ""
+
+#: template/./doc/beginners.sgml:21
+msgid "Cygwin"
+msgstr ""
+
+#: template/./doc/beginners.sgml:23
+msgid ""
+"You can understand Cygwin in two ways:\n"
+"<itemizedlist>\n"
+"<listitem><para>_(This is number of GNU tools and utilities, which make \n"
+"recompilation of POSIX programs is possible under Win32 platform."
+msgstr ""
+
+#: template/./doc/beginners.sgml:27
+msgid "This is \"POSIX-&gt;Win32 API-converter\""
+msgstr ""
+
+#: template/./doc/beginners.sgml:31
+msgid ""
+"What is API-converter? This is regular DLL, which must be called from each \n"
+"Cygwin program or library."
+msgstr ""
+
+#: template/./doc/beginners.sgml:32
+msgid ""
+"When any Cygwin-enabled program made a POSIX-call, \n"
+"it will be converted to Win32 system call."
+msgstr ""
+
+#: template/./doc/beginners.sgml:33
+msgid ""
+"This technique give you a possibility \n"
+"to recompile POSIX programs without massive rewriting of code."
+msgstr ""
+
+#: template/./doc/beginners.sgml:34
+msgid ""
+"All GNU tools\n"
+"(compilers, lexers, command interpreters, GUI libraries etc.) made by this "
+"way."
+msgstr ""
+
+#: template/./doc/beginners.sgml:38
+msgid "For this reason GNU tools organized as in other *NIX distributions"
+msgstr ""
+
+#: template/./doc/beginners.sgml:40
+msgid ""
+"Due to recompilation (and not porting in usual way) all files kept \n"
+"their places as in *NIX system."
+msgstr ""
+
+#: template/./doc/beginners.sgml:41
+msgid ""
+"Root directory is an install directory of\n"
+"whole Cygwin."
+msgstr ""
+
+#: template/./doc/beginners.sgml:42
+msgid "All other files and directories depends on root."
+msgstr ""
+
+#: template/./doc/beginners.sgml:42
+msgid ""
+"This not a\n"
+"rule for you program, but a law for all part of Cygwin."
+msgstr ""
+
+#: template/./doc/beginners.sgml:43
+msgid ""
+"If you new in Cygwin\n"
+"or *NIX systems, below you can find a description of standard directories:"
+msgstr ""
+
+#: template/./doc/beginners.sgml:48
+msgid "root"
+msgstr ""
+
+#: template/./doc/beginners.sgml:51
+msgid ""
+"Root for all Cygwin files and directories. In real FAT hierarchy is a \n"
+"      directory, where you install your Cygwin. In case of cygwin_trunc.rar "
+"from \n"
+"      ITK's site it will be c:\\\\cygwin"
+msgstr ""
+
+#: template/./doc/beginners.sgml:58
+msgid "bin"
+msgstr ""
+
+#: template/./doc/beginners.sgml:61
+msgid "Place for all executables and shared libraries (.DLL), needed for them."
+msgstr ""
+
+#: template/./doc/beginners.sgml:66
+msgid "etc"
+msgstr ""
+
+#: template/./doc/beginners.sgml:69
+msgid "Place for all settings and initialisation files."
+msgstr ""
+
+#: template/./doc/beginners.sgml:74
+msgid "home"
+msgstr ""
+
+#: template/./doc/beginners.sgml:77
+msgid "Place for personal directories and files."
+msgstr ""
+
+#: template/./doc/beginners.sgml:82
+msgid "lib"
+msgstr ""
+
+#: template/./doc/beginners.sgml:85
+msgid "Place for all libraries, needed for compilers."
+msgstr ""
+
+#: template/./doc/beginners.sgml:90
+msgid "tmp"
+msgstr ""
+
+#: template/./doc/beginners.sgml:93
+msgid "Place for temporary files."
+msgstr ""
+
+#: template/./doc/beginners.sgml:98
+msgid "usr"
+msgstr ""
+
+#: template/./doc/beginners.sgml:101
+msgid ""
+"Place for other user (not system) files, like user programs, compiler \n"
+"      itself, includes etc."
+msgstr ""
+
+#: template/./doc/beginners.sgml:107
+msgid "var"
+msgstr ""
+
+#: template/./doc/beginners.sgml:110
+msgid "Place for system log and other auxillary files."
+msgstr ""
+
+#: template/./doc/beginners.sgml:117
+msgid ""
+"Like in case of precompiled Clip files may be placed in separate directory\n"
+"inside Cygwin hierarchy."
+msgstr ""
+
+#: template/./doc/beginners.sgml:120
+msgid "If you plan to work in Cygwin you must accept some rules."
+msgstr ""

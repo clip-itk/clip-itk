@@ -1,0 +1,60 @@
+$FUNCNAME$
+   FT_FWRITELN()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Write a line to the currently selected text file
+$SYNTAX$
+
+   FT_FWRITELN( < cData >, [ < lInsert > ] ) -> lSuccess
+
+$ARGUMENTS$
+
+   <cData> is a string of data to write to the file at the current
+    record position.
+
+   <lInsert> is a logical indicating whether the contents
+   of the current record are to be preserved, that is, if lInsert
+   evaluates to .T., the a new record is inserted at the current
+   position.  The current record then is pushed down to FT_FRECNO()+1.
+
+   If lInsert is .F. or omitted, the current record is replaced by
+   cData.
+
+$RETURNS$
+
+   TRUE if successful, otherwise check ^ft_fError()^n for error code.
+
+$DESCRIPTION$
+
+   This function writes a line of text to the file in the currently
+   selected text file workarea.  Text lines are delimited with a
+   CRLF pair.  The record pointer is not moved.
+
+   The contents of the current record are updated to reflect the new
+   new line written, unless the Insert option is selected.
+
+   Writing a null string has the effect of clearing the current line
+   if in overstrike mode, else inserting a new line (same as
+   FT_FINSERT()).
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+$EXAMPLES$
+
+   // write a line of text to a file
+
+   FT_FUSE( "config.sys" )
+
+   DO WHILE UPPER( FT_FREADLN() ) != "FILES=" .AND. !F_FEOF()
+
+      FT_FSKIP()
+
+   ENDDO
+
+   FT_FWRITELN( "FILES=30", FT_FEOF() )
+
+$SEEALSO$
+   FT_FREADLN(),FT_FRECNO(),FT_FINSERT(),FT_FDELETE()
+$END$
+

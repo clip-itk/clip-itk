@@ -1,0 +1,57 @@
+$FUNCNAME$
+   FT_FSELECT()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Select a text file workarea
+$SYNTAX$
+
+   FT_FSELECT( [ <nNewArea> ] ) -> nPreviousArea
+
+$ARGUMENTS$
+
+   ^b<nNewArea>^n is the text file workarea to select.
+
+$RETURNS$
+
+   The current selected text file area.
+
+$DESCRIPTION$
+
+   This function selects a text file "workarea" from 1 to 10.  A
+   file may or may not be open in the selected area.
+
+   Passing 0 for ^b<nNewArea>^n selects the next available workarea,
+   similar to Clipper's SELECT 0 command.  If no more workareas are
+   available the current workarea is not changed.
+
+   Each file is opened in its own "workarea", similar to the concept
+   used by dbf files.  As provided, a maximum of 10 files (in 10
+   workareas) can be opened (assuming there are sufficient file
+   handles available).  That number may be increased by modifying
+   the #define TEXT_WORKAREAS in the C source code and recompiling.
+
+   All the FT_F*() file functions operate on the file in the currently
+   selected text file workarea.
+
+   Text file workareas are separate from and independent of Clipper's
+   database workareas.
+
+$EXAMPLES$
+
+   FT_FSELECT(1)
+
+   nFile1 := FT_FUSE( "temp.c" )
+
+   ? FT_FLASTRE()                 // no. of lines in temp.c
+
+   FT_FSELECT(2)
+
+   nFile2 := FT_FUSE( "temp.h" )
+
+   ? FT_FLASTRE()                 // no. of lines in temp.h
+
+$SEEALSO$
+   FT_FUSE()
+$END$
+

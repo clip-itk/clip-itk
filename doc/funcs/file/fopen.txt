@@ -1,0 +1,152 @@
+$FUNCNAME$
+  FOPEN()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Open a binary file
+$LANG_RU$
+   Открывает двоичный файл.
+$SYNTAX$
+     FOPEN(<cFile>, [<nMode>]) --> nHandle
+$LANG_RU$
+     FOPEN(<имя файла>, [<режим доступа>]) --> номер файла
+$ARGUMENTS$
+     <cFile> is the name of the file to open, including the path if there
+     is one.
+
+     <nMode> is the requested DOS open mode indicating how the opened
+     file is to be accessed.  The open mode is composed of elements from the
+     two types of modes described in the tables below.  If just the Access
+     Mode is used, the file is opened non-sharable.  The default open mode is
+     zero, which indicates non-sharable and read-only.
+
+     <PRE>FOPEN() Access Modes
+     ------------------------------------------------------------------------
+     Mode    Fileio.ch      Operation
+     ------------------------------------------------------------------------
+     0       FO_READ        Open for reading (default)
+     1       FO_WRITE       Open for writing
+     2       FO_READWRITE   Open for reading or writing
+     ------------------------------------------------------------------------
+     </PRE>
+
+     The Sharing Modes determine how other processes may access the file.
+
+     <PRE>FOPEN() Sharing Modes
+     ------------------------------------------------------------------------
+     Mode    Fileio.ch      Operation
+     ------------------------------------------------------------------------
+     0       FO_COMPAT      Compatibility mode (default)
+     16      FO_EXCLUSIVE   Exclusive use
+     32      FO_DENYWRITE   Prevent others from writing
+     48      FO_DENYREAD    Prevent others from reading
+     64      FO_DENYNONE    Allow others to read or write
+     64      FO_SHARED      Same as FO_DENYNONE
+     ------------------------------------------------------------------------
+     </PRE>
+
+     The Access Modes in combination (+) with the Sharing modes determine the
+     accessibility of the file in a network environment.
+$LANG_RU$
+     <имя файла> - это имя файла, подлежащего открытию, если необходимо,
+     имя может включать в себя маршрут поиска.
+
+     <режим доступа> является запрашиваемым режимом доступа к DOS,
+     указывающим, как нужно осуществлять доступ к открытому файлу.
+     Ниже приведены допустимые режимы доступа:
+
+     <PRE>FOPEN() Access Modes
+     ------------------------------------------------------------------------
+     Mode    Fileio.ch      Operation
+     ------------------------------------------------------------------------
+     0       FO_READ        Open for reading (default)
+     1       FO_WRITE       Open for writing
+     2       FO_READWRITE   Open for reading or writing
+     ------------------------------------------------------------------------
+     </PRE>
+
+     The Sharing Modes determine how other processes may access the file.
+
+     <PRE>FOPEN() Sharing Modes
+     ------------------------------------------------------------------------
+     Mode    Fileio.ch      Operation
+     ------------------------------------------------------------------------
+     0       FO_COMPAT      Compatibility mode (default)
+     16      FO_EXCLUSIVE   Exclusive use
+     32      FO_DENYWRITE   Prevent others from writing
+     48      FO_DENYREAD    Prevent others from reading
+     64      FO_DENYNONE    Allow others to read or write
+     64      FO_SHARED      Same as FO_DENYNONE
+     ------------------------------------------------------------------------
+     </PRE>
+
+     The Access Modes in combination (+) with the Sharing modes determine the
+     accessibility of the file in a network environment.
+$RETURNS$
+     FOPEN() returns the file handle of the opened file in the range of zero
+     to 65,535.  If an error occurs, FOPEN() returns -1.
+$LANG_RU$
+     FOPEN() возвращает номер открытого файла для дальнейшего
+     использования в диапазоне от 0 до 65 535. Если при открытии
+     файла возникает ошибка, FOPEN() возвращает (-1).
+$DESCRIPTION$
+     FOPEN() is a low-level file function that opens an existing binary file
+     for reading and writing, depending on the <nMode> argument.  Whenever
+     there is an open error, use FERROR() to return the DOS error number.
+     For example, if the file does not exist, FOPEN() returns -1 and FERROR()
+     returns 2 to indicate that the file was not found.  See FERROR() for a
+     complete list of error numbers.
+
+     If the specified file is opened successfully, the value returned is the
+     DOS handle for the file.  This value is similar to an alias in the
+     database system and is required to identify the open file to other file
+     functions.  It is, therefore, important to assign the return value to a
+     variable for later use as in the example below.
+
+     Warning!  This function allows low-level access to DOS files and
+     devices.  It should be used with extreme care and requires a thorough
+     knowledge of the operating system.
+$LANG_RU$
+     FOPEN() является функцией обработки файлов низкого уровня, которая
+     открывает существующий двоичный файл для чтения или записи в
+     зависимости от значения аргумента <режим доступа>. При аварийном
+     завершении функции FOPEN() функция FERROR() возвращает код ошибки
+     DOS. Например, если файл не существует, FOPEN() возвращает код (-1),
+     а FERROR() возвращает код (2), что соответствует ошибке "файл не
+     найден". Полный список кодов ошибок приведен в разделе FERROR().
+
+     Если заданный файл успешно открыт, возвращаемым значением является
+     номер файла. Его значение подобно алиасу в системе базы данных и
+     требуется для того, чтобы обеспечить доступ другим функциям для
+     дальнейшей обработки файла. Поэтому всегда необходимо присваивать
+     этот номер переменной, как показано ниже.
+
+      Предупреждение:
+     Данная функция позволяет осуществлять доступ низкого уровня к файлам
+     и устройствам DOS. Она должна использоваться чрезвычайно осторожно и
+     требует хороших знаний операционной системы.
+$EXAMPLES$
+       This example uses FOPEN() to open a file with  sharable
+	read/write status and displays an error message if the open fails:
+
+	#include "Fileio.ch"
+	//
+	nHandle := FOPEN("Temp.txt", FO_READWRITE + FO_SHARED)
+	IF FERROR() != 0
+	   ? "Cannot open file, DOS error ", FERROR()
+	   BREAK
+	ENDIF
+$LANG_RU$
+      В следующем примере показано использование FOPEN() для открытия
+       файла в режиме чтение/запись:
+
+       #include "Fileio.ch"
+       //
+       nHandle = FOPEN("Temp.txt", FO_READWRITE)
+       IF FERROR() != 0
+	  ? "Не может открыть файл, ошибка DOS:", FERROR()
+	  BREAK
+       ENDIF
+$SEEALSO$
+  FCLOSE(),FCREATE(),FERROR()
+$END$

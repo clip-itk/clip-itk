@@ -1,0 +1,77 @@
+$FUNCNAME$
+  MENUMODAL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Activate a top bar menu
+$SYNTAX$
+     MENUMODAL(<oTopBar>, <nSelection>, <nMsgRow>,
+	<nMsgLeft>, <nMsgRight>, <cMsgColor>) --> MenuID
+$ARGUMENTS$
+     <oTopBar> is a TopBarMenu object created from the TopBarMenu class.
+     <nSelection> is the TopBarMenu item selected by default.
+     <nMsgRow> is the row number where menu item messages will appear.
+     <nMsgLeft> specifies the left border for menu item messages.
+     <nMsgRight> specifies the right border for menu item messages.
+     <cMsgColor> defines the color string for the menu item messages.  It
+     consists of a single foreground/background pair.
+$RETURNS$
+     MENUMODAL() returns the menu ID of the chosen menu item.  Menu IDs are
+     assigned using the MenuItem class.
+$DESCRIPTION$
+     MENUMODAL() is a user-interface function that implements the pull-down
+     menu system in xClipper.  It is part of the open architecture Get
+     system of xClipper.  MENUMODAL() is similar to the READ command in
+     that it waits for the user to perform an action.  However, the
+     MENUMODAL() function will only respond to menu actions.
+
+     To implement a menu object at the same time as other objects, use the
+     READMODAL() function which has one of its arguments as TopBarMenu
+     object.
+
+     When the user chooses a menu item, control is passed to the code block
+     associated with that particular menu item.  Code blocks are defined
+     using the MenuItem class.
+
+     The menu items can be selected by using either the keyboard or the
+     mouse.  To select a menu item with the mouse, simply select its
+     TopBarMenu item with the mouse and then choose the appropriate PopUp
+     menu item.
+
+     Note:  The MENUMODAL() function will take one menu event from the
+     user and then terminate.  To avoid this, the following can be used, and
+     the same will allow the program to continuously accept menu events:
+
+     DO WHILE (MENUMODAL(themenu,...) <> ExitMenu)
+     ENDDO
+
+     The following table lists the active keys that can be used during
+     MENUMODAL():
+
+     <PRE> MENUMODAL() Navigation Keys
+     ------------------------------------------------------------------------
+     Key                 Action
+     ------------------------------------------------------------------------
+     Left arrow, Ctrl+S  Move to the next TopBarMenu item to the left.  If
+			 there are no more items to the left, the rightmost
+			 TopBarMenu item will be selected.
+     Right arrow, Ctrl+D Move to the next TopBarMenu item to the right.  If
+			 there are no more items to the right, the leftmost
+			 TopBarMenu will be selected.
+     Up arrow, Ctrl+E    Move to the previous PopUp menu item.  If there are
+			 no more items above the current item, the menu item
+			 on the bottom will be selected.
+     Down arrow, Ctrl+X  Move to the next PopUp menu item.  If there are no
+			 more items below the current item, the menu item on
+			 the top will be selected.
+     ------------------------------------------------------------------------
+     </PRE>
+$EXAMPLES$
+     See the Menu.prg sample file in the \sample directory.
+     This example demonstrates combining TopBarMenu, PopUpMenu, and MenuItem
+     objects to create a menu with a number of available choices.  See
+     "Introduction to the Menu System" in the Programming and Utilities Guide
+     for more information about using this function.
+$SEEALSO$
+
+$END$

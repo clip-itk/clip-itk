@@ -21,7 +21,7 @@
 
 /**********************************************************/
 
-GtkType _gdk_type_font() { return GDK_OBJECT_FONT; }
+GtkType _gdk_type_font() { return GDK_TYPE_FONT; }
 long _clip_type_font() { return GDK_OBJECT_FONT; }
 const char * _clip_type_name_font() { return "GDK_OBJECT_FONT"; }
 
@@ -58,7 +58,7 @@ clip_GDK_FONTLOAD(ClipMachine * cm)
 	if (font)
 	{
 //		gdk_font_ref(font);
-		cfont = _register_object(cm,font,GDK_OBJECT_FONT,cv,
+		cfont = _register_object(cm,font,GDK_TYPE_FONT,cv,
 	       		(coDestructor)gdk_object_font_destructor);
 		if (cfont)
                 {
@@ -94,7 +94,7 @@ clip_GDK_FONTSETLOAD(ClipMachine * cm)
 	if (font)
 	{
 //		gdk_font_ref(font);
-		cfont = _register_object(cm,font,GDK_OBJECT_FONT,cv,
+		cfont = _register_object(cm,font,GDK_TYPE_FONT,cv,
 			(coDestructor)gdk_object_font_destructor);
 		if (cfont)
 		{

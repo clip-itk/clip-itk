@@ -1,0 +1,53 @@
+$FUNCNAME$
+  BETWEEN()
+$CATEGORY$
+  STRING, NUMERIC, DATE/TIME
+$SUMMARY$
+   Check value.
+$LANG_RU$
+   Проверка значения
+$SYNTAX$
+     BETWEEN(<TargetData>, <FirstData>, <SecondData>) 	--> TRUE || FALSE
+$ARGUMENTS$
+     <TargetData>	is the source value.
+     <FirstData>	is the first data to comparing
+     <SecondData>	is the second data to comparing
+$LANG_RU$
+     <TargetData>	исходное значение
+     <FirstData>	первое значение для сравнения
+     <SecondData>	второе значение для сравнения
+$RETURNS$
+     Returns TRUE if <TargetData> is located berween <FirstData>  and <SecondData>.
+$LANG_RU$
+     Возвращает TRUE если <TargetData> располагается между <FirstData> и <SecondData> включительно.
+$DESCRIPTION$
+
+     BETWEEN() compares source value <TargetData> with <FirstData> and <SecondData>.
+     If <TargetData> locate between <FirstData> and <SecondData>, BETWEEN() returns TRUE.
+
+     All values must be ones type (string, numeric, date, ...).
+$LANG_RU$
+
+     BETWEEN() сравнивает исходное значение <TargetData> с <FirstData> и <SecondData>.
+     Если <TargetData> находится в границах между <FirstData> и <SecondData>, BETWEEN() возвращает TRUE.
+
+     Все сравниваемые значения должны принадлежать какому-либо одному типу (строка, число, дата, ...).
+
+$EXAMPLES$
+
+       val := 12345
+       BETWEEN(val, 0, 99999) 	// --> TRUE
+       BETWEEN(val, 99999, 0) 	// --> TRUE
+       BETWEEN(val, 9999, 0) 	// --> FALSE
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

@@ -1,0 +1,40 @@
+$FUNCNAME$
+  DBAPPEND()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Append a new record to the database open in the current work area
+$LANG_RU$
+   Добавляет новую запись.
+$SYNTAX$
+     DBAPPEND([<lReleaseRecLocks>]) --> NIL
+$LANG_RU$
+     DBAPPEND() --> NIL
+$ARGUMENTS$
+     <lReleaseRecLocks>  is a logical data type that if  true (.T.),
+     clears all pending record locks, then appends the next record.  If
+     <lReleaseRecLocks> is false (.F.), all pending record locks are
+     maintained and the new record is added to the end of the Lock List.  The
+     default value of <lReleaseRecLocks> is true (.T.).
+$RETURNS$
+     DBAPPEND() always returns NIL.
+$LANG_RU$
+     DBAPPEND() всегда возвращает NIL.
+$DESCRIPTION$
+     DBAPPEND() is a database function that lets you add records to the
+     current database.  The enhancement to this function lets you maintain
+     multiple record locks during an append.
+
+     DBAPPEND() without a parameter as in earlier versions of xClipper,
+     clears all pending record locks prior to an append.  This is the same as
+     DBAPPEND(.T.).
+$LANG_RU$
+     DBAPPEND() добавляет новую запись в файл базы данных в текущей
+     рабочей области. Если запись добавлена успешно, то каждому полю
+     записи присваивается пустое значение соответствующего типа данных, и
+     новая запись становится текущей записью.  DBAPPEND() выполняет те же
+     функции, что и стандартная команда APPEND BLANK. Более подробную
+     информацию смотрите в описании команды APPEND BLANK.
+$SEEALSO$
+    DBDELETE(),DBRECALL()
+$END$

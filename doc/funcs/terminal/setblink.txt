@@ -1,0 +1,70 @@
+$FUNCNAME$
+  SETBLINK()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Toggle asterisk (*) interpretation in the SETCOLOR() string between blinking
+$LANG_RU$
+   Управляет интерпретацией символа "звездочка" (*), используемого в строке
+$SYNTAX$
+     SETBLINK([<lToggle>]) --> lCurrentSetting
+$LANG_RU$
+     SETBLINK([<признак>]) --> признак текущей установки
+$ARGUMENTS$
+     <lToggle> changes the meaning of the asterisk (*) character when it
+     is encountered in a SETCOLOR() string.  Specifying true (.T.) sets
+     character blinking on, and false (.F.) sets background intensity.  The
+     default is
+     true (.T.).
+$LANG_RU$
+     <признак> переключает режим интерпретации символа звездочки (*),
+     используемого в строке цветовой спецификации, устанавливаемой
+     функцией SETCOLOR(). Значение "истина" (.T.) вызывает мерцание, а
+     значение "ложь" (.F.) - интенсивность фона. По умолчанию - значение
+     "истина" (.T.).
+$RETURNS$
+     SETBLINK() returns the current setting as a logical value.
+$LANG_RU$
+     SETBLINK() возвращает текущую установку как логическое значение.
+$DESCRIPTION$
+     SETBLINK() is an environment function that toggles the
+     blinking/background intensity attribute and reports the current state of
+     SETBLINK().  When SETBLINK() is on, characters written to the screen can
+     be made to blink by including an asterisk (*) in a color string passed
+     to SETCOLOR().  When SETBLINK() is off, the asterisk (*) causes the
+     background color to be intensified instead.  Thus, blinking and
+     background intensity attributes are not available at the same time.
+
+     Note:  This function is meaningful only on the IBM PC or compatible
+     computers with CGA, EGA, or VGA display hardware.
+$LANG_RU$
+     SETBLINK() - функция среды окружения, переключающая атрибут
+     мерцания/интенсивности фонового цвета и возвращающая его текущее
+     состояние. Когда функция включает режим, символы могут мерцать  при
+     наличии символа звездочки (*) в строке цветовой спецификации,
+     устанавливаемой функцией SETCOLOR(). В противном случае, символ
+     звездочка (*) вызывает интенсивное свечение фона. Мерцание и
+     интенсивное свечение фона невозможны в одно и то же время.
+
+     Примечание:
+     Эту функцию можно использовать только на IBM-PC совместимых
+     компьютерах, с адаптерами экрана типа CGA, EGA или VGA.
+$EXAMPLES$
+       This example saves the current SETBLINK() state before passing
+	control to a user-defined function.  Upon return, SETBLINK() is
+	restored to its original value:
+
+	lOldBlink := SETBLINK()
+	MyFunc()
+	SETBLINK(lOldBlink)
+$LANG_RU$
+      В этом примере сохраняется текущее состояние SETBLINK() перед
+       передачей управления функции пользователя. Затем функция SETBLINK()
+       восстанавливает исходное значение:
+
+       lOldBlink := SETBLINK()
+       MyFunc()
+       SETBLINK(lOldBlink)
+$SEEALSO$
+  SETCOLOR()
+$END$

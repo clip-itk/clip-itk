@@ -1,0 +1,55 @@
+$FUNCNAME$
+  DBCOMMIT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Flush pending updates
+$LANG_RU$
+   Записывает данные из буферов на диск
+$SYNTAX$
+     DBCOMMIT() --> NIL
+$LANG_RU$
+     DBCOMMIT() --> NIL
+$RETURNS$
+     DBCOMMIT() always returns NIL.
+$LANG_RU$
+     DBCOMMIT() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCOMMIT() causes all updates to the current work area to be written to
+     disk.  All updated database and index buffers are written to DOS and a
+     DOS COMMIT request is issued for the database (.dbf) file and any index
+     files associated with the work area.
+
+     DBCOMMIT() performs the same function as the standard COMMIT command
+     except that it operates only on the current work area.  For more
+     information, refer to the COMMIT command.
+$LANG_RU$
+     При вызове функции DBCOMMIT() все изменения в текущей рабочей области
+     записываются из буферов на диск.
+
+     DBCOMMIT() - выполняет те же функции, что и стандартная команда
+     COMMIT, кроме того, что действует только в текущей рабочей области.
+     Более подробную информацию смотрите в команде COMMIT.
+$EXAMPLES$
+       In this example, COMMIT is used to force a write to disk after
+	a series of memory variables are assigned to field variables:
+
+	USE Sales EXCLUSIVE NEW
+	MEMVAR->Name := Sales->Name
+
+	MEMVAR->Amount := Sales->Amount
+	//
+	@ 10, 10 GET MEMVAR->Name
+	@ 11, 10 GET MEMVAR->Amount
+	READ
+	//
+	IF UPDATED()
+	   APPEND BLANK
+	   REPLACE Sales->Name WITH MEMVAR->Name
+	   REPLACE Sales->Amount WITH MEMVAR->Amount
+	   Sales->( DBCOMMIT() )
+	ENDIF
+
+$SEEALSO$
+  DBCLOSEALL(),DBCOMMITALL(),DBUNLOCK()
+$END$

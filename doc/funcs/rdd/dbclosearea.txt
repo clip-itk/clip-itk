@@ -1,0 +1,60 @@
+$FUNCNAME$
+  DBCLOSEAREA()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Close a work area
+$LANG_RU$
+   Закрывает текущую рабочую область
+$SYNTAX$
+     DBCLOSEAREA() --> NIL
+$LANG_RU$
+     DBCLOSEAREA() --> NIL
+$RETURNS$
+     DBCLOSEAREA() always returns NIL.
+$LANG_RU$
+     DBCLOSEAREA() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCLOSEAREA() releases the current work area from use.  Pending updates
+     are written, pending locks are released, and any resources associated
+     with the work area are closed or released.  DBCLOSEAREA() is equivalent
+     to the standard CLOSE command or the USE command with no clauses.  For
+     more information, refer to the USE and CLOSE commands.
+$LANG_RU$
+     DBCLOSEAREA() закрывает текущую рабочую область, возвращая системе
+     освобождаемую область памяти. Все корректировки базы данных
+     записываются на диск, блокировки снимаются, любые ресурсы, связанные
+     с текущей рабочей областью, закрываются или освобождаются.
+
+     DBCLOSEAREA() эквивалентна стандартной команде CLOSE или команде USE
+     без аргументов. Более подробную информацию смотрите в командах USE и
+     CLOSE.
+$EXAMPLES$
+       The following example closes a work area via an alias
+	reference:
+
+	cLast := "Winston"
+	//
+	DBUSEAREA( .T., "DBFNTX", "Sales", "Sales", .T. )
+	DBSETINDEX( "SALEFNAM" )
+	DBSETINDEX( "SALELNAM" )
+	//
+	DBUSEAREA( .T., "DBFNTX", "Colls", "Colls", .T. )
+	DBSETINDEX( "COLLFNAM" )
+	DBSETINDEX( "COLLLNAM" )
+	//
+	DBSELECTAREA( "Sales" )      // select "Sales" work area
+	//
+	IF ( Sales->(DBSEEK(cLast)) )
+
+	   IF Sales->( DELETED() ) .AND. Sales->( RLOCK() )
+	      Sales->( DBRECALL() )
+	      ? "Record deleted: ", Sales( DELETED() )
+	   ENDIF
+	ELSE
+	   ? "Not found"
+	   Colls->( DBCLOSEAREA() )
+	ENDIF
+$SEEALSO$
+  DBCLOSEALL(),DBCOMMIT(),DBUSEAREA()
+$END$

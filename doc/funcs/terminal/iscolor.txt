@@ -1,0 +1,66 @@
+$FUNCNAME$
+  ISCOLOR()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Determine if the current computer has color capability
+$LANG_RU$
+   Определяет наличие цветовых возможностей у компьютера.
+$SYNTAX$
+     ISCOLOR() | ISCOLOUR() --> lBoolean
+$LANG_RU$
+     ISCOLOR() | ISCOLOUR() --> логическое значение
+$RETURNS$
+     ISCOLOR() returns true (.T.) if there is a color graphics card
+     installed; otherwise, it returns false (.F.).
+$LANG_RU$
+     ISCOLOR() возвращает значение "истина" (.Т.), если установлена карта
+     цветной графики, в противном случае она возвращает значение "ложь"
+     (.F.).
+$DESCRIPTION$
+     ISCOLOR() is a screen function that allows you to make decisions about
+     the type of screen attributes to assign (color or monochrome).  Note
+     that some monochrome adapters with graphics capability return true
+     (.T.).
+$LANG_RU$
+     ISCOLOR() - это функция работы с экраном, которая позволяет Вам
+     принять решение относительно типа экрана, чтобы установить атрибуты
+     (цветной или монохромный). Отметим, что некоторые монохромные
+     адаптеры с графическими возможностями возвращают значение "истина"
+     (.Т.).
+$EXAMPLES$
+       This example installs color attribute variables at runtime:
+
+	IF ISCOLOR()
+	   cBox  = "BG+/B, W/N"
+	   cSays = "BG/B, W/N"
+	   cGets = "W/N, N/W"
+	ELSE
+	   cBox  = "W+"
+	   cSays = "W/N, N+/W"
+	   cGets = "W/N, N/W"
+	ENDIF
+	.
+	. <statements>
+	.
+	SETCOLOR(cSays)
+$LANG_RU$
+      Следующий пример устанавливает значения атрибутов цвета во время
+       выполнения программы:
+
+       IF ISCOLOR()
+	  cBox = "BG+/B, W/N"
+	  cSays = "BG/B, W/N"
+	  cGets = "W/N, N/W"
+       ELSE
+	  cBox = "W+"
+	  cSays = "W/N, N+/W"
+	  cGets = "W/N, N/W"
+       ENDIF
+       .
+       .<операторы>
+       .
+       SETCOLOR(cSays)
+$SEEALSO$
+  SETCOLOR()
+$END$

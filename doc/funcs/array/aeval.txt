@@ -1,0 +1,168 @@
+$FUNCNAME$
+  AEVAL()
+$CATEGORY$
+  Array
+$SUMMARY$
+   Execute a code block for each element in an array
+$LANG_RU$
+   Выполняет блок кода для каждого элемента массива.
+$SYNTAX$
+
+     AEVAL(<aArray>, <bBlock>,
+	[<nStart>], [<nCount>]) --> aArray
+
+
+$LANG_RU$
+
+     AEVAL(<имя массива>, <блок кода>, [<начальный элемент>],
+	 [<кол-во элементов>]) --> имя массива
+
+
+$ARGUMENTS$
+
+     <aArray> is the array to traverse.
+
+     <bBlock> is a code block to execute for each element encountered.
+
+     <nStart> is the starting element.  If not specified, the default is
+     element one.
+
+     <nCount> is the number of elements to process from <nStart>.  If not
+     specified, the default is all elements to the end of the array.
+
+
+$LANG_RU$
+
+     <имя массива> - имя массива для обработки.
+
+     <блок кода> - блок кодов, предназначенных для обработки каждого
+     элемента массива.
+
+     <начальный элемент> - номер первого обрабатываемого элемента массива.
+     Если <начальный элемент> не определен, то по умолчанию принимается
+     первый элемент.
+
+     <кол-во элементов> - количество элементов, которое необходимо
+     обработать начиная с элемента с номером <начальный элемент>.
+     Если <кол-во элементов> не определено, то по умолчанию
+     обрабатываются все элементы.
+
+
+$RETURNS$
+
+     AEVAL() returns a reference to <aArray>.
+
+
+$LANG_RU$
+
+     AEVAL() возвращает ссылку на <имя массива>.
+
+
+$DESCRIPTION$
+
+     AEVAL() is an array function that evaluates a code block once for each
+     element of an array, passing the element value and the element index as
+     block parameters.  The return value of the block is ignored.  All
+     elements in <aArray> are processed unless either the <nStart> or the
+     <nCount> argument is specified.
+
+     AEVAL() makes no assumptions about the contents of the array elements it
+     is passing to the block.  It is assumed that the supplied block knows
+     what type of data will be in each element.
+
+     AEVAL() is similar to DBEVAL() which applies a block to each record of a
+     database file.  Like DBEVAL(), AEVAL() can be used as a primitive for
+     the construction of iteration commands for both simple and complex array
+     structures.
+
+     Refer to the Code Blocks section in the "Basic Concepts" chapter of the
+     Programming and Utilities Guide for more information on the theory and
+     syntax of code blocks.
+
+
+$LANG_RU$
+
+     AEVAL() - функция работы с массивами, которая выполняет блок кода
+     для каждого элемента массива, передавая этот элемент в блок кода
+     как параметр.  Возвращаемое значение блока игнорируется. Если не
+     определены параметры <начальный элемент> и <кол-во элементов>,
+     обрабатываются все элементы массива.  AEVAL() работает аналогично
+     функции DBEVAL(), которая обрабатывает блоком кода каждую запись
+     файла базы данных. Подобно DBEVAL(), AEVAL() можно использовать
+     как примитив для построения итерационных команд при обработке
+     массивов с простой и сложной структурами.  За более подробной
+     информацией о теории и синтаксисе блоков кода обращайтесь к разделу
+     "Блок кода" в главе "Основные концепции"
+
+
+$EXAMPLES$
+
+       This example uses AEVAL() to display an array of file names
+	and file sizes returned from the DIRECTORY() function:
+
+	#include "Directry.ch"
+	//
+	LOCAL aFiles := DIRECTORY("*.dbf"), nTotal := 0
+	AEVAL(aFiles,;
+	   { | aDbfFile |;
+	      QOUT(PADR(aDbfFile[F_NAME], 10), aDbfFile[F_SIZE]),;
+	      nTotal += aDbfFile[F_SIZE]);
+	   } )
+	//
+	?
+	? "Total Bytes:", nTotal
+
+       This example uses AEVAL() to build a list consisting of
+	selected items from a multidimensional array:
+
+	#include "Directry.ch"
+	//
+	LOCAL aFiles := DIRECTORY("*.dbf"), aNames := {}
+	AEVAL(aFiles,;
+	   { | file | AADD(aNames, file[F_NAME]) };
+	   )
+
+       This example changes the contents of the array element
+	depending on a condition.  Notice the use of the codeblock
+	parameters:
+
+	LOCAL aArray[6]
+	AFILL(aArray,"old")
+	AEVAL(aArray,;
+	{|cValue,nIndex| IF(cValue == "old",;
+			  aArray[nIndex] := "new",)})
+
+
+$LANG_RU$
+
+      В этом примере AEVAL() используется для выдачи на экран массива
+       имен файлов и их размеров, полученных при помощи функции
+       DIRECTORY():
+
+       #include "Directry.ch"
+       //
+       LOCAL aFiles := DIRECTORY("*.dbf"), nTotal := 0
+       AEVAL( aFiles, ;
+       { | aDbfFile |;
+       QOUT(PADR(aDbfFile[F_NAME], 10), aDbfFile[F_SIZE]),;
+       nTotal += aDbfFile[F_SIZE];
+       };
+       )
+       //
+       ?
+       ? "Total Bytes :", nTotal
+
+      Следующий пример использует AEVAL() для построения списка выбранных
+       значений из многомерного массива:
+
+       #include "Directry.ch"
+       //
+       LOCAL aFiles := DIRECTORY("*.dbf"), aNames := {}
+       AEVAL(aFiles,;
+       { | file | AADD(aNames, file[F_NAME]) };
+       )
+
+
+$SEEALSO$
+  DBEVAL(),EVAL(),QOUT(),
+$END$

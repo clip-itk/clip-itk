@@ -1,0 +1,52 @@
+$FUNCNAME$
+	PARAM()
+$CATEGORY$
+	INFO
+$SUMMARY$
+	Returns paarameter value.
+$LANG_RU$
+	Возвращает значение параметра.
+$SYNTAX$
+     PARAM(<nParNumber>) 	--> <vParData>
+$ARGUMENTS$
+     <nParNumber>	Numeric, is the parameters nuber.
+$LANG_RU$
+     <nParNumber>	Numeric, номер параметра.
+$RETURNS$
+     Returns the parameters value.
+$LANG_RU$
+     Возвращает значение параметра.
+$DESCRIPTION$
+
+	PARAM() returns the data <vParData> value of parameter with number <nParNumber>.
+$LANG_RU$
+
+	PARAM() возвращает данные <vParData> значение параметра с номером <nParNumber>.
+$EXAMPLES$
+
+static function testParam(p1, p2, p3, p4, p5, p6, p7, p8, p9, p0)
+local i
+	for i=1 to PCOUNT()
+		? PARAM(i)
+	next
+return
+
+....
+
+testParam(1, 2, "A", "AB", "ABC")     // -->  1
+				      //      2
+				      //      A
+				      //      AB
+				      //      ABC
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	MEMVARGET()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

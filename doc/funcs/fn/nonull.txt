@@ -1,0 +1,31 @@
+$FUNCNAME$
+   fn_noNull()
+$CATEGORY$
+   Miscellaneous
+$ONELINER$
+   Strip a string of trailing nulls
+$SYNTAX$
+
+   fn_noNull( cStr ) -> cNewStr
+
+$ARGUMENTS$
+
+   <cStr> - The string to be stripped of nulls
+
+$RETURNS$
+
+   <cNewStr> 
+
+$DESCRIPTION$
+
+   Given a string <cStr>, fn_noNull() strips any trailing NULLs,
+   [ chr(0) ] from the end.  If there are no nulls, the entire
+   string is returned.
+
+$EXAMPLES$
+
+$SEEALSO$
+
+$Author: clip $
+   Steven Tyrakowski
+$END$

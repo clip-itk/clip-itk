@@ -1,0 +1,107 @@
+From: Kirill Prusskij <kirill@kesbyt.kirov.elektra.ru>
+
+The next issue concerns using cygwyn_trunc.rar under the Windows 9X. I've
+found that cygwin, installed from www.cygwin.com, modifies the registry
+during the installation. At same time the cygwyn_trunc.rar  installed
+cygwin hasn't been working with Clipper properly. The compiler gives me the
+compilation errors of the *.ch files and *.exe file runs with a message "dumb
+terminal". The attached file fixes the described bug. That is simply a reg
+file, so double click on it would automatically make the neccessary changes
+in your registry file. Another possible way to fix that bug is to install
+cygwin from www.cygwin.com and cyqwin_trunc.rar after that.
+
+Для тех кто работает под win'95, 98 и использует cygwin_trunc.rar.
+случайно я обнаружил что если устанавливать полный cygwin c
+www.cygwin.com то он
+записывает в реестр кое-какие данные.
+Без них усеченный cygwin с clip'ом у меня странно работал. При
+компиляции были ошибки на .ch файлы или при запуске .exe сообщение про 'dumb
+terminal'.
+В аттаче файлик из которого надо данные скинуть в реестр
+(например FAR  или regedit). Мне помогло.
+Или установить полный cygwin, потом на него cygwin_trunc.rar
+
+
+Best regards, UA4NAL
+ Kirill                            mailto:kirill@kesbyt.kirov.elektra.ru
+
+
+begin 644 cygwin.reg
+M4D5'141)5#0-"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R95Q#>6=N
+M=7,@4V]L=71I;VYS70T*#0I;2$M%65],3T-!3%]-04-(24Y%7%-O9G1W87)E
+M7$-Y9VYU<R!3;VQU=&EO;G-<0WEG=VEN70T*#0I;2$M%65],3T-!3%]-04-(
+M24Y%7%-O9G1W87)E7$-Y9VYU<R!3;VQU=&EO;G-<0WEG=VEN7&UO=6YT<R!V
+M,ET-"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R95Q#>6=N=7,@4V]L
+M=71I;VYS7$-Y9W=I;EQM;W5N=',@=C)<+UT-"B)N871I=F4B/2)#.B]C>6=W
+M:6XB#0HB9FQA9W,B/61W;W)D.C`P,#`P,#!A#0H-"EM(2T597TQ/0T%,7TU!
+M0TA)3D5<4V]F='=A<F5<0WEG;G5S(%-O;'5T:6]N<UQ#>6=W:6Y<;6]U;G1S
+M('8R7"]U<W(O8FEN70T*(FYA=&EV92(](D,Z+V-Y9W=I;B]B:6XB#0HB9FQA
+M9W,B/61W;W)D.C`P,#`P,#!A#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F
+M='=A<F5<0WEG;G5S(%-O;'5T:6]N<UQ#>6=W:6Y<;6]U;G1S('8R7"]U<W(O
+M;&EB70T*(FYA=&EV92(](D,Z+V-Y9W=I;B]L:6(B#0HB9FQA9W,B/61W;W)D
+M.C`P,#`P,#!A#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F='=A<F5<0WEG
+M;G5S(%-O;'5T:6]N<UQ#>6=W:6Y<4')O9W)A;2!/<'1I;VYS70T*#0I;2$M%
+M65],3T-!3%]-04-(24Y%7%-O9G1W87)E7$-Y9VYU<R!3;VQU=&EO;G-<0UE'
+M5TE.+D1,3"!S971U<%T-"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R
+M95Q#>6=N=7,@4V]L=71I;VYS7$-91U=)3BY$3$P@<V5T=7!<8C$U+C!=#0H-
+M"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F='=A<F5<0WEG;G5S(%-O;'5T:6]N
+M<UQ#64=724XN1$Q,('-E='5P7&(Q-2XP7&UO=6YT<UT-"@T*6TA+15E?3$]#
+M04Q?34%#2$E.15Q3;V9T=V%R95Q#>6=N=7,@4V]L=71I;VYS7$-91U=)3BY$
+M3$P@<V5T=7!<8C$U+C!<;6]U;G1S7#`P70T*#0I;2$M%65],3T-!3%]-04-(
+M24Y%7%-O9G1W87)E7$-Y9VYU<R!3;VQU=&EO;G-<0UE'5TE.+D1,3"!S971U
+M<%QB,34N,%QM;W5N='-<,#%=#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F
+M='=A<F5<0WEG;G5S(%-O;'5T:6]N<UQ#64=724XN1$Q,('-E='5P7&(Q-2XP
+M7&UO=6YT<UPP,ET-"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R95Q#
+M>6=N=7,@4V]L=71I;VYS7$-91U=)3BY$3$P@<V5T=7!<8C$U+C!<;6]U;G1S
+M7#`S70T*#0I;2$M%65],3T-!3%]-04-(24Y%7%-O9G1W87)E7$-Y9VYU<R!3
+M;VQU=&EO;G-<0UE'5TE.+D1,3"!S971U<%QB,34N,%QM;W5N='-<,#1=#0H-
+M"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F='=A<F5<0WEG;G5S(%-O;'5T:6]N
+M<UQ#64=724XN1$Q,('-E='5P7&(Q-2XP7&UO=6YT<UPP-5T-"@T*6TA+15E?
+M3$]#04Q?34%#2$E.15Q3;V9T=V%R95Q#>6=N=7,@4V]L=71I;VYS7$-91U=)
+M3BY$3$P@<V5T=7!<8C$U+C!<;6]U;G1S7#`V70T*#0I;2$M%65],3T-!3%]-
+M04-(24Y%7%-O9G1W87)E7$-Y9VYU<R!3;VQU=&EO;G-<0UE'5TE.+D1,3"!S
+M971U<%QB,34N,%QM;W5N='-<,#==#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<
+M4V]F='=A<F5<0WEG;G5S(%-O;'5T:6]N<UQ#64=724XN1$Q,('-E='5P7&(Q
+M-2XP7&UO=6YT<UPP.%T-"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R
+M95Q#>6=N=7,@4V]L=71I;VYS7$-91U=)3BY$3$P@<V5T=7!<8C$U+C!<;6]U
+M;G1S7#`Y70T*#0I;2$M%65],3T-!3%]-04-(24Y%7%-O9G1W87)E7$-Y9VYU
+M<R!3;VQU=&EO;G-<0UE'5TE.+D1,3"!S971U<%QB,34N,%QM;W5N='-<,$%=
+M#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F='=A<F5<0WEG;G5S(%-O;'5T
+M:6]N<UQ#64=724XN1$Q,('-E='5P7&(Q-2XP7&UO=6YT<UPP0ET-"@T*6TA+
+M15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R95Q#>6=N=7,@4V]L=71I;VYS7$-9
+M1U=)3BY$3$P@<V5T=7!<8C$U+C!<;6]U;G1S7#!#70T*#0I;2$M%65],3T-!
+M3%]-04-(24Y%7%-O9G1W87)E7$-Y9VYU<R!3;VQU=&EO;G-<0UE'5TE.+D1,
+M3"!S971U<%QB,34N,%QM;W5N='-<,$1=#0H-"EM(2T597TQ/0T%,7TU!0TA)
+M3D5<4V]F='=A<F5<0WEG;G5S(%-O;'5T:6]N<UQ#64=724XN1$Q,('-E='5P
+M7&(Q-2XP7&UO=6YT<UPP15T-"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T
+M=V%R95Q#>6=N=7,@4V]L=71I;VYS7$-91U=)3BY$3$P@<V5T=7!<8C$U+C!<
+M;6]U;G1S7#!&70T*#0I;2$M%65],3T-!3%]-04-(24Y%7%-O9G1W87)E7$-Y
+M9VYU<R!3;VQU=&EO;G-<0UE'5TE.+D1,3"!S971U<%QB,34N,%QM;W5N='-<
+M,3!=#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F='=A<F5<0WEG;G5S(%-O
+M;'5T:6]N<UQ#64=724XN1$Q,('-E='5P7&(Q-2XP7&UO=6YT<UPQ,5T-"@T*
+M6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R95Q#>6=N=7,@4V]L=71I;VYS
+M7$-91U=)3BY$3$P@<V5T=7!<8C$U+C!<;6]U;G1S7#$R70T*#0I;2$M%65],
+M3T-!3%]-04-(24Y%7%-O9G1W87)E7$-Y9VYU<R!3;VQU=&EO;G-<0UE'5TE.
+M+D1,3"!S971U<%QB,34N,%QM;W5N='-<,3-=#0H-"EM(2T597TQ/0T%,7TU!
+M0TA)3D5<4V]F='=A<F5<0WEG;G5S(%-O;'5T:6]N<UQ#64=724XN1$Q,('-E
+M='5P7&(Q-2XP7&UO=6YT<UPQ-%T-"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3
+M;V9T=V%R95Q#>6=N=7,@4V]L=71I;VYS7$-91U=)3BY$3$P@<V5T=7!<8C$U
+M+C!<;6]U;G1S7#$U70T*#0I;2$M%65],3T-!3%]-04-(24Y%7%-O9G1W87)E
+M7$-Y9VYU<R!3;VQU=&EO;G-<0UE'5TE.+D1,3"!S971U<%QB,34N,%QM;W5N
+M='-<,39=#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F='=A<F5<0WEG;G5S
+M(%-O;'5T:6]N<UQ#64=724XN1$Q,('-E='5P7&(Q-2XP7&UO=6YT<UPQ-UT-
+M"@T*6TA+15E?3$]#04Q?34%#2$E.15Q3;V9T=V%R95Q#>6=N=7,@4V]L=71I
+M;VYS7$-91U=)3BY$3$P@<V5T=7!<8C$U+C!<;6]U;G1S7#$X70T*#0I;2$M%
+M65],3T-!3%]-04-(24Y%7%-O9G1W87)E7$-Y9VYU<R!3;VQU=&EO;G-<0UE'
+M5TE.+D1,3"!S971U<%QB,34N,%QM;W5N='-<,3E=#0H-"EM(2T597TQ/0T%,
+M7TU!0TA)3D5<4V]F='=A<F5<0WEG;G5S(%-O;'5T:6]N<UQ#64=724XN1$Q,
+M('-E='5P7&(Q-2XP7&UO=6YT<UPQ05T-"@T*6TA+15E?3$]#04Q?34%#2$E.
+M15Q3;V9T=V%R95Q#>6=N=7,@4V]L=71I;VYS7$-91U=)3BY$3$P@<V5T=7!<
+M8C$U+C!<;6]U;G1S7#%"70T*#0I;2$M%65],3T-!3%]-04-(24Y%7%-O9G1W
+M87)E7$-Y9VYU<R!3;VQU=&EO;G-<0UE'5TE.+D1,3"!S971U<%QB,34N,%QM
+M;W5N='-<,4-=#0H-"EM(2T597TQ/0T%,7TU!0TA)3D5<4V]F='=A<F5<0WEG
+M;G5S(%-O;'5T:6]N<UQ#64=724XN1$Q,('-E='5P7&(Q-2XP7&UO=6YT<UPQ
+&1%T-"@T*
+`
+end
+

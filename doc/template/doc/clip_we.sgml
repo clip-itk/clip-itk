@@ -1,0 +1,308 @@
+<section id="appl-clipwe">
+<title>_(CLIP_WE - CLIP text editor.)_</title>
+
+<para>
+<command>CLIP_WE</command>_( is a multiwindow text editor. The base constructions
+are <link linkend="class-tedit">TEDIT</link> and <link linkend="class-medit">MEDIT</link> CLIP classes.)_
+</para>
+
+<para>
+_(The <command>CLIP_WE</command> functions:)_
+</para>
+<itemizedlist>
+<listitem><para>_(editing text with 2 mode <command>Insert</command> and <command>Owerview</command>)_</para></listitem>
+<listitem><para>_(functions with blocks (strings block and columns block): moving(between windows such), copying(between windows such), removing )_</para></listitem>
+<listitem><para>_(searching, searching with replace, searching by regular extension, case sensitive searching)_</para></listitem>
+<listitem><para>_(searching (forward/backward) CLIP structure items)_</para></listitem>
+<listitem><para>_(undo function)_</para></listitem>
+<listitem><para>_(highlighting some strings of text)_</para></listitem>
+<listitem><para>_(formatting text)_</para></listitem>
+<listitem><para>_(insert string by <link linkend="appl-clipwe-template">templates</link> (user-depending list of template) )_</para></listitem>
+<listitem><para>_(run <link linkend="appl-clipwe-macro">macro</link> expression and insert result as string (user-depending list of macro command) )_</para></listitem>
+<listitem><para>_(drawing symbols psevdographics (double and simple) )_</para></listitem>
+<listitem><para>_(load unfixed length files)_</para></listitem>
+<listitem><para>_(user-depended <link linkend="appl-clipwe-keymap">keymap</link>)_</para></listitem>
+<listitem><para>_(user-depended <link linkend="appl-clipwe-extend">extending functions</link> (load CLIP .po files and run it) )_</para></listitem>
+</itemizedlist>
+
+
+<section id="appl-clipwe-keymap">
+<title>CLIP_WE keymap</title>
+<para>
+_(The personal keymap set store in directory <command>~/.clip</command>
+For redefine standart keymap set create file <command>~/.clip/keymaps.prg</command> with
+functions <command>init_user_key(keymap)</command>. Compile this file :)_
+<programlisting><![CDATA[
+clip -p keymaps.prg
+]]></programlisting>
+</para>
+
+<para>
+_(There is example of user keymaps.prg)_
+<programlisting><![CDATA[
+#include <inkey.ch>
+function init_user_key(key_maps)
+	local k
+
+	/* Get keymap by default  */
+	key_maps:edit:=HK_get("edit")
+	k:=key_maps:edit
+
+	/* Set my hot keys */
+
+	/* Code 	  CLIP_WE command        Command description  */
+	k[K_ALT_0] 	:= HASH_ListFiles       // file list
+	k[K_ALT_C] 	:= HASH_CloseWindow     // close current window
+
+	k[KP_ALT_PLUS] 	:= HASH_CopyClipboard  	// copy block to clipboard
+	k[K_ALT_INS]	:= HASH_PasteClipboard 	// paste block from clipboard
+
+return key_maps
+
+]]></programlisting>
+</para>
+
+
+<para>_(The keymap set by default)_
+<informaltable frame="none"><tgroup cols="3"><tbody>
+<row><entry align="right"><command>_(Key code)_</command></entry>
+<entry align="center">_(CLIP_WE command)_</entry>
+<entry align="center">_(Description)_</entry></row>
+<row><entry align="right">K_ESC</entry><entry>HASH_CallMenu</entry><entry>_(Call CLIP_WE menu)_</entry></row>
+<row><entry align="right">K_ALT_X</entry><entry>HASH_ExitSave</entry><entry>_(Exit from editor witch save)_</entry></row>
+<row><entry align="right">K_ALT_B</entry><entry>HASH_ExitNoSave</entry><entry>_(Exit from editor witchout save )_</entry></row>
+<row><entry align="right">K_F1</entry><entry>HASH_HelpEdit</entry><entry>_(Call help page)_</entry></row>
+<row><entry align="right">K_F2</entry><entry>HASH_SaveFile</entry><entry>_(Save text)_</entry></row>
+<row><entry align="right">K_F3</entry><entry>HASH_OpenFile</entry><entry>_(Open file)_</entry></row>
+<row><entry align="right">K_CTRL_F3</entry><entry>HASH_CreateNewFile</entry><entry>_(Create new file)_</entry></row>
+<row><entry align="right">K_ALT_N</entry><entry>HASH_NextWindow</entry><entry>_(Show next window)_</entry></row>
+<row><entry align="right">K_ALT_P</entry><entry>HASH_PrevWindow</entry><entry>_(Show previous window)_</entry></row>
+<row><entry align="right">K_F6</entry><entry>HASH_FindString</entry><entry>_(Find string)_</entry></row>
+<row><entry align="right">K_CTRL_F6</entry><entry>HASH_FindReplace</entry><entry>_(Find and replace string)_</entry></row>
+<row><entry align="right">K_CTRL_L</entry><entry>HASH_FindNext</entry><entry>_(Find string to forward)_</entry></row>
+<row><entry align="right">K_CTRL_O</entry><entry>HASH_MatchSymbolForward</entry><entry>_(Matching symbol to forward)_</entry></row>
+<row><entry align="right">K_CTRL_T</entry><entry>HASH_MatchSymbolBackward</entry><entry>_(Matching symbol to backward)_</entry></row>
+<row><entry align="right">K_F4</entry><entry>HASH_GoTo</entry><entry>_(Goto string)_</entry></row>
+<row><entry align="right">K_CTRL_F4</entry><entry>HASH_SavePos</entry><entry>_(Save current string position)_</entry></row>
+<row><entry align="right">K_CTRL_PGUP</entry><entry>HASH_TopText</entry><entry>_(Go top text)_</entry></row>
+<row><entry align="right">K_CTRL_PGDN</entry><entry>HASH_BottomText</entry><entry>_(Go bottom text)_</entry></row>
+<row><entry align="right">K_F5</entry><entry>HASH_Template</entry><entry>_(Insert text by template)_</entry></row>
+<row><entry align="right">K_CTRL_F5</entry><entry>HASH_Macro</entry><entry>_(Run macro and insert result)_</entry></row>
+<row><entry align="right">K_CTRL_Q</entry><entry>HASH_DeleteEnd</entry><entry>_(Delete string from current position to end)_</entry></row>
+<row><entry align="right">K_CTRL_BS</entry><entry>HASH_DeleteBack</entry><entry>_(Delete string from current position to begin string)_</entry></row>
+<row><entry align="right">K_CTRL_Y</entry><entry>HASH_DeleteLine</entry><entry>_(Delete line)_</entry></row>
+<row><entry align="right">K_F7</entry><entry>HASH_MarkBlockString</entry><entry>_(Mark/unmark strings block)_</entry></row>
+<row><entry align="right">K_F8</entry><entry>HASH_MarkBlockRect</entry><entry>_(Mark/unmark rectangle block)_</entry></row>
+<row><entry align="right">K_F9</entry><entry>HASH_CopyBlock</entry><entry>_(Copy marked block)_</entry></row>
+<row><entry align="right">K_F10</entry><entry>HASH_MoveBlock</entry><entry>_(Move marked block)_</entry></row>
+<row><entry align="right">K_CTRL_P</entry><entry>HASH_CancelBlock</entry><entry>_(Unmark block)_</entry></row>
+<row><entry align="right">K_ALT_Y</entry><entry>HASH_DeleteBlock</entry><entry>_(Delete marked block)_</entry></row>
+<row><entry align="right">K_CTRL_U</entry><entry>HASH_Undo</entry><entry>_(Undo operation)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_Reload</entry><entry>_(Reload file)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_ReadOnly</entry><entry>_(Set ReadOnly flags)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_ListFiles</entry><entry>_(Show file list)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_CloseWindow</entry><entry>_(Close current window)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_SaveAsFile</entry><entry>_(Save file with new name)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_FindPrev</entry><entry>_(Find string to backward)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_MatchStructForward</entry><entry>_(Matching structure to forward)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_MatchStructBackward</entry><entry>_(Matching structure to backward)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_FormatLine</entry><entry>_(Formating line)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_FormatPart</entry><entry>_(Formatig part of text)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_SingleGraphic</entry><entry>_(On/off single graphics)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_DoubleGraphic</entry><entry>_(On/off double graphics)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_ChooseCodePage</entry><entry>_(Choose code page)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_Print</entry><entry>_(Print file)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_CopyClipboard</entry><entry>_(Copy block to clipboard)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_PasteClipboard</entry><entry>_(Paste block from clipboard)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_SaveBlock</entry><entry>_(Save marked block as file)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_LoadBlock</entry><entry>_(Load block from file)_</entry></row>
+<row><entry align="right"> </entry><entry>HASH_PrintBlock</entry><entry>_(Print marked block)_</entry></row>
+</tbody></tgroup></informaltable>
+
+</para>
+
+</section>
+
+<section id="appl-clipwe-template">
+<title>CLIP_WE templates</title>
+<para>
+_(CLIP_WE allow to use personal templates for each user. Templates stored
+in $USER/.clip/.templ. Common templates stored in $CLIPROOT/etc/.templ
+)_
+</para>
+<para>
+_(The every line of template file contain two strings: template and result string
+what separated with <command>TAB</command>. Template string is case sensitive.
+Result string can include several substrings with delimiter <command>"/"</command>.
+)_
+</para>
+<para>
+_(The example of file <command>.templ</command>)_
+<programlisting><![CDATA[
+f       For/Next
+c       CLEAR
+*       *******************************
+I       If/EndIF
+IE      If/Else/EndIF
+D       DO/EndDO
+DW      DO/While/EndDO
+DC      DO/Case/CASE/OTHERWISE/EndCASE
+F       FUNCTION/RETURN .T.
+FP      FUNCTION/RETURN .T./PARAMETERS
+U       USE
+UI      USE  INDEX
+P       PROCEDURE/RETURN
+PA      PARAMETERS
+PR      PRIVATE
+PU      PUBLIC
+PP      PROCEDURE/PARAMETERS/RETURN
+C       CASE
+
+]]></programlisting>
+</para>
+</section>
+
+<section id="appl-clipwe-macro">
+<title>CLIP_WE macro expressions</title>
+<para>
+_(CLIP_WE allow to run macro expression and insert result to editing text. The personal
+macro expressions stored
+in $USER/.clip/.macro. Common macro expressions  stored in $CLIPROOT/etc/.macro
+)_
+</para>
+<para>
+_(The every line of file .macro contain two substrings: template and CLIP expressions
+what separated with <command>TAB</command>. Template string is case sensitive.
+)_
+</para>
+<para>
+_(The example of file <command>.macro</command>)_
+<programlisting><![CDATA[
+d       DATE()
+dd      date_rus(date())
+]]></programlisting>
+</para>
+
+</section>
+
+<section id="appl-clipwe-extend">
+<title>CLIP_WE extend</title>
+<para>
+_(CLIP_WE have extend possibilities without recompilation. It is loading <command>.po</command> files and running functions
+what contain these files. The user defined action add automaticaly to general menu CLIP_WE)_
+</para>
+
+<para>
+_(In $USER/.clip or in $CLIPROOT/etc create file with name <command>clip_we.ini</command>
+It is initial text file what contain label and parameters set for this label.
+Label is string in upper case by CLIP style in square parenthesis - label of users action. The followed
+for it parameters descript this action.
+)_
+</para>
+<para>
+_(For example:)_
+<programlisting><![CDATA[
+_(The example of simple clip_we.ini)_
+[SAVEALL]
+	UFUNC	= SaveAllWins
+	UALLWINS	= .t.
+	UHOTKEY	= K_F5
+	UCOMMAND	= SaveAll
+	UFILE	= /home/user/.clip/my_functions/s.po
+	UMENUSTR	= &Save all
+	UMENUMSG	= Save all files
+
+[INSTIME]
+	UFUNC	= InsTime
+	UHOTKEY	= K_F6
+	UCOMMAND	= InsTime
+	UFILE	= /home/user/.clip/my_functions/i.po
+	UMENUSTR	= &Time
+	UMENUMSG	= Insert time data
+
+]]></programlisting>
+_(There are <command>SAVEALL</command> and <command>INSTTIME</command> label usre
+actions: saving text in all windows and insert current time value to text.
+The text user functions see below)_
+</para>
+<para>
+_(The parameters value)_
+<informaltable frame="none"><tgroup cols="3"><tbody>
+<row><entry align="right"><command>_(Parameter)_</command></entry><entry align="center"><command>_(Description)_</command></entry><entry><command>_(Value by default)_</command></entry></row>
+<row><entry align="right"><command>UFUNC</command></entry><entry align="center">_(User function name)_</entry><entry></entry></row>
+<row><entry align="right"><command>UALLWINS</command></entry><entry align="center">_(Logical value, if TRUE user function take first parameter MEDIT, else TEDIT)_</entry><entry>.F.</entry></row>
+<row><entry align="right"><command>UHOTKEY</command></entry><entry align="center">_(Hot key value)_</entry><entry></entry></row>
+<row><entry align="right"><command>UCOMMAND</command></entry><entry align="center">_(Action command )_</entry><entry></entry></row>
+<row><entry align="right"><command>UFILE</command></entry><entry align="center">_(Full .po file name what contain function)_</entry><entry></entry></row>
+<row><entry align="right"><command>UMENUSTR</command></entry><entry align="center">_(Text menu item)_</entry><entry></entry></row>
+<row><entry align="right"><command>UMENUMSG</command></entry><entry align="center">_(Small description menu item)_</entry><entry></entry></row>
+</tbody></tgroup></informaltable>
+</para>
+
+<para>
+_(User function take two parameters:)_
+<itemizedlist>
+<listitem><para>
+_(TEDIT(reference to TEDIT object what equal current window) or MEDIT object)_
+</para></listitem>
+<listitem><para>
+_(location for next command to make (optional parameters) )_
+</para></listitem>
+</itemizedlist>
+</para>
+<para>
+_(User function return TRUE if command processed and FALSE in other case)_
+</para>
+<para>
+_(Look examples user functions what we describe in clip_we.ini)_
+<programlisting><![CDATA[
+
+/* The function SaveAllWins save all opend files
+take MEDIT object as first parameter */
+function SaveAllWins(me)
+local i, k, x
+	/* Take current window number */
+	k := me:CURWIN
+
+	fr i=1 to len(me:TOBJ)
+		/* check: exist TEDIT object or not */
+		if me:TOBJ[i] == NIL
+			loop
+		endif
+
+		/* if text updated save it */
+		if me:tobj[i]:UPDATED
+			me:CURWIN := i
+			if empty(me:TOBJINFO[me:CURWIN]:NAME)
+				wselect(i)
+				x := alert([File;]+me:TOBJINFO[i]:name+[;has't name. Save it?],{[Yes],[No],[Cancel] })
+				if x==3 .or. x==0
+					loop
+				endif
+			endif
+			me:SAVEFILE()
+		endif
+
+	next
+	me:CURWIN := k
+	wselect (me:CURWIN)
+	me:DRAWHEAD()
+return .t.
+
+/* Insert text string what contain current time to editing text */
+/* The first parameter is TEDIT object */
+function InsTime(te)
+	te:INSERT(time())
+return .t.
+
+]]></programlisting>
+
+</para>
+<para>
+</para>
+
+</section>
+
+</section>
+
+

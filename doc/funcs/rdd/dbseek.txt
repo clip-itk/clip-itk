@@ -1,0 +1,100 @@
+$FUNCNAME$
+  DBSEEK()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Move to the record having the specified key value
+$LANG_RU$
+   Перемещает указатель на запись, имеющую заданное ключевое значение.
+$SYNTAX$
+     DBSEEK(<expKey>, [<lSoftSeek>], [<lLast>]) --> lFound
+$LANG_RU$
+     DBSEEK(<выражение поиска>,
+	   [<признак относительного поиска>]) --> признак завершения
+$ARGUMENTS$
+     <expKey> is a value of any type that specifies the key value
+     associated with the desired record.
+
+     <lSoftSeek> is an optional logical value that specifies whether a
+     soft seek is to be performed.  This determines how the work area is
+     positioned if the specified key value is not found (see below).  If
+     <lSoftSeek> is omitted, the current global _SET_SOFTSEEK setting is
+     used.
+
+     <lLast> is specified as true (.T.) to seek the last occurrence of
+     the specified key value.  False (.F.), the default, seeks the first
+     occurrence.
+
+     Note:  This parameter is only supported for specific RDDs.  DBFNTX
+     is NOT one of them.
+$LANG_RU$
+     <выражение поиска> - выражение любого типа, которое определяет
+     ключевое значение в искомой записи.
+
+     <признак относительного поиска> - необязательное логическое значение,
+     которое определяет, выполняется ли режим относительного поиска.
+     Это определяет, куда будет установлен указатель записи, если заданное
+     ключевое значение не найдено (см. ниже). Если <признак относительного
+     поиска> опущен, то используется режим, установленный командой SET() с
+     аргументом _SET_SOFTSEEK.
+$RETURNS$
+     DBSEEK() returns true (.T.) if the specified key value was found;
+     otherwise, it returns false (.F.).
+$LANG_RU$
+     DBSEEK() возвращает "истина" (.T.), если заданное ключевое выражение
+     было найдено и "ложь" (.F.) в противном случае.
+$DESCRIPTION$
+     DBSEEK() moves to the first logical record whose key value is equal to
+     <expKey>.  If such a record is found, it becomes the current record and
+     DBSEEK() returns true (.T.); otherwise, it returns false (.F.).  the
+     positioning of the work area is as follows: for a normal (not soft)
+     seek, the work area is positioned to LASTREC() + 1 and EOF() returns
+     true (.T.); for a soft seek, the work area is positioned to the first
+     record whose key value is greater than the specified key value.  If no
+     such record exists, the work area is positioned to LASTREC() + 1 and
+     EOF() returns true (.T.).
+
+     For a work area with no active indexes, DBSEEK() has no effect.
+
+     DBSEEK() performs the same function as the standard SEEK command.  For
+     more information, refer to the SEEK command.
+$LANG_RU$
+     DBSEEK() - перемещает указатель на первую логическую запись, ключевое
+     значение которой равно <выражение поиска>. Если такая запись найдена,
+     то она становится текущей записью, и DBSEEK() возвращает "истина"
+     (.T.).  В противном случае DBSEEK() возвращает "ложь" (.F.), а
+     указатель перемещается следующим образом: при нормальном (не
+     относительном) поиске указатель установится на записи с номером
+     LASTREC() + 1, и функция EOF() возвратит "истина" (.T.).
+     При относительном поиске указатель установится на первой записи,
+     ключевое значение которой больше, чем заданное ключевое значение.
+     Если такой записи не существует, указатель установится на записи с
+     номером LASTREC()+1, и функция EOF() возвратит значение "истина"
+     (.T.)
+
+     Функция DBSEEK() может применяться рабочей области, где есть активные
+     индексы.
+
+     DBSEEK() выполняет те же функции, что и стандартная команда SEEK.
+     Более подробную информацию смотрите в команде SEEK.
+$EXAMPLES$
+       In this example, DBSEEK() moves the pointer to the record in
+	the database, Employee, in which the value in FIELD "cName" matches
+	the entered value of cName:
+
+	ACCEPT "Employee name: " TO cName
+	IF ( Employee->(DBSEEK(cName)) )
+	   Employee->(VIEWRECORD())
+	ELSE
+	   ? "Not found"
+	END
+$LANG_RU$
+	  ACCEPT "Имя работника: " TO cName
+	  IF ( Employee->(DBSEEK(name)) )
+	     Employee->(ViewRecord())
+	  ELSE
+	     ? "Не найден"
+	  END
+$SEEALSO$
+  DBGOBOTTOM(),DBGOTOP(),DBSKIP(),EOF(),FOUND()
+$END$

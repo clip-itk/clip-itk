@@ -1,0 +1,404 @@
+<chapter id="localisation">
+
+<title>_(CLIP localisation)_</title>
+
+<sect1>
+<title>_(CLIP runtime localisation)_</title>
+
+<sect2>
+
+<title>_(The LANG environment variable, directory $CLIPROOT/lang)_</title>
+
+<para>
+_(The CLIP runtime system on program start check existance of some files,
+and treat it content as environment variables name/value pairs.
+(See <link linkend="envir">CLIP environment description</link>))_
+</para>
+
+<para>
+_(The first useful file is $CLIPROOT/lang/$LANG, where value of CLIPROOT
+will be taken from environment, or if there is nothing, from builtin
+(compiled-in) value, and LANG is a value of environment (also known as
+locale). If LANG is empty, CLIP check also CHARSET variable.)_
+</para>
+
+<example>
+<title>_(Sample $CLIPROOT/lang/ru_RU.KOI8-R file)_</title>
+<programlisting>
+#CLIP_KEYMAP is used in raw keyborard mode
+CLIP_KEYMAP=ru-koi8-r
+</programlisting>
+</example>
+
+<para>
+_(The next file is $CLIPROOT/term/$TERM, where TERM is variable, 
+which identified type of used terminal.)_
+</para>
+
+<example>
+<title>_(Sample $CLIPROOT/term/linux-console file)_</title>
+<programlisting>
+# switch on linux console raw keyboard
+CLIP_SCANMODE=IOCTL
+</programlisting>
+</example>
+
+</sect2>
+
+<sect2>
+<title>_(Keymaps and keymap table generation.)_</title>
+
+<para>
+_(Keymaps are used in raw keyboard mode, it is possible (for now) on
+Linux console, and on some kind of terminals, which can be switched into
+scancode mode by escape sequence.)_
+</para>
+
+<para>
+_(CLIP use the same keymaps as Linux kernel, and scancode processing is
+borrowed from the kernel sources. That means, you can easy add new keymaps
+and to modify it as required.)_
+</para>
+
+<itemizedlist>
+<title>_(Adding new keymap:)_</title>
+
+<listitem>
+
+<para>
+_(Copy appropriate keymap from 
+<command>/usr/share/keymaps</command>
+(on any Linux distribution):)_
+</para>
+
+<programlisting>
+<prompt>#</prompt> cp /usr/share/keymaps/i386/qwerty/ru1.kmap.gz .
+<prompt>#</prompt> gunzip ru1.kmap.gz
+</programlisting>
+
+</listitem>
+
+<listitem>
+<para>
+_(Use <command>$CLIPROOT/keymaps/genmap.sh</command>
+for generation CLIP-readable keymap:)_
+</para>
+
+<programlisting>
+# $CLIPROOT/keymaps/genmap.sh `pwd`/ru1.kmap >ru-koi8-r
+</programlisting>
+
+<note>
+<title>_(Absolute path warning)_</title>
+<para>_(Parameter of <command>genmap.sh</command>
+must have absolute pathname.)_</para>
+</note>
+
+</listitem>
+
+<listitem>
+
+<para>
+_(Copy keymap to <command>$CLIPROOT/keymaps</command>:)_
+</para>
+
+<programlisting>
+# cp ru-koi8-r $CLIPROOT/keymaps/
+</programlisting>
+
+</listitem>
+
+</itemizedlist>
+
+</sect2>
+
+<sect2>
+<title>_(Charsets, uni-files, utilites for generation)_</title>
+
+<para>
+_(Charsets are used for recoding terminal input and output,
+for dealing with terminal pseudographics, to determine the sort order,
+and for recoding file and database in/out througput.)_
+</para>
+
+<para>
+_(As with keymaps, CLIP use own format for storing charsets, but
+have utilite for generation from standard charset-to-unicode
+mapping.)_
+</para>
+
+<itemizedlist>
+<title>_(Adding new charset:)_</title>
+
+<listitem>
+
+<para>
+_(Copy appropriate charset mapping from 
+<command>/usr/share/consoletrans</command>
+(on any Linux distribution):)_
+</para>
+
+<programlisting>
+# zcat /usr/share/consoletrans/koi8-r.sfm.gz > koi8-r.uni
+</programlisting>
+
+<note>
+<title>_(Fullness of Unicode mapping)_</title>
+<para>
+_(Some Unicode mapping files provide mapping only for part of 
+full 256 symbols in charset. For such exceptions, you probably must
+manually append absent characters.)_
+</para>
+</note>
+
+</listitem>
+
+<listitem>
+
+<para>
+_(Use the <command>gen_tbl</command> utilite for .tbl file generation:)_
+</para>
+
+<programlisting>
+<prompt>#</prompt> zcat $CLIPROOT/charsets/UnicodeData-2.1.8.txt.gz | \
+<prompt>#</prompt> 	$CLIPROOT/bin/gen_tbl koi8-r.uni > koi8-r.tbl
+</programlisting>
+
+</listitem>
+
+<listitem>
+
+<para>
+_(Copy .uni and .tbl files to <command>$CLIPROOT/charsets</command>:)_
+</para>
+
+<programlisting>
+# cp koi8-r.uni koi8-r.tbl $CLIPROOT/charsets
+</programlisting>
+
+</listitem>
+
+</itemizedlist>
+
+</sect2>
+
+</sect1>
+
+<sect1>
+<title>_(Message translation)_</title>
+
+<sect2>
+<title>_(Gettext and utils for po-files translation)_</title>
+
+<para>
+_(<firstterm>Gettext</firstterm> is a common package, widely used
+for message <firstterm>localisation</firstterm>.)_
+</para>
+
+<para>
+_(The <quote>gettext</quote> package have two main parts -
+the message extraction and preparing utilites, 
+and a library for runtime message handling.)_
+</para>
+
+<para>
+_(CLIP use some <quote>gettext</quote> utilities for message
+extracting and preparing of message files, but use own code for runtime 
+message handling.)_
+</para>
+
+
+</sect2>
+
+<sect2>
+<title>_(CLIP po-files and dirs, clip_msg* utils)_</title>
+
+<para>
+_(CLIP have number of utilites to make the message handling
+easier.)_
+</para>
+
+<itemizedlist>
+<title>_(Locale message roadmap:)_</title>
+
+<listitem>
+
+<para>
+_(Extracting of message and creating the .pot (po-template) file.)_
+</para>
+<para>
+_(For extracting messages from C sources may be used 
+<command>xgettext</command> command from <command>gettext</command>
+package.)_
+</para>
+<para>
+_(CLIP automatically extract messages, quoted in [] brackets, and
+store them in
+<emphasis>$CLIPROOT/locale/pot/&lt;modulename&gt;/&lt;filename&gt;.pot</emphasis>
+file.)_
+</para>
+<para>
+_(The <emphasis>&lt;modulename&gt;</emphasis> determined by CLIP from current
+working directory name, or may be specified by environment variable 
+<link linkend="envir">CLIP_MODULE</link>.)_
+</para>
+<para>
+_(The <emphasis>&lt;filename&gt;</emphasis> determined from name
+of compiled file.)_
+</para>
+
+</listitem>
+
+<listitem>
+
+<para>
+_(Use script <command>clip_msgmerge</command> to merge .pot files
+from directory $CLIPROOT/locale.pot with translated .po files
+in directory $CLIPROOT/locale.po.)_
+</para>
+
+<para>
+_(<command>clip_msgmerge</command> merge files for all locales in
+$CLIPROOT/locale.po/&lt;locale&gt;. To add new locale you just need
+create appropriate directory, for example, $CLIPROOT/locale.po/ru_RU.KOI8-R
+for locale ru_RU.KOI8-R.)_
+</para>
+
+</listitem>
+
+<listitem>
+
+<para>
+_(You must edit created .po files in any text editor, or use
+specialized po-file editor, like <command>kbabel</command>
+from KDE suite.)_
+</para>
+
+<note>
+<title>_(Charset definition in .po file.)_</title>
+<para>
+_(Please check the field 
+<quote>Content-Type: text/plain; charset=ASCII</quote>
+in first entry of .po file. You must set valid value of charset,
+used in this file (for example, 
+<quote>Content-Type: text/plain; charset=KOI8-R</quote>).
+This is very important for correct message handling.)_
+</para>
+</note>
+
+</listitem>
+
+<listitem>
+
+<para>
+_(And the last step: invoke script <command>clip_msgfmt</command>
+to format messages into compiled message file in directory
+$CLIPROOT/locale.mo)_
+</para>
+
+<para>
+_(Now, CLIP runtime will fetch nesessary messages from this
+files, and substitute it in your program.)_
+</para>
+
+</listitem>
+
+</itemizedlist>
+
+</sect2>
+
+</sect1>
+
+
+<sect1>
+<title>_(Writing and translation the CLIP documentation.)_</title>
+
+<para>
+_(CLIP project now use the 
+<ulink url="http://www.docbook.org">DocBook</ulink>
+documentation system to provide multiformat and multilanguage
+documentation in the strong and regular fasion.)_
+</para>
+
+<para>
+_(The good introduction into DocBook is)_
+<ulink url="http://www.docbook.org/tdg/index.html">
+DocBook - The Definition Guide</ulink>.
+</para>
+
+<para>
+_(A simple introduction into DocBook is
+<link linkend="writing-docbook">here</link>.)_
+</para>
+
+<sect2>
+<title>_(CLIP makefiles and .po manipulation utilities)_</title>
+<para>
+_(Writing and supporting documentation in more than one language
+is not so trivial, so we develop some helper programs to make
+our life a bit easier.)_
+</para>
+
+<itemizedlist>
+
+<listitem>
+<para>
+_(The <command>po_extr</command> utilite process given files and 
+extract all strings, delimited by start and stop strings, into
+output standard .po file.)_
+</para>
+<para>
+_(By default, as start string used <quote>&#095;&#040;</quote>,
+and as stop string <quote>&#041;&#095;</quote>.)_
+</para>
+</listitem>
+
+<listitem>
+<para>
+_(The companion program is <command>po_subst</command>, which
+substitute translated values from .po files into source text.)_
+</para>
+</listitem>
+
+</itemizedlist>
+
+<para>
+_(The makefile <command>$CLIPROOT/include/Makefile.tdoc</command>
+can be used as include to simplify and unificate the documentation
+building.)_
+</para>
+
+<para>
+_(This file assume, that sources .sgmls are in 
+directory ./template, the translated .po files are in 
+./po/&lt;sgml-file-name&gt;/*.po, and the output directory
+will be ./html for HTML output, ./ps for Postscript output,
+./pdf for PDF output, ./text for text output.)_
+</para>
+
+<para>
+_(Provided targets are:)_
+<simplelist>
+<member>merge - _(to merge sources and .po translations)_</member>
+<member>sgml - _(to produce translated SGML files)_</member>
+<member>html - _(to generate documentation in HTML format)_</member>
+<member>ps - _(to generate documentation in Postscript format)_</member>
+<member>pdf - _(to generate documentation in Adobe PDF format)_</member>
+<member>tex - _(to generate documentation in TeX format)_</member>
+<member>text - _(to generate documentation in plain text format)_</member>
+</simplelist>
+</para>
+
+<para>
+_(Some CLIP packages already have the <quote>tdoc</quote> directory,
+which contain documentation in this layout ("template doc, tdoc"),
+and we have planes make it for all.)_
+</para>
+
+</sect2>
+
+&docbook;
+
+</sect1>
+
+</chapter>

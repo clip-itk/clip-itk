@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2003-04-10 17:29+0500\n"
+"Last-Translator: Rushad <rust@itk.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: template/./doc/sockets.sgml:0
+msgid "Working with sockets"
+msgstr "Работа с сокетами"
+
+#: template/./doc/sockets.sgml:2
+msgid "Introduction"
+msgstr "Введение"
+
+#: template/./doc/sockets.sgml:4
+msgid ""
+"\n"
+"CLIP has the set of functions for work with sockets through TCP protocol.\n"
+"In combination with multitasking capability they can be used for\n"
+"writing application servers and clients.\n"
+msgstr ""
+"\n"
+"CLIP имеет набор функций для работы с сокетами с использованием протокола "
+"TCP. В сочетании с многозадачностью они могут быть использованы для "
+"написания серверов приложений и клиентов.\n"
+
+#: template/./doc/sockets.sgml:10
+msgid "TCP functions"
+msgstr "Функции TCP"
+
+#: template/./doc/sockets.sgml:14
+msgid "Listen for connections from a client"
+msgstr "Установка обработчика подключений от клиента"
+
+#: template/./doc/sockets.sgml:17
+msgid "Accept a connection from a client"
+msgstr "Принятие подключения от клиента"
+
+#: template/./doc/sockets.sgml:20
+msgid "Initiate a connection to the server"
+msgstr "Подключение к серверу"
+
+#: template/./doc/sockets.sgml:23
+msgid "Close a socket"
+msgstr "Закрытие сокета"
+
+#: template/./doc/sockets.sgml:26
+msgid "Send a message to the connected peer"
+msgstr "Отправка сообщения другой стороне"
+
+#: template/./doc/sockets.sgml:29
+msgid "Receive a message from the connected peer"
+msgstr "Прием сообщения от другой стороны"
+
+#: template/./doc/sockets.sgml:34
+msgid "Example"
+msgstr "Пример"
+
+#: template/./doc/sockets.sgml:36
+msgid ""
+"\n"
+"Below are the codes of simple application server and client.\n"
+"Server waits for a connection from client, reads messages from client,\n"
+"and sends them back. Client connects to the server, reads data from "
+"keyboard,\n"
+"sends them to the server, and prints what server returns.\n"
+msgstr ""
+"\n"
+"Ниже приведены исходные тексты простого сервера приложений и клиента. Сервер "
+"ожидает подключения от клиентов, получает от них сообщения и посылает их "
+"обратно. Клиент подключается к серверу, получает данные с клавиатуры, "
+"посылает их серверу и выводит на экран то, что возвращает сервер.\n"
+
+#: template/./doc/sockets.sgml:44
+msgid "Server source:"
+msgstr "Сервер:"
+
+#: template/./doc/sockets.sgml:100
+msgid "Client source:"
+msgstr "Клиент:"

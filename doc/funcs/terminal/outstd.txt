@@ -1,0 +1,71 @@
+$FUNCNAME$
+  OUTSTD()
+$CATEGORY$
+  TERMINAL/IO,FILE/IO
+$SUMMARY$
+   Write a list of values to the standard output device
+$LANG_RU$
+   Записывает список выражений на стандартное устройство вывода.
+$SYNTAX$
+     OUTSTD(<exp list>) --> NIL
+$LANG_RU$
+     OUTSTD(<список выражений>) --> NIL
+$ARGUMENTS$
+     <exp list> is a list of values to display and can consist of any
+     combination of data types including memo.
+$LANG_RU$
+     <список выражений> - список выражений, состоящих из любого сочетания
+     типов данных, включая memo поля, чьи значения должны выводиться.
+$RETURNS$
+     OUTSTD() always returns NIL.
+$LANG_RU$
+     OUTSTD() всегда возвращает NIL.
+$DESCRIPTION$
+     OUTSTD() is a simple output function similar to QOUT() except that it
+     writes to the STDOUT device (instead of to the xClipper console output
+     stream).  Programs with very simple output requirements (i.e., that
+     perform no full-screen input or output) can use this function to avoid
+     loading the terminal output subsystems.  The header file Simplio.ch
+     redefines the ? and ?? commands to use the OUTSTD() function.
+
+     Since OUTSTD() sends its output to the standard output device, the
+     output can be redirected using the DOS redirection symbols (>, >, |).
+     This lets you redirect output from a xClipper program to a file or
+     pipe.  Refer to your PC/MS-DOS documentation for more information about
+     this operating system facility.
+$LANG_RU$
+     Функция OUTSTD() похожа на функцию QOUT(), за исключением того, что
+     вывод осуществляется на  стандартное устройство вывода, а не на
+     консоль.  Программы с простыми требованиями к выходным форматам (не
+     осуществляющие полноэкранного ввода или вывода) могут использовать
+     эту функцию для того, чтобы избежать прикомпоновки подсистемы
+     терминального вывода. Для переопределение команд ? и ?? с
+     использованием функции OUTSTD() вместо QOUT() может использоваться
+     файл описаний Simplio.ch.
+
+     Так как OUTSTD() посылает вывод на стандартное устройство вывода, то
+     этот вывод может быть перенаправлен, используя символы DOS (>,|) в
+     файл или канал. За более подробной информацией обратитесь к
+     документации по операционной системе.
+$EXAMPLES$
+       This example uses OUTSTD() to display a list of expressions:
+
+	OUTSTD(Name, PADR(RTRIM(City) + "," + ;
+	      State, 20), ZipCode)
+
+       This example redirects the output of a xClipper program to a
+	new file using the DOS redirection operator (>):
+
+	C>MYPROG > FILE.TXT
+$LANG_RU$
+      Следующий пример использует OUTSTD() для вывода списка выражений:
+
+       OUTSTD(Name, PADR(RTRIM(City) + "," + State, 20), ZipCode)
+
+      В этом примере показывается, как перенаправить вывод из
+       xClipper-программы в новый файл, используя DOS-оператор >:
+
+       C>MYPROG > FILE.TXT
+$SEEALSO$
+  OUTERR(),QOUT(),DISPOUT()
+$END$

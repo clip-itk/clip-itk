@@ -1,0 +1,87 @@
+$FUNCNAME$
+  LEFT()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Extract a substring beginning with the first character in a string
+$LANG_RU$
+   Определяет подстроку, начиная с первого символа в строке.
+$SYNTAX$
+     LEFT(<cString>, <nCount>) --> cSubString
+$LANG_RU$
+     LEFT( <символьная строка>, <длина подстроки>) --> символьная подстрока
+$ARGUMENTS$
+     <cString> is a character string from which to extract characters.
+     The maximum size of <cString> is 65,535 (64K) bytes.
+     <nCount> is the number of characters to extract.
+$LANG_RU$
+     <символьная строка> - символьная строка, из которой выделяется
+     подстрока. Наибольший размер символьной строки - 65535 ( 64К ) байт.
+     <длина подстроки> - длина выделяемой подстроки.
+$RETURNS$
+     LEFT() returns the leftmost <nCount> characters of <cString> as a
+     character string.  If <nCount> is negative or zero, LEFT() returns a
+     null string ("").  If <nCount> is larger than the length of the
+     character string, LEFT() returns the entire string.
+$LANG_RU$
+     LEFT() возвращает заданное число символов, начиная с первого символа
+     в строке, в виде символьной подстроки. Если значение аргумента <длина
+     подстроки>- отрицательное или ноль, LEFT() возвращает пустую строку
+     (""). Если значение аргумента <длина подстроки> больше длины исходной
+     строки, LEFT() возвращает всю строку.
+$DESCRIPTION$
+
+     LEFT() is a character function that returns a substring of a specified
+     character string.  It is the same as SUBSTR(<cString>, 1, <nCount>).
+     LEFT() is also like RIGHT(), which returns a substring beginning with
+     the last character in a string.
+
+     LEFT(), RIGHT(), and SUBSTR() are often used with both the AT() and
+     RAT() functions to locate the first and/or the last position of a
+     substring before extracting it.
+
+
+$LANG_RU$
+
+     LEFT() является функцией обработки символьных строк, которая
+     возвращает подстроку, выделенную из заданной символьной строки. Она
+     аналогична функции SUBSTR(<символьная строка>, 1, <длина подстроки>).
+     LEFT() сходна с RIGHT(), которая возвращает подстроку, начиная с
+     последнего символа в строке.
+
+     LEFT(), RIGHT() и SUBSTR() часто используются совместно с функциями
+     AT() и RAT() для определения первой и/или последней позиции подстроки
+     в строке перед ее выделением.
+
+
+$EXAMPLES$
+
+       This example extracts the first three characters from the left
+	of the target string:
+
+	? LEFT("ABCDEF", 3)                  // Result: ABC
+
+       This example extracts a substring from the beginning of a
+	string up to the first occurrence of a comma:
+
+	LOCAL cName := "James, William"
+	? LEFT(cName, AT(",", cName) - 1)   // Result: James
+
+
+$LANG_RU$
+
+      В этом примере выделяются три первых символа из исходной строки:
+
+
+       ? LEFT("ABCDEF", 3)                   // Результат: ABC
+
+      В этом примере выделяется подстрока с первого символа до первой
+       запятой:
+
+       LOCAL cName := "James, William"
+       ? LEFT(cName, AT(",", cName) - 1)     // Результат: James
+
+
+$SEEALSO$
+  AT(),LTRIM(),RAT(),RIGHT(),RTRIM(),STUFF(),SUBSTR()
+$END$

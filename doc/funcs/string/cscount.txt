@@ -1,0 +1,40 @@
+$FUNCNAME$
+  CSCOUNT()
+$CATEGORY$
+  STRING
+$SUMMARY$
+	Returns the number specified chars into source string.
+$LANG_RU$
+	Возвращает количество заданных символов в строке.
+$SYNTAX$
+     CSCOUNT(<сChar>, <sString>) 	--> <nCount>
+$ARGUMENTS$
+     <cChar>	Character, is the character for scanning.
+     <sString>	String, is the source string
+$LANG_RU$
+     <cChar>	Character, символ для поиска
+     <sString>	String, исходная строка
+$RETURNS$
+     Returns the number of character <cChar> into source string <sString>.
+$LANG_RU$
+     Возвращает количество символов <cChar> в строке <sString>.
+$DESCRIPTION$
+     CSCOUNT() returns the number of character <cChar> into source string <sString>.
+$LANG_RU$
+     CSCOUNT() возвращает количество символов <cChar> в строке <sString>.
+$EXAMPLES$
+
+CSCOUNT("s", "substr") 		// --> 2
+CSCOUNT("a", "substr") 		// --> 0
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

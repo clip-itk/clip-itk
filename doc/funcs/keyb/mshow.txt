@@ -1,0 +1,92 @@
+$FUNCNAME$
+  MSHOW()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Display the mouse pointer
+$SYNTAX$
+     MSHOW([<nCol>, <nRow>, <nStyle>]) --> nOldCursorShape
+     MSHOW([<nCursorShape>]) --> nOldCursorShape
+     MSHOW([<nCursorShape>] | [<nCol>, <nRow>, <nMode>]) --> nOldCursorShape
+$ARGUMENTS$
+     <nCol> and <nRow> define mouse pointer coordinates.
+     <nStyle> defines the style of mouse pointer using one of the
+     constants listed in the table below:
+
+     <PRE> Text and Graph Constants
+     ------------------------------------------------------------------------
+     Constant       Description
+     ------------------------------------------------------------------------
+     LLM_COOR_TEXT  Specifies that the coordinates are passed in rows and
+		    columns of text
+     LLM_COOR_GRAPH Specifies that the coordinates are passed in pixels
+     ------------------------------------------------------------------------
+     </PRE>
+
+     <nCursorShape> is a numeric value representing the mouse cursor
+     shape.  The following are the possible values predefined for this
+     parameter:
+
+     Cursor Shape Constants
+     ------------------------------------------------------------------------
+     Constant                 Description
+     ------------------------------------------------------------------------
+     LLM_CURSOR_ARROW         Standard pointer
+     LLM_CURSOR_SIZE_NS       North South arrow
+     LLM_CURSOR_SIZE_WE       West East arrow
+     LLM_CURSOR_SIZE_NW_SE    North-West South-East arrow
+     LLM_CURSOR_SIZE_NE_SW    North-East South-West arrow
+     LLM_CURSOR_HAND          Hand
+     LLM_CURSOR_FINGER        Hand with one pointing finger
+     LLM_CURSOR_CROSS         Cross
+     LLM_CURSOR_WAIT          Hourglass
+     ------------------------------------------------------------------------
+$RETURNS$
+     MSHOW() returns the previously used cursor shape.  See <nCurorShape>
+     above for further information.
+$DESCRIPTION$
+     MSHOW() displays the mouse pointer.  It is generally used without
+     parameters to simply redisplay the mouse pointer at the position where
+     MHIDE() hid it (assuming the user has not moved the mouse).
+
+     It is possible to use two sets of parameters with this function.
+
+       Specify the coordinates where the pointer should appear.  In
+	this case, three parameters must be passed:  the mode and its
+	coordinates.  In text mode, coordinates are passed as row and column.
+	In graphic mode, you can pass either text or graphic coordinates.
+	Conversion is done automatically based on the font size of the
+	current characters.
+
+       You can also specify the mouse cursor shape to be displayed
+	when the mouse is visible.  This feature is available in graphic mode
+	only.
+
+     It is important to hide the mouse pointer before any new screen display,
+     and then show it again.  See MHIDE() for further information on how to
+     do this.
+
+     Note:  The MSETCURSOR() function should be used in place of MSHOW()
+     and MHIDE().  It is kept here for compatibility.
+$EXAMPLES$
+       The following example hides the mouse pointer before using an
+	@...SAY command and then redisplays it.  Next, the mouse pointer is
+	repositioned, hidden, changed to an hour-glass, and then restored to
+	its previous shape:
+
+	LOCAL nOldShape := 0
+	MHIDE()
+	   @ 10, 20 say "Hello world!!!"
+	MSHOW()
+	// Position the pointer at the center of the screen
+	MSHOW(MAXCOL() / 2, MAXROW() / 2, LLM_COOR_TEXT)
+	MHIDE()
+	   @ 10, 20 say "Please wait ..."
+	// Display an hour glass cursor
+	nOldShape := MSHOW(LLM_CURSOR_WAIT)
+	// Your code
+	// Restore previously used cursor
+	MSHOW(nOldShape)
+$SEEALSO$
+  MHIDE(),MSETCLIP(),MSHOW()
+$END$

@@ -78,6 +78,9 @@ static function codb_count_add(countId)
 	n2 := rddGetvalue(::hDb,"VALUE")
 	if alltrim(s1) == countId
 		n2++
+		if n2 >20000000
+			outlog([WARNING!!!! Depository have many objects],n2)
+		endif
 		rddSetValue(::hDb,"VALUE",n2)
 		rddUnLock(::hDb)
 	else

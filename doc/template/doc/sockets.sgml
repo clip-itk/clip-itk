@@ -1,0 +1,163 @@
+<chapter id="sockets"><title>_(Working with sockets)_</title>
+
+<section id="sockintro"><title>_(Introduction)_</title>
+<para>_(
+CLIP has the set of functions for work with sockets through TCP protocol.
+In combination with multitasking capability they can be used for
+writing application servers and clients.
+)_</para>
+</section>
+
+<section id="sockfuncs"><title>_(TCP functions)_</title>
+<informaltable frame="none"><tgroup cols="2"><tbody>
+
+<row><entry><link linkend="functiontcplisten">TCPListen()</link></entry>
+<entry>_(Listen for connections from a client)_</entry></row>
+
+<row><entry><link linkend="functiontcpaccept">TCPAccept()</link></entry>
+<entry>_(Accept a connection from a client)_</entry></row>
+
+<row><entry><link linkend="functiontcpconnect">TCPConnect()</link></entry>
+<entry>_(Initiate a connection to the server)_</entry></row>
+
+<row><entry><link linkend="functiontcpclose">TCPClose()</link></entry>
+<entry>_(Close a socket)_</entry></row>
+
+<row><entry><link linkend="functiontcpwrite">TCPWrite()</link></entry>
+<entry>_(Send a message to the connected peer)_</entry></row>
+
+<row><entry><link linkend="functiontcpread">TCPRead()</link></entry>
+<entry>_(Receive a message from the connected peer)_</entry></row>
+
+</informaltable>
+</section>
+
+<section id="sockexample"><title>_(Example)_</title>
+<para>_(
+Below are the codes of simple application server and client.
+Server waits for a connection from client, reads messages from client,
+and sends them back. Client connects to the server, reads data from keyboard,
+sends them to the server, and prints what server returns.
+)_</para>
+
+<itemizedlist>
+
+<listitem><para>_(Server source:)_</para>
+<programlisting>
+// Stand for connection and simply make echo.
+#define DEFPORT  3000
+
+
+function main( cport )
+
+	local nPort, nH, nT := seconds() + 60
+	local nCon
+	clear screen
+
+	nport := iif( cport != nil, val(cport), DEFPORT )
+
+	if (nH := tcpListen( nport, 10 )) == -1
+		? "tcpsrv: Error listen on port ", nport
+		?
+		return( 1 )
+	endif
+
+	? "wait client connection"
+	do while( .t. )
+		if (nCon := tcpAccept( nH, 50 )) != -1
+			? "start",nH,nCon
+			start( @conEcho(), nCon )
+		endif
+		sleep(1)
+	enddo
+	tcpClose( nH )
+
+	?
+return( 0 )
+
+
+static function ConEcho( nH )
+// Make echo.
+
+	local cBuf := space(5), nL, cTxt
+
+	? "task, param : ", nH
+	do while( .t. )
+		if( (nL := tcpRead( nH, @cBuf, len(cBuf), 6000 )) > 0 )
+			if( nL == 1 .and. upper( substr(cbuf,1,1)) == "Q" )
+				exit
+			endif
+			? "tcpsrv, read : ", nL
+			cTxt := "tcpsrv:" + substr(cBuf, 1, nL)
+			tcpWrite( nH, cTxt )
+		endif
+	enddo
+	tcpClose( nH )
+
+return( 0 )
+</programlisting>
+</listitem>
+
+<listitem><para>_(Client source:)_</para>
+<programlisting>
+#define BUFLEN   1024
+#define DEFPORT  3000
+#define DEFHOST "localhost"
+
+#define nTimeOut 600
+
+
+function main( cport, chost )
+
+	local nH, nPort , nL, cbuf := space( BUFLEN )
+	local nK, cEnv
+
+	clear screen
+
+	nPort := iif(valtype(cport)=='C', val( cport), DEFPORT )
+	if( chost == nil ); chost := DEFHOST; endif
+
+
+	? "Connecting to " + getHostByName( cHost )
+
+	if( (nH := tcpConnect( cHost, nPort, nTimeOut )) == -1 )
+		? "Error connecting to " + cHost + " on port "
+		?? nPort
+		?
+		return( 1 )
+	endif
+
+	nK := 0; cEnv := ""
+	do while ( nK != 27 )
+		if( (nL := tcpRead( nH, @cbuf, BUFLEN, 60 )) > 0 )
+			? "Received  ("+alltrim(str(nL))+"):"+substr(cbuf,1,nL)
+			?
+		endif
+		if( (nK := inkey( 0.1 )) == 0 )
+			loop; endif
+		if( nK == 13 )
+			nL := tcpWrite( nH, cEnv )
+			? "Send: ",nl, + cEnv
+			if upper(cEnv)=="Q"
+				exit
+			endif
+			cEnv := ""
+		else
+			cEnv += chr(nK)
+		endif
+
+	enddo
+
+	? tcpClose( nH )
+
+	?
+
+return( 0 )
+</programlisting>
+</listitem>
+
+</itemizedlist>
+
+</section>
+
+</chapter>

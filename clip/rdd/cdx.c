@@ -4,9 +4,12 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log: cdx.c,v $
+	Revision 1.155  2005/03/04 15:33:25  clip
+	rust: fixed bug with zero string keys
+	
 	Revision 1.154  2005/02/02 14:22:24  clip
 	rust: minor fix for SET OPTIMIZE LEVEL 2
-	
+
 	Revision 1.153  2004/11/22 12:56:13  clip
 	rust: reset stack validity flag in cdx_setscope()
 
@@ -1318,21 +1321,21 @@ static int _cdx_dupbytes(void* key1,void* key2,int len){
 	int l = len/sizeof(int);
 	int o = len%sizeof(int);
 
-	for(i=0,k1=key1,k2=key2;i<l && *k1==*k2;i++,k1++,k2++)
+	for(i=0,k1=key1,k2=key2;i<l && *k1==*k2 && *k1;i++,k1++,k2++)
 		;
 	o += (l-i)*sizeof(int);
 	if(o || i<l){
 		i = i << 2;
 		if(o==1){
-			i += (*(char*)k1==*(char*)k2);
+			i += ((*(char*)k1==*(char*)k2) && (*(char*)k1));
 			return i;
 		}
-		if(*(short*)k1==*(short*)k2){
+		if((*(short*)k1==*(short*)k2) && (*(short*)k1)){
 			i += 2;
 			if(o>2)
-				i += (*(((char*)k1)+2)==*(((char*)k2)+2));
+				i += (*(((char*)k1)+2)==*(((char*)k2)+2) && (*(char*)k1));
 		} else {
-			i += (*(char*)k1==*(char*)k2);
+			i += ((*(char*)k1==*(char*)k2) && (*(char*)k1));
 		}
 		return i;
 	}

@@ -1,0 +1,314 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/dev.sgml:2
+msgid "Terminals, keyboard, mouse, localization"
+msgstr ""
+
+#: template/./doc/dev.sgml:4
+msgid "Terminals"
+msgstr ""
+
+#: template/./doc/dev.sgml:6
+msgid ""
+"\n"
+"CLIP applications are able to work with all kind of terminals and "
+"emulators.\n"
+"Terminal abilities descriptions are available at\n"
+"<emphasis>terminfo</emphasis> database or\n"
+"(if environment variable TERMCAP is set) at the file TERMCAP is indicating "
+"on.\n"
+"On addition to this descriptions there are some extended possibilities\n"
+"to indicate for CLIP application some special capabilities of terminal.\n"
+"These descriptions are in directory $CLIPROOT/term and looking as\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:16
+msgid "to work with description of linux terminal in terminfo"
+msgstr ""
+
+#: template/./doc/dev.sgml:18
+msgid ""
+"whether yielding scan-codes instead of ansi-codes terminal ability;\n"
+"# options are: terminal, ioctl, no"
+msgstr ""
+
+#: template/./doc/dev.sgml:21
+msgid "ESC-sequence to switch scan-codes transfer mode on"
+msgstr ""
+
+#: template/./doc/dev.sgml:23
+msgid "ESC-sequence to switch scan-codes transfer mode off"
+msgstr ""
+
+#: template/./doc/dev.sgml:25
+msgid "keyboard layout for keyboard driver of CLIP application"
+msgstr ""
+
+#: template/./doc/dev.sgml:27
+msgid "charset used by CLIP VM at run time // unicode - file"
+msgstr ""
+
+#: template/./doc/dev.sgml:29
+msgid "charset used by client for display // unicode - file"
+msgstr ""
+
+#: template/./doc/dev.sgml:31
+msgid "single pseudo-graphics symbols"
+msgstr ""
+
+#: template/./doc/dev.sgml:33
+msgid "double pseudo-graphics symbols"
+msgstr ""
+
+#: template/./doc/dev.sgml:35
+msgid "color translation table"
+msgstr ""
+
+#: template/./doc/dev.sgml:39
+msgid ""
+"\n"
+"All \"advanced\" terminal names have to be registered in your\n"
+"<emphasis>terminfo/termcap</emphasis> database.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:43
+msgid ""
+"\n"
+"Linux standard <emphasis>unicode-tables</emphasis> located in\n"
+"/usr/share/consoletrans directory are used for translation of\n"
+"terminal output.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:48
+msgid ""
+"\n"
+"Necessary unicode-tables have to be unpacked and put into $CLIPROOT/"
+"charsets\n"
+"directory. CLIP distribution contains some unicode-tables also.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:53
+msgid "Keyboard"
+msgstr ""
+
+#: template/./doc/dev.sgml:55
+msgid ""
+"\n"
+"CLIP applications have two keyboard drivers: <emphasis>ANSI-mode</emphasis>\n"
+"and <emphasis>scan-mode</emphasis>.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:58
+msgid ""
+"\n"
+"In the ANSI-mode ansi-codes of the keys are accepted from terminal,\n"
+"and two modificators - Ctrl-J, Ctrl-K are used for extended possibilities.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:62
+msgid ""
+"\n"
+"Modificator change key code for CLIP application. For example:\n"
+"pushing key 1 yield code 49, pushing Ctrl-J,1 yield code 376,\n"
+"pushing Ctrl-K,1 also yield code 376. Modificator Ctrl-J works the same as\n"
+"ALT, and modificator Ctrl-K works the same as CTRL but not with all keys.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:67
+msgid ""
+"\n"
+"More advanced keyboard mode is <emphasis>scan-mode</emphasis>.\n"
+"In this mode terminal passes to the host scan-codes\n"
+"of pushed and released keys.\n"
+"All key combinations are available in the case of correct keymap "
+"description.\n"
+"There is even possibility to enlist code of symbol using\n"
+"\"Alt+enlisted_at_digital_keyboard_code\"!\n"
+"In this case description of used console layout (/usr/share/keymaps/*) is "
+"used.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:76
+msgid ""
+"\n"
+"In order for CLIP application to be able to use scan-mode it is necessary "
+"to\n"
+"generate keyboard description for desired keymap using\n"
+"$CLIPROOT/keymaps/genmap.sh utility; to put this description\n"
+"in $CLIPROOT/keymaps and to register CLIP_KEYMAP in the file with used\n"
+"terminal description in $CLIPROOT/term directory (see above about\n"
+"<link linkend=\"devterminals\">terminals</link>).\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:84
+msgid ""
+"\n"
+"As terminal with scan-mode capability one may use linux-console or our\n"
+"terminal emulator <command>STelnel</command> (download at\n"
+"<ulink url=\"ftp://ftp.itk.ru/pub/telnet\">ftp://ftp.itk.ru/pub/telnet</"
+"ulink>)\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:89
+msgid ""
+"\n"
+"In order to use capabilities of \"advanced\" terminal run stelnet as "
+"follows:\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:93
+msgid ""
+"\n"
+"and launch CLIP application as follows:\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:102
+msgid "Mouse"
+msgstr ""
+
+#: template/./doc/dev.sgml:104
+msgid ""
+"\n"
+"Mouse is supported in the following cases:\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:108
+msgid ""
+"\n"
+"on console with standard terminal mode using daemon gpm\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:111
+msgid ""
+"\n"
+"on X-Windows terminals with TERM==xterm or TERM==rxwt terminals\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:114
+msgid ""
+"\n"
+"on another X-Windows terminals in the case of environment\n"
+"variable XTERM_MOUSE is set to <emphasis>ON</emphasis>\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:118
+msgid ""
+"\n"
+"from stelnet terminal emulator in the case of environment\n"
+"variable XTERM_MOUSE is set to <emphasis>ON</emphasis>\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:122
+msgid ""
+"\n"
+"from console through ssh on another host (trans_1.2 package is required)\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:125
+msgid ""
+"\n"
+"on the Windows host\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:130
+msgid "Localization"
+msgstr ""
+
+#: template/./doc/dev.sgml:132
+msgid ""
+"\n"
+"Localization of CLIP application includes localization of display devices,\n"
+"keyboard, string constants and embedded functions.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:136
+msgid ""
+"\n"
+"Display devices are console, terminal, terminal emulator.\n"
+"One can execute their localization by standard for OS means, i.e.\n"
+"font loading, terminal localization by burning the BIOS,\n"
+"or by loading a special display/keyboard driver.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:142
+msgid ""
+"\n"
+"In the case of scan-mode keyboard layout and encoding\n"
+"are made up by means of creating keymap-file and generation\n"
+"on its base file - description for CLIP's builtin keyboard driver.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:147
+msgid ""
+"\n"
+"Some clipper-functions (such as upper,lower,isalpha, isdigit) have\n"
+"national features - pseudographics, weight coefficients for string\n"
+"indexing and comparison etc.\n"
+"Utility $CLIPROOT/bin/gen_tbl is intended for creating the file - "
+"description\n"
+"of national features of that functions.\n"
+"For the more details see <link linkend=\"localisation\">Localisation</link>\n"
+"chapter.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:156
+msgid ""
+"\n"
+"CLIP has special setting for the using DBF data by different users with\n"
+"different charsets simultaneously:\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:163 template/./doc/dev.sgml:183
+msgid ""
+"\n"
+"or in the command form:\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:169
+msgid ""
+"\n"
+"where cp866 is name of tbl-file with national features description.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:172
+msgid ""
+"\n"
+"May be so that data stored in DBF with one charset, program operates in\n"
+"another and client displays in third (see above about\n"
+"<link linkend=\"devterminals\">terminals</link>).\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:177
+msgid ""
+"\n"
+"There is possibility to set charset used by printer too:\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:189
+msgid ""
+"\n"
+"CLIP compiler stores all string constants defined as [string_data]\n"
+"at the $CLIPROOT/locale.pot subdirectories.\n"
+"So there is possibility for all these constants to make the\n"
+"translations for another languages.\n"
+msgstr ""
+
+#: template/./doc/dev.sgml:195
+msgid ""
+"\n"
+"At run time CLIP application reads environment variable LANG\n"
+"and then gets appropriate constants from $CLIPROOT/locale.po "
+"subdirectories.\n"
+msgstr ""

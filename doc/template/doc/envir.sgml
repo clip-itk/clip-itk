@@ -1,0 +1,298 @@
+<chapter id="envir">
+
+<title>_(Title)_</title>
+
+
+<para>_(first_p)_</para>
+<sect1><title>_(second_p)_</title>
+<variablelist>
+  <varlistentry>
+	<term>_(cc)_</term>
+	<listitem>
+	  <para>
+		_(cc description)_
+	  </para><para></para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(cflags)_</term>
+	<listitem>
+	  <para>
+		_(cflags description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(compileflag)_</term>
+	<listitem>
+	  <para>
+		_(compileflag description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(copt)_</term>
+	<listitem>
+	  <para>
+		_(optimiz)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(cdbg)_</term>
+	<listitem>
+	  <para>
+		_(debug-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(outflag)_</term>
+	<listitem>
+	  <para>
+		_(outflag-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(inc-flag)_</term>
+	<listitem>
+	  <para>
+		_(incl-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(objsuf)_</term>
+	<listitem>
+	  <para>
+		_(objsuf-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(sobjsuf)_</term>
+	<listitem>
+	  <para>
+		_(sobjsuf-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(libsuf)_</term>
+	<listitem>
+	  <para>
+		_(libsuf-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(slibsuf)_</term>
+	<listitem>
+	  <para>
+		_(slibsuf-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(sflags)_</term>
+	<listitem>
+	  <para>
+		_(sflags-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+</variablelist>
+</sect1>
+<sect1>
+<title>_(div_1)_</title>
+<variablelist>
+  <varlistentry>
+	<term>_(cliplib)_</term>
+	<listitem>
+	  <para>
+		_(cliplib description)_
+	  </para><para></para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(clibslib)_</term>
+	<listitem>
+	  <para>
+		_(clislib description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(cliplibs)_</term>
+	<listitem>
+	  <para>
+		_(cliplibs description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+</variablelist>
+
+</sect1>
+<sect1>
+
+<title>_(div_2)_</title>
+<variablelist>
+  <varlistentry>
+	<term>_(cliproot)_</term>
+	<listitem>
+	  <para>
+		_(cliproot description)_
+	  </para><para></para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(cliblocaleroot)_</term>
+	<listitem>
+	  <para>
+		_(cliplocaleroot description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(clipmodule)_</term>
+	<listitem>
+	  <para>
+		_(clipmodule description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+</variablelist>
+
+</sect1>
+<sect1>
+<title>_(div_3)_</title>
+<variablelist>
+  <varlistentry>
+	<term>_(cliplang)_</term>
+	<listitem>
+	  <para>
+		_(cliplang description)_
+	  </para><para></para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(cliphostcs)_</term>
+	<listitem>
+	  <para>
+		_(cliphostcs description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(clipclient)_</term>
+	<listitem>
+	  <para>
+		_(clipclient description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(cliplocale)_</term>
+	<listitem>
+	  <para>
+		_(cliplocale description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+</variablelist>
+
+</sect1>
+<sect1>
+<title>_(div_4)_</title>
+<variablelist>
+  <varlistentry>
+	<term>_(cmdstr)_</term>
+	<listitem>
+	  <para>
+		_(cmdstr description)_
+	  </para><para></para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(names)_</term>
+	<listitem>
+	  <para>
+		_(names description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(loglevel)_</term>
+	<listitem>
+	  <para>
+		_(loglevel description)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(scanmode)_</term>
+	<listitem>
+	  <para>
+		_(scanmode_descript)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(scanstart)_</term>
+	<listitem>
+	  <para>
+		_(scanstart-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(scanstop)_</term>
+	<listitem>
+	  <para>
+		_(scanstop-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(keymap)_</term>
+	<listitem>
+	  <para>
+		_(keymap-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(linechars)_</term>
+	<listitem>
+	  <para>
+		_(linechars-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(dline)_</term>
+	<listitem>
+	  <para>
+		_(dline-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+  <varlistentry>
+	<term>_(colormap)_</term>
+	<listitem>
+	  <para>
+		_(colormap-descr)_
+	  </para>
+	</listitem>
+  </varlistentry>
+</variablelist>
+
+</sect1>
+<sect1>
+<title>_(end_title)_</title>
+<para>_(end_1)_</para>
+<para>_(end_2)_</para>
+</sect1>
+
+</chapter>

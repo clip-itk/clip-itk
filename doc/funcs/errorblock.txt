@@ -1,0 +1,177 @@
+$FUNCNAME$
+  ERRORBLOCK()
+$CATEGORY$
+  CODEBLOCK,SYSTEM,INFO,MISCELLANEOUS
+$SUMMARY$
+   Post a code block to execute when a runtime error occurs
+$LANG_RU$
+   Отправляет блок кода на выполнение при возникновении ошибки времени
+$SYNTAX$
+     ERRORBLOCK([<bErrorHandler>]) --> bCurrentErrorHandler
+$LANG_RU$
+     ERRORBLOCK([<блок обработки ошибки>]) --> текущий блок обработки ошибки
+$ARGUMENTS$
+     <bErrorHandler> is the code block to execute whenever a runtime
+     error occurs.  When evaluated, the <bErrorHandler> is passed an error
+     object as an argument by the system.
+$LANG_RU$
+     <блок обработки ошибки> - это блок кода, выполняющийся в случае
+     возникновении ошибки времени выполнения. При этом <блок обработки
+     ошибки> получает от системы в качестве аргумента ERROR-объект.
+$RETURNS$
+     ERRORBLOCK() returns the current error handling code block.  If no error
+     handling block has been posted since the program was invoked,
+     ERRORBLOCK() returns the default error handling block.
+$LANG_RU$
+     ERRORBLOCK() возвращает текущий блок кода обработки ошибки. Если с
+     начала работы программы не было ни одного отправленного блока кода,
+     ERRORBLOCK() возвращает блок кода для обработки ошибки, принятый по
+     умолчанию.
+$DESCRIPTION$
+     ERRORBLOCK() is an error function that defines an error handler to
+     execute whenever a runtime error occurs.  Specify the error handler as a
+     code block with the following form,
+
+     { |<oError>| <expression list>,... }
+
+     where <oError> is an error object containing information about the
+     error.  Within the code block, messages can be sent to the error object
+     to obtain information about the error.  Returning true (.T.) from the
+     error handling block retries the failed operation and false (.F.)
+     resumes processing.
+
+     The error handling code block can be specified either as a list of
+     expressions or as a call to a user-defined function.  A call to a user-
+     defined function is more useful since you can use xClipper control
+     statements instead of expressions.  This is particularly the case if
+     there is a BEGIN SEQUENCE pending and you want to BREAK to the nearest
+     RECOVER statement.
+
+     As this implies, error handling blocks can be used in combination with
+     BEGIN SEQUENCE...END control structures.  Within an error handling
+     block, you handle device, low-level, and common errors that have a
+     general recovery mechanism.  If the operation needs specific error
+     handling, define a BEGIN SEQUENCE then BREAK to the RECOVER statement,
+     returning the error object for local processing.  See the example below.
+
+     If no <bErrorHandler> has been specified using ERRORBLOCK() and a
+     runtime error occurs, the default error handling block is evaluated.
+     This error handler displays a descriptive message to the screen, sets
+     the ERRORLEVEL() to 1, then QUITs the program.
+
+     Since ERRORBLOCK() returns the current error handling block, it is
+     possible to specify an error handling block for an operation saving the
+     current error handling block, then restore it after the operation has
+     completed.  Also, error handlers specified as code blocks, can be passed
+     to procedures and user-defined functions, and RETURNed as values.
+
+     For more information on the structure and operations of error objects,
+     refer to the Error class entry in this chapter and the "Error Handling
+     Strategies" chapter in the Programming and Utilities Guide.
+$LANG_RU$
+     ERRORBLOCK() - это функция обработки ошибок, определяющая обработчик
+     ошибок, который выполняется при возникновении ошибки времени
+     выполнения.  Обработчик ошибок описывается в виде блока кода в
+     следующей форме:
+
+     { | <ERROR-объект> | <список выражений>, ... }
+
+     При этом <ERROR-объект> - это ERROR-объект, содержащий информацию
+     об ошибке. Для получения информации об ошибке вместе с блоком кода
+     в ERROR объект могут быть переданы соответствующие сообщения.
+     Возвратив значение "истина" (.T.), блок обработки ошибки пытается
+     повторно выполнить операцию, приведшую к ошибке, после чего
+     возвращает значение "ложь" (.F.).
+
+     Блок кода, обрабатывающий ошибку, может быть описан как список
+     выражений или как вызов функции пользователя. Вызов из блока кода
+     функции пользователя более предпочтителен, так как в этом случае
+     можно вместо выражений использовать операторы и команды xClipper для
+     обработки ошибок.
+
+     Обычным является прием программирования, когда программа содержит
+     управляющую структуру BEGIN SEQUENCE, и при возникновении ошибки вы
+     хотите управление передать командой BREAK на первую команду
+     предложения RECOVER.  Предполагается, что блок обработки ошибок может
+     использоваться с управляющей структурой BEGIN SEQUENCE...END. При
+     помощи блока обработки ошибок можно контролировать работу устройств,
+     обычных ошибок и ошибок низшего уровня, так как это - универсальный
+     механизм восстановления.
+
+     Если требуются нестандартные действия по обработке ошибки, необходимо
+     определить BEGIN SEQUENCE и затем командой BREAK передать управление
+     на первый оператор предложения RECOVER, возвратив ERROR-объект для
+     локальной обработки ( смотри пример ниже ).
+
+     Если при помощи ERRORBLOCK() не было определено ни одного блока кода
+     <блок обработки ошибки> и возникла ошибка времени выполнения,
+     выполнится блок обработки ошибок, заданный по умолчанию. При этом на
+     экран будет выдано сообщение об ошибке, ERRORLEVEL() примет значение
+     1, после чего выполнится команда QUIT.
+
+     После того, как ERRORBLOCK() возвратит текущий блок обработки ошибок,
+     появляется возможность определить блок обработки ошибок с последующим
+     его восстановлением после того, как завершатся операции. И еще,
+     важным свойством обработчиков ошибок, описываемых как блоки кода,
+     является тот факт, что они могут быть переданы процедурам и функциям
+     пользователя и могут быть их возвращаемыми значениями.
+
+     За более подробной информацией о структуре и операциях ERROR-объекта
+     обращайтесь в раздел "Error класс" в главе " Стандартные классы".
+$EXAMPLES$
+       This code fragment posts, and then calls an error handling
+	block when there is an error within a BEGIN SEQUENCE construct:
+
+	LOCAL bErrorHandler, bLastHandler, objErr
+	bErrorHandler := { |oError| ;
+	      MyErrorHandler(oError) }
+	//
+	// Save current handler
+	bLastHandler := ERRORBLOCK(bErrorHandler)
+	//
+	BEGIN SEQUENCE
+	   .
+	   . <operation statements>
+	   .
+	// Receive error object from BREAK
+	RECOVER USING oErrorInfo
+	   .
+	   . <recovery statements>
+	   .
+	END
+	ERRORBLOCK(bLastHandler)      // Restore handler
+	RETURN
+
+	FUNCTION MyErrorHandler( oError )
+	   //
+	   BREAK oError      // Return error object to RECOVER
+	   RETURN NIL
+$LANG_RU$
+      Следующий фрагмент программы показывает, как блок обработки ошибок
+       передан и затем вызван при возникновении ошибки внутри управляющей
+       структуры BEGIN SEQUENCE:
+
+       LOCAL bErrorHandler, bLastHandler, objError
+       bErrorHandler := { | objError | MyErrorHandler( objError ) }
+       //
+       bLastHandler := ERRORBLOCK( bErrorHandler )
+       // Сохранить текущий обработчик
+       BEGIN SEQUENCE
+	  ...
+	  ...<операторы>
+	  ...
+       RECOVER USING objErrorInfo // Принять объект-ошибку из BREAK
+	  ...
+	  ...<операторы восстановления>
+	  ...
+       END
+       ERRORBLOCK(bLastHandler) // Восстановить обработчик
+       RETURN
+
+     FUNCTION MyErrorHandler( objError )
+       //
+       BREAK objError // Возвратить объект-ошибку в RECOVER
+       RETURN NIL
+$SEEALSO$
+
+$END$

@@ -1,0 +1,56 @@
+$FUNCNAME$
+  DBSETINDEX()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Empty orders from an order bag into the order list
+$LANG_RU$
+   Открывает существующий индексный файл.
+$SYNTAX$
+     DBSETINDEX(<cOrderBagName>) --> NIL
+$LANG_RU$
+     DBSETINDEX( <имя индексного файла> ) --> NIL
+$ARGUMENTS$
+     <cOrderBagName> is the name of a disk file containing one or more
+     orders.  You may specify <cOrderBagName> as the file name with or
+     without the path name or extension.  If you do not include the extension
+     as part of <cOrderBagName>, xClipper uses the default extension of the
+     current RDD.
+$LANG_RU$
+     <имя индексного файла> - символьное значение, которое определяет имя
+     открываемого индексного файла.
+$RETURNS$
+     DBSETINDEX() always returns NIL.
+$LANG_RU$
+     DBSETINDEX() всегда возвращает NIL.
+$DESCRIPTION$
+     DBSETINDEX() is a database function that adds the contents of an order
+     bag into the order list of the current work area.  Any orders already
+     associated with the work area continue to be active.  If the newly
+     opened order bag is the only order associated with the work area, it
+     becomes the controlling order; otherwise, the controlling order remains
+     unchanged.  If the order bag contains more than one order, and there are
+     no other orders associated with the work area, the first order in the
+     new order bag becomes the controlling order.
+
+     Note: DBSETINDEX() does not close all currently open index files.
+
+     DBSETINDEX() is a compatibility command and therefore is not
+     recommended.  It is superseded by the ORDLISTADD() function.
+$LANG_RU$
+     DBSETINDEX() открывает индексный файл для текущей рабочей области.
+     Любые индексные файлы, уже связанные с текущей рабочей областью,
+     продолжают быть активными.  Если заново открытый индекс является
+     единственным индексом, связанным с рабочей областью, то он становится
+     управляющим индексом, в противном случае,  управляющий индекс не
+     переназначается.
+
+     После открытия нового индекса указатель записей устанавливается на
+     первую логическую запись в соответствии с управляющим индексом.
+
+     DBSETINDEX() выполняет те же функции, что и стандартная команда SET
+     INDEX или предложение INDEX команды USE. Более подробную информацию
+     смотрите в команде SET INDEX.
+$SEEALSO$
+  ORDLISTADD(),DBCLEARINDEX(),DBCREATEINDEX(),DBREINDEX(),DBSETORDER()
+$END$

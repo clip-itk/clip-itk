@@ -1,0 +1,18 @@
+$FUNCNAME$
+  MSETCURSOR()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Determine a mouse's visibility
+$SYNTAX$
+     MSETCURSOR( [<lVisible>] ) --> lIsVisible
+$ARGUMENTS$
+     <lVisible> determines if the mouse should be visible.  Set to true
+     (.T.) to show the mouse cursor and set to false (.F.) to hide it.
+$RETURNS$
+     MSETCURSOR() returns the mouse cursor's previous visibility state if
+     <lVisible> is passed; otherwise, it returns its current visibility
+     state.
+$SEEALSO$
+
+$END$

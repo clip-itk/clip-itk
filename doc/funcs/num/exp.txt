@@ -1,0 +1,59 @@
+$FUNCNAME$
+  EXP()
+$CATEGORY$
+  NUMERIC
+$SUMMARY$
+   Calculate e**x
+$LANG_RU$
+   Вычисляет e в степени x.
+$SYNTAX$
+     EXP(<nExponent>) --> nAntilogarithm
+$LANG_RU$
+     EXP(<значение>) --> е в степени <значение>
+$ARGUMENTS$
+     <nExponent> is the natural logarithm for which a numeric value is to
+     be calculated.
+$LANG_RU$
+     <значение> - показатель степени, в которую необходимо возвести e.
+$RETURNS$
+     EXP() returns a numeric value that is equivalent to the value e raised
+     to the specified power.
+$LANG_RU$
+     EXP() возвращает числовое значение, равное е в заданной степени.
+$DESCRIPTION$
+     EXP() is a mathematical function that calculates the value, y, (the
+     antilogarithm) of the following equation,
+
+     e**x = y
+
+     where e is the base of natural logarithms (2.71828...) and x is
+     <nExponent>.  The maximum value of <nExponent> is 45 before a numeric
+     overflow occurs.  EXP() and LOG() are inverse functions.
+
+     The number of decimal places displayed is determined solely by SET
+     DECIMALS regardless of the current SET FIXED value.
+$LANG_RU$
+     EXP() является математической функцией, которая вычисляет е**x,
+     где е - основание натурального логарифма, а х - числовое значение.
+     Максимальное значение выражения <значение> равно 45.  При больших
+     значениях экспоненты происходит числовое переполнение.  EXP() и LOG()
+     являются взаимно обратными функциями. Число знаков, выводимых на
+     дисплей после десятичной точки, определяется командой SET DECIMALS,
+     при этом текущее значение SET FIXED не учитывается.
+$EXAMPLES$
+       This example demonstrates several invocations of EXP():
+
+	? EXP(1)                       // Result: 2.72
+	SET DECIMALS TO 10
+	? EXP(1)                       // Result: 2.7182818285
+	? LOG(EXP(1))                  // Result: 1.0000000000
+$LANG_RU$
+      В примере демонстрируется несколько вызовов EXP():
+
+       ? EXP(1)                  // Результат: 2.72
+       SET DECIMALS TO 10
+       ? EXP(1)                  // Результат: 2.7182818285
+       ? LOG(EXP(1))             // Результат: 1.0000000000
+$SEEALSO$
+  LOG()
+$END$

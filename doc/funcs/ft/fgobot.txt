@@ -1,0 +1,40 @@
+$FUNCNAME$
+   FT_FGOBOT()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Go to the last record in a text file
+$SYNTAX$
+
+   FT_FGOBOT() -> NIL
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   NIL
+
+$DESCRIPTION$
+
+   This function moves the record pointer to the last record of the
+   file in the currently selected text file workarea.
+
+   If a read error occurs ^ft_fError()^n will contain the error code.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+$EXAMPLES$
+
+   // read last line
+   FT_FUSE( "text.c" )
+
+   FT_FGOBOT()
+
+   ? FT_FREADLN()
+
+$SEEALSO$
+   FT_FSELECT(),FT_FUSE(),FT_FGOTOP(),FT_FRECNO(),FT_FREADLN()
+$END$
+

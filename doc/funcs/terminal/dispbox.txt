@@ -1,0 +1,167 @@
+$FUNCNAME$
+  DISPBOX()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Display a box on the screen
+$LANG_RU$
+   Формирует на экране прямоугольную рамку.
+$SYNTAX$
+     DISPBOX(<nTop>, <nLeft>, <nBottom>, <nRight>,
+	[<cnBoxString>], [<cColorString>]) --> NIL
+$LANG_RU$
+     DISPBOX( <верхняя строка>, <левая колонка>,
+	  <нижняя строка>, <правая колонка>, [<строка рамки>],
+	  [<строка цвета>] ) --> NIL
+$ARGUMENTS$
+     <nTop>, <nLeft>, <nBottom>, and <nRight> define the
+     coordinates of the box.  DISPBOX() draws a box using row values from
+     zero to MAXROW(), and column values from zero to MAXCOL().  If <nBottom>
+     and <nRight> are larger than MAXROW() and MAXCOL(), the bottom-right
+     corner is drawn off the screen.
+
+     <cnBoxString> is a numeric or character expression that defines the
+     border characters of the box.  If specified as a numeric expression, a
+     value of 1 displays a single-line box and a value of 2 displays a
+     double-line box.  All other numeric values display a single-line box.
+
+     If <cnBoxString> is a character expression, it specifies the characters
+     to be used in drawing the box.  This is a string of eight border
+     characters and a fill character.  If <cnBoxString> is specified as a
+     single character, that character is used to draw the whole box.
+
+     If this argument is not specified, a single-line box is drawn.
+
+     <cColorString> defines the display color of the box that is drawn.
+     If not specified, the box is drawn using the standard color setting of
+     the current system color as defined by SETCOLOR().
+$LANG_RU$
+     <верхняя строка>, <левая колонка>, <нижняя строка>, <правая колонка>
+     определяют координаты рамки. Граничные значения номеров колонок - от
+     0 до MAXCOL(), граничные значения номеров строк - от 0 до MAXROW().
+     Если выражения <нижняя строка> и <правая колонка> больше, чем
+     значения MAXROW() и MAXCOL() соответственно, то нижний правый угол
+     будет размещен за видимой частью экрана.
+
+     <строка рамки> - числовое или символьное выражение, которое
+     определяет символы изображения рамки. Если задано как числовое
+     выражение, то при значении 1 рисуется одинарная рамка, а при значении
+     2 - двойная рамка.  Все остальные числовые значения рисуют одинарную
+     рамку.
+
+     Если <строка рамки> - символьное выражение, то она задает символы,
+     которые используются для рисования рамки. Это строка из восьми
+     символов изображения границ рамки и одного символа - заполнителя.
+     Если <строка рамки> определяется как один символ, то этот символ
+     используется для рисования всей рамки.
+
+     Если <строка рамки> не задана, рисуется одинарная рамка.
+
+     <строка цвета> - определяет цвета изображаемой рамки. Если <строка
+     цвета> не задана, то рамка рисуется в стандартном цвете текущей
+     цветовой спецификации, заданной функцией SETCOLOR().
+$RETURNS$
+     DISPBOX() always returns NIL.
+$LANG_RU$
+     DISPBOX() всегда возвращает NIL.
+$DESCRIPTION$
+     DISPBOX() is a screen function that draws a box at the specified display
+     coordinates in the specified color.  If you specify <cnBoxString>,
+     DISPBOX() draws a box on the screen using configurable border and fill
+     characters.  DISPBOX() draws the box using <cnBoxString> starting from
+     the upper left-hand corner, proceeding clockwise and filling the screen
+     region with the ninth character.  If the ninth character is not
+     specified, the screen region within the box is not painted.  Existing
+     text and color remain unchanged.
+
+     In cases where cnBoxString respects xClipper conventions, the behavior
+     of DISPBOX() is unchanged.  The behavior of this function can easily be
+     modified to take advantage of graphic mode.  For example, you can
+     replace the standard window frames using single or double lines with new
+     graphical frames that have an impressive 3-D look.  Simply replace the
+     cBoxString parameter using the following:
+
+     CHR(2) + CHR(nColor+1) // draws a box of thickness 16x8x16x8
+     CHR(3) + CHR(nColor+1) // draws a box of thickness 8x8x8x8
+     CHR(4) + CHR(nColor+1) // draws a box of thickness
+
+			    // 16x16x16x16
+     CHR(5) + CHR(nColor+1) // draws a box of thickness 16x8x8x8
+
+     Note that <nColor> is a numeric color representation.  You must add 1 to
+     this value.
+
+     In general, CHR(2) + CHR(nColor+1) can be used instead of xClipper's
+     B_SINGLE or B_DOUBLE defines.
+
+     xClipper graphics comes with two #defines LLG_BOX_GRAY_STD and
+     LLG_BOX_GRAY_SQUARE to allow gray (nColor=7) boxes of width 16x8 or
+     16x16.
+
+     You can completely customize the box by passing chr(1) + ... as the
+     first parameter:
+
+     CHR(1)             + ;  // Box entirely defined
+     CHR(nBackColor+1)  + ;  // Color used as background fill
+     CHR(nLightColor+1) + ;  // Color used to lighten the frame
+     CHR(nDarkColor+1)  + ;  // Color used to darken the frame
+     CHR(nWidthUp)      + ;  // Thickness of upper edge of box
+     CHR(nWidthRight)   + ;  // Thickness of right edge of box
+     CHR(nWidthDown)    + ;  // Thickness of lower edge of box
+     CHR(nWidthLeft)         // Thickness of left edge of box
+
+     After DISPBOX() executes, the cursor is located in the upper corner of
+     the boxed region at <nTop> + 1 and <nLeft> + 1.  ROW() and COL() are
+     also updated to reflect the new cursor position.
+
+     Note that Box.ch, located in \include, provides constants for
+     various border configurations.
+$LANG_RU$
+     DISPBOX - экранная функция, рисует рамку в заданных координатах
+     экрана и в заданных цветах. Если <строка рамки> определена, DISPBOX()
+     рисует рамку на экране, используя граничные и заполняющие символы.
+     DISPBOX() рисует рамку, используя граничные символы из выражения
+     <строка рамки>, если она задана, начиная с верхнего левого угла по
+     направлению часовой стрелки, и заполняет пространство внутри рамки
+     девятым символом.  Если девятый символ не задан, пространство экрана
+     внутри рамки не заполняется, а существующие текст и цвет внутри рамки
+     не изменяются.
+
+     После выполнения функции DISPBOX() курсор занимает положение в
+     верхнем углу рамки с координатами <верхняя строка> + 1 и <левая
+     колонка> + 1.  Значения функций ROW() и COL() отражают новую позицию
+     курсора.
+
+     Различные конфигурации границ рамки определены в файле описаний
+     Box.ch, помещаемом в директорию \include.
+$EXAMPLES$
+       This code example displays a double-line box using a numeric
+	value to specify the box border:
+
+	#define B_SINGLE   1
+	#define B_DOUBLE   2
+	//
+	DISPBOX(1, 1, 10, 10, B_DOUBLE, "BG+/B")
+
+       This example displays a single-line top and double-line side
+	box by specifying border characters with a manifest constant defined
+	in Box.ch:
+
+	#include "Box.ch"
+	//
+	DISPBOX(1, 1, 10, 10, B_SINGLE_DOUBLE, "BG+/B")
+
+       This example displays a box with a 3-D look.  It can be used
+	for graphic mode:
+
+	// Display a box with a 3D look of constant width 16x16x16x16
+	DISPBOX( nTop, nLeft, nBottom, nRight, LLG_BOX_GRAY_SQUARE )
+	// Write some transparent text in the 3D frame
+	GWRITEAT(  nLeft * GMODE()[LLG_MODE_FONT_COL] ,;
+	nTop  * GMODE()[LLG_MODE_FONT_ROW] ,;
+	"This is some Text...",;
+	4,;
+	LLG_MODE_SET; )
+$SEEALSO$
+  SCROLL()
+$END$

@@ -1,0 +1,90 @@
+$FUNCNAME$
+  FCOUNT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the number of fields in the current .dbf file
+$LANG_RU$
+   Возвращает число полей записи текущего (.dbf) файла.
+$SYNTAX$
+     FCOUNT() --> nFields
+$LANG_RU$
+     FCOUNT() --> число полей
+$RETURNS$
+     FCOUNT() returns the number of fields in the database file in the
+     current work area as an integer numeric value.  If there is no database
+     file open, FCOUNT() returns zero.
+$LANG_RU$
+     FCOUNT() возвращает число полей в файле базы данных, открытом в
+     текущей рабочей области как целое числовое значение. Если нет
+     открытого файла базы данных, FCOUNT() возвращает нуль.
+$DESCRIPTION$
+     FCOUNT() is a database function.  It is useful in applications
+     containing data-independent programs that can operate on any database
+     file.  These include generalized import/export and reporting programs.
+     Typically, you use FCOUNT() to establish the upper limit of a FOR...NEXT
+     or DO WHILE loop that processes a single field at a time.
+
+     By default, FCOUNT() operates on the currently selected work area.
+$LANG_RU$
+     FCOUNT() является функцией базы данных. Она используется в прикладных
+     программах, настраиваемых на базы данных с разной структурой записей.
+     К их числу относятся программы с настраиваемым вводом/выводом и
+     программы отчетов.
+
+     Обычно функция FCOUNT() используется для установления верхнего
+     предела для цикла FOR...NEXT или DO WHILE, который обрабатывает один
+     файл за один раз. По умолчанию FCOUNT() обрабатывает файл в текущей
+     (активной) рабочей области. Но если ее использовать как элемент
+     выражения, уточненного алиасом, можно получить данные о количестве
+     полей записи файла базы данных в пассивной рабочей области.
+$EXAMPLES$
+       This example illustrates FCOUNT(), returning the number of
+	fields in the current and an unselected work area:
+
+	USE Sales NEW
+	USE Customer NEW
+	? FCOUNT()                     // Result: 5
+	? Sales->(FCOUNT())            // Result: 8
+
+       This example uses FCOUNT() to DECLARE an array with field
+	information:
+
+	LOCAL aFields := ARRAY(FCOUNT())
+	AFIELDS(aFields)
+
+       This example uses FCOUNT() as the upper boundary of a FOR loop
+	that processes the list of current work area fields:
+
+	LOCAL nField
+	USE Sales NEW
+	FOR nField := 1 TO FCOUNT()
+	   ? FIELD(nField)
+	NEXT
+$LANG_RU$
+      Пример иллюстрирует, как FCOUNT() возвращает число полей в текущей
+       и пассивной рабочей области:
+
+       USE Sales NEW
+       USE Customer NEW
+       ? FCOUNT()                   // Результат: 5
+       ? Sales->(FCOUNT())          // Результат: 8
+
+      В данном примере показано, как использовать FCOUNT(), чтобы описать
+       массив для последующей загрузки в него информации о полях:
+
+       LOCAL aFields := ARRAY(FCOUNT())
+       AFIELDS(aFields)
+
+      В данном примере показано использование FCOUNT() как верхнего
+       предела цикла FOR...NEXT по списку полей записи файла текущей
+       рабочей области:
+
+       LOCAL nField
+       USE Sales NEW
+       FOR nField := 1 TO FCOUNT()
+	  ? FIELD(nField)
+       NEXT
+$SEEALSO$
+  AFIELDS(),FIELDNAME(),TYPE()
+$END$

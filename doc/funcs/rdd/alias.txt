@@ -1,0 +1,68 @@
+$FUNCNAME$
+  ALIAS()
+$CATEGORY$
+  DataBase
+$SUMMARY$
+   Return a specified work area alias
+$LANG_RU$
+   Возвращает алиас заданной рабочей области.
+$SYNTAX$
+     ALIAS([<nWorkArea>]) --> cAlias
+$LANG_RU$
+     ALIAS([<номер рабочей области>]) --> алиас
+$ARGUMENTS$
+     <nWorkArea> is any work area number.
+$LANG_RU$
+     <номер рабочей области> - номер рабочей области.
+$RETURNS$
+
+     ALIAS() returns the alias of the specified work area as a character
+     string in uppercase.  If <nWorkArea> is not specified, the alias of the
+     current work area is returned.  If there is no database file in USE for
+     the specified work area, ALIAS() returns a null string ("").
+
+
+$LANG_RU$
+
+     ALIAS() возвращает алиас заданной рабочей области в виде символьной
+     строки. Если <номер рабочей области> не определен, возвращается алиас
+     текущей рабочей области. Если в заданной рабочей области нет открытой
+     базы данных, ALIAS() возвращает пустую строку ("").
+
+
+$DESCRIPTION$
+
+     ALIAS() is a database function that determines the alias of a specified
+     work area.  An alias is the name assigned to a work area when a database
+     file is USEd.  The actual name assigned is either the name of the
+     database file, or a name explicitly assigned with the ALIAS clause of
+     the USE command.
+
+     ALIAS() is the inverse of the SELECT() function.  ALIAS() returns the
+     alias name given the work area number, and SELECT() returns the work
+     area number given the alias name.
+
+       This example returns the name of the previously selected work
+	area:
+
+	USE File1 NEW ALIAS Test1
+	nOldArea := SELECT()
+	USE File2 NEW ALIAS Test2
+	? ALIAS( nOldArea )            // Returns Test1
+
+
+$LANG_RU$
+
+     ALIAS() - функция работы с базами данных, которую используют с целью
+     определения алиаса для заданной рабочей области. Алиас - это имя,
+     присвоенное рабочей области при открытии в ней базы данных. Этим
+     именем может быть либо имя файла базы данных, либо имя, явно
+     указанное в предложении ALIAS команды USE. Функция ALIAS() является
+     обратной по действию функции SELECT(). ALIAS() возвращает алиас по
+     заданному номеру рабочей области, тогда как функция SELECT()
+     возвращает номер рабочей области по заданному алиасу.
+
+
+$SEEALSO$
+  SELECT(),
+$END$

@@ -1,0 +1,53 @@
+$FUNCNAME$
+   FT_FSKIP()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Move the record pointer to a new position in a text file
+$SYNTAX$
+
+   FT_FSKIP( [ <nLines> ] ) -> nLinesSkipped
+
+$ARGUMENTS$
+
+   <nLines> is the number of lines to skip.  Defaults to 1 if
+   not specified.
+
+$RETURNS$
+
+   The number of lines actually skipped.  If the file's EOF or
+   BOF was encountered before ^b<nLines>^n could be skipped, the
+   return value will be less than ^b<nLines>^n.
+
+$DESCRIPTION$
+
+   This function moves the text file record pointer, similar to
+   the CLIPPER SKIP command.
+
+   Use the return value to determine how many records were actually
+   skipped, for example to write a custom skipper function for
+   TBrowse'g text files.
+
+   If a read error occurs ^ft_fError()^n will contain the error code.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+ $EXAMPLES$
+
+   // display each record of a text file
+
+   FT_FUSE( "text.c" )
+
+   DO WHILE ! FT_FEOF()
+
+      ? FT_FREADLN()
+
+      FT_FSKIP()
+
+   ENDDO
+
+
+$SEEALSO$
+   FT_FRECNO(),FT_FGOTOP()
+$END$
+

@@ -1,0 +1,126 @@
+$FUNCNAME$
+  SUBSTR()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Extract a substring from a character string
+$LANG_RU$
+   Выделяет подстроку из символьной строки.
+$SYNTAX$
+     SUBSTR(<cString>, <nStart>, [<nCount>]) --> cSubstring
+$LANG_RU$
+     SUBSTR(<строка символов>, <начальная позиция>, [<к-во символов>]) --> подстрока
+$ARGUMENTS$
+     <cString> is the character string from which to extract a substring.
+     It can be up to 65,535 (64K) bytes, the maximum character string size in
+     xClipper.
+     <nStart> is the starting position in <cString>.  If <nStart> is
+     positive, it is relative to the leftmost character in <cString>.  If
+     <nStart> is negative, it is relative to the rightmost character in the
+     <cString>.
+     <nCount> is the number of characters to be extracted.  If omitted,
+     the substring begins at <nStart> and continues to the end of the string.
+     If <nCount> is greater than the number of characters from <nStart> to
+     the end of <cString>, the excess numbers are ignored.
+$LANG_RU$
+     <строка символов> - символьная строка, из которой должна быть
+     выделена подстрока. Ее длина не должна превышать 65 535 (64К) байтов,
+     что равняется максимальному размеру символьной строки в xClipper.
+     <начальная позиция> - начальная позиция в строке, заданной аргументом
+     <строка символов>. Если значение аргумента <начальная позиция>
+     положительное, то отсчет ведется от крайнего слева символа в
+     аргументе <строке символов>.
+     Если же значение аргумента <начальная позиция> - отрицательное, то
+     от крайнего справа символа.
+     <к-во символов> - является числом выделяемых символов. Если аргумент
+     опущен, подстрока начинается со значения аргумента <начальная
+     позиция> и продолжается до конца строки. Если значение аргумента
+     <к-во символов> больше числа символов, отсчитываемых от значения
+     аргумента <начальная позиция> до конца строки, определенной
+     аргументом <строка символов>, то излишек игнорируется.
+$RETURNS$
+     SUBSTR() returns a character string.
+$LANG_RU$
+     SUBSTR() возвращает выделенную символьную подстроку.
+$DESCRIPTION$
+     SUBSTR() is a character function that extracts a substring from another
+     character string or memo field.  SUBSTR() is related to the LEFT() and
+     RIGHT() functions which extract substrings beginning with leftmost and
+     rightmost characters in <cString>, respectively.
+
+     The SUBSTR(), RIGHT(), and LEFT() functions are often used with both the
+     AT() and RAT() functions to locate either the first and/or the last
+     position of a substring before extracting it.  They are also used to
+     display or print only a portion of a character string.
+$LANG_RU$
+     SUBSTR() является функцией обработки символьных строк, которая
+     выделяет подстроку из другой символьной строки или memo-поля.
+     SUBSTR() сходна с функциями LEFT() и RIGHT(), которые выделяют
+     подстроки, начиная с крайнего слева или крайнего справа символов
+     аргумента <строка символов>.
+
+     Функции SUBSTR(), RIGHT() и LEFT() часто используются в сочетании с
+     функциями AT() и RAT() для определения первой и (или) последней
+     позиции подстроки до ее выделения. Они также используются для вывода
+     на дисплей или принтер только части символьной строки.
+$EXAMPLES$
+
+       These examples extract the first and last name from a
+	variable:
+
+	cName:= "Biff Styvesent"
+	? SUBSTR(cName, 1, 4)               // Result: Biff
+	? SUBSTR(cName, 6)                  // Result: Styvesent
+	? SUBSTR(cName, LEN(cName) + 2)     // Result: null string
+	? SUBSTR(cName, -9)                  // Result: Styvesent
+	? SUBSTR(cName, -9, 3)               // Result: Sty
+
+       This example uses SUBSTR() with AT() and RAT() to create a
+	user-defined function to extract a file name from a file
+	specification:
+
+	? FileBase("C:\PRG\MYFILE.OBJ")      // Result: MYFILE.OBJ
+
+	FUNCTION FileBase( cFile )
+	   LOCAL nPos
+	   IF (nPos := RAT("\", cFile)) != 0
+	      RETURN SUBSTR(cFile, nPos + 1)
+	   ELSEIF (nPos := AT(":", cFile)) != 0
+	      RETURN SUBSTR(cFile, nPos + 1)
+	   ELSE
+	      RETURN cFile
+	   ENDIF
+
+
+$LANG_RU$
+
+      В данных примерах показано выделение имени и файмилии из
+       переменной:
+
+       cName = "Biff Styvesent"
+       ? SUBSTR(cName, 1, 4)                 // Результат: Biff
+       ? SUBSTR(cName, 6)                    // Результат: Styvesent
+       ? SUBSTR(cName, LEN(cName) + 2)       // Результат: Нулевая строка
+       ? SUBSTR(cName, -9)                   // Результат: Styvesent
+       ? SUBSTR(cName, -9, 3)                // Результат: Sty
+
+      Этот пример показывает использование SUBSTR() в сочетании с AT() и
+       RAT() для создания функции пользователя, выделяющей имена файлов из
+       их спецификации:
+
+       ? FileBase("C:\PRG\MYFILE.OBJ")       // Результат: MYFILE.OBJ
+
+       FUNCTION FileBase( cFile )
+	  LOCAL nPos
+	  IF (nPos := RAT("\", cFile)) != 0
+	     RETURN SUBSTR( cFile, nPos + 1)
+	  ELSEIF (nPos := AT(":", cFile)) != 0
+	     RETURN SUBSTR( cFile, nPos + 1)
+	  ELSE
+	     RETURN cFile
+	  ENDIF
+
+
+$SEEALSO$
+  RAT(),RIGHT(),STR(),AT(),LEFT()
+$END$

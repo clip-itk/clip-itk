@@ -1,0 +1,67 @@
+$FUNCNAME$
+   DefPath()
+$CATEGORY$
+   System, Database,INFO
+$SUMMARY$
+   Returns the true path defined in SET DEFAULT command.
+   $LANG_RU$
+   Возвращает правильный путь, установленный по SET DEFAULT.
+   $LANG_UA$
+   Поверта╨ вЁрний шлях, встановлений командою SET DEFAULT.
+$SYNTAX$
+  DefPath() -> <cPath>
+$ARGNAME$
+$RETURNS$
+   The new path string.
+   $LANG_RU$
+   Новый путь.
+   $LANG_UA$
+   Новий шлях.
+$DESCRIPTION$
+   Returns the path defined in SET DEFAULT command with ending
+   PATH_DELIM or ":" symbol. If SET DEFAULT path isn't defined (empty),
+   nothing is added.
+   $LANG_RU$
+   Возвращает путь, установленный по SET DEFAULT, с завершающим
+   символом PATH_DELIM или :.
+   Если SET DEFAULT специально не задан (пуст), то ничего не добавляет.
+   $LANG_UA$
+   Поверта╨ шлях, встановлений командою SET DEFAULT, Ёз додатковим
+символом
+   PATH_DELIM або ":". Якщо шлях SET DEFAULT не визначений (пустий),
+нЁчого
+   не дода╨ться.
+$EXAMPLES$
+	SET DEFAULT TO c:\FOX
+	? Set(_SET_DEFAULT) // 'c:\fox'
+	? DefPath()         // 'c:\fox\'
+
+	SET DEFAULT TO D
+	? Set(_SET_DEFAULT) // 'D'
+	? DefPath()         // 'D:'
+$PECULIARITIES$
+   DefPath() is undocumented in xClipper.
+   $LANG_RU$
+   Функция DefPath() не документирована (но активно используется) в xClipper.
+   $LANG_UA$
+   ФункцЁя DefPath() не документована (але активно використову╨ться) в xClipper.
+$PLATFORMS$
+   The ending symbol PATH_DELIM depends of platform. It is "\" in DOS/WINDOWS
+   and "/" in UNIX.
+   $LANG_RU$
+   Завершающий символ PATH_DELIM зависит от платформы. Это "\" в DOS/WINDOWS
+   и "/" в UNIX.
+   $LANG_UA$
+   Символ PATH_DELIM залежить вЁд платформи. Це "\" в DOS/WINDOWS
+   та "/" в UNIX.
+$CONFORMS$
+$SEEALSO$
+
+$AUTHOR$
+   Yevgen Bondar
+   $LANG_RU$
+   Евгений Бондарь
+   $LANG_UA$
+   Евгений Бондарь
+
+

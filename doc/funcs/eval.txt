@@ -1,0 +1,113 @@
+$FUNCNAME$
+  EVAL()
+$CATEGORY$
+  CODEBLOCK
+$SUMMARY$
+   Evaluate a code block
+$LANG_RU$
+   Выполняет блок кода.
+$SYNTAX$
+     EVAL(<bBlock>, [<BlockArg list>]) --> LastBlockValue
+$LANG_RU$
+     EVAL(<блок кода>,[<список аргументов>]) --> значение последнего выражения
+$ARGUMENTS$
+     <bBlock> is the code block to be evaluated.
+     <BlockArg list> is a list of arguments to send to the code block
+     before it is evaluated.
+$LANG_RU$
+     <блок кода> является выполняемым блоком кода.
+     <список аргументов> является списком аргументов, которые посылаются в
+     блок кода перед его выполнением.
+$RETURNS$
+     EVAL() returns the value of the last expression within the block.  A
+     code block can return a value of any type.
+$LANG_RU$
+     EVAL() возвращает значение последнего выражения в блоке. Блок кода
+     может возвращать значение любого типа.
+$DESCRIPTION$
+
+     EVAL() is a code block function.  It is the most basic code block
+     evaluation facility in the xClipper system.  A code block is a special
+     data value that refers to a piece of compiled program code.  For more
+     information on code blocks, refer to the "Basic Concepts" chapter in the
+     Programming and Utilities Guide.
+
+     To execute or evaluate a code block, call EVAL() with the block value
+     and any parameters.  The parameters are supplied to the block when it is
+     executed.  Code blocks may be a series of expressions separated by
+     commas.  When a code block is evaluated, the returned value is the value
+     of the last expression in the block.
+
+     The xClipper compiler usually compiles a code block at compile time.
+     There are, however, occasions at runtime when you may need to compile a
+     code block from a character string.  You can do this by using the macro
+     operator (&amp;).
+
+     EVAL() is often used to create iteration functions.  These are functions
+     that apply a block to each member of a data structure.  AEVAL(),
+     ASORT(), ASCAN(), and DBEVAL() are iteration functions (e.g., AEVAL()
+     applies a block to each element within an array).
+
+
+$LANG_RU$
+
+     EVAL() является функцией обработки блока кода. Это наиболее мощное
+     средство в системе xClipper для выполнения блоков кода. Блок кода
+     является особым значением данных, которое относится к части
+     компилированного кода программы. Для получения дополнительной
+     информации по блокам кода читайте главу "Основные концепции".
+
+     Для выполнения блока кода нужно вызвать функцию EVAL(), передав ей
+     блок кода и набор параметров. Параметры передаются блоку перед его
+     выполнением. Блоки кода могут представлять собой последовательность
+     выражений, разделенных запятыми. Когда блок кода выполняется,
+     возвращаемым значением является значение последнего выражения в
+     блоке.
+
+     Блок кода обычно компилируется при компиляции xClipper-программы.
+     Однако бывают случаи, когда во время выполнения программы возникает
+     необходимость компилировать блок кода из символьной строки.
+     (Например, при использовании оператора (&amp;)).
+
+     EVAL() часто используется для создания функций - итераторов. Это
+     такие функции, которые применяют блок к каждому элементу структуры
+     данных. AEVAL(), ASORT(), ASCAN() и DBEVAL() являются функциями -
+     итераторами.  AEVAL(), например, выполняет блок для каждого элемента
+     в массиве.
+
+
+$EXAMPLES$
+
+       This example creates a code block that increments a number,
+	and then evaluates it:
+
+	bBlock := { |nArg| nArg + 1 }
+	? EVAL(bBlock, 1)                     // Result: 2
+
+       This example demonstrates compiling a code block at runtime
+	using the macro operator (&amp;):
+
+	// Compile a string to a block
+	bBlock := &amp;("{ |nArg| nArg + 1 }")
+
+	// Evaluate the block
+	? EVAL(bBlock, 1)                     // Result: 2
+
+
+$LANG_RU$
+
+      В примере показано создание блока кода:
+
+       bBlock := { |nArg| nArg + 1 }
+       ? EVAL(bBlock, 1)                     // Результат: 2
+
+      В следующем примере демонстрируется, как может компилироваться блок
+       кода во время выполнения с помощью использования оператора (&amp;):
+
+       bBlock := &amp;("{ |nArg| nArg + 1 }")    // Транслировать строку блока
+       ? EVAL(bBlock, 1)                     // Выполнить блок
+
+
+$SEEALSO$
+  AEVAL(),ASCAN(),ASORT(),DBEVAL()
+$END$

@@ -1,0 +1,49 @@
+$FUNCNAME$
+  SETPOS()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Move the cursor to a new position
+$LANG_RU$
+   Перемещает курсор в новую позицию.
+$SYNTAX$
+     SETPOS(<nRow>, <nCol>) --> <nRow>
+$LANG_RU$
+     SETPOS(<номер строки>, <номер колонки>) --> NIL
+$ARGUMENTS$
+     <nRow> and <nCol> define the new screen position of the cursor.
+     These values may range from 0, 0 to MAXROW(), MAXCOL().
+$LANG_RU$
+     <номер строки> и <номер колонки> определяют новую позицию курсора на
+     экране. Эти значения могут изменяться в диапазоне от 0, 0 до
+     MAXROW(), MAXCOL().
+$RETURNS$
+     SETPOS() always returns <nRow>
+$LANG_RU$
+     SETPOS() всегда возвращает NIL.
+$DESCRIPTION$
+     SETPOS() is an environment function that moves the cursor to a new
+     position on the screen.  After the cursor is positioned, ROW() and COL()
+     are updated accordingly.  To control the shape and visibility of the
+     cursor, use the SETCURSOR() function.
+$LANG_RU$
+     SETPOS() является функцией среды, которая перемещает курсор на
+     новую позицию на экране. После того, как курсор занял позицию,
+     соответственно корректируются значения ROW() и COL(). Для управления
+     формой и видимостью курсора, служит функция SETCURSOR().
+$EXAMPLES$
+       This example moves the cursor to a new position then displays
+	a string to the screen using a console command, ??:
+
+	SETPOS(1, 1)
+	?? "Hello world"
+$LANG_RU$
+      Этот пример показывает перемещение курсора на новую позицию
+       и последующее выведение на экран строки путем использования
+       диалоговой команды ??:
+
+       SETPOS( 1, 1)
+       ?? "Привет !"
+$SEEALSO$
+  ROW(),SETCURSOR(),COL()
+$END$

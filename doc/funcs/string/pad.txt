@@ -1,0 +1,118 @@
+$FUNCNAME$
+  PAD()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Pad character, date, and numeric values with a fill character
+$LANG_RU$
+   Дополняет CHARACTER, DATE и NUMERIC значения символом-заполнителем.
+$SYNTAX$
+     PADL(<exp>, <nLength>, [<cFillChar>]) --> cPaddedString
+     PADC(<exp>, <nLength>, [<cFillChar>]) --> cPaddedString
+     PADR(<exp>, <nLength>, [<cFillChar>]) --> cPaddedString
+$LANG_RU$
+     PADL( <выражение>,<длина>,[<символ-заполнитель>]) --> дополненная строка.
+     PADC(<выражение>,<длина>,[<символ-заполнитель>]) --> дополненная строка
+     PADR(<выражение>,<длина>,[<символ-заполнитель>]) --> дополненная строка
+$ARGUMENTS$
+     <exp> is a character, numeric, or date value to be padded with a
+     fill character.
+     <nLength> is the length of the character string to be returned.
+     <cFillChar> is the character with which to pad <exp>.  If not
+     specified, the default is a space character.
+$LANG_RU$
+     <выражение> - выражение типа CHARACTER, NUMERIC или DATE, дополняемое
+     символом-заполнителем.
+     <длина> - длина возвращаемой символьной строки.
+     <символ-заполнитель> - символ, которым дополняется <выражение>. Если
+     он не задан, по умолчанию принимается пробел.
+$RETURNS$
+     PADC(), PADL(), and PADR() return the result of <exp> as a character
+     string padded with <cFillChar> to a total length of <nLength>.
+$LANG_RU$
+     PADL(), PADC(), PADR() возвращают символьную строку, которая
+     представляет собой <выражение>, дополненное <символом-заполнителем>
+     до величины, заданной в аргументе <длина>.
+$DESCRIPTION$
+
+     PADC(), PADL(), and PADR() are character functions that pad character,
+     date, and numeric values with a fill character to create a new character
+     string of a specified length.  PADC() centers <exp> within <nLength>
+     adding fill characters to the left and right sides; PADL() adds fill
+     characters on the left side; and PADR() adds fill characters on the
+     right side.  If the length of <exp> exceeds <nLength>, all of the PAD()
+     functions truncate cPaddedString to <nLength>.
+
+     PADC(), PADL(), and PADR() display variable length strings within a
+     fixed length area.  They can be used, for instance, to ensure alignment
+     with consecutive ?? commands.  Another use is to display text to a fixed-
+     width screen area assuring that previous text is completely overwritten.
+
+     PADC(), PADL(), and PADR() are the inverse of the ALLTRIM(), RTRIM(),
+     and LTRIM() functions which trim leading and trailing space from
+     character strings.
+
+
+$LANG_RU$
+
+     PADL(), PADC(), PADR() - функции обработки символов, которые
+     дополняют выражения типа CHARACTER, DATE и NUMERIC
+     символом-заполнителем, создавая новую символьную строку заданной
+     длины. Функция PADC() центрирует значение, заданное в аргументе
+     <выражение>, дополняя его до заданной длины символом-заполнителем
+     и с левой, и с правой стороны.
+
+     PADL() дополняет строку символом-заполнителем с левой стороны;
+     PADR() дополняет строку символом-заполнителем с правой стороны.
+
+     Если длина результирующей строки, определенной аргументом
+     <выражение>, превосходит значение аргумента <длина>, то все
+     функции PAD() укорачивают возвращаемую символьную строку до
+     значения аргумента <длина>.
+
+     Функции PADL(), PADC(), PADR() используются для выдачи на дисплей
+     строк переменной длины внутри фиксированной области. Они могут быть
+     использованы, например, для форматирования вывода информации
+     командами последовательного вывода (??). Если есть уверенность, что
+     предыдущий текст полностью переписан, эти функции можно использовать
+     на дисплее внутри фиксированной области.
+
+     Функции PADL(), PADC(), PADR() являются обратными по отношению к
+     функциям ALLTRIM(), LTRIM() и RTRIM(), которые удаляют пробелы в
+     начале и конце символьной строки.
+
+
+$EXAMPLES$
+
+       This example uses PADR() to format a record number display on
+	a status line filling the allocated space:
+
+	IF EOF()
+	   @ 23, 45 PADR("EOF/" + LTRIM(STR(LASTREC())), 20)
+	ELSEIF BOF()
+	   @ 23, 45 PADR("BOF/" + LTRIM(STR(LASTREC())), 20)
+	ELSE
+	   @ 23, 45 SAY PADR("Record " + LTRIM(STR(RECNO()) ;
+		 + "/" + LTRIM(STR(LASTREC())), 20)
+	ENDIF
+
+
+$LANG_RU$
+
+      В этом примере функция PADR() используется для форматирования
+       вывода на дисплей количества записей в строке статуса путем
+       заполнения свободного пространства пробелами:
+
+       IF EOF()
+	  @ 23, 45 PADR("EOF/" + LTRIM(STR(LASTREC())), 20)
+       ELSEIF BOF()
+	  @ 23, 45 PADR("BOF/" + LTRIM(STR(LASTREC())), 20)
+       ELSE
+	  @ 23, 45 SAY PADR("Record" + LTRIM(STR(RECNO()) + "/" + ;
+	  LTRIM(STR(LASTREC())), 20)
+       ENDIF
+
+
+$SEEALSO$
+  RTRIM(),ALLTRIM(),LTRIM()
+$END$

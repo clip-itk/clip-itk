@@ -1,0 +1,44 @@
+$FUNCNAME$
+	WEIGHTTABLE()
+$CATEGORY$
+	INFO,STRING,DATABASE
+$SUMMARY$
+	Returns the weight table of characters.
+$LANG_RU$
+	Возвращает весовую таблицу символов.
+$SYNTAX$
+	WEIGHTTABLE() 	--> <sTable>
+$ARGUMENTS$
+$RETURNS$
+     Returns the string <sTable> - weight table of characters.
+$LANG_RU$
+     Возвращает строку <sTable>, содержащую весовую таблицу символов.
+$DESCRIPTION$
+
+	WEIGHTTABLE() returns the string <sTable> - weight table. This table
+	contain the "weight" all 256 characters and using for comparison operations, for operations with index mode, for
+	regular expressions and more.
+$LANG_RU$
+
+	WEIGHTTABLE() возвращает строку <sTable>, весовую таблицу. Эта таблица
+	содержит вес всех 256 символов и используется в операциях сравнения строк, индексации, регулярных выражениях и пр.
+$EXAMPLES$
+
+wt := WEIGHTTABLE()
+
+for i=1 to 256
+	? str(i, 3)+": "+as(wt[i])
+next
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформ
+$SEEALSO$
+	WEIGHTASC(), WEIGHTCHR(), ASC()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

@@ -92,7 +92,7 @@ clip_GDK_WINDOWSETCURSOR(ClipMachine * cm)
 
 		if (cursor)
 		{
-			ccur = _register_object(cm,cursor,GDK_OBJECT_CURSOR,NULL,
+			ccur = _register_object(cm,cursor,GDK_TYPE_CURSOR,NULL,
 				(coDestructor)gdk_object_cursor_destructor);
 			ccur->ref_count = 1;
 			_clip_mclone(cm,RETPTR(cm),&ccur->obj);

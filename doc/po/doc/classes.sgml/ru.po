@@ -1,0 +1,2400 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/classes.sgml:2
+msgid "CLIP classes"
+msgstr ""
+
+#: template/./doc/classes.sgml:3
+msgid ""
+"CLIP provide support clipper classes as <command>Get</command>, "
+"<command>Error</command>, <command>CheckBox</command> ....\n"
+"and few new classes:\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:8
+msgid "Base CLIPPER  classes"
+msgstr ""
+
+#: template/./doc/classes.sgml:13
+msgid "New CLIP classes"
+msgstr ""
+
+#: template/./doc/classes.sgml:17
+msgid "Stack"
+msgstr ""
+
+#: template/./doc/classes.sgml:18
+msgid "to control stack of arbitrary data"
+msgstr ""
+
+#: template/./doc/classes.sgml:19
+msgid "Queue"
+msgstr ""
+
+#: template/./doc/classes.sgml:20
+msgid "to control queue of arbitrary data"
+msgstr ""
+
+#: template/./doc/classes.sgml:21
+msgid "SortedArray"
+msgstr ""
+
+#: template/./doc/classes.sgml:22
+msgid "to control sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:23
+msgid "DateTime"
+msgstr ""
+
+#: template/./doc/classes.sgml:24
+msgid "to control date and time"
+msgstr ""
+
+#: template/./doc/classes.sgml:25
+msgid "ListItem"
+msgstr ""
+
+#: template/./doc/classes.sgml:26
+msgid "to control associated in list data values"
+msgstr ""
+
+#: template/./doc/classes.sgml:27
+msgid "IniFile"
+msgstr ""
+
+#: template/./doc/classes.sgml:28
+msgid "to control Windows-likely .ini files"
+msgstr ""
+
+#: template/./doc/classes.sgml:29
+msgid "TEdit"
+msgstr ""
+
+#: template/./doc/classes.sgml:30
+msgid "to control data"
+msgstr ""
+
+#: template/./doc/classes.sgml:36
+msgid "Class Stack"
+msgstr ""
+
+#: template/./doc/classes.sgml:38 template/./doc/classes.sgml:205
+#: template/./doc/classes.sgml:538 template/./doc/classes.sgml:1180
+#: template/./doc/classes.sgml:1762 template/./doc/classes.sgml:3150
+msgid "Class"
+msgstr ""
+
+#: template/./doc/classes.sgml:38
+msgid "are destined to control stack arbitrary data.\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:44 template/./doc/classes.sgml:227
+#: template/./doc/classes.sgml:566 template/./doc/classes.sgml:568
+#: template/./doc/classes.sgml:1198 template/./doc/classes.sgml:1853
+#: template/./doc/classes.sgml:3178 template/./doc/classes.sgml:3181
+msgid "Constructor"
+msgstr ""
+
+#: template/./doc/classes.sgml:48
+msgid "Push data to stack"
+msgstr ""
+
+#: template/./doc/classes.sgml:52
+msgid "Get last data"
+msgstr ""
+
+#: template/./doc/classes.sgml:56
+msgid "Get stack length"
+msgstr ""
+
+#: template/./doc/classes.sgml:60
+msgid "Free stack"
+msgstr ""
+
+#: template/./doc/classes.sgml:70 template/./doc/classes.sgml:98
+#: template/./doc/classes.sgml:128 template/./doc/classes.sgml:153
+#: template/./doc/classes.sgml:177 template/./doc/classes.sgml:265
+#: template/./doc/classes.sgml:293 template/./doc/classes.sgml:326
+#: template/./doc/classes.sgml:360 template/./doc/classes.sgml:394
+#: template/./doc/classes.sgml:428 template/./doc/classes.sgml:465
+#: template/./doc/classes.sgml:499 template/./doc/classes.sgml:630
+#: template/./doc/classes.sgml:659 template/./doc/classes.sgml:712
+#: template/./doc/classes.sgml:745 template/./doc/classes.sgml:796
+#: template/./doc/classes.sgml:840 template/./doc/classes.sgml:898
+#: template/./doc/classes.sgml:938 template/./doc/classes.sgml:978
+#: template/./doc/classes.sgml:1018 template/./doc/classes.sgml:1059
+#: template/./doc/classes.sgml:1101 template/./doc/classes.sgml:1137
+#: template/./doc/classes.sgml:1256 template/./doc/classes.sgml:1335
+#: template/./doc/classes.sgml:1367 template/./doc/classes.sgml:1395
+#: template/./doc/classes.sgml:1428 template/./doc/classes.sgml:1460
+#: template/./doc/classes.sgml:1499 template/./doc/classes.sgml:1531
+#: template/./doc/classes.sgml:1563 template/./doc/classes.sgml:1595
+#: template/./doc/classes.sgml:1627 template/./doc/classes.sgml:1669
+#: template/./doc/classes.sgml:1712 template/./doc/classes.sgml:1982
+#: template/./doc/classes.sgml:2050 template/./doc/classes.sgml:2100
+#: template/./doc/classes.sgml:2152 template/./doc/classes.sgml:2189
+#: template/./doc/classes.sgml:2222 template/./doc/classes.sgml:2264
+#: template/./doc/classes.sgml:2306 template/./doc/classes.sgml:2348
+#: template/./doc/classes.sgml:2391 template/./doc/classes.sgml:2434
+#: template/./doc/classes.sgml:2477 template/./doc/classes.sgml:2520
+#: template/./doc/classes.sgml:2562 template/./doc/classes.sgml:2604
+#: template/./doc/classes.sgml:2639 template/./doc/classes.sgml:2677
+#: template/./doc/classes.sgml:2720 template/./doc/classes.sgml:2753
+#: template/./doc/classes.sgml:2817 template/./doc/classes.sgml:2867
+#: template/./doc/classes.sgml:2903 template/./doc/classes.sgml:2933
+#: template/./doc/classes.sgml:2968 template/./doc/classes.sgml:3013
+#: template/./doc/classes.sgml:3052 template/./doc/classes.sgml:3102
+#: template/./doc/classes.sgml:3216 template/./doc/classes.sgml:3256
+#: template/./doc/classes.sgml:3290 template/./doc/classes.sgml:3318
+#: template/./doc/classes.sgml:3359 template/./doc/classes.sgml:3414
+#: template/./doc/classes.sgml:3485 template/./doc/classes.sgml:3529
+msgid "Parameters"
+msgstr ""
+
+#: template/./doc/classes.sgml:71 template/./doc/classes.sgml:129
+#: template/./doc/classes.sgml:154 template/./doc/classes.sgml:178
+#: template/./doc/classes.sgml:266 template/./doc/classes.sgml:327
+#: template/./doc/classes.sgml:361 template/./doc/classes.sgml:395
+#: template/./doc/classes.sgml:429 template/./doc/classes.sgml:466
+#: template/./doc/classes.sgml:500 template/./doc/classes.sgml:631
+#: template/./doc/classes.sgml:1102 template/./doc/classes.sgml:1138
+#: template/./doc/classes.sgml:2190 template/./doc/classes.sgml:2904
+#: template/./doc/classes.sgml:3103 template/./doc/classes.sgml:3291
+#: template/./doc/classes.sgml:3319 template/./doc/classes.sgml:3486
+msgid "No parameters"
+msgstr ""
+
+#: template/./doc/classes.sgml:73 template/./doc/classes.sgml:106
+#: template/./doc/classes.sgml:131 template/./doc/classes.sgml:156
+#: template/./doc/classes.sgml:181 template/./doc/classes.sgml:268
+#: template/./doc/classes.sgml:301 template/./doc/classes.sgml:329
+#: template/./doc/classes.sgml:363 template/./doc/classes.sgml:397
+#: template/./doc/classes.sgml:431 template/./doc/classes.sgml:468
+#: template/./doc/classes.sgml:502 template/./doc/classes.sgml:633
+#: template/./doc/classes.sgml:672 template/./doc/classes.sgml:717
+#: template/./doc/classes.sgml:758 template/./doc/classes.sgml:805
+#: template/./doc/classes.sgml:858 template/./doc/classes.sgml:907
+#: template/./doc/classes.sgml:947 template/./doc/classes.sgml:987
+#: template/./doc/classes.sgml:1027 template/./doc/classes.sgml:1068
+#: template/./doc/classes.sgml:1104 template/./doc/classes.sgml:1140
+#: template/./doc/classes.sgml:1292 template/./doc/classes.sgml:1338
+#: template/./doc/classes.sgml:1370 template/./doc/classes.sgml:1398
+#: template/./doc/classes.sgml:1431 template/./doc/classes.sgml:1463
+#: template/./doc/classes.sgml:1502 template/./doc/classes.sgml:1534
+#: template/./doc/classes.sgml:1566 template/./doc/classes.sgml:1598
+#: template/./doc/classes.sgml:1630 template/./doc/classes.sgml:1677
+#: template/./doc/classes.sgml:1720 template/./doc/classes.sgml:2023
+#: template/./doc/classes.sgml:2069 template/./doc/classes.sgml:2123
+#: template/./doc/classes.sgml:2160 template/./doc/classes.sgml:2192
+#: template/./doc/classes.sgml:2230 template/./doc/classes.sgml:2269
+#: template/./doc/classes.sgml:2311 template/./doc/classes.sgml:2353
+#: template/./doc/classes.sgml:2396 template/./doc/classes.sgml:2439
+#: template/./doc/classes.sgml:2482 template/./doc/classes.sgml:2525
+#: template/./doc/classes.sgml:2567 template/./doc/classes.sgml:2609
+#: template/./doc/classes.sgml:2644 template/./doc/classes.sgml:2682
+#: template/./doc/classes.sgml:2725 template/./doc/classes.sgml:2761
+#: template/./doc/classes.sgml:2822 template/./doc/classes.sgml:2875
+#: template/./doc/classes.sgml:2906 template/./doc/classes.sgml:2941
+#: template/./doc/classes.sgml:2976 template/./doc/classes.sgml:3025
+#: template/./doc/classes.sgml:3060 template/./doc/classes.sgml:3105
+#: template/./doc/classes.sgml:3224 template/./doc/classes.sgml:3264
+#: template/./doc/classes.sgml:3293 template/./doc/classes.sgml:3321
+#: template/./doc/classes.sgml:3371 template/./doc/classes.sgml:3430
+#: template/./doc/classes.sgml:3488 template/./doc/classes.sgml:3537
+msgid "Return value"
+msgstr ""
+
+#: template/./doc/classes.sgml:75
+msgid ""
+"\n"
+"\t\tStack object.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:78 template/./doc/classes.sgml:111
+#: template/./doc/classes.sgml:136 template/./doc/classes.sgml:161
+#: template/./doc/classes.sgml:187 template/./doc/classes.sgml:273
+#: template/./doc/classes.sgml:306 template/./doc/classes.sgml:334
+#: template/./doc/classes.sgml:368 template/./doc/classes.sgml:402
+#: template/./doc/classes.sgml:436 template/./doc/classes.sgml:473
+#: template/./doc/classes.sgml:507 template/./doc/classes.sgml:638
+#: template/./doc/classes.sgml:677 template/./doc/classes.sgml:722
+#: template/./doc/classes.sgml:764 template/./doc/classes.sgml:811
+#: template/./doc/classes.sgml:864 template/./doc/classes.sgml:913
+#: template/./doc/classes.sgml:953 template/./doc/classes.sgml:992
+#: template/./doc/classes.sgml:1032 template/./doc/classes.sgml:1073
+#: template/./doc/classes.sgml:1109 template/./doc/classes.sgml:1145
+#: template/./doc/classes.sgml:1297 template/./doc/classes.sgml:1343
+#: template/./doc/classes.sgml:1375 template/./doc/classes.sgml:1403
+#: template/./doc/classes.sgml:1436 template/./doc/classes.sgml:1468
+#: template/./doc/classes.sgml:1507 template/./doc/classes.sgml:1539
+#: template/./doc/classes.sgml:1571 template/./doc/classes.sgml:1603
+#: template/./doc/classes.sgml:1635 template/./doc/classes.sgml:1682
+#: template/./doc/classes.sgml:1725 template/./doc/classes.sgml:2028
+#: template/./doc/classes.sgml:2074 template/./doc/classes.sgml:2129
+#: template/./doc/classes.sgml:2166 template/./doc/classes.sgml:2198
+#: template/./doc/classes.sgml:2236 template/./doc/classes.sgml:2274
+#: template/./doc/classes.sgml:2316 template/./doc/classes.sgml:2358
+#: template/./doc/classes.sgml:2401 template/./doc/classes.sgml:2444
+#: template/./doc/classes.sgml:2487 template/./doc/classes.sgml:2530
+#: template/./doc/classes.sgml:2572 template/./doc/classes.sgml:2614
+#: template/./doc/classes.sgml:2649 template/./doc/classes.sgml:2687
+#: template/./doc/classes.sgml:2730 template/./doc/classes.sgml:2766
+#: template/./doc/classes.sgml:2827 template/./doc/classes.sgml:2881
+#: template/./doc/classes.sgml:2911 template/./doc/classes.sgml:2947
+#: template/./doc/classes.sgml:2981 template/./doc/classes.sgml:3031
+#: template/./doc/classes.sgml:3065 template/./doc/classes.sgml:3110
+#: template/./doc/classes.sgml:3229 template/./doc/classes.sgml:3269
+#: template/./doc/classes.sgml:3298 template/./doc/classes.sgml:3326
+#: template/./doc/classes.sgml:3377 template/./doc/classes.sgml:3435
+#: template/./doc/classes.sgml:3493 template/./doc/classes.sgml:3542
+msgid "Description"
+msgstr ""
+
+#: template/./doc/classes.sgml:80
+msgid ""
+"\n"
+"\t\t<command>StackNew()</command> is constructs and returns new stack "
+"object.\n"
+"\t\tThat class can be used to storage, access, control arbitrary data.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:84 template/./doc/classes.sgml:116
+#: template/./doc/classes.sgml:142 template/./doc/classes.sgml:166
+#: template/./doc/classes.sgml:193 template/./doc/classes.sgml:281
+#: template/./doc/classes.sgml:313 template/./doc/classes.sgml:343
+#: template/./doc/classes.sgml:377 template/./doc/classes.sgml:411
+#: template/./doc/classes.sgml:445 template/./doc/classes.sgml:479
+#: template/./doc/classes.sgml:513 template/./doc/classes.sgml:644
+#: template/./doc/classes.sgml:693 template/./doc/classes.sgml:727
+#: template/./doc/classes.sgml:779 template/./doc/classes.sgml:822
+#: template/./doc/classes.sgml:879 template/./doc/classes.sgml:919
+#: template/./doc/classes.sgml:959 template/./doc/classes.sgml:1000
+#: template/./doc/classes.sgml:1040 template/./doc/classes.sgml:1082
+#: template/./doc/classes.sgml:1116 template/./doc/classes.sgml:1152
+#: template/./doc/classes.sgml:1305 template/./doc/classes.sgml:1349
+#: template/./doc/classes.sgml:1382 template/./doc/classes.sgml:1410
+#: template/./doc/classes.sgml:1443 template/./doc/classes.sgml:1479
+#: template/./doc/classes.sgml:1513 template/./doc/classes.sgml:1545
+#: template/./doc/classes.sgml:1577 template/./doc/classes.sgml:1609
+#: template/./doc/classes.sgml:1641 template/./doc/classes.sgml:1689
+#: template/./doc/classes.sgml:1732 template/./doc/classes.sgml:2036
+#: template/./doc/classes.sgml:2080 template/./doc/classes.sgml:2135
+#: template/./doc/classes.sgml:2172 template/./doc/classes.sgml:2203
+#: template/./doc/classes.sgml:2243 template/./doc/classes.sgml:2282
+#: template/./doc/classes.sgml:2324 template/./doc/classes.sgml:2367
+#: template/./doc/classes.sgml:2410 template/./doc/classes.sgml:2453
+#: template/./doc/classes.sgml:2496 template/./doc/classes.sgml:2538
+#: template/./doc/classes.sgml:2580 template/./doc/classes.sgml:2623
+#: template/./doc/classes.sgml:2658 template/./doc/classes.sgml:2696
+#: template/./doc/classes.sgml:2736 template/./doc/classes.sgml:2782
+#: template/./doc/classes.sgml:2833 template/./doc/classes.sgml:2889
+#: template/./doc/classes.sgml:2917 template/./doc/classes.sgml:2953
+#: template/./doc/classes.sgml:2990 template/./doc/classes.sgml:3037
+#: template/./doc/classes.sgml:3079 template/./doc/classes.sgml:3118
+#: template/./doc/classes.sgml:3240 template/./doc/classes.sgml:3278
+#: template/./doc/classes.sgml:3305 template/./doc/classes.sgml:3344
+#: template/./doc/classes.sgml:3384 template/./doc/classes.sgml:3443
+#: template/./doc/classes.sgml:3501 template/./doc/classes.sgml:3550
+msgid "Example"
+msgstr ""
+
+#: template/./doc/classes.sgml:102 template/./doc/classes.sgml:297
+msgid ""
+"\n"
+"\t\ta data to be insert.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:108
+msgid ""
+"\n"
+"\t\tReturn value is a number pushed element in to stack.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:113
+msgid ""
+"\n"
+"\t\t<command>Push()</command> is inserted some data to the end of stack.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:133
+msgid ""
+"\n"
+"\t\tA last pushed element in to stack or NIL if stack is empty.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:138
+msgid ""
+"\n"
+"\t\t<command>Pop()</command> is return last pushed data in to stack. If "
+"stack has no\n"
+"\t\telements function return NIL\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:158
+msgid ""
+"\n"
+"\t\tA elements count of stack.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:163
+msgid ""
+"\n"
+"\t\t<command>Len()</command> is return  elements count in stack.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:183
+msgid ""
+"\n"
+"\t\tAlways <command>TRUE</command>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:189
+msgid ""
+"\n"
+"\t\t<command>Free()</command> is removed all elements from stack.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:204
+msgid "Class Queue"
+msgstr ""
+
+#: template/./doc/classes.sgml:205
+msgid ""
+"are destined to control\n"
+"queues make from arbitrary data\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:208 template/./doc/classes.sgml:540
+#: template/./doc/classes.sgml:1182 template/./doc/classes.sgml:1769
+#: template/./doc/classes.sgml:3153
+msgid "Attributes"
+msgstr ""
+
+#: template/./doc/classes.sgml:212 template/./doc/classes.sgml:544
+#: template/./doc/classes.sgml:1186 template/./doc/classes.sgml:1773
+#: template/./doc/classes.sgml:3157
+msgid "String, contain class name. In this case "
+msgstr ""
+
+#: template/./doc/classes.sgml:215
+msgid "Array, array of some data"
+msgstr ""
+
+#: template/./doc/classes.sgml:223 template/./doc/classes.sgml:562
+#: template/./doc/classes.sgml:1194 template/./doc/classes.sgml:1849
+#: template/./doc/classes.sgml:3174
+msgid "Methods"
+msgstr ""
+
+#: template/./doc/classes.sgml:230
+msgid "Put new data to queue"
+msgstr ""
+
+#: template/./doc/classes.sgml:234
+msgid "Get data from queue"
+msgstr ""
+
+#: template/./doc/classes.sgml:238
+msgid "Read first data of queue"
+msgstr ""
+
+#: template/./doc/classes.sgml:242
+msgid "Read last data of queue"
+msgstr ""
+
+#: template/./doc/classes.sgml:246
+msgid "Get queue length"
+msgstr ""
+
+#: template/./doc/classes.sgml:250
+msgid "To free queue"
+msgstr ""
+
+#: template/./doc/classes.sgml:254
+msgid "Check queue to empty"
+msgstr ""
+
+#: template/./doc/classes.sgml:270
+msgid ""
+"\n"
+"\t\tReturns new Queue object.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:275
+msgid ""
+"\n"
+"\t\t<command>QueueNew()</command>\n"
+"\t\tis constructs and returns new <command>Queue</command> object.\n"
+"\t\tThat class can be use to manipulating( put, get, read) queues\n"
+"\t\tmade from arbitrary types data.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:303
+msgid ""
+"\n"
+"\t\tReturns number new element into queue.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:308
+msgid ""
+"\n"
+"\t\t<command>Put()</command>\n"
+"\t\tis inserts new element into queue immediately after\n"
+"\t\tto the last element and returns it number.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:331 template/./doc/classes.sgml:365
+msgid ""
+"\n"
+"\t\tReturns a data - first queues element.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:336
+msgid ""
+"\n"
+"\t\t<command>Get()</command>\n"
+"\t\tis returns first queues element and removes it from queue.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:340
+msgid ""
+"\n"
+"\t\tIf queue is empty <command>Get()</command> returns NIL.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:370
+msgid ""
+"\n"
+"\t\t<command>Head()</command>\n"
+"\t\tis returns first queues element but not removes it from queue.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:374
+msgid ""
+"\n"
+"\t\tIf queue is empty <command>Head()</command> returns NIL.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:399
+msgid ""
+"\n"
+"\t\tReturns a data - last queues element.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:404
+msgid ""
+"\n"
+"\t\t<command>Tail()</command>\n"
+"\t\tis returns last queues element but not removes it from queue.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:408
+msgid ""
+"\n"
+"\t\tIf queue is empty <command>Tail()</command> returns NIL.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:433
+msgid ""
+"\n"
+"\t\tReturns a quantity queues elements.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:438
+msgid ""
+"\n"
+"\t\t<command>Len()</command>\n"
+"\t\tis returns a quantity queues elements.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:442
+msgid ""
+"\n"
+"\t\tIf queue is empty <command>Len()</command> returns zero.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:470 template/./doc/classes.sgml:3062
+msgid ""
+"\n"
+"\t\tAlways returns .T.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:475
+msgid ""
+"\n"
+"\t\t<command>Free()</command>\n"
+"\t\tis frees a queue and returns .T.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:504
+msgid ""
+"\n"
+"\t\tReturns .T. if queue is empty and .F. if other.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:509
+msgid ""
+"\n"
+"\t\t<command>Empty()</command>\n"
+"\t\tis checks a queue by empty and returns .T. if queue is empty or .F. if "
+"other.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:536
+msgid "Class SortedArray"
+msgstr ""
+
+#: template/./doc/classes.sgml:538
+msgid "are destined to control of sorted array.\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:547
+msgid "An array of items for sorting"
+msgstr ""
+
+#: template/./doc/classes.sgml:550
+msgid "When error arisen, "
+msgstr ""
+
+#: template/./doc/classes.sgml:550
+msgid " contains error description"
+msgstr ""
+
+#: template/./doc/classes.sgml:553
+msgid "If .t. then item founded by seeking."
+msgstr ""
+
+#: template/./doc/classes.sgml:554
+msgid "See methods "
+msgstr ""
+
+#: template/./doc/classes.sgml:572
+msgid "Add new element to sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:576
+msgid "Length of sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:580
+msgid "Delete element from sorted array by key and values"
+msgstr ""
+
+#: template/./doc/classes.sgml:584
+msgid "Delete element from sorted array by index"
+msgstr ""
+
+#: template/./doc/classes.sgml:589
+msgid "Seek element in sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:593
+msgid "Hard seek element in sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:597
+msgid "Soft seek element in sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:601
+msgid "Get element keys by index in sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:605
+msgid "Get element data by index in sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:609
+msgid "Get item are sorted array by index"
+msgstr ""
+
+#: template/./doc/classes.sgml:613
+msgid "Get first item data are sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:618
+msgid "Get last item data are sorted array"
+msgstr ""
+
+#: template/./doc/classes.sgml:635
+msgid ""
+"\n"
+"\t\tSortedArray object.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:640
+msgid ""
+"\n"
+"\t\t<command>tSortedArrayNew()</command> is constructs and returns new "
+"sorted array object.\n"
+"\t\tThat class can be used to storage, access, control sorted data.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:663
+msgid ""
+"\n"
+"\t\ta sorting key\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:667
+msgid ""
+"\n"
+"\t\ta value to be added in to <command>items</command>.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:674
+msgid ""
+"\n"
+"\t\tIf adding is success then returns value is .T. , else is .F.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:679
+msgid ""
+"\n"
+"\t\t<command>Add()</command> is added new item to class SortedArray with "
+"key\n"
+"\t\t<command>nKey</command> and value <command>Value</command>. Every item\n"
+"\t\tof sorted array is array containes only two elements: key (<![CDATA"
+"[<nKey>]]>)\n"
+"\t\tand value (<![CDATA[<Value>]]>).\n"
+"\t\tItems with\n"
+"\t\tlow keys <command>nKey</command> are sorted toward the top of the "
+"array.\n"
+"\t\tIf <command>nKey</command> or <command>Value</command> not specified "
+"then\n"
+"\t\tattribute <command>error</command> will be contain error description.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:689
+msgid ""
+"\n"
+"\t\tYou can add several items with identical keys. In this case class "
+"SortedArray\n"
+"\t\twill contain all these items and item can be inserted at suitable "
+"place.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:714 template/./doc/classes.sgml:2266
+#: template/./doc/classes.sgml:2308 template/./doc/classes.sgml:2350
+#: template/./doc/classes.sgml:2393 template/./doc/classes.sgml:2436
+#: template/./doc/classes.sgml:2479 template/./doc/classes.sgml:2522
+#: template/./doc/classes.sgml:2564 template/./doc/classes.sgml:2606
+#: template/./doc/classes.sgml:2641 template/./doc/classes.sgml:2679
+#: template/./doc/classes.sgml:2722 template/./doc/classes.sgml:2819
+msgid ""
+"\n"
+"\t\tNo parameters\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:719
+msgid ""
+"\n"
+"\t\tReturn sorted array length\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:724
+msgid ""
+"\n"
+"\t\t<command>Len()</command> is returned sorted array length.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:749
+msgid ""
+"\n"
+"\t\ta specified key value\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:753
+msgid ""
+"\n"
+"\t\ta value to be delete from sorted array\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:760
+msgid ""
+"\n"
+"\t\tIn successfully return value is <command>.T.</command> else\n"
+"\t\t<command>.F.</command>\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:766
+msgid ""
+"\n"
+"\t\t<command>Del(), Delete(), DelKey()</command> is deleted item from\n"
+"\t\t sorted array by key and value.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:770
+msgid ""
+"\n"
+"\t\t If parameters <![CDATA[<nKey>]]> or <![CDATA[<Value>]]> not\n"
+"\t\t spacified then methods return .F. and write error description to\n"
+"\t\t attribute <command>Error</command>.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:775
+msgid ""
+"\n"
+"\t\t When element with <![CDATA[<nKey>]]> and <![CDATA[<Value>]]> not\n"
+"\t\t found methods return .F. and write error description to attribute "
+"<command>Error</command>.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:800
+msgid ""
+"\n"
+"\t\titems index in sorted array\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:807
+msgid ""
+"\n"
+"\t\tIf successfully return value is <command>.T.</command> else\n"
+"\t\t<command>.F.</command>\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:813
+msgid ""
+"\n"
+"\t\t<command>DelItem()</command> is removed item from\n"
+"\t\t sorted array by index.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:817
+msgid ""
+"\n"
+"\t\tIf <command>nPos</command> without of bound sorted array then\n"
+"\t\tmethod return <command>.F.</command> and write to attribute\n"
+"\t\t<command>Error</command> error descriptions.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:844 template/./doc/classes.sgml:902
+#: template/./doc/classes.sgml:942
+msgid ""
+"\n"
+"\t\ta specified key value that you search\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:848
+msgid ""
+"\n"
+"\t\tis an optional logical value that specifies whether a soft seek\n"
+"\t\tis to be perfomed. This determines how the sorted array is\n"
+"\t\tpositioned if the specified key not found.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:853
+msgid ""
+"\n"
+"\t\tBy default <![CDATA[<lSoft>]]> is .F.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:860 template/./doc/classes.sgml:909
+#: template/./doc/classes.sgml:949
+msgid ""
+"\n"
+"\t\tIs returns item index whose key value is equal <![CDATA[<nKey>]]> if "
+"specified\n"
+"\t\tkey value was found, otherwise it returns Len()+1.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:866
+msgid ""
+"\n"
+"\t\t<command>Seek()</command> moves to the first item whose key is\n"
+"\t\tequal to <![CDATA[<nKey>]]>. If such a item is found, it becomes to "
+"current\n"
+"\t\titem and Seek() returns item index in sorted array,\n"
+"\t\tattribute <command>Found</command> sets to .T., otherwise it returns\n"
+"\t\tLen() +1 position and attribute <command>Found</command> sets to .F. "
+"The\n"
+"\t\tpositioning in sorted array is as followes: for normal (hard) seek "
+"(lSoft is .F.),\n"
+"\t\tthe sorted array is positioned to Len() + 1; for a soft seek,\n"
+"\t\tthe sorted array positioned to the first iten whose key value is\n"
+"\t\tgreather than specified key <![CDATA[<nKey>]]>. If no such item exist, "
+"the\n"
+"\t\tsorted array positioned to Len()+1 and returns Len() + 1 and\n"
+"\t\tsets attribute <command>Found</command> sets to .F.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:915
+msgid ""
+"\n"
+"\t\t<command>SoftSeek()</command> calls method <link linkend=\"class-sarray-"
+"seek\">Seek()</link> as\n"
+"\t\tSeek(<![CDATA[<nKey>]]>, .T.)\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:955
+msgid ""
+"\n"
+"\t\t<command>HardSeek()</command> calls method <link linkend=\"class-sarray-"
+"seek\">Seek()</link> as\n"
+"\t\tSeek(<![CDATA[<nKey>]]>, .F.)\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:982 template/./doc/classes.sgml:1022
+#: template/./doc/classes.sgml:1063
+msgid ""
+"\n"
+"\t\titem index in sorted array\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:989
+msgid ""
+"\n"
+"\t\tIs returns key value by item index.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:994
+msgid ""
+"\n"
+"\t\t<command>GetKey()</command> gets key value by item index in sorted array "
+"and returns it if\n"
+"\t\tfound, otherwise it returns <command>NIL</command>. If index is without "
+"of\n"
+"\t\tbound sorted array or is <command>NIL</command> then attribute "
+"<command>Error</command>\n"
+"\t\tto be keep error description.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1029
+msgid ""
+"\n"
+"\t\tIs returns data value by item index.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1034
+msgid ""
+"\n"
+"\t\t<command>GetData()</command> gets data value by item index in sorted "
+"array and returns it if\n"
+"\t\tfound, otherwise it returns <command>NIL</command>. If index is without "
+"of\n"
+"\t\tbound sorted array or is <command>NIL</command> then attribute "
+"<command>Error</command>\n"
+"\t\tto be keep error description.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1070
+msgid ""
+"\n"
+"\t\tIs returns array that contain key value and data value.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1075
+msgid ""
+"\n"
+"\t\t<command>GetItem()</command> gets key value and data value by item index "
+"in sorted array\n"
+"\t\tand returns array containes it.\n"
+"\t\tIn other case it returns <command>NIL</command>. If index is without of\n"
+"\t\tbound sorted array or is <command>NIL</command> then attribute "
+"<command>Error</command>\n"
+"\t\tto be keep error description.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1106
+msgid ""
+"\n"
+"\t\tIs returns data value of first item sorted array.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1111
+msgid ""
+"\n"
+"\t\t<command>GetFirst()</command> gets data value first items sorted array\n"
+"\t\tand returns it.\n"
+"\t\tIf no items in sorted array it returns <command>NIL</command>.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1142
+msgid ""
+"\n"
+"\t\tIs returns data value of last item sorted array.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1147
+msgid ""
+"\n"
+"\t\t<command>GetLast()</command> gets data value last added items in to "
+"sorted array\n"
+"\t\tand returns it.\n"
+"\t\tIf no items in sorted array it returns <command>NIL</command>.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1178
+msgid "Class DateTime"
+msgstr ""
+
+#: template/./doc/classes.sgml:1180
+msgid "are destined to control of date and time values.\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:1189
+msgid "A data contain DateTime value."
+msgstr ""
+
+#: template/./doc/classes.sgml:1201
+msgid "Get date"
+msgstr ""
+
+#: template/./doc/classes.sgml:1205
+msgid "Get time"
+msgstr ""
+
+#: template/./doc/classes.sgml:1209
+msgid "Get year"
+msgstr ""
+
+#: template/./doc/classes.sgml:1213
+msgid "Get month"
+msgstr ""
+
+#: template/./doc/classes.sgml:1217
+msgid "Get day"
+msgstr ""
+
+#: template/./doc/classes.sgml:1221
+msgid "Get hours"
+msgstr ""
+
+#: template/./doc/classes.sgml:1225
+msgid "Get minutes"
+msgstr ""
+
+#: template/./doc/classes.sgml:1230
+msgid "Get secundes"
+msgstr ""
+
+#: template/./doc/classes.sgml:1234
+msgid "Get milisecundes"
+msgstr ""
+
+#: template/./doc/classes.sgml:1238
+msgid "Normalize date value"
+msgstr ""
+
+#: template/./doc/classes.sgml:1242
+msgid "Addition date value to DateTime date-object"
+msgstr ""
+
+#: template/./doc/classes.sgml:1246
+msgid "Subtraction date value from DateTime date-object"
+msgstr ""
+
+#: template/./doc/classes.sgml:1258
+msgid ""
+"\n"
+"\tIf some parameters not specified then it set to zero.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1263
+msgid ""
+"\n"
+"\t\ta new date year\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1267
+msgid ""
+"\n"
+"\t\ta new date month\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1271
+msgid ""
+"\n"
+"\t\ta new date day\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1275
+msgid ""
+"\n"
+"\t\ta new date hours\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1279
+msgid ""
+"\n"
+"\t\ta new date minutes\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1283
+msgid ""
+"\n"
+"\t\ta new date secundes\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1287
+msgid ""
+"\n"
+"\t\ta new date milisecundes\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1294
+msgid ""
+"\n"
+"\t\tDateTime object.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1299
+msgid ""
+"\n"
+"\t\t<command>DateTimeNew()</command> is constructs and returns new "
+"<command>DateTime</command> object.\n"
+"\t\tThat class can be used to control date object.\n"
+"\t\tIf some parameters not specified then date set to zero-date.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1303
+msgid "DateTime-data keep not normalized date!"
+msgstr ""
+
+#: template/./doc/classes.sgml:1336 template/./doc/classes.sgml:1368
+#: template/./doc/classes.sgml:1396 template/./doc/classes.sgml:1429
+#: template/./doc/classes.sgml:1461 template/./doc/classes.sgml:1500
+#: template/./doc/classes.sgml:1532 template/./doc/classes.sgml:1564
+#: template/./doc/classes.sgml:1596 template/./doc/classes.sgml:1628
+msgid "No Parameters"
+msgstr ""
+
+#: template/./doc/classes.sgml:1340
+msgid ""
+"\n"
+"\t\tReturns <command><![CDATA[<Data>]]></command> as date values.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1345
+msgid ""
+"\n"
+"\t\t<command>Date()</command> converts DateTime-data value to normal "
+"calendar date\n"
+"\t\tand returns  it as date values.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1372
+msgid ""
+"\n"
+"\t\tReturns numeric value - year.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1377
+msgid ""
+"\n"
+"\t\t<command>Year()</command> returns year of the specified <command><![CDATA"
+"[<Data>]]></command>\n"
+"\t\tas four-digit numeric value. Not normalized.\n"
+"\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1400
+msgid ""
+"\n"
+"\t\tReturns numeric value - month.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1405
+msgid ""
+"\n"
+"\t\t<command>Month()</command> returns month of the specified <command><!"
+"[CDATA[<Data>]]></command>\n"
+"\t\tas numeric value. Not normalized.\n"
+"\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1433
+msgid ""
+"\n"
+"\t\tReturns numeric value - day of month.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1438
+msgid ""
+"\n"
+"\t\t<command>Day()</command> returns day of the specified <command><![CDATA"
+"[<Data>]]></command>\n"
+"\t\tas numeric value. Not normalized.\n"
+"\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1465
+msgid ""
+"\n"
+"\t\tReturns string value - time.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1470
+msgid ""
+"\n"
+"\t\t<command>Time()</command> returns the normalized time value of the "
+"specified <command><![CDATA[<Data>]]></command>\n"
+"\t\tas string value in the format <command>hh:mm:ss:ms</command>\n"
+"\t\tOr returns \"00:00:00:00\" if DateTime object contained zero-date.\n"
+"\t\tWhen <command>hh</command> is two-digit hours value, <command>mm</"
+"command>\n"
+"\t\tis two-digit minutes value, <command>ss</command> is two-digit secundes "
+"value and\n"
+"\t\t<command>ms</command> is two-digit milisecundes value.\n"
+"\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1504
+msgid ""
+"\n"
+"\t\tReturns numeric value - hours.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1509
+msgid ""
+"\n"
+"\t\t<command>Hour()</command> returns the hour value of the specified "
+"<command><![CDATA[<Data>]]></command>\n"
+"\t\tas numeric value. Not normalized.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1536
+msgid ""
+"\n"
+"\t\tReturns numeric value - minutes.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1541
+msgid ""
+"\n"
+"\t\t<command>Min()</command> returns the minutes value of the specified "
+"<command><![CDATA[<Data>]]></command>\n"
+"\t\tas numeric value. Not normalized.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1568
+msgid ""
+"\n"
+"\t\tReturns numeric value - secundes.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1573
+msgid ""
+"\n"
+"\t\t<command>Sec()</command> returns the secundes value of the specified "
+"<command><![CDATA[<Data>]]></command>\n"
+"\t\tas numeric value. Not normalized.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1600
+msgid ""
+"\n"
+"\t\tReturns numeric value - milisecundes.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1605
+msgid ""
+"\n"
+"\t\t<command>Msec()</command> returns the milisecundes value of the "
+"specified <command><![CDATA[<Data>]]></command>\n"
+"\t\tas numeric value. Not normalized.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1632 template/./doc/classes.sgml:1679
+#: template/./doc/classes.sgml:1722
+msgid ""
+"\n"
+"\t\tReturns some self.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1637
+msgid ""
+"\n"
+"\t\t<command>Normalize()</command> converts DateTime-data to normal calendar "
+"date and\n"
+"\t\t returns some self.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1673
+msgid ""
+"\n"
+"\ta DateTime object to addition.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1684
+msgid ""
+"\n"
+"\t\t<command>Add()</command> add <command><![CDATA[<dtObj>]]></command>\n"
+"\t\tto DateTime-data and returns some self witch increased data. New\n"
+"\t\tDateTime-data is't normalize.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1716
+msgid ""
+"\n"
+"\ta DateTime object to subtraction.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1727
+msgid ""
+"\n"
+"\t\t<command>Sub()</command> subtract <command><![CDATA[<dtObj>]]></"
+"command>\n"
+"\t\tfrom DateTime-data and returns some self witch decreased data. New\n"
+"\t\tDateTime-data is't normalize.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1760
+msgid "Class ListItem"
+msgstr ""
+
+#: template/./doc/classes.sgml:1762
+msgid ""
+"are destined to control of\n"
+"associated in list data values. For example, it can be list of files.\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:1766
+msgid ""
+"\n"
+"Class contain methods to move, search, check items specified in one or more\n"
+"columns.\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:1776
+msgid "Array, array of items"
+msgstr ""
+
+#: template/./doc/classes.sgml:1779
+msgid "Numeric, a number first item on viewport."
+msgstr ""
+
+#: template/./doc/classes.sgml:1782
+msgid "String, a color specification."
+msgstr ""
+
+#: template/./doc/classes.sgml:1783 template/./doc/classes.sgml:2012
+msgid "clr1 - border and items color"
+msgstr ""
+
+#: template/./doc/classes.sgml:1784 template/./doc/classes.sgml:2013
+msgid "clr2 - current item colors if <![CDATA[ListItem]]> in focus"
+msgstr ""
+
+#: template/./doc/classes.sgml:1785 template/./doc/classes.sgml:2014
+msgid "clr3 - current item colors if <![CDATA[ListItem]]> outof focus"
+msgstr ""
+
+#: template/./doc/classes.sgml:1786 template/./doc/classes.sgml:2015
+msgid "clr4 - title colors "
+msgstr ""
+
+#: template/./doc/classes.sgml:1787 template/./doc/classes.sgml:2016
+msgid "clr5 - selected item colors "
+msgstr ""
+
+#: template/./doc/classes.sgml:1788 template/./doc/classes.sgml:2017
+msgid "clr6 - current selected item colors "
+msgstr ""
+
+#: template/./doc/classes.sgml:1789 template/./doc/classes.sgml:2018
+msgid "clr7 - founded symbol colors "
+msgstr ""
+
+#: template/./doc/classes.sgml:1790
+msgid "By default <![CDATA[<ColorSpec>]]> is "
+msgstr ""
+
+#: template/./doc/classes.sgml:1794 template/./doc/classes.sgml:1797
+#: template/./doc/classes.sgml:1800 template/./doc/classes.sgml:1803
+msgid "Numeric, a <![CDATA[ListItem]]> viewport coordinates"
+msgstr ""
+
+#: template/./doc/classes.sgml:1806 template/./doc/classes.sgml:1809
+msgid "Numeric, a cursor coordinates"
+msgstr ""
+
+#: template/./doc/classes.sgml:1812
+msgid "Numeric, a number current item in list"
+msgstr ""
+
+#: template/./doc/classes.sgml:1815
+msgid "Numeric, a number columns in <![CDATA[ListItem]]> viewport"
+msgstr ""
+
+#: template/./doc/classes.sgml:1818
+msgid "Numeric, a number rows in <![CDATA[ListItem]]> viewport"
+msgstr ""
+
+#: template/./doc/classes.sgml:1821
+msgid "Array, contain a width every columns"
+msgstr ""
+
+#: template/./doc/classes.sgml:1824
+msgid "Numeric, a number current item in viewport"
+msgstr ""
+
+#: template/./doc/classes.sgml:1827
+msgid "Logical, is .T. if <![CDATA[ListItem]]> in focus"
+msgstr ""
+
+#: template/./doc/classes.sgml:1830
+msgid "Array, contain a columns header"
+msgstr ""
+
+#: template/./doc/classes.sgml:1834
+msgid "Logical, if .T. all columns reflected without delimiter as one item"
+msgstr ""
+
+#: template/./doc/classes.sgml:1838
+msgid "Numeric, a maxnumber of items in viewport"
+msgstr ""
+
+#: template/./doc/classes.sgml:1841
+msgid ""
+"String, a symbol delimiter. Bye default is <command><![CDATA[|]]></command>"
+msgstr ""
+
+#: template/./doc/classes.sgml:1856
+msgid "Go down"
+msgstr ""
+
+#: template/./doc/classes.sgml:1860
+msgid "Go up"
+msgstr ""
+
+#: template/./doc/classes.sgml:1864
+msgid "Go left"
+msgstr ""
+
+#: template/./doc/classes.sgml:1868
+msgid "Go right"
+msgstr ""
+
+#: template/./doc/classes.sgml:1872
+msgid "Go home"
+msgstr ""
+
+#: template/./doc/classes.sgml:1876
+msgid "Go end"
+msgstr ""
+
+#: template/./doc/classes.sgml:1880
+msgid "Go page up"
+msgstr ""
+
+#: template/./doc/classes.sgml:1884
+msgid "Go page down"
+msgstr ""
+
+#: template/./doc/classes.sgml:1888
+msgid "Add new item"
+msgstr ""
+
+#: template/./doc/classes.sgml:1892
+msgid "Insert new item"
+msgstr ""
+
+#: template/./doc/classes.sgml:1896
+msgid "Delete item"
+msgstr ""
+
+#: template/./doc/classes.sgml:1900
+msgid "Get item"
+msgstr ""
+
+#: template/./doc/classes.sgml:1904
+msgid "Set item"
+msgstr ""
+
+#: template/./doc/classes.sgml:1908
+msgid "Refresh ListItem object"
+msgstr ""
+
+#: template/./doc/classes.sgml:1912
+msgid "Set focus to ListItem object"
+msgstr ""
+
+#: template/./doc/classes.sgml:1916
+msgid "Kill ListItem object focus "
+msgstr ""
+
+#: template/./doc/classes.sgml:1920 template/./doc/classes.sgml:1924
+msgid "Clear ListItem object"
+msgstr ""
+
+#: template/./doc/classes.sgml:1928
+msgid "Find symbols"
+msgstr ""
+
+#: template/./doc/classes.sgml:1932
+msgid "Clear buffer founded symbols"
+msgstr ""
+
+#: template/./doc/classes.sgml:1936
+msgid "Set columns headers"
+msgstr ""
+
+#: template/./doc/classes.sgml:1940
+msgid "Draw columns headers"
+msgstr ""
+
+#: template/./doc/classes.sgml:1944
+msgid "Set number columns"
+msgstr ""
+
+#: template/./doc/classes.sgml:1948
+msgid "Set columns width"
+msgstr ""
+
+#: template/./doc/classes.sgml:1952
+msgid "Set new left and right bounds"
+msgstr ""
+
+#: template/./doc/classes.sgml:1957
+msgid "Set flag <![CDATA[<Union>]]> to .T."
+msgstr ""
+
+#: template/./doc/classes.sgml:1963
+msgid "Set flag <![CDATA[<Union>]]> to .F."
+msgstr ""
+
+#: template/./doc/classes.sgml:1968
+msgid "Select/unselect item"
+msgstr ""
+
+#: template/./doc/classes.sgml:1972
+msgid "Get selected items"
+msgstr ""
+
+#: template/./doc/classes.sgml:1986
+msgid ""
+"\n"
+"\t\ta viewport coordinates, left top row\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1990
+msgid ""
+"\n"
+"\t\ta viewport coordinates, left top columns\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1994
+msgid ""
+"\n"
+"\t\ta viewport coordinates, right bottom row\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:1998
+msgid ""
+"\n"
+"\t\ta viewport coordinates, right bottom columns\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2002
+msgid ""
+"\n"
+"\t\ta number columns in viewport, by default it set to 1\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2006
+msgid ""
+"\n"
+"\t\ta columns delimiter, by default is symbol <![CDATA[|]]>\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2010
+msgid ""
+"\n"
+"\t\ta color specification. \"clr1, clr2, clr3, clr4, clr5, clr6, clr7\"\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2019
+msgid ""
+"If <![CDATA[<sColor>]]> contain less than 7 elements, then\n"
+"\t\tit will be increased to 7 with value \"7/0\" (white on black)"
+msgstr ""
+
+#: template/./doc/classes.sgml:2025
+msgid ""
+"\n"
+"\t\tReturns new ListItem object.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2030
+msgid ""
+"\n"
+"\t\t<command>ListItemNew()</command> is constructs and returns new "
+"<command>ListItem</command> object.\n"
+"\t\tThat class can be use to control associated to list data values.\n"
+"\t\tExample to use it class you can see in FileDialog() function.\n"
+"\t\tListItem object used to choose some file form list files.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2054 template/./doc/classes.sgml:2104
+msgid ""
+"\n"
+"\t\ta item to be adding to ListItem object\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2058 template/./doc/classes.sgml:2112
+msgid ""
+"\n"
+"\t\ta color specification for item. If not specified, then\n"
+"\t\t<![CDATA[<sColor>]]> sets to <![CDATA[clr1]]> from <![CDATA[::ColorSpec]]"
+">\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2063 template/./doc/classes.sgml:2117
+msgid ""
+"\n"
+"\t\ta color specification for selected item. If not specified, then\n"
+"\t\t<![CDATA[<sColorSel>]]> sets to <![CDATA[clr2]]> from <![CDATA[::"
+"ColorSpec]]>\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2071
+msgid ""
+"\n"
+"\t\tReturns 1 if succesfully (if specified <![CDATA[<sItem>]]>) and other "
+"returns 0.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2076
+msgid ""
+"\n"
+"\t\t<command>AddItem()</command> is added new item to end of <![CDATA[<::"
+"Item>]]> array\n"
+"\t\twith personality color specification. The items counter <![CDATA[<::"
+"ItemCount>]]> increased by 1.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2108
+msgid ""
+"\n"
+"\t\ta position new item into <![CDATA[<::Item>]]> of ListItem object\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2125
+msgid ""
+"\n"
+"\t\tReturns 1 if succesfully (if specified <![CDATA[<sItem>]]> and\n"
+"\t\t<![CDATA[<nPosition>]]> in bound of 1 to <![CDATA[<::ItemCount>]]>) and "
+"other returns 0.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2131
+msgid ""
+"\n"
+"\t\t<command>InsItem()</command> is inserted new item to the <![CDATA"
+"[<nPosition>]]> of <![CDATA[<::Item>]]> array\n"
+"\t\twith personality color specification. The items counter <![CDATA[<::"
+"ItemCount>]]> increased by 1.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2156
+msgid ""
+"\n"
+"\t\ta item position into <![CDATA[<::Item>]]> what to be delete\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2162 template/./doc/classes.sgml:2232
+msgid ""
+"\n"
+"\t\tIf specified <![CDATA[<nPosition>]]> and it\n"
+"\t\tin bound of 1 to <![CDATA[<::ItemCount>]]> returns 1, other returns 0.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2168
+msgid ""
+"\n"
+"\t\t<command>DelItem()</command> is deleted item specified as <![CDATA"
+"[<nPosition>]]> position in <![CDATA[<::Item>]]> array.\n"
+"\t\tThe items counter <![CDATA[<::ItemCount>]]> decreased by 1.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2194
+msgid ""
+"\n"
+"\t\tIf specified <![CDATA[<::Item>]]> returns string value\n"
+"\t\tof current item (it specified <![CDATA[<::Buffer>]]>), other returns "
+"NIL.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2200
+msgid ""
+"\n"
+"\t\t<command>GetItem()</command> is return current item value specified as <!"
+"[CDATA[<::Buffer>]]>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2226
+msgid ""
+"\n"
+"\t\ta item position into <![CDATA[<::Item>]]> what value to be changed.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2238
+msgid ""
+"\n"
+"\t\t<command>SetItem()</command> moves to the new position <![CDATA"
+"[<nPosition>]]> and\n"
+"\t\trefreshed ListItem object.\n"
+"\t\tThe <![CDATA[<::Buffer>]]> set by <![CDATA[<nPosition>]]>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2271 template/./doc/classes.sgml:2313
+#: template/./doc/classes.sgml:2355 template/./doc/classes.sgml:2398
+#: template/./doc/classes.sgml:2441 template/./doc/classes.sgml:2484
+#: template/./doc/classes.sgml:2527 template/./doc/classes.sgml:2569
+#: template/./doc/classes.sgml:2611 template/./doc/classes.sgml:2646
+#: template/./doc/classes.sgml:2684 template/./doc/classes.sgml:2727
+#: template/./doc/classes.sgml:2824
+msgid ""
+"\n"
+"\t\tNothing returns.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2276
+msgid ""
+"\n"
+"\t\t<command>Down()</command> is skipped ListItem object on the\n"
+"\t\tnew position <![CDATA[<::Buffer>]]>+1.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> increased by 1.\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2318
+msgid ""
+"\n"
+"\t\t<command>Up()</command> is skipped ListItem object on the\n"
+"\t\tnew position <![CDATA[<::Buffer>]]>-1.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> decreased by 1.\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2360
+msgid ""
+"\n"
+"\t\t<command>Left()</command> is skipped ListItem object on the\n"
+"\t\tnew position <![CDATA[<::Buffer>]]> - <![CDATA[<::RowWin>]]>.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> decreased by <![CDATA[<::"
+"RowWin>]]>\n"
+"\t\t(the number lines in viewport).\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2403
+msgid ""
+"\n"
+"\t\t<command>Right()</command> is skipped ListItem object on the\n"
+"\t\tnew position <![CDATA[<::Buffer>]]> + <![CDATA[<::RowWin>]]>.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> increased by <![CDATA[<::"
+"RowWin>]]>\n"
+"\t\t(the number lines in viewport).\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2446
+msgid ""
+"\n"
+"\t\t<command>PageUp()</command> is skipped ListItem object on the\n"
+"\t\tnew position <![CDATA[<::Buffer>]]> - <![CDATA[<::ItemWin>]]>.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> decreased by <![CDATA[<::"
+"ItemWin>]]>\n"
+"\t\t(the maxnumber items in viewport).\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2489
+msgid ""
+"\n"
+"\t\t<command>PageDown()</command> is skipped ListItem object on the\n"
+"\t\tnew position <![CDATA[<::Buffer>]]> + <![CDATA[<::ItemWin>]]>.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> increased by <![CDATA[<::"
+"ItemWin>]]>\n"
+"\t\t(the maxnumber items in viewport).\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2532
+msgid ""
+"\n"
+"\t\t<command>Home()</command> is moves ListItem object on the\n"
+"\t\tfirst position.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> set by 1.\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2574
+msgid ""
+"\n"
+"\t\t<command>End()</command> is moves ListItem object on the\n"
+"\t\tlast position.\n"
+"\t\tThe number current item <![CDATA[<::Buffer>]]> set by <![CDATA[<::"
+"ItemCount>]]>.\n"
+"\t\tBuffer founded symbols is clearing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2616
+msgid ""
+"\n"
+"\t\t<command>Refresh()</command> is drawing ListItem object\n"
+"\t\tviewport and stabilize some attributes: <![CDATA[<::Pos>]]>, <![CDATA[<::"
+"Line>]]>, <![CDATA[<::First>]]>\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2620
+msgid ""
+"\n"
+"\t\tThis method invoked automaticaly from other methods.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2651
+msgid ""
+"\n"
+"\t\t<command>SetFocus()</command> is sets focus ListItem object\n"
+"\t\tand sets attribute <![CDATA[<::HasFocus>]]> to .T.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2655
+msgid ""
+"\n"
+"\t\tViewport redrawing and object is active.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2689
+msgid ""
+"\n"
+"\t\t<command>KillFocus()</command> is unsets focus ListItem object\n"
+"\t\tand sets attribute <![CDATA[<::HasFocus>]]> to .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2693
+msgid ""
+"\n"
+"\t\tListItem object lost focus and viewport redrawing.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2732
+msgid ""
+"\n"
+"\t\t<command>Clear()</command> is cleaning ListItem object.\n"
+"\t\tThis method removes all items from list and redraws viewport.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2757
+msgid ""
+"\n"
+"\t\ta string to be find.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2763
+msgid ""
+"\n"
+"\t\tReturns .T. in succesfully search; other returns .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2768
+msgid ""
+"\n"
+"\t\t<command>Find()</command> is searches <![CDATA[<sStr>]]> symbols\n"
+"\t\tinto items of <![CDATA[<::Item>]]>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2772
+msgid ""
+"\n"
+"\t\tIf some first symbols of item equal the pattern <![CDATA[<sStr>]]> then\n"
+"\t\t<command>Find()</command> returns .T. and cursor moves to founded item.\n"
+"\t\t<![CDATA[<::Buffer>]]> sets to number founded item. And founded symbols\n"
+"\t\tmarked <![CDATA[<Clr7>]]> colors specified into <![CDATA[<::ColorSpec>]]"
+">\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2778
+msgid ""
+"\n"
+"\t\tIf pattern <![CDATA[<sStr>]]> not found then\n"
+"\t\t<command>Find()</command> returns .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2829
+msgid ""
+"\n"
+"\t\t<command>ClearFindBuffer()</command> is cleaning buffer founded "
+"symbols.\n"
+"\t\tThis method removes all symbols from <![CDATA[<::FindBuffer>]]>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2871
+msgid ""
+"\n"
+"\t\ta array of columns header.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2877
+msgid ""
+"\n"
+"\t\tReturns .T. if <![CDATA[<aHeader>]]> not empty and it has type\n"
+"\t\t<command>array</command>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2883
+msgid ""
+"\n"
+"\t\t<command>SetTitle()</command> is sets columns header for\n"
+"\t\tListItem object. If length <![CDATA[<aHeader>]]> is less <![CDATA[<::"
+"ColWin>]]> then\n"
+"\t\tlength <![CDATA[<aHeader>]]> increased to <![CDATA[<::ColWin>]]> and new "
+"items sets to \"\".\n"
+"\t\tColumns header to be kept in <![CDATA[<::Title>]]>\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2908
+msgid ""
+"\n"
+"\t\tAlways returns .T..\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2913
+msgid ""
+"\n"
+"\t\t<command>DrawTitle()</command> is darws columns header if it\n"
+"\t\tspecified.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2937
+msgid ""
+"\n"
+"\t\ta new columns number.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2943
+msgid ""
+"\n"
+"\t\tReturns .T. if <![CDATA[<nCol>]]> specified as numeric and\n"
+"\t\t<![CDATA[<nCol>]]> is more than zero; other case returns .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2949
+msgid ""
+"\n"
+"\t\t<command>SetColumns()</command> is sets new columns number and\n"
+"\t\tautomaticaly established columns width as well.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2972
+msgid ""
+"\n"
+"\t\ta array with columns width.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2978
+msgid ""
+"\n"
+"\t\tReturns .T. if <![CDATA[<aWidth>]]> specified as array; other case "
+"returns .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2983
+msgid ""
+"\n"
+"\t\t<command>SetWidthCol()</command> is sets new columns width.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:2986
+msgid ""
+"\n"
+"\t\tIf length <![CDATA[<aWidth>]]> is less <![CDATA[<::ColWin>]]> then\n"
+"\t\tfor last columns (not specified in <![CDATA[<aWidth>]]>) automaticaly "
+"established columns width as well.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3017
+msgid ""
+"\n"
+"\t\tnumeric, a left new column position\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3021
+msgid ""
+"\n"
+"\t\tnumeric, a right new column position\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3027
+msgid ""
+"\n"
+"\t\tReturns .T. if <![CDATA[<nLeft>]]> and  <![CDATA[<nRight>]]>\n"
+"\t\tspecified as positive numeric; other case returns .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3033
+msgid ""
+"\n"
+"\t\t<command>SetNewBound()</command> is sets new columns bound -\n"
+"\t\tleft and right and changes columns width. After sets object must be "
+"redraw.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3056
+msgid ""
+"\n"
+"\t\ta array of numeric or simple numeric value - numbers items to be "
+"select.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3067
+msgid ""
+"\n"
+"\t\t<command>Select()</command> is select/deselect one or more items "
+"specified\n"
+"\t\tas <![CDATA[<vSel>]]>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3071
+msgid ""
+"\n"
+"\t\t<![CDATA[<vSel>]]> is array: every item of <![CDATA[<vSel>]]> conform\n"
+"\t\tto items of <![CDATA[<::Item>]]> to be select/deselect.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3075
+msgid ""
+"\n"
+"\t\t<![CDATA[<vSel>]]> is NIL: specify current <![CDATA[<::Buffer>]]>\n"
+"\t\tas selected/deselected.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3107
+msgid ""
+"\n"
+"\t\tReturns array of selected items into <![CDATA[<::Item>]]>\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3112
+msgid ""
+"\n"
+"\t\t<command>GetSelected()</command> is returns array of selected items\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3115
+msgid ""
+"\n"
+"\t\tIf no selected items then method returns empty array.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3149
+msgid "Class IniFile"
+msgstr ""
+
+#: template/./doc/classes.sgml:3150
+msgid ""
+"are destined to control\n"
+"Wondows-likely .ini files - load, save, get/set keywords ...\n"
+msgstr ""
+
+#: template/./doc/classes.sgml:3160
+msgid "String, full file name"
+msgstr ""
+
+#: template/./doc/classes.sgml:3163
+msgid "Map, a map of keywords."
+msgstr ""
+
+#: template/./doc/classes.sgml:3166
+msgid "String, a error description"
+msgstr ""
+
+#: template/./doc/classes.sgml:3184
+msgid "Init new IniFile object"
+msgstr ""
+
+#: template/./doc/classes.sgml:3188
+msgid "Load .ini file"
+msgstr ""
+
+#: template/./doc/classes.sgml:3192
+msgid "Save .ini file"
+msgstr ""
+
+#: template/./doc/classes.sgml:3196
+msgid "Get value from .ini file"
+msgstr ""
+
+#: template/./doc/classes.sgml:3200
+msgid "Set value .ini file"
+msgstr ""
+
+#: template/./doc/classes.sgml:3204
+msgid "Get keywords name"
+msgstr ""
+
+#: template/./doc/classes.sgml:3220 template/./doc/classes.sgml:3260
+msgid ""
+"\n"
+"\t\ta full name .ini file\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3226
+msgid ""
+"\n"
+"\t\tReturns new IniFile object.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3231
+msgid ""
+"\n"
+"\t\t<command>IniFile()</command> and <command>IniFileNew()</command>\n"
+"\t\tis constructs and returns new <command>IniFile</command> object.\n"
+"\t\tThat class can be use to control(load, save, change key value)\n"
+"\t\tWindows-likely .ini files.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3237
+msgid ""
+"\n"
+"\t\t<command>IniFile()</command> require to invoke methods <command><link "
+"linkend=\"class-inifile-new\">New()</link></command>\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3266
+msgid ""
+"\n"
+"\t\tReturns initialize IniFile object.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3271
+msgid ""
+"\n"
+"\t\t<command>New()</command> is creates a new IniFile object.\n"
+"\t\tThis methods must be invoke after <command>IniFile()</command>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3275
+msgid ""
+"\n"
+"\t\tFile name <![CDATA[<sFile>]]> stores into attribute <![CDATA[<::File>]]"
+">\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3295
+msgid ""
+"\n"
+"\t\tMethod returns .T.. If an occurs error, <command>Load()</command> "
+"returns .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3300
+msgid ""
+"\n"
+"\t\t<command>Load()</command> is trys load .ini file specified\n"
+"\t\t<![CDATA[<::File>]]> and if succesfully, creates the table of\n"
+"\t\tkey values and data and stores it table into <![CDATA[<::Data>]]>\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3323
+msgid ""
+"\n"
+"\t\tMethod returns .T.. If an occurs error, <command>Save()</command> "
+"returns .F.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3328
+msgid ""
+"\n"
+"\t\t<command>Save()</command> is trys create file with name\n"
+"\t\t<![CDATA[<::File>]]> and if succesfully, write a data <![CDATA[<::Data>]]"
+">\n"
+"\t\tto an file <![CDATA[<::File>]]> in format .ini files:\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3363 template/./doc/classes.sgml:3418
+#: template/./doc/classes.sgml:3533
+msgid ""
+"\n"
+"\t\tstring, a section name.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3367 template/./doc/classes.sgml:3422
+msgid ""
+"\n"
+"\t\tstring, a key value.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3373
+msgid ""
+"\n"
+"\t\tMethod returns string data value specify by  section <![CDATA[<sPart>]]"
+">\n"
+"\t\tand key value <![CDATA[<sKey>]]>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3379
+msgid ""
+"\n"
+"\t\t<command>GetValue()</command> is returns data value specify as section <!"
+"[CDATA[<sPart>]]>\n"
+"\t\tand key value <![CDATA[<sKey>]]>; otherwise, if an occurs error\n"
+"\t\t<command>GetValue()</command> returns NIL.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3426
+msgid ""
+"\n"
+"\t\tstring, a new data value.\n"
+"\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3432
+msgid ""
+"\n"
+"\t\tMethod returns string data value what to be sets.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3437
+msgid ""
+"\n"
+"\t\t<command>SetValue()</command> is sets new data value specify as section "
+"<![CDATA[<sPart>]]>\n"
+"\t\tand key value <![CDATA[<sKey>]]>; otherwise, if <![CDATA[<sPart>]]> or <!"
+"[CDATA[<sKey>]]>\n"
+"\t\tnot exist <command>SetValue()</command> creates new item in section <!"
+"[CDATA[<sPart>]]>\n"
+"\t\twith key <![CDATA[<sKey>]]> and data <![CDATA[<sData>]]>\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3490
+msgid ""
+"\n"
+"\t\tReturns array of exist sections name.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3495
+msgid ""
+"\n"
+"\t\t<command>Sections()</command> is returns array of string.\n"
+"\t\tEvery item in array is section name of .ini file specify\n"
+"\t\tas <![CDATA[::File]]>. If file <![CDATA[::File]]> is empty\n"
+"\t\t<command>Sections()</command> returns empty array.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3539
+msgid ""
+"\n"
+"\t\tReturns array of exist keys value of section <![CDATA[<sPart>]]>.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3544
+msgid ""
+"\n"
+"\t\t<command>Keys()</command> is returns array of string.\n"
+"\t\tEvery item in array is key value of section <![CDATA[<sPart>]]>.\n"
+"\t\tIf file <![CDATA[<sPart>]]> not exist then\n"
+"\t\t<command>Keys()</command> returns empty array.\n"
+"\t\t"
+msgstr ""
+
+#: template/./doc/classes.sgml:3581
+msgid "Class TextEdit"
+msgstr ""

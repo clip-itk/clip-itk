@@ -1,0 +1,72 @@
+$FUNCNAME$
+  MEMVARBLOCK()
+$CATEGORY$
+  CODEBLOCK
+$SUMMARY$
+   Return a set-get code block for a given memory variable
+$LANG_RU$
+   Возвращает блок кода для данной переменной памяти.
+$SYNTAX$
+     MEMVARBLOCK(<cMemvarName>) --> bMemvarBlock
+$LANG_RU$
+     MEMVARBLOCK(<имя переменной памяти>)  --> блок кода
+$ARGUMENTS$
+     <cMemvarName> is the name of the variable referred to by the set-get
+     block, specified as a character string.
+$LANG_RU$
+     <имя переменной памяти> - имя переменной, с которой будет связан блок
+     кода, задается как символьная строка.
+$RETURNS$
+     MEMVARBLOCK() returns a code block that when evaluated sets (assigns) or
+     gets (retrieves) the value of the given memory variable.  If
+     <cMemvarName> does not exist, MEMVARBLOCK() returns NIL.
+$LANG_RU$
+     MEMVARBLOCK() возвращает блок кода, предназначенный либо для
+     присваивания нового значения, либо для считывания текущего значения
+     переменной памяти.  Если <имя переменной памяти> не существует, то
+     MEMVARBLOCK() возвращает NIL.
+$DESCRIPTION$
+     The code block created by MEMVARBLOCK() has two operations depending on
+     whether an argument is passed to the code block when it is evaluated.
+     If evaluated with an argument, it assigns the value of the argument to
+     <cMemvarName>.  If evaluated without an argument, the code block
+     retrieves the value of <cMemvarName>.
+$LANG_RU$
+     Блок кода, созданный функцией MEMVARBLOCK(), имеет два действия,
+     зависящих от того, был ли передан аргумент блоку кода при его
+     вычислении. Если блок кода вычислялся с аргументом, то он присваивает
+     значение аргумента <имя переменной памяти>. Если вычислялся без
+     аргумента, то кодовый блок возвращает значение <имя переменной
+     памяти>.
+$EXAMPLES$
+       This example compares MEMVARBLOCK() to a code block created
+	using the macro operator (&amp;).  Note that using MEMVARBLOCK() allows
+	you to avoid the speed and size overhead of the macro operator:
+
+	PRIVATE var := "This is a string"
+	//
+	// Set-Get block defined using macro operator
+	bSetGet := &amp;( "{ |setVal|;
+	      IF( setVal == NIL, var, var := setVal ) }" )
+	// Set-Get block defined using MEMVARBLOCK()
+
+	// bSetGet created here is the functional
+	// equivalent of bSetGet above
+	bSetGet := MEMVARBLOCK("var")
+$LANG_RU$
+      Следующий пример сравнивает функцию MEMVARBLOCK() и создание
+       блока кода с помощью оператора макроподстановки. Заметим, что
+       использование MEMVARBLOCK() позволяет избежать потерь в скорости и
+       увеличения размеров от макроподстановки:
+
+       PRIVATE var := "Это строка"
+       // Блок кода определяется использованием макроподстановки
+       bSetGet := &amp;("{|setVal| IF(setVal == NIL, var, var := setVal) }")
+
+       // Блок кода определяется с помощью MEMVARBLOCK()
+       // Создаваемый здесь блок кода функционально эквивалентен блоку
+       // кода bSetGet, созданному выше
+       bSetGet := MEMVARBLOCK("var")
+$SEEALSO$
+  FIELDBLOCK(),FIELDWBLOCK()
+$END$

@@ -1,0 +1,79 @@
+$FUNCNAME$
+  LTRIM()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Remove leading spaces from a character string
+$LANG_RU$
+   Удаляет начальные пробелы из символьной строки.
+$SYNTAX$
+     LTRIM(<cString>) --> cTrimString
+$LANG_RU$
+     LTRIM(<символьная строка>) --> символьная строка
+$ARGUMENTS$
+     <cString> is the character string to copy without leading spaces.
+$LANG_RU$
+     <символьная строка> - символьная строка.
+$RETURNS$
+     LTRIM() returns a copy of <cString> with the leading spaces removed.  If
+     <cString> is a null string ("") or all spaces, LTRIM() returns a null
+     string ("").
+$LANG_RU$
+     LTRIM() возвращает копию аргумента <символьная строка> с удаленными
+     начальными пробелами. Если <символьная строка> является нулевой
+     строкой ("") или строкой, состоящей только из пробелов, LTRIM()
+     возвращает нулевую строку ("").
+$DESCRIPTION$
+
+     LTRIM() is a character function that formats character strings with
+     leading spaces.  These can be, for example, numbers converted to
+     character strings using STR().
+
+     LTRIM() is related to RTRIM(), which removes trailing spaces, and
+     ALLTRIM(), which removes both leading and trailing spaces.  The inverse
+     of ALLTRIM(), LTRIM(), and RTRIM() are the PADC(), PADR(), and PADL()
+     functions which center, right-justify, or left-justify character strings
+     by padding them with fill characters.
+
+
+$LANG_RU$
+
+     LTRIM() является функцией обработки символьных строк, используемой
+     для форматирования символьных строк с начальными пробелами. Ими могут
+     быть, например, числа, преобразуемые в символьные строки функцией
+     STR().
+
+     LTRIM() сходна с функцией RTRIM(), которая удаляет конечные пробелы.
+     Обратными к функциям ALLTRIM(), LTRIM() и RTRIM() являются функции
+     PADC(), PADR() и PADL(), которые центрируют, сдвигают вправо или
+     влево символьные строки путем добавления к ним символов-заполнителей.
+
+
+$EXAMPLES$
+
+       These examples illustrate LTRIM() used with several other
+	functions:
+
+	nNumber = 18
+	? STR(nNumber)                  // Result: 18
+	? LEN(STR(nNumber))            // Result: 10
+
+	? LTRIM(STR(nNumber))         // Result: 18
+	? LEN(LTRIM(STR(nNumber)))      // Result:  2
+
+
+$LANG_RU$
+
+      Следующие примеры иллюстрируют использование LTRIM() в комбинации с
+       некоторыми другими функциями:
+
+       nNumber = 18
+       ? STR(nNumber)                  // Результат: 18
+       ? LEN(STR(nNumber))             // Результат: 10
+       ? LTRIM(STR(nNumber))           // Результат: 18
+       ? LEN(LTRIM(STR(nNumber)))      // Результат: 2
+
+
+$SEEALSO$
+  ALLTRIM(),PAD(),RTRIM(),STR(),SUBSTR(),TRIM()
+$END$

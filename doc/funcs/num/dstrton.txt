@@ -1,0 +1,38 @@
+$FUNCNAME$
+  DSTRTON()
+$CATEGORY$
+  STRING, NUMERIC, CONVERSION
+$SUMMARY$
+	Convert string as "double"  to xClipper-numeric.
+$LANG_RU$
+	Преобразует строку c "double"-представлнием в xClipper-число.
+$SYNTAX$
+     DSTRTON(<sString>) 	--> <nValue>
+$ARGUMENTS$
+     <sString>	String, is the source string
+$LANG_RU$
+     <sString>	String, исходная строка
+$RETURNS$
+     Returns the numeric value, what was converted from string with "double"  representation.
+$LANG_RU$
+     Возвращает числовое значение, сконвертированное из строки с "double" представлением.
+$DESCRIPTION$
+     DSTRTON() converts string <sString> to numeric values and returns it.
+$LANG_RU$
+     DSTRTON() преобразует строку <sString> в число и возвращает его.
+$EXAMPLES$
+
+fread(file,@str,8)<BR>
+n=DSTRTON(str)
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

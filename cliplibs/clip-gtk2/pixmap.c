@@ -213,7 +213,7 @@ clip_GDK_PIXMAPFROMXPMNEW(ClipMachine * cm)
 	if (mask && cmask!=NULL)
         {
         	cbitmap = _list_get_cobject(cm, mask);
-		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_OBJECT_BITMAP, cmask, NULL);
+		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_TYPE_BITMAP, cmask, NULL);
 		if (cbitmap) _clip_mclone(cm, cmask, &cbitmap->obj);
         }
 
@@ -293,7 +293,7 @@ clip_GDK_PIXMAPCREATEFROMXPMD(ClipMachine * cm)
 	if (mask && cmask!=NULL)
         {
         	cbitmap = _list_get_cobject(cm, mask);
-		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_OBJECT_BITMAP, cmask, NULL);
+		if (!cbitmap) cbitmap = _register_object(cm,mask,GDK_TYPE_BITMAP, cmask, NULL);
 		//if (cbitmap) _clip_mclone(cm, cmask, &cbitmap->obj);
 		//cmask = NEW(ClipVar);
 		//_clip_map(cm, cmask);

@@ -1,0 +1,41 @@
+$FUNCNAME$
+   FT_FBOF()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Determine if attempt to skip past beginning of text file
+$SYNTAX$
+
+   FT_FBOF() -> lResult
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   .T. if an attempt was made to skip past the first record of
+   the currently selected text file, otherwise .F.
+
+$DESCRIPTION$
+
+   This function is similar to the CLIPPER Bof() function.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+$EXAMPLES$
+
+   FT_FUSE( "FTTEXT.C" )
+
+   FT_FGOTOP()
+
+   ? FT_FBOF()        // .F.
+
+   FT_FSKIP(-1)
+
+   ? FT_FBOF()        // .T.
+
+$SEEALSO$
+   FT_FSKIP(),FT_FEOF(),FT_FGOTOP()
+$END$
+

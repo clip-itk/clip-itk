@@ -325,6 +325,7 @@ destroy_c_widget(void *item)
 
 	_clip_destroy_c_item(cw->cmachine, cw->handle, _C_ITEM_TYPE_WIDGET);
 	free(cw);
+//printf("destroy ok \n");
 }
 
 CLIP_DLLEXPORT void
@@ -345,8 +346,9 @@ destroy_c_object(void *item)
 	for (cs = co->siglist; cs;)
 	{
 		csnext = cs->next;
+                //printf("destroy signal %s \n", cs->signame);
 		_clip_destroy(co->cmachine, &cs->cfunc);
-		free(cs);
+		if (cs) free(cs);
 		cs = csnext;
 	}
 
@@ -714,8 +716,8 @@ _register_object(ClipMachine * cm, void * data, long clip_type, ClipVar * cv, co
 	if (wt_item && wt_item->fclip_type) clip_wtype = wt_item->fclip_type();
 	if (wt_item && wt_item->ftype_name) cobj->type_name = wt_item->ftype_name();
 	if (cv && cv->t.type == MAP_t)
-		_clip_mclone(cm, &cobj->obj, cv);
-		//cobj->obj = *cv;
+		//_clip_mclone(cm, &cobj->obj, cv);
+		cobj->obj = *cv;
 	else
 		_clip_map(cm, &cobj->obj);
 

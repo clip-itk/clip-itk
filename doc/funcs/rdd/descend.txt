@@ -1,0 +1,85 @@
+$FUNCNAME$
+  DESCEND()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Create a descending index key value
+$LANG_RU$
+   Создает значение ключа для сортировки по убыванию.
+$SYNTAX$
+     DESCEND(<exp>) --> ValueInverted
+$LANG_RU$
+     DESCEND(<выражение>) --> дополнение выражения
+$ARGUMENTS$
+     <exp> is any valid expression of character, date, logical, or
+     numeric type.  Memo type is treated in the same way as character type.
+$LANG_RU$
+     <выражение> - это допустимое выражение символьного, логического,
+     арифметического типов или типа даты. Тип memo обрабатывается как
+     символьный.
+$RETURNS$
+     DESCEND() returns an inverted expression of the same data type as the
+     <exp>, except for dates which return a numeric value.  A DESCEND() of
+     CHR(0) always returns CHR(0).
+$LANG_RU$
+     DESCEND() возвращает данные того же типа, что и выражение
+     <выражение> в форме дополнения, за исключением дат, которые
+     возвращаются в числовой форме. Значение функции DESCEND() с
+     аргументом CHR(0) - CHR(0).
+$DESCRIPTION$
+     DESCEND() is a conversion function that returns the inverted form of the
+     specified expression to be used with INDEX to create descending order
+     indexes.  Specify that part of the index expression you want to be
+     descending as the DESCEND() argument.  To subsequently perform a lookup
+     with SEEK, specify DESCEND() in the search expression.
+$LANG_RU$
+     DESCEND() - функция преобразования данных, которая возвращает
+     значение аргумента <выражение> в форме дополнения. Значение
+     аргумента используется в сочетании с командой INDEX для создания
+     индексов, сортирующих данные по убыванию. Это достигается тем,
+     что ту часть выражения в индексе, которая должна сортировать по
+     убыванию значений, представляют как аргумент функции DESCEND().
+     При последующем поиске при помощи команды SEEK, DESCEND() включается
+     в выражение поиска.
+$EXAMPLES$
+       This example uses DESCEND() in an INDEX expression to create a
+	descending order date index:
+
+	USE Sales NEW
+	INDEX ON DESCEND(OrdDate) TO SalesDate
+
+	Later, use DESCEND() to SEEK on the descending index:
+
+	SEEK DESCEND(dFindDate)
+
+       This example illustrates how to create a descending order
+	index using more than one data type.  Here, the key is created using
+	the concatenation of date and character fields after the appropriate
+	type conversion has taken place.  This example uses STR() instead of
+	DTOS(), since DESCEND() of a date returns a numeric value:
+
+	USE Sales NEW
+	INDEX ON STR(DESCEND(SaleDate)) + Salesman TO LastSale
+$LANG_RU$
+      В этом примере используется функция DESCEND() в выражении команды
+       INDEX для создания сортировки по убыванию дат:
+
+       USE Sales NEW
+       INDEX ON DESCEND(OrdDate) TO SalesDate
+
+      Далее, DESCEND() может быть использована в команде SEEK при поиске
+       значений в индексе, построенном по убыванию :
+
+       SEEK DESCEND(dFindDate)
+
+      В этом примере показано, как создать индекс для сортировки по
+       убыванию, используя данные разных типов. Ключ создается путем
+       сцепления данных типа даты и символьных полей после предварительных
+       преобразований.  Вместо функции DTOC() используется функция STR(),
+       так как DESCEND() данные типа даты преобразует в числовое значение:
+
+       USE Sales NEW
+       INDEX ON STR( DESCEND(SaleDate)) + Salesman TO LastSale
+$SEEALSO$
+
+$END$

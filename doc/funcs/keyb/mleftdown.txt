@@ -1,0 +1,14 @@
+$FUNCNAME$
+  MLEFTDOWN()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Determine the press status of the left mouse button
+$SYNTAX$
+     MLEFTDOWN() --> lIsPressed
+$RETURNS$
+     MLEFTDOWN() returns true (.T.) if the left mouse button is currently
+     pressed; otherwise, it returns false (.F.).
+$SEEALSO$
+  MRIGHTDOWN()
+$END$

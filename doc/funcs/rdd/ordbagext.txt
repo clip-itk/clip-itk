@@ -1,0 +1,18 @@
+$FUNCNAME$
+  ORDBAGEXT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the default order bag RDD extension
+$SYNTAX$
+     ORDBAGEXT() --> cBagExt
+$RETURNS$
+     ORDBAGEXT() returns a character expression.
+$DESCRIPTION$
+     ORDBAGEXT() is an order management function that returns a character
+     expression that is the default order bag extension of the current or
+     aliased work area.  cBagExt is determined by the RDD active in the
+     current work area.
+$SEEALSO$
+  ORDBAGNAME()
+$END$

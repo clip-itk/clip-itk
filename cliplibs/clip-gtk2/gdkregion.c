@@ -15,8 +15,8 @@
 #include "clip-gtk2.h"
 #include "clip-gdk2.h"
 
-GtkType _gdk_type_region() { return GDK_OBJECT_REGION; }
-long _clip_type_region() { return GDK_OBJECT_REGION; }
+GtkType _gdk_type_region() { return GDK_TYPE_REGION; }
+long _clip_type_region() { return GDK_TYPE_REGION; }
 const char * _clip_type_name_region() { return "GDK_OBJECT_REGION"; }
 
 int
@@ -134,7 +134,7 @@ clip_GDK_REGIONNEW(ClipMachine * cm)
 
 	if (region)
 	{
-		cregion = _register_object(cm,region,GDK_OBJECT_REGION,cv,NULL);
+		cregion = _register_object(cm,region,GDK_TYPE_REGION,cv,NULL);
 		if (cregion)
 			_clip_mclone(cm,RETPTR(cm),&cregion->obj);
                 else
@@ -191,7 +191,7 @@ clip_GDK_REGIONPOLYGON(ClipMachine * cm)
 
 	if (region)
 	{
-		cregion = _register_object(cm,region,GDK_OBJECT_REGION,cv,NULL);
+		cregion = _register_object(cm,region,GDK_TYPE_REGION,cv,NULL);
 		if (cregion)
 			_clip_mclone(cm,RETPTR(cm),&cregion->obj);
                 else
@@ -231,7 +231,7 @@ clip_GDK_REGIONSINTERSECT(ClipMachine * cm)
 
 	if (creg)
 	{
-		cdest = _register_object(cm,GDK_REGION(creg),GDK_OBJECT_REGION,NULL,NULL);
+		cdest = _register_object(cm,GDK_REGION(creg),GDK_TYPE_REGION,NULL,NULL);
 		if (cdest)
 			_clip_mclone(cm,RETPTR(cm),&cdest->obj);
 	}
@@ -257,7 +257,7 @@ clip_GDK_REGIONUNION(ClipMachine * cm)
 
 	if (creg)
 	{
-		cdest = _register_object(cm,GDK_REGION(creg),GDK_OBJECT_REGION,NULL,NULL);
+		cdest = _register_object(cm,GDK_REGION(creg),GDK_TYPE_REGION,NULL,NULL);
 		if (cdest)
 			_clip_mclone(cm,RETPTR(cm),&cdest->obj);
 	}
@@ -283,7 +283,7 @@ clip_GDK_REGIONSUBTRACT(ClipMachine * cm)
 
 	if (creg)
 	{
-		cdest = _register_object(cm,GDK_REGION(creg),GDK_OBJECT_REGION,NULL,NULL);
+		cdest = _register_object(cm,GDK_REGION(creg),GDK_TYPE_REGION,NULL,NULL);
 		if (cdest)
 			_clip_mclone(cm,RETPTR(cm),&cdest->obj);
 	}
@@ -310,7 +310,7 @@ clip_GDK_REGIONXOR(ClipMachine * cm)
 
 	if (creg)
 	{
-		cdest = _register_object(cm,GDK_REGION(creg),GDK_OBJECT_REGION,NULL,NULL);
+		cdest = _register_object(cm,GDK_REGION(creg),GDK_TYPE_REGION,NULL,NULL);
 		if (cdest)
 			_clip_mclone(cm,RETPTR(cm),&cdest->obj);
 	}
@@ -336,7 +336,7 @@ clip_GDK_REGIONUNIONWITHRECT(ClipMachine * cm)
 
 	if (creg)
 	{
-		cdest = _register_object(cm,GDK_REGION(creg),GDK_OBJECT_REGION,NULL,NULL);
+		cdest = _register_object(cm,GDK_REGION(creg),GDK_TYPE_REGION,NULL,NULL);
 		if (cdest)
 			_clip_mclone(cm,RETPTR(cm),&cdest->obj);
 	}

@@ -1,0 +1,43 @@
+$FUNCNAME$
+  DBGOTO()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Position record pointer to a specific identity
+$LANG_RU$
+   Перемещает указатель на запись с заданным номером.
+$SYNTAX$
+     DBGOTO(<xIdentity>) --> NIL
+$LANG_RU$
+     DBGOTO(<номер записи>) --> NIL
+$ARGUMENTS$
+     <xIdentity> is a unique value guaranteed by the structure of the
+     data file to reference a specific item in a data source (database).  In
+     a Xbase data structure (.dbf) <xIdentity> is the record number.  In
+     other data formats, <xIdentity> is the unique primary key value.
+     <xIdentity> could be an array offset or virtual memory handle if the
+     data set is in memory instead of on disk.
+$LANG_RU$
+     <номер записи> - числовое значение, которое определяет номер записи,
+     на которую должен быть установлен указатель.
+$RETURNS$
+     DBGOTO() always returns NIL.
+$LANG_RU$
+     DBGOTO() всегда возвращает NIL.
+$DESCRIPTION$
+     DBGOTO() is a database function that positions the record pointer in the
+     current work area at the specified <xIdentity>.  In an Xbase data
+     structure, this identity is the record number because every record, even
+     an empty record, has a record number.  In non-Xbase data structures,
+     identity may be defined as something other than record number.
+$LANG_RU$
+     DBGOTO() перемещает указатель на запись, номер которой равен <номер
+     записи>. Если такой номер не существует, указатель устанавливается на
+     запись LASTREC()+1, а значение, возвращаемое функциями как EOF(), так
+     и BOF() - "истина" (.T.).
+
+     DBGOTO() выполняет те же функции, что и стандартная команда GO. Более
+     подробную информацию смотрите в команде GO.
+$SEEALSO$
+  BOF(),DBGOBOTTOM(),DBGOTOP(),DBSEEK(),DBSKIP(),EOF()
+$END$

@@ -1,0 +1,57 @@
+$FUNCNAME$
+	TCPLISTEN()
+$CATEGORY$
+	TCP,FILE/IO
+$SUMMARY$
+	Listen port.
+$LANG_RU$
+	Слушать порт.
+$SYNTAX$
+	TCPLISTEN(<nPort>[, <nBackLog>])	--> <nErrNo>
+$ARGUMENTS$
+	<nPort>		Numeric, is the port number.
+	<nBackLog>	Numeric, is the  maximum length the queue of  pending  connections.
+$LANG_RU$
+	<nPort>		Numeric, номер порта.
+	<nBackLog>	Numeric, максимальная длина очереди ожидающих соединения.
+$RETURNS$
+	Returns the numeric value <nErrNo>: on zero - operation was successfully, <nErrNo> < 0 - error code.
+$LANG_RU$
+	Возвращает числовое значение <nErrNo>: ноль - операция завершилась успешно, <nErrNo> - код ошибки.
+$DESCRIPTION$
+	TCPLISTEN() creates socket and stands for incomming connections.
+$LANG_RU$
+	TCPLISTEN() создает сокет и устанавливает прослушивание входящих соединений.
+$EXAMPLES$
+
+#define DEFPORT	3000
+
+local nH, nPort, nCon
+nPort := DEFPORT
+
+if (nH := TCPLISTEN( nPort, 10 )) == -1
+	? "tcpsrv: Error listen on port ", nPort
+	?
+	return( 1 )
+endif
+
+//? "wait client connection"
+do while( .t. )
+	? "wait client connection",time()
+	if (nCon := TCPACCEPT( nH, 5000 )) != -1
+		? "start",nH,nCon
+		start( {|nC| /* reading data from connection */ TCPREAD(nC....)}, nCon )
+	endif
+	sleep(0.01)
+enddo
+TCPCLOSE( nH )
+
+
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+$AUTHOR$
+$LASTDATE$
+$END$
+

@@ -1,0 +1,131 @@
+<chapter id="beginners">
+<title>_(Beginner's guide)_</title>
+
+
+<sect1>_(In the beginning was...)_</sect1>
+
+<para>_(In the beginning was the CA-Clipper. Many peoples got used to it. 
+Got used to it's compilation system (compile --&gt; link --&gt; run). Compiler 
+was the same, but linker could be change (rtlink, exospace, blinker, etc.).)_</para>
+<para>_(When you come to Clip you not just change the compiler. You change the 
+whole ideology of making programs. Why?)_</para>
+<para>_(Clip developed in Linux and this is main platform for compiler and client 
+applications.)_ _(Clip can be compiled and used in many platforms (for example 
+Linux, FreeBSD, Solaris).)_ _(This can be done by using so called GNU tools:
+make, gcc, flex, bison and many others. GNU tools natively ported on all of that
+platforms, because all of that are POSIX-compatible.)_ _(But Win32 platform is
+very different. For this reason using Clip under Win32 is not a trivial.)_</para>
+<para>_(Working with Clip under Win32 is possible through Cygwin. What is this?)_
+</para>
+
+
+<sect1>_(Cygwin)_</sect1>
+
+<para>_(You can understand Cygwin in two ways:
+<itemizedlist>
+<listitem><para>_(This is number of GNU tools and utilities, which make 
+recompilation of POSIX programs is possible under Win32 platform.)_</para></listitem>
+<listitem><para>_(This is "POSIX-&gt;Win32 API-converter")_</para></listitem>
+</simplelist>
+</para>
+
+<para>_(What is API-converter? This is regular DLL, which must be called from each 
+Cygwin program or library.)_ _(When any Cygwin-enabled program made a POSIX-call, 
+it will be converted to Win32 system call.)_ _(This technique give you a possibility 
+to recompile POSIX programs without massive rewriting of code.)_ _(All GNU tools
+(compilers, lexers, command interpreters, GUI libraries etc.) made by this way.)_
+</para>
+
+<para>_(For this reason GNU tools organized as in other *NIX distributions)_</para>
+
+<para>_(Due to recompilation (and not porting in usual way) all files kept 
+their places as in *NIX system.)_ _(Root directory is an install directory of
+whole Cygwin.)_ _(All other files and directories depends on root.)_ _(This not a
+rule for you program, but a law for all part of Cygwin.)_ _(If you new in Cygwin
+or *NIX systems, below you can find a description of standard directories:)_</para>
+
+<variablelist>
+  <varlistentry>
+    <term>_(root)_</term>
+    <listitem>
+      <para>
+      _(Root for all Cygwin files and directories. In real FAT hierarchy is a 
+      directory, where you install your Cygwin. In case of cygwin_trunc.rar from 
+      ITK's site it will be c:\\cygwin)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>_(bin)_</term>
+    <listitem>
+      <para>
+      _(Place for all executables and shared libraries (.DLL), needed for them.)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>_(etc)_</term>
+    <listitem>
+      <para>
+      _(Place for all settings and initialisation files.)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>_(home)_</term>
+    <listitem>
+      <para>
+      _(Place for personal directories and files.)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>_(lib)_</term>
+    <listitem>
+      <para>
+      _(Place for all libraries, needed for compilers.)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>_(tmp)_</term>
+    <listitem>
+      <para>
+      _(Place for temporary files.)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>_(usr)_</term>
+    <listitem>
+      <para>
+      _(Place for other user (not system) files, like user programs, compiler 
+      itself, includes etc.)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>_(var)_</term>
+    <listitem>
+      <para>
+      _(Place for system log and other auxillary files.)_
+      </para><para></para>
+    </listitem>
+  </varlistentry>
+
+</variablelist>
+
+<para>_(Like in case of precompiled Clip files may be placed in separate directory
+inside Cygwin hierarchy.)_</para>
+
+<para>_(If you plan to work in Cygwin you must accept some rules.)_</para>
+
+<para>_()_</para>
+
+<para>_()_</para>
+
+<para>_()_</para>
+
+<para>_()_</para>
+
+

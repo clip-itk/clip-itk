@@ -1,0 +1,13 @@
+$FUNCNAME$
+  MRESTSTATE()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Re-establish the previous state of a mouse
+$SYNTAX$
+     MRESTSTATE( <cSaveState> ) --> NIL
+$RETURNS$
+     MRESTSTATE() always returns NIL.
+$SEEALSO$
+  MSAVESTATE()
+$END$

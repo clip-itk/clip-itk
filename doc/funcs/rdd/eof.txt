@@ -1,0 +1,149 @@
+$FUNCNAME$
+  EOF()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Determine when end of file is encountered
+$LANG_RU$
+   Определяет момент перехода за последнюю логическую запись файла базы данных.
+$SYNTAX$
+     EOF() --> lBoundary
+$LANG_RU$
+     EOF() --> признак конца файла
+$RETURNS$
+     EOF() returns true (.T.) when an attempt is made to move the record
+     pointer beyond the last logical record in a database file; otherwise, it
+     returns false (.F.).  If there is no database file open in the current
+     work area, EOF() returns false (.F.).  If the current database file
+     contains no records, EOF() returns true (.T.).
+$LANG_RU$
+     EOF() возвращает значение "истина" (.T.) при попытке переместить
+     указатель записи за последнюю логическую запись файла базы данных,
+     в остальных случаях она возвращает значение "ложь" (.F.). Если файл
+     базы данных не открыт в текущей рабочей области, EOF() возвращает
+     значение "ложь" (.F.). Если текущий файл базы данных не содержит ни
+     одной логической записи, EOF() возвращает значение " истина" (.T.).
+$DESCRIPTION$
+     EOF() is a database function used to test for an end of file boundary
+     condition when the record pointer is moving forward through a database
+     file.  Any command that can move the record pointer can set EOF().
+
+     The most typical application is as a part of the <lCondition> argument
+     of a DO WHILE construct that sequentially processes records in a
+     database file.  Here <lCondition> would include a test for .NOT. EOF(),
+     forcing the DO WHILE loop to terminate when EOF() returns true (.T.).
+
+     EOF() and FOUND() are often used interchangeably to test whether a SEEK,
+     FIND, or LOCATE command failed.  With these commands, however, FOUND()
+     is preferred.
+
+     When EOF() returns true (.T.), the record pointer is positioned at
+     LASTREC() + 1 regardless of whether there is an active SET FILTER or SET
+     DELETED is ON.  Further attempts to move the record pointer forward
+     return the same result without error.  Once EOF() is set to true (.T.),
+     it retains its value until there is another attempt to move the record
+     pointer.
+
+     By default, EOF() operates on the currently selected work area.  It can
+     be made to operate on an unselected work area by specifying it within an
+     aliased expression (see example below).
+$LANG_RU$
+     EOF() - это функция работы с базами данных, которая используется для
+     проверки, не достиг ли указатель записи конца файла при его движении
+     вперед по файлу базы данных. Все команды, передвигающие указатель
+     записи, могут изменять значение EOF().
+
+     Наиболее типичным случаем использования EOF() является ее включение
+     в качестве аргумента условия <лог. условие> конструкции DO WHILE при
+     последовательной обработке записей файла базы данных. В этом случае
+     <лог.  условие> должно включать проверку на .NOT.EOF(), заставляя
+     цикл завершаться в том случае, когда EOF() возвращает значение
+     "истина" (.T.).
+
+     Функции EOF() и FOUND() могут быть взаимозаменяемыми при проверке
+     успешности выполнения команд SEEK, FIND или LOCATE. Однако в этом
+     случае более предпочтительной является функция FOUND().
+
+     Когда функция EOF() возвращает значение "истина" (.T.), указатель
+     записи устанавливается на значение LASTREC() + 1 независимо от того,
+     было ли активно предложение SET FILTER или командой SET DELETED
+     установлен режим ON. При дальнейших попытках передвижения указателя
+     записи вперед значение EOF() будет оставаться неизменным и ошибки
+     времени выполнения не будет.  Значение "истина" (.T.), установленное
+     функцией EOF(), не изменится до следующей попытки передвижения
+     указателя записи.
+
+     По умолчанию функция EOF() работает с файлом базы данных в текущей
+     (активной) рабочей области. Однако она может быть использована с
+     файлом базы данных пассивной рабочей области. В этом случае EOF()
+     должна быть частью выражения, уточненного алиасом (смотри пример
+     ниже).
+$EXAMPLES$
+       This example demonstrates EOF() by deliberately moving the
+	record pointer beyond the last record:
+
+	USE Sales
+	GO BOTTOM
+	? EOF()            // Result: .F.
+	SKIP
+	? EOF()            // Result: .T.
+
+       This example uses aliased expressions to query the value of
+	EOF() in unselected work areas:
+
+	USE Sales NEW
+	USE Customer NEW
+	? Sales->(EOF())
+	? Customer->(EOF())
+
+       This example illustrates how EOF() can be used as part of a
+	condition for sequential database file operations:
+
+	USE Sales INDEX CustNum NEW
+	DO WHILE !EOF()
+	   nOldCust := Sales->CustNum
+	   nTotalAmount := 0
+	   DO WHILE nOldCust = Sales->CustNum .AND. (!EOF())
+	      ? Sales->CustNum, Sales->Description, ;
+		    Sales->SaleAmount
+	      nTotalAmount += Sales->SaleAmount
+	      SKIP
+	   ENDDO
+	   ? "Total amount: ", nTotalAmount
+	ENDDO
+$LANG_RU$
+      Этот пример демонстрирует использование функции EOF() при свободном
+       перемещении указателя записи по файлу базы данных:
+
+       USE Sales
+       GO BOTTOM
+       ? EOF()          // Результат: .F.
+       SKIP
+       ? EOF()          // Результат: .T.
+
+      Этот пример использует выражение, уточненное алиасом при просмотре
+       значения функции EOF() в пассивной рабочей области:
+
+       USE Sales NEW
+       USE Customer NEW
+       ? Sales->(EOF())
+       ? Customer->(EOF())
+
+      Этот пример иллюстрирует, как функция EOF() может быть использована
+       в качестве части условия при последовательных операциях над файлом
+       базы данных:
+
+       USE Sales INDEX CustNum NEW
+       DO WHILE !EOF()
+	  nOldCust = Sales->CustNum
+	  nTotalAmount := 0
+	  DO WHILE nOldCust = Sales->CustNum .AND. (!EOF())
+	     ? Sales->CustNum, Sales->Description, Sales->SaleAmount
+	     nTotalAmount += Sales->SaleAmount
+	     SKIP
+	  ENDDO
+	  ? "Общий итог :", nTotalAmount
+       ENDDO
+$SEEALSO$
+  BOF(),FOUND(),LASTREC()
+$END$

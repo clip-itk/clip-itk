@@ -1,0 +1,87 @@
+$FUNCNAME$
+  FRENAME()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Change the name of a file
+$LANG_RU$
+   Изменяет имя файла.
+$SYNTAX$
+     FRENAME(<cOldFile>, <cNewFile>) --> nSuccess
+$LANG_RU$
+     FRENAME(<старое имя файла>, <новое имя файла>) --> признак завершения
+$ARGUMENTS$
+     <cOldFile> is the name of the file to be renamed, including the file
+     extension.  A drive letter and/or path name may also be included as part
+     of the file name.
+
+     <cNewFile> is the new name of the file, including the file
+     extension.  A drive letter and/or path name may also be included as part
+     of the name.
+$LANG_RU$
+     <старое имя файла> - имя файла (включая расширение), который должен
+     быть переименован. Имя дисковода и/или путь также могут быть включены
+     как часть имени файла.
+
+     <новое имя файла> - новое имя файла, включая расширение. Имя
+     дисковода и/или путь также могут быть включены как часть имени.
+$RETURNS$
+     FRENAME() returns -1 if the operation fails and zero if it succeeds.  In
+     the case of a failure, FERROR() can be used to determine the nature of
+     the error.
+$LANG_RU$
+     FRENAME() возвращает -1, если операция не удалась и 0, если она
+     прошла успешно. В случае неудачи может быть использована функция
+     FERROR() с тем, чтобы определить природу ошибки.
+$DESCRIPTION$
+     FRENAME() is a file function that changes the name of a specified file
+     to a new name and is identical to the RENAME command.
+
+     When FRENAME() is called, <cOldFile> is renamed only if it is located in
+     the current DOS directory or in the specified path.  FRENAME() does not
+     use SET DEFAULT or SET PATH to locate <cOldFile>.
+
+     If the source directory is different from the target directory, the file
+     moves to the target directory.  In the instance that either <cNewFile>
+     exists or is currently open, FRENAME() fails and returns -1, indicating
+     that it did not perform its designated action.  The nature of the error
+     can be determined with FERROR().
+
+     Warning!  Files must be CLOSEd before renaming.  Attempting to
+     rename an open file will produce unpredictable results.  When a database
+     file is renamed, the associated memo (.dbt) file must also be renamed.
+     Failure to do so may compromise the integrity of your databases.
+$LANG_RU$
+     FRENAME() - это файловая функция, которая меняет старое имя файла
+     на новое. Она идентична команде RENAME. При вызове FRENAME() файл с
+     именем, заданным в аргументе <старое имя файла>, переименовывается
+     только в том случае, если он расположен в текущей директории DOS или
+     на заданном пути.  FRENAME() не использует для поиска файла установки
+     команд SET DEFAULT или SET PATH. Если исходная директория отличается
+     от новой, то файл переносится в новую директорию. Если файл с именем
+     <новое имя файла> существует, то FRENAME() возвращает (1). Это
+     означает, что функция не выполнила предписанного ей действия.
+     Характер ошибки может быть установлен с помощью функции FERROR().
+
+      Предупреждение:
+     Файл должен быть закрыт перед переименованием. Попытка переименовать
+     открытый файл приведет к непредсказуемым результатам.
+     При переименовании файла базы данных, связанный с ним memo-файл
+     (.dbt) также должен быть переименован. Невыполнение этих требований
+     может нарушить правильность работы вашей программы.
+$EXAMPLES$
+       This example demonstrates a file rename:
+
+	IF FRENAME("OldFile.txt", "NewFile.txt") == -1
+	   ? "File error:", FERROR()
+	ENDIF
+$LANG_RU$
+      Следующий пример демонстрирует, как переименовать файл:
+
+       IF FRENAME ("OldFile.txt", "NewFile.txt") = -1
+	  ? "Ошибка:", FERROR()
+	  BREAK
+       ENDIF
+$SEEALSO$
+  FERASE(),FERROR(),FILE()
+$END$

@@ -24,6 +24,25 @@ $SEEALSO$
 	UIDRIVER
 $END$
 
+$FUNCNAME$
+	useDriver()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Use specified driver.
+$LANG_RU$
+	Использовать указанный драйвер.
+$SYNTAX$
+	useDriver(<name>)
+$ARGUMENTS$
+	<name>		- String. Driver name.
+$LANG_RU$
+	<name>		- Строка. Имя драйвера.
+$EXAMPLES$
+	useDriver("gtk2")
+$SEEALSO$
+	GETDRIVER()
+$END$
 
 $FUNCNAME$
 	getSysImage()
@@ -166,10 +185,10 @@ $LANG_RU$
 $SYNTAX$
 	XMLGetTag(<root>,<path>)	--> <oTag>
 $ARGUMENTS$
-	<root>		- <link linkend="functionxmlgettag">XMLGetTag</link> object. Element from which lookup is begun.
+	<root>		- <link linkend="classXMLTAG">XMLTag</link> object. Element from which lookup is begun.
 	<path>		- String. Hierarchy as tag names (in upper case) delimited by dots. For example, if queried "HEAD.VALUE" will be lookup first child element with name 'head' and its child element with name 'value' will be returned. If tag not found in hierarchy NIL is returned.
 $LANG_RU$
-	<root>		- Объект <link linkend="functionxmlgettag">XMLGetTag</link>. Элемент, с которого начинается поиск.
+	<root>		- Объект <link linkend="classXMLTAG">XMLTag</link>. Элемент, с которого начинается поиск.
 	<path>		- Строка. Иерархия в виде имён тегов (в верхнем регистре), разделённых точками. Например, при запросе "HEAD.VALUE" будет найден первый тег с именем 'head', а затем возвращён объект первого тега 'value' под ним. Если тег в такое иерархии не найден, возвращается NIL.
 $RETURNS$
 	Tag by specified hierarchy.
@@ -178,7 +197,7 @@ $LANG_RU$
 $EXAMPLES$
 	t := XMLGetTag( self:root, "INTERFACE.WIDGET" )	// Find <widget> tag under tag <interface> from element self:root.
 $SEEALSO$
-	XMLGETTAG()
+	XMLTAG
 $END$
 
 

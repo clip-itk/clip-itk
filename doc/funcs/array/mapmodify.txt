@@ -1,0 +1,81 @@
+$FUNCNAME$
+	MAPMODIFY
+$CATEGORY$
+	OBJECT, ARRAY
+$SUMMARY$
+	Include/exclude control mode for attributes changing.
+$LANG_RU$
+	Включает/отключает режим контроля измений атрибутов.
+$SYNTAX$
+     MAPMODIFY(<oObj>, <lMode>) 	--> <lOldMode>
+$ARGUMENTS$
+     <oObj>	Object, is the source object.
+     <lMode>	Logical, is the new mode value.
+$LANG_RU$
+     <oObj>	Object, исходный объект.
+     <lMode>	Logical, новое значение режима.
+$RETURNS$
+     Returns logical value - old control mode.
+$LANG_RU$
+     Возвращает логическое значение - старое значение режима контроля.
+$DESCRIPTION$
+     MAPMODIFY() includes/excludes the control mode for attributes when
+     this attributes try changes.
+
+     If <lMode> is TRUE and source object <oObj> contents method <Modify>,
+     then before changes attributes value automatically called method
+     oObj:Modify(<nHashAttr>, <vNewValue>). When <nHashAttr> is the
+     attribute hash code, <vNewValue> new value, what must be assigned.
+     The <Modify> method must returned realy value for modifyed attribute.
+
+$LANG_RU$
+     MAPMODIFY() включает/отключает режим контроля изменения атрибутов.
+
+     Если <lMode> TRUE и объект <oObj> содержит метод <Modify>,
+     то перед изменением значения атрибута будет автоматически вызван метод
+     oObj:Modify(<nHashAttr>, <vNewValue>). Где <nHashAttr> хэш-код
+     изменяемого атрибута, <vNewValue> новое значение атрибута.
+     Метод <Modify> должен вернуть реальное значение, которое будет присвоено
+     модифицируемому атрибуту.
+$EXAMPLES$
+static function modify(selfobj, HashAttr, Val)
+local ret
+	ret := Val
+	if HashAttr == hashstr("GROUP")
+		ret := Val
+		if Val == NIL
+			ret := "WORKGROUP"
+		endif
+	endif
+return ret
+
+Person := MAP()
+Person:NAME := "User1"
+Person:GROUP := "WORKGROUP"
+Person:PASSWD := "****"
+Person:MODIFY := @modify()
+
+? Person:GROUP		// --> WORKGROUP
+
+Person:GROUP := NIL
+
+? Person:GROUP		// --> NIL
+
+Person:GROUP := "ABC"
+
+? Person:GROUP		// --> ABC
+
+MAPMODIFY(Person, .T.)
+Person:GROUP := NIL
+? Person:GROUP		// --> WORKGROUP
+
+$PLATFORMS$
+$SEEALSO$
+	MAP(), HASHSTR()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+

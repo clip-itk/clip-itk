@@ -1,0 +1,87 @@
+$FUNCNAME$
+	HASHSTR()
+$CATEGORY$
+	STRING, NUMERIC, CONVERSION
+$SUMMARY$
+	Returns hash code for string.
+$LANG_RU$
+	Возвращает хэш-код строки.
+$SYNTAX$
+	HASHSTR(<sStr>) 	--> <nHashCode>
+$ARGUMENTS$
+     <sStr>	String, is the string to convertion.
+$LANG_RU$
+     <sStr>	String, исходная строка
+$RETURNS$
+     Returns the numeric value - hash code, what was converted from string.
+$LANG_RU$
+     Возвращает числовое значение - хэш-код, сконвертированное из строки.
+$DESCRIPTION$
+
+     HASHSTR() calulates hash code from string <sStr> and returns it as numeric
+     value <nHashCode>. Hash code has unique values into range of 1000000 to MAX_LONG.
+$LANG_RU$
+
+     HASHSTR() вычисляет хэш-код для строки <sStr> и возвращает его в виде
+     числа. Хэш-код имеет уникальное значение в пределах от 1000000 до MAX_LONG.
+$EXAMPLES$
+
+HASHSTR("asdf")		// --> 1886203041
+HASHSTR("ASDF")		// --> 1190707477
+HASHSTR("aSdF")		// --> 1934510729
+
+$PLATFORMS$
+$SEEALSO$
+	HASHNAME()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+$FUNCNAME$
+	HASHNAME()
+$CATEGORY$
+	STRING, NUMERIC, CONVERSION
+$SUMMARY$
+	Returns string from hash values.
+$LANG_RU$
+	Возвращает строку, из которой был получен хэш-код.
+$SYNTAX$
+
+	HASHNAME(<nHashCode>) 	--> <sStr>
+
+$ARGUMENTS$
+     <nHashCode>	Numeric, is the source hash code.
+
+$LANG_RU$
+     <nHashCode>	Numeric, исходный хэш-код.
+
+$RETURNS$
+
+     Returns the string, from what was converted hash code.
+
+$LANG_RU$
+
+     Возвращает строку, из которой был сгенерирован хэш-код.
+
+$DESCRIPTION$
+
+     HASHNAME() returns sources string for hash code <nHashCode>.
+$LANG_RU$
+
+     HASHNAME() возвращает исходную строку, из которой был получен хэш-код <nHashCode>.
+$EXAMPLES$
+
+HASHSTR("asdf")		// --> 1886203041
+HASHNAME(1886203041)	// --> asdf
+
+$PLATFORMS$
+$SEEALSO$
+	HASHSTR()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

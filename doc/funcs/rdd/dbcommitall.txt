@@ -1,0 +1,61 @@
+$FUNCNAME$
+  DBCOMMITALL()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Flush pending updates in all work areas
+$LANG_RU$
+   Записывает данные из буферов на диск для всех рабочих областей.
+$SYNTAX$
+     DBCOMMITALL() --> NIL
+$LANG_RU$
+     DBCOMMITALL() --> NIL
+$RETURNS$
+     DBCOMMITALL() always returns NIL.
+$LANG_RU$
+     DBCOMMITALL() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCOMMITALL() causes all pending updates to all work areas to be written
+     to disk.  It is equivalent to calling DBCOMMIT() for every occupied work
+     area.
+
+     For more information, refer to DBCOMMIT() and the COMMIT command.
+$LANG_RU$
+     При вызове функции DBCOMMITALL() все изменения во всех рабочих
+     областях записываются из буферов на диск. Это эквивалентно вызову
+     функции DBCOMMIT() для каждой рабочей области.
+
+     Более подробная информация находится в описании функции DBCOMMIT() и
+     команды COMMIT.
+$EXAMPLES$
+       The following example writes all pending updates to disk:
+
+	cLast := "Winston"
+	//
+	DBUSEAREA( .T., "DBFNTX", "Sales", "Sales", .T. )
+	DBSETINDEX( "SALEFNAM" )
+	DBSETINDEX( "SALELNAM" )
+	//
+
+	DBUSEAREA( .T., "DBFNTX", "Colls", "Colls", .T. )
+	DBSETINDEX( "COLLFNAM" )
+	DBSETINDEX( "COLLLNAM" )
+
+	DBSELECTAREA( "Sales" )      // select "Sales" work area
+
+	IF ( Sales->(DBSEEK(cLast)) )
+	   IF Sales->( DELETED() ) .AND. Sales( RLOCK() )
+	      Sales->( DBRECALL() )
+	      ? "Deleted record has been recalled."
+	   ENDIF
+	ELSE
+	   ? "Not found"
+	ENDIF
+	//
+	// processing done, write updates to disk and close
+	DBCOMMITALL()
+	DBCLOSEALL()
+	QUIT
+$SEEALSO$
+  DBCLOSEALL(),DBCOMMIT(),DBUNLOCK()
+$END$

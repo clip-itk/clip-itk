@@ -1,0 +1,173 @@
+$FUNCNAME$
+  COMPILESTRING()
+$CATEGORY$
+  CODEBLOCK, SYSTEM
+$SUMMARY$
+	Compile string.
+$LANG_RU$
+	Компиляция строки.
+$SYNTAX$
+     COMPILESTRING(<sString>, <@sError>) 	--> <CodeBlock>
+$ARGUMENTS$
+     <sString>	String, is the source string
+     <sError>	String, is the error description
+$LANG_RU$
+     <sString>	String, исходная строка
+     <sError>	String, описание ошибки
+$RETURNS$
+     Returns the code block, what was compilled from a source string.
+$LANG_RU$
+     Возвращает блок кода, что был скомпилирован из исходной строки.
+$DESCRIPTION$
+
+     COMPILESTRING() compiles string <sString> to code block and returns it.
+     If error was created, <sError> kept error description.
+
+     Sourse string can contents any CLIP construstions and command with the
+     exlusion not static functions declaration. <sString> must begin with
+     parameters descriptions (if it need) without functions/procedures declaration. See examples.
+$LANG_RU$
+
+     COMPILESTRING() компилирует строку <sString>  и возвращает полученный
+     кодовый блок. <sError> содержит описание ошибки, если таковая возникла в процессе
+     компиляции.
+
+     Исходная строка может содержать любые CLIP конструкции, команды, за исключением
+     описания нестатических функций. <sString> должна начинаться с описания параметров
+     (если они есть) без описания названий функции или процедуры. См пример.
+$EXAMPLES$
+/* source string */
+str:="
+parameters p1,p2
+   qout(p1,p2)
+   localfunc1(p1,p2)
+return p1+p2
+static function localfunc1(fp1,fp2)
+   qout('called local function in string compiled block')
+return p1-p2"
+
+/* compile string */
+block:=COMPILESTRING(str,@err)
+if empty(err)
+       x:=eval(block,1,2) 	// returns values  p1 and p2
+       ? x 			// returns values  p1+p2
+else
+       ? err 			// error description
+endif
+
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+$FUNCNAME$
+  COMPILEFILE()
+$CATEGORY$
+  CODEBLOCK, SYSTEM
+$SUMMARY$
+	Compile file.
+$LANG_RU$
+	Компиляция файла.
+$SYNTAX$
+     COMPILEFILE(<sFileName>, <sFlags>, <@sError>) 	--> TRUE || FALSE
+$ARGUMENTS$
+     <sFileName>	String, is the file name to compiling.
+     <sFlags>		String, is the compiller flags (by default "-p").
+     <sError>		String, is the error description
+$LANG_RU$
+     <sFileName>	String, имя файла для компиляции.
+     <sFlags>		String, флаги компиляции (по умолчанию "-p")
+     <sError>		String, описание ошибки
+$RETURNS$
+     Returns TRUE if file compilled without errors.
+$LANG_RU$
+     Возвращает TRUE, если файл скомпилировался без ошибок.
+$DESCRIPTION$
+
+     COMPILEFILE() compilles file <sFileName> with flags <sFlags> and returns
+     TRUE in success, in other returns FALSE and <sError>  contents error description.
+
+$LANG_RU$
+
+     COMPILEFILE() компилирует файл <sFileName> с флагами <sFlags> и возвращает
+     TRUE в случае успеха, иначе возвращает FALSE и <sError> содержит описание
+     ошибки.
+$EXAMPLES$
+
+sFileName := FILEDIALOG("*.prg")
+err := ""
+lCF := COMPILEFILE(sFileName,,@err)
+if iCF
+	qout("Compiller: OK")
+else
+	qout("Compiller: error"+ err)
+endif
+
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+
+
+$FUNCNAME$
+	LOADBLOCK()
+$CATEGORY$
+	CODEBLOCK, SYSTEM
+$SUMMARY$
+	Load byte-code file.
+$LANG_RU$
+	Загрузка байт-кода.
+$SYNTAX$
+     LOADBLOCK(<sFileName>) 	--> <CodeBlock>
+$ARGUMENTS$
+     <sFileName>	String, is the byte-code file name.
+$LANG_RU$
+     <sFileName>	String, имя байт-код файла.
+$RETURNS$
+     Returns code block, what was loaded from byte-code file.
+$LANG_RU$
+     Возвращает кодовый блок, загруженный из байт-код файла.
+$DESCRIPTION$
+
+     LOADBLOCK() loades byte-code file <sFileName> and returns code block.
+     Byte-code file can be created:
+
+     clip -P filename.prg
+
+     The rules and structure of filename.prg must be corresponded are rules
+     for string from function <link linkend="functionCOMPILESTRING">COMPILESTRING()</link>.
+$LANG_RU$
+
+     LOADBLOCK() загружает байт-код файл <sFileName> и возвращает кодовый блок.
+     Байт-код файл может быть создан:
+
+     clip -P filename.prg
+
+     Правила и структура файла filename.prg должны соответствовать правилам для
+     строки из функции <link linkend="functionCOMPILESTRING">COMPILESTRING()</link>.
+$EXAMPLES$
+
+block := LOADBLOCK("test.po")
+
+eval(block, "1", 2)
+
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+
+

@@ -1,0 +1,96 @@
+$FUNCNAME$
+  NEXTKEY()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Read the pending key in the keyboard buffer
+$LANG_RU$
+   Считывает код нажатой клавиши в буфере клавиатуры.
+$SYNTAX$
+     NEXTKEY() --> nInkeyCode
+$LANG_RU$
+     NEXTKEY() --> код клавиши
+$RETURNS$
+     NEXTKEY() returns an integer numeric value ranging from -39 to 386 for
+     keyboard events and integer values from 1001 to 1007 for mouse events.
+     This value identifies either the key extracted from the keyboard buffer
+     or the mouse event that last occurred.  If the keyboard buffer is empty
+     and no mouse events are taking place, NEXTKEY() returns zero.  If SET
+     TYPEAHEAD is zero, NEXTKEY() always returns zero.
+$LANG_RU$
+     NEXTKEY() возвращает целое число, которое находится в интервале от
+     -39 до 386 или от 1001 до 1007 для событий мыши. Если буфер клавиатуры пуст, NEXTKEY() возвращает 0. Если
+     командой SET TYPEAHEAD установлен размер буфера - ноль, то NEXTKEY()
+     возвращает ноль.
+$DESCRIPTION$
+     NEXTKEY() is a function that reads the keystroke pending in the keyboard
+     buffer or the next mouse event without removing it.  The value returned
+     is the INKEY() code of the key pressed--the same value as returned by
+     INKEY() and LASTKEY().  NEXTKEY() returns values for all ASCII
+     characters as well as function, Alt+function, Ctrl+function, Alt+letter,
+     and Ctrl+letter key combinations.
+
+     NEXTKEY() is like the INKEY() function but differs in one fundamental
+     respect.  INKEY() removes the pending key from the keyboard buffer and
+     updates LASTKEY() with the value of the key.  by contrast NEXTKEY()
+     reads, but does not remove the key from the keyboard buffer, and does
+     not update LASTKEY().
+
+     Since NEXTKEY() does not remove the key from the keyboard buffer, it can
+     be used to poll the keyboard, and then pass control to a routine that
+     uses a wait state or INKEY() to actually fetch the key from the buffer.
+
+     For a complete list of INKEY() codes and Inkey.ch constants.
+$LANG_RU$
+     NEXTKEY() - функция работы с клавиатурой, которая считывает код
+     очередной нажатой клавиши без его удаления из буфера клавиатуры.
+     Возвращаемые значения - это INKEY-коды нажатых клавиш - такие же,
+     что возвращают функции INKEY() и LASTKEY(). NEXTKEY() возвращает
+     значения кодов для всех ASCII символов, функциональных клавиш,
+     <Alt>-функциональных клавиш, <Ctrl>-функциональных клавиш,
+     <Alt>-символов, <Ctrl>-символов. NEXTKEY() похожа на функцию INKEY(),
+     но отличается одним основным свойством. INKEY() удаляет код нажатой
+     клавиши из буфера клавиатуры, изменяя значение LASTKEY().  NEXTKEY()
+     считывает, но не удаляет код нажатой клавиши из буфера клавиатуры и
+     не изменяет значения LASTKEY().
+
+     Поскольку NEXTKEY() не удаляет клавишу из буфера клавиатуры, можно
+     использовать эту функцию для опроса клавиатуры и затем передавать
+     управление программе, которая использует состояние ожидания для того,
+     чтобы извлечь клавишу из буфера. Полный список INKEY-кодов и описаний
+     констант файла описаний Inkey.ch приведен в приложении С этой книги.
+
+
+$EXAMPLES$
+
+       This example places an Esc key in the keyboard buffer, and
+	then shows the differences between INKEY(), LASTKEY(), and NEXTKEY():
+
+	#include "Inkey.ch"
+	//
+	CLEAR TYPEAHEAD
+	KEYBOARD CHR(K_ESC)
+	//
+	? NEXTKEY(), LASTKEY()            // Result: 27 0
+	? INKEY(), LASTKEY()              // Result: 27 27
+	? NEXTKEY()                       // Result: 0
+
+
+$LANG_RU$
+
+      В этом примере в буфер клавиатуры помещается значение клавиши <Esc>
+       и затем показываются отличия между INKEY(), LASTKEY() и NEXTKEY().
+
+       #include "Inkey.ch"
+       //
+       CLEAR TYPEAHEAD
+       KEYBOARD CHR(K_ESC)
+       //
+       ? NEXTKEY(), LASTKEY()          // Результат: 27, 0
+       ? INKEY(), LASTKEY()            // Результат: 27, 27
+       ? NEXTKEY()                     // Результат: 0
+
+
+$SEEALSO$
+  INKEY(),LASTKEY()
+$END$

@@ -1,0 +1,139 @@
+$FUNCNAME$
+  TONE()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Sound a speaker tone for a specified frequency and duration
+$LANG_RU$
+   Звуковое устройство подает сигнал заданной частоты и длительности.
+$SYNTAX$
+     TONE(<nFrequency>, <nDuration>) --> NIL
+$LANG_RU$
+     TONE(<частота>, <длительность>) --> NIL
+$ARGUMENTS$
+     <nFrequency> is a positive numeric value indicating the frequency of
+     the tone to be sounded.
+     <nDuration> is a positive numeric value indicating the duration of
+     the tone measured in increments of 1/18 of a second.  For example, an
+     <nDuration> value of 18 represents one second.
+     For both arguments, non-integer values are truncated--not rounded--to
+     their integer portion.
+$LANG_RU$
+     <частота> - положительное число, задающее частоту звука - тон.
+     <продолжительность> - положительное число, задающее продолжительность
+     звука, измеренное в единицах 1/18 секунды; одна секунда, следовательно,
+     равна 18 единицам. В обоих аргументах дробные части отбрасываются, без
+     округления до целого.
+$RETURNS$
+     TONE() always returns NIL.
+$LANG_RU$
+     TONE() всегда возвращает NIL.
+$DESCRIPTION$
+     TONE() is a sound function that indicates various program states to the
+     user.  These can be error states, boundary conditions, or the end of a
+     time-consuming process.  For example, an error state would sound an
+     error tone before alerting the user with a message or interactive dialog
+     box.  A boundary condition might indicate that the user is attempting to
+     move the cursor past the top or bottom of a column in a TBrowse object.
+     A batch process also might indicate its completion with a sound to alert
+     the user, in case the user has turned away from the screen.
+
+     TONE() works by sounding the speaker at the specified frequency for the
+     specified duration.  The duration is measured in increments of 1/18 of a
+     second.  The frequency is measured in hertz (cycles per second).
+     Frequencies of less than 20 are inaudible.  The table below shows the
+     frequencies of standard musical notes.
+
+     Note:  TONE() works only on IBM PC and 100 percent compatible
+     computers.
+
+     <PRE>Table of Musical Notes
+     ------------------------------------------------------------------------
+     Pitch   Frequency    Pitch     Frequency
+     ------------------------------------------------------------------------
+     C       130.80       mid C     261.70
+     C#      138.60       C#        277.20
+     D       146.80       D         293.70
+     D#      155.60       D#        311.10
+     E       164.80       E         329.60
+     F       174.60       F         349.20
+     F#      185.00       F#        370.00
+     G       196.00       G         392.00
+     G#      207.70       G#        415.30
+     A       220.00       A         440.00
+     A#      233.10       A#        466.20
+     B       246.90       B         493.90
+			  C         523.30
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     TONE() - функция управления звуковым сигналом - используется для
+     индикации различных состояний программы, например, ошибки, граничных
+     условий или окончания процесса: если в программе произошла ошибка, то
+     пользователю подается звуковой сигнал перед сообщением о ней. TONE()
+     подает звуковой сигнал заданной частоты и длительности. Длительность
+     измеряется в единицах 1/18 сек. Частота измеряется в герцах (циклах в
+     секунду). Частота ниже 20 герц неразличима для слуха. Ниже приведена
+     таблица стандартных тональных частот (Гц), соответствующих нотам.
+
+     Примечание:
+     Функция TONE() работает только на компьютерах IBM PC или полностью
+     совместимых с ними.
+
+     <PRE>Таблица тональных сигналов.
+     ---------------------------------------------------------------------
+     Обозначение      Частота           Обозначение      Частота
+     ---------------------------------------------------------------------
+     C                130.80            mid C            261.70
+     C#               138.60            C#               277.20
+     D                146.80            D                293.70
+     D#               155.60            D#               311.10
+     E                164.80            E                329.60
+     F                174.60            F                349.20
+     F#               185.00            F#               370.00
+     G                196.00            G                392.00
+     G#               207.70            G#               415.30
+     A                220.00            A                440.00
+     A#               233.10            A#               466.20
+     B                246.90            B                493.90
+					C                523.30
+     ---------------------------------------------------------------------
+     </PRE>
+$EXAMPLES$
+       This example is a beep function that indicates that a batch
+	operation has completed:
+
+	FUNCTION DoneBeep
+	   TONE(300, 1)
+	   TONE(100, 1)
+	   TONE(300, 1)
+	   TONE(100, 1)
+	   RETURN NIL
+
+       This example is a tone sequence that indicates invalid
+	keystrokes or boundary conditions:
+
+	FUNCTION ErrorBeep
+	   TONE(100, 3)
+	   RETURN NIL
+$LANG_RU$
+      Следующий пример показывает функцию DoneBeep, которая использует
+       звуковой сигнал для индикации окончания пакетной операции:
+
+       FUNCTION DoneBeep
+	  TONE(300, 1)
+	  TONE(100, 1)
+	  TONE(300, 1)
+	  TONE(100, 1)
+	  RETURN NIL
+
+      Этот пример иллюстрирует последовательность звуковых сигналов, для
+       индикации неверно нажатых клавиш или выхода за границу файла или
+       экрана:
+
+       FUNCTION ErrorBeep
+	  TONE(100, 3)
+	  RETURN NIL
+$SEEALSO$
+  CHR()
+$END$

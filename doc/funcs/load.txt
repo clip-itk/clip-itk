@@ -1,0 +1,48 @@
+$FUNCNAME$
+  LOAD()
+$CATEGORY$
+	CODEBLOCK, SYSTEM
+$SUMMARY$
+	Load byte-code file or dynamic library.
+$LANG_RU$
+	Загрузка байт-кода или динамической библиотеки.
+$SYNTAX$
+     LOAD(<sFileName>) 	--> <CodeBlock>
+$ARGUMENTS$
+     <sFileName>	String, is the byte-code file name od dymanic library file name.
+$LANG_RU$
+     <sFileName>	String, имя байт-код файла или имя файла динамической библиотеки.
+$RETURNS$
+     Returns code block, what was loaded from file.
+$LANG_RU$
+     Возвращает кодовый блок, загруженный из файла.
+$DESCRIPTION$
+     LOAD() reades file <sFileName> and returns code block.
+     <sFile> is the byte-code file "filename.po" or dynamic library "filename.so".
+     After loading all not static functions are accessible to use.
+$LANG_RU$
+     LOAD() зачитывает файл <sFileName> и возвращает кодовый блок.
+     <sFile> это байт-код файл "filename.po" или динамическая библиотека "filename.so".
+     Все не статик функции, объявленные в файле, становятся доступными для
+     использования.
+$EXAMPLES$
+
+/* test.po */
+local a
+	a := "Hello, world!"
+return a
+/////////////////////////
+
+block := LOAD("test.po")
+
+qout( eval(block) )	// --> Hello, world!
+
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+

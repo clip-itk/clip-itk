@@ -1,0 +1,81 @@
+$FUNCNAME$
+  A2EDIT()
+$CATEGORY$
+  ARRAY
+$SUMMARY$
+   Browse 2D array in a table layout
+$LANG_RU$
+   Просмотр двухмерного массива в виде таблицы
+$SYNTAX$
+
+     A2EDIT(<nTop>, <nLeft>, <nBottom>, <nRight>, <aData>, <cUserFunc>, <aSay>, <aHeaders>, <aHeadSep>, <aColSep>, <aFootSep>, <aFooters>) --> NIL
+
+$ARGUMENTS$
+
+     <nTop> 	Numeric, is the upper coordinates of the A2EDIT() window.
+     <nLeft> 	Numeric, is the left coordinates.
+     <nBottom> 	Numeric, is the bottom coordinates.
+     <nRight> 	Numeric, is the right coordinates.
+     <aData> 	Array, is the 2D array to browse.
+     <cUserFunc> 	String, is the user function name.
+     <aSay> 	Array, is the picture clauses to format each column.
+     <aHeaders>	Array, is the column headers.
+     <aHeadSep>	Array or character, is the heading separators.
+     <aColSep>	Array or character, is the columns separators.
+     <aFootSep>	Array or character, is the footings separators.
+     <aFooters>	Array, is the footings data.
+
+$LANG_RU$
+
+     <nTop> 	Numeric, верхняя координата A2EDIT() окна.
+     <nLeft> 	Numeric, левая координата.
+     <nBottom> 	Numeric, нижняя координата.
+     <nRight> 	Numeric, правая координата.
+     <aData> 	Array, массив для просмотра.
+     <cUserFunc> 	String, имя функции пользователя.
+     <aSay> 	Array, шаблоны для представления содержимого колонок.
+     <aHeaders>	Array, заголовки колонок.
+     <aHeadSep>	Array or character, разделители колонок заголовков.
+     <aColSep>	Array or character, разделители колонок.
+     <aFootSep>	Array or character, разделители колонок подвала.
+     <aFooters>	Array, строки подписей к колонкам.
+
+$RETURNS$
+
+     A2EDIT() returns NIL.
+
+$LANG_RU$
+
+     A2EDIT() возвращает NIL.
+
+$DESCRIPTION$
+
+     A2EDIT() is a array function that determines the browse 2D array data
+     in a table layout.
+
+     A2EDIT() lake a <link linkend="functionDBEDIT">DBEDIT()</link> function.
+
+$LANG_RU$
+
+     A2EDIT() - это функция работы с массивом, которая
+     предназначена для просмотра 2-мерного массива.
+
+     A2EDIT()  это таже <link linkend="functionDBEDIT">DBEDIT()</link>, но только
+     работает с массивом, а не с БД.
+
+$EXAMPLES$
+
+       arr := {{1,2,3,4,5}{11,22,33,44,55}{111,222,333,444,555}}
+       A2EDIT(0, 0, maxrow(), maxcol(), arr, {"One", "Two", "Three", "Four", "Five"})
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	DBEDIT()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$

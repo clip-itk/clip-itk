@@ -1,0 +1,12 @@
+REGEDIT4
+
+[HKEY_CURRENT_USER\SOFTWARE\Cygnus Solutions]
+
+[HKEY_CURRENT_USER\SOFTWARE\Cygnus Solutions\Cygwin]
+
+[HKEY_CURRENT_USER\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2]
+"cygdrive prefix"="/cygdrive"
+"cygdrive flags"=dword:00000022
+
+[HKEY_CURRENT_USER\SOFTWARE\Cygnus Solutions\Cygwin\Program Options]
+

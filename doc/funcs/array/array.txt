@@ -1,0 +1,99 @@
+$FUNCNAME$
+  ARRAY()
+$CATEGORY$
+  ARRAY
+$SUMMARY$
+   Create an uninitialized array of specified length
+$LANG_RU$
+   Создает неинициализированный массив заданной длины.
+$SYNTAX$
+     ARRAY(<nElements> [, <nElements>...]) aArray
+$LANG_RU$
+     ARRAY(<кол-во эл. 1> [,<кол-во эл. 2>...]) --> массив
+$ARGUMENTS$
+     <nElements> is the number of elements in the specified dimension.
+     The maximum number of elements in a dimension is 65000.  Arrays in
+     xClipper can have an unlimited number of dimensions.
+$LANG_RU$
+     <кол-во эл.> - количество элементов в заданном измерении.
+     Максимально допустимое количество элементов в одном измерении
+     65000.  Количество измерений в массиве не ограничено.
+$RETURNS$
+     ARRAY() returns an array of specified dimensions.
+$LANG_RU$
+     ARRAY() возвращает массив заданной размерности.
+$DESCRIPTION$
+
+     ARRAY() is an array function that returns an uninitialized array with
+     the specified number of elements and dimensions.  If more than one
+     <nElements> argument is specified, a multidimensional array is created
+     with the number of dimensions equal to the number of <nElements>
+     arguments specified.  Any <nElements> that is itself an array creates a
+     nested array.
+
+     In xClipper, there are several ways to create an array.  You can
+     declare an array using a declaration statement such as LOCAL or STATIC;
+     you can create an array using a PRIVATE or PUBLIC statement; you can
+     assign a literal array to an existing variable; or you can use the
+     ARRAY() function.  ARRAY() has the advantage that it can create arrays
+     within expressions or code blocks.
+
+
+$LANG_RU$
+
+     ARRAY() - функция работы с массивами, которая возвращает
+     неинициализированный массив с заданным количеством измерений
+     и элементов. Если задано более одного аргумента <кол-во эл.>,
+     создается "вложенный", или многомерный массив с количеством
+     измерений, равным количеству заданных аргументов <кол-во эл.>.
+
+     xClipper предусматривает несколько способов создания массивов.
+     Можно создать массив при помощи таких описательных операторов, как
+     LOCAL или STATIC; можно создать массив, используя операторы PUBLIC
+     или PRIVATE; можно присвоить массив литералов созданной переменной
+     или, наконец, использовать функцию ARRAY(). Использование ARRAY()
+     предпочтительнее, поскольку можно создавать массивы, используя
+     выражения или блоки кода.
+
+
+$EXAMPLES$
+
+       This example creates a one-dimensional array of five elements
+	using the ARRAY() function, and then shows the equivalent action by
+	assigning a literal array of NIL values:
+
+	aArray := ARRAY(5)
+	aArray := { NIL, NIL, NIL, NIL, NIL }
+
+       This example shows three different statements which create the
+	same multidimensional array:
+
+	aArray := ARRAY(3, 2)
+	aArray := { {NIL, NIL}, {NIL, NIL}, {NIL, NIL} }
+	aArray := { ARRAY(2), ARRAY(2), ARRAY(2) }
+
+       This example creates a nested, multidimensional array:
+
+	aArray := ARRAY(3, {NIL,NIL})
+
+
+$LANG_RU$
+
+      Этот пример создает одномерный массив из пяти элементов, используя
+       функцию ARRAY() и затем делает то же самое, присваивая переменной
+       массив констант NIL :
+
+       aArray := ARRAY(5)
+       aArray := { NIL, NIL, NIL, NIL, NIL }
+
+      Этот пример демонстрирует три различных оператора, которые создают
+       один и тот же многомерный массив :
+
+       aArray := ARRAY( 3, 2 )
+       aArray := {{ NIL, NIL },{ NIL, NIL },{ NIL, NIL }}
+       aArray := { ARRAY(2), ARRAY(2), ARRAY(2) }
+
+
+$SEEALSO$
+  AADD(),ACLONE(),ACOPY(),ADEL(),AEVAL(),AFILL(),AINS()
+$END$

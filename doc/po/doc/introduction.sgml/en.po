@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-10-24 14:58+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/introduction.sgml:1 template/./doc/introduction.sgml:8
+msgid "Introduction"
+msgstr ""
+
+#: template/./doc/introduction.sgml:3
+msgid "Clip team searches for sponsor or investor"
+msgstr ""
+
+#: template/./doc/introduction.sgml:4
+msgid "clip future notes"
+msgstr "<!-- nothing --> "
+
+#: template/./doc/introduction.sgml:12
+msgid "Download and mirrors"
+msgstr ""
+
+#: template/./doc/introduction.sgml:16
+msgid "Very fast mirror linux.ru.net"
+msgstr ""
+
+#: template/./doc/introduction.sgml:19
+msgid "Home ftp ftp.itk.ru"
+msgstr ""
+
+#: template/./doc/introduction.sgml:22
+msgid "Irkutsk mirror ftp.lastik.ru"
+msgstr ""
+
+#: template/./doc/introduction.sgml:35
+msgid "Trademarks"
+msgstr ""
+
+#: template/./doc/introduction.sgml:37
+msgid "Clipper - trademark of Computer Associates International Inc"
+msgstr ""
+
+#: template/./doc/introduction.sgml:39
+msgid "UNIX - trademark of SCO Inc"
+msgstr ""
+
+#: template/./doc/introduction.sgml:41
+msgid "Linux - trademark of  Linus Torwalds"
+msgstr ""
+
+#: template/./doc/introduction.sgml:43
+msgid "DOS, Windows, FoxPro - are  trademarks of Microsoft Corporation"
+msgstr ""

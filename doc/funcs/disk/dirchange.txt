@@ -1,0 +1,40 @@
+$FUNCNAME$
+  DIRCHANGE()
+$CATEGORY$
+  FILE/IO,DISKUTILS
+$SUMMARY$
+   Change the current DOS directory
+$SYNTAX$
+     DIRCHANGE(<cDir>) --> nSuccess
+$ARGUMENTS$
+     <cDir> is the name of the directory to change to, including the
+     drive.
+$RETURNS$
+     DIRCHANGE() returns 0 if successful; -1 if there is an argument error.
+     Otherwise, DIRCHANGE() returns the DOS error code.
+$DESCRIPTION$
+     DIRCHANGE() changes the current DOS directory.  This function may also
+     be used to determine whether or not a directory exists.
+$EXAMPLES$
+       The following example attempts to change to the "c:\dos"
+	directory.  If it is unsuccessful, an error message is displayed.
+
+	nResult :=  DIRCHANGE("c:\dos")
+
+	IF nResult != 0
+	   ? "Cannot change directory. "
+	   DO CASE
+	      CASE nResult == 3
+		 ?? "Directory does not exist."
+	      CASE nResult == 5
+		 ?? "Access to directory denied."
+	   END
+	   BREAK
+	ENDIF
+
+       You may also use something like this:
+
+	DIRCHANGE( "..\..\test" )
+$SEEALSO$
+  CURDIR(),DIRMAKE(),DIRREMOVE(),DISKCHANGE()
+$END$

@@ -1,0 +1,83 @@
+$FUNCNAME$
+    fn_Bin2I()
+$CATEGORY$
+    Miscellaneous
+$ONELINER$
+    Convert a binary string to numeric
+$SYNTAX$
+
+    fn_Bin2I( <cBinStr> ) -> nValue
+
+$ARGUMENTS$
+
+    <cBinStr> is a string of bytes representing a number.
+
+$RETURNS$
+
+    The decimal value of <cBinStr>.
+
+$DESCRIPTION$
+
+    Internally, all information is stored as a series of bytes.  When
+    performing a direct read from memory, a character string will be
+    returned.  Use this function to convert that string to its Clipper
+    numeric equivalent.
+
+    This function only returns integer values.
+
+$EXAMPLES$
+
+    /* convert a string containing CHR(0)+CHR(0)+CHR(222)+CHR(175) */
+
+    ? fn_Bin2I( CHR(0)+CHR(0)+CHR(222)+CHR(175) ) 	// 57007
+
+$SEEALSO$
+    fn_I2Bin(), fn_PeekStr(), fn_PokeStr()
+$INCLUDE$
+
+$Author: clip $
+   Steve Larsen
+$END$
+
+$FUNCNAME$
+    fn_I2Bin()
+$CATEGORY$
+    Miscellaneous
+$ONELINER$
+    Convert an integer to binary string
+$SYNTAX$
+
+    fn_I2Bin( <nValue>, [ <nLen> ] ) -> cBinStr
+
+$ARGUMENTS$
+
+    <nValue> is the integer to convert.  Only positive integers may
+    be converted.
+
+    <nLen> is the desired resultant string length.  If omitted, it
+    defaults to the length required to represent <nValue>.  If <nLen>
+    is larger than the length required to represent <nValue>, cBinStr
+    is left-padded with CHR(0)'s to fill it out to the desired length.
+
+$RETURNS$
+
+    A binary string representing the value passed.
+
+$DESCRIPTION$
+
+    This function converts a decimal value to it binary equivalent,
+    and is useful for doing a direct memory translation.
+
+$EXAMPLES$
+
+    ? fn_I2Bin( 57007 )
+
+    ? fn_I2Bin( 57007, 4 )
+
+$SEEALSO$
+    fn_Bin2I(), fn_PeekStr(), fn_PokeStr()
+$INCLUDE$
+
+$Author: clip $
+   Steve Larsen
+$END$

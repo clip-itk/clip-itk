@@ -1,0 +1,42 @@
+$FUNCNAME$
+  CLIP()
+$CATEGORY$
+  CODEBLOCK
+$SUMMARY$
+   Evaluate function.
+$LANG_RU$
+   Выполнить функцию.
+$SYNTAX$
+     CLIP(<sFuncName>, [<Param1>, ..., <ParamN>) 	--> <vData>
+$ARGUMENTS$
+     <sFuncName>	String, is the function name.
+     <Param1>,...<paramN>	is are parameters for function <sFuncName>.
+$LANG_RU$
+     <sFuncName>	String, имя функции
+     <Param1>,...<paramN>	параметры, передаваемые в функцию <sFuncName>.
+$RETURNS$
+     Returns the result of evaluate <sFuncName> function.
+$LANG_RU$
+     Возвращает результат выполнения функции <sFuncName>.
+$DESCRIPTION$
+
+     CLIP() evaluates function with name <sFuncName> and returns result this function.
+$LANG_RU$
+
+     CLIP()  выполняет функцию с именем <sFuncName>  и возвращает результат выполнения.
+$EXAMPLES$
+
+CLIP("substr","asdfghjkl",2,3) 		// --> "sdf"
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+

@@ -1,0 +1,71 @@
+$FUNCNAME$
+  MLCTOPOS()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Return the byte position of a formatted string based on line and column
+$LANG_RU$
+   Возвращает позицию байта на основе номеров строки и колонки в
+$SYNTAX$
+     MLCTOPOS(<cText>, <nWidth>, <nLine>, <nCol>, [<nTabSize>], [<lWrap>]) --> nPosition
+$LANG_RU$
+     MLPOS(<символьная строка>,<длина строки>, <номер строки>, <номер колонки>,
+	 [<шаг табуляции>], [<перенос разрешен>]) --> номер позиции
+$ARGUMENTS$
+     <cText> is the text string to be scanned.
+     <nWidth> is the line length formatting width.
+     <nLine> is the line number counting from 1.
+     <nCol> is the column number counting from 0.
+     <nTabSize> is the number of columns between tab stops.  If not
+     specified, the default is 4.
+     <lWrap> is the word wrap flag.  If not specified, the default is
+      true (.T.).
+$LANG_RU$
+     <символьная строка> - символьная строка для просмотра.
+     <длина строки> - длина форматированной строки.
+     <номер строки> - номер строки; отсчитывается от 1.
+     <номер колонки> - номер колонки; отсчитывается от 0.
+     <шаг табуляции> - определяет размер шага табуляции.  Если аргумент не
+     задан,  по умолчанию величина шага принимается равной  4.
+     <перенос разрешен> - логическое значение, определяющее разрешение
+     переноса слов. Если аргумент не задан, по умолчанию его значение -
+     "истина" (.T.).
+$RETURNS$
+     MLCTOPOS() returns the byte position within <cText> counting from 1.
+$LANG_RU$
+     MLCTOPOS() возвращает позицию в байтах внутри <символьная строка>,
+     считая от 1.
+$DESCRIPTION$
+     MLCTOPOS() is a memo function that determines the byte position that
+     corresponds to a particular line and column within the formatted text.
+     Note that the line number is one-relative and the column number is
+     zero-relative.  This is compatible with MEMOEDIT().  The return value is
+     one-relative, making it suitable for use in SUBSTR() or other string
+     functions.
+$LANG_RU$
+     MLCTOPOS() - функция для работы с MEMO-полями, определяющая номер
+     позиции в байтах, соответствующий конкретным строке и колонке внутри
+     отформатированного текста. Номер строки считается от единицы, а номер
+     колонки - от нуля, что совместимо с функцией MEMOEDIT(). Возвращаемое
+     значение считается от единицы, это делает удобным использование
+     функции MLCTOPOS() внутри SUBSTR() или других строковых функций.
+$EXAMPLES$
+       This example determines the byte position of line 5, column 3
+	in the cText string:
+
+	cText := "Note the side on which the bread ;
+		    is buttered."
+	//
+	? MLCTOPOS(cText, 5, 3, 0)         // Result: 10
+$LANG_RU$
+      В этом примере определяется номер позиции байта в строке текста.
+       Текст форматируется на длину 5 символов с разрешением переноса.
+       Определение осуществляется для символа в нулевой колонке третьей
+       строки:
+
+       cText := "Пометим сторону, где хлеб намазан маслом"
+       //
+       ? MLCTOPOS(cText, 5, 3, 0)         // Результат: 9
+$SEEALSO$
+  MEMOEDIT(),MLPOS(),MPOSTOLC()
+$END$

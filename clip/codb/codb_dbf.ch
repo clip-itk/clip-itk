@@ -9,7 +9,7 @@
 #define CODB_COUNTER_STRUCTURE { ;
 		{"ID"           ,"C",CODB_ID_LEN  ,0},;
 		{"NAME"         ,"C",25 ,0},;
-		{"VALUE"        ,"N",6  ,0};
+		{"VALUE"        ,"N",8  ,0};
 		}
 
 /*

@@ -8,7 +8,7 @@
 #define __GET_TYPE	HASH__GET_TYPE
 
 function gtk_GetNew(wObj, vVal, sTempl, bValid, bWhen)
-local sStr
+local GetList:={}, sStr
 
  	if ( wObj == NIL )
         	wObj := map()
@@ -18,10 +18,9 @@ local sStr
         wObj:destroy := @__gtk_GetDestroy()
         wObj:__Type := __GET_TYPE
 
-	sStr := vVal
-
-	gtk_EntrySetText(wObj, toString(vVal))
-	wObj:Get := __GET__( vVal, "vVal", sTempl, bValid, bWhen )
+        sStr := @vVal
+	gtk_EntrySetText(wObj, toString(sStr))
+	wObj:Get := __GET__( @sStr, "sStr", sTempl, bValid, bWhen )
 
         wObj:Get:_display := @__gtk_GetDisplay()
         wObj:Get:lPasswd := .f.
@@ -33,7 +32,8 @@ local sStr
         endif
         wObj:Get:KeyChar := @__gtk_KeyChar()
         wObj:sig := gtk_SignalConnect(wObj, GTK_EVENT, {|wgt, ev| wgt:Get:KeyChar(wgt:Get, ev) })
-	wObj:Get:SetFocus()
+        gtk_SignalConnect(wObj, "focus-in-event", {|w, e| w:Get:SetFocus(), .f.})
+        gtk_SignalConnect(wObj, "focus-out-event", {|w, e| w:Get:KillFocus(), .f.})
         if !empty( bWhen )
         	wObj:__When := bWhen
                 wObj:__SigWhen := gtk_SignalConnect(wObj, "focus-in-event", {|w, e| __GetFocus(w, e)})
@@ -52,9 +52,11 @@ local vVal
         	return
         endif
         wObj:Get:Assign()
-        wObj:Get:KillFocus()
-        wObj:Get:SetFocus()
+//        wObj:Get:KillFocus()
+//        wObj:Get:SetFocus()
 	vVal := wObj:Get:VarGet()
+//        wObj:Get:KillFocus()
+//        wObj:Get:SetFocus()
 return vVal
 
 function gtk_GetVarPut(wObj, vVal)
@@ -62,7 +64,7 @@ local ret
 	if !( "__TYPE" $ wObj .and. wObj:__TYPE == __GET_TYPE )
         	return
         endif
-        wObj:Get:KillFocus()
+//        wObj:Get:KillFocus()
         wObj:Get:SetFocus()
 	ret := wObj:Get:VarPut(vVal)
         wObj:Get:KillFocus()
@@ -71,7 +73,7 @@ return ret
 /****************************************************************************/
 
 static function __gtk_GetDisplay(gObj)
-local 	oGet
+local 	oGet, x, y, l:=.f.
 
 	if ( "GET" $ gObj )
         	oGet := gObj:Get
@@ -79,12 +81,21 @@ local 	oGet
         	oGet := gObj
         endif
 
+	if gtk_EditableHasSelection(oGet:hWid)
+                gtk_EditableGetSelectionBounds(oGet:hWid, @x, @y)
+                if x <> y
+        		l := .t.
+                endif
+        endif
 	if ( "Q" $ oGet:__flags .and. oGet:Type == "C" )
         	gtk_EntrySetText( oGet:hWid, Replicate( "*", len( trim(oGet:Buffer) ) ) )
-        	gtk_EntrySetPosition( oGet:hWid, oGet:Pos-1 )
+        	gtk_EntrySetPosition( oGet:hWid, oGet:Pos )
         else
         	gtk_EntrySetText( oGet:hWid, oGet:Buffer )
-        	gtk_EntrySetPosition( oGet:hWid, oGet:Pos-1 )
+        	gtk_EntrySetPosition( oGet:hWid, oGet:Pos )
+        endif
+        if (l)
+        	gtk_EntrySelectRegion(oGet:hWid, x, y)
         endif
 return
 
@@ -127,7 +138,26 @@ static MouseEvent := .f.
         	oGet:End()
                 return .t.
 	case nKey == K_DEL
-        	oGet:Delete()
+		nLo := nHi := 0
+		gtk_EditableGetSelectionBounds(oGet:hWid, @nLo, @nHi)
+
+		// Delete selection
+		if nHi != nLo
+			gtk_EditableSelectRegion(oGet:hWid, nLo, nLo)
+			oGet:buffer = Left( oGet:buffer, Min( nHi, nLo )-1 ) ;
+		   		+ Right( oGet:buffer, ;
+			    	Len( oGet:buffer ) - Max( nHi, nLo ) ) ;
+		   		+ Space( Abs( nLo - nHi ) )
+
+			oGet:Assign()
+			oGet:Reset()
+                	oGet:KillFocus()
+                	oGet:SetFocus()
+			oGet:SetPos(Min( nLo, nHi ))
+		else
+        		oGet:Delete()
+		endif
+
                 return .t.
 	case nKey == K_BS
         	oGet:BackSpace()
@@ -138,23 +168,22 @@ static MouseEvent := .f.
 	endcase
         nKey := asc(sStr)
 	if  nKey >= 32 .and. nKey < 256
-
 		nLo := nHi := 0
 		gtk_EditableGetSelectionBounds(oGet:hWid, @nLo, @nHi)
 
-
 		// Delete selection
 		if nHi != nLo
-			oGet:buffer = Left( oGet:buffer, Min( nHi, nLo ) ) ;
+                        gtk_EditableSelectRegion(oGet:hWid, nLo, nLo)
+			oGet:buffer = Left( oGet:buffer, Min( nHi, nLo )-1 ) ;
 		   		+ Right( oGet:buffer, ;
 			    	Len( oGet:buffer ) - Max( nHi, nLo ) ) ;
 		   		+ Space( Abs( nLo - nHi ) )
 
 			oGet:Assign()
 			oGet:Reset()
-			oGet:Pos := Min( nLo, nHi ) + 1
                 	oGet:KillFocus()
                 	oGet:SetFocus()
+			oGet:SetPos(Min( nLo, nHi ))
 		endif
 
 		if oGet:Type == "N" .and. ;

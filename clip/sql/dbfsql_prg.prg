@@ -37,10 +37,10 @@ STATIC FUNCTION connDestroy(self)
 	LOCAL rs
 
 	IF self:conn != NIL
-		FOR I:=1 TO LEN(self:Rowsets)
-			rs := self:Rowsets[I]
-			SQLDestroyRowset(rs)
-		NEXT
+		WHILE LEN(self:Rowsets) > 0
+			rs := self:Rowsets[1]
+			rowsetDestroy(self:Rowsets[1])
+		ENDDO
 		SQLDestroyConn(self:conn)
 		self:conn := NIL
 	ENDIF
@@ -134,7 +134,7 @@ STATIC FUNCTION connCreateRowset(self,selectSQL,pars,insertSQL,deleteSQL,updateS
 		SQLFillOrders(ors:rowset)
 	ENDIF
 
-	AADD(self:Rowsets,ors:rowset)
+	AADD(self:Rowsets,ors)
 
 RETURN ors
 
@@ -247,7 +247,7 @@ STATIC FUNCTION rowsetAppend(self,data)
 					self:SetValue(J,data[keys[I]])
 					EXIT
 				ENDIF
-            ENDIF
+			ENDIF
 		NEXT
 	NEXT
 	SQLAddKeys(self:rowset)
@@ -331,7 +331,7 @@ STATIC FUNCTION rowsetDestroy(self)
 	LOCAL conn := self:connect
 	LOCAL p
 
-	p := ASCAN(conn:rowsets,{|x| x == self:rowset } )
+	p := ASCAN(conn:rowsets,{|x| x:rowset == self:rowset } )
 	IF p != 0
 		ADEL(conn:rowsets,p)
 		ASIZE(conn:rowsets,LEN(conn:rowsets)-1)

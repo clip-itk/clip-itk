@@ -1,0 +1,194 @@
+$FUNCNAME$
+  STUFF()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Delete and insert characters in a string
+$LANG_RU$
+   Удаляет или вставляет символы в строке.
+$SYNTAX$
+     STUFF(<cString>, <nStart>,	<nDelete>, <cInsert>) --> cNewString
+$LANG_RU$
+     STUFF(<строка символов>, <начало замены>, <к-во удаляемых символов>, <вставляемая подстрока>)
+     --> новая строка символов
+$ARGUMENTS$
+     <cString> is the target character string into which characters are
+     inserted and deleted.
+     <nStart> is the starting position in the target string where the
+     insertion/deletion occurs.
+     <nDelete> is the number of characters to be deleted.
+     <cInsert> is the string to be inserted.
+$LANG_RU$
+     <строка символов> - символьная строка, в которую вставляются или из
+     которой удаляются символы.
+     <начало замены> - начальная позиция в строке, с которой происходит
+     вставка (удаление).
+     <к-во удаляемых символов> - число символов, подлежащих удалению.
+     <вставляемая подстрока> - вставляемая строка.
+$RETURNS$
+     STUFF() returns a copy of <cString> with the specified characters
+     deleted and with <cInsert> inserted.
+$LANG_RU$
+     STUFF() возвращает копию аргумента <строка символов> с удаленными
+     символами и вставленной строкой, значение которой задано аргументом
+     <вставляемая подстрока>.
+$DESCRIPTION$
+     STUFF() is a character function that deletes <nDelete> characters from
+     <cString> beginning at the <nStart> position.  Then, it inserts
+     <cInsert> into the resulting string beginning at <nStart> to form the
+     return string.  With this, STUFF() can perform the following six
+     operations:
+
+       Insert: If <nDelete> is zero, no characters are removed from
+	<cString>.  <cInsert> is then inserted at <nStart>, and the entire
+	string is returned.  For example, STUFF("My dog has fleas.", 12, 0,
+	"no" ) returns "My dog has no fleas."
+
+       Replace: If <cInsert> is the same length as <nDelete>,
+	<cInsert> replaces characters beginning at <nStart>.  The same number
+	of characters are deleted as are inserted, and the resulting string
+	is the same length as the original.  For example, STUFF("My dog has
+	fleas.", 12, 5, "bones") returns "My dog has bones."
+
+       Delete: If <cInsert> is a null string (""), the number of
+	characters specified by <nDelete> are removed from <cString>, and the
+	string is returned without any added characters.  For example,
+	STUFF("My dog has fleas.", 1, 3, "") returns "dog has fleas."
+
+       Replace and insert: If <cInsert> is longer than <nDelete>, all
+	characters from <nStart> up to <nDelete> are replaced and the rest of
+	<cInsert> is inserted.  Since more characters are inserted than are
+	deleted, the resulting string is always longer than the original.
+	For example, STUFF("My dog has fleas.", 8, 3, "does not have")
+	returns "My dog does not have fleas."
+
+       Replace and delete: If the length of <cInsert> is less than
+	<nDelete>, more characters are deleted than inserted.  The resulting
+	string, therefore, is shorter than the original.  For example,
+	STUFF("My dog has fleas.", 8, 3, "is") returns "My dog is fleas."
+
+       Replace and delete rest: If <nDelete> is greater than or equal
+	to the number of characters remaining in <cString> beginning with
+	<nStart>, all remaining characters are deleted before <cInsert> is
+	inserted.  For example, STUFF("My dog has fleas.", 8, 10, "is.")
+	returns "My dog is."
+$LANG_RU$
+     STUFF() является функцией обработки символьных строк, удаляющей
+     символы, количество которых задано в аргументе <к-во удаляемых
+     символов>, из аргумента <строка символов>, начиная с позиции,
+     заданной аргументом <начало замены>. Затем она вставляет значение
+     аргумента <вставляемая подстрока> в полученную строку, начиная с
+     символа, номер которого определен в аргументе <начало замены>, и
+     формирует возвращаемую строку. При этом STUFF() может выполнять шесть
+     следующих операций:
+
+      Вставка. Если значение аргумента <к-во удаляемых символов> равно
+       нулю, из аргумента <строка символов> символы не удаляются. Значение
+       аргумента <вставляемая подстрока> вставляется, начиная с позиции,
+       заданной аргументом <начало замены>, после чего строка
+       возвращается. Например:
+
+       STUFF("My dog has fleas" , 12, 0, "no")
+
+       возвратит: "My dog has no fleas".
+
+      Замена. Если значение аргумента <вставляемая подстрока> имеет ту же
+       длину, что и значение аргумента <к-во удаляемых символов>, значение
+       аргумента <вставляемая строка> заменяет символы, начиная с позиции,
+       заданной аргументом <начало замены>. Удаляется то же число
+       символов, что и вставляется, и полученная строка имеет такую же
+       длину, что и первоначальная. Например:
+
+       STUFF("My dog has fleas", 12, 5, "bones")
+
+       возвращает: "My dog has bones".
+
+      Удаление. Если значение аргумента <вставляемая подстрока> является
+       строкой с нулевой длиной (""), из строки, заданной аргументом
+       <строка символов>, удаляется число символов, заданное аргументом
+       <к-во удаляемых символов>, и строка возвращается без каких-либо
+       добавленных символов.  Например:
+
+       STUFF("My dog has fleas", 1, 3, "")
+
+       возвратит: "dog has fleas".
+
+      Замена и вставка. Если значение аргумента <вставляемая подстрока>
+       больше, чем значение аргумента <к-во удаляемых символов>, все
+       символы, начиная с позиции, установленной аргументом <начало
+       замены>, в соответствии со значением аргумента <к-во удаляемых
+       символов>, удаляются, а затем значение аргумента <вставляемая
+       подстрока> вставляется в строку. Поскольку вставляется больше
+       символов, чем удаляется, полученная строка всегда длиннее
+       первоначальной. Например:
+
+       STUFF("My dog has fleas", 8, 3, "does not have")
+
+       возвратит: "My dog does not have fleas".
+
+      Замена и удаление. Если длина аргумента <вставляемая подстрока>
+       меньше, чем значение аргумента <к-во удаляемых символов>,лишние
+       символы будут удалены, а затем произойдет вставка. Результирующая
+       строка при этом будет короче исходной.  Например:
+
+       STUFF ("My dog has fleas", 8, 3, "is")
+
+       возвратит: "My dog is fleas".
+
+      Замена и удаление оставшихся символов. Если значение аргумента
+       <к-во удаляемых символов> больше или равно числу оставшихся
+       символов, начиная с позиции ,заданной аргументом <начало замены>,
+       аргумента <строка символов>, все эти оставшиеся символы удаляются
+       перед вставкой значения аргумента <вставляемая подстрока>.
+       Например:
+
+       STUFF("My dog has fleas", 8, 10, "is")
+
+       возвратит "My dog is".
+
+
+$EXAMPLES$
+
+       These examples demonstrate the six basic operations of
+	STUFF():
+
+	// Insert
+	? STUFF("ABCDEF", 2, 0, "xyz")      // Result: AxyzBCDEF
+	// Replace
+	? STUFF("ABCDEF", 2, 3, "xyz")      // Result: AxyzEF
+	// Delete
+	? STUFF("ABCDEF", 2, 2, "")         // Result: ADEF
+	// Replace and insert
+	? STUFF("ABCDEF", 2, 1, "xyz")      // Result: AxyzCDEF
+	// Replace and delete
+	? STUFF("ABCDEF", 2, 4, "xyz")      // Result: AxyzF
+	// Replace and delete rest
+	? STUFF("ABCDEF", 2, 10, "xyz")     // Result: Axyz
+
+
+$LANG_RU$
+
+      Этот пример демонстрирует шесть основных операций STUFF():
+
+       // Вставка
+       ? STUFF("ABCDEF", 2, 0, "xyz")     // Результат: AxyzBCDEF
+       //
+       // Замена
+       ? STUFF("ABCDEF", 2, 3, "xyz")     // Результат: AxyzEF
+       //
+       // Удаление
+       ? STUFF("ABCDEF", 2, 2, "")        // Результат: ADEF
+       //
+       // Замена со вставкой
+       ? STUFF("ABCDEF", 2, 1, "xyz")     // Результат: AxyzCDEF
+       //
+       // Замена с удалением
+       ? STUFF("ABCDEF", 2, 4, "xyz")     // Результат: AxyzF
+       //
+       // Замена с удалением оставшихся символов
+       ? STUFF("ABCDEF", 2, 10, "xyz")    // Результат: Axyz
+
+
+$SEEALSO$
+  RAT(),RIGHT(),STRTRAN(),SUBSTR(),AT(),LEFT()
+$END$

@@ -1,0 +1,48 @@
+$FUNCNAME$
+  DISPCOUNT()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return the number of pending DISPEND() requests
+$SYNTAX$
+     DISPCOUNT() --> nDispCount
+$RETURNS$
+     DISPCOUNT() returns the number of DISPEND() calls required to restore
+     the original display context.
+$DESCRIPTION$
+     You can use DISPCOUNT() to determine the current display context.
+     xClipper uses display contexts to buffer and to supervise screen
+     output operations.
+
+     Each call to DISPBEGIN() defines a new display context.  Output to the
+     display context is suppressed until a matching DISPEND() statement
+     executes.
+
+     Since you may nest DISPBEGIN() calls, use DISPCOUNT() to determine
+     whether there are pending screen refresh requests.
+$EXAMPLES$
+       This example saves the setting of DISPCOUNT(), then releases
+	all pending display contexts before writing to the screen:
+
+	PROCEDURE ForceDisplay(cExp)
+	   LOCAL nSavCount
+
+	nSavCount := DISPCOUNT()
+
+	//  Discard pending display contexts
+	DO WHILE ( DISPCOUNT() > 0)
+	   DISPEND()
+
+	ENDDO
+
+	DISPOUT(cExp)
+
+	//  "Rewind" the current display context
+	DO WHILE (DISPCCOUNT() < nSavCount )
+	   DISPBEGIN()
+	ENDDO
+
+	RETURN
+$SEEALSO$
+  DISPBEGIN(),DISPEND()
+$END$

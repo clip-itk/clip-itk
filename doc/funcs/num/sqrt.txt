@@ -1,0 +1,57 @@
+$FUNCNAME$
+  SQRT()
+$CATEGORY$
+  NUMERIC
+$SUMMARY$
+   Return the square root of a positive number
+$LANG_RU$
+   Возвращает квадратный корень положительного числа.
+$SYNTAX$
+     SQRT(<nNumber>) --> nRoot
+$LANG_RU$
+     SQRT(<число>) --> квадратный корень
+$ARGUMENTS$
+     <nNumber> is a positive number for which the square root is to be
+     computed.
+$LANG_RU$
+     <число> - положительное число, из которого извлекается квадратный
+     корень.
+$RETURNS$
+     SQRT() returns a numeric value calculated to double precision.  The
+     number of decimal places displayed is determined solely by SET DECIMALS
+     regardless of SET FIXED.  A negative <nNumber> returns zero.
+$LANG_RU$
+     SQRT() возвращает числовое значение, вычисленное с двойной
+     точностью.  Число разрядов дробной части определяется установкой
+     команды SET DECIMALS и не зависит от установок команды SET FIXED.
+     При отрицательном значении аргумента <число> функция возвращает
+     ноль.
+$DESCRIPTION$
+     SQRT() is a numeric function used anywhere in a numeric calculation to
+     compute a square root (e.g., in an expression that calculates standard
+     deviation).
+$LANG_RU$
+     SQRT() является арифметической функцией, используемой для вычисления
+     квадратного корня. Например, это может быть выражение для вычисления
+     стандартного отклонения от математического ожидания.
+$EXAMPLES$
+       These examples show various results of SQRT():
+
+	SET DECIMALS TO 5
+	//
+	? SQRT(2)                 // Result: 1.41421
+	? SQRT(4)                 // Result: 2.00000
+	? SQRT(4) ** 2            // Result: 4.00000
+	? SQRT(2) ** 2            // Result: 2.00000
+$LANG_RU$
+      Этот пример показывает различные результаты использования SQRT():
+
+       SET DECIMALS TO 5
+       //
+       ? SQRT(2)                     // Результат: 1.41421
+       ? SQRT(4)                     // Результат: 2.00000
+       ? SQRT(4) ** 2                // Результат: 4.00000
+       ? SQRT(2) ** 2                // Результат: 2.00000
+$SEEALSO$
+
+$END$

@@ -1,0 +1,536 @@
+$FUNCNAME$
+  ACHOICE()
+$CATEGORY$
+  Menus/Prompts,TERMINAL/IO
+$SUMMARY$
+   Execute a pop-up menu
+$LANG_RU$
+   Реализует всплывающее меню
+$SYNTAX$
+     ACHOICE(<nTop>, <nLeft>, <nBottom>, <nRight>,
+	<acMenuItems>,
+	[<alSelectableItems> | <lSelectableItems>],
+	[<cUserFunction>],
+	[<nInitialItem>],
+	[<nWindowRow>]) --> nPosition
+$LANG_RU$
+     ACHOICE(<верхняя строка>, <левая колонка>,
+	  <нижняя строка>, <правая колонка>,
+	  <массив меню>,
+	  [<массив логических значений>|<массив выбранных значений>],
+	  [<функция пользователя>],
+	  [<позиция маркера>],
+	  [<строка окна>]) --> номер элемента меню
+$ARGUMENTS$
+     <nTop>, <nLeft> and <nBottom>, <nRight> are the upper-
+     left and lower-right window coordinates.  Row values can range from zero
+     to MAXROW() and column values can range from zero to MAXCOL().
+
+     <acMenuItems> is an array of character strings to display as the
+     menu items.  The individual menu items are later identified by their
+     numeric positions in this array.
+
+     <alSelectableItems> is a parallel array of logical values--one
+     element for each item in <acMenuItems>--that specify the selectable menu
+     items.  Elements can be logical values or character strings.  ACHOICE()
+     will not permit a null string and stops displaying if it encounters one.
+     If the element is a character string, it is evaluated as a macro
+     expression which should evaluate to a logical data type.  In either
+     case, a value of false (.F.) means that the corresponding menu item is
+     not available, and a value of true (.T.) means that it is available.  If
+     you specify <lSelectableItems> instead of an array, false (.F.) makes
+     all menu items unavailable and true (.T.) makes all menu items
+     available.  By default, all menu items are available for selection.
+
+     <cUserFunction> is the name of a user-defined function that executes
+     when an unrecognizable key is pressed.  Specify the function name as a
+     character expression without parentheses or arguments.  Note that the
+     behavior of ACHOICE() is affected by the presence of this argument.
+     Refer to the discussion below for further information.
+
+     <nInitialItem> is the position in the <acMenuItems> array of the
+     item that will be highlighted when the menu is initially displayed.  If
+     you specify an unavailable menu item or no argument at all, the initial
+     menu item is the first selectable item in the array.
+
+     <nWindowRow> is the number of the window row on which the initial
+     menu item will appear.  Row numbering begins with zero.  By default, the
+     initial menu item appears as close to the top of the window as possible,
+     without leaving any empty rows at the bottom.  Thus, if there are enough
+     menu items following the initial one to fill up the window, the initial
+     form will appear on the first row (row zero) of the menu.  This function
+     argument is used to control the initial menu appearance when there are
+     more menu items than will fit in the window.
+
+     As with all functions, optional arguments are omitted by using a comma
+     instead of the actual argument.
+$LANG_RU$
+     <верхняя строка>, <левая колонка>, <нижняя строка>, <правая колонка>
+     определяют верхнюю левую и нижнюю правую координаты окна. Номера
+     строк могут находиться в диапазоне от нуля до MAXROW() и номера
+     колонок - в диапазоне от нуля до MAXCOL().
+
+     <массив меню> - это массив символьных строк, которые высвечиваются
+     как элементы меню. Каждый конкретный элемент меню в последствии
+     идентифицируется своей числовой позицией в этом массиве.
+
+     <массив выбранных значений> - это параллельный массив логических
+     значений - каждый элемент этого массива соответствует одному элементу
+     в массиве <массив меню> с тем же индексом. Элементы могут быть как
+     логическими значениями, так и символьными строками. Если элемент -
+     символьная строка, то она рассматривается как выражение, которое
+     при вычислении должно выдать значение логического типа. В любом
+     случае значение "ложь" (.F.) означает, что соответствующий элемент
+     меню недоступен для выбора, а значение "истина" (.T.) означает, что
+     он доступен. Если аргумент <выбираемость меню> задан в виде скаляра,
+     а не массива, то его значение "ложь" (.F.) делает все элементы меню
+     недоступными, а значение "истина" (.T.) - доступными. По умолчанию
+     все элементы меню доступны для выбора.
+
+     <функция пользователя> - это имя определенной пользователем функции,
+     которая выполняется при нажатии нераспознаваемой клавиши. Имя функции
+     задается как символьное выражение без круглых скобок и аргументов.
+     Следует отметить, что поведение функции ACHOICE() при заданной
+     функции пользователя отличается от поведения, когда она не задана.
+     Более подробно об этом будет сказано ниже.
+
+     <позиция маркера> - номер элемента в массиве <массив меню>, который
+     будет выделен при начальном отображении меню. Если задан номер
+     недоступного элемента меню или аргумент совсем не задан, то будет
+     выделен первый доступный для выбора элемент в массиве.
+
+     <строка окна> - номер строки окна, на которой появится первый
+     элемент меню. Нумерация строк начинается с нуля. По умолчанию
+     первый элемент меню появляется в такой строке окна, чтобы не
+     оставалось пустых строк внизу. Таким образом, если существует
+     достаточное количество элементов меню для заполнения окна, то
+     первоначальный элемент появится на первой строке (нулевая строка)
+     меню. Этот аргумент функции используется для управления
+     первоначальным появлением меню, когда имеется больше элементов,
+     чем вмещает окно.
+
+     Как и во всех функциях, при пропуске необязательного аргумента вместо
+     него надо записывать запятую.
+$RETURNS$
+     ACHOICE() returns the numeric position in the <acMenuItems> array of the
+     menu item selected.  If the selection process is aborted, ACHOICE()
+     returns zero.
+$LANG_RU$
+     ACHOICE() возвращает числовую позицию выбранного в массиве <массив
+     меню> элемента меню. Если процесс выбора прерван, то ACHOICE()
+     возвращает нуль.
+$DESCRIPTION$
+     ACHOICE() is a user interface function that can create various kinds of
+     pop-up menus.  Each menu uses an array of character strings as menu
+     items and a parallel array of logical values to determine whether items
+     are selectable.  When you invoke ACHOICE(), the list of menu items is
+     displayed within the specified window coordinates.  When the user
+     presses Return, the current item is selected, and ACHOICE() returns the
+     position of the menu item in <acMenuItems>.  When the user presses Esc,
+     ACHOICE() aborts and returns zero.
+
+     The menu items scroll if the number of items in <acMenuItems> exceeds
+     the number of rows in the menu window, and the user attempts to move the
+     highlight beyond the top or bottom of the menu window.  Note that the
+     highlight does not wrap when you reach the top or bottom of the list of
+     items.  Pressing the first letter does, however, wrap the highlight
+     within the set of items whose first letter matches the key you press.
+
+       Navigating the menu:  ACHOICE() has two modes depending on
+	whether the <cUserFunction> argument is specified.  If it is not
+	specified the following navigation keys are active:
+
+	<PRE>ACHOICE() Keys (No User Function)
+	---------------------------------------------------------------------
+	Key            Action
+	---------------------------------------------------------------------
+	Up arrow       Go to previous item
+	Down arrow     Go to next item
+	Home           Go to first item in menu
+	End            Go to last item in menu
+	Ctrl+Home      Go to first item in window
+	Ctrl+End       Go to last item in window
+	PgUp           Go to previous page
+	PgDn           Go to next page
+	Ctrl+PgUp      Go to the first item in menu
+	Ctrl+PgDn      Go to last item in menu
+	Return         Select current item
+	Esc            Abort selection
+	Left arrow     Abort selection
+	Right arrow    Abort selection
+	First Letter   Go to next item beginning with first letter
+	---------------------------------------------------------------------
+	</PRE>
+
+       Color:  Menu items are displayed in standard color, the
+	highlight in enhanced color, and the unavailable items in the
+	unselected color.  For example, the following color statement
+
+	SETCOLOR("W+/N, BG+/B, , , W/N")
+
+	displays a menu that is bright white on black, the highlight is
+	bright cyan on blue, and the unavailable menu items are dim white on
+	black.
+
+       User function: Like the other user interface functions,
+	ACHOICE() supports a user function.  The user function is specified
+	when you want to nest ACHOICE() invocations to create hierarchical
+	menus or to redefine keys.
+
+	When a user function is specified, ACHOICE() processes only a limited
+	set of keys automatically.  These are listed in the following table.
+	All other keys generate a key exception which passes control to the
+	user function for handling.  Control is also passed to the user
+	function when ACHOICE() goes idle (i.e., when there are no more keys
+	to process).
+
+	<PRE>ACHOICE() Keys (User Function Specified)
+	---------------------------------------------------------------------
+	Key          Action
+	---------------------------------------------------------------------
+	Uparrow      Go to previous item
+	Dnarrow      Go to next item
+	Ctrl+Home    Go to first item in window
+	Ctrl+End     Go to last item in window
+	PgUp         Go to previous page
+	PgDn         Go to next page
+	Ctrl+PgUp    Go to the first item in menu
+	Ctrl+PgDn    Go to last item in menu
+	---------------------------------------------------------------------
+	</PRE>
+	When ACHOICE() executes the user function, it automatically passes
+	the following three parameters:
+
+	-  The current ACHOICE() mode
+
+	-  The current element in the array of items
+
+	-  The relative row position within the menu window
+
+	The mode indicates the current state of ACHOICE() depending on the
+	key pressed and the action taken by ACHOICE() prior to executing the
+	user function.  The mode parameter has the following possible values:
+
+	<PRE>ACHOICE() Modes
+	---------------------------------------------------------------------
+	Mode    Achoice.ch     Description
+	---------------------------------------------------------------------
+	0       AC_IDLE        Idle
+	1       AC_HITTOP      Attempt to cursor past top of list
+	2       AC_HITBOTTOM   Attempt to cursor past bottom of list
+	3       AC_EXCEPT      Keystroke exceptions
+	4       AC_NOITEM      No selectable items
+	---------------------------------------------------------------------
+	</PRE>
+
+	After the user function has performed whatever operations are
+	appropriate to the ACHOICE() mode or LASTKEY(), it must RETURN a
+	value requesting ACHOICE() to perform an operation from the following
+	set of actions:
+
+	<PRE>ACHOICE() User Function Return Values
+	---------------------------------------------------------------------
+	Value   Achoice.ch     Action
+	---------------------------------------------------------------------
+	0       AC_ABORT       Abort selection
+	1       AC_SELECT      Make selection
+	2       AC_CONT        Continue ACHOICE()
+	3       AC_GOTO        Go to the next item whose first character
+			       matches the key pressed
+	---------------------------------------------------------------------
+	</PRE>
+$LANG_RU$
+     ACHOICE() - функция, обеспечивающая интерфейс с пользователем,
+     которую можно использовать для создания различных видов всплывающих
+     (pop-up) меню. Каждое меню использует массив символьных строк в
+     качестве элементов меню и параллельный массив логических значений,
+     чтобы определять, доступны элементы для выбора или нет. При вызове
+     ACHOICE() элементы меню высвечивается внутри окна с заданными
+     координатами. Когда пользователь нажимает клавишу <Return>,
+     выбирается текущий элемент, и ACHOICE() возвращает номер выбранного
+     элемента в массиве <массив меню>. Когда пользователь нажимает клавишу
+     <Esc>, выполнение ACHOICE() прерывается и она возвращает нуль.
+
+     Если количество элементов в массиве <массив меню> превышает
+     количество строк в окне меню и если пользователь попытается
+     переместить выделение за пределы окна верх или вниз, то элементы
+     меню будут сдвигаться в окне (скроллинг). Надо отметить, что
+     светящийся маркер не переходит автоматически в начало списка
+     элементов, когда вы достигаете его конца, и не переходит в конец,
+     когда вы достигаете начала списка. Однако, если нажать клавишу с
+     какой-нибудь буквой, светящийся маркер переместится на строку меню,
+     начинающуюся с этой буквы.
+
+      Перемещение по меню. ACHOICE() имеет два режима, зависящие от того,
+       задан ли аргумент <функция пользователя> или нет. Если он не задан,
+       активными являются следующие клавиши перемещения.
+
+
+       <PRE>Клавиши ACHOICE() (Нет функции пользователя)
+       -------------------------------------------------------------------
+       Клавиша            Действие
+       -------------------------------------------------------------------
+       <стрелка вверх>    к предыдущему элементу
+       <стрелка вниз>     к следующему элементу
+       <Home>             к первому элементу меню
+       <End>              к последнему элементу меню
+       <Ctrl>-<Home>      к первому элементу в окне
+       <Ctrl>-<End>       к последнему элементу в окне
+       <PgUp>             к предыдущей странице
+       <PgDn>             к следующей странице
+       <Ctrl>-<PgUp>      к первому элементу меню
+       <Ctrl>-<PgDn>      к последнему элементу меню
+       <Return>           выбрать текущий элемент
+       <Esc>              прервать выбор
+       <стрелка влево>    прервать выбор
+       <стрелка вправо>   прервать выбор
+       <первая буква>     к элементу, начинающемуся с этой буквы
+       -------------------------------------------------------------------
+       </PRE>
+
+      Цвет. Элементы меню отображаются в стандартом цвете, выделенный
+       элемент - в выделенном цвете, недоступные элементы в невыбранном
+       цвете. Например, следующий оператор установки цвета:
+
+       SETCOLOR("W+/N, BG+/B, , , W/N")
+
+       выводит меню как яркое-белое на черном, выделяемый элемент -
+       ярко-бирюзовый на синем, а недоступные элементы меню - белые на
+       черном.
+
+      Функция пользователя. Подобно другим функциям интерфейса с
+       пользователем, ACHOICE() поддерживает функцию пользователя.
+       Функция пользователя может быть использована при создании
+       иерархических меню или переопределении клавишей.
+
+       Если задана функция пользователя, ACHOICE() автоматически
+       отрабатывает только ограниченный набор клавиш. Они перечислены
+       в таблице 5-2. Нажатие остальных клавиш приводит к передаче
+       управления на функцию пользователя для их обработки. Управление
+       также передается функции пользователя, когда ACHOICE() неактивна
+       (т.е. когда больше нет клавиш для обработки).
+
+
+       <PRE>Клавиши ACHOICE() (Функции пользователя заданы)
+       -------------------------------------------------------------------
+       Клавиша          Действие
+       -------------------------------------------------------------------
+       <стрелка вверх>  к предыдущему элементу
+       <стрелка вниз>   к следующему элементу
+       <Ctrl>-<Home>    к первому элементу в окне
+       <Ctrl>-<End>     к последнему элементу в окне
+       <PgUp>           к предыдущей странице
+       <PgDn>           к следующей странице
+       <Ctrl>-<PgUp>    к первому элементу меню
+       <Ctrl>-<PgDn>    к последнему элементу меню
+       -------------------------------------------------------------------
+       </PRE>
+
+       Когда ACHOICE() выполняет функцию пользователя, ей автоматически
+       передаются следующие три параметра:
+
+	текущий режим ACHOICE()
+
+	текущий элемент в массиве меню
+
+	относительная позиция строки в окне меню.
+
+       Режим показывает текущее состояние ACHOICE(), зависящее от того,
+       какая клавиша была нажата, и действие, предпринятое ACHOICE() перед
+       выполнением функции пользователя. Параметр режима имеет следующие
+       возможные значения:
+
+       <PRE>Режимы ACHOICE()
+       -------------------------------------------------------------------
+       Режим    Achoice.ch      Описание
+       -------------------------------------------------------------------
+	 0      AC_IDLE         неактивно
+	 1      AC_HITTOP       пытается продвинуть маркер вверх за список
+	 2      AC_HITBOTTOM    пытается продвинуть маркер за конец списка
+	 3      AC_EXCEPT       необрабатываемая клавиша
+	 4      AC_NOITEM       невыбранные элементы
+       -------------------------------------------------------------------
+       </PRE>
+
+       После того, как функция пользователя будет выполнена, она должна
+       вернуть в ACHOICE() код, определяющий последующие действия
+       ACHOICE().  Ниже приводится набор этих кодов:
+
+
+       <PRE>Значения, возвращаемые функцией пользователя ACHOICE().
+       -------------------------------------------------------------------
+       Значение   Achoce.ch    Действие
+       -------------------------------------------------------------------
+	 0        AC_ABORT     прервать выбор
+	 1        AC_SELECT    сделать выбор
+	 2        AC_CONT      продолжить ACHOICE()
+	 3        AC_GOTO      к следующему элементу меню, первая буква
+			       которого совпадает с нажатой клавишей
+       -------------------------------------------------------------------
+       </PRE>
+$EXAMPLES$
+       This example uses two literal arrays to specify the menu items
+	and selection criteria.  After the menu is displayed and the user
+	makes a selection, the name of the selected menu item is displayed:
+
+	acMenuItems := {"One", "Two", "-------", "Three"}
+	alSelectableItems := {.T., .T., .F., .T.}
+	nPosition := ACHOICE(10, 10, 12, 15, acMenuItems,;
+				 alSelectableItems)
+	? acMenuItems[nPosition]
+
+       This example declares an array of menu items and supplies a
+	user-defined function which displays a message with each highlighted
+	choice:
+
+	#include "achoice.ch"
+	#include "inkey.ch"
+
+	PROCEDURE Main()
+
+	   LOCAL acMenuItems[4], cUserFunction, nRetVal
+	   LOCAL nKey, nPos
+
+	   acMenuItems[1] := "Add"
+	   acMenuItems[2] := "Edit"
+	   acMenuItems[3] := "Delete"
+	   acMenuItems[4] := "Update"
+
+	   CLS
+
+	   nPos := ACHOICE( 10, 10, 13, 15, acMenuItems,;
+			  .T., "cUserFunction" )
+	   DO CASE
+	   CASE nPos == 1
+	      //  Put ADD routine here
+	   CASE nPos == 2
+	      //  Put EDIT routine here
+	   CASE nPos == 3
+	      //  Put DELETE routine here
+	   CASE nPos ==4
+	      //  Put UPDATE routine here
+	   ENDCASE
+
+	RETURN
+
+
+	FUNCTION cUserFunction( nMode, nCurElement, nRowPos )
+
+	   LOCAL nRetVal := AC_CONT     // Default, Continue
+	   LOCAL nKey := LASTKEY()
+
+	   DO CASE
+	// After all pending keys are processed, display message
+	   CASE nMode == AC_IDLE
+	   DO CASE
+	      CASE nCurElement == 1
+		 @ 22, 5 SAY " Adding   "
+	      CASE nCurElement == 2
+		 @ 22, 5 SAY " Editing  "
+	      CASE nCurElement ==  3
+		 @ 22, 5 SAY " Deleting "
+	      CASE nCurElement ==  4
+		 @ 22, 5 SAY " Updating "
+	   ENDCASE
+
+	      nRetVal := AC_CONT            // Continue ACHOICE()
+
+	   CASE nMode == AC_HITTOP          // Attempt to go past Top
+	      TONE( 100, 3 )
+	   CASE nMode == AC_HITBOTTOM       // Attempt to go past
+					    // Bottom
+	      TONE( 100, 3 )
+
+	   CASE nMode == AC_EXCEPT          // Key Exception
+	      DO CASE
+	      CASE nKey == K_RETURN         // If RETURN key, select
+		 nRetVal := AC_SELECT
+	      CASE nKey == K_ESC            // If ESCAPE key, abort
+		 nRetVal := AC_ABORT
+	      OTHERWISE
+		    nRetVal := AC_GOTO      // Otherwise, go to item
+	      ENDCASE
+	   ENDCASE
+
+	RETURN nRetVal
+
+       The next example declares the arrays, specifies a selection
+	condition for one of the menu items, and supplies a user function:
+
+	EXTERNAL UPDATED
+	//
+	FUNCTION MyMenu
+	   LOCAL acMenuItems[4], alSelectableItems[4],;
+		  cUserFunction := "DoIt"
+	   //
+	   acMenuItems[1] := "Add Record"
+	   acMenuItems[2] := "Edit Record"
+	   acMenuItems[3] := "Delete Record"
+	   acMenuItems[4] := "Update Record"
+	   //
+	   alSelectableItems[1] := .T.
+	   alSelectableItems[2] := .T.
+	   alSelectableItems[3] := .T.
+	   alSelectableItems[4] := "!UPDATED()"
+	   // Selection condition
+
+	   RETURN ACHOICE(10, 10, 12, 15, acMenuItems,;
+	      alSelectableItems, cUserFunction)
+
+       This example uses two arrays to specify menu items and
+	corresponding action blocks.  After the menu is displayed and the
+	user makes a selection, the ACHOICE() return value is used to
+	determine which action block of the aActionItems array is evaluated:
+
+	PROCEDURE Main()
+	   LOCAL nChoice
+	   LOCAL aMenuItems := { "Add Record   ", ;
+				    "Edit Record  ", ;
+				    "Delete Record", ;
+				    "Update Record"   }
+
+	   LOCAL aActionItems := { {|| AddFunc()  }, ;
+				    {|| EditFunc() }, ;
+				    {|| DelFunc()  }, ;
+				    {|| UpdFunc()  }  }
+
+	   nChoice := ACHOICE( 10, 10, 13, 22, aMenuItems )
+
+	   IF nChoice == 0
+	      QUIT      // ESCAPE was pressed
+	   ENDIF
+
+	   EVAL( aActionItems[nChoice] )
+
+	RETURN
+$LANG_RU$
+      Этот пример содержит два символьных массива, чтобы задать
+       элементы меню и критерии выбора. После того, как меню высвечено,
+       и пользователь сделал выбор, имя выбранного элемента меню
+       высвечивается:
+
+       acMenuItems = {ONE, TWO, "", THREE}
+       alSelectableItems = {.T., .T., .F., .T.}
+       nPosition = ACHOICE(10, 10, 12, 15, acMenuItems, alSelectableItems)
+       ? acMenuItems(nPosition)
+
+      В следующем примере объявлены массивы, для одного из элементов меню
+       задано условие выбора и имеется функция пользователя:
+
+       FUNCTION MyMenu
+	  LOCAL acMenuItems[4], alSelectableItems[4], cUserFunction:="DoIt"
+	  //
+	  acMenuItems[1] = "Добавить запись"
+	  acMenuItems[2] = "Редактировать запись"
+	  acMenuItems[3] = "Удалить запись"
+	  acMenuItems[4] = "Обновить запись"
+	  //
+	  alSelectableItems[1] = .T.
+	  alSelectableItems[2] = .T.
+	  alSelectableItems[3] = .T.
+	  alSelectableItems[4] = "!UPDATED()" // Условие выбора
+	  RETURN ACHOICE(10, 10, 12, 15, acMenuItems,;
+	     alSelectableItems, cUserFunction)
+$SEEALSO$
+
+$END$

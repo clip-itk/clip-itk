@@ -1,0 +1,237 @@
+$FUNCNAME$
+  DBEVAL()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Evaluate a code block for each record matching a scope and condition
+$LANG_RU$
+   Выполняет блок кода для каждой записи, входящей в группу и отвечающей
+$SYNTAX$
+     DBEVAL(<bBlock>,[<bForCondition>],[<bWhileCondition>],[<nNextRecords>],
+	[<nRecord>],[<lRest>]) --> NIL
+$LANG_RU$
+     DBEVAL(<блок кода>,[<FOR-лог.условие>],[<WHILE-лог. условие>],
+	  [<к-во записей>],[<номер записи>],[<переключатель>]) --> NIL
+$ARGUMENTS$
+
+     <bBlock> is a code block to execute for each record processed.
+
+     <bForCondition> is an optional condition specified as a code block
+     that is evaluated for each record in the scope.  It provides the same
+     functionality as the FOR clause of record processing commands.
+
+     <bWhileCondition> is an optional condition specified as a code block
+     that is evaluated for each record from the current record until the
+     condition returns false (.F.).  It provides the same functionality as
+     the WHILE clause of record processing commands.
+
+     <nNextRecords> is an optional number that specifies the number of
+     records to process starting with the current record.  It is the same as
+     the NEXT clause.
+
+     <nRecord> is an optional record number to process.  If this argument
+     is specified, <bBlock> will be evaluated for the specified record.  This
+     argument is the same as the RECORD clause.
+
+     <lRest> is an optional logical value that determines whether the
+     scope of DBEVAL() is all records, or, starting with the current record,
+     all records to the end of file.  This argument corresponds to the REST
+     and ALL clauses of record processing commands.  If true (.T.) , the
+     scope is REST; otherwise, the scope is ALL records.  If <lRest> is not
+     specified the scope defaults to ALL.
+
+
+$LANG_RU$
+
+     <блок кода> - это блок кода, выполняемый для каждой обрабатываемой
+     записи.
+
+     <FOR-лог.условие> - это необязательное условие, определенное как блок
+     кода, который выполняется для каждой записи в группе. Он выполняет те
+     же функции, что и предложение FOR в командах обработки записей.
+
+     <WHILE-лог. условие> - это необязательное условие, определенное как
+     блок кода, который выполняется для каждой записи, начиная с текущей
+     и до тех пор, пока условие не примет значение "ложь" (.F.). Он
+     выполняет те же функции, что и предложение WHILE в командах обработки
+     записей.
+
+     <к-во записей> - это необязательный аргумент, определяющий
+     количество записей, вовлекаемых в обработку, начиная с текущей.
+     Он работает аналогично предложению NEXT.
+
+     <номер записи> - это необязательный аргумент, определяющий номер
+     обрабатываемой записи. Если этот параметр определен, блок кода
+     выполняется для этой заданной записи. Он работает аналогично
+     предложению RECORD.
+
+     <переключатель> - это необязательный логический аргумент,
+     определяющий, начинается ли группа записей, обрабатываемых
+     DBEVAL(), с текущей записи и завершается в конце файла, или
+     на обработку передается весь файл. Этот аргумент аналогичен
+     предложению REST и ALL в командах обработки записей. Если его
+     значение "истина" (.T.), то величина группы аналогична REST,
+     в противном случае - ALL ( все записи).  Если аргумент не задан,
+     по умолчанию принимаются все записи файла.
+
+
+$RETURNS$
+
+     DBEVAL() always returns NIL.
+
+
+$LANG_RU$
+
+     DBEVAL() всегда возвращает NIL.
+
+
+$DESCRIPTION$
+
+     DBEVAL() is a database function that evaluates a single block for each
+     record within the current work area that matches a specified scope
+     and/or condition.  On each iteration, DBEVAL() evaluates the specified
+     block.  All records within the scope or matching the condition are
+     processed until the end of file is reached.
+
+     By default, DBEVAL() operates on the currently selected work area.  It
+     will operate on an unselected work area if you specify it as part of an
+     aliased expression.
+
+     DBEVAL() is similar to AEVAL() which applies a block to each element in
+     an array.  Like AEVAL(), DBEVAL() can be used as a primitive for the
+     construction of user-defined commands that process database files.  In
+     fact, many of the standard xClipper database processing commands are
+     created using DBEVAL().
+
+     Refer to the Code Blocks section in the "Basic Concepts" chapter of the
+     Programming and Utilities Guide for more information on the syntax and
+     theory of code blocks; and refer also to the Database System section in
+     the same chapter for information on record scoping and conditions.  Also
+     refer to the xClipper standard header file, std.ch, found in
+     \include for examples of xClipper database command definitions
+     that use DBEVAL().
+
+
+$LANG_RU$
+
+     DBEVAL() - это функция работы с базами данных, выполняющая блок кода
+     для каждой записи, которая входит в определенную группу и (или)
+     удовлетворяет заданному условию в текущей рабочей области. При каждой
+     итерации DBEVAL() выполняет заданный блок. Все записи, входящие в
+     группу или соответствующие условию, обрабатываются до тех пор, пока
+     не будет достигнут конец файла.  По умолчанию DBEVAL() работает с
+     активной (текущей) рабочей областью.  Однако можно заставить DBEVAL()
+     работать с пассивной рабочей областью.  Это достигается заданием
+     выражения, уточненного алиасом. DBEVAL() работает аналогично функции
+     AEVAL(), которая обрабатывает каждый элемент массива.  Так же, как
+     AEVAL(), DBEVAL() может быть использована в качестве примитива для
+     построения команд пользователя, обрабатывающих файлы баз данных.
+     Многие стандартные команды xClipper, обрабатывающие файлы баз
+     данных, созданы с помощью DBEVAL().
+
+     Обратитесь к разделу "Блоки кода" в главе "Основные концепции" за
+     более полной информацией по синтаксису и теории создания блоков кода.
+     Обратитесь также к разделу "Система баз данных" в главе "Основные
+     концепции" за более полной информацией о группировке записей и
+     задании условий их выбора. Просмотрите стандартный файл описаний
+     std.ch, находящийся в директории \include, куда
+     включены примеры описаний стандартных команд обработки файлов баз
+     данных xClipper, которые используют функцию DBEVAL().
+
+
+$EXAMPLES$
+
+       This example uses DBEVAL() to implement Count(), a user-
+	defined function that counts the number of records in a work area
+	matching a specified scope.  The scope is passed as an array to
+	Count().  To make the example more interesting, there is a user-
+	defined command to create the scope array, thereby allowing you to
+	specify the scope in a familiar form.  Additionally, there is a set
+	of manifest constants that define the attributes of the scope object.
+
+	// Scope command definition
+	#command CREATE SCOPE <aScope> [FOR <for>] ;
+	   [WHILE <while>] [NEXT <next>] [RECORD <rec>] ;
+	   [<rest:REST>] [ALL];
+	=>;
+	   <aScope> := { <{for}>, <{while}>, <next>, ;
+	      <rec>, <.rest.> }
+	//
+
+	// Scope attribute constants
+	#define FOR_COND      1
+	#define WHILE_COND    2
+	#define NEXT_SCOPE    3
+	#define REC_SCOPE     4
+	#define REST_SCOPE    5
+	//
+	// Create a scope and count records using it
+	LOCAL mySet, myCount
+	USE Customer NEW
+	CREATE SCOPE mySet FOR Customer = "Smith" WHILE ;
+		  Zip > "90000"
+	myCount := Count( mySet )
+	RETURN
+
+	FUNCTION Count( aScope )
+	   LOCAL nCount := 0
+	   DBEVAL( {|| nCount++},;
+	      aScope[ FOR_COND ],;
+	      aScope[ WHILE_COND ],;
+	      aScope[ NEXT_SCOPE ],;
+	      aScope[ REC_SCOPE ],;
+	      aScope[ REST_SCOPE ];
+	   )
+	   RETURN nCount
+
+
+$LANG_RU$
+
+      Этот пример использует DBEVAL() как инструмент в функции
+       пользователя COUNT(), предназначенной для подсчета количества
+       записей в рабочей области в заданной группе. Условия выбора группы
+       передаются функции COUNT() в виде массива. Для того, чтобы этот
+       пример был еще более интересным, в нем используется команда
+       пользователя, которая создает массив, задающий группу записей, тем
+       самым позволяя сформировать условие выбора группы более простым
+       способом. В пример также включены описания явных констант, которые
+       определяют атрибуты объекта группы:
+
+       // Описание команды
+       //
+       #command CREATE SCOPE <aScope> [FOR<for>] [WHILE<while>];
+	  [NEXT<next>] [RECORD<rec>] [<rest:REST>] [ALL];
+       =>;
+	  aScope := { <{for}>, <{while}>, <next>, <rec>, <.rest.> }
+       //
+       // Описание констант
+       //
+       #define FOR_COND    1
+       #define WHILE_COND  2
+       #define NEXT_SCOPE  3
+       #define REC_SCOPE   4
+       #define REST_SCOPE  5
+       //
+       // Создание группы записей и расчет количества записей в ней
+       //
+       LOCAL mySet, myCount
+       USE Customer NEW
+       CREATE SCOPE mySet FOR Customer = "Smith" WHILE Zip > "90000"
+       myCount = Count( mySet )
+       RETURN
+
+       FUNCTION Count( aScope )
+	  LOCAL Count := 0
+	  DBEVAL( { || nCount++,;
+	  aScope[ FOR_COND ],;
+	  aScope[ WHILE_COND ],;
+	  aScope[ NEXT_SCOPE ],;
+	  aScope[ REC_SCOPE ],;
+	  aScope[ REST_SCOPE ];
+	  } )
+	  RETURN nCount
+
+
+$SEEALSO$
+  AEVAL(),EVAL()
+$END$

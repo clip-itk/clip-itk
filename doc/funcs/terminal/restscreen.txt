@@ -1,0 +1,98 @@
+$FUNCNAME$
+  RESTSCREEN()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Display a saved screen region to a specified location
+$LANG_RU$
+   Выводит ранее сохраненную область экрана в заданное место экрана.
+$SYNTAX$
+     RESTSCREEN([<nTop>], [<nLeft>], [<nBottom>], [<nRight>], <cScreen>) --> NIL
+$LANG_RU$
+     RESTSCREEN( <верхняя строка>, <левая колонка>,
+	  <нижняя строка>, <правая колонка>, <образ экрана>) --> NIL
+$ARGUMENTS$
+     <nTop>, <nLeft>, <nBottom>, and <nRight> define the
+     coordinates of the screen information contained in <cScreen>.  If
+     <cScreen> was saved without coordinates to preserve the entire screen,
+     no screen coordinates are necessary with RESTSCREEN().
+     <cScreen> is a character string containing the saved screen region.
+$LANG_RU$
+     <верхняя строка>, <левая колонка>, <нижняя строка> и <правая колонка>
+     определяют координаты окна экрана для вывода образа экрана
+     содержащегося в аргументе <образ экрана>.
+     <образ экрана> - символьная строка, содержащая сохраненную область
+     экрана.
+$RETURNS$
+     RESTSCREEN() always returns NIL.
+$LANG_RU$
+     RESTSCREEN() всегда возвращает NIL.
+$DESCRIPTION$
+     RESTSCREEN() is a screen function that redisplays a screen region saved
+     with SAVESCREEN().  The target screen location may be the same as or
+     different from the original location when the screen region was saved.
+     If you specify a new screen location, the new screen region must be the
+     same size or you will get ambiguous results.  To use RESTSCREEN() to
+     restore screen regions saved with SAVE SCREEN, specify the region
+     coordinates as 0, 0, MAXROW(), MAXCOL().
+
+     Warning!  SAVE SCREEN, RESTORE SCREEN, SAVESCREEN(), and
+     RESTSCREEN() are supported when using the default (IBM PC memory mapped)
+     screen driver.  Other screen drivers may not support saving and
+     restoring screens.
+$LANG_RU$
+     RESTSCREEN() - функция работы с экраном, которая "перерисовывает"
+     сохраненную с помощью функции SAVESCREEN() область экрана.
+     Восстановленная область может быть размещена как на старом,
+     так и на новом месте экрана.
+
+     Если вы задаете новое местоположение экрана, новая область экрана
+     должна иметь тот же размер, иначе вы получите неопределенный
+     результат.  Для использования RESTSCREEN() с целью восстановления
+     областей экрана, сохраненных с помощью SAVESCREEN(), задайте
+     координаты области 0, 0, MAXROW(), MAXCOL().
+
+     Предупреждение:
+     Команды SAVE SCREEN и RESTORE SCREEN и функции SAVESCREEN() и
+     RESTSCREEN() поддерживаются только при использовании стандартного
+     заданного по умолчанию экранного драйвера (IBM-PC карта памяти).
+     Использование других экранных драйверов не гарантирует поддержку
+     работы этих функций.
+$EXAMPLES$
+       This example demonstrates RESTSCREEN() as part of a general
+	purpose pop-up menu function, PopMenu():
+
+	? PopMenu({1, 1, 3, 10, {"ItemOne", "ItemTwo"}, ;
+	      "BG+/B"})
+
+	FUNCTION PopMenu( aList )
+	   LOCAL cScreen, nChoice, cOldColor := ;
+		    SETCOLOR(aList[6])
+	   cScreen := SAVESCREEN(aList[1], aList[2],;
+	       aList[3], aList[4])
+	   @ aList[1], aList[2], TO aList[3], aList[4] DOUBLE
+	   nChoice := ACHOICE(++aList[1], ++aList[2],;
+	      --aList[3], --aList[4], aList[5])
+	   SETCOLOR(cOldColor)
+	   RESTSCREEN(--aList[1], --aList[2], ++aList[3],;
+	       ++aList[4], cScreen)
+	   RETURN nChoice
+$LANG_RU$
+      Этот пример демонстрирует RESTSCREEN() как часть "всплывающего"
+       меню часто используемой функции PopMenu():
+
+       ? PopMenu({ 1, 1, 3, 10, {"ItemOne", "ItemTwo"}, "BG+/B"} )
+
+       FUNCTION PopMenu( aList )
+	  LOCAL cScreen, nChoice, cOldColor := SETCOLOR(aList[6])
+	  cScreen := SAVESCREEN( aList[1], aList[2], aList[3], aList[4])
+	  @ aList[1], aList[2], TO aList[3], aList[4] DOUBLE
+	  nChoice := ACHOICE(++aList[1], ++aList[2],;
+	  --aList[3], --aList[4], aList[5])
+	  SETCOLOR(cOldColor)
+	  RESTSCREEN(--aList[1], --aList[2],;
+	  ++aList[3], ++aList[4], cScreen)
+	  RETURN nChoice
+$SEEALSO$
+  SAVESCREEN()
+$END$

@@ -1,0 +1,860 @@
+$CLASSNAME$
+	LISTITEM
+$SUMMARY$
+	Class are destined to control of
+	associated in list data values. For example, it can be list of files.
+$LANG_RU$
+	Класс предназначен для управления данными, организованными в список.
+	Например, это может быть список файлов.
+$ABOUT$
+	Class are destined to control of
+	associated in list data values. For example, it can be list of files.
+$LANG_RU$
+	Класс предназначен для управления данными, организованными в список.
+	Например, это может быть список файлов.
+$SYNTAX$
+	ListItemNew(<nLrow>,<nLcol>,<nRrow>,<nRcol>[,<nColumns>[,<sDelimiter>[,<sColor>]]]) --> ListItem object
+$ATTRIBUTES$
+	<ClassName> 	LISTITEM
+	<Item>		Array, array of data value
+	<nTop> 		Numeric, a LISTITEM viewport coordinates
+	<nLeft>         Numeric, a LISTITEM viewport coordinates
+	<nBottom>       Numeric, a LISTITEM viewport coordinates
+	<nRight>        Numeric, a LISTITEM viewport coordinates
+	<ColorSpec>	String, color specification.
+
+			"clr1, clr2, clr3, clr4, clr5, clr6, clr7"
+			clr1 - border and items color
+			clr2 - current item colors if object in focus
+			clr3 - current item colors if object outof focus
+			clr4 - title colors
+			clr5 - selected item colors
+			clr6 - current selected item colors
+			clr7 - founded symbol colors
+
+
+	<ItemCount>	Numeric, items count
+	<Buffer>	Numeric, the cuurent items number
+	<First>		Numeric, the number of first element into viewport
+	<ItemWin>	Numeric, items into viewport
+	<Line>		Numeric, a current cursor coordinates - line
+	<Col>		Numeric, a current cursor coordinates - column
+	<Pos>		Numeric, a current column
+	<ColWin>	Numeric, a number columns into viewport
+	<RowWin>	Numeric, a number rows into viewport
+	<LenCol>	Array, array with columns width
+	<Title>		Array, array of string that contain columns titles
+	<Delim>		String, columns delimiters
+	<HasFocus>	Logical, is TRUE if object in focus
+	<FindBuffer>	String, the find buffer
+
+$LANG_RU$
+	<ClassName> 	LISTITEM
+	<Item>		Array, массив элементов.
+	<nTop> 		Numeric, координаты области редактирования LISTITEM
+	<nLeft>         Numeric, координаты области редактирования LISTITEM
+	<nBottom>       Numeric, координаты области редактирования LISTITEM
+	<nRight>        Numeric, координаты области редактирования LISTITEM
+	<ColorSpec>	String, цветовая спецификация.
+
+			"clr1, clr2, clr3, clr4, clr5, clr6, clr7"
+			clr1 - основной цвет и цвет обрамления
+			clr2 - цвет текущего элемента, если объект в фокусе
+			clr3 - цвет текущего элемента, если объект не в фокусе
+			clr4 - цвет заголовков
+			clr5 - цвет выделенных элементов
+			clr6 - цвет текущего выделенного элемента
+			clr7 - цвет выделенных операцией поиска символов
+
+	<ItemCount>	Numeric, количество элементов в <::Item>
+	<Buffer>	Numeric, номер текущего элемента
+	<First>		Numeric, номер первого элемента в области просмотра
+	<ItemWin>	Numeric, количество элементов в области просмотра
+	<Line>		Numeric, текущая координата курсора - строка
+	<Col>		Numeric, текущая координата курсора - колонка
+	<Pos>		Numeric, номер текщей колонки
+	<ColWin>	Numeric, количество колонок в области просмотра
+	<RowWin>	Numeric, количество строк в области просмотра
+	<LenCol>	Array, массив, содержащий ширину колонок
+	<Title>		Array, массив заголовков колонок
+	<Delim>		String, разделитель колонок
+	<HasFocus>	Logical, если TRUE объект находится в фокусе
+	<FindBuffer>	String, буфер поиска
+
+$METHODNAME$
+	ListItemNew()
+$SUMMARY$
+	LISTITEM object constructor.
+$LANG_RU$
+	Конструктор объекта LISTITEM.
+$SYNTAX$
+	ListItemNew(<nLrow>,<nLcol>,<nRrow>,<nRcol>[,<nColumns>[,<sDelimiter>[,<sColor>]]]) --> ListItem object
+$ARGUMENTS$
+	<nLrow> 	Numeric, a object coordinates
+	<nLcol>		Numeric, a object coordinates
+	<nRrow>		Numeric, a object coordinates
+	<nRcol>		Numeric, a object coordinates
+	<nColumns>	Numeric, a number columns into viewport. By default 1.
+	<sDelimiter>	String, a columns delimiter. By default <|>
+	<sColor>	String, a colors specification. By default "7/0, 7/0, 7/0, 7/0, 7/0, 7/0, 7/0"
+$LANG_RU$
+	<nLrow> 	Numeric, координаты области просмотра
+	<nLcol>		Numeric, координаты области просмотра
+	<nRrow>		Numeric, координаты области просмотра
+	<nRcol>		Numeric, координаты области просмотра
+	<nColumns>	Numeric, количество колонок. По умолчанию 1.
+	<sDelimiter>	String, разделитель колонок. По умолчанию <|>
+	<sColor>	String, цветовая спецификация. По умолчанию "7/0, 7/0, 7/0, 7/0, 7/0, 7/0, 7/0"
+$RETURNS$
+	Method returns new LISTITEM object.
+$LANG_RU$
+	Метод возвращает новый объект LISTITEM.
+$DESCRIPTION$
+	ListItemNew() is constructs and returns new LISTITEM object.
+	That class can be used to edit, view, control associated in list data.
+$LANG_RU$
+	ListItemNew() создает и возвращает объект LISTITEM.
+	Объект этого класса может быть использован для просмотра, редактирования,
+	управления данными, организованными в список.
+$ENDMETHOD$
+
+$METHODNAME$
+	Down()
+$SUMMARY$
+	Goes next element.
+$LANG_RU$
+	Перемещение  на следующий элемент.
+$SYNTAX$
+	Down() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Down() is moves cursor to next element of <::Item>.
+$LANG_RU$
+	Down() перемещает курсор на следующий элемент массива <::Item>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Up()
+$SUMMARY$
+	Goes previous element.
+$LANG_RU$
+	Перемещение на предыдущий элемент.
+$SYNTAX$
+	Up() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Up() is moves cursor to previouse  element of <::Item>.
+$LANG_RU$
+	Up() перемещает курсор на предыдущий элемент массива <::Item>.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Left()
+$SUMMARY$
+	Goes to left.
+$LANG_RU$
+	Перемещение налево.
+$SYNTAX$
+	Left() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Left() is moves cursor to left of current column.
+	The new current element will be <::Buffer> - <::RowWin>.
+$LANG_RU$
+	Left() перемещает курсор в левую от текущей колонку.
+	Новый текущий элемент будет <::Buffer> - <::RowWin>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Right()
+$SUMMARY$
+	Goes to right.
+$LANG_RU$
+	Перемещение направо.
+$SYNTAX$
+	Right() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Right() is moves cursor to right of current column.
+	The new current element will be <::Buffer> + <::RowWin>.
+$LANG_RU$
+	Right() перемещает курсор в правую от текущей колонку.
+	Новый текущий элемент будет <::Buffer> + <::RowWin>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Home()
+$SUMMARY$
+	Goes to first element of array <::Item>.
+$LANG_RU$
+	Перемещение на первый элемент массива <::Item>
+$SYNTAX$
+	Home() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Home() is moves cursor to the first element of <::Item> listing.
+	The new current element will be 1.
+$LANG_RU$
+	Home() перемещает курсор на первый элемент списка <::Item>.
+	Новый текущий элемент будет 1.
+$ENDMETHOD$
+
+$METHODNAME$
+	End()
+$SUMMARY$
+	Goes to last element of array <::Item>.
+$LANG_RU$
+	Перемещение на последний элемент массива <::Item>
+$SYNTAX$
+	End() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	End() is moves cursor to the last element of <::Item> listing.
+	The new current element will be len(<::Item>).
+$LANG_RU$
+	End() перемещает курсор на последний элемент списка <::Item>.
+	Новый текущий элемент будет len(<::Item>).
+$ENDMETHOD$
+
+$METHODNAME$
+	PageDown()
+$SUMMARY$
+	Goes to next page of array <::Item>.
+$LANG_RU$
+	Перемещение на следующую страницу массива <::Item>
+$SYNTAX$
+	PageDown() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	PageDown() is moves cursor to the next page  of <::Item> listing.
+	The size of page is <::ItemWin>. The current element will be <::Buffer>+<::ItemWin>.
+$LANG_RU$
+	PageDown() перемещает курсор на страницу вниз  списка <::Item>.
+	Размер страницы -  <::ItemWin>. Текущий элемент будет <::Buffer>+<::ItemWin>.
+$ENDMETHOD$
+
+$METHODNAME$
+	PageUp()
+$SUMMARY$
+	Goes to previouse page of array <::Item>.
+$LANG_RU$
+	Перемещение на предыдущую страницу массива <::Item>
+$SYNTAX$
+	PageUp() 	--> NIL
+$ARGUMENTS$
+
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	PageUp() is moves cursor to the previouse page of <::Item> listing.
+	The size of page is <::ItemWin>. The current element will be <::Buffer>-<::ItemWin>.
+$LANG_RU$
+	PageUp() перемещает курсор на страницу вверх списка <::Item>.
+	Размер страницы -  <::ItemWin>. Текущий элемент будет <::Buffer>-<::ItemWin>.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	AddItem()
+$SUMMARY$
+	Add new element to listing.
+$LANG_RU$
+	Добавить новый элемент в список.
+$SYNTAX$
+	AddItem(<vData>[, <sColor>][, <sSelColor>]) 	--> 0 || 1
+$ARGUMENTS$
+	<vData> - a data value
+	<sColor> - the base element colors
+	<sSelColor> - the selected element colors
+$LANG_RU$
+	<vData> - новый элемент списка.
+	<sColor> - основной цвет элемента в списке.
+	<sSelColor> - цвет выделенного элемента.
+$RETURNS$
+	Returns 1 if element will be added.
+$LANG_RU$
+	Возвращает 1, если элемент добавлен.
+$DESCRIPTION$
+	AddItem() added new element to the end listing <::Item>.
+$LANG_RU$
+	AddItem() добавляет новый элемент в конец списка <::Item>.
+$ENDMETHOD$
+
+$METHODNAME$
+	InsItem()
+$SUMMARY$
+	Insert new element into listing.
+$LANG_RU$
+	Вставить новый элемент в список.
+$SYNTAX$
+	InsItem(<vData>, <nPos>[, <sColor>][, <sSelColor>][, <lSelected>]) 	--> 0 || 1
+$ARGUMENTS$
+	<vData> - a data value
+	<nPos> - a new elements position
+	<sColor> - the base element colors
+	<sSelColor> - the selected element colors
+	<lSelected> - if TRUE, element will be selected (by default FALSE)
+$LANG_RU$
+	<vData> - новый элемент списка.
+	<nPos> - номер элемента в списке
+	<sColor> - основной цвет элемента в списке.
+	<sSelColor> - цвет выделенного элемента.
+	<lSelected> - если TRUE, элемент будет помечен как выделенный (по умолчанию FALSE).
+$RETURNS$
+	Returns 1 if element will be inserted.
+$LANG_RU$
+	Возвращает 1, если элемент вставлен.
+$DESCRIPTION$
+	InsItem() inserted new element <vData> into  listing <::Item>. New element inserted
+	at position <nPos>. Before insertion, size of <::Item> increased by 1 and all
+	elements with <nPos> shifted down one elemen.
+$LANG_RU$
+	InsItem() вставляет новый элемент <vData> в список <::Item>. Новый элемент
+	будет иметь <nPos> номер в списке. Перед вставлением, размер <::Item> увеличивается
+	на 1 и все элементы начиная с <nPos>  сдвигаются вниз.
+$ENDMETHOD$
+
+$METHODNAME$
+	DelItem()
+$SUMMARY$
+	Delete an listing element.
+$LANG_RU$
+	Удалить элемент из списка.
+$SYNTAX$
+	DelItem(<nPos>) 	--> 0 || 1
+$ARGUMENTS$
+	<nPos> - a elements position
+$LANG_RU$
+	<nPos> - номер элемента в списке
+$RETURNS$
+	Returns 1 if element will be deleted.
+$LANG_RU$
+	Возвращает 1, если элемент удален.
+$DESCRIPTION$
+	DelItem() is deletes an element <nPos> from an listing <::Item>. The contents of the
+	element is lost, and all elements from <nPos>+1 position shifted up one element.
+	The last element in the array discarded.
+$LANG_RU$
+	DelItem() удаляет элемент с номером <nPos> из списка <::Item>. Содержимое
+	элемента будет потеряно и все элементы начиная с <nPos>+1 будут сдвинуты
+	вверх на 1 позицию. Последний элемент списка будет уничтожен.
+$ENDMETHOD$
+
+$METHODNAME$
+	GetItem()
+$SUMMARY$
+	Gets current item.
+$LANG_RU$
+	Получить текущий элемент.
+$SYNTAX$
+	GetItem() 	--> <vData>
+$ARGUMENTS$
+$RETURNS$
+	Returns data value of current element.
+$LANG_RU$
+	Возвращает текущий элемент списка.b
+$DESCRIPTION$
+	GetItem() is gets the current element <::Buffer> into listing <::Item>.
+	If array <::Item> is empty, method return NIL.
+$LANG_RU$
+	GetItem() возвращает текущий элемент <::Buffer> списка <::Item>.
+	Если массив <::Item> пуст, метод возвращает NIL.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetItem()
+$SUMMARY$
+	Sets new current item.
+$LANG_RU$
+	Установить текущий элемент.
+$SYNTAX$
+	SetItem(<nPos>) 	--> 0 || 1
+$ARGUMENTS$
+	<nPos> - the number new current elements.
+$LANG_RU$
+	<nPos> - номер нового текущего элемента.
+$RETURNS$
+	Returns 1 if element with number <nPos>  exist.
+$LANG_RU$
+	Возвращает 1, если элемент с номером <nPos> существует.
+$DESCRIPTION$
+	SetItem() is sets new current element with number <nPos>. If <nPos> is more
+	than length of <::Item>, method returns 0.
+	If array <::Item> is empty, method return NIL.
+$LANG_RU$
+	SetItem() устанавливает новый текущий элемент с номером <nPos>. Если <nPos>
+	больше, чем элементов в списке, мето возвращает NIL, номер текущего элемента не
+	меняется.
+$ENDMETHOD$
+
+$METHODNAME$
+	Refresh()
+$SUMMARY$
+	Refreshed viewport.
+$LANG_RU$
+	Перерисовать область просмотра..
+$SYNTAX$
+	Refresh() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Refresh() is refreshes viewport. Called within methods of class LISTITEM
+	automaticaly.
+$LANG_RU$
+	Refresh() перерисовывает обоасть просмотра. Вызывается из методов класса
+	LISTITEM автоматически и не требует прямого вызова.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetFocus()
+$SUMMARY$
+	Set focus to object.
+$LANG_RU$
+	Установить фокус.
+$SYNTAX$
+	SetFocus() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	SetFocus() is sets focus to object of LISTITEM class. Attribute <::HasFocus> take value TRUE.
+$LANG_RU$
+	SetFocus() устанавливает фокус для объекта класса LISTITEM. Атрибут
+	<::HasFocus> приобретает значение TRUE.
+$ENDMETHOD$
+
+$METHODNAME$
+	KillFocus()
+$SUMMARY$
+	Kill focus.
+$LANG_RU$
+	Снять фокус.
+$SYNTAX$
+	KillFocus() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	KillFocus() is kils focus for object of LISTITEM class. Attribute <::HasFocus> take value FALSE.
+$LANG_RU$
+	KillFocus() снимает фокус для объекта класса LISTITEM. Атрибут
+	<::HasFocus> приобретает значение FALSE.
+$ENDMETHOD$
+
+$METHODNAME$
+	Clear()
+$SUMMARY$
+	Remove all items from listing.
+$LANG_RU$
+	Удалить все элементы из списка.
+$SYNTAX$
+	Clear() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Clear() removes all items from a <::Item> and sets counters to zero.
+$LANG_RU$
+	Crear() удаляет из списка все элементы и устанавливает счетчики в
+	нулевое положение.
+$ENDMETHOD$
+
+$METHODNAME$
+	ClearFindBuffer()
+$SUMMARY$
+	Crears find buffer.
+$LANG_RU$
+	Очистить буфер поиска.
+$SYNTAX$
+	ClearFindBuffer() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	ClearFindBuffer() is clears find buffer. <::FindBuffer> sets to empty string.
+$LANG_RU$
+	CrearFindBuffer() очищает буфер поиска. <::FindBuffer> присваивается пустая строка.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetTitle()
+$SUMMARY$
+	Set columns header.
+$LANG_RU$
+	Задать заголовки колонкам.
+$SYNTAX$
+	SetTitle(<aTitle>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<aTitle>  - Array, array of columns header
+$LANG_RU$
+	<aTitle>  - Array, массив заголовков колонок.
+$RETURNS$
+	Returns TRUE if <aTitle> not empty.
+$LANG_RU$
+	Возвращает TRUE, если <aTitle> не пуст.
+$DESCRIPTION$
+	SetTitle() is sets headers for listing columns. Headers sets for first len(<aTitle>)
+	columns, the rest columns becomes empty header.
+$LANG_RU$
+	SetTitle() устанавливает заголоки для колонок списка. Заголовки
+	устанавливаются для первых len(<aTitle>) колонок, остальные колонки
+	будут иметь пустые заголовки.
+$ENDMETHOD$
+
+$METHODNAME$
+	DrawTitle()
+$SUMMARY$
+	Draw columns header.
+$LANG_RU$
+	Нарисовать заголовки колонок.
+$SYNTAX$
+	DrawTitle() 	--> TRUE
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	DrawTitle() is drew headers for listing columns.
+$LANG_RU$
+	DrawTitle() прорисовывает заголовки списка.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetColumns()
+$SUMMARY$
+	Set columns count.
+$LANG_RU$
+	Задать количество колонок.
+$SYNTAX$
+	SetColumns(<nCol>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<nCol> - Numeric, the columns count
+$LANG_RU$
+	<nCol> - Numeric, количество колонок
+$RETURNS$
+	Returns TRUE i success.
+$LANG_RU$
+	Возвращает TRUE  в случае успеха.
+$DESCRIPTION$
+	SetColumns() is sets columns count and sets new balanced width  for all columns.
+$LANG_RU$
+	SetColumns() устанавливает количество колонок в списке и задает новую сбалансированную ширину
+	колонок.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetWidthCol()
+$SUMMARY$
+	Set columns width.
+$LANG_RU$
+	Задать ширину колонок.
+$SYNTAX$
+	SetWidthCol(<aWidth>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<aWidth> - Array, array of width for columns
+$LANG_RU$
+	<aWidth> - Array, массив, содержащий ширины колонок.
+$RETURNS$
+	Returns TRUE in success.
+$LANG_RU$
+	Возвращает TRUE  в случае успеха.
+$DESCRIPTION$
+	SetWidthCol() is sets columns width. If <aWidth[i]>==0, for column with
+	number <i> automaticaly sets balanced width.
+$LANG_RU$
+	SetWidthCol() устанавливает ширину колонок в списке. Если <aWidth[i]>==0,
+	то для колонки с номером <i> ширина устанавливается автоматически.
+$ENDMETHOD$
+
+$METHODNAME$
+	Select()
+$SUMMARY$
+	Select item.
+$LANG_RU$
+	Выделить элемент.
+$SYNTAX$
+	Select([<vItem>]) 	--> TRUE
+$ARGUMENTS$
+	<vItem> - Array or Numeric, array of items numbers for selection or items number. (By default current item <::Buffer>)
+$LANG_RU$
+	<vItem> - Array or Numeric, массив с номерами элементов для выделения
+	или конкретный номер элемента. (По умолчанию номер текущего элемента <::Buffer>)
+$RETURNS$
+	Returns TRUE.
+$LANG_RU$
+	Возвращает TRUE.
+$DESCRIPTION$
+	Select() is sets selected (one or more) items of listing <::Item>.
+$LANG_RU$
+	Select() выделяет цветом один или несколько элементов списка <::Item>
+$ENDMETHOD$
+
+$METHODNAME$
+	GetSelected()
+$SUMMARY$
+	Returns selected items numbers.
+$LANG_RU$
+	Возвращает номера выделенных элементов.
+$SYNTAX$
+	GetSelected() 	--> <aSelectedItems>
+$ARGUMENTS$
+$RETURNS$
+	Returns array of selected items numbers.
+$LANG_RU$
+	Возвращает массив номеров выделенных элементов.
+$DESCRIPTION$
+	GetSelected() returns array of selected items numbers.
+$LANG_RU$
+	GetSelected() возвращает массив номеров выделенных элементов.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Find()
+$SUMMARY$
+	Find substring.
+$LANG_RU$
+	Поиск подстроки.
+$SYNTAX$
+	Find(<sStr>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<sStr> - String, substring to searching
+$LANG_RU$
+	<sStr> - String, строка для поиска
+$RETURNS$
+	Returns TRUE if searching is success.
+$LANG_RU$
+	Возвращает TRUE если поиск успешен.
+$DESCRIPTION$
+	Find() is addes substring <sStr> to the end of find buffer <::FindBuffer> and
+	searching <::FindBuffer> within <::Item>.
+	If <::FindBuffer> is empty, searching start with first element of <::Item>,
+	in other searching start with current position <::Buffer>.
+
+	The <::FindBuffer> value is compared to the array element beginning with
+	the leftmost character in the <::Item> element  and proceeding until there
+	are no more characters left in <::FindBuffer>. If <::FindBuffer> is found
+	seraching stopped, <::Buffer> sets to position founded element and Find()
+	returns TRUE. If there is no match, <::Buffer> no changed, <sStr> removes from a <::FIndBuffer>
+	and Find() returns FALSE.
+$LANG_RU$
+	Find() добавляет <sStr> в конец буфера поиска <::FindBuffer> и
+	ищет <::FindBuffer> в списке <::Item>.
+	Если буфер<::FindBuffer> пуст, поиск начинается с первого элемента <::Item>,
+	иначе, поиск начинается с текущей позиции <::Buffer>.
+
+	Строка <::FindBuffer> сравнивается с самыми левыми символами элементов массива <::Item>.
+	Поиск продолжается пока <::FindBuffer> не будет найден или до конца массива.
+	Если строка <::FindBuffer> найдена, поиск останавливается, <::Buffer> принимает
+	значение соответствующее позиции найденного элемента в массиве <::Item> и Find()
+	возвращает TRUE. Если поиск не удачен, <::Buffer> не изменяется, подстрока <sStr>
+	удаляется из строки <::FIndBuffer> и Find() возвращает FALSE.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetKey()
+$SUMMARY$
+	Set a code block associated with code key value.
+$LANG_RU$
+	Установить блок кода, связанный с кодом клавиши.
+$SYNTAX$
+	SetKey(<nKey>[, <bData>]) 	--> bPreviouse
+$ARGUMENTS$
+	<nKey> - Numeric, the key code.
+	<bData> - Block code, block to runing.
+$LANG_RU$
+	<nKey> - Numeric, код клавиши.
+	<bData> - Block code, кодовый блок.
+$RETURNS$
+	Returns the previouse block code if exist or returns current one <bData>.
+$LANG_RU$
+	Возвращает предыдущий кодовый блок ассоциированный с кодом <nKey>(если такой имеется)
+	или возвращает блок <bData>.
+$DESCRIPTION$
+	SetKey() is sets a new code block associated with code <nKey>.
+	When replacing an existing code block definition, it returns previous
+	code block, in other returns current one.
+	Its associated key code will be evaluated HandleKey() methods.
+
+	If <bData>  is NIL, SetKey() returns old block code and remove
+	keypress/code block definition.
+
+
+	A default key code is cursor moves(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
+	K_PGDN, K_HOME, K_END ....) associates with corresponded methods Left(),
+	Right(), Up(), Down() and more.
+
+	Users code block take two parameters: link to LISTITEM object and key code;
+	and  can be returns one of next values:
+
+	-1 User request for the LISTITEM to lose input focus
+
+	0  Code block associated with <nKey> was evaluated
+
+	1  Unable to locate <nKey> in the dictionary, key was not processed
+
+$LANG_RU$
+	SetKey() устанавливает новый кодовый блок, ассоциированный с кодом <nKey>.
+	Когда при этом замещается существующий блок кода, метод возвращает этот
+	существующий блок, иначе возвращает вновь установленный.
+	Коды клавиш и связанные с ними кодовые блоки обрабатываются методом
+	HandleKey().
+
+	Если <bData> NIL, SetKey() возвращает старый кодовый блок
+	и удаляет код клавиши с ассоциированым с ним кодовым блоком.
+
+	По умолчанию с клавишами перемещения курсора(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
+	K_PGDN, K_HOME, K_END ....) ассоциированы соответствующие методы Left(),
+	Right(), Up(), Down() и тд.
+
+	Блок кода, ассоциированный пользователем с кодом клавиши, получает два
+	параметра: сам объект LISTITEM и код клавиши; и должен вернуть
+	одно из следующих значений:
+
+	-1 Пользовательский запрос к LISTITEM потерять фокус
+
+	0  Кодовый блок, ассоциированный с кодом <nKey>, был выполнен
+
+	1  Неопределенный в словаре код <nKey>, код не был обработан
+
+$ENDMETHOD$
+
+$METHODNAME$
+	HandleKey()
+$SUMMARY$
+	Simple handle key.
+$LANG_RU$
+	Обработчик кодов.
+$SYNTAX$
+	HandleKey(<nKey>) 	--> .T. || .F.
+$ARGUMENTS$
+	<nKey> - Numeric, specified in <inkey.ch> key code
+$LANG_RU$
+	<nKey> - Numeric, описанный в <inkey.ch> код клавиши.
+
+$RETURNS$
+	Returns one of numeric value :
+
+	-1 User request for the LISTITEM to lose input focus
+
+	0  Code block associated with <nKey> was evaluated
+
+	1  Unable to locate <nKey> in the dictionary, key was not processed
+$LANG_RU$
+	Возвращает одно из значений:
+
+	-1 Пользовательский запрос к LISTITEM потерять фокус
+
+	0  Кодовый блок, ассоциированный с кодом <nKey>, был выполнен
+
+	1  Неопределенный в словаре код <nKey>, код не был обработан
+$DESCRIPTION$
+	HandleKey() is evaluates code block that associated with key code
+	<nKey>. The keypress/code block definition creates within SetKey() method.
+
+	A default key code  cursor moves  associates with corresponded methods Left(),
+	Right(), Up(), Down() and more of LISTITEM class.
+$LANG_RU$
+	HandleKey() выполняет блок кода, ассоциированный с кодом клавиши
+	<nKey>. Список кодов клавиш и связанных с ними блоков кода создается методом
+	SetKey(). По умолчанию в этом списке находятся коды клавиш управления курсором,
+	связанные с соответствующими методами класса LISTITEM.
+
+$ENDMETHOD$
+
+
+
+$EXAMPLES$
+
+#include <inkey.ch>
+#define FA_NORMAL	0
+#define FA_READONLY	1
+#define FA_HIDDEN	2
+#define FA_SYSTEM	4
+#define FA_VOLUME	8
+#define FA_DIRECTORY	16
+#define FA_ARCHIVE	32
+
+clear screen
+wopen(5, 5, 20, 30)
+li := ListItemNew(0, 0, maxrow(), maxcol()) //  create new ListItem object
+wbox()
+fname = fileseek("./", FA_ARCHIVE+FA_VOLUME+FA_SYSTEM+FA_HIDDEN+FA_READONLY)
+do while !empty(fname)
+	li:AddItem(fname, "R/N, N/W")	// --> 1
+	fname = fileseek()
+enddo
+li:SetKey(K_ENTER, {|oLI, nKey| alert(toString(oLI:Buffer)+ " " + oLi:GetItem())})
+li:SetFocus()
+do while .t.
+	nKey := inkey(0)
+	ret := li:HandleKey(nKey)
+	if ret == -1
+		exit
+	endif
+enddo
+wclose()
+
+
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+
+
+

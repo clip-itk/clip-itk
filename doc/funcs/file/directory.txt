@@ -1,0 +1,145 @@
+$FUNCNAME$
+  DIRECTORY()
+$CATEGORY$
+  SYSTEM,FILE/IO,ARRAY
+$SUMMARY$
+   Create an array of directory and file information
+$LANG_RU$
+   Создает массив с информацией о каталогах и файлах.
+$SYNTAX$
+     DIRECTORY(<cDirSpec>, [<cAttributes>]) --> aDirectory
+$LANG_RU$
+     DIRECTORY(<шаблон поиска>,[<атрибуты>]) -> массив файлов
+$ARGUMENTS$
+     <cDirSpec> identifies the drive, directory and file specification
+     for the directory search.  Wildcards are allowed in the file
+     specification.  If <cDirSpec> is omitted, the default value is *.*.
+
+     <cAttributes> specifies inclusion of files with special attributes
+     in the returned information.  <cAttributes> is a string containing one
+     or more of the following characters:
+
+     <PRE>DIRECTORY() Attributes
+     ------------------------------------------------------------------------
+     Attribute    Meaning
+     ------------------------------------------------------------------------
+     H            Include hidden files
+     S            Include system files
+     D            Include directories
+     V            Search for the DOS volume label and exclude all other files
+     ------------------------------------------------------------------------
+     </PRE>
+
+     Normal files are always included in the search, unless you specify V.
+$LANG_RU$
+     <шаблон поиска> - определяет устройство, директорию и спецификацию
+     файлов для поиска. Допустимо использование произвольных символов.
+     Если аргумент <шаблон поиска> не указан, по умолчанию принимается
+     (*.*).
+
+     Аргумент <атрибуты> определяет необходимость включения в информации
+     о файлах со специальными атрибутами. Аргумент <атрибуты> состоит из
+     строки, содержащей один или более символов, представленных в таблице
+
+     <PRE>Атрибуты функции DIRECTORY().
+     ---------------------------------------------------------------------
+     Атрибут       Значение
+     ---------------------------------------------------------------------
+     H             Включаются скрытые файлы
+     S             Включаются системные файлы
+     D             Включаются имена каталогов
+     V             Ищется метка тома DOS. Все остальные файлы исключаются
+     ---------------------------------------------------------------------
+     </PRE>
+
+     Информация о файлах может присутствовать в подмассивах, только если
+     не используется атрибут V.
+$RETURNS$
+     DIRECTORY() returns an array of subarrays, with each subarray containing
+     information about each file matching <cDirSpec>.  The subarray has the
+     following structure:
+
+     <PRE>DIRECTORY() Subarray Structure
+     ------------------------------------------------------------------------
+     Position     Metasymbol     Directry.ch
+     ------------------------------------------------------------------------
+     1            cName          F_NAME
+     2            cSize          F_SIZE
+     3            dDate          F_DATE
+     4            cTime          F_TIME
+     5            cAttributes    F_ATTR
+     ------------------------------------------------------------------------
+     </PRE>
+
+     If no files are found matching <cDirSpec> or if <cDirSpec> is an illegal
+     path or file specification, DIRECTORY() returns an empty ({}) array.
+$LANG_RU$
+     DIRECTORY() возвращает массив, в котором каждый элемент является
+     подмассивом, содержащим информацию об очередном файле, выбранном в
+     соответствии с аргументом <шаблон поиска>. Подмассив имеет следующую
+     структуру:
+
+     <PRE>Структура подмассивов функции DIRECTORY().
+     ---------------------------------------------------------------------
+     Позиция          Метасимвол           Directry.ch
+     ---------------------------------------------------------------------
+       1               cName                 F_NAME
+       2               nSize                 F_SIZE
+       3               dDate                 F_DATE
+       4               cTime                 F_TIME
+       5               cAttributes           F_ATT
+     ---------------------------------------------------------------------
+     </PRE>
+
+     Если не найдено файлов, соответствующих <шаблон поиска>, или в
+     <шаблон поиска> указан неверный маршрут доступа или спецификация
+     файла, то функция DIRECTORY() возвращает пустой ({}) массив.
+$DESCRIPTION$
+     DIRECTORY() is an environment function that returns information about
+     files in the current or specified directory.  It is similar to ADIR(),
+     but returns a single array instead of adding values to a series of
+     existing arrays passed by reference.
+
+     Use DIRECTORY() to perform actions on groups of files.  In combination
+     with AEVAL(), you can define a block that can be applied to all files
+     matching the specified <cDirSpec>.
+
+     The header file, Directry.ch, in the \include subdirectory
+     contains #defines for the subarray subscripts, so that the references to
+     each file subarray are more readable.
+$LANG_RU$
+     DIRECTORY() - это функция среды, которая возвращает информацию о
+     файлах в текущем или заданном каталоге. Она похожа на ADIR(), но
+     возвращает единственный массив вместо того, чтобы заносить значения в
+     группу созданных массивов, передаваемых по ссылке.
+
+     DIRECTORY() может быть использована для обработки групп файлов.
+     Создав блок кода, который сможет обрабатывать все файлы, выбираемые в
+     соответствии со значением <шаблон поиска>, можно использовать
+     DIRECTORY() в комбинации с функцией AEVAL().
+
+     Для удобства пользования элементами подмассива в комплект поставки
+     xClipper входит файл описаний directory.ch, помещаемый в директорию
+     \include, определяющий имена элементов подмассива.
+$EXAMPLES$
+       This example creates an array of information about files in
+	the current directory and then lists the names of the files using
+	AEVAL() and QOUT():
+
+	#include "directry.ch"
+	//
+	aDirectory := DIRECTORY("*.*", "D")
+	AEVAL( aDirectory, {|aFile| QOUT(aFile[F_NAME])} )
+$LANG_RU$
+      В этом примере формируется массив информации о файлах в текущем
+       каталоге, а затем распечатывается список имен этих файлов. В
+       примере используются функции AEVAL() и QOUT():
+
+
+	  #include "directry.ch"
+	  //
+	  aDirectory := DIRECTORY("*.*", "D")
+	  AEVAL( aDirectory, { | aFile | QOUT( aFile[F_NAME]) } )
+$SEEALSO$
+  AEVAL()
+$END$

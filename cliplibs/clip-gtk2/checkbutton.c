@@ -54,8 +54,8 @@ clip_GTK_CHECKBUTTONNEW(ClipMachine * cm)
 			if (*pc == *pchar)
 			*pc='_';
 	}
-        else
-        	*pchar = '_';
+//        else
+//        	*pchar = '_';
 	if (_clip_parinfo(cm,2) == CHARACTER_t)
                 {
                 LOCALE_TO_UTF(title);

@@ -28,7 +28,8 @@ clean:
 	rm -rf *.ex *.nm
 
 install: all
-	clip_cp libclip-codb $(CLIPROOT)/lib
+	../clip_cp libclip-codb $(DESTDIR)$(CLIPROOT)/lib
+	tar cf - codb.ch codbcfg.ch codb_dbf.ch | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 
 #codb.o: codb.prg
 #	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) codb.prg

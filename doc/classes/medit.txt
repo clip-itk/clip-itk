@@ -1,0 +1,1194 @@
+$CLASSNAME$
+	MEDIT
+$SUMMARY$
+	Class are destined to control multi TEXTEDIT objects.
+$LANG_RU$
+	Class are destined to control multi TEXTEDIT objects.
+$ABOUT$
+	Class are destined to control multi TEXTEDIT objects.
+$SYNTAX$
+	mEdit()	--> MEDIT object
+	mEdit_new()		--> MEDIT object
+$ATTRIBUTES$
+	<ClassName> MEDIT
+	<Tobj>	Array, an array of TEXTEDIT objects
+	<TobjInfo> Array, an array of window information for every element <Tobj>
+	<Curwin> Numeric, the cureent window number.
+	<Clipboard> Array, an clipboard array.
+	<Find>	FIND object, contain search information and options
+	<Opt>  Map, the MEDIT configuration
+		OCREATEBAK - Logical, if TRUE create .bak files, specified TE_CREATE_BAK
+		OTABSIZE   - Numeric, the tabulation size, specified TE_TABSIZE
+		OAUTOSAVE  - Logical, if TRUE save TEXEDIT objects automatical every OTIMEAUTOSAVE time, specified TE_AUTO_SAVE
+		OTIMEAUTOSAVE - Numeric, the time autosave in minute, specified TE_TIME_AUTO_SAVE
+		OSAVESTATUS   - Logical, if TRUE autosave this options into file, specified TE_SAVE_STATUS
+		OHYPHEN       - Logical, if TRUE hyphen, specified TE_HYPHEN.
+		OAUTOMARGIN   - Logical, if TRUE auto margin boundary, specified TE_AUTO_MARGIN.
+		OMARGINLEFT   - Numeric, the left margin, specified TE_MARGIN_LEFT.
+		OMARGINRIGHT  - Numeric, the right margin, specified TE_MARGIN_RIGHT.
+		OAUTOINDENT   - Logical, if TRUE auto set new column position by position first letter of previouse line, specified TE_AUTO_IDENT.
+
+	<Templ> Map, the key is template, data - substring to replace.
+	<Tempmacro> Map, the key is template, data - macro values.
+	<UserFunc>  String, the name user function.
+	<nTop>		a MEDIT viewport coordinates (default - 0)
+	<nLeft> a MEDIT viewport coordinates (default - 0)
+	<nBot>		a MEDIT viewport coordinates (default - maxrow())
+	<nRight>	a MEDIT viewport coordinates (default - maxcol())
+
+	<Param> Array, array of file names to edit.
+	<Tab_size>	Numeric, the tabulation size.
+	<bLine> Numeric, the line number by loading (default 1).
+	<bPos>		Numeric, the column number by loading (default 1).
+	<wLine> Numeric, the line number in viewport by loading (default 1).
+	<wPos>		Numeric, the column number in viewport by loading (default 1).
+	<Single_mode>	Logical, if TRUE - the draw mode is SINGLE (default FALSE)
+	<Double_mode>	Logical, if TRUE - the draw mode is DOUBLE (default FALSE).
+	<stLine>	String, the status line text (default [ESC - menu]).
+	<oMenu> MENU object.
+	<AutoIndent>	Logical, if TRUE auto identification new column position into new line by previose line (default TRUE)
+
+$METHODNAME$
+	mEdit()
+$SUMMARY$
+	MEDIT constructor.
+$LANG_RU$
+	MEDIT constructor.
+$SYNTAX$
+	mEdit([<aParam>],[<nTop>],[<nLeft>],[<nBot>],[<nRight>],[<sUserFunc>],[<nTabSize>],[<nBline>],[<nBpos>],[<nWline>],[<nWpos>])	--> MEDIT object
+	mEdit_New([<aParam>],[<nTop>],[<nLeft>],[<nBot>],[<nRight>],[<sUserFunc>],[<nTabSize>],[<nBline>],[<nBpos>],[<nWline>],[<nWpos>])		--> MEDIT object
+$ARGUMENTS$
+	<aParam> Array, the file names to edit.
+	<nTop> Numeric, the viewport coordinates (default 0)
+	<nLeft> Numeric, the viewport coordinates (default 0)
+	<nBot>	Numeric, the viewport coordinates (default maxrow())
+	<nRight> Numeric, the viewport coordinates (default maxcol())
+	<sUserFunc> String, the user function name
+	<nTabSize> Numeric, the tabulation size (default TE_TABSIZE)
+	<nBline>  Numeric, the begin line position into editor buffer for each TEXTEDIT object	(default 1)
+	<nBpos> Numeric, the begin column position into editor buffer  (default 1)
+	<nWline> Numeric, the begin line position into viewport  (default 1)
+	<nWpos> Numeric, the begin column position into viewport  (default 1)
+$RETURNS$
+	New MEDIT object
+$DESCRIPTION$
+	Medit_new() is constructs and returns new MEDIT object.
+	That class can be used to create, for example, multiwindow text editors.
+
+	Medit() is equal to Medit_new(), but it activate method Runme() at once.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	DrawHead()
+$SUMMARY$
+	Draw border header.
+$LANG_RU$
+	Draw border header.
+$SYNTAX$
+	DrawHead()	--> .T.
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	DrawHead() is drow title for each TEXTEDIT object.
+	Title include next information: file name, read only mode, share mode,
+	SET_INSERT mode, window number.
+$ENDMETHOD$
+
+$METHODNAME$
+	Set_options()
+$SUMMARY$
+	Set editor options.
+$LANG_RU$
+	Set editor options.
+$SYNTAX$
+	Set_options()	--> .T.
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	Set_options() is setted options <::Opt> by default or
+	read its from saved file.
+
+	Options file have name: getenv("HOME")+"/.clip/.edit" If this file
+	exist, options reading from it.
+
+	For more information about saved options see description of Save_options().
+$ENDMETHOD$
+
+
+$METHODNAME$
+	SaveFile()
+$SUMMARY$
+	Save file.
+$LANG_RU$
+	Save file.
+$SYNTAX$
+	SaveFile([<sFileName>]) --> .T. || .F.
+$ARGUMENTS$
+	<sFileName> String, full file name.
+$RETURNS$
+	Returns TRUE if file saved and returns FALSE in other.
+$DESCRIPTION$
+	SaveFile() is saved current TEXTEDIT editor buffer (<::Tobj[::Curwin]>) into file <sFileName>.
+	If <sFileName> not specified, then text saved into file with old name
+	specified into TEXTEDIT object attribute <::Path>+<::FileName>.
+
+	If option <::Opt:OCREATEBAK> is TRUE, then before saving would be create
+	.bak file.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Save_options()
+$SUMMARY$
+	Save MEDIT options.
+$LANG_RU$
+	Save MEDIT options.
+$SYNTAX$
+	Save_options()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	Save_options() is saved MEDIT options <::Opt> to file getenv("HOME")+"/.clip/.edit".
+	Every user can have own file options.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	WriteStatus()
+$SUMMARY$
+	Save MEDIT status.
+$LANG_RU$
+	Save MEDIT status.
+$SYNTAX$
+	WriteStatus()	--> .T. || .F.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE is status was saved and FALSE in other.
+$DESCRIPTION$
+	WriteStatus() is saved MEDIT status to file "edit."+getenv("USER").
+	Every user can have own file options into many directories.
+
+	To status file wrote next information:
+
+	- the number current window;
+
+	- the history opened files;
+
+	- the history for FIND and REPLACE operations;
+
+	- the information about editing files: full file name, current position
+	  line and column into editor buffer, current position line and column into viewport and more.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	ListFiles()
+$SUMMARY$
+	Show listing opened files.
+$LANG_RU$
+	Show listing opened files.
+$SYNTAX$
+	ListFiles()	--> nCurWindow
+$ARGUMENTS$
+$RETURNS$
+	Returns number choosed window.
+$DESCRIPTION$
+	ListFiles() is made dialog to choose opened files. It is are listing
+	TEXTEDIT objects.
+
+	If window not choosed, ListFiles() returns the number cuurent window.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	EditOpt()
+$SUMMARY$
+	Edit MEDIT options.
+$LANG_RU$
+	Edit MEDIT options.
+$SYNTAX$
+	EditOpt()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	EditOpt() is made dialog to edit MEDIT options <::Opt>.
+$ENDMETHOD$
+
+$METHODNAME$
+	EditKeys()
+$SUMMARY$
+	Edit MEDIT options.
+$LANG_RU$
+	Edit MEDIT options.
+$SYNTAX$
+	EditOpt()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	EditOpt() is made dialog to edit MEDIT options <::Opt>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Goto()
+$SUMMARY$
+	Run dialog "Go to line".
+$LANG_RU$
+	Run dialog "Go to line".
+$SYNTAX$
+	Goto()	--> nNewLine
+$ARGUMENTS$
+$RETURNS$
+	Returns the new line number.
+$DESCRIPTION$
+	Goto() read new line number and if it number between 1 and <::Lines>
+	called method TextEdit:GotoLine() for current TEXTEDIT object.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	Menu()
+$SUMMARY$
+	Create common menu for MEDIT object.
+$LANG_RU$
+	Create common menu for MEDIT object.
+$SYNTAX$
+	Menu()	--> oMenu
+$ARGUMENTS$
+$RETURNS$
+	Returns the new MENU object.
+$DESCRIPTION$
+	Menu() created new MENU object to control MEDIT object.
+
+	Menu() is calls automaticaly from one of constructors.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	EnableMenu()
+$SUMMARY$
+	Enable menu items.
+$LANG_RU$
+	Enable menu items.
+$SYNTAX$
+	EnableMenu()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	EnableMenu() called method MenuItem:EnableStatus() to every items of MENU
+	object that be created winthin method Medit:Menu().
+
+	The status enable specify TRUE if will be opened or created even though
+	file.
+
+$ENDMETHOD$
+
+
+$METHODNAME$
+	EnableBlockMenu()
+$SUMMARY$
+	Enable block menu items.
+$LANG_RU$
+	Enable block menu items.
+$SYNTAX$
+	EnableBlockMenu()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	EnableBlockMenu() called method MenuItem:EnableStatus() to every items of MENU
+	object that be called block methods.
+
+	The status enable specify TRUE if block will be makked.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	HelpEdit()
+$SUMMARY$
+	Make help.
+$LANG_RU$
+	Make help.
+$SYNTAX$
+	HelpEdit()	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$DESCRIPTION$
+	HelpEdit() read help for text editor from file CLIPROOT()+"/doc/edit.html"
+$ENDMETHOD$
+
+	obj:setReadOnly := @me_setReadOnly()
+
+$METHODNAME$
+	GetReadOnly()
+$SUMMARY$
+	Get mode Read Only.
+$LANG_RU$
+	Get mode Read Only.
+$SYNTAX$
+	GetReadOnly(<nWin>)	--> lMode
+$ARGUMENTS$
+	<nWin> - Numeric, window number into <::Tobj> listing
+$RETURNS$
+	Returns logical value TRUE if mode ReadOnly specify.
+$DESCRIPTION$
+	GetReadOnly() is get read only mode for TEXTEDIT objects <::Tobj[nWin]>.
+
+	If <nWin>  is NIL, then SetReadOnly() returns FALSE.
+$ENDMETHOD$
+
+$METHODNAME$
+	ChooseCodePage()
+$SUMMARY$
+	Choose and set new codepage.
+$LANG_RU$
+	Choose and set new codepage.
+$SYNTAX$
+	ChooseCodePage()	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$DESCRIPTION$
+	ChooseCodePage() is ran dialog "Choose code page"  and
+	converted editor buffer <::Tobj[::Curwin]> to choosed code page.
+
+	All existing code page reading from directory CLIPROOT()+"/charsets"
+
+$ENDMETHOD$
+
+$METHODNAME$
+	ChangeCharset()
+$SUMMARY$
+	Change charset.
+$LANG_RU$
+	Change charset.
+$SYNTAX$
+	ChangeCharset(<nWin>, <sCharset>)	--> .T. || .F.
+$ARGUMENTS$
+	<nWin> - Numeric, the window number within <::Tobj>
+	<sCharset> - String, the new charset.
+$RETURNS$
+	Returns TRUE if sets charset <sCharset>.
+$DESCRIPTION$
+	ChangeCharset() is called corresponding method SetCharset() for <::Tobj[nWin]>
+
+$ENDMETHOD$
+
+$METHODNAME$
+	RemoveWindow()
+$SUMMARY$
+	Remove window
+$LANG_RU$
+	Remove window
+$SYNTAX$
+	RemoveWindow([<@nWin>]) --> NIL
+$ARGUMENTS$
+	<@nWin> - Numeric, the window number(default <::Curwin>)
+$RETURNS$
+	Returns NIL.
+$DESCRIPTION$
+	RemoveWindow() is removed TEXTEDIT object with number <nWin> from
+	listing <::Tobj> and decreased <nWin> by one.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	InitUserMacro()
+$SUMMARY$
+	Initiation users macros.
+$LANG_RU$
+	Initiation users macros.
+$SYNTAX$
+	InitUserMacro(<sIniFileName>)	--> .T. || .F.
+$ARGUMENTS$
+	<sIniFileName> - String, the .ini file name.
+$RETURNS$
+	Returns TRUE if <sIniFileName> exist and loaded.
+$DESCRIPTION$
+	IniUserMacro() is read file <sIniFileName> and try loaded it.
+	The format .ini file is:
+
+	[Label]
+		UFUNC	= <UserFuncName>	The name user function
+		UFILE	= <UserFuncFileName>	The full name file .po that contained user function <UserFuncName>
+		[UALLWINS= <lAll>]		If .T. user function take object MEDIT, other its take current TEXTEDIT object. (Default is .F.)
+		[UHOTKEY = <HotKeyCode>]	The name hot key code into <inkey.ch>
+		[UCOMMAND= <CommandName>]	The command name.(Default <UserFuncName>)
+		[UMENUSTR= <MenuString>]	The menu items string. (Default <UserFuncName>)
+		[UMENUMSG= <MenuMsg>]		The message menu item.
+
+	The all users macro will be added to <::oMenu> object into item "Macro".
+
+	The function <UserFuncName> take one parameters MEDIT or TEXTEDIT object and
+	can be returns logical value. If users function returns TRUE, then key code
+	processed. If users function return FALSE, then key code can be processed
+	of standart handler RunMe().
+
+$ENDMETHOD$
+
+$METHODNAME$
+	ApplyHash()
+$SUMMARY$
+	Evaluate the code block.
+$LANG_RU$
+	Evaluate the code block.
+$SYNTAX$
+	ApplyHash(<nHashCode>)	--> nResult
+$ARGUMENTS$
+	<nHashCode> - Numeric, hash code of command
+$RETURNS$
+	Returns one of numeric value what definited in edit.ch.
+
+	ME_EXIT -1 User request for the MEDIT to lose input focus
+
+	ME_CONTINUE	0  Code block associated with <nHashCode> was evaluated
+
+	ME_EXCEPTION	1  Unable to locate <nHashCode> in the dictionary, hash code was not processed
+$DESCRIPTION$
+
+	ApplyHash() evaluates the code block associeated with hash code <nHashCode>
+	that is contained whithin SetHash() dictionary and returns <nResult>.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	SetHash()
+$SUMMARY$
+	Set a code block associated with commands hash code value.
+$LANG_RU$
+	Set a code block associated with commands hash code value.
+$SYNTAX$
+	SetHash(<nHashCode>[, <bData>]) --> bPreviouse
+$ARGUMENTS$
+
+	<nHashCode> - Numeric, the commands hash code.
+	<bData> - Block code, block to runing.
+$RETURNS$
+	Returns the previouse block code if exist or returns current one <bData>.
+$DESCRIPTION$
+	SetHash() is sets a new code block associated with code <nHashCode>.
+	When replacing an existing code block definition, it returns previous
+	code block, in other returns current one.
+	Its associated hash code will be evaluated ApplyHash() methods.
+
+	If <bData>  is NIL, SetHash() returns old block code and remove
+	hashcommand/code block definition.
+
+
+	A default hash code is cursor moves(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
+	K_PGDN, K_HOME, K_END ....) associates with corresponded methods Left(),
+	Right(), Up(), Down() and more.
+$ENDMETHOD$
+
+$METHODNAME$
+	SaveWins()
+$SUMMARY$
+	Save all windows that contained TEXEDIT objects.
+$LANG_RU$
+	Save all windows that contained TEXEDIT objects.
+$SYNTAX$
+	SaveWins()	--> .T. || .F.
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE if all TEXTEDIT objects was be saved.
+$DESCRIPTION$
+	SaveWins() is tryed to save to files all TEXEDIT objects from <::Tobj>.
+
+	If all objects was be saved, SaveWins return TRUE, in other FALSE.
+$ENDMETHOD$
+
+$METHODNAME$
+	CreateNewWindow()
+$SUMMARY$
+	Create new TEXTEDIT object into new window.
+$LANG_RU$
+	Create new TEXTEDIT object into new window.
+$SYNTAX$
+	CreateNewWindow()	--> .T.
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	CreateNewWindow() is created new TEXTEDIT object into new window.
+
+	New window will be created with coordinates <::nTop>, <::nLeft>,
+	<::nBot>, <::nRight> and will be add to listing TEXEDIT objects
+	<::Tobj>. This window will be current and take focus.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	OpenFile()
+$SUMMARY$
+	Open file into new window.
+$LANG_RU$
+	Open file into new window.
+$SYNTAX$
+	OpenFile()	--> .T. || .F.
+$ARGUMENTS$
+
+$RETURNS$
+	Returns TRUE if file will be loaded, and FALSE in other.
+$DESCRIPTION$
+	OpenFile() is ran file dialog and loaded to new TEXTEDIT object
+	selected file within new window..
+
+	New window will be created with coordinates <::nTop>, <::nLeft>,
+	<::nBot>, <::nRight> and will be add to listing TEXEDIT objects
+	<::Tobj>. This window will be current and take focus.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	FindString()
+$SUMMARY$
+	Find string or regular expression within current one or all windows.
+$LANG_RU$
+	Find string or regular expression within current one or all windows.
+$SYNTAX$
+	FindString([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number with begin searching. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	FindString() is called method Find() for TEXTEDIT object <::Tobj[nWin]>
+	with find options <::Find>.
+
+$ENDMETHOD$
+
+$METHODNAME$
+	FindReplace()
+$SUMMARY$
+	Find and replace string or regular expression within current one or all windows.
+$LANG_RU$
+	Find and replace string or regular expression within current one or all windows.
+$SYNTAX$
+	FindReplace([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number with begin searching. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	FindReplace() is called method Replace() for TEXTEDIT object <::Tobj[nWin]>
+	with find options <::Find>.
+$ENDMETHOD$
+
+$METHODNAME$
+	FindPrev()
+$SUMMARY$
+	Search continue to backward.
+$LANG_RU$
+	Search continue to backward.
+$SYNTAX$
+	FindPrev([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number with begin searching. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	FindPrev() is called method FindPrev() for TEXTEDIT object <::Tobj[nWin]>
+	with find options <::Find>.
+$ENDMETHOD$
+
+$METHODNAME$
+	FindNext()
+$SUMMARY$
+	Search continue to forward.
+$LANG_RU$
+	Search continue to forward.
+$SYNTAX$
+	FindNext([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number with begin searching. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	FindNext() is called method FindNext() for TEXTEDIT object <::Tobj[nWin]>
+	with find options <::Find>.
+$ENDMETHOD$
+
+$METHODNAME$
+	ReloadFile()
+$SUMMARY$
+	Reload file.
+$LANG_RU$
+	Reload file.
+$SYNTAX$
+	ReloadFile([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number that to be reloaded. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	ReloadFile() is called method LoadFile() for TEXTEDIT object <::Tobj[nWin]>
+	with find options <::Find>.
+$ENDMETHOD$
+
+$METHODNAME$
+	PrevWindow()
+$SUMMARY$
+	Change current window to previous.
+$LANG_RU$
+	Change current window to previous.
+$SYNTAX$
+	PrevWindow()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	PrevWindow() is changed current window to previous. <::Curwin> decreased by one.
+$ENDMETHOD$
+
+$METHODNAME$
+	NextWindow()
+$SUMMARY$
+	Change current window to next.
+$LANG_RU$
+	Change current window to next.
+$SYNTAX$
+	NextWindow()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	NextWindow() is changed current window to next. <::Curwin> increased by one.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetInsertMode()
+$SUMMARY$
+	Set insert mode.
+$LANG_RU$
+	Set insert mode.
+$SYNTAX$
+	SetInsertMode([<lMode>])	--> .T.
+$ARGUMENTS$
+	<lMode> Logical, the insert mode. (Default is inversive insert mode)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	SetInsertMode() is sets new insert mode.
+$ENDMETHOD$
+
+$METHODNAME$
+	MatchSymbol()
+$SUMMARY$
+	Match symbol within window.
+$LANG_RU$
+	Match symbol within window.
+$SYNTAX$
+	MatchSymbol([<nWin>][,<lDirect>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+	<lDirect> Logical, the searching direct. (Default is TRUE - search to forward)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	MatchSymbol() is called method Identity() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	MatchStructure()
+$SUMMARY$
+	Match structure within window.
+$LANG_RU$
+	Match structure within window.
+$SYNTAX$
+	MatchStructure([<nWin>][,<ldirect>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+	<lDirect> Logical, the searching direct. (Default is TRUE - search to forward)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	MatchStructure() is called method MatchStruct() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	CopyToClipboard
+$SUMMARY$
+	Copy block to clipboard.
+$LANG_RU$
+	Copy block to clipboard.
+$SYNTAX$
+	CopyToClipboard([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	CopyToClipboard() is called method CopyToClipboard() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	SaveBlock()
+$SUMMARY$
+	Save block to file.
+$LANG_RU$
+	Save block to file.
+$SYNTAX$
+	SaveBlock([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	SaveBlock() is choosed file name and called method SaveBlock() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	MarkBlock()
+$SUMMARY$
+	Start/stop to mark block.
+$LANG_RU$
+	Start/stop to mark block.
+$SYNTAX$
+	MarkBlock([<nWin>][,<lMode>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+	<lMode> Logical, if TRUE (default) start/stop lines block, in other columns block.
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	MarkBlock() is called methods BeginBlock or EndBlock() for TEXTEDIT object <::Tobj[nWin]> .
+$ENDMETHOD$
+
+$METHODNAME$
+	CancelBlock()
+$SUMMARY$
+	Unmark block.
+$LANG_RU$
+	Unmark block.
+$SYNTAX$
+	CancelBlock([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	CancelBlock() is called method CancelBlock() for TEXTEDIT object <::Tobj[nWin]> .
+$ENDMETHOD$
+
+$METHODNAME$
+	ShowFiles()
+$SUMMARY$
+	Show listing of opened files.
+$LANG_RU$
+	Show listing of opened files.
+$SYNTAX$
+	ShowFiles()	--> .T.
+$ARGUMENTS$
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	ShowFiles() is showed opened files and choose some one to edit.
+$ENDMETHOD$
+
+$METHODNAME$
+	CloseWindow()
+$SUMMARY$
+	Close window.
+$LANG_RU$
+	Close window.
+$SYNTAX$
+	CloseWindow([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	CloseWindow() is saved file, closed window <nWin> and removed it from are
+	<::Tobj> listing.
+$ENDMETHOD$
+
+$METHODNAME$
+	Print()
+$SUMMARY$
+	Print file or marked block.
+$LANG_RU$
+	Print file or marked block.
+$SYNTAX$
+	Print([<nWin>][, <lBlock>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+	<lBlock> Logical, if TRUE printed only block from are window <nWin>, if FALSE (default) printed all file.
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	Print() is printed file or if <lBlock> is TRUE marked block.
+$ENDMETHOD$
+
+$METHODNAME$
+	Undo()
+$SUMMARY$
+	Make "undo" operation.
+$LANG_RU$
+	Make "undo" operation.
+$SYNTAX$
+	Undo([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	Undo() is called method Undo() for TEXTEDIT object <::Tobj[nWin]> .
+$ENDMETHOD$
+
+$METHODNAME$
+	SavePos()
+$SUMMARY$
+	Save current line position.
+$LANG_RU$
+	Save current line position.
+$SYNTAX$
+	SavePos([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	SavePos() is saved current line position of TEXTEDIT object <::Tobj[nWin]> .
+$ENDMETHOD$
+
+$METHODNAME$
+	CallMenu()
+$SUMMARY$
+	Call and run menu.
+$LANG_RU$
+	Call and run menu.
+$SYNTAX$
+	CallMenu(<nChoice>)	--> .T.
+$ARGUMENTS$
+	<nChoice> Numeric, the menu item position.
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	CallMenu() is called and ran menu object <::oMenu> that was created within
+	method Menu().
+$ENDMETHOD$
+
+$METHODNAME$
+	NewLine()
+$SUMMARY$
+	Goto new line of window.
+$LANG_RU$
+	Goto new line of window.
+$SYNTAX$
+	NewLine([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	NewLine() is called method InsertLine() if Set(_SET_INSERT) is TRUE and
+	method NewLine()for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Delete()
+$SUMMARY$
+	Delete symbol.
+$LANG_RU$
+	Delete symbol.
+$SYNTAX$
+	Delete([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	Delete() is called method DelRight() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	DeleteEnd()
+$SUMMARY$
+	Delete string from current column to th end of string.
+$LANG_RU$
+	Delete string from current column to th end of string.
+$SYNTAX$
+	DeleteEnd([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	DeleteEnd() is called method DelEnd() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Backspace()
+$SUMMARY$
+	Delete symbol.
+$LANG_RU$
+	Delete symbol.
+$SYNTAX$
+	Backspace([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	Backspace() is called method Backspace() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	DeleteHome()
+$SUMMARY$
+	Delete string from cuurent column to the start of string.
+$LANG_RU$
+	Delete string from cuurent column to the start of string.
+$SYNTAX$
+	DeleteHome([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	DeleteHome() is called method DelHome() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	DeleteLine()
+$SUMMARY$
+	Delete line.
+$LANG_RU$
+	Delete line.
+$SYNTAX$
+	DeleteLine([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	DeleteLine() is called method DeleteLine() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	CenterLine()
+$SUMMARY$
+	Centered line.
+$LANG_RU$
+	Centered line.
+$SYNTAX$
+	CenterLine([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	CenterLine() is called method CenterLine() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	CopyBlock()
+$SUMMARY$
+	Copy or move block to new position line and column.
+$LANG_RU$
+	Copy or move block to new position line and column.
+$SYNTAX$
+	CopyBlock([<nWin>][,<lCopy>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+	<lCopy> Logical, if TRUE (default) make operation to copy block, in other make move block.
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	CopyBlock() is called method CopyBlock() or MoveBlock() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	DeleteBlock()
+$SUMMARY$
+	Remove block.
+$LANG_RU$
+	Remove block.
+$SYNTAX$
+	DeleteBlock([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	DeleteBlock() is called method DeleteBlock() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	PasteFromClipboard()
+$SUMMARY$
+	Paste  block from clipboard.
+$LANG_RU$
+	Paste  block from clipboard.
+$SYNTAX$
+	PasteFromClipboard([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	PasteFromClipboard() is called method PasteFromClipboard() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+$METHODNAME$
+	LoadBlock()
+$SUMMARY$
+	Load block from file.
+$LANG_RU$
+	Load block from file.
+$SYNTAX$
+	LoadBlock([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	LoadBlock() is choosed file and called method LoadBlock() for TEXTEDIT object <::Tobj[nWin]>.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	InsTemplate()
+$SUMMARY$
+	Insert text string(s) by template.
+$LANG_RU$
+	Insert text string(s) by template.
+$SYNTAX$
+	InsTemplate([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	InsTemplate() is called method InsTempl() for TEXTEDIT object <::Tobj[nWin]> with
+	templates array <::Templ>.
+$ENDMETHOD$
+
+$METHODNAME$
+	InsMacro()
+$SUMMARY$
+	Insert text string(s) by after do macro expression.
+$LANG_RU$
+	Insert text string(s) by after do macro expression.
+$SYNTAX$
+	InsMacro([<nWin>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	InsMacro() is called method InsMacro() for TEXTEDIT object <::Tobj[nWin]> with
+	templates array <::TemplMacro>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Format()
+$SUMMARY$
+	Format line or part of text.
+$LANG_RU$
+	Format line or part of text.
+$SYNTAX$
+	Format([<nWin>][,<lMode>])	--> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+	<lMode> Logical, if TRUE (default) formatting line, in other formatting part.
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	Format() is called method FormatLine() or FormatPart() for TEXTEDIT object <::Tobj[nWin]> with
+	parameters that specified <::Opt>.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetDraw()
+$SUMMARY$
+	Start/Stop lines drow mode.
+$LANG_RU$
+	Start/Stop lines drow mode.
+$SYNTAX$
+	SetDraw([<nWin>][,<lDrawMode>]) --> .T.
+$ARGUMENTS$
+	<nWin>	Numeric, the window number. (Default current window number <::Curwin>)
+	<lDrawMode> Logical, if TRUE (default) set single line draw mode, in other set double line draw mode..
+$RETURNS$
+	Returns TRUE.
+$DESCRIPTION$
+	SetDraw() is set/unset single/double line draw mode.
+$ENDMETHOD$
+
+$METHODNAME$
+	RunMe()
+$SUMMARY$
+	Key code handler()
+$LANG_RU$
+	Key code handler()
+$SYNTAX$
+	RunMe() --> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$DESCRIPTION$
+	RunMe() is started key code handler of MEDIT object. It processed key code
+	and made corresponding of this key MEDIT command.
+$ENDMETHOD$
+
+
+$EXAMPLES$
+
+#include <inkey.ch>
+#include <edit.ch>
+
+/* create new MEDIT object */
+me := medit_new()
+
+/* get standart HASH command for MEDIT object */
+mekeys := HK_get("edit")
+
+/* create users HASH command */
+keys := map()
+keys[K_F2] := HASH_Save
+keys[K_F3] := HASH_Open
+keys[K_ESC] := HASH_Quit
+
+/* set code block to users HASH command */
+me:SetHash(HASH_Save, {|oMe, nKey| oMe:SaveFile(), ME_CONTINUE})
+me:SetHash(HASH_Open, {|oMe, nKey| oMe:OpenFile(), ME_CONTINUE})
+me:SetHash(HASH_Quit, {|oMe, nKey| oMe:CloseWindow(), ME_EXIT})
+
+
+/* make command */
+ret := ME_CONTINUE
+do while ret != ME_EXIT
+	nKey := inkey(0)
+	if nKey $ keys
+		hKey := keys[nKey]
+	elseif nKey $ mekeys
+		hKey := mekeys[nKey]
+	else
+		hKey := nKey
+	endif
+	ret := me:applyHash(hKey)
+enddo
+
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+

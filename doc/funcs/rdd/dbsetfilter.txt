@@ -1,0 +1,77 @@
+$FUNCNAME$
+  DBSETFILTER()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Set a filter condition
+$LANG_RU$
+   Устанавливает фильтр.
+$SYNTAX$
+     DBSETFILTER(<bCondition>, [<cCondition>]) --> NIL
+$LANG_RU$
+     DBSETFILTER(<условие - блок кода>,[<текст условия>]) --> NIL
+$ARGUMENTS$
+     <bCondition> is a code block that expresses the filter condition in
+     executable form.
+
+     <cCondition> stores the filter condition as a character string for
+     later retrieval by the DBFILTER() function.  If you omit this optional
+     parameter, the DBFILTER() function will return an empty string for the
+     work area.
+$LANG_RU$
+     <условие - блок кода> - блок кода, выражающий условие фильтра в
+     исполняемой форме.
+
+     <текст условия> - необязательная символьная величина, выражающая
+     условие фильтра в текстовой форме.
+$RETURNS$
+     DBSETFILTER() always returns NIL.
+$LANG_RU$
+     DBSETFILTER() всегда возвращает NIL.
+$DESCRIPTION$
+     DBSETFILTER() sets a logical filter condition for the current work area.
+     When a filter is set, records which do not meet the filter condition are
+     not logically visible.  That is, database operations which act on
+     logical records will not consider these records.
+
+     The filter expression supplied to DBSETFILTER() evaluates to true (.T.)
+     if the current record meets the filter condition; otherwise, it should
+     evaluate to false (.F.).
+
+     The filter expression may be a code block (<bCondition>) or both a code
+     block and equivalent text (<cCondition>).  If both versions are
+     supplied, they must express the same condition.  If the text version is
+     omitted, DBFILTER() will return an empty string for the work area.
+
+     DBSETFILTER() performs the same function as the standard SET FILTER
+     command.  For more information, refer to the SET FILTER command.
+$LANG_RU$
+     DBSETFILTER() устанавливает логическое условие фильтра для текущей
+     рабочей области. Когда фильтр установлен, записи, не удовлетворяющие
+     условию фильтра, логически не видны. То есть, операции,
+     обрабатывающие логические записи, такие записи не рассматривают.
+
+     Выражение фильтра, задаваемое при вызове функции DBSETFILTER(),
+     должно при вычислении для записей, удовлетворяющих условиям фильтра,
+     давать результат "истина" (.T.) и "ложь" (.F.) в противном случае.
+
+     Выражение фильтра может быть представлено или как один блок кода
+     <условие - блок кода>, или как блок кода и эквивалентный <текст
+     условия>, выражающие одинаковые условия. Если второй аргумент
+     отсутствует, то функция DBFILTER() будет возвращать пустую строку.
+
+     DBSETFILTER() выполняет те же функции, что и стандартная команда
+     SET FILTER. Более подробную информацию смотрите в команде SET FILTER.
+$EXAMPLES$
+       This example limits data access to records in which the Age
+	field value is less than 40:
+
+	USE Employee NEW
+	DBSETFILTER( {|| Age < 40}, "Age < 40" )
+	DBGOTOP()
+$LANG_RU$
+	  USE Employees NEW
+	  DBSETFILTER( {|| Age < 40}, "Age < 40")
+$SEEALSO$
+  DBCLEARFILTER(),DBFILTER()
+$END$

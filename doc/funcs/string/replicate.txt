@@ -1,0 +1,65 @@
+$FUNCNAME$
+  REPLICATE()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Return a string repeated a specified number of times
+$LANG_RU$
+   Возвращает строку, повторенную заданное количество раз.
+$SYNTAX$
+     REPLICATE(<cString>, <nCount>) --> cRepeatedString
+$LANG_RU$
+     REPLICATE(<строка символов>, <к-во повторений>) --> новая строка символов
+$ARGUMENTS$
+     <cString> is the character string to be repeated.
+     <nCount> is the number of times to repeat <cString>.
+$LANG_RU$
+     <строка символов> - повторяемая символьная строка.
+     <к-во повторений> - количество повторений строки, заданной в
+     аргументе <строка символов>.
+$RETURNS$
+     REPLICATE() returns a character string up to a maximum of 65,535 (64K)
+     bytes in length.  Specifying a zero as the <nCount> argument returns a
+     null string ("").
+$LANG_RU$
+     REPLICATE() возвращает символьную строку длиной до 65 535 (64К)
+     байтов.  При количестве повторений, равном нулю,функция возвращает
+     строку нулевой длины ("").
+$DESCRIPTION$
+     REPLICATE() is a character function that repeatedly displays, prints, or
+     stuffs the keyboard with one or more characters.  REPLICATE() is like
+     the SPACE() function, which returns a specified number of space
+     characters.
+$LANG_RU$
+     REPLICATE() - это функция обработки символьных строк, которая
+     используется для многократной выдачи на экран, вывода на печать
+     или заполнения буфера клавиатуры одним или более символами.
+     REPLICATE() подобна SPACE(), возвращающей заданное количество
+     пробелов.
+$EXAMPLES$
+       These examples demonstrate REPLICATE() repeating strings:
+
+	? REPLICATE("*", 5)           // Result: *****
+	? REPLICATE("Hi ", 2)         // Result: Hi Hi
+	? REPLICATE(CHR(42), 5)       // Result: *****
+
+       This example uses REPLICATE() to stuff the keyboard with
+	several Down arrow keys:
+
+	#include "Inkey.ch"
+	KEYBOARD REPLICATE(CHR(K_DOWN), 25)
+$LANG_RU$
+      Эти примеры демонстрируют возможности функции REPLICATE():
+
+       ? REPLICATE("*", 5)       // Результат: *****
+       ? REPLICATE("Hi ", 2)     // Результат: Hi Hi
+       ? REPLICATE(CHR(42), 5)   // Результат: *****
+
+      Этот пример использует REPLICATE() для имитации нажатия на
+       клавиатуре двадцати пяти раз клавиши <стрелка вниз>:
+
+       #include "Inkey.ch"
+       KEYBOARD REPLICATE(CHR(K_DN), 25)
+$SEEALSO$
+  SPACE()
+$END$

@@ -1,0 +1,258 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-10-24 14:58+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/about.sgml:1
+msgid "Clipper compatible compiler"
+msgstr ""
+
+#: template/./doc/about.sgml:4
+msgid "Preprocessor"
+msgstr ""
+
+#: template/./doc/about.sgml:6
+msgid "Fully compatible with CA-Clipper with some"
+msgstr ""
+
+#: template/./doc/about.sgml:8
+msgid "new possibilities."
+msgstr ""
+
+#: template/./doc/about.sgml:14
+msgid "Compiler"
+msgstr ""
+
+#: template/./doc/about.sgml:16
+msgid ""
+"slight incompability with CA-Clipper, which may be resolved easily,\n"
+"using the \"search and replace\" method.\n"
+"In addition it can compile to <emphasis> C program,\n"
+"byte-code, dynamic library and mixed C+byte-code. </emphasis>\n"
+msgstr ""
+
+#: template/./doc/about.sgml:24
+msgid "Very fast and efficient OO-model"
+msgstr ""
+
+#: template/./doc/about.sgml:28
+msgid ""
+"Difference from CA-Clipper reveals itself in part of descriptions and "
+"making\n"
+"an object, but in part of using the ready objects syntax and logic of\n"
+"functioning is completely the same."
+msgstr ""
+
+#: template/./doc/about.sgml:32
+msgid ""
+"<emphasis>It is possible to write programs on CLIP, without using other "
+"syntax excepting OOP.</emphasis>"
+msgstr ""
+
+#: template/./doc/about.sgml:34
+msgid "Initial support syntax from FS,CAVO,FoxPro."
+msgstr ""
+
+#: template/./doc/about.sgml:41
+msgid "C-API"
+msgstr ""
+
+#: template/./doc/about.sgml:42
+msgid "has much more possibilities than CA-Clipper."
+msgstr ""
+
+#: template/./doc/about.sgml:46
+msgid "Full international support "
+msgstr ""
+
+#: template/./doc/about.sgml:48
+msgid ""
+"Including adjustment on any code page of any language on any keyboard\n"
+"(with stelnet emulator only or on consoles),\n"
+"substitution of string constants during execution and changing a logic of\n"
+"functioning with strings, given for functions <emphasis>alpha, digit, lower, "
+"upper,\n"
+"</emphasis> subscripted weight factors etc.\n"
+"Support two-bytes charsets <emphasis>BIG5, GB</emphasis>,\n"
+"may be Korean, Japan too."
+msgstr ""
+
+#: template/./doc/about.sgml:59
+msgid " GUI, based on GTK"
+msgstr ""
+
+#: template/./doc/about.sgml:60
+msgid "Provides using of all widgets and processing the events"
+msgstr ""
+
+#: template/./doc/about.sgml:65
+msgid " Using of dynamic libraries,"
+msgstr ""
+
+#: template/./doc/about.sgml:67
+msgid ""
+"loading and execution of the byte-code from external files ( in run-time, "
+"too )."
+msgstr ""
+
+#: template/./doc/about.sgml:72
+msgid "Compatibility"
+msgstr ""
+
+#: template/./doc/about.sgml:75
+msgid ""
+"up to <emphasis>Clipper 5.3 </emphasis> (support of objects <emphasis>menu, "
+"button, check</emphasis>\n"
+"and other <emphasis>get-objects</emphasis>), as well as standard classes "
+"<emphasis>tbrowse,get,error</emphasis>."
+msgstr ""
+
+#: template/./doc/about.sgml:78
+msgid ""
+" Are implemented a lot of CA_Tools functions,\n"
+"including all functions for processing the lines, dates, files, "
+"mathematicians."
+msgstr ""
+
+#: template/./doc/about.sgml:81
+msgid " support all SIX functions and features"
+msgstr ""
+
+#: template/./doc/about.sgml:82
+msgid " MEM,DBF,DBT,FPT,NTX,CTX,CDX,NSX..."
+msgstr ""
+
+#: template/./doc/about.sgml:83
+msgid " VFP data types: datetime,currency"
+msgstr ""
+
+#: template/./doc/about.sgml:84
+msgid ""
+" RDD allows to use your own drivers, as well as use a driver, combined from\n"
+"several different drivers."
+msgstr ""
+
+#: template/./doc/about.sgml:86
+msgid "RDD also allows to use only OO-style, without using of aliases"
+msgstr ""
+
+#: template/./doc/about.sgml:92
+msgid "Multitask support"
+msgstr ""
+
+#: template/./doc/about.sgml:93
+msgid "Builtin simple non-preemptive multitask model"
+msgstr ""
+
+#: template/./doc/about.sgml:97
+msgid "CODB - CLIP Object Data Base"
+msgstr ""
+
+#: template/./doc/about.sgml:98
+msgid "Library and utils for object storehouse"
+msgstr ""
+
+#: template/./doc/about.sgml:102
+msgid "SQL"
+msgstr ""
+
+#: template/./doc/about.sgml:106
+msgid ""
+"libraries and classes for direct access to SQL-servers (PG,MySql,Oracle,"
+"Interbase) "
+msgstr ""
+
+#: template/./doc/about.sgml:108
+msgid "ODBC and ODBC bridge to Windows drivers."
+msgstr ""
+
+#: template/./doc/about.sgml:110
+msgid "SQL-interpreter and commands, compatible with FoxPro"
+msgstr ""
+
+#: template/./doc/about.sgml:117
+msgid "Other possibilities "
+msgstr ""
+
+#: template/./doc/about.sgml:121
+msgid "Overloading operators for objects."
+msgstr ""
+
+#: template/./doc/about.sgml:123
+msgid "Support of regular expressions."
+msgstr ""
+
+#: template/./doc/about.sgml:125
+msgid "function for TCP/IP sockets connections"
+msgstr ""
+
+#: template/./doc/about.sgml:127
+msgid "COM_() functions"
+msgstr ""
+
+#: template/./doc/about.sgml:129
+msgid "Rushmore like technology, but more fast and efficient."
+msgstr ""
+
+#: template/./doc/about.sgml:131
+msgid "Support of very-large-scale numbers with unlimited accuracy."
+msgstr ""
+
+#: template/./doc/about.sgml:133
+msgid ""
+"Support of graphic files PNG,GD,JPEG and primitives like lines,\n"
+"    rectangles, firing ranges, circumferences etc."
+msgstr ""
+
+#: template/./doc/about.sgml:136
+msgid ""
+"Several common classes for word processorses, <emphasis>html/cgi </"
+"emphasis>programms."
+msgstr ""
+
+#: template/./doc/about.sgml:138
+msgid ""
+"Several utilities for interpreting the patterns of the documents,\n"
+"  <emphasis>www_sql,clip_bl, clip_blank, clip_sql, clip_hindex, clip_hseek</"
+"emphasis> etc."
+msgstr ""
+
+#: template/./doc/about.sgml:141
+msgid "multiwindows interactive debugger."
+msgstr ""
+
+#: template/./doc/about.sgml:148
+msgid " Supported OS'es"
+msgstr ""
+
+#: template/./doc/about.sgml:150
+msgid ""
+"linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe with TurboLinux, "
+"Win32 ( with CYGWIN development tools)"
+msgstr ""
+
+#: template/./doc/about.sgml:155
+msgid "TODO list"
+msgstr ""
+
+#: template/./doc/about.sgml:159
+msgid "Windows support"
+msgstr ""
+
+#: template/./doc/about.sgml:161
+msgid "FiveWin compatiblies."
+msgstr ""
+
+#: template/./doc/about.sgml:163
+msgid "FoxPro compatiblies."
+msgstr ""

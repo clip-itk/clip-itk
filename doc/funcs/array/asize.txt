@@ -1,0 +1,75 @@
+$FUNCNAME$
+  ASIZE()
+$CATEGORY$
+  ARRAY
+$SUMMARY$
+   Grow or shrink an array
+$LANG_RU$
+   Увеличивает или уменьшает размер массива.
+$SYNTAX$
+     ASIZE(<aTarget>, <nLength>) --> aTarget
+$LANG_RU$
+     ASIZE(<изменяемый массив>,<новый размер>) --> измененный массив
+$ARGUMENTS$
+     <aTarget> is the array to grow or shrink.
+     <nLength> is the new size of the array.
+$LANG_RU$
+     <изменяемый массив> - массив, размер которого требует изменения.
+     <новый размер> - новый размер массива.
+$RETURNS$
+     ASIZE() returns a reference to the target array, <aTarget>.
+$LANG_RU$
+     ASIZE() возвращает указатель на массив <изменяемый массив>.
+$DESCRIPTION$
+
+     ASIZE() is an array function that changes the actual length of the
+     <aTarget> array.  The array is shortened or lengthened to match the
+     specified length.  If the array is shortened, elements at the end of the
+     array are lost.  If the array is lengthened, new elements are added to
+     the end of the array and assigned NIL.
+
+     ASIZE() is similar to AADD() which adds a single new element to the end
+     of an array and optionally assigns a new value at the same time.  Note
+     that ASIZE() is different from AINS() and ADEL(), which do not actually
+     change the array's length.
+
+     Note:  ASIZE() only supports single-dimensional arrays.
+
+
+$LANG_RU$
+
+     ASIZE() - функция обработки массивов, которая изменяет фактическую
+     длину массива. Массив наращивается или уменьшается до указанного
+     размера.  Если массив уменьшается, то конечные его элементы теряются.
+     При увеличении длины массива новые элементы добавляются в его конец и
+     им присваивается значение NIL.
+
+     ASIZE() подобна функции AADD(), которая добавляет новый элемент в
+     конец массива и одновременно присваивает ему новое значение. Следует
+     отметить, что ASIZE() отличается от функций AINS() и ADEL(), которые
+     в действительности не изменяют размер массива.
+
+
+$EXAMPLES$
+
+       These examples demonstrate adding new elements and deleting
+	existing elements:
+
+	aArray := { 1 }          // Result: aArray is { 1 }
+	ASIZE(aArray, 3)         // Result: aArray is { 1, NIL, NIL }
+	ASIZE(aArray, 1)         // Result: aArray is { 1 }
+
+
+$LANG_RU$
+
+      Следующие примеры демонстрируют добавление в массив новых элементов
+       и удаление существующих:
+
+       aArray := { 1 }        // Результат: массив равен { 1 }
+       ASIZE( aArray, 3)      // Результат: массив равен { 1, NIL, NIL }
+       ASIZE( aArray, 1)      // Результат: массив равнен { 1 }
+
+
+$SEEALSO$
+  AADD(),ADEL(),AFILL(),AINS()
+$END$

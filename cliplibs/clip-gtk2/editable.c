@@ -130,8 +130,8 @@ int
 clip_GTK_EDITABLESELECTREGION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-	gint     start = _clip_parni(cm,2);
-	gint       end = _clip_parni(cm,3);
+	gint     start = _clip_parni(cm,2)-1;
+	gint       end = _clip_parni(cm,3)-1;
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
 	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
 	gtk_editable_select_region(GTK_EDITABLE(cedt->widget),start,end);
@@ -145,7 +145,7 @@ clip_GTK_EDITABLEINSERTTEXT(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
 	gchar    *text = _clip_parc(cm,2);
-	gint  position = _clip_parni(cm,3);
+	gint  position = _clip_parni(cm,3)-1;
 	gchar empty_text[] = "\0";
 	gint  text_length;
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
@@ -167,8 +167,8 @@ int
 clip_GTK_EDITABLEDELETETEXT(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-	gint start_pos = _clip_parni(cm,2);
-	gint   end_pos = _clip_parni(cm,3);
+	gint start_pos = _clip_parni(cm,2)-1;
+	gint   end_pos = _clip_parni(cm,3)-1;
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
 	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
 	if (_clip_parinfo(cm,2)==UNDEF_t) start_pos = 0;
@@ -183,8 +183,8 @@ int
 clip_GTK_EDITABLEGETCHARS(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-	gint start_pos = _clip_parni(cm,2);
-	gint   end_pos = _clip_parni(cm,3);
+	gint start_pos = _clip_parni(cm,2)-1;
+	gint   end_pos = _clip_parni(cm,3)-1;
 	gchar   * text;
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
 	CHECKOPT(2,NUMERIC_t); CHECKOPT(3,NUMERIC_t);
@@ -251,6 +251,8 @@ clip_GTK_EDITABLEGETSELECTIONBOUNDS(ClipMachine * cm)
         gint start, end;
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
         gtk_editable_get_selection_bounds(GTK_EDITABLE(cedt->widget), &start, &end);
+        start++;
+        end++;
 	_clip_storni(cm,start,2,0);
 	_clip_storni(cm,end,3,0);
 	return 0;
@@ -277,7 +279,7 @@ int
 clip_GTK_EDITABLESETPOSITION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
-	gint  position = _clip_parni(cm,2);
+	gint  position = _clip_parni(cm,2)-1;
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
 	CHECKOPT(2,NUMERIC_t);
 	gtk_editable_set_position(GTK_EDITABLE(cedt->widget),position);
@@ -291,7 +293,7 @@ clip_GTK_EDITABLEGETPOSITION(ClipMachine * cm)
 {
 	C_widget *cedt = _fetch_cw_arg(cm);
 	CHECKCWID(cedt,GTK_IS_EDITABLE);
-	_clip_retni(cm,gtk_editable_get_position(GTK_EDITABLE(cedt->widget)));
+	_clip_retni(cm,gtk_editable_get_position(GTK_EDITABLE(cedt->widget))+1);
 	return 0;
 err:
 	return 1;

@@ -1,0 +1,14 @@
+$FUNCNAME$
+  MRIGHTDOWN()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Determine the status of the right mouse button
+$SYNTAX$
+     MRIGHTDOWN() --> lIsPressed
+$RETURNS$
+     MRIGHTDOWN() returns true (.T.) if the mouse's right button is currently
+     pressed; otherwise, it returns false (.F.) .
+$SEEALSO$
+  MLEFTDOWN()
+$END$

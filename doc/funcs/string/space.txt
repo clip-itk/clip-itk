@@ -1,0 +1,60 @@
+$FUNCNAME$
+  SPACE()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Return a string of spaces
+$LANG_RU$
+   Возвращает строку пробелов.
+$SYNTAX$
+     SPACE(<nCount>) --> cSpaces
+$LANG_RU$
+     SPACE(<число пробелов>) --> строка пробелов
+$ARGUMENTS$
+     <nCount> is the number of spaces to be returned, up to a maximum of
+     65,535 (64 K).
+$LANG_RU$
+     <число пробелов> - число пробелов для построения строки.
+     Максимум - 65535 (64К).
+$RETURNS$
+     SPACE() returns a character string.  If <nCount> is zero, SPACE()
+     returns a null string ("").
+$LANG_RU$
+     SPACE() возвращает символьную строку. Если значение аргумента <число
+     пробелов> равно нулю, SPACE() возвращает строку нулевой длины ("").
+$DESCRIPTION$
+     SPACE() is a character function that returns a specified number of
+     spaces.  It is the same as REPLICATE("", <nCount>).  SPACE() can
+     initialize a character variable before associating it with a GET.
+     SPACE() can also pad strings with leading or trailing spaces.  Note,
+     however, that the PADC(), PADL(), and PADR() functions are more
+     effective for this purpose.
+$LANG_RU$
+     SPACE() является функцией обработки символьных строк, используемой
+     для возврата строки, состоящей из заданного числа пробелов. Ее
+     действие подобно действию функции REPLICATE(" ",<количество байтов>).
+
+     SPACE() используется для инициализации символьной переменной перед ее
+     использованием в команде GET. Кроме того, SPACE() используется для
+     заполнения строк либо начальными, либо конечными пробелами. Однако
+     следует отметить, что применение функций PADC(), PADL() и PADR() для
+     этой цели более эффективно.
+$EXAMPLES$
+       This example uses SPACE() to initialize a variable for data
+	input:
+
+	USE Customer NEW
+	MEMVAR->Name = SPACE(LEN(Customer->Name))
+	@ 10,10 SAY "Customer Name" GET MEMVAR->Name
+	READ
+$LANG_RU$
+      Этот пример показывает использование SPACE() для инициализации
+       переменной при вводе данных:
+
+       USE Customer NEW
+       MEMVAR->Name = SPACE(LEN(Customer->Name))
+       @ 10, 10 SAY "Имя покупателя:" GET MEMVAR->Name
+       READ
+$SEEALSO$
+  PAD(),REPLICATE()
+$END$

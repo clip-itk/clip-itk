@@ -643,7 +643,7 @@ _extext_style_to_map(ClipMachine *cm, GtkExTextStyle *style, ClipVar *m_style)
 	if (style->font)
 	{
 		cfont = _list_get_cobject(cm,style->font);
-		if (!cfont) cfont = _register_object(cm,style->font,GDK_OBJECT_FONT,
+		if (!cfont) cfont = _register_object(cm,style->font,GDK_TYPE_FONT,
 			NULL,(coDestructor)gdk_object_font_destructor);
 		if (cfont)
 		{

@@ -49,15 +49,15 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	   obj:autoLite	:= .t.
 	   obj:cargo	:= NIL
 	   obj:colCount	:= 0
-	   obj:colorSpec	:= setcolor()
+	   obj:colorSpec:= setcolor()
 	   obj:colPos	:= 1
 	   obj:rowPos	:= 1
 	   obj:mColPos	:= 0
 	   obj:mRowPos	:= 0
 	   obj:rowcount	:= rRow-lrow+1
 	   obj:colSep	:= " "
-	   obj:headSep	:= " "
-	   obj:footSep	:= " "
+	   obj:headSep	:= ""
+	   obj:footSep	:= ""
 	   obj:freeze	:= 0
 	   obj:leftVisible	:= 1
 	   obj:rightVisible	:= 1
@@ -170,6 +170,7 @@ function _recover_tbrowse(obj)
 	   obj:__dummyRow	:= @__dummyRow()
 	   obj:__sayTable	:= @__sayTable() // рисовать обрамление, заголовки, подвалы
 	   obj:__setColor	:= @__setcolor()
+	   obj:__getColor	:= @__getcolor()
 //	   obj:__checkRow	:= @__checkRow()
 
 	tb_set_default_keys(obj)
@@ -332,12 +333,12 @@ static func __sayTable
 	  scol=::__whereVisible[i]
 	  len=min(len,::nright-scol-lenSep+len(strSep2))
 	  strings:=::__HeadStrings[col]
-	  ccc:=::__colors[1]
+	  ccc:=::__getcolor(1)
 	  if ::__columns[col]:defColor!=NIL
-		ccc:=::__colors[::__columns[col]:defColor[1]]
+		ccc:=::__getcolor(::__columns[col]:defColor[1])
 	  endif
 	  if ::__columns[col]:colorHeading!=NIL
-		ccc:=::__colors[::__columns[col]:colorHeading]
+		ccc:=::__getcolor(::__columns[col]:colorHeading)
 	  endif
 	  for j=1 to len(strings )
 		s=padr(strings[j],len)
@@ -346,33 +347,33 @@ static func __sayTable
 		if ::__columns[col]:colSepH != nil
 			strseph:=substr(::__columns[col]:colSepH,j,1)
 			if ::winbuffer == nil
-				dispOutAt(::nTop+j-1, scol-1,strseph,::__colors[1])
+				dispOutAt(::nTop+j-1, scol-1,strseph,::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,::nTop+j-1, scol-1,strseph,::__colors[1])
+				winbuf_out_at(::winbuffer,::nTop+j-1, scol-1,strseph,::__getcolor(1))
 			endif
 			x := scol-1 + len(strseph)
 		else
 			if ::winbuffer == nil
-				dispOutAt(::nTop+j-1, scol,strsep1,::__colors[1])
+				dispOutAt(::nTop+j-1, scol,strsep1,::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,::nTop+j-1, scol,strsep1,::__colors[1])
+				winbuf_out_at(::winbuffer,::nTop+j-1, scol,strsep1,::__getcolor(1))
 			endif
 			x := scol + len(strsep1)
 		endif
 		if ::winbuffer == nil
 			dispOut(s,ccc)
-			dispOut(iif(i<visLen,strSep2,""),::__colors[1])
+			dispOut(iif(i<visLen,strSep2,""),::__getcolor(1))
 		else
 			winbuf_out_at(::winbuffer,y,x,s,ccc)
 			x += len(s)
-			winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,""),::__colors[1])
+			winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,""),::__getcolor(1))
 			x += len(iif(i<visLen,strSep2,""))
 		endif
 		if i==visLen
 			if ::winbuffer == nil
-				dispout(space(::nRight-col()+1),::__colors[1])
+				dispout(space(::nRight-col()+1),::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
+				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__getcolor(1))
 			endif
 		endif
 	next
@@ -385,55 +386,55 @@ static func __sayTable
 		if ::__columns[col]:colSepH != nil .and. len(::__columns[col]:colSepH)>j
 			strseph:=substr(::__columns[col]:colSepH,j+1,1)
 			if ::winbuffer == nil
-				dispOutAt(::nTop+j, scol-1, strseph,::__colors[1])
+				dispOutAt(::nTop+j, scol-1, strseph,::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,::nTop+j, scol-1, strseph,::__colors[1])
+				winbuf_out_at(::winbuffer,::nTop+j, scol-1, strseph,::__getcolor(1))
 			endif
 		endif
 		s := replicate(strHsep1,len)+iif(i<visLen,headsep,"")
 		if ::winbuffer == nil
-			dispOutAt(::nTop+j, scol,s, ::__colors[1])
+			dispOutAt(::nTop+j, scol,s, ::__getcolor(1))
 		else
-			winbuf_out_at(::winbuffer,::nTop+j, scol, s, ::__colors[1])
+			winbuf_out_at(::winbuffer,::nTop+j, scol, s, ::__getcolor(1))
 		endif
 		y := ::nTop+j; x := scol + len(s)
 		if i==vislen
 			if ::winbuffer == nil
-				dispout(replicate(strHsep1,::nright-col()+1),::__colors[1])
+				dispout(replicate(strHsep1,::nright-col()+1),::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,y,x, replicate(strHsep1,::nright-col()+1),::__colors[1])
+				winbuf_out_at(::winbuffer,y,x, replicate(strHsep1,::nright-col()+1),::__getcolor(1))
 			endif
 		endif
 		j++
 	endif
 	::__rect[1]=::nTop+j
 	strings:=::__footStrings[col]
-	ccc:=::__colors[1]
+	ccc:=::__getcolor(1)
 	if ::__columns[col]:defColor!=NIL
-		ccc:=::__colors[::__columns[col]:defColor[1]]
+		ccc:=::__getcolor(::__columns[col]:defColor[1])
 	endif
 	if ::__columns[col]:colorFooting!=NIL
-		ccc:=::__colors[::__columns[col]:colorFooting]
+		ccc:=::__getcolor(::__columns[col]:colorFooting)
 	endif
 	for j=1 to len(strings)
 		s=padr(strings[j],len)
 		if ::winbuffer == nil
-			dispOutAt(::nBottom-j+1, scol, strsep1, ::__colors[1])
+			dispOutAt(::nBottom-j+1, scol, strsep1, ::__getcolor(1))
 			dispOut(s, ccc)
-			dispOut(iif(i<visLen,strSep2,"") , ::__colors[1])
+			dispOut(iif(i<visLen,strSep2,"") , ::__getcolor(1))
 			if i==visLen
-				dispout(space(::nRight-col()+1),::__colors[1])
+				dispout(space(::nRight-col()+1),::__getcolor(1))
 			endif
 		else
-			winbuf_out_at(::winbuffer,::nBottom-j+1, scol, strsep1, ::__colors[1])
+			winbuf_out_at(::winbuffer,::nBottom-j+1, scol, strsep1, ::__getcolor(1))
 			y := ::nBottom-j+1
 			x := scol + len(strsep1)
 			winbuf_out_at(::winbuffer,y,x,s,ccc)
 			x += len(s)
-			winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,"") , ::__colors[1])
+			winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,"") , ::__getcolor(1))
 			x += len(iif(i<visLen,strSep2,""))
 			if i==visLen
-				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
+				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__getcolor(1))
 			endif
 		endif
 	next
@@ -447,17 +448,17 @@ static func __sayTable
 	//if ( j>0 .and. lenHSep>0 ) .or. !empty(::footSep)
 	if footing .and. lenHSep>0  .and. !empty(headSep)
 		if ::winbuffer == nil
-			dispOutAt(::nBottom-j, scol, replicate(strHsep1,len)+iif(i<visLen,headsep,"") , ::__colors[1])
+			dispOutAt(::nBottom-j, scol, replicate(strHsep1,len)+iif(i<visLen,headsep,"") , ::__getcolor(1))
 			if i==vislen
-				dispOut(replicate(strHsep1,::nright-col()+1),::__colors[1])
+				dispOut(replicate(strHsep1,::nright-col()+1),::__getcolor(1))
 			endif
 		else
 			s := replicate(strHsep1,len)+iif(i<visLen,headsep,"")
-			winbuf_out_at(::winbuffer,::nBottom-j, scol, s, ::__colors[1])
+			winbuf_out_at(::winbuffer,::nBottom-j, scol, s, ::__getcolor(1))
 			y := ::nBottom-j+1
 			x := scol + len(s)
 			if i==vislen
-				winbuf_out_at(::winbuffer,y,x,replicate(strHsep1,::nright-col()+1),::__colors[1])
+				winbuf_out_at(::winbuffer,y,x,replicate(strHsep1,::nright-col()+1),::__getcolor(1))
 			endif
 		endif
 		j++
@@ -597,10 +598,35 @@ static func __setcolor()
 		aadd(::__colors,substr(s,1,i-1) )
 		s:=substr(s,i+1)
 	   enddo
-	   for i=len(::__colors) to 10
+	   /*
+	   if len(::__colors) < 1
 		aadd(::__colors,"W/N")
+	   endif
+	   if len(::__colors) < 2
+		aadd(::__colors,nToColor(invertAttr(::__colors[1])))
+	   endif
+	   */
+	   //outlog(__FILE__,__LINE__,::__colors)
+
+	   /*
+	   for i=len(::__colors) to 10
+		aadd(::__colors,"n/w" /*"W/N" */)
 	   next
+	   */
 return NIL
+*********************************
+static func __getcolor(self,num)
+	local len,ret := "W/N"
+	len := Len(self:__colors)
+	if len>1
+		ret := atail(self:__colors)
+	endif
+	if num>0 .and. num<=len
+		ret := self:__colors[num]
+	elseif num>1
+		ret := nToColor(invertAttr(ret))
+	endif
+return ret
 
 *********************************
 static func addColumn(self,col)
@@ -905,7 +931,7 @@ static func panEnd(self)
 		self:__colpos:=self:colcount+1
 		self:__whoVisible(self:__colPos)
 		self:__colpos:=len(self:__colVisible)
-		self:colPos=self:__colVisible[self:__colPos]
+		self:colPos:=self:__colVisible[self:__colPos]
 		self:refreshAll()
 	endif
 
@@ -916,16 +942,16 @@ static func panLeft(self)
 	local i,j
 	if self:__colPos > self:freeze
 		i=self:colPos
-		self:__colPos=self:freeze+1
+		self:__colPos:=self:freeze+1
 		self:__whoVisible(-1)
 
 		for j=1 to len(self:__colVisible)
 			if i = self:__colVisible[j]
-				self:__colPos=j
+				self:__colPos:=j
 				exit
 			endif
 		next
-		self:colPos=self:__colVisible[self:__colPos]
+		self:colPos:=self:__colVisible[self:__colPos]
 		self:refreshAll()
 	endif
 return self
@@ -935,16 +961,16 @@ static func panRight(self)
 	local i,j
 	if ! self:__rightAll
 		i=self:colpos
-		self:__colPos=len(self:__colVisible)
+		self:__colPos:=len(self:__colVisible)
 		self:__whoVisible(1)
 		for j=1 to len(self:__colVisible)
 			if i = self:__colVisible[j]
-				self:__colPos=j
+				self:__colPos:=j
 				exit
 			endif
 		next
 
-		self:colPos=self:__colVisible[self:__colPos]
+		self:colPos:=self:__colVisible[self:__colPos]
 		self:refreshAll()
 	endif
 return self
@@ -977,6 +1003,7 @@ static func colorRect(self,rect,block)   /////  ?????????
 	if empty(block)
 		block:={1,2}
 	endif
+#ifdef __1
 	m1:=min(max(1,rect[1]),len(self:__colorCells))
 	m2:=min(max(1,rect[3]),len(self:__colorCells))
 	for i=m1 to m2
@@ -987,6 +1014,26 @@ static func colorRect(self,rect,block)   /////  ?????????
 		next
 		self:_outCurrent(i,.t.)
 	next
+#else
+	dispBegin()
+	m1:=max(1,rect[1])
+	m2:=max(1,rect[3])
+	for i=m1 to m2
+		if len(self:__colorCells) <i
+			aadd(self:__colorCells,{})
+		endif
+		m3:=max(1,rect[2])
+		m4:=max(1,rect[4])
+		for j=m3 to m4
+			if len(self:__colorCells[i]) <j
+				aadd(self:__colorCells[i],{1,2})
+			endif
+			self:__colorCells[i][j]:=block
+		next
+		self:_outCurrent(i,.t.)
+	next
+	dispEnd()
+#endif
 return self
 
 *********************************
@@ -1043,6 +1090,14 @@ static func stabilize(self)
 	self:__sayTable()
   endif
 
+  i:=ascan(self:__colVisible,self:colPos)
+  if i>0
+	self:__colPos := i
+  else
+	self:configure()
+	return .f.
+  endif
+
   if !self:stable
      nstab=0
      for j=1 to self:rowCount
@@ -1086,6 +1141,9 @@ static func _outCurrent ( row, hilite, fSay )
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"_outCurrent",row)
 #endif
+   if !::__firstStab
+	return
+   endif
    fSay:=iif(fSay==NIL,.t.,fSay)
    row=iif(row==NIL,::rowPos,row)
    hilite=iif(hilite==NIL,::autoLite,hilite)
@@ -1097,7 +1155,7 @@ static func _outCurrent ( row, hilite, fSay )
    if ::winbuffer==nil; dispBegin(); endif
    visLen= len(::__colVisible)
    if fSay .and. hilite .and. ::winbuffer == nil //.or. row==0
-	draw_rect(xcur,::nLeft,xcur,::nright,colorToN(::__colors[1]))
+	draw_rect(xcur,::nLeft,xcur,::nright,colorToN(::__getcolor(1)))
    endif
    for i=1 to visLen
 	  col=::__colVisible[i]
@@ -1188,8 +1246,11 @@ static func _outCurrent ( row, hilite, fSay )
 		endif
 	  endif
 #endif
-	  if !empty(::__colorCells[srow][col])
-		ccolors:=::__colorCells[srow][col]
+	  if srow==::rowPos .and. i==::__colPos .and. row>0
+	  else
+		if !empty(::__colorCells[srow][col])
+			ccolors:=::__colorCells[srow][col]
+		endif
 	  endif
 	  len=min(::__columnsLen[col],len(data))
 	  lenc=max(::__columnsLen[col],len)
@@ -1201,17 +1262,17 @@ static func _outCurrent ( row, hilite, fSay )
 	  endif
 	  //data:=padr(data,len)
 	  data:=left(data,len)
-	  xcolor:=::__colors[ccolors[1]]
+	  xcolor:=::__getcolor(ccolors[1])
 	  if hilite .and. row >0
 		switch ( ::hiliteType )
 		case 0
 		case 1
 			if srow==::rowPos .and. i==::__colPos .and. row>0
-				xcolor:=::__colors[ccolors[2]]
+				xcolor:=::__getcolor(ccolors[2])
 			endif
 		case 2
 			if srow==::rowPos
-				xcolor:=::__colors[ccolors[2]]
+				xcolor:=::__getcolor(ccolors[2])
 			endif
 		endswitch
 	  endif
@@ -1233,45 +1294,45 @@ static func _outCurrent ( row, hilite, fSay )
 		  y := ::__rect[1]-1+srow; x := scol
 		  if datat $ "N"
 			if ::winbuffer == nil
-				dispout(space(lenc-len),::__colors[1])
+				dispout(space(lenc-len),::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,y,x,space(lenc-len),::__colors[1])
+				winbuf_out_at(::winbuffer,y,x,space(lenc-len),::__getcolor(1))
 				x += lenc-len
 			endif
 		  endif
 		  if datat $ "L"
 			if ::winbuffer == nil
-				dispout(space((lenc-len)/2),::__colors[1])
+				dispout(space((lenc-len)/2),::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,y,x,space((lenc-len)/2),::__colors[1])
+				winbuf_out_at(::winbuffer,y,x,space((lenc-len)/2),::__getcolor(1))
 				x += (lenc-len)/2
 			endif
 		  endif
 		  if ::winbuffer == nil
 			dispOut(data, xcolor)
 			//dispOut(space(ecol-col()), xcolor)
-			dispOut(space(ecol-col()), ::__colors[1])
+			dispOut(space(ecol-col()), ::__getcolor(1))
 			if i==vislen //.and. fSay
-				dispOut(space(::nRight-col()+1),::__colors[1])
+				dispOut(space(::nRight-col()+1),::__getcolor(1))
 			else
-				dispOut(colsep,::__colors[1])
+				dispOut(colsep,::__getcolor(1))
 			endif
 		  else
 			winbuf_out_at(::winbuffer,y,x,data, xcolor)
 			x += len(data)
 			//dispOut(space(ecol-col()), xcolor)
-			winbuf_out_at(::winbuffer,y,x,space(ecol-x), ::__colors[1])
+			winbuf_out_at(::winbuffer,y,x,space(ecol-x), ::__getcolor(1))
 			x := ecol
 			if i==vislen //.and. fSay
-				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
+				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,y,x,colsep,::__colors[1])
+				winbuf_out_at(::winbuffer,y,x,colsep,::__getcolor(1))
 			endif
 		  endif
 	  endif
    next
    if hilite .and. ::hiliteType==3 .and. srow==::rowPos .and. row!=0
-	xcolor:=colorToN(::__colors[ccolors[2]])
+	xcolor:=colorToN(::__getcolor(ccolors[2]))
 	if ::winbuffer == nil
 		draw_rect(xcur,::nLeft,xcur,::nright,xColor)
 	else
@@ -1306,19 +1367,19 @@ static func __dummyRow( row )
 	  len=::__columnsLen[col]
 	  len=min(len,::nright-scol)
 	  if ::winbuffer == nil
-		dispOutAt(::__rect[1]-1+srow ,scol,space(len), ::__colors[1])
+		dispOutAt(::__rect[1]-1+srow ,scol,space(len), ::__getcolor(1))
 		if i==vislen
-			dispOut(space(::nRight-col()+1),::__colors[1])
+			dispOut(space(::nRight-col()+1),::__getcolor(1))
 		else
-			dispOut(colsep,::__colors[1])
+			dispOut(colsep,::__getcolor(1))
 		endif
 	  else
-		winbuf_out_at(::winbuffer,::__rect[1]-1+srow ,scol,space(len), ::__colors[1])
+		winbuf_out_at(::winbuffer,::__rect[1]-1+srow ,scol,space(len), ::__getcolor(1))
 		y := ::__rect[1]-1+srow; x := scol + len
 		if i==vislen
-			winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__colors[1])
+			winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__getcolor(1))
 		else
-			winbuf_out_at(::winbuffer,y,x,colsep,::__colors[1])
+			winbuf_out_at(::winbuffer,y,x,colsep,::__getcolor(1))
 		endif
 	  endif
    next

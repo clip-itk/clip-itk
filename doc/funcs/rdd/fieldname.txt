@@ -1,0 +1,127 @@
+$FUNCNAME$
+  FIELDNAME()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return a field name from the current database (.dbf) file
+$LANG_RU$
+   Возвращает имя поля из текущего (.dbf) файла.
+$SYNTAX$
+     FIELDNAME/FIELD(<nPosition>) --> cFieldName
+$LANG_RU$
+     FIELDNAME(<номер позиции>) --> имя поля
+$ARGUMENTS$
+     <nPosition> is the position of a field in the database file
+     structure.
+$LANG_RU$
+     <номер позиции> является номером поля в структуре записи файла базы
+     данных.
+$RETURNS$
+     FIELDNAME() returns the name of the specified field as a character
+     string.  If <nPosition> does not correspond to an existing field in the
+     current database file or if no database file is open in the current work
+     area, FIELDNAME() returns a null string ("").
+$LANG_RU$
+     FIELDNAME() возвращает имя поля с заданным номером в виде символьной
+     строки в верхнем регистре. Если поле с указанным значением аргумента
+     <номер позиции> отсутствует, FIELDNAME() возвращает пустую строку
+     ("").
+$DESCRIPTION$
+     FIELDNAME() is a database function that returns a field name using an
+     index to the position of the field name in the database structure.  Use
+     it in data-independent applications where the field name is unknown.  If
+     information for more than one field is required, use AFIELDS() to create
+     an array of field information or COPY STRUCTURE EXTENDED to create a
+     database of field information.
+
+     If you need additional database file structure information, use TYPE()
+     and LEN().  To obtain the number of decimal places for a numeric field,
+     use the following expression:
+
+     LEN(SUBSTR(STR(<idField>), RAT(".", ;
+
+		 STR(<idField>)) + 1))
+
+     By default, FIELDNAME() operates on the currently selected work area as
+     shown in the example below.
+$LANG_RU$
+     FIELDNAME() является функцией обработки баз данных. Она возвращает
+     имя поля, порядковый номер которого в структуре записи соответствует
+     позиции, заданной в качестве его индекса.
+
+     Обычно она используется в прикладных программах, когда неизвестны
+     имена полей. Если требуется получить имена сразу нескольких полей,
+     удобнее использовать функцию AFIELDS(), так как она создает массив с
+     именами полей, или команду COPY STRUCTURE EXTENDED, создающую базу
+     данных с информацией о полях.
+
+     Если необходима дополнительная информация о структуре файла базы
+     данных для совместной обработки, можно использовать функции TYPE() и
+     LEN().  Для получения количества цифр после десятичной запятой в
+     числовых полях, можно использовать следующее выражение:
+
+     LEN(SUBSTR(STR(<имя поля>), RAT(".", STR(<имя поля>)) + 1))
+
+     По умолчанию функция FIELDNAME() обрабатывает файл в текущей
+     (активной) рабочей области. Однако для обработки файла в пассивной
+     рабочей области необходимо ее включить в уточненное алиасом
+     выражение, как показано в примере ниже.
+$EXAMPLES$
+       These examples illustrate FIELDNAME() used with several other
+	functions:
+
+	USE Sales
+	? FIELDNAME(1)              // Result: BRANCH
+	? FCOUNT()                  // Result: 5
+	? LEN(FIELDNAME(0))         // Result: 0
+	? LEN(FIELDNAME(40))        // Result: 0
+
+       This example uses FIELDNAME() to list the name and type of
+	each field in Customer.dbf:
+
+	USE Customer NEW
+	FOR nField := 1 TO FCOUNT()
+	   ? PADR(FIELDNAME(nField), 10),;
+		  VALTYPE(&amp;(FIELDNAME(nField)))
+	NEXT
+
+       This example accesses fields in unselected work areas using
+	aliased expressions:
+
+	USE Sales NEW
+	USE Customer NEW
+	USE Invoices NEW
+	//
+	? Sales->(FIELDNAME(1))            // Result: SALENUM
+	? Customer->(FIELDNAME(1))         // Result: CUSTNUM
+$LANG_RU$
+      В следующих примерах показано использование FIELDNAME() совместно с
+       другими функциями:
+
+       USE Sales
+       ? FIELDNAME(1)               // Результат: BRANCH
+       ? FCOUNT()                   // Результат: 5
+       ? LEN(FIELDNAME(0))          // Результат: 0
+       ? LEN(FIELDNAME(40))         // Результат: 0
+
+      В следующем примере показано использование FIELDNAME() для
+       получения списка имен и типов полей в Customer.dbf:
+
+       USE Customer NEW
+       FOR nField := 1 TO FCOUNT()
+	  ? PADR(FIELDNAME(nField), 10), VALTYPE(&amp;(FIELDNAME(nField)))
+       NEXT
+
+      В данном примере показано использование выражений, уточненных
+       алиасом, для осуществления доступа к именам полей в пассивной
+       рабочей области:
+
+       USE Sales NEW
+       USE Customer NEW
+       USE Invoices NEW
+       //
+       ? Sales-> (FIELDNAME(1))     // Результат: SALENUM
+       ? Customer-> (FIELDNAME(2))  // Результат: Custnum
+$SEEALSO$
+  AFIELDS(),DBSTRUCT(),FCOUNT(),LEN(),VALTYPE()
+$END$

@@ -5,16 +5,29 @@ set exclusive off
 
 oDep01 := coDepository():new("ACC0101","sdfsd")
 oDep01:open()
+
+outlog(__FILE__,__LINE__,"aaaaa")
+obj:=oDep01:getValue("ACC010108E25")
+outlog(__FILE__,__LINE__,"aaaaa")
+obj:=oDep01:getValue("ACC010108E26")
+outlog(__FILE__,__LINE__,valtype(obj), obj)
+?
+return
+
+
 oDict := oDep01:dictionary()
-class:=oDict:classBodyByName("an_info2")
+class:=oDict:classBodyByName("transfer_tov")
+
 ? class
 //tmp:= oDep01:select(class:id,,,'account=="GBL02010008F" .and. an_level==1  .and. beg_date<=stod("20050119") .and. end_date>=stod("20050101")  .and. an_value1=="GBL0201015AS"')
-tmp:= oDep01:select(class:id,,,'account=="GBL02010008F" .and. beg_date<=stod("20050119") .and. end_date>=stod("20050101")  .and. an_value1=="GBL0201015AS"')
-//tmp:= oDep01:select(class:id)
-? len(tmp),tmp
+//tmp:= oDep01:select(class:id,,,'account=="GBL02010008F .and. beg_date<=stod("20050119") .and. end_date>=stod("20050101")  .and. an_value1=="GBL0201015AS"')
+tmp:= oDep01:select(class:id)
+//? len(tmp),tmp
 for i=1 to len(tmp)
 	obj:=oDep01:getValue(tmp[i])
-	? obj
+	if empty(obj) .or. !("ID" $ obj)
+		? tmp[i] //,obj
+	endif
 next
 ?
 return

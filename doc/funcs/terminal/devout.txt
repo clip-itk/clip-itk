@@ -1,0 +1,64 @@
+$FUNCNAME$
+  DEVOUT()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Write a value to the current device
+$LANG_RU$
+   Выводит значение выражения на текущее устройство.
+$SYNTAX$
+     DEVOUT(<exp>, [<cColorString>]) --> NIL
+$LANG_RU$
+     DEVOUT(<выражение>,[<цвета>]) -->NIL
+$ARGUMENTS$
+     <exp> is the value to display.
+     <cColorString> is an optional argument that defines the display
+     color of <exp>.  If the current DEVICE setting is SCREEN, the output is
+     displayed in the specified color.
+     If not specified, <exp> is displayed as the standard color of the
+     current system color as defined by SETCOLOR().  <cColorString> is a
+     character expression containing the standard color setting.  If you want
+     to specify a literal color setting, enclose it in quote marks.
+$LANG_RU$
+     <выражение> - значение для вывода на устройство
+     <цвета> - необязательный аргумент, который определяет цвета для
+     вывода <выражение>. Если текущее устройство - экран, то вывод
+     осуществляется в заданных цветах.
+     Если этот аргумент опущен, то <выражение> выводится в стандартном
+     цвете текущей цветовой спецификации, заданной функцией SETCOLOR().
+     <цвета> - символьное выражение, содержащее стандартную установку
+     цветов. Если вы хотите задать литеральную строку цветов, то эта
+     строка должна быть заключена в кавычки.
+$RETURNS$
+     DEVOUT() always returns NIL.
+$LANG_RU$
+     DEVOUT() всегда возвращает NIL.
+$DESCRIPTION$
+     DEVOUT() is a full-screen display function that writes the value of a
+     single expression to the current device at the current cursor or
+     printhead position.  Use DEVOUT() with DEVPOS() in Std.ch to implement
+     the @...SAY command.
+$LANG_RU$
+     DEVOUT() - полноэкранная функция вывода, которая выводит значение
+     выражения на текущее устройство, в текущую позицию курсора или
+     печатающей головки. Вызов функции DEVOUT() в сочетании с DEVPOS()
+     используется в STD.CH для реализации команды @...SAY.
+$EXAMPLES$
+       This example shows the relationship between the DEVOUT()
+	function and the @...SAY command:
+
+	DEVPOS(10, 10)
+	DEVOUT("Hello there", "BG+/B"))
+	//
+	@ 10, 10 SAY "Hello there" COLOR "BG+/B"
+$LANG_RU$
+      Следующий пример демонстрирует родственность функции DEVOUT() и
+       команды @...SAY:
+
+	  DEVPOS(10,10)
+	  DEVOUT("Привет","BG+/B")
+	  //
+	  @10,10 SAY "Привет"
+$SEEALSO$
+  COL(),DEVPOS(),QOUT(),ROW(),SETPOS()
+$END$

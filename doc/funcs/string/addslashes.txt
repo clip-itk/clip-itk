@@ -1,0 +1,56 @@
+$FUNCNAME$
+  ADDSLASHES()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Returns string with slashes (\).
+$LANG_RU$
+   Возвращает строку с символами слеш (\)
+$SYNTAX$
+
+     ADDSLASHES(<sString>) 	--> <sResString>
+
+$ARGUMENTS$
+
+     <sString>	String, is the source string.
+
+$LANG_RU$
+
+     <sString>	String, исходная строка.
+
+$RETURNS$
+
+     ADDSLASHES() returns string with backward slashes (\).
+
+$LANG_RU$
+
+     ADDSLASHES() возвращает строку с символами обратный слэш (\).
+
+$DESCRIPTION$
+
+     ADDSLASHES() returns a string <sResString> with backslashes before characters that need to be quoted
+     in database queries etc. These characters are single quote ('), double quote
+     ("), backslash (\) and NUL (the null byte).
+
+$LANG_RU$
+
+     ADDSLASHES() возвращает строку <sResString> с обратными слэш перед символами,
+     нуждающимися в экранировании, например в запросах к БД.
+     Это такие символы, как одиночная кавычка ('),
+     двойная кавычка ("), обратный слэш (\) и NUL (нулевой символ).
+
+$EXAMPLES$
+
+       str := "Name='Ann'"
+       ADDSLASHES(str) 		// --> Name=\'Ann\'
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$

@@ -1,0 +1,14 @@
+$FUNCNAME$
+  MSAVESTATE()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Save the current state of a mouse
+$SYNTAX$
+     MSAVESTATE() --> cSaveState
+$RETURNS$
+     MSAVESTATE() returns a character string that describes the mouse's
+     current state.
+$SEEALSO$
+  MRESTSTATE()
+$END$

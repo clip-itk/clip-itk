@@ -1,0 +1,304 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-10-24 14:58+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/about.sgml:1
+msgid "Clipper compatible compiler"
+msgstr "Совместимый с Клиппер компилятор"
+
+#: template/./doc/about.sgml:4
+msgid "Preprocessor"
+msgstr "Препроцессор"
+
+#: template/./doc/about.sgml:6
+msgid "Fully compatible with CA-Clipper with some"
+msgstr "Полностью совместимый с CA-Clipper c некоторыми"
+
+#: template/./doc/about.sgml:8
+msgid "new possibilities."
+msgstr "новыми возможностями"
+
+#: template/./doc/about.sgml:14
+msgid "Compiler"
+msgstr "Компилятор"
+
+#: template/./doc/about.sgml:16
+#, fuzzy
+msgid ""
+"slight incompability with CA-Clipper, which may be resolved easily,\n"
+"using the \"search and replace\" method.\n"
+"In addition it can compile to <emphasis> C program,\n"
+"byte-code, dynamic library and mixed C+byte-code. </emphasis>\n"
+msgstr ""
+"незначительная несовместимость с CA-Clipper, которая\n"
+"легко устраняется методом \"поиск с заменой\". Дополнительно\n"
+"умеет компилировать в С-программу, байт-код, динамическую библиотеку\n"
+"и смешанный С+байт_код.\n"
+
+#: template/./doc/about.sgml:24
+msgid "Very fast and efficient OO-model"
+msgstr "Очень быстрая ОО-модель"
+
+#: template/./doc/about.sgml:28
+#, fuzzy
+msgid ""
+"Difference from CA-Clipper reveals itself in part of descriptions and "
+"making\n"
+"an object, but in part of using the ready objects syntax and logic of\n"
+"functioning is completely the same."
+msgstr ""
+"Отличие от CA-Clipper проявляется в части описания\n"
+"и создания объекта (если можно считать недокументированные возможности\n"
+"стандартом). В части использования готовых объектов, синтаксис\n"
+"и логика работы  полностью сохранена."
+
+#: template/./doc/about.sgml:32
+msgid ""
+"<emphasis>It is possible to write programs on CLIP, without using other "
+"syntax excepting OOP.</emphasis>"
+msgstr ""
+"На CLIP можно писать программы, не применяя другого синтаксиса кроме ОО-"
+"ориентированного."
+
+#: template/./doc/about.sgml:34
+msgid "Initial support syntax from FS,CAVO,FoxPro."
+msgstr "Частично поддерживается синтаксис FS,CAVO,FoxPro."
+
+#: template/./doc/about.sgml:41
+msgid "C-API"
+msgstr "C-API"
+
+#: template/./doc/about.sgml:42
+msgid "has much more possibilities than CA-Clipper."
+msgstr "предоставляет намного больше возможностей чем в CA-Clipper."
+
+#: template/./doc/about.sgml:46
+msgid "Full international support "
+msgstr "Полная интернационализация на любой язык"
+
+#: template/./doc/about.sgml:48
+#, fuzzy
+msgid ""
+"Including adjustment on any code page of any language on any keyboard\n"
+"(with stelnet emulator only or on consoles),\n"
+"substitution of string constants during execution and changing a logic of\n"
+"functioning with strings, given for functions <emphasis>alpha, digit, lower, "
+"upper,\n"
+"</emphasis> subscripted weight factors etc.\n"
+"Support two-bytes charsets <emphasis>BIG5, GB</emphasis>,\n"
+"may be Korean, Japan too."
+msgstr ""
+"В том числе настройки на любую раскладку любого языка на любой клавиатуре\n"
+"(только с эмулятором stelnet или на консоли), подмена строковых констант\n"
+"во время выполнения и изменение логики работы со строковыми\n"
+"данными для функций <emphasis>alpha, digit, lower, upper,</emphasis> "
+"индексных\n"
+"весовых коэффициентов и т.п.\n"
+"Также поддерживаются двухбайтовые кодировки BIG5, GB(Китай, Корея,Япония,...)"
+
+#: template/./doc/about.sgml:59
+msgid " GUI, based on GTK"
+msgstr "GUI на основе GTK"
+
+#: template/./doc/about.sgml:60
+msgid "Provides using of all widgets and processing the events"
+msgstr ""
+"Обеспечивает  полноценный  доступ  ко  всем  виджетам  и обработку\n"
+"событий. Работает на многих платформах."
+
+#: template/./doc/about.sgml:65
+msgid " Using of dynamic libraries,"
+msgstr "Подключение динамических библиотек,"
+
+#: template/./doc/about.sgml:67
+msgid ""
+"loading and execution of the byte-code from external files ( in run-time, "
+"too )."
+msgstr ""
+"загрузка и выполнение байт-кода из внешних файлов,\n"
+"в том числе и во время исполнения.\n"
+"Загрузка DLL,SO, написаные на clipper/clip."
+
+#: template/./doc/about.sgml:72
+msgid "Compatibility"
+msgstr "Совместимость"
+
+#: template/./doc/about.sgml:75
+msgid ""
+"up to <emphasis>Clipper 5.3 </emphasis> (support of objects <emphasis>menu, "
+"button, check</emphasis>\n"
+"and other <emphasis>get-objects</emphasis>), as well as standard classes "
+"<emphasis>tbrowse,get,error</emphasis>."
+msgstr ""
+"до <emphasis>Clipper 5.3 </emphasis> (поддержка объектов <emphasis>menu, "
+"button, check</emphasis> и других <emphasis>get</emphasis>-объектов),\n"
+"а также стандартные классы <emphasis>tbrowse,get,error</emphasis>."
+
+#: template/./doc/about.sgml:78
+msgid ""
+" Are implemented a lot of CA_Tools functions,\n"
+"including all functions for processing the lines, dates, files, "
+"mathematicians."
+msgstr ""
+"Не полная с библиотекой Ca-Tools, но сделано очень многое в том числе все "
+"функции \n"
+"для обработки строк, дат, файлов, математики."
+
+#: template/./doc/about.sgml:81
+msgid " support all SIX functions and features"
+msgstr "полностью поддерживаются все SIX-функции и фенечки"
+
+#: template/./doc/about.sgml:82
+msgid " MEM,DBF,DBT,FPT,NTX,CTX,CDX,NSX..."
+msgstr " MEM,DBF,DBT,FPT,NTX,CTX,CDX,NSX..."
+
+#: template/./doc/about.sgml:83
+msgid " VFP data types: datetime,currency"
+msgstr "Типы данных VFP: datetime,currency"
+
+#: template/./doc/about.sgml:84
+msgid ""
+" RDD allows to use your own drivers, as well as use a driver, combined from\n"
+"several different drivers."
+msgstr ""
+"RDD позволяет назначать свои драйвера форматов, а также можно\n"
+"назначать драйвера из нескольких разных форматов."
+
+#: template/./doc/about.sgml:86
+msgid "RDD also allows to use only OO-style, without using of aliases"
+msgstr ""
+"RDD позволяет использовать только ОО-стиль без\n"
+"использования механизма alias'ов"
+
+#: template/./doc/about.sgml:92
+msgid "Multitask support"
+msgstr "Поддержка многозадачности"
+
+#: template/./doc/about.sgml:93
+msgid "Builtin simple non-preemptive multitask model"
+msgstr "Встроенная простая невытесняющая многозадачность."
+
+#: template/./doc/about.sgml:97
+msgid "CODB - CLIP Object Data Base"
+msgstr ""
+
+#: template/./doc/about.sgml:98
+msgid "Library and utils for object storehouse"
+msgstr ""
+
+#: template/./doc/about.sgml:102
+msgid "SQL"
+msgstr "SQL"
+
+#: template/./doc/about.sgml:106
+msgid ""
+"libraries and classes for direct access to SQL-servers (PG,MySql,Oracle,"
+"Interbase) "
+msgstr ""
+"библиотеки и классы прямого доступа к SQL-серверам (PG,MySql,Oracle,"
+"Interbase)"
+
+#: template/./doc/about.sgml:108
+msgid "ODBC and ODBC bridge to Windows drivers."
+msgstr "ODBC и ODBC мост к Windows драйверам"
+
+#: template/./doc/about.sgml:110
+msgid "SQL-interpreter and commands, compatible with FoxPro"
+msgstr "SQL-интерпретатор и команды совместимые с FoxPro"
+
+#: template/./doc/about.sgml:117
+msgid "Other possibilities "
+msgstr "Другие возможности"
+
+#: template/./doc/about.sgml:121
+msgid "Overloading operators for objects."
+msgstr "перегрузка операций для объектов"
+
+#: template/./doc/about.sgml:123
+msgid "Support of regular expressions."
+msgstr "поддержка регулярных выражений;"
+
+#: template/./doc/about.sgml:125
+msgid "function for TCP/IP sockets connections"
+msgstr "функции соединения с TCP/IP sockets;"
+
+#: template/./doc/about.sgml:127
+msgid "COM_() functions"
+msgstr "COM_() функции"
+
+#: template/./doc/about.sgml:129
+msgid "Rushmore like technology, but more fast and efficient."
+msgstr "более быстрый аналог технологии \"rushmore\" из системы FoxPro;"
+
+#: template/./doc/about.sgml:131
+msgid "Support of very-large-scale numbers with unlimited accuracy."
+msgstr "поддержка больших и сверхбольших чисел с неограниченной точностью;"
+
+#: template/./doc/about.sgml:133
+msgid ""
+"Support of graphic files PNG,GD,JPEG and primitives like lines,\n"
+"    rectangles, firing ranges, circumferences etc."
+msgstr ""
+"Работа с графическими файлами  PNG, GD, JPEG и примитивами типа\n"
+"линий, прямоугольников, полигонов, окружностей и т.п."
+
+#: template/./doc/about.sgml:136
+msgid ""
+"Several common classes for word processorses, <emphasis>html/cgi </"
+"emphasis>programms."
+msgstr ""
+"Несколько общеупотребительных классов для облегчения\n"
+"программирования текстовых процессоров, <emphasis>html/cgi </emphasis> "
+"программ."
+
+#: template/./doc/about.sgml:138
+msgid ""
+"Several utilities for interpreting the patterns of the documents,\n"
+"  <emphasis>www_sql,clip_bl, clip_blank, clip_sql, clip_hindex, clip_hseek</"
+"emphasis> etc."
+msgstr ""
+"Несколько утилит по интерпретации шаблонов документов <emphasis>www_sql, "
+"clip_bl,clip_blank, clip_sql, clip_hindex, clip_hseek</emphasis> и т.п.n"
+
+#: template/./doc/about.sgml:141
+msgid "multiwindows interactive debugger."
+msgstr "многооконный интерактивный отладчик."
+
+#: template/./doc/about.sgml:148
+msgid " Supported OS'es"
+msgstr "Операционные системы"
+
+#: template/./doc/about.sgml:150
+msgid ""
+"linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe with TurboLinux, "
+"Win32 ( with CYGWIN development tools)"
+msgstr ""
+"linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe под TurboLinux, "
+"Win32 (с использованием средств разработки CYGWIN)"
+
+#: template/./doc/about.sgml:155
+msgid "TODO list"
+msgstr "Находятся в разработке"
+
+#: template/./doc/about.sgml:159
+msgid "Windows support"
+msgstr "Версия для Windows;"
+
+#: template/./doc/about.sgml:161
+msgid "FiveWin compatiblies."
+msgstr "совместимость с FiveWin"
+
+#: template/./doc/about.sgml:163
+msgid "FoxPro compatiblies."
+msgstr "совместимость с FoxPro."

@@ -1,0 +1,141 @@
+$FUNCNAME$
+  FCREATE()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Create and/or truncate a binary file to zero-length
+$LANG_RU$
+   Создает и/или сокращает двоичный файл до нулевой длины.
+$SYNTAX$
+     FCREATE(<cFile>, [<nAttribute>]) --> nHandle
+$LANG_RU$
+     FCREATE(<имя файла>, [<атрибут>]) --> номер файла
+$ARGUMENTS$
+     <cFile> is the name of the file to create.  If the file already
+     exists, its length is truncated to zero without warning.
+
+     <nAttribute> is one of the binary file attributes shown in the table
+     below.  If this argument is omitted, the default value is zero.
+
+     <PRE>Binary File Attributes
+     ------------------------------------------------------------------------
+     Value   Fileio.ch      Attribute Description
+     ------------------------------------------------------------------------
+     0       FC_NORMAL      Normal    Create normal read/write file (default)
+     1       FC_READONLY    Read-only Create read-only file
+     2       FC_HIDDEN      Hidden    Create hidden file
+     4       FC_SYSTEM      System    Create system file
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     <имя файла> является именем файла, подлежащего созданию. Если файл
+     уже существует, его длина сокращается до нуля без предупреждения.
+
+     <атрибут> является одним из атрибутов двоичного файла, представленных
+     в таблице ниже. Если этот аргумент пропущен, то его значение по
+     умолчанию равно нулю.
+
+     <PRE>Атрибуты двоичного файла.
+     ---------------------------------------------------------------------
+     Значение   Fileio.ch   Атрибут     Описание
+     ---------------------------------------------------------------------
+     0          FC_NORMAL   Обычный     Создает обычный файл, доступный для чтения/записи (по умолчанию)
+     1          FC_READONLY Только для  Создает файл только для чтения
+			      чтения
+     2          FC_HIDDEN   Невидимый   Создает невидимый файл
+     4          FC_SYSTEM   Системный   Создает системный файл
+     ---------------------------------------------------------------------
+     </PRE>
+$RETURNS$
+     FCREATE() returns the DOS file handle number of the new binary file in
+     the range of zero to 65,535.   If an error occurs, FCREATE() returns
+     -1 and FERROR() is set to indicate an error code.
+$LANG_RU$
+     FCREATE() возвращает номер созданного нового двоичного файла DOS в
+     диапазоне от 0 до 65535. Если в процессе создания файла происходит
+     ошибка, FCREATE() возвращает значение (-1), а функция FERROR()
+     устанавливается на соответствующий код ошибки.
+$DESCRIPTION$
+     FCREATE() is a low-level file function that either creates a new file or
+     opens and truncates an existing file.  If <cFile> does not exist, it is
+     created and opened for writing.  If it does exist and can be opened for
+     writing, it is truncated to zero-length.  If it cannot be opened for
+     writing, FCREATE() returns -1 and FERROR() returns the appropriate error
+     value.
+
+     When FCREATE() successfully creates a new file, the file is left open in
+     compatibility sharing mode and read/write access mode.  The file
+     attribute specified by the <nAttribute> argument is applied to the new
+     file when it is closed, allowing writing to a newly created read-only
+     file.  For a list of access modes, see FOPEN().
+
+     Since a file handle is required in order to identify an open file to
+     other file functions, always assign the return value from FCREATE() to a
+     variable for later use.
+
+     Like other file functions, FCREATE() does not use either the DEFAULT or
+     PATH settings for its operation.  Instead, it writes to the current DOS
+     directory unless a path is explicitly stated.
+
+     Warning!  This function allows low-level access to DOS files and
+     devices.  It should be used with extreme care and requires a thorough
+     knowledge of the operating system.
+$LANG_RU$
+     FCREATE() является функцией обработки файлов низкого уровня, которая
+     либо создает новый файл, либо открывает существующий файл и обрезает
+     его до нулевой длины. Если файл с именем <имя файла> не существует,
+     он создается и открывается для записи. Если же он существует и может
+     быть открыт для записи, то сокращается до нулевой длины. Если его
+     нельзя открыть для записи, FCREATE() возвращает значение (-1), а
+     FERROR() устанавливается на соответствующий код ошибки.
+
+     Если функция FCREATE() успешно создает новый файл, он остается на
+     все время работы до его закрытия доступным для ввода/вывода. Атрибут
+     файла, устанавливаемый с помощью аргумента <атрибут>, подсоединяется
+     к файлу при его закрытии, разрешая таким образом запись в новый
+     созданный файл, даже если он был создан только для чтения. Список
+     режимов доступа приводится в описании функции FOPEN().
+
+     Поскольку доступ других функций к открытому файлу производится через
+     присвоенный ему номер, возвращаемое значение функции FCREATE()
+     необходимо всегда переносить в переменную памяти.
+
+     Так же, как и на остальные функции обработки файлов, на функцию
+     FCREATE() не влияют установки DEFAULT и PATH. Если явно не установлен
+     маршрут, созданные файлы она размещает в текущей директории.
+
+     Предупреждение:
+     Данная функция позволяет осуществлять доступ низкого уровня к файлам
+     и устройствам DOS. Она должна использоваться чрезвычайно осторожно и
+     требует хороших знаний операционной системы.
+$EXAMPLES$
+       This example creates a file called Testfile and opens it for
+	reading and writing:
+
+	#include "Fileio.ch"
+
+	//
+	IF (nHandle := FCREATE("Testfile", FC_NORMAL)) == -1
+	   ? "File cannot be created:", FERROR()
+	   BREAK
+	ELSE
+	   FWRITE(nHandle, "Hello there")
+	   FCLOSE(nHandle)
+	ENDIF
+$LANG_RU$
+
+      В следующем простом примере показано создание файла, называемого
+       Testfile, и его открытие для чтения и записи:
+
+       #include "Fileio.ch"
+       //
+       IF (nHandle := FCREATE("Testfile", FC_NORMAL)) = -1
+	  ? "Файл не может быть создан: " FERROR()
+	  BREAK
+       ELSE
+	  FWRITE(nHandle, "Привет Вам")
+	  FCLOSE(nHandle)
+       ENDIF
+$SEEALSO$
+  FCLOSE(),FERROR(),FOPEN()
+$END$

@@ -1,0 +1,538 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/langext.sgml:0
+msgid "Language extensions"
+msgstr ""
+
+#: template/./doc/langext.sgml:2
+msgid "Introduction"
+msgstr ""
+
+#: template/./doc/langext.sgml:4
+msgid ""
+"\n"
+"CLIP is a <emphasis>Clipper</emphasis> compiler, in other words\n"
+"it understands the <emphasis>standard Clipper syntax</emphasis>.\n"
+"For lack of the documentation on CLIP language (it's under construction\n"
+"at present), refer to the Clipper manuals. Only language extensions\n"
+"are considered here.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:12
+msgid "SWITCH statement"
+msgstr ""
+
+#: template/./doc/langext.sgml:14
+msgid ""
+"\n"
+"<command>SWITCH</command> statement is a control structure that\n"
+"executes one of several blocks of the statements depending on the value\n"
+"of an expression.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:19
+msgid ""
+"\n"
+"Syntax:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:32
+msgid ""
+"\n"
+"It evaluates <emphasis><![CDATA[<expression>]]></emphasis>,\n"
+"looks for it's value in <emphasis>CASE</emphasis> constants,\n"
+"and executes associated block of statements. If none\n"
+"of the <emphasis>CASE</emphasis> constants are equal to the\n"
+"expression value, it executes the block of statements following\n"
+"the <emphasis>OTHERWISE</emphasis> statement (if exist).\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:40
+msgid ""
+"\n"
+"Only numeric and character constants are allowed in <emphasis>CASE</"
+"emphasis>\n"
+"statement.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:44
+msgid ""
+"\n"
+"<command>SWITCH</command> is more effective than similar\n"
+"<command>DO CASE</command> statement.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:49
+msgid "Assign of the reference"
+msgstr ""
+
+#: template/./doc/langext.sgml:51
+msgid ""
+"\n"
+"New operator <command>:=@</command> is used with the following syntax:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:57
+msgid ""
+"\n"
+"It assigns <![CDATA[<rVar>]]> variable to the\n"
+"<![CDATA[<lVar>]]> variable by reference, i.e. <![CDATA[<lVar>]]>\n"
+"becomes a reference to (synonym of) <![CDATA[<rVar>]]>.\n"
+"<![CDATA[<rVar>]]> can be of any data type, including function reference.\n"
+"For example:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:78
+msgid "Support FoxPro style for array access"
+msgstr ""
+
+#: template/./doc/langext.sgml:85
+msgid "Support call codeblock via function"
+msgstr ""
+
+#: template/./doc/langext.sgml:87
+msgid ""
+" construction call memvar defined codeblock if function with\n"
+"name \"cb\" not exist. "
+msgstr ""
+
+#: template/./doc/langext.sgml:96
+msgid "Hexadecimal constants"
+msgstr ""
+
+#: template/./doc/langext.sgml:98
+msgid ""
+"\n"
+"CLIP understands hexadecimal constants as C does.\n"
+"For example <command>0x10</command> (decimal 16),\n"
+"<command>0xff</command> (decimal 255).\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:104
+msgid "Rational arithmetic"
+msgstr ""
+
+#: template/./doc/langext.sgml:106
+msgid ""
+"\n"
+"CLIP supports rational numbers with unlimited precision.\n"
+"To realize this possibility, it's necessary to write somewhere in\n"
+"program\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:114
+msgid ""
+"\n"
+"or via the command described in <command>clip.ch</command>\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:120
+msgid ""
+"\n"
+"The compiler does not support large numbers as\n"
+"constants, that is, when using expressions like\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:127
+msgid ""
+"\n"
+"the compiler will make an attempt to\n"
+"transform this into double, and only coprocessor knows what the result\n"
+"will be :) To actually use large constants, it's necessary to use\n"
+"<link linkend=\"functionval\">VAL()</link> function. For example:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:138
+msgid ""
+"\n"
+"<link linkend=\"functionstr\">STR()</link> function\n"
+"now supports <emphasis>len</emphasis>, <emphasis>dec</emphasis>\n"
+"parameters of any value. For example:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:146
+msgid ""
+"\n"
+"Also, <link linkend=\"functionrstr\">RSTR()</link> function is added, and "
+"this gives a\n"
+"string in the form of <emphasis>numerator/denominator</emphasis>:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:154
+msgid "Associative arrays"
+msgstr ""
+
+#: template/./doc/langext.sgml:156
+msgid ""
+"\n"
+"<emphasis>Associative array (AA)</emphasis> - is an array which elements\n"
+"are accessed by <emphasis>associated</emphasis> character strings.\n"
+"Let's consider associative array in contrast of an ordinary array.\n"
+"An ordinary array may be written as follows:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:166
+msgid ""
+"\n"
+"To get access to elements, a consecutive numbers set\n"
+"is used, and it is limited with the array size. Inserting a new element\n"
+"becomes a problem, and it results in time losses. Opposite to ordinary\n"
+"arrays, elements of association arrays are identified by strings.\n"
+"<link linkend=\"functionmap\">map()</link> function creates an empty "
+"associative\n"
+"array. New elements are added to the associative array automatically.\n"
+"To get access to the element of the associative array object-style syntax\n"
+"can be used. For example:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:185
+msgid ""
+"\n"
+"To be honest, elements of associative array are identified by\n"
+"a <emphasis>hash codes</emphasis> of strings. Hash code is the number\n"
+"as a result of hashing a string to a number by using\n"
+"bit operations. For strings of less than 20 characters, the probability\n"
+"of coincidence of hash codes is approximately 1/1000000. For longer "
+"strings,\n"
+"the probability is increased.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:193
+msgid ""
+"\n"
+"The compiler calculates hash codes of strings enclosed in \"`\" characters.\n"
+"For example:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:200
+msgid ""
+"\n"
+"Also, compiler calculates hash codes of strings with <emphasis>hash_</"
+"emphasis>\n"
+"prefix. In this case, the string is not converted to upper case. You should "
+"do\n"
+"it yourself:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:209
+msgid ""
+"\n"
+"At run time, hash code can be calculated by\n"
+"<link linkend=\"functionhashstr\">hashstr()</link> function:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:216
+msgid ""
+"\n"
+"Pay attention to <emphasis>QWER</emphasis> which is written in upper case,\n"
+"because compiler does not distinguish letter cases.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:220
+msgid ""
+"\n"
+"It's possible to get a list of indexes in the associative array by\n"
+"<link linkend=\"functionmapkeys\">mapkeys()</link> function which returns "
+"an\n"
+"ordinary array with hash codes of associative array elements:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:232
+msgid ""
+"\n"
+"Also, the associate array is characterized by a very fast access to "
+"elements,\n"
+"because necessary element is actually searched in a hash table.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:237
+msgid "FOR ... IN statement"
+msgstr ""
+
+#: template/./doc/langext.sgml:239
+msgid ""
+"\n"
+"<command>FOR ... IN</command> statement is a control structure that\n"
+"executes a block of statements for all elements of an associative array.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:242
+msgid "Syntax:"
+msgstr ""
+
+#: template/./doc/langext.sgml:249
+msgid ""
+"\n"
+"Before processing the block of statements,\n"
+"<emphasis><![CDATA[<element>]]></emphasis> variable takes value of the next\n"
+"element of <emphasis><![CDATA[<associative_array>]]></emphasis>.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:254
+msgid ""
+"\n"
+"Another syntax of <command>FOR ... IN</command> statement allows to execute\n"
+"a block of statements for hash codes identifying all elements of\n"
+"an associative array:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:263
+msgid "For example"
+msgstr ""
+
+#: template/./doc/langext.sgml:282
+msgid "Strings as arrays"
+msgstr ""
+
+#: template/./doc/langext.sgml:284
+msgid ""
+"\n"
+"C-style syntax could be used for accessing substrings in CLIP:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:290
+msgid ""
+"\n"
+"where <![CDATA[<pos>]]> is the start position of the substring,\n"
+"<![CDATA[<length>]]> is the length of the substring, 1 by default.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:294
+msgid ""
+"\n"
+"This format is identical to calling <link linkend=\"functionsubstr\">SUBSTR()"
+"</link>\n"
+"function, e.g.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:300
+msgid "could be written as"
+msgstr ""
+
+#: template/./doc/langext.sgml:306
+msgid "OO model"
+msgstr ""
+
+#: template/./doc/langext.sgml:308
+msgid "Introduction in OO model"
+msgstr ""
+
+#: template/./doc/langext.sgml:310
+msgid ""
+"\n"
+"Firstly, some words about CA-Clipper built-in OO model. Its OO is based\n"
+"on ordinary array, and any call like\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:317
+msgid ""
+"\n"
+"or\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:323
+msgid ""
+"\n"
+"results in the situation when in <emphasis>obj</emphasis> array there is "
+"searching of an element\n"
+"whose first element coincides with attribute or method name, and such\n"
+"search is executed linearly and is practically analogues to\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:331
+msgid ""
+"\n"
+"function, which greatly reduces the efficiency of OO model of pure\n"
+"CA-Clipper. This, of course, is rather a simplified\n"
+"explanation, but the sense is still that as described.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:336
+msgid ""
+"\n"
+"We believe, now it's clear for what purpose association arrays were\n"
+"made. OO model based on association arrays is faster by an order.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:340
+msgid ""
+"\n"
+"At the same time, there's no need in expressions like\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:346
+msgid ""
+"\n"
+"and in <emphasis>TClass</emphasis> class itself, which raises\n"
+"OO model efficiency.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:350
+msgid ""
+"\n"
+"How could you make your own class? It's very simple:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:378
+msgid ""
+"\n"
+"Also, we'd like to add two simple rules:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:382
+msgid ""
+"\n"
+"The attribute is created when something, including NIL, is assigned to it.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:385
+msgid ""
+"\n"
+"At any moment in run-time,the method can assign or reassign any\n"
+"function announced in this module as static function, or can adopt\n"
+"this function from another object, as a usual assignment of values:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:395
+msgid ""
+"\n"
+"In what way can objects be used? As in CA-Clipper, or even more simply:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:402
+msgid ""
+"In an object, <command>destroy()</command>\n"
+"method can be announced, but it isn't quite destructor, which is usual\n"
+"in languages of the third generation. There is a local <emphasis>obj</"
+"emphasis>\n"
+"variable, and this is just an object. Upon leaving the function body,\n"
+"this variable, along with all its data, is destroyed. Now, let's consider "
+"the\n"
+"case of an object having an attribute\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:413
+msgid ""
+"\n"
+"When destroying <emphasis>obj</emphasis>, it's necessary\n"
+"to close <emphasis>hFile</emphasis>, but the compiler doesn't know\n"
+"this; the compiler (rather a virtual machine) only knows that in\n"
+"<emphasis>hFile</emphasis>\n"
+"there's a number and will destroy the number only, but the file will\n"
+"remain open. Just for such purposes <command>destroy()</command> is "
+"intended,\n"
+"and it'll called (if it exists ) before destroying <emphasis>obj</emphasis>\n"
+"variable.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:429
+msgid "Control of change attributes"
+msgstr ""
+
+#: template/./doc/langext.sgml:431
+msgid ""
+"\n"
+"If it's necessary to control changes of object attributes, make\n"
+"<command>modify()</command> method and invoke\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:438
+msgid ""
+"\n"
+"<command>modify()</command> method is called before changing value\n"
+"of any object attribute. Two parameters are passed to\n"
+"<command>modify()</command>: hash code of attribute to be changed\n"
+"and new value to be assigned to it. <command>modify()</command>\n"
+"should return the value to assign to the attribute. For example:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:466
+msgid "Recovering/reviving objects"
+msgstr ""
+
+#: template/./doc/langext.sgml:468
+msgid ""
+"\n"
+"CLIP is able to store the data of any type to MEMO fields, including\n"
+"objects. But there is no way to store object methods (methods can be\n"
+"changed).\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:473
+msgid ""
+"\n"
+"Recovering is made with the following steps: data are decoded; if data are "
+"of\n"
+"<emphasis>object</emphasis> type and object have <emphasis>CLASSNAME</"
+"emphasis>\n"
+"attribute then called function\n"
+"<emphasis><![CDATA[_recover_&(var:CLASSNAME)(var)]]></emphasis>.\n"
+"This function must assign this object methods.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:480
+msgid ""
+"\n"
+"This feature can be used to send object as string via e-mail or TCP :)\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:483
+msgid ""
+"\n"
+"Here is an example of using this feature:\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:523
+msgid "Overloading operators for objects"
+msgstr ""
+
+#: template/./doc/langext.sgml:525
+msgid ""
+"\n"
+"CLIP supports overloading of the operations.\n"
+"Operations that can be overloaded and corresponding\n"
+"<emphasis>operator</emphasis> methods are listed in the table below.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:529
+msgid "Overloaded operations"
+msgstr ""
+
+#: template/./doc/langext.sgml:532 template/./doc/langext.sgml:533
+msgid "Operation"
+msgstr ""
+
+#: template/./doc/langext.sgml:532 template/./doc/langext.sgml:533
+msgid "Method"
+msgstr ""
+
+#: template/./doc/langext.sgml:555
+msgid ""
+"\n"
+"Here is an example of using operations overloading.\n"
+msgstr ""
+
+#: template/./doc/langext.sgml:597
+msgid "Conclusion"
+msgstr ""
+
+#: template/./doc/langext.sgml:599
+msgid ""
+"\n"
+"Due to such OO model and compiling into C-program, there appears\n"
+"a possibility to write TBrowse and Get standard classes in Clipper itself.\n"
+"At the same time, the efficiency of these classes is not worse than\n"
+"those written in pure C in CA-Clipper.\n"
+msgstr ""

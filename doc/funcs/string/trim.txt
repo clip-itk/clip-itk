@@ -1,0 +1,49 @@
+$FUNCNAME$
+  TRIM()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Remove trailing spaces from a character string
+$SYNTAX$
+     TRIM(<cString>) --> cTrimString
+$ARGUMENTS$
+     <cString> is the character string to be copied without trailing
+     spaces.
+$RETURNS$
+     TRIM() returns a copy of <cString> with the trailing spaces removed.  If
+     <cString> is a null string ("") or all spaces, TRIM() returns a null
+     string ("").
+$DESCRIPTION$
+     TRIM() is a character function that formats character strings.  It is
+     useful when you want to delete trailing spaces while concatenating
+     strings.  This is typically the case with database fields which are
+     stored in fixed-width format.  For example, you can use TRIM() to
+     concatenate first and last name fields to form a name string.
+
+     TRIM() is related to LTRIM(), which removes leading spaces, and
+     ALLTRIM(), which removes both leading and trailing spaces.  The inverse
+     of ALLTRIM(), LTRIM(), and RTRIM() are the PADC(), PADR(), and PADL()
+     functions which center, right-justify, or left-justify character strings
+     by padding them with fill characters.
+$EXAMPLES$
+
+       This is a user-defined function in which TRIM() formats city,
+	state, and zip code fields for labels or form letters:
+
+	FUNCTION CityState(cCity, cState, cZip)
+	   RETURN TRIM(cCity) + ", " ;
+	    + TRIM(cState) + "  " + cZip
+
+       In this example the user-defined function, CityState(),
+	displays a record from Customer.dbf:
+
+	USE Customer INDEX CustName NEW
+	SEEK "Kate"
+
+	? CityState(City, State, ZipCode)
+	// Result: Athens, GA 10066
+
+
+$SEEALSO$
+  PAD(),RTRIM(),SUBSTR()
+$END$

@@ -1,0 +1,121 @@
+$FUNCNAME$
+  SETCANCEL()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Toggle Alt+C or Ctrl+C and Ctrl+Break as program termination keys
+$LANG_RU$
+   Переключает Alt-C или Ctrl+C как ключ завершения программы.
+$SYNTAX$
+     SETCANCEL([<lToggle>]) --> lCurrentSetting
+$LANG_RU$
+     SETCANCEL([<переключатель>]) --> текущий режим
+$ARGUMENTS$
+     <lToggle> changes the availability of Alt+C and Ctrl+Break as
+     termination keys.  Specifying true (.T.) allows either of these keys to
+     terminate an application and false (.F.) disables both keys.  The
+     default is true (.T.).
+$LANG_RU$
+     <переключатель> - включает и выключает Alt-C как ключ завершения
+     программы. Значение аргумента - "истина" (.T.) разрешает
+     использование Alt-C для завершения программы, а значение - "ложь"
+     (.F.) - запрещает.  По умолчанию устанавливается значение "истина"
+     (.T.).
+$RETURNS$
+     SETCANCEL() returns the current setting as a logical value.
+$LANG_RU$
+     SETCANCEL() возвращает текущий режим в виде логического значения.
+$DESCRIPTION$
+     SETCANCEL() is a keyboard function that toggles the state of the
+     termination keys, Alt+C and Ctrl+Break, and reports the current state of
+     SETCANCEL().  Use SETCANCEL() when you want to suppress a user's ability
+     to terminate a program without using the specified method.
+
+     Note that if Alt+C or Ctrl+Break is redefined with SET KEY, the SET KEY
+     definition takes precedence even if SETCANCEL() returns true (.T.).
+
+     Warning!  When SETCANCEL() has been set to false (.F.), the user
+     cannot terminate a runaway program unless you provide an alternative
+     escape mechanism.
+$LANG_RU$
+     SETCANCEL() является функцией работы с клавиатурой, которая
+     переключает состояние ключа завершения программы Alt-C и сообщает,
+     возможно ли в данный момент завершение программы при помощи нажатия
+     клавиш Alt-C.
+
+     SETCANCEL() используется в тех случаях, когда вы хотите подавить
+     возможность завершения программы этим методом. Необходимо помнить,
+     что Alt-C переназначается с помощью команды SET KEY, установка SET
+     KEY имеет приоритет даже в том случае, если SETCANCEL() возвращает
+     значение "истина" (.T.).
+
+     Предупреждение:
+     Когда SETCANCEL() устанавливает значение "ложь" (.F.), пользователь
+     не может завершить программу, пока не будет обеспечен альтернативный
+     механизм выхода.
+$EXAMPLES$
+       This example provides an escape route from a wait state with
+	SETCANCEL() set off:
+
+	#define K_ALTC   302
+	//
+	SETCANCEL(.F.)              // Disable termination keys
+	SET KEY K_ALTC TO AltC      // Redefine Alt-C
+	.
+	. <statements>
+	.
+	RETURN
+
+	FUNCTION AltC
+	   LOCAL cScreen, nChoice, cLastColor := ;
+		 SETCOLOR("W/B, N/G")
+	   //
+	   SAVE SCREEN TO cScreen
+	   @ 6, 20 CLEAR TO 9, 58
+	   @ 6, 20 TO 9, 58 DOUBLE
+	   @ 7, 26 SAY "Alt-C: Do you want to quit?"
+	   @ 8, 35 PROMPT " Yes "
+	   @ 8, 41 PROMPT " No "
+	   MENU TO nChoice
+	   SETCOLOR(cLastColor)
+	   RESTORE SCREEN FROM cScreen
+	   //
+	   IF nChoice = 1
+	      QUIT
+	   ENDIF
+	   //
+	   RETURN NIL
+$LANG_RU$
+      В примере демонстрируется, как обеспечить маршрут выхода из
+       состояния ожидания при режиме (.F.) функции SETCANCEL():
+
+       #define K_ALTC 302
+       //
+       SETCANCEL(.F.)               // Запрещает использование <Alt>-<C>
+       SET KEY K_ALTC TO AltC       // Переназначает <Alt>-<C>
+       ...
+       ...<операторы>
+       ...
+       RETURN
+
+       FUNCTION AltC
+	  LOCAL cScreen, nChoice, cLastColor := SETCOLOR("W/B, N/G")
+	  //
+	  SAVE SCREEN TO cScreen
+	  @ 5, 20 CLEAR TO 9, 58
+	  @ 6, 20 TO 9, 58 DOUBLE
+	  @ 7, 26 SAY "Alt-C: Желаете завершить работу ?"
+	  @ 8, 35 PROMPT " Да "
+	  @ 8, 41 PROMPT " Нет "
+	  MENU TO nChoice
+	  SETCOLOR(cLastColor)
+	  RESTORE SCREEN FROM cScreen
+	  //
+	  IF nChoice = 1
+	     QUIT
+	  ENDIF
+	  //
+	  RETURN NIL
+$SEEALSO$
+  SETKEY()
+$END$

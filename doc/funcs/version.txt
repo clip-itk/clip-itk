@@ -1,0 +1,27 @@
+$FUNCNAME$
+  VERSION()
+$CATEGORY$
+  SYSTEM,MISCELLANEOUS,INFO
+$SUMMARY$
+   Returns xClipper version
+$LANG_RU$
+   Возвращает номер версии xClipper.
+$SYNTAX$
+     VERSION() --> cVersion
+$LANG_RU$
+     VERSION() --> номер версии
+$RETURNS$
+     VERSION() returns the version number of the xClipper library,
+     EXTEND.LIB, as a character value.
+$LANG_RU$
+     VERSION() возвращает номер версии xClipper библиотеки EXTEND.LIB в
+     виде символьной строки.
+$DESCRIPTION$
+     VERSION() is an environment function that returns the version of the
+     xClipper library, EXTEND.LIB.
+$LANG_RU$
+     VERSION() - функция среды, которая возвращает номер версии xClipper
+     библиотеки EXTEND.LIB.
+$SEEALSO$
+
+$END$

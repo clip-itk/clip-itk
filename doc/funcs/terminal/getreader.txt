@@ -1,0 +1,42 @@
+$FUNCNAME$
+  GETREADER()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Execute standard READ behavior for a Get object
+$SYNTAX$
+     GETREADER(<oGet>, <GetList>, <oMenu>, <nMsgRow>,
+	<nMsgLeft>, <nMsgRight>, <cMsgColor>) --> NIL
+$ARGUMENTS$
+     <oGet> is a reference to a Get object.
+     <GetList> is an array of all the Get objects in the current Get
+     list.
+     <oMenu> is a reference to a TopBarMenu object.
+     <nMsgRow> is a numeric value representing the row number on the
+     screen where the message bar is located.
+     <nMsgLeft> is a numeric value representing the left border of the
+     row bar.
+     <nMsgRight> is a numeric value representing the right border of the
+     row bar.
+     <cMsgColor> is a character string representing the color string to
+     be used for the message bar.
+$RETURNS$
+     GETREADER() always returns NIL.
+$DESCRIPTION$
+     GETREADER() is a GET function that implements the standard READ behavior
+     for GETs.  By default, READMODAL() uses the GETREADER() function to read
+     Get objects.  GETREADER() in turn uses other functions in Getsys.prg to
+     do the work of reading the Get object.
+$EXAMPLES$
+       This example sets the current Get object to the first GET in
+	the Get list.  Then, a READ is performed on this GET which has no
+	menu object, but includes a message bar at row 25 from column 0 to
+	column 80.  The color of the text on the message bar is white with a
+	red background.
+
+	oGet := GetList [1]
+	GETREADER (oGet, Getlist, NIL,25,;
+		       0,80,"W+/R")
+$SEEALSO$
+  GETAPPLYKEY(),GETDOSETKEY(),GETPOSTVALIDATE()
+$END$

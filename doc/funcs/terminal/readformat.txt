@@ -1,0 +1,29 @@
+$FUNCNAME$
+  READFORMAT()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Return and optionally, set the code block that implements a format (.fmt)
+$SYNTAX$
+     READFORMAT([<bFormat>]) --> bCurrentFormat
+$ARGUMENTS$
+     <bFormat> is the name of the code block, if any, to use for
+     implementing a format file.  If no argument is specified, the function
+     simply returns the current code block without setting a new one.
+$RETURNS$
+     READFORMAT() returns the current format file as a code block.  If no
+     format file has been set, READFORMAT() returns NIL.
+$DESCRIPTION$
+     READFORMAT() is a Get system function that accesses the current format
+     file in its internal code block representation.  It lets you manipulate
+     the format file code block from outside of the Get system's source code.
+
+     To set a format file, use SET FORMAT (see the SET FORMAT entry ) or
+     READFORMAT().
+
+     READFORMAT() is intended primarily for creating new READ layers.  The
+     code block that READFORMAT() returns, when evaluated, executes the code
+     that is in the format file from which it was created.
+$SEEALSO$
+  READKILL(),READUPDATED()
+$END$

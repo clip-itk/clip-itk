@@ -1,0 +1,44 @@
+$FUNCNAME$
+	MEMVARSET()
+$CATEGORY$
+	INFO
+$SUMMARY$
+	Sets MEMVAR value.
+$LANG_RU$
+	Устанавливает значение переменной MEMVAR.
+$SYNTAX$
+     MEMVARSET(<sVarName>, <vData>) 	--> TRUE || FALSE
+$ARGUMENTS$
+     <sVarName>	String, is the variable name.
+     <vData>	is the new value of MEMVAR.
+$LANG_RU$
+     <sVarName>	String, имя переменной.
+     <vData>  	новое значение переменной MEMVAR.
+$RETURNS$
+     Returns TRUE if successfully.
+$LANG_RU$
+     Возвращает TRUE в случае успеха.
+$DESCRIPTION$
+
+	MEMVARSET() sets new MEMVAR value with name <sVarName>.
+$LANG_RU$
+
+	MEMVARSET() устанавливает новое значение переменной MEMVAR с именем <sVarName>.
+$EXAMPLES$
+
+MEMVARSET(Mem, "asdf")
+
+? MEMVARGET(Mem) 	// --> asdf
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	MEMVARGET()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

@@ -1,0 +1,17 @@
+<chapter id="license">
+<title>_(Clip license)_</title>
+<sect1>
+<title>_(Clip license description)_</title>
+_(Clip License Body)_
+</sect1>
+<sect1>
+<title>_(Gnu Public License)_</title>
+_(Gnu Public License Body)_
+</sect1>
+<sect1>
+<title>_(The original text of the GPL license)_</title>
+<para>
+<ulink url="http://www.gnu.org/copyleft/gpl.html">_(GNU General Public License)_</ulink>
+</para>
+</sect1>
+</chapter>

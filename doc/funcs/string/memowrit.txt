@@ -1,0 +1,87 @@
+$FUNCNAME$
+  MEMOWRIT()
+$CATEGORY$
+  STRING,DATABASE,FILE/IO
+$SUMMARY$
+   Write a character string or memo field to a disk file
+$LANG_RU$
+   Записывает символьную строку или memo-поле в дисковый файл.
+$SYNTAX$
+     MEMOWRIT(<cFile>, <cString>) --> lSuccess
+$LANG_RU$
+     MEMOWRIT()(<имя файла>,<символьная строка>) --> признак завершения
+$ARGUMENTS$
+     <cFile> is the name of the target disk file including the file
+     extension and optional path and drive designator.
+
+     <cString> is the character string or memo field to write to <cFile>.
+$LANG_RU$
+     <имя файла> - имя дискового файла адресата, должно явно содержать
+     расширение имени. Допускается задание маршрута доступа.
+
+     <символьная строка> - строка символов или memo-поле, записываемые в
+     файл с именем указанным в аргументе <имя файла>.
+$RETURNS$
+     MEMOWRIT() returns true (.T.) if the writing operation is successful;
+     otherwise, it returns false (.F.).
+$LANG_RU$
+     MEMOWRIT() возвращает значение "истина" (.T.), если операция записи в
+     файл прошла успешно, в противном случае возвращает значение "ложь"
+     (.F.).
+$DESCRIPTION$
+     MEMOWRIT() is a memo function that writes a character string or memo
+     field to a disk file.  If a path is not specified, MEMOWRIT() writes
+     <cFile> to the current DOS directory and not the current DEFAULT
+     directory.  If <cFile> already exists, it is overwritten.
+
+     MEMOWRIT() is generally used with MEMOREAD() to load text files into
+     memory where they can be edited, displayed, and written back to disk.
+     You can also use MEMOWRIT() as a quick way of exporting a memo field to
+     a text file.
+$LANG_RU$
+     MEMOWRIT() - функция обработки memo-полей, которая записывает
+     символьную строку или memo-поле в дисковый файл. Если в аргументе
+     <имя файла> не задан маршрут доступа, MEMOWRIT() записывает файл в
+     текущую директорию DOS. Установки команды SET DEFAULT TO не влияют
+     на работу функции. Если файл с именем, указанным в аргументе <имя
+     файла>, уже существует, то он переписывается.
+
+     MEMOWRIT() обычно используется в сочетании с функцией MEMOREAD()
+     для загрузки текстовых файлов в память, и затем они могут быть
+     отредактированы, выведены на консоль и потом записаны обратно на
+     диск.
+
+     MEMOWRIT() можно также использовать как быстрый путь экспорта
+     memo-поля в текстовый файл.
+$EXAMPLES$
+
+       This example uses MEMOWRIT() with MEMOREAD() to allow editing
+	of memo fields with an external editor:
+
+	LOCAL cEditor := "MYEDIT.EXE"
+	USE Sales NEW
+	IF MEMOWRIT("Cliptmp.txt", Notes)
+	   RUN (cEditor + " Cliptmp.txt")
+	   REPLACE Notes WITH MEMOREAD("Cliptmp.txt")
+	ELSE
+	   ? "Error while writing Cliptmp.txt"
+	   BREAK
+	ENDIF
+$LANG_RU$
+
+      Этот пример демонстрирует, как MEMOWRIT() может быть использована
+       совместно с MEMOREAD() для редактирования memo-поля внешним
+       редактором:
+
+       LOCAL cEditor := "MYEDIT.EXE"
+       USE Sales NEW
+       IF MEMOWRIT("Cliptmp.txt", Notes)
+	  RUN (cEditor + "Cliptmp.txt")
+	  REPLACE Notes WITH MEMOREAD("Cliptmp.txt")
+       ELSE
+	  ? "Ошибка записи Cliptmp.txt"
+	  BREAK
+       ENDIF
+$SEEALSO$
+  MEMOEDIT(),MEMOREAD()
+$END$

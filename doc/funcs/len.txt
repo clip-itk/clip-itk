@@ -1,0 +1,144 @@
+$FUNCNAME$
+  LEN()
+$CATEGORY$
+  ARRAY,STRING,NUMERIC,INFO
+$SUMMARY$
+   Return the length of a character string or the number of elements in an array
+$LANG_RU$
+   Определяет длину символьной строки или количество элементов в массиве.
+$SYNTAX$
+     LEN(<cString> | <aTarget>) --> nCount
+$LANG_RU$
+     LEN(<символьная строка> | <массив>) --> число
+$ARGUMENTS$
+     <cString> is the character string to count.
+
+     <aTarget> is the array to count.
+$LANG_RU$
+     <символьная строка> - символьная строка.
+
+     <массив> - массив.
+$RETURNS$
+     LEN() returns the length of a character string or the number of elements
+     in an array as an integer numeric value.  If the character string is a
+     null string ("") or the array is empty, LEN() returns zero.
+$LANG_RU$
+     LEN() возвращает длину символьной строки или количество элементов
+     в массиве в виде целого числа. Если символьная строка или массив
+     пустые, то LEN() возвращает ноль.
+$DESCRIPTION$
+     LEN() is a character and array function that returns the length of a
+     character string or the number of elements in an array.  With a
+     character string, each byte counts as one, including an embedded null
+     byte (CHR(0)).  By contrast, a null string ("") counts as zero.
+
+     For an array, LEN() returns the number of elements.  If the array is
+     multidimensional, subarrays count as one element.  This means that the
+     LEN() of a nested or multidimensional array simply returns the length of
+     the first dimension.  To determine the number of elements in other
+     dimensions, use LEN() on the subarrays as shown in the example below.
+     Note that nested arrays in xClipper need not have uniform dimensions.
+$LANG_RU$
+     LEN() является функцией обработки символьных строк и массивов,
+     которая возвращает длину символьной строки или количество элементов
+     в массиве. В символьной строке каждый байт, включая и нулевые символы
+     (CHR(0)), считается как один символ. Длина пустой строки ("") равна
+     0.
+
+     Для любого массива LEN() возвращает число элементов в нем. Если
+     массив является многомерным, то подмассивы считаются как один
+     элемент. Это означает, что для вложенного или многомерного массива
+     LEN() возвращает длину первого измерения. Чтобы определить число
+     элементов в других измерениях, надо использовать LEN() для
+     подмассивов, как показано в примере. Следует отметить, что вложенные
+     массивы в xClipper не обязательно должны иметь одинаковые измерения.
+$EXAMPLES$
+       These examples demonstrate LEN() with various arguments:
+
+	? LEN("string of characters")         // Result: 20
+	? LEN("")                              // Result: 0
+	? LEN(CHR(0))                        // Result: 1
+	//
+	LOCAL aTest[10]
+	? LEN(aTest)                           // Result: 10
+
+       This example creates a literal two-dimensional array, and then
+	returns the number of elements in the subarray contained in the first
+	element of the original array:
+
+	LOCAL aArray := { {1, 2}, {1, 2}, {1, 2} }
+	? LEN(aArray)                        // Result: 3
+	? LEN(aArray[1])                     // Result: 2
+
+       This example navigates a multidimensional array using LEN():
+
+     LOCAL aArray := { {1, 2}, {1, 2}, {1, 2} }
+	LOCAL nRow, nColumn, nRowCount, nColumnCount
+
+	//
+	nRowCount = LEN(aArray)
+	FOR nRow = 1 TO nRowCount
+	   nColumnCount = LEN(aArray[nRow])
+	   FOR nColumn = 1 TO nColumnCount
+	      ? nRow, nColumn, aArray[nRow][nColumn]
+	   NEXT
+	NEXT
+
+       In this example a function returns an array of numeric values
+	that describe the dimensions of a nested or multidimensional array.
+	The function assumes that the array has uniform dimensions:
+
+	FUNCTION Dimensions( aArray )
+	   LOCAL aDims := {}
+	   DO WHILE ( VALTYPE(aArray) == "A" )
+	      AADD( aDims, LEN(aArray) )
+	      aArray := aArray[1]
+	   ENDDO
+	   RETURN (aDims)
+$LANG_RU$
+      Этот пример демонстрирует работу функции LEN() с различными
+       параметрами:
+
+       ? LEN("Строка символов")        // Результат: 15
+       ? LEN("")                       // Результат: 0
+       ? LEN(CHR(0))                   // Результат: 1
+       //
+       LOCAL aTest[10]
+       ? LEN(aTest)                    // Результат: 10
+
+      Этот пример создает числовой двумерный массив и возвращает число
+       элементов в подмассиве, содержащемся в первом элементе исходного
+       массива:
+
+       LOCAL aArray:= {{1,2}, {1,2}, {1,2}}
+       ? LEN(aArray)                   // Результат: 3
+       ? LEN(aArray[1])                // Результат: 2
+
+      Этот пример показывает, как можно перемещаться по элементам
+       массива, используя LEN():
+
+       LOCAL aArray := { { 1, 2}, { 1, 2}, { 1, 2} }
+       LOCAL nRow, nColumn, nRowCount, nColumnCount
+       //
+       nRowCount = LEN(aArray)
+       FOR nRow = 1 TO nRowCount
+	  nColumnCount = LEN(aArray[nRow])
+	  FOR nColumn = 1 TO nColumnCount
+	     ? nRow, nColumn, aArray[nRow][nColumn]
+	  NEXT
+       NEXT
+
+      В этом примере представлена функция, которая возвращает массив
+       числовых величин, описывающих размеры вложенного или многомерного
+       массива.  Предполагается, что массив имеет одинаковые измерения:
+
+       FUNCTION Dimensions( aArray )
+	  LOCAL aDims := {}
+	  DO WHILE ( VALTYPE(aArray) == "A" )
+	     AADD( aDims, LEN(aArray) )
+	     aArray := aArray[1]
+	  ENDDO
+	  RETURN (aDims)
+$SEEALSO$
+  AADD(),ASIZE(),LTRIM(),RTRIM()
+$END$

@@ -1,0 +1,26 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-10-24 14:58+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/index.sgml:2
+msgid "LANG"
+msgstr "ru"
+
+#: template/./doc/index.sgml:3
+msgid "xBase and Clipper language compatible compiler"
+msgstr "Компилятор, совместимый с языками семейства xBase и Clipper"
+
+#: template/./doc/index.sgml:7
+msgid "Object oriented, CA-Clipper compatible compiler"
+msgstr "Объектно-ориентированный, CA-Clipper совместимый компилятор"

@@ -1,0 +1,41 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/license.sgml:1
+msgid "Clip license"
+msgstr ""
+
+#: template/./doc/license.sgml:3
+msgid "Clip license description"
+msgstr ""
+
+#: template/./doc/license.sgml:4
+msgid "Clip License Body"
+msgstr ""
+
+#: template/./doc/license.sgml:7
+msgid "Gnu Public License"
+msgstr ""
+
+#: template/./doc/license.sgml:8
+msgid "Gnu Public License Body"
+msgstr ""
+
+#: template/./doc/license.sgml:11
+msgid "The original text of the GPL license"
+msgstr ""
+
+#: template/./doc/license.sgml:13
+msgid "GNU General Public License"
+msgstr ""

@@ -133,6 +133,16 @@ $LANG_RU$
 $ENDMETHOD$
 
 $METHODNAME$
+	clear()
+$SUMMARY$
+	Clear toolbar.
+$LANG_RU$
+	Очистить панель инструментов.
+$SYNTAX$
+	clear()
+$ENDMETHOD$
+
+$METHODNAME$
 	getElement()
 $SUMMARY$
 	Get button object.

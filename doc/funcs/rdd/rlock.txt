@@ -1,0 +1,146 @@
+$FUNCNAME$
+  RLOCK()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Lock the current record in the active work area
+$LANG_RU$
+   Блокирует текущую запись в активной рабочей области.
+$SYNTAX$
+     RLOCK() --> lSuccess
+$LANG_RU$
+     RLOCK() --> признак завершения
+$RETURNS$
+     RLOCK() returns true (.T.) if the record lock is obtained; otherwise, it
+     returns false (.F.).
+$LANG_RU$
+     RLOCK() возвращает значение "истина"(.Т.), если блокирование текущей
+     записи прошло успешно и "ложь"(.F.) - в противном случае.
+$DESCRIPTION$
+     RLOCK() is a network function that locks the current record, preventing
+     other users from updating the record until the lock is released.
+     RLOCK() provides a shared lock, allowing other users read-only access to
+     the locked record while allowing only the current user to modify it.  A
+     record lock remains until another record is locked, an UNLOCK is
+     executed, the current database file is closed, or an FLOCK() is obtained
+     on the current database file.
+
+     For each invocation of RLOCK(), there is one attempt to lock the current
+     record, and the result is returned as a logical value.  An attempt to
+     obtain a record lock fails if another user currently has a file or
+     record lock on that particular record, or EXCLUSIVE USE of the database
+     file.  An attempt to RLOCK() in an empty database returns true (.T.).
+
+     By default, RLOCK() operates on the currently selected work area.  It
+     will operate on an unselected work area if you specify it as part of an
+     aliased expression (see example below).  This feature is useful since
+     RLOCK() does not automatically attempt a record lock for related files.
+
+     As a general rule, RLOCK() operates solely on the current record.  This
+     includes the following commands:
+
+       @...GET
+
+       DELETE (single record)
+
+       RECALL (single record)
+
+       REPLACE (single record)
+
+     Refer to the "Network Programming" chapter in the Programming and
+     Utilities Guide for more information.
+$LANG_RU$
+     RLOCK() - это функция работы в сети, применяемая для блокирования
+     текущей записи и запрещающая другим пользователям обновлять запись
+     до тех пор, пока она блокирована. RLOCK() осуществляет раздельную
+     блокировку, предоставляя другим пользователям право только считывать
+     данные блокированной записи и оставляя право изменять ее только за
+     текущим пользователем. Запись остается блокированной до тех пор,
+     пока не будет блокирована другая запись, выполнится команда UNLOCK,
+     закроется текущий файл базы данных или будет выполнена функция
+     FLOCK() для текущего файла базы данных.
+
+     При каждом вызове RLOCK() производится одна попытка блокировать
+     текущую запись и результат возвращается в виде логического значения.
+     Попытка блокировки считается неудачной, если в этот момент уже была
+     выполнена блокировка файла или этой записи другим пользователем, или
+     файл был открыт в режиме монопольного пользования (EXCLUSIVE USE).
+
+     По умолчанию RLOCK() обрабатывает текущую (активную) рабочую область.
+     Функция может обрабатывать и пассивную рабочую область, если ее
+     использовать как элемент выражения, уточненного алиасом (смотрите
+     пример ниже). Эта возможность особенно полезна, поскольку RLOCK()
+     автоматически не блокирует записи, логически связанные с записью
+     активной рабочей области.
+
+     Как правило, RLOCK() используется для работы с текущей записью. При
+     этом наиболее часто используемые команды:
+
+	@...GET
+
+	DELETE (единственная запись)
+
+	RECALL (единственная запись)
+
+	REPLACE (единственная запись)
+
+     За более подробной информацией обращайтесь к главе "Программирование
+     в сети" книги "Программирование и утилиты".
+$EXAMPLES$
+       This example deletes a record in a network environment, using
+	RLOCK():
+
+	USE Customer INDEX CustName SHARED NEW
+	SEEK "Smith"
+	IF FOUND()
+	   IF RLOCK()
+	      DELETE
+	      ? "Smith deleted"
+	   ELSE
+	      ? "Record in use by another"
+	   ENDIF
+	ELSE
+	   ? "Smith not in Customer file"
+	ENDIF
+	CLOSE
+
+       This example specifies RLOCK() as an aliased expression to
+	lock a record in an unselected work area:
+
+	USE Sales SHARED NEW
+	USE Customer SHARED NEW
+	//
+	IF !Sales->(RLOCK())
+	   ? "The current Sales record is in use by another"
+	ENDIF
+$LANG_RU$
+
+      Этот пример демонстрирует, как можно стереть записи в сетевой среде
+       с использованием RLOCK():
+
+       USE Customer INDEX CustName SHARED NEW
+       SEEK "Smith"
+       IF FOUND()
+	  IF RLOCK()
+	     DELETE
+	     ? "Smith удален"
+	  ELSE
+	     ? "Запись используется другим пользователем"
+	  ENDIF
+       ELSE
+	  ? "Smith не найден в базе Customer"
+       ENDIF
+       CLOSE
+
+      Этот пример показывает, как задать RLOCK() в качестве алиасного
+       выражения, чтобы блокировать запись в пассивной рабочей области:
+
+       USE Sales SHARED NEW
+       USE Customer SHARED NEW
+       //
+       IF !Sales->(RLOCK())
+	  ? "Текущая запись базы Sales используется другим пользователем"
+       ENDIF
+$SEEALSO$
+  FLOCK()
+$END$

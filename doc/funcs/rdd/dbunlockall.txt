@@ -1,0 +1,67 @@
+$FUNCNAME$
+  DBUNLOCKALL()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Release all locks for all work areas
+$LANG_RU$
+   Снимает все блокировки для всех рабочих областей.
+$SYNTAX$
+     DBUNLOCKALL() --> NIL
+$LANG_RU$
+     DBUNLOCKALL() --> NIL
+$RETURNS$
+     DBUNLOCKALL() always returns NIL.
+$LANG_RU$
+     DBUNLOCKALL() всегда возвращает NIL.
+$DESCRIPTION$
+     DBUNLOCKALL() releases any record or file locks obtained by the current
+     process for any work area.  DBUNLOCKALL() is only meaningful on a shared
+     database in a network environment.  It is equivalent to calling
+     DBUNLOCK() on every occupied work area.
+
+     DBUNLOCKALL() performs the same function as the UNLOCK ALL command.  For
+     more information, refer to the UNLOCK ALL command.
+$LANG_RU$
+     DBUNLOCKALL() снимает блокировки записи или всей базы данных,
+     установленные текущим процессом для всех рабочих областей.
+     DBUNLOCKALL() используется только для баз данных, открытых для
+     совместного использования в сетевой среде. Вызов функции
+     DBUNLOCKALL() эквивалентен вызову функции  DBUNLOCK() в каждой
+     рабочей области.
+
+     DBUNLOCKALL() выполняет те же функции, что и стандартная команда
+     UNLOCK ALL.  Более подробную информацию смотрите в команде UNLOCK
+     ALL.
+$EXAMPLES$
+       The following example marks a record for deletion if an
+	RLOCK() attempt is successful, then clears all locks in all work
+	areas:
+
+	cLast := "Winston"
+	USE Sales SHARED NEW VIA "DBFNTX"
+	DBSETINDEX( "SALEFNAM" )
+	DBSETINDEX( "SALELNAM" )
+	//
+	USE Colls SHARED NEW VIA "DBFNTX"
+	DBSETINDEX( "COLLFNAM" )
+	DBSETINDEX( "COLLLNAM" )
+	//
+	DBSELECTAREA( "Sales" )      // select "Sales" work area
+	//
+	IF ( Colls->(DBSEEK(cLast)) )
+	   IF Colls->( DELETED() )
+	      ? "Record deleted: ", Colls->( DELETED() )
+
+	      IF Colls->( RLOCK() )
+		 Colls->( DBRECALL() )
+		 ? "Record recalled..."
+	      ENDIF
+	   ENDIF
+	ELSE
+	   ? "Not found"
+	   DBUNLOCKALL()            // remove all locks in
+	ENDIF                        // all work areas
+$SEEALSO$
+  DBUNLOCK(),FLOCK(),RLOCK()
+$END$

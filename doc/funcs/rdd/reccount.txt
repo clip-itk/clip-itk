@@ -1,0 +1,76 @@
+$FUNCNAME$
+  RECCOUNT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Determine the number of records in the current database (.dbf) file
+$LANG_RU$
+   Определяет количество записей в текущем файле (.dbf)
+$SYNTAX$
+     RECCOUNT() | LASTREC() --> nRecords
+$LANG_RU$
+     RECCOUNT() | LASTREC() --> количество записей
+$RETURNS$
+     RECCOUNT() returns the number of physical records in the current
+     database file as an integer numeric value.  Filtering commands such as
+     SET FILTER or SET DELETED have no affect on the return value.
+     RECCOUNT() returns zero if there is no database file open in the current
+     work area.
+$LANG_RU$
+     RECCOUNT() возвращает количество физических записей в текущем файле
+     базы данных в виде целого числа. Команды установки фильтров, такие
+     как SET FILTER или SET DELETED, не влияют на возвращаемое значение.
+     RECCOUNT() возвращает ноль, если в текущей рабочей области нет
+     открытого файла базы данных.
+$DESCRIPTION$
+     RECCOUNT() is a database function that is a synonym for LASTREC().  By
+     default, RECCOUNT() operates on the currently selected work area.  It
+     will operate on an unselected work area if you specify it as part of an
+     aliased expression (see example below).  Note that RECCOUNT() is a
+     compatibility function.  LASTREC() should be used in its place.
+$LANG_RU$
+     RECCOUNT() - функция обработки баз данных, являющаяся синонимом
+     функции LASTREC(). По умолчанию RECCOUNT() обрабатывает файл активной
+     рабочей области. Однако при помощи LASTREC() можно обрабатывать и
+     файлы пассивных рабочих областей. Для этого необходимо использовать
+     ее в качестве элемента выражения, уточненного алиасом (смотрите пример
+     ниже).
+$EXAMPLES$
+       This example illustrates the relationship between COUNT and
+	RECCOUNT():
+
+	USE Sales NEW
+	? RECCOUNT()                      // Result: 84
+	//
+	SET FILTER TO Salesman = "1001"
+	COUNT TO nRecords
+	? nRecords                        // Result: 14
+	? RECCOUNT()                      // Result: 84
+
+       This example uses an aliased expression to access the number
+	of records in an unselected work area:
+
+	USE Sales NEW
+	USE Customer NEW
+	? RECCOUNT(), Sales->(RECCOUNT())
+$LANG_RU$
+      Этот пример иллюстрирует сходство и различие между командой COUNT и
+       функцией RECCOUNT():
+
+       USE Sales NEW
+       ? RECCOUNT()                    // Результат: 84
+       //
+       SET FILTER TO Salesman = "1001"
+       COUNT TO nRecords
+       ? nRecords                      // Результат: 14
+       ? RECCOUNT()                    // Результат: 84
+
+      Этот пример показывает, как получить доступ к записям в пассивной
+       рабочей области с помощью выражения, уточненного алиасом:
+
+       USE Sales NEW
+       USE Customer NEW
+       ? RECCOUNT(), Sales->(RECCOUNT())
+$SEEALSO$
+  EOF(),LASTREC()
+$END$

@@ -1,0 +1,87 @@
+$FUNCNAME$
+  LOG()
+$CATEGORY$
+  NUMERIC
+$SUMMARY$
+   Calculate the natural logarithm of a numeric value
+$LANG_RU$
+   Вычисляет натуральный логарифм числовой величины.
+$SYNTAX$
+     LOG(<nExp>) --> nNaturalLog
+$LANG_RU$
+     LOG(<арифметическое выражение>) --> натуральный логарифм
+$ARGUMENTS$
+     <nExp> is a numeric value greater than zero to be converted to its
+     natural logarithm.
+$LANG_RU$
+     <арифметическое выражение> - положительное числовое выражение.
+$RETURNS$
+     LOG() returns the natural logarithm as a numeric value.  If <nExp> is
+     less than or equal to zero, LOG() returns a numeric overflow (displayed
+     as a row of asterisks).
+$LANG_RU$
+     LOG() возвращает значение натурального логарифма в виде числа.  Если
+     значение аргумента <арифметическое выражение> меньше или равно нулю,
+     LOG() возвращает строку звездочек (*), означающую числовое
+     переполнение.
+$DESCRIPTION$
+     LOG() is a numeric function that calculates the natural logarithm of a
+     number and is the inverse of EXP().  The natural logarithm has a base of
+     e which is approximately 2.7183.  The LOG() function returns x in the
+     following equation,
+
+     e**x = y
+
+     where y is the numeric expression used as the LOG() argument (i.e.,
+     LOG(y) = x).  Due to mathematical rounding, the values returned by LOG()
+     and EXP() may not agree exactly (i.e., EXP(LOG(x)) may not always equal
+     x).
+$LANG_RU$
+     LOG() является числовой функцией, которая вычисляет натуральный
+     логарифм и обратна по действию функции EXP(). Основанием натурального
+     логарифма является e = 2.7183. В выражении, приведенном ниже,
+     функция LOG() возвратит x:
+
+     e ** x = y
+
+     где y - числовое выражение, используемое как аргумент функции LOG()
+     (т.е. LOG(y) = x). Из-за округлений в вычислениях возвращаемые
+     функциями LOG() и EXP() значения могут точно не совпадать (т.е.
+     EXP(LOG(x)) не всегда будет равен x).
+$EXAMPLES$
+       These examples demonstrate various results of LOG():
+
+	? LOG(10)                  // Result: 2.30
+	? LOG(10 * 2)            // Result: 3.00
+	? EXP(LOG(1))            // Result: 1.00
+	? LOG(2.71)               // Result: 1.00
+
+       This example is a user-defined function that returns the base
+	10 logarithm:
+
+	FUNCTION Log10( nNumber )
+	IF nNumber > 0
+	   RETURN LOG(nNumber)/LOG(10)
+	ELSE
+	   RETURN NIL
+	ENDIF
+$LANG_RU$
+      Следующие примеры иллюстрируют различные результаты LOG() :
+
+       ? LOG(10)              // Результат: 2.30
+       ? LOG(10 * 2)          // Результат: 3.00
+       ? EXP(LOG(1))          // Результат: 1.00
+       ? LOG(2.71)            // Результат: 1.00
+
+      В этом примере представлена функция пользователя, которая
+       возвращает логарифм по основанию 10:
+
+       FUNCTION Log10( nNumber )
+	  IF nNumber > 0
+	     RETURN LOG(nNumber) / LOG(10)
+	  ELSE
+	     RETURN NIL
+	  ENDIF
+$SEEALSO$
+  EXP()
+$END$

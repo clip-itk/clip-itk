@@ -1,0 +1,153 @@
+$FUNCNAME$
+  FOUND()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Determine if the previous search operation succeeded
+$LANG_RU$
+   Определяет, успешна ли предшествующая операция поиска.
+$SYNTAX$
+     FOUND() --> lSuccess
+$LANG_RU$
+     FOUND() --> признак завершения операции поиска
+$RETURNS$
+     FOUND() returns true (.T.) if the last search command was successful;
+     otherwise, it returns false (.F.).
+$LANG_RU$
+     FOUND() возвращает значение "истина" (.Т.), если последняя команда
+     поиска была успешной, в противном случае - "ложь" (.F.).
+$DESCRIPTION$
+     FOUND() is a database function that determines whether a search
+     operation (i.e., FIND, LOCATE, CONTINUE, SEEK, or SET RELATION)
+     succeeded.  When any of these commands are executed, FOUND() is set to
+     true (.T.) if there is a match; otherwise, it is set to false (.F.).
+
+     If the search command is LOCATE or CONTINUE, a match is the next record
+     meeting the scope and condition.  If the search command is FIND, SEEK or
+     SET RELATION, a match is the first key in the controlling index that
+     equals the search argument.  If the key value equals the search
+     argument, FOUND() is true (.T.); otherwise, it is false (.F.).
+
+     The value of FOUND() is retained until another record movement command
+     is executed.  Unless the command is another search command, FOUND() is
+     automatically set to false (.F.).
+
+     Each work area has a FOUND() value.  This means that if one work area
+     has a RELATION set to a child work area, querying FOUND() in the child
+     returns true (.T.) if there is a match.
+
+     By default, FOUND() operates on the currently selected work area.  It
+     can be made to operate on an unselected work area by specifying it
+     within an aliased expression (see example below).
+
+     FOUND() will return false (.F.) if there is no database open in the
+     current work area.
+$LANG_RU$
+     FOUND() является функцией обработки баз данных, позволяющей
+     определить, является ли операция поиска (выполняемая командами
+     FIND, LOCATE, CONTINUE, SEEK, SET RELATION) успешной.
+     По выполнении какой-либо из этих команд, FOUND() устанавливает
+     значение "истина"(.Т.), если поиск был успешным; в противном
+     случае она возвращает значение "ложь"(.F.).
+
+     Если командами поиска являются LOCATE или CONTINUE, их завершение
+     считается успешным, если они встретят следующую запись, совпадающую
+     с условием поиска в заданной группе. Если командами поиска являются
+     FIND, SEEK или SET RELATION, их завершение считается успешным, когда
+     будет найден первый ключ в управляющем индексе, совпадающий с
+     заданным аргументом поиска. Если команда SET SOFTSEEK устанавливает
+     режим ON, указатель записи перемещается на запись, значение ключа
+     которой больше, чем аргумент поиска или равно ему.
+     Если значение ключа равно аргументу поиска, FOUND() принимает
+     значение "истина"(.Т.); в противном случае, она принимает значение
+     "ложь"(.F.).
+
+     Значение функции FOUND() сохраняется до тех пор, пока не выполнится
+     другая команда по перемещению указателя записи. Если эта команда не
+     является командой поиска, функция FOUND() автоматически принимает
+     значение "ложь"(.F.).
+
+     Для каждой рабочей области можно получить значение функции FOUND().
+     Это означает, что если какая-либо рабочая область связана отношением
+     с дочерней рабочей областью при помощи команды SET RELATION, запрос
+     FOUND() для дочерней рабочей области возвратит значение "истина"(.Т.)
+     в том случае, если поиск был успешным.
+
+     По умолчанию функция FOUND() анализирует активную рабочую область.
+     Однако для анализа необходимо включить ее в уточненное алиасом
+     выражение (см. пример ниже).
+$EXAMPLES$
+       This example illustrates the behavior of FOUND() after a
+	record movement command:
+
+	USE Sales INDEX Sales
+	? INDEXKEY(0)              // Result: SALESMAN
+	SEEK "1000"
+	? FOUND()                  // Result: .F.
+	SEEK "100"
+	? FOUND()                  // Result: .T.
+	SKIP
+	? FOUND()                  // Result: .F.
+
+       This example tests a FOUND() value in an unselected work area
+	using an aliased expression:
+
+	USE Sales INDEX Sales NEW
+	USE Customer INDEX Customer NEW
+	SET RELATION TO CustNum INTO Sales
+	//
+	SEEK "Smith"
+	? FOUND(), Sales->(FOUND())
+
+       This code fragment processes all Customer records with the key
+	value "Smith" using FOUND() to determine when the key value changes:
+
+	USE Customer INDEX Customer NEW
+	SEEK "Smith"
+	DO WHILE FOUND()
+	   .
+
+	   . <statements>
+	   .
+	   SKIP
+	   LOCATE REST WHILE Name == "Smith"
+	ENDDO
+$LANG_RU$
+      В следующем примере иллюстрируется поведение FOUND() после команд
+       перемещения указателя записи:
+
+       USE Sales INDEX Sales
+       ? INDEXKEY(0)                // Результат: SALESMAN
+       SEEK "1000"
+       ? FOUND()                    // Результат: .F.
+       SEEK "100"
+       ? FOUND()                    // Результат: .T.
+       SKIP
+       ? FOUND()                    // Результат: .F.
+
+      В следующем примере показано использование FOUND() для анализа в
+       пассивной рабочей области с помощью выражения, уточненного алиасом:
+
+       USE Sales INDEX Sales NEW
+       USE Customer INDEX Customer NEW
+       SET RELATION TO CustNum INTO Sales
+       //
+       SEEK "Smith"
+       ? FOUND(), Sales->(FOUND())
+
+      В примере показано, как фрагмент кода обрабатывает все записи
+       Customer со значением ключа "Smith", используя FOUND(), чтобы
+       определить, когда меняется значение ключа:
+
+       USE Customer INDEX Customer NEW
+       SEEK "Smith"
+       DO WHILE FOUND()
+	  .
+	  . <операторы>
+	  .
+	  SKIP
+	  LOCATE REST WHILE Name = "Smith"
+       ENDDO
+$SEEALSO$
+  EOF()
+$END$

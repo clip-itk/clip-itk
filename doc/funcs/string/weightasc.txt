@@ -1,0 +1,50 @@
+$FUNCNAME$
+	WEIGHTASC()
+$CATEGORY$
+	INFO,STRING,DATABASE
+$SUMMARY$
+	Returns the weight characterics of character.
+$LANG_RU$
+	Возвращает весовую характеристику символа.
+$SYNTAX$
+	WEIGHTASC(<sString>) 	--> <nCode>
+$ARGUMENTS$
+	<sString>	String, is the source string.
+$LANG_RU$
+	<sString>	String, исходная строка.
+$RETURNS$
+     Returns the numeric value <nCode> - weight of character into weight table.
+$LANG_RU$
+     Возвращает число <nCode> - вес символа в весовой таблице.
+$DESCRIPTION$
+
+	WEIGHTASC() returns the numeric value <nCode> - weight first character of
+	source string <sString> into weigth table. This code characterize the position
+	character for comparing operation.
+$LANG_RU$
+
+	WEIGHTASC() возвращает число <nCode> - вес первого симвода исходной
+	строки <sString> в весовой таблице. Эта код характеризует позицию символа в
+	операциях сравнения.
+$EXAMPLES$
+
+str := "asdf"
+wa := WEIGHTASC(str) 	// --> 66
+
+? WEIGHTCHR(wa)		// --> a
+? WEIGHTCHR(wa+1)	// --> b
+? WEIGHTCHR(wa+10)	// --> k
+
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформ
+$SEEALSO$
+	WEIGHTTABLE(), WEIGHTCHR()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

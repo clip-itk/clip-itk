@@ -1,0 +1,421 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/rdd.sgml:0
+msgid "Replaceable Database Drivers (RDD)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:2
+msgid "Overview"
+msgstr ""
+
+#: template/./doc/rdd.sgml:4
+msgid ""
+"\n"
+"RDD is an abbreviation for Replaceable Database Drivers, that are\n"
+"used for processing a particular database format. RDD is an intermediate\n"
+"layer, that translates CLIP API calls to the low level file operations.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:8
+msgid ""
+"\n"
+"RDD architecture used in CLIP differs from those used in Clipper.\n"
+"CLIP RDD (in conception of Clipper) consist of three different\n"
+"<emphasis>subdrivers</emphasis>: table driver, index driver and memo "
+"driver.\n"
+"These drivers can be easily combined in any way.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:13
+msgid ""
+"\n"
+"Besides, CLIP have additional developer interface - a set of RDD*()\n"
+"functions, that operate with the database <emphasis>descriptors</emphasis>,\n"
+"instead of <emphasis>work areas</emphasis>.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:17
+msgid ""
+"\n"
+"Some of the most interesting features of CLIP RDD subsystem are listed "
+"below:\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:21
+msgid ""
+"\n"
+"query optimizer (Rushmore/MachSIx like technology)\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:24
+msgid ""
+"\n"
+"VARCHAR fields (compact storing of strings with length up to 64K)\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:27
+msgid ""
+"\n"
+"VARIANT fields, allowing to store data of any basic XBase type\n"
+"(CHARACTER, NUMERIC, DATE, DATETIME or LOGIC)\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:31
+msgid ""
+"\n"
+"storing data of any type (including objects) in memo-fields\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:34
+msgid ""
+"\n"
+"Roll-Your-Own filters\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:37
+msgid ""
+"\n"
+"MEMOPACK and Flexible FPT (reusing discarded blocks, that reduces memo "
+"bloat)\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:40
+msgid ""
+"\n"
+"support of \"scoped\" SET RELATION (only \"right\" child table records are "
+"visible)\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:43
+msgid ""
+"\n"
+"Roll-Your-Own indexes\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:46
+msgid ""
+"\n"
+"multiple record locking\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:49
+msgid ""
+"\n"
+"database event triggers\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:52
+msgid ""
+"\n"
+"record edit rollbacks\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:55
+msgid ""
+"\n"
+"\"temporary\" tables (that are deleted on CLOSE automatically)\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:60
+msgid "RDDs peculiarities"
+msgstr ""
+
+#: template/./doc/rdd.sgml:62
+msgid ""
+"\n"
+"There are following subdrivers:\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:66
+msgid ""
+"\n"
+"table drivers: DBF, FOX and VFP\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:69
+msgid ""
+"\n"
+"index drivers: NTX, CTX, CDX, IDX\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:72
+msgid ""
+"\n"
+"memo drivers: DBT, FPT\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:76
+msgid ""
+"\n"
+"The following RDDs (in conception of Clipper) consist of these subdrivers:\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:92
+msgid "synonym for DBFCDX"
+msgstr ""
+
+#: template/./doc/rdd.sgml:99
+msgid "Table drivers"
+msgstr ""
+
+#: template/./doc/rdd.sgml:101
+msgid ""
+"\n"
+"CLIP discerns the type of table to be opened using file signature,\n"
+"i.e. the table is opened successfully even if specified table RDD\n"
+"is different. But that does not apply to memo files and indexes.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:105
+msgid ""
+"\n"
+"DBF and FOX drivers are mostly the same. The only difference is\n"
+"file signature for tables with memo (0xF5 with FOX, 0x83 with DBF).\n"
+"VFP driver operates with Visual FoxPro tables. VFP table have\n"
+"different header, and provides some possibilities that are missing\n"
+"in usual DBF format, e.g. possibility of creating binary fields and\n"
+"nullable fields (5th and 6th elements in the field description,\n"
+"used in DBCREATE() and DBSTRUCT()).\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:113
+msgid ""
+"\n"
+"All table drivers support all field types, described below.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:115
+msgid "Field types"
+msgstr ""
+
+#: template/./doc/rdd.sgml:119
+msgid "Field type"
+msgstr ""
+
+#: template/./doc/rdd.sgml:120
+msgid "Identifier(s)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:121
+msgid "Size in table"
+msgstr ""
+
+#: template/./doc/rdd.sgml:122
+msgid "Description"
+msgstr ""
+
+#: template/./doc/rdd.sgml:130
+msgid "Character strings"
+msgstr ""
+
+#: template/./doc/rdd.sgml:134
+msgid ""
+"\n"
+"VARCHAR type allows to store character data of any size. At that,\n"
+"the first <![CDATA[<size_of_field>]]> - 6 bytes are stored in .DBF file "
+"itself,\n"
+"remaining are stored in MEMO file. In the time of indexing,\n"
+"only those bytes stored in .DBF are used.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:140
+msgid "Borrowed from SIx library"
+msgstr ""
+
+#: template/./doc/rdd.sgml:143
+msgid "Variable length character strings"
+msgstr ""
+
+#: template/./doc/rdd.sgml:148
+msgid "Borrowed from VFP"
+msgstr ""
+
+#: template/./doc/rdd.sgml:151
+msgid "Integers or fractions"
+msgstr ""
+
+#: template/./doc/rdd.sgml:157
+msgid "Monetary amounts"
+msgstr ""
+
+#: template/./doc/rdd.sgml:163
+msgid "Double precision floating point numbers"
+msgstr ""
+
+#: template/./doc/rdd.sgml:170
+msgid "Integer values"
+msgstr ""
+
+#: template/./doc/rdd.sgml:175
+msgid "8 (3 bytes with V(3))"
+msgstr ""
+
+#: template/./doc/rdd.sgml:176
+msgid "Chronological data consisting of year, month, day"
+msgstr ""
+
+#: template/./doc/rdd.sgml:182
+msgid "Chronological data consisting of year, month, day and time"
+msgstr ""
+
+#: template/./doc/rdd.sgml:188
+msgid "Boolean values of true or false"
+msgstr ""
+
+#: template/./doc/rdd.sgml:194
+msgid "Data of any type"
+msgstr ""
+
+#: template/./doc/rdd.sgml:196
+msgid "Available with FPT memo driver, only CHARACTER with DBT"
+msgstr ""
+
+#: template/./doc/rdd.sgml:198 template/./doc/rdd.sgml:210
+msgid " with no size limits"
+msgstr ""
+
+#: template/./doc/rdd.sgml:202
+msgid ""
+"\n"
+"BLOB type is always binary, regardless of binary status in field "
+"description,\n"
+"passed to DBCREATE() function.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:208
+msgid "Binary data of any type"
+msgstr ""
+
+#: template/./doc/rdd.sgml:214
+msgid ""
+"\n"
+"VARIANT type allows to store the data of any basic xBase type. Character\n"
+"strings can be of size <![CDATA[<size_of_field>]]> - 2 (two bytes are\n"
+"reserved for storing type and length). VARIANT fields can be indexed.\n"
+"The order of values of various types in index is as the following:\n"
+"CHARACTER, LOGICAL, DATE, DATETIME, NUMERIC.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:222
+msgid "Data of any xBase type (CHARACTER, NUMERIC, DATE, DATETIME or LOGICAL)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:229
+msgid "Index drivers"
+msgstr ""
+
+#: template/./doc/rdd.sgml:231
+msgid ""
+"\n"
+"The following table summarizes the availability of key features across\n"
+"index drivers.\n"
+msgstr ""
+
+#: template/./doc/rdd.sgml:234
+msgid "Index features summary"
+msgstr ""
+
+#: template/./doc/rdd.sgml:238
+msgid "Item"
+msgstr ""
+
+#: template/./doc/rdd.sgml:247
+msgid "Order management (tag support)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:248 template/./doc/rdd.sgml:249
+#: template/./doc/rdd.sgml:280 template/./doc/rdd.sgml:281
+#: template/./doc/rdd.sgml:296
+msgid "No"
+msgstr ""
+
+#: template/./doc/rdd.sgml:248 template/./doc/rdd.sgml:249
+#: template/./doc/rdd.sgml:260 template/./doc/rdd.sgml:261
+#: template/./doc/rdd.sgml:264 template/./doc/rdd.sgml:265
+#: template/./doc/rdd.sgml:268 template/./doc/rdd.sgml:269
+#: template/./doc/rdd.sgml:272 template/./doc/rdd.sgml:273
+#: template/./doc/rdd.sgml:276 template/./doc/rdd.sgml:277
+#: template/./doc/rdd.sgml:280 template/./doc/rdd.sgml:281
+#: template/./doc/rdd.sgml:292 template/./doc/rdd.sgml:293
+#: template/./doc/rdd.sgml:297
+msgid "Yes"
+msgstr ""
+
+#: template/./doc/rdd.sgml:251
+msgid "Number of orders (tags) per file"
+msgstr ""
+
+#: template/./doc/rdd.sgml:255
+msgid "Number of order bags (files) per work area"
+msgstr ""
+
+#: template/./doc/rdd.sgml:256 template/./doc/rdd.sgml:257
+msgid "No limit"
+msgstr ""
+
+#: template/./doc/rdd.sgml:259
+msgid "Conditional indexes (FOR clause)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:263
+msgid "Temporary (partial) indexes (WHILE clause)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:267
+msgid "Descending via DESCENDING clause"
+msgstr ""
+
+#: template/./doc/rdd.sgml:271
+msgid "Unique via the UNIQUE clause"
+msgstr ""
+
+#: template/./doc/rdd.sgml:275
+msgid "EVAL and EVERY clause support"
+msgstr ""
+
+#: template/./doc/rdd.sgml:279
+msgid "Structural indexes"
+msgstr ""
+
+#: template/./doc/rdd.sgml:283
+msgid "Maximum key expression length (bytes)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:287
+msgid "Maximum FOR condition length (bytes)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:291
+msgid "Scoped relations support"
+msgstr ""
+
+#: template/./doc/rdd.sgml:295
+msgid "Filter and FOR clause optimization (MachSIx/Rushmore technology)"
+msgstr ""
+
+#: template/./doc/rdd.sgml:302
+msgid "Memo drivers"
+msgstr ""
+
+#: template/./doc/rdd.sgml:304
+msgid ""
+"\n"
+"There are two memo drivers DBT and FPT. DBT memo files are used with\n"
+"DBFNTX and DBFCTX RDDs. DBT file format is fully compatible with Clipper.\n"
+"FPT memo files used with DBFCDX and DBFIDX RDDs have more powerful format,\n"
+"that can store not only textual data, but any other data. FPT\n"
+"file can store any CLIP data type, including objects, binary data\n"
+"(e.g. images), etc.\n"
+msgstr ""

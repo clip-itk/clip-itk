@@ -606,7 +606,7 @@ clip_GTK_TREEVIEWINSERTCOLUMNWITHATTRIBUTES(ClipMachine * cm)
 
 	LOCALE_TO_UTF(title);
 	col = gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(ctree->widget),
-		position, title,
+		(position<0?position:position-1), title,
 		GTK_CELL_RENDERER(ccell->object),
 		attrs[0],   attrn[0],   attrs[1],  attrn[1],
 		attrs[2],   attrn[2],   attrs[3],  attrn[3],

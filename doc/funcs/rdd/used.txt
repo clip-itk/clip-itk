@@ -1,0 +1,68 @@
+$FUNCNAME$
+  USED()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Determine whether a database file is in USE
+$LANG_RU$
+   Определяет, есть ли в наличии открытый файл базы данных.
+$SYNTAX$
+     USED() --> lDbfOpen
+$LANG_RU$
+     USED() --> признак наличия открытой базы данных
+$RETURNS$
+     USED() returns true (.T.) if there is a database file in USE; otherwise,
+     it returns false (.F.).
+$LANG_RU$
+     USED () возвращает значение "истина" (.Т.), если существует открытый
+     файл базы данных; в противном случае она возвращает значение "ложь"
+     (.F.).
+$DESCRIPTION$
+     USED() is a database function that determines whether there is a
+     database file in USE in a particular work area.  By default, USED()
+     operates on the currently selected work area.  It will operate on an
+     unselected work area if you specify it as part of an aliased expression.
+$LANG_RU$
+     USED () - функция работы с базами данных, которая используется для
+     определения наличия открытого файла базы данных в текущей (активной)
+     рабочей области. По умолчанию USED() анализирует текущую рабочую
+     область.  Однако функция USED() может анализировать и пассивные
+     рабочие области, если ее использовать как элемент выражения,
+     уточненного алиасом.  ( Смотри пример ниже ).
+$EXAMPLES$
+       This example determines whether a database file is in USE in
+	the current work area:
+
+	USE Customer NEW
+	? USED()               // Result: .T.
+	CLOSE
+	? USED()               // Result: .F.
+
+
+$LANG_RU$
+
+      Этот пример определяет, есть ли открытый файл базы данных в текущей
+       рабочей области:
+
+       USE Customer NEW
+       ? USED()                                 // Результат .Т.
+       CLOSE
+       ? USED()                                 // Результат .F.
+
+      Этот пример демонстрирует работу функции USED() в выражении,
+       уточненном алиасом:
+
+       USE Customer NEW
+       USE Sales NEW
+       USE Invoices NEW
+       SELECT O
+       //
+       ? Customer --> (USED())                  // Результат: .Т.
+       ? Sales --> (USED())                     // Результат: .Т.
+       ? Invoices --> (USED())                  // Результат: .Т.
+       ? BackOrder --> (USED())                 // Результат: .F.
+
+
+$SEEALSO$
+  SELECT(),ALIAS()
+$END$

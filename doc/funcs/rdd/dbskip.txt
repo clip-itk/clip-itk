@@ -1,0 +1,64 @@
+$FUNCNAME$
+  DBSKIP()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Move relative to the current record
+$LANG_RU$
+   Перемещает указатель относительно текущей записи.
+$SYNTAX$
+     DBSKIP([<nRecords>]) --> NIL
+$LANG_RU$
+     DBSKIP(<кол-во записей>) --> NIL
+$ARGUMENTS$
+     <nRecords> is the number of logical records to move, relative to the
+     current record.  A positive value means to skip forward, and a negative
+     value means to skip backward.  If <nRecords> is omitted, a value of 1 is
+     assumed.
+$LANG_RU$
+     <кол-во записей> - число логических записей, на которое должен
+     переместится указатель относительно текущей записи. Положительное
+     значение означает перемещение вперед, отрицательное - назад. Если
+     <кол-во записей> опущено, то подразумевается значение 1.
+$RETURNS$
+     DBSKIP() always returns NIL.
+$LANG_RU$
+     DBSKIP() всегда возвращает NIL.
+$DESCRIPTION$
+     DBSKIP() moves either forward or backward relative to the current
+     record.  Attempting to skip forward beyond the last record positions the
+     work area to LASTREC() + 1 and EOF() returns true (.T.).  Attempting to
+     skip backward beyond the first record positions the work area to the
+     first record and BOF() returns true (.T.).
+
+     DBSKIP() performs the same function as the standard SKIP command.  For
+     more information, refer to the SKIP command.
+$LANG_RU$
+     DBSKIP() перемещает указатель вперед или назад относительно текущей
+     записи. При попытке передвинуть указатель вперед за последнюю запись
+     указатель установится в позиции LASTREC()+1, и функция EOF()
+     возвратит значение "истина" (.T.). При попытке передвинуть указатель
+     назад за первую запись указатель установится на первую запись, и
+     функция BOF() возвратит значение "истина" (.T.).
+
+     DBSKIP() выполняет те же функции, что и стандартная команда SKIP.
+     Более подробную информацию смотрите в команде SKIP.
+$EXAMPLES$
+       This example demonstrates a typical use of the DBSKIP()
+	function:
+
+	DBGOTOP()
+
+	DO WHILE ( !EOF() )
+	   ? FIELD->Name
+	   DBSKIP()
+	ENDDO
+$LANG_RU$
+	  DBGOTOP()
+	  WHILE ( !EOF() )
+	     ? FIELD->Name
+	     DBSKIP()
+	  END
+$SEEALSO$
+  BOF(),DBGOBOTTOM(),DBGOTOP(),DBSEEK(),EOF()
+$END$

@@ -1,0 +1,48 @@
+$FUNCNAME$
+   fn_isNet()
+$CATEGORY$
+   Miscellaneous
+$ONELINER$
+   Determine if user is on functioning NetWare node
+$SYNTAX$
+
+   fn_isNet() -> nStatus
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   <nStatus>, a numeric, which will be one of:
+
+	 0     User has shell loaded and is logged in
+	 1     User hasn't loaded IPX
+	 2     User hasn't loaded a shell
+	 3     User is not attached to a server
+	 4     User has no connection id (?)
+	 5     User is not logged in
+
+
+$DESCRIPTION$
+
+   fn_isNet() provides a simple way to determine if the user
+   running your program is logged in.  if fn_isNet() == 0, 
+   she's in.
+
+$EXAMPLES$
+
+   if !fn_isNet()
+      qout( "This program requires Novell NetWare." )
+   endif
+
+   if fn_isNet()
+      qout( "This is not a network version!" )
+      ft_reboot()   // Take that!
+   endif
+
+$SEEALSO$
+   fn_netver(), fn_is3x()
+$Author: clip $
+Michael Landesman
+$END$

@@ -1,0 +1,98 @@
+$FUNCNAME$
+  SETCURSOR()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Set the cursor shape
+$LANG_RU$
+   Устанавливает форму курсора.
+$SYNTAX$
+     SETCURSOR([<nCursorShape>]) --> nCurrentSetting
+$LANG_RU$
+     SETCURSOR([<форма курсора>]) --> текущая форма курсора
+$ARGUMENTS$
+     <nCursorShape> is a number indicating the shape of the cursor.  For
+     simpler coding, the Setcurs.ch header file provides descriptive names
+     for the various cursor shapes as shown in the table below:
+
+     <PRE> Cursor Shapes
+     ------------------------------------------------------------------------
+     Shape               Value     Setcurs.ch
+     ------------------------------------------------------------------------
+     None                0         SC_NONE
+     Underline           1         SC_NORMAL
+     Lower half block    2         SC_INSERT
+     Full block          3         SC_SPECIAL1
+     Upper half block    4         SC_SPECIAL2
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     <форма курсора> - число, указывающее форму курсора. Для того,
+     чтобы облегчить задание формы курсора, используется файл описаний
+     Setcurs.ch, который присваивает описательные имена различным формам
+     курсора, как показано в таблице :
+
+     <PRE> Формы курсора.
+     ---------------------------------------------------------------------
+     Форма                     Значение          Setcurs.ch
+     ---------------------------------------------------------------------
+     Нет                          0              SC_NONE
+     Подчерк                      1              SC_NORMAL
+     Нижний полублок              2              SC_INSERT
+     Блок                         3              SC_SPECIAL1
+     Верхний полублок             4              SC_SPECIAL2
+     ---------------------------------------------------------------------
+     </PRE>
+$RETURNS$
+     SETCURSOR() returns the current cursor shape as a numeric value.
+$LANG_RU$
+     SETCURSOR() возвращает текущую форму курсора в виде числа.
+$DESCRIPTION$
+     SETCURSOR() is an environment function that controls the shape of the
+     screen cursor.  The actual shape is dependent on the current screen
+     driver.  The specified shapes appear on IBM PC and compatible computers.
+     On other computers, the appearance may differ for each value specified.
+
+     SETCURSOR(0) is the same as SET CURSOR OFF, and any positive integer
+     value of <nCursorShape> less than 5 is the same as SET CURSOR ON.  The
+     cursor will display as the selected shape.
+$LANG_RU$
+     SETCURSOR() является функцией среды, которая управляет формой
+     экранного курсора. Фактическая форма зависит от текущего драйвера
+     экрана. Указанные формы - это те, которые гарантированно изображаются
+     на IBM-PC и совместимых с ним машинах. На других ЭВМ изображение
+     может отличаться для каждого задаваемого значения.
+
+     SETCURSOR(0) - то же самое, что SET CURSOR OFF, а SETCURSOR(1) - то
+     же, что SET CURSOR ON.
+$EXAMPLES$
+       This example uses SETCURSOR() to turn on a full block cursor
+	for the subsequent READ.  When the READ terminates, SETCURSOR() turns
+	off the cursor:
+
+	#include "Setcurs.ch"
+	//
+	USE Customer NEW
+	@ 10, 10 GET Customer->Name
+	@ 11, 10 GET Customer->Phone
+	//
+	SETCURSOR(SC_SPECIAL1)        // Change cursor to a block
+	READ
+	SETCURSOR(SC_NONE)            // Turn off cursor
+$LANG_RU$
+      Этот пример показывает использование SETCURSOR() для включения
+       курсора в форме блока для выполнения последующей команды READ.
+       Когда READ завершается, SETCURSOR() отключает курсор :
+
+       #include "Setcurs.ch"
+       //
+       USE Customer NEW
+       @ 10, 10 GET Customer->Name
+       @ 11, 10 GET Customer->Phone
+       //
+       SETCURSOR(SC_SPECIAL)        // Устанавливает курсор - блок
+       READ
+       SETCURSOR(SC_NONE)           // Отключает курсор
+$SEEALSO$
+  SETPOS()
+$END$

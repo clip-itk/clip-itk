@@ -1,0 +1,39 @@
+$FUNCNAME$
+	DOSPATH()
+$CATEGORY$
+	FILE/IO, DISKUTILS
+$SUMMARY$
+	Returns file name as DOS file name.
+$LANG_RU$
+	Возвращает имя файла как в DOS системах.
+$SYNTAX$
+     DOSPATH(<sUnixFileName>) 	--> <sDosFileName>
+$ARGUMENTS$
+     <sUnixFileName>	String, is the file name in UNIX style.
+$LANG_RU$
+     <sUnixFileName>	String, имя файла в формате UNIX систем.
+$RETURNS$
+     Returns file name in DOS style.
+$LANG_RU$
+	Возвращает имя файла как в DOS системах.
+$DESCRIPTION$
+     DOSPATH() uses specified in CLIP function <link linkend="functionSET">SET("C", ...)</link>
+     values and returns UNIX file name as DOS file name.
+$LANG_RU$
+     DOSPATH() использует определенные CLIP функцией <link linkend="functionSET">SET("C", ...)</link>
+     значения и возвращает UNIX имя файла в стиле DOS.
+$EXAMPLES$
+
+SET("C:", "/usr/home/user1")
+sUnixFileName := "/usr/home/user1/test.prg"
+
+? DOSPATH(sUnixFileName) 	// --> C:\test.prg
+
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

@@ -1,0 +1,44 @@
+$FUNCNAME$
+  DBCLEARRELATION()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Clear active relations
+$LANG_RU$
+   Уничтожает активные связи.
+$SYNTAX$
+     DBCLEARRELATION() --> NIL
+$LANG_RU$
+     DBCLEARRELATION() --> NIL
+$RETURNS$
+     DBCLEARRELATION() always returns NIL.
+$LANG_RU$
+     DBCLEARRELATION() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCLEARRELATION() clears any active relations for the current work area.
+
+     DBCLEARRELATION() performs the same function as the standard SET
+     RELATION TO command with no clauses specified.  For more information,
+     refer to the SET RELATION command.
+$LANG_RU$
+     DBCLEARRELATION() уничтожает все активные связи для текущей рабочей
+     области.
+
+     DBCLEARRELATION() выполняет те же функции, что и стандартная команда
+     SET RELATION TO без аргументов. Более подробную информацию смотрите в
+     описании команды SET RELATION.
+$EXAMPLES$
+       The following example sets a relation, lists data, and then
+	clears the relation:
+
+	USE Employee NEW
+	USE Department NEW INDEX Dept
+	//
+	SELECT Employee
+	DBSETRELATION("Department", ;
+	   {|| Employee->Dept}, "Employee->Dept")
+	LIST Employee->Name, Department->Name
+	DBCLEARRELATION()
+$SEEALSO$
+  DBSETRELATION()
+$END$

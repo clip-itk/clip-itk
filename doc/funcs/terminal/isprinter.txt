@@ -1,0 +1,72 @@
+$FUNCNAME$
+  ISPRINTER()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Determine whether LPT1 is ready
+$LANG_RU$
+   Определяет состояние готовности принтера.
+$SYNTAX$
+     ISPRINTER() --> lReady
+$LANG_RU$
+     ISPRINTER() --> признак готовности.
+$RETURNS$
+     ISPRINTER() returns true (.T.) if LPT1 is ready; otherwise, it returns
+     false (.F.).
+$LANG_RU$
+     ISPRINTER() возвращает значение "истина" (.T.), если LPT1 готово, в
+     противном случае - значение "ложь" (.F.).
+$DESCRIPTION$
+     ISPRINTER() is a printer function that determines whether the parallel
+     port (LPT1) is online and ready to print.  ISPRINTER() is
+     hardware-dependent and, therefore, only works on IBM BIOS compatible
+     systems.
+
+     You can check ISPRINTER() to make sure the printer is ready before you
+     begin a print operation; however, if an error occurs during the print
+     operation, a runtime error is generated.
+$LANG_RU$
+     ISPRINTER() является функцией работы с принтером и определяет,
+     готов ли параллельный порт LPT1 начать вывод на печать. ISPRINTER()
+     является аппаратурно-зависимой функцией, и поэтому работает только
+     на системах с IBM - совместимым BIOS.
+
+     ISPRINTER() используется для определения состояния готовности
+     принтера перед началом вывода на печать. Однако если во время
+     вывода на печать происходит ошибка, то генерируется ошибка
+     времени выполнения.
+$EXAMPLES$
+       This example tests the parallel port for readiness with up to
+	25 retries.  If the parallel port is ready, the printer operation
+	begins:
+
+	LOCAL nCount := 0, nTimes := 25, lReady
+	//
+	DO WHILE nCount++ <= nTimes .AND. !(lReady := ;
+	      ISPRINTER())
+	ENDDO
+	//
+	IF lReady
+	   REPORT FORM Sales TO PRINTER
+	ELSE
+	   ? "Printer not ready..."
+	   BREAK
+	ENDIF
+$LANG_RU$
+      Этот пример 25 раз проверяет готовность параллельного порта. Если
+       он готов, то начинается вывод на печать:
+
+       LOCAL nCount := 0, nTimes := 25, lReady
+       //
+       DO WHILE nCount++ <= nTimes .AND. !(lReady := ISPRINTER())
+       ENDDO
+       //
+       IF lReady
+	  REPORT FORM Sales TO PRINTER
+       ELSE
+	  ? "Принтер не готов"
+       BREAK
+       ENDIF
+$SEEALSO$
+
+$END$

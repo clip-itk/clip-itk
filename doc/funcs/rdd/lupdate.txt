@@ -1,0 +1,80 @@
+$FUNCNAME$
+  LUPDATE()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the last modification date of a database (.dbf) file
+$LANG_RU$
+   Возвращает дату последнего изменения файла базы данных.
+$SYNTAX$
+     LUPDATE() --> dModification
+$LANG_RU$
+     LUPDATE() --> дата модификации
+$RETURNS$
+     LUPDATE() returns the date of the last change to the open database file
+     in the current work area.  If there is no database file in USE,
+     LUPDATE() returns a blank date.
+$LANG_RU$
+     LUPDATE() возвращает дату последнего изменения файла базы данных,
+     открытого в текущей рабочей области. Если нет открытого файла базы
+     данных, то LUPDATE() возвращает пустую дату.
+$DESCRIPTION$
+     LUPDATE() is a database function that determines the date the database
+     file in the current work area was last modified and CLOSEd.  By default,
+     LUPDATE() operates on the currently selected work area.  It will operate
+     on an unselected work area if you specify it as part of an aliased
+     expression, as shown in the example below.
+$LANG_RU$
+     LUPDATE() является функцией обработки баз данных, которая определяет
+     дату последнего изменения файла базы данных в текущей рабочей
+     области. По умолчанию LUPDATE() обращается к текущей (активной)
+     рабочей области.
+
+     Она может обращаться и к пассивной рабочей области, если ее включить
+     в выражение, уточненное алиасом, как показано в примере .
+$EXAMPLES$
+       This example demonstrates that the modification date of the
+	database file is not changed until the database file is closed:
+
+	? DATE()                  // Result: 09/01/90
+	USE Sales NEW
+	? LUPDATE()               // Result: 08/31/90
+	//
+	APPEND BLANK
+	? LUPDATE()               // Result: 08/31/90
+	CLOSE DATABASES
+	//
+	USE Sales NEW
+	? LUPDATE()               // Result: 09/01/90
+
+       This example uses an aliased expression to access LUPDATE()
+	for a database file opened in an unselected work area:
+
+	USE Sales NEW
+	USE Customer NEW
+	? LUPDATE(), Sales->(LUPDATE())
+$LANG_RU$
+      Этот пример демонстрирует тот факт, что изменение файла базы данных
+       не меняет дату его корректировки до закрытия:
+
+       ? DATE()            // Результат: 09/01/90
+       USE Sales NEW
+       ? LUPDATE()         // Результат: 08/31/90
+       //
+       APPEND BLANK
+       ? LUPDATE()         // Результат: 08/31/90
+       CLOSE DATABASES
+       //
+       USE Sales NEW
+       ? LUPDATE()         // Результат: 09/01/90
+
+      Этот пример иллюстрирует использование выражения, уточненного
+       алиасом, для обращения к файлу базы данных, открытому вне текущей
+       рабочей области:
+
+       USE Sales NEW
+       USE Customer NEW
+       ? LUPDATE(), Sales->(LUPDATE())
+$SEEALSO$
+  FIELDNAME(),LASTREC(),RECSIZE()
+$END$

@@ -1,0 +1,66 @@
+$FUNCNAME$
+  SECONDS()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Return the number of seconds elapsed since midnight
+$LANG_RU$
+   Возвращает количество секунд, прошедших с полуночи.
+$SYNTAX$
+     SECONDS() --> nSeconds
+$LANG_RU$
+     SECONDS() --> количество секунд
+$RETURNS$
+     SECONDS() returns the system time as a numeric value in the form
+     seconds.hundredths.  The numeric value returned is the number of seconds
+     elapsed since midnight, and is based on a twenty-four hour clock in a
+     range from 0 to 86399.
+$LANG_RU$
+     SECONDS() возвращает системное время как числовое значение до сотых
+     долей секунды. Возвращенное числовое значение - это количество
+     секунд, отсчитываемое от полуночи. Диапазон его значений - от 0 до
+     86399.
+$DESCRIPTION$
+     SECONDS() is a time function that provides a simple method of
+     calculating elapsed time during program execution, based on the system
+     clock.  It is related to the TIME() function which returns the system
+     time as a string in the form hh:mm:ss.
+$LANG_RU$
+     SECONDS() - это функция получения времени, используемая для
+     обеспечения простого метода вычисления интервалов времени. Она
+     использует системный таймер. SECONDS() родственна функции TIME(),
+     которая возвращает системное время в виде строки формата чч:мм:сс.
+$EXAMPLES$
+       This example contrasts the value of TIME() with SECONDS():
+
+	? TIME()               // Result: 10:00:00
+	? SECONDS()            // Result: 36000.00
+
+       This example uses SECONDS() to track elapsed time in seconds:
+
+	LOCAL nStart, nElapsed
+	nStart:= SECONDS()
+	.
+	. <statements>
+	.
+	nElapsed:= SECONDS() - nStart
+	? "Elapsed: " + LTRIM(STR(nElapsed)) + " seconds"
+$LANG_RU$
+      Этот пример сравнивает значения TIME() и SECONDS():
+
+       ? TIME()            // Результат: 10:00:00
+       ? SECONDS()         // Результат: 36000.00
+
+      Этот пример демонстрирует использование SECONDS() для отслеживания
+       времени, отсчитываемого в секундах:
+
+       LOCAL nStart, nElapsed
+       nStart = SECONDS()
+       ...
+       ...<операторы>
+       ...
+       nElapsed = SECONDS() - nStart
+       ? "Прошло :" + LTRIM(STR(nElapsed)) + " секунд"
+$SEEALSO$
+  TIME()
+$END$

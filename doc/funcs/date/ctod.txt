@@ -1,0 +1,120 @@
+$FUNCNAME$
+  CTOD()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Convert a date string to a date value
+$LANG_RU$
+   Преобразует символьную строку, содержащую дату, в переменную типа DATE.
+$SYNTAX$
+     CTOD(<cDate>) --> dDate
+$LANG_RU$
+     CTOD(<строка-дата>) --> дата
+$ARGUMENTS$
+     <cDate> is a character string consisting of numbers representing the
+     month, day, and year separated by any character other than a number.
+     The month, day, and year digits must be specified in accordance with the
+     SET DATE format.  If the century digits are not specified, the century
+     is determined by the rules of SET EPOCH.
+$LANG_RU$
+     <строка-дата> - строка символов, состоящая из чисел, представляющих
+     собой номер месяца, дня и года, разделенные любым символом, кроме
+     цифр. День, месяц и год должны быть заданы в соответствии с
+     установленным командой SET DATE форматом. Если не задано число,
+     определяющее век, оно определяется установкой команды SET EPOCH.
+$RETURNS$
+     CTOD() returns a date value.  If <cDate> is not a valid date, CTOD()
+     returns an empty date.
+$LANG_RU$
+     CTOD() возвращает значение даты. Если <строка-дата> задана
+     некорректно, CTOD() возвращает пустую дату.
+$DESCRIPTION$
+     CTOD() is a character conversion function that converts a character
+     string to a date.  To initialize an empty date for date entry, specify
+     <cDate> as a null string (""), SPACE(8), or "  /  /  ".
+
+     CTOD() is used whenever you need a literal date value.  Some examples
+     are:
+
+       Initializing a variable to a date value
+
+       Specifying a literal date string as an argument of a RANGE
+	clause of @...GET
+
+       Specifying a literal date string in order to perform date
+	arithmetic
+
+       Comparing the result of a date expression to a literal date
+	string
+
+       REPLACEing a date field with a literal date string
+
+     CTOD() is the inverse of DTOC() which converts a date value to a
+     character string in the format specified by SET DATE and SET CENTURY.
+     DTOS() also converts a date value to a character string in the form
+     yyyymmdd.
+$LANG_RU$
+     CTOD() - это функция преобразования символьных строк, которая
+     преобразует строку символов в дату. Для формирования пустой даты
+     необходимо задать <строка-дата> либо в виде строки нулевой длины
+     (""), либо строкой SPACE(8), либо строкой "//".
+
+     CTOD() используется везде, где необходима дата в виде литеральной
+     строки. Например:
+
+      При инициализации переменной для хранения дат
+
+      При определении литеральной строки, содержащей дату как
+       аргумента предложения RANGE команды @...GET
+
+      При определении литеральной строки, содержащей дату, для
+       выполнения арифметических действий над ней
+
+      При сравнении результата выполнения выражения над датами с
+       литеральной строкой
+
+      При присваивании значения литеральной строки полю типа дата
+
+     Функция CTOD() обратна по действию функции DTOC(), которая
+     преобразует значение переменной типа дата в литеральную строку
+     в формате, определенном командами SET DATE и SET CENTURY.  DTOC()
+     также преобразует значение переменной типа дата в строку символов
+     в формате ггггммдд.
+$EXAMPLES$
+       This example uses CTOD() to initialize two date variables,
+	using one as a GET and the other for RANGE validation:
+
+	SET CENTURY ON
+	dBegin := CTOD("01-26-1876")
+	dCurrent := CTOD("")
+	@ 10, 10 SAY "Enter date:" GET dCurrent ;
+	      RANGE dBegin, DATE()
+	READ
+
+       This example uses CTOD() to create a date value within a FOR
+	condition:
+
+	USE Inventory NEW
+	REPLACE ALL Inventory->Price WITH ;
+	   Inventory->Price * 1.1 FOR ;
+	   Inventory->InvDate < CTOD("10/10/90")
+$LANG_RU$
+      В этом примере функция CTOD() используется для инициализации двух
+       переменных типа дата, включенных одна в команду GET, а другая - в
+       предложение RANGE:
+
+       SET CENTURY ON
+       dBegin = CTOD("01-26-1876")
+       dCurrent = CTOD("")
+       @ 10, 10 SAY "Введите дату:" GET dCurrent RANGE dBegin, DATE()
+       READ
+
+      Этот пример использует CTOD() для преобразования даты в значение
+       типа дата при проверке условия в команде FOR:
+
+       USE Inventory NEW
+       REPLACE ALL Inventory->Price WITH Inventory->Price * 1.1;
+	 FOR Inventory->InvDate < CTOD("10/10/90")
+$SEEALSO$
+  DATE(),DTOC(),DTOS()
+$END$

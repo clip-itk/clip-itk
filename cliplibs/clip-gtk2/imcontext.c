@@ -125,7 +125,7 @@ clip_GTK_IMCONTEXTGETPREEDITSTRING(ClipMachine * cm)
 
 	if (list)
         {
-		clist = _register_object(cm, list, GTK_OBJECT_PANGO_ATTR_LIST, NULL, NULL);
+		clist = _register_object(cm, list, GTK_TYPE_PANGO_ATTR_LIST, NULL, NULL);
 		if (clist) _clip_mclone(cm, cvlist, &clist->obj);
         }
 

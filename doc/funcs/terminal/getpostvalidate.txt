@@ -1,0 +1,33 @@
+$FUNCNAME$
+  GETPOSTVALIDATE()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Postvalidate the current Get object
+$SYNTAX$
+     GETPOSTVALIDATE(<oGet>) --> lSuccess
+$ARGUMENTS$
+     <oGet> is a reference to the current Get object.
+$RETURNS$
+     GETPOSTVALIDATE() returns a logical value indicating whether the Get
+     object has been postvalidated successfully.
+$DESCRIPTION$
+     GETPOSTVALIDATE() is a Get system function that validates a Get object
+     after editing, including evaluating Get:postBlock (the VALID clause) if
+     present.
+
+     The return value indicates whether the GET has been postvalidated
+     successfully.  If a CLEAR GETS is issued during postvalidation,
+     Get:exitState is set to GE_ESCAPE and GETPOSTVALIDATE() returns true
+     (.T.).
+$EXAMPLES$
+       This example calls GETPOSTVALIDATE to determine whether or not
+	the VALID clause of oGet is satisfied.  If not, then the user is not
+	allowed to exit from the Get object.
+
+	IF (! GETPOSVALIDATE (oGet))
+	   oGet : exitState := GE_NOEXIT
+	ENDIF
+$SEEALSO$
+  GETAPPLYKEY(),GETDOSETKEY(),GETPREVALIDATE()
+$END$

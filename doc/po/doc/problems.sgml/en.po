@@ -1,0 +1,387 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/problems.sgml:1
+msgid "Possible problems and uncompatibilities"
+msgstr ""
+
+#: template/./doc/problems.sgml:4
+msgid ""
+"\n"
+"One of the most important targets of CLIP is Clipper compatibility.\n"
+"But when the compatibility gets in contradiction with the functionality,\n"
+"the latter is chosen as more important. This is the cause of the part of\n"
+"uncompatibilities. Cause of another part of uncompatibilities is\n"
+"distinction of the Unix platform (e.g. different file systems\n"
+"and terminal capabilities).\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:15
+msgid ""
+"\n"
+"GCC 3.2.x have bugs, CLIP does not support it.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:19
+msgid ""
+"\n"
+"As a rule, in Unix user should press <emphasis>ESC</emphasis> key twice.\n"
+"CLIP makes possible to avoid that inconvenience by emulating second\n"
+"<emphasis>ESC</emphasis> in some interval of keyboard quietness.\n"
+"The length of that interval is controlled by\n"
+"<command>SET(_SET_ESC_DELAY,<![CDATA[<nMilliseconds>]]>)</command>.\n"
+"See also about <link linkend=\"devkeyboard\">SCANMODE</link>.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:28
+msgid ""
+"\n"
+"<command>SETBLINK()</command> function does not work with CLIP under Unix\n"
+"(it always returns .T.). When you use <emphasis>BLINK</emphasis>\n"
+"attribute ('*' in clipper color definition) some terminals display\n"
+"blinking text others highlight background. Linux console in VGA text mode\n"
+"blinks, in FB mode highlights background. If you are using text mode "
+"console\n"
+"you can use SVGATextMode program to switch VGA adapter in BG-HI mode\n"
+"(look at option \"16color\" in <emphasis>/etc/TextConfig</emphasis>).\n"
+"If you are using other terminal you have to find a way how to switch them\n"
+"into proper mode.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:38
+msgid ""
+"\n"
+"Because it cannot be controlled from server side maybe you will find\n"
+"interesting this function:\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:43
+msgid ""
+"\n"
+"which allow to block sending <emphasis>BLINK</emphasis> attribute\n"
+"from a CLIP application to the terminal. So if you won't be able to\n"
+"set terminal in BG-HI mode you can disable using\n"
+"<emphasis>BLINK</emphasis> attribute (<command>blinkattr(.f.)</command>)\n"
+"and the text won't blink (but their background won't be highlighted too).\n"
+"<emphasis>Thanks for the info to Przemyslaw Czerpak.</emphasis>\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:52
+msgid ""
+"\n"
+"Some RDD functions (e.g. <command>DBSKIP()</command>) don't generate\n"
+"<emphasis>EG_NOTABLE</emphasis> error when there are no work areas\n"
+"in use with Clipper 5.01. But with Clipper 5.3 (and Clipper 5.2)\n"
+"error is generated. In such case CLIP works like Clipper 5.3.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:59
+msgid ""
+"\n"
+"It is impossible to open a table in <command>EXCLUSIVE READONLY</command>\n"
+"mode with CLIP under Unix. In such case table is opened in\n"
+"<command>SHARED READONLY</command> mode. The cause is the difference\n"
+"between DOS's and Unix file locking mechanism.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:66
+msgid ""
+"\n"
+"<emphasis>AS</emphasis> and <emphasis>REF</emphasis> are reserved keywords\n"
+"in CLIP. See description of the <command>-q</command> switch in the\n"
+"<link linkend=\"compoptions\">compiler options</link> section.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:72
+msgid ""
+"\n"
+"In Clipper, <command>CHR(<![CDATA[<nConst>]]>)</command> is constant "
+"(translated\n"
+"at compile time). In CLIP <command>CHR()</command> is as usual function\n"
+"as others, it is always evaluated at run time.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:79
+msgid ""
+"\n"
+"CLIP can work in two modes: <emphasis>fullscreen</emphasis> and\n"
+"<emphasis>stream</emphasis>. Just started, a CLIP application is working\n"
+"in the <emphasis>stream</emphasis> mode, i.e. all application's output is\n"
+"placed in the <emphasis>stdout</emphasis> stream. An application\n"
+"works in this mode until any full screen operation (e.g. displaying a "
+"window,\n"
+"displaying data at a specified screen row and column or polling keyboard)\n"
+"is performed (this mode is useful for <emphasis>CGI</emphasis> "
+"applications,\n"
+"for example). When any full screen operation is performed, application\n"
+"initializes terminal, switches to <emphasis>fullscreen</emphasis>\n"
+"mode and stops output to the <emphasis>stdout</emphasis> stream.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:92
+msgid ""
+"\n"
+"Follow these two simple rules:\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:96
+msgid ""
+"\n"
+"full screen application should start with <command>CLEAR SCREEN</command>\n"
+"command.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:101
+msgid ""
+"\n"
+"stream application (<emphasis>CGI</emphasis>) should redefine the standard\n"
+"<emphasis>error block</emphasis> (by <command>ERRORBLOCK()</command>\n"
+"function) to avoid turning into <emphasis>fullscreen</emphasis> mode\n"
+"(standard <emphasis>error block</emphasis> performs full screen "
+"operations).\n"
+"For example:\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:120
+msgid ""
+"\n"
+"In the Unix file system, file mask <emphasis>*.*</emphasis> means all files\n"
+"with a dot ('.') in their names. Use the <emphasis>FILE_MASK</emphasis>\n"
+"macro instead of '<emphasis>*.*</emphasis>'. <emphasis>FILE_MASK</emphasis>\n"
+"is platform dependent constant ('<emphasis>*</emphasis>' in Unix,\n"
+"'<emphasis>*.*</emphasis>' in Windows).\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:128
+msgid ""
+"\n"
+"Do not use the keywords (<command>FIELD</command>, <command>WHILE</"
+"command>,\n"
+"<command>FOR</command>, <command>CASE</command>, <command>END</command>, "
+"etc)\n"
+"as the names of variables.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:134
+msgid ""
+"\n"
+"In some circumstances, the <command>IF(,,)</command> function is discerned\n"
+"as <command>IF ... ELSE ... ENDIF</command> statement. In such cases\n"
+"compiler generates a warning.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:140
+msgid ""
+"\n"
+"With Clipper, the <command>TYPE()</command> function invokes some functions\n"
+"(e.g. <command>SUBSTR()</command>) and does not invoke anothers\n"
+"(e.g. <command>ALERT()</command>). CLIP does not invoke any function\n"
+"and returns '<emphasis>UI</emphasis>' for expressions containing any\n"
+"function calls.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:148
+msgid ""
+"\n"
+"Clipper have an odd feature:\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:154
+msgid ""
+"\n"
+"This <emphasis>feature</emphasis> is <emphasis>not supported</emphasis>\n"
+"by CLIP (both examples are OK).\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:159
+msgid ""
+"\n"
+"Unix file system does differentiate the case of letters in the file names\n"
+"(<command>USE table.dbf</command> and <command>USE TABLE.DBF</command>\n"
+"are not equivalent commands). To help porting DOS-applications to Unix\n"
+"<command>SET TRANSLATE PATH ON</command> command is intended.\n"
+"When <command>ON</command> all file (and directory) names are translated\n"
+"to the lower case. In this case the full path to the file and the file "
+"itself\n"
+"<emphasis>must</emphasis> be in the lower case on the disk.\n"
+"When <command>OFF</command> the translation is not performed. In this case\n"
+"names of the files on the disk must correspond to the names they are\n"
+"addressed by.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:170
+msgid ""
+"\n"
+"Disk names (C:, D:, etc) can be assigned to the directories in the "
+"following\n"
+"manner:\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:176
+msgid ""
+"\n"
+"By default, disk C: is assigned to the root directory (/).\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:180
+msgid ""
+"\n"
+"The <command>INDEXEXT()</command> function returns the index's suffix\n"
+"in the lower case.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:185
+msgid ""
+"\n"
+"Displaying of double pseudographic symbols is not possible on some types of\n"
+"terminals. It is possible by using <emphasis>termcap</emphasis> instead\n"
+"of <emphasis>terminfo</emphasis> (export TERMCAP=/etc/termcap and\n"
+"look at <emphasis>g1</emphasis> entry for single graphic chars and\n"
+"<emphasis>g2</emphasis> entry for double graphic chars in\n"
+"<emphasis>/etc/termcap</emphasis>).\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:194
+msgid ""
+"\n"
+"Displaying of the chars with codes less than 32 is impossible on Unix\n"
+"terminals. These chars are displayed as highlighted char with the code\n"
+"<emphasis><![CDATA[<nSymbol>]]> + 32</emphasis>.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:200
+msgid ""
+"\n"
+"You should recollect <command>DISPBEGIN()</command>,\n"
+"<command>DISPEND()</command> functions. Those who have\n"
+"long been working with terminals must understand well why it is\n"
+"necessary. As for novices, they should read attentively the description\n"
+"of these functions and imagine how information runs via narrow\n"
+"commiunication channels from the server to terminals and how the\n"
+"processor is loaded, while outputting information. To use them is not\n"
+"necessary, but it's desirable, particularly in those places where you\n"
+"display and process the input from the keyboard themselves. In those\n"
+"functions and commands (<command>PROMPT/MENU</command>,\n"
+"<command>GET/READ</command>, etc) where the processing\n"
+"of the display and keyboard is executed independently, an optimal output\n"
+"mode has been already used, and so enclosing them by\n"
+"<command>DISPBEGIN()</command> & <command>DISPEND()</command>\n"
+"is unnecessary.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:218
+msgid ""
+"\n"
+"The restriction of the function/procedure name size of 10 chars has\n"
+"been removed. It applies equally to variable names. To simplify the\n"
+"transition to a length of more than 10 symbols, you can use\n"
+"<command>#xdefine</command> directive (case-insensitive\n"
+"<command>#define</command>).\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:226
+msgid ""
+"\n"
+"The restriction of the string size of 64k has been removed.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:230
+msgid ""
+"\n"
+"The restriction of the array size of 4096/8192 elements has been removed.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:234
+msgid ""
+"\n"
+"The <command>MEMOEDIT()</command> function is based on the\n"
+"<command>TEXTEDIT</command> class, and there may be some problems with\n"
+"user functions for <command>MEMOEDIT()</command>.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:240
+msgid ""
+"\n"
+"get:baddate() is a method, not an attribute.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:244
+msgid ""
+"\n"
+"<command>TBrowse</command> object is visualised not quite so as a standard\n"
+"one is, which eliminates problems with number of displayed fields and "
+"cursor\n"
+"positioning, when navigating over the table in user functions.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:250
+msgid ""
+"\n"
+"<command>RUN</command> command output damages current screen contents.\n"
+"When outputting to the terminal, this problem cannot be completely solved\n"
+"without resorting to tricks, as it turns out that several programs output\n"
+"independently to one device, in the same way as if several programs,\n"
+"independent of each other, output information to one COM port. We recommend\n"
+"to use something like:\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:261
+msgid ""
+"\n"
+"And one more peculiarity of the <command>RUN</command> command - in Unux,\n"
+"it runs the shell, then shell executes the program. Though\n"
+"<command>run cd mydir</command> will operate, but after exiting from the "
+"shell\n"
+"the current directory will remain the same.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:268
+msgid ""
+"\n"
+"In error object, there is some incompatibility.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:272
+msgid ""
+"\n"
+"It is preferable to use <command>inkey(0.1)</command> instead of\n"
+"<command>inkey()</command>, otherwise an application will use too much\n"
+"of processor time. In particular, we had to make some changes in DBU\n"
+"concerning <command>INKEY()</command> and stabilization in\n"
+"<command>TBrowse</command>; these changes are enclosed by\n"
+"<command>#ifdef __CLIP__</command>.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:281
+msgid ""
+"\n"
+"<command>RESTORE FROM</command> always operates as with\n"
+"<command>ADDITIVE</command>.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:286
+msgid ""
+"\n"
+"The <command>SET PROCEDURE</command> command is not and probably\n"
+"will not be supported. Link the whole program from object files by\n"
+"using CLIP or use the new features relating to PO-files;\n"
+"read about <link linkend=\"functionload\">LOAD()</link> function.\n"
+msgstr ""
+
+#: template/./doc/problems.sgml:293
+msgid ""
+"\n"
+"The <command>SETCOLOR()</command> function have 10 pair colors, new 5 pair\n"
+"don`t have any special meaning.\n"
+msgstr ""

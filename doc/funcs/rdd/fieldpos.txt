@@ -1,0 +1,79 @@
+$FUNCNAME$
+  FIELDPOS()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the position of a field in a work area
+$LANG_RU$
+   Возвращает номер поля в рабочей области.
+$SYNTAX$
+     FIELDPOS(<cFieldName>) --> nFieldPos
+$LANG_RU$
+     FIELDPOS(<имя поля>)  --> номер поля
+$ARGUMENTS$
+     <cFieldName> is the name of a field in the current or specified work
+     area.
+$LANG_RU$
+     <имя поля> - имя поля в текущей или заданной рабочей области.
+$RETURNS$
+     FIELDPOS() returns the position of the specified field within the list
+     of fields associated with the current or specified work area.  If the
+     current work area has no field with the specified name, FIELDPOS()
+     returns zero.
+$LANG_RU$
+     FIELDPOS() возвращает порядковый номер заданного поля внутри списка
+     полей, связанных с текущей или заданной рабочей областью. Если в
+     рабочей области нет полей с заданным именем, то FIELDPOS() возвращает
+     ноль.
+$DESCRIPTION$
+     FIELDPOS() is a database function that is the inverse of the FIELDNAME()
+     function.  FIELDPOS() is most often used with the FIELDPUT() and
+     FIELDGET() functions.
+
+     FIELDPOS() return the names of fields in any unselected work area by
+     referring to the function using an aliased expression.  See the example
+     below.
+$LANG_RU$
+     FIELDPOS() - функция баз данных, являющаяся обратной функциям FIELD()
+     или FIELDNAME(), и возвращающая имя поля по его номеру в списке полей
+     рабочей области. FIELDPOS() наиболее часто используется в сочетании с
+     функциями FIELDPUT() и FIELDGET().
+
+     Как и другие функции баз данных, FIELDPOS() может использоваться для
+     возвращения имени поля в любой невыбранной рабочей области, используя
+     функцию с алиасным выражением. Смотрите пример ниже
+$EXAMPLES$
+       This example demonstrates a typical specification of the
+	FIELDPOS() function:
+
+	USE Customer NEW
+	? FIELDPOS("Name")                     // Result: 1
+	? FIELDGET(FIELDPOS("Name"))           // Result: Kate
+
+       This example uses FIELDPOS() to return the position of a
+	specified field in a unselected work area:
+
+	USE Customer NEW
+	USE Invoices NEW
+	? Customer->(FIELDPOS("Name"))         // Result: 1
+	? Customer->(FIELDGET(FIELDPOS("Name")))
+					       // Result: Kate
+$LANG_RU$
+      В этом примере демонстрируется обычное использование функции
+       FIELDPOS():
+
+       USE Customer NEW
+       ? FIELDPOS("Name")                        // Результат: 1
+       ? FIELDGET(FIELDPOS("Name"))              // Результат: Кэт
+
+      В этом примере демонстрируется, как использовать FIELDPOS() для
+       получения позиции заданного поля в невыбранной рабочей области с
+       помощью алиасного выражения:
+
+       USE Customer NEW
+       USE Invoices NEW
+       ? Customer->(FIELDPOS("Name"))            // Результат: 1
+       ? Customer->(FIELDGET(FIELDPOS("Name")))  // Результат: Кэт
+$SEEALSO$
+  FIELDGET(),FIELDPUT()
+$END$

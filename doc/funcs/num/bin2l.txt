@@ -1,0 +1,77 @@
+$FUNCNAME$
+  BIN2L()
+$CATEGORY$
+  CONVERSION,MISCELLANEOUS,NUMERIC
+$SUMMARY$
+   Convert a 32-bit signed integer to a numeric value
+$LANG_RU$
+   Преобразует 32-битовое целое со знаком в числовое значение.
+$SYNTAX$
+     BIN2L(<cSignedInt>) --> nNumber
+$LANG_RU$
+     BIN2L(<строка символов>) --> целое число
+$ARGUMENTS$
+     <cSignedInt> is a character string in the form of a 32-bit signed
+     integer number--least significant byte first.  Only the first four
+     characters are used by the function; all others are ignored.
+$LANG_RU$
+     <строка символов> - строка символов, представленная в форме
+     32-битового целого числа со знаком - последний значащий байт
+     является первым. Функция использует только четыре первых байта,
+     все остальные символы игнорируются.
+$RETURNS$
+     BIN2L() returns an integer numeric value.
+$LANG_RU$
+     BIN2L() возвращает число целого типа.
+$DESCRIPTION$
+     BIN2L() is a low-level file function that is used with FREAD() to
+     convert a four-byte character string formatted as a signed integer to a
+     xClipper numeric data type.  This is most useful when you are reading
+     foreign file types and want to read numeric data in its native format.
+$LANG_RU$
+     BIN2L() - это функция работы с массивами низшего уровня, которая
+     используется в комбинации с функцией FREAD() для преобразования
+     четырехбайтных символьных строк, форматированных как целое со
+     знаком, в числа формата, используемого с системе xClipper. Чаще
+     всего она используется при чтении файлов других типов для получения
+     числовых данных в их собственном формате.
+$EXAMPLES$
+       This example opens a database file using low-level file
+	functions and reads the number of records (bytes 4-7).  The result is
+	the same as with LASTREC():
+
+	#include "Fileio.ch"
+	//
+	nHandle := FOPEN("Sales.dbf", FO_READ)
+	// Note:  Sales.dbf contains 84 records
+	//
+	// Point to byte 4
+	FSEEK(nHandle, 4, FS_SET)
+	//
+	// Read the number of records
+	cRecords := SPACE(4)
+	FREAD(nHandle, @cRecords, 4)
+	//
+	? LTRIM(STR(BIN2L(cRecords)))         // Result: 84
+	FCLOSE(nHandle)
+$LANG_RU$
+      Этот пример открывает файл базы данных, используя функцию обработки
+       файлов низшего уровня и считывает количество записей (байты 4-7).
+       Результат тот же, что и при использовании функции LASTREC():
+
+       #include "Fileio.ch"
+       //
+       nHandle = FOPEN("Sales.dbf", FO_READ)
+       //
+       // Установить указатель на четвертый байт.
+       FSEEK(nHandle, 4, FS_SET)
+       //
+       // Читать количество записей.
+       cRecords = SPACE(4)
+       FREAD(nHandle, @cRecords, 4)
+       //
+       ? LTRIM(STR(BIN2L(cRecords))) // Результат : 84
+       FCLOSE(nHandle)
+$SEEALSO$
+  BIN2I(),BIN2W(),FREAD(),FREADSTR(),I2BIN(),L2BIN()
+$END$

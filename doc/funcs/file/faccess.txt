@@ -1,0 +1,51 @@
+$FUNCNAME$
+	FACCESS()
+$CATEGORY$
+	FILE/IO
+$SUMMARY$
+	Check access to file.
+$LANG_RU$
+	Проверка прав доступа к файлу.
+$SYNTAX$
+
+     FACCESS(<sFileName>, <sMode>) 	--> TRUE || FALSE
+
+$ARGUMENTS$
+     <sFileName>	String, is the file name.
+     <sMode>		String, is the access mode.
+
+$LANG_RU$
+     <sFileName>	String, имя файла.
+     <sMode>		String, права доступа.
+
+$RETURNS$
+
+     Returns TRUE if specified access mode is true for file.
+
+$LANG_RU$
+
+	Возвращает TRUE, если заданные права доступа к файлу истинны.
+
+$DESCRIPTION$
+
+     FACCESS() checks access mode <sMode> for file <sFileName>.
+
+	<sMode> is the string in UNIX format "rwx-rwx-rwx" (owner-group-other)
+$LANG_RU$
+
+     FACCESS() проверяет права доступа <sMode> к файлу <sFileName>.
+
+     <sMode> это строка в UNIX формате : "rwx-rwx-rwx" (владелец-группа-прочие)
+$EXAMPLES$
+
+FACCESS("/usr/home/user1/mbox", "rw--") 	// TRUE
+FACCESS("/usr/home/user1/mbox", "rw-rw-rw") 	// FALSE
+
+$PLATFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

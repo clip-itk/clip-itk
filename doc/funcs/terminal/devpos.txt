@@ -1,0 +1,92 @@
+$FUNCNAME$
+  DEVPOS()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Move the cursor or printhead to a new position depending on the current
+$LANG_RU$
+   Перемещает курсор или головку принтера на новую позицию.
+$SYNTAX$
+     DEVPOS(<nRow>, <nCol>) --> NIL
+$LANG_RU$
+     DEVPOS(<номер строки>,<номер колонки>]) -->NIL
+$ARGUMENTS$
+     <nRow> and <nCol> are the new row and column positions of the
+     cursor or printhead.
+$LANG_RU$
+     <номер строки> и <номер колонки> - новые строка и колонка позиции
+     курсора или печатающей головки принтера.
+$RETURNS$
+     DEVPOS() always returns NIL.
+$LANG_RU$
+     DEVPOS() всегда возвращает NIL.
+$DESCRIPTION$
+     DEVPOS() is an environment function that moves the screen or printhead
+     depending on the current DEVICE.  If DEVICE is SET to SCREEN, DEVPOS()
+     behaves like SETPOS(), moves the cursor to the specified location, and
+     updates ROW() and COL() with the new cursor position.
+
+     If DEVICE is SET to PRINTER, DEVPOS() moves the printhead instead.  It
+     does this by sending the number of linefeed and/or formfeed characters
+     to the printer, and advancing the printhead to the new position.  If the
+     current SET MARGIN value is greater than zero, it is added to <nCol>.
+     The printhead is then advanced to the specified <nRow> and <nCol>
+     position and PROW() and PCOL() are updated.  If either <nRow> or <nCol>
+     are less than the current PROW() and PCOL() values, the printhead is
+     moved according to the following special rules:
+
+       If <nRow> is less than PROW(), an automatic EJECT (CHR(12)) is
+	sent to the printer followed by the number of linefeed characters
+	(CHR(10)) required to position the printhead on <nRow> of the
+	following page.
+
+       If <nCol> including the current SET MARGIN value is less than
+	PCOL(), a carriage return character (CHR(13)) and the number of space
+	characters required to position the printhead at <nCol> are sent to
+	the printer.
+
+     To circumvent these rules, use SETPRC() to reset PROW() and PCOL() to
+     new values before using DEVPOS().  See the SETPRC() discussion for more
+     information.
+
+     If the printer is redirected to a file using the SET PRINTER command,
+     DEVPOS() updates the file instead of the printer.
+$LANG_RU$
+     DEVPOS() - функция среды, управляющая перемещением курсора или
+     печатающей головки принтера - текущего установленного устройства.
+     Если устройство - экран, то DEVPOS() действует так же, как функция
+     SETPOS(), то есть перемещает курсор в заданное положение и изменяет
+     ROW() и COL() в соответствии с новой позицией курсора.
+
+     Если текущее устройство устройство - принтер, то функция DEVPOS()
+     перемещает головку принтера. Это достигается посредством посылки на
+     принтер необходимого числа символов перевод строки и/или перевод
+     страницы. Если текущее значение левой границы, установленное командой
+     SET MARGIN, больше нуля, то оно добавляется к <номер колонки>. После
+     того, как печатающая головка принтера займет позицию, заданную <номер
+     строки> и <номер колонки>, функции PROW() и PCOL() изменят свое
+     возвращающее значение.  Если или <номер строки>, или <номер колонки>
+     меньше, чем текущие значения PROW() и PCOL(), печатающая головка
+     принтера перемещается согласно следующим правилам:
+
+      Если <номер строки> меньше, чем PROW(), на принтер автоматически
+       посылается команда перевода страницы (код CHR(12)) и необходимое
+       количество символов перевод строки (CHR(10)) для перемещения
+       печатающей головки принтера в положение <номер строки> на следующей
+       странице.
+
+      Если <номер колонки>, включая текущее значение, установленное
+       командой SET MARGIN меньше, чем PCOL(), то на принтер посылается
+       команда перевод каретки (CHR(13) и необходимое число символов
+       пробела для перемещения печатающей головки в положение <номер
+       колонки>.
+
+     Для того, чтобы обойти эти правила, можно перед использованием
+     DEVPOS() с помощью функции SETPRC() присвоить PROW() и PCOL()
+     новые значения. Более подробную информацию смотрите в SETPRC().
+
+     Если команда SET PRINTER перенаправляет вывод с принтера в файл,
+     DEVPOS() изменяет состояние файла, а не принтера.
+$SEEALSO$
+  DEVOUT(),PCOL(),PROW(),SETPOS()
+$END$

@@ -1,0 +1,87 @@
+$FUNCNAME$
+  CHR()
+$CATEGORY$
+  STRING,NUMERIC,KEYBOARD/MOUSE
+$SUMMARY$
+   Convert an ASCII code to a character value
+$LANG_RU$
+   Преобразует код ASCII в его символьное значение.
+$SYNTAX$
+     CHR(<nCode>) --> cChar
+$LANG_RU$
+     CHR(<код ASCII>) --> символ
+$ARGUMENTS$
+     <nCode> is an ASCII code in the range of zero to 255.
+$LANG_RU$
+     <код ASCII> - код ASCII в пределах от 0 до 255.
+$RETURNS$
+     CHR() returns a single character value whose ASCII code is specified by
+     <nCode>.
+$LANG_RU$
+     CHR() возвращает символ, код которого определен <код ASCII>.
+$DESCRIPTION$
+
+     CHR() is a numeric conversion function that converts an ASCII code to a
+     character.  It is the inverse of ASC().  CHR() serves a number of common
+     tasks including:
+
+       Sending control codes and graphics characters to the screen or
+	printer
+
+       Ringing the bell
+
+       Converting INKEY() return values to characters
+
+       Stuffing the keyboard buffer
+
+
+$LANG_RU$
+
+     CHR() - функция преобразования чисел, которая преобразует код
+     ASCII в символ. Она противоположна по действию функции ASC(). Эта
+     многоплановая функция полезна в часто используемых задачах, таких
+     как:
+
+      Посылка управляющих кодов или графических символов на экран или
+       принтер.
+
+      Включение звонка.
+
+      Преобразование кодов, возвращаемых функцией INKEY(), в символы.
+
+      Заполнение буфера клавиатуры.
+
+
+$EXAMPLES$
+
+       These examples illustrate CHR() with various arguments:
+
+	? CHR(72)                    // Result: H
+	? CHR(ASC("A") + 32)         // Result: a
+	? CHR(7)                     // Result: bell sounds
+
+       These lines of code show the difference between a null string
+	and the null character:
+
+	? LEN("")                   // Result: 0
+	? LEN(CHR(0))               // Result: 1
+
+
+$LANG_RU$
+
+      Следующие примеры показывают работу функции CHR() с различными
+       аргументами:
+
+       ? CHR(72)                 // Результат: H
+       ? CHR(ASC("A") + 32)      // Результат: a
+       ? CHR(7)                  // Результат: звуковой сигнал
+
+      Здесь показана разница между нулевой строкой и нулевым символом:
+
+       ? LEN("")                 // Результат: 0
+       ? LEN(CHR(0))             // Результат: 1
+
+
+$SEEALSO$
+  ASC(),INKEY()
+$END$

@@ -1,0 +1,26 @@
+$FUNCNAME$
+  DISKNAME()
+$CATEGORY$
+  DISKUTILS
+$SUMMARY$
+   Return the current DOS drive
+$SYNTAX$
+     DISKNAME() --> cDrive
+$RETURNS$
+     DISKNAME() returns the letter of the current DOS drive, without a
+     trailing colon.
+$EXAMPLES$
+       This example illustrates the relationship between
+	DISKNAME()and DISKCHANGE() and shows that DISKNAME() is unaffected by
+	the SET DEFAULT TO command:
+
+	? DISKNAME()      // C
+	SET DEFAULT TO A
+	? DISKNAME()      // C
+	DISKCHANGE("A")
+	? DISKNAME()      // A
+	DISKCHANGE("C")
+	? DISKNAME()      // C
+$SEEALSO$
+  CURDIR(),DISKCHANGE()
+$END$

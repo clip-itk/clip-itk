@@ -1,0 +1,75 @@
+$FUNCNAME$
+  HEADER()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the current database file header length
+$LANG_RU$
+   Возвращает величину заголовка текущего файла базы данных.
+$SYNTAX$
+     HEADER() --> nBytes
+$LANG_RU$
+     HEADER() --> количество байтов
+$RETURNS$
+     HEADER() returns the number of bytes in the header of the current
+     database file as an integer numeric value.  If no database file is in
+     use, HEADER() returns a zero (0).
+$LANG_RU$
+     HEADER() возвращает количество байтов заголовка текущего файла базы
+     данных в виде целого арифметического значения.
+$DESCRIPTION$
+     HEADER() is a database function that is used with LASTREC(), RECSIZE(),
+     and DISKSPACE() to create procedures for backing up files.
+
+     By default, HEADER() operates on the currently selected work area.  It
+     will operate on an unselected work area if you specify it as part of an
+     aliased expression (see example below).
+$LANG_RU$
+     HEADER() - это функция обработки базы данных, которая используется
+     вместе с функциями LASTREC(), RECSIZE() и DISKSPACE() для создания
+     процедур сохранения файлов.
+
+     По умолчанию HEADER() оперирует с текущей (активной) рабочей
+     областью.  Для того, чтобы функция могла оперировать с пассивной
+     рабочей областью, необходимо включить ее как элемент в выражение,
+     уточненное алиасом (смотрите пример ниже).
+$EXAMPLES$
+       This example determines the header size of Sales.dbf:
+
+	USE Sales NEW
+	? HEADER()            // Result: 258
+
+       This example defines a pseudofunction, DbfSize(), that uses
+	HEADER() with RECSIZE() and LASTREC() to calculate the size of the
+	current database file in bytes:
+
+	#define DbfSize()      ((RECSIZE() * LASTREC()) + ;
+	      HEADER() + 1)
+
+	Later you can use DbfSize() as you would any function:
+
+	USE Sales NEW
+	USE Customer NEW
+	? DbfSize()
+	? Sales->(DbfSize())
+$LANG_RU$
+      Этот пример определяет размер заголовка файла SALES.dbf:
+
+       USE Sales NEW
+       ? HEADER()          // Результат: 258
+
+      Этот пример определяет псевдо-функцию DbfSize(), которая использует
+       HEADER() в сочетании с RECSIZE() и LASTREC() для вычисления длины в
+       байтах текущего файла базы данных:
+
+       #define DbfSize() ((RECSIZE() * LASTREC()) + HEADER() + 1)
+
+      Позже можно использовать DbfSize() так же, как любую другую функцию:
+
+       USE Sales NEW
+       USE Customer NEW
+       ? DbfSize()
+       ? Sales -> (DbfSize())
+$SEEALSO$
+  LASTREC(),RECSIZE()
+$END$

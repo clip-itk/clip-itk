@@ -198,7 +198,7 @@ clip_GDK_GCNEWWITHVALUES(ClipMachine * cm)
 	if (gc)
 	{
 //		gdk_gc_ref(gc);
-		cgc = _register_object(cm,gc,GDK_OBJECT_GC,cv,
+		cgc = _register_object(cm,gc,GDK_TYPE_GC,cv,
 			(coDestructor)gdk_object_gc_destructor);
 		if (cgc)
 		{

@@ -1,0 +1,78 @@
+$FUNCNAME$
+  MPOSTOLC()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Return line and column position of a formatted string based on a specified
+$LANG_RU$
+   Возвращает номера строки и колонки форматированного текста, основываясь
+$SYNTAX$
+     MPOSTOLC(<cText>, <nWidth>, <nPos>, [<nTabSize>], [<lWrap>]) --> aLineColumn
+$LANG_RU$
+     MPOSTOLC(<символьная строка>,<длина строки>,<номер позиции>, [<шаг табуляции>],
+	   [<перенос разрешен>]) --> массив
+$ARGUMENTS$
+     <cText> is a text string.
+     <nWidth> is the length of the formatted line.
+     <nPos> is the byte position within text counting from one (1).
+     <nTabSize> is the number of columns between tab stops.  If not
+     specified, the default is four (4).
+     <lWrap> is the word wrap flag.  If not specified, the default is
+     true (.T.).
+$LANG_RU$
+     <символьная строка> - символьная строка для просмотра.
+     <длина строки> - длина форматированной строки.
+     <номер позиции> - номер позиции в байтах в тексте; отсчитывается от 1.
+     <шаг табуляции> - определяет размер шага табуляции.  Если аргумент не
+     задан,  по умолчанию величина шага принимается равной  4.
+     <перенос разрешен> - логическое значение, определяющее разрешение
+     переноса слов. Если аргумент не задан, по умолчанию его значение -
+     "истина" (.T.).
+$RETURNS$
+     MPOSTOLC() returns an array containing the line and the column values
+     for the specified byte position, <nPos>.
+$LANG_RU$
+     MPOSTOLC() возвращает массив, содержащий значения строки и колонки
+     для заданного <номер позиции>.
+$DESCRIPTION$
+     MPOSTOLC() is a memo function that determines the formatted line and
+     column corresponding to a particular byte position within <cText>.  Note
+     that the line number returned is one-relative and the column number is
+     zero-relative.  This is compatible with MEMOEDIT().  <nPos> is
+     one-relative, compatible with AT(), RAT(), and other string functions.
+$LANG_RU$
+     MPOSTOLC() - функция работы с MEMO-полями, определяющая номер строки
+     и колонки в отформатированном тексте, соответствующие позиции в
+     байтах в строке. Возвращаемый номер строки отсчитывается от единицы,
+     а номер колонки - от нуля, что соответствует правилам для функцией
+     MEMOEDIT(). Возвращаемый <номер позиции> - отсчитывается от единицы,
+     это делает удобным использование функции MPOSTOLC() с AT(), RAT() или
+     другими строковыми функциями.
+$EXAMPLES$
+       This example determines, for the text string shown, the line
+	and column corresponding to the tenth character of the text, assuming
+	a formatting width of five columns.  A formatting width of five would
+	cause each of the first three words to be placed on a line by itself.
+	The tenth character of the text is the "s" in "side".  The word
+	"side" would be at the leftmost column of the third line of the
+	formatted text, so the return value is {3, 0}.
+
+	cText := "Note the side on which the bread ;
+	      is buttered."
+	//
+	aLC := MPOSTOLC(cText, 5, 10)         // Result: {3, 0}
+$LANG_RU$
+      В этом примере для тринадцатого символа строки текста определяется
+       номер строки и колонки при форматировании строки на длину 8
+       символов.  Тринадцатый символ текста - буква "т" в слове "сторону".
+       При заданном форматировании, три первых слова располагаются на
+       отдельных строках.  Слово "сторону" будет располагаться, начиная с
+       самой левой колонки третьей строки отформатированного текста,
+       следовательно, возвращаемое значение - {3,1}:
+
+       cText := "Пометим ту сторону, где хлеб намазан маслом"
+       //
+       aLC := MPOSTOLC(cText, 8, 13,)        // Результат: {3, 1}
+$SEEALSO$
+  MEMOEDIT(),MLCTOPOS(),MLPOS()
+$END$

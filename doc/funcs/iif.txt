@@ -1,0 +1,49 @@
+$FUNCNAME$
+  IIF()
+$CATEGORY$
+  LOGICAL
+$SUMMARY$
+   Return the result of an expression based on a condition
+$SYNTAX$
+     [I]IF(<lCondition>, <expTrue>, <expFalse>) --> Value
+$ARGUMENTS$
+     <lCondition> is a logical expression to be evaluated.
+     <expTrue> is the value, a condition-expression, of any data type,
+     returned if <lCondition> is true (.T.).
+     <expFalse> is the value, of any date type, returned if <lCondition>
+     is false (.F.).  This argument need not be the same data type as
+     <expTrue>.
+$RETURNS$
+     IIF() returns the evaluation of <expTrue> if <lCondition> evaluates to
+     true (.T.) and <expFalse> if it evaluates to false (.F.).  The value
+     returned is the data type of the valid condition-expression.
+$DESCRIPTION$
+     IIF() is a logical conversion function.  It is one of the most powerful
+     and versatile functions in xClipper.  It provides a mechanism to
+     evaluate a condition within an expression.  With this ability you can
+     convert a logical expression to another data type.
+$EXAMPLES$
+       This example converts a logical data value to a numeric data
+	value:
+
+	lPaid = .T.
+	? IIF(lPaid, 1, 0)               // Result: 1
+
+       In this example a logical field is formatted depending on
+	whether the Customer is past due or not:
+
+	@ ROW() + 1, 25 SAY IIF(lPaid, SPACE(10), "Go get 'em")
+
+       If you are printing forms, you can print an indicating symbol
+	in different columns depending on the value of a logical field:
+
+	@ ROW(), IIF(InHospital, 10, 12) SAY "X"
+
+       You can also use IIF() to force the LABEL FORM to print blank
+	lines.  Enter the following expression when you create the label with
+	RL.EXE:
+
+	IIF(EMPTY(Company), CHR(255), Company)
+$SEEALSO$
+  IF()
+$END$

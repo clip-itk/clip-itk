@@ -1,0 +1,83 @@
+$FUNCNAME$
+  RECSIZE()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Determine the record length of a database (.dbf) file
+$LANG_RU$
+   Определяет длину записи файла базы данных (.dbf).
+$SYNTAX$
+     RECSIZE() --> nBytes
+$LANG_RU$
+     RECSIZE() --> количество байтов
+$RETURNS$
+     RECSIZE() returns, as a numeric value, the record length in bytes of the
+     database file open in the current work area.  RECSIZE() returns zero if
+     no database file is open.
+$LANG_RU$
+     RECSIZE() возвращает длину записи в байтах файла базы данных,
+     открытого в текущей рабочей области в виде целого числа. Если не
+     существует открытого файла базы данных, то RECSIZE() возвращает ноль.
+$DESCRIPTION$
+     RECSIZE() is a database function that determines the length of a record
+     by summing the lengths of each field then adding one for the DELETED()
+     status flag.  When this value is multiplied by LASTREC(), the product is
+     the amount of space occupied by the file's records.
+
+     RECSIZE() is useful in programs that perform automatic file backup.
+     When used in conjunction with DISKSPACE(), the RECSIZE() function can
+     assist in ensuring that sufficient free space exists on the disk before
+     a file is stored.
+
+     By default, RECSIZE() operates on the currently selected work area.  It
+     will operate on an unselected work area if you specify it as part of an
+     aliased expression (see example below).
+$LANG_RU$
+     RECSIZE() - функция обработки баз данных, которая определяет длину
+     записи суммированием длин всех полей и затем добавлением к ним длины
+     поля флажка признака удаления, используемого функцией DELETED().
+     Значение RECSIZE(), умноженное на значение функции LASTREC(),
+     определяет количество байтов, занимаемое записями файла.
+
+     RECSIZE() полезна в программах, выполняющих автоматическое
+     резервирование файлов. При ее использовании в сочетании с функцией
+     DISKSPACE() RECSIZE() помогает убедиться в том, что имеется
+     достаточно свободного места на диске для записи файла.
+
+     По умолчанию RECSIZE() обрабатывет текущую (активную) рабочую
+     область. Для обработки пассивной рабочей области ее необходимо
+     использовать как выражение, уточненное алиасом (см. пример ниже).
+$EXAMPLES$
+       The following user-defined function, DbfSize(), uses RECSIZE()
+	to calculate the size of the current database file:
+
+	FUNCTION DbfSize
+	   RETURN ((RECSIZE() * LASTREC()) + HEADER() + 1)
+
+       This example illustrates the use of RECSIZE() to determine the
+	record length of database files open in unselected work areas:
+
+	USE Customer NEW
+	USE Sales NEW
+	//
+	? RECSIZE(), Customer->(RECSIZE())
+	? DbfSize(), Customer->(DbfSize())
+$LANG_RU$
+      Функция пользователя DbfSize() использует RECSIZE() для вычисления
+       размера текущего файла базы данных:
+
+       FUNCTION DbfSize
+	  RETURN ((RECSIZE() * LASTREC()) + HEADER())
+
+      Этот пример иллюстрирует использование RECSIZE() для определения
+       длины записи файлов базы данных, открытых в пассивной рабочей
+       области:
+
+       USE Customer NEW
+       USE Sales NEW
+       //
+       ? RECSIZE(), Customer->(RECSIZE())
+       ? DbfSize(), Customer->(DbfSize())
+$SEEALSO$
+  FIELDNAME(),HEADER(),LASTREC()
+$END$

@@ -1,0 +1,171 @@
+<chapter id="about">
+<title>_(Clipper compatible compiler)_</title>
+
+<formalpara>
+<title>_(Preprocessor)_</title>
+<para>
+_(Fully compatible with CA-Clipper with some)_
+<!--link linkend="newPossibilities"-->
+_(new possibilities.)_
+<!--/link-->
+</para>
+</formalpara>
+
+<formalpara>
+<title>_(Compiler)_</title>
+<para>
+_(slight incompability with CA-Clipper, which may be resolved easily,
+using the "search and replace" method.
+In addition it can compile to <emphasis> C program,
+byte-code, dynamic library and mixed C+byte-code. </emphasis>
+)_</para>
+</formalpara>
+
+<formalpara>
+<title>_(Very fast and efficient OO-model)_</title>
+<para>
+<simplelist>
+<member>
+_(Difference from CA-Clipper reveals itself in part of descriptions and making
+an object, but in part of using the ready objects syntax and logic of
+functioning is completely the same.)_
+</member><member>
+_(<emphasis>It is possible to write programs on CLIP, without using other syntax excepting OOP.</emphasis>)_
+</member><member>
+_(Initial support syntax from FS,CAVO,FoxPro.)_
+</member>
+</simplelist>
+</para>
+</formalpara>
+
+<formalpara>
+<title>_(C-API)_</title>
+<para>_(has much more possibilities than CA-Clipper.)_</para>
+</formalpara>
+
+<formalpara>
+<title>_(Full international support )_</title>
+<para>
+_(Including adjustment on any code page of any language on any keyboard
+(with stelnet emulator only or on consoles),
+substitution of string constants during execution and changing a logic of
+functioning with strings, given for functions <emphasis>alpha, digit, lower, upper,
+</emphasis> subscripted weight factors etc.
+Support two-bytes charsets <emphasis>BIG5, GB</emphasis>,
+may be Korean, Japan too.)_
+</para>
+</formalpara>
+
+<formalpara>
+<title>_( GUI, based on GTK)_</title>
+<para>_(Provides using of all widgets and processing the events)_
+</para>
+</formalpara>
+
+<formalpara>
+<title>_( Using of dynamic libraries,)_</title>
+<para>
+_(loading and execution of the byte-code from external files ( in run-time, too ).)_
+</para>
+</formalpara>
+
+<formalpara>
+<title>_(Compatibility)_</title>
+<para>
+<itemizedlist>
+<listitem><para>_(up to <emphasis>Clipper 5.3 </emphasis> (support of objects <emphasis>menu, button, check</emphasis>
+and other <emphasis>get-objects</emphasis>), as well as standard classes <emphasis>tbrowse,get,error</emphasis>.)_
+</para></listitem>
+<listitem><para>_( Are implemented a lot of CA_Tools functions,
+including all functions for processing the lines, dates, files, mathematicians.)_
+</para></listitem>
+<listitem><para>_( support all SIX functions and features)_</para></listitem>
+<listitem><para>_( MEM,DBF,DBT,FPT,NTX,CTX,CDX,NSX...)_</para></listitem>
+<listitem><para>_( VFP data types: datetime,currency)_</para></listitem>
+<listitem><para>_( RDD allows to use your own drivers, as well as use a driver, combined from
+several different drivers.)_</para></listitem>
+<listitem><para>_(RDD also allows to use only OO-style, without using of aliases)_</para></listitem>
+</itemizedlist>
+</para>
+</formalpara>
+
+<formalpara>
+<title>_(Multitask support)_</title>
+<para>_(Builtin simple non-preemptive multitask model)_</para>
+</formalpara>
+
+<formalpara>
+<title>_(CODB - CLIP Object Data Base)_</title>
+<para>_(Library and utils for object storehouse)_</para>
+</formalpara>
+
+<formalpara>
+<title>_(SQL)_</title>
+<para>
+<simplelist>
+<member>
+_(libraries and classes for direct access to SQL-servers (PG,MySql,Oracle,Interbase) )_
+</member><member>
+_(ODBC and ODBC bridge to Windows drivers.)_
+</member><member>
+_(SQL-interpreter and commands, compatible with FoxPro)_
+</member>
+</simplelist>
+</para>
+</formalpara>
+
+<formalpara>
+<title>_(Other possibilities )_</title>
+<para>
+<itemizedlist>
+<listitem><para>
+_(Overloading operators for objects.)_
+</para></listitem><listitem><para>
+_(Support of regular expressions.)_
+</para></listitem><listitem><para>
+_(function for TCP/IP sockets connections)_
+</para></listitem><listitem><para>
+_(COM_() functions)_
+</para></listitem><listitem><para>
+_(Rushmore like technology, but more fast and efficient.)_
+</para></listitem><listitem><para>
+_(Support of very-large-scale numbers with unlimited accuracy.)_
+</para></listitem><listitem><para>
+_(Support of graphic files PNG,GD,JPEG and primitives like lines,
+    rectangles, firing ranges, circumferences etc.)_
+</para></listitem><listitem><para>
+_(Several common classes for word processorses, <emphasis>html/cgi </emphasis>programms.)_
+</para></listitem><listitem><para>
+_(Several utilities for interpreting the patterns of the documents,
+  <emphasis>www_sql,clip_bl, clip_blank, clip_sql, clip_hindex, clip_hseek</emphasis> etc.)_
+</para></listitem><listitem><para>
+_(multiwindows interactive debugger.)_
+</para></listitem>
+</itemizedlist>
+</para>
+</formalpara>
+
+<formalpara>
+<title>_( Supported OS'es)_</title>
+<para>
+_(linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe with TurboLinux, Win32 ( with CYGWIN development tools))_
+</para>
+</formalpara>
+
+<formalpara>
+<title>_(TODO list)_</title>
+<para>
+<itemizedlist>
+<listitem><para>
+_(Windows support)_
+</para></listitem><listitem><para>
+_(FiveWin compatiblies.)_
+</para></listitem><listitem><para>
+_(FoxPro compatiblies.)_
+</para></listitem>
+</itemizedlist>
+</para>
+</formalpara>
+
+
+</chapter>

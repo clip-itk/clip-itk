@@ -1,0 +1,109 @@
+$FUNCNAME$
+  DBUSEAREA()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Use a database file in a work area
+$LANG_RU$
+   Открывает файл базы данных в рабочей области.
+$SYNTAX$
+     DBUSEAREA( [<lNewArea>], [<cDriver>], <cName>, [<xcAlias>],
+       [<lShared>], [<lReadonly>]) --> NIL
+$LANG_RU$
+     DBUSEAREA( [<признак новой области>], [<драйвер>], <имя>,
+		[<алиас>], [<совместный доступ>],
+		[<только чтение>] )  --> NIL
+$ARGUMENTS$
+     <lNewArea> is an optional logical value.  A value of true (.T.)
+     selects the lowest numbered unoccupied work area as the current work
+     area before the use operation.  If <lNewArea> is false (.F.) or omitted,
+     the current work area is used; if the work area is occupied, it is
+     closed first.
+
+     <cDriver> is an optional character value.  If present, it specifies
+     the name of the database driver which will service the work area.  If
+     <cDriver> is omitted, the current default driver is used (see note
+     below).
+
+     <cName> specifies the name of the database (.dbf) file to be opened.
+
+     <xcAlias> is an optional character value.  If present, it specifies
+     the alias to be associated with the work area.  The alias must
+     constitute a valid xClipper identifier.  A valid <xcAlias> may be any
+     legal identifier (i.e., it must begin with an alphabetic character and
+     may contain numeric or alphabetic characters and the underscore).
+     Within a single application, xClipper will not accept duplicate
+     aliases.  If <xcAlias> is omitted, a default alias is constructed from
+     <cName>.
+
+     <lShared> is an optional logical value.  If present, it specifies
+     whether the database (.dbf) file should be accessible to other processes
+     on a network.  A value of true (.T.) specifies that other processes
+     should be allowed access; a value of false (.F.) specifies that the
+     current process is to have exclusive access.  If <lShared> is omitted,
+     the current global _SET_EXCLUSIVE setting determines whether shared
+     access is allowed.
+
+     <lReadonly> is an optional logical value that specifies whether
+     updates to the work area are prohibited.  A value of true (.T.)
+     prohibits updates; a value of false (.F.) permits updates.  A value of
+     true (.T.) also permits read-only access to the specified database
+     (.dbf) file.  If <lReadonly> is omitted, the default value is false
+     (.F.).
+$LANG_RU$
+     <признак новой области> - необязательное логическое значение.
+     Значение "истина" (.T.) определяет, что текущей рабочей областью
+     перед открытием базы данных становится неиспользуемая рабочая область
+     с наименьшим номером. Если <признак новой области> - "ложь" (.F.) или
+     опущен, используется текущая рабочая область. Если в этой рабочей
+     области уже есть открытый файл базы данных, то он закрывается.
+
+     <драйвер> - необязательная символьная величина. Если присутствует,
+     то она определяет имя драйвера баз данных, который будет
+     использоваться в рабочей области. Если <драйвер> опущен, то по
+     умолчанию используется текущий драйвер (см. замечание ниже).
+
+     <имя> - определяет имя открываемой базы данных (.dbf).
+
+     <алиас> - необязательная символьная величина. Если присутствует,
+     то она определяет алиас, связанный с рабочей областью. Алиас должен
+     быть допустимым в xClipper идентификатором. Если <алиас> опущен, то
+     значение алиаса такое же, как <имя>.
+
+     <совместный доступ>  - необязательная логическая величина. Если
+     аргумент присутствует, то он определяет, открывается ли база данных в
+     режиме доступности для других процессов в сети. Значение "истина"
+     (.T.) определяет, что другие процессы могут иметь доступ, а значение
+     "ложь" (.F.) определяет, что текущий процесс должен иметь монопольный
+     доступ.  Если <совместный доступ> опущен, то текущая глобальная
+     установка _SET_EXLUSIVE определяет, разрешен ли совместный доступ к
+     файлам баз данных.
+
+     <только чтение> - необязательная логическая величина, которая
+     определяет, запрещены ли изменения данных в рабочей области.
+     Значение "истина" (.T.) определяет запрет изменений, а "ложь"
+     (.F.) - разрешение. Если аргумент <только чтение> опущен, то
+     предполагается значение "ложь" (.F.).
+$RETURNS$
+     DBUSEAREA() always returns NIL.
+$LANG_RU$
+     DBUSEAREA() всегда возвращает NIL.
+$DESCRIPTION$
+     DBUSEAREA() associates the specified database (.dbf) file with the
+     current work area.  It performs the same function as the standard USE
+     command.  For more information, refer to the USE command.
+$LANG_RU$
+     DBUSEAREA() открывает базу данных (.dbf-файл) в текущей или новой
+     рабочей области.
+
+     DBUSEAREA() выполняет те же функции, что и стандартная команда USE.
+     Более подробную информацию смотрите в команде USE.
+$EXAMPLES$
+       This example is a typical use of the DBUSEAREA() function:
+
+	DBUSEAREA(.T., "DBFNDX", "Employees")
+$LANG_RU$
+	DBUSEAREA(.T.,"DBFNTX","Employee")
+$SEEALSO$
+  DBCLOSEAREA(),DBSETDRIVER(),SELECT(),SET()
+$END$

@@ -1,0 +1,47 @@
+$FUNCNAME$
+  ATAIL()
+$CATEGORY$
+  ARRAY
+$SUMMARY$
+   Return the highest numbered element of an array
+$LANG_RU$
+   Возвращает элемент массива с наибольшим номером.
+$SYNTAX$
+     ATAIL(<aArray>) --> Element
+$LANG_RU$
+     ATAIL(<массив>) --> элемент
+$ARGUMENTS$
+     <aArray> is the array.
+$LANG_RU$
+     <массив> - массив
+$RETURNS$
+     ATAIL() returns either a value or a reference to an array or object.
+     The array is not changed.
+$LANG_RU$
+     ATAIL() возвращает значение, которое также может являться ссылкой на
+     массив или объект.  Сам массив не изменяется.
+$DESCRIPTION$
+     ATAIL() is an array function that returns the highest numbered element
+     of an array.  It can be used in applications as shorthand for
+     <aArray>[LEN(<aArray>)] when you need to obtain the last element of an
+     array.
+$LANG_RU$
+     ATAIL() - функция обработки массивов, которая возвращает значение
+     элемента массива с наибольшим номером. Она может быть использована
+     как более короткая запись выражения <массив>[LEN(<массив>)],
+     обеспечивающего доступ к последнему элементу массива.
+$EXAMPLES$
+       The following example creates a literal array and returns that
+	last element of the array:
+
+	aArray := {"a", "b", "c", "d"}
+	? ATAIL(aArray)                     // Result: d
+$LANG_RU$
+      Следующий пример демонстрирует создание литерального массива и
+       получение последнего его элемента.
+
+       aArray := {"a", "b", "c", "d"}
+       ? ATAIL(aArray)                      // Результат: d
+$SEEALSO$
+  LEN()
+$END$

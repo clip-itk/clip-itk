@@ -1,0 +1,3555 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2003-02-17 18:43+0400\n"
+"Last-Translator: Rushad <rust@itk.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: template/./doc/sql.sgml:1
+msgid "Working with SQL servers"
+msgstr "Работа с SQL серверами"
+
+#: template/./doc/sql.sgml:5
+msgid "Rushad"
+msgstr "Рушад"
+
+#: template/./doc/sql.sgml:5
+msgid "Nabiullin"
+msgstr "Набиуллин"
+
+#: template/./doc/sql.sgml:11
+msgid ""
+"\n"
+"CLIP provides simple but powerful tools for access to the various SQL\n"
+"servers. The underlying principles of this tools are considered in this\n"
+"chapter. Some features and possibilities and related classes and functions\n"
+"are described below.\n"
+msgstr ""
+"\n"
+"CLIP предоставляет простой, но мощный инструмент для доступа к различным\n"
+"SQL серверам. В этой главе рассматриваются концепции, лежащие в основе "
+"этого\n"
+"инструмента. Также описываются основные возможности и классы и функции для\n"
+"для работы с SQL серверами.\n"
+
+#: template/./doc/sql.sgml:17
+msgid "Features"
+msgstr "Возможности"
+
+#: template/./doc/sql.sgml:20
+msgid ""
+"\n"
+"Some of the features and possibilities are listed below.\n"
+msgstr ""
+"\n"
+"Ниже перечислены некоторые возможности инструмента.\n"
+
+#: template/./doc/sql.sgml:27
+msgid ""
+"\n"
+"CLIP unifies use of the various SQL servers thus hiding individual\n"
+"peculiarities of their APIs from developers as many as possible.\n"
+"Nevertheless you should know SQL dialect of desired RDBMS.\n"
+msgstr ""
+"\n"
+"CLIP унифицирует использование различных SQL серверов, таким образом \n"
+"скрывая особенности их API от разработчика, настолько, насколько это "
+"возможно.\n"
+"Тем не менее, вы должны знать диалект языка SQL, используемый в выбранном "
+"СУБД.\n"
+
+#: template/./doc/sql.sgml:34
+msgid ""
+"\n"
+"Transactions are supported. By default each SQL statement works\n"
+"in it's own transaction (each statement is enclosed in pair of START/COMMIT\n"
+"implicitly).\n"
+"Nevertheless it is possible to accomplish a sequence of the statements\n"
+"in one transaction by calling explicitly START and COMMIT or ROLLBACK\n"
+"functions in appropriate points.\n"
+msgstr ""
+"\n"
+"Поддерживаются транзакции. По умолчанию каждый оператор SQL работает\n"
+"в своей собственной транзакции (после выполнения каждого оператора неявно\n"
+"производится COMMIT). Тем не менее, возможно выполнение нескольких\n"
+"операторов в одной транзакции, путем ручного старта транзакции, с "
+"последующим\n"
+"его завершением (COMMIT или ROLLBACK).\n"
+
+#: template/./doc/sql.sgml:43
+msgid ""
+"\n"
+"Local ordering allow change the order of rows locally, no more need to "
+"charge\n"
+"the server by almost the same query with different ORDER BY clause. Also, "
+"local\n"
+"orders allow fast seek for desired row in huge the result set.\n"
+msgstr ""
+"\n"
+"Локальные индексы позволяют менять логический порядок записей. Больше\n"
+"не нужно загружать сервер почти одинаковыми запросами, отличающимися лишь\n"
+"предложением ORDER BY. Локальные индексы позволяют также производить\n"
+"быстрый поиск по ключу в большом наборе записей.\n"
+
+#: template/./doc/sql.sgml:49
+msgid ""
+"\n"
+"Automation of mirroring updates in database. You may provide appropriate\n"
+"UPDATE, DELETE, INSERT statements which will be executed automaticly after\n"
+"update of the local set of the selected rows.\n"
+msgstr ""
+"\n"
+"Автоматизация отражения изменений в базе данных. Можно снабдить набор "
+"записей\n"
+"соответствующими операторами UPDATE, DELETE, INSERT, которые будут\n"
+"автоматически выполняться на сервере при изменении набора выбранных "
+"записей.\n"
+
+#: template/./doc/sql.sgml:55
+msgid ""
+"\n"
+"Two fetch modes - full fetch and fetch on demand. In first mode all result\n"
+"rows are fetched after execution of SELECT statement. The fetching process\n"
+"can be observed and cancelled by user defined function. In second mode\n"
+"the fetching is accomplished as far as particular row has been addressed.\n"
+"Such kind of execution is helpful when amount of result rows can't\n"
+"be estimated.\n"
+msgstr ""
+"\n"
+"Два режима загрузки (выборки) записей - полная выборка и выборка по "
+"требованию.\n"
+"В первом режиме все выбранные записи полностью загружаются сразу после "
+"выполнения\n"
+"запроса SELECT. За процессом загрузки можно наблюдать и его можно досрочно\n"
+"прекращать при помощи функции определяемой пользователем.\n"
+"Во втором режиме загрузка записей осуществляется по мере обращения к ним.\n"
+"Такой режим загрузки полезен, когда невозможно оценить заранее количество\n"
+"записей, удовлетворяющих запросу SELECT.\n"
+
+#: template/./doc/sql.sgml:67
+msgid "Quick start"
+msgstr "Краткий курс"
+
+#: template/./doc/sql.sgml:69 template/./doc/sql.sgml:2409
+#: template/./doc/sql.sgml:2537 template/./doc/sql.sgml:2670
+#: template/./doc/sql.sgml:2800 template/./doc/sql.sgml:2955
+#: template/./doc/sql.sgml:3047
+msgid "Building an application"
+msgstr "Сборка приложения"
+
+#: template/./doc/sql.sgml:72
+msgid ""
+"\n"
+"To build an application working with desired SQL server you have to\n"
+"install appropriate <![CDATA[clip-<rdbms>]]> package.\n"
+"The following packages are available currently:\n"
+msgstr ""
+"\n"
+"Чтобы построить приложение работающее с каким-нибудь SQL сервером, "
+"необходимо\n"
+"установить соответствующий пакет <![CDATA[clip-<rdbms>]]>.\n"
+" На данный момент доступны\n"
+"пакеты для следующих СУБД:\n"
+
+#: template/./doc/sql.sgml:122
+msgid "DBTCP proxy server for ODBC connections"
+msgstr "Прокси сервер DBTCP для использования источников данных ODBC"
+
+#: template/./doc/sql.sgml:130
+msgid ""
+"\n"
+"Once installed desired package you can build an application like this:\n"
+msgstr ""
+"\n"
+"Установив пакет для выбранного SQL сервера можно собирать приложение "
+"примерно так:\n"
+
+#: template/./doc/sql.sgml:138
+msgid "Step by step"
+msgstr "Шаг за шагом"
+
+#: template/./doc/sql.sgml:141
+msgid ""
+"\n"
+"Before you will be able to make something you should create a connect to\n"
+"the server. The function <link linkend=\"sqlconnectnew\">ConnectNew()</"
+"link>\n"
+"is intended for that purpose. ConnectNew() - is a constructor of the class\n"
+"<link linkend=\"sqltconnect\">TConnect</link>, i.e. it returns\n"
+"a TConnect object on success. Once obtained that object can be used to\n"
+"execute SQL statements, to select a set of desired rows, to start and\n"
+"end transactions. For example:\n"
+msgstr ""
+"\n"
+"Прежде всего приложение должно произвести подключение к серверу.\n"
+"Для этого предназначена функция <link linkend=\"sqlconnectnew\">ConnectNew()"
+"</link> \n"
+"ConnectNew() - это конструктор класса <link linkend=\"sqltconnect"
+"\">TConnect</link>,\n"
+"т.е. он возвращает объект класса TConnect.\n"
+"Этот объект может использоваться для выполнения операторов SQL;\n"
+"для выборки набора записей, возвращаемых запросом SELECT;\n"
+"а также для старта и завершения транзакций. Например:\n"
+
+#: template/./doc/sql.sgml:161
+msgid ""
+"\n"
+"Several connections can be made simultaneously. Moreover,\n"
+"it is possible to connect to several various servers simultaneously.\n"
+msgstr ""
+"\n"
+"Одновременно может быть произведено несколько несколько подключений.\n"
+"Более того, возможно одновременное подключение к нескольким различным "
+"серверам.\n"
+
+#: template/./doc/sql.sgml:166
+msgid ""
+"\n"
+"SQL statements and queries can have parameters. Parameter names must be\n"
+"preceded with ':'. Parameter values are passed in the bidimensional array -\n"
+"one row per parameter. First column contains parameter name, second - the "
+"value.\n"
+"For example:\n"
+msgstr ""
+"\n"
+"В операторах и запросах SQL могут использоваться параметры.\n"
+"Именам параметров в строке, содержащей оператор или запрос, должен "
+"предшествовать\n"
+"символ ':'. Значения параметров передаются в двумерном массиве,\n"
+"одна строка на параметр. Первый столбец каждой строки должен содержать\n"
+"имя параметра, второй - его значение. Например:\n"
+
+#: template/./doc/sql.sgml:178
+msgid ""
+"\n"
+"TConnect member function <link linkend=\"sqlcreaterowset\">CreateRowset()</"
+"link>\n"
+"is used to obtain a set of rows - result of SELECT statement. It returns\n"
+"an object of TRowset class. For example:\n"
+msgstr ""
+"\n"
+"Для получения набора записей - результата запроса SELECT используется\n"
+"метод класса TConnect <link linkend=\"sqlcreaterowset\">CreateRowset()</"
+"link>.\n"
+"Он возвращает объект класса TRowset. Например:\n"
+
+#: template/./doc/sql.sgml:189
+msgid ""
+"\n"
+"TRowset member functions allow you to navigate through the set of result "
+"rows.\n"
+"Here they are:\n"
+"<link linkend=\"sqlbof\">Bof()</link>, <link linkend=\"sqleof\">Eof()</"
+"link>,\n"
+"<link linkend=\"sqlskip\">Skip()</link>, <link linkend=\"sqlgoto\">Goto()</"
+"link>,\n"
+"<link linkend=\"sqlgotop\">GoTop()</link>, <link linkend=\"sqlgobottom"
+"\">GoBottom()</link>,\n"
+"<link linkend=\"sqllastrec\">Lastrec()</link>, <link linkend=\"sqlrecno"
+"\">Recno()</link>.\n"
+msgstr ""
+"\n"
+"Несколько методов класса TRowset позволяют производить навигацию по "
+"наборузаписей: <link linkend=\"sqlbof\">Bof()</link>, <link linkend=\"sqleof"
+"\">Eof()</link>,\n"
+"<link linkend=\"sqlskip\">Skip()</link>, <link linkend=\"sqlgoto\">Goto()</"
+"link>,\n"
+"<link linkend=\"sqlgotop\">GoTop()</link>, <link linkend=\"sqlgobottom"
+"\">GoBottom()</link>,\n"
+"<link linkend=\"sqllastrec\">Lastrec()</link>, <link linkend=\"sqlrecno"
+"\">Recno()</link>.\n"
+
+#: template/./doc/sql.sgml:198
+msgid ""
+"\n"
+"Two functions are intended to read/write the current row:\n"
+"<link linkend=\"sqlread\">Read()</link> and <link linkend=\"sqlwrite\">Write"
+"()</link>.\n"
+"Read() returns an object whose structure is the same as the structure of "
+"the\n"
+"row. For example:\n"
+msgstr ""
+"\n"
+"Две функции предназначены для чтения/записи текущей записи набора:\n"
+"<link linkend=\"sqlread\">Read()</link> и <link linkend=\"sqlwrite\">Write()"
+"</link>.\n"
+"Read() возвращает объект с такой же структурой, что и структура записи.\n"
+"Например:\n"
+
+#: template/./doc/sql.sgml:210
+msgid ""
+"\n"
+"Write() function receives an object and sets the values of fields\n"
+"whose names are in compliance with the attribute names of that object.\n"
+"For example:\n"
+msgstr ""
+"\n"
+"Метод Write() получает в качестве параметра объект с несколькими "
+"атрибутами,\n"
+"и устанавливает значения соответствующих полей. Например:\n"
+
+#: template/./doc/sql.sgml:224
+msgid ""
+"You can add row to the set (<link linkend=\"sqlappend\">Append()</link>)\n"
+"and delete (<link linkend=\"sqldelete\">Delete()</link>).\n"
+"Append() receives parameter - obj. For example:\n"
+msgstr ""
+"Можно добавлять записи к набору ((<link linkend=\"sqlappend\">Append()</"
+"link>)\n"
+"и удалять (<link linkend=\"sqldelete\">Delete()</link>).\n"
+"Append() получает параметр - объект. Например:\n"
+
+#: template/./doc/sql.sgml:243
+msgid ""
+"\n"
+"All changes performed by Write(), Append(), Delete() are applied to the set\n"
+"only. However, three additional parameters (<![CDATA[<cInsertSQL>, "
+"<cDeleteSQL>,\n"
+"<cUpdateSQL>]]>) can be passed to CreateRowset(). If passed,\n"
+"<![CDATA[<cInsertSQL>]]>\n"
+"will be executed implicitly by invoking Append() method. Likewise,\n"
+"<![CDATA[<cDeleteSQL>]]> and <![CDATA[<cUpdateSQL>]]> will be used when\n"
+"Delete() and Write() have been invoked. An unique ID of the row should be\n"
+"SELECTed in the case of Write() and Delete(). (Read about this issue\n"
+"documentation on the driver of desired <link linkend=\"sqlrdbms\">RDBMS</"
+"link>.)\n"
+"For example:\n"
+msgstr ""
+"\n"
+"Все изменения набора записей, производимые методами\n"
+"Write(), Append(), Delete() - локальны. Но конструктору TRowset\n"
+"могут быть переданы три дополнительных параметра\n"
+"(<![CDATA[<cInsertSQL>, <cDeleteSQL>,<cUpdateSQL>]]>).\n"
+"Если передан, оператор <![CDATA[<cInsertSQL>]]> будет неявно выполнен\n"
+"на сервере методом Append(). Точно так же\n"
+"<![CDATA[<cDeleteSQL>]]> и <![CDATA[<cUpdateSQL>]]>\n"
+"будут выполнены методами Delete() и Write(). В случае Write() и Delete()\n"
+"в наборе должно присутствовать поле с уникальными идентификаторами записей.\n"
+"См. подробности о путях решения этой проблемы драйверами разных\n"
+"<link linkend=\"sqlrdbms\">СУБД</link>. Например:\n"
+
+#: template/./doc/sql.sgml:263
+msgid ""
+"\n"
+"If amount of matched rows can't be estimated two parameters <![CDATA[\n"
+"<bEval> and <nEvery>]]> will be helpful. Code block <![CDATA[<bEval>]]>\n"
+"will be executed during fetching process after each fetched <![CDATA"
+"[<nEvery>]]>\n"
+"rows. If it returns .F. the process breaks. Thus you could make\n"
+"a progressbar for huge result sets and cancel fetching.\n"
+"This example prints '.' per 100 rows and can be cancelled by pressing ESC.\n"
+msgstr ""
+"\n"
+"В случаях когда количество возвращаемых записей невозможно предугадать\n"
+"будут полезны параметры <![CDATA[<bEval> и <nEvery>]]>. Блок кода\n"
+"<![CDATA[<bEval>]]> исполняется в процессе выборки через каждые\n"
+"<![CDATA[<nEvery>]]> записи. Если он возвращает .F. - процесс прекращается.\n"
+"Таким образом можно сделать индикатор процесса для больших результирующих\n"
+"наборов и прекращать выборку по требованию пользователя. Нижеследующий\n"
+"пример печатает точку через каждые 100 загруженных записей и может быть\n"
+"остановлен нажатием ESC.\n"
+
+#: template/./doc/sql.sgml:277
+msgid ""
+"\n"
+"For the same reason (when amount of matched rows can't be estimated)\n"
+"you may direct TRowset to not fetch all found rows immediately,\n"
+"but fetch them on demand.\n"
+"There is another one parameter <![CDATA[<lNoFetch>]]> for this purpose.\n"
+"If passed .T., CreateRowset() terminates at once. But number of matched "
+"rows\n"
+"can't be obtained while not fetched rows are remained. To fetch the rest\n"
+"of them <link linkend=\"sqlfetchall\">TRowset:FetchAll()</link> function "
+"could\n"
+"be used. <link linkend=\"sqlfetched\">TRowset:Fetched()</link> returns "
+"number\n"
+"of rows fetched at the moment. For example:\n"
+msgstr ""
+"\n"
+"В подобных же случаях (когда невозможно предугадать размер результирующего\n"
+"набора) было бы полезно иметь возможность не загружать все записи сразу,\n"
+"а только тогда когда они потребуются. Для этого предназначен параметр\n"
+"<![CDATA[<lNoFetch>]]>. Если этот параметр .T., CreateRowset() завершается\n"
+"сразу после выполнения оператора SQL сервером, без загрузки записей.\n"
+"Загрузка производится позже, в процессе навигации по набору записей.\n"
+"Но в этом случае невозможно сразу определить количество выбранных записей,\n"
+"до тех пор пока остается хотя бы одна незагруженная запись. Для довыборки "
+"незагруженных записей существует функция\n"
+"<link linkend=\"sqlfetchall\">TRowset:FetchAll()</link>. Для определения "
+"количества\n"
+"загруженных на данный момент записей - \n"
+"<link linkend=\"sqlfetched\">TRowset:Fetched()</link>. Например:\n"
+
+#: template/./doc/sql.sgml:302
+msgid ""
+"\n"
+"TRowset supports so-called 'local orders'. 'Local order' is an index "
+"created\n"
+"on the client side and it allows to change an order of rows in the set. It "
+"is\n"
+"mostly the same as standard RDD indices, but it's time life is limited by\n"
+"row set's life time, i.e. it is located in the memory and does not\n"
+"occupy any files. <link linkend=\"sqlcreateorder\">TRowset:CreateOrder()</"
+"link>\n"
+"creates an order with given name,\n"
+"<link linkend=\"sqlsetorder\">TRowset:SetOrder()</link> activates an order.\n"
+"For example:\n"
+msgstr ""
+"\n"
+"TRowset поддерживает так называемые \"локальные индексы\". \"Локальный индекс"
+"\" -\n"
+"это индекс, создаваемый на клиентской стороне и используемый для изменения\n"
+"логического порядка записей в наборе. Это практически то же самое, что и "
+"обычные\n"
+"индексы в RDD, но время их жизни ограничено временем жизни набора записей.\n"
+"Т.е. они располгаются в памяти клиентской машины, а не в файлах. Функция\n"
+"<link linkend=\"sqlcreateorder\">TRowset:CreateOrder()</link> создает "
+"индекс\n"
+"с заданным именем. Функция <link linkend=\"sqlsetorder\">TRowset:SetOrder()</"
+"link>\n"
+"активирует индекс, после чего он начинает управлять логическим порядком "
+"записей.\n"
+"Например:\n"
+
+#: template/./doc/sql.sgml:336
+msgid ""
+"\n"
+"Now we shall proceed to the description of SQL related classes and "
+"functons.\n"
+msgstr ""
+"\n"
+"Теперь перейдем к описанию функций и классов предназначенных для работы с "
+"SQL\n"
+"серверами.\n"
+
+#: template/./doc/sql.sgml:343
+msgid "SQL API reference"
+msgstr "Описание API SQL"
+
+#: template/./doc/sql.sgml:349 template/./doc/sql.sgml:415
+#: template/./doc/sql.sgml:519 template/./doc/sql.sgml:694
+#: template/./doc/sql.sgml:1168 template/./doc/sql.sgml:1378
+#: template/./doc/sql.sgml:1427 template/./doc/sql.sgml:1457
+#: template/./doc/sql.sgml:1515 template/./doc/sql.sgml:1550
+#: template/./doc/sql.sgml:1601 template/./doc/sql.sgml:1635
+#: template/./doc/sql.sgml:1665 template/./doc/sql.sgml:1695
+#: template/./doc/sql.sgml:1729 template/./doc/sql.sgml:1763
+#: template/./doc/sql.sgml:1816 template/./doc/sql.sgml:1851
+#: template/./doc/sql.sgml:1885 template/./doc/sql.sgml:1941
+#: template/./doc/sql.sgml:1997 template/./doc/sql.sgml:2029
+#: template/./doc/sql.sgml:2063 template/./doc/sql.sgml:2085
+#: template/./doc/sql.sgml:2108 template/./doc/sql.sgml:2135
+#: template/./doc/sql.sgml:2201 template/./doc/sql.sgml:2248
+#: template/./doc/sql.sgml:2337
+msgid "Return value"
+msgstr "Возвращаемое значение"
+
+#: template/./doc/sql.sgml:351
+msgid ""
+"\n"
+"An array of drivers as series of subarrays, one per available driver.\n"
+"The first element of subarray contains short ID of driver;\n"
+"the second - the name of RDBMS accessed by driver;\n"
+"the third - driver description.\n"
+msgstr ""
+"\n"
+"Двухмерный массив с описаниями доступных драйверов, по одной строке на "
+"драйвер.\n"
+"Первый столбец содержит краткую строку - идентификатор драйвера;\n"
+"второй - имя СУБД с которой работает драйвер; третий - описание драйвера.\n"
+
+#: template/./doc/sql.sgml:357 template/./doc/sql.sgml:420
+#: template/./doc/sql.sgml:524 template/./doc/sql.sgml:564
+#: template/./doc/sql.sgml:586 template/./doc/sql.sgml:699
+#: template/./doc/sql.sgml:929 template/./doc/sql.sgml:969
+#: template/./doc/sql.sgml:1127 template/./doc/sql.sgml:1175
+#: template/./doc/sql.sgml:1228 template/./doc/sql.sgml:1266
+#: template/./doc/sql.sgml:1306 template/./doc/sql.sgml:1357
+#: template/./doc/sql.sgml:1385 template/./doc/sql.sgml:1432
+#: template/./doc/sql.sgml:1462 template/./doc/sql.sgml:1520
+#: template/./doc/sql.sgml:1556 template/./doc/sql.sgml:1606
+#: template/./doc/sql.sgml:1640 template/./doc/sql.sgml:1670
+#: template/./doc/sql.sgml:1700 template/./doc/sql.sgml:1734
+#: template/./doc/sql.sgml:1768 template/./doc/sql.sgml:1821
+#: template/./doc/sql.sgml:1856 template/./doc/sql.sgml:1890
+#: template/./doc/sql.sgml:1907 template/./doc/sql.sgml:1946
+#: template/./doc/sql.sgml:1976 template/./doc/sql.sgml:2002
+#: template/./doc/sql.sgml:2034 template/./doc/sql.sgml:2068
+#: template/./doc/sql.sgml:2090 template/./doc/sql.sgml:2113
+#: template/./doc/sql.sgml:2140 template/./doc/sql.sgml:2163
+#: template/./doc/sql.sgml:2206 template/./doc/sql.sgml:2253
+#: template/./doc/sql.sgml:2299 template/./doc/sql.sgml:2342
+#: template/./doc/sql.sgml:2376
+msgid "Description"
+msgstr "Описание"
+
+#: template/./doc/sql.sgml:359
+msgid ""
+"\n"
+"<command>SQLList()</command> is used to obtain the list of available\n"
+"SQL drivers. The driver is available when it's library is linked with\n"
+"an application. If there are no linked SQL drivers an empty array\n"
+"is returned.\n"
+msgstr ""
+"\n"
+"<command>SQLList()</command> используется для получения списка доступных\n"
+"приложению драйверов для доступа к SQL серверам. Драйвер доступен, когда\n"
+"приложение слинковано с соответствующей библиотекой. Если ни один драйвер\n"
+"не прилинкован возвращается пустой массив.\n"
+
+#: template/./doc/sql.sgml:365
+msgid ""
+"\n"
+"The first element of subarray representing a driver contains RDBMS's ID\n"
+"(short CHARACTER value associated with driver), which is used as\n"
+"<![CDATA[<cRDBMS>]]> parameter of TConnect constructor\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link>.\n"
+msgstr ""
+"\n"
+"Первый элемент строки возвращаемого массива содержит строку-идентификатор "
+"(ID)\n"
+"СУБД, с которым работает драйвер, используемый в качестве значения "
+"параметра\n"
+"<![CDATA[<cRDBMS>]]> конструктора класса TConnect\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link>.\n"
+
+#: template/./doc/sql.sgml:371 template/./doc/sql.sgml:452
+#: template/./doc/sql.sgml:549 template/./doc/sql.sgml:571
+#: template/./doc/sql.sgml:593 template/./doc/sql.sgml:936
+#: template/./doc/sql.sgml:982 template/./doc/sql.sgml:1150
+#: template/./doc/sql.sgml:1190 template/./doc/sql.sgml:1234
+#: template/./doc/sql.sgml:1281 template/./doc/sql.sgml:1340
+#: template/./doc/sql.sgml:1363 template/./doc/sql.sgml:1407
+#: template/./doc/sql.sgml:1441 template/./doc/sql.sgml:1527
+#: template/./doc/sql.sgml:1574 template/./doc/sql.sgml:1612
+#: template/./doc/sql.sgml:1646 template/./doc/sql.sgml:1676
+#: template/./doc/sql.sgml:1706 template/./doc/sql.sgml:1740
+#: template/./doc/sql.sgml:1793 template/./doc/sql.sgml:1828
+#: template/./doc/sql.sgml:1862 template/./doc/sql.sgml:1896
+#: template/./doc/sql.sgml:1917 template/./doc/sql.sgml:1962
+#: template/./doc/sql.sgml:1981 template/./doc/sql.sgml:2012
+#: template/./doc/sql.sgml:2049 template/./doc/sql.sgml:2073
+#: template/./doc/sql.sgml:2095 template/./doc/sql.sgml:2119
+#: template/./doc/sql.sgml:2149 template/./doc/sql.sgml:2172
+#: template/./doc/sql.sgml:2226 template/./doc/sql.sgml:2266
+#: template/./doc/sql.sgml:2313 template/./doc/sql.sgml:2353
+#: template/./doc/sql.sgml:2384
+msgid "Example"
+msgstr "Пример"
+
+#: template/./doc/sql.sgml:393 template/./doc/sql.sgml:501
+#: template/./doc/sql.sgml:621 template/./doc/sql.sgml:951
+#: template/./doc/sql.sgml:1119 template/./doc/sql.sgml:1207
+#: template/./doc/sql.sgml:1246 template/./doc/sql.sgml:1503
+#: template/./doc/sql.sgml:1538 template/./doc/sql.sgml:1589
+#: template/./doc/sql.sgml:1623 template/./doc/sql.sgml:1657
+#: template/./doc/sql.sgml:1687 template/./doc/sql.sgml:1717
+#: template/./doc/sql.sgml:1751 template/./doc/sql.sgml:1804
+#: template/./doc/sql.sgml:1839 template/./doc/sql.sgml:1873
+#: template/./doc/sql.sgml:1933 template/./doc/sql.sgml:2187
+#: template/./doc/sql.sgml:2240 template/./doc/sql.sgml:2283
+#: template/./doc/sql.sgml:2327 template/./doc/sql.sgml:2368
+msgid "Parameters"
+msgstr "Параметры"
+
+#: template/./doc/sql.sgml:397
+msgid ""
+"\n"
+"RDBMS identifier; see desired <link linkend=\"sqlrdbms\">RDBMS</link> "
+"information\n"
+msgstr ""
+"\n"
+"идентификатор СУБД; см. информацию о специфике использования конкретной\n"
+"<link linkend=\"sqlrdbms\">СУБД</link>\n"
+
+#: template/./doc/sql.sgml:401
+msgid ""
+"\n"
+"a number of RDBMS specific parameters; see desired\n"
+"<link linkend=\"sqlrdbms\">RDBMS</link> information\n"
+msgstr ""
+"\n"
+"несколько специфичных для используемой СУБД параметров;\n"
+"см. информацию о специфике использования конкретной\n"
+"<link linkend=\"sqlrdbms\">СУБД</link>\n"
+
+#: template/./doc/sql.sgml:406
+msgid ""
+"\n"
+"(9th parameter) backend charset\n"
+msgstr ""
+"\n"
+"(9-й параметр) кодировка, используемая сервером\n"
+
+#: template/./doc/sql.sgml:410
+msgid ""
+"\n"
+"(10th parameter) default transaction isolation level; see desired\n"
+"<link linkend=\"sqlrdbms\">RDBMS</link> information\n"
+msgstr ""
+"\n"
+"(10-й параметр) уровень изоляции по умолчанию;\n"
+"см. информацию о специфике использования конкретной\n"
+"<link linkend=\"sqlrdbms\">СУБД</link>\n"
+
+#: template/./doc/sql.sgml:417
+msgid ""
+"\n"
+"TConnect object.\n"
+msgstr ""
+"\n"
+"Объект класса TConnect.\n"
+
+#: template/./doc/sql.sgml:422
+msgid ""
+"\n"
+"<command>ConnectNew()</command> connects to a SQL server, constructs and\n"
+"returns TConnect object.\n"
+"That object can be used to start/stop transactions, to execute SQL "
+"statements,\n"
+"and to obtain a set of rows by SELECT statement.\n"
+msgstr ""
+"\n"
+"<command>ConnectNew()</command> подключается к серверу, создает\n"
+"и возвращает объект класса TConnect.\n"
+"Этот объект может использоваться для старта/завершения транзакций,\n"
+"выполнения операторов SQL и для получения наборов записей - результата\n"
+"оператора SELECT.\n"
+
+#: template/./doc/sql.sgml:428
+msgid ""
+"\n"
+"Optional parameter <command><![CDATA[<cCharset>]]></command> is used to\n"
+"indicate that server uses different from client charset. All string\n"
+"transformations are made then automatically.\n"
+"If not passed, SET(\"SQL_CHARSET\") is used. Note, that changing\n"
+"SET(\"SQL_CHARSET\") after connection to the server has no effect for this\n"
+"connection.\n"
+msgstr ""
+"\n"
+"Дополнительный параметр <command><![CDATA[<cCharset>]]></command>\n"
+"используется в случаях, когда кодировки сервера и клиента не совпадают.\n"
+"Все перекодировки строк, получаемых с сервера и передаваемых обратно "
+"производятся\n"
+"автоматически. Если этот параметр не передан используется\n"
+"SET(\"SQL_CHARSET\"). Обратите внимание, что\n"
+"изменение SET(\"SQL_CHARSET\") после подключения к серверу не имеет эффекта\n"
+"для этого подключения.\n"
+
+#: template/./doc/sql.sgml:436
+msgid ""
+"\n"
+"If optional parameter <command><![CDATA[<cIsolation>]]></command>\n"
+"is not passed, an appropriate SET variable is used, for example\n"
+"SET(\"OR_ISOLATION_LEVEL\") for Oracle. If there is no such SET variable, "
+"the\n"
+"SET(\"SQL_ISOLATION_LEVEL\") is used.\n"
+msgstr ""
+"\n"
+"Если дополнительный параметр <command><![CDATA[<cIsolation>]]></command>\n"
+"не передан, используется соответствующая переменная SET, например\n"
+"SET(\"OR_ISOLATION_LEVEL\") для Oracle. Если такой переменной SET нет, "
+"используется SET(\"SQL_ISOLATION_LEVEL\").\n"
+
+#: template/./doc/sql.sgml:442
+msgid ""
+"\n"
+"Default isolation level can be overrided by\n"
+"<link linkend=\"sqlstart\">TConnect:Start()</link> parameters. Changing "
+"value\n"
+"of an appropriate SET variable after connect wouldn't help.\n"
+msgstr ""
+"\n"
+"Вместо уровня изоляции по умолчанию может быть использоваться другой,\n"
+"определяемый соответствующим параметром функции\n"
+"<link linkend=\"sqlstart\">TConnect:Start()</link>. Изменение значения "
+"соответствующей\n"
+"переменной SET после того как подключение произведено не влияет на "
+"умалчиваемый\n"
+"уровень изоляции этого подключения.\n"
+
+#: template/./doc/sql.sgml:447
+msgid ""
+"\n"
+"When an application completes access to the SQL server it should disconnect\n"
+"from the server and release system resources by calling\n"
+"<link linkend=\"sqlconndestroy\">TConnect:Destroy()</link>.\n"
+msgstr ""
+"\n"
+"Когда приложению больше не требуется SQL сервер, оно должно отключиться\n"
+"от сервера и освободить занимаемые подключением ресурсы при помощи\n"
+"вызова функции-деструктора\n"
+"<link linkend=\"sqlconndestroy\">TConnect:Destroy()</link>.\n"
+
+#: template/./doc/sql.sgml:454
+msgid ""
+"\n"
+"In this example the connection to the local PostgreSQL server is performed.\n"
+msgstr ""
+"\n"
+"В этом примере производится подключение к локальному серверу PostgreSQL.\n"
+
+#: template/./doc/sql.sgml:464
+msgid "TConnect class"
+msgstr "Класс TConnect"
+
+#: template/./doc/sql.sgml:467
+msgid ""
+"\n"
+"TConnect class constructor and member functions are listed below:\n"
+msgstr ""
+"\n"
+"Ниже перечислены конструктор и методы класса TConnect:\n"
+
+#: template/./doc/sql.sgml:473
+msgid "TConnect constructor"
+msgstr "Конструктор TConnect"
+
+#: template/./doc/sql.sgml:478
+msgid "execute SQL statement"
+msgstr "выполнение оператора SQL"
+
+#: template/./doc/sql.sgml:481
+msgid "commit transaction"
+msgstr "завершение успешной транзакции"
+
+#: template/./doc/sql.sgml:484
+msgid "disconnect from the server and destroy TConnect object"
+msgstr "отключение от сервера и деструктор TConnect"
+
+#: template/./doc/sql.sgml:487 template/./doc/sql.sgml:1004
+msgid "TRowset constructor"
+msgstr "Конструктор TRowset"
+
+#: template/./doc/sql.sgml:490
+msgid "rollback transaction"
+msgstr "откат транзакции"
+
+#: template/./doc/sql.sgml:493
+msgid "start transaction"
+msgstr "старт транзакции"
+
+#: template/./doc/sql.sgml:505
+msgid ""
+"\n"
+"a string containing SQL statement to be executed\n"
+msgstr ""
+"\n"
+"строка содержащая оператор SQL для выполнения\n"
+
+#: template/./doc/sql.sgml:509
+msgid ""
+"\n"
+"an array contaning SQL parameters as a series of subarrays,\n"
+"one per parameter. Each subarray must contain at least two elements. The "
+"first\n"
+"is parameter name, the second is the parameter value. Third element\n"
+"is used only with <link linkend=\"sqloracle\">Oracle</link> (and is "
+"required),\n"
+"and contains a numeric data type identifier.\n"
+"Optional fourth element is used to indicate a binary value;\n"
+"if passed .T. no charset transformations take place\n"
+msgstr ""
+"\n"
+"двухмерный массив с параметрами SQL, по одной строке на параметр. Каждая "
+"строка\n"
+"должна содержать как минимум два элемента. В первом - имя параметра,\n"
+"во втором - его значение. Третий элемент используется только с\n"
+"<link linkend=\"sqloracle\">Oracle</link> (обязателен),\n"
+"и содержит числовое значение - идентификатор типа данных Oracle. "
+"Дополнительный\n"
+"четвертый элемент служит для индикации бинарного значения; если .T. "
+"перекодировки\n"
+"не производятся\n"
+
+#: template/./doc/sql.sgml:521
+msgid ""
+"\n"
+"A number of affected rows.\n"
+msgstr ""
+"\n"
+"Количество затронутых записей.\n"
+
+#: template/./doc/sql.sgml:526
+msgid ""
+"\n"
+"<command>Command()</command> is used to execute non-SELECT statements.\n"
+"'Non-SELECT' means any SQL statement that does not return rows. To execute\n"
+"a statement that returns rows use\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> even if you "
+"are\n"
+"not interested in the results.\n"
+msgstr ""
+"\n"
+"<command>Command()</command> используется для выполнения операторов SQL,"
+"кроме запросов SELECT (в т.ч. операторов, возвращающих результирующие "
+"строки). Для выполнения запроса, возвращающего строки, используйте <link "
+"linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> даже если вы не "
+"заинтересованы в получении результатов.\n"
+
+#: template/./doc/sql.sgml:533
+msgid ""
+"\n"
+"SQL statement may have parameters. Parameter names in\n"
+"<command><![CDATA[<cSQL>]]></command> must be preceded with ':' character.\n"
+"Parameter values are passed in two dimensional array\n"
+"<command><![CDATA[<aParameters>]]></command>.\n"
+msgstr ""
+"\n"
+"Оператор SQL может получать параметры. Имени параметра в <command><![CDATA"
+"[<cSQL>]]></command> должен предшествовать символ ':'. Значения параметров "
+"передаются в двухмерном массиве <command><![CDATA[<aParameters>]]></"
+"command>.\n"
+
+#: template/./doc/sql.sgml:539
+msgid ""
+"\n"
+"If there is no active transaction, changes made by executing\n"
+"<command><![CDATA[<cSQL>]]></command> are committed implicitly.\n"
+"If you need another behavior you have to start transaction\n"
+"explicitly by invoking <link linkend=\"sqlstart\">TConnect:Start()</link>.\n"
+msgstr ""
+"\n"
+"Если нет активной транзакции, изменения, сделанные оператором <command><!"
+"[CDATA[<cSQL>]]></command> коммитятся (вступают в силу) сразу. Если нужно "
+"другое поведение вызывайте <link linkend=\"sqlstart\">TConnect:Start()</"
+"link> явно.\n"
+
+#: template/./doc/sql.sgml:545
+msgid ""
+"\n"
+"Return value is a number of affected rows, for example number of deleted "
+"rows\n"
+"in the case of DELETE statement.\n"
+msgstr ""
+"\n"
+"Возвращаемое значение - количество затронутых записей, например количество "
+"удаленных записей в случае оператора DELETE.\n"
+
+#: template/./doc/sql.sgml:566
+msgid ""
+"\n"
+"<command>Commit()</command> commit all changes made after\n"
+"invoking <link linkend=\"sqlstart\">TConnect:Start()</link> and ends "
+"transaction.\n"
+"If there is no active transaction an error is generated.\n"
+msgstr ""
+"\n"
+"<command>Commit()</command> подтверждает все изменения, сделанные в "
+"транзакции, запущенной функцией <link linkend=\"sqlstart\">TConnect:Start()</"
+"link>,и завершает транзакцию. Если нет активных транзакций, генерируется "
+"ошибка.\n"
+
+#: template/./doc/sql.sgml:588
+msgid ""
+"\n"
+"When an application completes access to the SQL server it should disconnect\n"
+"from the server and release system resources by calling\n"
+"<command>Destroy()</command>.\n"
+msgstr ""
+"\n"
+"Когда приложению больше не требуется доступ к SQLсерверу, следует "
+"отсоединитьсяот него и освободить занимавшиеся системные ресурсы при помощи "
+"вызова деструктора <command>Destroy()</command>.\n"
+
+#: template/./doc/sql.sgml:625
+msgid ""
+"\n"
+"a string containing SQL query to be executed\n"
+msgstr ""
+"\n"
+"строка содержащая SQL запрос, который следует выполнить\n"
+
+#: template/./doc/sql.sgml:629
+msgid ""
+"\n"
+"an array contaning SQL parameters as a series of subarrays,\n"
+"one per parameter. Each subarray must contain at least two elements. The "
+"first\n"
+"is parameter name, the second is the parameter value. Third element\n"
+"is used only with <link linkend=\"sqloracle\">Oracle</link> (and is "
+"required),\n"
+"and contains a numeric data type identifier.\n"
+"Optional fourth element is used to indicate a binary value;\n"
+"if passed .T. no charset transformations take place. Parameters and their\n"
+"values passed in <![CDATA[<aParameters>]]> can be used in any of\n"
+"SQL statements described below\n"
+msgstr ""
+"\n"
+"двухмерный массив с параметрами SQL, по одной строке на параметр. Каждая "
+"строка\n"
+"должна содержать как минимум два элемента. В первом - имя параметра,\n"
+"во втором - его значение. Третий элемент используется только с\n"
+"<link linkend=\"sqloracle\">Oracle</link> (обязателен),\n"
+"и содержит числовое значение - идентификатор типа данных Oracle. "
+"Дополнительный\n"
+"четвертый элемент служит для индикации бинарного значения; если .T. "
+"перекодировки не производятся. Переданные параметры могут использоваться в "
+"SQL операторах, описываемых ниже\n"
+
+#: template/./doc/sql.sgml:641
+msgid ""
+"\n"
+"SQL statement to be executed when a new row is added to the set\n"
+msgstr ""
+"\n"
+"оператор SQL, который следует выполнить при добавлении новой строки к "
+"набору\n"
+
+#: template/./doc/sql.sgml:645
+msgid ""
+"\n"
+"SQL statement to be executed when a row is deleted from the set\n"
+msgstr ""
+"\n"
+"оператор SQL, который следует выполнить при удалении строки из набора\n"
+
+#: template/./doc/sql.sgml:649
+msgid ""
+"\n"
+"SQL statement to be executed when a row is changed\n"
+msgstr ""
+"\n"
+"оператор SQL, который следует выполнить при изменении строки набора\n"
+
+#: template/./doc/sql.sgml:653
+msgid ""
+"\n"
+"SQL query to be executed to refresh the current row in the set\n"
+msgstr ""
+"\n"
+"запрос SQL, который следует выполнить для обновления текущей строки набора\n"
+
+#: template/./doc/sql.sgml:657
+msgid ""
+"\n"
+"name of the 'row ID' field (only for <link linkend=\"sqlinterbase"
+"\">Interbase</link>,\n"
+"<link linkend=\"sqlodbc\">ODBC</link> and <link linkend=\"sqldbtcp\">DBTCP</"
+"link>)\n"
+msgstr ""
+"\n"
+"имя поля-идентификатора (только для <link linkend=\"sqlinterbase"
+"\">Interbase</link>, <link linkend=\"sqlodbc\">ODBC</link> и <link linkend="
+"\"sqldbtcp\">DBTCP</link>)\n"
+
+#: template/./doc/sql.sgml:662
+msgid ""
+"\n"
+"an array with definitions of the local orders to be created as a series\n"
+"of subarrays, one per order. First element of subarray defines the name of\n"
+"the order, second - a field name or code block to be evaluated to get the\n"
+"key value. Third element is required only for character keys and defines\n"
+"the length of the key.\n"
+msgstr ""
+"\n"
+"массив с определениями локальных индексов в виде серии подмассивов, по "
+"одному на индекс. Первый элемент подмассива определяет имя индекса, второй "
+"имя поля или блок кода возвращающий значения ключа. Третий элемент требуется "
+"только для символьных ключей и определяет длину ключа\n"
+
+#: template/./doc/sql.sgml:670
+msgid ""
+"\n"
+"SQL statement to be executed for getting a new unique row ID value,\n"
+"which will be used with <![CDATA[<cInsertSQL>]]> (only for\n"
+"<link linkend=\"sqlinterbase\">Interbase</link>)\n"
+msgstr ""
+"\n"
+"оператор SQL для получения нового уникального значения поля-идентификатора, "
+"используемое в дальнейшем с оператором <![CDATA[<cInsertSQL>]]> (только для "
+"<link linkend=\"sqlinterbase\">Interbase</link>)\n"
+
+#: template/./doc/sql.sgml:676
+msgid ""
+"\n"
+"logical value defining the fetching mode. If passed .F. all rows\n"
+"are fetched immediately, if .T. - rows are fetched later on demand.\n"
+"Default is .F.\n"
+msgstr ""
+"\n"
+"логическое значение определяющее режим загрузки записей. Если передано .F. "
+"все записи загружаются сразу, если .T. - записи загружаются позже (по "
+"требованию). По умолчанию - .F.\n"
+
+#: template/./doc/sql.sgml:682
+msgid ""
+"\n"
+"a code block to be evaluated during fetching process. TRowset object\n"
+"is passed to the code block as a parameter.\n"
+"If <![CDATA[<bEval>]]> returns .F. fetching process aborts. It is ignored "
+"in\n"
+"'fetch on demand' mode (when <![CDATA[<lNoFetch>]]> is .T.)\n"
+msgstr ""
+"\n"
+"блок кода, выполняемый в процессе загрузки записей. Этот блок кода получает "
+"параметр - объект TRowset. Если блок кода возвращает .F. процесс загрузки "
+"прекращается досрочно. В режиме 'загрузка по требованию' (когда <![CDATA"
+"[<lNoFetch>]]> - .T.) этот параметр игнорируется\n"
+
+#: template/./doc/sql.sgml:689
+msgid ""
+"\n"
+"an interval of rows when <![CDATA[<bEval>]]> should be evaluated (if "
+"passed).\n"
+"Default is 1, i.e. <![CDATA[<bEval>]]> is evaluated after each fetched row\n"
+msgstr ""
+"\n"
+"определяет количество загруженных записей между между выполнениями <![CDATA"
+"[<bEval>]]> (если передан). По умолчанию - 1, то есть <![CDATA[<bEval>]]> "
+"выполняется после каждой загруженной записи\n"
+
+#: template/./doc/sql.sgml:696
+msgid ""
+"\n"
+"<link linkend=\"sqltrowset\">TRowset</link> object.\n"
+msgstr ""
+"\n"
+"Объект <link linkend=\"sqltrowset\">TRowset</link>.\n"
+
+#: template/./doc/sql.sgml:701
+msgid ""
+"\n"
+"<command>CreateRowset()</command> executes SELECT query, builds\n"
+"a set of resulting rows and returns a TRowset object. Thus it may be\n"
+"considered as a TRowset class constructor. 'SELECT query' means any\n"
+"valid SQL statement returning rows. Usage of any other kind of SQL "
+"statement\n"
+"in <![CDATA[<cSelectSQL>]]> will result in an error.\n"
+msgstr ""
+"\n"
+"<command>CreateRowset()</command> выполняет запрос SELECT, строит локальный "
+"набор результирующих записей и возвращает объект TRowset. То есть эту "
+"функцию можно рассматривать как конструктор класса TRowset. 'Запрос SELECT' "
+"означает любой оператор SQL, возвращающий результирующие записи (или пустой "
+"набор записей). Использование оператора SQL любого другого вида приведет к "
+"ошибке.\n"
+
+#: template/./doc/sql.sgml:708
+msgid ""
+"\n"
+"<![CDATA[<cInsertSQL>, <cDeleteSQL>, <cUpdateSQL>]]>\n"
+"are optional parameters that make easier modification of data in the "
+"database.\n"
+"If not passed, corresponding changes in the set don't reflect in the tables\n"
+"of database. <![CDATA[<cInsertSQL>]]> is executed automatically by\n"
+"<link linkend=\"sqlappend\">TRowset:Append()</link> method. In the same way\n"
+"<![CDATA[<cDeleteSQL>]]> is executed by\n"
+"<link linkend=\"sqldelete\">TRowset:Delete()</link> method, and\n"
+"<![CDATA[<cUpdateSQL>]]> is executed by\n"
+"<link linkend=\"sqlwrite\">TRowset:Write()</link> method.\n"
+msgstr ""
+"\n"
+"<![CDATA[<cInsertSQL>, <cDeleteSQL>, <cUpdateSQL>]]> - дополнительные "
+"параметры, предназначенные для облегчения модификации таблиц базы данных. "
+"Если не переданы, соответствующие изменения набора записей не отражаются в "
+"базе данных. <![CDATA[<cInsertSQL>]]> выполняется автоматически методом "
+"<link linkend=\"sqlappend\">TRowset:Append()</link>. Таким же образом, <!"
+"[CDATA[<cDeleteSQL>]]> выполняется методом <link linkend=\"sqldelete"
+"\">TRowset:Delete()</link>, а <![CDATA[<cUpdateSQL>]]> - методом <link "
+"linkend=\"sqlwrite\">TRowset:Write()</link>.\n"
+
+#: template/./doc/sql.sgml:719
+msgid ""
+"\n"
+"<![CDATA[<cRefreshSQL>]]> is automatically executed by\n"
+"<link linkend=\"sqlrefreshcurrent\">TRowset:RefreshCurrent()</link> method.\n"
+"It must have the same list of fields as <![CDATA[<cSelectSQL>]]>.\n"
+msgstr ""
+"\n"
+"<![CDATA[<cRefreshSQL>]]> выполняется автоматически методом <link linkend="
+"\"sqlrefreshcurrent\">TRowset:RefreshCurrent()</link>. <![CDATA"
+"[<cRefreshSQL>]]> должен запрашивать точно такой же список полей, что и <!"
+"[CDATA[<cSelectSQL>]]>.\n"
+
+#: template/./doc/sql.sgml:724
+msgid ""
+"\n"
+"The row set intended to modifying must contain an unique field (row ID),\n"
+"which is used to bind rows in the database tables and rows in the set.\n"
+"You should explicitly include that field to the list of requesting fields\n"
+"in the SELECT query. There is various approach to that issue in\n"
+"various RDBMS's.\n"
+msgstr ""
+"\n"
+"Редактируемый набор записей должен содержать поле - идентификатор записи с "
+"уникальными значениями, используемый для связывания записей таблицы базы "
+"данных и строк набора. Необходимо явно включать это поле в список "
+"запрашиваемых полей запроса SELECT. Для различных СУБД существуют различные "
+"подходы к реализации механизма связывания записей таблицы и строк набора.\n"
+
+#: template/./doc/sql.sgml:732
+msgid ""
+"\n"
+"Some RDBMS's provide a 'hidden' field for that purpose (ROWID in\n"
+"<link linkend=\"sqloracle\">Oracle</link>, OID in\n"
+"<link linkend=\"sqlpostgresql\">PostgreSQL</link>).\n"
+"Such field is created for any table by default,\n"
+"even if you did not describe it in the CREATE TABLE statement.\n"
+"PostgreSQL understands such syntax:\n"
+msgstr ""
+"\n"
+"Некоторые СУБД имеют 'скрытые' поля - идентификаторы записей для каждой "
+"хранимой таблицы (ROWID в <link linkend=\"sqloracle\">Oracle</link>, OID в "
+"<link linkend=\"sqlpostgresql\">PostgreSQL</link>). Эти поля создаются "
+"неявно, даже если вы не включали его описания в список полей оператора "
+"CREATE TABLE. PostgreSQL понимает такой синтаксис:\n"
+
+#: template/./doc/sql.sgml:743
+msgid ""
+"\n"
+"In the contrast, Oracle does not allow such syntax. You should enumerate\n"
+"all fields by the name:\n"
+msgstr ""
+"\n"
+"В отличие от PostgreSQL, Oracle не понимает такого синтаксиса. Необходимо "
+"перечислить все запрашиваемые поля:\n"
+
+#: template/./doc/sql.sgml:751
+msgid ""
+"\n"
+"Some RDBMS's provide autoincremental fields for that purpose.\n"
+"<link linkend=\"sqlmysql\">MySQL</link>'s CREATE TABLE syntax allows to\n"
+"create table with such field by\n"
+"using AUTO_INCREMENT clause in the field's definition. CLIP discerns\n"
+"such field and uses it as row ID. You don't need to do anything more to\n"
+"indicate a field as row ID except for definition a field with "
+"AUTO_INCREMENT\n"
+"clause in CREATE TABLE statement.\n"
+msgstr ""
+"\n"
+"Некоторые СУБД предоставляют возможность использования автоинкрементных "
+"полей с уникальными значениями. Синтаксис оператора CREATE TABLE в<link "
+"linkend=\"sqlmysql\">MySQL</link> позволяет использовать предложение "
+"AUTO_INCREMENT в определении поля. CLIP распознает такие поля и использует "
+"их в качестве идентификаторов записей. Никаких других действий кроме "
+"включения поля AUTO_INCREMENT в таблицу, которую предполагается "
+"редактировать при помощи методов класса TRowset, не требуется.\n"
+
+#: template/./doc/sql.sgml:760
+msgid ""
+"\n"
+"Some RDBMS's (<link linkend=\"sqlinterbase\">Interbase</link>)\n"
+"provide triggers and unique number generators.\n"
+"A typical approach in such case is to define a trigger BEFORE INSERT,\n"
+"which gets an unique ID from generator and assigns it to the 'row ID' "
+"field.\n"
+"But there is no way to determine 'row ID' value of newly inserted row.\n"
+"I.e., you can't UPDATE or DELETE just INSERTed row (a row INSERTed\n"
+"after TRowset object was created). You have two choices:\n"
+msgstr ""
+"\n"
+"Некоторые СУБД (<link linkend=\"sqlinterbase\">Interbase</link>) "
+"предоставляют механизм триггеров и генераторы уникальных значений. Типичный "
+"подход в этом случае - создать триггер BEFORE INSERT, который получает "
+"уникальное значение от генератора и присваивает его полю - идентификатору "
+"записи. Но не существует способа определить значение поля - идентификатора "
+"записи вновь вставленной записи. То есть невозможно изменить или удалить "
+"(при помощи операторов UPDATE и DELETE) вновь вставленную запись "
+"(добавленную после того как был создан объект TRowset). Есть два выбора:\n"
+
+#: template/./doc/sql.sgml:770
+msgid ""
+"\n"
+"design your application considering this limitation (never UPDATE\n"
+"a newly INSERTed rows);\n"
+msgstr ""
+"\n"
+"оформлять приложение с учетом этого ограничения (никогда не изменять вновь "
+"вставленные записи);\n"
+
+#: template/./doc/sql.sgml:774
+msgid ""
+"\n"
+"don't use trigger BEFORE INSERT, but provide <![CDATA[<cGenIdSQL>]]>\n"
+"parameter containing SQL query to the generator. That statement must\n"
+"return an unique ID from generator which then will be assigned to the field\n"
+"with name <![CDATA[<cIdName>]]> during executing <![CDATA[<cInsertSQL>]]>\n"
+"statement.\n"
+msgstr ""
+"\n"
+"не использовать триггер BEFORE INSERT, а передавать конструктору TRowset "
+"параметр <![CDATA[<cGenIdSQL>]]> с запросом к генератору уникальных "
+"значений. Этот оператор должен возвращать новое уникальное значение, которое "
+"будет затем присвоено полю с именем <![CDATA[<cIdName>]]> во время "
+"выполнения оператора <![CDATA[<cInsertSQL>]]>.\n"
+
+#: template/./doc/sql.sgml:782
+msgid ""
+"\n"
+"Interbase's RDB$DB_KEY attribute intended to be a 'row ID' is not actually.\n"
+"It is rather a 'row address' which can be changed (like RECNO() which\n"
+"can be changed after PACK). Therefore it's not used as 'row ID'.\n"
+msgstr ""
+"\n"
+"Атрибут таблиц Interbase под названием RDB$DB_KEY в действительности не "
+"является идентификатором записи, а скорее адресом записи, которое может "
+"меняться (как RECNO(), значение которого может измениться после PACK). "
+"Поэтому этот атрибут не используется в качестве идентификатора записей.\n"
+
+#: template/./doc/sql.sgml:788
+msgid ""
+"\n"
+"In the case of RDBMS's not providing any of features described above (ODBC,\n"
+"DBTCP),\n"
+"you should pass <![CDATA[<cIdName>]]> parameter with the name of 'row ID'\n"
+"field and should design your application so that a newly INSERTed row never\n"
+"is changed or deleted.\n"
+msgstr ""
+"\n"
+"В случае использования СУБД не предоставляющих никаких из вышеперечисленных "
+"возможностей (ODBC,DBTCP), необходимо передавать параметр <![CDATA"
+"[<cIdName>]]> с именем поля - идентификатора записи и оформлять ваши "
+"приложения таким образом, чтобы никогда не изменялись вновь вставленные "
+"записи.\n"
+
+#: template/./doc/sql.sgml:796
+msgid ""
+"\n"
+"SQL statements <![CDATA[<cInsertSQL>, <cDeleteSQL>, <cUpdateSQL>\n"
+"and <cRefreshSQL>]]> get values of current row fields through parameters\n"
+"with the same name as row set's field name. For example:\n"
+msgstr ""
+"\n"
+"Операторы SQL <![CDATA[<cInsertSQL>, <cDeleteSQL>, <cUpdateSQL>\n"
+"и <cRefreshSQL>]]> получают значения полей через параметры SQL с именами "
+"совпадающими с именами полей набора. Например:\n"
+
+#: template/./doc/sql.sgml:808
+msgid ""
+"\n"
+"There are three macros: %FIELDS, %VALUES for use in\n"
+"<![CDATA[<cInsertSQL>]]>; %LIST for use in <![CDATA[<cUpdateSQL>]]>.\n"
+"%FIELDS is expanded as list of field names; %VALUES - as parameter names;\n"
+"%LIST - as list of fields and corresponding parameters. For example:\n"
+msgstr ""
+"\n"
+"Имеется три макроса: %FIELDS, %VALUES для использования в операторе INSERT; %"
+"LIST для использования в операторе UPDATE. %FIELDS преобразуется в список "
+"имен полей; %VALUES - в список параметров; %LIST - в список полей и "
+"параметров. Например:\n"
+
+#: template/./doc/sql.sgml:818
+msgid ""
+"\n"
+"There are two modes of fetching rows controlled by\n"
+"<![CDATA[<lNoFetch>]]> parameter: full fetching and fetching on demand.\n"
+msgstr ""
+"\n"
+"Имеется два режима загрузки записей, управляемые параметром <![CDATA"
+"[<lNoFetch>]]>: полная загрузка и загрузка по требованию.\n"
+
+#: template/./doc/sql.sgml:823
+msgid ""
+"\n"
+"In the first mode (<![CDATA[<lNoFetch>]]>==.F.)\n"
+"all selected rows have been fetched before\n"
+"<command>CreateRowset()</command> terminates. You can immediately\n"
+"use <link linkend=\"sqllastrec\">TRowset:Lastrec()</link> to determine the "
+"number\n"
+"of selected rows in this mode. You can use <![CDATA[<bEval>]]> code block\n"
+"to observe and to manage fetching process.\n"
+msgstr ""
+"\n"
+"В первом режиме (<![CDATA[<lNoFetch>]]>==.F.) все результирующие записи "
+"загружаются до завершения <command>CreateRowset()</command>. В этом режиме "
+"можно сразу использовать <link linkend=\"sqllastrec\">TRowset:Lastrec()</"
+"link> для определения количества результирующих записей. Можно использовать "
+"<![CDATA[<bEval>]]> для наблюдения и прерывания процесса загрузки.\n"
+
+#: template/./doc/sql.sgml:831
+msgid ""
+"\n"
+"In the second mode (<![CDATA[<lNoFetch>]]>==.T.)\n"
+"rows are fetched later on demand (during the navigation\n"
+"through the set). This mode is more faster but\n"
+"<command>Lastrec()</command> returns actual number\n"
+"of selected rows only after all rows have been fetched. <![CDATA[<bEval>]]>\n"
+"parameter is ignored in this mode.\n"
+msgstr ""
+"\n"
+"Во втором режиме (<![CDATA[<lNoFetch>]]>==.T.) записи загружаются по "
+"требованию (в процессе навигации по набору). Этот режим гораздо быстрее, но "
+"<command>Lastrec()</command> возвращает рельное количество результирующих "
+"записей только после того как загрузятся все записи. В этом режиме параметр "
+"<![CDATA[<bEval>]]> игнорируется.\n"
+
+#: template/./doc/sql.sgml:840
+msgid ""
+"\n"
+"When an application completes using the row set, it should release\n"
+"the set by calling <link linkend=\"sqlrsdestroy\">TRowset:Destroy()</link>.\n"
+msgstr ""
+"\n"
+"Когда приложению больше не требуется набор строк, оно должно освободить "
+"занимаемые ресурсы при помощи вызова метода-деструктора <command>TRowset:"
+"Destroy()</command>.\n"
+
+#: template/./doc/sql.sgml:844 template/./doc/sql.sgml:1470
+msgid "Examples"
+msgstr "Примеры"
+
+#: template/./doc/sql.sgml:848
+msgid ""
+"\n"
+"Simple example which creates a row set not intended to modifying:\n"
+msgstr ""
+"\n"
+"Простой пример, в котором создается нередактируемый набор записей:\n"
+
+#: template/./doc/sql.sgml:857
+msgid ""
+"\n"
+"Creating a row set using SQL parameters in SELECT query:\n"
+msgstr ""
+"\n"
+"Создание набора записей с использованием параметров SQL:\n"
+
+#: template/./doc/sql.sgml:867
+msgid ""
+"\n"
+"Creating a row set intended to modifying:\n"
+msgstr ""
+"\n"
+"Создание редактируемого набора записей:\n"
+
+#: template/./doc/sql.sgml:880
+msgid ""
+"\n"
+"Creating a row set with local orders 'id' and 'fullname':\n"
+msgstr ""
+"\n"
+"Создание набора записей с локальными индексами 'id' и 'fullname':\n"
+
+#: template/./doc/sql.sgml:895
+msgid ""
+"\n"
+"Using <![CDATA[<bEval>]]> to observe fetching process (printing a dot every\n"
+"100 rows), which can be stopped by pressing ESC:\n"
+msgstr ""
+"\n"
+"Использование <![CDATA[<bEval>]]>  для наблюдения за процессом загрузки "
+"(через каждые 100 загруженные записи печатается точка), который можно "
+"прервать нажатием ESC:\n"
+
+#: template/./doc/sql.sgml:906
+msgid ""
+"\n"
+"Fetching rows on demand:\n"
+msgstr ""
+"\n"
+"Загрузка записей по требованию:\n"
+
+#: template/./doc/sql.sgml:931
+msgid ""
+"\n"
+"<command>Rollback()</command> discards all changes made after\n"
+"invoking <link linkend=\"sqlstart\">TConnect:Start()</link> and ends "
+"transaction.\n"
+"If there is no active transaction an error is generated.\n"
+msgstr ""
+"\n"
+"<command>Rollback()</command> отменяет все изменения сделанные во время "
+"транзакции и завершает транзакцию. Если нет активной транзакции генерируется "
+"ошибка.\n"
+
+#: template/./doc/sql.sgml:955
+msgid ""
+"\n"
+"a string defining isolation level to be used during transaction. This\n"
+"parameter overrides default isolation level defined by\n"
+"<![CDATA[<cIsolation>]]> parameter of\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link> function.\n"
+"See desired <link linkend=\"sqlrdbms\">RDBMS</link> section about what\n"
+"values can be passed with this parameter\n"
+msgstr ""
+"\n"
+"строка определяющая уровень изоляции для запускаемой транзакции. См. раздел "
+"описывающий особенности разных <link linkend=\"sqlrdbms\">СУБД</link> о "
+"возможных значениях этого параметра.\n"
+
+#: template/./doc/sql.sgml:964
+msgid ""
+"\n"
+"this parameter is used only with <link linkend=\"sqlinterbase\">Interbase</"
+"link>\n"
+"and defines which tables should be locked and how\n"
+msgstr ""
+"\n"
+"этот параметр используется только с <link linkend=\"sqlinterbase"
+"\">Interbase</link> и определяет какие таблицы заблокировать и как\n"
+
+#: template/./doc/sql.sgml:971
+msgid ""
+"\n"
+"<command>Start()</command> starts new transaction. There must be\n"
+"no active transaction, otherwise an error is generated. Transaction should\n"
+"be sometime stopped (either must be commited or must be rolled back by "
+"invoking\n"
+"<link linkend=\"sqlcommit\">TConnect:Commit()</link> or\n"
+"<link linkend=\"sqlrollback\">TConnect:Rollback()</link> function).\n"
+msgstr ""
+"\n"
+"<command>Start()</command> стартует новую транзакцию. В момент запуска новой "
+"транзакция предыдущая должна быть завершена, иначе генерируется ошибка. "
+"Транзакция должна быть когда-нибудь завершена при помощи <link linkend="
+"\"sqlcommit\">TConnect:Commit()</link> или <link linkend=\"sqlrollback"
+"\">TConnect:Rollback()</link>.\n"
+
+#: template/./doc/sql.sgml:978
+msgid ""
+"\n"
+"If there is no active transaction all changes to the database are commited\n"
+"immediately after executing each SQL statement.\n"
+msgstr ""
+"\n"
+"Если нет активной транзакции, все изменения таблицы вступают в силу после "
+"каждого выполненного оператора SQL.\n"
+
+#: template/./doc/sql.sgml:995
+msgid "TRowset class"
+msgstr "Класс TRowset"
+
+#: template/./doc/sql.sgml:998
+msgid ""
+"\n"
+"TRowset class constructor and member functions are listed below:\n"
+msgstr ""
+"\n"
+"Ниже перечислены конструктор и методы класса TRowset:\n"
+
+#: template/./doc/sql.sgml:1009
+msgid "append a new row to the row set"
+msgstr "добавление новой строки в набор"
+
+#: template/./doc/sql.sgml:1012
+msgid "determine when beginning of set is encountered"
+msgstr "определение достижения начала набора"
+
+#: template/./doc/sql.sgml:1015
+msgid "browse rows within a window"
+msgstr "просмотр набора строк в окне"
+
+#: template/./doc/sql.sgml:1018
+msgid "create new local order"
+msgstr "создание нового локального индекса"
+
+#: template/./doc/sql.sgml:1021
+msgid "delete a row from the row set"
+msgstr "удаление строки из набора"
+
+#: template/./doc/sql.sgml:1024
+msgid "destroy TRowset object"
+msgstr "уничтожение объекта TRowset"
+
+#: template/./doc/sql.sgml:1027
+msgid "determine when end of set is encountered"
+msgstr "определение достижения конца набора"
+
+#: template/./doc/sql.sgml:1030
+msgid "fetch all unfetched rows"
+msgstr "дозагрузка оставшихся записей"
+
+#: template/./doc/sql.sgml:1033
+msgid "determine the number of fetched rows"
+msgstr "определение количества загруженных строк"
+
+#: template/./doc/sql.sgml:1036
+msgid "determine if a given field is binary"
+msgstr "определение, является ли поле бинарным"
+
+#: template/./doc/sql.sgml:1039
+msgid "return a set/get code block for a given field"
+msgstr "создание блока кода для доступа к заданному полю набора"
+
+#: template/./doc/sql.sgml:1042
+msgid "determine number of decimal digits in a given field"
+msgstr "определение количества знаков после запятой для заданного поля"
+
+#: template/./doc/sql.sgml:1045
+msgid "determine length of a given field"
+msgstr "определение длины заданного поля"
+
+#: template/./doc/sql.sgml:1048
+msgid "return the name of a field with a given position"
+msgstr "определение имени поля по заданной позиции"
+
+#: template/./doc/sql.sgml:1051
+msgid "return the position of a field with a given name"
+msgstr "определение позиции поля с заданным именем"
+
+#: template/./doc/sql.sgml:1054
+msgid "determine if a given field is nullable"
+msgstr "определение, может ли поле принимать значения NULL"
+
+#: template/./doc/sql.sgml:1057
+msgid "return XBase type of the field"
+msgstr "определение типа данных поля"
+
+#: template/./doc/sql.sgml:1060
+msgid "return RDBMS type of the field"
+msgstr "определение типа данных поля (в терминах используемой СУБД)"
+
+#: template/./doc/sql.sgml:1063
+msgid "determine if a given field is unsigned"
+msgstr "определение, является ли поле беззнаковым"
+
+#: template/./doc/sql.sgml:1066
+msgid "retrieve the value of a field in the current row"
+msgstr "получение значения поля в текущей строке"
+
+#: template/./doc/sql.sgml:1069
+msgid "move to the last logical row"
+msgstr "перемещение к последней логической строке"
+
+#: template/./doc/sql.sgml:1072
+msgid "move to the specified row"
+msgstr "перемещение к заданной строке"
+
+#: template/./doc/sql.sgml:1075
+msgid "move to the first logical row"
+msgstr "перемещение к первой логической строке"
+
+#: template/./doc/sql.sgml:1078
+msgid "determine logical position of the current row"
+msgstr "определение логического номера текущей строки"
+
+#: template/./doc/sql.sgml:1081
+msgid "determine the number of rows in the set"
+msgstr "определение количества строк в наборе"
+
+#: template/./doc/sql.sgml:1084
+msgid "return the number of fields in the set"
+msgstr "определение количества полей в наборе"
+
+#: template/./doc/sql.sgml:1087
+msgid "read the current row"
+msgstr "чтение текущей строки"
+
+#: template/./doc/sql.sgml:1090
+msgid "return the position of the current row"
+msgstr "определение номера текущей строки"
+
+#: template/./doc/sql.sgml:1093
+msgid "refresh the set by repeated executing the SELECT query"
+msgstr "обновление набора путем повторного выполнения запроса SELECT"
+
+#: template/./doc/sql.sgml:1096
+msgid "refresh the current row by executing <![CDATA[<cRefreshSQL>]]>"
+msgstr "обновление текущей строки путем выполнения <![CDATA[<cRefreshSQL>]]>"
+
+#: template/./doc/sql.sgml:1099
+msgid "move to the row having the specified key value"
+msgstr "поиск строки с заданным значением ключа"
+
+#: template/./doc/sql.sgml:1102
+msgid "set the controlling order"
+msgstr "установка логического порядка записей"
+
+#: template/./doc/sql.sgml:1105
+msgid "set the value of a field in the current row"
+msgstr "присвоение значения полю текущей строки"
+
+#: template/./doc/sql.sgml:1108
+msgid "move relative to the current row"
+msgstr "перемещение относительно текущей записи"
+
+#: template/./doc/sql.sgml:1111
+msgid "write the current row"
+msgstr "запись текущей строки"
+
+#: template/./doc/sql.sgml:1123
+msgid ""
+"\n"
+"an object with fields values\n"
+msgstr ""
+"\n"
+"объект со значениями полей\n"
+
+#: template/./doc/sql.sgml:1129
+msgid ""
+"\n"
+"<command>Append()</command> appends a new row to the row set and\n"
+"assigns <![CDATA[<oRow>]]> attributes values to the approprate fields of\n"
+"newly inserted row.\n"
+msgstr ""
+"\n"
+"<command>Append()</command> добавляет новую строку к набору и присваивает "
+"значения атрибутов <![CDATA[<oRow>]]> соответствующим полям новой записи.\n"
+
+#: template/./doc/sql.sgml:1134
+msgid ""
+"\n"
+"If row set was created with <![CDATA[<cInsertSQL>]]> parameter,\n"
+"the latter is executed on the SQL server with newly inserted values.\n"
+msgstr ""
+"\n"
+"Если конструктору набора записей был передан параметр <![CDATA[<cInsertSQL>]]"
+">, то последний исполняется на SQL сервере со значениями полей новой "
+"записи.\n"
+
+#: template/./doc/sql.sgml:1138 template/./doc/sql.sgml:1316
+msgid ""
+"\n"
+"If the row set was created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]"
+">\n"
+"parameter of <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</"
+"link> is .T.),\n"
+"all unfetched rows are fetched before processing.\n"
+msgstr ""
+"\n"
+"Если набор был создан в режиме 'загрузка по требованию' (<![CDATA"
+"[<lNoFetch>]]>==.T.), то предварительно дозагружаются все оставшиеся "
+"записи.\n"
+
+#: template/./doc/sql.sgml:1143
+msgid ""
+"\n"
+"<command>Append()</command> increases rows count returning by\n"
+"<link linkend=\"sqllastrec\">TRowset:Lastrec()</link>.\n"
+msgstr ""
+"\n"
+"<command>Append()</command> увеличивает количество строк в наборе, "
+"возвращаемое методом <link linkend=\"sqllastrec\">TRowset:Lastrec()</link>.\n"
+
+#: template/./doc/sql.sgml:1147
+msgid ""
+"\n"
+"Current row position moves to the new row.\n"
+msgstr ""
+"\n"
+"Указатель перемещается на новую строку.\n"
+
+#: template/./doc/sql.sgml:1170
+msgid ""
+"\n"
+"True (.T.) after an attempt to skip backward beyond the first logical row "
+"in\n"
+"the set; otherwise it returns false (.F.). If the set contains no rows\n"
+"it returns true (.T.).\n"
+msgstr ""
+"\n"
+".T. после попытки переместиться в обратном направлении за первую логическую "
+"строку набора; в противном случае возвращается .F. Если набор не содержит ни "
+"одной строки возвращается .T.\n"
+
+#: template/./doc/sql.sgml:1177
+msgid ""
+"\n"
+"<command>Bof()</command> is used to test for a boundary condition when\n"
+"you are moving the row pointer backward through a set using\n"
+"<link linkend=\"sqlskip\">TRowset:Skip()</link> function.\n"
+msgstr ""
+"\n"
+"<command>Bof()</command> используется для проверки условия достижения границ "
+"набора при перемещении указателя в обратном направлении при помощи метода "
+"<link linkend=\"sqlskip\">TRowset:Skip()</link>.\n"
+
+#: template/./doc/sql.sgml:1182
+msgid ""
+"\n"
+"Once <command>Bof()</command> is set to true (.T.), it retains its value\n"
+"until there is another attempt to move the row pointer.\n"
+msgstr ""
+"\n"
+"После того, как функцией <command>Bof()</command> будет установлено "
+"значение .T., оно остается до тех пор, пока не будет сделана очередная "
+"попытка передвижения указателя записи.\n"
+
+#: template/./doc/sql.sgml:1186
+msgid ""
+"\n"
+"<command>TRowset:Skip()</command> is the only row movement function\n"
+"that can set <command>Bof()</command> to true (.T.).\n"
+msgstr ""
+"\n"
+"<command>TRowset:Skip()</command> является единственной функцией, которая "
+"может установить значение <command>Bof()</command> == .T.\n"
+
+#: template/./doc/sql.sgml:1211
+msgid ""
+"\n"
+"define the window coordinates. If not specified, the default window "
+"coordinates\n"
+"are 1, 0 to MAXROW(), and MAXCOL().\n"
+msgstr ""
+"\n"
+"определяют координаты окна. По умолчанию 1, 0, MAXROW(), MAXCOL().\n"
+
+#: template/./doc/sql.sgml:1216
+msgid ""
+"\n"
+"an array of strings containing field names to use as column values\n"
+msgstr ""
+"\n"
+"массив строк с именами полей, используемых в качестве значений колонок\n"
+
+#: template/./doc/sql.sgml:1220
+msgid ""
+"\n"
+"a parallel array of strings contaning headings for each column\n"
+msgstr ""
+"\n"
+"параллельный массив строк содержащих заголовки для каждой колонки\n"
+
+#: template/./doc/sql.sgml:1224
+msgid ""
+"\n"
+"a parallel array containing widths for each column\n"
+msgstr ""
+"\n"
+"параллельный массив содержащий размеры каждой колонки\n"
+
+#: template/./doc/sql.sgml:1230
+msgid ""
+"\n"
+"<command>Browse()</command> is a user interface function\n"
+"that provides a simple browser for rows in the set.\n"
+msgstr ""
+"\n"
+"<command>Browse()</command> - функция пользовательского интерфейса "
+"предоставляющая простой просмотр строк набора.\n"
+
+#: template/./doc/sql.sgml:1250
+msgid ""
+"\n"
+"defines the name of an order to be created\n"
+msgstr ""
+"\n"
+"имя создаваемого индекса\n"
+
+#: template/./doc/sql.sgml:1254
+msgid ""
+"\n"
+"a name of the field which values are used as keys\n"
+msgstr ""
+"\n"
+"имя поля, значения которого используются в качестве ключей\n"
+
+#: template/./doc/sql.sgml:1258
+msgid ""
+"\n"
+"a code block used to evaluate keys; it receives TRowset object as parameter\n"
+msgstr ""
+"\n"
+"блок кода, используемый для вычисления ключей; он получает объект TRowset в "
+"качестве параметра\n"
+
+#: template/./doc/sql.sgml:1262
+msgid ""
+"\n"
+"a length of the key; it is required for character keys\n"
+msgstr ""
+"\n"
+"длина ключа; требуется только для символьных ключей\n"
+
+#: template/./doc/sql.sgml:1268
+msgid ""
+"\n"
+"<command>CreateOrder()</command> is used to create a local order.\n"
+"Under 'local order' is meant an index in memory controlling logical order "
+"of\n"
+"rows in the set. Once created, order can be set as controlling by\n"
+"<link linkend=\"sqlsetorder\">TRowset:SetOrder()</link> function. Besides,\n"
+"controlling order can be used to locate row having a given key by\n"
+"<link linkend=\"sqlseek\">TRowset:Seek()</link> function.\n"
+msgstr ""
+"\n"
+"<command>CreateOrder()</command> используется для создания локального "
+"индекса, то есть индекса в памяти, управляющего логическим порядком строк в "
+"наборе. Созданный индекс может затем быть установлен управляющим при помощи "
+"метода <link linkend=\"sqlsetorder\">TRowset:SetOrder()</link>. Кроме того, "
+"управляющий индекс может использоваться для быстрого поиска строки, "
+"содержащей заданный ключ при помощи метода <link linkend=\"sqlseek\">TRowset:"
+"Seek()</link> function.\n"
+
+#: template/./doc/sql.sgml:1276
+msgid ""
+"\n"
+"If rowset is created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]>\n"
+"parameter of <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</"
+"link>\n"
+"is .T.), all rows are fetched implicitly before processing.\n"
+msgstr ""
+"\n"
+"Если набор был создан в режиме 'загрузка по требованию' (<![CDATA"
+"[<lNoFetch>]]>==.T.), то предварительно дозагружаются все оставшиеся "
+"записи.\n"
+
+#: template/./doc/sql.sgml:1283
+msgid ""
+"\n"
+"This example creates two orders ('birthdate' and 'fullname');\n"
+"shows rows ordered by birth date and full name, and seeks for a person\n"
+"whose name begins with 'Joh':\n"
+msgstr ""
+"\n"
+"В этом примере создаются два индекса ('birthdate' и 'fullname'); "
+"показываются записи отсортированные в порядке даты рождения и полного имени; "
+"ищется работник, чье имя начинается с 'Joh':\n"
+
+#: template/./doc/sql.sgml:1308
+msgid ""
+"\n"
+"<command>Delete()</command> deletes the current row from the set.\n"
+msgstr ""
+"\n"
+"<command>Delete()</command> удаляет текущую строку из набора.\n"
+
+#: template/./doc/sql.sgml:1311
+msgid ""
+"\n"
+"If row set was created with <![CDATA[<cDeleteSQL>]]> parameter,\n"
+"the latter is executed on the SQL server with the value of 'row id' field\n"
+"of the current record.\n"
+msgstr ""
+"\n"
+"Если конструктору набора был передан параметр <![CDATA[<cDeleteSQL>]]>, "
+"последний выполняется на SQL сервере со значением поля - идентификатора "
+"текущей записи.\n"
+
+#: template/./doc/sql.sgml:1321
+msgid ""
+"\n"
+"<command>Delete()</command> decreases rows count returning by\n"
+"<link linkend=\"sqllastrec\">TRowset:Lastrec()</link>.\n"
+msgstr ""
+"\n"
+"<command>Delete()</command> уменьшает количество строк в наборе, "
+"возвращаемое методом <link linkend=\"sqllastrec\">TRowset:Lastrec()</link>.\n"
+
+#: template/./doc/sql.sgml:1325
+msgid ""
+"\n"
+"If there is no controlling order the current row position remains the same,\n"
+"or moves to the last row (when deleted a row with Recno()==Lastrec()).\n"
+msgstr ""
+"\n"
+"Если нет управляющего индекса позиция указателя текущей строки не "
+"изменяется, или перемещается к последней строке (когда удаляется последняя "
+"физическая строка (Recno()==Lastrec()).\n"
+
+#: template/./doc/sql.sgml:1329
+msgid ""
+"\n"
+"If there is controlling order (set using\n"
+"<link linkend=\"sqlsetorder\">TRowset:SetOrder()</link>)\n"
+"the current row position moves to the row having the next key, or\n"
+"moves to the last logical row (when a row having biggest key value is "
+"deleted).\n"
+msgstr ""
+"\n"
+"Если есть управляющий индекс (установленный методом <link linkend="
+"\"sqlsetorder\">TRowset:SetOrder()</link>) указатель текущей строки "
+"перемещается к следующей логической строке, или перемещается к последней "
+"логической строке (когда удаляется строка с наибольшим значением ключа).\n"
+
+#: template/./doc/sql.sgml:1335
+msgid ""
+"\n"
+"If the last remained row is deleted, both <link linkend=\"sqlbof\">Bof()</"
+"link>\n"
+"and <link linkend=\"sqleof\">Eof()</link> status are switched to true (.T.)\n"
+"and <link linkend=\"sqlrecno\">TRowset:Recno()</link> returns zero (0).\n"
+msgstr ""
+"\n"
+"Если удаляется последняя оставшаяся строка, состояния <link linkend=\"sqlbof"
+"\">Bof()</link> и <link linkend=\"sqleof\">Eof()</link> устанавливаются в ."
+"T. и <link linkend=\"sqlrecno\">TRowset:Recno()</link> возвращает 0.\n"
+
+#: template/./doc/sql.sgml:1359
+msgid ""
+"\n"
+"When an application completes using the row set, it should release\n"
+"the set by calling <command>TRowset:Destroy()</command>.\n"
+msgstr ""
+"\n"
+"Когда приложению больше не требуется набор строк, оно должно освободить "
+"занимаемые ресурсы при помощи вызова метода-деструктора <command>TRowset:"
+"Destroy()</command>.\n"
+
+#: template/./doc/sql.sgml:1380
+msgid ""
+"\n"
+"True (.T.) after an attempt to skip forward beyond the last logical row\n"
+"in the set; otherwise it returns false (.F.). If the set contains no rows\n"
+"it returns true (.T.).\n"
+msgstr ""
+"\n"
+".T. после попытки переместиться в прямом направлении за последнюю логическую "
+"строку набора; в противном случае возвращается .F. Если набор не содержит ни "
+"одной строки возвращается .T.\n"
+
+#: template/./doc/sql.sgml:1387
+msgid ""
+"\n"
+"<command>Eof()</command> is used to test for a boundary condition when\n"
+"you are moving the row pointer forward through a set using\n"
+"<link linkend=\"sqlskip\">TRowset:Skip()</link> function.\n"
+msgstr ""
+"\n"
+"<command>Eof()</command> используется для проверки условия достижения границ "
+"набора при перемещении указателя в прямом направлении при помощи метода "
+"<link linkend=\"sqlskip\">TRowset:Skip()</link>.\n"
+
+#: template/./doc/sql.sgml:1392
+msgid ""
+"\n"
+"Once <command>Eof()</command> is set to true (.T.), it retains its value\n"
+"until there is another attempt to move the row pointer.\n"
+msgstr ""
+"\n"
+"После того, как функцией <command>Eof()</command> будет установлено "
+"значение .T., оно остается до тех пор, пока не будет сделана очередная "
+"попытка передвижения указателя записи.\n"
+
+#: template/./doc/sql.sgml:1396
+msgid ""
+"\n"
+"TRowset:Skip() is the only row movement function that can set\n"
+"<command>Eof()</command> to true (.T.).\n"
+msgstr ""
+"\n"
+"<command>TRowset:Skip()</command> является единственной функцией, которая "
+"может установить значение <command>Eof()</command> == .T.\n"
+
+#: template/./doc/sql.sgml:1400
+msgid ""
+"\n"
+"Unlike standard XBase's command <command>SKIP</command>,\n"
+"<link linkend=\"sqlskip\">TRowset:Skip()</link> never moves beyond the last\n"
+"logical row. When <command>TRowset:Eof()</command> returns .T. the\n"
+"current row position is certainly the last logical row, not\n"
+"<command>Lastrec()</command>+1.\n"
+msgstr ""
+"\n"
+"В отличие от команды <command>SKIP</command>, использеумой в XBase, <link "
+"linkend=\"sqlskip\">TRowset:Skip()</link> никогда не перемещает указатель за "
+"последнюю логическую строку. Когда <command>TRowset:Eof()</command> "
+"возвращает .T. указатель находится на последней логической строке, а не на "
+"<command>Lastrec()</command>+1.\n"
+
+#: template/./doc/sql.sgml:1429 template/./doc/sql.sgml:2031
+#: template/./doc/sql.sgml:2137
+msgid ""
+"\n"
+"The number of rows in the set.\n"
+msgstr ""
+"\n"
+"Количество строк в наборе.\n"
+
+#: template/./doc/sql.sgml:1434
+msgid ""
+"\n"
+"<command>FetchAll()</command> fetches all unfetched rows. It is useful\n"
+"when row set has been created in 'fetch on demand' mode (<![CDATA"
+"[<lNoFetch>]]>\n"
+"parameter of <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</"
+"link>\n"
+"is .T.). If there is no unfetched rows <command>FetchAll()</command>\n"
+"has no effect.\n"
+msgstr ""
+"\n"
+"<command>FetchAll()</command> дозагружает оставшиеся записи в набор. Это "
+"бывает необходимо, когда набор был создан в режиме 'загрузка по требованию'. "
+"Если все записи уже загружены, <command>FetchAll()</command> ничего не "
+"делает.\n"
+
+#: template/./doc/sql.sgml:1459
+msgid ""
+"\n"
+"Number of already fetched rows.\n"
+msgstr ""
+"\n"
+"Количество загруженных строк.\n"
+
+#: template/./doc/sql.sgml:1464
+msgid ""
+"\n"
+"<command>Fetched()</command> is used to determine how much rows are fetched\n"
+"already. It is useful in <![CDATA[<bEval>]]> code block parameter of\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>, and when\n"
+"row set has been created in 'fetch on demand' mode.\n"
+msgstr ""
+"\n"
+"<command>Fetched()</command> используется для определения количества "
+"загруженных строк. Это бывает необходимо в блоке кода <![CDATA[<bEval>]]>, "
+"передаваемом конструктору набора <link linkend=\"sqlcreaterowset\">TConnect:"
+"CreateRowset()</link>, и при создании набора в режиме 'загрузка по "
+"требованию'.\n"
+
+#: template/./doc/sql.sgml:1474
+msgid ""
+"\n"
+"Print the number of already fetched rows during fetching process:\n"
+msgstr ""
+"\n"
+"Выводится количество загруженных строк в процессе загрузки:\n"
+
+#: template/./doc/sql.sgml:1483
+msgid ""
+"\n"
+"Using <command>Fetched()</command> with row set created in 'fetch on "
+"demand'\n"
+"mode:\n"
+msgstr ""
+"\n"
+"Использование <command>Fetched()</command> с набором, созданным в режиме "
+"'загрузка по требованию':\n"
+
+#: template/./doc/sql.sgml:1507 template/./doc/sql.sgml:1542
+#: template/./doc/sql.sgml:1593 template/./doc/sql.sgml:1627
+#: template/./doc/sql.sgml:1661 template/./doc/sql.sgml:1721
+#: template/./doc/sql.sgml:1755 template/./doc/sql.sgml:1808
+#: template/./doc/sql.sgml:1843 template/./doc/sql.sgml:1877
+#: template/./doc/sql.sgml:2287
+msgid ""
+"\n"
+"the position of the field in the list of fields\n"
+msgstr ""
+"\n"
+"позиция поля в списке полей\n"
+
+#: template/./doc/sql.sgml:1511 template/./doc/sql.sgml:1546
+#: template/./doc/sql.sgml:1597 template/./doc/sql.sgml:1631
+#: template/./doc/sql.sgml:1725 template/./doc/sql.sgml:1759
+#: template/./doc/sql.sgml:1812 template/./doc/sql.sgml:1847
+#: template/./doc/sql.sgml:1881 template/./doc/sql.sgml:2291
+msgid ""
+"\n"
+"the name of the field\n"
+msgstr ""
+"\n"
+"имя поля\n"
+
+#: template/./doc/sql.sgml:1517
+msgid ""
+"\n"
+"True (.T.) if the given field is binary; false (.F.) otherwise.\n"
+msgstr ""
+"\n"
+".T. если поле бинарное, .F. в противном случае.\n"
+
+#: template/./doc/sql.sgml:1522
+msgid ""
+"\n"
+"<command>FieldBinary()</command> is used to determine if a character field\n"
+"is binary. Charset transformations don't take place with the values of\n"
+"binary field.\n"
+msgstr ""
+"\n"
+"<command>FieldBinary()</command> используется для определения, является ли "
+"поле бинарным. Бинарные поля не подвергаются перекодировкам.\n"
+
+#: template/./doc/sql.sgml:1552
+msgid ""
+"\n"
+"A code block that, when evaluated, sets (assigns) or gets (retrieves)\n"
+"the value of the given field.\n"
+msgstr ""
+"\n"
+"Блок кода, устанавливающий или получающий значение поля.\n"
+
+#: template/./doc/sql.sgml:1558
+msgid ""
+"\n"
+"<command>FieldBlock()</command> builds a set/get code block for a given "
+"field.\n"
+"When executed with an argument, the code block created by this function\n"
+"assigns the value of the argument to a given field.  When executed\n"
+"without an argument, the code block retrieves the value of a given field.\n"
+msgstr ""
+"\n"
+"<command>FieldBlock()</command> строит блок кода для доступа к заданному "
+"полю. Если блоку передается параметр, значение поля устанавливается "
+"значением этого параметра. Если блоку не передается параметров, то он "
+"возвращает значение поля.\n"
+
+#: template/./doc/sql.sgml:1564
+msgid ""
+"\n"
+"Change the set using that code block does not cause immediate execution of\n"
+"<![CDATA[<cUpdateSQL>]]> (parameter passed to\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>).\n"
+"<link linkend=\"sqlwrite\">Write()</link> and all row movement functions\n"
+"(<link linkend=\"sqlgotop\">Gotop()</link>,\n"
+"<link linkend=\"sqlgobottom\">Gobottom()</link>,\n"
+"<link linkend=\"sqlgoto\">Goto()</link> and <link linkend=\"sqlskip\">Skip()"
+"</link>)\n"
+"are only functions that initiate reflection the change on the SQL server.\n"
+msgstr ""
+"\n"
+"Изменение набора с использованием этого блока кода не вызывает "
+"незамедлительного выполнения <![CDATA[<cUpdateSQL>]]> (параметра "
+"конструктора набора <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()"
+"</link>). Выполнение <![CDATA[<cUpdateSQL>]]> на сервере инициируется лишь "
+"методом <link linkend=\"sqlwrite\">Write()</link>, а также всеми методами, "
+"перемещающими указатель (<link linkend=\"sqlgotop\">Gotop()</link><link "
+"linkend=\"sqlgobottom\">Gobottom()</link><link linkend=\"sqlgoto\">Goto()</"
+"link> и <link linkend=\"sqlskip\">Skip()</link>).\n"
+
+#: template/./doc/sql.sgml:1603
+msgid ""
+"\n"
+"A number of decimal digits used in a given numeric field.\n"
+msgstr ""
+"\n"
+"Количество знаков после запятой для заданного поля.\n"
+
+#: template/./doc/sql.sgml:1608
+msgid ""
+"\n"
+"<command>FieldDec()</command> is used to determine the number of decimal\n"
+"digits in a given field.\n"
+msgstr ""
+"\n"
+"<command>FieldDec()</command> используется для определения количества "
+"десятичных знаков после запятой, используемых в заданном поле.\n"
+
+#: template/./doc/sql.sgml:1637
+msgid ""
+"\n"
+"A length of the field (in terms of used RDBMS).\n"
+msgstr ""
+"\n"
+"Длина поля (в терминах используемой СУБД).\n"
+
+#: template/./doc/sql.sgml:1642
+msgid ""
+"\n"
+"<command>FieldLen()</command> is used to determine the length of a given "
+"field,\n"
+"in terms of used RDBMS. For example, the length of a field of type 'FLOAT' "
+"is 4.\n"
+msgstr ""
+"\n"
+"<command>FieldLen()</command> используется для определения длины заданного "
+"поля, в терминах используемой СУБД. Например, длина поля типа 'FLOAT' равна "
+"4.\n"
+
+#: template/./doc/sql.sgml:1667
+msgid ""
+"\n"
+"The name of field.\n"
+msgstr ""
+"\n"
+"Имя поля.\n"
+
+#: template/./doc/sql.sgml:1672
+msgid ""
+"\n"
+"<command>FieldName()</command> is used to determine the name of a field "
+"with\n"
+"a given position.\n"
+msgstr ""
+"\n"
+"<command>FieldName()</command> используется для определения имени поля с "
+"заданной позицией.\n"
+
+#: template/./doc/sql.sgml:1691
+msgid ""
+"\n"
+"the name of field\n"
+msgstr ""
+"\n"
+"имя поля\n"
+
+#: template/./doc/sql.sgml:1697
+msgid ""
+"\n"
+"The position of the field.\n"
+msgstr ""
+"\n"
+"Позиция поля.\n"
+
+#: template/./doc/sql.sgml:1702
+msgid ""
+"\n"
+"<command>FieldNo()</command> is used to determine the position of a field "
+"with\n"
+"a given name.\n"
+msgstr ""
+"\n"
+"<command>FieldNo()</command> используется для определения позиции поля с "
+"заданным именем.\n"
+
+#: template/./doc/sql.sgml:1731
+msgid ""
+"\n"
+"True (.T.) if the given field is nullable; false (.F.) otherwise (NOT "
+"NULL).\n"
+msgstr ""
+"\n"
+".T. если поле может принимать значения NULL; .F. - в противном случае (поле "
+"NOT NULL).\n"
+
+#: template/./doc/sql.sgml:1736
+msgid ""
+"\n"
+"<command>FieldNullable()</command> is used to determine if a field is "
+"nullable,\n"
+"i.e. not 'NOT NULL'.\n"
+msgstr ""
+"\n"
+"<command>FieldNullable()</command> используется для определения, может ли "
+"поле принимать значения NULL.\n"
+
+#: template/./doc/sql.sgml:1765
+msgid ""
+"\n"
+"Type of a field (in terms of XBase).\n"
+msgstr ""
+"\n"
+"Код, определяющий тип поля (XBase).\n"
+
+#: template/./doc/sql.sgml:1770
+msgid ""
+"\n"
+"<command>FieldType()</command> is used to determine the type of a given "
+"field.\n"
+"It returns a single character that designates the data type of\n"
+"the data field. <command>FieldType()</command> returns the following\n"
+"characters for the various data field types:\n"
+msgstr ""
+"\n"
+"<command>FieldType()</command> используется для определения типа поля. "
+"Функция возвращает один символ, определяющий тип данных. Возвращается один "
+"из следующих символов:\n"
+
+#: template/./doc/sql.sgml:1777
+msgid ""
+"\n"
+"<emphasis>C</emphasis> - character string\n"
+msgstr ""
+"\n"
+"<emphasis>C</emphasis> - строка символов\n"
+
+#: template/./doc/sql.sgml:1780
+msgid ""
+"\n"
+"<emphasis>N</emphasis> - numeric\n"
+msgstr ""
+"\n"
+"<emphasis>N</emphasis> - число\n"
+
+#: template/./doc/sql.sgml:1783
+msgid ""
+"\n"
+"<emphasis>D</emphasis> - date\n"
+msgstr ""
+"\n"
+"<emphasis>D</emphasis> - дата\n"
+
+#: template/./doc/sql.sgml:1786
+msgid ""
+"\n"
+"<emphasis>T</emphasis> - datetime\n"
+msgstr ""
+"\n"
+"<emphasis>T</emphasis> - дата и время\n"
+
+#: template/./doc/sql.sgml:1789
+msgid ""
+"\n"
+"<emphasis>L</emphasis> - logical\n"
+msgstr ""
+"\n"
+"<emphasis>L</emphasis> - логическое значение\n"
+
+#: template/./doc/sql.sgml:1818
+msgid ""
+"\n"
+"Numeric type of a field (in terms of used RDBMS).\n"
+msgstr ""
+"\n"
+"Код, определяющий тип поля (в терминах используемой СУБД).\n"
+
+#: template/./doc/sql.sgml:1823
+msgid ""
+"\n"
+"<command>FieldTypeSQL()</command> is used to determine the type of a given "
+"field,\n"
+"in terms of used RDBMS. Specific RDBMS types are defined in corresponding *."
+"ch\n"
+"files.\n"
+msgstr ""
+"\n"
+"<command>FieldTypeSQL</command> используется для определения типа поля, в "
+"терминах используемой СУБД. Типы данных конкретных СУБД определены в "
+"соответствующих заголовочных *.ch файлах, включенных в состав пакетов.\n"
+
+#: template/./doc/sql.sgml:1853
+msgid ""
+"\n"
+"True (.T.) if the given field is unsigned; false (.F.) otherwise.\n"
+msgstr ""
+"\n"
+".T. если поле беззнаковое; .F. - в противном случае.\n"
+
+#: template/./doc/sql.sgml:1858
+msgid ""
+"\n"
+"<command>FieldUnsigned()</command> is used to determine if a numeric field\n"
+"is unsigned.\n"
+msgstr ""
+"\n"
+"<command>FieldUnsigned()</command> используется для определения, является ли "
+"поле беззнаковым.\n"
+
+#: template/./doc/sql.sgml:1887
+msgid ""
+"\n"
+"A value of current row's field.\n"
+msgstr ""
+"\n"
+"Значение поля текущей строки.\n"
+
+#: template/./doc/sql.sgml:1892
+msgid ""
+"\n"
+"<command>GetValue()</command> is used to retrieve the value of a field\n"
+"in the current row.\n"
+msgstr ""
+"\n"
+"<command>GetValue()</command> используется для определения значения "
+"заданного поля текущей строки.\n"
+
+#: template/./doc/sql.sgml:1909
+msgid ""
+"\n"
+"<command>GoBottom()</command> moves the row position to the last logical "
+"row.\n"
+msgstr ""
+"\n"
+"<command>GoBottom()</command> перемещает указатель к последней логической "
+"строке.\n"
+
+#: template/./doc/sql.sgml:1912
+msgid ""
+"\n"
+"If the row set was created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]"
+">\n"
+"parameter of <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</"
+"link>\n"
+"is .T.), all unfetched rows are fetched before processing.\n"
+msgstr ""
+"\n"
+"Если набор был создан в режиме 'загрузка по требованию' (<![CDATA"
+"[<lNoFetch>]]>==.T.), то предварительно дозагружаются все оставшиеся "
+"записи.\n"
+
+#: template/./doc/sql.sgml:1937
+msgid ""
+"\n"
+"the position to move to\n"
+msgstr ""
+"\n"
+"номер строки\n"
+
+#: template/./doc/sql.sgml:1943
+msgid ""
+"\n"
+"New position of current row.\n"
+msgstr ""
+"\n"
+"Новый номер текущей строки.\n"
+
+#: template/./doc/sql.sgml:1948
+msgid ""
+"\n"
+"<command>Goto()</command> is used to move to the specified physical\n"
+"row position. If controlling order is not physical (set by\n"
+"<link linkend=\"sqlsetorder\">TRowset:SetOrder()</link>),\n"
+"physical position can be different from logical position.\n"
+msgstr ""
+"\n"
+"<command>Goto()</command> используется для перемещения к строке с заданным "
+"номером.\n"
+
+#: template/./doc/sql.sgml:1954
+msgid ""
+"\n"
+"If <![CDATA[<nRowPosition>]]> is less than 1, <command>Goto()</command>\n"
+"moves to the first physical row, and <link linkend=\"sqlbof\">Bof()</link>\n"
+"state is set to true (.T.). If <![CDATA[<nRowPosition>]]> is larger than\n"
+"<link linkend=\"sqllastrec\">Lastrec()</link>, <command>Goto()</command> "
+"moves\n"
+"to the last physical row, and <link linkend=\"sqleof\">Eof()</link> state\n"
+"is set to true (.T.).\n"
+msgstr ""
+"\n"
+"Если <![CDATA[<nRowPosition>]]> меньше 1, <command>Goto()</command> "
+"перемещает указатель к строке с номером 1 и состояние <link linkend=\"sqlbof"
+"\">Bof()</link> устанавливается в .T. Если <![CDATA[<nRowPosition>]]> "
+"больше, чем <link linkend=\"sqllastrec\">Lastrec()</link>, <command>Goto()</"
+"command> перемещает указатель к последней физической строке, и состояние "
+"<link linkend=\"sqleof\">Eof()</link> устанавливается в .T.\n"
+
+#: template/./doc/sql.sgml:1978
+msgid ""
+"\n"
+"<command>GoTop()</command> moves the row position to the first logical row.\n"
+msgstr ""
+"\n"
+"<command>GoTop()</command> перемещает указатель к первой логической строке.\n"
+
+#: template/./doc/sql.sgml:1999
+msgid ""
+"\n"
+"The logical position of the current row.\n"
+msgstr ""
+"\n"
+"Логический номер текущей строки.\n"
+
+#: template/./doc/sql.sgml:2004
+msgid ""
+"\n"
+"<command>KeyNo()</command> is used to determine the logical number of\n"
+"the current row. If there is no controlling order (created by\n"
+"<link linkend=\"sqlcreateorder\">TRowset:CreateOrder()</link> and set by\n"
+"<link linkend=\"sqlsetorder\">TRowset:SetOrder()</link>), <command>KeyNo()</"
+"command>\n"
+"returns the physical row position, i.e. it works just like\n"
+"<link linkend=\"sqlrecno\">TRowset:Recno()</link>.\n"
+msgstr ""
+"\n"
+"<command>KeyNo()</command> используется для определения логического номера "
+"текущей строки. Если нет управляющего индекса (созданного методом <link "
+"linkend=\"sqlcreateorder\">TRowset:CreateOrder()</link> и установленного "
+"управляемым методом <link linkend=\"sqlsetorder\">TRowset:SetOrder()</"
+"link>), <command>KeyNo()</command> возвращает физический номер строки, то "
+"есть имеет тот же эффект, что и метод <link linkend=\"sqlrecno\">TRowset:"
+"Recno()</link>.\n"
+
+#: template/./doc/sql.sgml:2036
+msgid ""
+"\n"
+"<command>Lastrec()</command> determines the number of rows in the set.\n"
+msgstr ""
+"\n"
+"<command>Lastrec()</command> возвращает количество строк в наборе.\n"
+
+#: template/./doc/sql.sgml:2039
+msgid ""
+"\n"
+"If the row set was created in 'fetch on demand' mode (<![CDATA[<lNoFetch>]]"
+">\n"
+"parameter of <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</"
+"link> is .T.),\n"
+"<command>Lastrec()</command> can return 0 (if there remain unfetched rows).\n"
+"The number of fetched rows can be determined using\n"
+"<link linkend=\"sqlfetched\">TRowset:Fetched()</link> function.\n"
+"<link linkend=\"sqlfetchall\">TRowset:FetchAll()</link> can be used to "
+"fetch\n"
+"the remainder of unfetched rows. After that, <command>Lastrec()</command>\n"
+"will return actual number of rows.\n"
+msgstr ""
+"\n"
+"Если набор был создан в режиме 'загрузка по требованию' (параметр <![CDATA"
+"[<lNoFetch>]]> конструктора <link linkend=\"sqlcreaterowset\">TConnect:"
+"CreateRowset()</link> - .T.), <command>Lastrec()</command> может возвращать "
+"0 (когда загружены не все записи). Количество загруженных строк можно "
+"определить с помощью метода <link linkend=\"sqlfetched\">TRowset:Fetched()</"
+"link>. Для дозагрузки оставшихся записей можно использовать метод <link "
+"linkend=\"sqlfetchall\">TRowset:FetchAll()</link>. После этого "
+"<command>Lastrec()</command>, будет возвращать действительноеколичество "
+"строк в наборе.\n"
+
+#: template/./doc/sql.sgml:2065
+msgid ""
+"\n"
+"The number of fields in the row set.\n"
+msgstr ""
+"\n"
+"Количество полей в наборе.\n"
+
+#: template/./doc/sql.sgml:2070
+msgid ""
+"\n"
+"<command>NFields()</command> determines the number of fields in the row "
+"set.\n"
+msgstr ""
+"\n"
+"<command>NFields()</command> используется для определения количества полей в "
+"строках набора.\n"
+
+#: template/./doc/sql.sgml:2087
+msgid ""
+"\n"
+"An object containing all fields of current row.\n"
+msgstr ""
+"\n"
+"Объект, содержащий все поля текущей строки.\n"
+
+#: template/./doc/sql.sgml:2092
+msgid ""
+"\n"
+"<command>Read()</command> retrieves the current row values into an object.\n"
+msgstr ""
+"\n"
+"<command>Read()</command> получает значения всех полей текущей строки и "
+"помещает их в одноименные атрибуты возвращаемого объекта.\n"
+
+#: template/./doc/sql.sgml:2110
+msgid ""
+"\n"
+"The physical position of the current row.\n"
+msgstr ""
+"\n"
+"Физический номер текущей строки.\n"
+
+#: template/./doc/sql.sgml:2115
+msgid ""
+"\n"
+"<command>Recno()</command> used to determine the physical position of\n"
+"the current row. If there are no rows in the set, it returns 0.\n"
+msgstr ""
+"\n"
+"<command>Recno()</command> используется для определения физического номера "
+"текущей строки. Если в наборе не ни одной строки, возвращается 0.\n"
+
+#: template/./doc/sql.sgml:2142
+msgid ""
+"\n"
+"<command>RefreshAll()</command> refreshes the row set by repeatedly\n"
+"executing <![CDATA[<cSelectSQL>]]> passed to the TRowset constructor\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> with\n"
+"SQL parameters passed in <![CDATA[<aParameters>]]>. The physical\n"
+"row position remains the same, or moves to the last physical row.\n"
+msgstr ""
+"\n"
+"<command>RefreshAll()</command> обновляет набор строк путем повторного "
+"выполнения <![CDATA[<cSelectSQL>]]>, переданного конструктору класса TRowset "
+"(<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>), с "
+"использованием параметров SQL, переданных в <![CDATA[<aParameters>]]>. "
+"Указатель остается на строке с тем же физическим номером, или перемещается к "
+"последней физической строке.\n"
+
+#: template/./doc/sql.sgml:2165
+msgid ""
+"\n"
+"<command>RefreshCurrent()</command> refreshes the current row of the set\n"
+"by executing <![CDATA[<cRefreshSQL>]]> passed to the TRowset constructor\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>.\n"
+"If <![CDATA[<cRefreshSQL>]]> not passed, <command>RefreshCurrent()</"
+"command>\n"
+"has no effect.\n"
+msgstr ""
+"\n"
+"<command>RefreshCurrent()</command> обновляет текущую строку набора путем "
+"выполнения <![CDATA[<cRefreshSQL>]]>, переданного конструктору <link linkend="
+"\"sqlcreaterowset\">TConnect:CreateRowset()</link>. Если <![CDATA"
+"[<cRefreshSQL>]]> - NIL, <command>RefreshCurrent()</command> ничего не "
+"делает.\n"
+
+#: template/./doc/sql.sgml:2191
+msgid ""
+"\n"
+"a value of the key associated with the desired row\n"
+msgstr ""
+"\n"
+"значение ключа искомой строки\n"
+
+#: template/./doc/sql.sgml:2195
+msgid ""
+"\n"
+"logical value that specifies whether a soft seek is to be performed.\n"
+"This determines how the work area is positioned if the specified key\n"
+"value is not found (see below)\n"
+msgstr ""
+"\n"
+"логическое значение определяющее режим относительного поиска. Это "
+"определяет, куда будет установлен указатель, если строка с заданным ключом "
+"не найдена (см. ниже)\n"
+
+#: template/./doc/sql.sgml:2203
+msgid ""
+"\n"
+"True (.T.) if the specified key value was found; otherwise, false (.F.).\n"
+msgstr ""
+"\n"
+".T. если строка с заданным ключом найдена; .F. - в противном случае\n"
+
+#: template/./doc/sql.sgml:2208
+msgid ""
+"\n"
+"<command>Seek()</command> moves to the first logical row whose key\n"
+"value is equal to <![CDATA[<xKeyValue>]]>. If such row is found, it becomes\n"
+"the current row and <command>Seek()</command> returns true (.T.);\n"
+"otherwise, it returns false (.F.). For a normal (not soft) seek,\n"
+"the row set is positioned to the last logical row\n"
+"and <link linkend=\"sqleof\">TRowset:Eof()</link> returns true (.T.);\n"
+"for a soft seek, the row set is positioned to the first row whose key\n"
+"value is greater than the specified key value.  If no such row exists,\n"
+"the row set is positioned to the last logical row and\n"
+"<command>TRowset:Eof()</command> returns true (.T.).\n"
+msgstr ""
+"\n"
+"<command>Seek()</command> ищет первую логическую строку с ключом, равным <!"
+"[CDATA[<xKeyValue>]]>. Если такая строка найдена, она становится текущей и "
+"<command>Seek()</command> возвращает .T.; иначе возвращается .F. и указатель "
+"перемещается следующим образом: при нормальном (не относительным) поиске "
+"указатель перемещается к последней логической строке и <link linkend=\"sqleof"
+"\">TRowset:Eof()</link> возвращает .T.; при относительном поиске указатель "
+"перемещается к первой строке, ключевое значение которой больше чем заданное. "
+"Если такой строки не существует, указатель перемещается к последней "
+"логической строке и <command>TRowset:Eof()</command> возвращает .T.\n"
+
+#: template/./doc/sql.sgml:2220
+msgid ""
+"\n"
+"For a row set with no controlling order (created by\n"
+"<link linkend=\"sqlcreateorder\">TRowset:CreateOrder()</link> and prescribed "
+"controlling\n"
+"by <link linkend=\"sqlsetorder\">TRowset:SetOrder()</link>),\n"
+"<command>Seek()</command> has no effect.\n"
+msgstr ""
+"\n"
+"Если нет управляющего индекса (созданного при помощи метода <link linkend="
+"\"sqlcreateorder\">TRowset:CreateOrder()</link> и установленного управляющим "
+"при помощи метода <link linkend=\"sqlsetorder\">TRowset:SetOrder()</link>),"
+"<command>Seek()</command> ничего не делает.\n"
+
+#: template/./doc/sql.sgml:2244
+msgid ""
+"\n"
+"the name of the order to be set controlling\n"
+msgstr ""
+"\n"
+"имя индекса, который должен стать управляющим\n"
+
+#: template/./doc/sql.sgml:2250
+msgid ""
+"\n"
+"The name of previously controlling order or NIL (physical order).\n"
+msgstr ""
+"\n"
+"Имя текущего управляющего индекса или NIL (если нет управляющего индекса).\n"
+
+#: template/./doc/sql.sgml:2255
+msgid ""
+"\n"
+"<command>SetOrder()</command> activates an order created by\n"
+"<link linkend=\"sqlcreateorder\">TRowset:CreateOrder()</link>\n"
+"(makes it controlling). It returns the name of previously controlling\n"
+"order.\n"
+msgstr ""
+"\n"
+"<command>SetOrder()</command> устанавливает индекс, созданный методом <link "
+"linkend=\"sqlcreateorder\">TRowset:CreateOrder()</link>, управляющим. "
+"Возвращается имя ранее управляющего индекса.\n"
+
+#: template/./doc/sql.sgml:2261
+msgid ""
+"\n"
+"If passed an empty string, <command>SetOrder()</command> causes the row set\n"
+"to be accessed in physical (<link linkend=\"sqlrecno\">TRowset:Recno()</"
+"link>)\n"
+"order.\n"
+msgstr ""
+"\n"
+"Если передана пустая строка, <command>SetOrder()</command> снимает "
+"управляющий индекс, и доступ к строкам набора осуществляется в физическом "
+"порядке.\n"
+
+#: template/./doc/sql.sgml:2295
+msgid ""
+"\n"
+"the value to be assigned to the field\n"
+msgstr ""
+"\n"
+"новое значение поля\n"
+
+#: template/./doc/sql.sgml:2301
+msgid ""
+"\n"
+"<command>SetValue()</command> assignes <![CDATA[<xValue>]]> to the field\n"
+"in the current row.\n"
+msgstr ""
+"\n"
+"<command>SetValue()</command> присвает значение <![CDATA[<xValue>]]> "
+"заданному полю текущей строки.\n"
+
+#: template/./doc/sql.sgml:2305
+msgid ""
+"\n"
+"Unlike <link linkend=\"sqlwrite\">TRowset:Write()</link> function,\n"
+"<command>SetValue()</command> does not cause immediate reflection the "
+"change\n"
+"on the SQL server. One of the row movement functions must arise\n"
+"to cause reflection (executing <![CDATA[<cUpdateSQL>]]> statement,\n"
+"passed to the TRowset constructor\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>).\n"
+msgstr ""
+"\n"
+"В отличие от метода <link linkend=\"sqlwrite\">TRowset:Write()</link> "
+"<command>SetValue()</command> не инициирует немедленного отражения изменения "
+"на SQL сервере (выполнения оператора <![CDATA[<cUpdateSQL>]]>, переданного "
+"конструктору класса TRowset <link linkend=\"sqlcreaterowset\">TConnect:"
+"CreateRowset()</link>). Отражение производится при первом же вызове метода, "
+"перемещающего указатель.\n"
+
+#: template/./doc/sql.sgml:2331
+msgid ""
+"\n"
+"the number of logical rows to move, relatively to the current row.\n"
+"A positive value means to skip forward, and a negative value means\n"
+"to skip backward.  If omitted, a value of 1 is assumed\n"
+msgstr ""
+"\n"
+"количество логических строк, на которое должен переместиться указатель "
+"относительно текущей строки. Положительное значение означает перемещение в "
+"прямом направлении, отрицательное - в обратном. По умолчанию 1\n"
+
+#: template/./doc/sql.sgml:2339
+msgid ""
+"\n"
+"Actual number of rows skipped.\n"
+msgstr ""
+"\n"
+"Действительное число строк, на которое переместился указатель.\n"
+
+#: template/./doc/sql.sgml:2344
+msgid ""
+"\n"
+"<command>Skip()</command> moves either forward or backward relatively\n"
+"to the current row. Attempting to skip forward beyond the last logical\n"
+"row positions the row set to the last logical row and\n"
+"<link linkend=\"sqleof\">TRowset:Eof()</link> returns true (.T.).\n"
+"Attempting to skip backward beyond the first logical row positions\n"
+"the row set to the first logical row and\n"
+"<link linkend=\"sqlbof\">TRowset:Bof()</link> returns true (.T.).\n"
+msgstr ""
+"\n"
+"<command>Skip()</command> перемещает указатель в прямом или обратном "
+"направлении относительно текущей строки. При попытке переместить указатель в "
+"прямом направлении за последнюю логическую строку, указатель становится на "
+"последнюю логическую строку и <link linkend=\"sqleof\">TRowset:Eof()</link> "
+"возвращает .T. При попытке переместить указатель в обратном направлении за "
+"первую логичускую строку, указатель становится на первую логическую строку и "
+"<link linkend=\"sqlbof\">TRowset:Bof()</link> возвращает .T.\n"
+
+#: template/./doc/sql.sgml:2372
+msgid ""
+"\n"
+"an object containing new field values\n"
+msgstr ""
+"\n"
+"объект, содержащий новые значения полей\n"
+
+#: template/./doc/sql.sgml:2378
+msgid ""
+"\n"
+"<command>Write()</command> assigns new values to the current row's fields.\n"
+"It tries then to reflect the changes on the SQL server by executing\n"
+"<![CDATA[<cUpdateSQL>]]> statement passed to the TRowset constructor\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>.\n"
+msgstr ""
+"\n"
+"<command>Write()</command> присваивает новые значения полям текущей строки. "
+"Производится попытка отразить изменения на SQL сервере путем выполнения "
+"оператора <![CDATA[<cUpdateSQL>]]>, переданного конструктору класса TRowset "
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>.\n"
+
+#: template/./doc/sql.sgml:2403
+msgid "RDBMS specific"
+msgstr "Особенности СУБД"
+
+#: template/./doc/sql.sgml:2405
+msgid ""
+"\n"
+"Peculiarities of using particular RDBMS with CLIP are described below.\n"
+msgstr ""
+"\n"
+"Ниже описываются особенности использования различных СУБД с CLIP.\n"
+
+#: template/./doc/sql.sgml:2411
+msgid ""
+"\n"
+"To be able to build an application using MySQL data base, appropriate "
+"packages\n"
+"must be installed. It includes MySQL development files and\n"
+"<command>clip-mysql</command> package. See\n"
+"<link linkend=\"installation\">Installation</link> chapter for details.\n"
+msgstr ""
+"\n"
+"Для построения приложения использующего базу данных MySQL должны быть "
+"установлены соответствующие пакеты. Это пакет разработчика MySQL и пакет "
+"<command>clip-mysql</command>. См. подробности в главе <link linkend="
+"\"installation\">Установка CLIP</link>.\n"
+
+#: template/./doc/sql.sgml:2417
+msgid ""
+"\n"
+"Link your application with MySQL driver by adding\n"
+"<command>-lclip-mysql</command> to the end of <command>clip</command> "
+"command:\n"
+msgstr ""
+"\n"
+"Чтобы скомпоновать приложение с драйвером MySQL необходимо добавить "
+"<command>-lclip-mysql</command> в конец команды компиляции <command>clip</"
+"command>:\n"
+
+#: template/./doc/sql.sgml:2424 template/./doc/sql.sgml:2553
+#: template/./doc/sql.sgml:2685 template/./doc/sql.sgml:2816
+#: template/./doc/sql.sgml:2971 template/./doc/sql.sgml:3063
+msgid "ConnectNew() syntax"
+msgstr "Синтаксис ConnectNew()"
+
+#: template/./doc/sql.sgml:2426
+msgid ""
+"\n"
+"To obtain a connect to the MySQL server use\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link> with the following "
+"syntax:\n"
+msgstr ""
+"\n"
+"Для подключения к серверу MySQL используется следующий синтаксис <link "
+"linkend=\"sqlconnectnew\">ConnectNew()</link>:\n"
+
+#: template/./doc/sql.sgml:2434 template/./doc/sql.sgml:2563
+#: template/./doc/sql.sgml:2694 template/./doc/sql.sgml:2825
+#: template/./doc/sql.sgml:2980 template/./doc/sql.sgml:3072
+msgid ""
+"\n"
+"where\n"
+msgstr ""
+"\n"
+"где\n"
+
+#: template/./doc/sql.sgml:2438
+msgid ""
+"\n"
+"\"MS\" - identifier of MySQL driver; see also\n"
+"<link linkend=\"sqlsqllist\">SQLList()</link>\n"
+msgstr ""
+"\n"
+"\"MS\" - идентификатор драйвера MySQL; см. также описание функции <link "
+"linkend=\"sqlsqllist\">SQLList()</link>\n"
+
+#: template/./doc/sql.sgml:2442
+msgid ""
+"\n"
+"cHost - a string containing the name of the host MySQL server is running on\n"
+msgstr ""
+"\n"
+"cHost - строка, содержащая имя хоста сервера MySQL\n"
+
+#: template/./doc/sql.sgml:2445 template/./doc/sql.sgml:2574
+#: template/./doc/sql.sgml:3083
+msgid ""
+"\n"
+"cPort - server port number as string\n"
+msgstr ""
+"\n"
+"cPort - номер порта сервера в виде строки\n"
+
+#: template/./doc/sql.sgml:2448 template/./doc/sql.sgml:2577
+#: template/./doc/sql.sgml:2702 template/./doc/sql.sgml:2833
+#: template/./doc/sql.sgml:2991 template/./doc/sql.sgml:3086
+msgid ""
+"\n"
+"cLogin - a string containing user login\n"
+msgstr ""
+"\n"
+"cLogin - строка, содержащая логин пользователя\n"
+
+#: template/./doc/sql.sgml:2451 template/./doc/sql.sgml:2580
+#: template/./doc/sql.sgml:2705 template/./doc/sql.sgml:2836
+#: template/./doc/sql.sgml:2994 template/./doc/sql.sgml:3089
+msgid ""
+"\n"
+"cPassword - a string containing user's password\n"
+msgstr ""
+"\n"
+"cPassword - строка, содержащая пароль пользователя\n"
+
+#: template/./doc/sql.sgml:2454 template/./doc/sql.sgml:2583
+msgid ""
+"\n"
+"cDB - a string containing the name of the database to be used\n"
+msgstr ""
+"\n"
+"cDB - строка, содержащая имя базы данных\n"
+
+#: template/./doc/sql.sgml:2457
+msgid ""
+"\n"
+"cSocket - a string containing UNIX socket or pipe name to be used as "
+"transport\n"
+msgstr ""
+"\n"
+"cSocket - строка, содержащая имя UNIX socket или pipe, используемого в "
+"качестве транспорта\n"
+
+#: template/./doc/sql.sgml:2460
+msgid ""
+"\n"
+"cFlags - flags to be used with this connection as string; see MySQL manual\n"
+"for details\n"
+msgstr ""
+"\n"
+"cFlags - флаги соединения в виде строки; см. руководство по MySQL\n"
+
+#: template/./doc/sql.sgml:2464 template/./doc/sql.sgml:2593
+#: template/./doc/sql.sgml:2711 template/./doc/sql.sgml:2842
+#: template/./doc/sql.sgml:2997 template/./doc/sql.sgml:3095
+msgid ""
+"\n"
+"cCharset - charset used by server; if not passed, SET(\"SQL_CHARSET\") is "
+"used\n"
+msgstr ""
+"\n"
+"cCharset - кодировка, используемая сервером; если NIL, используется SET"
+"(\"SQL_CHARSET\")\n"
+
+#: template/./doc/sql.sgml:2467
+msgid ""
+"\n"
+"cIsolation - a string containing the name of isolation level to be used\n"
+"by default (see MySQL manual for details); if not passed,\n"
+"SET(\"MS_ISOLATION_LEVEL\") value is used; possible values:\n"
+msgstr ""
+"\n"
+"cIsolation - строка, содержащая имя уровня изоляции, используемого по "
+"умолчанию (см. подробности в руководстве по MySQL); если NIL, используется "
+"SET(\"MS_ISOLATION_LEVEL\"); возможны следующие значения:\n"
+
+#: template/./doc/sql.sgml:2486 template/./doc/sql.sgml:2609
+#: template/./doc/sql.sgml:2734 template/./doc/sql.sgml:2880
+msgid ""
+"\n"
+"the same values are possible for <![CDATA[<cIsolation>]]> parameter\n"
+"of <link linkend=\"sqlstart\">TRowset:Start()</link>.\n"
+msgstr ""
+"\n"
+"эти же значения могут использоваться в качестве значений параметра <![CDATA"
+"[<cIsolation>]]> метода <link linkend=\"sqlstart\">TRowset:Start()</link>.\n"
+
+#: template/./doc/sql.sgml:2491 template/./doc/sql.sgml:2614
+#: template/./doc/sql.sgml:2739 template/./doc/sql.sgml:2885
+#: template/./doc/sql.sgml:3001 template/./doc/sql.sgml:3099
+msgid "Rows binding"
+msgstr "Идентификация строк"
+
+#: template/./doc/sql.sgml:2493
+msgid ""
+"\n"
+"To bind rows in the data base and rows in the local set a field with\n"
+"AUTO_INCREMENT clause is used (see description of CREATE TABLE statement\n"
+"in the MySQL manual). See also\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> "
+"description\n"
+"for details.\n"
+msgstr ""
+"\n"
+"Для связывания строк набора и записей базы данных используется поле "
+"AUTO_INCREMENT (см. описание оператора CREATE TABLE в руководстве по MySQL). "
+"См. также описание конструктора TRowset <link linkend=\"sqlcreaterowset"
+"\">TConnect:CreateRowset()</link>.\n"
+
+#: template/./doc/sql.sgml:2500 template/./doc/sql.sgml:2622
+#: template/./doc/sql.sgml:2771 template/./doc/sql.sgml:2926
+#: template/./doc/sql.sgml:3015
+msgid "Implemented data types"
+msgstr "Реализованные типы данных"
+
+#: template/./doc/sql.sgml:2502
+msgid ""
+"\n"
+"The following table shows implemented MySQL data types and their XBase\n"
+"equivalents.\n"
+msgstr ""
+"\n"
+"В следующей таблице представлены реализованные типы данных MySQL и их XBase-"
+"эквиваленты.\n"
+
+#: template/./doc/sql.sgml:2505
+msgid "Implemented MySQL data types"
+msgstr "Реализованные типы данных MySQL"
+
+#: template/./doc/sql.sgml:2507
+msgid "MySQL data type"
+msgstr "Тип данных MySQL"
+
+#: template/./doc/sql.sgml:2507 template/./doc/sql.sgml:2629
+#: template/./doc/sql.sgml:2778 template/./doc/sql.sgml:2933
+#: template/./doc/sql.sgml:3022
+msgid "CLIP data type"
+msgstr "Тип данных CLIP"
+
+#: template/./doc/sql.sgml:2539
+msgid ""
+"\n"
+"To be able to build an application using PostgreSQL data base,\n"
+"appropriate packages must be installed. It includes PostgreSQL\n"
+"development files and <command>clip-postgres</command> package. See\n"
+"<link linkend=\"installation\">Installation</link> chapter for details.\n"
+msgstr ""
+"\n"
+"Для построения приложения использующего базу данных PostgreSQL должны быть "
+"установлены соответствующие пакеты. Это пакет разработчика PostgreSQL и "
+"пакет <command>clip-postgres</command>. См. подробности в главе <link "
+"linkend=\"installation\">Установка CLIP</link>.\n"
+
+#: template/./doc/sql.sgml:2545
+msgid ""
+"\n"
+"Link your application with PostgreSQL driver by adding\n"
+"<command>-lclip-postgres</command> to the end of <command>clip</command>\n"
+"command:\n"
+msgstr ""
+"\n"
+"Чтобы скомпоновать приложение с драйвером PostgreSQL необходимо добавить "
+"<command>-lclip-postgres</command> в конец команды компиляции <command>clip</"
+"command>:\n"
+
+#: template/./doc/sql.sgml:2555
+msgid ""
+"\n"
+"To obtain a connect to the PostgreSQL server use\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link> with the following "
+"syntax:\n"
+msgstr ""
+"\n"
+"Для подключения к серверу PostgreSQL используется следующий синтаксис <link "
+"linkend=\"sqlconnectnew\">ConnectNew()</link>:\n"
+
+#: template/./doc/sql.sgml:2567
+msgid ""
+"\n"
+"\"PG\" - identifier of PostgreSQL driver; see also\n"
+"<link linkend=\"sqlsqllist\">SQLList()</link>\n"
+msgstr ""
+"\n"
+"\"PG\" - идентификатор драйвера PostgreSQL; см. также описание функции <link "
+"linkend=\"sqlsqllist\">SQLList()</link>\n"
+
+#: template/./doc/sql.sgml:2571
+msgid ""
+"\n"
+"cHost - a string containing the name of the host PostgreSQL server is "
+"running on\n"
+msgstr ""
+"\n"
+"cHost - строка, содержащая имя хоста сервера PostgreSQL\n"
+
+#: template/./doc/sql.sgml:2586
+msgid ""
+"\n"
+"cTTY - the name of debug tty\n"
+msgstr ""
+"\n"
+"cTTY - терминал для вывода отладочной информации\n"
+
+#: template/./doc/sql.sgml:2589
+msgid ""
+"\n"
+"cOptions - optional parameters of the connection; see PostgreSQL manual\n"
+"for details\n"
+msgstr ""
+"\n"
+"cOptions - дополнительные параметры соединения; см. руководство по "
+"PostgreSQL\n"
+
+#: template/./doc/sql.sgml:2596
+msgid ""
+"\n"
+"cIsolation - a string containing the name of isolation level to be used by "
+"default\n"
+"(see PostgreSQL manual for details); if not passed, SET(\"PG_ISOLATION_LEVEL"
+"\")\n"
+"value is used; possible values:\n"
+msgstr ""
+"\n"
+"cIsolation - строка, содержащая имя уровня изоляции, используемого по "
+"умолчанию (см. подробности в руководстве по PostgreSQL); если NIL, "
+"используется SET(\"PG_ISOLATION_LEVEL\"); возможны следующие значения:\n"
+
+#: template/./doc/sql.sgml:2616
+msgid ""
+"\n"
+"To bind rows in the data base and rows in the local set a <command>oid</"
+"command>\n"
+"field is used. See\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> "
+"description\n"
+"and PostgreSQL manual for details.\n"
+msgstr ""
+"\n"
+"Для связывания строк набора и записей базы данных используется поле "
+"<command>oid</command>. См. руководство по PostgreSQL и описание "
+"конструктора TRowset <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset"
+"()</link>.\n"
+
+#: template/./doc/sql.sgml:2624
+msgid ""
+"\n"
+"The following table shows implemented PostgreSQL data types and their XBase\n"
+"equivalents.\n"
+msgstr ""
+"\n"
+"В следующей таблице представлены реализованные типы данных PostgreSQL и их "
+"XBase-эквиваленты.\n"
+
+#: template/./doc/sql.sgml:2627
+msgid "Implemented PostgreSQL data types"
+msgstr "Реализованные типы данных PostgreSQL"
+
+#: template/./doc/sql.sgml:2629
+msgid "PostgreSQL data type"
+msgstr "Тип данных PostgreSQL"
+
+#: template/./doc/sql.sgml:2672
+msgid ""
+"\n"
+"To be able to build an application using Oracle data base, appropriate "
+"packages\n"
+"must be installed. It includes Oracle development files and\n"
+"<command>clip-oracle</command> package. See\n"
+"<link linkend=\"installation\">Installation</link> chapter for details.\n"
+msgstr ""
+"\n"
+"Для построения приложения использующего базу данных Oracle должны быть "
+"установлены соответствующие пакеты. Это файлы разработчика Oracle и пакет "
+"<command>clip-oracle</command>. См. подробности в главе <link linkend="
+"\"installation\">Установка CLIP</link>.\n"
+
+#: template/./doc/sql.sgml:2678
+msgid ""
+"\n"
+"Link your application with Oracle driver by adding\n"
+"<command>-lclip-oracle</command> to the end of <command>clip</command> "
+"command:\n"
+msgstr ""
+"\n"
+"Чтобы скомпоновать приложение с драйвером Oracle необходимо добавить "
+"<command>-lclip-oracle</command> в конец команды компиляции <command>clip</"
+"command>:\n"
+
+#: template/./doc/sql.sgml:2687
+msgid ""
+"\n"
+"To obtain a connect to the Oracle server use\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link> with the following "
+"syntax:\n"
+msgstr ""
+"\n"
+"Для подключения к серверу Oracle используется следующий синтаксис <link "
+"linkend=\"sqlconnectnew\">ConnectNew()</link>:\n"
+
+#: template/./doc/sql.sgml:2698
+msgid ""
+"\n"
+"\"OR\" - identifier of Oracle driver; see also\n"
+"<link linkend=\"sqlsqllist\">SQLList()</link>\n"
+msgstr ""
+"\n"
+"\"OR\" - идентификатор драйвера Oracle; см. также описание функции <link "
+"linkend=\"sqlsqllist\">SQLList()</link>\n"
+
+#: template/./doc/sql.sgml:2708
+msgid ""
+"\n"
+"cDB - a string containing the name of the database to be used (connect "
+"string)\n"
+msgstr ""
+"\n"
+"cDB - строка, содержащая имя базы данных (connect string)\n"
+
+#: template/./doc/sql.sgml:2714
+msgid ""
+"\n"
+"cIsolation - a string containing the name of isolation level to be used by "
+"default\n"
+"(see Oracle manual for details); if not passed, SET(\"OR_ISOLATION_LEVEL\")\n"
+"value is used; values containing one or more of the following strings\n"
+"divided by ';' are possible:\n"
+msgstr ""
+"\n"
+"cIsolation - строка, содержащая имя уровня изоляции, используемого по "
+"умолчанию (см. подробности в руководстве по Oracle); если NIL, используется "
+"SET(\"OR_ISOLATION_LEVEL\"); возможны следующие значения:\n"
+
+#: template/./doc/sql.sgml:2741
+msgid ""
+"\n"
+"To bind rows in the data base and rows in the local set a\n"
+"<command>rowid</command> field is used (see Oracle manual). See also\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> "
+"description\n"
+"for details.\n"
+msgstr ""
+"\n"
+"Для связывания строк набора и записей базы данных используется поле "
+"<command>rowid</command> (см. руководство по Oracle). См. также описание "
+"конструктора TRowset <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset"
+"()</link> .\n"
+
+#: template/./doc/sql.sgml:2747 template/./doc/sql.sgml:2893
+#: template/./doc/sql.sgml:3009 template/./doc/sql.sgml:3107
+msgid "Other peculiarities"
+msgstr "Другие особенности"
+
+#: template/./doc/sql.sgml:2749
+msgid ""
+"\n"
+"An array with SQL parameters (used in <![CDATA[<aParameters>]]> parameter "
+"of\n"
+"<link linkend=\"sqlcommand\">TConnect:Command()</link> and\n"
+"<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> functions)\n"
+"must have third element (SQL data type) in each row with Oracle.\n"
+"Data types are defined in <command>oracle.ch</command> include file.\n"
+"For example:\n"
+msgstr ""
+"\n"
+"Массив параметров SQL (используемый в качестве значения параметра <![CDATA"
+"[<aParameters>]]> методов <link linkend=\"sqlcommand\">TConnect:Command()</"
+"link> и<link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>) "
+"должен содержать третий элемент (тип данных Oracle) в каждой строке. Типы "
+"данных Oracle определены в файле <command>oracle.ch</command>. Например:\n"
+
+#: template/./doc/sql.sgml:2763
+msgid ""
+"\n"
+"INSERT statement passed in <![CDATA[<cInsertSQL>]]> parameter to\n"
+"TRowset constructor <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()"
+"</link>\n"
+"must have <command>RETURNING rowid</command> clause. For example:\n"
+msgstr ""
+"\n"
+"Оператор INSERT, содержащийся в параметре <![CDATA[<cInsertSQL>]]> "
+"конструктора TRowset <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset"
+"()</link>, должен содержать предложение <command>RETURNING rowid</command>. "
+"Например:\n"
+
+#: template/./doc/sql.sgml:2773
+msgid ""
+"\n"
+"The following table shows implemented Oracle data types and their XBase\n"
+"equivalents.\n"
+msgstr ""
+"\n"
+"В следующей таблице представлены реализованные типы данных Oracle и их XBase-"
+"эквиваленты.\n"
+
+#: template/./doc/sql.sgml:2776
+msgid "Implemented Oracle data types"
+msgstr "Реализованные типы данных Oracle"
+
+#: template/./doc/sql.sgml:2778
+msgid "Oracle data type"
+msgstr "Тип данных Oracle"
+
+#: template/./doc/sql.sgml:2802
+msgid ""
+"\n"
+"To be able to build an application using Interbase data base,\n"
+"appropriate packages must be installed. It includes Interbase development "
+"files\n"
+"and <command>clip-interbase</command> package. See\n"
+"<link linkend=\"installation\">Installation</link> chapter for details.\n"
+msgstr ""
+"\n"
+"Для построения приложения использующего базу данных Interbase должны быть "
+"установлены соответствующие пакеты. Это файлы разработчика Interbase и пакет "
+"<command>clip-interbase</command>. См. подробности в главе <link linkend="
+"\"installation\">Установка CLIP</link>.\n"
+
+#: template/./doc/sql.sgml:2808
+msgid ""
+"\n"
+"Link your application with Interbase driver by adding\n"
+"<command>-lclip-interbase</command> to the end of <command>clip</command>\n"
+"command:\n"
+msgstr ""
+"\n"
+"Чтобы скомпоновать приложение с драйвером Interbase необходимо добавить "
+"<command>-lclip-interbase</command> в конец команды компиляции "
+"<command>clip</command>:\n"
+
+#: template/./doc/sql.sgml:2818
+msgid ""
+"\n"
+"To obtain a connect to the Interbase server use\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link> with the following "
+"syntax:\n"
+msgstr ""
+"\n"
+"Для подключения к серверу Interbase используется следующий синтаксис <link "
+"linkend=\"sqlconnectnew\">ConnectNew()</link>:\n"
+
+#: template/./doc/sql.sgml:2829
+msgid ""
+"\n"
+"\"IB\" - identifier of Interbase driver; see also\n"
+"<link linkend=\"sqlsqllist\">SQLList()</link>\n"
+msgstr ""
+"\n"
+"\"IB\" - идентификатор драйвера Interbase; см. также описание функции <link "
+"linkend=\"sqlsqllist\">SQLList()</link>\n"
+
+#: template/./doc/sql.sgml:2839
+msgid ""
+"\n"
+"cDB - a string containing the name of the database to be used (the file "
+"name)\n"
+msgstr ""
+"\n"
+"cDB - строка, содержащая имя базы данных (имя файла)\n"
+
+#: template/./doc/sql.sgml:2845
+msgid ""
+"\n"
+"cIsolation - a string containing the name of isolation level to be used by "
+"default\n"
+"(see Interbase manual for details); if not passed, SET(\"IB_ISOLATION_LEVEL"
+"\")\n"
+"value is used; values containing one or more of the following strings\n"
+"divided by ';' are possible:\n"
+msgstr ""
+"\n"
+"cIsolation - строка, содержащая имя уровня изоляции, используемого по "
+"умолчанию (см. подробности в руководстве по Interbase); если NIL, "
+"используется SET(\"IB_ISOLATION_LEVEL\"); возможны следующие значения:\n"
+
+#: template/./doc/sql.sgml:2887 template/./doc/sql.sgml:3003
+#: template/./doc/sql.sgml:3101
+msgid ""
+"\n"
+"To bind rows in the data base and rows in the local set a field with the "
+"name\n"
+"passed in <![CDATA[<cIdName>]]> parameter to TRowset constructor is used.\n"
+"See <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link> "
+"description\n"
+"for details.\n"
+msgstr ""
+"\n"
+"Для связывания строк набора и записей базы данных используется поле, чье имя "
+"передается конструктору TRowset в параметре <![CDATA[<cIdName>]]>. См. "
+"описание <link linkend=\"sqlcreaterowset\">TConnect:CreateRowset()</link>.\n"
+
+#: template/./doc/sql.sgml:2895
+msgid ""
+"\n"
+"With Interbase, <link linkend=\"sqlstart\">TConnect:Start()</link>\n"
+"may receive the second parameter <![CDATA[<cLockTables>]]> describing\n"
+"what tables and how they should be locked during transaction.\n"
+"The string being contained in <![CDATA[<cLockTables>]]> should have\n"
+"the following form:\n"
+msgstr ""
+"\n"
+"При использовании драйвера Interbase метод <link linkend=\"sqlstart"
+"\">TConnect:Start()</link> может получать второй параметр <![CDATA"
+"[<cLockTables>]]>, в котором описывается какие таблицы и как должны быть "
+"заблокированы на время транзакции. Строка, содержащаяся в <![CDATA"
+"[<cLockTables>]]> должна иметь следующий формат:\n"
+
+#: template/./doc/sql.sgml:2905
+msgid ""
+"\n"
+"where <![CDATA[<table_name>]]> - the name of the table to be locked;\n"
+"<![CDATA[<lock_type>]]> - lock type; the following types are possible:\n"
+msgstr ""
+"\n"
+"где <![CDATA[<table_name>]]> - имя таблицы; <![CDATA[<lock_type>]]> - тип "
+"блокировки; возможны следующие значения:\n"
+
+#: template/./doc/sql.sgml:2923
+msgid ""
+"\n"
+"See Interbase manual for details.\n"
+msgstr ""
+"\n"
+"См. подробности в руководстве по Interbase.\n"
+
+#: template/./doc/sql.sgml:2928
+msgid ""
+"\n"
+"The following table shows implemented Interbase data types and their XBase\n"
+"equivalents.\n"
+msgstr ""
+"\n"
+"В следующей таблице представлены реализованные типы данных Interbase и их "
+"XBase-эквиваленты.\n"
+
+#: template/./doc/sql.sgml:2931
+msgid "Implemented Interbase data types"
+msgstr "Реализованные типы данных Interbase"
+
+#: template/./doc/sql.sgml:2933
+msgid "Interbase data type"
+msgstr "Тип данных Interbase"
+
+#: template/./doc/sql.sgml:2957
+msgid ""
+"\n"
+"To be able to build an application using ODBC manager,\n"
+"appropriate packages must be installed. It includes ODBC development files\n"
+"(iODBC2 or unixodbc) and <command>clip-odbc</command> package. See\n"
+"<link linkend=\"installation\">Installation</link> chapter for details.\n"
+msgstr ""
+"\n"
+"Для построения приложения использующего ODBC должны быть установлены "
+"соответствующие пакеты. Это пакет разработчика ODBC (iODBC2 или unixodbc) и "
+"пакет <command>clip-odbc</command>. См. подробности в главе <link linkend="
+"\"installation\">Установка CLIP</link>.\n"
+
+#: template/./doc/sql.sgml:2963
+msgid ""
+"\n"
+"Link your application with ODBC driver by adding\n"
+"<command>-lclip-odbc</command> to the end of <command>clip</command>\n"
+"command:\n"
+msgstr ""
+"\n"
+"Чтобы скомпоновать приложение с драйвером ODBC необходимо добавить <command>-"
+"lclip-odbc</command> в конец команды компиляции <command>clip</command>:\n"
+
+#: template/./doc/sql.sgml:2973
+msgid ""
+"\n"
+"To obtain a connect to the database server through ODBC manager use\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link> with the following "
+"syntax:\n"
+msgstr ""
+"\n"
+"Для подключения к базе данных через ODBC используется следующий синтаксис "
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link>:\n"
+
+#: template/./doc/sql.sgml:2984
+msgid ""
+"\n"
+"\"ODBC\" - identifier of ODBC driver; see also\n"
+"<link linkend=\"sqlsqllist\">SQLList()</link>\n"
+msgstr ""
+"\n"
+"\"ODBC\" - идентификатор драйвера ODBC; см. также описание функции <link "
+"linkend=\"sqlsqllist\">SQLList()</link>\n"
+
+#: template/./doc/sql.sgml:2988
+msgid ""
+"\n"
+"cDSN - a string containing Data Source Name (see ODBC manual and odbc.ini)\n"
+msgstr ""
+"\n"
+"cDSN - строка, содержащая имя источника данных (см. руководство по ODBC и "
+"файл odbc.ini)\n"
+
+#: template/./doc/sql.sgml:3011
+msgid ""
+"\n"
+"With ODBC you have to set appropriate transactions isolation level "
+"manually.\n"
+"<link linkend=\"sqlstart\">TConnect:Start()</link> ignores passed "
+"parameters.\n"
+msgstr ""
+"\n"
+"При использовании ODBC нужный уровень изоляции должен устанавливаться "
+"вручную. Параметры метода <link linkend=\"sqlstart\">TConnect:Start()</link> "
+"игнорируются.\n"
+
+#: template/./doc/sql.sgml:3017
+msgid ""
+"\n"
+"The following table shows implemented ODBC data types and their XBase\n"
+"equivalents.\n"
+msgstr ""
+"\n"
+"В следующей таблице представлены реализованные типы данных ODBCи их XBase-"
+"эквиваленты.\n"
+
+#: template/./doc/sql.sgml:3020
+msgid "Implemented ODBC data types"
+msgstr "Реализованные типы данных ODBC"
+
+#: template/./doc/sql.sgml:3022
+msgid "ODBC data type"
+msgstr "Тип данных ODBC"
+
+#: template/./doc/sql.sgml:3049
+msgid ""
+"\n"
+"To be able to build an application using DBTCP proxy,\n"
+"appropriate packages must be installed. It includes DBTCP development files\n"
+"and <command>clip-dbtcp</command> package. See\n"
+"<link linkend=\"installation\">Installation</link> chapter for details.\n"
+msgstr ""
+"\n"
+"Для построения приложения использующего DBTCP должны быть установлены "
+"соответствующие пакеты. Это пакет разработчика DBTCP и пакет <command>clip-"
+"dbtcp</command>. См. подробности в главе <link linkend=\"installation"
+"\">Установка CLIP</link>.\n"
+
+#: template/./doc/sql.sgml:3055
+msgid ""
+"\n"
+"Link your application with DBTCP driver by adding\n"
+"<command>-lclip-dbtcp</command> to the end of <command>clip</command>\n"
+"command:\n"
+msgstr ""
+"\n"
+"Чтобы скомпоновать приложение с драйвером DBTCP необходимо добавить "
+"<command>-lclip-dbtcp</command> в конец команды компиляции <command>clip</"
+"command>:\n"
+
+#: template/./doc/sql.sgml:3065
+msgid ""
+"\n"
+"To obtain a connect to the database server through DBTCP proxy use\n"
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link> with the following "
+"syntax:\n"
+msgstr ""
+"\n"
+"Для подключения к базе данных через DBTCP используется следующий синтаксис "
+"<link linkend=\"sqlconnectnew\">ConnectNew()</link>:\n"
+
+#: template/./doc/sql.sgml:3076
+msgid ""
+"\n"
+"\"DBTCP\" - identifier of DBTCP driver; see also\n"
+"<link linkend=\"sqlsqllist\">SQLList()</link>\n"
+msgstr ""
+"\n"
+"\"DBTCP\" - идентификатор драйвера DBTCP; см. также описание функции <link "
+"linkend=\"sqlsqllist\">SQLList()</link>\n"
+
+#: template/./doc/sql.sgml:3080
+msgid ""
+"\n"
+"cHost - host name DBTCP server running on\n"
+msgstr ""
+"\n"
+"cHost - строка, содержащая имя хоста на котором работает сервер DBTCP\n"
+
+#: template/./doc/sql.sgml:3092
+msgid ""
+"\n"
+"cDSN - a string containing Data Source Name\n"
+msgstr ""
+"\n"
+"cDSN - строка, содержащая имя источника данных\n"
+
+#: template/./doc/sql.sgml:3109
+msgid ""
+"\n"
+"With DBTCP you have to set appropriate transactions isolation level "
+"manually.\n"
+"<link linkend=\"sqlstart\">TConnect:Start()</link> ignores passed "
+"parameters.\n"
+msgstr ""
+"\n"
+"При использовании DBTCP нужный уровень изоляции должен устанавливаться "
+"вручную. Параметры метода <link linkend=\"sqlstart\">TConnect:Start()</link> "
+"игнорируются.\n"
+
+#, fuzzy
+#~ msgid "Building an application working with MySQL"
+#~ msgstr "Сборка приложения"

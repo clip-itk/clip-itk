@@ -1,0 +1,83 @@
+$FUNCNAME$
+  FIELDWBLOCK()
+$CATEGORY$
+  DATABASE,CODEBLOCK
+$SUMMARY$
+   Return a set-get code block for a field in a given work area
+$LANG_RU$
+   Возвращает блок кода для поля в данной рабочей области.
+$SYNTAX$
+     FIELDWBLOCK(<cFieldName>, <nWorkArea>) --> bFieldWBlock
+$LANG_RU$
+     FIELDWBLOCK(<имя поля>,<номер рабочей области>)  --> блок кода
+$ARGUMENTS$
+     <cFieldName> is the name of the field specified as a character
+     string.
+     <nWorkArea> is the work area number where the field resides
+     specified as a numeric value.
+$LANG_RU$
+     <имя поля> - имя поля базы данных, заданное как символьная строка.
+     <номер рабочей области> - номер рабочей области, где находится поле,
+     заданное как числовое значение.
+$RETURNS$
+     FIELDWBLOCK() returns a code block that, when evaluated, sets (assigns)
+     or gets (retrieves) the value of <cFieldName> in the work area
+     designated by <nWorkArea>.  If <cFieldName> does not exist in the
+     specified work area, FIELDWBLOCK() returns an empty block.
+$LANG_RU$
+     FIELDWBLOCK() возвращает блок кода, предназначенный либо для
+     присваивания нового значения, либо для считывания текущего
+     значения данного поля.
+$DESCRIPTION$
+     FIELDWBLOCK() is a database function that builds a code block.  When
+     evaluated with the EVAL() function, the code block first selects the
+     designated <nWorkArea>.  If an argument was passed, the code block then
+     assigns the value of the argument to <cFieldName>.  If no argument was
+     passed, the code block retrieves the value of <cFieldName>.  The
+     original work area is then reselected before the code block returns
+     control.
+
+     Note that the specified field variable may not exist when the code block
+     is created but must exist before the code block is executed.
+$LANG_RU$
+     FIELDWBLOCK() - функция баз данных, создающая блок кода, при
+     выполнении которого функцией EVAL(), сначала выбирается рабочая
+     область - <номер рабочей области>. Если аргумент блока кода был
+     передан функцией EVAL(), то блок кода присваивает <поле базы>
+     значение аргумента. При выполнении без аргумента, кодовый блок
+     возвращает текущее значение <поле базы>.
+
+     Существование <поле базы> не требуется при создании блока кода, но
+     необходима его доступность в указанной рабочей области при вызове
+     функции EVAL() для выполнения блока кода.
+$EXAMPLES$
+       This example compares FIELDWBLOCK() to a code block created
+	using the macro operator.  Note that using FIELDWBLOCK() avoids the
+	speed and size overhead of the macro operator:
+
+	// Set-Get block for work area 1 defined with
+	// macro operator
+	bSetGet := &amp;( "{ |setVal| IF( setVal == NIL, ;
+	   1->FName, 1->FName := setVal ) }" )
+	// Set-Get block defined using FIELDWBLOCK()
+
+	// bSetGet created here is the functional
+	// equivalent of bSetGet above
+	bSetGet := FIELDWBLOCK("FName", 1)
+$LANG_RU$
+      Следующий пример сравнивает функцию FIELDWBLOCK() и создание
+       блока кода с помощью оператора макроподстановки. Заметим, что
+       использование FIELDWBLOCK() позволяет избежать потерь в скорости
+       и увеличения размеров от макроподстановки:
+
+       // Блок кода для рабочей области 1 определяется с использованием
+       // оператора макроподстановки
+       bSetGet := &amp;( "{ |setVal| IF(setVal == NIL, ;
+	  1->FName, 1->FName := setVal ) }" )
+
+       // Блок кода определяется с помощью FIELDWBLOCK()
+       // Создаваемый здесь блок кода функционально эквивалентен блоку кода
+       bSetGet := FIELDWBLOCK("FName", 1)
+$SEEALSO$
+  FIELDBLOCK(),MEMVARBLOCK()
+$END$

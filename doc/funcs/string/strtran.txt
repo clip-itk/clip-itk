@@ -1,0 +1,85 @@
+$FUNCNAME$
+  STRTRAN()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Search and replace characters within a character string or memo field
+$LANG_RU$
+   Ищет и заменяет символы в символьной строке или memo-поле.
+$SYNTAX$
+     STRTRAN(<cString>, <cSearch>,[<cReplace>], [<nStart>], [<nCount>]) --> cNewString
+$LANG_RU$
+     STRTRAN(<строка символов>, <замещаемая подстрока>,[<замещающая подстрока>], [<начало замены>],
+	  [<число замен>]) --> новая строка символов
+$ARGUMENTS$
+     <cString> is the character string or memo field to be searched.
+     <cSearch> is the sequence of characters to be located.
+     <cReplace> is the sequence of characters with which to replace
+     <cSearch>.  If this argument is not specified, the specified instances
+     of the search argument are replaced with a null string ("").
+     <nStart> is the first occurrence that will be replaced.  If this
+     argument is omitted, the default is one.  If this argument is equal to
+     or less than zero, STRTRAN() returns an empty string.
+     <nCount> is the number of occurrences to be replaced.  If this
+     argument is not specified, the default is all.
+$LANG_RU$
+     <строка символов> является символьной строкой или memo-полем, в
+     котором производится поиск.
+     <замещаемая подстрока> - последовательность символов, которую нужно
+     установить.
+     <замещающая подстрока> - последовательность символов, которыми
+     нужно заменить значение аргумента <замещаемая подстрока>. Если этот
+     аргумент не задан, найденные экземпляры аргумента поиска заменяются
+     строкой нулевой длины ("").
+     <начало замены> - является номером первого экземпляра аргумента
+     <замещаемая строка>, подлежащего замене. Если этот аргумент опущен,
+     то по умолчанию принимается (1).
+     <число замен> - число экземпляров аргумента <замещаемая подстрока>,
+     которые должны заменяться. Если он опущен, то по умолчанию заменяются
+     все.
+$RETURNS$
+     STRTRAN() returns a new character string with the specified instances of
+     <cSearch> replaced with <cReplace>.
+$LANG_RU$
+     STRTRAN() возвращает новую символьную строку с заданными экземплярами
+     <замещаемая подстрока>, замененными на значение аргумента <замещающая
+     подстрока>.
+$DESCRIPTION$
+     STRTRAN() is a character function that performs a standard substring
+     search within a character string.  When it finds a match, it replaces
+     the search string with the specified replacement string.  All instances
+     of <cSearch> are replaced unless <nStart> or <nCount> is specified.
+     Note that STRTRAN() replaces substrings and, therefore, does not account
+     for whole words.
+$LANG_RU$
+     STRTRAN() является функцией обработки символьных строк, которая
+     выполняет стандартный поиск подстроки внутри символьной строки.
+     Когда она находит соответствие, она заменяет строку поиска заданной
+     строкой замены. Если не заданы аргументы <начало замены> и <число
+     замен>, все экземпляры подстрок, совпадающие со значением аргумента
+     <замещаемая подстрока> заменяются на значение аргумента <замещающая
+     подстрока>. Следует отметить, что STRTRAN() заменяет подстроки и,
+     следовательно, не отвечает за целые слова.
+$EXAMPLES$
+
+       This example uses STRTRAN() to establish a postmodern analog
+	to a famous quotation:
+
+	cString:= "To compute, or not to compute?"
+	? STRTRAN(cString, "compute", "be")
+	// Result: To be, or not to be?
+
+
+$LANG_RU$
+
+      Этот пример показывает использование STRTRAN() для установления
+       современного аналога известной цитаты староанглийского периода:
+
+       cString = "Вычислять или не вычислять ?"
+       ? STRTRAN(cString, "вычислять", "быть")
+       // Результат : быть или не быть ?
+
+
+$SEEALSO$
+  RAT(),STUFF(),SUBSTR(),AT()
+$END$

@@ -1,0 +1,39 @@
+$FUNCNAME$
+   FT_FEOF()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Determine if end of text file has been encountered
+$SYNTAX$
+
+   FT_FEOF() -> lResult
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   .T. if an attempt was made to skip past the last record of
+   the currently selected text file, otherwise .F.
+
+$DESCRIPTION$
+
+   This function is similar to the CLIPPER Eof() function.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+$EXAMPLES$
+
+   FT_FUSE( "FTTEXT.C" )
+
+   ? FT_FEOF()        // .F.
+
+   FT_FSKIP()
+
+   ? FT_FEOF()        // .T.
+
+$SEEALSO$
+   FT_FUSE(),FT_FSKIP()
+$END$
+

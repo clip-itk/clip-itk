@@ -312,7 +312,6 @@ function Main()
 comment -because GTK_ENABLE_BROKEN */
 
 
-
 	//Dialog and font and color selecting dialogs
 	/***************************************************/
 	D_MSG("Create frame for dialogs")
@@ -617,6 +616,7 @@ comment -because GTK_ENABLE_BROKEN */
 	gtk_WidgetShowAll(PxmFrame)
 	//
 	/***************************************************/
+
 	D_MSG("Run events")
 
 	gtk_Main()

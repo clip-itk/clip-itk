@@ -1,0 +1,606 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/codb.sgml:1
+msgid "CODB- CLIP Object Data Base."
+msgstr ""
+
+#: template/./doc/codb.sgml:4
+msgid ""
+"\n"
+"For better understanding of this document it is necessary to read sections\n"
+"of the documentation <link linkend=\"leintroduction\">language extensions</"
+"link> and especially attentively\n"
+"the chapter <link linkend=\"leoomodel\">OO-model</link>. If you won't "
+"understand them - further reading\n"
+"has no sense.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:11
+msgid ""
+"\n"
+"<command>CODB</command> consists of the dictionary ( metadata storehouse ) "
+"and a number of\n"
+"depositories for data objects.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:16
+msgid ""
+"\n"
+"<command>CODB</command> is not OO storehouse as it is in classical OO-"
+"programming (C ++, SmallTalk...).\n"
+"<command>CODB</command> is an object database, i.e. storehouse of objects "
+"with some OO elements.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:21
+msgid ""
+"\n"
+"In particular, the \"private\" properties is not supported - for the simple "
+"reason that\n"
+"<command>CODB</command> core must know about all properties of an object. "
+"But instead of\n"
+"\"private\" there is an opportunity to store objects with properties,\n"
+"which aren't described in metadata.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:28
+msgid ""
+"\n"
+"Thus, if the object with extra properties will be stored, using the method\n"
+"method depository:append(obj), all those extra properties will be kept\n"
+"completely, but the type checking, content checking and indexation will not\n"
+"work for them.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:35
+msgid ""
+"\n"
+"While reading such an object all properties will be accessible and\n"
+"the programmer is fully responsible for the content of those extra "
+"properties.\n"
+"If he will not describe them in the documentation, they may be considered\n"
+"as \"private\" :).\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:42
+msgid ""
+"\n"
+"Inheritance is supported, but only from one superclass, and the properties\n"
+" and indexes are inherited only.\n"
+" "
+msgstr ""
+
+#: template/./doc/codb.sgml:47
+msgid ""
+"\n"
+"Polymorphism currently is not supported, because object methods are not "
+"kept.\n"
+"Possibly, the following versions of <command>CODB</command> will support "
+"object methods keeping\n"
+"and polymorphism. Currently only event handlers ( analogues of triggers in\n"
+" RDBMS ) are available - it is possible to realize polymorphism partially\n"
+"using them, if necessary.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:55
+msgid ""
+"\n"
+"Main concepts:\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:59 template/./doc/codb.sgml:125
+msgid "Class"
+msgstr ""
+
+#: template/./doc/codb.sgml:60
+msgid "the set of substances with identical properties"
+msgstr ""
+
+#: template/./doc/codb.sgml:62 template/./doc/codb.sgml:128
+msgid "Object"
+msgstr ""
+
+#: template/./doc/codb.sgml:63
+msgid "the substance belonging to any class"
+msgstr ""
+
+#: template/./doc/codb.sgml:65
+msgid "The stored object"
+msgstr ""
+
+#: template/./doc/codb.sgml:66
+msgid ""
+"object which is kept in storehouse, there is other name\n"
+"for such objects - \"permanent\" or \"constant\""
+msgstr ""
+
+#: template/./doc/codb.sgml:70
+msgid "The comment:"
+msgstr ""
+
+#: template/./doc/codb.sgml:72
+msgid ""
+"In some ODB, especially based on C ++, the metadata are not permanent.\n"
+"In such ODB metadata are known only at compile time and are not kept\n"
+"in dictionaries. In <command>CODB</command> both metadata and the stored "
+"data are permanent\n"
+"because they are kept in DB and are accessible at run-time"
+msgstr ""
+
+#: template/./doc/codb.sgml:77 template/./doc/codb.sgml:131
+msgid "Property"
+msgstr ""
+
+#: template/./doc/codb.sgml:78
+msgid "a part of an object, the attribute of an object, it may be of any type"
+msgstr ""
+
+#: template/./doc/codb.sgml:80
+msgid "Method"
+msgstr ""
+
+#: template/./doc/codb.sgml:81
+msgid "a program code which an object may execute"
+msgstr ""
+
+#: template/./doc/codb.sgml:83 template/./doc/codb.sgml:114
+msgid "Metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:84
+msgid "objects which describes the structure of other objects"
+msgstr ""
+
+#: template/./doc/codb.sgml:86 template/./doc/codb.sgml:110
+msgid "Dictionary"
+msgstr ""
+
+#: template/./doc/codb.sgml:87
+msgid "storehouse of metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:89 template/./doc/codb.sgml:117
+msgid "Depository"
+msgstr ""
+
+#: template/./doc/codb.sgml:90
+msgid ""
+"a place where stored objects are kept ( the structure of these\n"
+" objects is described in the dictionary )"
+msgstr ""
+
+#: template/./doc/codb.sgml:93
+msgid "Essence"
+msgstr ""
+
+#: template/./doc/codb.sgml:94
+msgid "a string which describes the content of stored object"
+msgstr ""
+
+#: template/./doc/codb.sgml:96 template/./doc/codb.sgml:120
+msgid "Extent"
+msgstr ""
+
+#: template/./doc/codb.sgml:97
+msgid ""
+"a part of depository for storage of related objects belonging to\n"
+"different classes. The fragmentation of depositry on extents depends on\n"
+"the essence of the whole data kept, the number of stored objects, their "
+"relations\n"
+"etc. It is defined at a design time"
+msgstr ""
+
+#: template/./doc/codb.sgml:104
+msgid ""
+"\n"
+"If to consider these concepts from the point of RDBMS:\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:111
+msgid ""
+"a place where descriptions of databases, tables, fields, users,\n"
+"views, triggers and others is stored"
+msgstr ""
+
+#: template/./doc/codb.sgml:115
+msgid "the data used by RDBMS for the internal needs"
+msgstr ""
+
+#: template/./doc/codb.sgml:118
+msgid "database"
+msgstr ""
+
+#: template/./doc/codb.sgml:121
+msgid ""
+"this concept is not present in RDBMS, but it may\n"
+"be a part of database, which keeps some tables. For example, tables which "
+"names\n"
+" begins with a letter \"A\", a letter \"B\", ....."
+msgstr ""
+
+#: template/./doc/codb.sgml:126
+msgid "the table"
+msgstr ""
+
+#: template/./doc/codb.sgml:129
+msgid "a record of the table"
+msgstr ""
+
+#: template/./doc/codb.sgml:132
+msgid "a field of a record"
+msgstr ""
+
+#: template/./doc/codb.sgml:135
+msgid "Specification"
+msgstr ""
+
+#: template/./doc/codb.sgml:138
+msgid ""
+"\n"
+"Theoretically <command>CODB</command> may keep the data in any low level "
+"storehouse:\n"
+" TXT, SDF, XML, DBF, SQL, others ODB, CORBA...\n"
+"At the present time only a driver for DBF+CDX files is implemented.\n"
+"The driver is written on CLIP, it's sources are about 60k.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:145
+msgid ""
+"\n"
+"Identification of all objects is global, i.e. using the identifier of an\n"
+"object it is possible to determine the dictionary and depository it is "
+"related to.\n"
+"The length of the identifier of an object is defined at compile time,\n"
+"the configuration is in codbcfg.ch. In a standard configuration the "
+"identifier\n"
+"of any object ( meta or stored ) occupies 12 bytes and consists of:\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:152
+msgid "The identifier of the dictionary - 5 bytes."
+msgstr ""
+
+#: template/./doc/codb.sgml:153
+msgid "The identifier of the depository - 2 bytes."
+msgstr ""
+
+#: template/./doc/codb.sgml:154
+msgid "The identifier of an object in depository - 5 bytes."
+msgstr ""
+
+#: template/./doc/codb.sgml:158
+msgid ""
+"\n"
+"Only Latin letters and digits are used in the identifier, so the number of\n"
+"dictionaries is no more than 32^5 = 2^25 = ~32 000 000.\n"
+"At each dictionary there may be 32^2 = ~1000 depositories.\n"
+"The number of extents inside the depository is limited only by the number "
+"of\n"
+"files in the directory or number of tables supported by RDBMS.\n"
+"The number of objects in one depository is no more than 32^5 = ~32 000 000.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:167
+msgid ""
+"\n"
+"The speed of objects recording to the database using the DBF driver is "
+"about\n"
+"200 per second ( Celeron 400/128M ), it depends on the size of object "
+"slightly.\n"
+"The speed of reading without caching is about 2000 per second.\n"
+"If an application server and objects caching will be used, the speed of\n"
+"reading will increase presumably in 3-4 times.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:175
+msgid ""
+"\n"
+"Controling classes."
+msgstr ""
+
+#: template/./doc/codb.sgml:178
+msgid ""
+"\n"
+"There are three classes for creation and management of dictionaries and "
+"depositories:\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:181
+msgid ""
+"<link linkend=\"classCODBLIST\">CODBLIST  </link> - handles the list of "
+"accessible dictionaries."
+msgstr ""
+
+#: template/./doc/codb.sgml:182
+msgid ""
+"<link linkend=\"classCODBDICTIONARY\">CODBDICTIONARY</link> - handles the "
+"content of the dictionary."
+msgstr ""
+
+#: template/./doc/codb.sgml:183
+msgid ""
+"<link linkend=\"classCODBDEPOSITORY\">CODBDEPOSITORY</link> - handles the "
+"content of depository."
+msgstr ""
+
+#: template/./doc/codb.sgml:187
+msgid ""
+"\n"
+"And one service class:\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:190
+msgid ""
+"<link linkend=\"classCODBIDLIST\">CODBIDLIST</link> - a service class for a "
+"work with stored objects in navigating style."
+msgstr ""
+
+#: template/./doc/codb.sgml:195
+msgid ""
+"\n"
+"Metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:196
+msgid ""
+"Metadata it is objects what describe other object and so objects needdes\n"
+"to control of ODB kernel.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:200
+msgid ""
+"\n"
+"Any metadata have obligatory attribute <![CDATA[<ID>]]>. This attribute use "
+"for access to\n"
+"keeping objects. <![CDATA[<ID>]]> created ODB kernel when object append to "
+"dictionary.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:204
+msgid ""
+"\n"
+"The metadata counts and names are limited and determine by ODB kernel.\n"
+"The dictionary have object only classes:"
+msgstr ""
+
+#: template/./doc/codb.sgml:207
+msgid "In the dictionary mast be at least one object of each metaclass.\n"
+msgstr ""
+
+#: template/./doc/codb.sgml:210
+msgid " the description of metadata \"depository\""
+msgstr ""
+
+#: template/./doc/codb.sgml:211 template/./doc/codb.sgml:231
+#: template/./doc/codb.sgml:248 template/./doc/codb.sgml:300
+#: template/./doc/codb.sgml:321
+msgid "Attributes:"
+msgstr ""
+
+#: template/./doc/codb.sgml:213 template/./doc/codb.sgml:233
+#: template/./doc/codb.sgml:250 template/./doc/codb.sgml:302
+#: template/./doc/codb.sgml:323
+msgid "ID - metadata identifier"
+msgstr ""
+
+#: template/./doc/codb.sgml:214
+msgid "NAME - depository name"
+msgstr ""
+
+#: template/./doc/codb.sgml:216
+msgid "Example: create DEPOSIT metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:230
+msgid " the description of metadata \"extent\""
+msgstr ""
+
+#: template/./doc/codb.sgml:234
+msgid "NAME - extent name"
+msgstr ""
+
+#: template/./doc/codb.sgml:235
+msgid "HELP - description"
+msgstr ""
+
+#: template/./doc/codb.sgml:237
+msgid "Example: create EXTENT metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:247
+msgid " the attribute description of keeping object"
+msgstr ""
+
+#: template/./doc/codb.sgml:251
+msgid "NAME - keeping object attribute name"
+msgstr ""
+
+#: template/./doc/codb.sgml:252
+msgid "TYPE - keeping object attribute type"
+msgstr ""
+
+#: template/./doc/codb.sgml:253
+msgid "LEN - length"
+msgstr ""
+
+#: template/./doc/codb.sgml:254
+msgid "DEC - characters after point (for numeric attributes)"
+msgstr ""
+
+#: template/./doc/codb.sgml:255
+msgid "LENTYPE - formatting type (for string attributes)"
+msgstr ""
+
+#: template/./doc/codb.sgml:256
+msgid ""
+"REF_TO - class identifier (for attributes with type \"R\") if empty, then "
+"reference to object any classes"
+msgstr ""
+
+#: template/./doc/codb.sgml:257
+msgid "DEFVALUE - the value by default"
+msgstr ""
+
+#: template/./doc/codb.sgml:259 template/./doc/codb.sgml:273
+msgid "The TYPE values:"
+msgstr ""
+
+#: template/./doc/codb.sgml:261
+msgid "\"C\" - characters string with limit by length"
+msgstr ""
+
+#: template/./doc/codb.sgml:262
+msgid "\"N\" - numeric"
+msgstr ""
+
+#: template/./doc/codb.sgml:263
+msgid "\"D\" - date"
+msgstr ""
+
+#: template/./doc/codb.sgml:264
+msgid "\"L\" - logical"
+msgstr ""
+
+#: template/./doc/codb.sgml:265
+msgid "\"M\" - characters string without limit by length"
+msgstr ""
+
+#: template/./doc/codb.sgml:266
+msgid "\"O\" - object"
+msgstr ""
+
+#: template/./doc/codb.sgml:267
+msgid ""
+"\"X\" - any data of simple type: string, numeric, date, logical, reference"
+msgstr ""
+
+#: template/./doc/codb.sgml:268
+msgid "\"R\" - reference to object"
+msgstr ""
+
+#: template/./doc/codb.sgml:269
+msgid "\"S\" - reference to class"
+msgstr ""
+
+#: template/./doc/codb.sgml:270
+msgid "\"A\" - array of reference"
+msgstr ""
+
+#: template/./doc/codb.sgml:271
+msgid "\"B\" - code block"
+msgstr ""
+
+#: template/./doc/codb.sgml:275
+msgid "1 - \"As is\""
+msgstr ""
+
+#: template/./doc/codb.sgml:276
+msgid "2 - \"Right trim\""
+msgstr ""
+
+#: template/./doc/codb.sgml:277
+msgid "3 - \"Right & Left trim\""
+msgstr ""
+
+#: template/./doc/codb.sgml:278
+msgid "4 - \"Right pad length\""
+msgstr ""
+
+#: template/./doc/codb.sgml:280
+msgid "Example: create ATTR metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:299
+msgid " the index description "
+msgstr ""
+
+#: template/./doc/codb.sgml:303
+msgid "NAME - index name"
+msgstr ""
+
+#: template/./doc/codb.sgml:304
+msgid "EXPR - index expression"
+msgstr ""
+
+#: template/./doc/codb.sgml:306
+msgid "Example: create INDEX metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:320
+msgid " the structure description "
+msgstr ""
+
+#: template/./doc/codb.sgml:324
+msgid "NAME - keeling object name"
+msgstr ""
+
+#: template/./doc/codb.sgml:325
+msgid "SUPER_ID - super class identifier"
+msgstr ""
+
+#: template/./doc/codb.sgml:326
+msgid "EXTENT_ID - extent identifier"
+msgstr ""
+
+#: template/./doc/codb.sgml:327
+msgid "EXPR_ESSENCE - expression for short appeares"
+msgstr ""
+
+#: template/./doc/codb.sgml:328
+msgid "UNSTABLE - the characteristic of object stably (service parameter)"
+msgstr ""
+
+#: template/./doc/codb.sgml:329
+msgid "ATTR_LIST - array of attribute identifiers"
+msgstr ""
+
+#: template/./doc/codb.sgml:330
+msgid "IDX_LIST - array of index identifiers"
+msgstr ""
+
+#: template/./doc/codb.sgml:332
+msgid "Example: create CLASS metadata"
+msgstr ""
+
+#: template/./doc/codb.sgml:357
+msgid ""
+"\n"
+"There are two utilities:"
+msgstr ""
+
+#: template/./doc/codb.sgml:359
+msgid ""
+"codb_make - to creat dictionaries and depositories using the\n"
+"    description in XML format."
+msgstr ""
+
+#: template/./doc/codb.sgml:361
+msgid "clip_ab   - to work with dictionaries, etc. in an interactive mode."
+msgstr ""
+
+#: template/./doc/codb.sgml:367
+msgid "Examples"
+msgstr ""
+
+#: template/./doc/codb.sgml:369
+msgid ""
+"\n"
+"The first full example of using the <command>CODB</command> (prg/udb/sample/"
+"my001.prg), it is for\n"
+"the subsequent descriptions of classes were visible in a whole.\n"
+"To execute it you need to build the program with the command\n"
+" \" clip-eslM my001.prg-lclip-codb \"\n"
+" "
+msgstr ""

@@ -1,0 +1,165 @@
+$FUNCNAME$
+  FSEEK()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Set a binary file pointer to a new position
+$LANG_RU$
+   Устанавливает указатель двоичного файла на новую позицию.
+$SYNTAX$
+     FSEEK(<nHandle>, <nOffset>, [<nOrigin>]) --> nPosition
+$LANG_RU$
+     FSEEK (<номер обраб. файла>, <смещение>,
+	  <начало перемещения>]) --> номер новой позиции
+$ARGUMENTS$
+     <nHandle> is the file handle obtained from FOPEN(), FCREATE(), or
+     predefined by DOS.
+
+     <nOffset> is the number of bytes to move the file pointer from the
+     position defined by <nOrigin>.  It can be a positive or negative number.
+     A positive number moves the pointer forward, and a negative number moves
+     the pointer backward in the file.
+
+     <nOrigin> defines the starting location of the file pointer before
+     FSEEK() is executed.  The default value is zero, representing the
+     beginning of file.  If <nOrigin> is the end of file, <nOffset> must be
+     zero or negative.
+
+     <PRE>Methods of Moving the File Pointer
+     ------------------------------------------------------------------------
+     Origin  Fileio.ch      Description
+     ------------------------------------------------------------------------
+     0       FS_SET         Seek from beginning of file
+     1       FS_RELATIVE    Seek from the current pointer position
+     2       FS_END         Seek from end of file
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     <номер обраб. файла> - номер обрабатываемого файла, полученный с
+     помощью функций FOPEN(), FCREATE() или предварительно определенный
+     в DOS.
+
+     <смещение> - это количество байтов, на которые должен быть перемещен
+     указатель файла с позиции, определенной аргументом <начало поиска>.
+     Его значение может быть положительным или отрицательным в зависимости
+     от направления перемещения указателя.
+
+     <начало перемещения> - определяет начальное положение указателя файла
+     перед выполнением FSEEK(). По умолчанию это нуль, соответствующий
+     началу файла. Если <начало поиска> - конец файла, то аргумент
+     <смещение> должен быть нулевым или отрицательным.
+
+     <PRE>Методы перемещения указателя файла
+     ---------------------------------------------------------------------
+     Значение  Fileio.ch    Описание
+     ---------------------------------------------------------------------
+     0         FS_SET       Позиционирование от начала файла
+     1         FS_RELATIVE  Позиционирование от текущей позиции указателя
+     2         FS_END       Позиционирование от конца файла
+     ---------------------------------------------------------------------
+     </PRE>
+$RETURNS$
+     FSEEK() returns the new position of the file pointer relative to the
+     beginning of file (position 0) as an integer numeric value.  This value
+     is without regard to the original position of the file pointer.
+$LANG_RU$
+     FSEEK() возвращает значение новой позиции указателя файла
+     относительно начала файла (позиции 0) в виде целого числа
+     независимо от того, какой метод был выбран для перемещения.
+$DESCRIPTION$
+     FSEEK() is a low-level file function that moves the file pointer forward
+     or backward in an open binary file without actually reading the contents
+     of the specified file.  The beginning position and offset are specified
+     as function arguments, and the new file position is returned.
+     Regardless of the function arguments specified, the file pointer cannot
+     be moved beyond the beginning or end of file boundaries.
+
+     Warning!  This function allows low-level access to DOS files and
+     devices.  It should be used with extreme care and requires a thorough
+     knowledge of the operating system.
+$LANG_RU$
+     FSEEK() - функция обработки файлов низкого уровня, которая перемещает
+     указатель файла вперед или назад в открытом двоичном файле без
+     реального считывания его содержания. Начальная позиция и смещение
+     задаются как аргументы функции. Функция возвращает новую позицию
+     указателя. Независимо от заданных аргументов функции указатель файла
+     не может быть перемещен за границы начала и конца файла.
+
+     Предупреждение:
+     Данная функция позволяет осуществлять доступ низкого уровня к файлам
+     и устройствам DOS. Она должна использоваться чрезвычайно осторожно и
+     требует хороших знаний операционной системы.
+$EXAMPLES$
+       This example uses FSEEK() to determine the length of a file by
+	seeking from the end of file.  Then, the file pointer is reset to the
+	beginning of file:
+
+	#include "Fileio.ch"
+	//
+	// Open the file read-only
+	IF (nHandle := FOPEN("Temp.txt")) >= 0
+	   //
+	   // Get length of the file
+	   nLength := FSEEK(nHandle, 0, FS_END)
+	   //
+	   // Reset file position to beginning of file
+	   FSEEK(nHandle, 0)
+	   FCLOSE(nHandle)
+	ELSE
+	   ? "File open error:", FERROR()
+	ENDIF
+
+       This pseudofunction positions the file pointer at the last
+	byte in a binary file:
+
+	#define FileBottom(nHandle);
+	      (FSEEK(nHandle, 0, FS_END))
+
+       This pseudofunction positions the file pointer at the first
+	byte in a binary file:
+
+	#define FileTop(nHandle);
+	      (FSEEK(nHandle, 0))
+
+       This pseudofunction reports the current position of the file
+	pointer in a specified binary file:
+
+	#define FilePos(nHandle);
+	      (FSEEK(nHandle, 0, FS_RELATIVE))
+$LANG_RU$
+      Следующий пример использует FSEEK(), чтобы определить длину файла
+       путем установки указателя на последний байт файла. Затем указатель
+       файла устанавливается на начало файла перемещением на нулевой байт:
+
+       #include "Fileio.ch"
+       //
+       // Открытие файла
+       IF (nHandle := FOPEN("Temp.txt") ) >= 0
+	  //
+	  // Определение длины файла
+	  nLength := FSEEK(nHandle, 0, FS_END)
+	  //
+	  // Установка указателя на начало файла
+	  FSEEK (nHandle, 0)
+       ELSE
+	  ? "Ошибка открытия файла:", FERROR()
+	  BREAK
+       ENDIF
+
+      Для позиционирования указателя на последний байт в двоичном файле
+       используйте следующие псевдо-функции:
+
+       define FileBottom(nHandle) (FSEEK(nHandle, 0, 2) )
+
+      Для позиционирования указателя на первый байт в двоичном файле
+       используйте псевдо-функции, подобные этой:
+
+       #define FileTop(nHandle) (FSEEK(nHandle, 0, 0) )
+
+      Чтобы получить текущую позицию указателя в заданном двоичном файле,
+       используйте следующую псевдо-функцию:
+
+       #define FilePos(nHandle) (FSEEK(nHandle, 0, 1) )
+$SEEALSO$
+  FCLOSE(),FCREATE(),FERROR(),FOPEN(),FREAD(),FREADSTR(),FWRITE()
+$END$

@@ -1,0 +1,1453 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2003-04-08 16:54+0500\n"
+"Last-Translator: \n"
+"Language-Team:  <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: template/./doc/capi.sgml:0
+msgid "Extend System"
+msgstr "Система расширения "
+
+#: template/./doc/capi.sgml:2
+msgid ""
+"\n"
+"Really 90% of the CLIP functional capabilities made up on its extend system\n"
+"base.\n"
+msgstr ""
+"\n"
+"Практически 90% функциональных возможностей CLIP сделаны на базе его системы "
+"расширения\n"
+
+#: template/./doc/capi.sgml:6
+#, fuzzy
+msgid ""
+"\n"
+"Extend system is the set of functions to retrieve the calling parameters,\n"
+"to retrieve data, to generate errors, some arrays, objects and another "
+"types\n"
+"execution functions in C/C++ representation.\n"
+msgstr ""
+"\n"
+"Система расширения представляет собой набор функций для получения вызываемых "
+"параметров, передачи данных, генерации ошибок, некоторые другие функции для "
+"обработки массивов, объектов и других типов в представлении на языке C/C++.\n"
+
+#: template/./doc/capi.sgml:11
+#, fuzzy
+msgid ""
+"\n"
+"For example, the simpliest function may be represented in C like that,\n"
+"orientally:\n"
+msgstr ""
+"\n"
+"Например, простейшая функция будет представляться в C-сырце примерно так:\n"
+
+#: template/./doc/capi.sgml:16
+#, fuzzy
+msgid "also here must be stdlib, stdio, etc."
+msgstr "должны быть также stdlib, stdio, и.т.д."
+
+#: template/./doc/capi.sgml:20
+msgid ""
+"The name of jointed function must be begining from \"clip_\" and then\n"
+"// it must be the name of CLIPPER-function on upper register.\n"
+"// Such names CLIP-compilier put on the special list of the\n"
+"// run-time available functions.\n"
+"// mp is the current CLIP-machine state description; it's better to see its\n"
+"// structure in clip.h directly.\n"
+"// If this function returns 0 there are no error;\n"
+"// if it returns not 0 it is error code."
+msgstr ""
+"Название подключаемой функции должно начинаться с \"clip_\" и далее\n"
+"// название CLIPPER-функции в верхнем регистре.\n"
+"// такие имена CLIP-компилятор помещает в специальный список доступных\n"
+"// в run-time функций.\n"
+"// mp - это описание текущего состояния CLIP-машины, лучше смотрите ее "
+"структуру\n"
+"// непосредственно в clip.h\n"
+"// Если эта функция возвращает 0 - то ошибок не произошло, если\n"
+"// не 0 - то это будет код ошибки."
+
+#: template/./doc/capi.sgml:32
+msgid "We get first parameter as fix length string."
+msgstr "получаем первый параметр в виде строки с конкретной длиной."
+
+#: template/./doc/capi.sgml:35
+msgid ""
+"We get second and third parameter as the automatical converting to int-number"
+msgstr ""
+"получаем второй и третий параметр в виде числа с автоматическим "
+"преобразованием в int - тип"
+
+#: template/./doc/capi.sgml:36
+#, fuzzy
+msgid "If the pass parameters were incorect types"
+msgstr "если передаваемые параметры были не того типа - в качестве С-значений"
+
+#: template/./doc/capi.sgml:37
+msgid "it will be retrieved NULL as C-values."
+msgstr "будет получено NULL"
+
+#: template/./doc/capi.sgml:42
+#, fuzzy
+msgid ""
+"Test of retrieved string and error generation in case of\n"
+"// the incorrect passing parameter."
+msgstr "проверка полученной строки и генерация ошибки в случае неправильно"
+
+#: template/./doc/capi.sgml:45
+msgid "The execution algorithm itself."
+msgstr "собственно алгоритм обработки"
+
+#: template/./doc/capi.sgml:46
+msgid "It's not necessary to pay your attention to it."
+msgstr "на него можно не обращать внимания"
+
+#: template/./doc/capi.sgml:66
+msgid ""
+"The returning of the value to the CLIP-machine as the string\n"
+"// (with the allocated memory)\n"
+"// with fix length (because of clipper-strings may have the zero bytes!)\n"
+"// If it nothing returns by _CLIP_.... , then NIL will returns."
+msgstr ""
+
+#: template/./doc/capi.sgml:71
+msgid "The message to CLIP-machine is that function terminates correct."
+msgstr "сообщение CLIP-машине что функция завершилась без ошибок"
+
+#: template/./doc/capi.sgml:75
+msgid ""
+"\n"
+"Well, now let's look at such expent functions that you need for\n"
+"the new CLIP capabilities using.\n"
+"If you easy read and write in C it's better to see in clip.h file.\n"
+msgstr ""
+"\n"
+"Ну а теперь собственно коротко о тех функциях расширения, которыми надо "
+"пользоваться при написании новых возможностей для CLIP.Для тех, кто легко "
+"читает и пишет на Си, лучше ознакомиться с файлом clip.h.\n"
+
+#: template/./doc/capi.sgml:81
+msgid "The passed parameters retrieving functions"
+msgstr "Функции получения передаваемых параметров"
+
+#: template/./doc/capi.sgml:89 template/./doc/capi.sgml:111
+#: template/./doc/capi.sgml:134 template/./doc/capi.sgml:157
+#: template/./doc/capi.sgml:180 template/./doc/capi.sgml:211
+#: template/./doc/capi.sgml:234 template/./doc/capi.sgml:261
+#: template/./doc/capi.sgml:285 template/./doc/capi.sgml:309
+#: template/./doc/capi.sgml:333 template/./doc/capi.sgml:372
+#: template/./doc/capi.sgml:394 template/./doc/capi.sgml:416
+#: template/./doc/capi.sgml:437 template/./doc/capi.sgml:466
+#: template/./doc/capi.sgml:490 template/./doc/capi.sgml:516
+#: template/./doc/capi.sgml:543 template/./doc/capi.sgml:565
+#: template/./doc/capi.sgml:586 template/./doc/capi.sgml:614
+#: template/./doc/capi.sgml:650 template/./doc/capi.sgml:669
+#: template/./doc/capi.sgml:688 template/./doc/capi.sgml:713
+#: template/./doc/capi.sgml:738 template/./doc/capi.sgml:760
+#: template/./doc/capi.sgml:789 template/./doc/capi.sgml:849
+#: template/./doc/capi.sgml:876 template/./doc/capi.sgml:905
+#: template/./doc/capi.sgml:927 template/./doc/capi.sgml:949
+#: template/./doc/capi.sgml:990 template/./doc/capi.sgml:1016
+#: template/./doc/capi.sgml:1041 template/./doc/capi.sgml:1073
+msgid "Parameters"
+msgstr "Параметры"
+
+#: template/./doc/capi.sgml:91
+msgid ""
+"\n"
+"<emphasis>mp</emphasis> is pointing to the current CLIP-machine state "
+"description.\n"
+msgstr ""
+"\n"
+"<emphasis>mp</emphasis> - указывает на текущее состояние CLIP-машины\n"
+
+#: template/./doc/capi.sgml:94
+msgid ""
+"\n"
+"<emphasis>num</emhpasis> is the position of parameter.\n"
+msgstr ""
+"\n"
+"<emphasis>num</emhpasis> - позиция параметра в списке параметров\n"
+
+#: template/./doc/capi.sgml:97 template/./doc/capi.sgml:119
+#: template/./doc/capi.sgml:142 template/./doc/capi.sgml:165
+#: template/./doc/capi.sgml:194 template/./doc/capi.sgml:219
+#: template/./doc/capi.sgml:245 template/./doc/capi.sgml:269
+#: template/./doc/capi.sgml:293 template/./doc/capi.sgml:317
+#: template/./doc/capi.sgml:353 template/./doc/capi.sgml:380
+#: template/./doc/capi.sgml:402 template/./doc/capi.sgml:424
+#: template/./doc/capi.sgml:451 template/./doc/capi.sgml:474
+#: template/./doc/capi.sgml:501 template/./doc/capi.sgml:527
+#: template/./doc/capi.sgml:551 template/./doc/capi.sgml:573
+#: template/./doc/capi.sgml:600 template/./doc/capi.sgml:628
+#: template/./doc/capi.sgml:655 template/./doc/capi.sgml:674
+#: template/./doc/capi.sgml:699 template/./doc/capi.sgml:724
+#: template/./doc/capi.sgml:746 template/./doc/capi.sgml:768
+#: template/./doc/capi.sgml:812 template/./doc/capi.sgml:860
+#: template/./doc/capi.sgml:890 template/./doc/capi.sgml:913
+#: template/./doc/capi.sgml:935 template/./doc/capi.sgml:957
+#: template/./doc/capi.sgml:1002 template/./doc/capi.sgml:1028
+#: template/./doc/capi.sgml:1056 template/./doc/capi.sgml:1114
+msgid "Description"
+msgstr "Описание"
+
+#: template/./doc/capi.sgml:99
+msgid ""
+"\n"
+"If"
+msgstr ""
+"\n"
+"Если "
+
+#: template/./doc/capi.sgml:99
+#, fuzzy
+msgid ""
+"returns the number of\n"
+"parameters, if non zero it returns type of passed parameter with num "
+"number.\n"
+msgstr ""
+"\n"
+" возвращяет число параметров; если не 0, то возвращает тип передаваемого "
+"параметра под номером num.\n"
+
+#: template/./doc/capi.sgml:113
+msgid ""
+"\n"
+"<emphasis>mp</emphasis> is pointing to the current CLIP-machine state "
+"description\n"
+msgstr ""
+"\n"
+"<emphasis>mp</emphasis> - указывает на текущее состояние CLIP-машины\n"
+
+#: template/./doc/capi.sgml:116 template/./doc/capi.sgml:139
+#: template/./doc/capi.sgml:162 template/./doc/capi.sgml:185
+#: template/./doc/capi.sgml:216 template/./doc/capi.sgml:239
+#: template/./doc/capi.sgml:266 template/./doc/capi.sgml:290
+#: template/./doc/capi.sgml:314 template/./doc/capi.sgml:338
+msgid ""
+"\n"
+"<emphasis>num</emphasis>  is the position of parameter\n"
+msgstr ""
+"\n"
+"<emphasis>num</emhpasis> - позиция параметра в списке параметров\n"
+
+#: template/./doc/capi.sgml:122
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+"returns converted to int type value of parameter with num number\n"
+msgstr ""
+"\n"
+"Возвращает значение передаваемого параметра с номером num преобразованное к "
+"типу int\n"
+
+#: template/./doc/capi.sgml:136 template/./doc/capi.sgml:159
+#: template/./doc/capi.sgml:182 template/./doc/capi.sgml:213
+#: template/./doc/capi.sgml:236 template/./doc/capi.sgml:263
+#: template/./doc/capi.sgml:287 template/./doc/capi.sgml:311
+#: template/./doc/capi.sgml:335 template/./doc/capi.sgml:374
+#: template/./doc/capi.sgml:396 template/./doc/capi.sgml:418
+#: template/./doc/capi.sgml:439 template/./doc/capi.sgml:468
+#: template/./doc/capi.sgml:492 template/./doc/capi.sgml:518
+#: template/./doc/capi.sgml:545 template/./doc/capi.sgml:567
+#: template/./doc/capi.sgml:588 template/./doc/capi.sgml:616
+#: template/./doc/capi.sgml:740 template/./doc/capi.sgml:762
+#: template/./doc/capi.sgml:791 template/./doc/capi.sgml:851
+#: template/./doc/capi.sgml:878 template/./doc/capi.sgml:907
+#: template/./doc/capi.sgml:929 template/./doc/capi.sgml:951
+msgid ""
+"\n"
+"<emphasis>mp</emphasis> is pointing to the current CLIP-machine task "
+"context\n"
+msgstr ""
+"\n"
+"<emphasis>mp</emphasis> - указывает на текущее состояние CLIP-машины\n"
+
+#: template/./doc/capi.sgml:145
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to long type value of parameter with num number\n"
+" "
+msgstr ""
+"\n"
+"Возвращает значение передаваемого параметра с номером num преобразованное к "
+"типу long \n"
+
+#: template/./doc/capi.sgml:168
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to double type value of parameter with num number\n"
+msgstr ""
+"\n"
+"Возвращает значение передаваемого параметра с номером num преобразованное к "
+"типу double\n"
+
+#: template/./doc/capi.sgml:188 template/./doc/capi.sgml:242
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is the parameter length\n"
+msgstr ""
+"\n"
+"<emphasis>len</emphasis> - длина передаваемого параметра\n"
+
+#: template/./doc/capi.sgml:191
+msgid ""
+"\n"
+"<emphasis>dec</emphasis>  is the parameter precision\n"
+msgstr ""
+"\n"
+"<emphasis>dec</emphasis>- точность передаваемого параметра\n"
+
+#: template/./doc/capi.sgml:197
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+" retrieves a numeric value passed as parameter\n"
+" with <emphasis>len</emphasis> length and <emphasis>dec</emphasis> "
+"precision;\n"
+" returns converted to int type value of parameter with num number\n"
+msgstr ""
+"\n"
+"Возвращает значение передаваемого параметра с номером num преобразованное к "
+"типу int\n"
+
+#: template/./doc/capi.sgml:222
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to character type value of parameter with num number\n"
+msgstr ""
+"\n"
+"Возвращает значение передаваемого параметра с номером num преобразованное к "
+"типу char\n"
+
+#: template/./doc/capi.sgml:248
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter and its length;\n"
+" returns converted to string with length type value of parameter with num "
+"number\n"
+" (clipper-strings may has bytes of 0!)\n"
+" "
+msgstr ""
+"\n"
+"Возвращает значение параметра с номером num как строку с длиной (в clipper-"
+"строках могут быть нулевые байты!)\n"
+
+#: template/./doc/capi.sgml:272
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to logical (0/1) type\n"
+" value of parameter with num number\n"
+msgstr ""
+"\n"
+"Возвращает логическое значение параметра с номером num в виде 0/1\n"
+
+#: template/./doc/capi.sgml:296
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to clipper-avaible type\n"
+" value of parameter with num number\n"
+msgstr ""
+"\n"
+"возвращает преобразованное к CLIP- типу значение параметра с номером num\n"
+
+#: template/./doc/capi.sgml:320
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter and\n"
+" returns converted to julian-representation date\n"
+" value of parameter with num number\n"
+msgstr ""
+"\n"
+"Возвращает значение параметра с номером num, как дату преобразованную в "
+"julian - представление\n"
+
+#: template/./doc/capi.sgml:341
+msgid ""
+"\n"
+"<emphasis>yy</emphasis>  is pointing to int contained year value\n"
+msgstr ""
+"\n"
+"<emphasis>yy</emphasis>-указывает на значение года\n"
+
+#: template/./doc/capi.sgml:344
+msgid ""
+"\n"
+"<emphasis>mm</emphasis>  is pointing to int contained month value\n"
+msgstr ""
+"\n"
+"<emphasis>mm</emphasis>-указывает на значение месяца\n"
+
+#: template/./doc/capi.sgml:347
+msgid ""
+"\n"
+"<emphasis>dd</emphasis>  is pointing to int contained day value\n"
+msgstr ""
+"\n"
+"<emphasis>dd</emphasis>-указывает на значение дня\n"
+
+#: template/./doc/capi.sgml:350
+msgid ""
+"\n"
+"<emphasis>ww</emphasis>  is pointing to int contained millenium format\n"
+msgstr ""
+"\n"
+"<emphasis>ww</emphasis>-указывает на формат столетия\n"
+
+#: template/./doc/capi.sgml:356
+#, fuzzy
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to year,month,day,millenium-representation date\n"
+" value of parameter with num number\n"
+msgstr ""
+"\n"
+"Возвращает значение параметра с номером num как дату представленную в виде "
+"year,month,day, millenium\n"
+
+#: template/./doc/capi.sgml:364
+#, fuzzy
+msgid "The data post to CLIP-machine functions"
+msgstr " Функции возврата данных в CLIP-машину"
+
+#: template/./doc/capi.sgml:377
+msgid ""
+"\n"
+"<emphasis>n</emphasis>  is a numerical expression of type int\n"
+msgstr ""
+"\n"
+"<emphasis>n</emphasis> - численное выражение типа int\n"
+
+#: template/./doc/capi.sgml:383
+msgid ""
+"\n"
+" post a int type value to a CLIP return value area\n"
+msgstr ""
+"\n"
+" передает значение типа int в область возвращаемых значений CLIP\n"
+
+#: template/./doc/capi.sgml:399
+msgid ""
+"\n"
+"<emphasis>n</emphasis>  is a numerical expression of type long\n"
+msgstr ""
+"\n"
+"<emphasis>n</emphasis> - численное выражение типа long\n"
+
+#: template/./doc/capi.sgml:405
+msgid ""
+"\n"
+" post a long type value to a CLIP return value area\n"
+msgstr ""
+"\n"
+" передает значение типа long в область возвращаемых значений CLIP\n"
+
+#: template/./doc/capi.sgml:421 template/./doc/capi.sgml:442
+msgid ""
+"\n"
+"<emphasis>n</emphasis>  is a numerical expression of type double\n"
+msgstr ""
+"\n"
+"<emphasis>n</emphasis> - численное выражение типа double\n"
+
+#: template/./doc/capi.sgml:427
+msgid ""
+"\n"
+" post a double type value to a CLIP return value area\n"
+msgstr ""
+"\n"
+"передает значение типа double в область возвращаемых значений CLIP\n"
+
+#: template/./doc/capi.sgml:445 template/./doc/capi.sgml:622
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is a string length parameter\n"
+msgstr ""
+"\n"
+"<emphasis>len</emphasis> - длина строки\n"
+
+#: template/./doc/capi.sgml:448 template/./doc/capi.sgml:625
+msgid ""
+"\n"
+"<emphasis>dec</emphasis>  is a string precision parameter\n"
+msgstr ""
+"\n"
+"<emphasis>dec</emphasis>  - точность параметра\n"
+
+#: template/./doc/capi.sgml:454
+msgid ""
+"\n"
+" post a double type with len length and dec precision value\n"
+" to a CLIP return value area\n"
+msgstr ""
+"\n"
+"возвращает число, преобразовав его из double в формате с длиной len и "
+"точностью dec .в область возвращаемых значений CLIP\n"
+
+#: template/./doc/capi.sgml:471 template/./doc/capi.sgml:495
+msgid ""
+"\n"
+"<emphasis>str</emphasis>  is a string of type char\n"
+msgstr ""
+"\n"
+"<emphasis>str</emphasis>  - строка типа char\n"
+
+#: template/./doc/capi.sgml:477
+msgid ""
+"\n"
+" post a  string to a CLIP return value area;\n"
+" data from str must be copied before;\n"
+" Str must be released without CLIP-machine taking part!\n"
+msgstr ""
+"\n"
+"возвращает строку с длиной len, предварительно скопировав данные из str. Str "
+"должна быть освобождена без участия CLIP-машины!\n"
+
+#: template/./doc/capi.sgml:498 template/./doc/capi.sgml:524
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is a string length\n"
+msgstr ""
+"\n"
+"<emphasis>len</emphasis> - длина строки\n"
+
+#: template/./doc/capi.sgml:504
+msgid ""
+"\n"
+" post a  string with len length; data from str must be copied before;\n"
+" Str must be released without CLIP-machine taking part!\n"
+msgstr ""
+"\n"
+"возвращает строку с длиной len, предварительно скопировав данные из str. Str "
+"должна быть освобождена без участия CLI-машины!\n"
+
+#: template/./doc/capi.sgml:521
+msgid ""
+"\n"
+"<emphasis>str</emphasis>  is  pointing  to string\n"
+msgstr ""
+"\n"
+"<emphasis>str</emphasis> - указатель на строку\n"
+
+#: template/./doc/capi.sgml:530
+msgid ""
+"\n"
+" post a  string with len length without the coping of data from str;\n"
+" Str will be released by CLIP-machine when this string be not used more\n"
+" (i.e when number of references on this string will become equal to zero)\n"
+msgstr ""
+"\n"
+"возвращает строку c длиной len, без копирования данных из str. Str будет "
+"освобождена CLIP-машиной когда эта строка не будет больше использоваться "
+"(когда кол-во ссылок на эту строку станет равно 0).\n"
+
+#: template/./doc/capi.sgml:548
+msgid ""
+"\n"
+"<emphasis>l</emphasis>  is a numerical expression of type logic\n"
+msgstr ""
+"\n"
+"<emphasis>l</emphasis>  - численное выражение типа  logic\n"
+
+#: template/./doc/capi.sgml:554
+msgid ""
+"\n"
+" post a logic type number to a CLIP return value area\n"
+msgstr ""
+"\n"
+"передает значение типа logic в область возвращаемых значений CLIP\n"
+
+#: template/./doc/capi.sgml:570
+msgid ""
+"\n"
+"<emphasis>l</emphasis>  is a julian parameter of type long\n"
+msgstr ""
+"\n"
+"<emphasis>l</emphasis>  - julian параметр типа long\n"
+
+#: template/./doc/capi.sgml:576
+msgid ""
+"\n"
+" post a julian format date to a CLIP return value area\n"
+msgstr ""
+"\n"
+"передает значение типа julian в область возвращаемых значений CLIP\n"
+
+#: template/./doc/capi.sgml:591
+msgid ""
+"\n"
+"<emphasis>yy</emphasis>  is a parameter contained year\n"
+msgstr ""
+"\n"
+"<emphasis>yy</emphasis>  - значение года\n"
+
+#: template/./doc/capi.sgml:594
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is a parameter contained month\n"
+msgstr ""
+"\n"
+"<emphasis>len</emphasis>  - значение месяца\n"
+
+#: template/./doc/capi.sgml:597
+msgid ""
+"\n"
+"<emphasis>dec</emphasis>  is a parameter contained day\n"
+msgstr ""
+"\n"
+"<emphasis>dec</emphasis>  - значение дня\n"
+
+#: template/./doc/capi.sgml:603
+msgid ""
+"\n"
+" post a year,month,day format date to a CLIP return value area\n"
+" "
+msgstr ""
+"\n"
+"передает значение года,месяца,дня типа date в область возвращаемых значений "
+"CLIP\n"
+
+#: template/./doc/capi.sgml:619
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>r</emphasis>  is a numerical expression of type double\n"
+msgstr ""
+"\n"
+"<emphasis>n</emphasis> - численное выражение типа double\n"
+
+#: template/./doc/capi.sgml:631
+#, fuzzy
+msgid ""
+"\n"
+" post a rational type with len length and dec precision number\n"
+" to a CLIP return value area\n"
+msgstr ""
+"\n"
+"возвращает рациональное число в формате с длиной len и точностью dec.\n"
+
+#: template/./doc/capi.sgml:638
+msgid "The hash-codes evaluation functions"
+msgstr " Функции вычисления hash-кодов "
+
+#: template/./doc/capi.sgml:640
+msgid ""
+"\n"
+"Hash-codes are used everwhere in CLIP-machine, hence there is necessity\n"
+"to evaluate them often.\n"
+msgstr ""
+"\n"
+"hash-коды постоянно используются в CLIP-машине,поэтому часто возникает "
+"необходимость их вычисления.\n"
+
+#: template/./doc/capi.sgml:652 template/./doc/capi.sgml:671
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>x</emphasis> is a pointer to the string to be hashed\n"
+msgstr ""
+"\n"
+"<emphasis>x</emphasis> - указывает на строку для хэширования\n"
+
+#: template/./doc/capi.sgml:658
+#, fuzzy
+msgid ""
+"\n"
+"hash a string without register accounting.\n"
+msgstr ""
+"\n"
+"хэширует без учета регистра клавиатуры\n"
+
+#: template/./doc/capi.sgml:677
+#, fuzzy
+msgid ""
+"\n"
+"hash a string with register accounting.\n"
+msgstr ""
+"\n"
+"хэширует с учетом регистра клавиатуры\n"
+
+#: template/./doc/capi.sgml:690 template/./doc/capi.sgml:715
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>seed</emphasis> is the down boundary hash beginned from\n"
+msgstr ""
+"\n"
+"<emphasis>seed</emphasis> - нижняя граница строки с которой начинается "
+"хэширование\n"
+
+#: template/./doc/capi.sgml:693
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>bytes</emphasis> is a pointer to the len object\n"
+msgstr ""
+"\n"
+"<emphasis>bytes</emphasis> - указатель на объект len\n"
+
+#: template/./doc/capi.sgml:696 template/./doc/capi.sgml:721
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>len</emphasis> is the object to be hashed\n"
+msgstr ""
+"\n"
+"<emphasis>len</emphasis> - объект для хэширования\n"
+
+#: template/./doc/capi.sgml:702
+#, fuzzy
+msgid ""
+"\n"
+"hash object len without register accounting.\n"
+msgstr ""
+"\n"
+"хэширует объект len без учета регистра клавиатуры\n"
+
+#: template/./doc/capi.sgml:718
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>bytes</emphasis> is a pointer to the obect len\n"
+msgstr ""
+"\n"
+"<emphasis>bytes</emphasis> - указатель на объект len\n"
+
+#: template/./doc/capi.sgml:727
+#, fuzzy
+msgid ""
+"\n"
+"hash  object len with register accounting.\n"
+msgstr ""
+"\n"
+"хэширует объект len с учетом регистра клавиатуры\n"
+
+#: template/./doc/capi.sgml:743
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>vp</emphasis> is a pointer to the object of ClipVar type to be "
+"hashed\n"
+msgstr ""
+"\n"
+"<emphasis>vp</emphasis> - указатель на объект (типа ClipVar) для "
+"хэширования\n"
+
+#: template/./doc/capi.sgml:749
+#, fuzzy
+msgid ""
+"\n"
+"hash the object of ClipVar type with register accounting.\n"
+msgstr ""
+"\n"
+"хэширует объект типа ClipVar с учетом регистра клавиатуры.\n"
+
+#: template/./doc/capi.sgml:765
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>vp</emphasis> is pointing to the object of ClipVar type to be "
+"hashed\n"
+msgstr ""
+"\n"
+"<emphasis>vp</emphasis> - указатель на объект (типа ClipVar) для "
+"хэширования \n"
+
+#: template/./doc/capi.sgml:771
+#, fuzzy
+msgid ""
+"\n"
+"hash  the object of ClipVar type to be hashed without register accounting.\n"
+msgstr ""
+"\n"
+"хэширует объект типа ClipVar без учета регистра клавиатуры.\n"
+
+#: template/./doc/capi.sgml:777
+msgid "The run-time errors generation functions"
+msgstr ""
+"\n"
+" Функции генерации run-time ошибок\n"
+
+#: template/./doc/capi.sgml:779
+msgid ""
+"\n"
+"For the more insighting to the \"error\" entity read the error class "
+"description.\n"
+msgstr ""
+"\n"
+"Для более полного понимания сущности \"ошибка\" читайте описание класса "
+"error \n"
+
+#: template/./doc/capi.sgml:794
+msgid ""
+"\n"
+"<emphasis>genCode</emphasis> is an error code number\n"
+msgstr ""
+"\n"
+"<emphasis>genCode</emphasis>  - номер  кода ошибки\n"
+
+#: template/./doc/capi.sgml:797
+msgid ""
+"\n"
+"<emphasis>canDefault</emphasis>  indicates if default recovery is available\n"
+msgstr ""
+"\n"
+"<emphasis>canDefault</emphasis>  - указывает, возможно ли восстановить по "
+"умолчанию\n"
+
+#: template/./doc/capi.sgml:800
+msgid ""
+"\n"
+"<emphasis>canRetry</emphasis>  indicates if a retry is possible after an "
+"error\n"
+msgstr ""
+"\n"
+"<emphasis>canRetry</emphasis>  - указывает, воможен ли перезапуск после "
+"ошибки\n"
+
+#: template/./doc/capi.sgml:803
+msgid ""
+"\n"
+"<emphasis>subSystem</emphasis> is character describtion of the subsystem "
+"generation the error\n"
+msgstr ""
+"\n"
+"<emphasis>subSystem</emphasis> -  символьное описание подсистемы, "
+"сгенерировавшей ошибку\n"
+
+#: template/./doc/capi.sgml:806
+msgid ""
+"\n"
+"<emphasis>subCode</emphasis> is subsystem-cpecific error code number\n"
+msgstr ""
+"\n"
+"<emphasis>subCode</emphasis> -номер кода ошибки подсистемы\n"
+
+#: template/./doc/capi.sgml:809
+msgid ""
+"\n"
+"<emphasis>operation</emphasis> is character describtion of the failed "
+"operation\n"
+msgstr ""
+"\n"
+"<emphasis>operation</emphasis>  - символьное описание операции, "
+"сгенерировавшей ошибку\n"
+
+#: template/./doc/capi.sgml:815
+#, fuzzy
+msgid ""
+"\n"
+"provides with information about runtime errors\n"
+msgstr ""
+"\n"
+"обеспечивает  информацией об ошибках \n"
+
+#: template/./doc/capi.sgml:821
+msgid ""
+"\n"
+"In more simple cases one can use:\n"
+msgstr "Могут быть использованы также :"
+
+#: template/./doc/capi.sgml:834
+msgid "The static data operating functions"
+msgstr " Функции управления статическими данными "
+
+#: template/./doc/capi.sgml:836
+#, fuzzy
+msgid ""
+"\n"
+"There is a set of functions for the necessity to store any static data\n"
+"(for example set(_MY_SET_1,MY_DATA)) in CLIP-machine.\n"
+"Attention! It's prohibited in C to declare explicitly constractoins like "
+"that\n"
+"\"static my_type var_name\". Such data may lead to conflict between "
+"different\n"
+"CLIP-processes!\n"
+msgstr ""
+"\n"
+"Имеется небольшой набор функций для того, чтобы сохранять какие-либо "
+"статические данные (например, set(_MY_SET_1,MY_DATA)) в CLIP-машине.\n"
+"Внимание! В С запрещено явно объявлять конструкции таким образом: \n"
+"\"static my_type var_name\". Такие данные могут привести к конфликту между "
+"различными CLIP-процессами!\n"
+
+#: template/./doc/capi.sgml:854
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>hash</emphasis>  is the identificator of item data to be stored\n"
+msgstr ""
+"\n"
+"<emphasis>hash</emphasis>  - идентификатор данных item для сохранения\n"
+
+#: template/./doc/capi.sgml:857
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>item</emphasis>  is the pointer  to item data to be stored\n"
+msgstr ""
+"\n"
+"<emphasis>item</emphasis>  - указатель на данные item для сохранения\n"
+
+#: template/./doc/capi.sgml:863
+msgid ""
+"\n"
+" store "
+msgstr ""
+"\n"
+"сохраняет"
+
+#: template/./doc/capi.sgml:863
+msgid " data with "
+msgstr " данные с "
+
+#: template/./doc/capi.sgml:863
+msgid ""
+" identificator,\n"
+" the best way to generate it is to use"
+msgstr ""
+"идентификатором;\n"
+"для его генерации лучше всего использовать\n"
+
+#: template/./doc/capi.sgml:864
+msgid ""
+" functions.\n"
+" A memory for"
+msgstr ""
+"функции.\n"
+"Память для"
+
+#: template/./doc/capi.sgml:865
+msgid "must be allocated explicitly.\n"
+msgstr "должна быть выделена явно.\n"
+
+#: template/./doc/capi.sgml:881 template/./doc/capi.sgml:932
+#: template/./doc/capi.sgml:954
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>hash</emphasis>  is the identificator of item data\n"
+msgstr ""
+"\n"
+"<emphasis>hash</emphasis>  - идентификатор данных item \n"
+
+#: template/./doc/capi.sgml:884
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>item</emphasis>  is the pointer to  data\n"
+msgstr ""
+"\n"
+"<emphasis>item</emphasis>  - указатель на данные\n"
+
+#: template/./doc/capi.sgml:887
+msgid ""
+"\n"
+"<emphasis>destroy</emphasis>  is the destroy function\n"
+msgstr ""
+"\n"
+"<emphasis>destroy</emphasis>  - функция уничтожения\n"
+
+#: template/./doc/capi.sgml:893
+msgid ""
+"\n"
+" set a function of the memory release for the static data with a "
+msgstr ""
+"\n"
+" набор функций освобождения памяти для статических данных с "
+
+#: template/./doc/capi.sgml:894 template/./doc/capi.sgml:916
+#: template/./doc/capi.sgml:938
+#, fuzzy
+msgid "identificator\n"
+msgstr " идентификатором \n"
+
+#: template/./doc/capi.sgml:910
+msgid ""
+"\n"
+"<emphasis>hash</emphasis>  is the identificator  of item data\n"
+msgstr ""
+"\n"
+"<emphasis>hash</emphasis>  - идентификатор данных item\n"
+
+#: template/./doc/capi.sgml:916
+msgid ""
+"\n"
+" release the memory for "
+msgstr ""
+"\n"
+" освобождает память для "
+
+#: template/./doc/capi.sgml:938
+msgid ""
+"\n"
+" destroy all information about "
+msgstr ""
+"\n"
+" уничтожает всю информацию о "
+
+#: template/./doc/capi.sgml:960
+msgid ""
+"\n"
+" return pointer to  "
+msgstr ""
+"\n"
+" возвращает  указатель на идентифицируемую "
+
+#: template/./doc/capi.sgml:960
+msgid "identificator memory\n"
+msgstr " - ем область памяти  \n"
+
+#: template/./doc/capi.sgml:966
+msgid "The containers operating functions"
+msgstr " Функции управления контейнерами "
+
+#: template/./doc/capi.sgml:968
+msgid ""
+"\n"
+"Container is a one more way to store the static data.\n"
+"For example it's difficalt to return any C-pointer on structure to CLIP-"
+"machine:\n"
+msgstr ""
+"\n"
+"Контейнер - это еще одно средство для хранения статических данных. Например, "
+"в CLIP-машину трудно вернуть какой-нибудь Си-указатель на структуру:\n"
+
+#: template/./doc/capi.sgml:976
+msgid ""
+"\n"
+"Where the pointer \"FILE * fh\" mast be put to?\n"
+"Well known that return value in clipper-function <command>fopen()</command> "
+"is\n"
+"simple number.\n"
+"And for instance what about structure of open connection whith ORACLE,MYSQL "
+"etc?\n"
+"It's desired to operate with a number inside of CLIP-application.\n"
+"To store that structures a container is intend for.\n"
+msgstr ""
+"\n"
+"Что делать с указателем \"FILE * fh\"? А ведь в clipper-функции "
+"<command>fopen()</command> возвращаемое значение - простое число.Или, "
+"например, структура открытого соединения с ORACLE,MYSQL и т.п. Также "
+"желательно внутри clip-программы оперировать числом.Вот именно для хранения "
+"таких структур и предназначен контейнер.\n"
+
+#: template/./doc/capi.sgml:992 template/./doc/capi.sgml:1018
+#: template/./doc/capi.sgml:1043
+msgid ""
+"\n"
+"<emphasis>cm</emphasis> is pointing to the current CLIP-machine task "
+"context\n"
+msgstr ""
+"\n"
+"<emphasis>cm</emphasis>  - указывает на текущее состояние CLIP-машины\n"
+
+#: template/./doc/capi.sgml:995 template/./doc/capi.sgml:1021
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>key</emphasis> is file, connection etc. number\n"
+msgstr ""
+"\n"
+"<emphasis>key</emphasis>  - номер файла,соединения и т.п.\n"
+
+#: template/./doc/capi.sgml:998 template/./doc/capi.sgml:1024
+#: template/./doc/capi.sgml:1049
+msgid ""
+"is a stored information type\n"
+"(it's for impossibility to set file number instead of connection one)\n"
+msgstr ""
+" - тип хранимой информации (необходимо для исключения возможности поставить "
+"номер файла вместо номера соединения).\n"
+
+#: template/./doc/capi.sgml:1005
+msgid ""
+"\n"
+" fetch item object with key number\n"
+msgstr ""
+"\n"
+"загружает объект item с номером key\n"
+
+#: template/./doc/capi.sgml:1031
+msgid ""
+"\n"
+" destroy item object with key number\n"
+" "
+msgstr ""
+"\n"
+"уничтожает объект item с номером key\n"
+
+#: template/./doc/capi.sgml:1046
+#, fuzzy
+msgid ""
+"\n"
+"<emphasis>item</emphasis> is file, connection etc. number\n"
+msgstr ""
+"\n"
+"<emphasis>key</emphasis>  - номер файла,соединения и т.п.\n"
+
+#: template/./doc/capi.sgml:1053
+msgid "is a stored structure destroy/close function"
+msgstr "- функция уничтожения/закрытия хранимой структуры."
+
+#: template/./doc/capi.sgml:1059
+msgid ""
+"\n"
+" store item object with key number\n"
+msgstr ""
+"\n"
+" сохраняет объект item с номером key\n"
+
+#: template/./doc/capi.sgml:1065
+msgid "The CLIP function/procedure calling from C"
+msgstr "Вызов функции/процедуры, написанной на CLIPе, из C "
+
+#: template/./doc/capi.sgml:1075
+msgid "is pointing to a current CLIP-machine task context"
+msgstr " указывает на текущее состояние CLIP-машины"
+
+#: template/./doc/capi.sgml:1078
+msgid "is a function name in CLIP"
+msgstr " имя функции на CLIP"
+
+#: template/./doc/capi.sgml:1081
+msgid "is a number of arguments\n"
+msgstr " - число аргументов\n"
+
+#: template/./doc/capi.sgml:1083
+msgid "is pointing to array of argc ClipVar type elements\n"
+msgstr " - указывает на массив из argc элементов типа ClipVar\n"
+
+#: template/./doc/capi.sgml:1086
+msgid ""
+"is a pointer to stack cell\n"
+"in wich returned value will be located.\n"
+"One can use macros RETPTR to get that pointer.\n"
+msgstr ""
+" - указатель на ячейку стека\n"
+" в который будет помещено возвращаемое значение\n"
+
+#: template/./doc/capi.sgml:1091
+msgid ""
+"\n"
+"For example :\n"
+msgstr "Например: \n"
+
+#: template/./doc/capi.sgml:1097
+msgid "RETPTR is macros that returns pointer to"
+msgstr "RETPTR - макрос, возращает указатель"
+
+#: template/./doc/capi.sgml:1098
+msgid "stack cell returned value will be in"
+msgstr " на ячейку стека, в которой будет возвращаемое значение"
+
+#: template/./doc/capi.sgml:1100
+msgid "to be on a safe side"
+msgstr "на всякий случай "
+
+#: template/./doc/capi.sgml:1102
+msgid "first argument is a string (\"Baby\")"
+msgstr "первый аргумент - строка (\"Baby\")"
+
+#: template/./doc/capi.sgml:1103
+msgid "element s of union ClipVar is for strings"
+msgstr "элемент s юниона ClipVar - для строк"
+
+#: template/./doc/capi.sgml:1106
+msgid "second argument is number"
+msgstr "второй - число"
+
+#: template/./doc/capi.sgml:1107
+msgid "element n of union ClipVar is for numbers"
+msgstr "элемент n юниона ClipVar - для чисел"
+
+#: template/./doc/capi.sgml:1117
+#, fuzzy
+msgid ""
+"\n"
+"allow to call a written in CLIP function/procedure from C\n"
+msgstr ""
+"\n"
+" позволяет вызвать из С написанную на CLIP функцию/процедуру  \n"
+
+#: template/./doc/capi.sgml:1123
+msgid "The CLIP dynamics loading modules creating"
+msgstr "Создание динамически загружаемых модулей для clip"
+
+#: template/./doc/capi.sgml:1125
+#, fuzzy
+msgid ""
+"\n"
+"There is function <command>load()</command> in CLIP, that load dynamics "
+"modules (*.so)\n"
+"or byte-code (*.po) and libraries of byte-codes (*.pa).\n"
+msgstr ""
+"\n"
+"В CLIP имеется функция <command>load()</command>, которая загружает "
+"динамические модули (*.so)\n"
+"или байт-код (*.po) и библиотеки байт-кодов (*.pa).\n"
+
+#: template/./doc/capi.sgml:1129
+#, fuzzy
+msgid ""
+"\n"
+"It's easy to make byte-code and so-modules from prg-files by commands:\n"
+msgstr ""
+"\n"
+"Байт-код и so-модули легко получить из prg-файлов командами:\n"
+
+#: template/./doc/capi.sgml:1134
+msgid ""
+"\n"
+"And it's possible to write the same loading module in C in such way:\n"
+msgstr ""
+"\n"
+"Написать на Си такой же загружаемый модуль можно таким способом:\n"
+
+#: template/./doc/capi.sgml:1137
+#, fuzzy
+msgid ""
+"\n"
+"To create module.prg and then to describe all necessary empty functions in "
+"it:\n"
+msgstr ""
+"\n"
+"Создается module.prg и в нем описываются все необходимые пустые функции\n"
+
+#: template/./doc/capi.sgml:1146
+msgid ""
+"\n"
+"Then this module is compilied\n"
+msgstr ""
+"\n"
+"Затем этот модуль компилируется\n"
+
+#: template/./doc/capi.sgml:1150
+#, fuzzy
+msgid ""
+"\n"
+"As resalt we have C-text in file <emphasis>module.c.</emphasis>\n"
+"This text has storeges for described functions  my_func1,my_func2,....\n"
+"Now we need simply to change function body by described above rules for C-"
+"API\n"
+"and so-module in C is done. Then it must be compilied by C-compilier\n"
+"whith key -shared or with analogous one (it depends on compilier).\n"
+msgstr ""
+"\n"
+"В результате получается Си-текст в файле module.c.\n"
+"Этот текст имеет заготовки для описанных функций my_func1,my_func2,....\n"
+"Остается просто поменять тело функций по вышеописанным правилам для C-API \n"
+"и получится so-модуль написанный на Си. Далее его останется только\n"
+"скомпилировать Си-компилятором с ключиком -shared или аналогичным,\n"
+"в зависимости от компилятора.\n"
+
+#: template/./doc/capi.sgml:1158
+msgid "Other features"
+msgstr "Другие возможности"
+
+#: template/./doc/capi.sgml:1160
+msgid ""
+"\n"
+"In addition to described above there are much more functions in C-API\n"
+"to operate whith arrays, objects, input-output process,\n"
+"code blocks calling and others.\n"
+msgstr ""
+"\n"
+"Кроме описанных выше в C-API существует множество других функций для работы "
+"с массивами, объектами, процессами ввода-вывода, вызовами кодовых блоков и "
+"многое другое.\n"
+
+#: template/./doc/capi.sgml:1165
+#, fuzzy
+msgid ""
+"\n"
+"But that informations will be given them only who has appropriate\n"
+"qualification, because of incorrect and inqualificating using of these\n"
+"capabilities may lead to misunderstanding \"falling\"  of applications,\n"
+"memory losing etc.\n"
+msgstr ""
+"\n"
+"Но данная информация будет предоставляться только тем, кто имеет\n"
+"соответствующую квалификацию, так как некорректное и\n"
+"неквалифицированное использование данных возможностей может привести к\n"
+"непонятным \"падениям\" прикладных программ, утечке памяти и.т.п.\n"
+
+#: template/./doc/capi.sgml:1171
+msgid ""
+"\n"
+"Who wants to add something serious to CLIP please contact to us"
+msgstr ""
+
+#: template/./doc/capi.sgml:1173
+#, fuzzy
+msgid ""
+"and we will give you information and examples; help in learning\n"
+"of inner structure of CLIP-machine garantee.\n"
+msgstr ""
+"\n"
+"Желающих усовершенствовать CLIP просим обращаться по адресу \n"
+"- дадим и информацию и примеры, поможем в работе и освоении внутреннего\n"
+"устройства CLIP-машины.\n"
+
+#~ msgid "the incorrect passing parameter."
+#~ msgstr " переданного параметра"
+
+#~ msgid "The returning of the value to the CLIP-machine as the string"
+#~ msgstr ""
+#~ "возврат значения в clip-машину в виде строки (с выделенной областью "
+#~ "памяти)"
+
+#~ msgid ""
+#~ "with fix length (because of clipper-strings may have the zero bytes!)"
+#~ msgstr ""
+#~ "с указанной длиной (потому что в clipper-строках могут быть нулевые байты)"
+
+#~ msgid "If it nothing returns by _CLIP_.... , then NIL will returns."
+#~ msgstr ""
+#~ "если ничего не вернуть посредством _clip_.... , то в clip-машину вернется "
+#~ "NIL"
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "<emphasis>x</emphasis> is a pointer to the string to be hased\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<emphasis>x</emphasis> - указывает на строку для hash\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "<emphasis>seed</emphasis> is the doun boundary hash beginned from\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<emphasis>seed</emphasis> - нижняя граница строки с которой начинается "
+#~ "хэширование\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " retrieves a numeric value passed as parameter, its length and "
+#~ "precision;\n"
+#~ " returns 0 in correct case and -1 in incorrect one\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Заполняет информацию о параметре с номером num - длину и точность "
+#~ "представления\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " returns converted from int type value\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Вернуть число, преобразовав его из int.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " returns converted from long type value\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Вернуть число, преобразовав его из long.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " returns converted from double type value\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Вернуть число, преобразовав его из double.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " returns string; data from str must be copied before;\n"
+#~ " Str must be released without CLIP-machine taking part!\n"
+#~ msgstr ""
+#~ "\n"
+#~ "возвращает строку, предварительно скопировав данные из str. Str должна "
+#~ "быть освобождена без участия clip-машины!\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " returns converted from logic type number\n"
+#~ msgstr ""
+#~ "\n"
+#~ "возвращает  логическое значение.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " returns date converted from julian format\n"
+#~ msgstr ""
+#~ "\n"
+#~ "возвращает дату, преобразовав из формата julian.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " returns date converted from year,month,day format\n"
+#~ " "
+#~ msgstr ""
+#~ "\n"
+#~ " возвращает дату, преобразовав из формата year, month, day.\n"
+#~ " "
+
+#~ msgid ""
+#~ "\n"
+#~ "<emphasis>bytes</emphasis> is pointing to the bytes to be rolled up\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<emphasis>bytes</emphasis> - ...\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "provides object with information about runtime errors\n"
+#~ "(_</para>\n"
+#~ "</section>\n"
+#~ "</section>\n"
+#~ "\n"
+#~ "<para>_(\n"
+#~ "In more simple cases one can use:\n"
+#~ msgstr ""
+#~ "\n"
+#~ "предоставляет объекты с информацией об ошибках выполнения\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "<emphasis>item</emphasis>  is the pointer\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<emphasis>item</emphasis>  \n"
+
+#~ msgid ""
+#~ "\n"
+#~ " ....\n"
+#~ msgstr ""
+#~ "\n"
+#~ " ....\n"
+
+#~ msgid ""
+#~ "\n"
+#~ " ....\n"
+#~ " "
+#~ msgstr ""
+#~ "\n"
+#~ " ....\n"

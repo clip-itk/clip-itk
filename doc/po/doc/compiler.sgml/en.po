@@ -1,0 +1,417 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/compiler.sgml:1
+msgid "Compiler"
+msgstr ""
+
+#: template/./doc/compiler.sgml:4
+msgid ""
+"\n"
+"CLIP compiler (<command>clip</command>) is used to:\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:8
+msgid ""
+"\n"
+"compile one or more source files (.prg) to an object file form (.o);\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:11
+msgid ""
+"\n"
+"compile one or more source files (.prg) to a P-code (pseudocode) module\n"
+"form (.po);\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:15
+msgid ""
+"\n"
+"link one or more source files (.prg), object files (.o), static libraries (."
+"a),\n"
+"dynamic libraries (.so) or a P-code modules (.po) to an executable file "
+"form.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:20
+msgid "Usage"
+msgstr ""
+
+#: template/./doc/compiler.sgml:25
+msgid ""
+"\n"
+"where\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:29
+msgid ""
+"\n"
+"<![CDATA[<CLIP compiler options>]]> is a list of one or more options\n"
+"to control the course of the compilation and/or linking, all of which\n"
+"are described below;\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:34
+msgid ""
+"\n"
+"<![CDATA[<filelist>]]> is a space separated list of source, object,\n"
+"library files to compile or link. All file names must be written with\n"
+"suffices, no assumtions about file type are made;\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:39
+msgid ""
+"\n"
+"<![CDATA[<C compiler options>]]> are passed to the C compiler.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:44
+msgid "Options"
+msgstr ""
+
+#: template/./doc/compiler.sgml:46
+msgid ""
+"\n"
+"Any of the CLIP compiler options described below can be placed in the\n"
+"<command>.cliprc</command> file in the current directory; or in\n"
+"the <command>$HOME/.cliprc</command> file; or in any file in the\n"
+"<command>$CLIPROOT/cliprc</command> directory. For example,\n"
+"you could create a file <command>.cliprc</command> in your home directory\n"
+"with the following content:\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:59
+msgid ""
+"\n"
+"It results in compiling with <command>-r -l -Scp866</command> options,\n"
+"even if you don't specify them explicitly.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:64
+msgid ""
+"\n"
+"The list of options follows.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:72
+msgid ""
+"\n"
+"display a short usage help and exit\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:79
+msgid ""
+"\n"
+"display a short help about acceptable environment variables and exit; see\n"
+"more detailed information in the chapter\n"
+"<link linkend=\"envir\">Environment variables</link>\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:88
+msgid ""
+"\n"
+"display CLIP compiler version and exit\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:95
+msgid ""
+"\n"
+"set/increase verbose level; possible values of <![CDATA[<level>]]> are from\n"
+"0 (silent) to 6 (most verbose); default is 1\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:103
+msgid ""
+"\n"
+"declare any variable included in a PRIVATE, PUBLIC, or PARAMETERS\n"
+"statement as MEMVAR\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:111
+msgid ""
+"\n"
+"generate warning messages for undeclared or unaliased (ambiguous)\n"
+"variable references\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:119
+msgid ""
+"\n"
+"generate executable file\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:126
+msgid ""
+"\n"
+"stop after generation C code\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:133
+msgid ""
+"\n"
+"include debugging information in the object file\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:140
+msgid ""
+"\n"
+"print generated program syntax tree\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:147
+msgid ""
+"\n"
+"place executable in file <![CDATA[<name>]]>\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:154
+msgid ""
+"\n"
+"define the location of the output object files\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:161
+msgid ""
+"\n"
+"set optimisation level for C compiler\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:168
+msgid ""
+"\n"
+"use the code of the first file in the file list as a program start point\n"
+"(automatic definition of the <command>MAIN</command> procedure)\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:176
+msgid ""
+"\n"
+"suppress the automatic definition of a procedure with the same name as\n"
+"the program file (.prg)\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:184
+msgid ""
+"\n"
+"generate pseudocode (P-code) module; see <link linkend=\"functionload\">Load"
+"()</link>\n"
+"function description\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:192
+msgid ""
+"\n"
+"compile in C+P-code mode; smaller size of an output file,\n"
+"either an object or an executable\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:200
+msgid ""
+"\n"
+"create an shared object; when used with <command>-e</command> option\n"
+"it results in linking with shared run-time library (libclip.so), which\n"
+"gives a smaller size executable; see <command>-r</command> option\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:209
+msgid ""
+"\n"
+"always when possible link with shared libraries; smaller size of an "
+"executable\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:216
+msgid ""
+"\n"
+"add the specified directory to the INCLUDE path list\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:223
+msgid ""
+"\n"
+"add the specified directory to the list of path that CLIP will search for\n"
+"libraries\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:231
+msgid ""
+"\n"
+"define macro <![CDATA[<name>]]>\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:238
+msgid ""
+"\n"
+"define macro <![CDATA[<name> as <value>]]>\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:245
+msgid ""
+"\n"
+"identifies an alternate standard header file to preprocess in place of\n"
+"the supplied STD.CH which is used automatically\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:253
+msgid ""
+"\n"
+"define charset of the string constants used in the source files (.prg);\n"
+"CLIP_HOSTCS environment variable is used by default; see chapter\n"
+"<link linkend=\"envir\">Environment variables</link> for details\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:262
+msgid ""
+"\n"
+"define charset of the string constants to be used for an application's "
+"output;\n"
+"CLIP_HOSTCS environment variable is used by default; see chapter\n"
+"<link linkend=\"envir\">Environment variables</link> for details\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:271
+msgid ""
+"\n"
+"stop after the preprocessing stage; the output is preprocessed source\n"
+"code, which is sent to the standard output\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:279
+msgid ""
+"\n"
+"print command definitions at the preprocessing stage\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:286
+msgid ""
+"\n"
+"do not remove temporary '.c' files\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:293
+msgid ""
+"\n"
+"generate warnings about unresolved function names; see CLIP_NAMES\n"
+"environment variable description in the chapter\n"
+"<link linkend=\"envir\">Environment variable</link>\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:302
+msgid ""
+"\n"
+"Don`t use shared libraries, ignore -r -s switches, include\n"
+"all CLIP or system libraries to executable file.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:310
+msgid ""
+"\n"
+"set <![CDATA[<name>]]> environment variable's value to <![CDATA[<value>]]>\n"
+"for a compilation time\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:318
+msgid ""
+"\n"
+"set syntax compatability mode; possible values:"
+msgstr ""
+
+#: template/./doc/compiler.sgml:321
+msgid ""
+"AS clause in variables definitions is not\n"
+"\tacceptable; it's default behavior"
+msgstr ""
+
+#: template/./doc/compiler.sgml:325
+msgid ""
+"AS clause in variables defintions is\n"
+"\tacceptable"
+msgstr ""
+
+#: template/./doc/compiler.sgml:335
+msgid "Examples"
+msgstr ""
+
+#: template/./doc/compiler.sgml:338
+msgid ""
+"\n"
+"As stated before, CLIP compiler perceives not only options passed via\n"
+"command line, but these of them prescribed in <command>.cliprc</command>\n"
+"file in the current directory; or in the <command>$HOME/.cliprc</command> "
+"file;\n"
+"or in any file in the <command>$CLIPROOT/cliprc</command> directory.\n"
+"In the following examples it's assumed there are no (or empty) files,\n"
+"listed above.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:348
+msgid ""
+"\n"
+"Build a very simple application from one source file with no\n"
+"<command>MAIN</command> procedure. The result is a huge executable\n"
+"staticly linked with CLIP Run Time Library (RTL).\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:357
+msgid ""
+"\n"
+"Build an application from three source files. The result is\n"
+"small executable dynamicly linked with CLIP RTL.\n"
+"<command>app.prg</command> contains <command>MAIN</command> procedure.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:368
+msgid ""
+"\n"
+"Create a P-code module (<command>.po</command> file). Be silent.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:375
+msgid ""
+"\n"
+"Build a dynamic library from two source files and link an application\n"
+"with it. See <link linkend=\"util-clipmakeslib\">clip_makeslib</link>\n"
+"utility description. The result is small executable dynamicly linked\n"
+"with CLIP RTL, which is able to work only when <command>libmylib.so</"
+"command>\n"
+"is placed in the current working directory.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:389
+msgid ""
+"\n"
+"Build previous application so that it able to work when\n"
+"<command>libmylib.so</command> is placed in /home/rust/lib directory.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:401
+msgid ""
+"\n"
+"See preprocessor output.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:408
+msgid ""
+"\n"
+"Compile in <command>C+P-code</command> mode. Link dynamicly with CLIP RTL.\n"
+"Be more verbose. The result is an executable of the smallest size.\n"
+msgstr ""
+
+#: template/./doc/compiler.sgml:416
+msgid ""
+"\n"
+"Using C compiler option <command>-l</command> to link with shared\n"
+"library <command>libclip-postgres.so</command> (PostgreSQL driver for "
+"CLIP).\n"
+msgstr ""

@@ -1,0 +1,68 @@
+$FUNCNAME$
+  DTOS()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Convert a date value to a character string formatted as yyyymmdd
+$LANG_RU$
+   Преобразует значение даты в строку символов формата ггггммдд.
+$SYNTAX$
+     DTOS(<dDate>) --> cDate
+$LANG_RU$
+     DTOS(<дата>) --> строка-дата
+$ARGUMENTS$
+     <dDate> is the date value to convert.
+$LANG_RU$
+     <дата> - преобразуемое значение даты.
+$RETURNS$
+     DTOS() returns a character string eight characters long in the format
+     yyyymmdd.  When <dDate> is a null date (CTOD("")), DTOS() returns a
+     string of eight spaces.  The return value is not affected by the current
+     date format.
+$LANG_RU$
+     DTOS() возвращает строку длиной в 5 символов в формате ггггммдд.
+     Если значение аргумента <дата> имеет нулевое значение, (CTOD("")),
+     DTOS() возвращает строку из восьми пробелов. Формат возвращаемой
+     строки не зависит от текущей установки формата командой SET DATE.
+$DESCRIPTION$
+     DTOS() is a date conversion function that is used when creating index
+     expressions consisting of a date value and a character expression.
+     DTOS() converts a date value to a character string that can be
+     concatenated to any other character expression.  The return value is
+     structured to preserve date order (year, month, and day).
+$LANG_RU$
+     DTOS() - это функция преобразования даты, которая используется при
+     создании выражений индексов, содержащих значения даты, в строку
+     символов, которая может быть сцеплена с какими-либо другими
+     символьными выражениями.  Структура возвращаемого значения - всегда
+     ггггммдд.
+$EXAMPLES$
+       These examples illustrate DTOS() in conjunction with several
+	other functions:
+
+	? DATE()                        // Result: 09/01/90
+
+	? DTOS(DATE())                  // Result: 19900901
+	? LEN(DTOS(CTOD("")))           // Result: 8
+
+       This example demonstrates how to create an index with a
+	compound date and character key using DTOS():
+
+	USE Sales NEW
+	INDEX ON DTOS(Date) + Salesman TO DateName
+$LANG_RU$
+      Следующие примеры показывают использование функции DTOS() в
+       сочетании с другими функциями:
+
+       ? DATE()                     // Результат: 09/01/90
+       ? DTOS(DATE())               // Результат: 19900901
+       ? LEN(DTOS(CTOD("")))        // Результат: 8
+
+      Этот пример демонстрирует, как создать с использованием DTOS()
+       индекс, включающий в себя комбинацию даты и символьного ключа:
+
+       USE Sales NEW
+       INDEX ON DTOS(Date) + Salesman TO DateName
+$SEEALSO$
+  CTOD(),DATE(),DTOC()
+$END$

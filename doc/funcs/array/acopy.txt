@@ -1,0 +1,129 @@
+$FUNCNAME$
+  ACOPY()
+$CATEGORY$
+  Array
+$SUMMARY$
+   Copy elements from one array to another
+$LANG_RU$
+   Копирует элементы одного массива в другой.
+$SYNTAX$
+
+     ACOPY(<aSource>, <aTarget>,
+	[<nStart>], [<nCount>], [<nTargetPos>]) --> aTarget
+
+
+$LANG_RU$
+
+     ACOPY(<исходный массив>,<принимающий массив>,
+       [<начальный элемент>],[<кол-во элементов>],
+       [<нач. элемент принимающего массива>])
+       --> принимающий массив
+
+
+$ARGUMENTS$
+
+     <aSource> is the array to copy elements from.
+
+     <aTarget> is the array to copy elements to.
+
+     <nStart> is the starting element position in the <aSource> array.
+     If not specified, the default value is one.
+
+     <nCount> is the number of elements to copy from the <aSource> array
+     beginning at the <nStart> position.  If <nCount> is not specified, all
+     elements in <aSource> beginning with the starting element are copied.
+
+     <nTargetPos> is the starting element position in the <aTarget> array
+     to receive elements from <aSource>.  If not specified, the default value
+     is one.
+
+
+$LANG_RU$
+
+     <исходный массив> - массив, из которого копируются элементы.
+
+     <принимающий массив> - массив, в который копируются элементы.
+
+     <начальный элемент> - позиция начального элемента в массиве <исходный
+     массив>. Если она не определена, то по умолчанию принимается равной
+     единице.
+
+     <кол-во элементов> - количество элементов, которое необходимо
+     скопировать из массива <исходный массив>, начиная с позиции
+     <начальный элемент>. Если значение <кол-во элементов> не задано,
+     копируются все элементы, начиная со значения <начальный элемент>.
+
+     <нач. элемент принимающего массива> - начальная позиция в массиве
+     <принимающий массив>, начиная с которой принимаются копируемые
+     элементы.  Если не определено, то по умолчанию - с первого элемента.
+
+
+$RETURNS$
+
+     ACOPY() returns a reference to the target array, <aTarget>.
+
+
+$LANG_RU$
+
+     ACOPY() возвращает ссылку на принимающий массив <принимающий массив>.
+
+
+$DESCRIPTION$
+
+     ACOPY() is an array function that copies elements from the <aSource>
+     array to the <aTarget> array.  The <aTarget> array must already exist
+     and be large enough to hold the copied elements.  If the <aSource> array
+     has more elements, some elements will not be copied.
+
+     ACOPY() copies values of all data types including NIL and code blocks.
+     If an element of the <aSource> array is a subarray, the corresponding
+     element in the <aTarget> array will contain a reference to the subarray.
+     Thus, ACOPY() will not create a complete duplicate of a multidimensional
+     array.  To do this, use the ACLONE() function.
+
+
+$LANG_RU$
+
+     ACOPY() - это функция работы с массивами, которая копирует элементы
+     массива <исходный массив> в массив <принимающий массив>. Массив
+     <принимающий массив> должен быть создан до начала работы функции и
+     иметь достаточно большой размер, чтобы принять копируемые элементы.
+     Если массив <исходный массив> содержит избыточное количество
+     элементов, лишние элементы не будут копироваться.
+
+     ACOPY() копирует все типы данных, включая NIL и блок кода. Если
+     какой-либо элемент массива <исходный массив> является подмассивом,
+     соответствующий элемент массива <принимающий массив> будет содержать
+     ссылку на подмассив. Таким образом, ACOPY() не создает полную копию
+     многомерного массива. Для того, чтобы сделать это, используйте
+     функцию ACLONE().
+
+
+$EXAMPLES$
+
+       This example creates two arrays, each filled with a value.
+	The first two elements from the source array are then copied into the
+	target array:
+
+	LOCAL nCount := 2, nStart := 1, aOne, aTwo
+	aOne := { 1, 1, 1 }
+	aTwo := { 2, 2, 2 }
+	ACOPY(aOne, aTwo, nStart, nCount)
+	// Result: aTwo is now { 1, 1, 2 }
+
+
+$LANG_RU$
+
+      В этом примере создаются два массива, элементы которых заполнены
+       значениями. Затем два элемента из первого массива копируются во
+       второй массив:
+
+       LOCAL nCount := 2, nStart := 1, aOne, aTwo
+       aOne := ( 1, 1, 1 )
+       aTwo := ( 2, 2, 2 )
+       ACOPY(aOne, aTwo, nStart, aCount) // Результат: aTwo - {1, 1, 2}
+
+
+$SEEALSO$
+  ACLONE(),ADEL(),AEVAL(),AFILL(),AINS(),ASORT(),
+$END$

@@ -7,11 +7,18 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	local an_obj,class,cId,tmpDict,tcol,tcol_list,err
 	local classes:=map(), tCols := map()
 
+	//outlog(__FILE__,__LINE__,an_level,an_values)
 	oDict := oDep:dictionary()
 	an_info := oDict:classBodyByName("an_info")
 	if empty(an_info)
 		outlog("Error: class AN_INFO not found in ACC01")
 		return data
+	endif
+	if an_level < 1
+		an_level := 1
+	endif
+	if an_level > len(an_values)
+		an_level := len(an_values)
 	endif
 	if an_level <= 1
 		an_balance := oDict:classBodyByName("an_balance")
@@ -33,7 +40,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		endif
 	next
 
-	if x == 0 //if an_level>1 .and. empty(an_values[1])
+	if x == 0 //.or. empty(an_values[an_level])//if an_level>1 .and. empty(an_values[1])
 		s := 'account=="'+account+'"'
 		//s2:= '.and. beg_date>=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
 		s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
@@ -261,7 +268,7 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 		aadd(ret,x)
 	next
 	//outlog(__FILE__,__LINE__,"ret=",len(ret),ret)
-	if an_level <= 1
+	if an_level <= 1 .and. !empty(ret)
 		return ret
 	endif
 	i := 0
@@ -277,6 +284,7 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 		next
 		aadd(ret,x)
 	endif
+	//outlog(__FILE__,__LINE__,"ret=",len(ret),ret)
 	if empty(ret) //.or. i==0
 		return ret
 	endif

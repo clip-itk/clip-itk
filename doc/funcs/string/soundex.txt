@@ -1,0 +1,74 @@
+$FUNCNAME$
+  SOUNDEX()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Convert a character string to "soundex" form
+$LANG_RU$
+   Преобразует символьную строку в звуковую форму.
+$SYNTAX$
+     SOUNDEX(<cString>) --> cSoundexString
+$LANG_RU$
+     SOUNDEX(<строка символов>) --> строка в форме А999
+$ARGUMENTS$
+     <cString> is the character string to convert.
+$LANG_RU$
+     <строка символов> - символьная строка, подлежащая преобразованию.
+$RETURNS$
+     SOUNDEX() returns a four-digit character string in the form A999.
+$LANG_RU$
+     SOUNDEX() возвращает четырехзначную символьную строку в форме A999
+$DESCRIPTION$
+     SOUNDEX() is a character function that indexes and searches for sound-
+     alike or phonetic matches.  It is used in applications where the precise
+     spelling of character keys is not known or where there is a high
+     probability of misspelled names.  Misspelling is common in real-time
+     transaction systems where the data entry operator is receiving
+     information over the telephone.  SOUNDEX() works by bringing
+     sound-alikes together under the same key value.  Note, however, the
+     soundex method is not absolute.  Keys that are quite different can
+     result in the same soundex value.
+$LANG_RU$
+     SOUNDEX() является символьной функцией, используемой для
+     индексирования и поиска звуковых или фонетических соответствий.
+     Она применяется тогда, когда неизвестна точная орфография написания
+     символьных строк или же существует реальная опасность неправильного
+     написания имен.  Неправильное орфографическое написание является
+     распространенным в интерактивных системах реального времени, где
+     оператор, вводящий данные, получает информацию по телефону. SOUNDEX()
+     работает путем сведения похожих по произношению символов с символами
+     с одинаковым значением. Следует однако отметить, что звуковой метод
+     не является совершенным. Символы, являющиеся совершенно различными,
+     могут иметь одинаковое звуковое значение.
+$EXAMPLES$
+       This example builds an index using SOUNDEX() to create the key
+	values.  It then searches for a value found in the Salesman field:
+
+	USE Sales
+	INDEX ON SOUNDEX(Salesman) TO Salesman
+	SEEK SOUNDEX("Smith")
+	? FOUND(), Salesman            // Result: .T. Smith
+
+       Here, a search is made for the same key as above but with a
+	different spelling:
+
+	SEEK SOUNDEX("Smythe")
+	? FOUND(), Salesman            // Result: .T. Smith
+$LANG_RU$
+      Этот пример показывает построение индекса путем использования
+       SOUNDEX() для создания значений ключей. Затем она ищет значение,
+       найденное в поле Salesman:
+
+       USE Sales
+       INDEX ON SOUNDEX(Salesman) TO Salesman
+       SEEK SOUNDEX("Smith")
+       ? FOUND(), Salesman                // Результат: .T. Smith
+
+      Этот пример осуществляет поиск того же значения, что и предыдущий,
+       но с другим написанием:
+
+       SEEK SOUNDEX("Smythe")
+       ? FOUND(), Salesman                // Результат: .T. Smith
+$SEEALSO$
+
+$END$

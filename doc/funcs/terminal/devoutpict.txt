@@ -1,0 +1,41 @@
+$FUNCNAME$
+  DEVOUTPICT()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Write a value to the current device using a picture clause
+$SYNTAX$
+     DEVOUTPICT(<exp>, <cPicture>, [<cColorString>]) --> NIL
+$ARGUMENTS$
+     <exp> is the value to display.
+
+     <cPicture> defines the formatting control for the display of <exp>.
+     The picture specified here is the same as one used with @...SAY or
+     TRANSFORM and can include both templates and functions.
+
+     <cColorString> is an optional argument that defines the display
+     color of <exp>.  If the current DEVICE is SCREEN, output displays in the
+     specified color.
+
+     If not specified, <exp> displays as the standard color of the current
+     system color as defined by SETCOLOR().  <cColorString> is a character
+     expression containing the standard color setting.  If you want to
+     specify a literal color setting, it must be enclosed in quote marks.
+$RETURNS$
+     DEVOUTPICT() always returns NIL.
+$DESCRIPTION$
+     DEVOUTPICT() is a full-screen display function that writes the value of
+     a single expression to the current device at the current cursor or
+     printhead position.  DEVOUTPICT() is used in combination with DEVPOS()
+     in Std.ch to implement the @...SAY command used with a PICTURE clause.
+$EXAMPLES$
+       This example shows the relationship between the DEVOUTPICT()
+	function and the @...SAY command:
+
+	DEVPOS(10, 10)
+	DEVOUTPICT("Hello there", "@!", "BG+/B"))
+	//
+	@ 10, 10 SAY "Hello there" PICTURE "@!" COLOR "BG+/B"
+$SEEALSO$
+  COL(),DEVOUT(),DEVPOS(),QOUT(),ROW()
+$END$

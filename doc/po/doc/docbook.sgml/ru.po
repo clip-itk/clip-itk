@@ -1,0 +1,789 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2003-01-13 16:06+0400\n"
+"Last-Translator: Paul Lasarev <paul@itk.ru>\n"
+"Language-Team: Russian <clip-devel@itk.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: template/./doc/docbook.sgml:1
+msgid "Writing Documentation with DocBook"
+msgstr "Использование DocBook для написания документации"
+
+#: template/./doc/docbook.sgml:4
+msgid ""
+"DocBook is a flavor of <acronym>SGML</acronym>\n"
+"(<firstterm>Standard Generalized Markup\n"
+"Language</firstterm>), a syntax for marking up the contents\n"
+"of documents.  HTML is another very common flavor of SGML;\n"
+"DocBook markup looks very similar to HTML markup, although\n"
+"the names of the markup tags differ."
+msgstr ""
+"DocBook является вариантом <acronym>SGML</acronym>\n"
+"(<firstterm>Standard Generalized Markup\n"
+"Language</firstterm>), предназначенным для описания\n"
+"документации.  HTML это другой широко используемый вариант SGML;\n"
+"Разметка DocBook очень похожа на HTML, хотя\n"
+"имена тэгов различаются."
+
+#: template/./doc/docbook.sgml:13
+msgid "Terminology"
+msgstr "Терминология"
+
+#: template/./doc/docbook.sgml:16
+msgid ""
+"SGML markup contains a number of syntactical elements that\n"
+"serve different purposes in the markup.  We'll run through\n"
+"the basics here to make sure we're on the same page when\n"
+"we refer to SGML semantics."
+msgstr ""
+"Разметка SGML содержит ряд синтаксических элементов, которые выполняют "
+"различные функции. Мы опишем здесь базовые элементы, чтобы быть уверенными в "
+"точном понимании семантики SGML."
+
+#: template/./doc/docbook.sgml:22
+msgid ""
+"The basic currency of SGML is the\n"
+"<firstterm>tag</firstterm>.  A simple tag consists of a\n"
+"pair of angle brackets and the name of the tag.  For\n"
+"example, the <sgmltag>para</sgmltag> tag would appear in\n"
+"an SGML document as <sgmltag\n"
+"class=\"starttag\">para</sgmltag>.  This start tag indicates\n"
+"that the immediately following text should be classified\n"
+"according to the tag.  In regular SGML, each opening tag\n"
+"must have a matching end tag to show where the start tag's\n"
+"contents end.  End tags begin with\n"
+"<quote><literal>&lt;/</literal></quote> markup, e.g.,\n"
+"<sgmltag class=\"endtag\">para</sgmltag>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:36
+msgid ""
+"The combination of a start tag, contents, and an end tag\n"
+"is called an <firstterm>element</firstterm>.  SGML\n"
+"elements can be nested inside of each other, or contain\n"
+"only text, or may be a combination of both text and other\n"
+"elements, although in most cases it is better to limit\n"
+"your elements to one or the other."
+msgstr ""
+
+#: template/./doc/docbook.sgml:44
+msgid ""
+"The <acronym>XML</acronym> (<firstterm>eXtensible Markup\n"
+"Language</firstterm>) specification, a modern subset of\n"
+"the SGML specification, adds a so-called <firstterm>empty\n"
+"tag</firstterm>, for elements that contain no text\n"
+"content.  The entire element is a single tag, ending with\n"
+"<quote><literal>/&gt;</literal></quote>, e.g.,\n"
+"<sgmltag>&lt;xref/&gt;</sgmltag>.  However, use of this\n"
+"tag style restricts you to XML DocBook processing, and\n"
+"your document may no longer compile with SGML-only\n"
+"processing systems."
+msgstr ""
+
+#: template/./doc/docbook.sgml:56
+msgid ""
+"Often a processing system will need more information about\n"
+"an element than you can provide with just tags.  SGML\n"
+"allows you to add extra <quote>hints</quote> in the form\n"
+"of SGML <firstterm>attributes</firstterm> to pass along\n"
+"this information.  The most common use of attributes in\n"
+"DocBook is giving specific elements a name, or an ID, so\n"
+"you can refer to it from elsewhere.  This ID can be used\n"
+"for many things, including file-naming for HTML output,\n"
+"hyper-linking to specific parts of the document, and even\n"
+"pulling text from that element (see the <sgmltag\n"
+"class=\"starttag\">xref</sgmltag> tag)."
+msgstr ""
+
+#: template/./doc/docbook.sgml:69
+msgid ""
+"An SGML attribute appears inside the start tag, between\n"
+"the &lt; and &gt; brackets.  For example, if you wanted to\n"
+"set the <sgmltag class=\"attribute\">id</sgmltag> attribute\n"
+"of the <sgmltag class=\"starttag\">book</sgmltag> element to\n"
+"<quote>mybook</quote>, you would create a start tag like\n"
+"this: <programlisting>&lt;book id=\"mybook\"></programlisting>"
+msgstr ""
+
+#: template/./doc/docbook.sgml:77
+msgid ""
+"Notice that the contents of the attribute are enclosed in\n"
+"quote marks.  These quotes are optional in SGML, but\n"
+"mandatory in XML.  It's a good habit to use quotes, as it\n"
+"will make it much easier to migrate your documents to an\n"
+"XML processing system later on."
+msgstr ""
+
+#: template/./doc/docbook.sgml:84
+msgid ""
+"You can also specify more than one attribute in a single\n"
+"tag: <programlisting>&lt;book id=\"mybook\" status=\"draft\"></"
+"programlisting>"
+msgstr ""
+
+#: template/./doc/docbook.sgml:88
+msgid ""
+"Another commonly used type of SGML markup is the\n"
+"<firstterm>entity</firstterm>.  An entity lets you\n"
+"associate a block of text with a name.  You declare the\n"
+"entity once, at the beginning of your document, and can\n"
+"invoke it as many times as you like throughout the\n"
+"document.  You can use entities as shorthand, or to make\n"
+"it easier to maintain certain phrases in a central\n"
+"location, or even to insert the contents of an entire file\n"
+"into your document."
+msgstr ""
+
+#: template/./doc/docbook.sgml:99
+msgid ""
+"An entity in your document is always surrounded by the\n"
+"<quote>&amp;</quote> and <quote>;</quote> characters.  One\n"
+"entity you'll need sooner or later is the one for the\n"
+"<quote>&lt;</quote> character.  Since SGML expects all\n"
+"tags to begin with a <quote>&lt;</quote>, the\n"
+"<quote>&lt;</quote> is a reserved character.  To use it in\n"
+"your document (as I am doing here), you must insert it\n"
+"with the <literal>&amp;lt;</literal> entity.  Each time\n"
+"the SGML processor encounters <literal>&amp;lt;</literal>,\n"
+"it will place a literal <quote>&lt;</quote> in the output\n"
+"document. Similarly you must use the <literal>&amp;gt;</literal> \n"
+"and <literal>&amp;amp;</literal> entities for the \n"
+"<quote>&gt;</quote> and <quote>&amp;</quote> characters."
+msgstr ""
+
+#: template/./doc/docbook.sgml:114
+msgid ""
+"The final term you'll need to know when writing simple\n"
+"DocBook documents is the <acronym>DTD</acronym>\n"
+"(<firstterm>Document Type Declaration</firstterm>).  The\n"
+"DTD defines the flavor of SGML a given document is written\n"
+"in.  It lists all the legal tag names, like <sgmltag\n"
+"class=\"starttag\">book</sgmltag>, <sgmltag\n"
+"class=\"starttag\">para</sgmltag>, and so on, and declares\n"
+"how those tags are allowed to be used together.  For\n"
+"example, it doesn't make sense to put a <sgmltag\n"
+"class=\"starttag\">book</sgmltag> element inside a <sgmltag\n"
+"class=\"starttag\">para</sgmltag> paragraph element -- only\n"
+"the reverse."
+msgstr ""
+
+#: template/./doc/docbook.sgml:128
+msgid ""
+"The DTD thus defines the legal structure of the document.\n"
+"It also declares which attributes can be used with which\n"
+"tags.  The SGML processing system can use the DTD to make\n"
+"sure the document is laid out properly before attempting\n"
+"to process it.  SGML-aware text editors like \n"
+"can also use the DTD to\n"
+"guide you while you write, offering you choices about\n"
+"which tags you can add in different places in the\n"
+"document, and beeping at you when you try to add a tag\n"
+"where it doesn't belong."
+msgstr ""
+
+#: template/./doc/docbook.sgml:140
+msgid ""
+"Generally, you will declare which DTD you want to use as\n"
+"the first line of your SGML document.  In the case of\n"
+"DocBook, you will use something like this:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:148
+msgid ""
+"Note that you must specify your toplevel element inside\n"
+"the doctype declaration.  If you were writing an article\n"
+"rather than a book, you might use this declaration instead:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:161
+msgid ""
+"Once you're comfortable with SGML, creating a DocBook\n"
+"document is quite simple and straightforward.  Even\n"
+"though DocBook contains over 300 different tags, you can\n"
+"usually get by with only a small subset of those tags.\n"
+"Most of them are for inline formatting, rather than for\n"
+"document structuring.  Furthermore, the common tags have\n"
+"short, intuitive names."
+msgstr ""
+
+#: template/./doc/docbook.sgml:170
+msgid ""
+"Below is a (completely nonsensical) example to illustrate\n"
+"how a simple document might be laid out.  Notice that all\n"
+"<sgmltag class=\"starttag\">chapter</sgmltag> and <sgmltag\n"
+"class=\"starttag\">sect1</sgmltag> elements have <sgmltag\n"
+"class=\"attribute\">id</sgmltag> attributes.  This is not\n"
+"mandatory, but is a good habit to get into, as DocBook is\n"
+"commonly converted into HTML, with a separate generated\n"
+"file for each <sgmltag class=\"starttag\">book</sgmltag>,\n"
+"<sgmltag class=\"starttag\">chapter</sgmltag>, and/or <sgmltag\n"
+"class=\"starttag\">sect1</sgmltag> element.  If the given\n"
+"element has an <sgmltag class=\"attribute\">id</sgmltag>\n"
+"attribute, the processor will typically name the file\n"
+"accordingly.  Thus, the below document might result in\n"
+"<filename>index.html</filename>,\n"
+"<filename>chapter-one.html</filename>,\n"
+"<filename>blobs.html</filename>, and so on."
+msgstr ""
+
+#: template/./doc/docbook.sgml:188
+msgid ""
+"Also notice the text marked off with <quote>&lt;!--\n"
+"</quote> and <quote> --&gt;</quote> characters.  These\n"
+"denote SGML comments.  SGML processors will completely\n"
+"ignore anything between these markers, similar to\n"
+"<quote>/*</quote> and <quote>*/</quote> comments in C\n"
+"source code."
+msgstr ""
+
+#: template/./doc/docbook.sgml:260
+msgid "Common Elements"
+msgstr ""
+
+#: template/./doc/docbook.sgml:262
+msgid ""
+"Once you get used to the syntax of SGML, the next hurdle\n"
+"in writing DocBook documentation is to learn the many\n"
+"DocBook-specific tag names, and when to use them.  DocBook\n"
+"was created for technical documentation, and as such, the\n"
+"tag names and document structure are slanted towards the\n"
+"needs of such documentation."
+msgstr ""
+
+#: template/./doc/docbook.sgml:270
+msgid ""
+"To cover its target audience, DocBook declares a wide\n"
+"variety of specialized tags, including tags for formatting\n"
+"source code (with somewhat of a C/C++ bias), computer\n"
+"prompts, GUI application features, keystrokes, and so on.\n"
+"DocBook also includes tags for universal formatting needs,\n"
+"like headers, footnotes, tables, and graphics."
+msgstr ""
+
+#: template/./doc/docbook.sgml:278
+msgid ""
+"We won't cover all of these elements here (over 300\n"
+"DocBook tags exist!), but we will cover the basics.  To\n"
+"learn more about the other tags, check out the official\n"
+"DocBook guide, at <ulink\n"
+"url=\"http://docbook.org\">http://docbook.org</ulink>"
+msgstr ""
+
+#: template/./doc/docbook.sgml:285
+msgid ""
+"There are often many correct ways to mark up a given piece\n"
+"of text, and you may have to make guesses about which tag\n"
+"to use.  Sometimes you'll have to make compromises.\n"
+"If you don't like the way a certain\n"
+"tag looks in HTML, that doesn't mean you should choose a\n"
+"different tag based on its output formatting.  The\n"
+"processing stylesheets can be altered to fix the\n"
+"formatting of that same tag everywhere in the document\n"
+"(not just in the place you're working on).  For example,\n"
+"if you're frustrated that the <sgmltag\n"
+"class=\"starttag\">systemitem</sgmltag> tag doesn't produce\n"
+"any formatting by default, you should fix the stylesheets,\n"
+"not change the valid <sgmltag\n"
+"class=\"starttag\">systemitem</sgmltag> tag to, for example,\n"
+"an <sgmltag class=\"starttag\">emphasis</sgmltag> tag."
+msgstr ""
+
+#: template/./doc/docbook.sgml:302
+msgid "Here are the common SGML elements:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:306
+msgid "Structural Elements"
+msgstr ""
+
+#: template/./doc/docbook.sgml:311
+msgid ""
+"The book is the most common toplevel element, and is\n"
+"probably the one you should use for your document."
+msgstr ""
+
+#: template/./doc/docbook.sgml:320
+msgid ""
+"If you want to group more than one book into a\n"
+"single unit, you can place them all inside a set.\n"
+"This is useful when you want to bundle up\n"
+"documentation in alternate ways.  We do this with\n"
+"the documentation, using a <sgmltag\n"
+"class=\"starttag\">set</sgmltag> to put everything\n"
+"into a single directory,\n"
+"and a <sgmltag class=\"starttag\">book</sgmltag> to\n"
+"put each Wine guide into a separate directory."
+msgstr ""
+
+#: template/./doc/docbook.sgml:336
+msgid ""
+"A <sgmltag class=\"starttag\">chapter</sgmltag>\n"
+"element includes a single entire chapter of the\n"
+"book."
+msgstr ""
+
+#: template/./doc/docbook.sgml:346
+msgid ""
+"If the chapters in your book fall into major\n"
+"categories or groupings, you can place each \n"
+"collection of chapters\n"
+"into a <sgmltag class=\"starttag\">part</sgmltag>\n"
+"element."
+msgstr ""
+
+#: template/./doc/docbook.sgml:358
+msgid ""
+"DocBook has many section elements to divide the\n"
+"contents of a chapter into smaller chunks.  The\n"
+"encouraged approach is to use the numbered section\n"
+"tags, <sgmltag class=\"starttag\">sect1</sgmltag>,\n"
+"<sgmltag class=\"starttag\">sect2</sgmltag>, <sgmltag\n"
+"class=\"starttag\">sect3</sgmltag>, <sgmltag\n"
+"class=\"starttag\">sect4</sgmltag>, and <sgmltag\n"
+"class=\"starttag\">sect5</sgmltag> (if necessary).\n"
+"These tags must be nested in order: you can't place\n"
+"a <sgmltag class=\"starttag\">sect3</sgmltag> directly\n"
+"inside a <sgmltag class=\"starttag\">sect1</sgmltag>.\n"
+"You have to nest the <sgmltag\n"
+"class=\"starttag\">sect3</sgmltag> inside a <sgmltag\n"
+"class=\"starttag\">sect2</sgmltag>, and so forth.\n"
+"Documents with these explicit section groupings are\n"
+"easier for SGML processors to deal with, and lead to\n"
+"better organized documents.  DocBook also supplies a\n"
+"<sgmltag class=\"starttag\">section</sgmltag> element\n"
+"which you can nest inside itself, but its use is\n"
+"discouraged in favor of the numbered section tags."
+msgstr ""
+
+#: template/./doc/docbook.sgml:385
+msgid ""
+"The title of a book, chapter, part, section, etc.\n"
+"In most of the major structural elements, like\n"
+"<sgmltag class=\"starttag\">chapter</sgmltag>,\n"
+"<sgmltag class=\"starttag\">part</sgmltag>, and the\n"
+"various section tags, <sgmltag\n"
+"class=\"starttag\">title</sgmltag> is mandatory.  In\n"
+"other elements like <sgmltag\n"
+"class=\"starttag\">book</sgmltag> and <sgmltag\n"
+"class=\"starttag\">note</sgmltag>, it's optional."
+msgstr ""
+
+#: template/./doc/docbook.sgml:401
+msgid ""
+"The basic unit of text is the paragraph, represented\n"
+"by the <sgmltag class=\"starttag\">para</sgmltag> tag.\n"
+"This is probably the tag you'll use most often.  In\n"
+"fact, in a simple document, you can probably get\n"
+"away with using only <sgmltag\n"
+"class=\"starttag\">book</sgmltag>, <sgmltag\n"
+"class=\"starttag\">chapter</sgmltag>, <sgmltag\n"
+"class=\"starttag\">title</sgmltag>, and <sgmltag\n"
+"class=\"starttag\">para</sgmltag>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:417
+msgid ""
+"For shorter, more targeted documents, like topic\n"
+"pieces and whitepapers, you can use <sgmltag\n"
+"class=\"starttag\">article</sgmltag> as your toplevel\n"
+"element."
+msgstr ""
+
+#: template/./doc/docbook.sgml:427
+msgid "Inline Formatting Elements"
+msgstr ""
+
+#: template/./doc/docbook.sgml:432
+msgid ""
+"The name of a file.  You can optionally set the\n"
+"<sgmltag class=\"attribute\">class</sgmltag> attribute\n"
+"to <literal>Directory</literal>,\n"
+"<literal>HeaderFile</literal>, and\n"
+"<literal>SymLink</literal> to further classify the\n"
+"filename."
+msgstr ""
+
+#: template/./doc/docbook.sgml:445
+msgid "Literal text entered by the user."
+msgstr ""
+
+#: template/./doc/docbook.sgml:453
+msgid "Literal text output by the computer."
+msgstr ""
+
+#: template/./doc/docbook.sgml:461
+msgid ""
+"A catch-all element for literal computer data.  Its\n"
+"use is somewhat vague; try to use a more specific\n"
+"tag if possible, like <sgmltag\n"
+"class=\"starttag\">userinput</sgmltag> or <sgmltag\n"
+"class=\"starttag\">computeroutput</sgmltag>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:473
+msgid ""
+"An inline quotation.  This tag typically inserts\n"
+"quotation marks for you, so you would write <sgmltag\n"
+"class=\"starttag\">quote</sgmltag>This is a\n"
+"quote<sgmltag class=\"endtag\">quote</sgmltag> rather\n"
+"than \"This is a quote\".  This usage may be a little\n"
+"bulkier, but it does allow for automated formatting\n"
+"of all quoted material in the document.  Thus, if\n"
+"you wanted all quotations to appear in italic, you\n"
+"could make the change once in your stylesheet,\n"
+"rather than doing a search and replace throughout\n"
+"the document.  For larger chunks of quoted text, you\n"
+"can use <sgmltag\n"
+"class=\"starttag\">blockquote</sgmltag>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:493
+msgid ""
+"Insert a side note for the reader.  By default, the\n"
+"SGML processor usually prefixes the content with\n"
+"\"Note:\".  You can change this text by adding a\n"
+"<sgmltag class=\"starttag\">title</sgmltag> element.\n"
+"Thus, to add a visible FIXME comment to the\n"
+"documentation, you might write:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:508
+msgid "The results will look something like this:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:520
+msgid ""
+"Used for inserting SGML tags, etc., into a SGML\n"
+"document without resorting to a lot of entity\n"
+"quoting, e.g., &amp;lt;.  You can change the\n"
+"appearance of the text with the <sgmltag\n"
+"class=\"attribute\">class</sgmltag> attribute.  Some\n"
+"common values of this are\n"
+"<literal>starttag</literal>,\n"
+"<literal>endtag</literal>,\n"
+"<literal>attribute</literal>,\n"
+"<literal>attvalue</literal>, and even\n"
+"<literal>sgmlcomment</literal>.  See this SGML file,\n"
+"<filename>documentation/documentation.sgml</filename>,\n"
+"for examples."
+msgstr ""
+
+#: template/./doc/docbook.sgml:540
+msgid ""
+"The text used for a computer prompt, for example a\n"
+"shell prompt, or command-line application prompt."
+msgstr ""
+
+#: template/./doc/docbook.sgml:549
+msgid ""
+"Meta-text that should be replaced by the user, not\n"
+"typed in literally, e.g., in command descriptions\n"
+"and <parameter>--help</parameter> outputs."
+msgstr ""
+
+#: template/./doc/docbook.sgml:559
+msgid "A programming constant, e.g.,"
+msgstr ""
+
+#: template/./doc/docbook.sgml:568
+msgid ""
+"A symbolic value replaced, for example, by a\n"
+"pre-processor.  This applies primarily to C macros,\n"
+"but may have other uses.  Use the <sgmltag\n"
+"class=\"starttag\">constant</sgmltag> tag instead of\n"
+"<sgmltag class=\"starttag\">symbol</sgmltag> where\n"
+"appropriate."
+msgstr ""
+
+#: template/./doc/docbook.sgml:581
+msgid "A programming function name."
+msgstr ""
+
+#: template/./doc/docbook.sgml:589
+msgid "Programming language parameters you pass with a function."
+msgstr ""
+
+#: template/./doc/docbook.sgml:597
+msgid "Parameters you pass to a command-line executable."
+msgstr ""
+
+#: template/./doc/docbook.sgml:605
+msgid "Variable name, typically in a programming language."
+msgstr ""
+
+#: template/./doc/docbook.sgml:613
+msgid ""
+"Programming language types, e.g., from a typedef\n"
+"definition.  May have other uses, too."
+msgstr ""
+
+#: template/./doc/docbook.sgml:622
+msgid ""
+"The name of a C-language <type>struct</type>\n"
+"declaration, e.g., <structname>sockaddr</structname>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:631
+msgid "A field inside a C <type>struct</type>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:639
+msgid ""
+"An executable binary, e.g., <command>/bin/sh</command>\n"
+"or <command>ls</command>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:648
+msgid "An environment variable, e.g, <envar>$PATH</envar>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:656
+msgid ""
+"A generic catch-all for system-related things, like\n"
+"OS names, computer names, system resources, etc."
+msgstr ""
+
+#: template/./doc/docbook.sgml:665
+msgid ""
+"An email address.  The SGML processor will typically\n"
+"add extra formatting characters, and even a\n"
+"<literal>mailto:</literal> link for HTML pages.\n"
+"Usage: <sgmltag\n"
+"class=\"starttag\">email</sgmltag>user@host.com<sgmltag\n"
+"class=\"endtag\">email</sgmltag>"
+msgstr ""
+
+#: template/./doc/docbook.sgml:678
+msgid ""
+"Special emphasis for introducing a new term.  Can\n"
+"also be linked to a <sgmltag\n"
+"class=\"starttag\">glossary</sgmltag> entry, if\n"
+"desired."
+msgstr ""
+
+#: template/./doc/docbook.sgml:688
+msgid "Item Listing Elements"
+msgstr ""
+
+#: template/./doc/docbook.sgml:693
+msgid ""
+"For bulleted lists, no numbering.  You can tweak the\n"
+"layout with SGML attributes."
+msgstr ""
+
+#: template/./doc/docbook.sgml:702
+msgid ""
+"A numbered list; the SGML processor will insert the\n"
+"numbers for you.  You can suggest numbering styles\n"
+"with the <sgmltag\n"
+"class=\"attribute\">numeration</sgmltag> attribute."
+msgstr ""
+
+#: template/./doc/docbook.sgml:713
+msgid ""
+"A very simple list of items, often inlined.  Control\n"
+"the layout with the <sgmltag\n"
+"class=\"attribute\">type</sgmltag> attribute."
+msgstr ""
+
+#: template/./doc/docbook.sgml:723
+msgid ""
+"A list of terms with definitions or descriptions,\n"
+"like this very list!"
+msgstr ""
+
+#: template/./doc/docbook.sgml:731
+msgid "Block Text Quoting Elements"
+msgstr ""
+
+#: template/./doc/docbook.sgml:736
+msgid ""
+"Quote a block of source code. Typically highlighted\n"
+"in the output and set off from normal text."
+msgstr ""
+
+#: template/./doc/docbook.sgml:745
+msgid ""
+"Quote a block of visible computer output, like the\n"
+"output of a command or chunks of debug logs."
+msgstr ""
+
+#: template/./doc/docbook.sgml:753
+msgid "Hyperlink Elements"
+msgstr ""
+
+#: template/./doc/docbook.sgml:759
+msgid ""
+"Generic hypertext link, used for pointing to other\n"
+"sections within the current document.  You supply\n"
+"the visible text for the link, plus the name of the <sgmltag\n"
+"class=\"attribute\">id</sgmltag> attribute of the\n"
+"element that you want to link to.  For example:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:776
+msgid ""
+"In-document hyperlink that can generate its own\n"
+"text.  Similar to the <sgmltag\n"
+"class=\"starttag\">link</sgmltag> tag, you use the\n"
+"<sgmltag class=\"attribute\">linkend</sgmltag>\n"
+"attribute to specify which target element you want\n"
+"to jump to:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:790
+msgid ""
+"By default, most SGML processors will autogenerate\n"
+"some generic text for the <sgmltag\n"
+"class=\"starttag\">xref</sgmltag> link, like\n"
+"<quote>Section 2.3.1</quote>.  You can use the\n"
+"<sgmltag class=\"attribute\">endterm</sgmltag>\n"
+"attribute to grab the visible text content of the\n"
+"hyperlink from another element:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:806
+msgid ""
+"This would create a link to the\n"
+"<symbol>configuring</symbol> element,\n"
+"displaying the text of the\n"
+"<symbol>config-title</symbol> element for the\n"
+"hyperlink.  Most often, you'll add an <sgmltag\n"
+"class=\"attribute\">id</sgmltag> attribute to the\n"
+"<sgmltag class=\"starttag\">title</sgmltag> of the\n"
+"section you're linking to, as above, in which case\n"
+"the SGML processor will use the target's title text\n"
+"for the link text."
+msgstr ""
+
+#: template/./doc/docbook.sgml:818
+msgid ""
+"Alternatively, you can use an <sgmltag\n"
+"class=\"attribute\">xreflabel</sgmltag> attribute in\n"
+"the target element tag to specify the link text:"
+msgstr ""
+
+#: template/./doc/docbook.sgml:825
+msgid ""
+"<sgmltag class=\"starttag\">xref</sgmltag> is an\n"
+"empty element.  You don't need a closing tag for\n"
+"it (this is defined in the DTD).  In SGML\n"
+"documents, you should use the form <sgmltag\n"
+"class=\"starttag\">xref</sgmltag>, while in XML\n"
+"documents you should use\n"
+"<sgmltag>&lt;xref/></sgmltag>."
+msgstr ""
+
+#: template/./doc/docbook.sgml:840
+msgid ""
+"An invisible tag, used for inserting <sgmltag\n"
+"class=\"attribute\">id</sgmltag> attributes into a\n"
+"document to link to arbitrary places (i.e., when\n"
+"it's not close enough to link to the top of an\n"
+"element)."
+msgstr ""
+
+#: template/./doc/docbook.sgml:852
+msgid "Hyperlink in URL form, e.g.,"
+msgstr ""
+
+#: template/./doc/docbook.sgml:861
+msgid ""
+"Indirect hyperlink; can be used for linking to\n"
+"external documents.  Not often used in practice."
+msgstr ""
+
+#: template/./doc/docbook.sgml:870
+msgid "Multiple SGML files"
+msgstr ""
+
+#: template/./doc/docbook.sgml:878
+msgid "The SGML Environment"
+msgstr ""
+
+#: template/./doc/docbook.sgml:881
+msgid ""
+"You can write SGML/DocBook documents in any text editor you\n"
+"might find (although as we'll find in\n"
+", some editors are more friendly for\n"
+"this task than others).  However, if you want to convert\n"
+"those documents into a more friendly form for reading, such\n"
+"as HTML, PostScript, or PDF, you will need a working SGML\n"
+"environment.  This section attempts to lay out the various\n"
+"SGML rendering systems, and how they are set up on the\n"
+"popular Linux distributions."
+msgstr ""
+
+#: template/./doc/docbook.sgml:893
+msgid ""
+"There are two main environments, which can provide transformation\n"
+"from your .sgml files into target (HTML,Postsript,TeX,text,pdf,...)\n"
+"formats."
+msgstr ""
+
+#: template/./doc/docbook.sgml:899
+msgid "DSSSL Environment"
+msgstr ""
+
+#: template/./doc/docbook.sgml:901
+msgid ""
+"This is the old and stable modular stylesheet system.\n"
+"In most cases that is what you need."
+msgstr ""
+
+#: template/./doc/docbook.sgml:907
+msgid "XSLT Environment"
+msgstr ""
+
+#: template/./doc/docbook.sgml:909
+msgid ""
+"This is new, less stable environment, use .xml files\n"
+"instead .sgml."
+msgstr ""
+
+#: template/./doc/docbook.sgml:915
+msgid "SGML on Redhat"
+msgstr ""
+
+#: template/./doc/docbook.sgml:917
+msgid ""
+"Most Linux distributions have everything you need already\n"
+"bundled up in package form.  Unfortunately, each\n"
+"distribution seems to handle its SGML environment\n"
+"differently, installing it into different paths, and\n"
+"naming its packages according to its own whims."
+msgstr ""
+
+#: template/./doc/docbook.sgml:924
+msgid ""
+"The following packages seems to be sufficient for RedHat 7.1.  You\n"
+"will want to be careful about the order in which you install the\n"
+"rpms."
+msgstr ""
+
+#: template/./doc/docbook.sgml:937
+msgid ""
+"You can also use ghostscript to view the ps format output and \n"
+"Adobe Acrobat 4 to view the pdf file."
+msgstr ""
+
+#: template/./doc/docbook.sgml:943
+msgid "SGML on Debian"
+msgstr ""
+
+#: template/./doc/docbook.sgml:945
+msgid ""
+"The following packages seems to be sufficient for Debian 3.0.\n"
+"Just install them via apt-get."
+msgstr ""
+
+#: template/./doc/docbook.sgml:951
+msgid "You can also use <command>gv</command> to view the ps format output."
+msgstr ""

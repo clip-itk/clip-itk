@@ -1,0 +1,52 @@
+$FUNCNAME$
+   FT_FREADLN()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Read a line from the currently selected text file
+$SYNTAX$
+
+   FT_FREADLN() -> cLine
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   A string containing the current record in a text file.
+
+$DESCRIPTION$
+
+   This function returns a line of text read from the file in the
+   currently selected text file workarea.  Text lines are delimited
+   with a CRLF pair.  The record pointer is not moved.
+
+   Currently the maximum record size is 4096 characters.  You may
+   increase the maximum record size by changing the value of ^b#define
+   ^bBUFFSIZE^n in the C source and recompiling, however you should
+   consider the performance implications if you do (all read and writes
+   use this buffer size, including ft_fSkip()'s and ft_fGoto()'s).
+
+   If a read error occurs ^ft_fError()^n will contain the error code.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+$EXAMPLES$
+
+   // display each record of a text file
+
+   FT_FUSE( "text.c" )
+
+   DO WHILE ! FT_FEOF()
+
+      ? FT_FREADLN()
+
+      FT_FSKIP()
+
+   ENDDO
+
+$SEEALSO$
+   FT_FUSE(),FT_FWRITELN(),FT_FRECNO(),FT_FGOTOP()
+$END$
+

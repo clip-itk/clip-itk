@@ -100,6 +100,16 @@ $LANG_RU$
 $ENDMETHOD$
 
 $METHODNAME$
+	clear()
+$SUMMARY$
+	Clear menu.
+$LANG_RU$
+	Очистить меню.
+$SYNTAX$
+	clear()
+$ENDMETHOD$
+
+$METHODNAME$
 	getElement()
 $SUMMARY$
 	Get object of menu item by its index.

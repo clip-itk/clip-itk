@@ -1,0 +1,53 @@
+$FUNCNAME$
+	TCPCONNECT()
+$CATEGORY$
+	TCP,FILE/IO
+$SUMMARY$
+	Connect with server.
+$LANG_RU$
+	Установить соединение с сервером.
+$SYNTAX$
+	TCPCONNECT(<sHostName>[, <nPort>][, <nTimeout>])	--> <nConnection>
+$ARGUMENTS$
+	<sHostName>	String, is the server name.
+	<nPort>		Numeric, is the port number.
+	<nTimeout>	Numeric, is the timeout.( default 60000 )
+$LANG_RU$
+	<sHostName>	String, имя сервера.
+	<nPort>		Numeric, номер порта.
+	<nTimeout>	Numeric, время ожидания ответа.( default 60000 )
+$RETURNS$
+	Returns the connection number or -1.
+$LANG_RU$
+	Возвращает номер соединения или -1.
+$DESCRIPTION$
+	TCPCONNECT() makes connect to server <sHostName> and creates socket
+	to port <nPort>. Returns connection number <nConnection> or -1 on error.
+	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
+$LANG_RU$
+	TCPCONNECT() устанавливает соединение с сервером <sHostName> и создает сокет
+	к порту <nPort>.Возвращат номер соединения <nConnection> или -1 в случае ошибки.
+	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+$EXAMPLES$
+
+
+con := TCPCONNECT("http://www.itk.ru")
+
+if con > -1
+	? "connection: ", con
+	....
+	TCPCLOSE(con)
+else
+	? FERROR()
+endif
+
+
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+$END$
+

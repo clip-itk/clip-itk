@@ -1,0 +1,84 @@
+$FUNCNAME$
+  INDEXORD()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the order position of the controlling index
+$LANG_RU$
+   Возвращает порядковый номер управляющего индекса.
+$SYNTAX$
+     INDEXORD() --> nOrder
+$LANG_RU$
+     INDEXORD() --> порядковый номер
+$RETURNS$
+     INDEXORD() returns an integer numeric value.  The value returned is
+     equal to the position of the controlling index in the list of open
+     indexes for the current work area.  A value of zero indicates that there
+     is no controlling index and records are being accessed in natural order.
+     If no database file is open, INDEXORD() will also return a zero.
+$LANG_RU$
+     INDEXORD() возвращает целое числовые значение. Возвращаемое значение
+     равно позиции управляющего индекса в списке открытых в текущей
+     рабочей области индексов. Нулевое значение указывает, что
+     управляющего индекса нет, и записи доступны в естественном порядке.
+$DESCRIPTION$
+     INDEXORD() is a database function that determines the position of the
+     controlling index in the list of index files opened by the last
+     USE...INDEX or SET INDEX TO in the current work area.  It is often
+     useful to save the last controlling index so it can be restored later.
+
+     By default, INDEXORD() operates on the currently selected work area.  It
+     will operate on an unselected work area if you specify it as part of an
+     aliased expression (see example below).
+$LANG_RU$
+     INDEXORD() - это функция базы данных, которая может быть использована
+     для определения позиции управляющего индекса в списке индексных
+     файлов, открытых в текущей рабочей области при последнем выполнении
+     команд USE...INDEX или SET INDEX TO. Часто бывает полезным сохранить
+     последний управляющий индекс, чтобы можно было восстановить его
+     позже.
+
+     По умолчанию INDEXORD() оперирует в выбранной текущей (активной)
+     рабочей области. Можно сделать так, чтобы эта функция оперировала с
+     пассивной рабочей областью, используя ее как элемент выражения,
+     уточненного алиасом (смотрите пример ниже).
+$EXAMPLES$
+       This example uses INDEXORD() to save the current order.  After
+	changing to a new order, it uses the saved value to restore the
+	original order:
+
+	USE Customer INDEX Name, Serial NEW
+	nOrder := INDEXORD()                  // Result: 1
+	SET ORDER TO 2
+	? INDEXORD()                           // Result: 2
+	SET ORDER TO nOrder
+	? INDEXORD()                           // Result: 1
+
+       This example uses an aliased expression to determine the order
+	number of the controlling index in an unselected work area:
+
+	USE Sales INDEX Salesman, CustNum NEW
+	USE Customer INDEX Name, Serial NEW
+	? Sales->(INDEXORD())               // Result: 1
+$LANG_RU$
+      Этот пример использует функцию INDEXORD() для сохранения
+       порядкового номера текущего индекса. После изменения на новый
+       индекс сохраненное значение используется для восстановления
+       первоначального индекса:
+
+       USE Customer INDEX Name, Serial NEW
+       nOrder := INDEXORD()                  // Результат: 1
+       SET ORDER TO 2
+       ? INDEXORD()                          // Результат: 2
+       SET ORDER TO nOrder
+       ? INDEXORD()                          // Результат: 1
+
+      Этот пример использует уточненное алиасом выражение для определения
+       порядкового номера управляющего индекса в пассивной рабочей области:
+
+       USE Sales INDEX Salesman, CustNum NEW
+       USE Customer INDEX Name, Serial NEW
+       ? Sales --> (INDEXORD())              // Результат: 1
+$SEEALSO$
+  INDEXKEY()
+$END$

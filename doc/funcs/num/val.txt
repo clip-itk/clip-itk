@@ -1,0 +1,94 @@
+$FUNCNAME$
+  VAL()
+$CATEGORY$
+  STRING,NUMERIC
+$SUMMARY$
+   Convert a character number to numeric type
+$LANG_RU$
+   Преобразует число в символьной форме в числовой тип.
+$SYNTAX$
+     VAL(<cNumber>) --> nNumber
+$LANG_RU$
+     VAL (<число в символьной форме>) --> число
+$ARGUMENTS$
+     <cNumber> is the character expression to be converted.
+$LANG_RU$
+     <число в символьной форме> - преобразуемое символьное выражение.
+$RETURNS$
+     VAL() returns <cNumber> converted to a numeric value including decimal
+     digits.
+$LANG_RU$
+     VAL() возвращает значение аргумента <число в символьной форме>
+     преобразованное в числовое значение, включая дробную часть.
+$DESCRIPTION$
+     VAL() is a character conversion function that converts a character
+     string containing numeric digits to a numeric value.  When VAL() is
+     executed, it evaluates <cNumber> until a second decimal point, the first
+     non-numeric character, or the end of the expression is encountered.
+     Leading spaces are ignored.  When SET FIXED is ON, VAL() returns the
+     number of decimal places specified by SET DECIMALS, rounding <cNumber>
+     if it is specified with more digits than the current DECIMALS value.  As
+     with all other functions that round, digits between zero and four are
+     rounded down, and digits between five and nine are rounded up.  When SET
+     FIXED is OFF, VAL() returns the number of decimal places specified in
+     <cNumber>.
+
+     VAL() is the opposite of STR() and TRANSFORM(), which convert numeric
+     values to character strings.
+$LANG_RU$
+     VAL() - функция преобразования символов, которая преобразует строку
+     символов, содержащую цифры, в числовое значение. Функция VAL()
+     просматривает значение аргумента <число в символьной форме> до тех
+     пор, пока не встретится вторая десятичная точка, нечисловой символ
+     или конец выражения. Лидирующие пробелы игнорируются. Если SET FIXED
+     установлено в режим ON, число возвращаемых функцией десятичных знаков
+     определяется установкой команды SET DECIMALS, округляя полученное
+     значение аргумента <число в символьной форме>, если в нем значащих
+     цифр больше, чем определено командой SET DECIMALS. При значениях
+     округляемой дробной части от 0 до 4 не происходит переноса 1 в
+     старший разряд, а при значениях от 5 до 9 такой перенос происходит.
+
+     Если SET FIXED установлено в режим OFF, то VAL() возвращает число
+     десятичных знаков такое же, как и в аргументе <число в символьной
+     форме>.
+
+     VAL() - функция, обратная STR() и TRANSFORM(), которые преобразуют
+     числовые значения в символьные строки.
+$EXAMPLES$
+
+       These examples illustrate VAL() with SET FIXED ON and SET
+	DECIMALS TO 2:
+
+	SET DECIMALS TO 2
+	SET FIXED ON
+	//
+	? VAL("12.1234")         // Result:   12.12
+	? VAL("12.1256")         // Result:   12.13
+	? VAL("12A12")           // Result:   12
+	? VAL("A1212")           // Result:      0
+	? VAL(SPACE(0))          // Result:      0
+	? VAL(SPACE(1))          // Result:      0
+	? VAL(" 12.12")          // Result:   12.12
+
+
+$LANG_RU$
+
+      Следующие примеры иллюстрируют функцию VAL() c SET FIXED ON и
+       SET DECIMALS TO 2.
+
+       SET DECIMALS TO 2
+       SET FIXED ON
+       //
+       ? VAL ("12.1234")               // Результат: 12.12
+       ? VAL ("12.1256")               // Результат: 12.13
+       ? VAL ("12A12")                 // Результат: 12.00
+       ? VAL ("A1212")                 // Результат: 0.00
+       ? VAL (SPACE (0))               // Результат: 0.00
+       ? VAL (SPACE (1))               // Результат: 0.00
+       ? VAL (" 12.12")                // Результат: 12.12
+       ? VAL ("12 .12")                // Результат: 12.00
+
+
+$SEEALSO$
+  ROUND(),STR(),TRANSFORM()
+$END$

@@ -1,0 +1,38 @@
+$FUNCNAME$
+    FN_IS3X()
+$CATEGORY$
+    Miscellaneous
+$ONELINER$
+    Is the current server a 3.x server?
+$SYNTAX$
+
+    fn_is3x() -> lIs3X
+
+$ARGUMENTS$
+
+    None
+
+$RETURNS$
+
+    .t. if the server is a 3.x server, .f. if it isn't
+
+$DESCRIPTION$
+
+    A simple function that wraps around FN_GETFSI().  Determines
+    whether or not the current server is a NetWare 3.x server or
+    not.
+
+$EXAMPLES$
+
+    if fn_is3X()
+       qout( "You're on NetWare 3.x" )
+    endif
+
+$SEEALSO$
+    FN_GETFSI()
+$INCLUDE$
+
+$Author: clip $
+   Glenn Scott
+
+$END$

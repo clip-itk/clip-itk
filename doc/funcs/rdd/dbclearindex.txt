@@ -1,0 +1,47 @@
+$FUNCNAME$
+  DBCLEARINDEX()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Close all indexes for the current work area
+$LANG_RU$
+   Закрывает все индексные файлы в текущей рабочей области..
+$SYNTAX$
+     DBCLEARINDEX() --> NIL
+$LANG_RU$
+     DBCLEARINDEX() --> NIL
+$RETURNS$
+     DBCLEARINDEX() always returns NIL.
+$LANG_RU$
+     DBCLEARINDEX() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCLEARINDEX() closes any active indexes for the current work area.  Any
+     pending index updates are written and the index files are closed.
+
+     DBCLEARINDEX() performs the same function as the standard SET INDEX
+     command with no indexes specified.  For more information, refer to the
+     SET INDEX command.
+$LANG_RU$
+     DBCLEARINDEX() закрывает все активные индексные файлы в текущей
+     рабочей области. Все обновленные данные записываются в индексные
+     файлы, после чего они закрывается.
+
+     DBCLEARINDEX() выполняет те же функции, что и стандартная команда
+     SET INDEX TO без определения индексного файла. Более подробную
+     информацию смотрите в команде SET INDEX.
+$EXAMPLES$
+       The following example clears index files if any are set:
+
+	cFirst := "Winston"
+	DBUSEAREA( .T., "DBFNTX", "Sales", "Sales", .T. )
+	DBSETINDEX( "FIRSTNAM" )
+	DBSETINDEX( "LASTNAME" )
+	//
+	IF INDEXORD() > 0               // is there an index?
+	   DBCLEARINDEX()               // clear index files
+	ELSE
+	   COPY TO FILE TEMP SDF      // copy to SDF in natural
+	ENDIF                           // order
+$SEEALSO$
+  DBCREATEINDEX(),DBREINDEX(),DBSETINDEX(),DBSETORDER()
+$END$

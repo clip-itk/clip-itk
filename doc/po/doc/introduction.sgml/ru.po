@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-10-24 14:58+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/introduction.sgml:1 template/./doc/introduction.sgml:8
+msgid "Introduction"
+msgstr "Введение"
+
+#: template/./doc/introduction.sgml:3
+msgid "Clip team searches for sponsor or investor"
+msgstr "Команда разработки Clip ищет спонсоров и/или инвесторов"
+
+#: template/./doc/introduction.sgml:4
+msgid "clip future notes"
+msgstr ""
+"  Если вы читаете эту страницу, значит вас тоже волнует будущее Clipper,\n"
+"  прочитайте пожалуйста внимательнее информацию от начала и до конца.\n"
+"  Многое из ненаписанного вы найдете \"между строк\".\n"
+"\n"
+"  Если у вас есть мысли и пожелания по развитию безвременно зачахшей\n"
+"  лучшей среды разработки последнего десятилетия - обязательно напишите\n"
+"  нам и мы постараемся учесть ваши пожелания."
+
+#: template/./doc/introduction.sgml:12
+msgid "Download and mirrors"
+msgstr "Где взять"
+
+#: template/./doc/introduction.sgml:16
+msgid "Very fast mirror linux.ru.net"
+msgstr "Очень быстрое зеркало на linux.ru.net"
+
+#: template/./doc/introduction.sgml:19
+msgid "Home ftp ftp.itk.ru"
+msgstr "Домашнее ftp на ftp.itk.ru"
+
+#: template/./doc/introduction.sgml:22
+msgid "Irkutsk mirror ftp.lastik.ru"
+msgstr "Домашнее ftp ftp.itk.ru)"
+
+#: template/./doc/introduction.sgml:35
+msgid "Trademarks"
+msgstr "Зарегестрированные торговые марки"
+
+#: template/./doc/introduction.sgml:37
+msgid "Clipper - trademark of Computer Associates International Inc"
+msgstr "Clipper - торговые марка Computer Associates International Inc"
+
+#: template/./doc/introduction.sgml:39
+msgid "UNIX - trademark of SCO Inc"
+msgstr "UNIX - торговые марка SCO Inc"
+
+#: template/./doc/introduction.sgml:41
+msgid "Linux - trademark of  Linus Torwalds"
+msgstr "Linux - торговые марка  Linus Torwalds"
+
+#: template/./doc/introduction.sgml:43
+msgid "DOS, Windows, FoxPro - are  trademarks of Microsoft Corporation"
+msgstr "DOS, Windows, FoxPro - торговые марки Microsoft Corporation"

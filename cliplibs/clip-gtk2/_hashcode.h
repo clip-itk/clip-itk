@@ -154,6 +154,7 @@
 #define	HASH___GDK_OBJECT_WINDOW        	0xBE6EECF0
 #define	HASH___GDK_TYPE_ATOM            	0x712605E0
 #define	HASH___GDK_TYPE_BITMAP          	0x35E1A8F6
+#define	HASH___GDK_TYPE_REGION          	0xD2EE072C
 #define	HASH__GET_TYPE                  	0x2ED368F7
 #define	HASH_GRAB                       	0x184BC4A2
 #define	HASH___GRAB_FOCUS_SIGNAL        	0x5C2095C1

@@ -1,0 +1,107 @@
+$FUNCNAME$
+  DBFILTER()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the current filter expression as a character string
+$LANG_RU$
+   Возвращает текущее выражение фильтра в виде строки символов.
+$SYNTAX$
+     DBFILTER() --> cFilter
+$LANG_RU$
+     DBFILTER() --> значение фильтра
+$RETURNS$
+     DBFILTER() returns the filter condition defined in the current work area
+     as a character string.  If no FILTER has been SET, DBFILTER() returns a
+     null string ("").
+$LANG_RU$
+     DBFILTER() возвращает значение фильтра, определенного в текущей
+     рабочей области в виде строки символов. Если фильтр не определен,
+     DBFILTER() возвращает строку нулевой длины ("").
+$DESCRIPTION$
+     DBFILTER() is a database function used to save and re-execute an active
+     filter by returning the filter expression as a character string that can
+     be later recompiled and executed using the macro operator (&amp;).  This
+     function operates like the DBRELATION() and DBRSELECT() functions which
+     save and re-execute the linking expression of a relation within a work
+     area.
+
+     Since each work area can have an active filter, DBFILTER() can return
+     the filter expression of any work area.  This is done by referring to
+     DBFILTER() within an aliased expression as demonstrated below.
+$LANG_RU$
+     DBFILTER() - это функция работы с базами данных, которая используется
+     для сохранения и повторного выполнения активного фильтра путем
+     возврата строки символов, представляющей собой выражение, которое
+     определяет значение фильтра с последующей рекомпиляцией и выполнением
+     его при помощи макрооператора (&amp;). Эта функция работает аналогично
+     функциям DBRELATION() и DBRSELECT(), которые используют для
+     сохранения и повторного выполнения скомпонованного выражения
+     отношения в рабочей области. Так как каждая рабочая область имеет
+     активный фильтр, DBFILTER() может возвратить его значение для любой
+     области. Это достигается путем включения DBFILTER() в выражение,
+     уточненное алиасом, как показано ниже.
+$EXAMPLES$
+       This example opens two database files, sets two filters, and
+	then displays the filter expressions for both work areas:
+
+	USE Customer INDEX Customer NEW
+	SET FILTER TO Last = "Smith"
+	USE Invoices INDEX Invoices NEW
+	SET FILTER TO CustId = "Smi001"
+	SELECT Customer
+	//
+	? DBFILTER()                      // Result: Last = "Smith"
+	? Invoices->(DBFILTER())      // Result: Custid = "Smi001"
+
+       This user-defined function, CreateQry(), uses DBFILTER() to
+	create a memory file containing the current filter expression in the
+	private variable cFilter:
+
+	FUNCTION CreateQry( cQryName )
+	   PRIVATE cFilter := DBFILTER()
+	   SAVE ALL LIKE cFilter TO (cQryName + ".qwy")
+	   RETURN NIL
+
+       You can later RESTORE a query file with this user-defined
+	function, SetFilter():
+
+	FUNCTION SetFilter()
+	PARAMETER cQryName
+	   RESTORE FROM &amp;cQryName..qwy ADDITIVE
+	   SET FILTER TO &amp;cFilter.
+	   RETURN NIL
+$LANG_RU$
+      Этот пример открывает два файла баз данных, устанавливает два
+       фильтра и затем выдает на экран выражения фильтров для обеих
+       рабочих областей:
+
+       USE Customer INDEX Customer NEW
+       SET FILTER TO Last = "Smith"
+       USE Invoices INDEX Invoices NEW
+       SET FILTER TO CustId = "Smi001"
+       SELECT Customer
+       //
+       ? DBFILTER()                 // Результат: Last = "Smith"
+       ? Invoices->(DBFILTER())     // Результат: CustId = "Smi001"
+
+      В следующем примере функция пользователя CreateQry()
+       использует DBFILTER() для создания файла хранения переменных
+       памяти, содержащего текущее значение фильтра в PRIVATE переменной
+       cFilter:
+
+       FUNCTION CreateQry( cQryName )
+	  PRIVATE cFilter := DBFILTER()
+	  SAVE ALL LIKE cFilter TO ( cQryName + ".qwy")
+	  RETURN NIL
+
+      Позднее можно восстановить фильтр при помощи функции пользователя
+       SetFilter() :
+
+       FUNCTION SetFilter( cQryName )
+	  RESTORE FROM &amp;cQryName..qwy ADDITIVE
+	  SET FILTER TO &amp;cFilter.
+	  RETURN NIL
+$SEEALSO$
+  DBRELATION(),DBRSELECT()
+$END$

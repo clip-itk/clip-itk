@@ -1,0 +1,184 @@
+$FUNCNAME$
+  AFIELDS()
+$CATEGORY$
+  DataBase
+$SUMMARY$
+   Fill arrays with the structure of the current database file
+$LANG_RU$
+   Заполняет массив информацией о структуре файла базы данных.
+$SYNTAX$
+
+     AFIELDS([<aFieldNames>], [<aTypes>],
+	[<aWidths>], [<aDecimals>]) --> nFields
+
+
+$LANG_RU$
+
+     AFIELDS([<массив имен полей>], [<массив типов полей>],
+	  [<массив размеров полей>], [<массив размеров дробной части>])
+	  --> количество полей
+
+
+$ARGUMENTS$
+
+     <aFieldNames> is the array to fill with field names.  Each element
+     is a character string.
+
+     <aTypes> is the array to fill with the type of fields in
+     <aFieldNames>.  Each element is a character string.
+
+     <aWidths> is the array to fill with the widths of fields in
+     <aFieldNames>.  Each element is numeric data type.
+
+     <aDecimals> is the array to fill with the number of decimals defined
+     for fields in <aFieldNames>.  Each element is numeric data type.  If the
+     field type is not numeric, the <aDecimals> element is zero.
+
+
+$LANG_RU$
+
+     <массив имен полей> - массив, заполняемый именами полей. Каждый его
+     элемент - строка символов.
+
+     <массив типов полей> - массив, заполняемый информацией о типах
+     соответствующих полей массива <массив имен полей>. Каждый его
+     элемент - строка символов.
+
+     <массив размеров полей> - массив, заполняемый информацией о размерах
+     соответствующих полей массива <массив имен полей>. Содержит элементы
+     арифметического типа.
+
+     <массив размеров дробной части> - массив, заполняемый информацией
+     о количестве дробных знаков, определенных для соответствующих полей
+     массива <массив имен полей>. Каждый элемент - арифметического типа.
+     Если тип поля не арифметический, значение соответствующего элемента
+     в массиве <массив размеров дробной части> - ноль.
+
+
+$RETURNS$
+
+     AFIELDS() returns the number of fields or the length of the shortest
+     array argument, whichever is less.  If no arguments are specified, or if
+     there is no file in USE in the current work area, AFIELDS() returns
+     zero.
+
+
+$LANG_RU$
+
+     AFIELDS() возвращает количество полей или длину наименьшего
+     аргумента массива, смотря по тому, что меньше. Если не определено
+     ни одного аргумента или не открыта ни одна база данных в текущей
+     рабочей области, AFIELDS() возвращает ноль.
+
+
+$DESCRIPTION$
+
+     AFIELDS() is an array function that fills a series of arrays (structure
+     attribute arrays) with the structure of the database file currently
+     open, one element in each array per field.  AFIELDS() works like ADIR(),
+     filling a series of existing arrays with information.  To use AFIELDS(),
+     you must first create the arrays to hold the database structure
+     information, each with the same number of elements as the number of
+     fields (i.e. FCOUNT()).  Once the structure attribute arrays are
+     created, you can then invoke AFIELDS() to fill the structure arrays with
+     information about each field.
+
+     By default, AFIELDS() operates on the currently selected work area.  It
+     can  operate on an unselected work area if you specify it within an
+     aliased expression (see example below).
+
+     AFIELDS() is a compatibility function and therefore is not recommended.
+     It is superseded by DBSTRUCT(), which does not require the existence of
+     any arrays prior to invocation and returns a multidimensional array
+     containing the current database file structure.
+
+
+$LANG_RU$
+
+     AFIELDS() - функция, которая заполняет группу массивов информацией
+     о структуре активного в данный момент файла базы данных; элементы
+     массивов с одним номером содержат при этом информацию об одном поле.
+     AFIELDS() во многом схожа с функцией ADIR(), заполняя группу
+     созданных массивов информацией. Чтобы воспользоваться функцией
+     AFIELDS(), нужно сначала создать массивы одинаковой длины, в которые
+     будет занесена информация о структуре файла базы данных, при этом
+     количество элементов в них должно соответствовать количеству полей в
+     записи файла базы данных (т.е.FCOUNT()).  После того, как эти массивы
+     созданы, можно использовать AFIELDS() для заполнения их данными о
+     полях файла базы данных.
+
+     По умолчанию AFIELDS() обрабатывает активную рабочую область, однако
+     при помощи AFIELDS() можно обрабатывать и пассивную рабочую область.
+     Для этого необходимо использовать уточненное алиасом выражение (см.
+     пример ниже).
+
+     AFIELDS() - функция, используемая для связи с предыдущей версией
+     xClipper. Она может быть заменена функцией DBSTRUCT(), которая не
+     требует создания группы массивов перед ее использованием и возвращает
+     многомерный массив, содержащий данные о структуре файла текущей базы
+     данных.
+
+
+$EXAMPLES$
+
+       This example demonstrates how AFIELDS() and ACHOICE() can be
+	used together to create a fields picklist:
+
+	USE Sales NEW
+	PRIVATE aFieldNames[FCOUNT()]
+	AFIELDS(aFieldNames)
+	@ 1, 0 TO 10, 10 DOUBLE
+	nChoice := ACHOICE(2, 1, 9, 9, aFieldNames)
+	@ 12, 0 SAY IF(nChoice != 0, aFieldNames[nChoice],;
+			"None selected")
+	RETURN
+
+       This example uses AFIELDS() with an aliased expression to fill
+	arrays with the structure of Sales.dbf, open in an unselected work
+	area:
+
+	LOCAL aFieldNames, aTypes, aWidths, aDecimals
+	USE Sales NEW
+	USE Customer NEW
+	//
+	aFieldNames := Sales->(ARRAY(FCOUNT()))
+	aTypes := Sales->(ARRAY(FCOUNT()))
+	aWidths := Sales->(ARRAY(FCOUNT()))
+	aDecimals := Sales->(ARRAY(FCOUNT()))
+	//
+	Sales->(AFIELDS(aFieldNames, aTypes, ;
+		 aWidths, aDecimals))
+
+
+$LANG_RU$
+
+      В следующем примере демонстрируется, как использовать функции
+       AFIELDS() и ACHOICE() для создания списка для выбора полей:
+
+       USE Sales NEW
+       PRIVATE aFields[FCOUNT()]
+       AFIELDS(aFields)
+       @ 1, 0 TO 10, 10 DOUBLE
+       nChoice = ACHOICE( 2, 1, 9, 9, aFields)
+       @ 12, 0 SAY IF( nChoice != 0, aFields[nChoice], "Не выбрано")
+       RETURN
+
+      Этот пример использует AFIELDS() в уточненном алиасом выражении
+       для заполнения массивов информацией о структуре файла Sales.dbf,
+       открытого в пассивной области:
+
+       LOCAL aFieldNames, aTypes, aWidths, aDecimals
+       USE Sales NEW
+       USE Customer NEW
+       //
+       aFieldNames := Sales->(ARRAY(FCOUNT())
+       aTypes := Sales->(ARRAY(FCOUNT())
+       aWidths := Sales->(ARRAY(FCOUNT())
+       aDecimals := Sales->(ARRAY(FCOUNT())
+       //
+       Sales->(AFIELDS(aFieldNames, aTypes, aWidths, aDecimals))
+
+
+$SEEALSO$
+  ACHOICE(),ADIR()*,AEVAL(),ASCAN(),DBCREATE(),
+$END$

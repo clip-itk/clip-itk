@@ -1,0 +1,43 @@
+$FUNCNAME$
+	STARTPATH()
+$CATEGORY$
+	INFO,FILE/IO,DISKUTILS
+$SUMMARY$
+	Returns full path and name of program.
+$LANG_RU$
+	Возвращает полный путь и имя программы.
+$SYNTAX$
+     STARTPATH() 	--> <sPath>
+$ARGUMENTS$
+$RETURNS$
+     Returns the string <sPath> what contain full path and name of started program.
+$LANG_RU$
+     Возвращает строку <sPath>, содержащую полный путь и имя стартовавшей программы..
+$DESCRIPTION$
+
+	STARTPATH() returns the string <sPath> what contain full path and name of started program.
+$LANG_RU$
+
+	STARTPATH() возвращает строку <sPath>, содержащую полный путь и имя стартовавшей программы..
+$EXAMPLES$
+
+? CURDIR()		// --> /usr/home/user1/test
+? STARTPATH()		// --> /usr/home/user1/test/mytest
+
+? DIRCHANGE("mybase")	// --> 0
+
+? CURDIR()		// --> /usr/home/user1/test/mybase
+? STARTPATH()		// --> /usr/home/user1/test/mytest
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	CURDIR(), DIRCHANGE()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

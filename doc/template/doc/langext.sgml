@@ -1,0 +1,609 @@
+<chapter id="langext"><title>_(Language extensions)_</title>
+
+<section id="leintroduction"><title>_(Introduction)_</title>
+<para>_(
+CLIP is a <emphasis>Clipper</emphasis> compiler, in other words
+it understands the <emphasis>standard Clipper syntax</emphasis>.
+For lack of the documentation on CLIP language (it's under construction
+at present), refer to the Clipper manuals. Only language extensions
+are considered here.
+)_</para>
+</section>
+
+<section id="leswitch"><title>_(SWITCH statement)_</title>
+<para>_(
+<command>SWITCH</command> statement is a control structure that
+executes one of several blocks of the statements depending on the value
+of an expression.
+)_</para>
+<para>_(
+Syntax:
+)_</para>
+<programlisting><![CDATA[
+[DO] SWITCH <expression>
+	CASE <const11>[,<const12>,...]
+		<statements>,...
+	[ CASE <const21>[,<const22>,...] ]
+		<statements>,...
+	[ OTHERWISE ]
+		<statements>,...
+END[SWITCH]
+]]></programlisting>
+<para>_(
+It evaluates <emphasis><![CDATA[<expression>]]></emphasis>,
+looks for it's value in <emphasis>CASE</emphasis> constants,
+and executes associated block of statements. If none
+of the <emphasis>CASE</emphasis> constants are equal to the
+expression value, it executes the block of statements following
+the <emphasis>OTHERWISE</emphasis> statement (if exist).
+)_</para>
+<para>_(
+Only numeric and character constants are allowed in <emphasis>CASE</emphasis>
+statement.
+)_</para>
+<note><para>_(
+<command>SWITCH</command> is more effective than similar
+<command>DO CASE</command> statement.
+)_</para></note>
+</section>
+
+<section id="leref"><title>_(Assign of the reference)_</title>
+<para>_(
+New operator <command>:=@</command> is used with the following syntax:
+)_</para>
+<programlisting><![CDATA[
+<lVar> := @<rVar>
+]]></programlisting>
+<para>_(
+It assigns <![CDATA[<rVar>]]> variable to the
+<![CDATA[<lVar>]]> variable by reference, i.e. <![CDATA[<lVar>]]>
+becomes a reference to (synonym of) <![CDATA[<rVar>]]>.
+<![CDATA[<rVar>]]> can be of any data type, including function reference.
+For example:
+)_</para>
+<programlisting>
+a := "a"
+b := @a
+? a,b        // "a","a"
+b := "b"
+? a,b        // "b","b"
+b := @NIL    // remove reference
+f := @func()
+? eval(f)    // "Hello!"
+
+static function func
+return "Hello!"
+</programlisting>
+</section>
+
+<section id="lefuncarray"><title>_(Support FoxPro style for array access)_</title>
+<programlisting><![CDATA[
+aVar := {1,2,3,4}
+? aVar(nIndex)
+]]></programlisting>
+</section>
+
+<section id="lefuncblock"><title>_(Support call codeblock via function)_</title>
+<para>
+<![CDATA[cb(p1,p2,....)]]> _( construction call memvar defined codeblock if function with
+name "cb" not exist. )_
+</para>
+<programlisting><![CDATA[
+cb := {|x1,x2|qout(x2,x2),"return value"}
+? cb(1,2)
+]]></programlisting>
+</section>
+
+<section id="lehex"><title>_(Hexadecimal constants)_</title>
+<para>_(
+CLIP understands hexadecimal constants as C does.
+For example <command>0x10</command> (decimal 16),
+<command>0xff</command> (decimal 255).
+)_</para>
+</section>
+
+<section id="lerational"><title>_(Rational arithmetic)_</title>
+<para>_(
+CLIP supports rational numbers with unlimited precision.
+To realize this possibility, it's necessary to write somewhere in
+program
+)_</para>
+<programlisting>
+set(_SET_RATIONAL,.t.)
+</programlisting>
+<para>_(
+or via the command described in <command>clip.ch</command>
+)_</para>
+<programlisting>
+SET RATIONAL ON
+</programlisting>
+<para>_(
+The compiler does not support large numbers as
+constants, that is, when using expressions like
+)_</para>
+<programlisting>
+x := 123456789012345678901234567890
+</programlisting>
+<para>_(
+the compiler will make an attempt to
+transform this into double, and only coprocessor knows what the result
+will be :) To actually use large constants, it's necessary to use
+<link linkend="functionval">VAL()</link> function. For example:
+)_</para>
+<programlisting>
+x:=val("123456789012345678901234567890")
+x:=val("1234.567890")
+x:=val("1/3")
+</programlisting>
+<para>_(
+<link linkend="functionstr">STR()</link> function
+now supports <emphasis>len</emphasis>, <emphasis>dec</emphasis>
+parameters of any value. For example:
+)_</para>
+<programlisting>
+? str(val("7/3"),1000,990)
+</programlisting>
+<para>_(
+Also, <link linkend="functionrstr">RSTR()</link> function is added, and this gives a
+string in the form of <emphasis>numerator/denominator</emphasis>:
+)_</para>
+<programlisting>
+? rstr(val("7/3")+val("5/6")) // 19/6
+</programlisting>
+</section>
+
+<section id="lemap"><title>_(Associative arrays)_</title>
+<para>_(
+<emphasis>Associative array (AA)</emphasis> - is an array which elements
+are accessed by <emphasis>associated</emphasis> character strings.
+Let's consider associative array in contrast of an ordinary array.
+An ordinary array may be written as follows:
+)_</para>
+<programlisting>
+declare m[5]
+m[1]=11; m[2]=12; ....
+</programlisting>
+<para>_(
+To get access to elements, a consecutive numbers set
+is used, and it is limited with the array size. Inserting a new element
+becomes a problem, and it results in time losses. Opposite to ordinary
+arrays, elements of association arrays are identified by strings.
+<link linkend="functionmap">map()</link> function creates an empty associative
+array. New elements are added to the associative array automatically.
+To get access to the element of the associative array object-style syntax
+can be used. For example:
+)_</para>
+<programlisting>
+// create an empty associative array
+m=map()
+// add two elements
+m:asdf=11; m:qwer=12
+? valtype(m) // 'O' (object)
+? len(m)     // 2
+? m:qwer     // 12
+</programlisting>
+<para>_(
+To be honest, elements of associative array are identified by
+a <emphasis>hash codes</emphasis> of strings. Hash code is the number
+as a result of hashing a string to a number by using
+bit operations. For strings of less than 20 characters, the probability
+of coincidence of hash codes is approximately 1/1000000. For longer strings,
+the probability is increased.
+)_</para>
+<para>_(
+The compiler calculates hash codes of strings enclosed in "`" characters.
+For example:
+)_</para>
+<programlisting>
+? m:qwer == m[`qwer`] // .t.
+</programlisting>
+<para>_(
+Also, compiler calculates hash codes of strings with <emphasis>hash_</emphasis>
+prefix. In this case, the string is not converted to upper case. You should do
+it yourself:
+)_</para>
+<programlisting>
+? m:qwer == m[hash_qwer] // .f.
+? m:qwer == m[hash_QWER] // .t.
+</programlisting>
+<para>_(
+At run time, hash code can be calculated by
+<link linkend="functionhashstr">hashstr()</link> function:
+)_</para>
+<programlisting>
+? m:qwer == m[hashstr("QWER")] // .t.
+</programlisting>
+<note><para>_(
+Pay attention to <emphasis>QWER</emphasis> which is written in upper case,
+because compiler does not distinguish letter cases.
+)_</para></note>
+<para>_(
+It's possible to get a list of indexes in the associative array by
+<link linkend="functionmapkeys">mapkeys()</link> function which returns an
+ordinary array with hash codes of associative array elements:
+)_</para>
+<programlisting>
+mm := mapkeys(m)
+? len(mm) // 2
+for i to len(mm)
+	? mm[i] // something like 1233345677, 124321423
+next
+</programlisting>
+<para>_(
+Also, the associate array is characterized by a very fast access to elements,
+because necessary element is actually searched in a hash table.
+)_</para>
+</section>
+
+<section id="leforin"><title>_(FOR ... IN statement)_</title>
+<para>_(
+<command>FOR ... IN</command> statement is a control structure that
+executes a block of statements for all elements of an associative array.
+)_</para>
+<para>_(Syntax:)_</para>
+<programlisting><![CDATA[
+FOR <element> IN <associative_array>
+	<statements>...
+NEXT
+]]></programlisting>
+<para>_(
+Before processing the block of statements,
+<emphasis><![CDATA[<element>]]></emphasis> variable takes value of the next
+element of <emphasis><![CDATA[<associative_array>]]></emphasis>.
+)_</para>
+<para>_(
+Another syntax of <command>FOR ... IN</command> statement allows to execute
+a block of statements for hash codes identifying all elements of
+an associative array:
+)_</para>
+<programlisting><![CDATA[
+FOR <key> IN <associative_array> KEYS
+	<statements>...
+NEXT
+]]></programlisting>
+<para>_(For example)_</para>
+<programlisting>
+m := map()
+m:qwer := 12
+m:asdf := "hello"
+for member in m
+	? member
+next
+//         12
+// hello
+
+for key in m keys
+	? key,m[key]
+next
+// 304733034         12
+// 1190707477 hello
+</programlisting>
+</section>
+
+<section id="lestrarr"><title>_(Strings as arrays)_</title>
+<para>_(
+C-style syntax could be used for accessing substrings in CLIP:
+)_</para>
+<programlisting><![CDATA[
+string[ <position>, |<length>| ]
+]]></programlisting>
+<para>_(
+where <![CDATA[<pos>]]> is the start position of the substring,
+<![CDATA[<length>]]> is the length of the substring, 1 by default.
+)_</para>
+<para>_(
+This format is identical to calling <link linkend="functionsubstr">SUBSTR()</link>
+function, e.g.
+)_</para>
+<programlisting>
+substr(str,2,3)
+</programlisting>
+<para>_(could be written as)_</para>
+<programlisting>
+str[2,3]
+</programlisting>
+</section>
+
+<section id="leoomodel"><title>_(OO model)_</title>
+
+<section id="leoointro"><title>_(Introduction in OO model)_</title>
+<para>_(
+Firstly, some words about CA-Clipper built-in OO model. Its OO is based
+on ordinary array, and any call like
+)_</para>
+<programlisting>
+obj:attribute
+</programlisting>
+<para>_(
+or
+)_</para>
+<programlisting>
+obj:method()
+</programlisting>
+<para>_(
+results in the situation when in <emphasis>obj</emphasis> array there is searching of an element
+whose first element coincides with attribute or method name, and such
+search is executed linearly and is practically analogues to
+)_</para>
+<programlisting>
+ascan(obj,{|x|x[1]=="attribute"})
+</programlisting>
+<para>_(
+function, which greatly reduces the efficiency of OO model of pure
+CA-Clipper. This, of course, is rather a simplified
+explanation, but the sense is still that as described.
+)_</para>
+<para>_(
+We believe, now it's clear for what purpose association arrays were
+made. OO model based on association arrays is faster by an order.
+)_</para>
+<para>_(
+At the same time, there's no need in expressions like
+)_</para>
+<programlisting>
+obj:=TClass(class_name):new()
+</programlisting>
+<para>_(
+and in <emphasis>TClass</emphasis> class itself, which raises
+OO model efficiency.
+)_</para>
+<para>_(
+How could you make your own class? It's very simple:
+)_</para>
+<programlisting>
+function MyClassNew()
+obj:=map() // empty object
+clone(MyClass2New(),obj) // adoption of MyClass2 structure
+clone(MyClass3New(),obj) // adoption of MyClass3 structure
+// if there are coinciding attributes or
+// methods, elements of the last class
+// become main.
+obj:attribute1:=0
+obj:attribute2:=date()
+obj:method1:=@func1() // method1 becomes a function reference
+obj:method2:=@func2()
+// these functions must be defined in
+// the same .prg file as static
+// if methods have been addopted from other classes,
+// they will be reassigned to indicated classes
+return obj // returning a ready object
+
+static function func1
+::attribute1++
+return NIL
+static function func2(self)
+self:attribute1--
+return self
+</programlisting>
+<para>_(
+Also, we'd like to add two simple rules:
+)_</para>
+<orderedlist>
+<listitem><para>_(
+The attribute is created when something, including NIL, is assigned to it.
+)_</para></listitem>
+<listitem><para>_(
+At any moment in run-time,the method can assign or reassign any
+function announced in this module as static function, or can adopt
+this function from another object, as a usual assignment of values:
+)_</para>
+<programlisting>
+myObj1:method1 := myObj2:methodX
+</programlisting>
+</listitem>
+</orderedlist>
+<para>_(
+In what way can objects be used? As in CA-Clipper, or even more simply:
+)_</para>
+<programlisting>
+obj:=MyClassNew()
+obj:method1()
+? obj:attribute1
+</programlisting>
+<para>_(In an object, <command>destroy()</command>
+method can be announced, but it isn't quite destructor, which is usual
+in languages of the third generation. There is a local <emphasis>obj</emphasis>
+variable, and this is just an object. Upon leaving the function body,
+this variable, along with all its data, is destroyed. Now, let's consider the
+case of an object having an attribute
+)_</para>
+<programlisting>
+obj:hFile:=fopen("somefile")
+</programlisting>
+<para>_(
+When destroying <emphasis>obj</emphasis>, it's necessary
+to close <emphasis>hFile</emphasis>, but the compiler doesn't know
+this; the compiler (rather a virtual machine) only knows that in
+<emphasis>hFile</emphasis>
+there's a number and will destroy the number only, but the file will
+remain open. Just for such purposes <command>destroy()</command> is intended,
+and it'll called (if it exists ) before destroying <emphasis>obj</emphasis>
+variable.
+)_</para>
+<programlisting>
+static function my_destroy()
+fclose(::hFile)
+return
+</programlisting>
+</section>
+
+<section id="leoomodif"><title>_(Control of change attributes)_</title>
+<para>_(
+If it's necessary to control changes of object attributes, make
+<command>modify()</command> method and invoke
+)_</para>
+<programlisting>
+mapmodify(obj, .t. )
+</programlisting>
+<para>_(
+<command>modify()</command> method is called before changing value
+of any object attribute. Two parameters are passed to
+<command>modify()</command>: hash code of attribute to be changed
+and new value to be assigned to it. <command>modify()</command>
+should return the value to assign to the attribute. For example:
+)_</para>
+<programlisting>
+obj := MyObj()
+obj:attr1 := "bye"
+? obj:attr1,obj:attr2 // hello world
+
+function MyObj()
+local obj := map()
+obj:attr1 := ""
+obj:attr2 := "world"
+obj:modify := @mymodify()
+mapmodify(obj,.t.)
+return obj
+
+static function mymodify(self,hash,value)
+if hash == hash_ATTR1 .and. value == "bye"
+	return "hello" // don't be so pessimistic :)
+endif
+return value
+</programlisting>
+
+</section>
+
+<section id="leoorecover"><title>_(Recovering/reviving objects)_</title>
+<para>_(
+CLIP is able to store the data of any type to MEMO fields, including
+objects. But there is no way to store object methods (methods can be
+changed).
+)_</para>
+<para>_(
+Recovering is made with the following steps: data are decoded; if data are of
+<emphasis>object</emphasis> type and object have <emphasis>CLASSNAME</emphasis>
+attribute then called function
+<emphasis><![CDATA[_recover_&(var:CLASSNAME)(var)]]></emphasis>.
+This function must assign this object methods.
+)_</para>
+<para>_(
+This feature can be used to send object as string via e-mail or TCP :)
+)_</para>
+<para>_(
+Here is an example of using this feature:
+)_</para>
+<programlisting>
+x:=asdfNew() /* Constructor */
+? "x:m1",x:m1() /* See wheter it works */
+? "x:m2",x:m2()
+y:=var2str(x) /* object -> string */
+/* or field->memo_field:=x */
+? "y=",y
+z:=str2var(y) /* string -> object, _recover_asdf() is called automatically */
+/* or z:=field->memo_field */
+? "z=",z
+? "z:m1",z:m1() /* see wheter it works now */
+? "z:m2",z:m2()
+return
+
+function asdfNew()
+local o:=map()
+o:classname := "ASDF"
+o:a1 := "asdf"
+o:a2 := "qwer"
+_recover_asdf(o)
+return o
+
+function _recover_asdf(o)
+o:m1 :=@asdf_1()
+o:m2 :=@asdf_2()
+? "recovering"
+return o
+
+static function asdf_1
+? "asdf_1",::a1
+return ::a1
+
+static function asdf_2
+? "asdf_2",::a2
+return ::a1
+</programlisting>
+</section>
+
+<section id="leoooverload"><title>_(Overloading operators for objects)_</title>
+<para>_(
+CLIP supports overloading of the operations.
+Operations that can be overloaded and corresponding
+<emphasis>operator</emphasis> methods are listed in the table below.
+)_</para>
+<table frame="all"><title>_(Overloaded operations)_</title><tgroup cols="4">
+<thead>
+<row>
+<entry>_(Operation)_</entry><entry>_(Method)_</entry>
+<entry>_(Operation)_</entry><entry>_(Method)_</entry>
+</row>
+</thead>
+<tbody>
+<row><entry align="center">'+'</entry><entry>operator_add</entry>
+<entry align="center">'-'</entry><entry>operator_sub</entry></row>
+<row><entry align="center">'*'</entry><entry>operator_mul</entry>
+<entry align="center">'/'</entry><entry>operator_div</entry></row>
+<row><entry align="center">'%'</entry><entry>operator_mod</entry>
+<entry align="center">'^'</entry><entry>operator_pow</entry></row>
+<row><entry align="center">'|'</entry><entry>operator_or</entry>
+<entry align="center">'&'</entry><entry>operator_and</entry></row>
+<row><entry align="center">'$'</entry><entry>operator_in</entry>
+<entry align="center">'='</entry><entry>operator_eq</entry></row>
+<row><entry align="center">'=='</entry><entry>operator_eeq</entry>
+<entry align="center">'!='</entry><entry>operator_neq</entry></row>
+<row><entry align="center">'<![CDATA[<]]>'</entry><entry>operator_lt</entry>
+<entry align="center">'<![CDATA[>]]>'</entry><entry>operator_gt</entry></row>
+<row><entry align="center">'<![CDATA[<=]]>'</entry><entry>operator_le</entry>
+<entry align="center">'<![CDATA[>=]]>'</entry><entry>operator_ge</entry></row>
+</tbody></table>
+<para>_(
+Here is an example of using operations overloading.
+)_</para>
+<programlisting>
+car1 := newBMW()
+car2 := newKAMAZ()
+? car1 > car2 // .F. (weight of Kamaz is much more :)
+car := car1+car2
+? car:model // Scrap
+? car:weight // 10000
+// 10000 kilograms of the scarp-iron :)
+
+function newCar()
+local obj := map()
+obj:model := ""
+obj:weight := 0
+obj:operator_gt := @car_gt()
+obj:operator_add := @car_add()
+return obj
+
+static function car_gt(car)
+return ::weight > car:weight
+
+static function car_add(car)
+local obj := newCar()
+obj:model := "Scrap"
+obj:weight := ::weight+car:weight
+return obj
+
+function newBMW()
+local obj := newCar() // adopt Car class
+obj:model := "BMW"
+obj:weight := 2000
+return obj
+
+function newKAMAZ()
+local obj := newCar() // adopt Car class
+obj:model := "KAMAZ"
+obj:weight := 8000
+return obj
+</programlisting>
+</section>
+
+<section id="leooconclusion"><title>_(Conclusion)_</title>
+<para>_(
+Due to such OO model and compiling into C-program, there appears
+a possibility to write TBrowse and Get standard classes in Clipper itself.
+At the same time, the efficiency of these classes is not worse than
+those written in pure C in CA-Clipper.
+)_</para>
+</section>
+
+</section>
+
+</chapter>

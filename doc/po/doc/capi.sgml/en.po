@@ -1,0 +1,985 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/capi.sgml:0
+msgid "Extend System"
+msgstr ""
+
+#: template/./doc/capi.sgml:2
+msgid ""
+"\n"
+"Really 90% of the CLIP functional capabilities made up on its extend system\n"
+"base.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:6
+msgid ""
+"\n"
+"Extend system is the set of functions to retrieve the calling parameters,\n"
+"to retrieve data, to generate errors, some arrays, objects and another "
+"types\n"
+"execution functions in C/C++ representation.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:11
+msgid ""
+"\n"
+"For example, the simpliest function may be represented in C like that,\n"
+"orientally:\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:16
+msgid "also here must be stdlib, stdio, etc."
+msgstr ""
+
+#: template/./doc/capi.sgml:20
+msgid ""
+"The name of jointed function must be begining from \"clip_\" and then\n"
+"// it must be the name of CLIPPER-function on upper register.\n"
+"// Such names CLIP-compilier put on the special list of the\n"
+"// run-time available functions.\n"
+"// mp is the current CLIP-machine state description; it's better to see its\n"
+"// structure in clip.h directly.\n"
+"// If this function returns 0 there are no error;\n"
+"// if it returns not 0 it is error code."
+msgstr ""
+
+#: template/./doc/capi.sgml:32
+msgid "We get first parameter as fix length string."
+msgstr ""
+
+#: template/./doc/capi.sgml:35
+msgid ""
+"We get second and third parameter as the automatical converting to int-number"
+msgstr ""
+
+#: template/./doc/capi.sgml:36
+msgid "If the pass parameters were incorect types"
+msgstr ""
+
+#: template/./doc/capi.sgml:37
+msgid "it will be retrieved NULL as C-values."
+msgstr ""
+
+#: template/./doc/capi.sgml:42
+msgid ""
+"Test of retrieved string and error generation in case of\n"
+"// the incorrect passing parameter."
+msgstr ""
+
+#: template/./doc/capi.sgml:45
+msgid "The execution algorithm itself."
+msgstr ""
+
+#: template/./doc/capi.sgml:46
+msgid "It's not necessary to pay your attention to it."
+msgstr ""
+
+#: template/./doc/capi.sgml:66
+msgid ""
+"The returning of the value to the CLIP-machine as the string\n"
+"// (with the allocated memory)\n"
+"// with fix length (because of clipper-strings may have the zero bytes!)\n"
+"// If it nothing returns by _CLIP_.... , then NIL will returns."
+msgstr ""
+
+#: template/./doc/capi.sgml:71
+msgid "The message to CLIP-machine is that function terminates correct."
+msgstr ""
+
+#: template/./doc/capi.sgml:75
+msgid ""
+"\n"
+"Well, now let's look at such expent functions that you need for\n"
+"the new CLIP capabilities using.\n"
+"If you easy read and write in C it's better to see in clip.h file.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:81
+msgid "The passed parameters retrieving functions"
+msgstr ""
+
+#: template/./doc/capi.sgml:89 template/./doc/capi.sgml:111
+#: template/./doc/capi.sgml:134 template/./doc/capi.sgml:157
+#: template/./doc/capi.sgml:180 template/./doc/capi.sgml:211
+#: template/./doc/capi.sgml:234 template/./doc/capi.sgml:261
+#: template/./doc/capi.sgml:285 template/./doc/capi.sgml:309
+#: template/./doc/capi.sgml:333 template/./doc/capi.sgml:372
+#: template/./doc/capi.sgml:394 template/./doc/capi.sgml:416
+#: template/./doc/capi.sgml:437 template/./doc/capi.sgml:466
+#: template/./doc/capi.sgml:490 template/./doc/capi.sgml:516
+#: template/./doc/capi.sgml:543 template/./doc/capi.sgml:565
+#: template/./doc/capi.sgml:586 template/./doc/capi.sgml:614
+#: template/./doc/capi.sgml:650 template/./doc/capi.sgml:669
+#: template/./doc/capi.sgml:688 template/./doc/capi.sgml:713
+#: template/./doc/capi.sgml:738 template/./doc/capi.sgml:760
+#: template/./doc/capi.sgml:789 template/./doc/capi.sgml:849
+#: template/./doc/capi.sgml:876 template/./doc/capi.sgml:905
+#: template/./doc/capi.sgml:927 template/./doc/capi.sgml:949
+#: template/./doc/capi.sgml:990 template/./doc/capi.sgml:1016
+#: template/./doc/capi.sgml:1041 template/./doc/capi.sgml:1073
+msgid "Parameters"
+msgstr ""
+
+#: template/./doc/capi.sgml:91
+msgid ""
+"\n"
+"<emphasis>mp</emphasis> is pointing to the current CLIP-machine state "
+"description.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:94
+msgid ""
+"\n"
+"<emphasis>num</emhpasis> is the position of parameter.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:97 template/./doc/capi.sgml:119
+#: template/./doc/capi.sgml:142 template/./doc/capi.sgml:165
+#: template/./doc/capi.sgml:194 template/./doc/capi.sgml:219
+#: template/./doc/capi.sgml:245 template/./doc/capi.sgml:269
+#: template/./doc/capi.sgml:293 template/./doc/capi.sgml:317
+#: template/./doc/capi.sgml:353 template/./doc/capi.sgml:380
+#: template/./doc/capi.sgml:402 template/./doc/capi.sgml:424
+#: template/./doc/capi.sgml:451 template/./doc/capi.sgml:474
+#: template/./doc/capi.sgml:501 template/./doc/capi.sgml:527
+#: template/./doc/capi.sgml:551 template/./doc/capi.sgml:573
+#: template/./doc/capi.sgml:600 template/./doc/capi.sgml:628
+#: template/./doc/capi.sgml:655 template/./doc/capi.sgml:674
+#: template/./doc/capi.sgml:699 template/./doc/capi.sgml:724
+#: template/./doc/capi.sgml:746 template/./doc/capi.sgml:768
+#: template/./doc/capi.sgml:812 template/./doc/capi.sgml:860
+#: template/./doc/capi.sgml:890 template/./doc/capi.sgml:913
+#: template/./doc/capi.sgml:935 template/./doc/capi.sgml:957
+#: template/./doc/capi.sgml:1002 template/./doc/capi.sgml:1028
+#: template/./doc/capi.sgml:1056 template/./doc/capi.sgml:1114
+msgid "Description"
+msgstr ""
+
+#: template/./doc/capi.sgml:99
+msgid ""
+"\n"
+"If"
+msgstr ""
+
+#: template/./doc/capi.sgml:99
+msgid ""
+"returns the number of\n"
+"parameters, if non zero it returns type of passed parameter with num "
+"number.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:113
+msgid ""
+"\n"
+"<emphasis>mp</emphasis> is pointing to the current CLIP-machine state "
+"description\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:116 template/./doc/capi.sgml:139
+#: template/./doc/capi.sgml:162 template/./doc/capi.sgml:185
+#: template/./doc/capi.sgml:216 template/./doc/capi.sgml:239
+#: template/./doc/capi.sgml:266 template/./doc/capi.sgml:290
+#: template/./doc/capi.sgml:314 template/./doc/capi.sgml:338
+msgid ""
+"\n"
+"<emphasis>num</emphasis>  is the position of parameter\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:122
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+"returns converted to int type value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:136 template/./doc/capi.sgml:159
+#: template/./doc/capi.sgml:182 template/./doc/capi.sgml:213
+#: template/./doc/capi.sgml:236 template/./doc/capi.sgml:263
+#: template/./doc/capi.sgml:287 template/./doc/capi.sgml:311
+#: template/./doc/capi.sgml:335 template/./doc/capi.sgml:374
+#: template/./doc/capi.sgml:396 template/./doc/capi.sgml:418
+#: template/./doc/capi.sgml:439 template/./doc/capi.sgml:468
+#: template/./doc/capi.sgml:492 template/./doc/capi.sgml:518
+#: template/./doc/capi.sgml:545 template/./doc/capi.sgml:567
+#: template/./doc/capi.sgml:588 template/./doc/capi.sgml:616
+#: template/./doc/capi.sgml:740 template/./doc/capi.sgml:762
+#: template/./doc/capi.sgml:791 template/./doc/capi.sgml:851
+#: template/./doc/capi.sgml:878 template/./doc/capi.sgml:907
+#: template/./doc/capi.sgml:929 template/./doc/capi.sgml:951
+msgid ""
+"\n"
+"<emphasis>mp</emphasis> is pointing to the current CLIP-machine task "
+"context\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:145
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to long type value of parameter with num number\n"
+" "
+msgstr ""
+
+#: template/./doc/capi.sgml:168
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to double type value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:188 template/./doc/capi.sgml:242
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is the parameter length\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:191
+msgid ""
+"\n"
+"<emphasis>dec</emphasis>  is the parameter precision\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:197
+msgid ""
+"\n"
+"\n"
+" retrieves a numeric value passed as parameter\n"
+" with <emphasis>len</emphasis> length and <emphasis>dec</emphasis> "
+"precision;\n"
+" returns converted to int type value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:222
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to character type value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:248
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter and its length;\n"
+" returns converted to string with length type value of parameter with num "
+"number\n"
+" (clipper-strings may has bytes of 0!)\n"
+" "
+msgstr ""
+
+#: template/./doc/capi.sgml:272
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to logical (0/1) type\n"
+" value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:296
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to clipper-avaible type\n"
+" value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:320
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter and\n"
+" returns converted to julian-representation date\n"
+" value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:341
+msgid ""
+"\n"
+"<emphasis>yy</emphasis>  is pointing to int contained year value\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:344
+msgid ""
+"\n"
+"<emphasis>mm</emphasis>  is pointing to int contained month value\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:347
+msgid ""
+"\n"
+"<emphasis>dd</emphasis>  is pointing to int contained day value\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:350
+msgid ""
+"\n"
+"<emphasis>ww</emphasis>  is pointing to int contained millenium format\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:356
+msgid ""
+"\n"
+" retrieves a numeric value passed as parameter;\n"
+" returns converted to year,month,day,millenium-representation date\n"
+" value of parameter with num number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:364
+msgid "The data post to CLIP-machine functions"
+msgstr ""
+
+#: template/./doc/capi.sgml:377
+msgid ""
+"\n"
+"<emphasis>n</emphasis>  is a numerical expression of type int\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:383
+msgid ""
+"\n"
+" post a int type value to a CLIP return value area\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:399
+msgid ""
+"\n"
+"<emphasis>n</emphasis>  is a numerical expression of type long\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:405
+msgid ""
+"\n"
+" post a long type value to a CLIP return value area\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:421 template/./doc/capi.sgml:442
+msgid ""
+"\n"
+"<emphasis>n</emphasis>  is a numerical expression of type double\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:427
+msgid ""
+"\n"
+" post a double type value to a CLIP return value area\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:445 template/./doc/capi.sgml:622
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is a string length parameter\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:448 template/./doc/capi.sgml:625
+msgid ""
+"\n"
+"<emphasis>dec</emphasis>  is a string precision parameter\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:454
+msgid ""
+"\n"
+" post a double type with len length and dec precision value\n"
+" to a CLIP return value area\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:471 template/./doc/capi.sgml:495
+msgid ""
+"\n"
+"<emphasis>str</emphasis>  is a string of type char\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:477
+msgid ""
+"\n"
+" post a  string to a CLIP return value area;\n"
+" data from str must be copied before;\n"
+" Str must be released without CLIP-machine taking part!\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:498 template/./doc/capi.sgml:524
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is a string length\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:504
+msgid ""
+"\n"
+" post a  string with len length; data from str must be copied before;\n"
+" Str must be released without CLIP-machine taking part!\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:521
+msgid ""
+"\n"
+"<emphasis>str</emphasis>  is  pointing  to string\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:530
+msgid ""
+"\n"
+" post a  string with len length without the coping of data from str;\n"
+" Str will be released by CLIP-machine when this string be not used more\n"
+" (i.e when number of references on this string will become equal to zero)\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:548
+msgid ""
+"\n"
+"<emphasis>l</emphasis>  is a numerical expression of type logic\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:554
+msgid ""
+"\n"
+" post a logic type number to a CLIP return value area\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:570
+msgid ""
+"\n"
+"<emphasis>l</emphasis>  is a julian parameter of type long\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:576
+msgid ""
+"\n"
+" post a julian format date to a CLIP return value area\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:591
+msgid ""
+"\n"
+"<emphasis>yy</emphasis>  is a parameter contained year\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:594
+msgid ""
+"\n"
+"<emphasis>len</emphasis>  is a parameter contained month\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:597
+msgid ""
+"\n"
+"<emphasis>dec</emphasis>  is a parameter contained day\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:603
+msgid ""
+"\n"
+" post a year,month,day format date to a CLIP return value area\n"
+" "
+msgstr ""
+
+#: template/./doc/capi.sgml:619
+msgid ""
+"\n"
+"<emphasis>r</emphasis>  is a numerical expression of type double\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:631
+msgid ""
+"\n"
+" post a rational type with len length and dec precision number\n"
+" to a CLIP return value area\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:638
+msgid "The hash-codes evaluation functions"
+msgstr ""
+
+#: template/./doc/capi.sgml:640
+msgid ""
+"\n"
+"Hash-codes are used everwhere in CLIP-machine, hence there is necessity\n"
+"to evaluate them often.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:652 template/./doc/capi.sgml:671
+msgid ""
+"\n"
+"<emphasis>x</emphasis> is a pointer to the string to be hashed\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:658
+msgid ""
+"\n"
+"hash a string without register accounting.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:677
+msgid ""
+"\n"
+"hash a string with register accounting.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:690 template/./doc/capi.sgml:715
+msgid ""
+"\n"
+"<emphasis>seed</emphasis> is the down boundary hash beginned from\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:693
+msgid ""
+"\n"
+"<emphasis>bytes</emphasis> is a pointer to the len object\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:696 template/./doc/capi.sgml:721
+msgid ""
+"\n"
+"<emphasis>len</emphasis> is the object to be hashed\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:702
+msgid ""
+"\n"
+"hash object len without register accounting.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:718
+msgid ""
+"\n"
+"<emphasis>bytes</emphasis> is a pointer to the obect len\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:727
+msgid ""
+"\n"
+"hash  object len with register accounting.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:743
+msgid ""
+"\n"
+"<emphasis>vp</emphasis> is a pointer to the object of ClipVar type to be "
+"hashed\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:749
+msgid ""
+"\n"
+"hash the object of ClipVar type with register accounting.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:765
+msgid ""
+"\n"
+"<emphasis>vp</emphasis> is pointing to the object of ClipVar type to be "
+"hashed\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:771
+msgid ""
+"\n"
+"hash  the object of ClipVar type to be hashed without register accounting.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:777
+msgid "The run-time errors generation functions"
+msgstr ""
+
+#: template/./doc/capi.sgml:779
+msgid ""
+"\n"
+"For the more insighting to the \"error\" entity read the error class "
+"description.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:794
+msgid ""
+"\n"
+"<emphasis>genCode</emphasis> is an error code number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:797
+msgid ""
+"\n"
+"<emphasis>canDefault</emphasis>  indicates if default recovery is available\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:800
+msgid ""
+"\n"
+"<emphasis>canRetry</emphasis>  indicates if a retry is possible after an "
+"error\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:803
+msgid ""
+"\n"
+"<emphasis>subSystem</emphasis> is character describtion of the subsystem "
+"generation the error\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:806
+msgid ""
+"\n"
+"<emphasis>subCode</emphasis> is subsystem-cpecific error code number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:809
+msgid ""
+"\n"
+"<emphasis>operation</emphasis> is character describtion of the failed "
+"operation\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:815
+msgid ""
+"\n"
+"provides with information about runtime errors\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:821
+msgid ""
+"\n"
+"In more simple cases one can use:\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:834
+msgid "The static data operating functions"
+msgstr ""
+
+#: template/./doc/capi.sgml:836
+msgid ""
+"\n"
+"There is a set of functions for the necessity to store any static data\n"
+"(for example set(_MY_SET_1,MY_DATA)) in CLIP-machine.\n"
+"Attention! It's prohibited in C to declare explicitly constractoins like "
+"that\n"
+"\"static my_type var_name\". Such data may lead to conflict between "
+"different\n"
+"CLIP-processes!\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:854
+msgid ""
+"\n"
+"<emphasis>hash</emphasis>  is the identificator of item data to be stored\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:857
+msgid ""
+"\n"
+"<emphasis>item</emphasis>  is the pointer  to item data to be stored\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:863
+msgid ""
+"\n"
+" store "
+msgstr ""
+
+#: template/./doc/capi.sgml:863
+msgid " data with "
+msgstr ""
+
+#: template/./doc/capi.sgml:863
+msgid ""
+" identificator,\n"
+" the best way to generate it is to use"
+msgstr ""
+
+#: template/./doc/capi.sgml:864
+msgid ""
+" functions.\n"
+" A memory for"
+msgstr ""
+
+#: template/./doc/capi.sgml:865
+msgid "must be allocated explicitly.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:881 template/./doc/capi.sgml:932
+#: template/./doc/capi.sgml:954
+msgid ""
+"\n"
+"<emphasis>hash</emphasis>  is the identificator of item data\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:884
+msgid ""
+"\n"
+"<emphasis>item</emphasis>  is the pointer to  data\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:887
+msgid ""
+"\n"
+"<emphasis>destroy</emphasis>  is the destroy function\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:893
+msgid ""
+"\n"
+" set a function of the memory release for the static data with a "
+msgstr ""
+
+#: template/./doc/capi.sgml:894 template/./doc/capi.sgml:916
+#: template/./doc/capi.sgml:938
+msgid "identificator\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:910
+msgid ""
+"\n"
+"<emphasis>hash</emphasis>  is the identificator  of item data\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:916
+msgid ""
+"\n"
+" release the memory for "
+msgstr ""
+
+#: template/./doc/capi.sgml:938
+msgid ""
+"\n"
+" destroy all information about "
+msgstr ""
+
+#: template/./doc/capi.sgml:960
+msgid ""
+"\n"
+" return pointer to  "
+msgstr ""
+
+#: template/./doc/capi.sgml:960
+msgid "identificator memory\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:966
+msgid "The containers operating functions"
+msgstr ""
+
+#: template/./doc/capi.sgml:968
+msgid ""
+"\n"
+"Container is a one more way to store the static data.\n"
+"For example it's difficalt to return any C-pointer on structure to CLIP-"
+"machine:\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:976
+msgid ""
+"\n"
+"Where the pointer \"FILE * fh\" mast be put to?\n"
+"Well known that return value in clipper-function <command>fopen()</command> "
+"is\n"
+"simple number.\n"
+"And for instance what about structure of open connection whith ORACLE,MYSQL "
+"etc?\n"
+"It's desired to operate with a number inside of CLIP-application.\n"
+"To store that structures a container is intend for.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:992 template/./doc/capi.sgml:1018
+#: template/./doc/capi.sgml:1043
+msgid ""
+"\n"
+"<emphasis>cm</emphasis> is pointing to the current CLIP-machine task "
+"context\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:995 template/./doc/capi.sgml:1021
+msgid ""
+"\n"
+"<emphasis>key</emphasis> is file, connection etc. number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:998 template/./doc/capi.sgml:1024
+#: template/./doc/capi.sgml:1049
+msgid ""
+"is a stored information type\n"
+"(it's for impossibility to set file number instead of connection one)\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1005
+msgid ""
+"\n"
+" fetch item object with key number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1031
+msgid ""
+"\n"
+" destroy item object with key number\n"
+" "
+msgstr ""
+
+#: template/./doc/capi.sgml:1046
+msgid ""
+"\n"
+"<emphasis>item</emphasis> is file, connection etc. number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1053
+msgid "is a stored structure destroy/close function"
+msgstr ""
+
+#: template/./doc/capi.sgml:1059
+msgid ""
+"\n"
+" store item object with key number\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1065
+msgid "The CLIP function/procedure calling from C"
+msgstr ""
+
+#: template/./doc/capi.sgml:1075
+msgid "is pointing to a current CLIP-machine task context"
+msgstr ""
+
+#: template/./doc/capi.sgml:1078
+msgid "is a function name in CLIP"
+msgstr ""
+
+#: template/./doc/capi.sgml:1081
+msgid "is a number of arguments\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1083
+msgid "is pointing to array of argc ClipVar type elements\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1086
+msgid ""
+"is a pointer to stack cell\n"
+"in wich returned value will be located.\n"
+"One can use macros RETPTR to get that pointer.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1091
+msgid ""
+"\n"
+"For example :\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1097
+msgid "RETPTR is macros that returns pointer to"
+msgstr ""
+
+#: template/./doc/capi.sgml:1098
+msgid "stack cell returned value will be in"
+msgstr ""
+
+#: template/./doc/capi.sgml:1100
+msgid "to be on a safe side"
+msgstr ""
+
+#: template/./doc/capi.sgml:1102
+msgid "first argument is a string (\"Baby\")"
+msgstr ""
+
+#: template/./doc/capi.sgml:1103
+msgid "element s of union ClipVar is for strings"
+msgstr ""
+
+#: template/./doc/capi.sgml:1106
+msgid "second argument is number"
+msgstr ""
+
+#: template/./doc/capi.sgml:1107
+msgid "element n of union ClipVar is for numbers"
+msgstr ""
+
+#: template/./doc/capi.sgml:1117
+msgid ""
+"\n"
+"allow to call a written in CLIP function/procedure from C\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1123
+msgid "The CLIP dynamics loading modules creating"
+msgstr ""
+
+#: template/./doc/capi.sgml:1125
+msgid ""
+"\n"
+"There is function <command>load()</command> in CLIP, that load dynamics "
+"modules (*.so)\n"
+"or byte-code (*.po) and libraries of byte-codes (*.pa).\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1129
+msgid ""
+"\n"
+"It's easy to make byte-code and so-modules from prg-files by commands:\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1134
+msgid ""
+"\n"
+"And it's possible to write the same loading module in C in such way:\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1137
+msgid ""
+"\n"
+"To create module.prg and then to describe all necessary empty functions in "
+"it:\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1146
+msgid ""
+"\n"
+"Then this module is compilied\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1150
+msgid ""
+"\n"
+"As resalt we have C-text in file <emphasis>module.c.</emphasis>\n"
+"This text has storeges for described functions  my_func1,my_func2,....\n"
+"Now we need simply to change function body by described above rules for C-"
+"API\n"
+"and so-module in C is done. Then it must be compilied by C-compilier\n"
+"whith key -shared or with analogous one (it depends on compilier).\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1158
+msgid "Other features"
+msgstr ""
+
+#: template/./doc/capi.sgml:1160
+msgid ""
+"\n"
+"In addition to described above there are much more functions in C-API\n"
+"to operate whith arrays, objects, input-output process,\n"
+"code blocks calling and others.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1165
+msgid ""
+"\n"
+"But that informations will be given them only who has appropriate\n"
+"qualification, because of incorrect and inqualificating using of these\n"
+"capabilities may lead to misunderstanding \"falling\"  of applications,\n"
+"memory losing etc.\n"
+msgstr ""
+
+#: template/./doc/capi.sgml:1171
+msgid ""
+"\n"
+"Who wants to add something serious to CLIP please contact to us"
+msgstr ""
+
+#: template/./doc/capi.sgml:1173
+msgid ""
+"and we will give you information and examples; help in learning\n"
+"of inner structure of CLIP-machine garantee.\n"
+msgstr ""

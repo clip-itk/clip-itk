@@ -1,0 +1,30 @@
+$FUNCNAME$
+  GETDOSETKEY()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Process SET KEY during GET editing
+$SYNTAX$
+     GETDOSETKEY(<bKeyBlock>, <oGet>) --> NIL
+$ARGUMENTS$
+     <oGet> is a reference to the current Get object.
+     <bKeyBlock> is the code block to execute.
+$RETURNS$
+     GETDOSETKEY() always returns NIL.
+$DESCRIPTION$
+     GETDOSETKEY() is a function that executes a SET KEY code block,
+     preserving the context of the passed Get object.
+
+     Note that the procedure name and line number passed to the SET KEY block
+     are based on the most recent call to READMODAL().
+$EXAMPLES$
+       The following example determines if the last key pressed,
+	nKey, has a SET KEY associated with it.  If it does, then GETDOSETKEY
+	is called to execute that block on the current GET.
+
+	IF ((bKeyBlock := SETKEY (nKey)) == NIL)
+	   GETDOSETKEY (bKeyBlock, oGet)
+	ENDIF
+$SEEALSO$
+  GETAPPLYKEY(),GETPOSTVALIDATE(),GETPREVALIDATE()
+$END$

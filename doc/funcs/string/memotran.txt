@@ -1,0 +1,84 @@
+$FUNCNAME$
+  MEMOTRAN()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Replace carriage return/linefeeds in character strings
+$LANG_RU$
+   Замещает символы "возврат каретки/перевод строки" символьной строкой.
+$SYNTAX$
+     MEMOTRAN(<cString>,[<cReplaceHardCR>],[<cReplaceSoftCR>]) --> cNewString
+$LANG_RU$
+     MEMOTRAN( <символьная строка>,[<замещающий символ 1>],
+	<замещающий символ 2>]) --> новая символьная строка.
+$ARGUMENTS$
+     <cString> is the character string or memo field to be searched.
+
+     <cReplaceHardCR> is the character with which to replace a hard
+     carriage return/line feed pair.  If not specified, the default value is
+     a semicolon (;).
+
+     <cReplaceSoftCR> is the character with which to replace a soft
+     carriage return/line feed pair.  If not specified, the default value is
+     a space.
+$LANG_RU$
+     <символьная строка> - строка символов или memo-поле.
+
+     [<замещающий символ 1>] - символ, замещающий пару символов "жесткий
+     возврат каретки/перевод строки". По умолчанию - точка с запятой (;).
+
+     [<замещающий символ 2>] - символ, заменяющий пару : "мягкий возврат
+     каретки/перевод строки". По умолчанию - пробел.
+$RETURNS$
+     MEMOTRAN() returns a copy of <cString> with the specified carriage
+     return/line feed pairs replaced.
+$LANG_RU$
+     MEMOTRAN() возвращает копию <символьной строки> с замещенными парами
+     символов "возврат каретки/перевод строки"
+$DESCRIPTION$
+     MEMOTRAN() is a memo function that converts a memo field or long
+     character string containing hard and soft carriage return/line feed
+     characters into a form that can be displayed.  These two character
+     combinations are end of line formatting indicators placed in the string
+     by MEMOEDIT().  Soft carriage returns (CHR(141)) are inserted when a
+     line longer than the width of the MEMOEDIT() window wraps.  Hard
+     carriage returns (CHR(13)) are inserted when the user explicitly presses
+     Return.
+
+     MEMOTRAN() is particularly useful when displaying a memo field in a
+     REPORT FORM which does not wrap when a soft carriage return is
+     encountered.  MEMOTRAN() resolves this by converting soft carriage
+     returns to spaces.  Note, however, that you must declare MEMOTRAN() as
+     external using the REQUEST statement if it is used in a REPORT FORM and
+     not specified anywhere else in the current program.
+$LANG_RU$
+     MEMOTRAN() - функция обработки memo-полей, которая изменяет длинные
+     символьные строки или memo-поля, содержащие жесткий или мягкий
+     возврат каретки/перевод строки, в форму, удобную для выдачи на
+     дисплей.  Эти две символьные комбинации используются функцией
+     MEMOEDIT() как форматирующие признаки конца строки. Мягкий возврат
+     каретки (CHR(141)) ставится в том случае, когда длина строки больше,
+     чем размер окна MEMOEDIT(). Жесткий возврат каретки (CHR(13))
+     ставится при нажатии клавиши <Enter>.
+
+     Функция MEMOTRAN() бывает особенно полезна при выдаче memo-поля
+     командой REPORT FORM, которая не делает переносов, когда встречается
+     мягкий возврат каретки. MEMOTRAN() устраняет этот недостаток, замещая
+     мягкий возврат каретки пробелом. Заметим, что если вы запускаете
+     REPORT FORM, который использует MEMOTRAN(), и при этом MEMOTRAN()
+     нигде больше в программе не встречается, то необходимо при помощи
+     команды EXTERNAL объявить MEMOTRAN() как внешнюю функцию.
+$EXAMPLES$
+
+       This example strips all end of line characters from a memo
+	field:
+
+	REPLACE Notes WITH MEMOTRAN(Notes)
+$LANG_RU$
+
+      В этом примере из memo-поля удаляются все символы конца строки:
+
+       REPLACE Notes WITH MEMOTRAN(Notes," "," ")
+$SEEALSO$
+  STRTRAN()
+$END$

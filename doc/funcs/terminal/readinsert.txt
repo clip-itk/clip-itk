@@ -1,0 +1,84 @@
+$FUNCNAME$
+  READINSERT()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Toggle the current insert mode for READ and MEMOEDIT()
+$LANG_RU$
+   Переключает текущий режим вставки, для команды READ и функции MEMOEDIT()
+$SYNTAX$
+     READINSERT([<lToggle>]) --> lCurrentMode
+$LANG_RU$
+     READINSERT([<переключатель>]) --> текущий режим вставки
+$ARGUMENTS$
+     <lToggle> toggles the insert mode on or off.  True (.T.) turns
+     insert on, while false (.F.) turns insert off.  The default is false
+     (.F.) or the last user-selected mode in READ or MEMOEDIT().
+$LANG_RU$
+     <переключатель> - устанавливает режим вставки ON или OFF.
+     При значении аргумента <переключатель> - "истина" (.T.) включается
+     режим вставки, если его значение - "ложь" (.F.) режим вставки
+     выключается.  Если аргумент не задан, его значение по умолчанию -
+     "ложь" (.F.) или последний выбранный пользователем режим для команды
+     READ или функции MEMOEDIT().
+$RETURNS$
+     READINSERT() returns the current insert mode state as a logical value.
+$LANG_RU$
+     READINSERT() возвращает текущее состояние режима вставки в виде
+     логического значения.
+$DESCRIPTION$
+     READINSERT() is an environment function that reports the current state
+     of the insert mode for READ and MEMOEDIT() and, optionally, sets the
+     insert mode on or off depending on the value of <lToggle>.  When
+     READINSERT() returns false (.F.) and the user enters characters into a
+     Get object's buffer during a READ or a MEMOEDIT(), characters are
+     overwritten.  When READINSERT() returns true (.T.), entered characters
+     are inserted instead.  The insert mode is a global setting belonging to
+     the system and not to any specific object.
+
+     You can execute READINSERT() prior to or during a READ or MEMOEDIT().
+     If used with READ, READINSERT() can be invoked within a WHEN or VALID
+     clause of @...GET or within a SET KEY procedure.  If used with
+     MEMOEDIT(), it can be invoked with the user function as well as a SET
+     KEY procedure.
+$LANG_RU$
+     READINSERT() - функция среды, которая возвращает текущее состояние
+     режима вставки для команды READ и функции MEMOEDIT() и по желанию
+     включает или выключает режим вставки в зависимости от значения
+     аргумента <переключатель>. Когда READINSERT() возвращает значение
+     "ложь"(.F.) и пользователь вводит данные в буфер GET-объекта во время
+     выполнения READ или MEMOEDIT(), то символы перезаписываются. Когда
+     READINSERT() возвращает "истину" (.T.), вводимые символы вставляются,
+     раздвигая текст. Режим вставки - это установка, принадлежащая
+     системе, а не какому-либо особому объекту.
+
+     READINSERT() может быть выполнена до или во время выполнения команды
+     READ или функции MEMOEDIT(). При использовании в сочетании с READ,
+     READINSERT() может быть вызвана внутри предложений WHEN или VALID
+     оператора @...GET или внутри процедуры, определенной в команде
+     SET KEY. При использовании в сочетании с MEMOEDIT() она может быть
+     вызвана с помощью функции пользователя так же, как и с помощью
+     процедуры, установленной командой SET KEY.
+$EXAMPLES$
+       This example sets the insert mode prior to entering MEMOEDIT()
+	and resets the mode when MEMOEDIT() terminates:
+
+	USE Sales NEW
+
+	// Turn on insert mode
+	lInsMode = READINSERT(.T.)
+	Sales->Notes := MEMOEDIT(Sales->Notes)
+	//
+	// Restore previous insert mode
+	READINSERT(lInsMode)
+$LANG_RU$
+      Следующий пример устанавливает режим вставки перед выполнением
+       MEMOEDIT() и сбрасывает этот режим, когда MEMOEDIT() завершается:
+
+       USE Sales NEW
+       lInsMode = READINSERT(.T.)      // Включение режима вставки
+       Sales->Notes := MEMOEDIT(Sales->Notes)
+       READINSERT(lInsMode)            // Восстановление начального режима
+$SEEALSO$
+  READEXIT(),MEMOEDIT()
+$END$

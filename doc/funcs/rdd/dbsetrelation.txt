@@ -1,0 +1,110 @@
+$FUNCNAME$
+  DBSETRELATION()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Relate two work areas
+$LANG_RU$
+   Устанавливает связь между двумя рабочими областями
+$SYNTAX$
+     DBSETRELATION(<nArea> | <cAlias>, <bExpr>, <cExpr>) --> NIL
+$LANG_RU$
+     DBSETRELATION( <номер области> | <алиас>,
+		    <выражение - блок кода>,
+		    [<текстовое выражение>] )   -->  NIL
+$ARGUMENTS$
+     <nArea> is a numeric value that specifies the work area number of
+     the child work area.
+     <cAlias> is a character value that specifies the alias of the child
+     work area.
+     <bExpr> is a code block that expresses the relational expression in
+     executable form.
+     <cExpr> is a character value that expresses the relational
+     expression in textual form.
+$LANG_RU$
+     <номер области> - числовая величина, которая определяет номер
+     дочерней рабочей области.
+     <алиас> - символьная величина, которая определяет алиас дочерней
+     рабочей области.
+     <выражение - блок кода> - блок кода, определяющий выражение отношения
+     связи в исполняемой форме.
+     <текстовое выражение> - необязательная символьная величина,
+     определяющая выражение отношения связи в текстовой форме. Если
+     <текстовое выражение> опущено, то функция DBRELATION() возвратит
+     пустую строку.
+$RETURNS$
+     DBSETRELATION() always returns NIL.
+$LANG_RU$
+     DBSETRELATION() всегда возвращает NIL.
+$DESCRIPTION$
+     DBSETRELATION() relates the work area specified by <nArea> or <cAlias>
+     (the child work area) to the current work area (the parent work area).
+     Any existing relations remain active.
+
+     Relating work areas synchronizes the child work area with the parent
+     work area.  This is achieved by automatically repositioning the child
+     work area whenever the parent work area moves to a new record.  If there
+     is an active index in the child work area, moving the parent work area
+     causes an automatic SEEK operation in the child work area; the seek key
+     is based on the expression specified by <bExpr> and/or <cExpr>.  If the
+     child work area has no active index, moving the parent work area causes
+     an automatic GOTO in the child work area; the record number for the GOTO
+     is based on the expression specified by <bExpr> and/or <cExpr>.
+
+     The relational expression may be a code block (<bExpr>) or both a code
+     block and equivalent text (<cExpr>).  If both versions are supplied,
+     they must be equivalent.  If the text version is omitted, DBRELATION()
+     will return an empty string for the relation.
+
+     DBSETRELATION() performs the same function as the standard SET RELATION
+     command with the ADDITIVE clause.  For more information, refer to the
+     SET RELATION command.
+$LANG_RU$
+     DBSETRELATION() - связывает рабочую область, определенную при помощи
+     <номер области> или <алиас> (дочернюю рабочую область) с текущей
+     рабочей областью (родительская рабочая область). Все активные
+     отношения связи остаются активными.
+
+     Установленная связь между двумя рабочими областями заставляет
+     дочернюю рабочую область работать синхронно с родительской рабочей
+     областью.  Это достигается автоматическим перемещением указателя
+     записей в дочерней рабочей области всякий раз, когда указатель в
+     родительской рабочей области перемещается на новую запись. Если
+     дочерняя рабочая область имеет активный индекс, то перемещение
+     указателя в родительской рабочей области заставляет автоматически
+     работать команду SEEK в дочерней рабочей области. При этом ключ
+     поиска  является результатом вычисления заданного <выражение - блок
+     кода>. Если дочерняя рабочая область не имеет активного индекса, то
+     перемещение указателя в родительской рабочей области заставляет
+     автоматически работать команду GOTO в дочерней рабочей области. При
+     этом номер записи для GOTO  является результатом вычисления
+     <выражение - блок кода>.
+
+     Выражение отношения может быть задано или как одно <выражение - блок
+     кода>, или как два аргумента: <выражение - блок кода> и эквивалентный
+     ему <текст выражения>. Если текстовый вариант не задан, то функция
+     DBRELATION() будет возвращать пустую строку.
+
+     DBSETRELATION() выполняет те же функции, что и стандартная команда
+     SET RELATION с предложением ADDITIVE. Более подробную информацию
+     смотрите в команде SET RELATION.
+$EXAMPLES$
+       This example demonstrates a typical use of the DBSETRELATION()
+	function:
+
+	USE Employee NEW
+	USE Department NEW INDEX Dept
+	SELECT Employee
+	DBSETRELATION("Department", {|| Employee->Dept},;
+			"Employee->Dept")
+	LIST Employee->Name, Department->Name
+$LANG_RU$
+       USE Employees NEW
+       USE Department NEW INDEX Dept
+
+       SELECT Employee
+       DBSETRELATION("Department", {|| Employee->Dept}, "Employee->Dept")
+       LIST Employee->Name, Department->Name
+$SEEALSO$
+  DBCLEARRELATION(),DBRELATION(),DBRSELECT(),FOUND()
+$END$

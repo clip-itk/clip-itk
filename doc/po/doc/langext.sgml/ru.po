@@ -1,0 +1,740 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2003-04-08 15:49+0500\n"
+"Last-Translator: Rushad <rust@itk.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: template/./doc/langext.sgml:0
+msgid "Language extensions"
+msgstr "Расширения языка"
+
+#: template/./doc/langext.sgml:2
+msgid "Introduction"
+msgstr "Введение"
+
+#: template/./doc/langext.sgml:4
+msgid ""
+"\n"
+"CLIP is a <emphasis>Clipper</emphasis> compiler, in other words\n"
+"it understands the <emphasis>standard Clipper syntax</emphasis>.\n"
+"For lack of the documentation on CLIP language (it's under construction\n"
+"at present), refer to the Clipper manuals. Only language extensions\n"
+"are considered here.\n"
+msgstr ""
+"\n"
+"CLIP является компилятором <emphasis>Clipper</emphasis>, другими словами он "
+"понимает <emphasis>стандартный синтаксис Clipper</emphasis>. За неимением "
+"документации по языку CLIP (в данный момент находится в разработке), "
+"обращайтесь к руководству по Clipper. Здесь рассматриваются лишь расширения "
+"языка, реализованный в CLIP.\n"
+
+#: template/./doc/langext.sgml:12
+msgid "SWITCH statement"
+msgstr "Оператор SWITCH"
+
+#: template/./doc/langext.sgml:14
+msgid ""
+"\n"
+"<command>SWITCH</command> statement is a control structure that\n"
+"executes one of several blocks of the statements depending on the value\n"
+"of an expression.\n"
+msgstr ""
+"\n"
+"Оператор <command>SWITCH</command> является управляющей структурой, которая "
+"выполняет блок операторов в зависимости от значения выражения.\n"
+
+#: template/./doc/langext.sgml:19
+msgid ""
+"\n"
+"Syntax:\n"
+msgstr ""
+"\n"
+"Синтаксис:\n"
+
+#: template/./doc/langext.sgml:32
+msgid ""
+"\n"
+"It evaluates <emphasis><![CDATA[<expression>]]></emphasis>,\n"
+"looks for it's value in <emphasis>CASE</emphasis> constants,\n"
+"and executes associated block of statements. If none\n"
+"of the <emphasis>CASE</emphasis> constants are equal to the\n"
+"expression value, it executes the block of statements following\n"
+"the <emphasis>OTHERWISE</emphasis> statement (if exist).\n"
+msgstr ""
+"\n"
+"Оператор вычисляет <emphasis><![CDATA[<expression>]]></emphasis>, ищет "
+"вычисленное значение среди констант, указанных в операторах <emphasis>CASE</"
+"emphasis>, и выполняет соответствующий блок операторов. Если вычисленное "
+"значение среди констант не найдено, выполняется блок операторов, следующий "
+"за оператором <emphasis>OTHERWISE</emphasis> (если есть).\n"
+
+#: template/./doc/langext.sgml:40
+msgid ""
+"\n"
+"Only numeric and character constants are allowed in <emphasis>CASE</"
+"emphasis>\n"
+"statement.\n"
+msgstr ""
+"\n"
+"В операторах <emphasis>CASE</emphasis> разрешается использование только "
+"числовых и символьных констант.\n"
+
+#: template/./doc/langext.sgml:44
+msgid ""
+"\n"
+"<command>SWITCH</command> is more effective than similar\n"
+"<command>DO CASE</command> statement.\n"
+msgstr ""
+"\n"
+"Оператор <command>SWITCH</command> более эффективен, чем похожий оператор "
+"<command>DO CASE</command>.\n"
+
+#: template/./doc/langext.sgml:49
+msgid "Assign of the reference"
+msgstr "Присвоение по ссылке"
+
+#: template/./doc/langext.sgml:51
+msgid ""
+"\n"
+"New operator <command>:=@</command> is used with the following syntax:\n"
+msgstr ""
+"\n"
+"Новая операция <command>:=@</command> используется в следующем синтаксисе:\n"
+
+#: template/./doc/langext.sgml:57
+msgid ""
+"\n"
+"It assigns <![CDATA[<rVar>]]> variable to the\n"
+"<![CDATA[<lVar>]]> variable by reference, i.e. <![CDATA[<lVar>]]>\n"
+"becomes a reference to (synonym of) <![CDATA[<rVar>]]>.\n"
+"<![CDATA[<rVar>]]> can be of any data type, including function reference.\n"
+"For example:\n"
+msgstr ""
+"\n"
+"Эта операция присваивает переменную <![CDATA[<rVar>]]> переменной <![CDATA"
+"[<lVar>]]>  по ссылке, т.е. <![CDATA[<lVar>]]> становится ссылкой на "
+"(синонимом) <![CDATA[<rVar>]]>. <![CDATA[<rVar>]]> может быть любого типа, в "
+"том числе ссылкой на функцию. Например:\n"
+
+#: template/./doc/langext.sgml:78
+msgid "Support FoxPro style for array access"
+msgstr "Поддержка FoxPro стиля для доступа к элементам массива"
+
+#: template/./doc/langext.sgml:85
+msgid "Support call codeblock via function"
+msgstr "Вызов кодовых блоков как функций"
+
+#: template/./doc/langext.sgml:87
+msgid ""
+" construction call memvar defined codeblock if function with\n"
+"name \"cb\" not exist. "
+msgstr ""
+"вызывается кодовый блок, объявленный как memvar. если не найдена\n"
+"функция с именем \"cb\"."
+
+#: template/./doc/langext.sgml:96
+msgid "Hexadecimal constants"
+msgstr "Шестнадцатеричные константы"
+
+#: template/./doc/langext.sgml:98
+msgid ""
+"\n"
+"CLIP understands hexadecimal constants as C does.\n"
+"For example <command>0x10</command> (decimal 16),\n"
+"<command>0xff</command> (decimal 255).\n"
+msgstr ""
+"\n"
+"CLIP понимает шестнадцатеричные константы, как C. Например <command>0x10</"
+"command> (десятичное 16), <command>0xff</command> (десятичное 255).\n"
+
+#: template/./doc/langext.sgml:104
+msgid "Rational arithmetic"
+msgstr "Рациональная арифметика"
+
+#: template/./doc/langext.sgml:106
+msgid ""
+"\n"
+"CLIP supports rational numbers with unlimited precision.\n"
+"To realize this possibility, it's necessary to write somewhere in\n"
+"program\n"
+msgstr ""
+"\n"
+"CLIP поддерживает использование рациональных чисел с неограниченной "
+"точностью. Чтобы воспользоваться этой возможностью нужно написать где-нибудь "
+"в программе\n"
+
+#: template/./doc/langext.sgml:114
+msgid ""
+"\n"
+"or via the command described in <command>clip.ch</command>\n"
+msgstr ""
+"\n"
+"или в виде команды, описанной в <command>clip.ch</command>\n"
+
+#: template/./doc/langext.sgml:120
+msgid ""
+"\n"
+"The compiler does not support large numbers as\n"
+"constants, that is, when using expressions like\n"
+msgstr ""
+"\n"
+"Компилятор не поддерживает константы - длинные числа, то есть при "
+"использовании подобного выражения\n"
+
+#: template/./doc/langext.sgml:127
+#, fuzzy
+msgid ""
+"\n"
+"the compiler will make an attempt to\n"
+"transform this into double, and only coprocessor knows what the result\n"
+"will be :) To actually use large constants, it's necessary to use\n"
+"<link linkend=\"functionval\">VAL()</link> function. For example:\n"
+msgstr ""
+"\n"
+"компилятор сделает попытку преобразования в тип double, и только "
+"сопроцессору известно что из этого получится. Чтобы реально использовать "
+"длинные константы, необходимо использовать функцию <link linkend="
+"\"functionval\">VAL()</link>. Например:\n"
+
+#: template/./doc/langext.sgml:138
+#, fuzzy
+msgid ""
+"\n"
+"<link linkend=\"functionstr\">STR()</link> function\n"
+"now supports <emphasis>len</emphasis>, <emphasis>dec</emphasis>\n"
+"parameters of any value. For example:\n"
+msgstr ""
+"\n"
+"Функция <link linkend=\"functionstr\">STR()</link> теперь поддерживает "
+"параметры <emphasis>len</emphasis>, <emphasis>dec</emphasis> любого размера. "
+"Например:\n"
+
+#: template/./doc/langext.sgml:146
+#, fuzzy
+msgid ""
+"\n"
+"Also, <link linkend=\"functionrstr\">RSTR()</link> function is added, and "
+"this gives a\n"
+"string in the form of <emphasis>numerator/denominator</emphasis>:\n"
+msgstr ""
+"\n"
+"Также добавлена функция <link linkend=\"functionrstr\">RSTR()</link>, "
+"которая возвращает строку в виде <emphasis>числитель/знаменатель</"
+"emphasis>:\n"
+
+#: template/./doc/langext.sgml:154
+msgid "Associative arrays"
+msgstr "Ассоциативные массивы"
+
+#: template/./doc/langext.sgml:156
+msgid ""
+"\n"
+"<emphasis>Associative array (AA)</emphasis> - is an array which elements\n"
+"are accessed by <emphasis>associated</emphasis> character strings.\n"
+"Let's consider associative array in contrast of an ordinary array.\n"
+"An ordinary array may be written as follows:\n"
+msgstr ""
+"\n"
+"<emphasis>Ассоциативный массив (АМ)</emphasis> - это массив для доступа к "
+"элементам которого используются <emphasis>ассоциативные</emphasis> строки. "
+"Рассмотрим ассоциативные массивы в сравнении с обычными массивами. Обычный "
+"массив выглядит следующим образом:\n"
+
+#: template/./doc/langext.sgml:166
+#, fuzzy
+msgid ""
+"\n"
+"To get access to elements, a consecutive numbers set\n"
+"is used, and it is limited with the array size. Inserting a new element\n"
+"becomes a problem, and it results in time losses. Opposite to ordinary\n"
+"arrays, elements of association arrays are identified by strings.\n"
+"<link linkend=\"functionmap\">map()</link> function creates an empty "
+"associative\n"
+"array. New elements are added to the associative array automatically.\n"
+"To get access to the element of the associative array object-style syntax\n"
+"can be used. For example:\n"
+msgstr ""
+"\n"
+"Ключами доступа к элементам являются непрерывный ряд чисел, ограниченный "
+"объявленным размером массива. Вставка в такой массив нового элемента "
+"становится проблемой, и это чревато неизбежными издержакми. В отличии от "
+"обычных массивов, элементы ассоциативного массива идентифицируются строками. "
+"Функция <link linkend=\"functionmap\">map()</link> создает пустой "
+"ассоциативный массив. Новые элементы в ассоциативный массив добавляются "
+"автоматически. Для доступа к элементам ассоциативного массива может быть "
+"использован стиль объектно ориентированного синтаксиса. Например:\n"
+
+#: template/./doc/langext.sgml:185
+msgid ""
+"\n"
+"To be honest, elements of associative array are identified by\n"
+"a <emphasis>hash codes</emphasis> of strings. Hash code is the number\n"
+"as a result of hashing a string to a number by using\n"
+"bit operations. For strings of less than 20 characters, the probability\n"
+"of coincidence of hash codes is approximately 1/1000000. For longer "
+"strings,\n"
+"the probability is increased.\n"
+msgstr ""
+"\n"
+"Если быть точнее, элементы ассоциативного массива идентифицируются "
+"<emphasis>хэш-кодами</emphasis> строк. Хэш-код - это число, получаемое путем "
+"хэширования строки с использованием битовых операций. Для строк длиной до 20 "
+"символов, вероятность совпадения хэш-кодов двух различных строк равна "
+"приблизительно 1/1000000. Для более длинных строк, вероятность "
+"увеличивается.\n"
+
+#: template/./doc/langext.sgml:193
+msgid ""
+"\n"
+"The compiler calculates hash codes of strings enclosed in \"`\" characters.\n"
+"For example:\n"
+msgstr ""
+"\n"
+"Компилятор вычисляет хэш-коды строк заключенных в символы \"`\". Например:\n"
+
+#: template/./doc/langext.sgml:200
+msgid ""
+"\n"
+"Also, compiler calculates hash codes of strings with <emphasis>hash_</"
+"emphasis>\n"
+"prefix. In this case, the string is not converted to upper case. You should "
+"do\n"
+"it yourself:\n"
+msgstr ""
+"\n"
+"Компилятор также вычисляет хэш-коды строк с префиксом <emphasis>hash_</"
+"emphasis>. В этом случае строки не переводятся к верхнему регистру. Вы "
+"должны делать это сами:\n"
+
+#: template/./doc/langext.sgml:209
+#, fuzzy
+msgid ""
+"\n"
+"At run time, hash code can be calculated by\n"
+"<link linkend=\"functionhashstr\">hashstr()</link> function:\n"
+msgstr ""
+"\n"
+"Во время выполнения хэш-код может быть вычислен при помощи функции <link "
+"linkend=\"functionhashstr\">hashstr()</link>:\n"
+
+#: template/./doc/langext.sgml:216
+msgid ""
+"\n"
+"Pay attention to <emphasis>QWER</emphasis> which is written in upper case,\n"
+"because compiler does not distinguish letter cases.\n"
+msgstr ""
+"\n"
+"Обратите внимание что <emphasis>QWER</emphasis> большими буквами, потому что "
+"компилятор не чувствителен к регистру символов.\n"
+
+#: template/./doc/langext.sgml:220
+#, fuzzy
+msgid ""
+"\n"
+"It's possible to get a list of indexes in the associative array by\n"
+"<link linkend=\"functionmapkeys\">mapkeys()</link> function which returns "
+"an\n"
+"ordinary array with hash codes of associative array elements:\n"
+msgstr ""
+"\n"
+"Можно получить список индексов (хэш-кодов элементов) ассоциативного массива "
+"при помощи функции <link linkend=\"functionmapkeys\">mapkeys()</link> "
+"которая возвращает обычный массив содержащий хэш-коды всех элементов "
+"ассоциативного массива:\n"
+
+#: template/./doc/langext.sgml:232
+msgid ""
+"\n"
+"Also, the associate array is characterized by a very fast access to "
+"elements,\n"
+"because necessary element is actually searched in a hash table.\n"
+msgstr ""
+"\n"
+"Ассоциативный массив характеризуется быстрым доступом к элементам.\n"
+
+#: template/./doc/langext.sgml:237
+msgid "FOR ... IN statement"
+msgstr "Оператор FOR ... IN"
+
+#: template/./doc/langext.sgml:239
+msgid ""
+"\n"
+"<command>FOR ... IN</command> statement is a control structure that\n"
+"executes a block of statements for all elements of an associative array.\n"
+msgstr ""
+"\n"
+"Оператор <command>FOR ... IN</command> - это управляющая структура, которая "
+"исполняет блок операторов для каждого элемента ассоциативного массива.\n"
+
+#: template/./doc/langext.sgml:242
+msgid "Syntax:"
+msgstr "Синтаксис:"
+
+#: template/./doc/langext.sgml:249
+msgid ""
+"\n"
+"Before processing the block of statements,\n"
+"<emphasis><![CDATA[<element>]]></emphasis> variable takes value of the next\n"
+"element of <emphasis><![CDATA[<associative_array>]]></emphasis>.\n"
+msgstr ""
+"\n"
+"Перед выполнением блока операторов, переменная <emphasis><![CDATA[<element>]]"
+"></emphasis> принимает значение очередного элемента <emphasis><![CDATA"
+"[<associative_array>]]></emphasis>.\n"
+
+#: template/./doc/langext.sgml:254
+msgid ""
+"\n"
+"Another syntax of <command>FOR ... IN</command> statement allows to execute\n"
+"a block of statements for hash codes identifying all elements of\n"
+"an associative array:\n"
+msgstr ""
+"\n"
+"Другой синтаксис оператора <command>FOR ... IN</command> позволяет выполнять "
+"блок операторов для хэш-кодов каждого элемента ассоциативного массива:\n"
+
+#: template/./doc/langext.sgml:263
+msgid "For example"
+msgstr "Например"
+
+#: template/./doc/langext.sgml:282
+msgid "Strings as arrays"
+msgstr "Строки как массивы"
+
+#: template/./doc/langext.sgml:284
+msgid ""
+"\n"
+"C-style syntax could be used for accessing substrings in CLIP:\n"
+msgstr ""
+"\n"
+"В CLIP можно использовать синтаксис в стиле C для доступа к подстрокам:\n"
+
+#: template/./doc/langext.sgml:290
+msgid ""
+"\n"
+"where <![CDATA[<pos>]]> is the start position of the substring,\n"
+"<![CDATA[<length>]]> is the length of the substring, 1 by default.\n"
+msgstr ""
+"\n"
+"где <![CDATA[<pos>]]> - начальная позиция подстроки, <![CDATA[<length>]]> - "
+"длина подстроки, по умолчанию 1.\n"
+
+#: template/./doc/langext.sgml:294
+#, fuzzy
+msgid ""
+"\n"
+"This format is identical to calling <link linkend=\"functionsubstr\">SUBSTR()"
+"</link>\n"
+"function, e.g.\n"
+msgstr ""
+"\n"
+"Этот синтаксис идентичен вызову функции <link linkend=\"functionsubstr"
+"\">SUBSTR()</link>, например\n"
+
+#: template/./doc/langext.sgml:300
+msgid "could be written as"
+msgstr "может быть написано как"
+
+#: template/./doc/langext.sgml:306
+msgid "OO model"
+msgstr "ОО модель"
+
+#: template/./doc/langext.sgml:308
+msgid "Introduction in OO model"
+msgstr "Введение в ОО модель"
+
+#: template/./doc/langext.sgml:310
+msgid ""
+"\n"
+"Firstly, some words about CA-Clipper built-in OO model. Its OO is based\n"
+"on ordinary array, and any call like\n"
+msgstr ""
+"\n"
+"Во первых, несколько слов об ОО модели, встроенной в CA-Clipper. Она "
+"основана на использовании обычных массивов и любой вызов, подобный\n"
+
+#: template/./doc/langext.sgml:317
+msgid ""
+"\n"
+"or\n"
+msgstr ""
+"\n"
+"или\n"
+
+#: template/./doc/langext.sgml:323
+msgid ""
+"\n"
+"results in the situation when in <emphasis>obj</emphasis> array there is "
+"searching of an element\n"
+"whose first element coincides with attribute or method name, and such\n"
+"search is executed linearly and is practically analogues to\n"
+msgstr ""
+"\n"
+"приводит к тому, что в массиве <emphasis>obj</emphasis> производится поиск "
+"элемента, у которого первый элемент совпадает с именем атрибута или метода, "
+"причем такой поиск производится линейно и практически является аналогом "
+"функции\n"
+
+#: template/./doc/langext.sgml:331
+msgid ""
+"\n"
+"function, which greatly reduces the efficiency of OO model of pure\n"
+"CA-Clipper. This, of course, is rather a simplified\n"
+"explanation, but the sense is still that as described.\n"
+msgstr ""
+"\n"
+"что естественно очень плохо сказывается на производительности ОО-модели CA-"
+"Clipper. Это конечно упрощенное описание, но смысл остается такой же.\n"
+
+#: template/./doc/langext.sgml:336
+msgid ""
+"\n"
+"We believe, now it's clear for what purpose association arrays were\n"
+"made. OO model based on association arrays is faster by an order.\n"
+msgstr ""
+"\n"
+"Теперь должно быть понятно для чего предназначены ассоциативные массивы. ОО "
+"модель, основанная на ассоциативных массивах производительнее на порядок.\n"
+
+#: template/./doc/langext.sgml:340
+msgid ""
+"\n"
+"At the same time, there's no need in expressions like\n"
+msgstr ""
+"\n"
+"При этом исчезает необходимость в конструкциях\n"
+
+#: template/./doc/langext.sgml:346
+msgid ""
+"\n"
+"and in <emphasis>TClass</emphasis> class itself, which raises\n"
+"OO model efficiency.\n"
+msgstr ""
+"\n"
+"и в самом классе <emphasis>TClass</emphasis>, что ещеувеличивает "
+"производительность.\n"
+
+#: template/./doc/langext.sgml:350
+msgid ""
+"\n"
+"How could you make your own class? It's very simple:\n"
+msgstr ""
+"\n"
+"Как сделать свой класс? Очень просто:\n"
+
+#: template/./doc/langext.sgml:378
+msgid ""
+"\n"
+"Also, we'd like to add two simple rules:\n"
+msgstr ""
+"\n"
+"Хотелось бы еще добавить два простых правила:\n"
+
+#: template/./doc/langext.sgml:382
+msgid ""
+"\n"
+"The attribute is created when something, including NIL, is assigned to it.\n"
+msgstr ""
+"\n"
+"Атрибут рождается при первом присвоении в него чего-нибудь, в том числе и "
+"NIL.\n"
+
+#: template/./doc/langext.sgml:385
+msgid ""
+"\n"
+"At any moment in run-time,the method can assign or reassign any\n"
+"function announced in this module as static function, or can adopt\n"
+"this function from another object, as a usual assignment of values:\n"
+msgstr ""
+"\n"
+"Методом можно назначить или переназначить в любой момент любую функцию, "
+"объявленную как static в этом же .prg модуле,либо наследовать его от другого "
+"объекта, как обычное присвоение значений:\n"
+
+#: template/./doc/langext.sgml:395
+msgid ""
+"\n"
+"In what way can objects be used? As in CA-Clipper, or even more simply:\n"
+msgstr ""
+"\n"
+"Как использовать объекты? Так же как и в CA-Clipper:\n"
+
+#: template/./doc/langext.sgml:402
+msgid ""
+"In an object, <command>destroy()</command>\n"
+"method can be announced, but it isn't quite destructor, which is usual\n"
+"in languages of the third generation. There is a local <emphasis>obj</"
+"emphasis>\n"
+"variable, and this is just an object. Upon leaving the function body,\n"
+"this variable, along with all its data, is destroyed. Now, let's consider "
+"the\n"
+"case of an object having an attribute\n"
+msgstr ""
+" В объекте можно объявить метод <command>destroy()</command>, но это не "
+"совсем деструктор, как это принято в языках 3 поколения. Есть переменная "
+"<emphasis>obj</emphasis> и в ней лежит объект. При выходе из тела функции "
+"эта переменная будет уничтожена со всеми вложенными в ней данными. Теперь "
+"рассмотрим ситуацию, в котором у этого объекта есть атрибут\n"
+
+#: template/./doc/langext.sgml:413
+msgid ""
+"\n"
+"When destroying <emphasis>obj</emphasis>, it's necessary\n"
+"to close <emphasis>hFile</emphasis>, but the compiler doesn't know\n"
+"this; the compiler (rather a virtual machine) only knows that in\n"
+"<emphasis>hFile</emphasis>\n"
+"there's a number and will destroy the number only, but the file will\n"
+"remain open. Just for such purposes <command>destroy()</command> is "
+"intended,\n"
+"and it'll called (if it exists ) before destroying <emphasis>obj</emphasis>\n"
+"variable.\n"
+msgstr ""
+"\n"
+"При уничтожении <emphasis>obj</emphasis> необходимо закрыть <emphasis>hFile</"
+"emphasis>, но компилятор (точнее виртуальная CLIP-машина), не знает этого. "
+"Он знает только что <emphasis>hFile</emphasis> - это число, и уничтожает "
+"только это число, а файл остается открытым. Для подобных случаев и "
+"предназначен метод <command>destroy()</command>, который вызывается (если "
+"есть) перед уничтожением переменной <emphasis>obj</emphasis> виртуальной "
+"CLIP-машиной.\n"
+
+#: template/./doc/langext.sgml:429
+msgid "Control of change attributes"
+msgstr "Контроль за изменением атрибутов"
+
+#: template/./doc/langext.sgml:431
+msgid ""
+"\n"
+"If it's necessary to control changes of object attributes, make\n"
+"<command>modify()</command> method and invoke\n"
+msgstr ""
+"\n"
+"Если надо контролировать изменения атрибутов объекта, то сделайте метод "
+"<command>modify()</command> и установите\n"
+
+#: template/./doc/langext.sgml:438
+msgid ""
+"\n"
+"<command>modify()</command> method is called before changing value\n"
+"of any object attribute. Two parameters are passed to\n"
+"<command>modify()</command>: hash code of attribute to be changed\n"
+"and new value to be assigned to it. <command>modify()</command>\n"
+"should return the value to assign to the attribute. For example:\n"
+msgstr ""
+"\n"
+"Метод <command>modify()</command> вызывается перед изменением значения "
+"любого атрибута объекта. Ему передается два параметра: хэш-код изменяемого "
+"атрибута и его новое значение. <command>modify()</command> должен вернуть "
+"значение, которое затем присвоится атрибуту. Например:\n"
+
+#: template/./doc/langext.sgml:466
+msgid "Recovering/reviving objects"
+msgstr "Регенерация объектов"
+
+#: template/./doc/langext.sgml:468
+msgid ""
+"\n"
+"CLIP is able to store the data of any type to MEMO fields, including\n"
+"objects. But there is no way to store object methods (methods can be\n"
+"changed).\n"
+msgstr ""
+"\n"
+"CLIP способен хранить данные любых типов в мемо-полях, в том числе и "
+"объекты. Но методы объекта не сохраняются (потому что нет смысла хранить код "
+"с каждым экземпляром, да и методы имеют тенденцию к изменению).\n"
+
+#: template/./doc/langext.sgml:473
+msgid ""
+"\n"
+"Recovering is made with the following steps: data are decoded; if data are "
+"of\n"
+"<emphasis>object</emphasis> type and object have <emphasis>CLASSNAME</"
+"emphasis>\n"
+"attribute then called function\n"
+"<emphasis><![CDATA[_recover_&(var:CLASSNAME)(var)]]></emphasis>.\n"
+"This function must assign this object methods.\n"
+msgstr ""
+"\n"
+"Восстановление объекта производится следующим образом: данные раскодируются, "
+"и если объект имеет атрибут <emphasis>CLASSNAME</emphasis> вызывается "
+"функция <emphasis><![CDATA[_recover_&(var:CLASSNAME)(var)]]></emphasis>. Эта "
+"функция должна восстановить методы объекта.\n"
+
+#: template/./doc/langext.sgml:480
+msgid ""
+"\n"
+"This feature can be used to send object as string via e-mail or TCP :)\n"
+msgstr ""
+"\n"
+"Этим же механизмом можно пользоваться и для передачи объектов в виде строки. "
+"Например по почте или TCP-соединению :)\n"
+
+#: template/./doc/langext.sgml:483
+msgid ""
+"\n"
+"Here is an example of using this feature:\n"
+msgstr ""
+"\n"
+"Вот пример использования механизма регенерации объектов:\n"
+
+#: template/./doc/langext.sgml:523
+msgid "Overloading operators for objects"
+msgstr "Перегрузка операций"
+
+#: template/./doc/langext.sgml:525
+msgid ""
+"\n"
+"CLIP supports overloading of the operations.\n"
+"Operations that can be overloaded and corresponding\n"
+"<emphasis>operator</emphasis> methods are listed in the table below.\n"
+msgstr ""
+"\n"
+"CLIP поддерживает перегрузку операций для объектов. Перегружаемые операции и "
+"соответствующие имена методов перечислены в следующей таблице.\n"
+
+#: template/./doc/langext.sgml:529
+msgid "Overloaded operations"
+msgstr "Перегружаемые операции"
+
+#: template/./doc/langext.sgml:532 template/./doc/langext.sgml:533
+msgid "Operation"
+msgstr "Операция"
+
+#: template/./doc/langext.sgml:532 template/./doc/langext.sgml:533
+msgid "Method"
+msgstr "Метод"
+
+#: template/./doc/langext.sgml:555
+msgid ""
+"\n"
+"Here is an example of using operations overloading.\n"
+msgstr ""
+"\n"
+"Вот пример использования перегрузки операций.\n"
+
+#: template/./doc/langext.sgml:597
+msgid "Conclusion"
+msgstr "Заключение"
+
+#: template/./doc/langext.sgml:599
+msgid ""
+"\n"
+"Due to such OO model and compiling into C-program, there appears\n"
+"a possibility to write TBrowse and Get standard classes in Clipper itself.\n"
+"At the same time, the efficiency of these classes is not worse than\n"
+"those written in pure C in CA-Clipper.\n"
+msgstr ""
+"\n"
+"Благодаря такому устройству ОО-модели и возможности компилировать быстрый "
+"код посредством трансляции в С-программу, появилась возможность написать "
+"стандартные классы TBrowse, Get на самом CA-Clipper.При этом визуально "
+"производительность этих классов не хуже, чем написанные на чистом C в "
+"стандартном CA-Clipper.\n"

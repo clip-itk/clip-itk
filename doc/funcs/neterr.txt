@@ -1,0 +1,114 @@
+$FUNCNAME$
+  NETERR()
+$CATEGORY$
+  SYSTEM,ENVIRONMENT,FILE/IO,DATABASE,INFO
+$SUMMARY$
+   Determine if a network command has failed
+$LANG_RU$
+   Индицирует сбой выполнения команд при работе в сети.
+$SYNTAX$
+     NETERR([<lNewError>]) --> lError
+$LANG_RU$
+     NETERR([<признак новой ошибки>]) --> признак ошибки
+$ARGUMENTS$
+     <lNewError>, if specified, sets the value returned by NETERR() to
+     the specified status.  <lNewError> can be either true (.T.) or false
+     (.F.).  Setting NETERR() to a specified value allows the runtime error
+     handler to control the way certain file errors are handled.  For more
+     information, refer to Errorsys.prg.
+$LANG_RU$
+     <признак новой ошибки> - если задан, устанавливает значение,
+     возвращаемое NETERR(), в дальнейшем. <признак новой ошибки> может
+     быть или "истина" (.T.), или "ложь" (.F.). Установка значения,
+     возвращаемого функцией NETERR(), позволяет управлять обработчиком
+     ошибок в некоторых ситуациях.  Более подробную информацию смотрите
+     в Errorsys.prg.
+$RETURNS$
+     NETERR() returns true (.T.) if a USE or APPEND BLANK fails.  The initial
+     value of NETERR() is false (.F.).  If the current process is not running
+     under a network operating system, NETERR() always returns false (.F.).
+$LANG_RU$
+     Значение, возвращаемое NETERR(), устанавливается функцией DefError()
+     программы Errorsys.prg, назначаемой обработчиком исключительных
+     ситуаций по умолчанию. Если не назначен (с помощью функции
+     ERRORBLOCK()) другой обработчик ошибок, то NETERR() возвращает
+     "истина" (.T.) при неудачном выполнении команд APPEND BLANK и USE.
+     Начальное значение NETERR() - "ложь" (.F.). Если текущий процесс
+     выполняется под управлением несетевого программного обеспечения,
+     NETERR() всегда возвращает "ложь" (.F.).
+$DESCRIPTION$
+     NETERR() is a network function.  It is a global flag set by USE,
+     USE...EXCLUSIVE, and APPEND BLANK in a network environment.  It is used
+     to test whether any of these commands have failed by returning true
+     (.T.) in the following situations:
+
+     <PRE> NETERR() Causes
+     ------------------------------------------------------------------------
+     Command             Cause
+     ------------------------------------------------------------------------
+     USE                 USE EXCLUSIVE by another process
+     USE...EXCLUSIVE     USE EXCLUSIVE or USE by another process
+     APPEND BLANK        FLOCK() or RLOCK() of LASTREC() + 1 by another user
+     ------------------------------------------------------------------------
+     </PRE>
+
+     NETERR() is generally applied in a program by testing it following a USE
+     or APPEND BLANK command.  If it returns false (.F.), you can perform the
+     next operation.  If the command is USE, you can open index files.  If it
+     is APPEND BLANK, you can assign values to the new record with a REPLACE
+     or @...GET command.  Otherwise, you must handle the error by either
+     retrying the USE or APPEND BLANK, or terminating the current operation
+     with a BREAK or RETURN.
+$LANG_RU$
+     NETERR() - это сетевая функция. Она используется для проверки
+     прикладной программой успешности выполнения команд USE, USE EXCLUSIVE
+     и APPEND BLANK в сети. В следующую далее таблицу сведены условия
+     возвращения функцией NETERR() (устанавливаемые в DefError()) значения
+     "истина" (.T.):
+
+     <PRE> Значения NETERR() - "истина" (.T.).
+     ---------------------------------------------------------------------
+     Команда          Ситуация
+     ---------------------------------------------------------------------
+     USE              Команда USE EXCLUSIVE в другом процессе
+     USE EXCLUSIVE    Команды USE или USE EXCLUSIVE в другом процессе
+     APPEND BLANK     FLOCK() другим пользователем или RLOCK() для
+		      записи LASTREC()+1
+     ---------------------------------------------------------------------
+     </PRE>
+
+     Если возвращенное функцией NETERR() значение - "ложь" (.F.), то можно
+     выполнять следующую команду.  Например, после успешного выполнения
+     USE можно открывать индексный файл, а после успешного выполнения
+     APPEND BLANK можно заполнять поля записи командами REPLACE или
+     @...GET. В противном случае, необходимо обработать ошибку и либо
+     повторить команды USE и APPEND BLANK, либо прервать операцию
+     командами BREAK или RETURN.
+$EXAMPLES$
+       This example demonstrates typical usage of NETERR().  If the
+	USE succeeds, the index files are opened and processing continues.
+	If the USE fails, a message displays and control returns to the
+	nearest BEGIN SEQUENCE construct:
+
+	USE Customer SHARED NEW
+	IF !NETERR()
+	   SET INDEX TO CustNum, CustOrders, CustZip
+	ELSE
+	   ? "File is in use by another"
+	   BREAK
+	ENDIF
+$LANG_RU$
+      В этом примере демонстрируется типичное использование функции
+       NETERR().  Если команда USE выполнена успешно, то открывается
+       индексный файл, и процесс продолжается. Если команда USE выполнена
+       с ошибкой, то на экран выдается сообщение об ошибке:
+
+       USE Customer SHARED NEW
+       IF !NETERR()
+       SET INDEX TO CustNum, CustOrders, CustZip
+       ELSE
+       ? "База данных используется другим пользователем"
+       ENDIF
+$SEEALSO$
+  RLOCK(),FLOCK()
+$END$

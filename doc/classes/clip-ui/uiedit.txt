@@ -115,6 +115,20 @@ $LANG_RU$
 	<flag>		- Логическое значение. Флаг показа значений звёздочками.
 $ENDMETHOD$
 
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action executed on content changed.
+$LANG_RU$
+	Установить действие, выполняемое при измении содержимого поля.
+$SYNTAX$
+	setAction(<action>)
+$ARGUMENTS$
+	<action>	- Code block. Code block executed on content changed.
+$LANG_RU$
+	<action>	- Блок кода. Блок кода, выполняемый при измении содержимого поля.
+$ENDMETHOD$
+
 $EXAMPLES$
 	edit := UIEdit("Text...")
 

@@ -1,0 +1,60 @@
+$FUNCNAME$
+  CURDIR()
+$CATEGORY$
+  FILE/IO,DISKUTILS
+$SUMMARY$
+   Return the current DOS directory
+$LANG_RU$
+   Возвращает имя текущей директории DOS.
+$SYNTAX$
+     CURDIR([<cDrivespec>]) --> cDirectory
+$LANG_RU$
+     CURDIR([<имя устройства>]) --> имя текущей директории
+$ARGUMENTS$
+     <cDrivespec> specifies the letter of the disk drive to query.  If
+     not specified, the default is the current DOS drive.
+$LANG_RU$
+     <имя устройства> - определяет букву названия дисковода. Если аргумент
+     не определен, то по умолчанию принимается текущий дисковод.
+$RETURNS$
+     CURDIR() returns the current DOS directory of the drive specified by
+     <cDrivespec> as a character string without either leading or trailing
+     backslash (\) characters.
+
+     If an error occurs, or the current directory of the specified drive is
+     the root directory, CURDIR() returns a null string ("").
+$LANG_RU$
+     CURDIR() возвращает имя текущей директории на устройстве,
+     определенном аргументом <имя устройства> в виде строки символов
+     без ведущих или завершающих символов (\).
+
+     При возникновении ошибки или если окажется, что указанное имя не
+     является драйвером текущего устройства, CURDIR() возвращает пустую
+     строку ("").
+$DESCRIPTION$
+     CURDIR() is an environment function that gives you the name of the
+     current DOS directory, ignoring the SET DEFAULT and SET PATH settings.
+$LANG_RU$
+     CURDIR() - это функция внешней среды, которая возвращает имя текущего
+     драйвера устройства и каталога DOS. Значения SET DEFAULT и SET PATH
+     игнорируются.
+$EXAMPLES$
+       These examples illustrate various CURDIR() results:
+
+	? CURDIR("E:")     // Result: null string--root directory
+	? CURDIR("C")      // Result: dir1\dir2
+	? CURDIR("C:")     // Result: dir1\dir2
+	? CURDIR()         // Result: null string--root directory
+	? CURDIR("A")      // Result: null string--drive not ready
+$LANG_RU$
+      Следующая группа примеров демонстрирует различные способы
+       использования функции CURDIR():
+
+       ? CURDIR("E:")   // Результат: нулевая строка - корневой каталог
+       ? CURDIR("C")    // Результат: dir1\dir2
+       ? CURDIR("C:")   // Результат: dir1\dir2
+       ? CURDIR()       // Результат: нулевая строка - корневой каталог
+       ? CURDIR("A")    // Результат: нулевая строка - дисковод не готов
+$SEEALSO$
+  FILE()
+$END$

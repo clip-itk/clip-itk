@@ -1,0 +1,120 @@
+$FUNCNAME$
+  FWRITE()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Write to an open binary file
+$LANG_RU$
+   Записывает информацию в открытый двоичный файл.
+$SYNTAX$
+     FWRITE(<nHandle>, <cBuffer>, [<nBytes>]) --> nBytesWritten
+$LANG_RU$
+     FWRITE (<номер файла>, <символьная строка>,
+	  [<к-во записываемых байтов>]) --> к-во записанных байтов
+$ARGUMENTS$
+     <nHandle> is the file handle obtained from FOPEN(), FCREATE(), or
+     predefined by DOS.
+
+     <cBuffer> is the character string to write to the specified file.
+
+     <nBytes> indicates the number of bytes to write beginning at the
+     current file pointer position.  If omitted, the entire content of
+     <cBuffer> is written.
+$LANG_RU$
+     <номер файла> - номер обрабатываемого файла, полученный с помощью
+     функций FOPEN(), FCREATE() или предварительно определенный в DOS.
+
+     <символьная строка> - это строка для записи в заданный файл.
+
+     <к-во записываемых байтов> - указывает количество байтов для записи,
+     начиная с текущей позиции указателя файла. Если этот аргумент опущен,
+     записывается все содержимое аргумента <символьная строка>.
+$RETURNS$
+     FWRITE() returns the number of bytes written as an integer numeric
+     value.  If the value returned is equal to <nBytes>, the operation was
+     successful.  If the return value is less than <nBytes> or zero, either
+     the disk is full or another error has occurred.
+$LANG_RU$
+     FWRITE() возвращает количество записанных байтов в виде целого
+     числового значения. Если возвращаемое значение равно значению
+     аргумента <к-во записываемых байтов>, то операция прошла успешно.
+     Если возвращаемое значение меньше, чем <к-во записываемых байтов>,
+     или равно нулю, то либо полностью заполнен диск, либо имеет место
+     какая-то другая ошибка.
+$DESCRIPTION$
+     FWRITE() is a low-level file function that writes data to an open binary
+     file from a character string buffer.  You can either write all or a
+     portion of the buffer contents.  Writing begins at the current file
+     position, and the function returns the actual number of bytes written.
+
+     If FWRITE() results in an error condition, FERROR() can be used to
+     determine the specific error.
+
+     Warning!  This function allows low-level access to DOS files and
+     devices.  It should be used with extreme care and requires a thorough
+     knowledge of the operating system
+$LANG_RU$
+     FWRITE() - функция обработки файлов низкого уровня, используемая
+     для записи данных в двоичный файл из буферной символьной строки.
+     Вы можете записать как весь буфер, так и часть его содержимого.
+     Запись начинается с текущей позиции в файле. Функция возвращает
+     реальное количество записанных байтов.
+
+     При аварийном завершении функции FWRITE() уточнить причину ошибки
+     можно при помощи функции FERROR(), которая возвратит код ошибки DOS.
+
+     Предупреждение:
+     Данная функция позволяет осуществлять доступ низкого уровня к файлам
+     и устройствам DOS. Она должна использоваться чрезвычайно осторожно и
+     требует хороших знаний операционной системы.
+$EXAMPLES$
+       This example copies the contents of one file to another:
+
+	#include "Fileio.ch"
+	#define F_BLOCK      512
+	//
+	cBuffer := SPACE(F_BLOCK)
+	nInfile := FOPEN("Temp.txt", FO_READ)
+	nOutfile := FCREATE("Newfile.txt", FC_NORMAL)
+	lDone := .F.
+	//
+	DO WHILE !lDone
+	   nBytesRead := FREAD(nInfile, @cBuffer, F_BLOCK)
+	   IF FWRITE(nOutfile, cBuffer, nBytesRead) < ;
+		       nBytesRead
+	      ? "Write fault: ", FERROR()
+	      lDone := .T.
+	   ELSE
+	      lDone := (nBytesRead == 0)
+	   ENDIF
+	ENDDO
+	//
+	FCLOSE(nInfile)
+	FCLOSE(nOutfile)
+$LANG_RU$
+      Этот пример копирует содержимое одного файла в другой:
+
+       #include "Fileio.ch"
+       #define F_BLOCK 512
+       //
+       cBuffer = SPACE(F_BLOCK)
+       nInfile = FOPEN("Temp.txt", FO_READ)
+       nOutfile = FCREATE("Newfile.txt", FC_NORMAL)
+       lDone = .F.
+       //
+       DO WHILE !lDone
+	  nBytesRead = FREAD(nInfile, @cBuffer, F_BLOCK)
+
+	  IF FWRITE (nOutfile, cBuffer, nBytesRead) < nBytesRead
+	     ? "Ошибка записи: ", FERROR()
+	     lDone = .T.
+	  ELSE
+	     lDone = (nBytesRead == 0)
+	  ENDIF
+       ENDDO
+       //
+       FCLOSE(nInfile)
+       FCLOSE(nOutfile)
+$SEEALSO$
+  FCLOSE(),FCREATE(),FERROR(),FOPEN(),I2BIN(),L2BIN()
+$END$

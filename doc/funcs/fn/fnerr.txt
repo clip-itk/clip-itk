@@ -1,0 +1,56 @@
+ $FUNCNAME$
+    FN_ERROR()
+ $CATEGORY$
+    Miscellaneous
+ $ONELINER$
+    Return current error status for a Netware Library function
+ $SYNTAX$
+
+    fn_error() -> nError
+
+ $ARGUMENTS$
+
+    None
+
+ $RETURNS$
+
+    <nError>, a numeric error code.  Details on the error codes can
+    be found...
+
+ $DESCRIPTION$
+
+ $EXAMPLES$
+
+ $SEEALSO$
+    _fnSetErr()
+ $Author: clip $
+    Glenn Scott
+ $END$
+
+ $FUNCNAME$
+    _fnSetErr()
+ $CATEGORY$
+    Miscellaneous
+ $ONELINER$
+    Set the current Netware Library error status
+ $SYNTAX$
+
+    _fnSetErr( nErrCode ) -> nOldError
+
+ $ARGUMENTS$
+
+   <nErrCode>
+
+ $RETURNS$
+
+   <nOldError>
+
+ $DESCRIPTION$
+
+ $EXAMPLES$
+
+ $SEEALSO$
+    FN_ERROR()
+ $Author: clip $
+    Glenn Scott
+ $END$

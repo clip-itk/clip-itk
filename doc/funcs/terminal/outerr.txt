@@ -1,0 +1,51 @@
+$FUNCNAME$
+  OUTERR()
+$CATEGORY$
+  TERMINAL/IO,FILE/IO
+$SUMMARY$
+   Write a list of values to the standard error device
+$LANG_RU$
+   Выводит результаты вычисления выражений передаваемого списка на
+$SYNTAX$
+     OUTERR(<exp list>) --> NIL
+$LANG_RU$
+     OUTERR(<список выражений>) --> NIL
+$ARGUMENTS$
+     <exp list> is a list of values to display and can consist of any
+     combination of data types including memo.
+$LANG_RU$
+     <список выражений> - список выражений, состоящих из любого сочетания
+     типов данных, включая memo поля, чьи значения должны выводиться.
+$RETURNS$
+     OUTERR() always returns NIL.
+$LANG_RU$
+     OUTERR() всегда возвращает NIL.
+$DESCRIPTION$
+     OUTERR() is identical to OUTSTD() except that it writes to the standard
+     error device rather than the standard output device.  Output sent to the
+     standard error device bypasses the xClipper console and output devices
+     as well as any DOS redirection.  It is typically used to log error
+     messages in a manner that will not interfere with the standard screen or
+     printer output.
+$LANG_RU$
+     Функция OUTERR() идентична функции OUTSTD(), за исключением того, что
+     вывод осуществляется на стандартное устройство для сообщений об
+     ошибках, а не на стандартное устройство вывода. Вывод направляется на
+     стандартное устройство вывода сообщений об ошибках, минуя
+     xClipper-консоль и выходные устройства, тем же способом, как и
+     переназначение вывода в DOS. Это обычно используется для ведения
+     журнала сообщений об ошибках, отделяющего их от стандартного вывода
+     на экран или на принтер.
+$EXAMPLES$
+       This example displays an error message along with the date and
+	time of occurrence to the screen:
+
+	OUTERR("File lock failure", DATE(), TIME())
+$LANG_RU$
+      Следующий пример демонстрирует вывод на экран сообщения об
+       ошибке в сопровождении даты и времени:
+
+       OUTERR( "Ошибка блокировки файла",DATE(),TIME() )
+$SEEALSO$
+  OUTSTD(),DISPOUT()
+$END$

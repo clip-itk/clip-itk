@@ -1,0 +1,83 @@
+$FUNCNAME$
+  FERASE()
+$CATEGORY$
+  FILE/IO
+$SUMMARY$
+   Delete a file from disk
+$LANG_RU$
+   Удаляет файл с диска.
+$SYNTAX$
+     FERASE(<cFile>) --> nSuccess
+$LANG_RU$
+     FERASE(<имя файла>) --> признак завершения
+$ARGUMENTS$
+     <cFile> is the name of the file to be deleted from disk, including
+     extension, optionally preceded by a drive and/or path specification.
+$LANG_RU$
+     <имя файла> является именем файла, подлежащего удалению с диска.
+     Кроме имени самого файла, аргумент может содержать маршрут доступа,
+     включая имя устройства и расширение файла.
+$RETURNS$
+     FERASE() returns -1 if the operation fails and zero if it succeeds.  In
+     the case of a failure, FERROR() can be used to determine the nature of
+     the error.
+$LANG_RU$
+     При аварийном завершении FERASE() возвращает (-1) и 0, если удаление
+     файла прошло успешно. В случае аварийного завершения функции для
+     определения характера ошибки может быть использована функция
+     FERROR().
+$DESCRIPTION$
+     FERASE() is a file function that deletes a specified file from disk.
+     FERASE() is the same as the ERASE command but returns a value and can be
+     specified within an expression.  When FERASE() is called, <cFile> is
+     deleted from disk only if found in the current DOS directory or in the
+     directory explicitly specified as part of the file name.  Like the other
+     file functions and commands, FERASE() does not use either SET DEFAULT or
+     SET PATH to locate <cFile>.
+
+     Warning!  Files must be CLOSEd before removing them with FERASE().
+$LANG_RU$
+     FERASE() является функцией обработки файлов. Она удаляет указанный
+     файл с диска. FERASE() аналогична команде ERASE, с той разницей, что
+     она возвращает признак завершения и может использоваться как элемент
+     выражения.  Когда вызывается FERASE(), <имя файла> удаляется с диска
+     только в том случае, если находится в текщей DOS директории,
+     специфицированной как часть имени файла. Если путь доступа к
+     удаляемому файлу не задан явно в аргументе <имя файла>, поиск
+     удаляемого файла производится в текущей директории, так как установки
+     SET DEFAULT и SET PATH на работу функции не влияют.
+
+     Предупреждение:
+     Файлы должны быть закрыты перед удалением с помощью FERASE().
+$EXAMPLES$
+       This example deletes a set of files matching a wildcard
+	pattern:
+
+	#include "Directry.ch"
+	AEVAL(DIRECTORY("*.BAK"), { |aFile| ;
+	   FERASE(aFile[F_NAME]) })
+
+       This example erases a file and displays a message if the
+	operation fails:
+
+	IF FERASE("AFile.txt") == -1
+	   ? "File erase error:", FERROR()
+	   BREAK
+	ENDIF
+$LANG_RU$
+      В данном примере показано, как удалить набор файлов, имена которых
+       совпадают с произвольным шаблоном:
+
+       #include "Directry.ch"
+       AEVAL(DIRECTORY("*.BAK"), { | aFile | FERASE(aFile[F_NAME]) })
+
+      В следующем примере показано удаление файла и последующая выдача
+       сообщения, если операция завершилась аварийно:
+
+       IF FERASE("AFile.txt") = -1
+	  ? "Ошибка удаления файла: ", FERROR()
+	  BREAK
+       ENDIF
+$SEEALSO$
+  FERROR(),FRENAME()
+$END$

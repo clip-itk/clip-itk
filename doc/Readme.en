@@ -1,0 +1,99 @@
+About all questions please contact:
+e-mail  : uri@itk.ru
+phone   : 1-7-3412-253950 (may be changed in future)
+home www: www.itk.ru
+home ftp: ftp.itk.ru/pub/clip
+
+Files list:
+   clip-prg-<version>.tgz  - SRC: all source packages
+  clip-doc-<lang>-<format> - documentation in compiled format
+	  clip-doc-src.tgz - documentation in SGML sources and templates
+
+	cygwin_trunc.rar   - BIN: cygwin developer tools for migration from unix to
+			     win32 platforms ( trunc - it`s truncated by ITK
+			     distribution), for details, please,
+			     see Readme.cygwin from ftp.
+	Readme.cygwin	   - TXT: details for instalation truncated cygwin.
+	clip_win32_bin.rar - BIN: CLIP and base libraries for Win32+Cygwin.
+	gtk_std_win32.rar  - BIN: GTK+ standart libraries for Windows, installing
+			     after cygwin and clip.
+	clip_gtk_win32.rar - BIN: clip library over GTK+, generated from clip_gtk
+			     package.
+
+	(rar archiver home page - www.rarsoft.com)
+
+ATTENTION:
+1. source codes (prg and ch files in packages) have russian codepage koi8-r.
+2. In OS Solaris must installed "GNU bin utils" and path for it must in
+   first: export PATH=/usr/local/bin;.............
+
+	       First:
+
+1. Set CLIPROOT environment variable to the directory in which data for the
+   operation of the compiler and ready programs.
+   Or use "make system" for installing to system directories.
+
+   Warning: don`t use $CLIPROOT directory for saving source packages.
+   For saving source use any other directory, for example: /usr/src
+   or /home/$USER/clip_src .
+
+   The best way - in your home .profile add line:
+   export CLIPROOT=/usr/local/clip
+   and reconnect/relogin to Unix.
+
+2. Add $CLIPROOT/bin to PATH variable (the best - in home .profile).
+
+3. If GNU maker in your system have name "gmake", add to environment
+   variable MAKE=gmake.
+
+4. In Win32+CygWin add to autoexec.bat via UNIX-STYLE:
+   set CLIPROOT=/clip
+   set LANG=ru_RU.CP1251
+   #or
+   set CLIP_LANG=ru_RU.CP1251
+   #CP1251 change to your windows codepage
+   If you use truncated CygWin from ftp.itk.ru - add to autoexec.bat:
+   set PATH= ....; c:\cygwin\bin;c:\cygwin\clip\bin; ....
+
+
+
+	       The following action is recommended:
+
+1. Set LANG (or CLIP_LANG) environment variable as you wish
+	(ru_RU.KOI8-R, for example).
+It's necessary for normal localization of executable utilities.
+
+
+		Installation from binary codes
+
+1. cygwin - unpack in root directory on disk C:\
+	rar x cygwin_trunc.rar
+
+	or install full cygwin distribution and install CLIP from source
+	code or more
+
+2. clip_win32_bin.rar - unpack in root directory on disk C: over cygwin.
+	rar x clip_win32_bin.rar
+
+3. unpack other packages.
+
+4. for installing from DEB or RPM packages - see Readme_deb or Readme_rpm
+
+
+
+		Installation all source code
+
+1. Download ftp.itk.ru/pub/clip/clip-prg-<version>.tgz
+
+2. See Readme_src
+
+   Also, for further operation, it's better to do the following:
+
+1. ;) read the documentation in doc directory.
+
+2. Create a .cliprc file in the home directory and write compiler options and
+   flags into it, which are used by default.
+
+   All success and good luck to everybody!
+
+   Remember uri@itk.ru and do not hesitate to contact us.

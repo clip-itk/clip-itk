@@ -1,0 +1,47 @@
+$FUNCNAME$
+  DBGOBOTTOM()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Move to the last logical record
+$LANG_RU$
+   Перемещает указатель на последнюю логическую запись.
+$SYNTAX$
+     DBGOBOTTOM() --> NIL
+$LANG_RU$
+     DBGOBOTTOM() --> NIL
+$RETURNS$
+     DBGOBOTTOM() always returns NIL.
+$LANG_RU$
+     DBGOBOTTOM() всегда возвращает NIL.
+$DESCRIPTION$
+     DBGOBOTTOM() moves to the last logical record in the current work area.
+
+     DBGOBOTTOM() performs the same function as the standard GO BOTTOM
+     command.  For more information, refer to the GO command.
+$LANG_RU$
+     DBGOBOTTOM() Перемещает указатель на последнюю логическую запись в
+     текущей рабочей области.
+
+     DBGOBOTTOM() выполняет те же функции, что и стандартная команда GO
+     BOTTOM. Более подробную информацию смотрите в команде GO.
+$EXAMPLES$
+       The following example uses DBGOBOTTOM() to position the record
+	pointer on the last logical record:
+
+	cLast := "Winston"
+	DBUSEAREA( .T., "DBFNTX", "Sales", "Sales", .T. )
+	DBSETINDEX( "LASTNAME" )
+	//
+	Sales->( DBGOBOTTOM() )
+	IF ( Sales->Last == "Winston" )
+	   IF RLOCK()
+	      Sales->( DBDELETE() )
+	      ? "Record deleted: ", Sales->( DELETED() )
+	   ELSE
+	      ? "Unable to lock record..."
+	   ENDIF
+	END
+$SEEALSO$
+  BOF(),DBGOTOP(),DBSEEK(),DBSKIP(),EOF()
+$END$

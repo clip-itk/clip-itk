@@ -1,0 +1,66 @@
+$FUNCNAME$
+  ISUPPER()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Determine if the leftmost character in a string is uppercase
+$LANG_RU$
+   Определяет, является ли первый символ в строке заглавной буквой.
+$SYNTAX$
+     ISUPPER(<cString>) --> lBoolean
+$LANG_RU$
+     ISUPPER(<символьная строка>) --> признак заглавной буквы
+$ARGUMENTS$
+     <cString> is the character string to be examined.
+$LANG_RU$
+     <символьная строка> - символьная строка.
+$RETURNS$
+     ISUPPER() returns true (.T.) if the first character is an uppercase
+     letter; otherwise, it returns false (.F.).
+$LANG_RU$
+     ISUPPER() возвращает значение "истина" (.T.), если первый символ в
+     строке является прописной буквой, в противном случае - значение
+     "ложь" (.F.).
+$DESCRIPTION$
+
+     ISUPPER() is a character function that determines whether the first
+     character of a string is uppercase.  It is the inverse of ISLOWER().
+     Both ISUPPER() and ISLOWER() relate to the UPPER() and LOWER() functions
+     which actually convert uppercase characters to lowercase, and vice
+     versa.
+
+
+$LANG_RU$
+
+     ISUPPER() является функцией обработки символьных строк, которая
+     определяет, является ли первый символ в строке прописной буквой.
+     Эта функция противоположна функции ISLOWER(), которая определяет,
+     является ли первый символ в строке строчной буквой.
+
+     Функции ISUPPER() и ISLOWER() связаны с функциями UPPER() и LOWER(),
+     которые переводят символы из нижнего регистра в верхний и наоборот.
+
+
+$EXAMPLES$
+
+       These examples illustrate ISUPPER() applied to various values:
+
+	? ISUPPER("AbCdE")         // Result: .T.
+	? ISUPPER("aBCdE")         // Result: .F.
+	? ISUPPER("$abcd")         // Result: .F.
+	? ISUPPER("8ABCD")         // Result: .F.
+
+
+$LANG_RU$
+
+      Следующие примеры иллюстрируют использование ISUPPER():
+
+       ? ISUPPER("AbCdE")        // Результат: .T.
+       ? ISUPPER("aBCdE")        // Результат: .F.
+       ? ISUPPER("$abcd")        // Результат: .F.
+       ? ISUPPER("8ABCD")        // Результат: .F.
+
+
+$SEEALSO$
+  ISALPHA(),ISDIGIT(),ISLOWER(),LOWER(),UPPER()
+$END$

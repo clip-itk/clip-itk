@@ -1,0 +1,8 @@
+$FUNCNAME$
+	_clip_stornl()
+$CATEGORY$
+	C-API
+$DESCRIPTION$
+$EXAMPLES$
+$SEEALSO$
+$END$

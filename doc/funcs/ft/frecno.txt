@@ -1,0 +1,45 @@
+$FUNCNAME$
+   FT_FRECNO()
+$CATEGORY$
+   File I/O
+$ONELINER$
+   Return the current record number of a text file
+$SYNTAX$
+
+   FT_FRECNO() -> nRecNo
+
+$ARGUMENTS$
+
+   None
+
+$RETURNS$
+
+   The current record number of a text file or 0 if no file is open.
+
+$DESCRIPTION$
+
+   This function returns the current record number of the file open
+   in the currently selected text file workarea.
+
+   A text file "record" is a line of text terminated by a CRLF pair.
+
+$EXAMPLES$
+
+   FT_FUSE( "text.c" )      // open text file
+
+   DO WHILE !FT_FEOF()
+
+      ? FT_FREADLN()        // read thru file
+
+      FT_FSKIP()
+
+   ENDDO
+
+   FT_FGOTOP()              // go back to top
+
+   ? FT_FRECNO()            // 1
+
+$SEEALSO$
+    FT_FSELECT(),FT_FUSE(),FT_FGOTOP(),FT_FGOBOT()
+$END$
+

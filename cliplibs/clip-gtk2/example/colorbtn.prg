@@ -18,7 +18,8 @@ gtk_ButtonModifyBG(btn1, gtk_ColorNew(0, 55555, 55555), GTK_STATE_PRELIGHT)
 
 btn2 := gtk_ButtonNew(, "button2")
 gtk_ButtonModifyFG(btn2, gtk_ColorNew(0, 0, 33333))
-gtk_ButtonModifyFont(btn2, "Arial Italic 16")
+//gtk_ButtonModifyFont(btn2, "Arial Italic 16")
+gtk_ButtonModifyFont(btn2, "Sans Bold 16")
 
 gtk_BoxPackStart(vbox, btn1)
 gtk_BoxPackStart(vbox, btn2)

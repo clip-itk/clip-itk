@@ -762,6 +762,7 @@ _object_signal_connect(ClipMachine *cm, gboolean after)
 		int extra_sigfound = _extra_signal_lookup(signame, GTK_OBJECT_TYPE(cobj->object));
 		C_signal *cs;
 
+		//printf ("object %s  signame %s \n", cobj->type_name, signame);
 		if (sigfound || extra_sigfound || sid < 1000) /* sid<1000 - event */
 		{
 			if (!cobj->siglist)
@@ -809,7 +810,7 @@ clip_GTK_SIGNALCONNECT(ClipMachine *cm)
 	C_widget *cwid = _fetch_cw_arg(cm);
 	C_object *cobj = _fetch_co_arg(cm);
 
-	if (cwid->type != 0)
+	if (cwid->objtype == GTK_OBJ_WIDGET)
 		return _signal_connect(cm,FALSE);
 	else if (cobj->type != 0)
 		return _object_signal_connect(cm, FALSE);

@@ -1,0 +1,56 @@
+$FUNCNAME$
+  DBSETDRIVER()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the default database driver and optionally set a new driver
+$LANG_RU$
+   Возвращает имя используемого по умолчанию драйвера баз данных и
+$SYNTAX$
+     DBSETDRIVER([<cDriver>]) --> cCurrentDriver
+$LANG_RU$
+     DBSETDRIVER([<драйвер>]) --> текущий драйвер
+$ARGUMENTS$
+     <cDriver> is an optional character value that specifies the name of
+     the database driver that should be used to activate and manage new work
+     areas when no driver is explicitly specified.
+$LANG_RU$
+     <драйвер> - необязательное символьное выражение, определяющее имя
+     драйвера баз данных, используемого для активизации и управления
+     новыми рабочими областями, когда в командах USE драйвер не задан
+     явным образом.
+$RETURNS$
+     DBSETDRIVER() returns the name of the current default driver.
+$LANG_RU$
+     DBSETDRIVER() возвращает имя текущего драйвера баз данных.
+$DESCRIPTION$
+     DBSETDRIVER() sets the database driver to be used when activating new
+     work areas without specifying a driver.  If the specified driver is not
+     available to the application, the call has no effect.  DBSETDRIVER()
+     returns the name of the current default driver, if any.
+$LANG_RU$
+     DBSETDRIVER() устанавливает драйвер баз данных, используемый при
+     активации новых рабочих областей без явно заданного драйвера. Если
+     указанный драйвер недоступен, то функция не оказывает действия.
+     DBSETDRIVER() - возвращает имя текущего драйвера баз данных,
+     используемого по умолчанию  при открытии баз данных.
+$EXAMPLES$
+       This example makes the "DBFNDX" driver the default driver.  If
+	the driver is unavailable, a message is issued:
+
+	DBSETDRIVER("DBFNDX")
+	IF ( DBSETDRIVER() <> "DBFNDX" )
+	   ? "DBFNDX driver not available"
+	ENDIF
+$LANG_RU$
+      В этом примере устанавливается драйвер "DBFNTX". В случае
+       недоступности драйвера выдается сообщение.
+
+       DBSETDRIVER("DBFNTX")
+
+       IF ( DBSETDRIVER() <> "DBFNTX" )
+	  ? "DBFNTX драйвер не доступен"
+       ENDIF
+$SEEALSO$
+  DBUSEAREA(),RLOCK()
+$END$

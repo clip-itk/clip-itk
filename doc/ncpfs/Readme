@@ -1,0 +1,42 @@
+This is a patch for Linux kernel, which allow
+correct use of EXCLUSIVE and SHARE open modes on
+mounted by ncpmount filesystems.
+
+To apply patch, cd to kernel source root (usually /usr/src):
+
+cd /usr/src
+patch -p0 < full_path_to_patch_file
+
+or, for example:
+
+cd /usr/src/linux-2.4.18
+patch -p1 < full_path_to_patch_file
+
+
+To enable NCPFS in kernel, choose config item
+CONFIG_NCP_FS=m
+(Filesystems->Network File Systems->NCP filesystem support)
+
+Also, enable kernel NCPFS server locking:
+CONFIG_NCPFS_IOCTL_LOCKING=y
+(Filesystems->Network File Systems->NCP filesystem support/Proprietary file locking)
+
+Of course, you must enable IPX:
+CONFIG_IPX=m
+(Networking options->The IPX protocol)
+
+and install support packages (for Debian it is 'ipx' and  'ncpfs').
+
+Note, that due to internal organisation of ncpfs module (probably
+inspirated by single-user nature of Novell session protocol), correct
+multiuser locking appear only when every user have it's own ncpfs
+mount to server.
+
+Clip make efforts to keep both fcntl and ncpfs locking schemes,
+but when more than one process open one file on the same ncp mount
+and one of this processes crashed, it is probability to get hanged
+locks (until all processes will not close the file).
+
+You are warned.
+
+Paul Lasarev <paul@itk.ru>

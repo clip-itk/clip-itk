@@ -1,0 +1,34 @@
+$FUNCNAME$
+  DIRREMOVE()
+$CATEGORY$
+  DISKUTILS
+$SUMMARY$
+   Remove a directory
+$SYNTAX$
+     DIRREMOVE(<cDirName>) --> nSuccess
+$ARGUMENTS$
+     <cDirName> is the name of the directory to erase, including an
+     optional drive.  If you do not specify a drive, the current one is used.
+$RETURNS$
+     DIRREMOVE() returns 0 if successful; -1 if there is an argument error.
+     Otherwise, DIRREMOVE returns the DOS error code.
+$DESCRIPTION$
+     DIRREMOVE() removes a specified directory.  Note that you must first
+     have sufficient rights to delete a directory.  A directory must be empty
+     in order to be deleted.  Therefore, to delete a directory that contains
+     subdirectories, you must first delete the subdirectories (see example
+     below).
+$EXAMPLES$
+       This example uses DIRREMOVE() to delete a subdirectory named
+	C:\TEST\ONE, which only contains an empty subdirectory named
+	C:\TEST\ONE\TWO:
+
+	DIRREMOVE("c:\test\one\two")        // First delete lowest dir
+	nResult := DIRREMOVE("c:\test\one")  // Then delete higher dir
+	IF nResult != 0
+	   ? "Cannot remove directory, DOS error ", siResult
+	   BREAK
+	ENDIF
+$SEEALSO$
+  DIRCHANGE(),DIRMAKE()
+$END$

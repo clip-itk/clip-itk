@@ -1,0 +1,100 @@
+$FUNCNAME$
+  DBRSELECT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the target work area number of a relation
+$LANG_RU$
+   Возвращает номер рабочей области для заданного отношения.
+$SYNTAX$
+     DBRSELECT(<nRelation>) --> nWorkArea
+$LANG_RU$
+     DBRSELECT(<номер отношения>) --> номер рабочей области
+$ARGUMENTS$
+     <nRelation> is the position of the desired relation in the list of
+     current work area relations.  The relations are numbered according to
+     the order in which they were defined with SET RELATION.
+$LANG_RU$
+     <номер отношения> - это позиция в списке отношений текущей
+     рабочей области выбранного отношения. Отношения нумеруются в
+     последовательности их описания командой SET RELATION.
+$RETURNS$
+     DBRSELECT() returns the work area number of the relation specified by
+     <nRelation> as an integer numeric value.  If there is no RELATION SET
+     for <nRelation>, DBRSELECT() returns zero.
+$LANG_RU$
+     DBRSELECT() возвращает номер рабочей области в виде целого числа
+     для отношения, номер которого определен аргументом <номер отношения>.
+     Если отношение с заданным номером не определено, DBRSELECT()
+     возвращает ноль.
+$DESCRIPTION$
+     DBRSELECT() is a database function used in combination with DBRELATION()
+     to determine the work area and linking expression of an existing
+     relation created with the SET RELATION command.  DBRSELECT() returns the
+     work area defined by the INTO clause.  DBRELATION() returns the linking
+     expression defined by the TO clause.  To determine the alias of the
+     relation instead of the work area number, use the expression
+     ALIAS(DBRSELECT(<nRelation>)).
+
+     By default, DBRSELECT() operates on the currently selected work area.
+     It will operate on an unselected work area if you specify it as part of
+     an aliased expression (see example below).
+$LANG_RU$
+     DBRSELECT() - это функция работы с базами данных, которая
+     используется в комбинации с функцией DBRELATION() для определения
+     рабочей области и скомпонованного выражения действующего отношения,
+     созданного командой SET RELATION. DBRSELECT() возвращает рабочую
+     область, определенную в предложении INTO. DBRELATION() возвращает
+     скомпонованное выражение, определенное в предложении TO. Для
+     определения алиаса вместо номера рабочей области используйте
+     выражение ALIAS( DBRSELECT( <номер отношения> )).
+
+     По умолчанию DBRSELECT() работает с текущей ( активной ) рабочей
+     областью. Однако она может работать в пассивной рабочей области. Для
+     этого необходимо включить DBRSELECT() в выражение, уточненное алиасом
+     (смотри пример ниже).
+$EXAMPLES$
+       This example opens three database files, sets two child
+	relations from the parent work area, and then displays the linking
+	expression to the second child work area, as well as the target work
+	area of the relation:
+
+	USE Invoices INDEX Invoices NEW
+	USE BackOrder INDEX BackOrder NEW
+	USE Customer INDEX Customer NEW
+	SET RELATION TO CustNum INTO Customer, ;
+	      OrderNum INTO BackOrder
+	//
+	? DBRELATION(2), DBRSELECT(2)         // Result: OrderNum 3
+
+	? ALIAS(DBRSELECT(2))               // Result: BACKORDER
+
+       Later, you can query the same information from an unselected
+	work area by using an aliased expression:
+
+	USE Archive NEW
+	? Customer->(DBRELATION(2))      // Result: OrderNum
+	? Customer->(DBRSELECT(2))         // Result: 3
+$LANG_RU$
+      Этот пример открывает три рабочих области, устанавливает два
+       отношения из родительской области с дочерними и затем выдает
+       на экран скомпонованное выражение отношения со второй дочерней
+       областью вместе с алиасом определяемой рабочей области:
+
+       USE Invoices INDEX Invoices NEW
+       USE BackOrder INDEX BackOrder NEW
+       USE Customer INDEX Customer NEW
+       SET RELATION TO CustNum INTO Customer, OrderNum INTO BackOrder
+       //
+       ? DBRELATION(2), DBRSELECT(2)         // Результат: OrderNum 3
+       ? ALIAS(DBRSELECT(2))                 // Результат: BackOrder
+
+      Несколько позже можно получить ту же самую информацию из пассивной
+       рабочей области, используя выражение, уточненное алиасом:
+
+       USE Archive NEW
+       ? Customer->(DBRELATION(2))           // Результат: OrderNum
+       ? Customer->(DBRSELECT(2))            // Результат: 3
+$SEEALSO$
+  DBFILTER(),DBRELATION(),RLOCK()
+$END$

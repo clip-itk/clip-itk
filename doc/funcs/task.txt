@@ -1,0 +1,355 @@
+$FUNCNAME$
+	START()
+$CATEGORY$
+	TASK, CODEBLOCK
+$SUMMARY$
+	Start task.
+$LANG_RU$
+	Начать задачу.
+$SYNTAX$
+     START(<vTask>, [<vPar1>,,, <vParN>]) 	--> <nTaskID>
+$ARGUMENTS$
+	<vTask>		Is the function name, or code block, or address of static function.
+	<vPar1>...<vParN> Is are some parameters for task.
+$LANG_RU$
+	<vTask>		Имя функции, или блок кода, или адрес статической функции.
+	<vPar1>...<vParN> Параметры, передаваемые в задачу.
+$RETURNS$
+     Returns numeric value - is the task identifier.
+$LANG_RU$
+     Возвращает числовое значение - идентификатор задания.
+$DESCRIPTION$
+	START() starts task in parallel mode and passes it some parameters <vPar1>,,, <vParN>.
+$LANG_RU$
+	START() запускает задачу в параллельном режиме и передает ей параметры
+	<vPar1>,,, <vParN>
+$EXAMPLES$
+
+
+
+ts := @task2()
+  ...
+
+? START("task1", "Ann", "Jhon", "Mary")
+  ...
+? START(ts, 200, 100)
+  ...
+? START({|p1, p2| qout("Start code block"), ..., qout("Code block finished")})
+  ...
+
+function task1(a, b, c)
+	qout('Start task1')
+	...
+	qout('task1 finished')
+return .T.
+
+static function task2(x, y)
+	qout('Start task2')
+	...
+	qout('task2 finished')
+return
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	TASKSTOP(), TASKSTART()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+$FUNCNAME$
+	TASKSTOP()
+$CATEGORY$
+	TASK
+$SUMMARY$
+	Stop all tasks with the exclusion current task.
+$LANG_RU$
+	Остановить все задания, за исключением текущего.
+$SYNTAX$
+     TASKSTOP() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+     Returns NIL.
+$LANG_RU$
+     Возвращает NIL.
+$DESCRIPTION$
+	TASKSTOP() stopeds all tasks with the exclusion current task.
+$LANG_RU$
+	TASKSTOP() останавливает все задания, за исключением текущего.
+$EXAMPLES$
+
+
+function Task_stop()
+	TASKSTOP()
+	....
+return
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	TASKSTART()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+$FUNCNAME$
+	TASKSTART()
+$CATEGORY$
+	TASK
+$SUMMARY$
+	Resume all tasks what was stopped.
+$LANG_RU$
+	Возобновить все задания, которые были остановлены.
+$SYNTAX$
+     TASKSTART() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+     Returns NIL.
+$LANG_RU$
+     Возвращает NIL.
+$DESCRIPTION$
+	TASKSTART() resumes all tasks what was stopped of function TASKSTOP().
+$LANG_RU$
+	TASKSTART() возобновляет все задания, которые были остановлены функцией TASKSTOP().
+$EXAMPLES$
+
+
+function Task_stop()
+	TASKSTOP()
+	....
+return
+
+....
+Task_stop()
+
+TASKSTART()
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	TASKSTOP()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+
+$FUNCNAME$
+	TASKID()
+$CATEGORY$
+	TASK
+$SUMMARY$
+	Return task identifier.
+$LANG_RU$
+	Возвращает идентификатор задания.
+$SYNTAX$
+     TASKID() 	--> <nTaskID>
+$ARGUMENTS$
+$RETURNS$
+     Returns task identifier as numeric value.
+$LANG_RU$
+     Возвращает идентификатор задания как числовое значение.
+$DESCRIPTION$
+	TASKID() returns current task identifier <nTaskID> as numeric value.
+$LANG_RU$
+	TASKID() возвращает идентификатор текущего задания <nTaskID> как числовое значение.
+$EXAMPLES$
+
+
+TASKSTOP()
+
+? TASKID()
+
+TASKSTART()
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+
+$FUNCNAME$
+	TASKSENDMSG()
+$CATEGORY$
+	TASK
+$SUMMARY$
+	Send message to task.
+$LANG_RU$
+	Отправить сообщение заданию.
+$SYNTAX$
+     TASKSENDMSG(<nReceiverID>, <vMsg>[, <lWait>]) 	--> <lResult>
+$ARGUMENTS$
+	<nReceiverID>	NUMERIC, is the identifier of task receiver.
+	<vMsg>		is the any type data - message to task.
+	<lWait>		Logical, is TRUE if function must wait processed.
+$LANG_RU$
+	<nReceiverID>	NUMERIC, идентификатор задания-получателя.
+	<vMsg>		данные "посылка"  для задания.
+	<lWait>		Logical, TRUE, если функция должна дождаться окончания процесса.
+$RETURNS$
+     Returns logical value <lResult>, TRUE if message was delivered.
+$LANG_RU$
+     Возвращает логическое значение <lResult>, TRUE если сообщение было доставлено.
+$DESCRIPTION$
+	TASKSENDMSG() sends var <vMsg> to task with identifier <nReceiverID> and returns
+	returns TRUE if operation successfully.
+$LANG_RU$
+	TASKSENDMSG() отправляет значение <vMsg> заданию с идентификатором <nReceiverID> и
+	возвращает TRUE, если операция завершилась успешно.
+$EXAMPLES$
+
+static id
+
+id := START("func1")
+
+for i:=1 to 10
+	TASKSENDMSG(id, time())
+	sleep(i)
+next
+
+....
+
+function func1()
+	do while .T.
+		? "task got: ", TASKGETMSG()
+	enddo
+return
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	TASKGETMSG(), TASKPEEKMSG()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+
+$FUNCNAME$
+	TASKGETMSG()
+$CATEGORY$
+	TASK
+$SUMMARY$
+	Get message.
+$LANG_RU$
+	Прочитать полученное сообщение.
+$SYNTAX$
+     TASKGETMSG() 	--> <vMsg>
+$ARGUMENTS$
+$RETURNS$
+     Returns var <vMsg>, what was sended from a TASKSENDMSG().
+$LANG_RU$
+     Возвращает полученные данные, что были отправлены функцией TASKSENDMSG().
+$DESCRIPTION$
+	TASKGETMSG() gets message from task input queue and returns it. If no
+	message available, waits forever.
+$LANG_RU$
+	TASKGETMSG() читает сообщение из входной очереди задания и возвращает его.
+	Если в очереди нет сообщений - ожидает бесконечно.
+$EXAMPLES$
+
+static id
+
+id := START("func1")
+
+for i:=1 to 10
+	TASKSENDMSG(id, time())
+	sleep(i)
+next
+
+....
+
+function func1()
+	do while .T.
+		? "task got: ", TASKGETMSG()
+	enddo
+return
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	TASKSENDMSG(), TASKPEEKMSG()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+
+
+$FUNCNAME$
+	TASKPEEKMSG()
+$CATEGORY$
+	TASK
+$SUMMARY$
+	Get message.
+$LANG_RU$
+	Прочитать полученное сообщение.
+$SYNTAX$
+     TASKPEEKMSG() 	--> <vMsg>
+$ARGUMENTS$
+$RETURNS$
+     Returns var <vMsg>, what was sended from a TASKSENDMSG().
+$LANG_RU$
+     Возвращает полученные данные, что были отправлены функцией TASKSENDMSG().
+$DESCRIPTION$
+	TASKPEEKMSG() gets message from task input queue and returns it. If no
+	message available, immediatly returns NIL.
+$LANG_RU$
+	TASKPEEKMSG() читает сообщение из входной очереди задания и возвращает его.
+	Если в очереди нет сообщений - немедленно возвращает NIL.
+$EXAMPLES$
+
+static id
+
+id := START("func1")
+
+for i:=1 to 10
+	TASKSENDMSG(id, time())
+	sleep(i)
+next
+
+....
+
+function func1()
+	do while .T.
+		? "task got: ", TASKPEEKMSG()
+	enddo
+return
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+	TASKSENDMSG(), TASKGETMSG()
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

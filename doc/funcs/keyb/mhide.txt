@@ -1,0 +1,45 @@
+$FUNCNAME$
+  MHIDE()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Hide the mouse pointer
+$SYNTAX$
+     MHIDE() --> NIL
+$RETURNS$
+     MHIDE() always returns NIL.
+$DESCRIPTION$
+     MHIDE() hides the mouse pointer.  This function should be used together
+     with MSHOW() when updating the screen.  It is important to hide the
+     mouse pointer before changing the screen display and then show it again
+     after the change.
+
+     Note:  The MSETCURSOR() function should be used in place of MSHOW()
+     and MHIDE().  It is kept here for compatibility.
+$EXAMPLES$
+       This example uses the mouse pointer:
+
+	MHIDE()
+	@ 10, 20 say "Hi there, folks!!!"
+	MSHOW()
+
+       You can automate calls to MHIDE()/MSHOW() by modifying parts
+	of your header files (*.ch).  For example:
+
+	#command @ <row>, <col> SAY <xpr>;[PICTURE <pic>];
+	   [COLOR <color>];
+	   => DEVPOS(<row>, <col>);
+	   DEVOUTPict(<xpr>, <pic> [, <color>])
+	   // Can be changed to
+	#command @ <row>, <col> SAY <xpr>;
+	   [PICTURE <pic>];
+
+	   [COLOR <color>];
+
+	   => MHIDE();
+	   DEVPOS(<row>, <col>);
+	   DEVOUTPict(<xpr>, <pic> [, <color>]);
+	   MSHOW()
+$SEEALSO$
+  MSHOW(),MSETCLIP(),MSETCURSOR()
+$END$

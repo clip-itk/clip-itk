@@ -1,0 +1,51 @@
+$FUNCNAME$
+  DBREINDEX()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Recreate all active indexes for the current work area
+$LANG_RU$
+   Воссоздает все активные индексы в текущей рабочей области.
+$SYNTAX$
+     DBREINDEX() --> NIL
+$LANG_RU$
+     DBREINDEX() --> NIL
+$RETURNS$
+     DBREINDEX() always returns NIL.
+$LANG_RU$
+     DBREINDEX() всегда возвращает NIL.
+$DESCRIPTION$
+     DBREINDEX() rebuilds all active indexes associated with the current work
+     area.  After the indexes are recreated, the work area is moved to the
+     first logical record in the controlling order.
+
+     DBREINDEX() performs the same function as the standard REINDEX command.
+     For more information, refer to the REINDEX command.
+$LANG_RU$
+     DBREINDEX() заново строит все активные индексы в текущей рабочей
+     области. После индексации указатель записи в текущей рабочей области
+     устанавливается на первую логическую запись согласно управляющему
+     индексу.
+
+     DBREINDEX() выполняет те же функции, что и стандартная команда
+     REINDEX.  Более подробную информацию смотрите в команде REINDEX.
+$EXAMPLES$
+       The following example reindexes the work area:
+
+	cLast := "Winston"
+	DBUSEAREA( .T., "DBFNTX", "Sales", "Sales", .T. )
+	DBSETINDEX( "LASTNAME" )
+	//
+	IF ( Sales->(DBSEEK(cLast)) )
+	   IF RLOCK()
+	      DELETE FOR Sales->LastName == "Winston"
+	      Sales->( DBREINDEX() )
+	   ELSE
+	      ? "Unable to lock record..."
+	   ENDIF
+	ELSE
+	   ? "Not found"
+	ENDIF
+$SEEALSO$
+  DBCLEARINDEX(),DBCREATEINDEX(),DBSETINDEX(),DBSETORDER()
+$END$

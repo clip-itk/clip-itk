@@ -1,0 +1,76 @@
+$FUNCNAME$
+  MSTATE()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Return the current mouse state
+$SYNTAX$
+     MSTATE() --> aState | 0
+$RETURNS$
+     <PRE> MSTATE() Return Array
+     ------------------------------------------------------------------------
+     Position                 Description
+     ------------------------------------------------------------------------
+     LLM_STATE_X              State of X position.
+     LLM_STATE_Y              State of Y position.
+     LLM_STATE_ROW            State of column position.
+     LLM_STATE_COL            State of line position.
+     LLM_STATE_LEFT           State of left mouse button.  LLM_BUTTON_DOWN
+			      means down and LLM_BUTTON_UP means up.
+     LLM_STATE_RIGHT          State of right mouse button.  LLM_BUTTON_DOWN
+			      means down and LLM_BUTTON_UP means up.
+     LLM_STATE_VISIBLE        State of mouse pointer.  True (.T) means
+			      visible and false (.F) means invisible.  (See
+			      MSHOW() and MHIDE() for more information.)
+     LLM_STATE_DRIVER         Indicates version of mouse driver.
+     LLM_STATE_SHAPE          Mouse cursor shape.  (See note below.)
+     LLM_STATE_CLICKS_LEFT    Number of left clicks since last MSTATE() call.
+     LLM_STATE_CLICKS_RIGHT   Number of right clicks since last MSTATE()
+			      call.
+     ------------------------------------------------------------------------
+     </PRE>
+
+     Note:  The following are the possible values predefined for this
+     return array position:  LLM_CURSOR_ARROW, LLM_CURSOR_SIZE_NS,
+     LLM_CURSOR_SIZE_WE, LLM_CURSOR_SIZE_NW_SE, LLM_CURSOR_SIZE_NE_SW,
+     LLM_CURSOR_HAND, LLM_CURSOR_FINGER, LLM_CURSOR_CROSS, LLM_CURSOR_WAIT.
+     For a description of these values see the MSHOW() table of Cursor Shape
+     Constants.
+
+     If the mouse is missing, 0 is returned.
+
+     The number of clicks (i.e., aState[LLM_STATE_CLICKS_LEFT] and
+     aState[LLM_STATE_CLICKS_RIGHT]) is reset each time MSTATE() is called.
+     Use MSTATE() to reset the mouse settings when needed.
+$DESCRIPTION$
+     MSTATE() returns information on the mouse state, i.e., the current
+     screen position of the pointer, the state of the left and right mouse
+     buttons, the visibility status of the mouse pointer, and the version of
+     the mouse driver.
+$EXAMPLES$
+       This example shows how to use MSTATE() function:
+
+	// Show the mouse pointer
+	MSHOW()
+	DO WHILE INKEY() != K_ESC
+		       // Retrieve mouse state
+	   aState := MSTATE()
+		       // Line position
+	   @ 24,  0 SAY aState[LLM_STATE_ROW]
+		       // Column position
+	   @ 24, 10 SAY aState[LLM_STATE_COL]
+		       // State of left button
+	   @ 24, 20 SAY "Left" + If(aState[LLM_STATE_LEFT]==LLM_BUTTON_DOWN,;
+	   "Down"  ,;
+	   "Up")
+		       // State of right button
+	   @ 24, 40 SAY "Right " + If(aState[LLM_STATE_RIGHT]==    ;
+	   LLM_BUTTON_DOWN ,;
+	   "Down"  ,;
+	   "Up")
+	ENDDO
+	   // Hide the mouse pointer
+	MHIDE()
+$SEEALSO$
+  MHIDE(),MSETCURSOR(),MSHOW()
+$END$

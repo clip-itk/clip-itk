@@ -1,0 +1,58 @@
+$FUNCNAME$
+	TCPREAD()
+$CATEGORY$
+	TCP,FILE/IO
+$SUMMARY$
+	Read to buffer data from connection.
+$LANG_RU$
+	Прочитать в буфер данные из соединения.
+$SYNTAX$
+	TCPREAD(<nConnection>, @<sBuffer>, <nLen>[, <nTimeout>])	--> <nLenBuf>
+$ARGUMENTS$
+	<nConnection>	Numeric, is the connection number.
+	<sBuffer>	String, is the receiver buffer.
+	<nLen>		Numeric, is the buffer size.
+	<nTimeout>	NUmeric, is the timeout.
+$LANG_RU$
+	<nConnection>	Numeric, номер соединения.
+	<sBuffer>	String, принимающий буфер.
+	<nLen>		Numeric, размер буфера.
+	<nTimeout>	NUmeric, время ожидания.
+$RETURNS$
+	Returns numeric value - is the realy number of bytes received, or -1
+	if an error occurred.
+$DESCRIPTION$
+	TCPREAD() reads from connection <nConnection> some data (no more of <nLen> bytes) and writes it
+	to buffer <sBuffer>.
+	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
+$LANG_RU$
+	TCPREAD() читает из соединения  <nConnection> данные (не больше <nLen> байт) и записывает их
+	в буфер <sBuffer>.
+	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+$EXAMPLES$
+
+con := TCPCONNECT("http://www.itk.ru")
+
+if con > -1
+	? "connection: ", con
+	buf := ""
+	tr := TCPREAD(con, @buf, 1024)
+	if tr > -1
+		? buf
+	else
+		? "Error:", FERROR(), ":", FERRORSTR()
+	endif
+	TCPCLOSE(con)
+else
+	? FERROR(), FERRORSTR()
+endif
+
+$PECULIARITIES$
+$PLATFORMS$
+$CONFORMS$
+$SEEALSO$
+$AUTHOR$
+	ITK
+$LASTDATE$
+$END$
+

@@ -1,0 +1,255 @@
+$FUNCNAME$
+   FT_Ach2tb()
+$CATEGORY$
+   Menus/Prompts
+$ONELINER$
+   Replace ACHOICE() with a Tbrowse object & multiple features.
+$SYNTAX$
+   FT_Ach2tb( <nToprow>,<nTopcol>[,<nBotrow>][,<nBotcol>],<aArrey>,     ;
+	 [<cBoxtype>],[<cBoxcolor>],[<cBoxtitle>],[<nTitlePos>],        ;
+	 [<cUselcolor>],[<cTitlecolor>],[<cBarcolor>],[<cHkcolor>],     ;
+	 [<lShadow>],[<lExecute>],[<nMsgrow>],[<nMsgcol>],              ;
+	 [<cMsg.color>],[cElevbar],[cEbarcolor],[<cEbarside>],          ;
+	 [<cNoSelcolor>],[<cTagch>],[<nStartelem>],[<lRscreen>],        ;
+	 [<nTimeout>],[<nTimeoutval>],[<cUserfunc>] )
+    --> nOption
+
+$ARGUMENTS$
+
+<nToprow>   is the top row of the box to be drawn.  Required.
+
+<nTopcol>   is the top column of the box to be drawn.  Required.
+
+<nBotrow>   is the bottom row of the box to be drawn.  The default is
+   <nToprow>+Len(<aArrey>)+1 or maxrow()-2, whichever is less.
+
+<nBotcol>   is the bottom column of the box to be drawn.  The default
+   is <nTopcol>+width of the widest element in <aArrey> +2.
+
+   It's been pointed out that the number of commas required to default
+   the <nBotrow> and <nBotcol> params. is at least slightly confusing.
+   So, some documentation on the requirements:
+   Default both:                           7,9,,   ARRAY:
+   Default <nBotrow>, specify <nBotcol>:   7,9,,20 ARRAY:
+   Default <nBotcol>, specify <nBotrow>:   7,9,15, ARRAY:
+
+<aArrey>    is the arrey of options to present to the user.  Each
+   element can hold as many as five subelements, or as few as one.
+   Required.  Additional documentation below.
+
+<cnBoxtype> is the type of box to draw.  Uses DispBox().  The
+   default is a double-line box.
+
+<cBoxcolor> is the color with which to draw the box.  The default is
+   Setcolor().
+
+<cBoxtitle> is title of the box drawn on <nToprow>.  The default is
+   no title.
+
+<nTitlepos>  is the starting column position (to the right of
+   <nTopcol>) at which to draw <cBoxtitle>.  The default is 1.
+
+<cUselcolor> is the color with which to draw unselected options.
+   The default is Setcolor().
+
+<cTitlecolor> is the color with which to draw the box title.  The
+   default is yellow on red.
+
+<cBarcolor>  is the color with which to draw the selection bar.
+   The default is yellow on black.
+
+<cHkcolor>  is the default color with which to draw the hotkeys for
+   for each option.  This is used when no hotkey color is supplied
+   in <aArrey>.  The default is hiwhite on the current background
+   color.
+
+<cShadow>   is a character string, either "L" or "R" (for left or
+   right) to designate the side of the box where a shadow will appear.
+   Leave this NIL to avoid drawing a shadow.  You might also leave
+   this NIL if you choose to use a .C or .ASM shadow function, which
+   is a good idea.  Shadoww(), included below, is flat-out SLOW.
+
+<lExecute>  turn on/off execution of option when first letter is
+   pressed.  Rule:  setting in element 5 of each <aArrey> subarray
+   overrides <lexecute>.  If that element is left NIL, the <lexecute>
+   setting is used.  If <lexecute> is not passed and element 5 is NIL,
+   auto execution is turned ON.
+
+<nMsgrow>  is the row on which to draw a message for each option.
+   The default is two rows below the bottom of the box.
+
+<nMsgcol>  is the column at which to draw a message for each option.
+   The default is <nTopcol> +2.  To CENTER the message, pass "C".
+
+<cMsgcolor>  is the default color with which to draw messages.  This
+   color is used when element 4 of each <aArrey> subarray is left NIL.
+   The default is Setcolor().
+
+<cElevbar>  is the ASCII character to use as the elevator bar drawn
+   on the box.  Leave this NIL to draw no elevator bar.
+
+<cEbarcolor>  is the color with which to draw the elevator bar.
+   This is ignored if <cElevbar> is NIL.
+
+<cEbarside>  is a character string, either "L" or "R" (for left or
+   right) to designate the side of the box on which to draw the
+   elevator bar.  This is ignored if <cElevbar> is NIL.
+
+<cNoselcolor>  is the color with which to draw unselectable options.
+   The default is white on black.
+
+<cTagchar> is the ASCII character to use to draw tags that would
+   appear to the right of each option.  The default is *DIS*abled
+   tagging.  The default tag is chr(251).
+
+<nStartelem>  is the number of the option where the selection bar
+   will first be placed.  Leave this NIL to begin at option 1.
+
+<lRestscrn>  is a logical to designate whether or not the screen
+   coordinates occupied by the box and/or shadow should be restored
+   before FT_Ach2tb() returns.  The default is .T.
+
+<nTimeout>  is the number of seconds after which FT_ACH2TB() will
+   timeout and return to the function/proced. which called it.  The
+   default is 0.
+
+<nTimeoutVal> is an optional alternative numeric value FT_ACH2TB() will
+   RETURN when/if it times out.  The default is the current element
+   number.
+
+<bUserfunc>  is a code block containing a function call to be
+   executed after each key press.  You need to write just two formal
+   parameters to allow the run-time passing of the key pressed and the
+   current element number, e.g.:
+	     { |key,num| Myfunc( key,num [,other params.] ) }
+   Unlimited extra parameters may be passed.  Of course, make certain
+   to also write 'receptors' for them in 'Myfunc()' itself...as in the
+   above example.  The default is NO user function.
+
+$RETURNS$
+   the number of the selected option, or 0 if [Esc] is pressed.
+
+$DESCRIPTION$
+   FT_Ach2tb() is a greatly enhanced, fully featured, and now mouse-
+   supported replacement for Achoice(), based on a Tbrowse object.
+   Each element of <aArray> (the array you pass to it) is itself an
+   array.  Each element can solely composed of "Option" (below), but
+   may be composed as follows to take full advantage of the function's
+   features:
+
+       Option   ,     Message      ,HotKeyPos,HotKeyColor,Selectable
+   { "Utilities","System Utilities", 3       ,"+gr/b"    ,.T. }
+
+   All elements except for the first, the option itself, are optional.
+   IF 'Message' is NIL, no message is displayed.  'HotKeyPos' is the
+   position within 'Option' of the hotkey.  In the example above, the
+   hotkey for 'Utilities' is the first 'i', i.e., at position 3.  The
+   default is 1.  'HotKeyColor' is the color to use for the hotkey
+   display.  The default is hiwhite  on the current background color.
+   'Selectable' is a logical indicating whether or not that option can
+   be selected.  The default is .T.
+
+   The A_CHOICE() UDC in FT_ACH2T.CH makes using FT_ACH2TB() a breeze.
+   The myriad of parameters can be written in any order.  Only <nToprow>,
+   <nTopcol>, and <aArrey> are required.  See the example below.
+
+   There may be some confusion over 'unselected' and 'unselectable'
+   options.  The former refers to any option not currently covered
+   by the selection bar.  The latter refers to options you have
+   designated unselectable in subelement 5 of <aArray>, i.e., by
+   writing .F.
+
+   To enable tagging, pass any ASCII character as <cTagchar>.  To
+   tag/untag all options, press [SPACE].  To tag/untag individual
+   options, press [+] and [-] respectively.  On press of [+], browse
+   moves to the next element in the display.  To test for the tagged
+   status of an option, use the WAS_TAGGED() UDC in FT_ACH2T.CH. To
+   check the entire array for tags, use Aeval() in conjunction with
+   Was_Tagged() as in the example below.  When tagging is enabled, the
+   string "Tags" will be written across the bottom row of the box in
+   hiwhite on the current background color.
+
+   Because FT_ACH2TB() takes over the [SPACE],[+], and [-] keys, it saves
+   any SET KEY procedures you might have set them to, and restores same
+   on returning.  Any other procedures you might have SET KEYs to will
+   fly when FT_ACH2TB() is called...thanks to the Inkey() replacement,
+   SKINkey().
+
+   The pice de resistance of FT_ACH2TB() is its ability to execute
+   a user function designed entirely by you.  It is called after each
+   keypress, and because it is completely open-ended, extends the
+   the reach of FT_ACH2TB() to the limits of Clipper.  See the docu-
+   mentation under <bUserfunc> above.
+
+
+   Test compile:  CLIPPER ft_ach2t /n/w/m/dFT_TEST
+   Test link   :  RTLINK FI ft_ach2t LIB nanfor /pll:base50
+
+
+   Mouse support
+
+   Mouse support is provided via the Nanforum Toolkit FT_M* functions.
+   Most actions are tied to the left button.  The equivalent of pressing
+   [Esc] comes via the right button.  These left button clicks will
+   produce the designated actions:
+
+   Mouse cursor outside box                :  K_ENTER (select option)
+
+   Mouse cursor at box top left corner     :  browse:goTop()
+
+		       bottom left corner  :  browse:goBottom()
+
+		       top right corner    :  browse:pageUp()
+
+		       bottom right corner :  browse:pageDown()
+
+
+   Mouse cursor at option, tagging ENabled
+
+   Selection bar moves to option, subsequent press to tag or untag.  Do
+   this for as many options as you want to tag/untag, then move mouse
+   cursor outside the box.  Press again to select.  Tagging overrides
+   <lExecute>, so with tagging on and <lExecute> .F., subsequent presses
+   while inside the box coordinates simply tag/untag.
+
+
+   Mouse cursor at option, tagging DISabled
+
+   IF <lExecute> is turned on, the option is immediately selected.  If
+   turned off, selection bar moves to option.  Press again to select.
+
+
+
+   To Disable Mouse Support
+
+   Compile with /dNOMOUSE
+
+
+$EXAMPLES$
+nOpt := A_CHOICE( 7,9,, ARRAY:t_array )   // the minimum
+
+nOpt := A_CHOICE( 7,9,, ;
+	  ARRAY:t_arrey ;
+	  USERFUNC:{|a,b| UserFunc(a,b,any1)};
+	  BOXTYPE:B_SINGLE  ;
+	  BOXTITLE:title  ;
+	  SHADOW:"FT" ;
+	  TAGCHAR:chr(17) ;
+	  REST_SCREEN:.F. ;
+	  AUTOEXEC:.F. ;
+	  MES_COLOR:MSG_COLOR ;
+	  ELEVBAR:'|' ;
+	  NOSELCOLOR:"bg/n" ;
+	  MES_COL:"C" )
+
+Check only the RETURNed element for whether tagged:
+IF( Was_Tagged(chr(17),t_arrey,nOpt), MoreProcessing(), )
+
+Check entire 't_arrey':
+Aeval( t_arrey,{|e,n| IF( Was_Tagged(chr(17),t_arrey,n ), ;
+			  MoreProcessing(t_arrey),NIL ) } )
+
+
+$Author: clip $
+   Steve Kolterman
+$END$

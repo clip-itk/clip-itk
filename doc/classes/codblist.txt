@@ -1,0 +1,359 @@
+$CLASSNAME$
+	CODBLIST
+$SUMMARY$
+	CODB Class are destined to control of the list accessibile dictionary.
+
+	In yours system (computer, local network, VPN, internet) may be many
+	CODB data sourses (in configuration by default 32,000,000 ). CODB it is
+	those class what provide DB supporting with methods description for
+	access to certain CODB.
+
+	The information keeping into $CLIPROOT/etc/codb.dbf
+$LANG_RU$
+	CODB класс предназначен для управления списком доступных словарей.
+
+	В вашей системе (машина, локальная сеть, VPN, internet) может быть
+	много CODB источников данных (в конфигурации по умолчанию - 32000000).
+	codbList и есть тот класс, который обеспечивает поддержку БД c описателями
+	способов доступа к известным CODB.
+	Информация хранится в $CLIPROOT/etc/codb.dbf
+
+$ABOUT$
+	CODB Class are destined to control of the list accessibile dictionary.
+
+	In yours system (computer, local network, VPN, internet) may be many
+	CODB data sourses (in configuration by default 32,000,000 ). CODB it is
+	those class what provide DB supporting with methods description for
+	access to certain CODB.
+
+	The information keeping into $CLIPROOT/etc/codb.dbf
+$LANG_RU$
+	CODB класс предназначен для управления списком доступных словарей.
+
+	В вашей системе (машина, локальная сеть, VPN, internet) может быть
+	много CODB источников данных (в конфигурации по умолчанию - 32000000).
+	codbList и есть тот класс, который обеспечивает поддержку БД c описателями
+	способов доступа к известным CODB.
+	Информация хранится в $CLIPROOT/etc/codb.dbf
+
+$SYNTAX$
+	CODBListNew() --> CODB object
+	CODBList:New()  --> CODB object
+$ATTRIBUTES$
+	<ClassName> 	CODBLIST
+	<Error>		String, the error description what araised within running last operation.
+$LANG_RU$
+	<ClassName> 	CODBLIST
+	<Error>		String, описание ошибки, возникшей при выполнении последней операции.
+
+$METHODNAME$
+	New()
+$SUMMARY$
+	Initiation new CODBLIST object.
+$LANG_RU$
+	Инициализация нового объекта CODBLIST.
+$SYNTAX$
+	New() --> CODBLIST object
+$ARGUMENTS$
+$RETURNS$
+	Method returns new CODBLIST object.
+$LANG_RU$
+	Метод возвращает новый объект CODBLIST.
+$DESCRIPTION$
+	New() inits new CODBLIST object and returns it.
+$LANG_RU$
+	New() инициализирует новый объект CODBLIST возвращает его.
+$ENDMETHOD$
+
+$METHODNAME$
+	List()
+$SUMMARY$
+	Returns list CODB what registered in system.
+$LANG_RU$
+	Возвращает список зарегистрированных CODB.
+$SYNTAX$
+	List() 	--> <aList>
+$ARGUMENTS$
+
+$RETURNS$
+	Returns list of registered CODB - <aList>.
+$LANG_RU$
+	Возвращает список зарегистрированных CODB - <aList>.
+$DESCRIPTION$
+	List() returns list of registered CODB - <aList>.
+	Every element of <aList> is string what contain CODB identifier and
+	CODB name via <:>
+$LANG_RU$
+	List() возвращает список зарегистрированных CODB - <aList>.
+	Каждый элемент <aList> - это строка, содержащая CODB идентификатор и
+	CODB название через <:>
+$ENDMETHOD$
+
+$METHODNAME$
+	ExistId()
+$SUMMARY$
+	Check CODB identifier into list accessible CODB.
+$LANG_RU$
+	Проверить CODB идентификатор в списке известных CODB.
+$SYNTAX$
+	ExistId(<sCodbId>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<sCodbId> String, the CODB identifier (english alpha-betical symbols and numerics)
+$LANG_RU$
+	<sCodbId> String, CODB идентификатор (английские читаемые буквы и цифры)
+$RETURNS$
+	Returns TRUE if CODB with identifier <sCodbId> is exist into list of registered CODB.
+$LANG_RU$
+	Возвращает TRUE если CODB с идентификатором <sCodbId> существует в списке
+	зарегистрированных CODB.
+$DESCRIPTION$
+	ExistId() returns TRUE if CODB with identifier <sCodbId> is exist into list of registered CODB.
+	In other returns FALSE.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	ExistId() возвращает TRUE если CODB с идентификатором <sCodbId> существует в списке
+	зарегистрированных CODB.
+	В противном случае возвращает FALSE.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Append()
+$SUMMARY$
+	Add to list new CODB specifier.
+$LANG_RU$
+	Добавить в список новый описатель CODB.
+$SYNTAX$
+	Append(<oCodbData>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<oCodbData> Object, new CODB specifier.
+$LANG_RU$
+	<oCodbData> Object, описатель нового CODB.
+$RETURNS$
+	Returns TRUE if new CODB added.
+$LANG_RU$
+	Возвращает TRUE если новая CODB добавлена.
+$DESCRIPTION$
+	Append() returns TRUE if new CODB specifier added.
+	The <oCodbData> must be contain property <ID>. This property specified
+	CODB identifier.
+
+	The <oCodbData> can be contain property <TYPE> - the type of dictionary.
+	By default it is CODB_DICTTYPE_DEFAULT.
+	If <TYPE> is "DBF", then <oCodbData> can be contain attribute <PATH> - full path to dbf
+	file (by default it is /home/$USER/codb+<ID>)
+
+	The properties of <oCodbData> see in file <"codbcfg.ch">
+	<pre>ID - CODB identifier and this one  dictionary identifier (5 byte)
+	NAME - CODB name
+	TYPE - driver type to access to data:
+		DBF - DBF (by default)
+		MS  - MySQL
+		PG  - Postgress
+		OR  - Oracle
+		IB  - Interbase and Firebird
+		ODBC - ODBC data source
+	PATH - path to data (only for DBF)
+	HOST - name and IP address SQL server
+	PORT - TCP port of SQL server
+	USER - SQL-server user
+	DBNAME - DB name into SQL server
+	</pre>
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Append() возвращает TRUE, если описатель CODB добавлен.
+	<oCodbData> должна содержать атрибут <ID>. Это свойство определяет
+	CODB идентификатор.
+
+	<oCodbData> может включать атрибут <TYPE> - тип словаря. По умолчанию этот
+	атрибут CODB_DICTTYPE_DEFAULT.
+	Если <TYPE>  "DBF", то <oCodbData> может содержать и еще один атрибут: <PATH> -
+	полный путь к словарю dbf (по умолчанию: /home/$USER/codb+<ID>)
+
+	Свойства объекта <oCodbData> см. в файле <"codbcfg.ch">
+	<pre>
+	ID - идентификатор CODB, он же и индентификатор словаря (5 байт)
+	NAME - название CODB
+	TYPE - тип драйвера доступа к данным:
+		DBF - по умолчанию
+		MS  - MySQL
+		PG  - Postgress
+		OR  - Oracle
+		IB  - Interbase and Firebird
+		ODBC - ODBC data source
+	PATH - путь к данным в файловой системе (только для DBF)
+	HOST - имя и IP адрес машины c SQL сервером
+	PORT - TCP порт SQL сервера
+	USER - пользователь SQL-сервера
+	DBNAME - имя БД в SQL-сервере
+	</pre>
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Update()
+$SUMMARY$
+	Update CODB description.
+$LANG_RU$
+	Обновить описание CODB.
+$SYNTAX$
+	Update(<oCodbData>) 	--> TRUE || FALSE
+$ARGUMENTS$
+	<oCodbData> Object, CODB specifier to updating.
+$LANG_RU$
+	<oCodbData> Object, описатель CODB для обновления.
+$RETURNS$
+	Returns TRUE if specifier CODB updated.
+$LANG_RU$
+	Возвращает TRUE если описание CODB обновлено.
+$DESCRIPTION$
+	Update() returns TRUE if CODB specifier updated.
+	The <oCodbData> must be contain property <ID>. This property specified
+	CODB identifier.
+
+	The <oCodbData> can be contain property <TYPE> - the type of dictionary.
+	By default it is CODB_DICTTYPE_DEFAULT.
+	If <TYPE> is "DBF", then <oCodbData> can be contain attribute <PATH> - full path to dbf
+	file (by default it is /home/$USER/codb+<ID>)
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Update() возвращает TRUE, если описатель CODB обновлен.
+	<oCodbData> должна содержать атрибут <ID>. Это свойство определяет
+	CODB идентификатор.
+
+	<oCodbData> может включать атрибут <TYPE> - тип словаря. По умолчанию этот
+	атрибут CODB_DICTTYPE_DEFAULT.
+	Если <TYPE>  "DBF", то <oCodbData> может содержать и еще один атрибут: <PATH> -
+	полный путь к словарю dbf (по умолчанию: /home/$USER/codb+<ID>)
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Connect()
+$SUMMARY$
+	Open DB.
+$LANG_RU$
+	Открыть БД.
+$SYNTAX$
+	Connect(<sCodbID>[, <sUser>[, <sPasswd>]]) 	--> <oDict>
+$ARGUMENTS$
+	<sCodbID>   	String, identifier CODB
+	<sUser>		String, users name
+	<sPasswd>	String, password to access to CODB
+$LANG_RU$
+	<sCodbID>   	String, идентификатор CODB
+	<sUser>		String, имя пользователя
+	<sPasswd>	String, пароль для доступа к CODB
+$RETURNS$
+	Returns object of DICTIONARY class - <oDict>.
+$LANG_RU$
+	Возвращает объект класса DICTIONARY - <oDict>.
+$DESCRIPTION$
+	Connect() openes DB with identifier <sCodbID>. Made connect with
+	SQL-server (if source is SQL-server) or openes necessary files and
+	returns object of DICTIONARY class <oDict>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	Connect() открывает БД с идентификатором <sCodbID>. Устанавливает
+	соединение с SQL-сервером (если источник SQL-сервер) или открывает нужные
+	файлы и возвращает объект класса DICTIONARY <oDict>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+$METHODNAME$
+	Close()
+$SUMMARY$
+	Close DB.
+$LANG_RU$
+	Закрыть БД.
+$SYNTAX$
+	Close() 	--> NIL
+$ARGUMENTS$
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Close() closes all files, connections, DB.
+$LANG_RU$
+	Close() закрывает все файлы, соединения, БД.
+$ENDMETHOD$
+
+$METHODNAME$
+	GetValue()
+$SUMMARY$
+	Get dictionary by CODB identifier.
+$LANG_RU$
+	Получить словарь по идентификатору CODB.
+$SYNTAX$
+	GetValue(<sCodbID>) 	--> <oDict>
+$ARGUMENTS$
+	<sCodbId> String, the CODB identifier (english alpha-betical symbols and numerics)
+$LANG_RU$
+	<sCodbId> String, CODB идентификатор (английские читаемые буквы и цифры)
+$RETURNS$
+	Returns object of DICTIONARY class - <oDict> with identifier <sCodbID>.
+$LANG_RU$
+	Возвращает объект класса DICTIONARY - <oDict> с идентификатором <sCodbID>.
+$DESCRIPTION$
+	GetValue() returns object of DICTIONARY class - <oDict> with identifier <sCodbID>.
+
+	<::Error> contain error descriptions if araised.
+$LANG_RU$
+	GetValue() возвращает объект класса DICTIONARY - <oDict> с идентификатором <sCodbID>.
+
+	<::Error> содержит описание ошибки, если таковая произошла.
+$ENDMETHOD$
+
+
+
+
+$EXAMPLES$
+
+dList := codbList():new()
+
+if !empty(dList:error)
+? "Error:" dList:error
+quit
+endif
+
+dle      := map()
+dle:id   := "MY001"
+dle:name := "my first CODB"
+dle:type := "DBF"
+dle:path := "/home/my_user_name/codb/MY001"
+
+if dList:existId(dle:ID)
+dList:update(dle)
+else
+dList:append(dle)
+endif
+
+if !empty(dList:error)
+? "Error:" dList:error
+quit
+endif
+
+oDict := dList:connect("MY001")
+? oDict  // see descriptions of DICTIONARY class
+
+dList:close()
+quit
+
+$PLATFORMS$
+   No dependies of platform.
+$SEEALSO$
+	CODBDICTIONARY
+$AUTHOR$
+ITK
+$LASTDATE$
+
+

@@ -1,0 +1,129 @@
+$FUNCNAME$
+  EMPTY()
+$CATEGORY$
+  STRING,NUMERIC,ARRAY,DATE/TIME,LOGICAL
+$SUMMARY$
+   Determine if the result of an expression is empty
+$LANG_RU$
+   Определяет, является ли результат выполнения выражения пустым.
+$SYNTAX$
+     EMPTY(<exp>) --> lEmpty
+$LANG_RU$
+     EMPTY(<выражение>) --> лог. значение признака
+$ARGUMENTS$
+     <exp> is an expression of any data type.
+$LANG_RU$
+     <выражение> - выражение любого типа.
+$RETURNS$
+     EMPTY() returns true (.T.) if the expression results in an empty value;
+     otherwise, it returns false (.F.).  The criteria for determining whether
+     a value is considered empty depends on the data type of <exp> according
+     to the following rules:
+
+     <PRE> List of Empty Values
+     ------------------------------------------------------------------------
+     Data Type    Contents
+     ------------------------------------------------------------------------
+     Array        Zero-length
+     Character    Spaces, tabs, CR/LF, or ("")
+     Numeric      0
+     Date         Null (CTOD(""))
+     Logical      False (.F.)
+     Memo         Same as character
+     NIL          NIL
+     ------------------------------------------------------------------------
+     </PRE>
+$LANG_RU$
+     EMPTY() возвращает значение "истина" (.T.), если результат выражения
+     имеет пустое значение, в противном случае она возвращает "ложь"
+     (.F.).  Критерии, по которым определяется пустое значение, зависят
+     от типа данных выражения <выражение> в соответствии со следующими
+     правилами:
+     <PRE> Список пустых значений .
+     ---------------------------------------------------------------------
+     Тип данных       Критерий
+     ---------------------------------------------------------------------
+     массив           нулевая длина
+     символ           пробел, символ табуляции, CR/LF или пустая строка
+     число            0
+     дата             NULL( CTOD("") )
+     логические       "ложь" (.F.)
+     MEMO             то же, что и символ
+     NIL              NIL
+     ---------------------------------------------------------------------
+     </PRE>
+$DESCRIPTION$
+     The EMPTY() function has a number of uses.  You can use it to determine
+     if a user entered a value into a Get object before committing changes to
+     a database file.  It can also determine whether a formal parameter is
+     NIL or unsupplied.  In addition, it can test an array for zero-length.
+$LANG_RU$
+     Функция EMPTY() достаточно универсальна и поэтому имеет несколько
+     применений. Она может быть использована для анализа, когда
+     пользователь вводит значения в GET-объект перед совершением изменений
+     в файле базы данных. Она также может быть использована для анализа,
+     не содержит ли формальный параметр NIL или он не задан. И, наконец,
+     она может быть использована для проверки массива на нулевую длину.
+$EXAMPLES$
+       These examples illustrate use of EMPTY() against several
+	different data types:
+
+	? EMPTY(SPACE(5)), EMPTY("")        // Result: .T. .T.
+	? EMPTY(0), EMPTY(CTOD(""))         // Result: .T. .T.
+	? EMPTY(.F.), EMPTY(NIL)            // Result: .T. .T.
+
+       This example uses EMPTY() to determine whether the user
+	entered a value into the first Get object before writing the new
+	value to the database file:
+
+	LOCAL cCust := SPACE(15), nAmount := 0
+	USE Sales NEW
+	@ 10, 10 GET cCust
+	@ 11, 10 GET nAmount PICTURE "999.99"
+	READ
+	//
+	IF !EMPTY(cCust)
+	   APPEND BLANK
+	   REPLACE Sales->Cust WITH cCust, Sales->Amount ;
+	      WITH nAmount
+	ENDIF
+
+       This example uses EMPTY() as part of the VALID clause to force
+	the user to enter data into the current Get object:
+
+	LOCAL cCode := SPACE(5)
+	@ 2, 5 SAY "Enter code" GET cCode VALID !EMPTY(cCode)
+	READ
+$LANG_RU$
+      Следующие примеры показывают использование функции EMPTY() для
+       различных целей:
+
+       ? EMPTY(SPACE(5)), EMPTY("")          // Результат: .T. .T.
+       ? EMPTY(0), EMPTY(CTOD(""))           // Результат: .T. .T.
+       ? EMPTY(.F.), EMPTY(NIL)              // Результат: .T. .T.
+
+      Этот пример использует функцию EMPTY() для анализа, вводит ли
+       пользователь значение в первый GET-объект перед записью нового
+       значения в файл базы данных :
+
+       LOCAL cCust := SPACE(15), nAmount := 0
+       USE Sales NEW
+       @ 10, 10 GET cCust
+       @ 11, 10 GET nAmount PICTURE "999.99"
+       READ
+       //
+       IF !EMPTY(cCust)
+	  APPEND BLANK
+	  REPLACE Sales->Cust WITH cCust, Sales->nAmount WITH nAmount
+       ENDIF
+
+      Этот пример использует функцию EMPTY() как часть предложения VALID
+       для усиления контроля пользователя при вводе в GET-объект нового
+       значения:
+
+       LOCAL cCode := SPACE(5)
+       @ 2, 5 SAY "Введите код" GET cCode VALID !EMPTY(cCode)
+       READ
+$SEEALSO$
+  LEN()
+$END$

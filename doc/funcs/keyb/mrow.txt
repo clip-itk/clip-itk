@@ -1,0 +1,13 @@
+$FUNCNAME$
+  MROW()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Determine a mouse cursor's screen row position
+$SYNTAX$
+     MROW() --> nCurrentMouseRow
+$RETURNS$
+     MROW() returns the mouse cursor's current screen row position.
+$SEEALSO$
+  MCOL()
+$END$

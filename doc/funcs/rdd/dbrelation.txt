@@ -1,0 +1,106 @@
+$FUNCNAME$
+  DBRELATION()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Return the linking expression of a specified relation
+$LANG_RU$
+   Возвращает скомпонованное выражение заданного отношения.
+$SYNTAX$
+     DBRELATION(<nRelation>) --> cLinkExp
+$LANG_RU$
+     DBRELATION(<номер отношения>) --> выражение связи
+$ARGUMENTS$
+     <nRelation> is the position of the desired relation in the list of
+     current work area relations.  The relations are numbered according to
+     the order in which they were defined with SET RELATION.
+$LANG_RU$
+     <номер отношения> - позиция выбираемого отношения в списке отношений
+     текущей рабочей области. Отношения нумеруются в последовательности их
+     описания в команде SET RELATION.
+$RETURNS$
+     DBRELATION() returns a character string containing the linking
+     expression of the relation specified by <nRelation>.  If there is no
+     RELATION SET for <nRelation>, DBRELATION() returns a null string ("").
+$LANG_RU$
+     DBRELATION() возвращает строку символов, содержащую скомпонованное
+     выражение связи, номер которого определен аргументом <номер
+     отношения>.  Если отношение с заданным номером не существует,
+     DBRELATION() возвращает строку нулевой длины ("").
+$DESCRIPTION$
+     DBRELATION() is a database function used with DBRSELECT() to determine
+     the linking expression and work area of an existing relation created
+     with the SET RELATION command.
+
+     DBRELATION() returns the linking expression defined by the TO clause.
+     DBRSELECT() returns the work area linked as defined by the INTO clause.
+
+     By default, DBRELATION() operates on the currently selected work area.
+     It will operate on an unselected work area if you specify it as part of
+     an aliased expression (see example below).
+$LANG_RU$
+     DBRELATION() - это функция работы с базами данных, которая
+     используется в комбинации с функцией DBRSELECT() для определения
+     скомпонованного выражения и рабочей области действующего отношения,
+     заданного командой SET RELATION. DBRELATION() возвращает
+     скомпонованное выражение, определенное в предложении TO.
+
+     DBRSELECT() возвращает скомпонованную рабочую область такой, как она
+     была определена в предложении INTO.
+
+     По умолчанию DBRELATION() выполняется для активной ( текущей )
+     рабочей области. Однако она может быть выполнена для пассивной
+     рабочей области путем включения DBRELATION() в выражение, уточненное
+     алиасом ( смотри пример ниже ).
+$EXAMPLES$
+       This example opens three database files, sets two child
+	relations from the parent work area, and then displays the linking
+	expression to the second child work area:
+
+	USE Invoices INDEX Invoices NEW
+	USE BackOrder INDEX BackOrder NEW
+	USE Customer INDEX Customer NEW
+	SET RELATION TO CustNum INTO Invoices, OrderNum ;
+	      INTO BackOrder
+	//
+	? DBRELATION(2)                  // Result: OrderNum
+
+       Later you can query the same linking expression from an
+	unselected work area by using an aliased expression like this:
+
+	USE Archive NEW
+	? Customer->(DBRELATION(2))   // Result: OrderNum
+
+       This example is a user-defined function, Relation(), that
+	returns the results of both DBRELATION() and DBRSELECT() as an array:
+
+	FUNCTION Relation( nRelation )
+	   RETURN { DBRELATION(nRelation), ;
+		 ALIAS(DBRSELECT(nRelation)) }
+$LANG_RU$
+      В этом примере открываются три файла базы данных, устанавливается
+       два дочерних отношения из родительской рабочей области и затем на
+       экран выдается выражение, связанное со второй дочерней рабочей
+       областью:
+
+       USE Invoices INDEX Invoices NEW
+       USE BackOrder INDEX BackOrder NEW
+       USE Customer INDEX Customer NEW
+       SET RELATION TO CustNum INTO Invoices, OrderNum INTO BackOrder
+       //
+       ? DBRELATION(2)                       // Результат: OrderNum
+
+      Затем можно извлечь то же скомпонованное выражение из пассивной
+       рабочей области, используя выражение, уточненное алиасом:
+
+       USE Archive NEW
+       ? Customer --> (DBRELATION(2))        // Результат: OrderNum
+
+      В этом примере функция пользователя Relation() возвращает
+       результаты работы DBRELATION() и DBRSELECT() в виде массива:
+
+       FUNCTION Relation( nRelation )
+	  RETURN { DBRELATION(nRelation), ALIAS(DBRSELECT(nRelation)) }
+$SEEALSO$
+  DBFILTER(),DBRSELECT()
+$END$

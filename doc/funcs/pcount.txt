@@ -1,0 +1,78 @@
+$FUNCNAME$
+  PCOUNT()
+$CATEGORY$
+  SYSTEM,MISCELLANEOUS,INFO
+$SUMMARY$
+   Determine the position of the last actual parameter passed
+$LANG_RU$
+   Определяет позицию последнего переданного аргумента.
+$SYNTAX$
+     PCOUNT() --> nLastArgumentPos
+$LANG_RU$
+     PCOUNT() --> позиция последнего аргумента
+$RETURNS$
+     PCOUNT() returns, as an integer numeric value, the position of the last
+     argument passed.  If no arguments are passed, PCOUNT() returns zero.
+$LANG_RU$
+     PCOUNT() возвращает позицию последнего переданного аргумента в виде
+     целого числа. Если аргументы не были переданы, PCOUNT() возвращает
+     ноль.
+$DESCRIPTION$
+     PCOUNT() reports the position of the last argument in the list of
+     arguments passed when a procedure or user-defined function is invoked.
+     This information is useful when determining whether arguments were left
+     off the end of the argument list.  Arguments skipped in the middle of
+     the list are still included in the value returned.
+
+     To determine if a parameter did not receive a value, test it for NIL.
+     Skipped parameters are uninitialized and, therefore, return NIL when
+     accessed.  Another method is to test parameters with the VALTYPE()
+     function.  This can establish whether the argument was passed and
+     enforce the correct type at the same time.  If a parameter was not
+     supplied, a default value can be assigned.
+
+     For more information on passing parameters, refer to the "Basic
+     Concepts" chapter in the Programming and Utilities Guide.
+$LANG_RU$
+     PCOUNT() возвращает позицию последнего аргумента в списке аргументов,
+     передаваемых при вызове процедуры или функции пользователя.
+     Эта информация полезна при определении, были ли аргументы опущены
+     в конце списка аргументов.
+
+     Аргументы, пропущенные в середине списка, из списка не исключаются,
+     а замещаются значениями NIL.
+
+     Чтобы определить, получил ли параметр значение, необходимо проверить,
+     имеет ли он значение NIL. Пропущенные параметры являются
+     неинициализированными, следовательно, при обращении к ним возвращают
+     NIL.  Другой метод проверки параметров - с помощью функции VALTYPE().
+     Она может устанавливать, был ли аргумент передан и в то же время
+     проверяет корректность его типа. Если параметр не был определен,
+     то подразумевается значение по умолчанию.
+$EXAMPLES$
+       This example is a user-defined function that opens a database
+	file and uses PCOUNT() to determine whether the calling procedure
+	passed the name of the database file to be opened.  If the name was
+	not passed, OpenFile() asks for the name:
+
+	FUNCTION OpenFile( cFile )
+	   IF PCOUNT() = 0
+	      ACCEPT "File to use: " TO cFile
+	   ENDIF
+	   USE (cFile)
+	   RETURN (NETERR())
+$LANG_RU$
+      В этом примере показана функция пользователя, которая открывает
+       файл базы данных, используя функцию PCOUNT(), определяет, передала
+       ли вызывающая процедура имя файла, который следует открыть. Если
+       имя не передано, то функция OpenFile() запрашивает его имя:
+
+       FUNCTION OpenFile( cFile)
+	  IF PCOUNT() = 0
+	     ACCEPT "Открыть файл : " TO cFile
+	  ENDIF
+	  USE (cFile)
+	  RETURN (NETERR())
+$SEEALSO$
+  VALTYPE()
+$END$

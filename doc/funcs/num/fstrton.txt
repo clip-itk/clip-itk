@@ -1,0 +1,38 @@
+$FUNCNAME$
+  FSTRTON()
+$CATEGORY$
+  STRING, NUMERIC, CONVERSION
+$SUMMARY$
+	Convert string as "float"  to xClipper-numeric.
+$LANG_RU$
+	Преобразует строку c "float"-представлнием в xClipper-число.
+$SYNTAX$
+     FSTRTON(<sString>) 	--> <nValue>
+$ARGUMENTS$
+     <sString>	String, is the source string
+$LANG_RU$
+     <sString>	String, исходная строка
+$RETURNS$
+     Returns the numeric value, what was converted from string with "float"  representation.
+$LANG_RU$
+     Возвращает числовое значение, сконвертированное из строки с "float" представлением.
+$DESCRIPTION$
+     FSTRTON() converts string <sString> to numeric values and returns it.
+$LANG_RU$
+     FSTRTON() преобразует строку <sString> в число и возвращает его.
+$EXAMPLES$
+
+fread(file,@str,8)<BR>
+n=FSTRTON(str)
+
+$PLATFORMS$
+   No dependies of platform.
+   $LANG_RU$
+   Не зависит от платформ
+$SEEALSO$
+$AUTHOR$
+ITK
+   $LANG_RU$
+ИТК
+$END$
+

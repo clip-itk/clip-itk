@@ -1,0 +1,119 @@
+$FUNCNAME$
+  MLCOUNT()
+$CATEGORY$
+  STRING
+$SUMMARY$
+   Count the number of lines in a character string or memo field
+$LANG_RU$
+   Подсчитывает количество строк в memo-поле или символьной строке.
+$SYNTAX$
+     MLCOUNT(<cString>, [<nLineLength>],[<nTabSize>], [<lWrap>]) --> nLines
+$LANG_RU$
+     MLCOUNT(<символьная строка>, [<длина строки>],[<шаг табуляции>],
+	  [<переключатель переноса>]) --> кол-во строк
+$ARGUMENTS$
+     <cString> is the character string or memo field to be counted.
+
+     <nLineLength> specifies the number of characters per line and can
+     range from four to 254.  If not specified, the default line length is
+     79.
+
+     <nTabSize> defines the tab size.  If not specified, the default
+     value is four.  If <nTabSize> is greater than or equal to <nLineLength>,
+     then the tab size is automatically converted to <nLineLength> - 1.
+
+     <lWrap> toggles word wrap on and off.  Specifying true (.T.) toggles
+     word wrap on; false (.F.) toggles it off.  If not specified, the default
+     value is true (.T.).
+$LANG_RU$
+     <символьная строка> - memo-поле или строка символов, из которой
+     выделяется строка текста.
+
+     <длина строки> - определяет количество символов на строку и может
+     принимать значения от 4 до 254. По умолчанию - 79.
+
+     <шаг табуляции> - определяет размер шага табуляции. Если аргумент не
+     определен, то по умолчанию шаг принимается равным 4. Если значение
+     аргумента <шаг табуляции> больше, чем значение аргумента <длина
+     строки>, то величина шага табуляции автоматически принимается равной
+     значению выражения (<длина строки> - 1).
+
+     <переключатель переноса> - включает и выключает режим переноса слов.
+     Если его значение - "истина" (.T.) - режим включен; если его значение
+     - "ложь" (.F.) - режим отключен. Если аргумент не определен, его
+     значение по умолчанию принимается - "истина" (.T.).
+$RETURNS$
+     MLCOUNT() returns the number of lines in <cString> depending on the
+     <nLineLength>, the <nTabSize>, and whether word wrapping is on or off.
+$LANG_RU$
+     MLCOUNT() возвращает число строк аргумента <символьная строка> в
+     зависимости от значений аргументов <длина строки> и <шаг табуляции>
+     и наличия или отсутствия режима переноса слов.
+$DESCRIPTION$
+     MLCOUNT() is a memo function used with MEMOLINE() to print character
+     strings and memo fields based on the number of characters per line.  In
+     the basic operation, use MLCOUNT() to return the number of lines in the
+     character string or memo field.  Then, using MEMOLINE() to extract each
+     line, loop through the memo field until there are no lines left.
+
+     If <lWrap> is true (.T.) and an end of line position breaks a word, it
+     is word wrapped to the next line and the next line begins with that
+     word.  If <lWrap> is false (.F.), MLCOUNT() counts the number of
+     characters specified by <nLineLength> as the current line.  The next
+     line begins with the character following the next hard or soft carriage
+     return.  Intervening characters are ignored.
+$LANG_RU$
+     MLCOUNT() - функция обработки memo-полей, используемая в сочетании с
+     функцией MEMOLINE() для печати символьных строк и memo-полей на
+     основании заданного количества символов в строке. Способ действия
+     заключается в том, что сначала с помощью MLCOUNT() подсчитывают
+     количество строк в memo-поле или символьной строке. Затем, используя
+     MEMOLINE(), выделяют каждую строку, зациклив этот процесс до тех пор,
+     пока не будут выбраны все строки.
+
+     Если значение аргумента <переключатель переноса> - "истина" (.T.) и
+     конец строки попадает внутрь слова, то оно переносится на следующую
+     строку.
+
+     Если значение аргумента <переключатель переноса> - "ложь" (.F.), то
+     MLCOUNT() подсчитывает количество строк точно в соответствии со
+     значением, определенным в аргументе <длина строки> для каждой строки.
+     Следующая строка начинается с символа, следующего за ближайшим
+     символом твердого или мягкого возврата каретки.
+
+     Символы, попавшие в промежуток, игнорируются.
+$EXAMPLES$
+       This example displays the contents of each Notes memo field in
+	the Sales database file, one line at a time:
+
+	USE Sales NEW
+	nLineLength = 65
+	//
+	DO WHILE !EOF()
+	   nLines = MLCOUNT(Sales->Notes, nLineLength)
+	   FOR nCurrLine = 1 TO nLines
+
+	      ? MEMOLINE(Sales->Notes, nLineLength, nCurrLine)
+	   NEXT
+	   SKIP
+	   ?
+	ENDDO
+$LANG_RU$
+      Этот пример показывает, как выдать на дисплей содержимое каждого
+       memo-поля Notes файла базы данных Sales в виде последовательности
+       строк длиной в 65 символов:
+
+       USE Sales NEW
+       nLineLength = 65
+       //
+       DO WHILE ! EOF()
+	  nLines = MLCOUNT(Sales --> Notes, nLineLength)
+	  FOR nCurrLine = 1 TO nLines
+	     ? MEMOLINE(Sales --> Notes, nCurrLine, nLineLength)
+	  NEXT
+	  SKIP
+	  ?
+       ENDDO
+$SEEALSO$
+  MEMOLINE(),MEMOTRAN(),MLPOS()
+$END$

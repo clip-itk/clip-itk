@@ -1,0 +1,41 @@
+$FUNCNAME$
+  NETNAME()
+$CATEGORY$
+  SYSTEM,ENVIRONMENT
+$SUMMARY$
+   Return the current workstation identification
+$LANG_RU$
+   Возвращает идентификатор текущей рабочей станции.
+$SYNTAX$
+     NETNAME() --> cWorkstationName
+$LANG_RU$
+     NETNAME() --> имя рабочей станции
+$RETURNS$
+     NETNAME() returns the workstation identification as a character string
+     up to 15 characters in length.  If the workstation identification was
+     never set or the application is not operating under the IBM PC Network,
+     it returns a null string ("").
+$LANG_RU$
+     NETNAME() возвращает идентификатор рабочей станции в виде символьной
+     строки длиной не более 15 символов. Если идентификатор рабочей
+     станции не установлен или станция работает в сети, отличной от
+     IBM PC Network, функция NETNAME() возвращает нулевую строку ("").
+$EXAMPLES$
+       This example demonstrates the NETNAME() result when a
+	workstation is started as a network node with a station identifier of
+	"STATION 1":
+
+	? NETNAME()               // Result: STATION 1
+
+       This example demonstrates the NETNAME() result when a
+	workstation is started as a stand-alone unit:
+
+	? NETNAME()               // Result: ""
+$LANG_RU$
+      Этот пример демонстрирует функцию NETNAME(), когда рабочая станция
+       является узлом сети и имеет идентификатор "СТАНЦИЯ 1":
+
+       ? NETNAME()               // Результат: "СТАНЦИЯ 1"
+$SEEALSO$
+
+$END$

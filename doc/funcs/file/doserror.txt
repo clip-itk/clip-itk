@@ -1,0 +1,49 @@
+$FUNCNAME$
+  DOSERROR()
+$CATEGORY$
+  FILE/IO,SYSTEM,DATABASE
+$SUMMARY$
+   Return the last DOS error number
+$LANG_RU$
+   Возвращает номер последней ошибки DOS.
+$SYNTAX$
+     DOSERROR([<nNewOsCode>]) --> nOsCode
+$LANG_RU$
+     DOSERROR([<новый код ошибки>]) --> код ошибки
+$ARGUMENTS$
+     <nNewOsCode>, if specified, alters the value returned by DOSERROR().
+     The value must be a numeric value that reflects a DOS error number.
+$LANG_RU$
+     <новый код ошибки> - если задан, определяет значение, возвращаемое
+     DOSERROR(). Значение должно быть числовой величиной, которая
+     отображает номер ошибки DOS.
+$RETURNS$
+     DOSERROR() returns the DOS error number as an integer numeric value.
+$LANG_RU$
+     DOSERROR() возвращает номер ошибки DOS в виде целого арифметического
+     значения.
+$DESCRIPTION$
+     DOSERROR() is an error function that returns the last DOS error code
+     associated with an activation of the runtime error block.  When a
+     runtime error occurs, the DOSERROR() function is set to the current DOS
+     error if the operation has an associated DOS error.  The function value
+     is retained until another runtime error occurs.  If the failed operation
+     has no associated DOS error, the DOSERROR() returns zero.  With low-
+     level file functions, FERROR() returns the same value as DOSERROR().
+
+     Through use of the optional <nNewOsCode>, you may customize to the
+     reporting activation the returned value for any DOS error.
+$LANG_RU$
+     DOSERROR() - это функция обработки ошибок, которая возвращает код
+     последней ошибки DOS, связанный с активизацией блока ошибок времени
+     выполнения.
+
+     При возникновении ошибки в процессе выполнения программы, если это
+     ошибка DOS, функция DOSERROR() примет значение ее кода. Это значение
+     сохранится до возникновения следующей ошибки. Если возникшая ошибка
+     не является ошибкой DOS, DOSERROR() примет значение 0. При
+     возникновении ошибок в процессе низкоуровневой обработки файлов
+     значение функций FERROR() и DOSERROR() одинаковы.
+$SEEALSO$
+  ERRORBLOCK(),FERROR()
+$END$

@@ -1,0 +1,297 @@
+$CLASSNAME$
+	HISTORY
+$SUMMARY$
+	Class are destined to control listing of history.
+$LANG_RU$
+	Класс предназначен для управления списком "истории"
+$ABOUT$
+	Class are destined to control listing of history.
+$LANG_RU$
+	Класс предназначен для управления списком "истории"
+$SYNTAX$
+	HistoryObj(nLrow, nLcol, nRrow, nRcol, sColor) --> QUEUE object
+$ATTRIBUTES$
+	<ClassName> 	HISTORY
+	<Lrow> 		Numeric, a HISTORY viewport coordinates
+	<Lcol>         	Numeric, a HISTORY viewport coordinates
+	<Rrow>       	Numeric, a HISTORY viewport coordinates
+	<Rcol>        	Numeric, a HISTORY viewport coordinates
+	<History>	Array, array of history items
+	<Header>	String, the history box header
+	<Size>		Numeric, the max size history array
+	<ColorSpec>	String, color specification.
+			"clr1, clr2, clr3, clr4"
+			clr1 - border and items color
+			clr2 - current item colors if object in focus
+			clr3 - current item colors if object outof focus
+			clr4 - title colors
+$LANG_RU$
+	<ClassName> 	HISTORY
+	<Lrow> 		Numeric, координаты области просмотра HISTORY
+	<Lcol>         	Numeric, координаты области просмотра HISTORY
+	<Rrow>       	Numeric, координаты области просмотра HISTORY
+	<Rcol>        	Numeric, координаты области просмотра HISTORY
+	<History>	Array, массив элементов "истории"
+	<Header>	String, заголовок окна
+	<Size>		Numeric, максимальный размер массива "истории"
+	<ColorSpec>	String, цветовая спецификация.
+
+			"clr1, clr2, clr3, clr4"
+			clr1 - основной цвет и цвет обрамления
+			clr2 - цвет текущего элемента, если объект в фокусе
+			clr3 - цвет текущего элемента, если объект не в фокусе
+			clr4 - цвет заголовков
+
+$METHODNAME$
+	HistoryObj()
+$SUMMARY$
+	HISTORY object constructor.
+$LANG_RU$
+	Конструктор объекта HISTORY.
+$SYNTAX$
+	HistoryObj(nLrow, nLcol, nRrow, nRcol, sColor) --> QUEUE object
+$ARGUMENTS$
+	<nLrow>		Numeric, a HISTORY viewport coordinates
+	<nLcol>         Numeric, a HISTORY viewport coordinates
+	<nRrow>         Numeric, a HISTORY viewport coordinates
+	<nRCol>         Numeric, a HISTORY viewport coordinates
+	<sColor>        String, color specification.
+$LANG_RU$
+	<nLrow>		Numeric, координаты области просмотра HISTORY
+	<nLcol>         Numeric, координаты области просмотра HISTORY
+	<nRrow>         Numeric, координаты области просмотра HISTORY
+	<nRCol>         Numeric, координаты области просмотра HISTORY
+	<sColor>        String, цветовая спецификация.
+$RETURNS$
+	Method returns new HISTORY object.
+$LANG_RU$
+	Метод возвращает новый объект HISTORY.
+$DESCRIPTION$
+	HistoryObj() is constructs and returns new HISTORY object.
+	That class can be use to manipulating listing of history( for example,
+	history listing of loaded files)
+$LANG_RU$
+	HistoryObj() создает и возвращает новый объект класса HISTORY.
+	Этот объект может использоваться для управления списком "истории"
+	(например, списком "истории" загруженных файлов)
+$ENDMETHOD$
+
+$METHODNAME$
+	InsertToFirst()
+$SUMMARY$
+	Insert item to first position.
+$LANG_RU$
+	Вставить элемент на первую позицию.
+$SYNTAX$
+	InsertToFirst(<sData>) --> NIL
+$ARGUMENTS$
+	<sData>  - String, data to inserting
+$LANG_RU$
+	<sData>	 - String, данные для сохранении в "истории"
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	InsertToFirst() is inserts data <sData> to history array <::History> begin with
+	first position. All items with one will be shifted down one position.
+
+	If <sData> already exist within <::History>, it removes from old place and
+	insert to first position.
+$LANG_RU$
+	InsertToFirst() вставляет новый элемент "истории" <sData> на первую позицию
+	в массив <::History>
+
+	Если <sData> уже существует в массиве <::History>, он просто перемещается
+	на первую позицию.
+$ENDMETHOD$
+
+$METHODNAME$
+	Add()
+$SUMMARY$
+	Add item into history.
+$LANG_RU$
+	Добавить элемент.
+$SYNTAX$
+	Add(<sData>) --> NIL
+$ARGUMENTS$
+	<sData>  - String, data to adding
+$LANG_RU$
+	<sData>	 - String, данные для сохранении в "истории"
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Add() is addes data <sData> to the end of history array <::History>.
+
+	If <sData> already exist within <::History>, it removes from old place and
+	addes to the end of <::History>.
+$LANG_RU$
+	Add() добавляет новый элемент <sData> в конец массива <::History>
+
+	Если <sData> уже существует в массиве <::History>, он удаляется со старого
+	места и добавляется в конец <::History>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Delete()
+$SUMMARY$
+	Delete item from history.
+$LANG_RU$
+	Удалить элемент.
+$SYNTAX$
+	Delete(<sData>) --> TRUE || FALSE
+$ARGUMENTS$
+	<sData>  - String, data to deleting
+$LANG_RU$
+	<sData>	 - String, данные для удаления.
+$RETURNS$
+	Returns TRUE if element <sData> exists and removes.
+$LANG_RU$
+	Возвращает TRUE если элемент <sData> существует и удален.
+$DESCRIPTION$
+	Delete() is deletes data <sData> from the history array <::History>.
+	The size of <::History> not changes.
+
+	If <sData> exist into <::History>, it removes, all lower items shift up one
+	position  and Delete() returns TRUE.
+$LANG_RU$
+	Delete() удаляет элемент <sData> из массива <::History>. Размер
+	<::History> не изменяется.
+
+	Если элемент <sData> существует в массиве <::History>, он удаляется со старого
+	места, все нижние элементы сдвигаются вверх и Delete() возвращает TRUE.
+$ENDMETHOD$
+
+$METHODNAME$
+	SetSize()
+$SUMMARY$
+	Set new size history array.
+$LANG_RU$
+	Изменить размер массива "истории"
+$SYNTAX$
+	SetSize(<nSize>) -->
+$ARGUMENTS$
+	<sSize>  - Numeric, new history array size.
+$LANG_RU$
+	<sSize>  - Numeric, новый размер массива
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	SetSize() set new size <nSize> for history array <::History>.
+$LANG_RU$
+	SetSize() устанавливает новый размер массива  <::History> равный <nSize>
+$ENDMETHOD$
+
+$METHODNAME$
+	First()
+$SUMMARY$
+	Get first item.
+$LANG_RU$
+	Получить первый элемент.
+$SYNTAX$
+	First() --> <sData>
+$ARGUMENTS$
+$RETURNS$
+	Returns first item of <::History>.
+$LANG_RU$
+	Возвращает первый элемент <::History>.
+$DESCRIPTION$
+	First() returns first item of history array <::History> as string <sData>
+	without removes element from array.
+$LANG_RU$
+	First() возвращает первый элемент массива  <::History> не удаляя его из
+	массива.
+$ENDMETHOD$
+
+$METHODNAME$
+	Set()
+$SUMMARY$
+	Init history.
+$LANG_RU$
+	Инициализировать "историю".
+$SYNTAX$
+	Set(<aArr>[, <nSize>]) --> NIL
+$ARGUMENTS$
+	<aArr>		Array, array of strings - new history items
+	<nSize>		Numeric, the size of history buffer.
+$LANG_RU$
+	<aArr>		Array, массив строк - элементов массива "истьрия"
+	<nSize>		Numeric, размер массива.
+$RETURNS$
+	Returns NIL.
+$LANG_RU$
+	Возвращает NIL.
+$DESCRIPTION$
+	Set() truncates <::History> to zero and addes to <::History>
+	items from <aArr>.
+
+	New size of history buffer is <nSize>. If <nSize> not specified, then
+	new size is size of <aArr>
+$LANG_RU$
+	Set() усекает длину  массива <::History> до 0 и добавляет в него
+	элементы из массива <aArr>.
+
+	Новый размер "истории" - <nSize>. Если параметр <nSize> не определен, то
+	размер буфера истории определяется размером массива <aArr>.
+$ENDMETHOD$
+
+$METHODNAME$
+	Run()
+$SUMMARY$
+	Run history.
+$LANG_RU$
+	Выполнить "историю"
+$SYNTAX$
+	Run([<nPos>][, <lItem>]) --> <vData>
+$ARGUMENTS$
+	<nPos>		Numeric, the current position into <::History>(default 1)
+	<lItem>		Logical, if TRUE(default) returns items value, else returns item number.
+$LANG_RU$
+	<nPos>		Numeric, текущая позиция в массиве <::History>(по умолчанию 1)
+	<lItem>		Logical, если TRUE(по умолчанию) метод возвращает значение элемента, иначе - его индекс.
+$RETURNS$
+	Returns value or index of selected item.
+$LANG_RU$
+	Возвращает значение или индекс выбранного элемента.
+$DESCRIPTION$
+	Run() is drows history and it
+	is simple key handler and returns by press <ENTER> value or index of selected item.
+$LANG_RU$
+	Run() прорисовывает объект HISTORY, обрабатывает нажатие клавиш и возвращает по
+	<ENTER> значение или индекс выбранного элемента.
+$ENDMETHOD$
+
+$EXAMPLES$
+
+History := HistoryObj(5, 5, 10, 30)
+do while .t.
+	fname := fileDialog()
+	if !empty(fname)
+		History:InsertToFirst(fname)
+	else
+		exit
+	endif
+enddo
+
+do while .t.
+	fname := History:Run()
+	str := memoread(fname)
+	memoedit(str, 0, 0, maxrow(), maxcol())
+enddo
+
+$PLATFORMS$
+   No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+ITK
+$LASTDATE$
+
+
+
+

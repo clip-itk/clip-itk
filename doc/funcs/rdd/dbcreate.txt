@@ -1,0 +1,189 @@
+$FUNCNAME$
+  DBCREATE()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Create a database file from a database structure array
+$LANG_RU$
+   Создает файл базы данных на основе информации о структуре базы данных,
+$SYNTAX$
+     DBCREATE(<cDatabase>, <aStruct>,[<cDriver>]) --> NIL
+$LANG_RU$
+     DBCREATE(<имя базы данных>, <структура>) --> NIL
+$ARGUMENTS$
+     <cDatabase> is the name of the new database file, with an optional
+     drive and directory, specified as a character string.  If specified
+     without an extension, .dbf is assumed.
+
+     <aStruct> is an array that contains the structure of <cDatabase> as
+     a series of subarrays, one per field.  Each subarray contains the
+     definition of each field's attributes and has the following structure:
+
+     <PRE>Field Definition Subarray
+     ------------------------------------------------------------------------
+     Position     Metasymbol     dbstruct.ch
+     ------------------------------------------------------------------------
+     1            cName          DBS_NAME
+     2            cType          DBS_TYPE
+     3            nLength        DBS_LEN
+     4            nDecimals      DBS_DEC
+     ------------------------------------------------------------------------
+     </PRE>
+
+     <cDriver> specifies the replaceable database driver (RDD) to use to
+     process the current work area.  <cDriver> is the name of the RDD
+     specified as a character expression.  If you specify <cDriver> as a
+     literal value, you must enclose it in quotes.
+
+$LANG_RU$
+     <имя базы данных> - имя нового файла базы данных, которое может
+     содержать имя дисковода и путь доступа к нему в виде строки символов.
+     Если имя файла задано без расширения, то по умолчанию принимается
+     расширение (.dbf).
+
+     <структура> - это массив, содержащий информацию о структуре записей
+     файла базы данных <имя базы данных> в виде группы подмассивов - по
+     одному на каждое поле. Каждый подмассив содержит описание
+     соответствующего поля и имеет следующую структуру :
+
+     <PRE>Подмассив описания поля.
+     ---------------------------------------------------------------------
+     Позиция       Метасимвол        dbstruct.ch
+     ---------------------------------------------------------------------
+       1            cName            DBS_NAME
+       2            cType            DBS_TYPE
+       3            nLength          DBS_LEN
+       4            nDecimals        DBS_DEC
+     ---------------------------------------------------------------------
+     </PRE>
+$RETURNS$
+     DBCREATE() always returns NIL.
+$LANG_RU$
+     DBCREATE() всегда возвращает NIL.
+$DESCRIPTION$
+     DBCREATE() is a database function that creates a database file from an
+     array containing the structure of the file.  You may create the array
+     programmatically or by using DBSTRUCT().  DBCREATE() is similar to the
+     CREATE FROM command which creates a new database file structure from a
+     structure extended file.  Use CREATE or COPY STRUCTURE EXTENDED commands
+     to create a structure extended file.
+
+     Before using DBCREATE(), you must first create the <aStruct> array and
+     fill it with the field definition arrays according to the structure in
+     Field Definition Subarray table (above).  There are some specific rules
+     for creating a field definition array, including:
+
+       Specify all field attributes with a value of the proper data
+	type for the attribute.  The decimals attribute must be specified--
+	even for non-numeric fields.  If the field does not have a decimals
+	attribute, specify zero.
+
+       Specify the type attribute using the first letter of the data
+	type as a minimum.  Use longer and more descriptive terms for
+	readability.  For example, both "C" and "Character" can be specified
+	as the type attribute for character fields.
+
+       In xClipper, character fields contain up to 64,000
+	characters.  Unlike the CREATE FROM command, DBCREATE() does not use
+	the decimals attribute to specify the high-order part of the field
+	length.  Specify the field length directly, regardless of its
+	magnitude.
+
+     To make references to the various elements of the field definition
+     subarray more readable, the header file called dbstruct.ch is supplied.
+     It contains the #defines to assign a name to the array position for each
+     field attribute.  It is located in \include.
+$LANG_RU$
+     DBCREATE() - функция работы с базой данных, которая создает файл
+     базы данных на основе информации массива, содержащего описание
+     структуры его записи. Массив может быть создан программным путем
+     при использовании функции DBSTRUCT().
+
+     DBCREATE() аналогична команде CREATE FROM, которая создает новый
+     файл базы данных по данным дополнительного файла о структуре записи.
+     Дополнительный файл с информацией о структуре записи можно
+     сформировать при помощи либо CREATE, либо COPY STRUCTURE EXTENDED.
+
+     Перед использованием функции DBCREATE() требуется создать массив
+     <структура> и заполнить его информацией, описывающей атрибуты полей
+     в соответствии с таблицей 5-7. При создании подмассива описания поля
+     необходимо руководствоваться следующими правилами:
+
+      Все атрибуты поля должны быть определены в соответствии с типом
+       данных. Атрибут, задающий количество знаков после десятичной точки,
+       должен быть определен даже для нецифровых полей. Если поле не имеет
+       атрибута, определяющего количество знаков после десятичной точки,
+       необходимо задавать его значение 0.
+
+      Тип атрибута необходимо задавать, используя как минимум первую
+       букву типа данных. Более полно тип атрибута может быть назван для
+       облегчения чтения программы. Например, для указания строки символов
+       можно использовать и "C", и "Character".
+
+      В xClipper символьные поля могут иметь длину до 64 килобайт. В
+       отличие от команды CREATE FROM, функция DBCREATE() не использует
+       атрибут, задающий количество знаков после десятичной точки для
+       определения величины целой части поля.
+
+     Для того, чтобы сделать ссылки на различные элементы подмассива
+     описаний поля более удобочитаемыми, используется файл описаний с именем
+     dbstruct.ch, который содержит описания имен позиций в массиве для каждого
+     элемента, определяющего атрибут поля. Этот файл находится в директории
+     \include.
+$EXAMPLES$
+       This example creates an empty array and then adds field
+	definition subarrays using the AADD() function before creating
+	People.dbf.  You might use this technique to add field definitions to
+	your structure array dynamically:
+
+	aDbf := {}
+	AADD(aDbf, { "Name", "C", 25, 0 })
+	AADD(aDbf, { "Address", "C", 1024, 0 })
+	AADD(aDbf, { "Phone", "N", 13, 0 })
+	//
+	DBCREATE("People", aDbf)
+
+       This example performs the same types of actions but declares
+	the structure array as a two-dimensional array, and then uses
+	subscript addressing to specify the field definitions.  It will be
+	created using the DBFMDX RDD:
+
+	#include "dbstruct.ch"
+	//
+	LOCAL aDbf[1][4]
+	aDbf[1][ DBS_NAME ] := "Name"
+	aDbf[1][ DBS_TYPE ] := "Character"
+	aDbf[1][ DBS_LEN ]  := 25
+	aDbf[1][ DBS_DEC ]  := 0
+	//
+	DBCREATE("Name", aDbf, "DBFMDX")
+$LANG_RU$
+      В этом примере при помощи функции AADD() создается пустой массив и
+       затем в него добавляются подмассивы описания атрибутов полей. Затем
+       создается файл базы данных People.dbf. Вы можете использовать этот
+       метод, если нужно добавлять динамически описания полей в массив
+       описания структуры:
+
+       aDbf := {}
+       AADD(aDbf, { "Name", "C", 25, 0 })
+       AADD(aDbf, { "Address", "C", 1024, 0 })
+       AADD(aDbf, { "Phone", "N", 13, 0 })
+       //
+       DBCREATE("People", aDbf)
+
+      В этом примере производятся те же действия, но массив структуры
+       описывается как двухмерный, а затем при занесении в него описаний
+       структуры используется индексация:
+
+       #include "dbstruct.ch"
+       //
+       LOCAL aDbf[1][4]
+       aDbf[1][DBS_NAME] := "Name"
+       aDbf[1][DBS_TYPE] := "Character"
+       aDbf[1][DBS_LEN] := 25
+       aDbf[1][DBS_DEC] := 0
+       //
+       DBCREATE("Name", aDbf)
+$SEEALSO$
+  AFIELDS(),DBSTRUCT()
+$END$

@@ -1,0 +1,80 @@
+$FUNCNAME$
+  BIN2I()
+$CATEGORY$
+  CONVERSION,MISCELLANEOUS,NUMERIC
+$SUMMARY$
+   Convert a 16-bit signed integer to a numeric value
+$LANG_RU$
+   Преобразует 16-битовое целое со знаком в числовое значение.
+$SYNTAX$
+   BIN2I(<cSignedInt>) --> nNumber
+$LANG_RU$
+   BIN2I(<строка символов>) --> целое число
+$ARGUMENTS$
+     <cSignedInt> is a character string in the form of a 16-bit signed
+     integer number--least significant byte first.  Only the first two
+     characters are used by the function; all others are ignored.
+$LANG_RU$
+     <строка символов> - строка символов, представленная в форме 16-ти
+     битового целого числа со знаком - последний значащий байт является
+     первым.  Функция использует только два первых символа, все остальные
+     символы игнорируются.
+$RETURNS$
+     BIN2I() returns an integer numeric value.
+$LANG_RU$
+     BIN2I() возвращает число целого типа.
+$DESCRIPTION$
+     BIN2I() is a low-level file function that is used with FREAD() to
+     convert a two-byte character string formatted as a signed integer to a
+     xClipper numeric data type.  This is most useful when you are reading
+     foreign file types and want to read numeric data in its native format.
+$LANG_RU$
+     BIN2I() - это функция работы с файлами низшего уровня, которая
+     используется в сочетании с функцией FREAD() для преобразования
+     двухбайтных символьных строк, рассматриваемых как целые числа
+     со знаком, в числа формата, принятого в системе xClipper. Такие
+     преобразования чаще всего необходимы, когда вы считываете файлы
+     других типов и хотите прочитать арифметические данные в их истинном
+     формате.
+$EXAMPLES$
+
+       This example opens a database file using low-level file
+	functions and reads the date of last update (bytes 1-3).  The result
+	is the same as with LUPDATE():
+
+	#include "Fileio.ch"
+	//
+	nHandle := FOPEN("Sales.dbf", FO_READ)
+	//
+	// Point to byte 1 in the file
+	FSEEK(nHandle, 1, FS_SET)
+	//
+	// Read date of last update
+	nYear := BIN2I(FREADSTR(nHandle, 1) + CHR(0))
+	nMonth := BIN2I(FREADSTR(nHandle, 1) + CHR(0))
+	nDay := BIN2I(FREADSTR(nHandle, 1) + CHR(0))
+	//
+	? LTRIM(STR(nMonth)), LTRIM(STR(nDay)), LTRIM(STR(nYear))
+	FCLOSE(nHandle)
+$LANG_RU$
+      В этом примере открывается файл базы данных и считывается дата
+       последнего его обновления ( байты 1 - 3 ). Результат - тот же
+       самый, как если бы вы использовали функцию LUPDATE():
+
+       #include "Fileio.ch"
+       //
+       nHandle = FOPEN("Sales.dbf", FO_READ)
+       //
+       // Установить указатель на первый байт файла.
+       FSEEK(nHandle, 1, FS_SET)
+       //
+       // Читать дату последнего обновления файла.
+       nYear = BIN2I(FREADSTR(nHandle, 1) + CHR(0))
+       nMonth = BIN2I(FREADSTR(nHandle, 1) + CHR(0))
+       nDay = BIN2I(FREADSTR(nHandle, 1) + CHR(0))
+       //
+       ? LTRIM(STR(nMonth)), LTRIM(STR(nDay)), LTRIM(STR(nYear))
+       FCLOSE(nHandle)
+$SEEALSO$
+  BIN2L(),BIN2W(),FREAD(),FREADSTR(),I2BIN(),L2BIN()
+$END$

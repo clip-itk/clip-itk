@@ -1,0 +1,60 @@
+$FUNCNAME$
+  DTOC()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Convert a date value to a character string
+$LANG_RU$
+   Преобразует значение даты в символьную строку.
+$SYNTAX$
+     DTOC(<dDate>) --> cDate
+$LANG_RU$
+     DTOC(<дата>) --> строка-дата
+$ARGUMENTS$
+     <dDate> is the date value to convert.
+$LANG_RU$
+     <дата> - это дата, значение которой преобразуется.
+$RETURNS$
+     DTOC() returns a character string representation of a date value.  The
+     return value is formatted in the current date format.  The default
+     format is mm/dd/yy.  A null date returns a string of spaces equal in
+     length to the current date format.
+$LANG_RU$
+     DTOC() возвращает дату, представленную в виде строки символов.
+     Возвращаемое значение форматируется с учетом установленного текущего
+     формата даты. По умолчанию принимается формат мм/дд/гг. Нулевая дата
+     преобразуется в строку пробелов, равную длине, принятой для формата
+     даты.
+$DESCRIPTION$
+     DTOC() is a date conversion function used for formatting purposes when
+     you want to display the date in the SET DATE format and when a character
+     expression is required (in a LABEL FORM, for example).  If you need a
+     specialized date format, you can use TRANSFORM() or a custom expression.
+
+     If you are INDEXing a date in combination with a character string, use
+     DTOS() instead of DTOC() to convert the date value to a character
+     string.
+$LANG_RU$
+     DTOC() - функция преобразования даты, которая используется, когда
+     нужно выделить дату в формате, установленном командой SET DATE в
+     качестве элемента символьного выражения (например, при выводе меток).
+     Если требуется специальный формат даты, вы можете использовать
+     функцию TRANSFORM() или соответствующее выражение. Если вы включаете
+     дату как элемент символьного выражения в индекс, для преобразования
+     даты необходимо использовать DTOS() вместо DTOC().
+$EXAMPLES$
+       These examples show general uses of DTOC():
+
+	? DATE()                  // Result: 09/01/90
+	? DTOC(DATE())            // Result: 09/01/90
+	? "Today is " + DTOC(DATE())
+				// Result: Today is 09/01/90
+$LANG_RU$
+      Следующие примеры показывают применение функции DTOC():
+
+       ? DATE()                     // Результат: 09/01/90
+       ? DTOC(DATE())               // Результат: 09/01/90
+       ? "Сегодня " + DTOC(DATE())  // Результат: Сегодня 09/01/90
+$SEEALSO$
+  CTOD(),DATE(),DTOS()
+$END$

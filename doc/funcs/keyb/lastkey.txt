@@ -1,0 +1,132 @@
+$FUNCNAME$
+  LASTKEY()
+$CATEGORY$
+  KEYBOARD/MOUSE
+$SUMMARY$
+   Return the INKEY() value of the last key extracted from the keyboard buffer
+$LANG_RU$
+   Возвращает INKEY-код последней нажатой клавиши, извлеченной из буфера
+$SYNTAX$
+     LASTKEY() --> nInkeyCode
+$LANG_RU$
+     LASTKEY() --> INKEY-код.
+$RETURNS$
+     LASTKEY() returns an integer value from -39 to 386 for keyboard events
+     and integer values from 1001 to 1007 for mouse events.  This value
+     identifies either the key extracted from the keyboard buffer or the
+     mouse event that last occurred.  If the keyboard buffer is empty, and no
+     mouse events are taking place, LASTKEY() returns 0.  LASTKEY() returns
+     values for all ASCII characters, function, Alt+Function, Alt+Letter, and
+     Ctrl+Letter key combinations.
+$LANG_RU$
+     LASTKEY() возвращает число от -39 до 386 или от 1001 до 1007 для
+     событий мыши, определяющее INKEY-код последней нажатой клавиши,
+     извлеченной из буфера клавиатуры.
+
+
+$DESCRIPTION$
+
+     LASTKEY() is a function that reports the INKEY() value of the last key
+     fetched from the keyboard buffer by the INKEY() function, or the next
+     mouse event, or a wait state such as ACCEPT, INPUT, READ, WAIT,
+     ACHOICE(), DBEDIT(), or MEMOEDIT().  The time LASTKEY() waits is based
+     on the operating system clock and is not related to the microprocessor
+     speed.  LASTKEY() retains its current value until another key is fetched
+     from the keyboard buffer.
+
+     LASTKEY() has a number of uses which include:
+
+       Determining the key that terminates a READ
+
+       Determining the key that exits the current Get object within a
+	user-defined function, invoked by a VALID clause
+
+       Identifying an exception key in the user function of
+	ACHOICE(), DBEDIT(), or MEMOEDIT()
+
+     LASTKEY() is also used with UPDATED() to determine if any Get object's
+     buffer was changed during a READ.
+
+     LASTKEY() is related to NEXTKEY() and READKEY().  NEXTKEY() reads the
+     current key pending in the keyboard buffer without removing it.  Use
+     NEXTKEY() instead of INKEY() when polling for a key.
+
+     For a complete list of INKEY() codes and Inkey.ch constants for each
+     key, refer to the Error Messages and Appendices Guide.
+
+
+$LANG_RU$
+
+     LASTKEY() является функцией работы с клавиатурой, которая возвращает
+     INKEY-код последней нажатой клавиши, вызванной из буфера клавиатуры
+     функцией INKEY(), или в состоянии ожидания - командами ACCEPT, INPUT,
+     READ, WAIT, ACHOICE(), DBEDIT() и функциями MEMOEDIT(). LASTKEY()
+     сохраняет свое значение до тех пор, пока новая клавиша не будет
+     считана из буфера клавиатуры.
+
+     В программах LASTKEY() может быть использована в следующих случаях:
+
+      Определение кода клавиши, использованной для прерывания READ.
+
+      Определения кода клавиши, использованной для выхода из текущего
+       GET-объекта внутри функции пользователя, вызванной в предложении
+       VALID.
+
+      Определения ключа выхода в функциях пользователя в ACHOICE(),
+       DBEDIT() или MEMOEDIT().
+
+     LASTKEY() используется также в комбинации с UPDATED(), чтобы
+     определить, изменялся ли какой-либо из буферов GET-объектов во время
+     выполнения команды READ.
+
+     Функция LASTKEY() аналогична функциям NEXTKEY() и READKEY().
+     NEXTKEY() читает текущий введенный код клавиши в буфер клавиатуры
+     без его удаления.  NEXTKEY() используется вместо INKEY(), когда
+     осуществляется выбор кода клавиши.
+
+     За полным списком INKEY-кодов и констант из файла описаний Inkey.ch
+     следует обратиться к Приложению В.
+
+
+$EXAMPLES$
+
+       This example illustrates a typical application of LASTKEY() to
+	test the key that exits a READ.  If the user exits with any key other
+	than Esc and a GET was changed, the specified database file is
+	updated:
+
+	#include "Inkey.ch"
+	//
+	USE Customer NEW
+	MEMVAR->balance = Customer->Balance
+	@ 10, 10 SAY "Current Balance" GET MEMVAR->balance
+	READ
+	//
+	IF (LASTKEY() != K_ESC) .AND. UPDATED()
+	   REPLACE Customer->Balance WITH MEMVAR->balance
+
+	ENDIF
+
+
+$LANG_RU$
+
+      Этот пример иллюстрирует типичное применение LASTKEY() для проверки
+       кода ключа, использованного для выхода из команды READ. Если выход
+       осуществляется по любому ключу, отличному от <Esc>, и GET-объект
+       изменялся, заданный файл базы данных также изменяется:
+
+       #include "Inkey.ch"
+       //
+       USE Customer NEW
+       MEMVAR->balance = Customer->Balance
+       @ 10, 10 SAY "Текущий остаток" GET MEMVAR->balance
+       READ
+       //
+       IF ( LASTKEY() != K_ESC) .AND. UPDATED()
+	  REPLACE Customer->Balance WITH MEMVAR->balance
+       ENDIF
+
+
+$SEEALSO$
+  CHR(),INKEY(),NEXTKEY()
+$END$

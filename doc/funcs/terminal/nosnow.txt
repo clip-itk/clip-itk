@@ -1,0 +1,32 @@
+$FUNCNAME$
+  NOSNOW()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Toggle snow suppression
+$LANG_RU$
+   Управляет режимом подавления "снега".
+$SYNTAX$
+     NOSNOW(<lToggle>) --> NIL
+$LANG_RU$
+     NOSNOW(<признак>) --> NIL
+$ARGUMENTS$
+     <lToggle> is a logical value that toggles the current state of snow
+     suppression.  A value of true (.T.) enables the snow suppression on,
+     while a value of false (.F.) disables snow suppression.
+$LANG_RU$
+     <признак> - логическое значение, определяющее текущее состояние
+     подавления "снега". Значение "истина" (.T.) включает режим подавления
+     "снега", а "ложь" (.F.) - выключает.
+$DESCRIPTION$
+     NOSNOW() is used to suppress snow on CGA monitors.  Typically, use
+     NOSNOW() in the configuration section of your application to give the
+     user the option to suppress snow.
+$LANG_RU$
+     NOSNOW() используется для подавления "снега" на мониторах типа CGA.
+     Обычно пользователю следует предоставлять средство подавления "снега"
+     в разделе конфигурационной настройки программы. Для этой цели можно
+     использовать вызов функции NOSNOW().
+$SEEALSO$
+
+$END$

@@ -4,7 +4,7 @@
 
 #define _CODBCFG_DEFINED
 
-#define CODB_VERSION "0.6.0"
+#define CODB_VERSION "0.6.5"
 #define CODB_KNOWLEDGE "0.1.0"
 
 /* space for all IDENT in OODB */

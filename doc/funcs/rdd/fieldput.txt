@@ -1,0 +1,69 @@
+$FUNCNAME$
+  FIELDPUT()
+$CATEGORY$
+  DATABASE
+$SUMMARY$
+   Set the value of a field variable using the ordinal position of the field in
+$LANG_RU$
+   Записывает значение в поле, используя его номер в структуре.
+$SYNTAX$
+     FIELDPUT(<nField>, <expAssign>) --> ValueAssigned
+$LANG_RU$
+     FIELDPUT(<номер поля>,<выражение>)  --> присвоенное значение
+$ARGUMENTS$
+     <nField> is the ordinal position of the field in the current
+     database file.
+
+     <expAssign> is the value to assign to the given field.  The data
+     type of this expression must match the data type of the designated field
+     variable.
+$LANG_RU$
+     <номер поля> - порядковый номер поля в структуре базы данных  текущей
+     рабочей области
+
+     <выражение> - значение, присваиваемое данному полю. Тип данных этого
+     выражения должен соответствовать типу данных определяемого поля.
+$RETURNS$
+     FIELDPUT() returns the value assigned to the designated field.  If
+     <nField> does not correspond to the position of any field in the current
+     database file, FIELDPUT() returns NIL.
+$LANG_RU$
+     FIELDPUT() возвращает значение, присвоенное указываемому полю. Если
+     <номер поля> не соответствует номеру какого-либо поля в текущей базе
+     данных, FIELDPUT() возвратит NIL.
+$DESCRIPTION$
+     FIELDPUT() is a database function that assigns <expAssign> to the field
+     at ordinal position <nField> in the current work area.  This function
+     allows you to set the value of a field using its position within the
+     database file structure rather than its field name.  Within generic
+     database service functions this allows, among other things, the setting
+     of field values without use of the macro operator.
+$LANG_RU$
+     FIELDPUT() - функция баз данных, присваивающая значение <выражение>
+     полю с порядковым номером <номер поля> в базе данных текущей рабочей
+     области. Использование номера поля, а не его имени, позволяет, кроме
+     всего прочего, получать значение без использования операции
+     макроподстановки.
+$EXAMPLES$
+       This example compares FIELDPUT() to functionally equivalent
+	code that uses the macro operator to set the value of a field:
+
+	// Using macro operator
+	FName := FIELD(nField)           // Get field name
+	FIELD->&amp;FName := FVal            // Set field value
+	// Using FIELDPUT()
+	FIELDPUT(nField, FVal)           // Set field value
+$LANG_RU$
+      Следующий пример позволяет сравнить функцию FIELDPUT() с
+       эквивалентным фрагментом программы, использующим операцию
+       макроподстановки для присвоения значения полю:
+
+       // Использование оператора макроподстановки
+       FName := FIELD(nField)      // Получение имени поля
+       FIELD->&amp;FName := FVal       // Присвоение значения полю
+
+       // Использование FIELDPUT()
+       FIELDPUT(nField, FVal)      // Присвоение значения полю
+$SEEALSO$
+  FIELDGET()
+$END$

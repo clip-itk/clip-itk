@@ -1,0 +1,95 @@
+$FUNCNAME$
+  UPDATED()
+$CATEGORY$
+  TERMINAL/IO
+$SUMMARY$
+   Determine whether a GET changed during a READ
+$LANG_RU$
+   Определяет, были ли изменены поля GET в процессе выполнения команды READ.
+$SYNTAX$
+     UPDATED() --> lChange
+$LANG_RU$
+     UPDATED() --> признак завершения
+$RETURNS$
+     UPDATED() returns true (.T.) if data in a GET is added or changed;
+     otherwise, it returns false (.F.).
+$LANG_RU$
+     UPDATED() возвращает значение "истина" (.Т.), если данные в GET
+     дополнялись или изменялись; в противном случае возвращается значение
+     "ложь" (.F.).
+$DESCRIPTION$
+     UPDATED() determines whether characters were successfully entered into a
+     GET from the keyboard during the most current READ.  Each time READ
+     executes, UPDATED() is set to false (.F.).  Then, any change to a GET
+     entered from the keyboard sets UPDATED() to true (.T.) after the user
+     successfully exits the GET.  If the user presses Esc before exiting the
+     first GET edited, UPDATED() remains false (.F.).  Once UPDATED() is set
+     to true (.T.), it retains this value until the next READ is executed.
+
+     Within a SET KEY or VALID procedure, you can change the current GET
+     variable using the KEYBOARD command or by assigning a new value with one
+     of the many assignment operators.  Changing the variable with KEYBOARD
+     is the same as if the user had entered the change directly from the
+     keyboard, and UPDATED() is set accordingly.  However, since UPDATED()
+     reflects only those changes made from the keyboard, an assignment to the
+     GET variable does not affect UPDATED().
+$LANG_RU$
+     UPDATED() используют, чтобы определить, была ли введена информация с
+     клавиатуры в переменную оператора GET в процессе выполнения текущей
+     команды READ. Каждое включение команды READ устанавливает значение
+     UPDATED() - "ложь"(.F.). Затем любое изменение в переменной команды
+     GET устанавливает значение UPDATED() - "истина"(.Т.) после успешного
+     выхода из GET. Если пользователь для выхода из команды GET нажал
+     клавишу <Esc>, UPDATED() возвратит значение "ложь"(.F.). Если
+     значение функции UPDATED() "истина"(.Т.), то она сохраняет это
+     значение до тех пор, пока управление не перейдет на следующую команду
+     GET.
+
+     Внутри SET KEY или VALID процедуры, можно изменять значения текущих
+     GET переменных, используя команду KEYBOARD или присваивая им новые
+     значения с помощью операторов присвоения. Изменение значений
+     переменных при помощи команды KEYBOARD аналогично тому, как если бы
+     пользователь вносил изменения прямо с клавиатуры, и поэтому UPDATED()
+     устанавливается на значение "истина"(.Т.). Но поскольку UPDATED()
+     отражает только те изменения, которые сделаны с клавиатуры, изменение
+     значений GET переменных любым другим путем на изменение значения
+     UPDATED() не влияет.
+$EXAMPLES$
+       This example assigns field values from Customer.dbf to
+	variables and edits them.  If the user changes any of the values, the
+	field variables for the current record are updated with the new
+	values:
+
+	USE Customer NEW
+	CLEAR
+	MEMVAR->Customer = Customer->Customer
+	MEMVAR->Address = Customer->Address
+	@ 1, 1 SAY "Name:" GET MEMVAR->Customer
+	@ 2, 1 SAY "Address:" GET MEMVAR->Address
+	READ
+	//
+	IF UPDATED()
+	   Customer->Customer := MEMVAR->Customer
+	   Customer->Address := MEMVAR->Address
+	ENDIF
+$LANG_RU$
+      Следующий пример присваивает переменным памяти значения полей базы
+       данных Customer.dbf и затем редактирует их. Если пользователь
+       изменил любые из этих значений, то поля текущей записи
+       модифицируются новыми значениями:
+
+       USE Customer NEW
+       CLEAR
+       MEMVAR->Customer = Customer->Customer
+       MEMVAR->Address = Customer->Address
+       @ 1, 1 SAY "Имя:" GET MEMVAR->Customer
+       @ 2, 1 SAY "Адрес:" GET MEMVAR->Address
+       READ
+       //
+       IF UPDATED()
+	  Customer->Customer := MEMVAR->Customer
+	  Customer->Address := MEMVAR->Address
+       ENDIF
+$SEEALSO$
+    READMODAL()
+$END$

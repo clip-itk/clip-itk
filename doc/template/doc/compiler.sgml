@@ -1,0 +1,427 @@
+<chapter id="compiler">
+<title>_(Compiler)_</title>
+
+<para>_(
+CLIP compiler (<command>clip</command>) is used to:
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+compile one or more source files (.prg) to an object file form (.o);
+)_</para></listitem>
+<listitem><para>_(
+compile one or more source files (.prg) to a P-code (pseudocode) module
+form (.po);
+)_</para></listitem>
+<listitem><para>_(
+link one or more source files (.prg), object files (.o), static libraries (.a),
+dynamic libraries (.so) or a P-code modules (.po) to an executable file form.
+)_</para></listitem>
+</itemizedlist>
+
+<section id="compusage"><title>_(Usage)_</title>
+<programlisting><![CDATA[
+clip [<CLIP compiler options>] [<filelist>] [<C compiler options>]
+]]></programlisting>
+<para>_(
+where
+)_</para>
+<itemizedlist>
+<listitem><para>_(
+<![CDATA[<CLIP compiler options>]]> is a list of one or more options
+to control the course of the compilation and/or linking, all of which
+are described below;
+)_</para></listitem>
+<listitem><para>_(
+<![CDATA[<filelist>]]> is a space separated list of source, object,
+library files to compile or link. All file names must be written with
+suffices, no assumtions about file type are made;
+)_</para></listitem>
+<listitem><para>_(
+<![CDATA[<C compiler options>]]> are passed to the C compiler.
+)_</para></listitem>
+</itemizedlist>
+</section>
+
+<section id="compoptions"><title>_(Options)_</title>
+<para>_(
+Any of the CLIP compiler options described below can be placed in the
+<command>.cliprc</command> file in the current directory; or in
+the <command>$HOME/.cliprc</command> file; or in any file in the
+<command>$CLIPROOT/cliprc</command> directory. For example,
+you could create a file <command>.cliprc</command> in your home directory
+with the following content:
+)_</para>
+<programlisting>
+-r
+-l
+-Scp866
+</programlisting>
+<para>_(
+It results in compiling with <command>-r -l -Scp866</command> options,
+even if you don't specify them explicitly.
+)_</para>
+
+<para>_(
+The list of options follows.
+)_</para>
+
+<variablelist>
+
+<varlistentry>
+<term><command>-h, --help</command></term>
+<listitem><para>_(
+display a short usage help and exit
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-H, --help-environment</command></term>
+<listitem><para>_(
+display a short help about acceptable environment variables and exit; see
+more detailed information in the chapter
+<link linkend="envir">Environment variables</link>
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-V, --version</command></term>
+<listitem><para>_(
+display CLIP compiler version and exit
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-v[<level>], --verbose[=<level>]]]></command></term>
+<listitem><para>_(
+set/increase verbose level; possible values of <![CDATA[<level>]]> are from
+0 (silent) to 6 (most verbose); default is 1
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-a, --auto-memvar[=1|0]</command></term>
+<listitem><para>_(
+declare any variable included in a PRIVATE, PUBLIC, or PARAMETERS
+statement as MEMVAR
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-w, --namespace-warning[=1|0]</command></term>
+<listitem><para>_(
+generate warning messages for undeclared or unaliased (ambiguous)
+variable references
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-e, --exec</command></term>
+<listitem><para>_(
+generate executable file
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-c, --compile</command></term>
+<listitem><para>_(
+stop after generation C code
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-g,-b, --debug[=1|0]</command></term>
+<listitem><para>_(
+include debugging information in the object file
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-t, --show-syntax-tree</command></term>
+<listitem><para>_(
+print generated program syntax tree
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-o<name>, --output=<name>]]></command></term>
+<listitem><para>_(
+place executable in file <![CDATA[<name>]]>
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-d<name>, --outdir=<name>]]></command></term>
+<listitem><para>_(
+define the location of the output object files
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-O, --optimise[=<val>]]]></command></term>
+<listitem><para>_(
+set optimisation level for C compiler
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-M, --main</command></term>
+<listitem><para>_(
+use the code of the first file in the file list as a program start point
+(automatic definition of the <command>MAIN</command> procedure)
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-n, --nomain</command></term>
+<listitem><para>_(
+suppress the automatic definition of a procedure with the same name as
+the program file (.prg)
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-p, --pcode</command></term>
+<listitem><para>_(
+generate pseudocode (P-code) module; see <link linkend="functionload">Load()</link>
+function description
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-l, --c-pcode</command></term>
+<listitem><para>_(
+compile in C+P-code mode; smaller size of an output file,
+either an object or an executable
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-s, --shared</command></term>
+<listitem><para>_(
+create an shared object; when used with <command>-e</command> option
+it results in linking with shared run-time library (libclip.so), which
+gives a smaller size executable; see <command>-r</command> option
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-r, --shared-exec</command></term>
+<listitem><para>_(
+always when possible link with shared libraries; smaller size of an executable
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-I<path>, --include-path=<path>]]></command></term>
+<listitem><para>_(
+add the specified directory to the INCLUDE path list
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-L<path>, --library-path=<path>]]></command></term>
+<listitem><para>_(
+add the specified directory to the list of path that CLIP will search for
+libraries
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-D<name>, --define=<name>]]></command></term>
+<listitem><para>_(
+define macro <![CDATA[<name>]]>
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-D<name=value>, --define=<name=value>]]></command></term>
+<listitem><para>_(
+define macro <![CDATA[<name> as <value>]]>
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-U[<filename>], --use-std-ch[=<filename>]]]></command></term>
+<listitem><para>_(
+identifies an alternate standard header file to preprocess in place of
+the supplied STD.CH which is used automatically
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-S<charset>, --source-charset=<charset>]]></command></term>
+<listitem><para>_(
+define charset of the string constants used in the source files (.prg);
+CLIP_HOSTCS environment variable is used by default; see chapter
+<link linkend="envir">Environment variables</link> for details
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-T<charet>, --target-charset=<charset>]]></command></term>
+<listitem><para>_(
+define charset of the string constants to be used for an application's output;
+CLIP_HOSTCS environment variable is used by default; see chapter
+<link linkend="envir">Environment variables</link> for details
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-P, --preprocess</command></term>
+<listitem><para>_(
+stop after the preprocessing stage; the output is preprocessed source
+code, which is sent to the standard output
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-C, --show-command</command></term>
+<listitem><para>_(
+print command definitions at the preprocessing stage
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-R, --noremove-c</command></term>
+<listitem><para>_(
+do not remove temporary '.c' files
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>-N, --names</command></term>
+<listitem><para>_(
+generate warnings about unresolved function names; see CLIP_NAMES
+environment variable description in the chapter
+<link linkend="envir">Environment variable</link>
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command>--static,--full-static</command></term>
+<listitem><para>_(
+Don`t use shared libraries, ignore -r -s switches, include
+all CLIP or system libraries to executable file.
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-E<name>=<value>, --environment=<name>=<value>]]></command></term>
+<listitem<para>_(
+set <![CDATA[<name>]]> environment variable's value to <![CDATA[<value>]]>
+for a compilation time
+)_</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><command><![CDATA[-q <word>, --compat=<word>]]></command></term>
+<listitem><para>_(
+set syntax compatability mode; possible values:)_</para>
+	<itemizedlist>
+	<listitem><para>
+	<command>no-as-word</command> - _(AS clause in variables definitions is not
+	acceptable; it's default behavior)_
+	</para></listitem>
+	<listitem><para>
+	<command>as-word</command> - _(AS clause in variables defintions is
+	acceptable)_
+	</para></listitem>
+	</itemizedlist>
+</listitem>
+</varlistentry>
+
+</variablelist>
+</section>
+
+<section id="compexamples"><title>_(Examples)_</title>
+
+<para>_(
+As stated before, CLIP compiler perceives not only options passed via
+command line, but these of them prescribed in <command>.cliprc</command>
+file in the current directory; or in the <command>$HOME/.cliprc</command> file;
+or in any file in the <command>$CLIPROOT/cliprc</command> directory.
+In the following examples it's assumed there are no (or empty) files,
+listed above.
+)_</para>
+<itemizedlist>
+
+<listitem><para>_(
+Build a very simple application from one source file with no
+<command>MAIN</command> procedure. The result is a huge executable
+staticly linked with CLIP Run Time Library (RTL).
+)_</para>
+<programlisting>
+clip -eM test.prg
+</programlisting></listitem>
+
+<listitem><para>_(
+Build an application from three source files. The result is
+small executable dynamicly linked with CLIP RTL.
+<command>app.prg</command> contains <command>MAIN</command> procedure.
+)_</para>
+<programlisting>
+clip funcs1.prg
+clip funcs2.prg
+clip -es app.prg funcs1.o funcs2.o
+</programlisting></listitem>
+
+<listitem><para>_(
+Create a P-code module (<command>.po</command> file). Be silent.
+)_</para>
+<programlisting>
+clip -pv0 funcs.prg
+</programlisting></listitem>
+
+<listitem><para>_(
+Build a dynamic library from two source files and link an application
+with it. See <link linkend="util-clipmakeslib">clip_makeslib</link>
+utility description. The result is small executable dynamicly linked
+with CLIP RTL, which is able to work only when <command>libmylib.so</command>
+is placed in the current working directory.
+)_</para>
+<programlisting>
+clip funcs1.prg
+clip funcs2.prg
+clip_makeslib libmylib funcs1.o funcs2.o
+clip -es app.prg ./libmylib.so
+</programlisting></listitem>
+
+<listitem><para>_(
+Build previous application so that it able to work when
+<command>libmylib.so</command> is placed in /home/rust/lib directory.
+)_</para>
+<programlisting>
+clip funcs1.prg
+clip funcs2.prg
+clip_makeslib libmylib funcs1.o funcs2.o
+cp libmylib.so /home/rust/lib
+clip -es app.prg /home/rust/lib/libmylib.so
+</programlisting></listitem>
+
+<listitem><para>_(
+See preprocessor output.
+)_</para>
+<programlisting>
+clip -P test.prg
+</programlisting></listitem>
+
+<listitem><para>_(
+Compile in <command>C+P-code</command> mode. Link dynamicly with CLIP RTL.
+Be more verbose. The result is an executable of the smallest size.
+)_</para>
+<programlisting>
+clip -elsv2 app.prg
+</programlisting></listitem>
+
+<listitem><para>_(
+Using C compiler option <command>-l</command> to link with shared
+library <command>libclip-postgres.so</command> (PostgreSQL driver for CLIP).
+)_</para>
+<programlisting>
+clip -els test.prg -lclip-postgres
+</programlisting></listitem>
+
+</itemizedlist>
+</section>
+
+</chapter>

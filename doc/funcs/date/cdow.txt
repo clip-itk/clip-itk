@@ -1,0 +1,48 @@
+$FUNCNAME$
+  CDOW()
+$CATEGORY$
+  DATE/TIME
+$SUMMARY$
+   Convert a date value to a character day of the week
+$LANG_RU$
+   Преобразует значение даты в название дня недели в виде символьной строки.
+$SYNTAX$
+     CDOW(<dExp>) --> cDayName
+$LANG_RU$
+     CDOW(<выражение типа дата>) --> название дня недели
+$ARGUMENTS$
+     <dExp> is the date value to convert.
+$LANG_RU$
+     <выражение типа дата> - значение преобразуемой даты.
+$RETURNS$
+     CDOW() returns the name of the day of the week as a character string.
+     The first letter is uppercase and the rest of the string is lowercase.
+     For a null date value, CDOW() returns a null string ("").
+$LANG_RU$
+     CDOW() возвращает название дня недели в виде символьной строки.
+     Первая буква - заглавная ( в верхнем регистре ), остальные - строчные
+     (в нижнем регистре). Для нулевой даты CDOW() возвращает пустую
+     строку ("").
+$DESCRIPTION$
+     CDOW() is a date conversion function used in formatting date displays
+     for reports, labels, and screens.
+$LANG_RU$
+     CDOW() - это функция преобразования, которая используется для
+     форматированной выдачи даты в отчеты, метки и на экран.
+$EXAMPLES$
+       These examples illustrate CDOW():
+
+	? DATE()                      // Result: 09/01/90
+	? CDOW(DATE())                // Result: Friday
+	? CDOW(DATE() + 7)            // Result: Friday
+	? CDOW(CTOD("06/12/90"))      // Result: Tuesday
+$LANG_RU$
+      Следующий пример показывает работу CDOW():
+
+       ? DATE()                     // Результат: 09/01/90
+       ? CDOW(DATE())               // Результат: Пятница
+       ? CDOW(DATE() + 7)           // Результат: Пятница
+       ? CDOW(CTOD("06/12/90"))     // Результат: Понедельник
+$SEEALSO$
+  CTOD(),DATE(),DAY(),DOW()
+$END$

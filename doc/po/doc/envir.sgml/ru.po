@@ -1,0 +1,370 @@
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: template/./doc/envir.sgml:2
+msgid "Title"
+msgstr "Переменные среды окружения"
+
+#: template/./doc/envir.sgml:5
+msgid "first_p"
+msgstr ""
+"С помощью переменных среды окружения можно управлять процессом компиляции и "
+"сборки программ. Поскольку CLIP чаще всего используется в режиме C+PO(C+PO-"
+"программы - псевдокод обернутый в С-программу. Быстро компилируются, имеют "
+"маленький размер, медленно работают, но зато управляются стандартными "
+"средствами С-разработчика. Декомпиляция теоретически возможна, но намного "
+"сложнее чем декомпиляция PO-файлов) часть переменных относится к компилятору "
+"языка C. Собственно CLIP не является компилятором как таковым. В основном он "
+"осуществляет трансляцию в байт-код (псевдокод), для вызова которого "
+"создается и используется C-оболочка. Соответственно нет прямой необходимости "
+"манипулировать переменными среды окружения, относящимися к вызову "
+"компилятора языка C."
+
+#: template/./doc/envir.sgml:6
+msgid "second_p"
+msgstr "Эти переменные стандартны, но тем не менее вот их описание:"
+
+#: template/./doc/envir.sgml:9
+msgid "cc"
+msgstr "CC"
+
+#: template/./doc/envir.sgml:12
+msgid "cc description"
+msgstr "имя C-компилятора (по умолчанию == 'gcc')."
+
+#: template/./doc/envir.sgml:17
+msgid "cflags"
+msgstr "CFLAGS"
+
+#: template/./doc/envir.sgml:20
+msgid "cflags description"
+msgstr "опции C-компилятора (по умолчанию == '')"
+
+#: template/./doc/envir.sgml:25
+msgid "compileflag"
+msgstr "COMPILE_FLAG"
+
+#: template/./doc/envir.sgml:28
+msgid "compileflag description"
+msgstr "'compile-only' флаг для C-компилятора (по умолчанию == '-c')"
+
+#: template/./doc/envir.sgml:33
+msgid "copt"
+msgstr "COPT"
+
+#: template/./doc/envir.sgml:36
+msgid "optimiz"
+msgstr "флаг уровня оптимизации для C-компилятора (по умолчанию == '-O2') "
+
+#: template/./doc/envir.sgml:41
+msgid "cdbg"
+msgstr "CDBG"
+
+#: template/./doc/envir.sgml:44
+msgid "debug-descr"
+msgstr "флаг C-компилятора для включения отладочной информации в объектный"
+
+#: template/./doc/envir.sgml:49
+msgid "outflag"
+msgstr "OUT_FLAG"
+
+#: template/./doc/envir.sgml:52
+msgid "outflag-descr"
+msgstr ""
+"флаг C-компилятора определяющий имя создаваемого файла (по умолчанию == '-o')"
+
+#: template/./doc/envir.sgml:57
+msgid "inc-flag"
+msgstr "INCLUDE_FLAG"
+
+#: template/./doc/envir.sgml:60
+msgid "incl-descr"
+msgstr ""
+"флаг C-компилятора, определяющий расположение include-файлов (по умолчанию "
+"== '-I') "
+
+#: template/./doc/envir.sgml:65
+msgid "objsuf"
+msgstr "OBJSUF"
+
+#: template/./doc/envir.sgml:68
+msgid "objsuf-descr"
+msgstr "суффикс создаваемых объектных файлов (по умолчанию == ' o') "
+
+#: template/./doc/envir.sgml:73
+msgid "sobjsuf"
+msgstr "SOBJSUF"
+
+#: template/./doc/envir.sgml:76
+msgid "sobjsuf-descr"
+msgstr "суффикс создаваемых разделяемых файлов (по умолчанию == '.so') "
+
+#: template/./doc/envir.sgml:81
+msgid "libsuf"
+msgstr "LIBSUF"
+
+#: template/./doc/envir.sgml:84
+msgid "libsuf-descr"
+msgstr "суффикс для статически линкуемых библиотек (по умолчанию == '.a')"
+
+#: template/./doc/envir.sgml:89
+msgid "slibsuf"
+msgstr "SLIBSUF"
+
+#: template/./doc/envir.sgml:92
+msgid "slibsuf-descr"
+msgstr "суффикс для разделяемых библиотек (по умолчанию == '.so') "
+
+#: template/./doc/envir.sgml:97
+msgid "sflags"
+msgstr "SFLAGS"
+
+#: template/./doc/envir.sgml:100
+msgid "sflags-descr"
+msgstr "флаг C-компилятора - shared version (по умолчанию == '-shared')"
+
+#: template/./doc/envir.sgml:107
+msgid "div_1"
+msgstr ""
+"Следующие переменные устанавливают имена библиотек, с которыми собираются "
+"ваши программы:"
+
+#: template/./doc/envir.sgml:110
+msgid "cliplib"
+msgstr "CLIPLIB"
+
+#: template/./doc/envir.sgml:113
+msgid "cliplib description"
+msgstr "имя статически линкуемой RTL (по умолчанию == 'libclip.a')"
+
+#: template/./doc/envir.sgml:118
+msgid "clibslib"
+msgstr "CLIPSLIB"
+
+#: template/./doc/envir.sgml:121
+msgid "clislib description"
+msgstr "имя динамически линкуемой RTL (по умолчанию == 'libclip.so') "
+
+#: template/./doc/envir.sgml:126
+msgid "cliplibs"
+msgstr "CLIPLIBS"
+
+#: template/./doc/envir.sgml:129
+msgid "cliplibs description"
+msgstr "дополнительные библиотеки (по умолчанию == '') "
+
+#: template/./doc/envir.sgml:138
+msgid "div_2"
+msgstr ""
+"Переменные среды окружения, используемые для определения местонахождения "
+"файлов CLIP:"
+
+#: template/./doc/envir.sgml:141
+msgid "cliproot"
+msgstr "CLIPROOT"
+
+#: template/./doc/envir.sgml:144
+msgid "cliproot description"
+msgstr ""
+"корневой каталог для всех файлов CLIP (по умолчанию == '$HOME/cliproot' при "
+"локальной установке)"
+
+#: template/./doc/envir.sgml:149
+msgid "cliblocaleroot"
+msgstr "CLIP_LOCALE_ROOT"
+
+#: template/./doc/envir.sgml:152
+msgid "cliplocaleroot description"
+msgstr "корневой каталог для файлов локализации (по умолчанию CLIPROOT)"
+
+#: template/./doc/envir.sgml:157
+msgid "clipmodule"
+msgstr "CLIP_MODULE"
+
+#: template/./doc/envir.sgml:160
+msgid "clipmodule description"
+msgstr ""
+"текущий модуль локализации (по умолчанию == 'environ'). Во время исполнения "
+"ее значение доступно через предопределенный макрос __CLIP_MODULE__"
+
+#: template/./doc/envir.sgml:168
+msgid "div_3"
+msgstr "Переменные окружения, использующиеся для работы с кодовыми страницами:"
+
+#: template/./doc/envir.sgml:171
+msgid "cliplang"
+msgstr "CLIP_LANG"
+
+#: template/./doc/envir.sgml:174
+msgid "cliplang description"
+msgstr ""
+"используется для определения кодировки строк-констант в исходных текстах при "
+"компиляции (если не заданы ключи командной строки -T, -S и отсутствует файл ."
+"clipcharset). Если данная переменная окружения не определена, то "
+"соответствующее значение берется из LANG"
+
+#: template/./doc/envir.sgml:179
+msgid "cliphostcs"
+msgstr "CLIP_HOSTCS"
+
+#: template/./doc/envir.sgml:182
+msgid "cliphostcs description"
+msgstr ""
+"определяет внутреннее представление строк (по умолчанию - значение CLIP_LANG "
+"на момент компиляции)"
+
+#: template/./doc/envir.sgml:187
+msgid "clipclient"
+msgstr "CLIP_CLIENTCS"
+
+#: template/./doc/envir.sgml:190
+msgid "clipclient description"
+msgstr ""
+"определяет кодировку, в которой информация выводится на терминал (по "
+"умолчанию - значение CLIP_LANG на момент компиляции).Если во время "
+"выполнения программы не совпадает с CLIP_HOSTCS, то происходит перекодировка"
+
+#: template/./doc/envir.sgml:195
+msgid "cliplocale"
+msgstr "CLIP_LOCALE"
+
+#: template/./doc/envir.sgml:198
+msgid "cliplocale description"
+msgstr ""
+"главная переменная, определяющая кодировку, с которой работает CLIP-"
+"программа. Если она не определена, то проверяются CLIP_CLIENTCS, "
+"CLIP_CHARSET и CHARSET"
+
+#: template/./doc/envir.sgml:206
+msgid "div_4"
+msgstr "Остальные переменные окружения:"
+
+#: template/./doc/envir.sgml:209
+msgid "cmdstr"
+msgstr "CLIP_CMDSTR"
+
+#: template/./doc/envir.sgml:212
+msgid "cmdstr description"
+msgstr "список опций командной строки, разделенных точкой с запятой"
+
+#: template/./doc/envir.sgml:217
+msgid "names"
+msgstr "CLIP_NAMES"
+
+#: template/./doc/envir.sgml:220
+msgid "names description"
+msgstr ""
+"компилятор создает .ex (внешние ссылки), .nm (определенные имена) файлы "
+"(возможные значения: yes/no|on/off|0/1). Во время работы C-линковщика нет "
+"возможности определить, все ли вызываемые функции доступны. Поэтому "
+"сгенерированные .ex & .nm файлы, лежащие рядом с соответствующими объектными "
+"файлами и библиотеками дают возможность компилятору CLIP при генерации "
+"исполняемого файла сравнить содержимое этих файлов и выяснить, каких функций "
+"не хватит при выполнении программы"
+
+#: template/./doc/envir.sgml:225
+msgid "loglevel"
+msgstr "CLIP_LOGLEVEL"
+
+#: template/./doc/envir.sgml:228
+msgid "loglevel description"
+msgstr ""
+"определяет информативность сообщений, выводимых в log-файл. Значения 1, 2 и "
+"3 дают все более подробную информацию для пользователей, 4 - показывает все "
+"вызовы функций, 5 - выводит максимально подробную информацию для анализа "
+"хода программы без вмешательства отладчика"
+
+#: template/./doc/envir.sgml:233
+msgid "scanmode"
+msgstr ""
+
+#: template/./doc/envir.sgml:236
+#, fuzzy
+msgid "scanmode_descript"
+msgstr ""
+"текущий модуль локализации (по умолчанию == 'environ'). Во время исполнения "
+"ее значение доступно через предопределенный макрос __CLIP_MODULE__"
+
+#: template/./doc/envir.sgml:241
+msgid "scanstart"
+msgstr ""
+
+#: template/./doc/envir.sgml:244
+#, fuzzy
+msgid "scanstart-descr"
+msgstr "флаг C-компилятора - shared version (по умолчанию == '-shared')"
+
+#: template/./doc/envir.sgml:249
+msgid "scanstop"
+msgstr ""
+
+#: template/./doc/envir.sgml:252
+#, fuzzy
+msgid "scanstop-descr"
+msgstr "флаг C-компилятора - shared version (по умолчанию == '-shared')"
+
+#: template/./doc/envir.sgml:257
+msgid "keymap"
+msgstr ""
+
+#: template/./doc/envir.sgml:260
+#, fuzzy
+msgid "keymap-descr"
+msgstr "флаг C-компилятора для включения отладочной информации в объектный"
+
+#: template/./doc/envir.sgml:265
+msgid "linechars"
+msgstr ""
+
+#: template/./doc/envir.sgml:268
+#, fuzzy
+msgid "linechars-descr"
+msgstr ""
+"флаг C-компилятора, определяющий расположение include-файлов (по умолчанию "
+"== '-I') "
+
+#: template/./doc/envir.sgml:273
+msgid "dline"
+msgstr ""
+
+#: template/./doc/envir.sgml:276
+#, fuzzy
+msgid "dline-descr"
+msgstr ""
+"флаг C-компилятора, определяющий расположение include-файлов (по умолчанию "
+"== '-I') "
+
+#: template/./doc/envir.sgml:281
+msgid "colormap"
+msgstr ""
+
+#: template/./doc/envir.sgml:284
+#, fuzzy
+msgid "colormap-descr"
+msgstr ""
+"флаг C-компилятора, определяющий расположение include-файлов (по умолчанию "
+"== '-I') "
+
+#: template/./doc/envir.sgml:292
+msgid "end_title"
+msgstr ""
+
+#: template/./doc/envir.sgml:293
+#, fuzzy
+msgid "end_1"
+msgstr "Эти переменные стандартны, но тем не менее вот их описание:"
+
+#: template/./doc/envir.sgml:294
+#, fuzzy
+msgid "end_2"
+msgstr "Эти переменные стандартны, но тем не менее вот их описание:"

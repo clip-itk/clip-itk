@@ -1,0 +1,143 @@
+$FUNCNAME$
+  ASORT()
+$CATEGORY$
+  ARRAY
+$SUMMARY$
+   Sort an array
+$LANG_RU$
+   Сортирует массив.
+$SYNTAX$
+     ASORT(<aTarget>, [<nStart>],[<nCount>], [<bOrder>]) --> aTarget
+$LANG_RU$
+     ASORT(<имя массива>, [<начальный элемент>], [<кол-во элементов>], [<режим сортировки>]) --> имя массива
+$ARGUMENTS$
+     <aTarget> is the array to be sorted.
+     <nStart> is the first element of the sort.  If not specified, the
+     default starting position is one.
+     <nCount> is the number of elements to be sorted.  If not specified,
+     all elements in the array beginning with the starting element are
+     sorted.
+     <bOrder> is an optional code block used to determine sorting order.
+     If not specified, the default order is ascending.
+$LANG_RU$
+     <имя массива> - массив для сортировки.
+     <начальный элемент> - номер первого сортируемого элемента. Если
+     <начальный элемент> не задан, по умолчанию принимается первый
+     элемент массива.
+     <кол-во элементов> - количество элементов, которые необходимо
+     отсортировать. Если <кол-во элементов> не задано, в сортировке
+     участвуют все элементы, начиная с номера <начальный элемент> и
+     до конца массива.
+     <режим сортировки> - необязательный блок кода, используемый для
+     задания режима сортировки. Если он не определен, то по умолчанию
+     сортировка производится в порядке возрастания значений элементов.
+$RETURNS$
+     ASORT() returns a reference to the <aTarget> array.
+$LANG_RU$
+     ASORT() возвращает ссылку на массив <имя массива>.
+$DESCRIPTION$
+     ASORT() is an array function that sorts all or part of an array
+     containing elements of a single data type.  Data types that can be
+     sorted include character, date, logical, and numeric.
+
+     If the <bOrder> argument is not specified, the default order is
+     ascending.  Elements with low values are sorted toward the top of the
+     array (first element), while elements with high values are sorted toward
+     the bottom of the array (last element).
+
+     If the <bOrder> block argument is specified, it is used to determine the
+     sorting order.  Each time the block is evaluated, two elements from the
+     target array are passed as block parameters.  The block must return true
+     (.T.) if the elements are in sorted order.  This facility can be used to
+     create a descending or dictionary order sort.  See the examples below.
+
+     When sorted, character strings are ordered in ASCII sequence; logical
+     values are sorted with false (.F.) as the low value; date values are
+     sorted chronologically; and numeric values are sorted by magnitude.
+$LANG_RU$
+     ASORT() - функция обработки массивов, которая сортирует весь массив,
+     содержащий элементы одного типа, или его часть. Сортировка возможна
+     для массивов, состоящих из данных типа CHARACTER, DATE, LOGICAL и
+     NUMERIC.
+
+     Если аргумент <режим сортировки> не определен, то по умолчанию
+     сортировка производится по возрастанию значений. Элемент с наименьшим
+     значением перемещается в начало массива (первый элемент), в то время
+     как элемент с наибольшим значением перемещается в конец массива
+     (последний элемент).
+
+     Если аргумент <режим сортировки> определен как блок кода, он явно
+     определяет тип сортировки. В процессе сортировки блоку передается
+     очередная пара сортируемых элементов из массива. Если элементы
+     соответствуют типу сотировки, блок возвращает значение "истина"
+     (.T.). Это средство может быть использовано при задании сортировки
+     по убыванию при сортировке словарей (см. примеры ниже).
+
+     При сортировке символьные строки располагаются в соответствии с
+     кодами ASCII, для логических данных считается, что значение
+     "ложь"(.F.) имеет наименьшее значение, данные типа дата сортируются
+     в хронологическом порядке, а числовые данные - в соответствии с их
+     значениями.
+
+      Примечание:
+     Так как многомерные массивы в xClipper строятся путем вложения
+     подмассивов в другие массивы, функция ASORT() прямо их не сортирует.
+     Для сортировки вложенного массива следует использовать блок кода,
+     который надлежащим образом управляет подмассивом.
+$EXAMPLES$
+       This example creates an array of five unsorted elements, sorts
+	the array in ascending order, then sorts the array in descending
+	order using a code block:
+
+	aArray := { 3, 5, 1, 2, 4 }
+	ASORT(aArray)
+	// Result: { 1, 2, 3, 4, 5 }
+
+	ASORT(aArray,,, { |x, y| x > y })
+	// Result: { 5, 4, 3, 2, 1 }
+
+
+       This example sorts an array of character strings in ascending
+	order, independent of case.  It does this by using a code block that
+	converts the elements to uppercase before they are compared:
+
+	aArray := { "Fred", Kate", "ALVIN", "friend" }
+	ASORT(aArray,,, { |x, y| UPPER(x) < UPPER(y) })
+
+       This example sorts a nested array using the second element of
+	each subarray:
+
+	aKids := { {"Mary", 14}, {"Joe", 23}, {"Art", 16} }
+	aSortKids := ASORT(aKids,,, { |x, y| x[2] < y[2] })
+
+	Result:
+
+	{ {"Mary", 14}, {"Art", 16}, {"Joe", 23} }
+$LANG_RU$
+      В этом примере создается массив из пяти неотсортированных элементов
+       и производится его сортировка по возрастанию, а затем, с помощью
+       блока кода, по убыванию:
+
+       aArray := { 3, 5, 1, 2, 4 }
+       ASORT(aArray)                      // Результат: { 1, 2, 3, 4, 5 }
+       ASORT(aArray,,,{ |x, y| x > y })   // Результат: { 5, 4, 3, 2, 1 }
+
+      В следующем примере сортируется массив символьных строк по
+       возрастанию независимо оттого, в верхнем или нижнем регистре
+       представлены символы. Это достигается использованием блока
+       кода, который перед сравнением представляет символы в верхнем
+       регистре:
+
+       aArray := { "Фрэд", "Kэт", "АЛВИН", "друг" }
+       ASORT(aArray,,, { |x, y| UPPER(x) < UPPER(y) } )
+
+      В следующем примере производится сортировка каждого второго
+       элемента подмассива:
+
+       aKids := { {"Мери", 14}, {"Джо", 23}, {"Арт", 16} }
+       aSortKids := ASORT(aKids,,, { |x, y| x[2] < y[2] })
+       //
+       // Результат : { {"Мери", 14}, {"Арт", 16}, {"Джо", 23} }
+$SEEALSO$
+  ASCAN(),EVAL()
+$END$
