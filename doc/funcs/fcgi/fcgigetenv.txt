@@ -7,8 +7,8 @@ $SUMMARY$
 $LANG_RU$
 	Возвращает значения переменных окружения, либо map со всеми переменными в виде пар имя/значение.
 $SYNTAX$
-	cValue := FCGI_GETENV(<cName>)
-	mapEnv := FCGI_GETENV()
+	FCGI_GETENV(<cName>) --> cValue
+	FCGI_GETENV() --> mapEnv
 $ARGUMENTS$
 	<cName> - name of environment variable.
 $LANG_RU$

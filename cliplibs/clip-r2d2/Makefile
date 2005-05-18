@@ -13,7 +13,7 @@ OBJS = cgi_funcs.o an_funcs.o \
 	obj_rass.o print.o rdfarr.o rdfinfo.o \
 	rdf_sell.o \
 	report1.o report3.o report4.o report5.o report6.o \
-	report7.o
+	report7.o report8.o
 
 R2D2LIB = libclip-r2d2.a
 R2D2FLIB = libclip-r2d2$(DLLSUFF)

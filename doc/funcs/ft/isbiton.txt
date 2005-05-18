@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Determine the state of individual bits in a number
 $SYNTAX$
-   FT_ISBITON( <nNumber>, <nBit> ) -> lResult
+   FT_ISBITON( <nNumber>, <nBit> ) --> lResult
 $ARGUMENTS$
    <nNumber> is an integer for which a bit state needs to be checked.
 

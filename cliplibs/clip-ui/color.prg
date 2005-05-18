@@ -2,14 +2,15 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 16 Feb 2005						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
 /*   License, or (at your option) any later version.                       */
 /*-------------------------------------------------------------------------*/
+
+static driver := getDriver()
 
 /* UIColor class */
 function UIColor( color, opacity )
@@ -18,7 +19,7 @@ function UIColor( color, opacity )
 	color := iif(empty(color),"#000000",color)
 	
 	if left(color,1) != '#'
-		obj = gdk_ColorParse(color)
+		obj = driver:colorParse(color)
 	else
 		o := iif(empty(opacity),255,opacity)
 		r := cton(substr(color,2,2),16)

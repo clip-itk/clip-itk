@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Set the DOS system time
 $SYNTAX$
-   FT_SETTIME( <cTime> ) -> <lResult>
+   FT_SETTIME( <cTime> ) --> <lResult>
 $ARGUMENTS$
    <cTime> is a string in the form <hh:mm:ss> that you want to set
    the current DOS system time to.

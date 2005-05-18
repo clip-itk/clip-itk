@@ -6,7 +6,7 @@ $ONELINER$
    Select a text file workarea
 $SYNTAX$
 
-   FT_FSELECT( [ <nNewArea> ] ) -> nPreviousArea
+   FT_FSELECT( [ <nNewArea> ] ) --> nPreviousArea
 
 $ARGUMENTS$
 

@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Wait for a specified amount of time
 $SYNTAX$
-   FT_SLEEP( <nSeconds>, [<nInitial>] ) -> nil
+   FT_SLEEP( <nSeconds>, [<nInitial>] ) --> nil
 $ARGUMENTS$
   <nSeconds> is the number of seconds to pause
 

@@ -75,6 +75,11 @@
 
 
 /* signals */
+#define GTK_SHOW_MENU_SIGNAL		HASH___GTK_SHOW_MENU_SIGNAL
+#define GTK_TOGGLE_CURSOR_ITEM_SIGNAL	HASH___GTK_TOGGLE_CURSOR_ITEM_SIGNAL
+#define GTK_SELECT_CURSOR_ITEM_SIGNAL	HASH___GTK_SELECT_CURSOR_ITEM_SIGNAL
+#define GTK_ITEM_ACTIVATED_SIGNAL	HASH___GTK_ITEM_ACTIVATED_SIGNAL
+#define GTK_ACTIVATE_CURSOR_ITEM_SIGNAL	HASH___GTK_ACTIVATE_CURSOR_ITEM_SIGNAL
 #define GTK_EDITING_CANCELED_SIGNAL	HASH___GTK_EDITING_CANCELED_SIGNAL
 #define GTK_ACTION_ACTIVATED_SIGNAL	HASH___GTK_ACTION_ACTIVATED_SIGNAL
 #define GTK_MATCH_SELECTED_SIGNAL	HASH___GTK_MATCH_SELECTED_SIGNAL
@@ -465,6 +470,8 @@
 #define GTK_OBJECT_CELL_RENDERER_TEXT	HASH___GTK_OBJECT_CELL_RENDERER_TEXT
 #define GTK_OBJECT_CELL_RENDERER_TOGGLE	HASH___GTK_OBJECT_CELL_RENDERER_TOGGLE
 #define GTK_OBJECT_CELL_RENDERER_PIXBUF	HASH___GTK_OBJECT_CELL_RENDERER_PIXBUF
+#define GTK_OBJECT_CELL_RENDERER_COMBO	HASH___GTK_OBJECT_CELL_RENDERER_COMBO
+#define GTK_OBJECT_CELL_RENDERER_PROGRESS	HASH___GTK_OBJECT_CELL_RENDERER_PROGRESS
 #define GTK_OBJECT_TREE_VIEW_COLUMN	HASH___GTK_OBJECT_TREE_VIEW_COLUMN
 
 #define GTK_OBJECT_CTREE_NODE		HASH___GTK_OBJECT_CTREE_NODE
@@ -493,6 +500,7 @@
 #define GTK_WIDGET_WINDOW			HASH___GTK_WIDGET_WINDOW
 #define GTK_WIDGET_DIALOG			HASH___GTK_WIDGET_DIALOG
 #define GTK_WIDGET_INPUT_DIALOG			HASH___GTK_WIDGET_INPUT_DIALOG
+#define GTK_WIDGET_ABOUT_DIALOG			HASH___GTK_WIDGET_ABOUT_DIALOG
 #define GTK_WIDGET_MESSAGE_DIALOG		HASH___GTK_WIDGET_MESSAGE_DIALOG
 #define GTK_WIDGET_FONT_SELECTION_DIALOG	HASH___GTK_WIDGET_FONT_SELECTION_DIALOG
 #define GTK_WIDGET_COLOR_SELECTION_DIALOG	HASH___GTK_WIDGET_COLOR_SELECTION_DIALOG
@@ -500,6 +508,7 @@
 #define GTK_OBJECT_FILE_CHOOSER			HASH___GTK_OBJECT_FILE_CHOOSER
 #define GTK_WIDGET_FILE_CHOOSER_DIALOG		HASH___GTK_WIDGET_FILE_CHOOSER_DIALOG
 #define GTK_WIDGET_FILE_CHOOSER_WIDGET		HASH___GTK_WIDGET_FILE_CHOOSER_WIDGET
+#define GTK_WIDGET_FILE_CHOOSER_BUTTON		HASH___GTK_WIDGET_FILE_CHOOSER_BUTTON
 #define GTK_OBJECT_FILE_FILTER			HASH___GTK_OBJECT_FILE_FILTER
 /* Accelerators group */
 #define GTK_WIDGET_ACCEL_GROUP		HASH___GTK_WIDGET_ACCEL_GROUP
@@ -527,6 +536,7 @@
 #define GTK_WIDGET_TEAROFF_MENU_ITEM	HASH___GTK_WIDGET_TEAROFF_MENU_ITEM
 #define GTK_WIDGET_SEPARATOR_MENU_ITEM	HASH___GTK_WIDGET_SEPARATOR_MENU_ITEM
 #define GTK_WIDGET_IMAGE_MENU_ITEM	HASH___GTK_WIDGET_IMAGE_MENU_ITEM
+#define GTK_WIDGET_MENU_TOOL_BUTTON	HASH___GTK_WIDGET_MENU_TOOL_BUTTON
 /* Data Entry Widgets */
 #define GTK_WIDGET_TEXT			HASH___GTK_WIDGET_TEXT
 #define GTK_WIDGET_ENTRY		HASH___GTK_WIDGET_ENTRY
@@ -540,6 +550,8 @@
 #define GTK_WIDGET_HSCALE		HASH___GTK_WIDGET_HSCALE
 #define GTK_WIDGET_VSCALE		HASH___GTK_WIDGET_VSCALE
 #define GTK_WIDGET_TEXT_VIEW		HASH___GTK_WIDGET_TEXT_VIEW
+#define GTK_WIDGET_CELL_VIEW		HASH___GTK_WIDGET_CELL_VIEW
+#define GTK_WIDGET_ICON_VIEW		HASH___GTK_WIDGET_ICON_VIEW
 #define GTK_OBJECT_TEXT_CHILD_ANCHOR	HASH___GTK_OBJECT_TEXT_CHILD_ANCHOR
 #define GTK_OBJECT_TEXT_ITER		HASH___GTK_OBJECT_TEXT_ITER
 #define GTK_OBJECT_TEXT_MARK		HASH___GTK_OBJECT_TEXT_MARK
@@ -2721,10 +2733,12 @@ GTK_FILL the widget should fill the space allocated to it.
 
 #define TREE_TYPE_STRING	0
 #define TREE_TYPE_NUMERIC	1
-#define TREE_TYPE_LOGICAL	2
-#define TREE_TYPE_DATE		3
-#define TREE_TYPE_PIXMAP	4
-#define TREE_TYPE_DATETIME	5
+#define TREE_TYPE_NUMERIC_FLOAT	2
+#define TREE_TYPE_LOGICAL	3
+#define TREE_TYPE_DATE		4
+#define TREE_TYPE_PIXMAP	5
+#define TREE_TYPE_DATETIME	6
+#define TREE_TYPE_PIXBUF	7
 
 
 /* GTK TEXT delete types */
@@ -2944,13 +2958,6 @@ that will be taken on behalf of the user for a drag destination site. */
 #define GTK_UI_MANAGER_ACCELERATOR	256 //	Install an accelerator.
 
 
-/* Gtk file chooser actions */
-#define GTK_FILE_CHOOSER_ACTION_OPEN 		0 // Indicates open mode. The file chooser will only let the user pick an existing file.
-#define GTK_FILE_CHOOSER_ACTION_SAVE 		1 // Indicates save mode. The file chooser will let the user pick an existing file, or type in a new filename.
-#define GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER 	2 // Indicates an Open mode for selecting folders. The file chooser will let the user pick an existing folder.
-#define GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER  	3 // Indicates a mode for creating a new folder. The file chooser will let the user name an existing or new folder.
-
-
 /* Gtk file filter flags */
 #define GTK_FILE_FILTER_FILENAME     	1
 #define GTK_FILE_FILTER_URI          	2
@@ -2982,7 +2989,56 @@ that will be taken on behalf of the user for a drag destination site. */
 #define PANGO_ALIGN_CENTER	1	// Center the line within the available space
 #define PANGO_ALIGN_RIGHT	2	// Put all available space on the left
 
+/* File chooser action */
+
+#define GTK_FILE_CHOOSER_ACTION_OPEN	0	// Indicates open mode. The
+						// file chooser will only let the
+						// user pick an existing file.
+#define GTK_FILE_CHOOSER_ACTION_SAVE	1	// Indicates save mode. The file
+						// chooser will let the user pick
+						// an existing file, or type in a
+						// new filename.
+#define GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER	2	// Indicates an Open mode for selecting
+							// folders. The file chooser will let the
+							// user pick an existing folder.
+#define GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER	3	// Indicates a mode for creating a new folder.
+							// The file chooser will let the user name an
+							// existing or new folder.
+
+/* Pango ellipsize mode */
+
+#define PANGO_ELLIPSIZE_NONE	0
+#define PANGO_ELLIPSIZE_START	1
+#define PANGO_ELLIPSIZE_MIDDLE	2
+#define PANGO_ELLIPSIZE_END	3
+
+
+/* GObject types */
+
+#define CLIP_G_TYPE_INVALID 	0
+#define CLIP_G_TYPE_NONE	1
+#define CLIP_G_TYPE_INTERFACE	2
+#define CLIP_G_TYPE_CHAR	3
+#define CLIP_G_TYPE_UCHAR	4
+#define CLIP_G_TYPE_BOOLEAN	5
+#define CLIP_G_TYPE_INT		6
+#define CLIP_G_TYPE_UINT	7
+#define CLIP_G_TYPE_LONG	8
+#define CLIP_G_TYPE_ULONG	9
+#define CLIP_G_TYPE_INT64	10
+#define CLIP_G_TYPE_UINT64	11
+#define CLIP_G_TYPE_ENUM	12
+#define CLIP_G_TYPE_FLAGS	13
+#define CLIP_G_TYPE_FLOAT	14
+#define CLIP_G_TYPE_DOUBLE	15
+#define CLIP_G_TYPE_STRING	16
+#define CLIP_G_TYPE_POINTER	17
+#define CLIP_G_TYPE_BOXED	18
+#define CLIP_G_TYPE_PARAM	19
+#define CLIP_G_TYPE_OBJECT	20
+
 #endif
+
 
 
 

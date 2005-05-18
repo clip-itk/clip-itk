@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Get the inverse of a color
 $SYNTAX$
-   FT_INVCLR( [ <cDsrdColor> ] ) -> cColor
+   FT_INVCLR( [ <cDsrdColor> ] ) --> cColor
 $ARGUMENTS$
    <cDsrdColor> is the color to get the inverse of.  Defaults to
    current color.

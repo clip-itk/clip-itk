@@ -6,7 +6,7 @@ $ONELINER$
    Add elements unique of source array to target array
 $SYNTAX$
    FT_AADDITION( <aList1>, <aList2> [, <lTrimmer> [, <lCaseSens> ] ] ) ;
-	   -> aNewArray
+	   --> aNewArray
 $ARGUMENTS$
    <aList1> is the primary array.
 

@@ -14,14 +14,12 @@ $LANG_RU$
 	UITable(<columns>)	--> Объект UITable
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITable".
-	<rows> 		- Array of array. Array of values. Each records contains array of strings of values by columns.
-	<rowsId> 	- Array of strings. Array of row identifiers.
+	<nodes>		- Accociated array of <link linkend="classuitableitem">UITableItem</link> objects.
 	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
 	<altRowColor>	- <link linkend="classuicolor">UIColor</link> object. Alternative color for even rows in table. Default value defined in macro variable ALT_TABLE_ROW_COLOR, that is defined in file clip-ui.ch.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UITable".
-	<rows> 		- Массив массивов. Массив значений. Каждая запись содержит массив строк значений по столбцам соответственно.
-	<rowsId> 	- Массив массивов. Массив идентификаторов строк.
+	<nodes>		- Ассоциативный массив объектов <link linkend="classuitableitem">UITableItem</link>.
 	<onSelect> 	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
 	<altRowColor>	- Объект <link linkend="classuicolor">UIColor</link>. Альтернативный цвет чётных строк таблицы. По умолчанию берётся из макропеременной ALT_TABLE_ROW_COLOR, объявленной в файле clip-ui.ch.
 
@@ -46,13 +44,17 @@ $SUMMARY$
 $LANG_RU$
 	Добавить строку в таблицу.
 $SYNTAX$
-	addRow(data,[<id>])
+	addRow(data,[<id>])	--> <oTableItem>
 $ARGUMENTS$
 	<data>		- Array of strings. Array of values by columns.
 	<id>		- String. Row identifier.
 $LANG_RU$
 	<data>		- Mассив строк. Массив значений по столбцам соответственно.
 	<id>		- Строка. Идентификатор строки.
+$RETURNS$
+	Appended row object (<link linkend="classuitableitem">UITableItem</link>).
+$LANG_RU$
+	Объект добавленной строки (<link linkend="classuitableitem">UITableItem</link>).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -62,10 +64,12 @@ $SUMMARY$
 $LANG_RU$
 	Указать действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
+	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
+	<signal>	- Строка. Название сигнала.
 	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
@@ -82,29 +86,29 @@ $ENDMETHOD$
 $METHODNAME$
 	getSelection()
 $SUMMARY$
-	Get selected row number.
+	Get selected row identifier.
 $LANG_RU$
-	Возвращает номер выделенной строки.
+	Возвращает идентификатор выделенной строки.
 $SYNTAX$
-	getSelection()	--> <nRow>
+	getSelection()	--> <sRow>
 $RETURNS$
-	Number of selected row. Numbering is began from 1.
+	The identifier of selected row.
 $LANG_RU$
-	Номер выделенной строки. Нумерация начинается с 1.
+	Идентификатор выделенной строки.
 $ENDMETHOD$
 
 $METHODNAME$
 	getSelectionId()
 $SUMMARY$
-	Get identifier of selected row.
+	Get user identifier of selected row.
 $LANG_RU$
-	Возвращает идентификатор выделенной строки.
+	Возвращает пользовательский идентификатор выделенной строки.
 $SYNTAX$
 	getSelectionId()	--> <sRow>
 $RETURNS$
-	The identifier of selected row.
+	The user identifier of selected row.
 $LANG_RU$
-	Идентификатор выделенной строки.
+	Пользовательский идентификатор выделенной строки.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -131,6 +135,7 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
+	UITABLEITEM
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

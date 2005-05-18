@@ -1,6 +1,5 @@
-
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004-2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -318,4 +317,98 @@ clip_GTK_ENTRYCOMPLETIONSETTEXTCOLUMN(ClipMachine * cm)
 err:
 	return 1;
 }
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_ENTRYCOMPLETIONGETINLINECOMPLETION(ClipMachine * cm)
+{
+        C_object *ccompletion   = _fetch_co_arg(cm);
+
+	CHECKCOBJ(ccompletion, GTK_IS_ENTRY_COMPLETION(ccompletion->object));
+
+	_clip_retl(cm, gtk_entry_completion_get_inline_completion(GTK_ENTRY_COMPLETION(ccompletion->object)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ENTRYCOMPLETIONGETPOPUPCOMPLETION(ClipMachine * cm)
+{
+        C_object *ccompletion   = _fetch_co_arg(cm);
+
+	CHECKCOBJ(ccompletion, GTK_IS_ENTRY_COMPLETION(ccompletion->object));
+
+	_clip_retl(cm, gtk_entry_completion_get_popup_completion(GTK_ENTRY_COMPLETION(ccompletion->object)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ENTRYCOMPLETIONGETTEXTCOLUMN(ClipMachine * cm)
+{
+        C_object *ccompletion   = _fetch_co_arg(cm);
+        gint           column   ;
+
+	CHECKCOBJ(ccompletion, GTK_IS_ENTRY_COMPLETION(ccompletion->object));
+
+	column = gtk_entry_completion_get_text_column(GTK_ENTRY_COMPLETION(ccompletion->object));
+        column ++;
+
+        _clip_retni(cm, column);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ENTRYCOMPLETIONINSERTPREFIX(ClipMachine * cm)
+{
+        C_object *ccompletion   = _fetch_co_arg(cm);
+
+	CHECKCOBJ(ccompletion, GTK_IS_ENTRY_COMPLETION(ccompletion->object));
+
+	gtk_entry_completion_insert_prefix(GTK_ENTRY_COMPLETION(ccompletion->object));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ENTRYCOMPLETIONSETINLINECOMPLETION(ClipMachine * cm)
+{
+        C_object *ccompletion   = _fetch_co_arg(cm);
+        gboolean          set   = _clip_parl(cm, 2);
+
+	CHECKCOBJ(ccompletion, GTK_IS_ENTRY_COMPLETION(ccompletion->object));
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_entry_completion_set_inline_completion(GTK_ENTRY_COMPLETION(ccompletion->object), set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ENTRYCOMPLETIONSETPOPUPCOMPLETION(ClipMachine * cm)
+{
+        C_object *ccompletion   = _fetch_co_arg(cm);
+        gboolean          set   = _clip_parl(cm, 2);
+
+	CHECKCOBJ(ccompletion, GTK_IS_ENTRY_COMPLETION(ccompletion->object));
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_entry_completion_set_popup_completion(GTK_ENTRY_COMPLETION(ccompletion->object), set);
+
+	return 0;
+err:
+	return 1;
+}
+#endif
 

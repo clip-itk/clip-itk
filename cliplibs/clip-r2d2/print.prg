@@ -90,7 +90,7 @@ local columns,oDep,oDict
 	sTmp := substr(stmp,2,len(sTmp)-2)
 	sTmp:=strtran(sTmp,'"',"")
 	//? '<body>'
-	?
+	//?
 	//? '<print id="'+sTmp+'">'
 	? '<print id="'+sTmp+'">'
 
@@ -131,7 +131,7 @@ local columns,oDep,oDict
 		print_table(m_class[i][1],m_class[i][2])
 	next
 	? '</print>'
-	?
+	
 
 
 /********************************************/

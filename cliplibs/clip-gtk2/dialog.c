@@ -559,3 +559,152 @@ err:
 	return 1;
 }
 #endif
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_MESSAGEDIALOGFORMATSECONDARYMARKUP(ClipMachine * cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+        gchar  *markup = _clip_parc(cm, 2);
+        gchar  *margs[10] ;
+        gint   i, j, n ;
+
+        CHECKCWID(cwid, GTK_IS_MESSAGE_DIALOG);
+        CHECKOPT(2, CHARACTER_t);
+
+	n = _clip_parinfo(cm, 0) - 2;
+	for (i=0, j=3; i<n; i++)
+        {
+        	gchar *str = _clip_parc(cm, j);
+        	CHECKARG(j, CHARACTER_t);
+                LOCALE_TO_UTF(str);
+                strcpy(margs[i], str);
+                FREE_TEXT(str);
+        }
+	if (markup) LOCALE_TO_UTF(markup);
+	gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(cwid->widget),
+		markup,
+		margs[0], margs[1], margs[2], margs[3], margs[4],
+		margs[5], margs[6], margs[7], margs[8], margs[9]);
+
+	if (markup) FREE_TEXT(markup);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_MESSAGEDIALOGFORMATSECONDARYTEXT(ClipMachine * cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+        gchar  	 *text = _clip_parc(cm, 2);
+        gchar  *margs[10] ;
+        gint   i, j, n ;
+
+        CHECKCWID(cwid, GTK_IS_MESSAGE_DIALOG);
+        CHECKOPT(2, CHARACTER_t);
+
+	n = _clip_parinfo(cm, 0) - 2;
+	for (i=0, j=3; i<n; i++)
+        {
+        	gchar *str = _clip_parc(cm, j);
+        	CHECKARG(j, CHARACTER_t);
+                LOCALE_TO_UTF(str);
+                strcpy(margs[i], str);
+                FREE_TEXT(str);
+        }
+	if (text) LOCALE_TO_UTF(text);
+	gtk_message_dialog_format_secondary_text
+	(GTK_MESSAGE_DIALOG(cwid->widget),
+		text,
+		margs[0], margs[1], margs[2], margs[3], margs[4],
+		margs[5], margs[6], margs[7], margs[8], margs[9]);
+
+	if (text) FREE_TEXT(text);
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_ALTERNATIVEDIALOGBUTTONORDER(ClipMachine * cm)
+{
+	C_object *cscr = _fetch_co_arg(cm);
+
+        //CHECKCOBJOPT(cscr, GDK_IS_OBJECT(cscr->object));
+
+	_clip_retl(cm, gtk_alternative_dialog_button_order((cscr)?(GdkScreen *)(cscr->object):NULL));
+	return 0;
+/*
+err:
+	return 1;
+*/
+}
+
+/* gtk_DialogSetAlternativeButtonOrder(comboBox, intFirst, ...intNext, -1)*/
+int
+clip_GTK_DIALOGSETALTERNATIVEBUTTONORDER(ClipMachine * cm)
+{
+	C_widget   *cdlg = _fetch_cw_arg(cm);
+        gint        i, n ;
+        gint       a[10] ;
+
+	CHECKCWID(cdlg,GTK_IS_DIALOG);
+
+	n = _clip_parinfo(cm, 0)-1;
+        for (i=0; i<10; i++)
+        {
+        	if (i<=n)
+                {
+                	CHECKARG(i+2, NUMERIC_t);
+                        a[i] = _clip_parni(cm, i+2);
+                }
+                else
+        		a[i] = -1;
+	}
+
+	gtk_dialog_set_alternative_button_order(GTK_DIALOG(cdlg->widget),
+		a[0], a[1], a[2], a[3], a[4],
+		a[5], a[6], a[7], a[8], a[9]);
+
+	return 0;
+err:
+	return 1;
+}
+
+
+int
+clip_GTK_DIALOGSETALTERNATIVEBUTTONORDERFROMARRAY(ClipMachine * cm)
+{
+	C_widget   *cdlg = _fetch_cw_arg(cm);
+        ClipArrVar   *ca = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 2));
+        gint        i, n ;
+        gint          *a ;
+
+	CHECKCWID(cdlg,GTK_IS_DIALOG);
+        CHECKARG(2, ARRAY_t);
+
+	n = (int) ca->count;
+        a = calloc(n, sizeof(int));
+        for (i=0; i<n; i++)
+        {
+		ClipVar *c;
+
+		c = ca->items+i;
+		if (c->t.type == NUMERIC_t)
+                	a[i] = c->n.d;
+	}
+
+	gtk_dialog_set_alternative_button_order(GTK_DIALOG(cdlg->widget),
+		n, a);
+
+	free(a);
+	return 0;
+err:
+	return 1;
+}
+
+#endif

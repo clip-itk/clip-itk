@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Convert a character string to MetaPhone format
 $SYNTAX$
-   FT_METAPH( <cName> [, <nSize> ] ) -> cMetaPhone
+   FT_METAPH( <cName> [, <nSize> ] ) --> cMetaPhone
 $ARGUMENTS$
    <cName> is the character string to convert
 

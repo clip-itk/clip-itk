@@ -6,11 +6,11 @@
 
 /* install META data for global dictionary */
 
-function codb_install(dict_id,xmlFile)
+function codb_install(dict_id,xmlFile,mdir)
 	local modules,dict,xmlData:={}
 	local i,ret
-	if empty(dict_id) .or. empty(xmlFile)
-		? "usage: codb_install <dictionary_id> <xmlFile_with_data> [module1 module2 .... moduleN]"
+	if empty(dict_id) .or. empty(xmlFile) .or. empty(mdir)
+		? "usage: codb_install <dictionary_id> <xmlFile_with_data> <source_dir>"
 		?
 		return .f.
 	endif
@@ -31,7 +31,7 @@ function codb_install(dict_id,xmlFile)
 		return .f.
 	endif
 
-	ret:=install_default_dictionary(dict,xmlData)
+	ret:=install_default_dictionary(dict,xmlData,mdir)
 
 	if valtype(ret) == "C" // error
 		? ret
@@ -41,8 +41,9 @@ function codb_install(dict_id,xmlFile)
 
 return .t.
 /**********************************************/
-static function install_default_dictionary(dict,xmlData)
+static function install_default_dictionary(dict,xmlData,mdir)
 	local i,j,k,n,x,tmpDict
+	local fname,source
 	local nSpec,aSpec,nSpec2,aSpec2
 	local oMeta,Obj,aMeta,aTypes
 	local metaname,metaTag,metadata,metakey
@@ -138,12 +139,19 @@ static function install_default_dictionary(dict,xmlData)
 					if !empty(tmp)
 						metadata := tmp[1]
 					else
-						metadata := ""
+						//metadata := ""
 					endif
 				endif
 
 				oMeta[metakey] := metadata
 			next
+			if metaname == "PLUGINS"
+				fname := mdir+PATH_DELIM+"plugins"+PATH_DELIM+oMeta:filename
+				oMeta:source := memoread(fname)
+				if empty(oMeta:source)
+					? "Error:","Can`t load plugins file:",fname,ferrorstr()
+				endif
+			endif
 			tmp:=dict:select(metaname,,oMeta:name)
 			if !empty(tmp)
 				if len(tmp)==1

@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Initialize the mouse driver, vars and return status of mouse
 $SYNTAX$
-   FT_MINIT() -> lMouseStatus
+   FT_MINIT() --> lMouseStatus
 $ARGUMENTS$
    NONE
 $RETURNS$
@@ -33,7 +33,7 @@ $CATEGORY$
 $ONELINER$
    Reset mouse driver and return status of mouse
 $SYNTAX$
-   FT_MRESET() -> nMouseStatus
+   FT_MRESET() --> nMouseStatus
 $ARGUMENTS$
    NONE
 $RETURNS$
@@ -65,7 +65,7 @@ $CATEGORY$
 $ONELINER$
    Set the mouse cursor
 $SYNTAX$
-   FT_MCURSOR( [ <lState> ] ) -> lCursorState
+   FT_MCURSOR( [ <lState> ] ) --> lCursorState
 $ARGUMENTS$
    <lState> is a logical indicating whether to set the mouse cursor on.
 	    .T. - set mouse cursor on
@@ -91,7 +91,7 @@ $CATEGORY$
 $ONELINER$
    Increment internal cursor flag and display mouse cursor
 $SYNTAX$
-   FT_MSHOWCRS() -> NIL
+   FT_MSHOWCRS() --> NIL
 $ARGUMENTS$
    NONE
 $RETURNS$
@@ -125,7 +125,7 @@ $CATEGORY$
 $ONELINER$
    Decrement internal mouse cursor flag and hide mouse cursor
 $SYNTAX$
-   FT_MHIDECRS() -> NIL
+   FT_MHIDECRS() --> NIL
 $ARGUMENTS$
    NONE
 $RETURNS$
@@ -159,7 +159,7 @@ $CATEGORY$
 $ONELINER$
    Get mouse cursor position and button status
 $SYNTAX$
-   FT_MGETPOS( @<nX>, @<nY> ) -> nButtonStatus
+   FT_MGETPOS( @<nX>, @<nY> ) --> nButtonStatus
 $ARGUMENTS$
    <nX> is a variable that will receive the mouse X position in virtual
    screen coordinates.  It must be passed by reference.
@@ -203,7 +203,7 @@ $CATEGORY$
 $ONELINER$
    Get mouse cursor position (text coord.) and button status
 $SYNTAX$
-   FT_MGETPOS( @<nX>, @<nY> ) -> nButtonStatus
+   FT_MGETPOS( @<nX>, @<nY> ) --> nButtonStatus
 $ARGUMENTS$
    <nX> is a variable that will receive the mouse X position in text
    screen coordinates.  It must be passed by reference.
@@ -243,7 +243,7 @@ $CATEGORY$
 $ONELINER$
    Get mouse cursor row position
 $SYNTAX$
-   FT_MGETX() -> nRowPos
+   FT_MGETX() --> nRowPos
 $ARGUMENTS$
    NONE
 $RETURNS$
@@ -268,7 +268,7 @@ $CATEGORY$
 $ONELINER$
    Get mouse cursor column position
 $SYNTAX$
-   FT_MGETY() -> nColPos
+   FT_MGETY() --> nColPos
 $ARGUMENTS$
    NONE
 $RETURNS$
@@ -292,7 +292,7 @@ $CATEGORY$
 $ONELINER$
    Position the mouse cursor using virtual screen coordinates
 $SYNTAX$
-   FT_MSETPOS( <nX>, <nY> ) -> NIL
+   FT_MSETPOS( <nX>, <nY> ) --> NIL
 $ARGUMENTS$
    <nX> is the desired mouse row.
 
@@ -319,7 +319,7 @@ $CATEGORY$
 $ONELINER$
    Position the mouse cursor using text screen coordinates
 $SYNTAX$
-   FT_MSETPOS( <nX>, <nY> ) -> NIL
+   FT_MSETPOS( <nX>, <nY> ) --> NIL
 $ARGUMENTS$
    <nX> is the desired mouse row.
 
@@ -345,7 +345,7 @@ $CATEGORY$
 $ONELINER$
    Set vertical bounds of mouse using virtual screen coord.
 $SYNTAX$
-   FT_MXLIMIT( <nX1>, <nX2> ) -> NIL
+   FT_MXLIMIT( <nX1>, <nX2> ) --> NIL
 $ARGUMENTS$
    <nX1> is the top row limit.
 
@@ -369,7 +369,7 @@ $CATEGORY$
 $ONELINER$
    Set horiz. bounds of mouse using virtual screen coordinates
 $SYNTAX$
-   FT_MYLIMIT( <nY1>, <nY2> ) -> NIL
+   FT_MYLIMIT( <nY1>, <nY2> ) --> NIL
 $ARGUMENTS$
    <nY1> is the left column limit.
 
@@ -393,7 +393,7 @@ $CATEGORY$
 $ONELINER$
    Retrieve button press status
 $SYNTAX$
-   FT_MBUTPRS( <nButton> [, @nButPrs [, @nX [, @nY] ] ] ) -> nButStatus
+   FT_MBUTPRS( <nButton> [, @nButPrs [, @nX [, @nY] ] ] ) --> nButStatus
 $ARGUMENTS$
    <nButton> is the mouse button number:
 
@@ -439,7 +439,7 @@ $end$
  $ONELINER$
     Get mouse button release information
  $SYNTAX$
-    FT_MBUTREL( nButton [, @nButRel [, @nX [, @nY] ] ]) -> nBStat
+    FT_MBUTREL( nButton [, @nButRel [, @nX [, @nY] ] ]) --> nBStat
  $ARGUMENTS$
     <nButton> is the mouse button number
 	      0 - Left   Button
@@ -480,7 +480,7 @@ $CATEGORY$
 $ONELINER$
    Define the mouse cursor
 $SYNTAX$
-   FT_MDEFCRS( <nCrsType>, <nScrMask>, <nCrsMask> ) -> NIL
+   FT_MDEFCRS( <nCrsType>, <nScrMask>, <nCrsMask> ) --> NIL
 $ARGUMENTS$
    <nCrsType> is the cursor type. A value of 0 indicates the software cursor
 	      (the default) and a value of 1 indicates the hardware cursor.
@@ -538,7 +538,7 @@ $CATEGORY$
 $ONELINER$
    Get mickeys
 $SYNTAX$
-   FT_MMICKEYS( @<nX>, @<nY> ) -> NIL
+   FT_MMICKEYS( @<nX>, @<nY> ) --> NIL
 $ARGUMENTS$
    <nX> is a variable that will receive the vertical mickey count.
 
@@ -564,7 +564,7 @@ $ONELINER$
    Return true if a double click was detected
 $SYNTAX$
    FT_MDBLCLK( [ <nClick> [, <nButton> [, <nInterval> [, <nRow> [, <nCol>;
-	       [, <nTime> ] ] ] ] ] ] ) -> lIsDoubleClk
+	       [, <nTime> ] ] ] ] ] ] ) --> lIsDoubleClk
 $ARGUMENTS$
    <nClick> is a numeric value.  If it is zero FT_MDBLCLK() will not
 	    check for the first press but rather will simply wait the
@@ -650,7 +650,7 @@ $CATEGORY$
 $ONELINER$
    Test if the mouse cursor is in the passed region
 $SYNTAX$
-   FT_MINREGION( <nT>, <nL>, <nB>, <nR> ) -> lInRegion
+   FT_MINREGION( <nT>, <nL>, <nB>, <nR> ) --> lInRegion
 $ARGUMENTS$
    <nT>, <nL> <nB> <nR> are the four corners of the screen region.
 $RETURNS$
@@ -675,7 +675,7 @@ $CATEGORY$
 $ONELINER$
    Set the mouse sensitivity parameters
 $SYNTAX$
-   FT_MSETSENS( <nHoriz>, <nVert>, <nDouble> ) -> NIL
+   FT_MSETSENS( <nHoriz>, <nVert>, <nDouble> ) --> NIL
 $ARGUMENTS$
    <nHoriz>  is the sensitivity of the mouse on the horizontal axis. This
 	     value is the integer percentage of highest sensitivity and
@@ -737,7 +737,7 @@ $CATEGORY$
 $ONELINER$
    Get the mouse sensitivity parameters
 $SYNTAX$
-   FT_MGETSENS( <@nHoriz>, <@nVert>, <@nDouble> ) -> NIL
+   FT_MGETSENS( <@nHoriz>, <@nVert>, <@nDouble> ) --> NIL
 $ARGUMENTS$
    <nHoriz>  is the percentage of maximum horizontal sensitivity. PASSED
 	     BY REFERENCE.
@@ -768,7 +768,7 @@ $CATEGORY$
 $ONELINER$
    Get the mouse driver version
 $SYNTAX$
-   FT_MVERSION( <@nMinor>, <@nType>, <@nIRQ>  ) -> <nMajor>
+   FT_MVERSION( <@nMinor>, <@nType>, <@nIRQ>  ) --> <nMajor>
 $ARGUMENTS$
    <nMinor>  is the Minor version number. PASSED BY REFERENCE.
    <nType>   is the Mouse type. PASSED BY REFERENCE.
@@ -811,7 +811,7 @@ $CATEGORY$
 $ONELINER$
    Set the display page for the mouse pointer
 $SYNTAX$
-   FT_MSETPAGE( <@nPage> ) -> NIL
+   FT_MSETPAGE( <@nPage> ) --> NIL
 $ARGUMENTS$
    <nPage>  is the desired display page.
 $RETURNS$
@@ -835,7 +835,7 @@ $CATEGORY$
 $ONELINER$
    Get the display page for the mouse pointer
 $SYNTAX$
-   FT_MGETPAGE() -> <nPage>
+   FT_MGETPAGE() --> <nPage>
 $ARGUMENTS$
    None
 $RETURNS$

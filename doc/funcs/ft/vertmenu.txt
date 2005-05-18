@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Vertical lightbar menu
 $SYNTAX$
-   FT_MENU2( <aMenuarray> [, <cColors> ] ) -> NIL
+   FT_MENU2( <aMenuarray> [, <cColors> ] ) --> NIL
 $ARGUMENTS$
    <aMenuarray> is an array of menu options, messages, and action
     blocks.

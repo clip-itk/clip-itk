@@ -193,18 +193,29 @@ local newstr, l, i, j
 		for i:= 1 to l
 			s := left(str, 1)
 			if s == "<"
-				/*if left(lower(str), 5) == "<pre>"
-					newstr += "&\n<programlisting>"
-					j := atl("</pre>", lower(str))
-					newstr += substr(str, 6, j-11) + "</programlisting>&\n"
-					str := substr(str, j+6)
+				if left(lower(str), 5) == "<pre>"
+					newstr += "<programlisting>"
+					str := substr(str, 6)
+					//newstr += str
+					//j := atl("</pre>", lower(str))
+					//newstr += substr(str, 6, j-11) + "</programlisting>&\n"
+					//str := substr(str, j+6)
 					loop
-				else*/
+				elseif left(lower(str), 6) == "</pre>"
+					newstr += "</programlisting>"
+					str := substr(str, 7)
+					//newstr += str
+					//j := atl("</pre>", lower(str))
+					//newstr += substr(str, 6, j-11) + "</programlisting>&\n"
+					//str := substr(str, j+6)
+					loop
+				/*else
 				if left(lower(str), 5) == "<pre>"
 					j := atl("</pre>", lower(str))
 					newstr += substr(str, 1, j+5)
 					str := substr(str, j+6)
 					loop
+				*/
 				elseif  left(lower(str), 9) == "<command>"
 					j := atl("</command>", lower(str))
 					newstr += substr(str, 1, j+9)
@@ -214,6 +225,31 @@ local newstr, l, i, j
 					j := atl("</link>", lower(str))
 					newstr += substr(str, 1, j+6)
 					str := substr(str, j+7)
+					loop
+				elseif  left(lower(str), 13) == "<itemizedlist"
+					j := atl("</itemizedlist>", lower(str))
+					newstr += substr(str, 1, j+15)
+					str := substr(str, j+16)
+					loop
+				elseif  left(lower(str), 13) == "<ordered"
+					j := atl("</orderedlist>", lower(str))
+					newstr += substr(str, 1, j+14)
+					str := substr(str, j+15)
+					loop
+				elseif  left(lower(str), 13) == "<simple"
+					j := atl("</simplelist>", lower(str))
+					newstr += substr(str, 1, j+13)
+					str := substr(str, j+14)
+					loop
+				elseif  left(lower(str), 13) == "<variable"
+					j := atl("</variablelist>", lower(str))
+					newstr += substr(str, 1, j+15)
+					str := substr(str, j+16)
+					loop
+				elseif  left(lower(str), 9) == "<listitem"
+					j := atl("</listitem>", lower(str))
+					newstr += substr(str, 1, j+11)
+					str := substr(str, j+12)
 					loop
 				else
 					newstr += '<![CDATA['+s+']]>'
@@ -248,7 +284,7 @@ local i, j, a, str, lStr, arr, lf
 
 	qout( "Write to: "+fname+" function:"+fs:FUNCNAME)
 
-	str := '<section id="function'+fs:SGMLID+'"><title>Function '+fs:FUNCNAME+' </title>&\n'
+	str := '<refsect2>&\n<title><anchor id="function'+fs:SGMLID+'">Function '+fs:FUNCNAME+' </title>&\n'
 	fwrite(fsgml, str, len(str))
 
 	if !empty(fs:LASTDATE)
@@ -262,61 +298,104 @@ local i, j, a, str, lStr, arr, lf
 		endif
 	endif
 
+	str := "<programlisting>&\n"
+
 	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:SYNTAX)
-		str := '<programlisting><![CDATA['+fs[lang]:SYNTAX+']]></programlisting>&\n'
+		str += '<![CDATA['+fs[lang]:SYNTAX+']]>&\n'
 	else
-		str := '<programlisting><![CDATA['+fs:SYNTAX+']]></programlisting>&\n'
+		str += '<![CDATA['+fs:SYNTAX+']]>&\n'
+	endif
+	str += "&\n</programlisting>&\n"
+	fwrite(fsgml, str, len(str))
+
+	a:=NIL
+	if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:DESCRIPTION)
+		a := split_str(fs[lang]:DESCRIPTION, "&\n")
+	else
+		a := split_str(fs:DESCRIPTION, "&\n")
+	endif
+	if empty(a)
+		if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:SUMMARY)
+			a := split_str(fs[lang]:SUMMARY, "&\n")
+		else
+			a := split_str(fs:SUMMARY, "&\n")
+		endif
+	endif
+	str := "<para>&\n"
+	for i=1 to len(a)
+		if empty(a[i])
+			str += "</para>&\n<para>&\n"
+		endif
+		str += a[i]+"&\n"
+	next
+	fwrite(fsgml, str, len(str))
+	str := "</para>&\n"
+
+	fwrite(fsgml, str, len(str))
+
+	str := '<informaltable pgwide="1" frame="none" role="params"><tgroup cols="2">&\n<colspec colwidth="2*">&\n<colspec colwidth="8*">&\n<tbody>&\n'
+	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:ARGS)
+		for i=1 to len(fs[lang]:ARGS)
+			if empty(fs[lang]:ARGS[i][2])
+				loop
+			endif
+			str += '<row><entry align="right" valign="top"><parameter><![CDATA['+fs[lang]:ARGS[i][1]+']]></parameter></entry>&\n'
+			str += '<entry><para>'+trans(fs[lang]:ARGS[i][2])+'</para></entry></row>&\n'
+		next
+	else
+		for i=1 to len(fs:ARGS)
+			if empty(fs:ARGS[i][2])
+				loop
+			endif
+			str += '<row><entry align="right" valign="top"><parameter><![CDATA['+fs:ARGS[i][1]+']]></parameter></entry>&\n'
+			str += '<entry><para>'+trans(fs:ARGS[i][2])+'</para></entry></row>&\n'
+		next
 	endif
 	fwrite(fsgml, str, len(str))
 
-	str := '<section><title>Arguments</title>&\n'
-	if empty(fs:ARGS)
-		str += '<para>No arguments</para>&\n'
+	str := '<row><entry align="right" valign="top"><emphasis>Returns :</emphasis></entry>&\n'
+	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:RETURNS)
+		str += '<entry><para>'+trans(fs[lang]:RETURNS)+'</para></entry></row>&\n'
 	else
-		str += '<informaltable frame="none"><tgroup cols="2"><tbody>&\n'
-		if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:ARGS)
-			for i=1 to len(fs[lang]:ARGS)
-				a := split_str(fs[lang]:ARGS[i][2], "&\n")
-
-				str += '<row><entry align="right"><command><![CDATA['+fs[lang]:ARGS[i][1]+']]></command></entry>'
-				str += '&\n'
-
-				for j=1 to len(a)
-					if j>1
-						str += '<row><entry align="right"> </entry>'
-					endif
-					str += '<entry>'+a[j]+'</entry></row>&\n'
-				next
-			next
+		if !empty(fs:RETURNS)
+			str += '<entry><para>'+trans(fs:RETURNS)+'</para></entry></row>&\n'
 		else
-			for i=1 to len(fs:ARGS)
-				a := split_str(fs:ARGS[i][2], "&\n")
-				str += '<row><entry align="right"><command><![CDATA['+fs:ARGS[i][1]+']]></command></entry>'
-				str += '&\n'
-				for j=1 to len(a)
-					if j>1
-						str += '<row><entry align="right"> </entry>'
-					endif
-					str += '<entry>'+a[j]+'</entry></row>&\n'
-				next
-			next
+			str += '<entry>NIL</entry></row>&\n'
 		endif
 
-		str += '</tbody></tgroup></informaltable>&\n'
-
 	endif
-	str += '</section><!-- ARGS for '+fs:FUNCNAME+' -->&\n'
 	fwrite(fsgml, str, len(str))
 
-	str := '<section><title>Returns</title>&\n'
-	if empty(fs:RETURNS)
-		str += '<para>Returns NIL.</para>&\n'
-	else
-		str += '<para>&\n'
-		if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:RETURNS)
-			a := split_str(fs[lang]:RETURNS, "&\n")
+	str := '<row><entry align="right" valign="top"><emphasis>See also :</emphasis></entry><entry>&\n'
+	if !empty(fs:SEEALSO)
+		a := split(fs:SEEALSO, ",")
+		for j=1 to len(a)
+			if empty(a[j])
+				loop
+			endif
+			lf := .f.
+			if atr("(",a[j])>0
+				lf := .t.
+			endif
+			i := strtran(a[j], "(", "")
+			i := strtran(i, ")", "")
+			i := strtran(i, "_", "")
+			i := strtran(i, "*", "")
+			i := alltrim(i)
+			str += '<link linkend="'+iif(lf, 'function', 'class')+i+'">'+a[j]+'</link> '
+		next
+		str += '</entry></row>&\n'
+	endif
+	str += '</tbody></tgroup></informaltable>&\n'
+	fwrite(fsgml, str, len(str))
+
+	str := ""
+	if !empty(fs:PECULIARITIES)
+		str += '<para>&\n<command>Peculiarities: </command>&\n'
+		if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:PECULIARITIES)
+			a := split_str(fs[lang]:PECULIARITIES, "&\n")
 		else
-			a := split_str(fs:RETURNS, "&\n")
+			a := split_str(fs:PECULIARITIES, "&\n")
 		endif
 		for j=1 to len(a)
 			if empty(a[j])
@@ -327,40 +406,45 @@ local i, j, a, str, lStr, arr, lf
 		next
 		str += '&\n</para>&\n'
 	endif
-	str += '</section><!-- RETURNS for '+fs:FUNCNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
 
-	str := '<section><title>Description</title>&\n'
-
-	/*
-	str += '<programlisting><![CDATA[&\n'
-	if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:DESCRIPTION)
-		str += trans(fs[lang]:DESCRIPTION, .f.)
-	else
-		str += trans(fs:DESCRIPTION, .f.)
-	endif
-	str += ']]></programlisting>&\n'
-	*/
-	str += '<para>&\n'
-	if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:DESCRIPTION)
-		a := split_str(fs[lang]:DESCRIPTION, "&\n")
-	else
-		a := split_str(fs:DESCRIPTION, "&\n")
-	endif
-	for j=1 to len(a)
-		if empty(a[j])
-			str += '</para><para>&\n'
+	if !empty(fs:AUTHOR)
+		str += '<para>&\n<command>Author: </command>&\n'
+		if lang != "EN" .and. (lang $ fs).and. !empty(fs[lang]:AUTHOR)
+			a := fs[lang]:AUTHOR
 		else
-			str += a[j]
+			a := fs:AUTHOR
 		endif
-	next
-	str += '&\n</para>&\n'
+		arr := {}
+		do while search("[a-zA-Z0-9\.\_]*@[a-zA-Z0-9\.\_]*", a, arr, 1)
+			str += substr(a, 1, arr[1][1]-1)
+			str += '<email>'
+			str += substr(a, arr[1][1], arr[1][2]-arr[1][1])
+			str += '</email>'
+			a := substr(a, arr[1][2])
+			arr := {}
+		enddo
+		str += a
+		str += '&\n</para>&\n'
+	endif
 
-	str += '</section><!-- DESCRIPTION for '+fs:FUNCNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
+	if !empty(fs:PLATFORMS)
+		str += '<para>&\n'
+		if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:PLATFORMS)
+			a := split(trans(fs[lang]:PLATFORMS), "&\n")
+		else
+			a := split(trans(fs:PLATFORMS), "&\n")
+		endif
+		for j=1 to len(a)
+			if empty(a[j])
+				str += '</para><para>&\n'
+			else
+				str += a[j]
+			endif
+		next
+		str += '&\n</para>&\n'
+	endif
 
-
-	str := '<section><title>Example</title>&\n'
+	str := '<informalexample><para><command>Example :</command></para>&\n'
 	str += '<programlisting><![CDATA[&\n'
 	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:EXAMPLES)
 		str += trans(fs[lang]:EXAMPLES, .f.)
@@ -368,94 +452,10 @@ local i, j, a, str, lStr, arr, lf
 		str += trans(fs:EXAMPLES, .f.)
 	endif
 	str += ']]></programlisting>&\n'
-	str += '</section><!-- EXAMPLE for '+fs:FUNCNAME+' -->&\n'
+	str += '</informalexample><!-- EXAMPLE for '+fs:FUNCNAME+' -->&\n'
 	fwrite(fsgml, str, len(str))
 
-
-
-	str := '<section><title>Peculiarities</title>&\n'
-	str += '<para>&\n'
-	if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:PECULIARITIES)
-		a := split_str(fs[lang]:PECULIARITIES, "&\n")
-	else
-		a := split_str(fs:PECULIARITIES, "&\n")
-	endif
-	for j=1 to len(a)
-		if empty(a[j])
-			str += '</para><para>&\n'
-		else
-			str += a[j]
-		endif
-	next
-	str += '&\n</para>&\n'
-	str += '</section><!-- PECULIARITIES for '+fs:FUNCNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
-
-
-	str := '<section><title>See also</title>&\n'
-	str += '<para>&\n'
-	a := split(fs:SEEALSO, ",")
-	for j=1 to len(a)
-		if empty(a[j])
-			loop
-		endif
-		lf := .f.
-		if atr("(",a[j])>0
-			lf := .t.
-		endif
-		i := strtran(a[j], "(", "")
-		i := strtran(i, ")", "")
-		i := strtran(i, "_", "")
-		i := strtran(i, "*", "")
-		i := alltrim(i)
-		str += '<link linkend="'+iif(lf, 'function', 'class')+i+'">'+a[j]+'</link> '
-	next
-	str += '&\n</para>&\n'
-	str += '</section><!-- SEEALSO for '+fs:FUNCNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
-
-
-	str := '<section><title>Author of documentation</title>&\n'
-	str += '<para>&\n'
-	if lang != "EN" .and. (lang $ fs).and. !empty(fs[lang]:AUTHOR)
-		a := fs[lang]:AUTHOR
-	else
-		a := fs:AUTHOR
-	endif
-	arr := {}
-	do while search("[a-zA-Z0-9\.\_]*@[a-zA-Z0-9\.\_]*", a, arr, 1)
-		str += substr(a, 1, arr[1][1]-1)
-		str += '<email>'
-		str += substr(a, arr[1][1], arr[1][2]-arr[1][1])
-		str += '</email>'
-		a := substr(a, arr[1][2])
-		arr := {}
-	enddo
-	str += a
-	str += '&\n</para>&\n'
-	str += '</section><!-- AUTHOR for '+fs:FUNCNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
-
-	str := '<section><title>Platforms</title>&\n'
-	str += '<para>&\n'
-	if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:PLATFORMS)
-		a := split(trans(fs[lang]:PLATFORMS), "&\n")
-	else
-		a := split(trans(fs:PLATFORMS), "&\n")
-	endif
-	for j=1 to len(a)
-		if empty(a[j])
-			str += '</para><para>&\n'
-		else
-			str += a[j]
-		endif
-	next
-	str += '&\n</para>&\n'
-	str += '</section><!-- PLATFORMS for '+fs:FUNCNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
-
-
-	str := '</section><!-- End function '+fs:FUNCNAME+' -->&\n'
+	str := '</refsect2><!-- End function '+fs:FUNCNAME+' -->&\n'
 	fwrite(fsgml, str, len(str))
 
 	qqout("..... done")
@@ -467,8 +467,7 @@ static function WriteFuncsOrder(outfile, lang, fs, ab_order, categ)
 local str, i, j, x, key, val, nam, ab_part, key1, key2, fsgml
 
 fsgml := fcreate(outfile)
-str := '<chapter id="functions"><title>CLIP Functions</title>&\n'
-str += '<section id="abfunctions"><title>Functions in alhabetic order</title>&\n'
+str := '<part id="abfunctions"><title>CLIP Functions in alhabetic order</title>&\n'
 ab_part := {}
 for i=1 to ab_order:len()
 	key1 := ab_order:getkey(i)
@@ -482,7 +481,7 @@ next
 fwrite(fsgml, str, len(str))
 /* write order functions by 50 into part */
 for j := 1 to len(ab_part)
-	str := '<section id="functions'+ab_part[j][1]+'"><title>'+ab_part[j][2]+'</title>&\n'
+	str := '<article id="functions'+ab_part[j][1]+'"><title>'+ab_part[j][2]+'</title>&\n'
 	fwrite(fsgml, str, len(str))
 
 	str := '<informaltable frame="none"><tgroup cols="2"><tbody>&\n'
@@ -505,33 +504,30 @@ for j := 1 to len(ab_part)
 	str := '</tbody></tgroup></informaltable>&\n'
 	fwrite(fsgml, str, len(str))
 
-	str := '</section><!-- '+ab_part[j][2]+' functions -->&\n'
+	str := '</article><!-- '+ab_part[j][2]+' functions -->&\n'
 	fwrite(fsgml, str, len(str))
 next
 
-str := '</section>&\n'
-#ifndef __FAST__LINK
-str += '<section id="ctfunctions"><title>Functions by categories</title>&\n'
-#endif
+str := "</part> <!-- CLIP funcs in alphabetical order -->&\n"
 fwrite(fsgml, str, len(str))
-str := ""
+//str := '</article>&\n'
+//#ifndef __FAST__LINK
+str := '<part id="ctfunctions"><title>CLIP Functions by categories</title>&\n'
+fwrite(fsgml, str, len(str))
 /* write categories */
 for i=1 to len(categ)
-	str += "&fncsect"+alltrim(tostring(i))+";&\n"
+	str := "&fncsect"+alltrim(tostring(i))+";&\n"
+	fwrite(fsgml, str, len(str))
 next
-fwrite(fsgml, str, len(str))
-#ifndef __FAST__LINK
-str := '</section>&\n'
-fwrite(fsgml, str, len(str))
-#endif
-str := '</chapter>&\n'
+str := '</part><!-- CLIP funcs by categories -->&\n'
+//#endif
 fwrite(fsgml, str, len(str))
 fclose(fsgml)
 return ab_part
 
 *******************************************************************************
 static function writeSection(fname, lang, fs, categ)
-local x, i, j, key, val, nam, str, fsec, awr, fn, cat, ii
+local x, i, j, key, val, nam, str, fsec, awr, fn, cat, ii, syn, s, lpre
 	awr:={}
 	asize(awr, len(fs))
 	afill(awr, .f.)
@@ -541,54 +537,88 @@ local x, i, j, key, val, nam, str, fsec, awr, fn, cat, ii
 		x++
 		fsec := fcreate(fn)
 		key := categ[i][1]
-		str := '<section id="categ'+categ[i][3]+'"><title>'+key+'</title>&\n'
+		str := '<refentry id="categ'+categ[i][3]+'">&\n<refmeta><refentrytitle>'+key+'</refentrytitle>&\n</refmeta>&\n'
 		fwrite(fsec, str, len(str))
-		#ifdef __FAST__LINK
-		str := '<informaltable frame="none"><tgroup cols="1"><tbody>&\n'
-		str += '<row><entry><link linkend="about'+categ[i][3]+'">About</link></entry></row>&\n'
-		str += '<row><entry><link linkend="order'+categ[i][3]+'">Functions order</link></entry></row>&\n'
-		str += '</tbody></tgroup></informaltable>&\n'
+		str := '<refnamediv>&\n<refname>'+key+'</refname>&\n'
+		fwrite(fsec, str, len(str))
+		str := "<refpurpose>&\n"
+		val := categ[i][5]
+		if !empty(val)
+			if lang $ val
+				cat := categ[i][5][lang]
+			elseif "EN" $ val
+				cat := categ[i][5]:EN
+			endif
+			if !empty(cat)
+				for ii=1 to len(cat)
+					str += " "+trans(cat[ii])
+				next
+			else
+				str += " "
+			endif
+		endif
+		str += "&\n</refpurpose>&\n"
+		fwrite(fsec, str, len(str))
+		str := "</refnamediv>&\n"
 		fwrite(fsec, str, len(str))
 
-		str := '<section id="about'+categ[i][3]+'"><title>About '+key+'</title>'
-		str += '<para>' // start write about category
+		str := '<refsynopsisdiv><title>Function</title>&\n<synopsis>&\n'
+		fwrite(fsec, str, len(str))
+		for j=1 to categ[i][2]:len()
+			key := categ[i][2]:getkey(j)
+			val := categ[i][2]:getdata(j)
+			//nam := fs[val]:FUNCNAME
+			nam := strtran(alltrim(fs[val]:SYNTAX), "&\n", "")
+			s := atr("-->", nam)
+			if s > 0
+				syn := "<![CDATA["+padr(alltrim(substr(nam, s+3)), 12)+"]]>"
+				nam := substr(nam, 1, s-1)
+				nam := "<![CDATA["+nam+"]]>"
+			else
+				nam := "<![CDATA["+nam+"]]>"
+				syn := "<![CDATA["+padr(" ", 35)+"]]>"
+			endif
+			if lang != "EN" .and. (lang $ fs[val]) .and. ("SUMMARY" $ fs[val][lang])
+				val := trans(iif(!empty(fs[val][lang]:SUMMARY), fs[val][lang]:SUMMARY, fs[val]:SUMMARY))
+			else
+				val := trans(fs[val]:SUMMARY)
+			endif
+			if empty(val)
+				loop
+			endif
+			str := syn+'<link linkend="function'+key+'">'+nam+'</link>&\n'
+			fwrite(fsec, str, len(str))
+		next
+		str := '</synopsis>&\n</refsynopsisdiv>&\n'
+		fwrite(fsec, str, len(str))
+
+		str := "<refsect1>&\n<title>Description </title>&\n"
+		str += "<para>&\n"
 		val := categ[i][4]
 		if !empty(val)
+			cat := NIL
 			if lang $ val
 				cat := categ[i][4][lang]
 			elseif "EN" $ val
 				cat := categ[i][4]:EN
 			endif
 			if !empty(cat)
+				lPre := .f.
 				for ii=1 to len(cat)
-					if ii!=1
-						str += "</para><para>&\n"
+					if empty(cat[ii]) .and. !lPre
+						str += "</para>&\n<para>&\n"
 					endif
-					str += trans(cat[ii])
+					str += trans(cat[ii])+"&\n"
+					if atl("<pre>", lower(cat[ii])) > 0
+						lPre := .t.
+					endif
+					if atl("</pre>", lower(cat[ii])) > 0
+						lPre := .f.
+					endif
 				next
 			endif
 		endif
-		str += '</para>&\n'	//stop write about category
-		str += '</section>&\n'
-		str += '<section id="order'+categ[i][3]+'"><title>'+key+' functions order</title>&\n'
-		fwrite(fsec, str, len(str))
-		#endif
-
-		str := '<informaltable frame="none"><tgroup cols="2"><tbody>&\n'
-		fwrite(fsec, str, len(str))
-		for j=1 to categ[i][2]:len()
-			key := categ[i][2]:getkey(j)
-			val := categ[i][2]:getdata(j)
-			nam := fs[val]:FUNCNAME
-			if lang != "EN" .and. (lang $ fs[val]) .and. ("SUMMARY" $ fs[val][lang])
-				val := trans(iif(!empty(fs[val][lang]:SUMMARY), fs[val][lang]:SUMMARY, fs[val]:SUMMARY))
-			else
-				val := trans(fs[val]:SUMMARY)
-			endif
-			str := '<row><entry><link linkend="function'+key+'">'+nam+'</link></entry><entry>'+val+'</entry></row>&\n'
-			fwrite(fsec, str, len(str))
-		next
-		str := '</tbody></tgroup></informaltable>&\n'
+		str += "&\n</para>&\n"
 		fwrite(fsec, str, len(str))
 		for j=1 to categ[i][2]:len()
 			val := categ[i][2]:getdata(j)
@@ -597,10 +627,7 @@ local x, i, j, key, val, nam, str, fsec, awr, fn, cat, ii
 				awr[val] := .t.
 			endif
 		next
-		str := '</section><!-- '+categ[i][1]+' categories -->&\n'
-		#ifdef __FAST__LINK
-		str += '</section>'
-		#endif
+		str := "</refsect1>&\n</refentry>&\n"
 		fwrite(fsec, str, len(str))
 		fclose(fsec)
 	next
@@ -626,7 +653,7 @@ local i, a, s
 			a[i] := alltrim(a[i])
 			s := strtran(strtran(a[i], "/", ""), " ", "")
 			if !(s $ categ)
-				categ[s]:= {a[i], tSortedArrayNew(), s, map()}
+				categ[s]:= {a[i], tSortedArrayNew(), s, map(), map()}
 			endif
 			categ[s][2]:Add(fs[x]:SGMLID, x)
 		next
@@ -635,8 +662,8 @@ return 1
 
 *******************************************************************************
 static function parseArguments(fsrc, fs, alang)
-local str, s, lang:="EN", argname, argdesc:="", x, lpre := .f.
-local instr
+local str, s, lang:="EN", argname, argdesc:="", x, lpre := .f., llist := .f., litem := .f.
+local instr, j
 	do while !fileeof(fsrc)
 		instr := alltrim(filegetstr(fsrc))
 		if !lpre .and. atl("<pre>", lower(instr))>0
@@ -654,6 +681,34 @@ local instr
 		else
 			str := instr
 			s := upper(str)
+		endif
+		if  llist
+			j := atl("</itemizedlist>", lower(str))
+			if j>0
+				llist := .f.
+				argdesc += substr(str, 1, j+15)
+				str := substr(str, j+16)
+				s := upper(str)
+			else
+				llist := .t.
+				argdesc += str
+				str := ""
+				loop
+			endif
+		endif
+		if  litem
+			j := atl("</listitem>", lower(str))
+			if j>0
+				litem := .f.
+				argdesc += substr(str, 1, j+11)
+				str := substr(str, j+12)
+				s := upper(str)
+			else
+				llist := .t.
+				argdesc += str
+				str := ""
+				loop
+			endif
 		endif
 		if left(s, 6) == "$LANG_"
 			if !empty(argname)
@@ -676,7 +731,34 @@ local instr
 			exit
 		endif
 
-		if left(str, 1) == "<" .and. (lower(left(str, 5)) != "<pre>" .and. lower(left(str, 6)) != "</pre>")
+
+		if  left(lower(str), 13) == "<itemizedlist"
+			j := atl("</itemizedlist>", lower(str))
+			if j>0
+				llist := .f.
+				argdesc += substr(str, 1, j+15)
+				str := substr(str, j+16)
+				loop
+			else
+				llist := .t.
+				argdesc += str
+				str := ""
+				loop
+			endif
+		elseif  left(lower(str), 9) == "<listitem"
+			j := atl("</listitem>", lower(str))
+			if j>0
+				litem := .f.
+				argdesc += substr(str, 1, j+11)
+				str := substr(str, j+12)
+				loop
+			else
+				litem := .t.
+				argdesc += str
+				str := ""
+				loop
+			endif
+		elseif left(str, 1) == "<" .and. (lower(left(str, 5)) != "<pre>" .and. lower(left(str, 6)) != "</pre>")
 			if !empty(argname)
 				writeArgs(fs, argname, argdesc, lang)
 			endif
@@ -691,50 +773,88 @@ return str
 
 *******************************************************************************
 static function parseCateg(fsrc, categ, alang)
-local str, s, lang:="EN", cname, cidname, descr := {}, lDesc := .f.
+local str, s, lang:="EN", cname, cidname, descr := {}, lDesc := .f., lSumm := .f.
+local summ := {}
 	do while !fileeof(fsrc)
 		str := alltrim(filegetstr(fsrc))
 		s := upper(str)
 		if s == "$DESCRIPTION$"
 			lDesc := .t.
+			lSumm := .f.
+			lang := "EN"
+			loop
+		endif
+		if s == "$SUMMARY$"
+			lSumm := .t.
+			lDesc := .f.
+			lang := "EN"
 			loop
 		endif
 		if left(s, 6) == "$LANG_"
 
-			if !empty(descr)
-				if !(cidname $ categ)
-					categ[cidname]:= {cname, tSortedArrayNew(), cidname, map()}
+			if lDesc
+				if !empty(descr)
+					if !(cidname $ categ)
+						categ[cidname]:= {cname, tSortedArrayNew(), cidname, map(), map()}
+					endif
+					categ[cidname][4][lang] := descr
 				endif
-				categ[cidname][4][lang] := descr
+				str := upper(substr(s, 7))
+				str := substr(str, 1, len(str)-1)
+				if ascan(alang, str) < 1
+					aadd(alang, str)
+				endif
+				lang := str
+				descr := {}
+				loop
 			endif
-			str := upper(substr(s, 7))
-			str := substr(str, 1, len(str)-1)
-			if ascan(alang, str) < 1
-				aadd(alang, str)
+
+			if lSumm
+				if !empty(summ)
+					if !(cidname $ categ)
+						categ[cidname]:= {cname, tSortedArrayNew(), cidname, map(), map()}
+					endif
+					categ[cidname][5][lang] := summ
+				endif
+				str := upper(substr(s, 7))
+				str := substr(str, 1, len(str)-1)
+				if ascan(alang, str) < 1
+					aadd(alang, str)
+				endif
+				lang := str
+				summ := {}
+				loop
 			endif
-			lang := str
-			descr := {}
-			loop
 		endif
 		if left(s, 1) == "$" .and. right(s, 1) == "$"
 			exit
 		endif
 
-		if !lDesc
+		if !lDesc .and. !lSumm
 			cname := s
 			cidname := strtran(strtran(cname, "/", ""), " ", "")
 			lCn := .f.
 			loop
 		endif
 
-		aadd(descr, str)
+		if lDesc
+			aadd(descr, str)
+		else
+			aadd(summ, str)
+		endif
 
 	enddo
 	if !empty(descr)
 		if !(cidname $ categ)
-			categ[cidname]:= {cname, tSortedArrayNew(), cidname, map()}
+			categ[cidname]:= {cname, tSortedArrayNew(), cidname, map(), map()}
 		endif
 		categ[cidname][4][lang] := descr
+	endif
+	if !empty(summ)
+		if !(cidname $ categ)
+			categ[cidname]:= {cname, tSortedArrayNew(), cidname, map(), map()}
+		endif
+		categ[cidname][5][lang] := summ
 	endif
 return str
 

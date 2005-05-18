@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Возвращает значение арифметического выражения типа int.
 $SYNTAX$
-	void _clip_retni(ClipMachine * cm,int n)
+	_clip_retni(ClipMachine * cm,int n) --> void
 $ARGUMENTS$
 	<n> - a numeric expression of integer type
 $LANG_RU$

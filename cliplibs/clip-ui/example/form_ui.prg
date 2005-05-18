@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 16 Feb 2005						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -19,6 +18,7 @@ static ws, win
 function main( formName )
 	local form
 	local fileName
+	local params := array(0)
 	
 	if empty(formName)
 		?? "Usage: ./form_ui <form.xfl>&\n"
@@ -33,6 +33,8 @@ function main( formName )
 			driver := substr(param(i),10)
 		elseif param(i) == "-driver" .and. i+1<=pcount()
 			driver := param(i+1)
+		else
+			aadd(params, param(i))
 		endif
 	next
 	
@@ -40,7 +42,7 @@ function main( formName )
 	?? "Used driver: "+driver,chr(10)
 	useDriver( driver )
 	
-	ws  := UIWorkSpace()
+	ws  := UIWorkSpace( params )
 	
 	form := UIForm( fileName )
 	win  := form:parseFile()

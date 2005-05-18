@@ -1,5 +1,9 @@
 $ABOUTCATEG$
   Pack/Unpack
+$SUMMARY$
+	Functions pack/unpack and compress/uncompress data or file.
+$LANG_RU$
+	Функции упаковки/распаковки и сжатия/расжатия строк и файлов.
 $DESCRIPTION$
 	Category Pack/Unpack include description of functions for
 	pack/unpack and compress/uncompress data or file.

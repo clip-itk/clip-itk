@@ -1828,9 +1828,9 @@ clip_GTK_WIDGETLISTMNEMONICLABELS(ClipMachine *cm)
 
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 
+	list = gtk_widget_list_mnemonic_labels(cwid->widget);
 	l = g_list_length(list);
 	_clip_array(cm, cv, 1, &l);
-	list = gtk_widget_list_mnemonic_labels(cwid->widget);
 	for (l=0; list; list=g_list_next(list), l++)
 	{
 		C_widget *cwid;

@@ -33,14 +33,14 @@ GTK_SRC = accelgroup.c adjustment.c alignment.c bin.c bmpxpm.c box.c button.c\
 	  label.c layout.c list.c listitem.c liststore.c menu.c menubar.c menuitem.c \
 	  menushell.c misc.c notebook.c object.c optionmenu.c paned.c pango.c\
 	  pixmap.c plug.c progress.c progressbar.c radiobutton.c radiomenuitem.c \
-	  range.c rulers.c scale.c scrollbar.c scrolledwindow.c separator.c \
+	  range.c rc.c rulers.c scale.c scrollbar.c scrolledwindow.c separator.c \
           selections.c  sizegroup.c socket.c spinbutton.c statusbar.c stock.c \
           table.c textbuffer.c \
 	  textiter.c textmark.c \
 	  texttag.c texttagtable.c textview.c tipsquery.c togglebutton.c \
 	  toolbar.c tooltips.c treemodel.c treeselection.c treestore.c \
 	  treeview.c treeviewcolumn.c style.c viewport.c widget.c window.c windowgroup.c \
-	  gtkermsg.prg gtkutil.prg
+	  gtkermsg.prg gtkutil.prg gtkbrowse.prg
 
 GTK_EXTEXT_SRC = #gtkextext.c extext.c
 
@@ -60,14 +60,14 @@ GTK_OBJ = accelgroup.o adjustment.o alignment.o bin.o bmpxpm.o box.o button.o \
 	  label.o layout.o list.o listitem.o liststore.o menu.o menubar.o menuitem.o \
 	  menushell.o misc.o notebook.o object.o optionmenu.o paned.o pango.o\
 	  pixmap.o plug.o progress.o progressbar.o radiobutton.o radiomenuitem.o \
-	  range.o rulers.o scale.o scrollbar.o scrolledwindow.o separator.o \
+	  range.o rc.o rulers.o scale.o scrollbar.o scrolledwindow.o separator.o \
 	  selections.o sizegroup.o socket.o spinbutton.o statusbar.o stock.o \
 	  table.o textbuffer.o \
 	  textiter.o textmark.o \
 	  texttag.o texttagtable.o textview.o tipsquery.o togglebutton.o \
 	  toolbar.o tooltips.o treemodel.o treeselection.o treestore.o \
 	  treeview.o treeviewcolumn.o style.o viewport.o widget.o window.o windowgroup.o \
-	  gtkermsg.o gtkutil.o
+	  gtkermsg.o gtkutil.o gtkbrowse.o
 
 GTK_EXTEXT_OBJ = #gtkextext.o extext.o
 
@@ -88,9 +88,19 @@ else
 	GTK_24_OBJ =
 endif
 
-SRCS = $(GDK_SRC) $(GTK_SRC) $(GTK_EXTEXT_SRC) $(GTK_24_SRC)
+ifdef GTK_26
+	GTK_26_SRC = aboutdialog.c cellview.c filechooserbutton.c iconview.c \
+        menutoolbutton.c
 
-OBJS = $(GDK_OBJ) $(GTK_OBJ) $(GTK_EXTEXT_OBJ) $(GTK_24_OBJ)
+	GTK_26_OBJ = aboutdialog.o cellview.o filechooserbutton.o iconview.o \
+        menutoolbutton.o
+else
+	GTK_26_SRC =
+	GTK_26_OBJ =
+endif
+SRCS = $(GDK_SRC) $(GTK_SRC) $(GTK_EXTEXT_SRC) $(GTK_24_SRC) $(GTK_26_SRC)
+
+OBJS = $(GDK_OBJ) $(GTK_OBJ) $(GTK_EXTEXT_OBJ) $(GTK_24_OBJ) $(GTK_26_OBJ)
 
 OBJDIR	= .
 EXTOBJS =
@@ -143,7 +153,7 @@ $(XSLIB): $(XLIB)
 clean:
 	rm -rf *.o *.a *.so *.dll *.po *.pa *.b *.BAK *.bak *~ core* \
 	*core Makefile.inc *.ex *.nm \
-	gtkermsg.c gtkutil.c
+	gtkermsg.c gtkutil.c gtkbrowse.c
 
 distclean: clean
 	rm -rf clip-gtkcfg2.h hashcode.h _hashcode.h Makefile

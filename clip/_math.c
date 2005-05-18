@@ -5,6 +5,9 @@
 */
 /*
    $Log: _math.c,v $
+   Revision 1.38  2005/03/29 08:09:12  clip
+   uri: small fix in random(lValue)
+
    Revision 1.37  2004/12/21 14:10:55  clip
    uri: small fix
 
@@ -588,11 +591,17 @@ clip_RANDOM(ClipMachine * mp)
 {
 	long ret = 0;
 	long d = _clip_parnl(mp, 1);
+	long l = _clip_parl(mp, 1);
+
+	if (_clip_parinfo(mp,1) == LOGICAL_t )
+		d = 0xFFFF;
 
 	if (d != 0)
 		ret = random() % d;
 	else
 		ret = random();
+	if (_clip_parinfo(mp,1) == LOGICAL_t && !l)
+		ret -= d/2;
 	_clip_retnl(mp, ret);
 	return 0;
 }

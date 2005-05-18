@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004 - 2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -460,3 +460,188 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+int
+clip_GTK_SELECTIONDATAGETPIXBUF(ClipMachine * cm)
+{
+        C_object   *cselection = _fetch_co_arg(cm);
+        GdkPixbuf         *pix ;
+        C_object         *cpix ;
+
+	if (!cselection || cselection->type != GTK_TYPE_SELECTION_DATA)
+        		goto err;
+
+       	pix = gtk_selection_data_get_pixbuf((GtkSelectionData*)(cselection->object));
+
+	if (pix)
+        {
+        	cpix = _list_get_cobject(cm, pix);
+                if (!cpix) cpix = _register_object(cm, pix, GDK_TYPE_PIXBUF, NULL, NULL);
+                if (cpix) _clip_mclone(cm, RETPTR(cm), &cpix->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_SELECTIONDATAGETURIS(ClipMachine * cm)
+{
+        C_object   *cselection = _fetch_co_arg(cm);
+        gchar           **uris ;
+        ClipVar            *cv = RETPTR(cm);
+
+	if (!cselection || cselection->type != GTK_TYPE_SELECTION_DATA)
+        		goto err;
+
+       	uris = gtk_selection_data_get_uris((GtkSelectionData*)(cselection->object));
+
+	if (uris)
+        {
+        	long l ;
+                gchar **u = uris;
+                _clip_array(cm, cv, 1, 0);
+
+                for(l=0; u; l++)
+                {
+                	ClipVar *s;
+                        _clip_var_str(u[0], strlen(u[0]), s);
+                	_clip_aadd(cm, cv, s);
+                }
+
+                g_strfreev(uris);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_SELECTIONDATASETPIXBUF(ClipMachine * cm)
+{
+        C_object   *cselection = _fetch_co_arg(cm);
+        C_object         *cpix = _fetch_cobject(cm, _clip_spar(cm, 2));
+
+	if (!cselection || cselection->type != GTK_TYPE_SELECTION_DATA)
+        		goto err;
+	CHECKCOBJ(cpix, GDK_IS_PIXBUF(cpix->object));
+
+       	gtk_selection_data_set_pixbuf((GtkSelectionData*)(cselection->object),
+       		GDK_PIXBUF(cpix->object));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_SELECTIONDATASETURIS(ClipMachine * cm)
+{
+        C_object   *cselection = _fetch_co_arg(cm);
+        ClipArrVar         *ca = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 2));
+        gchar           **uris ;
+        long                 l ;
+        int                  i ;
+
+	if (!cselection || cselection->type != GTK_TYPE_SELECTION_DATA)
+        		goto err;
+	CHECKARG(2, ARRAY_t);
+
+	l = ca->count;
+	*uris = calloc(l+1,sizeof(gchar));
+        *uris[l+1] = 0;
+       	for(i=0; i<l; i++)
+        {
+        	ClipVar *s = ca->items+i;
+                if (s->t.type != CHARACTER_t) goto err;
+
+		strcpy(uris[i], s->s.str.buf);
+	}
+       	gtk_selection_data_set_uris((GtkSelectionData*)(cselection->object), uris);
+        g_strfreev(uris);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_SELECTIONDATATARGETSINCLUDEIMAGE(ClipMachine * cm)
+{
+        C_object   *cselection = _fetch_co_arg(cm);
+        gboolean      writable = _clip_parl(cm, 2);
+
+	if (!cselection || cselection->type != GTK_TYPE_SELECTION_DATA)
+        		goto err;
+	CHECKARG(2, LOGICAL_t);
+
+       	_clip_retl(cm, gtk_selection_data_targets_include_image((GtkSelectionData*)(cselection->object),
+       		writable));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_TARGETLISTADDIMAGETARGETS(ClipMachine * cm)
+{
+        C_object  *ctlist = _fetch_co_arg(cm);
+        guint        info = _clip_parni(cm, 2);
+        gboolean writable = _clip_parl(cm, 3);
+
+	if (!ctlist || ctlist->type != GTK_TYPE_TARGET_LIST)
+        		goto err;
+
+	CHECKARG(2, NUMERIC_t);
+	CHECKARG(3, LOGICAL_t);
+
+       	gtk_target_list_add_image_targets((GtkTargetList*)(ctlist->object),
+       		info, writable);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TARGETLISTADDTEXTTARGETS(ClipMachine * cm)
+{
+        C_object  *ctlist = _fetch_co_arg(cm);
+        guint        info = _clip_parni(cm, 2);
+
+	if (!ctlist || ctlist->type != GTK_TYPE_TARGET_LIST)
+        		goto err;
+
+	CHECKARG(2, NUMERIC_t);
+
+       	gtk_target_list_add_text_targets((GtkTargetList*)(ctlist->object),
+       		info);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TARGETLISTADDURITARGETS(ClipMachine * cm)
+{
+        C_object  *ctlist = _fetch_co_arg(cm);
+        guint        info = _clip_parni(cm, 2);
+
+	if (!ctlist || ctlist->type != GTK_TYPE_TARGET_LIST)
+        		goto err;
+
+	CHECKARG(2, NUMERIC_t);
+
+       	gtk_target_list_add_uri_targets((GtkTargetList*)(ctlist->object),
+       		info);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

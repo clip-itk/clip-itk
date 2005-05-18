@@ -6,7 +6,7 @@ $ONELINER$
    Move the record pointer to a new position in a text file
 $SYNTAX$
 
-   FT_FSKIP( [ <nLines> ] ) -> nLinesSkipped
+   FT_FSKIP( [ <nLines> ] ) --> nLinesSkipped
 
 $ARGUMENTS$
 

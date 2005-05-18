@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 25 Feb 2005						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -17,7 +16,7 @@
 /* Default driver name */
 #define DEFAULT_DRIVER	"gtk"
 
-/* Page settings for UIPrinter */
+/* Page settings for UIPrinter. TODO: need to move in client sources */
 /* Measurement units */
 #define PRINT_PT	0
 #define PRINT_CM	1
@@ -41,7 +40,7 @@
 #define ALIGN_LEFT	0
 #define ALIGN_CENTER	1
 #define ALIGN_RIGHT	2
-#define ALIGN_JUSTIFY	3 	// Now is ALIGN_LEFT. TODO: need really justify
+#define ALIGN_JUSTIFY	3
 #define ALIGN_TOP	0
 #define ALIGN_MIDDLE	1
 #define ALIGN_BOTTOM	2
@@ -69,11 +68,11 @@
 #define SPLITTER_VERTICAL	1
 
 /* IMAGES */
-#define IMG_EMPTY	1
-#define IMG_OK		2
-#define IMG_INFO	2
-#define IMG_ERROR	3
-#define IMG_QUESTION	4
+#define IMG_EMPTY	1	// Empty transparent pixmap
+#define IMG_OK		2	// i
+#define IMG_ERROR	3	// Error (cross on red field)
+#define IMG_WARNING	4	// Exclamation mark
+#define IMG_QUESTION	5	// ?
 
 /* FRAME TYPES */
 #define FRAME_PLAIN	0

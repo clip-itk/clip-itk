@@ -1,27 +1,19 @@
 $CLASSNAME$
-	XFL_FORMS
+	XFLForms
 $SUMMARY$
-	Class underconstruction
+	Class XFLForms
 $LANG_RU$
-	Class underconstruction
+	Класс XFLForms
 $ABOUT$
+
 $SYNTAX$
-$ATTRIBUTES$
-$METHODNAME$
-$SUMMARY$
-$SYNTAX$
-$ARGUMENTS$
+	XFLForms()	--> XFLForms object
 
-$RETURNS$
-$DESCRIPTION$
-$ENDMETHOD$
-
-$EXAMPLES$
-
-$PLATFORMS$
-   No dependies of platform.
-$SEEALSO$
 $AUTHOR$
-ITK
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
 $LASTDATE$
+
+
 

@@ -24,7 +24,7 @@ $SUMMARY$
 $LANG_RU$
 	Конструктор.
 $SYNTAX$
-	UICheckBox([<value>],<label>)
+	UICheckBox([<value>],<label>)	--> UICheckBox object.
 $ARGUMENTS$
 	<value>		- Boolean. Set check box state: .T. - check box is checked, .F. - check box is unchecked.
 	<label>		- String. Check box label. You can define accel key for widget activation. Just place symbol "&" before accel letter. This letter will be underlined and widget will be activated with key Alt-letter.

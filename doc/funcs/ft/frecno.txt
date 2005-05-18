@@ -6,7 +6,7 @@ $ONELINER$
    Return the current record number of a text file
 $SYNTAX$
 
-   FT_FRECNO() -> nRecNo
+   FT_FRECNO() --> nRecNo
 
 $ARGUMENTS$
 

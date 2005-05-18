@@ -827,7 +827,7 @@ _map_colors_to_gdk_array (ClipMachine *cm, ClipVar *map, GdkColor gdk_color[])
 		for(i=0; i < a->count && i<5; i++ )
 		{
 			if ( a->items[i].t.type != MAP_t ) continue;
-			_map_get_colors(cm, (ClipVar*)&a->items[i].d, colors);
+			_map_get_colors(cm, (ClipVar*)&a->items[i], colors);
 			gdk_color[i].red = colors[0];
 			gdk_color[i].green = colors[1];
 			gdk_color[i].blue = colors[2];
@@ -1167,7 +1167,10 @@ CLIP_DLLEXPORT void
 _map_to_rc_style(ClipMachine *cm, ClipVar *m_style, GtkRcStyle *style, GtkStateType state)
 {
 	ClipVar *c;
+	ClipArrVar *cv;
 	PangoFontDescription * font = NULL;
+        char *str;
+        int i;
 
 	/* Colors */
 	if ( (c = _clip_mget( cm, m_style, HASH_FG_COLOR )) != NULL )
@@ -1202,6 +1205,26 @@ _map_to_rc_style(ClipMachine *cm, ClipVar *m_style, GtkRcStyle *style, GtkStateT
 			style->font_desc = font;
 		}
 	}
+
+	c = _clip_mget(cm,m_style,HASH_BG_PIXMAP_NAME);
+	if (c && (c->t.type == CHARACTER_t || c->t.type == ARRAY_t))
+	{
+		if (c->t.type == CHARACTER_t)
+                {
+			_clip_mgetc(cm,m_style,HASH_BG_PIXMAP_NAME, &str, &i);
+			style->bg_pixmap_name[0] = str;
+                }
+                else
+                {
+                	cv = (ClipArrVar *)_clip_vptr(_clip_mget(cm,m_style,HASH_BG_PIXMAP_NAME));
+                	for(i=0; i<5 && i<cv->count ; i++)
+                        {
+				str = cv->items[i].s.str.buf;
+				style->bg_pixmap_name[i] = str;
+                        }
+                }
+	}
+
 }
 
 

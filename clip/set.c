@@ -5,6 +5,9 @@
 */
 /*
    $Log: set.c,v $
+   Revision 1.99  2005/03/09 14:36:50  clip
+   uri: small fix
+
    Revision 1.98  2005/03/04 06:45:44  clip
    uri: small fix about colorRect() and tBrowse:defColor
 
@@ -1506,7 +1509,7 @@ clip_INVERTATTR(ClipMachine * mp)
 		return 0;
 	if (t == CHARACTER_t)
 		attr = _clip_str2attr(s, l);
-	attr = ((attr&0x88)+ (attr&0x07) << 4) + ((attr&0x70)>>4);
+	attr = ((attr&0x88)+ ((attr&0x07) << 4) + ((attr&0x70)>>4));
 	_clip_retni(mp, attr);
 	return 0;
 }

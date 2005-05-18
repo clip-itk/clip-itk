@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004 - 2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -470,4 +470,18 @@ clip_GTK_SEPARATORTOOLITEMGETDRAW(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_TOOLITEMREBUILDMENU(ClipMachine * cm)
+{
+	C_widget *citem = _fetch_cw_arg(cm);
 
+        CHECKCWID(citem, GTK_IS_TOOL_ITEM);
+
+        gtk_tool_item_rebuild_menu(GTK_TOOL_ITEM(citem->widget));
+
+	return 0;
+err:
+	return 1;
+}
+#endif

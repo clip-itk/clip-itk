@@ -2,6 +2,8 @@ $FUNCNAME$
 	_clip_storni()
 $CATEGORY$
 	C-API
+$SYNTAX$
+	_clip_storni(ClipMachine * mp, int n, int num, int ind) --> int
 $DESCRIPTION$
 $EXAMPLES$
 $SEEALSO$

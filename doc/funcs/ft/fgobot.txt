@@ -6,7 +6,7 @@ $ONELINER$
    Go to the last record in a text file
 $SYNTAX$
 
-   FT_FGOBOT() -> NIL
+   FT_FGOBOT() --> NIL
 
 $ARGUMENTS$
 

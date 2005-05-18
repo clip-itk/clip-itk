@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2005  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"

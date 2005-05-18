@@ -1,5 +1,10 @@
 $ABOUTCATEG$
   CGI/FCGI
+$SUMMARY$
+	Functions for using CGI or FCGI technology of WEB-servers.
+$LANG_RU$
+	Функций технологий CGI и FCGI, предназначенных
+	для создания динамических WEB-страниц.
 $DESCRIPTION$
 	Category CGI/FCGI include description of functions for
 	using CGI or FCGI technology of WEB-servers.

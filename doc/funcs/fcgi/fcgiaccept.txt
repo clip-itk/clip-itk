@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Принимает FCGI соединение c сервером.
 $SYNTAX$
-	lAccepted := FCGI_ACCEPT()
+	FCGI_ACCEPT() --> lAccepted
 $ARGUMENTS$
 	None.
 $LANG_RU$

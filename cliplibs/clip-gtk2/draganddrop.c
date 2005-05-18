@@ -819,3 +819,88 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_DRAGDESTADDIMAGETARGETS(ClipMachine * cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid, GTK_IS_WIDGET);
+
+        gtk_drag_dest_add_image_targets(GTK_WIDGET(cwid->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_DRAGDESTADDTEXTTARGETS(ClipMachine * cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid, GTK_IS_WIDGET);
+
+        gtk_drag_dest_add_text_targets(GTK_WIDGET(cwid->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_DRAGDESTADDURITARGETS(ClipMachine * cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid, GTK_IS_WIDGET);
+
+        gtk_drag_dest_add_uri_targets(GTK_WIDGET(cwid->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_DRAGSOURCEADDIMAGETARGETS(ClipMachine * cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid, GTK_IS_WIDGET);
+
+        gtk_drag_source_add_image_targets(GTK_WIDGET(cwid->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_DRAGSOURCEADDTEXTTARGETS(ClipMachine * cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid, GTK_IS_WIDGET);
+
+        gtk_drag_source_add_text_targets(GTK_WIDGET(cwid->widget));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_DRAGSOURCEADDURITARGETS(ClipMachine * cm)
+{
+	C_widget        *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid, GTK_IS_WIDGET);
+
+        gtk_drag_source_add_uri_targets(GTK_WIDGET(cwid->widget));
+
+	return 0;
+err:
+	return 1;
+}
+#endif

@@ -6,7 +6,7 @@ $ONELINER$
    Read a line from the currently selected text file
 $SYNTAX$
 
-   FT_FREADLN() -> cLine
+   FT_FREADLN() --> cLine
 
 $ARGUMENTS$
 

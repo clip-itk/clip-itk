@@ -4,9 +4,15 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.318  2005/04/11 15:40:12  clip
+	rust: another memory leak fixed
+	
+	Revision 1.317  2005/04/11 14:18:35  clip
+	rust: memory leak fixed
+
 	Revision 1.316  2005/02/02 14:22:24  clip
 	rust: minor fix for SET OPTIMIZE LEVEL 2
-	
+
 	Revision 1.315  2005/01/19 13:32:03  clip
 	rust: minor fix in string comparison
 
@@ -3424,7 +3430,10 @@ int rdd_locate(ClipMachine* cm,RDD_DATA* rd,char* cfor,ClipVar* fexpr,ClipVar* w
 	if(fexpr){
 		ClipVar *dest = (ClipVar*)calloc(1,sizeof(ClipVar));
 		if(rd->locate_wpar)
+		{
 			_clip_destroy(cm,rd->locate_wpar);
+			free(rd->locate_wpar);
+		}
 		if(rd->locate_filter)
 			if((er = rdd_destroyfilter(cm,rd->locate_filter,__PROC__)))
 				return er;
@@ -3437,6 +3446,7 @@ int rdd_locate(ClipMachine* cm,RDD_DATA* rd,char* cfor,ClipVar* fexpr,ClipVar* w
 			_clip_clone(cm,dest,wexpr);
 			rd->locate_wpar = dest;
 		} else {
+			free(dest);
 			rd->locate_wpar = NULL;
 		}
 		rd->locate_next = next;

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003 - 2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -1696,3 +1696,28 @@ err:
 }
 
 #endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_TEXTBUFFERBACKSPACE(ClipMachine * cm)
+{
+	C_object     *cbuffer = _fetch_co_arg(cm);
+	C_object       *citer = _fetch_cobject(cm, _clip_par(cm, 2));
+        gboolean  interactive = _clip_parl(cm, 3);
+        gboolean def_editable = _clip_parl(cm, 4);
+
+	CHECKARG(1,MAP_t); CHECKCOBJ(cbuffer, GTK_IS_TEXT_BUFFER(cbuffer->object));
+	CHECKCOBJ(citer, GTK_IS_TEXT_ITER(citer));
+	CHECKARG(3,LOGICAL_t);
+	CHECKARG(4,LOGICAL_t);
+
+	_clip_retl(cm, gtk_text_buffer_backspace(GTK_TEXT_BUFFER(cbuffer->object),
+		GTK_TEXT_ITER(citer->object),
+		interactive,
+		def_editable));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+

@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Set the current video page
 $SYNTAX$
-   FT_SETVPG( <nPage> ) -> NIL
+   FT_SETVPG( <nPage> ) --> NIL
 $ARGUMENTS$
    <nMode> is a valid video page.
 $RETURNS$
@@ -33,7 +33,7 @@ $CATEGORY$
 $ONELINER$
    Get the currently selected video page
 $SYNTAX$
-   FT_GETVPG() -> <nPage>
+   FT_GETVPG() --> <nPage>
 $ARGUMENTS$
    None.
 $RETURNS$

@@ -94,19 +94,14 @@ clip_GTK_WINDOWSETICONPIXMAP(ClipMachine * cm)
 {
 	C_widget *cwin = _fetch_cw_arg(cm);
 	C_widget *cpix = _fetch_cwidget(cm,_clip_spar(cm,2));
-	GdkPixmap *pix;
-	GdkBitmap *bit;
+        GdkPixmap *pix;
+        GdkBitmap *bit;
 	CHECKCWID(cwin,GTK_IS_WINDOW);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cpix,GTK_IS_PIXMAP);
-	if (cwin->widget->window)
-	{
-		gtk_pixmap_get(GTK_PIXMAP(cpix->widget), &pix, &bit);
-		gdk_window_set_icon(cwin->widget->window, cwin->widget->window,
-			pix, bit);
-		_clip_retl(cm, TRUE);
-	}
-	else
-		_clip_retl(cm, FALSE);
+	gtk_pixmap_get(GTK_PIXMAP(cpix->widget), &pix, &bit);
+	gdk_window_set_icon(GDK_WINDOW(cwin->widget->window),
+			    GDK_WINDOW(cpix->widget->window),
+		pix, bit);
 	return 0;
 err:
 	return 1;

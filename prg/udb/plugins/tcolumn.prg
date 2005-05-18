@@ -29,7 +29,7 @@ return ret
 static function ab_tcol_view_card(oDep,data,oBox,colorSpec)
 	local ret:=.t.,oldcol:=setcolor(colorSpec)
 	local x1:=oBox:nTop,y1:=oBox:nleft, y2:=oBox:nRight
-	local i
+	local i,s
 
 	dispbegin()
 	@ x1,y1,oBox:nBottom,y2 box B_DOUBLE+" "
@@ -42,7 +42,14 @@ static function ab_tcol_view_card(oDep,data,oBox,colorSpec)
 		dispend()
 		return .f.
 	endif
-	@ x1++,y1 say [Identification..]+padr(data:id,y2-y1-16)
+	s:=data:id
+	if "__VERSION" $ data
+		s+=[ version:]+str(data:__version)
+	endif
+	if "__CRC32" $ data
+		s+=[ CRC:]+data:__crc32
+	endif
+	@ x1++,y1 say [Identification..]+padr(s,y2-y1-16)
 	@ x1++,y1 say [Name............]+data:name
 	@ x1++,y1 say [Width...........]+str(data:width)
 	@ x1++,y1 say [Header..........]+padr(data:header,y2-y1-16)

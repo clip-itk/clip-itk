@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Save the status of all the SET command settings
 $SYNTAX$
-   FT_SAVESETS() -> aOldSets
+   FT_SAVESETS() --> aOldSets
 $ARGUMENTS$
    None
 $RETURNS$

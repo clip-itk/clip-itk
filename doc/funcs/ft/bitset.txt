@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Set selected bit in a byte
 $SYNTAX$
-   FT_BITSET( <cByte>, <nBitPos> ) -> cByte
+   FT_BITSET( <cByte>, <nBitPos> ) --> cByte
 $ARGUMENTS$
    <cByte> is a character from CHR(0) to CHR(255).
 

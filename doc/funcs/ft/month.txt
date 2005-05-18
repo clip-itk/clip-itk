@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Return Calendar or Fiscal Month Data
 $SYNTAX$
-   FT_MONTH( [ <dGivenDate> ], [nMonthNum] ) -> aDateInfo
+   FT_MONTH( [ <dGivenDate> ], [nMonthNum] ) --> aDateInfo
 $ARGUMENTS$
    <dGivenDate> is any valid date in any date format.  Defaults
    to current system date if not supplied.

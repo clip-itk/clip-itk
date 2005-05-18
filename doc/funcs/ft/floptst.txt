@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
     Test diskette drive status
 $SYNTAX$
-    FT_FLOPTST( <nDrive> ) -> nStatus
+    FT_FLOPTST( <nDrive> ) --> nStatus
 $ARGUMENTS$
     <nDrive> is the diskette drive number, 0 = A:, 1 = B:
 $RETURNS$

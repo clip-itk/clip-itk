@@ -1,6 +1,7 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2005  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
+    	      Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 #include "hashcode.h"
@@ -198,4 +199,20 @@ clip_GTK_PROGRESSBARGETORIENTATION(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_PROGRESSBARSETELLIPSIZE(ClipMachine * cm)
+{
+	C_widget *cpbar = _fetch_cw_arg(cm);
+        PangoEllipsizeMode mode = _clip_parni(cm, 2);
 
+        CHECKCWID(cpbar,GTK_IS_PROGRESS_BAR);
+        CHECKARG(2, NUMERIC_t);
+
+        gtk_progress_bar_set_ellipsize(GTK_PROGRESS_BAR(cpbar->widget),
+        	mode);
+	return 0;
+err:
+	return 1;
+}
+#endif

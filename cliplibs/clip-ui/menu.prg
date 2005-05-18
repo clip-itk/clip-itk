@@ -3,9 +3,8 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
 /*   Authors: 								   */
-/*  	     Andrey Cherepanov <sibskull@mail.ru>			   */
+/*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   Last change: 31 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -159,15 +158,19 @@ static function ui_setMenuItemIcon(self, icon)
 return .T.
 
 /* Set action for menu item */
-static function ui_setMenuItemAction(self, action)
-	driver:setAction( self, "activate", action)
-	driver:enableWidget( self, .T. )
+static function ui_setMenuItemAction(self, signal, action)
+	if signal=='activate' .and. valtype(action)=='B'
+		driver:setAction( self, "activate", action)
+		driver:enableWidget( self, .T. )
+	endif
 return .T.
 
 /* Set action for menu item */
-static function ui_setMenuItemCheckedAction(self, action)
-	driver:setAction( self, "toggled", action)
-	driver:enableWidget( self, .T. )
+static function ui_setMenuItemCheckedAction(self, signal, action)
+	if signal=='toggled' .and. valtype(action)=='B'
+		driver:setAction( self, "toggled", action)
+		driver:enableWidget( self, .T. )
+	endif
 return .T.
 
 /* Set key for menu item */

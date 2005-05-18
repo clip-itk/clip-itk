@@ -6,7 +6,7 @@ $ONELINER$
     Is the current server a 3.x server?
 $SYNTAX$
 
-    fn_is3x() -> lIs3X
+    fn_is3x() --> lIs3X
 
 $ARGUMENTS$
 

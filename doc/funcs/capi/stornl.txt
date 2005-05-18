@@ -2,6 +2,8 @@ $FUNCNAME$
 	_clip_stornl()
 $CATEGORY$
 	C-API
+$SYNTAX$
+	_clip_stornl(ClipMachine * mp, long n, int num, int ind) --> int
 $DESCRIPTION$
 $EXAMPLES$
 $SEEALSO$

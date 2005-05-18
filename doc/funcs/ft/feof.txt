@@ -6,7 +6,7 @@ $ONELINER$
    Determine if end of text file has been encountered
 $SYNTAX$
 
-   FT_FEOF() -> lResult
+   FT_FEOF() --> lResult
 
 $ARGUMENTS$
 

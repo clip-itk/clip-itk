@@ -6,7 +6,7 @@ $ONELINER$
     Remove the file server name from a path string
 $SYNTAX$
 
-    Fn_SSFromP( <cFullPath>,<@cServerName> ) -> cStrippedPath
+    Fn_SSFromP( <cFullPath>,<@cServerName> ) --> cStrippedPath
 
 $ARGUMENTS$
 

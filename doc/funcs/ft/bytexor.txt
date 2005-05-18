@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Perform bit-wise XOR on two ASCII characters (bytes)
 $SYNTAX$
-   FT_BYTEXOR( <cByte1>, <cByte2> ) -> cNewByte
+   FT_BYTEXOR( <cByte1>, <cByte2> ) --> cNewByte
 $ARGUMENTS$
    <cByte1> and <cByte2> are characters from CHR(0) to CHR(255).
    May be passed in CHR() form, as character literals, or

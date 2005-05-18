@@ -3,4 +3,9 @@
 	script="okv_b"  	type="clip_script"
 	datatype="sdf"		datafile="data/ru/okv_b.txt"
 	>
+<dataloader
+	classname="currency"	depository="SQL0101" primary_key="code"
+	script="okv_b"  	type="clip_script"
+	datatype="sdf"		datafile="data/ru/okv_b.txt"
+	>
 

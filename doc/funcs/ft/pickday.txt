@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Picklist of days of week
 $SYNTAX$
-   FT_PICKDAY() -> cDayOfWeek
+   FT_PICKDAY() --> cDayOfWeek
 $ARGUMENTS$
    None
 $RETURNS$

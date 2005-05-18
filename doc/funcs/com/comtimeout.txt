@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Установливает таймаут операций в единицах 1/10 секунды.
 $SYNTAX$
-	nOldTimeout := COM_TIMEOUT(<nComPort>[,<nTimeout>])
+	COM_TIMEOUT(<nComPort>[,<nTimeout>]) --> nOldTimeout
 $ARGUMENTS$
 	<nComPort> - Designates the number of the port (1 to N).
 	<nTimeout> - Designates operation timeout in tenth (1/10) seconds.

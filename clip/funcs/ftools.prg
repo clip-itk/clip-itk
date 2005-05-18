@@ -27,9 +27,13 @@ function isDrive(c)
 	endif
 return .f.
 ************************************************************
-function makeDirectory(path)
+function makeDirectory(path,mode)
 	local curdir:=curDir()
 	local r3, p:=path, i, s
+
+	if empty(mode)
+		mode := "777"
+	endif
 	if dirChange(path) >= 0
 		dirChange(PATH_DELIM+curDir)
 		return .t.
@@ -50,6 +54,7 @@ function makeDirectory(path)
 			dirChange(PATH_DELIM+curDir)
 			return .f.
 		endif
+		chmod(s,mode)
 		r3:=dirChange(s)
 	enddo
 	dirChange(PATH_DELIM+curDir)
@@ -196,6 +201,8 @@ function tempfile(cDir,cExt,nAttr)
 		if i>0
 			s2 := substr(s2,i)
 		endif
+	else
+		s2 := ret
 	endif
 return  s2
 **********************************************************

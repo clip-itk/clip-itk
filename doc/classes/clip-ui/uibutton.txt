@@ -44,11 +44,13 @@ $SUMMARY$
 $LANG_RU$
 	Переназначить действие, выполняемое при нажатии кнопки.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
-	<action>	- Codeblock. Code block which is executed when button is pressed.
+	<signal>	- String. Signal name.
+	<action>	- Code block. Action.
 $LANG_RU$
-	<action>	- Блок кода. Блок кода, которые будет запущен при нажатии на кнопку.
+	<signal>	- Строка. Название сигнала.
+	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
 $METHODNAME$

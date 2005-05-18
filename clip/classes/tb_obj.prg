@@ -124,62 +124,70 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 return obj
 **********************************************************
 function _recover_tbrowse(obj)
-	   obj:setKey	:=@tb_setKey()
-	   obj:applyKey	:=@__applykey()
-	   obj:down	:=@down()
-	   obj:up	:=@up()
-	   obj:left	:=@cleft()
-	   obj:right	:=@cright()
-	   obj:goBottom	:=@goBottom()
-	   obj:goTop	:=@goTop()
-	   obj:home	:=@home()
-	   obj:end	:=@end()
-	   obj:pageDown	:=@pageDown()
-	   obj:pageUp	:=@pageUp()
-	   obj:panHome	:=@panHome()
-	   obj:panEnd	:=@panEnd()
-	   obj:panLeft	:=@panLeft()
-	   obj:panRight	:=@panRight()
+	obj:setKey	:=@tb_setKey()
+	obj:applyKey	:=@__applykey()
+	obj:down	:=@down()
+	obj:up	:=@up()
+	obj:left	:=@cleft()
+	obj:right	:=@cright()
+	obj:goBottom	:=@goBottom()
+	obj:goTop	:=@goTop()
+	obj:home	:=@home()
+	obj:end	:=@end()
+	obj:pageDown	:=@pageDown()
+	obj:pageUp	:=@pageUp()
+	obj:panHome	:=@panHome()
+	obj:panEnd	:=@panEnd()
+	obj:panLeft	:=@panLeft()
+	obj:panRight	:=@panRight()
 
-	   obj:addColumn	:=@addColumn()
-	   obj:insColumn	:=@insColumn()
-	   obj:setColumn	:=@setColumn()
-	   obj:delColumn	:=@delColumn()
-	   obj:getColumn	:=@getColumn()
-	   obj:__delAllColumns	:=@__delAllColumns()
+	obj:addColumn	:=@addColumn()
+	obj:insColumn	:=@insColumn()
+	obj:setColumn	:=@setColumn()
+	obj:delColumn	:=@delColumn()
+	obj:getColumn	:=@getColumn()
+	obj:__delAllColumns	:=@__delAllColumns()
 
-	   obj:deHilite 	:=@deHilite()
-	   obj:hilite   	:=@hilite()
+	obj:deHilite 	:=@deHilite()
+	obj:hilite   	:=@hilite()
 
-	   obj:hitTest   	:=@tb_hitTest()
+	obj:hitTest   	:=@tb_hitTest()
 
-	   obj:colorRect	:= @colorRect()
-	   obj:colWidth 	:= @colWidth()
-	   obj:configure	:= @configure()
-	   obj:invalidate	:= @invalidate()
-	   obj:refreshAll	:= @refreshAll()
-	   obj:refreshCurrent	:= @refreshCurrent()
-	   obj:refreshCurent	:= @refreshCurrent()
-	   obj:refreshCur	:= @refreshCurrent()
-	   obj:_outCurrent  	:= @_outCurrent()
-	   obj:stabilize	:= @stabilize()
-	   obj:forceStable	:= @forceStable()
+	obj:colorRect	:= @colorRect()
+	obj:colWidth 	:= @colWidth()
+	obj:configure	:= @configure()
+	obj:invalidate	:= @invalidate()
+	obj:refreshAll	:= @refreshAll()
+	obj:refreshCurrent	:= @refreshCurrent()
+	obj:refreshCurent	:= @refreshCurrent()
+	obj:refreshCur	:= @refreshCurrent()
+	obj:_outCurrent  	:= @_outCurrent()
+	obj:stabilize	:= @stabilize()
+	obj:forceStable	:= @forceStable()
 
-	   obj:__whoVisible	:= @__whoVisible() // вычислить кто видимый
-	   obj:__reMakeColumns	:= @__remakeColumns()
-	   obj:__dummyRow	:= @__dummyRow()
-	   obj:__sayTable	:= @__sayTable() // рисовать обрамление, заголовки, подвалы
-	   obj:__setColor	:= @__setcolor()
-	   obj:__getColor	:= @__getcolor()
-//	   obj:__checkRow	:= @__checkRow()
+	obj:__whoVisible	:= @__whoVisible() // вычислить кто видимый
+	obj:__reMakeColumns	:= @__remakeColumns()
+	obj:__dummyRow	:= @__dummyRow()
+	obj:__sayTable	:= @__sayTable() // рисовать обрамление, заголовки, подвалы
+	obj:__setColor	:= @__setcolor()
+	obj:__getColor	:= @__getcolor()
+//	obj:__checkRow	:= @__checkRow()
+	obj:__lenColSep := @__lenColSep()
+
 
 	tb_set_default_keys(obj)
 
 return obj
 
 **********************************************************
+static func __lenColSep(num)
+	local colSep
+	colSep:=::__columns[num]:colSep
+	colsep:=iif(colSep==NIL,::colSep,colSep)
+return	len(colSep)
+**********************************************************
 static func __whoVisible(num)
-	   local i,cnum,leftcol,lensep,scol,oldcol,col,mincol,maxcol
+	   local i,cnum,leftcol,scol,oldcol,col,mincol,maxcol
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"whoVisible",num)
 #endif
@@ -187,7 +195,6 @@ static func __whoVisible(num)
 		return
 	   endif
 	   cnum=iif(num==NIL,0,num)
-	   lenSep:=len(::colsep)
 
 	   ::freeze:=max(::freeze,0)
 	   ::freeze:=min(::freeze,::colCount)
@@ -208,10 +215,10 @@ static func __whoVisible(num)
 	   scol:=::__rect[2]
 	   leftcol:=scol
 	   for i=1 to ::freeze
-		leftcol+=::__columnsLen[i]+lensep
+		leftcol+=::__columnsLen[i]+::__lenColSep(i)
 	   next
 	   while i<=::colCount .and. leftcol>::nRight-3 .and. ::freeze>0
-		leftcol-=::__columnsLen[i]+lensep
+		leftcol-=::__columnsLen[i]+::__lenColSep(i)
 		::freeze--
 	   enddo
 	   leftcol:=max(leftcol,::__rect[2])
@@ -220,16 +227,16 @@ static func __whoVisible(num)
 	   for i=1 to ::freeze
 		aadd(::__colVisible,i)
 		aadd(::__whereVisible,scol)
-		scol+=::__columnsLen[i]+lensep
+		scol+=::__columnsLen[i]+::__lenColSep(i)
 	   next
 	   *
 	   col+=cnum
 	   col=min(max(min(col,::colCount),::freeze+1),::colCount)
 	   if cnum>=0 .and. num != NIL
-			scol:=::__rect[4]-(::__columnsLen[col]+lenSep)
+			scol:=::__rect[4]-(::__columnsLen[col]+::__lenColSep(col))
 			while scol>leftcol .and. col > ::freeze+1
 				col--
-				scol-=::__columnsLen[col]+lenSep
+				scol-=::__columnsLen[col]+::__lenColSep(col)
 			enddo
 			if scol<leftcol .and. (col<=oldcol .or. cnum >= ::colCount) .and. cnum>0
 				col++
@@ -238,7 +245,7 @@ static func __whoVisible(num)
 	   mincol:=col
 	   scol:=leftcol
 	   while scol<::__rect[4] .and. col<=::colCount
-		scol+=::__columnsLen[col]+lenSep
+		scol+=::__columnsLen[col]+::__lenColSep(col)
 		col++
 	   enddo
 	   scol--
@@ -246,17 +253,17 @@ static func __whoVisible(num)
 	   col=min(col,::colCount)
 	   col=max(1,col)
 	   maxcol:=col
-	   if (col>1 .and. !::chop .and. ::colCount>1 .and. scol-lensep>::__rect[4] .and. mincol!=maxcol) .or. cnum>::colCount
+	   if (col>1 .and. !::chop .and. ::colCount>1 .and. scol-::__lenColSep(col)>::__rect[4] .and. mincol!=maxcol) .or. cnum>::colCount
 			if cnum < ::colCount
 				col--
 				maxcol:=col
 			endif
-			scol:=::__rect[4]-(::__columnsLen[col]+lenSep)
+			scol:=::__rect[4]-(::__columnsLen[col]+::__lenColSep(col))
 			while scol>leftcol .and. col>1
 				col--
-				scol-=::__columnsLen[col]+lenSep
+				scol-=::__columnsLen[col]+::__lenColSep(col)
 			enddo
-			if scol+lenSep<leftcol
+			if scol+::__lenColSep(col)<leftcol
 				col++
 			endif
 			col:=max(1,col)
@@ -273,7 +280,7 @@ static func __whoVisible(num)
 	   for col=mincol to maxcol
 		aadd(::__colVisible,col)
 		aadd(::__whereVisible,scol)
-		scol+=::__columnsLen[col]+lensep
+		scol+=::__columnsLen[col]+::__lenColSep(col)
 	   next
 	   if empty(::__colVisible)
 		aadd(::__colVisible,col)
@@ -296,7 +303,8 @@ return NIL
 *********************************
 static func __sayTable
    local visLen,col,colSep,lensep,lenhsep
-   local strsep1,strsep2,strseph,scol,len,strings
+   //local strsep1,strsep2
+   local strseph,scol,len,strings
    local i,j,k,s,ccc,headsep,strhsep1, x,y
    local heading:=.t., footing:=.t.
 #ifdef DEBUG_CALL
@@ -325,13 +333,14 @@ static func __sayTable
 	  colSep:=::__columns[col]:colSep
 	  colsep:=iif(colSep==NIL,::colSep,colSep)
 	  lenSep:=len(colSep)
-	  strsep1:=iif(lenSep>2,substr(colsep,3,1),"")
-	  lenSep:=iif(lenSep==3,3,1)
-	  strsep1:=space(len(strsep1))
-	  strsep2:=substr(colsep,1,2)
-	  strsep2:=space(len(strsep2))
+	  //strsep1:=iif(lenSep>2,substr(colsep,3,1),"")
+	  //lenSep:=iif(lenSep==3,3,1)
+	  //strsep1:=space(len(strsep1))
+	  //strsep2:=substr(colsep,1,2)
+	  //strsep2:=space(len(strsep2))
 	  scol=::__whereVisible[i]
-	  len=min(len,::nright-scol-lenSep+len(strSep2))
+	  //len=min(len,::nright-scol-lenSep+len(strSep2))
+	  len=min(len,::nright-scol-lenSep)
 	  strings:=::__HeadStrings[col]
 	  ccc:=::__getcolor(1)
 	  if ::__columns[col]:defColor!=NIL
@@ -341,33 +350,37 @@ static func __sayTable
 		ccc:=::__getcolor(::__columns[col]:colorHeading)
 	  endif
 	  for j=1 to len(strings )
+		dispOutAt(::nTop+j-1, scol,space(::nRight-scol),::__getcolor(1))
 		s=padr(strings[j],len)
 		y := ::nTop+j-1
 		x := scol
+		dispOutAt(::nTop+j-1, scol,"")
 		if ::__columns[col]:colSepH != nil
 			strseph:=substr(::__columns[col]:colSepH,j,1)
 			if ::winbuffer == nil
-				dispOutAt(::nTop+j-1, scol-1,strseph,::__getcolor(1))
+				dispOutAt(::nTop+j-1, scol,strseph,::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,::nTop+j-1, scol-1,strseph,::__getcolor(1))
+				winbuf_out_at(::winbuffer,::nTop+j-1, scol,strseph,::__getcolor(1))
 			endif
-			x := scol-1 + len(strseph)
+			x := scol + len(strseph)
 		else
 			if ::winbuffer == nil
-				dispOutAt(::nTop+j-1, scol,strsep1,::__getcolor(1))
+				//dispOutAt(::nTop+j-1, scol,colsep,::__getcolor(1))
 			else
-				winbuf_out_at(::winbuffer,::nTop+j-1, scol,strsep1,::__getcolor(1))
+				//winbuf_out_at(::winbuffer,::nTop+j-1, scol,strsep1,::__getcolor(1))
 			endif
-			x := scol + len(strsep1)
+			//x := scol + len(strsep1)
+			x := scol + len(colsep)
 		endif
 		if ::winbuffer == nil
 			dispOut(s,ccc)
-			dispOut(iif(i<visLen,strSep2,""),::__getcolor(1))
+			//dispOut(iif(i<visLen,colSep,""),::__getcolor(1))
+			//dispOut(iif(i<visLen,strSep2,""),::__getcolor(1))
 		else
 			winbuf_out_at(::winbuffer,y,x,s,ccc)
 			x += len(s)
-			winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,""),::__getcolor(1))
-			x += len(iif(i<visLen,strSep2,""))
+			//winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,""),::__getcolor(1))
+			//x += len(iif(i<visLen,strSep2,""))
 		endif
 		if i==visLen
 			if ::winbuffer == nil
@@ -391,11 +404,18 @@ static func __sayTable
 				winbuf_out_at(::winbuffer,::nTop+j, scol-1, strseph,::__getcolor(1))
 			endif
 		endif
-		s := replicate(strHsep1,len)+iif(i<visLen,headsep,"")
-		if ::winbuffer == nil
-			dispOutAt(::nTop+j, scol,s, ::__getcolor(1))
+		//s := replicate(strHsep1,len+lenSep-lenHsep)+iif(i<visLen,headsep,"")
+		if i==1
+			s := replicate(strHsep1,len)
+			x := scol
 		else
-			winbuf_out_at(::winbuffer,::nTop+j, scol, s, ::__getcolor(1))
+			s := headsep+replicate(strHsep1,len+lenSep-lenHsep)
+			x := scol-lenSep
+		endif
+		if ::winbuffer == nil
+			dispOutAt(::nTop+j, x,s, ::__getcolor(1))
+		else
+			winbuf_out_at(::winbuffer,::nTop+j, x, s, ::__getcolor(1))
 		endif
 		y := ::nTop+j; x := scol + len(s)
 		if i==vislen
@@ -417,22 +437,24 @@ static func __sayTable
 		ccc:=::__getcolor(::__columns[col]:colorFooting)
 	endif
 	for j=1 to len(strings)
-		s=padr(strings[j],len)
+		s=padr(strings[j],len+lenSep)
+		//outlog(__FILE__,__LINE__,strings[j],s,len,ccc)
 		if ::winbuffer == nil
-			dispOutAt(::nBottom-j+1, scol, strsep1, ::__getcolor(1))
-			dispOut(s, ccc)
-			dispOut(iif(i<visLen,strSep2,"") , ::__getcolor(1))
+			//dispOutAt(::nBottom-j+1, scol, strsep1, ::__getcolor(1))
+			dispOutAt(::nBottom-j+1, scol, s, ccc)
+			//dispOut(s, ccc)
+			//dispOut(iif(i<visLen,strSep2,"") , ::__getcolor(1))
 			if i==visLen
 				dispout(space(::nRight-col()+1),::__getcolor(1))
 			endif
 		else
-			winbuf_out_at(::winbuffer,::nBottom-j+1, scol, strsep1, ::__getcolor(1))
+			//winbuf_out_at(::winbuffer,::nBottom-j+1, scol, strsep1, ::__getcolor(1))
 			y := ::nBottom-j+1
-			x := scol + len(strsep1)
+			//x := scol + len(strsep1)
 			winbuf_out_at(::winbuffer,y,x,s,ccc)
 			x += len(s)
-			winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,"") , ::__getcolor(1))
-			x += len(iif(i<visLen,strSep2,""))
+			//winbuf_out_at(::winbuffer,y,x,iif(i<visLen,strSep2,"") , ::__getcolor(1))
+			//x += len(iif(i<visLen,strSep2,""))
 			if i==visLen
 				winbuf_out_at(::winbuffer,y,x,space(::nRight-col()+1),::__getcolor(1))
 			endif
@@ -447,14 +469,21 @@ static func __sayTable
 	j:=len(strings)
 	//if ( j>0 .and. lenHSep>0 ) .or. !empty(::footSep)
 	if footing .and. lenHSep>0  .and. !empty(headSep)
+		//s := replicate(strHsep1,len)+iif(i<visLen,headsep,"")
+		if i==1
+			s := replicate(strHsep1,len)
+			x := scol
+		else
+			s := headsep+replicate(strHsep1,len+lenSep-lenHsep)
+			x := scol-lenSep
+		endif
 		if ::winbuffer == nil
-			dispOutAt(::nBottom-j, scol, replicate(strHsep1,len)+iif(i<visLen,headsep,"") , ::__getcolor(1))
+			dispOutAt(::nBottom-j, x, s , ::__getcolor(1))
 			if i==vislen
 				dispOut(replicate(strHsep1,::nright-col()+1),::__getcolor(1))
 			endif
 		else
-			s := replicate(strHsep1,len)+iif(i<visLen,headsep,"")
-			winbuf_out_at(::winbuffer,::nBottom-j, scol, s, ::__getcolor(1))
+			winbuf_out_at(::winbuffer,::nBottom-j, x, s, ::__getcolor(1))
 			y := ::nBottom-j+1
 			x := scol + len(s)
 			if i==vislen
@@ -937,6 +966,7 @@ static func panEnd(self)
 
 return self
 
+/*
 *********************************
 static func panLeft(self)
 	local i,j
@@ -955,7 +985,34 @@ static func panLeft(self)
 		self:refreshAll()
 	endif
 return self
+*/
+*********************************
+static func panLeft(self)
+	local i,j,k
+	if self:freeze >=len(self:__colVisible)
+		return self
+	endif
+	if self:__colVisible[self:freeze+1] == self:freeze+1
+		return self
+	endif
 
+	i=self:colPos
+	k=self:__colPos
+	self:__colPos=self:freeze+1
+	self:colPos=self:__colVisible[self:__colPos]
+	self:__whoVisible(-1)
+	self:__colPos=k
+	for j=1 to len(self:__colVisible)
+		if i = self:__colVisible[j]
+			self:__colPos=j
+			exit
+		endif
+	next
+	self:colPos=self:__colVisible[self:__colPos]
+	self:refreshAll()
+return self
+
+/*
 *********************************
 static func panRight(self)
 	local i,j
@@ -973,6 +1030,30 @@ static func panRight(self)
 		self:colPos:=self:__colVisible[self:__colPos]
 		self:refreshAll()
 	endif
+return self
+*/
+*********************************
+static func panRight(self)
+	local i,j,k
+	if self:__rightAll
+		return self
+	endif
+	i=self:colpos
+	k=self:__colPos
+	self:__colPos=len(self:__colVisible)
+	self:colPos=self:__colVisible[self:__colPos]
+	self:__whoVisible(1)
+	self:__colPos=k
+	for j=1 to len(self:__colVisible)
+		if i = self:__colVisible[j]
+			self:__colPos=j
+			exit
+		endif
+	next
+
+	self:colPos=self:__colVisible[self:__colPos]
+	self:refreshAll()
+
 return self
 
 *********************************
@@ -1246,8 +1327,7 @@ static func _outCurrent ( row, hilite, fSay )
 		endif
 	  endif
 #endif
-	  if srow==::rowPos .and. i==::__colPos .and. row>0
-	  else
+	  if .t. //!(srow==::rowPos .and. i==::__colPos .and. row>0)
 		if !empty(::__colorCells[srow][col])
 			ccolors:=::__colorCells[srow][col]
 		endif

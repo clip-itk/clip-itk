@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Sum the elements of an array
 $SYNTAX$
-   FT_ASUM( <aArray> [, <nStartIndex> [, <nEndIndex> ] ] ) -> nSum
+   FT_ASUM( <aArray> [, <nStartIndex> [, <nEndIndex> ] ] ) --> nSum
 $ARGUMENTS$
    <aArray> is the array containing the elements to be summed.
 

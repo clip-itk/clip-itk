@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003 by E/AS Software Foundation 		           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 01 Jun 2004						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -38,9 +37,11 @@ function UIButtonBar()
 return obj
 
 /* Connect action to button */
-static function ui_setAction(self, action)
-	driver:setAction( self, "clicked", action)
-	driver:enableWidget( self, .T. )
+static function ui_setAction(self, signal, action)
+	if signal=='clicked' .and. valtype(action)=='B'
+		driver:setAction( self, "clicked", action)
+		driver:enableWidget( self, .T. )
+	endif
 return NIL
 
 /* Set button padding */

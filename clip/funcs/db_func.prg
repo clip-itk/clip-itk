@@ -1911,7 +1911,7 @@ function __DBUPDATE( cAlias, bKey, lRandom, bWith )
 					eval(bWith)
 				endif
 			else
-				do while ( eval(bKey) == xKey .AND. ! EOF() )
+				do while ( eval(bKey) < xKey .AND. ! EOF() )
 					skip
 				enddo
 				if ( eval(bKey) == xKey .AND. ! EOF() )

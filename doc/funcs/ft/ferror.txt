@@ -6,7 +6,7 @@ $ONELINER$
    Return the error code for a text file operation
 $SYNTAX$
 
-   FT_FERROR() -> nErrorNo
+   FT_FERROR() --> nErrorNo
 
 $ARGUMENTS$
 

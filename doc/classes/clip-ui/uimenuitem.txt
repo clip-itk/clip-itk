@@ -7,7 +7,7 @@ $LANG_RU$
 $ABOUT$
 	Class of menu item. Object of this class was created by method add() of class <link linkend="classuimenu">UIMenu</link>.
 $LANG_RU$
-	Класс пункта меню. Объект создаётся при в методе add() класса <link linkend="classuimenu">UIMenu</link>.
+	Класс пункта меню. Объект создаётся в методе add() класса <link linkend="classuimenu">UIMenu</link>.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIMenuItem".
 	<label>		- Label.
@@ -36,11 +36,13 @@ $SUMMARY$
 $LANG_RU$
 	Установить действие, выполняемое при выборе пункта меню.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
-	<action>	- Code block. Code block executed on menu item activation.
+	<signal>	- String. Signal name.
+	<action>	- Code block. Action.
 $LANG_RU$
-	<action>	- Блок кода. Блок кода, выполняемый при выборе пункта меню.
+	<signal>	- Строка. Название сигнала.
+	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
 $PLATFORMS$

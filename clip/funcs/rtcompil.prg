@@ -54,7 +54,7 @@ function loadPlugIns(sFile)
 		// mini make
 		f1:=directory(sFile+".prg")
 		f2:=directory(sFile+".po")
-		if len(f1) > 1 .and. len(f2) >0
+		if len(f1) > 0 .and. len(f2) >0
 			if f1[1][3] > f2[1][3] .or. (f1[1][3] == f2[1][3] .and. f1[1][4] > f2[1][4] )
 				compile:=.t.
 			endif
@@ -70,6 +70,7 @@ function loadPlugIns(sFile)
 		endif
 		if !empty(out)
 			memowrit(sFile+".out",out)
+			chmod(sFile+".out","666")
 		endif
 		if !empty(err)
 			ret:=err
@@ -78,6 +79,7 @@ function loadPlugIns(sFile)
 			ret:= [Error compiling plugin file:]+ret
 			return ret
 		endif
+		chmod(sFile+".po","666")
 	endif
 
 	eBlock := errorBlock({ |err| break(err) })

@@ -4,7 +4,9 @@ if [ -z "$PGINCDIR" ]; then
 	for x in /usr/include/pgsql \
 		/usr/include/pgsql/server \
 		/usr/include/postgresql \
-		/opt/postgresql/include
+		/opt/postgresql/include \
+		/usr/local/pgsql/include
+
 	do
 		if [ -f "$x/libpq-fe.h" ]; then
 			PGINCDIR=$x
@@ -25,5 +27,5 @@ if [ -z "$PGLIBDIR" ]; then
 fi
 
 sed -e "s,@PGINCDIR@,${PGINCDIR:-/usr/include},g" \
-    -e "s,@PGLIBDIR@,${PGLIBDIR:-/usr/lib},g" \
+	-e "s,@PGLIBDIR@,${PGLIBDIR:-/usr/lib},g" \
 	Makefile.in > Makefile

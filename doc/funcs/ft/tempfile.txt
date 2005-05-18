@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Create a file with a unique name
 $SYNTAX$
-   FT_TEMPFIL( [ <cPath> ] [, <lHide> ] ) -> cFileSpec
+   FT_TEMPFIL( [ <cPath> ] [, <lHide> ] ) --> cFileSpec
 $ARGUMENTS$
    <cPath> is the directory where you want to create the temporary
    file.  If you omit this argument, the root of the current drive

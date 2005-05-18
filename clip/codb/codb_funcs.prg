@@ -150,7 +150,7 @@ return oData
 
 ************************************
 function codb_checkBody(oData,aBodyDesc)
-	local i,name,len
+	local i:=0,name,len
 	if empty(aBodyDesc)
 		return oData
 	endif
@@ -158,14 +158,14 @@ function codb_checkBody(oData,aBodyDesc)
 		oData := map()
 	endif
 	len:=len(aBodyDesc)
-	for i=1 to len
+	while (i++) < len
 		name := hashStr(upper(aBodyDesc[i][1]))
 		if name $ oData
 			attrCheck ( @oData[ name ], aBodyDesc[i] )
 		else
 			oData[ name ] := attrBlank ( aBodyDesc[i] )
 		endif
-	next
+	end
 return oData
 
 ************************************
@@ -319,6 +319,88 @@ return CODB_VERSION
 function codb_info(dKey)
 	local ret, data_key
 	data_key := alltrim(upper(dKey))
+	do switch (data_key)
+		case "CODB_VERSION"
+			ret:=CODB_VERSION
+		case "CODB_ID_LEN"
+			ret:=CODB_ID_LEN
+		case "DICT_ID_LEN"
+			ret:=DICT_ID_LEN
+		case "DEPOSIT_ID_LEN"
+			ret:=DEPOSIT_ID_LEN
+		case "OBJECT_ID_LEN"
+			ret:=CODB_ID_LEN - DICT_ID_LEN - DEPOSIT_ID_LEN
+		case "CODB_CLASS_BODY"
+			ret:=CODB_CLASS_BODY
+		case  "CODB_ATTR_BODY"
+			ret:=CODB_ATTR_BODY
+		case  "CODB_COUNTER_BODY"
+			ret:=CODB_COUNTER_BODY
+		case  "CODB_SEMA_BODY"
+			ret:=CODB_SEMA_BODY
+		case  "CODB_IDX_PER_CLASS"
+			ret:=CODB_IDX_PER_CLASS
+		case  "CODB_IDX_DATALENGTH"
+			ret:=CODB_IDX_DATALENGTH
+		case  "CODB_DICT_CACHE"
+			ret:=CODB_DICT_CACHE
+		case  "CODB_DEP_CACHE"
+			ret:=CODB_DEP_CACHE
+		case  "CODB_MEMOSIZE_DEFAULT"
+			ret:=CODB_MEMOSIZE_DEFAULT
+		case  "CODB_ATTR_TYPES"
+			ret:=CODB_ATTR_TYPES
+		case  "CODB_REPORT_TYPES"
+			ret:=CODB_REPORT_TYPES
+		case  "CODB_PLUGINS_TYPES"
+			ret:=CODB_PLUGINS_TYPES
+		case  "CODB_ATTR_LENTYPES"
+			ret:=CODB_ATTR_LENTYPES
+		case  "CODB_INDEX_TYPES"
+			ret:=CODB_INDEX_TYPES
+		case  "CODB_COUNTER_TYPES"
+			ret:=CODB_COUNTER_TYPES
+		case  "CODB_MAX_LEN_STRING"
+			ret:=CODB_MAX_LEN_STRING
+		case  "CODB_MIN_DECIMALS"
+			ret:=CODB_MIN_DECIMALS
+		case  "CODB_MAX_DECIMALS"
+			ret:=CODB_MAX_DECIMALS
+		case  "CODB_GROUP_BODY"
+			ret:=CODB_GROUP_BODY
+		case  "CODB_USER_BODY"
+			ret:=CODB_USER_BODY
+		case  "CODB_EXTENT_BODY"
+			ret:=CODB_EXTENT_BODY
+		case  "CODB_DEPOSIT_BODY"
+			ret:=CODB_DEPOSIT_BODY
+		case  "CODB_TCOLUMN_BODY"
+			ret:=CODB_TCOLUMN_BODY
+		case  "CODB_TVIEW_BODY"
+			ret:=CODB_TVIEW_BODY
+		case  "CODB_REPORT_BODY"
+			ret:=CODB_REPORT_BODY
+		case  "CODB_PLUGINS_BODY"
+			ret:=CODB_PLUGINS_BODY
+		case  "CODB_INDEX_BODY"
+			ret:=CODB_INDEX_BODY
+		case  "CODB_DICT_TYPES"
+			ret:=CODB_DICT_TYPES
+		case  "CODB_DICT_DTYPES"
+			ret:=CODB_DICT_DTYPES
+		case  "CODB_DICTLIST_STRUCTURE"
+			ret:=CODB_DICTLIST_STRUCTURE
+		case  "CODB_DICTINDEX_STRUCTURE"
+			ret:=CODB_DICTINDEX_STRUCTURE
+		case  "CODB_DICT_STRUCTURE"
+			ret:=CODB_DICT_STRUCTURE
+		case  "CODB_IDXTABLE_STRUCTURE"
+			ret:=CODB_IDXTABLE_STRUCTURE
+		case  "CODB_EXTENT_STRUCTURE"
+			ret:=CODB_EXTENT_STRUCTURE
+	end
+	/*
+	data_key := alltrim(upper(dKey))
 	do case
 		case data_key == "CODB_VERSION"
 			ret:=CODB_VERSION
@@ -330,6 +412,14 @@ function codb_info(dKey)
 			ret:=DEPOSIT_ID_LEN
 		case data_key == "OBJECT_ID_LEN"
 			ret:=CODB_ID_LEN - DICT_ID_LEN - DEPOSIT_ID_LEN
+		case data_key == "CODB_CLASS_BODY"
+			ret:=CODB_CLASS_BODY
+		case data_key == "CODB_ATTR_BODY"
+			ret:=CODB_ATTR_BODY
+		case data_key == "CODB_COUNTER_BODY"
+			ret:=CODB_COUNTER_BODY
+		case data_key == "CODB_SEMA_BODY"
+			ret:=CODB_SEMA_BODY
 		case data_key == "CODB_IDX_PER_CLASS"
 			ret:=CODB_IDX_PER_CLASS
 		case data_key == "CODB_IDX_DATALENGTH"
@@ -364,12 +454,6 @@ function codb_info(dKey)
 			ret:=CODB_USER_BODY
 		case data_key == "CODB_EXTENT_BODY"
 			ret:=CODB_EXTENT_BODY
-		case data_key == "CODB_ATTR_BODY"
-			ret:=CODB_ATTR_BODY
-		case data_key == "CODB_COUNTER_BODY"
-			ret:=CODB_COUNTER_BODY
-		case data_key == "CODB_CLASS_BODY"
-			ret:=CODB_CLASS_BODY
 		case data_key == "CODB_DEPOSIT_BODY"
 			ret:=CODB_DEPOSIT_BODY
 		case data_key == "CODB_TCOLUMN_BODY"
@@ -396,7 +480,8 @@ function codb_info(dKey)
 			ret:=CODB_IDXTABLE_STRUCTURE
 		case data_key == "CODB_EXTENT_STRUCTURE"
 			ret:=CODB_EXTENT_STRUCTURE
-	endcase
+	end
+	*/
 return ret
 
 *******************************************

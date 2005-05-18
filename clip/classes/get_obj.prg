@@ -1684,7 +1684,7 @@ static function	__set_default_keys()
 	m[K_HOME]  	:= { |oGet,nKey| oGet:home(),0 }
 	m[K_LEFT]  	:= { |oGet,nKey| oGet:left(),0 }
 	m[K_RIGHT]  	:= { |oGet,nKey| oGet:right(),0 }
-	m[K_CTRL_END]  	:= { |oGet,nKey| oGet:End(),0 }
+	//m[K_CTRL_END]  	:= { |oGet,nKey| oGet:End(),0 }
 	m[K_CTRL_HOME]  := { |oGet,nKey| oGet:Home(),0 }
 	m[K_CTRL_LEFT]  := { |oGet,nKey| oGet:wordLeft(),0 }
 	m[K_CTRL_RIGHT] := { |oGet,nKey| oGet:wordRight(),0 }

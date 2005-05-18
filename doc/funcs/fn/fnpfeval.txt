@@ -6,7 +6,7 @@ $ONELINER$
    Set preferred server and eval block
 $SYNTAX$
 
-   fn_pfEval( xID, bBlock ) -> xRet
+   fn_pfEval( xID, bBlock ) --> xRet
 
 $ARGUMENTS$
 
@@ -15,7 +15,7 @@ $ARGUMENTS$
    If it's numeric, it is the connection ID of the server you want
    to set to before evaluating <bBlock>.  This is is position of
    the server in the server name table. You can use FN_FSNAME()
-   to find a connection ID, given a server name.  If the 
+   to find a connection ID, given a server name.  If the
    connection ID is invalid, the current connection ID is used.
 
    If it's a character, it is the _name_ of the server you want
@@ -26,14 +26,14 @@ $ARGUMENTS$
 
 $RETURNS$
 
-   <xVal>, whatever is returned from the block when it is 
+   <xVal>, whatever is returned from the block when it is
    evaluated.
 
 $DESCRIPTION$
-   
+
    Some APIs require you to set to a preferred connection ID first
    before they can be executed.  This call just simplifies the
-   process of getting the old ID, setting the new one, doing 
+   process of getting the old ID, setting the new one, doing
    something, then resetting the old ID.
 
    This function records the state of fn_error() after evaluating
@@ -41,13 +41,13 @@ $DESCRIPTION$
    Therefore, you can't really know whether or not the calls to
    change the preferred server back and forth are working or not,
    as there is no way to access their return values.
-   
+
 $EXAMPLES$
 
 $INCLUDE$
 
 $SEEALSO$
-  
+
 $Author: clip $
    Glenn Scott
 $END$

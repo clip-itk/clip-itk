@@ -102,7 +102,8 @@ return ret:return
 static function cdb_cbr_append(self,data)
 	local ret
 	self:error := ""
-	ret := codb_cobraQuery("CODBLIST_APPEND",data)
+	/* temporary disable creating CODB over cobra */
+	ret := codb_cobraQuery("CODBLIST_APPEND_DISABLE",data)
 	if !empty(ret:errno)
 		self:error := codb_cobraError(ret)
 		return .f.
@@ -130,7 +131,7 @@ static function cdb_cbr_connect(self,ident,user,passwd)
 	ret:dbPass	:= iif(passwd==NIL, "", passwd)
 	ret:error	:= ""
 	codb_checkBodyCODB(ret)
-	vfunc:=codb_dictCobra_Methods("",ret:id,user,passwd)
+	vfunc:=codb_dictCobra_Methods(ret,user,passwd)
 	/* add virtual methods */
 	m:=mapkeys(vfunc)
 	for i=1 to len(m)
@@ -272,18 +273,18 @@ static function cdb_append(data)
 		if empty(data:type)
 			data:type:=CODB_DICTTYPE_DEFAULT
 		endif
-		data:type:=alltrim(data:type)
-		if alltrim(data:type)=="DBF"
-			data:path:=alltrim(data:path)
-			if empty(data:path)
-				if empty(getenv("CODBROOT"))
-					data:path:=PATH_DELIM+"home"+PATH_DELIM+;
-					getenv("USER")+PATH_DELIM+"codb"+PATH_DELIM+alltrim(data:id)
-				else
-					data:path:=getenv("CODBROOT")+PATH_DELIM+alltrim(data:id)
-					data:path:=strtran(data:path,"//","/")
-				endif
+		if empty(data:path)
+			if empty(getenv("CODBROOT"))
+				data:path:=PATH_DELIM+"home"+PATH_DELIM+;
+				getenv("USER")+PATH_DELIM+"codb"+PATH_DELIM+alltrim(data:id)
+			else
+				data:path:=getenv("CODBROOT")+PATH_DELIM+alltrim(data:id)
+				data:path:=strtran(data:path,"//","/")
 			endif
+		endif
+		data:path:=alltrim(data:path)
+		data:type:=alltrim(data:type)
+		if data:type == "DBF"
 		else // SQL default parameters
 		endif
 	endif
@@ -310,6 +311,9 @@ static function cdb_append(data)
 			ret := .f.
 			dict:close()
 		endif
+	endif
+	if empty(::error)
+		set("CODB_SERVER_REINIT","Y")
 	endif
 return ret
 ************************************************************
@@ -341,13 +345,13 @@ static function cdb_update(data)
 		if empty(data:type)
 			data:type:=CODB_DICTTYPE_DEFAULT
 		endif
+		if empty(data:path)
+			data:path:=PATH_DELIM+"home"+PATH_DELIM+;
+			getenv("USER")+PATH_DELIM+"codb"+PATH_DELIM+alltrim(data:id)
+		endif
+		data:path:=alltrim(data:path)
 		data:type:=alltrim(data:type)
-		if alltrim(data:type)=="DBF"
-			data:path:=alltrim(data:path)
-			if empty(data:path)
-				data:path:=PATH_DELIM+"home"+PATH_DELIM+;
-				getenv("USER")+PATH_DELIM+"codb"+alltrim(data:id)
-			endif
+		if data:type == "DBF"
 		else // SQL default parameters
 		endif
 	endif
@@ -400,19 +404,18 @@ static function cdb_connect(ident,user,passwd)
 	ret := tmp:body
 	ret:server:=NIL
 	codb_checkBodyCODB(ret)
+	ret:path:=alltrim(ret:path)
 	ret:type:=upper(alltrim(ret:type))
 	ret:dtype:=upper(alltrim(ret:dtype))
 	/* make virtual methods */
 	do case
 		case codb_cobraAvailable()
-			vfunc:=codb_dictCobra_Methods("",ret:id,user,passwd)
+			ret:path:=""
+			vfunc:=codb_dictCobra_Methods(ret,user,passwd)
 		case ret:type=="DBF"
-			vfunc:=codb_dictdbf_Methods(ret:path,ret:id,user,passwd)
+			vfunc:=codb_dictdbf_Methods(ret,user,passwd)
 		otherwise
-			/*
-			vfunc:=codb_dictsql_Methods()
-			ret:server:=connectNew(ret:type,ret:host,ret:port,ret:user,,ret:dbname)
-			*/
+			vfunc:=codb_dictsql_Methods(ret,user,passwd)
 	endcase
 
 	/* add virtual methods */

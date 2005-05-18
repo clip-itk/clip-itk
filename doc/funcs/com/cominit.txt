@@ -7,8 +7,8 @@ $SUMMARY$
 $LANG_RU$
 	Инициализирует параметры порта.
 $SYNTAX$
-	lInitialized := COM_INIT(<nComPort>,[<nBaudRate>],[<cParity>],
-		 [<nDataLength>],[<nStopBits>])
+	COM_INIT(<nComPort>,[<nBaudRate>],[<cParity>],
+		 [<nDataLength>],[<nStopBits>]) --> lInitialized
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N) that is initialized.
 	<nBaudRate> - Designates the selected baud rate for the port. Settings of 300, 600, 1200, 2400, 4800, 9600 and 19200 baud are possible. The default value is 300 baud.

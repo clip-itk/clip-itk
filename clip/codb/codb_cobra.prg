@@ -129,7 +129,7 @@ return ""
 ************************************************************
 function codb_cobraError(oAnswer)
 	local ret
-	outlog(__FILE__,__LINE__,oAnswer)
+	//outlog(__FILE__,__LINE__,oAnswer)
 	ret := oAnswer:error
 return  ret
 
@@ -146,7 +146,6 @@ function codb_CobraQuery(cCmd)
 		aadd(aParams,param(i))
 	next
 	oQuery:=oServer:QueryNew()
-//	outlog(__FILE__,__LINE__,cCmd,aParams)
 	if !oServer:queryASend(oQuery:id,"CODBUNIFY",aParams)
 		ret := oServer:error
 		oServer:queryDelete(oQuery:id)
@@ -162,6 +161,5 @@ function codb_CobraQuery(cCmd)
 		return ret
 	endif
 	ret := oQuery:answer
-  //	outlog(__FILE__,__LINE__,ret)
 	oServer:queryDelete(oQuery:id)
 return ret

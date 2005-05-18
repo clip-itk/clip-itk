@@ -6,7 +6,7 @@ $ONELINER$
    Convert from any data type to any other data type
 $SYNTAX$
    FT_XTOY( <xValueToConvert>, <cTypeToConvertTo> ;
-	    [, <lWantYesNo> ] ) -> xResult
+	    [, <lWantYesNo> ] ) --> xResult
 $ARGUMENTS$
    <xValueToConvert> is the value to convert.
 

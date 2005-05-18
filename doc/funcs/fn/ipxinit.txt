@@ -6,7 +6,7 @@ $ONELINER$
     This function gets the entry address for the IPX interface.
 $SYNTAX$
 
-    Fn_IPXInit() -> lInit
+    Fn_IPXInit() --> lInit
 
 $ARGUMENTS$
 
@@ -24,9 +24,9 @@ $DESCRIPTION$
     called before any of the IPX functions in this library can be
     performed.
 
-    [This function is meant to be part of a larger suite but 
+    [This function is meant to be part of a larger suite but
     the code wasn't ready by the release date.  In its present
-    form, it can be used to determine if IPX is installed, 
+    form, it can be used to determine if IPX is installed,
     which might be useful.]
 
 $EXAMPLES$
@@ -36,7 +36,7 @@ $EXAMPLES$
     EndIf
 
 $SEEALSO$
-    
+
 $INCLUDE$
 
 $Author: clip $

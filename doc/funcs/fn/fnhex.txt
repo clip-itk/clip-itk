@@ -6,7 +6,7 @@ $ONELINER$
     Convert a binary string to hexidecimal
 $SYNTAX$
 
-    fn_Bin2I( <cBinStr> ) -> cHexStr
+    fn_Bin2I( <cBinStr> ) --> cHexStr
 
 $ARGUMENTS$
 
@@ -45,7 +45,7 @@ $ONELINER$
     Convert a hexidecimal string to to binary
 $SYNTAX$
 
-    fn_Hex2Bin( <cHexStr> ) -> cBinStr
+    fn_Hex2Bin( <cHexStr> ) --> cBinStr
 
 $ARGUMENTS$
 

@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2004 by E/AS Software Foundation 		           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 17 Jul 2004						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */

@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 01 Feb 2005						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -12,6 +11,8 @@
 /*-------------------------------------------------------------------------*/
 
 static driver := getDriver()
+
+/* TODO: control wordwrap for UIEditText */
 
 /* EditText class */
 function UIEdit(value)
@@ -39,6 +40,7 @@ function _recover_UIEDIT( obj )
 	obj:getValue	:= @ui_getValue()
 	obj:readOnly	:= @ui_setReadOnly()
 	obj:setAction 	:= @ui_setEditAction()
+	obj:appendText	:= @ui_appendText()
 return obj
 
 /* Get widget geometry: position and size */
@@ -63,6 +65,9 @@ return driver:getValue( self )
 
 /* Set state to read-only */
 static function ui_setReadOnly(self, flag)
+	if empty(flag)
+		flag := .T.
+	endif
 	driver:editSetReadOnly(self,flag)
 return
 
@@ -73,7 +78,52 @@ static function ui_editSetPassword(self, flag)
 return
 
 /* Set action for edit entry */
-static function ui_setEditAction(self, action)
-	driver:setAction( self, "changed", action)
+static function ui_setEditAction(self, signal, action)
+	if signal=='changed' .and. valtype(action)=='B'
+		driver:setAction( self, "changed", action)
+	endif
 return .T.
 
+/* Append text to the end of current text */
+static function ui_appendText(self, text)
+	driver:setValue( self, val2str(text), .T.)
+return .T.
+
+/* EditDate class */
+function UIEditDate(value, caption)
+        local button, obj
+
+        obj := UIEdit(value)
+        caption := iif(empty(caption),"Select Date",caption)
+        button := UIButton("...", {|| driver:showCalendar(caption, obj:getValue(), obj) })
+        obj:stick := map()
+        obj:stick:right := button
+
+return obj
+
+/* EditFileName class */
+function UIEditFileName(value, caption)
+        local button, obj
+
+        obj := UIEdit(value)
+        caption := iif(empty(caption),"Select File",caption)
+        button := UIButton("...", {|| driver:selectFileName(caption, obj:getValue(), obj) })
+        obj:stick := map()
+        obj:stick:right := button
+
+return obj
+
+/* EditColor class */
+function UIEditColor(value, caption)
+        local button, obj
+
+        obj := UIEdit(value)
+        caption := iif(empty(caption),"Select Color",caption)
+        button := UIButton("...", {|| driver:selectColor(caption, obj:getValue(), obj) })
+        obj:stick := map()
+        obj:stick:right := button
+
+return obj
+
+/* EditNumber class */
+/*????*/

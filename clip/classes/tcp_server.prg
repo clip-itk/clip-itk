@@ -135,7 +135,7 @@ function tcpServerLoadIniModules(oIni,type)
 	endif
 	tmp := strtran(tmp,"$CLIPROOT",cliproot())
 	dir:=directory(tmp+PATH_DELIM+"*.po")
-	? "Found "+alltrim(str(len(dir)))+" modules for HTTP in directory:"+tmp
+	? "Found "+alltrim(str(len(dir)))+"init modules in directory:"+tmp
 	for i=1 to len(dir)
 		load(tmp+PATH_DELIM+dir[i][1],mFuncs)
 		for j=1 to len(mFuncs)

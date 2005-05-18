@@ -3,7 +3,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	local oDict,an_info,an_balance,osb_class,anb_list:=map()
 	local as,as1,s:="",s0,s1,s2,obj,aObj,tObj,tmp,data:={}
 	local i,j,k,x,y,z,itogCel,aOst:={}
-	local max_date,min_date,variants:={}
+	local max_date,min_date,variants:={},nFilled, call_an := .f.
 	local an_obj,class,cId,tmpDict,tcol,tcol_list,err
 	local classes:=map(), tCols := map()
 
@@ -20,7 +20,19 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	if an_level > len(an_values)
 		an_level := len(an_values)
 	endif
-	if an_level <= 1
+	nFilled := 0
+	for i=1 to len(an_values)
+		if !empty(an_values[i])
+			nFilled ++
+		endif
+	next
+	if nFilled == 0
+		call_an := .t.
+	elseif nFilled ==1 .and. !empty(an_values[1])
+		call_an := .t.
+	endif
+	//outlog(__FILE__,__LINE__,
+	if an_level <= 1 .and. call_an
 		an_balance := oDict:classBodyByName("an_balance")
 		if empty(an_balance)
 			outlog("Error: class AN_BALANCE not found in ACC01")
@@ -33,14 +45,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 			return data
 		endif
 	endif
-	x := 0
-	for i=1 to len(an_values)
-		if !empty(an_values[i])
-			x ++
-		endif
-	next
 
-	if x == 0 //.or. empty(an_values[an_level])//if an_level>1 .and. empty(an_values[1])
+	if nFilled == 0 //.or. empty(an_values[an_level])//if an_level>1 .and. empty(an_values[1])
 		s := 'account=="'+account+'"'
 		//s2:= '.and. beg_date>=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
 		s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
@@ -77,7 +83,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	next
 	*/
 	for i=1 to len(variants)
-		j := calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,variants[i])
+		j := calc_summ(oDep,an_balance,account,iif(call_an,an_level,2),beg_date,end_date,variants[i])
+		//outlog("variant",i,variants[i])
 		//outlog("summ=",j)
 		aadd(aOst,j)
 		tmp :=  variants[i][an_level]
@@ -390,6 +397,7 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 	endif
 	for j=1 to len(tmp)
 		tObj := oDep:getValue(tmp[j])
+		//outlog(__FILE__,__LINE__,tObj:unit)
 		//outlog(__FILE__,__LINE__,an_balance:name,tmp[j],tObj)
 		if empty(tObj)
 			outlog("Error: can`t load object:",tmp[i])

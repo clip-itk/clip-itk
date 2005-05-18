@@ -8,7 +8,7 @@ local aRefs, aTree :={}
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
-local urn, sprname:="", values := "", attr := ""
+local urn, sprname:="", values := "", attr := "", atom:=""
 
 	errorblock({|err|error2html(err)})
 
@@ -36,6 +36,10 @@ local urn, sprname:="", values := "", attr := ""
 	if !empty(values)
 		values := split(values,"[,]")
 	endif
+	if "ATOM" $ _query
+		atom := upper(_query:atom)
+	endif
+	atom := (left(atom,1) == "Y")
 
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang)
@@ -79,7 +83,7 @@ local urn, sprname:="", values := "", attr := ""
 	if lower(sprname) == "accpost"
 		columns := cgi_accpost_columns(oDict)
 	else
-		columns := cgi_make_columns(oDict,sprname)
+		columns := cgi_make_columns(oDict,sprname) //,,atom)
 	endif
 
 	if empty(columns)
@@ -130,15 +134,25 @@ local urn, sprname:="", values := "", attr := ""
 
 	//asort(aRefs,,,{|x,y| x[3] <= y[3] })
 	cgi_checkTreeArefs(arefs,oDep)
+
+	if atom .and. "UNIQUE_KEY" $ classDesc .and. !empty(classDesc:unique_key)
+		j:= classDesc:unique_key
+		for i=1 to len(aRefs)
+			obj := arefs[i][4]
+			obj:id := mapEval(obj,j)
+		next
+	endif
+
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
+
 
 
 	if empty(urn)
 		urn := 'urn:'+sprname
 	endif
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"",,atom)
 	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"",,atom)
 	? '</RDF:RDF>'
 ?
 return

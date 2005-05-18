@@ -1,0 +1,118 @@
+$CLASSNAME$
+	UISlider
+$SUMMARY$
+	Class UISlider.
+$LANG_RU$
+	Класс UISlider.
+$ABOUT$
+	Slider class.
+$LANG_RU$
+	Класс ползунка.
+$SYNTAX$
+	UISlider([<value>],[<lower>],[<upper>],[<step>])	--> UISlider object.
+$LANG_RU$
+	UISlider([<value>],[<lower>],[<upper>],[<step>])	--> Объект UISlider.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UISlider".
+	<lower>		- The minimum value.
+	<upper>		- The maximum value.
+	<step>		- The increment to use to make changes to the value.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UISlider".
+	<lower>		- Минимальное значение.
+	<upper>		- Максимальное значение.
+	<step>		- Приращение значения при изменении позиции ползунка.
+
+$METHODNAME$
+	UISlider()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UISlider([<value>],[<lower>],[<upper>],[<step>])	--> UISlider object.
+$ARGUMENTS$
+	<value>		- Number. Position of the slider.
+	<lower>		- Number. The minimum value.
+	<upper>		- Number. The maximum value.
+	<step>		- Number. The increment to use to make changes to the value.
+$LANG_RU$
+	<value>		- Число. Позиция ползунка.
+	<lower>		- Число. Минимальное значение.
+	<upper>		- Число. Максимальное значение.
+	<step>		- Число. Приращение значения при изменении позиции ползунка.
+$ENDMETHOD$
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Set slider position.
+$LANG_RU$
+	Установить позицию ползунка.
+$SYNTAX$
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- Number. Position of the slider.
+$LANG_RU$
+	<value>		- Число. Позиция ползунка.
+$ENDMETHOD$
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get slider position.
+$LANG_RU$
+	Получить позицию ползунка.
+$SYNTAX$
+	getValue() 	--> <value>
+$RETURNS$
+	Returns slider position.
+$LANG_RU$
+	Возвращает позицию ползунка.
+$ENDMETHOD$
+
+$METHODNAME$
+	setRange()
+$SUMMARY$
+	Set range of slider positions.
+$LANG_RU$
+	Установить диапазон позиций ползунка.
+$SYNTAX$
+	setRange(<range>)
+$ARGUMENTS$
+	<range>		- String. Range in form "min-max", where minimum and maximum values of range is separated by '-'. 
+$LANG_RU$
+	<range>		- Строка. Диапазон позиций ползунка в виде "мин-макс", где минимальное и максимальное значения диапазона разделены символом '-'.
+$ENDMETHOD$
+
+$METHODNAME$
+	setStep()
+$SUMMARY$
+	Set increment to use to make changes to the value.
+$LANG_RU$
+	Установить приращение значения при изменении позиции ползунка.
+$SYNTAX$
+	setStep(<step>)
+$ARGUMENTS$
+	<step>		- Number. The increment to use to make changes to the value.
+$LANG_RU$
+	<step>		- Число. Приращение значения при изменении позиции ползунка.
+$ENDMETHOD$
+
+
+$EXAMPLES$
+	sd := UISlider(10, 5, 60, 5)
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

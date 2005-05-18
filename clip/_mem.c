@@ -5,6 +5,9 @@
 */
 /*
    $Log: _mem.c,v $
+   Revision 1.25  2005/03/31 11:47:42  clip
+   uri: small fix for support mem files from FOX
+
    Revision 1.24  2004/06/10 09:35:22  clip
    rust: minor fix in MEMVARLIST()
 
@@ -311,8 +314,10 @@ read_MemFile(const char *path, DbfLocale * tbl,
 		(*names)[*rescount] = strdup(mh.name);
 		++(*rescount);
 
+		//printf("\ntype=%d,%x,len=%d,name=%s\n",mh.type,mh.type,mh.len,mh.name);
 		switch (mh.type)
 		{
+		case 'C':	/* string */
 		case 0xC3:	/* string */
 			{
 				char *sp;
@@ -346,6 +351,7 @@ read_MemFile(const char *path, DbfLocale * tbl,
 				}
 			}
 			break;
+		case 'L':	/* logic */
 		case 0xCC:	/* logic */
 			{
 				char ch;
@@ -362,6 +368,7 @@ read_MemFile(const char *path, DbfLocale * tbl,
 				dp->u.l = ch;
 			}
 			break;
+		case 'N':	/* numeric */
 		case 0xCE:	/* numeric */
 			{
 				double d = 0;
@@ -383,6 +390,7 @@ read_MemFile(const char *path, DbfLocale * tbl,
 				dp->u.n = d;
 			}
 			break;
+		case 'D':	/* date */
 		case 0xC4:	/* date */
 			{
 				double d = 0;

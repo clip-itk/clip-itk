@@ -7,11 +7,11 @@ local oDict,oDep, oDep02,oDict02
 local accPost, acc_chart, osb_class
 local beg_date:=date(),end_date:=date(), account:=""
 local connect_id:="", connect_data
-local i,j,k,s1,s2,tmp,obj
+local i,j,k,x,s1,s2,tmp,obj
 local acc_list, acc_objs,acc_s
 local post_list, d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
-local c_data
+local c_data, itogo:={0.00,0.00,0.00,0.00,0.00,0.00}
 local cache:=map()
 
 	errorblock({|err|error2html(err)})
@@ -123,20 +123,24 @@ local cache:=map()
 	for i=1 to len(acc_list)
 		s2 := ' .and. (daccount="'+acc_list[i]+'" .or. kaccount="'+acc_list[i]+'")'
 		tmp:=oDep:select(accpost:id,,,s1+s2)
-		//? s1,s2
-		//? tmp
 		for j=1 to len(tmp)
-			aadd(post_list,tmp[j])
+			if ascan(post_list,tmp[j])<=0
+				aadd(post_list,tmp[j])
+			endif
 		next
 	next
-	outlog(__FILE__,__LINE__,len(post_list),post_list)
+	//outlog(__FILE__,__LINE__,len(post_list),post_list)
 //	return
 
 	d_data := {}; k_data := {}
 	d_list := {}; k_list := {}
 
 	for i=1 to len(post_list)
+		x := .f.
 		obj:=oDep:getValue(post_list[i])
+		//outlog(__FILE__,__LINE__,obj)
+		//outlog(__FILE__,__LINE__,oDep02:getValue(obj:daccount):code,oDep02:getValue(obj:kaccount):code,obj:summa)
+		//outlog(__FILE__,__LINE__,k)
 		if empty(obj)
 			loop
 		endif
@@ -146,18 +150,23 @@ local cache:=map()
 			//? tmp,d_cache,"<BR/>"
 			if  tmp $ d_cache
 				j := d_cache[tmp]
+				//outlog(__FILE__,__LINE__,j:summa,obj:summa)
 				j:summa += obj:summa
+				//outlog(__FILE__,__LINE__,j:summa)
 			else
 				aadd(d_data,obj)
 				d_cache[tmp] := atail(d_data)
 			endif
+			x := .t.
 		endif
 		j:=ascan(acc_list,obj:kaccount)
 		if j>0
 			tmp:=obj:daccount+obj:kaccount
 			if  tmp $ k_cache
 				j := k_cache[tmp]
-				j:summa += obj:summa
+				if !x
+					j:summa += obj:summa
+				endif
 			else
 				aadd(k_data,obj)
 				k_cache[tmp] := atail(k_data)
@@ -246,10 +255,10 @@ local cache:=map()
     acc_s := ""
     j:=len(acc_objs)
     for i=1 to j
-    	acc_s+=acc_objs[i]:code
-    	if i!=j
-        	acc_s+=","
-        endif
+	acc_s+=acc_objs[i]:code
+	if i!=j
+		acc_s+=","
+	endif
     next
 	? '<div>Справка по оборотам проводок по счету(ам): '+acc_s //account
 	? 'за период с '+dtoc(beg_date)+' по '+dtoc(end_date)+'</div>'
@@ -265,6 +274,8 @@ local cache:=map()
 	? '</tr>'
 	? '<tbody>'
 
+	asort(d_res,,,{|x,y|val(x:debet)<val(y:debet)})
+	asort(k_res,,,{|x,y|val(x:kredit)<val(y:kredit)})
 	j:=max(len(d_res),len(k_res))
 
 	for i=1 to j
@@ -309,6 +320,7 @@ local cache:=map()
 		cgi_html_error("Class description not found: os_balance")
 		return
 	endif
+	asort(acc_objs,,,{|x,y|val(x:code)<val(y:code)})
 	s1:= ' .and. odate>=stod("'+dtos(beg_date)+ '") .and. odate<=stod("'+dtos(end_date)+ '")'
 	s2:= ' .and. odate<stod("'+dtos(beg_date)+ '")'
 	for i=1 to len(acc_objs)
@@ -324,7 +336,22 @@ local cache:=map()
 		? '<td valign="top" align="right" >'+str(c_data:ed_summa,14,2)+'</td>'
 		? '<td valign="top" align="right" >'+str(c_data:ek_summa,14,2)+'</td>'
 		? '</tr>'
+		itogo[1]+=c_data:bd_summa
+		itogo[2]+=c_data:bk_summa
+		itogo[3]+=c_data:od_summa
+		itogo[4]+=c_data:ok_summa
+		itogo[5]+=c_data:ed_summa
+		itogo[6]+=c_data:ek_summa
 	next
+	? '<tr>'
+	? '<td valign="top" align="left" >Итого</td>'
+	? '<td valign="top" align="right" >'+str(itogo[1],14,2)+'</td>'
+	? '<td valign="top" align="right" >'+str(itogo[2],14,2)+'</td>'
+	? '<td valign="top" align="right" >'+str(itogo[3],14,2)+'</td>'
+	? '<td valign="top" align="right" >'+str(itogo[4],14,2)+'</td>'
+	? '<td valign="top" align="right" >'+str(itogo[5],14,2)+'</td>'
+	? '<td valign="top" align="right" >'+str(itogo[6],14,2)+'</td>'
+	? '</tr>'
 	? '</tbody>'
 	? '</table>'
 	? '<div id="end"></div></body>'

@@ -338,4 +338,182 @@ clip_GTK_CLIPBOARDWAITISTEXTAVAILABLE(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+static void
+_clipboard_received(GtkClipboard *clipb, GdkPixbuf *pix, gpointer data)
+{
+	C_var *c = (C_var*)data;
+	C_object *c_obj = _list_get_cobject(c->cm, clipb);
+        C_object *cpix  = _list_get_cobject(c->cm, pix);
+	ClipVar stack[3];
+	ClipVar res;
+	if (!c_obj)
+		c_obj = _register_object(c->cm,clipb, GTK_TYPE_CLIPBOARD, NULL, NULL);
+	if (!cpix)
+		cpix = _register_object(c->cm,pix, GDK_TYPE_PIXBUF, NULL, NULL);
+	if (c_obj)
+	{
+		memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
+		_clip_mclone(c->cw->cmachine, &stack[0], &c->co->obj);
+		_clip_mclone(c->cw->cmachine, &stack[1], &c_obj->obj);
+		_clip_mclone(c->cw->cmachine, &stack[2], &cpix->obj);
+		_clip_eval( c->cm, &(c->cfunc), 3, stack, &res );
+		_clip_destroy(c->cm, &res);
+		_clip_destroy(c->cm, &stack[0]);
+		_clip_destroy(c->cm, &stack[1]);
+		_clip_destroy(c->cm, &stack[2]);
+	}
+}
+
+int
+clip_GTK_CLIPBOARDREQUESTIMAGE(ClipMachine * cm)
+{
+	C_object     *cclipb = _fetch_co_arg(cm);
+        ClipVar       *cfunc = _clip_spar(cm, 2);
+        C_var             *c ;
+
+	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
+        	goto err;
+
+	CHECKARG2(2, CCODE_t, PCODE_t);
+
+	c->cm = cm; c->co = cclipb;
+	_clip_mclone(cm, &c->cfunc, cfunc);
+
+	gtk_clipboard_request_image((GtkClipboard *)cclipb->object,
+		(GtkClipboardImageReceivedFunc)_clipboard_received, c);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLIPBOARDSETCANSTORE(ClipMachine * cm)
+{
+	C_object     *cclipb = _fetch_co_arg(cm);
+        ClipArrVar     *ctag = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 2));
+        gint        ntargets = _clip_parni(cm, 3);
+
+	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
+        	goto err;
+
+	CHECKARG(2, ARRAY_t);
+	CHECKARG(3, NUMERIC_t);
+
+	if (ctag)
+	{
+		GtkTargetEntry *tags;
+		gint i;
+
+		tags = malloc(ctag->count*sizeof(GtkTargetEntry));
+		memset(tags, 0, sizeof(GtkTargetEntry)*ctag->count);
+		for (i=0; i<ctag->count; i++)
+			_array_to_target_entry(cm, &ctag->items[i], &tags[i]);
+		gtk_clipboard_set_can_store((GtkClipboard *)cclipb->object,
+			tags,
+			ntargets);
+		free(tags);
+	}
+	else
+		gtk_clipboard_set_can_store((GtkClipboard *)cclipb->object,
+			NULL,
+			ntargets);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLIPBOARDSETIMAGE(ClipMachine * cm)
+{
+	C_object     *cclipb = _fetch_co_arg(cm);
+        C_object       *cpix = _fetch_cobject(cm, _clip_spar(cm, 2));
+
+	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
+        	goto err;
+
+	CHECKCOBJ(cpix, GDK_IS_PIXBUF(cpix->object));
+
+	gtk_clipboard_set_image((GtkClipboard *)cclipb->object,
+		GDK_PIXBUF(cpix->object));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLIPBOARDSTORE(ClipMachine * cm)
+{
+	C_object     *cclipb = _fetch_co_arg(cm);
+
+	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
+        	goto err;
+
+	gtk_clipboard_store((GtkClipboard *)cclipb->object);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLIPBOARDWAITFORIMAGE(ClipMachine * cm)
+{
+	C_object     *cclipb = _fetch_co_arg(cm);
+        C_object       *cpix ;
+        GdkPixbuf       *pix ;
+
+	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
+        	goto err;
+
+	pix = gtk_clipboard_wait_for_image((GtkClipboard *)cclipb->object);
+
+	if (pix)
+        {
+        	cpix = _list_get_cobject(cm, pix);
+                if (!cpix) cpix = _register_object(cm, pix, GDK_TYPE_PIXBUF, NULL, NULL);
+                if (cpix) _clip_mclone(cm, RETPTR(cm), &cpix->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLIPBOARDWAITISIMAGEAVAILABLE(ClipMachine * cm)
+{
+	C_object     *cclipb = _fetch_co_arg(cm);
+
+	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
+        	goto err;
+
+	_clip_retl(cm, gtk_clipboard_wait_is_image_available((GtkClipboard *)cclipb->object));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CLIPBOARDWAITISTARGETAVAILABLE(ClipMachine * cm)
+{
+	C_object     *cclipb = _fetch_co_arg(cm);
+        C_object      *catom = _fetch_cobject(cm, _clip_spar(cm, 2));
+
+	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
+        	goto err;
+	if (!catom || catom->type != GDK_TYPE_ATOM)
+        		goto err;
+
+	_clip_retl(cm, gtk_clipboard_wait_is_target_available((GtkClipboard *)cclipb->object,
+		(GdkAtom)(catom->object)));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
 

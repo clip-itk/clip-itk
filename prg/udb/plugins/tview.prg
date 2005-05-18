@@ -45,7 +45,14 @@ static function ab_tview_view_card(oDep,data,oBox,colorSpec)
 		dispend()
 		return .f.
 	endif
-	@ x1++,y1 say [Identification..]+padr(data:id,y2-y1-16)
+	s:=data:id
+	if "__VERSION" $ data
+		s+=[ version:]+str(data:__version)
+	endif
+	if "__CRC32" $ data
+		s+=[ CRC:]+data:__crc32
+	endif
+	@ x1++,y1 say [Identification..]+padr(s,y2-y1-16)
 	@ x1++,y1 say [Name............]+data:name
 	@ x1++,y1 say [Header..........]+data:header
 	@ x1++,y1 say [Footer..........]+data:footer

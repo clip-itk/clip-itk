@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Define an inclusion region
 $SYNTAX$
-     MSETCLIP([<nCoord list>], [<nMode>])
+     MSETCLIP([<nCoord list>], [<nMode>]) --> aRegions
 $ARGUMENTS$
      <nCoord List> contains the coordinates of the inclusion region which
      is represented as a comma-separated list of four coordinates whose

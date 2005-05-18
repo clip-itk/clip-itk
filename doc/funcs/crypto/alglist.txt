@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Возвращает список алгоритмов шифрации, доступных через библиотеку OpenSSL.
 $SYNTAX$
-	aAlgoritmes := EVP_ALG_LIST()
+	EVP_ALG_LIST() --> aAlgoritmes
 
 $ARGUMENTS$
 	None.

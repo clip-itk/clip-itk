@@ -1,5 +1,10 @@
 $ABOUTCATEG$
   C-API
+$SUMMARY$
+	C-functions that allows using C-language
+	along with CLIP.
+$LANG_RU$
+	C-функции, позволяющие	использовать C вместе с CLIP.
 $DESCRIPTION$
 	CLIP's C-API is a set of C-functions that allows using C-language
 	along with CLIP. It could be necessary for writing some speed critical
@@ -20,6 +25,7 @@ $DESCRIPTION$
 	Exported function should return 0 (zero) if successful, or appropriate
 	error code (those described in error.ch, with 'EG_' prefix).
 
+	<pre>
 	Example:
 	/* my.c */
 	#include <stdio.h>
@@ -45,7 +51,7 @@ $DESCRIPTION$
 	#./test
 	Hello from MyFunction
 	#
-
+	</pre>
 $LANG_RU$
 	C-API языка CLIP представляет собой набор C-функций, позволяющих
 	использовать C вместе с CLIP. Это может понадобиться, например, для
@@ -69,6 +75,7 @@ $LANG_RU$
 	Экспортируемая функция должна возвращать 0 (ноль) в случае успеха,
 	или соответствующий код ошибки (описанные в error.ch, имеющие префикс 'EG_').
 
+	<pre>
 	Пример:
 	/* my.c */
 	#include <stdio.h>
@@ -94,3 +101,4 @@ $LANG_RU$
 	#./test
 	Hello from MyFunction
 	#
+	</pre>

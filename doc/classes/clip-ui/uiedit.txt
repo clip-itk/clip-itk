@@ -9,9 +9,15 @@ $ABOUT$
 $LANG_RU$
 	Класс однострочного поля ввода.
 $SYNTAX$
-	UIEdit(<value>)	--> UIEdit object
+	UIEdit([<value>])	--> UIEdit object
+	UIEditColor([<value>],[<caption>])	--> UIEdit object
+	UIEditDate([<value>],[<caption>])	--> UIEdit object
+	UIEditFileName([<value>],[<caption>])	--> UIEdit object
 $LANG_RU$
 	UIEdit(<value>)	--> Объект UIEdit
+	UIEditColor([<value>],[<caption>])	--> Объект UIEdit
+	UIEditDate([<value>],[<caption>])	--> Объект UIEdit
+	UIEditFileName([<value>],[<caption>])	--> Объект UIEdit
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIEdit".
 $LANG_RU$
@@ -24,11 +30,59 @@ $SUMMARY$
 $LANG_RU$
 	Конструктор. Создать однострочное поле ввода.
 $SYNTAX$
-	UIEdit(<value>)	--> UIEditText object
+	UIEdit([<value>])	--> UIEdit object
 $ARGUMENTS$
 	<value>		- String. Text in single line text entry.
 $LANG_RU$
 	<value>		- Строка. Строка текста в однострочном поле ввода.
+$ENDMETHOD$
+
+$METHODNAME$
+	UIEditColor()
+$SUMMARY$
+	Constructor. Create single line text entry with button that show color choose dialog.
+$LANG_RU$
+	Конструктор. Создать однострочное поле ввода с кнопкой вызова диалога выбора цвета.
+$SYNTAX$
+	UIEditColor([<value>],[<caption>])	--> UIEdit object
+$ARGUMENTS$
+	<value>		- String. Text in single line text entry.
+	<caption>	- String. Caption of choose color dialog.
+$LANG_RU$
+	<value>		- Строка. Строка текста в однострочном поле ввода.
+	<caption>	- Строка. Заголовок диалога выбора цвета.
+$ENDMETHOD$
+
+$METHODNAME$
+	UIEditDate()
+$SUMMARY$
+	Constructor. Create single line text entry with button that show date choose dialog.
+$LANG_RU$
+	Конструктор. Создать однострочное поле ввода с кнопкой вызова диалога выбора даты.
+$SYNTAX$
+	UIEditDate([<value>],[<caption>])	--> UIEdit object
+$ARGUMENTS$
+	<value>		- String. Text in single line text entry.
+	<caption>	- String. Caption of choose date dialog.
+$LANG_RU$
+	<value>		- Строка. Строка текста в однострочном поле ввода.
+	<caption>	- Строка. Заголовок диалога выбора даты.
+$ENDMETHOD$
+
+$METHODNAME$
+	UIEditFileName()
+$SUMMARY$
+	Constructor. Create single line text entry with button that show file name choose dialog.
+$LANG_RU$
+	Конструктор. Создать однострочное поле ввода с кнопкой вызова диалога выбора имени файла.
+$SYNTAX$
+	UIEditFileName([<value>],[<caption>])	--> UIEdit object
+$ARGUMENTS$
+	<value>		- String. Text in single line text entry.
+	<caption>	- String. Caption of choose file name dialog.
+$LANG_RU$
+	<value>		- Строка. Строка текста в однострочном поле ввода.
+	<caption>	- Строка. Заголовок диалога выбора имени файла.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -84,7 +138,7 @@ $SYNTAX$
 $RETURNS$
 	Text from edit field. Type of returned value is string.
 $LANG_RU$
-	Текст из поля ввода. Возвращаемое значение: строка.
+	Текст из поля ввода. Тип возвращаемого значения: строка.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -122,11 +176,27 @@ $SUMMARY$
 $LANG_RU$
 	Установить действие, выполняемое при измении содержимого поля.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
-	<action>	- Code block. Code block executed on content changed.
+	<signal>	- String. Signal name.
+	<action>	- Code block. Action.
 $LANG_RU$
-	<action>	- Блок кода. Блок кода, выполняемый при измении содержимого поля.
+	<signal>	- Строка. Название сигнала.
+	<action>	- Блок кода. Действие.
+$ENDMETHOD$
+
+$METHODNAME$
+	appendText()
+$SUMMARY$
+	Append text to field content.
+$LANG_RU$
+	Добавить текст к содержимому поля.
+$SYNTAX$
+	appendText(<text>)
+$ARGUMENTS$
+	<text> 		- String. Appended text.
+$LANG_RU$
+	<text>		- Строка. Добавляемая строка
 $ENDMETHOD$
 
 $EXAMPLES$

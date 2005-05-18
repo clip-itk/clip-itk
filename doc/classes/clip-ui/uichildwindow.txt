@@ -15,9 +15,11 @@ $LANG_RU$
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIChildWindow".
 	<name>		- Window name defined in constructor.
+	<userSpace>	- Layout for widget placement. <link linkend="classuivbox">UIVBox</link> object.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIChildWindow".
 	<name>		- Имя окна для его поиска, заданное в конструкторе.
+	<userSpace>	- Область размещения виджетов. Объект <link linkend="classuivbox">UIVBox</link>.
 
 $METHODNAME$
 	UIChildWindow()
@@ -266,6 +268,34 @@ $ARGUMENTS$
 	<id>		- String. Object identifier changed in window.
 $LANG_RU$
 	<id>		- Строка. Идентификатор объекта, изменяемого в окне.
+$ENDMETHOD$
+
+$METHODNAME$
+	setCaption()
+$SUMMARY$
+	Set new child window caption.
+$LANG_RU$
+	Изменить заголовок дочернего окна.
+$SYNTAX$
+	setCaption(<caption>)
+$ARGUMENTS$
+	<caption>	- String. Text of child window title.
+$LANG_RU$
+	<caption>	- Строка. Текст заголовка дочернего окна.
+$ENDMETHOD$
+
+$METHODNAME$
+	setFocus()
+$SUMMARY$
+	Set focus to specified widget.
+$LANG_RU$
+	Установить фокус ввода на указанный виджет.
+$SYNTAX$
+	setFocus(<obj>)
+$ARGUMENTS$
+	<obj>		- Widget. Focused widget.
+$LANG_RU$
+	<obj>		- Виджет. Виджет, на который передаётся фокус.
 $ENDMETHOD$
 
 $EXAMPLES$

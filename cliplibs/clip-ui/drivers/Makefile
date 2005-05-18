@@ -1,7 +1,7 @@
 # This is a part of CLIP-UI library
 #
 # Copyright (C) 2003-2005 by E/AS Software Foundation
-# Author: Andrey Cherepanov <sibskull@mail.ru>
+# Author: Andrey Cherepanov <skull@eas.lrn.ru>
 ifndef CLIPROOT
 	CLIPROOT=$(shell cd ../../../../; pwd)/cliproot
 endif

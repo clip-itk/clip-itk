@@ -6,7 +6,7 @@ $ONELINER$
    Determine if attempt to skip past beginning of text file
 $SYNTAX$
 
-   FT_FBOF() -> lResult
+   FT_FBOF() --> lResult
 
 $ARGUMENTS$
 

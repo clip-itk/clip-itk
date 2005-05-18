@@ -37,6 +37,7 @@ parameters p1,p2,p3,p4,p5
 	set translate path off
 	set optimize on
 	set optimize level to 2
+    set deleted off
 
 	dList:=codbList():new()
 	if val(dList:error)!=0
@@ -67,7 +68,7 @@ parameters p1,p2,p3,p4,p5
 			return .f.
 		endif
 
-		ret:=install_default_dictionary_list(dList,xmlData:dictionary)
+		ret:=install_default_dictionary_list(dList,xmlData:dictionary,mdir)
 
 		if valtype(ret) == "C" // error
 			? ret
@@ -76,7 +77,7 @@ parameters p1,p2,p3,p4,p5
 		endif
 
 		if "INSTALL" $ xmlData
-			ret2:=parse_install_extensions(xmlData:install)
+			ret2:=parse_install_extensions(xmlData:install,mdir)
 		endif
 
 		if valtype(ret2) == "C" // error
@@ -115,12 +116,12 @@ parameters p1,p2,p3,p4,p5
 		endif
 		for i=1 to len(ret)
 			/* load and install metadata for dictionaries */
-			eval(fBlock,ret[i],mdirs[d]+PATH_DELIM+ret[i]+".xml")
+			eval(fBlock,ret[i],mdirs[d]+PATH_DELIM+ret[i]+".xml",mdirs[d])
 			? "Added default metadata from:",ret[i],"OK"
 			fList:=directory(mdirs[d]+PATH_DELIM+ret[i]+"_*.xml")
 			asort(flist,,,{|x,y|x[1]<y[1]})
 			for j=1 to len(fList)
-				eval(fBlock,ret[i],mdirs[d]+PATH_DELIM+fList[j][1])
+				eval(fBlock,ret[i],mdirs[d]+PATH_DELIM+fList[j][1],mDirs[d])
 				? "Added default metadata from:",fList[j][1],"OK"
 				? "******************"
 			next
@@ -134,7 +135,7 @@ parameters p1,p2,p3,p4,p5
 return
 
 /****************************************************/
-static function install_default_dictionary_list(dList,xmlData)
+static function install_default_dictionary_list(dList,xmlData,mdir)
 	local i,j,k,bErr,ret,arr:={}
 	local dict,dictDesc
 	local attrname,attrData
@@ -183,8 +184,7 @@ static function install_default_dictionary_list(dList,xmlData)
 return  ret
 
 ************************************************************
-/****************************************************/
-static function parse_install_extensions(xmlData)
+static function parse_install_extensions(xmlData,mdir)
 	local i,j,k,bErr,ret,arr:={}
 	local dict,dictDesc
 	local attrname,attrData

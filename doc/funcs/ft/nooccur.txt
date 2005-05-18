@@ -6,7 +6,7 @@ $ONELINER$
    Find the number of times one string occurs in another
 $SYNTAX$
    FT_NOOCCUR( <cCheckFor>, <cCheckIn> ;
-	       [, <lIgnoreCase> ] )      -> <nOccurrences>
+	       [, <lIgnoreCase> ] )     --> <nOccurrences>
 $ARGUMENTS$
    <cCheckFor> is the string to search for
 

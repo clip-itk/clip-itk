@@ -6,7 +6,7 @@
     Determine if a specified bit is set
  $SYNTAX$
 
-    fn_isbit( <nNum>, <nBit> ) -> lSet
+    fn_isbit( <nNum>, <nBit> ) --> lSet
 
  $ARGUMENTS$
 
@@ -15,7 +15,7 @@
 
  $RETURNS$
 
-    Returns logical .t. if the bit is set, .f. if 
+    Returns logical .t. if the bit is set, .f. if
     it isn't.
 
  $DESCRIPTION$
@@ -42,7 +42,7 @@
     Set a bit in a number
  $SYNTAX$
 
-    fn_setbit( <nNum>, <nBit> ) -> nResult
+    fn_setbit( <nNum>, <nBit> ) --> nResult
 
  $ARGUMENTS$
 
@@ -77,7 +77,7 @@
     Toggle a bit in a number
  $SYNTAX$
 
-    fn_togbit( <nNum>, <nBit> ) -> nResult
+    fn_togbit( <nNum>, <nBit> ) --> nResult
 
  $ARGUMENTS$
 
@@ -112,7 +112,7 @@
     Clear a bit in a number
  $SYNTAX$
 
-     fn_clrbit( <nNum>, <nBit> ) -> nResult
+     fn_clrbit( <nNum>, <nBit> ) --> nResult
 
  $ARGUMENTS$
 

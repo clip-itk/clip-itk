@@ -3,7 +3,6 @@
 /*                                                                         */
 /*   Copyright (C) 2003 by E/AS Software Foundation                        */
 /*   Author: Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   Last change: 09 Jun 2004                                              */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -22,8 +21,7 @@ TODO: id by data, not index, nice expand/collapse icons, possible remove lines, 
 function UITree(nTreeColumn, acNameColumns)
 	local obj := driver:createTree(nTreeColumn, acNameColumns)
 	obj:className 	:= "UITree"
-	obj:nodes 	:= array(0)
-	obj:nodesId 	:= array(0)
+	obj:nodes 	:= map()
 	obj:onSelect 	:= NIL
 	_recover_UITREE(obj)
 return obj
@@ -46,15 +44,21 @@ static function ui_addNode(self, columns, id, parent, sibling, expanded)
 	next
 	expanded := iif(valtype(expanded)=="U",.T.,expanded)
 	node := driver:addTreeNode(self, parent, sibling, columns, expanded)
-	aadd(self:nodes, node)
-	aadd(self:nodesId, id)
+	node:className := "UITreeItem"
+	node:tree := @self
+	node:node_id := id
+	// TODO: set action to item object
+	
+	self:nodes[node:id] = node
 return node
 
 /* Set action to UITree */
-static function ui_setAction(self, action)
+static function ui_setAction(self, signal, action)
   	// Set action to single-click LMB or key ENTER pressed
-	self:onSelect := action
-	driver:setTreeSelectAction( self, {|w,e| treeNodeSelect(self, e)} )
+	if signal=='selected' .and. valtype(action)=='B'
+		self:onSelect := action
+		driver:setTreeSelectAction( self, {|w,e| treeNodeSelect(self, e)} )
+	endif
 return NIL
 
 /* Slot for tree selection */
@@ -67,8 +71,7 @@ return
 /* Clear all nodes */
 static function ui_clear(self)
 	driver:clearTree( self )
-	self:nodes := array(0)
-	self:nodesId := array(0)
+	self:nodes := map()
 return NIL
 
 /* Get current selection */
@@ -79,4 +82,4 @@ return driver:getTreeSelection( self )
 static function ui_getSelectionId(self)
 	local sel
 	sel := driver:getTreeSelection( self )
-return iif(sel<=0 .or. sel>len(self:nodesId), NIL, self:nodesId[sel] )
+return self:nodes[sel]:node_id

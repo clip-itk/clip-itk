@@ -412,3 +412,54 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_ACTIONGETACCELPATH(ClipMachine * cm)
+{
+        C_object *caction = _fetch_co_arg(cm);
+        gchar       *path ;
+
+	CHECKARG2(1,MAP_t, NUMERIC_t); CHECKCOBJ(caction, GTK_IS_ACTION(caction->object));
+
+	path = (gchar *)gtk_action_get_accel_path(GTK_ACTION(caction->object));
+        LOCALE_FROM_UTF(path);
+        _clip_retc(cm, path);
+        FREE_TEXT(path);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ACTIONSETSENSITIVE(ClipMachine * cm)
+{
+        C_object  *caction = _fetch_co_arg(cm);
+        gboolean sensitive = _clip_parl(cm, 2);;
+
+	CHECKARG2(1,MAP_t, NUMERIC_t); CHECKCOBJ(caction, GTK_IS_ACTION(caction->object));
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_action_set_sensitive(GTK_ACTION(caction->object), sensitive);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_ACTIONSETVISIBLE(ClipMachine * cm)
+{
+        C_object  *caction = _fetch_co_arg(cm);
+        gboolean   visible = _clip_parl(cm, 2);;
+
+	CHECKARG2(1,MAP_t, NUMERIC_t); CHECKCOBJ(caction, GTK_IS_ACTION(caction->object));
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_action_set_visible(GTK_ACTION(caction->object), visible);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

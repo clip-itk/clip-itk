@@ -6,7 +6,7 @@ $ONELINER$
    Deletes a line from the currently selected text file
 $SYNTAX$
 
-   FT_FDELETE( [ < nLines > ] ) -> lSuccess
+   FT_FDELETE( [ < nLines > ] ) --> lSuccess
 
 $ARGUMENTS$
 

@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Perform bit-wise NOT on an ASCII character (byte)
 $SYNTAX$
-   FT_BYTENOT( <cByte> ) -> cNewByte
+   FT_BYTENOT( <cByte> ) --> cNewByte
 $ARGUMENTS$
    <cByte> is a character from CHR(0) to CHR(255).
    May be passed in CHR() form, as character literal, or

@@ -1,5 +1,9 @@
 $ABOUTCATEG$
   Serial I/O
+$SUMMARY$
+	Functions for using communication over COM-ports.
+$LANG_RU$
+	Описания функций для rоммуникации посредством COM-портов.
 $DESCRIPTION$
 	Category Serial I/O include description of functions for
 	using communication over COM-ports. This function based on

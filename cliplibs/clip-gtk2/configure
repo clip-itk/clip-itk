@@ -203,6 +203,10 @@ then
         then
 		echo "GTK_24=yes" >&3
         fi
+	if [ \( "$GTK_MINOR" -ge 6  \) ]
+        then
+		echo "GTK_26=yes" >&3
+        fi
 fi
 
 if [ "$USE_GTK" = yes ]

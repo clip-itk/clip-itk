@@ -5,6 +5,9 @@
 */
 /*
    $Log: _io.c,v $
+   Revision 1.281  2005/03/24 08:18:51  clip
+   uri: some fix for val("+40")
+
    Revision 1.280  2005/02/21 10:56:56  clip
    uri: small fix in *token()
 
@@ -2459,7 +2462,9 @@ _clip_strtod(char *str, int *decpos)
 
 	while (*s == ' ')
 		s++;
-	if (!(((*s >= '0') && (*s <= '9')) || (*s == '.') || (*s == ',') || (*s == '-')))
+	if (*s == '+')
+		s++;
+	if (!(((*s >= '0') && (*s <= '9')) || (*s == '.') || (*s == ',') || (*s == '-') || (*s == '+')))
 	{
 		if (decpos)
 			*decpos = strlen(str);
@@ -2531,13 +2536,13 @@ _clip_strtod(char *str, int *decpos)
 
 	while (*s == ' ')
 		s++;
-	if (!(((*s >= '0') && (*s <= '9')) || (*s == '.') || (*s == '-')))
+	if (!(((*s >= '0') && (*s <= '9')) || (*s == '.') || (*s == '-') || (*s == '+')))
 	{
 		if (decpos)
 			*decpos = strlen(str);
 		return 0;
 	}
-	while ((*s >= '0' && *s <= '9') || *s == '-')
+	while ((*s >= '0' && *s <= '9') || *s == '-' || *s == '+')
 		s++;
 
 	e = s;
@@ -2647,7 +2652,7 @@ clip_VAL(ClipMachine * mp)
 		}
 		else
 			sp = s + dec;
-		for (; *sp && (isdigit(*sp) || *sp == '.' || *sp == ',' || *sp == '-' || *sp==' '); ++sp)
+		for (; *sp && (isdigit(*sp) || *sp == '.' || *sp == ',' || *sp == '-' || *sp == '+' || *sp==' '); ++sp)
 			;
 		len = sp - s;
 		if (dec)

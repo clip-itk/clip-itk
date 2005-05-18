@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Включает/выключает аппаратное управление потоком символов (CTS/RTS).
 $SYNTAX$
-	lOldHandshake := COM_HARD(<nComPort>,<lNewHandshake>,[<lDTR/DSR>])
+	COM_HARD(<nComPort>,<lNewHandshake>,[<lDTR/DSR>]) --> lOldHandshake
 $ARGUMENTS$
 	<nComPort> - Designates the number of the port (1 to N).
 	<lNewHandshake> - Designates whether the handshake is on (.T.) or off (.F.).

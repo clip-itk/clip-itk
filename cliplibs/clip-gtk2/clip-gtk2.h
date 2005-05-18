@@ -362,6 +362,7 @@ void _list_remove_action(ClipMachine * cm, void *pointer);
 void _map_to_action_entry (ClipMachine *cm, ClipVar *cv, GtkActionEntry *act);
 void _map_to_toggle_action_entry (ClipMachine *cm, ClipVar *cv, GtkToggleActionEntry *act);
 void _map_to_radio_action_entry (ClipMachine *cm, ClipVar *cv, GtkRadioActionEntry *act);
+GtkType _gtk_type_tool_button();
 
 #endif
 

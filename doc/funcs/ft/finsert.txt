@@ -6,7 +6,7 @@ $ONELINER$
    Inserts a line in the currently selected text file
 $SYNTAX$
 
-   FT_FINSERT( [ < nLines > ] ) -> lSuccess
+   FT_FINSERT( [ < nLines > ] ) --> lSuccess
 
 $ARGUMENTS$
 

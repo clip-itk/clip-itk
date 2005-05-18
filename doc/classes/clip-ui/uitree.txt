@@ -14,13 +14,11 @@ $LANG_RU$
 	UITree([<nTreeColumn>],<acNameColumns>)	--> Объект UITree
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITree".
-	<nodes>		- Array of arrays. Array of values. Each records contains array of strings of values by columns.
-	<nodesId>	- Array of strings. Array of tree node identifiers.
+	<nodes>		- Accociated array of <link linkend="classuitreeitem">UITreeItem</link> objects.
 	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UITree".
-	<nodes>		- Массив массивов. Массив значений. Каждая запись содержит массив строк значений по столбцам соответственно.
-	<nodesId>	- Массив строк. Массив идентификаторов элементов дерева.
+	<nodes>		- Ассоциативный массив объектов <link linkend="classuitreeitem">UITreeItem</link>.
 	<onSelect>	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
 
 $METHODNAME$
@@ -50,19 +48,19 @@ $SYNTAX$
 $ARGUMENTS$
 	<columns>	- Array of strings. Array of values by columns.
 	<id>		- String. Node identifier.
-	<parent>	- Object. Parent node.
-	<sibling>	- Object. Put node before specified node on such level.
+	<parent>	- Object <link linkend="classuitreeitem">UITreeItem</link>. Parent node.
+	<sibling>	- Object <link linkend="classuitreeitem">UITreeItem</link>. Put node before specified node on such level.
 	<expanded>	- Boolean. Expand child nodes.
 $LANG_RU$
 	<columns>	- Массив строк. Массив значений по столбцам соответственно.
 	<id>		- Строка. Идентификатор элемента.
-	<parent>	- Объект. Родительский объект. Указывается объект, , возвращённый при предыдущем вызове этой функции.
-	<sibling>	- Объект. Поместить перед элементом того же уровня.
+	<parent>	- Объект <link linkend="classuitreeitem">UITreeItem</link>. Родительский объект. Указывается объект, , возвращённый при предыдущем вызове этой функции.
+	<sibling>	- Объект <link linkend="classuitreeitem">UITreeItem</link>. Поместить перед элементом того же уровня.
 	<expanded>	- Логическое значение. Сразу показывать дочерние элементы.
 $RETURNS$
-	Object of tree node, that may be used as parent node.
+	Object of tree node, that may be used as parent node (<link linkend="classuitreeitem">UITreeItem</link>).
 $LANG_RU$
-	Объект элемента, который можно далее использовать как родительский.
+	Объект элемента, который можно далее использовать как родительский (<link linkend="classuitreeitem">UITreeItem</link>).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -72,10 +70,12 @@ $SUMMARY$
 $LANG_RU$
 	Указать действие, вызываемое при выборе элемента одним щелчком мыши или нажатием клавиши 'Enter'.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
+	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
+	<signal>	- Строка. Название сигнала.
 	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
@@ -92,29 +92,29 @@ $ENDMETHOD$
 $METHODNAME$
 	getSelection()
 $SUMMARY$
-	Get index of selected node. Numbering is begun from 1.
+	Get identifier of selected node.
 $LANG_RU$
-	Возвращает номер выделенного элемента. Нумерация начинается с 1.
+	Возвращает идентификатор выделенного элемента.
 $SYNTAX$
-	getSelection()	--> <nNode>
+	getSelection()	--> <sNode>
 $RETURNS$
-	Selected node. Numbering is begun from 1.
+	The selected node identifier.
 $LANG_RU$
-	Номер выделенного элемента. Нумерация начинается с 1.
+	Идентификатор выделенного элемента.
 $ENDMETHOD$
 
 $METHODNAME$
 	getSelectionId()
 $SUMMARY$
-	Get identifier of selected node.
+	Get user identifier of selected node.
 $LANG_RU$
-	Возвращает идентификатор выделенного элемента.
+	Возвращает пользовательский идентификатор выделенного элемента.
 $SYNTAX$
 	getSelectionId()	--> <id>
 $RETURNS$
-	Identifier of selected node.
+	The user identifier of selected node.
 $LANG_RU$
-	Идентификатор выделенного элемента.
+	Пользовательский идентификатор выделенного элемента.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -129,6 +129,7 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
+	UITREEITEM
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

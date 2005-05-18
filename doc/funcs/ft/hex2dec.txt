@@ -5,7 +5,7 @@ $FUNCNAME$
 $ONELINER$
    Convert a hex number to decimal
 $SYNTAX$
-   FT_HEX2DEC( <cHexNum> ) -> nDecNum
+   FT_HEX2DEC( <cHexNum> ) --> nDecNum
 $ARGUMENTS$
    <cHexNum> is a character string representing a hex number.
 $RETURNS$

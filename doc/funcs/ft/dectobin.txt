@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Convert decimal to binary
 $SYNTAX$
-   FT_DEC2BIN( <nNum> ) -> cBinaryNumber
+   FT_DEC2BIN( <nNum> ) --> cBinaryNumber
 $ARGUMENTS$
    <nNum> is the numeric expression to be converted.
 $RETURNS$

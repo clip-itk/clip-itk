@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Шифрует строку, используя один из алгоритмов.
 $SYNTAX$
-	cEncrypted := EVP_ENCRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>])
+	EVP_ENCRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>]) --> cEncrypted
 $ARGUMENTS$
 	<cData> - string for encryption.
 	<cKey>  - key for encryption.

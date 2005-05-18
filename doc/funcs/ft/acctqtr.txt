@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Return accounting quarter data
 $SYNTAX$
-   FT_ACCTQTR( [ <dGivenDate> ], [ <nQtrNum> ] ) -> aDateinfo
+   FT_ACCTQTR( [ <dGivenDate> ], [ <nQtrNum> ] ) --> aDateinfo
 $ARGUMENTS$
    <dGivenDate> is any valid date in any date format.  Defaults
    to current system date if not supplied.

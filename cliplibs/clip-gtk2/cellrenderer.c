@@ -63,16 +63,27 @@ CLIP_DLLEXPORT GtkType _gtk_type_cell_renderer() { return GTK_TYPE_CELL_RENDERER
 CLIP_DLLEXPORT GtkType _gtk_type_cell_renderer_text() { return GTK_TYPE_CELL_RENDERER_TEXT; }
 CLIP_DLLEXPORT GtkType _gtk_type_cell_renderer_pixbuf() { return GTK_TYPE_CELL_RENDERER_PIXBUF; }
 CLIP_DLLEXPORT GtkType _gtk_type_cell_renderer_toggle() { return GTK_TYPE_CELL_RENDERER_TOGGLE; }
-
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+CLIP_DLLEXPORT GtkType _gtk_type_cell_renderer_combo() { return GTK_TYPE_CELL_RENDERER_COMBO; }
+CLIP_DLLEXPORT GtkType _gtk_type_cell_renderer_progress() { return GTK_TYPE_CELL_RENDERER_PROGRESS; }
+#endif
 long _clip_type_cell_renderer() { return GTK_OBJECT_CELL_RENDERER; }
 long _clip_type_cell_renderer_text() { return GTK_OBJECT_CELL_RENDERER_TEXT; }
 long _clip_type_cell_renderer_pixbuf() { return GTK_OBJECT_CELL_RENDERER_PIXBUF; }
 long _clip_type_cell_renderer_toggle() { return GTK_OBJECT_CELL_RENDERER_TOGGLE; }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+long _clip_type_cell_renderer_combo() { return GTK_OBJECT_CELL_RENDERER_COMBO; }
+long _clip_type_cell_renderer_progress() { return GTK_OBJECT_CELL_RENDERER_PROGRESS; }
+#endif
 
 const char * _clip_type_name_cell_renderer()  { return "GTK_OBJECT_CELL_RENDERER"; }
 const char * _clip_type_name_cell_renderer_text()  { return "GTK_OBJECT_CELL_RENDERER_TEXT"; }
 const char * _clip_type_name_cell_renderer_pixbuf()  { return "GTK_OBJECT_CELL_RENDERER_PIXBUF"; }
 const char * _clip_type_name_cell_renderer_toggle()  { return "GTK_OBJECT_CELL_RENDERER_TOGGLE"; }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+const char * _clip_type_name_cell_renderer_combo()  { return "GTK_OBJECT_CELL_RENDERER_COMBO"; }
+const char * _clip_type_name_cell_renderer_progress()  { return "GTK_OBJECT_CELL_RENDERER_PROGRESS"; }
+#endif
 
 /* Register boxes in global table */
 int
@@ -86,6 +97,10 @@ clip_INIT___CELLRENDERER(ClipMachine *cm)
 	_wtype_table_put(_clip_type_cell_renderer_text,  _clip_type_name_cell_renderer_text,  _gtk_type_cell_renderer_text,  _gtk_type_cell_renderer, cell_renderer_text_signals);
 	_wtype_table_put(_clip_type_cell_renderer_toggle,  _clip_type_name_cell_renderer_toggle,  _gtk_type_cell_renderer_toggle,  _gtk_type_cell_renderer, cell_renderer_toggle_signals);
 	_wtype_table_put(_clip_type_cell_renderer_pixbuf,  _clip_type_name_cell_renderer_pixbuf,  _gtk_type_cell_renderer_pixbuf,  _gtk_type_cell_renderer, NULL);
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+	_wtype_table_put(_clip_type_cell_renderer_combo,  _clip_type_name_cell_renderer_combo,  _gtk_type_cell_renderer_combo,  _gtk_type_cell_renderer_text, NULL);
+	_wtype_table_put(_clip_type_cell_renderer_progress,  _clip_type_name_cell_renderer_progress,  _gtk_type_cell_renderer_progress,  _gtk_type_cell_renderer, NULL);
+#endif
 	return 0;
 }
 
@@ -173,4 +188,65 @@ err:
 	return 1;
 }
 
+#endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_CELLRENDERERSTOPEDITING(ClipMachine * cm)
+{
+        C_object *ccell = _fetch_co_arg(cm);
+	gboolean  lstop = _clip_parl(cm, 2);
+
+	CHECKCOBJ(ccell, GTK_IS_CELL_RENDERER(ccell->object));
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_cell_renderer_stop_editing(GTK_CELL_RENDERER(ccell->object), lstop);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CELLRENDERERCOMBONEW(ClipMachine * cm)
+{
+	ClipVar *cv       = _clip_spar(cm,1);
+        C_object *ccell;
+        GtkCellRenderer *cell;
+
+	CHECKOPT(1,MAP_t);
+
+	cell = gtk_cell_renderer_combo_new();
+
+	if (cell)
+	{
+		ccell = _list_get_cobject(cm,cell);
+		if (!ccell) ccell = _register_object(cm,cell,GTK_TYPE_CELL_RENDERER_COMBO,cv,NULL);
+		if (ccell) _clip_mclone(cm,RETPTR(cm),&ccell->obj);
+	}
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_CELLRENDERERPROGRESSNEW(ClipMachine * cm)
+{
+	ClipVar *cv       = _clip_spar(cm,1);
+        C_object *ccell;
+        GtkCellRenderer *cell;
+
+	CHECKOPT(1,MAP_t);
+
+	cell = gtk_cell_renderer_progress_new();
+
+	if (cell)
+	{
+		ccell = _list_get_cobject(cm,cell);
+		if (!ccell) ccell = _register_object(cm,cell,GTK_TYPE_CELL_RENDERER_PROGRESS,cv,NULL);
+		if (ccell) _clip_mclone(cm,RETPTR(cm),&ccell->obj);
+	}
+	return 0;
+err:
+	return 1;
+}
 #endif

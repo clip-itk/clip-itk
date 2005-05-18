@@ -1,0 +1,79 @@
+$CLASSNAME$
+	UIRadioButton
+$SUMMARY$
+	Class UIRadioButton.
+$LANG_RU$
+	Класс UIRadioButton.
+$ABOUT$
+	Class of radio button.
+$LANG_RU$
+	Класс кнопки альтернативы.
+$SYNTAX$
+	UIRadioButton(<radiogroup>, <text>)	--> UIRadioButton object.
+$LANG_RU$
+	UIRadioButton(<radiogroup>, <text>)	--> Объект UIRadioButton.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIRadioButton".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIRadioButton".
+
+$METHODNAME$
+	UIRadioButton()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UIRadioButton(<radiogroup>, <text>)	--> UIRadioButton object.
+$ARGUMENTS$
+	<radiogroup>	- Object <link linkend="classuiradiogroup">UIRadioGroup</link>. Radio buttons group.
+	<text>		- String. Radio button label.
+$LANG_RU$
+	<radiogroup>	- Объект <link linkend="classuiradiogroup">UIRadioGroup</link>. Группа кнопок альтернатив.
+	<text>		- Строка. Надпись кнопки альтернативы.
+$ENDMETHOD$
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Set radio button selected/unselected.
+$LANG_RU$
+	Сделать кнопку альтернативы выбранной/невыбранной.
+$SYNTAX$
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- Boolean. Radio button status.
+$LANG_RU$
+	<value>		- Логическое значение. Статус кнопки альтернативы.
+$ENDMETHOD$
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get radio button status.
+$LANG_RU$
+	Вернуть состояние кнопки альтернативы.
+$SYNTAX$
+	getValue()	--> <lStatus>
+$RETURNS$
+	Radio button status. Type of returned value is boolean.
+$LANG_RU$
+	Состояние кнопки альтернативы. Тип возвращаемого значения: логическое значение.
+$ENDMETHOD$
+
+$EXAMPLES$
+	rg := UIRadioGroup()
+	grid:add(rg:addButton("button1"))
+	grid:add(rg:addButton("button2"))
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+	UIRADIOGROUP
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

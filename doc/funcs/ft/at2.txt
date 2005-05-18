@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Find position of the nth occurrence of a substring
 $SYNTAX$
-   FT_AT2( <cSearch>, <cTarget> [, <nOccurs> [, <lCaseSens> ] ] ) -> nPos
+   FT_AT2( <cSearch>, <cTarget> [, <nOccurs> [, <lCaseSens> ] ] ) --> nPos
 $ARGUMENTS$
    <cSearch> is the character substring to search for.
 

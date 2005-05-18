@@ -4,7 +4,22 @@ set optimize level to 2
 set exclusive off
 
 oDep01 := coDepository():new("ACC0101","sdfsd")
+? oDep01:error
 oDep01:open()
+oDict01 := oDep01:dictionary()
+? oDict01:lockID("ACC010000001")
+? oDict01:lockID("ACC010000002")
+inkey(0)
+? oDict01:unLockID("ACC010000001")
+?
+return
+
+? oDict01:loadModule("asdfasdf")
+? oDict01:getModule("asdfasdf")
+? oDict01:loadModule("trans_opl")
+? oDict01:getModule("trans_opl")
+?
+return
 
 outlog(__FILE__,__LINE__,"aaaaa")
 obj:=oDep01:getValue("ACC010108E25")

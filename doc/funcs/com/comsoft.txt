@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Запрашивает статус или устанавливает программное управление потоком (XON/XOFF).
 $SYNTAX$
-	lOldHandshake := COM_SOFT(<nComPort>,[<lNewHandshake>],[<cXONchar>],[<cXOFFchar>])
+	COM_SOFT(<nComPort>,[<lNewHandshake>],[<cXONchar>],[<cXOFFchar>]) -->  lOldHandshake
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N) for which the software handshake is set.
 	<lNewHandshake> - Designates whether the handshake is on (.T.) or off (.F.). If this parameter is omitted, the function returns the current setting.

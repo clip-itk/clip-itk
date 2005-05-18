@@ -6,7 +6,7 @@ $ONELINER$
    Get the no. of records in the currently selected text file
 $SYNTAX$
 
-   FT_FLASTRE() -> nLastRecordNum
+   FT_FLASTRE() --> nLastRecordNum
 
 $ARGUMENTS$
 

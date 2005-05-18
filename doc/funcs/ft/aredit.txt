@@ -6,7 +6,7 @@ $ONELINER$
    2 dimensional array editing function using TBrowse
 $SYNTAX$
    FT_AREDIT( <nTop>, <nLeft>, <nBottom>, <nRight>, <Array Name>, ;
-      <nElem>, <aHeadings>, <aBlocks> [, <bGetFunc> ] ) -> xElement
+      <nElem>, <aHeadings>, <aBlocks> [, <bGetFunc> ] ) --> xElement
 $ARGUMENTS$
    <nTop>, <nLeft>, <nBottom>, <nRight> are coordinates for TBrowse
 

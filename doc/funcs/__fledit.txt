@@ -11,7 +11,7 @@ $SUMMARY$
    Вибира╨ з масиву структури DBStruct()) елементи, яки вказанЁ в
 списку.
 $SYNTAX$
-  __Fledit( <aSrc>, <aList>) -> <aSelected>
+  __Fledit( <aSrc>, <aList>) --> <aSelected>
 $ARGUMENTS$
    <aSrc> The initial array keeping all possible field's descriptions.
    <aList> The Array keeping all fields to check.

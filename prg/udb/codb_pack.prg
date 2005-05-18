@@ -52,7 +52,7 @@ local mFiles := {;
 		j := at(":",list[i])
 		name := left(list[i],j-1)
 		obj := dList:getValue(name)
-		if !empty(obj:path)
+		if obj:type=="DBF" .and. !empty(obj:path)
 			aadd(paths,obj:path)
 		endif
 	next

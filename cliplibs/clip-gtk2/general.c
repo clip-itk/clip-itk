@@ -600,3 +600,56 @@ clip_GTK_VERSION(ClipMachine * cm)
 	return 0;
 }
 
+/* g_ObjectGet(object, property_name, property_type)--> property_value */
+/* property_type - one of CLIP_G_TYPE... */
+int
+clip_G_OBJECTGET(ClipMachine * cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+	C_object *cobj = _fetch_co_arg(cm);
+        gchar    *name = _clip_parc(cm, 2);
+        gint      type = _clip_parni(cm, 3);
+
+	CHECKARG(2, CHARACTER_t);
+        CHECKARG(3, NUMERIC_t);
+
+        GObject  *gobj ;
+        gint         i ;
+        gboolean     b ;
+        gchar       *c ;
+        gdouble      d ;
+
+	if (cwid->objtype == GTK_OBJ_WIDGET)
+        	gobj = G_OBJECT(cwid->widget);
+	else
+        	gobj = G_OBJECT(cobj->object);
+
+	switch (type)
+        {
+        	case CLIP_G_TYPE_INT:
+			g_object_get(gobj, name, &i, NULL);
+                        _clip_retni(cm, i);
+                        break;
+        	case CLIP_G_TYPE_DOUBLE:
+			g_object_get(gobj, name, &d, NULL);
+                        _clip_retnd(cm, d);
+                        break;
+                case CLIP_G_TYPE_STRING:
+			g_object_get(gobj, name, &c, NULL);
+                        LOCALE_FROM_UTF(c);
+                        _clip_retc(cm, c);
+                        FREE_TEXT(c);
+                        g_free(c);
+                        break;
+                case CLIP_G_TYPE_BOOLEAN:
+			g_object_get(gobj, name, &b, NULL);
+                        _clip_retnl(cm, b);
+                        break;
+        }
+	return 0;
+err:
+	return 1;
+}
+
+
+

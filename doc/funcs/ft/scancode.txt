@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Wait for keypress and return keyboard scan code
 $SYNTAX$
-   FT_SCANCODE() -> cCode
+   FT_SCANCODE() --> cCode
 $ARGUMENTS$
    None
 $RETURNS$

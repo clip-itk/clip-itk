@@ -476,7 +476,7 @@ static function _dep_id4PrimaryKey(self,classname,keyName,keyValue,lList)
 return ret
 ************************************************************
 static function _dep__GetValue(self,objId,nLocks)
-	local ret:=map(),idxData,oExt,class_desc
+	local i:=0,ret:=map(),idxData,oExt,class_desc
 
 	self:error := ""
 	if !(valtype(objId) =="C")
@@ -497,9 +497,17 @@ static function _dep__GetValue(self,objId,nLocks)
 	oExt := self:extentOpen(idxData:extent_id)
 	if oExt == NIL
 		return ret
-	else
-		ret := oExt:getValue(objId,nLocks,idxData:version)
 	endif
+
+	while (i++) < 10
+		ret := oExt:getValue(objId,nLocks,idxData:version)
+		if valtype(ret) == "O" .and. "CLASS_ID" $ ret
+			exit
+		endif
+		outlog(__FILE__,__LINE__,"Undefined problem for loading object:",objId)
+		sleep(0.02)
+	enddo
+
 	if valtype(ret) != "O"
 		ret := map()
 		ret:id := objId
@@ -517,6 +525,10 @@ static function _dep__GetValue(self,objId,nLocks)
 		endif
 		ret:__version := idxData:version
 		ret:__crc32   := idxData:crc32
+	endif
+	if "CLASS_ID" $ ret
+	else
+		return map()
 	endif
 	if len(self:__objCache) > CODB_DEP_CACHE
 		codb_cache_minimize(self:__objCache, CODB_DEP_CACHE/4 )

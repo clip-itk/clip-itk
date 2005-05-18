@@ -6,7 +6,7 @@
      Read a string of bytes from memory
  $SYNTAX$
 
-     fn_PeekStr( <nSegment>, <nOffset>, <nLength> ) -> cBinStr
+     fn_PeekStr( <nSegment>, <nOffset>, <nLength> ) --> cBinStr
 
  $ARGUMENTS$
 
@@ -57,7 +57,7 @@
      Write a string of bytes to memory
  $SYNTAX$
 
-     fn_PokeStr( <nSegment>, <nOffset>, <cBinStr> ) -> NIL
+     fn_PokeStr( <nSegment>, <nOffset>, <cBinStr> ) --> NIL
 
  $ARGUMENTS$
 
@@ -74,10 +74,10 @@
  $DESCRIPTION$
 
      Use this function to perform memory write to a contiguous block of
-     memory.  
+     memory.
 
      If you plan to perform consecutive memory write to memory, for
-     instance in copying an array of binary strings to memory, pass 
+     instance in copying an array of binary strings to memory, pass
      <nOffset> by reference to keep it updated in the calling routine.
 
  $EXAMPLES$

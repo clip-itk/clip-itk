@@ -6,7 +6,7 @@ $ONELINER$
    Determine if user is on functioning NetWare node
 $SYNTAX$
 
-   fn_isNet() -> nStatus
+   fn_isNet() --> nStatus
 
 $ARGUMENTS$
 
@@ -27,7 +27,7 @@ $RETURNS$
 $DESCRIPTION$
 
    fn_isNet() provides a simple way to determine if the user
-   running your program is logged in.  if fn_isNet() == 0, 
+   running your program is logged in.  if fn_isNet() == 0,
    she's in.
 
 $EXAMPLES$

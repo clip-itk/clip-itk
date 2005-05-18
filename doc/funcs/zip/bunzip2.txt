@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Распаковывает строку по BZIP2 алгоритму.
 $SYNTAX$
-	cResult := bUnZip2(<cData>)
+	bUnZip2(<cData>) --> cResult
 $LANG_RU$
 $ARGUMENTS$
 	<cData> - data for uncompress.

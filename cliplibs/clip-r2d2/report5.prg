@@ -400,6 +400,8 @@ local cashe:=map()
 			endif
 			//outlog(__FILE__,__LINE__,tmp,post_objs[i])
 			post_objs[tmp]:summa += post_objs[i]:summa
+			post_objs[tmp]:dquantity += post_objs[i]:dquantity
+			post_objs[tmp]:kquantity += post_objs[i]:kquantity
 			adel(post_objs,i)
 			asize(post_objs,len(post_objs)-1)
 		next
@@ -443,7 +445,7 @@ local cashe:=map()
 			? '	<td valign="top"  align="right">'+str(0.00,14,2)+' </td>'
 		endif
 #ifdef USE_DOCUMENT
-		? '	<td font="size"   align="left"  >'+codb_essence(post:primary_document)+' </td>'
+		? '	<td font="size"   align="left"  ><span>'+codb_essence(post:primary_document)+'</span> <span>'+codb_essence(post:document_record)+'</span> </td>'
 #else
 		subj_desc := codb_getValue(subj)
 		obj_desc := codb_getValue(obj)

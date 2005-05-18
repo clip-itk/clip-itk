@@ -3,9 +3,8 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Authors: 								   */
-/*  	     Andrey Cherepanov <sibskull@mail.ru>			   */
+/*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   Last change: 17 Feb 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -38,6 +37,7 @@ function initGTKDriver()
 	drv:closeMainWindow	:= @ui_closeMainWindow()
 	drv:showWindow		:= @ui_showWindow()
 	drv:setCaption		:= @ui_setCaption()
+	drv:setChildCaption	:= @ui_setChildCaption()
 	drv:setPanels		:= @ui_setPanels()
 	drv:setGeometry		:= @ui_setGeometry()
 	drv:getGeometry		:= @ui_getGeometry()
@@ -47,6 +47,7 @@ function initGTKDriver()
 	drv:setFocus		:= @ui_setFocus()
 	drv:setDefault		:= @ui_setDefault()
 	drv:setKeyEvent		:= @ui_setKeyEvent()
+	drv:setModal		:= @ui_setModal()
 
 	/* Menu */
 	drv:createMenuBar	:= @ui_createMenuBar()
@@ -121,6 +122,11 @@ function initGTKDriver()
 	/* ComboBox*/
 	drv:createComboBox	:= @ui_createComboBox()
 	drv:setComboBoxList	:= @ui_setComboBoxList()
+	drv:setComboBoxValueInList := @ui_setComboBoxValueInList()
+	
+	/* RadioGroup and RadioButton */
+ 	drv:createRadioGroup  := @ui_createRadioGroup()
+	drv:createRadioButton := @ui_createRadioButton()
 
 	/* CheckBox */
 	drv:createCheckBox	:= @ui_createCheckBox()
@@ -148,7 +154,33 @@ function initGTKDriver()
 	/* Timer */
 	drv:startTimer		:= @ui_startTimer()
 	drv:stopTimer		:= @ui_stopTimer()
-			
+		
+	/* Color */
+	drv:colorParse		:= @ui_colorParse()
+		
+	/* ProgressBar */
+	drv:createProgressBar 	:= @ui_createProgressBar()
+	drv:setProgressBarPercent := @ui_setProgressBarPercent()
+
+        /* Layout */
+       	drv:createLayout         := @ui_createLayout()
+        drv:addLayout            := @ui_addLayout()
+        drv:moveLayout           := @ui_moveLayout()
+
+        /* Slider */
+        drv:createSlider        := @ui_createSlider()
+        drv:setSliderRange      := @ui_setSliderRange()
+        drv:setSliderStep       := @ui_setSliderStep()
+
+        /* Calendar */
+        drv:showCalendar        := @ui_showCalendar()
+
+        /* FileName Dialog */
+        drv:selectFileName      := @ui_selectFileName()
+
+        /* Color Dialog */
+        drv:selectColor 	:= @ui_selectColor()
+
 return drv
 
 function getGTKDriver( params )
@@ -160,9 +192,9 @@ return drv
 
 /** Application **/
 
-static function ui_createInstance( self )
+static function ui_createInstance( self, params )
 	loadlib("libclip-gtk")
-	gtk_init()
+	clipa("gtk_init", params)
 return map()
 
 static function ui_run( self, ws )
@@ -255,6 +287,15 @@ static function ui_setCaption( self, window, caption )
 	gtk_windowSetTitle( window, caption )
 return 0
 
+static function ui_setChildCaption( self, window, caption )
+	local n, w
+	n := ascan(window:parent:childs, {|e| e:idWindow == window:idWindow })
+	if n > 0
+		w := gtk_NotebookGetNthPage(window:parent:childSpace, n) 
+		gtk_NotebookSetTabLabel(window:parent:childSpace, w, caption)
+	endif
+return 0
+
 static function ui_setPanels( self, window, menu, toolBar, statusBar )
 	local frame
 	if .not. empty(menu)
@@ -333,7 +374,8 @@ static function ui_setWindowPlacement( self, window, centered )
 return 0
 
 static function ui_setWindowIcon( self, window, pic )
- 	gtk_WindowSetIconPixmap( window, pic )
+ 	gtk_WidgetRealize( window )
+	gtk_WindowSetIconPixmap( window, pic )
 return 0
 
 static function ui_getCurrentChild(self, window)
@@ -346,12 +388,14 @@ static function ui_setFocus(self, window, widget)
 return NIL
 
 static function ui_setDefault(self, window, widget)
-	local action, s:=map()
 	gtk_WindowSetDefault(window, widget)
-//	s:FG_color := UIColor("green")
-//	gtk_WidgetSetStyle(widget, s)
 	window:setFocus( widget )
-	//TODO: setDefault(): no border for default button
+return NIL
+
+static function ui_setModal(self, window, modal)
+	if window:className == 'UIWindow' 
+		gtk_WindowSetModal(window, modal)
+	endif
 return NIL
 
 /** Menu **/
@@ -611,7 +655,7 @@ static function ui_createVBox(self, window, spacing, padding)
 	if valtype( window )=="O" .and. "USERSPACE" $ window
 		if empty( window:userSpace )
 			o := gtk_VBoxNew(,.F., spacing)
-			obj := gtk_alignmentNew( , 0, 0, 1, 1 ) 
+			obj := gtk_alignmentNew( , 0, 0, 1, 1 )
 			o:layout := obj
 			gtk_ContainerSetBorderWidth( o, padding )
 			gtk_ContainerAdd( window, obj )
@@ -621,7 +665,7 @@ static function ui_createVBox(self, window, spacing, padding)
   	else
 		o := gtk_VBoxNew(,.F., spacing)
 		gtk_ContainerSetBorderWidth( o, padding )
-		obj := gtk_alignmentNew( , 0, 0, 1, 1 ) 
+		obj := gtk_alignmentNew( , 0, 0, 1, 1 )
 		o:layout := obj
 		if .not. empty(window)
 			if window:className=="UIHBox" .or. window:className=="UIVBox"
@@ -636,7 +680,7 @@ return o
 static function ui_createHBox(self, window, spacing, padding)
 	local o, obj
 	o := gtk_HBoxNew(,.F., spacing)
-	obj := gtk_alignmentNew( , 0, 0, 1, 1 ) 
+	obj := gtk_alignmentNew( , 0, 0, 1, 1 )
 	o:layout := obj
 	gtk_ContainerSetBorderWidth( o, padding )
 	if .not. empty(window)
@@ -675,7 +719,7 @@ static function ui_addBox(self, box, obj, expand, fill, padding)
 		if "RIGHT" $ obj:stick .and. .not. empty(obj:stick:right)
 			gtk_BoxPackEnd( hBox, obj:stick:right, .F., .F., padding)
 		endif
-	else	
+	else
 		gtk_BoxPackStart( box, obj, expand, fill, padding)
 	endif
 return 0
@@ -707,7 +751,7 @@ static function ui_addBoxEnd(self, box, obj, expand, fill, padding)
 		if "RIGHT" $ obj:stick .and. .not. empty(obj:stick:right)
 			gtk_BoxPackEnd( hBox, obj:stick:right, .F., .F., padding)
 		endif
-	else	
+	else
 		gtk_BoxPackEnd( box, obj, expand, fill, padding)
 	endif
 return 0
@@ -759,6 +803,9 @@ static function ui_addGrid(self, box, obj, pos, h_expand, v_expand)
         r := iif(len(rw)==2,val(rw[2]),l)
 	if "LAYOUT" $ obj
 		gtk_ContainerAdd( obj:layout, obj )
+		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
+			gtk_ContainerAdd( obj:layout, obj:edit )
+		endif
 		obj := obj:layout
 	endif
 	if "STICK" $ obj .and. valtype(obj:stick) == "O"
@@ -779,7 +826,7 @@ static function ui_addGrid(self, box, obj, pos, h_expand, v_expand)
 		if "RIGHT" $ obj:stick .and. .not. empty(obj:stick:right)
 			gtk_BoxPackEnd( hBox, obj:stick:right, .F., .F., padding)
 		endif
-	else	
+	else
 		gtk_TableAttach( box, obj, l, r+1, t, b+1, hflags, vflags, box:padding*2, box:padding )
 	endif
 return NIL
@@ -797,7 +844,7 @@ static function ui_setBoxAlignment(self, box, align, valign)
 	align  :=iif(valtype(align) != 'N', 0, align)
 	valign :=iif(valtype(valign) != 'N', 0, valign)
 	
-	gtk_alignmentSet( box:layout, align/2, valign/2, 0.01, 0.01 ) 
+	gtk_alignmentSet( box:layout, align/2, valign/2, 0.01, 0.01 )
 		
 return NIL
 
@@ -812,7 +859,8 @@ static function ui_createSplitter(self, type)
 		o := gtk_VPanedNew()
 	else
 		o := gtk_HPanedNew()
-	endif		
+	endif
+	gtk_PanedSetPosition(o, 100)
 return o
 
 /* Add widget to left/top pane */
@@ -820,6 +868,9 @@ static function ui_addSplitPane(self, pane, obj)
 	local vBox, hBox
 	if "LAYOUT" $ obj
 		gtk_ContainerAdd( obj:layout, obj )
+		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
+			gtk_ContainerAdd( obj:layout, obj:edit )
+		endif
 		obj := obj:layout
 	endif
 	if "STICK" $ obj .and. valtype(obj:stick) == "O"
@@ -840,7 +891,7 @@ static function ui_addSplitPane(self, pane, obj)
 		if "RIGHT" $ obj:stick .and. .not. empty(obj:stick:right)
 			gtk_BoxPackEnd( hBox, obj:stick:right, .F., .F.)
 		endif
-	else	
+	else
 		gtk_PanedAdd1(pane, obj)
 	endif
 return NIL
@@ -850,6 +901,9 @@ static function ui_addSplitPaneEnd(self, pane, obj)
 	local vBox, hBox
 	if "LAYOUT" $ obj
 		gtk_ContainerAdd( obj:layout, obj )
+		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
+			gtk_ContainerAdd( obj:layout, obj:edit )
+		endif
 		obj := obj:layout
 	endif
 	if "STICK" $ obj .and. valtype(obj:stick) == "O"
@@ -870,7 +924,7 @@ static function ui_addSplitPaneEnd(self, pane, obj)
 		if "RIGHT" $ obj:stick .and. .not. empty(obj:stick:right)
 			gtk_BoxPackEnd( hBox, obj:stick:right, .F., .F.)
 		endif
-	else	
+	else
 		gtk_PanedAdd2(pane, obj)
 	endif
 return NIL
@@ -884,7 +938,7 @@ return NIL
 /** Button **/
 
 static function ui_createButton(self, label, action)
-	local o 
+	local o
 	if valtype(label) != "C"
 		label:=""
 	endif
@@ -904,33 +958,38 @@ return 0
 /** Table **/
 
 static function ui_createTable(self, columns)
-	local o,i
+	local o, i, frame
+	frame := gtk_ScrolledWindowNew()
+	gtk_ScrolledWindowSetPolicy( frame, GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC )
+	
 	o := gtk_CListNew(,len(columns),columns)
 	gtk_CListSetSelectionMode( o, GTK_SELECTION_BROWSE )
 	if valtype(columns) == 'A'
-		// TODO: need more clever resizing
 		for i=1 to len(columns)
 			gtk_CListSetColumnAutoResize(o, i)
 		next
 	endif
+	o:layout := frame
 return o
 
 static function ui_addTableRow(self, table, data)
-	local row, c
-	gtk_CListAppend( table, data)
-	row := len(table:rows)+1
+	local row, node:=map()
+	node:id := gtk_CListAppend( table, data)
+	row := len(mapkeys(table:nodes))+1
         if row%2==0 .and. .not. empty(table:altRowColor)
 		gtk_CListSetBackground(table,row,table:altRowColor)
 	endif
-return NIL
+return node
 
 static function ui_clearTable(self, table)
 	gtk_CListClear( table )
 return NIL
 
 static function ui_getTableSelection(self, table)
-	local a:=gtk_CListGetSelection( table )
-return iif(len(a)==0,0,a[1])
+	local sel
+	sel := gtk_CListGetSelection( table )
+	// TODO: wrong number (1 instead 0)
+return sel[1]-1
 
 static function ui_setTableSelectAction( self, table, action )
 	self:setAction( table, GTK_2BUTTON_PRESS, action )
@@ -952,15 +1011,13 @@ static function ui_createEdit(self, defValue)
 return o
 
 static function ui_createEditText(self, defValue)
-	local o, vScroll, layout
-	vScroll := gtk_VScrollBarNew()
-	o := gtk_TextNew(,,gtk_RangeGetAdjustment(vScroll))
-//	o := gtk_TextNew()
-//	vScroll := gtk_VScrollBarNew(gtk_TextGetVAdjustment(o))
+	local o, frame
+	frame := gtk_ScrolledWindowNew()
+	gtk_ScrolledWindowSetPolicy( frame, GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC )
+	
+	o := gtk_TextNew()
 	gtk_TextSetEditable(o, .T.)
-	// TODO: scroll by mouse only works only on scrollbar
-	o:stick := map()
-	o:stick:right := vScroll
+	o:layout := frame
 return o
 
 static function ui_editSetReadOnly(self, o, flag)
@@ -1020,9 +1077,7 @@ return NIL
 static function ui_createComboBox(self, values)
 	local o
 	o := gtk_ComboNew()
-	if valtype(values) == 'A'
-		gtk_ComboSetPopDownStrings(o, values)
-	endif
+	self:setComboBoxList(o, values)
 return o
 
 static function ui_setComboBoxList(self, o, values)
@@ -1031,6 +1086,21 @@ static function ui_setComboBoxList(self, o, values)
 	endif
 return o
 
+static function ui_setComboBoxValueInList(self, o, flag)
+	gtk_ComboSetValueInList(o, flag, .F.)
+return o
+
+/** RadioGroup **/
+// Create radio group
+static function ui_createRadioGroup(self)
+	local o:= gtk_RadioGroupNew()
+return o
+
+/** RadioButton **/
+// Create radio button
+static function ui_createRadioButton(self, rg, text)
+	local o:= gtk_RadioButtonNew(, rg, text)
+return o
 
 /** CheckBox **/
 static function ui_createCheckBox(self, value, label)
@@ -1043,18 +1113,27 @@ static function ui_createCheckBox(self, value, label)
 return o
 
 /** Values **/
-static function ui_setValue(self, o, value)
+static function ui_setValue(self, o, value, append)
 	local a
+	
+	append := iif( valtype(append) == 'L' .and. append, .T., .F. )
 	switch o:className
                 case "UILabel"
 			o:setValue( value )
+		
 		case "UIEdit"
-			gtk_EntrySetText( o, value )
+			if append
+				gtk_EntryAppendText( o, value )
+			else
+				gtk_EntrySetText( o, value )
+			endif
 
 		case "UIEditText"
-			gtk_TextSetPoint( o, 0 )
-			gtk_TextForwardDelete( o, gtk_TextGetLength( o ))
-			
+			if .not. append
+				gtk_TextSetPoint( o, 0 )
+				gtk_TextForwardDelete( o, gtk_TextGetLength( o ))
+			endif
+							
 			gtk_TextFreeze(o)
 			gtk_TextInsert( o, value, UIFont():font )
 			gtk_TextThaw(o)
@@ -1069,6 +1148,13 @@ static function ui_setValue(self, o, value)
 		case "UICheckBox"
 			gtk_ToggleButtonSetActive( o, value)
 
+		case "UIRadioButton"
+			gtk_ToggleButtonSetActive( o, value)
+
+                case "UISlider"
+                        a := gtk_ScaleGetAdjustment(o)
+                        gtk_AdjustmentSetValue(a, val(value))
+                        
 		otherwise
                         ?? "ERROR: couldn't set value to non-valued widget: "+o:className+CHR(10)
 			return NIL
@@ -1087,29 +1173,7 @@ static function ui_setStyle(self, o, style, value, element)
 		font := UIFont()
 		st:font := font:font
 	endif
-/*	
-struct GtkStyle
-{
-  GtkStyleClass *klass;
-
-  GdkColor fg[5];
-  GdkColor bg[5];
-  GdkColor light[5];
-  GdkColor dark[5];
-  GdkColor mid[5];
-  GdkColor text[5];
-  GdkColor base[5];
-  GdkColor black;
-  GdkColor white;
-  
-  GdkFont *font;
-  
-  GdkPixmap *bg_pixmap[5];
-};	
 	
-	
-	
-*/	
 	// Alignment
 	if style == "align"
 		align := map()
@@ -1150,7 +1214,7 @@ struct GtkStyle
 	endif
 	
 	// Background picture
-	if style == "background"
+	if style == "background" // TODO: doesn't work with UIEdit
 		st:bg_pixmap := UIImage( value )
 		gtk_WidgetSetStyle(o, st)
 		return .T.
@@ -1179,6 +1243,13 @@ static function ui_getValue(self, o)
 		case "UICheckBox"
                 	val := gtk_ToggleButtonGetActive( o )
 
+		case "UIRadioButton"
+                	val := gtk_ToggleButtonGetActive( o )
+
+                case "UISlider"
+                        a := gtk_ScaleGetAdjustment(o)
+                        gtk_AdjustmentGetValue(a, @val)
+                        
 		otherwise
                         ?? "ERROR: couldn't get value from non-valued widget: "+o:className+CHR(10)
 			val := NIL
@@ -1280,7 +1351,7 @@ return oKey
 
 static function ui_conversionLetter( letter )
 	local i, l
-	local al_ru := "áâ÷çäå³öúéêëìíîïðòóôõæèãþûýÿùøüàñ"
+	local al_ru := "?????????????????????????????????"
 	local al_tr := "F,DULT`;PBQRKVYJGHCNEA[WXIO]SM'.Z"
 	
 	l := upper(letter)
@@ -1291,71 +1362,71 @@ static function ui_conversionKey(nCode)
 	local nNewCode := nCode
 	
 	switch nCode
-		case 1040, 1072 // 'Á', 'á'
+		case 1040, 1072 // '?', '?'
 			nNewCode := GDK_Cyrillic_a
-		case 1041, 1073 // 'Â', 'â'
+		case 1041, 1073 // '?', '?'
 			nNewCode := GDK_Cyrillic_be
-		case 1042, 1074 // '×', '÷'
+		case 1042, 1074 // '?', '?'
 			nNewCode := GDK_Cyrillic_ve
-		case 1043, 1075 // 'Ç', 'ç'
+		case 1043, 1075 // '?', '?'
 			nNewCode := GDK_Cyrillic_ghe
-		case 1044, 1076 // 'Ä', 'ä'
+		case 1044, 1076 // '?', '?'
 			nNewCode := GDK_Cyrillic_de
-		case 1045, 1077 // 'Å', 'å'
+		case 1045, 1077 // '?', '?'
 			nNewCode := GDK_Cyrillic_je
-		case 1025, 1105 // '£', '³'
+		case 1025, 1105 // '?', '?'
 			nNewCode := GDK_Cyrillic_io
-		case 1046, 1078 // 'Ö', 'ö'
+		case 1046, 1078 // '?', '?'
 			nNewCode := GDK_Cyrillic_zhe
-		case 1047, 1079 // 'Ú', 'ú'
+		case 1047, 1079 // '?', '?'
 			nNewCode := GDK_Cyrillic_ze
-		case 1048, 1080 // 'É', 'é'
+		case 1048, 1080 // '?', '?'
 			nNewCode := GDK_Cyrillic_i
-		case 1049, 1081 // 'Ê', 'ê'
+		case 1049, 1081 // '?', '?'
 			nNewCode := GDK_Cyrillic_shorti
-		case 1050, 1082 // 'Ë', 'ë'
+		case 1050, 1082 // '?', '?'
 			nNewCode := GDK_Cyrillic_ka
-		case 1051, 1083 // 'Ì', 'ì'
+		case 1051, 1083 // '?', '?'
 			nNewCode := GDK_Cyrillic_el
-		case 1052, 1084 // 'Í', 'í'
+		case 1052, 1084 // '?', '?'
 			nNewCode := GDK_Cyrillic_em
-		case 1053, 1085 // 'Î', 'î'
+		case 1053, 1085 // '?', '?'
 			nNewCode := GDK_Cyrillic_en
-		case 1054, 1086 // 'Ï', 'ï'
+		case 1054, 1086 // '?', '?'
 			nNewCode := GDK_Cyrillic_o
-		case 1055, 1087 // 'Ð', 'ð'
+		case 1055, 1087 // '?', '?'
 			nNewCode := GDK_Cyrillic_pe
-		case 1056, 1088 // 'Ò', 'ò'
+		case 1056, 1088 // '?', '?'
 			nNewCode := GDK_Cyrillic_er
-		case 1057, 1089 // 'Ó', 'ó'
+		case 1057, 1089 // '?', '?'
 			nNewCode := GDK_Cyrillic_es
-		case 1058, 1090 // 'Ô', 'ô'
+		case 1058, 1090 // '?', '?'
 			nNewCode := GDK_Cyrillic_te
-		case 1059, 1091 // 'Õ', 'õ'
+		case 1059, 1091 // '?', '?'
 			nNewCode := GDK_Cyrillic_u
-		case 1060, 1092 // 'Æ', 'æ'
+		case 1060, 1092 // '?', '?'
 			nNewCode := GDK_Cyrillic_ef
-		case 1061, 1093 // 'È', 'è'
+		case 1061, 1093 // '?', '?'
 			nNewCode := GDK_Cyrillic_ha
-		case 1062, 1094 // 'Ã', 'ã'
+		case 1062, 1094 // '?', '?'
 			nNewCode := GDK_Cyrillic_tse
-		case 1063, 1095 // 'Þ', 'þ'
+		case 1063, 1095 // '?', '?'
 			nNewCode := GDK_Cyrillic_che
-		case 1064, 1096 // 'Û', 'û'
+		case 1064, 1096 // '?', '?'
 			nNewCode := GDK_Cyrillic_sha
-		case 1065, 1097 // 'Ý', 'ý'
+		case 1065, 1097 // '?', '?'
 			nNewCode := GDK_Cyrillic_shcha
-		case 1066, 1098 // 'ß', 'ÿ'
+		case 1066, 1098 // '?', '?'
 			nNewCode := GDK_Cyrillic_hardsign
-		case 1067, 1099 // 'Ù', 'ù'
+		case 1067, 1099 // '?', '?'
 			nNewCode := GDK_Cyrillic_yeru
-		case 1068, 1100 // 'Ø', 'ø'
+		case 1068, 1100 // '?', '?'
 			nNewCode := GDK_Cyrillic_softsign
-		case 1069, 1101 // 'Ü', 'ü'
+		case 1069, 1101 // '?', '?'
 			nNewCode := GDK_Cyrillic_e
-		case 1070, 1102 // 'À', 'à'
+		case 1070, 1102 // '?', '?'
 			nNewCode := GDK_Cyrillic_yu
-		case 1071, 1103 // 'Ñ', 'ñ'
+		case 1071, 1103 // '?', '?'
 			nNewCode := GDK_Cyrillic_ya
 	end switch
 return nNewCode
@@ -1377,7 +1448,10 @@ return NIL
 /** Tree **/
 
 static function ui_createTree(self, nTreeColumn, acNameColumns)
-	local o,i
+	local o, i, frame
+	frame := gtk_ScrolledWindowNew()
+	gtk_ScrolledWindowSetPolicy( frame, GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC )
+	
 	nTreeColumn := iif(empty(nTreeColumn),1,nTreeColumn)
 	o := gtk_CTreeNew(, len(acNameColumns), nTreeColumn, acNameColumns)
 	o:currentNode := NIL
@@ -1395,6 +1469,7 @@ static function ui_createTree(self, nTreeColumn, acNameColumns)
 			gtk_CListSetColumnAutoResize(o, i)
 		next
 	endif
+	o:layout := frame
 return o
 
 static function ui_setTreeSelectAction( self, tree, action )
@@ -1404,24 +1479,22 @@ static function ui_setTreeSelectAction( self, tree, action )
 return
 
 static function ui_getTreeSelection(self, tree)
-	local i, l:=len(tree:nodes), h
 	if tree:currentNode != NIL
-		h := tree:currentNode:handle
-		for i=1 to l
-			if tree:nodes[i]:handle == h
-				return i
-			endif
-		next
+		return tree:currentNode:handle
 	endif
 return NIL
 
 static function ui_addTreeNode(self, tree, parent, sibling, columns, expanded)
-	local node
-	node := gtk_CTreeInsertNode(tree, parent, sibling, columns,,,, .F., expanded)
+	local node, item:=map(), p, s
+	p := iif(empty(parent),NIL,parent:id)
+	s := iif(empty(sibling),NIL,sibling:id)
+	node := gtk_CTreeInsertNode(tree, p, s, columns,,,, .F., expanded)
 	if len(tree:nodes) == 0
 		tree:currentNode := node
 	endif
-return node
+	item := node
+	item:id := node:handle
+return item
 
 static function ui_clearTree(self, tree)
 	gtk_CListClear( tree )
@@ -1446,3 +1519,172 @@ return id
 static function ui_stopTimer(self, id)
 	gtk_timeoutRemove( id )
 return NIL
+
+static function ui_colorParse(self, color)
+return gdk_ColorParse(color)
+
+/** ProgressBar **/
+static function ui_createProgressBar(self, text)
+	local pb := gtk_ProgressBarNew()
+	if text != nil
+		text := strtran(text, "%", "%%")
+		gtk_ProgressSetShowText(pb, .t.)
+		gtk_ProgressSetFormatString(pb, text)
+	endif
+return pb
+
+static function ui_setProgressBarPercent(self, pb, percent, text)
+	gtk_ProgressSetPercentage(pb, percent)
+	if text != nil
+		text := strtran(text, "%", "%%")
+		gtk_ProgressSetShowText(pb, .t.)
+		gtk_ProgressSetFormatString(pb, text)
+	endif
+return .T.
+
+/** Layout **/
+static function ui_createLayout(self)
+        local fb := gtk_FixedNew()
+return fb
+
+static function ui_addLayout(self, fb, wd, x, y)
+        gtk_FixedPut(fb, wd, x, y)
+return .T.
+
+static function ui_moveLayout(self, fb, wd, x, y)
+        gtk_FixedMove(fb, wd, x, y)
+return .T.
+
+/** Slider **/
+static function ui_createSlider(self, lower, upper, step)
+        local adj := gtk_Adjustmentnew(,, lower, upper, step, step, 10), obj
+
+        obj := gtk_HScaleNew(, adj)
+        gtk_ScaleSetDigits(obj, 0)
+        gtk_ScaleSetDrawValue(obj, 0)
+
+return obj
+
+static function ui_setSliderRange(self, obj, lower, upper)
+        local value, adj
+        value := self:getValue(obj)
+        adj := gtk_Adjustmentnew(, value, lower, upper, obj:step, obj:step, 10)
+        gtk_ScaleSetAdjustment(obj, adj)
+return .t.
+
+static function ui_setSliderStep(self, obj, step)
+        local value, adj
+        value := self:getValue(obj)
+        adj := gtk_Adjustmentnew(, value, obj:lower, obj:upper, step, step, 10)
+        gtk_ScaleSetAdjustment(obj, adj)
+return .t.
+
+/** Calendar **/
+static function ui_showCalendar(self, caption, date, obj)
+        local cal, dsel, win, o
+        default date to dtoc(date())
+
+	if !("SETVALUE" $ obj .and. valtype(obj:setValue) == "B")
+		return nil
+	endif
+	
+	cal := gtk_CalendarNew()
+	
+	// TODO: need i18n correction for the first week day
+	gtk_CalendarDisplayOptions(cal, GTK_CALENDAR_SHOW_HEADING+;
+					GTK_CALENDAR_SHOW_DAY_NAMES+;
+					GTK_CALENDAR_WEEK_START_MONDAY)
+	dsel := ctod(date)
+	gtk_CalendarSelectMonth(cal,month(dsel),year(dsel))
+	gtk_CalendarSelectDay(cal, day(dsel))
+	gtk_CalendarMarkDay(cal, day(dsel))
+
+	win := gtk_WindowNew( , caption )
+	gtk_ContainerAdd( win, cal )
+	gtk_WindowSetFocus(win, cal)                
+	gtk_WindowSetPosition( win, GTK_WIN_POS_CENTER)
+	gtk_WindowSetModal( win, .T. )
+	
+/*      As popup menu...
+	win := gtk_MenuNew()
+	o := gtk_MenuItemNew()
+	gtk_MenuAppend(win, o)
+	gtk_ContainerAdd( o, cal )
+	gtk_WidgetShowAll( win )
+	
+	self:setAction(win, "selection-done", {|| qout("selection-done"), .F. })
+	self:setAction(win, "activate-current", {|| qout("activate-current"), .F. })
+//	self:setAction(o, "activate-current", {|| qout("activate-current"), .F. })
+*/
+	self:setAction(cal, "day-selected-double-click", {|wd| date := gtk_CalendarGetDate(wd), obj:setValue(date), gtk_WidgetDestroy(win) })
+	self:setAction(cal, "key-press-event", {|wd, e| iif(e:keyval==13, gtk_SignalEmit(cal, "day-selected-double-click"), .T.) })
+
+//	gtk_MenuPopup( win, NIL, NIL, NIL, NIL, obj)
+	gtk_WidgetShowAll( win )
+return date
+
+/** FileName Dialog **/
+static function ui_selectFileName(self, caption, file, obj)
+        local fd
+	if !("SETVALUE" $ obj .and. valtype(obj:setValue) == "B")
+		return nil
+	endif
+	fd := gtk_FileSelectionNew(, caption)
+	if !empty(file)
+		gtk_FileSelectionSetFileName(fd, file)
+	endif
+
+	gtk_WindowSetModal( fd, .T. )
+	
+	gtk_SignalConnect(fd:okbutton, "clicked",;
+	    {|wid,e| file := gtk_FileSelectionGetFileName(fd), obj:setValue(file), gtk_WidgetDestroy(fd)})
+	gtk_SignalConnect(fd:cancelbutton, "clicked", {|wid,e| gtk_WidgetDestroy(fd)})
+
+	gtk_WindowSetPosition( fd, GTK_WIN_POS_CENTER)
+	gtk_WidgetShow(fd)
+
+return fd
+
+/** Color Dialog **/
+static function ui_selectColor(self, caption, color, obj)
+        local cd
+
+	if !("SETVALUE" $ obj .and. valtype(obj:setValue) == "B")
+		return nil
+	endif
+
+	cd := gtk_ColorSelectionDialogNew(, caption)
+	if !empty(color)
+		gtk_ColorSelectionSetColor(cd:colorsel, UIColor(color))
+	endif
+
+	gtk_WindowSetModal( cd, .T. )
+	
+	gtk_SignalConnect(cd:okbutton, "clicked",;
+	    {|wid,e| color := gtk_ColorSelectionGetColor(cd:colorsel),;
+		obj:setValue(conv_color_to_str(color:red, color:green, color:blue)), gtk_WidgetDestroy(cd)})
+	gtk_SignalConnect(cd:cancelbutton, "clicked", {|wid,e| gtk_WidgetDestroy(cd)})
+
+	gtk_WindowSetPosition( cd, GTK_WIN_POS_CENTER)
+	gtk_WidgetShow(cd)
+
+return cd
+
+static function conv_color_to_str(red, green, blue)
+	local color := '#'
+	if red > 0
+		color += ntoc((red + 1) / 256 - 1, 16, 2, '0')
+	else
+		color += '00'
+	endif
+	if green > 0
+		color += ntoc((green + 1) / 256 - 1, 16, 2, '0')
+	else
+		color += '00'
+	endif
+	if blue > 0
+		color += ntoc((blue + 1) / 256 - 1, 16, 2, '0')
+	else
+		color += '00'
+	endif
+return color

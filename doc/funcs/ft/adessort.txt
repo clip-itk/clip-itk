@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Sort an array in descending order
 $SYNTAX$
-   FT_ADESSORT( <aArray> [, <nStartIndex> [, <nEndIndex> ] ] ) -> aSorted
+   FT_ADESSORT( <aArray> [, <nStartIndex> [, <nEndIndex> ] ] ) --> aSorted
 $ARGUMENTS$
    <aArray> is the array to be sorted
 

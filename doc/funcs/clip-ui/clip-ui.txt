@@ -33,7 +33,7 @@ $SUMMARY$
 $LANG_RU$
 	Использовать указанный драйвер.
 $SYNTAX$
-	useDriver(<name>)
+	useDriver(<name>) --> NIL
 $ARGUMENTS$
 	<name>		- String. Driver name.
 $LANG_RU$
@@ -59,18 +59,18 @@ $ARGUMENTS$
 			<itemizedlist mark="bullet">
 			<listitem><para><constant>IMG_EMPTY</constant> &mdash; empty (transparent) pixmap (16x16)</para></listitem>
 			<listitem><para><constant>IMG_OK</constant> &mdash; symbol "i" in blue circle (32x32)</para></listitem>
-			<listitem><para><constant>IMG_INFO</constant> &mdash; symbol "i" in blue circle (32x32)</para></listitem>
 			<listitem><para><constant>IMG_ERROR</constant> &mdash; symbol "x" in red circle (32x32)</para></listitem>
-			<listitem><para><constant>IMG_QUESTION</constant> &mdash; symbol "i" in blue circle (32x32)</para></listitem>
+			<listitem><para><constant>IMG_WARNING</constant> &mdash; yellow triangle with exclamation mark (32x32)</para></listitem>
+			<listitem><para><constant>IMG_QUESTION</constant> &mdash; symbol "?" in blue circle (32x32)</para></listitem>
 			</itemizedlist>
 $LANG_RU$
 	<id>		- Число. Идентификатор предопределённого изображения.
 			<itemizedlist mark="bullet">
 			<listitem><para><constant>IMG_EMPTY</constant> &mdash; пустой (прозрачный) рисунок (16х16)</para></listitem>
 			<listitem><para><constant>IMG_OK</constant> &mdash; символ "i" в синем кружочке (32х32)</para></listitem>
-			<listitem><para><constant>IMG_INFO</constant> &mdash; символ "i" в синем кружочке (32х32)</para></listitem>
 			<listitem><para><constant>IMG_ERROR</constant> &mdash; символ "х" в красном кружочке (32х32)</para></listitem>
-			<listitem><para><constant>IMG_QUESTION</constant> &mdash; символ "i" в синем кружочке (32х32)</para></listitem>
+			<listitem><para><constant>IMG_WARNING</constant> &mdash; жёлтый треугольник с восклицательным знаком (32х32)</para></listitem>
+			<listitem><para><constant>IMG_QUESTION</constant> &mdash; символ "?" в синем кружочке (32х32)</para></listitem>
 			</itemizedlist>
 
 $RETURNS$
@@ -78,7 +78,7 @@ $RETURNS$
 $LANG_RU$
 	Содержимое указанного предопределённого изображения.
 $EXAMPLES$
-	imgContent := getSysImage( IMG_INFO )
+	imgContent := getSysImage( IMG_OK )
 $SEEALSO$
 	UIIMAGE
 $END$

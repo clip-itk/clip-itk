@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Return the current Novell NetWare logical station number
 $SYNTAX$
-   FT_NWLSTAT() -> nStatNum
+   FT_NWLSTAT() --> nStatNum
 $ARGUMENTS$
    None
 $RETURNS$

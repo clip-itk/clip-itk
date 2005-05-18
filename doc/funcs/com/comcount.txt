@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Определяет число доступных символов в буфере приема.
 $SYNTAX$
-	nTotalCharacters := COM_COUNT(<nComPort>)
+	COM_COUNT(<nComPort>) --> nTotalCharacters
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N) for which the number of characters in the input buffer is determined.
 $LANG_RU$

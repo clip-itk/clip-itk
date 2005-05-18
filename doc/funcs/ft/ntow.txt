@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Translate numeric value to words
 $SYNTAX$
-   FT_NTOW( <nNumber> ) -> cWords
+   FT_NTOW( <nNumber> ) --> cWords
 $ARGUMENTS$
    <nNumber>  An integer to translate
 $RETURNS$
@@ -39,7 +39,7 @@ $EXAMPLES$
 	x      := int( x )
   string := iif( x < 0, "Credit of ", "Debit of " )
 	? string + FT_NTOW( abs(x) ) + " Dollars and " + "99/100"
-	     -> Credit of Twenty Three Dollars and 99/100
+	    --> Credit of Twenty Three Dollars and 99/100
 $Author: clip $
    Gary Baren
 $end$

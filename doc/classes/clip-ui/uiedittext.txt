@@ -84,7 +84,7 @@ $SYNTAX$
 $RETURNS$
 	Text from edit field. Type of returned value is string.
 $LANG_RU$
-	Текст из поля ввода. Возвращаемое значение: строка.
+	Текст из поля ввода. Тип возвращаемого значения: строка.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -108,11 +108,27 @@ $SUMMARY$
 $LANG_RU$
 	Установить действие, выполняемое при измении содержимого поля.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
-	<action>	- Code block. Code block executed on content changed.
+	<signal>	- String. Signal name.
+	<action>	- Code block. Action.
 $LANG_RU$
-	<action>	- Блок кода. Блок кода, выполняемый при измении содержимого поля.
+	<signal>	- Строка. Название сигнала.
+	<action>	- Блок кода. Действие.
+$ENDMETHOD$
+
+$METHODNAME$
+	appendText()
+$SUMMARY$
+	Append text to field content.
+$LANG_RU$
+	Добавить текст к содержимому поля.
+$SYNTAX$
+	appendText(<text>)
+$ARGUMENTS$
+	<text> 		- String. Appended text.
+$LANG_RU$
+	<text>		- Строка. Добавляемая строка
 $ENDMETHOD$
 
 $EXAMPLES$

@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Convert byte to hexadecimal version of its binary value
 $SYNTAX$
-   FT_BYT2HEX( cByte ) -> cHexValue
+   FT_BYT2HEX( cByte ) --> cHexValue
 $ARGUMENTS$
    <cByte> is the byte to convert.
 $RETURNS$

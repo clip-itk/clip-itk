@@ -14,8 +14,10 @@ $LANG_RU$
 	UIWorkSpace()	--> Объект UIWorkSpace
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIWorkSpace".
+	<onQuit>	- Action executed on application quit.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIWorkSpace".
+	<onQuit>	- Действие, выполняемое при выходе из приложения.
 
 $METHODNAME$
 	UIWorkSpace()
@@ -24,7 +26,11 @@ $SUMMARY$
 $LANG_RU$
 	Конструктор. Создать экземпляр приложения.
 $SYNTAX$
-	UIWorkSpace()	--> UIWorkSpace object
+	UIWorkSpace([<params>])	--> UIWorkSpace object
+$ARGUMENTS$
+	<params>	- Array. List of command line options.
+$LANG_RU$
+	<params>	- Массив. Список параметров командной строки.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -45,6 +51,22 @@ $LANG_RU$
 	Завершить работу экземпляра приложения.
 $SYNTAX$
 	quit()
+$ENDMETHOD$
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action that will be call on application quit.
+$LANG_RU$
+	Указать действие, выполняемое при выходе из приложения.
+$SYNTAX$
+	setAction([<signal>],<action>)
+$ARGUMENTS$
+	<signal>	- String. Signal name.
+	<action>	- Code block. Action.
+$LANG_RU$
+	<signal>	- Строка. Название сигнала.
+	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
 $EXAMPLES$

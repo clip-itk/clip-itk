@@ -100,17 +100,14 @@ clip_GTK_SCALEGETADJUSTMENT(ClipMachine * cm)
 {
 	C_widget *cscale = _fetch_cw_arg(cm);
 	C_widget  * cadj;
-        GtkArg arg;
+        GtkAdjustment * adj;
+
         CHECKCWID(cscale,GTK_IS_SCALE);
-        arg.type = GTK_TYPE_ADJUSTMENT;
-        arg.name = "adjustment";
-	gtk_widget_get(cscale->widget, &arg);
-        if (arg.d.object_data)
-        {
-                cadj = _list_get_cwidget(cm,GTK_ADJUSTMENT(arg.d.object_data));
-                if (!cadj) cadj = _register_widget(cm,GTK_WIDGET(arg.d.object_data),NULL);
-                if (cadj) _clip_mclone(cm,RETPTR(cm),&cadj->obj);
-        }
+
+        adj = GTK_RANGE(&GTK_SCALE(cscale->widget)->range)->adjustment;
+	cadj = _list_get_cwidget(cm,adj);
+	if (!cadj) cadj = _register_widget(cm,(GtkWidget*)adj,NULL);
+	if (cadj) _clip_mclone(cm,RETPTR(cm),&cadj->obj);
 	return 0;
 err:
 	return 1;

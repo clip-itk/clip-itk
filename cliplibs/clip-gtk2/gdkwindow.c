@@ -255,17 +255,21 @@ int
 clip_GDK_WINDOWSETBACKPIXMAP(ClipMachine * cm)
 {
 	C_widget    *cwin = _fetch_cw_arg(cm);
-        C_object    *cpix = _fetch_cobject(cm, _clip_spar(cm, 2));
+        C_widget    *cpix = _fetch_cwidget(cm, _clip_spar(cm, 2));
         gboolean relative = _clip_parl(cm, 3);
 	GdkWindow *win = NULL;
+        GdkPixmap *pix = NULL;
+        GdkBitmap *mask;
 
 	CHECKCWID(cwin,GTK_IS_WIDGET); CHECKOPT(2, MAP_t);
-	CHECKCOBJOPT(cpix,GDK_IS_PIXMAP(cpix->object));
+	CHECKCWIDOPT(cpix,GTK_IS_PIXMAP);
 	CHECKARG(3,LOGICAL_t);
 
-	if (cwin && cwin->widget) win = cwin->widget->window;
+	if (cwin && cwin->widget) win = (GdkWindow *)cwin->widget->window;
 
-	gdk_window_set_back_pixmap(win, (cpix?GDK_PIXMAP(cpix->object):NULL), relative);
+	if (cpix) gtk_pixmap_get(GTK_PIXMAP(cpix->widget), &pix, &mask);
+
+	gdk_window_set_back_pixmap(win, pix, relative);
 
 	return 0;
 err:

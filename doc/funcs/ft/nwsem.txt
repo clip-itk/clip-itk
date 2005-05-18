@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
     Open or create a NetWare semaphore
 $SYNTAX$
-    FT_NWSEMOPEN( <cName>, <nInitVal>, <@nHandle>, <@nOpenCnt> ) -> nRc
+    FT_NWSEMOPEN( <cName>, <nInitVal>, <@nHandle>, <@nOpenCnt> ) --> nRc
 $ARGUMENTS$
     <cName> is the semaphore name, maximum length is 127 characters.
 
@@ -97,7 +97,7 @@ $CATEGORY$
 $ONELINER$
     Examine a NetWare semaphore's value and open count
 $SYNTAX$
-    FT_NWSEMEX( <nHandle>, <@nValue>, <@nOpenCnt> ) -> nRc
+    FT_NWSEMEX( <nHandle>, <@nValue>, <@nOpenCnt> ) --> nRc
 $ARGUMENTS$
     <nHandle> is the semaphore handle, returned from a previous call
     to FT_NWSEMOPEN().
@@ -133,7 +133,7 @@ $EXAMPLES$
   ENDIF
 
   FT_NWSEMEX( nHandle, @nValue, @nOpenCnt )
-  QOUT( "Semaphore test -> Open at [" + ;
+  QOUT( "Semaphore test--> Open at [" + ;
 	ALLTRIM(STR(nOpenCnt))        + ;
 	"] stations, value is ["      + ;
 	ALLTRIM(STR(nValue)) + "]" )
@@ -150,7 +150,7 @@ $CATEGORY$
 $ONELINER$
    Wait on a NetWare semaphore (decrement)
 $SYNTAX$
-   FT_NWSEMWAIT( <nHandle> [, nTimeout ] ) -> nRc
+   FT_NWSEMWAIT( <nHandle> [, nTimeout ] ) --> nRc
 $ARGUMENTS$
    <nHandle> is the semaphore handle, returned from a previous call
    to FT_NWSEMOPEN().
@@ -188,7 +188,7 @@ $CATEGORY$
 $ONELINER$
    Signal a NetWare semaphore (increment)
 $SYNTAX$
-   FT_NWSEMSIG( nHandle ) -> nRc
+   FT_NWSEMSIG( nHandle ) --> nRc
 $ARGUMENTS$
    <nHandle> is the semaphore handle, returned from a previous call
    to FT_NWSEMOPEN().
@@ -219,7 +219,7 @@ $CATEGORY$
 $ONELINER$
    Close a NetWare semaphore
 $SYNTAX$
-   FT_NWSEMCLOSE( <nHandle> )  -> nRc
+   FT_NWSEMCLOSE( <nHandle> ) --> nRc
 $ARGUMENTS$
    <nHandle> is the semaphore handle, returned from a previous call
    to FT_NWSEMOPEN().
@@ -247,7 +247,7 @@ $CATEGORY$
 $ONELINER$
    Perform a semaphore "lock"
 $SYNTAX$
-   FT_NWSEMLOCK ( <cSemaphore>, <@nHandle> ) -> lRet
+   FT_NWSEMLOCK ( <cSemaphore>, <@nHandle> ) --> lRet
 $ARGUMENTS$
    <cSemaphore> is the name of a semaphore you want to "lock."
    <nHandle> is the semaphore's handle, if you get the lock.
@@ -311,7 +311,7 @@ $CATEGORY$
 $ONELINER$
    "Unlock" a semaphore locked by FT_NWSEMLOCK()
 $SYNTAX$
-   FT_NWSEMUNLOCK( <nHandle> ) -> lRet
+   FT_NWSEMUNLOCK( <nHandle> ) --> lRet
 $ARGUMENTS$
    <nHandle> is the semaphore handle returned from FT_NWSEMLOCK()
 $RETURNS$

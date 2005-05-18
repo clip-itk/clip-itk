@@ -54,8 +54,9 @@ static __tree_store_set(ClipMachine *cm, GtkTreeIter *iter, gint startDataParam)
         	gint column = _clip_parni(cm, i);
         	ClipVar *val;
         	GValue value;
+                C_object *cobj;
                 gchar *str;
-		int j;
+		int j,n;
                 double d;
 
 		CHECKARG(i, NUMERIC_t);
@@ -69,6 +70,16 @@ static __tree_store_set(ClipMachine *cm, GtkTreeIter *iter, gint startDataParam)
 		switch ((int)utypes->items[column].n.d)
 		{
 		case TREE_TYPE_NUMERIC:
+			g_value_init(&value, G_TYPE_INT);
+			if (val->t.type == NUMERIC_t)
+                		g_value_set_int(&value, (int)val->n.d);
+                	else
+                        {
+                		n = _clip_strtod(val->s.str.buf, &j);
+                		g_value_set_int(&value, n);
+                        }
+			break;
+		case TREE_TYPE_NUMERIC_FLOAT:
 			g_value_init(&value, G_TYPE_FLOAT);
 			if (val->t.type == NUMERIC_t)
                 		g_value_set_float(&value, val->n.d);
@@ -96,6 +107,11 @@ static __tree_store_set(ClipMachine *cm, GtkTreeIter *iter, gint startDataParam)
                         else
                         	str = _clip_date_to_str(_clip_str_to_date(val->s.str.buf, cm->date_format, cm->epoch), cm->date_format);
 	                g_value_set_string(&value, str);
+			break;
+		case TREE_TYPE_PIXBUF:
+			g_value_init(&value,  GDK_TYPE_PIXBUF);
+	                cobj = _fetch_cobject(cm, val);
+	                g_value_set_object(&value, cobj->object);
 			break;
 		}
         	gtk_tree_store_set_value(GTK_TREE_STORE(cstree->object), iter, column, &value);
@@ -144,6 +160,9 @@ static __tree_store_set_types(ClipMachine * cm, gint ncolumns, GType * types, Cl
         		types[i] = G_TYPE_BOOLEAN;
                         break;
                 case TREE_TYPE_NUMERIC:
+        		types[i] = G_TYPE_INT;
+                        break;
+                case TREE_TYPE_NUMERIC_FLOAT:
         		types[i] = G_TYPE_FLOAT;
                         break;
                 case TREE_TYPE_DATE:
@@ -154,6 +173,9 @@ static __tree_store_set_types(ClipMachine * cm, gint ncolumns, GType * types, Cl
                         break;
                 case TREE_TYPE_PIXMAP:
         		types[i] = GTK_TYPE_PIXMAP;
+                        break;
+                case TREE_TYPE_PIXBUF:
+        		types[i] = GDK_TYPE_PIXBUF;
                         break;
                 default:
                         printf("add other type \n");
@@ -172,10 +194,12 @@ err:
 /* ...      -  all types for the columns, from first to last:      */
 /* TREE_TYPE_STRING                                                */
 /* TREE_TYPE_NUMERIC                                               */
+/* TREE_TYPE_NUMERIC_FLOAT                                         */
 /* TREE_TYPE_LOGICAL                                               */
 /* TREE_TYPE_DATE                                                  */
 /* TREE_TYPE_DATETIME                                              */
 /* TREE_TYPE_PIXMAP                                                */
+/* TREE_TYPE_PIXBUF                                                */
 int
 /******************************************************************************
 * gtk_TreeStoreNew(map, ncolumns, type1, ...)
@@ -305,8 +329,9 @@ clip_GTK_TREESTORESETVALUE(ClipMachine * cm)
 	GtkTreeIter iter;
         ClipArrVar *utypes;
 	GValue value;
+        C_object *cobj;
 	gchar *str;
-	int j;
+	int j,n;
 	double d;
 
         CHECKARG2(1, MAP_t, NUMERIC_t);CHECKCOBJ(cstree, GTK_IS_TREE_STORE(cstree->object));
@@ -323,6 +348,16 @@ clip_GTK_TREESTORESETVALUE(ClipMachine * cm)
 	switch ((int)utypes->items[column].n.d)
 	{
 	case TREE_TYPE_NUMERIC:
+		g_value_init(&value, G_TYPE_INT);
+		if (val->t.type == NUMERIC_t)
+			g_value_set_int(&value, (int)val->n.d);
+		else
+		{
+			n = _clip_strtod(val->s.str.buf, &j);
+			g_value_set_int(&value, n);
+		}
+		break;
+	case TREE_TYPE_NUMERIC_FLOAT:
 		g_value_init(&value, G_TYPE_FLOAT);
 		if (val->t.type == NUMERIC_t)
 			g_value_set_float(&value, val->n.d);
@@ -350,6 +385,11 @@ clip_GTK_TREESTORESETVALUE(ClipMachine * cm)
 		else
 			str = _clip_date_to_str(_clip_str_to_date(val->s.str.buf, cm->date_format, cm->epoch), cm->date_format);
 		g_value_set_string(&value, str);
+		break;
+	case TREE_TYPE_PIXBUF:
+		g_value_init(&value,  GDK_TYPE_PIXBUF);
+	        cobj = _fetch_cobject(cm, val);
+	        g_value_set_object(&value, cobj->object);
 		break;
 	}
 	gtk_tree_store_set_value(GTK_TREE_STORE(cstree->object), &iter, column, &value);

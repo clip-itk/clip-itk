@@ -162,10 +162,11 @@ META data may be: group,user,attr,class,extent,deposit
 #define CODB_PLUGINS_BODY { ;
 		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
 		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
+		{"CLASS_ID"  ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
 		{"TYPE"      ,"C",1            ,0,CODB_LENTYPE_RTRIM,"C"},;
 		{"FILENAME"  ,"C",256          ,0,CODB_LENTYPE_RTRIM,""},;
 		{"MAINFUNC"  ,"C",50           ,0,CODB_LENTYPE_RTRIM,""},;
-		{"CLASS_ID"  ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""};
+		{"SOURCE"    ,"M",0            ,0,CODB_LENTYPE_NONE,""};
 		}
 
 #define CODB_INDEX_BODY { ;
@@ -181,6 +182,11 @@ META data may be: group,user,attr,class,extent,deposit
 		{"DEPOSIT"   ,"C",DEPOSIT_ID_LEN,0,CODB_LENTYPE_NONE,""}, ;
 		{"MAX_VALUE" ,"N",6		,0,CODB_LENTYPE_NONE,0}, ;
 		{"LAST_VALUE","N",6		,0,CODB_LENTYPE_NONE,0} ;
+		}
+
+#define CODB_SEMA_BODY { ;
+		{"ID"        ,"C",CODB_ID_LEN  ,0,CODB_LENTYPE_RTRIM,""},;
+		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM ,""};
 		}
 
 

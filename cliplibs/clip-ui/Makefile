@@ -1,7 +1,7 @@
 # This is a part of CLIP-UI library
 #
 # Copyright (C) 2003 by E/AS Software Foundation
-# Author: Andrey Cherepanov <sibskull@mail.ru>
+# Author: Andrey Cherepanov <skull@eas.lrn.ru>
 ifndef CLIPROOT
 	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
 endif
@@ -21,8 +21,9 @@ TARGET  = libclip-ui$(DLLSUFF)
 RTARGET = libclip-ui$(DLLREALSUFF)
 
 OBJS    = button.o checkbox.o color.o combobox.o edit.o font.o form.o \
-	  frame.o grid.o image.o label.o menu.o special.o table.o timer.o \
-	  toolbar.o tree.o utils.o window.o workspace.o
+	  frame.o grid.o image.o label.o layout.o menu.o progressbar.o \
+          radiobutton.o slider.o special.o table.o timer.o toolbar.o tree.o \
+          utils.o window.o workspace.o
 
 .PHONY: all clean uninstall distclean
 
@@ -77,4 +78,3 @@ ucommit:
 
 shell:
 	sh
-

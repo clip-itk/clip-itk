@@ -6,12 +6,14 @@ local err,_query
 local sDict:="", sDep:=""
 local oDict,oDep, classDesc
 local connect_id:="", connect_data
-local beg_date:=date(),end_date:=date()
 local i,j,k,x,tmp,col,obj,bal_data,aBal_data:={}
 local acc_chartt_class,acc_chartt_list,balance:="",account:=""
-local columns,sprname,atree,nnnn
+local columns,sprname,atree,nnnn,urn,level
 local xslt:=""
 local host:=""
+local periodic, mPeriod, nPer
+private beg_date:=date(),end_date:=date()
+memvar beg_date,end_date
 private oDep02,oDict02,start_id:=1
 
 errorblock({|err|error2html(err)})
@@ -44,6 +46,12 @@ errorblock({|err|error2html(err)})
 	endif
 	if "ACCOUNT" $ _query
 		account := _query:account
+	endif
+	if "PERIODIC" $ _query
+		periodic := _query:periodic
+	endif
+	if "URN" $ _query
+		urn := _query:urn
 	endif
 
 	if !empty(connect_id)
@@ -99,25 +107,14 @@ errorblock({|err|error2html(err)})
 			acc_chartt_list := {balance}
 		endif
 	endif
-	for i=1 to len(acc_chartt_list)
-		bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i],account)
-		aadd(aBal_data,bal_data)
-	next
-
-#ifdef _____1
-	put_tree_header()
-	put_bal_tree(aBal_data,acc_chartt_list)
-#else
 	if len(xslt)>0
-	? '<?xml-stylesheet type="text/xsl" href="http://'+host+'/xslt/'+xslt+'"?>'
+		? '<?xml-stylesheet type="text/xsl" href="http://'+host+'/xslt/'+xslt+'"?>'
 	endif
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
-	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
-	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
 
-	sprname:="os_balance"
+	sprname:= "os_balance"
 	columns := cgi_make_columns(oDict,sprname)
 	nnnn := {"odate","ndate","an_public1","an_public2",;
 		"bd_quantity","bk_quantity","od_quantity",;
@@ -148,106 +145,66 @@ errorblock({|err|error2html(err)})
 	      ains(columns,i+1)
 	      columns[i+1] := tmp
 
-	endif
+	      tmp := oclone(col)
+	      tmp:name := "end_date"
+	      tmp:header := "Конец"
+	      tmp:expr := "m->end_date"
+	      tmp:datatype := "C"
+	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
+	      aadd(columns,"")
+	      ains(columns,i+1)
+	      columns[i+1] := tmp
 
-	for i=1 to len(aBal_data)
-		aTree := aBal_data[i]
-		if empty(atree)
-			loop
-		endif
-		cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+sprname,columns,"")
-		?
-		cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+sprname,columns,"")
+	      tmp := oclone(col)
+	      tmp:name := "beg_date"
+	      tmp:header := "Начало"
+	      tmp:expr := "m->beg_date"
+	      tmp:datatype := "C"
+	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
+	      aadd(columns,"")
+	      ains(columns,i+1)
+	      columns[i+1] := tmp
+	endif
+	******
+	mperiod := periodic2date(beg_date,end_date,periodic)
+	if empty(urn)
+		urn := sprname
+	endif
+	for nPer = 1 to len(mPeriod)
+		beg_date =mPeriod[nPer][1]
+		end_date =mPeriod[nPer][2]
+
+		aBal_data:={}
+		for i=1 to len(acc_chartt_list)
+			bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i],account)
+			aadd(aBal_data,bal_data)
+		next
+		//? beg_date,end_date,len(aBal_data)
+
+		? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
+		? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+		//? '000000'
+		for i=1 to len(aBal_data)
+			aTree := aBal_data[i]
+			if empty(atree)
+				loop
+			endif
+			if empty(periodic)
+			    level:= ""
+			    else
+			    level:= ':'+alltrim(str(nPer))
+			endif
+
+		//? 'aaaaaa'
+			cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+urn,columns,"",level)
+		//? 'bbbbbb'
+			?
+			cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+urn,columns,"",level)
+		//? 'cccccc'
+		next
 	next
 	? '</RDF:RDF>'
-#endif
 
-return
-
-static function put_tree_header()
-	? '<window  '
-	? 'xmlns:html="http://www.w3.org/1999/xhtml"'
-	? 'xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >'
-	? '<description value="Оборотно-сальдовый баланс"/>'
-
-	? '     <tree id="balance" flex="1">'
-	? '          <treecols>'
-	? '              <treecol  primary="true" id="account_code"        label="Код"           flex="1"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  primary="true" id="account_smallname"   label="Счет.субсчет"  flex="1" hidden="true"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  id="account_bd_summa"    label="Начало.дебет"  flex="1" style="text-align:right"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  id="account_bk_summa"    label="Начало.кредит" flex="1" style="text-align:right"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  id="account_od_summa"    label="Оборот.дебет"  flex="1" style="text-align:right"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  id="account_ok_summa"    label="Оборот.кредит" flex="1" style="text-align:right"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  id="account_ed_summa"    label="Конец.дебет"   flex="1" style="text-align:right"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  id="account_ek_summa"    label="Конец.кредит"  flex="1" style="text-align:right"/>'
-	? '    <splitter class="tree-splitter"/>'
-	? '              <treecol  id="account"    label=""  flex="1" />'
-	? '         </treecols>'
-return
-
-static function put_bal_tree(aBal_Data,acc_chartt_list)
-	local i,x,bal_data,tmp
-
-	? ' <treechildren>'
-	for i=1 to len(acc_chartt_list)
-		bal_data := aBal_data[i]
-		x:=len(bal_data)
-		tmp:=bal_data[x][4]
-		//? "aaa",tmp
-		//? "aaa",bal_data[x]
-		? '  <treeitem idref="'+tmp:account+'" open="false" container="true">'
-		? '    <treerow>'
-		? '      <treecell label="'+tmp:code+'"/>'
-		? '      <treecell label="'+tmp:smallname+'"/>'
-		? '      <treecell label="'+bal_summa(tmp:bd_summa)+'" style="text-align:right"/>'
-		? '      <treecell label="'+bal_summa(tmp:bk_summa)+'" style="text-align:right"/>'
-		? '      <treecell label="'+bal_summa(tmp:od_summa)+'" style="text-align:right"/>'
-		? '      <treecell label="'+bal_summa(tmp:ok_summa)+'" style="text-align:right"/>'
-		? '      <treecell label="'+bal_summa(tmp:ed_summa)+'" style="text-align:right"/>'
-		? '      <treecell label="'+bal_summa(tmp:ek_summa)+'" style="text-align:right"/>'
-		? '      <treecell label="'+tmp:account+'"/>'
-		? '    </treerow>'
-		putTree(bal_data)
-		? '  </treeitem>'
-	next
-	? ' </treechildren>'
-	? '</tree> '
-	? '<label id="end"/>'
-	? '</window>'
-	?
-	return
-******************************
-static function putTree(bal_data)
-	local i,tmp
-	? '     <treechildren>'
-	for i=1 to len(bal_data)
-		tmp:=bal_data[i][4]
-		? '        <treeitem idref="'+tmp:account+'" '+iif(empty(bal_data[i][5]),'', 'open="false" container="true"')+'>'
-		? '             <treerow>'
-		? '                  <treecell label="'+tmp:code+'"/>'
-		? '                  <treecell label="'+tmp:smallname+'"/>'
-		? '                  <treecell label="'+bal_summa(tmp:bd_summa)+'" style="text-align:right"/>'
-		? '                  <treecell label="'+bal_summa(tmp:bk_summa)+'" style="text-align:right"/>'
-		? '                  <treecell label="'+bal_summa(tmp:od_summa)+'" style="text-align:right"/>'
-		? '                  <treecell label="'+bal_summa(tmp:ok_summa)+'" style="text-align:right"/>'
-		? '                  <treecell label="'+bal_summa(tmp:ed_summa)+'" style="text-align:right"/>'
-		? '                  <treecell label="'+bal_summa(tmp:ek_summa)+'" style="text-align:right"/>'
-		? '                  <treecell label="'+tmp:account+'"/>'
-		? '             </treerow>'
-		if !empty(bal_data[i][5])
-			putTree(bal_data[i][5])
-		endif
-		//? '        </treechildren>'
-		? '        </treeitem>'
-	next
-	? '   </treechildren>'
 return
 
 ***********************
@@ -289,7 +246,8 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
 		endif
 		//if account:code=="41.1"
 		data := r2d2_get_osb_data(oDep,osb_class:id,account,beg_date,end_date,s1,s2)
-		//	outlog(__FILE__,__LINE__,data)
+		//outlog(__FILE__,__LINE__,account,beg_date,end_date,s1,s2)
+		//outlog(__FILE__,__LINE__,data)
 		//else
 		//	loop
 		//endif

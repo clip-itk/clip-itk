@@ -6,7 +6,7 @@ $ONELINER$
    Appends a line to the currently selected text file
 $SYNTAX$
 
-   FT_FAPPEND( [ < nLines > ] ) -> NIL
+   FT_FAPPEND( [ < nLines > ] ) --> NIL
 
 $ARGUMENTS$
 

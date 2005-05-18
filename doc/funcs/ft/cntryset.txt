@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Check/Set the CENTURY Setting
 $SYNTAX$
-   FT_SETCENTURY( [ <lNewSetState> ] ) -> <lOldState>
+   FT_SETCENTURY( [ <lNewSetState> ] ) --> <lOldState>
 $ARGUMENTS$
    lNewSetState - Boolean to Set CENTURY
 		    .F. - Toggle CENTURY off

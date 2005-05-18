@@ -32,7 +32,7 @@ local i
                                           2, .t., ;
                 		          3, (111.0*i), ;
                                           4, date(), ;
-                                          5, "red", ;
+                                          5, "pink", ;
                 		          -1)
 
         next
@@ -200,7 +200,6 @@ local i
 
 	gtk_SignalConnect(win, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 
-
 /*****************************************************************************
 *                            TREE STORE TEST                                 *
 *****************************************************************************/
@@ -210,7 +209,11 @@ local i
 	gtk_WindowSetDefaultSize(twin, 280, 435)
 
 
-        tree = gtk_TreeStoreNew(, 5, TREE_TYPE_STRING , TREE_TYPE_LOGICAL, TREE_TYPE_NUMERIC, TREE_TYPE_DATE, TREE_TYPE_STRING)
+        tree = gtk_TreeStoreNew(, 5, TREE_TYPE_STRING , TREE_TYPE_LOGICAL, TREE_TYPE_NUMERIC_FLOAT, TREE_TYPE_DATE, TREE_TYPE_STRING)
+	tmodel = gtk_TreeModel(tree)
+	tview = gtk_TreeViewNewWithModel(,tmodel)
+  	gtk_TreeViewSetRulesHint (tview, .t.)
+  	gtk_TreeViewSetHeadersVisible (tview, .t.)
 
         for i=1 to 10
                 path = gtk_TreeStoreAppend(tree, NIL, 1, "tree строка"+alltrim(str(i)), ;
@@ -219,15 +222,18 @@ local i
                                           4, date(), ;
                                           5, "red", ;
                 		          -1)
+
         	for j=1 to 10
                 	path1 = gtk_TreeStoreAppend(tree, path)
                 	gtk_TreeStoreSetValue(tree, path1, 1, "iter"+path1)
         	next
+        	if i==1
+                	//gtk_TreeViewExpandRow( tview, gtk_TreePathNewFromString(path), .F.)
+                	gtk_TreeViewExpandToPath( tview, gtk_TreePathNewFromString(path))
+                endif
+
         next
-	tmodel = gtk_TreeModel(tree)
-	tview = gtk_TreeViewNewWithModel(,tmodel)
-  	gtk_TreeViewSetRulesHint (tview, .t.)
-  	gtk_TreeViewSetHeadersVisible (tview, .t.)
+
 
   	*** create text cell
   	renderer = gtk_CellRendererTextNew ()
@@ -285,6 +291,7 @@ local i
         gtk_BoxPackStart(tbox, tsw, .t., .t.)
 	gtk_BoxPackEnd(tbox, tstbar)
 	gtk_ContainerAdd(twin, tbox)
+
 	gtk_WidgetShowAll(twin)
 	gtk_SignalConnect(twin, "delete-event", {|w| gtk_WidgetDestroy(w),gtk_Quit()})
 

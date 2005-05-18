@@ -16,4 +16,14 @@
 	user=""
 	dbname=""
 	>
+<dictionary id="SQL01" name="My first SQL dictionary"
+	path=""
+	type="SQL"
+	dtype="MS"
+	host="localhost"
+	port=""
+	user=""
+	passwd=""
+	dbname="CODB"
+	>
 

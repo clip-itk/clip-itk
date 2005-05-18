@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Открывает bZIP2 файл.
 $SYNTAX$
-	nHandle := bZip2Open(<filename> [,<mode>])
+	bZip2Open(<filename> [,<mode>]) --> nHandle
 $LANG_RU$
 $ARGUMENTS$
 	<filename> - name of file with bZIP2 archive.

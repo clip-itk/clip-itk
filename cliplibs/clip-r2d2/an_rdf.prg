@@ -7,6 +7,7 @@ local sDict:="", sDep:=""
 local oDict,oDep, classDesc
 local connect_id:="", connect_data
 local beg_date:=date(),end_date:=date(),account:=""
+local periodic, mPeriod, nPer
 local i,j,k,tmp,obj
 local an_data,an_level:=1, an_values:={" "," "," "," "," "," "}
 local urn:=""
@@ -27,6 +28,9 @@ local total:=""
 	endif
 	if "END_DATE" $ _query
 		end_date := ctod(_query:end_date,"dd.mm.yyyy")
+	endif
+	if "PERIODIC" $ _query
+		periodic := _query:periodic
 	endif
 	if "XSLT" $ _query
 		xslt := _query:xslt
@@ -67,7 +71,7 @@ local total:=""
 		URN := _query:URN
 	endif
 	if "TOTAL" $ _query
-    		total := _query:total
+		total := _query:total
 	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
@@ -102,10 +106,6 @@ local total:=""
 	endif
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
-	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
-	//? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
 
 	oDep := codb_needDepository("ACC0101")
 	if empty(oDep)
@@ -114,17 +114,36 @@ local total:=""
 	endif
 	oDict := oDep:dictionary()
 
-	an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
-	asort(an_data,,,{|x,y| x:essence <= y:essence })
 
-	cgi_an_putRdf1(an_data,account,an_level,urn,total)
-	//putRdf2(an_data,account,an_level)
+	mperiod := periodic2date(beg_date,end_date,periodic)
+	for nPer = 1 to len(mPeriod)
+		beg_date =mPeriod[nPer][1]
+		end_date =mPeriod[nPer][2]
 
+		//? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+		//? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
+		? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
+		? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+		? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
+		//? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
+
+		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
+		asort(an_data,,,{|x,y| x:essence <= y:essence })
+
+		if !empty(periodic)
+		    periodic := ":"+alltrim(str(nPer))
+		    else
+		    periodic := ""
+		endif    
+		cgi_an_putRdf1(an_data,account,an_level,urn,total,beg_date,end_date,"",periodic)
+		//putRdf2(an_data,account,an_level)
+
+	next
 	? '</RDF:RDF>'
 	return
 ******************************
-function cgi_an_putRdf1(bal_data,account,an_level,urn,total)
-	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id
+function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
+	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
 	acc := codb_getValue(account)
 	//? acc
@@ -133,10 +152,14 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total)
 			cont := .t.
 		endif
 	endif
+	if empty(ext_urn)
+		ext_urn := ""
+	endif
 	for i=1 to len(bal_data)
 		tmp:=bal_data[i]
 
 		if !(tmp:unit_num=="EMPTY") ;
+		    .and. empty(ext_urn);	
 		   .and. tmp:bd_summa == 0 .and. tmp:bk_summa==0;
 		   .and. tmp:od_summa == 0 .and. tmp:ok_summa==0;
 		   .and. tmp:ed_summa == 0 .and. tmp:ek_summa==0;
@@ -145,14 +168,20 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total)
 			loop
 		endif
 
-	/*
-		if tmp:an_value == 'total'
+	
+		if tmp:an_value == 'total' .and. total!='yes'
 			loop
 		endif
-	*/
+	
 		urn_id := urn
-		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+'" id="'+tmp:an_value+'_'+alltrim(str(random(10000)))+'" DOCUM:about="'+urn_id+':'+tmp:an_value+'"'
+		promt:= iif(tmp:an_value=="total","",tmp:an_value)
+//		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+ext_urn+'" id="'+tmp:an_value+'_'+alltrim(str(random(10000)))+'" DOCUM:about="'+urn_id+':'+tmp:an_value+ext_urn+'"'
+		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+ext_urn+'" id="'+tmp:an_value+ext_urn+'" DOCUM:about="'+urn_id+':'+tmp:an_value+ext_urn+'"'
 		? '	DOCUM:_saldo_="an_data"'
+		? '	DOCUM:beg_date="'+dtoc(beg_date)+'"'
+		? '	DOCUM:end_date="'+dtoc(end_date)+'"'
+		acccode:=split(codb_essence(account),":")[1]
+		? '	DOCUM:acccode="'+acccode+'"'
 		? '	DOCUM:account="'+codb_essence(account)+'"'
 		? '	DOCUM:sort_account="'+codb_essence(account)+'"'
 		? '	DOCUM:ref_account="'+account+'"'
@@ -198,11 +227,19 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total)
 		? '/>'
 
 	next
+	
+	if empty(ext_urn)
+	    urn:=urn
+	    else
+	    urn:=urn+':'+promt
+	endif    
+	
 	? '<RDF:Seq about="'+urn+'">'
 	for i=1 to len(bal_data)
 		tmp:=bal_data[i]
 
 		if !(tmp:unit_num=="EMPTY") ;
+		    .and. empty(ext_urn);	
 		   .and. tmp:bd_summa == 0 .and. tmp:bk_summa==0;
 		   .and. tmp:od_summa == 0 .and. tmp:ok_summa==0;
 		   .and. tmp:ed_summa == 0 .and. tmp:ek_summa==0;
@@ -212,13 +249,13 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total)
 		endif
 
 		if tmp:an_value == 'total' .and. total!='yes'
-                        loop
+			loop
 		endif
 		if  tmp:an_value=='EMPTY'
-		        loop
+			loop
 		endif
 
-		? '	<RDF:li resource="'+urn_id+':'+tmp:an_value+'"/>'
+		? '	<RDF:li resource="'+urn_id+':'+tmp:an_value+ext_urn+'"/>'
 	next
 	? '</RDF:Seq>'
 return

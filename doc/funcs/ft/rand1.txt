@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Generate a random number
 $SYNTAX$
-   FT_RAND1( <nMax> ) -> nRand
+   FT_RAND1( <nMax> ) --> nRand
 $ARGUMENTS$
    <nMax>  Maximum limit of value to be produced.
 $RETURNS$

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004 - 2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -381,4 +381,39 @@ clip_GTK_ICONTHEMEADDBUILTINAICON(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_ICONTHEMEGETICONSIZES(ClipMachine * cm)
+{
+        C_object  *cicon  = _fetch_co_arg(cm);
+        gchar *icon_name  = _clip_parc(cm, 2);
+        ClipVar     *cv   = RETPTR(cm);
+        gint         *a   ;
 
+	CHECKCOBJ(cicon, GTK_IS_ICON_THEME(cicon->object));
+        CHECKARG(2, CHARACTER_t);
+
+	LOCALE_TO_UTF(icon_name);
+	a = gtk_icon_theme_get_icon_sizes(GTK_ICON_THEME(cicon->object), icon_name);
+        FREE_TEXT(icon_name);
+
+	_clip_array(cm, cv, 0, 0);
+	while (a)
+	{
+		ClipVar *item;
+		item = NEW(ClipVar);
+		item->t.type = NUMERIC_t;
+		item->t.flags = 0;
+		item->n.d = a[0];
+		_clip_aadd(cm, cv, item);
+		_clip_delete(cm, item);
+                a++;
+	}
+
+	free(a);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003,2004 by E/AS Software Foundation	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 22 Jul 2004						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -20,8 +19,7 @@ static driver := getDriver()
 function UITable(columns)
 	local obj	:= driver:createTable(columns)
 	obj:className	:= "UITable"
-	obj:rows	:= array(0)
-	obj:rowsId	:= array(0)
+	obj:nodes	:= map()
 	obj:onSelect	:= NIL
 // No alternate rows color by default
 //	obj:altRowColor	:= NIL
@@ -41,21 +39,27 @@ return obj
 
 /* Add row and fill it by data */
 static function ui_addRow(self, data, id)
-        local i
+        local i, node
         // Convert values to strings
 	for i=1 to len(data)
 		data[i] := val2str(data[i])
         next
-	driver:addTableRow(self, data)
-	aadd(self:rows, data)
-	aadd(self:rowsId, id)
+	node := driver:addTableRow(self, data)
+	node:className := "UITableItem"
+	node:table := @self
+	node:node_id := id
+	// TODO: set action to item object
+	
+	self:nodes[node:id] = node
 return NIL
 
 /* Set action to UITable */
-static function ui_setAction(self, action)
+static function ui_setAction(self, signal, action)
 	// Set action to double-click or key ENTER pressed
-	self:onSelect := action
-	driver:setTableSelectAction( self, {|w,e| tableRowSelect(self, e)} )
+	if signal=='selected' .and. valtype(action)=='B'
+		self:onSelect := action
+		driver:setTableSelectAction( self, {|w,e| tableRowSelect(self, e)} )
+	endif
 return NIL
 
 /* Slot for table selection */
@@ -68,8 +72,7 @@ return
 /* Clear all rows */
 static function ui_clear(self)
 	driver:clearTable( self )
-	self:rows   := array(0)
-	self:rowsId := array(0)
+	self:nodes := map()
 return NIL
 
 /* Get current selection */
@@ -82,7 +85,7 @@ return sel
 static function ui_getSelectionId(self)
 	local sel
 	sel := driver:getTableSelection( self )
-return iif(sel==0,NIL,self:rowsId[sel])
+return self:nodes[sel]:node_id
 
 /* Set alternate row color */
 static function ui_setAltRowColor(self, color)

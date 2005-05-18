@@ -228,6 +228,16 @@ local newstr, l, i, j
 					newstr += substr(str, 1, j+6)
 					str := substr(str, j+7)
 					loop
+				elseif  left(lower(str), 13) == "<itemizedlist"
+					j := atl("</itemizedlist>", lower(str))
+					newstr += substr(str, 1, j+13)
+					str := substr(str, j+14)
+					loop
+				elseif  left(lower(str), 9) == "<listitem"
+					j := atl("</listitem>", lower(str))
+					newstr += substr(str, 1, j+9)
+					str := substr(str, j+10)
+					loop
 				else
 					newstr += '<![CDATA['+s+']]>'
 				endif
@@ -260,55 +270,62 @@ local i, j, a, str, lStr, arr, lf
 
 	qout( "Write to: "+fname+" function:"+fs:CLASSNAME)
 
-	str := '<section id="class'+fs:SGMLID+'"><title>Class '+fs:CLASSNAME+' </title>&\n'
+	str := '<refentry id="class'+fs:SGMLID+'">&\<refmeta><refentrytitle>Class '+fs:CLASSNAME+' </refentrytitle>&\n</refmeta>&\n'
 	fwrite(fsgml, str, len(str))
 
-	str := '<section id="aboutClass'+fs:SGMLID+'"><title>About </title>&\n'
+	str := '<refnamediv>&\n<refname>'+fs:CLASSNAME+' </refname>&\n'
 	fwrite(fsgml, str, len(str))
-	str := '<para>&\n'
+
+	str := '<refpurpose>&\n'
+	fwrite(fsgml, str, len(str))
+	str := ''
 	if !empty(fs:ABOUT)
 		if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:ABOUT)
-			a := split_str(fs[lang]:ABOUT, "&\n")
+			str += fs[lang]:ABOUT
 		else
-			a := split_str(fs:ABOUT, "&\n")
+			str += fs:ABOUT
 		endif
-		for j=1 to len(a)
-			if empty(a[j])
-				str += '</para><para>&\n'
-			else
-				str += a[j]
+	endif
+	str += ' &\n</refpurpose>&\n'
+	fwrite(fsgml, str, len(str))
+
+	str := '</refnamediv>&\n'
+	fwrite(fsgml, str, len(str))
+
+	str := '<refsynopsisdiv><title>Synopsis</title>&\n<synopsis>&\n'
+	fwrite(fsgml, str, len(str))
+	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:SYNTAX)
+		str := '<![CDATA['+fs[lang]:SYNTAX+']]>&\n'
+	else
+		str := '<![CDATA['+fs:SYNTAX+']]>&\n'
+	endif
+	fwrite(fsgml, str, len(str))
+
+	str := '</synopsis>&\n</refsynopsisdiv>&\n'
+	fwrite(fsgml, str, len(str))
+
+	str := '<refsect1 id="descrClass'+fs:SGMLID+'"><title>Description </title>&\n'
+	fwrite(fsgml, str, len(str))
+
+	str := "<para> &\n"
+	if !empty(fs:SUMMARY)
+		if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:SUMMARY)
+			a := split_str(fs[lang]:SUMMARY, "&\n")
+		else
+			a := split_str(fs:SUMMARY, "&\n")
+		endif
+		for i:=1 to len(a)
+			if empty(a[i])
+				str += "&\n</para>&\n<para>&\n"
 			endif
+			str += a[i]
 		next
 	endif
-	str += '&\n</para>&\n'
-	fwrite(fsgml, str, len(str))
-
-	str := '</section>&\n'
+	str += "&\n</para>&\n</refsect1>"
 	fwrite(fsgml, str, len(str))
 
 
-	str := '<section id="descrClass'+fs:SGMLID+'"><title>Description </title>&\n'
-	fwrite(fsgml, str, len(str))
-
-	if !empty(fs:LASTDATE)
-		a := fs:LASTDATE
-		if lang != "EN" .and. (lang $ fs)
-			a := fs[lang]:LASTDATE
-		endif
-		if !empty(a) .and. a < fs:LASTDATE
-			str := '<warning><para>The text of documentation not equal english variant!</para></warning>&\n'
-			fwrite(fsgml, str, len(str))
-		endif
-	endif
-
-	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:SYNTAX)
-		str := '<programlisting><![CDATA['+fs[lang]:SYNTAX+']]></programlisting>&\n'
-	else
-		str := '<programlisting><![CDATA['+fs:SYNTAX+']]></programlisting>&\n'
-	endif
-	fwrite(fsgml, str, len(str))
-
-	str := '<section><title>Attributes</title>&\n'
+	str := '<refsect1>&\n<title>Attributes</title>&\n'
 	if empty(fs:ATTRIBS)
 		str += '<para>No attributes</para>&\n'
 	else
@@ -342,11 +359,11 @@ local i, j, a, str, lStr, arr, lf
 
 		str += '</tbody></tgroup></informaltable>&\n'
 	endif
-	str += '</section><!-- ATTRS for '+fs:CLASSNAME+' -->&\n'
+	str += '</refsect1>'
 	fwrite(fsgml, str, len(str))
 
 
-	str := '<section><title>Methods</title>&\n'
+	str := '<refsect1><title>Methods</title>&\n'
 	fwrite(fsgml, str, len(str))
 	if empty(fs:METHODS)
 		str := '<para>No methods</para>&\n'
@@ -368,54 +385,57 @@ local i, j, a, str, lStr, arr, lf
 			fwrite(fsgml, str, len(str))
 			str := ""
 	endif
-	str += '</section><!-- METHODS for '+fs:CLASSNAME+' -->&\n'
 	fwrite(fsgml, str, len(str))
 
-
-	str := '<section><title>Example</title>&\n'
-	str += '<programlisting><![CDATA[&\n'
 	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:EXAMPLES)
-		str += trans(fs[lang]:EXAMPLES, .f.)
+		j := trans(fs[lang]:EXAMPLES, .f.)
 	else
-		str += trans(fs:EXAMPLES, .f.)
+		j := trans(fs:EXAMPLES, .f.)
 	endif
-	str += ']]></programlisting>&\n'
-	str += '</section><!-- EXAMPLE for '+fs:CLASSNAME+' -->&\n'
+
+	writeMethodDesc(fsgml, fs, lang, ab_met, alltrim(fs:CLASSNAME))
+
+	str := '&\n</refsect1>&\n'
 	fwrite(fsgml, str, len(str))
 
-
-
-	str := '<section><title>See also</title>&\n'
-	str += '<para>&\n'
-	a := split(fs:SEEALSO, ",")
-	for j=1 to len(a)
-		if empty(a[j])
-			loop
-		endif
-		lf := .f.
-		if atr("(",a[j])>0
-			lf := .t.
-		endif
-		i := strtran(a[j], "(", "")
-		i := strtran(i, ")", "")
-		i := strtran(i, "_", "")
-		i := strtran(i, "*", "")
-		i := alltrim(i)
-		str += '<link linkend="'+iif(lf,'function', 'class')+i+'">'+a[j]+'</link> '
-	next
-	str += '&\n</para>&\n'
-	str += '</section><!-- SEEALSO for '+fs:CLASSNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
-
-
-	str := '<section><title>Author of documentation</title>&\n'
-	str += '<para>&\n'
-	if lang != "EN" .and. (lang $ fs).and. !empty(fs[lang]:AUTHOR)
-		a := fs[lang]:AUTHOR
-	else
-		a := fs:AUTHOR
+	if !empty(j)
+		str := '<refsect1><title>Example:</title>&\n'
+		str += '<informalexample>&\n'
+		str += '<programlisting><![CDATA[&\n'
+		str += j
+		str += ']]></programlisting>&\n'
+		str += '</informalexample><!-- EXAMPLE for '+fs:CLASSNAME+' -->&\n'
+		fwrite(fsgml, str, len(str))
+		str := '</refsect1>&\n'
+		fwrite(fsgml, str, len(str))
 	endif
+
+	if !empty(fs:SEEALSO)
+		str := '<refsect1><title>See also</title>&\n'
+		str += '<para>&\n'
+		a := split(fs:SEEALSO, ",")
+		for j=1 to len(a)
+			if empty(a[j])
+				loop
+			endif
+			lf := .f.
+			if atr("(",a[j])>0
+				lf := .t.
+			endif
+			i := strtran(a[j], "(", "")
+			i := strtran(i, ")", "")
+			i := strtran(i, "_", "")
+			i := strtran(i, "*", "")
+			i := alltrim(i)
+			str += '<link linkend="'+iif(lf,'function', 'class')+i+'">'+a[j]+'</link> '
+		next
+		str += '&\n</para>&\n</refsect1>'
+		fwrite(fsgml, str, len(str))
+	endif
+
 	arr := {}
+	a:= ""
+	str := ""
 	do while search("[a-zA-Z0-9\.\_]*@[a-zA-Z0-9\.\_]*", a, arr, 1)
 		str += substr(a, 1, arr[1][1]-1)
 		str += '<email>'
@@ -424,35 +444,30 @@ local i, j, a, str, lStr, arr, lf
 		a := substr(a, arr[1][2])
 		arr := {}
 	enddo
-	str += a
-	str += '&\n</para>&\n'
-	str += '</section><!-- AUTHOR for '+fs:CLASSNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
-
-	str := '<section><title>Platforms</title>&\n'
-	str += '<para>&\n'
-	if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:PLATFORMS)
-		a := split(trans(fs[lang]:PLATFORMS), "&\n")
-	else
-		a := split(trans(fs:PLATFORMS), "&\n")
+	if !empty(a)
+		str += '<para><command>Author of documentation</command></para>&\n'
+		str += '<para>&\n'
+		str += a
+		str += '&\n</para>&\n'
 	endif
-	for j=1 to len(a)
-		if empty(a[j])
-			str += '</para><para>&\n'
-		else
-			str += a[j]
-		endif
-	next
-	str += '&\n</para>&\n'
-	str += '</section><!-- PLATFORMS for '+fs:CLASSNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
 
-	writeMethodDesc(fsgml, fs, lang, ab_met, alltrim(fs:CLASSNAME))
+	if lang != "EN" .and. (lang $ fs)  .and. !empty(fs[lang]:PLATFORMS)
+		a := trans(fs[lang]:PLATFORMS)
+	else
+		a := trans(fs:PLATFORMS)
+	endif
+	if !empty(a)
 
-	str := '</section>&\n'
-	fwrite(fsgml, str, len(str))
+		str += '<para><command>Platforms</command></para>&\n<para>&\n'+a
+		str += '&\n</para>&\n'
+	endif
 
-	str := '</section><!-- End function '+fs:CLASSNAME+' -->&\n'
+	if !empty(str)
+		str := '<refsect1><title> </title>&\n' + str + '</refsect1>&\n'
+		fwrite(fsgml, str, len(str))
+	endif
+
+	str := '</refentry><!-- End function '+fs:CLASSNAME+' -->&\n'
 	fwrite(fsgml, str, len(str))
 
 
@@ -471,15 +486,7 @@ local i, j, key, val, str, a, x, ii, fs, fsl
 	for ii=1 to ab_met:len()
 		key := ab_met:getKey(ii)
 		x := ab_met:getData(ii)
-		str := '<section id="class-'+clname+'-'+key+'"><title>Method '+clname+':'+key+'()</title>'
-		fwrite(fsgml, str, len(str))
-
-		val := trans(fs[x]:SUMMARY)
-		if lang != "EN" .and. !empty(fsl[x]:SUMMARY)
-			val := trans(fsl[x]:SUMMARY)
-		endif
-
-		str := '<para><command>'+val+'</command></para>&\n'
+		str := '<refsect2>&\n<title><anchor id="class-'+clname+'-'+key+'">Method '+clname+':'+key+'()</title>&\n'
 		fwrite(fsgml, str, len(str))
 
 		str := '<programlisting><![CDATA['+fs[x]:SYNTAX+']]></programlisting>&\n'
@@ -488,85 +495,69 @@ local i, j, key, val, str, a, x, ii, fs, fsl
 		endif
 		fwrite(fsgml, str, len(str))
 
-		str := '<section><title>Arguments</title>&\n'
-		if empty(fs[x]:ARGS)
-			str += '<para>No arguments</para>&\n'
-		else
-			str += '<informaltable frame="none"><tgroup cols="2"><tbody>&\n'
-			if lang != "EN" .and. !empty(fsl[x]:ARGS)
-				for i=1 to len(fsl[x]:ARGS)
-					a := split_str(fsl[x]:ARGS[i][2], "&\n")
-
-					str += '<row><entry align="right"><command><![CDATA['+fsl[x]:ARGS[i][1]+']]></command></entry>'
-					str += '&\n'
-
-					for j=1 to len(a)
-						if j>1
-							str += '<row><entry align="right"> </entry>'
-						endif
-						str += '<entry>'+a[j]+'</entry></row>&\n'
-					next
-//					str += '&\n</para></listitem></varlistentry>&\n'
-				next
-			else
-				for i=1 to len(fs[x]:ARGS)
-					a := split_str(fs[x]:ARGS[i][2], "&\n")
-					str += '<row><entry align="right"><command><![CDATA['+fs[x]:ARGS[i][1]+']]></command></entry>'
-					str += '&\n'
-					for j=1 to len(a)
-						if j>1
-							str += '<row><entry align="right"> </entry>'
-						endif
-						str += '<entry>'+a[j]+'</entry></row>&\n'
-					next
-				next
-			endif
-
-			str += '</tbody></tgroup></informaltable>&\n'
-
-		endif
-		str += '</section><!-- ARGS for '+fs[x]:METHODNAME+' -->&\n'
-		fwrite(fsgml, str, len(str))
-
-		str := '<section><title>Returns</title>&\n'
-		if empty(fs[x]:RETURNS)
-			str += '<para>Returns NIL.</para>&\n'
-		else
-			str += '<para>&\n'
-			a := split_str(fs[x]:RETURNS, "&\n")
-			if lang != "EN" .and. !empty(fsl[x]:RETURNS)
-				a := split_str(fsl[x]:RETURNS, "&\n")
-			endif
-			for j=1 to len(a)
-				if empty(a[j])
-					str += '</para><para>&\n'
-				else
-					str += a[j]
-				endif
-			next
-			str += '&\n</para>&\n'
-		endif
-		str += '</section><!-- RETURNS for '+fs[x]:METHODNAME+' -->&\n'
-		fwrite(fsgml, str, len(str))
-
-		str := '<section><title>Description</title>&\n'
-		str += '<para>&\n'
+		a := NIL
+		str := '<para>&\n'
 		a := split_str(fs[x]:DESCRIPTION, "&\n")
 		if lang != "EN" .and. !empty(fsl[x]:DESCRIPTION)
 			a := split_str(fsl[x]:DESCRIPTION, "&\n")
 		endif
+		if empty(a)
+			a := split_str(fs[x]:SUMMARY, "&\n")
+			if empty(a) .and. lang != "EN" .and. !empty(fsl[x]:SUMMARY)
+				a := split_str(fsl[x]:SUMMARY)
+			endif
+		endif
 		for j=1 to len(a)
 			if empty(a[j])
-				str += '</para><para>&\n'
+				str += '&\n</para>&\n<para>&\n'
 			else
 				str += a[j]
 			endif
 		next
 		str += '&\n</para>&\n'
-		str += '</section><!-- DESCRIPTION for '+fs[x]:METHODNAME+' -->&\n'
 		fwrite(fsgml, str, len(str))
 
-		str := '</section><!-- end method '+key+'() -->&\n'
+		str := '<informaltable pgwide="1" frame="none" role="params"><tgroup cols="2">&\n<colspec colwidth="2*">&\n<colspec colwidth="8*">&\n<tbody>&\n'
+		if lang != "EN" .and. !empty(fsl[x]:ARGS)
+			for i=1 to len(fsl[x]:ARGS)
+				if empty(fsl[x]:ARGS[i][2])
+					loop
+				endif
+
+				str += '<row><entry align="right" valign="top"><parameter><![CDATA['+fsl[x]:ARGS[i][1]+']]></parameter></entry>&\n'
+
+				str += '<entry><para>'+trans(fsl[x]:ARGS[i][2])+'</para></entry></row>&\n'
+			next
+		else
+			for i=1 to len(fs[x]:ARGS)
+				if empty(fs[x]:ARGS[i][2])
+					loop
+				endif
+				str += '<row><entry align="right" valign="top"><parameter><![CDATA['+fs[x]:ARGS[i][1]+']]></parameter></entry>&\n'
+				str += '<entry><para>'+trans(fs[x]:ARGS[i][2])+'</para></entry></row>&\n'
+			next
+		endif
+		fwrite(fsgml, str, len(str))
+
+		str := '<row><entry align="right" valign="top"><emphasis>Returns :</emphasis></entry>&\n'
+		if lang != "EN" .and.  !empty(fsl[x]:RETURNS)
+			str += '<entry><para>'+trans(fsl[x]:RETURNS)+'</para></entry></row>&\n'
+		else
+			if !empty(fs[x]:RETURNS)
+				str += '<entry><para>'+trans(fs[x]:RETURNS)+'</para></entry></row>&\n'
+			else
+				str += '<entry>NIL</entry></row>&\n'
+			endif
+
+		endif
+		fwrite(fsgml, str, len(str))
+
+		str := '</tbody></tgroup></informaltable>&\n'
+
+		fwrite(fsgml, str, len(str))
+
+
+		str := '</refsect2><!-- end method '+key+'() -->&\n'
 		fwrite(fsgml, str, len(str))
 	next
 
@@ -577,7 +568,7 @@ static function WriteClassOrder(outfile, lang, fs, ab_order, categ)
 local str, j, fsgml
 
 fsgml := fcreate(outfile)
-str := '<chapter id="classes"><title>CLIP Classes</title>&\n'
+str := '<part id="classes"><title>CLIP Classes</title>&\n'
 fwrite(fsgml, str, len(str))
 
 for j := 1 to ab_order:len()
@@ -586,7 +577,7 @@ for j := 1 to ab_order:len()
 next
 
 
-str := '</chapter>&\n'
+str := '</part>&\n'
 fwrite(fsgml, str, len(str))
 fclose(fsgml)
 return

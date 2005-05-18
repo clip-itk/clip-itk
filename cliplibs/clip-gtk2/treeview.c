@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003-2004  ITK
+    Copyright (C) 2003-2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -28,8 +28,8 @@ static int
 handle_move_cursor(GtkTreeView *tree, GtkMovementStep arg1, gint arg2, C_signal *cs)
 {
 	PREPARECV(cs,cv);
-	_clip_mputn(cs->cw->cmachine, &cv, HASH_ARG1, arg1);
-	_clip_mputn(cs->cw->cmachine, &cv, HASH_ARG2, arg2);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_STEP, arg1);
+	_clip_mputn(cs->cw->cmachine, &cv, HASH_COUNT, arg2);
 	INVOKESIGHANDLER(GTK_WIDGET(tree), cs,cv);
 }
 #if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
@@ -298,7 +298,7 @@ err:
 }
 
 int
-clip_GTK_TREEVIEWNEWSETMODEL(ClipMachine * cm)
+clip_GTK_TREEVIEWSETMODEL(ClipMachine * cm)
 {
 	C_widget *ctree = _fetch_cw_arg(cm);
 	C_object *cmodel   = _fetch_cobject(cm, _clip_spar(cm, 2));
@@ -338,7 +338,7 @@ err:
 
 
 int
-clip_GTK_TREEVIEWNEWGETHADJUSTMENT(ClipMachine * cm)
+clip_GTK_TREEVIEWGETHADJUSTMENT(ClipMachine * cm)
 {
 	C_widget *ctree = _fetch_cw_arg(cm);
 	GtkAdjustment *adjust;
@@ -361,7 +361,7 @@ err:
 
 
 int
-clip_GTK_TREEVIEWNEWSETHADJUSTMENT(ClipMachine * cm)
+clip_GTK_TREEVIEWSETHADJUSTMENT(ClipMachine * cm)
 {
 	C_widget *ctree = _fetch_cw_arg(cm);
 	C_object *cadjust = _fetch_cobject(cm, _clip_spar(cm, 2));
@@ -378,7 +378,7 @@ err:
 
 
 int
-clip_GTK_TREEVIEWNEWGETVADJUSTMENT(ClipMachine * cm)
+clip_GTK_TREEVIEWGETVADJUSTMENT(ClipMachine * cm)
 {
 	C_widget *ctree = _fetch_cw_arg(cm);
 	GtkAdjustment *adjust;
@@ -401,7 +401,7 @@ err:
 
 
 int
-clip_GTK_TREEVIEWNEWSETVADJUSTMENT(ClipMachine * cm)
+clip_GTK_TREEVIEWSETVADJUSTMENT(ClipMachine * cm)
 {
 	C_widget *ctree = _fetch_cw_arg(cm);
 	C_object *cadjust = _fetch_cobject(cm, _clip_spar(cm, 2));
@@ -1517,7 +1517,7 @@ clip_GTK_TREEVIEWSETCURSORONCELL(ClipMachine * cm)
 	gboolean start_edit= _clip_parni(cm, 5);
 
 	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
-	CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+	CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath));
 	CHECKCOBJOPT(ccolumn, GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
 	CHECKCOBJOPT(crender, GTK_IS_CELL_RENDERER(crender->object));
 	CHECKARG(5, LOGICAL_t);
@@ -1540,7 +1540,7 @@ clip_GTK_TREEVIEWEXPANDTOPATH(ClipMachine * cm)
 	C_object *cpath    = _fetch_cobject(cm, _clip_spar(cm, 2));
 
 	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
-	CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath->object));
+	CHECKCOBJ(cpath, GTK_IS_TREE_PATH(cpath));
 
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(ctree->widget),
 		GTK_TREE_PATH(cpath->object));
@@ -1550,5 +1550,94 @@ err:
 	return 1;
 }
 #endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_TREEVIEWGETFIXEDHEIGHTMODE(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
 
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
 
+	_clip_retl(cm, gtk_tree_view_get_fixed_height_mode(GTK_TREE_VIEW(ctree->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEVIEWSETFIXEDHEIGHTMODE(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+        gboolean enable    = _clip_parl(cm, 2);
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_tree_view_set_fixed_height_mode(GTK_TREE_VIEW(ctree->widget), enable);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEVIEWGETHOVERSELECTION(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+
+	_clip_retl(cm, gtk_tree_view_get_hover_selection(GTK_TREE_VIEW(ctree->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEVIEWSETHOVERSELECTION(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+        gboolean enable    = _clip_parl(cm, 2);
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_tree_view_set_hover_selection(GTK_TREE_VIEW(ctree->widget), enable);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEVIEWGETHOVEREXPAND(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+
+	_clip_retl(cm, gtk_tree_view_get_hover_expand(GTK_TREE_VIEW(ctree->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_TREEVIEWSETHOVEREXPAND(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+        gboolean enable    = _clip_parl(cm, 2);
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_tree_view_set_hover_expand(GTK_TREE_VIEW(ctree->widget), enable);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

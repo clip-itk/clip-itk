@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Открывает GZIP файл.
 $SYNTAX$
-	nHandle := gZipOpen(<filename> [,<mode>])
+	gZipOpen(<filename> [,<mode>]) --> nHandle
 $LANG_RU$
 $ARGUMENTS$
 	<filename> - name of file with gzip archive.

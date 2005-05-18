@@ -13,7 +13,7 @@
 #include "tbrowse.ch"
 
 #define K_UNDO          K_CTRL_U
-#define CTRL_END_SPECIAL
+//#define CTRL_END_SPECIAL
 
 #ifndef SETCURSOR_IN_GETSYS
 	#xdefine setcursor __setcursorempty

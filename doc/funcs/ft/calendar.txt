@@ -6,7 +6,7 @@ $ONELINER$
    Display date/time calendar, find a date, return calendar data.
 $SYNTAX$
    FT_CALENDAR ( [ <nRow> ], [ <nCol> ], [ <cColor> ], [ <lShadow> ] ,
-		 [ <lShowHelp> ] ) -> aRetVal
+		 [ <lShowHelp> ] ) --> aRetVal
 $ARGUMENTS$
 
    <nRow> is an optional screen row for calendar display,

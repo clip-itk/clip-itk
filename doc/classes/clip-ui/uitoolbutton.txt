@@ -34,11 +34,13 @@ $SUMMARY$
 $LANG_RU$
 	Установить действие, выполняемое по нажатию кнопки на панель инструментов.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
-	<action>	- Code block. Code block that will be executed if button pressed.
+	<signal>	- String. Signal name.
+	<action>	- Code block. Action.
 $LANG_RU$
-	<action>	- Блок кода. Блок кода, выполняемый при нажатии на кнопку.
+	<signal>	- Строка. Название сигнала.
+	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
 $PLATFORMS$

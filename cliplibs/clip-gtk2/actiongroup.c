@@ -636,4 +636,29 @@ clip_GTK_ACTIONGROUPSETTRANSLATIONDOMAIN(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_ACTIONGROUPTRANSLATESTRING(ClipMachine * cm)
+{
+        C_object *cagroup = _fetch_co_arg(cm);
+        gchar     *string = _clip_parc(cm, 2);
+        gchar     *resstr ;
 
+	CHECKARG2(1,MAP_t, NUMERIC_t); CHECKCOBJ(cagroup, GTK_IS_ACTION_GROUP(cagroup->object));
+        CHECKARG(2, CHARACTER_t);
+
+	LOCALE_TO_UTF(string);
+	resstr = (gchar *)gtk_action_group_translate_string(GTK_ACTION_GROUP(cagroup->object),
+                string);
+	LOCALE_FROM_UTF(resstr);
+        _clip_retc(cm, resstr);
+
+	FREE_TEXT(string);
+        FREE_TEXT(resstr);
+
+	return 0;
+err:
+	return 1;
+}
+
+#endif

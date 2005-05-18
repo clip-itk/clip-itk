@@ -6,7 +6,7 @@ $ONELINER$
    Strip a string of trailing nulls
 $SYNTAX$
 
-   fn_noNull( cStr ) -> cNewStr
+   fn_noNull( cStr ) --> cNewStr
 
 $ARGUMENTS$
 
@@ -14,7 +14,7 @@ $ARGUMENTS$
 
 $RETURNS$
 
-   <cNewStr> 
+   <cNewStr>
 
 $DESCRIPTION$
 

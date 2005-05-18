@@ -71,9 +71,8 @@ for i=1 to __ac_data:lenMass
    if valtype(_lmass[i])!="L"
       _lmass[i]=.t.
    endif
-   if _lmass[i]
+   if __ac_data:exit .AND. _lmass[i]
       __ac_data:exit:=.f.
-      exit
    endif
 next
 __ac_data:_lmass:=_lmass
@@ -334,20 +333,21 @@ return __ac_data:nRowmass-i
 *****************************************************
 * по 1-му символу
 static func firstChr(chrKey,bb)
-local ccc,retVal
-ccc:=upper(chr(chrKey))
-retVal:=ascan(__ac_data:massP,{|elem|iif(upper(substr(ltrim(elem),1,1))==ccc,.t.,.f.)},__ac_data:nRowmass+1)
-if retVal==0 .and. __ac_data:nRowMass >= 1
-   retVal:=ascan(__ac_data:massP,{|elem|iif(upper(substr(ltrim(elem),1,1))==ccc,.t.,.f.)},1)
-endif
-if retVal!=0
-   __ac_data:nrowMass:=retVal
-   if retVal < __ac_data:nB-__ac_data:nT
-	bb:rowPos := retVal
-   endif
-endif
+	local ccc,retVal
+	ccc:=upper(chr(chrKey))
+	retVal:=ascan(__ac_data:massP,{|elem|iif( elem != NIL .and. upper(substr(ltrim(elem),1,1))==ccc,.t.,.f.)},__ac_data:nRowmass+1)
+	if retVal==0 .and. __ac_data:nRowMass >= 1
+		retVal:=ascan(__ac_data:massP,{|elem| elem != NIL .and. iif(upper(substr(ltrim(elem),1,1))==ccc,.t.,.f.)},1)
+	endif
+	if retVal!=0 .and. __ac_data:_lmass[retVal]
+		__ac_data:nrowMass:=retVal
+		if retVal < __ac_data:nB-__ac_data:nT
+			bb:rowPos := retVal
+		endif
+	endif
 return 3
 
+*****************************************************
 static function  __ach_color_block(x)
   local t, nrow
   nrow:=iif(x==NIL,__ac_data:nRowMass,x)

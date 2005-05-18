@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Читает данные из bZIP2 файла.
 $SYNTAX$
-	realLen := bZip2Read(<nHandle>, <@cBuffer> [,<nLen>])
+	bZip2Read(<nHandle>, <@cBuffer> [,<nLen>]) --> realLen
 $LANG_RU$
 $ARGUMENTS$
 	<nHandle> - number of opened file.

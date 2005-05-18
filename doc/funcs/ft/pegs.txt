@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    FT_PEGS GAME (all work and no play...)
 $SYNTAX$
-   FT_PEGS() -> NIL
+   FT_PEGS() --> NIL
 $ARGUMENTS$
    None
 $RETURNS$

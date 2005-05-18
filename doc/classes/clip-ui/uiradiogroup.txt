@@ -1,0 +1,62 @@
+$CLASSNAME$
+	UIRadioGroup
+$SUMMARY$
+	Class UIRadioGroup.
+$LANG_RU$
+	Класс UIRadioGroup.
+$ABOUT$
+	Class of radio buttons group.
+$LANG_RU$
+	Класс группы кнопок альтернатив.
+$SYNTAX$
+	UIRadioGroup()	--> UIRadioGroup object.
+$LANG_RU$
+	UIRadioGroup()	--> Объект UIRadioGroup.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIRadioGroup".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIRadioGroup".
+
+$METHODNAME$
+	UIRadioGroup()
+$SUMMARY$
+	Constructor.
+$LANG_RU$
+	Конструктор.
+$SYNTAX$
+	UIRadioGroup()
+$ENDMETHOD$
+
+$METHODNAME$
+	addButton()
+$SUMMARY$
+	Append radio button to group.
+$LANG_RU$
+	Добавить кнопку альтернативы в группу.
+$SYNTAX$
+	addButton(<text>)
+$ARGUMENTS$
+	<text>		- String. Label for appending radio button.
+$LANG_RU$
+	<text>		- Строка. Надпись для добавляемой кнопки альтернативы.
+$ENDMETHOD$
+
+$EXAMPLES$
+	rg := UIRadioGroup()
+	grid:add(rg:addButton("button1"))
+	grid:add(rg:addButton("button2"))
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+	UIRADIOBUTTON
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

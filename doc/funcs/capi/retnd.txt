@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Возвращает значение арифметического выражения типа double.
 $SYNTAX$
-	void _clip_retnd(ClipMachine * cm,double n)
+	_clip_retnd(ClipMachine * cm,double n) --> void
 $ARGUMENTS$
 	<n> - a numeric expression of double type
 $LANG_RU$

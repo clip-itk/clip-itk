@@ -1,6 +1,5 @@
-
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004 - 2005 ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */

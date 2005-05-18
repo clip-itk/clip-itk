@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Convert Lotus style escape codes
 $SYNTAX$
-   FT_ESCCODE( <cASCII> )  -> <cPrinterFormat>
+   FT_ESCCODE( <cASCII> ) --> <cPrinterFormat>
 $ARGUMENTS$
    <cASCII> is the ASCII representation of the printer control
 	codes in Lotus 123 format (e.g. "\027E" for Chr(27)+"E")

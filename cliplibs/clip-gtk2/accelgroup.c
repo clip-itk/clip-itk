@@ -314,6 +314,7 @@ err:
 	return 1;
 }
 
+
 int
 clip_GTK_ACCELERATORPARSE(ClipMachine * cm)
 {
@@ -597,6 +598,29 @@ clip_GTK_ACCELMAPUNLOCKPATH(ClipMachine * cm)
 	CHECKARG(1, CHARACTER_t);
 
         gtk_accel_map_unlock_path(accel_path);
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_ACCELERATORGETLABEL(ClipMachine * cm)
+{
+	guint accelerator_key = _clip_parni(cm, 1);
+	GdkModifierType  type = _clip_parni(cm, 2);
+        gchar          *label ;
+
+	CHECKARG(1, NUMERIC_t);
+	CHECKARG(2, NUMERIC_t);
+
+	label = gtk_accelerator_get_label(accelerator_key, type);
+
+        LOCALE_FROM_UTF(label);
+        _clip_retc(cm, label);
+        FREE_TEXT(label);
 
 	return 0;
 err:

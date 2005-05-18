@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Принимает числовой параметр как double.
 $SYNTAX$
-	double _clip_parnd(ClipMachine * cm,int num)
+	_clip_parnd(ClipMachine * cm,int num) --> double
 $ARGUMENTS$
 	<num> - position of the parameter in parameters list
 $LANG_RU$

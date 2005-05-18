@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Display a blinking message on the screen
 $SYNTAX$
-   FT_BLINK( <cMsg>, [ <nRow> ], [ <nCol> ] ) -> NIL
+   FT_BLINK( <cMsg>, [ <nRow> ], [ <nCol> ] ) --> NIL
 $ARGUMENTS$
    <cMsg> is the string to blink.
 

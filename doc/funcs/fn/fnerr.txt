@@ -6,7 +6,7 @@
     Return current error status for a Netware Library function
  $SYNTAX$
 
-    fn_error() -> nError
+    fn_error() --> nError
 
  $ARGUMENTS$
 
@@ -35,7 +35,7 @@
     Set the current Netware Library error status
  $SYNTAX$
 
-    _fnSetErr( nErrCode ) -> nOldError
+    _fnSetErr( nErrCode ) --> nOldError
 
  $ARGUMENTS$
 

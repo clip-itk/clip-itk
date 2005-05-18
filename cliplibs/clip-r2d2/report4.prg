@@ -4,7 +4,7 @@ function r2d2_report4_xml(_queryArr)
 
 local err, _query
 local oDict,oDep, oDep02,oDict02
-local beg_date:=date(),end_date:=date(), account:=""
+local beg_date:=date(),end_date:=date(), account:="",urn:='report4'
 local chess_bal, acc_chart, columns
 local connect_id:="", connect_data
 local i,j,k,s1,s2,tmp,obj,col
@@ -29,6 +29,10 @@ local k_list, d_list, arefs:={}, atree:={}
 	if "ACCOUNT" $ _query
 		account := upper(_query:account)
 	endif
+	if "URN" $ _query
+	         urn := _query:URN
+	endif
+				 
 
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
@@ -193,9 +197,9 @@ local k_list, d_list, arefs:={}, atree:={}
 */
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
 
-	cgi_putArefs2Rdf1(aTree,oDep,0,"report4",columns,"")
+	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,"report4",columns,"")
+	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
 	? '</RDF:RDF>'
 
 /******************************************/

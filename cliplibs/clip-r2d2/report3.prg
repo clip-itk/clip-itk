@@ -188,6 +188,8 @@ local urn,sprname,cache:=map()
 			endif
 			//outlog(__FILE__,__LINE__,tmp,post_objs[i])
 			post_objs[tmp]:summa += post_objs[i]:summa
+			post_objs[tmp]:dquantity += post_objs[i]:dquantity
+			post_objs[tmp]:kquantity += post_objs[i]:kquantity
 			adel(post_objs,i)
 			asize(post_objs,len(post_objs)-1)
 		next
@@ -206,6 +208,10 @@ local urn,sprname,cache:=map()
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
 
+	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
+        ? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
+	? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'		  
 	if empty(urn)
 		urn := sprname
 	endif

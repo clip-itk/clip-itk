@@ -79,4 +79,29 @@
 #define GTK_STOCK_ZOOM_IN          "gtk-zoom-in"
 #define GTK_STOCK_ZOOM_OUT         "gtk-zoom-out"
 
+
+/* begin with gtk2.0-2.4 */
+#define GTK_STOCK_DIALOG_AUTHENTICATION	"gtk-dialog-error"
+#define GTK_STOCK_HARDDISK		"gtk-harddisk"
+#define GTK_STOCK_INDENT		"gtk-indent"
+#define GTK_STOCK_NETWORK		"gtk-network"
+#define GTK_STOCK_UNINDENT		"gtk-unindent"
+
+
+/* begin with gtk2.0-2.6 */
+#define GTK_STOK_ABOUT			"gtk-about"
+#define GTK_STOK_CONNECT		"gtk-connect"
+#define GTK_STOK_DIRECTORY		"gtk-directory"
+#define GTK_STOK_DISCONNECT		"gtk-disconnect"
+#define GTK_STOK_EDIT			"gtk-edit"
+#define GTK_STOK_FILE			"gtk-file"
+#define GTK_STOK_MEDIA_FORWARD		"gtk-media-forward"
+#define GTK_STOK_MEDIA_NEXT		"gtk-media-next"
+#define GTK_STOK_MEDIA_PAUSE		"gtk-media-pause"
+#define GTK_STOK_MEDIA_PLAY		"gtk-media-play"
+#define GTK_STOK_MEDIA_PREVIOUS		"gtk-media-previous"
+#define GTK_STOK_MEDIA_RECORD		"gtk-media-record"
+#define GTK_STOK_MEDIA_REWIND		"gtk-media-rewind"
+#define GTK_STOK_MEDIA_STOP		"gtk-media-stop"
+
 #endif /* __GTK_STOCK_H__ */

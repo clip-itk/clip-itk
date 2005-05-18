@@ -2,7 +2,8 @@ LIBS= -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangox-1.0 -l
 
 SRC =clipgtktest tbrow simple  test_stock test_image accel test_tree test_image \
 	test_gtk test_text winpic test note fonttest text container test_dnd drag_and_drop \
-        colorbtn pango entrytempl combobox ifactory lines draw lists imgmenu
+        colorbtn pango entrytempl combobox ifactory lines draw lists imgmenu\
+        winback test_rc iconview
 all: $(SRC)
 
 clean:
@@ -24,7 +25,7 @@ note: note.prg
 	clip -es note.prg -lclip-gtk2
 
 tbrow: tbrow.prg
-	clip -es -M tbrow.prg -lclip-gtk2
+	clip -es tbrow.prg -lclip-gtk2
 
 simple: simple.prg
 	clip -es simple.prg -lclip-gtk2
@@ -45,6 +46,7 @@ test_gtk: test_gtk.prg
 
 test_stock: test_stock.prg
 	clip -es test_stock.prg -lclip-gtk2
+#	clip -egs test_stock.prg ./libclip-gtk2.so $(LIBS)
 
 test_image: test_image.prg
 	clip -es test_image.prg -lclip-gtk2
@@ -52,6 +54,10 @@ test_image: test_image.prg
 test_tree: test_tree.prg
 	clip -es test_tree.prg -lclip-gtk2
 #	clip -esg test_tree.prg ./libclip-gtk2.so $(LIBS)
+
+iconview: iconview.prg
+	clip -es iconview.prg -lclip-gtk2
+#	clip -esg iconview.prg ./libclip-gtk2.so $(LIBS)
 
 test_text: test_text.prg
 	clip -es test_text.prg -lclip-gtk2
@@ -95,5 +101,13 @@ lists: lists.prg
 imgmenu: imgmenu.prg
 	clip -es imgmenu.prg -lclip-gtk2
 #	clip -esg imgmenu.prg ./libclip-gtk2.so $(LIBS)
+
+winback: winback.prg
+#	clip -es winback.prg -lclip-gtk2
+	clip -esg winback.prg ./libclip-gtk2.so $(LIBS)
+
+test_rc: test_rc.prg
+	clip -es test_rc.prg -lclip-gtk2
+#	clip -esg test_rc.prg ./libclip-gtk2.so $(LIBS)
 
 

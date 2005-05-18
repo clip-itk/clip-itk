@@ -6,7 +6,7 @@ $ONELINER$
    Open or close a text file for use by the FT_F* functions
 $SYNTAX$
 
-   FT_FUSE( [ <cFile> ] [, <nMode> ] ) -> nHandle | 0
+   FT_FUSE( [ <cFile> ] [, <nMode> ] ) --> nHandle | 0
 
 $ARGUMENTS$
 

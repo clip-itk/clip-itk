@@ -10,7 +10,7 @@ gtk_ContainerAdd( window, vbox )
 
 
 hb := {}
-
+/*
 stock :={{GTK_STOCK_DIALOG_INFO,GTK_STOCK_DIALOG_WARNING,GTK_STOCK_DIALOG_ERROR,GTK_STOCK_DIALOG_QUESTION ,GTK_STOCK_DND},;
          {GTK_STOCK_DND_MULTIPLE,GTK_STOCK_ADD,GTK_STOCK_APPLY,GTK_STOCK_BOLD,GTK_STOCK_CANCEL},;
          {GTK_STOCK_CDROM,GTK_STOCK_CLEAR,GTK_STOCK_CLOSE,GTK_STOCK_CONVERT,GTK_STOCK_COPY},;
@@ -26,19 +26,31 @@ stock :={{GTK_STOCK_DIALOG_INFO,GTK_STOCK_DIALOG_WARNING,GTK_STOCK_DIALOG_ERROR,
          {GTK_STOCK_STOP,GTK_STOCK_STRIKETHROUGH,GTK_STOCK_UNDELETE,GTK_STOCK_UNDERLINE,GTK_STOCK_UNDO},;
          {GTK_STOCK_YES,GTK_STOCK_ZOOM_100,GTK_STOCK_ZOOM_FIT,GTK_STOCK_ZOOM_IN,GTK_STOCK_ZOOM_OUT}}
 
+*/
 
+stock := gtk_StockListIDs()
 
 btn := {}
-for i=1 to len(stock)
+k := 1
+i := 1
+do while k<= len(stock)
+
 	aadd(hb, gtk_HBoxNew())
         aadd(btn, {})
-	for j=1 to len(stock[i])
-        	aadd(btn[i], gtk_ButtonNewFromStock(, stock[i][j]))
+
+	for j=1 to 5
+                if k>len(stock)
+                	exit
+                endif
+        	aadd(btn[i], gtk_ButtonNewFromStock(, stock[k]))
                 gtk_SignalConnect(btn[i][j], "clicked", {|wid,ev| action(wid)})
         	gtk_BoxPackStart(hb[i], btn[i][j])
+                k++
 	next
 	gtk_BoxPackStart( vbox, hb[i] )
-next
+        i++
+
+enddo
 
 gtk_SignalConnect( window, "delete-event", {|wid,e|gtk_Quit()} )
 gtk_WidgetShowAll( window )

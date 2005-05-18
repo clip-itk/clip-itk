@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Set the DOS system date
 $SYNTAX$
-   FT_SETDATE( <dDate> ) -> <lResult>
+   FT_SETDATE( <dDate> ) --> <lResult>
 $ARGUMENTS$
    <dDate> is a Clipper date variable that you want to set the current
    DOS system date to.

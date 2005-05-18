@@ -8,7 +8,7 @@ $SYNTAX$
    FT_XBOX( [ <cJustType> ], [ <cRetWait> ], [ <cBorType> ],   ;
 	    [ <cBorColor> ], [ <cBoxColor> ], [ <nStartRow> ], ;
 	    [ <nStartCol> ], <cLine1>,  <cLine2>, <cLine3>,    ;
-	    <cLine4>, <cLine5>, <cLine6>, <cLine7>, <cLine8> ) -> NIL
+	    <cLine4>, <cLine5>, <cLine6>, <cLine7>, <cLine8> ) --> NIL
 $ARGUMENTS$
    <cJustType> is a character indicating the type of text justification.
    "L" or "l" will cause the text to be left-justified in the box.

@@ -6,6 +6,9 @@
 %{
 /*
  * $Log: clic.lex,v $
+ * Revision 1.254  2005/05/11 11:39:48  clip
+ * uri: some fix from Matija Nalis <mnalis-ml@voyager.hr>
+ *
  * Revision 1.253  2004/04/29 07:29:18  clip
  * uri: fix backward output in command TEXT. Closes #172
  *
@@ -5526,8 +5529,8 @@ skip_norm(int *pos,int extend, Coll *delims)
 					nch = yytext[*pos+1];
 				else
 					nch = 0;
-				if (*pos < (yyleng-1))
-					nnch = yytext[*pos+1];
+				if (*pos < (yyleng-2))
+					nnch = yytext[*pos+2];
 				else
 					nnch = 0;
 				if ( *pos>0 && ( bch=='&' && is_id(yytext[*pos-1]) ))

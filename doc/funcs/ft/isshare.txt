@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
     Determine if DOS "Share" is installed
 $SYNTAX$
-    FT_ISSHARE() -> nRetCode
+    FT_ISSHARE() --> nRetCode
 $ARGUMENTS$
     None
 $RETURNS$

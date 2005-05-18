@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Распаковывает строку по GZIP алгоритму.
 $SYNTAX$
-	cResult := gUnZip(<cData>)
+	gUnZip(<cData>) --> cResult
 $LANG_RU$
 $ARGUMENTS$
 	<cData> - data for uncompress.

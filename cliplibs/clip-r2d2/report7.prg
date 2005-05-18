@@ -158,6 +158,8 @@ local i,j,k,s,s1,s2,tmp,obj,col
 			endif
 			//outlog(__FILE__,__LINE__,tmp,post_objs[i])
 			post_objs[tmp]:summa += post_objs[i]:summa
+			post_objs[tmp]:dquantity += post_objs[i]:dquantity
+			post_objs[tmp]:kquantity += post_objs[i]:kquantity
 			adel(post_objs,i)
 			asize(post_objs,len(post_objs)-1)
 		next
@@ -210,7 +212,9 @@ local i,j,k,s,s1,s2,tmp,obj,col
 			an_data[j]:od_summa -= paraSumm[i]
 			an_data[j]:ok_summa -= paraSumm[i]
 		next
-		cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn)
+		cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",":"+accounts[i])
+ 		     //cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
+		
 	next
 	? '</RDF:RDF>'
 

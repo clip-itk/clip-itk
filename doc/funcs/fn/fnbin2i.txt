@@ -6,7 +6,7 @@ $ONELINER$
     Convert a binary string to numeric
 $SYNTAX$
 
-    fn_Bin2I( <cBinStr> ) -> nValue
+    fn_Bin2I( <cBinStr> ) --> nValue
 
 $ARGUMENTS$
 
@@ -47,7 +47,7 @@ $ONELINER$
     Convert an integer to binary string
 $SYNTAX$
 
-    fn_I2Bin( <nValue>, [ <nLen> ] ) -> cBinStr
+    fn_I2Bin( <nValue>, [ <nLen> ] ) --> cBinStr
 
 $ARGUMENTS$
 

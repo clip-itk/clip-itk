@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
    Просматривает записи в заданном окне.
 $SYNTAX$
-     BROWSE([<nTop>], [<nLeft>], [<nBottom>], [<nRight>]) lSuccess
+     BROWSE([<nTop>], [<nLeft>], [<nBottom>], [<nRight>]) --> lSuccess
 $LANG_RU$
      BROWSE([<верхняя строка>],[<левая колонка>], [<нижняя строка>],[<правая колонка>]) --> NIL
 $ARGUMENTS$

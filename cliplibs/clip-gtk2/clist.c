@@ -1005,7 +1005,7 @@ clip_GTK_CLISTPREPEND(ClipMachine * cm)
 	if (_clip_parinfo(cm,2)==CHARACTER_t)
 		columns[0] = _clip_locale_to_utf8(_clip_parc(cm,2));
 
-	_clip_retni(cm,gtk_clist_prepend(GTK_CLIST(clst->widget),columns));
+	_clip_retni(cm,gtk_clist_prepend(GTK_CLIST(clst->widget),columns)+1);
 
 	if (_clip_parinfo(cm,2)==ARRAY_t)
 	{
@@ -1031,7 +1031,7 @@ clip_GTK_CLISTPREPEND(ClipMachine * cm)
 	if (_clip_parinfo(cm,2)==CHARACTER_t)
 		columns[0] = _clip_parc(cm,2);
 
-	_clip_retni(cm,gtk_clist_prepend(GTK_CLIST(clst->widget),columns));
+	_clip_retni(cm,gtk_clist_prepend(GTK_CLIST(clst->widget),columns)+1);
 	if (columns) free(columns);
 #endif */
 	return 0;
@@ -1068,7 +1068,7 @@ clip_GTK_CLISTAPPEND(ClipMachine * cm)
 	if (_clip_parinfo(cm,2)==CHARACTER_t)
 		columns[0] = _clip_locale_to_utf8(_clip_parc(cm,2));
 
-	_clip_retni(cm,gtk_clist_append(GTK_CLIST(clst->widget),columns));
+	_clip_retni(cm,gtk_clist_append(GTK_CLIST(clst->widget),columns)+1);
 
 	if (_clip_parinfo(cm,2)==ARRAY_t)
 	{
@@ -1094,7 +1094,7 @@ clip_GTK_CLISTAPPEND(ClipMachine * cm)
 	if (_clip_parinfo(cm,2)==CHARACTER_t)
 		columns[0] = _clip_parc(cm,2);
 
-	_clip_retni(cm,gtk_clist_append(GTK_CLIST(clst->widget),columns));
+	_clip_retni(cm,gtk_clist_append(GTK_CLIST(clst->widget),columns)+1);
 	if (columns) free(columns);
 #endif */
 	return 0;
@@ -1132,7 +1132,7 @@ clip_GTK_CLISTINSERT(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t)
 		columns[0] = _clip_locale_to_utf8(_clip_parc(cm,3));
 
-	_clip_retni(cm,gtk_clist_insert(GTK_CLIST(clst->widget),row-1,columns));
+	_clip_retni(cm,gtk_clist_insert(GTK_CLIST(clst->widget),row-1,columns)+1);
 
 	if (_clip_parinfo(cm,3)==ARRAY_t)
 	{
@@ -1158,7 +1158,7 @@ clip_GTK_CLISTINSERT(ClipMachine * cm)
 	if (_clip_parinfo(cm,3)==CHARACTER_t)
 		columns[0] = _clip_parc(cm,3);
 
-	_clip_retni(cm,gtk_clist_insert(GTK_CLIST(clst->widget),row-1,columns));
+	_clip_retni(cm,gtk_clist_insert(GTK_CLIST(clst->widget),row-1,columns)+1);
 	if (columns) free(columns);
 #endif*/
 	return 0;
@@ -1251,8 +1251,8 @@ clip_GTK_CLISTGETSELECTIONINFO(ClipMachine * cm)
 	gint row, column;
 	CHECKCWID(clst,GTK_IS_CLIST);
 	CHECKARG(2,NUMERIC_t); CHECKARG(3,NUMERIC_t);
-	_clip_retni(cm,gtk_clist_get_selection_info(GTK_CLIST(clst->widget), x,y, &row,&column));
-	_clip_storni(cm,row,4,0); _clip_storni(cm,column,5,0);
+	_clip_retni(cm,gtk_clist_get_selection_info(GTK_CLIST(clst->widget), x-1,y-1, &row,&column));
+	_clip_storni(cm,row+1,4,0); _clip_storni(cm,column+1,5,0);
 	return 0;
 err:
 	return 1;

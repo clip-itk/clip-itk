@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Test the status of an individual bit
 $SYNTAX$
-   FT_ISBIT( <cByte>, <nBitPos> ) -> lResult
+   FT_ISBIT( <cByte>, <nBitPos> ) --> lResult
 $ARGUMENTS$
    <cByte> is a character from CHR(0) to CHR(255)
 

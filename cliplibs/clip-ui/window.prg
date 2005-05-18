@@ -3,9 +3,8 @@
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
 /*   Authors: 								   */
-/*  	     Andrey Cherepanov <sibskull@mail.ru>			   */
+/*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   Last change: 10 Jan 2005						   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -37,6 +36,7 @@ function UIWindow( caption, parent, name, close, resizeable )
 	obj:returnAction := NIL
 	obj:objClass	:= ""
 	obj:objDep	:= ""
+	obj:caption	:= caption
 
 	obj:childs	:= array(0)
 	obj:childCount	:= 0
@@ -70,7 +70,6 @@ function _recover_UIWINDOW( obj )
 	obj:setPlacement  := @ui_setPlacement()
 	obj:setMDI	:= @ui_setMDI()
 	obj:setIcon	:= @ui_setIcon()
-	obj:setFocus	:= @ui_setFocus()
 	obj:setDefault	:= @ui_setDefault()
 	obj:setKeyEvent := @ui_setKeyEvent()
 	obj:unSetKeyEvent := @ui_unSetKeyEvent()
@@ -96,6 +95,7 @@ function UIChildWindow( caption, parent, name )
 	obj:returnAction := NIL
 	obj:objClass	:= ""
 	obj:objDep	:= ""
+	obj:caption	:= caption
 
 	obj:menu 	:= NIL
 	obj:toolbar	:= NIL
@@ -114,6 +114,7 @@ function _recover_UICHILDWINDOW( obj )
         obj:add		:= @ui_add()
         obj:addEnd	:= @ui_addEnd()
 	obj:close	:= @ui_close()
+	obj:setCaption  := @ui_setChildCaption()
 return obj
 
 function _recover_UIWINDOWCOMMON( obj )
@@ -129,6 +130,7 @@ function _recover_UIWINDOWCOMMON( obj )
 	obj:return	:= @ui_return()
 	obj:isChanged	:= @ui_isChanged()
 	obj:setId	:= @ui_setId()
+	obj:setFocus	:= @ui_setFocus()
 return obj
 
 function UIDocument(caption, parent, name)
@@ -192,6 +194,7 @@ static function ui_dialogBox(self, caption, text, buttons, buttonNames, action, 
 	vb:addEnd( hb )
 	win:setDefault( b[1] ) // Make first button default
 	win:setPlacement( .t. )
+	driver:setModal( win, .T. )
 	win:show()
 return win
 
@@ -318,7 +321,15 @@ return NIL
 
 /* Set window caption */
 static function ui_setCaption(self, caption)
+	self:caption := caption
 	driver:setCaption( self, caption )
+return NIL
+
+/* Set caption for child window */
+static function ui_setChildCaption(self, caption)
+	// TODO: BUG #230: child window caption should be show in main window caption
+	self:caption := caption
+	driver:setChildCaption( self, caption )
 return NIL
 
 /* Get window geometry: position and size */
@@ -352,7 +363,7 @@ static function ui_setMDI( self )
 	endif
 return NIL
 
-/* TODO: Set window icon */
+/* Set window icon */
 static function ui_setIcon( self, pic )
 	if empty(pic)
         	pic := UIImage()
@@ -365,7 +376,7 @@ static function ui_setName(self, name, o)
         if valtype(o) != "O" .or. .not. "CLASSNAME" $ o
 		return NIL
 	endif
-	if ascan({"UIEdit","UIEditText","UIComboBox","UICheckBox","UIButton","UILabel"},o:className) != 0
+	if ascan({"UIEdit","UIEditText","UIComboBox","UICheckBox","UIButton","UILabel","UIRadioButton","UISlider"},o:className) != 0
 		self:value[name] := o
 		self:valueTypes[name] := "string"
 		aadd( self:valueNames, name )
@@ -407,7 +418,11 @@ return o:getValue()
 
 /* Set focus to specified widget */
 static function ui_setFocus(self, obj)
-	driver:setFocus(self, obj)
+	if self:className == 'UIChildWindow' .or. self:className == "UIDocument"
+		driver:setFocus(self:parent, obj)
+	else
+		driver:setFocus(self, obj)
+	endif
 return NIL
 
 /* Set default pushbutton */

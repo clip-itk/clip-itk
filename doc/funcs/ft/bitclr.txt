@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Clear (reset) selected bit in a byte
 $SYNTAX$
-   FT_BITCLR( <cByte>, <nBitPos> ) -> cByte
+   FT_BITCLR( <cByte>, <nBitPos> ) --> cByte
 $ARGUMENTS$
    <cByte> is a character from CHR(0) to CHR(255).
 

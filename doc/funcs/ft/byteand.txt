@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Perform bit-wise AND on two ASCII characters (bytes)
 $SYNTAX$
-   FT_BYTEAND( <cByte1>, <cByte2> ) -> cByte
+   FT_BYTEAND( <cByte1>, <cByte2> ) --> cByte
 $ARGUMENTS$
    <cByte1> and <cByte2> are characters from CHR(0) TO CHR(255).
    May be passed in CHR() form, as character literals, or as expressions

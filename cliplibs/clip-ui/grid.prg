@@ -1,9 +1,8 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
-/*   Copyright (C) 2003, 2004 by E/AS Software Foundation 	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 22 Jul 2004						   */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -133,5 +132,5 @@ return NIL
 
 /* Set splitter position */
 static function ui_setSplitterPosition(self, pos)
-	driver:setPanePosition(self, pos)
+	driver:setSplitterPosition(self, pos)
 return NIL

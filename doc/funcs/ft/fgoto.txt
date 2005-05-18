@@ -6,7 +6,7 @@ $ONELINER$
    Move record pointer to specific record in a text file
 $SYNTAX$
 
-   FT_FGOTO( nLine ) -> NIL
+   FT_FGOTO( nLine ) --> NIL
 
 $ARGUMENTS$
 

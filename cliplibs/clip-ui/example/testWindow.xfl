@@ -77,6 +77,18 @@
 			<widget name="tax" class="checkbox" label="Use &amp;tax">
 			    	<property name="value" value="false" />
 			</widget>
+                        <widget class="radiogroup">
+                                <widget class="radioButton" name="button1" label="button1" />
+                                <widget class="radioButton" name="button2" label="button2" />
+                        </widget>
+
+			<widget class="slider" >
+                                <property name="value" value="10" />
+                                <property name="range" value="5-60" />
+                                <property name="step" value="5" />
+                        </widget>
+                       
+			<widget class="progressbar" label="Progress: " />
 		        <widget class="hbox">
 				<property name="padding" value="3" />
 				<widget class="label" label="Payment order N ">
@@ -89,11 +101,17 @@
 			    		<property name="value" value="11" />
 				</widget>
 				<widget class="label" label=" from " />
-				<widget name="date" class="edit" label="">
-			    		<property name="geometry.width" value="60" />
+				<widget name="date" class="editdate" label="">
+			    		<property name="geometry.width" value="70" />
 			    		<property name="value" value="20.10.03" />
 				</widget>
 				
+			</widget>
+			<widget name="color" class="editcolor" label="">
+		    		<property name="value" value="#91FF40" />
+			</widget>
+			<widget name="file" class="editfilename" label="">
+		    		<property name="value" value="testWindow.xfl" />
 			</widget>
 			
 			<!-- Payer -->
@@ -104,10 +122,6 @@
 					<property name="padding" value="3" />
 					<widget class="combobox" name="payer">
 						<property name="values" value="'JSC &quot;Brown and son&quot;'" />
-					</widget>
-					<widget class="label" label="Payer bank: JSC &quot;MENATEP&quot; in Krasnoyarsk">
-					</widget>
-					<widget class="label" label="Acc.: 7683187443445276">
 					</widget>
 				</widget>
 			</widget>
@@ -120,10 +134,6 @@
 					<widget class="combobox" name="payee">
 						<property name="values" value="'JSC &quot;Lighthouse&quot;','JSC &quot;Ronal&quot;','JSC &quot;Porechnoye&quot;'" />
 						<property name="selection" value="2" />
-					</widget>
-					<widget class="label" label="Payee bank: JSC &quot;MENATEP&quot; in Moscow">
-					</widget>
-					<widget class="label" label="Acc.: 7683187443445276">
 					</widget>
 				</widget>
 			</widget>
@@ -144,9 +154,11 @@
 
 			<!-- Bottom panel -->
 			<widget class="hbox">
-				<widget class="button" name="save"  label="Save" />
-				<widget class="button" name="print" label="Print" />
-				<widget class="button" name="close" label="Close" />
+				<widget class="layout">
+				  <widget class="button" name="save"  label="Save" />
+				  <widget class="button" name="print" label="Print" pos="60,0" />
+				  <widget class="button" name="close" label="Close" pos="120,10" />
+				</widget>
 			</widget>
 		    
 		    </widget>
@@ -160,9 +172,9 @@
 
         <!-- Widget properties -->
         <style>
-                <property widget="mainWindow" name="geometry" value="600,450,35,15" />
+                <property widget="mainWindow" name="geometry" value="600,550,35,15" />
                 <property widget="mainWindow" name="position" value="center" />
-                <property widget="mainWindow" name="icon" value="icons/reference_partner.xpm" />
+                <property widget="mainWindow" name="icon" value="icons/eas-logo.xpm" />
         </style>
 
         <!-- Actions -->

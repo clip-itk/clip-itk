@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004-2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -475,3 +475,133 @@ err:
 	return 1;
 }
 
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_COMBOBOXGETACTIVETEXT(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+        gchar      *text ;
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+
+	text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(ccmb->widget));
+        LOCALE_FROM_UTF(text);
+        _clip_retc(cm, text);
+        FREE_TEXT(text);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOBOXGETCOLUMNSPANCOLUMN(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+
+	_clip_retni(cm, gtk_combo_box_get_column_span_column(GTK_COMBO_BOX(ccmb->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOBOXGETFOCUSONCLICK(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+
+	_clip_retl(cm, gtk_combo_box_get_focus_on_click(GTK_COMBO_BOX(ccmb->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOBOXGETPOPUPACCESSIBLE(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+        AtkObject  * atk ;
+        C_object   *catk ;
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+
+	atk = gtk_combo_box_get_popup_accessible(GTK_COMBO_BOX(ccmb->widget));
+
+	if (atk)
+        {
+        	catk = _list_get_cobject(cm, atk);
+                if (!catk) catk = _register_object(cm, atk, GTK_TYPE_OBJECT, NULL, NULL);
+                if (catk) _clip_mclone(cm, RETPTR(cm), &catk->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOBOXGETROWSPANCOLUMN(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+
+	_clip_retni(cm, gtk_combo_box_get_row_span_column(GTK_COMBO_BOX(ccmb->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOBOXGETWRAPWIDTH(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+
+	_clip_retni(cm, gtk_combo_box_get_wrap_width(GTK_COMBO_BOX(ccmb->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOBOXSETADDTEAROFFS(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+        gboolean     set = _clip_parl(cm, 2);
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_combo_box_set_add_tearoffs(GTK_COMBO_BOX(ccmb->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_COMBOBOXSETFOCUSONCLICK(ClipMachine * cm)
+{
+	C_widget   *ccmb = _fetch_cw_arg(cm);
+        gboolean     set = _clip_parl(cm, 2);
+
+	CHECKCWID(ccmb,GTK_IS_COMBO_BOX);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_combo_box_set_focus_on_click(GTK_COMBO_BOX(ccmb->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

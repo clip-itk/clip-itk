@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 21 Feb 2005						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -14,14 +13,8 @@
 
 /* Test of clip-ui library usage */
 
-/* TODO for GTK2:
-	- auto scrollbars in UIEditText (don't show)
-	- ugly separator in menu (standart GtkSeparatorMenuItem in clip-gtk2)
-   
-*/
-
 static ws
-static wnd := NIL
+static wnd := NIL, ww1, ww2
 static childToolbar
 
 /* Declaration */
@@ -30,7 +23,7 @@ local journal_menu, action_menu, doc_menu
 local ref_menu, cfg_menu, window_menu, help_menu
 local main_tbar, statusbar
 local accel_group
-local win := NIL
+local win := NIL, params:=array(0)
 
 driver := "gtk"
 for i:=1 to pcount()
@@ -38,6 +31,8 @@ for i:=1 to pcount()
 		driver := substr(param(i),10)
 	elseif param(i) == "-driver" .and. i+1<=pcount()
 		driver := param(i+1)
+	else
+		aadd(params, param(i))
 	endif
 next
 
@@ -46,7 +41,7 @@ next
 useDriver( driver )
 
 /* create workspace */
-ws  := UIWorkSpace()
+ws  := UIWorkSpace( params )
 
 /*--------------------------------------------------------------------*/
 /* create main window */
@@ -93,27 +88,39 @@ statusbar   := UIStatusBar()
 statusbar:setText("Ready.")
 
 win:setPanels( menu, main_tbar, statusbar )
+win:setMDI()
+
+ww1 := UIDocument("Core widgets", win)
 
 /* Test widgets */
 sp := UISplitter(SPLITTER_VERTICAL)
-win:userSpace:add(sp, .T., .T.)
+ww1:add(sp, .T., .T.)
+sp:setPosition( 200 )
 
 BankRefReq( sp )
 
 b  := UIVBox(,3,3)
 sp:addEnd(b) 
 
-BankDocReq( win, b )
+BankDocReq( ww1, b )
 
-//-----------------------------------------------------------------------------
-// Assign icon to window. TODO: icon doesn't set up for GTK+ 1.x
-//win:setIcon( UIImage(IMG_OK) )
-win:setIcon( UIImage("icons/journal_bank_pp.xpm") )
+ww2 := UIChildWindow("", win)
 
+OtherWidget(ww2)
+
+ww1:show()
+
+ww2:setCaption("Other widgets")
+ww2:show()
+
+ww1:show()
+
+// Assign icon to window.
+win:setIcon( UIImage("icons/eas-logo.xpm") )
 // Put window to screen center
 win:setPlacement( .T. )
 // Set size to 600x450
-win:setGeometry( { 600, 450, 35, 15 } )
+win:setGeometry( { 600, 550, 35, 15 } )
 //-----------------------------------------------------------------------------
 
 /* show window */
@@ -164,40 +171,44 @@ static function BankRefReq( sp )
 	node11 := tree:addNode({"Node2"})
 	node2  := tree:addNode({"Leaf1"},, node1)
 	node3  := tree:addNode({"Leaf2"},, node1)
-	node5  := tree:addNode({"Leaf5", "Leaf5"},, node1)
+	node5  := tree:addNode({"Leaf5", "Leaf5"},5, node1)
 	node4  := tree:addNode({"Leaf3"},, node1, node3)
 	node44 := tree:addNode({"Leaf3333"},, node11)
 	node55 := tree:addNode({"Leaf333"},, node44)
 	node66 := tree:addNode({"Leaf33"},, node55)
 	
-	tree:setAction({|w,e| listEventTree(tree, e) })
+	tree:setAction("selected",{|w,e| listEventTree(tree, e) })
 	splitter:add( tree )
 	
 	table := UITable({"#","Date","Payee","Sum"})
 	table:setAltRowColor("#cbe8ff")
-	table:addRow({"1","20.10.03",'JSC "Lighthouse"',"20000.00"})
+	table:addRow({"1","20.10.03",'JSC "Lighthouse"',"20000.00"},"DB0101000588")
 	table:addRow({"2","20.10.03",'JSC "Phoenix"',"5689.20"})
 	table:addRow({"3","21.10.03",'JSC "Phoenix"',"1500.00"})
 	table:addRow({"4","25.10.03",'JSC "Phoenix"',"99.00"})
 	
 //	table:clear()
-	table:setAction({|w,e| listEvent(table, e) })
+	table:setAction("selected",{|w,e| listEvent(table, e) })
 	splitter:addEnd( table )
 
 return NIL
 
+static function listEventTree(tree, c)
+	?? "Select in tree:",c,"(id =",tree:getSelectionId(),")",chr(10)
+return
+
 function listEvent(table, c)
-	?? "Table selection:",c,chr(10)
+	?? "Select in table:",c,"(id =",table:getSelectionId(),")",chr(10)
 return
 
 /* Form widgets */
 static function BankDocReq(w,grid)
-	local drv, lab, data, top, bottomLine, t, f1, f2, t1, t2, b1, b2, b3, e1, e2, cb1, cb2, sum, hbsum, rs
+	local drv, lab, data, top, bottomLine, t, f1, f2, t1, t2, b1, b2, b3, e1, e2, cb1, cb2, sum, hbsum, rs, rg
 	drv := getDriver()
 
 	data := map()
 	data:num  := "11"
-	data:date :="20.10.03"
+	data:date :="20.10"
 	data:client := 'JSC "Brown and son"'
 	data:sum  := "20000.00"
 	data:reason := "For delivered goods.&\n"
@@ -224,7 +235,15 @@ static function BankDocReq(w,grid)
 	pol:INN		:= "1212145436"
 
 	w:setName("usetax",grid:add(UICheckBox(.F.,"Use &tax")))
+	
+	rg := UIRadioGroup()
+	w:setName("button1", grid:add(rg:addButton("button1")))
+	w:setName("button2", grid:add(rg:addButton("button2")))
         
+        // Slider
+        sd := UISlider(10, 5, 60, 5)
+        w:setName("slider", grid:add(sd))
+
 	// Title
 	top := UIHBox(,0,3)
 	lab := UILabel("Payment order N ")
@@ -248,12 +267,18 @@ static function BankDocReq(w,grid)
  	e1 := UIEdit()
 	e1:setValue(data:num)
 	e1:setGeometry(50)
+	e1:readOnly()
         w:setName("number", e1)
+	drv:setStyle(top, "background", "icons/tick.xpm")
 	top:add(e1)
+
 	top:add(UILabel(" from "))
-	e2 := UIEdit()
+
+	e2 := UIEditDate()
 	e2:setValue(data:date)
-	e2:setGeometry(60)
+	e2:appendText(".2005")
+	w:setFocus(e2)
+	e2:setGeometry(75)
 	w:setName("date", e2)
 	top:add(e2)
 	grid:add(top)
@@ -269,8 +294,6 @@ static function BankDocReq(w,grid)
 	cb1 := UIComboBox({'JSC "Brown and son"'},1)
 	w:setName("payer", cb1)
 	t1:add(cb1)
-	t1:add(UILabel("Payer bank: "+plat:bank+" in "+plat:bankCity))
-	t1:add(UILabel("Acc.: "+plat:account))
 
         // Payee
 	f2 := UIFrame("Payee",FRAME_SUNKEN)
@@ -280,10 +303,9 @@ static function BankDocReq(w,grid)
 	cb2 := UIComboBox()
 	cb2:setList({'JSC "Lighthouse"','JSC "Ronal"','JSC "Porechnoye"'})
 	cb2:setValue(2)
+	cb2:setValueInList(.T.)
         w:setName("payee", cb2)
 	t2:add(cb2)
-	t2:add(UILabel("Payee bank: "+pol:bank+" in "+pol:bankCity))
-	t2:add(UILabel("Acc.: "+pol:account))
 
 	// Sum
 	hbsum := UIHBox(,3)
@@ -297,27 +319,25 @@ static function BankDocReq(w,grid)
 	grid:add(hbsum)
 	
 	// Fill tax calculation
-	sum:setAction({|| fieldChanged(w) })
+	sum:setAction("changed", {|| fieldChanged(w) })
 	fieldChanged(w)
 	
 	grid:add(UILabel("Description:"))
-	// TODO: autoscroll in UIEditText
         rs := UIEditText(data:reason)
+	rs:appendText("&\nEND.")
+	rs:setGeometry({,30})
 	w:setName("reason", rs)
 	grid:add(rs, .T., .T.)
 
 	// Bottom panel
-	bottomLine := UIHBox()
-	grid:addEnd(bottomLine)
+	bottomLine := w:actions
 	b1 := UIButton( "Save", {|o,e| pp_save(w) } )
-	b2 := UIButton( "Print", NIL )
+	b2 := UIButton( "Print", {|| w:dialogBox("Print","Print function isn't implemented yet.","'Ok','Cancel'",NIL,NIL,IMG_OK) } )
 	b3 := UIButton( "Close", {|o,e| w_close(w) } )
 
 	bottomLine:add(b1)
 	bottomLine:add(b2)
 	bottomLine:add(b3)
-
-	w:setDefault( b1 )
 
 return NIL
 
@@ -336,10 +356,6 @@ static function pp_save(wnd)
 	next
 return 0
 
-static function listEventTree(tree, c)
-	?? "Select in tree:",c,"(id =",tree:getSelectionId(),")",chr(10)
-return
-
 static function fieldChanged(win)
 	local s, tax, label, i
 	if valtype(win) != 'O'
@@ -353,3 +369,46 @@ static function fieldChanged(win)
 		label:setText("Tax: "+tax)
 	endif
 return 
+
+static function OtherWidget(w)
+	local hp, hp1, pb, bt, percent := 0, lt, g, co, fn
+	
+	hp := UIHBox(,3)
+	hp:setPadding(5)
+	hp:add(UILabel("Predefined icons:"))
+	hp:add(UIImage(1))
+	hp:add(UIImage(2))
+	hp:add(UIImage(3))
+	hp:add(UIImage(4))
+	hp:add(UIImage(5))
+
+        // Layout
+        lt := UILayout()
+	hp:add(lt)
+        
+	// Progress Bar
+	pb := UIProgressBar("Progress Bar")
+	lt:add(pb)
+        
+	bt := UIButton( "Change ProgressBar", {|o,e| percent += 0.05, percent := iif(percent > 1, 0, percent),; 
+                                               pb:setPercent(percent, "Progress: "+alltrim(str(percent*100,0))+" %") } )
+	lt:add(bt, "10,30")
+
+	w:add( hp )
+	
+	g := UIHBox(,5)
+	
+	// Get FileName
+	g:add(UILabel("File name: "))
+	fn := UIEditFileName('')
+        g:add(fn)
+	
+	// Get Color
+	g:add(UILabel("Color: "))
+	co := UIEditColor('#91FF40')
+	co:setGeometry(60)
+        g:add(co)
+	
+	w:add( g )
+
+return

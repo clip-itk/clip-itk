@@ -51,7 +51,15 @@ static function ab_plugins_view_card(oDep,data,oBox,colorSpec)
 		dispend()
 		return .f.
 	endif
-	@ x1++,y1 say [Identification..]+padr(data:id,y2-y1-16)
+	//outlog(__FILE__,__LINE__,data)
+	s:=data:id
+	if "__VERSION" $ data
+		s+=[ version:]+str(data:__version)
+	endif
+	if "__CRC32" $ data
+		s+=[ CRC:]+data:__crc32
+	endif
+	@ x1++,y1 say [Identification..]+padr(s,y2-y1-16)
 	@ x1++,y1 say [Name............]+data:name
 
 	ntype:=ascan(atype,{|x|x[1]==data:type})
@@ -64,9 +72,23 @@ static function ab_plugins_view_card(oDep,data,oBox,colorSpec)
 	if !empty(tmp)
 		@ x1++,y1 say [Class...........]+alltrim(tmp:name)+"("+data:class_id+")"
 	else
-		@ x1++,y1 say [Class...........]+[(NONE)]
+		@ x1++,y1 say [Class...........]+[(NONE)]+"("+data:class_id+")"
 	endif
-
+	@ x1++,y1 say padr("",y2-y1,"-")
+	s := ""
+	if "SOURCE" $ data
+		s := data:source
+	endif
+	tmp:=split(s,"&\n")
+	i:=1
+	for x1=x1 to oBox:nBottom-1
+		s:=""
+		if i<=len(tmp)
+			s := tmp[i]
+		endif
+		@ x1++,y1 say padr(s,y2-y1," ")
+		i++
+	next
 	dispend()
 	setcolor(oldcol)
 return ret

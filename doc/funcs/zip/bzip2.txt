@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Пакует строку по bZIP2 алгоритму.
 $SYNTAX$
-	cResult := bZip2(<cData> [,<nLevel>])
+	bZip2(<cData> [,<nLevel>]) --> cResult
 $LANG_RU$
 $ARGUMENTS$
 	<cData> - data for compress.

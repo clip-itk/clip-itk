@@ -9,6 +9,7 @@
 #include "clip-gtkcfg2.h"
 
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
 
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
@@ -880,6 +881,9 @@ clip_GTK_TREEMODELGET(ClipMachine * cm)
 	glong l;
 	gfloat f;
 	gboolean b;
+        GdkPixbuf *pix;
+        C_object  *cpix;
+	ClipVar *vv ;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
 	CHECKARG(2, MAP_t);
@@ -918,6 +922,14 @@ clip_GTK_TREEMODELGET(ClipMachine * cm)
 					iter, x, &f, -1);
 				_clip_stornd(cm, f, i+1, 0);
 				break;
+			/*case GDK_TYPE_PIXBUF:
+				vv = _clip_spar(cm, i+1);
+				gtk_tree_model_get(GTK_TREE_MODEL(ctreemodel->object),
+					iter, x, pix, -1);
+				cpix = _list_get_cobject(cm, pix);
+                                if (!cpix)  cpix = _register_object(cm, pix, GDK_TYPE_PIXBUF, NULL, NULL);
+				_clip_mclone(cm, vv, &cpix->obj);
+				break;*/
 		}
 	}
 

@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Average numeric values in an array
 $SYNTAX$
-   FT_AAVG( <aArray> [, <nStartIndex> [, <nEndIndex> ] ] ) -> nAverage
+   FT_AAVG( <aArray> [, <nStartIndex> [, <nEndIndex> ] ] ) --> nAverage
 $ARGUMENTS$
    <aArray> is the array containing the elements to be averaged.
 

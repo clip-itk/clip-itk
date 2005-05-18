@@ -7,8 +7,8 @@ $SUMMARY$
 $LANG_RU$
 	Открывает порт и инициализирует буффер.
 $SYNTAX$
-	lStatus := COM_OPEN(<nComPort>,<notused>,<notused>,<notused>,
-		[<lRTSCTS>],[<lXONXOFF>],[<lDebug>])
+	COM_OPEN(<nComPort>,<notused>,<notused>,<notused>,
+		[<lRTSCTS>],[<lXONXOFF>],[<lDebug>]) --> lStatus
 $ARGUMENTS$
 	<nComPort> - Designates the number of the port (1 to N).
 	<lRTSCRS>  - Enable or disable use of hardware flow control.

@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Return the date of Easter
 $SYNTAX$
-   FT_EASTER( <xYear> ) -> dEdate
+   FT_EASTER( <xYear> ) --> dEdate
 $ARGUMENTS$
    xYear can be a character, date or numeric describing the year
    for which you wish to receive the date of Easter.

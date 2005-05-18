@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Расшифровывает строку, зашифрованную функцией ENV_ENCRYPT().
 $SYNTAX$
-	cDecrypted := EVP_DECRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>])
+	EVP_DECRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>]) --> cDecrypted
 $ARGUMENTS$
 	<cData> - string for decryption.
 	<cKey>  - key for decryption.

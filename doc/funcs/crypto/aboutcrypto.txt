@@ -1,5 +1,9 @@
 $ABOUTCATEG$
   Crypto
+$SUMMARY$
+	Functions for cryptography based on OpenSSL technology.
+$LANG_RU$
+	Функции шифрования, основанные на библиотеки OpenSSL.
 $DESCRIPTION$
 	Category Crypto include description of functions for
 	cryptography based on OpenSSL technology.

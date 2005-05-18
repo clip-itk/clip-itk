@@ -6,7 +6,7 @@ $ONELINER$
    Find middle value in array, or average of two middle values
 $SYNTAX$
    FT_AMEDIAN( <aArray> [, <nStart> [, <nEnd> ] ] )
-	      -> nMedian
+	      --> nMedian
 $ARGUMENTS$
    <aArray> is the array containing the elements to be averaged.
 

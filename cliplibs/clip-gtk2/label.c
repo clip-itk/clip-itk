@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004 - 2005  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
               Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
@@ -288,4 +288,144 @@ _label_parse_uline(GtkWidget *wid, char text[])
 	gtk_label_set_text(GTK_LABEL(wid), text);
 	return ret;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_LABELGETANGLE(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
 
+	CHECKCWID(clbl,GTK_IS_LABEL);
+	_clip_retnd(cm,gtk_label_get_angle(GTK_LABEL(clbl->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELGETELLIPSIZE(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+	_clip_retni(cm, (int)gtk_label_get_ellipsize(GTK_LABEL(clbl->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELGETMAXWIDTHCHARS(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+	_clip_retni(cm, gtk_label_get_max_width_chars(GTK_LABEL(clbl->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELGETSINGLELINEMODE(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+	_clip_retl(cm, gtk_label_get_single_line_mode(GTK_LABEL(clbl->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELGETWIDTHCHARS(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+	_clip_retni(cm, gtk_label_get_width_chars(GTK_LABEL(clbl->widget)));
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELSETANGLE(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+        gdouble  angle = _clip_parnd(cm, 2);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_label_set_angle(GTK_LABEL(clbl->widget), angle);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELSETELLIPSIZE(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+        PangoEllipsizeMode mode = _clip_parni(cm, 2);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_label_set_ellipsize(GTK_LABEL(clbl->widget), mode);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELSETMAXWIDTHCHARS(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+        gint    width = _clip_parni(cm, 2);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_label_set_max_width_chars(GTK_LABEL(clbl->widget), width);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELSETWIDTHCHARS(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+        gint    width = _clip_parni(cm, 2);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_label_set_width_chars(GTK_LABEL(clbl->widget), width);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_LABELSETSINGLELINEMODE(ClipMachine * cm)
+{
+	C_widget *clbl = _fetch_cw_arg(cm);
+        gboolean   set = _clip_parl(cm, 2);
+
+	CHECKCWID(clbl,GTK_IS_LABEL);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_label_set_single_line_mode(GTK_LABEL(clbl->widget), set);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

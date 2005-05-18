@@ -6,7 +6,7 @@ $ONELINER$
    Write a line to the currently selected text file
 $SYNTAX$
 
-   FT_FWRITELN( < cData >, [ < lInsert > ] ) -> lSuccess
+   FT_FWRITELN( < cData >, [ < lInsert > ] ) --> lSuccess
 
 $ARGUMENTS$
 

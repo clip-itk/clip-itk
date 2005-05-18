@@ -9,7 +9,7 @@ $SUMMARY$
    $LANG_UA$
    Поверта╨ вЁрний шлях, встановлений командою SET DEFAULT.
 $SYNTAX$
-  DefPath() -> <cPath>
+  DefPath() --> <cPath>
 $ARGNAME$
 $RETURNS$
    The new path string.

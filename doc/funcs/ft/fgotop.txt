@@ -6,7 +6,7 @@ $ONELINER$
    Go to the first record in a text file
 $SYNTAX$
 
-   FT_FGOTOP() -> NIL
+   FT_FGOTOP() --> NIL
 
 $ARGUMENTS$
 

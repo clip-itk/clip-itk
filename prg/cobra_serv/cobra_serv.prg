@@ -9,6 +9,7 @@
 function main( iniFile )
 
 	local tmp, oIni
+	public server_reinit := .f.
 
 #ifdef DEBUG
 	clear screen
@@ -33,12 +34,13 @@ function main( iniFile )
 #endif
 	while .t.
 #ifdef DEBUG
-		if inkey(10) !=0
+		if inkey(2) !=0
 			exit
 		endif
 #else
-		sleep(1000)
+		sleep(2)
 #endif
+		//? m->server_reinit
 	enddo
 	?
 return
@@ -76,10 +78,11 @@ static function cobra_commander( nH, oInI )
 	local cCmdWrapper, cDaemon, cIPAddr
 
 	? "Task started",seconds(),nH
+	outlog("Task started",seconds(),nH)
 	errorBlock({|e|error2Log(e)})
 	//cFile := "log_"+alltrim(str(nH))+"_"+alltrim(str(seconds()))+".log"
 	oConnect := cobraServiceNew(oIni)
-	oConnect:setRootPath()
+	//oConnect:setRootPath()
 	//errorBlock({|e|oConnect:errorBlock(e)})
 	set macro_in_string off
 	set translate path off
@@ -116,6 +119,9 @@ static function cobra_commander( nH, oInI )
 
 	do while( .t. )
 
+#ifdef DEBUG
+		outlog("Waiting string from client:")
+#endif
 		if oConnect:receiveLine()
 #ifdef DEBUG
 			outlog("Read from client:",'"'+oConnect:cLine+'"')
@@ -186,13 +192,26 @@ static function cobra_commander( nH, oInI )
 #endif
 				oConnect:sendLine(i)
 			endif
+			if set("CODB_SERVER_REINIT") == "Y"
+				m->server_reinit := .t.
+				set("CODB_SERVER_REINIT","N")
+				? "need reinit"
+			endif
 			//run_command(oConnect)
 		elseif oConnect:errno == 32
 			outlog("Connection closed from client:",ferrorStr())
 			exit
+		else
+#ifdef DEBUG
+			outlog("Undefined data from client:",oConnect:cLine)
+#endif
 		endif
+#ifdef DEBUG
+			outlog("Timeout waiting data from client. Loop waiting.")
+#endif
 	enddo
-	outlog("Close TCP handle:",nH)
+	? "Task closed",seconds(),nH
+	outlog("Task closed",seconds(),nH)
 	oConnect:close( nH )
 
 return( 0 )
@@ -242,7 +261,7 @@ static function kamache_commander(oConnect)
 	local e
 
 	? "Task started",seconds(),oConnect:nConnect
-	outlog("start task for handle:", oConnect:nConnect)
+	outlog("Task started",seconds(),oConnect:nConnect)
 
 	errorBlock({|e|oConnect:errorBlock(e)})
 
@@ -254,7 +273,8 @@ static function kamache_commander(oConnect)
 	recover
 		oConnect:close()
 	end sequence
-	outlog("close task for handle:", oConnect:nConnect,"sended=",oConnect:nSended,"received=",oConnect:nReceived)
+	? "Task closed",seconds(),oConnect:nConnect
+	outlog("Task closed",seconds(),oConnect:nConnect)
 return( 0 )
 
 /***************************************/

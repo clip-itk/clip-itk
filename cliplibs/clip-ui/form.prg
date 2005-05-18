@@ -2,15 +2,16 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 06 Feb 2005						   */
+/*   Authors: 								   */
+/*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
+/*           Igor Satsyuk <satsyuk@tut.by>                                 */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
 /*   License, or (at your option) any later version.                       */
 /*-------------------------------------------------------------------------*/
-#include <clip-ui.ch>
+#include "clip-ui.ch"
 
 static driver := getDriver()
 
@@ -195,6 +196,9 @@ static function ui_createWidget(self, tag, parent )
                         gRow := val(getProperty(self:root, t, "rows"))
 			o := UIGrid(, gRow, gCol)
 			add := .T.
+                case "LAYOUT"
+			o := UILayout()
+			add := .T.
 
 		/* Widgets */
 		case "MAINWINDOW"
@@ -294,14 +298,40 @@ static function ui_createWidget(self, tag, parent )
 		case "EDITTEXT"
 			o := UIEditText()
 			add = .T.
+		case "EDITDATE"
+			o := UIEditDate()
+			add = .T.
+		case "EDITFILENAME"
+			o := UIEditFileName()
+			add = .T.
+		case "EDITCOLOR"
+			o := UIEditColor()
+			add = .T.
 		case "CHECKBOX"
 			o := UICheckBox(,label)
 			add = .T.
 		case "COMBOBOX"
 			o := UIComboBox()
 			add = .T.
+		case "RADIOGROUP"
+			o := UIRadioGroup()
+			o:box := parent
+		case "RADIOBUTTON"
+			if parent:className == "UIRadioGroup"
+				o := parent:addButton(label)
+				parent := parent:box
+				add = .T.
+			else
+				?? "WARNING: radiobutton must be placed into radiogroup&\n"
+			endif
 		case "FRAME"
 			o := UIFrame(label)
+			add = .T.
+		case "PROGRESSBAR"
+			o := UIProgressBar(label)
+			add = .T.
+		case "SLIDER"
+			o := UISlider()
 			add = .T.
         	otherwise
 			?? "WARNING: Unknown class:",class,chr(10)
@@ -324,8 +354,8 @@ static function ui_createWidget(self, tag, parent )
 	if add == .T.
 		gClass := iif("O" $ parent, parent:o, parent)
 		box    := iif("USERSPACE" $ parent,parent:userSpace,parent)
-		if gClass:className == "UIGrid"
-			gRow := t:attr["POS"]
+		if gClass:className == "UIGrid" .or. gClass:className == "UILayout"
+			gRow := mapget(t:attr, "POS", "")
 			parent:add( o, gRow )
                 elseif gClass:className == "UISplitter"
 			if empty( parent:first )
@@ -354,8 +384,6 @@ static function ui_createWidget(self, tag, parent )
 			ui_setProperty(self, c, o)
 		elseif c:name == "RULE"
 			ui_setAction(self, c, o)
-		elseif c:name == "FIELD"
-			// TODO: process <field> tag...
 		elseif ascan({"COLUMN"},{|ev| ev==c:name}) != 0
 			// Nothing do
 		else
@@ -491,6 +519,13 @@ static function ui_setProperty(self, tag, obj, value)
 				obj:nodeNames[nName] := obj:addNode (row, nName, nParent, nSibling) // (columns,id,parent,sibling)
 								
 			endif
+		case "range"
+ 			if obj:className != "UISlider"; return .F.; endif
+                        obj:setRange(value)
+		case "step"
+ 			if obj:className != "UISlider"; return .F.; endif
+                        obj:setStep(value)
+
 		otherwise
 			driver:setStyle(obj, name, value, mapget(t:attr,"ELEMENT",NIL))
 	endswitch
@@ -606,7 +641,7 @@ static function ui_setAction(self, tag, lObj)
 		obj := e[1]
 		signal := e[2]
 		if "SETACTION" $ obj
-			obj:setAction({|| self:actionHandler( id ) })
+			obj:setAction(signal,{|| self:actionHandler( id ) })
 		else
 			?? "WARNING: cannot link action to widget class '",obj,"'&\n"
 		endif
@@ -663,7 +698,6 @@ static function ui_subActionHandler(self, tag, addVal)
 	local c, p, params:=array(0)
 
 	if tag:name == "RETURNEDVALUE"
-		// TODO: UIForm:subActionHandler(): several values can be returned
 //		?? "returned value:", addVal, chr(10)
 		return addVal
 	endif
@@ -745,6 +779,12 @@ static function ui_subActionHandler(self, tag, addVal)
 
 	if widget != NIL .and. valtype(widget) == "O"
 		if method $ widget .and. valtype(widget[method]) == "B"
+			/* TODO: use clipa() or similar function
+			aadd( params, NIL )
+			ains( params, 1 )
+			params[1] := widget
+			ret := clipa("func", params)
+			*/
 			switch len(params)
                                	case 1
 					ret := eval(widget[method], widget, params[1])

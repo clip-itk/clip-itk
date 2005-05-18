@@ -61,8 +61,16 @@ parameters oIni
 				loop
 			endif
 		endif
-		?? "opening "
-		oDicts[i] := coDictionary():new(dictId)
+		?? "opening... "
+		oDicts[i] := codb_needDepository(dictId)
+		if empty(oDicts[i])
+			oDicts[i] := coDictionary():new(dictId)
+			if !empty(oDicts[i]:error)
+				?? oDicts[i]:error
+				loop
+			endif
+			oDicts[i]:open()
+		endif
 		if !empty(oDicts[i]:error)
 			?? oDicts[i]:error
 			loop
@@ -97,13 +105,16 @@ parameters oIni
 				loop
 			endif
 		endif
-		?? "opening "
-		oDeps[i] := coDepository():new(depId)
-		if !empty(oDeps[i]:error)
-			?? oDeps[i]:error
-			loop
+		?? "opening... "
+		oDeps[i] := codb_needDepository(depId)
+		if empty(oDeps[i])
+			oDeps[i] := coDepository():new(depId)
+			if !empty(oDeps[i]:error)
+				?? oDeps[i]:error
+				loop
+			endif
+			oDeps[i]:open()
 		endif
-		oDeps[i]:open()
 		if !empty(oDeps[i]:error)
 			?? oDeps[i]:error
 			loop

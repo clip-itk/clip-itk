@@ -58,8 +58,9 @@ Dtype - data type: object or account transaction
 		{"DTYPE"  ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"PATH"   ,"C",256,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"HOST"   ,"C",128,0,CODB_LENTYPE_RTRIM,""}, ;
-		{"PORT"   ,"N",6  ,0,CODB_LENTYPE_RTRIM,0}, ;
+		{"PORT"   ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"USER"   ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
+		{"PASSWD" ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"DBNAME" ,"C",20 ,0,CODB_LENTYPE_RTRIM,""} ;
 		}
 

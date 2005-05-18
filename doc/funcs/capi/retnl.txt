@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Возвращает значение арифметического выражения типа long.
 $SYNTAX$
-	void _clip_retnl(ClipMachine * cm,long n)
+	_clip_retnl(ClipMachine * cm,long n) --> void
 $ARGUMENTS$
 	<n> - a numeric expression of long type
 $LANG_RU$

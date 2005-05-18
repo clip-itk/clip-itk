@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003 - 2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -1263,6 +1263,39 @@ clip_GTK_TEXTVIEWGETACCEPTSTAB(ClipMachine * cm)
 	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
 
         _clip_retl(cm, gtk_text_view_get_accepts_tab(GTK_TEXT_VIEW(cview->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+/* gtk_TextViewGetIterAtPosition(textView, @trailing, x, y) --> gtkTextIter) */
+int
+clip_GTK_TEXTVIEWGETITERATPOSITION(ClipMachine * cm)
+{
+	C_widget   *cview = _fetch_cw_arg(cm);
+        gint            x = _clip_parni(cm, 3);
+        gint            y = _clip_parni(cm, 4);
+        gint     trailing ;
+        GtkTextIter *iter;
+        C_object   *citer;
+
+	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
+	CHECKARG(3, NUMERIC_t);
+	CHECKARG(4, NUMERIC_t);
+
+        gtk_text_view_get_iter_at_position(GTK_TEXT_VIEW(cview->widget),
+        	iter, &trailing, x, y);
+
+	if (iter)
+        {
+		citer = _list_get_cobject(cm, iter);
+		if (!citer) citer = _register_object(cm,iter,GTK_TYPE_TEXT_ITER,NULL,NULL);
+		if (citer) _clip_mclone(cm,RETPTR(cm),&citer->obj);
+        }
+
+	_clip_storni(cm, trailing, 2, 0);
 
 	return 0;
 err:

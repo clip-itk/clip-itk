@@ -1,3 +1,16 @@
+2005-04-04
+	- new classes: UIEditColor, UIEditDate, UIEditFileName
+	- methods: setFocus() [UIChildWindow,UIDocument], 
+	  setAction() [UIWorkSpace]
+	- support signal names in setAction() methods
+
+2005-03-18
+	- new predefined icons: IMG_WARNING, IMG_QUESTION
+	- new classes: UILayout, UIProgressBar, UIRadioGroup, UIRadioButton, 
+	  UISlider, UITableItem, UITreeItem
+	- new methods: appendText() [UIEdit,UIEditText], setCaption() 
+	  [UIChildWindow]
+
 2005-02-25 clip-ui 0.1.2.2
 	- new function useDriver() for driver choose
 	- new driver: gtk2 (GTK+ 2.xx driver)

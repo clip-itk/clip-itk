@@ -9,16 +9,24 @@
 #include "codbcfg.ch"
 
 ************************************************************
-function codb_dictCobra_Methods(path,dict_id,user,passwd)
+function codb_dictCobra_Methods(dbData,user,passwd)
 
-	local obj	:= codb_dictAll_Methods(path,dict_id,user,passwd)
+	local obj	:= codb_dictAll_Methods(dbData,user,passwd)
+	local i
+	outlog(__FILE__,__LINE__,dbData)
+	i := 1
+	while ( !Empty(ProcName(i)) )
+		outlog("Called from", ProcName(i),ProcLine(i))
+		i++
+	end
+
 
 	obj:delete	:= @_dict_delete()
 	obj:undelete	:= @_dict_undelete()
 	obj:append	:= @_dict_append()
 	obj:update	:= @_dict_update()
 	obj:select	:= @_dict_select() // return array of selected metaData
-	obj:getValue	:= @_dict_getValue() // return body for ID
+	obj:__getValue	:= @_dict___getValue() // return body for ID
 	obj:metaBodyByName:= @_dict_metaBodyByName() // return class ID by name
 	obj:classBodyByName:= @_dict_classBodyByName() // return class ID by name
 	obj:classByName := @_dict_classBodyByName() // return class ID by name
@@ -27,38 +35,53 @@ function codb_dictCobra_Methods(path,dict_id,user,passwd)
 	obj:attrByName  := @_dict_attrBodyByName() // return class ID by name
 	obj:classDesc	:= @_dict_classDesc() // return class description with
 					   // all inherites
+	obj:runTrigger  := @_dict_runTrigger()
 	obj:counter	:= @_dict_counter() // check and return counter value
 	obj:hashName	:= @_dict_hashName() // return string for hashcode
 	obj:checkBody	:= @_dict_checkBody()
 	obj:create	:= @_dict_create()
-	obj:open	:= @_dict_open()
+	obj:__open	:= @_dict___open()
 	obj:close	:= @_dict_close()
 	//obj:destroy	:= @_dict_close()
 
+	obj:__depNew	:= @_dict___depNew()
+	obj:__countNew	:= @_dict___countNew()
+	obj:__makeDirs	:= @_dict___makeDirs()
+	obj:__makeVersion:= @_dict___makeVersion()
+	obj:__makeMeta  := @_dict___makeMeta()
+	obj:__loadPlugins:= @_dict___LoadPlugins()
+
 return obj
 ************************************************************
-static function _dict_open(self)
-	local tmp,i,m,ret
-	self:error:=""
-	if codb_dict_ref_counter(self:id) > 0
-		tmp := codb_dict_reference(self:id)
-		m := mapKeys(tmp)
-		for i=1 to len(m)
-			if valtype(tmp[m[i]]) == "B"
-				self[m[i]] := tmp[m[i]]
-			else
-				self[m[i]] :=@ tmp[m[i]]
-			endif
-		next
-		codb_dict_register(self:id)
-		return
-	endif
+static function _dict___LoadPlugins(self)
+return {}
+************************************************************
+static function _dict_runTrigger(self)
+return .t.
+************************************************************
+static function _dict___makeVersion(self)
+return .t.
+************************************************************
+static function _dict___makeDirs(self)
+	outlog(__FILE__,__LINE__)
+return .t.
+************************************************************
+static function _dict___makeMeta(self)
+return .t.
+************************************************************
+static function _dict___depNew(self,sDeposit)
+return	codb_depCobraNew(self,sDeposit)
+************************************************************
+static function _dict___countNew(self)
+return	//codb_countCobraNew(self:path)
+************************************************************
+static function _dict___open(self)
+	local ret
 	ret := codb_cobraQuery("DICT_OPEN",self:id)
 	if !empty(ret:errno)
 		self:error := codb_cobraError(ret)
 		return .f.
 	endif
-	codb_dict_register(self:id,self)
 return ret:return
 ************************************************************
 static function _dict_close(self)
@@ -76,7 +99,7 @@ static function _dict_select(self,metaName,nIndex,sName,sWhere,nCount,deleted)
 	endif
 return ret:return
 ************************************************************
-static function _dict_getValue(self,cID)
+static function _dict___getValue(self,cID)
 	local _ret,ret,err,bl
 	self:error := ""
 	_ret := codb_cobraQuery("DICT_GETVALUE",self:id,cId)
@@ -85,23 +108,6 @@ static function _dict_getValue(self,cID)
 		return map()
 	endif
 	ret := _ret:return
-//	outlog(__FILE__,__LINE__,cId,ret)
-	if "__META" $ ret .and. alltrim(ret:__meta) == "CLASS"
-		if !empty(ret:expr_essence)
-			err := errorblock({|_1|break(_1)})
-			begin sequence
-				bl:="{||"+ret:expr_essence+"}"
-				bl:=&bl
-			end
-			errorBlock(err)
-		endif
-		if empty(bl)
-			ret:_bEssence := NIL
-		else
-			ret:_bEssence := bl
-		endif
-		ret:essence :=@class_essence()
-	endif
 return ret
 ************************************************************
 static function _dict_metaBodyByName(self,metaClass,metaName)
@@ -235,32 +241,3 @@ static function _dict_counter(self,name,deposit,value)
 		return 0
 	endif
 return ret:return
-************************************************************
-static function class_essence(self,obj)
-	// self is class description
-	local ret := ""
-	local err
-	if valtype(obj) != "O"
-		return
-	endif
-	if valtype(self:_bEssence) == "B"
-		err := errorBlock({|x|break(x)})
-		begin sequence
-			ret := mapEval(obj,self:_bEssence)
-		recover
-			ret := [Error in expression:]+self:expr_essence
-		end sequence
-		errorBlock(err)
-	else
-		if "NAME" $ obj
-			ret:= obj:name
-		elseif "EMPL_NAME" $ obj
-			ret:= obj:empl_name
-		elseif "SMALLNAME" $ obj
-			ret:= obj:smallname
-		elseif "FULLNAME" $ obj
-			ret:= obj:fullname
-		endif
-	endif
-return ret
-

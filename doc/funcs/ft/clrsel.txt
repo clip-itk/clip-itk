@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    User Selectable Colour Routine
 $SYNTAX$
-   FT_ClrSel( <aClrData>, [ <lClrMode> ], [ <cTestChr> ]  -> aClrData
+   FT_ClrSel( <aClrData>, [ <lClrMode> ], [ <cTestChr> ] --> aClrData
 $ARGUMENTS$
 
    <aClrData> is an array of subarrays, with each subarray containing

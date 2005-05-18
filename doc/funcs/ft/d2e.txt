@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
 	Convert decimal to scientific notation
 $SYNTAX$
-	FT_D2E( <nDec>, <nPrecision> )  -> <cNumE>
+	FT_D2E( <nDec>, <nPrecision> ) --> <cNumE>
 $ARGUMENTS$
 	<nDec>         Decimal number to convert
 
@@ -20,13 +20,13 @@ $DESCRIPTION$
 	notation is returned.
 $EXAMPLES$
 	? FT_D2E( 12.345, 2 )
-	  -> 1.23E1
+	 --> 1.23E1
 
 	? FT_D2E( -12.345, 3 )
-	  -> -1.235E1
+	 --> -1.235E1
 
 	? FT_D2E( 0.00000543, 2 )
-	  -> 5.43E-6
+	 --> 5.43E-6
 $SEEALSO$
    FT_E2D()
 $Author: clip $

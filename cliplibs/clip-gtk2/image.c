@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003  ITK
+    Copyright (C) 2003 - 2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -280,4 +280,93 @@ clip_GTK_IMAGESETFROMSTOCK(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_IMAGEGETICONNAME(ClipMachine * cm)
+{
+	C_widget *cimg   = _fetch_cw_arg(cm);
+	gchar      *name ;
+	GtkIconSize size ;
 
+	CHECKCWID(cimg,GTK_IS_IMAGE);
+
+
+	gtk_image_get_icon_name(GTK_IMAGE(cimg->widget),
+        	(G_CONST_RETURN gchar **)&name, &size);
+
+        _clip_storc(cm, name, 2, 0);
+        _clip_storni(cm, size, 3, 0);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_IMAGEGETPIXELSIZE(ClipMachine * cm)
+{
+	C_widget *cimg   = _fetch_cw_arg(cm);
+
+	CHECKCWID(cimg,GTK_IS_IMAGE);
+
+
+	_clip_retni(cm, gtk_image_get_pixel_size(GTK_IMAGE(cimg->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_IMAGESETPIXELSIZE(ClipMachine * cm)
+{
+	C_widget *cimg   = _fetch_cw_arg(cm);
+        gint      size   = _clip_parni(cm, 2);
+
+	CHECKCWID(cimg,GTK_IS_IMAGE);
+        CHECKARG(2, NUMERIC_t);
+
+	gtk_image_set_pixel_size(GTK_IMAGE(cimg->widget), size);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_IMAGENEWFROMICONNAME(ClipMachine * cm)
+{
+	gchar       *name = _clip_parc(cm, 1);
+        GtkIconSize  size = _clip_parni(cm, 2);
+	GtkWidget *wid;
+        C_widget *cwid;
+
+	CHECKARG(1,CHARACTER_t);
+	CHECKARG(2,NUMERIC_t);
+
+	wid = gtk_image_new_from_icon_name((const gchar *)name, size);
+	if (!wid) goto err;
+	cwid = _register_widget(cm, wid, NULL);
+	_clip_mclone(cm,RETPTR(cm),&cwid->obj);
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_IMAGESETFROMICONNAME(ClipMachine * cm)
+{
+	C_widget  *cimage = _fetch_cw_arg(cm);
+	gchar       *name = _clip_parc(cm, 2);
+        GtkIconSize  size = _clip_parni(cm, 3);
+
+	CHECKCWID(cimage, GTK_IS_IMAGE);
+	CHECKARG(2,CHARACTER_t);
+	CHECKARG(3,NUMERIC_t);
+
+	gtk_image_set_from_icon_name(GTK_IMAGE(cimage->widget), (const gchar *)name, size);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

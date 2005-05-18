@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2004 - 2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -189,4 +189,18 @@ clip_GTK_FILEFILTERFILTER(ClipMachine * cm)
 err:
 	return 1;
 }
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_FILEFILTERADDPIXBUFFORMATS(ClipMachine * cm)
+{
+        C_object  *cfilter = _fetch_co_arg(cm);
 
+	CHECKCOBJ(cfilter, GTK_IS_FILE_FILTER(cfilter->object));
+
+	gtk_file_filter_add_pixbuf_formats(GTK_FILE_FILTER(cfilter->object));
+
+	return 0;
+err:
+	return 1;
+}
+#endif

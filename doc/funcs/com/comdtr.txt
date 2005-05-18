@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Запрашивает/устанавливает сигнал Data Terminal Ready (DTR).
 $SYNTAX$
-	lOldDTRStatus := COM_DTR(<nComPort>,[<lNewDTRStatus>])
+	COM_DTR(<nComPort>,[<lNewDTRStatus>]) --> lOldDTRStatus
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N) for which the number of characters in the input buffer is determined.
 	<lNewDTRStatus> - Designates the status of DTR. .T. designates

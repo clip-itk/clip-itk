@@ -6,7 +6,7 @@ $ONELINER$
    Calculate net present value
 $SYNTAX$
    FT_NETPV( <nInitialInvestment>, <nInterestRate>, <aCashFlow> ;
-	     [, <nNoOfCashFlows> ] ) -> nNetPV
+	     [, <nNoOfCashFlows> ] ) --> nNetPV
 $ARGUMENTS$
    <nInitialInvestment> is the amount of cash invested for purposes
    of generating the cash flows.

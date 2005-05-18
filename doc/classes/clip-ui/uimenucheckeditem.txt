@@ -22,11 +22,13 @@ $SUMMARY$
 $LANG_RU$
 	Установить действие, выполняемое при выборе пункта меню.
 $SYNTAX$
-	setAction(<action>)
+	setAction([<signal>],<action>)
 $ARGUMENTS$
-	<action>	- Code block. Code block executed on menu item activation.
+	<signal>	- String. Signal name.
+	<action>	- Code block. Action.
 $LANG_RU$
-	<action>	- Блок кода. Блок кода, выполняемый при выборе пункта меню.
+	<signal>	- Строка. Название сигнала.
+	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
 $METHODNAME$

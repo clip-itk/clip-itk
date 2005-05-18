@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Возвращает кол-во доступных COM-портов.
 $SYNTAX$
-	nMaxCom := COM_NUM()
+	COM_NUM() --> nMaxCom
 $ARGUMENTS$
 $RETURNS$
 	Return the number of the highest available serial interface port

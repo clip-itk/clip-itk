@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Читает символы из буфера приема.
 $SYNTAX$
-	cData := COM_READ(<nComPort>,[<nLength>])
+	COM_READ(<nComPort>,[<nLength>]) --> cData
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N) that is read.
 	<nLength> - Designates the number of the characters in the buffer that are read. The default value reads all characters.

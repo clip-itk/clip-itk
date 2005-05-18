@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Perform bit-wise negation on an ASCII character
 $SYNTAX$
-   FT_BYTENEG( <cByte> ) -> cNewByte
+   FT_BYTENEG( <cByte> ) --> cNewByte
 $ARGUMENTS$
    <cByte> is a character from CHR(0) to CHR(255).
    May be passed in CHR() form, as character literal, or

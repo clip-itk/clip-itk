@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
 	Читает вывод WWW сервера, переданный через протокол FCGI.
 $SYNTAX$
-	cStdInData := FCGI_READ()
+	FCGI_READ() --> cStdInData
 $ARGUMENTS$
 	None.
 $LANG_RU$

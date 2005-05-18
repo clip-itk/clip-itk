@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003-2004  ITK
+    Copyright (C) 2003-2005  ITK
     Author  : Elena V. Kornilova <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -55,8 +55,9 @@ static __list_store_set(ClipMachine *cm, GtkTreeIter *iter, gint startDataParam)
         	gint column = _clip_parni(cm, i);
         	ClipVar *val;
         	GValue value;
+                C_object *cobj;
                 gchar *str;
-		int j;
+		int j, n;
                 double d;
 
 		CHECKARG(i, NUMERIC_t);
@@ -70,6 +71,16 @@ static __list_store_set(ClipMachine *cm, GtkTreeIter *iter, gint startDataParam)
 		switch ((int)utypes->items[column].n.d)
 		{
 		case TREE_TYPE_NUMERIC:
+			g_value_init(&value, G_TYPE_INT);
+			if (val->t.type == NUMERIC_t)
+                		g_value_set_int(&value, (int)val->n.d);
+                	else
+                        {
+                		n = _clip_strtod(val->s.str.buf, &j);
+                		g_value_set_int(&value, n);
+                        }
+			break;
+		case TREE_TYPE_NUMERIC_FLOAT:
 			g_value_init(&value, G_TYPE_FLOAT);
 			if (val->t.type == NUMERIC_t)
                 		g_value_set_float(&value, val->n.d);
@@ -89,6 +100,11 @@ static __list_store_set(ClipMachine *cm, GtkTreeIter *iter, gint startDataParam)
 		case TREE_TYPE_LOGICAL:
 			g_value_init(&value,  G_TYPE_BOOLEAN);
 	                g_value_set_boolean(&value, val->l.val);
+			break;
+		case TREE_TYPE_PIXBUF:
+			g_value_init(&value,  GDK_TYPE_PIXBUF);
+	                cobj = _fetch_cobject(cm, val);
+	                g_value_set_object(&value, cobj->object);
 			break;
 		case TREE_TYPE_DATE:
 			g_value_init(&value,  G_TYPE_STRING);
@@ -145,6 +161,9 @@ static __list_store_set_types(ClipMachine * cm, gint ncolumns, GType * types, Cl
         		types[i] = G_TYPE_BOOLEAN;
                         break;
                 case TREE_TYPE_NUMERIC:
+        		types[i] = G_TYPE_INT;
+                        break;
+                case TREE_TYPE_NUMERIC_FLOAT:
         		types[i] = G_TYPE_FLOAT;
                         break;
                 case TREE_TYPE_DATE:
@@ -155,6 +174,9 @@ static __list_store_set_types(ClipMachine * cm, gint ncolumns, GType * types, Cl
                         break;
                 case TREE_TYPE_PIXMAP:
         		types[i] = GTK_TYPE_PIXMAP;
+                        break;
+                case TREE_TYPE_PIXBUF:
+        		types[i] = GDK_TYPE_PIXBUF;
                         break;
                 default:
                         printf("add other type \n");
@@ -173,10 +195,12 @@ err:
 /* ...      -  all types for the columns, from first to last:      */
 /* TREE_TYPE_STRING                                                */
 /* TREE_TYPE_NUMERIC                                               */
+/* TREE_TYPE_NUMERIC_FLOAT                                         */
 /* TREE_TYPE_LOGICAL                                               */
 /* TREE_TYPE_DATE                                                  */
 /* TREE_TYPE_DATETIME                                              */
 /* TREE_TYPE_PIXMAP                                                */
+/* TREE_TYPE_PIXBUF                                                */
 int
 /******************************************************************************
 * gtk_ListStoreNew(map, ncolumns, type1, ...)
@@ -307,8 +331,9 @@ clip_GTK_LISTSTORESETVALUE(ClipMachine * cm)
 	GtkTreeIter iter;
         ClipArrVar *utypes;
 	GValue value;
+        C_object *cobj;
 	gchar *str;
-	int j;
+	int j, n;
 	double d;
 
         CHECKARG2(1, MAP_t, NUMERIC_t);CHECKCOBJ(cslist, GTK_IS_LIST_STORE(cslist->object));
@@ -325,6 +350,16 @@ clip_GTK_LISTSTORESETVALUE(ClipMachine * cm)
 	switch ((int)utypes->items[column].n.d)
 	{
 	case TREE_TYPE_NUMERIC:
+		g_value_init(&value, G_TYPE_INT);
+		if (val->t.type == NUMERIC_t)
+			g_value_set_int(&value, (int)val->n.d);
+		else
+		{
+			n = _clip_strtod(val->s.str.buf, &j);
+			g_value_set_int(&value, n);
+		}
+		break;
+	case TREE_TYPE_NUMERIC_FLOAT:
 		g_value_init(&value, G_TYPE_FLOAT);
 		if (val->t.type == NUMERIC_t)
 			g_value_set_float(&value, val->n.d);
@@ -345,6 +380,11 @@ clip_GTK_LISTSTORESETVALUE(ClipMachine * cm)
 		g_value_init(&value,  G_TYPE_BOOLEAN);
 		g_value_set_boolean(&value, val->l.val);
 		break;
+	case TREE_TYPE_PIXBUF:
+		g_value_init(&value,  GDK_TYPE_PIXBUF);
+	        cobj = _fetch_cobject(cm, val);
+	        g_value_set_object(&value, cobj->object);
+		break;
 	case TREE_TYPE_DATE:
 		g_value_init(&value,  G_TYPE_STRING);
 		if (val->t.type == DATE_t)
@@ -356,7 +396,7 @@ clip_GTK_LISTSTORESETVALUE(ClipMachine * cm)
 	}
 	gtk_list_store_set_value(GTK_LIST_STORE(cslist->object), &iter, column, &value);
 
-		return 0;
+	return 0;
 err:
 	return 1;
 }
@@ -695,3 +735,175 @@ err:
 	return 1;
 }
 #endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+/******************************************************************************
+* gtk_ListStoreInsertWithValues(list, @iter, position, ncol, val, ....) -->path_string
+******************************************************************************/
+int
+clip_GTK_LISTSTOREINSERTWITHVALUES(ClipMachine * cm)
+{
+	C_object *cslist = _fetch_co_arg(cm);
+        ClipVar      *ci = _clip_spar(cm, 2);
+        gint    position = _clip_parni(cm, 3);
+        gint     nValues ;
+
+	GtkTreeIter iter;
+        C_object  *citer;
+        C_object   *cobj;
+        gint    columns[20];
+	GValue values[20];
+	gchar *str;
+	int i,j;
+
+        CHECKARG2(1, MAP_t, NUMERIC_t);CHECKCOBJ(cslist, GTK_IS_LIST_STORE(cslist->object));
+        CHECKARG(3, NUMERIC_t);
+
+	position --;
+	nValues = _clip_parinfo(cm, 0)-3;
+
+        memset(columns, 0, sizeof(columns));
+        memset(values, 0, sizeof(values));
+	for (i=0, j=4; i<nValues; i++, j+=2)
+        {
+        	gint     c = _clip_parni(cm, j);
+                ClipVar *v = _clip_spar(cm, j+1);
+
+        	if (c >= 0)
+        		columns[i] = c;
+		else
+        		columns[i] = -1;
+		switch ((int)v->t.type)
+		{
+		case NUMERIC_t:
+			g_value_init(&values[i], G_TYPE_FLOAT);
+                	g_value_set_float(&values[i], v->n.d);
+			break;
+		case CHARACTER_t:
+			str = v->s.str.buf;
+			LOCALE_TO_UTF(str);
+			g_value_init(&values[i],  G_TYPE_STRING);
+	                g_value_set_string(&values[i], str);
+                        FREE_TEXT(str);
+			break;
+		case LOGICAL_t:
+			g_value_init(&values[i],  G_TYPE_BOOLEAN);
+	                g_value_set_boolean(&values[i], v->l.val);
+			break;
+		case DATE_t:
+			g_value_init(&values[i],  G_TYPE_STRING);
+	                str = _clip_date_to_str(v->lv.l, cm->date_format);
+	                g_value_set_string(&values[i], str);
+			break;
+		case MAP_t:
+			g_value_init(&values[i],  GDK_TYPE_PIXBUF);
+	        	cobj = _fetch_cobject(cm, v);
+	        	g_value_set_object(&values[i], cobj->object);
+			break;
+		}
+        }
+
+	gtk_list_store_insert_with_values(GTK_LIST_STORE(cslist->object), &iter,
+		position,
+		columns[0], values[0], columns[1], values[1], columns[2], values[2], columns[3], values[3], columns[4], values[4],
+		columns[5], values[5], columns[6], values[6], columns[7], values[7], columns[8], values[8], columns[9], values[9],
+		columns[10], values[10], columns[11], values[11], columns[12], values[12], columns[13], values[13], columns[14], values[14],
+		columns[15], values[15], columns[16], values[16], columns[17], values[17], columns[18], values[18], columns[19], values[19]
+		);
+
+	if (&iter)
+        {
+        	citer = _list_get_cobject(cm, &iter);
+                if (!citer) citer = _register_object(cm, &iter, GTK_TYPE_TREE_ITER, NULL, NULL);
+                if (citer) _clip_mclone(cm, ci, &citer->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+/******************************************************************************
+* gtk_ListStoreInsertWithValuesV(list, @iter, position, aColumns, aValues, nValues)
+******************************************************************************/
+int
+clip_GTK_LISTSTOREINSERTWITHVALUESV(ClipMachine * cm)
+{
+	C_object *cslist = _fetch_co_arg(cm);
+        ClipVar      *ci = _clip_spar(cm, 2);
+        gint    position = _clip_parni(cm, 3);
+        ClipArrVar   *ca = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 4));
+        ClipArrVar   *cv = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 5));
+        gint     nValues = _clip_parni(cm, 6);
+
+	GtkTreeIter iter;
+        C_object  *citer;
+        gint    *columns;
+	GValue *values;
+        C_object *cobj;
+	gchar *str;
+	int i;
+
+        CHECKARG2(1, MAP_t, NUMERIC_t);CHECKCOBJ(cslist, GTK_IS_LIST_STORE(cslist->object));
+        CHECKARG(3, NUMERIC_t);
+        CHECKARG(4, ARRAY_t);
+        CHECKARG(5, ARRAY_t);
+        CHECKARG(6, NUMERIC_t);
+
+	position --;
+	columns = malloc(nValues*sizeof(int));
+        values   = malloc(nValues*sizeof(GValue));
+        memset(columns, 0, nValues*sizeof(int));
+        memset(values, 0, nValues*sizeof(GValue));
+	for (i=0; i<nValues; i++)
+        {
+        	ClipVar *c = ca->items+i;
+                ClipVar *v = cv->items+i;
+
+        	if (c->t.type == NUMERIC_t)
+        		columns[i] = c->n.d - 1;
+		switch ((int)v->t.type)
+		{
+		case NUMERIC_t:
+			g_value_init(&values[i], G_TYPE_FLOAT);
+                	g_value_set_float(&values[i], v->n.d);
+			break;
+		case CHARACTER_t:
+			str = v->s.str.buf;
+			LOCALE_TO_UTF(str);
+			g_value_init(&values[i],  G_TYPE_STRING);
+	                g_value_set_string(&values[i], str);
+                        FREE_TEXT(str);
+			break;
+		case LOGICAL_t:
+			g_value_init(&values[i],  G_TYPE_BOOLEAN);
+	                g_value_set_boolean(&values[i], v->l.val);
+			break;
+		case DATE_t:
+			g_value_init(&values[i],  G_TYPE_STRING);
+	                str = _clip_date_to_str(v->lv.l, cm->date_format);
+	                g_value_set_string(&values[i], str);
+			break;
+		case MAP_t:
+			g_value_init(&values[i],  GDK_TYPE_PIXBUF);
+	        	cobj = _fetch_cobject(cm, v);
+	        	g_value_set_object(&values[i], cobj->object);
+			break;
+		}
+        }
+
+	gtk_list_store_insert_with_valuesv(GTK_LIST_STORE(cslist->object), &iter,
+		position, columns, values, nValues);
+
+	if (&iter)
+        {
+        	citer = _list_get_cobject(cm, &iter);
+                if (!citer) citer = _register_object(cm, &iter, GTK_TYPE_TREE_ITER, NULL, NULL);
+                if (citer) _clip_mclone(cm, ci, &citer->obj);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+#endif
+

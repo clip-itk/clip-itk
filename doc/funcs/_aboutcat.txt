@@ -1,5 +1,9 @@
 $ABOUTCATEG$
 	INFO
+$SUMMARY$
+	Functions for access to some information about values, functions, parameters, and so.
+$LANG_RU$
+	Функции	доступа к информации о переменных, функциях, параметрах и тп.
 $DESCRIPTION$
 	Categories <command>INFO</command> is the set of functions for getting
 	some information about values, functions, parameters, and so.

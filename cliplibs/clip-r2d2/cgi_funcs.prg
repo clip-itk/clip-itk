@@ -19,7 +19,7 @@ function cgi_xml_header()
 	qqout("Content-type: text/xml")
 	qout()
 	qout('<?xml version="1.0" encoding="koi8-r"?>')
-	qout()
+//	qout()
 //	qout('<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>')
 return ""
 /************************************************/
@@ -357,7 +357,7 @@ function r2d2_get_osb_data(oDep,bal_id,account,beg_date,end_date,s1,s2)
 	endif
 	s:=' account=="'+account:id+'"'
 	tmp := oDep:select(bal_id,1,,s+s1)
-	outlog(__FILE__,__LINE__,s+s1,tmp)
+	//outlog(__FILE__,__LINE__,s+s1,tmp)
 
 	for j=1 to len(tmp)
 		obj:=oDep:getValue(tmp[j])
@@ -416,7 +416,7 @@ function r2d2_get_osb_data(oDep,bal_id,account,beg_date,end_date,s1,s2)
 return data
 
 ***********************
-function cgi_make_columns(oDict,sprname,type)
+function cgi_make_columns(oDict,sprname,type,atom)
 	// type is
 	// 0 - default, all columns
 	// 1 - only attr_find or first 2 attributes
@@ -426,6 +426,7 @@ function cgi_make_columns(oDict,sprname,type)
 	local a1,a2,a3
 
 	type := iif(type==NIL,0,type)
+	atom := iif(valType(atom)!="L",.f.,atom)
 
 	classDesc := oDict:classBodyByName(sprName)
 	oEmp := oDict:padrBody(map(),classDesc:id,.t.)
@@ -569,6 +570,22 @@ function cgi_make_columns(oDict,sprname,type)
 		col:dataRefTo:= ""
 		col:datamask := ""
 		col:expr    := classDesc:expr_essence
+		col:footer  := ""
+		aadd(columns,col)
+	endif
+	if atom .and. "UNIQUE_KEY" $ classDesc .and. !empty(classDesc:unique_key)
+		col:=map()
+		col:id	    := ""
+		col:attr_id := classDesc:id+"ukey"
+		col:name    := "unique_key"
+		col:header  := ""
+		col:width   := 50
+		col:dataLen := 0
+		col:dataDec := 0
+		col:dataType:= "C"
+		col:dataRefTo:= ""
+		col:datamask := ""
+		col:expr    := classDesc:unique_key
 		col:footer  := ""
 		aadd(columns,col)
 	endif
@@ -1224,12 +1241,17 @@ function r2d2_acc_constant(cName)
 return obj:value
 
 /************************************************/
-function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
+function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 	local s:=replicate("   ",level),sOut,col
 	local obj,obj2,i,j,k,tmp,sTmp,sTmp2,sTmp3,stmp4
 	local sid,dName := urn // "docum"
 	local ret := .f., ltree:= .f.
 	local sdata,rerr,errblock:=errorBlock({|err|cgi_error2xml(err)})
+
+	if empty(ext_urn)
+		ext_urn := ""
+	endif
+	atom := iif(valType(atom)!="L",.f.,atom)
 
 #ifdef PUT_RDF_TREE
 	for i=1 to len(aRefs)
@@ -1255,6 +1277,7 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 		else
 			sid := "XXXXXXXXXXXX"
 		endif
+		sid+=ext_urn
 #ifdef PUT_RDF_TREE
 		if lTree
 			? s+'<RDF:Seq about="'+dname+sTree+':'+sid+'">'
@@ -1271,7 +1294,7 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 				sTmp3 := "я"
 				if "DATATYPE" $ col .and.  col:datatype == "S"
 					//sData += s+ ' <DOCUM:ref_'+col:name+'>'+ stmp + '</DOCUM:ref_'+col:name+'>'
-					? s+'    DOCUM:ref_'+col:name+'="'+ stmp + '"'
+					? s+'    DOCUM:ref_'+col:name+'="'+ stmp + '" '
 				endif
 				//sData+=s+' <DOCUM:'+col:name+'>'
 				if "DATATYPE" $ col .and. col:datatype == "R"
@@ -1349,7 +1372,9 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 					//sData+= s+' DOCUM:ref_'+col:name+'="'+ sTmp2 + '"'
 				endif
 				if !empty(sTmp3)
-					? s+'	 DOCUM:sort_'+col:name+'="'+ sTmp3 + '"'
+				    if col:name!="paydate"
+				    ? s+'	 DOCUM:sort_'+col:name+'="'+ sTmp3 + '"'
+				    endif
 				endif
 
 			next
@@ -1362,7 +1387,7 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 
 		if !empty(aRefs[i][5])
 			ret := .t.
-			aRefs[i][3] := cgi_putArefs2Rdf1(aRefs[i][5],oDep,level+1,urn,columns,sTree+":"+tmp:id)
+			aRefs[i][3] := cgi_putArefs2Rdf1(aRefs[i][5],oDep,level+1,urn,columns,sTree+":"+tmp:id,ext_urn)
 		endif
 #ifdef PUT_RDF_TREE
 		if lTree
@@ -1384,14 +1409,19 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree)
 	?
 return ret
 /************************************************/
-function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree)
+function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree,ext_urn)
 	local s:=replicate("   ",level),sOut,col
 	local obj,obj2,i,j,tmp,sTmp,tmp2,sid
 	local dName := urn //"docum"
 	local llTree := .f.
+
 #ifdef PUT_RDF_TREE
 	return
 #endif
+
+	if empty(ext_urn)
+		ext_urn := ""
+	endif
 	*****
 	llTree := .f.
 	for j=1 to len(aRefs)
@@ -1416,6 +1446,7 @@ function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree)
 		else
 			sid := "XXXXXXXXXXXX"
 		endif
+		sid += ext_urn
 		if empty(aRefs[i][5])
 
 			if llTree
@@ -1602,6 +1633,19 @@ function cgi_accpost_columns(oDict,sprname)
 	endif
 	columns := cgi_make_columns(oDict,sprname)
 	//? "columns=", columns
+    // add reference to acc_char_type
+	i := ascan(columns,{|x|x:name == "daccount"})
+	if i>0
+		col := oclone(columns[i])
+		col:datatype := "R"
+		col:dataref_to := ""
+		aadd(columns,col)
+	col:name := "acc_chart_type"
+	col:header := "Тип баланса"
+		col:expr := "__obj:=codb_getValue(daccount),iif(empty(__obj),'',codb_essence(__obj:acc_chart_type))"
+		col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
+	col:obj_id :={|| "" }
+    endif
 	i := ascan(columns,{|x|x:name == "an_debet"})
 	if i>0
 		col := oclone(columns[i])
@@ -1651,3 +1695,86 @@ function cgi_accpost_columns(oDict,sprname)
 
 	endif
 return columns
+/************************************************/
+/*
+  ptype - type of periodic:
+  NIL - none
+  1.....n - n days
+  w - week
+  d - decade
+  m - month
+  k - kvartel
+*/
+function periodic2date(bdate,edate,pType)
+	local ret := {},i,j,n
+	if pType == NIL
+		aadd(ret,{bdate,edate})
+		return ret
+	endif
+	if valtype(pType) == "N"
+		n := pType
+	else
+		n := val(pType)
+	endif
+	if n > 0
+		for i=bdate to edate step n
+			aadd(ret,{i,min(i+n-1,edate)})
+		next
+		return ret
+	endif
+	if valType(pType) != "C"
+		aadd(ret,{bdate,edate})
+		return ret
+	endif
+	pType := upper(pType)
+	/*
+	if pType == "D"
+		for i=bdate to edate
+			aadd(ret,{i,min(i,edate)})
+		next
+		return ret
+	endif
+	*/
+	if pType == "W"
+		j := bdate
+		for i=bdate to edate
+			if dow(i) == 1
+				aadd(ret,{j,min(i,edate)})
+				j := i+1
+			endif
+		next
+		if j<edate
+			aadd(ret,{j,edate})
+		endif
+		return ret
+	endif
+	if pType == "D"
+		j := bdate
+		for i=bdate+1 to edate
+			n := day(i)
+			if n==11 .or. n==21 .or. n==1
+				aadd(ret,{j,min(i-1,edate)})
+				j := i
+			endif
+		next
+		if j<edate
+			aadd(ret,{j,edate})
+		endif
+		return ret
+	endif
+	if pType == "M"
+		j := bdate
+		for i=bdate+1 to edate
+			if day(i) == 1
+				aadd(ret,{j,min(i-1,edate)})
+				j := i
+			endif
+		next
+		if j<edate
+			aadd(ret,{j,edate})
+		endif
+		return ret
+	endif
+
+	aadd(ret,{bdate,edate})
+return ret

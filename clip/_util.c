@@ -5,6 +5,9 @@
 */
 /*
    $Log: _util.c,v $
+   Revision 1.142  2005/03/21 09:29:57  clip
+   uri: add EVALA()
+
    Revision 1.141  2004/12/01 08:13:05  clip
    alena: fix return value for _clip_translate_toutf
 
@@ -1074,6 +1077,33 @@ clip_EVAL(ClipMachine * mp)
 		return 0;
 
 	return _clip_eval(mp, bp, mp->argc - 1, ARGPTR(mp, 2), RETPTR(mp));
+}
+
+int
+clip_EVALA(ClipMachine * mp)
+{
+	int parcount;
+	ClipVar *params;
+	ClipVar *bp = _clip_par(mp, 1);
+	ClipVar *ap = _clip_par(mp, 2);
+
+	if (!bp || (bp->t.type != CCODE_t && bp->t.type != PCODE_t))
+		return 0;
+
+
+	if ( !ap || ap->t.type != ARRAY_t)
+	{
+		int r;
+
+		r = _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "EVALA");
+		return _clip_call_errblock(mp, r);
+	}
+
+	parcount  = ap->a.count;
+	params = ap->a.items;
+
+	//_clip_clip(mp, funcname, parcount, params, retVal);
+	return _clip_eval(mp, bp, parcount, params, RETPTR(mp));
 }
 
 int

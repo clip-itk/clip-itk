@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001 - 2005  ITK
     Author  : Alexey M. Tkachenko <alexey@itk.ru>
               Elena V. Kornilova  <alena@itk.ru>
     License : (GPL) http://www.itk.ru/clipper/license.html
@@ -129,7 +129,10 @@ err:
 	return 1;
 }
 
+#if !((GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6))
+
 // Set ICON NAME property for window
+
 int
 clip_GTK_WINDOWSETICONNAME(ClipMachine * cm)
 {
@@ -151,6 +154,7 @@ clip_GTK_WINDOWSETICONNAME(ClipMachine * cm)
 err:
 	return 1;
 }
+#endif
 
 // Set DECORATIONS for window
 int
@@ -1437,4 +1441,86 @@ err:
 	return 1;
 }
 #endif
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
+int
+clip_GTK_WINDOWGETFOCUSONMAP(ClipMachine * cm)
+{
+	C_widget     *cwid = _fetch_cw_arg(cm);
 
+	CHECKCWID(cwid,GTK_IS_WINDOW);
+
+	_clip_retl(cm, gtk_window_get_focus_on_map(GTK_WINDOW(cwid->widget)));
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWSETFOCUSONMAP(ClipMachine * cm)
+{
+	C_widget     *cwid = _fetch_cw_arg(cm);
+        gboolean    enable = _clip_parl(cm, 2);
+
+	CHECKCWID(cwid,GTK_IS_WINDOW);
+        CHECKARG(2, LOGICAL_t);
+
+	gtk_window_set_focus_on_map(GTK_WINDOW(cwid->widget), enable);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWGETICONNAME(ClipMachine * cm)
+{
+	C_widget     *cwid = _fetch_cw_arg(cm);
+        gchar        *name ;
+
+	CHECKCWID(cwid,GTK_IS_WINDOW);
+
+	name = (gchar *)gtk_window_get_icon_name(GTK_WINDOW(cwid->widget));
+
+	if (name)
+        {
+        	LOCALE_FROM_UTF(name);
+                _clip_retc(cm, name);
+                FREE_TEXT(name);
+        }
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWSETDEFAULTICONNAME(ClipMachine * cm)
+{
+        gchar        *name = _clip_parc(cm, 1);
+
+	CHECKARG(1, CHARACTER_t);
+
+	gtk_window_set_default_icon_name((const gchar *) name);
+
+	return 0;
+err:
+	return 1;
+}
+
+int
+clip_GTK_WINDOWSETICONNAME(ClipMachine * cm)
+{
+	C_widget     *cwid = _fetch_cw_arg(cm);
+        gchar        *name = _clip_parc(cm, 2);
+
+	CHECKCWID(cwid,GTK_IS_WINDOW);
+	CHECKARG(2, CHARACTER_t);
+
+	gtk_window_set_icon_name(GTK_WINDOW(cwid->widget), (const gchar *) name);
+
+	return 0;
+err:
+	return 1;
+}
+#endif

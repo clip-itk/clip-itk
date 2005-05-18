@@ -5,7 +5,7 @@ $CATEGORY$
 $ONELINER$
    Return true number of days to add given number of workdays
 $SYNTAX$
-   FT_ADDWKDY( <dStart>, <nWorkDays> ) -> nTrueDays
+   FT_ADDWKDY( <dStart>, <nWorkDays> ) --> nTrueDays
 $ARGUMENTS$
    <dStart> = date to start adding from
    <nWorkDays> = number of workdays to add

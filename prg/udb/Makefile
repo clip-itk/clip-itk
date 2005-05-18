@@ -71,6 +71,9 @@ codb_reindex: codb_reindex.prg
 codb_rcheck: codb_rcheck.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M codb_rcheck.prg $(CLIPLIBS) $(LIBS)
 
+codb_check: codb_check.prg
+	$(CLIP) $(CLIPFLAGS) -s -e -M codb_check.prg $(CLIPLIBS) $(LIBS)
+
 codb_addobj: codb_addobj.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M codb_addobj.prg $(CLIPLIBS) $(LIBS)
 

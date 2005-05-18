@@ -2,8 +2,7 @@
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
 /*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
-/*   Author: Andrey Cherepanov <sibskull@mail.ru>			   */
-/*   Last change: 18 Feb 2005						   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -150,8 +149,10 @@ static function ui_setToolbarItemIcon(self, icon)
 return .T.
 
 /* Set action for toolbar item */
-static function ui_setToolbarItemAction(self, action)
-	driver:setAction( self, "clicked", action)
-	self:action := action
-	driver:enableWidget( self, .T. )
+static function ui_setToolbarItemAction(self, signal, action)
+	if signal=='clicked' .and. valtype(action)=='B'
+		driver:setAction( self, "clicked", action)
+		self:action := action
+		driver:enableWidget( self, .T. )
+	endif
 return .T.

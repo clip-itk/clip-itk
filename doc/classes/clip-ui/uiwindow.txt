@@ -15,9 +15,11 @@ $LANG_RU$
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIWindow".
 	<name>		- Window name defined in constructor.
+	<userSpace>	- Layout for widget placement. <link linkend="classuivbox">UIVBox</link> object.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIWindow".
 	<name>		- Имя окна для его поиска, заданное в конструкторе.
+	<userSpace>	- Область размещения виджетов. Объект <link linkend="classuivbox">UIVBox</link>.
 
 $METHODNAME$
 	UIWindow()

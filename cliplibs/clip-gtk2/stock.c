@@ -143,7 +143,7 @@ err:
 int
 clip_GTK_STOCKLISTIDS(ClipMachine * cm)
 {
-	ClipVar  *cv;
+	ClipVar  *cv = RETPTR(cm);
         GSList *list;
         long    i, n;
 
@@ -158,7 +158,6 @@ clip_GTK_STOCKLISTIDS(ClipMachine * cm)
                 	ClipVar  c;
                         gchar *str;
 
-			memset(&cv, 0, sizeof(cv));
 			str = (gchar *)list->data;
                 	_clip_var_str(str, strlen(str), &c);
                 	_clip_aset(cm, cv, &c, 1, &i);
@@ -166,7 +165,6 @@ clip_GTK_STOCKLISTIDS(ClipMachine * cm)
                         g_free(str);
                 }
                 g_slist_free(list);
-                _clip_mclone(cm, RETPTR(cm), cv);
         }
 
 	return 0;

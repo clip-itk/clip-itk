@@ -7,7 +7,7 @@ $SUMMARY$
 $LANG_RU$
    Создает неинициализированный массив заданной длины.
 $SYNTAX$
-     ARRAY(<nElements> [, <nElements>...]) aArray
+     ARRAY(<nElements> [, <nElements>...]) --> aArray
 $LANG_RU$
      ARRAY(<кол-во эл. 1> [,<кол-во эл. 2>...]) --> массив
 $ARGUMENTS$

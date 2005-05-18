@@ -2,53 +2,104 @@
 TODO
 ====
 
-Last change: 25 Feb 2005
+Last change: 04 Apr 2005
 
 
-NEW WIDGET:
-	- UIFixedBox
-	- UIRadioButton
-	- UIProgressBar
-	- UISlider
-	- UIChoice (for date, number, file, color, form)
-	- UIIconView
+CLIP-UI
+-------
+ - Spreadsheet widget 
+ - Set slot functions for window open, activation, close
+ + Move to driver gdk_ColorParse() function from uicolor.prg
+ + Additional parameter 'signal' in method setAction()
+ - New widgets:
+   + UILayout (fixed positions of widgets)
+   + UIRadioButton
+   + UIProgressBar
+   + UISlider
+   - UIChoice (for date(+), number, file(+), color(+), form)
+     + for date picking see http://gtk.org/tutorial2.0/sec-calendar.html
+   - UIIconView
+   - UITab
+   - UIWizard
+   - UIList
+ + Program activation of UIChildWindow
+ + New classes for UITable/UITree nodes
+ - DnD methods for UITable/UITree
+ - Deletion of widget from comtainers
+ - Disallow editing in UIComboBox field
+ - Using ID in UIComboBox
+ - Possible security hole in array interpretation ("{|| {"+array_string+"} }")
+ - gtk_ScrolledWindowNew() make child widget too small
+ - sent command line parameters to gtk_Init()
+ - Default selection needed for UIComboBox in forms
+ - usablity issues for UISlider: value should be step multiple, step indication under slider
+ - icons for UIChildWindow
+ - wrong setFocus() behaviour for widgets in UIChildWindow/UIDocument
+ - UIEditDate should display calendar in popup window
+ - UIEditDate: date should be selected by keyboard
+ + Modal dialogs for select file name, color or date
+ 
+GTK2 driver
+-----------
+ + Set style: gtk_WidgetModifyFG() gtk_WidgetModifyBG(), gtk_WidgetModifyFont()...
+ - Input numero sign on typographic quotes
+ + Migrate UIComboBox to gtk_ComboBox
+ 
+Documentation
+-------------
+ - separate section "CLIP-UI" in CLIP documentation 
+ - XFL format description
+ + UISlider class
+ + UIChildWindow:setCaption(), caption attribute for all window classes
+ + param passed to UIWorkSpace()
+ - list support (and any other Docbook tags) in .txt class/funcs description files
+ - UIDriver class
+ - full attribute list of window classes
+ 
+-------------------------------------------------------------------------------
+TODOs in source code
+-------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------
-INLINE TODOs
+clip-ui.ch:19: Page settings for UIPrinter. TODO: need to move in client sources
+drivers/driver-gtk.prg:460:	add accel support
+drivers/driver-gtk.prg:974:	wrong number (1 instead 0)
+drivers/driver-gtk.prg:1200:	if style == "background"	doesn't work with UIEdit
+drivers/driver-gtk.prg:1270:	push accel to accel poll (see widget.c - bug in accel_group, window required)
+drivers/driver-gtk.prg:1272:	need to accel button and linked to label input fields
+drivers/driver-gtk.prg:1273:	need to append key to menu item
+drivers/driver-gtk.prg:1293:	need to remove key from menu item
+drivers/driver-gtk2.prg:21:	
+drivers/driver-gtk2.prg:304:	need remove border from toolbar
+drivers/driver-gtk2.prg:423:	o := gtk_ImageMenuItemNewWithMnemonic( , strtran( name, "&", "_" ) )
+drivers/driver-gtk2.prg:424:	gtk_ImageMenuItemSetImage( o, pic )
+drivers/driver-gtk2.prg:477:	add accel support
+drivers/driver-gtk2.prg:1214:	deprecated in GTK+ 2.x
+drivers/driver-gtk2.prg:1234:	Set states of widget while color change
+drivers/driver-gtk2.prg:1331:	push accel to accel poll (see widget.c - bug in accel_group, window required)
+drivers/driver-gtk2.prg:1333:	need to accel button and linked to label input fields
+drivers/driver-gtk2.prg:1334:	need to append key to menu item
+drivers/driver-gtk2.prg:1354:	need to remove key from menu item
+drivers/driver-gtk2.prg:1530:	addTreeNode(): sibling 
+edit.prg:15:	control wordwrap for UIEditText 
+form.prg:590:	labelled form rule support on menu
+form.prg:773:	use clipa() or similar function
+form.prg:819:	show untranslated string in debug mode
+table.prg:16:	column and row manipulation, get/set values, id by data, not index 
+table.prg:51:	set action to item object
+table.prg:91:	redraw rows on alternate color changes
+tree.prg:17: 	id by data, not index, nice expand/collapse icons, possible remove lines, ignore expand/collapse as node activation on single LMB click, fill tree from object 
+tree.prg:50:	set action to item object
+utils.prg:130:	value type transformation
+window.prg:18:	setAction() for UIWindow (close), UIChildWindow (close and changed focus) 
+window.prg:329:	BUG #230: child window caption should be show in main window caption
+window.prg:488:	compare mods too 
 
-drivers/driver-gtk.prg:350:     setDefault() doesn't work - no border for 
-				default button
-drivers/driver-gtk.prg:429:     add accel support
-drivers/driver-gtk.prg:909:     need more clever resizing
-drivers/driver-gtk.prg:959:     scroll by mouse only works only on scrollbar
-drivers/driver-gtk.prg:1211:	push accel to accel poll (see widget.c - bug in 
-				accel_group, window required)
-drivers/driver-gtk.prg:1213:	need to accel button and linked to label input 
-				fields
-drivers/driver-gtk.prg:1214:	need to append key to menu item
-drivers/driver-gtk.prg:1234:	need to remove key from menu item
-
-clip-ui.ch:42:	ALIGN_JUSTIFY need really justify
-form.prg:562:	labelled form rule support on menu
-form.prg:664:	UIForm:subActionHandler(): several values can be returned
-form.prg:786:	show untranslated string in debug mode
-image.prg:1035:	ok pixmap
-image.prg:1037:	question pixmap
-table.prg:17:	column and row manipulation, get/set values
-table.prg:90:	redraw rows on alternate color changes
-tree.prg:18:	nice expand/collapse icons, possible remove lines, ignore 
-		expand/collapse as node activation on single LMB click, 
-		fill tree from object 
-utils.prg:124:	value type transformation
-window.prg:353:	Set window icon
-window.prg:413:	setDefault() doesn't work - no border for default button
-window.prg:477:	compare mods too 
-------------------------------------------------------------------------------
-
-http://eas.lrn.ru/index.php?module=request (on Russian)
+-------------------------------------------------------------------------------
+TODOs on web-site http://eas.lrn.ru/index.php?module=request (on Russian)
+-------------------------------------------------------------------------------
 
 clip-ui
-
+-------
 #194 	система отслеживания ошибок
 #195 	облегчить привязку к функциям драйвера
 #196 	визуальный конфигуратор базы данных и форм
@@ -56,26 +107,26 @@ clip-ui
 #198 	предопределённые пиктограмы кнопок: использование PNG
 #199 	виджеты ввода чисел и дат, выбора из списка (тестирование)
 #200 	автоинтеграция модулей в меню
-#201 	кнопка в диалогах по умолчанию (выделение)
+#201+ 	кнопка в диалогах по умолчанию (выделение)
 #202 	очистка (удаление виджетов)
-#221 	очистить меню (UIMenu)
+#221+ 	очистить меню (UIMenu)
 #222 	вызов меню по Alt (UIMenu)
 #223 	пиктограммы в меню, содержащим CheckMenuItem сдвинуты вправо (UIMenu)
 #224 	шаблон ввода/ограничение длины поля ввода (UIEdit)
-#225 	пиктограмма окна UIWindow не работает (функция gtk_WindowSetIconPixmap)
+#225+ 	пиктограмма окна UIWindow не работает (функция gtk_WindowSetIconPixmap)
 #226 	выделение кнопки по умолчанию (UIChildWindow)
 #227 	ошибка перехода по акселераторам-русским буквам (UIChildWindow)
 #228 	привязка к акселераторам надписей перевода фокуса полей ввода 
 	(UIChildWindow)
-#229 	изменение заголовка дочернего окна (UIChildWindow)
+#229+ 	изменение заголовка дочернего окна (UIChildWindow)
 #230 	заголовок дочернего окна должен показывается как часть заголовка 
 	основного окна (UIChildWindow)
-#231 	убрать обрамление у панели инструментов дочернего окна (UIChildWindow)
-#232 	реализовать описание в формах виджета дерева (UITree)
+#231+ 	убрать обрамление у панели инструментов дочернего окна (UIChildWindow)
+#232+ 	реализовать описание в формах виджета дерева (UITree)
 #233 	пиктограммы раскрытия/сворачивания, возможность убирания линий (UITree)
 #234 	при одинарном щелчке мышью выделять элемент без его 
 	раскрытия/сворачивания (UITree)
-#235 	Создать класс UIFixedLayout (gtk_fixed_new, абсолютное 
+#235+ 	Создать класс UIFixedLayout (gtk_fixed_new, абсолютное 
 	позиционирование)
 #236 	создать собственный виджет электронной таблицы (UISheet)
 #237 	контекстное меню на строке (удаление/добавление строк) (UISheet)
@@ -89,13 +140,14 @@ clip-ui
 #244 	сохранение данных/форматирования в XML (UISheet)
 
 clip-ui/gtk
+-----------
 #203 	передача параметров запуска у GtkInit()
-#204 	необходимо автоэкранирование символа акселератора по умолчанию "_"
+#204+ 	необходимо автоэкранирование символа акселератора по умолчанию "_"
 #205 	активировать привязки клавиш при win:show() для всех подменю
 #206 	автоматически добавлять комбинации клавиш в элементы меню 
 	(GtkAccelLabel)
 #207 	привязывать комбинации клавиш к элементу меню любой вложенности
 #208 	выравнивание комбинаций клавиш в элементах меню по правому краю 
 	(GtkAccelLabel)
-#209 	не удаётся изменить цвет фона (работает только изменение цвета 
+#209- 	не удаётся изменить цвет фона (работает только изменение цвета 
 	текста и фона полей)
