@@ -9,6 +9,8 @@
 #include "codbcfg.ch"
 #include "codb_dbf.ch"
 
+//#define PROFILE
+
 ************************************************************
 function codb_depDbfNew(oDict,dep_id)
 	local obj:=codb_depAll_Methods(oDict,dep_id)
@@ -77,7 +79,7 @@ static function _dep_delete(self,cId,lErase)
 		return .f.
 	endif
 	if !waitRddLock(self:hDbIdxTbl)
-		self:error := codb_error(1005)+":"+cId
+		self:error := codb_error(1005)+":"+cId+":dep,line:"+alltrim(str(__LINE__))
 		taskStart()
 		return .f.
 	endif
@@ -150,7 +152,7 @@ static function _dep_unDelete(self,cId)
 		return .f.
 	endif
 	if !waitRddLock(self:hDbIdxTbl)
-		self:error := codb_error(1005)+":"+cId
+		self:error := codb_error(1005)+":"+cId+":dep,line:"+alltrim(str(__LINE__))
 		taskStart()
 		return .f.
 	endif
@@ -203,6 +205,11 @@ static function _dep_append(self,oData,class_id)
 	endif
 
 	oData := self:checkObjBody(oData,class_desc)
+	cId := self:counters:addvalue("OBJECT")
+	cId := padl(alltrim(ntoc(cId,32)),codb_info("OBJECT_ID_LEN"),"0")
+	cId := self:oDict:id + self:number + cId
+	oData:id:= cId
+	oData:class_id := class_id
 
 	if "UNIQUE_KEY" $ class_desc .and. !empty(class_desc:unique_key)
 		/* check unique value */
@@ -220,11 +227,6 @@ static function _dep_append(self,oData,class_id)
 		endif
 	endif
 
-	cId := self:counters:addvalue("OBJECT")
-	cId := padl(alltrim(ntoc(cId,32)),codb_info("OBJECT_ID_LEN"),"0")
-	cId := self:oDict:id + self:number + cId
-	oData:id:= cId
-	oData:class_id := class_id
 	if "HAVE_COUNTERS" $ class_desc .and. class_desc:have_counters
 		self:__check_counters(class_desc,oData)
 	endif
@@ -351,7 +353,7 @@ static function _dep_update(self,oData)
 	endif
 	/* update data to IDXTABLE */
 	if !waitRddLock(self:hDbIdxTbl)
-		self:error := codb_error(1005)+":"+oData:id
+		self:error := codb_error(1005)+":"+oData:id+":dep,line:"+alltrim(str(__LINE__))
 		taskStart()
 		return .f.
 	endif
@@ -609,8 +611,16 @@ return tmp1
 ************************************************************
 static function _dep_select(self,class_Id,nIndex,sName,sWhere,nCount,deleted)
 	static wrap:=map()
-	local ret:={},sIndex,s:=""
+	local tm,ret:={},sIndex,s:=""
 	local tmp,class_desc,i,aWrapNames:={}
+#ifdef PROFILE
+	s:=procname(1)+str(procline(1))
+	if ! (s $ self:__profile)
+		self:__profile[s]:={procline(1),0,0,0}
+	endif
+	s:=""
+	tm:=seconds()
+#endif
 	self:error := ""
 	if deleted == NIL .or. valtype(deleted) != "L"
 		deleted := .f.
@@ -694,6 +704,13 @@ static function _dep_select(self,class_Id,nIndex,sName,sWhere,nCount,deleted)
 	rddSetOrder(self:hDbIdxTbl,"object_id")
 	taskStart()
 	self:runTrigger(class_id,"AFTER_SELECT_OBJECT",class_id,nIndex,sWhere)
+#ifdef PROFILE
+	s:=procname(1)+str(procline(1))
+	i:=self:__profile[s]
+	i[2]++
+	i[3]+=seconds()-tm
+	i[4]+=len(ret)
+#endif
 return ret
 ************************************************************
 
@@ -703,6 +720,11 @@ return	rddSetFilter(p1,p2,p3)
 ************************************************************
 static function _dep_close(self)
 	local i
+#ifdef PROFILE
+	for i in self:__profile
+		outlog("dep profile",i)
+	next
+#endif
 	self:error := ""
 	if "ID" $ self
 		if codb_dep_ref_counter(self:id) > 1
@@ -753,7 +775,7 @@ static function _dep_open(self)
 			endif
 		next
 		codb_dep_register(self:id)
-		return
+		return .t.
 	endif
 	dbfile:=self:path+PATH_DELIM+".version"
 	hf:=fopen(dbfile,0)

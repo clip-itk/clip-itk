@@ -4,9 +4,15 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.320  2005/08/08 09:00:31  clip
+	alena: fix for gcc 4
+	
+	Revision 1.319  2005/06/03 12:51:34  clip
+	rust: avoid index crashes when trying to
+
 	Revision 1.318  2005/04/11 15:40:12  clip
 	rust: another memory leak fixed
-	
+
 	Revision 1.317  2005/04/11 14:18:35  clip
 	rust: memory leak fixed
 
@@ -1336,7 +1342,7 @@ int rdd_child_duty(ClipMachine* cm,RDD_DATA* child,const char* __PROC__){
 
 			child->orders[child->curord]->valid_stack = 0;
 			child->eof = 1;
-			if((er = rdd_lastrec(cm,child,&lastrec,__PROC__))) return er;
+			if((er = rdd_lastrec(cm,child,(int *)(&lastrec),__PROC__))) return er;
 			child->recno = lastrec+1;
 		} else {
 			if((er = child->orders[child->curord]->vtbl->seek(cm,child,
@@ -2585,6 +2591,7 @@ int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __P
 	ClipVar* v = _clip_vptr(vp);
 	RDD_ORDER* ro;
 	int eof,i,r,er;
+	unsigned char *recdup = NULL, *recbuf = NULL;
 
 	if(rd->pending_child_parent)
 		if((er = rdd_child_duty(cm,rd,__PROC__))) return er;
@@ -2603,6 +2610,17 @@ int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __P
 	if(!r && !rd->flocked)
 		return rdd_err(cm,EG_UNLOCKED,0,__FILE__,__LINE__,__PROC__,er_notpermitted);
 
+	recdup = malloc(rd->recsize);
+	memcpy(recdup, rd->record, rd->recsize);
+	recbuf = malloc(rd->recsize);
+
+	if((er = rd->vtbl->setvalue(cm,rd,no,v,0,__PROC__)))
+		goto unlock;
+
+	memcpy(recbuf, recdup, rd->recsize);
+	memcpy(recdup, rd->record, rd->recsize);
+	memcpy(rd->record, recbuf, rd->recsize);
+
 	if(!rd->newrec){
 		for(i=0;i<rd->ords_opened;i++){
 			ro = rd->orders[i];
@@ -2620,7 +2638,9 @@ int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __P
 		rd->eof = 0;
 	}
 
-	if((er = rd->vtbl->setvalue(cm,rd,no,v,0,__PROC__))) goto unlock;
+	memcpy(recbuf, recdup, rd->recsize);
+	memcpy(recdup, rd->record, rd->recsize);
+	memcpy(rd->record, recbuf, rd->recsize);
 /*	if((er = rdd_childs(cm,rd,__PROC__))) return er; */
 	if(!rd->newrec){
 		for(i=0;i<rd->ords_opened;i++){
@@ -2667,6 +2687,10 @@ int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __P
 		else
 			_rm_clrbit(rd->filter->rmap,rd->filter->size,rd->recno);
 	}
+	if(recdup)
+		free(recdup);
+	if(recbuf)
+		free(recbuf);
 	return 0;
 unlock:
 	if(!rd->newrec){
@@ -2730,7 +2754,7 @@ int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* a,int 
 		}
 	}
 
-	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) goto err;
+	if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) goto err;
 
 	bytes = (lastrec >> 5) + 1;
 
@@ -3911,7 +3935,7 @@ dbf_get_locale(ClipMachine * mp)
 		return &koi_locale;
 	}
 
-	buf = (char *) calloc(256, 3);
+	buf = (unsigned char *) calloc(256, 3);
 
 	make_translation(cs1, len1, cs2, len2, buf);
 	make_translation(cs2, len2, cs1, len1, buf + 256);
@@ -4297,7 +4321,7 @@ int rdd_seekeval(ClipMachine* cm,RDD_DATA* rd,ClipVar* block,int* found,const ch
 	if(!(*found)){
 		unsigned int lastrec;
 
-		if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
+		if((er = rdd_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
 		rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 	}
@@ -4360,7 +4384,7 @@ int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pat,int regular,int co
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) goto err;
 
 	e = (char*)pattern + strlen(pattern);
-	loc_write(rd->loc,pattern,e-pattern);
+	loc_write(rd->loc,(unsigned char *)pattern,e-pattern);
 	if(!regular){
 		s = strchr(pattern,'*');
 		q = strchr(pattern,'?');
@@ -4398,7 +4422,7 @@ int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pat,int regular,int co
 		if(!(*found)){
 			unsigned int lastrec;
 
-			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) goto err;
+			if((er = rdd_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) goto err;
 			rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) goto err;
 		}

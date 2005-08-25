@@ -5,6 +5,9 @@
 */
 /*
    $Log: _clipboard.c,v $
+   Revision 1.12  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
    Revision 1.11  2003/09/02 14:27:41  clip
    changes for MINGW from
    Mauricio Abre <maurifull@datafull.com>
@@ -284,7 +287,7 @@ int
 clip_GETCLIPBOARDDATA(ClipMachine * mp)
 {
 	int len;
-	char * data = from_clipboard( _clip_parni(mp,1), &len );
+	char * data = (char *)from_clipboard( _clip_parni(mp,1), &len );
 	_clip_retcn_m(mp,data,len);
 	return 0;
 }
@@ -297,7 +300,7 @@ clip_SETCLIPBOARDDATA(ClipMachine * mp)
 	if ( data == NULL )
 		_clip_retl(mp,0);
 	else
-		_clip_retl(mp,to_clipboard(data,_clip_parni(mp,2),len));
+		_clip_retl(mp,to_clipboard((const unsigned char *)data,_clip_parni(mp,2),len));
 
 	return 0;
 }

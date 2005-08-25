@@ -5,6 +5,12 @@
 */
 /*
  * $Log: clic.h,v $
+ * Revision 1.47  2005/08/25 08:36:33  clip
+ * uri: small fix for AMD64 (added -fPIC option for gcc)
+ *
+ * Revision 1.46  2005/07/07 12:32:53  clip
+ * uri: small fix for gcc4
+ *
  * Revision 1.45  2003/05/16 11:08:01  clip
  * initial support for using assembler instead C
  * now activated if environment variable CLIP_ASM is defined to any value
@@ -408,7 +414,7 @@ SwitchEl;
 
 
 extern int genDebug;
-extern int optLevel;
+/*extern int optLevel;*/
 extern int vmLongJmps;
 extern int verbose;
 
@@ -467,8 +473,8 @@ extern int changeCharset;
 extern char *out_charset;
 
 
-extern char *CC, *COMPILE_FLAG, *CFLAGS, *COPT, *CDBG, *OUT_FLAG, *INCLUDE_FLAG,
-	*OBJSUF, *LIBSUF, *SLIBSUF, *SOBJSUF, *SFLAGS;
+extern char *CC, *COMPILE_FLAG, *CFLAGS, *ADDCFLAGS, *COPT, *CDBG, *OUT_FLAG,
+	*INCLUDE_FLAG, *OBJSUF, *LIBSUF, *SLIBSUF, *SOBJSUF, *SFLAGS;
 extern char *CLIPLIB, *CLIPSLIB;
 extern char *CLIPROOT;
 extern char *CLIP_MODULE;

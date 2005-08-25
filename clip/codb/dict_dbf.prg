@@ -169,7 +169,7 @@ static function _dict___counter(cId,value)
 	endif
 	taskstop()
 	if !waitRddLock(::hDbMeta)
-		::error := codb_error(1005)+":"+cId
+		::error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
 		return 0
 	endif
 	rec := rddRead(::hDbMeta)
@@ -324,7 +324,7 @@ static function _dict_delete(self,cId)
 		endif
 		idxData:version :=max(idxData:version,-90)
 		if !waitRddLock(self:hDbMetaIdx)
-			self:error := codb_error(1005)+":"+cId
+			self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
 			taskStart()
 			return .f.
 		endif
@@ -339,7 +339,7 @@ static function _dict_delete(self,cId)
 	rec := rddRead(self:hDbMeta)
 	if rec:id == cID
 		if !waitRddLock(self:hDbMeta)
-			self:error := codb_error(1005)+":"+cId
+			self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
 			taskStart()
 			return .f.
 		endif
@@ -380,7 +380,7 @@ static function _dict_undelete(self,cId)
 	rec := rddRead(self:hDbMeta)
 	if rec:id == cID
 		if !waitRddLock(self:hDbMeta)
-			self:error := codb_error(1005)+":"+cId
+			self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
 			taskStart()
 			return .f.
 		endif
@@ -404,7 +404,7 @@ static function _dict_undelete(self,cId)
 		idxData := map()
 		idxData:version := rec:version
 		if !waitRddLock(self:hDbMetaIdx)
-			self:error := codb_error(1005)+":"+cId
+			self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
 			taskStart()
 			return .f.
 		endif
@@ -718,7 +718,7 @@ static function _dict_update(self,oData,metaName,aRecursive)
 		return .f.
 	endif
 	if !waitRddLock(self:hDbMeta)
-		self:error := codb_error(1005)+":"+cId
+		self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
 		taskStart()
 		return .f.
 	endif
@@ -741,7 +741,7 @@ static function _dict_update(self,oData,metaName,aRecursive)
 		return .f.
 	endif
 	if !waitRddLock(self:hDbMetaIdx)
-		self:error := codb_error(1005)+":"+cId
+		self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
 		taskStart()
 		return .f.
 	endif

@@ -104,8 +104,8 @@
 
 /*
  * $Log: clic.tab.c,v $
- * Revision 1.7  2004/08/20 12:50:29  clip
- * uri: small fix
+ * Revision 1.9  2005/08/25 08:36:33  clip
+ * uri: small fix for AMD64 (added -fPIC option for gcc)
  *
  * Revision 1.81  2004/07/19 13:41:31  clip
  * rust: DO proc WITH ... didn't respect () (pass by value)

@@ -301,7 +301,7 @@ clip_GTK_SELECTIONDATASET(ClipMachine * cm)
         C_object *cselection = _fetch_co_arg(cm);
         C_object      *ctype = _fetch_cobject(cm, _clip_spar(cm, 2));
         gint          format = _clip_parni(cm, 3);
-        const guchar   *data = _clip_parc(cm, 4);
+        const guchar   *data = (const guchar *)_clip_parc(cm, 4);
         gint          length = _clip_parni(cm, 5);
 
 	if (!cselection || cselection->type != GTK_TYPE_SELECTION_DATA)
@@ -353,7 +353,7 @@ clip_GTK_SELECTIONDATAGETTEXT(ClipMachine * cm)
 	if (!cselection || cselection->type != GTK_TYPE_SELECTION_DATA)
         		goto err;
 
-       	str = gtk_selection_data_get_text((GtkSelectionData*)(cselection->object));
+       	str = (gchar *)gtk_selection_data_get_text((GtkSelectionData*)(cselection->object));
        	LOCALE_FROM_UTF(str);
         _clip_retc(cm, str);
 	FREE_TEXT(str);

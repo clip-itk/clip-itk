@@ -575,6 +575,37 @@ function codb_getValue(ObjId)
 	endif
 return
 ************************************************************
+function codb_updateObj(Obj)
+	local idLen1:=codb_info("DICT_ID_LEN")
+	local idLen2:=codb_info("DEPOSIT_ID_LEN")
+	local ret, oDep, idDep, idDict,oDict
+	local objId
+	if valtype(Obj)!="O"
+		return
+	endif
+	if "ID" $ obj
+		objId := obj:id
+	endif
+	if valtype(objId)!="C"
+		return
+	endif
+	if substr(ObjId,idLen1+1,idLen2) == "00"  // metadata
+		idDict:=left(ObjId,idLen1)
+		oDict := codb_dict_reference(idDict)
+		if valtype(oDict) != "O"
+			return
+		endif
+		return  oDict:update(Obj)
+	else
+		idDep:=left(ObjId,idLen1+idLen2)
+		oDep := codb_dep_reference(idDep)
+		if valtype(oDep) != "O"
+			return
+		endif
+		return  oDep:update(Obj)
+	endif
+return
+************************************************************
 function codb_update(oData)
 	static idLen1:=codb_info("DICT_ID_LEN")
 	static idLen2:=codb_info("DEPOSIT_ID_LEN")

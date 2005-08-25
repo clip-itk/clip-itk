@@ -40,7 +40,7 @@ GTK_SRC = accelgroup.c adjustment.c alignment.c bin.c bmpxpm.c box.c button.c\
 	  texttag.c texttagtable.c textview.c tipsquery.c togglebutton.c \
 	  toolbar.c tooltips.c treemodel.c treeselection.c treestore.c \
 	  treeview.c treeviewcolumn.c style.c viewport.c widget.c window.c windowgroup.c \
-	  gtkermsg.prg gtkutil.prg gtkbrowse.prg
+	  gtkermsg.prg gtkutil.prg #gtkbrowse.prg
 
 GTK_EXTEXT_SRC = #gtkextext.c extext.c
 
@@ -67,7 +67,7 @@ GTK_OBJ = accelgroup.o adjustment.o alignment.o bin.o bmpxpm.o box.o button.o \
 	  texttag.o texttagtable.o textview.o tipsquery.o togglebutton.o \
 	  toolbar.o tooltips.o treemodel.o treeselection.o treestore.o \
 	  treeview.o treeviewcolumn.o style.o viewport.o widget.o window.o windowgroup.o \
-	  gtkermsg.o gtkutil.o gtkbrowse.o
+	  gtkermsg.o gtkutil.o #gtkbrowse.o
 
 GTK_EXTEXT_OBJ = #gtkextext.o extext.o
 
@@ -153,7 +153,7 @@ $(XSLIB): $(XLIB)
 clean:
 	rm -rf *.o *.a *.so *.dll *.po *.pa *.b *.BAK *.bak *~ core* \
 	*core Makefile.inc *.ex *.nm \
-	gtkermsg.c gtkutil.c gtkbrowse.c
+	gtkermsg.c gtkutil.c #gtkbrowse.c
 
 distclean: clean
 	rm -rf clip-gtkcfg2.h hashcode.h _hashcode.h Makefile

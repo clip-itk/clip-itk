@@ -662,7 +662,7 @@ clip_GDK_GCSETDASHES(ClipMachine * cm)
 	CHECKOPT(2,NUMERIC_t); CHECKARG(3,CHARACTER_t); CHECKOPT(4,NUMERIC_t);
 	if (_clip_parinfo(cm,4)==UNDEF_t) n = strlen(dash_list);
 
-	gdk_gc_set_dashes(GDK_GC(cgc->object), dash_offset,dash_list,n);
+	gdk_gc_set_dashes(GDK_GC(cgc->object), dash_offset,(gint8 *)dash_list,n);
 
 	return 0;
 err:

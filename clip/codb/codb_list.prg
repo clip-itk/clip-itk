@@ -429,10 +429,3 @@ return ret
 ************************************************************
 static function codb_checkBodyCODB(data)
 return codb_checkBody(data,CODB_DICTLIST_BODY )
-************************************************************
-init procedure codb_init()
-	//rddSetDefault(CODB_RDD_DEFAULT)
-	set autorder to 1
-	set optimize on
-	//set map file on
-return

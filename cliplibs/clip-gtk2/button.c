@@ -440,7 +440,7 @@ int
 clip_GTK_BUTTONSETLABEL(ClipMachine * cm)
 {
 	C_widget   *cbtn = _fetch_cw_arg(cm);
-	gchar     * text = _clip_parc(cm,2);
+	char       *text = _clip_parc(cm,2);
         char      *pchar = _clip_parc(cm,3);
 	GtkWidget *label;
         guint  accel_key = 0;
@@ -478,11 +478,11 @@ int
 clip_GTK_BUTTONGETLABEL(ClipMachine * cm)
 {
 	C_widget   *cbtn = _fetch_cw_arg(cm);
-	gchar     * text;
+	gchar* text;
 
 	CHECKCWID(cbtn,GTK_IS_BUTTON);
 
-	text = (char *)(gtk_button_get_label(GTK_BUTTON(cbtn->widget)));
+	text = (gchar *)(gtk_button_get_label(GTK_BUTTON(cbtn->widget)));
 
 	LOCALE_FROM_UTF(text)
 	_clip_retc(cm,text);

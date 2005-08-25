@@ -30,6 +30,7 @@ function codb_depAll_Methods(oDict,dep_id)
 	obj:counters	:= NIL
 	obj:Extents	:= map()
 	obj:__objCache	:= map()
+	obj:__profile	:= map()
 	obj:error	:= ""
 	obj:oDict	:= oDict
 	obj:DictClosing := .f.
@@ -66,16 +67,30 @@ static function _dep_padrBody(self,oData,class_id)
 return self:checkBody(oData,class_id,.t.)
 ************************************************************
 static function _dep_checkObjBody(self,oData,class_desc,lPadr)
-	local i,tmp,body_stru:={}
-	for i=1 to len(class_desc:attr_list)
-		tmp:=class_desc:attr_list[i]
-		tmp:=self:oDict:getValue(tmp)
-		if empty(tmp)
-			outlog(__FILE__,__LINE__,[Internal error:],"oDict:getvalue("+toString(class_desc:attr_list[i])+")")
-			loop
-		endif
-		aadd(body_stru,{alltrim(upper(tmp:name)),tmp:type,tmp:len,tmp:dec,tmp:lentype,tmp:defValue})
-	next
+	static bodies := map(),crcs:=map()
+	local i,crc,name,tmp,body_stru:={}
+	name := class_desc:name
+	crc := crc32(var2str(class_desc))
+	if name $ crcs .and. crc != crcs[name]
+		adel(crcs,name)
+		adel(bodies,name)
+	endif
+	if name $ bodies
+		body_stru := bodies[name]
+	else
+		//outlog(__FILE__,__LINE__,class_desc:name,crc)
+		for i=1 to len(class_desc:attr_list)
+			tmp:=class_desc:attr_list[i]
+			tmp:=self:oDict:getValue(tmp)
+			if empty(tmp)
+				outlog(__FILE__,__LINE__,[Internal error:],"oDict:getvalue("+toString(class_desc:attr_list[i])+")")
+				loop
+			endif
+			aadd(body_stru,{alltrim(upper(tmp:name)),tmp:type,tmp:len,tmp:dec,tmp:lentype,tmp:defValue})
+		next
+		bodies[name] := body_stru
+		crcs[name] := crc
+	endif
 	if lPadr != NIL .and. lPadr
 		oData:=codb_padrBody(odata,body_stru)
 	else

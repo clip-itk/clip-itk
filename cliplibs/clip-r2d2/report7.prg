@@ -13,7 +13,7 @@ local urn:="",connect_id:="", connect_data, sprname:="accpost"
 local k_list, d_list, arefs:={}, atree:={}
 local post_list:={},post_objs:={}
 local paraSumm:={}
-local i,j,k,s,s1,s2,tmp,obj,col
+local i,j,k,s,s1,s2,tmp,obj,col,type
 
 	errorblock({|err|error2html(err)})
 
@@ -26,7 +26,9 @@ local i,j,k,s,s1,s2,tmp,obj,col
 	if "URN" $ _query
 		URN := _query:URN
 	endif
-
+	if "TYPE" $ _query
+		type := _query:type
+	endif
 	if "BEG_DATE" $ _query
 		beg_date := ctod(_query:beg_date,"dd.mm.yyyy")
 	endif
@@ -196,12 +198,15 @@ local i,j,k,s,s1,s2,tmp,obj,col
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
 	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
 	? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
-
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
-	?
-	?
+	if empty(type)
+    	    cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+		?
+	    cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+		?
+	else
+	    cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
+	
+	endif
 
 	for i=1 to len(accounts)
 		//? "acc=",accounts[i],an_levels[i]
@@ -212,7 +217,14 @@ local i,j,k,s,s1,s2,tmp,obj,col
 			an_data[j]:od_summa -= paraSumm[i]
 			an_data[j]:ok_summa -= paraSumm[i]
 		next
-		cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",":"+accounts[i])
+		if empty(type)
+		    cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",":"+accounts[i])
+		else
+		?' <items id="level'+alltrim(str(i,2,0))+'">['
+		    cgi_an_putRdf2(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')		
+		?' ]</items>'    
+		endif
+		
  		     //cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
 		
 	next

@@ -13,7 +13,7 @@ local d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
 local c_data, aRefs:={},aTree:={}
 local post,post_list,post_objs
-local urn,sprname,cache:=map()
+local urn,sprname,type,cache:=map()
 
 	errorblock({|err|error2html(err)})
 
@@ -42,7 +42,9 @@ local urn,sprname,cache:=map()
 	if "URN" $ _query
 		URN := _query:URN
 	endif
-
+	if "TYPE" $ _query
+		TYPE := _query:TYPE
+	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
@@ -212,12 +214,17 @@ local urn,sprname,cache:=map()
         ? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
 	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
 	? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'		  
-	if empty(urn)
-		urn := sprname
+	if empty(type)
+	    if empty(urn)
+	    	urn := sprname
+		endif
+	    cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+		?
+	    cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+	else
+	    cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
 	endif
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+	
 	? '</RDF:RDF>'
 #else
 	cgi_putTreeHeader(columns)

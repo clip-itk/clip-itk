@@ -297,6 +297,7 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 		nWin := 0
 		for i:=1 to ::nWins
 			nWin ++
+			::curwin := nWin
 			fd := ::tobjinfo[i]:name
 			setcolor(set("edit_colors_window"))
 			::tobjinfo[nWin]:curwin := wopen(::ntop,::nleft,::nbot-1,::nright)
@@ -367,6 +368,9 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 		::curwin := oldwin
 	endif
 
+	do while ::curwin > ::nWins
+		::curwin --
+	enddo
 	if ::curwin > 0 .and. ::curwin<=::nWins
 		dispbegin()
 		wselect(::tobjinfo[::curwin]:curwin)
@@ -2135,7 +2139,7 @@ local w, color
 return
 ************************************
 static function me_chooseCodePage()
-local pathCP:="", a, b, lo, nkey:=-1, str
+local pathCP:="", a, b, lo, nkey:=-1, str, ch, hch
 local i,k, r, nLeft, nRight, nTop, nBottom, cntc:=4, item, oldcolor, owin
 
 	pathCP += CLIPROOT()+PATH_DELIM+"charsets"
@@ -2195,12 +2199,34 @@ local i,k, r, nLeft, nRight, nTop, nBottom, cntc:=4, item, oldcolor, owin
 	if item == NIL
 		return
 	endif
-	::tobj[::curwin]:charset := item
+	::tobj[::curwin]:setCharset(item)
+	/*
+	if item != ::tobj[::curwin]:__hostcharset
+		::tobj[::curwin]:charset := item
+		ch := ::tobj[::curwin]:charset
+		hch := ::tobj[::curwin]:__hostcharset
+	else
+		hch := ::tobj[::curwin]:charset
+		ch := item
+		::tobj[::curwin]:charset := item
+	endif
+	//i := ::tobj[::curwin]:edbuffer
+	//aeval(i, {|_item| _item:=translate_charset(ch, hch, _item)})
+	//::tobj[::curwin]:edbuffer := i
+	aeval(::tobj[::curwin]:edbuffer, {|_item| i:=_item,_item:=translate_charset(ch, hch, _item)})
 	for i=1 to ::tobj[::curwin]:lines
-		::tobj[::curwin]:edbuffer[i] := translate_charset(::tobj[::curwin]:charset, ::tobj[::curwin]:__hostcharset, ::tobj[::curwin]:edbuffer[i])
+	outlog(__FILE__, ::tobj[::curwin]:edbuffer[i])
 	next
+
+/*	for i=1 to ::tobj[::curwin]:lines
+	//	::tobj[::curwin]:edbuffer[i] := translate_charset(::tobj[::curwin]:charset, ::tobj[::curwin]:__hostcharset, ::tobj[::curwin]:edbuffer[i])
+		::tobj[::curwin]:edbuffer[i] := translate_charset(ch, hch, ::tobj[::curwin]:edbuffer[i])
+	next
+*/
+
 	::tobj[::curwin]:refresh()
 	setcolor(oldcolor)
+	*/
 return
 ************************************
 static function me_changeCharset(nWin, charSet)

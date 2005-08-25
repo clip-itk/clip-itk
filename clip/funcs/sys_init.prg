@@ -41,23 +41,23 @@ init procedure sys_init
   if !dbf_charset_init(cliproot)
 	l := [cp437]
 	set("DBF_CHARSET",l)
-	outlog(2,"set DBF_CHARSET:",l)
+	outlog(2,"set DBF_CHARSET:",l,__FILE__,__LINE__)
 	if "ru" $ lower(getenv("LANG")) .or. "ru" $ lower(getenv("CLIP_LANG")) .or. empty(getenv("LANG"))
 		// it`s Russian DOS codepage
 		set("DBF_CHARSET","cp866")
-		outlog(2,"set DBF_CHARSET:","cp866")
+		outlog(2,"set DBF_CHARSET:","cp866",__FILE__,__LINE__)
 	endif
   endif
 
 #ifdef OS_CYGWIN
   for i=asc("A") to asc("Z")
 		set(chr(i)+":","/cygdrive/"+chr(i))
-		outlog(2,"add drive "+chr(i)+": as "+"/cygdrive/"+lower(chr(i)))
+		outlog(2,"add drive "+chr(i)+": as "+"/cygdrive/"+lower(chr(i)),__FILE__,__LINE__)
   next
   drives_init(cliproot)
 #else
   if !drives_init(cliproot)
-	outlog(2,"add drive C: as /")
+	outlog(2,"add drive C: as /",__FILE__,__LINE__)
 	set("C:","/")
 	//outlog(2,"add drive D: as /usr")
 	//set("D:","/usr")
@@ -91,7 +91,7 @@ init procedure sys_init
 		endif
 		x=int(x/2)
   next
-  outlog(2,"set ulimit -v =",l)
+  outlog(2,"set ulimit -v =",l,__FILE__,__LINE__)
 
   l:=ulimit(ULIMIT_DATA)
   x:=0x7fffffff
@@ -103,7 +103,7 @@ init procedure sys_init
 	endif
 	x=int(x/2)
   next
-  outlog(2,"set ulimit -d =",l)
+  outlog(2,"set ulimit -d =",l,__FILE__,__LINE__)
 
   HK_init()           // default hot keys for editor, debugger, ... more
   HK_load()           // load users hot keys
@@ -132,7 +132,7 @@ static function drives_init(path)
 		   if substr(buf,2,1)==":"
 			d:=upper(substr(buf,1,1))+":"
 			p:=alltrim(substr(buf,3))
-			outlog(2,"add drive "+d+" as "+p)
+			outlog(2,"add drive "+d+" as "+p,__FILE__,__LINE__)
 			set(d,p)
 			ret:=.t.
 		   endif
@@ -165,7 +165,7 @@ static function dbf_charset_init(path)
 	enddo
 	if !empty(buf)
 		set("DBF_CHARSET",lower(buf))
-		outlog(2,"set DBF_CHARSET:",lower(buf))
+		outlog(2,"set DBF_CHARSET:",lower(buf),__FILE__,__LINE__)
 		ret:=.t.
 	endif
 	fclose(fh)
@@ -204,15 +204,15 @@ function loadsets(file)
 			next
 			if nn > 0
 				begin sequence
-					outlog(2,"add set "+d+" as "+p)
+					outlog(2,"add set "+d+" as "+p,__FILE__,__LINE__)
 					set(nn, &p)
 				recover using error
-					outlog(2,file+":error setting:",buf)
+					outlog(2,file+":error setting:",buf,__FILE__,__LINE__)
 					end sequence
 					loop
 			endif
 		endif
-		outlog(2,"add set '"+d+"' as '"+toString(p)+"'")
+		outlog(2,"add set '"+d+"' as '"+toString(p)+"'",__FILE__,__LINE__)
 		set(d,p)
 	enddo
 	fclose(fh)

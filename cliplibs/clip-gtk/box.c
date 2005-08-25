@@ -227,7 +227,7 @@ clip_GTK_BOXQUERYCHILDPACKING(ClipMachine * cm)
 	C_widget *cbox  = _fetch_cw_arg(cm);
 	C_widget *cwid  = _fetch_cwidget(cm,_clip_spar(cm,2));
         gboolean expand, fill;
-        gint padding;
+        guint padding;
         GtkPackType pack_type;
         CHECKCWID(cbox,GTK_IS_BOX);
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCWID(cwid,GTK_IS_WIDGET);

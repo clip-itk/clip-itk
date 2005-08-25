@@ -284,7 +284,7 @@ int clip_HS_FILTER(ClipMachine* cm){
 	if((er = hs_close(cm,hs,__PROC__))) goto err_unlock;
 
 	if(expr && _clip_parinfo(cm,3) == CHARACTER_t && len > 2){
-		if((er = rm_evalpartial(cm,fp,NULL,&len,&count,__PROC__))) goto err_unlock;
+		if((er = rm_evalpartial(cm,fp,NULL,(unsigned int *)&len,&count,__PROC__))) goto err_unlock;
 	}
 	if(wa->rd->vtbl->_ulock(cm,wa->rd,__PROC__)) goto err;
 
@@ -378,7 +378,7 @@ int clip_HS_INDEX(ClipMachine* cm){
 	oldbof = wa->rd->bof;
 	oldeof = wa->rd->eof;
 	oldbof = oldeof = 0;
-	if((er = rdd_lastrec(cm,wa->rd,&lastrec,__PROC__))) goto err_unlock;
+	if((er = rdd_lastrec(cm,wa->rd,(int *)&lastrec,__PROC__))) goto err_unlock;
 	tmp = malloc(strlen(expr)+5);
 	sprintf(tmp,"{||%s}",expr);
 	if((er = _clip_eval_macro(cm,tmp,strlen(tmp),&block))) goto err_unlock;
@@ -762,7 +762,7 @@ static int _hs_loadbits(ClipMachine* cm,HIPER* hs,unsigned int poffs,unsigned in
 			if((er = rdd_read(cm,&hs->file,next,hs->pagesize,rpage,__PROC__)))
 				goto err;
 			for(;rpos<hs->intsonpage;rpos++){
-				offs = _rdd_uint((char*)(rpage+rpos));
+				offs = _rdd_uint((unsigned char*)(rpage+rpos));
 				if(!offs)
 					break;
 				tail = min(hs->pagesize,(ints-c)<<2);
@@ -771,7 +771,7 @@ static int _hs_loadbits(ClipMachine* cm,HIPER* hs,unsigned int poffs,unsigned in
 				c += hs->intsonpage;
 			}
 			rpos = 1;
-			next = _rdd_uint((char*)(rpage+((next==poffs)?2:0)));
+			next = _rdd_uint((unsigned char*)(rpage+((next==poffs)?2:0)));
 		} while(next);
 	} else {
 		rpos = 3;
@@ -780,7 +780,7 @@ static int _hs_loadbits(ClipMachine* cm,HIPER* hs,unsigned int poffs,unsigned in
 			if((er = rdd_read(cm,&hs->file,next,hs->pagesize,rpage,__PROC__)))
 				goto err;
 			for(;rpos<hs->intsonpage;rpos++){
-				offs = _rdd_uint((char*)(rpage+rpos));
+				offs = _rdd_uint((unsigned char*)(rpage+rpos));
 				if(!offs)
 					break;
 				if((er = rdd_read(cm,&hs->file,offs,hs->pagesize,page,__PROC__)))
@@ -792,7 +792,7 @@ static int _hs_loadbits(ClipMachine* cm,HIPER* hs,unsigned int poffs,unsigned in
 				}
 			}
 			rpos = 1;
-			next = _rdd_uint((char*)(rpage+((next==poffs)?2:0)));
+			next = _rdd_uint((unsigned char*)(rpage+((next==poffs)?2:0)));
 		} while(next);
 	}
 	free(rpage);
@@ -902,7 +902,7 @@ static int _hs_insert(ClipMachine* cm,HIPER* hs,unsigned int offs,int pos,unsign
 
 	if((er = rdd_read(cm,&hs->file,offs,hs->pagesize,page,__PROC__))) goto err;
 	memmove(page+pos+1,page+pos,hs->pagesize-pos*4);
-	_rdd_put_uint((char*)(page+pos),rec);
+	_rdd_put_uint((unsigned char*)(page+pos),rec);
 	if((er = rdd_write(cm,&hs->file,offs,hs->pagesize,page,__PROC__))) goto err;
 	do {
 		for(i=rpos+1;i<hs->intsonpage;i++){
@@ -913,9 +913,9 @@ static int _hs_insert(ClipMachine* cm,HIPER* hs,unsigned int offs,int pos,unsign
 
 			if((er = rdd_read(cm,&hs->file,offs,hs->pagesize,page,__PROC__)))
 				goto err;
-			rec = _rdd_uint((char*)(page+hs->intsonpage));
+			rec = _rdd_uint((unsigned char*)(page+hs->intsonpage));
 			memmove(page+1,page,hs->pagesize);
-			_rdd_put_uint((char*)page,rec);
+			_rdd_put_uint((unsigned char*)page,rec);
 			if((er = rdd_write(cm,&hs->file,offs,hs->pagesize,page,__PROC__)))
 				goto err;
 		}
@@ -1076,8 +1076,8 @@ static int _hs_addpair(ClipMachine* cm,HIPER* hs,unsigned int offs,unsigned int 
 	if((er = rdd_write(cm,&hs->file,poffs,hs->pagesize,page,__PROC__)))
 		goto err;
 
-	_rdd_put_uint(page+4,1);
-	_rdd_put_uint(page+12,poffs);
+	_rdd_put_uint((unsigned char *)(page+4),1);
+	_rdd_put_uint((unsigned char *)(page+12),poffs);
 	if((er = rdd_write(cm,&hs->file,roffs,hs->pagesize,page,__PROC__)))
 		goto err;
 

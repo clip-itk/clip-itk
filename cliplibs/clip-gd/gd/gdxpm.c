@@ -4,6 +4,7 @@ library.
 Caolan.McNamara@ul.ie
 http://www.csn.ul.ie/~caolan
 */
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "gd.h"
@@ -129,7 +130,7 @@ gdImagePtr gdImageCreateFromXpm(char *filename)
 		return(0);
 	apixel[image.cpp] = '\0';
 
-	pointer = image.data;
+	pointer = (int *)image.data;
 	for(i=0;i<image.height;i++)
 		{
 		for(j=0;j<image.width;j++)

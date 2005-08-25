@@ -1,10 +1,13 @@
 /*
 	$Log: po_subst.c,v $
+	Revision 1.10  2005/08/08 09:00:31  clip
+	alena: fix for gcc 4
+	
 	Revision 1.9  2002/10/29 12:20:27  clip
 	fixes for non-multibyte jade parser
 	use 'make html NOUTF=1' for such case
 	paul
-	
+
 	Revision 1.8  2002/10/24 13:05:44  clip
 	tdoc: add English GPL text
 	paul
@@ -322,7 +325,7 @@ find_msg(char *id)
 #ifdef OS_CYGWIN
                                 	iconv(fp->cd, (const char **)&is, &il , &os, &ol);
 #else
-                                	iconv(fp->cd, &is, &il , &os, &ol);
+                                	iconv(fp->cd, &is, (size_t *)(&il) , &os, (size_t *)&(ol));
 #endif
                                         l = obuflen - ol;
                                         obuf[l] = 0;

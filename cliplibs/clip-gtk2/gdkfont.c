@@ -223,7 +223,7 @@ clip_GDK_TEXTEXTENTS(ClipMachine * cm)
 	gint lbearing, rbearing, width, ascent, descent;
 	CHECKCOBJOPT(cfont,GDK_IS_FONT(cfont));
 	CHECKARG(2,CHARACTER_t); CHECKOPT(3,NUMERIC_t);
-	if (_clip_parinfo(cm,3)==UNDEF_t) text_length = strlen(string);
+	if (_clip_parinfo(cm,3)==UNDEF_t) text_length = strlen((const char *)string);
 	LOCALE_TO_UTF(string);
 	gdk_text_extents(GDK_FONT(cfont->object), string, text_length,
 		&lbearing, &rbearing, &width, &ascent, &descent);
@@ -265,7 +265,7 @@ clip_GDK_TEXTWIDTH(ClipMachine * cm)
 	gint     text_length = _clip_parni(cm,3);
 	CHECKCOBJOPT(cfont,GDK_IS_FONT(cfont));
 	CHECKARG(2,CHARACTER_t); CHECKOPT(3,NUMERIC_t);
-	if (_clip_parinfo(cm,3)==UNDEF_t) text_length = strlen(string);
+	if (_clip_parinfo(cm,3)==UNDEF_t) text_length = strlen((const char *)string);
 	LOCALE_TO_UTF(string);
 	_clip_retni(cm,gdk_text_width(GDK_FONT(cfont->object), string, text_length));
 	FREE_TEXT(string);
@@ -321,7 +321,7 @@ clip_GDK_TEXTMEASURE(ClipMachine * cm)
 	gint     text_length = _clip_parni(cm,3);
 	CHECKCOBJOPT(cfont,GDK_IS_FONT(cfont));
 	CHECKARG(2,CHARACTER_t); CHECKOPT(3,NUMERIC_t);
-	if (_clip_parinfo(cm,3)==UNDEF_t) text_length = strlen(string);
+	if (_clip_parinfo(cm,3)==UNDEF_t) text_length = strlen((const char *)string);
 	LOCALE_TO_UTF(string);
 	_clip_retni(cm,gdk_text_measure(GDK_FONT(cfont->object), string, text_length));
 	FREE_TEXT(string);

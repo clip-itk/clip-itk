@@ -5,6 +5,19 @@
 */
 /*
    $Log: _util.c,v $
+   Revision 1.146  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
+   Revision 1.145  2005/07/28 06:54:43  clip
+   uri: small fix
+
+   Revision 1.144  2005/07/28 05:57:06  clip
+   alena: fix clip_ASCAN memory floating
+
+   Revision 1.143  2005/07/25 10:23:21  clip
+   alena: fix bug with "floating" memory  in functions AEVAL() and
+   _clip_resume()
+
    Revision 1.142  2005/03/21 09:29:57  clip
    uri: add EVALA()
 
@@ -1616,19 +1629,40 @@ clip_AEVAL(ClipMachine * mp)
 
 		for (i = start; i < start + count; ++i)
 		{
-			ClipVar *app = ap->a.items + i;
+			ClipVar *nv, *app = ap->a.items + i;
 			ClipVar res, stack[2];
+			unsigned l=0;
 
 			memset(&res, 0, sizeof(ClipVar));
 			memset(stack, 0, sizeof(stack));
 
+			if (!(app->t.flags & F_MREF))
+			{
+				//_clip_ref( mp, app, 0 );
+				//--(mp->fp->sp);
+				l =1;
+				nv = NEW(ClipVar);
+
+				*nv = *app;
+
+				nv->t.count = 2;
+				app->t.flags = F_MREF /*mptr?F_MPTR:F_MREF */ ;
+				app->p.vp = nv;
+				app->t.field = 0;
+				app->p.fp = 0;
+
+			}
 			stack[0] = *app;
 			stack[1].t.type = NUMERIC_t;
 			stack[1].t.memo = 0;
 			stack[1].n.d = i + 1;
 
+
 			r = _clip_eval(mp, bp, 2, stack, &res);
 			_clip_destroy(mp, &res);
+			if (l)
+			   --(nv->t.count);
+
 			if (r)
 				return r;
 		}
@@ -1649,13 +1683,30 @@ clip_AEVAL(ClipMachine * mp)
 
 		for (i = 0; i < c; ++i)
 		{
-			ClipVar *app = &ap->m.items[i].v;
+			ClipVar *nv, *app = &ap->m.items[i].v;
 			long no = ap->m.items[i].no;
 			ClipVar res, stack[2];
+			unsigned l=0;
 
 			memset(&res, 0, sizeof(ClipVar));
 			memset(stack, 0, sizeof(stack));
 
+			if (!(app->t.flags & F_MREF))
+			{
+				//_clip_ref( mp, app, 0 );
+				//--(mp->fp->sp);
+				l =1;
+				nv = NEW(ClipVar);
+
+				*nv = *app;
+
+				nv->t.count = 2;
+				app->t.flags = F_MREF /*mptr?F_MPTR:F_MREF */ ;
+				app->p.vp = nv;
+				app->t.field = 0;
+				app->p.fp = 0;
+
+			}
 			stack[0] = *app;
 			stack[1].t.type = NUMERIC_t;
 			stack[1].t.memo = 0;
@@ -1663,6 +1714,8 @@ clip_AEVAL(ClipMachine * mp)
 
 			r = _clip_eval(mp, bp, 2, stack, &res);
 			_clip_destroy(mp, &res);
+			if (l)
+			   --(nv->t.count);
 			if (r)
 				return r;
 		}
@@ -1733,9 +1786,14 @@ clip_ASCAN(ClipMachine * mp)
 				memset(&res, 0, sizeof(res));
 
 				r = _clip_eval(mp, bp, 1, app, &res);
+				/*
+				if (app->t.flags != F_MREF)
+					app->p.vp->t.count --;
+				*/
 				if (!r && res.t.type == LOGICAL_t && res.l.val)
 					no = i + 1;
 				_clip_destroy(mp, &res);
+
 				if (r)
 					return r;
 				if (no)
@@ -3034,7 +3092,7 @@ _clip_translate_toutf8(char *p1, unsigned char *str, int len, char **result)
 		return EG_ARG;
 
 
-	wclen = strlen(str);
+	wclen = strlen((const char *)str);
 	wcs = calloc(wclen,sizeof(unsigned long));
 	if (load_charset_name(p1, &cs1, &len1))
 	{
@@ -3275,7 +3333,7 @@ clip_TRANSLATE_CHARSET(ClipMachine * mp)
 
 	if (!strcasecmp(p1, p2))
 	{
-		_clip_retcn(mp, str, len);
+		_clip_retcn(mp, (char *)str, len);
 		return 0;
 	}
 
@@ -3283,13 +3341,13 @@ clip_TRANSLATE_CHARSET(ClipMachine * mp)
 	if (!strcasecmp(p1, "utf-8"))
 	{
 		char *result;
-		if (!_clip_translate_fromutf8(p2, str, len, &result))
+		if (!_clip_translate_fromutf8(p2, (char *)str, len, &result))
 		{
 			_clip_retc(mp, result);
 			free(result);
 		}
 		else
-			_clip_retc(mp, str);
+			_clip_retc(mp, (char *)str);
 		return 0;
 	}
 
@@ -3302,7 +3360,7 @@ clip_TRANSLATE_CHARSET(ClipMachine * mp)
 			free(result);
 		}
 		else
-			_clip_retc(mp, str);
+			_clip_retc(mp, (char *)str);
 		return 0;
 	}
 
@@ -3312,7 +3370,7 @@ clip_TRANSLATE_CHARSET(ClipMachine * mp)
 	if ((r = _clip_translate_charset(p1, p2, str, s, len)))
 		return r;
 
-	_clip_retcn_m(mp, s, len);
+	_clip_retcn_m(mp, (char *)s, len);
 
 	return 0;
 }

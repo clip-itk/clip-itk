@@ -14,7 +14,7 @@ local dList,list
 local i,j,k,id,tmp,key
 local dictlist:={}, oDicts:={}, dictId, oDict
 local deplist:={} , oDeps:={},  depId, oDep
-local classes,class,a,b,c,obj
+local classes,class,a,b,c,obj,count
 local plugins,oPlug,m
 
 
@@ -106,13 +106,16 @@ local plugins,oPlug,m
 		endif
 		?? "OK"
 		? "Check indexes for classes and objects:"
+		count := 0
 		oDep  := oDeps[i]
 		oDict := oDep:dictionary()
 		oDict:stopTriggers()
 		classes := oDict:select("CLASS")
 		for a=1 to len(classes)
 			class := oDict:getValue(classes[a])
-			? "&\t",class:name
+			tmp := oDep:select(classes[a])
+			count += len(tmp)
+			? "&\t",class:name,len(tmp),"objects"
 			if empty(class)
 				loop
 			endif
@@ -129,7 +132,6 @@ local plugins,oPlug,m
 				oDict:update(oPlug)
 			next
 			*/
-			tmp := oDep:select(classes[a])
 			?? space(CODB_ID_LEN+1)
 			for b=1 to len(tmp)
 				?? replicate(chr(K_BS),CODB_ID_LEN+1),padr(tmp[b],CODB_ID_LEN)
@@ -151,6 +153,7 @@ local plugins,oPlug,m
 			class:unstable := .f.
 			oDict:update(class)
 		next
+		? "Checked",count,"objects in depository"
 		oDict:startTriggers()
 
 	next

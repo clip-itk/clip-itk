@@ -5,6 +5,9 @@
 */
 /*
    $Log: clip_dbg.c,v $
+   Revision 1.24  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
    Revision 1.23  2004/10/09 12:38:53  clip
    rust: minor fix for configure -m=...
 
@@ -271,7 +274,8 @@ start_pipe(char *op, char *cmd)
 	if (pipe_flag)
 		return;
 
-	if (!tmpnam(pipe_name))
+	//if (!tmpnam(pipe_name))
+	if (!mkstemp(pipe_name))
 		return;
 
 	pipe_tmp = fopen(pipe_name, "w");

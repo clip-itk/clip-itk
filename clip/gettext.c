@@ -96,7 +96,7 @@ _clip_gettext(const char *msg)
 
 				int l = sizeof(buf) - 1;
 				buf[l] = 0;
-				_clip_translate_charset(locale->charset, _clip_hostcs, s, buf, l);
+				_clip_translate_charset(locale->charset, _clip_hostcs, (unsigned char *)s, (unsigned char *)buf, l);
 				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
 					   locale->charset, _clip_hostcs, l, s, l, buf);
 				return buf;
@@ -133,7 +133,7 @@ _clip_locale_msg(char *module, char *msg, char **dst)
 
 				*dst = (char *) malloc(l + 1);
 				(*dst)[l] = 0;
-				_clip_translate_charset(locale->charset, _clip_hostcs, s, *dst, l);
+				_clip_translate_charset(locale->charset, _clip_hostcs, (unsigned char *)s, (unsigned char *)(*dst), l);
 				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
 					   locale->charset, _clip_hostcs, l, s, l, *dst);
 				return;
@@ -229,7 +229,7 @@ _clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, c
 			{
 				*dst = (char *) malloc(l + 1);
 				(*dst)[l] = 0;
-				_clip_translate_charset(lp->charset, _clip_hostcs, sp, *dst, l);
+				_clip_translate_charset(lp->charset, _clip_hostcs, (unsigned char *)sp, (unsigned char *)(*dst), l);
 				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
 					   lp->charset, _clip_hostcs, l, sp, l, *dst);
 			}

@@ -5,6 +5,9 @@
 */
 /*
    $Log: hash.c,v $
+   Revision 1.9  2005/08/08 09:00:31  clip
+   alena: fix for gcc 4
+
    Revision 1.8  2004/05/21 11:22:19  clip
    rust: minor fix for 'configure -m'
 
@@ -77,7 +80,7 @@ new_HashTable()
 	tp->size = FIRST_SIZE;
 	tp->current = 0;
 	tp->items = NEWVECT(void *, FIRST_SIZE);
-	tp->hashs = NEWVECT(long, FIRST_SIZE);
+	tp->hashs = (unsigned long *)NEWVECT(long, FIRST_SIZE);
 	tp->status = NEWVECT(char, FIRST_SIZE);
 
 	HashTable_clear(tp);

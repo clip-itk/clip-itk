@@ -5,6 +5,12 @@
  */
 /*
    $Log: _ctools_s.c,v $
+   Revision 1.75  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
+   Revision 1.74  2005/07/13 07:11:37  clip
+   uri: small fix in token() about 2th and 3th parameters
+
    Revision 1.73  2005/02/22 08:04:39  clip
    uri: small fix
 
@@ -308,7 +314,7 @@ clip_ADDASCII(ClipMachine * mp)
 {
 	int l;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int asc = _clip_parni(mp, 2);
 	int t2 = _clip_parinfo(mp, 2);
 	int pos = _clip_parni(mp, 3);
@@ -331,8 +337,8 @@ clip_ADDASCII(ClipMachine * mp)
 	ret[l] = 0;
 	ret[pos] = str[pos] + asc;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -358,7 +364,7 @@ clip_ASCIISUM(ClipMachine * mp)
 {
 	int l, i;
 	long ret = 0;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 
 	if (str == NULL)
 	{
@@ -376,7 +382,7 @@ clip_ASCPOS(ClipMachine * mp)
 {
 	int l;
 	int ret = 0;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int num = _clip_parni(mp, 2);
 
 	if (str == NULL)
@@ -442,8 +448,8 @@ clip_AFTERATNUM(ClipMachine * mp)
 {
 	int l, l1, l2;
 	unsigned char *ret, *beg;
-	unsigned char *sstr = _clip_parcl(mp, 1, &l1);
-	unsigned char *str = _clip_parcl(mp, 2, &l2);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int count = _clip_parni(mp, 3);
 	int ignore = _clip_parni(mp, 4);
 
@@ -457,7 +463,7 @@ clip_AFTERATNUM(ClipMachine * mp)
 	ret = malloc(l + 1);
 	memcpy(ret, beg, l);
 	ret[l] = 0;
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -466,8 +472,8 @@ clip_ATADJUST(ClipMachine * mp)
 {
 	int l, le, l1, l2;
 	unsigned char fillchr = ' ', *beg, *ret;
-	unsigned char *sstr = _clip_parcl(mp, 1, &l1);
-	unsigned char *str = _clip_parcl(mp, 2, &l2);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int newpos = _clip_parni(mp, 3);
 	int count = _clip_parni(mp, 4);
 	int ignore = _clip_parni(mp, 5);
@@ -496,10 +502,10 @@ clip_ATADJUST(ClipMachine * mp)
 			ret[le] = fillchr;
 		memcpy(ret + le, beg, l - le);
 		ret[l] = 0;
-		_clip_retcn_m(mp, ret, l);
+		_clip_retcn_m(mp, (char *)ret, l);
 	}
 	else
-		_clip_retcn(mp, str, l2);
+		_clip_retcn(mp, (char *)str, l2);
 	return 0;
 }
 
@@ -508,8 +514,8 @@ clip_ATNUM(ClipMachine * mp)
 {
 	int l1, l2;
 	unsigned char *beg;
-	unsigned char *sstr = _clip_parcl(mp, 1, &l1);
-	unsigned char *str = _clip_parcl(mp, 2, &l2);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int count = _clip_parni(mp, 3);
 	int ignore = _clip_parni(mp, 4);
 
@@ -531,9 +537,9 @@ clip_ATREPL(ClipMachine * mp)
 {
 	int l, l1, l2, l3, sovp = 0, rcur, atlike0, atlike1;
 	unsigned char *ret, *cur, *s, *e1, *e2, *end, *send, *buf;
-	unsigned char *sstr = _clip_parcl(mp, 1, &l1);
-	unsigned char *str = _clip_parcl(mp, 2, &l2);
-	unsigned char *rstr = _clip_parcl(mp, 3, &l3);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l2);
+	unsigned char *rstr = (unsigned char *)_clip_parcl(mp, 3, &l3);
 	int count = _clip_parni(mp, 4);
 	int flag = _clip_parl(mp, 5);
 	char *atlike = _clip_fetch_item(mp, HASH_setatlike);
@@ -566,7 +572,7 @@ clip_ATREPL(ClipMachine * mp)
 	buf = str;
 	if (l1 == 0)
 	{
-		_clip_retcn(mp, str, l2);
+		_clip_retcn(mp, (char *)str, l2);
 		return 0;
 	}
 	while (1)
@@ -615,8 +621,8 @@ clip_ATREPL(ClipMachine * mp)
 		free(ret);
 	}
 	if (rset && _clip_par_isref(mp, 2))
-		_clip_par_assign_str(mp, 2, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 2, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -625,8 +631,8 @@ clip_BEFORATNUM(ClipMachine * mp)
 {
 	int l, l1, l2;
 	unsigned char *ret, *beg;
-	unsigned char *sstr = _clip_parcl(mp, 1, &l1);
-	unsigned char *str = _clip_parcl(mp, 2, &l2);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int count = _clip_parni(mp, 3);
 	int ignore = _clip_parni(mp, 4);
 
@@ -640,7 +646,7 @@ clip_BEFORATNUM(ClipMachine * mp)
 	ret = malloc(l + 1);
 	memcpy(ret, str, l);
 	ret[l] = 0;
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -650,8 +656,8 @@ clip_CHARADD(ClipMachine * mp)
 {
 	int l1, l2;
 	unsigned char *ret, *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int asc = _clip_parni(mp, 2);
 	int t2 = _clip_parinfo(mp, 2);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
@@ -669,8 +675,8 @@ clip_CHARADD(ClipMachine * mp)
 	for (e = ret, end = ret + l1; e < end; e++)
 		*e += asc;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l1);
-	_clip_retcn_m(mp, ret, l1);
+		_clip_par_assign_str(mp, 1, (char *)ret, l1);
+	_clip_retcn_m(mp, (char *)ret, l1);
 	return 0;
 }
 
@@ -679,8 +685,8 @@ clip_CHARAND(ClipMachine * mp)
 {
 	int l1, l2;
 	unsigned char *ret, *e, *end, *e2, *end2;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *str =(unsigned char *) _clip_parcl(mp, 1, &l1);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (str == NULL || s == NULL)
@@ -696,8 +702,8 @@ clip_CHARAND(ClipMachine * mp)
 		for (e2 = s; e2 < end2 && e < end; e++, e2++)
 			*e = (*e & *e2);
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l1);
-	_clip_retcn_m(mp, ret, l1);
+		_clip_par_assign_str(mp, 1, (char *)ret, l1);
+	_clip_retcn_m(mp, (char *)ret, l1);
 	return 0;
 }
 
@@ -706,7 +712,7 @@ clip_CHAREVEN(ClipMachine * mp)
 {
 	int l, l1, i;
 	unsigned char *ret, *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 
 	if (str == NULL)
 	{
@@ -718,7 +724,7 @@ clip_CHAREVEN(ClipMachine * mp)
 	for (i = 0, e = str + 1, end = str + l1; e < end; e += 2, i++)
 		ret[i] = *e;
 	ret[l] = 0;
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -727,7 +733,7 @@ clip_CHARLIST(ClipMachine * mp)
 {
 	int l, l1, i;
 	unsigned char *ret, *buf, *e, *end, *s;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 
 	if (str == NULL)
 	{
@@ -753,7 +759,7 @@ clip_CHARLIST(ClipMachine * mp)
 	}
 	ret[l] = 0;
 	free(buf);
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -762,7 +768,7 @@ clip_CHARMIRR(ClipMachine * mp)
 {
 	int l, l1, i;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (str == NULL)
@@ -776,8 +782,8 @@ clip_CHARMIRR(ClipMachine * mp)
 		ret[l] = str[i];
 	ret[l] = 0;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -786,8 +792,8 @@ clip_CHARMIX(ClipMachine * mp)
 {
 	int l1, l2, i;
 	unsigned char *ret;
-	unsigned char *str1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *str2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
 	if (str1 == NULL || str2 == NULL)
 	{
@@ -796,7 +802,7 @@ clip_CHARMIX(ClipMachine * mp)
 	}
 	if (l2 == 0)
 	{
-		_clip_retcn(mp, str1, l1);
+		_clip_retcn(mp, (char *)str1, l1);
 		return 0;
 	}
 
@@ -807,7 +813,7 @@ clip_CHARMIX(ClipMachine * mp)
 		ret[i * 2 + 1] = str2[i % l2];
 	}
 	ret[l1 * 2] = 0;
-	_clip_retcn_m(mp, ret, l1 * 2);
+	_clip_retcn_m(mp, (char *)ret, l1 * 2);
 	return 0;
 }
 
@@ -816,7 +822,7 @@ clip_CHARNOLIST(ClipMachine * mp)
 {
 	int l, l1, i;
 	unsigned char *ret, *buf, *e, *end, *s;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 
 	if (str == NULL)
 	{
@@ -825,7 +831,7 @@ clip_CHARNOLIST(ClipMachine * mp)
 		for (i = 0; i < 256; i++)
 			ret[i] = i;
 		ret[l] = 0;
-		_clip_retcn_m(mp, ret, l);
+		_clip_retcn_m(mp, (char *)ret, l);
 		return 0;
 	}
 	l = 0;
@@ -848,7 +854,7 @@ clip_CHARNOLIST(ClipMachine * mp)
 	}
 	ret[l] = 0;
 	free(buf);
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -857,7 +863,7 @@ clip_CHARNOT(ClipMachine * mp)
 {
 	int l, l1, i;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (str == NULL)
@@ -871,8 +877,8 @@ clip_CHARNOT(ClipMachine * mp)
 		ret[i] = (~(str[i]));
 	ret[l] = 0;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -881,7 +887,7 @@ clip_CHARODD(ClipMachine * mp)
 {
 	int l, l1, i;
 	unsigned char *ret, *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 
 	if (str == NULL)
 	{
@@ -893,7 +899,7 @@ clip_CHARODD(ClipMachine * mp)
 	for (i = 0, e = str, end = str + l1; e < end; e += 2, i++)
 		ret[i] = *e;
 	ret[l] = 0;
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -902,8 +908,8 @@ clip_CHARONE(ClipMachine * mp)
 {
 	int l, l1, l2, i;
 	unsigned char *ret, *str, *s, *e, *end, *f, p;
-	unsigned char *str1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *str2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
 	if (str1 == NULL)
 	{
@@ -937,7 +943,7 @@ clip_CHARONE(ClipMachine * mp)
 	}
 	free(s);
 	ret[i] = 0;
-	_clip_retcn_m(mp, ret, i);
+	_clip_retcn_m(mp, (char *)ret, i);
 	return 0;
 }
 
@@ -946,8 +952,8 @@ clip_CHARONLY(ClipMachine * mp)
 {
 	int l, l1, l2, i;
 	unsigned char *ret, *e, *end, *s;
-	unsigned char *str1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *str2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
 	if (str1 == NULL || str2 == NULL)
 	{
@@ -969,7 +975,7 @@ clip_CHARONLY(ClipMachine * mp)
 	}
 	free(s);
 	ret[i] = 0;
-	_clip_retcn_m(mp, ret, i);
+	_clip_retcn_m(mp, (char *)ret, i);
 	return 0;
 }
 
@@ -978,8 +984,8 @@ clip_CHAROR(ClipMachine * mp)
 {
 	int l1, l2;
 	unsigned char *ret, *e, *end, *e2, *end2;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (str == NULL || s == NULL)
@@ -995,8 +1001,8 @@ clip_CHAROR(ClipMachine * mp)
 		for (e2 = s; e2 < end2 && e < end; e++, e2++)
 			*e = (*e | *e2);
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l1);
-	_clip_retcn_m(mp, ret, l1);
+		_clip_par_assign_str(mp, 1, (char *)ret, l1);
+	_clip_retcn_m(mp, (char *)ret, l1);
 	return 0;
 }
 
@@ -1007,10 +1013,10 @@ clip_CHARRELA(ClipMachine * mp)
 	unsigned char *e1, *e2, *e3=NULL, *e4;
 	unsigned char *ee1, *ee3;
 	unsigned char *end1, *end2, *end3, *end4;
-	unsigned char *str1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *str2 = _clip_parcl(mp, 2, &l2);
-	unsigned char *str3 = _clip_parcl(mp, 3, &l3);
-	unsigned char *str4 = _clip_parcl(mp, 4, &l4);
+	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
+	unsigned char *str3 = (unsigned char *)_clip_parcl(mp, 3, &l3);
+	unsigned char *str4 = (unsigned char *)_clip_parcl(mp, 4, &l4);
 
 	if (str1 == NULL || str2 == NULL || str3 == NULL || str4 == NULL)
 	{
@@ -1049,11 +1055,11 @@ clip_CHARRELREP(ClipMachine * mp)
 	unsigned char *e1, *e2, *e3=NULL, *e4;
 	unsigned char *ee1, *ee3, *cur, *ret;
 	unsigned char *end1, *end2, *end3, *end4;
-	unsigned char *str1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *str2 = _clip_parcl(mp, 2, &l2);
-	unsigned char *str3 = _clip_parcl(mp, 3, &l3);
-	unsigned char *str4 = _clip_parcl(mp, 4, &l4);
-	unsigned char *str5 = _clip_parcl(mp, 5, &l5);
+	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
+	unsigned char *str3 = (unsigned char *)_clip_parcl(mp, 3, &l3);
+	unsigned char *str4 = (unsigned char *)_clip_parcl(mp, 4, &l4);
+	unsigned char *str5 = (unsigned char *)_clip_parcl(mp, 5, &l5);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (str1 == NULL || str2 == NULL || str3 == NULL || str4 == NULL || str5 == NULL)
@@ -1063,7 +1069,7 @@ clip_CHARRELREP(ClipMachine * mp)
 	}
 	if (l1 == 0 || l3 == 0)
 	{
-		_clip_retcn(mp, str4, l4);
+		_clip_retcn(mp, (char *)str4, l4);
 		return 0;
 	}
 	l = 0;
@@ -1098,8 +1104,8 @@ clip_CHARRELREP(ClipMachine * mp)
 	memcpy(ret + cpos, cur, str4 + l4 - cur);
 	ret[l] = 0;
 	if (rset && _clip_par_isref(mp, 4))
-		_clip_par_assign_str(mp, 4, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 4, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -1108,8 +1114,8 @@ clip_CHARREM(ClipMachine * mp)
 {
 	int l, l1, l2, i;
 	unsigned char *ret, *e, *end, *s;
-	unsigned char *str1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *str2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
 	if (str1 == NULL || str2 == NULL)
 	{
@@ -1130,7 +1136,7 @@ clip_CHARREM(ClipMachine * mp)
 	}
 	free(s);
 	ret[i] = 0;
-	_clip_retcn_m(mp, ret, i);
+	_clip_retcn_m(mp, (char *)ret, i);
 	return 0;
 }
 
@@ -1139,9 +1145,9 @@ clip_CHARREPL(ClipMachine * mp)
 {
 	int l, l1, l2, l3, pos, sovp;
 	unsigned char *ret, *s, *e1, *end, *send;
-	unsigned char *sstr = _clip_parcl(mp, 1, &l1);
-	unsigned char *str = _clip_parcl(mp, 2, &l2);
-	unsigned char *rstr = _clip_parcl(mp, 3, &l3);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l2);
+	unsigned char *rstr = (unsigned char *)_clip_parcl(mp, 3, &l3);
 	int flag = _clip_parl(mp, 4);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
@@ -1156,7 +1162,7 @@ clip_CHARREPL(ClipMachine * mp)
 	ret[l] = 0;
 	if (l1 == 0)
 	{
-		_clip_retcn_m(mp, ret, l);
+		_clip_retcn_m(mp, (char *)ret, l);
 		return 0;
 	}
 	while (1)
@@ -1179,8 +1185,8 @@ clip_CHARREPL(ClipMachine * mp)
 			break;
 	}
 	if (rset && _clip_par_isref(mp, 2))
-		_clip_par_assign_str(mp, 2, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 2, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -1206,7 +1212,7 @@ clip_CHARSORT(ClipMachine * mp)
 	int l, i, nsort, epos;
 	int *set;
 	unsigned char *ret, *beg, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int elen = _clip_parni(mp, 2);
 	int clen = _clip_parni(mp, 3);
 	int ignore = _clip_parni(mp, 4);
@@ -1252,7 +1258,7 @@ clip_CHARSORT(ClipMachine * mp)
 		end = ret + l;
 	if (elen > l || ignore > l || beg == end)
 	{
-		_clip_retcn_m(mp, ret, l);
+		_clip_retcn_m(mp, (char *)ret, l);
 		return 0;
 	}
 	nsort = (end - beg) / elen;
@@ -1264,8 +1270,8 @@ clip_CHARSORT(ClipMachine * mp)
 	_clip_charsort_mp = mp;
 	qsort(beg, nsort, elen, _clip_charsort);
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -1274,9 +1280,9 @@ clip_CHARSPREAD(ClipMachine * mp)
 {
 	int i, l1, l2, nl = 0, sl, cpos = 0, nch, och;
 	unsigned char *e, *end, *ret, *cur;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	int l = _clip_parni(mp, 2);
-	unsigned char *s = _clip_parcl(mp, 3, &l2);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 3, &l2);
 	int ch = _clip_parni(mp, 3);
 
 	if (str == NULL || l == 0)
@@ -1301,7 +1307,7 @@ clip_CHARSPREAD(ClipMachine * mp)
 	}
 	if (nl == 0)
 	{
-		_clip_retcn_m(mp, ret, l1);
+		_clip_retcn_m(mp, (char *)ret, l1);
 		return 0;
 	}
 	sl = l - l1;
@@ -1328,7 +1334,7 @@ clip_CHARSPREAD(ClipMachine * mp)
 	}
 	memcpy(ret + cpos, cur, e - cur);
 	ret[l] = 0;
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -1337,7 +1343,7 @@ clip_CHARSWAP(ClipMachine * mp)
 {
 	int l, i;
 	unsigned char *ret, ch;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (str == NULL)
@@ -1360,8 +1366,8 @@ clip_CHARSWAP(ClipMachine * mp)
 	}
 	ret[l] = 0;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -1370,8 +1376,8 @@ clip_CHARXOR(ClipMachine * mp)
 {
 	int l1, l2;
 	unsigned char *ret, *e, *end, *e2, *end2;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (str == NULL || s == NULL)
@@ -1387,22 +1393,22 @@ clip_CHARXOR(ClipMachine * mp)
 		for (e2 = s; e2 < end2 && e < end; e++, e2++)
 			*e = (*e ^ *e2);
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l1);
-	_clip_retcn_m(mp, ret, l1);
+		_clip_par_assign_str(mp, 1, (char *)ret, l1);
+	_clip_retcn_m(mp, (char *)ret, l1);
 	return 0;
 }
 
 int
 clip_CHECKSUM(ClipMachine * mp)
 {
-	unsigned char *str = _clip_parc(mp, 1);
+	unsigned char *str = (unsigned char *)_clip_parc(mp, 1);
 
 	if (str == NULL)
 	{
 		_clip_retc(mp, "");
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "CHECKSUM");
 	}
-	_clip_retnl(mp, _clip_hashstr(str));
+	_clip_retnl(mp, _clip_hashstr((char *)str));
 	return 0;
 }
 
@@ -1410,8 +1416,8 @@ int
 clip_COUNTLEFT(ClipMachine * mp)
 {
 	int l1, l2, ret = 0;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int ch = _clip_parni(mp, 2);
 
 	if (str == NULL || l1 == 0)
@@ -1435,8 +1441,8 @@ clip_COUNTRIGHT(ClipMachine * mp)
 {
 	int l1, l2, ret = 0;
 	unsigned char *e;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int ch = _clip_parni(mp, 2);
 
 	if (str == NULL || l1 == 0)
@@ -1477,12 +1483,12 @@ clip_EXPAND(ClipMachine * mp)
 {
 	int l = 0, l1, l2, i;
 	unsigned char *e, *ret, *cur, *end, ch = ' ';
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	int kol = _clip_parni(mp, 2);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
 	if (_clip_parinfo(mp, 2) != CHARACTER_t)
-		s = _clip_parcl(mp, 3, &l2);
+		s = (unsigned char *)_clip_parcl(mp, 3, &l2);
 	if (s != NULL)
 		ch = *s;
 	if (kol <= 0)
@@ -1503,7 +1509,7 @@ clip_EXPAND(ClipMachine * mp)
 			*cur = ch;
 	}
 	*cur = *e;
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -1512,9 +1518,9 @@ clip_JUSTLEFT(ClipMachine * mp)
 {
 	int l1, l2, i;
 	unsigned char *e, *ret, *end, *cur;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	int ch = _clip_parni(mp, 2);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (s != NULL)
@@ -1536,8 +1542,8 @@ clip_JUSTLEFT(ClipMachine * mp)
 		*cur = ch;
 	ret[l1] = 0;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l1);
-	_clip_retcn_m(mp, ret, l1);
+		_clip_par_assign_str(mp, 1, (char *)ret, l1);
+	_clip_retcn_m(mp, (char *)ret, l1);
 	return 0;
 }
 
@@ -1546,9 +1552,9 @@ clip_JUSTRIGHT(ClipMachine * mp)
 {
 	int l1, l2, i;
 	unsigned char *e, *ret, *end, *cur;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	int ch = _clip_parni(mp, 2);
-	unsigned char *s = _clip_parcl(mp, 2, &l2);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
 	if (s != NULL)
@@ -1571,8 +1577,8 @@ clip_JUSTRIGHT(ClipMachine * mp)
 		*cur = *e;
 	ret[l1] = 0;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l1);
-	_clip_retcn_m(mp, ret, l1);
+		_clip_par_assign_str(mp, 1, (char *)ret, l1);
+	_clip_retcn_m(mp, (char *)ret, l1);
 	return 0;
 }
 
@@ -1580,15 +1586,15 @@ int
 clip_LIKE(ClipMachine * mp)
 {
 	int sl, l;
-	unsigned char *s = _clip_parcl(mp, 1, &sl);
-	unsigned char *str = _clip_parcl(mp, 2, &l);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 1, &sl);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l);
 
 	if (str == 0 || s == 0)
 	{
 		_clip_retc(mp, "");
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "LIKE");
 	}
-	_clip_retl(mp, _clip_glob_match(str, s, mp->flags & TRANSLATE_FLAG) > 0);
+	_clip_retl(mp, _clip_glob_match((char *)str, (char *)s, mp->flags & TRANSLATE_FLAG) > 0);
 	return 0;
 }
 
@@ -1635,7 +1641,7 @@ clip_MAXLINE(ClipMachine * mp)
 {
 	int l, ret = 0;
 	unsigned char *e, *beg, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 
 	if (str == 0)
 	{
@@ -1661,8 +1667,8 @@ clip_NUMAT(ClipMachine * mp)
 {
 	int l1, l2, ret = 0, atlike0, atlike1;
 	unsigned char *e1, *e2, *s, *beg, *end, *send;
-	unsigned char *sstr = _clip_parcl(mp, 1, &l1);
-	unsigned char *str = _clip_parcl(mp, 2, &l2);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int ignore = _clip_parni(mp, 3);
 	char *atlike = _clip_fetch_item(mp, HASH_setatlike);
 	int cset = (*(unsigned char *) _clip_fetch_item(mp, HASH_csetatmupa)) == 't';
@@ -1698,7 +1704,7 @@ clip_NUMLINE(ClipMachine * mp)
 {
 	int i, l, ret = 0;
 	unsigned char *e, *beg, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int len = _clip_parni(mp, 2);
 
 	if (len <= 0)
@@ -1741,7 +1747,7 @@ clip_POSALPHA(ClipMachine * mp)
 {
 	int l;
 	unsigned char *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int flag = _clip_parl(mp, 2);
 	int ignore = _clip_parni(mp, 3);
 
@@ -1765,8 +1771,8 @@ clip_POSCHAR(ClipMachine * mp)
 {
 	int l;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
-	unsigned char *s = _clip_parc(mp, 2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
+	unsigned char *s = (unsigned char *)_clip_parc(mp, 2);
 	int ch = _clip_parni(mp, 2);
 	int pos = _clip_parni(mp, 3);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
@@ -1785,8 +1791,8 @@ clip_POSCHAR(ClipMachine * mp)
 	memcpy(ret, str, l);
 	ret[pos] = ch;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -1795,7 +1801,7 @@ clip_POSDEL(ClipMachine * mp)
 {
 	int l, rl, i;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int pos = _clip_parni(mp, 2);
 	int num = _clip_parni(mp, 3);
 
@@ -1820,7 +1826,7 @@ clip_POSDEL(ClipMachine * mp)
 	for (i = pos + num; i < l; i++, pos++)
 		ret[pos] = str[i];
 	ret[rl] = 0;
-	_clip_retcn_m(mp, ret, rl);
+	_clip_retcn_m(mp, (char *)ret, rl);
 	return 0;
 }
 
@@ -1829,8 +1835,8 @@ clip_POSDIFF(ClipMachine * mp)
 {
 	int l1, l2;
 	unsigned char *e1, *e2, *beg, *end;
-	unsigned char *s1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *s2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *s1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int ignore = _clip_parni(mp, 3);
 
 	if (s1 == NULL || s2 == NULL)
@@ -1866,8 +1872,8 @@ clip_POSEQUAL(ClipMachine * mp)
 {
 	int l1, l2, sovp = 0;
 	unsigned char *e1, *e2, *end1, *end2, *beg = NULL;
-	unsigned char *s1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *s2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *s1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int count = _clip_parni(mp, 3);
 	int ignore = _clip_parni(mp, 4);
 
@@ -1908,8 +1914,8 @@ clip_POSINS(ClipMachine * mp)
 {
 	int l1, l2, rl;
 	unsigned char *ret;
-	unsigned char *s1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *s2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *s1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int pos = _clip_parni(mp, 3);
 
 	if (s1 == NULL || s2 == NULL)
@@ -1921,7 +1927,7 @@ clip_POSINS(ClipMachine * mp)
 		pos = l1;
 	if (pos > l1)
 	{
-		_clip_retcn(mp, s1, l1);
+		_clip_retcn(mp, (char *)s1, l1);
 		return 0;
 	}
 	pos--;
@@ -1931,7 +1937,7 @@ clip_POSINS(ClipMachine * mp)
 	memcpy(ret + pos, s2, l2);
 	memcpy(ret + pos + l2, s1 + pos, l1 - pos + 1);
 	ret[rl] = 0;
-	_clip_retcn_m(mp, ret, rl);
+	_clip_retcn_m(mp, (char *)ret, rl);
 	return 0;
 }
 
@@ -1941,7 +1947,7 @@ clip_POSLOWER(ClipMachine * mp)
 	int l, x;
 	unsigned char *e, *end;
 	unsigned char ch;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int flag = _clip_parl(mp, 2);
 	int ignore = _clip_parni(mp, 3);
 
@@ -1972,7 +1978,7 @@ clip_POSUPPER(ClipMachine * mp)
 	int l, x;
 	unsigned char *e, *end;
 	unsigned char ch;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int flag = _clip_parl(mp, 2);
 	int ignore = _clip_parni(mp, 3);
 
@@ -2004,12 +2010,12 @@ clip_POSRANGE(ClipMachine * mp)
 	unsigned char *e, *end;
 	unsigned char ch, ch1, ch2;
 
-	unsigned char *s1 = _clip_parc(mp, 1);
-	unsigned char *s2 = _clip_parc(mp, 2);
+	unsigned char *s1 = (unsigned char *)_clip_parc(mp, 1);
+	unsigned char *s2 = (unsigned char *)_clip_parc(mp, 2);
 	int t1 = _clip_parni(mp, 1);
 	int t2 = _clip_parni(mp, 2);
 
-	unsigned char *str = _clip_parcl(mp, 3, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 3, &l);
 	int flag = _clip_parl(mp, 4);
 	int ignore = _clip_parni(mp, 5);
 
@@ -2049,8 +2055,8 @@ clip_POSREPL(ClipMachine * mp)
 {
 	int l1, l2, rl, i;
 	unsigned char *ret;
-	unsigned char *s1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *s2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *s1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int pos = _clip_parni(mp, 3);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
@@ -2063,7 +2069,7 @@ clip_POSREPL(ClipMachine * mp)
 		pos = l1 - l2 + 1;
 	if (pos > l1)
 	{
-		_clip_retcn(mp, s1, l1);
+		_clip_retcn(mp, (char *)s1, l1);
 		return 0;
 	}
 	pos--;
@@ -2075,8 +2081,8 @@ clip_POSREPL(ClipMachine * mp)
 		ret[i] = s1[i];
 	ret[rl] = 0;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, rl);
-	_clip_retcn_m(mp, ret, rl);
+		_clip_par_assign_str(mp, 1, (char *)ret, rl);
+	_clip_retcn_m(mp, (char *)ret, rl);
 	return 0;
 }
 
@@ -2087,12 +2093,12 @@ clip_RANGEREM(ClipMachine * mp)
 	unsigned char *e, *end, *r, *ret;
 	unsigned char ch, ch1, ch2;
 
-	unsigned char *s1 = _clip_parc(mp, 1);
-	unsigned char *s2 = _clip_parc(mp, 2);
+	unsigned char *s1 = (unsigned char *)_clip_parc(mp, 1);
+	unsigned char *s2 = (unsigned char *)_clip_parc(mp, 2);
 	int t1 = _clip_parni(mp, 1);
 	int t2 = _clip_parni(mp, 2);
 
-	unsigned char *str = _clip_parcl(mp, 3, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 3, &l);
 
 	if (str == NULL)
 	{
@@ -2119,7 +2125,7 @@ clip_RANGEREM(ClipMachine * mp)
 		r++;
 	}
 	*r = 0;
-	_clip_retcn_m(mp, ret, r - ret);
+	_clip_retcn_m(mp, (char *)ret, r - ret);
 	return 0;
 }
 
@@ -2130,12 +2136,12 @@ clip_RANGEREPL(ClipMachine * mp)
 	unsigned char *e, *end, *r, *ret;
 	unsigned char ch, ch1, ch2, ch3;
 
-	unsigned char *s1 = _clip_parc(mp, 1);
+	unsigned char *s1 = (unsigned char *)_clip_parc(mp, 1);
 	int t1 = _clip_parni(mp, 1);
-	unsigned char *s2 = _clip_parc(mp, 2);
+	unsigned char *s2 = (unsigned char *)_clip_parc(mp, 2);
 	int t2 = _clip_parni(mp, 2);
-	unsigned char *str = _clip_parcl(mp, 3, &l);
-	unsigned char *s3 = _clip_parc(mp, 4);
+	unsigned char *str =(unsigned char *) _clip_parcl(mp, 3, &l);
+	unsigned char *s3 = (unsigned char *)_clip_parc(mp, 4);
 	int t3 = _clip_parni(mp, 4);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
@@ -2168,8 +2174,8 @@ clip_RANGEREPL(ClipMachine * mp)
 	}
 	ret[l] = 0;
 	if (rset && _clip_par_isref(mp, 2))
-		_clip_par_assign_str(mp, 2, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 2, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -2178,8 +2184,8 @@ clip_REMALL(ClipMachine * mp)
 {
 	int l, rl;
 	unsigned char *ret, *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
-	unsigned char *s = _clip_parc(mp, 2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
+	unsigned char *s = (unsigned char *)_clip_parc(mp, 2);
 	int ch = _clip_parni(mp, 2);
 
 	if (str == NULL)
@@ -2197,7 +2203,7 @@ clip_REMALL(ClipMachine * mp)
 		ret[rl] = 0;
 	ret = realloc(ret, rl + 1);
 	ret[rl] = 0;
-	_clip_retcn_m(mp, ret, rl);
+	_clip_retcn_m(mp, (char *)ret, rl);
 	return 0;
 }
 
@@ -2206,8 +2212,8 @@ clip_REMLEFT(ClipMachine * mp)
 {
 	int l, rl;
 	unsigned char *ret, *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
-	unsigned char *s = _clip_parc(mp, 2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
+	unsigned char *s = (unsigned char *)_clip_parc(mp, 2);
 	int ch = _clip_parni(mp, 2);
 
 	if (str == NULL)
@@ -2221,7 +2227,7 @@ clip_REMLEFT(ClipMachine * mp)
 	for (e = str, end = str + l; e < end && (*e == ch); e++);
 	rl = l - (e - str);
 	memcpy(ret, e, rl);
-	_clip_retcn_m(mp, ret, rl);
+	_clip_retcn_m(mp, (char *)ret, rl);
 	return 0;
 }
 
@@ -2230,8 +2236,8 @@ clip_REMRIGHT(ClipMachine * mp)
 {
 	int l, rl;
 	unsigned char *ret, *e;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
-	unsigned char *s = _clip_parc(mp, 2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
+	unsigned char *s = (unsigned char *)_clip_parc(mp, 2);
 	int ch = _clip_parni(mp, 2);
 
 	if (str == NULL)
@@ -2243,10 +2249,10 @@ clip_REMRIGHT(ClipMachine * mp)
 	ch = ch == 0 ? ' ' : ch;
 	for (e = str + l - 1; e >= str && (*e == ch); e--);
 	rl = e - str + 1;
-	ret = (char *) malloc(rl + 1);
+	ret = (unsigned char *) malloc(rl + 1);
 	memcpy(ret, str, rl);
 	ret[rl] = 0;
-	_clip_retcn_m(mp, ret, rl);
+	_clip_retcn_m(mp, (char *)ret, rl);
 	return 0;
 }
 
@@ -2255,10 +2261,10 @@ clip_REPLALL(ClipMachine * mp)
 {
 	int l;
 	unsigned char *ret, *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
-	unsigned char *s1 = _clip_parc(mp, 2);
+	unsigned char *str =(unsigned char *) _clip_parcl(mp, 1, &l);
+	unsigned char *s1 = (unsigned char *)_clip_parc(mp, 2);
 	int ch1 = _clip_parni(mp, 2);
-	unsigned char *s2 = _clip_parc(mp, 3);
+	unsigned char *s2 = (unsigned char *)_clip_parc(mp, 3);
 	int ch2 = _clip_parni(mp, 3);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
@@ -2278,8 +2284,8 @@ clip_REPLALL(ClipMachine * mp)
 	for (e = ret + l - 1; e >= ret && (*e == ch2); e--)
 		*e = ch1;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -2288,10 +2294,10 @@ clip_REPLLEFT(ClipMachine * mp)
 {
 	int l;
 	unsigned char *ret, *e, *end;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
-	unsigned char *s1 = _clip_parc(mp, 2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
+	unsigned char *s1 = (unsigned char *)_clip_parc(mp, 2);
 	int ch1 = _clip_parni(mp, 2);
-	unsigned char *s2 = _clip_parc(mp, 3);
+	unsigned char *s2 = (unsigned char *)_clip_parc(mp, 3);
 	int ch2 = _clip_parni(mp, 3);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
@@ -2309,8 +2315,8 @@ clip_REPLLEFT(ClipMachine * mp)
 	for (e = ret, end = ret + l; e < end && (*e == ch2); e++)
 		*e = ch1;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -2319,10 +2325,10 @@ clip_REPLRIGHT(ClipMachine * mp)
 {
 	int l;
 	unsigned char *ret, *e;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
-	unsigned char *s1 = _clip_parc(mp, 2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
+	unsigned char *s1 = (unsigned char *)_clip_parc(mp, 2);
 	int ch1 = _clip_parni(mp, 2);
-	unsigned char *s2 = _clip_parc(mp, 3);
+	unsigned char *s2 = (unsigned char *)_clip_parc(mp, 3);
 	int ch2 = _clip_parni(mp, 3);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
@@ -2340,8 +2346,8 @@ clip_REPLRIGHT(ClipMachine * mp)
 	for (e = ret + l - 1; e >= ret && (*e == ch2); e--)
 		*e = ch1;
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l);
-	_clip_retcn_m(mp, ret, l);
+		_clip_par_assign_str(mp, 1, (char *)ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -2368,8 +2374,8 @@ clip_STRSWAP(ClipMachine * mp)
 {
 	int l1, l2, l, i;
 	unsigned char ch;
-	unsigned char *s1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *s2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *s1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *s2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
 	if (s1 == NULL || s2 == NULL)
 	{
@@ -2392,9 +2398,9 @@ clip_TABEXPAND(ClipMachine * mp)
 {
 	int l, rl, cur = 0, nt, nl, pos = 0;
 	unsigned char *e, *end, *beg, *ret, cch;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int tlen = _clip_parni(mp, 2);
-	unsigned char *s = _clip_parc(mp, 3);
+	unsigned char *s = (unsigned char *)_clip_parc(mp, 3);
 	int ch = _clip_parni(mp, 3);
 
 	if (str == NULL)
@@ -2432,7 +2438,7 @@ clip_TABEXPAND(ClipMachine * mp)
 	ret = realloc(ret, rl + 1);
 	memcpy(ret + pos, beg, nl);
 	ret[rl] = 0;
-	_clip_retcn_m(mp, ret, rl);
+	_clip_retcn_m(mp, (char *)ret, rl);
 	return 0;
 }
 
@@ -2441,9 +2447,9 @@ clip_TABPACK(ClipMachine * mp)
 {
 	int l, rl, cur = 1, pos = 0, kol = 0;
 	unsigned char *e, *end, *beg, *ret, cch;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int tlen = _clip_parni(mp, 2);
-	unsigned char *s = _clip_parc(mp, 3);
+	unsigned char *s = (unsigned char *)_clip_parc(mp, 3);
 	int ch = _clip_parni(mp, 3);
 
 	if (str == NULL)
@@ -2495,7 +2501,7 @@ clip_TABPACK(ClipMachine * mp)
 	memcpy(ret + pos, beg, e - beg);
 	pos += e - beg - 1;
 	ret[pos] = 0;
-	_clip_retcn_m(mp, ret, pos);
+	_clip_retcn_m(mp, (char *)ret, pos);
 	return 0;
 }
 
@@ -2504,7 +2510,7 @@ clip_VALPOS(ClipMachine * mp)
 {
 	int l;
 	int ret = 0;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 	int num = _clip_parni(mp, 2);
 
 	if (str == NULL)
@@ -2727,7 +2733,7 @@ _clip_attoken(unsigned char *str, int l1, unsigned char *str2, int l2, int count
 
 	if (str2 == NULL)
 	{
-		dstr = CLIP_TOKEN_CHARACTERS;
+		dstr = (unsigned char *)CLIP_TOKEN_CHARACTERS;
 		l2 = CLIP_TOKEN_CHARS_NUM;
 	}
 	else
@@ -2771,8 +2777,8 @@ clip_ATTOKEN(ClipMachine * mp)
 	int l1, l2, ret;
 	/*int lflag = 0 ;*/
 	unsigned char *beg;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *dstr = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *dstr = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int count = 0xffff;
 
 	if ( _clip_parinfo(mp,2) == NUMERIC_t )
@@ -2787,8 +2793,8 @@ clip_ATTOKEN(ClipMachine * mp)
 	}
 	if ( dstr == NULL )
 	{
-		dstr = "\\ \t\n\r,.;:!?/<<>>()^#&%+-*" ;
-		l2 = strlen(dstr);
+		dstr = (unsigned char *)("\\ \t\n\r,.;:!?/<<>>()^#&%+-*" );
+		l2 = strlen((const char *)dstr);
 	}
 
 	if ( count <= 0 )
@@ -2835,8 +2841,8 @@ clip_NUMTOKEN(ClipMachine * mp)
 {
 	int l1, l2, ret = 0, nt;
 	unsigned char *e, *end, *send, *dstr, *buf;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *sstr = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int tlen = _clip_parni(mp, 3);
 
 	if (str == NULL)
@@ -2850,7 +2856,7 @@ clip_NUMTOKEN(ClipMachine * mp)
 
 	if (sstr == NULL)
 	{
-		dstr = CLIP_TOKEN_CHARACTERS;
+		dstr = (unsigned char *)CLIP_TOKEN_CHARACTERS;
 		l2 = CLIP_TOKEN_CHARS_NUM;
 	}
 	else
@@ -2884,8 +2890,8 @@ _clip_token_case(ClipMachine * mp, int flag)
 {
 	int l1, l2, count = 0;
 	unsigned char *e, *end, *dstr, *buf, *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *sstr = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int num = _clip_parni(mp, 3);
 	int rset = (*(char *) (_clip_fetch_item(mp, HASH_csetref)) == 't');
 
@@ -2897,7 +2903,7 @@ _clip_token_case(ClipMachine * mp, int flag)
 
 	if (sstr == NULL)
 	{
-		dstr = CLIP_TOKEN_CHARACTERS;
+		dstr = (unsigned char *)CLIP_TOKEN_CHARACTERS;
 		l2 = CLIP_TOKEN_CHARS_NUM;
 	}
 	else
@@ -2931,8 +2937,8 @@ _clip_token_case(ClipMachine * mp, int flag)
 	}
 	free(buf);
 	if (rset && _clip_par_isref(mp, 1))
-		_clip_par_assign_str(mp, 1, ret, l1);
-	_clip_retcn_m(mp, ret, l1);
+		_clip_par_assign_str(mp, 1, (char *)ret, l1);
+	_clip_retcn_m(mp, (char *)ret, l1);
 	return 0;
 }
 
@@ -2980,8 +2986,8 @@ clip_TOKENINIT(ClipMachine * mp)
 	int l1, l2, aaa = 3 * sizeof(int) + 4;
 	unsigned char *e, *dstr, *tstr;
 	int * tmp;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *sstr = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int tlen = _clip_parni(mp, 3);
 	void *atsep = _clip_fetch_item(mp, HASH_token_atsep);
 	unsigned char *buf = _clip_fetch_item(mp, HASH_token_delimiters);
@@ -3010,7 +3016,7 @@ clip_TOKENINIT(ClipMachine * mp)
 
 	if (sstr == NULL)
 	{
-		dstr = CLIP_TOKEN_CHARACTERS;
+		dstr = (unsigned char *)CLIP_TOKEN_CHARACTERS;
 		l2 = CLIP_TOKEN_CHARS_NUM;
 	}
 	else
@@ -3046,7 +3052,7 @@ clip_SAVETOKEN(ClipMachine * mp)
 	memcpy(ret + tmp, str, len_str);
 	memcpy(ret + tmp + len_str, del, 256);
 	ret[l] = 0;
-	_clip_retcn_m(mp, ret, l);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -3056,7 +3062,7 @@ clip_RESTTOKEN(ClipMachine * mp)
 	int l, len_str, tmp1 = 3 * sizeof(int) + 4, tmp2 = 5 * sizeof(int) + 4;
 	void *atsep, *del;
 	unsigned char *str;
-	unsigned char *s = _clip_parcl(mp, 1, &l);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 1, &l);
 
 	if (s == NULL)
 	{
@@ -3087,8 +3093,8 @@ clip_TOKEN(ClipMachine * mp)
 {
 	int l1, l2, count = 1, nt, *tmp1;
 	unsigned char *e, *end, *dstr, *buf, *ret, *tbeg, *tend, *tmp2, tsep;
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
-	unsigned char *sstr = _clip_parcl(mp, 2, &l2);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *sstr = (unsigned char *)_clip_parcl(mp, 2, &l2);
 	int num = _clip_parni(mp, 3);
 	int tlen = _clip_parni(mp, 4);
 	int ignore = _clip_parni(mp, 5);
@@ -3101,9 +3107,17 @@ clip_TOKEN(ClipMachine * mp)
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "TOKEN");
 	}
 
+	if (_clip_parinfo(mp,2) == NUMERIC_t )
+	{
+		num = _clip_parni(mp, 2);
+		sstr = NULL;
+	}
+	if (_clip_parinfo(mp,3) == CHARACTER_t )
+		sstr = (unsigned char *)_clip_parcl(mp, 3, &l2);
+
 	if (sstr == NULL)
 	{
-		dstr = CLIP_TOKEN_CHARACTERS;
+		dstr = (unsigned char *)CLIP_TOKEN_CHARACTERS;
 		l2 = CLIP_TOKEN_CHARS_NUM;
 	}
 	else
@@ -3157,7 +3171,7 @@ clip_TOKEN(ClipMachine * mp)
 	tmp1++;
 	*tmp1 = tend - str + 1;
 
-	_clip_retcn_m(mp, ret, tend - tbeg);
+	_clip_retcn_m(mp, (char *)ret, tend - tbeg);
 	free(buf);
 	return 0;
 }
@@ -3169,7 +3183,7 @@ clip_TOKENNEXT(ClipMachine * mp)
 	unsigned char ch,*e, *end, *ret, *tbeg, *tend, *tmp2;
 	void *atsep = _clip_fetch_item(mp, HASH_token_atsep);
 	unsigned char *str = _clip_fetch_item(mp, HASH_token_string);
-	unsigned char *buf = (char *) _clip_fetch_item(mp, HASH_token_delimiters);
+	unsigned char *buf = (unsigned char *) _clip_fetch_item(mp, HASH_token_delimiters);
 	int ignore = *((int *) atsep);
 	tmp2 = atsep + 3 * sizeof(int);
 
@@ -3204,7 +3218,7 @@ clip_TOKENNEXT(ClipMachine * mp)
 	ret = malloc(tend - tbeg + 1);
 	memcpy(ret, tbeg, tend - tbeg);
 	ret[tend - tbeg] = 0;
-	_clip_retcn_m(mp, ret, tend - tbeg);
+	_clip_retcn_m(mp, (char *)ret, tend - tbeg);
 	for (ch=*e; e < end && ch == *e; e++);
 	tend = e;
 	*((int *) atsep) = tend - str;
@@ -3253,11 +3267,11 @@ clip_BLANK(ClipMachine * mp)
 
 	if (t == CHARACTER_t && flag)
 	{
-		str = _clip_parcl(mp, 1, &l);
+		str = (unsigned char *)_clip_parcl(mp, 1, &l);
 		ret = malloc(l + 1);
 		memset(ret, ' ', l);
 		ret[l] = 0;
-		_clip_retcn_m(mp, ret, l);
+		_clip_retcn_m(mp, (char *)ret, l);
 	}
 	return 0;
 }
@@ -3325,8 +3339,8 @@ int
 clip_CSCOUNT(ClipMachine * mp)
 {
 	int i, j, l1, l2;
-	unsigned char *str1 = _clip_parcl(mp, 1, &l1);
-	unsigned char *str2 = _clip_parcl(mp, 2, &l2);
+	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
+	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
 	if (str1 == NULL || str2 == NULL)
 	{
@@ -3343,7 +3357,7 @@ clip_CSCOUNT(ClipMachine * mp)
 int
 clip_WEIGHTTABLE(ClipMachine * mp)
 {
-	_clip_retcn(mp, _clip_cmptbl, 256);
+	_clip_retcn(mp, (char *)_clip_cmptbl, 256);
 	return 0;
 }
 
@@ -3793,7 +3807,7 @@ int
 _clip_setxlat(ClipMachine * mp, unsigned char * data)
 {
 	int no = _clip_parni(mp,1) % 256;
-	unsigned char * s = _clip_parc(mp,1);
+	unsigned char * s = (unsigned char *)_clip_parc(mp,1);
 	_clip_retl(mp,0);
 	if ( s!=NULL )
 		no = *s;
@@ -3808,7 +3822,7 @@ _clip_setxlat(ClipMachine * mp, unsigned char * data)
 	if ( _clip_parinfo(mp,0) >= 2)
 	{
 		int len;
-		unsigned char * str = _clip_parcl(mp,2,&len);
+		unsigned char * str = (unsigned char *)_clip_parcl(mp,2,&len);
 		if ( ( no + len) > 256 )
 			len = 256 - no;
 		memcpy(data+no, str, len);
@@ -3821,7 +3835,7 @@ _clip_setxlat(ClipMachine * mp, unsigned char * data)
 int
 _clip_getxlat(ClipMachine * mp, unsigned char * data)
 {
-	_clip_retcn(mp, data, 256);
+	_clip_retcn(mp, (char *)data, 256);
 	return 0;
 }
 

@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: ntx.c,v $
+	Revision 1.120  2005/08/08 09:00:31  clip
+	alena: fix for gcc 4
+	
 	Revision 1.119  2005/02/05 11:52:43  clip
 	rust: minor fix in ntx_seek()
-	
+
 	Revision 1.118  2004/09/20 14:23:57  clip
 	rust: minor fix in dbseek()
 
@@ -428,8 +431,8 @@ static int ntx__ulock(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__){
 			char cnt[2];
 
 			er = rdd_read(cm,&ro->index->file,2,2,cnt,__PROC__);
-			ro->cnt = _rdd_ushort(cnt)+1;
-			_rdd_put_ushort(cnt,ro->cnt);
+			ro->cnt = _rdd_ushort((unsigned char *)cnt)+1;
+			_rdd_put_ushort((unsigned char *)cnt,ro->cnt);
 			er = rdd_write(cm,&ro->index->file,2,2,cnt,__PROC__);
 		}
 		fl.l_type = F_UNLCK;
@@ -497,7 +500,7 @@ static int _ntx_search_page(RDD_DATA* rd,RDD_ORDER* ro,NTX_PAGE* page,char* key,
 	while(l<=h){
 		i = (l+h)/2;
 		buck = _ntx_buck(page,i);
-		c = _ntx_compare(rd,ro->unique,ro->descend,buck->key,ro->keysize,
+		c = _ntx_compare(rd,ro->unique,ro->descend,(char *)buck->key,ro->keysize,
 			exact?_rdd_uint(buck->recno):0,key,len,exact?recno:0);
 		if(c && f)
 			return 1;
@@ -509,7 +512,7 @@ static int _ntx_search_page(RDD_DATA* rd,RDD_ORDER* ro,NTX_PAGE* page,char* key,
 			if(exact){
 				while(!c && i--){
 					buck = _ntx_buck(page,i);
-					c = _ntx_compare(rd,ro->unique,ro->descend,buck->key,ro->keysize,
+					c = _ntx_compare(rd,ro->unique,ro->descend,(char *)buck->key,ro->keysize,
 						_rdd_uint(buck->recno),key,len,recno);
 				}
 				*no = i+1;
@@ -665,7 +668,7 @@ static int __ntx_tuneseek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,i
 
 	_ntx_page(ro,ro->stack[ro->level].page,&page);
 	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-	c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	c = _ntx_compare(rd,0,ro->descend,(char *)buck->key,ro->keysize,0,key,len,0);
 	while(!c){
 		if((er = __ntx_prev(cm,rd,ro,&out,__PROC__)))
 			return er;
@@ -673,7 +676,7 @@ static int __ntx_tuneseek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,i
 			break;
 		_ntx_page(ro,ro->stack[ro->level].page,&page);
 		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-		c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+		c = _ntx_compare(rd,0,ro->descend,(char *)buck->key,ro->keysize,0,key,len,0);
 	}
 	if(c){
 		if((er = __ntx_next(cm,rd,ro,&out,__PROC__)))
@@ -690,7 +693,7 @@ static int __ntx_tuneprev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,i
 
 	_ntx_page(ro,ro->stack[ro->level].page,&page);
 	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-	c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	c = _ntx_compare(rd,0,ro->descend,(char *)buck->key,ro->keysize,0,key,len,0);
 	while(!c && _rdd_uint(buck->recno) != recno){
 		if((er = __ntx_prev(cm,rd,ro,&out,__PROC__)))
 			return er;
@@ -698,7 +701,7 @@ static int __ntx_tuneprev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,i
 			break;
 		_ntx_page(ro,ro->stack[ro->level].page,&page);
 		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-		c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+		c = _ntx_compare(rd,0,ro->descend,(char *)buck->key,ro->keysize,0,key,len,0);
 	}
 	*ok = _rdd_uint(buck->recno) == recno;
 	return 0;
@@ -712,7 +715,7 @@ static int __ntx_tunenext(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,i
 
 	_ntx_page(ro,ro->stack[ro->level].page,&page);
 	buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-	c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+	c = _ntx_compare(rd,0,ro->descend,(char *)buck->key,ro->keysize,0,key,len,0);
 	while(!c && _rdd_uint(buck->recno) != recno){
 		if((er = __ntx_next(cm,rd,ro,&out,__PROC__)))
 			return er;
@@ -720,7 +723,7 @@ static int __ntx_tunenext(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,char* key,i
 			break;
 		_ntx_page(ro,ro->stack[ro->level].page,&page);
 		buck = _ntx_buck(&page,ro->stack[ro->level].pos);
-		c = _ntx_compare(rd,0,ro->descend,buck->key,ro->keysize,0,key,len,0);
+		c = _ntx_compare(rd,0,ro->descend,(char *)buck->key,ro->keysize,0,key,len,0);
 	}
 	*ok = _rdd_uint(buck->recno) == recno;
 	return 0;
@@ -996,7 +999,7 @@ static int _ntx_free_page(ClipMachine* cm,RDD_ORDER* ro,unsigned int* page,
 	} else {
 		char next[4];
 		if((er = rdd_read(cm,&ro->index->file,*page,4,next,__PROC__))) return er;
-		_rdd_put_uint(hdr.fuu,_rdd_backuint(next));
+		_rdd_put_uint(hdr.fuu,_rdd_backuint((unsigned char *)next));
 	}
 	if((er = rdd_write(cm,&ro->index->file,ro->header,sizeof(NTX_HEADER),(char*)&hdr,
 		__PROC__))) return er;
@@ -1032,7 +1035,7 @@ static int _ntx_split_node(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
 
 	if(buckno==mediane){
 		memcpy(key,kk,ro->keysize);
-		loc_write(rd->loc,key,ro->keysize);
+		loc_write(rd->loc,(unsigned char *)key,ro->keysize);
 		key[ro->keysize] = 0;
 		recno = rn;
 		rchild = cc;
@@ -1111,12 +1114,12 @@ static int _ntx_split_node(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
 		ro->stack[0].page = root;
 		ro->stack[0].pos = 0;
 
-		loc_read(rd->loc,key,ro->keysize);
+		loc_read(rd->loc,(unsigned char *)key,ro->keysize);
 		if((er = _ntx_add_node(cm,rd,ro,key,recno,child,__PROC__)))
 			return er;
 	} else {
 		--(ro->level);
-		loc_read(rd->loc,key,ro->keysize);
+		loc_read(rd->loc,(unsigned char *)key,ro->keysize);
 		if((er = _ntx_add_node(cm,rd,ro,key,recno,child,__PROC__)))
 			return er;
 	}
@@ -1147,7 +1150,7 @@ static int _ntx_put_node(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,
 	} else {
 		boffs = _rdd_ushort(page->offs+(count+1)*2);
 		memmove(basep+offs+2,basep+offs,(count+1-buckno)*2);
-		_rdd_put_ushort(basep+offs,boffs);
+		_rdd_put_ushort((unsigned char *)(basep+offs),boffs);
 
 		buck = (NTX_BUCKET*)(basep+boffs);
 		_rdd_put_uint(buck->left,child);
@@ -1240,7 +1243,7 @@ static int _ntx_remove_node(ClipMachine* cm,RDD_ORDER* ro,unsigned int page,NTX_
 	_rdd_put_uint(bp->recno,0);
 
 	memmove(basep+offs,basep+offs+2,(count-no)*2);
-	_rdd_put_ushort(basep+2+count*2,boffs);
+	_rdd_put_ushort((unsigned char *)(basep+2+count*2),boffs);
 	_rdd_put_ushort(pp->nkeys,count-1);
 	return rdd_write(cm,&ro->index->file,page,sizeof(NTX_PAGE),basep,__PROC__);
 }
@@ -1589,7 +1592,7 @@ static int ntx_open(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* tag,c
 
 	ro->expr = (char*)malloc(strlen(hdr.key)+1);
 	strcpy(ro->expr,hdr.key);
-	loc_read(rd->loc,ro->expr,strlen(ro->expr));
+	loc_read(rd->loc,(unsigned char *)ro->expr,strlen(ro->expr));
 	if((ro->simpfno = _rdd_fieldno(rd,_clip_casehashword(ro->expr,strlen(ro->expr))))!=-1)
 		ro->simpexpr = 1;
 
@@ -1715,7 +1718,7 @@ static int _ntx_savebtree(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,BTREE* bt,c
 		key = (char*)(&page)+_rdd_ushort(&page.offs[_rdd_ushort(page.nkeys)*sizeof(unsigned short)])+4;
 		memcpy(key,(char*)bt_key(bt),ro->keysize+4);
 		if(ro->type=='C')
-			loc_write(ro->index->loc,key+sizeof(unsigned int),ro->keysize);
+			loc_write(ro->index->loc,(unsigned char *)(key+sizeof(unsigned int)),ro->keysize);
 		eof = bt_next(bt);
 		_rdd_put_ushort(page.nkeys,_rdd_ushort(page.nkeys)+1);
 	}
@@ -1826,7 +1829,7 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	_rdd_put_ushort(hdr.fullpage,ro->fullpage);
 	_rdd_put_ushort(hdr.halfpage,ro->halfpage);
 	strncpy(hdr.key,ro->expr,sizeof(hdr.key));
-	loc_write(rd->loc,hdr.key,strlen(hdr.key));
+	loc_write(rd->loc,(unsigned char *)hdr.key,strlen(hdr.key));
 	if(rd->os.cForCondition)
 		strcpy(hdr.forexpr,rd->os.cForCondition);
 	hdr.unique = ro->unique;
@@ -2158,7 +2161,7 @@ static int ntx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 	ro->level = 0;
 	if((er = _ntx_first(cm,ro,_rdd_uint(hdr.root),&recno,&out,__PROC__))) return er;
 	if(out){
-		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
+		if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
 		rd->bof = rd->v_bof = rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 		return 0;
@@ -2182,7 +2185,7 @@ static int ntx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 	ro->level = 0;
 	if((er = _ntx_last(cm,ro,_rdd_uint(hdr.root),&recno,&out,__PROC__))) return er;
 	if(out){
-		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
+		if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
 		rd->bof = rd->v_bof = rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 		return 0;
@@ -2209,7 +2212,7 @@ static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 		int r;
 
 		er = rdd_read(cm,&ro->index->file,2,2,cnt,__PROC__);
-		if(!ro->valid_stack || ro->cnt != _rdd_ushort(cnt)){
+		if(!ro->valid_stack || ro->cnt != _rdd_ushort((unsigned char *)cnt)){
 			NTX_HEADER hdr;
 			_ntx_header(ro,&hdr);
 			ro->stack[0].page = _rdd_uint(hdr.root);
@@ -2221,14 +2224,14 @@ static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 			if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,0,
 				__PROC__))) return er;
 			if(r){
-				if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
+				if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
 				if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 					return er;
 				rd->eof = 1;
 				ro->valid_stack = 0;
 				return 0;
 			}
-			ro->cnt = _rdd_ushort(cnt);
+			ro->cnt = _rdd_ushort((unsigned char *)cnt);
 		}
 	}
 
@@ -2237,7 +2240,7 @@ static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 
 		if((er = __ntx_next(cm,rd,ro,&out,__PROC__))) return er;
 		if(out){
-			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
+			if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
 			rd->eof = 1;
@@ -2283,7 +2286,7 @@ static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 		int r;
 
 		er = rdd_read(cm,&ro->index->file,2,2,cnt,__PROC__);
-		if(!ro->valid_stack || ro->cnt != _rdd_ushort(cnt)){
+		if(!ro->valid_stack || ro->cnt != _rdd_ushort((unsigned char *)cnt)){
 			NTX_HEADER hdr;
 			_ntx_header(ro,&hdr);
 			ro->stack[0].page = _rdd_uint(hdr.root);
@@ -2299,7 +2302,7 @@ static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 				rd->bof = 1;
 				return 0;
 			}
-			ro->cnt = _rdd_ushort(cnt);
+			ro->cnt = _rdd_ushort((unsigned char *)cnt);
 		}
 	}
 
@@ -2390,17 +2393,17 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 						if(!res || !sok){
 							if((er = ntx_prev(cm,rd,ro,__PROC__))) return er;
 							if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-							loc_write(rd->loc,ro->key,ro->keysize);
+							loc_write(rd->loc,(unsigned char *)ro->key,ro->keysize);
 							*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
 						}
 						break;
 					}
 					if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-					loc_write(rd->loc,ro->key,ro->keysize);
+					loc_write(rd->loc,(unsigned char *)ro->key,ro->keysize);
 					if(_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0)){
 						if((er = ntx_prev(cm,rd,ro,__PROC__))) return er;
 						if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-						loc_write(rd->loc,ro->key,ro->keysize);
+						loc_write(rd->loc,(unsigned char *)ro->key,ro->keysize);
 						*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
 						break;
 					}
@@ -2431,17 +2434,17 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 						if(!res || !sok){
 							if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
 							if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-							loc_write(rd->loc,ro->key,ro->keysize);
+							loc_write(rd->loc,(unsigned char *)ro->key,ro->keysize);
 							*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
 						}
 						break;
 					}
 					if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-					loc_write(rd->loc,ro->key,ro->keysize);
+					loc_write(rd->loc,(unsigned char *)ro->key,ro->keysize);
 					if(_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0)){
 						if((er = ntx_next(cm,rd,ro,__PROC__))) return er;
 						if((er = _ntx_calc_key(cm,rd,ro,__PROC__))) return er;
-						loc_write(rd->loc,ro->key,ro->keysize);
+						loc_write(rd->loc,(unsigned char *)ro->key,ro->keysize);
 						*found = !_ntx_compare(rd,0,ro->descend,ro->key,ro->keysize,0,expr,len,0);
 						break;
 					}
@@ -2754,8 +2757,8 @@ static int _ctx_openorder(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,CTX_TAG* ta
 		sizeof(RDD_ORDER*)*rd->ords_opened);
 	rd->orders[rd->ords_opened-1] = ro;
 
-	ro->name = (char*)malloc(strlen(tag->tagname)+1);
-	strcpy(ro->name,tag->tagname);
+	ro->name = (char*)malloc(strlen((const char *)tag->tagname)+1);
+	strcpy(ro->name,(const char *)tag->tagname);
 	ro->orderno = rd->ords_opened-1;
 	ro->header = _rdd_uint(tag->header);
 
@@ -2764,7 +2767,7 @@ static int _ctx_openorder(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,CTX_TAG* ta
 
 	ro->expr = (char*)malloc(strlen(hdr.key)+1);
 	strcpy(ro->expr,hdr.key);
-	loc_read(rd->loc,ro->expr,strlen(ro->expr));
+	loc_read(rd->loc,(unsigned char *)ro->expr,strlen(ro->expr));
 	if((ro->simpfno = _rdd_fieldno(rd,_clip_casehashword(ro->expr,strlen(ro->expr))))!=-1)
 		ro->simpexpr = 1;
 	{
@@ -2827,7 +2830,7 @@ static int ctx_open(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* tag,c
 	} else {
 		ri->orders = (RDD_ORDER**)malloc(sizeof(RDD_ORDER*));
 		for(i=0;i<hdr.ntags;i++)
-			if(strcasecmp(tag,hdr.tags[i].tagname)==0){
+			if(strcasecmp(tag,(const char *)hdr.tags[i].tagname)==0){
 				if((er = _ctx_openorder(cm,rd,ri,&hdr.tags[i],&ri->orders[i],__PROC__)))
 					return er;
 				break;
@@ -2892,7 +2895,7 @@ static int ctx_zap(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC
 			sizeof(NTX_PAGE),&page,__PROC__))) return er;
 
 		for(j=0;j<ri->norders;j++){
-			if(strcasecmp(chdr.tags[i].tagname,ri->orders[j]->name)==0){
+			if(strcasecmp((const char *)chdr.tags[i].tagname,ri->orders[j]->name)==0){
 				ri->orders[j]->header = sizeof(CTX_HEADER)+i*sizeof(NTX_HEADER);
 				break;
 			}
@@ -2935,7 +2938,7 @@ static int ctx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 			return er;
 	}
 	for(i=0;i<chdr.ntags;i++){
-		if(strcasecmp(chdr.tags[i].tagname,tag)==0){
+		if(strcasecmp((const char *)chdr.tags[i].tagname,tag)==0){
 			if((int)ri->file.md==-1){
 				struct stat st;
 				fstat(ri->file.fd,&st);
@@ -2951,7 +2954,7 @@ static int ctx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 		if(i==62)
 			return rdd_err(cm,EG_CREATE,0,__FILE__,__LINE__,__PROC__,
 				"Too many tags");
-		strncpy(chdr.tags[i].tagname,tag,MAX_TAG_LEN);
+		strncpy((char *)chdr.tags[i].tagname,tag,MAX_TAG_LEN);
 		chdr.tags[i].tagname[MAX_TAG_LEN] = 0;
 		if((int)ri->file.md==-1){
 			struct stat st;
@@ -2977,7 +2980,7 @@ static int ctx_destroy(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __
 	if((er = rdd_read(cm,&ro->index->file,0,sizeof(CTX_HEADER),&chdr,__PROC__)))
 		return er;
 	for(i=0;i<chdr.ntags;i++){
-		if(strcasecmp(chdr.tags[i].tagname,ro->name)==0){
+		if(strcasecmp((const char *)chdr.tags[i].tagname,ro->name)==0){
 			for(i++;i<chdr.ntags;i++){
 				memcpy(&chdr.tags[i-1],&chdr.tags[i],sizeof(CTX_TAG));
 			}

@@ -6,6 +6,9 @@
 
 /*
  * $Log: clip.c,v $
+ * Revision 1.83  2005/08/25 08:36:33  clip
+ * uri: small fix for AMD64 (added -fPIC option for gcc)
+ *
  * Revision 1.82  2003/09/09 15:10:02  clip
  * uri: USE_AS & CLIP_ASM is "yes" by default
  *
@@ -395,6 +398,7 @@ const char *std_ch_filename = "std.ch";
 char *CC = "gcc";
 char *COMPILE_FLAG = "-c";
 char *CFLAGS = "";
+char *ADDCFLAGS = ADD_CFLAGS;
 char *COPT = "-O2";
 char *CDBG = "-g";
 char *OUT_FLAG = "-o";
@@ -1887,8 +1891,8 @@ main(int argc, char **argv)
 				e = cmd + strlen(cmd);
 			}
 
-			sprintf(cmd + strlen(cmd), " %s %s %s %s %s %s", optLevel ? COPT : "", genDebug ? CDBG : "",
-				CFLAGS, ofuncname, OUT_FLAG, oname);
+			sprintf(cmd + strlen(cmd), " %s %s %s %s %s %s %s", optLevel ? COPT : "", genDebug ? CDBG : "",
+				CFLAGS, ADDCFLAGS, ofuncname, OUT_FLAG, oname);
 			for (e = cmd + strlen(cmd), i = 0; i < onum; ++i)
 			{
 				sprintf(e, " %s", ovect[i]);

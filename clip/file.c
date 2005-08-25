@@ -5,6 +5,12 @@
  */
 /*
    $Log: file.c,v $
+   Revision 1.96  2005/08/25 08:36:33  clip
+   uri: small fix for AMD64 (added -fPIC option for gcc)
+
+   Revision 1.95  2005/07/07 12:32:53  clip
+   uri: small fix for gcc4
+
    Revision 1.94  2004/11/02 12:05:54  clip
    uri: small fix for 13.2 format detecting for numeric constants.
 
@@ -464,6 +470,7 @@ typedef struct
 ClipHashBucket;
 #endif
 
+extern int optLevel;
 
 /* name underscore */
 #ifdef NM_UNDERSCORE
@@ -1446,8 +1453,8 @@ compile_File(const char *cname)
 			snprintf(e, sizeof(cmd) - (e - cmd), " %s %s", INCLUDE_FLAG, (char *) includePaths.items[i]);
 			e = cmd + strlen(cmd);
 		}
-		snprintf(e, sizeof(cmd) - (e - cmd), " %s %s %s %s %s %s %s", optLevel ? COPT : "", genDebug ? CDBG : "",
-			 CFLAGS, COMPILE_FLAG, cname, OUT_FLAG, oname);
+		snprintf(e, sizeof(cmd) - (e - cmd), " %s %s %s %s %s %s %s %s", optLevel ? COPT : "", genDebug ? CDBG : "",
+			 CFLAGS, ADDCFLAGS, COMPILE_FLAG, cname, OUT_FLAG, oname);
 
 	}
 

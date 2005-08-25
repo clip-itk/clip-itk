@@ -34,7 +34,7 @@ static int dbt_create(ClipMachine* cm,char* name,const char* __PROC__){
 	int er;
 
 	memset(&hdr,0,sizeof(DBT_HEADER));
-	_rdd_put_uint(hdr.fuu,1);
+	_rdd_put_uint((unsigned char *)hdr.fuu,1);
 	hdr.version = 0x50;
 
 	memset(&file,0,sizeof(RDD_FILE));
@@ -60,7 +60,7 @@ static int dbt_zap(ClipMachine* cm,RDD_MEMO* rm,const char* __PROC__){
 	if((er = rdd_trunc(cm,&rm->file,sizeof(DBT_HEADER),__PROC__))) return er;
 	if((er = rdd_read(cm,&rm->file,0,sizeof(DBT_HEADER),&hdr,__PROC__)))
 		return er;
-	_rdd_put_uint(hdr.fuu,1);
+	_rdd_put_uint((unsigned char *)hdr.fuu,1);
 	return rdd_write(cm,&rm->file,0,sizeof(DBT_HEADER),&hdr,__PROC__);
 }
 
@@ -111,7 +111,7 @@ static int dbt_getvalue(ClipMachine* cm,RDD_MEMO* rm,int id,ClipVar* vp,const ch
 				vp->s.str.buf = realloc(vp->s.str.buf,len+(pos-buf)+1);
 				memcpy(vp->s.str.buf+len,buf,pos-buf);
 				vp->s.str.len = len+(pos-buf);
-				loc_read(rm->loc,vp->s.str.buf,vp->s.str.len);
+				loc_read(rm->loc,(unsigned char *)vp->s.str.buf,vp->s.str.len);
 				return 0;
 /*			}*/
 		}
@@ -132,13 +132,13 @@ static int dbt_setvalue(ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int bin
 	if(vp->t.type != CHARACTER_t)
 		return rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,
 			"Incompatible types");
-	loc_write(rm->loc,vp->s.str.buf,vp->s.str.len);
+	loc_write(rm->loc,(unsigned char *)vp->s.str.buf,vp->s.str.len);
 
 	if((er = dbt_getvalue(cm,rm,*id,&old,__PROC__))) return er;
 	pages = (old.s.str.len + 2) / DBT_PAGE_SIZE + ((old.s.str.len+2)%DBT_PAGE_SIZE!=0);
 	if(!*id || vp->s.str.len+2 > pages*DBT_PAGE_SIZE){
 		if((er = rdd_read(cm,&rm->file,0,4,fuu,__PROC__))) return er;
-		*id = _rdd_uint(fuu);
+		*id = _rdd_uint((unsigned char *)fuu);
 		isnew = 1;
 	}
 	pages = (vp->s.str.len + 2) / DBT_PAGE_SIZE + ((vp->s.str.len+2)%DBT_PAGE_SIZE!=0);
@@ -149,7 +149,7 @@ static int dbt_setvalue(ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int bin
 		__PROC__))) return er;
 	free(buf);
 	if(isnew){
-		_rdd_put_uint(fuu,*id+pages);
+		_rdd_put_uint((unsigned char *)fuu,*id+pages);
 		if((er = rdd_write(cm,&rm->file,0,4,fuu,__PROC__))) return er;
 	}
 	rm->updated = 1;

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "gd.h"
 
 /* A short program which converts a .png file into a .gd file, for
@@ -29,7 +30,7 @@ int main(int argc, char **argv)
 	if (!out) {
 		fprintf(stderr, "Output file cannot be written to!\n");
 		gdImageDestroy(im);
-		exit(1);	
+		exit(1);
 	}
 	gdImageGd(im, out);
 	fclose(out);

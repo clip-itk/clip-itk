@@ -6,6 +6,9 @@
 
 /*
    $Log: crypto.c,v $
+   Revision 1.2  2005/08/09 08:54:37  clip
+   alena: fix for gcc 4
+
    Revision 1.1  2001/12/25 07:03:46  clip
    symmetric block encrypton/decryption realised
    EVP_ENCRYPT,EVP_DECRYPT
@@ -148,7 +151,7 @@ do_cipher(ClipMachine *mp, int operation)
 		return EG_ARG;
 
 
-	EVP_BytesToKey(cipher, (EVP_MD*)digest, "clip", key_str, key_len, 1, key, iv);
+	EVP_BytesToKey(cipher, (EVP_MD*)digest, (const unsigned char *)"clip", (const unsigned char *)key_str, key_len, 1, key, iv);
 	EVP_CipherInit(&ectx, cipher, key, iv, operation);
 
 	for(l=0, data_ptr=data; l<data_len; )
@@ -159,7 +162,7 @@ do_cipher(ClipMachine *mp, int operation)
 			ll = BLOCK_SIZE;
 
 		ebuflen = sizeof(ebuf);
-		EVP_CipherUpdate(&ectx, ebuf, &ebuflen, data_ptr, ll);
+		EVP_CipherUpdate(&ectx, (unsigned char *)ebuf, (int *)&ebuflen, (unsigned char *)data_ptr, ll);
 
 		obuf = (char*) realloc( obuf, olen + ebuflen);
 		memcpy(obuf + olen, ebuf, ebuflen);
@@ -169,7 +172,7 @@ do_cipher(ClipMachine *mp, int operation)
 		data_ptr += ll;
 	}
 
-	EVP_CipherFinal(&ectx, ebuf, &ebuflen);
+	EVP_CipherFinal(&ectx, (unsigned char *)ebuf, (int *)&ebuflen);
 
 	obuf = (char*) realloc( obuf, olen + ebuflen + 1);
 	memcpy(obuf + olen, ebuf, ebuflen);

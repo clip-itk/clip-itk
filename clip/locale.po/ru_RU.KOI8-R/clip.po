@@ -927,7 +927,7 @@ msgstr "найден бесконечный цикл подстановки"
 #: clic.lex:6840
 #, c-format
 msgid "too many entries in OPTIONAL list: > %d\n"
-msgstr "слишком много вхождений в спискеOPTIONAL: > %d\n"
+msgstr "слишком много вхождений в списке OPTIONAL: > %d\n"
 
 #: clic.lex:6923
 msgid "bad #include directive"

@@ -5,6 +5,9 @@
 */
 /*
    $Log: _tcp.c,v $
+   Revision 1.35  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
    Revision 1.34  2004/06/15 11:19:35  clip
    uri: small fix for Kamache
 
@@ -456,7 +459,7 @@ clip_TCPCONNECT(ClipMachine *mp)
 
 		arg = 0;
 		i = sizeof(arg);
-		if (getsockopt(sock, SOL_SOCKET, SO_ERROR, (void *) &arg, &i) == -1)
+		if (getsockopt(sock, SOL_SOCKET, SO_ERROR, (void *) &arg, (socklen_t *)(&i)) == -1)
 			goto err;
 		if (arg != 0)
 		{
@@ -803,7 +806,7 @@ int clip_UDPRECVFROM(ClipMachine *mp)
 		sin.sin_family      = PF_INET;
 		sln = sizeof(sin);
 		if ( timeout < 0 || select( cf->fileno+1, &set, NULL, NULL, &tv ) > 0 )
-			ret = recvfrom( cf->fileno, msg, len, 0, (struct sockaddr *) &sin, &sln );
+			ret = recvfrom( cf->fileno, msg, len, 0, (struct sockaddr *) &sin, (socklen_t *)(&sln) );
 		else
 #ifdef OS_MINGW
 			*err = EAGAIN;
@@ -855,7 +858,7 @@ int clip_TCPGETPEERNAME(ClipMachine *mp)
 	else
 	{
 	sln = sizeof(sin);
-	ret = getpeername(cf->fileno, (struct sockaddr *) &sin, &sln);
+	ret = getpeername(cf->fileno, (struct sockaddr *) &sin, (socklen_t *)(&sln));
 
 	*err = ret < 0 ? errno : 0;
 

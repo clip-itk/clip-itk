@@ -168,7 +168,7 @@ static gint handle_drag_data_get_signal (GtkWidget *widget, GdkDragContext *drag
 	_clip_mclone(cs->cw->cmachine, &seld, &cdata->obj);
 	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_LENGTH, data->length);
 	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_FORMAT, data->format);
-	_clip_mputc(cs->cw->cmachine, &cdata->obj, HASH_DATA, data->data, data->data?strlen(data->data):0);
+	_clip_mputc(cs->cw->cmachine, &cdata->obj, HASH_DATA, (char *)data->data, data->data?strlen((const char *)data->data):0);
 	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_SELECTION, &csel->obj);
 	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TARGET, &ctarg->obj);
 	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TYPE, &ctype->obj);
@@ -211,7 +211,7 @@ static gint handle_drag_data_received_signal (GtkWidget *widget, GdkDragContext 
 	_clip_mclone(cs->cw->cmachine, &seld, &cdata->obj);
 	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_LENGTH, data->length);
 	_clip_mputn(cs->cw->cmachine, &cdata->obj, HASH_FORMAT, data->format);
-	_clip_mputc(cs->cw->cmachine, &cdata->obj, HASH_DATA, data->data, data->data?strlen(data->data):0);
+	_clip_mputc(cs->cw->cmachine, &cdata->obj, HASH_DATA, (char *)data->data, data->data?strlen((const char *)data->data):0);
 	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_SELECTION, &csel->obj);
 	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TARGET, &ctarg->obj);
 	_clip_madd(cs->cw->cmachine, &cdata->obj, HASH_TYPE, &ctype->obj);

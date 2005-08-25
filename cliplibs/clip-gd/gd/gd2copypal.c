@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "gd.h"
 
 /* A short program which converts a .png file into a .gd file, for
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Palette is not in GD2 format!\n");
 		exit(1);
 	}
- 
+
         in = fopen(argv[2], "rb");
         if (!in) {
                 fprintf(stderr, "Input file does not exist!\n");
@@ -40,12 +41,12 @@ int main(int argc, char **argv)
         }
 
 	gdImagePaletteCopy(im, pal);
- 
+
 	out = fopen(argv[2], "wb");
 	if (!out) {
 		fprintf(stderr, "Output file cannot be written to!\n");
 		gdImageDestroy(im);
-		exit(1);	
+		exit(1);
 	}
 	gdImageGd2(im, out, 128, 2);
 	fclose(out);

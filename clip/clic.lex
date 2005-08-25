@@ -6,6 +6,9 @@
 %{
 /*
  * $Log: clic.lex,v $
+ * Revision 1.255  2005/05/25 10:33:02  clip
+ * uri: small fix
+ *
  * Revision 1.254  2005/05/11 11:39:48  clip
  * uri: some fix from Matija Nalis <mnalis-ml@voyager.hr>
  *
@@ -6840,7 +6843,7 @@ substCommandPartList(Coll *coll, int *beg, int reverse, int parno)
 				}
 			}
 			if (jj==64)
-				yywarning("too many entries in OPTIONAL list: > %d\n", jj);
+				yyerror("too many entries in OPTIONAL list: > %d\n", jj);
 			}
 			break;
 		default:

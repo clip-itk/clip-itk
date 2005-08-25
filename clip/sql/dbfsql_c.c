@@ -1133,7 +1133,7 @@ SQL_get_locale(ClipMachine * mp, const char* sqlcs)
 		return &koi_locale;
 	}
 
-	buf = (char *) calloc(256, 3);
+	buf = (unsigned char *) calloc(256, 3);
 
 	make_translation(cs1, len1, cs2, len2, buf);
 	make_translation(cs2, len2, cs1, len1, buf + 256);
@@ -1171,7 +1171,7 @@ int clip_SQLLOCREAD(ClipMachine* mp){
 		return 1;
 	}
 
-	c = str->s.str.buf;
+	c = (unsigned char *)str->s.str.buf;
 	if(c && c[0]){
 		e = c+str->s.str.len;
 		for(;c<e;c++)
@@ -1194,7 +1194,7 @@ int clip_SQLLOCWRITE(ClipMachine* mp){
 		return 1;
 	}
 
-	c = str->s.str.buf;
+	c = (unsigned char *)str->s.str.buf;
 	if(c && c[0]){
 		e = c+str->s.str.len;
 		for(;c<e;c++)
@@ -1295,7 +1295,7 @@ static int _sql_char_compare(void* op,void* key1,void* key2,int* uniq){
 	l = order->len - sizeof(int);
 	if(k1 <= 0)
 		l = -k1;
-	r = sql_cmp(order->loc,(char*)key1+sizeof(int),(char*)key2+sizeof(int),l);
+	r = sql_cmp(order->loc,(unsigned char*)key1+sizeof(int),(unsigned char*)key2+sizeof(int),l);
 	if(!r && k1 >= 0)
 		r = k1 - k2;
 	return r;

@@ -31,6 +31,85 @@ static ClipVar *action_list = &_action_list;
 #endif
 
 /****************************************************************/
+#if 1
+CLIP_DLLEXPORT char *
+_clip_locale_to_utf8(char *text)
+{
+
+#ifdef OS_CYGWIN
+	char *buf;
+	char *utf_text;
+	gsize br, bw;
+	GError *ge;
+	int len;
+
+	if (!WinCharset)
+	{
+		WinCharset = malloc(10);
+		snprintf(WinCharset,10,"cp%d",GetACP());
+	}
+	if (!ClipHostCharset)
+		ClipHostCharset = _clip_host_charset();
+
+	if (!WinCharset || !ClipHostCharset || !text)
+		return text;
+
+	len = strlen(text);
+	buf = (char *) malloc(len+1); buf[len] = 0;
+	_clip_translate_charset(ClipHostCharset,WinCharset,text,buf,len);
+	utf_text = (char *)g_locale_to_utf8(buf, strlen(buf), &br, &bw, &ge);
+	free(buf);
+
+	return utf_text;
+#else
+
+	gsize br, bw;
+	GError *ge;
+	gchar *t_utf;
+
+	t_utf = g_locale_to_utf8(text, strlen(text), &br, &bw, &ge);
+
+	return t_utf;
+#endif
+}
+
+CLIP_DLLEXPORT char *
+_clip_locale_from_utf8(char *text)
+{
+#ifdef OS_CYGWIN
+	char *buf;
+	char *locale_text;
+	gsize br, bw;
+	GError *ge;
+	int len;
+
+	if (!WinCharset)
+	{
+		WinCharset = malloc(10);
+		snprintf(WinCharset,10,"cp%d",GetACP());
+	}
+	if (!ClipHostCharset)
+		ClipHostCharset = _clip_host_charset();
+
+	if (!WinCharset || !ClipHostCharset || !text)
+		return text;
+
+	locale_text = g_locale_from_utf8(text, strlen(text), &br, &bw, &ge);
+	len = strlen(locale_text);
+	buf = (char *) malloc(len+1); buf[len] = 0;
+	_clip_translate_charset(WinCharset,ClipHostCharset,locale_text,buf,len);
+	g_free(locale_text);
+	return buf;
+#else
+	gsize br, bw;
+	GError *ge;
+	gchar *t_utf;
+
+	t_utf = g_locale_from_utf8(text, strlen(text), &br, &bw, &ge);
+	return t_utf;
+#endif
+}
+#else
 CLIP_DLLEXPORT unsigned char *
 _clip_locale_to_utf8(unsigned char *text)
 {
@@ -68,7 +147,7 @@ _clip_locale_to_utf8(unsigned char *text)
 
 	t_utf = g_locale_to_utf8(text, strlen(text), &br, &bw, &ge);
 
-	return t_utf;
+	return (unsigned char *)t_utf;
 #endif
 }
 
@@ -108,7 +187,7 @@ _clip_locale_from_utf8(unsigned char *text)
 	return t_utf;
 #endif
 }
-
+#endif
 
 /****************************************************************/
 CLIP_DLLEXPORT long

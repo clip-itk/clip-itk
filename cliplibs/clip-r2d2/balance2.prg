@@ -1,6 +1,6 @@
 #include "r2d2lib.ch"
 
-function r2d2_balance_rdf(_queryArr)
+function r2d2_balance2_rdf(_queryArr)
 
 local err,_query
 local sDict:="", sDep:=""
@@ -191,13 +191,11 @@ errorblock({|err|error2html(err)})
 			endif
 			if empty(periodic)
 			    level:= ""
-			    else
+			else
 			    level:= ':'+alltrim(str(nPer))
 			endif
 
-			cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+urn,columns,"",level)
-			?	
-			cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+urn,columns,"",level)
+			cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"",,)
 		next
 	next
 	? '</RDF:RDF>'

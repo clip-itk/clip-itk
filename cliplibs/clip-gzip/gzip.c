@@ -5,6 +5,9 @@
  */
 /*
   $Log: gzip.c,v $
+  Revision 1.8  2005/08/09 09:45:10  clip
+  alena: fix for gcc 4
+
   Revision 1.7  2004/11/03 12:34:50  clip
   rust: a few bugs fixed
 
@@ -210,7 +213,7 @@ clip_GZIP(ClipMachine * mp)
 	rp = (char *)malloc( rl + 4 );
 	rp1 = rp + sizeof(long);
 
-	r = compress2( rp1, &rl, s, l, level);
+	r = compress2( (unsigned char *)rp1, &rl, (unsigned char *)s, l, level);
 
 	if (r != Z_OK )
 	{
@@ -248,7 +251,7 @@ clip_GUNZIP(ClipMachine * mp)
 	rl = read_ulong(s);
 	rp = (char *)malloc( rl+1 );
 
-	r = uncompress( rp, &rl, s + 4, l - 4);
+	r = uncompress( (unsigned char *)rp, &rl, (unsigned char *)(s + 4), l - 4);
 
 	if (r != Z_OK )
 	{

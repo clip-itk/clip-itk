@@ -182,6 +182,7 @@ esac
 #
 #C_FLAGS="-Wall -I. $DEBUGFLAGS $OPTFLAGS $MDBG"
 C_FLAGS="-Wall -I. -I./include $DEBUGFLAGS $OPTFLAGS -O0"
+ADD_CFLAGS="-fPIC"
 
 uname=`uname -s`
 uver=`uname -r`
@@ -410,6 +411,7 @@ echo "OSNAME='$osname'" >&3
 echo "DLLIB='$DLLIB'" >&3
 echo "ARCH='$arch'" >&3
 echo "ADDLIBS='$ADDLIBS'" >&3
+echo "ADD_CFLAGS='$ADD_CFLAGS'" >&3
 echo "DLLSUFF='$DLLSUFF'" >&3
 echo "EXESUFF='$EXESUFF'" >&3
 echo "DLLREALSUFF='$DLLREALSUFF'" >&3
@@ -579,6 +581,7 @@ echo >&3
 echo '#define CLIP_VERSION "'`cat release_version`'"' >&3
 echo '#define DLLIB "'$DLLIB'"' >&3
 echo '#define ADDLIBS "'$ADDLIBS'"' >&3
+echo '#define ADD_CFLAGS "'$ADD_CFLAGS'"' >&3
 echo '#define DLLSUFF "'$DLLSUFF'"' >&3
 echo '#define EXESUFF "'$EXESUFF'"' >&3
 echo '#define DLLREALSUFF "'$DLLREALSUFF'"' >&3
@@ -876,6 +879,7 @@ echo >&3
 echo 'test -n "$CLIPROOT" || '"CLIPROOT=$CLIPROOT" >&3
 echo "CLIP_ROOT=$CLIPROOT" >&3
 echo "ADDLIBS='$ADDLIBS'" >&3
+echo "ADD_CFLAGS='$ADD_CFLAGS'" >&3
 echo "DLLSUFF=$DLLSUFF" >&3
 echo "EXESUFF=$EXESUFF" >&3
 echo "DLLREALSUFF=$DLLREALSUFF" >&3
@@ -911,6 +915,7 @@ echo >&3
 echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
 echo "CLIP_ROOT=$CLIPROOT" >&3
 echo "ADDLIBS='$ADDLIBS'" >&3
+echo "ADD_CFLAGS='$ADD_CFLAGS'" >&3
 echo "DLLSUFF=$DLLSUFF" >&3
 echo "EXESUFF=$EXESUFF" >&3
 echo "DLLREALSUFF=$DLLREALSUFF" >&3
@@ -942,6 +947,7 @@ echo >&3
 echo '[ -z "$CLIPROOT" ] && '"CLIPROOT=$CLIPROOT" >&3
 echo "CLIP_ROOT=$CLIPROOT" >&3
 echo "ADDLIBS='$ADDLIBS'" >&3
+echo "ADD_CFLAGS='$ADD_CFLAGS'" >&3
 echo "DLLSUFF=$DLLSUFF" >&3
 echo "EXESUFF=$EXESUFF" >&3
 echo "DLLREALSUFF=$DLLREALSUFF" >&3

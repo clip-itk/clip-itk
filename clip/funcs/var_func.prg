@@ -263,6 +263,8 @@ function oclone(Obj)
 		vt := valtype(Obj[k])
 		if vt=="O"
 			newObj[k] := oClone(obj[k])
+		elseif vt=="A"
+			newObj[k] := aClone(obj[k])
 		else
 			NewObj[k] := Obj[k]
 		endif
@@ -358,4 +360,95 @@ function varChanged(newData,oldData)
 		endif
 	next
 return .f.
+
+**************************************
+function patchObj(obj,diff)
+	local i
+	if valtype(obj)!="O" .or. valtype(diff)!="O"
+		return obj
+	endif
+	for i in diff KEYS
+		obj[i] := diff[i]
+	next
+return obj
+
+**************************************
+function diffObj(oOld,oNew)
+	local diff:=map()
+	local i,x,t,vOld,vNew
+	if valtype(oOld)!="O" .or. valtype(oNew)!="O"
+		return diff
+	endif
+	for i in oNew KEYS
+		if ! (i $ oOLd)
+			diff[i] := oNew[i]
+			loop
+		endif
+		vNew := oNew[i]
+		vOld := oOld[i]
+		t := valtype(vNew)
+		if t != valtype(vOld)
+			diff[i] := vNew
+			loop
+		endif
+		if  t $ "CLDNM"
+			if vOld != vNew
+				diff[i] := vNew
+			endif
+			loop
+		endif
+		if  t == "O"
+			x := diffObj(vOld,vNew)
+			if !empty(x)
+				diff[i] := x
+			endif
+			loop
+		endif
+		if  t == "A"
+			x := cmpArrays(vOld,vNew)
+			if !x
+				diff[i] := vNew
+			endif
+			loop
+		endif
+	next
+return diff
+
+**************************************
+**************************************
+static function cmpArrays(aOld,aNew)
+	local i,x,t,vOld,vNew
+	if len(aOld) != len(aNew)
+		return .f.
+	endif
+	for i=1 to len(aOld)
+		vNew := aNew[i]
+		vOld := aOld[i]
+		t := valtype(vNew)
+		if t != valtype(vOld)
+			return .f.
+		endif
+		if  t $ "CLDNM"
+			if vOld != vNew
+				return .f.
+			endif
+			loop
+		endif
+		if  t == "O"
+			x := diffObj(vOld,vNew)
+			if !empty(x)
+				return .f.
+			endif
+			loop
+		endif
+		if  t == "A"
+			x := cmpArrays(vOld,vNew)
+			if !x
+				return .f.
+			endif
+		endif
+	next
+return  .t.
+
+**************************************
 

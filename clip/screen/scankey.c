@@ -1,6 +1,9 @@
 
 /*
    $Log: scankey.c,v $
+   Revision 1.35  2005/08/08 09:00:32  clip
+   alena: fix for gcc 4
+
    Revision 1.34  2005/02/03 17:21:29  clip
    uri: kbdstat(), bit #18, for En/Ru detection. Only for scan mode keyboard.
 
@@ -1191,7 +1194,8 @@ do_fn(unsigned char value, char up_flag)
 	printf("do_fn: %d\r\n", value);
 #endif
 
-	if (value < SIZE(func_table))
+	//if (((int)value) < SIZE(func_table))
+	if (((int)value) < (sizeof(func_table)/sizeof((func_table)[0])))
 	{
 #if 1
 		if ( K(KT_FN, value) == K_INSERT )

@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rushmore.c,v $
+	Revision 1.62  2005/08/08 09:00:31  clip
+	alena: fix for gcc 4
+	
 	Revision 1.61  2005/01/19 13:32:03  clip
 	rust: minor fix in string comparison
-	
+
 	Revision 1.60  2004/12/10 09:16:43  clip
 	rust: minor fix for hs_* functions
 
@@ -1236,7 +1239,7 @@ int rm_evalpartial(ClipMachine* cm,RDD_FILTER* fp,ClipVar* block,unsigned int* r
 		if(fp->list)
 			*cnt = fp->listlen;
 		else
-			if(rdd_lastrec(cm,fp->rd,cnt,__PROC__)) goto err;
+			if(rdd_lastrec(cm,fp->rd,(int *)cnt,__PROC__)) goto err;
 		return 0;
 	}
 

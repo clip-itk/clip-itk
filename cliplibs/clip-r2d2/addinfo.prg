@@ -84,6 +84,10 @@ local sprname:=""
 	else
 		aadd(mas,_queryStr)
 	endif
+	if !oDict:lockID(classDesc:id,10000)
+		return
+	endif
+
 
 	for m=1 to len(mas)
 		_query:=cgi_split(mas[m])
@@ -189,21 +193,22 @@ local sprname:=""
 		endif
 		if !empty(id)
 			obj:id := id
-			if classDesc:name == "accpost"
+			if .f. //classDesc:name == "accpost"
 				oDep:error := r2d2_mt_oper("update_accpost",oDep,obj)
 				//oDep:update(obj)
 			else
 				oDep:update(obj)
 			endif
 		else
-			if classDesc:name == "accpost"
+			if .f. //classDesc:name == "accpost"
 				oDep:error := r2d2_mt_oper("append_accpost",oDep,obj)
 				//id := oDep:append(obj,classDesc:id)
 			else
 				id := oDep:append(obj,classDesc:id)
 			endif
 		endif
-		if !empty(oDep:error)
+		if !empty(oDep:error) 
+		
 			if val(oDep:error) != 1143 /* non unique value */
 				cgi_xml_error(odep:error)
 				return
@@ -243,8 +248,8 @@ local sprname:=""
 			endif
 		endif
 	next
+	oDict:unLockID(classDesc:id)
 
-#ifndef __1
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
@@ -254,66 +259,9 @@ local sprname:=""
 	if empty(urn)
 		urn := 'urn:'+sprname
 	endif
+	cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
 	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
 	? '</RDF:RDF>'
-#else
-	/* put xml-header */
-	?
-	? '<overlay '
-	? ' title=" " onload="oppa()"'
-	? 'xmlns:html="http://www.w3.org/1999/xhtml"'
-	? 'xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">'
-
-//	? '<box>'
-	? '<tree id="info" onselect="prosm(currentIndex)" height="350">'
-	? '  <treecols id="trc">'
-
-	for i=1 to len(columns)
-		col:=columns[i]
-		? '    <treecol id="'+col:name+'"'
-		?? ' primary="false"'
-		?? ' label="'+col:header+'"'
-		?? ' hidden="'+iif(empty(col:header),"true","false")+'"'
-		if "DATALEN" $ col
-			?? ' datalen="'+alltrim(toString(col:datalen))+'" '
-			?? ' datatype="'+col:datatype+'"'
-			?? ' datamask="'+col:datamask+'"'
-			?? ' dataisindex="'+iif(col:isindex,"true","false")+'"'
-		endif
-		if "DEFVALUE" $ col
-			?? ' defvalue="'+toString(col:defvalue)+'"'
-		endif
-		if "REFS" $ col .and. !empty(col:refs)
-			k:=""
-			for j=1 to len(col:refs)
-			    k+=col:refs[j]+","
-			next
-			k := left(k,len(k)-1)
-			?? ' dataRefTo="'+k+'"'
-		else
-			if "DATAREFTO" $ col
-				?? ' dataRefTo="'+col:dataRefTo+'"'
-			endif
-		endif
-		?? '/>'
-		? '    <splitter class="tree-splitter"/>'
-	next
-
-	? ' </treecols>'
-	? '<treechildren id="data">'
-
-	for i=1 to len(objs)
-		put_object(objs[i],oDep,columns,_queryArr,err_desc)
-	next
-
-	? '<treeitem id="end"/>'
-	? '</treechildren>'
-	? '</tree>'
-//	? '</box>'
-	? '</overlay>'
-#endif
 
 ?
 return

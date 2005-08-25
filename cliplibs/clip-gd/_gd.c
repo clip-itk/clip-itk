@@ -6,6 +6,9 @@
 
 /*
    $Log: _gd.c,v $
+   Revision 1.7  2005/08/05 10:06:36  clip
+   alena: fix for gcc 4
+
    Revision 1.6  2003/02/04 07:34:21  clip
    alena: add new function gdImageCopyResized()
 
@@ -903,13 +906,13 @@ _clip_gdPutChar(ClipMachine * mp, int type)
 			gdImageCharUp(im,f,x,y,*str,color);
 			break;
 		case 2:
-			gdImageString(im,f,x,y,str,color);
+			gdImageString(im,f,x,y,(unsigned char *)str,color);
 			break;
 		case 3:
 			gdImageString16(im,f,x,y,(unsigned short *)str,color);
 			break;
 		case 4:
-			gdImageStringUp(im,f,x,y,str,color);
+			gdImageStringUp(im,f,x,y,(unsigned char *)str,color);
 			break;
 		case 5:
 			gdImageStringUp16(im,f,x,y,(unsigned short *)str,color);
@@ -918,7 +921,7 @@ _clip_gdPutChar(ClipMachine * mp, int type)
 			gdImageCharRotate(im,f,x,y,*str,ugol,color);
 			break;
 		case 7:
-			gdImageStringRotate(im,f,x,y, str,ugol,color);
+			gdImageStringRotate(im,f,x,y, (unsigned char *)str,ugol,color);
 			break;
 	}
 	_clip_retl(mp,1);

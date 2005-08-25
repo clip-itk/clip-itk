@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #ifdef _WIN32
 #include <process.h>
-int unlink(const char * filename) { 
+int unlink(const char * filename) {
 	return _unlink(filename);
 }
-#else 
+#else
 #include <unistd.h>   /* for getpid(), unlink() */
 #endif
 #include "gd.h"
@@ -258,7 +259,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Can't create file test/gdtest.jpg.\n");
 		exit(1);
 	}
-	gdImageJpeg(im, out, -1);	
+	gdImageJpeg(im, out, -1);
 	fclose(out);
 	in = fopen("test/gdtest.jpg", "rb");
 	if (!in) {
@@ -271,13 +272,13 @@ int main(int argc, char **argv)
 		fprintf(stderr, "gdImageCreateFromJpeg failed.\n");
 		exit(1);
 	}
-	gdImageDestroy(im2);	
+	gdImageDestroy(im2);
 	printf("Created test/gdtest.jpg successfully. Compare this image\n"
 		"to the input image manually. Some difference must be\n"
 		"expected as JPEG is a lossy file format.\n");
 #endif /* HAVE_JPEG */
 	/* Assume the color closest to black is the foreground
-		color for the B&W wbmp image. */	
+		color for the B&W wbmp image. */
 	fprintf(stderr, "NOTE: the WBMP output image will NOT match the original unless the original\n"
 	"is also black and white. This is OK!\n");
 	foreground = gdImageColorClosest(im, 0, 0, 0);
@@ -290,7 +291,7 @@ int main(int argc, char **argv)
 			fprintf(stderr, "Can't create file test/gdtest.wbmp.\n");
 			exit(1);
 		}
-		gdImageWBMP(im, foreground, out);	
+		gdImageWBMP(im, foreground, out);
 		fclose(out);
 		in = fopen("test/gdtest.wbmp", "rb");
 		if (!in) {
@@ -302,9 +303,9 @@ int main(int argc, char **argv)
 		fprintf(stderr, "WBMP colors are:\n");
 		for (i = 0; (i < gdImageColorsTotal(im2)); i++) {
 			fprintf(stderr, "%02X%02X%02X\n",
-				gdImageRed(im2, i), 
+				gdImageRed(im2, i),
 				gdImageGreen(im2, i),
-				gdImageBlue(im2, i)); 
+				gdImageBlue(im2, i));
 		}
 		fclose(in);
 		if (!im2) {
@@ -317,9 +318,9 @@ int main(int argc, char **argv)
 			fprintf(stderr, "Can't create file test/gdtest_wbmp_to_png.png.\n");
 			exit(1);
 		}
-		gdImagePng(im2, out);	
+		gdImagePng(im2, out);
 		fclose(out);
-		gdImageDestroy(im2);	
+		gdImageDestroy(im2);
 	}
 	gdImageDestroy(im);
 	gdImageDestroy(ref);

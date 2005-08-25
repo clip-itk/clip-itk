@@ -168,7 +168,7 @@ int clip_GDK_PIXBUFGETPIXELS( ClipMachine * cm )
 
 	rowstride = gdk_pixbuf_get_rowstride( GDK_PIXBUF(cpxbsrc->object ));
 	height = gdk_pixbuf_get_height( GDK_PIXBUF(cpxbsrc->object));
-	_clip_retcn( cm, gdk_pixbuf_get_pixels( GDK_PIXBUF(cpxbsrc->object)),
+	_clip_retcn( cm, (char *)gdk_pixbuf_get_pixels( GDK_PIXBUF(cpxbsrc->object)),
 		 rowstride*height );
 return( 0 );
 err:

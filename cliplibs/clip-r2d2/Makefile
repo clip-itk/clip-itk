@@ -8,10 +8,11 @@ CLIP	= $(CLIPROOT)/bin/clip
 CLIPFLAGS = -a -O -b -w -n -l
 OBJS = cgi_funcs.o an_funcs.o \
 	classes_xml.o classes_rdf.o addinfo.o \
-	accpost.o an_rdf.o balance.o bind2.o \
+	accpost.o an_rdf.o balance.o \
 	connect.o delobj.o getfile.o obj_arr.o \
 	obj_rass.o print.o rdfarr.o rdfinfo.o \
-	rdf_sell.o \
+	rdfinfo2.o an_rdf2.o balance2.o \
+	bind.o rdf_sell.o rdfarr2.o bind2.o \
 	report1.o report3.o report4.o report5.o report6.o \
 	report7.o report8.o
 

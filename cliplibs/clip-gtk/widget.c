@@ -1270,3 +1270,36 @@ clip_GTK_WIDGETGETPARENTWINDOW (ClipMachine *cm)
 err:
 	return 1;
 }
+int
+clip_GTK_WIDGETGETPARENT (ClipMachine *cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+        C_widget *cparent ;
+        GtkWidget *parent;
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	parent = GTK_WIDGET(GTK_WIDGET(cwid->widget)->parent);
+	if (parent)
+	{
+		cparent = _list_get_cwidget(cm, parent);
+		if (!cparent) cparent = _register_widget(cm, parent, NULL);
+		if (cparent) _clip_mclone(cm, RETPTR(cm), &cparent->obj);
+	}
+	return 0;
+err:
+	return 1;
+}
+int
+clip_GTK_WIDGETQUEUERESIZE (ClipMachine *cm)
+{
+	C_widget *cwid = _fetch_cw_arg(cm);
+
+	CHECKCWID(cwid,GTK_IS_WIDGET);
+
+	gtk_widget_queue_resize(GTK_WIDGET(cwid->widget));
+	return 0;
+err:
+	return 1;
+}
+

@@ -516,7 +516,7 @@ gdft_draw_bitmap(gdImage *im, int fg, FT_Bitmap bitmap, int pen_x, int pen_y) {
 				if (x >= im->sx || x < 0) continue;
 
 				/* get pixel location in gd buffer */
-				pixel = &im->pixels[y][x];
+				pixel = (char *)&im->pixels[y][x];
 				if (tc_key.pixel == NUMCOLORS) {
 					/* use fg color directly */
 					*pixel = fg;

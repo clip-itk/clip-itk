@@ -127,7 +127,7 @@ static function _ext_delete(self,cId,version)
 	enddo
 	if found
 		if !waitRddLock(self:hDbData)
-			self:error := codb_error(1005)+":"+cId
+			self:error := codb_error(1005)+":"+cId+":ext,line:"+alltrim(str(__LINE__))
 			taskStart()
 			return .f.
 		endif
@@ -183,7 +183,7 @@ static function _ext_update(self,oData,version)
 	enddo
 	if found //rddGetValue(self:hDbData,"object_id") == oData:id
 		if !waitRddLock(self:hDbData)
-			self:error := codb_error(1005)+":"+oData:id
+			self:error := codb_error(1005)+":"+oData:id+":ext,line:"+alltrim(str(__LINE__))
 			taskStart()
 			return .f.
 		endif
@@ -214,7 +214,7 @@ static function _ext_changeVersion(self,cId,old,new)
 	enddo
 	if found
 		if !waitRddLock(self:hDbData)
-			self:error := codb_error(1005)+":"+cId
+			self:error := codb_error(1005)+":"+cId+":ext,line:"+alltrim(str(__LINE__))
 			taskStart()
 			return .f.
 		endif

@@ -69,11 +69,15 @@ local i,j,k,x,tcol,rname,ind_list
 			loop
 		endif
 
-		if classDesc:name == "accpost"
+		if !oDict:lockID(classDesc:id,10000)
+			return
+		endif
+		if .f. //classDesc:name == "accpost"
 			oDep:error := r2d2_mt_oper("delete_accpost",oDep,obj)
 		else
 			oDep:delete(obj_id)
 		endif
+		oDict:unLockID(classDesc:id)
 
 		if !empty(oDep:error)
 			cgi_xml_error("Error deleting object:"+oDep:error)
@@ -167,7 +171,7 @@ local i,j,k,x,tcol,rname,ind_list
 			? '    </hbox>'
 		next
 		? '</vbox>'
-*/		
+*/
 	next
 	? '</window>'
 ?

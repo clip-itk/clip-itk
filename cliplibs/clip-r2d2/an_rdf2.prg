@@ -1,6 +1,6 @@
 #include "r2d2lib.ch"
 
-function r2d2_an_rdf(_queryArr)
+function r2d2_an_rdf2(_queryArr)
 
 local err, _query
 local sDict:="", sDep:=""
@@ -14,6 +14,7 @@ local urn:=""
 local xslt:=""
 local host:=""
 local total:=""
+local level:=""
 	errorblock({|err|error2html(err)})
 
 	_query := d2ArrToMap(_queryArr)
@@ -73,6 +74,9 @@ local total:=""
 	if "TOTAL" $ _query
 		total := _query:total
 	endif
+	if "LEVEL" $ _query
+		level := _query:level
+	endif	
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
@@ -126,7 +130,7 @@ local total:=""
 		? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
 		? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
 		//? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
-
+		? '<items id="'+urn+'">['
 		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		asort(an_data,,,{|x,y| x:essence <= y:essence })
 
@@ -135,16 +139,16 @@ local total:=""
 		    else
 		    periodic := ""
 		endif
-		cgi_an_putRdf1(an_data,account,an_level,urn,total,beg_date,end_date,"",periodic)
+		cgi_an_putRdf2(an_data,account,an_level,urn,total,beg_date,end_date,"",periodic,level)
 		//putRdf2(an_data,account,an_level)
 
 	next
-	? '</RDF:RDF>'
-	oDep:close()
+	? ']</items></RDF:RDF>'
 	return
 ******************************
-function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
+function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn,level)
 	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode
+	
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
 	acc := codb_getValue(account)
 	//? acc
@@ -174,91 +178,60 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 			loop
 		endif
 
+		if tmp:an_value == 'EMPTY' 
+			loop
+		endif
 		urn_id := urn
 		promt:= iif(tmp:an_value=="total","",tmp:an_value)
-//		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+ext_urn+'" id="'+tmp:an_value+'_'+alltrim(str(random(10000)))+'" DOCUM:about="'+urn_id+':'+tmp:an_value+ext_urn+'"'
-		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+ext_urn+'" id="'+tmp:an_value+ext_urn+'" DOCUM:about="'+urn_id+':'+tmp:an_value+ext_urn+'"'
-		? '	DOCUM:_saldo_="an_data"'
-		? '	DOCUM:beg_date="'+dtoc(beg_date)+'"'
-		? '	DOCUM:end_date="'+dtoc(end_date)+'"'
-		acccode:=split(codb_essence(account),":")[1]
-		? '	DOCUM:acccode="'+acccode+'"'
-		? '	DOCUM:account="'+codb_essence(account)+'"'
-		? '	DOCUM:sort_account="'+codb_essence(account)+'"'
-		? '	DOCUM:ref_account="'+account+'"'
-		? '	DOCUM:account_name="'+tmp:essence+'"'
-		? ' 	DOCUM:an_value.id="'+tmp:an_value+'"'
-
+		
+		?? '{ a:{level:"'+level+'", '
+		?? ' isContainer:false }, '
+		//acccode:=split(codb_essence(account),":")[1]
+		?? ' r:{ account:"'+account+'", unit:"'+tmp:unit_num+'"}, '
+		
+		//? '	acccode="'+acccode+'"'
+		//? '	account="'+codb_essence(account)+'"'
+		//? '	sort_account="'+codb_essence(account)+'"'
+		//? '	ref_account="'+account+'"'
+		?? ' account_name:"'+tmp:essence+'" ,'
+		//?? ' id:"'+tmp:an_value+'", '
+		//?? ' about:"'+urn_id+':'+tmp:an_value+'", ' 
+		?? ' id:"'+urn_id+':'+tmp:an_value+'", ' 
+		k := tmp:tcols
+		k :=strtran(k,':','')
+		k :=strtran(k,'="',':')		
+		k :=strtran(k,'"','",')
+		k :=strtran(k,':',':"')
+		?? alltrim(k)
+/*
 		k := split(tmp:tcols,'"  ')
 		for j=1 to len(k)
-			//? '	DOCUM:an_value.'+alltrim(k[j])+iif(j==len(k),'','"')
+		? k[j]+', '
+
 			ss := ""
 			if "="$alltrim(k[j])
-				ss +="DOCUM:rfl."+alltrim(k[j])+iif(j==len(k),'','"')
+				ss += alltrim(k[j])+iif(j==len(k),'',' ,')
 			else
-				ss+=alltrim(k[j])+iif(j==len(k),'','"')
+				ss+=alltrim(k[j])+iif(j==len(k),'',' ,')
 			endif
 			?? " "+	ss
 		next
+*/
+		?? ' bd_summa:"'+sort_summa(tmp:bd_summa)+'", '
+		?? ' bk_summa:"'+sort_summa(tmp:bk_summa)+'", '
+		?? ' od_summa:"'+sort_summa(tmp:od_summa)+'", '
+		?? ' ok_summa:"'+sort_summa(tmp:ok_summa)+'", '
+		?? ' ed_summa:"'+sort_summa(tmp:ed_summa)+'", '
+		?? ' ek_summa:"'+sort_summa(tmp:ek_summa)+'", '
+		?? ' beg_num:"' +sort_summa(tmp:beg_num) +'", '
+		?? ' in_num: "' +sort_summa(tmp:in_num)  +'", '
+		?? ' out_num:"' +sort_summa(tmp:out_num) +'", '
+		?? ' end_num:"' +sort_summa(tmp:end_num) +'", '
 
-		? '	DOCUM:bd_summa="'+bal_summa(tmp:bd_summa)+'"'
-		? '	DOCUM:sort_bd_summa="'+sort_summa(tmp:bd_summa)+'"'
-		? '	DOCUM:bk_summa="'+bal_summa(tmp:bk_summa)+'"'
-		? '	DOCUM:sort_bk_summa="'+sort_summa(tmp:bk_summa)+'"'
-		? '	DOCUM:od_summa="'+bal_summa(tmp:od_summa)+'"'
-		? '	DOCUM:sort_od_summa="'+sort_summa(tmp:od_summa)+'"'
-		? '	DOCUM:ok_summa="'+bal_summa(tmp:ok_summa)+'"'
-		? '	DOCUM:sort_ok_summa="'+sort_summa(tmp:ok_summa)+'"'
-		? '	DOCUM:ed_summa="'+bal_summa(tmp:ed_summa)+'"'
-		? '	DOCUM:sort_ed_summa="'+sort_summa(tmp:ed_summa)+'"'
-		? '	DOCUM:ek_summa="'+bal_summa(tmp:ek_summa)+'"'
-		? '	DOCUM:sort_ek_summa="'+sort_summa(tmp:ek_summa)+'"'
-
-		? '	DOCUM:beg_num="' +alltrim(bal_num(tmp:beg_num))   +'"'
-		? '	DOCUM:sort_beg_num="' +sort_summa(tmp:beg_num)   +'"'
-		? '	DOCUM:in_num="'  +alltrim(bal_num(tmp:in_num))    +'"'
-		? '	DOCUM:sort_in_num="'  +sort_summa(tmp:in_num)    +'"'
-		? '	DOCUM:out_num="' +alltrim(bal_num(tmp:out_num))   +'"'
-		? '	DOCUM:sort_out_num="' +sort_summa(tmp:out_num)   +'"'
-		? '	DOCUM:end_num="' +alltrim(bal_num(tmp:end_num))   +'"'
-		? '	DOCUM:sort_end_num="' +sort_summa(tmp:end_num)   +'"'
-		? '	DOCUM:unit_num="'+tmp:unit_num  +'"'
-		? '	DOCUM:sort_unit_num="'+tmp:unit_num  +'"'
-
-		? '/>'
+		?? '	unit:"'+codb_essence(tmp:unit_num)  +'" '
+		?? '},'
 
 	next
-
-	if empty(ext_urn)
-	    urn:=urn
-	    else
-	    urn:=urn+':'+promt
-	endif
-
-	? '<RDF:Seq about="'+urn+'">'
-	for i=1 to len(bal_data)
-		tmp:=bal_data[i]
-
-		if !(tmp:unit_num=="EMPTY") ;
-		    .and. empty(ext_urn);
-		   .and. tmp:bd_summa == 0 .and. tmp:bk_summa==0;
-		   .and. tmp:od_summa == 0 .and. tmp:ok_summa==0;
-		   .and. tmp:ed_summa == 0 .and. tmp:ek_summa==0;
-		   .and. tmp:beg_num == 0 .and. tmp:in_num==0;
-		   .and. tmp:out_num == 0 .and. tmp:end_num==0
-		    loop
-		endif
-
-		if tmp:an_value == 'total' .and. total!='yes'
-			loop
-		endif
-		if  tmp:an_value=='EMPTY'
-			loop
-		endif
-
-		? '	<RDF:li resource="'+urn_id+':'+tmp:an_value+ext_urn+'"/>'
-	next
-	? '</RDF:Seq>'
 return
 
 

@@ -684,7 +684,7 @@ function cgi_objDesc(obj,col)
 		sOut := 'an_ref="'+dan+'" an_data="'+dal+'"'
 		sTmp:= alltrim(str(len(obj:an_kredit)))
 	elseif valtype(sTmp) == "C"
-		sTmp := strtran(sTmp,'"',"'")
+		sTmp := strtran(sTmp,'"',"")
 		sTmp := strtran(sTmp,'&',"")
 		sTmp := strtran(sTmp,'<',"")
 		sTmp := strtran(sTmp,'>',"")
@@ -752,6 +752,15 @@ function sdtod(s,d1,d2)
 			exit
 		endif
 	next
+	if i==5  /* year  */
+		i := val(s)
+		if i<1000 .or. i>3000
+			return .f.
+		endif
+		d1 := ctod("01.01."+s,"dd.mm.yy")
+		d2 := ctod("31.12."+s,"dd.mm.yy")
+		return .t.
+	endif
 	s1 := padl(substr(s,1,i-1),2,"0")
 	s3 := substr(s,i)
 	for i=1 to len(s3)
@@ -760,7 +769,7 @@ function sdtod(s,d1,d2)
 		endif
 	next
 	s2 := upper(substr(s3,1,i-1))
-	s3 := substr(s3,i+1)
+	s3 := substr(s3,i)
 	if empty(s2)
 		return .f.
 	elseif s2 $ [KQë]     /* quartel */
@@ -1167,16 +1176,22 @@ function r2d2_mt_oper(MT_oper,oDep,obj)
 	oDict02 := oDep02:dictionary()
 	oDict   := oDep:dictionary()
 	if !("ACC_TYPE_TRANS" $ obj)
+		obj:acc_type_trans := ""
+		/*
 		outlog("MT warning",__LINE__,"accpost object don`t have attribute ACC_TYPE_TRANS")
 		return ret
+		*/
 	endif
-	acc_trans_obj := oDep02:getValue(obj:acc_type_trans)
+	//	acc_trans_obj := oDep02:getValue(obj:acc_type_trans)
+	/*
 	if empty(acc_trans_obj)
 		outlog("MT warning",__LINE__,"accpost object have undefined reference to ACC_TYPE_TRANS")
 		return ret
 	endif
-	filename := iif("FILENAME" $ acc_trans_obj,acc_trans_obj:filename,"")
-	outlog("MT message",__LINE__,"ACC_TYPE_TRANS filename found:",filename)
+	*/	
+	
+	filename := ""//iif("FILENAME" $ acc_trans_obj,acc_trans_obj:filename,"")
+	//outlog("MT message",__LINE__,"ACC_TYPE_TRANS filename found:",filename)
 	if !empty(filename)
 		bCode := oDict:loadModule(filename)
 		if !empty(oDict:error)
@@ -1240,6 +1255,148 @@ function r2d2_acc_constant(cName)
 	endif
 return obj:value
 
+/************************************************/
+function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
+	local s:=replicate("",level),sOut,col
+	local obj,obj2,i,j,k,tmp,sTmp,sTmp2,sTmp3,stmp4
+	local sid,dName := urn , refs, refr
+	local ret := .f., ltree:= .f.
+	local sdata,rerr,errblock:=errorBlock({|err|cgi_error2xml(err)})
+
+	if empty(ext_urn)
+		ext_urn := ""
+	endif
+	if empty(sTree)
+		sTree := "level0"
+	endif
+?? '<items id="'+sTree+'">['
+	for i=1 to len(Arefs)
+		tmp:=aRefs[i][4]
+		sid := ""
+		if "ID" $ tmp .and. !empty(tmp:id)
+			sid := tmp:id
+		else
+			sid := "XXXXXXXXXXXX"
+		endif
+		sid+=ext_urn
+
+		refs:= ""
+		refr:= ""
+		?? s+' {id:"'+sid+'", '
+		?? s+' a: {'
+		?? s+' level:'+alltrim(str(level,3,0))+', '
+		?? s+' isContainer:'+iif(empty(aRefs[i][5]),"false","true")
+		?? s+' },'
+
+		begin sequence
+			sdata := ""
+			for j=1 to len(columns)
+				col := columns[j]
+				sTmp := mapEval(tmp,col:block)
+				sTmp3 := ""
+
+				if "DATATYPE" $ col .and. col:datatype == "R"
+
+					if "OBJ_ID" $ col
+						sTmp2 := mapEval(tmp,col:obj_id)
+					elseif upper(col:name) $ tmp
+						sTmp2 := tmp[upper(col:name)]
+					else
+						sTmp2 := sTmp
+					endif
+
+					if empty(sTmp2)
+						if !empty(stmp3)
+							sTmp2 := sTmp3:id
+						endif
+					endif
+
+					if !empty(stmp2)
+						 refr:=refr+' '+col:name+':"'+ sTmp2 + '",'
+						sTmp3  := '"'+codb_essence(sTmp)+'"'
+					endif
+
+				elseif "DATATYPE" $ col .and. col:datatype=="S" .and. len(stmp) > 0
+
+					obj2:=codb_getValue(sTmp)
+					if !empty(obj2)
+						k:= codb_tColumnBody(obj2:id)
+						if !empty(k)
+							sTmp3 := '"'+k:header+'"' //+':'+obj2:name
+						else
+							sTmp3 := obj2:name+":"+obj2:id
+						endif
+					endif
+					refs:=refs+' '+col:name+':"'+ stmp + '",'
+				elseif valtype(sTmp) == "C"
+					sTmp := strtran(sTmp,'"','\"')
+					sTmp := strtran(sTmp,"'","\'")					
+					sTmp := strtran(sTmp,'&',"")
+					sTmp := strtran(sTmp,'<',"")
+					sTmp := strtran(sTmp,'>',"")
+					sTmp3:= '"'+sTmp+'"'
+				elseif valtype(sTmp) == "L"
+					sTmp3:= iif(sTmp,"true","false")
+				elseif valtype(sTmp) == "N"
+					sTmp3 := '"'+sort_summa(stmp,,col:datalen,col:datadec)+'"' //padl(alltrim(str(sTmp,col:datalen,col:datadec)),10,"0")
+				elseif valtype(sTmp) == "D"
+					sTmp3 := iif(empty(sTmp),'','"'+dtos(sTmp)+'"')
+				endif
+
+				if !empty(stmp3) .and. len(stmp3) >2
+				?? s+' '+col:name+':'+sTmp3+','
+				endif
+
+			next
+		recover using rerr
+			cgi_error2xml(rerr)
+		end sequence
+			if len(refr) >0
+				?? s+'r:{'+refr+'},'
+			endif
+			if len(refs) >0
+				?? s+'s:{'+refs+'},'
+			endif
+		?? s+'},'
+	next
+	?? ']</items>'
+	for i=1 to len(Arefs)
+		tmp:=aRefs[i][4]
+		if !empty(aRefs[i][5])
+			cgi_putArefs2Rdf(aRefs[i][5],oDep,level+1,urn,columns,tmp:id,ext_urn)
+		endif
+	next
+	errorBlock(errBlock)
+return ret
+/************************************************/
+function cgi_putArefs2RdfLevels(aRefs,oDep,level,urn,columns,sTree,ext_urn)
+	local sOut:="", i,tmp,sid
+	if empty(ext_urn)
+		ext_urn := ""
+	endif
+	if empty(sTree)
+		sTree := "0"
+	endif
+	if level==0
+		? '<levels>'
+	endif
+	for i=1 to len(aRefs)
+		tmp:=aRefs[i][4]
+		if !empty(aRefs[i][5])
+			cgi_putArefs2RdfLevels(aRefs[i][5],oDep,level+1,urn,columns,tmp:id)
+		endif
+		if "ID" $ tmp .and. !empty(tmp:id)
+			sid := tmp:id
+		else
+			sid := "XXXXXXXXXXXX"
+		endif
+		sOut+=sid+","
+	next
+	? '	<level name="'+sTree+'" idrefs="'+sOut+'" />'
+	if level==0
+		? '</levels>'
+	endif
+return
 /************************************************/
 function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 	local s:=replicate("   ",level),sOut,col
@@ -1324,8 +1481,9 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 						endif
 					endif
 				elseif valtype(sTmp) == "C"
-					sTmp := strtran(sTmp,'"',"'")
-					sTmp := strtran(sTmp,'&',"'")
+					sTmp := strtran(sTmp,'"',"")
+					sTmp := strtran(sTmp,"'","'")
+					sTmp := strtran(sTmp,'&',"")
 					sTmp := strtran(sTmp,'<',"")
 					sTmp := strtran(sTmp,'>',"")
 					sTmp3 := sTmp

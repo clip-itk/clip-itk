@@ -4,14 +4,17 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: six.c,v $
+	Revision 1.104  2005/08/08 09:00:31  clip
+	alena: fix for gcc 4
+	
 	Revision 1.103  2004/05/26 09:52:24  clip
 	rust: some cleanings
-	
+
 	Revision 1.102  2003/09/02 14:27:43  clip
 	changes for MINGW from
 	Mauricio Abre <maurifull@datafull.com>
 	paul
-	
+
 	Revision 1.101  2003/06/04 11:55:31  clip
 	rust: avoid 'unsafe read' warning in m6_IsOptimize()
 
@@ -1105,10 +1108,10 @@ int clip_M6_FILTSAVE(ClipMachine* cm){
 	if(ftruncate(fd,0))	goto err_create;
 	if(write(fd,"CFLT",4)==-1) goto err_write;
 	if(write(fd,&fp->custom,1)==-1) goto err_write;
-	_rdd_put_ushort(buf,strlen(fp->sfilter));
+	_rdd_put_ushort((unsigned char *)buf,strlen(fp->sfilter));
 	if(write(fd,buf,sizeof(short))==-1) goto err_write;
-	if(write(fd,fp->sfilter,_rdd_ushort(buf)+1)==-1) goto err_write;
-	_rdd_put_uint(buf,fp->size);
+	if(write(fd,fp->sfilter,_rdd_ushort((unsigned char *)buf)+1)==-1) goto err_write;
+	_rdd_put_uint((unsigned char *)buf,fp->size);
 	if(write(fd,buf,sizeof(int))==-1) goto err_write;
 	if(fp->rmap){
 		bytes = (((fp->size+1) >> 5) + 1) << 2;
@@ -1174,10 +1177,10 @@ int clip_M6_FILTRESTORE(ClipMachine* cm){
 	}
 	if(read(fd,&fp->custom,1)==-1) goto err_read;
 	if(read(fd,buf,sizeof(short))==-1) goto err_read;
-	fp->sfilter = (char*)calloc(1,_rdd_ushort(buf)+1);
-	if(read(fd,fp->sfilter,_rdd_ushort(buf)+1)==-1) goto err_read;
+	fp->sfilter = (char*)calloc(1,_rdd_ushort((unsigned char *)buf)+1);
+	if(read(fd,fp->sfilter,_rdd_ushort((unsigned char *)buf)+1)==-1) goto err_read;
 	if(read(fd,buf,sizeof(int))==-1) goto err_read;
-	fp->size = _rdd_uint(buf);
+	fp->size = _rdd_uint((unsigned char *)buf);
 	if(fp->size){
 		bytes = (((fp->size+1) >> 5) + 1) << 2;
 		fp->rmap = calloc(1,bytes);

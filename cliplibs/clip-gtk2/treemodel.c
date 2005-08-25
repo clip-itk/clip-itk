@@ -881,9 +881,11 @@ clip_GTK_TREEMODELGET(ClipMachine * cm)
 	glong l;
 	gfloat f;
 	gboolean b;
+        /* not used
         GdkPixbuf *pix;
         C_object  *cpix;
 	ClipVar *vv ;
+        */
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
 	CHECKARG(2, MAP_t);

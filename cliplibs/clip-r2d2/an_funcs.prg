@@ -1,3 +1,4 @@
+#define NEW_VARIANTS
 ***********************
 function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	local oDict,an_info,an_balance,osb_class,anb_list:=map()
@@ -53,6 +54,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		//s2:= '.and. beg_date>=stod("'+dtos(beg_date)+'") '
 		s1:= '.and. an_level=='+alltrim(str(an_level,2,0))+' '
 		tmp:=oDep:select(an_info:id,,,s+s1+s2)
+		//outlog(__FILE__,__LINE__,s+s1+s2,tmp)
 		//outlog("an_values=",an_values,s)
 		//outlog("an_info",s+s1+s2,tmp)
 
@@ -82,6 +84,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		outlog("variant",i,variants[i])
 	next
 	*/
+
 	for i=1 to len(variants)
 		j := calc_summ(oDep,an_balance,account,iif(call_an,an_level,2),beg_date,end_date,variants[i])
 		//outlog("variant",i,variants[i])
@@ -164,7 +167,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 				end sequence
 				errorBlock(err)
 				if !empty(k)
-					aObj:tCols += ' '+class:tcol_list[j]+'="'+toString(k)+'" '
+					aObj:tCols += ' '+class:tcol_list[j]+'="'+alltrim(toString(k))+'" '
 				endif
 			next
 		else
@@ -251,9 +254,10 @@ return data
 static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
 	local ret :={},ret2:={},lExit := .f.,m1:={}
 	local oDict,an_info_full
-	local tmp,i,j,k,x,s,s1,s2,s3
+	local tmp,i,j,k,s,s1,s2,s3
 	local a,b,obj,an1,an2
 	local _used := map()
+	local x,y := {}
 
 	oDict := oDep:dictionary()
 	an_info_full := oDict:classBodyByName("an_info_full")
@@ -298,8 +302,54 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 	//return ret
 
 
+#ifdef NEW_VARIANTS
 	s := 'account=="'+account+'"'+;
 		' .and. beg_date<=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
+	tmp:=oDep:select(an_info_full:id,,,s)
+	//outlog(__FILE__,__LINE__,len(tmp),s,tmp)
+	for i=len(tmp) to 1 step -1
+		obj := oDep:getValue(tmp[i])
+		if empty(obj)
+			loop
+		endif
+		k:=len(ret)+1
+		//outlog(__FILE__,__LINE__,obj:an_value1,obj:an_value2,obj:an_value3,obj:an_value4,obj:an_value5,obj:an_value6)
+		while ((k--)>1)
+			a:= ret[k]
+			j:=len(a)
+			x := .t.
+			if x .and. a[1]!=NIL .and. a[1] != obj:an_value1
+				x := .f.
+			endif
+			if x .and. a[2]!=NIL .and. a[2] != obj:an_value2
+				x := .f.
+			endif
+			if x .and. a[3]!=NIL .and. a[3] != obj:an_value3
+				x := .f.
+			endif
+			if x .and. a[4]!=NIL .and. a[4] != obj:an_value4
+				x := .f.
+			endif
+			if x .and. a[5]!=NIL .and. a[5] != obj:an_value5
+				x := .f.
+			endif
+			if x .and. a[6]!=NIL .and. a[6] != obj:an_value6
+				x := .f.
+			endif
+			if x
+				b := aclone(a)
+				b[1] := obj:an_value1
+				b[2] := obj:an_value2
+				b[3] := obj:an_value3
+				b[4] := obj:an_value4
+				b[5] := obj:an_value5
+				b[6] := obj:an_value6
+				aadd(ret2,b)
+			endif
+		end
+	next
+	//outlog(__FILE__,__LINE__,len(ret2),ret2)
+#else
 	for k=1 to len(ret)
 		s2 := ""; a:= ret[k]
 		for i=1 to len(a)
@@ -310,6 +360,7 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 			      '=="'+a[i]+'"'
 		next
 		tmp:=oDep:select(an_info_full:id,,,s+s2)
+		//outlog(__FILE__,__LINE__,s+s2,tmp)
 		for i=1 to len(tmp)
 			obj := oDep:getValue(tmp[i])
 			if empty(obj)
@@ -325,6 +376,7 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 			aadd(ret2,b)
 		next
 	next
+#endif
 	b:={}
 	_used := map()
 	for i=1 to len(ret2)
@@ -371,27 +423,30 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 	ret:unit_num := ""
 	ret:accpost_list := {}
 
-	s := 'account="'+account+'" '
+	s:= ""
 	if an_level <= 1
-		s += ' .and. an_value=="'+variant[1]+'"'
+		s += 'an_value=="'+variant[1]+'" .and. '
 	else
-		for i=1 to len(variant)
+		for i=len(variant) to 1 step -1
 			if empty(variant[i])
 				loop
 			endif
-			as1:=".and. AN_VALUE"+alltrim(str(i,2,0))
-			s+=as1+'=="'+variant[i]+'" '
+			as1:="AN_VALUE"+alltrim(str(i,2,0))
+			s+=as1+'=="'+variant[i]+'" .and. '
 		next
 	endif
+	s += ' account="'+account+'" '
 	s1 := ' .and. odate>=stod("'+dtos(beg_date)+'") .and. odate<=stod("'+dtos(end_date)+'")'
 	s2 := ' .and. odate<=stod("'+dtos(beg_date)+'")'
 
 	max_date:=stod("10010101")
 	min_date:=stod("22010101")
 	tmp := oDep:select(an_balance:id,,,s+s1)
+	//outlog(__FILE__,__LINE__,s+s1,tmp)
 	//outlog("an_balance",s+s1,tmp)
 	if empty(tmp)
 		tmp := oDep:select(an_balance:id,1,,s+s2,-1)
+		//outlog(__FILE__,__LINE__,s+s2,tmp)
 		z := .t.
 		//outlog("an_balance",s+s2,tmp)
 	endif

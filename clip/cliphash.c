@@ -245,7 +245,7 @@ _clip_casehashbytes(long seed, const char *bytes, int len)
 		 && is_hex(bytes[6]) && is_hex(bytes[7]) && is_hex(bytes[8]) && is_hex(bytes[9])
 		)
 	{
-		crc32val = strtoul(s,0,16);
+		crc32val = strtoul((const char *)s,0,16);
 		return crc32val;
 	}
 

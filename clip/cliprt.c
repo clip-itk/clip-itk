@@ -5,6 +5,22 @@
  */
 /*
    $Log: cliprt.c,v $
+   Revision 1.443  2005/08/08 09:11:39  clip
+   alena: restore
+
+   Revision 1.442  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
+   Revision 1.441  2005/07/28 05:57:07  clip
+   alena: fix clip_ASCAN memory floating
+
+   Revision 1.440  2005/07/25 10:23:21  clip
+   alena: fix bug with "floating" memory  in functions AEVAL() and
+   _clip_resume()
+
+   Revision 1.439  2005/06/30 11:32:39  clip
+   uri: small fix
+
    Revision 1.438  2004/12/10 10:43:28  clip
    uri: fixed memory leak in _clip_ret*() with twice call.
 
@@ -1842,7 +1858,7 @@ SETLONG(void *ptr, long l)
 #endif
 
 static ClipInitStruct *init_struct = 0;
-char *_clip_hostcs = "c";
+char *_clip_hostcs = "CP437";
 
 CLIP_DLLEXPORT void
 _clip_init_struct(ClipInitStruct * sp)
@@ -4555,6 +4571,13 @@ _clip_resume(ClipMachine * mp, int nlocals, int nreflocals)
 		{
 			ClipVar *vp = vfp->vars + i;
 
+/*#if 1
+			if ((vp->t.flags & F_MPTR) && calc_loopcount(mp, vp, vfp, 0) == vfp->refcount - 1)
+                        {
+					_clip_destroy(mp, vp);
+			}
+#endif
+*/
 #if 1
 			if ((vp->t.flags & F_MPTR) && vp->p.vp->t.count == 1
 				&& (calc_loopcount(mp, vp, vfp, 0) == vfp->refcount - 1))
@@ -9240,8 +9263,7 @@ _clip_retcn_m(ClipMachine * mp, char *s, int l)
 	vp->s.str.len = l;
 }
 
-CLIP_DLLEXPORT void
-_clip_retc(ClipMachine * mp, char *s)
+CLIP_DLLEXPORT void _clip_retc(ClipMachine * mp, char *s)
 {
 	int l = 0;
 
@@ -11750,10 +11772,10 @@ _clip_strnncmp(const char *str1, const char *str2, int len1, int len2)
 	unsigned char ch1 = 0, ch2 = 0;
 	const unsigned char *us1, *us2;
 
-	for (us1 = str1, us2 = str2; len1 && len2; us1++, us2++, len1--, len2--)
+ 	for (us1 = (const unsigned char *)str1, us2 = (const unsigned char *)str2; len1 && len2; us1++, us2++, len1--, len2--)
 	{
-		ch1 = *us1;
-		ch2 = *us2;
+		ch1 = *(unsigned char *)us1;
+		ch2 = *(unsigned char *)us2;
 		if (ch1 < 32 && ch2 > 31)
 			ch1 = 0;
 
@@ -11804,7 +11826,7 @@ _clip_strnncasecmp(const char *str1, const char *str2, int len1, int len2)
 	unsigned char ch1 = 0, ch2 = 0;
 	const unsigned char *us1, *us2;
 
-	for (us1 = str1, us2 = str2; len1 && len2; us1++, us2++, len1--, len2--)
+	for (us1 = (const unsigned char *)str1, us2 = (const unsigned char *)str2; len1 && len2; us1++, us2++, len1--, len2--)
 	{
 		ch1 = _clip_uptbl[*us1];
 		ch2 = _clip_uptbl[*us2];

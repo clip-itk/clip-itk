@@ -252,14 +252,14 @@ err:
 int
 clip_GDK_DRAWTEXT(ClipMachine *cm)
 {
-	C_widget     *cwid = _fetch_cw_arg(cm);
-	C_object      *cgc = _fetch_cobject(cm,_clip_spar(cm,2));
-	C_object     *font = _fetch_cobject(cm,_clip_spar(cm,3));
-	gint             x = _clip_parni(cm,4);
-	gint             y = _clip_parni(cm,5);
-	gchar        *text = _clip_parc(cm,6);
-	gint        length = _clip_parni(cm,7);
-	GdkDrawable *drw = NULL;
+	C_widget      *cwid = _fetch_cw_arg(cm);
+	C_object       *cgc = _fetch_cobject(cm,_clip_spar(cm,2));
+	C_object      *font = _fetch_cobject(cm,_clip_spar(cm,3));
+	gint              x = _clip_parni(cm,4);
+	gint              y = _clip_parni(cm,5);
+        gchar         *text = _clip_parc(cm,6);
+	gint         length = _clip_parni(cm,7);
+	GdkDrawable    *drw = NULL;
 	CHECKCWID(cwid,GTK_IS_WIDGET);
 	CHECKOPT2(2,NUMERIC_t,MAP_t); CHECKCOBJ(cgc,GDK_IS_GC(cgc->object));
 	CHECKOPT2(3,NUMERIC_t,MAP_t); CHECKCOBJ(cgc,GDK_IS_FONT(font));

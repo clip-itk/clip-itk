@@ -385,20 +385,18 @@ RETURN .t.
 
 *********** загрузка текста из строки
 static function te_loadString(str)
-local i
+local ts
 	if str==NIL .or. (valtype(str)!="C" .and. valtype(str)!="M")
 		return .f.
 	endif
 
 	::__nullInit()
 	if ::charset != NIL
-		str := translate_charset(::charset, ::__hostcharset, str)
+		str := translate_charset(::charset, ::__hostcharset, @str)
 	endif
-	::edbuffer := split(str, "&\r?&\n")
-	//tab := ::tabSize
-	for i=1 to len(::edbuffer)
-		::edbuffer[i] := tabexpand(::edbuffer[i], ::tabSize)
-	next
+	::edbuffer := charsplit("&\n", @str)
+	ts := ::tabsize
+	aeval(::edbuffer, {|item| item := tabexpand(item, ts)})
 	::lines:=len(::edbuffer)
 	::refresh()
 RETURN  .t.
@@ -2310,31 +2308,52 @@ RETURN .t.
 
 ***************************************************
 static function te_saveString()
-  local i, n, str:=""
+local i, n, str:="", ts, hch, ch
+
+  ts := ::TabSize
   if ::charset == NIL
 	if ::tabPack
-	for i=1 to ::lines
-		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
-		str += tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
-			ltrim(::edbuffer[i])+"&\n"
-	next
+		aeval(::edbuffer, {|item| ;
+			str:=str+tabpack(padr(item, len(item)-len(ltrim(item))), ts)+ltrim(item)+"&\n"})
+		/*
+		for i=1 to ::lines
+			n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
+			str += tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
+				ltrim(::edbuffer[i])+"&\n"
+		next
+		*/
 	else
-	for i=1 to ::lines
-		str += ::edbuffer[i]+"&\n"
-	next
+		aeval(::edbuffer, {|item| str:=str+item+"&\n"})
+		/*
+		for i=1 to ::lines
+			str += ::edbuffer[i]+"&\n"
+		next
+		*/
 	endif
   else
+	hch := ::__hostcharset
+	ch := ::charset
 	if ::tabPack
+		aeval(::edbuffer, {|item| ;
+			str:=str+translate_charset(hch, ch,  ;
+			tabpack(padr(item, len(item)-len(ltrim(item))), ts))+ ;
+			    ltrim(item)+"&\n"})
+	/*
 	for i=1 to ::lines
 		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
 		str += translate_charset(::__hostcharset, ::charset, ;
 			    tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
 			    ltrim(::edbuffer[i]))+"&\n"
 	next
+	*/
 	else
+		aeval(::edbuffer, {|item| ;
+			str:=str+translate_charset(hch, ch, item)+"&\n"	})
+	/*
 	for i=1 to ::lines
 		str += translate_charset(::__hostcharset, ::charset, ::edbuffer[i])+"&\n"
 	next
+	*/
 	endif
   endif
   ::updated:=.f.
@@ -2342,7 +2361,7 @@ RETURN str
 
 *********** запись блока на диск
 static function te_saveBlock( fileName, createbak )
-local nfile, nbakfile, i, n, str, scr, ps, pl
+local nfile, nbakfile, i, n, str, scr, ps, pl, ts, hch, ch
   save screen to scr
   filename := alltrim(filename)
   createbak := iif(createbak==NIL, .f., createbak)
@@ -2360,52 +2379,46 @@ local nfile, nbakfile, i, n, str, scr, ps, pl
      restore screen from scr
      return .f.
   endif
+  hch := ::__hostcharset
+  ch := ::charset
   if ::strblock
+	ts := ::tabSize
+	i := min(::koordblock[1], ::koordblock[3])
+	n := max(::koordblock[1], ::koordblock[3]) - i + 1
 	if ::charset ==NIL
 		if ::tabPack
-		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
-			str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
-				ltrim(::edbuffer[i])+"&\n"
-			fwrite(nfile, str, len(str))
-		next
+			aeval(::edbuffer, {|item| ;
+				str:=tabpack(padr(item, len(item)-len(ltrim(item))), ts)+ltrim(item)+"&\n", ;
+				fwrite(nfile, str, len(str))}, i, n)
 		else
-		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			str := ::edbuffer[i]+"&\n"
-			fwrite(nfile, str, len(str))
-		next
+			aeval(::edbuffer, {|item| ;
+				str:=item+"&\n",fwrite(nfile, str, len(str))}, i, n)
 		endif
 	else
 		if ::tabPack
-		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
-			str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
-				ltrim(::edbuffer[i])
-			str := translate_charset(::__hostcharset, ::charset, str)+"&\n"
-			fwrite(nfile, str, len(str))
-		next
+			aeval(::edbuffer, {|item| ;
+				str:=tabpack(padr(item, len(item)-len(ltrim(item))), ts)+ltrim(item), ;
+				str:=translate_charset(hch, ch, str)+"&\n", ;
+				fwrite(nfile, str, len(str))}, i, n)
 		else
-		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			str := translate_charset(::__hostcharset, ::charset, ::edbuffer[i])+"&\n"
-			fwrite(nfile, str, len(str))
-		next
+			aeval(::edbuffer, {|item| ;
+				str:=translate_charset(hch, ch, item)+"&\n",;
+				fwrite(nfile, str, len(str))}, i, n)
 		endif
 	endif
   else
 	ps := min(::koordblock[2], ::koordblock[4])
 	pl := max(::koordblock[2], ::koordblock[4]) - ps +1
+	i := min(::koordblock[1], ::koordblock[3])
+	n := max(::koordblock[1], ::koordblock[3]) - i + 1
 	if ::charset == NIL
-		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			//str := tabpack(::edbuffer[i], ::tabSize)
-			str := substr(::edbuffer[i], ps, pl)+"&\n"
-			fwrite(nfile, str, len(str))
-		next
+		aeval(::edbuffer, {|item| ;
+			str:=substr(item, ps, pl)+"&\n", ;
+			fwrite(nfile, str, len(str))}, i, n)
 	else
-		for i=min(::koordblock[1], ::koordblock[3]) to max(::koordblock[1], ::koordblock[3])
-			//str := tabpack(::edbuffer[i], ::tabSize)
-			str := translate_charset(::__hostcharset, ::charset, substr(::edbuffer[i], ps, pl))+"&\n"
-			fwrite(nfile, str, len(str))
-		next
+		aeval(::edbuffer, {|item| ;
+			str:=translate_charset(hch, ch, substr(item, ps, pl))+"&\n", ;
+			fwrite(nfile, str, len(str))}, i, n)
 	endif
   endif
   fclose(nfile)
@@ -2415,7 +2428,7 @@ RETURN .t.
 
 *********** загрузка блока с диска
 static function te_loadBlock(filename, undo)
-local nfile, i, path
+local nfile, i, path, s, arr, size, edb
 	undo := iif(undo==NIL, .t., undo)
 	filename := alltrim(filename)
 	nfile := fopen(filename)
@@ -2479,9 +2492,7 @@ local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
 	rowblock := endbl-stbl+1
 
 	buf := {}
-	for i=stbl to endbl
-		aadd(buf, ::edbuffer[i])
-	next
+	aeval(::edbuffer, {|item| aadd(buf, item)}, stbl, rowblock)
 
 	if undo
 		::writeundo(iif(mov, HASH_MVBL, HASH_CPBL), buf)
@@ -2572,7 +2583,7 @@ RETURN ::copyBlock(.t., undo)
 
 *********** удалить блок
 static function te_deleteBlock(undo)
-local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}
+local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}, arr
     undo := iif(undo==NIL, .t., undo)
     if !::strblock .and. !::rectblock
 	 return .f.
@@ -2585,14 +2596,25 @@ local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}
 	endif
 	rowblock := endbl-stbl+1
 	if undo
+		/*
 		for i=stbl to endbl
 			aadd(unarr, ::edbuffer[i])
 		next
+		*/
+		aeval(::edbuffer, {|item| aadd(unarr, item)}, stbl, rowblock)
 		::writeundo(HASH_DELBL, unarr)
 	endif
+
+	arr := ::edbuffer
+	i := stbl
+	aeval(::edbuffer, {|item| arr[i]:=item, i:=i+1}, endbl+1)
+	::edbuffer := arr
+	/*
 	for i=stbl to endbl
 	    adel(::edbuffer, stbl)
 	next
+	*/
+
 	::lines -= rowblock
 	asize(::edbuffer, ::lines)
 	if ::line-::rowWin > stbl
@@ -2611,16 +2633,11 @@ local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}
 		endbl := ::lines
 	endif
 	if undo
-		for i=stbl to endbl
-			aadd(unarr, substr(::edbuffer[i], leftbl, rightbl-leftbl+1))
-		next
+		aeval(::edbuffer, {|item| aadd(unarr, substr(item, leftbl, rightbl-leftbl+1))}, stbl, endbl-stbl+1)
 		::writeundo(HASH_DELBL, unarr)
 	endif
 
-	for i=stbl to endbl
-	    ::edbuffer[i] := substr(::edbuffer[i], 1, leftbl-1);
-			   + substr(::edbuffer[i], rightbl+1)
-	next
+	aeval(::edbuffer, {|item| item:=substr(item,1,leftbl-1)+substr(item, rightbl+1)}, stbl, endbl-stbl+1)
 
 	if ::line-::rowWin > stbl
 		::rowWin := 1
@@ -2764,7 +2781,7 @@ RETURN .t.
 
 ************ откат последних действий
 static function te_undo()
-local i, j, cmd, len, line, p
+local i, j, cmd, len, line, p, edb
 	if ::__curundo == ::__startundo
 		return
 	endif
@@ -2858,25 +2875,25 @@ local i, j, cmd, len, line, p
 			if cmd != HASH_DELBL
 				::deleteBlock(.f.)
 			endif
-			len := len(::__undobuffer[::__curundo][U_VALUE])
 			line := min(::__undobuffer[::__curundo][U_BLOCK][2], ::__undobuffer[::__curundo][U_BLOCK][4])
-			::gotoLine(line, ,.f.)
+			edb := ::edbuffer
+			len := ::lines
 			if ::__undobuffer[::__curundo][U_BLOCK][1] == 1
-				for j=1 to len
-					::insertLine(.f.)
-					::edbuffer[line+j-1] := ::__undobuffer[::__curundo][U_VALUE][j]
-				next
+				aeval(::__undobuffer[::__curundo][U_VALUE], ;
+					{|item| len:=len+1, asize(edb, len), ;
+					 ains(edb, line), edb[line]:=item, ;
+					 line:=line+1})
 			else
-				for j=1 to len
-					::__check_line(line+j-1)
-					::edbuffer[line+j-1] := substr(::edbuffer[line+j-1], 1, ::__undobuffer[::__curundo][U_BLOCK][3]-1)+;
-								::__undobuffer[::__curundo][U_VALUE][j] + substr(::edbuffer[line+j-1], ::__undobuffer[::__curundo][U_BLOCK][3])
-				next
+				j := ::__undobuffer[::__curundo][U_BLOCK][3]
+				aeval(::__undobuffer[::__curundo][U_VALUE], ;
+					{|item| ;
+					 edb[line]:=substr(edb[line], 1, j-1)+ item + substr(edb[line], j), ;
+					 line:=line+1})
 			endif
+			::edbuffer := edb
+			::lines := len(::edbuffer)
 			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
 			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
-			::lines := ::__undobuffer[::__curundo][U_LINES]
-			asize(::edbuffer, ::__undobuffer[::__curundo][U_LINES])
 		case cmd == HASH_PASTCLB
 			::deleteBlock(.f.)
 			::lines := ::__undobuffer[::__curundo][U_LINES]
@@ -2899,10 +2916,12 @@ local i, j, cmd, len, line, p
 		case cmd == HASH_LOADBLOCK
 			::gotoLine(::__undobuffer[::__curundo][U_LINE], ::__undobuffer[::__curundo][U_ROW], .f.)
 			::gotoPos(::__undobuffer[::__curundo][U_POS], ::__undobuffer[::__curundo][U_COL], .f.)
-			for j=::__undobuffer[::__curundo][U_VALUE][1] to ::__undobuffer[::__curundo][U_VALUE][2]
-				adel(::edbuffer, j)
-			next
-			::lines -= ::__undobuffer[::__curundo][U_VALUE][2] - ::__undobuffer[::__curundo][U_VALUE][1] + 1
+			edb := ::edbuffer
+			j:=::__undobuffer[::__curundo][U_VALUE][1]
+			aeval(::edbuffer, {|item| edb[j]:=item, j:=j+1}, ;
+			      ::__undobuffer[::__curundo][U_VALUE][2]+1 )
+			::edbuffer := edb
+			::lines := len(::edbuffer)-::__undobuffer[::__curundo][U_VALUE][2]+::__undobuffer[::__curundo][U_VALUE][1]-1
 			asize(::edbuffer, ::lines)
 			::strblock := .f.
 			::rectblock := .f.
@@ -3401,14 +3420,12 @@ local ret := .f., i
 return ret
 *************
 static function te_setTabSize(tabsize)
-local i, n, str
-	for i=1 to ::lines
-		n := len(::edbuffer[i])-len(ltrim(::edbuffer[i]))
-		str := tabpack(padr(::edbuffer[i], n), ::tabSize)+ ;
-			ltrim(::edbuffer[i])
-		::edbuffer[i] := tabexpand(str, tabsize)
-	next
+local i, n, str, ts
 	::tabsize := iif(tabsize==NIL, ::tabsize, tabsize)
+	ts := ::tabSize
+	aeval(::edbuffer, {|item| n:=len(item)-len(ltrim(item)), ;
+		str:=tabpack(padr(item, n), ts)+ltrim(item), ;
+		item := tabexpand(str, tabsize)	})
 	::refresh()
 return
 *************
@@ -3418,11 +3435,14 @@ static function te_setFocus(lFocus)
 return ::InFocus
 ***************
 static function te_setCharset(newchs)
-local i
+local i, hch, ch
 	::charset := newchs
-	for i=1 to ::lines
-		::edbuffer[i] := translate_charset(::charset, ::__hostcharset, ::edbuffer[i])
-	next
+	hch := ::__hostcharset
+	ch := ::charset
+	//aeval(::edbuffer, {|item| item := translate_charset(ch, hch, item, .t.)})
+	i:=0
+	aeval(::edbuffer, {|item| i:=i+1,item := str(i)+" :"+item}, 1, ::lines)
+	alert(str(i))
 	::refresh()
 return
 **************
@@ -3436,13 +3456,11 @@ local file:=path+"/.clipcharset"
 return ::charset
 **************
 static function te_print()
-local i, str
 
   printBegin()
-  for i=1 to ::lines
-	str := ::edbuffer[i]
-	qout(str)
-  next
+
+  aeval(::edbuffer, {|item| qout(item)})
+
   printEnd()
 return .t.
 **************

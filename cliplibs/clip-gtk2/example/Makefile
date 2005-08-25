@@ -103,8 +103,8 @@ imgmenu: imgmenu.prg
 #	clip -esg imgmenu.prg ./libclip-gtk2.so $(LIBS)
 
 winback: winback.prg
-#	clip -es winback.prg -lclip-gtk2
-	clip -esg winback.prg ./libclip-gtk2.so $(LIBS)
+	clip -es winback.prg -lclip-gtk2
+#	clip -esg winback.prg ./libclip-gtk2.so $(LIBS)
 
 test_rc: test_rc.prg
 	clip -es test_rc.prg -lclip-gtk2

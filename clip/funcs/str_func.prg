@@ -23,11 +23,13 @@ FUNCTION memotran(str,s1,s2)
 	s2:=iif(s2==NIL," ",s2)
 	ret:=strtran(str,chr(13)+chr(10),s1)
 return strtran(ret,chr(141)+chr(10),s2)
-***************************************************************
+/*******************
+see SPLIT in _regex.c
 * s1 - string
 * s2 - delimiter
 FUNCTION Split(s1,s2)
-LOCAL temp:={}, arr:={}, i:=1
+LOCAL temp:={}, arr:={}, i:=1, p
+
 do while search(s2, s1, arr)
 	aadd(temp, left(s1, arr[i][1]-1))
 	s1 := substr(s1, arr[i][2])
@@ -35,6 +37,21 @@ do while search(s2, s1, arr)
 enddo
 aadd(temp, s1)
 RETURN temp
+*/
+
+/****************************************************************
+* simple SPLIT without regex
+* s1 - string
+* s2 - simple delimiter
+FUNCTION ChSplit(s1,s2)
+LOCAL temp:={}, arr:={}, i:=len(s2), k
+
+do while (k := at(s2, s1))>0
+	aadd(temp, left(s1, k-1))
+	s1 := substr(s1, k+i)
+enddo
+aadd(temp, s1)
+RETURN temp*/
 ****************************************************************
 /*
 делит строку на подстроки заданной длины,

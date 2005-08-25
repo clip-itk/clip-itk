@@ -49,7 +49,7 @@ clip_GTK_CHECKBUTTONNEW(ClipMachine * cm)
 	if (pchar)
 	{
 		unsigned char *pc;
-		for (pc = title;pc && *pc; pc++)
+		for (pc = (unsigned char *)title;pc && *pc; pc++)
 			if (*pc == *pchar)
 			{
 				*pc='_';

@@ -5,6 +5,9 @@
  */
 /*
  $Log: task.c,v $
+ Revision 1.22  2005/07/11 09:07:23  clip
+ uri: small fix fo gcc4
+
  Revision 1.21  2004/05/21 10:46:35  clip
  rust: another memory leak fixed
 
@@ -305,6 +308,7 @@ TaskMessage_get_data(TaskMessage * msg)
 static void
 FD_CLR_BY(fd_set * fds, fd_set * mask)
 {
+#if 0
 	int i;
 
 	for (i = 0;
@@ -313,11 +317,24 @@ FD_CLR_BY(fd_set * fds, fd_set * mask)
 		 i++, ((unsigned *) fds)++, ((unsigned *) mask)++
 		)
 		*((unsigned *) fds) &= ~(*((unsigned *) mask));
+#else
+	int i;
+	unsigned *fds_ptr = (unsigned*)fds;
+	unsigned *mask_ptr = (unsigned*)mask;
+
+	for (i = 0;
+		 i < sizeof(fd_set) / sizeof(unsigned);
+
+		 i++, fds_ptr++, mask_ptr++
+		)
+		*fds_ptr &= ~(*mask_ptr);
+#endif
 }
 
 static void
 FD_AND_BY(fd_set * fds, fd_set * mask)
 {
+#if 0
 	int i;
 
 	for (i = 0;
@@ -326,11 +343,24 @@ FD_AND_BY(fd_set * fds, fd_set * mask)
 		 i++, ((unsigned *) fds)++, ((unsigned *) mask)++
 		)
 		*((unsigned *) fds) &= *((unsigned *) mask);
+#else
+	int i;
+	unsigned *fds_ptr = (unsigned*)fds;
+	unsigned *mask_ptr = (unsigned*)mask;
+
+	for (i = 0;
+		 i < sizeof(fd_set) / sizeof(unsigned);
+
+		 i++, fds_ptr++, mask_ptr++
+		)
+		*fds_ptr &= *mask_ptr;
+#endif
 }
 
 static void
 FD_SET_BY(fd_set * fds, fd_set * mask)
 {
+#if 0
 	int i;
 
 	for (i = 0;
@@ -339,11 +369,24 @@ FD_SET_BY(fd_set * fds, fd_set * mask)
 		 i++, ((unsigned *) fds)++, ((unsigned *) mask)++
 		)
 		*((unsigned *) fds) |= *((unsigned *) mask);
+#else
+	int i;
+	unsigned *fds_ptr = (unsigned*)fds;
+	unsigned *mask_ptr = (unsigned*)mask;
+
+	for (i = 0;
+		 i < sizeof(fd_set) / sizeof(unsigned);
+
+		 i++, fds_ptr++, mask_ptr++
+		)
+		*fds_ptr |= *mask_ptr;
+#endif
 }
 
 static int
 FD_ISSET_BY(fd_set * fds, fd_set * mask)
 {
+#if 0
 	int i;
 
 	for (i = 0;
@@ -353,6 +396,19 @@ FD_ISSET_BY(fd_set * fds, fd_set * mask)
 		)
 		if (*((unsigned *) fds) & *((unsigned *) mask))
 			return 1;
+#else
+	int i;
+	unsigned *fds_ptr = (unsigned*)fds;
+	unsigned *mask_ptr = (unsigned*)mask;
+
+	for (i = 0;
+		 i < sizeof(fd_set) / sizeof(unsigned);
+
+		 i++, fds_ptr++, mask_ptr++
+		)
+		if ( *fds_ptr & *mask_ptr )
+			return 1;
+#endif
 	return 0;
 }
 

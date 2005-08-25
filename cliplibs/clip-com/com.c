@@ -6,6 +6,9 @@
 
 /*
   $Log: com.c,v $
+  Revision 1.5  2005/08/09 08:49:09  clip
+  alena: fix for gcc 4
+
   Revision 1.4  2004/05/28 12:34:55  clip
   uri: add com_rts()
 
@@ -330,7 +333,7 @@ clip_COM_SEND(ClipMachine * mp)
 		return EG_ARG;
 	}
 
-	ret = v24Write(gz, sptr, len);
+	ret = v24Write(gz, (unsigned char *)sptr, len);
 	err = _clip_fetch_item(mp, HASH_ferror);
 	*err = ret < 0 ? errno : 0;
 
@@ -364,7 +367,7 @@ clip_COM_READ(ClipMachine * mp)
 
 	buf = (char *) malloc(nb);
 
-	ret = v24Read(gz, buf, nb);
+	ret = v24Read(gz, (unsigned char *)buf, nb);
 	if (ret < 0)
 	{
 		err = _clip_fetch_item(mp, HASH_ferror);

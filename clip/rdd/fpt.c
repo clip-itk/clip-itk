@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: fpt.c,v $
+	Revision 1.43  2005/08/08 09:00:31  clip
+	alena: fix for gcc 4
+	
 	Revision 1.42  2004/05/24 12:55:22  clip
 	rust: full FlexFile support
-	
+
 	Revision 1.41  2003/09/02 14:27:43  clip
 	changes for MINGW from
 	Mauricio Abre <maurifull@datafull.com>
@@ -174,12 +177,12 @@ static int fpt_create(ClipMachine* cm,char* name,const char* __PROC__){
 	memset(&dum,0,sizeof(FPT_HEADER));
 	fuu = sizeof(FPT_HEADER)/cm->mblocksize;
 	fuu += (fuu*cm->mblocksize<sizeof(FPT_HEADER))?1:0;
-	_rdd_put_backuint(hdr.fuu,fuu);
-	_rdd_put_backushort(hdr.blocksize,cm->mblocksize);
+	_rdd_put_backuint((unsigned char *)hdr.fuu,fuu);
+	_rdd_put_backushort((unsigned char *)hdr.blocksize,cm->mblocksize);
 	strcpy(hdr.sig,"FlexFile3");
 	strcpy(hdr.sig0,"Made by CLIP1");
 	hdr.sig[9] = 3;
-	_rdd_put_uint(hdr.sig1,0x10);
+	_rdd_put_uint((unsigned char *)hdr.sig1,0x10);
 
 	memset(&file,0,sizeof(RDD_FILE));
 	file.md = (char*)-1;
@@ -208,9 +211,9 @@ static int fpt_zap(ClipMachine* cm,RDD_MEMO* rm,const char* __PROC__){
 	if((er = rdd_trunc(cm,&rm->file,fuu*rm->blocksize,__PROC__))) return er;
 	if((er = rdd_read(cm,&rm->file,0,sizeof(FPT_HEADER),&hdr,__PROC__)))
 		return er;
-	_rdd_put_backuint(hdr.fuu,fuu);
-	_rdd_put_uint(hdr.flexsize,0);
-	_rdd_put_uint(hdr.flexoffs,0);
+	_rdd_put_backuint((unsigned char *)hdr.fuu,fuu);
+	_rdd_put_uint((unsigned char *)hdr.flexsize,0);
+	_rdd_put_uint((unsigned char *)hdr.flexoffs,0);
 	return rdd_write(cm,&rm->file,0,sizeof(FPT_HEADER),&hdr,__PROC__);
 }
 
@@ -221,7 +224,7 @@ static int fpt_open(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PROC
 
 	if((er = rdd_read(cm,&rm->file,0,sizeof(FPT_HEADER),&hdr,__PROC__)))
 		return er;
-	rm->blocksize = _rdd_backushort(hdr.blocksize);
+	rm->blocksize = _rdd_backushort((unsigned char *)hdr.blocksize);
 	if(memcmp(hdr.sig0,"SIxMemo",7) == 0)
 		rm->format = SIX_MEMO;
 	else if(memcmp(hdr.sig0,"Made by CLIP",12) == 0)
@@ -233,8 +236,8 @@ static int fpt_open(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PROC
 	/* Thanks to Przemek (Przemyslaw Czerpak <druzus@priv.onet.pl>) */
 	if(rm->format == CLIP_MEMO && !rd->readonly && !hdr.sig0[12]){
 		hdr.sig0[12] = '1';
-		_rdd_put_uint(hdr.flexsize,0);
-		_rdd_put_uint(hdr.flexoffs,0);
+		_rdd_put_uint((unsigned char *)hdr.flexsize,0);
+		_rdd_put_uint((unsigned char *)hdr.flexoffs,0);
 		if((er = rdd_write(cm,&rm->file,0,sizeof(FPT_HEADER),&hdr,__PROC__)))
 			return er;
 	}
@@ -250,17 +253,17 @@ static int fpt_close(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,const char* __PRO
 static void _read_six_str(ClipVar* vp,DbfLocale* loc,char** str){
 	vp->t.type = CHARACTER_t;
 	*str += 2;
-	vp->s.str.len = _rdd_uint(*str);
+	vp->s.str.len = _rdd_uint((unsigned char *)(*str));
 	*str += 12;
 	vp->s.str.buf = *str;
 	*str += vp->s.str.len;
-	loc_read(loc,vp->s.str.buf,vp->s.str.len);
+	loc_read(loc,(unsigned char *)vp->s.str.buf,vp->s.str.len);
 }
 
 static void _read_six_int(ClipVar* vp,char** str){
 	vp->t.type = NUMERIC_t;
 	*str += 6;
-	vp->n.d = (int)_rdd_uint(*str);
+	vp->n.d = (int)_rdd_uint((unsigned char *)(*str));
 	*str += 8;
 }
 
@@ -275,14 +278,14 @@ static void _read_six_double(ClipVar* vp,int dec,char** str){
 static void _read_six_date(ClipVar* vp,char** str){
 	vp->t.type = DATE_t;
 	*str += 6;
-	vp->d.julian = _rdd_uint(*str);
+	vp->d.julian = _rdd_uint((unsigned char *)(*str));
 	*str += 8;
 }
 
 static void _read_six_log(ClipVar* vp,char** str){
 	vp->t.type = LOGICAL_t;
 	*str += 6;
-	vp->d.julian = _rdd_ushort(*str);
+	vp->d.julian = _rdd_ushort((unsigned char *)(*str));
 	*str += 8;
 }
 
@@ -294,10 +297,10 @@ static void _read_six_array(ClipMachine* cm,ClipVar* vp,DbfLocale* loc,char** s,
 
 	_clip_array(cm,vp,1,dims);
 	*s += 2;
-	size = _rdd_uint(*s);
+	size = _rdd_uint((unsigned char *)(*s));
 	*s += 12;
 	for(i=0;i<size;i++){
-		int type = _rdd_backushort(*s);
+		int type = _rdd_backushort((unsigned char *)(*s));
 		ClipVar v;
 		memset(&v,0,sizeof(ClipVar));
 		switch(type){
@@ -347,23 +350,23 @@ static int fpt_getvalue(ClipMachine* cm,RDD_MEMO* rm,int id,ClipVar* vp,const ch
 	}
 	if((er = rdd_read(cm,&rm->file,id*rm->blocksize,8,buf,__PROC__)))
 		return er;
-	len = _rdd_backuint(buf+4);
+	len = _rdd_backuint((unsigned char *)(buf+4));
 	str = malloc(len+1);
 	if((er = rdd_read(cm,&rm->file,id*rm->blocksize+8,len,str,__PROC__)))
 		return er;
 	str[len] = 0;
-	if(_rdd_backuint(buf)==3){
+	if(_rdd_backuint((unsigned char *)buf)==3){
 		_clip_str2var(cm,vp,str,len,0);
 		free(str);
-	} else if(_rdd_backuint(buf)==0x8000){
+	} else if(_rdd_backuint((unsigned char *)buf)==0x8000){
 		s = str;
 		_read_six_array(cm,vp,rm->loc,&str,len);
 		free(s);
 	} else {
 		vp->s.str.buf = str;
 		vp->s.str.len = len;
-		if(_rdd_backuint(buf)==1)
-			loc_read(rm->loc,vp->s.str.buf,vp->s.str.len);
+		if(_rdd_backuint((unsigned char *)buf)==1)
+			loc_read(rm->loc,(unsigned char *)vp->s.str.buf,vp->s.str.len);
 	}
 	return 0;
 }
@@ -615,22 +618,22 @@ static int _flex_newpage(ClipMachine* cm,RDD_MEMO* rm,unsigned int* page,int lea
 	} else {
 		if((er = rdd_read(cm,&rm->file,0,4,buf,__PROC__)))
 			return er;
-		*page = _rdd_backuint(buf)*rm->blocksize;
-		_rdd_put_backuint(buf,_rdd_backuint(buf)+(FLEX_PAGESIZE/rm->blocksize));
+		*page = _rdd_backuint((unsigned char *)buf)*rm->blocksize;
+		_rdd_put_backuint((unsigned char *)buf,_rdd_backuint((unsigned char *)buf)+(FLEX_PAGESIZE/rm->blocksize));
 		if((er = rdd_write(cm,&rm->file,0,4,buf,__PROC__)))
 			return er;
 	}
-	_rdd_put_backuint(buf,0x3e8);
+	_rdd_put_backuint((unsigned char *)buf,0x3e8);
 	if((er = rdd_write(cm,&rm->file,*page,4,buf,__PROC__)))
 		return er;
 	if(leaf)
 		s = FLEX_MAXLEAF*8;
 	else
 		s = FLEX_MAXPARENT*12;
-	_rdd_put_backuint(buf,s+2);
+	_rdd_put_backuint((unsigned char *)buf,s+2);
 	if((er = rdd_write(cm,&rm->file,*page+4,4,buf,__PROC__)))
 		return er;
-	_rdd_put_ushort(buf,leaf?3:2);
+	_rdd_put_ushort((unsigned char *)buf,leaf?3:2);
 	if((er = rdd_write(cm,&rm->file,*page+8,2,buf,__PROC__)))
 		return er;
 	memset(buf,0xad,s);
@@ -646,12 +649,12 @@ static int __flex_search(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* tree,int l,int 
 
 	if((er = rdd_read(cm,&rm->file,tree->offs,4,buf,__PROC__)))
 		return er;
-	if(_rdd_backuint(buf) != 0x3e8)
+	if(_rdd_backuint((unsigned char *)buf) != 0x3e8)
 		return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,er_corruption);
 	if((er = rdd_read(cm,&rm->file,tree->offs+8,2,buf,__PROC__)))
 		return er;
-	tree->count = _rdd_ushort(buf)/4;
-	tree->leaf = _rdd_ushort(buf)%4==3;
+	tree->count = _rdd_ushort((unsigned char *)buf)/4;
+	tree->leaf = _rdd_ushort((unsigned char *)buf)%4==3;
 	if(tree->count > (tree->leaf?FLEX_MAXLEAF:FLEX_MAXPARENT))
 		return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,er_corruption);
 	tree->items = calloc(tree->count,sizeof(FLEX_ITEM));
@@ -659,12 +662,12 @@ static int __flex_search(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* tree,int l,int 
 		return er;
 	for(i=0;i<tree->count;i++){
 		if(tree->leaf){
-			tree->items[i].li_size = _rdd_uint(buf+i*8+(size?0:4));
-			tree->items[i].li_offs = _rdd_uint(buf+i*8+(size?4:0));
+			tree->items[i].li_size = _rdd_uint((unsigned char *)(buf+i*8+(size?0:4)));
+			tree->items[i].li_offs = _rdd_uint((unsigned char *)(buf+i*8+(size?4:0)));
 		} else {
-			tree->items[i].li_size = _rdd_uint(buf+i*12+(size?0:4));
-			tree->items[i].li_offs = _rdd_uint(buf+i*12+(size?4:0));
-			tree->items[i].page = _rdd_uint(buf+i*12+8);
+			tree->items[i].li_size = _rdd_uint((unsigned char *)(buf+i*12+(size?0:4)));
+			tree->items[i].li_offs = _rdd_uint((unsigned char *)(buf+i*12+(size?4:0)));
+			tree->items[i].page = _rdd_uint((unsigned char *)(buf+i*12+8));
 		}
 	}
 	tree->pos = 0;
@@ -697,11 +700,11 @@ static int _flex_search(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE** ptree,int l,int
 		return 0;
 	tree = calloc(1,sizeof(FLEX_TREE));
 	tree->root = 1;
-	tree->offs = _rdd_uint(size?hdr.flexsize:hdr.flexoffs);
+	tree->offs = _rdd_uint((unsigned char *)(size?hdr.flexsize:hdr.flexoffs));
 	if(!tree->offs){
 		if((er = _flex_newpage(cm,rm,&rootpage,1,__PROC__)))
 			goto err;
-		_rdd_put_uint(size?hdr.flexsize:hdr.flexoffs,rootpage);
+		_rdd_put_uint((unsigned char *)(size?hdr.flexsize:hdr.flexoffs),rootpage);
 		if((er = rdd_write(cm,&rm->file,hdr.flexsize-hdr.fuu,8,&hdr.flexsize,__PROC__)))
 			goto err;
 		tree->leaf = 1;
@@ -736,17 +739,17 @@ static int _flex_next(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* tree,const char* _
 				tree->offs = parent->items[parent->pos].page;
 				if((er = rdd_read(cm,&rm->file,tree->offs,FLEX_PAGESIZE,buf,__PROC__)))
 					return er;
-				tree->count = _rdd_ushort(buf+8)/4;
+				tree->count = _rdd_ushort((unsigned char *)(buf+8))/4;
 				tree->pos = 0;
 				tree->items = calloc(tree->count,sizeof(FLEX_ITEM));
 				for(i=0;i<tree->count;i++){
 					if(!tree->leaf){
-						tree->items[i].page = _rdd_uint(buf+10+i*12+8);
-						tree->items[i].li_size = _rdd_uint(buf+10+i*12);
-						tree->items[i].li_offs = _rdd_uint(buf+10+i*12+4);
+						tree->items[i].page = _rdd_uint((unsigned char *)(buf+10+i*12+8));
+						tree->items[i].li_size = _rdd_uint((unsigned char *)(buf+10+i*12));
+						tree->items[i].li_offs = _rdd_uint((unsigned char *)(buf+10+i*12+4));
 					} else {
-						tree->items[i].li_size = _rdd_uint(buf+10+i*8);
-						tree->items[i].li_offs = _rdd_uint(buf+10+i*8+4);
+						tree->items[i].li_size = _rdd_uint((unsigned char *)(buf+10+i*8));
+						tree->items[i].li_offs = _rdd_uint((unsigned char *)(buf+10+i*8+4));
 					}
 				}
 			}
@@ -777,17 +780,17 @@ static int _flex_prev(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* tree,int* out,cons
 				tree->offs = parent->items[parent->pos].page;
 				if((er = rdd_read(cm,&rm->file,tree->offs,FLEX_PAGESIZE,buf,__PROC__)))
 					return er;
-				tree->count = _rdd_ushort(buf+8)/4;
+				tree->count = _rdd_ushort((unsigned char *)(buf+8))/4;
 				tree->pos = 0;
 				tree->items = calloc(tree->count,sizeof(FLEX_ITEM));
 				for(i=0;i<tree->count;i++){
 					if(!tree->leaf){
-						tree->items[i].page = _rdd_uint(buf+10+i*12+8);
-						tree->items[i].li_size = _rdd_uint(buf+10+i*12);
-						tree->items[i].li_offs = _rdd_uint(buf+10+i*12+4);
+						tree->items[i].page = _rdd_uint((unsigned char *)(buf+10+i*12+8));
+						tree->items[i].li_size = _rdd_uint((unsigned char *)(buf+10+i*12));
+						tree->items[i].li_offs = _rdd_uint((unsigned char *)(buf+10+i*12+4));
 					} else {
-						tree->items[i].li_size = _rdd_uint(buf+10+i*8);
-						tree->items[i].li_offs = _rdd_uint(buf+10+i*8+4);
+						tree->items[i].li_size = _rdd_uint((unsigned char *)(buf+10+i*8));
+						tree->items[i].li_offs = _rdd_uint((unsigned char *)(buf+10+i*8+4));
 					}
 				}
 			}
@@ -836,10 +839,10 @@ int _flex_saveleaf(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* leaf,int size,const c
 	memset(buf,0xAD,FLEX_MAXLEAF*8);
 	memset(buf+FLEX_MAXLEAF*8,0,sizeof(buf)-FLEX_MAXLEAF*8);
 	for(i=0;i<leaf->count;i++){
-		_rdd_put_uint(buf+i*8+(size?0:4),leaf->items[i].li_size);
-		_rdd_put_uint(buf+i*8+(size?4:0),leaf->items[i].li_offs);
+		_rdd_put_uint((unsigned char *)(buf+i*8+(size?0:4)),leaf->items[i].li_size);
+		_rdd_put_uint((unsigned char *)(buf+i*8+(size?4:0)),leaf->items[i].li_offs);
 	}
-	_rdd_put_ushort(cb,(short)(leaf->count*4+3));
+	_rdd_put_ushort((unsigned char *)cb,(short)(leaf->count*4+3));
 	if((er = rdd_write(cm,&rm->file,leaf->offs+8,2,cb,__PROC__)))
 		return er;
 	if((er = rdd_write(cm,&rm->file,leaf->offs+10,sizeof(buf),buf,__PROC__)))
@@ -855,11 +858,11 @@ int _flex_savebranch(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* branch,int size,con
 	memset(buf,0xAD,FLEX_MAXPARENT*12);
 	memset(buf+FLEX_MAXPARENT*12,0,sizeof(buf)-FLEX_MAXPARENT*12);
 	for(i=0;i<branch->count;i++){
-		_rdd_put_uint(buf+i*12+(size?0:4),branch->items[i].li_size);
-		_rdd_put_uint(buf+i*12+(size?4:0),branch->items[i].li_offs);
-		_rdd_put_uint(buf+i*12+8,branch->items[i].page);
+		_rdd_put_uint((unsigned char *)(buf+i*12+(size?0:4)),branch->items[i].li_size);
+		_rdd_put_uint((unsigned char *)(buf+i*12+(size?4:0)),branch->items[i].li_offs);
+		_rdd_put_uint((unsigned char *)(buf+i*12+8),branch->items[i].page);
 	}
-	_rdd_put_ushort(cb,(short)(branch->count*4+2));
+	_rdd_put_ushort((unsigned char *)cb,(short)(branch->count*4+2));
 	if((er = rdd_write(cm,&rm->file,branch->offs+8,2,cb,__PROC__)))
 		return er;
 	if((er = rdd_write(cm,&rm->file,branch->offs+10,sizeof(buf),buf,__PROC__)))
@@ -878,7 +881,7 @@ static int _flex_addstick(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* child,unsigned
 
 		if((er = _flex_newpage(cm,rm,&newroot,0,__PROC__)))
 			return er;
-		_rdd_put_uint(buf,newroot);
+		_rdd_put_uint((unsigned char *)buf,newroot);
 		if((er = rdd_write(cm,&rm->file,(int)(size?&hdr->flexsize:&hdr->flexoffs),4,buf,__PROC__)))
 			return er;
 
@@ -919,10 +922,10 @@ static int _flex_splitbranch(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* branch,int 
 
 	if((er = rdd_read(cm,&rm->file,branch->offs,FLEX_PAGESIZE,buf,__PROC__)))
 		return er;
-	if(_rdd_backuint(buf) != 0x3e8)
+	if(_rdd_backuint((unsigned char *)buf) != 0x3e8)
 		return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,er_corruption);
 
-	_rdd_put_ushort(newbuf+8,(short)((branch->count-half)*4+2));
+	_rdd_put_ushort((unsigned char *)(newbuf+8),(short)((branch->count-half)*4+2));
 	memset(newbuf+10,0,FLEX_PAGESIZE-10);
 	memset(newbuf+10,0xAD,FLEX_MAXPARENT*12);
 	memcpy(newbuf+10,buf+10+half*12,(branch->count-half)*12);
@@ -931,7 +934,7 @@ static int _flex_splitbranch(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* branch,int 
 	if((er = rdd_write(cm,&rm->file,newpage+8,FLEX_PAGESIZE-8,newbuf+8,__PROC__)))
 		return er;
 
-	_rdd_put_ushort(buf+8,(short)(half*4+2));
+	_rdd_put_ushort((unsigned char *)(buf+8),(short)(half*4+2));
 	memset(buf+10+half*12,0xAD,(branch->count-half)*12);
 	memset(buf+10+branch->count*12,0,FLEX_PAGESIZE-(10+branch->count*12));
 	if((er = rdd_write(cm,&rm->file,branch->offs+8,FLEX_PAGESIZE-8,buf+8,__PROC__)))
@@ -962,10 +965,10 @@ static int _flex_splitleaf(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* leaf,int size
 
 	if((er = rdd_read(cm,&rm->file,leaf->offs,FLEX_PAGESIZE,buf,__PROC__)))
 		return er;
-	if(_rdd_backuint(buf) != 0x3e8)
+	if(_rdd_backuint((unsigned char *)buf) != 0x3e8)
 		return rdd_err(cm,EG_CORRUPTION,0,__FILE__,__LINE__,__PROC__,er_corruption);
 
-	_rdd_put_ushort(newbuf+8,(short)((leaf->count-half)*4+3));
+	_rdd_put_ushort((unsigned char *)(newbuf+8),(short)((leaf->count-half)*4+3));
 	memset(newbuf+10,0,FLEX_PAGESIZE-10);
 	memset(newbuf+10,0xAD,FLEX_MAXLEAF*8);
 	memcpy(newbuf+10,buf+10+half*8,(leaf->count-half)*8);
@@ -974,7 +977,7 @@ static int _flex_splitleaf(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* leaf,int size
 	if((er = rdd_write(cm,&rm->file,newpage+8,FLEX_PAGESIZE-8,newbuf+8,__PROC__)))
 		return er;
 
-	_rdd_put_ushort(buf+8,(short)(half*4+3));
+	_rdd_put_ushort((unsigned char *)(buf+8),(short)(half*4+3));
 	memset(buf+10+half*8,0xAD,(leaf->count-half)*8);
 	memset(buf+10+leaf->count*8,0,FLEX_PAGESIZE-(10+leaf->count*8));
 	if((er = rdd_write(cm,&rm->file,leaf->offs+8,FLEX_PAGESIZE-8,buf+8,__PROC__)))
@@ -1090,10 +1093,10 @@ static int _flex_freeblock(ClipMachine* cm,RDD_MEMO* rm,unsigned int offs,int l,
 			return er;
 	}
 
-	_rdd_put_backuint(buf,0x3e9);
+	_rdd_put_backuint((unsigned char *)buf,0x3e9);
 	if((er = rdd_write(cm,&rm->file,offs,4,buf,__PROC__)))
 		return er;
-	_rdd_put_backuint(buf,l-8);
+	_rdd_put_backuint((unsigned char *)buf,l-8);
 	if((er = rdd_write(cm,&rm->file,offs+4,4,buf,__PROC__)))
 		return er;
 
@@ -1120,7 +1123,7 @@ static int flex_freeblock(ClipMachine* cm,RDD_MEMO* rm,int id,const char* __PROC
 	if(id && (rm->format == CLIP_MEMO || rm->format == FLEX_MEMO)){
 		if((er = rdd_read(cm,&rm->file,offs+4,4,buf,__PROC__)))
 			return er;
-		len = _rdd_backuint(buf);
+		len = _rdd_backuint((unsigned char *)buf);
 		b = (len+8+(rm->blocksize-1))/rm->blocksize;
 		l = b*rm->blocksize;
 
@@ -1236,8 +1239,8 @@ static int flex_useblock(ClipMachine* cm,RDD_MEMO* rm,int* id,int len,const char
 	} else {
 		if((er = rdd_read(cm,&rm->file,0,4,fuu,__PROC__)))
 			goto err;
-		*id = _rdd_backuint(fuu);
-		_rdd_put_backuint(fuu,*id+b);
+		*id = _rdd_backuint((unsigned char *)fuu);
+		_rdd_put_backuint((unsigned char *)fuu,*id+b);
 		if((er = rdd_write(cm,&rm->file,0,4,fuu,__PROC__)))
 			goto err;
 	}
@@ -1267,10 +1270,10 @@ static int _fpt_setvalue(ClipMachine* cm,RDD_MEMO* rm,int id,int type,char* str,
 
 	if(!id)
 		return 0;
-	_rdd_put_backuint(buf,type);
+	_rdd_put_backuint((unsigned char *)buf,type);
 	if((er = rdd_write(cm,&rm->file,offs,4,buf,__PROC__)))
 		return er;
-	_rdd_put_backuint(buf,len);
+	_rdd_put_backuint((unsigned char *)buf,len);
 	if((er = rdd_write(cm,&rm->file,offs+4,4,buf,__PROC__)))
 		return er;
 	if((er = rdd_write(cm,&rm->file,offs+8,len,str,__PROC__)))
@@ -1302,7 +1305,7 @@ static int fpt_setvalue(ClipMachine* cm,RDD_MEMO* rm,int* id,ClipVar* vp,int bin
 		l = vp->s.str.len;
 		str = _clip_memdup(vp->s.str.buf,l);
 		if(!binary)
-			loc_write(rm->loc,str,l);
+			loc_write(rm->loc,(unsigned char *)str,l);
 	}
 
 	if(vp->t.type != CHARACTER_t){
@@ -1362,7 +1365,7 @@ static int fpt_pack(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int tmpfd,int bsiz
 		step = 1;
 	if(block && block->t.type == UNDEF_t)
 		block = NULL;
-	_rdd_put_backushort(hdr.blocksize,rm->blocksize);
+	_rdd_put_backushort((unsigned char *)hdr.blocksize,rm->blocksize);
 	if(rm->format == FLEX_MEMO || rm->format == CLIP_MEMO){
 		strcpy(hdr.sig,"FlexFile3");
 		hdr.sig[9] = 3;
@@ -1373,7 +1376,7 @@ static int fpt_pack(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int tmpfd,int bsiz
 		strcpy(hdr.sig0,"SIxMemo");
 
 	if(write(rm->file.fd,&hdr,sizeof(FPT_HEADER))!=sizeof(FPT_HEADER)) goto err;
-	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) goto err1;
+	if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) goto err1;
 
 	for(rd->recno=1;rd->recno<=lastrec;rd->recno++){
 		for(i=0;i<rd->nfields;i++){
@@ -1460,14 +1463,14 @@ static int fpt_setvchar(ClipMachine* cm,RDD_MEMO* rm,int len,int oldlen,unsigned
 			return er;
 	} else {
 		if((er = rdd_read(cm,&rm->file,0,4,m,__PROC__))) return er;
-		*id = _rdd_backuint(m);
+		*id = _rdd_backuint((unsigned char *)m);
 		if((er = rdd_write(cm,&rm->file,(*id)*rm->blocksize,len,buf,__PROC__)))
 			return er;
 		if(len%rm->blocksize){
 			if((er = rdd_write(cm,&rm->file,(*id+newbls)*rm->blocksize-1,1,"",__PROC__)))
 				return er;
 		}
-		_rdd_put_backuint(m,*id+newbls);
+		_rdd_put_backuint((unsigned char *)m,*id+newbls);
 		if((er = rdd_write(cm,&rm->file,0,4,m,__PROC__))) return er;
 	}
 	return 0;

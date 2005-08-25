@@ -5,6 +5,9 @@
 */
 /*
    $Log: _io.c,v $
+   Revision 1.282  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
    Revision 1.281  2005/03/24 08:18:51  clip
    uri: some fix for val("+40")
 
@@ -2928,7 +2931,7 @@ out_scr(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 
 	sp->touched[y] = 1;
 
-	for (i = 0, s = buf; i < n; ++i, ++s)
+	for (i = 0, s = (unsigned char *)buf; i < n; ++i, ++s)
 	{
 		switch ((ch = *s))
 		{
@@ -3655,7 +3658,7 @@ clip_DISPBOXTERM(ClipMachine * mp)
 	if (cl > 0 || !chars)
 		disp_box(mp, Top, Left, Bottom, Right, chars, cl, chars_n, color, 0);
 	else
-		disp_box(mp, Top, Left, Bottom, Right, "         ", 9, chars_n, color, 0);
+		disp_box(mp, Top, Left, Bottom, Right, (unsigned char *)("         "), 9, chars_n, color, 0);
 
 	return 0;
 }
@@ -4363,7 +4366,7 @@ clip___KEYBOARD(ClipMachine * mp)
 
 	if (vp->t.type == CHARACTER_t)
 	{
-		unsigned char *s = vp->s.str.buf;
+		unsigned char *s = (unsigned char *)vp->s.str.buf;
 		int l = vp->s.str.len;
 		int i;
 		int n = *mp->kbdptr - mp->kbdbuf;
@@ -4462,7 +4465,7 @@ clip_CHR(ClipMachine * mp)
 
 	buf[0] = ch;
 	buf[1] = 0;
-	_clip_retcn(mp, buf, 1);
+	_clip_retcn(mp, (char *)buf, 1);
 
 	return 0;
 }
@@ -4470,7 +4473,7 @@ clip_CHR(ClipMachine * mp)
 int
 clip_ASC(ClipMachine * mp)
 {
-	unsigned char *str = _clip_parc(mp, 1);
+	unsigned char *str = (unsigned char *)_clip_parc(mp, 1);
 	int ch = 0;
 
 	if (str)
@@ -4799,7 +4802,7 @@ clip___ACCEPT(ClipMachine * mp)
 		sync_mp(mp);
 	}
 
-	s = (char *) malloc(size);
+	s = (unsigned  char *) malloc(size);
 
 	s[0] = 0;
 
@@ -4814,7 +4817,7 @@ clip___ACCEPT(ClipMachine * mp)
 		if (pos >= size - 1)
 		{
 			size = size * 3 / 2;
-			s = (char *) realloc(s, size);
+			s = (unsigned char *) realloc(s, size);
 		}
 
 		switch (ckey)
@@ -4836,14 +4839,14 @@ clip___ACCEPT(ClipMachine * mp)
 
 				free(s);
 				size = l + 4;
-				s = (char *) malloc(size);
+				s = (unsigned char *) malloc(size);
 				memcpy(s, sp, l);
 				s[l] = 0;
 
 				for (i = 0; i < cpos; ++i)
 					out_dev(mp, "\b", 1, attr, 1);
 
-				out_dev(mp, s, l, attr, 1);
+				out_dev(mp, (char *)s, l, attr, 1);
 
 				for (i = l; i < pos; ++i)
 					out_dev(mp, " ", 1, attr, 1);
@@ -4876,7 +4879,7 @@ clip___ACCEPT(ClipMachine * mp)
 		case 6:	/* End */
 			if (cpos < pos)
 			{
-				out_dev(mp, s + cpos, pos - cpos, attr, 1);
+				out_dev(mp, (char * )(s + cpos), pos - cpos, attr, 1);
 				cpos = pos;
 			}
 			break;
@@ -4890,7 +4893,7 @@ clip___ACCEPT(ClipMachine * mp)
 		case 4:	/* Right */
 			if (cpos < pos)
 			{
-				out_dev(mp, s + cpos, 1, attr, 1);
+				out_dev(mp, (char *)(s + cpos), 1, attr, 1);
 				++cpos;
 			}
 			break;
@@ -4908,7 +4911,7 @@ clip___ACCEPT(ClipMachine * mp)
 					memmove(s + cpos, s + cpos + 1, l);
 					s[pos] = ' ';
 					out_dev(mp, "\b", 1, attr, 1);
-					out_dev(mp, s + cpos, l + 1, attr, 1);
+					out_dev(mp, (char *)(s + cpos), l + 1, attr, 1);
 					for (i = 0; i <= l; ++i)
 						out_dev(mp, "\b", 1, attr, 1);
 				}
@@ -4923,7 +4926,7 @@ clip___ACCEPT(ClipMachine * mp)
 
 					memmove(s + cpos, s + cpos + 1, l);
 					s[pos] = ' ';
-					out_dev(mp, s + cpos, l + 1, attr, 1);
+					out_dev(mp, (char *)(s + cpos), l + 1, attr, 1);
 					for (i = 0; i <= l; ++i)
 						out_dev(mp, "\b", 1, attr, 1);
 				}
@@ -4939,7 +4942,7 @@ clip___ACCEPT(ClipMachine * mp)
 				{
 					s[cpos++] = b;
 					pos = cpos;
-					out_dev(mp, &b, 1, attr, 1);
+					out_dev(mp, (char *)(&b), 1, attr, 1);
 				}
 				else
 				{
@@ -4947,8 +4950,8 @@ clip___ACCEPT(ClipMachine * mp)
 
 					memmove(s + cpos + 1, s + cpos, l);
 					s[cpos] = b;
-					out_dev(mp, &b, 1, attr, 1);
-					out_dev(mp, s + cpos + 1, l, attr, 1);
+					out_dev(mp, (char *)(&b), 1, attr, 1);
+					out_dev(mp, (char *)(s + cpos + 1), l, attr, 1);
 					for (i = 0; i < l; ++i)
 						out_dev(mp, "\b", 1, attr, 1);
 					++cpos;
@@ -4960,9 +4963,9 @@ clip___ACCEPT(ClipMachine * mp)
 	}
 
 	  ret:
-	_clip_retc(mp, s);
+	_clip_retc(mp, (char *)s);
 
-	if (c == 0 || strcmp(mp->history.items[c - 1], s))
+	if (c == 0 || strcmp(mp->history.items[c - 1], (char *)s))
 		add_ClipVect(&mp->history, s);
 	else
 		free(s);
@@ -5103,7 +5106,7 @@ save_region(ClipMachine * mp, char *mem, int top, int left, int bottom, int righ
 			*p++ = sp->attrs[i][j];
 #endif
 		}
-	return s;
+	return (char *)s;
 }
 
 static void
@@ -5115,7 +5118,7 @@ rest_region(ClipMachine * mp, int top, int left, int bottom, int right, char *s,
 	int lines = sp->base->Lines;
 	int columns = sp->base->Columns;
 
-	for (i = top, p = s, e = p + l; i <= bottom; ++i)
+	for (i = top, p = (unsigned char *)s, e = p + l; i <= bottom; ++i)
 	{
 		if (i < 0 || i >= lines)
 			continue;
@@ -5734,7 +5737,7 @@ clip_WBOXTERM(ClipMachine * mp)
 
 	if (chars)
 	{
-		cl = strlen(chars);
+		cl = strlen((const char *)chars);
 		if (cl >= sizeof(bchars))
 			cl = sizeof(bchars) - 1;
 
@@ -6814,9 +6817,9 @@ clip_CENTER(ClipMachine * mp)
 {
 	int l1, l2, nl, i;
 	unsigned char *ret, *beg, *end, fillchr = ' ';
-	unsigned char *str = _clip_parcl(mp, 1, &l1);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	int len = _clip_parni(mp, 2);
-	unsigned char *s = _clip_parcl(mp, 3, &l2);
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 3, &l2);
 	int flag = _clip_parl(mp, 4);
 
 	if (str == NULL)
@@ -6829,7 +6832,7 @@ clip_CENTER(ClipMachine * mp)
 	if (_clip_parinfo(mp, 3) == LOGICAL_t)
 	{
 		flag = _clip_parl(mp, 3);
-		s = " ";
+		s = (unsigned char *)(" ");
 	}
 	if (len == 0)
 	{
@@ -6857,7 +6860,7 @@ clip_CENTER(ClipMachine * mp)
 			ret[i] = fillchr;
 	}
 	ret[i] = 0;
-	_clip_retcn_m(mp, ret, i);
+	_clip_retcn_m(mp, (char *)ret, i);
 	return 0;
 }
 

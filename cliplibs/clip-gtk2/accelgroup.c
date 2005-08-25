@@ -611,7 +611,7 @@ clip_GTK_ACCELERATORGETLABEL(ClipMachine * cm)
 {
 	guint accelerator_key = _clip_parni(cm, 1);
 	GdkModifierType  type = _clip_parni(cm, 2);
-        gchar          *label ;
+        gchar  *label ;
 
 	CHECKARG(1, NUMERIC_t);
 	CHECKARG(2, NUMERIC_t);

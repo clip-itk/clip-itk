@@ -1,5 +1,6 @@
 #include "gd.h"
 #include <string.h>
+#include <stdlib.h>
 
 #define PI 3.141592
 #define DEG2RAD(x) ((x)*PI/180.)
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
 #else
 	char *f = "times"; /* TrueType font */
 #endif
-	
+
 	/* obtain brect so that we can size the image */
 	err = gdImageStringFT((gdImagePtr)NULL,&brect[0],0,f,sz,angle,0,0,s);
 	if (err) {fprintf(stderr,err); return 1;}
@@ -91,4 +92,4 @@ int main(int argc, char *argv[])
 
 	return 0;
 #endif /* HAVE_FREETYPE */
-}	
+}

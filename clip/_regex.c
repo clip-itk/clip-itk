@@ -26,8 +26,8 @@ int
 clip_SEARCH(ClipMachine * mp)
 {
 	int c, sl, length, i;
-	unsigned char *s = _clip_parcl(mp, 1, &sl);	/* pattern */
-	unsigned char *string = _clip_parcl(mp, 2, &length);	/* string */
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 1, &sl);	/* pattern */
+	unsigned char *string = (unsigned char *)_clip_parcl(mp, 2, &length);	/* string */
 	unsigned char *str, *buf;
 	int start = _clip_parni(mp, 4) - 1;	/*from (start position) */
 	int range = _clip_parni(mp, 5) - 1;	/*range */
@@ -51,11 +51,11 @@ clip_SEARCH(ClipMachine * mp)
 		start = 0;
 	range = abs(range) < length ? abs(range) : length;
 
-	str = (char *) malloc(range + 1);
+	str = (unsigned char *) malloc(range + 1);
 	memcpy(str, string + start, range);
 	str[range] = 0;
 
-	buf = (char *) malloc(sl + 1);
+	buf = (unsigned char *) malloc(sl + 1);
 	memcpy(buf, s, sl);
 	buf[sl] = 0;
 
@@ -72,9 +72,9 @@ clip_SEARCH(ClipMachine * mp)
 	}
 	memset(&preg, 0, sizeof(preg));
 
-	regcomp(&preg, buf, REG_EXTENDED | (buf[0]=='^'?REG_NEWLINE:0));
+	regcomp(&preg, (const char *)buf, REG_EXTENDED | (buf[0]=='^'?REG_NEWLINE:0));
 
-	if (regexec(&preg, str, RE_NREGS, rmatch, 0/*REG_NOTBOL*/) == 0)
+	if (regexec(&preg, (const char *)str, RE_NREGS, rmatch, 0/*REG_NOTBOL*/) == 0)
 	{
 		int j;
 
@@ -151,7 +151,7 @@ int
 clip_RGCOMP(ClipMachine * mp)
 {
 	int ret, sl, rc, i;
-	unsigned char *s = _clip_parcl(mp, 1, &sl);	/* pattern */
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 1, &sl);	/* pattern */
 	unsigned char *buf;
 	regex_t *preg = NULL;
 
@@ -162,7 +162,7 @@ clip_RGCOMP(ClipMachine * mp)
 	}
 	preg = (regex_t*)malloc( sizeof(regex_t));
 
-	buf = (char *) malloc(sl + 1);
+	buf = (unsigned char *) malloc(sl + 1);
 	memcpy(buf, s, sl);
 	buf[sl] = 0;
 
@@ -171,7 +171,7 @@ clip_RGCOMP(ClipMachine * mp)
 		if ((*s) > 127)
 			buf[i] = _clip_cmptbl[(*s)];
 	}
-	rc = regcomp(preg, buf, REG_EXTENDED | (buf[0]=='^'?REG_NEWLINE:0));
+	rc = regcomp(preg, (const char *)buf, REG_EXTENDED | (buf[0]=='^'?REG_NEWLINE:0));
 
 	ret = _clip_store_c_item(mp, preg, _C_ITEM_TYPE_REGEX, destroy_c_regex);
 	_clip_retni(mp, ret);
@@ -185,7 +185,7 @@ clip_RGEXEC(ClipMachine * mp)
 {
 	int c, length, i;
 	int item = _clip_parni(mp, 1);		/* container pattern */
-	unsigned char *string = _clip_parcl(mp, 2, &length);	/* string */
+	unsigned char *string = (unsigned char *)_clip_parcl(mp, 2, &length);	/* string */
 	unsigned char *str;
 	int start = _clip_parni(mp, 4) - 1;	/*from (start position) */
 	int range = _clip_parni(mp, 5) - 1;	/*range */
@@ -210,7 +210,7 @@ clip_RGEXEC(ClipMachine * mp)
 		start = 0;
 	range = abs(range) < length ? abs(range) : length;
 
-	str = (char *) malloc(range + 1);
+	str = (unsigned char *) malloc(range + 1);
 	memcpy(str, string + start, range);
 	str[range] = 0;
 
@@ -222,7 +222,7 @@ clip_RGEXEC(ClipMachine * mp)
 	}
 
 	preg = (regex_t *) _clip_fetch_c_item(mp, item, _C_ITEM_TYPE_REGEX);
-	rerr = regexec(preg, str, RE_NREGS, rmatch, 0);
+	rerr = regexec(preg, (const char *)str, RE_NREGS, rmatch, 0);
 	if ( rerr == 0)
 	{
 		int j;
@@ -281,7 +281,7 @@ clip_RGEXEC(ClipMachine * mp)
 	}
 	else
 	{
-		 regerror(rerr, preg, str, range);
+		 regerror(rerr, preg, (char *)str, range);
 		 _clip_retl(mp, 0);
 	}
 	free(str);
@@ -293,6 +293,122 @@ clip_RGCANCEL(ClipMachine * mp)
 {
 	int item = _clip_parni(mp, 1);		/* container pattern */
 	_clip_destroy_c_item(mp, item, _C_ITEM_TYPE_REGEX);
+	return 0;
+}
+
+int
+clip_SPLIT(ClipMachine * mp)
+{
+	int sl, length, i;
+	unsigned char *string = (unsigned char *)_clip_parcl(mp, 1, &length);	/* string */
+	unsigned char *s = (unsigned char *)_clip_parcl(mp, 2, &sl);	/* pattern */
+	unsigned char *str, *buf;
+	unsigned char *ustr;
+	int start = 0;					/*from (start position) */
+	int range = length;				/*range */
+	int b;
+	long l[2];
+	ClipVar *rg = RETPTR(mp);
+
+	regex_t preg;
+	regmatch_t rmatch[RE_NREGS];
+
+	if (s == NULL || string == NULL)
+	{
+		_clip_retl(mp, 0);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "SEARCH");
+	}
+
+	str = (unsigned char *) malloc(range + 1);
+	memcpy(str, string + start, range);
+	str[range] = 0;
+
+	buf = (unsigned char *) malloc(sl + 1);
+	memcpy(buf, s, sl);
+	buf[sl] = 0;
+
+	for(i=0; i<sl; i++, s++)
+	{
+		if ((*s) > 127)
+			buf[i] = _clip_cmptbl[(*s)];
+	}
+	ustr = string;
+	for(i=0; i<range; i++, string++)
+	{
+		if (*(string+start) > 127)
+			str[i] = _clip_cmptbl[*(string+start)];
+
+	}
+	memset(&preg, 0, sizeof(preg));
+
+	regcomp(&preg, (const char *)buf, REG_EXTENDED | (buf[0]=='^'?REG_NEWLINE:0));
+
+	l[0] = 0;
+	_clip_array(mp, rg, 1, l);
+
+	b = 0;
+	while (b <= range)
+	{
+		if (regexec(&preg, (const char *)(str+b), RE_NREGS, rmatch, 0/*REG_NOTBOL*/) == 0)
+		{
+			int j=0;
+
+
+			ClipVar *st;
+
+			j = rmatch[0].rm_so;
+			if (j == -1)
+			{
+				st = NEW(ClipVar);
+
+				j = range - b;
+				st->t.type = CHARACTER_t;
+				st->s.str.buf = realloc(st->s.str.buf, j+1);
+				memcpy(st->s.str.buf, ustr+b, j);
+				st->s.str.buf[j] = 0;
+				st->s.str.len = j;
+				_clip_aadd(mp, rg, st);
+
+				_clip_delete(mp, st);
+				break;
+			}
+
+			st = NEW(ClipVar);
+
+			st->t.type = CHARACTER_t;
+			st->s.str.buf = realloc(st->s.str.buf, j+1);
+			memcpy(st->s.str.buf, ustr+b, j);
+			st->s.str.buf[j] = 0;
+			st->s.str.len = j;
+			_clip_aadd(mp, rg, st);
+
+			_clip_delete(mp, st);
+
+			b += rmatch[0].rm_eo;
+		}
+		else
+		{
+			ClipVar *st;
+			int j;
+			st = NEW(ClipVar);
+
+			j = range - b;
+			st->t.type = CHARACTER_t;
+			st->s.str.buf = realloc(st->s.str.buf, j+1);
+			memcpy(st->s.str.buf, ustr+b, j);
+			st->s.str.buf[j] = 0;
+			st->s.str.len = j;
+			_clip_aadd(mp, rg, st);
+
+			_clip_delete(mp, st);
+			break;
+		}
+	} // while
+
+	regfree(&preg);
+	free(str);
+	free(buf);
+
 	return 0;
 }
 

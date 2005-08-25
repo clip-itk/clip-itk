@@ -5,6 +5,9 @@
 */
 /*
    $Log: _mem.c,v $
+   Revision 1.26  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
    Revision 1.25  2005/03/31 11:47:42  clip
    uri: small fix for support mem files from FOX
 
@@ -311,7 +314,7 @@ read_MemFile(const char *path, DbfLocale * tbl,
 
 		dp = (*resp) + (*rescount);
 		memset(dp, 0, sizeof(DbfData));
-		(*names)[*rescount] = strdup(mh.name);
+		(*names)[*rescount] = strdup((const char *)mh.name);
 		++(*rescount);
 
 		//printf("\ntype=%d,%x,len=%d,name=%s\n",mh.type,mh.type,mh.len,mh.name);
@@ -448,7 +451,7 @@ write_MemFile(const char *path, DbfLocale * tbl,
 		dp = arr + i;
 
 		memset(&mh, 0, sizeof(mh));
-		strncpy(mh.name, names[i], 10);
+		strncpy((char *)mh.name, names[i], 10);
 
 		switch (dp->type)
 		{

@@ -1,6 +1,9 @@
 
 /*
    $Log: keymap.c,v $
+   Revision 1.4  2005/07/06 15:30:28  clip
+   uri: strange trouble with new util loadkeys and old kernel. not fixed goodly.
+
    Revision 1.3  2001/05/15 10:34:28  clip
    memdebug
    paul
@@ -128,9 +131,21 @@ load_keymap(FILE *file, char *errbuf, int errbuflen)
 			key_maps[i] = 0;
 			continue;
 		}
-
+//#define NEW_NR_KEYS
+/*
+	new kernels have value 512.
+	loadkeys util what generated under new kernels
+	created	file with 512 items.
+	But old kernel and files support only 128 items per map.
+	This patch make for ignoring items 129...512.
+*/
+#ifndef NEW_NR_KEYS
 		if (size < 0 || size > NR_KEYS)
 			goto err;
+#else
+		if (size < 0 )
+			goto err;
+#endif
 
 		keymap = (unsigned short *) calloc(size, sizeof(unsigned short));
 
@@ -142,6 +157,12 @@ load_keymap(FILE *file, char *errbuf, int errbuflen)
 
 			if (get_str(file, buf, sizeof(buf)))
 				goto err;
+#ifdef NEW_NR_KEYS
+			if (j > NR_KEYS)
+				continue;
+			if ( strncmp(buf,"#keymap",7)==0 )
+				exit;
+#endif
 			if (sscanf(buf, "%u", &us) != 1)
 				goto err;
 			keymap[j] = us;
@@ -220,6 +241,7 @@ load_keymap(FILE *file, char *errbuf, int errbuflen)
 
 	goto norm;
       err:
+
 	if (errbuf)
 		snprintf(errbuf, errbuflen, "keymap format error: line %d '%s' %s",
 			 line_no, buf, strerror(errno));

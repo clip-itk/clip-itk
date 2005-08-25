@@ -17,6 +17,7 @@ parameters p1,p2,p3,p4,p5
 		? "           append/update it on dictionaries"
 		?
 		? "Usage: codb_make"
+		? "Usage: codb_make --help"
 		?
 		? "Description of meta data will load from data[x]/codb_list.xml"
 		quit
@@ -28,16 +29,11 @@ parameters p1,p2,p3,p4,p5
 	s+=iif(p4==NIL,"",p4)
 	s+=iif(p5==NIL,"",p5)
 
-
-	if "--nodata" $ lower(s)
-		set("CODB_INSTALL_NODATA","yes")
-	endif
-
 	set exclusive on
 	set translate path off
 	set optimize on
 	set optimize level to 2
-    set deleted off
+	set deleted off
 
 	dList:=codbList():new()
 	if val(dList:error)!=0

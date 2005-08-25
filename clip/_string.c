@@ -5,6 +5,12 @@
 */
 /*
    $Log: _string.c,v $
+   Revision 1.117  2005/08/08 09:00:30  clip
+   alena: fix for gcc 4
+
+   Revision 1.116  2005/06/08 12:27:36  clip
+   alena: fix split(work with regexpression) and add new charsplit(simple split).
+
    Revision 1.115  2005/02/15 11:04:02  clip
    uri: small fix in descend()
 
@@ -925,7 +931,7 @@ clip_UPPER(ClipMachine * mp)
 	}
 
 	r = _clip_memdup(s, l);
-	translate(r, l, 1);
+	translate((unsigned char *)r, l, 1);
 
 	_clip_retcn_m(mp, r, l);
 
@@ -953,7 +959,7 @@ clip_XUPPER(ClipMachine * mp)
 		}
 
 		r = _clip_memdup(s, l);
-		translate(r, l, 1);
+		translate((unsigned char *)r, l, 1);
 
 		_clip_retcn_m(mp, r, l);
 	} else {
@@ -979,7 +985,7 @@ clip_LOWER(ClipMachine * mp)
 	}
 
 	r = _clip_memdup(s, l);
-	translate(r, l, 0);
+	translate((unsigned char *)r, l, 0);
 
 		_clip_retcn_m(mp, r, l);
 
@@ -2063,7 +2069,7 @@ clip_DESCEND(ClipMachine * mp)
 	{
 	case MEMO_t:
 	case CHARACTER_t:
-		str = _clip_parcl(mp, 1, &l);
+		str = (unsigned char *)_clip_parcl(mp, 1, &l);
 		buf = calloc(l + 1, 1); buf[l] = 0 ;
 		for (i = 0; i < l; i++)
 		{
@@ -2077,7 +2083,7 @@ clip_DESCEND(ClipMachine * mp)
 			else
 				buf[i] = ch;
 		}
-		_clip_retcn_m(mp, buf, l);
+		_clip_retcn_m(mp, (char *)buf, l);
 		break;
 	case DATE_t:
 		_clip_retnl(mp, 5231808 - _clip_pardj(mp, 1));
@@ -2152,7 +2158,7 @@ clip_ALT2KOI(ClipMachine * mp)
 
 	int l;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 
 	if (str == NULL)
 	{
@@ -2162,8 +2168,8 @@ clip_ALT2KOI(ClipMachine * mp)
 	ret = malloc(l + 1);
 	memcpy(ret, str, l);
 	ret[l] = 0;
-	_clip_recodeString(ret, l, CS_ALT, CS_KOI);
-	_clip_retcn_m(mp, ret, l);
+	_clip_recodeString((char *)ret, l, CS_ALT, CS_KOI);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -2173,7 +2179,7 @@ clip_KOI2ALT(ClipMachine * mp)
 
 	int l;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 
 	if (str == NULL)
 	{
@@ -2183,8 +2189,8 @@ clip_KOI2ALT(ClipMachine * mp)
 	ret = malloc(l + 1);
 	memcpy(ret, str, l);
 	ret[l] = 0;
-	_clip_recodeString(ret, l, CS_KOI, CS_ALT);
-	_clip_retcn_m(mp, ret, l);
+	_clip_recodeString((char *)ret, l, CS_KOI, CS_ALT);
+	_clip_retcn_m(mp, (char *)ret, l);
 	return 0;
 }
 
@@ -2193,7 +2199,7 @@ clip_ADDSLASH(ClipMachine * mp)
 {
 	int count=0,i,l;
 	unsigned char *ret;
-	unsigned char *str = _clip_parcl(mp, 1, &l);
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &l);
 
 	if ( str==NULL || l==0 )
 	{
@@ -2230,7 +2236,7 @@ clip_ADDSLASH(ClipMachine * mp)
 		ret[count] = str[i]?str[i]:'0';
 	}
 	ret[count] = 0;
-	_clip_retcn_m(mp,ret,count);
+	_clip_retcn_m(mp,(char *)ret,count);
 	return 0;
 }
 
@@ -2321,3 +2327,58 @@ clip_BASE64ENCODE(ClipMachine * mp)
 	_clip_retcn_m(mp,out,l);
 	return 0;
 }
+int
+clip_CHARSPLIT(ClipMachine * mp)
+{
+	int i = 1, sl, l, ll, kol;
+	const char *ss;
+	char *s = _clip_parcl(mp, 1, &sl);
+	char *str = _clip_parcl(mp, 2, &l);
+	ClipVar *arr = RETPTR(mp);
+	long ln[2];
+
+	if (str == NULL || s == NULL)
+	{
+		_clip_retni(mp, 0);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "CHSPLIT");
+	}
+
+	ln[0]=0;
+	_clip_array(mp, arr, 1, ln);
+
+	ss = str;
+	kol = 0;
+	while (1)
+	{
+		ll = l - (ss - str);
+		ss = _atl(ss, s, ll, sl);
+		if (ss != NULL)
+		{
+			ClipVar *st;
+
+			st = NEW(ClipVar);
+			_clip_var_str(str+kol, ss-str-kol, st);
+			_clip_aadd(mp, arr, st);
+
+			_clip_delete(mp, st);
+
+			kol = ss - str +1;
+		}
+		if (ss == NULL)
+		{
+			ClipVar *st;
+
+			st = NEW(ClipVar);
+			_clip_var_str(str+kol, l-kol, st);
+			_clip_aadd(mp, arr, st);
+
+			_clip_delete(mp, st);
+			break;
+		}
+		i++;
+		ss++;
+
+	}
+	return 0;
+}
+

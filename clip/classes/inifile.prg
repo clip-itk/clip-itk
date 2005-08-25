@@ -153,10 +153,12 @@ static function __IF_load()
 		::error := [Bad file name: name is not specified]
 		return .f.
 	endif
+	/*
 	if ".ini" $ ::file
 	else
 		::file += ".ini"
 	endif
+	*/
 	fh:=fopen(::file,FO_READ)
 	if fh<0
 		::error := ::file+[: open error:]+ferrorstr()

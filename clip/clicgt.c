@@ -1,13 +1,16 @@
 /*
 	$Log: clicgt.c,v $
+	Revision 1.15  2005/07/07 12:47:50  clip
+	uri: some fix for gcc4
+	
 	Revision 1.14  2003/09/08 15:06:02  clip
 	uri: next step fixes for mingw from uri
-	
+
 	Revision 1.13  2003/09/02 14:27:42  clip
 	changes for MINGW from
 	Mauricio Abre <maurifull@datafull.com>
 	paul
-	
+
 */
 
 #include <sys/types.h>
@@ -232,7 +235,7 @@ tr_charset(Locale *lp, char *msg)
 		rp = (char*) malloc(ol);
 		ip = msg;
 		op = rp;
-		iconv(lp->it, &ip, &il, &op, &ol);
+		iconv(lp->it, &ip, (size_t*)&il, &op, (size_t*)&ol);
 		rl -= ol;
 		rp = (char*) realloc(rp, rl+1);
 		rp[rl] = 0;

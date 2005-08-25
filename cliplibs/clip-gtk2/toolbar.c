@@ -72,6 +72,7 @@ err:
 }
 /**** ------------------ ****/
 
+/* not used
 static void
 _toolbar_child_destroy(ClipMachine * cm, C_widget * cw)
 {
@@ -80,7 +81,7 @@ _toolbar_child_destroy(ClipMachine * cm, C_widget * cw)
         	free (cw->data);
         }
 }
-
+*/
 static void
 _toolbar_child_callback(GtkWidget * widget, gpointer data)
 {

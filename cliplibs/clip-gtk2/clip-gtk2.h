@@ -341,8 +341,13 @@ int gdk_object_font_destructor(ClipMachine *cm, C_object *cfont);
 int gdk_object_gc_destructor(ClipMachine *cm, C_object *cgc);
 int gdk_object_colormap_destructor(ClipMachine *cm, C_object *ccmap);
 int gdk_object_window_destructor(ClipMachine *cm, C_object *cwin);
+#if 1
+char * _clip_locale_to_utf8(char *);
+char * _clip_locale_from_utf8(char *);
+#else
 unsigned char * _clip_locale_to_utf8(unsigned char *);
 unsigned char * _clip_locale_from_utf8(unsigned char *);
+#endif
 int _map_put_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region);
 int _map_get_gdk_rectangle (ClipMachine *cm, ClipVar *map, GdkRectangle *region);
 void _map_to_gtk_accel_key (ClipMachine *cm, ClipVar *cv, GtkAccelKey *key);
