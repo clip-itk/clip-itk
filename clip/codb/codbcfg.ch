@@ -4,8 +4,9 @@
 
 #define _CODBCFG_DEFINED
 
-#define CODB_VERSION "0.6.5"
+#define CODB_VERSION "0.7.0"
 #define CODB_KNOWLEDGE "0.1.0"
+#define CODB_MAX_OBJ_VERSION 10
 
 /* space for all IDENT in OODB */
 #define CODB_ID_LEN		12

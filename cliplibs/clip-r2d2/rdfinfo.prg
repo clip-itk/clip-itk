@@ -4,7 +4,7 @@ function r2d2_info_rdf(_queryArr)
 
 local err,_query
 local i,j,obj,idlist,sErr
-local aRefs, aTree :={}
+local aRefs, aTree :={}, needDeleted := .f.
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
@@ -40,6 +40,9 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 		atom := upper(_query:atom)
 	endif
 	atom := (left(atom,1) == "Y")
+	if "__DELETED" $ _query
+		needDeleted := (left(_query:__deleted,1) $ "YyäÄ")
+	endif
 
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang)
@@ -92,7 +95,7 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 	endif
 
 	if empty(id) .and. empty(values)
-		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,,@Serr,.f.,.t.)
+		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,,@Serr,.f.,.t.,,needDeleted)
 		if !empty(serr)
 			cgi_xml_error("Error in parameters:"+Serr)
 		endif
@@ -106,17 +109,23 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 		elseif !empty(values) .and. !empty(attr)
 			for i=1 to len(values)
 				s_select := attr+'=="'+values[i]+'"'
-				tmp:=oDep:select(classDesc:id,,,s_select)
+				tmp:=oDep:select(classDesc:id,,,s_select,,needDeleted)
 				for j=1 to len(tmp)
 					aadd(idList,tmp[j])
 				next
 			next
 		else // if !empty(s_select)
-			iDlist:=oDep:select(classDesc:id,,,s_select)
+			iDlist:=oDep:select(classDesc:id,,,s_select,,needDeleted)
 		endif
 
 		for i=1 to len(idList)
 			obj := oDep:getValue(idList[i])
+			if empty(obj)
+				loop
+			endif
+			if needDeleted .and. obj:__version >=0
+				loop
+			endif
 			if "OWNER_ID" $ obj
 				aadd(aRefs,{obj:id,obj:owner_id,.f.,obj})
 			elseif !empty(obj)

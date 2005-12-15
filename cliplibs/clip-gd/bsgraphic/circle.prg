@@ -88,6 +88,7 @@ local cx, cy, diametr1, diametr2, volume, radius1, radius2, i, k, av, cntColor
 local angle:={}, begang, endang:=270, ug, pice:={}
 local right:={}, left:={}, top:={}, bottom:={}
 local x, y, sx, sy, s, v, len, l, summa:=0, kl
+local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 	if !::__isData
 		return .f.
 	endif

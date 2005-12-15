@@ -197,9 +197,9 @@ local k_list, d_list, arefs:={}, atree:={}
 */
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
 
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+	cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
 	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+//	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
 	? '</RDF:RDF>'
 
 /******************************************/

@@ -21,6 +21,8 @@ OBJS  =	getsys.o common.o \
 #LANG=ru_RU.KOI8-R
 #export LANG
 
+all: bdbf$(EXESUFF)
+
 bdbf$(EXESUFF):	bdbf.prg common.ch bdbfmsg.ch $(OBJS)
 	$(CLIP) $(CLIPFLAGS) -s -e -l bdbf.prg $(OBJS) $(LIBS)
 

@@ -131,7 +131,7 @@ local columns,oDep,oDict
 		print_table(m_class[i][1],m_class[i][2])
 	next
 	? '</print>'
-	
+
 
 
 /********************************************/
@@ -207,6 +207,11 @@ static function print_obj(obj,columns)
 		if "DATATYPE" $ col .and. col:datatype == "R"
 			id_ref := obj[upper(col:name)]
 			sTmp  := codb_essence(sTmp)
+			sTmp := strtran(sTmp,'&',"&amp;")
+			sTmp := strtran(sTmp,'"',"&quot;")
+			sTmp := strtran(sTmp,"'","&apos;")
+			sTmp := strtran(sTmp,'<',"&lt;")
+			sTmp := strtran(sTmp,'>',"&gt;")
 			midref:= 'idref="'+id_ref+'"'
 		elseif "DATATYPE" $ col .and. col:datatype=="S"
 			//id_ref := obj[upper(col:name)]
@@ -222,10 +227,9 @@ static function print_obj(obj,columns)
 				endif
 			endif
 		elseif valtype(sTmp) == "C"
-			sTmp := strtran(sTmp,'"',"'")
-			sTmp := strtran(sTmp,'&',"'")
-			sTmp := strtran(sTmp,'<',"")
-			sTmp := strtran(sTmp,'>',"")
+			sTmp := strtran(sTmp,'&',"&amp;")
+			sTmp := strtran(sTmp,'<',"&lt;")
+			sTmp := strtran(sTmp,'>',"&gt;")
 		elseif valtype(sTmp) == "L"
 			sTmp:= iif(sTmp,"true","false")
 		elseif valtype(sTmp) == "A"
@@ -296,10 +300,14 @@ static function calc_objs(id_list)
 	local s1,s2
 
 	for i=1 to len(id_list)
+		if empty(id_list[i])
+			loop
+		endif
 		if id_list[i] $ m_objs
 			loop
 		endif
 		obj := codb_getValue(id_list[i])
+
 		if empty(obj)
 			outlog("Object not readable:",id_list[i])
 			loop

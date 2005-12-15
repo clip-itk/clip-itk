@@ -4,9 +4,18 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.c,v $
+	Revision 1.323  2005/12/09 15:46:35  clip
+	rust: actualize rd->record before rdd_setvalue()
+	
+	Revision 1.322  2005/11/30 16:38:44  clip
+	rust: fix SIGSEGV
+
+	Revision 1.321  2005/11/30 16:27:58  clip
+	rust: HZ че, не помню...
+
 	Revision 1.320  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
-	
+
 	Revision 1.319  2005/06/03 12:51:34  clip
 	rust: avoid index crashes when trying to
 
@@ -2610,6 +2619,10 @@ int rdd_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,const char* __P
 	if(!r && !rd->flocked)
 		return rdd_err(cm,EG_UNLOCKED,0,__FILE__,__LINE__,__PROC__,er_notpermitted);
 
+	if(!rd->valid)
+	{
+		if((er = rd->vtbl->getrecord(cm,rd,__PROC__))) return er;
+	}
 	recdup = malloc(rd->recsize);
 	memcpy(recdup, rd->record, rd->recsize);
 	recbuf = malloc(rd->recsize);
@@ -2773,12 +2786,16 @@ int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* a,int 
 	fp->sfilter = rd->rmfilter;
 	rd->rmfilter = NULL;
 
+	if(test)
+		optimize = 0;
 	fp->optimize = optimize;
 	if(fp->optimize==0){
 		free(fp->rmap);
 		fp->rmap = NULL;
 	}
-	if((er = _rdd_calcfiltlist(cm,rd,fp,__PROC__))) goto err;
+	if(fp->optimize == 2){
+		if((er = _rdd_calcfiltlist(cm,rd,fp,__PROC__))) goto err;
+	}
 	free(str);
 	if(pseudo)
 		free(pseudo);

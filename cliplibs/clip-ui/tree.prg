@@ -23,6 +23,7 @@ function UITree(nTreeColumn, acNameColumns)
 	obj:className 	:= "UITree"
 	obj:nodes 	:= map()
 	obj:onSelect 	:= NIL
+	obj:lastId	:= 0
 	_recover_UITREE(obj)
 return obj
 
@@ -32,12 +33,20 @@ function _recover_UITREE( obj )
 	obj:clear 	:= @ui_clear()
 	obj:getSelection := @ui_getSelection()
 	obj:getSelectionId := @ui_getSelectionId()
-	//obj:openView := @ui_openView()
+	obj:savePosition    := @ui_savePosition()
+	obj:restorePosition := @ui_restorePosition()
 return obj
 
 /* Add node and fill it by data */
 static function ui_addNode(self, columns, id, parent, sibling, expanded)
 	local i, node
+        
+        // Fix missing id
+        if id == NIL
+        	self:lastId++
+        	id := alltrim(str(self:lastId))
+	endif
+	
 	// Convert values to strings
 	for i=1 to len(columns)
 	      	columns[i] := val2str(columns[i])
@@ -47,8 +56,6 @@ static function ui_addNode(self, columns, id, parent, sibling, expanded)
 	node:className := "UITreeItem"
 	node:tree := @self
 	node:node_id := id
-	// TODO: set action to item object
-	
 	self:nodes[node:id] = node
 return node
 
@@ -72,6 +79,7 @@ return
 static function ui_clear(self)
 	driver:clearTree( self )
 	self:nodes := map()
+	self:lastId := 0
 return NIL
 
 /* Get current selection */
@@ -80,6 +88,33 @@ return driver:getTreeSelection( self )
 
 /* Get current selection ID */
 static function ui_getSelectionId(self)
-	local sel
+	local sel, id
 	sel := driver:getTreeSelection( self )
-return self:nodes[sel]:node_id
+	if .not. empty(sel) .and. sel $ self:nodes
+		id := self:nodes[sel]:node_id
+	else 
+		return NIL
+	endif
+return id
+
+/* Save current position to variable */
+static function ui_savePosition(self)
+	local pos
+	pos := driver:getTreePosition( self )
+return pos
+
+/* Restore position from variable */
+static function ui_restorePosition(self, pos)
+	local ret, k, i, realPos:=NIL
+	if valtype(pos) == 'A' .and. len(pos) == 2 .and. .not. empty(pos[2])
+		k := mapkeys(self:nodes)
+		for i:=1 to len(k)
+			if self:nodes[k[i]]:node_id == pos[2]
+				realPos := self:nodes[k[i]]:id
+				exit
+			endif
+		next
+		pos[1] := realPos
+		ret := driver:setTreePosition( self, pos )
+	endif
+return ret

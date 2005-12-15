@@ -5,6 +5,15 @@
 */
 /*
    $Log: _file.c,v $
+   Revision 1.170  2005/12/13 15:20:15  clip
+   uri: small fix in diskFree()
+
+   Revision 1.169  2005/12/07 09:37:22  clip
+   uri: fixed bug "ferror() value after double fcreate() call"
+
+   Revision 1.167  2005/10/28 11:43:46  clip
+   rust: sleep() -> usleep()
+
    Revision 1.166  2005/02/03 14:13:39  clip
    uri: small fix for fclose(NIL)
 
@@ -696,6 +705,7 @@ _clip_creat(ClipMachine* cm,char *file, int flags, mode_t mode, int exclusive)
 			(exclusive?CLIP_LOCK_WRITE:CLIP_LOCK_READ)))
 		{
 			_clip_close(cm,hash,fd);
+			errno = EAGAIN; /*11;*/ /* resource unavailable */
 			return -1;
 		}
 #ifdef USE_NCPFS
@@ -1178,37 +1188,6 @@ clip_INIT_FILE_SETS(ClipMachine * mp)
 	return 0;
 }
 
-int
-clip_CURDIR(ClipMachine * mp)
-{
-	int i;
-	char drv[3], *tmp;
-	char *dir, *disk = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
-	if (_clip_parinfo(mp,1) == CHARACTER_t)
-	{
-		tmp = _clip_parc(mp,1);
-		drv[0] = toupper(*tmp);
-	}
-	else
-		drv[0] = *disk;
-	drv[1] = ':';
-	drv[2] = 0;
-
-
-	dir = _clip_fetch_item(mp, _hash_cur_dir[drv[0] - 65]);
-	if (dir == NULL /* || *dir==0 */ )
-	{
-		_clip_retc(mp, "");
-		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "CURDIR: undefined or bad name of current disk");
-	}
-	for (i = 0; dir[i] != 0; i++)
-		if (dir[i] == '\\')
-			dir[i] = '/';
-	if (*dir == '/')
-		dir++;
-	_clip_retc(mp, dir);
-	return 0;
-}
 
 int
 clip_CURRDRIVE(ClipMachine * mp)
@@ -2777,6 +2756,12 @@ clip_MEMOWRIT(ClipMachine * mp)
 }
 
 int
+clip_MEMOWRITE(ClipMachine * mp)
+{
+	return clip_MEMOWRIT(mp);
+}
+
+int
 clip_FERROR(ClipMachine * mp)
 {
 	int *err;
@@ -3247,7 +3232,7 @@ int _clip_setlock(ClipMachine* cm,long hash,int fd,off_t pos,int flags){
 #ifdef USE_TASKS
 		Task_sleep(1);
 #else
-		sleep(1);
+		usleep(1);
 #endif
 	}
 	return !ok;

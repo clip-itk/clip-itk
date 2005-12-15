@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rdd.h,v $
+	Revision 1.151  2005/10/31 14:37:07  clip
+	uri: small speed optimize
+	
 	Revision 1.150  2005/02/02 14:22:23  clip
 	rust: minor fix for SET OPTIMIZE LEVEL 2
-	
+
 	Revision 1.149  2004/05/26 09:52:23  clip
 	rust: some cleanings
 
@@ -414,6 +417,48 @@
 #define _rm_setbit(m,b,r) ((r)<=(b))?((m)[((r)-1)>>5] = (m)[((r)-1)>>5] | (1<<((r-1)%32))):0
 #define _rm_clrbit(m,b,r) ((r)<=(b))?((m)[((r)-1)>>5] = (m)[((r)-1)>>5] & ~(1<<((r-1)%32))):0
 #define _rm_getbit(m,b,r) (((r)<=(b))?(((m)[((r)-1)>>5] & (1<<((r-1)%32)))):0)
+/*
+#define _RM_BITCOUNT  \
+	recs = 0;\
+	for(i=0;i<bytes;i++){\
+		tmp1 = bm[i];\
+		if(!tmp1 )\
+			continue;\
+		recs += ((tmp1 & 0x00000001) !=0 )+\
+			((tmp1 & 0x00000002) !=0 )+\
+			((tmp1 & 0x00000004) !=0 )+\
+			((tmp1 & 0x00000008) !=0 )+\
+			((tmp1 & 0x00000010) !=0 )+\
+			((tmp1 & 0x00000020) !=0 )+\
+			((tmp1 & 0x00000040) !=0 )+\
+			((tmp1 & 0x00000080) !=0 )+\
+			((tmp1 & 0x00000100) !=0 )+\
+			((tmp1 & 0x00000200) !=0 )+\
+			((tmp1 & 0x00000400) !=0 )+\
+			((tmp1 & 0x00000800) !=0 )+\
+			((tmp1 & 0x00001000) !=0 )+\
+			((tmp1 & 0x00002000) !=0 )+\
+			((tmp1 & 0x00004000) !=0 )+\
+			((tmp1 & 0x00008000) !=0 )+\
+			((tmp1 & 0x00010000) !=0 )+\
+			((tmp1 & 0x00020000) !=0 )+\
+			((tmp1 & 0x00040000) !=0 )+\
+			((tmp1 & 0x00080000) !=0 )+\
+			((tmp1 & 0x00100000) !=0 )+\
+			((tmp1 & 0x00200000) !=0 )+\
+			((tmp1 & 0x00400000) !=0 )+\
+			((tmp1 & 0x00800000) !=0 )+\
+			((tmp1 & 0x01000000) !=0 )+\
+			((tmp1 & 0x02000000) !=0 )+\
+			((tmp1 & 0x04000000) !=0 )+\
+			((tmp1 & 0x08000000) !=0 )+\
+			((tmp1 & 0x10000000) !=0 )+\
+			((tmp1 & 0x20000000) !=0 )+\
+			((tmp1 & 0x40000000) !=0 )+\
+			((tmp1 & 0x80000000) !=0 ) \
+			;                          \
+	}
+*/
 
 #define RM_END_EXPR	0
 #define RM_WORD		1
@@ -1033,6 +1078,7 @@ void destroy_ryo(void*);
 
 int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* remap,int test,const char* __PROC__);
 int rm_yylex(RDD_DATA* rd,int nomove);
+int rm_bitcount(unsigned int * bm, unsigned int size);
 int rm_init(ClipMachine* cm,RDD_DATA* rd,char* str,const char* __PROC__);
 unsigned int* rm_expr(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int bytes,int* optimize,int npseudo,RDD_PSEUDO* pseudo,int test,const char* __PROC__);
 int rm_checkjoin(ClipMachine* cm,RDD_FILTER* f1,RDD_FILTER* f2,const char* __PROC__);

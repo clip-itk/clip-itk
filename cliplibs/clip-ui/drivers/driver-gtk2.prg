@@ -12,6 +12,7 @@
 /*   License, or (at your option) any later version.                       */
 /*-------------------------------------------------------------------------*/
 #include <clip-gtk2.ch>
+//#include <gtk2-stock.ch>
 #include "../clip-ui.ch"
 
 static drv := NIL
@@ -98,6 +99,7 @@ function initGTK2Driver()
 	/* Button */
 	drv:createButton	:= @ui_createButton()
 	drv:setPadding		:= @ui_setPadding()
+	drv:setButtonText	:= @ui_setButtonText()
 
 	/* Table*/
 	drv:createTable		:= @ui_createTable()
@@ -106,6 +108,8 @@ function initGTK2Driver()
         drv:setTableSelectAction := @ui_setTableSelectAction()
 	drv:getTableSelection	:= @ui_getTableSelection()
 	drv:conditionTableSelection := @ui_conditionTableSelection()
+	drv:getTablePosition	:= @ui_getTablePosition()
+	drv:setTablePosition	:= @ui_setTablePosition()
 
 	/* Edit */
 	drv:createEdit		:= @ui_createEdit()
@@ -154,6 +158,8 @@ function initGTK2Driver()
 	drv:setTreeSelectAction := @ui_setTreeSelectAction()
 	drv:getTreeSelection 	:= @ui_getTreeSelection()
 	drv:conditionTreeSelection := @ui_conditionTreeSelection()
+	drv:getTreePosition	:= @ui_getTreePosition()
+	drv:setTreePosition	:= @ui_setTreePosition()
 	
 	/* Timer */
 	drv:startTimer		:= @ui_startTimer()
@@ -184,7 +190,7 @@ function initGTK2Driver()
 
         /* Color Dialog */
         drv:selectColor 	:= @ui_selectColor()
-
+	
 return drv
 
 function getGTK2Driver( params )
@@ -198,7 +204,8 @@ return drv
 
 static function ui_createInstance( self, params )
 	loadlib("libclip-gtk2")
-	clipa("gtk_init", params)
+//	clipa("gtk_init", iif(valtype(params)!='A',array(0), params))
+	gtk_init()
 return map()
 
 static function ui_run( self, ws )
@@ -347,8 +354,11 @@ return .t.
 
 /* Set window geometry: position and size */
 static function ui_setGeometry( self, window, geom )
-	if .not. valtype(geom) $ 'AN'
+	if .not. valtype(geom) $ 'AN' .or. valtype(window) != "O"
         	return .f.
+	endif
+	if "LAYOUT" $ window // Set geomtry for layout object
+		window := window:layout
 	endif
 	if valtype(geom) == 'N'
 		if ascan({"UIWindow","UIDocument","UIMainWindow"}, window:className) != 0
@@ -719,7 +729,11 @@ return o
 static function ui_addBox(self, box, obj, expand, fill, padding)
 	local vBox, hBox
 	if "LAYOUT" $ obj
-		gtk_ContainerAdd( obj:layout, obj )
+		if "SCROLL" $ obj:layout
+			gtk_ScrolledWindowAddWithViewport( obj:layout, obj )
+		else
+			gtk_ContainerAdd( obj:layout, obj )
+		endif
 		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
 			gtk_ContainerAdd( obj:layout, obj:edit )
 		endif
@@ -751,7 +765,11 @@ return 0
 static function ui_addBoxEnd(self, box, obj, expand, fill, padding)
 	local vBox, hBox
 	if "LAYOUT" $ obj
-		gtk_ContainerAdd( obj:layout, obj )
+		if "SCROLL" $ obj:layout
+			gtk_ScrolledWindowAddWithViewport( obj:layout, obj )
+		else
+			gtk_ContainerAdd( obj:layout, obj )
+		endif
 		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
 			gtk_ContainerAdd( obj:layout, obj:edit )
 		endif
@@ -794,11 +812,13 @@ static function ui_getBoxSpacing(self, box)
 return box:spacing
 
 static function ui_createGrid(self, parent, row, col, spacing, padding)
-	local o
+	local o, obj
 	o := gtk_TableNew(, row, col, .F.)
 	if .not. empty(parent)
 		gtk_ContainerAdd( parent, o )
 	endif
+	obj := gtk_alignmentNew( , 0, 0, 1, 1 )
+	o:layout := obj
 return o
 
 static function ui_addGrid(self, box, obj, pos, h_expand, v_expand)
@@ -826,7 +846,11 @@ static function ui_addGrid(self, box, obj, pos, h_expand, v_expand)
 	l := val(rw[1])
         r := iif(len(rw)==2,val(rw[2]),l)
 	if "LAYOUT" $ obj
-		gtk_ContainerAdd( obj:layout, obj )
+		if "SCROLL" $ obj:layout
+			gtk_ScrolledWindowAddWithViewport( obj:layout, obj )
+		else
+			gtk_ContainerAdd( obj:layout, obj )
+		endif
 		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
 			gtk_ContainerAdd( obj:layout, obj:edit )
 		endif
@@ -861,6 +885,7 @@ static function ui_setBoxAlignment(self, box, align, valign)
 	x:	ALIGN_LEFT	0
 		ALIGN_CENTER	1
 		ALIGN_RIGHT	2
+		ALIGN_JUSTIFY	3
 	y:	ALIGN_TOP	0
 		ALIGN_MIDDLE	1
 		ALIGN_BOTTOM	2
@@ -868,7 +893,7 @@ static function ui_setBoxAlignment(self, box, align, valign)
 	align  :=iif(valtype(align) != 'N', 0, align)
 	valign :=iif(valtype(valign) != 'N', 0, valign)
 	
-	gtk_alignmentSet( box:layout, align/2, valign/2, 0.01, 0.01 )
+	gtk_alignmentSet( box:layout, align/2, valign/2, 0, 0 )
 		
 return NIL
 
@@ -891,7 +916,11 @@ return o
 static function ui_addSplitPane(self, pane, obj)
 	local vBox, hBox
 	if "LAYOUT" $ obj
-		gtk_ContainerAdd( obj:layout, obj )
+		if "SCROLL" $ obj:layout
+			gtk_ScrolledWindowAddWithViewport( obj:layout, obj )
+		else
+			gtk_ContainerAdd( obj:layout, obj )
+		endif
 		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
 			gtk_ContainerAdd( obj:layout, obj:edit )
 		endif
@@ -924,7 +953,11 @@ return NIL
 static function ui_addSplitPaneEnd(self, pane, obj)
 	local vBox, hBox
 	if "LAYOUT" $ obj
-		gtk_ContainerAdd( obj:layout, obj )
+		if "SCROLL" $ obj:layout
+			gtk_ScrolledWindowAddWithViewport( obj:layout, obj )
+		else
+			gtk_ContainerAdd( obj:layout, obj )
+		endif
 		if "CLASSNAME" $ obj .and. obj:classname == "UIChoice"
 			gtk_ContainerAdd( obj:layout, obj:edit )
 		endif
@@ -979,6 +1012,10 @@ static function ui_setPadding(self, object, padding)
 	gtk_ContainerSetBorderWidth( object, padding )
 return 0
 
+static function ui_setButtonText(self, object, text)
+	gtk_ButtonSetLabel( object, " "+text+" " )
+return 0
+
 /** Table **/
 
 static function ui_createTable(self, columns)
@@ -1009,6 +1046,7 @@ static function ui_createTable(self, columns)
 		gtk_TreeViewColumnSetSizing(gtk_TreeViewGetColumn(o, c), CLIP_GTK_TREE_VIEW_COLUMN_AUTOSIZE)
 	next
 	o:layout := frame
+	frame:scroll := .T.
 return o
 
 static function ui_addTableRow(self, table, data)
@@ -1028,6 +1066,9 @@ static function ui_getTableSelection(self, table)
 	local s, iter, path, pathstr
 	s := gtk_TreeViewGetSelection( table )
 	gtk_TreeSelectionGetSelected(s, NIL, @iter)
+	if iter == NIL
+		return NIL
+	endif
 	path := gtk_TreeModelGetPath(gtk_TreeViewGetModel( table ), iter)
 	pathstr := gtk_TreePathToString(path)
 return pathstr
@@ -1039,6 +1080,20 @@ return
 static function ui_conditionTableSelection(self, table, event)
 return .T.
 
+static function ui_getTablePosition(self, table)
+	local pos
+	pos := array(2)
+	pos[1] := table:getSelection()
+	pos[2] := table:getSelectionId()
+return pos
+
+static function ui_setTablePosition(self, table, pos)
+	local r
+	if .not. empty(pos[1])
+		r := gtk_TreePathNewFromString(pos[1])
+		gtk_TreeViewSetCursor(table, r, NIL, .F.)
+	endif
+return NIL
 
 /** Edit **/
 
@@ -1060,6 +1115,7 @@ static function ui_createEditText(self, defValue)
 	buf := gtk_TextBufferNew() 
 	o := gtk_TextViewNewWithBuffer(, buf )
 	o:layout := frame
+	frame:scroll := .T.
 	
 	gtk_TextViewSetEditable(o, .T.)
   	gtk_TextViewSetLeftMargin(o, 2)
@@ -1540,6 +1596,7 @@ static function ui_createTree(self, nTreeColumn, acNameColumns)
 		endif
 	next
 	o:layout := frame
+	frame:scroll := .T.
 return o
 
 static function ui_addTreeNode(self, tree, parent, sibling, columns, expanded)
@@ -1566,6 +1623,9 @@ static function ui_getTreeSelection(self, tree)
 	local s, iter, path, pathstr
 	s := gtk_TreeViewGetSelection( tree )
 	gtk_TreeSelectionGetSelected(s, NIL, @iter)
+	if iter == NIL
+		return NIL
+	endif
 	path := gtk_TreeModelGetPath(gtk_TreeViewGetModel( tree ), iter)
 	pathstr := gtk_TreePathToString(path)
 return pathstr
@@ -1576,6 +1636,21 @@ return NIL
 
 static function ui_conditionTreeSelection(self, tree, event)
 return .T.
+
+static function ui_getTreePosition(self, tree)
+	local pos
+	pos := array(2)
+	pos[1] := tree:getSelection()
+	pos[2] := tree:getSelectionId()
+return pos
+
+static function ui_setTreePosition(self, tree, pos)
+	local r
+	if .not. empty(pos[1])
+		r := gtk_TreePathNewFromString(pos[1])
+		gtk_TreeViewSetCursor(tree, r, NIL, .F.)
+	endif
+return NIL
 
 /** Timer **/
 static function ui_startTimer(self, timeout, func, data)

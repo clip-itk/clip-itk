@@ -107,7 +107,7 @@ fi
 if [ -d udbx ]
 then
 	cd udbx
-	$MAKE
+	#$MAKE
 	cd ..
 fi
 

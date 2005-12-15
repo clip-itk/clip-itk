@@ -11,7 +11,7 @@
 /*-------------------------------------------------------------------------*/
 
 /* Header file for common CLIP-UI definition */
-#define lib_version 	"0.1.2.2"
+#define lib_version 	"0.1.2.3"
 
 /* Default driver name */
 #define DEFAULT_DRIVER	"gtk"

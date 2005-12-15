@@ -4,9 +4,21 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rushmore.c,v $
+	Revision 1.67  2005/10/31 14:37:07  clip
+	uri: small speed optimize
+	
+	Revision 1.65  2005/10/28 15:45:01  clip
+	rust: some rm_and() optimization
+
+	Revision 1.64  2005/10/07 13:02:56  clip
+	rust: avoiding _clip_eval() in rm_checkscope()
+
+	Revision 1.63  2005/09/20 11:24:16  clip
+	rust: set exact stuff fixed
+
 	Revision 1.62  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
-	
+
 	Revision 1.61  2005/01/19 13:32:03  clip
 	rust: minor fix in string comparison
 
@@ -455,10 +467,18 @@ int rm_init(ClipMachine* cm,RDD_DATA* rd,char* str,const char* __PROC__){
 }
 
 static void rm_and(unsigned int* lval,unsigned int* rval,int* lopt,int ropt,int bytes){
-	int i;
+	//int i, b;
+	unsigned int *rv = rval;
+	//unsigned int *lv = lval;
+	unsigned int *end = lval+bytes;
 
-	for(i=0;i<bytes;i++)
-		lval[i] = lval[i] & rval[i];
+	beg_:
+		if (lval>=end)
+			goto end_;
+		*lval &= *rv;
+		lval++; rv++;
+		goto beg_;
+	end_:
 	free(rval);
 	*lopt += ropt;
 	if(*lopt==4)
@@ -652,7 +672,10 @@ static int rm_cmp(ClipMachine* cm,int oper,ClipVar* vp1,ClipVar* vp2,int ic){
 		}
 		else
 		{
-			r = _clip_strncasecmp(vp1->s.str.buf,vp2->s.str.buf,min(vp1->s.str.len,vp2->s.str.len));
+			if(!vp1->s.str.len && vp2->s.str.len)
+				r = -1;
+			else
+				r = _clip_strncasecmp(vp1->s.str.buf,vp2->s.str.buf,min(vp1->s.str.len,vp2->s.str.len));
 		}
 	} else {
 		_clip_cmp(cm,vp1,vp2,&r,1);
@@ -676,16 +699,17 @@ static int rm_cmp(ClipMachine* cm,int oper,ClipVar* vp1,ClipVar* vp2,int ic){
 	return 0;
 }
 
-static int rm_checkscope(ClipMachine* cm,RDD_DATA* rd,unsigned int* map,int size,int oper,ClipVar* block,ClipVar* val,int ic,const char* __PROC__){
+static int rm_checkscope(ClipMachine* cm,RDD_DATA* rd,unsigned int* map,int size,int oper,char* fname,ClipVar* val,int ic,const char* __PROC__){
 	ClipVar key;
 	unsigned int bytes = ((size+1) >> 5) + 1;
-	int i,b,bb,t,tt;
+	int i,b,bb,t,tt,fno;
 	unsigned int oldrecno = rd->recno;
 	int oldeof = rd->eof;
 	int er;
 
 	rd->eof = 0;
 	memset(&key,0,sizeof(ClipVar));
+	fno = _rdd_fieldno(rd,_clip_casehashword(fname,strlen(fname)));
 	for(i=0;i<bytes;i++){
 		if(map[i]){
 			for(b=(i<<2),bb=0;bb<4;b++,bb++){
@@ -693,7 +717,10 @@ static int rm_checkscope(ClipMachine* cm,RDD_DATA* rd,unsigned int* map,int size
 					for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
 						if(_rm_getbit(map,size,t)){
 							if((er = rd->vtbl->rawgo(cm,rd,t,0,__PROC__))) goto err;
+							if(rdd_takevalue(cm,rd,fno,&key,__PROC__)) goto err;
+/*
 							if(_clip_eval(cm,block,0,NULL,&key)) goto err;
+*/
 							if(rm_cmp(cm,oper,_clip_vptr(&key),val,ic)){
 								_rm_clrbit(map,size,t);
 							}
@@ -713,8 +740,8 @@ err:
 
 static int rm_intersectscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigned int* map,int oper,char* lval,char* rval,int bytes,int* optimize,int test,int* ic,const char* __PROC__){
 	int i;
-	ClipVar v,vv,vt,vvt;
-	ClipVar *vp,*vpt;
+	ClipVar v,vv/*,vt,vvt*/;
+	ClipVar *vp/*,*vpt*/;
 	char* b = NULL;
 	char* e = NULL;
 	char* l = malloc(strlen(lval)+1);
@@ -725,8 +752,10 @@ static int rm_intersectscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigne
 		*ic = 0;
 	memset(&v,0,sizeof(ClipVar));
 	memset(&vv,0,sizeof(ClipVar));
+/*
 	memset(&vt,0,sizeof(ClipVar));
 	memset(&vvt,0,sizeof(ClipVar));
+*/
 	*optimize = 0;
 	for(s=lval,d=l;*s;s++){
 		if(*s != ' ')
@@ -775,18 +804,18 @@ static int rm_intersectscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigne
 			if(_clip_eval(cm,_clip_vptr(&vv),0,NULL,&v))
 				break;
 			vp = _clip_vptr(&v);
-
+/*
 			rdd_expandmacro(rd->area,rd->rdhandle,e,expr);
 			if(_clip_eval_macro(cm,expr,strlen(expr),&vvt))
 				break;
 			if(_clip_eval(cm,_clip_vptr(&vvt),0,NULL,&vt))
 				break;
 			vpt = _clip_vptr(&vvt);
-
+*/
 			if(ic)
 				*ic = rd->orders[i]->ic;
 			if(!test){
-				if(rm_checkscope(cm,rd,map,fp->size,oper,vpt,vp,*ic,__PROC__))
+				if(rm_checkscope(cm,rd,map,fp->size,oper,e,vp,*ic,__PROC__))
 					goto err;
 /*
 				if(oper == RM_EQU){
@@ -835,8 +864,10 @@ static int rm_intersectscope(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,unsigne
 		cm->m6_error = 2009;
 	_clip_destroy(cm,&v);
 	_clip_destroy(cm,&vv);
+/*
 	_clip_destroy(cm,&vt);
 	_clip_destroy(cm,&vvt);
+*/
 	free(l); free(r);
 	free(l1); free(r1);
 	if(!(*optimize))
@@ -1054,20 +1085,64 @@ static unsigned int* rm_term(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int byt
 		if(rd->curlex == RM_AND){
 			if(*optimize == 2){
 				unsigned int bytes = ((fp->size+1) >> 5) + 1;
-				int i,b,bb,t,tt;
+				int i; //,b,bb,t,tt;
+				unsigned int tmp1; //,tmp2;
 
 				recs = 0;
 				for(i=0;i<bytes;i++){
-					if(bm[i]){
-						for(b=(i<<2),bb=0;bb<4;b++,bb++){
-							if(((char*)bm)[b]){
-								for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
-									if(_rm_getbit(bm,fp->size,t))
-										recs++;
-								}
-							}
+					tmp1 = bm[i];
+					if(!tmp1 )
+						continue;
+					//if (tmp1 & 0x000000FF)
+					recs += ((tmp1 & 0x00000001) !=0 )+
+						((tmp1 & 0x00000002) !=0 )+
+						((tmp1 & 0x00000004) !=0 )+
+						((tmp1 & 0x00000008) !=0 )+
+						((tmp1 & 0x00000010) !=0 )+
+						((tmp1 & 0x00000020) !=0 )+
+						((tmp1 & 0x00000040) !=0 )+
+						((tmp1 & 0x00000080) !=0 )
+						;
+					//if (tmp1 & 0x0000FF00)
+					recs += ((tmp1 & 0x00000100) !=0 )+
+						((tmp1 & 0x00000200) !=0 )+
+						((tmp1 & 0x00000400) !=0 )+
+						((tmp1 & 0x00000800) !=0 )+
+						((tmp1 & 0x00001000) !=0 )+
+						((tmp1 & 0x00002000) !=0 )+
+						((tmp1 & 0x00004000) !=0 )+
+						((tmp1 & 0x00008000) !=0 )
+						;
+					//if (tmp1 & 0x00FF0000)
+					recs += ((tmp1 & 0x00010000) !=0 )+
+						((tmp1 & 0x00020000) !=0 )+
+						((tmp1 & 0x00040000) !=0 )+
+						((tmp1 & 0x00080000) !=0 )+
+						((tmp1 & 0x00100000) !=0 )+
+						((tmp1 & 0x00200000) !=0 )+
+						((tmp1 & 0x00400000) !=0 )+
+						((tmp1 & 0x00800000) !=0 )
+						;
+					//if (tmp1 & 0xFF000000)
+					recs += ((tmp1 & 0x01000000) !=0 )+
+						((tmp1 & 0x02000000) !=0 )+
+						((tmp1 & 0x04000000) !=0 )+
+						((tmp1 & 0x08000000) !=0 )+
+						((tmp1 & 0x10000000) !=0 )+
+						((tmp1 & 0x20000000) !=0 )+
+						((tmp1 & 0x40000000) !=0 )+
+						((tmp1 & 0x80000000) !=0 )
+						;
+					/*
+					for(b=(i<<2),bb=0;bb<4;b++,bb++){
+						if( !(((char*)bm)[b]) )
+							continue;
+						for(t=(b<<3)+1,tt=0;tt<8;t++,tt++){
+							if(_rm_getbit(bm,fp->size,t))
+								recs++;
 						}
 					}
+					*/
 				}
 			} else {
 				recs = fp->size;

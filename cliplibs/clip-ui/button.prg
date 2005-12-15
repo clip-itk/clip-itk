@@ -22,6 +22,7 @@ function UIButton( label, action, val )
 return obj
 
 function _recover_UIBUTTON( obj )
+	obj:setText	:= @ui_setText()
 	obj:setAction	:= @ui_setAction()
 	obj:setPadding	:= @ui_setPadding()
 	obj:setValue	:= @ui_setValue()
@@ -35,6 +36,11 @@ function UIButtonBar()
 	obj:setEqualSize( .T. )
 	obj:setAlignment( 0 )
 return obj
+
+/* Change button label */
+static function ui_setText(self, text)
+	driver:setButtonText(self, text)
+return NIL
 
 /* Connect action to button */
 static function ui_setAction(self, signal, action)

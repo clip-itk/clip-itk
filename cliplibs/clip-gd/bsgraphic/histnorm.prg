@@ -54,6 +54,8 @@ return obj
 ************
 static function bg_setData(arr, legend, alignLeg, signat)
 local i, j, l, ts
+local a,k,v,y1,y2
+
 	if empty(arr) .or. !(valtype(arr)$"AM") .or. len(arr)==0
 		return .f.
 	endif
@@ -195,6 +197,8 @@ return .t.
 static function bg_drawImage()
 local i, j, key, va, colwidth, dx, x, y, arrx:={}, wCol, volume
 local yav, rmin, x1, x2, a, cntColor, arry:={}, kl
+local y1,y2
+
 	if !::__isData
 		return .f.
 	endif

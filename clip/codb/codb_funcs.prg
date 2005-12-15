@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2004  ITK
+    Copyright (C) 2002-2005  ITK
     Author   : Uri (uri@itk.ru)
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -390,14 +390,14 @@ function codb_info(dKey)
 			ret:=CODB_DICT_DTYPES
 		case  "CODB_DICTLIST_STRUCTURE"
 			ret:=CODB_DICTLIST_STRUCTURE
-		case  "CODB_DICTINDEX_STRUCTURE"
-			ret:=CODB_DICTINDEX_STRUCTURE
+		case  "CODB_DICTLIST_BODY"
+			ret:=CODB_DICTLIST_BODY
 		case  "CODB_DICT_STRUCTURE"
 			ret:=CODB_DICT_STRUCTURE
-		case  "CODB_IDXTABLE_STRUCTURE"
-			ret:=CODB_IDXTABLE_STRUCTURE
 		case  "CODB_EXTENT_STRUCTURE"
 			ret:=CODB_EXTENT_STRUCTURE
+		case  "CODB_DEPIDX_STRUCTURE"
+			ret:=CODB_DEPIDX_STRUCTURE
 	end
 	/*
 	data_key := alltrim(upper(dKey))
@@ -472,14 +472,14 @@ function codb_info(dKey)
 			ret:=CODB_DICT_DTYPES
 		case data_key == "CODB_DICTLIST_STRUCTURE"
 			ret:=CODB_DICTLIST_STRUCTURE
-		case data_key == "CODB_DICTINDEX_STRUCTURE"
-			ret:=CODB_DICTINDEX_STRUCTURE
+		case data_key == "CODB_DICTLIST_BODY"
+			ret:=CODB_DICTLIST_BODY
 		case data_key == "CODB_DICT_STRUCTURE"
 			ret:=CODB_DICT_STRUCTURE
-		case data_key == "CODB_IDXTABLE_STRUCTURE"
-			ret:=CODB_IDXTABLE_STRUCTURE
 		case data_key == "CODB_EXTENT_STRUCTURE"
 			ret:=CODB_EXTENT_STRUCTURE
+		case data_key == "CODB_DEPIDX_STRUCTURE"
+			ret:=CODB_DEPIDX_STRUCTURE
 	end
 	*/
 return ret

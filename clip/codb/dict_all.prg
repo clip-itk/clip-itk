@@ -53,6 +53,7 @@ function codb_dictAll_Methods(dbData,user,passwd)
 	obj:getTriggers := @_dict_getTriggers()
 	obj:checkBody	:= @_dict_checkBody()
 	obj:getValue	:= @_dict_getValue() // return body for ID
+	obj:append	:= @_dict_append()
 
 	obj:__check_haveCounters:= @__check_haveCounters()
 	obj:loadPluginses:= @_dict_LoadPluginses()
@@ -112,26 +113,159 @@ static function _dict_close(self)
 	self:runTrigger(self:id,"AFTER_CLOSE_DICTIONARY")
 return .t.
 ************************************************************
-static function _dict_getValue(cID)
+************************************************************
+static function _dict_append(self,oData,metaName)
+	local dep_id:="00",id:=""
+	local i, oDep, list ,tmp, mtmp:={}
+	local m, super_desc
+
+	self:error := ""
+	if empty(metaName)
+		self:error := codb_error(1043)
+		return ""
+	endif
+
+	metaName := alltrim(upper(metaName))
+
+	oData := self:checkBody(oData,metaName)
+
+	if metaName == "ATTR"
+		if  !isword(oData:name)
+			// check validate name
+			self:error:=codb_error(1044)+":"+oData:name
+			return ""
+		endif
+		if oData:type $ "RS"
+			oData:len := CODB_ID_LEN
+		endif
+	endif
+
+	if metaName == "CLASS" // check unique name
+		tmp:=self:select(metaname,,odata:name)
+		if !empty(tmp) .and. self:getValue(tmp[1]):name == oData:name
+			self:error:=codb_error(1041)+":"+oData:name
+			return ""
+		endif
+	endif
+
+	Id := self:counters:addvalue("METADATA")
+
+	if metaName == "DEPOSIT"
+		dep_Id := self:counters:addvalue("DEPOSIT")
+		dep_id := padl(alltrim(ntoc(dep_id,32)),2,"0")
+		oData:number  := dep_id
+	endif
+	id := padl(alltrim(ntoc(id,32)),codb_info("OBJECT_ID_LEN"),"0")
+	id := padr(self:id,codb_info("CODB_ID_LEN")-len(id),"0")+id
+	oData:id:= id
+	if metaName=="CLASS"
+		/* inherit from SUPER class*/
+		super_desc := self:classDesc(oData:super_id)
+		m:=aclone(oData:attr_list)
+		if !empty(super_desc)
+			oData:attr_list:= super_desc:attr_list
+		else
+			oData:attr_list:= {}
+		endif
+		for i=1 to len(m)
+			if ascan(oData:attr_list, m[i]) == 0
+				aadd(oData:attr_list, m[i])
+			endif
+		next
+		m:=aclone(oData:idx_list)
+		if !empty(super_desc)
+			oData:idx_list:= super_desc:idx_list
+		else
+			oData:idx_list:= {}
+		endif
+		for i=1 to len(m)
+			if ascan(oData:idx_list, m[i]) == 0
+				aadd(oData:idx_list, m[i])
+			endif
+		next
+		self:__check_haveCounters(oData)
+		if empty(oData:extent_id)
+			tmp:=self:select("EXTENT",,"undef")
+			if !empty(tmp)
+				oData:extent_id := tmp[1]
+			endif
+		endif
+	endif
+	adel(oData,"__VERSION")
+	adel(oData,"__CRC32")
+	adel(oData,"__META")
+
+	self:runTrigger(self:id,"BEFORE_APPEND_CLASS",oData)
+
+	self:_append(oData,metaName)
+
+	if !empty(self:error)
+		return ""
+	endif
+
+	if metaName == "DEPOSIT"
+		oDep := codb_depDbfNew(self,oData:id)
+		if ! oDep:create()
+			self:error := oDep:error
+			return ""
+		endif
+		if ! oDep:open()
+			self:error := oDep:error
+			return ""
+		endif
+		oDep:close()
+	endif
+	if metaName == "EXTENT"
+		/* add new extent to exist depositories */
+		list := self:select("DEPOSIT")
+		for i=1 to len(list)
+			tmp := self:getValue(list[i])
+			aadd(mtmp, codb_needDepository(self:id+tmp:number))
+			oDep := mTmp[i]
+			if empty(oDep)
+				loop
+			endif
+			if ! oDep:addExtent(id)
+				self:error := oDep:error
+				loop
+			endif
+		next
+	endif
+	if !empty(self:error)
+		return ""
+	endif
+	codb_outlog(self:user,"append",oData)
+	self:runTrigger(self:id,"AFTER_APPEND_CLASS",oData)
+
+return id
+************************************************************
+static function _dict_getValue(self,cID,nLocks,version)
 	local ret:=map(), err,bl
 
-	::error := ""
-	cID := padr(cID,codb_info("CODB_ID_LEN"))
+	self:error := ""
 	if empty(cID)
 		return ret
 	endif
-	if cId $ ::__objCache
-		return ::__objCache[cId]
+	cID := padr(cID,codb_info("CODB_ID_LEN"))
+	if valtype(version)=="N"
+		adel(self:__objCache,cId)
 	endif
-	if len(::__objCache) > CODB_DICT_CACHE
-		codb_cache_minimize(::__objCache, CODB_DICT_CACHE/4 )
+	if nLocks != NIL
+		adel(self:__objCache,cId)
+	endif
+	if cId $ self:__objCache
+		return self:__objCache[cId]
+	endif
+	if len(self:__objCache) > CODB_DICT_CACHE
+		codb_cache_minimize(self:__objCache, CODB_DICT_CACHE/4 )
 	endif
 
-	ret := ::__getValue(cID)
+	ret := self:_getValue(cID,nLocks,version)
+
 	if empty(ret)
 		return ret
 	endif
-	::__objCache[ cId ] := ret
+	self:__objCache[ cId ] := ret
 
 	if alltrim(ret:__meta) == "CLASS"
 		if !empty(ret:expr_essence)
@@ -149,7 +283,7 @@ static function _dict_getValue(cID)
 		endif
 		ret:essence :=@class_essence()
 
-		::loadPluginses(cId)
+		self:loadPluginses(cId)
 	endif
 return ret
 ************************************************************
@@ -611,11 +745,23 @@ static function _dict_create(self)
 	if !self:__makeVersion(self)
 		return .f.
 	endif
+	if ! self:makeTables(self)
+		return .f.
+	endif
+	if ! self:makeIndies(self)
+		return .f.
+	endif
 	self:counters := self:__countNew()
-	if !self:counters:create()
+	/*
+	if !self:counters:makeTables()
 		self:error := self:counters:error
 		return .f.
 	endif
+	if !self:counters:makeIndies()
+		self:error := self:counters:error
+		return .f.
+	endif
+	*/
 	if self:counters:open()
 		self:counters:append("METADATA","Counter for meta data")
 		self:counters:append("DEPOSIT","Counter for depositories")
@@ -624,9 +770,6 @@ static function _dict_create(self)
 	endif
 	self:counters:close()
 	self:counters:=NIL
-	if ! self:__makeMeta(self)
-		return .f.
-	endif
 	if ! self:open()
 		return .f.
 	endif

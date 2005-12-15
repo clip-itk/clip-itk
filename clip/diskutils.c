@@ -5,6 +5,12 @@
 */
 /*
    $Log: diskutils.c,v $
+   Revision 1.115  2005/12/13 15:26:55  clip
+   uri: small fix
+
+   Revision 1.114  2005/12/13 15:20:15  clip
+   uri: small fix in diskFree()
+
    Revision 1.113  2005/01/10 11:30:05  clip
    uri: small fix in tempfile(), return path+tmpname
 
@@ -1098,23 +1104,78 @@ clip_DISKCHANGE(ClipMachine * cm)
 	return 0;
 }
 
+char *
+_clip_curdir(ClipMachine * mp,char * drv)
+{
+	int i;
+	char *dir;
+
+	dir = _clip_fetch_item(mp, _hash_cur_dir[drv[0] - 65]);
+	if (dir == NULL /* || *dir==0 */ )
+		return "";
+	for (i = 0; dir[i] != 0; i++)
+		if (dir[i] == '\\')
+			dir[i] = '/';
+	if (*dir == '/')
+		dir++;
+	return dir;
+}
+
+int
+clip_CURDIR(ClipMachine * mp)
+{
+	char drv[3], *tmp;
+	char *disk = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
+	if (_clip_parinfo(mp,1) == CHARACTER_t)
+	{
+		tmp = _clip_parc(mp,1);
+		drv[0] = toupper(*tmp);
+	}
+	else
+		drv[0] = *disk;
+	drv[1] = ':';
+	drv[2] = 0;
+	_clip_retc(mp, _clip_curdir(mp,drv));
+	return 0;
+}
+
+
 int
 clip_DISKFREE(ClipMachine * cm)
 {
-#ifdef OS_MINGW
-	DWORD fs;
-#else
-	struct statfs st;
-#endif
-
-	/*struct statvfs stv; */
 	char *dname = _clip_parc(cm, 1);
 	char *uname;
+#ifdef OS_MINGW
+	DWORD fs;
+	if (dname == NULL || *dname == 0)
+		dname = _clip_fetch_item(cm, CLIP_CUR_DRIVE);
+
+	uname = _get_disk_name(cm, dname);
+	GetDiskFreeSpace(uname, NULL, NULL, &fs, NULL);
+	_clip_retnd(cm, ((double) fs) * fs);
+#else
+	struct statfs st;
+	char drv[3];
+	char *tmp, buf[PATH_MAX];
 
 	if (dname == NULL || *dname == 0)
 		dname = _clip_fetch_item(cm, CLIP_CUR_DRIVE);
 
-	uname = _get_disk_path(cm, dname);
+	if (*dname == '/')
+		uname = dname;
+	else
+	{
+		drv[0] = *dname;
+		drv[1] = ':';
+		drv[2] = 0;
+		tmp = _clip_curdir(cm,drv);
+
+		buf[0] = drv[0];
+		buf[1] = ':';
+		buf[2] = '/';
+		strncpy(buf+3,tmp,PATH_MAX-4);
+		uname = _get_unix_name(cm, buf);
+	}
 
 	if (uname == NULL)
 		uname = dname;
@@ -1125,10 +1186,6 @@ clip_DISKFREE(ClipMachine * cm)
 		return 0;
 	}
 
-#ifdef OS_MINGW
-	GetDiskFreeSpace(uname, NULL, NULL, &fs, NULL);
-	_clip_retnd(cm, ((double) fs) * fs);
-#else
 	if (statfs(uname, &st))
 	{
 		_clip_retnd(cm, 0);

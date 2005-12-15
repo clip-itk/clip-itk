@@ -1,14 +1,14 @@
 [Dir drivers]
 Dirs=
-Files=driver-gtk2.prg/driver-gtk.prg
+Files=driver-gtk2.prg/driver-gtk.prg/Makefile
 
 [Dir example]
 Dirs=
-Files=form_ui.prg/test_ui.prg/testWindow.xfl
+Files=form_ui.prg/test_ui.prg/testWindow.xfl/Makefile
 
 [Project Dir]
 Dirs=drivers/example
-Files=button.prg/ChangeLog/checkbox.prg/clip-ui.ch/color.prg/combobox.prg/edit.prg/font.prg/form.prg/frame.prg/grid.prg/image.prg/label.prg/menu.prg/special.prg/table.prg/timer.prg/TODO/toolbar.prg/tree.prg/utils.prg/window.prg/workspace.prg/radiobutton.prg/progressbar.prg/Makefile/layout.prg/slider.prg
+Files=button.prg/ChangeLog/checkbox.prg/clip-ui.ch/color.prg/combobox.prg/edit.prg/font.prg/form.prg/frame.prg/grid.prg/image.prg/label.prg/menu.prg/special.prg/table.prg/timer.prg/TODO/toolbar.prg/tree.prg/utils.prg/window.prg/workspace.prg/radiobutton.prg/progressbar.prg/Makefile/layout.prg/slider.prg/iconview.prg
 
 [Project File]
 Name=clip-ui

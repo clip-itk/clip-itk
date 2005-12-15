@@ -49,24 +49,24 @@ do
 		;;
 	*$DLLSUFF)
 		cp $pwd/$i .
-                needex=yes
+		needex=yes
 		;;
 	*.a)
 		ar -x $pwd/$i
-                needex=yes
+		needex=yes
 		;;
 	*.o)
 		cp $pwd/$i .
-                needex=yes
+		needex=yes
 		;;
 	esac
-        if [ "$needex" = yes ]
-        then
-        	name=`echo "$i" | sed 's/\.[A-Za-z0-9.]*$/\.ex/'`
-                test -r "$pwd/$name" && cp "$pwd/$name" .
-        	name=`echo "$i" | sed 's/\.[A-Za-z0-9.]*$/\.nm/'`
-                test -r "$pwd/$name" && cp "$pwd/$name" .
-        fi
+	if [ "$needex" = yes ]
+	then
+		name=`echo "$i" | sed 's/\.[A-Za-z0-9.]*$/\.ex/'`
+		test -r "$pwd/$name" && cp "$pwd/$name" .
+		name=`echo "$i" | sed 's/\.[A-Za-z0-9.]*$/\.nm/'`
+		test -r "$pwd/$name" && cp "$pwd/$name" .
+	fi
 done
 
 [ -z "$CC" ] && CC=cc
@@ -254,13 +254,13 @@ echo "
 CLIP_DLLEXPORT ClipModule clip__MODULE_${ucname} =
 {
 	\"${ucname}\",
-        _s_cfunctions,
-        _s_libinits,
-        _s_libexits,
-        _s_libcpfiles,
-        0,
-        0,
-        0
+	_s_cfunctions,
+	_s_libinits,
+	_s_libexits,
+	_s_libcpfiles,
+	0,
+	0,
+	0
 };
 " >&3
 
@@ -286,7 +286,7 @@ CYGWIN)
 			addlib="$addlib /usr/local/clip/lib/libclip.dll"
 		fi
 	fi
-	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -c $target_ref || cleanup 1
+	$CC $CFLAGS $ADD_CFLAGS -O -I$pwd -I$CLIPROOT/include -c $target_ref || cleanup 1
 	dlltool --output-def _def.def ${target}_ref.o `cat _olist` || cleanup 2
 	dllwrap --dllname $target.dll --def _def.def ${target}_ref.o `cat _olist` $addlib || cleanup 3
 	if [ -n "$USE_STDLIB" ]
@@ -313,14 +313,14 @@ MINGW)
 			addlib="$addlib -lclip"
 		fi
 	fi
-	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -c $target_ref || cleanup 1
+	$CC $CFLAGS $ADD_CFLAGS -O -I$pwd -I$CLIPROOT/include -c $target_ref || cleanup 1
 	dlltool --output-def _def.def ${target}_ref.o `cat _olist` || cleanup 2
 	dllwrap --dllname $target.dll --def _def.def ${target}_ref.o `cat _olist` $addlib || cleanup 3
 	dlltool --output-lib $target.dll.a --dllname $target.dll --def _def.def || cleanup 4
 	cp $target.dll $target.dll.a $pwd
 	;;
 *)
-	$CC $CFLAGS -O -I$pwd -I$CLIPROOT/include -shared -o $arch $target_ref `cat _olist` $addlib || cleanup 1
+	$CC $CFLAGS $ADD_CFLAGS -O -I$pwd -I$CLIPROOT/include -shared -o $arch $target_ref `cat _olist` $addlib || cleanup 1
 	;;
 esac
 

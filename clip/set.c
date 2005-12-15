@@ -5,6 +5,9 @@
 */
 /*
    $Log: set.c,v $
+   Revision 1.100  2005/09/30 06:25:12  clip
+   uri: small fix
+
    Revision 1.99  2005/03/09 14:36:50  clip
    uri: small fix
 
@@ -703,7 +706,7 @@ _clip_close_printer(ClipMachine * mp)
 */
 		else
 			prno = 0;
-#ifndef __WIN32
+#ifndef _WIN32
 		if (prno)
 		       snprintf(buf, sizeof(buf), "%s -P lp%d %s 2>&1 >/dev/null", p_prog, prno, mp->real_prfile);
 		else

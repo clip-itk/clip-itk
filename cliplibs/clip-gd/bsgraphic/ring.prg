@@ -50,7 +50,8 @@ function _recover_bg_ring(obj)
 return obj
 ************
 static function bg_setData(arr, legend, alignLeg)
-local i, j, l
+local i, j, l, lll, ts
+
 	if empty(arr) .or. !(valtype(arr)$"AM") .or. len(arr)==0
 		return .f.
 	endif
@@ -114,6 +115,10 @@ local cx, cy, diametr1, diametr2, volume, radius1, radius2, i, k, av, cntColor
 local angle:={}, value:={}, begang, endang:=270, ug, pice:={}
 local right:={}, left:={}, top:={}, bottom:={}
 local x, y, sx, sy, s, v, len, l, summa:=0, kl
+local color,colorV,d,d1,d2,kk,str,isumma,valo,key
+local radian,val,colwidth1,colwidth2,center1,center2
+local diametr1_o,diametr2_o
+
 	if !::__isData
 		return .f.
 	endif

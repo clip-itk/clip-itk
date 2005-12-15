@@ -13,9 +13,12 @@
 /*-------------------------------------------------------------------------*/
 #include "clip-ui.ch"
 
-static driver := getDriver()
+#define COMPARE_DEBUG	.F.
 
-/* TODO: setAction() for UIWindow (close), UIChildWindow (close and changed focus) */
+static driver := getDriver()
+static _mainWindow := NIL
+
+/* TODO: setAction() for UIWindow (close), UIChildWindow (close and changed focus), l10n rules for date/time formatting */
 
 /* Window class */
 function UIWindow( caption, parent, name, close, resizeable )
@@ -37,6 +40,7 @@ function UIWindow( caption, parent, name, close, resizeable )
 	obj:objClass	:= ""
 	obj:objDep	:= ""
 	obj:caption	:= caption
+	obj:timers	:= array(0)
 
 	obj:childs	:= array(0)
 	obj:childCount	:= 0
@@ -58,7 +62,11 @@ function UIMainWindow(caption, name)
 	local obj	:= UIWindow(caption, NIL, name, .T., .T.)
 	obj:className	:= "UIMainWindow"
 	obj:sysMenus	:= map()
+	_mainWindow	:= obj
 return obj
+
+function getMainWindow()
+return _mainWindow
 
 function _recover_UIWINDOW( obj )
 	obj:close	:= @ui_mainWindowClose()
@@ -96,6 +104,7 @@ function UIChildWindow( caption, parent, name )
 	obj:objClass	:= ""
 	obj:objDep	:= ""
 	obj:caption	:= caption
+	obj:timers	:= array(0)
 
 	obj:menu 	:= NIL
 	obj:toolbar	:= NIL
@@ -179,9 +188,23 @@ static function ui_dialogBox(self, caption, text, buttons, buttonNames, action, 
 	lside := UIHBox()
 	vb:add(lside)
 	lside:setSpacing(10)
+	
+	/*
+	// Auto icon
+	if valtype(icon) == 'U'
+		if len(buttons) == 1
+			icon := IMG_OK
+		else
+			icon := IMG_QUESTION
+		endif
+	
+	endif
+	*/
+	// Add icon if specified
 	if valtype(icon) == 'N'
 		lside:add(UIImage(icon))
 	endif
+
 	lside:add(UILabel(text),.T.,.T.)
 	hb := UIButtonBar( , 10, 10 )
 	hb:setAlignment( ALIGN_CENTER )
@@ -256,9 +279,6 @@ static function ui_getObj(self)
 	obj:id := self:objId
 	a := self:getValues()
 	for i in a
-                if at(i[1],"\.") != 0
-			loop
-		endif
 		v := i[2]
 		if self:valueTypes[i[1]] == "number"
 			v := val(v)
@@ -267,18 +287,20 @@ static function ui_getObj(self)
 			v := ctod(v, dateFormat)
 		endif
 		obj[upper(i[1])] := v
-//		?? "&\tget",upper(i[1]),"=",valtype(v),v,chr(10)
+		//?? "&\tget",upper(i[1]),"=",valtype(v),v,chr(10)
 	next
 return obj
 
 /* Close main window */
 static function ui_mainWindowClose(self)
+	_stopTimers(self)
 	driver:closeMainWindow(self)
 return NIL
 
 /* Close current child window */
 static function ui_childClose(self)
 	local w, n
+	_stopTimers(self)
 	if len(self:childs) > 0
 		n := driver:getCurrentChild(self)
 		w := self:childs[n]
@@ -299,6 +321,7 @@ return
 /* Close window */
 static function ui_close(self)
 	local n
+	_stopTimers(self)
 	n := driver:closeWindow( self )
 	adel(self:parent:childs, n)
 	asize(self:parent:childs, len(self:parent:childs)-1)
@@ -372,14 +395,23 @@ static function ui_setIcon( self, pic )
 return NIL
 
 static function ui_setName(self, name, o)
-	local i
+	local i, nArr, vType:='string'
         if valtype(o) != "O" .or. .not. "CLASSNAME" $ o
 		return NIL
 	endif
 	if ascan({"UIEdit","UIEditText","UIComboBox","UICheckBox","UIButton","UILabel","UIRadioButton","UISlider"},o:className) != 0
+		
+		// Extract type from name
+		nArr := split(name,':')
+		if len(nArr) > 1
+			name  := nArr[1]
+			vType := lower(nArr[2])
+		endif
+		
 		self:value[name] := o
-		self:valueTypes[name] := "string"
+		self:valueTypes[name] := vType
 		aadd( self:valueNames, name )
+		//?? 'NAME:',name, vType, chr(10)
 	else
 //		?? "ERROR: couldn't set name for non-valued widget "+o:className+CHR(10)
 		return NIL
@@ -401,8 +433,8 @@ static function ui_getValues(self)
 	local i, w, v, values := array(0)
 	for i in self:valueNames
 		w := self:value[i]
-                v := w:getValue()
-                if at(i,"\.") == 0	// Only object's field
+                if at(i,"\.") == 0 .and. "GETVALUE" $ w  // Only object's field
+	                v := w:getValue()
 			aadd(values, { i, v } )
 		endif
 	next
@@ -442,15 +474,32 @@ return NIL
 
 /* Compare values in windows with original object */
 static function ui_isChanged(self)
-	local orig, frm, i, mk, e
+	local orig, frm, i, mk, e, name, ind
 	
 	orig := self:origObj
 	frm  := self:getObj()
 	
 	// Check compared objects
+	if "ID" $ frm
+		orig:id := frm:id
+	endif	
+	if COMPARE_DEBUG
+		?? "FORM:", frm, chr(10)
+		?? "ORIGINAL:", orig, chr(10)
+	endif
+		
 	if self:objId == NIL
 		// object never is been stored
-		return .T.
+		// check non-empty fields
+		mk := mapkeys(frm)
+		for i=1 to len(mk)
+			name := mk[i]
+			if .not. empty(frm[name])
+				if COMPARE_DEBUG; ?? "CHANGED:",name,frm[name],chr(10);endif
+				return .T.
+			endif
+		next
+		return .F.
 	endif
 	if valtype(orig) != "O"
 		?? "ERROR: original object doesn't stored.&\n"
@@ -462,20 +511,40 @@ static function ui_isChanged(self)
 	endif
 
 	mk := mapkeys(orig)
-//	?? "COMPARE:&\n"
+	if COMPARE_DEBUG; ?? "COMPARE:",mk,"&\n";endif
 	for i=1 to len(mk)
 		e := mk[i]
-//		?? "&\t",e,e $ frm,orig[e],frm[e],orig[e]==frm[e],chr(10)
+		if COMPARE_DEBUG
+			ind := alltrim(str(i))+"/"+alltrim(str(len(mk)))
+			?? "    "+ind+":", e
+			?? "", e $ frm
+			?? "", valtype(orig[e]), orig[e]
+			?? "", valtype(frm[e]), frm[e]
+			?? "", compareAnyValue(orig[e], frm[e])
+			?? chr(10)
+		endif
 		if .not. e $ frm
-//			?? "compare: no key from original in checked form&\n"
+			if COMPARE_DEBUG; ?? "compare: no key from original in checked form&\n"; endif
 			return .T.
-		elseif .not. orig[e] == frm[e]
-//			?? "compare: value",orig[e],"is changed, new:",frm[e],"&\n"
+		elseif .not. compareAnyValue(orig[e], frm[e])
+			if COMPARE_DEBUG; ?? "compare: value",orig[e],"is changed, new:",frm[e],"&\n"; endif
 			return .T.
 		endif
 	next
-//	?? "compare: objects are equivalent.&\n"
+	if COMPARE_DEBUG; ?? "compare: objects are equivalent.&\n";endif
 return .F.
+
+static function compareAnyValue(a, b)
+	if valtype(a) == valtype(b)
+		return a == b
+	endif
+	if valtype(a)=='D'
+		b := ctod(b)
+	endif
+	if valtype(a)=='N'
+		b := val(b)
+	endif
+return a == b
 
 static function ui_setId(self, id)
 	self:objId := id
@@ -513,3 +582,15 @@ static function ui_unSetKeyEvent(self, cKey)
 		asize(self:keyEvents, len(self:keyEvents)-1)
 	endif
 return .t.
+
+/* Stop any active timers of window */
+static function _stopTimers(self)
+	local i, timer
+	if .not. "TIMERS" $ self .or. len(self:timers) == 0
+		return NIL
+	endif
+	for i:=1 to len(self:timers)
+		timer := self:timers[i]
+		timer:stop()
+	next
+return NIL

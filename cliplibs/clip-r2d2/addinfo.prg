@@ -1,8 +1,8 @@
 #include "r2d2lib.ch"
 
-function r2d2_addinfo_xml(_queryArr,_queryStr)
+function r2d2_addinfo_xml(_queryStr)
 
-local err,_query
+local err,_query,_queryArr
 local i,j,k,m,obj,id:=""
 local aTree:={}, aRefs:={}
 local lang:="", sDict:="", sDep:=""
@@ -18,7 +18,8 @@ local sprname:=""
 
 	errorblock({|err|error2html(err)})
 
-	_query := d2ArrToMap(_queryArr)
+	_queryArr := cgi_split(_queryStr,.t.)
+	_query    := d2ArrToMap(_queryArr)
 	outlog(__FILE__,__LINE__, _query)
 
 	if "SPR" $ _query
@@ -59,18 +60,27 @@ local sprname:=""
 
 	cgi_xml_header()
 
-	oDep := codb_needDepository(sDict+sDep)
+	if empty(set(sDict))
+		oDep := codb_needDepository(sDict+sDep)
+	else
+		oDep := codb_needDepository(set(sDict))
+	endif
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: "+sDict+sDep )
 		return
 	endif
 	oDict := oDep:dictionary()
 	classDesc := oDict:classBodyByName(sprname)
-	columns := cgi_make_columns(oDict,sprname)
 
 	if empty(classDesc)
 		cgi_xml_error("Not found class description for "+sprname)
 		return
+	endif
+
+	columns := cgi_make_columns(oDict,sprname)
+
+	if classDesc:name == "accpost"
+		r2d2_accpost_log(oDep,"CGIADD","",_queryStr)
 	endif
 
 	if "};" $ _queryStr
@@ -207,12 +217,12 @@ local sprname:=""
 				id := oDep:append(obj,classDesc:id)
 			endif
 		endif
-		if !empty(oDep:error) 
-		
-			if val(oDep:error) != 1143 /* non unique value */
-				cgi_xml_error(odep:error)
-				return
-			endif
+		if !empty(oDep:error)
+
+			//if val(oDep:error) != 1143 /* non unique value */
+			cgi_xml_error(odep:error)
+			//	return
+			//endif
 			err_desc := oDep:error
 			if "UNIQUE_KEY" $ classDesc .and. !empty(classDesc:unique_key)
 			/* seek unique value */
@@ -250,18 +260,21 @@ local sprname:=""
 	next
 	oDict:unLockID(classDesc:id)
 
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
-	cgi_fillTreeRdf(aRefs,aTree,"",1)
+	if set("XML_OUT")=="NO"
+	else
+		? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+		//? 'xmlns:docum="http://last/cbt_new/rdf#">'
+		? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+		?
+		cgi_fillTreeRdf(aRefs,aTree,"",1)
 
-	if empty(urn)
-		urn := 'urn:'+sprname
+		if empty(urn)
+			urn := 'urn:'+sprname
+		endif
+		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
+		cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+		? '</RDF:RDF>'
 	endif
-	cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-	? '</RDF:RDF>'
 
 ?
 return

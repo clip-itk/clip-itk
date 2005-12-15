@@ -380,7 +380,6 @@ inst_lib:
 
 inst_std_lib:
 	mkdir -p $(DESTDIR)$(STD_LIBDIR)
-	echo "asdfsfs"
 	ls $(DESTDIR)$(CLIPROOT)/lib/*$(DLLSUFF)
 	for i in $(DESTDIR)$(CLIPROOT)/lib/*$(DLLSUFF); do ln -s $$i $(DESTDIR)$(STD_LIBDIR) 2>/dev/null || true; done
 	for i in $(DESTDIR)$(CLIPROOT)/lib/*$(DLLREALSUFF); do ln -s $$i $(DESTDIR)$(STD_LIBDIR) 2>/dev/null || true; done

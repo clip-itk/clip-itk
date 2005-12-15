@@ -13,18 +13,20 @@
 
 static driver := getDriver()
 
-/* TODO: column and row manipulation, get/set values, id by data, not index */
+/* TODO: column and row manipulation, get/set values */
 
 /* Table class */
 function UITable(columns)
 	local obj	:= driver:createTable(columns)
 	obj:className	:= "UITable"
+	obj:columns 	:= columns
 	obj:nodes	:= map()
 	obj:onSelect	:= NIL
 // No alternate rows color by default
 //	obj:altRowColor	:= NIL
 // Set alternate rows color by default
 	obj:altRowColor	:= UIColor(ALT_TABLE_ROW_COLOR)
+	obj:lastId	:= 0
 	_recover_UITABLE(obj)
 return obj
 
@@ -35,11 +37,20 @@ function _recover_UITABLE( obj )
 	obj:getSelection := @ui_getSelection()
 	obj:getSelectionId := @ui_getSelectionId()
 	obj:setAltRowColor := @ui_setAltRowColor()
+	obj:savePosition    := @ui_savePosition()
+	obj:restorePosition := @ui_restorePosition()
 return obj
 
 /* Add row and fill it by data */
 static function ui_addRow(self, data, id)
         local i, node
+        
+        // Fix missing id
+        if id == NIL
+        	self:lastId++
+        	id := alltrim(str(self:lastId))
+	endif
+        
         // Convert values to strings
 	for i=1 to len(data)
 		data[i] := val2str(data[i])
@@ -48,8 +59,6 @@ static function ui_addRow(self, data, id)
 	node:className := "UITableItem"
 	node:table := @self
 	node:node_id := id
-	// TODO: set action to item object
-	
 	self:nodes[node:id] = node
 return NIL
 
@@ -73,6 +82,7 @@ return
 static function ui_clear(self)
 	driver:clearTable( self )
 	self:nodes := map()
+	self:lastId := 0
 return NIL
 
 /* Get current selection */
@@ -83,9 +93,15 @@ return sel
 
 /* Get current selection ID */
 static function ui_getSelectionId(self)
-	local sel
+	local sel, id:=NIL
 	sel := driver:getTableSelection( self )
-return self:nodes[sel]:node_id
+	//?? "Selection:", sel, sel $ self:nodes, chr(10)
+	if .not. empty(sel) .and. sel $ self:nodes
+		id := self:nodes[sel]:node_id
+	else 
+		return NIL
+	endif
+return id
 
 /* Set alternate row color */
 static function ui_setAltRowColor(self, color)
@@ -93,3 +109,25 @@ static function ui_setAltRowColor(self, color)
 	// TODO: redraw rows on alternate color changes
 return NIL
 
+/* Save current position to variable */
+static function ui_savePosition(self)
+	local pos
+	pos := driver:getTablePosition( self )
+return pos
+
+/* Restore position from variable */
+static function ui_restorePosition(self, pos)
+	local ret, k, i, realPos:=NIL
+	
+	if valtype(pos) == 'A' .and. len(pos) == 2 .and. .not. empty(pos[2])
+		k := mapkeys(self:nodes)
+		for i:=1 to len(k)
+			if self:nodes[k[i]]:node_id == pos[2]
+				realPos := self:nodes[k[i]]:id
+				exit
+			endif
+		next
+		pos[1] := realPos
+		ret := driver:setTablePosition( self, pos )
+	endif
+return ret

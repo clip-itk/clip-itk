@@ -151,12 +151,19 @@ return (cMessage)
 
 *********************************************
 function error2html(err)
-local i
-?? "Content-type: text/html"
-?
-?
-? "system error:",err
-? "<BR>"
+	local i
+	if "ARGS" $ err
+		for i=1 to len(err:args)
+			if valtype(err:args[i]) == "O"
+				err:args[i] := "{OBJECT}"
+			endif
+		next
+	endif
+	?? "Content-type: text/html"
+	?
+	?
+	? "system error:",err
+	? "<BR>"
 	i := 1
 	while ( !Empty(ProcName(i)) )
 		? "Called from", allTrim(ProcName(i)) + ;
@@ -171,6 +178,13 @@ quit
 /*****************************************/
 function error2Log(err)
 	local i,s
+	if "ARGS" $ err
+		for i=1 to len(err:args)
+			if valtype(err:args[i]) == "O"
+				err:args[i] := "{OBJECT}"
+			endif
+		next
+	endif
 	i := 1
 	while ( !Empty(ProcName(i)) )
 		s := "Called from "+allTrim(ProcName(i)) + ;

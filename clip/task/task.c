@@ -5,6 +5,10 @@
  */
 /*
  $Log: task.c,v $
+ Revision 1.23  2005/11/26 16:25:48  clip
+ uri: rename task_select_if -> clip_task_select_if
+      It is openBsd pheatures.
+
  Revision 1.22  2005/07/11 09:07:23  clip
  uri: small fix fo gcc4
 
@@ -952,7 +956,7 @@ task_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds,
 }
 
 TASK_DLLEXPORT int
-task_select_if(int fd, void *rp, void *wp, void *ep, void *to)
+clip_task_select_if(int fd, void *rp, void *wp, void *ep, void *to)
 {
 	return task_select(fd, (fd_set *) rp, (fd_set *) wp, (fd_set *) ep, (struct timeval *) to);
 }

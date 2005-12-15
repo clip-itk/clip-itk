@@ -1,5 +1,5 @@
 #CC=gcc
-CFLAGS=-Wall -O -g #-pg -DMEMDBG
+CFLAGS=-Wall -O -g -fPIC #-pg -DMEMDBG
 
 SCRLIB = ./libscr.a
 SCROBJS = tcaps.o termgoto.o screen.o scankey.o keymap.o

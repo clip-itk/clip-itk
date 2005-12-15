@@ -104,7 +104,7 @@ fi
 if [ -d udbx ]
 then
 	cd udbx
-	$MAKE install
+	#$MAKE install
 	cd ..
 fi
 

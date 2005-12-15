@@ -5,6 +5,10 @@
 */
 /*
    $Log: clip.h,v $
+   Revision 1.242  2005/11/26 16:25:47  clip
+   uri: rename task_select_if -> clip_task_select_if
+        It is openBsd pheatures.
+
    Revision 1.241  2005/01/05 11:22:01  clip
    uri: small fix
 
@@ -2333,8 +2337,8 @@ int _clip_translate_charset(char *p1, char *p2, unsigned char *str
 	, unsigned char *ostr, int len);
 
 #ifdef USE_TASKS
-	#define select(p1,p2,p3,p4,p5) task_select_if(p1,p2,p3,p4,p5)
-	int task_select_if(int,void*,void*,void*,void*);
+	#define select(p1,p2,p3,p4,p5) clip_task_select_if(p1,p2,p3,p4,p5)
+	int clip_task_select_if(int,void*,void*,void*,void*);
 #endif
 
 void _clip_init_localvars(ClipMachine *mp, ClipVarFrame **plocalvars, int num);

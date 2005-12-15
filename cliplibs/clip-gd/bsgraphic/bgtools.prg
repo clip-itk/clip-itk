@@ -171,6 +171,12 @@ static function bg_drawScale(selfs)
 local fonColor, darkFonColor, colorAverage, mixedColor
 local smax, smin, skl, _step, decmin, highTitle, highSubTitle, xx, yy
 local lsign, widthLegend, highLegend
+local symb,yav
+local str,lenstr,MAXY,volume,highVrtTitle
+local a,x,y,z,j,i,t,m,kj,rmin,scl,scx
+local x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6
+local sk,va,xav,sk1,sk2
+
 	fonColor  := ::image:newColor(230, 230, 230)
 	darkFonColor := ::image:newColor(150, 150, 150)
 	colorAverage := ::image:newColor(::avColor[1], ::avColor[2], ::avColor[3])
@@ -526,6 +532,12 @@ static function bg_drawScale2(selfs)
 local fonColor, darkFonColor, colorAverage, mixedColor
 local smax, smin, skl, _step, decmin, highTitle, highSubTitle, xx, yy
 local lsign, widthLegend, highLegend
+local symb
+local str,lenstr,MAXY,volume,highVrtTitle
+local a,x,y,z,j,i,t,m,kj,rmin,scl,scx
+local x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6
+local sk,va,xav,sk1,sk2
+
 	fonColor  := ::image:newColor(230, 230, 230)
 	darkFonColor := ::image:newColor(150, 150, 150)
 	colorAverage := ::image:newColor(::avColor[1], ::avColor[2], ::avColor[3])

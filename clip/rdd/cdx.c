@@ -4,9 +4,12 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log: cdx.c,v $
+	Revision 1.158  2005/11/30 13:58:17  clip
+	rust: minor fix in cdx_setscope()
+	
 	Revision 1.157  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
-	
+
 	Revision 1.156  2005/05/25 15:04:40  clip
 	rust: right opening IDX when DBFCDX is default and non-standard suffix is used
 
@@ -2874,6 +2877,49 @@ static int cdx_reindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __
 		ro = ri->orders[i];
 		if(ro->custom)
 			continue;
+		rd->eof = 0;
+		if((er = rd->vtbl->rawgo(cm,rd,rd->recno,0,__PROC__))) return er;
+		if(ro->type == 'X'){
+			ro->keysize = ro->bufsize = ro->index->rd->fields[ro->simpfno].len-1;
+		} else {
+			if((er = rdd_calc(cm,rd->area,&ro->block,&vv,0))) return er;
+			vp = _clip_vptr(&vv);
+
+			switch(vp->t.type){
+				case CHARACTER_t:
+					ro->bufsize = ro->keysize = vp->s.str.len;
+					ro->dec = 0;
+					ro->type = 'C';
+					break;
+				case NUMERIC_t:
+					ro->keysize = (vp->t.len?vv.t.len:10);
+					ro->dec = vp->t.dec;
+					ro->bufsize = 8;
+					ro->type = 'N';
+					break;
+				case LOGICAL_t:
+					ro->keysize = 1;
+					ro->dec = 0;
+					ro->bufsize = 1;
+					ro->type = 'L';
+					break;
+				case DATE_t:
+					ro->keysize = 8;
+					ro->dec = 0;
+					ro->bufsize = 8;
+					ro->type = 'D';
+					break;
+				case DATETIME_t:
+					ro->keysize = 8;
+					ro->dec = 0;
+					ro->bufsize = 8;
+					ro->type = 'T';
+					break;
+				default:
+					return rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,
+						er_baddata);
+			}
+		}
 		rd->tagindexing = ro->name;
 		bt = bt1_create(ro->unique,ro->bufsize+sizeof(unsigned int),_cdx_compare,cm->index_buffer_limit);
 		buf = malloc(ro->bufsize+sizeof(unsigned int));
@@ -3787,7 +3833,7 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 			if(ro->type == 'X'){
 				*(char*)res = type_weight(NUMERIC_t);
 				*(((char*)res)+1) = 0;
-				(char*)res ++;
+				((char*)res)++;
 			}
 			if(var->n.d == 0)
 				var->n.d = 0;
@@ -3797,7 +3843,7 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 		case DATE_t:{
 			if(ro->type == 'X'){
 				*(char*)res = type_weight(DATE_t);
-				(char*)res ++;
+				((char*)res)++;
 			}
 			*(unsigned long long*)res = _cdx_longlong((double)var->d.julian);
 			break;
@@ -3805,7 +3851,7 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 		case DATETIME_t:{
 			if(ro->type == 'X'){
 				*(char*)res = type_weight(DATETIME_t);
-				(char*)res ++;
+				((char*)res)++;
 			}
 			_rdd_put_backuint((unsigned char*)res,var->dt.julian);
 			_rdd_put_backuint((unsigned char*)res+4,var->dt.time);
@@ -3814,7 +3860,7 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 		case LOGICAL_t:{
 			if(ro->type == 'X'){
 				*(char*)res = type_weight(LOGICAL_t);
-				(char*)res ++;
+				((char*)res)++;
 			}
 			*(char*)res = var->l.val?'T':'F';
 			break;
@@ -4020,7 +4066,7 @@ static int cdx_setscope(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* top,
 	void* t = NULL;
 	void* b = NULL;
 	unsigned int firstrecno = 0,lastrecno = 0,recno;
-	unsigned int lastrecno1 = 0;
+	unsigned int lastrecno1 = -1;
 	CDX_HEADER hdr;
 	int found,out = 0;
 	CDX_LEAF leaf;

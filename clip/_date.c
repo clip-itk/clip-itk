@@ -6,6 +6,12 @@
 
 /*
    $Log: _date.c,v $
+   Revision 1.63  2005/12/07 08:46:59  clip
+   uri: small fix in addmonth() from Slava Zanko <slavaz@cis.by>
+
+   Revision 1.62  2005/09/22 11:42:32  clip
+   uri: some fix in date() for WIN32 from Konstantin Suhorabski
+
    Revision 1.61  2004/12/03 09:07:27  clip
    uri: small fix
 
@@ -295,24 +301,34 @@ _clip_sysdate()
 	 */
 }
 
+
 int
 clip_DATE(ClipMachine * mp)
 {
 	int yy,mm,dd;
+
+#ifdef _WIN32
+	SYSTEMTIME st;
+	GetLocalTime( &st );
+	yy = st.wYear;
+	mm = st.wMonth;
+	dd = st.wDay;
+#else
 	struct tm *sysTime;
 
 	sysTime = _clip_sysdate();
-		yy = sysTime->tm_year + 1900;
-		mm = sysTime->tm_mon + 1;
-		dd = sysTime->tm_mday;
+	yy = sysTime->tm_year + 1900;
+	mm = sysTime->tm_mon + 1;
+	dd = sysTime->tm_mday;
 	free(sysTime);
+#endif
 
-		if ( _clip_parinfo(mp,1) == NUMERIC_t )
-			yy = _clip_parni(mp,1);
-		if ( _clip_parinfo(mp,2) == NUMERIC_t )
-			mm = _clip_parni(mp,2);
-		if ( _clip_parinfo(mp,3) == NUMERIC_t )
-			dd = _clip_parni(mp,3);
+	if ( _clip_parinfo(mp,1) == NUMERIC_t )
+	    yy = _clip_parni(mp,1);
+	if ( _clip_parinfo(mp,2) == NUMERIC_t )
+	    mm = _clip_parni(mp,2);
+	if ( _clip_parinfo(mp,3) == NUMERIC_t )
+	    dd = _clip_parni(mp,3);
 
 	_clip_retdc(mp, yy , mm, dd);
 	return 0;
@@ -615,6 +631,12 @@ clip_ADDMONTH(ClipMachine * mp)
 		nummon = _clip_parni(mp, 2);
 	old_mm = mm+yy*12;
 	mm += nummon;
+
+	if (mm>12) {
+	    yy+=(int) mm/12;
+	    mm = mm - ((int) mm/12)*12;
+	}
+
 	if (nummon!=0)
 	{
 		for(i=4; i!=0; i--)

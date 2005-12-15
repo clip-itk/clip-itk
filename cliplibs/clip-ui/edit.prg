@@ -127,3 +127,6 @@ return obj
 
 /* EditNumber class */
 /*????*/
+
+/* EditReference class */
+/*????*/

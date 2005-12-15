@@ -76,7 +76,7 @@ return .t.
 
 *********************************************
 static function hp_parse
-       local tbeg,tend,s,ch,c:=0,f1:=.f.,sch:='"'
+       local tbeg,tend,s,ch,c:=0,f1:=.f.,sch:='"', nPos
        while .t.
 	     tbeg=at("<",::buffer)
 	     if tbeg>1
@@ -86,11 +86,18 @@ static function hp_parse
 	     endif
 	     // Check for DOCTYPE or CDATA
 	     if substr(::buffer,tbeg+1,8) == '!DOCTYPE' .or. substr(::buffer,tbeg+1,7) == '![CDATA'
-		tend:=at("]>",::buffer)
+		if substr(::buffer, tbeg+1,8) == '!DOCTYPE'
+			s := ">"
+			nPos := 0
+		else
+			s := "]>"
+			nPos := 1
+		endif
+		tend:=at(s,::buffer)
 		if tend>0
 			// Put as text without interpretation
-			::__addText(substr(::buffer,1,tend+1))
-	        	::buffer:=substr(::buffer,tend+2)
+			::__addText(substr(::buffer,1,tend+nPos))
+	        	::buffer:=substr(::buffer,tend+nPos+1)
 			loop
 		else
 			// Missed end: wait for next portion

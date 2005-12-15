@@ -5,6 +5,9 @@
  */
 /*
    $Log: cliprt.c,v $
+   Revision 1.444  2005/12/02 08:33:33  clip
+   uri: small fix
+
    Revision 1.443  2005/08/08 09:11:39  clip
    alena: restore
 
@@ -3039,7 +3042,7 @@ _clip_signal(int sig)
 	static int oldsig = 0;
 	static int cnt = 0;
 
-	if(cnt >= 100)
+	if(cnt >= 10)
 		exit(100+sig);
 	if(sig == oldsig)
 		cnt++;

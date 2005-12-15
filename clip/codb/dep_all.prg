@@ -49,6 +49,7 @@ function codb_depAll_Methods(oDict,dep_id)
 	obj:padrBody	:= @_dep_padrBody()
 	obj:checkBody	:= @_dep_checkBody()
 	obj:runTrigger	:= @_dep_runTrigger()
+	obj:needExtent	:= @_dep_needExtent()
 	obj:__check_counters:= @__check_counters()
 
 return obj
@@ -137,20 +138,33 @@ return ret
 static function _dep_IdList(self,objId,nIndex,sName,sWhere,nCount,deleted,p1,p2)
 return coDb_IdList(self,objId,nIndex,sName,sWhere,nCount,deleted)
 ************************************************************
-static function _dep_GetValue(self,objId,nLocks)
+static function _dep_GetValue(self,cId,nLocks,version)
 	local ret:=map()
-	if nLocks == NIL
-		self:error := ""
-		if !(valtype(objId) =="C")
-			return ret
-		endif
-		if objId $ self:__objCache
-			return self:__objCache[objId]
-		endif
-		ret := self:_getValue(objId)
-	else
-		ret := self:_getValue(objId,nLocks)
+
+	self:error := ""
+	if !(valtype(cId) =="C")
+		return ret
 	endif
+	cID := padr(cID,codb_info("CODB_ID_LEN"))
+        if !empty(version)
+        	adel(self:__objCache,cId)
+	endif
+	if nLocks != NIL
+        	adel(self:__objCache,cId)
+	endif
+	if cId $ self:__objCache
+		return self:__objCache[cId]
+	endif
+
+	ret := self:_getValue(cId,nLocks,version)
+
+	if len(self:__objCache) > CODB_DEP_CACHE
+		codb_cache_minimize(self:__objCache, CODB_DEP_CACHE/4 )
+	endif
+        if empty(ret)
+        	return ret
+	endif
+	self:__objCache[cId] := ret
 return ret
 ************************************************************
 static function __check_counters(self,class_desc,oData)
@@ -165,6 +179,9 @@ static function __check_counters(self,class_desc,oData)
 		oData[name] := oDict:counter(attr:counter,self:number,oData[name])
 	next
 return
+************************************************************
+static function _dep_needExtent(self,ext_id)
+return self:extenOpen(ext_id)
 ************************************************************
 static function _dep_runTrigger(self,cId,cTrigger,newData,oldData)
 	local ret:=.t.,i,m, tret

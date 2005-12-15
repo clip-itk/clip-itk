@@ -384,11 +384,15 @@ RETURN lRes
 FUNC Add_Ext(name, ext)
 name:=ALLTRIM(name)
 IF RAT('.',name) <= RAT(PATH_DELIM,name)
+#ifdef  __CLIP__
+	ext:=LOWER(ext)
+#else
 	IF IsLower(name)
 		ext:=LOWER(ext)
 	ELSE
 		ext:=UPPER(ext)
 	ENDIF
+#endif
 	name+=ext
 ENDIF
 RETURN name
@@ -437,7 +441,7 @@ LOCAL i,xRes,cType
 
 xRes:=&_Fld
 xRes:={'','','','','','','',0,0,0,0,0,ctod(''),.f.,NIL};
- 	[AT(ValType(xRes),'CMVXGPTNFBIYDLU')]
+	[AT(ValType(xRes),'CMVXGPTNFBIYDLU')]
 IF m->_CurRType=='X' THEN xRes:=NIL
 IF Select()==1
 	_fld:=RealFldName(_fld)
@@ -588,7 +592,7 @@ DO CASE
 		IF _nMoves==0
 			KEYB _a
 		ELSE
-	                Eval(oTb:SkipBlock, _nMoves)
+			Eval(oTb:SkipBlock, _nMoves)
 			oTb:RefreshAll()
 			@ _top+Int((_numb-1)*_Length/(_la-1)),m->_awr say SCROLL_FILL
 			KEYB _EMP
@@ -1585,10 +1589,10 @@ FUNC Rand (nStart)
  Если указан параметр nStart,то последовательность начинается заново.
  От каждого nStart всегда возвращается одинаковая последовательность.
  Пример:
- 	? Rand(seconds()) - первый элемент
- 	While !Waitkey(3)<>xbeK_ESC
+	? Rand(seconds()) - первый элемент
+	While !Waitkey(3)<>xbeK_ESC
 		? Rand()
- 	end
+	end
 */
 
 static r_iy:=100001

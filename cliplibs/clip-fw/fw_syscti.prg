@@ -1540,7 +1540,7 @@ return oMenu
 *******************************
 static function MenuAddItem(cPrompt, cMsg, lChecked, lActive, bAction, cBmpFile, ;
 			cResName, oMenu, bBlock, nVKState, nVirtKey, lHelp, nHelpId, bWhen, lBreak )
-local oItem, ctiItem
+local oItem, ctiItem,ctiMenu
 
 	DEFAULT cMsg := "", lChecked := .f., lActive := .t.
 

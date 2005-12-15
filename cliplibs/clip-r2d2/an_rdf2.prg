@@ -10,11 +10,7 @@ local beg_date:=date(),end_date:=date(),account:=""
 local periodic, mPeriod, nPer
 local i,j,k,tmp,obj
 local an_data,an_level:=1, an_values:={" "," "," "," "," "," "}
-local urn:=""
-local xslt:=""
-local host:=""
-local total:=""
-local level:=""
+local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 	errorblock({|err|error2html(err)})
 
 	_query := d2ArrToMap(_queryArr)
@@ -32,6 +28,9 @@ local level:=""
 	endif
 	if "PERIODIC" $ _query
 		periodic := _query:periodic
+	endif
+	if "UNION" $ _query
+		union := _query:union
 	endif
 	if "XSLT" $ _query
 		xslt := _query:xslt
@@ -76,7 +75,7 @@ local level:=""
 	endif
 	if "LEVEL" $ _query
 		level := _query:level
-	endif	
+	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
@@ -110,28 +109,21 @@ local level:=""
 	endif
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
-
 	oDep := codb_needDepository("ACC0101")
 	if empty(oDep)
 //		cgi_xml_error( "Depository not found: ACC0101" )
 		return
 	endif
 	oDict := oDep:dictionary()
-
+	? '<items id="'+urn+'">['
 
 	mperiod := periodic2date(beg_date,end_date,periodic)
 	for nPer = 1 to len(mPeriod)
 		beg_date =mPeriod[nPer][1]
 		end_date =mPeriod[nPer][2]
 
-		//? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-		//? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
-		? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
-		? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-		? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
-		//? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
-		? '<items id="'+urn+'">['
-		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
+	
+		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
 		asort(an_data,,,{|x,y| x:essence <= y:essence })
 
 		if !empty(periodic)
@@ -141,13 +133,13 @@ local level:=""
 		endif
 		cgi_an_putRdf2(an_data,account,an_level,urn,total,beg_date,end_date,"",periodic,level)
 		//putRdf2(an_data,account,an_level)
-
+	
 	next
 	? ']</items></RDF:RDF>'
 	return
 ******************************
 function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn,level)
-	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode
+	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode,sTmp:=""
 	
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
 	acc := codb_getValue(account)
@@ -178,45 +170,34 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 			loop
 		endif
 
-		if tmp:an_value == 'EMPTY' 
+		if tmp:an_value == 'EMPTY'
 			loop
 		endif
 		urn_id := urn
 		promt:= iif(tmp:an_value=="total","",tmp:an_value)
+
+		?? "{ a:{level:'"+level+"', "
+		?? " isContainer:false }, "
+		?? " beg_date:'"+dtoc(beg_date)+"', "
+		?? " end_date:'"+dtoc(end_date)+"', "
+		?? " r:{ account:'"+account+"', unit:'"+tmp:unit_num+"'}, "
+    		 sTmp := tmp:essence
+		 sTmp := strtran(sTmp,'&',"&amp;")
+                 sTmp := strtran(sTmp,'"',"")
+                 sTmp := strtran(sTmp,"'",'')
+                 sTmp := strtran(sTmp,'<',"&lt;")
+                 sTmp := strtran(sTmp,'>',"&gt;")
 		
-		?? '{ a:{level:"'+level+'", '
-		?? ' isContainer:false }, '
-		//acccode:=split(codb_essence(account),":")[1]
-		?? ' r:{ account:"'+account+'", unit:"'+tmp:unit_num+'"}, '
-		
-		//? '	acccode="'+acccode+'"'
-		//? '	account="'+codb_essence(account)+'"'
-		//? '	sort_account="'+codb_essence(account)+'"'
-		//? '	ref_account="'+account+'"'
-		?? ' account_name:"'+tmp:essence+'" ,'
-		//?? ' id:"'+tmp:an_value+'", '
-		//?? ' about:"'+urn_id+':'+tmp:an_value+'", ' 
-		?? ' id:"'+urn_id+':'+tmp:an_value+'", ' 
+		?? " account_name:'"+sTmp+"' ,"
+		?? " id:'"+urn_id+":"+tmp:an_value+"', "
 		k := tmp:tcols
 		k :=strtran(k,':','')
-		k :=strtran(k,'="',':')		
+		k :=strtran(k,'="',':')
 		k :=strtran(k,'"','",')
 		k :=strtran(k,':',':"')
 		?? alltrim(k)
-/*
-		k := split(tmp:tcols,'"  ')
-		for j=1 to len(k)
-		? k[j]+', '
 
-			ss := ""
-			if "="$alltrim(k[j])
-				ss += alltrim(k[j])+iif(j==len(k),'',' ,')
-			else
-				ss+=alltrim(k[j])+iif(j==len(k),'',' ,')
-			endif
-			?? " "+	ss
-		next
-*/
+		?? ' union:"'+tmp:union+'", '
 		?? ' bd_summa:"'+sort_summa(tmp:bd_summa)+'", '
 		?? ' bk_summa:"'+sort_summa(tmp:bk_summa)+'", '
 		?? ' od_summa:"'+sort_summa(tmp:od_summa)+'", '
@@ -227,8 +208,7 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		?? ' in_num: "' +sort_summa(tmp:in_num)  +'", '
 		?? ' out_num:"' +sort_summa(tmp:out_num) +'", '
 		?? ' end_num:"' +sort_summa(tmp:end_num) +'", '
-
-		?? '	unit:"'+codb_essence(tmp:unit_num)  +'" '
+		?? ' unit:"'+codb_essence(tmp:unit_num)  +'" '
 		?? '},'
 
 	next

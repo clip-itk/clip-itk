@@ -24,7 +24,8 @@ cleanup()
 # 	cumulative install
 echo "cumulative install"
 $MAKE || cleanup 1
-$MAKE install || cleanup 1
+$MAKE install DESTDIR="" || cleanup 1
+#$MAKE install || cleanup 1
 #	package install
 mkdir -p ${DESTDIR}/${SCLIPROOT}/lib \
 	 ${DESTDIR}/${SCLIPROOT}/doc \
@@ -37,10 +38,12 @@ mkdir -p ${DESTDIR}/${SCLIPROOT}/lib \
 	 ${DESTDIR}/${SCLIPROOT}/locale.pot
 cp ${CLIPROOT}/include/clipcfg.sh ${CLIPROOT}/include/Makefile.inc ${DESTDIR}/${SCLIPROOT}/include/
 cp ${CLIPROOT}/bin/clip_msgfmt ${CLIPROOT}/bin/clip_msgmerge ${DESTDIR}/${SCLIPROOT}/bin/
+cp ${CLIPROOT}/bin/clip_cp ${DESTDIR}/${SCLIPROOT}/bin
 echo "install to ${DESTDIR}${SCLIPROOT}"
-$MAKE install CLIPROOT=${DESTDIR}/${SCLIPROOT} || cleanup 2
+$MAKE install DESTDIR="" CLIPROOT=${DESTDIR}/${SCLIPROOT} || cleanup 2
 rm ${DESTDIR}/${SCLIPROOT}/include/clipcfg.sh ${DESTDIR}/${SCLIPROOT}/include/Makefile.inc
 rm ${DESTDIR}/${SCLIPROOT}/bin/clip_msgfmt ${DESTDIR}/${SCLIPROOT}/bin/clip_msgmerge
+rm ${DESTDIR}/${SCLIPROOT}/bin/clip_cp
 
 cd $pwd
 

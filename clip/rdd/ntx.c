@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: ntx.c,v $
+	Revision 1.121  2005/09/26 12:14:20  clip
+	rust: balancing bug fixed
+	
 	Revision 1.120  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
 	
@@ -1398,7 +1401,7 @@ static int _ntx_balance(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 			if((er = rdd_write(cm,&ro->index->file,ro->header,sizeof(NTX_HEADER),(char*)&hdr,
 				__PROC__))) return er;
 		}
-	} else if(!_rdd_uint(bp->left)){
+	} else {
 		/* balance pages */
 		int i,j,sum,mediane;
 		char key[1024];
@@ -1436,6 +1439,10 @@ static int _ntx_balance(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 
 			for(i=count;i>mediane;i--)
 				if((er = _ntx_remove_node(cm,ro,page,&pp,i,__PROC__))) return er;
+			_rdd_put_uint(bp->recno, 0);
+			memset(bp->key, 0, ro->keysize);
+			if((er = rdd_write(cm,&ro->index->file,page,sizeof(NTX_PAGE),(char*)&pp,
+				__PROC__))) return er;
 		}
 		else if(count<mediane)
 		{
@@ -1463,6 +1470,13 @@ static int _ntx_balance(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 			memcpy(ubp->key,bp->key,ro->keysize);
 			_rdd_put_uint(ubp->recno,_rdd_uint(bp->recno));
 			if((er = rdd_write(cm,&ro->index->file,upage,sizeof(NTX_PAGE),(char*)&upp,
+				__PROC__))) return er;
+
+			bp = _ntx_buck(&rpp, j);
+			right = _rdd_uint(bp->left);
+			bp = _ntx_buck(&pp, i);
+			_rdd_put_uint(bp->left, right);
+			if((er = rdd_write(cm,&ro->index->file,page,sizeof(NTX_PAGE),(char*)&pp,
 				__PROC__))) return er;
 
 			for(i=count+1;i<=mediane;i++)

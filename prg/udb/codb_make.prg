@@ -43,6 +43,14 @@ parameters p1,p2,p3,p4,p5
 	endif
 
 	codb_openLog()
+	fList:=directory("data_*","D")
+	for i=1 to len(fList)
+		if fList[i][5] == "D"
+		else
+			loop
+		endif
+		aadd(mdirs,flist[i][1])
+	next
 
 	for d=1 to len(mdirs)
 		mdir := mdirs[d]+PATH_DELIM+"codb_list.xml"

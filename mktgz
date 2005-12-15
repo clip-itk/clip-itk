@@ -159,6 +159,7 @@ tar cvf - \
 | $COMPRESS_PRG > $dir/clip-dev_$ver.tar.$COMPRESS_SUFF
 
 cd $pwd
+#echo "asdf" $pwd $CLIPROOT $DESTDIR
 cd cliplibs
 $MAKE tgz
 cd $pwd

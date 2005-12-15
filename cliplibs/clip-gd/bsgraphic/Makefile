@@ -1,12 +1,14 @@
 CLIP	= $(CLIPROOT)/bin/clip
-CLIPFLAGS = -a -O -b
+CLIPFLAGS = -a -O -b -w
 
 ifdef CLIPROOT
 include $(CLIPROOT)/include/Makefile.inc
 endif
 
-GDLIB  = libclip-gd.a
-GDSLIB = libclip-gd$(DLLSUFF)
+GDLIB  =
+#libclip-gd.a
+GDSLIB =
+#libclip-gd$(DLLSUFF)
 GDLIBREAL = libclip-gd$(DLLREALSUFF)
 
 OBJS  =  circle.o hist.o bgtools.o histcumul.o histnorm.o hist3d.o line.o linecumul.o linenorm.o ring.o bggraph.o

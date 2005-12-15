@@ -1,3 +1,9 @@
+clip (1.1.15-1) stable; urgency=low
+
+  * new release, some bugs fixed, speed opti,ize, few new functions.
+
+ -- Uri Khnykin <uri@itk.ru>  Thu, 16 Dec 2005 01:00:00 +0500
+
 clip (1.1.14-1) stable; urgency=low
 
   * new release, some bugs fixed, GTK2 new functions, few new functions, CLIP-UI added.

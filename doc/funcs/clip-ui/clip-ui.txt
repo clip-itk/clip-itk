@@ -33,7 +33,7 @@ $SUMMARY$
 $LANG_RU$
 	Использовать указанный драйвер.
 $SYNTAX$
-	useDriver(<name>) --> NIL
+	useDriver(<name>)	--> NIL
 $ARGUMENTS$
 	<name>		- String. Driver name.
 $LANG_RU$
@@ -43,6 +43,28 @@ $EXAMPLES$
 $SEEALSO$
 	GETDRIVER()
 $END$
+
+
+$FUNCNAME$
+	getMainWindow()
+$CATEGORY$
+  CLIP-UI
+$SUMMARY$
+	Get current application main window <link linkend="classmainwindow">UIMainWindow</link> object.
+$LANG_RU$
+	Получить объект текущего главного окна приложения <link linkend="classuimainwindow">UIMainWindow</link>.
+$SYNTAX$
+	getMainWindow()	--> <oMainWindow>
+$RETURNS$
+	Current application main window <link linkend="classmainwindow">UIMainWindow</link> object.
+$LANG_RU$
+	Объект текущего главного окна приложения <link linkend="classuimainwindow">UIMainWindow</link>.
+$EXAMPLES$
+	static window := getMainWindow()
+$SEEALSO$
+	UIMAINWINDOW
+$END$
+
 
 $FUNCNAME$
 	getSysImage()

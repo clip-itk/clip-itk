@@ -1,3 +1,15 @@
+2005-11-14 clip-ui 0.1.2.3
+	- new methods: 
+		UIButton: setText()
+		UITable:  savePosition(), restorePosition()
+		UITree:   savePosition(), restorePosition()
+	- new function: getMainWindow()
+	- fix alignment for UIGrid
+	- UIForm support "Image" widget class (UIImage)
+
+2005-07-01
+	- FIX: put in scrolled window by gtk_ScrolledWindowAddWithViewport()
+
 2005-04-04
 	- new classes: UIEditColor, UIEditDate, UIEditFileName
 	- methods: setFocus() [UIChildWindow,UIDocument], 

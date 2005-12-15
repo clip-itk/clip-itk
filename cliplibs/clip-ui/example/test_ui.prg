@@ -16,6 +16,7 @@
 static ws
 static wnd := NIL, ww1, ww2
 static childToolbar
+static timer, tbState, iteration
 
 /* Declaration */
 local menu, i, sp, b
@@ -160,37 +161,31 @@ return 0
 
 /* Tree and table widgets */
 static function BankRefReq( sp )
-	local splitter, tree, table
+	local splitter, tree, table, vb
 
 	splitter := UISplitter(SPLITTER_HORIZONTAL)
 	sp:add(splitter, .T., .T.)
 	
 	tree := UITree(, {"N1","N2"})
 	
-	node1  := tree:addNode({"Node1", "node1111"})
-	node11 := tree:addNode({"Node2"})
-	node2  := tree:addNode({"Leaf1"},, node1)
-	node3  := tree:addNode({"Leaf2"},, node1)
-	node5  := tree:addNode({"Leaf5", "Leaf5"},5, node1)
-	node4  := tree:addNode({"Leaf3"},, node1, node3)
-	node44 := tree:addNode({"Leaf3333"},, node11)
-	node55 := tree:addNode({"Leaf333"},, node44)
-	node66 := tree:addNode({"Leaf33"},, node55)
-	
 	tree:setAction("selected",{|w,e| listEventTree(tree, e) })
 	splitter:add( tree )
 	
 	table := UITable({"#","Date","Payee","Sum"})
 	table:setAltRowColor("#cbe8ff")
-	table:addRow({"1","20.10.03",'JSC "Lighthouse"',"20000.00"},"DB0101000588")
-	table:addRow({"2","20.10.03",'JSC "Phoenix"',"5689.20"})
-	table:addRow({"3","21.10.03",'JSC "Phoenix"',"1500.00"})
-	table:addRow({"4","25.10.03",'JSC "Phoenix"',"99.00"})
 	
-//	table:clear()
+	// Fill tree and table
+	updateTable(tree, table)
+	node66 := tree:addNode({"Parent_Last"})
+	node67 := tree:addNode({"Last Leaf"},, node66)
+	table:addRow({"8","25.10.03",'Last: JSC "Phoenix"',"99.00"})
+		
+	vb := UIVbox()
 	table:setAction("selected",{|w,e| listEvent(table, e) })
-	splitter:addEnd( table )
-
+	vb:add(table, .T., .T.)
+	vb:addEnd(UIButton("&Update views", {|| updateTable(tree, table) }))
+	splitter:addEnd( vb )
+	
 return NIL
 
 static function listEventTree(tree, c)
@@ -199,6 +194,37 @@ return
 
 function listEvent(table, c)
 	?? "Select in table:",c,"(id =",table:getSelectionId(),")",chr(10)
+return
+
+function updateTable(tree, table)
+	local pos
+	
+	// Tree data
+	pos := tree:savePosition()
+	?? "Tree pos:", pos, chr(10)
+	tree:clear()
+	node1  := tree:addNode({"Node1", "node1111"})
+	node11 := tree:addNode({"Node2"})
+	node2  := tree:addNode({"Leaf1"},, node1)
+	node3  := tree:addNode({"Leaf2"},, node1)
+	node5  := tree:addNode({"Leaf5", "Leaf5"},, node1)
+	node4  := tree:addNode({"Leaf3"},, node1, node3)
+	node44 := tree:addNode({"Leaf3333"},, node11)
+	node55 := tree:addNode({"Leaf333"},, node44)
+	tree:restorePosition( pos )
+	
+	// Table data
+	pos := table:savePosition()
+	?? "Table pos:", pos, chr(10)
+	table:clear()
+	table:addRow({"1","20.10.03",'JSC "Lighthouse"',"20000.00"},"DB0101000588")
+	table:addRow({"2","20.10.03",'JSC "Phoenix"',"5689.20"})
+	table:addRow({"3","21.10.03",'JSC "Phoenix"',"1500.00"})
+	table:addRow({"4","25.10.03",'JSC "Phoenix"',"99.00"})
+	table:addRow({"5","20.10.03",'JSC "Lighthouse"',"20000.00"},"DB0101000589")
+	table:addRow({"6","20.10.03",'JSC "Phoenix"',"5689.20"})
+	table:addRow({"7","21.10.03",'JSC "Phoenix"',"1500.00"})
+	table:restorePosition( pos )
 return
 
 /* Form widgets */
@@ -371,7 +397,7 @@ static function fieldChanged(win)
 return 
 
 static function OtherWidget(w)
-	local hp, hp1, pb, bt, percent := 0, lt, g, co, fn
+	local hp, pb, bt, percent := 0, lt, g, co, fn, tg, t, tl, tb
 	
 	hp := UIHBox(,3)
 	hp:setPadding(5)
@@ -408,7 +434,56 @@ static function OtherWidget(w)
 	co := UIEditColor('#91FF40')
 	co:setGeometry(60)
         g:add(co)
-	
 	w:add( g )
 
+	// Timer
+	tg := UIHBox(,5)
+	tg:add(UILabel("Timer:"))
+	tl := UILabel("<time>")
+	tbState := 0
+	timer   := NIL
+	tb := UIButton("Start timer", {|| startTimer(tb, tl) })
+	tg:add(tl)
+	tg:add(tb)
+	w:add( tg )	
+
+return
+
+/* Start timer */
+static function startTimer(tb, tl)
+	if tbState == 0
+		// start
+		tbState := 1
+		tb:setText("Stop timer")
+		if empty(timer)
+			timer := UITimer(1, {|| timerEvent(tl) })
+		else
+			timer:start()
+		endif
+		iteration := 0
+	else
+		// stop
+		tbState := 0
+		tb:setText("Start timer")
+		if .not. empty(timer)
+			timer:stop()
+		endif
+	endif
+return
+
+/* Timer event */
+static function timerEvent(l)
+	local t, w
+	iteration++
+	if iteration == 15
+		w := getMainWindow()
+		if .not. empty(w)
+			w:dialogBox("Timer","Timer works 15 seconds.","'Ok'",NIL,NIL,IMG_OK)
+		else
+			?? "getMainWindow failed.&\n"
+		endif
+	endif
+	t := time()
+	?? "Event:", t, chr(10)
+	l:setText(t)
 return

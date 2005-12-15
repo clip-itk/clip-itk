@@ -10,10 +10,7 @@ local beg_date:=date(),end_date:=date(),account:=""
 local periodic, mPeriod, nPer
 local i,j,k,tmp,obj
 local an_data,an_level:=1, an_values:={" "," "," "," "," "," "}
-local urn:=""
-local xslt:=""
-local host:=""
-local total:=""
+local urn:="", xslt:="", host:="", total:="", union:=""
 	errorblock({|err|error2html(err)})
 
 	_query := d2ArrToMap(_queryArr)
@@ -31,6 +28,9 @@ local total:=""
 	endif
 	if "PERIODIC" $ _query
 		periodic := _query:periodic
+	endif
+	if "UNION" $ _query
+		union := _query:union
 	endif
 	if "XSLT" $ _query
 		xslt := _query:xslt
@@ -127,7 +127,7 @@ local total:=""
 		? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
 		//? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
 
-		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
+		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
 		asort(an_data,,,{|x,y| x:essence <= y:essence })
 
 		if !empty(periodic)
@@ -179,6 +179,7 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 //		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+ext_urn+'" id="'+tmp:an_value+'_'+alltrim(str(random(10000)))+'" DOCUM:about="'+urn_id+':'+tmp:an_value+ext_urn+'"'
 		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+ext_urn+'" id="'+tmp:an_value+ext_urn+'" DOCUM:about="'+urn_id+':'+tmp:an_value+ext_urn+'"'
 		? '	DOCUM:_saldo_="an_data"'
+		? '	DOCUM:union="'+tmp:union+'"'
 		? '	DOCUM:beg_date="'+dtoc(beg_date)+'"'
 		? '	DOCUM:end_date="'+dtoc(end_date)+'"'
 		acccode:=split(codb_essence(account),":")[1]

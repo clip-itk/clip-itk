@@ -23,7 +23,7 @@ cleanup()
 
 # 	cumulative install
 $MAKE || cleanup 1
-$MAKE install || cleanup 1
+$MAKE install DESTDIR="" || cleanup 1
 #	package install
 mkdir -p ${DESTDIR}/${SCLIPROOT}/lib \
 	 ${DESTDIR}/${SCLIPROOT}/doc \
@@ -35,8 +35,10 @@ mkdir -p ${DESTDIR}/${SCLIPROOT}/lib \
 	 ${DESTDIR}/${SCLIPROOT}/keymaps \
 	 ${DESTDIR}/${SCLIPROOT}/locale.pot
 cp ${CLIPROOT}/include/clipcfg.sh ${CLIPROOT}/include/Makefile.inc ${DESTDIR}/${SCLIPROOT}/include/
-$MAKE install CLIPROOT=${DESTDIR}/${SCLIPROOT} || cleanup 2
+cp ${CLIPROOT}/bin/clip_cp ${DESTDIR}/${SCLIPROOT}/bin
+$MAKE install DESTDIR="" CLIPROOT=${DESTDIR}/${SCLIPROOT} || cleanup 2
 rm ${DESTDIR}/${SCLIPROOT}/include/clipcfg.sh ${DESTDIR}/${SCLIPROOT}/include/Makefile.inc
+rm ${DESTDIR}/${SCLIPROOT}/bin/clip_cp
 
 mkdir -p ${DESTDIR}/usr/lib
 cd ${DESTDIR}/usr/lib || exit 1

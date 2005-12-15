@@ -2,38 +2,38 @@ set date format to "dd/mm/yyyy"
 set optimize on
 set optimize level to 2
 set exclusive off
+set exact off
 
+oDep := coDepository():new("GBL0201","sdfsd")
+oDep:open()
+oDict := oDep:dictionary()
+class:=oDict:classBodyByName("acc_chart")
+? tmp:= oDep:select(class:id,,,'code="62"')
+for i=1 to len(tmp)
+	oDep:getValue(tmp[i])
+next
+************
 oDep01 := coDepository():new("ACC0101","sdfsd")
-? oDep01:error
 oDep01:open()
 oDict01 := oDep01:dictionary()
-? oDict01:lockID("ACC010000001")
-? oDict01:lockID("ACC010000002")
-inkey(0)
-? oDict01:unLockID("ACC010000001")
-?
-return
-
-? oDict01:loadModule("asdfasdf")
-? oDict01:getModule("asdfasdf")
-? oDict01:loadModule("trans_opl")
-? oDict01:getModule("trans_opl")
-?
-return
-
-outlog(__FILE__,__LINE__,"aaaaa")
-obj:=oDep01:getValue("ACC010108E25")
-outlog(__FILE__,__LINE__,"aaaaa")
-obj:=oDep01:getValue("ACC010108E26")
-outlog(__FILE__,__LINE__,valtype(obj), obj)
-?
-return
-
-
-oDict := oDep01:dictionary()
-class:=oDict:classBodyByName("transfer_tov")
-
+class:=oDict01:classBodyByName("os_balance")
 ? class
+//tmp:= oDep01:select(class:id,,,'odate>=stod("20050801") .and. odate<=stod("20051130") .and. daccount="GBL0201016GL"')
+//tmp:= oDep01:select(class:id,,,'daccount="GBL0201016GL"')
+//tmp:= oDep01:select(class:id,,,'odate>=stod("20050801")')
+tmp:= oDep01:select(class:id,1,,'account=="GBL02010008H" .and. odate>=stod("20051110") .and. odate<=stod("20051130")')
+? len(tmp)
+for i=1 to len(tmp)
+	obj := oDep01:getValue(tmp[i])
+        ? obj:odate, obj:daccount
+next
+//tmp:= oDep01:select(class:id,,,'odate>=stod("20050801") .and. odate<=stod("20051130") .and. kaccount="GBL0201016GL"')
+//tmp:= oDep01:select(class:id,,,'kaccount="GBL0201016GL"')
+//tmp:= oDep01:select(class:id,,,'odate<=stod("20051130")')
+tmp:= oDep01:select(class:id,1,,'account=="GBL0201016GL" .and. odate>=stod("20051110") .and. odate<=stod("20051130")')
+? len(tmp)
+?
+return
 //tmp:= oDep01:select(class:id,,,'account=="GBL02010008F" .and. an_level==1  .and. beg_date<=stod("20050119") .and. end_date>=stod("20050101")  .and. an_value1=="GBL0201015AS"')
 //tmp:= oDep01:select(class:id,,,'account=="GBL02010008F .and. beg_date<=stod("20050119") .and. end_date>=stod("20050101")  .and. an_value1=="GBL0201015AS"')
 tmp:= oDep01:select(class:id)

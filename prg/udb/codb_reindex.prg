@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001  ITK
+    Copyright (C) 2001-2005  ITK
     Author   : Uri (uri@itk.ru)
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -113,7 +113,7 @@ local plugins,oPlug,m
 		classes := oDict:select("CLASS")
 		for a=1 to len(classes)
 			class := oDict:getValue(classes[a])
-			tmp := oDep:select(classes[a])
+			tmp := oDep:select(classes[a],,,,,.t.)
 			count += len(tmp)
 			? "&\t",class:name,len(tmp),"objects"
 			if empty(class)

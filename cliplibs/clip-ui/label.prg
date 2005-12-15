@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
 /*						                 	   */
-/*   Copyright (C) 2003 by E/AS Software Foundation 		           */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -22,16 +22,9 @@ return obj
 
 function _recover_UILABEL( obj )
 	obj:setText	:= @ui_setText()
-	obj:setValue	:= @ui_setText()
-	obj:getValue	:= @ui_getText()
 return obj
 
 /* Set label text */
 static function ui_setText(self, text)
 	driver:setLabelText(self, val2str(text) )
-	self:value := text
 return NIL
-
-/* Get label text */
-static function ui_getText(self)
-return self:value

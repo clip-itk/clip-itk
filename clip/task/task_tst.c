@@ -1,8 +1,12 @@
 /* $Log: task_tst.c,v $
-/* Revision 1.1  2001/11/12 14:13:46  clip
-/* START(cFuncname) now work :)
-/* paul
-/* */
+/* Revision 1.2  2005/11/26 16:25:48  clip
+/* uri: rename task_select_if -> clip_task_select_if
+/*      It is openBsd pheatures.
+/*
+ Revision 1.1  2001/11/12 14:13:46  clip
+ START(cFuncname) now work :)
+ paul
+ */
 
 #include <stdio.h>
 #include "task.h"

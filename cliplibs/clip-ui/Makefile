@@ -21,9 +21,9 @@ TARGET  = libclip-ui$(DLLSUFF)
 RTARGET = libclip-ui$(DLLREALSUFF)
 
 OBJS    = button.o checkbox.o color.o combobox.o edit.o font.o form.o \
-	  frame.o grid.o image.o label.o layout.o menu.o progressbar.o \
-          radiobutton.o slider.o special.o table.o timer.o toolbar.o tree.o \
-          utils.o window.o workspace.o
+	  frame.o grid.o image.o label.o layout.o menu.o \
+	  progressbar.o radiobutton.o slider.o special.o table.o timer.o \
+	  toolbar.o tree.o utils.o window.o workspace.o
 
 .PHONY: all clean uninstall distclean
 
@@ -43,6 +43,7 @@ clean:
 	cd example && $(MAKE) clean
 	rm -f $(OBJS) $(TARGET) var.ch *.bak *.nm *.ex *.ppo *.dll.a *.log *.dll
 
+clear: clean
 
 install: all
 	cd drivers && $(MAKE) install
@@ -52,7 +53,7 @@ install: all
 	$(CLIPROOT)/bin/clip_cp $(RTARGET) $(DESTDIR)$(CLIPROOT)/lib
 	$(CLIPROOT)/bin/clip_cp clip-ui.ch $(DESTDIR)$(CLIPROOT)/include
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui
-	cp -RL example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui/
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui/
 
 uninstall:
 	cd drivers && $(MAKE) uninstall
@@ -60,9 +61,9 @@ uninstall:
 	rm -f  $(CLIPROOT)/include/clip-ui.ch
 
 distclean: clean
-	cd example && $(MAKE) clean
 
 dist: distclean
+	cd .. && tar cvfz clip-ui.tgz clip-ui
 
 .prg.o: clip-ui.ch
 	$(CLIP) $(CLIPINCLUDE) $<

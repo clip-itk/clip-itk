@@ -1,6 +1,6 @@
 #define NEW_VARIANTS
 ***********************
-function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
+function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
 	local oDict,an_info,an_balance,osb_class,anb_list:=map()
 	local as,as1,s:="",s0,s1,s2,obj,aObj,tObj,tmp,data:={}
 	local i,j,k,x,y,z,itogCel,aOst:={}
@@ -102,11 +102,13 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 		aObj:an_value := anb_list[i]
 		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		***** calc tcol_list
-		aObj:tCols := ""; aObj:essence := anb_list[i]
+		aObj:tCols := ""
+		aObj:essence := anb_list[i]
+		aObj:union := ""
 		an_obj := codb_getValue(anb_list[i])
 		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		if empty(an_obj)
-			cgi_xml_error( "Object not readable:"+anb_list[i] )
+//			cgi_xml_error( "Object not readable:"+anb_list[i] )
 			//loop
 		endif
 		class := NIL; tmpDict := NIL
@@ -169,6 +171,9 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 				if !empty(k)
 					aObj:tCols += ' '+class:tcol_list[j]+'="'+alltrim(toString(k))+'" '
 				endif
+				if !empty(k) .and. union==class:tcol_list[j]
+					aObj:union := k
+				endif
 			next
 		else
 			aObj:essence  := class:essence(an_obj)
@@ -214,6 +219,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	aObj:=NIL; aObj:=map()
 	aObj:an_value := "total"
 	aObj:essence  := "Итого"
+	aObj:union    := "Итого"
 	aObj:tcols    := ""
 	aObj:bd_summa := 0
 	aObj:bk_summa := 0
@@ -248,6 +254,33 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level)
 	endif
 	//outlog(__FILE__,__LINE__,"data=",data)
 	aadd(data,aObj)
+	if !empty(union)
+		for i=len(data) to 1 step -1
+			for j=1 to len(data)
+				if data[i]:union == data[j]:union .and. i!=j
+				else
+					loop
+				endif
+				exit
+			next
+			if j>len(data)
+				loop
+			endif
+			aObj:=data[j]
+			aObj:bd_summa += data[i]:bd_summa
+			aObj:bk_summa += data[i]:bk_summa
+			aObj:od_summa += data[i]:od_summa
+			aObj:ok_summa += data[i]:ok_summa
+			aObj:ed_summa += data[i]:ed_summa
+			aObj:ek_summa += data[i]:ek_summa
+			aObj:beg_num  += data[i]:beg_num
+			aObj:end_num  += data[i]:end_num
+			aObj:in_num   += data[i]:in_num
+			aObj:out_num  += data[i]:out_num
+			adel(data,i)
+			asize(data,len(data)-1)
+		next
+	endif
 return data
 
 **********************************
@@ -428,6 +461,7 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 		s += 'an_value=="'+variant[1]+'" .and. '
 	else
 		for i=len(variant) to 1 step -1
+		//for i=1 to len(variant)
 			if empty(variant[i])
 				loop
 			endif

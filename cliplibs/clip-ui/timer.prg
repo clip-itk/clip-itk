@@ -17,10 +17,10 @@ static driver := getDriver()
 function UITimer( period, action, data )
 	local obj := map()
 	
-	obj:id := driver:startTimer(period, action, data)
+	obj:id := driver:startTimer(period*1000, action, data)
 	obj:className := "UITimer"
 	
-	obj:period := period	// in 1/1000 sec
+	obj:period := period*1000	// in seconds
 	obj:action := action
 	obj:data   := data
 	
@@ -35,7 +35,7 @@ return obj
 /* Restart timer */
 static function ui_start( self, period, action, data )
 	self:stop()
-	self:period := iif(empty(period),self:period,period)	// in 1/1000 sec
+	self:period := iif(empty(period),self:period,period*1000)	// in seconds
 	self:action := iif(empty(action),self:action,action)
 	self:data   := iif(empty(data),self:data,data)
 	

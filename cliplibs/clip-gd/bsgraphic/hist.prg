@@ -152,7 +152,7 @@ return .t.
 ************
 static function bg_drawImage()
 local i, j, key, v, colwidth, dx, x, y, arrx:={}, wCol, volume
-local yav, rmin, x1, x2, a, cntColor, kl
+local va,yav, rmin, x1, x2, a, cntColor, kl
 	if !::__isData
 		return .f.
 	endif

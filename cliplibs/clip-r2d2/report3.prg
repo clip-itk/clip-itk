@@ -5,9 +5,9 @@ function r2d2_report3_xml(_queryArr)
 local err, _query
 local oDict,oDep, oDep02,oDict02
 local accPost, acc_chart, osb_class
-local beg_date:=date(),end_date:=date(), account:="", document:="", an_value:=""
+local beg_date,end_date, account:="", document:="", an_value:=""
 local connect_id:="", connect_data
-local i,j,k,s,s1,s2,tmp,obj,col,columns
+local i,j,k,s,s1,s2,s3,tmp,obj,col,columns
 local acc_list, acc_objs
 local d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
@@ -53,7 +53,7 @@ local urn,sprname,type,cache:=map()
 		end_date := connect_data:end_date
 	endif
 
-	if empty(account) .or. empty(beg_date) .or. empty(end_date)
+	if empty(account) .and. empty(beg_date) .and. empty(end_date) .and. empty(document)
 		cgi_html_header()
 		? '<body>'
 		? "Error: bad parameters ! "
@@ -99,18 +99,21 @@ local urn,sprname,type,cache:=map()
 	endif
 
 	/* search account in acc_chart*/
-	acc_list:={}; acc_objs:={}; tmp:=""
-	obj:= oDep02:getValue(account)
-	if !empty(obj)
-		aadd(acc_objs,obj)
-		aadd(acc_list,account)
-		cache[obj:id] := obj
-	else
-		set exact off
-		tmp := oDep02:select(acc_chart:id,,,'code="'+account+'"')
-		set exact on
+	acc_list:={}; acc_objs:={}; tmp:={}
+	if !empty(account)
+		obj:= oDep02:getValue(account)
+		if !empty(obj)
+			aadd(acc_objs,obj)
+			aadd(acc_list,account)
+			cache[obj:id] := obj
+		else
+			set exact off
+			tmp := oDep02:select(acc_chart:id,,,'code="'+account+'"')
+			set exact on
+		endif
 	endif
-	if !empty(tmp)
+
+	if !empty(account)
 		for i=1 to len(tmp)
 			obj:=oDep02:getValue(tmp[i])
 			if empty(obj)
@@ -120,6 +123,9 @@ local urn,sprname,type,cache:=map()
 			aadd(acc_list,tmp[i])
 			cache[obj:id] := obj
 		next
+	else
+		aadd(acc_list,"")
+		aadd(acc_objs,map())
 	endif
 
 	if empty(acc_list)
@@ -130,17 +136,55 @@ local urn,sprname,type,cache:=map()
 	columns := cgi_accpost_columns(oDict,sprname)
 	post_list := {}
 	aRefs := {}
-	s1 := 'odate>=stod("'+dtos(beg_date)+'") .and. odate<=stod("'+dtos(end_date)+'")'
-	for i=1 to len(acc_list)
-		s2 := ' .and. (daccount="'+acc_list[i]+'" .or. kaccount="'+acc_list[i]+'")'
-		if !empty(document)
-			s2+=' .and. primary_document=="'+document+'"'
+	s1 :=""
+	if !empty(beg_date)
+		s1 += 'odate>=stod("'+dtos(beg_date)+'")'
+	endif
+	if !empty(end_date)
+		if !empty(s1)
+			s1+=' .and. '
 		endif
-		tmp:=oDep:select(accpost:id,,,s1+s2)
+		s1+='odate<=stod("'+dtos(end_date)+'")'
+	endif
+	for i=1 to len(acc_list)
+		s2:=""
+		if !empty(document)
+			if !empty(s1)
+				s2+=" .and. "
+			endif
+			s2+='primary_document=="'+document+'"'
+		endif
+		if empty(acc_list[i])
+			tmp:=oDep:select(accpost:id,,,s1+s2)
+			//outlog(__FILE__,__LINE__, s1+s2,tmp)
+			for j=1 to len(tmp)
+				aadd(post_list,tmp[j])
+			next
+		endif
+		s3:=""
+		if empty(s1) .and. empty(s2)
+		else
+			s3+=' .and. '
+		endif
+		s3 += 'daccount="'+acc_list[i]+'"'
+		tmp:=oDep:select(accpost:id,,,s1+s2+s3)
+		//outlog(__FILE__,__LINE__, s1+s2+s3,tmp)
+		for j=1 to len(tmp)
+			aadd(post_list,tmp[j])
+		next
+		s3:=""
+		if empty(s1) .and. empty(s2)
+		else
+			s3+=' .and. '
+		endif
+		s3 += 'kaccount="'+acc_list[i]+'"'
+		tmp:=oDep:select(accpost:id,,,s1+s2+s3)
+		//outlog(__FILE__,__LINE__, s1+s2+s3,tmp)
 		for j=1 to len(tmp)
 			aadd(post_list,tmp[j])
 		next
 	next
+	//outlog(__FILE__,__LINE__, len(post_list))
 	tmp := map()
 	post_objs:={}
 	for i=1 to len(post_list)
@@ -157,7 +201,10 @@ local urn,sprname,type,cache:=map()
 		if ! ("DACCOUNT" $ post .and. "KACCOUNT" $ post)
 			loop
 		endif
-		if post:odate < beg_date .or. post:odate > end_date
+		if !empty(beg_date) .and. post:odate < beg_date
+			loop
+		endif
+		if !empty(end_date) .and. post:odate > end_date
 			loop
 		endif
 		if !empty(document) .and. !(post:primary_document == document)
@@ -178,7 +225,7 @@ local urn,sprname,type,cache:=map()
 		endif
 		aadd(post_objs,post)
 	next
-	if empty(document)
+	if .t. //empty(document)
 		for i=len(post_objs) to 1 step -1
 			tmp := ascan(post_objs,{|x|x:daccount==post_objs[i]:daccount ;
 				.and. x:kaccount==post_objs[i]:kaccount;
@@ -210,13 +257,26 @@ local urn,sprname,type,cache:=map()
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
 
-	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
-        ? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
-	? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'		  
+	if empty(beg_date)
+		? '<RDF:beg_date>с самого начала</RDF:beg_date>'
+	else
+		? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
+	endif
+
+	if empty(end_date)
+		? '<RDF:end_date>до самого конца</RDF:end_date>'
+	else
+		? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
+	endif
+	if empty(account)
+		? '<RDF:account> Все счета</RDF:account>'
+	else
+		? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
+	endif
+	? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
 	if empty(type)
 	    if empty(urn)
-	    	urn := sprname
+		urn := sprname
 		endif
 	    cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 		?
@@ -224,7 +284,7 @@ local urn,sprname,type,cache:=map()
 	else
 	    cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
 	endif
-	
+
 	? '</RDF:RDF>'
 #else
 	cgi_putTreeHeader(columns)

@@ -1,6 +1,10 @@
 
 /*
    $Log: testscr.c,v $
+   Revision 1.9  2005/11/26 16:25:48  clip
+   uri: rename task_select_if -> clip_task_select_if
+        It is openBsd pheatures.
+
    Revision 1.8  2004/10/20 17:22:17  clip
    uri: add set(_SET_UTF8TERM) for terminal with UTF-8
 
@@ -46,7 +50,7 @@ _clip_logg()
 }
 
 int
-task_select_if(int fd, void *p1, void *p2, void *p3, void *p4)
+clip_task_select_if(int fd, void *p1, void *p2, void *p3, void *p4)
 {
 	return select(fd, p1, p2, p3, p4);
 }

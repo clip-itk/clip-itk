@@ -1,9 +1,9 @@
 CC = gcc
-OBJS = coll.o list.o hash.o
+OBJS = ../coll.o ../list.o ../hash.o
 LIBOBJS = task.o
 LIB = task.a
 PROGS = task_tst
-CFLAGS = -O -g -Wall -I..
+CFLAGS = -O -g -Wall -fPIC -I..
 LINKS = coll.h coll.c list.h list.c hash.h hash.c
 
 all: $(LIB)

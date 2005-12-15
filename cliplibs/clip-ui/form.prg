@@ -13,6 +13,8 @@
 /*-------------------------------------------------------------------------*/
 #include "clip-ui.ch"
 
+#define DEBUG	0
+
 static driver := getDriver()
 
 /* Interface form class */
@@ -31,17 +33,17 @@ function UIForm( fileName, parent )
 return obj
 
 function _recover_UIFORM( obj )
-	obj:parseFile	:= @ui_parseFile()
-	obj:parseString	:= @ui_parseString()
-	obj:parse	:= @ui_parse()
-	obj:createWidget := @ui_createWidget()
-	obj:setProperty	:= @ui_setProperty()
-	obj:getPropertyValue := @ui_getPropertyValue()
-	obj:setAction	:= @ui_setAction()
-	obj:setPreAction  := @ui_setPreAction()
-	obj:actionHandler := @ui_actionHandler()
-	obj:subActionHandler := @ui_subActionHandler()
-	obj:i18n := @ui_form_i18n()
+	obj:parseFile		:= @ui_parseFile()
+	obj:parseString		:= @ui_parseString()
+	obj:parse		:= @ui_parse()
+	obj:createWidget 	:= @ui_createWidget()
+	obj:setProperty		:= @ui_setProperty()
+	obj:getPropertyValue 	:= @ui_getPropertyValue()
+	obj:setAction		:= @ui_setAction()
+	obj:setPreAction  	:= @ui_setPreAction()
+	obj:actionHandler 	:= @ui_actionHandler()
+	obj:subActionHandler 	:= @ui_subActionHandler()
+	obj:i18n 		:= @ui_form_i18n()
 return obj
 
 /* Parse form from file */
@@ -82,30 +84,39 @@ static function ui_parse(self)
 
 	/* Parse all tags */
 	do while !oHtml:empty()
+		// Get next tag
 		oTag:=oHtml:get()
 		if valtype(oTag)!='O' // Garbage, not tag
+			if DEBUG==1; ?? "DEBUG: non tag: type='"+valtype(oTag)+"' value =", oTag,chr(10); endif
 			loop
+		else
+			if DEBUG==1; ?? "DEBUG: tag:", oTag, chr(10); endif
 		endif
 		if oTag:tagName == '!' // Comment
+			if DEBUG==1; ?? "DEBUG: comment:", oTag,chr(10); endif
 			loop
 		endif
 
 		if oTag:tagName == "?XML"
 			//self:encoding := mapget(oTag:fields,"ENCODING",self:encoding)
+			if DEBUG==1; ?? "DEBUG: <?xml...> tag:",chr(10); endif
 			loop
 		endif
 		if oTag:tagName == "FORM"
+			if DEBUG==1; ?? "DEBUG: <FORM> tag:", oTag,chr(10); endif
 			self:root := XMLTag(oTag:tagName)
 			pt := self:root
 			loop
 		endif
 
 		if substr(oTag:tagName,1,1) == "/"
+			if DEBUG==1; ?? "DEBUG: switch to parent tag:", valtype(pt:parent), iif(valtype(pt:parent)=='O' .and. 'NAME' $ pt:parent, "'"+pt:parent:name+"'", "<unknown>" ), chr(10); endif
 			pt := pt:parent
 			loop
 		endif
 
 		/* Regular tag */
+		if DEBUG==1; ?? "DEBUG: process tag <"+oTag:tagName+">, parent:",valtype(pt),chr(10); endif
 		ct := XMLTag(oTag:tagName)
 		ct:parent := pt
 		for i=1 to len(oTag:fieldsOrder)
@@ -270,6 +281,7 @@ static function ui_createWidget(self, tag, parent )
 			next
 			o := UITree( 1, a )
 			add = .T.
+/*
 		case "SHEET"
 			a := array(0)
 			for e in t:childs
@@ -279,13 +291,14 @@ static function ui_createWidget(self, tag, parent )
 			next
 			o := UISheet( a )
 			add = .T.
+*/
 		case "BUTTONBAR"
-			//if "ACTIONS" $ self:w
-			//	o := parent:actions
-			//else
-			o := UIButtonBar( parent )
-			add = .T.
-			//endif
+			if "ACTIONS" $ parent
+				o := parent:actions
+			else
+				o := UIButtonBar( parent )
+				add = .T.
+			endif
 		case "BUTTON"
 			o := UIButton( label, NIL)
 			add = .T.
@@ -312,6 +325,10 @@ static function ui_createWidget(self, tag, parent )
 			add = .T.
 		case "COMBOBOX"
 			o := UIComboBox()
+			add = .T.
+		case "IMAGE"
+			o := UIImage( iif(isfunction("GETRESOURCE"), ;
+				clip("GETRESOURCE", label), label) )
 			add = .T.
 		case "RADIOGROUP"
 			o := UIRadioGroup()

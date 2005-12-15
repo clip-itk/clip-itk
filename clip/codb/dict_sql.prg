@@ -84,17 +84,6 @@ static function _dict___makeMeta(self)
 //        rddCreateIndex(hdb,CODB_IDRIVER_DEFAULT,dbfile,"meta","meta")
 	rddCloseArea(hDB)
 
-	*************** create metaindex table
-	dbfile:=self:path+PATH_DELIM+"metaidx"
-	dbCreate(dbfile,CODB_DICTINDEX_STRUCTURE)
-	hdb:=rddUseArea(CODB_DDRIVER_DEFAULT,dbfile,.f.,.f.)
-	rddCreateIndex(hdb,CODB_IDRIVER_DEFAULT,dbfile,"id","id")
-	rddCreateIndex(hdb,CODB_IDRIVER_DEFAULT,dbfile,"meta","meta")
-	rddCreateIndex(hdb,CODB_IDRIVER_DEFAULT,dbfile,"name","name")
-	rddCreateIndex(hdb,CODB_IDRIVER_DEFAULT,dbfile,"class_id","class_id")
-	rddCreateIndex(hdb,CODB_IDRIVER_DEFAULT,dbfile,"super_id","super_id")
-	rddCreateIndex(hdb,CODB_IDRIVER_DEFAULT,dbfile,"user_id","user_id")
-	rddCloseArea(hDB)
 	taskstart()
 
 return .t.

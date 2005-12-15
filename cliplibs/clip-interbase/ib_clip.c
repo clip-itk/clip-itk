@@ -1,8 +1,11 @@
 /*
 	$Log: ib_clip.c,v $
+	Revision 1.21  2005/12/15 15:32:54  clip
+	rust: GCC 4 fix
+	
 	Revision 1.20  2003/08/05 11:25:34  clip
 	rust: patch from Sergio Zayas <icaro.maneton@lycos.es> applied
-	
+
 	Revision 1.19  2003/06/09 13:10:14  clip
 	rust: multiple column PRIMARY KEY as row ID
 
@@ -1316,8 +1319,9 @@ static int ib_outarray(ClipMachine* mp,unsigned char dtype,int scale,void** r,Cl
 {
 	for(dims[dim]=0;dims[dim]<bounds[dim];dims[dim]++){
 		if(dim == ndims-1){
+			char **c = (char**)r;
 			if(ib_outarrayitem(mp,dtype,scale,*r,v,len,ndims,dims)) return 1;
-			(char*)*r += len + (dtype==37?2:0);
+			*c += len + (dtype==37?2:0);
 		} else {
 			if(ib_outarray(mp,dtype,scale,r,v,len,ndims,bounds,dims,dim+1)) return 1;
 		}
@@ -1330,8 +1334,9 @@ static int ib_inarray(ClipMachine* mp,unsigned char dtype,int scale,void** r,Cli
 {
 	for(dims[dim]=0;dims[dim]<bounds[dim];dims[dim]++){
 		if(dim == ndims-1){
+			char **c = (char**)r;
 			if(ib_inarrayitem(mp,dtype,scale,*r,v,len,ndims,dims)) return 1;
-			(char*)*r += len + (dtype==37?2:0);
+			*c += len + (dtype==37?2:0);
 		} else {
 			if(ib_inarray(mp,dtype,scale,r,v,len,ndims,bounds,dims,dim+1)) return 1;
 		}

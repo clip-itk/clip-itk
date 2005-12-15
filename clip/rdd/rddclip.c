@@ -4,9 +4,13 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: rddclip.c,v $
+	Revision 1.98  2005/12/09 16:52:13  clip
+	
+	crr
+	
 	Revision 1.97  2005/02/02 14:22:24  clip
 	rust: minor fix for SET OPTIMIZE LEVEL 2
-	
+
 	Revision 1.96  2005/01/19 13:32:03  clip
 	rust: minor fix in string comparison
 

@@ -5,6 +5,10 @@
  */
 /*
  $Log: task.h,v $
+ Revision 1.4  2005/11/26 16:25:48  clip
+ uri: rename task_select_if -> clip_task_select_if
+      It is openBsd pheatures.
+
  Revision 1.3  2001/11/14 06:38:02  clip
  fix crash on exit after START
  paul
@@ -181,7 +185,7 @@ int Task_wait_write(int fd, long msec);
 int task_select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 		struct timeval *timeout);
 
-int task_select_if(int fd, void *rp, void *wp, void *ep, void *to);
+int clip_task_select_if(int fd, void *rp, void *wp, void *ep, void *to);
 
 /* ////////// обмен сообщениями /////////////// */
 

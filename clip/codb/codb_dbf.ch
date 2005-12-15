@@ -17,42 +17,34 @@ META data may be: group,user,attr,class,extent,deposit
 */
 
 #define CODB_DICT_STRUCTURE { ;
-		{"ID"      ,"C",CODB_ID_LEN  ,0},;
-		{"META"    ,"C",10 ,0},;
-		{"HASHNAME","N",12 ,0},;
-		{"VERSION" ,"N",3  ,0},;
-		{"CRC32"   ,"C",8  ,0},;
-		{"BODY"    ,"M",10 ,0};
-		}
-
-#define CODB_DICTINDEX_STRUCTURE { ;
 		{"ID"       ,"C",CODB_ID_LEN  ,0},;
 		{"META"     ,"C",10           ,0},;
 		{"NAME"     ,"C",50           ,0},;
+		{"HASHNAME" ,"N",12           ,0},;
 		{"CLASS_ID" ,"C",CODB_ID_LEN  ,0},;
 		{"SUPER_ID" ,"C",CODB_ID_LEN  ,0},;
 		{"EXTENT_ID","C",CODB_ID_LEN  ,0},;
 		{"GROUP_ID" ,"C",CODB_ID_LEN  ,0},;
 		{"USER_ID"  ,"C",CODB_ID_LEN  ,0},;
-		{"VERSION"  ,"N",3 	      ,0};
+		{"VERSION"  ,"N",3 	      ,0},;
+		{"CRC32"    ,"C",8            ,0},;
+		{"ISOLD"    ,"L",1            ,0},;
+		{"BODY"     ,"M",10           ,0};
 		}
 
-#define CODB_IDXTABLE_STRUCTURE { ;
+#define CODB_DEPIDX_STRUCTURE { ;
 		{"OBJECT_ID"    ,"C",CODB_ID_LEN ,0}, ;
 		{"CLASS_ID"     ,"C",CODB_ID_LEN ,0}, ;
-		{"EXTENT_ID"    ,"C",CODB_ID_LEN ,0}, ;
-		{"VERSION"      ,"N",3 		 ,0}, ;
-		{"CRC32"        ,"C",8 		 ,0} ;
-		}
-		/* and CODB_IDX_PER_CLASS elements:
-		{"DATAx"        ,"X",CODB_IDX_DATALENGTH ,0}
-		*/
+		{"EXTENT_ID"    ,"C",CODB_ID_LEN ,0} ;
+                }
 
 #define CODB_EXTENT_STRUCTURE { ;
 		{"OBJECT_ID"    ,"C",CODB_ID_LEN ,0}, ;
 		{"CLASS_ID"     ,"C",CODB_ID_LEN ,0}, ;
 		{"VERSION"      ,"N",3 		 ,0}, ;
-		{"BODY"    	,"M",10 ,0} ;
+		{"ISOLD"        ,"L",1 		 ,0}, ;
+		{"CRC32"        ,"C",8 		 ,0}, ;
+		{"BODY"    	,"M",10 	 ,0} ;
 		}
 
 #define CODB_GROUP_BODY { ;

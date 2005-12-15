@@ -156,7 +156,7 @@ static function install_default_dictionary(dict,xmlData,mdir)
 			if !empty(tmp)
 				if len(tmp)==1
 					oMeta:id := tmp[1]
-					dict:update(oMeta,metaname)
+					dict:update(oMeta,metaname,,.t.)
 					//?? ometa:name+"(updated),"
 				else
 					?? 'Warning install metadata ! "'+ometa:name+ '" have duplicate objects !,'

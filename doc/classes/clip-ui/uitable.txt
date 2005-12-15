@@ -112,6 +112,34 @@ $LANG_RU$
 $ENDMETHOD$
 
 $METHODNAME$
+	savePosition()
+$SUMMARY$
+	Get current selected row position.
+$LANG_RU$
+	Сохранение текущей выделенной строки.
+$SYNTAX$
+	savePosition()	--> <aPos>
+$RETURNS$
+	Array with selected row position: row address, column address, horizontal and vertical adjustments.
+$LANG_RU$
+	Массив с координатами текущей выделенной строки: адреса строки и столбца, горизонтальное и вертикальное смещение.
+$ENDMETHOD$
+
+$METHODNAME$
+	restorePosition()
+$SUMMARY$
+	Restore saved row position.
+$LANG_RU$
+	Восстановление cохранённой позиции строки.
+$SYNTAX$
+	restorePosition(<aPos>)
+$ARGUMENTS$
+	<aPos>		- Array with selected row position returned by savePosition() function.
+$LANG_RU$
+	<aPos>		- Массив с координатами текущей выделенной строки, возвращаемый функцией savePosition().
+$ENDMETHOD$
+
+$METHODNAME$
 	setAltRowColor()
 $SUMMARY$
 	Set alternative color for even rows in table.

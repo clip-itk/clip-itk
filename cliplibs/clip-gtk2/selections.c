@@ -460,7 +460,7 @@ err:
 	return 1;
 }
 
-#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
+#if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 6)
 int
 clip_GTK_SELECTIONDATAGETPIXBUF(ClipMachine * cm)
 {
