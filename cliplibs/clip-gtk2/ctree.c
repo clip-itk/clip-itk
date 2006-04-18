@@ -791,7 +791,7 @@ clip_GTK_CTREENODESETNODEINFO(ClipMachine * cm)
 	C_widget  *copened = _fetch_cwidget(cm,_clip_spar(cm,6));
 	gboolean   is_leaf = _clip_parl(cm,7);
 	gboolean  expanded = _clip_parl(cm,8);
-	GtkCTreeNode *node;
+	GtkCTreeNode *node = 0;
 	GdkPixmap *pxm_closed=NULL, *pxm_opened=NULL;
 	GdkBitmap *mask_closed=NULL, *mask_opened=NULL;
 	int i;

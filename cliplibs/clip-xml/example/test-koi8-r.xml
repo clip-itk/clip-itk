@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="KOI8-R" ?>
+<component a="aa" b="bbb" c="ccccc">&amp;&amp;text (русский в KOI8-R)<br /><![CDATA[cdata <xml>]]>
+<!-- This is my comment. Simple, simple comment -->
+</component>

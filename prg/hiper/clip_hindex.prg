@@ -60,7 +60,7 @@ RETURN
 
 PROCEDURE DirReview(path,h)
 	LOCAL dir := DIRECTORY(sRootPath+path+"/*","D")
-	LOCAL i,j,p,o,str
+	LOCAL i,j,p,o,str,tit
 
 	FOR i:=1 TO LEN(dir)
 		IF dir[i][F_ATTR] == 'D' .AND. LEFT(@dir[i][F_NAME],1) != '.';

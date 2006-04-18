@@ -61,10 +61,16 @@ local cache:=map()
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
-	endif
+
+
+        if "ACC01" $ _query .and. !empty(_query:acc01)
+            set("ACC01",_query:acc01)
+        endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+            set("ACC00",_query:acc00)
+        endif
+							
+							
 
 	if empty(account) .or. empty(beg_date) .or. empty(end_date)
 		//cgi_html_header()
@@ -88,7 +94,7 @@ local cache:=map()
 	cgi_xml_header()
 	? '<body>'
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -101,7 +107,7 @@ local cache:=map()
 		return
 	endif
 
-	oDep02 := codb_needDepository("GBL0201")
+	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: GBL0201" )
 		return
@@ -313,7 +319,7 @@ local cache:=map()
 		if empty(an_values[i])
 			loop
 		endif
-		acc_s+=codb_essence(an_values[i])+","
+		acc_s+=cgi_essence(an_values[i])+","
 	next
 	if !empty(acc_s)
 	? 'аналитика:'+acc_s

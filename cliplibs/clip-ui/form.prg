@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
-/*   Authors: 								   */
-/*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
+/*   This is a part of CLIP-UI library									   */
+/*																		   */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation 				   */
+/*   Authors: 															   */
+/*  	     Andrey Cherepanov <skull@eas.lrn.ru>						   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   									   */
+/*   																	   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -23,7 +23,7 @@ function UIForm( fileName, parent )
 	obj:parent	:= parent
 	obj:className	:= "UIForm"
 	obj:fileName	:= fileName
-	obj:root 	:= NIL
+	obj:oXml 	:= NIL
 	obj:widgets	:= map()
 	obj:names	:= array(0)
 	obj:actions	:= array(0)
@@ -35,146 +35,93 @@ return obj
 function _recover_UIFORM( obj )
 	obj:parseFile		:= @ui_parseFile()
 	obj:parseString		:= @ui_parseString()
-	obj:parse		:= @ui_parse()
+	obj:parse			:= @ui_parse()
 	obj:createWidget 	:= @ui_createWidget()
 	obj:setProperty		:= @ui_setProperty()
-	obj:getPropertyValue 	:= @ui_getPropertyValue()
+	obj:getPropertyValue := @ui_getPropertyValue()
 	obj:setAction		:= @ui_setAction()
 	obj:setPreAction  	:= @ui_setPreAction()
 	obj:actionHandler 	:= @ui_actionHandler()
-	obj:subActionHandler 	:= @ui_subActionHandler()
-	obj:i18n 		:= @ui_form_i18n()
+	obj:subActionHandler := @ui_subActionHandler()
+	obj:i18n 			:= @ui_form_i18n()
 return obj
 
 /* Parse form from file */
 static function ui_parseFile(self)
-	local fileName, hFile, oHtml
+	local fileName
 
 	fileName := self:fileName
 	set translate path off
-	hFile := fopen(fileName,0)
-	if hFile < 0
-		?? "ERROR: Cannot open form file '"+fileName+"':"+ferrorstr()+chr(10)
+	
+	// Parse file
+	self:oXml := XMLTree()
+	if .not. self:oXml:parseFile( fileName )
+		?? "ERROR: Cannot open form file '"+fileName+"': "+self:oXml:getError()+chr(10)
 		return NIL
 	endif
-	oHtml := htmlParserNew()
-	do while !fileeof(hFile)
-		oHtml:put(freadstr(hFile,1024))
-	enddo
-	fclose(hFile)
-	oHtml:end()
-	self:src := @oHtml
+
 return self:parse()
 
 /* Parse form from string */
 static function ui_parseString(self, str)
-	local oHtml
-	oHtml := htmlParserNew()
-	oHtml:put( str )
-	oHtml:end()
-	self:src := @oHtml
+
+	// Parse string
+	self:oXml := XMLTree()
+	if .not. self:oXml:parseString( str )
+		?? "ERROR: Cannot open form file: "+self:oXml:getError()+chr(10)
+		return NIL
+	endif
+
+
 return self:parse()
 
 /* Parse form */
 static function ui_parse(self)
-	local oHtml, oTag, ct:=NIL, pt:=NIL, attrName, attrData
-	local win := NIL, t, i
+	local win := NIL, res, t, i
 
-	oHtml := self:src
-
-	/* Parse all tags */
-	do while !oHtml:empty()
-		// Get next tag
-		oTag:=oHtml:get()
-		if valtype(oTag)!='O' // Garbage, not tag
-			if DEBUG==1; ?? "DEBUG: non tag: type='"+valtype(oTag)+"' value =", oTag,chr(10); endif
-			loop
-		else
-			if DEBUG==1; ?? "DEBUG: tag:", oTag, chr(10); endif
-		endif
-		if oTag:tagName == '!' // Comment
-			if DEBUG==1; ?? "DEBUG: comment:", oTag,chr(10); endif
-			loop
-		endif
-
-		if oTag:tagName == "?XML"
-			//self:encoding := mapget(oTag:fields,"ENCODING",self:encoding)
-			if DEBUG==1; ?? "DEBUG: <?xml...> tag:",chr(10); endif
-			loop
-		endif
-		if oTag:tagName == "FORM"
-			if DEBUG==1; ?? "DEBUG: <FORM> tag:", oTag,chr(10); endif
-			self:root := XMLTag(oTag:tagName)
-			pt := self:root
-			loop
-		endif
-
-		if substr(oTag:tagName,1,1) == "/"
-			if DEBUG==1; ?? "DEBUG: switch to parent tag:", valtype(pt:parent), iif(valtype(pt:parent)=='O' .and. 'NAME' $ pt:parent, "'"+pt:parent:name+"'", "<unknown>" ), chr(10); endif
-			pt := pt:parent
-			loop
-		endif
-
-		/* Regular tag */
-		if DEBUG==1; ?? "DEBUG: process tag <"+oTag:tagName+">, parent:",valtype(pt),chr(10); endif
-		ct := XMLTag(oTag:tagName)
-		ct:parent := pt
-		for i=1 to len(oTag:fieldsOrder)
-			attrName := oTag:fieldsOrder[i]
-			attrData := strtran(oTag:fields[attrName],"&amp;","&")
-			attrData := strtran(attrData,"&lt;","<")
-			attrData := strtran(attrData,"&gt;",">")
-			attrData := strtran(attrData,"&quot;",'"')
-			aadd(ct:attrNames, attrName)
-			ct:attr[attrName] := attrData
-		next
-		if valtype(pt) == "O" .and. "CHILDS" $ pt
-			aadd(pt:childs, ct)
-		else
-			?? "ERROR parse XML: parent object is empty. Possible tag <FORM> doesn't found or it isn't root element.&\n"
-		endif
-
-		if .not. oTag:closed
-			pt := ct
-		endif
-	enddo
-
-	if self:root == NIL
+	if self:oXml:getRoot() == NIL
 		?? "ERROR: there isn't root element.&\n"
-                return win
+		return win
+	else
+		self:root := self:oXml:getRoot()
 	endif
 
 	/* Locale */
 	self:locale := getLocaleStrings(self:root)
-	
-	
+
 	/* Root widget */
-	t := XMLGetTag(self:root, "INTERFACE.WIDGET")
-	if empty(t)
-		?? "ERROR: not root widget!&\n"
+	res := self:oXml:XPath("/interface/widget")
+	if empty(res) .or. len(res) == 0
+		?? "ERROR: no root widget!&\n"
 		return NIL
 	endif
-//	?? "PARENT window for form: ",valtype(self:parent),chr(10)
+	t := res[1]
+	//?? "PARENT window for form: ",valtype(self:parent),chr(10)
 	win := ui_createWidget(self, t, self:parent)
 	if empty(win)
 		return NIL
 	endif
 
 	/* Set properties */
-	t := XMLGetTag(self:root, "STYLE")
-	for i in t:childs
+	t := self:oXml:XPath("/style/*")
+	for i in t
 		ui_setProperty(self, i, NIL)
 	next
 
 	/* Set actions */
-	t := XMLGetTag(self:root, "ACTIONS")
-	for i in t:childs
+	t := self:oXml:XPath("/actions/*")
+	for i in t
 		ui_setAction(self, i, NIL)
 	next
-       	
+
 	/* Set pre actions */
-	t := XMLGetTag(self:root, "HEAD")
-	self:setPreAction(t, NIL)
+	res := self:oXml:XPath("/head")
+	if empty(res) .or. len(res) == 0
+		?? "ERROR: no <head> tag!&\n"
+		return NIL
+	endif
+	
+	self:setPreAction(res[1], NIL)
 
 return win
 
@@ -183,31 +130,31 @@ static function ui_createWidget(self, tag, parent )
 	local o:=NIL, class, name, label, c, i, a, e, w, box, t:=tag
 	local add:=.F., gCol:=1, gRow:=1, gClass, rule
 
-	class := mapget(t:attr,"CLASS","")
-	name  := mapget(t:attr,"NAME","")
-	label := self:i18n(mapget(t:attr,"LABEL",""))
-	rule  := mapget(t:attr,"RULE",NIL)
+	class := t:attribute("class","")
+	name  := t:attribute("name","")
+	label := self:i18n( t:attribute("label","") )
+	rule  := t:attribute("rule",NIL)
 
 	switch upper(class)
-                /* Grid */
+		/* Grid */
 		case "HBOX"
 			o := UIHBox()
 			add := .T.
-                case "VBOX"
+		case "VBOX"
 			o := UIVBox()
 			add := .T.
-                case "HSPLITTER"
+		case "HSPLITTER"
 			o := UISplitter(SPLITTER_HORIZONTAL)
 			add := .T.
-                case "VSPLITTER"
+		case "VSPLITTER"
 			o := UISplitter(SPLITTER_VERTICAL)
 			add := .T.
-                case "GRID"
-                        gCol := val(getProperty(self:root, t, "cols"))
-                        gRow := val(getProperty(self:root, t, "rows"))
+		case "GRID"
+			gCol := val(getProperty(self:root, t, "cols"))
+			gRow := val(getProperty(self:root, t, "rows"))
 			o := UIGrid(, gRow, gCol)
 			add := .T.
-                case "LAYOUT"
+		case "LAYOUT"
 			o := UILayout()
 			add := .T.
 
@@ -240,7 +187,7 @@ static function ui_createWidget(self, tag, parent )
 			o := UIMenu()
 			parent:setPanels(o,,)
 		case "MENUITEM"
-                	if ascan(t:childs,{|e| e:name == "WIDGET" }) == 0
+			if ascan(t:childs,{|e| e:getName() == "widget" }) == 0
 				i := parent:add(,label,)
 				o := parent:elem[i]
 			endif
@@ -265,22 +212,30 @@ static function ui_createWidget(self, tag, parent )
 			o:setText(label)
 		case "TABLE"
 			a := array(0)
-			for e in t:childs
-				if e:name == "COLUMN"
-					aadd( a, self:i18n(e:attr["TITLE"]))
+			for e in t:getChilds()
+				if e:getName() == "column"
+					aadd( a, self:i18n(e:attribute("title","")))
 				endif
 			next
-			o := UITable( a )
-			add = .T.
+			if len(a) > 0
+				o := UITable( a )
+				add = .T.
+			else
+				?? "No defined columns for Table widget&\n"
+			endif
 		case "TREE"
 			a := array(0)
-			for e in t:childs
-				if e:name == "COLUMN"
-					aadd( a, self:i18n(e:attr["TITLE"]))
+			for e in t:getChilds()
+				if e:getName() == "column"
+					aadd( a, self:i18n(e:attribute("title","")))
 				endif
 			next
-			o := UITree( 1, a )
-			add = .T.
+			if len(a) > 0
+				o := UITree( 1, a )
+				add = .T.
+			else
+				?? "No defined columns for Tree widget&\n"
+			endif
 /*
 		case "SHEET"
 			a := array(0)
@@ -350,16 +305,16 @@ static function ui_createWidget(self, tag, parent )
 		case "SLIDER"
 			o := UISlider()
 			add = .T.
-        	otherwise
+		otherwise
 			?? "WARNING: Unknown class:",class,chr(10)
 	endswitch
 	if .not. empty(name)
-        	aadd(self:names,name)
+		aadd(self:names,name)
 		self:widgets[name] := o
 		if "W" $ self
 			w := self:w
 			w:setName(name,o)
-			w:valueTypes[name] := mapget(t:attr,"TYPE",NIL)
+			w:valueTypes[name] := t:attribute("type",NIL)
 		endif
 	endif
 	if .not. empty(rule) .and. .not. empty(self:w) .and. "SYSMENUS" $ self:w
@@ -367,17 +322,17 @@ static function ui_createWidget(self, tag, parent )
 //		?? "SYSMENU:",rule,"=",valtype(o),chr(10)
 	endif
 
-        /* Add to grid */
+	/* Add to grid */
 	if add == .T.
 		gClass := iif("O" $ parent, parent:o, parent)
 		box    := iif("USERSPACE" $ parent,parent:userSpace,parent)
 		if gClass:className == "UIGrid" .or. gClass:className == "UILayout"
-			gRow := mapget(t:attr, "POS", "")
+			gRow := t:attribute("pos","")
 			parent:add( o, gRow )
-                elseif gClass:className == "UISplitter"
+		elseif gClass:className == "UISplitter"
 			if empty( parent:first )
 				parent:add( o )
-			else	
+			else
 				parent:addEnd( o )
 			endif
 		else
@@ -391,20 +346,20 @@ static function ui_createWidget(self, tag, parent )
 
 	t:o := o
 	/* Loop child widgets */
-        if o == NIL
-        	o := parent
+	if o == NIL
+		o := parent
 	endif
-	for c in t:childs
-        	if c:name == "WIDGET"
+	for c in t:getChilds()
+		if c:getName() == "widget"
 			ui_createWidget(self, c, o)
-		elseif c:name == "PROPERTY"
+		elseif c:getName() == "property"
 			ui_setProperty(self, c, o)
-		elseif c:name == "RULE"
+		elseif c:getName() == "rule"
 			ui_setAction(self, c, o)
-		elseif ascan({"COLUMN"},{|ev| ev==c:name}) != 0
+		elseif ascan({"column"},{|ev| ev==c:getName()}) != 0
 			// Nothing do
 		else
-			?? "WARNING: tag "+c:name+" is ignored&\n"
+			?? "WARNING: tag "+c:getName()+" is ignored&\n"
 		endif
 	next
 
@@ -414,11 +369,11 @@ return o
 static function ui_setProperty(self, tag, obj, value)
 	local class, name, widget, row, block, t:=tag, elem, node, nName, nParent, nSibling, nArr
 
-        if t != NIL
-		class  := mapget(t:attr,"CLASS","")
-		name   := mapget(t:attr,"NAME","")
-		widget := mapget(t:attr,"WIDGET","")
-		value  := iif(value==NIL,mapget(t:attr,"VALUE",""),value)
+	if t != NIL
+		class  := t:attribute("class","")
+		name   := t:attribute("name","")
+		widget := t:attribute("widget","")
+		value  := iif(value==NIL,t:attribute("value",""),value)
 		//?? name, value, chr(10)
 		if ascan({"rows","cols"},{|ev| ev==name}) > 0
 			return .F.
@@ -430,58 +385,58 @@ static function ui_setProperty(self, tag, obj, value)
 	if obj == NIL
 		return .F.
 	endif
-        switch name
+	switch name
 		case "altColor"
- 			if .not. "SETALTROWCOLOR" $ obj; return .F.; endif
+			if .not. "SETALTROWCOLOR" $ obj; return .F.; endif
 			obj:setAltRowColor(value)
 		case "label"
- 			if .not. "SETTEXT" $ obj; return .F.; endif
+			if .not. "SETTEXT" $ obj; return .F.; endif
 			obj:setText(value)
-                case "value"
- 			if .not. "SETVALUE" $ obj; return .F.; endif
+		case "value"
+			if .not. "SETVALUE" $ obj; return .F.; endif
 			if obj:className == "UICheckBox"
 				if ascan({"YES","TRUE"}, {|ev| ev==upper(value)}) > 0
 					value := .T.
 				elseif ascan({"NO","FALSE"}, {|ev| ev==upper(value)}) > 0
 					value := .F.
-				else	
+				else
 					return .F.
 				endif
 			endif
 //			?? "VAL: ",value,chr(10)
 			obj:setValue(value)
 		case "geometry"
- 			if .not. "SETGEOMETRY" $ obj; return .F.; endif
-                	obj:setGeometry(splitGeom(value,4))
+			if .not. "SETGEOMETRY" $ obj; return .F.; endif
+			obj:setGeometry(splitGeom(value,4))
 		case "geometry.width"
- 			if .not. "SETGEOMETRY" $ obj; return .F.; endif
-                        obj:setGeometry(val(value))
+			if .not. "SETGEOMETRY" $ obj; return .F.; endif
+			obj:setGeometry(val(value))
 		case "geometry.height"
- 			if .not. "SETGEOMETRY" $ obj; return .F.; endif
-                        obj:setGeometry({,val(value)})
+			if .not. "SETGEOMETRY" $ obj; return .F.; endif
+			obj:setGeometry({,val(value)})
 		case "MDI"
- 			if .not. "SETMDI" $ obj; return .F.; endif
+			if .not. "SETMDI" $ obj; return .F.; endif
 			if value == "true"
 				obj:setMDI()
 			endif
 		case "spacing"
- 			if .not. "SETSPACING" $ obj; return .F.; endif
+			if .not. "SETSPACING" $ obj; return .F.; endif
 			obj:setSpacing(val(value))
 		case "padding"
- 			if .not. "SETPADDING" $ obj; return .F.; endif
+			if .not. "SETPADDING" $ obj; return .F.; endif
 			obj:setPadding(val(value))
 		case "position"
- 			if .not. "SETPLACEMENT" $ obj; return .F.; endif
+			if .not. "SETPLACEMENT" $ obj; return .F.; endif
 			if value == "center"
 				obj:setPlacement( .T. )
 			endif
 		case "readOnly"
- 			if .not. "READONLY" $ obj; return .F.; endif
+			if .not. "READONLY" $ obj; return .F.; endif
 			if value == "true"
 				obj:readOnly( .T. )
 			endif
 		case "values"
- 			if .not. "SETLIST" $ obj; return .F.; endif
+			if .not. "SETLIST" $ obj; return .F.; endif
 			block := "{|| {"+value+"} }"
 			row := eval(&block)
 			obj:setList( row )
@@ -489,7 +444,7 @@ static function ui_setProperty(self, tag, obj, value)
 			if obj:className != "UIComboBox"; return .F.; endif
 			obj:setValue( val(value) )
 		case "type"
- 			if obj:className != "UIFrame"; return .F.; endif
+			if obj:className != "UIFrame"; return .F.; endif
 			switch upper(value)
 				case "PLAIN"
 					obj:setType(FRAME_PLAIN)
@@ -503,14 +458,14 @@ static function ui_setProperty(self, tag, obj, value)
 					obj:setType(FRAME_OUT)
 			endswitch
 		case "icon"
- 			if .not. "SETICON" $ obj; return .F.; endif
+			if .not. "SETICON" $ obj; return .F.; endif
 			obj:setIcon(UIImage( iif(isfunction("GETRESOURCE"), ;
 				clip("GETRESOURCE", value), value) ) )
 		case "row"
 			if obj:className != 'UITable' .and. obj:className != 'UITree'; return .F.; endif
 			block := "{|| {"+value+"} }"
 			row   := eval(&block)
-			elem  := mapget(t:attr,"ELEMENT",NIL)
+			elem  := t:attribute("element",NIL)
 			if obj:className == 'UITable'
 				obj:addRow( row, elem )
 			else
@@ -534,17 +489,17 @@ static function ui_setProperty(self, tag, obj, value)
 				endswitch
 				//?? nArr, nName, nParent, nSibling,chr(10)
 				obj:nodeNames[nName] := obj:addNode (row, nName, nParent, nSibling) // (columns,id,parent,sibling)
-								
+
 			endif
 		case "range"
- 			if obj:className != "UISlider"; return .F.; endif
-                        obj:setRange(value)
+			if obj:className != "UISlider"; return .F.; endif
+			obj:setRange(value)
 		case "step"
- 			if obj:className != "UISlider"; return .F.; endif
-                        obj:setStep(value)
+			if obj:className != "UISlider"; return .F.; endif
+			obj:setStep(value)
 
 		otherwise
-			driver:setStyle(obj, name, value, mapget(t:attr,"ELEMENT",NIL))
+			driver:setStyle(obj, name, value, t:attribute("element",NIL))
 	endswitch
 return .T.
 
@@ -552,22 +507,22 @@ return .T.
 static function getProperty(tree, obj, name, def)
 	local e, widget, class, ret:=def
 
-	if valtype(obj) != "O" .or. (.not. "ATTR" $ obj)
+	if valtype(obj) != "O" .or. obj:className != "XMLTag"
 		?? "ERROR: object is broken&\n"
 		return def
 	endif
-        // Child properties
-        widget := mapget(obj:attr,"NAME","")
-	for e in obj:childs
-        	if mapget(e:attr,"NAME","")==name
-         		ret := mapget(e:attr,"VALUE",def)
+	// Child properties
+	widget := obj:attribute("name","")
+	for e in obj:getChilds()
+		if e:attribute("name","")==name
+			ret := e:attribute("value",def)
 		endif
 	next
 
-	for e in XMLGetTag(tree, "STYLE")
-		if valtype(e) == "O" .and. "attr" $ e
-        		if mapget(e:attr,"WIDGET","") == widget .and. mapget(e:attr,"NAME","") == name
-         			ret := mapget(e:attr,"VALUE",def)
+	for e in XPath(tree, "style/*")
+		if valtype(e) == "O"
+			if e:attribute("widget","") == widget .and. e:attribute("name","") == name
+				ret := e:attribute("value",def)
 			endif
 		endif
 	next
@@ -576,24 +531,26 @@ return ret
 
 /* Return widget property value */
 static function ui_getPropertyValue(self, tagObj)
-        local val:=NIL, widget, prop, obj
-	if valtype(tagObj) != "O" .or. (.not. "ATTR" $ tagObj)
+	local val:=NIL, widget, prop, obj
+
+	if valtype(tagObj) != "O" .or. tagObj:className != "XMLTag"
 		?? "ERROR: object is broken&\n"
-		return def
+		return NIL
 	endif
-        widget := mapget(tagObj:attr,"WIDGET","")
-        prop   := mapget(tagObj:attr,"NAME","")
+
+	widget := tagObj:attribute("widget","")
+	prop   := tagObj:attribute("name","")
 	obj    := mapget(self:widgets,widget,NIL)
 
-        if empty(obj)
+	if empty(obj)
 		?? "ERROR get property for widget '"+widget+"': widget not found&\n"
-        	return NIL
+		return NIL
 	endif
 
 	if prop == "object"
 		return obj
 	endif
-	
+
 	if obj:className == "UIMenuItem" .and. prop == "isChecked"
 		return driver:isCheckedMenuItem( obj )
 	endif
@@ -602,59 +559,68 @@ return val
 
 /* Set action for widget */
 static function ui_setAction(self, tag, lObj)
-	local e, widget, signal, events, actions, j, id, labelRule, t:=tag
+	local e, obj, widget, signal, events, actions, j, id, labelRule, t:=tag
+	local cWidget
 
-        if t:name != "RULE"
-		?? "WARNING: rule tag must be <RULE>. Rule is ignored.&\n"
+	if t:getName() != "rule"
+		?? "WARNING: rule tag must be <rule>. Rule is ignored.&\n"
 		return .F.
 	endif
-        if len(t:childs) == 0
+	if len(t:getChilds()) == 0
 		?? "WARNING: rule is empty. Ignored.&\n"
 		return .F.
 	endif
 
 	// TODO: labelled form rule support on menu
-        labelRule := self:i18n(mapget(t:attr,"LABEL",NIL))
+	labelRule := self:i18n( t:attribute("label",NIL) )
 	if .not. empty(labelRule)
 //		?? "Action:",labelRule,chr(10)
 	endif
-	
+
 	// Retrieve data
 	events  := array(0)
 	actions := array(0)
-	for e in t:childs
-		if e:name == "EVENT"
-		        // Event condition
-			widget := mapget(e:attr,"WIDGET","")
-			signal := mapget(e:attr,"SIGNAL","")
+	for e in t:getChilds()
+		if e:getName() == "event"
+			// Event condition
+			widget := e:attribute("widget","")
+			signal := e:attribute("signal","")
 			obj := iif(lObj==NIL,mapget(self:widgets,widget,NIL),lObj)
 			if obj == NIL .or. empty(widget) .or. empty(signal)
 				?? "WARNING: widget '"+widget+"' is not found. Ignored&\n"
 				return .F.
 			endif
 			aadd(events,{ obj, signal })
-		elseif e:name == "ACTION"
-                	// Actions
+		elseif e:getName() == "action"
+			// Actions
 			if len(events) == 0
 				?? "WARNING: condition is not found. Ignored&\n"
 				return .F.
 			endif
-                        for j in e:childs
-				widget := mapget(j:attr,"WIDGET",NIL)
-                                if .not. empty(widget)
-					j:attr["WIDGET"] := mapget(self:widgets,widget,NIL)
+			for j in e:getChilds()
+				widget := j:attribute("widget",NIL)
+				/*if valtype(widget) == 'C'
+					cWidget := widget
+				elseif valtype(widget) == 'O'
+					cWidget := '{'+widget:className+'}'
+				else
+					cWidget := '<unknown>'
 				endif
+				//?? "set action for widget "+cWidget,chr(10)
+				if .not. empty(widget)
+					j:setAttribute( "widget", mapget(self:widgets,widget,NIL) )
+				endif*/
 				aadd(actions, j)
 			next
 		else
-			?? "WARNING: unknown tag "+e:name+" in '"+self:fileName+"'. Ignored&\n"
+			?? "WARNING: unknown tag "+e:getName()+" in '"+self:fileName+"'. Ignored&\n"
 		endif
 	next
 
 	// Set actions
-        aadd(self:actions, actions)
+	aadd(self:actions, actions)
 	id := len(self:actions)
-        for e in events
+	for e in events
 		obj := e[1]
 		signal := e[2]
 		if "SETACTION" $ obj
@@ -668,22 +634,32 @@ return .T.
 
 /* Set pre action for form */
 static function ui_setPreAction(self, tag, lObj)
-	local e, widget, actions, id, t:=tag
+	local e, widget, actions, id, t:=tag, cWidget
 
 	// Retrieve data
 	actions := array(0)
-	for e in t:childs
-		if e:name == "CALL"
-			widget := mapget(e:attr,"WIDGET",NIL)
-			if .not. empty(widget)
-				e:attr["WIDGET"] := mapget(self:widgets,widget,NIL)
+	for e in t:getChilds()
+		if e:getName() == "call"
+			widget := e:attribute("widget",NIL)
+			/*if valtype(widget) == 'C'
+				cWidget := widget
+			elseif valtype(widget) == 'O'
+				cWidget := '{'+widget:className+'}'
+			else
+				cWidget := '<unknown>'
 			endif
-        		aadd(actions, e)
+			//?? "set pre action for widget "+cWidget,chr(10)
+			if .not. empty(widget)
+				e:setAttribute( "widget", mapget(self:widgets,widget,NIL) )
+			endif*/
+			//?? "post widget:",valtype(e:attribute("widget")),chr(10)
+			aadd(actions, e)
 		endif
 	next
-        aadd(self:actions, actions)
+	aadd(self:actions, actions)
 	id := len(self:actions)
 	self:actionHandler( id )
+	
 return .T.
 
 /* Form action handler */
@@ -694,12 +670,12 @@ static function ui_actionHandler(self, id, addVal)
 		?? "Action handler:",valtype(id), id, addVal,chr(10)
 	else
 		?? "Action handler:",valtype(id), id:name, addVal,chr(10)
-        endif
+	endif
 */
 	if valtype(id) == "N"
 		acts := self:actions[id]
 	else
-		acts := id:childs
+		acts := id:getChilds()
 		//?? "returned:",addVal,chr(10)
 	endif
 
@@ -712,16 +688,16 @@ return NIL
 static function ui_subActionHandler(self, tag, addVal)
 	local widget, method, ret, subItem, retAction, value, i, condVal, chkVal
 	local iArr
-	local c, p, params:=array(0)
+	local e, c, p, params:=array(0)
 
-	if tag:name == "RETURNEDVALUE"
+	if tag:getName() == "returnedvalue"
 //		?? "returned value:", addVal, chr(10)
 		return addVal
 	endif
-	if tag:name == "PROPERTY"
-		if len(tag:childs) > 0
+	if tag:getName() == "property"
+		if len(tag:getChilds()) > 0
 //			?? "val ->",addVal,chr(10)
-			value := self:subActionHandler(tag:childs[1],addVal)
+			value := self:subActionHandler(tag:getChild(1),addVal)
 //			?? "SET PROPERTY", valtype(value), chr(10)
 			self:setProperty(tag, NIL, value)
 			return NIL
@@ -729,19 +705,19 @@ static function ui_subActionHandler(self, tag, addVal)
 			return self:getPropertyValue( tag )
 		endif
 	endif
-	if tag:name == "CONDITION"
+	if tag:getName() == "condition"
 		// Form condition
 		condVal := NIL
-		iArr := tag:childs
+		iArr := tag:getChilds()
 //		?? "CONDITION CHECK...&\n"
 		for i=1 to len(iArr)
 			e := iArr[i]
-			if e:name == "PARAM" .and. len(e:childs) == 1
-				condVal := self:subActionHandler(e:childs[1], addVal)
+			if e:getName() == "param" .and. len(e:getChilds()) == 1
+				condVal := self:subActionHandler(e:getChild(1), addVal)
 //				?? "checked value:",condVal,chr(10)
 			endif
-			if e:name == "CASE"
-				chkVal := mapget(e:attr, "VALUE", NIL)
+			if e:getName() == "case"
+				chkVal := e:attribute("value", NIL)
 				if valtype(condVal) == "L"
 					chkVal := iif(ascan({"TRUE",".T.","YES"},upper(chkVal))>0,.T.,.F.)
 				endif
@@ -754,33 +730,36 @@ static function ui_subActionHandler(self, tag, addVal)
 		next
 		return NIL
 	endif
-		
-	widget 	:= mapget(tag:attr,"WIDGET",NIL)
-	method 	:= upper(mapget(tag:attr,"METHOD",""))
-	c := tag:childs
+
+	widget := tag:attribute("widget","")
+	method 	:= upper(tag:attribute("method",""))
+	
+	//?? "call "+iif(valtype(widget)=='C',widget,"")+":"+method+"()",tag:getAttributes(),"&\n"
+	
+	c := tag:getChilds()
 	for p in c
-		switch p:name
-		case "PARAM"
-			if "VALUE" $ p:attr
+		switch p:getName()
+		case "param"
+			if p:attribute("value") != NIL
 				// Constant value
-				aadd(params,p:attr["VALUE"])
+				aadd(params,p:attribute("value"))
 			else
-                        	// Recursive call
-				if len(p:childs) > 0
-					aadd(params, self:subActionHandler(p:childs[1],addVal))
+				// Recursive call
+				if len(p:getChilds()) > 0
+					aadd(params, self:subActionHandler(p:getChild(1),addVal))
 				else
-                                        ?? "WARNING: parameter has no value&\n"
+					?? "WARNING: parameter has no value&\n"
 					aadd(params, NIL)
 				endif
 			endif
-		case "RETURN"
-                        // Bind action on form creation
-//                        ?? "SET RETURN HANDLER", self:fileName, ret, chr(10)
+		case "return"
+			// Bind action on form creation
+//          ?? "SET RETURN HANDLER", self:fileName, ret, chr(10)
 			retAction := {|ret| self:actionHandler(p,ret)}
-                        if method == "OPEN"
+			if method == "OPEN"
 				asize(params, 2)
 			endif
-                        if method == "DIALOGBOX"
+			if method == "DIALOGBOX"
 				asize(params, 4)
 			endif
 			aadd(params, retAction)
@@ -789,11 +768,12 @@ static function ui_subActionHandler(self, tag, addVal)
 		endswitch
 	next
 
-        outlog("CALL", method, "...")
+	outlog("CALL", method, "...")
 	if valtype(widget) == "C"
 		widget := mapget(self:widgets, widget, NIL)
 	endif
 
+	//?? "call widget: ", valtype(widget), iif(valtype(widget)=='O',widget:className,""),chr(10)
 	if widget != NIL .and. valtype(widget) == "O"
 		if method $ widget .and. valtype(widget[method]) == "B"
 			/* TODO: use clipa() or similar function
@@ -803,17 +783,17 @@ static function ui_subActionHandler(self, tag, addVal)
 			ret := clipa("func", params)
 			*/
 			switch len(params)
-                               	case 1
+				case 1
 					ret := eval(widget[method], widget, params[1])
-                               	case 2
+				case 2
 					ret := eval(widget[method], widget, params[1], params[2])
-                               	case 3
+				case 3
 					ret := eval(widget[method], widget, params[1], params[2], params[3])
-                               	case 4
+				case 4
 					ret := eval(widget[method], widget, params[1], params[2], params[3], params[4])
-                               	case 5
+				case 5
 					ret := eval(widget[method], widget, params[1], params[2], params[3], params[4], params[5])
-                               	case 6
+				case 6
 					ret := eval(widget[method], widget, params[1], params[2], params[3], params[4], params[5], params[6])
 				otherwise
 					ret := eval(widget[method], widget)

@@ -5,11 +5,12 @@ function r2d2_addinfo_xml(_queryStr)
 local err,_query,_queryArr
 local i,j,k,m,obj,id:=""
 local aTree:={}, aRefs:={}
+local connect_id:="", connect_data
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc
 local columns,col,mas:={},objs:={}
 local err_desc:="",keyValue
-local urn,a,b
+local urn,a,b,xmlitem
 
 local p_list,pdoc_del:=map()
 local sprname:=""
@@ -22,6 +23,9 @@ local sprname:=""
 	_query    := d2ArrToMap(_queryArr)
 	outlog(__FILE__,__LINE__, _query)
 
+	if "CONNECT_ID" $ _query
+		connect_id := _query:connect_id
+	endif
 	if "SPR" $ _query
 		sprname := _query:spr
 	endif
@@ -34,11 +38,34 @@ local sprname:=""
 	if "URN" $ _query
 		URN := _query:URN
 	endif
+	if "XMLITEM" $ _query
+		XMLITEM := _query:xmlitem
+	endif
+	if !empty(connect_id)
+		connect_data := cgi_connect_data(connect_id)
+	endif
+    /*
+	if !empty(connect_data)
+		beg_date := connect_data:beg_date
+		end_date := connect_data:end_date
+	endif
+    */
+	if "ACC01" $ _query .and. !empty(_query:acc01)
+		set("ACC01",_query:acc01)
+	endif
+	if "ACC00" $ _query .and. !empty(_query:acc00)
+		set("ACC00",_query:acc00)
+	endif
 
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang)
-	sprname := lower(sprname)
+	//sprname := lower(sprname)
 	sDict:= cgi_choice_sDict(@sprname)
+
+	if !empty(id)
+		sDict := left(id,codb_info("DICT_ID_LEN"))
+		sDep  := substr(id,codb_info("DICT_ID_LEN")+1,codb_info("DEPOSIT_ID_LEN"))
+	endif
 
 
 	if empty(sprname) .or. empty(sDep) .or. empty(sDict)
@@ -47,7 +74,7 @@ local sprname:=""
 		?
 		? "Error: bad parameters ! "
 		if empty (sdep)
-			?? "LANG not defined "
+			?? "Depository not defined "
 		endif
 		if empty (sdict)
 			?? "DICTIONARY not defined "
@@ -60,10 +87,10 @@ local sprname:=""
 
 	cgi_xml_header()
 
-	if empty(set(sDict))
-		oDep := codb_needDepository(sDict+sDep)
+	if empty(id)
+		oDep := cgi_needDepository(sDict,sDep)
 	else
-		oDep := codb_needDepository(set(sDict))
+		oDep := codb_needDepository(sDict+sDep)
 	endif
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: "+sDict+sDep )
@@ -100,6 +127,7 @@ local sprname:=""
 
 
 	for m=1 to len(mas)
+		outlog(__FILE__,__LINE__, mas[m])
 		_query:=cgi_split(mas[m])
 		if "ID" $ _query
 			id := _query:id
@@ -129,7 +157,11 @@ local sprname:=""
 					obj[tmp1] := ctod(_query[tmp1],"dd.mm.yyyy")
 				case "A"
 					//obj[tmp1] := &(_query[tmp1])
-					obj[tmp1] := split(_query[tmp1],",")
+					if empty(_query[tmp1])
+						obj[tmp1] := {}
+					else
+						obj[tmp1] := split(_query[tmp1],",")
+					endif
 				otherwise
 					obj[tmp1] := _query[tmp1]
 			endswitch
@@ -143,7 +175,7 @@ local sprname:=""
 					loop
 				endif
 				col:=obj:an_debet[i]
-				tmp1 := codb_getValue(col)
+				tmp1 := cgi_getValue(col)
 				if empty(tmp1)
 					outlog("Object not readable:",col)
 					adel(obj:an_debet,i)
@@ -162,7 +194,7 @@ local sprname:=""
 					loop
 				endif
 				col:=obj:an_kredit[i]
-				tmp1 := codb_getValue(col)
+				tmp1 := cgi_getValue(col)
 				if empty(tmp1)
 					outlog("Object not readable:",col)
 					adel(obj:an_kredit,i)
@@ -219,17 +251,19 @@ local sprname:=""
 		endif
 		if !empty(oDep:error)
 
-			//if val(oDep:error) != 1143 /* non unique value */
-			cgi_xml_error(odep:error)
+			if val(oDep:error) != 1143 /* non unique value */
+				outlog(__FILE__,__LINE__, odep:error)
+			cgi_xml_error(odep:error) //не надо выводить xml вне корневого тега!!!!!!!
 			//	return
-			//endif
+			endif
 			err_desc := oDep:error
 			if "UNIQUE_KEY" $ classDesc .and. !empty(classDesc:unique_key)
 			/* seek unique value */
 				keyValue:=oDep:eval(classDesc:unique_key,obj)
 				if empty(keyValue)
+				outlog(__FILE__,__LINE__, odep:error)				
 					cgi_xml_error(err_desc+":"+oDep:error)
-					return
+			//		return
 				endif
 				tmp := oDep:id4PrimaryKey(classDesc:name,classDesc:unique_key,keyValue,.t.)
 				for i=1 to len(tmp)
@@ -262,8 +296,16 @@ local sprname:=""
 
 	if set("XML_OUT")=="NO"
 	else
+	    if xmlitem=='yes'
+		? '<xmlitems>'
+		cgi_fillTreeRdf(aRefs,aTree,"",1)
+		if empty(urn)
+			urn := 'urn:'+sprname
+		endif
+		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
+		? '</xmlitems>'
+	    else
 		? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-		//? 'xmlns:docum="http://last/cbt_new/rdf#">'
 		? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 		?
 		cgi_fillTreeRdf(aRefs,aTree,"",1)
@@ -271,9 +313,9 @@ local sprname:=""
 		if empty(urn)
 			urn := 'urn:'+sprname
 		endif
-		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
 		cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 		? '</RDF:RDF>'
+	    endif
 	endif
 
 ?

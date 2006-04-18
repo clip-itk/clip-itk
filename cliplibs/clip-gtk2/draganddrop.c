@@ -718,7 +718,7 @@ clip_GDK_DRAGBEGIN(ClipMachine * cm)
 {
         C_object *cwin = _fetch_co_arg(cm);
         ClipVar    *cv = _clip_spar(cm, 2);
-        GList    *list ;
+        GList    *list = 0;
         gint         i ;
 
 	CHECKCOBJ(cwin, GDK_IS_WINDOW(cwin->object));

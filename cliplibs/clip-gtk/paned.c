@@ -219,7 +219,7 @@ int
 clip_GTK_PANEDGETSIZECHILD1(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-	gint    width, height;
+	gint    width= 0, height = 0;
 	GtkPaned * paned;
 	GtkRequisition child_requisition;
 
@@ -244,7 +244,7 @@ int
 clip_GTK_PANEDGETSIZECHILD2(ClipMachine * cm)
 {
 	C_widget  *cpan = _fetch_cw_arg(cm);
-	gint    width, height;
+	gint    width = 0, height = 0;
 	GtkPaned * paned;
 	GtkRequisition child_requisition;
 

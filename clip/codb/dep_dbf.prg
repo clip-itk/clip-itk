@@ -23,7 +23,7 @@ function codb_depDbfNew(oDict,dep_id)
 	obj:makeTables	:= @_dep_makeTables()
 	obj:makeIndies	:= @_dep_makeIndies()
 	obj:open	:= @_dep_open()
-	obj:delete	:= @_dep_delete()
+	obj:_delete	:= @_dep__delete()
 	obj:unDelete	:= @_dep_unDelete()
 	obj:append	:= @_dep_append()
 	obj:update	:= @_dep_update()
@@ -57,38 +57,38 @@ static function _dep_moveExtent(self,class_id,oldExt,newExt, lOut)
 	lOut := iif(valtype(lOut)=="L", lOut, .f. )
 
 	if lOut
-        	? "Moving objects",class_id,"from extent",oldExt,"to extent",newExt,space(20)
-        endif
+		? "Moving objects",class_id,"from extent",oldExt,"to extent",newExt,space(20)
+	endif
 	taskStop()
 	rddGotop(self:hDbRefTbl)
 	while !rddEof(self:hDbRefTbl)
 		if !waitRddLock(self:hDbRefTbl)
 			self:error := codb_error(1005)+":"+rec:object_id+":dep,line:"+alltrim(str(__LINE__))
 			rddSkip(self:hDbRefTbl)
-                        loop
+			loop
 		endif
-        	rec := rddRead(self:hDbRefTbl)
-                if ! (rec:class_id == class_id)
+		rec := rddRead(self:hDbRefTbl)
+		if ! (rec:class_id == class_id)
 			rddSkip(self:hDbRefTbl)
-                	loop
+			loop
 		endif
-                if ! (rec:extent_id == oldExt)
+		if ! (rec:extent_id == oldExt)
 			rddSkip(self:hDbRefTbl)
-                	loop
+			loop
 		endif
-                if lOut
+		if lOut
 			?? replicate(chr(K_BS),13),rec:object_id
 		endif
-                /* get full record structure */
-                obj:=oExt1:getValue(rec:object_id,,,.t.)
-                if empty(obj)
-                     	outlog(__FILE__,__LINE__,"Error loading object",rec)
+		/* get full record structure */
+		obj:=oExt1:getValue(rec:object_id,,,.t.)
+		if empty(obj)
+			outlog(__FILE__,__LINE__,"Error loading object",rec)
 			rddSkip(self:hDbRefTbl)
-                        loop
+			loop
 		endif
-                rec:extent_id := newExt
-                if oExt2:append(obj,,.t.)
-                	oExt1:delete(rec:object_id,.t.)
+		rec:extent_id := newExt
+		if oExt2:append(obj,,.t.)
+			oExt1:delete(rec:object_id,.t.)
 			rddWrite(self:hDbRefTbl,rec)
 		endif
 
@@ -99,8 +99,9 @@ static function _dep_moveExtent(self,class_id,oldExt,newExt, lOut)
 return .t.
 
 ************************************************************
-static function _dep_delete(self,cId,lErase)
-	local oData,old,class_id,class_desc,oExt,extent_id,refData
+static function _dep__delete(self,cId,lErase,class_id)
+	local oData,old,class_desc,oExt,refData
+	local lDeleted := .f.
 
 	lErase := iif(valtype(lErase) == "L", lErase, .f.)
 
@@ -109,10 +110,13 @@ static function _dep_delete(self,cId,lErase)
 	adel(self:__objCache,cId)
 	if empty(oData)
 		self:error := codb_error(1123)
-		return .f.
 	endif
 	if "CLASS_ID" $ oData .and. !empty(oData:class_id)
 		class_id := oData:class_id
+	endif
+	if empty(class_id)
+		self:error := codb_error(1122)
+		return .f.
 	endif
 	class_desc := self:oDict:getValue(class_id)
 	if empty(class_desc)
@@ -124,41 +128,41 @@ static function _dep_delete(self,cId,lErase)
 	endif
 	self:runTrigger(class_id,"BEFORE_DELETE_OBJECT",oData)
 
-	taskStop()
+	oExt := self:extentOpen(class_Desc:extent_id)
+	if empty(oExt)
+		self:error := codb_error(1121)+":"+class_Desc:extent_id
+		return .f.
+	endif
+	if !oExt:delete(cId,lErase)
+		self:error := oExt:error
+		return .f.
+	endif
+	*****
 	rddSeek(self:hDbRefTbl,cId,.f.)
 	refData := rddRead(self:hDbRefTbl)
 	if refData:object_id == cId
-		extent_id := refData:extent_id
+		ldeleted := rddDeleted(self:hDbRefTbl)
 	else
-		taskStart()
 		self:error := codb_error(1124)+":"+cId
 		return .f.
 	endif
 
-	oExt := self:extentOpen(extent_id)
-	if empty(oExt)
-		self:error := codb_error(1121)+":"+extent_id
-		taskStart()
-		return .f.
-	endif
 	if !waitRddLock(self:hDbRefTbl)
 		self:error := codb_error(1005)+":"+cId+":dep,line:"+alltrim(str(__LINE__))
-		taskStart()
 		return .f.
 	endif
 	refData := rddRead(self:hDbREfTbl)
-        if lErase
+	if lErase
 		rddDelete(self:hDbRefTbl)
-        endif
+	endif
 	rddUnlock(self:hDbRefTbl)
-	oExt:delete(cId,lErase)
-	self:error := oExt:error
-	taskStart()
 
 	if !empty(self:error)
 		return .f.
 	endif
-	self:runTrigger(class_id,"AFTER_DELETE_OBJECT",oData)
+	if !lDeleted
+		self:runTrigger(class_id,"AFTER_DELETE_OBJECT",oData)
+	endif
 	if "LOG_NEED" $ class_desc .and. class_desc:log_need
 		codb_outlog(self:oDict:user,"delete",oData)
 	endif
@@ -251,6 +255,7 @@ static function _dep_append(self,oData,class_id,obj_id)
 	oData:class_id := class_id
 	oData:extent_id := class_desc:extent_id
 
+	self:runTrigger(class_id,"BEFORE_APPEND_OBJECT",oData)
 	if "UNIQUE_KEY" $ class_desc .and. !empty(class_desc:unique_key)
 		/* check unique value */
 		keyValue:=self:eval(class_desc:unique_key,oData)
@@ -271,7 +276,6 @@ static function _dep_append(self,oData,class_id,obj_id)
 		self:__check_counters(class_desc,oData)
 	endif
 
-	self:runTrigger(class_id,"BEFORE_APPEND_OBJECT",oData)
 	aDel(oData,"__VERSION")
 	aDel(oData,"__CRC32")
 	/* DATAx !!!! */
@@ -341,6 +345,8 @@ static function _dep_update(self,oData)
 		self:error := codb_error(1122)
 		return .f.
 	endif
+	oData := self:checkObjBody(oData,class_desc)
+	self:runTrigger(class_id,"BEFORE_UPDATE_OBJECT",oData,oldData)
 	if "UNIQUE_KEY" $ class_desc .and. !empty(class_desc:unique_key)
 		/* check unique value */
 		keyValue1:=self:eval(class_desc:unique_key,oData)
@@ -354,10 +360,8 @@ static function _dep_update(self,oData)
 				return .f.
 			endif
 		endif
-                lUnique := .t.
+		lUnique := .t.
 	endif
-	oData := self:checkObjBody(oData,class_desc)
-	self:runTrigger(class_id,"BEFORE_UPDATE_OBJECT",oData,oldData)
 
 	aDel(oData,"__VERSION")
 	aDel(oData,"__CRC32")
@@ -430,7 +434,7 @@ static function _dep_id4PrimaryKey(self,classname,keyName,keyValue,lList)
 	local i,s,ret := ""
 	local tmp,iTmp,nIndex:=-1,sIndex
 	local class_desc:=map(),class_id
-        local oExt
+	local oExt
 
 	if empty(classname) .or. empty(keyName) //.or. empty(keyValue)
 		return ret
@@ -468,9 +472,9 @@ static function _dep_id4PrimaryKey(self,classname,keyName,keyValue,lList)
 	endif
 
 	oExt:=self:extentOpen(class_desc:extent_id)
-        if empty(oExt)
+	if empty(oExt)
 		self:error := codb_error(1121)+":"+class_desc:extent_id
-                return ret
+		return ret
 	endif
 
 	/* seek data in Extent */
@@ -486,13 +490,10 @@ static function _dep__GetValue(self,objId,nLocks,version)
 	if !(valtype(objId) =="C")
 		return ret
 	endif
-	taskStop()
 	if !rddSeek(self:hDbRefTbl,objID,.f.)
-		taskStart()
 		return ret
 	endif
 	refData := rddRead(self:hDbRefTbl)
-	taskStart()
 
 	if !(refData:object_id == objId)
 		return ret
@@ -612,28 +613,28 @@ static function _dep_select(self,class_Id,nIndex,sName,sWhere,nCount,deleted)
 
 	class_desc:=self:oDict:getValue(class_id)
 	if empty(class_desc)
-        	return ret
+		return ret
 	endif
 	if class_id $ wrap
 		aWrapNames := wrap[class_id]
 	else
-	     	for i=1 to len(class_desc:idx_list)
-	     		sIndex:="DATA"+alltrim(str(i,2,0))
-	     		tmp:=self:oDict:getValue(class_desc:idx_list[i])
-	     		if !empty(tmp)
-	     			aadd(aWrapNames,{tmp:expr,sIndex})
-	     		else
-	     			outlog(3,"Index #",alltrim(str(i,2,0)),"for class",class_desc:name,"don`t have description")
-	     		endif
-	     		if valtype(nIndex) == "C" .and. nIndex==tmp:name
-	     			nIndex := i
-	     		endif
-	     	next
+		for i=1 to len(class_desc:idx_list)
+			sIndex:="DATA"+alltrim(str(i,2,0))
+			tmp:=self:oDict:getValue(class_desc:idx_list[i])
+			if !empty(tmp)
+				aadd(aWrapNames,{tmp:expr,sIndex})
+			else
+				outlog(3,"Index #",alltrim(str(i,2,0)),"for class",class_desc:name,"don`t have description")
+			endif
+			if valtype(nIndex) == "C" .and. nIndex==tmp:name
+				nIndex := i
+			endif
+		next
 		wrap[class_id] := aWrapNames
 	endif
 	self:runTrigger(class_id,"BEFORE_SELECT_OBJECT",class_id,nIndex,sWhere)
 
-        oExt:=self:extentOpen(class_desc:extent_id)
+	oExt:=self:extentOpen(class_desc:extent_id)
 
 	if oExt == NIL
 		self:error := codb_error(1121)+":"+class_desc:extent_id
@@ -641,7 +642,7 @@ static function _dep_select(self,class_Id,nIndex,sName,sWhere,nCount,deleted)
 	endif
 
 	//outlog(__FILE__,__LINE__,s,aWrapNames,sIndex,nIndex,nCount,deleted)
-        ret := oExt:select(s,aWrapNames,sIndex,nIndex,nCount,deleted)
+	ret := oExt:select(s,aWrapNames,sIndex,nIndex,nCount,deleted)
 	//outlog(__FILE__,__LINE__,class_desc:extent_id,ret)
 
 	self:runTrigger(class_id,"AFTER_SELECT_OBJECT",class_id,nIndex,sWhere)
@@ -813,9 +814,9 @@ static function _dep_addExtent(self,ext_id)
 	set(_SET_MBLOCKSIZE,mSize)
 
 
-        oExt := codb_extdbfNew(self,ext_id)
-        oExt:makeTables(.f.)
-        oExt:makeIndies(.f.)
+	oExt := codb_extdbfNew(self,ext_id)
+	oExt:makeTables(.f.)
+	oExt:makeIndies(.f.)
 	taskStart()
 
 return .t.
@@ -848,8 +849,8 @@ static function _dep_makeIndies(self,lOut)
 	oDict:=self:Dictionary()
 	tmp := oDict:select("EXTENT")
 	for i=1 to len(tmp)
-        	oExt := codb_extdbfNew(self,tmp[i])
-                oExt:makeIndies(lOut)
+		oExt := codb_extdbfNew(self,tmp[i])
+		oExt:makeIndies(lOut)
 	next
 return .t.
 ************************************************************
@@ -858,7 +859,7 @@ static function _dep_makeTables(self,lOut)
 
 	lOut:=iif(valtype(lOut)=="L",lOut,.f.)
 
-        dbFile := self:path+PATH_DELIM+"dataidx"
+	dbFile := self:path+PATH_DELIM+"dataidx"
 	dbCreate(dbFile,CODB_DEPIDX_STRUCTURE)
 	chmod(dbfile+".dbf","666")
 
@@ -874,8 +875,8 @@ static function _dep_makeTables(self,lOut)
 
 	tmp := oDict:select("EXTENT")
 	for i=1 to len(tmp)
-        	oExt := codb_extdbfNew(self,tmp[i])
-                oExt:makeTables(lOut)
+		oExt := codb_extdbfNew(self,tmp[i])
+		oExt:makeTables(lOut)
 	next
 return .t.
 

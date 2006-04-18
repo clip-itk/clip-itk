@@ -9,7 +9,7 @@ local urn, sprname:="", attrname:=""
 local oDict,oDep
 local oDep02, oDict02, acc_chart, accounts:=map(),values:=map(), rules:={}
 local columns, classDesc, selling, accpost
-local doc_summa,customer,doc_id, objs:={}, push_id := ""
+local doc_summa,customer,doc_id, objs:={}, id := ""
 
 	errorblock({|err|error2html(err)})
 
@@ -23,7 +23,7 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 		attrname := _query:attr
 	endif
 	if "PUSH_ID" $ _query
-		push_id := upper(_query:push_id)
+		id := upper(_query:push_id)
 	endif
 	if "LANG" $ _query
 		lang := _query:lang
@@ -37,17 +37,22 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang)
-	sprname := lower(sprname)
+	//sprname := lower(sprname)
 	sDict:= cgi_choice_sDict(@sprname)
 
-	if empty(sprname) .or. empty(attrname) .or. empty(push_id) ;
+	if !empty(id)
+		sDict := left(id,codb_info("DICT_ID_LEN"))
+		sDep  := substr(id,codb_info("DICT_ID_LEN")+1,codb_info("DEPOSIT_ID_LEN"))
+	endif
+
+	if empty(sprname) .or. empty(attrname) .or. empty(id) ;
 	   .or. empty(sDep) .or. empty(sDict)
 		?? "Content-type: text/html"
 		?
 		?
 		? "Error: bad parameters ! "
 		if empty (sdep)
-			?? "LANG not defined "
+			?? "Depository not defined "
 		endif
 		if empty (sdict)
 			?? "DICTIONARY not defined "
@@ -55,7 +60,7 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 		if empty (attrname)
 			?? "ATTRIBUTE NAME not defined "
 		endif
-		if empty (push_id)
+		if empty (id)
 			?? "ORDER_PUSH ID not defined "
 		endif
 		? "Usage:"
@@ -70,7 +75,11 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
 
-	oDep := codb_needDepository(sDict+sDep)
+	if empty(id)
+		oDep := cgi_needDepository(sDict,sDep)
+	else
+		oDep := codb_needDepository(sDict+sDep)
+	endif
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: "+sDict+sDep )
 		return
@@ -96,7 +105,7 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 		cgi_xml_error("Empty table description for "+sprname)
 		return
 	endif
-	oDep02 := codb_needDepository("GBL0201")
+	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep02)
 		cgi_xml_error( "Depository not found: GBL0201" )
 		return
@@ -117,7 +126,7 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 		return
 	endif
 
-	tmp:=oDep:select(selling:id,,,'order_push=="'+push_id+'"')
+	tmp:=oDep:select(selling:id,,,'order_push=="'+id+'"')
 	/* delete old accposts */
 	doc_summa := 0
 	for i=1 to len(tmp)
@@ -141,7 +150,7 @@ local doc_summa,customer,doc_id, objs:={}, push_id := ""
 	obj:odate := date()
 	obj:regdate := date()
 	obj:acc_type_trans := "rdf_sell_prg"
-	obj[upper(attrname)] := push_id
+	obj[upper(attrname)] := id
 	doc_id := oDep:append(obj,classDesc:id)
 	if empty(doc_id) .or. !empty(oDep:error)
 		cgi_xml_error("Error append object:"+oDep:error)

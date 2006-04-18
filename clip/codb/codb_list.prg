@@ -283,7 +283,11 @@ static function cdb_append(data)
 	endif
 	if ::hdb==NIL .or. valtype(data)!="O" .or. !("ID" $ data) .or. empty(data:id)
 		::error := codb_error(1007)
+		return .f.
 	endif
+	data:id := upper(data:id)
+	data:id := strtran(alltrim(data:id)," ","_")
+	data:id := padr(data:id,DICT_ID_LEN,"0")
 	if empty(::error)
 		id:=data:id
 		rddGotop(::hDb)
@@ -295,22 +299,17 @@ static function cdb_append(data)
 		endif
 	endif
 	if empty(::error)
-		if empty(data:type)
-			data:type:=CODB_DICTTYPE_DEFAULT
+		if empty(data:type) .or. ("$CODBTYPE$" $ data:type)
+			data:type:=codbType()
 		endif
-		if empty(data:path)
-			if empty(getenv("CODBROOT"))
-				data:path:=PATH_DELIM+"home"+PATH_DELIM+;
-				getenv("USER")+PATH_DELIM+"codb"+PATH_DELIM+alltrim(data:id)
-			else
-				data:path:=getenv("CODBROOT")+PATH_DELIM+alltrim(data:id)
-				data:path:=strtran(data:path,"//","/")
-			endif
+		if empty(data:path) .or. ("$CODBROOT$" $ data:path)
+			data:path := codbRoot()+PATH_DELIM+alltrim(data:id)
 		endif
-		data:path:=alltrim(data:path)
-		data:type:=alltrim(data:type)
-		if data:type == "DBF"
+		data:path := alltrim(strtran(data:path,"//","/"))
+		data:type := alltrim(data:type)
+		if data:type $ "DBF " // "SQL ..."
 		else // SQL default parameters
+			::error := codb_error(1010)+":"+data:type
 		endif
 	endif
 	codb_checkBodyCODB(data )
@@ -340,11 +339,17 @@ static function cdb_append(data)
 	if empty(::error)
 		set("CODB_SERVER_REINIT","Y")
 	endif
+	if !ret
+		rddRlock(::hDb)
+		rddDelete(::hDb,rec)
+		rddUnlock(::hDb)
+	endif
 return ret
 ************************************************************
 static function cdb_update(data)
 	local id,ret:=.f.,dict,rec
 	::error:=""
+
 	if ::__readOnly
 		::close()
 		::new(.f.)
@@ -365,19 +370,21 @@ static function cdb_update(data)
 	endif
 	if !(rddGetValue(::hDb,"ID") == id)
 		::error := codb_error(1004)+":"+id
+	else
+    	data := rddGetValue(::hDb,"BODY")
 	endif
 	if empty(::error)
-		if empty(data:type)
-			data:type:=CODB_DICTTYPE_DEFAULT
+		if empty(data:type) .or. ("$CODBTYPE$" $ data:type)
+			data:type:=codbType()
 		endif
-		if empty(data:path)
-			data:path:=PATH_DELIM+"home"+PATH_DELIM+;
-			getenv("USER")+PATH_DELIM+"codb"+PATH_DELIM+alltrim(data:id)
+		if empty(data:path) .or. ("$CODBROOT$" $ data:path)
+			data:path := codbRoot()+PATH_DELIM+alltrim(data:id)
 		endif
-		data:path:=alltrim(data:path)
+		data:path := alltrim(strtran(data:path,"//","/"))
 		data:type:=alltrim(data:type)
-		if data:type == "DBF"
+		if data:type $ "DBF " // "SQL ..."
 		else // SQL default parameters
+			::error := codb_error(1010)+":"+data:type
 		endif
 	endif
 	codb_checkBodyCODB(data )
@@ -438,8 +445,11 @@ static function cdb_connect(ident,user,passwd)
 			vfunc:=codb_dictCobra_Methods(ret,user,passwd)
 		case ret:type=="DBF"
 			vfunc:=codb_dictdbf_Methods(ret,user,passwd)
-		otherwise
+		case ret:type=="SQL"
 			vfunc:=codb_dictsql_Methods(ret,user,passwd)
+		otherwise
+			vFunc := map()
+			ret:error := codb_error(1010)+":"+ret:type
 	endcase
 
 	/* add virtual methods */

@@ -1,5 +1,8 @@
 /*
 	$Log: ms_clip.c,v $
+	Revision 1.29  2006/03/23 10:41:06  clip
+	rust: BLOB functions for PG (thanks Slava Zanko <slavaz@cis.by>)
+	
 	Revision 1.27  2004/02/26 12:59:55  clip
 	rust: bindpars with NIL
 	
@@ -191,7 +194,17 @@ static SQLVTBL vtbl =
 	ms_start,
 	ms_commit,
 	ms_rollback,
-	ms_fetch
+	ms_fetch,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
 };
 
 int clip_INIT_MYSQL(ClipMachine* mp){

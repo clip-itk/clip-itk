@@ -30,7 +30,7 @@ main(int argc, char **argv)
 
 		for (i = 0; i < len; i++)
 		{
-			printf("%-3d: 0x%X <--> 0x%lX\n", i, cs[i].ch, cs[i].unich);
+			printf("%-3d: 0x%X <--> 0x%X\n", i, cs[i].ch, cs[i].unich);
 		}
 
 		return 0;

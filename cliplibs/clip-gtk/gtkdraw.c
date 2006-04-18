@@ -30,7 +30,7 @@ clip_GTK_DRAWHLINE(ClipMachine *cm)
 
 	GtkStyle *style;
 	GdkWindow *win = NULL;
-	GdkRectangle *area;
+	GdkRectangle *area = 0;
 
 	CHECKCWID(cwin,GTK_IS_WIDGET);
 	CHECKARG(2,MAP_t);

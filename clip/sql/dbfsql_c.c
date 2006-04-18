@@ -1645,3 +1645,175 @@ int clip_SQLKEYNO(ClipMachine* mp){
 	_clip_retni(mp,keyno);
 	return 0;
 }
+/* ***************************************************************************** */
+/*
+  Some functionality for BLOB's
+*/
+/* *************************************************************************** */
+int clip_SQLBLOBOPEN(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    unsigned int OID = (unsigned int)_clip_parni(mp,2);
+    char *cmode=_clip_parc(mp,3);
+    int mode = 0;
+    char clen=5;
+    while (clen){
+	clen--;
+	switch(*cmode){
+	    case 'r':
+	    case 'R':
+		mode |=1;
+	    break;
+	    case 'w':
+	    case 'W':
+		mode |=2;
+	    break;
+	    case '\0':
+		clen=0;
+	}
+	cmode++;
+    }
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_open)
+        return conn->vtbl->blob_open(mp,conn,OID,mode);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBCREATE(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    unsigned int OID = (unsigned int)_clip_parni(mp,2);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_create)
+        return conn->vtbl->blob_create(mp,conn,OID);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBIMPORT(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    const char *filename = _clip_parc(mp,2);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_import)
+        return conn->vtbl->blob_import(mp,conn,filename);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBEXPORT(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    unsigned int OID = (unsigned int)_clip_parni(mp,2);
+    const char *filename = _clip_parc(mp,3);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_export)
+        return conn->vtbl->blob_export(mp,conn,OID,filename);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBWRITE(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    int oid_fd = _clip_parni(mp,2);
+    const char *buffer = _clip_parc(mp,3);
+    int length = _clip_parni(mp,4);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_write)
+        return conn->vtbl->blob_write(mp,conn,oid_fd,buffer,length);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBREAD(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    int oid_fd = _clip_parni(mp,2);
+    char *buffer = _clip_parc(mp,3);
+    int length = _clip_parni(mp,4);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_read)
+        return conn->vtbl->blob_read(mp,conn,oid_fd,buffer,length);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBSEEK(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    int oid_fd = _clip_parni(mp,2);
+    int offset = _clip_parni(mp,3);
+    int whence = _clip_parni(mp,4);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_seek)
+        return conn->vtbl->blob_seek(mp,conn,oid_fd,offset,whence);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBTELL(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    int oid_fd = _clip_parni(mp,2);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_tell)
+        return conn->vtbl->blob_tell(mp,conn,oid_fd);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBCLOSE(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    int oid_fd = _clip_parni(mp,2);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_close)
+        return conn->vtbl->blob_close(mp,conn,oid_fd);
+    return 0;
+}
+/* *************************************************************************** */
+int clip_SQLBLOBUNLINK(ClipMachine* mp){
+    int conn_item = _clip_parni(mp,1);
+    SQLCONN* conn = (SQLCONN*)_clip_fetch_c_item(
+    	mp,conn_item,_C_ITEM_TYPE_SQL);
+    unsigned int OID = (unsigned int) _clip_parni(mp,2);
+    if(!conn){
+        _clip_trap_err(mp,0,0,0,subsys,ER_NOCONNECT,er_noconnect);
+        return 1;
+    }
+    if(conn->vtbl->blob_unlink)
+        return conn->vtbl->blob_unlink(mp,conn,OID);
+    return 0;
+}
+/* *************************************************************************** */
+

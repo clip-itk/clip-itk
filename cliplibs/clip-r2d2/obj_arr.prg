@@ -60,12 +60,12 @@ local id := "",oper:="add", value:="",attr:=""
 
 	obj := oDep:getValue(id,10)
 	if empty(obj)
-		cgi_xml_error("Object ID not found "+id)
+//		cgi_xml_error("Object ID not found "+id)
 		return
 	endif
 	if attr $ obj .and. valtype(obj[attr])=="A"
 	else
-		cgi_xml_error(attr+" is not array")
+//		cgi_xml_error(attr+" is not array")
 		return
 	endif
 	tmp1:=obj[attr]
@@ -88,7 +88,7 @@ local id := "",oper:="add", value:="",attr:=""
 		aadd(tmp1,a[i])
 	next
 	if !oDep:update(obj)
-		cgi_xml_error(oDep:error)
+//		cgi_xml_error(oDep:error)
 		return
 	endif
 	obj := oDep:getValue(id)
@@ -96,7 +96,7 @@ local id := "",oper:="add", value:="",attr:=""
 	classDesc := oDict:getValue(obj:class_id)
 
 	if empty(classDesc)
-		cgi_xml_error("Not found class description for "+obj:class_id)
+//		cgi_xml_error("Not found class description for "+obj:class_id)
 		return
 	endif
 

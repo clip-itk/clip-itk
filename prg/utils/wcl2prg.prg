@@ -7,6 +7,9 @@
 #define LF			CHR(10)
 #define CHUNKSIZE	1024
 
+memvar destfile, rdbms, host, login, passwd
+memvar rs, funcs, html, terms, vars
+
 PROCEDURE Main(srcfile,prg)
 	LOCAL I
 

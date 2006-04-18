@@ -184,7 +184,7 @@ return obj
 
 *******************************************************************************
 static function trans(str, all)
-local newstr, l, i, j
+local newstr, l, i, j, s
 	newstr := ""
 	all := iif(all==NIL, .t., all)
 
@@ -773,7 +773,7 @@ return str
 
 *******************************************************************************
 static function parseCateg(fsrc, categ, alang)
-local str, s, lang:="EN", cname, cidname, descr := {}, lDesc := .f., lSumm := .f.
+local str, s, lang:="EN", cname, cidname, descr := {}, lDesc := .f., lSumm := .f., lCn:=.f.
 local summ := {}
 	do while !fileeof(fsrc)
 		str := alltrim(filegetstr(fsrc))

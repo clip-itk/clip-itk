@@ -106,6 +106,10 @@ static function install_default_dictionary(dict,xmlData,mdir)
 						tmp=dict:select(aSpec[nSpec][3],,metadata[n])
 						if !empty(tmp)
 							metadata[n] := tmp[1]
+						else
+							? "Warning: in dictionary not found",aSpec[nSpec][3],metadata[n]," for metaobject:",ometa
+							?
+							quit
 						endif
 					next
 				endif
@@ -150,6 +154,8 @@ static function install_default_dictionary(dict,xmlData,mdir)
 				oMeta:source := memoread(fname)
 				if empty(oMeta:source)
 					? "Error:","Can`t load plugins file:",fname,ferrorstr()
+					?
+					quit
 				endif
 			endif
 			tmp:=dict:select(metaname,,oMeta:name)
@@ -169,6 +175,8 @@ static function install_default_dictionary(dict,xmlData,mdir)
 
 			if !empty(dict:error)
 				? "Error:",dict:error,"  "
+				?
+				quit
 			else
 				?? ometa:name+iif(empty(tmp),"(added),","(updated),")
 			endif

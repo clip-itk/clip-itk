@@ -5,6 +5,12 @@
  */
 /*
    $Log: file.c,v $
+   Revision 1.98  2006/01/03 13:33:54  clip
+   uri: small fix about _clip_MODULE := modulename
+
+   Revision 1.97  2005/12/30 13:32:21  clip
+   uri: small fix, module name include path of file.prg
+
    Revision 1.96  2005/08/25 08:36:33  clip
    uri: small fix for AMD64 (added -fPIC option for gcc)
 
@@ -2036,12 +2042,13 @@ write_OFile(File * file, long *len)
 		fprintf(out, "\t.long %sclip__PCODE_%s\n", US, upname);
 		fprintf(out, "\t.long 0\n");
 /*		fprintf(out, "\t.size %s_cpfiles,%d\n", upname, sizeof(ClipFile *) * 2);*/
-
-		fprintf(out, ".globl %sclip__MODULE_%s\n", US, upname);
+/*		fprintf(out, ".globl %sclip__MODULE_%s\n", US, upname);*/
+		fprintf(out, ".globl %sclip__MODULE_%s\n", US, file->mname);
 		fprintf(out, "\t.align 32\n");
 /*		fprintf(out, "\t.type clip__MODULE_%s,@object\n", upname);*/
 /*		fprintf(out, "\t.size clip__MODULE_%s,%d\n", upname, sizeof(ClipModule));*/
-		fprintf(out, US"clip__MODULE_%s:\n ", upname);
+/*		fprintf(out, US"clip__MODULE_%s:\n ", upname);      */
+		fprintf(out, US"clip__MODULE_%s:\n ", file->mname);
 		fprintf(out, "\t.long .LC0\n");
 		fprintf(out, "\t.long 0\n");
 		fprintf(out, "\t.long 0\n");
@@ -2115,7 +2122,8 @@ write_OFile(File * file, long *len)
 		fprintf(out, "\t&clip__PCODE_%s,\n", name);
 		fprintf(out, "\t0\n};\n");
 
-		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n ", name);
+/*		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n ", name);*/
+		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n ", file->mname);
 		fprintf(out, "\t\"%s\",\n", name);
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");

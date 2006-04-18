@@ -198,7 +198,7 @@ clip_GTK_CELLVIEWSETBACKGROUNDCOLOR(ClipMachine * cm)
 {
 	C_widget  *ccell = _fetch_cw_arg(cm);
         ClipVar  *ccolor = _clip_spar(cm, 2);
-        GdkColor  *color ;
+        GdkColor  *color = 0;
 
 	CHECKCWID(ccell,GTK_IS_CELL_VIEW);
         CHECKARG(2, MAP_t);

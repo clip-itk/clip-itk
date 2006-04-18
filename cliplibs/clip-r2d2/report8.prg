@@ -47,10 +47,13 @@ local urn,sprname,cache:=map()
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
-	endif
+
+        if "ACC01" $ _query .and. !empty(_query:acc01)
+            set("ACC01",_query:acc01)
+        endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+            set("ACC00",_query:acc00)
+        endif
 
 	if empty(account) .or. empty(beg_date) .or. empty(end_date)
 		cgi_html_header()
@@ -70,7 +73,7 @@ local urn,sprname,cache:=map()
 
 	cgi_xml_header()
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -90,7 +93,7 @@ local urn,sprname,cache:=map()
 		return
 	endif
 
-	oDep02 := codb_needDepository("GBL0201")
+	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: GBL0201" )
 		return
@@ -252,7 +255,7 @@ local urn,sprname,cache:=map()
 	?
 	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
+	? '<RDF:account>'+cgi_essence(account)+'</RDF:account>'
 
 
 	if empty(urn)

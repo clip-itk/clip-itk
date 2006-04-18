@@ -520,6 +520,10 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 		endif
 	endif
 	oData := o2update(oData,oldData)
+	if metaName == "DEPOSIT"
+		oData:number := oldData:number
+		oData:memosize := oldData:memosize
+	endif
 	oData := self:checkBody(oData,metaname)
 	adel(oData,"__VERSION")
 	adel(oData,"__CRC32")
@@ -538,6 +542,9 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 			oData:attr_list := aclone(super_desc:attr_list)
 		endif
 		for i=1 to len(m)
+			if empty(m[i])
+				loop
+			endif
 			if ascan(oData:attr_list, m[i]) == 0
 				aadd(oData:attr_list, m[i])
 			endif
@@ -549,6 +556,9 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 			oData:idx_list:= aclone(super_desc:idx_list)
 		endif
 		for i=1 to len(m)
+			if empty(m[i])
+				loop
+			endif
 			if ascan(oData:idx_list, m[i]) == 0
 				aadd(oData:idx_list, m[i])
 			endif

@@ -395,7 +395,7 @@ inst_codb:
 	cd codb && tar cf - codb.ch codbcfg.ch codb_dbf.ch | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 
 inst_ch: $(INST_MEMDEBUG_H)
-	tar cf - clip.h _win32.h clipcfg.h hash.h Makefile.inc Makefile.tdoc clipcfg.sh \
+	tar cf - clip.h _win32.h clipcfg.h hash.h Makefile.inc Makefile.tdoc clipcfg.sh screen/charset.h \
 		| (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 	cd rdd && tar cf - btree.h | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 	cd sql && tar cf - *.h | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)

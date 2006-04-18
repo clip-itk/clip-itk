@@ -83,7 +83,7 @@ clip_GTK_TREEMODEL(ClipMachine * cm)
 {
 	C_object *ctree   = _fetch_co_arg(cm);
 	C_object *cmodel;
-	GtkTreeModel *model;
+	GtkTreeModel *model = 0;
 
 	CHECKOPT2(1,MAP_t, NUMERIC_t);
 
@@ -232,7 +232,7 @@ clip_GTK_TREEPATHGETINDICES(ClipMachine * cm)
 {
 	C_object *ctreepath = _fetch_co_arg(cm);
 	GtkTreePath *path;
-	ClipVar *arr;
+	ClipVar *arr = 0;
 	gint *indices;
 	gint i;
 
@@ -467,7 +467,7 @@ clip_GTK_TREEMODELGETCOLUMNTYPE(ClipMachine * cm)
 	C_object *ctreemodel = _fetch_co_arg(cm);
 	gint index	     = _clip_parni(cm, 2);
 	GType type;
-	gint t;
+	gint t = 0;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
 	CHECKARG(2, NUMERIC_t);
@@ -874,10 +874,10 @@ clip_GTK_TREEMODELGET(ClipMachine * cm)
 	C_object *ctreemodel = _fetch_co_arg(cm);
 	C_object  *ctreeiter = _fetch_cobject(cm, _clip_spar(cm, 2));
 	GtkTreeIter    *iter;
-	GType       *columns;
+	GType       *columns = 0;
 	gint               n = _clip_parinfo(cm, 0);
 	gint i, x;
-	gchar *str;
+	gchar *str = 0;
 	glong l;
 	gfloat f;
 	gboolean b;
@@ -947,7 +947,7 @@ clip_GTK_TREEMODELGETFROMPATHSTRING(ClipMachine * cm)
 	//C_object  *ctreeiter = _fetch_cobject(cm, _clip_spar(cm, 2));
 	const gchar    *path = _clip_parc(cm, 2);
 	GtkTreeIter    iter;
-	GType       *columns;
+	GType       *columns = 0;
 	gint               n = _clip_parinfo(cm, 0);
 	gint i, x;
 	gchar *str;
@@ -1094,7 +1094,7 @@ clip_GTK_TREEMODELROWSREORDERED(ClipMachine * cm)
 	C_object  *ctreepath = _fetch_cobject(cm, _clip_spar(cm, 2));
 	C_object  *ctreeiter = _fetch_cobject(cm, _clip_spar(cm, 3));
 	ClipVar       	 *cv = RETPTR(cm);
-	gint      *new_order;
+	gint      *new_order = 0;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
 	CHECKARG(2, MAP_t);
@@ -1170,7 +1170,7 @@ clip_GTK_TREEMODELFILTERSETVISIBLEFUNC(ClipMachine * cm)
 {
 	C_object *ctreemodel = _fetch_co_arg(cm);
 	ClipVar        *func = _clip_spar(cm, 2);
-	C_var             *c ;
+	C_var             *c = 0;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
 	CHECKARG2(2, PCODE_t, CCODE_t);

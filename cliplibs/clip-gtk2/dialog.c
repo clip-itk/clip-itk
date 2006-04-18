@@ -311,7 +311,7 @@ clip_GTK_DIALOGADDBUTTONS(ClipMachine *cm)
 		text[14], response_id[14], text[15], response_id[15],
 		text[16], response_id[16], text[17], response_id[17],
 		text[18], response_id[18], text[19], response_id[19]
-		);
+		, NULL);
 
 	for (i=0; i<n; i ++)
         {
@@ -415,7 +415,7 @@ clip_GTK_DIALOGGETVBOX(ClipMachine *cm)
 {
 	C_widget *cdialog = _fetch_cw_arg(cm);
         GtkWidget *area;
-        C_widget *carea;
+        C_widget *carea = 0;
         CHECKCWID(cdialog,GTK_IS_DIALOG);
         area = GTK_DIALOG(cdialog->widget)->vbox;
         if (area) carea = _list_get_cwidget(cm, area);
@@ -432,7 +432,7 @@ clip_GTK_DIALOGGETACTIONAREA(ClipMachine *cm)
 {
 	C_widget *cdialog = _fetch_cw_arg(cm);
         GtkWidget *area;
-        C_widget *carea;
+        C_widget *carea = 0;
         CHECKCWID(cdialog,GTK_IS_DIALOG);
         area = GTK_DIALOG(cdialog->widget)->action_area;
         if (area) carea = _list_get_cwidget(cm, area);

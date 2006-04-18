@@ -116,7 +116,7 @@ binary-arch: build install
 	dh_installcron
 	dh_installmanpages -pclip-dev
 #	dh_installinfo
-	dh_dhelp
+#	dh_dhelp
 #	dh_undocumented
 	dh_installchangelogs -pclip-dev
 	dh_strip

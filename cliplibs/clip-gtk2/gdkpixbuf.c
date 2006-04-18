@@ -69,7 +69,7 @@ int clip_GDK_PIXBUFCOPY(ClipMachine * cm)
 {
 	C_object *cpixbufsrc = _fetch_co_arg(cm);
         GdkPixbuf *pixbuf;
-        C_object *cpixbuf;
+        C_object *cpixbuf = 0;
 
 	CHECKCOBJ(cpixbufsrc,GDK_IS_PIXBUF(cpixbuf->object));
 

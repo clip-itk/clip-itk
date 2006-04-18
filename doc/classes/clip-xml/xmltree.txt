@@ -1,0 +1,159 @@
+$CLASSNAME$
+	XMLTree
+$SUMMARY$
+	Class XMLTree
+$LANG_RU$
+	Класс XMLTree
+$ABOUT$
+	Class of XML DOM tree. This class is used for manipulate XML DOM tree.
+$LANG_RU$
+	Класс дерева XML DOM. Служит для работы с деревом DOM XML.
+$SYNTAX$
+	XMLTree(<name>)	--> XMLTag object
+$LANG_RU$
+	XMLTree(<name>)	--> Объект XMLTag
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "XMLTree".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "XMLTree".
+
+$METHODNAME$
+	XMLTree()
+$SUMMARY$
+	Constructor. Create object for manipulate XML DOM tree..
+$LANG_RU$
+	Конструктор. Создать объект для работы с деревом DOM XML.
+$SYNTAX$
+	XMLTree(<encoding>)	--> XMLTree object
+$ARGUMENTS$
+	<encoding>		- String. Encoding of dumped XML file.
+$LANG_RU$
+	<encoding>		- Строка. Кодировка выдаваемого файла XML.
+$ENDMETHOD$
+
+$METHODNAME$
+	parseFile()
+$SUMMARY$
+	Parse XML file.
+$LANG_RU$
+	Обработать файл XML.
+$SYNTAX$
+	parseFile(<filename>)
+$ARGUMENTS$
+	<filename>		- String. File name.
+$LANG_RU$
+	<filename>		- Строка. Имя файла.
+$ENDMETHOD$
+
+$METHODNAME$
+	parseString()
+$SUMMARY$
+	Parse XML file contents.
+$LANG_RU$
+	Обработать строку с содержмым файла XML.
+$SYNTAX$
+	parseString(<string>)
+$ARGUMENTS$
+	<string>		- String. XML file contents.
+$LANG_RU$
+	<string>		- Строка. Содержимое файла XML.
+$ENDMETHOD$
+
+$METHODNAME$
+	getRoot()
+$SUMMARY$
+	Get DOM root tag.
+$LANG_RU$
+	Получить корневой тег DOM.
+$SYNTAX$
+	getRoot()	--> <oRootTag>
+$RETURNS$
+	Root tag (XMLTag object).
+$LANG_RU$
+	Корневой тег (объект XMLTag).
+$ENDMETHOD$
+
+$METHODNAME$
+	setRoot()
+$SUMMARY$
+	Set new root tag.
+$LANG_RU$
+	Установить новый корневой тег.
+$SYNTAX$
+	setRoot(<tag>)
+$ARGUMENTS$
+	<tag>	- XMLTag object. New root tag.
+$LANG_RU$
+	<tag>	- Объект XMLTag. Новый корневой тег.
+$ENDMETHOD$
+
+$METHODNAME$
+	getError()
+$SUMMARY$
+	Get parse error description.
+$LANG_RU$
+	Получить описание ошибки обработки.
+$SYNTAX$
+	getError() --> <cError>
+$RETURNS$
+	Parse error description.
+$LANG_RU$
+	Описание ошибки обработки
+$ENDMETHOD$
+
+$METHODNAME$
+	dump()
+$SUMMARY$
+	Dump DOM to XML format.
+$LANG_RU$
+	Выдать строку в формате XML для текущего DOM.
+$SYNTAX$
+	dump([<tag>])	--> <cXML>
+$ARGUMENTS$
+	<tag>	- XMLTag object. Dump only this tag and all its children.
+$LANG_RU$
+	<tag>	- Объект XMLTag. Выдать указанный тег и все его дочерние теги.
+$RETURNS$
+	DOM in XML format.
+$LANG_RU$
+	DOM в формате XML.
+$ENDMETHOD$
+
+$METHODNAME$
+	XPath()
+$SUMMARY$
+	Execute XPath query.
+$LANG_RU$
+	Выполнить запрос XPath.
+$SYNTAX$
+	XPath(<path>,[<tag>])	--> <Result>
+$ARGUMENTS$
+	<path>	- String. XPath query.
+	<tag>	- XMLTag object. Context tag insead root.
+$LANG_RU$
+	<path>	- Строка. Запрос XPath.
+	<tag>	- Объект XMLTag. Тег контекста вместо корневого.
+$RETURNS$
+	XPath query result.
+$LANG_RU$
+	Результат запроса XPath.
+$ENDMETHOD$
+
+$EXAMPLES$
+	f := XMLTree()
+	f:parseFile( "component.xml" )
+	?? f:XPath( "/requires/*" )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

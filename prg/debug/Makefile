@@ -3,7 +3,7 @@ include $(CLIPROOT)/include/Makefile.inc
 endif
 #CLIP	= clip
 CLIP	= $(CLIPROOT)/bin/clip
-CLIPFLAGS = -a -O -b -l
+CLIPFLAGS = -a -O -l -w
 CLIPLIBS  =
 OBJS  = init.o cld_obj.o menu.o command.o source.o values.o viewset.o viewali.o monitor.o
 POBJS  = init.o cld_obj.po menu.po command.po source.po values.po viewset.po viewali.po monitor.po

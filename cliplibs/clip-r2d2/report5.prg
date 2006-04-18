@@ -1,6 +1,6 @@
 #include "r2d2lib.ch"
 /*
-	отчет по субконто: подразделению/работнику/корреспонденту
+	отчет по : подразделению/работнику/корреспонденту
 */
 
 #define USE_DOCUMENT
@@ -47,10 +47,16 @@ local cashe:=map()
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
-	endif
+
+
+        if "ACC01" $ _query .and. !empty(_query:acc01)
+            set("ACC01",_query:acc01)
+        endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+            set("ACC00",_query:acc00)
+        endif
+							
+							
 
 	if (empty(account) .and. empty(an_value)) .or. (empty(beg_date) .or. empty(end_date))
 		cgi_html_header()
@@ -74,7 +80,7 @@ local cashe:=map()
 	cgi_xml_header()
 	? '<body  xmlns:html="http://www.w3.org/1999/xhtml">'
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -87,7 +93,7 @@ local cashe:=map()
 		return
 	endif
 
-	oDep02 := codb_needDepository("GBL0201")
+	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: GBL0201" )
 		return
@@ -125,7 +131,7 @@ local cashe:=map()
 		next
 	endif
 	if !empty(an_value)
-		an_obj := codb_getvalue(an_value)
+		an_obj := cgi_getValue(an_value)
 		an_heritage := codb_heritage(an_obj:class_id)
 		//? an_heritage
 		if empty(an_obj)
@@ -183,7 +189,7 @@ local cashe:=map()
 	endif
 	if !empty(an_value)
 	? '<span name="header"> Аналитическая карточка по : </span>'
-	? '<span name="object" idref="'+an_value+'">'+codb_essence(an_value)+'</span>'
+	? '<span name="object" idref="'+an_value+'">'+cgi_essence(an_value)+'</span>'
 	endif
 	? 'за период с <span name="beg_date"> '+dtoc(beg_date)+'</span> по <span name="end_date">'+dtoc(end_date)+'</span>'
 	? '<br/>'
@@ -246,13 +252,13 @@ local cashe:=map()
 			/*
 			? "1:",acc_objs[i]:code,s+s2,varToString(tmp)
 			if !empty(tmp)
-				? "1:",varToString(codb_getValue(tmp[1]))
+				? "1:",varToString(cgi_getValue(tmp[1]))
 			endif
 			*/
 			//for j=1 to len(tmp)
-				//k := codb_getValue(tmp[j])
+				//k := cgi_getValue(tmp[j])
 			if !empty(tmp)
-				k := codb_getValue(atail(tmp))
+				k := cgi_getValue(atail(tmp))
 				if empty(k)
 					loop
 				endif
@@ -271,11 +277,11 @@ local cashe:=map()
 			/*
 			? "2:",acc_objs[i]:code,s+s2,varToString(tmp)
 			if !empty(tmp)
-				? "2:",varToString(codb_getValue(tmp[1]))
+				? "2:",varToString(cgi_getValue(tmp[1]))
 			endif
 			*/
 			for j=1 to len(tmp)
-				k := codb_getValue(tmp[j])
+				k := cgi_getValue(tmp[j])
 				if empty(k)
 					loop
 				endif
@@ -445,21 +451,21 @@ local cashe:=map()
 			? '	<td valign="top"  align="right">'+str(0.00,14,2)+' </td>'
 		endif
 #ifdef USE_DOCUMENT
-		? '	<td font="size"   align="left"  ><span>'+codb_essence(post:primary_document)+'</span> <span>'+codb_essence(post:document_record)+'</span> </td>'
+		? '	<td font="size"   align="left"  ><span>'+cgi_essence(post:primary_document)+'</span> <span>'+cgi_essence(post:document_record)+'</span> </td>'
 #else
-		subj_desc := codb_getValue(subj)
-		obj_desc := codb_getValue(obj)
+		subj_desc := cgi_getValue(subj)
+		obj_desc := cgi_getValue(obj)
 		if empty(subj_desc)
 			? '	<td valign="top"   > ... </td>'
 		else
 			//? '	<td valign="top"  align="left" >'+krName(subj_desc)+' </td>'
-			? '	<td font="size"   align="left"  >'+codb_essence(subj)+' </td>'
+			? '	<td font="size"   align="left"  >'+cgi_essence(subj)+' </td>'
 		endif
 		if empty(obj_desc)
 			? '	<td valign="top"   > ... </td>'
 		else
 			//? '	<td valign="top"   >'+krName(obj_desc)+' </td>'
-			? '	<td font="size" align="left">'+codb_essence(obj)+' </td>'
+			? '	<td font="size" align="left">'+cgi_essence(obj)+' </td>'
 		endif
 #endif
 		? '</tr>'

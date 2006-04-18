@@ -2,8 +2,8 @@
 
 
 function r2d2_classes_rdf()
-	local m1:={"GBL01","GBL02","ACC00","ACC01"}
-	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские"}
+	local m1:={"GBL01","GBL02","ACC00","ACC01","ETC01"}
+	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
 
 	cgi_xml_header()
 	put_rdf(m1,m2)

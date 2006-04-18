@@ -189,7 +189,7 @@ int clip_HS_FILTER(ClipMachine* cm){
 	int land = _clip_parl(cm,4);
 	int mode = _clip_parni(cm,5);
 	DBWorkArea* wa = cur_area(cm);
-	HIPER* hs;
+	HIPER* hs = NULL;
 	RDD_FILTER* fp;
 	unsigned int count;
 	char* fexpr = NULL,*tmp,*s;

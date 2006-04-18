@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2004 by E/AS Software Foundation 		           */
+/*									   */
+/*   Copyright (C) 2004 by E/AS Software Foundation 			   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -30,7 +30,7 @@ return obj
 
 /* Set text */
 static function ui_setText(self, text)
-	self:edit:setValue( value )
+	self:edit:setValue( text )
 return NIL
 
 /* Get text */

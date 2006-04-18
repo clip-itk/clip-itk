@@ -1,6 +1,6 @@
 #include "r2d2lib.ch"
 
-function r2d2_bind2_rdf(_queryArr)
+function r2d2_bind(_queryArr, VIA_XML)
 
 local i,j,k,obj,idlist,err,rname,dict
 local aTree:={},aList1:={},aList2:={},aList3:={}
@@ -8,7 +8,7 @@ local aRefs:={}
 local width1:="300", width2:="30"
 local _query, idOverlay := ""
 local lang:="", sDict:="", sDep:=""
-local oDict,oDep, tmp,tmp1,tmp2, classDesc, l_select:=.f.
+local oDict,oDep,oDepList, tmp,tmp1,tmp2, classDesc, l_select:=.f.
 local columns,columns2,col, id:="",urn
 local find_wrap:=map(), children
 local connect_id,connect_data
@@ -16,7 +16,7 @@ local connect_id,connect_data
 public sprname:="", type:="", Serr:=""
 public beg_date:=date(),end_date:=date()
 public path_obj
-public bind_type:="span", bind_id:=""
+public bind_type:="", bind_id:=""
 
 errorblock({|err|error2html(err)})
 
@@ -64,8 +64,12 @@ errorblock({|err|error2html(err)})
 	endif
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang)
-	sprname := lower(sprname)
+	//sprname := lower(sprname)
 	sDict:= cgi_choice_sDict(@sprname)
+	if !empty(id)
+		sDict := left(id,codb_info("DICT_ID_LEN"))
+		sDep  := substr(id,codb_info("DICT_ID_LEN")+1,codb_info("DEPOSIT_ID_LEN"))
+	endif
 
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
@@ -81,7 +85,7 @@ errorblock({|err|error2html(err)})
 		?
 		? "Error: bad parameters ! "
 		if empty (sdep)
-			?? "LANG not defined "
+			?? "Depository not defined "
 		endif
 		if empty (sdict)
 			?? "DICTIONARY not defined "
@@ -98,16 +102,20 @@ errorblock({|err|error2html(err)})
 	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
+	if empty(id)
+		oDep := cgi_needDepository(sDict,sDep)
+	else
+		oDep := codb_needDepository(sDict+sDep)
+	endif
 
-	oDep := codb_needDepository(sDict+sDep)
 	if empty(oDep)
-		cgi_xml_error( "Depository not found: "+sDict+sDep )
+//		cgi_xml_error( "Depository not found: "+sDict+sDep )
 		return
 	endif
 	oDict := oDep:dictionary()
 	classDesc:=oDict:classBodyByName(sprname)
 	if empty(classDesc)
-		cgi_xml_error("Class definition not found for:"+sprname)
+//		cgi_xml_error("Class definition not found for:"+sprname)
 		?
 		return
 	endif
@@ -126,26 +134,59 @@ errorblock({|err|error2html(err)})
 	endif
 
 	if empty(columns)
-		cgi_xml_error("Empty table description for "+sprname)
+//		cgi_xml_error("Empty table description for "+sprname)
 		return
+	endif
+	oDepList := {}
+	aadd(oDepList,oDep)
+	if bind_type=="all" .and. empty(id)
+		tmp := oDict:select("DEPOSIT")
+		for j=1 to len(tmp)
+			obj := oDict:getValue(tmp[j])
+			if empty(obj)
+				loop
+			endif
+			if oDep:id == sDict + obj:number
+				loop
+			endif
+			tmp2 := cgi_needDepository(sDict+obj:number,"")
+			if empty(tmp2)
+				loop
+			endif
+			aadd(oDepList,tmp2)
+		next
 	endif
 
-	if sprname == "os_balance"
-		aRefs := osb_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.)
-	elseif empty(id)
-		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.,.f.,.t.)
-	else
-		aRefs := {}
-		if empty(path_obj)
-			aadd(aRefs,{id,"","",codb_getValue(id)})
+	aRefs := {}
+	//outlog(__FILE__,__LINE__,len(oDepLIst))
+	for j=1 to len(oDepList)
+		oDep := oDepList[j]
+		if sprname == "os_balance"
+			tmp := osb_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.)
+			for i=1 to len(tmp)
+				aadd(aRefs,tmp[i])
+			next
+		elseif empty(id)
+			tmp := cgi_aRefs(oDep,classDesc,columns,_query,find_wrap,@Serr,.t.,.f.,.t.)
+			for i=1 to len(tmp)
+				aadd(aRefs,tmp[i])
+			next
 		else
-			aRefs := parse_path_obj(oDep,path_obj,id)
+			if empty(path_obj)
+				aadd(aRefs,{id,"","",cgi_getValue(id)})
+			else
+				tmp := parse_path_obj(oDep,path_obj,id)
+				for i=1 to len(tmp)
+					aadd(aRefs,tmp[i])
+				next
+			endif
+			exit
 		endif
-	endif
-	if !empty(serr)
-		cgi_xml_error("Error in parameters:"+sErr)
-		return
-	endif
+		if !empty(serr)
+			cgi_xml_error("Error in parameters:"+sErr)
+			return
+		endif
+	next
 
 	//asort(aRefs,,,{|x,y| x[3] <= y[3] })
 	if valtype(aRefs) != "A"
@@ -158,7 +199,7 @@ errorblock({|err|error2html(err)})
 		endif
 	next
 	tmp:id := ""
-	aadd(aRefs,{tmp:id,"","",tmp})
+	//aadd(aRefs,{tmp:id,"","",tmp})
 	for i=1 to len(aRefs)
 		arefs[i][2] := ""   // owner_id
 	next
@@ -173,9 +214,18 @@ errorblock({|err|error2html(err)})
 	if empty(urn)
 		urn := 'urn:'+sprname
 	endif
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns2,"")
-	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns2,"")
+
+	via_xml := iif (valtype(via_xml)=="L", via_xml, .f. )
+
+	if VIA_XML
+		cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns2,"")
+		?
+		cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns2,"")
+	else
+		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns2,"")
+		//cgi_putArefs2RdfLevels(aTree,oDep,0,urn,columns,"")
+	endif
+
 	? '</RDF:RDF>'
 ?
 return
@@ -190,7 +240,7 @@ static function parse_path_obj(oDep,path_obj,id)
 		path_obj := left(path_obj,len(path_obj)-1)
 	endif
 	paths := split(path_obj,",")
-	obj := codb_getValue(id)
+	obj := cgi_getValue(id)
 	for i=1 to len(paths)
 		if empty(paths[i])
 			loop
@@ -202,16 +252,16 @@ static function parse_path_obj(oDep,path_obj,id)
 			loop
 		endif
 		id := obj[ upper(paths[i]) ]
-		obj := codb_getValue(id)
+		obj := cgi_getValue(id)
 	next
-	aadd(aRefs,{id,"",{},codb_getValue(id)})
+	aadd(aRefs,{id,"",{},cgi_getValue(id)})
 return aRefs
 /************************************************/
 static function osb_aRefs(oDep,classDesc,columns,_query,find_wrap,Serr,includeAll)
 	local aRefs := {}
 	local i,m:={},data,account
 	if "ACCOUNT" $ _query
-		account := codb_getvalue(_query:account)
+		account := cgi_getValue(_query:account)
 	endif
 	if empty(account) .or. !("AN_VALUE1" $ account)
 		Serr := "Error: account not found !"
@@ -231,51 +281,3 @@ static function osb_aRefs(oDep,classDesc,columns,_query,find_wrap,Serr,includeAl
 	next
 	asize(columns,len(columns)-len(m))
 return aRefs
-/************************************************/
-static function putArefsToBind(aRefs,oDep,level,_queryArr,columns)
-	local s:=replicate("   ",level+1),col
-	local obj,i,j,k,oOut
-	if level==0 //len(arefs)==1
-		obj:=aRefs[1][4]
-		for j=1 to len(columns)
-			col := columns[j]
-			oOut := cgi_objDesc(obj,col)
-			? s+'<binding id="'+col:name+'"> <content>'
-			if m->bind_type=="span"
-				?? '<span>'
-				?? oOut:label
-				?? '</span>'
-			else
-				? '<xul:menuitem id="'+obj:id+'" label="'+oOut:label+'" />'
-			endif
-			?? '</content></binding>'
-		next
-		return
-	endif
-	if empty(m->bind_id)
-		? '<binding id="'+m->sprname+'">'
-	else
-		? '<binding id="'+m->bind_id+'">'
-	endif
-	? '<content>'
-	for i=1 to len(Arefs)
-		obj:=aRefs[i][4]
-		if m->bind_type == "span"
-			? s+'<'+m->sprname+' id="'+obj:id+'">'
-			for j=1 to len(columns)
-				col := columns[j]
-				? s+s+'<'+col:name+'>'
-				oOut := cgi_objDesc(obj,col)
-				?? oOut:label
-				?? s+'</'+col:name+'>'
-			next
-			? s+'</'+m->sprname+'>'
-		else
-			//oOut := cgi_objDesc(obj,columns[1])
-			? '<xul:menuitem id="'+obj:id+'" label="'+codb_essence(obj)+'" />'
-		endif
-	next
-	? '</content>'
-	? '</binding>'
-
-return

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>  
+
+<component>
+  <name>currency</name>
+  <version>1.0</version> 
+  <category>Base/Directories/Finance</category>
+  <description>Currency directory</description>
+  
+  <license>This component in released under the GNU/GPL License</license> 
+  
+  <created>2005-12-21</created> 
+  <modified>2006-01-16</modified> 
+  <author>
+  	<name>Andrey Cherepanov</name>
+	<email>support@eas.lrn.ru</email>
+	<copyright>2006</copyright>
+  </author>
+  <author>uri</author>
+  
+  <property name="policy">ru.Ru</property>
+  <property name="info">http://eas.lrn.ru/components/currency.xml</property>
+  <property name="download">http://eas.lrn.ru/components/currency.component</property>
+  <property name="documentation"><![CDATA[
+	This is documentation				 
+	on component currency
+					 ]]></property>
+  
+  <requires>
+  	<dependence type="component">forms</dependence>
+  </requires>
+  
+  <commands>
+    <plugin name="currency.po">
+      <command>getCourse</command>
+    </plugin>
+  </commands>
+  
+  <files>
+    <file name="create.xpm">Icon for create action</file>
+    <file name="edit.xpm">edit.xpm</file>
+    <file name="delete.xpm">delete.xpm</file>
+    <file form="list/currency" name="currency_list.xfl"></file>
+    <file form="object/currency" name="currency.xfl"></file>
+    <file name="currency.xpm">currency.xpm</file>
+  </files>
+  
+  <meta dictionary="ETC01">
+    <!-- Depositories -->
+    <depository name="ETC0101" />
+    
+    <!-- Attributes -->
+    <attribute name="name"  type="string" len="30" notNull="yes" notEmpty="yes">
+    	Currency name
+    </attribute>
+    <attribute name="ncode" type="string" len="3" />
+    <attribute name="code"  type="string" len="3" />
+
+    <!-- Indeces -->
+    <index name="ncode" expression="ncode" />
+    <index name="code" expression="code" />
+
+    <!-- Classes -->
+    <class name="currency" attributes="ncode,code,name" indices="ncode,code">
+    	Class for currencies
+    </class>
+  </meta>
+
+  <!-- Default data -->
+  <data>
+    <objects class="currency" depository="ETC0101">
+      <object>
+        <attr name="ncode">001</attr>
+        <attr name="code">USD</attr>
+        <attr name="name">Доллар США</attr>
+      </object>
+    </objects>
+  </data>
+  
+  <install> <!-- custom install actions -->
+  </install>
+  
+  <uninstall> <!-- custom uninstall actions -->
+  </uninstall>
+
+  <locale lang="ru">
+    <name>Валюты</name>
+    <description>Справочник валют</description>
+    <message id="Currency name">Название валюты</message>
+    <message id="Class for currencies">Валюты</message>
+  </locale>
+  
+</component>

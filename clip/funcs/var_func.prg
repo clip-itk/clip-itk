@@ -37,11 +37,11 @@ function xtoc( var,len,dec )
 	  case sw=="C"
 	   ret=var
 	  case sw=="D"
-	   if empty(var)
-		ret=space(10)
-	   else
-		ret=dtos(var)
-	   endif
+		if empty(var)
+			ret=space(10)
+		else
+			ret=dtos(var)
+		endif
 	  case sw=="L"
 	   ret=iif(var,"T","F") //iif(var,LANG_YES_CHAR,LANG_NO_CHAR)
 	  case sw=="N"
@@ -59,10 +59,10 @@ return ret
 
 ***************************************************************
 function readvar
-local s:=set("__readvar")
-if s==NIL
-   s=""
-endif
+	local s:=set("__readvar")
+	if s==NIL
+		s=""
+	endif
 return upper(s)
 
 ***************************************************************
@@ -175,63 +175,63 @@ return ret
 
 ****************************************************************************
 function funcname(pn)
-local str,i:=2 // i>1 начинаем не с функции, которая вызывает FUNCNAME()
+	local str,i := 2 // i>1 начинаем не с функции, которая вызывает FUNCNAME()
 		   // а с предыдущей
-do while .t.
-   str:=procname(i)
-   if empty(str)
-	  exit
-   endif
-   if str==pn
-	 return .t.
-   endif
-   i++
-enddo
+	pn := upper(pn)
+	do while .t.
+		str := procname(i)
+		if empty(str)
+			exit
+		endif
+		if str == pn
+			return .t.
+		endif
+		i++
+	enddo
 return .f.
 
 ****************************
-function stype
-parameters var
-Local objLocal,nLastHandler,error,ret_val:="U",prom
-nLastHandler:=ERRORBLOCK({|x|Break(x)})
-  Begin Sequence
-	ret_val=Type(var)
-  Recover Using error
-  End Sequence
-if ret_val="U"
-  Begin Sequence
-	 prom=&var
-  Recover Using error
-  End Sequence
-  ret_val=valtype(prom)
-endif
-ERRORBLOCK(nLastHandler)
+function stype(var)
+	Local objLocal,nLastHandler,error,ret_val:="U",prom
+	nLastHandler:=ERRORBLOCK({|x|Break(x)})
+
+	Begin Sequence
+		ret_val=Type(var)
+	Recover Using error
+	End Sequence
+	if ret_val="U"
+		Begin Sequence
+			prom=&var
+		Recover Using error
+		End Sequence
+		ret_val=valtype(prom)
+	endif
+	ERRORBLOCK(nLastHandler)
 return ret_val
 *****************************************************
-function slen
-parameters per
-local n:=0
-  do case
-	case stype(per)=="C"
-	n=len(&per)
-	case stype(per)=="D"
-	n=len(dtoc(&per))
-	case stype(per)=="N"
-	n=len(str(&per))
- endcase
+function slen(per)
+	local n:=0
+	do case
+		case stype(per)=="C"
+			n=len(&per)
+		case stype(per)=="D"
+			n=len(dtoc(&per))
+		case stype(per)=="N"
+		n=len(str(&per))
+	endcase
 return n
 
 **************************************
-func inlist
-local i,j,p,ret:=.f.
-p=param(1)
-j=pcount()
-for i=2 to j
-   if p==param(i)
-	ret=.t.
-	exit
-   endif
-next
+function inlist
+	local i,j,p,ret:=.f.
+	p=param(1)
+	j=pcount()
+	for i=2 to j
+		if p==param(i)
+			ret=.t.
+			exit
+		endif
+	next
 return ret
 
 **************************************

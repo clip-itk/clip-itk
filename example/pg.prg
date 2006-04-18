@@ -2,16 +2,19 @@
 #include "box.ch"
 #include "abox.ch"
 #include "pgch.ch"
+
+local x
+
 set color to 'w+/g+'
 clear screen
 //@ 0, 0 say '__B_SINGLE='+__B_SINGLE
 
 @ 1, 60 say "'"+chr(PGCH_HLINE)+chr(PGCH_LLCORNER)+chr(PGCH_LRCORNER);
 	+chr(PGCH_TTEE)+chr(PGCH_RTEE)+chr(PGCH_LTEE)+chr(PGCH_BTEE);
-        +chr(PGCH_ULCORNER)+chr(PGCH_URCORNER)+chr(PGCH_VLINE)+"'"
+	+chr(PGCH_ULCORNER)+chr(PGCH_URCORNER)+chr(PGCH_VLINE)+"'"
 @ 2, 60 say "'"+chr(PGCH_HLINE2)+chr(PGCH_LLCORNER2)+chr(PGCH_LRCORNER2);
 	+chr(PGCH_TTEE2)+chr(PGCH_RTEE2)+chr(PGCH_LTEE2)+chr(PGCH_BTEE2);
-        +chr(PGCH_ULCORNER2)+chr(PGCH_URCORNER2)+chr(PGCH_VLINE2)+"'"
+	+chr(PGCH_ULCORNER2)+chr(PGCH_URCORNER2)+chr(PGCH_VLINE2)+"'"
 
 @ 1, 0 say 'B_SINGLE='+B_SINGLE
 @ 2, 0 say 'B_DOUBLE='+B_DOUBLE

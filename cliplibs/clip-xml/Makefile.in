@@ -1,0 +1,94 @@
+# This is a part of CLIP-XML library
+#
+# Copyright (C) 2006 by E/AS Software Foundation
+# Author: Andrey Cherepanov <skull@eas.lrn.ru>
+#
+# Copyright (C) 2006 by ITK
+# Author: Alena <alena@itk.ru>
+#
+
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
+endif
+
+include $(CLIPROOT)/include/Makefile.inc
+
+CLIPINCLUDE = -I$(CLIPROOT)/include
+CLIP = $(CLIPROOT)/bin/clip
+
+.SUFFIXES: .prg .o .po
+
+COMPILER=gcc
+C_FLAGS=-Wall -g -I. -I$(CLIPROOT)/include -I/usr/include
+LIBS= -lexpat
+CC = $(COMPILER)
+CFLAGS  = $(C_FLAGS)
+
+
+XLIB=libclip-xml.a
+XSLIB=libclip-xml$(DLLSUFF)
+XSLIBREAL=libclip-xml$(DLLREALSUFF)
+
+XTARGETS=$(XLIB) $(XSLIB)
+
+SRC = expat.c
+OBJ = expat.o
+XLIBOBJS = $(OBJ)
+OBJS    = xmltag.o xmltree.o xpath.o
+
+HDRS	= clip-expat.ch
+HASHSRCS = $(SRC) $(HDRS)
+
+.PHONY: all clean uninstall distclean
+
+all: hash $(SRC) $(OBJS) $(XTARGETS)
+
+hash: _hashxml.h
+
+_hashxml.h: $(HASHSRCS)
+	$(CLIPROOT)/bin/clip_hashextract $(HASHSRCS) | sort -u > _hashxml.h
+	cmp _hashxml.h hashxml.h 2>/dev/null || cp _hashxml.h hashxml.h
+
+
+$(XLIB): $(XLIBOBJS)  $(OBJS)
+	rm -f $(XLIB)
+	$(CLIPROOT)/bin/clip_makelib $(XLIB) $(XLIBOBJS)  $(OBJS)
+	ranlib $(XLIB)
+
+$(XSLIB): $(XLIB)  $(OBJS)
+	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) $(XLIB) $(LIBS)  $(OBJS)
+
+
+install: all
+	$(CLIPROOT)/bin/clip_cp $(XLIB) $(XSLIB) $(DESTDIR)$(CLIPROOT)/lib
+	chmod 0644  $(DESTDIR)$(CLIPROOT)/lib/$(XLIB)
+	chmod 0755  $(DESTDIR)$(CLIPROOT)/lib/$(XSLIB)
+	cp clip-expat.ch $(DESTDIR)$(CLIPROOT)/include/
+	cp clip-expat.h $(DESTDIR)$(CLIPROOT)/include/
+	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-xml
+	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-xml/
+
+clean:
+	cd example && $(MAKE) clean
+	rm -rf Makefile *.o *.s *.b *.bak *.a *.so *.ex *.nm
+
+commit:
+	_cvs commit
+
+update:
+	_cvs update -dP
+
+ucommit:
+	_cvs update -dP && _cvs commit
+
+shell:
+	sh
+
+.prg.o:
+	$(CLIP) -wn $(CLIPINCLUDE) $<
+
+.c.o:
+	@echo $(CC) $(CDBGFLAGS) $(CFLAGS) -c $<
+	@$(CC) $(CDBGFLAGS) $(CFLAGS) $(XCFLAGS) -c $<
+
+

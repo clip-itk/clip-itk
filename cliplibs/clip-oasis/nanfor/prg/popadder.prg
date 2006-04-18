@@ -140,6 +140,7 @@
 #define B_DOUBLE 'ÉÍ»º¼ÍÈº '
 #define B_SINGLE 'ÚÄ¿³ÙÄÀ³ '
 
+#undef CRLF
 #define CRLF CHR(13)+CHR(10)
 #define nTotTran LEN(aTrans)
 

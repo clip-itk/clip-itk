@@ -6,7 +6,7 @@
 /* install procedure all CODB dictionaries and default data objects */
 //#include "codbcfg.ch"
 
-local dList,ret,ret2
+local ret,ret2
 local xmlData,i,j,d,s:=""
 local fName,fBlock,err,pClass
 local fList,mdir,mdirs:={"data","data1","data2","data3","data4","data5","data6"}
@@ -32,9 +32,9 @@ local fList,mdir,mdirs:={"data","data1","data2","data3","data4","data5","data6"}
 	set optimize on
 	set optimize level to 2
 
-	dList:=codbList():new()
-	if val(dList:error)!=0
-		? [Error open dictionary list!]+":"+dList:error
+	ret := __openDicts()
+	if !empty(ret)
+		? [Error open dictionary list!]+":",ret
 		?
 		return
 	endif
@@ -189,4 +189,25 @@ static function install_default_data_with_script(oModule)
 
 return ret
 
+*********************************************
+static function __openDicts()
+	local i,j,ret := ""
+	local dictList := {}
+	local dictId, odicts := {}
 
+	dictList := codb_dictList()
+	if empty(dictList)
+		ret := [dictionary list is empty]
+		return ret
+	endif
+	for i=1 to len(dictList)
+		dictId := dictList[i]
+		aadd(oDicts,NIL)
+		oDicts[i] := coDictionary():new(dictId)
+		if !empty(oDicts[i]:error)
+			ret +=  oDicts[i]:error
+			oDicts[i]:=NIL
+			loop
+		endif
+	next
+return ret

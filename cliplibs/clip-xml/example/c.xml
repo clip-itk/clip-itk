@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component a="aa" b="bbb" c="ccccc">&amp;&amp;text, (текст в UTF-8) <br /><![CDATA[cdata <xml>]]>
+<!-- This is my comment. Simple, simple comment --><badtag>
+</component>

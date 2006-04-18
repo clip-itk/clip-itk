@@ -32,7 +32,7 @@ clip_GTK_STYLECOPY(ClipMachine * cm)
 {
         ClipVar      *cs = _clip_spar(cm, 1);
         ClipVar  *cstyle = RETPTR(cm);
-	GtkStyle *style, *newstyle;
+	GtkStyle *style = 0, *newstyle;
 
         CHECKARG(1, MAP_t);
         _map_to_style(cm, cs, style);
@@ -50,7 +50,7 @@ clip_GTK_STYLEATTACH(ClipMachine * cm)
         ClipVar     *cs = _clip_spar(cm, 1);
         C_widget  *cwin = _fetch_cwidget(cm, _clip_spar(cm, 2));
         ClipVar *cstyle = RETPTR(cm);
-	GtkStyle *style, *newstyle;
+	GtkStyle *style = 0, *newstyle;
 
         CHECKARG(1, MAP_t);
         CHECKCWID(cwin, GTK_IS_WINDOW);
@@ -67,7 +67,7 @@ int
 clip_GTK_STYLEDETACH(ClipMachine * cm)
 {
         ClipVar     *cs = _clip_spar(cm, 1);
-	GtkStyle *style;
+        GtkStyle *style = 0;
 
         CHECKARG(1, MAP_t);
         _map_to_style(cm, cs, style);
@@ -84,7 +84,7 @@ clip_GTK_STYLESETBACKGROUND(ClipMachine * cm)
         ClipVar     *cs = _clip_spar(cm, 1);
         C_widget  *cwin = _fetch_cwidget(cm, _clip_spar(cm, 2));
         GtkStateType  t = _clip_parni(cm, 3);
-	GtkStyle *style;
+        GtkStyle *style = 0;
 
         CHECKARG(1, MAP_t);
         CHECKCWID(cwin, GTK_IS_WINDOW);
@@ -110,7 +110,7 @@ clip_GTK_STYLEAPPLYDEFAULTBACKGROUND(ClipMachine * cm)
         gint          y = _clip_parni(cm, 7);
         gint      width = _clip_parni(cm, 8);
         gint     height = _clip_parni(cm, 9);
-	GtkStyle *style;
+        GtkStyle *style = 0;
         GdkRectangle rect;
 
         CHECKARG(1, MAP_t);

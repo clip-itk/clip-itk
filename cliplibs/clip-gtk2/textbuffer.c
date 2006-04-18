@@ -89,12 +89,12 @@ _tag_set_property(ClipMachine * cm, gint p,  GtkTextTag *tag, const gchar * pnam
 	case HASH_background_gdk:
 	case HASH_foreground_gdk:
 		CHECKARG(p, MAP_t);
-		g_object_set(G_OBJECT(tag), pname,  (GdkColor *)((_fetch_cobject(cm, _clip_par(cm, p)))->object)); break;
+		g_object_set(G_OBJECT(tag), pname,  (GdkColor *)((_fetch_cobject(cm, _clip_par(cm, p)))->object), NULL); break;
 	case HASH_background_stipple:
 	case HASH_foreground_stipple:
 		co = _fetch_cobject(cm, _clip_par(cm, p));
 		CHECKARG(p, MAP_t); CHECKCOBJ(co, GDK_IS_PIXMAP(co->object));
-		g_object_set(G_OBJECT(tag), pname, GDK_PIXMAP(co->object)); break;
+		g_object_set(G_OBJECT(tag), pname, GDK_PIXMAP(co->object), NULL); break;
 	case HASH_font_desc:
 	/*            PangoFontDescription : Read / Write */ break;
 	case HASH_style:
@@ -477,7 +477,8 @@ clip_GTK_TEXTBUFFERINSERTWITHTAGS(ClipMachine * cm)
 		tags[0],  tags[1],  tags[2],  tags[3],  tags[4],
 		tags[5],  tags[6],  tags[7],  tags[8],  tags[9],
 		tags[10], tags[11], tags[12], tags[13], tags[14],
-		tags[15], tags[16], tags[17], tags[18], tags[19]);
+		tags[15], tags[16], tags[17], tags[18], tags[19],
+		NULL);
 	FREE_TEXT(buf);
 	return 0;
 err:
@@ -523,7 +524,8 @@ clip_GTK_TEXTBUFFERINSERTWITHTAGSBYNAME(ClipMachine * cm)
 		tags[0],  tags[1],  tags[2],  tags[3],  tags[4],
 		tags[5],  tags[6],  tags[7],  tags[8],  tags[9],
 		tags[10], tags[11], tags[12], tags[13], tags[14],
-		tags[15], tags[16], tags[17], tags[18], tags[19]);
+		tags[15], tags[16], tags[17], tags[18], tags[19],
+		NULL);
 	FREE_TEXT(buf);
 	return 0;
 err:
@@ -1478,7 +1480,7 @@ clip_GTK_TEXTBUFFERCOPYCLIPBOARD(ClipMachine * cm)
 {
 	C_object       *cbuffer = _fetch_co_arg(cm);
 	ClipVar    *cvclipboard = _clip_par(cm, 2);
-	GtkClipboard *clipboard ;
+	GtkClipboard *clipboard = 0;
 	C_object    *cclipboard ;
 
 
@@ -1508,7 +1510,7 @@ clip_GTK_TEXTBUFFERCUTCLIPBOARD(ClipMachine * cm)
 	C_object       *cbuffer = _fetch_co_arg(cm);
 	ClipVar    *cvclipboard = _clip_par(cm, 2);
 	gboolean       editable = BOOL_OPTION(cm, 3, 1);
-	GtkClipboard *clipboard ;
+	GtkClipboard *clipboard = 0;
 	C_object    *cclipboard ;
 
 
@@ -1612,7 +1614,7 @@ clip_GTK_TEXTBUFFERADDSELECTIONCLIPBOARD(ClipMachine * cm)
 {
 	C_object       *cbuffer = _fetch_co_arg(cm);
 	ClipVar    *cvclipboard = _clip_par(cm, 2);
-	GtkClipboard *clipboard ;
+	GtkClipboard *clipboard = 0;
 	C_object    *cclipboard ;
 
 
@@ -1641,7 +1643,7 @@ clip_GTK_TEXTBUFFERREMOVESELECTIONCLIPBOARD(ClipMachine * cm)
 {
 	C_object       *cbuffer = _fetch_co_arg(cm);
 	ClipVar    *cvclipboard = _clip_par(cm, 2);
-	GtkClipboard *clipboard ;
+	GtkClipboard *clipboard = 0;
 	C_object    *cclipboard ;
 
 

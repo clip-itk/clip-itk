@@ -197,7 +197,7 @@ return obj
 
 *******************************************************************************
 static function trans(str, all)
-local newstr, l, i, j
+local newstr, l, i, j, s
 	newstr := ""
 	all := iif(all==NIL, .t., all)
 
@@ -266,7 +266,7 @@ return newstr
 
 *******************************************************************************
 static function writeClassDesc(fname, fsgml, fs, lang, ab_met)
-local i, j, a, str, lStr, arr, lf
+local i, j, a, str, lStr, arr, lf, val
 
 	qout( "Write to: "+fname+" function:"+fs:CLASSNAME)
 
@@ -634,7 +634,7 @@ return 1
 
 *******************************************************************************
 static function parseArguments(fsrc, fsx, alang, nMet)
-local str, s, lang:="EN", argname, argdesc:="", x, fs
+local str, s, lang:="EN", argname, argdesc:="", x, fs, lCls
 	lCls := iif(nMet == NIL, .t., .f.)
 	do while !fileeof(fsrc)
 		str := alltrim(filegetstr(fsrc))

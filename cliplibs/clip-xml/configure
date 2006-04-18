@@ -1,0 +1,53 @@
+#!/bin/sh
+
+exitf()
+{
+	rm -f test_expat.c test_expat
+	exit $1
+}
+
+cp Makefile.empty Makefile
+cat <<EOF >test_expat.c
+
+#include <stdio.h>
+#include "expat.h"
+
+static void
+startElement(void *userData, const char *name, const char **atts)
+{
+}
+
+static void
+endElement(void *userData, const char *name)
+{
+}
+
+int
+main(int argc, char *argv[])
+{
+  char buf[BUFSIZ];
+  XML_Parser parser = XML_ParserCreate(NULL);
+  int done;
+  int depth = 0;
+  XML_SetUserData(parser, &depth);
+  XML_SetElementHandler(parser, startElement, endElement);
+  done = XML_STATUS_ERROR;
+  XML_ParserFree(parser);
+  return 0;
+}
+
+EOF
+
+EXPAT_EXIST=''
+
+gcc -o test_expat test_expat.c -I/usr/include -lexpat >/dev/null 2>&1 && EXPAT_EXIST="yes"]
+
+if [ -z $EXPAT_EXIST ]
+then
+	echo "Warning: package expat-dev not installed or have old version"
+	exitf 1
+fi
+
+cp Makefile.in Makefile
+
+exitf 0

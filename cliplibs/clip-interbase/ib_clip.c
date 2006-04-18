@@ -1,5 +1,8 @@
 /*
 	$Log: ib_clip.c,v $
+	Revision 1.22  2006/03/23 10:41:06  clip
+	rust: BLOB functions for PG (thanks Slava Zanko <slavaz@cis.by>)
+	
 	Revision 1.21  2005/12/15 15:32:54  clip
 	rust: GCC 4 fix
 	
@@ -215,7 +218,18 @@ static SQLVTBL vtbl =
 	ib_start,
 	ib_commit,
 	ib_rollback,
-	ib_fetch
+	ib_fetch,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
+
 };
 
 int clip_INIT_FIREBIRD(ClipMachine* mp)

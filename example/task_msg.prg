@@ -1,4 +1,4 @@
-local id1, id2
+local i,id1, id2
 
 id1:=start("f1")
 id2:=start("f2")

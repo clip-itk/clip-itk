@@ -8,6 +8,8 @@
 #define LF CHR(10)
 #define CHUNKSIZE 1024
 
+memvar ep
+
 PROCEDURE Main
 	LOCAL srcfile := NIL
 	LOCAL cfgfile := NIL
@@ -16,7 +18,7 @@ PROCEDURE Main
 	LOCAL login := NIL
 	LOCAL passwd := NIL
 	LOCAL dbname := NIL
-	LOCAL c
+	LOCAL c,e
 	LOCAL cfg
 	LOCAL lines
 	LOCAL comments := ARRAY(0)

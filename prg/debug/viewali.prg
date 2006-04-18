@@ -186,7 +186,7 @@ static function window_redrawCard()
 return
 ************************************************
 static function window_redrawCard1(n)
-	local i,k
+	local i,k,s
 	s:=::__data[n]
 	if empty(s)
 		return
@@ -248,7 +248,7 @@ static function window_redrawCard6(n)
 return
 ************************************************
 static function window_redraw()
-	local i,oldwin:=wselect()
+	local i,x,oldwin:=wselect()
 	dispbegin()
 	wselect(::winNo)
 	setcolor(::color)
@@ -410,7 +410,7 @@ return
 
 *********************************************
 static function get_data(n, browse)
-       ret:=NIL
+       local ret:=NIL
        if browse:curr_record<=len(browse:data) .and. browse:curr_record>0
 	  ret=browse:data[browse:curr_record][n]
        endif

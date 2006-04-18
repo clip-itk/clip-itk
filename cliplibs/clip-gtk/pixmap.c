@@ -295,12 +295,12 @@ clip_GDK_PIXMAPFROMBMPNEW(ClipMachine * cm)
 	GtkWidget *wid = NULL;
 	C_widget *cwid;
 	GdkBitmap *mask;
-	GdkPixmap *pixmap;
+	GdkPixmap *pixmap = 0;
 	GdkWindow *win = NULL;
 	GdkColormap *colormap = NULL;
 	gchar * * xpmdata;
-	int ncolors;
-	unsigned long rows,cols;
+	int ncolors = 0;
+	unsigned long rows = 0,cols = 0;
 	CHECKOPT(1,MAP_t);
 	CHECKOPT(2,CHARACTER_t);
 	CHECKOPT2(3,MAP_t,NUMERIC_t); CHECKCWIDOPT(cwin,GTK_IS_WIDGET);

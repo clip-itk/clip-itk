@@ -76,10 +76,21 @@ local urn:="", xslt:="", host:="", total:="", union:=""
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
+/*
 	if !empty(connect_data)
 		beg_date := connect_data:beg_date
 		end_date := connect_data:end_date
 	endif
+*/
+
+
+	if "ACC01" $ _query .and. !empty(_query:acc01)
+	    set("ACC01",_query:acc01)
+	endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+    	    set("ACC00",_query:acc00)
+        endif
+							  
 
 
 	if empty(beg_date) .or. empty(end_date) .or. empty(account)
@@ -107,7 +118,7 @@ local urn:="", xslt:="", host:="", total:="", union:=""
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 //		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -124,8 +135,8 @@ local urn:="", xslt:="", host:="", total:="", union:=""
 		//? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
 		? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 		? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-		? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
-		//? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
+		? '<RDF:account>'+cgi_essence(account)+'</RDF:account>'
+		? '<RDF:an_value>'+cgi_essence(an_values[1])+'</RDF:an_value>'
 
 		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
 		asort(an_data,,,{|x,y| x:essence <= y:essence })
@@ -144,9 +155,9 @@ local urn:="", xslt:="", host:="", total:="", union:=""
 	return
 ******************************
 function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
-	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode
+	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode,essenc
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
-	acc := codb_getValue(account)
+	acc := cgi_getValue(account)
 	//? acc
 	if !empty(acc)
 		if s $ acc .and. !empty(acc[s])
@@ -182,24 +193,32 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		? '	DOCUM:union="'+tmp:union+'"'
 		? '	DOCUM:beg_date="'+dtoc(beg_date)+'"'
 		? '	DOCUM:end_date="'+dtoc(end_date)+'"'
-		acccode:=split(codb_essence(account),":")[1]
+			acccode:=split(cgi_essence(account),":")[1]
 		? '	DOCUM:acccode="'+acccode+'"'
-		? '	DOCUM:account="'+codb_essence(account)+'"'
-		? '	DOCUM:sort_account="'+codb_essence(account)+'"'
+		? '	DOCUM:account="'+cgi_essence(account)+'"'
+		? '	DOCUM:sort_account="'+cgi_essence(account)+'"'
 		? '	DOCUM:ref_account="'+account+'"'
-		? '	DOCUM:account_name="'+tmp:essence+'"'
+		     essenc := tmp:essence
+		     essenc := strtran(essenc,'&',"&amp;")
+		     essenc := strtran(essenc,'"','&quot;')
+		     essenc := strtran(essenc,"'","&apos;")
+		     essenc := strtran(essenc,'<',"&lt;")
+		     essenc := strtran(essenc,'>',"&gt;")
+		? '     DOCUM:account_name="'+essenc+'"'
 		? ' 	DOCUM:an_value.id="'+tmp:an_value+'"'
 
 		k := split(tmp:tcols,'"  ')
 		for j=1 to len(k)
-			//? '	DOCUM:an_value.'+alltrim(k[j])+iif(j==len(k),'','"')
+
 			ss := ""
 			if "="$alltrim(k[j])
 				ss +="DOCUM:rfl."+alltrim(k[j])+iif(j==len(k),'','"')
 			else
-				ss+=alltrim(k[j])+iif(j==len(k),'','"')
+				ss +=alltrim(k[j])+iif(j==len(k),'','"')
 			endif
+
 			?? " "+	ss
+
 		next
 
 		? '	DOCUM:bd_summa="'+bal_summa(tmp:bd_summa)+'"'

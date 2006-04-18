@@ -2,7 +2,7 @@ ifdef CLIPROOT
 include $(CLIPROOT)/include/Makefile.inc
 endif
 CLIP	= $(CLIPROOT)/bin/clip
-CLIPFLAGS = -s -l
+CLIPFLAGS = -s -l -w
 
 all:		clip_hindex$(EXESUFF) clip_hseek$(EXESUFF)
 install:	all

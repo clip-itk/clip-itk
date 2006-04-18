@@ -36,7 +36,7 @@ META data may be: group,user,attr,class,extent,deposit
 		{"OBJECT_ID"    ,"C",CODB_ID_LEN ,0}, ;
 		{"CLASS_ID"     ,"C",CODB_ID_LEN ,0}, ;
 		{"EXTENT_ID"    ,"C",CODB_ID_LEN ,0} ;
-                }
+		}
 
 #define CODB_EXTENT_STRUCTURE { ;
 		{"OBJECT_ID"    ,"C",CODB_ID_LEN ,0}, ;
@@ -114,7 +114,10 @@ META data may be: group,user,attr,class,extent,deposit
 		{"LOG_NEED"  ,"L",1            ,0,CODB_LENTYPE_NONE,.f.},;
 		{"HAVE_COUNTERS","L",1         ,0,CODB_LENTYPE_NONE,.f.},;
 		{"ATTR_LIST" ,"A",0            ,0,0		    ,{}},;
-		{"IDX_LIST"  ,"A",0            ,0,0		    ,{}};
+		{"IDX_LIST"  ,"A",0            ,0,0		    ,{}},;
+		{"IDX_MAIN"  ,"C",0            ,0,CODB_LENTYPE_NONE ,""},;
+		{"TCOL_LIST" ,"A",0            ,0,0		    ,{}},;
+		{"ATTR_FIND" ,"A",0            ,0,0		    ,{}};
 		}
 
 #define CODB_TVIEW_BODY { ;

@@ -183,6 +183,7 @@ static function command_Quit()
 return ret
 ************************************************
 static function command_listWin(x)
+	local scr,y,m
 	if x==NIL
 		dispbegin()
 		wopen(0,0,::maxrow,::maxcol,.f.)
@@ -261,7 +262,7 @@ static function command_Restart()
 return .t.
 ************************************************
 static function command_Connect(_pid)
-	local i,x,pid,in:=space(0), mp:={}
+	local i,x,scr,pid,in:=space(0), mp:={}
 #ifdef __UNIX__
 	syscmd("ps x","",@in)
 	mp:=split(in,"&\n")
@@ -395,7 +396,7 @@ static function command_macro(str,flag)
 return ret
 ************************************************
 function dbg_viewvar(vname,level,p,flag)
-	local ret,i,m:={},mv:={},t:=valtype(p)
+	local ret,i,iii,h,m:={},mv:={},t:=valtype(p)
 	local curWin:=wselect(), curPos:=1
 	flag:=iif(flag==NIL,.t.,flag)
 	do case
@@ -899,7 +900,7 @@ return .t.
 
 ************************************************
 static function command_addTP(vstr)
-	local n
+	local n,sss
 	if empty(vstr)
 	   ::command:put([error:invalid parameter <expr>])
 	   return
@@ -1113,7 +1114,7 @@ static function command_run(str,add_flag)
 					enddo
 				case mcom==2
 					while len(::tracePoints)>0
-						::addTP(::tracePoints[i])
+						::addTP(::tracePoints[1])
 					enddo
 				case mcom==3
 					::values:deleteAll()
@@ -1552,7 +1553,7 @@ return ret
 ************************************************
 static function dbg_command(p1,p2,p3,p4)
 	local scr,ret:="",s,oldcol:=setcolor("W+/R"), col:=col(), row:=row()
-	local olderror
+	local olderror, _error
 	if ::dbgconnect==NIL
 		::command:put([No connection !])
 	else

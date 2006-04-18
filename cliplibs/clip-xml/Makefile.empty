@@ -1,0 +1,11 @@
+SSSS = "Warning: package expat-dev not installed"
+
+all:
+	echo $(SSSS)
+
+install:
+	echo $(SSSS)
+
+clean:
+	rm -rf Makefile *.o *.s *.b *.bak *.a *.so *.ex *.nm
+	echo $(SSSS)

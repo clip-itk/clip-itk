@@ -3,7 +3,7 @@
 function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
 	local oDict,an_info,an_balance,osb_class,anb_list:=map()
 	local as,as1,s:="",s0,s1,s2,obj,aObj,tObj,tmp,data:={}
-	local i,j,k,x,y,z,itogCel,aOst:={}
+	local i,j,k,kk,x,y,z,itogCel,aOst:={},typeval,essvalue
 	local max_date,min_date,variants:={},nFilled, call_an := .f.
 	local an_obj,class,cId,tmpDict,tcol,tcol_list,err
 	local classes:=map(), tCols := map()
@@ -52,6 +52,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		//s2:= '.and. beg_date>=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
 		s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
 		//s2:= '.and. beg_date>=stod("'+dtos(beg_date)+'") '
+	//s2:=""
 		s1:= '.and. an_level=='+alltrim(str(an_level,2,0))+' '
 		tmp:=oDep:select(an_info:id,,,s+s1+s2)
 		//outlog(__FILE__,__LINE__,s+s1+s2,tmp)
@@ -64,6 +65,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 				outlog("Error: can`t load object:",tmp[i])
 				loop
 			endif
+			//outlog("an_info",i,tmp[i],obj:an_value,obj:beg_date,obj:end_date,obj:accpost_list)
 			anb_list[obj:an_value] := obj:an_value
 		next
 	else
@@ -77,16 +79,17 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 	//outlog("anb_list=",anb_list)
 	//outlog("an_values=",an_values)
 
-	variants := calc_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
-	/*
+	variants := r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
+    /*
+	outlog("var_params=",account,an_level,beg_date,end_date,an_values,anb_list)
 	outlog("variants =",len(variants),variants)
 	for i=1 to len(variants)
 		outlog("variant",i,variants[i])
 	next
-	*/
+    */
 
 	for i=1 to len(variants)
-		j := calc_summ(oDep,an_balance,account,iif(call_an,an_level,2),beg_date,end_date,variants[i])
+		j := r2d2_calc_an_summ(oDep,an_balance,account,iif(call_an,an_level,2),beg_date,end_date,variants[i])
 		//outlog("variant",i,variants[i])
 		//outlog("summ=",j)
 		aadd(aOst,j)
@@ -105,7 +108,9 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		aObj:tCols := ""
 		aObj:essence := anb_list[i]
 		aObj:union := ""
-		an_obj := codb_getValue(anb_list[i])
+		aObj:attr := ""		
+		aObj:esse := ""				
+		an_obj := cgi_getValue(anb_list[i])
 		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		if empty(an_obj)
 //			cgi_xml_error( "Object not readable:"+anb_list[i] )
@@ -147,14 +152,16 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			endif
 		endif
 		if empty(class)
-			aObj:essence  := codb_essence(anb_list[i])
+			aObj:essence  := cgi_essence(anb_list[i])
 		elseif "TCOL_LIST" $ class
 			aObj:essence  := class:essence(an_obj)
 			for j=1 to len(class:tcol_list)
 				tCol := NIL; k:=""
+				
 				if class:tcol_list[j] $ tCols
 					tCol := tCols[class:tcol_list[j]]
 				endif
+
 				err := errorBlock({|oErr|break(oErr)})
 				begin sequence
 					if "EXPR_BLOCK" $ tCol
@@ -169,7 +176,36 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 				end sequence
 				errorBlock(err)
 				if !empty(k)
-					aObj:tCols += ' '+class:tcol_list[j]+'="'+alltrim(toString(k))+'" '
+				kk:=""
+//*--------------------------------		
+
+					typeval := valtype(an_obj[upper(class:tcol_list[j])])		
+					essvalue:= an_obj[upper(class:tcol_list[j])]
+//outlog( class:tcol_list[j] ,k, essvalue )					    					
+					if typeval=="L"
+					    essvalue:=iif(essvalue,'true','false')
+					    kk:=toString(k)
+					elseif  typeval=="D"
+					    essvalue:=iif(empty(essvalue),"''","'"+dtos(essvalue)+"'")
+					    KK:=toString(k)
+					elseif  typeval=="N"
+					    kk:=bal_summa(essvalue)					
+					    essvalue:="'"+bal_summa(essvalue)+"'"
+					else
+					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
+					    essvalue:=strtran(essvalue,"'","\'")
+					    essvalue:=strtran(essvalue,'"','\"')
+					    essvalue:=iif(len(essvalue)==0,' ',essvalue)
+					    essvalue:="'"+essvalue+"'"
+					    kk:=alltrim(toString(k))
+					    kk:=strtran(kk,"'","\'")
+					    kk:=strtran(kk,'"','\"')
+					    
+					endif 
+//outlog( class:tcol_list[j] ,kk, essvalue )		
+					aObj:esse  += class:tcol_list[j]+":"+essvalue+', '
+					aObj:attr  += class:tcol_list[j]+":'"+kk+"',  "
+					aObj:tCols += ' '+class:tcol_list[j]+'="'+alltrim(toString(k))+'" ' 
 				endif
 				if !empty(k) .and. union==class:tcol_list[j]
 					aObj:union := k
@@ -178,6 +214,11 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		else
 			aObj:essence  := class:essence(an_obj)
 		endif
+		
+//outlog(aObj:esse)			    												
+//outlog(aObj:attr)			    												
+		
+		
 		aObj:bd_summa := 0
 		aObj:bk_summa := 0
 		aObj:od_summa := 0
@@ -284,7 +325,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 return data
 
 **********************************
-static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
+function r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
 	local ret :={},ret2:={},lExit := .f.,m1:={}
 	local oDict,an_info_full
 	local tmp,i,j,k,s,s1,s2,s3
@@ -432,7 +473,7 @@ static function calc_variants(oDep,account,an_level,beg_date,end_date,an_values,
 	//outlog(__FILE__,__LINE__,len(ret2),ret2)
 return ret2
 ************************************
-static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,variant)
+function r2d2_calc_an_summ(oDep,an_balance,account,an_level,beg_date,end_date,variant)
 	local ret:=map()
 	local s,s1,s2,as1
 	local i,j,k,y,z:=.f.
@@ -511,6 +552,7 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 			min_date := tobj:odate
 		endif
 		if tobj:odate > max_date
+			//outlog(__FILE__,__LINE__,tobj:odate, max_date)
 			ret:ed_summa := tobj:ed_summa
 			ret:ek_summa := tobj:ek_summa
 			ret:end_num  := tobj:ed_quantity
@@ -528,10 +570,54 @@ static function calc_summ(oDep,an_balance,account,an_level,beg_date,end_date,var
 				ret:unit_num  := tobj:unit
 			endif
 		endif
+		//outlog(__FILE__,__LINE__,ret)
 		//outlog(__FILE__,__LINE__,an_balance:name,tmp[j],tObj)
 		for k=1 to len(tobj:accpost_list)
 			aadd(ret:accpost_list,tobj:accpost_list[k])
 		next
 	next
+return ret
+************************************
+function r2d2_amLastValue(oDep,_account,variant)
+	local ret := 0.00
+	local i, s := "", as1, tmp, obj
+	local oDict, oDep02, oDict02
+	local acc_chart,balance
+	local account := ""
+
+	oDict := oDep:dictionary()
+	balance := oDict:classBodyByName("am_balance")
+	if empty(balance)
+		outlog(__FILE__,__LINE__,"Error: class AM_BALANCE not found")
+		return ret
+	endif
+
+	oDep02 := codb_dep_reference("GBL0201")
+	tmp := oDep02:getValue(_account)
+	if !empty(tmp)
+		account := _account
+	else
+		account := oDep02:id4primaryKey("acc_chart","code",_account)
+	endif
+	if empty(account)
+		return ret
+	endif
+
+	********
+	for i=len(variant) to 1 step -1
+		as1:="AN_VALUE"+alltrim(str(i,2,0))
+		s+=as1+'=="'+variant[i]+'" .and. '
+	next
+
+	s += ' account="'+account+'" '
+	tmp := oDep:select(balance:id,1,,s,-1)
+
+	if empty(tmp)
+		return ret
+	endif
+
+	obj := oDep:getValue(tmp[1])
+	ret := obj:ed_summa - obj:ek_summa
+
 return ret
 

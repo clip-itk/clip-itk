@@ -31,7 +31,7 @@ distclean: clean
 dist: distclean
 
 driver-gtk.po: driver-gtk.prg
-	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk -n -p driver-gtk.prg || exit 0
+	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk -nw -p driver-gtk.prg || exit 0
 
 driver-gtk2.po: driver-gtk2.prg
-	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk2 -n -p driver-gtk2.prg || exit 0
+	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk2 -nw -p driver-gtk2.prg || exit 0

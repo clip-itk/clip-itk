@@ -234,9 +234,9 @@ gdImagePtr gdImageCreateFromGd2Ctx(gdIOCtxPtr in)
 	t_chunk_info *chunkIdx = NULL; /* So we can gdFree it with impunity. */
 	char	*chunkBuf = NULL; /* So we can gdFree it with impunity. */
 	int	chunkNum = 0;
-	int	chunkMax;
+	int	chunkMax = 0;
 	uLongf 	chunkLen;
-	int	chunkPos;
+	int	chunkPos = 0;
 	int 	compMax;
 	char	*compBuf = NULL; /* So we can gdFree it with impunity. */
 
@@ -374,9 +374,9 @@ gdImagePtr gdImageCreateFromGd2PartCtx(gdIOCtx *in, int srcx, int srcy, int w, i
         t_chunk_info *chunkIdx = NULL;
         char    *chunkBuf = NULL;
         int     chunkNum;
-        int     chunkMax;
+        int     chunkMax = 0;
         uLongf  chunkLen;
-        int     chunkPos;
+        int     chunkPos = 0;
         int     compMax;
         char    *compBuf = NULL;
 
@@ -565,11 +565,11 @@ static void _gdImageGd2(gdImagePtr im, gdIOCtx *out, int cs, int fmt)
         char    *chunkData = NULL; /* So we can gdFree it with impunity. */
         char    *compData = NULL; /* So we can gdFree it with impunity. */
         uLongf  compLen;
-        int     idxPos;
+        int     idxPos = 0;
         int     idxSize;
         t_chunk_info     *chunkIdx = NULL;
         int     posSave;
-	int	compMax;
+        int     compMax = 0;
 
         /*printf("Trying to write GD2 file\n"); */
 

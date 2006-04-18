@@ -113,7 +113,7 @@ clip_GTK_TREEVIEWCOLUMNNEWWITHATTRIBUTES(ClipMachine * cm)
         	attrs[28],  attrn[28],  attrs[29], attrn[29],
         	attrs[30],  attrn[30],  attrs[31], attrn[31],
         	attrs[32],  attrn[32],  attrs[33], attrn[33],
-        	attrs[34],  attrn[34]);
+        	attrs[34],  attrn[34],  NULL,      NULL);
 
 	FREE_TEXT(title);
 
@@ -249,7 +249,7 @@ clip_GTK_TREEVIEWCOLUMNSETATTRIBUTES(ClipMachine * cm)
         	attrs[28],  attrn[28],  attrs[29], attrn[29],
         	attrs[30],  attrn[30],  attrs[31], attrn[31],
         	attrs[32],  attrn[32],  attrs[33], attrn[33],
-        	attrs[34],  attrn[34]);
+        	attrs[34],  attrn[34],  NULL,      NULL);
 
 
 	return 0;
@@ -383,7 +383,7 @@ clip_GTK_TREEVIEWCOLUMNSETSIZING(ClipMachine * cm)
 {
         C_object *ccolumn   = _fetch_co_arg(cm);
         gint s   = _clip_parni(cm, 2);
-        GtkTreeViewColumnSizing sizing;
+        GtkTreeViewColumnSizing sizing = 0;
 
 	CHECKARG2(1,MAP_t, NUMERIC_t); CHECKCOBJOPT(ccolumn, GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
         CHECKARG(2, NUMERIC_t);
@@ -845,8 +845,8 @@ int
 clip_GTK_TREEVIEWCOLUMNCELLGETSIZE(ClipMachine * cm)
 {
         C_object *ccolumn   = _fetch_co_arg(cm);
-        GdkRectangle *rect;
-	gint x_offset;
+        GdkRectangle *rect = 0;
+        gint x_offset;
         gint y_offset;
         gint width;
         gint height;

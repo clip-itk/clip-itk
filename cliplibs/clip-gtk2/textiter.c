@@ -374,7 +374,7 @@ clip_GTK_TEXTITERGETMARKS(ClipMachine * cm)
 {
         C_object       *citer = _fetch_co_arg(cm);
         GSList         *marks ;
-        ClipVar           *mk ;
+        ClipVar           *mk = 0;
         long                n ;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(citer, GTK_IS_TEXT_ITER(citer));
@@ -421,7 +421,7 @@ clip_GTK_TEXTITERGETTOGGLEDTAGS(ClipMachine * cm)
         C_object       *citer = _fetch_co_arg(cm);
         gboolean      toggled = BOOL_OPTION(cm, 2, 1);
         GSList          *tags ;
-        ClipVar           *mk ;
+        ClipVar           *mk = 0;
         long                n ;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(citer, GTK_IS_TEXT_ITER(citer));
@@ -581,7 +581,7 @@ clip_GTK_TEXTITERGETTAGS(ClipMachine * cm)
 {
         C_object       *citer = _fetch_co_arg(cm);
         GSList          *tags ;
-        ClipVar           *mk ;
+        ClipVar           *mk = 0;
         long                n ;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(citer, GTK_IS_TEXT_ITER(citer));
@@ -883,8 +883,8 @@ int
 clip_GTK_TEXTITERGETATTRIBUTES(ClipMachine * cm)
 {
         C_object       *citer = _fetch_co_arg(cm);
-        ClipVar	     *cvattrs ;
-        C_object      *cattrs ;
+        ClipVar	     *cvattrs = 0;
+        C_object      *cattrs = 0;
         gint              ret ;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(citer, GTK_IS_TEXT_ITER(citer));

@@ -5,7 +5,7 @@
 */
 #include "set.ch"
 
-local par := {}, scr, color
+local i, par := {}, scr, color
 
 set translate off
 

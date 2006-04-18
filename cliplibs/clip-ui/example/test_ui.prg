@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
+/*									   */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -19,11 +19,11 @@ static childToolbar
 static timer, tbState, iteration
 
 /* Declaration */
-local menu, i, sp, b
+local menu, i, sp, b, cff
 local journal_menu, action_menu, doc_menu
 local ref_menu, cfg_menu, window_menu, help_menu
 local main_tbar, statusbar
-local accel_group
+local accel_group, driver
 local win := NIL, params:=array(0)
 
 driver := "gtk"
@@ -101,7 +101,7 @@ sp:setPosition( 200 )
 BankRefReq( sp )
 
 b  := UIVBox(,3,3)
-sp:addEnd(b) 
+sp:addEnd(b)
 
 BankDocReq( ww1, b )
 
@@ -162,30 +162,31 @@ return 0
 /* Tree and table widgets */
 static function BankRefReq( sp )
 	local splitter, tree, table, vb
+	local node66, node67
 
 	splitter := UISplitter(SPLITTER_HORIZONTAL)
 	sp:add(splitter, .T., .T.)
-	
+
 	tree := UITree(, {"N1","N2"})
-	
+
 	tree:setAction("selected",{|w,e| listEventTree(tree, e) })
 	splitter:add( tree )
-	
+
 	table := UITable({"#","Date","Payee","Sum"})
 	table:setAltRowColor("#cbe8ff")
-	
+
 	// Fill tree and table
 	updateTable(tree, table)
 	node66 := tree:addNode({"Parent_Last"})
 	node67 := tree:addNode({"Last Leaf"},, node66)
 	table:addRow({"8","25.10.03",'Last: JSC "Phoenix"',"99.00"})
-		
+
 	vb := UIVbox()
 	table:setAction("selected",{|w,e| listEvent(table, e) })
 	vb:add(table, .T., .T.)
 	vb:addEnd(UIButton("&Update views", {|| updateTable(tree, table) }))
 	splitter:addEnd( vb )
-	
+
 return NIL
 
 static function listEventTree(tree, c)
@@ -198,7 +199,9 @@ return
 
 function updateTable(tree, table)
 	local pos
-	
+	local node1,node2,node3,node4,node5
+	local node11, node44, node55, node66, node67
+
 	// Tree data
 	pos := tree:savePosition()
 	?? "Tree pos:", pos, chr(10)
@@ -212,7 +215,7 @@ function updateTable(tree, table)
 	node44 := tree:addNode({"Leaf3333"},, node11)
 	node55 := tree:addNode({"Leaf333"},, node44)
 	tree:restorePosition( pos )
-	
+
 	// Table data
 	pos := table:savePosition()
 	?? "Table pos:", pos, chr(10)
@@ -229,7 +232,7 @@ return
 
 /* Form widgets */
 static function BankDocReq(w,grid)
-	local drv, lab, data, top, bottomLine, t, f1, f2, t1, t2, b1, b2, b3, e1, e2, cb1, cb2, sum, hbsum, rs, rg
+	local drv, lab, data, top, bottomLine, sd, pol, plat, i,  t, f1, f2, t1, t2, b1, b2, b3, e1, e2, cb1, cb2, sum, hbsum, rs, rg
 	drv := getDriver()
 
 	data := map()
@@ -241,7 +244,7 @@ static function BankDocReq(w,grid)
 	for i:=1 to 10
 		data:reason += alltrim(str(i))+" line.&\n"
 	next
-	
+
 	plat := map()
 	plat:name 	:= 'JSC "Brown and son"'
 	plat:bank	:= 'JSC "MENATEP"'
@@ -261,21 +264,21 @@ static function BankDocReq(w,grid)
 	pol:INN		:= "1212145436"
 
 	w:setName("usetax",grid:add(UICheckBox(.F.,"Use &tax")))
-	
+
 	rg := UIRadioGroup()
 	w:setName("button1", grid:add(rg:addButton("button1")))
 	w:setName("button2", grid:add(rg:addButton("button2")))
-        
-        // Slider
-        sd := UISlider(10, 5, 60, 5)
-        w:setName("slider", grid:add(sd))
+
+	// Slider
+	sd := UISlider(10, 5, 60, 5)
+	w:setName("slider", grid:add(sd))
 
 	// Title
 	top := UIHBox(,0,3)
 	lab := UILabel("Payment order N ")
 	drv:setStyle(lab,"font.style","bold")
 	drv:setStyle(lab,"font.size","14")
-	
+
 	drv:setStyle(lab,"color.bg","red")
 	drv:setStyle(lab,"color.light","white")
 	drv:setStyle(lab,"color.dark","white")
@@ -283,18 +286,18 @@ static function BankDocReq(w,grid)
 	drv:setStyle(lab,"color.text","white")
 	drv:setStyle(lab,"color.base","white")
 	drv:setStyle(lab,"color.white","white")
-	
+
 	drv:setStyle(lab,"color.fg","#FF1790")
 
 //	drv:setStyle(lab,"color.text","blue")
 //	drv:setStyle(lab,"color.bg","#ff0000")
 //	drv:setStyle(lab,"color.base","#0000ff")
 	top:add(lab)
- 	e1 := UIEdit()
+	e1 := UIEdit()
 	e1:setValue(data:num)
 	e1:setGeometry(50)
 	e1:readOnly()
-        w:setName("number", e1)
+	w:setName("number", e1)
 	drv:setStyle(top, "background", "icons/tick.xpm")
 	top:add(e1)
 
@@ -309,33 +312,33 @@ static function BankDocReq(w,grid)
 	top:add(e2)
 	grid:add(top)
 
-        // Payer
+	// Payer
 	f1 := UIFrame()
 	grid:add(f1)
 	drv:setStyle(f1,"color.bg","darkblue")
 	f1:setLabel("Payer")
 	f1:setType(FRAME_RAISED)
-        t1 := UIVBox(,,3)
+	t1 := UIVBox(,,3)
 	f1:add( t1 )
 	cb1 := UIComboBox({'JSC "Brown and son"'},1)
 	w:setName("payer", cb1)
 	t1:add(cb1)
 
-        // Payee
+	// Payee
 	f2 := UIFrame("Payee",FRAME_SUNKEN)
 	grid:add(f2)
-        t2 := UIVBox(,,3)
+	t2 := UIVBox(,,3)
 	f2:add( t2 )
 	cb2 := UIComboBox()
 	cb2:setList({'JSC "Lighthouse"','JSC "Ronal"','JSC "Porechnoye"'})
 	cb2:setValue(2)
 	cb2:setValueInList(.T.)
-        w:setName("payee", cb2)
+	w:setName("payee", cb2)
 	t2:add(cb2)
 
 	// Sum
 	hbsum := UIHBox(,3)
-        hbsum:add(UILabel("&Sum: "))
+	hbsum:add(UILabel("&Sum: "))
 	sum := UIEdit(data:sum)
 	drv:setStyle(sum,"color.base","#C2D2FF")
 	drv:setStyle(sum,"color.bg","red")
@@ -343,13 +346,13 @@ static function BankDocReq(w,grid)
 	hbsum:add(sum)
 	hbsum:add(w:setName("tax", UILabel("")))
 	grid:add(hbsum)
-	
+
 	// Fill tax calculation
 	sum:setAction("changed", {|| fieldChanged(w) })
 	fieldChanged(w)
-	
+
 	grid:add(UILabel("Description:"))
-        rs := UIEditText(data:reason)
+	rs := UIEditText(data:reason)
 	rs:appendText("&\nEND.")
 	rs:setGeometry({,30})
 	w:setName("reason", rs)
@@ -374,10 +377,10 @@ return 0
 
 /* Show all stored values from document */
 static function pp_save(wnd)
-	local val
+	local val,i
 	val := wnd:getValues()
 	?? "Form values:"+CHR(10)
- 	for i in val
+	for i in val
 		?? CHR(9)+i[1]+" =",i[2],CHR(10)
 	next
 return 0
@@ -394,11 +397,11 @@ static function fieldChanged(win)
 	if valtype(label) == 'O'
 		label:setText("Tax: "+tax)
 	endif
-return 
+return
 
 static function OtherWidget(w)
 	local hp, pb, bt, percent := 0, lt, g, co, fn, tg, t, tl, tb
-	
+
 	hp := UIHBox(,3)
 	hp:setPadding(5)
 	hp:add(UILabel("Predefined icons:"))
@@ -408,32 +411,32 @@ static function OtherWidget(w)
 	hp:add(UIImage(4))
 	hp:add(UIImage(5))
 
-        // Layout
-        lt := UILayout()
+	// Layout
+	lt := UILayout()
 	hp:add(lt)
-        
+
 	// Progress Bar
 	pb := UIProgressBar("Progress Bar")
 	lt:add(pb)
-        
-	bt := UIButton( "Change ProgressBar", {|o,e| percent += 0.05, percent := iif(percent > 1, 0, percent),; 
-                                               pb:setPercent(percent, "Progress: "+alltrim(str(percent*100,0))+" %") } )
+
+	bt := UIButton( "Change ProgressBar", {|o,e| percent += 0.05, percent := iif(percent > 1, 0, percent),;
+					       pb:setPercent(percent, "Progress: "+alltrim(str(percent*100,0))+" %") } )
 	lt:add(bt, "10,30")
 
 	w:add( hp )
-	
+
 	g := UIHBox(,5)
-	
+
 	// Get FileName
 	g:add(UILabel("File name: "))
 	fn := UIEditFileName('')
-        g:add(fn)
-	
+	g:add(fn)
+
 	// Get Color
 	g:add(UILabel("Color: "))
 	co := UIEditColor('#91FF40')
 	co:setGeometry(60)
-        g:add(co)
+	g:add(co)
 	w:add( g )
 
 	// Timer
@@ -445,7 +448,7 @@ static function OtherWidget(w)
 	tb := UIButton("Start timer", {|| startTimer(tb, tl) })
 	tg:add(tl)
 	tg:add(tb)
-	w:add( tg )	
+	w:add( tg )
 
 return
 

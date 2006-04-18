@@ -6,6 +6,9 @@
 
 /*
    $Log: _system.c,v $
+   Revision 1.21  2006/03/13 07:22:32  clip
+   uri: some fix from Angelo Gigardi
+
    Revision 1.20  2004/11/30 13:45:48  clip
    uri: added UNAME()
 
@@ -204,14 +207,14 @@ clip_SYSCMD(ClipMachine * mp)
 
 		if(env)
 		{
-			execle("/bin/sh", "/bin/sh", "-c", cmd, 0, env);
+			execle("/bin/sh", "/bin/sh", "-c", cmd, 0, env, NULL, NULL);
 			i = 0;
 			while(env[i])
 				free(env[i++]);
 			free(env);
 		}
 		else
-			execlp("/bin/sh", "/bin/sh", "-c", cmd, 0);
+			execlp("/bin/sh", "/bin/sh", "-c", cmd, 0, NULL);
 		exit(111);
 	}
 

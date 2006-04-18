@@ -181,7 +181,7 @@ clip_GTK_ENTRYCOMPLETIONSETMATCHFUNC(ClipMachine * cm)
 {
         C_object *ccompletion   = _fetch_co_arg(cm);
         ClipVar  *func = _clip_spar(cm, 2);
-        C_var *c;
+        C_var *c = 0;
 
 	CHECKCOBJ(ccompletion, GTK_IS_ENTRY_COMPLETION(ccompletion->object));
         CHECKARG2(2, PCODE_t, CCODE_t);

@@ -97,7 +97,7 @@ clip_GDK_GCNEWWITHVALUES(ClipMachine * cm)
 	long      mask = _clip_parnl(cm,4);
 	GdkGC *gc;
 	GdkGCValues gcv;
-	GdkFont *font;
+	GdkFont *font = 0;
 	C_object *cgc, *cfont;
 	ClipVar *c;
 	C_widget *cw;
@@ -410,7 +410,7 @@ clip_GDK_GCSETFONT(ClipMachine * cm)
 {
 	C_object      *cgc = _fetch_co_arg(cm);
 	ClipVar *c;
-	GdkFont *font; C_object *cfont;
+	GdkFont *font = 0; C_object *cfont;
 
 	CHECKCOBJ(cgc,GDK_IS_GC(cgc->object)); CHECKARG3(2,CHARACTER_t,MAP_t,NUMERIC_t);
 	switch ( _clip_parinfo(cm,2) )

@@ -79,12 +79,22 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
+/*
 	if !empty(connect_data)
 		beg_date := connect_data:beg_date
 		end_date := connect_data:end_date
 	endif
+*/
 
 
+        if "ACC01" $ _query .and. !empty(_query:acc01)
+            set("ACC01",_query:acc01)
+        endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+            set("ACC00",_query:acc00)
+        endif
+							
+							
 	if empty(beg_date) .or. empty(end_date) .or. empty(account)
 		?? "Content-type: text/html"
 		?
@@ -109,7 +119,7 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 	endif
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 //		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -122,7 +132,7 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 		beg_date =mPeriod[nPer][1]
 		end_date =mPeriod[nPer][2]
 
-	
+
 		an_data := cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
 		asort(an_data,,,{|x,y| x:essence <= y:essence })
 
@@ -133,16 +143,16 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 		endif
 		cgi_an_putRdf2(an_data,account,an_level,urn,total,beg_date,end_date,"",periodic,level)
 		//putRdf2(an_data,account,an_level)
-	
+
 	next
 	? ']</items></RDF:RDF>'
 	return
 ******************************
 function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn,level)
 	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode,sTmp:=""
-	
+	local masan, u, stran:="", idan:=""
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
-	acc := codb_getValue(account)
+	acc := cgi_getValue(account)
 	//? acc
 	if !empty(acc)
 		if s $ acc .and. !empty(acc[s])
@@ -175,41 +185,48 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		endif
 		urn_id := urn
 		promt:= iif(tmp:an_value=="total","",tmp:an_value)
-
+//		?? iif(i==1,"",",")
 		?? "{ a:{level:'"+level+"', "
 		?? " isContainer:false }, "
+		?? " r:{ "+idan+tmp:esse+"account:'"+account+"', unit:'"+tmp:unit_num+"', an_value:'"+tmp:an_value+"'}, "
 		?? " beg_date:'"+dtoc(beg_date)+"', "
 		?? " end_date:'"+dtoc(end_date)+"', "
-		?? " r:{ account:'"+account+"', unit:'"+tmp:unit_num+"'}, "
-    		 sTmp := tmp:essence
-		 sTmp := strtran(sTmp,'&',"&amp;")
-                 sTmp := strtran(sTmp,'"',"")
-                 sTmp := strtran(sTmp,"'",'')
-                 sTmp := strtran(sTmp,'<',"&lt;")
-                 sTmp := strtran(sTmp,'>',"&gt;")
-		
-		?? " account_name:'"+sTmp+"' ,"
-		?? " id:'"+urn_id+":"+tmp:an_value+"', "
-		k := tmp:tcols
-		k :=strtran(k,':','')
-		k :=strtran(k,'="',':')
-		k :=strtran(k,'"','",')
-		k :=strtran(k,':',':"')
-		?? alltrim(k)
+		?? " account:'"+cgi_essence(account)+"', "
+		masan:=split(urn_id,":")
+		stran:=""
+		idan:=""
 
-		?? ' union:"'+tmp:union+'", '
-		?? ' bd_summa:"'+sort_summa(tmp:bd_summa)+'", '
-		?? ' bk_summa:"'+sort_summa(tmp:bk_summa)+'", '
-		?? ' od_summa:"'+sort_summa(tmp:od_summa)+'", '
-		?? ' ok_summa:"'+sort_summa(tmp:ok_summa)+'", '
-		?? ' ed_summa:"'+sort_summa(tmp:ed_summa)+'", '
-		?? ' ek_summa:"'+sort_summa(tmp:ek_summa)+'", '
-		?? ' beg_num:"' +sort_summa(tmp:beg_num) +'", '
-		?? ' in_num: "' +sort_summa(tmp:in_num)  +'", '
-		?? ' out_num:"' +sort_summa(tmp:out_num) +'", '
-		?? ' end_num:"' +sort_summa(tmp:end_num) +'", '
-		?? ' unit:"'+codb_essence(tmp:unit_num)  +'" '
-		?? '},'
+		for u=1 to len(masan)
+		    stran+="stran"+alltrim(str(u))+":'"+cgi_essence(masan[u])+"', "
+		    idan+="idan"+alltrim(str(u))+":'"+masan[u]+"', "
+		next
+//		outlog(__FILE__,__LINE__, tmp:esse)
+//		outlog(__FILE__,__LINE__, tmp:attr)
+		?? stran
+
+		 sTmp := tmp:essence
+		 sTmp := strtran(sTmp,'&',"&amp;")
+		 sTmp := strtran(sTmp,'"','\"')
+		 sTmp := strtran(sTmp,"'","\'")
+		 sTmp := strtran(sTmp,'<',"&lt;")
+		 sTmp := strtran(sTmp,'>',"&gt;")
+
+		?? " account_name:'"+sTmp+"' ,"
+		?? " id:'"+urn_id+":"+tmp:an_value+"', "+tmp:attr
+		?? " union:'"+tmp:union+"', "
+		?? " bd_summa:'"+bal_summa(tmp:bd_summa)+"', "
+		?? " bk_summa:'"+bal_summa(tmp:bk_summa)+"', "
+		?? " od_summa:'"+bal_summa(tmp:od_summa)+"', "
+		?? " ok_summa:'"+bal_summa(tmp:ok_summa)+"', "
+		?? " ed_summa:'"+bal_summa(tmp:ed_summa)+"', "
+		?? " ek_summa:'"+bal_summa(tmp:ek_summa)+"', "
+		?? " beg_num:'" +bal_summa(tmp:beg_num) +"', "
+		?? " in_num:'" +bal_summa(tmp:in_num)  +"', "
+		?? " out_num:'" +bal_summa(tmp:out_num) +"', "
+		?? " end_num:'" +bal_summa(tmp:end_num) +"', "
+		?? " unit:'"+cgi_essence(tmp:unit_num)  +"' " 
+		?? "}"+iif(i==len(bal_data),"",",")
+		
 
 	next
 return

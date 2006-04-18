@@ -17,6 +17,7 @@ function memoedit(str, ntop, nleft, nbot, nright, mode, user_func,;
 	if !(valtype(str) $ "CM")
 		str=""
 	endif
+	str := strtran(str,chr(13),"")
 
 	ntop=iif(ntop==NIL,0,min(ntop, maxrow()))
 	nbot=iif(nbot==NIL,maxrow(),min(nbot, maxrow()))

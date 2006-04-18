@@ -2,9 +2,9 @@
 
 function r2d2_delobj_xml(_queryStr)
 
-local _query,_queryArr
+local _query,_queryArr,sprname:=""
 local lang:="",sDep:="",obj_id:="",objs_id:={}
-local oDep,oDict,obj, classDesc, attr_list,attr
+local oDep,oDict,obj, classDesc,defClass, attr_list,attr
 local i,j,k,x,tcol,rname,ind_list
 local needDelete:=.t.
 local first_flag := .t.
@@ -17,6 +17,9 @@ local first_flag := .t.
 
 	if "ID" $ _query
 		obj_id := _query:id
+	endif
+	if "SPR" $ _query
+		sprname := _query:spr
 	endif
 	if "UNDELETE" $ _query
 		needDelete := .f.
@@ -50,6 +53,7 @@ local first_flag := .t.
 		return
 	endif
 	oDict := oDep:dictionary()
+    defClass := oDict:classBodyByName(sprname)
 
 	if "," $ obj_id
 		objs_id := split(obj_id,"[,]")
@@ -63,7 +67,13 @@ local first_flag := .t.
 		obj:=oDep:getValue(obj_id)
 
 		if empty(obj)
+        	if empty(defClass)
+				oDep:delete(obj_id)
+            else
+				oDep:delete(obj_id,,defClass:id)
+            endif
 			cgi_xml_error("Object not found for:"+obj_id)
+			cgi_xml_error("Object not found for:"+oDep:error)
 			?
 			loop
 		endif

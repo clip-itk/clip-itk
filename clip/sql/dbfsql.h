@@ -29,6 +29,10 @@
 
 #define MAXFIELDNAME	20		// (without terminating zero)
 
+#define SQLBLOB_SEEKTOP		1
+#define SQLBLOB_SEEKCURRENT	2
+#define SQLBLOB_SEEKBOTTOM	3
+
 #ifndef min
 #define min(a,b) (a)<(b)?(a):(b)
 #endif
@@ -126,6 +130,20 @@ typedef struct tagSQLVTBL {
 	int (*commit)(ClipMachine* mp,SQLCONN* conn);
 	int (*rollback)(ClipMachine* mp,SQLCONN* conn);
 	int (*fetch)(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors);
+
+/*
+  Some functionality for BLOB's
+*/
+	int (*blob_create)(ClipMachine* mp,SQLCONN* conn, unsigned int OID);
+	int (*blob_import)(ClipMachine* mp,SQLCONN* conn, const char *filename);
+	int (*blob_export)(ClipMachine* mp,SQLCONN* conn, unsigned int OID, const char *filename);
+	int (*blob_open)(ClipMachine* mp,SQLCONN* conn, unsigned int OID, int mode);
+	int (*blob_write)(ClipMachine* mp,SQLCONN* conn, int oid_fd, const char *buffer, int length);
+	int (*blob_read)(ClipMachine* mp,SQLCONN* conn, int oid_fd, char *buffer, int length);
+	int (*blob_seek)(ClipMachine* mp,SQLCONN* conn, int oid_fd, int offset, int whence);
+	int (*blob_tell)(ClipMachine* mp,SQLCONN* conn, int oid_fd);
+	int (*blob_close)(ClipMachine* mp,SQLCONN* conn, int oid_fd);
+	int (*blob_unlink)(ClipMachine* mp,SQLCONN* conn, unsigned int OID);
 } SQLVTBL;
 
 SQLLocale * SQL_get_locale(ClipMachine * mp, const char* sqlcs);

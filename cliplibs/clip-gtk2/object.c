@@ -671,7 +671,7 @@ _signal_connect(ClipMachine *cm, gboolean after)
 		//int sigfound = gtk_signal_lookup(signame, GTK_WIDGET_TYPE(cwid->widget));
 		int sigfound = g_signal_lookup(signame, GTK_WIDGET_TYPE(cwid->widget));
 		int extra_sigfound = _extra_signal_lookup(signame, GTK_WIDGET_TYPE(cwid->widget));
-		C_signal *cs;
+		C_signal *cs = 0;
 
 		if (sigfound || extra_sigfound || sid < 1000) /* sid<1000 - event */
 		{
@@ -760,7 +760,7 @@ _object_signal_connect(ClipMachine *cm, gboolean after)
 		long sid = sig_table->sigid;
 		int sigfound = g_signal_lookup(signame, GTK_OBJECT_TYPE(cobj->object));
 		int extra_sigfound = _extra_signal_lookup(signame, GTK_OBJECT_TYPE(cobj->object));
-		C_signal *cs;
+		C_signal *cs = 0;
 
 		//printf ("object %s  signame %s \n", cobj->type_name, signame);
 		if (sigfound || extra_sigfound || sid < 1000) /* sid<1000 - event */

@@ -1,0 +1,213 @@
+                             
+                         Clip-Glade 0.0
+                       Sergio Zayas - 2.005
+                     sergio_zayas@yahoo.com.ar
+     
+
+Aviso
+-----
+       Esta es una versión preliminar, incompleta y no plenamente 
+depurada.
+
+     
+Introducción
+------------
+       Clip-Glade es un módulo de enlace (binding) entre el compilar Clip
+y la librería libGlade.
+       Permite, a partir de los archivos xml generados por Glade (.glade),
+mostrar el interfaz gráfico y enlazar las señales generadas dentro de una
+aplicación Clip (.prg).
+       Al contrario que hace Clip en su implementación de GTK, aquí se ha
+usado el mismo nombre de las funciones que utiliza el API de libGlade para C.
+
+
+
+Más información
+---------------
+       Es de gran ayuda consultar la documentación disponible de libglade.
+
+       
+       
+Referencia de funciones
+-----------------------
+       Las funciones que aparecen a continuación se corresponden con el API
+de libglade 2.4.2, algunas se han omitido por no ser de interés para el 
+usuario y otras aún no están implementadas.
+
+
+NOTA: En los parámetros, (obl) significa que es obligatorio y (opc) opcional.
+
+
+glade_init ()
+=============
+
+glade_init() => nil
+       
+       Se usa para iniciar el entorno del procesador de archivos '.glade'.
+       En libglade-2 no es necesario porque la inicialización es automática,
+de todas formas no provoca ningún problema realizar la llamada.
+
+
+
+
+glade_require()
+===============
+
+glade_require( clibrary ) => nil 
+   clibrary (obl): Nombre de librería requerida.
+
+       Asegura que una librería requerida por el archivo que se va a procesar
+está disponible.
+
+
+
+
+clip_glade_xml_new()
+====================
+
+glade_xml_new ( fname, root, domain) => hxml ó nil
+   fname  (obl): Nombre del archivo '.glade'(xml) a procesar.
+   root   (opc): Nombre de la ventana que se quiere cargar.
+   domain (opc): Nombre del dominio de traducción de cadenas de texto.
+   
+   hxml: Identificador del archivo procesado, necesario para otras 
+         funciones.
+ 
+       Procesa un archivo .glade y crea todos los 'widgets' contenidos en él.
+       Si root='nombrewidget' entonces solo se crea ese widget y sus hijos.
+       Si domain='nombre_dominio' entonces las cadenas de texto se traducen
+al dominio indicado, para mas información consultar la documentación de gettext.
+       
+
+
+
+glade_xml_new_from_buffer()
+===========================
+
+glade_xml_new_from_buffer( buffer, size, root, domain) => hxml ó nil
+   buffer (obl): Cadena conteniendo el código xml a procesar.
+   size   (obl):   Longitud de la cadena.
+   root   (opc):   Nombre de la ventana que se quiere cargar.
+   domain (opc): Nombre del dominio de traducción de cadenas de texto.
+   
+   hxml: Identificador del archivo procesado, necesario para otras 
+         funciones.
+
+       Es igual que la anterior función pero la fuente del código xml
+es un búfer en memoria en lugar de un archivo.
+
+
+
+
+glade_xml_get_widget ()
+=======================
+
+glade_xml_get_widget( hxml, name) => oWidget ó nil
+   hxml (obl): Identificador válido devuelto por glade_xml_new()
+   name (obl): Nombre del widget que se quiere recuperar.
+
+       Esta función devuelve el 'widget' cuyo nombre se corresponda con 'name'
+o nil si no encuentra ninguno. El 'widget' puede ser 'root' (una ventana) o 
+cualquier hijo.
+
+
+
+   
+glade_get_widget_name()
+=======================
+
+glade_get_widget_name( widget ) => cNombreWidget
+    widget (obl): 'widget' (no el nombre del widget) válido
+
+    cNombreWidget: Nombre del widget.
+    
+       Devuelve el nombre del 'widget' dado como parámetro. El 'widget'
+debe ser válido, esto es, obtenido previamente con glade_xml_get_widget().
+
+
+
+
+glade_xml_get_widget_prefix() 
+=============================
+
+glade_xml_get_widget_prefix( hxml, name) => aWidgets
+   hxml (obl): Identificador válido devuelto por glade_xml_new()
+   name (obl): Cadena inicial del nombre de los 'widgets' que se quieren
+               recuperar. Es sensible a mayúsculas/minúsculas.
+
+   aWidgets  : Matriz.
+    
+       Devuelve una matriz con los widgets cuyo nombre comienza por la cadena 
+dada en 'name'; si no se encuentra ninguno devuelve una matriz vacía.
+
+
+
+
+glade_get_widget_tree() - Pendiente de implementar
+=======================
+
+glade_get_widget_tree( widget ) => hxml
+   widget (obl): Widget válido, no su nombre.
+   
+   hxml : Identificador xml.
+   
+       Esta función devuelve un identificador xml que define la estructura
+para crear el 'widget' válido dado en el parámetro. El 'widget'
+debe ser válido, esto es, obtenido previamente con glade_xml_get_widget().
+
+
+
+
+glade_xml_signal_connect()
+========================== 
+
+glade_xml_signal_connect( hxml, handlername, block ) => nil
+   hxml        (obl): Identificador válido devuelto por glade_xml_new().
+   handlername (obl): Nombre del gestor de señal.
+   block       (obl): Codeblock que recibirá la señal.
+   
+        En la descripción del interfaz glade los manejadores de señal para 
+los widgets se especifican mediante un nombre. Esta función permite conectar
+una función Clip con todas las señales cuyo nombre especificado coincida con
+el dado en 'handlername'.
+
+
+
+
+glade_xml_signal_connect_data() - No implementada
+===============================
+
+glade_xml_signal_connect_data( hxml, handlername, block, user_data) => nil
+
+       Esta función se diferencia de la anterior en que permite enviar al 
+codeblock un parámetro extra; puesto que en el lenguaje Clipper a un codeblock
+se le puede suministrar parámetros extra no tiene mucho sentido el uso de
+esta función.
+
+
+
+
+glade_xml_signal_autoconnect ()
+===============================
+
+glade_xml_signal_autoconnect( hxml) => nil
+   hxml (obl): Identificador válido devuelto por glade_xml_new()
+
+       Esta función es una variante de glade_xml_signal_connect() que 
+permite la conexión automática de señales con funciones Clip.
+       Cuando se llama busca entre las funciones de la aplicación aquellas
+cuyo nombre coincida con el nombre del gestor de señal (handlername) y 
+establece el enlace.
+       Las funciones que se quieran enlazar con esta llamada no pueden ser
+privadas a un módulo, es decir, no pueden definirse como 'static'.
+
+ 
+
+
+
+Contacto
+--------
+       Para cualquier sugerencia o corrección enviar los mensajes a
+sergio_zayas@yahoo.com.ar.
+
+

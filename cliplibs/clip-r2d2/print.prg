@@ -28,7 +28,7 @@ local columns,oDep,oDict
 	endif
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang)
-	sprname := lower(sprname)
+	//sprname := lower(sprname)
 	sDict:= cgi_choice_sDict(@sprname)
 
 	if empty(obj_id) .or. empty(sprname)
@@ -52,7 +52,7 @@ local columns,oDep,oDict
 		id_list := {obj_id}
 	endif
 	if empty(id_list) .and. !empty(sprname)
-		oDep := codb_needDepository(sDict+"01")
+		oDep := cgi_needDepository(sDict,"01")
 		if empty(oDep)
 			cgi_xml_error( "Depository not found: "+sDict+"01" )
 			return
@@ -101,7 +101,7 @@ local columns,oDep,oDict
 	?
 
 	sDep:="ACC00"
-	oDep := codb_needDepository(sDep+"01")
+	oDep := cgi_needDepository(sDep,"01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: "+sDep+"01" )
 		return
@@ -142,7 +142,7 @@ static function print_table(class_id,_id_list)
 
 	id_list:=aclone(_id_list)
 	/**/
-	classDesc := codb_getValue(class_id)
+	classDesc := cgi_getValue(class_id)
 	if empty(classDesc)
 		outlog("Object not readable:",obj:class_id)
 		return
@@ -206,7 +206,7 @@ static function print_obj(obj,columns)
 		sTmp := mapEval(obj,col:block)
 		if "DATATYPE" $ col .and. col:datatype == "R"
 			id_ref := obj[upper(col:name)]
-			sTmp  := codb_essence(sTmp)
+			sTmp  := cgi_essence(sTmp)
 			sTmp := strtran(sTmp,'&',"&amp;")
 			sTmp := strtran(sTmp,'"',"&quot;")
 			sTmp := strtran(sTmp,"'","&apos;")
@@ -215,7 +215,7 @@ static function print_obj(obj,columns)
 			midref:= 'idref="'+id_ref+'"'
 		elseif "DATATYPE" $ col .and. col:datatype=="S"
 			//id_ref := obj[upper(col:name)]
-			obj2:=codb_getValue(sTmp)
+			obj2:=cgi_getValue(sTmp)
 			if !empty(obj2)
 				k:= codb_tColumnBody(obj2:id)
 				if !empty(k)
@@ -306,7 +306,7 @@ static function calc_objs(id_list)
 		if id_list[i] $ m_objs
 			loop
 		endif
-		obj := codb_getValue(id_list[i])
+		obj := cgi_getValue(id_list[i])
 
 		if empty(obj)
 			outlog("Object not readable:",id_list[i])
@@ -315,7 +315,7 @@ static function calc_objs(id_list)
 		if !("CLASS_ID" $ obj) .or. obj:class_id == sprID
 			loop
 		endif
-		classDesc := codb_getValue(obj:class_id)
+		classDesc := cgi_getValue(obj:class_id)
 		if empty(classDesc)
 			outlog("Object not readable:",obj:class_id)
 			loop
@@ -333,7 +333,7 @@ static function calc_objs(id_list)
 
 		/* references and objs */
 		for j=1 to len(classDesc:attr_list)
-			attr := codb_getValue(classDesc:attr_list[j])
+			attr := cgi_getValue(classDesc:attr_list[j])
 			if empty(attr)
 				outlog("Object not readable:",classDesc:attr_list[j])
 				loop

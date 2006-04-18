@@ -123,8 +123,8 @@ clip_GTK_CELLLAYOUTSETATTRIBUTES(ClipMachine * cm)
 		attrs[0], attrn[0],  attrs[1],  attrn[1],  attrs[2],  attrn[2],  attrs[3],  attrn[3],  attrs[4], attrn[4],
 		attrs[5], attrn[5],  attrs[6],  attrn[6],  attrs[7],  attrn[7],  attrs[8],  attrn[8],  attrs[9], attrn[9],
 		attrs[10],attrn[10], attrs[11], attrn[11], attrs[12], attrn[12], attrs[13], attrn[13], attrs[14],attrn[14],
-		attrs[15],attrn[15], attrs[16], attrn[16], attrs[17], attrn[17], attrs[18], attrn[18], attrs[19],attrn[19]
-		);
+		attrs[15],attrn[15], attrs[16], attrn[16], attrs[17], attrn[17], attrs[18], attrn[18], attrs[19],attrn[19],
+		NULL);
 
 	return 0;
 err:
@@ -188,7 +188,7 @@ clip_GTK_CELLLAYOUTSETCELLDATAFUNC(ClipMachine * cm)
 	C_object      *clay = _fetch_co_arg(cm);
 	C_object *crenderer = _fetch_cobject(cm, _clip_spar(cm, 2));
 	ClipVar       *func = _clip_spar(cm, 3);
-	C_var            *c ;
+	C_var            *c = 0;
 
 	CHECKCOBJ(clay, GTK_IS_CELL_LAYOUT(clay->object));
 	CHECKCOBJ(crenderer, GTK_IS_CELL_RENDERER(crenderer->object));

@@ -5,16 +5,20 @@ function r2d2_info_rdf(_queryArr)
 local err,_query
 local i,j,obj,idlist,sErr
 local aRefs, aTree :={}, needDeleted := .f.
+local connect_id:="", connect_data
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
-local urn, sprname:="", values := "", attr := "", atom:=""
+local urn, sprname:="", values := "", attr := "", atom:="", iftree
 
 	errorblock({|err|error2html(err)})
 
 	_query:=d2ArrToMap(_queryArr)
 	outlog(__FILE__,__LINE__, _query)
 
+	if "CONNECT_ID" $ _query
+		connect_id := _query:connect_id
+	endif
 	if "SPR" $ _query
 		sprname := _query:spr
 	endif
@@ -43,11 +47,38 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 	if "__DELETED" $ _query
 		needDeleted := (left(_query:__deleted,1) $ "YyäÄ")
 	endif
+	if !empty(connect_id)
+		connect_data := cgi_connect_data(connect_id)
+	endif
+
+	if "IFTREE" $ _query
+		iftree := _query:iftree
+	endif
+
+
+    /*
+	if !empty(connect_data)
+		beg_date := connect_data:beg_date
+		end_date := connect_data:end_date
+	endif
+    */
+
+
+       if "ACC01" $ _query .and. !empty(_query:acc01)
+	   set("ACC01",_query:acc01)
+       endif
+       if "ACC00" $ _query .and. !empty(_query:acc00)
+	   set("ACC00",_query:acc00)
+       endif
 
 	lang := cgi_choice_lang(lang)
-	sDep := cgi_choice_sDep(lang)
-	sprname := lower(sprname)
+	sDep := cgi_choice_sDep(lang,sDict)
+	//sprname := lower(sprname)
 	sDict:= cgi_choice_sDict(@sprname)
+	if !empty(id)
+		sDict := left(id,codb_info("DICT_ID_LEN"))
+		sDep  := substr(id,codb_info("DICT_ID_LEN")+1,codb_info("DEPOSIT_ID_LEN"))
+	endif
 
 	if empty(sprname) .or. empty(sDep) .or. empty(sDict)
 		?? "Content-type: text/html"
@@ -55,7 +86,7 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 		?
 		? "Error: bad parameters ! "
 		if empty (sdep)
-			?? "LANG not defined "
+			?? "Depository not defined "
 		endif
 		if empty (sdict)
 			?? "DICTIONARY not defined "
@@ -72,7 +103,11 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
 
-	oDep := codb_needDepository(sDict+sDep)
+	if empty(id)
+		oDep := cgi_needDepository(sDict,sDep)
+	else
+		oDep := codb_needDepository(sDict+sDep)
+	endif
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: "+sDict+sDep )
 		return
@@ -126,7 +161,7 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 			if needDeleted .and. obj:__version >=0
 				loop
 			endif
-			if "OWNER_ID" $ obj
+			if "OWNER_ID" $ obj .and. empty(iftree)
 				aadd(aRefs,{obj:id,obj:owner_id,.f.,obj})
 			elseif !empty(obj)
 				aadd(aRefs,{obj:id,"",.f.,obj})
@@ -138,7 +173,7 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 		i := map()
 		i:id := "_template_obj_"
 		oDep:checkBody(i,classDesc:id)
-		aadd(aRefs,{i:id,"",.f.,i})
+		//aadd(aRefs,{i:id,"",.f.,i})
 	endif
 
 	//asort(aRefs,,,{|x,y| x[3] <= y[3] })
@@ -153,8 +188,6 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 	endif
 
 	cgi_fillTreeRdf(aRefs,aTree,"",1)
-
-
 
 	if empty(urn)
 		urn := 'urn:'+sprname

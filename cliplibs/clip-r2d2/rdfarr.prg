@@ -1,14 +1,16 @@
 #include "r2d2lib.ch"
 
-function r2d2_arr_rdf(_queryArr)
+function r2d2_array2rdf(_queryArr, isRDF)
 
 local err,_query
 local aRefs, aTree :={}
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="",attr:="", owner_map:=map(),map2:=map(),aData, sId
-local i,j,obj,idlist
+local i,j,obj,idlist,_idList
 local urn, sprname:=""
+
+	isRDF := iif( valType(isRDF)=="L", isRDF, ".t.")
 
 	errorblock({|err|error2html(err)})
 
@@ -78,11 +80,15 @@ local urn, sprname:=""
 		cgi_xml_error("Not found class description for "+obj:class_id)
 		return
 	endif
-	idList := obj[attr]
+
+	idList := {}
+	_idList := obj[attr]
 	if classDesc:name == "accpost" .and. left(attr,2)=="AN"
-		if len(idList) >0
-			idList := {idList[1][2]}
-		endif
+		for i=1 to len(_idList)
+			aadd(idList,_idList[i][2])
+		next
+	else
+		idList := _idList
 	endif
 	for i=1 to len(classDesc:attr_list)
 		tmp := oDict:getValue(classDesc:attr_list[i])
@@ -95,29 +101,32 @@ local urn, sprname:=""
 		endif
 	next
 	classDesc := NIL
-	if empty(sprName) .and. len(idList) >0
-		tmp := codb_GetValue(iDlist[1])
-		if !empty(tmp)
-			classDesc := codb_getValue(tmp:class_id)
-		endif
-		if !empty(classDesc)
-			sprName := classDesc:name
-		endif
-	elseif !empty(sprname)
-		classDesc := codb_getValue(sprName)
+	if !empty(sprname)
+		classDesc := cgi_getValue(sprName)
 		sprName := classDesc:name
-	endif
-	if empty(classDesc)
-		cgi_xml_error("Not found class description")
-		return
-	endif
-	if len(idList) > 0
-		oDep := codb_needDepository(idList[1])
-		oDict := oDep:dictionary()
+		if empty(classDesc)
+			cgi_xml_error("Not found class description")
+			return
+		endif
+		if len(idList) > 0
+			oDep := codb_needDepository(idList[1])
+			oDict := oDep:dictionary()
+		else
+			oDict := codb_needDepository(left(classDesc:id,codb_info("DICT_ID_LEN")))
+		endif
+		columns := cgi_make_columns(oDict,sprname)
 	else
-		oDict := codb_needDepository(left(classDesc:id,codb_info("DICT_ID_LEN")))
+		columns :={}
+		col := map()
+		col:datatype := "R"
+		col:dataref_to := ""
+		col:name := "essence"
+		col:header := ""
+		col:expr := "cgi_essence(id)"
+		col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
+		col:obj_id :={|| "" }
+		aadd(columns,col)
 	endif
-	columns := cgi_make_columns(oDict,sprname)
 
 	if empty(columns)
 		cgi_xml_error("Empty table description for "+sprname)
@@ -126,7 +135,7 @@ local urn, sprname:=""
 
 	aRefs := {}
 	for i=1 to len(idList)
-		obj := oDep:getValue(idList[i])
+		obj := cgi_getValue(idList[i])
 		if "OWNER_ID" $ obj
 			aadd(aRefs,{obj:id,obj:owner_id,.f.,obj})
 		elseif !empty(obj)
@@ -134,7 +143,7 @@ local urn, sprname:=""
 		endif
 	next
 
-	if empty(arefs)
+	if empty(arefs) .and. !empty(classDesc)
 		i := map()
 		i:id := "_template_obj_"
 		oDep:checkBody(i,classDesc:id)
@@ -149,9 +158,15 @@ local urn, sprname:=""
 	if empty(urn)
 		urn := 'urn:'+sprname
 	endif
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+
+	if isRDF
+		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
+	//cgi_putArefs2RdfLevels(aTree,oDep,0,urn,columns,"",,atom)
+	else
+		cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+		?
+		cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
+	endif
 	? '</RDF:RDF>'
 ?
 return

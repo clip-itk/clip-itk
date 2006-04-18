@@ -645,7 +645,7 @@ clip_PANGOLAYOUTINDEXTOPOS(ClipMachine * cm)
 {
         C_object *clayout = _fetch_co_arg(cm);
 	gint        index = _clip_parni(cm, 2);
-	ClipVar       *cv ;
+	ClipVar       *cv = 0;
 	PangoRectangle pos ;
 
 	CHECKCOBJ(clayout, GTK_IS_PANGO_LAYOUT(clayout));
@@ -859,10 +859,10 @@ clip_PANGOLAYOUTGETLINES(ClipMachine * cm)
 	
 	if (list)
 	{
-		int i;
+		int i = 0;
 		long l;
 		l = g_slist_length(list);
-		l = i;
+		i = l;
 
 		_clip_array(cm, cv, 1, &l);
 		for(l=0; l<i; l++, list=g_slist_next(list))

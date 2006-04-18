@@ -1,3 +1,5 @@
+local x
+
 ? "test for big numeric"
 set rational on
 ? "set rational is:",set(_SET_RATIONAL)

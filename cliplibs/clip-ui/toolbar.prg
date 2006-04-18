@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
+/*									   */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -77,7 +77,7 @@ return pos
 
 /* Add separator to toolbar */
 static function ui_addSeparator(self)
-	local elem
+	local elem, pos
 	elem := driver:addToolBarSpace( self )
 	aadd( self:elem, elem )
 	pos := len( self:elem )
@@ -130,7 +130,7 @@ return 0
 /* Return object by its number on the toolbar */
 static function ui_getElement(self, pos)
 	local obj := NIL
-       	if len(self:elem) < pos
+	if len(self:elem) < pos
 		pos := len(self:elem)
 	endif
 	if pos < 1

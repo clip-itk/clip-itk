@@ -113,7 +113,17 @@ static SQLVTBL vtbl = {
 	or_start,
 	or_commit,
 	or_rollback,
-	or_fetch
+	or_fetch,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
 };
 
 int clip_INIT_ORACLE(ClipMachine* mp){

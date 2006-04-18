@@ -52,11 +52,22 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
+	/*
 	if !empty(connect_data)
 		beg_date := connect_data:beg_date
 		end_date := connect_data:end_date
 	endif
+	*/
 
+
+        if "ACC01" $ _query .and. !empty(_query:acc01)
+	    set("ACC01",_query:acc01)
+	endif
+	if "ACC00" $ _query .and. !empty(_query:acc00)
+	    set("ACC00",_query:acc00)
+	endif
+							
+							
 	if empty(an_value) .or. empty(beg_date) .or. empty(end_date)
 		cgi_xml_header()
 
@@ -78,14 +89,14 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 
 	?
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
-		cgi_xml_error( "Depository not found: ACC0101" )
+//		cgi_xml_error( "Depository not found: ACC0101" )
 		return
 	endif
 	oDict := oDep:dictionary()
 
-	oDep02 := codb_needDepository("GBL0201")
+	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep02)
 		cgi_xml_error( "Depository not found: GBL0201" )
 		return
@@ -103,7 +114,7 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 		return
 	endif
 
-	an_obj := codb_getValue(an_value)
+	an_obj := cgi_getValue(an_value)
 	if empty(an_obj)
 		cgi_xml_error( "Object not readable: "+an_value )
 	else
@@ -196,16 +207,16 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-	? '<RDF:account>'+codb_essence(account)+'</RDF:account>'
-	? '<RDF:an_value>'+codb_essence(an_value)+'</RDF:an_value>'
+	? '<RDF:account>'+cgi_essence(account)+'</RDF:account>'
+	? '<RDF:an_value>'+cgi_essence(an_value)+'</RDF:an_value>'
 	if empty(type)
-    	    cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
+	    cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 		?
 	    cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
 		?
 	else
 	    cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
-	
+
 	endif
 
 	for i=1 to len(accounts)
@@ -221,12 +232,12 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 		    cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",":"+accounts[i])
 		else
 		?' <items id="level'+alltrim(str(i,2,0))+'">['
-		    cgi_an_putRdf2(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')		
-		?' ]</items>'    
+		    cgi_an_putRdf2(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')
+		?' ]</items>'
 		endif
-		
- 		     //cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
-		
+
+		     //cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
+
 	next
 	? '</RDF:RDF>'
 

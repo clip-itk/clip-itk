@@ -115,10 +115,23 @@ then
 	echo "****************************************************************************"
 	USE_GTK_EXTRA=no
 else
-	gtkextraincpath=`find $gtkextraprefix/include -name 'gtkextra.h' -printf '%h'`
-	cd $gtkextraincpath/..
+	gtkextraincpath=`find $gtkextraprefix/include -name 'gtkextra.h' -printf ' %h'`
+	trt=$gtkextraincpath
+	gtkextraincpath=
+	for ii in $trt
+		do
+		if [ -z "$gtkextraincpath" ]
+			then
+			gtkextraincpath=$ii
+		fi
+		if ! [ "$gtkextraincpath" \> "$ii" ]
+			then
+			gtkextraincpath=$ii
+		fi
+	done
+	cd $gtkextraincpath
 	gtkextraincpath=`pwd`
-	cd $oldpwd
+	cd $OLDPWD
 	LIBS=$LIBS' '`gtkextra-config --libs`
 
 	if [ "$osname" = "CYGWIN" ]

@@ -1,17 +1,18 @@
 #include <inkey.ch>
 
+local key:=0
+local flags:=0
+
 set color to "g+/b"
 clear screen
-key:=0
-flags:=0
 
 while .t.
 	dispbegin()
 	@ 0,0 clear
-        @ 5,0 say 'inkey()'
-        @ 5,10 say key
-        @ 6,0 say 'kbdstat()'
-        @ 6,10 say flags
+	@ 5,0 say 'inkey()'
+	@ 5,10 say key
+	@ 6,0 say 'kbdstat()'
+	@ 6,10 say flags
 
 	@ 1,40 say 'mpresent()'
 	@ 1,60 say mpresent()

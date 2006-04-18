@@ -5,6 +5,9 @@
  */
 /*
    $Log: _ctools_s.c,v $
+   Revision 1.76  2006/04/03 12:53:34  clip
+   uri: some speed up for htmlParser
+
    Revision 1.75  2005/08/08 09:00:30  clip
    alena: fix for gcc 4
 
@@ -3339,6 +3342,7 @@ int
 clip_CSCOUNT(ClipMachine * mp)
 {
 	int i, j, l1, l2;
+	unsigned char ch;
 	unsigned char *str1 = (unsigned char *)_clip_parcl(mp, 1, &l1);
 	unsigned char *str2 = (unsigned char *)_clip_parcl(mp, 2, &l2);
 
@@ -3347,8 +3351,10 @@ clip_CSCOUNT(ClipMachine * mp)
 		_clip_retni(mp, 0);
 		return 0;
 	}
+
+	ch = *str1;
 	for (i = 0, j = 0; i < l2; i++)
-		if (*str1 == str2[i])
+		if (ch == str2[i])
 			j++;
 	_clip_retni(mp, j);
 	return 0;

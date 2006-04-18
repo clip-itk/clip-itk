@@ -4,9 +4,12 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log: dbf.c,v $
+	Revision 1.187  2006/02/27 11:54:10  clip
+	rust: avoid some compilers' warnings
+	
 	Revision 1.186  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
-	
+
 	Revision 1.185  2005/05/25 14:30:19  clip
 	rust: failing DBCREATE() when file exists and USEd by another process
 
@@ -2297,7 +2300,9 @@ int dbf_setvalue(ClipMachine* cm,RDD_DATA* rd,int no,ClipVar* vp,int binary,cons
 				long long tmp;
 				double d = vp->n.d;
 #ifdef ARCH_i386
-				(*(long long*)&d)++;
+				long long *lld = (long long*)&d;
+
+				(*lld)++;
 #endif
 				tmp = d*10000;
 				memcpy(rd->record+rd->fields[no].offs,&tmp,8);

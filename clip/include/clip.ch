@@ -624,4 +624,6 @@
 #command WINEXEC <*cmd*>            => __winexec( #<cmd> )
 #command WINEXEC ( <c> )            => __winexec( <c> )
 
+#translate millisec( <v1> )         => sleep(<v1>/1000)
+
 #endif

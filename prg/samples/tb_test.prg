@@ -5,6 +5,10 @@
 
 
 parameters nfunc, dbf , index
+
+local i,j, col_names, atest, fields, m, m2, h
+local error, bSaveHandler
+
 if nfunc==NIL
    TEXT
 

@@ -141,7 +141,7 @@ $DESCRIPTION$
      LOADBLOCK() loades byte-code file <sFileName> and returns code block.
      Byte-code file can be created:
 
-     clip -P filename.prg
+     clip -p filename.prg
 
      The rules and structure of filename.prg must be corresponded are rules
      for string from function <link linkend="functionCOMPILESTRING">COMPILESTRING()</link>.
@@ -150,7 +150,7 @@ $LANG_RU$
      LOADBLOCK() загружает байт-код файл <sFileName> и возвращает кодовый блок.
      Байт-код файл может быть создан:
 
-     clip -P filename.prg
+     clip -p filename.prg
 
      Правила и структура файла filename.prg должны соответствовать правилам для
      строки из функции <link linkend="functionCOMPILESTRING">COMPILESTRING()</link>.

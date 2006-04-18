@@ -2,11 +2,13 @@ STATIC sRootPath := "/var/www"
 STATIC sSrcDir := "."
 STATIC sHtml
 
+field name, title
+
 PROCEDURE Main
 	LOCAL vars := getenv()
 	LOCAL str := ""
 	LOCAL i := 0
-	LOCAL t
+	LOCAL t, e
 
 	SET TRANSLATE PATH OFF
 

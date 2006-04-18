@@ -4,9 +4,15 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log: cdx.c,v $
+	Revision 1.160  2006/02/27 11:54:09  clip
+	rust: avoid some compilers' warnings
+	
+	Revision 1.159  2005/12/26 15:15:26  clip
+	rust: fix for gcc 4
+
 	Revision 1.158  2005/11/30 13:58:17  clip
 	rust: minor fix in cdx_setscope()
-	
+
 	Revision 1.157  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
 
@@ -1353,7 +1359,7 @@ static int _cdx_dupbytes(void* key1,void* key2,int len){
 
 static int _cdx_leaf2split(RDD_ORDER* ro,CDX_LEAF* leaf,void* keys,int pos,void* key,int len,unsigned int recno,int* addbytes){
 	int free = _rdd_ushort(leaf->free);
-	int dup,trail;
+	int dup,trail = 0;
 
 	*addbytes = 0;
 	free -= leaf->bytes;
@@ -3741,14 +3747,16 @@ cont:
 static unsigned long long _cdx_longlong(double d){
 	int i;
 	unsigned long long res;
+	unsigned char *cd = (unsigned char*)&res;
+	unsigned int *id = (unsigned int*)&res;
 
 	for(i=0;i<8;i++)
 		((unsigned char*)&res)[i] = ((unsigned char*)&d)[7-i];
 	if(d < 0){
-		((unsigned int*)&res)[0] = ~(((unsigned int*)&res)[0]);
-		((unsigned int*)&res)[1] = ~(((unsigned int*)&res)[1]);
+		id[0] = ~(id[0]);
+		id[1] = ~(id[1]);
 	} else {
-		((unsigned char*)&res)[0] = ((unsigned char*)&res)[0]^0x80;
+		cd[0] = cd[0]^0x80;
 	}
 	return res;
 }
@@ -3757,16 +3765,19 @@ static double _cdx_double(unsigned long long l){
 	int i;
 	double d;
 	unsigned long long ll = l;
+	unsigned char *cl = (unsigned char*)&l;
+	unsigned char *cd = (unsigned char*)&d;
+	unsigned int *il = (unsigned int*)&l;
 
-	((unsigned char*)&l)[0] = ((unsigned char*)&l)[0]^0x80;
+	cl[0] = cl[0]^0x80;
 	for(i=0;i<8;i++)
-		((unsigned char*)&d)[i] = ((unsigned char*)&l)[7-i];
+		cd[i] = cl[7-i];
 	if(ll!=_cdx_longlong(d)){
-		((unsigned char*)&l)[0] = ((unsigned char*)&l)[0]^0x80;
-		((unsigned int*)&l)[0] = ~(((unsigned int*)&l)[0]);
-		((unsigned int*)&l)[1] = ~(((unsigned int*)&l)[1]);
+		cl[0] = cl[0]^0x80;
+		il[0] = ~(il[0]);
+		il[1] = ~(il[1]);
 		for(i=0;i<8;i++)
-			((unsigned char*)&d)[i] = ((unsigned char*)&l)[7-i];
+			cd[i] = cl[7-i];
 	}
 	return d;
 }
@@ -3831,9 +3842,11 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 		}
 		case NUMERIC_t:{
 			if(ro->type == 'X'){
+				char *cres = (char*)res;
 				*(char*)res = type_weight(NUMERIC_t);
 				*(((char*)res)+1) = 0;
-				((char*)res)++;
+				cres++;
+				res = (void*)cres;
 			}
 			if(var->n.d == 0)
 				var->n.d = 0;
@@ -3842,16 +3855,20 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 		}
 		case DATE_t:{
 			if(ro->type == 'X'){
+				char *cres = (char*)res;
 				*(char*)res = type_weight(DATE_t);
-				((char*)res)++;
+				cres++;
+				res = (void*)cres;
 			}
 			*(unsigned long long*)res = _cdx_longlong((double)var->d.julian);
 			break;
 		}
 		case DATETIME_t:{
 			if(ro->type == 'X'){
+				char *cres = (char*)res;
 				*(char*)res = type_weight(DATETIME_t);
-				((char*)res)++;
+				cres++;
+				res = (void*)cres;
 			}
 			_rdd_put_backuint((unsigned char*)res,var->dt.julian);
 			_rdd_put_backuint((unsigned char*)res+4,var->dt.time);
@@ -3859,8 +3876,10 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 		}
 		case LOGICAL_t:{
 			if(ro->type == 'X'){
+				char *cres = (char*)res;
 				*(char*)res = type_weight(LOGICAL_t);
-				((char*)res)++;
+				cres++;
+				res = (void*)cres;
 			}
 			*(char*)res = var->l.val?'T':'F';
 			break;

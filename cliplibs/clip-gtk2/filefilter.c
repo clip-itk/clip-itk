@@ -144,7 +144,7 @@ clip_GTK_FILEFILTERADDCUSTOM(ClipMachine * cm)
         C_object  *cfilter = _fetch_co_arg(cm);
         GtkFileFilterFlags flags = _clip_parni(cm, 2);
         ClipVar      *func = _clip_spar(cm, 3);
-        C_var           *c;
+        C_var           *c = 0;
 
 	CHECKCOBJ(cfilter, GTK_IS_FILE_FILTER(cfilter->object));
         CHECKARG(2, NUMERIC_t); CHECKOPT2(3, PCODE_t, CCODE_t);

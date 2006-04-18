@@ -7,6 +7,11 @@
 #define LF			CHR(10)
 #define CHUNKSIZE	1024
 
+memvar vars, recurse, stopparsing
+memvar html, ifdeep, ifyes, ifanyyes
+memvar whiledeep, whilestack, whileyes, conn
+memvar rdbms, host, login, passwd, rs
+
 PROCEDURE Main()
 
 	LOCAL srcfile
@@ -176,7 +181,7 @@ FUNCTION ParseCommand(I,done,brk,nxt)
 	LOCAL terms
 	LOCAL data
 	LOCAL query
-	LOCAL r
+	LOCAL r,e
 	LOCAL borders
 	LOCAL rec
 	LOCAL err

@@ -1,5 +1,8 @@
 /*
 	$Log: dbtcp_clip.c,v $
+	Revision 1.11  2006/03/23 10:41:06  clip
+	rust: BLOB functions for PG (thanks Slava Zanko <slavaz@cis.by>)
+	
 	Revision 1.9  2004/02/26 12:59:55  clip
 	rust: bindpars with NIL
 	
@@ -127,7 +130,18 @@ static SQLVTBL vtbl =
 	dbtcp_start,
 	dbtcp_commit,
 	dbtcp_rollback,
-	dbtcp_fetch
+	dbtcp_fetch,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
+
 };
 
 void dbtcp_bindpars(DBTCP_STMT* stmt,ClipVar* ap){

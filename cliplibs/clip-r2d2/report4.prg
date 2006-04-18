@@ -30,17 +30,23 @@ local k_list, d_list, arefs:={}, atree:={}
 		account := upper(_query:account)
 	endif
 	if "URN" $ _query
-	         urn := _query:URN
+		 urn := _query:URN
 	endif
-				 
+
 
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
-	endif
+
+
+        if "ACC01" $ _query .and. !empty(_query:acc01)
+            set("ACC01",_query:acc01)
+        endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+            set("ACC00",_query:acc00)
+        endif
+							
+							
 
 	if empty(account) .or. empty(beg_date) .or. empty(end_date)
 		cgi_xml_header()
@@ -66,7 +72,7 @@ local k_list, d_list, arefs:={}, atree:={}
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -79,7 +85,7 @@ local k_list, d_list, arefs:={}, atree:={}
 		return
 	endif
 
-	oDep02 := codb_needDepository("GBL0201")
+	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: GBL0201" )
 		return

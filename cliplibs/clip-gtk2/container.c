@@ -122,7 +122,7 @@ clip_GTK_CONTAINERADDWITHPROPERTIES(ClipMachine * cm)
 		pname[0], pname[1], pname[2], pname[3], pname[4], pname[5],
 		pname[6], pname[7], pname[8], pname[9], pname[10], pname[11],
 		pname[12], pname[13], pname[14], pname[15], pname[16], pname[17],
-		pname[18], pname[19]);
+		pname[18], pname[19], NULL);
 	return 0;
 err:
 	return 1;
@@ -190,7 +190,7 @@ clip_GTK_CONTAINERGETCHILDREN (ClipMachine *cm)
         //memset(cv, 0, sizeof(cv));
         for (l=0; list; list = g_list_next(list), l++)
         {
-        	C_widget *cwid;
+        	C_widget *cwid = 0;
                 GtkWidget *wid;
                 wid = (GtkWidget *)list->data;
                 if (wid)
@@ -258,7 +258,7 @@ clip_GTK_CONTAINERFOREACH (ClipMachine *cm)
 {
 	C_widget *ccon = _fetch_cw_arg(cm);
 	ClipVar *cfunc = _clip_spar(cm,2);
-	C_var *c;
+	C_var *c = 0;
 
 	CHECKCWID(ccon,GTK_IS_CONTAINER);
 	CHECKARG2(2,CCODE_t,PCODE_t);
@@ -408,7 +408,7 @@ clip_GTK_CONTAINERCHILDGET(ClipMachine * cm)
 		pname[0], pname[1], pname[2], pname[3], pname[4], pname[5],
 		pname[6], pname[7], pname[8], pname[9], pname[10], pname[11],
 		pname[12], pname[13], pname[14], pname[15], pname[16], pname[17],
-		pname[18], pname[19]);
+		pname[18], pname[19], NULL);
 
         n = _clip_parinfo(cm, 0);
 	for (i=3; i<n; i++)
@@ -444,7 +444,7 @@ clip_GTK_CONTAINERCHILDSET(ClipMachine * cm)
 		pname[0], pname[1], pname[2], pname[3], pname[4], pname[5],
 		pname[6], pname[7], pname[8], pname[9], pname[10], pname[11],
 		pname[12], pname[13], pname[14], pname[15], pname[16], pname[17],
-		pname[18], pname[19]);
+		pname[18], pname[19], NULL);
 
 	return 0;
 err:
@@ -521,7 +521,7 @@ clip_GTK_CONTAINERFORALL (ClipMachine *cm)
 {
 	C_widget *ccon = _fetch_cw_arg(cm);
 	ClipVar *cfunc = _clip_spar(cm,2);
-	C_var *c;
+	C_var *c = 0;
 
 	CHECKCWID(ccon,GTK_IS_CONTAINER);
 	CHECKARG2(2,CCODE_t,PCODE_t);

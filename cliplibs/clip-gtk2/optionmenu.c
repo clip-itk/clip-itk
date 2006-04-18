@@ -62,7 +62,7 @@ int
 clip_GTK_OPTIONMENUGETMENU(ClipMachine * cm)
 {
 	C_widget *coptmenu = _fetch_cw_arg(cm);
-        C_widget *cmenu;
+        C_widget *cmenu = 0;
         GtkWidget *menu;
         CHECKCWID(coptmenu,GTK_IS_OPTION_MENU);
         menu = gtk_option_menu_get_menu(GTK_OPTION_MENU(coptmenu->widget));

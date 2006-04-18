@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
+/*									   */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
 /*   Authors: 								   */
 /*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
@@ -26,7 +26,7 @@ function UIWindow( caption, parent, name, close, resizeable )
 	obj:closeFlag	:= close
 	obj:className	:= "UIWindow"
 	obj:parent	:= parent
- 	obj:name	:= name
+	obj:name	:= name
 	obj:menu	:= NIL
 	obj:toolbar	:= NIL
 	obj:statusbar	:= NIL
@@ -35,7 +35,7 @@ function UIWindow( caption, parent, name, close, resizeable )
 	obj:valueTypes	:= map()
 	obj:objId	:= NIL
 	obj:origObj	:= NIL
-        obj:creator	:= NIL
+	obj:creator	:= NIL
 	obj:returnAction := NIL
 	obj:objClass	:= ""
 	obj:objDep	:= ""
@@ -47,7 +47,7 @@ function UIWindow( caption, parent, name, close, resizeable )
 	obj:childSpace	:= NIL
 	obj:menuChildWindow := NIL
 	obj:widget	:= map()
-	
+
 	obj:menu 	:= NIL
 	obj:toolbar	:= NIL
 	obj:statusbar	:= NIL
@@ -92,14 +92,14 @@ function UIChildWindow( caption, parent, name )
 	endif
 	obj := driver:createChildWindow( caption, parent )
 	obj:className	:= "UIChildWindow"
-        obj:name	:= name
+	obj:name	:= name
 	obj:widget	:= map()
 	obj:value	:= map()
 	obj:valueNames	:= array(0)
 	obj:valueTypes	:= map()
 	obj:objId	:= NIL
 	obj:origObj	:= NIL
-        obj:creator	:= NIL
+	obj:creator	:= NIL
 	obj:returnAction := NIL
 	obj:objClass	:= ""
 	obj:objDep	:= ""
@@ -120,8 +120,8 @@ function UIChildWindow( caption, parent, name )
 return obj
 
 function _recover_UICHILDWINDOW( obj )
-        obj:add		:= @ui_add()
-        obj:addEnd	:= @ui_addEnd()
+	obj:add		:= @ui_add()
+	obj:addEnd	:= @ui_addEnd()
 	obj:close	:= @ui_close()
 	obj:setCaption  := @ui_setChildCaption()
 return obj
@@ -159,12 +159,12 @@ return obj
 
 /* Open dialog box */
 static function ui_dialogBox(self, caption, text, buttons, buttonNames, action, icon )
-	local win:=NIL, g, vb, lside, hb, a, label, m, i, gI
+	local win:=NIL, g, vb, lside, hb, a, b, label, m, i, gI
 	win := UIWindow( caption, self, "dialogBox", .F. )
 	if win == NIL
 		return NIL
 	endif
-        win:creator 	 := self
+	win:creator 	 := self
 	win:returnAction := action
 	if valtype(buttons) != "A"
 		buttons := iif(buttons==NIL,"{|| {'OK'} }","{|| {"+buttons+"} }")
@@ -188,7 +188,7 @@ static function ui_dialogBox(self, caption, text, buttons, buttonNames, action, 
 	lside := UIHBox()
 	vb:add(lside)
 	lside:setSpacing(10)
-	
+
 	/*
 	// Auto icon
 	if valtype(icon) == 'U'
@@ -197,7 +197,7 @@ static function ui_dialogBox(self, caption, text, buttons, buttonNames, action, 
 		else
 			icon := IMG_QUESTION
 		endif
-	
+
 	endif
 	*/
 	// Add icon if specified
@@ -227,17 +227,17 @@ return {|| win:close(), eval(action, gId) }
 
 /* Set values to form fields */
 static function ui_setObj(self, obj)
-        local w, val, a, refObj, tref, ref
-	
+	local i, w, val, a, refObj, tref, ref
+
 	if valtype(obj) != 'O'
-        	return NIL
+		return NIL
 	endif
-	
+
 	/* Store original object */
 	self:origObj := map()
-	
+
 	for i in self:valueNames
-                if at(i,"\.") != 0
+		if at(i,"\.") != 0
 			a := split(i,"\.")
 			//?? "set foreign object attribute:",a,chr(10)
 			refObj := obj
@@ -250,8 +250,8 @@ static function ui_setObj(self, obj)
 				tref := refObj[upper(ref)]
 				if valtype(tref) == "O"
 					refObj := tref
-				elseif .not. empty(s) .and. valtype(tref) == "C"
-					refObj := s:getObject(tref)
+				elseif .not. empty(tref) .and. valtype(tref) == "C"
+					refObj := tref:getObject(tref)
 				else
 					loop
 				endif
@@ -263,7 +263,7 @@ static function ui_setObj(self, obj)
 			?? "window:setObj(): item '"+i+"' doesn't exist as object attribute&\n"
 			loop
 		endif
-               	w := self:value[i]
+		w := self:value[i]
 		if .not. empty(w)
 //			?? "&\tset",i,"=",valtype(val),val,chr(10)
 			self:origObj[upper(i)] := val
@@ -275,7 +275,7 @@ return NIL
 
 /* Get object from form fields */
 static function ui_getObj(self)
-        local a, i, obj := map(), v, dateFormat:="dd.mm.yy"
+	local a, i, obj := map(), v, dateFormat:="dd.mm.yy"
 	obj:id := self:objId
 	a := self:getValues()
 	for i in a
@@ -367,7 +367,7 @@ return NIL
 /* Set window placement: .T. if centered, .F. - if not */
 static function ui_setPlacement( self, centered )
 	if .not. empty(centered)
-        	driver:setWindowPlacement( self, centered )
+		driver:setWindowPlacement( self, centered )
 	endif
 return NIL
 
@@ -389,25 +389,25 @@ return NIL
 /* Set window icon */
 static function ui_setIcon( self, pic )
 	if empty(pic)
-        	pic := UIImage()
+		pic := UIImage()
 	endif
 	driver:setWindowIcon( self, pic )
 return NIL
 
 static function ui_setName(self, name, o)
 	local i, nArr, vType:='string'
-        if valtype(o) != "O" .or. .not. "CLASSNAME" $ o
+	if valtype(o) != "O" .or. .not. "CLASSNAME" $ o
 		return NIL
 	endif
 	if ascan({"UIEdit","UIEditText","UIComboBox","UICheckBox","UIButton","UILabel","UIRadioButton","UISlider"},o:className) != 0
-		
+
 		// Extract type from name
 		nArr := split(name,':')
 		if len(nArr) > 1
 			name  := nArr[1]
 			vType := lower(nArr[2])
 		endif
-		
+
 		self:value[name] := o
 		self:valueTypes[name] := vType
 		aadd( self:valueNames, name )
@@ -423,7 +423,7 @@ static function ui_setValues(self, values)
 	local i, w, v
 	for i in values
 		w := i[1]
-                v := i[2]
+		v := i[2]
 		w:setValue( v )
 	next
 return 0
@@ -433,8 +433,8 @@ static function ui_getValues(self)
 	local i, w, v, values := array(0)
 	for i in self:valueNames
 		w := self:value[i]
-                if at(i,"\.") == 0 .and. "GETVALUE" $ w  // Only object's field
-	                v := w:getValue()
+		if at(i,"\.") == 0 .and. "GETVALUE" $ w  // Only object's field
+			v := w:getValue()
 			aadd(values, { i, v } )
 		endif
 	next
@@ -442,9 +442,9 @@ return values
 
 /* Get value from widget defined by its name */
 static function ui_val(self, name)
-        local o:=mapget(self:value,name,NIL)
+	local o:=mapget(self:value,name,NIL)
 	if o == NIL
-        	return NIL
+		return NIL
 	endif
 return o:getValue()
 
@@ -464,7 +464,7 @@ return NIL
 
 /* Return values to another form */
 static function ui_return(self, val)
-        local act
+	local act
 //        ?? "RETURN value:",valtype(val), val,"|", "RETURNACTION" $ self, valtype(self:returnAction), chr(10)
 	if "RETURNACTION" $ self .and. valtype(self:returnAction) == "B"
 		act := self:returnAction
@@ -475,19 +475,19 @@ return NIL
 /* Compare values in windows with original object */
 static function ui_isChanged(self)
 	local orig, frm, i, mk, e, name, ind
-	
+
 	orig := self:origObj
 	frm  := self:getObj()
-	
+
 	// Check compared objects
 	if "ID" $ frm
 		orig:id := frm:id
-	endif	
+	endif
 	if COMPARE_DEBUG
 		?? "FORM:", frm, chr(10)
 		?? "ORIGINAL:", orig, chr(10)
 	endif
-		
+
 	if self:objId == NIL
 		// object never is been stored
 		// check non-empty fields
@@ -552,14 +552,14 @@ return
 
 /* Set action to shortcut in specified window  */
 static function ui_setkeyEvent(self, cKey, action)
-	local oKey
+	local oKey,i
 	if valtype(cKey) == "C" .or. valtype(cKey) == "N"
 		oKey := driver:getKeyCode(cKey, action)
 	else
 		oKey := cKey
 	endif
-	
-	// TODO: compare mods too 
+
+	// TODO: compare mods too
 	if (i := ascan(self:keyEvents, {|ev| ev:keyval == oKey:keyval})) <> 0
 		self:keyEvents[i]:action := action
 	else
@@ -576,7 +576,7 @@ static function ui_unSetKeyEvent(self, cKey)
 	local oKey, i
 
 	oKey := driver:getKeyCode(cKey)
-	
+
 	if (i := ascan(self:keyEvents, {|ev| ev:keyval == oKey:keyval})) <> 0
 		adel(self:keyEvents, i)
 		asize(self:keyEvents, len(self:keyEvents)-1)

@@ -1,0 +1,430 @@
+$FUNCNAME$
+	xml_XPath()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Execute XPath query.
+$LANG_RU$
+	Выполнить запрос XPath.
+$SYNTAX$
+	xml_XPath(<context>,<path>)	--> <Result>
+$ARGUMENTS$
+	<context>	- XMLTag object. Context tag.
+	<path>		- String. XPath query.
+$LANG_RU$
+	<context>	- Объект XMLTag. Тег контекста.
+	<path>		- Строка. Запрос XPath.
+$RETURNS$
+	XPath query result.
+$LANG_RU$
+	Результат запроса XPath.
+$EXAMPLES$
+	f := XMLTree()
+	f:parseFile( "component.xml" )
+	aRes := xml_XPath( f:getRoot(), "/requires/*" )
+$SEEALSO$
+$END$
+ 
+$FUNCNAME$
+	xml_errorString()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Get XML parse error description.
+$LANG_RU$
+	Получить описание ошибки обработки XML.
+$SYNTAX$
+	xml_errorString(<parser>)	--> <cError>
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+$RETURNS$
+	XML parse error description.
+$LANG_RU$
+	Описание ошибки обработки XML.
+$EXAMPLES$
+	? xml_errorString( parser )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_getCurrentColumnNumber()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Get current column number in parsed XML file.
+$LANG_RU$
+	Получить номер текущего столбца в обрабатываемом файле XML.
+$SYNTAX$
+	xml_getCurrentColumnNumber(<parser>)	--> <nColumn>
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+$RETURNS$
+	Current column number in parsed XML file.
+$LANG_RU$
+	Номер текущего столбца в обрабатываемом файле XML.
+$EXAMPLES$
+	? xml_getCurrentColumnNumber( parser )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_getCurrentLineNumber()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Get current line number in parsed XML file.
+$LANG_RU$
+	Получить номер текущей строки в обрабатываемом файле XML.
+$SYNTAX$
+	xml_getCurrentLineNumber(<parser>)	--> <nLine>
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+$RETURNS$
+	Current line number in parsed XML file.
+$LANG_RU$
+	Номер текущей строки в обрабатываемом файле XML.
+$EXAMPLES$
+	? xml_getCurrentLineNumber( parser )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_getErrorCode()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Get XML parse error code.
+$LANG_RU$
+	Получить код ошибки обработки XML.
+$SYNTAX$
+	xml_getErrorCode(<parser>)	--> <cError>
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+$RETURNS$
+	XML parse error code.
+$LANG_RU$
+	Код ошибки обработки XML.
+$EXAMPLES$
+	? xml_getErrorCode( parser )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_parse()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Parse string.
+$LANG_RU$
+	Обработать строку.
+$SYNTAX$
+	xml_parse(<parser>,<cString>,<nLen>,<isFinal>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<cString>	- String. Buffer with string from XML file.
+	<nLen>		- Number. Length of string.
+	<isFinal>	- Boolean. Flag for end XML stream.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<cString>	- Строка. Буфер со строкой из файла XML.
+	<nLen>		- Число. Длина строки.
+	<isFinal>	- Логическое значение. Признак заверщения потока из файла XML.
+$EXAMPLES$
+	parser := xml_ParserCreate()
+
+	xml_SetElementHandler( parser, @myStartElement(), @myEndElement() )
+	xml_Parse( parser, string, len( string ), .T. )
+		
+	if xml_GetErrorCode( parser ) <> 0
+		? xml_ErrorString( parser ) + ;
+		" at line "+alltrim( str( xml_GetCurrentLineNumber( parser ) ) ) + ;
+		", column "+alltrim( str( xml_GetCurrentColumnNumber( parser ) ) )
+	endif
+	xml_parserFree( parser )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_parserCreate()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Create parser object.
+$LANG_RU$
+	Создать объект парсера.
+$SYNTAX$
+	xml_parserCreate([<encoding>])	--> <oParser>
+$ARGUMENTS$
+	<encoding>	- String. XML encoding.
+$LANG_RU$
+	<encoding>	- Строка. Кодировка XML.
+$RETURNS$
+	Parser object.
+$LANG_RU$
+	Объект парсера.
+$EXAMPLES$
+	xml_parserCreate()
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_parserFree()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Free parser object.
+$LANG_RU$
+	Освободить память от объекта парсера.
+$SYNTAX$
+	xml_parserFree(<parser>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+$EXAMPLES$
+	xml_parserFree( parser )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setCDataSectionHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle start and end of CDATA block.
+$LANG_RU$
+	Подключить функции обработки начала и конца блока CDATA.
+$SYNTAX$
+	xml_setCDataSectionHandler(<parser>,<fStart>,<fEnd>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fStart>	- Function or code block. Handle function for start of CDATA block. Passed parameters: <userData> - user data.
+	<fEnd>		- Function or code block. Handle function for end of CDATA block. Passed parameters: <userData> - user data.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fStart>	- Функция или блок кода. Функция обработчика начала блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
+	<fEnd>		- Функция или блок кода. Функция обработчика конца блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
+$EXAMPLES$
+	xml_setCDataSectionHandler( parser, @myStartCData(), @myEndCData() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setCharacterDataHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle text block.
+$LANG_RU$
+	Подключить функции обработки блоков текста.
+$SYNTAX$
+	xml_setCharacterDataHandler(<parser>,<fText>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fText>		- Function or code block. Handle function for text block. Passed parameters: <userData> - user data, <cStr> - text, <nLen> - text length. 
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fText>		- Функция или блок кода. Функция обработчика текста. Передаваемые параметры: <userData> - пользовательские данные, <cStr> - текст, <nLen> - длина текста.
+$EXAMPLES$
+	xml_setCharacterDataHandler( parser, @myText() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setCommentHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle comments.
+$LANG_RU$
+	Подключить функции обработки комментариев.
+$SYNTAX$
+	xml_setCommentHandler(<parser>,<fComments>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fComments>		- Function or code block. Handle function for comments. Passed parameters: <userData> - user data, <cStr> - comment text. 
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fComments>		- Функция или блок кода. Функция обработчика комментариев. Передаваемые параметры: <userData> - пользовательские данные, <cStr> - текст комментариев.
+$EXAMPLES$
+	xml_setCommentHandler( parser, @myComments() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setDefaultHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle text which wouldn't otherwise be handled.
+$LANG_RU$
+	Подключить функции обработки текста, не обрабатываемого другими обработчиками.
+$SYNTAX$
+	xml_setDefaultHandler(<parser>,<fText>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fText>		- Function or code block. Handle function for text which wouldn't otherwise be handled. Passed parameters: <userData> - user data, <cStr> -  text, <nLen> - text length. 
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fText>		- Функция или блок кода. Функция обработчика текста, не обрабатываемого другими обработчиками. Передаваемые параметры: <userData> - пользовательские данные, <cStr> - текст, <nLen> - длина текста.
+$EXAMPLES$
+	xml_setDefaultHandler( parser, @myOtherText() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setElementHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle start and end tags.
+$LANG_RU$
+	Подключить функции обработки открывающих и закрывающих тегов.
+$SYNTAX$
+	xml_setElementHandler(<parser>,<fStart>,<fEnd>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fStart>	- Function or code block. Handle function for start tag. Passed parameters: <userData> - user data, <cName> - tag name, <aAttrs> - array of pair attribute name and its value.
+	<fEnd>		- Function or code block. Handle function for end tag. Passed parameters: <userData> - user data, <cName> - tag name.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fStart>	- Функция или блок кода. Функция обработчика открывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега, <aAttrs> - массив пар атрибутов и их значений.
+	<fEnd>		- Функция или блок кода. Функция обработчика закрывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега.
+$EXAMPLES$
+	xml_setElementHandler( parser, @myStartElement(), @myEndElement() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setParamEntityParsing()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set mode for parsing of parameter entities.
+$LANG_RU$
+	Установить режим обработки включений (entity).
+$SYNTAX$
+	xml_setParamEntityParsing(<parser>,<mode>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<mode>		- Number. This enables parsing of parameter entities, including the external parameter entity that is the external DTD subset, according to <mode>. Include clip-expat.ch and see Expat documentation.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<mode>		- Число. Режим обработки включений (entity), в том числе и определённых в DTD. Включите заголовочный файл clip-expat.ch и обратитесь к документации по Expat.
+$EXAMPLES$
+	xml_setParamEntityParsing( parser, XML_PARAM_ENTITY_PARSING_NEVER )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setStartCDataSectionHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle start of CDATA block.
+$LANG_RU$
+	Подключить функции обработки начала блока CDATA.
+$SYNTAX$
+	xml_setStartCDataSectionHandler(<parser>,<fStart>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fStart>	- Function or code block. Handle function for start of CDATA block. Passed parameters: <userData> - user data.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fStart>	- Функция или блок кода. Функция обработчика начала блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
+$EXAMPLES$
+	xml_setStartCDataSectionHandler( parser, @myStartCData() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setEndCDataSectionHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle end of CDATA block.
+$LANG_RU$
+	Подключить функции обработки конца блока CDATA.
+$SYNTAX$
+	xml_setEndCDataSectionHandler(<parser>,<fEnd>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fEnd>		- Function or code block. Handle function for end of CDATA block. Passed parameters: <userData> - user data.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fEnd>		- Функция или блок кода. Функция обработчика конца блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
+$EXAMPLES$
+	xml_setEndCDataSectionHandler( parser, @myEndCData() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setStartElementHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle start tags.
+$LANG_RU$
+	Подключить функции обработки открывающих тегов.
+$SYNTAX$
+	xml_setStartElementHandler(<parser>,<fStart>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fStart>	- Function or code block. Handle function for start tag. Passed parameters: <userData> - user data, <cName> - tag name, <aAttrs> - array of pair attribute name and its value.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fStart>	- Функция или блок кода. Функция обработчика открывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега, <aAttrs> - массив пар атрибутов и их значений.
+$EXAMPLES$
+	xml_setStartElementHandler( parser, @myStartElement() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setEndElementHandler()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set functions for handle end tags.
+$LANG_RU$
+	Подключить функции обработки закрывающих тегов.
+$SYNTAX$
+	xml_setEndElementHandler(<parser>,<fEnd>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<fEnd>		- Function or code block. Handle function for end tag. Passed parameters: <userData> - user data, <cName> - tag name.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<fEnd>		- Функция или блок кода. Функция обработчика закрывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега.
+$EXAMPLES$
+	xml_setEndElementHandler( parser, @myEndElement() )
+$SEEALSO$
+$END$
+
+$FUNCNAME$
+	xml_setUserData()
+$CATEGORY$
+	CLIP-XML
+$SUMMARY$
+	Set user data for parser.
+$LANG_RU$
+	Задать пользовательские данные для парсера.
+$SYNTAX$
+	xml_setUserData(<parser>,<data>)
+$ARGUMENTS$
+	<parser>	- Object created by function xml_ParserCreate().
+	<data>		- Any type. User data for parser.
+$LANG_RU$
+	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<data>		- Любой тип. Пользовательские данные для парсера.
+$EXAMPLES$
+	xml_setUserData( parser, { "user data" } )
+$SEEALSO$
+$END$

@@ -8,6 +8,10 @@
 #include "dbfsql.h"
 #include "error.ch"
 
+#define INV_WRITE               0x00020000
+#define INV_READ                0x00040000
+
+
 static const char subsys[]          = "DBFSQL";
 static const char er_nosql[]        = "No SQL statement";
 static const char er_nostatement[]  = "No statement. PG_PREPARE must be executed first";
@@ -16,6 +20,18 @@ static const char er_badorders[]    = "Bad orders";
 static const char er_start[]        = "Can't start transaction";
 static const char er_commit[]       = "Can't commit transaction";
 static const char er_rollback[]     = "Can't roll transaction back";
+
+static const char er_blob_create[]	= "Can't create Large Object";
+static const char er_blob_open[]        = "Can't open Large Object";
+static const char er_blob_import[]      = "Can't import Large Object";
+static const char er_blob_export[]	= "Can't export Large Object";
+static const char er_blob_write[]	= "Can't write Large Object";
+static const char er_blob_read[]	= "Can't read Large Object";
+static const char er_blob_seek[]	= "Can't seek Large Object";
+static const char er_blob_tell[]	= "Can't tell Large Object";
+static const char er_blob_close[]	= "Can't close Large Object";
+static const char er_blob_unlink[]	= "Can't unlink Large Object";
+
 
 int pg_createconn(ClipMachine* mp);
 
@@ -80,6 +96,19 @@ int pg_commit(ClipMachine* mp,SQLCONN* conn);
 int pg_rollback(ClipMachine* mp,SQLCONN* conn);
 int pg_fetch(ClipMachine* mp,SQLROWSET* rs,int recs,ClipVar* eval,int every,ClipVar* ors);
 
+int pg_lo_create(ClipMachine* mp, SQLCONN* c, unsigned int OID);
+int pg_lo_open(ClipMachine* mp, SQLCONN* c, unsigned int OID, int mode);
+int pg_lo_import(ClipMachine* mp, SQLCONN* c, const char *filename);
+int pg_lo_export(ClipMachine* mp, SQLCONN* c, unsigned int OID, const char *filename);
+int pg_lo_write(ClipMachine* mp, SQLCONN* c, int oid_fd, const char *buffer, int length);
+int pg_lo_read(ClipMachine* mp, SQLCONN* c, int oid_fd, char *buffer, int length);
+int pg_lo_seek(ClipMachine* mp, SQLCONN* c, int oid_fd, int offset, int whence);
+int pg_lo_tell(ClipMachine* mp, SQLCONN* c, int oid_fd);
+int pg_lo_close(ClipMachine* mp, SQLCONN* c, int oid_fd);
+int pg_lo_unlink(ClipMachine* mp, SQLCONN* c, unsigned int OID);
+
+
+
 static SQLVTBL vtbl = {
 	sizeof(PG_ROWSET),
 	pg_destroyconn,
@@ -97,7 +126,17 @@ static SQLVTBL vtbl = {
 	pg_start,
 	pg_commit,
 	pg_rollback,
-	pg_fetch
+	pg_fetch,
+	pg_lo_create,
+	pg_lo_import,
+	pg_lo_export,
+	pg_lo_open,
+	pg_lo_write,
+	pg_lo_read,
+	pg_lo_seek,
+	pg_lo_tell,
+	pg_lo_close,
+	pg_lo_unlink
 };
 
 int clip_INIT_POSTGRES(ClipMachine* mp){
@@ -162,8 +201,8 @@ void pg_bindpars(PG_STMT* stmt,ClipVar* ap){
 	int initlen = strlen(sql);
 	int len = initlen;
 	int i;
-	ClipVar *tp,*vp;
-	char parnamebuf[MAXFIELDNAME+1] = ":";
+	ClipVar *tp,*vp = 0;
+	char parnamebuf[MAXFIELDNAME+2] = ":";
 	char* parname = parnamebuf+1;
 	char* b;
 	char* e;
@@ -1137,5 +1176,189 @@ int pg_rollback(ClipMachine* mp,SQLCONN* c){
 	conn->at = 0;
 	return 0;
 }
+/* ************************************************************************* */
+/*
+  Some functionality for BLOB's (LO - Large Objects)
+*/
+/* ************************************************************************* */
+int pg_lo_create(ClipMachine* mp, SQLCONN* c, unsigned int OID){
+	PG_CONN		*conn = (PG_CONN*)c;
+	Oid		lobjId;
 
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	lobjId = lo_creat(conn->conn, OID);
+	if (lobjId == 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_create);
+		return 1;
+	}
+	_clip_retni(mp, lobjId);
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_open(ClipMachine* mp, SQLCONN* c, unsigned int OID, int mode){
+	PG_CONN		*conn = (PG_CONN*)c;
+	int 		oid_fd;
+	int lo_mode=0;
+	if ((mode&1) == 1) lo_mode |= INV_READ;
+	if ((mode&2) == 2) lo_mode |= INV_WRITE;
 
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	oid_fd = lo_open(conn->conn, OID, lo_mode);
+	if (oid_fd < 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_open);
+		return 1;
+	}
+	_clip_retni(mp,oid_fd);
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_import(ClipMachine* mp, SQLCONN* c, const char *filename){
+	PG_CONN		*conn = (PG_CONN*)c;
+	Oid		lobjId;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	lobjId = lo_import(conn->conn, filename);
+	if (lobjId == 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_import);
+		return 1;
+	}
+	_clip_retni(mp,(unsigned int) lobjId);
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_export(ClipMachine* mp, SQLCONN* c, unsigned int OID, const char *filename){
+	PG_CONN		*conn = (PG_CONN*)c;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	if (lo_export(conn->conn, OID, filename) > 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_export);
+		return 1;
+	}
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_write(ClipMachine* mp, SQLCONN* c, int oid_fd, const char *buffer, int length){
+	PG_CONN		*conn = (PG_CONN*)c;
+	int rt;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	rt = lo_write(conn->conn, oid_fd, (char*)buffer, (size_t) length);
+	if (rt < 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_write);
+		return 1;
+	}
+	_clip_retni(mp,(unsigned int) rt);
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_read(ClipMachine* mp, SQLCONN* c, int oid_fd, char *buffer, int length){
+	PG_CONN		*conn = (PG_CONN*)c;
+	int rt;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	rt = lo_read(conn->conn, oid_fd, buffer, (size_t) length);
+	if (rt < 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_read);
+		return 1;
+	}
+	_clip_retni(mp,(unsigned int) rt);
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_seek(ClipMachine* mp, SQLCONN* c, int oid_fd, int offset, int whence){
+	PG_CONN		*conn = (PG_CONN*)c;
+	int rt;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	switch(whence){
+		case SQLBLOB_SEEKTOP:
+		whence = SEEK_SET;
+		break;
+		case SQLBLOB_SEEKCURRENT:
+		whence = SEEK_CUR;
+		break;
+		case SQLBLOB_SEEKBOTTOM:
+		whence = SEEK_END;
+		break;
+		default:
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_seek);
+			return 1;
+	}
+	rt = lo_lseek(conn->conn, oid_fd, offset, whence);
+	if (rt < 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_seek);
+		return 1;
+	}
+	_clip_retni(mp,(unsigned int) rt);
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_tell(ClipMachine* mp, SQLCONN* c, int oid_fd){
+	PG_CONN		*conn = (PG_CONN*)c;
+	int rt;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	rt = lo_tell(conn->conn, oid_fd);
+	if (rt < 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_tell);
+		return 1;
+	}
+	_clip_retni(mp,(unsigned int) rt);
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_close(ClipMachine* mp, SQLCONN* c, int oid_fd){
+	PG_CONN		*conn = (PG_CONN*)c;
+	int rt;
+
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	rt = lo_close(conn->conn, oid_fd);
+	if (rt < 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_close);
+		return 1;
+	}
+	return 0;
+}
+/* ************************************************************************* */
+int pg_lo_unlink(ClipMachine* mp, SQLCONN* c, unsigned int OID){
+	PG_CONN		*conn = (PG_CONN*)c;
+	int rt;
+	if(!conn->at){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_start);
+		return 1;
+	}
+	rt = lo_unlink(conn->conn, OID);
+	if (rt < 0){
+		_clip_trap_err(mp,0,0,0,subsys,ER_START,er_blob_unlink);
+		return 1;
+	}
+	return 0;
+}
+/* ************************************************************************* */

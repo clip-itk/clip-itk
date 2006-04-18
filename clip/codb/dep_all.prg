@@ -14,7 +14,7 @@ function codb_depAll_Methods(oDict,dep_id)
 	local obj:=map(),tmp
 	obj:classname	:= "CODBDEPOSITORY"
 	obj:id		:= dep_id 	// padl(alltrim(dep_id),codb_info("DEPOSIT_ID_LEN"),"0")
-	tmp:=oDict:getValue(dep_id)
+	tmp		:= oDict:getValue(dep_id)
 	if empty(tmp)
 		obj:error := codb_error(1100)+":"+dep_id
 		obj:number:=space(codb_info("DEPOSIT_ID_LEN"))
@@ -44,6 +44,7 @@ function codb_depAll_Methods(oDict,dep_id)
 	obj:eval	:= @_dep_eval()
 	obj:idList	:= @_dep_IdList() // return object "ID list"
 	obj:getValue	:= @_dep_getValue()
+	obj:delete	:= @_dep_delete()
 	obj:padrObjBody := @_dep_padrObjBody()
 	obj:checkObjBody:= @_dep_checkObjBody()
 	obj:padrBody	:= @_dep_padrBody()
@@ -66,6 +67,15 @@ return self:checkObjBody(oData,class_desc, .t.)
 ************************************************************
 static function _dep_padrBody(self,oData,class_id)
 return self:checkBody(oData,class_id,.t.)
+************************************************************
+static function _dep_delete(self,cId,lErase,class_id)
+	local ret, dFlag := set(_SET_DELETED)
+	taskStop()
+	set(_SET_DELETED, .f.)
+	ret := self:_delete(cId,lErase,class_id)
+	set(_SET_DELETED,dFlag)
+	taskStart()
+return ret
 ************************************************************
 static function _dep_checkObjBody(self,oData,class_desc,lPadr)
 	static bodies := map(),crcs:=map()
@@ -139,30 +149,34 @@ static function _dep_IdList(self,objId,nIndex,sName,sWhere,nCount,deleted,p1,p2)
 return coDb_IdList(self,objId,nIndex,sName,sWhere,nCount,deleted)
 ************************************************************
 static function _dep_GetValue(self,cId,nLocks,version)
-	local ret:=map()
+	local ret:=map(), dFlag := set(_SET_DELETED)
 
 	self:error := ""
 	if !(valtype(cId) =="C")
 		return ret
 	endif
 	cID := padr(cID,codb_info("CODB_ID_LEN"))
-        if !empty(version)
-        	adel(self:__objCache,cId)
+	if !empty(version)
+		adel(self:__objCache,cId)
 	endif
 	if nLocks != NIL
-        	adel(self:__objCache,cId)
+		adel(self:__objCache,cId)
 	endif
 	if cId $ self:__objCache
 		return self:__objCache[cId]
 	endif
 
+	taskStop()
+	set(_SET_DELETED, .f.)
 	ret := self:_getValue(cId,nLocks,version)
+	set(_SET_DELETED,dFlag)
+	taskStart()
 
 	if len(self:__objCache) > CODB_DEP_CACHE
 		codb_cache_minimize(self:__objCache, CODB_DEP_CACHE/4 )
 	endif
-        if empty(ret)
-        	return ret
+	if empty(ret)
+		return ret
 	endif
 	self:__objCache[cId] := ret
 return ret

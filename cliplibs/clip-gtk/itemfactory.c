@@ -81,7 +81,7 @@ clip_GTK_ITEMFACTORYNEW(ClipMachine * cm)
 	C_object      *caccel = _fetch_cobject(cm, _clip_spar(cm, 3));
 	C_object       *citem ;
 	GtkItemFactory  *item ;
-	GtkType		 type ;
+	GtkType		 type = 0;
 
 	CHECKARG(1, NUMERIC_t);
 	CHECKARG(2, CHARACTER_t);

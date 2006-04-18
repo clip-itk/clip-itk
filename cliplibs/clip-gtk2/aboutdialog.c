@@ -580,7 +580,7 @@ int
 clip_GTK_ABOUTDIALOGSETEMAILHOOK(ClipMachine *cm)
 {
         ClipVar    *cfunc = _clip_spar(cm, 1);
-        C_var          *c ;
+        C_var          *c =0;
 
         CHECKARG2(1, CCODE_t, PCODE_t);
 
@@ -596,7 +596,7 @@ int
 clip_GTK_ABOUTDIALOGSETURLHOOK(ClipMachine *cm)
 {
         ClipVar    *cfunc = _clip_spar(cm, 1);
-        C_var          *c ;
+        C_var          *c =0;
 
         CHECKARG2(1, CCODE_t, PCODE_t);
 

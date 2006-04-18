@@ -264,7 +264,7 @@ clip_GTK_BUTTONBOXGETCHILDSECONDARY(ClipMachine * cm)
 	C_widget *cbbox = _fetch_cw_arg(cm);
         ClipVar     *cv = _clip_spar(cm, 2);
         C_widget  *cwid ;
-        GtkWidget  *wid ;
+        GtkWidget  *wid = 0;
 
         CHECKCWID(cbbox,GTK_IS_BUTTON_BOX);
 

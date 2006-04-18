@@ -1,0 +1,283 @@
+$CLASSNAME$
+	XMLTag
+$SUMMARY$
+	Class XMLTag
+$LANG_RU$
+	Класс XMLTag
+$ABOUT$
+	Class of XML tag. This class is used in XML parsing.
+$LANG_RU$
+	Класс описания тега XML. Служит для обработки файлов XML.
+$SYNTAX$
+	XMLTag(<name>)	--> XMLTag object
+$LANG_RU$
+	XMLTag(<name>)	--> Объект XMLTag
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "XMLTag".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "XMLTag".
+
+$METHODNAME$
+	XMLTag()
+$SUMMARY$
+	Constructor. Create tag object.
+$LANG_RU$
+	Конструктор. Создать объект тега.
+$SYNTAX$
+	XMLTag(<name>)	--> XMLTag object
+$ARGUMENTS$
+	<name>		- String. Name of tag.
+$LANG_RU$
+	<name>		- Строка. Имя тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	getName()
+$SUMMARY$
+	Get tag name.
+$LANG_RU$
+	Возвращает имя тега.
+$SYNTAX$
+	getName()	--> <cName>
+$RETURNS$
+	Tag name.
+$LANG_RU$
+	Имя тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	addChild()
+$SUMMARY$
+	Add child tag.
+$LANG_RU$
+	Добавить дочерний тег.
+$SYNTAX$
+	addChild(<tag>,[<position>])
+$ARGUMENTS$
+	<tag>		- XMLTag object. Child tag to be added.
+	<position>	- Number. Tag position.
+$LANG_RU$
+	<tag>		- Объект XMLTag. Добавляемый дочерний тег.
+	<position>	- Число. Позиция добавляемого дочернего тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	removeChild()
+$SUMMARY$
+	Remove child tag.
+$LANG_RU$
+	Удалить дочерний тег.
+$SYNTAX$
+	removeChild(<position>)
+$ARGUMENTS$
+	<position>	- Number. Child tag position.
+$LANG_RU$
+	<position>	- Число. Позиция удаляемого дочернего тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	countChilds()
+$SUMMARY$
+	Get child tag count.
+$LANG_RU$
+	Количество дочерних тегов.
+$SYNTAX$
+	countChilds()	--> <nCount>
+$RETURNS$
+	Number of child tags.
+$LANG_RU$
+	Количество дочерних тегов.
+$ENDMETHOD$
+
+$METHODNAME$
+	getChild()
+$SUMMARY$
+	Get child tag by its number.
+$LANG_RU$
+	Получить дочерний тег по его номеру.
+$SYNTAX$
+	getChild(<position>) --> <oTag>
+$ARGUMENTS$
+	<position>	- Number. Child tag position.
+$LANG_RU$
+	<position>	- Число. Позиция дочернего тега.
+$RETURNS$
+	Child tag.
+$LANG_RU$
+	Дочерний тег.
+$ENDMETHOD$
+
+$METHODNAME$
+	getChilds()
+$SUMMARY$
+	Get all child tags.
+$LANG_RU$
+	Получить все дочерние теги.
+$SYNTAX$
+	getChilds() --> <aTags>
+$RETURNS$
+	Array of child tags.
+$LANG_RU$
+	Массив дочерних тегов.
+$ENDMETHOD$
+
+$METHODNAME$
+	setAttribute()
+$SUMMARY$
+	Set value to attribute.
+$LANG_RU$
+	Присвоить значение атрибуту.
+$SYNTAX$
+	setAttribute(<attrName>,<attrValue>)
+$ARGUMENTS$
+	<attrName>	- String. Attribute name.
+	<attrValue>	- Any type. Attribute value. If type of value is number, boolean or date value will be converted to string.
+$LANG_RU$
+	<attrName>	- Строка. Имя атрибута.
+	<attrValue>	- Любой тип. Значение атрибута. Если тип значения - число, логическое значение или дата, то значение преобразуется в строку.
+$ENDMETHOD$
+
+$METHODNAME$
+	attribute()
+$SUMMARY$
+	Get child tag by its number.
+$LANG_RU$
+	Получить дочерний тег по его номеру.
+$SYNTAX$
+	attribute(<attrName>,<defVal>) --> <cValue>
+$ARGUMENTS$
+	<attrName>	- String. Attribute name.
+	<defVal>	- Any type. Default value for non-existing attribute.
+$LANG_RU$
+	<attrName>	- Строка. Имя атрибута.
+	<defVal>	- Любой тип. Значение по умолчанию для несуществующего атрибута.
+$RETURNS$
+	Attribute value.
+$LANG_RU$
+	Значение атрибута.
+$ENDMETHOD$
+
+$METHODNAME$
+	getAttributes()
+$SUMMARY$
+	Get all attributes with their values.
+$LANG_RU$
+	Получить все атрибуты с их значениями.
+$SYNTAX$
+	getAttributes() --> <aAttributes>
+$RETURNS$
+	Two-dimensional array of pair attribute and value.
+$LANG_RU$
+	Двумерный массив пар атрибутов и их значений.
+$ENDMETHOD$
+
+$METHODNAME$
+	removeAttribute()
+$SUMMARY$
+	Remove attribute.
+$LANG_RU$
+	Удалить атрибут.
+$SYNTAX$
+	removeAttribute(<attrName>)
+$ARGUMENTS$
+	<attrName>	- String. Attribute name.
+$LANG_RU$
+	<attrName>	- Строка. Имя атрибута.
+$ENDMETHOD$
+
+$METHODNAME$
+	setText()
+$SUMMARY$
+	Set text into the tag.
+$LANG_RU$
+	Установить текст тега.
+$SYNTAX$
+	setText(<text>)
+$ARGUMENTS$
+	<text>	- String. Text into the tag.
+$LANG_RU$
+	<text>	- Строка. Текст тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	getText()
+$SUMMARY$
+	Get text into the tag.
+$LANG_RU$
+	Получить текст тега.
+$SYNTAX$
+	getText()	--> <cText>
+$RETURNS$
+	Text into the tag.
+$LANG_RU$
+	Текст тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	getParent()
+$SUMMARY$
+	Get parent tag.
+$LANG_RU$
+	Получить родительский тег.
+$SYNTAX$
+	getParent()	--> <oParentTag>
+$RETURNS$
+	Parent tag.
+$LANG_RU$
+	Родительский тег.
+$ENDMETHOD$
+
+$METHODNAME$
+	dump()
+$SUMMARY$
+	Dump current tag and all its children to XML format.
+$LANG_RU$
+	Выдать строку в формате XML для текущего тега и всех его дочерних тегов.
+$SYNTAX$
+	dump([<encoding>],[<level>])	--> <cXML>
+$ARGUMENTS$
+	<encoding>	- String. Text encoding.
+	<level>		- Number. Indent level (*4 spaces). Default value is 0.
+$LANG_RU$
+	<encoding>	- Строка. Кодировка текста.
+	<level>		- Число. Уровень отступа (*4 пробела). Значение по умолчанию - 0.
+$RETURNS$
+	Tag and all its children in XML format.
+$LANG_RU$
+	Текущий тег и все его дочерние теги в формате XML.
+$ENDMETHOD$
+
+$METHODNAME$
+	XPath()
+$SUMMARY$
+	Execute XPath query with the current tag context.
+$LANG_RU$
+	Выполнить запрос XPath в контексте текущего тега.
+$SYNTAX$
+	XPath()	--> <Result>
+$RETURNS$
+	XPath query result.
+$LANG_RU$
+	Результат запроса XPath.
+$ENDMETHOD$
+
+$EXAMPLES$
+	f := XMLTree()
+	f:parseFile( "component.xml" )
+	tag := f:getRoot()
+	tag:setAttribute( "version", "1.1" )
+	?? f:dump()
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
+
+
+

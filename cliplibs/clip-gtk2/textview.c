@@ -418,7 +418,7 @@ clip_GTK_TEXTVIEWGETITERATLOCATION(ClipMachine * cm)
 	C_widget   *cview = _fetch_cw_arg(cm);
         gint            x = _clip_parni(cm, 2);
         gint            y = _clip_parni(cm, 3);
-        GtkTextIter *iter;
+        GtkTextIter *iter = 0;
         C_object   *citer;
 
 	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
@@ -699,7 +699,7 @@ clip_GTK_TEXTVIEWADDCHILDATANCHOR(ClipMachine * cm)
 {
 	C_widget       *cview = _fetch_cw_arg(cm);
         C_widget      *cchild = _fetch_cwidget(cm, _clip_spar(cm, 2));
-        GtkTextChildAnchor *anchor ;
+        GtkTextChildAnchor *anchor = 0;
         C_object          *canchor ;
 
 	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);
@@ -1278,7 +1278,7 @@ clip_GTK_TEXTVIEWGETITERATPOSITION(ClipMachine * cm)
         gint            x = _clip_parni(cm, 3);
         gint            y = _clip_parni(cm, 4);
         gint     trailing ;
-        GtkTextIter *iter;
+        GtkTextIter *iter = 0;
         C_object   *citer;
 
 	CHECKOPT2(1, MAP_t, NUMERIC_t); CHECKCWID(cview, GTK_IS_TEXT_VIEW);

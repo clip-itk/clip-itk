@@ -1,0 +1,84 @@
+
+                Clip-Glade2 - (c) Sergio Zayas Toré, 2.005
+                --------------------------------------------
+
+
+License
+--------
+        Clip-Glade2 is under GNU GPL license, see COPYING file.
+
+
+Description
+-----------
+       Clip-Glade2 is a library for Clip compiler (http://www.itk.ru).
+       Allow to make ease GUI development using libGlade inside a Clip application.
+
+
+Requeriments
+------------
+       For build Clip-Glade2 library :
+           1.- Clip compiler with gtk2 support (clip-gtk2).
+           2.- libglade2 library installed.
+           3.- libglade2-devel library installed.
+
+       For build and execute Clip applications :
+           1.- Clip compiler with gtk2 support (clip-gtk2).
+           2.- libglade2 library installed.
+
+
+Building Clip-Glade2
+--------------------
+       Go to Clip-Glade2 source directory:
+
+               $ make
+
+if success you will see 'libclip_glade2.so' file.
+
+
+       For install in the CLIPROOT/lib directory 
+
+	   If your Clip is system :
+	       $ su
+	       # make install  
+
+	   If your Clip is local :
+	       $ make install
+
+
+       For build and execute the example :
+               $cd example
+               $make
+               $./eglade
+
+
+
+Compiling Clip programs
+-----------------------
+       It's needs compile including clip-gtk2 and clip-glade2
+       librarys.
+   
+	    $ clip -e myprogram.prg -clip-gtk2 -lclip-glade2
+   
+
+       
+Info for Clip-Glade2
+--------------------
+       You can see calls info in file 'REFERENCIA.txt' (spanish) or
+       many info at :
+       http://developer.gnome.org/doc/API/2.0/libglade/index.html 
+
+
+
+Compatibility
+-------------
+       Clip-Glade2 is developed using libglade-2.0 version 2.4.2,
+earlys or uppers versions is not tested.
+
+
+
+Soporte
+-------
+       doubt and suggestion are welcome at :
+       
+       <Segio Zayas> sergio_zayas@yahoo.com.ar 
+

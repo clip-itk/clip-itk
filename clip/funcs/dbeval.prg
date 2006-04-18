@@ -56,8 +56,10 @@ FUNCTION dbEval( b, xFor, xWhile, nNext, nRec, lRest)
 		IF ( eval( __bFor ) )
 			EVAL(b)
 		ENDIF
-		SELECT (OldSel)
-		SKIP
+		IF nNext != 0
+			SELECT (OldSel)
+			SKIP
+		ENDIF
 	ENDDO
 
 	SELECT (OldSel)
@@ -112,8 +114,10 @@ FUNCTION dbEvalOptimize( b, cFor, xWhile, nNext, nRec, lRest)
 
 	WHILE ( !EOF() .AND. nNext-- != 0 .AND. eval( __bWhile ) )
 		EVAL(b)
-		SELECT (OldSel)
-		SKIP
+		IF nNext != 0
+			SELECT (OldSel)
+			SKIP
+		ENDIF
 	ENDDO
 
 	SELECT (OldSel)

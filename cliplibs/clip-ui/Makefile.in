@@ -41,7 +41,7 @@ $(TARGET): $(OBJS)
 clean:
 	cd drivers && $(MAKE) clean
 	cd example && $(MAKE) clean
-	rm -f $(OBJS) $(TARGET) var.ch *.bak *.nm *.ex *.ppo *.dll.a *.log *.dll
+	rm -f Makefile $(OBJS) $(TARGET) var.ch *.bak *.nm *.ex *.ppo *.dll.a *.log *.dll
 
 clear: clean
 
@@ -66,7 +66,7 @@ dist: distclean
 	cd .. && tar cvfz clip-ui.tgz clip-ui
 
 .prg.o: clip-ui.ch
-	$(CLIP) $(CLIPINCLUDE) $<
+	$(CLIP) -w $(CLIPINCLUDE) $<
 
 commit:
 	_cvs commit

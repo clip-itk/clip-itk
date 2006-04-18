@@ -180,7 +180,7 @@ clip_GTK_CONTAINERFOREACH (ClipMachine *cm)
 {
 	C_widget *ccon = _fetch_cw_arg(cm);
 	ClipVar *cfunc = _clip_spar(cm,2);
-	C_var *c;
+	C_var *c = 0;
 
 	CHECKCWID(ccon,GTK_IS_CONTAINER);
 	CHECKARG2(2,CCODE_t,PCODE_t);

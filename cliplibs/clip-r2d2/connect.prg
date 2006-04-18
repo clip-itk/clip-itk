@@ -62,18 +62,18 @@ local i,j,x,y
 
 	oDep := codb_needDepository("ETC0101")
 	if empty(oDep)
-		cgi_xml_error( "Depository not found: ETC0101" )
+//		cgi_xml_error( "Depository not found: ETC0101" )
 		return
 	endif
 	oDict := oDep:dictionary()
 	tmp:=oDict:select("CLASS",,"connection")
 	if empty(tmp)
-		cgi_xml_error("Class CONNECTION not found !","3")
+//		cgi_xml_error("Class CONNECTION not found !","3")
 		return
 	endif
 	classDesc := oDict:getValue(tmp[1])
 	if empty(classDesc)
-		cgi_xml_error("Bad description of class CONNECTION !","4")
+//		cgi_xml_error("Bad description of class CONNECTION !","4")
 		return
 	endif
 
@@ -101,7 +101,7 @@ local i,j,x,y
 		obj:acc01 := acc01
 		obj_id:=oDep:append(obj,classDesc:id)
 		if empty(obj_id)
-			cgi_xml_error(oDep:error,"5")
+//			cgi_xml_error(oDep:error,"5")
 			return
 		endif
 		obj:= oDep:getValue(obj_id)
@@ -114,11 +114,11 @@ local i,j,x,y
 		endif
 	endif
 	if !empty(oDep:error)
-		cgi_xml_error(oDep:error,"6")
+//		cgi_xml_error(oDep:error,"6")
 		return
 	endif
 	if empty(obj)
-		cgi_xml_error("Connection ID not found:"+id,"7")
+//		cgi_xml_error("Connection ID not found:"+id,"7")
 		return
 	endif
 	//? "obj1=",id,obj

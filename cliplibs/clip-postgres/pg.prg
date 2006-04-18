@@ -231,7 +231,7 @@ RETURN
 FUNCTION CLIP2PG(rowset,fieldno,value,totext)
 	LOCAL type := SQLFieldTypeSQL(rowset,fieldno)
 	LOCAL dec := SET(_SET_DECIMALS)
-	LOCAL I,J,res,tmp
+	LOCAL I,J,K,res,tmp
 	LOCAL year,mon,day,hour,min,sec
 
 	IF value==NIL

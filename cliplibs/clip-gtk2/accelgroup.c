@@ -482,7 +482,7 @@ clip_GTK_ACCELMAPFOREACH(ClipMachine * cm)
 {
         C_widget *cwid = _fetch_cw_arg(cm);
         ClipVar *cfunc = _clip_spar(cm, 2);
-        C_var       *c ;
+        C_var       *c = 0;
 
 	CHECKOPT(1, MAP_t);
 	CHECKARG2(2, PCODE_t, CCODE_t);
@@ -543,7 +543,7 @@ clip_GTK_ACCELMAPFOREACHUNFILTERED(ClipMachine * cm)
 {
         C_widget *cwid = _fetch_cw_arg(cm);
         ClipVar *cfunc = _clip_spar(cm, 2);
-        C_var       *c ;
+        C_var       *c = 0;
 
 	CHECKOPT(1, MAP_t);
 	CHECKARG2(2, PCODE_t, CCODE_t);

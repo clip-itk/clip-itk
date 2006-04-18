@@ -1,5 +1,6 @@
 local i
 public pub1:='pub1', pub2:='pub2'
+memvar pub1, pub2
 
 ? start(@f1(), 'p1', 'p2', 'p3')
 

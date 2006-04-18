@@ -104,7 +104,7 @@ int
 clip_GTK_STOCKITEMCOPY(ClipMachine * cm)
 {
 	ClipVar *cv   = _clip_spar(cm,1);
-        ClipVar           *newcv;
+        ClipVar           *newcv = 0;
         GtkStockItem        item;
         GtkStockItem    *newitem;
 

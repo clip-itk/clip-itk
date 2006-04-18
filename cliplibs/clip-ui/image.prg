@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
+/*									   */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -1614,9 +1614,9 @@ static question_xpm := {;
 function UIImage( file, isString )
     local obj
     if valtype(file) == "N"
-    	obj := driver:createImage( getSysImage( file ), .T. )
+	obj := driver:createImage( getSysImage( file ), .T. )
     else
-    	obj := driver:createImage( file, isString )
+	obj := driver:createImage( file, isString )
     endif
     obj:className := "UIImage"
     _recover_UIIMAGE(obj)
@@ -1633,6 +1633,6 @@ function getSysImage( id )
 	idImages[IMG_WARNING] 	:= warning_xpm  // Exclamation mark
 	idImages[IMG_QUESTION] 	:= question_xpm // ?
 	if id<0 .or. id>len(idImages)
-		return empty_pixmap
+		return empty_xpm
 	endif
 return idImages[id]

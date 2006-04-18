@@ -85,7 +85,7 @@ local infoDeps:={},infoFields:={}
 		?? 'odate="'+dtoc(obj:odate)+'" '
 		?? 'summa="'+bal_summa(obj:summa)+'" '
 		?? '>'
-		account := codb_getValue(obj:daccount)
+		account := cgi_getValue(obj:daccount)
 		?  '  <accpost_debet id="'+obj:daccount+'" '
 		if !empty(account)
 		?? ' account_code="'+account:code+'" '
@@ -94,7 +94,7 @@ local infoDeps:={},infoFields:={}
 		?? '>'
 		__out_an_data(obj,.t.)
 		**
-		account := codb_getValue(obj:kaccount)
+		account := cgi_getValue(obj:kaccount)
 		? '  <accpost_kredit id="'+obj:kaccount+'" '
 		if !empty(account)
 		?? ' account_code="'+account:code+'" '
@@ -124,7 +124,7 @@ static function __out_an_data(obj,lDebet)
 	for j=1 to len(an_data)
 		? '    <accpost_an_'+s+' anp_id="'+an_data[j][1]+'" '
 		?? ' and_id="'+an_data[j][2]+'" '
-		k:=codb_getValue(an_data[j][2])
+		k:=cgi_getValue(an_data[j][2])
 		if !empty(k)
 			//cClass := codb_classBody(k:class_id)
 			//cClass:essence(k)

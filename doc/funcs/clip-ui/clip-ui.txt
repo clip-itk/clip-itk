@@ -1,7 +1,7 @@
 $FUNCNAME$
 	getDriver()
 $CATEGORY$
-  CLIP-UI
+	CLIP-UI
 $SUMMARY$
 	Get current <link linkend="classuidriver">UIDriver</link> object.
 $LANG_RU$
@@ -27,7 +27,7 @@ $END$
 $FUNCNAME$
 	useDriver()
 $CATEGORY$
-  CLIP-UI
+	CLIP-UI
 $SUMMARY$
 	Use specified driver.
 $LANG_RU$
@@ -48,7 +48,7 @@ $END$
 $FUNCNAME$
 	getMainWindow()
 $CATEGORY$
-  CLIP-UI
+  	CLIP-UI
 $SUMMARY$
 	Get current application main window <link linkend="classmainwindow">UIMainWindow</link> object.
 $LANG_RU$
@@ -69,7 +69,7 @@ $END$
 $FUNCNAME$
 	getSysImage()
 $CATEGORY$
-  CLIP-UI
+  	CLIP-UI
 $SUMMARY$
 	Get content of predefined icons (XPM format).
 $LANG_RU$
@@ -108,7 +108,7 @@ $END$
 $FUNCNAME$
 	getClipUIVersion()
 $CATEGORY$
-  CLIP-UI
+  	CLIP-UI
 $SUMMARY$
 	Get CLIP-UI library version.
 $LANG_RU$
@@ -124,7 +124,7 @@ $END$
 $FUNCNAME$
 	mapget()
 $CATEGORY$
-  CLIP-UI
+  	CLIP-UI
 $SUMMARY$
 	Get value from associated array by its key. If specified key is not found, value <defVal> is returned.
 $LANG_RU$
@@ -150,7 +150,7 @@ $END$
 $FUNCNAME$
 	splitGeom()
 $CATEGORY$
-  CLIP-UI
+  	CLIP-UI
 $SUMMARY$
 	Extract array from string.
 $LANG_RU$
@@ -174,7 +174,7 @@ $END$
 $FUNCNAME$
 	val2str()
 $CATEGORY$
-  CLIP-UI
+  	CLIP-UI
 $SUMMARY$
 	Transform value to string.
 $LANG_RU$
@@ -195,33 +195,6 @@ $EXAMPLES$
 	s := val2str( 55 )	// "55"
 $SEEALSO$
 $END$
-
-$FUNCNAME$
-	XMLGetTag()
-$CATEGORY$
-  CLIP-UI
-$SUMMARY$
-	Get XML element by specified hierarchy.
-$LANG_RU$
-	Возвратить элемент XML по указанной иерархии.
-$SYNTAX$
-	XMLGetTag(<root>,<path>)	--> <oTag>
-$ARGUMENTS$
-	<root>		- <link linkend="classXMLTAG">XMLTag</link> object. Element from which lookup is begun.
-	<path>		- String. Hierarchy as tag names (in upper case) delimited by dots. For example, if queried "HEAD.VALUE" will be lookup first child element with name 'head' and its child element with name 'value' will be returned. If tag not found in hierarchy NIL is returned.
-$LANG_RU$
-	<root>		- Объект <link linkend="classXMLTAG">XMLTag</link>. Элемент, с которого начинается поиск.
-	<path>		- Строка. Иерархия в виде имён тегов (в верхнем регистре), разделённых точками. Например, при запросе "HEAD.VALUE" будет найден первый тег с именем 'head', а затем возвращён объект первого тега 'value' под ним. Если тег в такое иерархии не найден, возвращается NIL.
-$RETURNS$
-	Tag by specified hierarchy.
-$LANG_RU$
-	Тег по указанной иерархии.
-$EXAMPLES$
-	t := XMLGetTag( self:root, "INTERFACE.WIDGET" )	// Find <widget> tag under tag <interface> from element self:root.
-$SEEALSO$
-	XMLTAG
-$END$
-
 
 $PLATFORMS$
 	No dependies of platform.

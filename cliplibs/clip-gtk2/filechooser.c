@@ -929,8 +929,8 @@ clip_GTK_FILECHOOSERDIALOGNEW(ClipMachine * cm)
 		button[12], response_id[12], button[13], response_id[13],
 		button[14], response_id[14], button[15], response_id[15],
 		button[16], response_id[16], button[17], response_id[17],
-		button[18], response_id[18], button[19], response_id[19]
-		);
+		button[18], response_id[18], button[19], response_id[19],
+		NULL );
 	for (i=0; i<n-5; i ++)
         {
 		FREE_TEXT(button[i]);
@@ -998,8 +998,8 @@ clip_GTK_FILECHOOSERDIALOGNEWWITHBACKEND(ClipMachine * cm)
 		button[12], response_id[12], button[13], response_id[13],
 		button[14], response_id[14], button[15], response_id[15],
 		button[16], response_id[16], button[17], response_id[17],
-		button[18], response_id[18], button[19], response_id[19]
-		);
+		button[18], response_id[18], button[19], response_id[19],
+		NULL);
 	for (i=0; i<n-6; i ++)
         {
 		FREE_TEXT(button[i]);

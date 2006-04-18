@@ -625,7 +625,7 @@ clip_GTK_TREEVIEWINSERTCOLUMNWITHATTRIBUTES(ClipMachine * cm)
 		attrs[28],  attrn[28],  attrs[29], attrn[29],
 		attrs[30],  attrn[30],  attrs[31], attrn[31],
 		attrs[32],  attrn[32],  attrs[33], attrn[33],
-		attrs[34],  attrn[34]);
+		attrs[34],  attrn[34],  NULL,      NULL);
 	FREE_TEXT(title);
 
 	_clip_retni(cm, col);

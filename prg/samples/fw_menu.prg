@@ -5,6 +5,8 @@
 #include "imenu.ch"
 #include "inkey.ch"
 
+local oInfo
+
    SET( _SET_EVENTMASK, INKEY_ALL )
 
    msetcursor(.T.)
@@ -24,49 +26,49 @@ function menu_create
    MENU oMenu
       MENUITEM "File"
       MENU
-         MENUITEM "Open"                        ;
-         ACTION alert("Open ?")                 ;
-         MESSAGE "Open file from disk"
+	 MENUITEM "Open"                        ;
+	 ACTION alert("Open ?")                 ;
+	 MESSAGE "Open file from disk"
 
-         MENUITEM "New "                        ;
-            ACTION alert("New ?")               ;
-            MESSAGE "Create new file"
+	 MENUITEM "New "                        ;
+	    ACTION alert("New ?")               ;
+	    MESSAGE "Create new file"
 
-         SEPARATOR
+	 SEPARATOR
 
-         MENUITEM "E&xit"                       ;
-            ACTION __quit()        ;
-            MESSAGE "End of Demonstration"
+	 MENUITEM "E&xit"                       ;
+	    ACTION __quit()        ;
+	    MESSAGE "End of Demonstration"
 
       ENDMENU
 
       MENUITEM "Options"
       MENU
-         MENUITEM "Tab size"                        ;
-         ACTION alert("New tab size ?")             ;
-         MESSAGE "set new tab size"
+	 MENUITEM "Tab size"                        ;
+	 ACTION alert("New tab size ?")             ;
+	 MESSAGE "set new tab size"
 
-         MENUITEM "Page size "
-         MENU
-         	MENUITEM "Page size 60"             ;
-            	ACTION alert("New page size 60?")   ;
-            	MESSAGE "Set new page size 60 lines"
+	 MENUITEM "Page size "
+	 MENU
+		MENUITEM "Page size 60"             ;
+		ACTION alert("New page size 60?")   ;
+		MESSAGE "Set new page size 60 lines"
 
-         	MENUITEM "Page size 65"             ;
-            	ACTION alert("New page size 65?")   ;
-            	MESSAGE "Set new page size 65 lines"
+		MENUITEM "Page size 65"             ;
+		ACTION alert("New page size 65?")   ;
+		MESSAGE "Set new page size 65 lines"
 
-         	MENUITEM "Page size 80"             ;
-            	ACTION alert("New page size 80?")   ;
-            	MESSAGE "Set new page size 80 lines"
+		MENUITEM "Page size 80"             ;
+		ACTION alert("New page size 80?")   ;
+		MESSAGE "Set new page size 80 lines"
 
-         ENDMENU
+	 ENDMENU
 
-         SEPARATOR
+	 SEPARATOR
 
-         MENUITEM "Save options"                    ;
-            ACTION alert("save ?")                  ;
-            MESSAGE "save options to disk"
+	 MENUITEM "Save options"                    ;
+	    ACTION alert("save ?")                  ;
+	    MESSAGE "save options to disk"
       ENDMENU
    ENDMENU
 

@@ -162,23 +162,29 @@ static function _dict_append(self,oData,metaName)
 		/* inherit from SUPER class*/
 		super_desc := self:classDesc(oData:super_id)
 		m:=aclone(oData:attr_list)
-		if !empty(super_desc)
-			oData:attr_list:= super_desc:attr_list
-		else
+		if empty(super_desc)
 			oData:attr_list:= {}
+		else
+			oData:attr_list:= aclone(super_desc:attr_list)
 		endif
 		for i=1 to len(m)
+			if empty(m[i])
+				loop
+			endif
 			if ascan(oData:attr_list, m[i]) == 0
 				aadd(oData:attr_list, m[i])
 			endif
 		next
 		m:=aclone(oData:idx_list)
-		if !empty(super_desc)
-			oData:idx_list:= super_desc:idx_list
-		else
+		if empty(super_desc)
 			oData:idx_list:= {}
+		else
+			oData:idx_list:= aclone(super_desc:idx_list)
 		endif
 		for i=1 to len(m)
+			if empty(m[i])
+				loop
+			endif
 			if ascan(oData:idx_list, m[i]) == 0
 				aadd(oData:idx_list, m[i])
 			endif
@@ -623,6 +629,9 @@ static function _dict_loadPluginses(cID)
 				memowrit(file,source1)
 				chmod(file,"666")
 			endif
+			if empty(source1)
+				loop
+			endif
 		endif
 		if body:type $ "CS" .and. !(file(file) .or. file(file+".prg"))
 			::error := codb_error(1033)+":"+file
@@ -632,7 +641,7 @@ static function _dict_loadPluginses(cID)
 			case body:type=="C"
 				// CLIP source code as codeblock
 				bCode := loadPlugIns(file)
-				if valtype(bCode) =="C"
+				if valtype(bCode) == "C"
 					::error := codb_error(1034)+":"+bCode+":"+file
 					lError:=.t. ;loop
 				endif
@@ -664,6 +673,9 @@ static function _dict_loadPluginses(cID)
 				else
 					bcode:= &("{|p1|"+body:mainfunc+"(p1)}")
 				endif
+			otherwise
+				outlog("Undefined type of plugins:",body:type,body:name)
+				loop
 		endcase
 		if lError
 			loop

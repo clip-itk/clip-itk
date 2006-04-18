@@ -1293,7 +1293,7 @@ clip_GTK_WINDOWSETGEOMETRYHINTS(ClipMachine * cm)
 	C_widget     *cwin = _fetch_cw_arg(cm);
         C_widget     *cwid = _fetch_cwidget(cm,_clip_spar(cm,2));
         ClipVar     *mgeom = _clip_par(cm, 3);
-        GdkGeometry *geometry;
+        GdkGeometry *geometry = 0;
         gint mask = 0;
 
 	CHECKCWID(cwin,GTK_IS_WINDOW);

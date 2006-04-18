@@ -5,6 +5,9 @@
 */
 /*
    $Log: clip.h,v $
+   Revision 1.243  2005/12/22 12:30:05  clip
+   alena: add new _C_ITEM_TYPE_PARSER for clip-expat
+
    Revision 1.242  2005/11/26 16:25:47  clip
    uri: rename task_select_if -> clip_task_select_if
         It is openBsd pheatures.
@@ -1422,6 +1425,7 @@ ClipWindow;
 #define _C_ITEM_TYPE_CORBA_INTERFACE   13
 #define _C_ITEM_TYPE_BTREE	14
 #define _C_ITEM_TYPE_GTK_TIMEOUT	15
+#define _C_ITEM_TYPE_XML_PARSER	16
 
 typedef struct
 {

@@ -30,6 +30,8 @@ function codb_error(num)
 		case 1009
 			last_error := [Can`t switch access mode to readwrite]
 */
+		case 1010
+			last_error := [Bad type of dictionary]
 /* dictionary errors */
 		case 1020
 			last_error := [Dictionary path not inizialized]

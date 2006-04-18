@@ -38,7 +38,7 @@ clip_GTK_PROGRESSBARNEW(ClipMachine * cm)
 	C_widget * cadj = _fetch_cwidget(cm,_clip_spar(cm, 2));
 	GtkWidget *wid = NULL;
         C_widget *cwid;
-        GtkAdjustment *adj;
+        GtkAdjustment *adj = 0;
 	CHECKOPT(1,MAP_t);
 	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCWIDOPT(cadj,GTK_IS_ADJUSTMENT);
 

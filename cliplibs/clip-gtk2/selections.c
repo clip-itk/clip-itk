@@ -505,7 +505,7 @@ clip_GTK_SELECTIONDATAGETURIS(ClipMachine * cm)
 
                 for(l=0; u; l++)
                 {
-                	ClipVar *s;
+                	ClipVar *s = 0;
                         _clip_var_str(u[0], strlen(u[0]), s);
                 	_clip_aadd(cm, cv, s);
                 }
@@ -541,7 +541,7 @@ clip_GTK_SELECTIONDATASETURIS(ClipMachine * cm)
 {
         C_object   *cselection = _fetch_co_arg(cm);
         ClipArrVar         *ca = (ClipArrVar *)_clip_vptr(_clip_spar(cm, 2));
-        gchar           **uris ;
+        gchar           **uris = 0;
         long                 l ;
         int                  i ;
 

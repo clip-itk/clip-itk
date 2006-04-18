@@ -2,8 +2,8 @@
 
 function r2d2_classes_xml()
 
-	local m1:={"GBL01","GBL02","ACC00","ACC01"}
-	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские"}
+	local m1:={"GBL01","GBL02","ACC00","ACC01","ETC01"}
+	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
 	local i
 
 	cgi_xml_header()
@@ -201,7 +201,7 @@ static function put_class(oDict,class,tColumns)
 	local columns,col
 	columns := cgi_make_columns(oDict,class:name)
 	if empty(columns)
-		cgi_xml_error("Empty table description for "+class)
+//		cgi_xml_error("Empty table description for "+class)
 		return
 	endif
 	j:=class:name

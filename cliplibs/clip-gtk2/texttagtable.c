@@ -167,8 +167,8 @@ int
 clip_GTK_TEXTTAGTABLELOOKUP(ClipMachine * cm)
 {
 	C_object    *ctbl = _fetch_co_arg(cm);
-	const gchar *name ;
-	GtkTextTag   *tag ;
+	const gchar *name = 0;
+	GtkTextTag   *tag = 0;
 	C_object    *ctag ;
 
 	CHECKOPT(1,MAP_t); CHECKCOBJ(ctbl, GTK_IS_TEXT_TAG_TABLE(ctbl->object));
@@ -197,7 +197,7 @@ clip_GTK_TEXTTAGTABLEFOREACH (ClipMachine *cm)
 {
 	C_object *ctbl = _fetch_co_arg(cm);
 	ClipVar *cfunc = _clip_spar(cm,2);
-	C_var *c;
+	C_var *c = 0;
 
 	CHECKOPT(1,MAP_t); CHECKCOBJ(ctbl, GTK_IS_TEXT_TAG_TABLE(ctbl->object));
 	CHECKARG2(2,CCODE_t,PCODE_t);

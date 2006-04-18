@@ -60,23 +60,23 @@ Dtype - data type: object or account transaction
 		{"PATH"   ,"C",256,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"HOST"   ,"C",128,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"PORT"   ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
-		{"USER"   ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
+		{"DBUSER" ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"PASSWD" ,"C",10 ,0,CODB_LENTYPE_RTRIM,""}, ;
 		{"DBNAME" ,"C",20 ,0,CODB_LENTYPE_RTRIM,""} ;
 		}
 
 #define CODB_ATTR_TYPES { ;
-			{"C",[Character]},;
-			{"N",[Numeric]},;
-			{"D",[Date]},;
-			{"L",[Logical]},;
-			{"M",[Memo text]},;
-			{"O",[Object]},;
-			{"X",[Any data]},;
-			{"R",[Reference to object]},;
-			{"S",[Reference to class]},;
-			{"A",[References array]},;
-			{"B",[Executable code (code block)]};
+			{"C",[String],"string"},;
+			{"N",[Numeric],"number"},;
+			{"D",[Date],"date"},;
+			{"L",[Logical],"logical"},;
+			{"M",[Memo text],"text"},;
+			{"O",[Object],"object"},;
+			{"X",[Any data],"any"},;
+			{"R",[Reference],"ref"},;
+			{"S",[Class reference],"classref"},;
+			{"A",[Array references],"array"},;
+			{"B",[Executable code block],"code"};
 			}
 
 #define CODB_REPORT_TYPES { ;
@@ -86,9 +86,9 @@ Dtype - data type: object or account transaction
 			}
 
 #define CODB_PLUGINS_TYPES { ;
-			{"C",[CLIP source file as codeblock]},;
-			{"S",[Shared loadable library]},;
-			{"L",[Linked module with main function]};
+			{"C",[CLIP source file as codeblock],"Source file"},;
+			{"S",[Shared loadable library],"Shared library"},;
+			{"L",[Linked module with main function],"Linked function"};
 			}
 
 #define CODB_LENTYPE_NONE	1

@@ -78,7 +78,7 @@ int clip_GDK_PIXBUFCOPY(ClipMachine * cm)
 {
 	C_object *cpixbufsrc = _fetch_co_arg(cm);
 	GdkPixbuf *pixbuf;
-	C_object *cpixbuf;
+	C_object *cpixbuf = 0;
 
 	CHECKCOBJ(cpixbufsrc,GDK_IS_PIXBUF(cpixbuf));
 
@@ -173,8 +173,8 @@ int clip_GDK_PIXBUFGETPIXELS( ClipMachine * cm )
 	rowstride = gdk_pixbuf_get_rowstride( GDK_PIXBUF(cpxbsrc->object ));
 	height = gdk_pixbuf_get_height( GDK_PIXBUF(cpxbsrc->object));
 
-	_clip_retcn( cm, gdk_pixbuf_get_pixels( GDK_PIXBUF(cpxbsrc->object)),
-		 rowstride*height );
+	_clip_retcn( cm, (char *) (gdk_pixbuf_get_pixels( GDK_PIXBUF(cpxbsrc->object))),
+		 (int) (rowstride*height) );
 return( 0 );
 err:
 return( 1 );

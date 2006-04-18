@@ -183,7 +183,7 @@ function tempfile(cDir,cExt,nAttr)
 	endif
 	cExt := iif(valtype(cExt)=="C",cExt,"")
 	do while .t.
-		ret := "ctmp"+ntoc(random(0xFFFF),32,4,"0")+'.'+cExt
+		ret := "ctmp"+lower(ntoc(random(0xFFFF),32,4,"0"))+'.'+cExt
 		s2 := s1+ret
 		s2 := makepath(s2)
 		if !file(s2)

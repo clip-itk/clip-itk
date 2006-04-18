@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003 by E/AS Software Foundation 		           */
+/*									   */
+/*   Copyright (C) 2003 by E/AS Software Foundation 			   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*   									   */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -29,7 +29,7 @@ return obj
 /* Set callback function on quit */
 static function ui_setAction(self, signal, action)
 	if lower(signal)=='quit' .and. valtype(action)=='B'
-		obj:onQuit := action
+		self:onQuit := action
 	endif
 return NIL
 

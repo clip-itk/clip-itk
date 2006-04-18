@@ -230,7 +230,7 @@ msgstr ": ошибка создания:"
 
 #: inifile.prg:146
 msgid "Bad file name: name is not specified"
-msgstr ""
+msgstr "Не указано имя файла"
 
 #: inifile.prg:154
 msgid ": open error:"
@@ -241,9 +241,8 @@ msgid "Bad string in .ini file:"
 msgstr "Неправильная строка в .ini файле"
 
 #: cobra_service.prg:55
-#, fuzzy
 msgid "TCP connection error:"
-msgstr ": ошибка открытия:"
+msgstr "ошибка открытия TCP:"
 
 #: cobra_service.prg:164 cobra_service.prg:203
 msgid "Bad cobraQuery object"
@@ -254,53 +253,50 @@ msgid "Bad cobraAnswer object"
 msgstr ""
 
 #: cobra_service.prg:237
-#, fuzzy
 msgid "Answer ID not found"
-msgstr " не найдена!"
+msgstr "ID ответа не найден"
 
 #: cobra_service.prg:368 cobra_service.prg:460 cobra_service.prg:481
 #: cobra_service.prg:513 cobra_service.prg:550
 msgid "CODB library not linked"
-msgstr ""
+msgstr "Библиотека CODB не подключена"
 
 #: cobra_service.prg:373 cobra_service.prg:414 cobra_service.prg:434
 #: cobra_service.prg:518
 msgid "Bad depository ID:"
-msgstr ""
+msgstr "Неизвестный ID депозитария:"
 
 #: cobra_service.prg:384 cobra_service.prg:529
 msgid "Bad class name or ID:"
-msgstr ""
+msgstr "Неизвестное имя или ID класса:"
 
 #: cobra_service.prg:617
-#, fuzzy
 msgid "File not found:"
-msgstr " не найдена!"
+msgstr "Файл не найден:"
 
 #: cobra_service.prg:674
 msgid "Need updating client"
-msgstr ""
+msgstr "Требуется обновить клиента"
 
 #: cobra_service.prg:694
 msgid "Client LANG value not supported"
-msgstr ""
+msgstr "LANG клиента не поддерживается"
 
 #: cobra_service.prg:713
 msgid "Client CHARSET value not supported"
-msgstr ""
+msgstr "CHARSET клиента не поддерживается"
 
 #: cobra_service.prg:732
 msgid "Client CRYPTO value not supported"
-msgstr ""
+msgstr "CRYPTO клиента не поддерживается"
 
 #: a2edit.prg:33
 msgid "Error A2EDIT; What~s Edit ?"
 msgstr "Ошибка A2EDIT; Чего редактировать ?"
 
 #: blank.prg:53 blank.prg:55
-#, fuzzy
 msgid "cannot open file:"
-msgstr "Не могу открыть файл;"
+msgstr "не возможно открыть файл:"
 
 #: browse.prg:50 sqlbrows.prg:19
 msgid "<bof>"
@@ -483,18 +479,16 @@ msgid "NnFfNn0"
 msgstr "NnFfНн0"
 
 #: rtcompil.prg:47
-#, fuzzy
 msgid "Plugin not found:"
-msgstr " не найдена!"
+msgstr "Plugin не найден:"
 
 #: rtcompil.prg:76
 msgid "Error compiling plugin file:"
-msgstr ""
+msgstr "Ошибка компиляции plugin:"
 
 #: rtcompil.prg:85
-#, fuzzy
 msgid "Error loading plugin block from file:"
-msgstr "Прочитать блок из файла"
+msgstr "Ошибка чтения plugin-блока из файла:"
 
 #: var_func.prg:57 var_func.prg:94 var_func.prg:122
 msgid "Unknown"
@@ -717,9 +711,8 @@ msgid "O"
 msgstr "З"
 
 #: edit.prg:1304
-#, fuzzy
 msgid "Can't save file ;"
-msgstr "Не могу открыть файл;"
+msgstr "Не возможно сохранить файл ;"
 
 #: edit.prg:1326
 msgid "&New                "
@@ -1006,9 +999,8 @@ msgid "Undo operation"
 msgstr "Операция отката"
 
 #: edit.prg:1495
-#, fuzzy
 msgid "Forma&t"
-msgstr "Форматирование абзаца"
+msgstr "Forma&t"
 
 #: edit.prg:1498
 msgid "Format &line    "
@@ -1099,14 +1091,12 @@ msgid "Tabulation size"
 msgstr "Шаг табуляции"
 
 #: edit.prg:1680
-#, fuzzy
 msgid "Tabulation packing"
-msgstr "Шаг табуляции"
+msgstr "Оптимизация табуляций"
 
 #: edit.prg:1683
-#, fuzzy
 msgid "Open files in "
-msgstr "Открыть файл в"
+msgstr "Открыть файлы в"
 
 #: edit.prg:1685
 msgid "current directory"
@@ -1149,9 +1139,8 @@ msgid "Margin right"
 msgstr "Правая граница"
 
 #: edit.prg:1724
-#, fuzzy
 msgid "Max strings"
-msgstr "Поиск строки"
+msgstr "Максимум строк"
 
 #: edit.prg:1916
 msgid "Line "
@@ -1178,9 +1167,8 @@ msgid "Macros"
 msgstr ""
 
 #: tedit_obj.prg:72
-#, fuzzy
 msgid "<EOF>"
-msgstr "<Зам>"
+msgstr "<EOF>"
 
 #: tedit_obj.prg:327
 msgid "Load file..."
@@ -1191,31 +1179,28 @@ msgid "The size of file ;"
 msgstr "Размер файла ;"
 
 #: tedit_obj.prg:355 tedit_obj.prg:367
-#, fuzzy
 msgid "; most maximum size!;Last strings may be lost"
-msgstr "; превышает максимально допустимый. ; Последние строки текста могут быть утеряны"
+msgstr "; превышает максимальный размер!;Последние строки текста могут быть утеряны"
 
 #: tedit_obj.prg:355 tedit_obj.prg:367 tedit_obj.prg:452
 msgid "OK"
 msgstr "ОК"
 
 #: tedit_obj.prg:452
-#, fuzzy
 msgid ""
 "The size of file is a most maximum size!;Last strings may be lost; Please "
 "check MAXSTRINGS options"
 msgstr ""
 "Размер файла превышает максимальный!; Последние строки текста могут "
-"потеряться"
+"быть утеряны.; Пожалуйста проверьте настройки"
 
 #: tedit_obj.prg:2211
 msgid "Save file..."
 msgstr "Сохранение файла..."
 
 #: tedit_obj.prg:2218
-#, fuzzy
 msgid "file ;"
-msgstr "Файл;"
+msgstr "файл ;"
 
 #: tedit_obj.prg:2223 tedit_obj.prg:2321
 msgid "Can't create ;"
@@ -1230,9 +1215,8 @@ msgid "Save block to file..."
 msgstr "Запись блока в файл..."
 
 #: filed.prg:353
-#, fuzzy
 msgid "Bad directory name!"
-msgstr "Не правильно указано имя директории!"
+msgstr "Не правильно указано имя каталога!"
 
 #: sys_init.prg:43
 msgid "cp437"

@@ -7,6 +7,12 @@
 %{
 /*
  * $Log: clic.y,v $
+ * Revision 1.84  2006/01/04 08:06:04  clip
+ * uri: small fix
+ *
+ * Revision 1.82  2005/12/19 10:59:04  clip
+ * uri: some fix about output compiler messages to stderr
+ *
  * Revision 1.81  2004/07/19 13:41:31  clip
  * rust: DO proc WITH ... didn't respect () (pass by value)
  *
@@ -1604,20 +1610,38 @@ clic_parse(const char *filename, FILE *stream)
 
   curFile=new_File(strdup(filename));
   {
-	char path[256];
-	const char *s=strrchr(filename, '/');
+	char path[256], ch;
+	const char *s;
 	char *e;
+
+#if 0
+	*s=strrchr(filename, '/'); */
 	if (s)
 		s++;
 	else
 		s=filename;
+#else
+		s=filename;
+#endif
 	/*snprintf(path, sizeof(path), "_main_%s", s);*/
 	snprintf(path, sizeof(path), "%s", s);
 	e=strrchr(path, '.');
 	if (e)
 		*e=0;
 	for (e = path; *e; ++e)
+	{
+		ch = *e;
+		switch(ch)
+		{
+			case '.':
+			case '/':
+			case '\\':
+			case '-':
+			case '+':
+				*e = '_';
+		}
 		*e = toupper(*e);
+	}
 	curFile->mname = strdup(path);
 	if (nomain_flag)
 		strncat(path,"_m",sizeof(path));
@@ -1681,34 +1705,37 @@ print_file()
 {
 	int index=-1, line, ret;
 	char *filename;
+	char *workingdirectory ;
+	workingdirectory = getenv("PWD");
+
 	do {
 		ret = get_include (&index, &line, &filename);
 		if (index>=0)
-			fprintf(stdout, _clic_gettext("in file '%s',\n\tincluded at line %d "), filename, line);
+			fprintf(stderr, _clic_gettext("in file '%s',\n\tincluded at line %d "), filename, line);/*angelo*/
 		else
-			fprintf(stdout, _clic_gettext("in file '%s'\n"), filename);
+			fprintf(stderr, _clic_gettext("in file '%s'\n"), filename);
 	} while (ret!=0);
+	fprintf(stderr, _clic_gettext("  working directory : '%s'\n"), workingdirectory);   /*angelo*/
 }
 
 int
 yyerror(const char *s, ... )
 {
 	if (!clic_warncount && !clic_errorcount)
-		fprintf(stdout, "\n");
+		fprintf(stderr, "\n");
 	clic_errorcount++;
 	if (s)
 	{
 		va_list ap;
 		va_start(ap, s);
-		fprintf(stdout, _clic_gettext("error %d: "), clic_errorcount);
-		vfprintf(stdout, _clic_gettext(s), ap);
+		fprintf(stderr, _clic_gettext("error %d: "), clic_errorcount);/*angelo*/
+		vfprintf(stderr, _clic_gettext(s), ap);
 		va_end(ap);
 
-		fprintf(stdout,_clic_gettext("\n\tline %ld pos %ld (yychar=%d, '%c') "), cl_line+corr_line, cl_pos, yychar, (yychar>32&&yychar<256)?yychar:' ');
-		/*fprintf(stdout,"\n\tline %d pos %d ", cl_line+corr_line, cl_pos);*/
+		fprintf(stderr,_clic_gettext("\n\tline %ld pos %ld (yychar=%d, '%c') "), cl_line+corr_line, cl_pos, yychar, (yychar>32&&yychar<256)?yychar:' ');/*angelo*/
 	}
 	else
-		fprintf(stdout, _clic_gettext("error %d, (yychar=%d) "), clic_errorcount, yychar);
+		fprintf(stderr, _clic_gettext("error %d, (yychar=%d) "), clic_errorcount, yychar);/*angelo*/
 
 	print_file();
 	fflush(stdout);
@@ -1719,20 +1746,20 @@ int
 yywarning(const char *s, ... )
 {
 	if (!clic_warncount && !clic_errorcount)
-		fprintf(stdout, "\n");
+		fprintf(stderr, "\n");
 	clic_warncount++;
 	if (s)
 	{
 		va_list ap;
 		va_start(ap, s);
-		fprintf(stdout, _clic_gettext("warning %d: "), clic_warncount);
-		vfprintf(stdout, _clic_gettext(s), ap);
+		fprintf(stderr, _clic_gettext("warning %d: "), clic_warncount);/*angelo*/
+		vfprintf(stderr, _clic_gettext(s), ap);
 		va_end(ap);
 
-		fprintf(stdout, _clic_gettext("\n\tline %ld, pos %ld, "), cl_line+corr_line, cl_pos);
+		fprintf(stderr, _clic_gettext("\n\tline %ld, pos %ld, "), cl_line+corr_line, cl_pos);/*angelo*/
 	}
 	else
-		fprintf(stdout, _clic_gettext("warning %d, "), clic_warncount);
+		fprintf(stderr, _clic_gettext("warning %d, "), clic_warncount);/*angelo*/
 	print_file();
 	fflush(stdout);
 	return 0;

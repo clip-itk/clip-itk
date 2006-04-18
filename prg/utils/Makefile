@@ -2,7 +2,7 @@ ifdef CLIPROOT
 include $(CLIPROOT)/include/Makefile.inc
 endif
 CLIP	= $(CLIPROOT)/bin/clip
-CLIPFLAGS = -a -O -b
+CLIPFLAGS = -a -O -w
 CLIPLIBS  =
 PGLIBS	= libpgclip.a libpq.a libcrypt.a
 MSLIBS	= libmsclip.a libmysqlclient.a

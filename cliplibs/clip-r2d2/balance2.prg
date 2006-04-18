@@ -57,10 +57,16 @@ errorblock({|err|error2html(err)})
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
-	endif
+
+
+        if "ACC01" $ _query .and. !empty(_query:acc01)
+            set("ACC01",_query:acc01)
+        endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+            set("ACC00",_query:acc00)
+        endif
+							
+							
 
 
 	if empty(beg_date) .or. empty(end_date)
@@ -80,22 +86,22 @@ errorblock({|err|error2html(err)})
 	cgi_xml_header()
 	?
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
-		cgi_xml_error( "Depository not found: ACC0101" )
+//		cgi_xml_error( "Depository not found: ACC0101" )
 		return
 	endif
 	oDict := oDep:dictionary()
 
 	m->oDep02 := cgi_depository("GBL02")
 	if !empty(m->oDep02:error)
-		cgi_xml_error( m->odep02:Error )
+//		cgi_xml_error( m->odep02:Error )
 		return
 	endif
 	m->oDict02 := m->oDep02:dictionary()
 	acc_chartt_class := m->oDict02:classBodyByName("acc_chart_type")
 	if empty(acc_chartt_class)
-		cgi_xml_error("Class description not found: acc_chart_type")
+//		cgi_xml_error("Class description not found: acc_chart_type")
 		return
 	endif
 
@@ -130,15 +136,15 @@ errorblock({|err|error2html(err)})
 	i := ascan(columns,{|x| lower(x:name)=="account"})
 	if i>0
 	      col := columns[i]
-	      col:expr := "codb_getValue(account):code"
+	      col:expr := "cgi_getValue(account):code"
 	      col:header := "ëÏÄóÞ"
 	      col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
 
 	      tmp := oclone(col)
 	      tmp:name := "account_name"
 	      tmp:header := "óÞîÁÚ×ÁÎÉÅ"
-	      //tmp:expr := "codb_getValue(account):code"
-	      tmp:expr := "codb_getValue(account):smallname"
+	      //tmp:expr := "cgi_getValue(account):code"
+	      tmp:expr := "cgi_getValue(account):smallname"
 	      tmp:datatype := "C"
 	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
 	      aadd(columns,"")
@@ -214,14 +220,14 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
 	*****
 	acc_chart_class := m->oDict02:classBodyByName("acc_chart")
 	if empty(acc_chart_class)
-		cgi_xml_error("Class description not found: acc_chart")
+//		cgi_xml_error("Class description not found: acc_chart")
 		return
 	endif
 	*****
 	oDict:=oDep:dictionary()
 	osb_class := oDict:classBodyByName("os_balance")
 	if empty(osb_class)
-		cgi_xml_error("Class description not found: os_balance")
+//		cgi_xml_error("Class description not found: os_balance")
 		return
 	endif
 
@@ -261,7 +267,7 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
 		adata1:=reSummTree(aTree,0)
 		data:=map()
 		data:account	:= cType
-		data:smallname	:= codb_essence(cType)
+		data:smallname	:= cgi_essence(cType)
 		data:code	:= [Total]
 		data:owner_id	:= ""
 		data:bd_summa	:= aData1[1]

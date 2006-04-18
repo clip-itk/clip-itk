@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
+/*									   */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation		   */
 /*   Authors: 								   */
 /*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
@@ -99,7 +99,7 @@ return pos
 
 /* Add separator to menu */
 static function ui_addSeparator(self)
-        local elem
+	local elem, pos
 	elem := driver:addSeparator( self )
 	aadd( self:elem, elem )
 	pos := len( self:elem )
@@ -133,7 +133,7 @@ return NIL
 /* Return object by its number in the menu */
 static function ui_getElement(self, pos)
 	local obj := NIL
-        if len(self:elem) < pos
+	if len(self:elem) < pos
 		pos := len(self:elem)
 	endif
 	if pos < 1

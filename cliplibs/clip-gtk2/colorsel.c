@@ -306,7 +306,7 @@ clip_GTK_COLORSELECTIONPALETTEFROMSTRING(ClipMachine *cm)
         	_clip_array(cm, cvcolor, 1, &d);
                 for(i=0; i<len; i++)
                 {
-                	ClipVar  *cv;
+                	ClipVar  *cv = 0;
 			memset(cv,0,sizeof(ClipVar)); _clip_map(cm, cv);
 			_gdk_color_to_map(cm,color[i],cv);
                         _clip_aset(cm, cvcolor, cv, 1, &i);
@@ -325,7 +325,7 @@ clip_GTK_COLORSELECTIONPALETTETOSTRING(ClipMachine *cm)
 {
         ClipVar     *cvcolor = _clip_spar(cm, 1);
         gint             len = INT_OPTION(cm, 2, 0);
-        gchar       *palette ;
+        gchar       *palette = 0;
 
 	CHECKARG(1, ARRAY_t); CHECKARG(2, NUMERIC_t);
 

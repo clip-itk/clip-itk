@@ -8,13 +8,24 @@ FUNCTION ConnectNew(rdbms)
 
 	o:RDBMS := rdbms
 	o:Rowsets := ARRAY(0)
-	o:Command := @connCommand()
-	o:TestParser := @connTestParser()
-	o:Destroy := @connDestroy()
-	o:CreateRowset := @connCreateRowset()
-	o:Start := @connStart()
-	o:Commit := @connCommit()
-	o:Rollback := @connRollback()
+	o:Command 	:= @connCommand()
+	o:TestParser	:= @connTestParser()
+	o:Destroy	:= @connDestroy()
+	o:CreateRowset	:= @connCreateRowset()
+	o:Start		:= @connStart()
+	o:Commit	:= @connCommit()
+	o:Rollback	:= @connRollback()
+
+	o:blobCreate	:= @BlobCreate()
+	o:blobOpen  	:= @BlobOpen()
+	o:blobImport	:= @BlobImport()
+	o:blobExport	:= @BlobExport()
+	o:blobWrite 	:= @BlobWrite()
+	o:blobRead  	:= @BlobRead()
+	o:blobSeek  	:= @BlobSeek()
+	o:blobTell  	:= @BlobTell()
+	o:blobClose 	:= @BlobClose()
+	o:blobUnlink	:= @BlobUnlink()
 RETURN o
 
 STATIC FUNCTION connCommand(sql,pars)
@@ -37,12 +48,13 @@ STATIC FUNCTION connDestroy(self)
 	LOCAL rs
 
 	IF self:conn != NIL
-		WHILE LEN(self:Rowsets) > 0
-			rs := self:Rowsets[1]
-			rowsetDestroy(self:Rowsets[1])
-		ENDDO
+		FOR I:=1 TO LEN(self:Rowsets)
+			rs := self:Rowsets[I]
+			SQLDestroyRowset(rs)
+		NEXT
 		SQLDestroyConn(self:conn)
 		self:conn := NIL
+		self:Rowsets := NIL
 	ENDIF
 RETURN
 
@@ -133,8 +145,7 @@ STATIC FUNCTION connCreateRowset(self,selectSQL,pars,insertSQL,deleteSQL,updateS
 	IF orders != NIL
 		SQLFillOrders(ors:rowset)
 	ENDIF
-
-	AADD(self:Rowsets,ors)
+	AADD(self:Rowsets,ors:rowset)
 
 RETURN ors
 
@@ -331,7 +342,7 @@ STATIC FUNCTION rowsetDestroy(self)
 	LOCAL conn := self:connect
 	LOCAL p
 
-	p := ASCAN(conn:rowsets,{|x| x:rowset == self:rowset } )
+	p := ASCAN(conn:rowsets,{|x| x == self:rowset } )
 	IF p != 0
 		ADEL(conn:rowsets,p)
 		ASIZE(conn:rowsets,LEN(conn:rowsets)-1)
@@ -717,3 +728,36 @@ RETURN SQLFetch(self:rowset,0)
 
 STATIC FUNCTION rowsetKeyNo(self)
 RETURN SQLKeyNo(self:rowset)
+
+
+// BLOB-functions
+STATIC FUNCTION blobCreate(self,OID)
+RETURN SQLBlobCreate(self:conn,OID)
+
+STATIC FUNCTION blobOpen(self,OID,mode)
+RETURN SQLBlobOpen(self:conn,OID,mode)
+
+STATIC FUNCTION blobImport(self,filename)
+RETURN SQLBlobImport(self:conn,filename)
+
+STATIC FUNCTION blobExport(self,OID,filename)
+RETURN SQLBlobExport(self:conn,OID,filename)
+
+STATIC FUNCTION blobWrite(self,oid_fd,buffer,length)
+RETURN SQLBlobWrite(self:conn,oid_fd,buffer,length)
+
+STATIC FUNCTION blobRead(self,oid_fd,buffer,length)
+RETURN SQLBlobRead(self:conn,oid_fd,@buffer,length)
+
+STATIC FUNCTION blobSeek(self,oid_fd, offset,whence)
+RETURN SQLBlobSeek(self:conn,oid_fd,offset,whence)
+
+STATIC FUNCTION blobTell(self,oid_fd)
+RETURN SQLBlobTell(self:conn,oid_fd)
+
+STATIC FUNCTION blobClose(self,oid_fd)
+RETURN SQLBlobClose(self:conn,oid_fd)
+
+STATIC FUNCTION blobUnlink(self,OID)
+RETURN SQLBlobUnlink(self:conn,OID)
+

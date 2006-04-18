@@ -5,6 +5,15 @@
 */
 /*
    $Log: _util.c,v $
+   Revision 1.149  2006/03/13 07:22:32  clip
+   uri: some fix from Angelo Gigardi
+
+   Revision 1.148  2006/01/19 07:15:20  clip
+   uri: small fix in koi8*.uni
+
+   Revision 1.147  2006/01/11 15:38:54  clip
+   uri: small fix
+
    Revision 1.146  2005/08/08 09:00:30  clip
    alena: fix for gcc 4
 
@@ -628,7 +637,7 @@ clip_CLIPROOT(ClipMachine * mp)
 	int len1,len2;
 	char * s1 = _clip_cygwinroot();
 	char * s2 = getenv("CLIPROOT");
-	if (s2 == NULL)
+	if (s2 == NULL || *s2 == 0)
 		s2 = CLIPROOT;
 
 	len1 = strlen(s1);
@@ -1629,7 +1638,7 @@ clip_AEVAL(ClipMachine * mp)
 
 		for (i = start; i < start + count; ++i)
 		{
-			ClipVar *nv, *app = ap->a.items + i;
+			ClipVar *nv = 0, *app = ap->a.items + i;
 			ClipVar res, stack[2];
 			unsigned l=0;
 
@@ -1683,7 +1692,7 @@ clip_AEVAL(ClipMachine * mp)
 
 		for (i = 0; i < c; ++i)
 		{
-			ClipVar *nv, *app = &ap->m.items[i].v;
+			ClipVar *nv = 0, *app = &ap->m.items[i].v;
 			long no = ap->m.items[i].no;
 			ClipVar res, stack[2];
 			unsigned l=0;
@@ -2150,7 +2159,7 @@ int
 clip___RUN(ClipMachine * mp)
 {
 	char *com = _clip_parc(mp, 1);
-	int old_cursor;
+	int old_cursor = 0;
 
 	if (com == NULL)
 	{

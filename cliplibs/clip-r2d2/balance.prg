@@ -1,6 +1,6 @@
 #include "r2d2lib.ch"
 
-function r2d2_balance_rdf(_queryArr)
+function r2d2_balance_xml(_queryArr, isRDF)
 
 local err,_query
 local sDict:="", sDep:=""
@@ -8,7 +8,7 @@ local oDict,oDep, classDesc
 local connect_id:="", connect_data
 local i,j,k,x,tmp,col,obj,bal_data,aBal_data:={}
 local acc_chartt_class,acc_chartt_list,balance:="",account:=""
-local columns,sprname,atree,nnnn,urn,level
+local columns,sprname,atree,nnnn,urn,level,itogo:="false"
 local xslt:=""
 local host:=""
 local periodic, mPeriod, nPer
@@ -17,6 +17,8 @@ memvar beg_date,end_date
 private oDep02,oDict02,start_id:=1
 
 errorblock({|err|error2html(err)})
+
+	isRDF := iif( valType(isRDF)=="L", isRDF, ".t.")
 
 	_query := d2ArrToMap(_queryArr)
 	outlog(__FILE__,__LINE__, _query)
@@ -53,13 +55,25 @@ errorblock({|err|error2html(err)})
 	if "URN" $ _query
 		urn := _query:urn
 	endif
-
+	if "ITOGO" $ _query
+		itogo := _query:itogo
+	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
+/*
 	if !empty(connect_data)
 		beg_date := connect_data:beg_date
 		end_date := connect_data:end_date
+	endif
+*/
+
+
+	if "ACC01" $ _query .and. !empty(_query:acc01)
+	    set("ACC01",_query:acc01)
+	endif
+        if "ACC00" $ _query .and. !empty(_query:acc00)
+	    set("ACC00",_query:acc00)
 	endif
 
 
@@ -80,7 +94,7 @@ errorblock({|err|error2html(err)})
 	cgi_xml_header()
 	?
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -89,13 +103,13 @@ errorblock({|err|error2html(err)})
 
 	m->oDep02 := cgi_depository("GBL02")
 	if !empty(m->oDep02:error)
-		cgi_xml_error( m->odep02:Error )
+//		cgi_xml_error( m->odep02:Error )
 		return
 	endif
 	m->oDict02 := m->oDep02:dictionary()
 	acc_chartt_class := m->oDict02:classBodyByName("acc_chart_type")
 	if empty(acc_chartt_class)
-		cgi_xml_error("Class description not found: acc_chart_type")
+		//cgi_xml_error("Class description not found: acc_chart_type")
 		return
 	endif
 
@@ -130,15 +144,15 @@ errorblock({|err|error2html(err)})
 	i := ascan(columns,{|x| lower(x:name)=="account"})
 	if i>0
 	      col := columns[i]
-	      col:expr := "codb_getValue(account):code"
+	      col:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code)"
 	      col:header := "КодСч"
 	      col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
 
 	      tmp := oclone(col)
 	      tmp:name := "account_name"
 	      tmp:header := "СчНазвание"
-	      //tmp:expr := "codb_getValue(account):code"
-	      tmp:expr := "codb_getValue(account):smallname"
+	      //tmp:expr := "cgi_getValue(account):code"
+	      tmp:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:smallname)"
 	      tmp:datatype := "C"
 	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
 	      aadd(columns,"")
@@ -171,12 +185,12 @@ errorblock({|err|error2html(err)})
 		urn := sprname
 	endif
 	for nPer = 1 to len(mPeriod)
-		beg_date =mPeriod[nPer][1]
-		end_date =mPeriod[nPer][2]
+		beg_date = mPeriod[nPer][1]
+		end_date = mPeriod[nPer][2]
 
 		aBal_data:={}
 		for i=1 to len(acc_chartt_list)
-			bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i],account)
+			bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i],account,itogo)
 			aadd(aBal_data,bal_data)
 		next
 		//? beg_date,end_date,len(aBal_data)
@@ -195,9 +209,13 @@ errorblock({|err|error2html(err)})
 			    level:= ':'+alltrim(str(nPer))
 			endif
 
-			cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+urn,columns,"",level)
-			?	
-			cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+urn,columns,"",level)
+			if isRDF
+				cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"",,)
+            else
+				cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+urn,columns,"",level)
+				?
+				cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+urn,columns,"",level)
+            endif
 		next
 	next
 	? '</RDF:RDF>'
@@ -205,9 +223,9 @@ errorblock({|err|error2html(err)})
 return
 
 ***********************
-static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
+static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 	local acc_chart_class,acc_chart_list
-	local oDict,osb_class
+	local oDict,osb_class,idOwner:=""
 	local aData := {},data,adata1,account
 	local i,j,k,tmp,obj,s1,s2,s
 	local min_date := end_date
@@ -216,20 +234,32 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
 	*****
 	acc_chart_class := m->oDict02:classBodyByName("acc_chart")
 	if empty(acc_chart_class)
-		cgi_xml_error("Class description not found: acc_chart")
+//		cgi_xml_error("Class description not found: acc_chart")
 		return
 	endif
 	*****
 	oDict:=oDep:dictionary()
 	osb_class := oDict:classBodyByName("os_balance")
 	if empty(osb_class)
-		cgi_xml_error("Class description not found: os_balance")
+//		cgi_xml_error("Class description not found: os_balance")
 		return
 	endif
 
 	s1:= ' .and. odate>=stod("'+dtos(beg_date)+ '") .and. odate<=stod("'+dtos(end_date)+ '")'
 	s2:= ' .and. odate<stod("'+dtos(beg_date)+ '")'
 	acc_chart_list := m->oDep02:select(acc_chart_class:id,,,'acc_chart_type="'+cType+'"')
+	if !empty(cAccount)
+		for i=1 to len(acc_chart_list)
+			account := m->oDep02:getValue(acc_chart_list[i])
+			if empty(account)
+				loop
+			endif
+            if account:code == cAccount
+            	idOwner := account:id
+                exit
+            endif
+    	next
+    endif
 	for i=1 to len(acc_chart_list)
 		account := m->oDep02:getValue(acc_chart_list[i])
 		if empty(account)
@@ -254,17 +284,32 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
 		if empty(cAccount)
 			aadd(aRefs,{account:id,account:owner_id,account:code,atail(adata)})
 		else
-			aadd(aRefs,{account:id,"",account:code,atail(adata)})
+			aadd(aRefs,{account:id,idOwner,account:code,atail(adata)})
 		endif
 	next
 	asort(aRefs,,,{|x,y| x[3] <= y[3] })
-	fillTree(aRefs,atree,"",1)
-	if empty(cAccount)
+    if  empty(cAccount)
+		fillTree(aRefs,atree,"",1)
+    else
+		fillTree(aRefs,atree,idOwner,1)
+    endif
+	if !empty(aTree) //empty(cAccount)
 		adata1:=reSummTree(aTree,0)
 		data:=map()
-		data:account	:= cType
-		data:smallname	:= codb_essence(cType)
-		data:code	:= [Total]
+        if empty(cAccount)
+			data:account	:= cType
+			data:smallname	:= cgi_essence(cType)
+			data:id 	:= "TOTAL_LINE_"+ntoc(m->start_id,32,4,"0")
+        else
+        	if empty(idOwner)
+				data:account	:= cAccount
+            else
+				data:account	:= idOwner
+            endif
+			data:smallname	:= cgi_essence(idOwner)
+			data:id 	:= "TOTAL_"+cAccount
+        endif
+		data:code	    := [Total]
 		data:owner_id	:= ""
 		data:bd_summa	:= aData1[1]
 		data:bk_summa	:= aData1[2]
@@ -272,10 +317,12 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount)
 		data:ok_summa	:= aData1[4]
 		data:ed_summa	:= aData1[5]
 		data:ek_summa	:= aData1[6]
-		data:id 	:= "ID_TMP_LINE_"+ntoc(m->start_id,32,4,"0")
 		m->start_id++
-		aadd(aTree,{[Total]+cType,"",[Total],data,{}})
-	endif
+		outlog(__FILE__,__LINE__, itogo)
+		if itogo=="true"
+		    aadd(aTree,{[Total]+cType,"",[Total],data,{}})
+		endif    
+    	endif
 return aTree
 /************************************************/
 static function reSummTree(aTree,level)

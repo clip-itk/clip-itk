@@ -44,7 +44,7 @@ local id := "", value:="",attr:=""
 	sDep := left(id,codb_info("DICT_ID_LEN")+codb_info("DEPOSIT_ID_LEN"))
 	oDep := codb_needDepository(sDep)
 	if empty(oDep)
-		cgi_xml_error("Depository not found "+sDep)
+//		cgi_xml_error("Depository not found "+sDep)
 		return
 	endif
 	oDict := oDep:dictionary()

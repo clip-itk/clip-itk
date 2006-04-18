@@ -7,7 +7,7 @@ local oDict,oDep, oDep02,oDict02
 local accPost, acc_chart, osb_class
 local beg_date:=date(),end_date:=date(), account:=""
 local connect_id:="", connect_data
-local i,j,k,x,s1,s2,tmp,obj
+local i,j,k,x,s1,s2,summ:=0,tmp,obj
 local acc_list, acc_objs,acc_s
 local post_list, d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
@@ -36,10 +36,16 @@ local cache:=map()
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
+
+
+	if "ACC01" $ _query .and. !empty(_query:acc01)
+	    set("ACC01",_query:acc01)
 	endif
+	if "ACC00" $ _query .and. !empty(_query:acc00)
+	    set("ACC00",_query:acc00)
+	endif
+
+
 
 	if empty(account) .or. empty(beg_date) .or. empty(end_date)
 		//cgi_html_header()
@@ -63,7 +69,7 @@ local cache:=map()
 	cgi_xml_header()
 	? '<body>'
 
-	oDep := codb_needDepository("ACC0101")
+	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: ACC0101" )
 		return
@@ -76,7 +82,7 @@ local cache:=map()
 		return
 	endif
 
-	oDep02 := codb_needDepository("GBL0201")
+	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: GBL0201" )
 		return
@@ -91,6 +97,8 @@ local cache:=map()
 
 	/* search account in acc_chart*/
 	acc_list:={}; acc_objs:={}; tmp:=""
+	
+	
 	obj:= oDep02:getValue(account)
 	if !empty(obj)
 		aadd(acc_objs,obj)
@@ -102,15 +110,20 @@ local cache:=map()
 		set exact on
 	endif
 	if !empty(tmp)
+
 		for i=1 to len(tmp)
 			obj:=oDep02:getValue(tmp[i])
 			if empty(obj)
 				loop
 			endif
+//		outlog(__FILE__,__LINE__,obj:code)			
+			if (account+'.') $ obj:code
 			aadd(acc_objs,obj)
 			aadd(acc_list,tmp[i])
 			cache[obj:id] := obj
+			endif
 		next
+		
 	endif
 
 	if empty(acc_list)
@@ -260,8 +273,8 @@ local cache:=map()
 		acc_s+=","
 	endif
     next
-	? '<div>Справка по оборотам проводок по счету(ам): '+acc_s //account
-	? 'за период с '+dtoc(beg_date)+' по '+dtoc(end_date)+'</div>'
+	? '<div><span>Справка по оборотам проводок по счету: '+codb_essence(account)+'</span>'
+	? '<span>за период с '+dtoc(beg_date)+' по '+dtoc(end_date)+'</span></div>'
 	? '<table cellpadding="2" cellspacing="0" border="1" width="80%" align="center">'
 	? '<tr>'
 	? '	<th valign="top" width="10%"><br/></th>'
@@ -327,6 +340,12 @@ local cache:=map()
 		tmp := acc_objs[i]
 		c_data:=r2d2_get_osb_data(oDep,osb_class:id,tmp,beg_date,end_date,s1,s2)
 //		? "c_data",c_data
+		summ := abs(c_data:bd_summa)+abs(c_data:bk_summa)+;
+			abs(c_data:od_summa)+abs(c_data:ok_summa)+;
+			abs(c_data:ed_summa)+abs(c_data:ek_summa)
+		if summ == 0
+			loop
+		endif
 		? '<tr>'
 		? '<td valign="top" align="left" >'+tmp:code+'</td>'
 		? '<td valign="top" align="right" >'+str(c_data:bd_summa,14,2)+'</td>'
@@ -343,15 +362,18 @@ local cache:=map()
 		itogo[5]+=c_data:ed_summa
 		itogo[6]+=c_data:ek_summa
 	next
-	? '<tr>'
-	? '<td valign="top" align="left" >Итого</td>'
-	? '<td valign="top" align="right" >'+str(itogo[1],14,2)+'</td>'
-	? '<td valign="top" align="right" >'+str(itogo[2],14,2)+'</td>'
-	? '<td valign="top" align="right" >'+str(itogo[3],14,2)+'</td>'
-	? '<td valign="top" align="right" >'+str(itogo[4],14,2)+'</td>'
-	? '<td valign="top" align="right" >'+str(itogo[5],14,2)+'</td>'
-	? '<td valign="top" align="right" >'+str(itogo[6],14,2)+'</td>'
-	? '</tr>'
+	if len(acc_objs)>1
+	    ? '<tr>'
+	    ? '<td valign="top" align="left" >'+split(codb_essence(account),":")[1]+'</td>'
+	    ? '<td valign="top" align="right" >'+str(itogo[1],14,2)+'</td>'
+	    ? '<td valign="top" align="right" >'+str(itogo[2],14,2)+'</td>'
+	    ? '<td valign="top" align="right" >'+str(itogo[3],14,2)+'</td>'
+	    ? '<td valign="top" align="right" >'+str(itogo[4],14,2)+'</td>'
+	    ? '<td valign="top" align="right" >'+str(itogo[5],14,2)+'</td>'
+	    ? '<td valign="top" align="right" >'+str(itogo[6],14,2)+'</td>'
+	    ? '</tr>'
+	endif
+
 	? '</tbody>'
 	? '</table>'
 	? '<div id="end"></div></body>'

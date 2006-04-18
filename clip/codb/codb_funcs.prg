@@ -14,6 +14,63 @@ static dep_counter:= map()
 static oLogDep
 
 ************************************
+* return default path for ODB dictionaries
+************************************
+function codbRoot()
+	local ret := "", f
+	f := cliproot()+PATH_DELIM+"etc"+PATH_DELIM+"CODBROOT"
+	if file(f)
+		ret := memoread(f)
+		if len(ret) < 2
+			ret := ""
+		endif
+		ret := strtran(ret,"&\r","")
+		ret := strtran(ret,"&\n","")
+		ret := alltrim(ret)
+	endif
+	if empty(ret) //.and. !empty(getenv("CODBROOT"))
+		ret := getenv("CODBROOT")
+	endif
+
+	if empty(ret)
+		ret := cygwinroot()+PATH_DELIM+PATH_DELIM+"home"+PATH_DELIM+getenv("USER")+PATH_DELIM+"codb"
+	endif
+
+	ret := strtran(ret,"//","/")
+	ret := strtran(ret,"\\","\")
+	memowrit(f,ret)
+	ret += PATH_DELIM
+
+return ret
+************************************
+* return default type for ODB dictionaries
+************************************
+function codbType()
+	local ret := "", f
+	f := cliproot()+PATH_DELIM+"etc"+PATH_DELIM+"CODBTYPE"
+	if file(f)
+		ret := memoread(f)
+		if len(ret) < 2
+			ret := ""
+		endif
+		ret := strtran(ret,"&\r","")
+		ret := strtran(ret,"&\n","")
+		ret := alltrim(ret)
+	endif
+	if empty(ret) //.and. !empty(getenv("CODBTYPE"))
+		ret := getenv("CODBTYPE")
+	endif
+
+	if empty(ret)
+		ret :=	CODB_DICTTYPE_DEFAULT
+	endif
+
+	ret := strtran(ret,"//","/")
+	ret := strtran(ret,"\\","\")
+	memowrit(f,ret)
+
+return ret
+************************************
 function codb_dict_register(id,obj)
 	if id $ dict_list .and. dict_counter[id] > 0
 		dict_counter[id] ++
@@ -328,6 +385,8 @@ function codb_info(dKey)
 			ret:=DICT_ID_LEN
 		case "DEPOSIT_ID_LEN"
 			ret:=DEPOSIT_ID_LEN
+		case "DEP_ID_LEN"
+			ret:=DEPOSIT_ID_LEN
 		case "OBJECT_ID_LEN"
 			ret:=CODB_ID_LEN - DICT_ID_LEN - DEPOSIT_ID_LEN
 		case "CODB_CLASS_BODY"
@@ -501,7 +560,7 @@ return
 /**********************************************/
 function codb_ParseXMLfile(xmlFile)
 	local hFile, oHtml,oTag,oMeta
-	local ret
+	local ret, line := 1, s
 	local i,attrName,attrData
 	hFile := fopen(xmlFile,0)
 	if hFile < 0
@@ -509,7 +568,13 @@ function codb_ParseXMLfile(xmlFile)
 	endif
 	oHtml := htmlParserNew()
 	do while !fileeof(hFile)
-		oHtml:put(freadstr(hFile,20))
+		s := filegetstr(hFile)
+		//s := freadstr(hFile,20)
+		oHtml:put(s)
+		if !empty(oHtml:error)
+			outlog([XML parse error:],oHtml:error,[file],xmlFile,[line],line,[data],s)
+		endif
+		line ++
 	enddo
 	fclose(hFile)
 	oHtml:end()
@@ -550,6 +615,56 @@ function codb_ParseXMLfile(xmlFile)
 
 return ret
 
+************************************************************
+function codb_getRefTo(ObjId)
+	local ret := left(objId,codb_info("DICT_ID_LEN"))+":"
+	local obj,class
+
+	obj := codb_getValue(objId)
+	if empty(obj)
+		return ret+"__ERROR__("+objId+")"
+	endif
+	if "CLASS_ID" $ obj
+		class := codb_getValue(obj:class_id)
+		if empty(class)
+			return ret+"__ERROR__("+obj:class_id+")"
+		endif
+		ret += class:name
+	elseif "NAME" $ obj
+		ret += obj:name
+	endif
+return  ret
+************************************************************
+function codb_getKeyValue(ObjId)
+	local ret := objId
+	local obj,class, expr
+	local err,bErr
+
+	obj := codb_getValue(objId)
+	if empty(obj)
+		return ret
+	endif
+	class := codb_getValue(obj:class_id)
+	if empty(class)
+		return ret
+	endif
+	expr := class:unique_key
+	if empty(expr)
+		return ret
+	endif
+
+	bErr:=errorBlock({|err|break(err)})
+	begin sequence
+		if isWord(expr) .and. upper(expr) $ obj
+			ret := obj[upper(expr)]
+		else
+			ret := mapEval(obj,expr)
+		endif
+	recover
+		ret := codb_error(1140)+":"+expr
+	end sequence
+	errorBlock(bErr)
+return ret
 ************************************************************
 function codb_getValue(ObjId)
 	static idLen1:=codb_info("DICT_ID_LEN")
@@ -779,10 +894,37 @@ function codb_outLog(user,oper,oData)
 	endif
 return
 ************************************************************
+/* open dictionary List */
+function codb_DictList()
+	local ret := {}
+	local i,j,dList, List
+	dList:=codbList():new()
+	if val(dList:error)!=0
+		return ret
+	endif
+
+	list := dList:list()
+	for i=1 to len(list)
+		j := at(":",list[i])
+		aadd(ret,left(list[i],j-1))
+	next
+return ret
+************************************************************
 /* open or return reference to dep or dict by ID */
 function codb_needDepository(depId)
-	local oDep
-	if len(depId) == DICT_ID_LEN
+	local oDep, x, len:=len(depId), isDict := .f.
+
+	if len == DICT_ID_LEN
+		isDict := .t.
+	elseif len >= DICT_ID_LEN+DEPOSIT_ID_LEN
+		x := substr(depId,DICT_ID_LEN+1,DEPOSIT_ID_LEN)
+		if x =="00"
+			depId := left(depId,DICT_ID_LEN)
+			isDict := .t.
+		endif
+	endif
+
+	if isDict
 		oDep := codb_dict_reference(depId)
 		if valType(oDep) == "O"
 			oDep:error := ""
@@ -795,7 +937,7 @@ function codb_needDepository(depId)
 		oDep:open()
 		return oDep
 	endif
-	if len(depId) >= DICT_ID_LEN+DEPOSIT_ID_LEN
+	if len >= DICT_ID_LEN+DEPOSIT_ID_LEN
 		depId := left(depId,DICT_ID_LEN+DEPOSIT_ID_LEN)
 		oDep := codb_dep_reference(depId)
 		if valType(oDep) == "O"

@@ -1,5 +1,5 @@
 CLIP	= $(CLIPROOT)/bin/clip
-CLIPFLAGS = -a -O -b
+CLIPFLAGS = -a -O -w
 CLIPLIBS  =
 #GUILIB  = $(CLIPROOT)/lib/libxclip.a
 SQLLIB	= $(CLIPROOT)/lib/libdbfsql.a
@@ -12,7 +12,8 @@ CLIP_LOCALE_ROOT=.
 export CLIP_LOCALE_ROOT
 .SUFFIXES: .prg .o .po
 
-all: menu fw_menu getfile tb_test big_num multilang pluralmsg
+all: menu fw_menu getfile tb_test big_num multilang
+		#pluralmsg
 
 clean:
 	rm -rf *.exe *.uri *.c *.s *.o *.a *.so *.log *.pa *.b *.BAK *.bak *~ core* *core

@@ -197,7 +197,7 @@ clip_GTK_CLIPBOARDREQUESTCONTENTS(ClipMachine * cm)
 	C_object     *cclipb = _fetch_co_arg(cm);
         C_object      *catom = _fetch_cobject(cm, _clip_spar(cm, 2));
         ClipVar       *cfunc = _clip_spar(cm, 3);
-        C_var               *c ;
+        C_var               *c = 0;
 
 	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
         	goto err;
@@ -257,7 +257,7 @@ clip_GTK_CLIPBOARDREQUESTTEXT(ClipMachine * cm)
 {
 	C_object     *cclipb = _fetch_co_arg(cm);
         ClipVar       *cfunc = _clip_spar(cm, 2);
-        C_var               *c ;
+        C_var               *c = 0;
 
 	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
         	goto err;
@@ -370,7 +370,7 @@ clip_GTK_CLIPBOARDREQUESTIMAGE(ClipMachine * cm)
 {
 	C_object     *cclipb = _fetch_co_arg(cm);
         ClipVar       *cfunc = _clip_spar(cm, 2);
-        C_var             *c ;
+        C_var             *c = 0;
 
 	if (!cclipb || cclipb->type != GTK_TYPE_CLIPBOARD)
         	goto err;

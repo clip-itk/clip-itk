@@ -78,7 +78,7 @@ rm_include:
 	rm -f $(CLIPROOT)/cti.ch
 
 links:
-	[ -d include/cti ] || (cd include && ln -sf . cti)
+	#[ -d include/cti ] || (cd include && ln -sf . cti)
 
 $(LIB): $(OBJS)
 	rm -f $(LIB)

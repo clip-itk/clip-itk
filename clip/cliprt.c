@@ -5,6 +5,12 @@
  */
 /*
    $Log: cliprt.c,v $
+   Revision 1.446  2006/04/18 16:39:32  clip
+   uri: small fix
+
+   Revision 1.445  2006/04/18 16:11:49  clip
+   uri: new release
+
    Revision 1.444  2005/12/02 08:33:33  clip
    uri: small fix
 
@@ -4576,7 +4582,7 @@ _clip_resume(ClipMachine * mp, int nlocals, int nreflocals)
 
 /*#if 1
 			if ((vp->t.flags & F_MPTR) && calc_loopcount(mp, vp, vfp, 0) == vfp->refcount - 1)
-                        {
+			{
 					_clip_destroy(mp, vp);
 			}
 #endif
@@ -8965,6 +8971,8 @@ _clip_cdate(long ju, int *dd, int *mm, int *yy, int *ww)
 	else
 		*yy = c - 4715;
 	*ww = (ju + 1) % 7L;
+	if (*yy <= 0 )
+		*yy = 1;
 }
 
 /*
@@ -11775,7 +11783,7 @@ _clip_strnncmp(const char *str1, const char *str2, int len1, int len2)
 	unsigned char ch1 = 0, ch2 = 0;
 	const unsigned char *us1, *us2;
 
- 	for (us1 = (const unsigned char *)str1, us2 = (const unsigned char *)str2; len1 && len2; us1++, us2++, len1--, len2--)
+	for (us1 = (const unsigned char *)str1, us2 = (const unsigned char *)str2; len1 && len2; us1++, us2++, len1--, len2--)
 	{
 		ch1 = *(unsigned char *)us1;
 		ch2 = *(unsigned char *)us2;

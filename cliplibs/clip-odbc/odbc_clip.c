@@ -1,5 +1,8 @@
 /*
 	$Log: odbc_clip.c,v $
+	Revision 1.22  2006/03/23 10:41:06  clip
+	rust: BLOB functions for PG (thanks Slava Zanko <slavaz@cis.by>)
+	
 	Revision 1.20  2004/04/09 10:43:49  clip
 	rust: minor fix
 	
@@ -194,7 +197,17 @@ static SQLVTBL vtbl =
 	odbc_start,
 	odbc_commit,
 	odbc_rollback,
-	odbc_fetch
+	odbc_fetch,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
 };
 
 int odbc_error(ClipMachine* cm,SQLLocale* loc,SQLHENV henv,SQLHDBC hdbc,SQLHSTMT hstmt,int line,const char* er_){
