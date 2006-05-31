@@ -7,15 +7,21 @@ set exact off
 oDep := coDepository():new("GBL0201","sdfsd")
 oDep:open()
 oDict := oDep:dictionary()
-class:=oDict:classBodyByName("acc_chart")
-? tmp:= oDep:select(class:id,,,'code="62"')
+class:=oDict:classBodyByName("acc_type_trans")
+tmp:= oDep:select(class:id)
 for i=1 to len(tmp)
-	oDep:getValue(tmp[i])
+	obj := oDep:getValue(tmp[i])
+	? obj:name
 next
+?
+return
 ************
-oDep01 := coDepository():new("ACC0101","sdfsd")
+oDep01 := coDepository():new("ACC0102","sdfsd")
 oDep01:open()
 oDict01 := oDep01:dictionary()
+? oDep01:getvalue("ACC01021V6RI")
+?
+return
 class:=oDict01:classBodyByName("os_balance")
 ? class
 //tmp:= oDep01:select(class:id,,,'odate>=stod("20050801") .and. odate<=stod("20051130") .and. daccount="GBL0201016GL"')
@@ -25,7 +31,7 @@ tmp:= oDep01:select(class:id,1,,'account=="GBL02010008H" .and. odate>=stod("2005
 ? len(tmp)
 for i=1 to len(tmp)
 	obj := oDep01:getValue(tmp[i])
-        ? obj:odate, obj:daccount
+	? obj:odate, obj:daccount
 next
 //tmp:= oDep01:select(class:id,,,'odate>=stod("20050801") .and. odate<=stod("20051130") .and. kaccount="GBL0201016GL"')
 //tmp:= oDep01:select(class:id,,,'kaccount="GBL0201016GL"')

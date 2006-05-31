@@ -6,6 +6,12 @@
 
 /*
  * $Log: clip.c,v $
+ * Revision 1.85  2006/05/23 12:01:36  clip
+ * uri: small fix
+ *
+ * Revision 1.84  2006/05/23 11:56:25  clip
+ * uri: small fix
+ *
  * Revision 1.83  2005/08/25 08:36:33  clip
  * uri: small fix for AMD64 (added -fPIC option for gcc)
  *
@@ -1002,9 +1008,12 @@ diff_clock(clock_t beg, clock_t end)
 	static char buf[32];
 	clock_t diff = end - beg;
 	int /*m, */ s, ms;
+	long clk_tck;
 
-	s = diff / CLK_TCK;
-	ms = (diff % CLK_TCK) * 100 / CLK_TCK;
+	clk_tck = sysconf(_SC_CLK_TCK); /*CLK_TCK;*/
+
+	s = diff / clk_tck;
+	ms = (diff % clk_tck) * 100 / clk_tck;
 	/*m=s/60;
 	   s=s%60; */
 	sprintf(buf, "%d.%02ds", s, ms);

@@ -5,6 +5,9 @@
  */
 /*
  $Log: task.c,v $
+ Revision 1.24  2006/05/25 14:16:15  clip
+ uri: small fix
+
  Revision 1.23  2005/11/26 16:25:48  clip
  uri: rename task_select_if -> clip_task_select_if
       It is openBsd pheatures.
@@ -867,10 +870,11 @@ static long
 calc_wakeup(struct timeval *tv)
 {
 	long n;
+	long clk_tck = sysconf(_SC_CLK_TCK); //CLK_TCK;
 
 	if (!tv)
-		return times(&tms_buf) + 60 * 60 * 24 * CLK_TCK;
-	n = tv->tv_sec * CLK_TCK + tv->tv_usec / (1000000 / CLK_TCK);
+		return times(&tms_buf) + 60 * 60 * 24 * clk_tck;
+	n = tv->tv_sec * clk_tck + tv->tv_usec / (1000000 / clk_tck);
 	if (!n)
 		n = 1;
 	return times(&tms_buf) + n;
@@ -1399,9 +1403,10 @@ waitEvent(int block)
 
 	if (block)
 	{
+		long clk_tck = sysconf(_SC_CLK_TCK); //CLK_TCK;
 		dt = ((Task *) waitTasks.current)->wakeUp - tim + 1;
-		tv.tv_sec = dt / CLK_TCK;
-		tv.tv_usec = (dt % CLK_TCK) * (1000000 / CLK_TCK);
+		tv.tv_sec = dt / clk_tck;
+		tv.tv_usec = (dt % clk_tck) * (1000000 / clk_tck);
 	}
 	else
 	{
@@ -1488,13 +1493,14 @@ static long
 calcWakeup(long msec)
 {
 	long n, ret;
+	long clk_tck = sysconf(_SC_CLK_TCK); //CLK_TCK;
 
 	if (msec < 0)
 	{			/*  one day will enought? */
-		ret = (long) times(&tms_buf) + 60 * 60 * 24 * CLK_TCK;
+		ret = (long) times(&tms_buf) + 60 * 60 * 24 * clk_tck;
 		return ret;
 	}
-	n = msec / (1000 / CLK_TCK);
+	n = msec / (1000 / clk_tck);
 	if (n < 1)
 		n = 1;
 	ret = times(&tms_buf) + n;

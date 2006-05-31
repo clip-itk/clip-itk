@@ -5,6 +5,10 @@
 */
 /*
    $Log: _util.c,v $
+   Revision 1.150  2006/05/12 06:49:33  clip
+   uri: fix bug in macroassing and _clip_parse_name.
+        &("m[varname]") := &("m[varname]")
+
    Revision 1.149  2006/03/13 07:22:32  clip
    uri: some fix from Angelo Gigardi
 
@@ -3068,7 +3072,7 @@ clip_ISMEMVAR(ClipMachine * cm)
 
 		if (!ret)
 		{
-			ret = _clip_parse_name(name, l, 0, 0, 0, 0, 0, 0);
+			ret = _clip_parse_name(cm,name, l, 0, 0, 0, 0, 0, 0);
 			if (ret == 1 || ret == 3)
 				ret = 1;
 			else

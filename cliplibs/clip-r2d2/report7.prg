@@ -60,14 +60,14 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 	*/
 
 
-        if "ACC01" $ _query .and. !empty(_query:acc01)
+	if "ACC01" $ _query .and. !empty(_query:acc01)
 	    set("ACC01",_query:acc01)
 	endif
 	if "ACC00" $ _query .and. !empty(_query:acc00)
 	    set("ACC00",_query:acc00)
 	endif
-							
-							
+
+
 	if empty(an_value) .or. empty(beg_date) .or. empty(end_date)
 		cgi_xml_header()
 
@@ -154,6 +154,9 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 			loop
 		endif
 		if obj:odate>end_date .or. obj:odate<beg_date
+			loop
+		endif
+		if "__VERSION" $ obj .and. obj:__version < 0
 			loop
 		endif
 		aadd(post_objs,obj)

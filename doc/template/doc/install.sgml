@@ -118,6 +118,7 @@ and new versions) if you make a test or working on your system as a single perso
 $CLIPROOT/bin to your path.)_ _(You can do this (if your command interpreter is bash) by
 adding following lines at the end of your local bash_profile:)_</para>
 <simplelist>
+<member>_(export CLIP_LANG=en_EN.CP437 #or ru_RU.KOI8-R)_</member>
 <member>_(export CLIPROOT=$HOME/cliproot)_</member>
 <member>_(export PATH=$CLIPROOT/bin:$PATH)_</member>
 </simplelist>

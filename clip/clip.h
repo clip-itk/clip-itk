@@ -5,12 +5,16 @@
 */
 /*
    $Log: clip.h,v $
+   Revision 1.244  2006/05/12 06:49:34  clip
+   uri: fix bug in macroassing and _clip_parse_name.
+        &("m[varname]") := &("m[varname]")
+
    Revision 1.243  2005/12/22 12:30:05  clip
    alena: add new _C_ITEM_TYPE_PARSER for clip-expat
 
    Revision 1.242  2005/11/26 16:25:47  clip
    uri: rename task_select_if -> clip_task_select_if
-        It is openBsd pheatures.
+	It is openBsd pheatures.
 
    Revision 1.241  2005/01/05 11:22:01  clip
    uri: small fix
@@ -2316,8 +2320,8 @@ int _clip_fileStrModeToNumMode(char *mode);
 int _clip_clip(ClipMachine * mp, const char *funcname, int argc, ClipVar * stackp, ClipVar * retp);
 void _clip_destroy_locals(ClipMachine *mp);
 
-int _clip_parse_name(char *name, int l, char **anamep, int *alp, char **fnamep
-		, int *flp, long **dimp, int *ndimp);
+int _clip_parse_name(ClipMachine * mp, char *name, int l, char **anamep, int *alp,
+		char **fnamep, int *flp, long **dimp, int *ndimp);
 
 #define CLEAR_CLIPVAR(vp) memset((vp),0,sizeof(ClipVar))
 

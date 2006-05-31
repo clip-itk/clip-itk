@@ -27,11 +27,11 @@ function codb_extdbfNew(oDep,ext_id)
 	obj:open	:= @_ext_open()
 	obj:close	:= @_ext_close()
 	obj:destroy	:= @_ext_close()
-        obj:id4PrimaryKey := @_ext_id4PrimaryKey()
-        obj:makeIndies  := @_ext_makeIndies()
-        obj:makeTables   := @_ext_makeTables()
-        obj:select	 := @_ext_select()
-        obj:objCRC	 := @_ext_objCRC()
+	obj:id4PrimaryKey := @_ext_id4PrimaryKey()
+	obj:makeIndies  := @_ext_makeIndies()
+	obj:makeTables   := @_ext_makeTables()
+	obj:select	 := @_ext_select()
+	obj:objCRC	 := @_ext_objCRC()
 
 return obj
 ************************************************************
@@ -71,17 +71,17 @@ static function _ext_select(self,s,aWrapNames,sIndex,nIndex,nCount,deleted)
 	//outlog(__FILE__,__LINE__s,aWrapNames)
 	rddSetFilter(self:hDbData,s,aWrapNames)
 
-        //outlog(__FILE__,__LINE__,self:path,self:hDbData,rddIndexKey(self:hDbData),s,aWrapNames)
+	//outlog(__FILE__,__LINE__,self:path,self:hDbData,rddIndexKey(self:hDbData),s,aWrapNames)
 	if nIndex!=NIL .and. nIndex>0
-                //outlog(__FILE__,__LINE__,nIndex)
+		//outlog(__FILE__,__LINE__,nIndex)
 		sIndex := "data"+alltrim(str(nIndex,2,0))
 		rddSetOrder(self:hDbData,sIndex)
 	endif
 	if nCount == NIL
 		rddGoTop(self:hDbData)
-                //outlog(__FILE__,__LINE__,rddEof(self:hDbData))
+		//outlog(__FILE__,__LINE__,rddEof(self:hDbData))
 		while !rddEof(self:hDbData)
-                	//outlog(__FILE__,__LINE__,rddRecno(self:hDbData))
+			//outlog(__FILE__,__LINE__,rddRecno(self:hDbData))
 			if deleted .or. rddGetvalue(self:hDbData,"VERSION") >= 0
 				aadd(ret,rddGetvalue(self:hDbData,"OBJECT_ID"))
 			endif
@@ -147,12 +147,12 @@ return ret
 static function _ext_getValue(self,cID,nLocks,version,lRecord)
 	local ret:=map(),tmp,i,locked:=.f.,found := .f., nRecno
 	self:error := ""
-        /*
+	/*
 	if version == NIL
 		version := 0
 	endif
-        */
-        lRecord := iif(valtype(lRecord)=="L",lRecord,.f.)
+	*/
+	lRecord := iif(valtype(lRecord)=="L",lRecord,.f.)
 	taskStop()
 	rddSeek(self:hDbData,cID,.f.)
 	while !rddEof(self:hDbData)
@@ -181,16 +181,19 @@ static function _ext_getValue(self,cID,nLocks,version,lRecord)
 		if nLocks==0 .or. locked
 			tmp := rddRead(self:hDbData)
 			if tmp:object_id == cID
-                        	if lRecord
-                                	ret := tmp
+				if lRecord
+					ret := tmp
 				else
 					ret := tmp:body
 					if valtype(ret) != "O"
 						outlog(__FILE__,__LINE__,"error in FPT","file=",self:path,"recno=",rddRecno(self:hDbData),"value=",ret)
-                                        else
+					else
 						ret:__version := tmp:version
 						ret:__crc32   := tmp:crc32
 					endif
+				endif
+				if rddDeleted(self:hDbData)
+					ret:__version := -1
 				endif
 			endif
 		else
@@ -216,18 +219,18 @@ static function _ext_delete(self,cId,lErase)
 		self:error := codb_error(1005)+":"+cId+":ext,line:"+alltrim(str(__LINE__))
 		return .f.
 	endif
-        if lErase
+	if lErase
 		rddDelete(self:hDbData)
 	else
-	      	ver := rddGetValue(self:hDbData,"version")
-                if ver > 0
-                	ver := -1
+		ver := rddGetValue(self:hDbData,"version")
+		if ver > 0
+			ver := -1
 		else
-                	ver --
+			ver --
 		endif
-        	ver := max(ver,-99)
-	      	ver := rddSetValue(self:hDbData,"version",ver)
-        endif
+		ver := max(ver,-99)
+		ver := rddSetValue(self:hDbData,"version",ver)
+	endif
 	rddUnlock(self:hDbData)
 return .t.
 ************************************************************
@@ -246,9 +249,9 @@ static function _ext_undelete(self,cId)
 	endif
 
 	ver := rddGetValue(self:hDbData,"version")
-        if ver < 0
-	      	rddSetValue(self:hDbData,"version",0)
-        endif
+	if ver < 0
+		rddSetValue(self:hDbData,"version",0)
+	endif
 	rddUnlock(self:hDbData)
 return .t.
 ************************************************************
@@ -258,23 +261,23 @@ static function _ext_append(self,oData, xData, lRecord)
 	lRecord := iif(valtype(lRecord)=="L", lRecord, .f. )
 	self:error := ""
 
-        if lRecord
-        	rec := oData
+	if lRecord
+		rec := oData
 	else
 		rec:object_id   := oData:id
 		rec:class_id    := oData:class_id
 		rec:version	:= 0
-        	rec:isOld 	:= .f.
+		rec:isOld 	:= .f.
 		rec:body        := oData
 
 		/*
 		tmp := mapKeys(xData)
-        	for i=1 to len(tmp)
-        		rec[tmp[i]] := xData[tmp[i]]
+		for i=1 to len(tmp)
+			rec[tmp[i]] := xData[tmp[i]]
 		next
-                */
-                for i in xData KEYS
-                	rec[i] := xData[i]
+		*/
+		for i in xData KEYS
+			rec[i] := xData[i]
 		next
 	endif
 	rec:crc32     := self:objCRC(rec:body)
@@ -293,18 +296,18 @@ static function _ext_update(self,oData, xData, lUnique)
 	rec:object_id   := oData:id
 	rec:class_id    := oData:class_id
 	rec:version	:= 0 //version  // доделать
-        rec:isOld 	:= .f.
+	rec:isOld 	:= .f.
 	rec:body        := oData
 	rec:crc32     := self:objCRC(rec:body)
 
 	/*
 	tmp := mapKeys(xData)
-        for i=1 to len(tmp)
-        	rec[tmp[i]] := xData[tmp[i]]
+	for i=1 to len(tmp)
+		rec[tmp[i]] := xData[tmp[i]]
 	next
-        */
-        for i in xData KEYS
-        	rec[i] := xData[i]
+	*/
+	for i in xData KEYS
+		rec[i] := xData[i]
 	next
 
 	**********
@@ -319,9 +322,9 @@ static function _ext_update(self,oData, xData, lUnique)
 		return .f.
 	endif
 	ver := rddGetValue(self:hDbData,"version")
-        if ver >= 0 .and. lUnique
-        	ver := min(ver+1,CODB_MAX_OBJ_VERSION)
-                rec:version := ver
+	if ver >= 0 .and. lUnique
+		ver := min(ver+1,CODB_MAX_OBJ_VERSION)
+		rec:version := ver
 	endif
 	rddWrite(self:hDbData,rec)
 	rddUnlock(self:hDbData)
@@ -362,9 +365,9 @@ static function _ext_makeTables(self,lOut)
 	lOut:=iif(valtype(lOut)=="L",lOut,.f.)
 
 	stru := CODB_EXTENT_STRUCTURE
-        x := atail(stru)
-        adel(stru,len(stru))
-        asize(stru,len(stru)-1)
+	x := atail(stru)
+	adel(stru,len(stru))
+	asize(stru,len(stru)-1)
 	for i=1 to CODB_IDX_PER_CLASS
 		str:="DATA"+alltrim(str(i,2,0))
 		if i<=2
@@ -375,11 +378,11 @@ static function _ext_makeTables(self,lOut)
 			aadd(stru,{str,"X",CODB_ID_LEN+2,0} )
 		endif
 	next
-        aadd(stru,x)
+	aadd(stru,x)
 	if lOut
 		? "create table",dbfile
 	endif
-        dbFile := self:path
+	dbFile := self:path
 	dbCreate(dbFile,stru)
 	chmod(dbfile+".dbf","666")
 	chmod(dbfile+".fpt","666")

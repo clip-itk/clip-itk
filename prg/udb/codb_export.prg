@@ -357,8 +357,7 @@ static function __exportDataArray(oDep,_data,kol)
 				if valtype(obj) == "O" .and. "__META" $ obj
 					type := "S"
 					s4 := obj:__meta
-					s2 := obj:name
-					s5 := left(obj:id,codb_info("DICT_ID_LEN"))
+					s2 := left(obj:id,codb_info("DICT_ID_LEN"))+":"+obj:name
 				endif
 			otherwise
 				s2 := toString(data)

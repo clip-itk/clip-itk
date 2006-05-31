@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2002-2005  ITK
+    Copyright (C) 2002-2006  ITK
     Author   : Uri (uri@itk.ru)
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
@@ -319,10 +319,12 @@ static function attrCheck (attrData, attrDesc )
 			ret := attrData
 		elseif cType == "C"
 			if left(attrData,1) == "."
-				ret := ( substr(attrData,2,1) $ "tT" )
+				ret := ( substr(attrData,2,1) $ "tTyY" )
 			else
-				ret := ( substr(attrData,1,1) $ "tT" )
+				ret := ( substr(attrData,1,1) $ "tTyY" )
 			endif
+		elseif cType == "N"
+			ret := (attrData > 0)
 		else
 			ret := .f.
 		endif
@@ -618,8 +620,14 @@ return ret
 ************************************************************
 function codb_getRefTo(ObjId)
 	local ret := left(objId,codb_info("DICT_ID_LEN"))+":"
-	local obj,class
+	local s,obj,class
 
+	ret := left(objId,codb_info("DICT_ID_LEN"))
+	s := substr(objId,codb_info("DICT_ID_LEN")+1,codb_info("DEPOSIT_ID_LEN"))
+	if !(s = "00")
+		ret += s
+	endif
+	ret += ":"
 	obj := codb_getValue(objId)
 	if empty(obj)
 		return ret+"__ERROR__("+objId+")"
@@ -927,7 +935,7 @@ function codb_needDepository(depId)
 	if isDict
 		oDep := codb_dict_reference(depId)
 		if valType(oDep) == "O"
-			oDep:error := ""
+		 //	oDep:error := ""
 			return oDep
 		endif
 		oDep:=coDictionary():new(depId)
@@ -941,7 +949,7 @@ function codb_needDepository(depId)
 		depId := left(depId,DICT_ID_LEN+DEPOSIT_ID_LEN)
 		oDep := codb_dep_reference(depId)
 		if valType(oDep) == "O"
-			oDep:error := ""
+		//	oDep:error := ""
 			return oDep
 		endif
 		oDep:=coDepository():new(depId)

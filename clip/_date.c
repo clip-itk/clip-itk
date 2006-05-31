@@ -6,6 +6,9 @@
 
 /*
    $Log: _date.c,v $
+   Revision 1.64  2006/05/26 06:32:50  clip
+   uri: small fix
+
    Revision 1.63  2005/12/07 08:46:59  clip
    uri: small fix in addmonth() from Slava Zanko <slavaz@cis.by>
 
@@ -554,7 +557,7 @@ clip_SECONDSCPU(ClipMachine * mp)
 	if (n & 2)
 		d += tm.tms_stime;
 
-	d /= CLK_TCK;
+	d /= sysconf(_SC_CLK_TCK);
 	_clip_retndp(mp, d, 10, 2);
 	return 0;
 }

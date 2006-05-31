@@ -8,7 +8,7 @@ Packager:	Paul Lasarev <paul@itk.ru>
 URL:		http://www.itk.ru
 Source:         %{name}-%{version}.tar.gz
 Group:		Development
-Copyright:	GPL
+License:	GPL
 Requires:	clip-lib, gcc, make, binutils
 BuildRoot:	/tmp/%{name}-%{version}
 Summary:	XBASE/Clipper compatible program compiler - utilities

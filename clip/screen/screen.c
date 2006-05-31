@@ -1,6 +1,9 @@
 
 /*
    $Log: screen.c,v $
+   Revision 1.108  2006/05/26 21:42:08  clip
+   uri: small fix for utf terminal
+
    Revision 1.107  2005/03/01 11:44:58  clip
    uri: small fix
 
@@ -2285,7 +2288,7 @@ termcap_put_char(ScreenData * dp, int ch, int utf8term)
 	{
 		int pg;
 
-		if (dp->utf8_mode && utf8term)
+		if (dp->utf8_mode /*&& utf8term*/)
 		{
 			char utfch[7];
 			int n;

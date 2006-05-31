@@ -8,7 +8,7 @@ Packager:	Paul Lasarev <paul@itk.ru>
 URL:		http://www.itk.ru
 Source:         %{name}-%{version}.tar.gz
 Group:		Development
-Copyright:	GPL
+License:	GPL
 Requires:	clip-lib, gcc, make, binutils, readline
 BuildRoot:	/tmp/%{name}-%{version}
 Summary:	XBASE/Clipper compatible program compiler
@@ -181,6 +181,7 @@ chmod -R g+w $LOCALEDIRS || true
 %{CLIPROOT}/locale.po/ru_RU.KOI8-R/sys.po
 %{CLIPROOT}/locale.po/ru_RU.KOI8-R/codb.po
 %{LIBDIR}/libclip.so
+%{LIBDIR}/libclip-codb.so
 %{CLIPROOT}/lib/libclip.so
 %{CLIPROOT}/lib/libclip-codb.so
 %{CLIPROOT}/charsets
@@ -199,6 +200,9 @@ chmod -R g+w $LOCALEDIRS || true
 %{CLIPROOT}/lib/*.a
 %{CLIPROOT}/lib/*.ex
 %{CLIPROOT}/lib/*.nm
+%{LIBDIR}/*.a
+%{LIBDIR}/*.ex
+%{LIBDIR}/*.nm
 %{CLIPROOT}/include
 %{CLIPROOT}/locale.pot
 %{CLIPROOT}/cliprc/clipflags

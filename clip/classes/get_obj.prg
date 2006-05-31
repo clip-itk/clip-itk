@@ -334,38 +334,39 @@ static func killFocus()
 return NIL
 
 **********************************************
-static func setFocus()
+static func setFocus(self)
   local v
 #ifdef DEBUG
-	outlog(__FILE__,__LINE__,"__setfocus",::name)
+	outlog(__FILE__,__LINE__,"__setfocus",self:name)
 #endif
-   if ::block==NIL .or. ::hasFocus
+   if self:block==NIL .or. self:hasFocus
 	return NIL
    endif
-  ::__oldReadVar:=set("__readvar",::name)
-  ::reset()
-  ::hasFocus:=.t.
+  //self:__oldReadVar:=set("__readvar",self:name)
+  self:__oldReadVar:=set("__readvar",getReadVar(self))
+  self:reset()
+  self:hasFocus:=.t.
 
-  ::original:=eval(::block)
-  ::__updateInfo()
+  self:original:=eval(self:block)
+  self:__updateInfo()
 
-  ::__analizePic()
-  ::__winLen=min(::__winlen,len(::__format))
+  self:__analizePic()
+  self:__winLen=min(self:__winlen,len(self:__format))
 
-  if ::type=="N"
-       ::__original:=str(::_original,::__len,::__dec)
-       ::__original:=strtran(::__original,".","")
+  if self:type=="N"
+       self:__original:=str(self:_original,self:__len,self:__dec)
+       self:__original:=strtran(self:__original,".","")
   endif
 
-  ::__fillBuffer()
-  if len(::__posArr)>0
-     ::pos:=::__posArr[1]
+  self:__fillBuffer()
+  if len(self:__posArr)>0
+     self:pos:=self:__posArr[1]
   endif
-  if ::type=="U" .or. (::type=="C" .and. ::__original=="")
-	::typeOut:=.t.
+  if self:type=="U" .or. (self:type=="C" .and. self:__original=="")
+	self:typeOut:=.t.
   endif
 
-  ::_display()
+  self:_display()
 
 return NIL
 **********************************************

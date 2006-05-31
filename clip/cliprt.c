@@ -5,6 +5,10 @@
  */
 /*
    $Log: cliprt.c,v $
+   Revision 1.447  2006/05/12 06:49:34  clip
+   uri: fix bug in macroassing and _clip_parse_name.
+        &("m[varname]") := &("m[varname]")
+
    Revision 1.446  2006/04/18 16:39:32  clip
    uri: small fix
 
@@ -5804,7 +5808,7 @@ find_lval(ClipMachine * mp, char *name, int namelen)
 	int fl = 0, r, ndim = 0;
 	long *dim = 0;
 
-	r = _clip_parse_name(name, namelen, 0, 0, &fname, &fl, &dim, &ndim);
+	r = _clip_parse_name(mp,name, namelen, 0, 0, &fname, &fl, &dim, &ndim);
 	if (r == 2)		/* field */
 		return 0;
 
@@ -5884,7 +5888,7 @@ _clip_pop_fieldhash(ClipMachine * mp, long *area, long *field)
 			int al = 0, fl = 0;
 			char *aname = 0, *fname = 0;
 
-			_clip_parse_name(vp->s.str.buf, vp->s.str.len, &aname, &al, &fname, &fl, 0, 0);
+			_clip_parse_name(mp,vp->s.str.buf, vp->s.str.len, &aname, &al, &fname, &fl, 0, 0);
 			if (aname)
 				*area = _clip_casehashbytes(0, aname, al);
 			if (fname)
@@ -11505,7 +11509,7 @@ _clip_refmacro(ClipMachine * mp)
 		return 0;
 	}
 
-	r = _clip_parse_name(vp->s.str.buf, vp->s.str.len, &aname, &al, &fname, &fl, &dim, &ndim);
+	r = _clip_parse_name(mp,vp->s.str.buf, vp->s.str.len, &aname, &al, &fname, &fl, &dim, &ndim);
 
 	if (aname)
 		ahash = _clip_casehashbytes(0, aname, al);

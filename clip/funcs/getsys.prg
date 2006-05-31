@@ -1073,7 +1073,7 @@ FUNCTION GetPreValidate( oGet, oMsg )
    LOCAL lWhen := .T.
    local oldReadVar
 
-   oldReadVar:=set("__readvar",oGet:name)
+   oldReadVar := set("__readvar",getReadVar(oGet))
    IF !( oGet:preBlock == NIL )
       lSavUpdated := oStatus:updated
       lWhen := EVAL( oGet:preBlock, oGet, oMsg )
@@ -1363,7 +1363,7 @@ RETURN
 
 
 ***********************************************
-STATIC FUNCTION GetReadVar( oGet )
+FUNCTION GetReadVar( oGet )
 
    LOCAL cName := UPPER( oGet:name )
    LOCAL i

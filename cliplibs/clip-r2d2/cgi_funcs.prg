@@ -1501,7 +1501,8 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 					else
 					    sTmp3 := "'"+alltrim(str(stmp))+"'"					    
 					endif        
-					
+					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ alltrim(str(stmp))  + ""					
+//outlog(stmp,stmp3,col:name)					
 				elseif valtype(sTmp) == "D"
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ iif(empty(sTmp),"'00000000'","'"+dtos(sTmp)+"'") + ""
 					sTmp3 := iif(empty(sTmp),'',"'"+dtoc(sTmp)+"'")
@@ -1520,7 +1521,7 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 			if len(refr) >0
 				?? s+", r:{"+refr+"}"
 			endif
-
+?
 		?? s+'}'+iif( i==aLen, '',',')
 	next
 	?? ']</items>'

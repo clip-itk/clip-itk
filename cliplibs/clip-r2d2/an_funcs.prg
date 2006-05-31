@@ -108,8 +108,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		aObj:tCols := ""
 		aObj:essence := anb_list[i]
 		aObj:union := ""
-		aObj:attr := ""		
-		aObj:esse := ""				
+		aObj:attr := ""
+		aObj:esse := ""
 		an_obj := cgi_getValue(anb_list[i])
 		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		if empty(an_obj)
@@ -157,7 +157,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			aObj:essence  := class:essence(an_obj)
 			for j=1 to len(class:tcol_list)
 				tCol := NIL; k:=""
-				
+
 				if class:tcol_list[j] $ tCols
 					tCol := tCols[class:tcol_list[j]]
 				endif
@@ -175,21 +175,22 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					  k:= "error in tcolumn expr:"+tCol:expr
 				end sequence
 				errorBlock(err)
-				if !empty(k)
+				if !empty(k) .or. valtype(k)=="N"
 				kk:=""
-//*--------------------------------		
+//*--------------------------------
 
-					typeval := valtype(an_obj[upper(class:tcol_list[j])])		
-					essvalue:= an_obj[upper(class:tcol_list[j])]
-//outlog( class:tcol_list[j] ,k, essvalue )					    					
+					typeval := valtype(an_obj[upper(class:tcol_list[j])])
+//					typeval := valtype(k)
+					essvalue:= /*k*/an_obj[upper(class:tcol_list[j])]
+//outlog( class:tcol_list[j] ,k, essvalue )
 					if typeval=="L"
 					    essvalue:=iif(essvalue,'true','false')
 					    kk:=toString(k)
 					elseif  typeval=="D"
 					    essvalue:=iif(empty(essvalue),"''","'"+dtos(essvalue)+"'")
-					    KK:=toString(k)
+					    kk:=toString(k)
 					elseif  typeval=="N"
-					    kk:=bal_summa(essvalue)					
+					    kk:=bal_summa(val(k))
 					    essvalue:="'"+bal_summa(essvalue)+"'"
 					else
 					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
@@ -200,12 +201,12 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					    kk:=alltrim(toString(k))
 					    kk:=strtran(kk,"'","\'")
 					    kk:=strtran(kk,'"','\"')
-					    
-					endif 
-//outlog( class:tcol_list[j] ,kk, essvalue )		
+
+					endif
+//outlog( class:tcol_list[j] ,kk, essvalue )
 					aObj:esse  += class:tcol_list[j]+":"+essvalue+', '
 					aObj:attr  += class:tcol_list[j]+":'"+kk+"',  "
-					aObj:tCols += ' '+class:tcol_list[j]+'="'+alltrim(toString(k))+'" ' 
+					aObj:tCols += ' '+class:tcol_list[j]+'="'+alltrim(toString(k))+'" '
 				endif
 				if !empty(k) .and. union==class:tcol_list[j]
 					aObj:union := k
@@ -214,11 +215,11 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		else
 			aObj:essence  := class:essence(an_obj)
 		endif
-		
-//outlog(aObj:esse)			    												
-//outlog(aObj:attr)			    												
-		
-		
+
+//outlog(aObj:esse)
+//outlog(aObj:attr)
+
+
 		aObj:bd_summa := 0
 		aObj:bk_summa := 0
 		aObj:od_summa := 0
@@ -376,11 +377,12 @@ function r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values
 	//return ret
 
 
-#ifdef NEW_VARIANTS
 	s := 'account=="'+account+'"'+;
 		' .and. beg_date<=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
+//#ifdef NEW_VARIANTS
+    if len(ret) > 100
 	tmp:=oDep:select(an_info_full:id,,,s)
-	//outlog(__FILE__,__LINE__,len(tmp),s,tmp)
+	//outlog(__FILE__,__LINE__,len(tmp),s/*,tmp*/)
 	for i=len(tmp) to 1 step -1
 		obj := oDep:getValue(tmp[i])
 		if empty(obj)
@@ -422,8 +424,9 @@ function r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values
 			endif
 		end
 	next
-	//outlog(__FILE__,__LINE__,len(ret2),ret2)
-#else
+	//outlog(__FILE__,__LINE__,len(ret2)/*,ret2*/)
+//#else
+    else
 	for k=1 to len(ret)
 		s2 := ""; a:= ret[k]
 		for i=1 to len(a)
@@ -450,9 +453,11 @@ function r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values
 			aadd(ret2,b)
 		next
 	next
-#endif
+   endif
+//#endif
 	b:={}
 	_used := map()
+	//outlog(__FILE__,__LINE__,len(ret2))
 	for i=1 to len(ret2)
 		a := ""
 		for j=1 to len(ret2[i])
@@ -470,6 +475,7 @@ function r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values
 		adel(ret2,b[i])
 	next
 	asize(ret2,len(ret2)-len(b))
+	//outlog(__FILE__,__LINE__,len(ret2))
 	//outlog(__FILE__,__LINE__,len(ret2),ret2)
 return ret2
 ************************************

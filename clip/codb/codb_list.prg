@@ -371,7 +371,7 @@ static function cdb_update(data)
 	if !(rddGetValue(::hDb,"ID") == id)
 		::error := codb_error(1004)+":"+id
 	else
-    	data := rddGetValue(::hDb,"BODY")
+	data := rddGetValue(::hDb,"BODY")
 	endif
 	if empty(::error)
 		if empty(data:type) .or. ("$CODBTYPE$" $ data:type)
@@ -405,7 +405,12 @@ static function cdb_update(data)
 		dict:=::connect(data:id)
 		::error := dict:error
 		ret := empty(dict:error)
-		dict:close()
+		if ret
+			dict:open()
+			::error := dict:error
+			ret := empty(dict:error)
+			dict:close()
+		endif
 	endif
 return ret
 ************************************************************

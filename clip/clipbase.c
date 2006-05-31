@@ -5,9 +5,13 @@
 */
 /*
 	$Log: clipbase.c,v $
+	Revision 1.373  2006/05/12 06:49:34  clip
+	uri: fix bug in macroassing and _clip_parse_name.
+	     &("m[varname]") := &("m[varname]")
+	
 	Revision 1.372  2005/02/02 14:22:23  clip
 	rust: minor fix for SET OPTIMIZE LEVEL 2
-	
+
 	Revision 1.371  2005/01/19 13:32:02  clip
 	rust: minor fix in string comparison
 
@@ -3076,8 +3080,8 @@ is_id(int c)
 	*ndimp - it's length
 */
 CLIP_DLLEXPORT int
-_clip_parse_name(char *name, int l, char **anamep, int *alp, char **fnamep
-		, int *flp, long **dimp, int *ndimp)
+_clip_parse_name(ClipMachine * mp, char *name, int l, char **anamep, int *alp,
+		char **fnamep, int *flp, long **dimp, int *ndimp)
 {
 	char *s, *e, *p, *ep;
 	int ret = 0;
@@ -3181,7 +3185,14 @@ _clip_parse_name(char *name, int l, char **anamep, int *alp, char **fnamep
 				if (is_dig(ep, ll))
 					val = atoi(ep) - 1;
 				else
-					val = _clip_casehashbytes(0, ep, ll);
+				{
+					ClipVar *var;
+					var = _clip_ref_memvar_noadd(mp, _clip_casehashbytes(0, ep, ll));
+					if (var)
+						val = _clip_long(var)-1;
+					else
+						val = _clip_casehashbytes(0, ep, ll);
+				}
 				if (dimp && ndimp)
 				{
 					(*dimp)[*ndimp] = val;
@@ -3225,7 +3236,7 @@ clip_ISFIELD(ClipMachine * cm)
 
 	if (!ret)
 	{
-		if (_clip_parse_name(name, l, &aname, &al, &fname, &fl, 0, 0) == 2)
+		if (_clip_parse_name(cm, name, l, &aname, &al, &fname, &fl, 0, 0) == 2)
 		{
 			if (aname)
 				wa = get_area(cm, _clip_casehashword(aname, al), 0, 0);
@@ -3269,7 +3280,7 @@ _clip_nameassign(ClipMachine * cm, char *name, int l, ClipVar * vp, int fieldpre
 				er_noalias);
 	}
 
-	r = _clip_parse_name(name, l, &aname, &al, &fname, &fl, &dim, &ndim);
+	r = _clip_parse_name(cm, name, l, &aname, &al, &fname, &fl, &dim, &ndim);
 	if (r == 2)
 	{
 		if (aname)

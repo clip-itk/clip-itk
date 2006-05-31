@@ -152,7 +152,7 @@ errorblock({|err|error2html(err)})
 	      tmp:name := "account_name"
 	      tmp:header := "СчНазвание"
 	      //tmp:expr := "cgi_getValue(account):code"
-	      tmp:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:smallname)"
+	      tmp:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code+':'+__obj:smallname)"
 	      tmp:datatype := "C"
 	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
 	      aadd(columns,"")
