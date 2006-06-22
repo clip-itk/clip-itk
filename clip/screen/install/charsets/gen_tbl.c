@@ -6,7 +6,10 @@
  */
 
 /*
-	$Log: gen_tbl.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:32  itk
+	uri: init sf.net repository
+	
 	Revision 1.9  2002/01/16 15:29:08  clip
 	chinese patch
 	preproc bugs

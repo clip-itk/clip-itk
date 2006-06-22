@@ -1,6 +1,9 @@
 
 /*
-   $Log: keymap.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:31  itk
+   uri: init sf.net repository
+
    Revision 1.4  2005/07/06 15:30:28  clip
    uri: strange trouble with new util loadkeys and old kernel. not fixed goodly.
 

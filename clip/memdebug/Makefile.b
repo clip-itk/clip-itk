@@ -1,7 +1,7 @@
 # Generated automatically from Makefile.in by configure.
 ###############################################################################
 # Makefile for the Malloc library.
-# $Id: Makefile.b,v 1.2 2000/05/03 21:39:20 clip Exp $
+# $Id$
 ###############################################################################
 
 # default root installation directory

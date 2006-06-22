@@ -5,7 +5,10 @@
  */
 
 /*
-  $Log: com.c,v $
+  $Log$
+  Revision 1.1  2006/06/22 20:12:02  itk
+  uri: init sf.net
+
   Revision 1.5  2005/08/09 08:49:09  clip
   alena: fix for gcc 4
 

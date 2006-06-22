@@ -1,6 +1,9 @@
 
 /*
-   $Log: tcaps.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:31  itk
+   uri: init sf.net repository
+
    Revision 1.8  2005/02/22 08:09:43  clip
    uri: small fix
 

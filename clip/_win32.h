@@ -5,7 +5,10 @@
 */
 
 /*
-    $Log: _win32.h,v $
+    $Log$
+    Revision 1.1  2006/06/22 19:35:15  itk
+    uri: init sf.net repository
+
     Revision 1.2  2003/09/05 12:11:52  clip
     uri: initial fixes for mingw+win32 from uri
 

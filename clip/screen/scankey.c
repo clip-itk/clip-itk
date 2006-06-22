@@ -1,6 +1,9 @@
 
 /*
-   $Log: scankey.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:31  itk
+   uri: init sf.net repository
+
    Revision 1.35  2005/08/08 09:00:32  clip
    alena: fix for gcc 4
 

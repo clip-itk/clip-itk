@@ -4,7 +4,10 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
- * $Log: clic.h,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:35:15  itk
+ * uri: init sf.net repository
+ *
  * Revision 1.47  2005/08/25 08:36:33  clip
  * uri: small fix for AMD64 (added -fPIC option for gcc)
  *

@@ -1,6 +1,9 @@
 
 /*
-   $Log: kbd.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:31  itk
+   uri: init sf.net repository
+
    Revision 1.6  2004/07/08 07:21:05  clip
    uri: small fix for kbdstat()
 

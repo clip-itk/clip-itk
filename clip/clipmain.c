@@ -1,6 +1,9 @@
 
 /*
-   $Log: clipmain.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:33  itk
+   uri: initial
+
    Revision 1.7  2004/01/25 10:23:40  clip
    uri: fix bug in exit procedures and inkey()
 

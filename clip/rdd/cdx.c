@@ -3,7 +3,10 @@
 	Author  : Rushad Nabiullin (rust@itk.ru)
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
-	$Log: cdx.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:30  itk
+	uri: init sf.net repository
+	
 	Revision 1.160  2006/02/27 11:54:09  clip
 	rust: avoid some compilers' warnings
 	

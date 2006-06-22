@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: _clipboard.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:29  itk
+   uri: initial
+
    Revision 1.12  2005/08/08 09:00:30  clip
    alena: fix for gcc 4
 

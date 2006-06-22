@@ -5,7 +5,10 @@
 */
 %{
 /*
-$Log: clic_c.lex,v $
+$Log$
+Revision 1.1  2006/06/22 19:35:15  itk
+uri: init sf.net repository
+
 Revision 1.5  2004/04/21 08:06:53  clip
 uri: some fix for new flex
 

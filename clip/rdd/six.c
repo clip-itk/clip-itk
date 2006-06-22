@@ -3,7 +3,10 @@
 	Author   : Rushad Nabiullin <rust@itk.ru>
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: six.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:31  itk
+	uri: init sf.net repository
+	
 	Revision 1.104  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
 	

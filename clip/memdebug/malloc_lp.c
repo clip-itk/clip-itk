@@ -56,7 +56,7 @@
 
 #if INCLUDE_RCS_IDS
 static	char	*rcs_id =
-  "$Id: malloc_lp.c,v 1.2 2001/05/15 07:02:17 clip Exp $";
+  "$Id$";
 #endif
 
 /*

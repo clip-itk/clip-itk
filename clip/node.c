@@ -1,6 +1,9 @@
 
  /*
- * $Log: node.c,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:01:35  itk
+ * uri: initial
+ *
  * Revision 1.142  2005/02/25 06:29:02  clip
  * uri: small fix for "12->f := val"
  *

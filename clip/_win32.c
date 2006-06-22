@@ -5,7 +5,10 @@
 */
 
 /*
-    $Log: _win32.c,v $
+    $Log$
+    Revision 1.1  2006/06/22 19:01:31  itk
+    uri: initial
+
     Revision 1.3  2003/09/08 15:06:02  clip
     uri: next step fixes for mingw from uri
 

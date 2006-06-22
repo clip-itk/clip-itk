@@ -4,7 +4,10 @@
    License : (GPL) http://www.itk.ru/clipper/license.html
  */
 /*
- $Log: task.h,v $
+ $Log$
+ Revision 1.1  2006/06/22 19:35:35  itk
+ uri: init sf.net repository
+
  Revision 1.4  2005/11/26 16:25:48  clip
  uri: rename task_select_if -> clip_task_select_if
       It is openBsd pheatures.

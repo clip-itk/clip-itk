@@ -21,7 +21,7 @@
  *
  * The author of the program may be contacted at gray.watson@antaire.com
  *
- * $Id: compat.h,v 1.2 2001/05/15 07:02:17 clip Exp $
+ * $Id$
  */
 
 #ifndef __COMPAT_H__

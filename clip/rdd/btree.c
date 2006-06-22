@@ -3,7 +3,10 @@
 	Author  : Rushad Nabiullin <rust@itk.ru>
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: btree.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:30  itk
+	uri: init sf.net repository
+	
 	Revision 1.29  2004/05/26 09:52:23  clip
 	rust: some cleanings
 	

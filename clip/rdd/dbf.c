@@ -3,7 +3,10 @@
 	Author  : Rushad Nabiullin <rust@itk.ru>
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: dbf.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:30  itk
+	uri: init sf.net repository
+	
 	Revision 1.187  2006/02/27 11:54:10  clip
 	rust: avoid some compilers' warnings
 	

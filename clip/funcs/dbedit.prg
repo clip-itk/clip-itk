@@ -347,6 +347,9 @@ STATIC FUNCTION StockBrowseNew( browse, fields, headers, footers, msay, hSep, cS
     endif
     asize(msay,len(fields))
     FOR n := 1 TO len(fields)
+	if empty(fields[n])
+		loop
+	endif
 	__cname:="{|| "+fields[n]+"}"
 	__cname:=&__cname
 	//column := TBColumnNew(Field(n), FieldWBlock(Field(n), Select()))

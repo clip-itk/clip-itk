@@ -1,5 +1,8 @@
 /*
-	$Log: dbtcp_clip.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 20:12:03  itk
+	uri: init sf.net
+	
 	Revision 1.11  2006/03/23 10:41:06  clip
 	rust: BLOB functions for PG (thanks Slava Zanko <slavaz@cis.by>)
 	

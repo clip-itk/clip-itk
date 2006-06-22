@@ -1,10 +1,12 @@
 #
 
 dirs = clip-gzip clip-bzip2 clip-crypto clip-gd clip-fcgi \
-       clip-cti clip-gtk clip-gtkextra clip-gtk2 clip-fw \
+       clip-gtk clip-gtkextra clip-gtk2 \
        clip-mysql clip-postgres clip-oracle clip-interbase clip-odbc \
-       clip-com clip-oasis clip-rtf clip-r2d2 clip-ui \
-       clip-xml clip-glade2
+       clip-com clip-oasis clip-rtf clip-r2d2 \
+       clip-xml clip-glade2 clip-ui
+
+#clip-cti  clip-fw
 
 all local user system install lib:
 	for dir in $(dirs); \

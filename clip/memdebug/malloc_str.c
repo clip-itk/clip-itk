@@ -41,7 +41,7 @@
 
 #if INCLUDE_RCS_IDS
 LOCAL	char	*rcs_id =
-  "$Id: malloc_str.c,v 1.2 2001/05/15 07:02:17 clip Exp $";
+  "$Id$";
 #endif
 
 #if HAVE_BCMP

@@ -3,7 +3,10 @@
 	Author  : Rushad Nabiullin <rust@itk.ru>,Pavel Lasarev (paul@itk.ru)
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: rdd.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:31  itk
+	uri: init sf.net repository
+	
 	Revision 1.323  2005/12/09 15:46:35  clip
 	rust: actualize rd->record before rdd_setvalue()
 	

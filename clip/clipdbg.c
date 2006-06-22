@@ -4,7 +4,10 @@
    License : (GPL) http://www.itk.ru/clipper/license.html
  */
 /*
-   $Log: clipdbg.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:33  itk
+   uri: initial
+
    Revision 1.50  2004/05/26 09:52:23  clip
    rust: some cleanings
 

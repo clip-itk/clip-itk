@@ -1,5 +1,8 @@
 /*
-	$Log: ib_clip.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 20:12:11  itk
+	uri: init sf.net
+	
 	Revision 1.22  2006/03/23 10:41:06  clip
 	rust: BLOB functions for PG (thanks Slava Zanko <slavaz@cis.by>)
 	

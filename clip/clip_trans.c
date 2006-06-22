@@ -1,5 +1,8 @@
 /*
-	$Log: clip_trans.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:01:32  itk
+	uri: initial
+	
 	Revision 1.7  2001/10/29 06:51:21  clip
 	fix text fopen modes
 	paul

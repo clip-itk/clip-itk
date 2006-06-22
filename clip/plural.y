@@ -1,5 +1,8 @@
 /*
-$Log: plural.y,v $
+$Log$
+Revision 1.1  2006/06/22 19:35:17  itk
+uri: init sf.net repository
+
 Revision 1.2  2003/07/03 07:15:56  clip
 fix a lot of warnings
 paul

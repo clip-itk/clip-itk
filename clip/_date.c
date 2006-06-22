@@ -5,7 +5,10 @@
 */
 
 /*
-   $Log: _date.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:29  itk
+   uri: initial
+
    Revision 1.64  2006/05/26 06:32:50  clip
    uri: small fix
 

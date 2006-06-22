@@ -1,5 +1,8 @@
 /*
-   $Log: clipvm.h,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:16  itk
+   uri: init sf.net repository
+
    Revision 1.21  2003/03/25 10:31:13  clip
    possible fixes #133
    paul

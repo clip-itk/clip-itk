@@ -6,7 +6,10 @@
 /* [ */
 %{
 /*
- * $Log: clic.y,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:35:15  itk
+ * uri: init sf.net repository
+ *
  * Revision 1.84  2006/01/04 08:06:04  clip
  * uri: small fix
  *

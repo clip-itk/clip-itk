@@ -1,6 +1,9 @@
 
 /*
-   $Log: list.h,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:17  itk
+   uri: init sf.net repository
+
    Revision 1.2  2000/05/24 18:34:35  clip
    _clip_push_area
    indents all

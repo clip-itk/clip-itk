@@ -4,7 +4,13 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: set.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:36  itk
+   uri: initial
+
+   Revision 1.101  2006/06/19 08:49:16  clip
+   uri: make support printing to LPTx with x>3
+
    Revision 1.100  2005/09/30 06:25:12  clip
    uri: small fix
 
@@ -688,7 +694,7 @@ _clip_close_printer(ClipMachine * mp)
 	if (mp->real_prfile != mp->prfile)
 	{
 		char buf[256], *sp = mp->prfile;
-		int prno;
+		int prno = 0;
 
 		char *p_prog;
 		/*setenv("CLIP_PRINT_PROG","lpr",0);*/
@@ -696,6 +702,7 @@ _clip_close_printer(ClipMachine * mp)
 		if (!p_prog || !*p_prog)
 			p_prog = "lpr";
 
+#if 0
 		if (!strcasecmp(sp, "lpt2") || !strcasecmp(sp, "lpt2:"))
 			prno = 2;
 		else if (!strcasecmp(sp, "lpt3") || !strcasecmp(sp, "lpt3:"))
@@ -704,8 +711,12 @@ _clip_close_printer(ClipMachine * mp)
 		elseif (!strcasecmp(sp, "lpt1") || !strcasecmp(sp, "lpt1:"))
 			prno = 1;
 */
-		else
+#else
+		if (!strncasecmp(sp, "lpt",3) && strlen(sp) >3 && sp[3]>='1' && sp[3]<='9' )
+			prno = atoi(sp+3);
+		if ( prno <= 1 )
 			prno = 0;
+#endif
 #ifndef _WIN32
 		if (prno)
 		       snprintf(buf, sizeof(buf), "%s -P lp%d %s 2>&1 >/dev/null", p_prog, prno, mp->real_prfile);
@@ -1154,9 +1165,14 @@ clip_SET(ClipMachine * mp)
 				mode = "w";
 
 			if (!strcasecmp(sp, "prn") || !strcasecmp(sp, "prn:")
+#if 0
 				|| !strcasecmp(sp, "lpt1") || !strcasecmp(sp, "lpt1:")
 				|| !strcasecmp(sp, "lpt2") || !strcasecmp(sp, "lpt2:")
-				|| !strcasecmp(sp, "lpt3") || !strcasecmp(sp, "lpt3:"))
+				|| !strcasecmp(sp, "lpt3") || !strcasecmp(sp, "lpt3:")
+#else
+				|| (!strncasecmp(sp, "lpt", 3) && strlen(sp)>3 && sp[3]>='1' && sp[3]<='9' )
+#endif
+				)
 			{
 				char buf[256];
 

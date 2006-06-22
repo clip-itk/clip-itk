@@ -9,6 +9,10 @@
 #include "codbcfg.ch"
 #include "codb_dbf.ch"
 
+static __objCache  := map()
+static __plugCache := map()
+static __modCache  := map()
+
 ************************************************************
 function codb_dictAll_Methods(dbData,user,passwd)
 
@@ -27,9 +31,9 @@ function codb_dictAll_Methods(dbData,user,passwd)
 	obj:serverData	:= oClone(dbData) /* data from codbList DB */
 
 	obj:__enableTriggers := .t.
-	obj:__objCache	:= map()
-	obj:__plugCache	:= map()
-	obj:__modCache	:= map()
+	//obj:__objCache	:= map()
+	//obj:__plugCache	:= map()
+	//obj:__modCache	:= map()
 	obj:dictionary	:= @_dict_self()
 	obj:idList	:= @_dict_IdList() // return object "ID list"
 	obj:objCRC	:= @_dict_objCRC()
@@ -54,6 +58,9 @@ function codb_dictAll_Methods(dbData,user,passwd)
 	obj:checkBody	:= @_dict_checkBody()
 	obj:getValue	:= @_dict_getValue() // return body for ID
 	obj:append	:= @_dict_append()
+	obj:update	:= @_dict_update()
+	obj:delete	:= @_dict_delete()
+	obj:undelete	:= @_dict_undelete()
 
 	obj:__check_haveCounters:= @__check_haveCounters()
 	obj:loadPluginses:= @_dict_LoadPluginses()
@@ -113,6 +120,30 @@ static function _dict_close(self)
 	self:runTrigger(self:id,"AFTER_CLOSE_DICTIONARY")
 return .t.
 ************************************************************
+static function _dict_update(self,oData,metaName,aRecursive,lOut)
+	local ret
+	__objCache := map()
+	taskStop()
+	ret := self:_update(oData,metaName,aRecursive,lOut)
+	taskStart()
+	__objCache := map()
+return ret
+************************************************************
+static function _dict_delete(self,cId)
+	local ret
+	adel(__objCache,cId)
+	taskStop()
+	ret := self:_delete(cId)
+	taskStart()
+return ret
+************************************************************
+static function _dict_undelete(self,cId)
+	local ret
+	adel(__objCache,cId)
+	taskStop()
+	ret := self:_undelete(cId)
+	taskStart()
+return ret
 ************************************************************
 static function _dict_append(self,oData,metaName)
 	local dep_id:="00",id:=""
@@ -253,25 +284,24 @@ static function _dict_getValue(self,cID,nLocks,version)
 		return ret
 	endif
 	cID := padr(cID,codb_info("CODB_ID_LEN"))
-	if valtype(version)=="N"
-		adel(self:__objCache,cId)
+	if valtype(version)=="N" .or. nLocks != NIL
+		adel(__objCache,cId)
 	endif
-	if nLocks != NIL
-		adel(self:__objCache,cId)
+	if cId $ __objCache
+		return __objCache[cId]
 	endif
-	if cId $ self:__objCache
-		return self:__objCache[cId]
-	endif
-	if len(self:__objCache) > CODB_DICT_CACHE
-		codb_cache_minimize(self:__objCache, CODB_DICT_CACHE/4 )
+	if len(__objCache) > CODB_DICT_CACHE
+		codb_cache_minimize(__objCache, CODB_DICT_CACHE/4 )
 	endif
 
+	taskStop()
 	ret := self:_getValue(cID,nLocks,version)
+	taskStart()
 
 	if empty(ret)
 		return ret
 	endif
-	self:__objCache[ cId ] := ret
+	__objCache[ cId ] := ret
 
 	if alltrim(ret:__meta) == "CLASS"
 		if !empty(ret:expr_essence)
@@ -349,27 +379,27 @@ static function _dict_attrBodyByName(attrName)
 	endif
 return ret
 ************************************************************
-static function _dict_classIdByName(className)
+static function _dict_classIdByName(self,className)
 	local ret:=map(), tmp
-	tmp := ::select("CLASS",,className)
+	tmp := self:select("CLASS",,className)
 	if !empty(tmp)
-		ret:=tmp[1]
+		ret := tmp[1]
 	endif
 return ret
 ************************************************************
-static function _dict_classBodyByName(className)
+static function _dict_classBodyByName(self,className)
 	local ret:=map(), tmp
-	tmp := ::select("CLASS",,className)
+	tmp := self:select("CLASS",,className)
 	if !empty(tmp)
-		ret:=::getValue(tmp[1])
+		ret := self:getValue(tmp[1])
 	endif
 return ret
 ************************************************************
-static function _dict_metaBodyByName(metaClass,metaName)
+static function _dict_metaBodyByName(self,metaClass,metaName)
 	local ret:=map(), tmp
-	tmp := ::select(metaClass,,metaName)
+	tmp := self:select(metaClass,,metaName)
 	if !empty(tmp)
-		ret:=::getValue(tmp[1])
+		ret := self:getValue(tmp[1])
 	endif
 return ret
 ************************************************************
@@ -426,7 +456,7 @@ return tmp
 static function _dict_loadModule(modname)
 	local tmp,obj,bCode,file
 
-	if modname $ ::__modCache
+	if modname $ __modCache
 		return .t.
 	endif
 
@@ -455,7 +485,7 @@ static function _dict_loadModule(modname)
 	if valtype(bCode) =="C"
 		::error := codb_error(1036)+":"+bCode
 	else
-		::__modCache[modname] := bCode
+		__modCache[modname] := bCode
 	endif
 	if !empty(::error)
 		outlog(2,"CODB:",::error)
@@ -463,8 +493,8 @@ static function _dict_loadModule(modname)
 return empty(::error)
 ************************************************************
 static function _dict_getModule(modname)
-	if modname $ ::__modCache
-		return ::__modCache[ modname ]
+	if modname $ __modCache
+		return __modCache[ modname ]
 	endif
 return NIL
 ************************************************************
@@ -475,13 +505,13 @@ static function _dict_getTriggers(self,cId,cTrigger)
 	endif
 	*/
 	self:loadPluginses(cId)
-	if !(cId $ self:__PlugCache)
+	if !(cId $ __PlugCache)
 		return {}
 	endif
-	if !(cTrigger $ self:__PlugCache[cId])
+	if !(cTrigger $ __PlugCache[cId])
 		return {}
 	endif
-return  self:__PlugCache[cId][cTrigger]
+return  __PlugCache[cId][cTrigger]
 ************************************************************
 static function _dict_checkBody(self,oData,metaName,lPadr)
 	local tmp,i,body_stru, class_desc
@@ -541,7 +571,7 @@ return oData
 static function __check_haveCounters(self,oData)
 	local i, attr, have := .f.
 	for i=1 to len(oData:attr_list)
-		attr := self:getValue(oData:attr_list)
+		attr := self:getValue(oData:attr_list[i])
 		if empty(attr)
 			loop
 		endif
@@ -549,7 +579,7 @@ static function __check_haveCounters(self,oData)
 			have := .t.
 		endif
 	next
-	oData:have_counters := .t.
+	oData:have_counters := have //.t.
 return
 
 ************************************************************
@@ -586,7 +616,7 @@ static function _dict_loadPluginses(cID)
 	local i,j,obj,tmp,body, source1,source2, m:={}
 	local bCode,path,file,bNames := {}
 	local cExt,eblock,lErr:=.f.,lError
-	if cId $ ::__PlugCache
+	if cId $ __PlugCache
 		return .t.
 	endif
 
@@ -601,7 +631,7 @@ static function _dict_loadPluginses(cID)
 			aadd(m,obj)
 		endif
 	next
-	::__PlugCache[ cId ] := map()
+	__PlugCache[ cId ] := map()
 	for i=1 to len(m)
 		body:=m[i]
 		file := ""
@@ -689,11 +719,11 @@ static function _dict_loadPluginses(cID)
 			lError:=.t. ;loop
 		endif
 		for j=1 to len(bnames)
-			if bnames[j] $ ::__PlugCache[ cId ]
+			if bnames[j] $ __PlugCache[ cId ]
 			else
-				::__PlugCache[ cId ][ bNames[j] ] := {}
+				__PlugCache[ cId ][ bNames[j] ] := {}
 			endif
-			aadd( ::__PlugCache[ cId ][ bNames[j] ], eval(bCode,bNames[j]) )
+			aadd( __PlugCache[ cId ][ bNames[j] ], eval(bCode,bNames[j]) )
 		next
 	next
 	if !empty(::error)
@@ -743,8 +773,8 @@ static function _dict_counter(name,deposit,value)
 	if empty(cId)
 		return 0
 	endif
-	if cId $ ::__objCache
-		adel(::__objCache,cId)
+	if cId $ __objCache
+		adel(__objCache,cId)
 	endif
 return ::__counter(cId,value)
 ************************************************************

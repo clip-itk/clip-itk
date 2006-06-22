@@ -3,7 +3,10 @@
 	Author  : Rushad Nabiullin <rust@itk.ru>
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: rddclip.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:31  itk
+	uri: init sf.net repository
+	
 	Revision 1.98  2005/12/09 16:52:13  clip
 	
 	crr

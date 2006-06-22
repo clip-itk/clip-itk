@@ -45,7 +45,7 @@
 
 #if INCLUDE_RCS_IDS
 LOCAL	char	*rcs_id =
-  "$Id: malloc.c,v 1.1 2000/04/20 19:38:45 paul Exp $";
+  "$Id$";
 #endif
 
 /*

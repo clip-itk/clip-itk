@@ -3,7 +3,10 @@
 	Author  : Rushad Nabiullin <rust@itk.ru>
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: ntx.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:31  itk
+	uri: init sf.net repository
+	
 	Revision 1.121  2005/09/26 12:14:20  clip
 	rust: balancing bug fixed
 	

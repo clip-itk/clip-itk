@@ -14,10 +14,10 @@ function codb_dictDBF_Methods(dbData,user,passwd)
 
 	local obj	:= codb_dictAll_methods(dbData,user,passwd)
 
-	obj:delete	:= @_dict_delete()
-	obj:undelete	:= @_dict_undelete()
+	obj:_delete	:= @_dict__delete()
+	obj:_undelete	:= @_dict__undelete()
 	obj:_append	:= @_dict__append()
-	obj:update	:= @_dict_update()
+	obj:_update	:= @_dict__update()
 	obj:select	:= @_dict_select() // return array of selected metaData
 	obj:_getValue	:= @_dict__getValue() // return body for ID
 	obj:__counter	:= @_dict___counter() // check and return counter value
@@ -246,7 +246,6 @@ return .t.
 static function _dict__getValue(cID,nLocks,version)
 	local i,ret:=map(), rec, locked:=.f.,nRecno
 
-	taskstop()
 	rddSeek(::hDbMeta,cID,.f.,.t.)
 	rec := rddRead(::hDbMeta)
 	if valtype(version) == "N"
@@ -259,7 +258,6 @@ static function _dict__getValue(cID,nLocks,version)
 		enddo
 	endif
 	if !(rec:id == cID)
-		taskstart()
 		return map()
 	endif
 	//ret := ::checkBody(rec:body,alltrim(rec:meta))
@@ -277,13 +275,11 @@ static function _dict__getValue(cID,nLocks,version)
 	next
 	if nLocks==0 .or. locked
 	else
-		taskstart()
 		return map()
 	endif
 
 	rec := rddRead(::hDbMeta)
 	if !(rec:id == cID)
-		taskstart()
 		return map()
 	endif
 	ret := rec:body
@@ -293,7 +289,6 @@ static function _dict__getValue(cID,nLocks,version)
 	ret:__version := rec:version
 	ret:__crc32 := rec:crc32
 	ret:__meta := alltrim(rec:meta)
-	taskStart()
 
 return ret
 ************************************************************
@@ -366,25 +361,21 @@ static function _dict_hashName(nHCode)
 	endif
 return ret
 ************************************************************
-static function _dict_delete(self,cId)
+static function _dict__delete(self,cId)
 	local rec,oData,version
 
 	self:error := ""
 	self:runTrigger(cId,"BEFORE_DELETE_CLASS")
-	adel(self:__objCache,cId)
-	taskStop()
 
 	rddSeek(self:hDbMeta,cID,.f.,.t.) // seek last record
 	rec := rddRead(self:hDbMeta)
 	if rec:id == cID
 	else
 		self:error := codb_error(1023)+":"+cId
-		taskstart()
 		return .f.
 	endif
 	if !waitRddLock(self:hDbMeta)
 		self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
-		taskStart()
 		return .f.
 	endif
 	***
@@ -401,19 +392,16 @@ static function _dict_delete(self,cId)
 	rddSetValue(self:hDbMeta,"VERSION",version)
 	***
 	rddUnLock(self:hDbMeta)
-	taskstart()
 	codb_outlog(self:user,"delete",oData)
 	self:runTrigger(cId,"AFTER_DELETE_CLASS",oData)
 return  .t.
 ************************************************************
-static function _dict_undelete(self,cId)
+static function _dict__undelete(self,cId)
 	local rec,oData,version:=-1
 
 	self:error := ""
 	self:runTrigger(cId,"BEFORE_UNDELETE_CLASS")
-	adel(self:__objCache,cId)
 
-	taskStop()
 	rddSeek(self:hDbMeta,cID,.f.,.t.)
 	rddSkip(self:hDbMeta,-1)
 	rec := rddRead(self:hDbMeta)
@@ -429,22 +417,18 @@ static function _dict_undelete(self,cId)
 	if rec:id == cID
 	else
 		self:error := codb_error(1023)+":"+cId
-		taskstart()
 		return .f.
 	endif
 	if rec:version >=0 .and. !rec:isold
-		taskstart()
 		return .f.
 	endif
 	if !waitRddLock(self:hDbMeta)
 		self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
-		taskStart()
 		return .f.
 	endif
 	rddSetValue(self:hDbMeta,"ISOLD",.f.)
 	rddSetValue(self:hDbMeta,"VERSION",version)
 	rddUnLock(self:hDbMeta)
-	taskstart()
 	oData := rec:body
 	codb_outlog(self:user,"undelete",oData)
 	self:runTrigger(cId,"AFTER_UNDELETE_CLASS",oData)
@@ -480,7 +464,7 @@ static function _dict__append(self,oData,metaName)
 
 return .t.
 ************************************************************
-static function _dict_update(self,oData,metaName,aRecursive,lOut)
+static function _dict__update(self,oData,metaName,aRecursive,lOut)
 	local i,j,s,m,rec,rec2,cId,recno
 	local changed := .f., oldData, super_desc
 	local unstable, oldExt:="", newExt:=""
@@ -491,22 +475,18 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 		aRecursive := {}
 	endif
 
-	self:__objCache := map()
 	if !empty(metaname)
 		metaName := alltrim(upper(metaName))
 	endif
 	cId := iif("ID" $ oData,oData:id,"")
-	taskStop()
 	rddSeek(self:hDbMeta,cId,.f.,.t.)
 	rec:= rddRead(self:hDbMeta)
 	if !(rec:id == cId) .or. empty(cId)
 		self:error := codb_error(1023)+":"+cId
-		taskstart()
 		return .f.
 	endif
 	if !waitRddLock(self:hDbMeta)
 		self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
-		taskStart()
 		return .f.
 	endif
 	recno := rddRecno(self:hDbMeta)
@@ -618,7 +598,6 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 			// check validate name
 			self:error:=codb_error(1044)+":"+oData:name
 			rddUnlock(self:hDbMeta)
-			taskstart()
 			return .f.
 		endif
 		if oData:type $ "RS"
@@ -628,7 +607,6 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 	endif
 	changed := !(self:objCRC(oData) == self:objCRC(oldData)) //varChanged(oData,oldData)
 	if !changed //.and. ("UNSTABLE" $ oData .and. !oData:unstable)
-		taskstart()
 		rddUnlock(self:hDbMeta)
 		return .t.
 	endif
@@ -661,12 +639,10 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 	rec:= rddRead(self:hDbMeta)
 	if !(rec:id == cId) .or. empty(cId)
 		self:error := codb_error(1023)+":"+cId
-		taskstart()
 		return .f.
 	endif
 	if !waitRddLock(self:hDbMeta)
 		self:error := codb_error(1005)+":"+cId+":dict,line:"+alltrim(str(__LINE__))
-		taskStart()
 		return .f.
 	endif
 	rec:body  := oData
@@ -696,7 +672,6 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 		rddAppend(self:hDbMeta,rec)
 	endif
 	rddUnlock(self:hDbMeta)
-	taskStart()
 
 	if metaName == "CLASS" .and. oData:unStable
 		/* changed CLASS description */
@@ -707,7 +682,6 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 		m := {}
 		s:='META=="'+padr(alltrim(upper(metaName)),rddFieldSize(self:hDbMeta,rddFieldPos(self:hDbMeta,"META")))+'"'
 		s+='.and. SUPER_ID=="'+oData:id+'"'
-		taskstop()
 		rddSetFilter(self:hDbMeta,s)
 		rddGoTop(self:hDbMeta)
 		while !rddEof(self:hDbMeta)
@@ -715,7 +689,6 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 			rddSkip(self:hDbMeta)
 		end
 		rddClearFilter(self:hDbMeta)
-		taskStart()
 		aadd(aRecursive,oData:id)
 		for i=1 to len(m)
 			if ascan(aRecursive,m[i]) == 0

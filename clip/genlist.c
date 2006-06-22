@@ -1,6 +1,9 @@
 
 /*
-   $Log: genlist.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:34  itk
+   uri: initial
+
    Revision 1.5  2003/09/08 15:06:03  clip
    uri: next step fixes for mingw from uri
 

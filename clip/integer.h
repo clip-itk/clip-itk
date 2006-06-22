@@ -1,5 +1,8 @@
 /*
-$Log: integer.h,v $
+$Log$
+Revision 1.1  2006/06/22 19:35:16  itk
+uri: init sf.net repository
+
 Revision 1.2  2000/09/12 08:50:41  clip
 DMALLOC disabled
 from uri:

@@ -8,7 +8,7 @@ then
 	exit 1
 fi
 
-test -n "$CVSROOT" || CVSROOT=':ext:clip@last.itk.ru:/home/clip/cvsroot'
+test -n "$CVSROOT" || CVSROOT=':ext:itk@clip-itk.cvs.sourceforge.net:/cvsroot/clip-itk'
 test -n "$CVS_RSH" || CVS_RSH='ssh'
 
 export CVSROOT CVS_RSH

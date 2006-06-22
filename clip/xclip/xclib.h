@@ -1,5 +1,5 @@
 /*
- *  $Id: xclib.h,v 1.1 2002/10/15 08:39:01 clip Exp $
+ *  $Id$
  * 
  *  xclib.h - header file for functions in xclib.c
  *  Copyright (C) 2001 Kim Saunders

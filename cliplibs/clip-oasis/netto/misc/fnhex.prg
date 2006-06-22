@@ -2,8 +2,8 @@
  * File......: FNHEX.PRG
  * Author....: Steve Larsen
  * CIS ID....: 76370,1532
- * Date......: $Date: 2002/03/09 13:58:12 $
- * Revision..: $Revision: 1.1 $
+ * Date......: $Date$
+ * Revision..: $Revision$
  * Log file..: $Logfile$
  *
  * This is an original work by Steve Larsen and is placed in the
@@ -12,7 +12,10 @@
  * Modification history:
  * ---------------------
  *
- * $Log: fnhex.prg,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 20:12:13  itk
+ * uri: init sf.net
+ *
  * Revision 1.1  2002/03/09 13:58:12  clip
  * uri: start :) "netto" library
  *

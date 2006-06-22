@@ -21,7 +21,7 @@
  *
  * The author of the program may be contacted at gray.watson@antaire.com
  *
- * $Id: dbg_tokens.h,v 1.1 2000/04/20 19:38:45 paul Exp $
+ * $Id$
  */
 
 #ifndef __DBG_TOKENS_H__

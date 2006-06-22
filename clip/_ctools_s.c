@@ -4,7 +4,10 @@
    License : (GPL) http://www.itk.ru/clipper/license.html
  */
 /*
-   $Log: _ctools_s.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:29  itk
+   uri: initial
+
    Revision 1.76  2006/04/03 12:53:34  clip
    uri: some speed up for htmlParser
 

@@ -66,6 +66,7 @@ static function xml_ParseFile( self, filename )
 	self:root := var:root
 	fclose(file)
 	xml_ParserFree(parser)
+
 return .T.
 
 /* Parse XML from string */
@@ -80,13 +81,12 @@ static function xml_ParseString( self, string )
 	var:ct := NIL
 	var:pt := NIL
 	var:root := NIL
-	xml_SetParamEntityParsing(parser, XML_PARAM_ENTITY_PARSING_ALWAYS)
 	xml_SetUserData(parser, @var)
 	xml_SetCharacterDataHandler( parser, @xml_handleText() )
 	xml_SetElementHandler( parser, @xml_handleElementStart(), @xml_handleElementEnd() )
 	
 	// Parse string
-	xml_Parse(parser, string, len(string))
+	xml_Parse(parser, string, len(string), .T.)
 		
 	// Handle buffer
 	if xml_GetErrorCode(parser) <> 0
@@ -100,7 +100,7 @@ static function xml_ParseString( self, string )
 	self:root := var:root
 	xml_ParserFree(parser)
 	
-return NIL
+return .T.
 
 /* Get root tag */
 static function xml_GetRoot( self )

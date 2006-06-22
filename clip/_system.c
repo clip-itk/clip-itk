@@ -5,7 +5,10 @@
 */
 
 /*
-   $Log: _system.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:30  itk
+   uri: initial
+
    Revision 1.21  2006/03/13 07:22:32  clip
    uri: some fix from Angelo Gigardi
 

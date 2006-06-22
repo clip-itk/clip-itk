@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-$Log: integer.c,v $
+$Log$
+Revision 1.1  2006/06/22 19:01:34  itk
+uri: initial
+
 Revision 1.6  2004/05/21 11:22:19  clip
 rust: minor fix for 'configure -m'
 

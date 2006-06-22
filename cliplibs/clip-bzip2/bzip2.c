@@ -5,7 +5,10 @@
  */
 
 /*
-  $Log: bzip2.c,v $
+  $Log$
+  Revision 1.1  2006/06/22 20:12:02  itk
+  uri: init sf.net
+
   Revision 1.5  2004/11/03 13:00:59  clip
   rust: a few bugs fixed
 

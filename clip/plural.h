@@ -1,5 +1,8 @@
 /* 
-   $Log: plural.h,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:17  itk
+   uri: init sf.net repository
+
    Revision 1.2  2002/10/31 10:33:59  clip
    plural form runtime messages support:
    gettext(cMsgid [,cModule])->cTranslated

@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: clip.h,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:15  itk
+   uri: init sf.net repository
+
    Revision 1.244  2006/05/12 06:49:34  clip
    uri: fix bug in macroassing and _clip_parse_name.
         &("m[varname]") := &("m[varname]")

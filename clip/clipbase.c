@@ -4,11 +4,20 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-	$Log: clipbase.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:01:32  itk
+	uri: initial
+	
+	Revision 1.375  2006/06/21 08:31:21  clip
+	uri: small fix about alias name length more 10 chars
+	
+	Revision 1.374  2006/06/20 15:08:10  clip
+	uri: add strip long alias name to 10 chars in dbusearea()
+
 	Revision 1.373  2006/05/12 06:49:34  clip
 	uri: fix bug in macroassing and _clip_parse_name.
 	     &("m[varname]") := &("m[varname]")
-	
+
 	Revision 1.372  2005/02/02 14:22:23  clip
 	rust: minor fix for SET OPTIMIZE LEVEL 2
 
@@ -1344,7 +1353,8 @@ _clip_field(ClipMachine * cm, long hash, long area)
 			break;
 	}
 
-	if (!(wa = get_area(cm, area, 0, 0)))
+	wa = get_area(cm, area, 0, 0);
+	if (!wa)
 	{
 		ClipVar *ap = _clip_ref_memvar_noadd(cm, area);
 		if (ap)
@@ -1634,6 +1644,18 @@ get_area(ClipMachine * cm, long area, int any, int* no)
 	else
 	{
 		wa = (DBWorkArea *) HashTable_fetch(cm->aliases, area);
+		if (wa == NULL)
+		{
+			char buf[11];
+			long tmp;
+			_clip_hash_name(cm,area,buf,sizeof(buf));
+			buf[10] = 0 ;
+			tmp = _clip_hashstr(buf);
+			wa = (DBWorkArea *) HashTable_fetch(cm->aliases, tmp);
+			if (wa)
+				area = tmp;
+		}
+
 		if (!wa)
 		{
 			area -= 1;
@@ -1887,8 +1909,12 @@ clip_DBUSEAREA(ClipMachine * cm)
 
 	if (alias)
 	{
-		wa->alias = malloc(strlen(alias) + 1);
-		strcpy(wa->alias, alias);
+		/* Uri: 2006-06-20 Strip long alias names to 10 chars */
+		int len = strlen(alias);
+		len = len > 10 ? 10: len;
+		wa->alias = malloc(len + 1);
+		strncpy(wa->alias, alias, len);
+		wa->alias[len] = 0;
 	} else {
 		char* s;
 		wa->alias = malloc(strlen(wa->rd->name) + 1);
@@ -2091,8 +2117,13 @@ clip_DBSELECTAREA(ClipMachine * cm)
 	}
 	else if (vp->t.type == CHARACTER_t)
 	{
-		long hash = _clip_casehashword(vp->s.str.buf,vp->s.str.len);
-		DBWorkArea *wa = HashTable_fetch(cm->aliases, hash);
+		int len;
+		long hash;
+		DBWorkArea *wa;
+
+		len = vp->s.str.len>10 ? 10: vp->s.str.len;
+		hash = _clip_casehashword(vp->s.str.buf, len);
+		wa = HashTable_fetch(cm->aliases, hash);
 
 		if (wa)
 			cm->curArea = wa->no;

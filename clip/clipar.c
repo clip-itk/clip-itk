@@ -4,7 +4,10 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: clipar.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:32  itk
+   uri: initial
+
    Revision 1.20  2003/09/08 15:06:02  clip
    uri: next step fixes for mingw from uri
 

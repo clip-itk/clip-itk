@@ -1,5 +1,8 @@
 /*
-   $Log: nodepriv.h,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:17  itk
+   uri: init sf.net repository
+
    Revision 1.21  2002/11/27 13:40:44  clip
    initial _CGET_ pseudofunction(bug 62):
    _CGET_(var[i1,i2,i3,...]) -> __CGET__(@var[i1,i2,i3],{i1,i2,i3},"var",...)

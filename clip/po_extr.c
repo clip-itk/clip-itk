@@ -1,5 +1,8 @@
 /*
-	$Log: po_extr.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:01:35  itk
+	uri: initial
+	
 	Revision 1.2  2002/10/24 13:05:44  clip
 	tdoc: add English GPL text
 	paul

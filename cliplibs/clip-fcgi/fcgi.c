@@ -5,7 +5,10 @@
  */
 
 /*
-   $Log: fcgi.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 20:12:03  itk
+   uri: init sf.net
+
    Revision 1.3  2005/01/05 11:22:16  clip
    uri: small fix
 

@@ -1,6 +1,9 @@
 
 /*
-   $Log: termcap.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:31  itk
+   uri: init sf.net repository
+
    Revision 1.3  2000/12/02 12:46:57  clip
    scancodes
    paul

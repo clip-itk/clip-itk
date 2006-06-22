@@ -1,5 +1,8 @@
 /*
-   $Log: glob.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:34  itk
+   uri: initial
+
    Revision 1.3  2000/05/24 18:34:28  clip
    _clip_push_area
    indents all

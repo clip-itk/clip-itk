@@ -5,7 +5,10 @@
    mail : icaro.maneton@lycos.es
 */
 /*
-   $Log: _tcpserv.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:31  itk
+   uri: initial
+
    Revision 1.6  2004/05/19 08:32:18  clip
    rust: fix for ./configure -m
 

@@ -1,5 +1,8 @@
 /*
- * $Log: clitypes.h,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:35:16  itk
+ * uri: init sf.net repository
+ *
  * Revision 1.4  2002/04/15 12:25:58  clip
  * Changes from Alexander S.Kresin <alex@belacy.belgorod.su>
  * paul

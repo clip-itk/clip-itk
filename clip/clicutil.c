@@ -1,5 +1,8 @@
 /*
- * $Log: clicutil.c,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:01:32  itk
+ * uri: initial
+ *
  * Revision 1.43  2004/11/17 12:42:43  clip
  * uri: small fix for '-a' compiler switch
  *

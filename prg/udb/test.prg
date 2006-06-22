@@ -4,9 +4,17 @@ set optimize level to 2
 set exclusive off
 set exact off
 
-oDep := coDepository():new("GBL0201","sdfsd")
+oDep := coDepository():new("GBL0101","sdfsd")
 oDep:open()
 oDict := oDep:dictionary()
+tmp:= oDict:select("CLASS")
+for i=1 to len(tmp)
+	obj := oDict:getValue(tmp[i])
+	tmp2 := oDep:select(obj:id)
+	? padr(obj:name,25), len(tmp2)
+next
+?
+return
 class:=oDict:classBodyByName("acc_type_trans")
 tmp:= oDep:select(class:id)
 for i=1 to len(tmp)

@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: hash.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:34  itk
+   uri: initial
+
    Revision 1.9  2005/08/08 09:00:31  clip
    alena: fix for gcc 4
 

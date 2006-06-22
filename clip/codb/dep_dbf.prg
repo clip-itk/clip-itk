@@ -24,9 +24,9 @@ function codb_depDbfNew(oDict,dep_id)
 	obj:makeIndies	:= @_dep_makeIndies()
 	obj:open	:= @_dep_open()
 	obj:_delete	:= @_dep__delete()
-	obj:unDelete	:= @_dep_unDelete()
+	obj:_unDelete	:= @_dep__unDelete()
 	obj:append	:= @_dep_append()
-	obj:update	:= @_dep_update()
+	obj:_update	:= @_dep__update()
 	obj:moveExtent	:= @_dep_moveExtent()
 	obj:id4PrimaryKey:= @_dep_id4PrimaryKey()
 	obj:addExtent	:= @_dep_addExtent()
@@ -107,7 +107,6 @@ static function _dep__delete(self,cId,lErase,class_id)
 
 	self:error := ""
 	oData:=self:_getValue(cId)
-	adel(self:__objCache,cId)
 	if empty(oData)
 		self:error := codb_error(1123)
 	endif
@@ -168,12 +167,11 @@ static function _dep__delete(self,cId,lErase,class_id)
 	endif
 return .t.
 ************************************************************
-static function _dep_unDelete(self,cId)
+static function _dep__unDelete(self,cId)
 	local oData,old,class_id,class_desc,oExt,extent_id,refData
 
 	self:error := ""
 	oData:=self:_getValue(cId)
-	adel(self:__objCache,cId)
 	if empty(oData)
 		self:error := codb_error(1123)
 		return .f.
@@ -200,12 +198,10 @@ static function _dep_unDelete(self,cId)
 	oExt := self:extentOpen(extent_id)
 	if empty(oExt)
 		self:error := codb_error(1121)+":"+extent_id
-		taskStart()
 		return .f.
 	endif
 	oExt:undelete(cId)
 	self:error := oExt:error
-	taskStart()
 
 	if !empty(self:error)
 		return .f.
@@ -319,23 +315,16 @@ static function _dep_append(self,oData,class_id,obj_id)
 	self:runTrigger(class_id,"AFTER_APPEND_OBJECT",oData)
 return cId
 ************************************************************
-static function _dep_update(self,oData)
+static function _dep__update(self,oData)
 	local i, ret := .t., cId:="",rec:=map()
 	local tmp,sData,oExt,class_desc:=map()
 	local class_id,oldData,extent_id,refData,xData:=map()
 	local keyValue1,keyValue2,x,changed,lUnique := .f.
 
 	self:error := ""
-	if "ID" $ oData
-		cId := oData:id
-	endif
-	if empty(cId)
-		self:error := codb_error(1139)
-		return .f.
-	endif
+	cId := oData:id
 	oldData := self:_getValue(cId)
 	oData := o2update(oData,oldData)
-	adel(self:__objCache,cId)
 
 	if "CLASS_ID" $ oData .and. !empty(oData:class_id)
 		class_id := oData:class_id
@@ -380,18 +369,15 @@ static function _dep_update(self,oData)
 		return .f.
 	endif
 
-	taskstop()
 	rddSeek(self:hDbRefTbl,cID,.f.)
 	refData := rddRead(self:hDbRefTbl)
 	if refData:object_id == cId
 	else
-		taskStart()
 		self:error := codb_error(1124)+":"+cId
 		return .f.
 	endif
 	if !waitRddLock(self:hDbRefTbl)
 		self:error := codb_error(1005)+":"+oData:id+":dep,line:"+alltrim(str(__LINE__))
-		taskStart()
 		return .f.
 	endif
 
@@ -416,10 +402,8 @@ static function _dep_update(self,oData)
 	next
 	if ! oExt:update(oData,xData,lUnique)
 		self:error := oExt:error
-		taskStart()
 		return .f.
 	endif
-	taskStart()
 	if !empty(self:error)
 		return .f.
 	endif

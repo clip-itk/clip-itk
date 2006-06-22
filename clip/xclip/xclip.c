@@ -1,5 +1,5 @@
 /*
- *  $Id: xclip.c,v 1.1 2002/10/15 08:39:01 clip Exp $
+ *  $Id$
  * 
  *  xclip.c - command line interface to X server selections 
  *  Copyright (C) 2001 Kim Saunders

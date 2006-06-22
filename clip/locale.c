@@ -1,5 +1,8 @@
 /*
-   $Log: locale.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:35  itk
+   uri: initial
+
    Revision 1.12  2003/09/05 12:11:53  clip
    uri: initial fixes for mingw+win32 from uri
 

@@ -2,8 +2,8 @@
  * File......: NETTO.CH
  * Author....: Clipper Netware API Group
  * CIS ID....: 71620,1521
- * Date......: $Date: 2002/03/09 13:58:11 $
- * Revision..: $Revision: 1.1 $
+ * Date......: $Date$
+ * Revision..: $Revision$
  * Log file..: $Logfile$
  * 
  * This is an original work by the Clipper Netware API working group
@@ -12,7 +12,10 @@
  * Modification history:
  * ---------------------
  *
- * $Log: netto.ch,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 20:12:13  itk
+ * uri: init sf.net
+ *
  * Revision 1.1  2002/03/09 13:58:11  clip
  * uri: start :) "netto" library
  *

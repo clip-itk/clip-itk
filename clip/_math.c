@@ -4,7 +4,10 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: _math.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:30  itk
+   uri: initial
+
    Revision 1.38  2005/03/29 08:09:12  clip
    uri: small fix in random(lValue)
 

@@ -158,6 +158,6 @@ function codb_error(num)
 		otherwise
 			last_error := [Unknown error code]
 	endswitch
-	last_error:=str(num,4,0)+":"+last_error
+	last_error:=str(num,4,0)+":"+last_error+" [ called from "+procname(1)+"("+alltrim(str(procline(1)))+")]"
 
 return last_error

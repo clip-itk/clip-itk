@@ -5,7 +5,7 @@
 #include "malloc.h"
 
 static	char	*rcs_id =
-  "$Id: sample.c,v 1.1 2000/04/20 19:38:45 paul Exp $";
+  "$Id$";
 
 main(int argc, char ** argv)
 {

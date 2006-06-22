@@ -1,5 +1,8 @@
 /*
- * $Log: node.h,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:35:17  itk
+ * uri: init sf.net repository
+ *
  * Revision 1.29  2003/03/26 13:10:11  clip
  * possible closes #133, #139
  * paul

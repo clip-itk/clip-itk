@@ -5,7 +5,10 @@
 */
 
 /*
- * $Log: clip.c,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:01:32  itk
+ * uri: initial
+ *
  * Revision 1.85  2006/05/23 12:01:36  clip
  * uri: small fix
  *

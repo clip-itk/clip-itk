@@ -4,7 +4,10 @@
    License : (GPL) http://www.itk.ru/clipper/license.html
  */
 /*
-   $Log: file.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:34  itk
+   uri: initial
+
    Revision 1.98  2006/01/03 13:33:54  clip
    uri: small fix about _clip_MODULE := modulename
 

@@ -2,8 +2,8 @@
  *   File......: FndPVE.Prg
  *   Author....: Sheldon Easterbrook
  *   CIS ID....: 71421,254
- *   Date......: $Date: 2002/03/09 13:58:12 $
- *   Revision..: $Revision: 1.1 $
+ *   Date......: $Date$
+ *   Revision..: $Revision$
  *   Log File..: $LogFile$
  *
  *   This is an original work by Sheldon Easterbrook and is placed in the
@@ -12,7 +12,10 @@
  *   Modification History:
  *   ---------------------
  *
- *   $Log: fndpve.prg,v $
+ *   $Log$
+ *   Revision 1.1  2006/06/22 20:12:13  itk
+ *   uri: init sf.net
+ *
  *   Revision 1.1  2002/03/09 13:58:12  clip
  *   uri: start :) "netto" library
  *

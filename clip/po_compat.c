@@ -1,5 +1,8 @@
 /*
- $Log: po_compat.c,v $
+ $Log$
+ Revision 1.1  2006/06/22 19:01:35  itk
+ uri: initial
+
  Revision 1.2  2003/07/03 07:15:56  clip
  fix a lot of warnings
  paul

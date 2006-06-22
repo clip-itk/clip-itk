@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: _depsort.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:29  itk
+   uri: initial
+
    Revision 1.2  2002/12/27 14:40:29  clip
    DEPSORT fix
    paul

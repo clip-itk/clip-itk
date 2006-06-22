@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: diskutils.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:34  itk
+   uri: initial
+
    Revision 1.115  2005/12/13 15:26:55  clip
    uri: small fix
 

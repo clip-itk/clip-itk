@@ -120,7 +120,7 @@ static function codb_exportDeps(oDict)
 	local tmp, obj
 	local m:={"ID","NAME","DTYPE","HOST","PORT","DBUSER","PASSWD","DBNAME"}
 
-	ret := s+'<dictionary>'+n
+	ret := s+'<dictionary rules="appendOnly">'+n
 	for i=1 to len(m)
 		s1 := m[i]
 		s1 := lower(s1)
@@ -134,7 +134,7 @@ static function codb_exportDeps(oDict)
 	endif
 	ret += s+'</dictionary>'+n+n
 
-	ret += s+'<meta dictionary="'+oDict:id+'">'+n
+	ret += s+'<meta dictionary="'+oDict:id+'" rules="appendOnly">'+n
 	tmp := oDict:select("DEPOSIT")
 	for i=1 to len(tmp)
 		obj := oDict:getValue(tmp[i])
@@ -197,19 +197,25 @@ static function component_data(oDep,classname)
 		ret += s+'<name>'+oDep:id+'</name>'+n
 		ret += s+'<category>CORE/DB</category>'+n
 	else
-		ret += s+'<name>'+classname+'</name>'+n
+		ret += s+'<name>'+classname+'-ru</name>'+n
 		if !empty(classDesc)
 			extent := oDict:getValue(classDesc:extent_id)
 		endif
+		/*
 		if !empty(extent)
 			ret += s+'<category>'+extent:name+'</category>'+n
 		endif
+		*/
+		ret += s+'<category>REFS/ru</category>'+n
 	endif
 	ret += s+'<version>1.0</version>'+n
+	ret += s+'<description></description>'+n
 	ret += s+'<license>GNU/GPL</license>'+n
-	ret += s+'<created>'+dtoc(date(),"yyyy-mm-dd")+'</created>'+n
+	//ret += s+'<created>'+dtoc(date(),"yyyy-mm-dd")+'</created>'+n
+	ret += s+'<created>2006-04-24</created>'+n
+	ret += s+'<modified>'+dtoc(date(),"yyyy-mm-dd")+'</modified>'+n
 	ret += s+'<author>Uri</author>'+n
-	ret += s+'<property name="policy">ru.Ru</property>'+n
+	ret += s+'<property name="policy">ru</property>'+n
 
 return ret
 
@@ -226,7 +232,7 @@ static function codb_exportMeta(oDep,className,expr)
 		return ret
 	endif
 
-	aadd(depends,{"component",oDict:id+"/CORE.xml"})
+	aadd(depends,{"component","void.xml"})
 	//aadd(depends,{"component",oDep:id+"/"+CORE+".xml"}})
 	ret += __exportMeta(oDict,classDesc)
 
@@ -235,7 +241,7 @@ return ret
 /**********************/
 static function codb_exportData(oDep,className,expr)
 	local  s:="&\t",n:="&\n",ret :=""
-	local i,j,tmp,obj,attrs:={},m:={}
+	local i,j,tmp,obj,objs,attrs:={},m:={}
 	local name,attr,type,data,s2,s3,s4,s5
 	local oDict := oDep:dictionary()
 	local classDesc
@@ -260,17 +266,13 @@ static function codb_exportData(oDep,className,expr)
 		next
 		asize(attrs,len(attrs)-len(m))
 	endif
-	if empty(expr)
-		tmp := oDep:select(classDesc:id)
-	else
-		tmp := oDep:select(classDesc:id,,,expr)
-	endif
+	objs :=  __makeObjsTree(oDep,classDesc,expr)
 	ret += s+'<data>'+n
-	ret += s+'  <objects depository="'+oDep:id+'" class="'+className+'">'+n
-	for i=1 to len(tmp)
-		obj := oDep:getValue(tmp[i])
+	ret += s+'  <objects depository="'+oDep:id+'" class="'+className+'" rules="appendOnly">'+n
+	for i=1 to len(objs)
+		obj := oDep:getValue(objs[i])
 		if empty(obj)
-			ret += __error([Object not found:]+tmp[i])
+			ret += __error([Object not found:]+objs[i])
 			loop
 		endif
 		ret += s+s+'<object>'+n
@@ -325,6 +327,85 @@ static function codb_exportData(oDep,className,expr)
 	ret += s+'  </objects>'+n
 	ret += s+'</data>'+n
 return ret
+/**********************/
+static function  __makeObjsTree(oDep,classDesc,expr)
+	local name := "",tmp, tmp1,objs:={}
+	local i,j,x,y, xRef:= map(), owners:={}, members:={}, oDict
+	local id,owner
+	oDict := oDep:dictionary()
+	for i=1 to len(classDesc:attr_list)
+		tmp := oDict:getValue(classDesc:attr_list[i])
+		if empty(tmp)
+			loop
+		endif
+		if tmp:ref_to == classDesc:id
+			tmp1 := tmp:ref_to
+			exit
+		endif
+		if upper(tmp:name) == "OWNER_ID"
+			name := tmp:name
+			exit
+		endif
+	next
+	if !empty(tmp1)
+		tmp := oDict:getValue(tmp1)
+		if !empty(tmp)
+			name := tmp:name
+		endif
+	endif
+	if empty(expr)
+		tmp := oDep:select(classDesc:id)
+	else
+		tmp := oDep:select(classDesc:id,,,expr)
+	endif
+	if empty(name)
+		return tmp
+	endif
+	name := upper(name)
+	for i=1 to len(tmp)
+		tmp1 := oDep:getValue(tmp[i])
+		if empty(tmp1)
+			loop
+		endif
+		/*
+		j := ascan(owners, {|x| x==tmp1[name]})
+		if j==0
+			aadd(owners, tmp1[name])
+			aadd(members, {})
+			j := len(owners)
+		endif
+		aadd(members[j],{tmp1:id,tmp1[name]})
+		*/
+		//xRef[ tmp1:id ] := tmp1[name]
+		aadd(members,{tmp1:id,tmp1[name]})
+	next
+	outlog(__FILE__,__LINE__,owners)
+	//tmp := oDep:select(classDesc:id,,,name+'==""'+iif(empty(expr),""," .and. "+expr))
+	//__checkObjsTree(oDep,objs,name)
+	for i=1 to 10
+		for j=1 to len(members)
+			x := -1
+			id := members[j][1]
+			owner := members[j][2]
+			y := ascan(objs,owner)
+			if empty(owner)
+				x := ascan(objs,id)
+			else
+				y := ascan(objs,owner)
+				if y>0
+					x := ascan(objs,id)
+				endif
+			endif
+			if x == 0
+				aadd(objs,id)
+			endif
+			if x > 0
+				adel(members,j)
+				asize(members,len(members)-1)
+			endif
+		next
+	next
+return objs
 /**********************/
 static function __exportDataArray(oDep,_data,kol)
 	local _s:="&\t",s,n:="&\n",ret :=""
@@ -401,7 +482,7 @@ return  ret
 static function __exportMeta(oDict,classDesc)
 	local  s:="&\t",n:="&\n",ret :=""
 	local tmp,i,s2,s3,attr,idx
-	ret += s+'<meta dictionary="'+oDict:id+'">'+n
+	ret += s+'<meta dictionary="'+oDict:id+'" rules="appendOnly">'+n
 	//ret += s+'<attributes>'+n
 	for i=1 to len(classDesc:attr_list)
 		attr := oDict:getValue(classDesc:attr_list[i])
@@ -619,7 +700,7 @@ static function __exportTcol(oDict,tcol_id)
 		return ret
 	endif
 	ret += s+'<tcolumn name="'+tcol:name+'"'
-	ret += s+'width="'+alltrim(str(tcol:width))+'"'+n
+	ret += s+'width="'+alltrim(str(tcol:width,5,0))+'"'+n
 	ret += s+s+'header="'+tcol:header+'"'+n
 	ret += s+s+'footer="'+tcol:footer+'"'+n
 	ret += s+s+'expression="'+tcol:expr+'"'+n

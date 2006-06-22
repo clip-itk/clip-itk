@@ -5,7 +5,10 @@
 */
 %{
 /*
- * $Log: clic.lex,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 19:35:15  itk
+ * uri: init sf.net repository
+ *
  * Revision 1.255  2005/05/25 10:33:02  clip
  * uri: small fix
  *

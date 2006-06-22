@@ -2,8 +2,8 @@
  * File......: FT_ACH2T.CH
  * Author....: Steve Kolterman
  * CIS ID....: 76320,37
- * Date......: $Date: 2003/04/26 09:29:33 $
- * Revision..: $Revision: 1.1 $
+ * Date......: $Date$
+ * Revision..: $Revision$
  * Log file..: $Logfile:   C:/nanfor/src/ft_ach2t.chv  $
  * 
  * This is an original work by Steve Kolterman and is placed in the
@@ -12,7 +12,10 @@
  * Modification history:
  * ---------------------
  *
- * $Log: ft_ach2t.ch,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 20:12:11  itk
+ * uri: init sf.net
+ *
  * Revision 1.1  2003/04/26 09:29:33  clip
  * uri: add
  *

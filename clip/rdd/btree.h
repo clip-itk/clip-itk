@@ -3,7 +3,10 @@
 	Author  : Rushad Nabiullin <rust@itk.ru>
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: btree.h,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:30  itk
+	uri: init sf.net repository
+	
 	Revision 1.10  2003/03/05 09:56:35  clip
 	rust: bug with unique indexes fixed,
 	reported by Stas I. Litovka <root@depot.pharm.sumy.ua>

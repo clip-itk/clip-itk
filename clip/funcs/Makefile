@@ -28,8 +28,8 @@ clean:
 	rm -rf *.o *.c *.s *.a *.so *.b *.BAK *.bak *~ core* *core
 	rm -f *.ex *.nm
 
-key_func.o: key_func.prg
-	$(CLIP) $(CLIPFLAGS2) key_func.prg
+#key_func.o: key_func.prg
+#	$(CLIP) $(CLIPFLAGS2) key_func.prg
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) $<

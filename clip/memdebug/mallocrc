@@ -3,7 +3,7 @@
 # Rename this to .mallocrc and place in your home directory to activate.
 # See malloc.info for more information
 #
-# $Id: mallocrc,v 1.6 2003/07/02 12:13:27 clip Exp $
+# $Id$
 #
 
 #

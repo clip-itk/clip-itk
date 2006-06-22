@@ -1,6 +1,9 @@
 
 /*
-   $Log: screen.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:31  itk
+   uri: init sf.net repository
+
    Revision 1.108  2006/05/26 21:42:08  clip
    uri: small fix for utf terminal
 

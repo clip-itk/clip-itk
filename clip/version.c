@@ -1,6 +1,9 @@
 
 /*
-   $Log: version.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:36  itk
+   uri: initial
+
    Revision 1.6  2003/01/21 14:05:17  clip
    license info:
    hidden flag --license print license

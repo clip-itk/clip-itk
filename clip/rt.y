@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-$Log: rt.y,v $
+$Log$
+Revision 1.1  2006/06/22 19:35:17  itk
+uri: init sf.net repository
+
 Revision 1.62  2003/11/05 11:20:58  clip
 fix POW in macro (closes #161)
 paul

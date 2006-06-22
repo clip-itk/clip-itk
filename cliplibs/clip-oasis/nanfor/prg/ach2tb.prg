@@ -2,8 +2,8 @@
  * File......: ACH2TB.PRG
  * Author....: Steve Kolterman
  * CIS ID....: 76320,37
- * Date......: $Date: 2003/04/26 09:31:42 $
- * Revision..: $Revision: 1.2 $
+ * Date......: $Date$
+ * Revision..: $Revision$
  * Log file..: $Logfile:   C:/nanfor/src/ach2tb.prv  $
  *
  * This is an original work by Steve Kolterman and is placed in the
@@ -12,7 +12,10 @@
  * Modification history:
  * ---------------------
  *
- * $Log: ach2tb.prg,v $
+ * $Log$
+ * Revision 1.1  2006/06/22 20:12:11  itk
+ * uri: init sf.net
+ *
  * Revision 1.2  2003/04/26 09:31:42  clip
  * uri: small fix
  *

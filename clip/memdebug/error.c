@@ -44,7 +44,7 @@
 
 #if INCLUDE_RCS_IDS
 LOCAL	char	*rcs_id =
-  "$Id: error.c,v 1.2 2001/05/15 07:56:37 clip Exp $";
+  "$Id$";
 #endif
 
 /*

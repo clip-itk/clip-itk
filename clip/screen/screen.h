@@ -1,5 +1,8 @@
 /*
-$Log: screen.h,v $
+$Log$
+Revision 1.1  2006/06/22 19:35:31  itk
+uri: init sf.net repository
+
 Revision 1.23  2005/02/03 17:21:29  clip
 uri: kbdstat(), bit #18, for En/Ru detection. Only for scan mode keyboard.
 

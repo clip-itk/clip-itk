@@ -1,5 +1,8 @@
 /*
-$Log: tcaps.h,v $
+$Log$
+Revision 1.1  2006/06/22 19:35:31  itk
+uri: init sf.net repository
+
 Revision 1.2  1999/11/02 23:05:55  axl
 start of logging CVS
 

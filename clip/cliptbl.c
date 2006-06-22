@@ -1,5 +1,8 @@
 /*
-   $Log: cliptbl.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:34  itk
+   uri: initial
+
    Revision 1.3  2001/09/12 10:50:42  clip
    stream output recoding
    paul

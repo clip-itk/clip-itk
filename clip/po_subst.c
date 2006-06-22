@@ -1,5 +1,8 @@
 /*
-	$Log: po_subst.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:01:36  itk
+	uri: initial
+	
 	Revision 1.10  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
 	

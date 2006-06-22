@@ -4,7 +4,10 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-   $Log: _file.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:29  itk
+   uri: initial
+
    Revision 1.170  2005/12/13 15:20:15  clip
    uri: small fix in diskFree()
 

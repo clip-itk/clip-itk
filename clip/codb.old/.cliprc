@@ -1,8 +1,0 @@
--E CLIP_MODULE=codb
-#-I ../include
-#-l
-#-s
-#-U std.ch
-#-U config.ch
-#-U clip.ch
-

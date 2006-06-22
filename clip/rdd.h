@@ -3,7 +3,10 @@
 	Author   : Rushad Nabiullin <rust@itk.ru>
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	$Log: rdd.h,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:17  itk
+	uri: init sf.net repository
+	
 	Revision 1.151  2005/10/31 14:37:07  clip
 	uri: small speed optimize
 	

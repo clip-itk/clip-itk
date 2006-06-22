@@ -1,5 +1,8 @@
 /*
-	$Log: po_util.h,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:35:17  itk
+	uri: init sf.net repository
+	
 	Revision 1.3  2002/11/04 10:21:57  clip
 	po compatability mode for old gettext utils
 	paul

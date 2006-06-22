@@ -1,5 +1,8 @@
 /*
-	$Log: po_util.c,v $
+	$Log$
+	Revision 1.1  2006/06/22 19:01:36  itk
+	uri: initial
+	
 	Revision 1.7  2002/12/11 07:19:48  clip
 	fix bug with '_' processing
 	paul

@@ -1,5 +1,8 @@
 /*
-   $Log: coll.h,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:35:16  itk
+   uri: init sf.net repository
+
    Revision 1.5  2004/05/21 11:22:18  clip
    rust: minor fix for 'configure -m'
 

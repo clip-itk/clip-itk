@@ -1,5 +1,8 @@
 /*
-   $Log: alttbl.c,v $
+   $Log$
+   Revision 1.1  2006/06/22 19:01:32  itk
+   uri: initial
+
    Revision 1.4  2000/05/24 18:34:00  clip
    _clip_push_area
    indents all

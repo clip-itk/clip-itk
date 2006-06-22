@@ -13,7 +13,7 @@
 /*-------------------------------------------------------------------------*/
 #include "clip-ui.ch"
 
-#define DEBUG	0
+#define DEBUG	.F.
 
 static driver := getDriver()
 
@@ -53,11 +53,17 @@ static function ui_parseFile(self)
 	fileName := self:fileName
 	set translate path off
 	
+	if DEBUG
+		?? "UIForm: file parsing...&\n"
+	endif
 	// Parse file
 	self:oXml := XMLTree()
 	if .not. self:oXml:parseFile( fileName )
 		?? "ERROR: Cannot open form file '"+fileName+"': "+self:oXml:getError()+chr(10)
 		return NIL
+	endif
+	if DEBUG
+		?? "UIForm: file parsing complete&\n"
 	endif
 
 return self:parse()
@@ -65,6 +71,9 @@ return self:parse()
 /* Parse form from string */
 static function ui_parseString(self, str)
 
+	if DEBUG
+		?? "UIForm: string parsing...&\n"
+	endif
 	// Parse string
 	self:oXml := XMLTree()
 	if .not. self:oXml:parseString( str )
@@ -72,6 +81,9 @@ static function ui_parseString(self, str)
 		return NIL
 	endif
 
+	if DEBUG
+		?? "UIForm: string parsing complete&\n"
+	endif
 
 return self:parse()
 
@@ -79,6 +91,9 @@ return self:parse()
 static function ui_parse(self)
 	local win := NIL, res, t, i
 
+	if DEBUG
+		?? "UIForm: form parsing...&\n"
+	endif
 	if self:oXml:getRoot() == NIL
 		?? "ERROR: there isn't root element.&\n"
 		return win
@@ -97,9 +112,15 @@ static function ui_parse(self)
 	endif
 	t := res[1]
 	//?? "PARENT window for form: ",valtype(self:parent),chr(10)
+	if DEBUG
+		?? "UIForm: create widgets...&\n"
+	endif
 	win := ui_createWidget(self, t, self:parent)
 	if empty(win)
 		return NIL
+	endif
+	if DEBUG
+		?? "UIForm: set properties...&\n"
 	endif
 
 	/* Set properties */
@@ -108,12 +129,18 @@ static function ui_parse(self)
 		ui_setProperty(self, i, NIL)
 	next
 
+	if DEBUG
+		?? "UIForm: set actions...&\n"
+	endif
 	/* Set actions */
 	t := self:oXml:XPath("/actions/*")
 	for i in t
 		ui_setAction(self, i, NIL)
 	next
 
+	if DEBUG
+		?? "UIForm: set preliminary actions...&\n"
+	endif
 	/* Set pre actions */
 	res := self:oXml:XPath("/head")
 	if empty(res) .or. len(res) == 0
@@ -122,6 +149,9 @@ static function ui_parse(self)
 	endif
 	
 	self:setPreAction(res[1], NIL)
+	if DEBUG
+		?? "UIForm: form parsing complete&\n"
+	endif
 
 return win
 

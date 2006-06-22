@@ -328,28 +328,30 @@ static func __sayTable
    heading := !(j==visLen)
    footing := !(k==vislen)
    for i=1 to visLen
-	  col=::__colVisible[i]
-	  len=::__columnsLen[col]
-	  colSep:=::__columns[col]:colSep
-	  colsep:=iif(colSep==NIL,::colSep,colSep)
-	  lenSep:=len(colSep)
-	  //strsep1:=iif(lenSep>2,substr(colsep,3,1),"")
-	  //lenSep:=iif(lenSep==3,3,1)
-	  //strsep1:=space(len(strsep1))
-	  //strsep2:=substr(colsep,1,2)
-	  //strsep2:=space(len(strsep2))
-	  scol=::__whereVisible[i]
-	  //len=min(len,::nright-scol-lenSep+len(strSep2))
-	  len=min(len,::nright-scol-lenSep)
-	  strings:=::__HeadStrings[col]
-	  ccc:=::__getcolor(1)
-	  if ::__columns[col]:defColor!=NIL
+	col=::__colVisible[i]
+	len=::__columnsLen[col]
+	colSep:=::__columns[col]:colSep
+	colsep:=iif(colSep==NIL,::colSep,colSep)
+	lenSep:=len(colSep)
+	//strsep1:=iif(lenSep>2,substr(colsep,3,1),"")
+	//lenSep:=iif(lenSep==3,3,1)
+	//strsep1:=space(len(strsep1))
+	//strsep2:=substr(colsep,1,2)
+	//strsep2:=space(len(strsep2))
+	scol=::__whereVisible[i]
+	//len=min(len,::nright-scol-lenSep+len(strSep2))
+	if vislen !=1
+		len=min(len,::nright-scol-lenSep)
+	endif
+	strings:=::__HeadStrings[col]
+	ccc:=::__getcolor(1)
+	if ::__columns[col]:defColor!=NIL
 		ccc:=::__getcolor(::__columns[col]:defColor[1])
-	  endif
-	  if ::__columns[col]:colorHeading!=NIL
+	endif
+	if ::__columns[col]:colorHeading!=NIL
 		ccc:=::__getcolor(::__columns[col]:colorHeading)
-	  endif
-	  for j=1 to len(strings )
+	endif
+	for j=1 to len(strings )
 		dispOutAt(::nTop+j-1, scol,space(::nRight-scol),::__getcolor(1))
 		s=padr(strings[j],len)
 		y := ::nTop+j-1
