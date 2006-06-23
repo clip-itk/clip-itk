@@ -21,7 +21,7 @@ update:
 	../_cvs update -dP
 clean:
 	cd data; rm -f *.bak
-	cd loaders; $(MAKE) clean
+	#cd loaders; $(MAKE) clean
 	cd sample; $(MAKE) clean
 	cd plugins; rm -rf *.po *.bak *.log *.out *.po *core core* *.ex *.nm
 	cd reports; rm -rf *.po *.bak *.log *.po *core core* *.ex *.nm
