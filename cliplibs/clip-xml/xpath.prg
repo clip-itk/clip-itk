@@ -711,6 +711,9 @@ static function _xpath_set( s, a )
 	for i:=1 to len(a)
 		e := a[i]
 		for cond in s:set
+			if XPATH_DEBUG
+				?? "XPath: get list for "+cond:axis+':'+cond:name,chr(10)
+			endif
 			switch cond:axis
 				case 'root'
 					c := e
@@ -732,6 +735,12 @@ static function _xpath_set( s, a )
 			endswitch
 		next
 	next
+	if XPATH_DEBUG
+		?? "XPath: list:", chr(10)
+		for c in v
+			?? '    <'+c:name+'>'+chr(10)			
+		next
+	endif
 	
 return v
 
