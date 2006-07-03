@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*									   */
-/*   Copyright (C) 2005 by E/AS Software Foundation			   */
-/*   Authors: 								   */
-/*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
+/*   This is a part of CLIP-UI library									   */
+/*																		   */
+/*   Copyright (C) 2005 by E/AS Software Foundation						   */
+/*   Authors: 															   */
+/*  	     Andrey Cherepanov <skull@eas.lrn.ru>						   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   									   */
+/* 									  									   */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -824,12 +824,6 @@ return o
 static function ui_addGrid(self, box, obj, pos, h_expand, v_expand)
 	local vBox, hBox, padding:=box:padding
 	local a, cl, rw, l, r, t, b, hflags := GTK_FILL, vflags := GTK_FILL
-	if valtype(h_expand) == "L" .and. h_expand
-		hflags += GTK_EXPAND
-	endif
-	if valtype(v_expand) == "L" .and. v_expand
-		vflags += GTK_EXPAND
-	endif
 	if valtype(pos) == "U"
 		?? "ERROR: bad grid position&\n"
 		return .F.
@@ -839,6 +833,23 @@ static function ui_addGrid(self, box, obj, pos, h_expand, v_expand)
 		?? "ERROR: no delimiter ',' in grid position&\n"
 		return .F.
 	endif
+	
+	// Check expand flags (+ in axes end)
+	if right(a[1],1) == '+'
+		a[1] := left(a[1], len(a[1])-1)
+		v_expand := .T.
+	endif
+	if right(a[2],1) == '+'
+		a[2] := left(a[2], len(a[2])-1)
+		h_expand := .T.
+	endif
+	if valtype(h_expand) == "L" .and. h_expand
+		hflags += GTK_EXPAND
+	endif
+	if valtype(v_expand) == "L" .and. v_expand
+		vflags += GTK_EXPAND
+	endif
+	
 	cl := split(a[1],"\-")
 	rw := split(a[2],"\-")
 	t := val(cl[1])
@@ -1156,8 +1167,10 @@ return NIL
 
 /** Frame **/
 static function ui_createFrame(self, caption, type)
-	local o
-	o := gtk_FrameNew(, caption)
+	local o, eBox
+	eBox := gtk_FrameNew(, caption)
+	o := gtk_EventBoxNew()
+	o:layout := eBox
 	self:setFrameType(o, type)
 return o
 
@@ -1166,12 +1179,12 @@ static function ui_setFrameGrid(self, frame, grid)
 return NIL
 
 static function ui_setFrameLabel(self, frame, label)
-	gtk_FrameSetLabel( frame, label )
+	gtk_FrameSetLabel( frame:layout, label )
 return NIL
 
 static function ui_setFrameType(self, frame, type)
 	if valtype(type) == 'N'
-		gtk_FrameSetShadowType( frame, type )
+		gtk_FrameSetShadowType( frame:layout, type )
 	endif
 return NIL
 

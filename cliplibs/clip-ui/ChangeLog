@@ -1,3 +1,11 @@
+2006-06-06
+	- UIFrame now support :layout widget for setup background ("color.bg")
+
+2006-06-02
+	- UIGrid: add expand flags to pos (+ at axes end)
+	- small fixes in UIForm
+	- UIFont now supports font size in form +XX or -XX
+
 2006-04-06 clip-ui 0.1.2.4
 	- configure stript
 	- remove XMLTag() and use clip-xml for XML parsing

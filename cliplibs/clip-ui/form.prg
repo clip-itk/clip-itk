@@ -409,6 +409,9 @@ static function ui_setProperty(self, tag, obj, value)
 			return .F.
 		endif
 	endif
+	if DEBUG
+		?? "UIForm: setProperty() for "+widget+':'+name+' = '+value,chr(10)
+	endif
 
 	obj := iif(obj==NIL,mapget(self:widgets,widget,NIL),obj)
 
@@ -433,7 +436,6 @@ static function ui_setProperty(self, tag, obj, value)
 					return .F.
 				endif
 			endif
-//			?? "VAL: ",value,chr(10)
 			obj:setValue(value)
 		case "geometry"
 			if .not. "SETGEOMETRY" $ obj; return .F.; endif
@@ -548,15 +550,6 @@ static function getProperty(tree, obj, name, def)
 			ret := e:attribute("value",def)
 		endif
 	next
-
-	for e in XPath(tree, "style/*")
-		if valtype(e) == "O"
-			if e:attribute("widget","") == widget .and. e:attribute("name","") == name
-				ret := e:attribute("value",def)
-			endif
-		endif
-	next
-
 return ret
 
 /* Return widget property value */
