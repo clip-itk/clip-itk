@@ -187,7 +187,7 @@ static function _dep_GetValue(self,cId,nLocks,version)
 	if !empty(version) .or. nLocks != NIL
 		adel(__objCache,cId)
 	endif
-	if cId $ __objCache
+	if cId $ __objCache .and. self:id==left(cId,DICT_ID_LEN+DEP_ID_LEN)
 		return __objCache[cId]
 	endif
 

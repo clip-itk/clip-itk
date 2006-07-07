@@ -290,6 +290,7 @@ static function attrCheck (attrData, attrDesc )
 				otherwise
 					ret := padr(ret,attrDesc[3])
 			endswitch
+			ret := left(ret,attrDesc[3])
 		endif
 	case 'D'
 		if cType =="D"

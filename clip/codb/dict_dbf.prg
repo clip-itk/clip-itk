@@ -336,6 +336,7 @@ static function _dict_select(self,metaName,nIndex,sName,sWhere,nCount,deleted)
 	end
 	rddClearFilter(self:hDbMeta)
 	taskStart()
+	//outlog(__FILE__,__LINE__,self:hDbMeta,s,ret)
 	self:runTrigger(metaname,"AFTER_SELECT_DICTIONARY",nIndex,s)
 return ret
 ************************************************************

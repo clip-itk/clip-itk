@@ -287,7 +287,7 @@ static function _dict_getValue(self,cID,nLocks,version)
 	if valtype(version)=="N" .or. nLocks != NIL
 		adel(__objCache,cId)
 	endif
-	if cId $ __objCache
+	if cId $ __objCache .and. self:id==left(cId,DICT_ID_LEN)
 		return __objCache[cId]
 	endif
 	if len(__objCache) > CODB_DICT_CACHE
