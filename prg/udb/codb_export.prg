@@ -253,6 +253,9 @@ static function codb_exportData(oDep,className,expr)
 		if empty(tmp)
 			loop
 		endif
+		if "price" $ tmp:name
+			loop
+		endif
 		aadd(attrs,tmp)
 	next
 	if "EXPORT_LIST" $ classDesc .and. !empty(classDesc:export_list)
@@ -338,21 +341,25 @@ static function  __makeObjsTree(oDep,classDesc,expr)
 		if empty(tmp)
 			loop
 		endif
+	//outlog(__FILE__,__LINE__,tmp:name,tmp:ref_to,classDesc:id)
 		if tmp:ref_to == classDesc:id
 			tmp1 := tmp:ref_to
-			exit
+			//exit
 		endif
 		if upper(tmp:name) == "OWNER_ID"
 			name := tmp:name
+			tmp1 := ""
 			exit
 		endif
 	next
+	//outlog(__FILE__,__LINE__,tmp1)
 	if !empty(tmp1)
 		tmp := oDict:getValue(tmp1)
 		if !empty(tmp)
 			name := tmp:name
 		endif
 	endif
+	//outlog(__FILE__,__LINE__,name)
 	if empty(expr)
 		tmp := oDep:select(classDesc:id)
 	else
@@ -379,7 +386,7 @@ static function  __makeObjsTree(oDep,classDesc,expr)
 		//xRef[ tmp1:id ] := tmp1[name]
 		aadd(members,{tmp1:id,tmp1[name]})
 	next
-	outlog(__FILE__,__LINE__,owners)
+	//outlog(__FILE__,__LINE__,owners)
 	//tmp := oDep:select(classDesc:id,,,name+'==""'+iif(empty(expr),""," .and. "+expr))
 	//__checkObjsTree(oDep,objs,name)
 	for i=1 to 10
@@ -824,8 +831,12 @@ return  '<error decription="'+s+'"/>&\n'
 
 /**********************/
 static function __metaGetValue(cID)
-	local oDict, dict_id:=left(cID,codb_info('DICT_ID_LEN'))
-	oDict := codb_dict_reference(dict_id)
+	local oDict, oDep, dict_id:=left(cID,codb_info('DICT_ID_LEN'))
+
+	oDep := codb_needDepository(cID)
+	oDict := oDep:dictionary()
+
+	//oDict := codb_dict_reference(dict_id)
 	if valtype(oDict) != "O"
 		oDict := coDictionary():new(dict_id)
 		if empty(oDict:error)

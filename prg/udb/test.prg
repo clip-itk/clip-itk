@@ -2,9 +2,9 @@ set date format to "dd/mm/yyyy"
 set optimize on
 set optimize level to 2
 set exclusive off
-set exact off
-
-oDep := coDepository():new("GBL0101","sdfsd")
+set exact on
+************
+oDep := coDepository():new("ACC0001","sdfsd")
 oDep:open()
 oDict := oDep:dictionary()
 tmp:= oDict:select("CLASS")
