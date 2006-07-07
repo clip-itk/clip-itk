@@ -181,8 +181,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 
 					typeval := valtype(an_obj[upper(class:tcol_list[j])])
 //					typeval := valtype(k)
-					essvalue:= /*k*/an_obj[upper(class:tcol_list[j])]
-//outlog( class:tcol_list[j] ,k, essvalue )
+					essvalue:= an_obj[upper(class:tcol_list[j])]
+//outlog( class:tcol_list[j] ,k, essvalue, typeval)
 					if typeval=="L"
 					    essvalue:=iif(essvalue,'true','false')
 					    kk:=toString(k)
@@ -193,20 +193,29 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					    kk:=bal_summa(val(k))
 					    essvalue:="'"+bal_summa(essvalue)+"'"
 					else
-					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
+					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))					
 					    essvalue:=strtran(essvalue,"'","\'")
 					    essvalue:=strtran(essvalue,'"','\"')
 					    essvalue:=iif(len(essvalue)==0,' ',essvalue)
+					    essvalue:=strtran(essvalue,"&","&amp;")
 					    essvalue:="'"+essvalue+"'"
+					    
 					    kk:=alltrim(toString(k))
 					    kk:=strtran(kk,"'","\'")
-					    kk:=strtran(kk,'"','\"')
+					    kk:=strtran(kk,'"','\"')					    
+					    kk:=strtran(kk,"&","&amp;")					    
+					    if len(kk)==12 .and. (substr(kk,1,3)=='GBL' .or. substr(kk,1,3)=='ACC')
+						essvalue:="'"+kk+"'"
+						kk:=codb_essence(kk)
+					    endif
 
 					endif
-//outlog( class:tcol_list[j] ,kk, essvalue )
 					aObj:esse  += class:tcol_list[j]+":"+essvalue+', '
 					aObj:attr  += class:tcol_list[j]+":'"+kk+"',  "
-					aObj:tCols += ' '+class:tcol_list[j]+'="'+alltrim(toString(k))+'" '
+					
+                                        k:=alltrim(toString(k))
+                                        k:=strtran(k,"&","&amp;")
+	                                aObj:tCols += ' '+class:tcol_list[j]+'="'+k+'" '
 				endif
 				if !empty(k) .and. union==class:tcol_list[j]
 					aObj:union := k

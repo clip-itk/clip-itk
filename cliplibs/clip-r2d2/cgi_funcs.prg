@@ -1449,9 +1449,11 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 					endif
 
 					if empty(sTmp2)
-						if !empty(stmp3)
-							sTmp2 := sTmp3:id
-						endif
+                                                sTmp3 := cgi_getValue(stmp)
+    		                                    if !empty(stmp3)
+	    	                        	        sTmp2 := sTmp3:id
+					            endif
+						sTmp3 := ""
 					endif
 
 					if !empty(stmp2)
@@ -1475,7 +1477,7 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 						if !empty(k)
 							sTmp3 := "'"+k:header+"'" //+':'+obj2:name
 						else
-							sTmp3 := obj2:name+":"+obj2:id
+							sTmp3 := "'"+obj2:name+"'" //+":"+obj2:id
 						endif
 					endif
 					refr:=refr+iif(refr=="","",",")+" "+col:name+":'"+ stmp + "'"
@@ -1521,7 +1523,6 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 			if len(refr) >0
 				?? s+", r:{"+refr+"}"
 			endif
-?
 		?? s+'}'+iif( i==aLen, '',',')
 	next
 	?? ']</items>'

@@ -150,7 +150,7 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 ******************************
 function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn,level)
 	local ss,i,j,k,tmp,cont:=.f.,s,acc,attr,urn_id,promt,acccode,sTmp:=""
-	local masan, u, stran:="", idan:=""
+	local masan, u, stran:="", idan:="", checkloop:= .t.
 	s:="AN_VALUE"+alltrim(str(an_level+1,2,0))
 	acc := cgi_getValue(account)
 	//? acc
@@ -185,7 +185,8 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		endif
 		urn_id := urn
 		promt:= iif(tmp:an_value=="total","",tmp:an_value)
-//		?? iif(i==1,"",",")
+		?? iif(checkloop,"",",")
+		checkloop:=.f.
 		?? "{ a:{level:'"+level+"', "
 		?? " isContainer:false }, "
 		?? " r:{ "+idan+tmp:esse+"account:'"+account+"', unit:'"+tmp:unit_num+"', an_value:'"+tmp:an_value+"'}, "
@@ -225,7 +226,7 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		?? " out_num:'" +bal_summa(tmp:out_num) +"', "
 		?? " end_num:'" +bal_summa(tmp:end_num) +"', "
 		?? " unit:'"+cgi_essence(tmp:unit_num)  +"' " 
-		?? "}"+iif(i==len(bal_data),"",",")
+		?? "}"//+iif(i==len(bal_data),"","")
 		
 
 	next
