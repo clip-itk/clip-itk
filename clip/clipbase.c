@@ -5,12 +5,18 @@
 */
 /*
 	$Log$
-	Revision 1.1  2006/06/22 19:01:32  itk
-	uri: initial
+	Revision 1.2  2006/07/17 08:09:47  itk
+	uri: some fixes about long alieas name in select()
 	
+	Revision 1.377  2006/07/11 08:03:15  clip
+	uri: fix uncompatibly about dbSetRelation() and long alias name
+	
+	Revision 1.376  2006/07/11 07:59:54  clip
+	uri: fix uncompatibly about select() and long alias name
+
 	Revision 1.375  2006/06/21 08:31:21  clip
 	uri: small fix about alias name length more 10 chars
-	
+
 	Revision 1.374  2006/06/20 15:08:10  clip
 	uri: add strip long alias name to 10 chars in dbusearea()
 
@@ -3508,7 +3514,7 @@ clip_SELECT(ClipMachine * cm)
 {
 	const char *alias = _clip_parc(cm, 1);
 	DBWorkArea *wa;
-	int i, ret = 0;
+	int i, len, ret = 0;
 	char *al,*e;
 
 	if (_clip_parinfo(cm,0) > 0 && _clip_parinfo(cm,1) == UNDEF_t)
@@ -3529,6 +3535,11 @@ clip_SELECT(ClipMachine * cm)
 	e = al;
 	while(isalpha(*e) || isdigit(*e) || *e == '_') e++;
 	*e = 0;
+	len = strlen(al);
+	if (len>10)
+		len = 10;
+	al[len] = 0;
+
 	for (i = 0; i < cm->areas->count; i++)
 	{
 		wa = (DBWorkArea *) cm->areas->items[i];
@@ -3927,12 +3938,16 @@ clip_DBSETRELATION(ClipMachine * cm)
 	if(type==NUMERIC_t){
 		childwa = get_area(cm,_clip_parni(cm,1),0,0);
 	} else {
-		int i;
+		int i, len;
 		DBWorkArea* twa;
 		char* alias = strdup(_clip_parc(cm,1));
 		char* e = alias+strlen(alias);
 		while(*(--e)==' ');
 		*(e+1) = 0;
+		len = strlen(alias);
+		if (len>10)
+			len = 10;
+		alias[len] = 0;
 		for (i = 0; i < cm->areas->count; i++)
 		{
 			twa = (DBWorkArea *) cm->areas->items[i];
