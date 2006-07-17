@@ -5,8 +5,11 @@
 */
 /*
    $Log$
-   Revision 1.1  2006/06/22 19:01:30  itk
-   uri: initial
+   Revision 1.2  2006/07/17 08:12:17  itk
+   uri: small fix about pcol() and qout()
+
+   Revision 1.283  2006/07/11 08:36:28  clip
+   uri: devout()+qout()+pcol() some bug fixed
 
    Revision 1.282  2005/08/08 09:00:30  clip
    alena: fix for gcc 4
@@ -1251,12 +1254,19 @@ out_dev(ClipMachine * mp, char *buf, int n, int attr, int wrap)
 			printer = (FILE *) mp->printer;
 			if (printer)
 			{
-				for (i = 0, s = buf; i < n; ++i, ++s, ++mp->pcol)
+				for (i = 0, s = buf; i < n; ++i, ++s)
+				{
 					if (*s == '\n')
 					{
 						mp->pcol = 0;
 						mp->prow++;
 					}
+					else
+					{
+						if (*s != '\r')
+							++ mp->pcol;
+					}
+				}
 				for (i = 0; i < mp->margin; ++i)
 					fputc(' ', printer);
 				for (i = 0; i < n; i++)
