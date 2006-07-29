@@ -323,6 +323,9 @@ static function codb_exportData(oDep,className,expr)
 			if !empty(s5)
 				s3 += ' refTo="'+s5+'"'
 			endif
+			if valtype(s4) != "C"
+				s4 := toString(s4)
+			endif
 			s3 += '>'+s4+'</attr>'+n
 		next
 		ret += s3+s+s+'</object>'+n
