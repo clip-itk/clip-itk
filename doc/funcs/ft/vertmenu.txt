@@ -38,6 +38,6 @@ $EXAMPLES$
 	  { "Maintenance","Reindex files",{ || FT_MENU2(maintmenu) } }, ;
 	  { "Quit", "See ya later" } }
     FT_MENU2(mainmenu)
-$Author: clip $
+$Author$
    Greg Lief
 $END$

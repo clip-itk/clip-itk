@@ -33,7 +33,7 @@ $EXAMPLES$
    FT_RSTRGN(cScreen)                     // restore the 1's region
 $SEEALSO$
    FT_RSTRGN(), FT_RGNSTACK()
-$Author: clip $
+$Author$
    David A. Richardson
 $END$
 
@@ -79,7 +79,7 @@ $EXAMPLES$
    FT_RSTRGN(cScreen, 20, 60)            // restore to a different location
 $SEEALSO$
    FT_SAVRGN(), FT_RGNSTACK()
-$Author: clip $
+$Author$
    David A. Richardson
 $END$
 
@@ -149,6 +149,6 @@ $EXAMPLES$
    FT_RGNSTACK("pop all")    // restore the 3's, 2's and 1's regions
 $SEEALSO$
    FT_SAVRGN(), FT_RSTRGN()
-$Author: clip $
+$Author$
    David A. Richardson
 $END$

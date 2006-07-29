@@ -26,6 +26,6 @@ $EXAMPLES$
    FT_ADESSORT(aNames, , 10)         // Sort the 1st 10 Elements
 
    FT_ADESSORT(aNames, 5, 10)        // Sort Elements 5-10
-$Author: clip $
+$Author$
    David Husnian
 $END$

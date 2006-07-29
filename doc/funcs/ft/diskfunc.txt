@@ -18,7 +18,7 @@ $DESCRIPTION$
 $EXAMPLES$
    ? FT_DSKSIZE()      // Maximum capacity for default drive
    ? FT_DSKSIZE( "D" ) // Maximum capacity for Drive D:
-$Author: clip $
+$Author$
    Robert A. DiFalco
 $end$
 
@@ -43,7 +43,7 @@ $DESCRIPTION$
    Uses FT_INT86() through the internal function _ftDiskInfo().
 $EXAMPLES$
    ? FT_DSKFREE()  // Returns free space on default drive.
-$Author: clip $
+$Author$
    Robert A. DiFalco
 $end$
 

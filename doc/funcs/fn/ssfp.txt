@@ -36,6 +36,6 @@ $SEEALSO$
 
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Sheldon Easterbrook
 $END$

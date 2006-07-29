@@ -57,7 +57,7 @@ $EXAMPLES$
 
    // round down to 3 decimals Within .005
    nAvg     := FT_ROUND(nAvg, 3, , ROUND_DOWN, .005)
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

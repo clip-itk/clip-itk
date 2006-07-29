@@ -39,7 +39,7 @@ $EXAMPLES$
 				   3rd dimension or subarray
 $SEEALSO$
    FT_AEMINLEN()
-$Author: clip $
+$Author$
    Ralph Oliver,  TRANSCOM SYSTEMS
 $end$
 

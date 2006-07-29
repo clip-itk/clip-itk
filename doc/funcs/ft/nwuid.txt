@@ -38,7 +38,7 @@ $EXAMPLES$
        QOut( Str( x, 3 ) + Space(3) + cUid )
      ENDIF
    NEXT
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

@@ -24,6 +24,6 @@ $EXAMPLES$
   ? FT_WorkDays( CTOD("5/18/91"), CTOD("5/19/91") ) // 0  (Sa - Su)
   ? FT_WorkDays( CTOD("5/17/91"), CTOD("5/17/91") ) // 1  (Fr - Fr)
 $SEEALSO$
-$Author: clip $
+$Author$
    John F. Kaster
 $END$

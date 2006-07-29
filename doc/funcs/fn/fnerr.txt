@@ -23,7 +23,7 @@
 
  $SEEALSO$
     _fnSetErr()
- $Author: clip $
+ $Author$
     Glenn Scott
  $END$
 
@@ -51,6 +51,6 @@
 
  $SEEALSO$
     FN_ERROR()
- $Author: clip $
+ $Author$
     Glenn Scott
  $END$

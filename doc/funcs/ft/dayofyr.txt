@@ -54,7 +54,7 @@ $EXAMPLES$
    ? aDateInfo[3]        // 12/28/91    (last day of accounting year)
 $SEEALSO$
    FT_DATECNFG()
-$Author: clip $
+$Author$
    Jo W. French dba Practical Computing
 $end$
 

@@ -86,7 +86,7 @@ $EXAMPLES$
     ENDIF
 $SEEALSO$
     FT_NWSEMEX(), FT_NWSEMWAIT(), FT_NWSEMSIG(), FT_NWSEMCLOSE(), FT_NWSEMLOCK()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 
@@ -139,7 +139,7 @@ $EXAMPLES$
 	ALLTRIM(STR(nValue)) + "]" )
 $SEEALSO$
     FT_NWSEMOPEN(), FT_NWSEMWAIT(), FT_NWSEMSIG(), FT_NWSEMCLOSE(), FT_NWSEMLOCK()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 
@@ -177,7 +177,7 @@ $EXAMPLES$
   ENDIF
 $SEEALSO$
     FT_NWSEMOPEN(), FT_NWSEMEX(), FT_NWSEMSIG(), FT_NWSEMCLOSE(), FT_NWSEMLOCK()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 
@@ -208,7 +208,7 @@ $EXAMPLES$
     QOUT( "Signal returns: " + STR( FT_NWSEMSIG( nHandle ) ) )
 $SEEALSO$
     FT_NWSEMOPEN(), FT_NWSEMEX(), FT_NWSEMWAIT(), FT_NWSEMCLOSE(), FT_NWSEMLOCK()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 
@@ -236,7 +236,7 @@ $EXAMPLES$
    QOUT( "Close returns:  " + STR( FT_NWSEMCLOSE( nHandle ) ) )
 $SEEALSO$
    FT_NWSEMOPEN(), FT_NWSEMEX(), FT_NWSEMWAIT(), FT_NWSEMSIG(), FT_NWSEMLOCK()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 
@@ -300,7 +300,7 @@ $EXAMPLES$
 
 $SEEALSO$
    FT_NWSEMOPEN(), FT_NWSEMEX(), FT_NWSEMWAIT(), FT_NWSEMSIG(), FT_NWSEMUNLOCK()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 
@@ -341,7 +341,7 @@ $EXAMPLES$
 
 $SEEALSO$
    FT_NWSEMOPEN(), FT_NWSEMEX(), FT_NWSEMWAIT(), FT_NWSEMSIG(), FT_NWSEMLOCK()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

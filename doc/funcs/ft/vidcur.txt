@@ -28,7 +28,7 @@ $EXAMPLES$
    // Set the position to row 5, column 10 on video page 1:
 
 	  FT_SETVCUR( 1, 5, 10 )
-$Author: clip $
+$Author$
    Glenn Scott
 $END$
 
@@ -71,6 +71,6 @@ $EXAMPLES$
    QOut("Row: " + str( aCurInfo[3] ) + "  Col: " + str( aCurInfo[4] ) )
 
 
-$Author: clip $
+$Author$
    Glenn Scott
 $END$

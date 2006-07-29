@@ -83,7 +83,7 @@ $EXAMPLES$
 			      <Epson elite & near letter quality>
 $SEEALSO$
 
-$Author: clip $
+$Author$
    Jim Gale
 $end$
 

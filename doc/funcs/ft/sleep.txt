@@ -42,7 +42,7 @@ $EXAMPLES$
        FT_SLEEP(0.5, nTime) && Sleep until the sytem clock is
 			    && nTime+0.5 seconds.
 
-$Author: clip $
+$Author$
    Leo Letendre
 $end$
 

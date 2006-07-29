@@ -24,7 +24,7 @@ $EXAMPLES$
    FT_PushVid()          // Save the current video states
 $SEEALSO$
    FT_PopVid()
-$Author: clip $
+$Author$
    Ted Means
 $end$
 
@@ -51,7 +51,7 @@ $EXAMPLES$
    FT_PopVid()          // Restore video states
 $SEEALSO$
    FT_PushVid()
-$Author: clip $
+$Author$
    Ted Means
 $end$
 

@@ -39,7 +39,7 @@ $EXAMPLES$
 
    For a demonstration of this function, compile and link the
    program WOY.PRG in the Nanforum Toolkit source code.
-$Author: clip $
+$Author$
    Forest Belt, Computer Diagnostic Services, Inc.
 $END$
 
@@ -81,6 +81,6 @@ $EXAMPLES$
 
    For a demonstration of this function, compile and link the
    program WOY.PRG in the Nanforum Toolkit source code.
-$Author: clip $
+$Author$
    Forest Belt, Computer Diagnostic Services, Inc.
 $END$

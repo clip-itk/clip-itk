@@ -49,7 +49,7 @@ $EXAMPLES$
 
 $SEEALSO$
    FT_RESTARR()
-$Author: clip $
+$Author$
    David Barrett
 $end$
 
@@ -96,7 +96,7 @@ $EXAMPLES$
 
 $SEEALSO$
    FT_SAVEARR()
-$Author: clip $
+$Author$
    David Barrett
 $end$
 

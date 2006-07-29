@@ -48,6 +48,6 @@ $INCLUDE$
 
 $SEEALSO$
 
-$Author: clip $
+$Author$
    Glenn Scott
 $END$

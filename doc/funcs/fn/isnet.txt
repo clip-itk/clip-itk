@@ -43,6 +43,6 @@ $EXAMPLES$
 
 $SEEALSO$
    fn_netver(), fn_is3x()
-$Author: clip $
+$Author$
 Michael Landesman
 $END$

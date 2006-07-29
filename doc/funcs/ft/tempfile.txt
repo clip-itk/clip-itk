@@ -40,6 +40,6 @@ $EXAMPLES$
    Create a unique file on another drive, but do not hide it:
 
 	  myFile := FT_TEMPFIL("e:\nanfor\src\")
-$Author: clip $
+$Author$
    Glenn Scott
 $END$

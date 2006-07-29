@@ -94,7 +94,7 @@ $EXAMPLES$
 	    }
 
   aClrs := FT_ClrSel( aClrs, lColour, cChr )
-$Author: clip $
+$Author$
   Dave Adams
 $end$
 

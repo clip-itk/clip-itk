@@ -74,7 +74,7 @@ $SEEALSO$
 
 $INCLUDE$
    INKEY.CH, SETCURS.CH, ACHOICE.CH
-$Author: clip $
+$Author$
    Keith A. Wire
 $end$
 

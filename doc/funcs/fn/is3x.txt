@@ -32,7 +32,7 @@ $SEEALSO$
     FN_GETFSI()
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Glenn Scott
 
 $END$

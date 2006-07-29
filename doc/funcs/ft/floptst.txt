@@ -45,7 +45,7 @@ $EXAMPLES$
        CASE iStatus == 4
 	  Qout( "Something is wrong with drive A, but I don't know what." )
     ENDCASE
-$Author: clip $
+$Author$
     Gary Smith
 $end$
 

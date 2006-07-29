@@ -142,7 +142,7 @@ $INCLUDE$
    FTMENUTO.CH
 $SEEALSO$
 
-$Author: clip $
+$Author$
    Ted Means
 $end$
 
@@ -187,7 +187,7 @@ $INCLUDE$
   FTMENUTO.CH
 $SEEALSO$
   FT_Prompt()
-$Author: clip $
+$Author$
    Ted Means
 $end$
 

@@ -32,7 +32,7 @@ $EXAMPLES$
    link the program BITTEST.PRG in the Nanforum Toolkit source code.
 $SEEALSO$
    FT_BYTEOR(), FT_BYTENOT(), FT_BYTENEG(), FT_BYTEAND()
-$Author: clip $
+$Author$
    Forest Belt, Computer Diagnostic Services, Inc.
 $end$
 

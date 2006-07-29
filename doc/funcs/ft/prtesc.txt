@@ -24,7 +24,7 @@ $EXAMPLES$
    UserInput( @cSetup )     // Let user modify setup code
    SET DEVICE TO PRINT      // get ready to print
    ?? FT_ESCCODE( cSetup )  // Output the converted code
-$Author: clip $
+$Author$
    Steven Tyrakowski
 $end$
 

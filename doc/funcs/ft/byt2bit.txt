@@ -36,7 +36,7 @@ $EXAMPLES$
    link the program BITTEST.PRG in the Nanforum Toolkit source code.
 $SEEALSO$
    FT_BYT2HEX()
-$Author: clip $
+$Author$
    Forest Belt, Computer Diagnostic Services, Inc.
 $end$
 

@@ -44,7 +44,7 @@ $EXAMPLES$
    once in the very first call to FT_PENDING() and only if the internal
    default values are not appropriate.
 
-$Author: clip $
+$Author$
    Isa Asudeh
 $end$
 

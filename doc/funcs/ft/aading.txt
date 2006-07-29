@@ -41,6 +41,6 @@ $EXAMPLES$
    FT_AADDITION( aList1, aList2, .F., .F. )
 	// sensitive to spaces, not sensitive to case
 	// returns {"apple","orange","pear","apple ","banana"}
-$Author: clip $
+$Author$
 Ralph Oliver,  TRANSCOM SYSTEMS
 $end$

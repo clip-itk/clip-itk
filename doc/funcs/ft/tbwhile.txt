@@ -81,6 +81,6 @@ $EXAMPLES$
       ? "You Selected: " + TBNames->Last +" "+ ;
 	 TBNames->First +" "+ TBNames->City
    ENDIF
-$Author: clip $
+$Author$
    Jim Orlowski
 $END$

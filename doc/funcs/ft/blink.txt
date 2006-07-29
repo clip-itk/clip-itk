@@ -22,7 +22,7 @@ $EXAMPLES$
 
    @5,10 SAY "WAIT - Printing Report"
    FT_BLINK( "..." )           //  Blink "..." after wait message...
-$Author: clip $
+$Author$
    Terry Hackett
 $end$
 

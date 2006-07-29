@@ -41,7 +41,7 @@ $EXAMPLES$
     [-]     returns:  CHR(45) + CHR(12)
     [grey+] returns:  CHR(43) + CHR(78)
     [+]     returns:  CHR(43) + CHR(13)
-$Author: clip $
+$Author$
    Glenn Scott (from John Kaster)
 $end$
 

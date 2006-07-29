@@ -21,7 +21,7 @@ $INCLUDE$
    SET.CH
 $SEEALSO$
    FT_SAVESETS(), FT_SETCENTURY()
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

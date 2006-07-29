@@ -47,7 +47,7 @@ $EXAMPLES$
    @ 20,0 SAY "Key that terminated FT_DISPFILE() was: " + '[' + cKey + ']'
 $SEEALSO$
    FT_DISPFILE(), FT_DFCLOSE()
-$Author: clip $
+$Author$
    Mike Taylor
 $end$
 
@@ -78,6 +78,6 @@ $EXAMPLES$
    @ 20,0 SAY "Key that terminated FT_DISPFILE() was: " + '[' + cKey + ']'
 $SEEALSO$
    FT_DFSETUP(), FT_DISPFILE()
-$Author: clip $
+$Author$
    Mike Taylor
 $END$

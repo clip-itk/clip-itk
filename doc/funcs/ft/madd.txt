@@ -41,7 +41,7 @@ $EXAMPLES$
 
 $SEEALSO$
    FT_DAYOFYR(), FT_DAYTOBOW()
-$Author: clip $
+$Author$
    Jo W. French dba Practical Computing
 $end$
 

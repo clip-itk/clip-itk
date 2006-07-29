@@ -52,7 +52,7 @@ $EXAMPLES$
    ? aDateInfo[3]   //  06/30/91   end of quarter 2
 $SEEALSO$
    FT_DATECNFG(), FT_WEEK(), FT_MONTH(), FT_YEAR()
-$Author: clip $
+$Author$
    Jo W. French dba Practical Computing
 $end$
 

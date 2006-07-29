@@ -14,7 +14,7 @@ $DESCRIPTION$
    This function is ideal if you need the user to select a day.
 $EXAMPLES$
    mday := FT_PICKDAY()
-$Author: clip $
+$Author$
    Greg Lief
 $end$
 

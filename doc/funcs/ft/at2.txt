@@ -33,7 +33,7 @@ $EXAMPLES$
    FT_AT2( cSearch, cTarget, 2, .F. )    // Returns ( 9 )
 $SEEALSO$
   FT_FINDITH()
-$Author: clip $
+$Author$
   Ralph Oliver,  TRANSCOM SYSTEMS
 $end$
 

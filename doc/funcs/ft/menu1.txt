@@ -106,7 +106,7 @@ FT_FILL( aOptions[3], 'C. Exit To DOS'               , {|| .f.},     .t. )
 	 Alt-C to its previous state prior to calling each function.
 $SEEALSO$
    FT_FILL()
-$Author: clip $
+$Author$
    Paul Ferrara
 $end$
 
@@ -166,7 +166,7 @@ The above would be added to the sub-menu associated with the fourth menu
 bar item, and would be selectable, and would exit FT_MENU1() when chosen.
 $SEEALSO$
    FT_MENU1()
-$Author: clip $
+$Author$
    Paul Ferrara
 $end$
 

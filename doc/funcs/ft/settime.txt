@@ -34,7 +34,7 @@ the DOS system time:
 
  RETURN ( nil )
 
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

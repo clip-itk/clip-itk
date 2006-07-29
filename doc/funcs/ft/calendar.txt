@@ -67,7 +67,7 @@ $EXAMPLES$
 $SEEALSO$
    FT_DAYOFYR()
 
-$Author: clip $
+$Author$
    Isa Asudeh
 $end$
 

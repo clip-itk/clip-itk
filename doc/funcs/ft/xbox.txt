@@ -75,6 +75,6 @@ $EXAMPLES$
      FT_XBOX('L','W','D','GR+/R','W/B',5,10,'It is so nice',;
 		     'to not have to do the messy chore',;
 		     'of calculating the box size!')
-$Author: clip $
+$Author$
    Don Opperthauser
 $END$

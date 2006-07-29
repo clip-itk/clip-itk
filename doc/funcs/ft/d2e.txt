@@ -29,7 +29,7 @@ $EXAMPLES$
 	 --> 5.43E-6
 $SEEALSO$
    FT_E2D()
-$Author: clip $
+$Author$
    Gary Baren
 $end$
 

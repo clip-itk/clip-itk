@@ -22,7 +22,7 @@ $EXAMPLES$
    FT_SETVPG( 1 )
 $SEEALSO$
    FT_GETVPG()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 
@@ -49,7 +49,7 @@ $EXAMPLES$
    nPage := FT_GETVPG()
 $SEEALSO$
    FT_SETVPG()
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

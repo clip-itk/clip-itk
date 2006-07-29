@@ -18,7 +18,7 @@ $EXAMPLES$
 
    Converts 21h, the Dos Interrupt, to its decimal equivalent,
    33, for use by FT_INT86().
-$Author: clip $
+$Author$
     Robert A. DiFalco
 $end$
 

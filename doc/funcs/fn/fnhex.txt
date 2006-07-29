@@ -33,7 +33,7 @@ $SEEALSO$
     fn_Hex2Bin(), fn_Bin2I(), fn_PeekStr(), fn_PokeStr()
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Steve Larsen
 $END$
 
@@ -70,6 +70,6 @@ $SEEALSO$
     fn_Bin2Hex(), fn_PeekStr(), fn_PokeStr()
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Steve Larsen
 $END$

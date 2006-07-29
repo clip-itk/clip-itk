@@ -69,7 +69,7 @@ $EXAMPLES$
      aArray := FT_DATECNFG('01/07/80', 2) //  '1980.07.01'     2 (Mon.)
 $SEEALSO$
    FT_ACCTADJ()
-$Author: clip $
+$Author$
    Jo W. French dba Practical Computing
 $end$
 

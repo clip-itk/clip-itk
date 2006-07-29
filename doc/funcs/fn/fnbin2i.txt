@@ -35,7 +35,7 @@ $SEEALSO$
     fn_I2Bin(), fn_PeekStr(), fn_PokeStr()
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Steve Larsen
 $END$
 
@@ -78,6 +78,6 @@ $SEEALSO$
     fn_Bin2I(), fn_PeekStr(), fn_PokeStr()
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Steve Larsen
 $END$

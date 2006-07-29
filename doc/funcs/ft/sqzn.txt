@@ -28,7 +28,7 @@ $SEEALSO$
     FT_UNSQZN()
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Joseph D. Booth, Sr.
 $END$
 
@@ -67,6 +67,6 @@ $SEEALSO$
   FT_SQZN()
 $INCLUDE$
 
-$Author: clip $
+$Author$
    Joseph D. Booth, Sr.
 $END$

@@ -20,7 +20,7 @@ $DESCRIPTION$
    when holidays occur.
 $EXAMPLES$
    dEdate := FT_EASTER( 1990 )     && returns 04/15/1990
-$Author: clip $
+$Author$
    Paul Tucker
 $end$
 

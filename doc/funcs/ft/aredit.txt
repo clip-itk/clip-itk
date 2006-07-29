@@ -66,6 +66,6 @@ $EXAMPLES$
       CLEAR SCREEN
       FT_AREDIT(3, 5, 18, 75, ar, @nElem, aHeadings, aBlocks, bGetFunc)
 
-$Author: clip $
+$Author$
    James J. Orlowski, M.D.
 $end$

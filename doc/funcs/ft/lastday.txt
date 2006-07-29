@@ -22,6 +22,6 @@ $EXAMPLES$
    ? FT_LDAY()                    // 03/31/91  (current month)
 $SEEALSO$
    FT_FDAY()
-$Author: clip $
+$Author$
    Mike Schinkel
 $end$

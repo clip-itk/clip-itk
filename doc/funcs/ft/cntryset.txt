@@ -24,7 +24,7 @@ $EXAMPLES$
 
    lOldState := FT_SETCENTURY(.F.)  // Get the current CENTURY Setting
 				    // and turn it off (set it to FALSE)
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

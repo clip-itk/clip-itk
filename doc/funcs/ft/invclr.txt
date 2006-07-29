@@ -17,7 +17,7 @@ $DESCRIPTION$
 $EXAMPLES$
    cInverse := FT_INVCLR()            // Get Inverse of Current Color
    cInvErr  := FT_INVCLR( cErrColor ) // Get Inverse of cErrorColor
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

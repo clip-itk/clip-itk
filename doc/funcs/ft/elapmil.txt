@@ -20,7 +20,7 @@ $EXAMPLES$
    FT_ELAPMIN( "2040", "1718" ) --> -322
 $SEEALSO$
    FT_ELTIME(), FT_MIL2MIN(), FT_MIN2MIL()
-$Author: clip $
+$Author$
    Alexander B. Spencer
 $end$
 

@@ -31,7 +31,7 @@ $EXAMPLES$
    ? FT_DAYTOBOW( dDate )       // 1
 $SEEALSO$
    FT_DATECNFG(), FT_ACCTWEEK(), FT_WEEK()
-$Author: clip $
+$Author$
    Jo W. French dba Practical Computing
 $end$
 

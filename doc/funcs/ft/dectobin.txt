@@ -16,7 +16,7 @@ $DESCRIPTION$
 $EXAMPLES$
    QOut( FT_DEC2BIN(255) )        // "11111111"
    QOut( FT_DEC2BIN(2) )          // "00000010"
-$Author: clip $
+$Author$
    Greg Lief
 $end$
 

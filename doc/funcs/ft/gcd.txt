@@ -21,7 +21,7 @@ $EXAMPLES$
    ? FT_GCD(108,54)                 // Result: 54
    ? FT_GCD(102,54)                 // Result: 6
    ? FT_GCD(111,17)                 // Result: 1
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

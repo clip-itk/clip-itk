@@ -29,7 +29,7 @@ $EXAMPLES$
    // sensitive
 
    nNoOfOccurrences := FT_NOOCCUR( "the", cMemoString, TRUE )
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

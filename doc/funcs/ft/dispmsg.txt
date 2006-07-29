@@ -86,7 +86,7 @@ $EXAMPLES$
       FT_DISPMSG( { { "Please Do Not Interrupt" }   , ;
 		    { "W+/B", "GR+/B" } }          , ;
 		    , 5, )
-$Author: clip $
+$Author$
    Paul Ferrara, ColumbuSoft
 $end$
 

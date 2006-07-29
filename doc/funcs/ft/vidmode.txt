@@ -24,7 +24,7 @@ $EXAMPLES$
 	RETURN ( NIL )
 $SEEALSO$
    FT_ADAPTER()
-$Author: clip $
+$Author$
    Glenn Scott
 $END$
 
@@ -53,6 +53,6 @@ $EXAMPLES$
 	QOut( "Video mode is: " + str( FT_GETMODE() ) )
 	return ( nil )
 
-$Author: clip $
+$Author$
    Glenn Scott
 $END$

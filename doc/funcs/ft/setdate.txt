@@ -36,7 +36,7 @@ the DOS system date:
 
  RETURN ( nil )
 
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

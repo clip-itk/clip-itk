@@ -36,7 +36,7 @@ $EXAMPLES$
    FT_AEMINLEN(aArray,3,5)   // Measure Elements 5 to end of 3rd dimension
 $SEEALSO$
    FT_AEMAXLEN()
-$Author: clip $
+$Author$
    Ralph Oliver,  TRANSCOM SYSTEMS
 $end$
 

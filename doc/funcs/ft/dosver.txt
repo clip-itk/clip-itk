@@ -28,7 +28,7 @@ $EXAMPLES$
     FUNCTION main()
     RETURN QOut( "Dos version: " + FT_DOSVER() )
 
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

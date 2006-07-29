@@ -45,7 +45,7 @@
      fn_PokeStr()
  $INCLUDE$
 
- $Author: clip $
+ $Author$
     Steve Larsen
  $END$
 
@@ -93,6 +93,6 @@
      fn_PeekStr()
  $INCLUDE$
 
- $Author: clip $
+ $Author$
     Steve Larsen
  $END$

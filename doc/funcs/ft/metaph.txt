@@ -27,7 +27,7 @@ $EXAMPLES$
    ? FOUND(), LastName             // Result: .T. Philmore
    SEEK FT_METAPH( "Fillmore" )
    ? FOUND(), LastName             // Result: .T. Philmore
-$Author: clip $
+$Author$
     Dave Adams
 $end$
 

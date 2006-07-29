@@ -37,7 +37,7 @@ $EXAMPLES$
 
    // Search Elements 5-10
    FT_ANOMATCHES(aNames, { | x | x <= cLastGoodName }, 5, 10)
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

@@ -51,7 +51,7 @@ $EXAMPLES$
      ? FT_ACCTADJ( dDate, .T. )   // 03/30/91 (prior week's end)
 $SEEALSO$
    FT_DATECNFG(), FT_DAYTOBOW()
-$Author: clip $
+$Author$
    Jo W. French dba Practical Computing
 $end$
 

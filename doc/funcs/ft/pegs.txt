@@ -16,7 +16,7 @@ $DESCRIPTION$
    pegs.
 $EXAMPLES$
    FT_PEGS()
-$Author: clip $
+$Author$
    Greg Lief
 $end$
 

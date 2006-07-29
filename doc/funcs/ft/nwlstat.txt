@@ -25,7 +25,7 @@ $DESCRIPTION$
    The behavior is undefined if no shell is loaded.
 $EXAMPLES$
    QOut( "Logical station: " + str( FT_NWLSTAT() ) )
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

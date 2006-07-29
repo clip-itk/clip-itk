@@ -24,6 +24,6 @@ $EXAMPLES$
 	 --> 0.0000543
 $SEEALSO$
   FT_D2E()
-$Author: clip $
+$Author$
   Gary Baren
 $end$

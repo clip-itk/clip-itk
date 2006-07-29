@@ -26,6 +26,6 @@ $EXAMPLES$
 
 $SEEALSO$
 
-$Author: clip $
+$Author$
    Steven Tyrakowski
 $END$

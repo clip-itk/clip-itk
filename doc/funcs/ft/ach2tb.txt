@@ -250,6 +250,6 @@ Aeval( t_arrey,{|e,n| IF( Was_Tagged(chr(17),t_arrey,n ), ;
 			  MoreProcessing(t_arrey),NIL ) } )
 
 
-$Author: clip $
+$Author$
    Steve Kolterman
 $END$

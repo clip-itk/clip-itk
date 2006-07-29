@@ -27,7 +27,7 @@ $DESCRIPTION$
 $EXAMPLES$
    nNumericValue := FT_XTOY(cInputValue, "N")
    IF (FT_XTOY(nInputValue, "L"))
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

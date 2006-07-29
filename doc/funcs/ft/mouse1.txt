@@ -22,7 +22,7 @@ $EXAMPLES$
    ENDIF
 $SEEALSO$
    FT_MRESET()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -54,7 +54,7 @@ $EXAMPLES$
    ENDIF
  $SEEALSO$
     FT_MINIT(), FT_MSHOWCRS()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -80,7 +80,7 @@ $EXAMPLES$
    IF !( FT_MCURSOR() )
       FT_MCURSOR( .T. )
    ENDIF
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -114,7 +114,7 @@ $EXAMPLES$
    ENDIF
  $SEEALSO$
     FT_MHIDECRS(), FT_MCONOFF()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -148,7 +148,7 @@ $EXAMPLES$
    FT_MSHOWCRS()
  $SEEALSO$
    FT_MSHOWCRS(), FT_MCONOFF()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -192,7 +192,7 @@ $EXAMPLES$
    ? "Button Status:", nButton
  $SEEALSO$
    FT_MGETCOORD(), FT_MSETPOS(), FT_MDEFCRS(), FT_MGETX(), FT_MGETY()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -232,7 +232,7 @@ $EXAMPLES$
    ? "Button Status:", nButton
  $SEEALSO$
    FT_MGETPOS(), FT_MSETPOS(), FT_MDEFCRS(), FT_MGETX(), FT_MGETY()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -257,7 +257,7 @@ $EXAMPLES$
    ? FT_MGETX()
  $SEEALSO$
     FT_MGETCOORD(), FT_MDEFCRS(), FT_MGETPOS(), FT_MGETY()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -281,7 +281,7 @@ $EXAMPLES$
    ? FT_MGETY()
  $SEEALSO$
    FT_MGETCOORD(), FT_MDEFCRS(), FT_MGETPOS(), FT_MGETX()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -308,7 +308,7 @@ $EXAMPLES$
 			    // in virtual screen coordinates
  $SEEALSO$
    FT_MGETPOS(), FT_MGETCOORD(), FT_MSETCOORD(), FT_MGETX(), FT_MGETY()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -334,7 +334,7 @@ $EXAMPLES$
 			    // in text screen coordinates
  $SEEALSO$
    FT_MGETPOS(), FT_MGETCOORD(), FT_MSETPOS(), FT_MDEFCRS(), FT_MGETX(), FT_MGETY()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -358,7 +358,7 @@ $EXAMPLES$
    FT_MXLIMIT( 10, 20 )
  $SEEALSO$
     FT_MYLIMIT(), FT_MINREGION()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -382,7 +382,7 @@ $EXAMPLES$
    FT_MYLIMIT( 10, 20 )
  $SEEALSO$
     FT_MXLIMIT(), FT_MINREGION()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -428,7 +428,7 @@ $EXAMPLES$
    ENDIF
  $SEEALSO$
     FT_MBUTREL(), FT_MDBLCLK()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -469,7 +469,7 @@ $end$
     ENDIF
  $SEEALSO$
     FT_MBUTPRS(), FT_MDBLCLK()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -527,7 +527,7 @@ $DESCRIPTION$
    specifies the range of scan lines which are on using <nScrMask> and
    <nCrsMask>. The range of values is dependant upon the type of monitor.
    The first scan line is 0.
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -552,7 +552,7 @@ $EXAMPLES$
    FT_MMICKEYS( @nX, @nY )
    ? nX
    ? nY
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -611,7 +611,7 @@ $EXAMPLES$
   ENDIF
  $SEEALSO$
     FT_MBUTPRS(), FT_MBUTREL()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -639,7 +639,7 @@ $EXAMPLES$
    FT_MCONOFF( 10, 10, 11, 20 )
  $SEEALSO$
     FT_MSHOWCRS(), FT_MHIDECRS(), FT_MXLIMIT(), FT_MYLIMIT(), FT_MINREGION()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -664,7 +664,7 @@ $EXAMPLES$
    ENDIF
  $SEEALSO$
     FT_MXLIMIT(), FT_MYLIMIT(), FT_MINREGION()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -726,7 +726,7 @@ $EXAMPLES$
    FT_MSETSENS( 75,75,50 )     // a little less mouse movement necessary.
  $SEEALSO$
    FT_MGETSENS()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -757,7 +757,7 @@ $EXAMPLES$
    FT_MGETSENS( @nHoriz, @nVert, @nDouble )
  $SEEALSO$
    FT_MSETSENS()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -800,7 +800,7 @@ $EXAMPLES$
    ENDIF
  $SEEALSO$
    FT_MSETSENS()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -824,7 +824,7 @@ $EXAMPLES$
    FT_MSETPAGE( 1 )  // Sets the mouse cursor to page 1
  $SEEALSO$
    FT_MGETPAGE()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 
@@ -849,7 +849,7 @@ $EXAMPLES$
    nPage = FT_MGETPAGE( )  // Gets the mouse cursor display page
  $SEEALSO$
    FT_MSETPAGE()
-$Author: clip $
+$Author$
     Leo Letendre
 $end$
 

@@ -25,7 +25,7 @@ $EXAMPLES$
    if FT_ISBITON( nCPUFlags, 7 )
       Qout( "The sign flag was set." )
    endif
-$Author: clip $
+$Author$
    Ted Means
 $end$
 

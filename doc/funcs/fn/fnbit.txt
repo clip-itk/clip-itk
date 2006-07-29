@@ -30,7 +30,7 @@
 
  $INCLUDE$
 
- $Author: clip $
+ $Author$
  Ted Means
  $END$
 
@@ -65,7 +65,7 @@
 
  $INCLUDE$
 
- $Author: clip $
+ $Author$
  Ted Means
  $END$
 
@@ -100,7 +100,7 @@
 
  $INCLUDE$
 
- $Author: clip $
+ $Author$
  Ted Means
  $END$
 
@@ -135,6 +135,6 @@
 
  $INCLUDE$
 
- $Author: clip $
+ $Author$
  Ted Means
  $END$

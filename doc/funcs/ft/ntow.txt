@@ -40,7 +40,7 @@ $EXAMPLES$
   string := iif( x < 0, "Credit of ", "Debit of " )
 	? string + FT_NTOW( abs(x) ) + " Dollars and " + "99/100"
 	    --> Credit of Twenty Three Dollars and 99/100
-$Author: clip $
+$Author$
    Gary Baren
 $end$
 

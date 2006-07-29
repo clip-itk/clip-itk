@@ -40,7 +40,7 @@ $EXAMPLES$
    ENDIF
 
 
-$Author: clip $
+$Author$
    Brian Loesgen
 $end$
 

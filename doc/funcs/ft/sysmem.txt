@@ -20,7 +20,7 @@ $DESCRIPTION$
 
 $EXAMPLES$
    QOut( "Conventional memory installed: " + Str( FT_SYSMEM() ) + "K" )
-$Author: clip $
+$Author$
    Glenn Scott
 $end$
 

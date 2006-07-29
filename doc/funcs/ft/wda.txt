@@ -37,6 +37,6 @@ $EXAMPLES$
 
 $SEEALSO$
     FT_WORKDAYS()
-$Author: clip $
+$Author$
    Eric Splaver
 $END$

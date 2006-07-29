@@ -29,7 +29,7 @@ $EXAMPLES$
    nNextPosition := FT_FINDITH("the", cMemoString, 10)
 $SEEALSO$
    FT_AT2()
-$Author: clip $
+$Author$
    David Husnian
 $end$
 

@@ -16,7 +16,7 @@ $EXAMPLES$
    FT_MIL2MIN( "1729" ) --> 1049
 $SEEALSO$
    FT_MIN2MIL(), FT_CIV2MIL(), FT_MIL2CIV(), FT_SYS2MIL()
-$Author: clip $
+$Author$
    Alexander B. Spencer
 $end$
 
@@ -38,7 +38,7 @@ $EXAMPLES$
    FT_MIN2MIL( 279 ) --> 0439
 $SEEALSO$
    FT_MIL2MIN(), FT_MIL2CIV(), FT_CIV2MIL(), FT_SYS2MIL()
-$Author: clip $
+$Author$
    Alexander B. Spencer
 $end$
 
@@ -69,7 +69,7 @@ $EXAMPLES$
    Caution:  leading blanks are irrelevant.
 $SEEALSO$
    FT_CIV2MIL(), FT_SYS2MIL(), FT_MIL2MIN(), FT_MIN2MIL()
-$Author: clip $
+$Author$
    Alexander B. Spencer
 $end$
 
@@ -101,7 +101,7 @@ $EXAMPLES$
 	     one and only one space.
 $SEEALSO$
    FT_MIL2CIV(), FT_SYS2MIL(), FT_MIL2MIN(), FT_MIN2MIL()
-$Author: clip $
+$Author$
    Alexander B. Spencer
 $end$
 
@@ -123,7 +123,7 @@ $EXAMPLES$
    FT_SYS2MIL() --> 1623
 $SEEALSO$
    FT_MIL2CIV(), FT_CIV2MIL()
-$Author: clip $
+$Author$
    Alexander B. Spencer
 $end$
 
