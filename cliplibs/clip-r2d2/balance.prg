@@ -8,7 +8,7 @@ local oDict,oDep, classDesc
 local connect_id:="", connect_data
 local i,j,k,x,tmp,col,obj,bal_data,aBal_data:={}
 local acc_chartt_class,acc_chartt_list,balance:="",account:=""
-local columns,sprname,atree,nnnn,urn,level,itogo:="false"
+local columns,sprname,atree,nnnn,urn,level,itogo:=.f.
 local xslt:=""
 local host:=""
 local periodic, mPeriod, nPer
@@ -57,6 +57,9 @@ errorblock({|err|error2html(err)})
 	endif
 	if "ITOGO" $ _query
 		itogo := _query:itogo
+		if lower(left(itogo,1)) $ "yt"
+			itogo := .t.
+		endif
 	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
@@ -72,7 +75,7 @@ errorblock({|err|error2html(err)})
 	if "ACC01" $ _query .and. !empty(_query:acc01)
 	    set("ACC01",_query:acc01)
 	endif
-        if "ACC00" $ _query .and. !empty(_query:acc00)
+	if "ACC00" $ _query .and. !empty(_query:acc00)
 	    set("ACC00",_query:acc00)
 	endif
 
@@ -211,11 +214,11 @@ errorblock({|err|error2html(err)})
 
 			if isRDF
 				cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"",,)
-            else
+	    else
 				cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+urn,columns,"",level)
 				?
 				cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+urn,columns,"",level)
-            endif
+	    endif
 		next
 	next
 	? '</RDF:RDF>'
@@ -254,11 +257,11 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 			if empty(account)
 				loop
 			endif
-            if account:code == cAccount
-            	idOwner := account:id
-                exit
-            endif
-    	next
+	    if account:code == cAccount
+		idOwner := account:id
+		exit
+	    endif
+	next
     endif
 	for i=1 to len(acc_chart_list)
 		account := m->oDep02:getValue(acc_chart_list[i])
@@ -296,19 +299,19 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 	if !empty(aTree) //empty(cAccount)
 		adata1:=reSummTree(aTree,0)
 		data:=map()
-        if empty(cAccount)
+	if empty(cAccount)
 			data:account	:= cType
 			data:smallname	:= cgi_essence(cType)
 			data:id 	:= "TOTAL_LINE_"+ntoc(m->start_id,32,4,"0")
-        else
-        	if empty(idOwner)
+	else
+		if empty(idOwner)
 				data:account	:= cAccount
-            else
+	    else
 				data:account	:= idOwner
-            endif
+	    endif
 			data:smallname	:= cgi_essence(idOwner)
 			data:id 	:= "TOTAL_"+cAccount
-        endif
+	endif
 		data:code	    := [Total]
 		data:owner_id	:= ""
 		data:bd_summa	:= aData1[1]
@@ -319,10 +322,10 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 		data:ek_summa	:= aData1[6]
 		m->start_id++
 		outlog(__FILE__,__LINE__, itogo)
-		if itogo=="true"
+		if itogo // =="true"
 		    aadd(aTree,{[Total]+cType,"",[Total],data,{}})
-		endif    
-    	endif
+		endif
+	endif
 return aTree
 /************************************************/
 static function reSummTree(aTree,level)
