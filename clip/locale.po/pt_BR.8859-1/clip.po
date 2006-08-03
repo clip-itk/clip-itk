@@ -1,14 +1,15 @@
-# translation of clip.po to Português Brasileiro
+# tradução de clip.po para Português Brasileiro
 # translation of clip.po to
 # Module clip.
 #
+# TEAM : Clip-BR <http://clip-br.web.br.com>, 2006.
 # FIRST AUTHOR Edson Leonel de Oliveira <elo.msn@hotmail.com>, 2006.
 # ELO <elo.msn@hotmail.com>, 2006.
 msgid ""
 msgstr ""
 "Project-Id-Version: clip\n"
 "POT-Creation-Date: 2005-12-19 14:36+0400\n"
-"PO-Revision-Date: 2006-07-14 22:14-0300\n"
+"PO-Revision-Date: 2006-07-20 22:14-0300\n"
 "Last-Translator: ELO <elo.msn@hotmail.com>\n"
 "Language-Team: Português Brasileiro <pt@li.org>\n"
 "MIME-Version: 1.0\n"
