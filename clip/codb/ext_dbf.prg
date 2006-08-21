@@ -322,6 +322,7 @@ static function _ext_update(self,oData, xData, lUnique)
 		return .f.
 	endif
 	ver := rddGetValue(self:hDbData,"version")
+	rec:version := ver
 	if ver >= 0 .and. lUnique
 		ver := min(ver+1,CODB_MAX_OBJ_VERSION)
 		rec:version := ver
