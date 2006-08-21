@@ -11,7 +11,8 @@ AB_OBJS  = ab_obj.o ab_menu.o ab_brow.o ab_init.o ab_funcs.o \
 .SUFFIXES: .prg .o .po
 
 PROGS = codb_pack codb_addobj codb_ab \
-	codb_make codb_load codb_export codb_reindex codb_rcheck #test
+	codb_make codb_load codb_export codb_reindex \
+	codb_arename codb_rcheck #test
 
 all: $(PROGS)
 
@@ -46,6 +47,7 @@ install: all
 	cp codb_rcheck$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_addobj$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 	cp codb_export$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
+	cp codb_arename$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin/
 
 test: test.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M test.prg $(CLIPLIBS) $(LIBS)
@@ -76,6 +78,9 @@ codb_check: codb_check.prg
 
 codb_addobj: codb_addobj.prg
 	$(CLIP) $(CLIPFLAGS) -s -e -M codb_addobj.prg $(CLIPLIBS) $(LIBS)
+
+codb_arename: codb_arename.prg
+	$(CLIP) $(CLIPFLAGS) -s -e -M codb_arename.prg $(CLIPLIBS) $(LIBS)
 
 codb_ab: $(AB_OBJS) codb_ab.prg
 	cd plugins; $(CLIP) -pw *.prg

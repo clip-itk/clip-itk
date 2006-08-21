@@ -837,6 +837,9 @@ static function __metaGetValue(cID)
 	local oDict, oDep, dict_id:=left(cID,codb_info('DICT_ID_LEN'))
 
 	oDep := codb_needDepository(cID)
+	if empty(oDep)
+		return cId
+	endif
 	oDict := oDep:dictionary()
 
 	//oDict := codb_dict_reference(dict_id)
