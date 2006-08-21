@@ -1497,6 +1497,7 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 				elseif valtype(sTmp) == "L"
 					sTmp3:= iif(sTmp,"'true'","'false'")
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ iif(sTmp,"true","false")  + ""
+										
 				elseif valtype(sTmp) == "N"
 					if col:datadec > 0
 					    sTmp3 := "'"+bal_summa(stmp)+"'"
@@ -1504,18 +1505,16 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 					    sTmp3 := "'"+alltrim(str(stmp))+"'"					    
 					endif        
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ alltrim(str(stmp))  + ""					
-//outlog(stmp,stmp3,col:name)					
 				elseif valtype(sTmp) == "D"
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ iif(empty(sTmp),"'00000000'","'"+dtos(sTmp)+"'") + ""
 					sTmp3 := iif(empty(sTmp),'',"'"+dtoc(sTmp)+"'")
 				endif
-
+	
 				if !empty(stmp3) .and. len(stmp3) > 2
     				    ?? s+" "+col:name+":"+sTmp3+iif( j==len(columns), "",",")
 				else
 		    		    ?? s+" "+col:name+":'"+iif(col:name=='essence',essenc,'')+" '"+iif( j==len(columns), "",",")
 		    		endif
-
 			next
 		recover using rerr
 			cgi_error2xml(rerr)
