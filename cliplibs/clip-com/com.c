@@ -6,8 +6,11 @@
 
 /*
   $Log$
-  Revision 1.1  2006/06/22 20:12:02  itk
-  uri: init sf.net
+  Revision 1.2  2006/10/17 08:01:34  itk
+  uri: small fixes
+
+  Revision 1.6  2006/10/02 09:07:26  clip
+  uri: small fix
 
   Revision 1.5  2005/08/09 08:49:09  clip
   alena: fix for gcc 4
@@ -37,6 +40,7 @@
 #include "error.ch"
 
 #include "libezV24/ezV24.h"
+#define _C_ITEM_TYPE_COMPORT	1600
 
 static void
 destroy_com_port(void *port)
@@ -108,7 +112,7 @@ clip_COM_OPEN(ClipMachine * mp)
 		return 0;
 	}
 
-	k = _clip_store_c_item(mp, gz, _C_ITEM_TYPE_FILE, destroy_com_port);
+	k = _clip_store_c_item(mp, gz, _C_ITEM_TYPE_COMPORT, destroy_com_port);
 
 	keys[no] = k;
 
@@ -128,11 +132,11 @@ clip_COM_CLOSE(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 
 	if (gz == NULL)
 		return EG_ARG;
-	else if (_clip_destroy_c_item(mp, fd, _C_ITEM_TYPE_FILE))
+	else if (_clip_destroy_c_item(mp, fd, _C_ITEM_TYPE_COMPORT))
 	{
 		ret = 0;
 		*err = 0;
@@ -244,7 +248,7 @@ clip_COM_INIT(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 
 	if (!gz)
 		return EG_ARG;
@@ -283,7 +287,7 @@ clip_COM_TIMEOUT(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 
 	if (gz == NULL)
 	{
@@ -319,7 +323,7 @@ clip_COM_SEND(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 
 	if (_clip_parinfo(mp,2)== NUMERIC_t)
 	{
@@ -360,7 +364,7 @@ clip_COM_READ(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 
 	if (gz == NULL)
 		return EG_ARG;
@@ -403,7 +407,7 @@ clip_COM_FLUSH(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 	if (!gz)
 		return (EG_ARG);
 
@@ -425,7 +429,7 @@ clip_COM_SFLUSH(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 	if (!gz)
 		return (EG_ARG);
 
@@ -450,7 +454,7 @@ clip_COM_SOFT(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 	if (!gz)
 		return (EG_ARG);
 
@@ -487,7 +491,7 @@ clip_COM_HARD(ClipMachine * mp)
 		return EG_ARG;
 	fd = keys[fd];
 
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 	if (!gz)
 		return (EG_ARG);
 
@@ -523,7 +527,7 @@ clip_COM_DTR(ClipMachine * mp)
 	if (fd < 1 || fd > 32)
 		return EG_ARG;
 	fd = keys[fd];
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 	if (!gz)
 		return (EG_ARG);
 
@@ -549,7 +553,7 @@ clip_COM_RTS(ClipMachine * mp)
 	if (fd < 1 || fd > 32)
 		return EG_ARG;
 	fd = keys[fd];
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 	if (!gz)
 		return (EG_ARG);
 
@@ -578,7 +582,7 @@ clip_COM_COUNT(ClipMachine * mp)
 	if (fd < 1 || fd > 32)
 		return EG_ARG;
 	fd = keys[fd];
-	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_FILE);
+	gz = (v24_port_t *) _clip_fetch_c_item(mp, fd, _C_ITEM_TYPE_COMPORT);
 	if (!gz)
 		return (EG_ARG);
 

@@ -4,7 +4,8 @@
 //#define PUT_RDF_TREE
 
 static asdicts:={"GBL01","GBL02","ACC00","ACC01","ETC01"}
-static asDeps:= {NIL,NIL,NIL,NIL,NIL}
+static asDeps:= {}
+static msDeps:= map()
 /************************************************/
 function d2ArrToMap(arr)
 	local ret := map()
@@ -267,7 +268,7 @@ function cgi_connect_data(connect_id)
 return	ret
 /************************************************/
 function cgi_essence(oId)
-	local ret,idLen1,idLen2
+	local ret,idLen1,idLen2,idDep,oDep
 	ret := codb_essence(oId)
 	if empty(ret) .or. ret==oId
 	else
@@ -277,15 +278,28 @@ function cgi_essence(oId)
 	idLen1:=codb_info("DICT_ID_LEN")
 	idLen2:=codb_info("DEPOSIT_ID_LEN")
 	if substr(oId,idLen1+1,idLen2) == "00"  // metadata
-		aadd(asDeps,codb_needDepository(left(oId,idLen1)) )
+		idDep := left(oId,idLen1)
 	else
-		aadd(asDeps,codb_needDepository(left(oId,idLen1+idLen2)) )
+		idDep := left(oId,idLen1+idLen2)
 	endif
+	if idDep $ msDeps
+		return ret
+	else
+		oDep := codb_needDepository(idDep)
+		//outlog(__FILE__,__LINE__,oDep)
+		if empty(oDep) .or. !empty(oDep:error)
+		else
+			aadd(asDeps, oDep )
+		endif
+		msDeps[idDep] := idDep
+	//outlog(__FILE__,__LINE__,idDep,msDeps)
+	endif
+	//outlog(__FILE__,__LINE__,len(asDeps),len(msDeps))
 return codb_essence(oId)
 
 /************************************************/
 function cgi_getValue(oId)
-	local ret,idLen1,idLen2
+	local ret,idLen1,idLen2,idDep,oDep
 	ret := codb_getValue(oId)
 	if valtype(ret)=="O"
 		return ret
@@ -294,9 +308,19 @@ function cgi_getValue(oId)
 	idLen1:=codb_info("DICT_ID_LEN")
 	idLen2:=codb_info("DEPOSIT_ID_LEN")
 	if substr(oId,idLen1+1,idLen2) == "00"  // metadata
-		aadd(asDeps,codb_needDepository(left(oId,idLen1)) )
+		idDep := left(oId,idLen1)
 	else
-		aadd(asDeps,codb_needDepository(left(oId,idLen1+idLen2)) )
+		idDep := left(oId,idLen1+idLen2)
+	endif
+	if idDep $ msDeps
+		return ret
+	else
+		oDep := codb_needDepository(idDep)
+		if empty(oDep) .or. !empty(oDep:error)
+		else
+			aadd(asDeps, oDep )
+		endif
+		msDeps[idDep] := idDep
 	endif
 return codb_getValue(oId)
 /************************************************/
@@ -327,10 +351,13 @@ function cgi_openDepositories(sDict,sDep)
 		if !empty(a2)
 			loop
 		endif
-		asDeps[i]:=coDepository():new(a1)
-		if "OPEN" $ asDeps[i]
-			asDeps[i]:open()
+		oDep := coDepository():new(a1)
+		aadd(asDeps,oDep)
+		msDeps[a1] := a1
+		if "OPEN" $ oDep
+			oDep:open()
 		endif
+		oDep := NIL
 	next
 return
 
@@ -1449,10 +1476,10 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 					endif
 
 					if empty(sTmp2)
-                                                sTmp3 := cgi_getValue(stmp)
-    		                                    if !empty(stmp3)
-	    	                        	        sTmp2 := sTmp3:id
-					            endif
+						sTmp3 := cgi_getValue(stmp)
+						    if !empty(stmp3)
+							sTmp2 := sTmp3:id
+						    endif
 						sTmp3 := ""
 					endif
 
@@ -1497,24 +1524,24 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 				elseif valtype(sTmp) == "L"
 					sTmp3:= iif(sTmp,"'true'","'false'")
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ iif(sTmp,"true","false")  + ""
-										
+
 				elseif valtype(sTmp) == "N"
 					if col:datadec > 0
 					    sTmp3 := "'"+bal_summa(stmp)+"'"
 					else
-					    sTmp3 := "'"+alltrim(str(stmp))+"'"					    
-					endif        
-					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ alltrim(str(stmp))  + ""					
+					    sTmp3 := "'"+alltrim(str(stmp))+"'"
+					endif
+					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ alltrim(str(stmp))  + ""
 				elseif valtype(sTmp) == "D"
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ iif(empty(sTmp),"'00000000'","'"+dtos(sTmp)+"'") + ""
 					sTmp3 := iif(empty(sTmp),'',"'"+dtoc(sTmp)+"'")
 				endif
-	
+
 				if !empty(stmp3) .and. len(stmp3) > 2
-    				    ?? s+" "+col:name+":"+sTmp3+iif( j==len(columns), "",",")
+				    ?? s+" "+col:name+":"+sTmp3+iif( j==len(columns), "",",")
 				else
-		    		    ?? s+" "+col:name+":'"+iif(col:name=='essence',essenc,'')+" '"+iif( j==len(columns), "",",")
-		    		endif
+				    ?? s+" "+col:name+":'"+iif(col:name=='essence',essenc,'')+" '"+iif( j==len(columns), "",",")
+				endif
 			next
 		recover using rerr
 			cgi_error2xml(rerr)
@@ -1568,7 +1595,11 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 	local obj,obj2,i,j,k,tmp,sTmp,sTmp2,sTmp3,stmp4,essenc:=""
 	local sid,dName := urn // "docum"
 	local ret := .f., ltree:= .f.
-	local sdata,rerr,errblock:=errorBlock({|err|cgi_error2xml(err)})
+	local sdata,rerr,errBlock
+
+	if level==0
+		errblock:=errorBlock({|err|cgi_error2xml(err)})
+	endif
 
 	if empty(ext_urn)
 		ext_urn := ""
@@ -1597,15 +1628,16 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 		if "ID" $ tmp .and. !empty(tmp:id)
 			sid := tmp:id
 
-		essenc:=cgi_essence(tmp:id)
-		essenc := strtran(essenc,'&',"&amp;")
-		essenc := strtran(essenc,'"','&quot;')
-		essenc := strtran(essenc,"'","&apos;")
-		essenc := strtran(essenc,'<',"&lt;")
-		essenc := strtran(essenc,'>',"&gt;")
+			essenc:=cgi_essence(tmp:id)
+			essenc := strtran(essenc,'&',"&amp;")
+			essenc := strtran(essenc,'"','&quot;')
+			essenc := strtran(essenc,"'","&apos;")
+			essenc := strtran(essenc,'<',"&lt;")
+			essenc := strtran(essenc,'>',"&gt;")
 		else
 			sid := "XXXXXXXXXXXX"
 		endif
+		//outlog(__FILE__,__LINE__,i,tmp:id)
 		sid+=ext_urn
 #ifdef PUT_RDF_TREE
 		if lTree
@@ -1741,9 +1773,9 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 		endif
 #endif
 	next
-	errorBlock(errBlock)
 #ifdef PUT_RDF_TREE
 	if level==0
+		errorBlock(errBlock)
 		? s+'</RDF:Seq>'
 		if lTree
 			? s+'</RDF:li>'

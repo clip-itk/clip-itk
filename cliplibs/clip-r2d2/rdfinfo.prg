@@ -192,6 +192,7 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
 	if empty(urn)
 		urn := 'urn:'+sprname
 	endif
+	outlog(__FILE__,__LINE__,len(aTree))
 	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"",,atom)
 	?
 	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"",,atom)

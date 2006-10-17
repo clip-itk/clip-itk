@@ -193,17 +193,17 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					    kk:=bal_summa(val(k))
 					    essvalue:="'"+bal_summa(essvalue)+"'"
 					else
-					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))					
+					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
 					    essvalue:=strtran(essvalue,"'","\'")
 					    essvalue:=strtran(essvalue,'"','\"')
 					    essvalue:=iif(len(essvalue)==0,' ',essvalue)
 					    essvalue:=strtran(essvalue,"&","&amp;")
 					    essvalue:="'"+essvalue+"'"
-					    
+
 					    kk:=alltrim(toString(k))
 					    kk:=strtran(kk,"'","\'")
-					    kk:=strtran(kk,'"','\"')					    
-					    kk:=strtran(kk,"&","&amp;")					    
+					    kk:=strtran(kk,'"','\"')
+					    kk:=strtran(kk,"&","&amp;")
 					    if len(kk)==12 .and. (substr(kk,1,3)=='GBL' .or. substr(kk,1,3)=='ACC')
 						essvalue:="'"+kk+"'"
 						kk:=codb_essence(kk)
@@ -212,10 +212,10 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					endif
 					aObj:esse  += class:tcol_list[j]+":"+essvalue+', '
 					aObj:attr  += class:tcol_list[j]+":'"+kk+"',  "
-					
-                                        k:=alltrim(toString(k))
-                                        k:=strtran(k,"&","&amp;")
-	                                aObj:tCols += ' '+class:tcol_list[j]+'="'+k+'" '
+
+					k:=alltrim(toString(k))
+					k:=strtran(k,"&","&amp;")
+					aObj:tCols += ' '+class:tcol_list[j]+'="'+k+'" '
 				endif
 				if !empty(k) .and. union==class:tcol_list[j]
 					aObj:union := k
@@ -334,6 +334,28 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 	endif
 return data
 
+*********************************
+function r2d2_calc_anb_list(oDep,an_info,account,beg_date,end_date,an_level)
+	local anb_list := map(),s,s2,s1,tmp,i,obj
+
+	s := 'account=="'+account+'"'
+	s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
+	s1:= '.and. an_level=='+alltrim(str(an_level,2,0))+' '
+	tmp:=oDep:select(an_info:id,,,s+s1+s2)
+	for i=1 to len(tmp)
+		obj:=oDep:getValue(tmp[i])
+		if empty(obj)
+			outlog("Error: can`t load object:",tmp[i])
+			loop
+		endif
+		if "AN_VALUE" $ obj
+		else
+			outlog("Error: strange object:",tmp[i],obj)
+			loop
+		endif
+		anb_list[obj:an_value] := obj:an_value
+	next
+return anb_list
 **********************************
 function r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
 	local ret :={},ret2:={},lExit := .f.,m1:={}
