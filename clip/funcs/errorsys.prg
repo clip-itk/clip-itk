@@ -198,4 +198,10 @@ function error2Log(err)
 	? s
 	outlog(s)
 return
-
+/*****************************************/
+function procStackDepth()
+	local i := 1
+	while ( !Empty(ProcName(i)) )
+		i++
+	end
+return i

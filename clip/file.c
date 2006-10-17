@@ -5,8 +5,11 @@
  */
 /*
    $Log$
-   Revision 1.1  2006/06/22 19:01:34  itk
-   uri: initial
+   Revision 1.2  2006/10/17 08:01:32  itk
+   uri: small fixes
+
+   Revision 1.99  2006/08/23 11:55:40  clip
+   uri: small fix
 
    Revision 1.98  2006/01/03 13:33:54  clip
    uri: small fix about _clip_MODULE := modulename
@@ -2298,7 +2301,7 @@ print_tree(FILE *out, Coll *tree, int beg, int end)
 
 	med = (beg+end)/2;
 
-	fprintf(out, "#%d/%d/%d\n", beg, med, end);
+	fprintf(out, "#1234/%d/%d/%d\n", beg, med, end);
 
 	if (beg == end)
 	{
