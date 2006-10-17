@@ -1,0 +1,290 @@
+<!-- 
+	DTD for CLIP component format 
+	Version: 1.0rc
+	Date: 06 Apr 2006
+	Author: Andrey Cherepanov <sibskull@mail.ru>
+	Last version: http://eas.lrn.ru/dtd/component.dtd
+
+	For check component XML type:
+	xmllint -noout -dtdvalid component.dtd <component.xml>
+	(replace '-' by double '-')
+-->
+
+<!-- Root tag -->
+<!ELEMENT component (     
+			name, 
+  			category*, 
+			version, 
+			description?,
+			license?,
+			created?,
+			modified?,
+			author*,
+			property*,
+			requires?,
+			files?,
+			dictionary?,
+			meta*,
+			data*,
+			install?,
+			uninstall?,
+			locale* )*
+  		    >
+
+<!-- Component name. Required. -->
+<!ELEMENT name (#PCDATA)>
+
+<!-- Component category (path delimited by '/': Base/Directories/Finance). Optional. -->
+<!ELEMENT category (#PCDATA)>
+
+<!-- Component brief description. Optional. -->
+<!ELEMENT description (#PCDATA)>
+
+<!-- Component version. Required. -->
+<!ELEMENT version (#PCDATA)>
+
+<!-- Component license. Optional. -->
+<!ELEMENT license (#PCDATA)>
+
+<!-- Component creation date (yyyy-mm-dd). Optional. -->
+<!ELEMENT created (#PCDATA)>
+
+<!-- Component modification date (yyyy-mm-dd). Optional. -->
+<!ELEMENT modified (#PCDATA)>
+
+<!-- Component author. Optional. -->
+<!ELEMENT author (#PCDATA|name|email|copyright)*>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT copyright (#PCDATA)>
+
+<!-- Custom property. Optional. -->
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property
+	name CDATA #REQUIRED
+>
+
+<!-- Component requirements. Optional. -->
+<!ELEMENT requires (dependence*)>
+<!ELEMENT dependence (#PCDATA)>
+<!ATTLIST dependence
+	type	CDATA #REQUIRED
+	version CDATA #IMPLIED
+>
+<!ELEMENT function (#PCDATA)>
+
+<!-- Component files. Optional. -->
+<!ELEMENT files (file*)>
+<!ELEMENT file (#PCDATA)>
+<!ATTLIST file
+	name 		CDATA #REQUIRED
+	form 		CDATA #IMPLIED
+	type 		CDATA #IMPLIED
+>
+
+<!-- Dictionary -->
+<!ELEMENT dictionary ( id, name, type?, path, dbUser? )>
+<!ELEMENT id 		(#PCDATA)>
+<!ELEMENT type 		(#PCDATA)>
+<!ELEMENT path 		(#PCDATA)>
+<!ELEMENT dbUser 	(#PCDATA)>
+
+
+<!-- Database structure and data. Optional. -->
+<!ELEMENT meta (	depository|
+			extent|
+			attribute|
+			index|
+			class|
+			counter|
+			tcolumn|
+			tview|
+			report|
+			plugin|
+			user|
+			group)*>
+<!ATTLIST meta
+	dictionary CDATA #REQUIRED
+>
+
+<!-- Depository -->
+<!ELEMENT depository (#PCDATA)>
+<!ATTLIST depository
+	id   	 ID    #IMPLIED
+	name 	 CDATA #REQUIRED
+	number 	 CDATA #IMPLIED
+	memoSize CDATA #IMPLIED
+>
+
+<!-- Extent -->
+<!ELEMENT extent (#PCDATA)>
+<!ATTLIST extent
+	id   ID	   #IMPLIED
+	name CDATA #REQUIRED
+>
+
+<!-- Attribute -->
+<!ELEMENT attribute (#PCDATA)>
+<!ATTLIST attribute
+	id   	 ID    #IMPLIED
+	name 	 CDATA #REQUIRED
+	type 	 (string|number|date|logical|text|object|any|ref|classref|array|code) #REQUIRED
+	len  	 CDATA #IMPLIED
+	dec  	 CDATA #IMPLIED
+	lenType  (ignore|rtrim|alltrim|fill) #IMPLIED
+	refTo 	 CDATA #IMPLIED
+	defValue CDATA #IMPLIED
+	counter  CDATA #IMPLIED
+	notNull  (yes|no|true|false) #IMPLIED
+	notEmpty (yes|no|true|false) #IMPLIED
+	mask     CDATA #IMPLIED
+	source   CDATA #IMPLIED
+	code     CDATA #IMPLIED
+	count  	 CDATA #IMPLIED
+>
+
+<!-- Index -->
+<!ELEMENT index (#PCDATA)>
+<!ATTLIST index
+	id   	   ID    #IMPLIED
+	name 	   CDATA #REQUIRED
+	expression CDATA #REQUIRED
+>
+
+<!-- Class -->
+<!ELEMENT class (#PCDATA|object)*>
+<!ATTLIST class
+	id   	   ID    #IMPLIED
+	name 	   CDATA #REQUIRED
+	superClass CDATA #IMPLIED
+	extent	   CDATA #IMPLIED
+	essence    CDATA #IMPLIED
+	expression CDATA #IMPLIED
+	uniqueKey  CDATA #IMPLIED
+	logNeed	    (yes|no|true|false) #IMPLIED
+	hasCounters (yes|no|true|false) #IMPLIED
+	attributes CDATA #IMPLIED
+	indices	   CDATA #IMPLIED
+>
+
+<!-- Counter -->
+<!ELEMENT counter (#PCDATA)>
+<!ATTLIST counter
+	id         ID    #IMPLIED
+	name       CDATA #REQUIRED
+	value      CDATA #REQUIRED
+	type  	   CDATA #IMPLIED
+	depository CDATA #IMPLIED
+	maxValue   CDATA #IMPLIED
+	lastValue  CDATA #IMPLIED
+>
+
+<!-- TColumn -->
+<!ELEMENT tcolumn (#PCDATA)>
+<!ATTLIST tcolumn
+	id   	ID    #IMPLIED
+	name 	CDATA #REQUIRED
+	header 	CDATA #IMPLIED
+	footer 	CDATA #IMPLIED
+	width  	CDATA #IMPLIED
+	expression CDATA #IMPLIED
+	depend 	CDATA #IMPLIED
+	ref  	CDATA #IMPLIED
+>
+
+<!-- TView -->
+<!ELEMENT tview (#PCDATA)>
+<!ATTLIST tview
+	id   	ID    #IMPLIED
+	name 	CDATA #REQUIRED
+	class  	CDATA #IMPLIED
+	extent 	CDATA #IMPLIED
+	group  	CDATA #IMPLIED
+	user   	CDATA #IMPLIED
+	header 	CDATA #IMPLIED
+	footer 	CDATA #IMPLIED
+	columns	CDATA #IMPLIED
+>
+
+<!-- Report-->
+<!ELEMENT report (#PCDATA)>
+<!ATTLIST report
+	id   	ID    #IMPLIED
+	name 	CDATA #REQUIRED
+	type  	CDATA #IMPLIED
+	file    CDATA #IMPLIED
+	class  	CDATA #IMPLIED
+	extent 	CDATA #IMPLIED
+	group  	CDATA #IMPLIED
+	user   	CDATA #IMPLIED
+>
+
+<!-- Plugin -->
+<!ELEMENT plugin (#PCDATA)>
+<!ATTLIST plugin
+	id   	ID    #IMPLIED
+	name 	CDATA #REQUIRED
+	class  	CDATA #IMPLIED
+	type  	CDATA #IMPLIED
+	file  	CDATA #IMPLIED
+	function CDATA #IMPLIED
+>
+
+<!-- User -->
+<!ELEMENT user (#PCDATA)>
+<!ATTLIST user
+	id       ID    #IMPLIED
+	name     CDATA #REQUIRED
+	group    CDATA #IMPLIED
+	access   CDATA #IMPLIED
+>
+
+<!-- Group -->
+<!ELEMENT group (#PCDATA)>
+<!ATTLIST group
+	id   ID	   #IMPLIED
+	name CDATA #REQUIRED
+>
+
+<!-- Default data -->
+<!ELEMENT data ( objects* )>
+
+<!ELEMENT objects (object+)>			
+<!ATTLIST objects
+	class 		CDATA #REQUIRED
+	depository	CDATA #REQUIRED
+>
+
+<!-- Object contents -->
+<!ELEMENT object (attr+)>			
+<!ATTLIST object
+	id 	 ID #IMPLIED
+>
+
+<!ELEMENT attr (#PCDATA|value)*>
+<!ATTLIST attr
+	name  CDATA #REQUIRED
+	refTo CDATA #IMPLIED
+>
+<!ELEMENT value (#PCDATA|value)*>
+<!ATTLIST value
+	type  (string|number|date|logical|text|object|any|ref|classref|array|code) #REQUIRED
+	refTo CDATA #IMPLIED
+	meta  CDATA #IMPLIED
+>
+
+      
+<!-- Install actions. Optional. -->
+<!ELEMENT install (#PCDATA)>
+
+<!-- Uninstall actions. Optional. -->
+<!ELEMENT uninstall (#PCDATA)>
+
+<!-- Component l10n. Optional. -->
+<!ELEMENT locale (name?, description?, message*)>
+<!ATTLIST locale
+	lang CDATA #REQUIRED
+>
+<!ELEMENT message (#PCDATA)>
+<!ATTLIST message
+	id CDATA #REQUIRED
+>

@@ -50,6 +50,10 @@ if [ -d udbx ]
 then
 	cd udbx; $MAKE clean; cd ..
 fi
+if [ -d ocmng ]
+then
+	cd ocmng; $MAKE clean; cd ..
+fi
 if [ -d dbc ]
 then
    cd dbc

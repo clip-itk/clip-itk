@@ -107,6 +107,12 @@ then
 	#$MAKE install
 	cd ..
 fi
+if [ -d ocmng ]
+then
+	cd ocmng
+	$MAKE install
+	cd ..
+fi
 
 #
 if [ "$CLIPROOT" != "$WRKDIR" ]

@@ -110,4 +110,10 @@ then
 	#$MAKE
 	cd ..
 fi
+if [ -d ocmng ]
+then
+	cd ocmng
+	$MAKE
+	cd ..
+fi
 
