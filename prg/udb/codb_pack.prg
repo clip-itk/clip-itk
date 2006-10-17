@@ -18,7 +18,7 @@ local oDict,oDep
 local i,j,k,l,tmp,id, paths:={}
 local all:={},all1:={},all2:={},dir
 local name,obj,fname
-local hdb,dbfile,str
+local hdb,dbfile,str,isDep:=.f.
 
 
 	set exclusive on
@@ -60,18 +60,68 @@ local hdb,dbfile,str
 
 	/* check especial versions 06 -> 0.7 */
 	check_60to70_version(all1,all2)
-        //return
+	//return
 
 	/* check tables structures */
 	check_table_stru(all)
 
 	/* pack and memopack */
 	for i=1 to len(all)
+		isDep:=.f.
 		dir := directory(all[i]+PATH_DELIM+"*.dbf")
 		for j=1 to len(dir)
+			if dir[j][1] == "dataidx.dbf"
+			else
+				loop
+			endif
+			isDep := .t.
+			adel(dir,j)
+			asize(dir,len(dir)-1)
+			exit
+		next
+		if isDep
+			fname := all[i]+PATH_DELIM+"dataidx"
+			? fname,""
+			use (fname) index (fname)
+			?? "pack",""
+			pack
+			?? "memopack",""
+			memopack
+			?? "reindex",""
+			reindex
+			use
+			fname := strtran(fname,".dbf","")
+			chmod(fname+".dbf","666")
+			chmod(fname+".fpt","666")
+			?? "","OK",""
+			*****
+			select 0
+			fname := all[i]+PATH_DELIM+"dataidx"
+			use (fname) alias dataidx index (fname)
+			set order to "object_id"
+		endif
+		for j=1 to len(dir)
+			select 0
 			fname := all[i]+PATH_DELIM+dir[j][1]
 			? fname,""
-			use (fname)
+			use (fname) alias extent
+			if isDep  .and. !(dir[j][1] == "counters.dbf")
+				?? "checking ID`s",""
+				goto top
+				do while !eof()
+					select dataidx
+					seek extent->object_id
+					if dataidx->object_id==extent->object_id
+					else
+						select extent
+						delete
+						?? "delete",extent->object_id,""
+					endif
+					select extent
+					skip
+				enddo
+				select extent
+			endif
 			?? "pack",""
 			pack
 			?? "memopack",""
@@ -82,6 +132,10 @@ local hdb,dbfile,str
 			chmod(fname+".fpt","666")
 			?? "","OK",""
 		next
+		if isDep
+			select dataidx
+			use
+		endif
 	next
 	/* reindex */
 	for i=1 to len(list)
@@ -116,9 +170,9 @@ local remake,dStr1,dStr2
 
 	for i=1 to len(all)
 		vFile := all[i]+PATH_DELIM+".version"
-                version := get_version(vFile)
-                if empty(version)
-                	loop
+		version := get_version(vFile)
+		if empty(version)
+			loop
 		endif
 		? all[i],"",version,codb_version(),""
 		/*
@@ -214,7 +268,7 @@ local remake,dStr1,dStr2
 				?? "","OK",""
 			endif
 		next
-                save_version(vFile)
+		save_version(vFile)
 	next
 return
 ********** check
@@ -228,165 +282,165 @@ field id,object_id,version,crc32,extent_id
 
 	for i=1 to len(all2)
 		vFile := all2[i]+PATH_DELIM+".version"
-                oldver := get_version(vFile)
-                if empty(oldVer)
-                	loop
+		oldver := get_version(vFile)
+		if empty(oldVer)
+			loop
 		endif
 		? all2[i],"",oldver,codb_version(),""
 		if left(oldver,5) =="0.6.5" .and. left(codb_version(),3)=="0.7"
-                else
+		else
 			loop
 		endif
-                ? "Redisign data from 0.6.x to 0.7.x"
-                dFile1:=all2[i]+PATH_DELIM+"reftable"
-                fErase(dFile1+".cdx")
-                fErase(dFile1+".dbf")
+		? "Redisign data from 0.6.x to 0.7.x"
+		dFile1:=all2[i]+PATH_DELIM+"reftable"
+		fErase(dFile1+".cdx")
+		fErase(dFile1+".dbf")
 
 		dir := directory(all2[i]+PATH_DELIM+"*.dbf")
-                for j=1 to len(dir)
-                	dFile3:=dir[j][1]
-                	dFile3 := substr(dFile3,1,len(dFile3)-4)
-                	if dFile3 $ "counters dataidx"
-                        	loop
+		for j=1 to len(dir)
+			dFile3:=dir[j][1]
+			dFile3 := substr(dFile3,1,len(dFile3)-4)
+			if dFile3 $ "counters dataidx"
+				loop
 			endif
-                	if "_" $ dFile3
-                        	loop
+			if "_" $ dFile3
+				loop
 			endif
-                	dFile1:=all2[i]+PATH_DELIM+dFile3
-                        ?
-                	fErase(dFile1+".cdx")
-                	remake_table(dFile1,atail(m->mfiles)[2])
-                next
-                ? "Importing data from old structure"
-                dFile2:=all2[i]+PATH_DELIM+"dataidx"
-                select 0
-                fErase(dFile2+".cdx")
-                //outlog(dFile2+".cdx",file(dFile2+".cdx"))
-                use (dFile2) alias dataidx exclusive
-                //outlog(indexkey())
-                index on object_id+extent_id+str(version,6,0) tag object_id to (dFile2)
-                //outlog(__FILE__,__LINE__,indexkey())
-                for j=1 to len(dir)
-                	dFile3:=dir[j][1]
-                	dFile3 := substr(dFile3,1,len(dFile3)-4)
-                	if dFile3 $ "counters dataidx"
-                        	loop
+			dFile1:=all2[i]+PATH_DELIM+dFile3
+			?
+			fErase(dFile1+".cdx")
+			remake_table(dFile1,atail(m->mfiles)[2])
+		next
+		? "Importing data from old structure"
+		dFile2:=all2[i]+PATH_DELIM+"dataidx"
+		select 0
+		fErase(dFile2+".cdx")
+		//outlog(dFile2+".cdx",file(dFile2+".cdx"))
+		use (dFile2) alias dataidx exclusive
+		//outlog(indexkey())
+		index on object_id+extent_id+str(version,6,0) tag object_id to (dFile2)
+		//outlog(__FILE__,__LINE__,indexkey())
+		for j=1 to len(dir)
+			dFile3:=dir[j][1]
+			dFile3 := substr(dFile3,1,len(dFile3)-4)
+			if dFile3 $ "counters dataidx"
+				loop
 			endif
-                	if "_" $ dFile3
-                        	loop
+			if "_" $ dFile3
+				loop
 			endif
-                        ext_id := dFile3
-                	dFile1:=all2[i]+PATH_DELIM+dFile3
-                        ? "Import data to",dFile1
-                	fErase(dFile1+".cdx")
-                        select 0
-                	use (dFile1) alias extent exclusive
-                        //outlog(__FILE__,__LINE__, dFile1)
-                	do while !eof()
-                		str := extent->object_id+ext_id+str(extent->version,6,0)
-                		select dataidx
-                        	seek  str
-                        	if found() .and. dataidx->object_id == extent->object_id ;
-                        		.and. dataidx->version == extent->version ;
-                                        .and. dataidx->extent_id == ext_id
+			ext_id := dFile3
+			dFile1:=all2[i]+PATH_DELIM+dFile3
+			? "Import data to",dFile1
+			fErase(dFile1+".cdx")
+			select 0
+			use (dFile1) alias extent exclusive
+			//outlog(__FILE__,__LINE__, dFile1)
+			do while !eof()
+				str := extent->object_id+ext_id+str(extent->version,6,0)
+				select dataidx
+				seek  str
+				if found() .and. dataidx->object_id == extent->object_id ;
+					.and. dataidx->version == extent->version ;
+					.and. dataidx->extent_id == ext_id
 
-                        		//outlog(__FILE__,__LINE__,indexkey(), found(), extent->(recno()), dataidx->(recno()))
-                        		//outlog(__FILE__,__LINE__, dataidx->object_id, extent->object_id, dataidx->version,extent->version,dataidx->extent_id, ext_id)
-                        		rec := dbRead()
-                                	if rec:version > 0
-                        			rec:version := 0
+					//outlog(__FILE__,__LINE__,indexkey(), found(), extent->(recno()), dataidx->(recno()))
+					//outlog(__FILE__,__LINE__, dataidx->object_id, extent->object_id, dataidx->version,extent->version,dataidx->extent_id, ext_id)
+					rec := dbRead()
+					if rec:version > 0
+						rec:version := 0
 					endif
-                                	if rec:version < 0
-                        			rec:version := -1
+					if rec:version < 0
+						rec:version := -1
 					endif
-                        		select extent
-                        		dbWrite(rec)
-                                        select dataidx
-                                        replace version with rec:version
-                                        replace crc32 with "XXXXXXXX"
-                        		select extent
+					select extent
+					dbWrite(rec)
+					select dataidx
+					replace version with rec:version
+					replace crc32 with "XXXXXXXX"
+					select extent
 				else
-                        		select extent
-                                	delete
-                        	endif
-                        	skip
-                	enddo
-                        ?? "","OK"
-                        select extent
-                        use
-                next
-                select dataidx
-                delete for crc32 != "XXXXXXXX"
-                /*
-                goto top
-                dbeval({|| version := 0})
-                */
-                use
-                **********
-                dFile2:=all2[i]+PATH_DELIM+"dataidx"
-                fErase(dFile2+".cdx")
-                ?
-                remake_table(dFile2,CODB_DEPIDX_STRUCTURE)
-                **********
+					select extent
+					delete
+				endif
+				skip
+			enddo
+			?? "","OK"
+			select extent
+			use
+		next
+		select dataidx
+		delete for crc32 != "XXXXXXXX"
+		/*
+		goto top
+		dbeval({|| version := 0})
+		*/
+		use
+		**********
+		dFile2:=all2[i]+PATH_DELIM+"dataidx"
+		fErase(dFile2+".cdx")
+		?
+		remake_table(dFile2,CODB_DEPIDX_STRUCTURE)
+		**********
 		save_version(vFile)
-        next
+	next
 	for i=1 to len(all1)
 		vFile := all1[i]+PATH_DELIM+".version"
-                oldver := get_version(vFile)
-                if empty(oldVer)
-                	loop
+		oldver := get_version(vFile)
+		if empty(oldVer)
+			loop
 		endif
 		? all1[i],"",oldver,codb_version(),""
 		if left(oldver,5) =="0.6.5" .and. left(codb_version(),3)=="0.7"
-                else
+		else
 			loop
 		endif
-                ? "Redisign data from 0.6.x to 0.7.x"
-                ?
-                dFile1:=all1[i]+PATH_DELIM+"metadata"
-                remake_table(dFile1,CODB_DICT_STRUCTURE)
-                dFile2:=all1[i]+PATH_DELIM+"metaidx"
-                *
-                ? "Importing data from old structure"
-                select 0
-                fErase(dFile1+".cdx")
-                use (dFile1) alias metadata exclusive
-                select 0
-                fErase(dFile2+".cdx")
-                use (dFile2) alias metaidx exclusive
-                index on id+str(version,6,0) tag id to (dFile2)
+		? "Redisign data from 0.6.x to 0.7.x"
+		?
+		dFile1:=all1[i]+PATH_DELIM+"metadata"
+		remake_table(dFile1,CODB_DICT_STRUCTURE)
+		dFile2:=all1[i]+PATH_DELIM+"metaidx"
+		*
+		? "Importing data from old structure"
+		select 0
+		fErase(dFile1+".cdx")
+		use (dFile1) alias metadata exclusive
+		select 0
+		fErase(dFile2+".cdx")
+		use (dFile2) alias metaidx exclusive
+		index on id+str(version,6,0) tag id to (dFile2)
 
 		select metadata
-                go top
-                do while !eof()
-                	str := metadata->id+str(metadata->version,6,0)
-                	select metaidx
-                        seek  str
-                        if found() .and. metaidx->id == metadata->id ;
-                        	.and. metaidx->version == metadata->version
+		go top
+		do while !eof()
+			str := metadata->id+str(metadata->version,6,0)
+			select metaidx
+			seek  str
+			if found() .and. metaidx->id == metadata->id ;
+				.and. metaidx->version == metadata->version
 
-                        	rec := dbRead()
-                                if rec:version > 0
-                        		rec:version := 0
+				rec := dbRead()
+				if rec:version > 0
+					rec:version := 0
 				endif
-                                if rec:version < 0
-                        		rec:version := -1
+				if rec:version < 0
+					rec:version := -1
 				endif
-                        	select metadata
-                        	dbWrite(rec)
+				select metadata
+				dbWrite(rec)
 			else
-                        	select metadata
-                                delete
-                        endif
-                        skip
-                enddo
+				select metadata
+				delete
+			endif
+			skip
+		enddo
 
-                select metadata
-                use
-                select metaidx
-                use
-                fErase(dFile2+".cdx")
-                fErase(dFile2+".dbf")
+		select metadata
+		use
+		select metaidx
+		use
+		fErase(dFile2+".cdx")
+		fErase(dFile2+".dbf")
 
 		save_version(vFile)
 	next
@@ -400,7 +454,7 @@ static function get_version(vFile)
 		return ret
 	endif
 	ret := filegetstr(hFile)
-        fClose(hFile)
+	fClose(hFile)
 return ret
 *********************
 static function save_version(vFile)
@@ -453,9 +507,9 @@ memvar mfiles
 	}
 
 	k := atail(mFiles)[2]
-        x := atail(k)
-        adel(k,len(k))
-        asize(k,len(k)-1)
+	x := atail(k)
+	adel(k,len(k))
+	asize(k,len(k)-1)
 	for i=1 to CODB_IDX_PER_CLASS
 		str:="DATA"+alltrim(str(i,2,0))
 		if i<=2
@@ -466,5 +520,5 @@ memvar mfiles
 			aadd(k,{str,"X",CODB_ID_LEN+2,0} )
 		endif
 	next
-        aadd(k,x)
+	aadd(k,x)
 return

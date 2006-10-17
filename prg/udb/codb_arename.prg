@@ -134,6 +134,7 @@ endif
 			else
 				obj[upper(attrNew)] := ""
 			endif
+			adel(obj,b)
 			oDep:update(obj)
 		next
 		oDict:startTriggers()

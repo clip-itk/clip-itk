@@ -82,20 +82,23 @@ endif
 	?? __header(oDep,className,sData)
 	? component_data(oDep,className)
 
-	if !empty(classname)
-		s1 := codb_exportMeta(oDep,className,sData)
-	endif
+	if classname == "TCOLUMN"
+		s1 := codb_exportTcols(oDep)
+	else
+		if !empty(classname)
+			s1 := codb_exportMeta(oDep,className,sData)
+		endif
 
-	if !isDict .and. !empty(className) // oDep:className == "CODBDEPOSITORY"
-		s2 := codb_exportData(oDep,className,sData)
-	endif
+		if !isDict .and. !empty(className) // oDep:className == "CODBDEPOSITORY"
+			s2 := codb_exportData(oDep,className,sData)
+		endif
 
-	if isDict  .and. empty(className)
-		s3 := codb_exportDeps(oDep)
+		if isDict  .and. empty(className)
+			s3 := codb_exportDeps(oDep)
+		endif
+		? __exportDepend()
+		? __exportFiles()
 	endif
-
-	? __exportDepend()
-	? __exportFiles()
 
 	if !empty(s1)
 		? s1
@@ -624,6 +627,23 @@ static function __exportPlugins(oDict,classDesc)
 		ret += s+'/>'+n+n
 	next
 		//{"SOURCE"    ,"M",0            ,0,CODB_LENTYPE_NONE,""};
+return ret
+/**********************/
+static function codb_exportTcols(oDep)
+	local ret := "", oDict
+	local s := "&\t"
+	local i,j,k,tmp, tmp2, tcols:={}
+
+	oDict := oDep:dictionary()
+	tmp2 := oDict:select("TCOLUMN")
+	for i=1 to len(tmp2)
+		aadd(tCols,tmp2[i])
+	next
+	ret += s+'<meta dictionary="'+oDict:id+'" rules="appendOnly">&\n'
+	for i=1 to len(tcols)
+		ret += __exportTcol(oDict,tcols[i])
+	next
+	ret += s+'</meta>&\n'
 return ret
 /**********************/
 static function __exportTviews(oDict,classDesc)

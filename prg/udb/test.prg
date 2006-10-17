@@ -1,3 +1,7 @@
+? random(val(param(1)))
+?
+return
+
 set date format to "dd/mm/yyyy"
 set optimize on
 set optimize level to 2
