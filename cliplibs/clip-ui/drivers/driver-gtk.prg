@@ -1314,7 +1314,7 @@ static function ui_getValue(self, o)
 		case "UIRadioButton"
                 	val := gtk_ToggleButtonGetActive( o )
 
-                case "UISlider"
+		case "UISlider"
                         a := gtk_ScaleGetAdjustment(o)
                         gtk_AdjustmentGetValue(a, @val)
                         

@@ -137,9 +137,12 @@ function _recover_UIWINDOWCOMMON( obj )
 	obj:setValues	:= @ui_setValues()
 	obj:getValues	:= @ui_getValues()
 	obj:return	:= @ui_return()
+	obj:select	:= @ui_select()
 	obj:isChanged	:= @ui_isChanged()
 	obj:setId	:= @ui_setId()
 	obj:setFocus	:= @ui_setFocus()
+	obj:setPadding	:= @ui_setPadding()
+	obj:setSpacing	:= @ui_setSpacing()
 return obj
 
 function UIDocument(caption, parent, name)
@@ -399,7 +402,7 @@ static function ui_setName(self, name, o)
 	if valtype(o) != "O" .or. .not. "CLASSNAME" $ o
 		return NIL
 	endif
-	if ascan({"UIEdit","UIEditText","UIComboBox","UICheckBox","UIButton","UILabel","UIRadioButton","UISlider"},o:className) != 0
+	if ascan({"UIEdit","UIEditText","UIComboBox","UICheckBox","UIButton","UILabel","UIRadioButton","UISlider","UITable","UITree","UISheet"},o:className) != 0
 
 		// Extract type from name
 		nArr := split(name,':')
@@ -433,7 +436,7 @@ static function ui_getValues(self)
 	local i, w, v, values := array(0)
 	for i in self:valueNames
 		w := self:value[i]
-		if at(i,"\.") == 0 .and. "GETVALUE" $ w  // Only object's field
+		if at(i,"\.") == 0 .and. "GETVALUE" $ w .and. w:className != 'UIButton' // Only object's field, without buttons
 			v := w:getValue()
 			aadd(values, { i, v } )
 		endif
@@ -465,9 +468,26 @@ return NIL
 /* Return values to another form */
 static function ui_return(self, val)
 	local act
-//        ?? "RETURN value:",valtype(val), val,"|", "RETURNACTION" $ self, valtype(self:returnAction), chr(10)
+    //?? "RETURN value:",valtype(val), val,"|", "RETURNACTION" $ self, valtype(self:returnAction), chr(10)
 	if "RETURNACTION" $ self .and. valtype(self:returnAction) == "B"
 		act := self:returnAction
+		eval(act, val)
+	endif
+return NIL
+
+/* Return id and text from table to another form */
+static function ui_select(self, table, column)
+	local act, obj:=NIL, val:=array(2)
+    //?? "RETURN value:","RETURNACTION" $ self, valtype(self:returnAction), chr(10)
+	if "RETURNACTION" $ self .and. valtype(self:returnAction) == "B"
+		act := self:returnAction
+		obj := mapget(self:value, table, NIL)
+		//?? valtype(obj), "GETSELECTIONID" $ obj , "GETSELECTIONFIELD" $ obj, chr(10)
+		if .not. empty(obj) .and. "GETSELECTIONID" $ obj .and. "GETSELECTIONFIELD" $ obj
+			val[1] := obj:getSelectionField(column)
+			val[2] := obj:getSelectionId()
+		endif
+		//?? "RETURNED:", val,chr(10)
 		eval(act, val)
 	endif
 return NIL
@@ -593,4 +613,18 @@ static function _stopTimers(self)
 		timer := self:timers[i]
 		timer:stop()
 	next
+return NIL
+
+/* Set window padding */
+static function ui_setPadding(self, padding)
+	if "USERSPACE" $ self
+		self:userSpace:setPadding( padding )
+	endif
+return NIL
+
+/* Set window spacing */
+static function ui_setspacing(self, spacing)
+	if "USERSPACE" $ self
+		self:userSpace:setspacing( spacing )
+	endif
 return NIL

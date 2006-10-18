@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="koi8-r" ?>
+<!-- Test interface form -->
+<!-- Web: http://eas.lrn.ru -->
+
+<form>
+	<head>
+	<!-- TODO: select existing item -->
+	</head>
+	<interface>
+		<widget class="window" name="window" label="Selection example">
+			  <widget class="label" label="Select person:" />
+			  <widget class="table" name="table">
+				<column name="num" title="#" />
+				<column name="name" title="Name" />
+				<property name="altColor" value="#cbe8ff" />
+				<property name="row" element="1" value="'1','Alan'" />
+				<property name="row" element="2" value="'2','John'" />
+				<property name="row" element="3" value="'3','Mary'" />
+			  </widget>
+			  <!-- Bottom panel -->
+			  <widget class="hbox">
+				  <widget class="button" name="select"  label="Select" />
+				  <widget class="button" name="close" label="Close" />
+			  </widget>
+		</widget>
+	</interface>
+	<!-- Widget properties -->
+    <style>
+		<property widget="window" name="geometry" value="300,350,35,15" />
+		<property widget="window" name="position" value="center" />
+		<property widget="window" name="padding" value="5" />
+		<property widget="window" name="spacing" value="3" />
+		<property widget="window" name="icon" value="icons/eas-logo.xpm" />
+	</style>
+	
+	<actions>
+		<rule>
+			<event widget="close" signal="clicked"/>
+			<action><call widget="window" method="close"/></action>
+		</rule>
+		
+		<rule>
+			<event widget="select" signal="clicked"/>
+			<event widget="table" signal="selected"/>
+			<action>
+				<call widget="window" method="select">
+					<param value="table" />
+					<param value="2" />
+				</call>
+				<call widget="window" method="close"/>
+			</action>
+		</rule>
+
+	</actions>
+</form>

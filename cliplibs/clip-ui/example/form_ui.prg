@@ -59,3 +59,32 @@ function main()
 	ws:run()
 	ws:quit()
 return 0
+
+function openForm( obj, filename, action )
+	local f, w
+	if valtype(obj) != 'O'
+		return NIL
+	endif
+	
+	f := UIForm( filename, obj )
+	w := f:parseFile()
+	w:returnAction := action
+	
+	if w == NIL
+		return NIL
+	endif
+	w:show()
+	
+return NIL
+
+function showValues()
+	local a, i
+	a := win:getValues()
+	for i in a
+		if valtype(i[2]) == 'A'
+			?? "    "+i[1]+" = ",i[2],chr(10)
+		else
+			?? "    "+i[1]+" = "+val2str(i[2]),chr(10)
+		endif
+	next
+return

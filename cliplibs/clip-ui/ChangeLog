@@ -1,3 +1,9 @@
+2006-10-16
+	- Window now support spacing and padding in form
+	- Pass both id and text for UIChoice
+	- getValues() method ignore named buttons
+	- UIChoice support setValue/getValue as array { text, id }
+
 2006-06-06
 	- UIFrame now support :layout widget for setup background ("color.bg")
 

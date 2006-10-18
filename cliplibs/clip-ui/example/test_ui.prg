@@ -10,6 +10,7 @@
 /*   License, or (at your option) any later version.                       */
 /*-------------------------------------------------------------------------*/
 #include <clip-ui.ch>
+#include <clip-gtk2.ch>
 
 /* Test of clip-ui library usage */
 
@@ -232,7 +233,9 @@ return
 
 /* Form widgets */
 static function BankDocReq(w,grid)
-	local drv, lab, data, top, bottomLine, sd, pol, plat, i,  t, f1, f2, t1, t2, b1, b2, b3, e1, e2, cb1, cb2, sum, hbsum, rs, rg
+	local drv, lab, data, top, bottomLine, sd, pol, plat 
+	local i,  t, f1, f2, t1, t2, b1, b2, b3, e1, e2, cb1, cb2
+	local sum, hbsum, rs, rg, wIcon, wB
 	drv := getDriver()
 
 	data := map()
@@ -315,14 +318,16 @@ static function BankDocReq(w,grid)
 	// Payer
 	f1 := UIFrame()
 	grid:add(f1)
-	drv:setStyle(f1,"color.bg","darkblue")
 	f1:setLabel("Payer")
 	f1:setType(FRAME_RAISED)
-	t1 := UIVBox(,,3)
+	t1 := UIHBox(,,3)
 	f1:add( t1 )
+	
+	drv:setStyle(f1,"color.bg","green")
+	
 	cb1 := UIComboBox({'JSC "Brown and son"'},1)
 	w:setName("payer", cb1)
-	t1:add(cb1)
+	gtk_ContainerAdd(t1, cb1)
 
 	// Payee
 	f2 := UIFrame("Payee",FRAME_SUNKEN)

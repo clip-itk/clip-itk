@@ -305,6 +305,9 @@ static function ui_createWidget(self, tag, parent )
 		case "EDITCOLOR"
 			o := UIEditColor()
 			add = .T.
+		case "CHOICE"
+			o := UIChoice()
+			add := .T.
 		case "CHECKBOX"
 			o := UICheckBox(,label)
 			add = .T.

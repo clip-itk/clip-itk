@@ -2,7 +2,13 @@
 TODO
 ====
 
-Last change: 06 Apr 2006
+Last change: 16 Oct 2006
+
+BUGS
+----
+ - select from list open from UIChoice with exist value
+ - all list widget supports setValue/getValue 
+
 
 CLIP-UI
 -------

@@ -77,36 +77,38 @@
 			<widget name="tax" class="checkbox" label="Use &amp;tax">
 			    	<property name="value" value="false" />
 			</widget>
-                        <widget class="radiogroup">
-                                <widget class="radioButton" name="button1" label="button1" />
-                                <widget class="radioButton" name="button2" label="button2" />
-                        </widget>
+			<widget class="radiogroup">
+					<widget class="radioButton" name="button1" label="button1" />
+					<widget class="radioButton" name="button2" label="button2" />
+			</widget>
 
-			<widget class="slider" >
-                                <property name="value" value="10" />
-                                <property name="range" value="5-60" />
-                                <property name="step" value="5" />
-                        </widget>
+			<widget name="slider" class="slider" >
+				<property name="value" value="10" />
+				<property name="range" value="5-60" />
+                <property name="step" value="5" />
+			</widget>
                        
-			<widget class="progressbar" label="Progress: " />
-		        <widget class="hbox">
+			<widget class="hbox">
 				<property name="padding" value="3" />
 				<widget class="label" label="Payment order N ">
-			    		<property name="font.style" value="bold" />
-			    		<property name="font.size" value="16" />
-			    		<property name="color.fg" value="#FF1790" />
+					<property name="font.style" value="bold" />
+					<property name="color.fg" value="#FF1790" />
 				</widget>
 				<widget name="number" class="edit" label="">
-			    		<property name="geometry.width" value="50" />
-			    		<property name="value" value="11" />
+					<property name="geometry.width" value="50" />
+					<property name="value" value="11" />
 				</widget>
 				<widget class="label" label=" from " />
 				<widget name="date" class="editdate" label="">
-			    		<property name="geometry.width" value="70" />
-			    		<property name="value" value="20.10.03" />
+					<property name="geometry.width" value="70" />
+					<property name="value" value="20.10.03" />
 				</widget>
-				
+				<widget class="label" label="Person:" />
+				<widget name="person" class="choice" label="">
+					<property name="value" value="" />
+				</widget>
 			</widget>
+			
 			<widget name="color" class="editcolor" label="">
 		    		<property name="value" value="#91FF40" />
 			</widget>
@@ -172,56 +174,74 @@
 
         <!-- Widget properties -->
         <style>
-                <property widget="mainWindow" name="geometry" value="600,550,35,15" />
+                <property widget="mainWindow" name="geometry" value="650,550,35,15" />
                 <property widget="mainWindow" name="position" value="center" />
                 <property widget="mainWindow" name="icon" value="icons/eas-logo.xpm" />
         </style>
 
         <!-- Actions -->
         <actions>
-                <!-- System actions -->
-		<rule>
-			<event widget="Menu.Quit" signal="activate"/>
-			<event widget="close" signal="activate"/>
-			<action><call widget="mainWindow" method="close"/></action>
-		</rule>
-		
-		<rule>
-			<event widget="showTB" signal="activate"/>
-			<action><call widget="main_toolBar" method="show">
-				<param><call widget="showTB" method="isChecked" /></param>
-			</call>
-			</action>
-		</rule>
-		
-		<rule>
-			<event widget="showSB" signal="activate"/>
-			<action>
-			<call widget="main_statusBar" method="show">
-				<param><call widget="showSB" method="isChecked" /></param>
-			</call>
-			</action>
-		</rule>
+			<!-- System actions -->
+			<rule>
+				<event widget="Menu.Quit" signal="activate"/>
+				<event widget="close" signal="clicked"/>
+				<action><call widget="mainWindow" method="close"/></action>
+			</rule>
+			
+			<rule>
+				<event widget="save" signal="clicked"/>
+				<action><call method="showValues"/></action>
+			</rule>
+			
+			<rule>
+				<event widget="showTB" signal="activate"/>
+				<action><call widget="main_toolBar" method="show">
+					<param><call widget="showTB" method="isChecked" /></param>
+				</call>
+				</action>
+			</rule>
+			
+			<rule>
+				<event widget="showSB" signal="activate"/>
+				<action>
+				<call widget="main_statusBar" method="show">
+					<param><call widget="showSB" method="isChecked" /></param>
+				</call>
+				</action>
+			</rule>
+	
+			<rule>
+				<event widget="TB.Bank.PaymentOrder.List" signal="clicked"/>
+				<action><call method="qout">
+				<param value="List of payment orders" /></call>
+				</action>
+			</rule>
+			
+			<rule>
+				<event widget="TB.Bank.PaymentOrder.Create" signal="clicked"/>
+				<action><call method="qout">
+				<param value="Create payment order" /></call>
+				</action>
+			</rule>
+			
+			<rule>
+				<event widget="Settings" signal="activate"/>
+				<action><call method="Configuration"/></action>
+			</rule>
 
-		<rule>
-			<event widget="TB.Bank.PaymentOrder.List" signal="clicked"/>
-			<action><call method="qout">
-			<param value="List of payment orders" /></call>
-			</action>
-		</rule>
-		
-		<rule>
-			<event widget="TB.Bank.PaymentOrder.Create" signal="clicked"/>
-			<action><call method="qout">
-			<param value="Create payment order" /></call>
-			</action>
-		</rule>
-		
-		<rule>
-			<event widget="Settings" signal="activate"/>
-			<action><call method="Configuration"/></action>
-		</rule>
-		
+			<rule label="Select pe&amp;rson">
+				<event widget="person" signal="clicked"/>
+				<action><call method="openForm">
+					<param><property widget="mainWindow" name="object"/></param>
+					<param value="selection.xfl"/>
+					<return>
+						<call widget="person" method="setValue">
+							<param><returnedvalue /></param>
+						</call>
+					</return>
+				</call></action>
+			</rule>
+
 	</actions>
 </form>
 

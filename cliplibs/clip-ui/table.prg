@@ -36,6 +36,7 @@ function _recover_UITABLE( obj )
 	obj:clear	:= @ui_clear()
 	obj:getSelection := @ui_getSelection()
 	obj:getSelectionId := @ui_getSelectionId()
+	obj:getSelectionField := @ui_getSelectionField()
 	obj:setAltRowColor := @ui_setAltRowColor()
 	obj:savePosition    := @ui_savePosition()
 	obj:restorePosition := @ui_restorePosition()
@@ -43,22 +44,23 @@ return obj
 
 /* Add row and fill it by data */
 static function ui_addRow(self, data, id)
-        local i, node
+	local i, node
         
-        // Fix missing id
-        if id == NIL
-        	self:lastId++
-        	id := alltrim(str(self:lastId))
+    // Fix missing id
+    if id == NIL
+       	self:lastId++
+       	id := alltrim(str(self:lastId))
 	endif
         
-        // Convert values to strings
+    // Convert values to strings
 	for i=1 to len(data)
 		data[i] := val2str(data[i])
-        next
+	next
 	node := driver:addTableRow(self, data)
 	node:className := "UITableItem"
 	node:table := @self
 	node:node_id := id
+	node:data := data
 	self:nodes[node:id] = node
 return NIL
 
@@ -91,7 +93,7 @@ static function ui_getSelection(self)
 	sel := driver:getTableSelection( self )
 return sel
 
-/* Get current selection ID */
+/* Get ID of selected string */
 static function ui_getSelectionId(self)
 	local sel, id:=NIL
 	sel := driver:getTableSelection( self )
@@ -102,6 +104,24 @@ static function ui_getSelectionId(self)
 		return NIL
 	endif
 return id
+
+/* Get field value on selected string  */
+static function ui_getSelectionField(self, column)
+	local sel, val:=NIL, node
+	column = iif(empty(column),1,int(val(column)))
+	sel := driver:getTableSelection( self )
+	//?? "Selection:", sel, sel $ self:nodes, chr(10)
+	if .not. empty(sel) .and. sel $ self:nodes
+		node := self:nodes[sel]
+		?? valtype(node:data), len(node:data), column, chr(10)
+		if valtype(node:data) == "A" .and. len(node:data) >= column .and. column > 0
+			val := node:data[column]
+			//?? "Value:", val, chr(10)
+		endif
+	else 
+		return NIL
+	endif
+return val
 
 /* Set alternate row color */
 static function ui_setAltRowColor(self, color)
