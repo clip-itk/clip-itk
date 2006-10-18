@@ -365,6 +365,22 @@ $LANG_RU$
 $ENDMETHOD$
 
 $METHODNAME$
+	select()
+$SUMMARY$
+	Send value for <link linkend="classuichoice">UIChoice</link> to window which initiated creation of this window.
+$LANG_RU$
+	Возвратить значение для <link linkend="classuichoice">UIChoice</link> в окно, инициировавшее создание данного окна.
+$SYNTAX$
+	select(<table>,<column>)
+$ARGUMENTS$
+	<table>		- String. Name of <link linkend="classuitable">UITable</link> widget in current window.
+	<column>	- Number. Column number from <link linkend="classuitable">UITable</link>.
+$LANG_RU$
+	<table>		- Строка. Имя виджета типа <link linkend="classuitable">UITable</link> в текущем окне.
+	<column>	- Число. Номер столбца в <link linkend="classuitable">UITable</link>.
+$ENDMETHOD$
+
+$METHODNAME$
 	isChanged()
 $SUMMARY$
 	Return true if any field in window was changed.
@@ -391,6 +407,35 @@ $ARGUMENTS$
 $LANG_RU$
 	<id>		- Строка. Идентификатор объекта, изменяемого в окне.
 $ENDMETHOD$
+
+$METHODNAME$
+	setSpacing()
+$SUMMARY$
+	Set space between widgets in window.
+$LANG_RU$
+	Установить расстояние между виджетами в окне.
+$SYNTAX$
+	setSpacing(<space>)
+$ARGUMENTS$
+	<space>		- Number. Space between widgets in pixels.
+$LANG_RU$
+	<space>		- Число. Расстояние в точках между виджетами в окне.
+$ENDMETHOD$
+
+$METHODNAME$
+	setPadding()
+$SUMMARY$
+	Set window border width.
+$LANG_RU$
+	Установить ширину границы окна.
+$SYNTAX$
+	setPadding(<space>)
+$ARGUMENTS$
+	<space>		- Number. Width of window border in pixels.
+$LANG_RU$
+	<space>		- Число. Ширина границы окна в точках.
+$ENDMETHOD$
+
 
 $EXAMPLES$
 	win := UIWindow("Dialog")

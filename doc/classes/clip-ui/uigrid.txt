@@ -5,7 +5,7 @@ $SUMMARY$
 $LANG_RU$
 	Класс UIGrid
 $ABOUT$
-	Class of table for placement widgets.
+	Class of grid for placement widgets.
 $LANG_RU$
 	Класс таблицы размещения виджетов.
 $SYNTAX$
@@ -20,16 +20,16 @@ $LANG_RU$
 $METHODNAME$
 	UIGrid()
 $SUMMARY$
-	Constructor. Create table for placement widgets.
+	Constructor. Create grid for placement widgets.
 $LANG_RU$
 	Конструктор. Создать таблицу размещения виджетов.
 $SYNTAX$
 	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> UIGrid object
 $ARGUMENTS$
-	<o>		- Widget objecеt. Widget in which table is inserted.
-	<grow>		- Number. Number of rows in table.
-	<gcol>		- Number. Number of columns in table.
-	<spacing>	- Number. Space between table cells in pixels (default is 0).
+	<o>		- Widget objecеt. Widget in which grid is inserted.
+	<grow>		- Number. Number of rows in grid.
+	<gcol>		- Number. Number of columns in grid.
+	<spacing>	- Number. Space between grid cells in pixels (default is 0).
 	<padding>	- Number. Space between widget and cell border in pixels (default is 2).
 $LANG_RU$
 	<o>		- Объект виджета. Виджет, в который вставляется таблица.
@@ -42,13 +42,13 @@ $ENDMETHOD$
 $METHODNAME$
 	add()
 $SUMMARY$
-	Add widget to table.
+	Add widget to grid.
 $LANG_RU$
 	Добавить виджет в таблицу.
 $SYNTAX$
 	add(<o>,<pos>,[<h_expand>],[<v_expand>])
 $ARGUMENTS$
-	<o>		- Widget object. Widget inserted in table.
+	<o>		- Widget object. Widget inserted in grid.
 	<pos>		- String. Address of cell or cell range for inserted widget. Number of row (row range) is separated from number of column (column range) by comma. Range is defined through hyphen. Numbering of rows and columns is begun from 1 (top and left side respectively). For example, widget place in first row and columns 2..4 is defined as string: "1,2-4".
 	<h_expand>	- Boolean. Possibility of expand widget horizontally on window size changed.
 	<v_expand>	- Boolean. Possibility of expand widget vertically on window size changed.
@@ -62,13 +62,13 @@ $ENDMETHOD$
 $METHODNAME$
 	setSpacing()
 $SUMMARY$
-	Set space between widget in table.
+	Set space between widgets in grid.
 $LANG_RU$
 	Установить расстояние между виджетами в таблице.
 $SYNTAX$
 	setSpacing(<space>)
 $ARGUMENTS$
-	<space>		- Number. Space between widget in pixels.
+	<space>		- Number. Space between widgets in pixels.
 $LANG_RU$
 	<space>		- Число. Расстояние в точках между виджетами в таблице.
 $ENDMETHOD$
@@ -76,13 +76,13 @@ $ENDMETHOD$
 $METHODNAME$
 	setPadding()
 $SUMMARY$
-	Set table border width.
+	Set grid border width.
 $LANG_RU$
 	Установить ширину границы таблицы.
 $SYNTAX$
 	setPadding(<space>)
 $ARGUMENTS$
-	<space>		- Number. Width of table border in pixels.
+	<space>		- Number. Width of grid border in pixels.
 $LANG_RU$
 	<space>		- Число. Ширина границы таблицы в точках.
 $ENDMETHOD$
@@ -90,7 +90,7 @@ $ENDMETHOD$
 $METHODNAME$
 	setAlignment()
 $SUMMARY$
-	Set alignment of widgets in table.
+	Set alignment of widgets in grid.
 $LANG_RU$
 	Установить выравнивание элементов в таблице.
 $SYNTAX$
@@ -132,17 +132,17 @@ $LANG_RU$
 $SYNTAX$
 	setEqualSize(<isEqual>)
 $ARGUMENTS$
-	<isEqual>	- Boolean. Flag for equal cells size in table.
+	<isEqual>	- Boolean. Flag for equal cells size in grid.
 $LANG_RU$
 	<isEqual>	- Логическое значение. Флаг установки равных размеров для элементов в таблице.
 $ENDMETHOD$
 
 $EXAMPLES$
-	table  := UIGrid( , 2, 2 )
+	grid  := UIGrid( , 2, 2 )
 	label  := UILabel( "Label:" )
 	ed_box := UIEdit()
-	table:add( label, "1,1" )
-	table:add( ed_box, "1,2", .T. )
+	grid:add( label, "1,1" )
+	grid:add( ed_box, "1,2", .T. )
 
 $PLATFORMS$
 	No dependies of platform.

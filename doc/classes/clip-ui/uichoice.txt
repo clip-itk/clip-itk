@@ -5,21 +5,19 @@ $SUMMARY$
 $LANG_RU$
 	Класс UIChoice
 $ABOUT$
-	Edit field with choice button. Inherits fields and method from class <link linkend="classuihbox">UIButton</link>.
+	Edit field with choice button. Inherits fields and method from class <link linkend="classuiedit">UIEdit</link>.
 $LANG_RU$
-	Поле ввода с кнопкой выбора элемента. Унаследуетс свойства класса <link linkend="classuihbox">UIButton</link>.
+	Поле ввода с кнопкой выбора элемента. Унаследуетс свойства класса <link linkend="classuiedit">UIEdit</link>.
 $SYNTAX$
 	UIChoice(<action>,[<value>],[<text>])	--> UIChoice object
 $LANG_RU$
 	UIChoice(<action>,[<value>],[<text>])	--> Объект UIChoice
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIChoice".
-	<layout>	- <link linkend="classuihbox">UIHBox</link> object. Container for edit field and button.
-	<edit>		- <link linkend="classuiedit">UIEdit</link> object. Edit field (read only).
+	<button>	- <link linkend="classuibutton">UIButton</link> object. Button for select element.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIChoice".
-	<layout>	- Объект <link linkend="classuihbox">UIHBox</link>. Контейнер, содержащий поле ввода и кнопку.
-	<edit>		- Объект <link linkend="classuiedit">UIEdit</link>. Поле ввода (только для чтения).
+	<button>	- Объект <link linkend="classuibutton">UIButton</link>. Кнопка выбора элемента.
 
 $METHODNAME$
 	UIChoice()
@@ -40,33 +38,48 @@ $LANG_RU$
 $ENDMETHOD$
 
 $METHODNAME$
-	setText()
+	setAction()
 $SUMMARY$
-	Set text to edit field.
+	Set action for button.
 $LANG_RU$
-	Поместить текст в поле ввода.
+	Установить действие по нажатию на кнопку выбора.
 $SYNTAX$
-	setText(<text>)
+	setAction(<signal>,<action>)
 $ARGUMENTS$
-	<text>		- String. Text to edit field.
+	<signal>	- String. Should be "clicked".
+	<action>	- Code block. Action called on button press.
 $LANG_RU$
-	<text>		- Строка. Текст, помещаемый в поле ввода.
+	<signal>	- Строка. Значение: "clicked".
+	<action>	- Блок кода. Действие, вызываемое при нажатии на кнопку.
 $ENDMETHOD$
 
 $METHODNAME$
-	getText()
+	setValue()
 $SUMMARY$
-	Get text from edit field.
+	Set text and id for selected element.
 $LANG_RU$
-	Получить текст из поля ввода.
+	Установить текст и идентификатор выбранного элемента.
 $SYNTAX$
-	getText()	--> <sText>
-$RETURNS$
-	Text from edit field.
+	setValue(<value>)
+$ARGUMENTS$
+	<value>		- Array. {<text>,<id>}.
 $LANG_RU$
-	Текст из поля ввода.
+	<value>		- Массив. {<текст>,<идентификатор>}.
 $ENDMETHOD$
 
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get text and id for selected element.
+$LANG_RU$
+	Получить текст и идентификатор выбранного элемента.
+$SYNTAX$
+	getValue()  --> <value>
+$RETURNS$
+	<value>		- Array. {<text>,<id>}.
+$LANG_RU$
+	<value>		- Массив. {<текст>,<идентификатор>}.
+$ENDMETHOD$
 $EXAMPLES$
 	choice := UIChoice({|| openForm("form.xfl") })
 
