@@ -17,9 +17,13 @@ OBJS  = codb_list.o codb.o codb_funcs.o codb_oql.o codb_install.o \
 LIB = libclip-codb.a
 SLIB = libclip-codb$(DLLSUFF)
 
+LIB_QUERY = libcodb_query.a
+SLIB_QUERY = libcodb_query$(DLLSUFF)
+OBJS_QUERY = codb_query.o
+
 export CFLAGS
 
-all:    $(OBJS) $(LIB) $(SLIB)
+all:    $(OBJS) $(OBJS_QUERY) $(LIB) $(SLIB) $(LIB_QUERY) $(SLIB_QUERY)
 #	../clip_makelib libclip-codb.a $(OBJS)
 #	../clip_makeslib libclip-codb $(OBJS)
 #	rm -rf *.c
@@ -30,8 +34,8 @@ clean:
 
 install: all
 	../clip_cp libclip-codb $(DESTDIR)$(CLIPROOT)/lib
+	../clip_cp libcodb_query $(DESTDIR)$(CLIPROOT)/lib
 	tar cf - codb.ch codbcfg.ch codb_dbf.ch | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
-
 
 $(LIB): $(OBJS)
 	rm -f $(LIB)
@@ -39,6 +43,13 @@ $(LIB): $(OBJS)
 
 $(SLIB): $(LIB)
 	../clip_makeslib $(SLIB) $(LIB)
+
+$(LIB_QUERY): $(OBJS_QUERY)
+	rm -f $(LIB_QUERY)
+	../clip_makelib $(LIB_QUERY) $(OBJS_QUERY)
+
+$(SLIB_QUERY): $(LIB_QUERY)
+	../clip_makeslib $(SLIB_QUERY) $(OBJS_QUERY)
 
 .prg.o:
 	$(CLIP) $(CLIPFLAGS) $(CLIPFLAGS2) $<
