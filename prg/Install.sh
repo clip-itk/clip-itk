@@ -113,7 +113,12 @@ then
 	$MAKE install
 	cd ..
 fi
-
+if [ -d codb ]
+then
+	cd codb
+	$MAKE install
+	cd ..
+fi
 #
 if [ "$CLIPROOT" != "$WRKDIR" ]
 then

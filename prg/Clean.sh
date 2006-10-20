@@ -54,6 +54,10 @@ if [ -d ocmng ]
 then
 	cd ocmng; $MAKE clean; cd ..
 fi
+if [ -d codb ]
+then
+	cd codb; $MAKE clean; cd ..
+fi
 if [ -d dbc ]
 then
    cd dbc

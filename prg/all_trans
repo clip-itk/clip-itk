@@ -65,3 +65,7 @@ if [ -d ca_dbu53 ]
 then
 	cd ca_dbu53 ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
 fi
+if [ -d codb ]
+then
+	cd codb ; $comm $CPsource $CPtarget *.ch *.prg ; cd ..
+fi

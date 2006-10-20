@@ -116,4 +116,10 @@ then
 	$MAKE
 	cd ..
 fi
+if [ -d codb ]
+then
+	cd codb
+	$MAKE
+	cd ..
+fi
 
