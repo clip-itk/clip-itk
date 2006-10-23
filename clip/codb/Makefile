@@ -19,7 +19,7 @@ SLIB = libclip-codb$(DLLSUFF)
 
 LIB_QUERY = libcodb_query.a
 SLIB_QUERY = libcodb_query$(DLLSUFF)
-OBJS_QUERY = codb_query.o
+OBJS_QUERY = codb_query.o formatter.o
 
 export CFLAGS
 
