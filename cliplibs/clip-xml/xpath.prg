@@ -31,27 +31,28 @@ TODO:
 */
 
 /* Print debug information */
-#define XPATH_DEBUG		.F.
+#define XPATH_DEBUG				.F.
 
 /* Tokens */
-#define XPATH_TOKEN_UNDEF	0
-#define XPATH_TOKEN_SYMBOL	1
-#define XPATH_TOKEN_NAME	2
+#define XPATH_TOKEN_UNDEF		0
+#define XPATH_TOKEN_SYMBOL		1
+#define XPATH_TOKEN_NAME		2
 #define XPATH_TOKEN_NODETYPE	3
 #define XPATH_TOKEN_OPERATOR	4
 #define XPATH_TOKEN_FUNCTION	5
-#define XPATH_TOKEN_AXIS	6
-#define XPATH_TOKEN_LITERAL	7
-#define XPATH_TOKEN_NUMBER	8
-#define XPATH_TOKEN_VARREF	9
+#define XPATH_TOKEN_AXIS		6
+#define XPATH_TOKEN_LITERAL		7
+#define XPATH_TOKEN_NUMBER		8
+#define XPATH_TOKEN_VARREF		9
 
 /* Blocks */
-#define XPATH_BLOCK_NODESET	20
-#define XPATH_BLOCK_NODES	21
+#define XPATH_BLOCK_NODESET		20
+#define XPATH_BLOCK_NODES		21
 #define XPATH_BLOCK_FUNCTION	22
 #define XPATH_BLOCK_EXPRESSION	23
 
 static lastError := ""
+static lastFlag  := 0
 
 /* Symbols and operators */
 static _xpath_symbols := { ;
@@ -399,13 +400,19 @@ static function _xpath_compile( res )
 	// Check root and abbreviated begin
 	if res[1]:type == XPATH_TOKEN_OPERATOR
 		// TODO: need more abbreviated syntax ( p.9 )
-		if res[1]:token == '/'
+		if left(res[1]:token,1) == '/'
 			b := _xpath_createNode( "root", "" )
 			ce     := b
 			aadd( a, b )
 			i++
 			isNodeset := .T.
+			if res[1]:token == '//'
+				b := _xpath_createNode( "descendant", "" )
+				ce     := b
+				aadd( a, b )
+			endif
 		endif
+		
 	elseif res[1]:type == XPATH_TOKEN_UNDEF
 		isNodeset := .T.
 	endif
@@ -698,6 +705,14 @@ static function _xpath_evaluate( res, context )
 
 return v
 
+static function _xpath_desc( e, v )
+	local i
+	aadd( v, e )
+	for i in e:getChilds()
+		_xpath_desc( i, @v )
+	next
+return NIL
+
 /* Define nodeset */
 static function _xpath_set( s, a )
 	local v:={}, i, e, cond, c, name
@@ -724,17 +739,30 @@ static function _xpath_set( s, a )
 				
 				case 'child'
 					name := cond:name
-					for c in e:getChilds()
+					if lastFlag == 1 // descendants on first level
 						if name == '*' .or. name == c:getName()
 							aadd( v, c )
 						endif
-					next
+					else
+						for c in e:getChilds()
+							if name == '*' .or. name == c:getName()
+								aadd( v, c )
+							endif
+						next
+					endif
+				case 'descendant'
+					_xpath_desc( e, @v )
+					lastFlag := 1
+					
 				otherwise
 					lastError := "Axis '"+cond:axis+"' isn't yet implemented."
 					return NIL
 			endswitch
 		next
 	next
+	if lastFlag > 0
+		lastFlag := 0
+	endif
 	if XPATH_DEBUG
 		?? "XPath: list:", chr(10)
 		for c in v
@@ -1041,9 +1069,13 @@ static function _xpath_callFunction( name, args, pos, context, cPos )
 	endswitch
 return NIL
 
-/* Dump XPatch expression block */
+/* Dump XPath expression block */
 static function _xpath_dumpBlock( b, level )
 	local l, s:='', childs:={}, cN
+	
+	if valtype(b) != 'O' .or. ! 'TYPE' $ b
+		return NIL
+	endif
 	
 	l := replicate( '    ', level )
 	switch b:type
