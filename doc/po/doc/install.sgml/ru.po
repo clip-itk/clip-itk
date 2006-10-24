@@ -462,19 +462,23 @@ msgstr ""
 "конец файла $HOME/.bash_profile:"
 
 #: template/./doc/install.sgml:120
-msgid "export CLIPROOT=$HOME/cliproot"
+msgid "export CLIP_LANG=en_EN.CP437 #or ru_RU.KOI8-R"
 msgstr ""
 
 #: template/./doc/install.sgml:121
+msgid "export CLIPROOT=$HOME/cliproot"
+msgstr ""
+
+#: template/./doc/install.sgml:122
 msgid "export PATH=$CLIPROOT/bin:$PATH"
 msgstr ""
 
-#: template/./doc/install.sgml:123
+#: template/./doc/install.sgml:124
 msgid "and relogin to make this settings actual."
 msgstr ""
 "и не забудьте перелогиниться для того, чтобы изменения вступили в силу."
 
-#: template/./doc/install.sgml:125
+#: template/./doc/install.sgml:126
 #, fuzzy
 msgid ""
 "You may not want to set CLIPROOT environment variable. In this case "
@@ -490,11 +494,11 @@ msgstr ""
 "version&gt; (make local создаст каталог ../cliproot). Исполняемые файлы "
 "пакета clip_dev будут иметь ссылки в $HOME/bin."
 
-#: template/./doc/install.sgml:131
+#: template/./doc/install.sgml:132
 msgid "Some notes:"
 msgstr "Примечания:"
 
-#: template/./doc/install.sgml:132
+#: template/./doc/install.sgml:133
 msgid ""
 "In OS Solaris must be installed \"GNU bin utils\" and path for it must be "
 "in  first: export PATH=/usr/local/bin;..."
@@ -503,7 +507,7 @@ msgstr ""
 "должен быть прописан раньше чем до родных утилит: export PATH=/usr/local/bin;"
 "$PATH"
 
-#: template/./doc/install.sgml:133
+#: template/./doc/install.sgml:134
 msgid ""
 "If GNU maker in your system have name \"gmake\", add to environment variable "
 "MAKE=gmake"
@@ -511,54 +515,54 @@ msgstr ""
 "Если GNU maker у вашей системе называется \"gmake\", добавьте в окружение "
 "переменную MAKE=gmake."
 
-#: template/./doc/install.sgml:136
+#: template/./doc/install.sgml:137
 msgid "Now you can go in your clip-prg-&lt;version&gt; and"
 msgstr "Теперь вы можете перейти в clip-prg-&lt;version&gt; и сделать"
 
-#: template/./doc/install.sgml:138
+#: template/./doc/install.sgml:139
 msgid "#make local"
 msgstr ""
 
-#: template/./doc/install.sgml:140
+#: template/./doc/install.sgml:141
 msgid "If your PATH is setted, you can start working with Clip immediately."
 msgstr ""
 "Если переменная PATH дополнена, то можно немедленно приступать к работе с "
 "Clip."
 
-#: template/./doc/install.sgml:144
+#: template/./doc/install.sgml:145
 msgid "System-wide installation"
 msgstr "Общесистемная установка"
 
-#: template/./doc/install.sgml:146
+#: template/./doc/install.sgml:147
 msgid "Just go in your clip-prg-&lt;version&gt; and"
 msgstr ""
 "Просто перейдите в ваш clip-prg-&lt;version&gt; каталог и дайте команду"
 
-#: template/./doc/install.sgml:148
+#: template/./doc/install.sgml:149
 msgid "#make system"
 msgstr ""
 
-#: template/./doc/install.sgml:150
+#: template/./doc/install.sgml:151
 msgid "Remember, that CLIPROOT points to /usr/local/clip by default."
 msgstr ""
 "Помните, что в этом случае по умолчанию CLIPROOT указывает в /usr/local/clip "
 
-#: template/./doc/install.sgml:150
+#: template/./doc/install.sgml:151
 #, fuzzy
 msgid ""
 "Don't forget\n"
 "to set CLIPROOT variable in your .profile"
 msgstr "Не забудьте установить CLIPROOT переменную в вашем .profile файле."
 
-#: template/./doc/install.sgml:153
+#: template/./doc/install.sgml:154
 msgid "Now you can use your Clip."
 msgstr "Теперь можете использовать Clip."
 
-#: template/./doc/install.sgml:157
+#: template/./doc/install.sgml:158
 msgid "Selective installation"
 msgstr "Выборочная установка"
 
-#: template/./doc/install.sgml:159
+#: template/./doc/install.sgml:160
 #, fuzzy
 msgid ""
 "You can install only needed packages. In this case you must download and\n"
@@ -571,7 +575,7 @@ msgstr ""
 "собственно компилятор, некоторые утилиты и стандартный отладчик. После "
 "скачивания распакуйте его в удобный для вас катклогкаталог."
 
-#: template/./doc/install.sgml:164
+#: template/./doc/install.sgml:165
 #, fuzzy
 msgid ""
 "Now, if you want a local installation, you needing to set CLIPROOT\n"
@@ -582,7 +586,7 @@ msgstr ""
 "переменную (например: export CLIPROOT=~/cliproot) и выполните ./configure в "
 "том каталоге, который образовался при распаковке пакета."
 
-#: template/./doc/install.sgml:168
+#: template/./doc/install.sgml:169
 #, fuzzy
 msgid ""
 "If you want to make system-wide installation start ./configure -r (that key\n"
@@ -592,13 +596,13 @@ msgstr ""
 "r (этот ключ означает \"release\"; остальные ключи можно узнать по ./"
 "configure -h)."
 
-#: template/./doc/install.sgml:171
+#: template/./doc/install.sgml:172
 msgid "After this run \"make\" and (with appropriate rights) \"make install\"."
 msgstr ""
 "После чего выполните \"make\" и (с соответствующими правами) \"make install"
 "\"."
 
-#: template/./doc/install.sgml:173
+#: template/./doc/install.sgml:174
 #, fuzzy
 msgid ""
 "For correct working you are still needing to add CLIPROOT in your .profile "
@@ -608,28 +612,28 @@ msgstr ""
 "Для нормальной работы вам по-прежнему необходимо добавить CLIPROOT к вашему "
 "профилю как описано выше."
 
-#: template/./doc/install.sgml:176
+#: template/./doc/install.sgml:177
 msgid "Each other clip_* package can be installed by the same way."
 msgstr ""
 "Каждый последующий clip_* пакет, необходимый вам устанавливается тем же "
 "способом."
 
-#: template/./doc/install.sgml:180
+#: template/./doc/install.sgml:181
 msgid "Patching your distribution"
 msgstr "Наложение патчей"
 
-#: template/./doc/install.sgml:182
+#: template/./doc/install.sgml:183
 msgid "On ftp server you can find patch.tgz"
 msgstr "На ftp сервере вы можете найти файл patch.tgz"
 
-#: template/./doc/install.sgml:182
+#: template/./doc/install.sgml:183
 #, fuzzy
 msgid ""
 "That file contains the last cumulative\n"
 "patch for clip_dev package."
 msgstr "Этот файл содержит последний кумулятивный патч для пакета clip_dev."
 
-#: template/./doc/install.sgml:183
+#: template/./doc/install.sgml:184
 #, fuzzy
 msgid ""
 "Just unpack it (this will overwrite some file)\n"
@@ -639,12 +643,12 @@ msgstr ""
 "Просто распакуйте его (при этом некоторые файлы перезапишутся) и "
 "пересоберите (так же, как описано выше в разделе \"Выборочная установка\")."
 
-#: template/./doc/install.sgml:186
+#: template/./doc/install.sgml:187
 msgid "Other libraries and packages some time updating also."
 msgstr ""
 "Остальные библиотеки и пакеты периодически обновляются таким же образом."
 
-#: template/./doc/install.sgml:186
+#: template/./doc/install.sgml:187
 #, fuzzy
 msgid ""
 "Their installation not\n"
@@ -652,11 +656,11 @@ msgid ""
 msgstr ""
 "Их установка не отличается от описанной в разделе \"Выборочная установка\""
 
-#: template/./doc/install.sgml:191
+#: template/./doc/install.sgml:192
 msgid "Cygwin installation"
 msgstr "Установка в Cygwin"
 
-#: template/./doc/install.sgml:193
+#: template/./doc/install.sgml:194
 #, fuzzy
 msgid ""
 "Firstly you have need to install a Cygwin package. Better way is taking the\n"
@@ -665,7 +669,7 @@ msgstr ""
 "В первую очередь вы должны установить Cygwin. Проще всего взять полную "
 "версию с официального сайта (cygwin.com)."
 
-#: template/./doc/install.sgml:194
+#: template/./doc/install.sgml:195
 #, fuzzy
 msgid ""
 "But it has a very big size.\n"
@@ -675,7 +679,7 @@ msgstr ""
 "Но это весьма значительный объем (~200Mb). Хорошей альтернативой будет пакет "
 "cygwin_trunc.rar с ftp сайта ITK или с одного из зеркал."
 
-#: template/./doc/install.sgml:196
+#: template/./doc/install.sgml:197
 #, fuzzy
 msgid ""
 "It's truncated version, but this is quite enough for using Clip (even\n"
@@ -684,7 +688,7 @@ msgstr ""
 "Это урезанная версия, обеспечивающая всю необходимую для работы Clip "
 "функциональность (даже для построения Clip из исходных текстов)."
 
-#: template/./doc/install.sgml:199
+#: template/./doc/install.sgml:200
 #, fuzzy
 msgid ""
 "You must unpack cygwin_trunc.tgz in C:\\ (root directory of disk C:), "
@@ -700,7 +704,7 @@ msgstr ""
 "переменной PATH в файле autoexec.bat и добавить cygwin.reg в ваш системный "
 "реестр. После перезагрузки вы можете использовать Cygwin."
 
-#: template/./doc/install.sgml:204
+#: template/./doc/install.sgml:205
 #, fuzzy
 msgid ""
 "In addition you may install GTK+ packages (gtk_std_win32.rar and\n"
@@ -709,7 +713,7 @@ msgstr ""
 "В дополнение вы можете установить GTK+ пакеты gtk_std_win32.rar и \n"
 "gtkextra_std_win32.rar) если вы планируете разрабатывать GUI приложения."
 
-#: template/./doc/install.sgml:207
+#: template/./doc/install.sgml:208
 msgid ""
 "More information about working with Cygwin you can find in \"Beginner's guide"
 "\"."
@@ -717,11 +721,11 @@ msgstr ""
 "Больше информации о работе с Cygwin вы найдете в \"Руководстве для начинающих"
 "\"."
 
-#: template/./doc/install.sgml:212
+#: template/./doc/install.sgml:213
 msgid "Clip Cygwin binaries"
 msgstr "Прекомпилированный Clip для Cygwin"
 
-#: template/./doc/install.sgml:214
+#: template/./doc/install.sgml:215
 #, fuzzy
 msgid ""
 "For introduction to Clip you can just install bineries win32 version of "
@@ -733,7 +737,7 @@ msgstr ""
 "Clip. Необходимый файл -- clip_win32_bin.rar. Это прекомпилированный вариант "
 "clip-prg-&lt;version&gt;.tgz (без более поздних патчей и исправлений)."
 
-#: template/./doc/install.sgml:218
+#: template/./doc/install.sgml:219
 msgid ""
 "Just go by the same way as Cygwin installation and set some variables "
 "through\n"
@@ -743,37 +747,37 @@ msgstr ""
 "каталоге Cygwin). Так же необходимо установить некоторые системные "
 "переменные (например через autoexec.bat):"
 
-#: template/./doc/install.sgml:221
+#: template/./doc/install.sgml:222
 msgid "set CLIPROOT=/clip"
 msgstr ""
 
-#: template/./doc/install.sgml:222
+#: template/./doc/install.sgml:223
 msgid "set LANG=ru_RU.CP1251"
 msgstr ""
 
-#: template/./doc/install.sgml:223
+#: template/./doc/install.sgml:224
 msgid "#or"
 msgstr "#или"
 
-#: template/./doc/install.sgml:224
+#: template/./doc/install.sgml:225
 msgid "set CLIP_LANG=ru_RU.CP1251"
 msgstr ""
 
-#: template/./doc/install.sgml:225
+#: template/./doc/install.sgml:226
 msgid "If you use truncated CygWin from ftp.itk.ru - add to autoexec.bat:"
 msgstr ""
 "Если вы используете урезанную версию Cygwin с сайта ftp.itk.ru или его "
 "зеркал -- добавьте в autoexec.bat так же"
 
-#: template/./doc/install.sgml:226
+#: template/./doc/install.sgml:227
 msgid "set PATH= c:\\cygwin\\bin;c:\\cygwin\\clip\\bin;"
 msgstr ""
 
-#: template/./doc/install.sgml:232
+#: template/./doc/install.sgml:233
 msgid "Building Clip for Cygwin from the sources"
 msgstr "Сборка Clip для Cygwin из исходных текстов"
 
-#: template/./doc/install.sgml:234
+#: template/./doc/install.sgml:235
 #, fuzzy
 msgid ""
 "If you have planning to work with Clip on win32 you will compile it from\n"
