@@ -58,6 +58,7 @@ fmt := CODB_Formatter()
 fmt:obj:options:hide_titles := .T.
 res := codb_execute( db, 'show databases' )
 ? fmt:show()
+codb_close( db )
 
 $PLATFORMS$
 	No dependies of platform.
