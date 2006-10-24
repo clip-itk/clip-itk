@@ -25,7 +25,7 @@ static cmdList := { ;
 	{ "help", 		@ec_help(), 	"Help about database commands" }, ;
 	{ "create", 	@ec_create(),   "Create metaobject" }, ;
 	{ "delete", 	@ec_delete(),   "Delete object or metaobject" }, ;
-	{ "describe", 	@ec_describe(), "Show metaclass structure" }, ;
+	{ "describe", 	@ec_describe(), "Show class structure" }, ;
 	{ "drop", 		@ec_drop(), 	"Delete metaobject by its name" }, ;
 	{ "get", 		@ec_get(),  	"Get object from repository" }, ;
 	{ "metaget", 	@ec_metaget(), 	"Get metaobject" }, ;
