@@ -1,296 +1,446 @@
-$FUNCNAME$
-	CODB_CONNECT
-$CATEGORY$
+$ABOUTCATEG$
 	CODB_QUERY
 $SUMMARY$
-	Connect to CODB databases.
+	Library for work with CODB databases by queries.
 $LANG_RU$
-	Подключиться к базам данных CODB.
-$SYNTAX$
-     codb_connect() --> oDB
-$RETURNS$
-	codb_connect() connects to CODB databases and returns object for other functions in codb_query library.
-$LANG_RU$
-	codb_connect() устанавливает подключение к базам данных CODB и возвращает объект, которые используется для функций библиотеки codb_query.
-$END$
-    
-$FUNCNAME$
-	CODB_CLOSE
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Disconnect from CODB databases.
-$LANG_RU$
-	Отключиться от баз данных CODB.
-$SYNTAX$
-	codb_close(<oDB>)
-$ARGUMENTS$
-	<oDB>	- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
-$LANG_RU$
-	<oDB> 	- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
-$END$
-  
-$FUNCNAME$
-	CODB_EXECUTE
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Execute query.
-$LANG_RU$
-	Выполнить запрос.
-$SYNTAX$
-	codb_execute(<oDB>,<sQuery>,[<sDatabase>],[<aFiles>]) --> oRes
-$ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
-	<sQuery>	- String. Query on CQL (dialect of SQL adapted for CODB).
-	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
-	<aFiles>	- Array. Array of files attached to this query. Each element is array: { <fileName>, <content> }. Optional parameter.
-$LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
-	<sQuery>	- Строка. Запрос на CQL (диалект SQL, адаптированный для CODB).
-	<sDatabase>	- Строка. Имя рабочего словаря:репозитория (например, ETC01:ETC0101). Необязательный параметр.
-	<aFiles>	- Массив. Массив файлов, прикреплённых к запросу. Каждый элмент этого массива является массивом из двух элементов: { <имя_файла>, <содержимое> }. Необязательный параметр.
-$RETURNS$
-	codb_execute() returns result as object. Real data shoult be retrieved by <link linkend="functioncodb_get_result">codb_get_result()</link>.
-$LANG_RU$
-	codb_execute() возвращает результат в виде объекта. Собственно данные можно получить изх этого объекта функцией <link linkend="functioncodb_get_result">codb_get_result()</link>.
-$END$
-
-$FUNCNAME$
-	CODB_GET_ANSWER
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Check if answer of query is error.
-$LANG_RU$
-	Проверить, является ли результат запроса ошибкой.
-$SYNTAX$
-	codb_get_answer(<oRes>) --> '' | 'ERROR'
-$ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
-$LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
-$RETURNS$
-	Returns empty string if query executed successful or 'ERROR' if error is ocurred.
-$LANG_RU$
-	Возвращает пустую строку, если запрос выполнен успешно или 'ERROR' если обнаружена ошибка.
-$END$
-
-$FUNCNAME$
-	CODB_GET_COLUMN
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Get result column name by its index.
-$LANG_RU$
-	Получить имя столбца результата по его номеру.
-$SYNTAX$
-	codb_get_column(<oRes>, <nIndex>) --> sName
-$ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
-	<nIndex>	- Number. Column number from 1.
-$LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
-	<nIndex>	- Число. Порядковый номер столбца, начиная с 1.
-$RETURNS$
-	Returns column name from result or NIL if column number does not exist.
-$LANG_RU$
-	Возвращает имя столбца в результате запроса или NIL, если нет столбца с таким номером.
-$END$
-
-$FUNCNAME$
-	CODB_GET_ERROR
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Get error description.
-$LANG_RU$
-	Возвращает описание ошибки.
-$SYNTAX$
-	codb_get_error(<oRes>) --> sError | ''
-$ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
-$LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
-$RETURNS$
-	Returns empty string if query executed successful or error description if error is ocurred.
-$LANG_RU$
-	Возвращает пустую строку, если запрос выполнен успешно или описание ошибки если обнаружена ошибка.
-$END$
-
-$FUNCNAME$
-	CODB_GET_METAOBJECT
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Get metaobject content by ID.
-$LANG_RU$
-	Возвращает содержимое метаобъекта по его идентификатору.
-$SYNTAX$
-	codb_get_metaobject(<oDB>,<sID>,[<sDatabase>]) --> oMetaobject
-$ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
-	<sID>		- String. ID of metaobject.
-	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
-$LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
-	<sID>		- Строка. Идентификатор метаобъекта.
-	<sDatabase>	- Строка. Имя рабочего словаря:репозитория (например, ETC01:ETC0101). Необязательный параметр.
-$RETURNS$
-	Returns metaobject content.
-$LANG_RU$
-	Возвращает содержимое метаобъекта.
-$END$
-
-$FUNCNAME$
-	CODB_GET_OBJECT
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Get object content by ID.
-$LANG_RU$
-	Возвращает содержимое объекта по его идентификатору.
-$SYNTAX$
-	codb_get_object(<oDB>,<sID>,[<sDatabase>]) --> oОbject
-$ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
-	<sID>		- String. ID of object.
-	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
-$LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
-	<sID>		- Строка. Идентификатор объекта.
-	<sDatabase>	- Строка. Имя рабочего словаря:репозитория (например, ETC01:ETC0101). Необязательный параметр.
-$RETURNS$
-	Returns object content.
-$LANG_RU$
-	Возвращает содержимое объекта.
-$END$
-
-$FUNCNAME$
-	CODB_GET_RESULT
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Get query result as array.
-$LANG_RU$
-	Возвращает результат запроса в виде массива.
-$SYNTAX$
-	codb_get_result(<oRes>) --> aResult
-$ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
-$LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
-$RETURNS$
-	Returns query result as array.
-$LANG_RU$
-	Возвращает результат запроса в виде массива.
-$END$
-
-$FUNCNAME$
-	CODB_NUM_COLUMNS
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Get number of columns in query result.
-$LANG_RU$
-	Возвращает количество столбцов в результате запроса.
-$SYNTAX$
-	codb_num_columns(<oRes>) --> nColumns
-$ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
-$LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
-$RETURNS$
-	Number of columns in query result.
-$LANG_RU$
-	Количество столбцов в результате запроса.
-$END$
-
-$FUNCNAME$
-	CODB_NUM_ROWS
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Get number of rows in query result.
-$LANG_RU$
-	Возвращает количество строк в результате запроса.
-$SYNTAX$
-	codb_num_rows(<oRes>) --> nRows
-$ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
-$LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
-$RETURNS$
-	Number of rows in query result.
-$LANG_RU$
-	Количество строк в результате запроса.
-$END$
-
-$FUNCNAME$
-	CODB_PUT_METAOBJECT
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Put metaobject in database.
-$LANG_RU$
-	Помещает метаобъект в базу данных.
-$SYNTAX$
-	codb_put_metaobject(<oDB>,<oContent>,[<sDatabase>],<sClass>) --> oResult
-$ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
-	<oConent>	- Object. Metaobject content.
-	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
-	<sClass>	- String. Class name.
-$LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
-	<oConent>	- Объект. Содержимое метаобъекта.
-	<sDatabase>	- Строка. Имя рабочего словаря:репозитория (например, ETC01:ETC0101). Необязательный параметр.
-	<sClass>	- Строка. Имя класса.
-$RETURNS$
-	Result object.
-$LANG_RU$
-	Объект результата.
-$END$
-
-$FUNCNAME$
-	CODB_PUT_OBJECT
-$CATEGORY$
-	CODB_QUERY
-$SUMMARY$
-	Put object in database.
-$LANG_RU$
-	Помещает объект в базу данных.
-$SYNTAX$
-	codb_put_object(<oDB>,<oContent>,[<sDatabase>],<sClass>) --> oResult
-$ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
-	<oConent>	- Object. Оbject content.
-	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
-	<sClass>	- String. Class name.
-$LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
-	<oConent>	- Объект. Содержимое объекта.
-	<sDatabase>	- Строка. Имя рабочего словаря:репозитория (например, ETC01:ETC0101). Необязательный параметр.
-	<sClass>	- Строка. Имя класса.
-$RETURNS$
-	Result object.
-$LANG_RU$
-	Объект результата.
-$END$
-
+	Библиотека для работы с базами данных CODB посредством запросов.
+$DESCRIPTION$
+	codb_query library provides unified access to CODB databases by
+	queries instead call of	methods of classes
+	<link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
+	<link linkend="classCODBDICTIONARY">CODBDICTIONARY</link>, 
+	<link linkend="classCODBLIST">CODBLIST</link> and
+	<link linkend="classCODBIDLIST">CODBIDLIST</link>.
 	
-$EXAMPLES$
-db := codb_connect()
-e := codb_get_error( db )
+	Queries are written on CQL language (SQL dialect adapted for CODB). You
+	can use this library in own CLIP program or use console program called codb.
+	
+	Using In Programs.
+	
+	For use codb_query library in programs you should build program with this
+	library. Just append '-lcodb_query' to build command.
+	
+	Typical session of work with database contains following steps:
+<code>db := codb_connect() // Connect to databases
+e := codb_get_error( db ) // Check error
 if e != NIL
 	?? "ERROR codb_connect(): " + e + chr(10)
 	return 1
 endif
-fmt := CODB_Formatter()
-fmt:obj:options:hide_titles := .T.
-res := codb_execute( db, 'show databases' )
-? fmt:show()
 
+// Query execution
+oRes := codb_execute( db, 'show databases' )
+
+// Process result
+aResult := codb_get_result( oRes )
+
+codb_close( db ) // Close databases</code>
+	
+	Connect to databases is provided by function <link
+	linkend="functioncodb_connect">codb_connect()</link>. This function
+	opens all available databases. Function <link
+	linkend="functioncodb_close">codb_close()</link> closes all databases.
+	
+	Real operations with databases are provided by functions:
+	<link linkend="functioncodb_execute">codb_execute()</link>, 
+	<link linkend="functioncodb_get_metaobject">codb_get_metaobject()</link>,
+	<link linkend="functioncodb_get_object">codb_get_object()</link>,
+	<link linkend="functioncodb_put_metaobject">codb_put_metaobject()</link>,
+	<link linkend="functioncodb_put_object">codb_put_object()</link>.
+	
+	The difference between these functions is <link
+	linkend="functioncodb_execute">codb_execute()</link> returns object, from
+	which you can extract data by function <link
+	linkend="functioncodb_get_result">codb_get_result()</link>, but other
+	functions operate only real objects. 
+	
+	For error check use <link
+	linkend="functioncodb_get_answer">codb_get_answer()</link> and <link
+	linkend="functioncodb_get_error">codb_get_error()</link>.
+	
+	Query result returned from <link
+	linkend="functioncodb_execute">codb_execute()</link>, you can processed by
+	<link linkend="functioncodb_get_result">codb_get_result()</link>, 
+	<link linkend="functioncodb_num_columns">codb_num_columns()</link>,
+	<link linkend="functioncodb_num_rows">codb_num_rows()</link> and 
+	<link linkend="functioncodb_get_column">codb_get_column()</link>.
+	
+	Besides you can get result as formatted string. Just pass result object in
+	<link linkend="classCODB_FORMATTER">CODB_Formatter()</link> method show.
+	
+	Using codb.
+	
+	<code>codb [options] [database[:depository]]</code>
+	On start codb without any parameters it will be work in interactive mode.
+	
+	codb options:
+	-c 'command'     Execute query and exit.
+  	--hide-titles    Suppress column names.
+  	--delim='DELIM'  Set columns delimiter.
+  	
+  	Complete list of options is available on run <code>codb -h</code>.
+  	
+  	Examples:
+  	<code>codb ETC01 -c 'show classes;'</code>
+  	Show all classes in database ETC01.
+  	<code>codb ETC01:ETC0101 -c 'select * from mng_vendor,mng_author;' --delim='|'</code>
+	Show all fields from all objects of classes mng_vendor and mng_author from
+	database ETC01 and depository ETC0101 with delimiter '|'.
+	
+	Note: All data outputs in formatted mode so fields are accompanied
+	with spaces to maximum width of element in each column.
+  	
+  	CQL Commands.
+  	
+  	Each CODB command should be ended by semicolon. You can write comments
+	begin with '#' character and end with line end ('\n'). String are
+	delimited by single quote ('). If single quote is part of string it should
+	be escaped by backslash (\').
+	
+	You can pass several commands in -c parameter and through pipe:
+  	<code>echo 'show classes;show indexes;' | codb ETC01</code>
+
+	Brief CQL Commands Description.
+	
+	<code>help</code> - Help about database commands;
+	<code>create</code> - Create metaobject;
+	<code>delete</code> - Delete object or metaobject;
+	<code>describe</code> - Show class structure;
+	<code>drop</code> - Delete metaobject by its name;
+	<code>get</code> - Get object from depository;
+	<code>metaget</code> - Get metaobject;
+	<code>metaput</code> - Create or update metaobject;
+	<code>put</code> - Create or update object in depository;
+	<code>select</code> - Query object attributes;
+	<code>show</code> - Show list of metaobjects;
+	<code>use</code> - Open database.
+	
+	There is command <code>quit</code> - quits the program in interactive
+	mode. You can quit from codb to press Esc key.
+
+	Verbose CQL Command Description.
+	
+	<code>help [&lt;command&gt;]</code>
+	Help on command. If 'help' call without command name show all
+	available commands.
+	
+	<code>create &lt;metaclass&gt; (&lt;attr1&gt;=&lt;value1&gt;[,...])</code>
+	or <code>create database &lt;db_name&gt; &lt;path&gt;[&lt;description&gt;]</code>
+	Create database or metaobject.
+	Examples:
+	create database EAS01 /var/lib/db 'E/AS Database';
+	create attribute (name='phone',type='C',len=20);
+	
+	Supported metaclasses: 
+	depository - depository;
+	extent - namespace;
+	attribute - attribute;
+	counter - counter;
+	index - index;
+	class - class;
+	tcolumn - view column;
+	tview - view;
+	report - report;
+	plugin - plugin;
+	user - user;
+	group - group of users.
+		
+	<code>delete &lt;id&gt;</code>
+	Delete object or metaobject by its id.
+	
+	<code>describe &lt;class_name&gt;</code>
+	Show class structure by its name.
+	
+	<code>drop &lt;metaclass&gt; &lt;metaobject_name&gt;</code>
+	Delete metaobject by its name.
+	
+	Supported metaclasses: 
+	depository - depository;
+	extent - namespace;
+	attribute - attribute;
+	counter - counter;
+	index - index;
+	class - class;
+	tcolumn - view column;
+	tview - view;
+	report - report;
+	plugin - plugin;
+	user - user;
+	group - group of users.
+	
+	<code>get &lt;id&gt;</code>
+	Get object content from depository by its id.
+	
+	<code>metaget &lt;id&gt;</code>
+	Get metaobject content from dictionary by its id.
+	
+	<code>metaput (&lt;attr1&gt;=&lt;value1&gt;[, ...])</code>
+	Create or change metaobject in dictionary. If 'id' is defined in attributes
+	list, exist object will be replaced by new values.
+	
+	<code>put (&lt;attr1&gt;=&lt;value1&gt;[, ...])</code>
+	Create or change metaobject in depository. If 'id' is defined in
+	attributes list, exist object will be replaced by new values.
+	
+	<code>select &lt;attributes&gt; from &lt;class&gt; [where &lt;condition&gt;]</code>
+	Get list of attribute values matched condition. 
+	
+	&lt;attributes&gt; - list of attribute names delimited by comma. Names with
+	spaces put in single quotes. You can use * for all attribute names for all
+	specified classes.
+	
+	&lt;class&gt; - list of class names delimited by comma. Names with
+	spaces put in single quotes.
+	
+	&lt;condition&gt; - condition by CLIP rules. There are supported
+	operators: '==', '!=', '>', '>=', '<=', '<' and logical operators
+	'.not.', '.and.', '.or.'. Value should be put in double quotes and
+	there are no spaces between operators.
+	
+	Example:
+	<code>select id,author_name,email from mng_author where code=="Uri";</code>
+	
+	<code>show &lt;metaclass&gt;</code>
+	Show metaobject list.
+	
+	Supported metaclass: 
+	databases - databases; 
+	depositories - depositories;
+	extents - namespaces;
+	attributes - attributes;
+	counters - counters;
+	indexes - indices;
+	classes - classes;
+	tcolumns - view columns;
+	tviews - views;
+	reports - reports;
+	plugins - plugins;
+	users - users;
+	groups - user groups;
+	statistics - total statistics with number metaobjects in each metaclass.
+	
+	<code>use &lt;db&gt; [&lt;depository&gt;]</code>
+	Change current work database and depository.
+$LANG_RU$
+	Библиотека codb_query предоставляет унифицированный способ работы с базами 
+	данным CODB посредством запросов вместо вызовов методов классов 
+	<link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
+	<link linkend="classCODBDICTIONARY">CODBDICTIONARY</link>, 
+	<link linkend="classCODBLIST">CODBLIST</link> и
+	<link linkend="classCODBIDLIST">CODBIDLIST</link>.
+	
+	Запросы строятся на языке CQL (диалекте SQL, адаптированном для CODB). Вы
+	можете задействовать эту библиотеку как программно, так и используя
+	консольный клиент codb.
+	
+	Использование в программах.
+	
+	Для использования библиотеки codb_query в программах вы должны собрать свою
+	программу с этой библиотекой. Укажите при сборке '-lcodb_query'.
+	
+	Типичный сеанс работы состоит из следующих этапов:
+<code>db := codb_connect() // Подключение к базам данных
+e := codb_get_error( db ) // Проверка ошибок
+if e != NIL
+	?? "ERROR codb_connect(): " + e + chr(10)
+	return 1
+endif
+
+// Выполнение запроса
+oRes := codb_execute( db, 'show databases' )
+
+// Обработка результата
+aResult := codb_get_result( oRes )
+
+codb_close( db ) // Закрытие баз данных</code>
+	
+	Подключение к базам данных обеспечивает функция <link
+	linkend="functioncodb_connect">codb_connect()</link>. При этом открываются
+	все доступные базы данных. Закрытие баз данных обеспечивается функцией <link
+	linkend="functioncodb_close">codb_close()</link>.
+	
+	Собственно операции с базой данных обеспечивают функции:
+	<link linkend="functioncodb_execute">codb_execute()</link>, 
+	<link linkend="functioncodb_get_metaobject">codb_get_metaobject()</link>,
+	<link linkend="functioncodb_get_object">codb_get_object()</link>,
+	<link linkend="functioncodb_put_metaobject">codb_put_metaobject()</link>,
+	<link linkend="functioncodb_put_object">codb_put_object()</link>.
+	
+	Отличие этих функций в том, что <link
+	linkend="functioncodb_execute">codb_execute()</link> возвращает объект, из
+	которого собственно данные можно получить функцией <link
+	linkend="functioncodb_get_result">codb_get_result()</link>, а
+	остальные функции оперируют готовыми объектами. 
+	
+	Для контроля ошибок используются функции <link
+	linkend="functioncodb_get_answer">codb_get_answer()</link> и <link
+	linkend="functioncodb_get_error">codb_get_error()</link>.
+	
+	Результат запроса, полученный при выполнении <link
+	linkend="functioncodb_execute">codb_execute()</link>, можно обработать,
+	используя функции <link 
+	linkend="functioncodb_get_result">codb_get_result()</link>, 
+	<link linkend="functioncodb_num_columns">codb_num_columns()</link>,
+	<link linkend="functioncodb_num_rows">codb_num_rows()</link> и 
+	<link linkend="functioncodb_get_column">codb_get_column()</link>.
+	
+	Кроме этого, результат можно получить в отформатированном виде. Для этого
+	объект результата передаётся в метод 'show' объекта класса <link
+	linkend="classCODB_FORMATTER">CODB_Formatter()</link>.
+	
+	Использование консоли codb.
+	
+	<code>codb [параметры] [словарь[:депозитарий]]</code>
+	При запуске codb без параметров, он будет работать в интерактивном режиме.
+	
+	Параметры codb:
+	-c 'команда'     Выполнить запрос и выйти.
+  	--hide-titles    Не показывать заголовки столбцов.
+  	--delim='DELIM'  Установить разделитель между столбцами.
+  	
+  	Полный перечень команд можно посмотреть, запустив <code>codb -h</code>.
+  	
+  	Примеры:
+  	<code>codb ETC01 -c 'show classes;'</code>
+  	Будет выведен список классов в базе данных ETC01.
+  	<code>codb ETC01:ETC0101 -c 'select * from mng_vendor,mng_author;' --delim='|'</code>
+	Будет выведены все поля объектов классов mng_vendor и mng_author из базы 
+	данных ETC01 и депозитария ETC0101 с разделителем '|'.
+	
+	Примечание: данные выводятся в табличном виде, то есть поля дополняются 
+	пробелами до ширины максимального элемента.
+  	
+  	Команды CQL.
+  	
+  	Каждая команда должна заканчиваться точкой с запятой. Вы можете
+	использовать комментарии, начинающиеся с символа '#' до конца строки
+	(символа '\n'). Строки ограничиваются одинарными кавычками ('). При
+	употреблении кавычки в строке она экранируется обратной косой чертой (\').	
+	
+	Вы можете также передать несколько команд как в параметре -c, так и через
+	каналы:
+  	<code>echo 'show classes;show indexes;' | codb ETC01</code>
+
+	Краткое описание команд CQL.
+	
+	<code>help</code> - помощь по команде;
+	<code>create</code> - создать базу данных или метаобъект;
+	<code>delete</code> - удалить объект или метаобъект;
+	<code>describe</code> - показать структуру класса;
+	<code>drop</code> - удалить метаобъект по его имени;
+	<code>get</code> - получить содержимое объекта из депозитария;
+	<code>metaget</code> - получить метаобъект;
+	<code>metaput</code> - создать или изменить метаобъект;
+	<code>put</code> - создать или изменить объект в депозитарии;
+	<code>select</code> - получить список полей объектов;
+	<code>show</code> - показать список метаобъектов;
+	<code>use</code> - изменить текущую базу данных и депозитарий.
+	
+	В интерактивном режиме доступна команда <code>quit</code> - выход из
+	консоли. Вы можете также выйти из консоли, нажав клавишу Esc.
+
+	Подробное описание команд CQL:
+	<code>help [&lt;команда&gt;]</code>
+	Помощь по команде. Если команда не указывается, показывается список
+	доступных команд с их кратким описанием.
+	
+	<code>create &lt;метакласс&gt; (&lt;поле1&gt;=&lt;значение1&gt;[, ...])</code>
+	или <code>create database &lt;имя&gt; &lt;путь&gt; [&lt;описание&gt;]</code>
+	Создать базу данных или метаобъект.
+	Примеры:
+	create database EAS01 /var/lib/db 'База данных E/AS';
+	create attribute (name='phone',type='C',len=20);
+	
+	Доступные классы метаобъектов: 
+	depository - депозитарий;
+	extent - пространство имён;
+	attribute - атрибут;
+	counter - счётчик;
+	index - индекс;
+	class - класс;
+	tcolumn - столбец вида;
+	tview - вид;
+	report - отчёт;
+	plugin - подключаемый модуль;
+	user - пользователь;
+	group - группа пользователей.
+	
+	<code>delete &lt;id&gt;</code>
+	Удалить объект или метаобъект по его идентификатору.
+	
+	<code>describe &lt;имя_класса&gt;</code>
+	Показать структуру класса по его имени.
+	
+	<code>drop &lt;метакласс&gt; &lt;имя_метаобъекта&gt;</code>
+	Удалить метаобъект по его имени.
+	
+	Доступные классы метаобъектов: 
+	depository - депозитарий;
+	extent - пространство имён;
+	attribute - атрибут;
+	counter - счётчик;
+	index - индекс;
+	class - класс;
+	tcolumn - столбец вида;
+	tview - вид;
+	report - отчёт;
+	plugin - подключаемый модуль;
+	user - пользователь;
+	group - группа пользователей.
+	
+	<code>get &lt;id&gt;</code>
+	Получить содержимое объекта из депозитария по его идентификатору.
+	
+	<code>metaget &lt;id&gt;</code>
+	Получить метаобъект из словаря по его идентификатору.
+	
+	<code>metaput (&lt;поле1&gt;=&lt;значение1&gt;[, ...])</code>
+	Создать или изменить метаобъект в словаре. Если в списке полей указан
+	идентификатор (id), будет заменён существующий объект.
+	
+	<code>put (&lt;поле1&gt;=&lt;значение1&gt;[, ...])</code>
+	Создать или изменить объект в депозитарии. Если в списке полей указан
+	идентификатор (id), будет заменён существующий объект.
+	
+	<code>select &lt;поля&gt; from &lt;класс&gt; [where &lt;условия&gt;]</code>
+	Получить список полей объектов, удовлетворяющих указанным критериям. 
+	
+	&lt;поля&gt; - список полей, разделённых запятыми. Поля с пробелами 
+	заключаются в кавычки. Вы можете указать * для показа всех полей всех 
+	указанных классов.
+	
+	&lt;класс&gt; - список имён классов, разделённых запятыми. Имена классов с 
+	пробелами заключаются в кавычки.
+	
+	&lt;условия&gt; - условие по правилам CLIP. Поддерживаются операции 
+	сравнения '==', '!=', '>', '>=', '<=', '<' и логические операции
+	'.not.', '.and.', '.or.'. Значения должны заключаться в двойные кавычки ("),
+	а между условиями не должно быть пробелов.
+	
+	Пример:
+	<code>select id,author_name,email from mng_author where code=="Uri";</code>
+	
+	<code>show &lt;метакласс&gt;</code>
+	Показать список метаобъектов.
+	
+	Доступные классы метаобъектов: 
+	databases - базы данных; 
+	depositories - депозитарии;
+	extents - пространства имён;
+	attributes - атрибуты;
+	counters - счётчики;
+	indexes - индексы;
+	classes - классы;
+	tcolumns - столбцы видов;
+	tviews - виды;
+	reports - отчёты;
+	plugins - подключаемые модули;
+	users - пользователи;
+	groups - группы пользователей;
+	statistics - общая статистика по количеству метаобъектов.
+	
+	<code>use &lt;база_данных&gt; [&lt;депозитарий&gt;]</code>
+	Изменить текущую базу данных и депозитарий.
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
