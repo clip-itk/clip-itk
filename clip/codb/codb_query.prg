@@ -468,7 +468,7 @@ static function ec_help( self, cmd, res, files )
 			case 'help'
 				res:data := {{'help <command>','Help about specified <command>'}}
 			case 'create'
-				res:data := {{'create <metaobject> (<param1>=<value1>[, ...]>)','Create metaobject'}, ;
+				res:data := {{'create <metaobject> (<param1>=<value1>[,...])','Create metaobject'}, ;
 				   	     {'create database <dbname> <path> [<desc>]', ;
 					      'Create new database <dbname> at location <path> with description <desc>'}}
 			case 'use'
@@ -476,11 +476,11 @@ static function ec_help( self, cmd, res, files )
 			case 'get'
 				res:data := {{'get <id>','Get object content specified by <id>'}}
 			case 'put'
-				res:data := {{'put <class> (<param1>=<value1>[, ...]>','Create (id is NULL) or update object in depository. <class> is class name for new object or id of changed object'}}
+				res:data := {{'put <class> (<param1>=<value1>[, ...])','Create (id is NULL) or update object in depository. <class> is class name for new object or id of changed object'}}
 			case 'metaget'
 				res:data := {{'metaget <id>','Get metaobject content specified by <id>'}}
 			case 'metaput'
-				res:data := {{'metaput (<param1>=<value1>[, ...]>)','Create (id is NULL) or update metaobject'}}
+				res:data := {{'metaput (<param1>=<value1>[, ...])','Create (id is NULL) or update metaobject'}}
 			case 'delete'
 				res:data := {{'delete <id>','Delete object or metaobject specified by <id>'}}
 			case 'drop'
