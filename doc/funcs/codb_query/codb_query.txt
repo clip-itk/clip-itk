@@ -6,8 +6,8 @@ $LANG_RU$
 	Библиотека для работы с базами данных CODB посредством запросов.
 $DESCRIPTION$
 	codb_query library provides unified access to CODB databases by
-	queries instead call of	methods of classes
-	<link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
+	queries instead call of	methods of classes <link 
+	linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
 	<link linkend="classCODBDICTIONARY">CODBDICTIONARY</link>, 
 	<link linkend="classCODBLIST">CODBLIST</link> and
 	<link linkend="classCODBIDLIST">CODBIDLIST</link>.
@@ -21,7 +21,7 @@ $DESCRIPTION$
 	library. Just append '-lcodb_query' to build command.
 	
 	Typical session of work with database contains following steps:
-<code>db := codb_connect() // Connect to databases
+<pre>db := codb_connect() // Connect to databases
 e := codb_get_error( db ) // Check error
 if e != NIL
 	?? "ERROR codb_connect(): " + e + chr(10)
@@ -34,7 +34,7 @@ oRes := codb_execute( db, 'show databases' )
 // Process result
 aResult := codb_get_result( oRes )
 
-codb_close( db ) // Close databases</code>
+codb_close( db ) // Close databases</pre>
 	
 	Connect to databases is provided by function <link
 	linkend="functioncodb_connect">codb_connect()</link>. This function
@@ -70,7 +70,7 @@ codb_close( db ) // Close databases</code>
 	
 	Using codb.
 	
-	<code>codb [options] [database[:depository]]</code>
+	<pre>codb [options] [database[:depository]]</pre>
 	On start codb without any parameters it will be work in interactive mode.
 	
 	codb options:
@@ -78,12 +78,12 @@ codb_close( db ) // Close databases</code>
   	--hide-titles    Suppress column names.
   	--delim='DELIM'  Set columns delimiter.
   	
-  	Complete list of options is available on run <code>codb -h</code>.
+  	Complete list of options is available on run <pre>codb -h</pre>.
   	
   	Examples:
-  	<code>codb ETC01 -c 'show classes;'</code>
+  	<pre>codb ETC01 -c 'show classes;'</pre>
   	Show all classes in database ETC01.
-  	<code>codb ETC01:ETC0101 -c 'select * from mng_vendor,mng_author;' --delim='|'</code>
+  	<pre>codb ETC01:ETC0101 -c 'select * from mng_vendor,mng_author;' --delim='|'</pre>
 	Show all fields from all objects of classes mng_vendor and mng_author from
 	database ETC01 and depository ETC0101 with delimiter '|'.
 	
@@ -98,34 +98,34 @@ codb_close( db ) // Close databases</code>
 	be escaped by backslash (\').
 	
 	You can pass several commands in -c parameter and through pipe:
-  	<code>echo 'show classes;show indexes;' | codb ETC01</code>
+  	<pre>echo 'show classes;show indexes;' | codb ETC01</pre>
 
 	Brief CQL Commands Description.
-	
-	<code>help</code> - Help about database commands;
-	<code>create</code> - Create metaobject;
-	<code>delete</code> - Delete object or metaobject;
-	<code>describe</code> - Show class structure;
-	<code>drop</code> - Delete metaobject by its name;
-	<code>get</code> - Get object from depository;
-	<code>metaget</code> - Get metaobject;
-	<code>metaput</code> - Create or update metaobject;
-	<code>put</code> - Create or update object in depository;
-	<code>select</code> - Query object attributes;
-	<code>show</code> - Show list of metaobjects;
-	<code>use</code> - Open database.
-	
-	There is command <code>quit</code> - quits the program in interactive
+	<pre>
+	help - Help about database commands;
+	create - Create metaobject;
+	delete - Delete object or metaobject;
+	describe - Show class structure;
+	drop - Delete metaobject by its name;
+	get - Get object from depository;
+	metaget - Get metaobject;
+	metaput - Create or update metaobject;
+	put - Create or update object in depository;
+	select - Query object attributes;
+	show - Show list of metaobjects;
+	use - Open database.
+	</pre>
+	There is command <pre>quit</pre> - quits the program in interactive
 	mode. You can quit from codb to press Esc key.
 
 	Verbose CQL Command Description.
 	
-	<code>help [&lt;command&gt;]</code>
+	<pre>help [<command>]</pre>
 	Help on command. If 'help' call without command name show all
 	available commands.
 	
-	<code>create &lt;metaclass&gt; (&lt;attr1&gt;=&lt;value1&gt;[,...])</code>
-	or <code>create database &lt;db_name&gt; &lt;path&gt;[&lt;description&gt;]</code>
+	<pre>create <metaclass> (<attr1>=<value1>[,...])</pre>
+	or <pre>create database <db_name> <path>[<description>]</pre>
 	Create database or metaobject.
 	Examples:
 	create database EAS01 /var/lib/db 'E/AS Database';
@@ -145,13 +145,13 @@ codb_close( db ) // Close databases</code>
 	user - user;
 	group - group of users.
 		
-	<code>delete &lt;id&gt;</code>
+	<pre>delete <id></pre>
 	Delete object or metaobject by its id.
 	
-	<code>describe &lt;class_name&gt;</code>
+	<pre>describe <class_name></pre>
 	Show class structure by its name.
 	
-	<code>drop &lt;metaclass&gt; &lt;metaobject_name&gt;</code>
+	<pre>drop <metaclass> <metaobject_name></pre>
 	Delete metaobject by its name.
 	
 	Supported metaclasses: 
@@ -168,39 +168,39 @@ codb_close( db ) // Close databases</code>
 	user - user;
 	group - group of users.
 	
-	<code>get &lt;id&gt;</code>
+	<pre>get <id></pre>
 	Get object content from depository by its id.
 	
-	<code>metaget &lt;id&gt;</code>
+	<pre>metaget <id></pre>
 	Get metaobject content from dictionary by its id.
 	
-	<code>metaput (&lt;attr1&gt;=&lt;value1&gt;[, ...])</code>
+	<pre>metaput (<attr1>=<value1>[, ...])</pre>
 	Create or change metaobject in dictionary. If 'id' is defined in attributes
 	list, exist object will be replaced by new values.
 	
-	<code>put (&lt;attr1&gt;=&lt;value1&gt;[, ...])</code>
+	<pre>put (<attr1>=<value1>[, ...])</pre>
 	Create or change metaobject in depository. If 'id' is defined in
 	attributes list, exist object will be replaced by new values.
 	
-	<code>select &lt;attributes&gt; from &lt;class&gt; [where &lt;condition&gt;]</code>
+	<pre>select <attributes> from <class> [where <condition>]</pre>
 	Get list of attribute values matched condition. 
 	
-	&lt;attributes&gt; - list of attribute names delimited by comma. Names with
+	<attributes> - list of attribute names delimited by comma. Names with
 	spaces put in single quotes. You can use * for all attribute names for all
 	specified classes.
 	
-	&lt;class&gt; - list of class names delimited by comma. Names with
+	<class> - list of class names delimited by comma. Names with
 	spaces put in single quotes.
 	
-	&lt;condition&gt; - condition by CLIP rules. There are supported
+	<condition> - condition by CLIP rules. There are supported
 	operators: '==', '!=', '>', '>=', '<=', '<' and logical operators
 	'.not.', '.and.', '.or.'. Value should be put in double quotes and
 	there are no spaces between operators.
 	
 	Example:
-	<code>select id,author_name,email from mng_author where code=="Uri";</code>
+	<pre>select id,author_name,email from mng_author where code=="Uri";</pre>
 	
-	<code>show &lt;metaclass&gt;</code>
+	<pre>show <metaclass></pre>
 	Show metaobject list.
 	
 	Supported metaclass: 
@@ -219,8 +219,9 @@ codb_close( db ) // Close databases</code>
 	groups - user groups;
 	statistics - total statistics with number metaobjects in each metaclass.
 	
-	<code>use &lt;db&gt; [&lt;depository&gt;]</code>
+	<pre>use <db> [<depository>]</pre>
 	Change current work database and depository.
+
 $LANG_RU$
 	Библиотека codb_query предоставляет унифицированный способ работы с базами 
 	данным CODB посредством запросов вместо вызовов методов классов 
@@ -239,7 +240,7 @@ $LANG_RU$
 	программу с этой библиотекой. Укажите при сборке '-lcodb_query'.
 	
 	Типичный сеанс работы состоит из следующих этапов:
-<code>db := codb_connect() // Подключение к базам данных
+<pre>db := codb_connect() // Подключение к базам данных
 e := codb_get_error( db ) // Проверка ошибок
 if e != NIL
 	?? "ERROR codb_connect(): " + e + chr(10)
@@ -252,7 +253,7 @@ oRes := codb_execute( db, 'show databases' )
 // Обработка результата
 aResult := codb_get_result( oRes )
 
-codb_close( db ) // Закрытие баз данных</code>
+codb_close( db ) // Закрытие баз данных</pre>
 	
 	Подключение к базам данных обеспечивает функция <link
 	linkend="functioncodb_connect">codb_connect()</link>. При этом открываются
@@ -290,7 +291,7 @@ codb_close( db ) // Закрытие баз данных</code>
 	
 	Использование консоли codb.
 	
-	<code>codb [параметры] [словарь[:депозитарий]]</code>
+	<pre>codb [параметры] [словарь[:депозитарий]]</pre>
 	При запуске codb без параметров, он будет работать в интерактивном режиме.
 	
 	Параметры codb:
@@ -298,12 +299,12 @@ codb_close( db ) // Закрытие баз данных</code>
   	--hide-titles    Не показывать заголовки столбцов.
   	--delim='DELIM'  Установить разделитель между столбцами.
   	
-  	Полный перечень команд можно посмотреть, запустив <code>codb -h</code>.
+  	Полный перечень команд можно посмотреть, запустив <pre>codb -h</pre>.
   	
   	Примеры:
-  	<code>codb ETC01 -c 'show classes;'</code>
+  	<pre>codb ETC01 -c 'show classes;'</pre>
   	Будет выведен список классов в базе данных ETC01.
-  	<code>codb ETC01:ETC0101 -c 'select * from mng_vendor,mng_author;' --delim='|'</code>
+  	<pre>codb ETC01:ETC0101 -c 'select * from mng_vendor,mng_author;' --delim='|'</pre>
 	Будет выведены все поля объектов классов mng_vendor и mng_author из базы 
 	данных ETC01 и депозитария ETC0101 с разделителем '|'.
 	
@@ -319,33 +320,33 @@ codb_close( db ) // Закрытие баз данных</code>
 	
 	Вы можете также передать несколько команд как в параметре -c, так и через
 	каналы:
-  	<code>echo 'show classes;show indexes;' | codb ETC01</code>
+  	<pre>echo 'show classes;show indexes;' | codb ETC01</pre>
 
 	Краткое описание команд CQL.
-	
-	<code>help</code> - помощь по команде;
-	<code>create</code> - создать базу данных или метаобъект;
-	<code>delete</code> - удалить объект или метаобъект;
-	<code>describe</code> - показать структуру класса;
-	<code>drop</code> - удалить метаобъект по его имени;
-	<code>get</code> - получить содержимое объекта из депозитария;
-	<code>metaget</code> - получить метаобъект;
-	<code>metaput</code> - создать или изменить метаобъект;
-	<code>put</code> - создать или изменить объект в депозитарии;
-	<code>select</code> - получить список полей объектов;
-	<code>show</code> - показать список метаобъектов;
-	<code>use</code> - изменить текущую базу данных и депозитарий.
-	
-	В интерактивном режиме доступна команда <code>quit</code> - выход из
+	<pre>
+	help - помощь по команде;
+	create - создать базу данных или метаобъект;
+	delete - удалить объект или метаобъект;
+	describe - показать структуру класса;
+	drop - удалить метаобъект по его имени;
+	get - получить содержимое объекта из депозитария;
+	metaget - получить метаобъект;
+	metaput - создать или изменить метаобъект;
+	put - создать или изменить объект в депозитарии;
+	select - получить список полей объектов;
+	show - показать список метаобъектов;
+	use - изменить текущую базу данных и депозитарий.
+	</pre>
+	В интерактивном режиме доступна команда <pre>quit</pre> - выход из
 	консоли. Вы можете также выйти из консоли, нажав клавишу Esc.
 
 	Подробное описание команд CQL:
-	<code>help [&lt;команда&gt;]</code>
+	<pre>help [<команда>]</pre>
 	Помощь по команде. Если команда не указывается, показывается список
 	доступных команд с их кратким описанием.
 	
-	<code>create &lt;метакласс&gt; (&lt;поле1&gt;=&lt;значение1&gt;[, ...])</code>
-	или <code>create database &lt;имя&gt; &lt;путь&gt; [&lt;описание&gt;]</code>
+	<pre>create <метакласс> (<поле1>=<значение1>[, ...])</pre>
+	или <pre>create database <имя> <путь> [<описание>]</pre>
 	Создать базу данных или метаобъект.
 	Примеры:
 	create database EAS01 /var/lib/db 'База данных E/AS';
@@ -365,13 +366,13 @@ codb_close( db ) // Закрытие баз данных</code>
 	user - пользователь;
 	group - группа пользователей.
 	
-	<code>delete &lt;id&gt;</code>
+	<pre>delete <id></pre>
 	Удалить объект или метаобъект по его идентификатору.
 	
-	<code>describe &lt;имя_класса&gt;</code>
+	<pre>describe <имя_класса></pre>
 	Показать структуру класса по его имени.
 	
-	<code>drop &lt;метакласс&gt; &lt;имя_метаобъекта&gt;</code>
+	<pre>drop <метакласс> <имя_метаобъекта></pre>
 	Удалить метаобъект по его имени.
 	
 	Доступные классы метаобъектов: 
@@ -388,39 +389,39 @@ codb_close( db ) // Закрытие баз данных</code>
 	user - пользователь;
 	group - группа пользователей.
 	
-	<code>get &lt;id&gt;</code>
+	<pre>get <id></pre>
 	Получить содержимое объекта из депозитария по его идентификатору.
 	
-	<code>metaget &lt;id&gt;</code>
+	<pre>metaget <id></pre>
 	Получить метаобъект из словаря по его идентификатору.
 	
-	<code>metaput (&lt;поле1&gt;=&lt;значение1&gt;[, ...])</code>
+	<pre>metaput (<поле1>=<значение1>[, ...])</pre>
 	Создать или изменить метаобъект в словаре. Если в списке полей указан
 	идентификатор (id), будет заменён существующий объект.
 	
-	<code>put (&lt;поле1&gt;=&lt;значение1&gt;[, ...])</code>
+	<pre>put (<поле1>=<значение1>[, ...])</pre>
 	Создать или изменить объект в депозитарии. Если в списке полей указан
 	идентификатор (id), будет заменён существующий объект.
 	
-	<code>select &lt;поля&gt; from &lt;класс&gt; [where &lt;условия&gt;]</code>
+	<pre>select <поля> from <класс> [where <условия>]</pre>
 	Получить список полей объектов, удовлетворяющих указанным критериям. 
 	
-	&lt;поля&gt; - список полей, разделённых запятыми. Поля с пробелами 
+	<поля> - список полей, разделённых запятыми. Поля с пробелами 
 	заключаются в кавычки. Вы можете указать * для показа всех полей всех 
 	указанных классов.
 	
-	&lt;класс&gt; - список имён классов, разделённых запятыми. Имена классов с 
+	<класс> - список имён классов, разделённых запятыми. Имена классов с 
 	пробелами заключаются в кавычки.
 	
-	&lt;условия&gt; - условие по правилам CLIP. Поддерживаются операции 
+	<условия> - условие по правилам CLIP. Поддерживаются операции 
 	сравнения '==', '!=', '>', '>=', '<=', '<' и логические операции
 	'.not.', '.and.', '.or.'. Значения должны заключаться в двойные кавычки ("),
 	а между условиями не должно быть пробелов.
 	
 	Пример:
-	<code>select id,author_name,email from mng_author where code=="Uri";</code>
+	<pre>select id,author_name,email from mng_author where code=="Uri";</pre>
 	
-	<code>show &lt;метакласс&gt;</code>
+	<pre>show <метакласс></pre>
 	Показать список метаобъектов.
 	
 	Доступные классы метаобъектов: 
@@ -439,16 +440,5 @@ codb_close( db ) // Закрытие баз данных</code>
 	groups - группы пользователей;
 	statistics - общая статистика по количеству метаобъектов.
 	
-	<code>use &lt;база_данных&gt; [&lt;депозитарий&gt;]</code>
+	<pre>use <база_данных> [<депозитарий>]</pre>
 	Изменить текущую базу данных и депозитарий.
-$PLATFORMS$
-	No dependies of platform.
-$LANG_RU$
-	Не зависит от платформы.
-$SEEALSO$
-	CODB_FORMATTER
-$AUTHOR$
-	Andrey Cherepanov <skull@eas.lrn.ru>
-$LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
-$LASTDATE$

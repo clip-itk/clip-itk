@@ -23,7 +23,7 @@ $SUMMARY$
 $LANG_RU$
 	Отключиться от баз данных CODB.
 $SYNTAX$
-	codb_close(<oDB>)
+	codb_close(<oDB>) --> NIL
 $ARGUMENTS$
 	<oDB>	- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
 $LANG_RU$
@@ -151,7 +151,7 @@ $SUMMARY$
 $LANG_RU$
 	Возвращает содержимое объекта по его идентификатору.
 $SYNTAX$
-	codb_get_object(<oDB>,<sID>,[<sDatabase>]) --> oОbject
+	codb_get_object(<oDB>,<sID>,[<sDatabase>]) --> oObject
 $ARGUMENTS$
 	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
 	<sID>		- String. ID of object.
