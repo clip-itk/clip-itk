@@ -8,10 +8,20 @@
 
 #define __FAST__LINK	1
 
+static docbook_tags := { ;
+	'command', ;
+	'link', ;
+	'itemizedlist', ;
+	'orderedlist', ;
+	'simplelist', ;
+	'variablelist', ;
+	'listitem' ;
+}
+
 function main()
 local fsrc, fsgml, str, outfile, i, j, par, fname, t, x
 local argn, argd, categ, ab_order, ab_part, fs, ii, jj, key, val, lang
-local outdir, s, outlang:={"EN"},alang:={"EN"}, lEnd, l_l
+local outdir, s, outlang:={"EN"},alang:={"EN"}, lEnd:=.T., l_l
 
 //clear screen
 
@@ -183,86 +193,70 @@ local obj := map()
 return obj
 
 *******************************************************************************
-static function trans(str, all)
-local newstr, l, i, j, s
+static function trans(pstr, all)
+local str, newstr, l, i, j, s, tag, reg
+	str := pstr
 	newstr := ""
 	all := iif(all==NIL, .t., all)
 
 	if all
-		l := len(str)
-		for i:= 1 to l
+		while len(str) > 0
+			reg := {}
+			if search('[<&>]', str, @reg)
+				i := reg[1][1]
+				newstr += left(str, i-1)
+				str := substr(str, i)
+			else
+				newstr += str
+				str := ''
+				loop
+			endif			
 			s := left(str, 1)
 			if s == "<"
 				if left(lower(str), 5) == "<pre>"
-					newstr += "<programlisting>"
+					newstr += "<programlisting><![CDATA["
 					str := substr(str, 6)
-					//newstr += str
-					//j := atl("</pre>", lower(str))
-					//newstr += substr(str, 6, j-11) + "</programlisting>&\n"
-					//str := substr(str, j+6)
 					loop
 				elseif left(lower(str), 6) == "</pre>"
-					newstr += "</programlisting>"
+					newstr += "]]></programlisting>"
 					str := substr(str, 7)
-					//newstr += str
-					//j := atl("</pre>", lower(str))
-					//newstr += substr(str, 6, j-11) + "</programlisting>&\n"
-					//str := substr(str, j+6)
 					loop
-				/*else
-				if left(lower(str), 5) == "<pre>"
-					j := atl("</pre>", lower(str))
-					newstr += substr(str, 1, j+5)
-					str := substr(str, j+6)
-					loop
-				*/
-				elseif  left(lower(str), 9) == "<command>"
-					j := atl("</command>", lower(str))
-					newstr += substr(str, 1, j+9)
-					str := substr(str, j+10)
-					loop
-				elseif  left(lower(str), 5) == "<link"
-					j := atl("</link>", lower(str))
-					newstr += substr(str, 1, j+6)
-					str := substr(str, j+7)
-					loop
-				elseif  left(lower(str), 13) == "<itemizedlist"
-					j := atl("</itemizedlist>", lower(str))
-					newstr += substr(str, 1, j+15)
-					str := substr(str, j+16)
-					loop
-				elseif  left(lower(str), 13) == "<ordered"
-					j := atl("</orderedlist>", lower(str))
-					newstr += substr(str, 1, j+14)
-					str := substr(str, j+15)
-					loop
-				elseif  left(lower(str), 13) == "<simple"
-					j := atl("</simplelist>", lower(str))
-					newstr += substr(str, 1, j+13)
-					str := substr(str, j+14)
-					loop
-				elseif  left(lower(str), 13) == "<variable"
-					j := atl("</variablelist>", lower(str))
-					newstr += substr(str, 1, j+15)
-					str := substr(str, j+16)
-					loop
-				elseif  left(lower(str), 9) == "<listitem"
-					j := atl("</listitem>", lower(str))
-					newstr += substr(str, 1, j+11)
-					str := substr(str, j+12)
-					loop
+				elseif left(str,9) == '<![CDATA['
+					j := at(']]>', str)
+					if j==0
+						newstr += str
+						str := ''
+						loop
+					else
+						newstr += left(str, j+2)
+						str := substr(str, j+3)
+					endif
 				else
-					newstr += '<![CDATA['+s+']]>'
+					// Check allowed tags
+					j := ascan(docbook_tags, {|e| left(lower(str),len(e)+1) == '<'+e })
+					if j > 0
+						tag := docbook_tags[j]
+						i = at('</'+tag+'>', lower(str) )
+						if i > 0
+							newstr += left(str, i+len(tag)+2)
+							str := substr(str, i+len(tag)+3)
+							loop
+						else
+							newstr += '&lt;'
+						endif
+					else
+						newstr += '&lt;'
+					endif
 				endif
 			elseif s== ">"
-				newstr += '<![CDATA['+s+']]>'
+				newstr += '&gt;'
 			elseif s== "&"
-				newstr += '<![CDATA['+s+']]>'
+				newstr += '&amp;'
 			else
 				newstr += s
 			endif
 			str := substr(str, 2)
-		next
+		enddo
 	else
 		newstr := str
 	endif
@@ -366,8 +360,8 @@ local i, j, a, str, lStr, arr, lf
 	endif
 	fwrite(fsgml, str, len(str))
 
-	str := '<row><entry align="right" valign="top"><emphasis>See also :</emphasis></entry><entry>&\n'
 	if !empty(fs:SEEALSO)
+		str := '<row><entry align="right" valign="top"><emphasis>See also :</emphasis></entry><entry>&\n'
 		a := split(fs:SEEALSO, ",")
 		for j=1 to len(a)
 			if empty(a[j])
@@ -384,10 +378,10 @@ local i, j, a, str, lStr, arr, lf
 			i := alltrim(i)
 			str += '<link linkend="'+iif(lf, 'function', 'class')+i+'">'+a[j]+'</link> '
 		next
+		str += '</entry></row>&\n'
+		str += '</tbody></tgroup></informaltable>&\n'
+		fwrite(fsgml, str, len(str))
 	endif
-	str += '</entry></row>&\n'
-	str += '</tbody></tgroup></informaltable>&\n'
-	fwrite(fsgml, str, len(str))
 
 	str := ""
 	if !empty(fs:PECULIARITIES)
@@ -444,16 +438,18 @@ local i, j, a, str, lStr, arr, lf
 		str += '&\n</para>&\n'
 	endif
 
-	str := '<informalexample><para><command>Example :</command></para>&\n'
-	str += '<programlisting><![CDATA[&\n'
-	if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:EXAMPLES)
-		str += trans(fs[lang]:EXAMPLES, .f.)
-	else
-		str += trans(fs:EXAMPLES, .f.)
+	if !empty(fs:EXAMPLES)
+		str := '<informalexample><para><command>Example :</command></para>&\n'
+		str += '<programlisting><![CDATA[&\n'
+		if lang != "EN" .and. (lang $ fs) .and. !empty(fs[lang]:EXAMPLES)
+			str += trans(fs[lang]:EXAMPLES, .f.)
+		else
+			str += trans(fs:EXAMPLES, .f.)
+		endif
+		str += ']]></programlisting>&\n'
+		str += '</informalexample><!-- EXAMPLE for '+fs:FUNCNAME+' -->&\n'
+		fwrite(fsgml, str, len(str))
 	endif
-	str += ']]></programlisting>&\n'
-	str += '</informalexample><!-- EXAMPLE for '+fs:FUNCNAME+' -->&\n'
-	fwrite(fsgml, str, len(str))
 
 	str := '</refsect2><!-- End function '+fs:FUNCNAME+' -->&\n'
 	fwrite(fsgml, str, len(str))
@@ -868,7 +864,8 @@ static function writeArgs(fs, argname, argdesc, lang)
 return
 *******************************************************************************
 static function split_str(str, delim)
-local arr, i, sp, ep, x, y
+	local arr, i, sp, ep, x, y
+	
 	arr := split(trans(str), delim)
 	for i=1 to len(arr)
 		x := atl("<pre>", lower(arr[i]))

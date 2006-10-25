@@ -13,7 +13,18 @@ $ARGDESC$
 $RETURNS$
    ...
 $DESCRIPTION$
-   ...
+   <![CDATA[c-dated text]]>
+   <link 
+   linkend="functionaadd">AADD</link>
+   <pre>Formatted
+text</pre>
+	Command: <command>command</command> & unknown <tag>
+	List:
+	<itemizedlist>
+		<listitem>first item</listitem>
+		<listitem>second item</listitem>
+		<listitem>third item</listitem>
+	</itemizedlist>
 $EXAMPLES$
    ...
 $PECULIARITIES$

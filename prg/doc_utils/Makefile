@@ -20,7 +20,7 @@ ctosgml$(EXESUFF):	ctosgml.prg $(OBJS)
 
 clean:
 	rm -rf *.o *.ppo *.c *.s *.a *.so *.b *.BAK *.bak *.log ftosgml ctosgml *~ core* *core
-	rm -rf *.ex *.nm *.exe
+	rm -rf *.ex *.nm *.exe sgml/*
 
 install:
 	cp ftosgml$(EXESUFF) $(DESTDIR)$(CLIPROOT)/bin
