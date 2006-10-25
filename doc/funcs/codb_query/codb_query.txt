@@ -132,6 +132,7 @@ codb_close( db ) // Close databases</pre>
 	create attribute (name='phone',type='C',len=20);
 	
 	Supported metaclasses: 
+	<pre>
 	depository - depository;
 	extent - namespace;
 	attribute - attribute;
@@ -144,7 +145,8 @@ codb_close( db ) // Close databases</pre>
 	plugin - plugin;
 	user - user;
 	group - group of users.
-		
+	</pre>
+	
 	<pre>delete <id></pre>
 	Delete object or metaobject by its id.
 	
@@ -155,6 +157,7 @@ codb_close( db ) // Close databases</pre>
 	Delete metaobject by its name.
 	
 	Supported metaclasses: 
+	<pre>
 	depository - depository;
 	extent - namespace;
 	attribute - attribute;
@@ -167,6 +170,7 @@ codb_close( db ) // Close databases</pre>
 	plugin - plugin;
 	user - user;
 	group - group of users.
+	</pre>
 	
 	<pre>get <id></pre>
 	Get object content from depository by its id.
@@ -203,7 +207,8 @@ codb_close( db ) // Close databases</pre>
 	<pre>show <metaclass></pre>
 	Show metaobject list.
 	
-	Supported metaclass: 
+	Supported metaclasses: 
+	<pre>
 	databases - databases; 
 	depositories - depositories;
 	extents - namespaces;
@@ -218,6 +223,7 @@ codb_close( db ) // Close databases</pre>
 	users - users;
 	groups - user groups;
 	statistics - total statistics with number metaobjects in each metaclass.
+	</pre>
 	
 	<pre>use <db> [<depository>]</pre>
 	Change current work database and depository.
@@ -353,6 +359,7 @@ codb_close( db ) // Закрытие баз данных</pre>
 	create attribute (name='phone',type='C',len=20);
 	
 	Доступные классы метаобъектов: 
+	<pre>
 	depository - депозитарий;
 	extent - пространство имён;
 	attribute - атрибут;
@@ -365,6 +372,7 @@ codb_close( db ) // Закрытие баз данных</pre>
 	plugin - подключаемый модуль;
 	user - пользователь;
 	group - группа пользователей.
+	</pre>
 	
 	<pre>delete <id></pre>
 	Удалить объект или метаобъект по его идентификатору.
@@ -376,6 +384,7 @@ codb_close( db ) // Закрытие баз данных</pre>
 	Удалить метаобъект по его имени.
 	
 	Доступные классы метаобъектов: 
+	<pre>
 	depository - депозитарий;
 	extent - пространство имён;
 	attribute - атрибут;
@@ -388,6 +397,7 @@ codb_close( db ) // Закрытие баз данных</pre>
 	plugin - подключаемый модуль;
 	user - пользователь;
 	group - группа пользователей.
+	</pre>
 	
 	<pre>get <id></pre>
 	Получить содержимое объекта из депозитария по его идентификатору.
@@ -425,6 +435,7 @@ codb_close( db ) // Закрытие баз данных</pre>
 	Показать список метаобъектов.
 	
 	Доступные классы метаобъектов: 
+	<pre>
 	databases - базы данных; 
 	depositories - депозитарии;
 	extents - пространства имён;
@@ -439,6 +450,7 @@ codb_close( db ) // Закрытие баз данных</pre>
 	users - пользователи;
 	groups - группы пользователей;
 	statistics - общая статистика по количеству метаобъектов.
+	</pre>
 	
 	<pre>use <база_данных> [<депозитарий>]</pre>
 	Изменить текущую базу данных и депозитарий.
