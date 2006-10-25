@@ -59,7 +59,7 @@ $PLATFORMS$
 $SEEALSO$
 $AUTHOR$
 ITK
-   $LANG_RU$
+$LANG_RU$
 ИТК
 $END$
 
@@ -88,8 +88,8 @@ $LANG_RU$
      Возвращает TRUE, если файл скомпилировался без ошибок.
 $DESCRIPTION$
 
-     COMPILEFILE() compilles file <sFileName> with flags <sFlags> and returns
-     TRUE in success, in other returns FALSE and <sError>  contents error description.
+     COMPILEFILE() compiles file <sFileName> with flags <sFlags> and returns
+     TRUE in success, in other returns FALSE and <sError> contents error description.
 
 $LANG_RU$
 
