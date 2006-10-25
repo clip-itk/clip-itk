@@ -384,8 +384,8 @@ local i, j, a, str, lStr, arr, lf
 			i := alltrim(i)
 			str += '<link linkend="'+iif(lf, 'function', 'class')+i+'">'+a[j]+'</link> '
 		next
-		str += '</entry></row>&\n'
 	endif
+	str += '</entry></row>&\n'
 	str += '</tbody></tgroup></informaltable>&\n'
 	fwrite(fsgml, str, len(str))
 
