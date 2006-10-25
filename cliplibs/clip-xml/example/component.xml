@@ -80,6 +80,7 @@
   </install>
   
   <uninstall> <!-- custom uninstall actions -->
+	<file name="** uninstall" />
   </uninstall>
 
   <locale lang="ru">
