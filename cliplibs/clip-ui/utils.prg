@@ -116,7 +116,7 @@ return value
 function getLocaleStrings( parent, locale )
 	local section:=NIL, mStr:=map(), tag, i
 	if empty(locale)
-		locale := substr(getenv("LANG"),1,2)
+		locale := left(getenv("LANG"),2)
 	endif
 
 	// Find appropriate section <locale lang="XX">

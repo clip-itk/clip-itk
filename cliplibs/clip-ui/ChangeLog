@@ -1,3 +1,7 @@
+2006-10-25 clip-ui-0.1.3
+	- UIWindow is resizeable by default
+	- Widget with suffix '+' is expanded in XFL forms
+
 2006-10-16
 	- Window now support spacing and padding in form
 	- Pass both id and text for UIChoice

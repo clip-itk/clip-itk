@@ -220,10 +220,10 @@ static function ui_createWindow( self, title, parent, resizeable )
 	vbox := UIVBox()
 	gtk_ContainerAdd( wnd, vbox )
 	wnd:userSpace := vbox
-	if valtype(resizeable) == "L" .and. resizeable
-		gtk_WindowSetPolicy(wnd, .T., .T., .T.)
-	else
+	if valtype(resizeable) == "L" .and. .not. resizeable
 		gtk_WindowSetPolicy(wnd, .F., .F., .T.)
+	else
+		gtk_WindowSetPolicy(wnd, .T., .T., .T.)
 	endif
 	if empty(parent)
 		gtk_SignalConnectAfter( wnd, "delete-event", @ui_quit() )

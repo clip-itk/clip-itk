@@ -14,20 +14,25 @@
             <!-- Menu -->
             <widget class="menuBar">
                 <widget class="popupMenu" name="journal_menu" label="&amp;Journal">
-			<widget class="menuItem" label="&amp;Payment orders" name="Menu.Bank.PaymentOrder.List">
-				<property name="icon" value="icons/journal_bank_pp.xpm"/>
-			</widget>
-			<widget class="menuItem" label="&amp;Create payment order" name="Menu.Bank.PaymentOrder.Create">
-				<property name="icon" value="icons/doc_bank_pp.xpm"/>
-			</widget>
-			<widget class="menuSeparator"/>
-			<widget class="menuItem" label="&amp;Exit" name="Menu.Quit"/>
+					<widget class="menuItem" label="&amp;Payment orders" name="Menu.Bank.PaymentOrder.List">
+						<property name="icon" value="icons/journal_bank_pp.xpm"/>
+					</widget>
+					<widget class="menuItem" label="&amp;Create payment order" name="Menu.Bank.PaymentOrder.Create">
+						<property name="icon" value="icons/doc_bank_pp.xpm"/>
+					</widget>
+					<widget class="menuSeparator"/>
+					<widget class="menuItem" label="&amp;Exit" name="Menu.Quit">
+						<rule>
+							<event widget="Menu.Quit" signal="activate"/>
+							<action><call widget="mainWindow" method="close"/></action>
+						</rule>
+					</widget>
                 </widget>
                 <widget class="popupMenu" name="cfg_menu" label="&amp;Settings">
-			<widget class="menuCheckedItem" name="showTB" label="Show &amp;toolbar" />
-			<widget class="menuCheckedItem" name="showSB" label="Show &amp;statusbar" />
-			<widget class="menuSeparator"/>
-			<widget name="Settings" class="menuItem" label="&amp;Configure..."/>
+					<widget class="menuCheckedItem" name="showTB" label="Show &amp;toolbar" />
+					<widget class="menuCheckedItem" name="showSB" label="Show &amp;statusbar" />
+					<widget class="menuSeparator"/>
+					<widget name="Settings" class="menuItem" label="&amp;Configure..."/>
                 </widget>
             </widget>
 
@@ -183,7 +188,6 @@
         <actions>
 			<!-- System actions -->
 			<rule>
-				<event widget="Menu.Quit" signal="activate"/>
 				<event widget="close" signal="clicked"/>
 				<action><call widget="mainWindow" method="close"/></action>
 			</rule>
@@ -243,5 +247,11 @@
 			</rule>
 
 	</actions>
+	<locale lang="ru">
+		<string id="Payment order N " value="Платежное поручение N " />
+		<string id="Save" value="&amp;Сохранить" />
+		<string id="Print" value="&amp;Печать" />
+		<string id="Close" value="&amp;Закрыть" />
+	</locale>
 </form>
 

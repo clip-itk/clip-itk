@@ -158,12 +158,17 @@ return win
 /* Return created widget from tag */
 static function ui_createWidget(self, tag, parent )
 	local o:=NIL, class, name, label, c, i, a, e, w, box, t:=tag
-	local add:=.F., gCol:=1, gRow:=1, gClass, rule
+	local add:=.F., gCol:=1, gRow:=1, gClass, rule, expanded:=.F.
 
 	class := t:attribute("class","")
 	name  := t:attribute("name","")
 	label := self:i18n( t:attribute("label","") )
 	rule  := t:attribute("rule",NIL)
+
+	if right(name,1) == '+' // Widget should be expanded
+		name := substr(name,1,len(name)-1)
+		expanded := .T.
+	endif
 
 	switch upper(class)
 		/* Grid */
@@ -369,7 +374,7 @@ static function ui_createWidget(self, tag, parent )
 				parent:addEnd( o )
 			endif
 		else
-			if class=="table" .or. o:className=="UISplitter" .or. o:className=="UIEditText"
+			if class=="table" .or. o:className=="UISplitter" .or. o:className=="UIEditText" .or. expanded
 				box:add( o, .T., .T. )
 			else
 				box:add( o, .F., iif(box:className=="UIButtonBar",.T.,.F.) )
@@ -790,7 +795,7 @@ static function ui_subActionHandler(self, tag, addVal)
 			endif
 			aadd(params, retAction)
 		otherwise
-			?? "WARNING: unknown tag",p:name,"&\n"
+			?? "WARNING: Illegal tag <"+str(p:name)+">'&\n"
 		endswitch
 	next
 
