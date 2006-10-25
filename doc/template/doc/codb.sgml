@@ -239,7 +239,7 @@ The dictionary have object only classes:)_</para>
 	<listitem><para>_(REF_TO - class identifier (for attributes with type "R") if empty, then reference to object any classes)_</para></listitem>
 	<listitem><para>_(DEFVALUE - the value by default)_</para></listitem>
 	</itemizedlist>
-	<para>_(The TYPE values:)_
+	<para>_(The TYPE values:)_</para>
 	<itemizedlist>
 	<listitem><para>_("C" - characters string with limit by length)_</para></listitem>
 	<listitem><para>_("N" - numeric)_</para></listitem>
@@ -253,11 +253,11 @@ The dictionary have object only classes:)_</para>
 	<listitem><para>_("A" - array of reference)_</para></listitem>
 	<listitem><para>_("B" - code block)_</para></listitem>
 	</itemizedlist>
-	<para>_(The LENTYPE values:)_
+	<para>_(The LENTYPE values:)_</para>
 	<itemizedlist>
 	<listitem><para>_(1 - "As is")_</para></listitem>
 	<listitem><para>_(2 - "Right trim")_</para></listitem>
-	<listitem><para>_(3 - "Right & Left trim")_</para></listitem>
+	<listitem><para>_(3 - "Right &amp; Left trim")_</para></listitem>
 	<listitem><para>_(4 - "Right pad length")_</para></listitem>
 	</itemizedlist>
 	<para>_(Example: create ATTR metadata)_</para>
@@ -395,6 +395,4 @@ There are two utilities:)_</para>
 </itemizedlist>
 </section>
 
-
 </chapter>
-

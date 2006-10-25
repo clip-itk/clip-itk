@@ -211,7 +211,7 @@ functions and commands (<command>PROMPT/MENU</command>,
 <command>GET/READ</command>, etc) where the processing
 of the display and keyboard is executed independently, an optimal output
 mode has been already used, and so enclosing them by
-<command>DISPBEGIN()</command> & <command>DISPEND()</command>
+<command>DISPBEGIN()</command> and <command>DISPEND()</command>
 is unnecessary.
 )_</para></listitem>
 
@@ -296,3 +296,4 @@ don`t have any special meaning.
 )_</para></listitem>
 
 </itemizedlist>
+</chapter>

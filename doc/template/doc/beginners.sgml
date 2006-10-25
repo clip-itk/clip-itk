@@ -1,7 +1,6 @@
 <chapter id="beginners">
 <title>_(Beginner's guide)_</title>
 
-
 <sect1>_(In the beginning was...)_</sect1>
 
 <para>_(In the beginning was the CA-Clipper. Many peoples got used to it. 
@@ -26,7 +25,7 @@ very different. For this reason using Clip under Win32 is not a trivial.)_</para
 <listitem><para>_(This is number of GNU tools and utilities, which make 
 recompilation of POSIX programs is possible under Win32 platform.)_</para></listitem>
 <listitem><para>_(This is "POSIX-&gt;Win32 API-converter")_</para></listitem>
-</simplelist>
+</itemizedlist>
 </para>
 
 <para>_(What is API-converter? This is regular DLL, which must be called from each 
@@ -128,4 +127,4 @@ inside Cygwin hierarchy.)_</para>
 
 <para>_()_</para>
 
-
+</chapter>

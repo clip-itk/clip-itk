@@ -44,7 +44,7 @@ All "advanced" terminal names have to be registered in your
 Linux standard <emphasis>unicode-tables</emphasis> located in
 /usr/share/consoletrans directory are used for translation of
 terminal output.
-)_<para>
+)_</para>
 <para>_(
 Necessary unicode-tables have to be unpacked and put into $CLIPROOT/charsets
 directory. CLIP distribution contains some unicode-tables also.
@@ -182,7 +182,7 @@ set("PRINTER_CHARSET","cp866")
 </programlisting>
 <para>_(
 or in the command form:
-)_<para>
+)_</para>
 <programlisting>
 set printer charset to cp866
 </programlisting>

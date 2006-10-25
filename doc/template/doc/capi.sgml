@@ -92,10 +92,10 @@ int _clip_parinfo(ClipMachine * mp, int num)
 <emphasis>mp</emphasis> is pointing to the current CLIP-machine state description.
 )_</para>
 <para>_(
-<emphasis>num</emhpasis> is the position of parameter.
+<emphasis>num</emphasis> is the position of parameter.
 )_</para>
 </section>
-<section><title>_(Description)_<title>
+<section><title>_(Description)_</title>
 <para>_(
 If)_ num==0 <command>_clip_parinfo()</command> _(returns the number of
 parameters, if non zero it returns type of passed parameter with num number.
@@ -109,7 +109,7 @@ parameters, if non zero it returns type of passed parameter with num number.
 int _clip_parni(ClipMachine * mp, int num)
 </programlisting>
 </section>
-<section><title>_(Parameters)_<title>
+<section><title>_(Parameters)_</title>
 <para>_(
 <emphasis>mp</emphasis> is pointing to the current CLIP-machine state description
 )_</para>
@@ -820,7 +820,7 @@ provides with information about runtime errors
 
 <para>_(
 In more simple cases one can use:
-)_<para>
+)_</para>
 <programlisting>
 void _clip_trap(ClipMachine * mp, const char *filename, int line)
 void _clip_trap_str(ClipMachine * mp, const char *filename, int line, const char *str)
@@ -968,7 +968,7 @@ _(
 <para>_(
 Container is a one more way to store the static data.
 For example it's difficalt to return any C-pointer on structure to CLIP-machine:
-)_<para>
+)_</para>
 <programlisting>
 FILE * fh
 fh=open(filename,...)
@@ -998,7 +998,7 @@ void *_clip_fetch_c_item( ClipMachine *cm, int key, int type )
 <para>
 <emphasis>type</emphasis> _(is a stored information type
 (it's for impossibility to set file number instead of connection one)
-)_<para>
+)_</para>
 </section>
 <section><title>_(Description)_</title>
 <para><command>_clip_fetch_c_item()</command>
@@ -1024,7 +1024,7 @@ int _clip_destroy_c_item( ClipMachine *cm, int key, int type )
 <para>
 <emphasis>type</emphasis> _(is a stored information type
 (it's for impossibility to set file number instead of connection one)
-)_<para>
+)_</para>
 </section>
 <section><title>_(Description)_</title>
 <para><command>_clip_destroy_c_item()</command>
@@ -1081,6 +1081,7 @@ int _clip_clip(ClipMachine * mp, const char *funcname,int argc,ClipVar * stackp,
 <para>
 <emphasis>argc</emphasis> _(is a number of arguments
 )_</para>
+<para>
 <emphasis>stackp</emphasis> _(is pointing to array of argc ClipVar type elements
 )_</para>
 <para>
@@ -1113,7 +1114,7 @@ int clip_MY_C_FUNC(ClipMachine* mp)
 </programlisting>
 </section>
 <section><title>_(Description)_</title>
-<para><command>_clip_clip()</command>
+<para><command>_clip_clip()</command></para>
 <para>_(
 allow to call a written in CLIP function/procedure from C
 )_</para>

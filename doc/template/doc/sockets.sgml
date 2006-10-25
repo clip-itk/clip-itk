@@ -29,7 +29,7 @@ writing application servers and clients.
 <row><entry><link linkend="functiontcpread">TCPRead()</link></entry>
 <entry>_(Receive a message from the connected peer)_</entry></row>
 
-</informaltable>
+</tbody></tgroup></informaltable>
 </section>
 
 <section id="sockexample"><title>_(Example)_</title>

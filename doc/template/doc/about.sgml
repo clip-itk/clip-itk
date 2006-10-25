@@ -148,7 +148,7 @@ _(multiwindows interactive debugger.)_
 <formalpara>
 <title>_( Supported OS'es)_</title>
 <para>
-_(linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe with TurboLinux, Win32 ( with CYGWIN development tools))_
+_(Linux, FreeBSD, OpenBSD, SPARC &amp; x86 Solaris, IBM mainframe with TurboLinux, Win32 ( with CYGWIN development tools))_
 </para>
 </formalpara>
 

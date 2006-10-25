@@ -542,7 +542,7 @@ Operations that can be overloaded and corresponding
 <row><entry align="center">'%'</entry><entry>operator_mod</entry>
 <entry align="center">'^'</entry><entry>operator_pow</entry></row>
 <row><entry align="center">'|'</entry><entry>operator_or</entry>
-<entry align="center">'&'</entry><entry>operator_and</entry></row>
+<entry align="center">'&amp;'</entry><entry>operator_and</entry></row>
 <row><entry align="center">'$'</entry><entry>operator_in</entry>
 <entry align="center">'='</entry><entry>operator_eq</entry></row>
 <row><entry align="center">'=='</entry><entry>operator_eeq</entry>
@@ -551,7 +551,7 @@ Operations that can be overloaded and corresponding
 <entry align="center">'<![CDATA[>]]>'</entry><entry>operator_gt</entry></row>
 <row><entry align="center">'<![CDATA[<=]]>'</entry><entry>operator_le</entry>
 <entry align="center">'<![CDATA[>=]]>'</entry><entry>operator_ge</entry></row>
-</tbody></table>
+</tbody></tgroup></table>
 <para>_(
 Here is an example of using operations overloading.
 )_</para>

@@ -307,7 +307,7 @@ all CLIP or system libraries to executable file.
 
 <varlistentry>
 <term><command><![CDATA[-E<name>=<value>, --environment=<name>=<value>]]></command></term>
-<listitem<para>_(
+<listitem><para>_(
 set <![CDATA[<name>]]> environment variable's value to <![CDATA[<value>]]>
 for a compilation time
 )_</para></listitem>

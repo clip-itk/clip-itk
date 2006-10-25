@@ -141,18 +141,18 @@ where it doesn't belong.)_
 _(Generally, you will declare which DTD you want to use as
 the first line of your SGML document.  In the case of
 DocBook, you will use something like this:)_
-<programlisting>&lt!doctype book PUBLIC "-//OASIS//DTD
-DocBook V3.1//EN" []> &lt;book> ...
-&lt;/book></programlisting>
+<programlisting>&lt;!doctype book PUBLIC "-//OASIS//DTD
+DocBook V3.1//EN" []&gt; &lt;book&gt; ...
+&lt;/book&gt;</programlisting>
 </para>
 <para>
 _(Note that you must specify your toplevel element inside
 the doctype declaration.  If you were writing an article
 rather than a book, you might use this declaration instead:)_
-<programlisting>&lt!doctype article PUBLIC "-//OASIS//DTD DocBook V3.1//EN" []>
-&lt;article>
+<programlisting>&lt;!doctype article PUBLIC "-//OASIS//DTD DocBook V3.1//EN" []&gt;
+&lt;article&gt;
 ...
-&lt;/article></programlisting>
+&lt;/article&gt;</programlisting>
 </para>
 </sect3>
 
@@ -763,9 +763,9 @@ the visible text for the link, plus the name of the <sgmltag
 class="attribute">id</sgmltag> attribute of the
 element that you want to link to.  For example:)_
 
-<programlisting>&lt;link linkend="configuring">the section on configuring wine&lt;/link>
+<programlisting>&lt;link linkend="configuring">the section on configuring wine&lt;/link&gt;
 ...
-&lt;sect2 id="configuring">
+&lt;sect2 id="configuring"&gt;
 ...</programlisting>
                 </para>
               </listitem>
@@ -782,9 +782,9 @@ attribute to specify which target element you want
 to jump to:)_
                 </para>
                 <para>
-<programlisting>&lt;xref linkend="configuring">
+<programlisting>&lt;xref linkend="configuring"&gt;
 ...
-&lt;sect2 id="configuring">
+&lt;sect2 id="configuring"&gt;
 ...</programlisting>
                 </para>
                 <para>
@@ -797,10 +797,10 @@ attribute to grab the visible text content of the
 hyperlink from another element:)_
                 </para>
                 <para>
-<programlisting>&lt;xref linkend="configuring" endterm="config-title">
+   <programlisting>&lt;xref linkend="configuring" endterm="config-title"&gt;
 ...
-&lt;sect2 id="configuring">
-  &lt;title id="config-title">Configuring&lt;/title>
+&lt;sect2 id="configuring"&gt;
+  &lt;title id="config-title">Configuring&lt;/title&gt;
 ...</programlisting>
                 </para>
                 <para>
@@ -820,7 +820,7 @@ _(Alternatively, you can use an <sgmltag
 class="attribute">xreflabel</sgmltag> attribute in
 the target element tag to specify the link text:)_
                 </para>
-<programlisting>&lt;sect1 id="configuring" xreflabel="Configuring"></programlisting>
+<programlisting>&lt;sect1 id="configuring" xreflabel="Configuring"&gt;</programlisting>
                 <note>
                   <para>
 _(<sgmltag class="starttag">xref</sgmltag> is an
@@ -829,7 +829,7 @@ it (this is defined in the DTD).  In SGML
 documents, you should use the form <sgmltag
 class="starttag">xref</sgmltag>, while in XML
 documents you should use
-<sgmltag>&lt;xref/></sgmltag>.)_
+<sgmltag>&lt;xref/&gt;</sgmltag>.)_
                   </para>
                 </note>
               </listitem>
@@ -875,7 +875,7 @@ external documents.  Not often used in practice.)_
         </sect3>
       </sect2>
 
-      <sect2 id="sgml-environment">
+<sect2 id="sgml-environment">
         <title>_(The SGML Environment)_</title>
 
         <para>
@@ -953,5 +953,4 @@ Just install them via apt-get.)_
           </para>
         </sect3>
 
-      </sect2>
-
+	</sect2>

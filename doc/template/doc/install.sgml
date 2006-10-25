@@ -38,13 +38,13 @@ ftp://ftp.itk.ru/pub/clip or from mirrors:)_</para>
 <member>_(clip_postgres.tgz)_</member>
 <member>_(SRC: Postgres client)_</member>
 <member>_(clip_interbase.tgz)_</member>
-<member>_(SRC: Interbase & FireBird client)_</member>
+<member>_(SRC: Interbase &amp; FireBird client)_</member>
 <member>_(clip_gtk.tgz)_</member>
 <member>_(SRC: GUI library over GTK)_</member>
 <member>_(clip_gtkextra.tgz)_</member>
 <member>_(SRC: GUI library over GTKextra)_</member>
 <member>_(clip_fw.tgz)_</member>
-<member>_(SRC: FiveWin-like classes & commands)_</member>
+<member>_(SRC: FiveWin-like classes &amp; commands)_</member>
 <member>_(clip_gd.tgz)_</member>
 <member>_(SRC: library for PNG (and more) files and business histograms)_</member>
 <member>_(clip_gzip.tgz)_</member>
@@ -66,7 +66,7 @@ ftp://ftp.itk.ru/pub/clip or from mirrors:)_</para>
 <member>_(clip_prg.tgz)_</member>
 <member>_(SRC: base utils - debugger, text editor, ... include preprocessor (PP) by Ron Pinkas, bdbf by Yevgen Bondar, ....)_</member>
 <member>_(clip_dbu.tgz)_</member>
-<member>_(SRC: CA_DBU & CA_DBU53 adapted for Clip)_</member>
+<member>_(SRC: CA_DBU &amp; CA_DBU53 adapted for Clip)_</member>
 <member>_(clip_fcgi.tgz)_</member>
 <member>_(SRC: FastCGI Clip library)_</member>
 <member>_(dbc.tgz)_</member>
@@ -86,7 +86,7 @@ ftp://ftp.itk.ru/pub/clip or from mirrors:)_</para>
 <member>_(cygwin_patch.rar)_</member>
 <member>_(BIN: fixing some problems with Cygwin)_</member>
 <member>_(patch.tgz)_</member>
-<member>_(SRC: latest fixes and addons for Clip base packages (dev & doc))_</member>
+<member>_(SRC: latest fixes and addons for Clip base packages (dev &amp; doc))_</member>
 </simplelist>
 
 <para>_(The easiest way to install the whole Clip is getting all-in-one package

@@ -1,5 +1,4 @@
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.0//EN"
-[
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.0//EN" [
   <!ENTITY introduction SYSTEM "doc/introduction.sgml">
   <!ENTITY about SYSTEM "doc/about.sgml">
   <!ENTITY license SYSTEM "doc/license.sgml">
@@ -160,9 +159,7 @@
 
   <!ENTITY utilites SYSTEM "doc/utilites.sgml">
   <!ENTITY sockets SYSTEM "doc/sockets.sgml">
-]
->
-
+]>
 
 <book id="Clip" lang="_(LANG)_">
 <title>_(xBase and Clipper language compatible compiler)_</title>
