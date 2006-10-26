@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Add element to the array
 $SYNTAX$
-   AADD( ... ) -> NIL
+   AADD( ... )    -> NIL
 $ARGNAME$
    ...
 $ARGDESC$
@@ -14,15 +14,15 @@ $RETURNS$
    ...
 $DESCRIPTION$
    <![CDATA[c-dated text]]>
-   <link 
+   Link: <link 
    linkend="functionaadd">AADD</link>
    <pre>Formatted
 text</pre>
 	Command: <command>command</command> & unknown <tag>
 	List:
 	<itemizedlist>
-		<listitem>first item</listitem>
-		<listitem>second item</listitem>
+		<listitem>first <br />item</listitem>
+		<listitem>second <emphasis>item</emphasis></listitem>
 		<listitem>third item</listitem>
 	</itemizedlist>
 $EXAMPLES$

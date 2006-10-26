@@ -15,13 +15,14 @@ static docbook_tags := { ;
 	'orderedlist', ;
 	'simplelist', ;
 	'variablelist', ;
-	'listitem' ;
+	'listitem', ;
+	'emphasis' ;
 }
 
 function main()
 local fsrc, fsgml, str, outfile, i, j, par, fname, t, x
 local argn, argd, categ, ab_order, ab_part, fs, ii, jj, key, val, lang
-local outdir, s, outlang:={"EN"},alang:={"EN"}, lEnd:=.T., l_l
+local outdir, s, outlang:={"EN"},alang:={"EN"}, lEnd, l_l
 
 //clear screen
 
@@ -42,7 +43,6 @@ dirchange("../")
 categ := map() // listing functions by category
 ab_order := tSortedArrayNew()
 
-
 fs := {}
 x := 0
 for ii=1 to len(par)
@@ -57,6 +57,10 @@ for ii=1 to len(par)
 	fsrc := fopen(fname, 0)
 	t := .f.
 	j := 0
+	argn := .f.
+	argd := .f.
+	lang := .f.
+	lEnd := .t.
 	do while !fileeof(fsrc)
 		str := alltrim(filegetstr(fsrc))
 		s := upper(str)
@@ -153,7 +157,7 @@ for ii=1 to len(par)
 		addToOrder(fs, @x, ab_order, categ, fname)
 	endif
 next
-qout("&\n Summary functions:"+toString(len(fs)))
+qout("&\nTotal functions: "+ltrim(toString(len(fs))))
 
 for i=1 to len(alang)
 	if ascan(outlang, alang[i]) > 0
@@ -167,6 +171,8 @@ next
 asize(fs, 0)
 asize(ab_order, 0)
 asize(categ, 0)
+
+qqout("&\n")
 
 return
 
@@ -233,13 +239,13 @@ local str, newstr, l, i, j, s, tag, reg
 					endif
 				else
 					// Check allowed tags
-					j := ascan(docbook_tags, {|e| left(lower(str),len(e)+1) == '<'+e })
+					j := ascan(docbook_tags, {|e| left(lower(str),len(e)+1) == '<'+e .or. left(lower(str),len(e)+2) == '</'+e })
 					if j > 0
 						tag := docbook_tags[j]
-						i = at('</'+tag+'>', lower(str) )
+						i = at('>', str )
 						if i > 0
-							newstr += left(str, i+len(tag)+2)
-							str := substr(str, i+len(tag)+3)
+							newstr += left(str, i)
+							str := substr(str, i+1)
 							loop
 						else
 							newstr += '&lt;'
@@ -379,10 +385,10 @@ local i, j, a, str, lStr, arr, lf
 			str += '<link linkend="'+iif(lf, 'function', 'class')+i+'">'+a[j]+'</link> '
 		next
 		str += '</entry></row>&\n'
-		str += '</tbody></tgroup></informaltable>&\n'
-		fwrite(fsgml, str, len(str))
 	endif
-
+	str += '</tbody></tgroup></informaltable>&\n'
+	fwrite(fsgml, str, len(str))
+	
 	str := ""
 	if !empty(fs:PECULIARITIES)
 		str += '<para>&\n<command>Peculiarities: </command>&\n'
@@ -522,6 +528,8 @@ fclose(fsgml)
 return ab_part
 
 *******************************************************************************
+// TODO: make sections as table
+
 static function writeSection(fname, lang, fs, categ)
 local x, i, j, key, val, nam, str, fsec, awr, fn, cat, ii, syn, s, lpre
 	awr:={}
@@ -567,12 +575,12 @@ local x, i, j, key, val, nam, str, fsec, awr, fn, cat, ii, syn, s, lpre
 			nam := strtran(alltrim(fs[val]:SYNTAX), "&\n", "")
 			s := atr("-->", nam)
 			if s > 0
-				syn := "<![CDATA["+padr(alltrim(substr(nam, s+3)), 12)+"]]>"
+				syn := "<![CDATA["+padr(alltrim(substr(nam, s+3)), 20)+"]]>"
 				nam := substr(nam, 1, s-1)
-				nam := "<![CDATA["+nam+"]]>"
+				nam := "<![CDATA["+alltrim(nam)+"]]>"
 			else
-				nam := "<![CDATA["+nam+"]]>"
-				syn := "<![CDATA["+padr(" ", 35)+"]]>"
+				syn := "<![CDATA["+padr(" ", 20)+"]]>"
+				nam := "<![CDATA["+alltrim(nam)+"]]>"
 			endif
 			if lang != "EN" .and. (lang $ fs[val]) .and. ("SUMMARY" $ fs[val][lang])
 				val := trans(iif(!empty(fs[val][lang]:SUMMARY), fs[val][lang]:SUMMARY, fs[val]:SUMMARY))
