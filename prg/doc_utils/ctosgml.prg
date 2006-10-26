@@ -147,7 +147,7 @@ for ii=1 to len(par)
 		addToOrder(fs, @x, ab_order, fname)
 	endif
 next
-qout("&\n Summary classes:"+toString(len(fs)))
+qout("&\nTotal classes:"+ltrim(toString(len(fs))))
 
 for i=1 to len(alang)
 	if ascan(outlang, alang[i]) > 0
@@ -161,6 +161,8 @@ next
 asize(fs, 0)
 asize(ab_order, 0)
 asize(ab_met, 0)
+
+qqout("&\n")
 
 return
 

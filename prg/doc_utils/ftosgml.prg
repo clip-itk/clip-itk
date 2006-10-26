@@ -241,10 +241,15 @@ local str, newstr, l, i, j, s, tag, reg
 					// Check allowed tags
 					j := ascan(docbook_tags, {|e| left(lower(str),len(e)+1) == '<'+e .or. left(lower(str),len(e)+2) == '</'+e })
 					if j > 0
-						tag := docbook_tags[j]
 						i = at('>', str )
 						if i > 0
-							newstr += left(str, i)
+							tag := left(str, i)
+							if tag == '<listitem>'
+								tag := tag + '<para>'
+							elseif tag == '</listitem>'
+								tag := '</para>' + tag
+							endif
+							newstr += tag
 							str := substr(str, i+1)
 							loop
 						else
@@ -360,12 +365,13 @@ local i, j, a, str, lStr, arr, lf
 		if !empty(fs:RETURNS)
 			str += '<entry><para>'+trans(fs:RETURNS)+'</para></entry></row>&\n'
 		else
-			str += '<entry>NIL</entry></row>&\n'
+			str += '<entry><para>NIL</para></entry></row>&\n'
 		endif
 
 	endif
 	fwrite(fsgml, str, len(str))
 
+	str := ""
 	if !empty(fs:SEEALSO)
 		str := '<row><entry align="right" valign="top"><emphasis>See also :</emphasis></entry><entry>&\n'
 		a := split(fs:SEEALSO, ",")
