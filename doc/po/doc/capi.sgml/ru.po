@@ -171,9 +171,10 @@ msgstr ""
 "<emphasis>mp</emphasis> - указывает на текущее состояние CLIP-машины\n"
 
 #: template/./doc/capi.sgml:94
+#, fuzzy
 msgid ""
 "\n"
-"<emphasis>num</emhpasis> is the position of parameter.\n"
+"<emphasis>num</emphasis> is the position of parameter.\n"
 msgstr ""
 "\n"
 "<emphasis>num</emhpasis> - позиция параметра в списке параметров\n"
@@ -196,7 +197,7 @@ msgstr ""
 #: template/./doc/capi.sgml:890 template/./doc/capi.sgml:913
 #: template/./doc/capi.sgml:935 template/./doc/capi.sgml:957
 #: template/./doc/capi.sgml:1002 template/./doc/capi.sgml:1028
-#: template/./doc/capi.sgml:1056 template/./doc/capi.sgml:1114
+#: template/./doc/capi.sgml:1056 template/./doc/capi.sgml:1115
 msgid "Description"
 msgstr "Описание"
 
@@ -1138,11 +1139,11 @@ msgstr " имя функции на CLIP"
 msgid "is a number of arguments\n"
 msgstr " - число аргументов\n"
 
-#: template/./doc/capi.sgml:1083
+#: template/./doc/capi.sgml:1084
 msgid "is pointing to array of argc ClipVar type elements\n"
 msgstr " - указывает на массив из argc элементов типа ClipVar\n"
 
-#: template/./doc/capi.sgml:1086
+#: template/./doc/capi.sgml:1087
 msgid ""
 "is a pointer to stack cell\n"
 "in wich returned value will be located.\n"
@@ -1151,41 +1152,41 @@ msgstr ""
 " - указатель на ячейку стека\n"
 " в который будет помещено возвращаемое значение\n"
 
-#: template/./doc/capi.sgml:1091
+#: template/./doc/capi.sgml:1092
 msgid ""
 "\n"
 "For example :\n"
 msgstr "Например: \n"
 
-#: template/./doc/capi.sgml:1097
+#: template/./doc/capi.sgml:1098
 msgid "RETPTR is macros that returns pointer to"
 msgstr "RETPTR - макрос, возращает указатель"
 
-#: template/./doc/capi.sgml:1098
+#: template/./doc/capi.sgml:1099
 msgid "stack cell returned value will be in"
 msgstr " на ячейку стека, в которой будет возвращаемое значение"
 
-#: template/./doc/capi.sgml:1100
+#: template/./doc/capi.sgml:1101
 msgid "to be on a safe side"
 msgstr "на всякий случай "
 
-#: template/./doc/capi.sgml:1102
+#: template/./doc/capi.sgml:1103
 msgid "first argument is a string (\"Baby\")"
 msgstr "первый аргумент - строка (\"Baby\")"
 
-#: template/./doc/capi.sgml:1103
+#: template/./doc/capi.sgml:1104
 msgid "element s of union ClipVar is for strings"
 msgstr "элемент s юниона ClipVar - для строк"
 
-#: template/./doc/capi.sgml:1106
+#: template/./doc/capi.sgml:1107
 msgid "second argument is number"
 msgstr "второй - число"
 
-#: template/./doc/capi.sgml:1107
+#: template/./doc/capi.sgml:1108
 msgid "element n of union ClipVar is for numbers"
 msgstr "элемент n юниона ClipVar - для чисел"
 
-#: template/./doc/capi.sgml:1117
+#: template/./doc/capi.sgml:1118
 #, fuzzy
 msgid ""
 "\n"
@@ -1194,11 +1195,11 @@ msgstr ""
 "\n"
 " позволяет вызвать из С написанную на CLIP функцию/процедуру  \n"
 
-#: template/./doc/capi.sgml:1123
+#: template/./doc/capi.sgml:1124
 msgid "The CLIP dynamics loading modules creating"
 msgstr "Создание динамически загружаемых модулей для clip"
 
-#: template/./doc/capi.sgml:1125
+#: template/./doc/capi.sgml:1126
 #, fuzzy
 msgid ""
 "\n"
@@ -1211,7 +1212,7 @@ msgstr ""
 "динамические модули (*.so)\n"
 "или байт-код (*.po) и библиотеки байт-кодов (*.pa).\n"
 
-#: template/./doc/capi.sgml:1129
+#: template/./doc/capi.sgml:1130
 #, fuzzy
 msgid ""
 "\n"
@@ -1220,7 +1221,7 @@ msgstr ""
 "\n"
 "Байт-код и so-модули легко получить из prg-файлов командами:\n"
 
-#: template/./doc/capi.sgml:1134
+#: template/./doc/capi.sgml:1135
 msgid ""
 "\n"
 "And it's possible to write the same loading module in C in such way:\n"
@@ -1228,7 +1229,7 @@ msgstr ""
 "\n"
 "Написать на Си такой же загружаемый модуль можно таким способом:\n"
 
-#: template/./doc/capi.sgml:1137
+#: template/./doc/capi.sgml:1138
 #, fuzzy
 msgid ""
 "\n"
@@ -1238,7 +1239,7 @@ msgstr ""
 "\n"
 "Создается module.prg и в нем описываются все необходимые пустые функции\n"
 
-#: template/./doc/capi.sgml:1146
+#: template/./doc/capi.sgml:1147
 msgid ""
 "\n"
 "Then this module is compilied\n"
@@ -1246,7 +1247,7 @@ msgstr ""
 "\n"
 "Затем этот модуль компилируется\n"
 
-#: template/./doc/capi.sgml:1150
+#: template/./doc/capi.sgml:1151
 #, fuzzy
 msgid ""
 "\n"
@@ -1265,11 +1266,11 @@ msgstr ""
 "скомпилировать Си-компилятором с ключиком -shared или аналогичным,\n"
 "в зависимости от компилятора.\n"
 
-#: template/./doc/capi.sgml:1158
+#: template/./doc/capi.sgml:1159
 msgid "Other features"
 msgstr "Другие возможности"
 
-#: template/./doc/capi.sgml:1160
+#: template/./doc/capi.sgml:1161
 msgid ""
 "\n"
 "In addition to described above there are much more functions in C-API\n"
@@ -1281,7 +1282,7 @@ msgstr ""
 "с массивами, объектами, процессами ввода-вывода, вызовами кодовых блоков и "
 "многое другое.\n"
 
-#: template/./doc/capi.sgml:1165
+#: template/./doc/capi.sgml:1166
 #, fuzzy
 msgid ""
 "\n"
@@ -1296,13 +1297,13 @@ msgstr ""
 "неквалифицированное использование данных возможностей может привести к\n"
 "непонятным \"падениям\" прикладных программ, утечке памяти и.т.п.\n"
 
-#: template/./doc/capi.sgml:1171
+#: template/./doc/capi.sgml:1172
 msgid ""
 "\n"
 "Who wants to add something serious to CLIP please contact to us"
 msgstr ""
 
-#: template/./doc/capi.sgml:1173
+#: template/./doc/capi.sgml:1174
 #, fuzzy
 msgid ""
 "and we will give you information and examples; help in learning\n"
@@ -1312,6 +1313,13 @@ msgstr ""
 "Желающих усовершенствовать CLIP просим обращаться по адресу \n"
 "- дадим и информацию и примеры, поможем в работе и освоении внутреннего\n"
 "устройства CLIP-машины.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "<emphasis>num</emhpasis> is the position of parameter.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<emphasis>num</emhpasis> - позиция параметра в списке параметров\n"
 
 #~ msgid "the incorrect passing parameter."
 #~ msgstr " переданного параметра"

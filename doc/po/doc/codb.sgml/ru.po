@@ -586,7 +586,8 @@ msgstr ""
 "удалены хвостовые пробелы"
 
 #: template/./doc/codb.sgml:259
-msgid "3 - \"Right & Left trim\""
+#, fuzzy
+msgid "3 - \"Right &amp; Left trim\""
 msgstr ""
 "3 - \"Right & Left trim\", при записи объектов будут удалены  начальные и "
 "конечные пробелы"

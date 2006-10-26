@@ -142,7 +142,7 @@ msgstr ""
 #: template/./doc/capi.sgml:94
 msgid ""
 "\n"
-"<emphasis>num</emhpasis> is the position of parameter.\n"
+"<emphasis>num</emphasis> is the position of parameter.\n"
 msgstr ""
 
 #: template/./doc/capi.sgml:97 template/./doc/capi.sgml:119
@@ -163,7 +163,7 @@ msgstr ""
 #: template/./doc/capi.sgml:890 template/./doc/capi.sgml:913
 #: template/./doc/capi.sgml:935 template/./doc/capi.sgml:957
 #: template/./doc/capi.sgml:1002 template/./doc/capi.sgml:1028
-#: template/./doc/capi.sgml:1056 template/./doc/capi.sgml:1114
+#: template/./doc/capi.sgml:1056 template/./doc/capi.sgml:1115
 msgid "Description"
 msgstr ""
 
@@ -852,62 +852,62 @@ msgstr ""
 msgid "is a number of arguments\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1083
+#: template/./doc/capi.sgml:1084
 msgid "is pointing to array of argc ClipVar type elements\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1086
+#: template/./doc/capi.sgml:1087
 msgid ""
 "is a pointer to stack cell\n"
 "in wich returned value will be located.\n"
 "One can use macros RETPTR to get that pointer.\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1091
+#: template/./doc/capi.sgml:1092
 msgid ""
 "\n"
 "For example :\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1097
+#: template/./doc/capi.sgml:1098
 msgid "RETPTR is macros that returns pointer to"
 msgstr ""
 
-#: template/./doc/capi.sgml:1098
+#: template/./doc/capi.sgml:1099
 msgid "stack cell returned value will be in"
 msgstr ""
 
-#: template/./doc/capi.sgml:1100
+#: template/./doc/capi.sgml:1101
 msgid "to be on a safe side"
 msgstr ""
 
-#: template/./doc/capi.sgml:1102
+#: template/./doc/capi.sgml:1103
 msgid "first argument is a string (\"Baby\")"
 msgstr ""
 
-#: template/./doc/capi.sgml:1103
+#: template/./doc/capi.sgml:1104
 msgid "element s of union ClipVar is for strings"
 msgstr ""
 
-#: template/./doc/capi.sgml:1106
+#: template/./doc/capi.sgml:1107
 msgid "second argument is number"
 msgstr ""
 
-#: template/./doc/capi.sgml:1107
+#: template/./doc/capi.sgml:1108
 msgid "element n of union ClipVar is for numbers"
 msgstr ""
 
-#: template/./doc/capi.sgml:1117
+#: template/./doc/capi.sgml:1118
 msgid ""
 "\n"
 "allow to call a written in CLIP function/procedure from C\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1123
+#: template/./doc/capi.sgml:1124
 msgid "The CLIP dynamics loading modules creating"
 msgstr ""
 
-#: template/./doc/capi.sgml:1125
+#: template/./doc/capi.sgml:1126
 msgid ""
 "\n"
 "There is function <command>load()</command> in CLIP, that load dynamics "
@@ -915,32 +915,32 @@ msgid ""
 "or byte-code (*.po) and libraries of byte-codes (*.pa).\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1129
+#: template/./doc/capi.sgml:1130
 msgid ""
 "\n"
 "It's easy to make byte-code and so-modules from prg-files by commands:\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1134
+#: template/./doc/capi.sgml:1135
 msgid ""
 "\n"
 "And it's possible to write the same loading module in C in such way:\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1137
+#: template/./doc/capi.sgml:1138
 msgid ""
 "\n"
 "To create module.prg and then to describe all necessary empty functions in "
 "it:\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1146
+#: template/./doc/capi.sgml:1147
 msgid ""
 "\n"
 "Then this module is compilied\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1150
+#: template/./doc/capi.sgml:1151
 msgid ""
 "\n"
 "As resalt we have C-text in file <emphasis>module.c.</emphasis>\n"
@@ -951,11 +951,11 @@ msgid ""
 "whith key -shared or with analogous one (it depends on compilier).\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1158
+#: template/./doc/capi.sgml:1159
 msgid "Other features"
 msgstr ""
 
-#: template/./doc/capi.sgml:1160
+#: template/./doc/capi.sgml:1161
 msgid ""
 "\n"
 "In addition to described above there are much more functions in C-API\n"
@@ -963,7 +963,7 @@ msgid ""
 "code blocks calling and others.\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1165
+#: template/./doc/capi.sgml:1166
 msgid ""
 "\n"
 "But that informations will be given them only who has appropriate\n"
@@ -972,13 +972,13 @@ msgid ""
 "memory losing etc.\n"
 msgstr ""
 
-#: template/./doc/capi.sgml:1171
+#: template/./doc/capi.sgml:1172
 msgid ""
 "\n"
 "Who wants to add something serious to CLIP please contact to us"
 msgstr ""
 
-#: template/./doc/capi.sgml:1173
+#: template/./doc/capi.sgml:1174
 msgid ""
 "and we will give you information and examples; help in learning\n"
 "of inner structure of CLIP-machine garantee.\n"

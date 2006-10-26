@@ -385,6 +385,7 @@ msgstr ""
 "[<nSymbol>]]> + 32</emphasis>.\n"
 
 #: template/./doc/problems.sgml:200
+#, fuzzy
 msgid ""
 "\n"
 "You should recollect <command>DISPBEGIN()</command>,\n"
@@ -400,7 +401,7 @@ msgid ""
 "<command>GET/READ</command>, etc) where the processing\n"
 "of the display and keyboard is executed independently, an optimal output\n"
 "mode has been already used, and so enclosing them by\n"
-"<command>DISPBEGIN()</command> & <command>DISPEND()</command>\n"
+"<command>DISPBEGIN()</command> and <command>DISPEND()</command>\n"
 "is unnecessary.\n"
 msgstr ""
 "\n"

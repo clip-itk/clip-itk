@@ -475,7 +475,7 @@ msgid "2 - \"Right trim\""
 msgstr ""
 
 #: template/./doc/codb.sgml:259
-msgid "3 - \"Right & Left trim\""
+msgid "3 - \"Right &amp; Left trim\""
 msgstr ""
 
 #: template/./doc/codb.sgml:260

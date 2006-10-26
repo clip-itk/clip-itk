@@ -280,9 +280,10 @@ msgid " Supported OS'es"
 msgstr "Операционные системы"
 
 #: template/./doc/about.sgml:150
+#, fuzzy
 msgid ""
-"linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe with TurboLinux, "
-"Win32 ( with CYGWIN development tools)"
+"Linux, FreeBSD, OpenBSD, SPARC &amp; x86 Solaris, IBM mainframe with "
+"TurboLinux, Win32 ( with CYGWIN development tools)"
 msgstr ""
 "linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe под TurboLinux, "
 "Win32 (с использованием средств разработки CYGWIN)"

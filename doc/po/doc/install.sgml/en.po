@@ -122,7 +122,7 @@ msgid "clip_interbase.tgz"
 msgstr ""
 
 #: template/./doc/install.sgml:40
-msgid "SRC: Interbase & FireBird client"
+msgid "SRC: Interbase &amp; FireBird client"
 msgstr ""
 
 #: template/./doc/install.sgml:41
@@ -146,7 +146,7 @@ msgid "clip_fw.tgz"
 msgstr ""
 
 #: template/./doc/install.sgml:46
-msgid "SRC: FiveWin-like classes & commands"
+msgid "SRC: FiveWin-like classes &amp; commands"
 msgstr ""
 
 #: template/./doc/install.sgml:47
@@ -238,7 +238,7 @@ msgid "clip_dbu.tgz"
 msgstr ""
 
 #: template/./doc/install.sgml:68
-msgid "SRC: CA_DBU & CA_DBU53 adapted for Clip"
+msgid "SRC: CA_DBU &amp; CA_DBU53 adapted for Clip"
 msgstr ""
 
 #: template/./doc/install.sgml:69
@@ -324,7 +324,7 @@ msgid "patch.tgz"
 msgstr ""
 
 #: template/./doc/install.sgml:88
-msgid "SRC: latest fixes and addons for Clip base packages (dev & doc)"
+msgid "SRC: latest fixes and addons for Clip base packages (dev &amp; doc)"
 msgstr ""
 
 #: template/./doc/install.sgml:91

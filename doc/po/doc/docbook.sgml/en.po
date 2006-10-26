@@ -668,7 +668,7 @@ msgid ""
 "documents, you should use the form <sgmltag\n"
 "class=\"starttag\">xref</sgmltag>, while in XML\n"
 "documents you should use\n"
-"<sgmltag>&lt;xref/></sgmltag>."
+"<sgmltag>&lt;xref/&gt;</sgmltag>."
 msgstr ""
 
 #: template/./doc/docbook.sgml:840

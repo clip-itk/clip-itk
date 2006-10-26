@@ -237,8 +237,8 @@ msgstr ""
 
 #: template/./doc/about.sgml:150
 msgid ""
-"linux, freebsd, openBsd, SPARC & x86 solaris, IBM mainframe with TurboLinux, "
-"Win32 ( with CYGWIN development tools)"
+"Linux, FreeBSD, OpenBSD, SPARC &amp; x86 Solaris, IBM mainframe with "
+"TurboLinux, Win32 ( with CYGWIN development tools)"
 msgstr ""
 
 #: template/./doc/about.sgml:155
