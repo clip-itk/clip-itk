@@ -25,9 +25,9 @@ $LANG_RU$
 $SYNTAX$
 	codb_close(<oDB>) --> NIL
 $ARGUMENTS$
-	<oDB>	- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB>	- Object. Database connection object returned from <link linkend="functionCODBCONNECT">codb_connect()</link>.
 $LANG_RU$
-	<oDB> 	- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB> 	- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functionCODBCONNECT">codb_connect()</link>.
 $END$
   
 $FUNCNAME$
@@ -41,19 +41,19 @@ $LANG_RU$
 $SYNTAX$
 	codb_execute(<oDB>,<sQuery>,[<sDatabase>],[<aFiles>]) --> oRes
 $ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB>		- Object. Database connection object returned from <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<sQuery>	- String. Query on CQL (dialect of SQL adapted for CODB).
 	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
 	<aFiles>	- Array. Array of files attached to this query. Each element is array: { <fileName>, <content> }. Optional parameter.
 $LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<sQuery>	- Строка. Запрос на CQL (диалект SQL, адаптированный для CODB).
 	<sDatabase>	- Строка. Имя рабочего словаря:депозитария (например, ETC01:ETC0101). Необязательный параметр.
 	<aFiles>	- Массив. Массив файлов, прикреплённых к запросу. Каждый элмент этого массива является массивом из двух элементов: { <имя_файла>, <содержимое> }. Необязательный параметр.
 $RETURNS$
-	codb_execute() returns result as object. Real data shoult be retrieved by <link linkend="functioncodb_get_result">codb_get_result()</link>.
+	codb_execute() returns result as object. Real data shoult be retrieved by <link linkend="functionCODBGETRESULT">codb_get_result()</link>.
 $LANG_RU$
-	codb_execute() возвращает результат в виде объекта. Собственно данные можно получить изх этого объекта функцией <link linkend="functioncodb_get_result">codb_get_result()</link>.
+	codb_execute() возвращает результат в виде объекта. Собственно данные можно получить изх этого объекта функцией <link linkend="functionCODBGETRESULT">codb_get_result()</link>.
 $END$
 
 $FUNCNAME$
@@ -67,9 +67,9 @@ $LANG_RU$
 $SYNTAX$
 	codb_get_answer(<oRes>) --> '' | 'ERROR'
 $ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
+	<oRes>		- Object. Object returned by <link linkend="functionCODBEXECUTE">codb_execute()</link> function.
 $LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
+	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $RETURNS$
 	Returns empty string if query executed successful or 'ERROR' if error is ocurred.
 $LANG_RU$
@@ -87,10 +87,10 @@ $LANG_RU$
 $SYNTAX$
 	codb_get_column(<oRes>, <nIndex>) --> sName
 $ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
+	<oRes>		- Object. Object returned by <link linkend="functionCODBEXECUTE">codb_execute()</link> function.
 	<nIndex>	- Number. Column number from 1.
 $LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
+	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 	<nIndex>	- Число. Порядковый номер столбца, начиная с 1.
 $RETURNS$
 	Returns column name from result or NIL if column number does not exist.
@@ -109,9 +109,9 @@ $LANG_RU$
 $SYNTAX$
 	codb_get_error(<oRes>) --> sError | NIL
 $ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
+	<oRes>		- Object. Object returned by <link linkend="functionCODBEXECUTE">codb_execute()</link> function.
 $LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
+	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $RETURNS$
 	Returns NIL if query executed successful or error description if error is ocurred.
 $LANG_RU$
@@ -129,11 +129,11 @@ $LANG_RU$
 $SYNTAX$
 	codb_get_metaobject(<oDB>,<sID>,[<sDatabase>]) --> oMetaobject
 $ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB>		- Object. Database connection object returned from <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<sID>		- String. ID of metaobject.
 	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
 $LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<sID>		- Строка. Идентификатор метаобъекта.
 	<sDatabase>	- Строка. Имя рабочего словаря:депозитария (например, ETC01:ETC0101). Необязательный параметр.
 $RETURNS$
@@ -153,11 +153,11 @@ $LANG_RU$
 $SYNTAX$
 	codb_get_object(<oDB>,<sID>,[<sDatabase>]) --> oObject
 $ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB>		- Object. Database connection object returned from <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<sID>		- String. ID of object.
 	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
 $LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<sID>		- Строка. Идентификатор объекта.
 	<sDatabase>	- Строка. Имя рабочего словаря:депозитария (например, ETC01:ETC0101). Необязательный параметр.
 $RETURNS$
@@ -177,9 +177,9 @@ $LANG_RU$
 $SYNTAX$
 	codb_get_result(<oRes>) --> aResult
 $ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
+	<oRes>		- Object. Object returned by <link linkend="functionCODBEXECUTE">codb_execute()</link> function.
 $LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
+	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $RETURNS$
 	Returns query result as array.
 $LANG_RU$
@@ -197,9 +197,9 @@ $LANG_RU$
 $SYNTAX$
 	codb_num_columns(<oRes>) --> nColumns
 $ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
+	<oRes>		- Object. Object returned by <link linkend="functionCODBEXECUTE">codb_execute()</link> function.
 $LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
+	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $RETURNS$
 	Number of columns in query result.
 $LANG_RU$
@@ -217,9 +217,9 @@ $LANG_RU$
 $SYNTAX$
 	codb_num_rows(<oRes>) --> nRows
 $ARGUMENTS$
-	<oRes>		- Object. Object returned by <link linkend="functioncodb_execute">codb_execute()</link> function.
+	<oRes>		- Object. Object returned by <link linkend="functionCODBEXECUTE">codb_execute()</link> function.
 $LANG_RU$
-	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functioncodb_execute">codb_execute()</link>.
+	<oRes>		- Объект. Объект, возвращённый функцией <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $RETURNS$
 	Number of rows in query result.
 $LANG_RU$
@@ -237,12 +237,12 @@ $LANG_RU$
 $SYNTAX$
 	codb_put_metaobject(<oDB>,<oContent>,[<sDatabase>],<sClass>) --> oResult
 $ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB>		- Object. Database connection object returned from <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<oConent>	- Object. Metaobject content.
 	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
 	<sClass>	- String. Class name.
 $LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<oConent>	- Объект. Содержимое метаобъекта.
 	<sDatabase>	- Строка. Имя рабочего словаря:депозитария (например, ETC01:ETC0101). Необязательный параметр.
 	<sClass>	- Строка. Имя класса.
@@ -263,12 +263,12 @@ $LANG_RU$
 $SYNTAX$
 	codb_put_object(<oDB>,<oContent>,[<sDatabase>],<sClass>) --> oResult
 $ARGUMENTS$
-	<oDB>		- Object. Database connection object returned from <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB>		- Object. Database connection object returned from <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<oConent>	- Object. Оbject content.
 	<sDatabase>	- String. Name of work dictionary:depository (eg. ETC01:ETC0101). Optional parameter.
 	<sClass>	- String. Class name.
 $LANG_RU$
-	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functioncodb_connect">codb_connect()</link>.
+	<oDB> 		- Объект. Объект подключения к базам данным CODB, возвращённый функцией <link linkend="functionCODBCONNECT">codb_connect()</link>.
 	<oConent>	- Объект. Содержимое объекта.
 	<sDatabase>	- Строка. Имя рабочего словаря:депозитария (например, ETC01:ETC0101). Необязательный параметр.
 	<sClass>	- Строка. Имя класса.

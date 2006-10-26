@@ -1,9 +1,9 @@
 $CLASSNAME$
 	CODB_FORMATTER
 $SUMMARY$
-	Class CODB_FORMATTER format output for result of <link linkend="functioncodb_execute">codb_execute()</link>.
+	Class CODB_FORMATTER format output for result of <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $LANG_RU$
-	Класс CODB_FORMATTER предназначен для форматирования результатов запросов <link linkend="functioncodb_execute">codb_execute()</link>.
+	Класс CODB_FORMATTER предназначен для форматирования результатов запросов <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $ABOUT$
 	Class CODB_FORMATTER format output for result in codb_query library.
 $LANG_RU$
@@ -32,15 +32,15 @@ $ENDMETHOD$
 $METHODNAME$
 	show()
 $SUMMARY$
-	Format <link linkend="functioncodb_execute">codb_execute()</link> result.
+	Format <link linkend="functionCODBEXECUTE">codb_execute()</link> result.
 $LANG_RU$
-	Отформатировать результат запроса <link linkend="functioncodb_execute">codb_execute()</link>.
+	Отформатировать результат запроса <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $SYNTAX$
 	show(<res>) --> sResult
 $ARGUMENTS$
-	<res>		- Object. Result of <link linkend="functioncodb_execute">codb_execute()</link> call.
+	<res>		- Object. Result of <link linkend="functionCODBEXECUTE">codb_execute()</link> call.
 $LANG_RU$
-	<res>		- Объект. Результат вызова функции <link linkend="functioncodb_execute">codb_execute()</link>.
+	<res>		- Объект. Результат вызова функции <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $RETURNS$
 	String. Formatted result.
 $LANG_RU$
@@ -65,7 +65,6 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
-	CODB_CONNECT,CODB_EXECUTE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

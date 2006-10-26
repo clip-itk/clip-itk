@@ -50,13 +50,13 @@ $FUNCNAME$
 $CATEGORY$
   	CLIP-UI
 $SUMMARY$
-	Get current application main window <link linkend="classmainwindow">UIMainWindow</link> object.
+	Get current application main window <link linkend="classuimainwindow">UIMainWindow</link> object.
 $LANG_RU$
 	Получить объект текущего главного окна приложения <link linkend="classuimainwindow">UIMainWindow</link>.
 $SYNTAX$
 	getMainWindow()	--> <oMainWindow>
 $RETURNS$
-	Current application main window <link linkend="classmainwindow">UIMainWindow</link> object.
+	Current application main window <link linkend="classuimainwindow">UIMainWindow</link> object.
 $LANG_RU$
 	Объект текущего главного окна приложения <link linkend="classuimainwindow">UIMainWindow</link>.
 $EXAMPLES$
