@@ -1,5 +1,5 @@
 $ABOUTCATEG$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Library for work with CODB databases by queries.
 $LANG_RU$
@@ -65,7 +65,7 @@ codb_close( db ) // Close databases</pre>
 	<link linkend="functionCODBGETCOLUMN">codb_get_column()</link>.
 	
 	Besides you can get result as formatted string. Just pass result object in
-	<link linkend="classCODBFORMATTER">CODB_Formatter()</link> method show.
+	<link linkend="classCODBFORMATTER">CODBFormatter()</link> method show.
 	
 	<command>Using codb.</command>
 	
@@ -297,7 +297,7 @@ codb_close( db ) // Закрытие баз данных</pre>
 	
 	Кроме этого, результат можно получить в отформатированном виде. Для этого
 	объект результата передаётся в метод 'show' объекта класса 
-	<link linkend="classCODBFORMATTER">CODB_Formatter()</link>.
+	<link linkend="classCODBFORMATTER">CODBFormatter()</link>.
 	
 	<command>Использование консоли codb.</command>
 	

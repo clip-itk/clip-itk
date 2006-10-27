@@ -116,28 +116,28 @@ $SYNTAX$
 $ARGUMENTS$
 	<align>		- Number. Horizontal alignment of widgets. Possible values:
 			  <itemizedlist mark="bullet">
-				<listitem><para><constant>ALIGN_LEFT</constant> &mdash; aligns with the left edge (default)</para></listitem>
-				<listitem><para><constant>ALIGN_CENTER</constant> &mdash; centers horizontally</para></listitem>
-				<listitem><para><constant>ALIGN_RIGHT</constant> &mdash; aligns with the right edge</para></listitem>
+				<listitem><command>ALIGN_LEFT</command> &mdash; aligns with the left edge (default)</listitem>
+				<listitem><command>ALIGN_CENTER</command> &mdash; centers horizontally</listitem>
+				<listitem><command>ALIGN_RIGHT</command> &mdash; aligns with the right edge</listitem>
 			  </itemizedlist>
 	<valign>	- Number. Vertical alignment of widgets. Possible values:
 			  <itemizedlist mark="bullet">
-				<listitem><para><constant>ALIGN_TOP</constant> &mdash; aligns with the top (default)</para></listitem>
-				<listitem><para><constant>ALIGN_MIDDLE</constant> &mdash; centers vertically</para></listitem>
-				<listitem><para><constant>ALIGN_BOTTOM</constant> &mdash; aligns with the bottom</para></listitem>
+				<listitem><command>ALIGN_TOP</command> &mdash; aligns with the top (default)</listitem>
+				<listitem><command>ALIGN_MIDDLE</command> &mdash; centers vertically</listitem>
+				<listitem><command>ALIGN_BOTTOM</command> &mdash; aligns with the bottom</listitem>
 			  </itemizedlist>
 $LANG_RU$
 	<align>		- Число. Горизонтальное выравнивание элементов. Значения:
 			  <itemizedlist mark="bullet">
-				<listitem><para><constant>ALIGN_LEFT</constant> &mdash; выравнивание по левому краю (значение по умолчанию)</para></listitem>
-				<listitem><para><constant>ALIGN_CENTER</constant> &mdash; выравнивание по центру</para></listitem>
-				<listitem><para><constant>ALIGN_RIGHT</constant> &mdash; выравнивание по правому краю</para></listitem>
+				<listitem><command>ALIGN_LEFT</command> &mdash; выравнивание по левому краю (значение по умолчанию)</listitem>
+				<listitem><command>ALIGN_CENTER</command> &mdash; выравнивание по центру</listitem>
+				<listitem><command>ALIGN_RIGHT</command> &mdash; выравнивание по правому краю</listitem>
 			  </itemizedlist>
 	<valign>	- Число. Вертикальное выравнивание элементов. Значения:
 			  <itemizedlist mark="bullet">
-				<listitem><para><constant>ALIGN_TOP</constant> &mdash; выравнивание по верхнему краю (значение по умолчанию)</para></listitem>
-				<listitem><para><constant>ALIGN_MIDDLE</constant> &mdash; выравнивание по середине</para></listitem>
-				<listitem><para><constant>ALIGN_BOTTOM</constant> &mdash; выравнивание по нижнему краю</para></listitem>
+				<listitem><command>ALIGN_TOP</command> &mdash; выравнивание по верхнему краю (значение по умолчанию)</listitem>
+				<listitem><command>ALIGN_MIDDLE</command> &mdash; выравнивание по середине</listitem>
+				<listitem><command>ALIGN_BOTTOM</command> &mdash; выравнивание по нижнему краю</listitem>
 			  </itemizedlist>
 $ENDMETHOD$
 

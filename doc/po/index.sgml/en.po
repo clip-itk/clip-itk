@@ -12,18 +12,18 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: template/./index.sgml:166 template/./index.sgml:199
+#: template/./index.sgml:163 template/./index.sgml:196
 msgid "LANG"
 msgstr "en"
 
-#: template/./index.sgml:167
+#: template/./index.sgml:164
 msgid "xBase and Clipper language compatible compiler"
 msgstr ""
 
-#: template/./index.sgml:171
+#: template/./index.sgml:168
 msgid "Object oriented, CA-Clipper compatible compiler"
 msgstr ""
 
-#: template/./index.sgml:200
+#: template/./index.sgml:197
 msgid "COM-port access library"
 msgstr ""

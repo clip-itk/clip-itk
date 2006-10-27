@@ -27,24 +27,10 @@ $SYNTAX$
 	UIFrame([<caption>],[<type>])	--> UIFrame object
 $ARGUMENTS$
 	<caption>	- String. Label at top of the frame.
-	<type>		- Number. Frame type.
-			  <itemizedlist mark="bullet">
-				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; no border</para></listitem>
-				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; all frame is sunken</para></listitem>
-				<listitem><para><constant>FRAME_RAISED</constant> &mdash; all frame is raised like a button</para></listitem>
-				<listitem><para><constant>FRAME_IN</constant> &mdash; only sunken border (default)</para></listitem>
-				<listitem><para><constant>FRAME_OUT</constant> &mdash; only raised border</para></listitem>
-			  </itemizedlist>
+	<type>		- Number. Frame type.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; no border</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; all frame is sunken</listitem><listitem><command>FRAME_RAISED</command> &mdash; all frame is raised like a button</listitem><listitem><command>FRAME_IN</command> &mdash; only sunken border (default)</listitem><listitem><command>FRAME_OUT</command> &mdash; only raised border</listitem></itemizedlist>
 $LANG_RU$
 	<caption>	- Строка. Надпись на рамке.
-	<type>		- Число. Тип рамки.
-			  <itemizedlist mark="bullet">
-				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; без рамки</para></listitem>
-				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; вдавленная панель</para></listitem>
-				<listitem><para><constant>FRAME_RAISED</constant> &mdash; приподнятая панель </para></listitem>
-				<listitem><para><constant>FRAME_IN</constant> &mdash; вдавленная рамка (значение по умолчанию)</para></listitem>
-				<listitem><para><constant>FRAME_OUT</constant> &mdash; выпуклая рамка</para></listitem>
-			  </itemizedlist>
+	<type>		- Число. Тип рамки.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; без рамки</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; вдавленная панель</listitem><listitem><command>FRAME_RAISED</command> &mdash; приподнятая панель </listitem><listitem><command>FRAME_IN</command> &mdash; вдавленная рамка (значение по умолчанию)</listitem><listitem><command>FRAME_OUT</command> &mdash; выпуклая рамка</listitem></itemizedlist>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -84,23 +70,9 @@ $LANG_RU$
 $SYNTAX$
 	setType(<type>)
 $ARGUMENTS$
-	<type>		- Number. Frame type.
-			  <itemizedlist mark="bullet">
-				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; no border</para></listitem>
-				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; all frame is sunken</para></listitem>
-				<listitem><para><constant>FRAME_RAISED</constant> &mdash; all frame is raised like a button</para></listitem>
-				<listitem><para><constant>FRAME_IN</constant> &mdash; only sunken border (default)</para></listitem>
-				<listitem><para><constant>FRAME_OUT</constant> &mdash; only raised border</para></listitem>
-			  </itemizedlist>
+	<type>		- Number. Frame type.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; no border</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; all frame is sunken</listitem><listitem><command>FRAME_RAISED</command> &mdash; all frame is raised like a button</listitem><listitem><command>FRAME_IN</command> &mdash; only sunken border (default)</listitem><listitem><command>FRAME_OUT</command> &mdash; only raised border</listitem></itemizedlist>
 $LANG_RU$
-	<type>		- Число. Тип рамки.
-			  <itemizedlist mark="bullet">
-				<listitem><para><constant>FRAME_PLAIN</constant> &mdash; без рамки</para></listitem>
-				<listitem><para><constant>FRAME_SUNKEN</constant> &mdash; вдавленная панель</para></listitem>
-				<listitem><para><constant>FRAME_RAISED</constant> &mdash; приподнятая панель </para></listitem>
-				<listitem><para><constant>FRAME_IN</constant> &mdash; вдавленная рамка (значение по умолчанию)</para></listitem>
-				<listitem><para><constant>FRAME_OUT</constant> &mdash; выпуклая рамка</para></listitem>
-			  </itemizedlist>
+	<type>		- Число. Тип рамки.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; без рамки</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; вдавленная панель</listitem><listitem><command>FRAME_RAISED</command> &mdash; приподнятая панель </listitem><listitem><command>FRAME_IN</command> &mdash; вдавленная рамка (значение по умолчанию)</listitem><listitem><command>FRAME_OUT</command> &mdash; выпуклая рамка</listitem></itemizedlist>
 $ENDMETHOD$
 
 $EXAMPLES$

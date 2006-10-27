@@ -1,7 +1,7 @@
 $FUNCNAME$
 	CODB_CONNECT
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Connect to CODB databases.
 $LANG_RU$
@@ -17,7 +17,7 @@ $END$
 $FUNCNAME$
 	CODB_CLOSE
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Disconnect from CODB databases.
 $LANG_RU$
@@ -33,7 +33,7 @@ $END$
 $FUNCNAME$
 	CODB_EXECUTE
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Execute query.
 $LANG_RU$
@@ -59,7 +59,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_ANSWER
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Check if answer of query is error.
 $LANG_RU$
@@ -79,7 +79,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_COLUMN
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Get result column name by its index.
 $LANG_RU$
@@ -101,7 +101,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_ERROR
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Get error description.
 $LANG_RU$
@@ -121,7 +121,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_METAOBJECT
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Get metaobject content by ID.
 $LANG_RU$
@@ -145,7 +145,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_OBJECT
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Get object content by ID.
 $LANG_RU$
@@ -169,7 +169,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_RESULT
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Get query result as array.
 $LANG_RU$
@@ -189,7 +189,7 @@ $END$
 $FUNCNAME$
 	CODB_NUM_COLUMNS
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Get number of columns in query result.
 $LANG_RU$
@@ -209,7 +209,7 @@ $END$
 $FUNCNAME$
 	CODB_NUM_ROWS
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Get number of rows in query result.
 $LANG_RU$
@@ -229,7 +229,7 @@ $END$
 $FUNCNAME$
 	CODB_PUT_METAOBJECT
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Put metaobject in database.
 $LANG_RU$
@@ -255,7 +255,7 @@ $END$
 $FUNCNAME$
 	CODB_PUT_OBJECT
 $CATEGORY$
-	CODB_QUERY
+	CODBQUERY
 $SUMMARY$
 	Put object in database.
 $LANG_RU$
@@ -286,7 +286,7 @@ if e != NIL
 	?? "ERROR codb_connect(): " + e + chr(10)
 	return 1
 endif
-fmt := CODB_Formatter()
+fmt := CODBFormatter()
 fmt:obj:options:hide_titles := .T.
 res := codb_execute( db, 'show databases' )
 ? fmt:show()
@@ -297,7 +297,7 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
-	CODB_FORMATTER
+	CODBFORMATTER
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

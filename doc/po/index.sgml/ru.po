@@ -11,18 +11,18 @@ msgstr ""
 "Content-Type: text/plain; charset=KOI8-R\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: template/./index.sgml:166 template/./index.sgml:199
+#: template/./index.sgml:163 template/./index.sgml:196
 msgid "LANG"
 msgstr "ru"
 
-#: template/./index.sgml:167
+#: template/./index.sgml:164
 msgid "xBase and Clipper language compatible compiler"
 msgstr "Компилятор, совместимый с языками семейства xBase и Clipper"
 
-#: template/./index.sgml:171
+#: template/./index.sgml:168
 msgid "Object oriented, CA-Clipper compatible compiler"
 msgstr "Объектно-ориентированный, CA-Clipper совместимый компилятор"
 
-#: template/./index.sgml:200
+#: template/./index.sgml:197
 msgid "COM-port access library"
 msgstr "Библиотека доступа к COM портам"
