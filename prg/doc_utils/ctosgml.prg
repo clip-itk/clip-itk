@@ -8,6 +8,17 @@
 
 #define __FAST__LINK	1
 
+static docbook_tags := { ;
+	'command', ;
+	'link', ;
+	'itemizedlist', ;
+	'orderedlist', ;
+	'simplelist', ;
+	'variablelist', ;
+	'listitem', ;
+	'emphasis' ;
+}
+
 function main()
 local fsrc, fsgml, str, outfile, i, j, par, fname, t, x
 local argn, argd, ab_order, ab_met, fs, ii, jj, key, val, lang
@@ -198,60 +209,76 @@ local obj := map()
 return obj
 
 *******************************************************************************
-static function trans(str, all)
-local newstr, l, i, j, s
+static function trans(pstr, all)
+local str, newstr, l, i, j, s, tag, reg
+	str := pstr
 	newstr := ""
 	all := iif(all==NIL, .t., all)
 
 	if all
-		l := len(str)
-		for i:= 1 to l
+		while len(str) > 0
+			reg := {}
+			if search('[<&>]', str, @reg)
+				i := reg[1][1]
+				newstr += left(str, i-1)
+				str := substr(str, i)
+			else
+				newstr += str
+				str := ''
+				loop
+			endif			
 			s := left(str, 1)
 			if s == "<"
-				/*if left(lower(str), 5) == "<pre>"
-					newstr += "&\n<programlisting>"
-					j := atl("</pre>", lower(str))
-					newstr += substr(str, 6, j-11) + "</programlisting>&\n"
-					str := substr(str, j+6)
-					loop
-				else*/
 				if left(lower(str), 5) == "<pre>"
-					j := atl("</pre>", lower(str))
-					newstr += substr(str, 1, j+5)
-					str := substr(str, j+6)
+					newstr += "<programlisting><![CDATA["
+					str := substr(str, 6)
 					loop
-				elseif  left(lower(str), 9) == "<command>"
-					j := atl("</command>", lower(str))
-					newstr += substr(str, 1, j+9)
-					str := substr(str, j+10)
+				elseif left(lower(str), 6) == "</pre>"
+					newstr += "]]></programlisting>"
+					str := substr(str, 7)
 					loop
-				elseif  left(lower(str), 5) == "<link"
-					j := atl("</link>", lower(str))
-					newstr += substr(str, 1, j+6)
-					str := substr(str, j+7)
-					loop
-				elseif  left(lower(str), 13) == "<itemizedlist"
-					j := atl("</itemizedlist>", lower(str))
-					newstr += substr(str, 1, j+13)
-					str := substr(str, j+14)
-					loop
-				elseif  left(lower(str), 9) == "<listitem"
-					j := atl("</listitem>", lower(str))
-					newstr += substr(str, 1, j+9)
-					str := substr(str, j+10)
-					loop
+				elseif left(str,9) == '<![CDATA['
+					j := at(']]>', str)
+					if j==0
+						newstr += str
+						str := ''
+						loop
+					else
+						newstr += left(str, j+2)
+						str := substr(str, j+3)
+					endif
 				else
-					newstr += '<![CDATA['+s+']]>'
+					// Check allowed tags
+					j := ascan(docbook_tags, {|e| left(lower(str),len(e)+1) == '<'+e .or. left(lower(str),len(e)+2) == '</'+e })
+					if j > 0
+						i = at('>', str )
+						tag := substr(str, len(docbook_tags[j])+iif(substr(str,2,1)=='/',3,2), 1 )
+						if i > 0 .and. ( tag == '>' .or. tag == ' ' .or. tag == "&\t" )
+							tag := left(str, i)
+							if tag == '<listitem>'
+								tag := tag + '<para>'
+							elseif tag == '</listitem>'
+								tag := '</para>' + tag
+							endif
+							newstr += tag
+							str := substr(str, i+1)
+							loop
+						else
+							newstr += '&lt;'
+						endif
+					else
+						newstr += '&lt;'
+					endif
 				endif
 			elseif s== ">"
-				newstr += '<![CDATA['+s+']]>'
-			elseif s== "&"
-				newstr += '<![CDATA['+s+']]>'
+				newstr += '&gt;'
+			elseif s== "&" .and. substr(str,2,1) == ' '
+				newstr += '&amp;'
 			else
 				newstr += s
 			endif
 			str := substr(str, 2)
-		next
+		enddo
 	else
 		newstr := str
 	endif
@@ -265,6 +292,7 @@ local newstr, l, i, j, s
 	newstr := strtran(newstr, chr(145), " ")
 	newstr := strtran(newstr, chr(148), " ")
 return newstr
+
 
 *******************************************************************************
 static function writeClassDesc(fname, fsgml, fs, lang, ab_met)

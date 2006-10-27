@@ -41,7 +41,7 @@ function main(p1)
 	end
 	fclose(h)
 	
-	fmt := CODB_Formatter()
+	fmt := CODBFormatter()
 	for i:=1 to pcount()
 		if ascan({'-h','--help','-?'}, param(i)) > 0
 			printUsage(1) // help

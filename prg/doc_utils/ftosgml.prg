@@ -242,7 +242,8 @@ local str, newstr, l, i, j, s, tag, reg
 					j := ascan(docbook_tags, {|e| left(lower(str),len(e)+1) == '<'+e .or. left(lower(str),len(e)+2) == '</'+e })
 					if j > 0
 						i = at('>', str )
-						if i > 0
+						tag := substr(str, len(docbook_tags[j])+iif(substr(str,2,1)=='/',3,2), 1 )
+						if i > 0 .and. ( tag == '>' .or. tag == ' ' .or. tag == "&\t" )
 							tag := left(str, i)
 							if tag == '<listitem>'
 								tag := tag + '<para>'
@@ -261,7 +262,7 @@ local str, newstr, l, i, j, s, tag, reg
 				endif
 			elseif s== ">"
 				newstr += '&gt;'
-			elseif s== "&"
+			elseif s== "&" .and. substr(str,2,1) == ' '
 				newstr += '&amp;'
 			else
 				newstr += s
