@@ -11,17 +11,18 @@
 #PACKAGE = clip-bzip2
 #MAIN=bzip2
 
-DOCBOOK_OPTS = -V %two-side%=\#f \
+DOCBOOK_OPTS = \
+	-V %use-id-as-filename%=\#t \
 	-V %chapter-autolabel%=\#t \
 	-V %appendix-autolabel%=\#t \
-	-V %section-autolabel%=\#t \
-	-V %section-label-includes-component-label%=\#t \
-	-V %toc-depth%=2 \
-	-V %generate-part-toc%=\#t \
-	-V %generate-article-toc%=\#t \
-	-V %paper-type%=A4 \
-	-V %use-id-as-filename%=\#t \
-	-V %always-format-variablelist-as-table%=\#t
+	-V %section-autolabel%=\#t 
+#	-V %section-label-includes-component-label%=\#t \
+#	-V %toc-depth%=2 \
+#	-V %generate-part-toc%=\#t \
+#	-V %generate-article-toc%=\#t \
+#	-V %paper-type%=A4 \
+#	-V %always-format-variablelist-as-table%=\#t \
+#	-V %two-side%=\#f \
 
 
 #
@@ -287,7 +288,7 @@ clean-rtf:
 	rm -rf rtf
 
 clean:
-	rm -rf sgml html
+	rm -rf sgml html *.log
 	find . -name '*.bak' -o -name '*~' -o -name '_.pot' | xargs rm -f
 
 .PHONY: extract merge subst clean distclean \

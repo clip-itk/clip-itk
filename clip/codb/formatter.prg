@@ -19,11 +19,11 @@
 
 #define DEF_DELIMITER	'   '
 
-function CODB_Formatter()
+function CODBFormatter()
 	local obj
 	
 	obj := map()
-	obj:className := "CODB_Formatter"
+	obj:className := "CODBFormatter"
 	obj:options := map()
 	
 	obj:options:hide_titles	:= .F.
