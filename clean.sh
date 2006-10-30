@@ -14,10 +14,11 @@ else
 fi
 
 export MAKE
-unset CLIPROOT
+#unset CLIPROOT
 pwd=`pwd`
 
 rm -rf debian/tmp debian/clip-lib clip-dev.spec
+rm -rf *.bak
 
 cd clip
 	$MAKE clean || true
