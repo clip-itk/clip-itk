@@ -1530,6 +1530,9 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 					    sTmp3 := "'"+bal_summa(stmp)+"'"
 					else
 					    sTmp3 := "'"+alltrim(str(stmp))+"'"
+					    if "*" $ sTmp3
+						sTmp3 := "'"+alltrim(str(stmp),20,0)+"'"
+					    endif
 					endif
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ alltrim(str(stmp))  + ""
 				elseif valtype(sTmp) == "D"
