@@ -10,7 +10,6 @@
 #
 #PACKAGE = clip-bzip2
 #MAIN=bzip2
-
 #DOCBOOK_OPTS = -V %two-side%=\#f \
 #	-V %chapter-autolabel%=\#t \
 #	-V %appendix-autolabel%=\#t \
@@ -24,7 +23,7 @@
 #	-V %always-format-variablelist-as-table%=\#t
 #DOCBOOK_OPTS = \
 #	-V %use-id-as-filename%=\#t \
-#	-V %chapter-autolabel%=\#t \
+#	-V %chapter-autolabel%=\#t  \
 #	-V %appendix-autolabel%=\#t \
 #	-V %section-autolabel%=\#t
 #
