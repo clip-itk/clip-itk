@@ -4,9 +4,9 @@ endif
 #CLIP	= clip
 CLIP	= $(CLIPROOT)/bin/clip
 CLIPFLAGS = -a -w -O -b -l
-CLIPLIBS  = -lclip-codb -lcodb_query
+CLIPLIBS  = -lclip-codb -lcodb-query
 TARGET = codb$(EXESUFF)
-OBJS  = codb.o formatter.o
+OBJS  = codb.o
 .SUFFIXES: .prg .o .po
 
 all: $(TARGET)
