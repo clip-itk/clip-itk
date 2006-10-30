@@ -98,6 +98,7 @@
 				<widget class="label" label="Payment order N ">
 					<property name="font.style" value="bold" />
 					<property name="color.fg" value="#FF1790" />
+					<msg lang="ru" id="Payment order N " value="Платежное поручение N " />
 				</widget>
 				<widget name="number" class="edit" label="">
 					<property name="geometry.width" value="50" />
@@ -248,10 +249,9 @@
 
 	</actions>
 	<locale lang="ru">
-		<string id="Payment order N " value="Платежное поручение N " />
-		<string id="Save" value="&amp;Сохранить" />
-		<string id="Print" value="&amp;Печать" />
-		<string id="Close" value="&amp;Закрыть" />
+		<msg id="Save" value="&amp;Сохранить" />
+		<msg id="Print" value="&amp;Печать" />
+		<msg id="Close" value="&amp;Закрыть" />
 	</locale>
 </form>
 

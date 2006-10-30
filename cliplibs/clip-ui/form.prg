@@ -394,7 +394,7 @@ static function ui_createWidget(self, tag, parent )
 			ui_setProperty(self, c, o)
 		elseif c:getName() == "rule"
 			ui_setAction(self, c, o)
-		elseif ascan({"column"},{|ev| ev==c:getName()}) != 0
+		elseif ascan({"column", "msg"},{|ev| ev==c:getName()}) != 0
 			// Nothing do
 		else
 			?? "WARNING: tag "+c:getName()+" is ignored&\n"

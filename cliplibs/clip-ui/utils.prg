@@ -114,7 +114,8 @@ return value
 	locale	two-letter language identifier
 */
 function getLocaleStrings( parent, locale )
-	local section:=NIL, mStr:=map(), tag, i
+	local section:=NIL, mStr:=map(), tag, i, a
+	
 	if empty(locale)
 		locale := left(getenv("LANG"),2)
 	endif
@@ -130,13 +131,24 @@ function getLocaleStrings( parent, locale )
 	// Get strings
 	if ! empty(section)
 		for i in section:getChilds()
-			if i:attribute("id","") == "" .or. i:attribute("value","") == ""
-				?? "Error in tag <locale>&\n"
+			if lower(i:name) == 'msg' .and. ( i:attribute("id","") == "" .or. i:attribute("value","") == "" )
+				?? "Error in message tag&\n"
 			else
 //				?? i:attribute("id"), "=>", i:attribute("value"),chr(10)
 				mStr[i:attribute("id")] := i:attribute("value")
 			endif
 		next
 	endif
+
+	// Collect messages inside widgets
+	a := parent:XPath('//msg')
+//	?? valtype(a), len(a),chr(10)
+	
+	for i in a
+		if i:attribute('lang','') == locale .and. .not. ( i:attribute("id","") == "" .and. i:attribute("value","") == "" )
+			mStr[i:attribute("id")] := i:attribute("value")
+//			?? i:attribute("id"), "=>", i:attribute("value"),chr(10)
+		endif
+	next
 
 return mStr
