@@ -63,7 +63,7 @@ HASHSRCS = cliprt.c clipdbg.c clipvm.c clipmain.c rt.y _io.c \
 RDDBASE = rdd/librdd.a
 CLASSLIB = classes/libclipclasses.a
 FUNCSLIB = funcs/libclipfuncs.a
-CODBLIB = codb/libclip-codb.a
+CODBLIB = codb/libclip-codb.a codb/libcodb-query.a
 SCREEN = screen/libscr.a
 TERMCAP = #screen/libtermcap.a
 SQL = sql/libdbfsql.a
@@ -392,6 +392,7 @@ inst_screen:
 
 inst_codb:
 	./clip_cp codb/libclip-codb $(DESTDIR)$(CLIPROOT)/lib
+	./clip_cp codb/libcodb-query $(DESTDIR)$(CLIPROOT)/lib
 	cd codb && tar cf - codb.ch codbcfg.ch codb_dbf.ch | (cd $(DESTDIR)$(CLIPROOT)/include && tar xf -)
 
 inst_ch: $(INST_MEMDEBUG_H)
