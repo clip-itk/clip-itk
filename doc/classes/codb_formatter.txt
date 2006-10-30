@@ -5,9 +5,9 @@ $SUMMARY$
 $LANG_RU$
 	Класс CODBFORMATTER предназначен для форматирования результатов запросов <link linkend="functionCODBEXECUTE">codb_execute()</link>.
 $ABOUT$
-	Class CODBFORMATTER format output for result in codb_query library.
+	Class CODBFORMATTER format output for result in codb-query library.
 $LANG_RU$
-	Class CODBFORMATTER format output for result in codb_query library.
+	Class CODBFORMATTER format output for result in codb-query library.
 $SYNTAX$
 	CODBFormatter() --> CODBFORMATTER object
 

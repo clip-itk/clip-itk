@@ -249,7 +249,7 @@ $SYNTAX$
 $ARGUMENTS$
 	<caption>	- String. Caption of dialog.
 	<text>		- String. Text of message.
-	<buttons> 	- String. In the string defined array of buttons in message window. For example, "'&Save','&Cancel'". If parameter isn't defined, only one button 'OK' will be shown.
+	<buttons> 	- String. In the string defined array of buttons in message window. For example, "'&amp;Save','&amp;Cancel'". If parameter isn't defined, only one button 'OK' will be shown.
 	<buttonNames> 	- String. In the string defined array of name for button. For example, "'SAVE','CANCEL'".
 	<action>	- Code block. Code block which is executed on any defined button on dialog window. As parameters of this call name of pressed button is used.
 $LANG_RU$
