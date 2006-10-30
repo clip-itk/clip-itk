@@ -306,9 +306,9 @@ codb_close( db ) // Закрытие баз данных</pre>
 	
 	Параметры codb:
 	<itemizedlist>
-	<listitem><command>-c 'команда'<command> - Выполнить запрос и выйти.</listitem>
-  	<listitem><command>--hide-titles<command> - Не показывать заголовки столбцов.</listitem>
-  	<listitem><command>--delim='DELIM'<command> - Установить разделитель между столбцами.</listitem>
+	<listitem><command>-c 'команда'</command> - Выполнить запрос и выйти.</listitem>
+  	<listitem><command>--hide-titles</command> - Не показывать заголовки столбцов.</listitem>
+  	<listitem><command>--delim='DELIM'</command> - Установить разделитель между столбцами.</listitem>
   	</itemizedlist>
   	
   	Полный перечень команд можно посмотреть, запустив <command>codb -h</command>.
