@@ -16,7 +16,7 @@
 # define	MULOP2	260
 # define	NUMBER	261
 
-#line 12 "plural.y"
+#line 15 "plural.y"
 
 /* Expression parsing for plural form selection.*/
 
@@ -84,7 +84,7 @@ struct PluralData
 };
 
 
-#line 82 "plural.y"
+#line 85 "plural.y"
 #ifndef YYSTYPE
 typedef union {
   unsigned long int num;
@@ -94,7 +94,7 @@ typedef union {
 # define YYSTYPE yystype
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
-#line 88 "plural.y"
+#line 91 "plural.y"
 
 /* Prototypes for local functions.  */
 static struct expression *new_exp (int nargs, enum operator op,
@@ -258,8 +258,8 @@ static const short yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined. */
 static const short yyrline[] =
 {
-       0,   207,   213,   217,   221,   225,   229,   233,   237,   241,
-     245,   249,   254
+       0,   210,   216,   220,   224,   228,   232,   236,   240,   244,
+     248,   252,   257
 };
 #endif
 
@@ -1049,74 +1049,74 @@ yyreduce:
   switch (yyn) {
 
 case 1:
-#line 208 "plural.y"
+#line 211 "plural.y"
 {
 	    PLURAL_DATA->res = yyvsp[0].exp;
 	  ;
     break;}
 case 2:
-#line 214 "plural.y"
+#line 217 "plural.y"
 {
 	    yyval.exp = new_exp_3 (qmop, yyvsp[-4].exp, yyvsp[-2].exp, yyvsp[0].exp);
 	  ;
     break;}
 case 3:
-#line 218 "plural.y"
+#line 221 "plural.y"
 {
 	    yyval.exp = new_exp_2 (lor, yyvsp[-2].exp, yyvsp[0].exp);
 	  ;
     break;}
 case 4:
-#line 222 "plural.y"
+#line 225 "plural.y"
 {
 	    yyval.exp = new_exp_2 (land, yyvsp[-2].exp, yyvsp[0].exp);
 	  ;
     break;}
 case 5:
-#line 226 "plural.y"
+#line 229 "plural.y"
 {
 	    yyval.exp = new_exp_2 (yyvsp[-1].op, yyvsp[-2].exp, yyvsp[0].exp);
 	  ;
     break;}
 case 6:
-#line 230 "plural.y"
+#line 233 "plural.y"
 {
 	    yyval.exp = new_exp_2 (yyvsp[-1].op, yyvsp[-2].exp, yyvsp[0].exp);
 	  ;
     break;}
 case 7:
-#line 234 "plural.y"
+#line 237 "plural.y"
 {
 	    yyval.exp = new_exp_2 (yyvsp[-1].op, yyvsp[-2].exp, yyvsp[0].exp);
 	  ;
     break;}
 case 8:
-#line 238 "plural.y"
+#line 241 "plural.y"
 {
 	    yyval.exp = new_exp_2 (yyvsp[-1].op, yyvsp[-2].exp, yyvsp[0].exp);
 	  ;
     break;}
 case 9:
-#line 242 "plural.y"
+#line 245 "plural.y"
 {
 	    yyval.exp = new_exp_1 (lnot, yyvsp[0].exp);
 	  ;
     break;}
 case 10:
-#line 246 "plural.y"
+#line 249 "plural.y"
 {
 	    yyval.exp = new_exp_0 (var);
 	  ;
     break;}
 case 11:
-#line 250 "plural.y"
+#line 253 "plural.y"
 {
 	    if ((yyval.exp = new_exp_0 (num)) != 0)
 	      yyval.exp->val.num = yyvsp[0].num;
 	  ;
     break;}
 case 12:
-#line 255 "plural.y"
+#line 258 "plural.y"
 {
 	    yyval.exp = yyvsp[-1].exp;
 	  ;
@@ -1354,7 +1354,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 260 "plural.y"
+#line 263 "plural.y"
 
 
 static void

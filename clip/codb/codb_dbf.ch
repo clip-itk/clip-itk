@@ -137,7 +137,7 @@ META data may be: group,user,attr,class,extent,deposit
 		{"NAME"      ,"C",50           ,0,CODB_LENTYPE_RTRIM  ,""},;
 		{"HEADER"    ,"C",80           ,0,CODB_LENTYPE_RTRIM  ,""},;
 		{"FOOTER"    ,"C",80           ,0,CODB_LENTYPE_RTRIM  ,""},;
-		{"WIDTH"     ,"N",2            ,0,0                   ,0 },;
+		{"WIDTH"     ,"N",3            ,0,0                   ,0 },;
 		{"EXPR"      ,"C",250          ,0,CODB_LENTYPE_RTRIM  ,""},;
 		{"DEPEND_OF" ,"C",20           ,0,CODB_LENTYPE_ALLTRIM,0 },;
 		{"REFS"      ,"A",0            ,0,0                   ,{} };
