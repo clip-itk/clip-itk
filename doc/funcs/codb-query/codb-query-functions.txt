@@ -1,7 +1,7 @@
 $FUNCNAME$
 	CODB_CONNECT
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Connect to CODB databases.
 $LANG_RU$
@@ -9,15 +9,15 @@ $LANG_RU$
 $SYNTAX$
      codb_connect() --> oDB
 $RETURNS$
-	codb_connect() connects to CODB databases and returns object for other functions in codb_query library.
+	codb_connect() connects to CODB databases and returns object for other functions in codb-query library.
 $LANG_RU$
-	codb_connect() устанавливает подключение к базам данных CODB и возвращает объект, которые используется для функций библиотеки codb_query.
+	codb_connect() устанавливает подключение к базам данных CODB и возвращает объект, которые используется для функций библиотеки codb-query.
 $END$
     
 $FUNCNAME$
 	CODB_CLOSE
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Disconnect from CODB databases.
 $LANG_RU$
@@ -33,7 +33,7 @@ $END$
 $FUNCNAME$
 	CODB_EXECUTE
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Execute query.
 $LANG_RU$
@@ -59,7 +59,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_ANSWER
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Check if answer of query is error.
 $LANG_RU$
@@ -79,7 +79,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_COLUMN
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Get result column name by its index.
 $LANG_RU$
@@ -101,7 +101,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_ERROR
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Get error description.
 $LANG_RU$
@@ -121,7 +121,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_METAOBJECT
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Get metaobject content by ID.
 $LANG_RU$
@@ -145,7 +145,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_OBJECT
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Get object content by ID.
 $LANG_RU$
@@ -169,7 +169,7 @@ $END$
 $FUNCNAME$
 	CODB_GET_RESULT
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Get query result as array.
 $LANG_RU$
@@ -189,7 +189,7 @@ $END$
 $FUNCNAME$
 	CODB_NUM_COLUMNS
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Get number of columns in query result.
 $LANG_RU$
@@ -209,7 +209,7 @@ $END$
 $FUNCNAME$
 	CODB_NUM_ROWS
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Get number of rows in query result.
 $LANG_RU$
@@ -229,7 +229,7 @@ $END$
 $FUNCNAME$
 	CODB_PUT_METAOBJECT
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Put metaobject in database.
 $LANG_RU$
@@ -255,7 +255,7 @@ $END$
 $FUNCNAME$
 	CODB_PUT_OBJECT
 $CATEGORY$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Put object in database.
 $LANG_RU$

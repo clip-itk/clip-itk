@@ -1,11 +1,11 @@
 $ABOUTCATEG$
-	CODBQUERY
+	CODB-QUERY
 $SUMMARY$
 	Library for work with CODB databases by queries.
 $LANG_RU$
 	Библиотека для работы с базами данных CODB посредством запросов.
 $DESCRIPTION$
-	codb_query library provides unified access to CODB databases by
+	codb-query library provides unified access to CODB databases by
 	queries instead call of	methods of classes <link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
 	<link linkend="classCODBDICTIONARY">CODBDICTIONARY</link>, 
 	<link linkend="classCODBLIST">CODBLIST</link> and
@@ -16,8 +16,8 @@ $DESCRIPTION$
 	
 	<command>Using In Programs.</command>
 	
-	For use codb_query library in programs you should build program with this
-	library. Just append '-lcodb_query' to build command.
+	For use codb-query library in programs you should build program with this
+	library. Just append '-lcodb-query' to build command.
 	
 	Typical session of work with database contains following steps:
 <pre>db := codb_connect() // Connect to databases
@@ -233,7 +233,7 @@ codb_close( db ) // Close databases</pre>
 	Change current work database and depository.
 
 $LANG_RU$
-	Библиотека codb_query предоставляет унифицированный способ работы с базами 
+	Библиотека codb-query предоставляет унифицированный способ работы с базами 
 	данным CODB посредством запросов вместо вызовов методов классов 
 	<link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
 	<link linkend="classCODBDICTIONARY">CODBDICTIONARY</link>, 
@@ -246,8 +246,8 @@ $LANG_RU$
 	
 	<command>Использование в программах.</command>
 	
-	Для использования библиотеки codb_query в программах вы должны собрать свою
-	программу с этой библиотекой. Укажите при сборке '-lcodb_query'.
+	Для использования библиотеки codb-query в программах вы должны собрать свою
+	программу с этой библиотекой. Укажите при сборке '-lcodb-query'.
 	
 	Типичный сеанс работы состоит из следующих этапов:
 <pre>db := codb_connect() // Подключение к базам данных
