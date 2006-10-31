@@ -1,4 +1,4 @@
-clip (1.1.2-0) stable; urgency=low
+clip (1.2.0-0) stable; urgency=low
 
   * new release, codb-query, ocmng, some UTF support, few new functions and docs, some optimize.
 

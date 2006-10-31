@@ -1,3 +1,8 @@
+ifndef CLIPROOT
+	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
+endif
+
+include $(CLIPROOT)/include/Makefile.inc
 #
 
 dirs = clip-gzip clip-bzip2 clip-crypto clip-gd clip-fcgi \

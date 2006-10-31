@@ -12,7 +12,7 @@ TARGET=libclip-com$(DLLSUFF)
 ATARGET=libclip-com.a
 RTARGET=libclip-com$(DLLREALSUFF)
 OBJS=com.o
-CFLAGS+=-IlibezV24 -Wall
+CFLAGS+=-IlibezV24 -Wall -g
 LIBEZ=libezV24/libezV24-0.a
 
 all:  have_lib $(TARGET) $(ATARGET)
