@@ -214,11 +214,11 @@ errorblock({|err|error2html(err)})
 
 			if isRDF
 				cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"",,)
-	    else
+			else
 				cgi_putArefs2Rdf1(aTree,oDep,0,'urn:'+urn,columns,"",level)
 				?
 				cgi_putArefs2Rdf2(aTree,oDep,0,'urn:'+urn,columns,"",level)
-	    endif
+			endif
 		next
 	next
 	? '</RDF:RDF>'

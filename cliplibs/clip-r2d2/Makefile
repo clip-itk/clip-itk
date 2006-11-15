@@ -11,10 +11,12 @@ OBJS = cgi_funcs.o an_funcs.o \
 	acc_log.o an_rdf.o balance.o \
 	connect.o delobj.o memo.o getfile.o obj_arr.o \
 	obj_rass.o print.o rdfinfo.o \
-	rdfinfo2.o an_rdf2.o balance2.o \
+	an_rdf2.o \
 	rdf_sell.o rdfarr.o bind2.o \
 	report1.o report3.o report4.o report5.o report6.o \
 	report7.o report8.o
+
+#rdfinfo2.o  balance2.o
 
 OBJS2 = accpost.o bind.o
 
