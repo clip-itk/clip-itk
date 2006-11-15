@@ -38,8 +38,8 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 #endif
 	   lRow := iif(lRow == NIL, 0, lRow)
 	   lCol := iif(lCol == NIL, 0, lCol)
-	   rRow := iif(rRow == NIL, 0, rRow)
-	   rCol := iif(rCol == NIL, 0, rCol)
+	   rRow := iif(rRow == NIL, MaxRow(), rRow)
+	   rCol := iif(rCol == NIL, MaxCol(), rCol)
 	   obj		:= map()
 	   obj:nTop	:=Lrow
 	   obj:nLeft	:=Lcol
