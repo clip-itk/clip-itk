@@ -65,7 +65,6 @@ then
 fi
 
 printf "configure: Makefile creating.."
-echo ''
 
 exec 3>Makefile.inc
 
@@ -142,7 +141,6 @@ cat ./Makefile.in >>Makefile
 echo ". done."
 
 printf "configure: creating gdcfg.h .."
-echo ''
 
 exec 3>gdcfg.h
 
