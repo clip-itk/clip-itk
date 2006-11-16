@@ -5,12 +5,15 @@
 */
 /*
    $Log$
+   Revision 1.2  2006/11/16 13:32:34  itk
+   uri: fix in dosparam(). delete program name from result  string
+
    Revision 1.1  2006/06/22 19:01:31  itk
    uri: initial
 
    Revision 1.150  2006/05/12 06:49:33  clip
    uri: fix bug in macroassing and _clip_parse_name.
-        &("m[varname]") := &("m[varname]")
+	&("m[varname]") := &("m[varname]")
 
    Revision 1.149  2006/03/13 07:22:32  clip
    uri: some fix from Angelo Gigardi
@@ -3492,12 +3495,12 @@ clip_DOSPARAM(ClipMachine * mp)
 	char *s;
 	int i, l;
 
-	for (i = 0, l = 0; i < _clip_raw_argc; i++)
+	for (i = 1, l = 0; i < _clip_raw_argc; i++)
 		l += strlen(_clip_raw_argv[i]) + 1;
 
 	s = (char *) malloc(l + 1);
 
-	for (i = 0, l = 0; i < _clip_raw_argc; i++)
+	for (i = 1, l = 0; i < _clip_raw_argc; i++)
 	{
 		char *p = _clip_raw_argv[i];
 		int l1 = strlen(p);
