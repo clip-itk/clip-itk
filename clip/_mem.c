@@ -5,8 +5,8 @@
 */
 /*
    $Log$
-   Revision 1.1  2006/06/22 19:01:30  itk
-   uri: initial
+   Revision 1.2  2006/11/21 09:35:00  itk
+   uri: small fix in "restore from + getsys".
 
    Revision 1.26  2005/08/08 09:00:30  clip
    alena: fix for gcc 4
@@ -624,21 +624,28 @@ clip___MRESTORE(ClipMachine * mp)
 	{
 		for (i = 0; i < nvars; i++)
 		{
-			ClipVar *vp;
-						char *s;
+			ClipVar *vp, tmp;
+			char *s;
 			long hash = _clip_casehashstr(names[i]);
 
 			s = strdup(names[i]);
 			HashTable_store(mp->hashnames, s, hash);
 
 			vp = _clip_ref_public_noadd(mp, hash);
-						if (!vp)
+			if (!vp)
 				vp = _clip_ref_memvar(mp, hash);
 
 			if (!vp)
 				continue;
+#if 0  /* 2006/11/21 restore in getsys bug fixed */
 			_clip_destroy(mp, vp);
 			dbf2clip(vars + i, vp);
+#else
+			dbf2clip(vars + i, &tmp);
+			if ( _clip_push(mp, &tmp) )
+				continue;
+			_clip_assign(mp, vp);
+#endif
 		}
 	}
 
