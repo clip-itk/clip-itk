@@ -269,7 +269,7 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 			loop
 		endif
 		if !empty(cAccount)
-			if account:id == cAccount .or. cAccount $ account:code
+			if account:id == cAccount .or. at(cAccount,account:code)==1
 			else
 				loop
 			endif
