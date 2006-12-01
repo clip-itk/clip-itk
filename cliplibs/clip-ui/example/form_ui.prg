@@ -20,7 +20,7 @@ function main()
 	local fileName,driver
 	local params := array(0)
 
-	driver := "gtk"
+	driver := "gtk2"
 	i := 1
 	while i <= pcount()
 		if left(param(i),9) == "--driver="

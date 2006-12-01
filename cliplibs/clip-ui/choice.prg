@@ -19,11 +19,15 @@ function UIChoice( action, value, text )
 	obj:button 		:= UIButton( "...", action, value )
 	obj:stick 		:= map()
 	obj:stick:right := obj:button
+	obj:source 		:= NIL
 	_recover_UICHOICE(obj)
 return obj
 
 function _recover_UICHOICE( obj )
 	obj:setAction	:= @ui_setAction()
+	obj:setSource	:= @ui_setSource()
+	obj:setText		:= @ui_setText()
+	obj:getText		:= @ui_getText()
 	obj:setValue	:= @ui_setValue()
 	obj:getValue	:= @ui_getValue()
 return obj
@@ -36,18 +40,32 @@ static function ui_setAction(self, signal, action)
 	endif
 return NIL
 
+/* Set source for automatic text retrieve on change value */
+static function ui_setSource(self, source)
+	self:source := source
+return NIL
+
+/* Set text */
+static function ui_setText(self, value)
+	driver:setValue( self, val2str(value) )
+return NIL
+
+/* Get text */
+static function ui_getText(self)
+return driver:getValue( self )
+
 /* Set value */
 static function ui_setValue(self, value)
-	local v
-	if valtype(value) == 'A' .and. len(value) == 2
-		driver:setValue( self, val2str(value[1]) )
-		self:button:setValue(value[2])
+	self:button:setValue(value)
+	
+	if valtype(self:source) != 'U' .and. isFunction("GETATTRIBUTEVALUE")
+		// getAttributeValue(<id>, <attribute>)
+		// <id> is object id
+		// <attribute> should has format: 'db:class:attribute'
+		self:setText( getAttributeValue( value, self:source ) )
 	endif
 return NIL
 
 /* Get value */
 static function ui_getValue(self)
-	local v:=array(2)
-	v[1] := driver:getValue( self )
-	v[2] := self:button:getValue()
-return v
+return self:button:getValue()

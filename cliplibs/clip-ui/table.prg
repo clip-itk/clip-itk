@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003,2004 by E/AS Software Foundation	           */
-/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
-/*   									   */
+/*   This is a part of CLIP-UI library                                     */
+/*                                                                         */
+/*   Copyright (C) 2003,2004 by E/AS Software Foundation                   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
+/*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -17,27 +17,27 @@ static driver := getDriver()
 
 /* Table class */
 function UITable(columns)
-	local obj	:= driver:createTable(columns)
+	local obj		:= driver:createTable(columns)
 	obj:className	:= "UITable"
 	obj:columns 	:= columns
-	obj:nodes	:= map()
+	obj:nodes		:= map()
 	obj:onSelect	:= NIL
 // No alternate rows color by default
 //	obj:altRowColor	:= NIL
 // Set alternate rows color by default
 	obj:altRowColor	:= UIColor(ALT_TABLE_ROW_COLOR)
-	obj:lastId	:= 0
+	obj:lastId		:= 0
 	_recover_UITABLE(obj)
 return obj
 
 function _recover_UITABLE( obj )
-	obj:addRow	:= @ui_addRow()
-	obj:setAction	:= @ui_setAction()
-	obj:clear	:= @ui_clear()
-	obj:getSelection := @ui_getSelection()
-	obj:getSelectionId := @ui_getSelectionId()
+	obj:addRow			:= @ui_addRow()
+	obj:setAction		:= @ui_setAction()
+	obj:clear			:= @ui_clear()
+	obj:getSelection 	:= @ui_getSelection()
+	obj:getSelectionId 	:= @ui_getSelectionId()
 	obj:getSelectionField := @ui_getSelectionField()
-	obj:setAltRowColor := @ui_setAltRowColor()
+	obj:setAltRowColor 	:= @ui_setAltRowColor()
 	obj:savePosition    := @ui_savePosition()
 	obj:restorePosition := @ui_restorePosition()
 return obj

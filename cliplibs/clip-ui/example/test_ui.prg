@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*									   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
-/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
-/*   									   */
+/*   This is a part of CLIP-UI library                                     */
+/*                                                                         */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation                   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
+/*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -15,7 +15,7 @@
 /* Test of clip-ui library usage */
 
 static ws
-static wnd := NIL, ww1, ww2
+static wnd := NIL, ww1, ww2, ww3
 static childToolbar
 static timer, tbState, iteration
 
@@ -27,7 +27,7 @@ local main_tbar, statusbar
 local accel_group, driver
 local win := NIL, params:=array(0)
 
-driver := "gtk"
+driver := "gtk2"
 for i:=1 to pcount()
 	if left(param(i),9) == "--driver="
 		driver := substr(param(i),10)
@@ -107,14 +107,17 @@ sp:addEnd(b)
 BankDocReq( ww1, b )
 
 ww2 := UIChildWindow("", win)
+ww2:setCaption("Other widgets")
 
 OtherWidget(ww2)
 
+ww3 := UIChildWindow("EditTable", win)
+
+EditTableWidget(ww3)
+
 ww1:show()
-
-ww2:setCaption("Other widgets")
 ww2:show()
-
+ww3:show()
 ww1:show()
 
 // Assign icon to window.
@@ -455,6 +458,69 @@ static function OtherWidget(w)
 	tg:add(tb)
 	w:add( tg )
 
+return
+
+/* EditTable widget */
+static function EditTableWidget( w )
+	local table, columns:={}, c, b
+	
+	aadd( columns, UIEditTableColumn( 'num', 	'#', 		TABLE_COLUMN_INC ) )
+	aadd( columns, UIEditTableColumn( 'name', 	'Name', 	TABLE_COLUMN_CHOICE ) )
+	aadd( columns, UIEditTableColumn( 'unit', 	'Units', 	TABLE_COLUMN_COMBO ) )
+	c := UIEditTableColumn( 'date',	'Date', TABLE_COLUMN_DATE)
+	c:editable := .F.
+	aadd( columns, c )
+	aadd( columns, UIEditTableColumn( 'qty', 	'Quantity', TABLE_COLUMN_NUMBER ) )
+	aadd( columns, UIEditTableColumn( 'price', 	'Price', 	TABLE_COLUMN_NUMBER ) )
+	aadd( columns, UIEditTableColumn( 'sum', 	'Sum', 		TABLE_COLUMN_NUMBER ) )
+	aadd( columns, UIEditTableColumn( 'vat', 	'VAT', 		TABLE_COLUMN_CHECK ) )
+	aadd( columns, UIEditTableColumn( 'other', 	'Comment',	TABLE_COLUMN_TEXT ) )
+	
+	//w:setPadding( 3 )
+	table := UIEditTable( columns )
+	table:addRow( { 1, "Vodka",      "bottle", date(),  5, 5.1, 0, .T., '' } )
+	table:addRow( { 2, "Beer",       "bottle", date(), 15, 2.5, 0, .F., 'Cold and tasty' } )
+	table:addRow( { 3, "Bad record", "",       date(),  0,   0, 0, .F., '' } )
+	table:setRow( 3, { 3, "Good record", "", date(),  1, 10.7, 0, .T., '' } )
+	table:addRow( { 4, "Milk",       "bottle", date(), 15, 2.3, 0, .T., '' } )
+	table:removeRow( 3 )
+	table:removeRow( 4 )
+	table:setField( 2, 'unit', 'barrel' )
+	table:setAction( 'changed', {|w,e,c| editTableChanged(w, e, c, table) })
+	//table:layout:setPadding( 3 )
+	w:add(table, .T., .T.)
+	b := UIButton("Get values", {|w, e| showEditTableValues(table) })
+	w:add(b)
+return
+
+/* Slot for changed row */
+static function editTableChanged(w, e, c, table)
+	?? "Changed row:", e, c, chr(10)
+	//table:setField( 'sum', row, table:getField('qty', row) * table:getField('price', row) )
+	//?? "SUM:", table:getField('sum', row), chr(10)
+return
+
+/* Get values from UIEditTable() */
+static function showEditTableValues( table )
+	local a, i, j
+	?? "UIEditTable: &\n"
+	?? "&\trows:", table:getProperty('rows'), chr(10)
+	?? "&\tcols:", table:getProperty('columns'), chr(10)
+	?? "&\tselected row:", table:getProperty('selectedRow'), chr(10)
+	?? "&\tselected column:", table:getProperty('selectedColumn'), chr(10)
+	?? "&\tcell 'date' at row 2 value:", table:getField('date',2), chr(10)
+	?? "&\trow (2) value:", table:getField(,2), chr(10)
+	?? "&\tselected row object:", table:getRow(), chr(10)
+	?? "Table content:&\n"
+	a := table:getValue()
+	if valtype(a) == 'A'
+		for i in a
+			for j in i
+				?? chr(9), j
+			next
+			?? chr(10)
+		next
+	endif
 return
 
 /* Start timer */
