@@ -764,11 +764,13 @@ clip_GTK_TREEMODELITERNCHILDREN(ClipMachine * cm)
 	gint             ret;
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL(ctreemodel->object));
-	CHECKOPT(2, MAP_t);
-
-	ret = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(ctreemodel->object),
-	      ctreeiter->object);
-
+	if( ctreeiter == NULL ) {
+		ret = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(ctreemodel->object), NULL);
+	} else {
+		CHECKOPT(2, MAP_t);
+		ret = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(ctreemodel->object),
+			ctreeiter->object);
+	}
 	_clip_retni(cm, ret);
 	return 0;
 err:
