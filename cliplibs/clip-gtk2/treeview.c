@@ -1500,7 +1500,7 @@ clip_GTK_TREEVIEWSETSEARCHCOLUMN(ClipMachine * cm)
 	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
 	CHECKARG(2, NUMERIC_t);
 
-	gtk_tree_view_set_search_column(GTK_TREE_VIEW(ctree->widget), column);
+	gtk_tree_view_set_search_column(GTK_TREE_VIEW(ctree->widget), column-1);
 
 	return 0;
 err:
@@ -1636,6 +1636,33 @@ clip_GTK_TREEVIEWSETHOVEREXPAND(ClipMachine * cm)
 
 	gtk_tree_view_set_hover_expand(GTK_TREE_VIEW(ctree->widget), enable);
 
+	return 0;
+err:
+	return 1;
+}
+
+/* Get index of selected column in tree view widget */
+int
+clip_GTK_TREEVIEWGETSELECTEDCOLUMN(ClipMachine * cm)
+{
+	C_widget *ctree    = _fetch_cw_arg(cm);
+	GList *cols;
+	gint cIndex;
+	GtkTreePath *path;
+	GtkTreeViewColumn *column;
+
+	CHECKARG2(1,MAP_t,NUMERIC_t); CHECKCWID(ctree,GTK_IS_TREE_VIEW);
+
+	/* get current cursor position */
+	gtk_tree_view_get_cursor(GTK_TREE_VIEW(ctree->widget),
+		&path, &column);
+
+	/* return column index */
+	cols = gtk_tree_view_get_columns(GTK_TREE_VIEW(ctree->widget));
+	cIndex = g_list_index(cols, (gpointer) column);
+	g_list_free(cols);
+	
+	_clip_retni(cm, cIndex+1);
 	return 0;
 err:
 	return 1;
