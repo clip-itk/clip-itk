@@ -25,6 +25,7 @@ function initGTKDriver()
 	drv:driver     := "gtk"
 	
 	/* WorkSpace */
+	drv:getName		:= @ui_getName()
 	drv:createInstance 	:= @ui_createInstance()
 	drv:run 		:= @ui_run()
 	drv:quit		:= @ui_quit()
@@ -167,24 +168,24 @@ function initGTKDriver()
 	drv:createProgressBar 	:= @ui_createProgressBar()
 	drv:setProgressBarPercent := @ui_setProgressBarPercent()
 
-        /* Layout */
-       	drv:createLayout         := @ui_createLayout()
-        drv:addLayout            := @ui_addLayout()
-        drv:moveLayout           := @ui_moveLayout()
+	/* Layout */
+	drv:createLayout         := @ui_createLayout()
+	drv:addLayout            := @ui_addLayout()
+	drv:moveLayout           := @ui_moveLayout()
 
-        /* Slider */
-        drv:createSlider        := @ui_createSlider()
-        drv:setSliderRange      := @ui_setSliderRange()
-        drv:setSliderStep       := @ui_setSliderStep()
+	/* Slider */
+	drv:createSlider        := @ui_createSlider()
+	drv:setSliderRange      := @ui_setSliderRange()
+	drv:setSliderStep       := @ui_setSliderStep()
 
-        /* Calendar */
-        drv:showCalendar        := @ui_showCalendar()
+	/* Calendar */
+	drv:showCalendar        := @ui_showCalendar()
 
-        /* FileName Dialog */
-        drv:selectFileName      := @ui_selectFileName()
+	/* FileName Dialog */
+	drv:selectFileName      := @ui_selectFileName()
 
-        /* Color Dialog */
-        drv:selectColor 	:= @ui_selectColor()
+	/* Color Dialog */
+	drv:selectColor 	:= @ui_selectColor()
 
 return drv
 
@@ -194,6 +195,8 @@ function getGTKDriver( params )
 	endif
 return drv
 
+static function ui_getName( self )
+return self:driver
 
 /** Application **/
 
@@ -614,7 +617,7 @@ static function ui_showWidget( self, obj, flag )
 	else
 		widget := obj
 	endif
-	if flag == .T.
+	if flag
 		gtk_WidgetShow( widget )
 	else
 		gtk_WidgetHide( widget )
@@ -1019,7 +1022,6 @@ static function ui_createTable(self, columns)
 		next
 	endif
 	o:layout := frame
-	frame:scroll := .T.
 return o
 
 static function ui_addTableRow(self, table, data)
@@ -1533,7 +1535,6 @@ static function ui_createTree(self, nTreeColumn, acNameColumns)
 		next
 	endif
 	o:layout := frame
-	frame:scroll := .T.
 return o
 
 static function ui_setTreeSelectAction( self, tree, action )

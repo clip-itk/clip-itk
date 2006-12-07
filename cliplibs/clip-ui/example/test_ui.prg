@@ -170,6 +170,7 @@ static function BankRefReq( sp )
 
 	splitter := UISplitter(SPLITTER_HORIZONTAL)
 	sp:add(splitter, .T., .T.)
+	splitter:setPosition( 170 )
 
 	tree := UITree(, {"N1","N2"})
 
@@ -177,7 +178,6 @@ static function BankRefReq( sp )
 	splitter:add( tree )
 
 	table := UITable({"#","Date","Payee","Sum"})
-	table:setAltRowColor("#cbe8ff")
 
 	// Fill tree and table
 	updateTable(tree, table)
@@ -462,11 +462,12 @@ return
 
 /* EditTable widget */
 static function EditTableWidget( w )
-	local table, columns:={}, c, b
+	local table, columns:={}, c, b, tA, t1, t2, t3
 	
+	//? 'create columns'
 	aadd( columns, UIEditTableColumn( 'num', 	'#', 		TABLE_COLUMN_INC ) )
 	aadd( columns, UIEditTableColumn( 'name', 	'Name', 	TABLE_COLUMN_CHOICE ) )
-	aadd( columns, UIEditTableColumn( 'unit', 	'Units', 	TABLE_COLUMN_COMBO ) )
+	aadd( columns, UIEditTableColumn( 'unit', 	'Units', 	TABLE_COLUMN_CHOICE ) )
 	c := UIEditTableColumn( 'date',	'Date', TABLE_COLUMN_DATE)
 	c:editable := .F.
 	aadd( columns, c )
@@ -476,38 +477,74 @@ static function EditTableWidget( w )
 	aadd( columns, UIEditTableColumn( 'vat', 	'VAT', 		TABLE_COLUMN_CHECK ) )
 	aadd( columns, UIEditTableColumn( 'other', 	'Comment',	TABLE_COLUMN_TEXT ) )
 	
+	// Lookup at second columns
+	columns[2]:lookup := .T.
+	columns[3]:default := 'bottle'
+	columns[8]:default := .T.
+	columns[5]:format := "%.0f"
+	
+	//? 'create UIEditTable'
 	//w:setPadding( 3 )
 	table := UIEditTable( columns )
+	
+	//? 'add rows'
 	table:addRow( { 1, "Vodka",      "bottle", date(),  5, 5.1, 0, .T., '' } )
 	table:addRow( { 2, "Beer",       "bottle", date(), 15, 2.5, 0, .F., 'Cold and tasty' } )
 	table:addRow( { 3, "Bad record", "",       date(),  0,   0, 0, .F., '' } )
 	table:setRow( 3, { 3, "Good record", "", date(),  1, 10.7, 0, .T., '' } )
 	table:addRow( { 4, "Milk",       "bottle", date(), 15, 2.3, 0, .T., '' } )
+	
+	//? 'remove rows'
 	table:removeRow( 3 )
 	table:removeRow( 4 )
-	table:setField( 2, 'unit', 'barrel' )
-	table:setAction( 'changed', {|w,e,c| editTableChanged(w, e, c, table) })
+	table:setCursor( 2, 3 )
+	
+	//? 'set field value'
+	table:setField( 'unit', 2, 'barrel' )
+	table:setField( 1, 2, 5 )
+	?? 'num: ', table:getField('num', 2), ' '
+	?? 'price', table:getField('price', 2)
+	?? chr(10)
+	
+	//? 'set action'
+	table:setAction( 'changed', {|t,r,c,val| editTableChanged(t, r, c, val) })
+	
 	//table:layout:setPadding( 3 )
 	w:add(table, .T., .T.)
 	b := UIButton("Get values", {|w, e| showEditTableValues(table) })
 	w:add(b)
+	tA := UITabArea()
+	w:add(tA, .T., .T.)
+	t1 := UITab('First', 'first')
+	tA:add( t1 )
+	t2 := UITab('Second', 'second')
+	tA:add( t2 )
+	t3 := UITab('Third', 'third')
+	tA:add( t3 )
+	t2:setCaption('Changed caption')
+	t1:add( UILabel('First tab') )
+	t2:add( UIButton('Jump to first tab', {|w,e| t1:activate(), tA:hide('third') }) )
+	t3:add( UILabel('Last tab') )
 return
 
 /* Slot for changed row */
-static function editTableChanged(w, e, c, table)
-	?? "Changed row:", e, c, chr(10)
-	//table:setField( 'sum', row, table:getField('qty', row) * table:getField('price', row) )
-	//?? "SUM:", table:getField('sum', row), chr(10)
-return
+static function editTableChanged(table, column, row, oldValue)
+	local p, q, s
+	p := table:getField('qty', row)
+	q := table:getField('price', row)
+	s := p*q
+	?? 'slot for editable cell: old value:', oldValue, 'sum:', s,chr(10)
+	table:setField( 'sum', row, s )
+return .F.
 
 /* Get values from UIEditTable() */
 static function showEditTableValues( table )
 	local a, i, j
 	?? "UIEditTable: &\n"
-	?? "&\trows:", table:getProperty('rows'), chr(10)
-	?? "&\tcols:", table:getProperty('columns'), chr(10)
-	?? "&\tselected row:", table:getProperty('selectedRow'), chr(10)
-	?? "&\tselected column:", table:getProperty('selectedColumn'), chr(10)
+	?? "&\trows:", table:getRowCount(), chr(10)
+	?? "&\tcols:", table:getColumnCount(), chr(10)
+	?? "&\tselected row:", table:getSelectedRow(), chr(10)
+	?? "&\tselected column:", table:getSelectedColumn(), chr(10)
 	?? "&\tcell 'date' at row 2 value:", table:getField('date',2), chr(10)
 	?? "&\trow (2) value:", table:getField(,2), chr(10)
 	?? "&\tselected row object:", table:getRow(), chr(10)
@@ -516,11 +553,12 @@ static function showEditTableValues( table )
 	if valtype(a) == 'A'
 		for i in a
 			for j in i
-				?? chr(9), j
+				?? '  ', j
 			next
 			?? chr(10)
 		next
 	endif
+	table:setValue(a)
 return
 
 /* Start timer */

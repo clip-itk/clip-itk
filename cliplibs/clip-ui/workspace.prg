@@ -23,7 +23,7 @@ return obj
 function _recover_UIWORKSPACE( obj )
 	obj:setAction   := @ui_setAction()
 	obj:run     	:= @ui_run()
-	obj:quit	:= @ui_quit()
+	obj:quit		:= @ui_quit()
 return obj
 
 /* Set callback function on quit */

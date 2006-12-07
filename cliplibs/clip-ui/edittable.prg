@@ -15,30 +15,18 @@
 
 /* Tests:
 	- create table with columns: 
-		- autoincremented #
 		- choice
-		- combobox
-		- text
-		- number
-		- checkbox
-		- date
-	- add default row (program and manual by Ins or Arrow Down on last row)
-	+ set row data
-	- remove row (program and manual with confirmation)
-	+ get/set field
-	? get/set property
-	- get/set data of whole table
-	- slots (changed)
-	+ number of rows
-	? selected row/column
+   
    BUGS:
-	- last i in codeblock - value doesn't store (need current selection)
-	- number is shown as integer
+	- unable to get value from first column if it is number
 	
+   FUTURE
+   	- custom background
+   	- sortable columns
+   	
 */
 
 static driver := getDriver()
-
 
 /* EditTable column class */
 function UIEditTableColumn(name, caption, type)
@@ -47,8 +35,19 @@ function UIEditTableColumn(name, caption, type)
 	obj:caption := caption
 	obj:type 	:= type
 	obj:editable := .T.
+	obj:format  := ''
+	switch type
+		case TABLE_COLUMN_NUMBER
+			obj:default	:= 0
+			obj:format := "%'.2f"
+		case TABLE_COLUMN_INC
+			obj:default	:= 0
+		case TABLE_COLUMN_CHECK
+			obj:default	:= .F.
+		otherwise
+			obj:default	:= ''
+	endswitch			
 return obj
-
 
 /* EditTable class */
 function UIEditTable(columns)
@@ -71,9 +70,12 @@ function _recover_UIEDITTABLE( obj )
 	obj:getField 		:= @ui_getField()
 	obj:setValue		:= @ui_setValue()
 	obj:getValue		:= @ui_getValue()
-	// Property
-	obj:setProperty		:= @ui_setProperty()
-	obj:getProperty		:= @ui_getProperty()
+	// Properties
+	obj:setCursor 		:= @ui_setCursor()
+	obj:getRowCount 	:= @ui_getRowCount()
+	obj:getColumnCount 	:= @ui_getColumnCount()
+	obj:getSelectedRow 	:= @ui_getSelectedRow()
+	obj:getSelectedColumn := @ui_getSelectedColumn()
 return obj
 
 /* Add row and fill it by data */
@@ -94,17 +96,17 @@ return driver:getEditTableRow(self, row)
 static function ui_removeRow(self, row)
 return driver:removeEditTableRow(self, row)
 
+/* Clear all rows */
+static function ui_clear(self)
+	driver:clearEditTable( self )
+return NIL
+
 /* Set action */
 static function ui_setAction(self, signal, action)
 	if signal=='changed' .and. valtype(action)=='B'
 		self:onChanged := action
 		driver:setAction( self, 'changed', action )
 	endif
-return NIL
-
-/* Clear all rows */
-static function ui_clear(self)
-	driver:clearEditTable( self )
 return NIL
 
 /* Get current selection */
@@ -114,8 +116,8 @@ static function ui_getSelection(self)
 return sel
 
 /* Set field contents */
-static function ui_setField(self, row, column, value)
-return driver:setEditTableField(self, row, column, value)
+static function ui_setField(self, column, row, value)
+return driver:setEditTableField(self, column, row, value)
 
 /* Get field contents */
 static function ui_getField(self, column, row)
@@ -129,10 +131,22 @@ return driver:setValue(self, data)
 static function ui_getValue(self)
 return driver:getValue(self)
 
-/* Set table property */
-static function ui_setProperty(self, name, value)
-return driver:setEditTableProperty(self, name, value)
+/* Set cursor to specified row and column in the table */
+static function ui_setCursor(self, row, column, beginEdit)
+return driver:setEditTableCursor(self, row, column, beginEdit)
 
-/* Get table property */
-static function ui_getProperty(self, name)
-return driver:getEditTableProperty(self, name)
+/* Get row count in the table */
+static function ui_getRowCount(self)
+return driver:getEditTableRowCount(self)
+
+/* Get column count in the table */
+static function ui_getColumnCount(self)
+return driver:getEditTableColumnCount(self)
+
+/* Get selected row in the table */
+static function ui_getSelectedRow(self)
+return driver:getEditTableSelectedRow(self)
+
+/* Get selected column in the table */
+static function ui_getSelectedColumn(self)
+return driver:getEditTableSelectedColumn(self)

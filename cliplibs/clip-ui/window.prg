@@ -208,7 +208,7 @@ static function ui_dialogBox(self, caption, text, buttons, buttonNames, action, 
 		lside:add(UIImage(icon))
 	endif
 
-	lside:add(UILabel(text),.T.,.T.)
+	lside:add( UILabel(text), .T., .T. )
 	hb := UIButtonBar( , 10, 10 )
 	hb:setAlignment( ALIGN_CENTER )
 	b := array(m)
@@ -219,7 +219,7 @@ static function ui_dialogBox(self, caption, text, buttons, buttonNames, action, 
 	next
 	vb:addEnd( hb )
 	win:setDefault( b[1] ) // Make first button default
-	win:setPlacement( .t. )
+	win:setPlacement( .T. )
 	driver:setModal( win, .T. )
 	win:show()
 return win

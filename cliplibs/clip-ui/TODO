@@ -2,22 +2,23 @@
 TODO
 ====
 
-Last change: 16 Oct 2006
+Last change: 07 Dec 2006
 
-BUGS
+MAIN
 ----
  - select from list open from UIChoice with exist value
- - all list widget supports setValue/getValue 
-
+ - Different column type in UITable 
+ - Restore position for UITree expands collapsed branches
+ - i18n support
 
 CLIP-UI
 -------
- - Debug function for UIForm and debug lebel for library (possible, CLIP-wide)
- - Spreadsheet widget 
+ - Debug function for UIForm and debug level for library (possible, CLIP-wide)
+ + Spreadsheet widget 
  - Set slot functions for window open, activation, close
- - New widgets:
-   - UIChoice (for select object)
-   - UITab
+ + New widgets:
+   + UIChoice (for select object)
+   + UITab
  - DnD methods for UITable/UITree
  - Deletion of widget from comtainers
  - Disallow editing in UIComboBox field
@@ -25,7 +26,6 @@ CLIP-UI
  - gtk_ScrolledWindowNew() make child widget too small
  - sent command line parameters to gtk_Init()
  - Default selection needed for UIComboBox in forms
- - usablity issues for UISlider: value should be step multiple, step indication under slider
  - icons for UIChildWindow
  - wrong setFocus() behaviour for widgets in UIChildWindow/UIDocument
  - UIEditDate should display calendar in popup window
@@ -35,19 +35,17 @@ CLIP-UI
  
 FORM
 ----
- - debug unclosed tags (<form /></form>)
  - "alignment.vertical" and "alignment.horizonal" widget properties
  - program for test form (include child window too)
- - fix bug in HTTP parser with unknown locales (C, ru_RU.UTF-8) - empty tag names
 
 GTK
 ---
- - Input numero sign or typographic quotes
- - unscrollable position of column header (GTK/GTK2)
+ - Input numero sign and typographic quotes in locale 'ru_RU.KOI8-R'
+ + unscrollable position of column header (GTK/GTK2)
  
 Documentation
 -------------
- - separate section "CLIP-UI" in CLIP documentation 
+ - separate section "CLIP-UI" in CLIP documentation for classes
  - XFL format description
  - list support (and any other Docbook tags) in .txt class/funcs description files
  - UIDriver class

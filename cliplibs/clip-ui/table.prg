@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library                                     */
 /*                                                                         */
-/*   Copyright (C) 2003,2004 by E/AS Software Foundation                   */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -13,7 +13,26 @@
 
 static driver := getDriver()
 
-/* TODO: column and row manipulation, get/set values */
+/* Table column class */
+function UITableColumn(name, caption, type)
+	local obj	:= map()
+	obj:name 	:= name
+	obj:caption := caption
+	obj:type 	:= type
+	obj:editable := .F.
+	obj:format  := ''
+	switch type
+		case TABLE_COLUMN_NUMBER
+			obj:default	:= 0
+			obj:format := "%'.2f"
+		case TABLE_COLUMN_INC
+			obj:default	:= 0
+		case TABLE_COLUMN_CHECK
+			obj:default	:= .F.
+		otherwise
+			obj:default	:= ''
+	endswitch			
+return obj
 
 /* Table class */
 function UITable(columns)
@@ -22,22 +41,20 @@ function UITable(columns)
 	obj:columns 	:= columns
 	obj:nodes		:= map()
 	obj:onSelect	:= NIL
-// No alternate rows color by default
-//	obj:altRowColor	:= NIL
-// Set alternate rows color by default
-	obj:altRowColor	:= UIColor(ALT_TABLE_ROW_COLOR)
 	obj:lastId		:= 0
 	_recover_UITABLE(obj)
 return obj
 
 function _recover_UITABLE( obj )
 	obj:addRow			:= @ui_addRow()
-	obj:setAction		:= @ui_setAction()
+	obj:setRow			:= @ui_setRow()
+	obj:getRow			:= @ui_getRow()
+	obj:removeRow		:= @ui_removeRow()
 	obj:clear			:= @ui_clear()
+	obj:setAction		:= @ui_setAction()
 	obj:getSelection 	:= @ui_getSelection()
 	obj:getSelectionId 	:= @ui_getSelectionId()
 	obj:getSelectionField := @ui_getSelectionField()
-	obj:setAltRowColor 	:= @ui_setAltRowColor()
 	obj:savePosition    := @ui_savePosition()
 	obj:restorePosition := @ui_restorePosition()
 return obj
@@ -64,6 +81,42 @@ static function ui_addRow(self, data, id)
 	self:nodes[node:id] = node
 return NIL
 
+/* Set data for table row */
+static function ui_setRow(self, row, data)
+    local i
+    // Convert values to strings
+	for i=1 to len(data)
+		data[i] := val2str(data[i])
+	next
+	if valtype(row) == 'C' .and. upper(row) $ self:nodes
+		row := self:nodes[row]:id
+	endif
+return driver:setTableRow(self, row, data)
+
+/* Get data from table row as object */
+static function ui_getRow(self, row)
+	if valtype(row) == 'C' .and. upper(row) $ self:nodes
+		row := self:nodes[row]:id
+	endif
+return driver:getTableRow(self, row)
+
+/* Get data from table row */
+static function ui_removeRow(self, row)
+	local id
+	if valtype(row) == 'C' .and. upper(row) $ self:nodes
+		id := self:nodes[row]:id
+		adel(self:nodes, upper(row))
+		row := id
+	endif
+return driver:removeTableRow(self, row)
+
+/* Clear all rows */
+static function ui_clear(self)
+	driver:clearTable( self )
+	self:nodes := map()
+	self:lastId := 0
+return NIL
+
 /* Set action to UITable */
 static function ui_setAction(self, signal, action)
 	// Set action to double-click or key ENTER pressed
@@ -79,13 +132,6 @@ function tableRowSelect(table, event)
 		eval(table:onSelect, table, table:getSelection() )
 	endif
 return
-
-/* Clear all rows */
-static function ui_clear(self)
-	driver:clearTable( self )
-	self:nodes := map()
-	self:lastId := 0
-return NIL
 
 /* Get current selection */
 static function ui_getSelection(self)
@@ -122,12 +168,6 @@ static function ui_getSelectionField(self, column)
 		return NIL
 	endif
 return val
-
-/* Set alternate row color */
-static function ui_setAltRowColor(self, color)
-	self:altRowColor := UIColor(color)
-	// TODO: redraw rows on alternate color changes
-return NIL
 
 /* Save current position to variable */
 static function ui_savePosition(self)
