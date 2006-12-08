@@ -1,0 +1,372 @@
+$CLASSNAME$
+	UIEditTable
+$SUMMARY$
+	Class UIEditTable
+$LANG_RU$
+	Класс UIEditTable
+$ABOUT$
+	Class of editable multicolumn list.
+$LANG_RU$
+	Класс редактируемой таблицы (многоколоночного списка).
+$DESCRIPTION$
+	Editable multicolumn list allow to manually create and modify two-dimensional array of values. 
+	On each cell allowed to edit you can press <keycap>Enter</keycap> key and go to edit mode. 
+	For store new value press <keycap>Enter</keycap> or <keycap>Esc</keycap> to cancel changes. 
+	New empty row is created on press <keycap>Insert</keycap> on any table row 
+	or <keycap>Down arrow</keycap> on last table row. To delete current selected row 
+	press <keycap>Delete</keycap>. Confirmation dialog will be appeared and you can confirm 
+	deletion or cancel operation.
+$LANG_RU$
+	Редактируемая таблица (многоколоночный список) предназначена для создания и изменения двумерного 
+	массива значений. Любую ячейку, разрешённую для изменения, вы можете редактировать, нажав 
+	клавишу <keycap>Enter</keycap>. Для сохранения изменённого значения, 
+	нажмите <keycap>Enter</keycap> или <keycap>Esc</keycap> для отмены изменений. Новую строку можно 
+	создать из любого места, нажав клавишу <keycap>Insert</keycap>, или <keycap>Down arrow</keycap> на
+	последней строке таблицы. Для удаления выбранной строки нажмите <keycap>Delete</keycap>. Появится 
+	диалог подтверждения где вы можете подтвердить удаление строки или отменить операцию.	
+$SYNTAX$
+	UIEditTable(<aColumns>)	--> UIEditTable object
+$LANG_RU$
+	UIEditTable(<aColumns>)	--> Объект UIEditTable
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIEditTable".
+	<columns>	- Array of <link linkend="classuiedittablecolumn">UIEditTableColumn</link> objects.
+	<onChanged> - Code block. Action that will be call after cell edit by user.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIEditTable".
+	<columns>	- Массив объектов <link linkend="classuiedittablecolumn">UIEditTableColumn</link>.
+	<onChanged> - Блок кода. Действие, вызываемое после редактирования ячейки пользователем.
+
+
+$METHODNAME$
+	UIEditTable()
+$SUMMARY$
+	Constructor. Create editable table.
+$LANG_RU$
+	Конструктор. Создать редактируемую таблицу.
+$SYNTAX$
+	UIEditTable(<aColumns>)	--> UIEditTable object
+$ARGUMENTS$
+	<aColumns>	- Array of <link linkend="classuiedittablecolumn">UIEditTableColumn</link> objects.
+$LANG_RU$
+	<aColumns>	- Массив объектов <link linkend="classuiedittablecolumn">UIEditTableColumn</link>.
+$EXAMPLES$
+	cols := array(0)
+	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UIEditTableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
+	aadd( cols, UIEditTableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
+	aadd( cols, UIEditTableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )
+	aadd( cols, UIEditTableColumn( 'flag', 'Mark', TABLE_COLUMN_CHECK ) )
+	table := UIEditTable( cols )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	addRow()
+$SUMMARY$
+	Append row into table.
+$LANG_RU$
+	Добавить строку в конец таблицы.
+$SYNTAX$
+	addRow([<data>],[<id>])
+$ARGUMENTS$
+	<data>		- Array of values. Array of values by columns.
+	<id>		- String. Row identifier.
+$LANG_RU$
+	<data>		- Mассив значений. Массив значений по столбцам соответственно.
+	<id>		- Строка. Идентификатор строки.
+$EXAMPLES$
+	table:addRow( { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
+	table:addRow( )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	setRow()
+$SUMMARY$
+	Fill row by values.
+$LANG_RU$
+	Заполнить строку значениями.
+$SYNTAX$
+	setRow(<row>,<data>)
+$ARGUMENTS$
+	<row>		- Number. Row number (from 1).
+	<data>		- Array or object. Array of values by columns or object contains fields with column names.
+$LANG_RU$
+	<row>		- Число. Номер строки (c 1).
+	<data>		- Mассив или объект. Массив значений по столбцам или объект, содержащий поля с именами столбцов.
+$EXAMPLES$
+	table:setRow( 1, { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
+	m := map()
+	m:num := 2
+	m:date := "29.10.03"
+	m:company := '"John Corp."'
+	m:sum := 5500.00
+	m:flag := .F.
+	table:setRow( 2, m )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getRow()
+$SUMMARY$
+	Get row from table as object with values.
+$LANG_RU$
+	Получить строку из таблицы в виде объекта со значениями.
+$SYNTAX$
+	getRow(<row>)	--> oRow
+$ARGUMENTS$
+	<row>		- Number. Row number (from 1).
+$LANG_RU$
+	<row>		- Число. Номер строки (c 1).
+$RETURNS$
+	Object contains fields with column names. 
+$LANG_RU$
+	Объект, содержащий поля с именами столбцов.
+$EXAMPLES$
+	oRow := table:getRow(2)
+	? oRow:company
+$ENDMETHOD$
+
+
+$METHODNAME$
+	removeRow()
+$SUMMARY$
+	Remove row from table.
+$LANG_RU$
+	Удалить строку из таблицы.
+$SYNTAX$
+	removeRow(<row>)
+$ARGUMENTS$
+	<row>		- Number. Row number (from 1).
+$LANG_RU$
+	<row>		- Число. Номер строки (c 1).
+$EXAMPLES$
+	table:removeRow(2)
+$ENDMETHOD$
+
+
+$METHODNAME$
+	clear()
+$SUMMARY$
+	Clear table: remove all rows.
+$LANG_RU$
+	Очистить таблицу: удалить все строки.
+$SYNTAX$
+	clear()
+$EXAMPLES$
+	table:clear()
+$ENDMETHOD$
+
+
+$METHODNAME$
+	setAction()
+$SUMMARY$
+	Set action that will be call after cell edit by user.
+$LANG_RU$
+	Указать действие, вызываемое после реда (c 1)ктирования ячейки пользователем.
+$SYNTAX$
+	setAction([<signal>],<action>)
+$ARGUMENTS$
+	<signal>	- String. Signal name. Should be 'changed'.
+	<action>	- Code block. Action.
+$LANG_RU$
+	<signal>	- Строка. Название сигнала. Допустимое значение: 'changed'.
+	<action>	- Блок кода. Действие.
+$EXAMPLES$
+	table:setAction( 'changed', {|table,row,column,oldValue| onEditTableChanged(table, row, column, oldValue) })
+$ENDMETHOD$
+
+
+$METHODNAME$
+	setField()
+$SUMMARY$
+	Change cell value.
+$LANG_RU$
+	Изменить значение отдельной ячейки.
+$SYNTAX$
+	setField(<column>,[<row>],<value>)
+$ARGUMENTS$
+	<column>	- Number or string. Number of column (from 1) or name of column.
+	<row>		- Number. Row number (from 1). If NIL current row is used.
+	<value>		- Any type. Value of appropriated column type.
+$LANG_RU$
+	<column>	- Число или строка. Номер столбца (с 1) или имя столбца.
+	<row>		- Число. Номер строки (c 1). Если NIL, используется текущая выделенная строка.
+	<value>		- Любой тип. Значение с типом соответствующего столбца.
+$EXAMPLES$
+	table:setField( 4, 1, 5600.00 )
+	table:setField( 'name', , 'John Bull')
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getField()
+$SUMMARY$
+	Get cell value.
+$LANG_RU$
+	Получить значение ячейки.
+$SYNTAX$
+	getField([<column>],[<row>]) --> vValue
+$ARGUMENTS$
+	<column>	- Number or string. Number of column (from 1) or name of column. If NIL method returns array with row values.
+	<row>		- Number. Row number (from 1). If NIL current row is used.
+$LANG_RU$
+	<column>	- Число или строка. Номер столбца (с 1) или имя столбца. Если NIL, метод возвращает массив значений строки.
+	<row>		- Число. Номер строки (c 1). Если NIL, используется текущая выделенная строка.
+$RETURNS$
+	Value in speciefied cell or array of row values if <column> is NIL. 
+$LANG_RU$
+	Значение указанной ячейки или массив значений строки если <column> не указан.
+$EXAMPLES$
+	name := table:getField( 'name', 1 )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Fill table. All existed content will be replaced by new content.
+$LANG_RU$
+	Заполнить таблицу. Все содержимое будет заменено указанным значением.
+$SYNTAX$
+	setValue(<data>)
+$ARGUMENTS$
+	<data>		- Array. Content for fill table.
+$LANG_RU$
+	<data>		- Массив. Содержимое для заполнения таблицы.
+$EXAMPLES$
+	data := table:getValue( )
+	table:setValue( data )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get table content.
+$LANG_RU$
+	Получить содержимое таблицы.
+$SYNTAX$
+	getValue() --> data
+$RETURNS$
+	Array. Table content. 
+$LANG_RU$
+	Массив. Содержимое таблицы.
+$EXAMPLES$
+	data := table:getValue( )
+	table:setValue( data )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	setCursor()
+$SUMMARY$
+	Set cursor to cpecified cell.
+$LANG_RU$
+	Установить фокус на указанную ячейку.
+$SYNTAX$
+	setCursor(<row>,<column>,<beginEdit>)
+$ARGUMENTS$
+	<row>		- Number. Row number (from 1).
+	<column>	- Number. Number of column (from 1).
+	<beginEdit>	- Logical. Start editing of cell.
+$LANG_RU$
+	<column>	- Число. Номер столбца (с 1).
+	<row>		- Число. Номер строки (c 1).
+	<beginEdit>	- Логическое значение. Флаг начала редактирования ячейки.
+$EXAMPLES$
+	table:setCursor( 2, 3 )
+$ENDMETHOD$
+
+	
+$METHODNAME$
+	getRowCount()
+$SUMMARY$
+	Get number of rows in the table.
+$LANG_RU$
+	Получить количество строк в таблице.
+$SYNTAX$
+	getRowCount() --> nRows
+$RETURNS$
+	Number. Number of rows in the table. 
+$LANG_RU$
+	Число. Количество строк в таблице.
+$EXAMPLES$
+	nRows := table:getRowCount( )
+$ENDMETHOD$
+	
+	
+$METHODNAME$
+	getColumnCount()
+$SUMMARY$
+	Get number of columns in the table.
+$LANG_RU$
+	Получить количество столбцов в таблице.
+$SYNTAX$
+	getColumnCount() --> nColumns
+$RETURNS$
+	Number. Number of columns in the table. 
+$LANG_RU$
+	Число. Количество столбцов в таблице.
+$EXAMPLES$
+	nColumns := table:getColumnCount( )
+$ENDMETHOD$
+	
+	
+$METHODNAME$
+	getSelectedRow()
+$SUMMARY$
+	Get current row in the table.
+$LANG_RU$
+	Получить текущую строку в таблице.
+$SYNTAX$
+	getSelectedRow() --> nRow
+$RETURNS$
+	Number. Number of rows in the table. 
+$LANG_RU$
+	Число. Номер текущей строки в таблице.
+$EXAMPLES$
+	nRow := table:getSelectedRow( )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getSelectedColumn()
+$SUMMARY$
+	Get current column in the table.
+$LANG_RU$
+	Получить текущий столбец в таблице.
+$SYNTAX$
+	getSelectedColumn() --> nColumn
+$RETURNS$
+	Number. Number of rows in the table. 
+$LANG_RU$
+	Число. Номер текущего столбца в таблице.
+$EXAMPLES$
+	nColumn := table:getSelectedColumn( )
+$ENDMETHOD$
+
+
+$EXAMPLES$
+	cols := array(0)
+	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UIEditTableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
+	aadd( cols, UIEditTableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
+	aadd( cols, UIEditTableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )
+	aadd( cols, UIEditTableColumn( 'flag', 'Mark', TABLE_COLUMN_CHECK ) )
+	table := UIEditTable( cols )
+	table:addRow( { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
+	? table:getValue()
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+	UIEDITTABLECOLUMN UITABLEEDIT 
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

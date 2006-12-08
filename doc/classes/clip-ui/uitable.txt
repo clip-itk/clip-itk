@@ -16,12 +16,10 @@ $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITable".
 	<nodes>		- Accociated array of <link linkend="classuitableitem">UITableItem</link> objects.
 	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
-	<altRowColor>	- <link linkend="classuicolor">UIColor</link> object. Alternative color for even rows in table. Default value defined in macro variable ALT_TABLE_ROW_COLOR, that is defined in file clip-ui.ch.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UITable".
 	<nodes>		- Ассоциативный массив объектов <link linkend="classuitableitem">UITableItem</link>.
 	<onSelect> 	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
-	<altRowColor>	- Объект <link linkend="classuicolor">UIColor</link>. Альтернативный цвет чётных строк таблицы. По умолчанию берётся из макропеременной ALT_TABLE_ROW_COLOR, объявленной в файле clip-ui.ch.
 
 $METHODNAME$
 	UITable()
@@ -32,9 +30,9 @@ $LANG_RU$
 $SYNTAX$
 	UITable(<columns>)	--> UITable object
 $ARGUMENTS$
-	<columns>	- Array of strings. Caption for table columns.
+	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects.
 $LANG_RU$
-	<columns>	- Массив строк. Заголовки столбцов таблицы.
+	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -44,7 +42,7 @@ $SUMMARY$
 $LANG_RU$
 	Добавить строку в таблицу.
 $SYNTAX$
-	addRow(data,[<id>])	--> <oTableItem>
+	addRow(<data>,[<id>])	--> <oTableItem>
 $ARGUMENTS$
 	<data>		- Array of strings. Array of values by columns.
 	<id>		- String. Row identifier.
@@ -58,6 +56,71 @@ $LANG_RU$
 $ENDMETHOD$
 
 $METHODNAME$
+	setRow()
+$SUMMARY$
+	Fill row by values.
+$LANG_RU$
+	Заполнить строку значениями.
+$SYNTAX$
+	setRow(<row>,<data>)
+$ARGUMENTS$
+	<row>		- Number. Row number (from 1).
+	<data>		- Array or object. Array of values by columns or object contains fields with column names.
+$LANG_RU$
+	<row>		- Число. Номер строки (c 1).
+	<data>		- Mассив или объект. Массив значений по столбцам или объект, содержащий поля с именами столбцов.
+$EXAMPLES$
+	table:setRow( 1, { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
+	m := map()
+	m:num := 2
+	m:date := "29.10.03"
+	m:company := '"John Corp."'
+	m:sum := 5500.00
+	m:flag := .F.
+	table:setRow( 2, m )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getRow()
+$SUMMARY$
+	Get row from table as object with values.
+$LANG_RU$
+	Получить строку из таблицы в виде объекта со значениями.
+$SYNTAX$
+	getRow(<row>)	--> oRow
+$ARGUMENTS$
+	<row>		- Number. Row number (from 1).
+$LANG_RU$
+	<row>		- Число. Номер строки (c 1).
+$RETURNS$
+	Object contains fields with column names. 
+$LANG_RU$
+	Объект, содержащий поля с именами столбцов.
+$EXAMPLES$
+	oRow := table:getRow(2)
+	? oRow:company
+$ENDMETHOD$
+
+
+$METHODNAME$
+	removeRow()
+$SUMMARY$
+	Remove row from table.
+$LANG_RU$
+	Удалить строку из таблицы.
+$SYNTAX$
+	removeRow(<row>)
+$ARGUMENTS$
+	<row>		- Number. Row number (from 1).
+$LANG_RU$
+	<row>		- Число. Номер строки (c 1).
+$EXAMPLES$
+	table:removeRow(2)
+$ENDMETHOD$
+
+
+$METHODNAME$
 	setAction()
 $SUMMARY$
 	Set action that will be call on selection by double click or 'Enter' key pressed.
@@ -66,10 +129,10 @@ $LANG_RU$
 $SYNTAX$
 	setAction([<signal>],<action>)
 $ARGUMENTS$
-	<signal>	- String. Signal name.
+	<signal>	- String. Signal name. Should be 'selected'.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
+	<signal>	- Строка. Название сигнала. Допустимое значение: 'selected'.
 	<action>	- Блок кода. Действие.
 $ENDMETHOD$
 
@@ -82,6 +145,7 @@ $LANG_RU$
 $SYNTAX$
 	clear()
 $ENDMETHOD$
+
 
 $METHODNAME$
 	getSelection()
@@ -97,6 +161,7 @@ $LANG_RU$
 	Идентификатор выделенной строки.
 $ENDMETHOD$
 
+
 $METHODNAME$
 	getSelectionId()
 $SUMMARY$
@@ -110,6 +175,7 @@ $RETURNS$
 $LANG_RU$
 	Пользовательский идентификатор выделенной строки.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	savePosition()
@@ -125,6 +191,7 @@ $LANG_RU$
 	Массив с координатами текущей выделенной строки: адреса строки и столбца, горизонтальное и вертикальное смещение.
 $ENDMETHOD$
 
+
 $METHODNAME$
 	restorePosition()
 $SUMMARY$
@@ -139,31 +206,23 @@ $LANG_RU$
 	<aPos>		- Массив с координатами текущей выделенной строки, возвращаемый функцией savePosition().
 $ENDMETHOD$
 
-$METHODNAME$
-	setAltRowColor()
-$SUMMARY$
-	Set alternative color for even rows in table.
-$LANG_RU$
-	Изменить альтернативный цвет чётных строк таблицы.
-$SYNTAX$
-	setAltRowColor(<color>)
-$ARGUMENTS$
-	<color>		- <link linkend="classuicolor">UIColor</link> object. Alternative color for even rows in table.
-$LANG_RU$
-	<color>		- Объект <link linkend="classuicolor">UIColor</link>. Альтернативный цвет чётных строк таблицы.
-$ENDMETHOD$
 
 $EXAMPLES$
-	table := UITable({"No","Date","Payee","Sum"})
-	table:setAltRowColor("#cbe8ff")
-	table:addRow({"1","20.10.03",'"John Corp."',"20000.00"})
+	cols := array(0)
+	aadd( cols, UITableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UITableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
+	aadd( cols, UITableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
+	aadd( cols, UITableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )
+	aadd( cols, UITableColumn( 'flag', 'Mark', TABLE_COLUMN_CHECK ) )
+	table := UITable( cols )
+	table:addRow( { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
 
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
-	UITABLEITEM
+	UITABLECOLUMN UITABLEITEM UITABLEEDIT 
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

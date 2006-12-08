@@ -1,0 +1,89 @@
+$CLASSNAME$
+	UIEditTableColumn
+$SUMMARY$
+	Class UIEditTableColumn
+$LANG_RU$
+	Класс UIEditTableColumn
+$ABOUT$
+	Class of editable multicolumn list column. See also <link linkend="classuiedittable">UIEditTable</link> class.
+$LANG_RU$
+	Класс столбца редактируемой таблицы (многоколоночного списка). См. также класс <link linkend="classuiedittable">UIEditTable</link>.
+$SYNTAX$
+	UIEditTableColumn(<name>,<caption>,<type>)	--> UIEditTableColumn object
+$LANG_RU$
+	UIEditTableColumn(<name>,<caption>,<type>)	--> Объект UIEditTableColumn
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UIEditTableColumn".
+	<name>		- String. Unique name of column.
+	<caption>	- String. Column caption in the table.
+	<type>		- Number. Column value type.
+	<editable>	- Logical. If .T. cell is editable.
+	<default>	- Any type. Default value for new row.
+	<format>	- String. Format string for number column in <command>printf</command> syntax. By default, "%'.2f" (two digits after the decimal-point character and thousands grouping).
+	<source>	- String. Source for choose value for column of type <command>TABLE_COLUMN_CHOICE</command> or <command>TABLE_COLUMN_COMBO</command>.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UIEditTableColumn".
+	<name>		- Строка. Уникальное имя столбца.
+	<caption>	- Строка. Заголовок столбца.
+	<type>		- Число. Тип значений в столбце.
+	<editable>	- Логическое значение. Если значение равно .T., ячейка может быть изменена пользователем. 
+	<default>	- Любой тип. Значение по умолчанию для новых строк.
+	<format>	- Строка. Шаблон форматирования столбца с числами, использующий синтаксис функции <command>printf</command>. Значение по умолчанию "%'.2f" (два знака дробной части и разделитель тысячных разрядов).
+	<source>	- Строка. Источник значений столбцов типа <command>TABLE_COLUMN_CHOICE</command> или <command>TABLE_COLUMN_COMBO</command>.
+
+
+$METHODNAME$
+	UIEditTableColumn()
+$SUMMARY$
+	Constructor. Create editable table column.
+$LANG_RU$
+	Конструктор. Создать столбец редактируемой таблицы.
+$SYNTAX$
+	UIEditTableColumn(<name>,<caption>,<type>)	--> UIEditTableColumn object
+$ARGUMENTS$
+	<name>		- String. Unique name of column.
+	<caption>	- String. Column caption in the table.
+	<type>		- Number. Column value type. Supported types: <itemizedlist mark="bullet"><listitem><command>TABLE_COLUMN_TEXT</command> &mdash; 
+	text</listitem><listitem><command>TABLE_COLUMN_CHOICE</command> &mdash; 
+	select from separate window</listitem><listitem><command>TABLE_COLUMN_COMBO</command> &mdash; 
+	select from combo box</listitem><listitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
+	number</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
+	date</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
+	checkbox</listitem><listitem><command>TABLE_COLUMN_INC</command> &mdash; 
+	autoincremented number. Automatically updated on each row changes.</listitem></itemizedlist>
+$LANG_RU$
+	<name>		- Строка. Уникальное имя столбца.
+	<caption>	- Строка. Заголовок столбца.
+	<type>		- Число. Тип значений в столбце. Поддерживаемые типы: <itemizedlist mark="bullet"><listitem><command>TABLE_COLUMN_TEXT</command> &mdash; 
+	текст</listitem><listitem><command>TABLE_COLUMN_CHOICE</command> &mdash; 
+	выбор из отдельного окна</listitem><listitem><command>TABLE_COLUMN_COMBO</command> &mdash; 
+	выбор из выпадающего списка</listitem><istitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
+	число</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
+	дата</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
+	флажок</listitem><listitem><command>TABLE_COLUMN_INC</command> &mdash; 
+	порядковый номер. Обновляется при каждом изменении строк.</listitem></itemizedlist>
+$EXAMPLES$
+	oColumn := UIEditTableColumn( 'name', 'Name', TABLE_COLUMN_TEXT ) )
+$ENDMETHOD$
+
+
+$EXAMPLES$
+	cols := array(0)
+	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UIEditTableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
+	aadd( cols, UIEditTableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
+	aadd( cols, UIEditTableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )
+	aadd( cols, UIEditTableColumn( 'flag', 'Mark', TABLE_COLUMN_CHECK ) )
+	table := UIEditTable( cols )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+	UIEDITTABLE
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$
