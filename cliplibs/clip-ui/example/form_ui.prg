@@ -88,3 +88,6 @@ function showValues()
 		endif
 	next
 return
+
+function getAttributeValue(name)
+return ''

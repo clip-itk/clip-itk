@@ -165,7 +165,7 @@ return 0
 
 /* Tree and table widgets */
 static function BankRefReq( sp )
-	local splitter, tree, table, vb
+	local splitter, tree, table, vb, tc
 	local node66, node67
 
 	splitter := UISplitter(SPLITTER_HORIZONTAL)
@@ -177,13 +177,20 @@ static function BankRefReq( sp )
 	tree:setAction("selected",{|w,e| listEventTree(tree, e) })
 	splitter:add( tree )
 
-	table := UITable({"#","Date","Payee","Sum"})
+	tc := array(0)
+	aadd(tc, UITableColumn('num',  '#', TABLE_COLUMN_NUMBER))
+	aadd(tc, UITableColumn('date', 'Date', TABLE_COLUMN_DATE))
+	aadd(tc, UITableColumn('name', 'Payee', TABLE_COLUMN_TEXT))
+	aadd(tc, UITableColumn('sum',  'Sum', TABLE_COLUMN_NUMBER))	
+	tc[1]:format = "%.0"
+
+	table := UITable(tc)
 
 	// Fill tree and table
 	updateTable(tree, table)
 	node66 := tree:addNode({"Parent_Last"})
 	node67 := tree:addNode({"Last Leaf"},, node66)
-	table:addRow({"8","25.10.03",'Last: JSC "Phoenix"',"99.00"})
+	table:addRow({8,date(),'Last: JSC "Phoenix"',99.00})
 
 	vb := UIVbox()
 	table:setAction("selected",{|w,e| listEvent(table, e) })
@@ -224,13 +231,13 @@ function updateTable(tree, table)
 	pos := table:savePosition()
 	?? "Table pos:", pos, chr(10)
 	table:clear()
-	table:addRow({"1","20.10.03",'JSC "Lighthouse"',"20000.00"},"DB0101000588")
-	table:addRow({"2","20.10.03",'JSC "Phoenix"',"5689.20"})
-	table:addRow({"3","21.10.03",'JSC "Phoenix"',"1500.00"})
-	table:addRow({"4","25.10.03",'JSC "Phoenix"',"99.00"})
-	table:addRow({"5","20.10.03",'JSC "Lighthouse"',"20000.00"},"DB0101000589")
-	table:addRow({"6","20.10.03",'JSC "Phoenix"',"5689.20"})
-	table:addRow({"7","21.10.03",'JSC "Phoenix"',"1500.00"})
+	table:addRow({1,"20.10.03",'JSC "Lighthouse"',20000.00},"DB0101000588")
+	table:addRow({2,"20.10.03",'JSC "Phoenix"',5689.20})
+	table:addRow({3,"21.10.03",'JSC "Phoenix"',1500.00})
+	table:addRow({4,"25.10.03",'JSC "Phoenix"',99.00})
+	table:addRow({5,"20.10.03",'JSC "Lighthouse"',20000.00},"DB0101000589")
+	table:addRow({6,"20.10.03",'JSC "Phoenix"',5689.20})
+	table:addRow({7,"21.10.03",'JSC "Phoenix"',1500.00})
 	table:restorePosition( pos )
 return
 
@@ -330,7 +337,7 @@ static function BankDocReq(w,grid)
 	
 	cb1 := UIComboBox({'JSC "Brown and son"'},1)
 	w:setName("payer", cb1)
-	gtk_ContainerAdd(t1, cb1)
+	t1:add(cb1)
 
 	// Payee
 	f2 := UIFrame("Payee",FRAME_SUNKEN)
@@ -599,3 +606,6 @@ static function timerEvent(l)
 	?? "Event:", t, chr(10)
 	l:setText(t)
 return
+
+function getAttributeValue(name)
+return ''
