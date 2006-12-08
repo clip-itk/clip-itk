@@ -106,7 +106,7 @@
 	 =>								;
 	 fx_scopeBegin([codestr( <for> )], <{for}>, <{while}>, 		;
 			<next>, <rec>, <.rest.>, <.nooptimize.>)	;
-	 ; while !eof() 						;
+	 ; while !fx_eof() 						;
 	 ; 	if !fx_scopeNext() 					;
 	 ;		exit 						;
 	 ; 	endif
