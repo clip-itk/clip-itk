@@ -21,6 +21,7 @@ function UITableColumn(name, caption, type)
 	obj:type 	:= type
 	obj:editable := .F.
 	obj:format  := ''
+	obj:source	:= ''
 	switch type
 		case TABLE_COLUMN_NUMBER
 			obj:default	:= 0

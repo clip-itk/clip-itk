@@ -467,7 +467,7 @@ static function EditTableWidget( w )
 	//? 'create columns'
 	aadd( columns, UIEditTableColumn( 'num', 	'#', 		TABLE_COLUMN_INC ) )
 	aadd( columns, UIEditTableColumn( 'name', 	'Name', 	TABLE_COLUMN_CHOICE ) )
-	aadd( columns, UIEditTableColumn( 'unit', 	'Units', 	TABLE_COLUMN_CHOICE ) )
+	aadd( columns, UIEditTableColumn( 'unit', 	'Units', 	TABLE_COLUMN_COMBO ) )
 	c := UIEditTableColumn( 'date',	'Date', TABLE_COLUMN_DATE)
 	c:editable := .F.
 	aadd( columns, c )

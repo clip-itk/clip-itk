@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation	           */
-/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
-/*   									   */
+/*   This is a part of CLIP-UI library                                     */
+/*                                                                         */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
+/*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -84,6 +84,7 @@
 /* TABLE COLUMN TYPES */
 #define TABLE_COLUMN_TEXT	0
 #define TABLE_COLUMN_CHOICE	1
+#define TABLE_COLUMN_COMBO	2
 #define TABLE_COLUMN_NUMBER	3
 #define TABLE_COLUMN_DATE	4
 #define TABLE_COLUMN_CHECK	5

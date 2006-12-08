@@ -1076,6 +1076,8 @@ static function ui_createTable(self, columns)
 					t := TREE_TYPE_STRING
 				case TABLE_COLUMN_CHOICE 	// TODO
 					t := TREE_TYPE_STRING
+				case TABLE_COLUMN_COMBO 	// TODO
+					t := TREE_TYPE_STRING
 				case TABLE_COLUMN_NUMBER
 					t := TREE_TYPE_NUMERIC_FLOAT
 				case TABLE_COLUMN_DATE
@@ -1101,6 +1103,7 @@ static function ui_createTable(self, columns)
 
 	gtk_TreeViewSetHeadersVisible(o, .T.)
 	gtk_TreeViewSetRulesHint (o, .T.)
+	gtk_TreeSelectionSetMode(gtk_TreeViewGetSelection(o), GTK_SELECTION_SINGLE)
 
 	o:store := store
 	o:model := model
@@ -1108,12 +1111,7 @@ static function ui_createTable(self, columns)
 	// Append columns
 	for i:=1 to cc
 		column := columns[i]
-		if valtype(column) != 'O'
-			renderer = gtk_CellRendererTextNew ()
-			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column, renderer, ;
-					"text", i)
-			ic := gtk_TreeViewGetColumn(o, c)
-		elseif column:type == TABLE_COLUMN_CHECK
+		if column:type == TABLE_COLUMN_CHECK
 			renderer = gtk_CellRendererToggleNew ()
 			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
 					"active", i)
@@ -1123,18 +1121,15 @@ static function ui_createTable(self, columns)
 			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
 					"text", i)
 			ic := gtk_TreeViewGetColumn(o, c)
+			if .not. empty(column:format) .and. column:type == TABLE_COLUMN_NUMBER
+				gtk_TreeViewColumnSetFormat(ic, renderer, c, column:format)
+			endif
 		endif
-		// TODO: background, type, sort
-/*
-        column1 = gtk_TreeViewGetColumn(view, col1)
-        gtk_TreeViewColumnSetSortColumnId(column1, col1)
-*/
 		gtk_TreeViewColumnSetResizable(ic, .T.)
-		gtk_TreeViewColumnSetSizing(ic, CLIP_GTK_TREE_VIEW_COLUMN_AUTOSIZE)
 		columns[i]:__obj := ic
 	next
-//	gtk_TreeViewSetExpanderColumn(o, NIL)
-//	gtk_TreeViewSetHoverSelection(o, .T.) // Cool effect!
+	//	gtk_TreeViewSetExpanderColumn(o, NIL)
+	//	gtk_TreeViewSetHoverSelection(o, .T.) // Cool effect!
 	if searchColumn != 0
 		gtk_TreeViewSetSearchColumn(o, searchColumn)
 	endif
@@ -1755,7 +1750,6 @@ static function ui_createTree(self, nTreeColumn, acNameColumns)
 	for i:=1 to cc
 		c := gtk_TreeViewInsertColumnWithAttributes(o, -1, acNameColumns[i], renderer, "text", i)
 		gtk_TreeViewColumnSetResizable(gtk_TreeViewGetColumn(o, c), .T.)
-		gtk_TreeViewColumnSetSizing(gtk_TreeViewGetColumn(o, c), CLIP_GTK_TREE_VIEW_COLUMN_AUTOSIZE)
 		if i == nTreeColumn
 			 gtk_TreeViewSetExpanderColumn(o, gtk_TreeViewGetColumn(o, c))
 		endif
@@ -1992,6 +1986,8 @@ static function ui_createEditTable(self, columns)
 				t := TREE_TYPE_STRING
 			case TABLE_COLUMN_CHOICE 	// TODO
 				t := TREE_TYPE_STRING
+				case TABLE_COLUMN_COMBO 	// TODO
+					t := TREE_TYPE_STRING
 			case TABLE_COLUMN_NUMBER
 				t := TREE_TYPE_NUMERIC_FLOAT
 			case TABLE_COLUMN_DATE

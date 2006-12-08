@@ -36,6 +36,7 @@ function UIEditTableColumn(name, caption, type)
 	obj:type 	:= type
 	obj:editable := .T.
 	obj:format  := ''
+	obj:source	:= ''
 	switch type
 		case TABLE_COLUMN_NUMBER
 			obj:default	:= 0
