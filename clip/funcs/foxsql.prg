@@ -72,6 +72,7 @@ function fx_dbcreate(data,ddriver)
 	enddo
 	aadd(m,{alltrim(fname), alltrim(ftype),val(flen),val(fdec)})
 	dbcreate(filename,m,ddriver)
+	use (filename) VIA (ddriver) NEW
 return
 
 **************************************************
