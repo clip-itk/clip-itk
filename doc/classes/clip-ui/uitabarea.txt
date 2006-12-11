@@ -1,0 +1,72 @@
+$CLASSNAME$
+	UITabArea
+$SUMMARY$
+	Class UITabArea
+$LANG_RU$
+	Класс UITabArea
+$ABOUT$
+	Class of area for tabs. See also <link linkend="classuitab">UITab</link> class.
+$LANG_RU$
+	Класс области для размещения вкладок. См. также класс <link linkend="classuitab">UITab</link>.
+$SYNTAX$
+	UITabArea()	--> UITabArea object
+$LANG_RU$
+	UITabArea()	--> Объект UITabArea
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UITabArea".
+	<tabs>		- Array. List of <link linkend="classuitab">UITab</link> object in this area.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UITabArea".
+	<tabs>		- Массив. Список объектов класса <link linkend="classuitab">UITab</link> в этой области.
+
+
+$METHODNAME$
+	UITabArea()
+$SUMMARY$
+	Constructor. Create new empty tab area.
+$LANG_RU$
+	Конструктор. Создать новую пустую область для размещения вкладок.
+$SYNTAX$
+	UITabArea()	--> UITabArea object
+$EXAMPLES$
+	oTabs := UITabArea()
+$ENDMETHOD$
+
+
+$METHODNAME$
+	add()
+$SUMMARY$
+	Add tab to tab area.
+$LANG_RU$
+	Добавить вкладку в область.
+$SYNTAX$
+	add(<tab>)
+$ARGUMENTS$
+	<tab>	- <link linkend="classuitab">UITab</link> object. Tab to be added.
+$LANG_RU$
+	<tab<	- Объект класса <link linkend="classuitab">UITab</link>. Добавляемый объект.
+$EXAMPLES$
+	oTabs := UITabArea()
+	t1 := UITab('First', 'first')
+	oTabs:add( t1 )
+	t1:add( UILabel('First tab') )
+$ENDMETHOD$
+
+
+$EXAMPLES$
+	oTabs := UITabArea()
+	t1 := UITab('First', 'first')
+	oTabs:add( t1 )
+	t1:add( UILabel('First tab') )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+	UITAB
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

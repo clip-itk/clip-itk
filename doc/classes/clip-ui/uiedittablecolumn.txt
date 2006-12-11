@@ -21,6 +21,7 @@ $ATTRIBUTES$
 	<default>	- Any type. Default value for new row.
 	<format>	- String. Format string for number column in <command>printf</command> syntax. By default, "%'.2f" (two digits after the decimal-point character and thousands grouping).
 	<source>	- String. Source for choose value for column of type <command>TABLE_COLUMN_CHOICE</command> or <command>TABLE_COLUMN_COMBO</command>.
+	<lookup>	- Logical. If .T. fot this column is enabled lookup mode: search value begins from typed characters.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIEditTableColumn".
 	<name>		- Строка. Уникальное имя столбца.
@@ -30,7 +31,8 @@ $LANG_RU$
 	<default>	- Любой тип. Значение по умолчанию для новых строк.
 	<format>	- Строка. Шаблон форматирования столбца с числами, использующий синтаксис функции <command>printf</command>. Значение по умолчанию "%'.2f" (два знака дробной части и разделитель тысячных разрядов).
 	<source>	- Строка. Источник значений столбцов типа <command>TABLE_COLUMN_CHOICE</command> или <command>TABLE_COLUMN_COMBO</command>.
-
+	<lookup>	- Логическое значение. Если значение равно .T., при наборе символов будет осуществляться поиск значения в указанном столбце, начинающийся с введённых символов.
+	
 
 $METHODNAME$
 	UIEditTableColumn()
@@ -49,7 +51,7 @@ $ARGUMENTS$
 	select from combo box</listitem><listitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
 	number</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
 	date</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
-	checkbox</listitem><listitem><command>TABLE_COLUMN_INC</command> &mdash; 
+	checkbox</listitem><listitem><command>TABLE_COLUMN_COUNTER</command> &mdash; 
 	autoincremented number. Automatically updated on each row changes.</listitem></itemizedlist>
 $LANG_RU$
 	<name>		- Строка. Уникальное имя столбца.
@@ -60,7 +62,7 @@ $LANG_RU$
 	выбор из выпадающего списка</listitem><istitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
 	число</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
 	дата</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
-	флажок</listitem><listitem><command>TABLE_COLUMN_INC</command> &mdash; 
+	флажок</listitem><listitem><command>TABLE_COLUMN_COUNTER</command> &mdash; 
 	порядковый номер. Обновляется при каждом изменении строк.</listitem></itemizedlist>
 $EXAMPLES$
 	oColumn := UIEditTableColumn( 'name', 'Name', TABLE_COLUMN_TEXT ) )
@@ -69,7 +71,7 @@ $ENDMETHOD$
 
 $EXAMPLES$
 	cols := array(0)
-	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_COUNTER ) )
 	aadd( cols, UIEditTableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
 	aadd( cols, UIEditTableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
 	aadd( cols, UIEditTableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )

@@ -209,7 +209,7 @@ $ENDMETHOD$
 
 $EXAMPLES$
 	cols := array(0)
-	aadd( cols, UITableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UITableColumn( 'num', 'N', TABLE_COLUMN_COUNTER ) )
 	aadd( cols, UITableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
 	aadd( cols, UITableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
 	aadd( cols, UITableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )

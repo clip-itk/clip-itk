@@ -1,0 +1,126 @@
+$CLASSNAME$
+	UITab
+$SUMMARY$
+	Class UITab
+$LANG_RU$
+	Класс UITab
+$ABOUT$
+	Class of single tab. Inherits <link linkend="classuivbox">UIVBox</link> class.
+$LANG_RU$
+	Класс одиночной вкладки. Наследует методы класса <link linkend="classuivbox">UIVBox</link>.
+$SYNTAX$
+	UITab(<caption>,<name>)	--> UITab object
+$LANG_RU$
+	UITab()	--> Объект UITab
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UITab".
+	<name>		- String. Tab name.
+	<parent>	- <link linkend="classuitabarea">UITabArea</link> object. Area for this tab.
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UITab".
+	<name>		- Строка. Имя вкладки. 
+	<parent>	- Объект класса <link linkend="classuitabarea">UITabArea</link>. Область размещения вкладки.
+
+
+$METHODNAME$
+	UITab()
+$SUMMARY$
+	Constructor. Create new tab.
+$LANG_RU$
+	Конструктор. Создать новую вкладку.
+$SYNTAX$
+	UITab(<caption>,<name>)	--> UITab object
+$ATTRIBUTES$
+	<caption>	- String. Tab caption.
+	<name>		- String. Tab name.
+$LANG_RU$
+	<caption>	- Строка. Заголовок вкладки. 
+	<name>		- Строка. Имя вкладки. 
+$EXAMPLES$
+	oTab := UITab("Tab 1", "tab1")
+$ENDMETHOD$
+
+
+$METHODNAME$
+	show()
+$SUMMARY$
+	Show hidden tab.
+$LANG_RU$
+	Показать скрытую вкладку.
+$SYNTAX$
+	show()
+$EXAMPLES$
+	oTabs := UITab()
+	t1 := UITab('First', 'first')
+	oTabs:add( t1 )
+	t1:hide()
+	t1:show()
+$ENDMETHOD$
+
+
+$METHODNAME$
+	hide()
+$SUMMARY$
+	Hide tab.
+$LANG_RU$
+	Скрыть вкладку.
+$SYNTAX$
+	hide()
+$EXAMPLES$
+	oTabs := UITab()
+	t1 := UITab('First', 'first')
+	oTabs:add( t1 )
+	t1:hide()
+	t1:show()
+$ENDMETHOD$
+
+
+$METHODNAME$
+	activate()
+$SUMMARY$
+	Set focus to tab.
+$LANG_RU$
+	Перейти на вкладку.
+$SYNTAX$
+	activate()
+$EXAMPLES$
+	t1 := UITab('First', 'first')
+	t1:activate()
+$ENDMETHOD$
+
+
+$METHODNAME$
+	setCaption()
+$SUMMARY$
+	Change tab caption.
+$LANG_RU$
+	Изменить заголовок вкладки.
+$SYNTAX$
+	setCaption(<caption>)
+$ATTRIBUTES$
+	<caption>	- String. New tab caption.
+$LANG_RU$
+	<caption>	- Строка. Новый заголовок вкладки. 
+$EXAMPLES$
+	t1 := UITab('First', 'first')
+	t1:setCaption('First tab')
+$ENDMETHOD$
+
+
+$EXAMPLES$
+	oTabs := UITab()
+	t1 := UITab('First', 'first')
+	oTabs:add( t1 )
+	t1:add( UILabel('First tab') )
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+	UITABAREA UIVBOX
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

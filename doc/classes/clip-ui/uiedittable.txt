@@ -52,7 +52,7 @@ $LANG_RU$
 	<aColumns>	- Массив объектов <link linkend="classuiedittablecolumn">UIEditTableColumn</link>.
 $EXAMPLES$
 	cols := array(0)
-	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_COUNTER ) )
 	aadd( cols, UIEditTableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
 	aadd( cols, UIEditTableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
 	aadd( cols, UIEditTableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )
@@ -350,7 +350,7 @@ $ENDMETHOD$
 
 $EXAMPLES$
 	cols := array(0)
-	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_INC ) )
+	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_COUNTER ) )
 	aadd( cols, UIEditTableColumn( 'date', 'Date', TABLE_COLUMN_DATE ) )
 	aadd( cols, UIEditTableColumn( 'company', 'Company', TABLE_COLUMN_TEXT ) )
 	aadd( cols, UIEditTableColumn( 'sum', 'Sum', TABLE_COLUMN_NUMBER ) )
