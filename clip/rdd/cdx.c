@@ -4,8 +4,8 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log$
-	Revision 1.1  2006/06/22 19:35:30  itk
-	uri: init sf.net repository
+	Revision 1.2  2006/12/11 12:23:22  foldi
+	Manage custom index.
 	
 	Revision 1.160  2006/02/27 11:54:09  clip
 	rust: avoid some compilers' warnings
@@ -683,6 +683,7 @@ static int _cdx_init_order(ClipMachine* cm,int area,RDD_INDEX* ri,unsigned int h
 
 	ro->ic = hdr.ic;
 	ro->unique = (hdr.options & 0x0001 ?1:0);
+	ro->custom = (hdr.options & 0x0004 ?1:0);
 	ro->descend = (_rdd_ushort(hdr.sort)?1:0);
 	ro->keysize = _rdd_ushort(hdr.keysize);
 	ro->curpage = calloc(1,sizeof(CDX_PAGE));
@@ -883,9 +884,10 @@ static int _cdx_search_leaf(RDD_ORDER* ro,CDX_LEAF* leaf,void* key,int len,unsig
 			memset(val+dup,0,ro->bufsize-dup);
 			memcpy(val+dup,p,ro->bufsize-(dup+trail));
 			if(ro->type == 'C' && !ro->binary)
-				memset(val+dup+ro->bufsize-(dup+trail),0x20,trail);
+                            memset(val+dup+ro->bufsize-(dup+trail),0x20,trail);
 			r = _cdx_cmp(ro,val,key,len);
 			if(r==0){
+                            memcpy(ro->key,val,ro->keysize);
 				if(recno){
 					if(rec==recno){
 						ret = 1;
@@ -905,7 +907,9 @@ static int _cdx_search_leaf(RDD_ORDER* ro,CDX_LEAF* leaf,void* key,int len,unsig
 				if(back)
 					(*pos)--;
 				ret = f;
-				goto e;
+                                goto e;
+                        } else {
+                            memcpy(ro->key,val,ro->keysize);
 			}
 		}
 	}
@@ -1126,6 +1130,10 @@ static int _cdx_first(ClipMachine* cm,RDD_ORDER* ro,int* out,const char* __PROC_
 		ro->stack[ro->level].pos = 0;
 		_CDX_PAGE(ro,ro->stack[ro->level].page,&page);
 	}
+        if ( *out != 1 ) {
+            int recno;
+            _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
+        }
 	return 0;
 }
 
@@ -1162,6 +1170,10 @@ static int _cdx_last(ClipMachine* cm,RDD_ORDER* ro,int* out,const char* __PROC__
 		_CDX_PAGE(ro,ro->stack[ro->level].page,&page);
 		ro->stack[ro->level].pos = _rdd_ushort(page.nkeys)-1;
 	}
+        if ( *out != 1 ) {
+            int recno;
+            _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
+        }
 	return 0;
 }
 
@@ -1193,7 +1205,11 @@ static int _cdx_next_rm(ClipMachine* cm,RDD_ORDER* ro,CDX_LEAF* leaf,int* out,in
 		} else {
 			*out = 1;
 		}
-	}
+        }
+        if ( *out != 1 ) {
+            int recno;
+            _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
+        }
 	return 0;
 }
 
@@ -1251,6 +1267,10 @@ static int _cdx_prev_rm(ClipMachine* cm,RDD_ORDER* ro,CDX_LEAF* leaf,int* out,in
 			ro->stack[ro->level].pos = 0;
 		}
 	}
+        if ( *out != 1 ) {
+            int recno;
+            _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
+        }
 	return 0;
 }
 
@@ -1781,7 +1801,8 @@ static int __cdx_addkey(ClipMachine* cm,int area,RDD_ORDER* ro,ClipVar* v,DbfLoc
 	CDX_HEADER hdr;
 	int found;
 	int len = ro->bufsize;
-	int er;
+        int er;
+        char *newkey;
 
 	ro->level = 0;
 	if(ro->bforexpr.t.type!=UNDEF_t){
@@ -1798,22 +1819,22 @@ static int __cdx_addkey(ClipMachine* cm,int area,RDD_ORDER* ro,ClipVar* v,DbfLoc
 		}
 		_clip_destroy(cm,&vv);
 	}
-
+        newkey=malloc(ro->keysize);
 	if(v){
-		if((er = cdx_formatkey(cm,ro,v,ro->key,__PROC__))) return er;
+		if((er = cdx_formatkey(cm,ro,v,newkey,__PROC__))) return er;
 		if(v->t.type == CHARACTER_t){
 			len = min(v->s.str.len,ro->bufsize-(ro->type=='X'?2:0));
 		} else if(ro->type != 'L'){
-			char* s = ro->key+ro->bufsize-1;
-			while((s>=ro->key) && (*s == 0)) s--;
-			len = s - (char*)ro->key + 1;
+			char* s = newkey+ro->bufsize-1;
+			while((s>=newkey) && (*s == 0)) s--;
+			len = s - (char*)newkey + 1;
 		}
 	} else {
 		ClipVar vv,*vp;
 
-		if((er = rdd_calc(cm,area,&ro->block,&vv,0))) return er;
+		if((er = rdd_calc(cm,area,&ro->block,&vv,0))) goto err1;
 		vp = _clip_vptr(&vv);
-		if((er = cdx_formatkey(cm,ro,vp,ro->key,__PROC__))) return er;
+		if((er = cdx_formatkey(cm,ro,vp,newkey,__PROC__))) goto err1;
 		_clip_destroy(cm,&vv);
 	}
 
@@ -1822,32 +1843,37 @@ static int __cdx_addkey(ClipMachine* cm,int area,RDD_ORDER* ro,ClipVar* v,DbfLoc
 
 	/* Note: _cdx_back_search_tree()'s up ro->levels of ro->stack may be incorrect */
 	if(ro->unique){
-		if((er = _cdx_search_tree(cm,ro,ro->key,ro->bufsize,0,&found,NULL,__PROC__))) return er;
-		if(found)
-			return 0;
+		if((er = _cdx_search_tree(cm,ro,newkey,ro->bufsize,0,&found,NULL,__PROC__))) goto err1;
+                if(found) goto cont;
 	}
 	ro->level = 0;
-	if((er = _cdx_search_tree(cm,ro,ro->key,ro->bufsize,recno,&found,NULL,__PROC__))) return er;
+	if((er = _cdx_search_tree(cm,ro,newkey,ro->bufsize,recno,&found,NULL,__PROC__))) goto err1;
 	if(found)
-		return 0;
+		goto cont;
 	if(!v){
 		if(ro->type == 'C'){
-			char* s = ro->key+ro->bufsize-1;
+			char* s = newkey+ro->bufsize-1;
 			if(ro->binary)
 				while(*s == 0) (s--,len--);
 			else
 				while(*s == ' ') (s--,len--);
-			if(s != ro->key+ro->bufsize-1)
+			if(s != newkey+ro->bufsize-1)
 				*(s+1) = 0;
 		} else if(ro->type != 'L'){
-			char* s = ro->key+ro->bufsize-1;
-			while((s>=ro->key) && (*s == 0)) s--;
-			len = s - (char*)ro->key + 1;
+			char* s = newkey+ro->bufsize-1;
+			while((s>=newkey) && (*s == 0)) s--;
+			len = s - (char*)newkey + 1;
 		}
 	}
-	if((ro->type == 'C' || (ro->type == 'X' && ro->key[0] == type_weight(CHARACTER_t))) && !ro->binary)
-		loc_write(loc,(unsigned char *)ro->key,len);
-	return _cdx_addkey(cm,area,loc,v,ro,ro->key,len,recno,__PROC__);
+	if((ro->type == 'C' || (ro->type == 'X' && newkey[0] == type_weight(CHARACTER_t))) && !ro->binary)
+		loc_write(loc,(unsigned char *)newkey,len);
+        er = _cdx_addkey(cm,area,loc,v,ro,newkey,len,recno,__PROC__);
+    err1:
+        free(newkey);
+        return er;
+    cont:
+        free(newkey);
+        return 0;
 }
 
 static int _cdx_addkey(ClipMachine* cm,int area,DbfLocale* loc,ClipVar* v,RDD_ORDER* ro,void* key,int len,unsigned int recno,const char* __PROC__){
@@ -2565,6 +2591,7 @@ static int _cdx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** ro
 	_rdd_put_uint(hdr.keysize,ro->bufsize);
 	hdr.options = (strcmp(ri->vtbl->id,"CDX")?0x20:0x62)
 		| (unique?0x01:0x00)
+		| (ro->custom?0x04:0x00)
 		| (rd->os.bForCondition.t.type!=UNDEF_t?0x08:0x00);
 	hdr.sign = 1;
 	hdr.ic = ro->ic;
@@ -3314,11 +3341,15 @@ static int cdx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 			char cntcdx[4];
 
 			if((er = rdd_read(cm,&ro->index->file,8,4,cntcdx,__PROC__))) return er;
-			if(!ro->valid_stack || ro->cntcdx != _rdd_backuint((unsigned char *)cntcdx)){
-				if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
-				vp = _clip_vptr(&v);
+                        if(!ro->valid_stack || ro->cntcdx != _rdd_backuint((unsigned char *)cntcdx)){
+                            if (ro->custom) {
+                                memcpy(key,ro->key,ro->keysize);
+                            } else {
+                                if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
+                                vp = _clip_vptr(&v);
 				if((er = cdx_formatkey(cm,ro,vp,key,__PROC__))) return er;
-				_clip_destroy(cm,&v);
+                                _clip_destroy(cm,&v);
+                            }
 				ro->curoffs = 0;
 
 				_CDX_HEADER(ro,&hdr);
@@ -3332,7 +3363,7 @@ static int cdx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 					if((er = _cdx_back_search_tree(cm,ro,key,ro->bufsize,rd->recno,
 						&found,NULL,__PROC__))) return er;
 				}
-				_clip_destroy(cm,&v);
+			    //    _clip_destroy(cm,&v);
 			}
 		}
 
@@ -3384,7 +3415,8 @@ static int cdx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	unsigned int oldpage = ro->stack[ro->level].page;
 	int oldpos = ro->stack[ro->level].pos;
 	int lastrec,deleted;
-	int oldeof = rd->eof;
+        int oldeof = rd->eof;
+        void* oldkey;
 
 	if(rd->bof)
 		return 0;
@@ -3394,6 +3426,8 @@ static int cdx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 		rd->eof = rd->bof;
 		return 0;
 	}
+        oldkey = malloc(ro->bufsize);
+        memcpy(oldkey,ro->key,ro->keysize);
 	key = malloc(ro->bufsize);
 	rd->bof = rd->v_bof = rd->eof = 0;
 
@@ -3401,34 +3435,38 @@ static int cdx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 		int oldcursor = rd->filter->cursor;
 		while(rd->filter->cursor > 0){
 			if((er = rd->vtbl->rawgo(cm,rd,rd->filter->list[--rd->filter->cursor],
-				0,__PROC__))) return er;
+				0,__PROC__))) goto err1;
 			if(!(cm->flags & DELETED_FLAG))
-				return 0;
-			if((er = rdd_deleted(cm,rd,&deleted,__PROC__))) return er;
+				goto cont;
+			if((er = rdd_deleted(cm,rd,&deleted,__PROC__))) goto err1;
 			if(!deleted)
-				return 0;
+				goto cont;
 		}
 		rd->bof = rd->v_bof = 1;
 		if(rd->filter->listlen==0){
 			rd->eof = 1;
-			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
-			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
+			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) goto err1;
+			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) goto err1;
 		} else {
 			rd->filter->cursor = oldcursor;
 			if((er = rd->vtbl->rawgo(cm,rd,rd->filter->list[oldcursor],
-				0,__PROC__))) return er;
+				0,__PROC__))) goto err1;
 		}
-		return 0;
+		goto cont;
 	}
 	if(rd->shared || !ro->valid_stack){
 		char cntcdx[4];
 
-		if((er = rdd_read(cm,&ro->index->file,8,4,cntcdx,__PROC__))) return er;
+		if((er = rdd_read(cm,&ro->index->file,8,4,cntcdx,__PROC__))) goto err1;
 		if(!ro->valid_stack || ro->cntcdx != _rdd_backuint((unsigned char *)cntcdx)){
-			if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
+                    if (ro->custom) {
+                        memcpy(key,ro->key,ro->keysize);
+                    } else {
+			if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) goto err1;
 			vp = _clip_vptr(&v);
-			if((er = cdx_formatkey(cm,ro,vp,key,__PROC__))) return er;
-			_clip_destroy(cm,&v);
+			if((er = cdx_formatkey(cm,ro,vp,key,__PROC__))) goto err1;
+                        _clip_destroy(cm,&v);
+                    }
 			ro->curoffs = 0;
 
 			_CDX_HEADER(ro,&hdr);
@@ -3437,18 +3475,18 @@ static int cdx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 
 			if(!ro->descend){
 				if((er = _cdx_search_tree(cm,ro,key,ro->bufsize,rd->recno,
-					&found,NULL,__PROC__))) return er;
+					&found,NULL,__PROC__))) goto err1;
 			} else {
 				if((er = _cdx_back_search_tree(cm,ro,key,ro->bufsize,rd->recno,
-					&found,NULL,__PROC__))) return er;
+					&found,NULL,__PROC__))) goto err1;
 			}
-			_clip_destroy(cm,&v);
+			// _clip_destroy(cm,&v);
 		}
 	}
 
-	if((er = rdd_checkfilter(cm,rd,&fok,__PROC__))) return er;
+	if((er = rdd_checkfilter(cm,rd,&fok,__PROC__))) goto err1;
 	if(!fok){
-		if((er = cdx_next(cm,rd,ro,__PROC__))) return er;
+		if((er = cdx_next(cm,rd,ro,__PROC__))) goto err1;
 		oldrecno = rd->recno;
 		oldeof = rd->eof;
 		fok = 1;
@@ -3459,40 +3497,47 @@ static int cdx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 
 		rd->eof = 0;
 		if(!ro->descend){
-			if((er = _cdx_prev(cm,rd,ro,&out,&recno,__PROC__))) return er;
+			if((er = _cdx_prev(cm,rd,ro,&out,&recno,__PROC__))) goto err1;
 		} else {
-			if((er = _cdx_next(cm,rd,ro,&out,&recno,__PROC__))) return er;
+			if((er = _cdx_next(cm,rd,ro,&out,&recno,__PROC__))) goto err1;
 		}
 		if(out)
 			break;
 		if((er = rd->vtbl->rawgo(cm,rd,recno,1,__PROC__)))
-			return er;
+			goto err1;
 		if(!ro->scopetop && !ro->scopebottom && !rd->filter
 			&& !(cm->flags & DELETED_FLAG))
 			break;
 		if((er = _cdx_recno_keyval(cm,ro,ro->level,&rd->recno,key,__PROC__)))
-			return er;
-		if((er = _cdx_checkscope(cm,rd,ro,key,&ok,__PROC__))) return er;
+			goto err1;
+		if((er = _cdx_checkscope(cm,rd,ro,key,&ok,__PROC__))) goto err1;
 		if(ok<0){
 			out = 1;
 			break;
 		}
-		if((er = rdd_checkfilter(cm,rd,&fok,__PROC__))) return er;
+		if((er = rdd_checkfilter(cm,rd,&fok,__PROC__))) goto err1;
 	}
-	free(key);
 
 	if(out){
 		rd->bof = rd->v_bof = 1;
 		ro->stack[ro->level].page = oldpage;
 		ro->stack[ro->level].pos = oldpos;
 		if((er = rd->vtbl->rawgo(cm,rd,oldrecno,0,__PROC__)))
-			return er;
+			goto err1;
 		rd->eof = oldeof;
+                memcpy(ro->key,oldkey,ro->keysize);
 		ro->valid_stack = 0;
 	} else {
 		ro->valid_stack = 1;
-	}
-	return 0;
+        }
+    cont:
+	free(key);
+        free(oldkey);
+        return 0;
+    err1:
+	free(key);
+        free(oldkey);
+	return er;
 }
 
 static int cdx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int soft,int last,int* found,const char* __PROC__){
@@ -3550,13 +3595,17 @@ static int cdx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 			ClipVar v,*vp;
 			void* k = malloc(ro->bufsize);
 
-			if((er = cdx_next(cm,rd,ro,__PROC__))) return er;
-			if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
-			vp = _clip_vptr(&v);
-			if((er = cdx_formatkey(cm,ro,vp,k,__PROC__))) return er;
+                        if((er = cdx_next(cm,rd,ro,__PROC__))) return er;
+                        if ( ro->custom) {
+                            memcpy(k,ro->key,ro->keysize);
+                        } else {
+                            if((er = rdd_calc(cm,rd->area,&ro->block,&v,0))) return er;
+                            vp = _clip_vptr(&v);
+                            if((er = cdx_formatkey(cm,ro,vp,k,__PROC__))) return er;
+                            _clip_destroy(cm,&v);
+                        }
 			*found = !_cdx_cmp(ro,k,key,len);
 			free(k);
-			_clip_destroy(cm,&v);
 		}
 	}
 	free(key);
@@ -4058,25 +4107,29 @@ static int cdx_keyvalue(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,co
 	int found,er;
 	void* key = malloc(ro->bufsize);
 
-	ro->level = 0;
 	if(rd->eof)	return 0;
+        if (ro->custom ) {
+            _clip_var_str(ro->key,ro->keysize,&vv);
+            vp = _clip_vptr(&vv);
+        } else {
+            ro->level = 0;
+            _CDX_HEADER(ro,&hdr);
+            ro->stack[0].page = _rdd_uint(hdr.root);
 
-	_CDX_HEADER(ro,&hdr);
-	ro->stack[0].page = _rdd_uint(hdr.root);
+            if((er = rdd_calc(cm,rd->area,&ro->block,&vv,0))) goto err;
+            vp = _clip_vptr(&vv);
+            if((er = cdx_formatkey(cm,ro,vp,key,__PROC__))) goto err;
+            _clip_destroy(cm,&vv);
 
-	if((er = rdd_calc(cm,rd->area,&ro->block,&vv,0))) goto err;
-	vp = _clip_vptr(&vv);
-	if((er = cdx_formatkey(cm,ro,vp,key,__PROC__))) goto err;
-	_clip_destroy(cm,&vv);
-
-	if((er = _cdx_search_tree(cm,ro,key,ro->bufsize,rd->recno,&found,NULL,__PROC__)))
-		goto err;
-	if(!found)
-		return 0;
-	if((er = rdd_calc(cm,rd->area,&ro->block,&vv,0))) goto err;
-	vp = _clip_vptr(&vv);
-	_clip_clone(cm,v,vp);
-	_clip_destroy(cm,&vv);
+            if((er = _cdx_search_tree(cm,ro,key,ro->bufsize,rd->recno,&found,NULL,__PROC__)))
+                goto err;
+            if(!found)
+                return 0;
+            if((er = rdd_calc(cm,rd->area,&ro->block,&vv,0))) goto err;
+            vp = _clip_vptr(&vv);
+        }
+        _clip_clone(cm,v,vp);
+        _clip_destroy(cm,&vv);
 	free(key);
 	return 0;
 err:

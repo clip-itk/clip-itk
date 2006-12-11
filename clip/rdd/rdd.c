@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log$
+	Revision 1.2  2006/12/11 12:23:22  foldi
+	Manage custom index.
+	
 	Revision 1.1  2006/06/22 19:35:31  itk
 	uri: init sf.net repository
 	
@@ -3413,7 +3416,7 @@ int rdd_keyadd(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char*
 	if(!ro->custom)
 		return rdd_err(cm,EG_UNSUPPORTED,0,__FILE__,__LINE__,__PROC__,
 			"Trying to add key to automatic (non-custom) order");
-	return ro->vtbl->addkey(cm,rd,ro,NULL,__PROC__);
+	return ro->vtbl->addkey(cm,rd,ro,v,__PROC__);
 }
 
 int rdd_keydel(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
