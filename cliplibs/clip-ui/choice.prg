@@ -16,6 +16,7 @@ static driver := getDriver()
 function UIChoice( action, value, text )
 	local obj := UIEdit( text )
 	obj:readOnly(.T.)
+	obj:className	:= "UIChoice" 
 	obj:button 		:= UIButton( "...", action, value )
 	obj:stick 		:= map()
 	obj:stick:right := obj:button
@@ -57,12 +58,13 @@ return driver:getValue( self )
 /* Set value */
 static function ui_setValue(self, value)
 	self:button:setValue(value)
-	
+	//?? 'set choice value:', value, self:source, isFunction("GETATTRIBUTEVALUE"), chr(10)
 	if valtype(self:source) != 'U' .and. isFunction("GETATTRIBUTEVALUE")
-		// getAttributeValue(<id>, <attribute>)
+		// getAttributeValue(<source>,<id>)
+		// <source> should has format: 'db:class:attribute'
 		// <id> is object id
-		// <attribute> should has format: 'db:class:attribute'
-		self:setText( getAttributeValue( value, self:source ) )
+		//?? 'text:', getAttributeValue( self:source, value ), chr(10)
+		driver:setValue( self, getAttributeValue( self:source, value ) )
 	endif
 return NIL
 

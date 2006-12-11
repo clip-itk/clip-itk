@@ -14,6 +14,11 @@
 #define PRGVERSION	"0.1.2.4"
 
 static ws, win
+static vals := { { '1', 'Alan' }, ;
+				 { '2', 'John' }, ;
+				 { '3', 'Mary' } ; 
+			   }
+
 
 function main()
 	local i,form
@@ -89,5 +94,12 @@ function showValues()
 	next
 return
 
-function getAttributeValue(name)
-return ''
+function getAttributeValue(id, path)
+	local v:='', i
+	if path == 'names'
+		i := ascan(vals, {|e| e[1] == id })
+		if i > 0
+			return vals[i][2]
+		endif
+	endif
+return v

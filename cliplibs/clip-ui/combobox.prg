@@ -13,10 +13,11 @@
 static driver := getDriver()
 
 /* Combobox class */
-function UIComboBox( values, defaultItem )
+function UIComboBox( values, defaultItem, source )
 	local obj 	:= driver:createComboBox( values )
 	obj:className 	:= "UIComboBox"
 	obj:list	:= values
+	obj:source	:= source
 	_recover_UICOMBOBOX(obj)
 	if .not. empty( defaultItem )
 		driver:setValue( obj, defaultItem )

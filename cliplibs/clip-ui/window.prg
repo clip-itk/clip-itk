@@ -402,23 +402,19 @@ static function ui_setName(self, name, o)
 	if valtype(o) != "O" .or. .not. "CLASSNAME" $ o
 		return NIL
 	endif
-	if ascan({"UIEdit","UIEditText","UIComboBox","UICheckBox","UIButton","UILabel","UIRadioButton","UISlider","UITable","UITree","UISheet"},o:className) != 0
-
-		// Extract type from name
-		nArr := split(name,':')
-		if len(nArr) > 1
-			name  := nArr[1]
-			vType := lower(nArr[2])
-		endif
-
-		self:value[name] := o
-		self:valueTypes[name] := vType
-		aadd( self:valueNames, name )
-		//?? 'NAME:',name, vType, chr(10)
-	else
-//		?? "ERROR: couldn't set name for non-valued widget "+o:className+CHR(10)
-		return NIL
+	
+	// Extract type from name
+	nArr := split(name,':')
+	if len(nArr) > 1
+		name  := nArr[1]
+		vType := lower(nArr[2])
 	endif
+
+	self:value[name] := o
+	self:valueTypes[name] := vType
+	aadd( self:valueNames, name )
+	//?? 'NAME:',name, vType, chr(10)
+
 return o
 
 /* Set all values to widgets defined by function SetName */
@@ -427,7 +423,9 @@ static function ui_setValues(self, values)
 	for i in values
 		w := i[1]
 		v := i[2]
-		w:setValue( v )
+		if "SETVALUE" $ w
+			w:setValue( v )
+		endif
 	next
 return 0
 
@@ -436,7 +434,7 @@ static function ui_getValues(self)
 	local i, w, v, values := array(0)
 	for i in self:valueNames
 		w := self:value[i]
-		if at(i,"\.") == 0 .and. "GETVALUE" $ w .and. w:className != 'UIButton' // Only object's field, without buttons
+		if left(i, 1) != '.' .and. "GETVALUE" $ w .and. w:className != 'UIButton' // Only object's field, without buttons
 			v := w:getValue()
 			aadd(values, { i, v } )
 		endif
@@ -446,7 +444,7 @@ return values
 /* Get value from widget defined by its name */
 static function ui_val(self, name)
 	local o:=mapget(self:value,name,NIL)
-	if o == NIL
+	if o == NIL .or. .not. 'GETVALUE' $ o
 		return NIL
 	endif
 return o:getValue()
@@ -477,15 +475,18 @@ return NIL
 
 /* Return id and text from table to another form */
 static function ui_select(self, table, column)
-	local act, obj:=NIL, val:=array(2)
+	local act, obj:=NIL, val:=''
     //?? "RETURN value:","RETURNACTION" $ self, valtype(self:returnAction), chr(10)
 	if "RETURNACTION" $ self .and. valtype(self:returnAction) == "B"
 		act := self:returnAction
 		obj := mapget(self:value, table, NIL)
 		//?? valtype(obj), "GETSELECTIONID" $ obj , "GETSELECTIONFIELD" $ obj, chr(10)
 		if .not. empty(obj) .and. "GETSELECTIONID" $ obj .and. "GETSELECTIONFIELD" $ obj
-			val[1] := obj:getSelectionField(column)
-			val[2] := obj:getSelectionId()
+			if empty(column)
+				val := obj:getSelectionId()
+			else
+				val := obj:getSelectionField(column)
+			endif
 		endif
 		//?? "RETURNED:", val,chr(10)
 		eval(act, val)

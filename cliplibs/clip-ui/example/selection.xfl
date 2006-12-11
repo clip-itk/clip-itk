@@ -45,7 +45,6 @@
 			<action>
 				<call widget="window" method="select">
 					<param value="table" />
-					<param value="2" />
 				</call>
 				<call widget="window" method="close"/>
 			</action>

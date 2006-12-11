@@ -119,7 +119,6 @@ function getLocaleStrings( parent, locale )
 	if empty(locale)
 		locale := left(getenv("LANG"),2)
 	endif
-
 	// Find appropriate section <locale lang="XX">
 	for tag in parent:getChilds()
 		if tag:getName() == "locale" .and. tag:attribute("lang","") == locale
@@ -142,13 +141,15 @@ function getLocaleStrings( parent, locale )
 
 	// Collect messages inside widgets
 	a := parent:XPath('//msg')
-//	?? valtype(a), len(a),chr(10)
+	//?? valtype(a), len(a),chr(10)
 	
-	for i in a
-		if i:attribute('lang','') == locale .and. .not. ( i:attribute("id","") == "" .and. i:attribute("value","") == "" )
-			mStr[i:attribute("id")] := i:attribute("value")
-//			?? i:attribute("id"), "=>", i:attribute("value"),chr(10)
-		endif
-	next
+	if valtype(a) == 'A' .and. len(a) > 0
+		for i in a
+			if i:attribute('lang','') == locale .and. .not. ( i:attribute("id","") == "" .and. i:attribute("value","") == "" )
+				mStr[i:attribute("id")] := i:attribute("value")
+	//			?? i:attribute("id"), "=>", i:attribute("value"),chr(10)
+			endif
+		next
+	endif
 
 return mStr

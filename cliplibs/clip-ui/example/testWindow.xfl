@@ -50,8 +50,8 @@
             </widget>
 		<widget class="tabarea">
 		<widget class="tab" label="Basic widgets">
-	    <widget class="vsplitter">
-		    <widget class="hsplitter">
+	    <widget name=".vs+" class="vsplitter">
+		    <widget name=".hs+" class="hsplitter">
 			<widget class="tree" >
 				<column name="n1" title="N1"/>
 				<column name="n2" title="N2"/>
@@ -116,6 +116,7 @@
 				<widget class="label" label="Person:" />
 				<widget name="person" class="choice" label="">
 					<property name="value" value="" />
+					<property name="source" value="names" />
 				</widget>
 			</widget>
 			
@@ -200,6 +201,7 @@
 				<property name="qty.type" 		value="number" /> 
 				<property name="price.type" 	value="number" /> 
 				<property name="sum.type" 		value="number" /> 
+				<property name="sum.format" 	value="%'.2f" /> 
 				<property name="vat.type" 		value="boolean" /> 
 				<property name="other.type" 	value="text" /> 
 				

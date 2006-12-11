@@ -1385,6 +1385,9 @@ static function ui_setValue(self, o, value, append)
 		case "UILabel"
 			o:setValue( value )
 
+		case "UIChoice"
+			gtk_EntrySetText( o, value )
+		
 		case "UIEdit"
 			if append
 				gtk_EntryAppendText( o, value )
@@ -1504,6 +1507,9 @@ static function ui_getValue(self, o)
 		case "UILabel"
 			val := o:getValue()
 
+		case "UIChoice"
+			val := gtk_EntryGetText( o )
+		
 		case "UIEdit"
 			val := gtk_EntryGetText( o )
 

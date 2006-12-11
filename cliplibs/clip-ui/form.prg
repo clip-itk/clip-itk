@@ -666,6 +666,9 @@ static function ui_setProperty(self, tag, obj, value)
 		case "step"
 			if obj:className != "UISlider"; return .F.; endif
 			obj:setStep(value)
+		case "source"
+			if .not. "SETSOURCE" $ obj; return .F.; endif
+			obj:setSource(value)
 
 		otherwise
 			driver:setStyle(obj, name, value, t:attribute("element",NIL))
@@ -851,7 +854,7 @@ static function ui_subActionHandler(self, tag, addVal)
 	local e, c, p, params:=array(0)
 
 	if tag:getName() == "returnedvalue"
-//		?? "returned value:", addVal, chr(10)
+		//?? "returned value:", addVal, chr(10)
 		return addVal
 	endif
 	if tag:getName() == "property"
