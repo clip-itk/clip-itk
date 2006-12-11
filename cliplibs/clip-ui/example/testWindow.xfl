@@ -48,7 +48,8 @@
                         <property name="icon" value="icons/reference_partner.xpm"/>
                 </widget>
             </widget>
-
+		<widget class="tabarea">
+		<widget class="tab" label="Basic widgets">
 	    <widget class="vsplitter">
 		    <widget class="hsplitter">
 			<widget class="tree" >
@@ -65,18 +66,22 @@
 				<property name="row" element=".node55" value="'Leaf33'" />
 			</widget>
 			<widget class="table">
-				<column name="num" title="#"/>
 				<column name="date" title="Date"/>
 				<column name="payee" title="Payee"/>
 				<column name="sum" title="Sum"/>
-				<property name="altColor" value="#cbe8ff" />
-				<property name="row" element="1" value="'1','20.10.03','JSC &quot;Lighthouse&quot;','20000.00'" />
-				<property name="row" element="2" value="'2','20.10.03','JSC &quot;Phoenix&quot;','5689.20'" />
-				<property name="row" element="3" value="'3','21.10.03','JSC &quot;Phoenix&quot;','1500.00'" />
-				<property name="row" element="4" value="'4','25.10.03','JSC &quot;Phoenix&quot;','99.00'" />
+				<property name="date.type" value="date" /> 
+				<property name="payee.type" value="text" /> 
+				<property name="payee.lookup" value="yes" /> 
+				<property name="sum.type" value="number" /> 
+				<property name="sum.format" value="%'.f" /> 
+				<property name="row" element="1" value="'20.10.03','Lighthouse',20000.00" />
+				<property name="row" element="2" value="'20.10.03','Phoenix',5689.20" />
+				<property name="row" element="3" value="'21.10.03','Turbo',1500.00" />
+				<property name="row" element="4" value="'25.10.03','Real trade',799.00" />
 			</widget>
 		    </widget>
-		    <widget class="vbox">
+		    
+			<widget class="vbox">
 			<property name="spacing" value="3" />
 			<property name="padding" value="3" />
 			<widget name="tax" class="checkbox" label="Use &amp;tax">
@@ -86,7 +91,6 @@
 					<widget class="radioButton" name="button1" label="button1" />
 					<widget class="radioButton" name="button2" label="button2" />
 			</widget>
-
 			<widget name="slider" class="slider" >
 				<property name="value" value="10" />
 				<property name="range" value="5-60" />
@@ -168,90 +172,125 @@
 				  <widget class="button" name="close" label="Close" pos="120,10" />
 				</widget>
 			</widget>
+
+			</widget>
 		    
 		    </widget>
 	    </widget>
+	    
+	    <widget class="tab" label="Editable table">
+			<widget class="edittable" name="eTable1+">
+				<column name="num" 	title="#" />
+				<column name="name" title="Name" />
+				<column name="unit" title="Units" />
+				<column name="date" title="Date" />
+				<column name="qty" 	title="Quantity" />
+				<column name="price" title="Price" />
+				<column name="sum" 	title="Sum" />
+				<column name="vat" 	title="VAT" />
+				<column name="other" title="Comment"/>
+				
+				<property name="num.type" 		value="counter" /> 
+				<property name="name.type" 		value="choice" />
+				<property name="name.lookup" 	value="true" />
+				<property name="unit.type" 		value="combobox" />
+				<property name="unit.default" 	value="bottle" />
+				<property name="date.type" 		value="date" />
+				<property name="date.editable" 	value="false" />
+				<property name="qty.type" 		value="number" /> 
+				<property name="price.type" 	value="number" /> 
+				<property name="sum.type" 		value="number" /> 
+				<property name="vat.type" 		value="boolean" /> 
+				<property name="other.type" 	value="text" /> 
+				
+				<property name="row" element="1" value="1,'Vodka','bottle','20.10.03',5,5.1,0,.T.,''" />
+				<property name="row" element="2" value="2,'Beer','pint','20.10.03',15,2.5,0,.F.,'Cold and tasty'" />
+				<property name="row" element="3" value="3,'Milk','bottle','20.10.03',15,2.3,0,.T.,''" />
+			</widget>
+	    </widget>
+	    </widget>
             
 	    <!-- Statusbar -->
-            <widget class="statusBar" name="main_statusBar" label="Ready." />
+		<widget class="statusBar" name="main_statusBar" label="Ready." />
 	
 	</widget>
-        </interface>
+	</interface>
 
-        <!-- Widget properties -->
-        <style>
-                <property widget="mainWindow" name="geometry" value="650,550,35,15" />
-                <property widget="mainWindow" name="position" value="center" />
-                <property widget="mainWindow" name="icon" value="icons/eas-logo.xpm" />
-        </style>
+	<!-- Widget properties -->
+	<style>
+			<property widget="mainWindow" name="geometry" value="650,550,35,15" />
+			<property widget="mainWindow" name="position" value="center" />
+			<property widget="mainWindow" name="icon" value="icons/eas-logo.xpm" />
+	</style>
 
-        <!-- Actions -->
-        <actions>
-			<!-- System actions -->
-			<rule>
-				<event widget="close" signal="clicked"/>
-				<action><call widget="mainWindow" method="close"/></action>
-			</rule>
-			
-			<rule>
-				<event widget="save" signal="clicked"/>
-				<action><call method="showValues"/></action>
-			</rule>
-			
-			<rule>
-				<event widget="showTB" signal="activate"/>
-				<action><call widget="main_toolBar" method="show">
-					<param><call widget="showTB" method="isChecked" /></param>
-				</call>
-				</action>
-			</rule>
-			
-			<rule>
-				<event widget="showSB" signal="activate"/>
-				<action>
-				<call widget="main_statusBar" method="show">
-					<param><call widget="showSB" method="isChecked" /></param>
-				</call>
-				</action>
-			</rule>
-	
-			<rule>
-				<event widget="TB.Bank.PaymentOrder.List" signal="clicked"/>
-				<action><call method="qout">
-				<param value="List of payment orders" /></call>
-				</action>
-			</rule>
-			
-			<rule>
-				<event widget="TB.Bank.PaymentOrder.Create" signal="clicked"/>
-				<action><call method="qout">
-				<param value="Create payment order" /></call>
-				</action>
-			</rule>
-			
-			<rule>
-				<event widget="Settings" signal="activate"/>
-				<action><call method="Configuration"/></action>
-			</rule>
+	<!-- Actions -->
+	<actions>
+		<!-- System actions -->
+		<rule>
+			<event widget="close" signal="clicked"/>
+			<action><call widget="mainWindow" method="close"/></action>
+		</rule>
+		
+		<rule>
+			<event widget="save" signal="clicked"/>
+			<action><call method="showValues"/></action>
+		</rule>
+		
+		<rule>
+			<event widget="showTB" signal="activate"/>
+			<action><call widget="main_toolBar" method="show">
+				<param><call widget="showTB" method="isChecked" /></param>
+			</call>
+			</action>
+		</rule>
+		
+		<rule>
+			<event widget="showSB" signal="activate"/>
+			<action>
+			<call widget="main_statusBar" method="show">
+				<param><call widget="showSB" method="isChecked" /></param>
+			</call>
+			</action>
+		</rule>
 
-			<rule label="Select pe&amp;rson">
-				<event widget="person" signal="clicked"/>
-				<action><call method="openForm">
-					<param><property widget="mainWindow" name="object"/></param>
-					<param value="selection.xfl"/>
-					<return>
-						<call widget="person" method="setValue">
-							<param><returnedvalue /></param>
-						</call>
-					</return>
-				</call></action>
-			</rule>
+		<rule>
+			<event widget="TB.Bank.PaymentOrder.List" signal="clicked"/>
+			<action><call method="qout">
+			<param value="List of payment orders" /></call>
+			</action>
+		</rule>
+		
+		<rule>
+			<event widget="TB.Bank.PaymentOrder.Create" signal="clicked"/>
+			<action><call method="qout">
+			<param value="Create payment order" /></call>
+			</action>
+		</rule>
+		
+		<rule>
+			<event widget="Settings" signal="activate"/>
+			<action><call method="Configuration"/></action>
+		</rule>
 
+		<rule label="Select pe&amp;rson">
+			<event widget="person" signal="clicked"/>
+			<action><call method="openForm">
+				<param><property widget="mainWindow" name="object"/></param>
+				<param value="selection.xfl"/>
+				<return>
+					<call widget="person" method="setValue">
+						<param><returnedvalue /></param>
+					</call>
+				</return>
+			</call></action>
+		</rule>
 	</actions>
+	
 	<locale lang="ru">
 		<msg id="Save" value="&amp;Сохранить" />
 		<msg id="Print" value="&amp;Печать" />
 		<msg id="Close" value="&amp;Закрыть" />
 	</locale>
+
 </form>
 

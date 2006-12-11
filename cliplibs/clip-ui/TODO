@@ -2,14 +2,14 @@
 TODO
 ====
 
-Last change: 07 Dec 2006
+Last change: 11 Dec 2006
 
 MAIN
 ----
- - select from list open from UIChoice with exist value
- - Different column type in UITable 
- - Restore position for UITree expands collapsed branches
  - i18n support
+ - support for choice and combo cell in UIEditTable
+ - set/get/remove rows for UITree
+ - different column types and lookup for UITree
 
 CLIP-UI
 -------
@@ -32,6 +32,9 @@ CLIP-UI
  - UIEditDate: date should be selected by keyboard
  - add method setProperty() for each widget
  - calendar for UIDateEdit should be placed in popup window with buttons 'select' and 'close'
+ - actions for UITable and UIEditTable (toolbar and keyboard shortcut) 
+ - Restore position for UITree expands collapsed branches
+ - select from list open from UIChoice with exist value
  
 FORM
 ----
@@ -42,6 +45,7 @@ GTK
 ---
  - Input numero sign and typographic quotes in locale 'ru_RU.KOI8-R'
  + unscrollable position of column header (GTK/GTK2)
+ - Support to lookup on each column in UITable
  
 Documentation
 -------------

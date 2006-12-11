@@ -159,6 +159,7 @@ return win
 static function ui_createWidget(self, tag, parent )
 	local o:=NIL, class, name, label, c, i, a, e, w, box, t:=tag
 	local add:=.F., gCol:=1, gRow:=1, gClass, rule, expanded:=.F.
+	local p_a, p_col, p_name, p_value
 
 	class := t:attribute("class","")
 	name  := t:attribute("name","")
@@ -246,12 +247,70 @@ static function ui_createWidget(self, tag, parent )
 			parent:setPanels(,,o)
 			o:setText(label)
 		case "TABLE"
+			// Get columns
 			a := array(0)
 			for e in t:getChilds()
 				if e:getName() == "column"
-					aadd( a, self:i18n(e:attribute("title","")))
+					aadd( a, UITableColumn( e:attribute("name"), self:i18n(e:attribute("title","")), TABLE_COLUMN_TEXT)  )
 				endif
 			next
+			
+			// Get column attributes
+			for e in t:getChilds()
+				if e:getName() == "property"
+					if .not. "." $ e:attribute("name")
+						loop
+					endif
+					p_a     := split(e:attribute("name"), '\.')
+					p_col   := p_a[1]
+					p_name  := p_a[2]
+					p_value := e:attribute("value")
+					i := ascan(a, {|e| e:name == p_col })
+					if i>0
+						o := a[i]
+						switch lower(p_name)
+							case 'caption'
+								o:caption := self:i18n(p_value)
+							case "type"
+								switch lower(p_value)
+									case 'text'
+										o:type := TABLE_COLUMN_TEXT
+									case 'choice'
+										o:type := TABLE_COLUMN_CHOICE
+									case 'combobox'
+										o:type := TABLE_COLUMN_COMBO
+									case 'number'
+										o:type := TABLE_COLUMN_NUMBER
+										o:default := iif(empty(o:default), 0, o:default)
+										o:format := iif(empty(o:format), "%'.2f", o:format)
+									case 'date'
+										o:type := TABLE_COLUMN_DATE
+									case 'boolean'
+										o:type := TABLE_COLUMN_CHECK
+										o:default := iif(empty(o:default), .F., o:default)
+									case 'counter'
+										o:type := TABLE_COLUMN_COUNTER
+										o:default := iif(empty(o:default), 0, o:default)
+									otherwise
+										?? "Table widget doesn't support column type '"+p_value+"'.&\n"
+								endswitch
+							case 'editable'
+								o:editable := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
+							case 'format'
+								o:format := p_value
+							case 'source'
+								o:source := p_value
+							case 'lookup'
+								o:lookup := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
+							case 'default'
+								o:default := p_value
+							otherwise
+								?? "Table widget doesn't support property '"+p_name+"'.&\n"
+						endswitch
+					endif
+				endif
+			next
+			// Create table
 			if len(a) > 0
 				o := UITable( a )
 				add = .T.
@@ -271,17 +330,77 @@ static function ui_createWidget(self, tag, parent )
 			else
 				?? "No defined columns for Tree widget&\n"
 			endif
-/*
-		case "SHEET"
+		case "EDITTABLE"
+			// Get columns
 			a := array(0)
-			for e in t:childs
-				if e:name == "COLUMN"
-					aadd( a, self:i18n(e:attr["TITLE"]))
+			for e in t:getChilds()
+				if e:getName() == "column"
+					aadd( a, UIEditTableColumn( e:attribute("name"), self:i18n(e:attribute("title","")), TABLE_COLUMN_TEXT)  )
 				endif
 			next
-			o := UISheet( a )
-			add = .T.
-*/
+			
+			// Get column attributes
+			for e in t:getChilds()
+				if e:getName() == "property"
+					if .not. "." $ e:attribute("name")
+						loop
+					endif
+					p_a     := split(e:attribute("name"), '\.')
+					p_col   := p_a[1]
+					p_name  := p_a[2]
+					p_value := e:attribute("value")
+					i := ascan(a, {|e| e:name == p_col })
+					if i>0
+						o := a[i]
+						switch lower(p_name)
+							case 'caption'
+								o:caption := self:i18n(p_value)
+							case "type"
+								switch lower(p_value)
+									case 'text'
+										o:type := TABLE_COLUMN_TEXT
+									case 'choice'
+										o:type := TABLE_COLUMN_CHOICE
+									case 'combobox'
+										o:type := TABLE_COLUMN_COMBO
+									case 'number'
+										o:type := TABLE_COLUMN_NUMBER
+										o:default := iif(empty(o:default), 0, o:default)
+										o:format := iif(empty(o:format), "%'.2f", o:format)
+									case 'date'
+										o:type := TABLE_COLUMN_DATE
+									case 'boolean'
+										o:type := TABLE_COLUMN_CHECK
+										o:default := iif(empty(o:default), .F., o:default)
+									case 'counter'
+										o:type := TABLE_COLUMN_COUNTER
+										o:default := iif(empty(o:default), 0, o:default)
+									otherwise
+										?? "EditTable widget doesn't support column type '"+p_value+"'.&\n"
+								endswitch
+							case 'editable'
+								o:editable := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
+							case 'format'
+								o:format := p_value
+							case 'source'
+								o:source := p_value
+							case 'lookup'
+								o:lookup := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
+							case 'default'
+								o:default := p_value
+							otherwise
+								?? "EditTable widget doesn't support property '"+p_name+"'.&\n"
+						endswitch
+					endif
+				endif
+			next
+			// Create table
+			if len(a) > 0
+				o := UIEditTable( a )
+				add = .T.
+			else
+				?? "No defined columns for EditTable widget&\n"
+			endif
 		case "BUTTONBAR"
 			if "ACTIONS" $ parent
 				o := parent:actions
@@ -343,8 +462,16 @@ static function ui_createWidget(self, tag, parent )
 		case "SLIDER"
 			o := UISlider()
 			add = .T.
+		case "TABAREA"
+			o := UITabArea()
+			add = .T.
+		case "TAB"
+			o := UITab(label, name)
+			add = .T.
+
 		otherwise
 			?? "WARNING: Unknown class:",class,chr(10)
+	
 	endswitch
 	if .not. empty(name)
 		aadd(self:names,name)
@@ -426,10 +553,12 @@ static function ui_setProperty(self, tag, obj, value)
 	if obj == NIL
 		return .F.
 	endif
+	
+	if (obj:className == "UITable" .or. obj:className == "UIEditTable") .and. lower(name) != 'row'
+		return .F.
+	endif
+	
 	switch name
-		case "altColor"
-			if .not. "SETALTROWCOLOR" $ obj; return .F.; endif
-			obj:setAltRowColor(value)
 		case "label"
 			if .not. "SETTEXT" $ obj; return .F.; endif
 			obj:setText(value)
@@ -502,11 +631,11 @@ static function ui_setProperty(self, tag, obj, value)
 			obj:setIcon(UIImage( iif(isfunction("GETRESOURCE"), ;
 				clip("GETRESOURCE", value), value) ) )
 		case "row"
-			if obj:className != 'UITable' .and. obj:className != 'UITree'; return .F.; endif
+			if obj:className != 'UITable' .and. obj:className != 'UITree' .and. obj:className != 'UIEditTable'; return .F.; endif
 			block := "{|| {"+value+"} }"
 			row   := eval(&block)
 			elem  := t:attribute("element",NIL)
-			if obj:className == 'UITable'
+			if obj:className == 'UITable' .or. obj:className == 'UIEditTable'
 				obj:addRow( row, elem )
 			else
 				if .not. 'NODENAMES' $ obj

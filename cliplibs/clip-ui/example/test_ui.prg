@@ -182,7 +182,8 @@ static function BankRefReq( sp )
 	aadd(tc, UITableColumn('date', 'Date', TABLE_COLUMN_DATE))
 	aadd(tc, UITableColumn('name', 'Payee', TABLE_COLUMN_TEXT))
 	aadd(tc, UITableColumn('sum',  'Sum', TABLE_COLUMN_NUMBER))	
-	tc[1]:format = "%.0"
+	tc[1]:format = "%.0f"
+	tc[3]:lookup := .T.
 
 	table := UITable(tc)
 
@@ -472,7 +473,7 @@ static function EditTableWidget( w )
 	local table, columns:={}, c, b, tA, t1, t2, t3
 	
 	//? 'create columns'
-	aadd( columns, UIEditTableColumn( 'num', 	'#', 		TABLE_COLUMN_INC ) )
+	aadd( columns, UIEditTableColumn( 'num', 	'#', 		TABLE_COLUMN_COUNTER ) )
 	aadd( columns, UIEditTableColumn( 'name', 	'Name', 	TABLE_COLUMN_CHOICE ) )
 	aadd( columns, UIEditTableColumn( 'unit', 	'Units', 	TABLE_COLUMN_COMBO ) )
 	c := UIEditTableColumn( 'date',	'Date', TABLE_COLUMN_DATE)
@@ -496,7 +497,7 @@ static function EditTableWidget( w )
 	
 	//? 'add rows'
 	table:addRow( { 1, "Vodka",      "bottle", date(),  5, 5.1, 0, .T., '' } )
-	table:addRow( { 2, "Beer",       "bottle", date(), 15, 2.5, 0, .F., 'Cold and tasty' } )
+	table:addRow( { 2, "Beer",       "pint", date(), 15, 2.5, 0, .F., 'Cold and tasty' } )
 	table:addRow( { 3, "Bad record", "",       date(),  0,   0, 0, .F., '' } )
 	table:setRow( 3, { 3, "Good record", "", date(),  1, 10.7, 0, .T., '' } )
 	table:addRow( { 4, "Milk",       "bottle", date(), 15, 2.3, 0, .T., '' } )

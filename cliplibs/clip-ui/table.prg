@@ -22,12 +22,14 @@ function UITableColumn(name, caption, type)
 	obj:editable := .F.
 	obj:format  := ''
 	obj:source	:= ''
+	obj:lookup	:= .F.
 	switch type
 		case TABLE_COLUMN_NUMBER
 			obj:default	:= 0
 			obj:format := "%'.2f"
-		case TABLE_COLUMN_INC
+		case TABLE_COLUMN_COUNTER
 			obj:default	:= 0
+			obj:format := "%.0f"
 		case TABLE_COLUMN_CHECK
 			obj:default	:= .F.
 		otherwise

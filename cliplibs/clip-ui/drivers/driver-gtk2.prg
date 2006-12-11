@@ -1084,7 +1084,7 @@ static function ui_createTable(self, columns)
 					t := TREE_TYPE_DATE
 				case TABLE_COLUMN_CHECK
 					t := TREE_TYPE_LOGICAL
-				case TABLE_COLUMN_INC		// TODO
+				case TABLE_COLUMN_COUNTER		// TODO
 					t := TREE_TYPE_NUMERIC
 				otherwise
 					t := TREE_TYPE_STRING
@@ -1094,7 +1094,9 @@ static function ui_createTable(self, columns)
 		endif
 		aadd( types, t )
 	next
-	store := gtk_ListStoreNew(, cc, types)
+	aadd( types, TREE_TYPE_LOGICAL )
+	aadd( types, TREE_TYPE_NUMERIC_FLOAT )
+	store := gtk_ListStoreNew(, cc+2, types)
 	if empty(store)
 		return NIL
 	endif
@@ -1124,6 +1126,9 @@ static function ui_createTable(self, columns)
 			if .not. empty(column:format) .and. column:type == TABLE_COLUMN_NUMBER
 				gtk_TreeViewColumnSetFormat(ic, renderer, c, column:format)
 			endif
+			if column:type == TABLE_COLUMN_NUMBER .or. column:type == TABLE_COLUMN_COUNTER
+					gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "xalign", cc+2)
+			endif
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
 		columns[i]:__obj := ic
@@ -1143,6 +1148,10 @@ static function ui_addTableRow(self, table, data)
 	for i:=1 to len( data )
 		gtk_ListStoreSetValue(table:store, row, i, data[i])
 	next
+	i := len(table:columns)
+	gtk_ListStoreSetValue(table:store, row, i+1, .T.)
+	gtk_ListStoreSetValue(table:store, row, i+2, 1.0)
+	
 	item:id := row
 return item
 
@@ -1994,14 +2003,16 @@ static function ui_createEditTable(self, columns)
 				t := TREE_TYPE_DATE
 			case TABLE_COLUMN_CHECK
 				t := TREE_TYPE_LOGICAL
-			case TABLE_COLUMN_INC		// TODO
+			case TABLE_COLUMN_COUNTER		// TODO
 				t := TREE_TYPE_NUMERIC
 			otherwise
 				t := TREE_TYPE_STRING
 		endswitch
 		aadd( types, t )
 	next
-	store := gtk_ListStoreNew(, cc, types)
+	aadd( types, TREE_TYPE_LOGICAL )
+	aadd( types, TREE_TYPE_NUMERIC_FLOAT )
+	store := gtk_ListStoreNew(, cc+2, types)
 	if empty(store)
 		return NIL
 	endif
@@ -2024,10 +2035,8 @@ static function ui_createEditTable(self, columns)
 					"active", i)
 			ic := gtk_TreeViewGetColumn(o, c)
 			if column:editable
-				gtk_TreeViewColumnAddAttribute(ic, renderer, "activatable", 1)
+				gtk_TreeViewColumnSetAttributes(ic, renderer, "activatable", cc+1, "active", i)
 				gtk_SignalConnect(renderer, "toggled", {|w, e| ui_EditTableToggled(self, w, e, o)})
-				//gtk_TreeViewColumnAddAttribute(ic, renderer, "active", 1)
-				//gtk_TreeViewColumnSetClickable(ic, .T.)
 			endif
 /*		elseif column:type == TABLE_COLUMN_COMBO .or. column:type == TABLE_COLUMN_CHOICE
 			renderer = gtk_CellRendererComboNew()
@@ -2068,12 +2077,17 @@ static function ui_createEditTable(self, columns)
 			if .not. empty(column:format) .and. column:type == TABLE_COLUMN_NUMBER
 				gtk_TreeViewColumnSetFormat(ic, renderer, c, column:format)
 			endif
-			if column:editable .and. column:type != TABLE_COLUMN_INC
-				gtk_TreeViewColumnAddAttribute(ic, renderer, "editable", 1)
-				//gtk_TreeViewColumnAddAttribute(ic, renderer, "active", 1)
-				//gtk_TreeViewColumnAddAttribute(ic, renderer, "visible", i)
-				//gtk_TreeViewColumnSetClickable(ic, .T.)
+			if column:editable .and. column:type != TABLE_COLUMN_COUNTER
+				gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "editable", cc+1)
 				gtk_SignalConnect(renderer, "edited", {|w, e| ui_EditTableEdited(self, w, e, o)})
+			endif
+			if column:type == TABLE_COLUMN_NUMBER .or. column:type == TABLE_COLUMN_COUNTER
+				//gtk_TreeViewColumnSetAlignment(ic, 1.0)
+				if column:editable .and. column:type != TABLE_COLUMN_COUNTER
+					gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "xalign", cc+2, "editable", cc+1)
+				else
+					gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "xalign", cc+2)
+				endif
 			endif
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
@@ -2169,10 +2183,13 @@ static function ui_addEditTableRow(self, table, data)
 	row := gtk_ListStoreAppend(table:store)
 	self:setEditTableRow(table, row, data)
 	for i:=1 to len(table:columns)
-		if table:columns[i]:type == TABLE_COLUMN_INC
+		if table:columns[i]:type == TABLE_COLUMN_COUNTER
 			gtk_ListStoreSetValue(GTK_TREEMODEL(table:model), row, i, 1+val(row))
 		endif
 	next
+	i := len(table:columns)
+	gtk_ListStoreSetValue(table:store, row, i+1, .T.)
+	gtk_ListStoreSetValue(table:store, row, i+2, 1.0)
 return row
 
 /* Set data for editable table row */
@@ -2183,21 +2200,21 @@ static function ui_setEditTableRow(self, table, row, data)
 	endif
 	if valtype(data) == 'A'
 		for i:=1 to len( data )
-			if table:columns[i]:type != TABLE_COLUMN_INC
+			if table:columns[i]:type != TABLE_COLUMN_COUNTER
 				gtk_ListStoreSetValue(table:store, row, i, data[i])
 			endif
 		next
 	elseif valtype(data) == 'O'
 		for i:=1 to len( table:columns )
 			c := upper(table:columns[i]:name)
-			if table:columns[i]:type != TABLE_COLUMN_INC
+			if table:columns[i]:type != TABLE_COLUMN_COUNTER
 				gtk_ListStoreSetValue(table:store, row, i, data[c])
 			endif
 		next
 	else
 		for i:=1 to len( table:columns )
 			c := table:columns[i]:default
-			if table:columns[i]:type != TABLE_COLUMN_INC
+			if table:columns[i]:type != TABLE_COLUMN_COUNTER
 				gtk_ListStoreSetValue(table:store, row, i, c)
 			endif
 		next
@@ -2243,13 +2260,16 @@ static function ui_removeEditTableRow(self, table, row)
 		num := 0 + val(row)
 	endif
 	total := self:getEditTableRowCount(table)
+	//?? 'remove', num, 'from', total, chr(10)
 	if num <= total
-		//?? 'remove', valtype(row), row, chr(10)
 		gtk_ListStoreRemove(table:store, row)
 		// Refresh count
-		for r:=1+num to total-1
+		for r:=num to total-1
+			//?? 'removing', r, 'from', total, chr(10)
 			for i:=1 to len(table:columns)
-				if table:columns[i]:type == TABLE_COLUMN_INC
+				//?? table:columns[i]:type, ''
+				if table:columns[i]:type == TABLE_COLUMN_COUNTER
+				//?? 'removed',ltrim(str(r-1)), i, r,chr(10)
 					gtk_ListStoreSetValue(GTK_TREEMODEL(table:model), ltrim(str(r-1)), i, r)
 				endif
 			next
@@ -2299,7 +2319,7 @@ static function ui_setEditTableField(self, table, column, row, value)
 			row := ltrim(str(row-1))
 		endif
 	endif
-	if table:columns[column]:type != TABLE_COLUMN_INC
+	if table:columns[column]:type != TABLE_COLUMN_COUNTER
 		gtk_ListStoreSetValue(table:store, row, column, value)
 	endif
 return NIL
