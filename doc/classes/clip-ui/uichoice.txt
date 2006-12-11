@@ -15,9 +15,11 @@ $LANG_RU$
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIChoice".
 	<button>	- <link linkend="classuibutton">UIButton</link> object. Button for select element.
+	<source>	- String. Address of source to get text description for set value. 
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIChoice".
 	<button>	- Объект <link linkend="classuibutton">UIButton</link>. Кнопка выбора элемента.
+	<source>	- Строка. Адрес ресурса для получения текстового описания устанавливаемого значения.
 
 $METHODNAME$
 	UIChoice()
@@ -56,30 +58,77 @@ $ENDMETHOD$
 $METHODNAME$
 	setValue()
 $SUMMARY$
-	Set text and id for selected element.
+	Set id for selected element.
 $LANG_RU$
-	Установить текст и идентификатор выбранного элемента.
+	Установить идентификатор выбранного элемента.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
-	<value>		- Array. {<text>,<id>}.
+	<value>		- String. Value.
 $LANG_RU$
-	<value>		- Массив. {<текст>,<идентификатор>}.
+	<value>		- Строка. Значение идентификатора.
 $ENDMETHOD$
 
 $METHODNAME$
 	getValue()
 $SUMMARY$
-	Get text and id for selected element.
+	Get id for selected element.
 $LANG_RU$
-	Получить текст и идентификатор выбранного элемента.
+	Получить идентификатор выбранного элемента.
 $SYNTAX$
 	getValue()  --> <value>
 $RETURNS$
-	<value>		- Array. {<text>,<id>}.
+	<value>		- String. Value.
 $LANG_RU$
-	<value>		- Массив. {<текст>,<идентификатор>}.
+	<value>		- Строка. Значение идентификатора.
 $ENDMETHOD$
+
+$METHODNAME$
+	setText()
+$SUMMARY$
+	Set text description for selected element.
+$LANG_RU$
+	Установить текстовое описание выбранного элемента.
+$SYNTAX$
+	setText(<text>)
+$ARGUMENTS$
+	<text>		- String. Text description of selected element.
+$LANG_RU$
+	<text>		- Строка. Текстовое описание выбранного элемента.
+$ENDMETHOD$
+
+$METHODNAME$
+	getText()
+$SUMMARY$
+	Get text description for selected element.
+$LANG_RU$
+	Получить текстовое описание выбранного элемента.
+$SYNTAX$
+	getText()  --> <text>
+$RETURNS$
+	<text>		- String. Text description of selected element.
+$LANG_RU$
+	<text>		- Строка. Текстовое описание выбранного элемента.
+$ENDMETHOD$
+
+$METHODNAME$
+	setSource()
+$SUMMARY$
+	Set address of source to get text description for set value.
+$LANG_RU$
+	Установить адрес ресурса для получения текстового описания устанавливаемого значения.
+$SYNTAX$
+	setSource(<source>)
+$ARGUMENTS$
+	<source>	- String. Source address in form '[db:]class[:field]'. This address pass to 
+	function getAttributeValue(source,value) (if exists) for fill text description of set value.
+$LANG_RU$
+	<source>	- Строка. Адрес источника в виде: '[db:]class[:field]'. Этот адрес будет передан 
+	функции getAttributeValue(source,value) (если она есть) для заполнения строки показа 
+	текстового описания.
+$ENDMETHOD$
+
+
 $EXAMPLES$
 	choice := UIChoice({|| openForm("form.xfl") })
 
