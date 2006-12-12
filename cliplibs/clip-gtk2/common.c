@@ -96,6 +96,7 @@ _clip_locale_from_utf8(char *text)
 
 	locale_text = g_locale_from_utf8(text, strlen(text), &br, &bw, &ge);
 	len = strlen(locale_text);
+	
 	buf = (char *) malloc(len+1); buf[len] = 0;
 	_clip_translate_charset(WinCharset,ClipHostCharset,locale_text,buf,len);
 	g_free(locale_text);
@@ -105,7 +106,14 @@ _clip_locale_from_utf8(char *text)
 	GError *ge;
 	gchar *t_utf;
 
-	t_utf = g_locale_from_utf8(text, strlen(text), &br, &bw, &ge);
+	t_utf = g_convert_with_fallback(text, 
+									strlen(text), 
+									_clip_host_charset(),
+									"utf-8",
+									"?",
+									&br,
+									&bw,
+									&ge);
 	return t_utf;
 #endif
 }
