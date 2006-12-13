@@ -209,13 +209,27 @@ err:
 int
 clip_GTK_CELLRENDERERCOMBONEW(ClipMachine * cm)
 {
-	ClipVar *cv       = _clip_spar(cm,1);
-        C_object *ccell;
-        GtkCellRenderer *cell;
-
-	CHECKOPT(1,MAP_t);
+	ClipVar  *cv       = _clip_spar(cm, 1);
+	C_object *cmodel   = _fetch_cobject(cm, _clip_spar(cm, 2));
+	gint      column   = _clip_parni(cm, 3);
+	gboolean  contains = _clip_parl(cm, 4);
+	gboolean  editable = _clip_parl(cm, 5);
+	C_object *ccell;
+	GtkCellRenderer *cell;
+        
+	CHECKOPT(1, MAP_t);
+	CHECKOPT2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(cmodel, GTK_IS_TREE_MODEL(cmodel->object));
+	CHECKOPT(3, NUMERIC_t);
+	CHECKOPT(4,LOGICAL_t);
+	CHECKOPT(5,LOGICAL_t);
 
 	cell = gtk_cell_renderer_combo_new();
+	g_object_set (cell,
+				"model", GTK_TREE_MODEL(cmodel->object),
+				"text-column", column-1,
+                "has-entry", contains,
+                "editable", editable,
+                NULL);
 
 	if (cell)
 	{
