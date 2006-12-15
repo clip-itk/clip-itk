@@ -90,6 +90,7 @@ STATIC FUNCTION connCreateRowset(self,selectSQL,pars,insertSQL,deleteSQL,updateS
 	ors:idname     := idname
 	ors:orders     := orders
 	ors:curorder   := NIL
+	ors:rowset     := NIL
 
 	ors:selectSQL  := selectSQL
 	ors:insertSQL  := insertSQL
