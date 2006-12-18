@@ -159,7 +159,7 @@ return win
 static function ui_createWidget(self, tag, parent )
 	local o:=NIL, class, name, label, c, i, a, e, w, box, t:=tag
 	local add:=.F., gCol:=1, gRow:=1, gClass, rule, expanded:=.F.
-	local p_a, p_col, p_name, p_value
+	local p_a, p_col, p_name, p_value, p_block
 
 	class := t:attribute("class","")
 	name  := t:attribute("name","")
@@ -299,7 +299,12 @@ static function ui_createWidget(self, tag, parent )
 							case 'format'
 								o:format := p_value
 							case 'source'
-								o:source := p_value
+								if "," $ p_value
+									p_value := strtran(p_value, chr(10), "")
+									p_block := "{|| {"+p_value+"} }"
+									p_value := eval(&p_block)
+								endif
+								o:source := UISource(p_value)
 							case 'lookup'
 								o:lookup := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
 							case 'default'
@@ -335,7 +340,7 @@ static function ui_createWidget(self, tag, parent )
 			a := array(0)
 			for e in t:getChilds()
 				if e:getName() == "column"
-					aadd( a, UIEditTableColumn( e:attribute("name"), self:i18n(e:attribute("title","")), TABLE_COLUMN_TEXT)  )
+					aadd( a, UITableColumn( e:attribute("name"), self:i18n(e:attribute("title","")), TABLE_COLUMN_TEXT)  )
 				endif
 			next
 			
@@ -383,7 +388,12 @@ static function ui_createWidget(self, tag, parent )
 							case 'format'
 								o:format := p_value
 							case 'source'
-								o:source := p_value
+								if "," $ p_value
+									p_value := strtran(p_value, chr(10), "")
+									p_block := "{|| {"+p_value+"} }"
+									p_value := eval(&p_block)
+								endif
+								o:source := UISource(p_value)
 							case 'lookup'
 								o:lookup := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
 							case 'default'
@@ -436,7 +446,7 @@ static function ui_createWidget(self, tag, parent )
 			o := UICheckBox(,label)
 			add = .T.
 		case "COMBOBOX"
-			o := UIComboBox()
+			o := UIComboBox(label)
 			add = .T.
 		case "IMAGE"
 			o := UIImage( iif(isfunction("GETRESOURCE"), ;
@@ -501,7 +511,11 @@ static function ui_createWidget(self, tag, parent )
 				parent:addEnd( o )
 			endif
 		else
-			if class=="table" .or. o:className=="UISplitter" .or. o:className=="UIEditText" .or. expanded
+			if class=="table" ;
+					.or. o:className=="UISplitter" ;
+					.or. o:className=="UITabArea" ;
+					.or. o:className=="UIEditText" ;
+					.or. expanded
 				box:add( o, .T., .T. )
 			else
 				box:add( o, .F., iif(box:className=="UIButtonBar",.T.,.F.) )
@@ -595,20 +609,18 @@ static function ui_setProperty(self, tag, obj, value)
 			if .not. "SETPADDING" $ obj; return .F.; endif
 			obj:setPadding(val(value))
 		case "position"
-			if .not. "SETPLACEMENT" $ obj; return .F.; endif
-			if value == "center"
+			if "SETPLACEMENT" $ obj .and. value == "center"
 				obj:setPlacement( .T. )
+			elseif "SETPOSITION" $ obj
+				obj:setPosition(val(value))
+			else
+				return .F.
 			endif
 		case "readOnly"
 			if .not. "READONLY" $ obj; return .F.; endif
 			if value == "true"
 				obj:readOnly( .T. )
 			endif
-		case "values"
-			if .not. "SETLIST" $ obj; return .F.; endif
-			block := "{|| {"+value+"} }"
-			row := eval(&block)
-			obj:setList( row )
 		case "selection"
 			if obj:className != "UIComboBox"; return .F.; endif
 			obj:setValue( val(value) )
@@ -668,6 +680,11 @@ static function ui_setProperty(self, tag, obj, value)
 			obj:setStep(value)
 		case "source"
 			if .not. "SETSOURCE" $ obj; return .F.; endif
+			if "," $ value
+				value := strtran(value, chr(10), "")
+				block := "{|| {"+value+"} }"
+				value := eval(&block)
+			endif
 			obj:setSource(value)
 
 		otherwise

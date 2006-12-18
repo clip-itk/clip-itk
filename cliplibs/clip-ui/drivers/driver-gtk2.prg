@@ -134,7 +134,6 @@ function initGTK2Driver()
 	/* ComboBox*/
 	drv:createComboBox	:= @ui_createComboBox()
 	drv:setComboBoxList	:= @ui_setComboBoxList()
-	drv:setComboBoxValueInList := @ui_setComboBoxValueInList()
 
 	/* RadioGroup and RadioButton */
 	drv:createRadioGroup  := @ui_createRadioGroup()
@@ -1059,7 +1058,7 @@ return 0
 
 static function ui_createTable(self, columns)
 	local o, i, cc, store, model, renderer, c, frame, column, ic
-	local t, types:={}, x, searchColumn:=0
+	local t, types:={}, x, searchColumn:=0, addColumns:=0
 
 	frame := gtk_ScrolledWindowNew()
 	gtk_ScrolledWindowSetPolicy( frame, GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC )
@@ -1074,9 +1073,10 @@ static function ui_createTable(self, columns)
 			switch column:type
 				case TABLE_COLUMN_TEXT
 					t := TREE_TYPE_STRING
-				case TABLE_COLUMN_CHOICE 	// TODO
+				case TABLE_COLUMN_CHOICE
 					t := TREE_TYPE_STRING
-				case TABLE_COLUMN_COMBO 	// TODO
+					addColumns++
+				case TABLE_COLUMN_COMBO
 					t := TREE_TYPE_STRING
 				case TABLE_COLUMN_NUMBER
 					t := TREE_TYPE_NUMERIC_FLOAT
@@ -1084,7 +1084,7 @@ static function ui_createTable(self, columns)
 					t := TREE_TYPE_DATE
 				case TABLE_COLUMN_CHECK
 					t := TREE_TYPE_LOGICAL
-				case TABLE_COLUMN_COUNTER		// TODO
+				case TABLE_COLUMN_COUNTER
 					t := TREE_TYPE_NUMERIC
 				otherwise
 					t := TREE_TYPE_STRING
@@ -1096,7 +1096,16 @@ static function ui_createTable(self, columns)
 	next
 	aadd( types, TREE_TYPE_LOGICAL )
 	aadd( types, TREE_TYPE_NUMERIC_FLOAT )
-	store := gtk_ListStoreNew(, cc+2, types)
+	aadd( types, TREE_TYPE_STRING )
+	
+	// Create columns for choice cell text 
+	if addColumns > 0
+		for i:=1 to addColumns
+			aadd( types, TREE_TYPE_STRING )
+		next
+	endif
+	
+	store := gtk_ListStoreNew(, len(types), types)
 	if empty(store)
 		return NIL
 	endif
@@ -1110,6 +1119,7 @@ static function ui_createTable(self, columns)
 	o:store := store
 	o:model := model
 	
+	addColumns := cc + 3
 	// Append columns
 	for i:=1 to cc
 		column := columns[i]
@@ -1120,8 +1130,15 @@ static function ui_createTable(self, columns)
 			ic := gtk_TreeViewGetColumn(o, c)
 		else
 			renderer = gtk_CellRendererTextNew ()
-			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
-					"text", i)
+			if column:type == TABLE_COLUMN_CHOICE
+				addColumns++
+				columns[i]:__text := addColumns
+				c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
+						"text", addColumns)
+			else
+				c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
+						"text", i)
+			endif
 			ic := gtk_TreeViewGetColumn(o, c)
 			if .not. empty(column:format) .and. column:type == TABLE_COLUMN_NUMBER
 				gtk_TreeViewColumnSetFormat(ic, renderer, c, column:format)
@@ -1131,6 +1148,7 @@ static function ui_createTable(self, columns)
 			endif
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
+		gtk_TreeViewColumnSetExpand(ic, .T.)
 		columns[i]:__obj := ic
 	next
 	//	gtk_TreeViewSetExpanderColumn(o, NIL)
@@ -1139,38 +1157,40 @@ static function ui_createTable(self, columns)
 		gtk_TreeViewSetSearchColumn(o, searchColumn)
 	endif
 	o:columns := columns
+	o:columnId := cc+3
 	o:layout := frame
 return o
 
-static function ui_addTableRow(self, table, data)
+static function ui_addTableRow(self, table, data, id)
 	local row, i, item:=map()
 	row := gtk_ListStoreAppend(table:store)
+	//?? 'add table row:', data, chr(10)
 	for i:=1 to len( data )
-		gtk_ListStoreSetValue(table:store, row, i, data[i])
+		ui_setTableValue(table, row, i, data[i])
 	next
 	i := len(table:columns)
 	gtk_ListStoreSetValue(table:store, row, i+1, .T.)
 	gtk_ListStoreSetValue(table:store, row, i+2, 1.0)
-	
-	item:id := row
-return item
+	gtk_ListStoreSetValue(table:store, row, table:columnId, id)
+return row
 
 /* Set data for table row */
-static function ui_setTableRow(self, table, row, data)
+static function ui_setTableRow(self, table, row, data, id)
 	local i, c
 	if valtype(row) == 'N'
 		row := ltrim(str(row-1))
 	endif
 	if valtype(data) == 'A'
 		for i:=1 to len( data )
-			gtk_ListStoreSetValue(table:store, row, i, data[i])
+			ui_setTableValue(table, row, i, data[i])
 		next
 	elseif valtype(data) == 'O'
 		for i:=1 to len( table:columns )
 			c := upper(table:columns[i]:name)
-			gtk_ListStoreSetValue(table:store, row, i, data[c])
+			ui_setTableValue(table, row, i, data[c])
 		next
 	endif
+	gtk_ListStoreSetValue(table:store, row, table:columnId, id)
 return NIL
 
 /* Get data from table row as object */
@@ -1192,9 +1212,7 @@ static function ui_getTableRow(self, table, row)
 	cc := len( table:columns )
 	for i:=1 to cc
 		c := table:columns[i]:name
-		v := table:columns[i]:default
-		gtk_TreeModelGetFromPathString( gtk_TreeViewGetModel( table ), row, i, @v, -1 )
-		o[upper(c)] := v
+		o[upper(c)] := ui_getTableValue(table, row, i, v)
 	next
 return o
 
@@ -1217,8 +1235,8 @@ static function ui_clearTable(self, table)
 	gtk_ListStoreClear( table:store )
 return NIL
 
-static function ui_getTableSelection(self, table)
-	local s, iter, path, pathstr
+static function ui_getTableSelection(self, table, needId)
+	local s, iter, path, pathstr, v:=''
 	s := gtk_TreeViewGetSelection( table )
 	gtk_TreeSelectionGetSelected(s, NIL, @iter)
 	if iter == NIL
@@ -1226,6 +1244,10 @@ static function ui_getTableSelection(self, table)
 	endif
 	path := gtk_TreeModelGetPath(gtk_TreeViewGetModel( table ), iter)
 	pathstr := gtk_TreePathToString(path)
+	if valtype(needId) == 'L' .and. needId
+		gtk_TreeModelGetFromPathString( gtk_TreeViewGetModel( table ), pathstr, table:columnId, @v, -1 )
+		return v
+	endif
 return pathstr
 
 static function ui_setTableSelectAction( self, table, action )
@@ -1301,7 +1323,7 @@ static function ui_createLabel(self, defValue)
 	endif
 	o := gtk_LabelNew(, defValue, "&")
 	gtk_LabelSetJustify( o, GTK_JUSTIFY_LEFT)
-	gtk_MiscSetAlignment( o, 0, 0)
+	gtk_MiscSetAlignment( o, 0, 0.5)
 return o
 
 static function ui_setLabelText(self, label, text)
@@ -1335,23 +1357,17 @@ return NIL
 static function ui_createComboBox(self, values)
 	local o
 
-	o := gtk_ComboBoxNew()
-	o:edit := gtk_ComboBoxNewText( o )
-
-	self:setComboBoxList(o, values)
+	//o := gtk_ComboBoxEntryNewText() // Editable combobox
+	o := gtk_ComboBoxNewText()
+	gtk_ComboBoxSetFocusOnClick(o, .T.)
+	// self:setComboBoxList(o, values)
 return o
 
 static function ui_setComboBoxList(self, o, values)
 	local i, row
-	if valtype(values) == 'A'
-		for i in values
-			gtk_ComboBoxAppendText(o,i)
-		next
-	endif
-return o
-
-static function ui_setComboBoxValueInList(self, o, flag)
-//TIP:	in GTK2 you can select only list values
+	for i in values
+		gtk_ComboBoxAppendText(o,i[1])
+	next
 return o
 
 /** RadioGroup **/
@@ -1404,9 +1420,6 @@ static function ui_setValue(self, o, value, append)
 			endif
 
 		case "UIComboBox"
-			if valtype(value) == "C"
-				value := ascan( o:list, value )
-			endif
 			gtk_ComboBoxSetActive( o, value )
 
 		case "UICheckBox"
@@ -1519,11 +1532,6 @@ static function ui_getValue(self, o)
 
 		case "UIComboBox"
 			val := gtk_ComboBoxGetActive( o )
-			if val>0 .and. val<=len(o:list)
-				val := o:list[val]
-			else
-				val := NIL
-			endif
 
 		case "UICheckBox"
 			val := gtk_ToggleButtonGetActive( o )
@@ -1985,7 +1993,7 @@ return color
 static function ui_createEditTable(self, columns)
 	local o, i, j, cc, store, model, renderer, c, frame, column, ic
 	local t, types:={}, x, searchColumn:=0
-	//local listArray, listTypes, listLen, listModel, iter
+	local listArray, listStore, listModel, iter, addColumns:=0
 
 	frame := gtk_ScrolledWindowNew()
 	gtk_ScrolledWindowSetPolicy( frame, GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC )
@@ -1999,9 +2007,10 @@ static function ui_createEditTable(self, columns)
 		switch column:type
 			case TABLE_COLUMN_TEXT
 				t := TREE_TYPE_STRING
-			case TABLE_COLUMN_CHOICE 	// TODO
+			case TABLE_COLUMN_CHOICE
 				t := TREE_TYPE_STRING
-				case TABLE_COLUMN_COMBO 	// TODO
+				addColumns++
+			case TABLE_COLUMN_COMBO
 					t := TREE_TYPE_STRING
 			case TABLE_COLUMN_NUMBER
 				t := TREE_TYPE_NUMERIC_FLOAT
@@ -2009,16 +2018,27 @@ static function ui_createEditTable(self, columns)
 				t := TREE_TYPE_DATE
 			case TABLE_COLUMN_CHECK
 				t := TREE_TYPE_LOGICAL
-			case TABLE_COLUMN_COUNTER		// TODO
+			case TABLE_COLUMN_COUNTER
 				t := TREE_TYPE_NUMERIC
 			otherwise
 				t := TREE_TYPE_STRING
 		endswitch
 		aadd( types, t )
+		if empty(column:editable)
+			column:editable := .T.
+		endif
 	next
 	aadd( types, TREE_TYPE_LOGICAL )
 	aadd( types, TREE_TYPE_NUMERIC_FLOAT )
-	store := gtk_ListStoreNew(, cc+2, types)
+	
+	// Create columns for choice cell text 
+	if addColumns > 0
+		for i:=1 to addColumns
+			aadd( types, TREE_TYPE_STRING )
+		next
+	endif
+	
+	store := gtk_ListStoreNew(, len(types), types)
 	if empty(store)
 		return NIL
 	endif
@@ -2031,11 +2051,15 @@ static function ui_createEditTable(self, columns)
 	gtk_TreeSelectionSetMode(gtk_TreeViewGetSelection(o), GTK_SELECTION_SINGLE)
 	o:store := store
 	o:model := model
-
+	
+	addColumns := cc + 2
 	// Append columns
 	for i:=1 to cc
+		
 		column := columns[i]
+		
 		if column:type == TABLE_COLUMN_CHECK
+			
 			renderer = gtk_CellRendererToggleNew()
 			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
 					"active", i)
@@ -2044,38 +2068,50 @@ static function ui_createEditTable(self, columns)
 				gtk_TreeViewColumnSetAttributes(ic, renderer, "activatable", cc+1, "active", i)
 				gtk_SignalConnect(renderer, "toggled", {|w, e| ui_EditTableToggled(self, w, e, o)})
 			endif
-/*		elseif column:type == TABLE_COLUMN_COMBO .or. column:type == TABLE_COLUMN_CHOICE
-			renderer = gtk_CellRendererComboNew()
+		
+		elseif column:type == TABLE_COLUMN_CHOICE
+			addColumns++
+			renderer = gtk_CellRendererTextNew()
 			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
-					"active", i)
+					"text", addColumns)
 			ic := gtk_TreeViewGetColumn(o, c)
+			if column:editable
+				gtk_TreeViewColumnSetAttributes(ic, renderer, "text", addColumns, "editable", cc+1)
+				gtk_SignalConnect(renderer, "edited",           {|w, e| ui_EditTableEdited(self, w, e, o)})
+				gtk_SignalConnect(renderer, "editing-started",  {|w, e| ui_EditTableStartEdit(self, w, e, o)})
+				gtk_SignalConnect(renderer, "editing-canceled", {|w, e| ui_EditTableEndEdit(self, w, e, o)})
+			endif
+			columns[i]:__text := addColumns
+                                             		
+		elseif column:type == TABLE_COLUMN_COMBO
 			
 			// Fill combobox
-			listArray := {"one", "two"} // TODO: get from column property
-			listLen := 1
-			listTypes := array(listLen)
-			for j:=1 to listLen
-				listTypes[j] := TREE_TYPE_STRING
-			next
-			listModel := gtk_ListStoreNew(, listLen, listTypes)
-			?? "fill combo...&\n"
+			if valtype(column:source) != 'O'
+				listArray := array(0)
+			else
+				listArray := column:source:getList()
+			endif
+			listStore := gtk_ListStoreNew(, 2, TREE_TYPE_STRING, TREE_TYPE_STRING)
+			//?? 'source:', listArray, column:source, chr(10)
 			for j:=1 to len(listArray)
-				iter := ''
-				gtk_ListStoreAppend(listModel)
-				?? 'add combo value:', ltrim(str(j-1)), 1, listArray[j], chr(10)
-				gtk_ListStoreSet(listModel, ltrim(str(j-1)), 1, listArray[j])
+				iter := gtk_ListStoreAppend(listStore)
+				gtk_ListStoreSet(listStore, iter, 1, listArray[j][1])
+				gtk_ListStoreSet(listStore, iter, 2, listArray[j][2])
 			next
-			
-			?? "set attribute...&\n"
-			gtk_TreeViewColumnAddAttribute(ic, renderer, "model", listModel)
-			gtk_TreeViewColumnAddAttribute(ic, renderer, "text-column", 0)
-			gtk_TreeViewColumnAddAttribute(ic, renderer, "has-entry", 0)
+			listModel := gtk_TreeModel(listStore)
+			columns[i]:__model := listModel
+						
+			// Create renderer
+			renderer = gtk_CellRendererComboNew(, listModel, 1, .F., column:editable)
+			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
+					"text", i)
+			ic := gtk_TreeViewGetColumn(o, c)
 			if column:editable
 				gtk_SignalConnect(renderer, "edited", {|w, e| ui_EditTableEdited(self, w, e, o)})
-				gtk_TreeViewColumnAddAttribute(ic, renderer, "editable", 1)
 			endif
-*/
+			
 		else
+			
 			renderer = gtk_CellRendererTextNew()
 			c := gtk_TreeViewInsertColumnWithAttributes(o, -1, column:caption, renderer, ;
 					"text", i)
@@ -2088,16 +2124,16 @@ static function ui_createEditTable(self, columns)
 				gtk_SignalConnect(renderer, "edited", {|w, e| ui_EditTableEdited(self, w, e, o)})
 			endif
 			if column:type == TABLE_COLUMN_NUMBER .or. column:type == TABLE_COLUMN_COUNTER
-				//gtk_TreeViewColumnSetAlignment(ic, 1.0)
 				if column:editable .and. column:type != TABLE_COLUMN_COUNTER
 					gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "xalign", cc+2, "editable", cc+1)
 				else
 					gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "xalign", cc+2)
 				endif
 			endif
+			
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
-		//gtk_TreeViewColumnSetSizing(ic, CLIP_GTK_TREE_VIEW_COLUMN_AUTOSIZE)
+		gtk_TreeViewColumnSetExpand(ic, .T.)
 		columns[i]:__obj := ic
 	next
 	//gtk_TreeViewSetExpanderColumn(o, gtk_TreeViewGetColumn(o, 2))
@@ -2142,21 +2178,36 @@ static function ui_EditTableKeyboardHandler(self, w, e, o)
 	endswitch
 return .F. 
 
+/* Slots for edit choice cell */
+static function ui_EditTableStartEdit(self, wid, ev, o)
+	?? 'start edit:', ev, chr(10)
+return .F.
+
+static function ui_EditTableEndEdit(self, wid, ev, o)
+	?? 'stop edit:', ev, chr(10)
+return .F.
+
 /* Edit text cell slot */
 static function ui_EditTableEdited(self, wid, ev, o)
-	local row, column, oldValue
+	local row, column, oldValue, c
 	
 	//row := self:getEditTableSelectedRow(o)
 	row := 1+val(ev:PATHSTRING)
 	column := self:getEditTableSelectedColumn(o)
-	oldValue := self:getEditTableField(o, column, row)
-	//?? "EditTableEdited():", row, column, ev:NEWTEXT, 'old:', oldValue, chr(10)
+	c := o:columns[column]
 	
-	gtk_ListStoreSetValue(GTK_TREEMODEL(o:model), ltrim(str(row-1)), column, ev:NEWTEXT)
+	//?? "EditTableEdited():", row, column, ev, chr(10)
+	oldValue := self:getEditTableField(o, column, row)
+	
+	if c:type == TABLE_COLUMN_COMBO
+		gtk_ListStoreSetValue(GTK_TREEMODEL(o:model), ltrim(str(row-1)), column, ev:NEWTEXT)
+	else
+		ui_setTableValue(o, ltrim(str(row-1)), column, ev:NEWTEXT)
+	endif
 	
 	if 'ONCHANGED' $ o
 		if eval( o:onChanged, o, column, row, oldValue )
-			gtk_ListStoreSetValue(GTK_TREEMODEL(o:model), ltrim(str(row-1)), column, oldValue)
+			ui_setTableValue(o, ltrim(str(row-1)), column, oldValue)
 			return .T.
 		endif
 	endif
@@ -2198,6 +2249,37 @@ static function ui_addEditTableRow(self, table, data)
 	gtk_ListStoreSetValue(table:store, row, i+2, 1.0)
 return row
 
+/* Wrappers for combobox and choice cell values */
+static function ui_setTableValue(table, row, column, value)
+	local c
+	c := table:columns[column]
+	
+	if c:type == TABLE_COLUMN_COMBO .and. valtype(c:source) == 'O'
+		value := c:source:getText(value)
+	endif
+	
+	//?? 'set value:', row, column, value, chr(10)
+	gtk_ListStoreSetValue(table:store, row, column, value)
+
+	if c:type == TABLE_COLUMN_CHOICE .and. valtype(c:source) == 'O' .and. "__TEXT" $ c
+		gtk_ListStoreSetValue(table:store, row, c:__text, c:source:getText(value))
+	endif
+	
+return value
+
+static function ui_getTableValue(table, row, column, value)
+	local c, v
+	c := table:columns[column]
+	v := c:default	
+	
+	gtk_TreeModelGetFromPathString( gtk_TreeViewGetModel( table ), row, column, @value, -1 )
+	
+	if c:type == TABLE_COLUMN_COMBO .and. valtype(c:source) == 'O'
+		value := c:source:getValueByText(value)
+	endif
+	
+return value
+
 /* Set data for editable table row */
 static function ui_setEditTableRow(self, table, row, data)
 	local i, c
@@ -2207,21 +2289,21 @@ static function ui_setEditTableRow(self, table, row, data)
 	if valtype(data) == 'A'
 		for i:=1 to len( data )
 			if table:columns[i]:type != TABLE_COLUMN_COUNTER
-				gtk_ListStoreSetValue(table:store, row, i, data[i])
+				ui_setTableValue(table, row, i, data[i])
 			endif
 		next
 	elseif valtype(data) == 'O'
 		for i:=1 to len( table:columns )
 			c := upper(table:columns[i]:name)
 			if table:columns[i]:type != TABLE_COLUMN_COUNTER
-				gtk_ListStoreSetValue(table:store, row, i, data[c])
+				ui_setTableValue(table, row, i, data[c])
 			endif
 		next
 	else
 		for i:=1 to len( table:columns )
 			c := table:columns[i]:default
 			if table:columns[i]:type != TABLE_COLUMN_COUNTER
-				gtk_ListStoreSetValue(table:store, row, i, c)
+				ui_setTableValue(table, row, i, c)
 			endif
 		next
 	endif
@@ -2250,8 +2332,7 @@ static function ui_getEditTableRow(self, table, row)
 	cc := len( table:columns )
 	for i:=1 to cc
 		c := table:columns[i]:name
-		v := table:columns[i]:default
-		gtk_TreeModelGetFromPathString( gtk_TreeViewGetModel( table ), row, i, @v, -1 )
+		v := ui_getTableValue(table, row, i, v)
 		o[upper(c)] := v
 	next
 return o
@@ -2271,11 +2352,8 @@ static function ui_removeEditTableRow(self, table, row)
 		gtk_ListStoreRemove(table:store, row)
 		// Refresh count
 		for r:=num to total-1
-			//?? 'removing', r, 'from', total, chr(10)
 			for i:=1 to len(table:columns)
-				//?? table:columns[i]:type, ''
 				if table:columns[i]:type == TABLE_COLUMN_COUNTER
-				//?? 'removed',ltrim(str(r-1)), i, r,chr(10)
 					gtk_ListStoreSetValue(GTK_TREEMODEL(table:model), ltrim(str(r-1)), i, r)
 				endif
 			next
@@ -2326,12 +2404,12 @@ static function ui_setEditTableField(self, table, column, row, value)
 		endif
 	endif
 	if table:columns[column]:type != TABLE_COLUMN_COUNTER
-		gtk_ListStoreSetValue(table:store, row, column, value)
+		ui_setTableValue(table, row, column, value)
 	endif
 return NIL
 
 static function ui_getEditTableField(self, table, column, row)
-	local o:=array(0), i, v:='', c, cc, r:=''
+	local o:=array(0), i, c, cc, r:='', v:=''
 	
 	// Normalize row
 	if valtype(row) == 'N'
@@ -2359,17 +2437,13 @@ static function ui_getEditTableField(self, table, column, row)
 	endif
 	if valtype(column) == 'N'
 		// Get single value
-		v := table:columns[column]:default
-		gtk_TreeModelGetFromPathString( gtk_TreeViewGetModel( table ), row, column, @v, -1 )
-		return v
+		return ui_getTableValue(table, row, column, v)
 	else
 		// Get row as array
 		cc := len( table:columns )
 		for i:=1 to cc
 			c := table:columns[i]:name
-			v := table:columns[i]:default
-			gtk_TreeModelGetFromPathString( gtk_TreeViewGetModel( table ), row, i, @v, -1 )
-			aadd(o, v)
+			aadd(o, ui_getTableValue(table, row, i, v))
 		next
 		return o
 	endif

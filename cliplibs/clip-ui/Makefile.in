@@ -22,8 +22,8 @@ RTARGET = libclip-ui$(DLLREALSUFF)
 
 OBJS    = button.o checkbox.o choice.o color.o combobox.o edit.o \
 		  edittable.o font.o form.o frame.o grid.o image.o label.o \
-		  layout.o menu.o progressbar.o radiobutton.o slider.o table.o \
-		  timer.o toolbar.o tree.o utils.o window.o workspace.o
+		  layout.o menu.o progressbar.o radiobutton.o slider.o source.o \
+		  table.o timer.o toolbar.o tree.o utils.o window.o workspace.o
 
 .PHONY: all clean uninstall distclean
 

@@ -2,14 +2,24 @@
 TODO
 ====
 
-Last change: 11 Dec 2006
+Last change: 18 Dec 2006
 
 MAIN
 ----
- - i18n support
- - support for choice and combo cell in UIEditTable
+ + id support in UICombobox
+ - i18n support for clip-ui
+ - support for choice cell in UIEditTable
+ + need test UIChoice for test_ui
+ + rename: test_ui -> uitest, form_ui -> uiform
+ + bug: in form comboboxes are not filled by text and don't contain list
+ + bug: default value does not show in UIChoice field
+ - context in open form
+ 	1) for cell addres of choice cell in UIEditTable
+ 	2) for UIChoice (focus to selected item)
+ - UITree: store id in the model
  - set/get/remove rows for UITree
- - different column types and lookup for UITree
+ - different column types and lookup by type for UITree
+ 
 
 CLIP-UI
 -------
@@ -21,11 +31,11 @@ CLIP-UI
    + UITab
  - DnD methods for UITable/UITree
  - Deletion of widget from comtainers
- - Disallow editing in UIComboBox field
- - Using ID in UIComboBox
- - gtk_ScrolledWindowNew() make child widget too small
+ + Disallow editing in UIComboBox field
+ + Using ID in UIComboBox
+ + gtk_ScrolledWindowNew() make child widget too small
  - sent command line parameters to gtk_Init()
- - Default selection needed for UIComboBox in forms
+ + Default selection needed for UIComboBox in forms
  - icons for UIChildWindow
  - wrong setFocus() behaviour for widgets in UIChildWindow/UIDocument
  - UIEditDate should display calendar in popup window
@@ -34,7 +44,9 @@ CLIP-UI
  - calendar for UIDateEdit should be placed in popup window with buttons 'select' and 'close'
  - actions for UITable and UIEditTable (toolbar and keyboard shortcut) 
  - Restore position for UITree expands collapsed branches
+ 
  - select from list open from UIChoice with exist value
+ - separate global function for message boxes
  
 FORM
 ----
@@ -43,9 +55,11 @@ FORM
 
 GTK
 ---
- - Input numero sign and typographic quotes in locale 'ru_RU.KOI8-R'
+ + Input numero sign and typographic quotes in locale 'ru_RU.KOI8-R'
  + unscrollable position of column header (GTK/GTK2)
  - Support to lookup on each column in UITable
+ - indent of menu items with icons (see gtk_ImageMenuItemNewWithMnemonic() )
+ - specialized widget for choose color and file name
  
 Documentation
 -------------

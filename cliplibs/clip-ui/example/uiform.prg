@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*									   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
-/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
-/*   									   */
+/*   This is a part of CLIP-UI library                                     */
+/*                                                                         */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
+/*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -11,12 +11,12 @@
 /*-------------------------------------------------------------------------*/
 #include <clip-ui.ch>
 
-#define PRGVERSION	"0.1.2.4"
+#define PRGVERSION	"0.1.3"
 
 static ws, win
-static vals := { { '1', 'Alan' }, ;
-				 { '2', 'John' }, ;
-				 { '3', 'Mary' } ; 
+static vals := { { 'Alan', '1' }, ;
+				 { 'John', '2' }, ;
+				 { 'Mary', '3' } ; 
 			   }
 
 
@@ -42,7 +42,7 @@ function main()
 
 	// Get fileName from parameters
 	if len(params) == 0
-		?? "Usage: ./form_ui [--driver=<DRIVER>] <form.xfl>&\n"
+		?? "Usage: ./uiform [--driver=<DRIVER>] <form.xfl>&\n"
 		CANCEL
 	else
 		fileName := params[1]
@@ -94,12 +94,16 @@ function showValues()
 	next
 return
 
-function getAttributeValue(id, path)
+function getAttributeValue(path, id)
 	local v:='', i
 	if path == 'names'
-		i := ascan(vals, {|e| e[1] == id })
-		if i > 0
-			return vals[i][2]
+		if empty(id)
+			return vals
+		else
+			i := ascan(vals, {|e| e[2] == val2str(id) })
+			if i > 0
+				return vals[i][1]
+			endif
 		endif
 	endif
 return v

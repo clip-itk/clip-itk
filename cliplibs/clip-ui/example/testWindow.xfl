@@ -50,8 +50,10 @@
             </widget>
 		<widget class="tabarea">
 		<widget class="tab" label="Basic widgets">
-	    <widget name=".vs+" class="vsplitter">
-		    <widget name=".hs+" class="hsplitter">
+	    <widget class="vsplitter">
+			<property name="position" value="210" />
+		    <widget class="hsplitter">
+			<property name="position" value="150" />
 			<widget class="tree" >
 				<column name="n1" title="N1"/>
 				<column name="n2" title="N2"/>
@@ -73,7 +75,7 @@
 				<property name="payee.type" value="text" /> 
 				<property name="payee.lookup" value="yes" /> 
 				<property name="sum.type" value="number" /> 
-				<property name="sum.format" value="%'.f" /> 
+				<property name="sum.format" value="%'.2f" /> 
 				<property name="row" element="1" value="'20.10.03','Lighthouse',20000.00" />
 				<property name="row" element="2" value="'20.10.03','Phoenix',5689.20" />
 				<property name="row" element="3" value="'21.10.03','Turbo',1500.00" />
@@ -113,28 +115,34 @@
 					<property name="geometry.width" value="70" />
 					<property name="value" value="20.10.03" />
 				</widget>
-				<widget class="label" label="Person:" />
-				<widget name="person" class="choice" label="">
-					<property name="value" value="" />
-					<property name="source" value="names" />
-				</widget>
+			</widget>
+			<widget class="label" label="Person:" />
+			<widget name="person" class="choice" label="">
+				<property name="source" value="names" />
+				<property name="value" value="3" />
 			</widget>
 			
-			<widget name="color" class="editcolor" label="">
-		    		<property name="value" value="#91FF40" />
-			</widget>
-			<widget name="file" class="editfilename" label="">
-		    		<property name="value" value="testWindow.xfl" />
+			<widget class="hbox">
+				<property name="spacing" value="3" />
+				<widget class="label" label="Color:" />
+				<widget name="color" class="editcolor" label="">
+						<property name="geometry.width" value="70" />
+						<property name="value" value="#91FF40" />
+				</widget>
+				<widget class="label" label="File:" />
+				<widget name="file" class="editfilename" label="">
+						<property name="value" value="testWindow.xfl" />
+				</widget>
 			</widget>
 			
 			<!-- Payer -->
 			<widget class="frame" label="Payer">
-				<property name="color.bg" value="darkblue" />
+				<property name="color.bg" value="green" />
 				<property name="type" value="raised" />
 				<widget class="vbox">
 					<property name="padding" value="3" />
-					<widget class="combobox" name="payer">
-						<property name="values" value="'JSC &quot;Brown and son&quot;'" />
+					<widget class="combobox" name="payer" label="names">
+						<property name="value" value="2" />
 					</widget>
 				</widget>
 			</widget>
@@ -145,8 +153,11 @@
 				<widget class="vbox">
 					<property name="padding" value="3" />
 					<widget class="combobox" name="payee">
-						<property name="values" value="'JSC &quot;Lighthouse&quot;','JSC &quot;Ronal&quot;','JSC &quot;Porechnoye&quot;'" />
-						<property name="selection" value="2" />
+						<property name="source" value="
+								  { 'JSC &quot;Lighthouse&quot;', 'id_light' },
+								  { 'JSC &quot;Ronal&quot;', 'id_ronal' },
+								  { 'JSC &quot;Porechnoye&quot;', 'id_por' }" />
+						<property name="value" value="id_por" />
 					</widget>
 				</widget>
 			</widget>
@@ -195,19 +206,21 @@
 				<property name="name.type" 		value="choice" />
 				<property name="name.lookup" 	value="true" />
 				<property name="unit.type" 		value="combobox" />
-				<property name="unit.default" 	value="bottle" />
+				<property name="unit.default" 	value="1" />
+				<property name="unit.source" 	value='"barrel", "pint"' />
 				<property name="date.type" 		value="date" />
 				<property name="date.editable" 	value="false" />
 				<property name="qty.type" 		value="number" /> 
+				<property name="qty.format"		value="%.0f" />
 				<property name="price.type" 	value="number" /> 
 				<property name="sum.type" 		value="number" /> 
 				<property name="sum.format" 	value="%'.2f" /> 
 				<property name="vat.type" 		value="boolean" /> 
 				<property name="other.type" 	value="text" /> 
 				
-				<property name="row" element="1" value="1,'Vodka','bottle','20.10.03',5,5.1,0,.T.,''" />
-				<property name="row" element="2" value="2,'Beer','pint','20.10.03',15,2.5,0,.F.,'Cold and tasty'" />
-				<property name="row" element="3" value="3,'Milk','bottle','20.10.03',15,2.3,0,.T.,''" />
+				<property name="row" element="1" value="1,'Vodka','1','20.10.03',5,5.1,0,.T.,''" />
+				<property name="row" element="2" value="2,'Beer','2','20.10.03',15,2.5,0,.F.,'Cold and tasty'" />
+				<property name="row" element="3" value="3,'Milk','1','20.10.03',15,2.3,0,.T.,''" />
 			</widget>
 	    </widget>
 	    </widget>

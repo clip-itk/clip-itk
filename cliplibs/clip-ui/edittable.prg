@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library                                     */
 /*                                                                         */
-/*   Copyright (C) 2003,2004 by E/AS Software Foundation                   */
+/*   Copyright (C) 2006 by E/AS Software Foundation                        */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -16,6 +16,7 @@
 /* Tests:
 	- create table with columns: 
 		- choice
+		- id from combobox column
    
    BUGS:
 	- unable to get value from first column if it is number
@@ -27,30 +28,6 @@
 */
 
 static driver := getDriver()
-
-/* EditTable column class */
-function UIEditTableColumn(name, caption, type)
-	local obj	:= map()
-	obj:name 	:= name
-	obj:caption := caption
-	obj:type 	:= type
-	obj:editable := .T.
-	obj:format  := ''
-	obj:source	:= ''
-	obj:lookup	:= .F.
-	switch type
-		case TABLE_COLUMN_NUMBER
-			obj:default	:= 0
-			obj:format := "%'.2f"
-		case TABLE_COLUMN_COUNTER
-			obj:default	:= 0
-			obj:format := "%.0f"
-		case TABLE_COLUMN_CHECK
-			obj:default	:= .F.
-		otherwise
-			obj:default	:= ''
-	endswitch			
-return obj
 
 /* EditTable class */
 function UIEditTable(columns)

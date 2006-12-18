@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*									   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 		   */
-/*   Authors: 								   */
-/*  	     Andrey Cherepanov <skull@eas.lrn.ru>			   */
+/*   This is a part of CLIP-UI library                                     */
+/*                                                                         */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
+/*   Authors:                                                              */
+/*               Andrey Cherepanov <skull@eas.lrn.ru>                      */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
-/*   									   */
+/*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -481,12 +481,8 @@ static function ui_select(self, table, column)
 		act := self:returnAction
 		obj := mapget(self:value, table, NIL)
 		//?? valtype(obj), "GETSELECTIONID" $ obj , "GETSELECTIONFIELD" $ obj, chr(10)
-		if .not. empty(obj) .and. "GETSELECTIONID" $ obj .and. "GETSELECTIONFIELD" $ obj
-			if empty(column)
-				val := obj:getSelectionId()
-			else
-				val := obj:getSelectionField(column)
-			endif
+		if .not. empty(obj) .and. "GETSELECTIONID" $ obj
+			val := obj:getSelectionId()
 		endif
 		//?? "RETURNED:", val,chr(10)
 		eval(act, val)

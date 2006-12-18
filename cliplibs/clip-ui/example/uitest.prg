@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library                                     */
 /*                                                                         */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation                   */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -18,6 +18,10 @@ static ws
 static wnd := NIL, ww1, ww2, ww3
 static childToolbar
 static timer, tbState, iteration
+static vals := { { 'Alan', 'P1' }, ;
+				 { 'John', 'P2' }, ;
+				 { 'Mary', 'P3' } ; 
+			   }
 
 /* Declaration */
 local menu, i, sp, b, cff
@@ -127,10 +131,10 @@ win:setPlacement( .T. )
 // Set size to 600x450
 win:setGeometry( { 600, 550, 35, 15 } )
 //-----------------------------------------------------------------------------
-
+?? "show&\n"
 /* show window */
 win:show()
-
+?? "start&\n"
 /* run infinitive application loop */
 ws:run()
 ws:quit()
@@ -180,10 +184,12 @@ static function BankRefReq( sp )
 	tc := array(0)
 	aadd(tc, UITableColumn('num',  '#', TABLE_COLUMN_NUMBER))
 	aadd(tc, UITableColumn('date', 'Date', TABLE_COLUMN_DATE))
-	aadd(tc, UITableColumn('name', 'Payee', TABLE_COLUMN_TEXT))
+	aadd(tc, UITableColumn('name', 'Payee', TABLE_COLUMN_CHOICE))
 	aadd(tc, UITableColumn('sum',  'Sum', TABLE_COLUMN_NUMBER))	
-	tc[1]:format = "%.0f"
+	tc[1]:format := "%.0f"
+	tc[3]:source := UISource( "names" ) 	
 	tc[3]:lookup := .T.
+	tc[4]:format := "%'.2f"
 
 	table := UITable(tc)
 
@@ -191,7 +197,7 @@ static function BankRefReq( sp )
 	updateTable(tree, table)
 	node66 := tree:addNode({"Parent_Last"})
 	node67 := tree:addNode({"Last Leaf"},, node66)
-	table:addRow({8,date(),'Last: JSC "Phoenix"',99.00})
+	table:addRow({8,date(),'P3',99.00})
 
 	vb := UIVbox()
 	table:setAction("selected",{|w,e| listEvent(table, e) })
@@ -232,13 +238,13 @@ function updateTable(tree, table)
 	pos := table:savePosition()
 	?? "Table pos:", pos, chr(10)
 	table:clear()
-	table:addRow({1,"20.10.03",'JSC "Lighthouse"',20000.00},"DB0101000588")
-	table:addRow({2,"20.10.03",'JSC "Phoenix"',5689.20})
-	table:addRow({3,"21.10.03",'JSC "Phoenix"',1500.00})
-	table:addRow({4,"25.10.03",'JSC "Phoenix"',99.00})
-	table:addRow({5,"20.10.03",'JSC "Lighthouse"',20000.00},"DB0101000589")
-	table:addRow({6,"20.10.03",'JSC "Phoenix"',5689.20})
-	table:addRow({7,"21.10.03",'JSC "Phoenix"',1500.00})
+	table:addRow({1,"20.10.03",'P1',20000.00},"DB0101000588")
+	table:addRow({2,"20.10.03",'P3',5689.20})
+	table:addRow({3,"21.10.03",'P2',1500.00})
+	table:addRow({4,"25.10.03",'P2',99.00})
+	table:addRow({5,"20.10.03",'P3',20000.00},"DB0101000589")
+	table:addRow({6,"20.10.03",'P1',5689.20})
+	table:addRow({7,"21.10.03",'P1',1500.00})
 	table:restorePosition( pos )
 return
 
@@ -336,9 +342,10 @@ static function BankDocReq(w,grid)
 	
 	drv:setStyle(f1,"color.bg","green")
 	
-	cb1 := UIComboBox({'JSC "Brown and son"'},1)
+	cb1 := UIChoice(NIL, "names", "P3")
 	w:setName("payer", cb1)
-	t1:add(cb1)
+	t1:add(cb1, .T., .T.)
+	cb1:setAction( "clicked", {|| ui_selectForm(cb1) } )
 
 	// Payee
 	f2 := UIFrame("Payee",FRAME_SUNKEN)
@@ -346,9 +353,8 @@ static function BankDocReq(w,grid)
 	t2 := UIVBox(,,3)
 	f2:add( t2 )
 	cb2 := UIComboBox()
-	cb2:setList({'JSC "Lighthouse"','JSC "Ronal"','JSC "Porechnoye"'})
+	cb2:setSource({'JSC "Lighthouse"','JSC "Ronal"','JSC "Porechnoye"'})
 	cb2:setValue(2)
-	cb2:setValueInList(.T.)
 	w:setName("payee", cb2)
 	t2:add(cb2)
 
@@ -384,6 +390,11 @@ static function BankDocReq(w,grid)
 	bottomLine:add(b2)
 	bottomLine:add(b3)
 
+return NIL
+
+/* Handle function for UIChoice field */
+static function ui_selectForm(widget)
+	widget:setValue("P1") // Set 'Alan' as value
 return NIL
 
 /* Close specified window */
@@ -473,34 +484,36 @@ static function EditTableWidget( w )
 	local table, columns:={}, c, b, tA, t1, t2, t3
 	
 	//? 'create columns'
-	aadd( columns, UIEditTableColumn( 'num', 	'#', 		TABLE_COLUMN_COUNTER ) )
-	aadd( columns, UIEditTableColumn( 'name', 	'Name', 	TABLE_COLUMN_CHOICE ) )
-	aadd( columns, UIEditTableColumn( 'unit', 	'Units', 	TABLE_COLUMN_COMBO ) )
-	c := UIEditTableColumn( 'date',	'Date', TABLE_COLUMN_DATE)
+	aadd( columns, UITableColumn( 'num', 	'#', 		TABLE_COLUMN_COUNTER ) )
+	aadd( columns, UITableColumn( 'name', 	'Name', 	TABLE_COLUMN_CHOICE ) )
+	aadd( columns, UITableColumn( 'unit', 	'Units', 	TABLE_COLUMN_COMBO ) )
+	c := 		   UITableColumn( 'date',	'Date', 	TABLE_COLUMN_DATE)
 	c:editable := .F.
 	aadd( columns, c )
-	aadd( columns, UIEditTableColumn( 'qty', 	'Quantity', TABLE_COLUMN_NUMBER ) )
-	aadd( columns, UIEditTableColumn( 'price', 	'Price', 	TABLE_COLUMN_NUMBER ) )
-	aadd( columns, UIEditTableColumn( 'sum', 	'Sum', 		TABLE_COLUMN_NUMBER ) )
-	aadd( columns, UIEditTableColumn( 'vat', 	'VAT', 		TABLE_COLUMN_CHECK ) )
-	aadd( columns, UIEditTableColumn( 'other', 	'Comment',	TABLE_COLUMN_TEXT ) )
+	aadd( columns, UITableColumn( 'qty', 	'Quantity', TABLE_COLUMN_NUMBER ) )
+	aadd( columns, UITableColumn( 'price', 	'Price', 	TABLE_COLUMN_NUMBER ) )
+	aadd( columns, UITableColumn( 'sum', 	'Sum', 		TABLE_COLUMN_NUMBER ) )
+	aadd( columns, UITableColumn( 'vat', 	'VAT', 		TABLE_COLUMN_CHECK ) )
+	aadd( columns, UITableColumn( 'other', 	'Comment',	TABLE_COLUMN_TEXT ) )
 	
 	// Lookup at second columns
 	columns[2]:lookup := .T.
 	columns[3]:default := 'bottle'
 	columns[8]:default := .T.
 	columns[5]:format := "%.0f"
+	columns[2]:source := UISource( "names" )
+	columns[3]:source := UISource( { "barrel", "pint" } )
 	
 	//? 'create UIEditTable'
 	//w:setPadding( 3 )
 	table := UIEditTable( columns )
 	
 	//? 'add rows'
-	table:addRow( { 1, "Vodka",      "bottle", date(),  5, 5.1, 0, .T., '' } )
-	table:addRow( { 2, "Beer",       "pint", date(), 15, 2.5, 0, .F., 'Cold and tasty' } )
-	table:addRow( { 3, "Bad record", "",       date(),  0,   0, 0, .F., '' } )
-	table:setRow( 3, { 3, "Good record", "", date(),  1, 10.7, 0, .T., '' } )
-	table:addRow( { 4, "Milk",       "bottle", date(), 15, 2.3, 0, .T., '' } )
+	table:addRow( { 1, "P1",      "2", date(),  5, 5.1, 0, .T., '' } )
+	table:addRow( { 2, "P2",       "1", date(), 15, 2.5, 0, .F., 'Cold and tasty' } )
+	table:addRow( { 3, "P3", 1,       date(),  0,   0, 0, .F., '' } )
+	table:setRow( 3, { 3, "P1", 1, date(),  1, 10.7, 0, .T., '' } )
+	table:addRow( { 4, "P2",       1, date(), 15, 2.3, 0, .T., '' } )
 	
 	//? 'remove rows'
 	table:removeRow( 3 )
@@ -508,14 +521,14 @@ static function EditTableWidget( w )
 	table:setCursor( 2, 3 )
 	
 	//? 'set field value'
-	table:setField( 'unit', 2, 'barrel' )
-	table:setField( 1, 2, 5 )
+	table:setField( 'unit', 2, 2 )
+	table:setField( 5, 2, 8 )
 	?? 'num: ', table:getField('num', 2), ' '
 	?? 'price', table:getField('price', 2)
 	?? chr(10)
 	
 	//? 'set action'
-	table:setAction( 'changed', {|t,r,c,val| editTableChanged(t, r, c, val) })
+	table:setAction( 'changed', {|t,r,c,val| TableChanged(t, r, c, val) })
 	
 	//table:layout:setPadding( 3 )
 	w:add(table, .T., .T.)
@@ -536,7 +549,7 @@ static function EditTableWidget( w )
 return
 
 /* Slot for changed row */
-static function editTableChanged(table, column, row, oldValue)
+static function TableChanged(table, column, row, oldValue)
 	local p, q, s
 	p := table:getField('qty', row)
 	q := table:getField('price', row)
@@ -608,5 +621,16 @@ static function timerEvent(l)
 	l:setText(t)
 return
 
-function getAttributeValue(name)
-return ''
+function getAttributeValue(path, id)
+	local v:='', i
+	if path == 'names'
+		if empty(id)
+			return vals
+		else
+			i := ascan(vals, {|e| e[2] == val2str(id) })
+			if i > 0
+				return vals[i][1]
+			endif
+		endif
+	endif
+return v

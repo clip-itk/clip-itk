@@ -13,8 +13,8 @@
 static driver := getDriver()
 
 /* Choice class (edit box with button for choosing values) */
-function UIChoice( action, value, text )
-	local obj := UIEdit( text )
+function UIChoice( action, source, value )
+	local obj := UIEdit( '' )
 	obj:readOnly(.T.)
 	obj:className	:= "UIChoice" 
 	obj:button 		:= UIButton( "...", action, value )
@@ -22,6 +22,13 @@ function UIChoice( action, value, text )
 	obj:stick:right := obj:button
 	obj:source 		:= NIL
 	_recover_UICHOICE(obj)
+
+	if .not. empty(source)
+		obj:setSource( source )
+	endif
+	if .not. empty(value)
+		obj:setValue( value )
+	endif
 return obj
 
 function _recover_UICHOICE( obj )
@@ -43,12 +50,12 @@ return NIL
 
 /* Set source for automatic text retrieve on change value */
 static function ui_setSource(self, source)
-	self:source := source
+	self:source := UISource(source)
 return NIL
 
 /* Set text */
 static function ui_setText(self, value)
-	driver:setValue( self, val2str(value) )
+	driver:setValue( self, value )
 return NIL
 
 /* Get text */
@@ -58,13 +65,9 @@ return driver:getValue( self )
 /* Set value */
 static function ui_setValue(self, value)
 	self:button:setValue(value)
-	//?? 'set choice value:', value, self:source, isFunction("GETATTRIBUTEVALUE"), chr(10)
-	if valtype(self:source) != 'U' .and. isFunction("GETATTRIBUTEVALUE")
-		// getAttributeValue(<source>,<id>)
-		// <source> should has format: 'db:class:attribute'
-		// <id> is object id
-		//?? 'text:', getAttributeValue( self:source, value ), chr(10)
-		driver:setValue( self, getAttributeValue( self:source, value ) )
+	//?? 'set value:', value, self:source:getText(value),chr(10)
+	if .not. empty(value)
+		self:setText( self:source:getText(value) )
 	endif
 return NIL
 

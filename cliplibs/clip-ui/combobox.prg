@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
-/*   This is a part of CLIP-UI library					   */
-/*						                 	   */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation 	           */
-/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>			   */
-/*   									   */
+/*   This is a part of CLIP-UI library                                     */
+/*                                                                         */
+/*   Copyright (C) 2003-2005 by E/AS Software Foundation                   */
+/*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
+/*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
 /*   published by the Free Software Foundation; either version 2 of the    */
@@ -13,39 +13,50 @@
 static driver := getDriver()
 
 /* Combobox class */
-function UIComboBox( values, defaultItem, source )
-	local obj 	:= driver:createComboBox( values )
+
+/* NOTE: for Windows-like drop-down list add 
+	GtkComboBox::appears-as-list = 1
+	GtkButton::inner-border = { 0, 0, 0, 0 }
+	in used theme
+*/
+
+function UIComboBox( source, defaultItem )
+	local obj 		:= driver:createComboBox()
 	obj:className 	:= "UIComboBox"
-	obj:list	:= values
-	obj:source	:= source
+	obj:source		:= NIL
+	obj:value		:= defaultItem
 	_recover_UICOMBOBOX(obj)
+	
+	obj:setSource( source )
 	if .not. empty( defaultItem )
-		driver:setValue( obj, defaultItem )
+		obj:setValue( defaultItem )
 	endif
 return obj
 
 function _recover_UICOMBOBOX( obj )
-	obj:setList	:= @ui_setList()
-	obj:setValue	:= @ui_setValue()
-	obj:getValue	:= @ui_getValue()
-	obj:setValueInList := @ui_setValueInList()
+	obj:setSource	   := @ui_setSource()
+	obj:setValue	   := @ui_setValue()
+	obj:getValue	   := @ui_getValue()
 return obj
 
 /* Set list of strings */
-static function ui_setList(self, values)
-	self:list	:= values
-	driver:setComboBoxList( self, values )
+static function ui_setSource(self, source)
+	self:source := UISource(source)
+	driver:setComboBoxList( self, self:source:getList() )
+		
+	if .not. empty( self:value )
+		self:setValue( self:value )
+	endif
+
 return NIL
 
 /* Set value */
 static function ui_setValue(self, value)
-	driver:setValue( self, value )
+	self:value := value
+	driver:setValue( self, self:source:setValue(value) )
 return NIL
 
 /* Get value */
 static function ui_getValue(self)
-return driver:getValue( self )
+return self:source:getValue( driver:getValue( self ) )
 
-/* Value entered in the text entry field must match one of the values in the list */
-static function ui_setValueInList(self, flag)
-return driver:setComboBoxValueInList(self, flag)
