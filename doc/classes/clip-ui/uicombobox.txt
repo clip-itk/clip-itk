@@ -14,9 +14,9 @@ $LANG_RU$
 	UIComboBox([<values>],[<defaultItem>])	--> Объект UIComboBox
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIComboBox".
-	<list>		- List of values. Type: array of strings.
+	<source>	- List of values. Type: array of strings.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIComboBox".
+	<source>	- Имя класса. Значение: "UIComboBox".
 	<list>		- Список значений. Тип: массив строк.
 
 $METHODNAME$
@@ -26,60 +26,60 @@ $SUMMARY$
 $LANG_RU$
 	Конструктор.
 $SYNTAX$
-	UIComboBox([<values>],[<defaultItem>])
+	UIComboBox([<source>],[<defaultItem>])
 $ARGUMENTS$
-	<values>		- Array of strings. Array of strings as elements of value list.
-	<defaultItem>		- String|Number. Select value by default from list. Element may be defined by its content (parameter as string ) or by its serial number (numbering begins from 1).
+	<source>		- Type supported for <link linkend="classuisource">UISource</link> constructor. Source for drop-down list.
+	<defaultItem>	- String. Select list element by its id.
 $LANG_RU$
-	<values>		- Массив строк. Массив строк-элементов выпадающего списка.
-	<defaultItem>		- Строка|число. Выбрать элемент по умолчанию из массива элементов по строке или номеру в списке (нумерация начинается с 1).
+	<source>		- Тип, поддерживаемый конструктором класса <link linkend="classuisource">UISource</link>. Источник данных для списка.
+	<defaultItem>	- Строка. Выбрать элемент по его идентификатору.
 
 $METHODNAME$
-	setList()
+	setSource()
 $SUMMARY$
-	Fill list of values.
+	Set source for drop-down list.
 $LANG_RU$
-	Заполнить список значений элементами.
+	Установить источник данных для списка.
 $SYNTAX$
-	setList(<values>)
+	setSource(<source>)
 $ARGUMENTS$
-	<values>		- Array of strings. Array of strings as elements of combo box.
+	<source>		- Type supported for <link linkend="classuisource">UISource</link> constructor. Source for drop-down list.
 $LANG_RU$
-	<values>		- Массив строк. Массив строк-элементов выпадающего списка.
+	<source>		- Тип, поддерживаемый конструктором класса <link linkend="classuisource">UISource</link>. Источник данных для списка.
 $ENDMETHOD$
 
 $METHODNAME$
 	setValue()
 $SUMMARY$
-	Select element by default from list.
+	Select element by id.
 $LANG_RU$
-	Выбрать элемент по умолчанию из массива элементов.
+	Выбрать элемент по идентификатору.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
-	<value>		- String|Number. String as element of list or serial number of list element (numbering begins from 1).
+	<value>		- String. Id of list element.
 $LANG_RU$
-	<value>		- Строка|Число. Строка текста элемента или его номер в списке значений (нумерация начинается с 1).
+	<value>		- Строка. Идентификатор элемента списка.
 $ENDMETHOD$
 
 $METHODNAME$
 	getValue()
 $SUMMARY$
-	Get selected string from combo box.
+	Get id of selected string from combo box.
 $LANG_RU$
-	Вернуть выбранную строку из списка значений.
+	Вернуть идентификатор выбранной строки из списка значений.
 $SYNTAX$
 	getValue()	--> <sValue>
 $RETURNS$
-	Selected string from combo box. Returned value is string.
+	Selected item id from combo box. Returned value is string.
 $LANG_RU$
-	Выбранная строка из списка значений. Возвращаемое значение: строка.
+	Идентификатор выбранной строки из списка значений. Возвращаемое значение: строка.
 $ENDMETHOD$
 
 $EXAMPLES$
 	   cb1 := UIComboBox({"cat","dog"},"dog")
 	   cb2 := UIComboBox()
-	   cb2:setList({"apple", "banana"})
+	   cb2:setSource({ { "apple", "1" }, { "banana", "2" } })
 	   cb2:setValue(1)
 
 $PLATFORMS$
@@ -87,6 +87,7 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
+	UISOURCE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
