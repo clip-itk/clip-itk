@@ -54,7 +54,11 @@ install: all
 	$(CLIPROOT)/bin/clip_cp clip-ui.ch $(DESTDIR)$(CLIPROOT)/include
 	mkdir -p $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui
 	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui/
-
+	mkdir -p $(DESTDIR)$(CLIPROOT)/locale.po
+	cd locale.po && \
+	for i in *; do mkdir -p $(DESTDIR)$(CLIPROOT)/locale.po/$$i/ && \
+	$(CLIPROOT)/bin/clip_cp $$i/* $(DESTDIR)$(CLIPROOT)/locale.po/$$i/; done
+	
 uninstall:
 	cd drivers && $(MAKE) uninstall
 	rm -rf $(CLIPROOT)/lib/$(TARGET) $(CLIPROOT)/lib/$(RTARGET) $(CLIPROOT)/doc/example/clip-ui/

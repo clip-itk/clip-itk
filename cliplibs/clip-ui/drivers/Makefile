@@ -9,8 +9,9 @@ endif
 include $(CLIPROOT)/include/Makefile.inc
 CLIPINCLUDE = -I$(CLIPROOT)/include
 CLIP = $(CLIPROOT)/bin/clip
+CLIP_MODULE = clip-ui
 
-OBJS    = driver-gtk.po driver-gtk2.po
+OBJS    = driver-gtk2.po
 
 .PHONY: all clean uninstall distclean
 
@@ -29,9 +30,6 @@ uninstall:
 distclean: clean
 
 dist: distclean
-
-driver-gtk.po: driver-gtk.prg
-	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk -nw -p driver-gtk.prg || exit 0
 
 driver-gtk2.po: driver-gtk2.prg
 	$(CLIP) $(CLIPINCLUDE) -I../../clip-gtk2 -nw -p driver-gtk2.prg || exit 0
