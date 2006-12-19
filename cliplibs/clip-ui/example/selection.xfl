@@ -4,7 +4,10 @@
 
 <form>
 	<head>
-	<!-- TODO: select existing item -->
+		<!-- Select existing item -->
+		<call widget="table" method="setValue">
+			<param><property widget="window" name="context" /></param>
+		</call>
 	</head>
 	<interface>
 		<widget class="window" name="window" label="Selection example">
@@ -45,6 +48,7 @@
 			<action>
 				<call widget="window" method="select">
 					<param value="table" />
+					<param><property widget="window" name="context" /></param>
 				</call>
 				<call widget="window" method="close"/>
 			</action>

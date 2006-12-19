@@ -1,8 +1,9 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library                                     */
 /*                                                                         */
-/*   Copyright (C) 2003 by E/AS Software Foundation                        */
-/*   Author: Igor Satsyuk <satsyuk@tut.by>                                 */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
+/*   Authors: Igor Satsyuk <satsyuk@tut.by>                                */
+/*            Andrey Cherepanov <skull@eas.lrn.ru>                         */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
 /*   it under the terms of the GNU General Public License as               */
@@ -14,50 +15,72 @@
 static driver := getDriver()
 
 /* 
-TODO: id by data, not index, nice expand/collapse icons, possible remove lines, ignore expand/collapse as node activation on single LMB click, fill tree from object 
+	TODO: nice expand/collapse icons, ignore expand/collapse as node 
+	activation on single LMB click
 */
 
 /* Tree class */
-function UITree(nTreeColumn, acNameColumns)
-	local obj := driver:createTree(nTreeColumn, acNameColumns)
+function UITree(columns, nTreeColumn)
+	local obj 		:= driver:createTree(columns, nTreeColumn)
 	obj:className 	:= "UITree"
-	obj:nodes 	:= map()
+	obj:columns 	:= columns
 	obj:onSelect 	:= NIL
-	obj:lastId	:= 0
+	obj:lastId		:= 0
 	_recover_UITREE(obj)
 return obj
 
 function _recover_UITREE( obj )
-	obj:addNode 	:= @ui_addNode()
-	obj:setAction 	:= @ui_setAction()
-	obj:clear 	:= @ui_clear()
-	obj:getSelection := @ui_getSelection()
-	obj:getSelectionId := @ui_getSelectionId()
+	obj:addNode 	 	:= @ui_addNode()
+	obj:setRow		 	:= @ui_setRow()
+	obj:getRow			:= @ui_getRow()
+	obj:removeRow		:= @ui_removeRow()
+	obj:setAction 	 	:= @ui_setAction()
+	obj:clear 	     	:= @ui_clear()
+	obj:getSelection 	:= @ui_getSelection()
+	obj:getValue     	:= @ui_getValue()
+	obj:setValue     	:= @ui_setValue()
 	obj:savePosition    := @ui_savePosition()
 	obj:restorePosition := @ui_restorePosition()
 return obj
 
 /* Add node and fill it by data */
-static function ui_addNode(self, columns, id, parent, sibling, expanded)
-	local i, node
+static function ui_addNode(self, data, id, parent, sibling, expanded)
+	local node
         
-        // Fix missing id
-        if id == NIL
-        	self:lastId++
-        	id := alltrim(str(self:lastId))
+	// Fix missing id
+    if id == NIL
+		self:lastId++
+		id := alltrim(str(self:lastId))
+	endif
+   	if valtype(id) == 'N'
+   		id := ltrim(str(id))
 	endif
 	
-	// Convert values to strings
-	for i=1 to len(columns)
-	      	columns[i] := val2str(columns[i])
-	next
-	expanded := iif(valtype(expanded)=="U",.T.,expanded)
-	node := driver:addTreeNode(self, parent, sibling, columns, expanded)
-	node:className := "UITreeItem"
-	node:tree := @self
-	node:node_id := id
-	self:nodes[node:id] = node
+	expanded := iif(valtype(expanded)=="U", .T., expanded)
+	node := driver:addTreeNode(self, parent, sibling, data, expanded, id)
 return node
+
+/* Set data for tree row */
+static function ui_setRow(self, row, data, id)
+	local i, node
+        
+    // Fix missing id
+    if id == NIL
+       	self:lastId++
+		id := self:lastId
+	endif
+   	if valtype(id) == 'N'
+   		id := ltrim(str(id))
+	endif
+return driver:setTreeRow(self, row, data, id)
+
+/* Get data from tree row as object */
+static function ui_getRow(self, row)
+return driver:getTreeRow(self, row)
+
+/* Get data from tree row */
+static function ui_removeRow(self, row)
+return driver:removeTreeRow(self, row)
 
 /* Set action to UITree */
 static function ui_setAction(self, signal, action)
@@ -78,7 +101,6 @@ return
 /* Clear all nodes */
 static function ui_clear(self)
 	driver:clearTree( self )
-	self:nodes := map()
 	self:lastId := 0
 return NIL
 
@@ -87,34 +109,21 @@ static function ui_getSelection(self)
 return driver:getTreeSelection( self )
 
 /* Get current selection ID */
-static function ui_getSelectionId(self)
-	local sel, id
-	sel := driver:getTreeSelection( self )
-	if .not. empty(sel) .and. sel $ self:nodes
-		id := self:nodes[sel]:node_id
-	else 
-		return NIL
-	endif
-return id
+static function ui_getValue(self)
+return driver:getTreeSelection( self, .T. )
+
+/* Set selection by ID */
+static function ui_setValue(self, id)
+return driver:setTreeSelection( self, id )
 
 /* Save current position to variable */
 static function ui_savePosition(self)
-	local pos
-	pos := driver:getTreePosition( self )
-return pos
+return driver:getTreePosition( self )
 
 /* Restore position from variable */
 static function ui_restorePosition(self, pos)
-	local ret, k, i, realPos:=NIL
+	local ret
 	if valtype(pos) == 'A' .and. len(pos) == 2 .and. .not. empty(pos[2])
-		k := mapkeys(self:nodes)
-		for i:=1 to len(k)
-			if self:nodes[k[i]]:node_id == pos[2]
-				realPos := self:nodes[k[i]]:id
-				exit
-			endif
-		next
-		pos[1] := realPos
 		ret := driver:setTreePosition( self, pos )
 	endif
 return ret

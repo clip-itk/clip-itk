@@ -56,8 +56,8 @@ function _recover_UITABLE( obj )
 	obj:clear			:= @ui_clear()
 	obj:setAction		:= @ui_setAction()
 	obj:getSelection 	:= @ui_getSelection()
-	obj:getSelectionId 	:= @ui_getSelectionId()
-/*	obj:getSelectionField := @ui_getSelectionField() */
+	obj:getValue	 	:= @ui_getValue()
+	obj:setValue	 	:= @ui_setValue()
 	obj:savePosition    := @ui_savePosition()
 	obj:restorePosition := @ui_restorePosition()
 return obj
@@ -75,7 +75,7 @@ static function ui_addRow(self, data, id)
    		id := ltrim(str(id))
 	endif
 	node := driver:addTableRow(self, data, id)
-return NIL
+return node
 
 /* Set data for table row */
 static function ui_setRow(self, row, data, id)
@@ -102,7 +102,6 @@ return driver:removeTableRow(self, row)
 /* Clear all rows */
 static function ui_clear(self)
 	driver:clearTable( self )
-	self:nodes := map()
 	self:lastId := 0
 return NIL
 
@@ -124,53 +123,25 @@ return
 
 /* Get current selection */
 static function ui_getSelection(self)
-	local sel
-	sel := driver:getTableSelection( self )
-return sel
+return driver:getTableSelection( self )
 
 /* Get ID of selected string */
-static function ui_getSelectionId(self)
-	local sel, id:=NIL
+static function ui_getValue(self)
 return driver:getTableSelection( self, .T. )
 
-/* Get field value on selected string  */
-/*static function ui_getSelectionField(self, column)
-	local sel, val:=NIL, node
-	column = iif(empty(column),1,int(val(column)))
-	sel := driver:getTableSelection( self )
-	//?? "Selection:", sel, sel $ self:nodes, chr(10)
-	if .not. empty(sel) .and. sel $ self:nodes
-		node := self:nodes[sel]
-		?? valtype(node:data), len(node:data), column, chr(10)
-		if valtype(node:data) == "A" .and. len(node:data) >= column .and. column > 0
-			val := node:data[column]
-			//?? "Value:", val, chr(10)
-		endif
-	else 
-		return NIL
-	endif
-return val
-*/
+/* Set selection by ID */
+static function ui_setValue(self, id)
+return driver:setTableSelection( self, id )
+
 /* Save current position to variable */
 static function ui_savePosition(self)
-	local pos
-	pos := driver:getTablePosition( self )
-return pos
+return driver:getTablePosition( self )
 
 /* Restore position from variable */
 static function ui_restorePosition(self, pos)
-	local ret, k, i, realPos:=NIL
+	local ret
 	
 	if valtype(pos) == 'A' .and. len(pos) == 2 .and. .not. empty(pos[2])
-/*		k := mapkeys(self:nodes)
-		for i:=1 to len(k)
-			if self:nodes[k[i]]:node_id == pos[2]
-				realPos := self:nodes[k[i]]:id
-				exit
-			endif
-		next
-		pos[1] := realPos
-*/
 		ret := driver:setTablePosition( self, pos )
 	endif
 return ret

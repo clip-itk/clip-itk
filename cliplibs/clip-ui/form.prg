@@ -18,7 +18,7 @@
 static driver := getDriver()
 
 /* Interface form class */
-function UIForm( fileName, parent )
+function UIForm( fileName, parent, context )
 	local obj	:= map()
 	obj:parent	:= parent
 	obj:className	:= "UIForm"
@@ -29,6 +29,7 @@ function UIForm( fileName, parent )
 	obj:actions	:= array(0)
 	obj:src		:= NIL
 	obj:locale	:= map()
+	obj:context := context
 	_recover_UIFORM(obj)
 return obj
 
@@ -155,11 +156,86 @@ static function ui_parse(self)
 
 return win
 
+/**/
+static function ui_TableColumns(self, t)
+	local a, e, i, o
+	local p_a, p_col, p_name, p_value, p_block
+	
+	// Get columns
+	a := array(0)
+	for e in t:getChilds()
+		if e:getName() == "column"
+			aadd( a, UITableColumn( e:attribute("name"), self:i18n(e:attribute("title","")), TABLE_COLUMN_TEXT)  )
+		endif
+	next
+	
+	// Get column attributes
+	for e in t:getChilds()
+		if e:getName() == "property"
+			if .not. "." $ e:attribute("name")
+				loop
+			endif
+			p_a     := split(e:attribute("name"), '\.')
+			p_col   := p_a[1]
+			p_name  := p_a[2]
+			p_value := e:attribute("value")
+			i := ascan(a, {|e| e:name == p_col })
+			if i>0
+				o := a[i]
+				switch lower(p_name)
+					case 'caption'
+						o:caption := self:i18n(p_value)
+					case "type"
+						switch lower(p_value)
+							case 'text'
+								o:type := TABLE_COLUMN_TEXT
+							case 'choice'
+								o:type := TABLE_COLUMN_CHOICE
+							case 'combobox'
+								o:type := TABLE_COLUMN_COMBO
+							case 'number'
+								o:type := TABLE_COLUMN_NUMBER
+								o:default := iif(empty(o:default), 0, o:default)
+								o:format := iif(empty(o:format), "%'.2f", o:format)
+							case 'date'
+								o:type := TABLE_COLUMN_DATE
+							case 'boolean'
+								o:type := TABLE_COLUMN_CHECK
+								o:default := iif(empty(o:default), .F., o:default)
+							case 'counter'
+								o:type := TABLE_COLUMN_COUNTER
+								o:default := iif(empty(o:default), 0, o:default)
+							otherwise
+								?? "EditTable widget doesn't support column type '"+p_value+"'.&\n"
+						endswitch
+					case 'editable'
+						o:editable := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
+					case 'format'
+						o:format := p_value
+					case 'source'
+						if "," $ p_value
+							p_value := strtran(p_value, chr(10), "")
+							p_block := "{|| {"+p_value+"} }"
+							p_value := eval(&p_block)
+						endif
+						o:source := UISource(p_value)
+					case 'lookup'
+						o:lookup := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
+					case 'default'
+						o:default := p_value
+					otherwise
+						?? "EditTable widget doesn't support property '"+p_name+"'.&\n"
+				endswitch
+			endif
+		endif
+	next
+return a
+
+
 /* Return created widget from tag */
 static function ui_createWidget(self, tag, parent )
 	local o:=NIL, class, name, label, c, i, a, e, w, box, t:=tag
 	local add:=.F., gCol:=1, gRow:=1, gClass, rule, expanded:=.F.
-	local p_a, p_col, p_name, p_value, p_block
 
 	class := t:attribute("class","")
 	name  := t:attribute("name","")
@@ -248,168 +324,33 @@ static function ui_createWidget(self, tag, parent )
 			o:setText(label)
 		case "TABLE"
 			// Get columns
-			a := array(0)
-			for e in t:getChilds()
-				if e:getName() == "column"
-					aadd( a, UITableColumn( e:attribute("name"), self:i18n(e:attribute("title","")), TABLE_COLUMN_TEXT)  )
-				endif
-			next
-			
-			// Get column attributes
-			for e in t:getChilds()
-				if e:getName() == "property"
-					if .not. "." $ e:attribute("name")
-						loop
-					endif
-					p_a     := split(e:attribute("name"), '\.')
-					p_col   := p_a[1]
-					p_name  := p_a[2]
-					p_value := e:attribute("value")
-					i := ascan(a, {|e| e:name == p_col })
-					if i>0
-						o := a[i]
-						switch lower(p_name)
-							case 'caption'
-								o:caption := self:i18n(p_value)
-							case "type"
-								switch lower(p_value)
-									case 'text'
-										o:type := TABLE_COLUMN_TEXT
-									case 'choice'
-										o:type := TABLE_COLUMN_CHOICE
-									case 'combobox'
-										o:type := TABLE_COLUMN_COMBO
-									case 'number'
-										o:type := TABLE_COLUMN_NUMBER
-										o:default := iif(empty(o:default), 0, o:default)
-										o:format := iif(empty(o:format), "%'.2f", o:format)
-									case 'date'
-										o:type := TABLE_COLUMN_DATE
-									case 'boolean'
-										o:type := TABLE_COLUMN_CHECK
-										o:default := iif(empty(o:default), .F., o:default)
-									case 'counter'
-										o:type := TABLE_COLUMN_COUNTER
-										o:default := iif(empty(o:default), 0, o:default)
-									otherwise
-										?? "Table widget doesn't support column type '"+p_value+"'.&\n"
-								endswitch
-							case 'editable'
-								o:editable := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
-							case 'format'
-								o:format := p_value
-							case 'source'
-								if "," $ p_value
-									p_value := strtran(p_value, chr(10), "")
-									p_block := "{|| {"+p_value+"} }"
-									p_value := eval(&p_block)
-								endif
-								o:source := UISource(p_value)
-							case 'lookup'
-								o:lookup := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
-							case 'default'
-								o:default := p_value
-							otherwise
-								?? "Table widget doesn't support property '"+p_name+"'.&\n"
-						endswitch
-					endif
-				endif
-			next
+			a := ui_TableColumns(self, t)
 			// Create table
 			if len(a) > 0
 				o := UITable( a )
 				add = .T.
 			else
-				?? "No defined columns for Table widget&\n"
+				?? "No defined columns for UITable widget&\n"
 			endif
 		case "TREE"
-			a := array(0)
-			for e in t:getChilds()
-				if e:getName() == "column"
-					aadd( a, self:i18n(e:attribute("title","")))
-				endif
-			next
+			// Get columns
+			a := ui_TableColumns(self, t)
+			// Create tree
 			if len(a) > 0
-				o := UITree( 1, a )
+				o := UITree( a, 1 )
 				add = .T.
 			else
-				?? "No defined columns for Tree widget&\n"
+				?? "No defined columns for UITree widget&\n"
 			endif
 		case "EDITTABLE"
 			// Get columns
-			a := array(0)
-			for e in t:getChilds()
-				if e:getName() == "column"
-					aadd( a, UITableColumn( e:attribute("name"), self:i18n(e:attribute("title","")), TABLE_COLUMN_TEXT)  )
-				endif
-			next
-			
-			// Get column attributes
-			for e in t:getChilds()
-				if e:getName() == "property"
-					if .not. "." $ e:attribute("name")
-						loop
-					endif
-					p_a     := split(e:attribute("name"), '\.')
-					p_col   := p_a[1]
-					p_name  := p_a[2]
-					p_value := e:attribute("value")
-					i := ascan(a, {|e| e:name == p_col })
-					if i>0
-						o := a[i]
-						switch lower(p_name)
-							case 'caption'
-								o:caption := self:i18n(p_value)
-							case "type"
-								switch lower(p_value)
-									case 'text'
-										o:type := TABLE_COLUMN_TEXT
-									case 'choice'
-										o:type := TABLE_COLUMN_CHOICE
-									case 'combobox'
-										o:type := TABLE_COLUMN_COMBO
-									case 'number'
-										o:type := TABLE_COLUMN_NUMBER
-										o:default := iif(empty(o:default), 0, o:default)
-										o:format := iif(empty(o:format), "%'.2f", o:format)
-									case 'date'
-										o:type := TABLE_COLUMN_DATE
-									case 'boolean'
-										o:type := TABLE_COLUMN_CHECK
-										o:default := iif(empty(o:default), .F., o:default)
-									case 'counter'
-										o:type := TABLE_COLUMN_COUNTER
-										o:default := iif(empty(o:default), 0, o:default)
-									otherwise
-										?? "EditTable widget doesn't support column type '"+p_value+"'.&\n"
-								endswitch
-							case 'editable'
-								o:editable := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
-							case 'format'
-								o:format := p_value
-							case 'source'
-								if "," $ p_value
-									p_value := strtran(p_value, chr(10), "")
-									p_block := "{|| {"+p_value+"} }"
-									p_value := eval(&p_block)
-								endif
-								o:source := UISource(p_value)
-							case 'lookup'
-								o:lookup := iif( lower(p_value)=='false' .or. lower(p_value)=='no', .F., .T. )
-							case 'default'
-								o:default := p_value
-							otherwise
-								?? "EditTable widget doesn't support property '"+p_name+"'.&\n"
-						endswitch
-					endif
-				endif
-			next
+			a := ui_TableColumns(self, t)
 			// Create table
 			if len(a) > 0
 				o := UIEditTable( a )
 				add = .T.
 			else
-				?? "No defined columns for EditTable widget&\n"
+				?? "No defined columns for UIEditTable widget&\n"
 			endif
 		case "BUTTONBAR"
 			if "ACTIONS" $ parent
@@ -721,6 +662,7 @@ static function ui_getPropertyValue(self, tagObj)
 	widget := tagObj:attribute("widget","")
 	prop   := tagObj:attribute("name","")
 	obj    := mapget(self:widgets,widget,NIL)
+	if DEBUG; ?? 'GET PROPERTY:', prop, chr(10); endif 
 
 	if empty(obj)
 		?? "ERROR get property for widget '"+widget+"': widget not found&\n"
@@ -734,13 +676,24 @@ static function ui_getPropertyValue(self, tagObj)
 	if obj:className == "UIMenuItem" .and. prop == "isChecked"
 		return driver:isCheckedMenuItem( obj )
 	endif
+	
+	if prop == "context"
+		if DEBUG; ?? 'CONTEXT:', self:context, chr(10); endif
+		return self:context
+	endif
+
+	if prop == "value" .and. "GETVALUE" $ obj
+		if DEBUG; ?? 'VALUE:', obj:getValue(), chr(10); endif
+		return obj:getValue()
+	endif
+
 
 return val
 
 /* Set action for widget */
 static function ui_setAction(self, tag, lObj)
 	local e, obj, widget, signal, events, actions, j, id, labelRule, t:=tag
-	local cWidget
+	local cWidget, a, column
 
 	if t:getName() != "rule"
 		?? "WARNING: rule tag must be <rule>. Rule is ignored.&\n"
@@ -763,14 +716,20 @@ static function ui_setAction(self, tag, lObj)
 	for e in t:getChilds()
 		if e:getName() == "event"
 			// Event condition
+			column := NIL
 			widget := e:attribute("widget","")
+			if ':' $ widget
+				a := split(widget, '\:')
+				widget := a[1]
+				column := a[2]
+			endif
 			signal := e:attribute("signal","")
 			obj := iif(lObj==NIL,mapget(self:widgets,widget,NIL),lObj)
 			if obj == NIL .or. empty(widget) .or. empty(signal)
 				?? "WARNING: widget '"+widget+"' is not found. Ignored&\n"
 				return .F.
 			endif
-			aadd(events,{ obj, signal })
+			aadd(events,{ obj, signal, column })
 		elseif e:getName() == "action"
 			// Actions
 			if len(events) == 0
@@ -804,7 +763,11 @@ static function ui_setAction(self, tag, lObj)
 		obj := e[1]
 		signal := e[2]
 		if "SETACTION" $ obj
-			obj:setAction(signal,{|| self:actionHandler( id ) })
+			if empty(e[3])
+				obj:setAction(signal,{|| self:actionHandler( id ) })
+			else
+				obj:setAction(signal,{|| self:actionHandler( id ) }, e[3])
+			endif
 		else
 			?? "WARNING: cannot link action to widget class '",obj,"'&\n"
 		endif

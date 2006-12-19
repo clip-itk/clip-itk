@@ -2,24 +2,20 @@
 TODO
 ====
 
-Last change: 18 Dec 2006
+Last change: 19 Dec 2006
 
 MAIN
 ----
- + id support in UICombobox
  - i18n support for clip-ui
  - support for choice cell in UIEditTable
- + need test UIChoice for test_ui
- + rename: test_ui -> uitest, form_ui -> uiform
- + bug: in form comboboxes are not filled by text and don't contain list
- + bug: default value does not show in UIChoice field
+ - gtk_TreeModelForech() in clip-gtk2
  - context in open form
  	1) for cell addres of choice cell in UIEditTable
  	2) for UIChoice (focus to selected item)
- - UITree: store id in the model
- - set/get/remove rows for UITree
- - different column types and lookup by type for UITree
- 
+ + UITree: store id in the model
+ + set/get/remove rows for UITree
+ + different column types and lookup by type for UITree
+ - documentation
 
 CLIP-UI
 -------
@@ -30,7 +26,7 @@ CLIP-UI
    + UIChoice (for select object)
    + UITab
  - DnD methods for UITable/UITree
- - Deletion of widget from comtainers
+ - Deletion of widget from containers
  + Disallow editing in UIComboBox field
  + Using ID in UIComboBox
  + gtk_ScrolledWindowNew() make child widget too small

@@ -64,6 +64,9 @@ return driver:getValue( self )
 
 /* Set value */
 static function ui_setValue(self, value)
+	if valtype(value) == 'A' .and. len(value) > 0
+		value := value[1]	
+	endif
 	self:button:setValue(value)
 	//?? 'set value:', value, self:source:getText(value),chr(10)
 	if .not. empty(value)

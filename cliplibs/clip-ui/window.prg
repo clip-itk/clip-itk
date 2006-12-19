@@ -434,7 +434,10 @@ static function ui_getValues(self)
 	local i, w, v, values := array(0)
 	for i in self:valueNames
 		w := self:value[i]
-		if left(i, 1) != '.' .and. "GETVALUE" $ w .and. w:className != 'UIButton' // Only object's field, without buttons
+		if left(i, 1) != '.' .and. "GETVALUE" $ w ;
+					.and. w:className != 'UIButton' ; // Only object's field, without buttons
+					.and. w:className != 'UITable' ;
+					.and. w:className != 'UITree'
 			v := w:getValue()
 			aadd(values, { i, v } )
 		endif
@@ -473,20 +476,30 @@ static function ui_return(self, val)
 	endif
 return NIL
 
-/* Return id and text from table to another form */
+/* Return id and context from table to another form */
 static function ui_select(self, table, column)
 	local act, obj:=NIL, val:=''
+    
     //?? "RETURN value:","RETURNACTION" $ self, valtype(self:returnAction), chr(10)
 	if "RETURNACTION" $ self .and. valtype(self:returnAction) == "B"
 		act := self:returnAction
 		obj := mapget(self:value, table, NIL)
+		
 		//?? valtype(obj), "GETSELECTIONID" $ obj , "GETSELECTIONFIELD" $ obj, chr(10)
-		if .not. empty(obj) .and. "GETSELECTIONID" $ obj
-			val := obj:getSelectionId()
+		if .not. empty(obj) .and. "GETVALUE" $ obj
+			val := obj:getValue()
 		endif
+		
+		// Append context if exist
+		if "CONTEXT" $ self .and. .not. empty(self:context)
+			val := { val, self:context }
+		endif
+		
 		//?? "RETURNED:", val,chr(10)
 		eval(act, val)
+	
 	endif
+
 return NIL
 
 /* Compare values in windows with original object */

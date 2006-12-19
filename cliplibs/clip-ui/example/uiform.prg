@@ -65,15 +65,22 @@ function main()
 	ws:quit()
 return 0
 
-function openForm( obj, filename, action )
+function openForm( obj, filename, context, action )
 	local f, w
 	if valtype(obj) != 'O'
 		return NIL
 	endif
 	
-	f := UIForm( filename, obj )
+	?? 'FORM CONTEXT:', context, chr(10)
+	f := UIForm( filename, obj, context )
 	w := f:parseFile()
-	w:returnAction := action
+	
+	w:context := context
+	if valtype(context) == 'B'
+		w:returnAction := context
+	else
+		w:returnAction := action
+	endif
 	
 	if w == NIL
 		return NIL

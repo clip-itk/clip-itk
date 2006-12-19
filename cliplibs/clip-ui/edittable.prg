@@ -82,10 +82,19 @@ static function ui_clear(self)
 return NIL
 
 /* Set action */
-static function ui_setAction(self, signal, action)
+static function ui_setAction(self, signal, action, column)
+	local i
 	if signal=='changed' .and. valtype(action)=='B'
 		self:onChanged := action
 		driver:setAction( self, 'changed', action )
+	elseif signal=='select' .and. valtype(action)=='B' .and. .not. empty(column)
+		for i:=1 to len(self:columns)
+			if column == self:columns[i]:name .and. self:columns[i]:type == TABLE_COLUMN_CHOICE
+				// Set action to column
+				?? 'set action for column', i, chr(10)
+				self:columns[i]:onSelect := action
+			endif
+		next
 	endif
 return NIL
 
@@ -97,10 +106,22 @@ return sel
 
 /* Set field contents */
 static function ui_setField(self, column, row, value)
+	if valtype(column) == 'A' .and. len(column) > 0
+		value  := column[1]
+		if len(column) > 1 .and. valtype(column[2]) == 'A' .and. len(column[2]) > 1
+			row    := column[2][1]
+			column := column[2][2]
+		endif
+	endif
 return driver:setEditTableField(self, column, row, value)
 
 /* Get field contents */
 static function ui_getField(self, column, row)
+	if empty(column) .and. empty(row)
+		column := driver:getEditTableSelectedColumn( self )
+		row := driver:getEditTableSelectedRow( self )
+		return { driver:getEditTableField(self, column, row), row, column }
+	endif
 return driver:getEditTableField(self, column, row)
 
 /* Fill table */

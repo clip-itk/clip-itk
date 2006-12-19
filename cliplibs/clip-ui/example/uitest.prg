@@ -169,14 +169,17 @@ return 0
 
 /* Tree and table widgets */
 static function BankRefReq( sp )
-	local splitter, tree, table, vb, tc
+	local splitter, tree, table, vb, rc, tc
 	local node66, node67
 
 	splitter := UISplitter(SPLITTER_HORIZONTAL)
 	sp:add(splitter, .T., .T.)
 	splitter:setPosition( 170 )
 
-	tree := UITree(, {"N1","N2"})
+	rc := array(0)
+	aadd(rc, UITableColumn('n1',  'N1', TABLE_COLUMN_TEXT))
+	aadd(rc, UITableColumn('n2',  'N2', TABLE_COLUMN_TEXT))
+	tree := UITree(rc)
 
 	tree:setAction("selected",{|w,e| listEventTree(tree, e) })
 	splitter:add( tree )
@@ -208,11 +211,11 @@ static function BankRefReq( sp )
 return NIL
 
 static function listEventTree(tree, c)
-	?? "Select in tree:",c,"(id =",tree:getSelectionId(),")",chr(10)
+	?? "Select in tree:",c,"(id =",tree:getValue(),")",chr(10)
 return
 
 function listEvent(table, c)
-	?? "Select in table:",c,"(id =",table:getSelectionId(),")",chr(10)
+	?? "Select in table:",c,"(id =",table:getValue(),")",chr(10)
 return
 
 function updateTable(tree, table)
@@ -226,12 +229,13 @@ function updateTable(tree, table)
 	tree:clear()
 	node1  := tree:addNode({"Node1", "node1111"})
 	node11 := tree:addNode({"Node2"})
-	node2  := tree:addNode({"Leaf1"},, node1)
+	node2  := tree:addNode({"Leaf1"},"ID001", node1)
 	node3  := tree:addNode({"Leaf2"},, node1)
 	node5  := tree:addNode({"Leaf5", "Leaf5"},, node1)
 	node4  := tree:addNode({"Leaf3"},, node1, node3)
 	node44 := tree:addNode({"Leaf3333"},, node11)
 	node55 := tree:addNode({"Leaf333"},, node44)
+	tree:setValue( "ID001" )
 	tree:restorePosition( pos )
 
 	// Table data
@@ -245,6 +249,7 @@ function updateTable(tree, table)
 	table:addRow({5,"20.10.03",'P3',20000.00},"DB0101000589")
 	table:addRow({6,"20.10.03",'P1',5689.20})
 	table:addRow({7,"21.10.03",'P1',1500.00})
+	table:setValue( "DB0101000589" )
 	table:restorePosition( pos )
 return
 
@@ -529,6 +534,7 @@ static function EditTableWidget( w )
 	
 	//? 'set action'
 	table:setAction( 'changed', {|t,r,c,val| TableChanged(t, r, c, val) })
+	table:setAction( 'select',  {|t,r,c,val| ChoiceSelect(t, r, c, val) }, 'name')
 	
 	//table:layout:setPadding( 3 )
 	w:add(table, .T., .T.)
@@ -547,6 +553,12 @@ static function EditTableWidget( w )
 	t2:add( UIButton('Jump to first tab', {|w,e| t1:activate(), tA:hide('third') }) )
 	t3:add( UILabel('Last tab') )
 return
+
+/* Slot for select choice cell */
+static function ChoiceSelect(table, column, row, oldValue)
+	?? 'slot for choice cell: old value:', oldValue, chr(10)
+	table:setField( column, row, 'P3')
+return .F.
 
 /* Slot for changed row */
 static function TableChanged(table, column, row, oldValue)
