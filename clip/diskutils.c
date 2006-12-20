@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.2  2006/12/20 14:36:54  estiloinfo
+   In FileCopy if the source file doesn't exists it ignores the file as Clipper
+
    Revision 1.1  2006/06/22 19:01:34  itk
    uri: initial
 
@@ -1580,15 +1583,15 @@ clip___COPYFILE(ClipMachine * cm)
 		goto end;
 	}
 
-	if ((fdsrc = open(usrc, O_RDONLY)) < 0 || (/*access(udst, F_OK) == 0 ||*/
-		(fddst = creat(udst, cm->fileCreateMode)) < 0))
-	{
-		ret = 0;
-		r = _clip_trap_err(cm, EG_OPEN, 0, 0, __FILE__, __LINE__, funcname);
-		*err = errno;
+	if ((fdsrc = open(usrc, O_RDONLY)) < 0)
 		goto end;
-	}
-
+	else
+		if((fddst = creat(udst, cm->fileCreateMode)) < 0){
+			ret = 0;
+			r = _clip_trap_err(cm, EG_OPEN, 0, 0, __FILE__, __LINE__, funcname);
+			*err = errno;
+			goto end;
+		}
 	if (!_set_lock(fdsrc, F_RDLCK) /*|| !_set_lock(fddst, F_WRLCK)*/)
 	{
 		ret = 0;
