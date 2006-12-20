@@ -1201,7 +1201,7 @@ static func stabilize(self)
 	     //devpos(row,col)   // ?????
 
 	  elseif nskip<0
-	     self:rowPos=1
+	     self:rowPos:=min(self:rowPos,-k + 1)
 	     self:refreshAll()
 	  endif
 
