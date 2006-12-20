@@ -961,7 +961,7 @@ clip_GTK_TREEVIEWCOLUMNSETFORMAT(ClipMachine * cm)
 {
 	C_object *ccolumn = _fetch_co_arg(cm);
 	C_object *ccell   = _fetch_cobject(cm, _clip_spar(cm, 2));
-    gint num         = _clip_parni(cm, 3);
+    gint num          = _clip_parni(cm, 3);
     gchar *format     = _clip_parc(cm, 4);
 	struct column_format *user_data;
 	

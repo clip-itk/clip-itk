@@ -1172,7 +1172,7 @@ clip_GTK_TREEMODELFILTERSETVISIBLEFUNC(ClipMachine * cm)
 {
 	C_object *ctreemodel = _fetch_co_arg(cm);
 	ClipVar        *func = _clip_spar(cm, 2);
-	C_var             *c = 0;
+	C_var             *c = NEW(C_var);
 
 	CHECKARG(1,MAP_t); CHECKCOBJ(ctreemodel, GTK_IS_TREE_MODEL_FILTER(ctreemodel->object));
 	CHECKARG2(2, PCODE_t, CCODE_t);
@@ -1548,3 +1548,55 @@ err:
 	return 1;
 }
 #endif
+
+static
+gboolean _foreach_func(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
+{
+	C_var *c = (C_var*)data;
+	C_object *cmodl = _list_get_cobject(c->cm, model);
+	C_object *cpath = _list_get_cobject(c->cm, path);
+	C_object *citer = _list_get_cobject(c->cm, iter);
+	ClipVar stack[3];
+	ClipVar res;
+	gboolean ret = TRUE;
+	if (!cmodl)
+		cmodl = _register_object(c->cm,model,GTK_TYPE_TREE_MODEL, NULL, NULL);
+	if (!cpath)
+		cpath = _register_object(c->cm,path,GTK_TYPE_TREE_PATH, NULL, NULL);
+	if (!citer)
+		citer = _register_object(c->cm,iter,GTK_TYPE_TREE_ITER, NULL, NULL);
+
+	memset(&stack,0,sizeof(stack)); memset( &res, 0, sizeof(ClipVar) );
+	_clip_mclone(c->cw->cmachine, &stack[0], &cmodl->obj);
+	_clip_mclone(c->cw->cmachine, &stack[1], &cpath->obj);
+	_clip_mclone(c->cw->cmachine, &stack[2], &citer->obj);
+
+	if ( _clip_eval( c->cm, &(c->cfunc), 3, stack, &res ) == 0 )
+		ret = res.t.type == LOGICAL_t ? res.l.val : ret;
+
+	_clip_destroy(c->cm, &res);
+	_clip_destroy(c->cm, &stack[0]);
+	_clip_destroy(c->cm, &stack[1]);
+	_clip_destroy(c->cm, &stack[2]);
+	return ret;
+}
+
+int
+clip_GTK_TREEMODELFOREACH(ClipMachine * cm)
+{
+	C_widget *ctreemodel = _fetch_cw_arg(cm);
+	ClipVar        *func = _clip_spar(cm, 2);
+	C_var             *c = NEW(C_var);
+	
+	CHECKCWID(ctreemodel, GTK_IS_TREE_MODEL);
+	CHECKARG2(2,PCODE_t,CCODE_t);
+
+	c->cm = cm; c->cw = ctreemodel; _clip_mclone(cm, &c->cfunc, func);
+	
+	gtk_tree_model_foreach( GTK_TREE_MODEL(ctreemodel->widget),
+		(GtkTreeModelForeachFunc)_foreach_func, c );
+
+	return 0;
+err:
+	return 1;
+}

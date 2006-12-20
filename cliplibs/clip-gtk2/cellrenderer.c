@@ -17,13 +17,24 @@
 #if (GTK2_VER_MAJOR >= 2) && (GTK2_VER_MINOR >= 4)
 
 static gint
+handle_editing_started (GtkCellRenderer *cell, GtkCellEditable *editable, gchar *path, C_signal *cs)
+{
+	OBJECTPREPARECV(cs,cv);
+	_clip_mputn(cs->co->cmachine, &cv, HASH_EDITABLE, (unsigned long)editable);
+	_clip_mputc(cs->co->cmachine, &cv, HASH_PATHSTRING, path, strlen(path));
+	OBJECTINVOKESIGHANDLER(cs,cv);
+}
+
+static gint
 handle_editing_canceled (GtkCellRenderer *cell, C_signal *cs)
 {
 	OBJECTPREPARECV(cs,cv);
 	OBJECTINVOKESIGHANDLER(cs,cv);
 }
+
 static SignalTable cell_renderer_signals[] =
 {
+	{"editing-started",		GSF( handle_editing_started ), ESF( object_emit_signal ), GTK_EDITING_STARTED_SIGNAL},
 	{"editing-canceled",	GSF( handle_editing_canceled ), ESF( object_emit_signal ), GTK_EDITING_CANCELED_SIGNAL},
 	{"", NULL, NULL, 0}
 };
