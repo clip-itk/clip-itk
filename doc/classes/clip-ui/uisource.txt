@@ -1,0 +1,159 @@
+$CLASSNAME$
+	UISource
+$SUMMARY$
+	Class UISource
+$LANG_RU$
+	Класс UISource
+$ABOUT$
+	Source for widgets with drop-down or external list.
+$LANG_RU$
+	Источник данных для выпадающих или внешних списков.
+$SYNTAX$
+	UISource(<source>)	--> UISource object.
+$LANG_RU$
+	UISource(<source>)	--> Объект UISource.
+$ATTRIBUTES$
+	<className>	- Class name. Value should be "UISource".
+$LANG_RU$
+	<className>	- Имя класса. Значение: "UISource".
+
+
+$METHODNAME$
+	UISource()
+$SUMMARY$
+	Constructor. Create source.
+$LANG_RU$
+	Конструктор. Создать источник.
+$SYNTAX$
+	UISource(<source>)	--> UISource object.
+$LANG_RU$
+	UISource(<source>)	--> Объект UISource.
+$ARGUMENTS$
+	<source>	- String, array of string or array of arrays. Source of values. If type 
+	of parameter is string it is external source (all operation required user-defined 
+	function <command>getAttributeValue(<source>,[<id>])</command>. If array of string 
+	is passed for each element is generated id (number of element from 1) as string. 
+	Array of arrays should contains at least pairs of { <text>, <id> }. 
+$LANG_RU$
+	<source>	- Строка, массив строк или массив массивов. Источник данных. 
+	Если передаётся строка, то для всех операций используется внешний источник 
+	через функцию <command>getAttributeValue(<source>,[<id>])</command>, 
+	определённую пользователем. Если передаётся массив строк, для каждого 
+	элемента генерируется идентификатор в виде строки (порядковый номер 
+	элемента, начиная с 1). Массив массивов должен содержать как минимум 
+	пары значений  { <текст>, <идентификатор> }.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getList()
+$SUMMARY$
+	Get source list.
+$LANG_RU$
+	Получить список значений источника.
+$SYNTAX$
+	getList()	--> <list>
+$ARGUMENTS$
+	None.
+$LANG_RU$
+	Нет.
+$RETURNS$
+	<list>	- Array of pairs { <text>, <id> }.
+$LANG_RU$
+	<list>	- Массив пар значений в виде { <текст>, <идентификатор> }.
+$ENDMETHOD$
+	
+
+$METHODNAME$
+	getValue()
+$SUMMARY$
+	Get id by position.
+$LANG_RU$
+	Получить идентификтор по порядковому номеру элемента.
+$SYNTAX$
+	getValue(<num>)	--> <id>
+$ARGUMENTS$
+	<num>	- Number or string. Position of element or id.
+$LANG_RU$
+	<num>	- Число или строка. Порядковый номер или идентификатор.
+$RETURNS$
+	<id>	- String. Identifier of element. If position is not found NIL is returned.
+$LANG_RU$
+	<id>	- Строка. Идентификтор элмента. Если указан неверный номер, возвращается NIL.
+$ENDMETHOD$
+	
+	
+$METHODNAME$
+	getValueByText()
+$SUMMARY$
+	Get id by element text.
+$LANG_RU$
+	Получить идентификтор по тексту элемента.
+$SYNTAX$
+	getValueByText(<text>)	--> <id>
+$ARGUMENTS$
+	<text>	- String. Element text.
+$LANG_RU$
+	<text>	- Строка. Текст элемента.
+$RETURNS$
+	<id>	- String. Identifier of element. If text is not found NIL is returned.
+$LANG_RU$
+	<id>	- Строка. Идентификтор элмента. Если текст не найден, возвращается NIL.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Get position by id.
+$LANG_RU$
+	Получить позицию элемента по его идентификатору.
+$SYNTAX$
+	setValue(<id>)	--> <num>
+$ARGUMENTS$
+	<id>	- String. Identifier of element.
+$LANG_RU$
+	<id>	- Строка. Идентификтор элмента.
+$RETURNS$
+	<num>	- Number. Position of element or 0 if element with specified id is not found.
+$LANG_RU$
+	<num>	- Число. Порядковый номер элемента или 0 если элемент с указанным идентификатором не найден.
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getText()
+$SUMMARY$
+	Get text by id.
+$LANG_RU$
+	Получить текст элемента по его идентификатору.
+$SYNTAX$
+	getText(<id>)	--> <text>
+$ARGUMENTS$
+	<id>	- String. Identifier of element.
+$LANG_RU$
+	<id>	- Строка. Идентификтор элмента.
+$RETURNS$
+	<text>	- String. Element text. If id is not found NIL is returned.
+$LANG_RU$
+	<text>	- Строка. Текст элемента. Если идентификатор не найден, возвращается NIL.
+$ENDMETHOD$
+
+
+$EXAMPLES$
+	source := UISource( { "barrel", "pint" } )
+	? source:getList()
+	? source:getText("1")
+
+
+$PLATFORMS$
+	No dependies of platform.
+$LANG_RU$
+	Не зависит от платформы.
+$SEEALSO$
+	UICHOICE UICOMBOBOX UITABLECOLUMN
+$AUTHOR$
+	Andrey Cherepanov <skull@eas.lrn.ru>
+$LANG_RU$
+	Андрей Черепанов <skull@eas.lrn.ru>
+$LASTDATE$

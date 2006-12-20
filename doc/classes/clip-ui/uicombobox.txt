@@ -9,15 +9,18 @@ $ABOUT$
 $LANG_RU$
 	Класс поля с выпадающим списком.
 $SYNTAX$
-	UIComboBox([<values>],[<defaultItem>])	--> UIComboBox object
+	UIComboBox(<source>,[<defaultItem>])	--> UIComboBox object
 $LANG_RU$
-	UIComboBox([<values>],[<defaultItem>])	--> Объект UIComboBox
+	UIComboBox(<source>,[<defaultItem>])	--> Объект UIComboBox
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIComboBox".
-	<source>	- List of values. Type: array of strings.
+	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
+	Source of list.
 $LANG_RU$
-	<source>	- Имя класса. Значение: "UIComboBox".
-	<list>		- Список значений. Тип: массив строк.
+	<className>	- Имя класса. Значение: "UIComboBox".
+	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
+	Источник значений.
+
 
 $METHODNAME$
 	UIComboBox()
@@ -29,10 +32,11 @@ $SYNTAX$
 	UIComboBox([<source>],[<defaultItem>])
 $ARGUMENTS$
 	<source>		- Type supported for <link linkend="classuisource">UISource</link> constructor. Source for drop-down list.
-	<defaultItem>	- String. Select list element by its id.
+	<defaultItem>	- String. Selected element by its id.
 $LANG_RU$
 	<source>		- Тип, поддерживаемый конструктором класса <link linkend="classuisource">UISource</link>. Источник данных для списка.
-	<defaultItem>	- Строка. Выбрать элемент по его идентификатору.
+	<defaultItem>	- Строка. Выбранный элемент по его идентификатору.
+
 
 $METHODNAME$
 	setSource()
@@ -43,10 +47,13 @@ $LANG_RU$
 $SYNTAX$
 	setSource(<source>)
 $ARGUMENTS$
-	<source>		- Type supported for <link linkend="classuisource">UISource</link> constructor. Source for drop-down list.
+	<source>		- Type supported for <link linkend="classuisource">UISource</link> constructor. 
+	Source for drop-down list.
 $LANG_RU$
-	<source>		- Тип, поддерживаемый конструктором класса <link linkend="classuisource">UISource</link>. Источник данных для списка.
+	<source>		- Тип, поддерживаемый конструктором 
+	класса <link linkend="classuisource">UISource</link>. Источник данных для списка.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	setValue()
@@ -62,6 +69,7 @@ $LANG_RU$
 	<value>		- Строка. Идентификатор элемента списка.
 $ENDMETHOD$
 
+
 $METHODNAME$
 	getValue()
 $SUMMARY$
@@ -76,11 +84,12 @@ $LANG_RU$
 	Идентификатор выбранной строки из списка значений. Возвращаемое значение: строка.
 $ENDMETHOD$
 
+
 $EXAMPLES$
-	   cb1 := UIComboBox({"cat","dog"},"dog")
+	   cb1 := UIComboBox({"cat","dog"},"2")
 	   cb2 := UIComboBox()
 	   cb2:setSource({ { "apple", "1" }, { "banana", "2" } })
-	   cb2:setValue(1)
+	   cb2:setValue("1")
 
 $PLATFORMS$
 	No dependies of platform.

@@ -14,11 +14,11 @@ $LANG_RU$
 	UITable(<columns>)	--> Объект UITable
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITable".
-	<nodes>		- Accociated array of <link linkend="classuitableitem">UITableItem</link> objects.
+	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects. Table columns.
 	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UITable".
-	<nodes>		- Ассоциативный массив объектов <link linkend="classuitableitem">UITableItem</link>.
+	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы таблицы.
 	<onSelect> 	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
 
 $METHODNAME$
@@ -30,9 +30,9 @@ $LANG_RU$
 $SYNTAX$
 	UITable(<columns>)	--> UITable object
 $ARGUMENTS$
-	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects.
+	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects. Table columns.
 $LANG_RU$
-	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>.
+	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы таблицы.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -50,9 +50,9 @@ $LANG_RU$
 	<data>		- Mассив строк. Массив значений по столбцам соответственно.
 	<id>		- Строка. Идентификатор строки.
 $RETURNS$
-	Appended row object (<link linkend="classuitableitem">UITableItem</link>).
+	String. Row address.
 $LANG_RU$
-	Объект добавленной строки (<link linkend="classuitableitem">UITableItem</link>).
+	Строка. Адрес строки.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -62,13 +62,15 @@ $SUMMARY$
 $LANG_RU$
 	Заполнить строку значениями.
 $SYNTAX$
-	setRow(<row>,<data>)
+	setRow(<row>,<data>,[<id>])
 $ARGUMENTS$
 	<row>		- Number. Row number (from 1).
 	<data>		- Array or object. Array of values by columns or object contains fields with column names.
+	<id>		- String. Node identifier.
 $LANG_RU$
 	<row>		- Число. Номер строки (c 1).
 	<data>		- Mассив или объект. Массив значений по столбцам или объект, содержащий поля с именами столбцов.
+	<id>		- Строка. Идентификатор элемента.
 $EXAMPLES$
 	table:setRow( 1, { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
 	m := map()
@@ -127,7 +129,7 @@ $SUMMARY$
 $LANG_RU$
 	Указать действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
 $SYNTAX$
-	setAction([<signal>],<action>)
+	setAction(<signal>,<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name. Should be 'selected'.
 	<action>	- Code block. Action.
@@ -135,6 +137,7 @@ $LANG_RU$
 	<signal>	- Строка. Название сигнала. Допустимое значение: 'selected'.
 	<action>	- Блок кода. Действие.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	clear()
@@ -163,19 +166,33 @@ $ENDMETHOD$
 
 
 $METHODNAME$
-	getSelectionId()
+	getValue()
 $SUMMARY$
 	Get user identifier of selected row.
 $LANG_RU$
 	Возвращает пользовательский идентификатор выделенной строки.
 $SYNTAX$
-	getSelectionId()	--> <sRow>
+	getValue()	--> <id>
 $RETURNS$
 	The user identifier of selected row.
 $LANG_RU$
 	Пользовательский идентификатор выделенной строки.
 $ENDMETHOD$
 
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Seе focus to row by its id.
+$LANG_RU$
+	Устанавливает фокус на строку с заданным идентификатором.
+$SYNTAX$
+	setValue(<id>) 
+$ARGUMENTS$
+	<id>		- String. Row identifier.
+$LANG_RU$
+	<id>		- Строка. Идентификатор строки.
+$ENDMETHOD$
 
 $METHODNAME$
 	savePosition()
@@ -222,7 +239,7 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
-	UITABLECOLUMN UITABLEITEM UITABLEEDIT 
+	UITABLECOLUMN UITABLEEDIT UITREE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

@@ -35,10 +35,6 @@ $LANG_RU$
 	<type>		- Число. Направление разделителя. <constant>SPLITTER_HORIZONTAL<constant> &mdash; горизонтальный разделитель, <constant>SPLITTER_VERTICAL<constant> (значение по умолчанию) &mdash; вертикальный разделитель.
 $ENDMETHOD$
 
-	obj:add   	:= @ui_addSplitPane()
-	obj:addEnd   	:= @ui_addSplitPaneEnd()
-	obj:setPosition := @ui_setSplitterPosition()
-
 $METHODNAME$
 	add()
 $SUMMARY$

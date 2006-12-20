@@ -5,9 +5,9 @@ $SUMMARY$
 $LANG_RU$
 	Класс UITableColumn
 $ABOUT$
-	Class of multicolumn list column. See also <link linkend="classuitable">UITable</link> class.
+	Class of multicolumn list column.
 $LANG_RU$
-	Класс столбца таблицы (многоколоночного списка). См. также класс <link linkend="classuitable">UITable</link>.
+	Класс столбца таблицы.
 $SYNTAX$
 	UITableColumn(<name>,<caption>,<type>)	--> UITableColumn object
 $LANG_RU$
@@ -17,21 +17,22 @@ $ATTRIBUTES$
 	<name>		- String. Unique name of column.
 	<caption>	- String. Column caption in the table.
 	<type>		- Number. Column value type.
-	<editable>	- Logical. Always .F.
+	<editable>	- Logical. For class <link linkend="classuiedittable">UIEdittable</link> set editable mode for cell in column.
 	<default>	- Any type. Default value for new row.
 	<format>	- String. Format string for number column in <command>printf</command> syntax. By default, "%'.2f" (two digits after the decimal-point character and thousands grouping).
-	<source>	- String. Source for choose value for column of type <command>TABLE_COLUMN_CHOICE</command> or <command>TABLE_COLUMN_COMBO</command>.
+	<source>	- Object of class <link linkend="classuisource">UISource</link>. Source for choose value for column of type <command>TABLE_COLUMN_CHOICE</command> or <command>TABLE_COLUMN_COMBO</command>.
 	<lookup>	- Logical. If .T. fot this column is enabled lookup mode: search value begins from typed characters.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UITableColumn".
 	<name>		- Строка. Уникальное имя столбца.
 	<caption>	- Строка. Заголовок столбца.
 	<type>		- Число. Тип значений в столбце.
-	<editable>	- Логическое значение. Всегда .F. 
+	<editable>	- Логическое значение. Для столбцов виджета <link linkend="classuiedittable">UIEdittable</link> устанавливает возможность редактирования ячеек.
 	<default>	- Любой тип. Значение по умолчанию для новых строк.
 	<format>	- Строка. Шаблон форматирования столбца с числами, использующий синтаксис функции <command>printf</command>. Значение по умолчанию "%'.2f" (два знака дробной части и разделитель тысячных разрядов).
-	<source>	- Строка. Источник значений столбцов типа <command>TABLE_COLUMN_CHOICE</command> или <command>TABLE_COLUMN_COMBO</command>.
+	<source>	- Объект класса <link linkend="classuisource">UISource</link>. Источник значений столбцов типа <command>TABLE_COLUMN_CHOICE</command> или <command>TABLE_COLUMN_COMBO</command>.
 	<lookup>	- Логическое значение. Если значение равно .T., при наборе символов будет осуществляться поиск значения в указанном столбце, начинающийся с введённых символов.
+
 
 $METHODNAME$
 	UITableColumn()
@@ -50,7 +51,9 @@ $ARGUMENTS$
 	select from combo box</listitem><listitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
 	number</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
 	date</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
-	checkbox</listitem></itemizedlist>
+	checkbox</listitem><listitem><command>TABLE_COLUMN_COUNTER</command> &mdash; 
+	row number (ignored in 
+	classes <link linkend="classuitable">UITable</link> and <link linkend="classuitree">UITree</link>)</listitem></itemizedlist>
 $LANG_RU$
 	<name>		- Строка. Уникальное имя столбца.
 	<caption>	- Строка. Заголовок столбца.
@@ -60,7 +63,9 @@ $LANG_RU$
 	выбор из выпадающего списка</listitem><istitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
 	число</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
 	дата</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
-	флажок</listitem></itemizedlist>
+	флажок</listitem><listitem><command>TABLE_COLUMN_COUNTER</command> &mdash; 
+	порядковый номер строки (игнорируется 
+	в <link linkend="classuitable">UITable</link> и <link linkend="classuitree">UITree</link>)</listitem></itemizedlist>
 $EXAMPLES$
 	oColumn := UITableColumn( 'name', 'Name', TABLE_COLUMN_TEXT ) )
 $ENDMETHOD$
@@ -80,7 +85,7 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
-	UITABLE
+	UISOURCE UITABLE UIEDITTABLE UITREE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

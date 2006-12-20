@@ -9,9 +9,9 @@ $ABOUT$
 $LANG_RU$
 	Класс иерархического многоколоночного списка (дерева).
 $SYNTAX$
-	UITree([<nTreeColumn>],<acNameColumns>)	--> UITree object
+	UITree(<acNameColumns>,[<nTreeColumn>])	--> UITree object
 $LANG_RU$
-	UITree([<nTreeColumn>],<acNameColumns>)	--> Объект UITree
+	UITree(<acNameColumns>,[<nTreeColumn>])	--> Объект UITree
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITree".
 	<nodes>		- Accociated array of <link linkend="classuitreeitem">UITreeItem</link> objects.
@@ -28,14 +28,17 @@ $SUMMARY$
 $LANG_RU$
 	Конструктор. Создать дерево.
 $SYNTAX$
-	UITree([<nTreeColumn>],<acNameColumns>)	--> UITree object
+	UITree(<acNameColumns>,[<nTreeColumn>])	--> UITree object
 $ARGUMENTS$
-	<nTreeColumn>	- Number. Column for show hierarchy. Column numbering is begun from 1.
-	<acNameColumns>	- Array of strings. Column titles.
+	<acNameColumns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects. Tree columns.
+	<nTreeColumn>	- Number. Column for show hierarchy. Column numbering is begun from 1. 
+	By default it is first column.
 $LANG_RU$
-	<nTreeColumn>	- Число. Номер столбца для размещения линий иерархии. Нумерация столбцов начинается с 1.
-	<acNameColumns>	- Массив строк. Заголовки столбцов списка.
+	<acNameColumns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы дерева.
+	<nTreeColumn>	- Число. Номер столбца для размещения линий иерархии. 
+	Нумерация столбцов начинается с 1. По умолчанию - первый столбец.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	addNode()
@@ -44,24 +47,92 @@ $SUMMARY$
 $LANG_RU$
 	Добавить элемент в дерево.
 $SYNTAX$
-	addNode(<columns>,[<id>],[<parent>],[<sibling>],[<expanded>])	--> <oNode>
+	addNode(<data>,[<id>],[<parent>],[<sibling>],[<expanded>])	--> <sNode>
 $ARGUMENTS$
-	<columns>	- Array of strings. Array of values by columns.
+	<data>		- Array of any types. Array of values by columns.
 	<id>		- String. Node identifier.
 	<parent>	- Object <link linkend="classuitreeitem">UITreeItem</link>. Parent node.
 	<sibling>	- Object <link linkend="classuitreeitem">UITreeItem</link>. Put node before specified node on such level.
 	<expanded>	- Boolean. Expand child nodes.
 $LANG_RU$
-	<columns>	- Массив строк. Массив значений по столбцам соответственно.
+	<columns>	- Массив любых типов. Массив значений по столбцам соответственно.
 	<id>		- Строка. Идентификатор элемента.
 	<parent>	- Объект <link linkend="classuitreeitem">UITreeItem</link>. Родительский объект. Указывается объект, , возвращённый при предыдущем вызове этой функции.
 	<sibling>	- Объект <link linkend="classuitreeitem">UITreeItem</link>. Поместить перед элементом того же уровня.
 	<expanded>	- Логическое значение. Сразу показывать дочерние элементы.
 $RETURNS$
-	Object of tree node, that may be used as parent node (<link linkend="classuitreeitem">UITreeItem</link>).
+	String. Node address. 
 $LANG_RU$
-	Объект элемента, который можно далее использовать как родительский (<link linkend="classuitreeitem">UITreeItem</link>).
+	Строка. Адрес элемента.
 $ENDMETHOD$
+
+
+$METHODNAME$
+	setRow()
+$SUMMARY$
+	Fill row by values.
+$LANG_RU$
+	Заполнить строку значениями.
+$SYNTAX$
+	setRow(<row>,<data>,[<id>])
+$ARGUMENTS$
+	<row>		- String. Node address.
+	<data>		- Array or object. Array of values by columns or object contains fields with column names.
+	<id>		- String. Node identifier.
+$LANG_RU$
+	<row>		- Строка. Адрес элемента.
+	<data>		- Mассив или объект. Массив значений по столбцам или объект, содержащий поля с именами столбцов.
+	<id>		- Строка. Идентификатор элемента.
+$EXAMPLES$
+	tree:setRow( "0", { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
+	m := map()
+	m:num := 2
+	m:date := "29.10.03"
+	m:company := '"John Corp."'
+	m:sum := 5500.00
+	m:flag := .F.
+	tree:setRow( "1:1", m, "ID_001" )
+$ENDMETHOD$
+
+
+$METHODNAME$
+	getRow()
+$SUMMARY$
+	Get row from tree as object with values.
+$LANG_RU$
+	Получить строку из таблицы в виде объекта со значениями.
+$SYNTAX$
+	getRow(<row>)	--> oRow
+$ARGUMENTS$
+	<row>		- String. Node address.
+$LANG_RU$
+	<row>		- Строка. Адрес элемента.
+$RETURNS$
+	Object contains fields with column names. 
+$LANG_RU$
+	Объект, содержащий поля с именами столбцов.
+$EXAMPLES$
+	oRow := tree:getRow("0")
+	? oRow:company
+$ENDMETHOD$
+
+
+$METHODNAME$
+	removeRow()
+$SUMMARY$
+	Remove row from table.
+$LANG_RU$
+	Удалить строку из таблицы.
+$SYNTAX$
+	removeRow(<row>)
+$ARGUMENTS$
+	<row>		- String. Node address.
+$LANG_RU$
+	<row>		- Строка. Адрес элемента.
+$EXAMPLES$
+	tree:removeRow("0")
+$ENDMETHOD$
+
 
 $METHODNAME$
 	setAction()
@@ -70,14 +141,15 @@ $SUMMARY$
 $LANG_RU$
 	Указать действие, вызываемое при выборе элемента одним щелчком мыши или нажатием клавиши 'Enter'.
 $SYNTAX$
-	setAction([<signal>],<action>)
+	setAction(<signal>,<action>)
 $ARGUMENTS$
-	<signal>	- String. Signal name.
+	<signal>	- String. Signal name. Should be 'selected'.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
+	<signal>	- Строка. Название сигнала. Допустимое значение: 'selected'.
 	<action>	- Блок кода. Действие.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	clear()
@@ -88,6 +160,7 @@ $LANG_RU$
 $SYNTAX$
 	clear()
 $ENDMETHOD$
+
 
 $METHODNAME$
 	getSelection()
@@ -103,19 +176,36 @@ $LANG_RU$
 	Идентификатор выделенного элемента.
 $ENDMETHOD$
 
+
 $METHODNAME$
-	getSelectionId()
+	getValue()
 $SUMMARY$
-	Get user identifier of selected node.
+	Get user identifier of selected row.
 $LANG_RU$
-	Возвращает пользовательский идентификатор выделенного элемента.
+	Возвращает пользовательский идентификатор выделенной строки.
 $SYNTAX$
-	getSelectionId()	--> <id>
+	getValue()	--> <id>
 $RETURNS$
-	The user identifier of selected node.
+	The user identifier of selected row.
 $LANG_RU$
-	Пользовательский идентификатор выделенного элемента.
+	Пользовательский идентификатор выделенной строки.
 $ENDMETHOD$
+
+
+$METHODNAME$
+	setValue()
+$SUMMARY$
+	Seе focus to row by its id.
+$LANG_RU$
+	Устанавливает фокус на строку с заданным идентификатором.
+$SYNTAX$
+	setValue(<id>) 
+$ARGUMENTS$
+	<id>		- String. Row identifier.
+$LANG_RU$
+	<id>		- Строка. Идентификатор строки.
+$ENDMETHOD$
+
 
 $METHODNAME$
 	savePosition()
@@ -131,6 +221,7 @@ $LANG_RU$
 	Массив с координатами текущей выделенной строки: адреса строки и столбца, горизонтальное и вертикальное смещение.
 $ENDMETHOD$
 
+
 $METHODNAME$
 	restorePosition()
 $SUMMARY$
@@ -145,9 +236,12 @@ $LANG_RU$
 	<aPos>		- Массив с координатами текущей выделенной строки, возвращаемый функцией savePosition().
 $ENDMETHOD$
 
-$EXAMPLES$
-	tree := UITree(1, {"N1","N2"})
 
+$EXAMPLES$
+	rc := array(0)
+	aadd(rc, UITableColumn('n1',  'N1', TABLE_COLUMN_TEXT))
+	aadd(rc, UITableColumn('n2',  'N2', TABLE_COLUMN_TEXT))
+	tree := UITree(rc)
 	node1  := tree:addNode({"Node1", "node1111"})
 	node11 := tree:addNode({"Node2"})
 	node2  := tree:addNode({"Leaf1"},, node1)
@@ -157,7 +251,7 @@ $PLATFORMS$
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
-	UITREEITEM
+	UITABLECOLUMN UITABLE UIEDITTABLE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$

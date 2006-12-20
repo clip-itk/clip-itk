@@ -162,17 +162,24 @@ $ENDMETHOD$
 $METHODNAME$
 	setAction()
 $SUMMARY$
-	Set action that will be call after cell edit by user.
+	Set action that will be call after cell edit by user. If action returns .T. old value is 
+	recovered in target cell.
 $LANG_RU$
-	Указать действие, вызываемое после реда (c 1)ктирования ячейки пользователем.
+	Указать действие, вызываемое после редактирования ячейки пользователем. Если действие 
+	возвращает .T., в ячейке восстанавливается старое значение. 
 $SYNTAX$
-	setAction([<signal>],<action>)
+	setAction(<signal>,<action>,[<column>])
 $ARGUMENTS$
-	<signal>	- String. Signal name. Should be 'changed'.
+	<signal>	- String. Signal name. Should be 'changed' for slot of edited cell and 'select' for
+	slot of select value in column with type TABLE_COLUMN_CHOICE.
 	<action>	- Code block. Action.
+	<column>	- String. Name of column with type TABLE_COLUMN_CHOICE for signal 'select'.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала. Допустимое значение: 'changed'.
+	<signal>	- Строка. Название сигнала. Допустимое значение: 'changed' для вызова действия при 
+	редактировании ячейки и 'select' для вызова действия выбора значений столбца типа 
+	TABLE_COLUMN_CHOICE.
 	<action>	- Блок кода. Действие.
+	<column>	- Строка. Имя столбца типа TABLE_COLUMN_CHOICE для сигнала 'select'.
 $EXAMPLES$
 	table:setAction( 'changed', {|table,row,column,oldValue| onEditTableChanged(table, row, column, oldValue) })
 $ENDMETHOD$

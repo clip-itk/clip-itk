@@ -15,11 +15,14 @@ $LANG_RU$
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIChoice".
 	<button>	- <link linkend="classuibutton">UIButton</link> object. Button for select element.
-	<source>	- String. Address of source to get text description for set value. 
+	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
+	Source of list.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIChoice".
 	<button>	- Объект <link linkend="classuibutton">UIButton</link>. Кнопка выбора элемента.
-	<source>	- Строка. Адрес ресурса для получения текстового описания устанавливаемого значения.
+	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
+	Источник значений.
+
 
 $METHODNAME$
 	UIChoice()
@@ -28,16 +31,21 @@ $SUMMARY$
 $LANG_RU$
 	Конструктор. Создать поле ввода с кнопкой выбора элемента.
 $SYNTAX$
-	UIChoice(<action>,[<value>],[<text>])	--> UIChoice object
+	UIChoice(<action>,<source>,[<value>])	--> UIChoice object
+$LANG_RU$
+	UIChoice(<action>,<source>,[<value>])	--> Объект UIChoice
 $ARGUMENTS$
 	<action>	- Code block. Action called on button press.
-	<value>		- Any type. Value stored in widget.
-	<text>		- String. Text in edit field.
+	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
+	Source of list.
+	<value>		- String. Value stored in widget.
 $LANG_RU$
 	<action>	- Блок кода. Действие, вызываемое при нажатии на кнопку.
-	<value>		- Любой тип. Значение, хранимое в виджете.
-	<text>		- Строка. Текст в поле ввода.
+	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
+	Источник значений.
+	<value>		- Строка. Значение, хранимое в виджете.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	setAction()
@@ -55,6 +63,7 @@ $LANG_RU$
 	<action>	- Блок кода. Действие, вызываемое при нажатии на кнопку.
 $ENDMETHOD$
 
+
 $METHODNAME$
 	setValue()
 $SUMMARY$
@@ -68,6 +77,7 @@ $ARGUMENTS$
 $LANG_RU$
 	<value>		- Строка. Значение идентификатора.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	getValue()
@@ -83,6 +93,7 @@ $LANG_RU$
 	<value>		- Строка. Значение идентификатора.
 $ENDMETHOD$
 
+
 $METHODNAME$
 	setText()
 $SUMMARY$
@@ -96,6 +107,7 @@ $ARGUMENTS$
 $LANG_RU$
 	<text>		- Строка. Текстовое описание выбранного элемента.
 $ENDMETHOD$
+
 
 $METHODNAME$
 	getText()
@@ -111,6 +123,7 @@ $LANG_RU$
 	<text>		- Строка. Текстовое описание выбранного элемента.
 $ENDMETHOD$
 
+
 $METHODNAME$
 	setSource()
 $SUMMARY$
@@ -120,23 +133,25 @@ $LANG_RU$
 $SYNTAX$
 	setSource(<source>)
 $ARGUMENTS$
-	<source>	- String. Source address in form '[db:]class[:field]'. This address pass to 
-	function getAttributeValue(source,value) (if exists) for fill text description of set value.
+	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
+	Source of list.
 $LANG_RU$
-	<source>	- Строка. Адрес источника в виде: '[db:]class[:field]'. Этот адрес будет передан 
-	функции getAttributeValue(source,value) (если она есть) для заполнения строки показа 
-	текстового описания.
+	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
+	Источник значений.
 $ENDMETHOD$
 
 
 $EXAMPLES$
-	choice := UIChoice({|| openForm("form.xfl") })
+	cb1 := UIChoice(NIL, { {"Alan", "P1"}, {"Mary", "P3"} }, "P3")
+	cb1:setAction( "clicked", {|| ui_selectForm(cb1) } )
+
 
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
 	Не зависит от платформы.
 $SEEALSO$
+	UISOURCE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
