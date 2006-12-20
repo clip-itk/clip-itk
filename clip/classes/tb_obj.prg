@@ -1163,7 +1163,6 @@ static func stabilize(self)
 
   if !self:__firstStab
 	 self:__setcolor()
-	 self:rowPos=min(self:rowPos,self:rowCount)
 	 self:__remakeColumns()
 	 self:__whoVisible()
 	 self:__firstStab:=.t.
@@ -1173,6 +1172,7 @@ static func stabilize(self)
 	self:__sayTable()
   endif
 
+  self:rowPos=min(self:rowPos,self:rowCount)
   i:=ascan(self:__colVisible,self:colPos)
   if i>0
 	self:__colPos := i
