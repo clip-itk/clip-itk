@@ -114,6 +114,9 @@ return driver:getTreeSelection( self, .T. )
 
 /* Set selection by ID */
 static function ui_setValue(self, id)
+	if valtype(id) == 'A' .and. len(id) > 0
+		id := id[1]		
+	endif
 return driver:setTreeSelection( self, id )
 
 /* Save current position to variable */

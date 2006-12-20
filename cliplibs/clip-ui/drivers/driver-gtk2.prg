@@ -1153,7 +1153,7 @@ static function ui_createTable(self, columns)
 			endif
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
-		gtk_TreeViewColumnSetExpand(ic, .T.)
+		//gtk_TreeViewColumnSetExpand(ic, .T.)
 		columns[i]:__obj := ic
 	next
 	//	gtk_TreeViewSetExpanderColumn(o, NIL)
@@ -1258,7 +1258,7 @@ return pathstr
 static function ui_setTableSelection( self, table, id )
 	local t, i, r:=NIL, v
 	
-	if empty(id)
+	if valtype(id) != 'C'
 		return
 	endif
 	
@@ -1868,7 +1868,7 @@ static function ui_createTree(self, columns, nTreeColumn)
 			endif
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
-		gtk_TreeViewColumnSetExpand(ic, .T.)
+		//gtk_TreeViewColumnSetExpand(ic, .T.)
 		columns[i]:__obj := ic
 	next
 	//	gtk_TreeViewSetExpanderColumn(o, NIL)
@@ -1997,33 +1997,35 @@ static function ui_getTreeSelection(self, tree, needId)
 	endif
 return pathstr
 
-static function ui_treeForeach( model, path, iter, data )
-	local c, id, v:=''
-	c  := data:column
-	id := data:id
-	gtk_TreeModelGetFromPathString( model, path, c, @v, -1 )
+function ui_treeForeach( model, path, iter, column, id, result )
+	local v:='', p
+	path := gtk_TreePathToString(path)
+	//?? "node:", path, iter, chr(10)
+	gtk_TreeModelGetFromPathString( model, path, column, @v, -1 )
 	if v == id
-		data:iter := iter
+		p := gtk_TreeModelGetPath(model, iter)
+		//?? "FOUND:", p, "&\n"
+		result := p
 		return .T.
 	endif
 return .F.
 
 static function ui_setTreeSelection( self, tree, id )
-	local r, data:=map()
+	local result:='', c
 	
-	if empty(id)
+	//?? "driver:setTreeSelection(", id, ")&\n"
+	if valtype(id) != 'C'
 		return
 	endif
 	
-	data:column := tree:columnId
-	data:id := id
-	data:iter := '' 
+	// Lookup id in model for tree path
+	c := tree:columnId 
+	gtk_TreeModelForeach( gtk_TreeViewGetModel( tree ), {|w,p,i| ui_treeForeach( w, p, i, c, id, @result ) } )
 	
-	// TODO: gtk_TreeModelForeach is absent in clip-gtk2
-	//gtk_TreeModelForeach( gtk_TreeViewGetModel( tree ), @ui_treeForeach(), @data )
-	r := data:iter
-	//?? 'set cursor', r, chr(10)	
-	//gtk_TreeViewSetCursor(tree, r, NIL, .F.)
+	//?? 'set cursor', result, chr(10)	
+	if .not. empty(result)
+		gtk_TreeViewSetCursor(tree, result, NIL, .F.)
+	endif
 return
 
 static function ui_clearTree(self, tree)
@@ -2239,7 +2241,7 @@ static function ui_createEditTable(self, columns)
 				t := TREE_TYPE_STRING
 		endswitch
 		aadd( types, t )
-		if empty(column:editable)
+		if valtype(column:editable) != 'L'
 			column:editable := .T.
 		endif
 	next
@@ -2292,9 +2294,9 @@ static function ui_createEditTable(self, columns)
 			ic := gtk_TreeViewGetColumn(o, c)
 			if column:editable
 				gtk_TreeViewColumnSetAttributes(ic, renderer, "text", addColumns, "editable", cc+1)
-				gtk_SignalConnect(renderer, "edited",           {|w, e| ui_EditTableEdited(self, w, e, o)})
-				gtk_SignalConnect(renderer, "editing-started",  {|w, e| ui_EditTableStartEdit(self, w, e, o)})
-				gtk_SignalConnect(renderer, "editing-canceled", {|w, e| ui_EditTableEndEdit(self, w, e, o)})
+				//gtk_SignalConnect(renderer, "edited",           {|w, e| ui_EditTableEdited(self, w, e, o)})
+				gtk_SignalConnect(renderer, "editing-started",  {|w, e| ui_EditTableStartEdit(self, w, e, o, renderer)})
+				//gtk_SignalConnect(renderer, "editing-canceled", {|w, e| ui_EditTableEndEdit(self, w, e, o, renderer)})
 			endif
 			columns[i]:__text := addColumns
                                              		
@@ -2348,7 +2350,7 @@ static function ui_createEditTable(self, columns)
 			
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
-		gtk_TreeViewColumnSetExpand(ic, .T.)
+		//gtk_TreeViewColumnSetExpand(ic, .T.)
 		columns[i]:__obj := ic
 	next
 	//gtk_TreeViewSetExpanderColumn(o, gtk_TreeViewGetColumn(o, 2))
@@ -2394,13 +2396,33 @@ static function ui_EditTableKeyboardHandler(self, w, e, o)
 return .F. 
 
 /* Slots for edit choice cell */
-static function ui_EditTableStartEdit(self, wid, ev, o)
-	?? 'start edit:', ev, chr(10)
-return .F.
+static function ui_EditTableStartEdit(self, wid, ev, o, renderer)
+	local row, column, oldValue, c, ret
+	
+	//row := self:getEditTableSelectedRow(o)
+	row := 1+val(ev:PATHSTRING)
+	column := self:getEditTableSelectedColumn(o)
+	c := o:columns[column]
+	
+	//?? "EditTableStartEdited():", row, column, ev, chr(10)
+	oldValue := self:getEditTableField(o, column, row)
+	//?? 'start edit:', ev, chr(10)
+	
+	if 'ONSELECT' $ c
+		ret := eval( c:onSelect, o, column, row, oldValue )
+		if valtype(ret) == 'L' .and. ret
+			ui_setTableValue(o, ltrim(str(row-1)), column, oldValue)
+			return .T.
+		endif
+	endif
+	//gtk_CellRendererEditingCanceled(renderer)
+	gtk_CellRendererStopEditing(renderer, .T.)
+	//?? "end start&\n"
+return .T.
 
-static function ui_EditTableEndEdit(self, wid, ev, o)
-	?? 'stop edit:', ev, chr(10)
-return .F.
+static function ui_EditTableEndEdit(self, wid, ev, o, renderer)
+	//?? 'stop edit:', ev, chr(10)
+return .T.
 
 /* Edit text cell slot */
 static function ui_EditTableEdited(self, wid, ev, o)
@@ -2418,13 +2440,6 @@ static function ui_EditTableEdited(self, wid, ev, o)
 		gtk_ListStoreSetValue(GTK_TREEMODEL(o:model), ltrim(str(row-1)), column, ev:NEWTEXT)
 	else
 		ui_setTableValue(o, ltrim(str(row-1)), column, ev:NEWTEXT)
-	endif
-	
-	if 'ONSELECT' $ c
-		if eval( c:onSelect, o, column, row, oldValue )
-			ui_setTableValue(o, ltrim(str(row-1)), column, oldValue)
-			return .T.
-		endif
 	endif
 	
 	if 'ONCHANGED' $ o

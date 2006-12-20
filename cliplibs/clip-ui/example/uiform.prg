@@ -75,10 +75,11 @@ function openForm( obj, filename, context, action )
 	f := UIForm( filename, obj, context )
 	w := f:parseFile()
 	
-	w:context := context
 	if valtype(context) == 'B'
+		w:context := NIL
 		w:returnAction := context
 	else
+		w:context := context
 		w:returnAction := action
 	endif
 	

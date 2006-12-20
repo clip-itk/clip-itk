@@ -831,10 +831,10 @@ return NIL
 static function ui_subActionHandler(self, tag, addVal)
 	local widget, method, ret, subItem, retAction, value, i, condVal, chkVal
 	local iArr
-	local e, c, p, params:=array(0)
+	local e, c, p, params:=array(0), tmp
 
 	if tag:getName() == "returnedvalue"
-		//?? "returned value:", addVal, chr(10)
+		if DEBUG; ?? "returned value:", addVal, chr(10); endif
 		return addVal
 	endif
 	if tag:getName() == "property"

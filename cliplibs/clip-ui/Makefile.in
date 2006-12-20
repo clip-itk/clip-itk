@@ -25,6 +25,8 @@ OBJS    = button.o checkbox.o choice.o color.o combobox.o edit.o \
 		  layout.o menu.o progressbar.o radiobutton.o slider.o source.o \
 		  table.o timer.o toolbar.o tree.o utils.o window.o workspace.o
 
+LANGS   = ru_RU.KOI8-R
+
 .PHONY: all clean uninstall distclean
 
 all: var.ch driver $(TARGET)
@@ -56,8 +58,8 @@ install: all
 	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-ui/
 	mkdir -p $(DESTDIR)$(CLIPROOT)/locale.po
 	cd locale.po && \
-	for i in *; do mkdir -p $(DESTDIR)$(CLIPROOT)/locale.po/$$i/ && \
-	$(CLIPROOT)/bin/clip_cp $$i/* $(DESTDIR)$(CLIPROOT)/locale.po/$$i/; done
+	for i in $(LANGS); do mkdir -p $(DESTDIR)$(CLIPROOT)/locale.po/$$i/ && \
+	$(CLIPROOT)/bin/clip_cp $$i/*.po $(DESTDIR)$(CLIPROOT)/locale.po/$$i/; done
 	
 uninstall:
 	cd drivers && $(MAKE) uninstall

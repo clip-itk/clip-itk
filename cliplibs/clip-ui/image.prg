@@ -1628,7 +1628,7 @@ return obj
 function getSysImage( id )
 	local idImages := array(5)
 	idImages[IMG_EMPTY] 	:= empty_xpm	// Empty transparent pixmap
-	idImages[IMG_OK] 	:= info_xpm	// i
+	idImages[IMG_OK] 		:= info_xpm	// i
 	idImages[IMG_ERROR] 	:= error_xpm	// Error (cross on red field)
 	idImages[IMG_WARNING] 	:= warning_xpm  // Exclamation mark
 	idImages[IMG_QUESTION] 	:= question_xpm // ?

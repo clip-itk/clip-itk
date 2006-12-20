@@ -486,15 +486,13 @@ return
 
 /* EditTable widget */
 static function EditTableWidget( w )
-	local table, columns:={}, c, b, tA, t1, t2, t3
+	local table, columns:={}, b, tA, t1, t2, t3
 	
 	//? 'create columns'
 	aadd( columns, UITableColumn( 'num', 	'#', 		TABLE_COLUMN_COUNTER ) )
 	aadd( columns, UITableColumn( 'name', 	'Name', 	TABLE_COLUMN_CHOICE ) )
 	aadd( columns, UITableColumn( 'unit', 	'Units', 	TABLE_COLUMN_COMBO ) )
-	c := 		   UITableColumn( 'date',	'Date', 	TABLE_COLUMN_DATE)
-	c:editable := .F.
-	aadd( columns, c )
+	aadd( columns, UITableColumn( 'date',	'Date', 	TABLE_COLUMN_DATE ) ) 
 	aadd( columns, UITableColumn( 'qty', 	'Quantity', TABLE_COLUMN_NUMBER ) )
 	aadd( columns, UITableColumn( 'price', 	'Price', 	TABLE_COLUMN_NUMBER ) )
 	aadd( columns, UITableColumn( 'sum', 	'Sum', 		TABLE_COLUMN_NUMBER ) )
@@ -503,12 +501,17 @@ static function EditTableWidget( w )
 	
 	// Lookup at second columns
 	columns[2]:lookup := .T.
-	columns[3]:default := 'bottle'
-	columns[8]:default := .T.
-	columns[5]:format := "%.0f"
 	columns[2]:source := UISource( "names" )
-	columns[3]:source := UISource( { "barrel", "pint" } )
 	
+	columns[3]:source := UISource( { "barrel", "pint" } )
+	columns[3]:default := 'bottle'
+	
+	columns[4]:editable := .F.
+	
+	columns[5]:format := "%.0f"
+	
+	columns[8]:default := .T.
+		
 	//? 'create UIEditTable'
 	//w:setPadding( 3 )
 	table := UIEditTable( columns )

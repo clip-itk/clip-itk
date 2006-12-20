@@ -307,7 +307,7 @@
 			<action><call method="openForm">
 				<param><property widget="mainWindow" name="object" /></param>
 				<param value="selection.xfl" />
-				<param><property widget="eTable1" name="getField" /></param>
+				<param><call widget="eTable1" method="getField" /></param>
 				<return>
 					<call widget="eTable1" method="setField">
 						<param><returnedvalue /></param>
