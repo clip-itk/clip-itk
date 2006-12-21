@@ -49,7 +49,7 @@
                 </widget>
             </widget>
 		<widget class="tabarea">
-		<widget class="tab" label="Basic widgets">
+		<widget class="tab" name="tab1" label="Basic widgets">
 	    <widget class="vsplitter">
 			<property name="position" value="210" />
 		    <widget class="hsplitter">
@@ -122,19 +122,6 @@
 				<property name="value" value="3" />
 			</widget>
 			
-			<widget class="hbox">
-				<property name="spacing" value="3" />
-				<widget class="label" label="Color:" />
-				<widget name="color" class="editcolor" label="">
-						<property name="geometry.width" value="70" />
-						<property name="value" value="#91FF40" />
-				</widget>
-				<widget class="label" label="File:" />
-				<widget name="file" class="editfilename" label="">
-						<property name="value" value="testWindow.xfl" />
-				</widget>
-			</widget>
-			
 			<!-- Payer -->
 			<widget class="frame" label="Payer">
 				<property name="color.bg" value="green" />
@@ -190,7 +177,30 @@
 		    </widget>
 	    </widget>
 	    
-	    <widget class="tab" label="Editable table">
+	    <widget class="tab" name="tab2+" label="Other widgets">
+		  <!--<widget class="vbox" name="vb2+">-->
+	    	<!-- Other widgets -->
+	    	<widget class="grid" name="grid2" cols="2" rows="5">
+	    		<widget class="label" name="title2" label="Other widgets" pos="1,1" />
+	    		<widget class="label" label="File name:" pos="2,1" />
+	    		<widget class="editFileName" name="filename+" pos="2,2" />
+	    		<widget class="label" label="Color:" pos="3,1" />
+	    		<widget class="editColor" name="color" pos="3,2">
+	    			<property name="value" value="#9C78FF" />
+				</widget>
+	    		<widget class="label" label="Icon:" pos="4,1" />
+	    		<widget class="hbox" pos="4,2" >
+	    			<widget class="image" label="icons/folder.xpm" />
+	    			<widget class="label" name="spacer+" label="" />
+				</widget>
+	    		<widget class="label" label="Progress:" pos="5,1" />
+	    		<widget class="progressbar" pos="5,2" label="Processing...">
+					<property name="value" value="71" />
+				</widget>
+	    	</widget>
+			
+			<!-- Editable table -->    
+			<widget class="label" label="Table with editable cells:" />
 			<widget class="edittable" name="eTable1+">
 				<column name="num" 	title="#" />
 				<column name="name" title="Name" />
@@ -223,7 +233,9 @@
 				<property name="row" element="2" value="2,'3','2','20.10.03',15,2.5,0,.F.,'Cold and tasty'" />
 				<property name="row" element="3" value="3,'2','1','20.10.03',15,2.3,0,.T.,''" />
 			</widget>
+	      <!--/widget-->
 	    </widget>
+	    
 	    </widget>
             
 	    <!-- Statusbar -->
@@ -237,6 +249,10 @@
 			<property widget="mainWindow" name="geometry" value="650,550,35,15" />
 			<property widget="mainWindow" name="position" value="center" />
 			<property widget="mainWindow" name="icon" value="icons/eas-logo.xpm" />
+			<property widget="grid2"      name="padding" value="15" />
+			<property widget="tab1"       name="padding" value="5" />
+			<property widget="tab2"       name="padding" value="5" />
+			<property widget="title2"     name="font.style" value="bold" />
 	</style>
 
 	<!-- Actions -->

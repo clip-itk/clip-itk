@@ -1,0 +1,1384 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>mainWindow</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>mainWindow</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>556</width>
+            <height>530</height>
+        </rect>
+    </property>
+    <property name="baseSize">
+        <size>
+            <width>650</width>
+            <height>550</height>
+        </size>
+    </property>
+    <property name="caption">
+        <string>clip-ui</string>
+    </property>
+    <property name="icon">
+        <pixmap>image0</pixmap>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>0</number>
+        </property>
+        <widget class="QTabWidget">
+            <property name="name">
+                <cstring>tab_area</cstring>
+            </property>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>tab1</cstring>
+                </property>
+                <attribute name="title">
+                    <string>Basic widgets</string>
+                </attribute>
+                <vbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <property name="margin">
+                        <number>5</number>
+                    </property>
+                    <widget class="QSplitter">
+                        <property name="name">
+                            <cstring>splitter3</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <widget class="QSplitter">
+                            <property name="name">
+                                <cstring>splitter2</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <widget class="QListView">
+                                <column>
+                                    <property name="text">
+                                        <string>N1</string>
+                                    </property>
+                                    <property name="clickable">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="resizable">
+                                        <bool>true</bool>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>N2</string>
+                                    </property>
+                                    <property name="clickable">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="resizable">
+                                        <bool>true</bool>
+                                    </property>
+                                </column>
+                            <item>
+                                <property name="text">
+                                    <string>Node1</string>
+                                </property>
+                                <property name="text">
+                                    <string>node1111</string>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <item>
+                                    <property name="text">
+                                        <string>Leaf1</string>
+                                    </property>
+                                    <property name="text">
+                                        <string></string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>Leaf2</string>
+                                    </property>
+                                    <property name="text">
+                                        <string></string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>Leaf5</string>
+                                    </property>
+                                    <property name="text">
+                                        <string>Leaf5</string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>Leaf3</string>
+                                    </property>
+                                    <property name="text">
+                                        <string></string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                </item>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>Node2</string>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <item>
+                                    <property name="text">
+                                        <string>Leaf3333</string>
+                                    </property>
+                                    <property name="text">
+                                        <string></string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                    <item>
+                                        <property name="text">
+                                            <string>Leaf333</string>
+                                        </property>
+                                        <property name="text">
+                                            <string></string>
+                                        </property>
+                                        <property name="pixmap">
+                                            <pixmap></pixmap>
+                                        </property>
+                                        <property name="pixmap">
+                                            <pixmap></pixmap>
+                                        </property>
+                                        <item>
+                                            <property name="text">
+                                                <string>Leaf33</string>
+                                            </property>
+                                            <property name="text">
+                                                <string></string>
+                                            </property>
+                                            <property name="pixmap">
+                                                <pixmap></pixmap>
+                                            </property>
+                                            <property name="pixmap">
+                                                <pixmap></pixmap>
+                                            </property>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                                <property name="name">
+                                    <cstring>listView1</cstring>
+                                </property>
+                            </widget>
+                            <widget class="QListView">
+                                <column>
+                                    <property name="text">
+                                        <string>Date</string>
+                                    </property>
+                                    <property name="clickable">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="resizable">
+                                        <bool>true</bool>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>Payee</string>
+                                    </property>
+                                    <property name="clickable">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="resizable">
+                                        <bool>true</bool>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>Sum</string>
+                                    </property>
+                                    <property name="clickable">
+                                        <bool>true</bool>
+                                    </property>
+                                    <property name="resizable">
+                                        <bool>true</bool>
+                                    </property>
+                                </column>
+                            <item>
+                                <property name="text">
+                                    <string>20.10.03</string>
+                                </property>
+                                <property name="text">
+                                    <string>Lighthouse</string>
+                                </property>
+                                <property name="text">
+                                    <string>20000.00</string>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>20.10.03</string>
+                                </property>
+                                <property name="text">
+                                    <string>Phoenix</string>
+                                </property>
+                                <property name="text">
+                                    <string>5689.20</string>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>21.10.03</string>
+                                </property>
+                                <property name="text">
+                                    <string>Turbo</string>
+                                </property>
+                                <property name="text">
+                                    <string>1500.00</string>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>25.10.03</string>
+                                </property>
+                                <property name="text">
+                                    <string>Real trade</string>
+                                </property>
+                                <property name="text">
+                                    <string>799.00</string>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                                <property name="pixmap">
+                                    <pixmap></pixmap>
+                                </property>
+                            </item>
+                                <property name="name">
+                                    <cstring>listView2</cstring>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QLayoutWidget">
+                            <property name="name">
+                                <cstring>layout6</cstring>
+                            </property>
+                            <vbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <property name="spacing">
+                                    <number>0</number>
+                                </property>
+                                <widget class="QCheckBox">
+                                    <property name="name">
+                                        <cstring>tax</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Use &amp;tax</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+T</string>
+                                    </property>
+                                    <property name="checked">
+                                        <bool>false</bool>
+                                    </property>
+                                </widget>
+                                <widget class="QButtonGroup">
+                                    <property name="name">
+                                        <cstring>buttonGroup1</cstring>
+                                    </property>
+                                    <property name="frameShadow">
+                                        <enum>Plain</enum>
+                                    </property>
+                                    <property name="lineWidth">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="title">
+                                        <string></string>
+                                    </property>
+                                    <vbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <property name="margin">
+                                            <number>0</number>
+                                        </property>
+                                        <widget class="QRadioButton">
+                                            <property name="name">
+                                                <cstring>button1</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>button1</string>
+                                            </property>
+                                        </widget>
+                                        <widget class="QRadioButton">
+                                            <property name="name">
+                                                <cstring>button2</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>button2</string>
+                                            </property>
+                                        </widget>
+                                    </vbox>
+                                </widget>
+                                <widget class="QSlider">
+                                    <property name="name">
+                                        <cstring>slider</cstring>
+                                    </property>
+                                    <property name="minValue">
+                                        <number>5</number>
+                                    </property>
+                                    <property name="maxValue">
+                                        <number>60</number>
+                                    </property>
+                                    <property name="lineStep">
+                                        <number>5</number>
+                                    </property>
+                                    <property name="pageStep">
+                                        <number>5</number>
+                                    </property>
+                                    <property name="value">
+                                        <number>10</number>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                </widget>
+                                <widget class="QLayoutWidget">
+                                    <property name="name">
+                                        <cstring>layout5</cstring>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QLabel">
+                                            <property name="name">
+                                                <cstring>textLabel1</cstring>
+                                            </property>
+                                            <property name="paletteForegroundColor">
+                                                <color>
+                                                    <red>255</red>
+                                                    <green>23</green>
+                                                    <blue>144</blue>
+                                                </color>
+                                            </property>
+                                            <property name="font">
+                                                <font>
+                                                    <bold>1</bold>
+                                                </font>
+                                            </property>
+                                            <property name="text">
+                                                <string>Payment order N</string>
+                                            </property>
+                                        </widget>
+                                        <widget class="QLineEdit">
+                                            <property name="name">
+                                                <cstring>number</cstring>
+                                            </property>
+                                            <property name="maximumSize">
+                                                <size>
+                                                    <width>50</width>
+                                                    <height>32767</height>
+                                                </size>
+                                            </property>
+                                            <property name="text">
+                                                <string>11</string>
+                                            </property>
+                                        </widget>
+                                        <widget class="QLabel">
+                                            <property name="name">
+                                                <cstring>textLabel2</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>from</string>
+                                            </property>
+                                        </widget>
+                                        <widget class="QDateEdit">
+                                            <property name="name">
+                                                <cstring>dateEdit2</cstring>
+                                            </property>
+                                            <property name="maximumSize">
+                                                <size>
+                                                    <width>70</width>
+                                                    <height>32767</height>
+                                                </size>
+                                            </property>
+                                            <property name="date">
+                                                <date>
+                                                    <year>2003</year>
+                                                    <month>10</month>
+                                                    <day>20</day>
+                                                </date>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>textLabel3</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Person:</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLayoutWidget">
+                                    <property name="name">
+                                        <cstring>choice_person</cstring>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QLineEdit">
+                                            <property name="name">
+                                                <cstring>person</cstring>
+                                            </property>
+                                        </widget>
+                                        <widget class="QPushButton">
+                                            <property name="name">
+                                                <cstring>button_person</cstring>
+                                            </property>
+                                            <property name="sizePolicy">
+                                                <sizepolicy>
+                                                    <hsizetype>0</hsizetype>
+                                                    <vsizetype>0</vsizetype>
+                                                    <horstretch>0</horstretch>
+                                                    <verstretch>0</verstretch>
+                                                </sizepolicy>
+                                            </property>
+                                            <property name="text">
+                                                <string>...</string>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QGroupBox">
+                                    <property name="name">
+                                        <cstring>payer2</cstring>
+                                    </property>
+                                    <property name="paletteBackgroundColor">
+                                        <color>
+                                            <red>0</red>
+                                            <green>255</green>
+                                            <blue>0</blue>
+                                        </color>
+                                    </property>
+                                    <property name="frameShadow">
+                                        <enum>Raised</enum>
+                                    </property>
+                                    <property name="title">
+                                        <string>Payer</string>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QComboBox">
+                                            <property name="name">
+                                                <cstring>payer</cstring>
+                                            </property>
+                                            <property name="editable">
+                                                <bool>false</bool>
+                                            </property>
+                                            <property name="currentItem">
+                                                <number>0</number>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QGroupBox">
+                                    <property name="name">
+                                        <cstring>groupBox1</cstring>
+                                    </property>
+                                    <property name="frameShadow">
+                                        <enum>Sunken</enum>
+                                    </property>
+                                    <property name="title">
+                                        <string>Payee</string>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QComboBox">
+                                            <item>
+                                                <property name="text">
+                                                    <string>JSC "Lighthouse"</string>
+                                                </property>
+                                            </item>
+                                            <item>
+                                                <property name="text">
+                                                    <string>JSC "Ronal"</string>
+                                                </property>
+                                            </item>
+                                            <item>
+                                                <property name="text">
+                                                    <string>JSC "Porechnoye"</string>
+                                                </property>
+                                            </item>
+                                            <property name="name">
+                                                <cstring>payee</cstring>
+                                            </property>
+                                            <property name="currentItem">
+                                                <number>2</number>
+                                            </property>
+                                            <property name="autoCompletion">
+                                                <bool>true</bool>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QLayoutWidget">
+                                    <property name="name">
+                                        <cstring>layout3</cstring>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QLabel">
+                                            <property name="name">
+                                                <cstring>textLabel5</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>&amp;Sum:</string>
+                                            </property>
+                                            <property name="buddy" stdset="0">
+                                                <cstring>sum</cstring>
+                                            </property>
+                                        </widget>
+                                        <widget class="QLineEdit">
+                                            <property name="name">
+                                                <cstring>sum</cstring>
+                                            </property>
+                                            <property name="paletteForegroundColor">
+                                                <color>
+                                                    <red>255</red>
+                                                    <green>0</green>
+                                                    <blue>0</blue>
+                                                </color>
+                                            </property>
+                                            <property name="paletteBackgroundColor">
+                                                <color>
+                                                    <red>194</red>
+                                                    <green>210</green>
+                                                    <blue>255</blue>
+                                                </color>
+                                            </property>
+                                            <property name="text">
+                                                <string>20000.00</string>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>textLabel6</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Description:</string>
+                                    </property>
+                                </widget>
+                                <widget class="QTextEdit">
+                                    <property name="name">
+                                        <cstring>reason</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>7</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                        <size>
+                                            <width>0</width>
+                                            <height>32</height>
+                                        </size>
+                                    </property>
+                                    <property name="maximumSize">
+                                        <size>
+                                            <width>32767</width>
+                                            <height>32</height>
+                                        </size>
+                                    </property>
+                                    <property name="text">
+                                        <string>For delivered goods.</string>
+                                    </property>
+                                    <property name="wordWrap">
+                                        <enum>WidgetWidth</enum>
+                                    </property>
+                                </widget>
+                                <widget class="QFrame">
+                                    <property name="name">
+                                        <cstring>frame4</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>5</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                        <size>
+                                            <width>0</width>
+                                            <height>40</height>
+                                        </size>
+                                    </property>
+                                    <property name="frameShape">
+                                        <enum>NoFrame</enum>
+                                    </property>
+                                    <property name="frameShadow">
+                                        <enum>Plain</enum>
+                                    </property>
+                                    <widget class="QPushButton">
+                                        <property name="name">
+                                            <cstring>save</cstring>
+                                        </property>
+                                        <property name="geometry">
+                                            <rect>
+                                                <x>0</x>
+                                                <y>0</y>
+                                                <width>65</width>
+                                                <height>24</height>
+                                            </rect>
+                                        </property>
+                                        <property name="text">
+                                            <string>Save</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QPushButton">
+                                        <property name="name">
+                                            <cstring>print</cstring>
+                                        </property>
+                                        <property name="enabled">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="geometry">
+                                            <rect>
+                                                <x>60</x>
+                                                <y>0</y>
+                                                <width>65</width>
+                                                <height>24</height>
+                                            </rect>
+                                        </property>
+                                        <property name="text">
+                                            <string>Print</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QPushButton">
+                                        <property name="name">
+                                            <cstring>close</cstring>
+                                        </property>
+                                        <property name="geometry">
+                                            <rect>
+                                                <x>120</x>
+                                                <y>10</y>
+                                                <width>65</width>
+                                                <height>24</height>
+                                            </rect>
+                                        </property>
+                                        <property name="text">
+                                            <string>Close</string>
+                                        </property>
+                                    </widget>
+                                </widget>
+                            </vbox>
+                        </widget>
+                    </widget>
+                </vbox>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>tab2</cstring>
+                </property>
+                <attribute name="title">
+                    <string>Other widgets</string>
+                </attribute>
+                <vbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <property name="margin">
+                        <number>5</number>
+                    </property>
+                    <widget class="QLayoutWidget">
+                        <property name="name">
+                            <cstring>layout11</cstring>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>15</number>
+                            </property>
+                            <widget class="QLayoutWidget" row="1" column="1">
+                                <property name="name">
+                                    <cstring>filename_filename</cstring>
+                                </property>
+                                <hbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLineEdit">
+                                        <property name="name">
+                                            <cstring>filename</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>7</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                    </widget>
+                                    <widget class="QPushButton">
+                                        <property name="name">
+                                            <cstring>button_filename</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>...</string>
+                                        </property>
+                                    </widget>
+                                </hbox>
+                            </widget>
+                            <widget class="QLabel" row="2" column="0">
+                                <property name="name">
+                                    <cstring>textLabel2_2_2</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>1</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string>Color:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLayoutWidget" row="3" column="1" rowspan="2" colspan="1">
+                                <property name="name">
+                                    <cstring>layout10</cstring>
+                                </property>
+                                <hbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLabel">
+                                        <property name="name">
+                                            <cstring>pixmapLabel1</cstring>
+                                        </property>
+                                        <property name="pixmap">
+                                            <pixmap>image1</pixmap>
+                                        </property>
+                                        <property name="scaledContents">
+                                            <bool>false</bool>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel">
+                                        <property name="name">
+                                            <cstring>textLabel4</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string></string>
+                                        </property>
+                                    </widget>
+                                </hbox>
+                            </widget>
+                            <widget class="QLabel" row="4" column="0" rowspan="2" colspan="1">
+                                <property name="name">
+                                    <cstring>textLabel5_2</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>1</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string>Progress:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLayoutWidget" row="2" column="1">
+                                <property name="name">
+                                    <cstring>color_color</cstring>
+                                </property>
+                                <hbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLineEdit">
+                                        <property name="name">
+                                            <cstring>color</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>#9C78FF</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QPushButton">
+                                        <property name="name">
+                                            <cstring>button_color</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>...</string>
+                                        </property>
+                                    </widget>
+                                </hbox>
+                            </widget>
+                            <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>title2</cstring>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <bold>1</bold>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Other widgets</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="1" column="0">
+                                <property name="name">
+                                    <cstring>textLabel2_2</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>1</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string>File name:</string>
+                                </property>
+                            </widget>
+                            <widget class="QProgressBar" row="5" column="1">
+                                <property name="name">
+                                    <cstring>progressBar1</cstring>
+                                </property>
+                                <property name="progress">
+                                    <number>71</number>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="3" column="0">
+                                <property name="name">
+                                    <cstring>textLabel3_2</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>1</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string>Icon:</string>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QLabel">
+                        <property name="name">
+                            <cstring>textLabel6_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Table with editable cells:</string>
+                        </property>
+                    </widget>
+                    <widget class="QTable">
+                        <column>
+                            <property name="text">
+                                <string>#</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Name</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Units</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Date</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Quantity</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Price</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Sum</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>VAT</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Comment</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </column>
+                        <row>
+                            <property name="text">
+                                <string>1</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </row>
+                        <row>
+                            <property name="text">
+                                <string>2</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </row>
+                        <row>
+                            <property name="text">
+                                <string>3</string>
+                            </property>
+                            <property name="pixmap">
+                                <pixmap></pixmap>
+                            </property>
+                        </row>
+                        <property name="name">
+                            <cstring>eTable1</cstring>
+                        </property>
+                        <property name="numRows">
+                            <number>3</number>
+                        </property>
+                        <property name="numCols">
+                            <number>9</number>
+                        </property>
+                        <property name="selectionMode">
+                            <enum>Single</enum>
+                        </property>
+                        <property name="focusStyle">
+                            <enum>FollowStyle</enum>
+                        </property>
+                    </widget>
+                </vbox>
+            </widget>
+        </widget>
+    </vbox>
+</widget>
+<menubar>
+    <property name="name">
+        <cstring>MenuBar</cstring>
+    </property>
+    <item text="&amp;Journal" name="Journal">
+        <action name="Menu_Bank_PaymentOrder_List"/>
+        <action name="Menu_Bank_PaymentOrder_Create"/>
+        <separator/>
+        <action name="Menu_Quit"/>
+    </item>
+    <item text="&amp;Settings" name="Settings">
+        <action name="showTB"/>
+        <action name="showSB"/>
+        <separator/>
+        <action name="settings"/>
+    </item>
+</menubar>
+<toolbars>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>main_toolbar</cstring>
+        </property>
+        <property name="frameShadow">
+            <enum>Raised</enum>
+        </property>
+        <property name="movingEnabled">
+            <bool>false</bool>
+        </property>
+        <property name="label">
+            <string>Toolbar</string>
+        </property>
+        <widget class="QToolButton">
+            <property name="name">
+                <cstring>TB_Bank_PaymentOrder_List</cstring>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="iconSet">
+                <iconset>image2</iconset>
+            </property>
+            <property name="textLabel">
+                <string>Payment orders</string>
+            </property>
+        </widget>
+        <widget class="QToolButton">
+            <property name="name">
+                <cstring>TB_Bank_PaymentOrder_Create</cstring>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="iconSet">
+                <iconset>image3</iconset>
+            </property>
+            <property name="textLabel">
+                <string>Create payment order</string>
+            </property>
+        </widget>
+        <widget class="QToolButton">
+            <property name="name">
+                <cstring>TB_Partner_List</cstring>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="iconSet">
+                <iconset>image4</iconset>
+            </property>
+            <property name="textLabel">
+                <string>Partners</string>
+            </property>
+        </widget>
+    </toolbar>
+</toolbars>
+<actions>
+    <action>
+        <property name="name">
+            <cstring>Menu_Quit</cstring>
+        </property>
+        <property name="text">
+            <string>Exit</string>
+        </property>
+        <property name="menuText">
+            <string>E&amp;xit</string>
+        </property>
+        <property name="accel">
+            <string></string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>Menu_Bank_PaymentOrder_List</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image2</iconset>
+        </property>
+        <property name="text">
+            <string>&amp;Payment orders</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>Menu_Bank_PaymentOrder_Create</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image3</iconset>
+        </property>
+        <property name="text">
+            <string>&amp;Create payment order</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Create payment order</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>showTB</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="text">
+            <string>Show &amp;toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>Show &amp;toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>showSB</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="text">
+            <string>Show &amp;statusbar</string>
+        </property>
+        <property name="menuText">
+            <string>Show &amp;statusbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>settings</cstring>
+        </property>
+        <property name="text">
+            <string>&amp;Configure...</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Configure...</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>fileJournalAction</cstring>
+        </property>
+        <property name="text">
+            <string>&amp;Journal</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Journal</string>
+        </property>
+    </action>
+</actions>
+<images>
+    <image name="image0">
+        <data format="PNG" length="766">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff61000002c549444154388d7d93df6b9b6514c73fcff33e6f922669b3f64d679252932ea6befec0ca2a520561775e78a7e285bbd0fd03bb99775e8c818817fe07036582b08b816c78a1a0e89cb413a46b99a25d5256cb523b9ab56bde34cd9bf7c7f1a2b62e889ecb73f87cbfe71cce51f3f3f3fc5f7c530f65cd33787d45cef83c3de23137eda8c3baf92ff0d2b296a5ed2c815803f95bbbe32c6e34e4d5498f6af584fa97c0cff702b9b23a8a17d96815a308208e0010208c35bf4465d277bec38f9101816f5763b9b69e27148d6d22dcd93cc6d6a00014a1df67f1eb65922363f8afbcc9f2ca75f4516bcd40aefd31fa08ec60d91a51202220315b8d3bf45b759e79691293cef0203bf1cf0e2e374689d0583ac69dcd63a7532c5cbc48a7d544c5210804a1902d56b187d2f8ed5dee5efae040e0d3252d7b918d005a85d89914c97496b933ef2212a310badbbb2c5efd8ab9d36f00b0f0e1594a3a4037b77bb2b4330c70e0fec2711243197abb3b7fc31074f7b9f9d9272805f65006bfe341bb49b150c0dc6ed944a21f711f22e8eef1fdc717f0bb1d2c2b4918c4a4f213bcf8f6eb00dcf8e81c3915522e97316b6d33e09e4c670138f5de794462c26e8f9f2e5f61eef45b64c60b74369b58ad3a956a994aa582d90b0e8e4ae288fd7617cbdee6f0cc148a87f7d691a08f00defd3fb9f1fe3b38290bd77529140a98acd507200c85df16eaec377fc57fb0461cf440699495c0ca8e73f3f3ab84bf7f492e7ac8ccc993b8ae4bb15854e6c9e136b7bd3c5a1b488d913cee620d17912804401b1b15f648d6bfe0b16331d5eacbcccccce0baae0230a79e1a53b736efca6a5c4127322446932472c583b1822e6afd07729bd7997c7c9c5a6d964aa542ad561b7ca6d7265afcb8b2427def18fba410dfc3da6990ed34c88f249978fe59cae532a5528952a974041f094c4fd794d64a9ed8d8606b6b0b3ff63125432ef71c8ee3e0380e53535303e061fc052a131dc96edf98cc0000000049454e44ae426082</data>
+    </image>
+    <image name="image1">
+        <data format="PNG" length="3193">89504e470d0a1a0a0000000d49484452000000300000003008060000005702f98700000c40494441546881d59a7b7454d5bdc73f67cebc67320921e405e405c410a21844b05a500ab5d0e2b26aa53578ad5dda25775daf5dabd68a5ea9f7e5bdffe0b315efad78a58a1651ee92a59462131f21ca450a8884105e09212481c96b6692cce3cc3967df3fce4c6632992484d5eabdbfb5f63a67ce9e7dcef7fbfb7d7fbfb3f79e913efbec33fe3f9bf9eb0670c7b321a1eba0ab1a3b1f754b931d6ffa6b80ba54fbc10b5151b3a288fafff8165796655ed63dbe16023f7c4913cf7fec115b9fbc9e82cad9fccb9f4064e4f3bd274e0a80db9e0e890f4ee5895b9e0a8889eef5954aa866336246b69ddf3f5149bb66e3ad5310558c3ed96ac69957cab3756eb16fd362b6d476839858515f0981bfd962121976338fd794503e772abbcf4060c8e8f3f5299c683c41a65961eb630bb8e8d7b8e99163f4fa050e619df0de7f7502f7bc6e150fdf3e9305f373d9d7057f3c034a144221683ed6ce80d7cbdf7e673a5795e7f3abd70638d0d88d2e74acb841f47f7d047eb2cd2e6e9e9fcdf65f15736a106acf81a2197d279b7b3873a28365f33278e0de6bd8f2296cda02be5e2bc836d042988505743ba07fb504eedfe1128b677bd8fcd074749785fa8b09e0dddd2afbf79fa628cbc46fffae9233fd161e7c13fa078dfe8c0c1b815e1910985481d0cc7cfb178de24f1bcbc74c864b22f0e8e132b1a0d0c6f97e85f68b033c77a377d40d1fd8e9118553ac3cb5b690f2d92ef67580d26bf40d0e41c3fe730cf907f9c5eae9941765b2710fb47a211c19894632c948b890551d55b780641f17dbb8041e6f9c23be5be1e4dd9f3a715ac00f6caa75f2d0478817962548fcb22e473cb46a1a4babb338e68383178deb8a025f34073878b483db1666b3f6c622de3800bfdb09e130883445d2939941c01b06350a513bc2649b3c810dc72bc492523beffec4418619bcc0a00055879aa56e66e53bf8f59fddc229e95415da79fb91291cf7c3317f422e27ce46a83fd4c1558536defad95c1abdf0e42e0829067041ec98422233cb49b84b46d714842a904ce357a2110436345788028f99dfdc9641c51418007a189d46d5b364e695e4a1eb207438ea074535face7743c3975eb4708467ee9a8964b5b0f900f40e2640231224522d2a814b9609e9203481248daff2e1de0dcd1562699983276eb42361808f8e3b145491f07858813f1e0cd0da11e0ee45595c7f452e1f9c8433dd86d721c9f349444659102cb295a030a16b51c0cab7fefea0f8f0d7d7a44de4c454429278e2463b26203c01f074f6fe013fd15098adf7cf207baa9b6d47a0c31fc3281272496da32c1006c98224c9e842428f38912c63cf934ca91fc6afbae9ed423f74760779e5ee5c3e3e07cddd2335ae335af76903300442d1d07409936c412023a23624b37b620242d738e1bb0cf4409b57616191838b61f00ea6808c6b9e84c793a3326c2a301046e8207481d56a4708097413a86357a204014de564b77e59d3d3aebe08e57936ba874603879192d1938ec3a6037e15a1eae842a0eba0ea3236ab054996411bbb120de33599adccc9b9bcd975eb8520d7163b680f8cf4be2e18adf7a4f361927e0d115587ab9ad041d70592d986643623222e96fffc74daa9b50960c389b9e2be451e2aa64c5c7952adee4818872ca8cc85f3fe31bc0fa3642504a08114d01051cd002f0cf908ddf8a26cb56136cb489a7bcc3c3003b86d26ee9a274f2a81fb06616bbd8fa14185e7d6e4b3efe2484fa7029e73f2732251e8709770ce950b0a98867454553700c7800b7de43887d3c19dcb43ec6b4d2f2333406028c4476d1e9615837609e0771f895277d4c7adf35cac5998c5412f7426793fe6403c5e2fabdedfc837f4d3584a8a4196115e85b6432decb67e8377e6aec38707a1834bf133bfab816aefa75ca1b6229796d277be07f337e79375c375383d192c7fe888a87b61fe88f78119e0a9792dd28ee36eb1acd8352ef0f63e78a53e4034a2f1dcedd370ba616f97f1124bf5f8dc0fb7b3b2fb13a63ebc160a0b8c8bd128582ccc9165e6ec6de0fbff7a33afe4fe1857c8c79aae3729acb915ebf7d7c0cc992049c6a2e1c811fa5f7d9aa1394bd86c2f4d1f018083ed61fcaa0b579a377750811d87a37c706c90fb16bab9e32a0b5ff8e16c5ffa9259b2ef036e573ec7f1f083303404e7cf832c835906d90cb209aa2a297af5373cfaf2662c05f958eed80a363b20812fb690b15aa1fa6aa6cc9fcfb75fdfca1dbd7b813b47609392f7858e98aac5bac576421865390a9cf1c1d3b5034cb19b58bfcc85dd05ad03c6f4201431bc1f8ac43e2ba0f529fcf0c51a0a9e7c1cfa7a0dafc7819bcd0611593648984c090f98cd49b5563774a869c6b9c5029e4cc2bfdfc60fdeeae51f5e5d3b2ca311fe7eaf7180fb171b73a1b8bdbe3fc4f2323bf72db07016e88aa4495612d7cafffb790aeea981b63688840d6016f3d80424c9688a927423dd00aee906094d83fe7eecb7ace69f3ffa2752961009f305827c7246e3a659f270396dea8af0e812076d40441f0d385942089875ea1358550e5d5d0670734a1b8b406cfc70198a13d035e3a8aa3038c8bc95d773682c021bafeb945efedc2596cfca19be569c6d615001d999f2524a99d30801d62e2fb9b367c0d9b3c67e89c5128b80c590513201531a02f190ea7aa2c5a3a0aaa069d8ae281f9103a352f6784790a66e289b66e480cb66a22b00b3b32092e4e9d428683ad83a5bb1ba9c70f1a2e17d8b2541c26c8ee5423201194c120c8b3679ce911c010dd4d8515160fd6382d75e93d21278e6860e69e7e14cf1d8cd990481b9f9560e9e8f505564c397aa7912e0150d2c0224558381009863e0e344e4a40898278a405214e239106f42a001f258110078f7b08f753765225ba1385be68de641d6611ba5f9f8b394a4dc08efdc89f3ca2ac8cb058b75741e8c97039034db4b4340d550dbdbf17774903d1e81e796764a9bea3ce2f15553985b009dfe2881482cd2292494f8042c4626140ac1b936f0f920771ab8dde909c4233042428c94d03001ddc8a99e1ec2cd27c8aeab4b5f4693adf6989f5fae9a82db0c15f9569a3a74a6cf34114af38cf8e7deaac578651bd3230af87d100c82d3019999e07426a4148f801423902aa1b82e756194e2c08071bf48049f6fe4a2654c023edf00af7f1a60ed0d1e169638f9f8e420eb4a3df8c309f9281a4965c8b8d672cd6aca0fedc4e576c5b4ac199b3f66196c36a3c52b535c42f1175a9c80a2182fc070d838aab12aa44438e5f393bc5334e60260d3f706a52df5dd48c0a2523307da42644ba31726a92df79e1f736e68c800118918e02361e33834047e3ff4f7434f4fac7583d70bddb1a3d70b7d7dc6f782a1c4f848840bbdfdd893e4336e04007cfd7e5eabf7b3766926768bc497ed3a22d384c0d8234aae46f96eb8e55ac8342fe6f4873574bfbd9d694e6722016535567dd225702cb920e6999477801068a130477c3e3c2918c75d82fde76d11e9f93f74100ac375652e3e6c1e20c79a8840fc993714c1dd574266cc1db39f7d86737979a8f1cdff7824c2114316a1588b9f874349e749fd9188213549e2606f2f9e14ef4f4800e0b7b7faa5e7775d604db58bbaa60039f644e2663be0ae2aa8ce491964b753f5ce0e3e1f1834bc9be13172210e301c4e0f38b95f9220270764993f7774a2edd933c1bed038b6bda18bc10115b7d54463ab8a2ee0aa69b0720638c718639b5bc1cc175f627f4f8f2197fc0270d847824f1709250ad95361c64c1082fd675a88eede3de6eef42511f8af3561e91fb7b570ebd599bc77a89fefe4c3ecb190c72c188cb2cdbc889716fc8ccfce9e3548949641492944d5a448848c854b3804763b54564261210c0cb0afe938fa38e02f990040634b3f3d3d416a8ffa5027f86e538b8f1ffddb976cdcd1c603fffe5d49dab3476a686a8240008a8b61e952c8cf37341e518ca9f6fcabe1da45909d8d72e1027f387a1426000f290b9a89ecc1771c62ceec6cee5d3a8d95f31ca3fa5555f0d27b6d6c7abf83deae56766e98350240cf8a15e2e6ea6a6c9595c605bfdf289b656546b246a3b43734d0d0de4e499a844d6793fa85a6afb797c35181d07456ce2b19d177fafc10eb7fd7c2ff34f5f0f6837609668d1a9f535b2bed5eb1422c0e062958b204b2b2a024769f9e1e0eecdac51781005597081e261901809acd42b8a67a787f7d1525d946457a794f272feeeaa0b7b385771e299af0e1c7962f170bb2b258b07a35949410a8afe7d3bd7bc9aaad9df42ff593260070ef9b7671e737f3f8e94d5359bfb595fdc77b79e33ed3a41fdebb6285287038f83218a462125e4fb6cb22f0a34d43226f463e9aaae13ddbc8f69f975dd6c3ff12765904fe2fd9d7fa678fbf84fd2fcf59bdfa1f1648450000000049454e44ae426082</data>
+    </image>
+    <image name="image2">
+        <data format="PNG" length="513">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff61000001c849444154388dcd933d6814511485bf3759c92284fc30335b48249ac6191623881849c23020c258d9d82988aecd2e8208c976761bc604d3440bc5451b838a90542efea024cadb0151117613092982120b675824362ec23c2b47cc460cda789a07f7bc73f9eee35d21a5e45f94da58b871e1b3da6a3837d5255a1a004cdfbd43ffb14126ce9d02606cfa56cb9da3ed7d00888d235c3b1f26040281101a4268bf25489cd5d587aad178a2f491058e5f7c8b3eb2c0e8cd7e3a0e3ee2fa8b2394ab1e86334fb9ea51ae7a491321a5e4cdebc7aabb7b86e1a14e7a7bdb09827566e722de7f680287314d93743a8d10220986f30eb9a92e819492674fc7d5c913861a1bdda180e4bc3cb94b398ea3eaf5ba6a369baa582caa1f3a3df8404929ff4cb0b2d287655998a6492a956a21d0006c7b1b954a832b57d7106dcf999d8b98985ce3c0fe0ee238269fcf532a9500f07d1fdff7b7fe06cbcb3bb16d9b4c26f37704008542e13f2648012c2e7ec3f37a181eeae492bf9b205807e0e5ab2f7cfdb897f1b3013ddb3fd1a6399c3954f9e5370a29256114aafbf772c4f14fe3f64c88ebba0cec1bc0755d0cdd106ca2641796de2da95aad461446c4718ca669e8864e369bc5da636d1a06f80eee6e003caca4d6de0000000049454e44ae426082</data>
+    </image>
+    <image name="image3">
+        <data format="PNG" length="484">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff61000001ab49444154388da593b14b1b6118879fbbc4b1169b4b96db8a43d5b30a4542484b7b90c529eae41f20b9a12e81b464c85a889ab137dc1f6091d2d6060a22c9265c3c455da216ece072539296d42d21dfe7a4b5e648957ee3fbf17b78def77b3fc5755dfee7846f17cae5b2bc6b389d4e2b7d008062b1f8cf703e9f0740bd7dd1ebf5e8743a249349badd2e428881f06b83f3f36d393c1c424a49a5b2422291c0b66db2d92c00994c26d04405383aac48e4064f8d6f9456f7888c7c26a46ee079efc8e572b45a2da494388e83aeebfd80f1f121b6b67ef2def651423b6c7e6db2bae633f3ec01a552894824821002cbb2820d4e4ebaccce3e62f9b58eecbd607e4ee3ed1b9dfd830b52a9149ee701e0384e30609041b55a251e8f03605916beefdfcfe0d5cb456ab5dab5c1bd67503ffec5e6971f7f02aada0f1864604c8c30bf301af8847732302635006cdb06a05028fc0508df34789e7cc84af131bbbbbf01d83fb8e0ecac46bbdd26168b110ef76fbee2ba2e8d66437efab8c4cdad5dffd0c0344da6a6a7304d93a81655825a50aebef3e9f75359afd769369a08215055152daa611806634fc602c300978432d110620ccd040000000049454e44ae426082</data>
+    </image>
+    <image name="image4">
+        <data format="PNG" length="882">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000033949444154388d5d925d4f5b6500809ff79cf7b43df4f350605242c7066c81e13e8c666a36cc881a77eb95516362bcf0c27fe0b537de78ed858b8b33313a96b13937668c0adb3ac605094c0d5060d016ba16da02fd3ab43de7f502af7c7ec073f1e4118944028085bfaa4af7860805fdd8d52a9b9914bdbdd07fbc4788dc33d52ce5700c1337d28d19ed12fc8706f0db1f79153e3248572c86e1f1d01608103f3644616e19f5e496eaf7bb0c0ef67334d689b1b3cedcbd1bcab6eb0a40cecc3e57ab5b7ecaad0c8ed3c23e7068d80d3a0b0ff9e85486232f0c606f26a9b9506e0934cd4b5f4790fb57bfe6f2279f2939f1739a90dfe4d30b02c771f9fc9aa4982bf271e0274a669083dd6ddc5693ca7e95a292e46c282a0ff954963be33f222f8eb8bcff7a8de1937e70255f7ce830792fc5dee324b5d3171879e732bbe934f3df5e21b35321db80ac2dd8ae3b14bc5d88a9dbd7d468ac8eddf261787de8211fb5e7591293bff3caa58b04c361344db0b6946471e11f0ae51ac2f4d3138ff160a389989efe539d7456e8b0c2b8d2449706c2f0705048d3a857f1f802185e1f9a698294a014e80270f9f2bb8768527ac483ac8fd54c155df9107a004488031541298130bcb8ba0f571928470765802fc4f44c12ad2d820488f51d17f3f994fa26f93d2f9e1b22bf5b60ed6e91f3e163bc3bd689190ea390681e2f1892d999797e994b31f6e65b87028009f726b22f8cdeaa62b70956ce6618288d707326cf5036c189e101cac53dc6d772ec47a2bc71698c5030243480dbf9eb4a853d585a8092bd43a351e3c49953dce70e95c95fd19772e4173629ffbd4974f629f1680756c41200f2c053535385c77475c6588a9420080868098d97160a9cf67623fbe3d4ed3af8db78f5fc3912376eb117ef55e18825b447d929b6db7659ef59277f749b4a7b857dcb86950d86121aba06faf232c1548ae0ea2a229de135d3e0e90fd701908b7b498a5a899aaad2b113c5c1430be8bb5ac6dab308a6d7882bf049891002c7751128ceaca5d8dada54f2bdae0f18593c4b73a2892634744da759ae1018bf42b7e9329cd5c1b20e1fd03434c7815a8db7778b7cf56806d91e888ad19747f93fd3ab597577e3194f0c03e13341ea877194825613da2d1abac6bf0a7866021a9254070000000049454e44ae426082</data>
+    </image>
+</images>
+<connections>
+    <connection>
+        <sender>Menu_Quit</sender>
+        <signal>activated()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>close</sender>
+        <signal>clicked()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>showTB</sender>
+        <signal>activated()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>isChecked()</slot>
+    </connection>
+    <connection>
+        <sender>showSB</sender>
+        <signal>activated()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>isChecked()</slot>
+    </connection>
+    <connection>
+        <sender>TB_Bank_PaymentOrder_List</sender>
+        <signal>clicked()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>qout()</slot>
+    </connection>
+    <connection>
+        <sender>TB_Bank_PaymentOrder_Create</sender>
+        <signal>clicked()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>qout()</slot>
+    </connection>
+    <connection>
+        <sender>TB_Partner_List</sender>
+        <signal>clicked()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>qout()</slot>
+    </connection>
+    <connection>
+        <sender>settings</sender>
+        <signal>activated()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>Configuration()</slot>
+    </connection>
+    <connection>
+        <sender>button_person</sender>
+        <signal>clicked()</signal>
+        <receiver>mainWindow</receiver>
+        <slot>openForm()</slot>
+    </connection>
+    <connection>
+        <sender>eTable1</sender>
+        <signal>pressed(int,int,int,const QPoint&amp;)</signal>
+        <receiver>mainWindow</receiver>
+        <slot>openForm()</slot>
+    </connection>
+    <connection>
+        <sender>mainWindow</sender>
+        <signal>toolBarPositionChanged(QToolBar*)</signal>
+        <receiver>mainWindow</receiver>
+        <slot>getClipVersion()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>showValues()</slot>
+    <slot>isChecked()</slot>
+    <slot>qout()</slot>
+    <slot>Configuration()</slot>
+    <slot>openForm()</slot>
+    <slot>getClipVersion()</slot>
+</slots>
+<layoutdefaults spacing="3" margin="5"/>
+</UI>

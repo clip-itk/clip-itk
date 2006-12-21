@@ -849,7 +849,7 @@ static function ui_createGrid(self, parent, row, col, spacing, padding)
 	if .not. empty(parent)
 		gtk_ContainerAdd( parent, o )
 	endif
-	obj := gtk_alignmentNew( , 0, 0, 1, 1 )
+	obj := gtk_AlignmentNew( , 0, 0, 1, 1 )
 	o:layout := obj
 return o
 

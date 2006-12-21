@@ -452,7 +452,7 @@ static function OtherWidget(w)
 	lt:add(pb)
 
 	bt := UIButton( "Change ProgressBar", {|o,e| percent += 0.05, percent := iif(percent > 1, 0, percent),;
-					       pb:setPercent(percent, "Progress: "+alltrim(str(percent*100,0))+" %") } )
+					       pb:setValue(percent, "Progress: "+alltrim(str(percent*100,0))+" %") } )
 	lt:add(bt, "10,30")
 
 	w:add( hp )

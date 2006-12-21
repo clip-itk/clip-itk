@@ -452,11 +452,13 @@ static function ui_createWidget(self, tag, parent )
 				parent:addEnd( o )
 			endif
 		else
-			if class=="table" ;
-					.or. o:className=="UISplitter" ;
-					.or. o:className=="UITabArea" ;
-					.or. o:className=="UIEditText" ;
-					.or. expanded
+			if 	     o:className=="UISplitter" ;
+				.or. o:className=="UITabArea" ;
+				.or. o:className=="UIEditText" ;
+				.or. o:className=="UITable" ;
+				.or. o:className=="UITree" ;
+				.or. o:className=="UIEditTable" ;
+				.or. expanded
 				box:add( o, .T., .T. )
 			else
 				box:add( o, .F., iif(box:className=="UIButtonBar",.T.,.F.) )
