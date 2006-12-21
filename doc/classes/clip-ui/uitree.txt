@@ -14,11 +14,11 @@ $LANG_RU$
 	UITree(<acNameColumns>,[<nTreeColumn>])	--> Объект UITree
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITree".
-	<nodes>		- Accociated array of <link linkend="classuitreeitem">UITreeItem</link> objects.
+	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects. Table columns.
 	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UITree".
-	<nodes>		- Ассоциативный массив объектов <link linkend="classuitreeitem">UITreeItem</link>.
+	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы таблицы.
 	<onSelect>	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
 
 $METHODNAME$
@@ -51,14 +51,14 @@ $SYNTAX$
 $ARGUMENTS$
 	<data>		- Array of any types. Array of values by columns.
 	<id>		- String. Node identifier.
-	<parent>	- Object <link linkend="classuitreeitem">UITreeItem</link>. Parent node.
-	<sibling>	- Object <link linkend="classuitreeitem">UITreeItem</link>. Put node before specified node on such level.
+	<parent>	- String. Parent node address.
+	<sibling>	- String. Node address. Put node before specified node on such level.
 	<expanded>	- Boolean. Expand child nodes.
 $LANG_RU$
 	<columns>	- Массив любых типов. Массив значений по столбцам соответственно.
 	<id>		- Строка. Идентификатор элемента.
-	<parent>	- Объект <link linkend="classuitreeitem">UITreeItem</link>. Родительский объект. Указывается объект, , возвращённый при предыдущем вызове этой функции.
-	<sibling>	- Объект <link linkend="classuitreeitem">UITreeItem</link>. Поместить перед элементом того же уровня.
+	<parent>	- Строка. Адрес родительского элемента.
+	<sibling>	- Строка. Адрес элемента. Поместить перед элементом того же уровня.
 	<expanded>	- Логическое значение. Сразу показывать дочерние элементы.
 $RETURNS$
 	String. Node address. 

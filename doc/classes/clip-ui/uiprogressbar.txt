@@ -17,6 +17,7 @@ $ATTRIBUTES$
 $LANG_RU$
 	<className>	- Имя класса. Значение: "UIProgressBar".
 
+
 $METHODNAME$
 	UIProgressBar()
 $SUMMARY$
@@ -31,25 +32,28 @@ $LANG_RU$
 	<text>		- Строка. Надпись на индикаторе хода выполнения.
 $ENDMETHOD$
 
+
 $METHODNAME$
-	setPercent()
+	setValue()
 $SUMMARY$
 	Set status of progress and change label.
 $LANG_RU$
 	Установить статус выполнения и поменять надпись на индикаторе.
 $SYNTAX$
-	setPercent(<percent>, [<text>])
+	setValue(<percent>, [<text>])
 $ARGUMENTS$
-	<percent>	- Number. Status of progress (0..1)
-	<text>		- String. Label on progress indicator.
+	<percent>	- Number or string. Status of progress (0..1 or 1..100)
+	<text>		- String. Label on progress indicator. If missed, show percent as integer number with suffix '%'.
 $LANG_RU$
-	<percent>	- Число. Статус выполнения (от 0 до 1)
-	<text>		- Строка. Надпись на индикаторе хода выполнения.
+	<percent>	- Число. Статус выполнения (от 0 до 1 или от 1 до 100)
+	<text>		- Строка. Надпись на индикаторе хода выполнения. Если не указан, показывается процент выполнения в виде целого числа с суффиксом '%'.
 $ENDMETHOD$
+
 
 $EXAMPLES$
 	pb := UIProgressBar("Working...")
 	pb:setPercent(0.5, "50 %")
+
 
 $PLATFORMS$
 	No dependies of platform.
