@@ -164,12 +164,10 @@
 			</widget>
 
 			<!-- Bottom panel -->
-			<widget class="hbox">
-				<widget class="layout">
-				  <widget class="button" name="save"  label="Save" />
-				  <widget class="button" name="print" label="Print" pos="60,0" />
-				  <widget class="button" name="close" label="Close" pos="120,10" />
-				</widget>
+			<widget class="layout">
+				<widget class="button" name="save"  label="Save" />
+				<widget class="button" name="print" label="Print" pos="60,0" />
+				<widget class="button" name="close" label="Close" pos="120,10" />
 			</widget>
 
 			</widget>

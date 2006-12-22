@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>mainWindow</class>
+<class>mainWindow_mainWindow</class>
 <widget class="QMainWindow">
     <property name="name">
-        <cstring>mainWindow</cstring>
+        <cstring>mainWindow_mainWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -473,7 +473,7 @@
                                         </widget>
                                         <widget class="QDateEdit">
                                             <property name="name">
-                                                <cstring>dateEdit2</cstring>
+                                                <cstring>date</cstring>
                                             </property>
                                             <property name="maximumSize">
                                                 <size>
@@ -511,21 +511,8 @@
                                             <property name="name">
                                                 <cstring>person</cstring>
                                             </property>
-                                        </widget>
-                                        <widget class="QPushButton">
-                                            <property name="name">
-                                                <cstring>button_person</cstring>
-                                            </property>
-                                            <property name="sizePolicy">
-                                                <sizepolicy>
-                                                    <hsizetype>0</hsizetype>
-                                                    <vsizetype>0</vsizetype>
-                                                    <horstretch>0</horstretch>
-                                                    <verstretch>0</verstretch>
-                                                </sizepolicy>
-                                            </property>
                                             <property name="text">
-                                                <string>...</string>
+                                                <string>3</string>
                                             </property>
                                         </widget>
                                     </hbox>
@@ -550,6 +537,9 @@
                                     <hbox>
                                         <property name="name">
                                             <cstring>unnamed</cstring>
+                                        </property>
+                                        <property name="margin">
+                                            <number>3</number>
                                         </property>
                                         <widget class="QComboBox">
                                             <property name="name">
@@ -577,6 +567,9 @@
                                     <hbox>
                                         <property name="name">
                                             <cstring>unnamed</cstring>
+                                        </property>
+                                        <property name="margin">
+                                            <number>2</number>
                                         </property>
                                         <widget class="QComboBox">
                                             <item>
@@ -815,22 +808,6 @@
                                             </sizepolicy>
                                         </property>
                                     </widget>
-                                    <widget class="QPushButton">
-                                        <property name="name">
-                                            <cstring>button_filename</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>0</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="text">
-                                            <string>...</string>
-                                        </property>
-                                    </widget>
                                 </hbox>
                             </widget>
                             <widget class="QLabel" row="2" column="0">
@@ -910,22 +887,6 @@
                                             <string>#9C78FF</string>
                                         </property>
                                     </widget>
-                                    <widget class="QPushButton">
-                                        <property name="name">
-                                            <cstring>button_color</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>0</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="text">
-                                            <string>...</string>
-                                        </property>
-                                    </widget>
                                 </hbox>
                             </widget>
                             <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
@@ -996,98 +957,47 @@
                             <property name="text">
                                 <string>#</string>
                             </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>Name</string>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
                             </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>Units</string>
                             </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>Date</string>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
                             </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>Quantity</string>
                             </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>Price</string>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
                             </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>Sum</string>
                             </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>VAT</string>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
                             </property>
                         </column>
                         <column>
                             <property name="text">
                                 <string>Comment</string>
                             </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
                         </column>
-                        <row>
-                            <property name="text">
-                                <string>1</string>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
-                        </row>
-                        <row>
-                            <property name="text">
-                                <string>2</string>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
-                        </row>
-                        <row>
-                            <property name="text">
-                                <string>3</string>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap></pixmap>
-                            </property>
-                        </row>
                         <property name="name">
                             <cstring>eTable1</cstring>
                         </property>
@@ -1308,67 +1218,67 @@
     <connection>
         <sender>Menu_Quit</sender>
         <signal>activated()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>close()</slot>
     </connection>
     <connection>
         <sender>close</sender>
         <signal>clicked()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>close()</slot>
     </connection>
     <connection>
         <sender>showTB</sender>
         <signal>activated()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>isChecked()</slot>
     </connection>
     <connection>
         <sender>showSB</sender>
         <signal>activated()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>isChecked()</slot>
     </connection>
     <connection>
         <sender>TB_Bank_PaymentOrder_List</sender>
         <signal>clicked()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>qout()</slot>
     </connection>
     <connection>
         <sender>TB_Bank_PaymentOrder_Create</sender>
         <signal>clicked()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>qout()</slot>
     </connection>
     <connection>
         <sender>TB_Partner_List</sender>
         <signal>clicked()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>qout()</slot>
     </connection>
     <connection>
         <sender>settings</sender>
         <signal>activated()</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>Configuration()</slot>
     </connection>
     <connection>
-        <sender>button_person</sender>
-        <signal>clicked()</signal>
-        <receiver>mainWindow</receiver>
+        <sender>filename</sender>
+        <signal>returnPressed()</signal>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>openForm()</slot>
     </connection>
     <connection>
         <sender>eTable1</sender>
         <signal>pressed(int,int,int,const QPoint&amp;)</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>openForm()</slot>
     </connection>
     <connection>
-        <sender>mainWindow</sender>
+        <sender>mainWindow_mainWindow</sender>
         <signal>toolBarPositionChanged(QToolBar*)</signal>
-        <receiver>mainWindow</receiver>
+        <receiver>mainWindow_mainWindow</receiver>
         <slot>getClipVersion()</slot>
     </connection>
 </connections>
