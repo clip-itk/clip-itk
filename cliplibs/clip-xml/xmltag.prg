@@ -64,7 +64,8 @@ return .T.
 /* Remove child tag by its number */
 static function xml_TagRemoveChild( self, position )
 	if empty(position) .or. self:countChilds() > position
-		return .F.
+		self:childs := array(0)
+		return .T.
 	endif
 	adel( self:childs, position )
 	asize( self:childs, self:countChilds()-1 )

@@ -22,6 +22,7 @@
 
 
 TODO:
+- context for '-' insede nodeset and operations
 - process nodeset
 - full support of full and abbreviated syntax
 - logical operators
@@ -69,7 +70,6 @@ static _xpath_symbols := { ;
 	{ '/',	XPATH_TOKEN_OPERATOR }, ;
 	{ '|',	XPATH_TOKEN_OPERATOR }, ;
 	{ '+',	XPATH_TOKEN_OPERATOR }, ;
-	{ '-',	XPATH_TOKEN_OPERATOR }, ;
 	{ '=',	XPATH_TOKEN_OPERATOR }, ;
 	{ '!=',	XPATH_TOKEN_OPERATOR }, ;
 	{ '<=',	XPATH_TOKEN_OPERATOR }, ;
@@ -78,6 +78,7 @@ static _xpath_symbols := { ;
 	{ '>',	XPATH_TOKEN_OPERATOR }, ;
 	{ '*',	XPATH_TOKEN_OPERATOR } ;
 }
+//	{ '-',	XPATH_TOKEN_OPERATOR }, ;
 
 /* Symbols */
 static _xpath_functions := { ;
