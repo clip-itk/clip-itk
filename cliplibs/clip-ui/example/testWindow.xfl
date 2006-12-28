@@ -86,10 +86,10 @@
 			<widget class="vbox">
 			<property name="spacing" value="3" />
 			<property name="padding" value="3" />
-			<widget name="tax" class="checkbox" label="Use &amp;tax">
+			<widget name="tax" class="checkBox" label="Use &amp;tax">
 			    	<property name="value" value="false" />
 			</widget>
-			<widget class="radiogroup">
+			<widget class="radioGroup">
 					<widget class="radioButton" name="button1" label="button1" />
 					<widget class="radioButton" name="button2" label="button2" />
 			</widget>
@@ -128,7 +128,7 @@
 				<property name="type" value="raised" />
 				<widget class="vbox">
 					<property name="padding" value="3" />
-					<widget class="combobox" name="payer" label="names">
+					<widget class="comboBox" name="payer" label="names">
 						<property name="value" value="2" />
 					</widget>
 				</widget>
@@ -139,7 +139,7 @@
 				<property name="type" value="sunken" />
 				<widget class="vbox">
 					<property name="padding" value="3" />
-					<widget class="combobox" name="payee">
+					<widget class="comboBox" name="payee">
 						<property name="source" value="
 								  { 'JSC &quot;Lighthouse&quot;', 'id_light' },
 								  { 'JSC &quot;Ronal&quot;', 'id_ronal' },
@@ -149,7 +149,7 @@
 				</widget>
 			</widget>
 
-		        <!-- Sum -->
+			<!-- Sum -->
 			<widget class="hbox">
 				<widget class="label" label="&amp;Sum: " />
 				<widget class="edit" name="sum">
@@ -159,7 +159,7 @@
 				</widget>
 			</widget>
 			<widget class="label" label="Description:" />
-			<widget class="edittext" name="reason" >
+			<widget class="editText" name="reason" >
 				<property name="value" value="For delivered goods." />
 			</widget>
 

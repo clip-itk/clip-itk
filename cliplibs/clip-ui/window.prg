@@ -240,7 +240,7 @@ static function ui_setObj(self, obj)
 	self:origObj := map()
 
 	for i in self:valueNames
-		if at(i,"\.") != 0
+		if at("\.",i) != 0
 			a := split(i,"\.")
 			//?? "set foreign object attribute:",a,chr(10)
 			refObj := obj

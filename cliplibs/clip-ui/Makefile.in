@@ -1,6 +1,6 @@
 # This is a part of CLIP-UI library
 #
-# Copyright (C) 2003 by E/AS Software Foundation
+# Copyright (C) 2003-2006 by E/AS Software Foundation
 # Author: Andrey Cherepanov <skull@eas.lrn.ru>
 ifndef CLIPROOT
 	CLIPROOT=$(shell cd ../../../; pwd)/cliproot
@@ -23,7 +23,8 @@ RTARGET = libclip-ui$(DLLREALSUFF)
 OBJS    = button.o checkbox.o choice.o color.o combobox.o edit.o \
 		  edittable.o font.o form.o frame.o grid.o image.o label.o \
 		  layout.o menu.o progressbar.o radiobutton.o slider.o source.o \
-		  table.o timer.o toolbar.o tree.o utils.o window.o workspace.o
+		  table.o timer.o toolbar.o tree.o utils.o window.o workspace.o \
+		  glade.o qt_designer.o
 
 LANGS   = ru_RU.KOI8-R
 

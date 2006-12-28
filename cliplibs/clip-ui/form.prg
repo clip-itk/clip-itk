@@ -97,16 +97,36 @@ static function ui_parse(self)
 	endif
 	if self:oXml:getRoot() == NIL
 		?? "ERROR: there isn't root element.&\n"
-		return win
+		return NIL
 	else
 		self:root := self:oXml:getRoot()
+	endif
+
+	// Check version
+	if lower(self:root:getName()) == "glade-interface"
+		
+		// Clade 3.x form support
+		self:root := ui_convertFromGlade3( self:root )
+	
+	elseif lower(self:root:getName()) == "ui" .and. left(self:root:attribute("version",""), 2) == "3."
+		
+		// Qt Designer 3.x form support
+		self:root := ui_convertFromUI3( self:root )
+	
+	elseif lower(self:root:getName()) == "form"
+	
+		// Noting do: native format
+		
+	else
+		?? "ERROR: Unknown form format.&\n"
+		return NIL
 	endif
 
 	/* Locale */
 	self:locale := getLocaleStrings(self:root)
 
 	/* Root widget */
-	res := self:oXml:XPath("/interface/widget")
+	res := self:root:XPath("/interface/widget")
 	if empty(res) .or. len(res) == 0
 		?? "ERROR: no root widget!&\n"
 		return NIL
@@ -125,7 +145,7 @@ static function ui_parse(self)
 	endif
 
 	/* Set properties */
-	t := self:oXml:XPath("/style/*")
+	t := self:root:XPath("/style/*")
 	for i in t
 		ui_setProperty(self, i, NIL)
 	next
@@ -134,7 +154,7 @@ static function ui_parse(self)
 		?? "UIForm: set actions...&\n"
 	endif
 	/* Set actions */
-	t := self:oXml:XPath("/actions/*")
+	t := self:root:XPath("/actions/*")
 	for i in t
 		ui_setAction(self, i, NIL)
 	next
@@ -143,7 +163,7 @@ static function ui_parse(self)
 		?? "UIForm: set preliminary actions...&\n"
 	endif
 	/* Set pre actions */
-	res := self:oXml:XPath("/head")
+	res := self:root:XPath("/head")
 	if empty(res) .or. len(res) == 0
 		?? "ERROR: no <head> tag!&\n"
 		return NIL

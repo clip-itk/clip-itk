@@ -2,7 +2,13 @@
 TODO
 ====
 
-Last change: 20 Dec 2006
+Last change: 27 Dec 2006
+
+FIRST
+=====
+ - signal 'open' and 'close' for windows
+ - support Glade and Qt Designer form formats
+
 
 CLIP-UI
 -------
@@ -19,13 +25,14 @@ CLIP-UI
  - actions for UITable and UIEditTable (toolbar and keyboard shortcut) 
  - Restore position for UITree expands collapsed branches
  - separate global function for message boxes
- 
+
+
 FORM
 ----
- - support Glade and Qt Designer form formats
  - save UIForm as XFL, Glade and UI formats
  - "alignment.vertical" and "alignment.horizonal" widget properties
  - program for test form (include child window too)
+
 
 GTK
 ---
@@ -36,6 +43,7 @@ GTK
  - button for choose value in choice cell of UIEditTable
  - default button decoration and behaviour
  
+
 Documentation
 -------------
  - separate section "CLIP-UI" in CLIP documentation for classes
@@ -43,6 +51,7 @@ Documentation
  - UIDriver class
  - full attribute list of window classes
  
+
 -------------------------------------------------------------------------------
 See TODOs on web-site: http://eas.lrn.ru/index.php?module=request (on Russian)
 -------------------------------------------------------------------------------
