@@ -5,12 +5,15 @@
 */
 /*
 	$Log$
+	Revision 1.3  2006/12/29 08:02:25  itk
+	uri: strip alias name from long filename.
+	
 	Revision 1.2  2006/07/17 08:09:47  itk
 	uri: some fixes about long alieas name in select()
-	
+
 	Revision 1.377  2006/07/11 08:03:15  clip
 	uri: fix uncompatibly about dbSetRelation() and long alias name
-	
+
 	Revision 1.376  2006/07/11 07:59:54  clip
 	uri: fix uncompatibly about select() and long alias name
 
@@ -1839,6 +1842,7 @@ clip_DBUSEAREA(ClipMachine * cm)
 	const char *driver = _clip_parc(cm, 2);
 	const char *name = _clip_parc(cm, 3);
 	const char *alias = _clip_parc(cm, 4);
+	char * alname;
 	int shared = _clip_parl(cm, 5);
 	int readonly = _clip_parl(cm, 6);
 	int tempo = _clip_parl(cm,7);
@@ -1914,17 +1918,17 @@ clip_DBUSEAREA(ClipMachine * cm)
 	strcpy(wa->name, name);
 
 	if (alias)
+		alname = alias;
+	else
+		alname = wa->rd->name;
 	{
-		/* Uri: 2006-06-20 Strip long alias names to 10 chars */
-		int len = strlen(alias);
+		/* Uri: 2006-12-29 Strip long alias names to 10 chars */
+		char* s;
+		int len = strlen(alname);
 		len = len > 10 ? 10: len;
 		wa->alias = malloc(len + 1);
-		strncpy(wa->alias, alias, len);
+		strncpy(wa->alias, alname, len);
 		wa->alias[len] = 0;
-	} else {
-		char* s;
-		wa->alias = malloc(strlen(wa->rd->name) + 1);
-		strcpy(wa->alias, wa->rd->name);
 		s = wa->alias;
 		while ((s = strchr(s, '.')))
 			*s = '_';
