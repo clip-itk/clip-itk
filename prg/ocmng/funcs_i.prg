@@ -833,6 +833,7 @@ static function __install_class(oDict,oClass,nLevel)
 	trans:ATTR_FIND  := "FINDATTRS"
 	trans:CLASS_ID   := "CLASS"
 	trans:TCOL_LIST   := "COLUMNS"
+	trans:TCOL_LIST   := "TCOLLIST"
 
 	if valtype(oClass) == "O"
 	else
