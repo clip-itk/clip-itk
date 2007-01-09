@@ -5,12 +5,15 @@
  */
 /*
    $Log$
+   Revision 1.2  2007/01/09 12:11:14  itk
+   uri: small fix for compare rational numbers
+
    Revision 1.1  2006/06/22 19:01:33  itk
    uri: initial
 
    Revision 1.447  2006/05/12 06:49:34  clip
    uri: fix bug in macroassing and _clip_parse_name.
-        &("m[varname]") := &("m[varname]")
+	&("m[varname]") := &("m[varname]")
 
    Revision 1.446  2006/04/18 16:39:32  clip
    uri: small fix
@@ -4920,7 +4923,7 @@ _clip_cmp(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int *res, int bytype
 				else
 				{
 					tmp = rational_double_init(Lval->n.d);
-					l = rational_cmp(tmp, Lval->r.r);
+					l = rational_cmp(tmp, Rval->r.r);
 				}
 				rational_destroy(tmp);
 			}
