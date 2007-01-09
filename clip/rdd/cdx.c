@@ -4,9 +4,12 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log$
+	Revision 1.4  2007/01/09 10:41:02  itk
+	uri: backward some change from "2006/12/11 12:23:22 foldi Manage custom index.". VERY LOW SPEED.
+	
 	Revision 1.3  2006/12/11 16:47:12  itk
 	uri: small fix in "index on" with many tags (with the same name)
-	
+
 	Revision 1.2  2006/12/11 12:23:22  foldi
 	Manage custom index.
 
@@ -456,6 +459,8 @@
 #ifdef HAVE_REGEX_H
 	#include <regex.h>
 #endif
+
+#define D20070109 /* spped up after "custom manage" */
 
 extern int type_weight(int type);
 
@@ -1133,10 +1138,12 @@ static int _cdx_first(ClipMachine* cm,RDD_ORDER* ro,int* out,const char* __PROC_
 		ro->stack[ro->level].pos = 0;
 		_CDX_PAGE(ro,ro->stack[ro->level].page,&page);
 	}
+#ifndef D20070109
 	if ( *out != 1 ) {
 	    int recno;
 	    _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
 	}
+#endif
 	return 0;
 }
 
@@ -1173,10 +1180,12 @@ static int _cdx_last(ClipMachine* cm,RDD_ORDER* ro,int* out,const char* __PROC__
 		_CDX_PAGE(ro,ro->stack[ro->level].page,&page);
 		ro->stack[ro->level].pos = _rdd_ushort(page.nkeys)-1;
 	}
+#ifndef D20090109
 	if ( *out != 1 ) {
 	    int recno;
 	    _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
 	}
+#endif
 	return 0;
 }
 
@@ -1209,10 +1218,12 @@ static int _cdx_next_rm(ClipMachine* cm,RDD_ORDER* ro,CDX_LEAF* leaf,int* out,in
 			*out = 1;
 		}
 	}
+#ifndef D20070109
 	if ( *out != 1 ) {
 	    int recno;
 	    _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
 	}
+#endif
 	return 0;
 }
 
@@ -1270,10 +1281,12 @@ static int _cdx_prev_rm(ClipMachine* cm,RDD_ORDER* ro,CDX_LEAF* leaf,int* out,in
 			ro->stack[ro->level].pos = 0;
 		}
 	}
+#ifndef D20070109
 	if ( *out != 1 ) {
 	    int recno;
 	    _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);
 	}
+#endif
 	return 0;
 }
 
@@ -1878,7 +1891,6 @@ static int __cdx_addkey(ClipMachine* cm,int area,RDD_ORDER* ro,ClipVar* v,DbfLoc
 	free(newkey);
 	return 0;
 }
-
 static int _cdx_addkey(ClipMachine* cm,int area,DbfLocale* loc,ClipVar* v,RDD_ORDER* ro,void* key,int len,unsigned int recno,const char* __PROC__){
 	CDX_PAGE page;
 	CDX_LEAF* leaf;
