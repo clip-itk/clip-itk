@@ -233,6 +233,14 @@ local sprname:=""
 		else
 			obj:class_id := classDesc:id
 		endif
+		if classDesc:name == "accpost"
+			if !accpost_stop_date(oDep,obj)
+				outlog(__FILE__,__LINE__, odep:error)
+				cgi_xml_error(odep:error)
+				loop
+			endif
+		endif
+
 		if !empty(id)
 			obj:id := id
 			if .f. //classDesc:name == "accpost"
@@ -261,7 +269,7 @@ local sprname:=""
 			/* seek unique value */
 				keyValue:=oDep:eval(classDesc:unique_key,obj)
 				if empty(keyValue)
-				outlog(__FILE__,__LINE__, odep:error)				
+				outlog(__FILE__,__LINE__, odep:error)
 					cgi_xml_error(err_desc+":"+oDep:error)
 			//		return
 				endif
@@ -357,4 +365,56 @@ static function put_object(obj,oDep,columns,_queryArr,err_desc)
 	? s,"  </treerow>"
 	? s,' </treeitem>'
 return
+****************************************
+function accpost_stop_date(oDep,oData)
+	static stop_dates := map() /* для сервера надо как то иначе */
+	local depEtc,dictEtc
+	local i,tmp,obj,acc_db,stop_date
+	if set("ACCPOST_LOG")=="NO"
+		return .t.
+	endif
+	if !(oDep:id $ stop_dates)
+		depEtc := cgi_needDepository("ETC01","01")
+		if empty(depEtc)
+			outlog(__FILE__,__LINE__,[Can`t open depository]+" ETC0101")
+			return .t.
+		endif
+		if !empty(depEtc:error)
+			outlog(__FILE__,__LINE__,[Error open depository]+" ETC0101:",depEtc:error)
+			return .t.
+		endif
+		dictEtc := depEtc:dictionary()
+		acc_db  := dictEtc:classBodyByName("acc_db")
+		if empty(acc_db)
+			outlog(__FILE__,__LINE__,[Can`t find class]+" acc_db")
+			return .t.
+		endif
+		tmp := depEtc:select(acc_db:id)
+		for i=1 to len(tmp)
+			obj := depEtc:getValue(tmp[i])
+			if empty(obj)
+				loop
+			endif
+			if "STOP_DATE" $ obj
+			else
+				loop
+			endif
+			if obj:acc01 == oDep:id
+				stop_date := obj:stop_date
+				stop_dates[oDep:id] := stop_date
+				exit
+			endif
+		next
+	else
+		stop_date := stop_dates[oDep:id]
+	endif
+
+	if empty(stop_date)
+		return .t.
+	endif
+	if valtype(stop_date)=="D" .and. oData:odate < stop_date
+		oDep:error := [stop_date limited]
+		return .f.
+	endif
+return .t.
 

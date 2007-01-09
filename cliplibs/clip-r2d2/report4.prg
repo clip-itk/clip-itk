@@ -39,14 +39,14 @@ local k_list, d_list, arefs:={}, atree:={}
 	endif
 
 
-        if "ACC01" $ _query .and. !empty(_query:acc01)
-            set("ACC01",_query:acc01)
-        endif
-        if "ACC00" $ _query .and. !empty(_query:acc00)
-            set("ACC00",_query:acc00)
-        endif
-							
-							
+	if "ACC01" $ _query .and. !empty(_query:acc01)
+	    set("ACC01",_query:acc01)
+	endif
+	if "ACC00" $ _query .and. !empty(_query:acc00)
+	    set("ACC00",_query:acc00)
+	endif
+
+
 
 	if empty(account) .or. empty(beg_date) .or. empty(end_date)
 		cgi_xml_header()
@@ -149,7 +149,7 @@ local k_list, d_list, arefs:={}, atree:={}
 			loop
 		endif
 		j := ascan(aRefs,{|x|x[1]==tmp:kaccount})
-		if j<=0
+		if j<=0.00
 			obj := empty_data(oDep02,tmp:kaccount)
 			aadd(aRefs,{tmp:kaccount,"",obj:code,obj})
 		else

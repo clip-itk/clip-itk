@@ -180,9 +180,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 //*--------------------------------
 
 					typeval := valtype(an_obj[upper(class:tcol_list[j])])
-//					typeval := valtype(k)
 					essvalue:= an_obj[upper(class:tcol_list[j])]
-//outlog( class:tcol_list[j] ,k, essvalue, typeval)
 					if typeval=="L"
 					    essvalue:=iif(essvalue,'true','false')
 					    kk:=toString(k)
@@ -190,8 +188,10 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					    essvalue:=iif(empty(essvalue),"''","'"+dtos(essvalue)+"'")
 					    kk:=toString(k)
 					elseif  typeval=="N"
-					    kk:=bal_summa(val(k))
-					    essvalue:="'"+bal_summa(essvalue)+"'"
+						kk:=iif(valtype(k)=="N", bal_summa(k), bal_summa(val(k)))
+					    //kk:=bal_summa(k)
+					    essvalue:="'"+toString(k)+"'"
+outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 					else
 					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
 					    essvalue:=strtran(essvalue,"'","\'")

@@ -90,7 +90,7 @@ local urn:="", xslt:="", host:="", total:="", union:=""
         if "ACC00" $ _query .and. !empty(_query:acc00)
     	    set("ACC00",_query:acc00)
         endif
-							  
+
 
 
 	if empty(beg_date) .or. empty(end_date) .or. empty(account)
@@ -204,6 +204,10 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		     essenc := strtran(essenc,"'","&apos;")
 		     essenc := strtran(essenc,'<',"&lt;")
 		     essenc := strtran(essenc,'>',"&gt;")
+		     essenc := iif(tmp:an_value=="total","Bсего",essenc)
+		     if tmp:an_value=="total"
+		? '     DOCUM:rfl.name="'+essenc+'"'
+		    endif
 		? '     DOCUM:account_name="'+essenc+'"'
 		? ' 	DOCUM:an_value.id="'+tmp:an_value+'"'
 

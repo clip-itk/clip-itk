@@ -93,8 +93,8 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
         if "ACC00" $ _query .and. !empty(_query:acc00)
             set("ACC00",_query:acc00)
         endif
-							
-							
+
+
 	if empty(beg_date) .or. empty(end_date) .or. empty(account)
 		?? "Content-type: text/html"
 		?
@@ -198,7 +198,14 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		idan:=""
 
 		for u=1 to len(masan)
-		    stran+="stran"+alltrim(str(u))+":'"+cgi_essence(masan[u])+"', "
+
+		 sTmp := cgi_essence(masan[u])
+		 sTmp := strtran(sTmp,'&',"&amp;")
+		 sTmp := strtran(sTmp,'"','\"')
+		 sTmp := strtran(sTmp,"'","\'")
+		 sTmp := strtran(sTmp,'<',"&lt;")
+		 sTmp := strtran(sTmp,'>',"&gt;")
+		    stran+="stran"+alltrim(str(u))+":'"+sTmp+"', "
 		    idan+="idan"+alltrim(str(u))+":'"+masan[u]+"', "
 		next
 //		outlog(__FILE__,__LINE__, tmp:esse)
@@ -225,9 +232,9 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		?? " in_num:'" +bal_summa(tmp:in_num)  +"', "
 		?? " out_num:'" +bal_summa(tmp:out_num) +"', "
 		?? " end_num:'" +bal_summa(tmp:end_num) +"', "
-		?? " unit:'"+cgi_essence(tmp:unit_num)  +"' " 
+		?? " unit:'"+cgi_essence(tmp:unit_num)  +"' "
 		?? "}"//+iif(i==len(bal_data),"","")
-		
+
 
 	next
 return
