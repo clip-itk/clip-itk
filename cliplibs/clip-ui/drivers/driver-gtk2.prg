@@ -760,6 +760,9 @@ return o
 
 static function ui_addBox(self, box, obj, expand, fill, padding)
 	local vBox, hBox
+	if valtype(obj) != 'O'
+		return NIL
+	endif
 	if "LAYOUT" $ obj
 		if "SCROLL" $ obj:layout
 			gtk_ScrolledWindowAddWithViewport( obj:layout, obj )
@@ -796,6 +799,9 @@ return 0
 
 static function ui_addBoxEnd(self, box, obj, expand, fill, padding)
 	local vBox, hBox
+	if valtype(obj) != 'O'
+		return NIL
+	endif
 	if "LAYOUT" $ obj
 		if "SCROLL" $ obj:layout
 			gtk_ScrolledWindowAddWithViewport( obj:layout, obj )
@@ -856,6 +862,9 @@ return o
 static function ui_addGrid(self, box, obj, pos, h_expand, v_expand)
 	local vBox, hBox, padding:=box:padding
 	local a, cl, rw, l, r, t, b, hflags := GTK_FILL, vflags := GTK_FILL
+	if valtype(obj) != 'O'
+		return NIL
+	endif
 	if valtype(pos) == "U"
 		?? "ERROR: bad grid position&\n"
 		return .F.
@@ -1520,8 +1529,10 @@ static function ui_setStyle(self, o, style, value, element)
 		switch upper(style)
 			case 'FG'
 				gtk_WidgetModifyFG(o, UIColor(value), GTK_STATE_NORMAL )
+				gtk_WidgetModifyText(o, UIColor(value), GTK_STATE_NORMAL )
 			case 'BG'
 				gtk_WidgetModifyBG(o, UIColor(value), GTK_STATE_NORMAL )
+				gtk_WidgetModifyBase(o, UIColor(value), GTK_STATE_NORMAL )
 			case 'TEXT'
 				gtk_WidgetModifyText(o, UIColor(value), GTK_STATE_NORMAL )
 			case 'BASE'
@@ -2387,11 +2398,14 @@ static function ui_EditTableKeyboardHandler(self, w, e, o)
 			endif
 		case 24 // Down arrow
 			if r == tRow .or. tRow == 0
-				o:addRow()
+				r := self:addEditTableRow(o)
+				self:setEditTableCursor(o, 1+val(r), NIL, .T. )
+				return .T.
 			endif
 		case 22 // Insert
 			r := self:addEditTableRow(o)
-			self:setEditTableCursor(o, 1+val(r), self:getEditTableSelectedColumn(o))	
+			self:setEditTableCursor(o, 1+val(r), NIL, .T. )
+			return .T.
 	endswitch
 return .F. 
 
@@ -2699,16 +2713,15 @@ static function ui_setEditTableCursor(self, table, row, column, beginEdit)
 	if row > r
 		row := r
 	endif
-	if row <= 0
-		row := 1
-	endif
-	
-	// Map indexes to objects
-	row := gtk_TreePathNewFromString( ltrim(str(row-1)) )
-	column := gtk_TreeViewGetColumn(table, column)
-	
-	gtk_TreeViewSetCursor(table, row, column, beginEdit)
 
+	if row > 0
+		// Map indexes to objects
+		row := gtk_TreePathNewFromString( ltrim(str(row-1)) )
+		column := iif(column>0, column, 1)
+		column := gtk_TreeViewGetColumn(table, column)
+		//?? "cursor: ", row, column, beginEdit, chr(10)
+		gtk_TreeViewSetCursor(table, row, column, beginEdit)
+	endif
 return NIL
 
 static function ui_getEditTableRowCount(self, table)

@@ -43,7 +43,7 @@ for i:=1 to pcount()
 next
 
 /* Use driver for GTK+ 2.x */
-?? "Used driver: "+driver,chr(10)
+//?? "Used driver: "+driver,chr(10)
 useDriver( driver )
 
 /* create workspace */
@@ -368,7 +368,7 @@ static function BankDocReq(w,grid)
 	hbsum:add(UILabel("&Sum: "))
 	sum := UIEdit(data:sum)
 	drv:setStyle(sum,"color.base","#C2D2FF")
-	drv:setStyle(sum,"color.bg","red")
+	drv:setStyle(sum,"color.text","red")
 	w:setName("sum", sum)
 	hbsum:add(sum)
 	hbsum:add(w:setName("tax", UILabel("")))

@@ -44,6 +44,7 @@
                 <widget name="TB.Bank.PaymentOrder.Create" class="toolButton" label="Create payment order">
                         <property name="icon" value="icons/doc_bank_pp.xpm" />
                 </widget>
+				<widget class="toolbarSeparator" />
                 <widget name="TB.Partner.List" class="toolButton" label="Partners">
                         <property name="icon" value="icons/reference_partner.xpm" />
                 </widget>
@@ -155,7 +156,7 @@
 				<widget class="edit" name="sum">
 					<property name="value" value="20000.00" />
 					<property name="color.base" value="#C2D2FF" />
-					<property name="color.bg" value="red" />
+					<property name="color.text" value="red" />
 				</widget>
 			</widget>
 			<widget class="label" label="Description:" />
@@ -176,7 +177,6 @@
 	    </widget>
 	    
 	    <widget class="tab" name="tab2+" label="Other widgets">
-		  <!--<widget class="vbox" name="vb2+">-->
 	    	<!-- Other widgets -->
 	    	<widget class="grid" name="grid2" cols="2" rows="5">
 	    		<widget class="label" name="title2" label="Other widgets" pos="1,1" />
@@ -213,6 +213,7 @@
 				<property name="num.type" 		value="counter" /> 
 				<property name="name.type" 		value="choice" />
 				<property name="name.source" 	value="names" />
+				<property name="name.default" 	value="2" />
 				<property name="name.lookup" 	value="true" />
 				<property name="unit.type" 		value="combobox" />
 				<property name="unit.default" 	value="1" />
@@ -231,7 +232,6 @@
 				<property name="row" element="2" value="2,'3','2','20.10.03',15,2.5,0,.F.,'Cold and tasty'" />
 				<property name="row" element="3" value="3,'2','1','20.10.03',15,2.3,0,.T.,''" />
 			</widget>
-	      <!--/widget-->
 	    </widget>
 	    
 	    </widget>

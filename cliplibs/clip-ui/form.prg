@@ -332,6 +332,9 @@ static function ui_createWidget(self, tag, parent )
 		case "MENUSEPARATOR"
 			parent:addSeparator()
 			return NIL
+		case "TOOLBARSEPARATOR"
+			parent:addSeparator()
+			return NIL
 		case "TOOLBAR"
 			o := UIToolBar()
 			parent:setPanels(,o,)
@@ -462,26 +465,28 @@ static function ui_createWidget(self, tag, parent )
 	if add == .T.
 		gClass := iif("O" $ parent, parent:o, parent)
 		box    := iif("USERSPACE" $ parent,parent:userSpace,parent)
-		if gClass:className == "UIGrid" .or. gClass:className == "UILayout"
-			gRow := t:attribute("pos","")
-			parent:add( o, gRow )
-		elseif gClass:className == "UISplitter"
-			if empty( parent:first )
-				parent:add( o )
+		if "ADD" $ box
+			if gClass:className == "UIGrid" .or. gClass:className == "UILayout"
+				gRow := t:attribute("pos","")
+				parent:add( o, gRow )
+			elseif gClass:className == "UISplitter"
+				if empty( parent:first )
+					parent:add( o )
+				else
+					parent:addEnd( o )
+				endif
 			else
-				parent:addEnd( o )
-			endif
-		else
-			if 	     o:className=="UISplitter" ;
-				.or. o:className=="UITabArea" ;
-				.or. o:className=="UIEditText" ;
-				.or. o:className=="UITable" ;
-				.or. o:className=="UITree" ;
-				.or. o:className=="UIEditTable" ;
-				.or. expanded
-				box:add( o, .T., .T. )
-			else
-				box:add( o, .F., iif(box:className=="UIButtonBar",.T.,.F.) )
+				if 	     o:className=="UISplitter" ;
+					.or. o:className=="UITabArea" ;
+					.or. o:className=="UIEditText" ;
+					.or. o:className=="UITable" ;
+					.or. o:className=="UITree" ;
+					.or. o:className=="UIEditTable" ;
+					.or. expanded
+					box:add( o, .T., .T. )
+				else
+					box:add( o, .F., iif(box:className=="UIButtonBar",.T.,.F.) )
+				endif
 			endif
 		endif
 	endif
@@ -791,7 +796,7 @@ static function ui_setAction(self, tag, lObj)
 				obj:setAction(signal,{|| self:actionHandler( id ) }, e[3])
 			endif
 		else
-			?? "WARNING: cannot link action to widget class '",obj,"'&\n"
+			//?? "WARNING: cannot link action to widget class '"+obj:className+"'&\n"
 		endif
 	next
 

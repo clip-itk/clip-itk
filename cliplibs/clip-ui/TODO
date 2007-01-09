@@ -2,18 +2,17 @@
 TODO
 ====
 
-Last change: 27 Dec 2006
+Last change: 05 Jan 2007
 
 FIRST
 =====
- - signal 'open' and 'close' for windows
+ - Set slot functions for window open, activation, close
  - support Glade and Qt Designer form formats
 
 
 CLIP-UI
 -------
  - Debug function for UIForm and debug level for library (possible, CLIP-wide)
- - Set slot functions for window open, activation, close
  - DnD methods for UITable/UITree
  - Delete widget from container
  - icons for UIChildWindow
@@ -42,6 +41,7 @@ GTK
  - specialized widget for choose color and file name
  - button for choose value in choice cell of UIEditTable
  - default button decoration and behaviour
+ - PNG icon support
  
 
 Documentation

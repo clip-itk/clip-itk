@@ -21,7 +21,7 @@ EXTRALIBS=
 all: $(PRG1) $(PRG2)
 
 clean:
-	rm -f *.o *.bak core* *core $(PRG1) $(PRG2) *.log *.nm *.ex *.exe $(OUTPUT)
+	rm -f *.o *.bak core* *core $(PRG1) $(PRG2) *.log *.nm *.ex *.exe $(OUTPUT) image[0-9]*
 
 $(PRG1): uitest.prg
 	$(CLIP) -ewslM $(CLIPINCLUDE) uitest.prg $(LIBS) $(EXTRALIBS)

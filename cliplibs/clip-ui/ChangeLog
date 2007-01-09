@@ -1,3 +1,6 @@
+2007-01-06
+	- support Qt Designer and Glade forms
+
 2006-12-20 clip-ui-0.1.4
 	- Stop support if GTK driver
 	- New widgets: UIChoice, UITabArea, UITab, UIEditTable

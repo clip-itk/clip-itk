@@ -49,7 +49,7 @@ function main()
 	endif
 
 	/* Use driver for GTK+ 2.x */
-	?? "Used driver: "+driver,chr(10)
+	//?? "Used driver: "+driver,chr(10)
 	useDriver( driver )
 
 	ws  := UIWorkSpace( params )

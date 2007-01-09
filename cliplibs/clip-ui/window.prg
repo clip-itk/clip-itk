@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library                                     */
 /*                                                                         */
-/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
+/*   Copyright (C) 2003-2007 by E/AS Software Foundation                   */
 /*   Authors:                                                              */
 /*               Andrey Cherepanov <skull@eas.lrn.ru>                      */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
