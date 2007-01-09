@@ -626,4 +626,7 @@
 
 #translate millisec( <v1> )         => sleep(<v1>/1000)
 
+#command SET IDLE INKEY <x:ON,OFF,&>      => Set( _SET_IDLE_INKEY, <(x)> )
+#command SET INKEY IDLE <x:ON,OFF,&>      => Set( _SET_IDLE_INKEY, <(x)> )
+
 #endif

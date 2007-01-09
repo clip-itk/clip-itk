@@ -5,12 +5,15 @@
 */
 /*
    $Log$
+   Revision 1.2  2007/01/09 11:41:30  itk
+   uri: add set(_SET_IDLE_INKEY) for minimize traffic from terminal
+
    Revision 1.1  2006/06/22 19:35:15  itk
    uri: init sf.net repository
 
    Revision 1.244  2006/05/12 06:49:34  clip
    uri: fix bug in macroassing and _clip_parse_name.
-        &("m[varname]") := &("m[varname]")
+	&("m[varname]") := &("m[varname]")
 
    Revision 1.243  2005/12/22 12:30:05  clip
    alena: add new _C_ITEM_TYPE_PARSER for clip-expat
@@ -1717,6 +1720,7 @@ extern long _hash_cur_dir[26];
 #define MULTILOCKS_FLAG     0x100
 #define FLUSHOUT_FLAG	    0x200
 #define UTF8TERM_FLAG	    0x400
+#define IDLEINKEY_FLAG	    0x800
 
 #define DEFAULT_COLOR "W/N,N/W,N,N,N/W"
 

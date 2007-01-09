@@ -73,6 +73,8 @@ __set_names[115]:=  "ESC_DELAY"
 __set_names[116]:=  "MULTILOCKS"
 __set_names[117]:=  "FLUSHOUT"
 __set_names[118]:=  "ROOTPATH"
+__set_names[119]:=  "UTF8TERM"
+__set_names[120]:=  "IDLE_INKEY"
 __set_names[1000]:= "LOGLEVEL"
 __set_names[1001]:= "LOGFILE"
 

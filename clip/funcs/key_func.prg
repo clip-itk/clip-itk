@@ -5,6 +5,7 @@
 */
 #include "config.ch"
 #include "inkey.ch"
+#include "set.ch"
 
 /* for trapshift */
 static tp_proc := NIL
@@ -41,6 +42,9 @@ function inkey(time,mask)
 	if nextkey() != 0
 		ret := _inkey(time,mask)
 		return ret
+	endif
+	if set(_SET_IDLE_INKEY)
+		return _inkey(time,mask)
 	endif
 	if !empty(t_buffer)
 		ret:=asc(left(t_buffer,1))

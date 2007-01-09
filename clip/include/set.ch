@@ -88,6 +88,8 @@
 #define _SET_ROOTPATH             118
 #define _SET_UTF8TERM             119 /* terminal support UTF-8 */
 
+#define _SET_IDLE_INKEY           120 /* use _inkey() without call terminal*/
+
 #define _SET_LOGLEVEL            1000
 #define _SET_LOGFILE             1001
 

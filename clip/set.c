@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.2  2007/01/09 11:41:30  itk
+   uri: add set(_SET_IDLE_INKEY) for minimize traffic from terminal
+
    Revision 1.1  2006/06/22 19:01:36  itk
    uri: initial
 
@@ -1298,6 +1301,9 @@ clip_SET(ClipMachine * mp)
 		break;
 	case _SET_UTF8TERM:
 		set_flag1(mp, UTF8TERM_FLAG, 1, 0);
+		break;
+	case _SET_IDLE_INKEY:
+		set_flag1(mp, IDLEINKEY_FLAG, 1, 0);
 		break;
 	case _SET_DISPBOX:
 		set_flag1(mp, DISPBOX_FLAG, 1, 0);
