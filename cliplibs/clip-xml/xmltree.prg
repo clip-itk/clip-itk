@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-XML library                                    */
 /*                                                                         */
-/*   Copyright (C) 2003-2005 by E/AS Software Foundation                   */
+/*   Copyright (C) 2003-2006 by E/AS Software Foundation                   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -26,7 +26,7 @@ function _recover_XMLTREE( obj )
 	obj:parseFile 	:= @xml_ParseFile()
 	obj:parseString := @xml_ParseString()
 	obj:getRoot		:= @xml_GetRoot()
-	obj:setRoot		:= @xml_setRoot()
+	obj:setRoot		:= @xml_SetRoot()
 	obj:getError	:= @xml_GetError()
 	obj:XPath		:= @xml_GetXPath()
 	obj:dump		:= @xml_Dump()
@@ -180,20 +180,34 @@ return
 
 /* Handler function for close tag */
 function xml_handleElementEnd( vUser, name )
+	//vUser:ct:text := substr(vUser:ct:text, 1, len(vUser:ct:text)-1)
 	vUser:pt := vUser:pt:parent
 	vUser:ct := vUser:pt
 return
 
 /* Handler function for text processing */
 function xml_handleText( vUser, sStr, nLen )
-	local s
-	s := translate_charset( "utf-8", host_charset(), alltrim(sStr) )
+	local s, l
+	
+	s := translate_charset( "utf-8", host_charset(), sStr )
 /*	
 	if .not. empty(sStr)
 		?? "TEXT:", host_charset(), sStr, translate_charset( "utf-8", "koi8-r", alltrim(sStr) ), chr(10)
 	endif
 */
-	if .not. empty(s) .and. .not. empty(vUser:ct)
-		vUser:ct:text += s
+/*
+	if .not. empty(s)
+		?? len(s), "'"+strtran(s,chr(10),'\n')+"'", chr(10)
+	endif
+*/
+//	if .not. empty(s) .and. .not. empty(vUser:ct)
+	if .not. empty(vUser:ct)
+		/*if len(s) == 1 .and. s $ '"<>'+chr(38)+chr(39)
+			l := len(vUser:ct:text)
+			vUser:ct:text := left(vUser:ct:text, len(vUser:ct:text)-1) + s
+			//?? "'"+vUser:ct:text+"'", l, chr(10)
+		else */
+			vUser:ct:text += s // + chr(10)
+		//endif
 	endif
 return

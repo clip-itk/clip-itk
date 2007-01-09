@@ -211,6 +211,7 @@ static function xml_TagDump( self, encoding, level )
 return s
 
 static function xmlText( text )
+	text := iif( valtype(text)=='C', text, '' )
 	text := strtran( text, '&', '&amp;' )
 	text := strtran( text, '>', '&gt;' )
 	text := strtran( text, '<', '&lt;' )
