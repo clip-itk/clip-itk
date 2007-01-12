@@ -239,6 +239,36 @@ $LANG_RU$
 $ENDMETHOD$
 
 $METHODNAME$
+	setFormat()
+$SUMMARY$
+	Set format rules for named widget. If format is set for widgets only 
+	these widgets is processing in functions setObj(), getObj(), 
+	setValues() and getValues().
+$LANG_RU$
+	Установить правила преобразования значения в содержимое виджета. Если
+	форматирование установлено для виджетов, только эти виджеты могут 
+	обрабатываться в функциях setObj(), getObj(), setValues() и getValues().
+$SYNTAX$
+	setFormat(<name>,[<type>],[<length>],[<decLen>],[<format>],[<flags>])
+$ARGUMENTS$
+	<widget> - String. Widget name.
+	<name>   - String. Value name.
+	<type>   - String. Value type. Should be 'string', 'number', 'date', 'boolean' or 'array'.
+	<length> - Number. Value length.
+	<decLen> - Number. Number of digits after decimal-point character.  
+	<format> - String. Value format. Not yet implemented.
+	<flags>  - String. Value flags. Not yet implemented.
+$LANG_RU$
+	<widget> - Строка. Имя виджета.
+	<name>   - Строка. Имя значения.
+	<type>   - Строка. Тип значения. Допустимые варианты: 'string', 'number', 'date', 'boolean' или 'array'.
+	<length> - Число. Длина значения.
+	<decLen> - Число. Количество знаков дробной части.
+	<format> - Строка. Формат значения. Пока не реализовано.
+	<flags>  - СТрока. Флаги значения. Пока не реализовано.
+$ENDMETHOD$
+
+$METHODNAME$
 	dialogBox()
 $SUMMARY$
 	Show dialog window with message.
