@@ -1,6 +1,9 @@
 
  /*
  * $Log$
+ * Revision 1.2  2007/01/12 08:10:10  itk
+ * uri: dangerous fix. crash reference in get-object
+ *
  * Revision 1.1  2006/06/22 19:01:35  itk
  * uri: initial
  *
@@ -3865,11 +3868,24 @@ pass_AssignNode(void *self, Pass pass, int level, void *par)
 					else
 					{
 						fprintfOffs(out, level, "if ((_ret=_clip_assign( _mp, ");
+#define D20061219
+/*
+bug in:
+ndata := 0
+@0,0 get ndata
+readmodal(getlist)
+ndata := 0   // this line crashed reference in get-object
+readmodal(getlist)
+*/
+#ifndef D20061219
 						if (islocal)
 							fprintf(out, "_clip_ref_destroy(_mp ,");
+#endif
 						np->var->pass(np->var, CTextLval, level, par);
+#ifndef D20061219
 						if (islocal)
 							fprintf(out, ")");
+#endif
 						fprintf(out, " ))) goto _trap_%d;\n", np->node.seqNo);
 					}
 				}
