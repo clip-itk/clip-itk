@@ -154,7 +154,7 @@
 			<widget class="hbox">
 				<widget class="label" label="&amp;Sum: " />
 				<widget class="edit" name="sum">
-					<property name="value" value="20000.00" />
+					<property name="value" value="20000" />
 					<property name="color.base" value="#C2D2FF" />
 					<property name="color.text" value="red" />
 				</widget>
@@ -331,6 +331,23 @@
 		</rule>
 	
 	</actions>
+	
+	<data>
+		<value widget="tax" name="tax" type="boolean" />    
+		<value widget="button1" name="radioButton1" type="boolean" />    
+		<value widget="button2" name="radioButton2" type="boolean" />    
+		<value widget="slider" name="slider" type="number" len="6" decLen="2" />    
+		<value widget="number" name="number" type="number" />    
+		<value widget="date" name="date" type="date" format="dd.mm.yyyy" />    
+		<value widget="person" name="person" type="string" />    
+		<value widget="payer" name="payer" type="string" />    
+		<value widget="payee" name="payee" type="string" />    
+		<value widget="sum" name="sum" type="number" len="12" decLen="2" />    
+		<value widget="reason" name="reason" type="string" />    
+		<!--value widget="filename" name="filename" type="string" /-->    
+		<value widget="color" name="color" type="string" />    
+		<value widget="eTable1" name="eTable1" type="array" />    
+	</data>
 	
 	<locale lang="ru">
 		<msg id="Save" value="&amp;Сохранить" />

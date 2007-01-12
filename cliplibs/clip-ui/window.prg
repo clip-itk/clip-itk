@@ -22,34 +22,35 @@ static _mainWindow := NIL
 
 /* Window class */
 function UIWindow( caption, parent, name, close, resizeable )
-	local obj	:= driver:createWindow( caption, parent, resizeable )
+	local obj		:= driver:createWindow( caption, parent, resizeable )
 	obj:closeFlag	:= close
 	obj:className	:= "UIWindow"
-	obj:parent	:= parent
-	obj:name	:= name
-	obj:menu	:= NIL
-	obj:toolbar	:= NIL
+	obj:parent		:= parent
+	obj:name		:= name
+	obj:menu		:= NIL
+	obj:toolbar		:= NIL
 	obj:statusbar	:= NIL
-	obj:value	:= map()
+	obj:value		:= map()
 	obj:valueNames	:= array(0)
 	obj:valueTypes	:= map()
-	obj:objId	:= NIL
-	obj:origObj	:= NIL
-	obj:creator	:= NIL
+	obj:valueTypes2	:= array(0)
+	obj:objId		:= NIL
+	obj:origObj		:= NIL
+	obj:creator		:= NIL
 	obj:returnAction := NIL
 	obj:objClass	:= ""
-	obj:objDep	:= ""
-	obj:caption	:= caption
-	obj:timers	:= array(0)
+	obj:objDep		:= ""
+	obj:caption		:= caption
+	obj:timers		:= array(0)
 
-	obj:childs	:= array(0)
+	obj:childs		:= array(0)
 	obj:childCount	:= 0
 	obj:childSpace	:= NIL
 	obj:menuChildWindow := NIL
-	obj:widget	:= map()
+	obj:widget		:= map()
 
-	obj:menu 	:= NIL
-	obj:toolbar	:= NIL
+	obj:menu 		:= NIL
+	obj:toolbar		:= NIL
 	obj:statusbar	:= NIL
 
 	obj:keyEvents 	:= array(0)
@@ -59,7 +60,7 @@ function UIWindow( caption, parent, name, close, resizeable )
 return obj
 
 function UIMainWindow(caption, name)
-	local obj	:= UIWindow(caption, NIL, name, .T., .T.)
+	local obj		:= UIWindow(caption, NIL, name, .T., .T.)
 	obj:className	:= "UIMainWindow"
 	obj:sysMenus	:= map()
 	_mainWindow	:= obj
@@ -69,18 +70,18 @@ function getMainWindow()
 return _mainWindow
 
 function _recover_UIWINDOW( obj )
-	obj:close	:= @ui_mainWindowClose()
-	obj:childClose    := @ui_childClose()
-	obj:childCloseAll := @ui_childCloseAll()
-	obj:setCaption  := @ui_setCaption()
-	obj:getGeometry := @ui_getGeometry()
-	obj:setGeometry := @ui_setGeometry()
-	obj:setPlacement  := @ui_setPlacement()
-	obj:setMDI	:= @ui_setMDI()
-	obj:setIcon	:= @ui_setIcon()
-	obj:setDefault	:= @ui_setDefault()
-	obj:setKeyEvent := @ui_setKeyEvent()
-	obj:unSetKeyEvent := @ui_unSetKeyEvent()
+	obj:close			:= @ui_mainWindowClose()
+	obj:childClose    	:= @ui_childClose()
+	obj:childCloseAll 	:= @ui_childCloseAll()
+	obj:setCaption  	:= @ui_setCaption()
+	obj:getGeometry 	:= @ui_getGeometry()
+	obj:setGeometry 	:= @ui_setGeometry()
+	obj:setPlacement  	:= @ui_setPlacement()
+	obj:setMDI			:= @ui_setMDI()
+	obj:setIcon			:= @ui_setIcon()
+	obj:setDefault		:= @ui_setDefault()
+	obj:setKeyEvent 	:= @ui_setKeyEvent()
+	obj:unSetKeyEvent 	:= @ui_unSetKeyEvent()
 return obj
 
 /* MDI child window */
@@ -92,25 +93,26 @@ function UIChildWindow( caption, parent, name )
 	endif
 	obj := driver:createChildWindow( caption, parent )
 	obj:className	:= "UIChildWindow"
-	obj:name	:= name
-	obj:widget	:= map()
-	obj:value	:= map()
+	obj:name		:= name
+	obj:widget		:= map()
+	obj:value		:= map()
 	obj:valueNames	:= array(0)
 	obj:valueTypes	:= map()
-	obj:objId	:= NIL
-	obj:origObj	:= NIL
-	obj:creator	:= NIL
+	obj:valueTypes2	:= array(0)
+	obj:objId		:= NIL
+	obj:origObj		:= NIL
+	obj:creator		:= NIL
 	obj:returnAction := NIL
 	obj:objClass	:= ""
-	obj:objDep	:= ""
-	obj:caption	:= caption
-	obj:timers	:= array(0)
+	obj:objDep		:= ""
+	obj:caption		:= caption
+	obj:timers		:= array(0)
 
-	obj:menu 	:= NIL
-	obj:toolbar	:= NIL
+	obj:menu 		:= NIL
+	obj:toolbar		:= NIL
 	obj:statusbar	:= NIL
 
-	obj:parent	:= parent
+	obj:parent		:= parent
 	parent:childCount += 1
 	obj:idWindow	:= "#"+alltrim(str(parent:childCount))
 	aadd(parent:childs, obj )
@@ -120,26 +122,27 @@ function UIChildWindow( caption, parent, name )
 return obj
 
 function _recover_UICHILDWINDOW( obj )
-	obj:add		:= @ui_add()
-	obj:addEnd	:= @ui_addEnd()
-	obj:close	:= @ui_close()
+	obj:add			:= @ui_add()
+	obj:addEnd		:= @ui_addEnd()
+	obj:close		:= @ui_close()
 	obj:setCaption  := @ui_setChildCaption()
 return obj
 
 function _recover_UIWINDOWCOMMON( obj )
-	obj:setObj	:= @ui_setObj()
-	obj:getObj	:= @ui_getObj()
+	obj:setObj		:= @ui_setObj()
+	obj:getObj		:= @ui_getObj()
 	obj:dialogBox	:= @ui_dialogBox()
 	obj:show    	:= @ui_show()
 	obj:setPanels	:= @ui_setPanels()
-	obj:setName	:= @ui_setName()
-	obj:val		:= @ui_val()
+	obj:setName		:= @ui_setName()
+	obj:val			:= @ui_val()
+	obj:setFormat	:= @ui_setFormat()
 	obj:setValues	:= @ui_setValues()
 	obj:getValues	:= @ui_getValues()
-	obj:return	:= @ui_return()
-	obj:select	:= @ui_select()
+	obj:return		:= @ui_return()
+	obj:select		:= @ui_select()
 	obj:isChanged	:= @ui_isChanged()
-	obj:setId	:= @ui_setId()
+	obj:setId		:= @ui_setId()
 	obj:setFocus	:= @ui_setFocus()
 	obj:setPadding	:= @ui_setPadding()
 	obj:setSpacing	:= @ui_setSpacing()
@@ -230,7 +233,7 @@ return {|| win:close(), eval(action, gId) }
 
 /* Set values to form fields */
 static function ui_setObj(self, obj)
-	local i, w, val, a, refObj, tref, ref
+	local i, w, val, a, refObj, tref, ref, vfl, rn
 
 	if valtype(obj) != 'O'
 		return NIL
@@ -240,6 +243,12 @@ static function ui_setObj(self, obj)
 	self:origObj := map()
 
 	for i in self:valueNames
+		vfl := ascan(self:valueTypes2, {|e| upper(i)==upper(e[1]) })
+		if vfl > 0
+			rn := self:valueTypes2[2]
+		else
+			rn := i
+		endif
 		if at("\.",i) != 0
 			a := split(i,"\.")
 			//?? "set foreign object attribute:",a,chr(10)
@@ -260,16 +269,19 @@ static function ui_setObj(self, obj)
 				endif
 			next
 			val := tref
-		elseif upper(i) $ obj
-			val := obj[upper(i)]
+		elseif upper(rn) $ obj
+			val := obj[upper(rn)]
 		else
-			?? "window:setObj(): item '"+i+"' doesn't exist as object attribute&\n"
+			?? "window:setObj(): item '"+rn+"' doesn't exist as object attribute&\n"
 			loop
 		endif
 		w := self:value[i]
 		if .not. empty(w)
-//			?? "&\tset",i,"=",valtype(val),val,chr(10)
+//			?? "&\tset",i,rn,"=",valtype(val),val,chr(10)
 			self:origObj[upper(i)] := val
+			if vfl > 0
+				val := _val2w( val, self:valueTypes2[vfl][3], w:className )
+			endif
 			w:setValue( val )
 		endif
 	next
@@ -283,7 +295,7 @@ static function ui_getObj(self)
 	a := self:getValues()
 	for i in a
 		v := i[2]
-		if self:valueTypes[i[1]] == "number"
+		if self:valueTypes[i[1]] == "number" .and. valtype(v) == "C"
 			v := val(v)
 		elseif self:valueTypes[i[1]] == "date" .and. valtype(v) == "C"
 			dateFormat := iif(len(v)==10,"dd.mm.yyyy",dateFormat)
@@ -376,7 +388,7 @@ return NIL
 
 /* Set menu, toolbar and statusbar for window */
 static function ui_setPanels( self, menu, toolBar, statusBar )
-	self:menu 	:= iif(empty(self:menu),menu,self:menu)
+	self:menu 		:= iif(empty(self:menu),menu,self:menu)
 	self:toolbar	:= iif(empty(self:toolbar),toolBar,self:toolbar)
 	self:statusbar	:= iif(empty(self:statusbar),statusBar,self:statusbar)
 	driver:setPanels( self, menu, toolbar, statusBar )
@@ -417,29 +429,65 @@ static function ui_setName(self, name, o)
 
 return o
 
-/* Set all values to widgets defined by function SetName */
+/* Set format for named widget */
+static function ui_setFormat(self, widget, name, type, length, decLen, format, flags)
+	local fDesc:=map()
+	if empty(widget) .or. empty(name)
+		return NIL
+	endif
+	fDesc:type 		:= iif(.not. empty(type), lower(type), "string")
+	fDesc:length 	:= iif(valtype(length)=="N", length, iif(valtype(length)=="C", val(length), 0))
+	fDesc:decLen 	:= iif(valtype(decLen)=="N", decLen, iif(valtype(decLen)=="C", val(decLen), 0))
+	fDesc:format 	:= iif(empty(format), "", format)
+	fDesc:flags		:= iif(empty(flags), "", flags)
+	aadd(self:valueTypes2, { widget, name, fDesc })
+return NIL
+
+/* Set all values to widgets defined by function setName() */
 static function ui_setValues(self, values)
-	local i, w, v
+	local i, w, v, vfl
 	for i in values
-		w := i[1]
-		v := i[2]
+		if valtype(i) != 'A' .or. len(i) < 2
+			loop
+		endif
+		vfl := ascan(self:valueTypes2, {|e| upper(i[1])==upper(e[2]) })
+		if vfl > 0
+			w := mapget(self:value, self:valueTypes2[vfl][1], NIL)
+			v := _val2w( i[2], self:valueTypes2[vfl][3] )
+		elseif len(self:valueTypes2) > 0
+			loop
+		else
+			w := mapget(self:value, i, NIL)
+			v := i[2]
+		endif
+		
 		if "SETVALUE" $ w
 			w:setValue( v )
 		endif
 	next
 return 0
 
-/* Get all values from widgets defined by function SetName */
+/* Get all values from widgets defined by function setName() */
 static function ui_getValues(self)
-	local i, w, v, values := array(0)
+	local i, w, v, values := array(0), rn, vfl
 	for i in self:valueNames
-		w := self:value[i]
-		if left(i, 1) != '.' .and. "GETVALUE" $ w ;
+		rn := i
+		vfl := ascan(self:valueTypes2, {|e| upper(i)==upper(e[1]) })
+		if vfl > 0
+			w := mapget(self:value, self:valueTypes2[vfl][1], NIL)
+			rn := self:valueTypes2[vfl][2]
+		elseif len(self:valueTypes2) > 0
+			loop
+		else
+			//?? "valtype:", valtype(i), i, valtype(self:value), len(mapkeys(self:value)), chr(10)
+			w := mapget(self:value, i, NIL)
+		endif
+		if valtype(w) == "O" .and. "GETVALUE" $ w ;
 					.and. w:className != 'UIButton' ; // Only object's field, without buttons
 					.and. w:className != 'UITable' ;
 					.and. w:className != 'UITree'
 			v := w:getValue()
-			aadd(values, { i, v } )
+			aadd(values, { rn, iif(vfl==0, v, _w2val(v, self:valueTypes2[vfl][3])) } )
 		endif
 	next
 return values
@@ -638,3 +686,110 @@ static function ui_setspacing(self, spacing)
 		self:userSpace:setspacing( spacing )
 	endif
 return NIL
+
+/* Raw widget value -> Formatted value */
+static function _w2val(v, format)
+	local nv:=v, fmt
+	
+	if valtype(format) != 'O'
+		return v
+	endif
+	switch valtype(v)
+		case 'O', 'A'
+			// As is
+		case 'L'
+			// Boolean
+			if format:type == 'string'
+				nv := iif(v, 'true', 'false')
+			elseif format:type == 'number'
+				nv := iif(v, 1, 0)
+			elseif format:type == 'boolean' .or. format:type == 'logical'
+				nv := v
+			elseif format:type == 'date'
+				nv := ''
+			elseif format:type == 'array'
+				nv := { v }
+			else
+				nv := v
+			endif
+		case 'N'
+			// Number
+			if format:type == 'string'
+				nv := str(v, format:length, format:decLen)
+			elseif format:type == 'number'
+				nv := v
+			elseif format:type == 'boolean' .or. format:type == 'logical'
+				nv := (v != 0)
+			elseif format:type == 'date'
+				nv := ''
+			elseif format:type == 'array'
+				nv := { v }
+			else
+				nv := v
+			endif
+		case 'C'
+			// String
+			if format:type == 'string'
+				nv := v
+			elseif format:type == 'number'
+				nv := val(v)
+			elseif format:type == 'boolean' .or. format:type == 'logical'
+				nv := lower(v) == 'true'
+			elseif format:type == 'date'
+				fmt := iif(len(format:format) > 0, format:format, iif(len(v)==10,"dd.mm.yyyy","dd.mm.yy"))
+				nv := ctod(v, fmt)
+			elseif format:type == 'array'
+				nv := { v }
+			else
+				nv := v
+			endif
+		case 'D'
+			// Date
+			if format:type == 'string'
+				fmt := iif(len(format:format) > 0, format:format, iif(len(v)==10,"dd.mm.yyyy","dd.mm.yy"))
+				nv := dtoc(v, fmt)
+			elseif format:type == 'number'
+				nv := ''
+			elseif format:type == 'boolean' .or. format:type == 'logical'
+				nv := ''
+			elseif format:type == 'date'
+				nv := v
+			elseif format:type == 'array'
+				nv := { v }
+			else
+				nv := ''
+			endif
+		case 'U'
+			// NIL
+			if format:type == 'string'
+				nv := ''
+			elseif format:type == 'number'
+				nv := 0
+			elseif format:type == 'boolean' .or. format:type == 'logical'
+				nv := .F.
+			elseif format:type == 'date'
+				nv := ''
+			elseif format:type == 'array'
+				nv := {}
+			else
+				nv := v
+			endif
+		otherwise
+			?? 'Unsupported type of value: ', valtype(v), chr(10)
+	endswitch
+return nv
+
+/* Formatted value -> Raw widget value */
+static function _val2w(v, format, class)
+	local nv:=v, fmt
+
+	if valtype(format) == 'O'
+		if valtype(v) == 'N'
+			nv := str(v, format:length, format:decLen)
+		elseif valtype(v) == 'D'
+			fmt := iif(len(format:format) > 0, format:format, iif(len(v)==10,"dd.mm.yyyy","dd.mm.yy"))
+			nv := dtoc(v, fmt)
+		endif
+	endif
+
+return nv

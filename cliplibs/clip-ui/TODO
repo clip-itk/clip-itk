@@ -2,12 +2,11 @@
 TODO
 ====
 
-Last change: 05 Jan 2007
+Last change: 12 Jan 2007
 
 FIRST
 =====
  - Set slot functions for window open, activation, close
- - support Glade and Qt Designer form formats
 
 
 CLIP-UI

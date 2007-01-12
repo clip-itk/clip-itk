@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library									   */
 /*																		   */
-/*   Copyright (C) 2003-2006 by E/AS Software Foundation 				   */
+/*   Copyright (C) 2003-2007 by E/AS Software Foundation 				   */
 /*   Authors: 															   */
 /*  	     Andrey Cherepanov <skull@eas.lrn.ru>						   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
@@ -45,6 +45,7 @@ function _recover_UIFORM( obj )
 	obj:actionHandler 	:= @ui_actionHandler()
 	obj:subActionHandler := @ui_subActionHandler()
 	obj:i18n 			:= @ui_form_i18n()
+	obj:setValues		:= @ui_setValues()
 return obj
 
 /* Parse form from file */
@@ -148,6 +149,16 @@ static function ui_parse(self)
 	t := self:root:XPath("/style/*")
 	for i in t
 		ui_setProperty(self, i, NIL)
+	next
+
+	if DEBUG
+		?? "UIForm: set value names...&\n"
+	endif
+
+	/* Set value format */
+	t := self:root:XPath("/data/*")
+	for i in t
+		ui_setValues(self, win, i)
 	next
 
 	if DEBUG
@@ -998,3 +1009,19 @@ static function ui_form_i18n(self, str)
 	endif
 //	?? "i18n:",str,"=>",lstr,chr(10)
 return lstr
+
+/* Set value format */
+static function ui_setValues(self, win, t)
+	if valtype(win) != 'O' .or. .not. 'SETFORMAT' $ win .or. valtype(t) != 'O'
+		return NIL
+	endif
+	// name, type, length, decLen, format, add
+	win:setFormat( 	t:attribute('widget'), ;
+					t:attribute('name'), ;
+					t:attribute('type'), ;
+					t:attribute('length'), ;
+					t:attribute('decLen'), ;
+					t:attribute('format'), ;
+					t:attribute('flags') ;
+				 )
+return NIL
