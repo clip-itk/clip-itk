@@ -44,6 +44,7 @@ static function xml_ParseFile( self, filename )
 	var:ct := NIL
 	var:pt := NIL
 	var:root := NIL
+	var:parser := parser
 	xml_SetUserData(parser, @var)
 	xml_SetCharacterDataHandler( parser, @xml_handleText() )
 	xml_SetElementHandler( parser, @xml_handleElementStart(), @xml_handleElementEnd() )
@@ -81,6 +82,7 @@ static function xml_ParseString( self, string )
 	var:ct := NIL
 	var:pt := NIL
 	var:root := NIL
+	var:parser := parser
 	xml_SetUserData(parser, @var)
 	xml_SetCharacterDataHandler( parser, @xml_handleText() )
 	xml_SetElementHandler( parser, @xml_handleElementStart(), @xml_handleElementEnd() )
@@ -163,6 +165,7 @@ function xml_handleElementStart( vUser, name, aAttr )
 	// Create new XMLTag object
 	//?? "<"+name+">&\n"
 	vUser:ct := XMLTag( name )
+	vUser:ct:pos := xml_GetCurrentByteIndex( vUser:parser )
 	vUser:ct:parent := vUser:pt
 	
 	aeval( aAttr, {|e| e[2]:=translate_charset( "utf-8", host_charset(), e[2]) } )

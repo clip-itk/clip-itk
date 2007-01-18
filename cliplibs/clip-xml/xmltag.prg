@@ -19,6 +19,7 @@ function XMLTag( name )
 	obj:name	:= name
 	obj:text	:= ""
 	obj:offset 	:= 0
+	obj:pos		:= 0
 	obj:attributes := array(0)
 	obj:parent	:= NIL
 	obj:childs	:= array(0)

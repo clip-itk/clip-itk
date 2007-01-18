@@ -289,6 +289,18 @@ err:
 }
 
 int
+clip_XML_GETCURRENTBYTEINDEX(ClipMachine *cm)
+{
+	C_parser *cpar = _fetch_c_arg(cm);
+	CHECKCPARSER(cpar);
+
+    _clip_retni(cm,XML_GetCurrentByteIndex(cpar->parser));
+    return 0;
+err:
+	return 1;
+}
+
+int
 clip_XML_GETCURRENTLINENUMBER(ClipMachine *cm)
 {
 	C_parser *cpar = _fetch_c_arg(cm);
