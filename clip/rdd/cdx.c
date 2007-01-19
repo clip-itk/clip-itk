@@ -4,9 +4,12 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log$
+	Revision 1.6  2007/01/19 13:39:51  itk
+	uri: fixed bad code. sigsegv under gcc4.1
+	
 	Revision 1.5  2007/01/19 08:05:26  itk
 	uri: small fix for gcc4.1
-	
+
 	Revision 1.4  2007/01/09 10:41:02  itk
 	uri: backward some change from "2006/12/11 12:23:22 foldi Manage custom index.". VERY LOW SPEED.
 
@@ -2489,6 +2492,7 @@ static int _cdx_compare(void* op,void* k1,void* k2,int* uniqfound){
 	return r;
 }
 
+#define D20070119
 static int _cdx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop,const char* tag,const char* expr,ClipVar* block,int unique,unsigned int header,const char* __PROC__){
 	RDD_ORDER* ro = NULL;
 	CDX_HEADER hdr;
@@ -2580,12 +2584,20 @@ static int _cdx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** ro
 				ro->type = 'T';
 				break;
 			default:
+#ifdef D20070119
+				_clip_destroy(cm,&vv);
+#endif
 				return rdd_err(cm,EG_DATATYPE,0,__FILE__,__LINE__,__PROC__,
 					er_baddata);
 		}
+#ifdef D20070119
+		_clip_destroy(cm,&vv);
+#endif
 	}
 	ro->key = malloc(ro->bufsize);
+#ifndef D20070119
 	_clip_destroy(cm,&vv);
+#endif
 
 	ro->unique = unique;
 	ro->descend = rd->os.lDescend;
