@@ -4,9 +4,12 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log$
+	Revision 1.5  2007/01/19 08:05:26  itk
+	uri: small fix for gcc4.1
+	
 	Revision 1.4  2007/01/09 10:41:02  itk
 	uri: backward some change from "2006/12/11 12:23:22 foldi Manage custom index.". VERY LOW SPEED.
-	
+
 	Revision 1.3  2006/12/11 16:47:12  itk
 	uri: small fix in "index on" with many tags (with the same name)
 
@@ -1180,7 +1183,7 @@ static int _cdx_last(ClipMachine* cm,RDD_ORDER* ro,int* out,const char* __PROC__
 		_CDX_PAGE(ro,ro->stack[ro->level].page,&page);
 		ro->stack[ro->level].pos = _rdd_ushort(page.nkeys)-1;
 	}
-#ifndef D20090109
+#ifndef D20070109
 	if ( *out != 1 ) {
 	    int recno;
 	    _cdx_leaf_item(ro,leaf,ro->stack[ro->level].pos,&recno,ro->key);

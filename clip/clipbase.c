@@ -5,9 +5,12 @@
 */
 /*
 	$Log$
+	Revision 1.4  2007/01/19 08:05:25  itk
+	uri: small fix for gcc4.1
+	
 	Revision 1.3  2006/12/29 08:02:25  itk
 	uri: strip alias name from long filename.
-	
+
 	Revision 1.2  2006/07/17 08:09:47  itk
 	uri: some fixes about long alieas name in select()
 
@@ -1918,7 +1921,7 @@ clip_DBUSEAREA(ClipMachine * cm)
 	strcpy(wa->name, name);
 
 	if (alias)
-		alname = alias;
+		alname = (char *)alias;
 	else
 		alname = wa->rd->name;
 	{
