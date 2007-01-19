@@ -67,8 +67,10 @@ function __dbCopyXStruct(fname)
 	   field->field_type:=fields[i][2]
 	   field->field_len :=fields[i][3]
 	   field->field_dec :=fields[i][4]
-	   if len(fields[i]) > 5
+	   if len(fields[i]) > 5 .and. valtype(fields[i])=="L"
 			field->field_bin :=fields[i][5]
+	   endif
+	   if len(fields[i]) > 6 .and. valtype(fields[i])=="L"
 			field->field_nil :=fields[i][6]
 	   endif
    next
