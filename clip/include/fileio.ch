@@ -14,7 +14,7 @@
 	#translate FGOBOTTOM(<f>)  => FSEEK( <f>, 0, FS_END)
 	#translate FPOS(<f>)       => FSEEK( <f>, 0, FS_RELATIVE )
 	#translate FBOF(<f>)       => (FPOS(<f>) == 0)
-	#translate FEOF(<f>)       => (FPOS(<f>) == FSize(<f>))
+	#translate FEOF(<f>)       => (FPOS(<f>) == FileSize(<f>))
 #endif
 
 /* mode open for FOPEN */
