@@ -1,0 +1,11 @@
+CC= gcc
+PTH_LIBS= -lpth
+PTH_TEST= pth_tst
+
+std_tst: pth_tst
+pth_tst: pth_tst.c
+	$(CC) pth_tst.c -o pth_tst $(PTH_LIBS)
+clean: 
+	cp Makefile.empty Makefile
+	rm -f $(PTH_TEST)
+	rm -f *.o *.bak

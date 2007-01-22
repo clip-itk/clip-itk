@@ -1,0 +1,11 @@
+LIB = task.a
+PROGS = cl_tst
+PTH_TEST= pth_tst
+
+all: 
+clean:
+	rm Makefile
+	rm -f $(LIB) $(PROGS) *.o core *.bak *.BAK *.a
+	rm -f cl_cfg.h
+	rm -f $(PTH_TEST)
+	cp Makefile.empty Makefile
