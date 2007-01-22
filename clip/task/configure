@@ -1,0 +1,29 @@
+#!/bin/sh
+
+make clean
+cp Makefile.pth Makefile
+make pth_tst
+./pth_tst >/dev/null 2>&1
+PTH_ERR=$?
+if [ "$PTH_ERR" = 0 ]
+then
+    echo Library PTH detected. CLIP will use it.
+#    make clean
+    #exit 0
+fi
+#make clean
+./cl_conf
+make cl_tst
+./cl_tst >/dev/null 2>&1
+CL_ERR=$?
+if [ "$CL_ERR" = 0 ]
+then
+    echo Library CL detected. CLIP will use it.
+    #make clean
+    exit 0
+fi
+echo Warning:Workable library for tasks not detected.
+echo Please install packages libpth2, libpth-dev
+#make clean
+exit 1
+
