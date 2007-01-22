@@ -375,7 +375,7 @@ if [ "$USE_TASKS" = yes -a ! -f task/task.o ]
 then
 	cd task
 	./configure
-	make clean task.o >/dev/null 2>&1
+#	make clean std_tst >/dev/null 2>&1
 	if [ $? = 0 ]
 	then
 		USE_TASKS=yes

@@ -213,7 +213,7 @@ $(SCREEN):
 	cd screen && $(MAKE) libscr.a
 
 $(TASK):
-	cd task && $(MAKE)
+	cd task && ./configure && $(MAKE)
 
 test:
 	cd tests && $(MAKE)
@@ -244,7 +244,7 @@ clean: cleanc
 cleanc:
 	rm -f *.ex *.nm
 	cd screen && $(MAKE) clean
-	cd task && $(MAKE) clean
+	cd task && $(MAKE) clean && $(MAKE) clean
 	cd rdd && $(MAKE) clean
 	cd sql && $(MAKE) clean
 	cd classes && $(MAKE) clean

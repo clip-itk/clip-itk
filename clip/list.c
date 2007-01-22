@@ -1,6 +1,9 @@
 
 /*
    $Log$
+   Revision 1.2  2007/01/22 12:39:30  itk
+   uri: some fix for new task model
+
    Revision 1.1  2006/06/22 19:01:35  itk
    uri: initial
 
@@ -20,7 +23,7 @@
    *
  */
 
-#include "clip.h"
+/*#include "clip.h"*/
 #include "list.h"
 
 #define PREV(el) ((ListEl *)(el))->prev

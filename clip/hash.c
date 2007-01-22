@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.2  2007/01/22 12:39:29  itk
+   uri: some fix for new task model
+
    Revision 1.1  2006/06/22 19:01:34  itk
    uri: initial
 
@@ -42,7 +45,7 @@
 
 #include <stdlib.h>
 
-#include "clip.h"
+/*#include "clip.h"*/
 #include "hash.h"
 
 struct _HashTable
