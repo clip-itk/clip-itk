@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.3  2007/01/23 14:12:08  itk
+   uri: some new code for new tasks
+
    Revision 1.2  2007/01/23 10:46:22  itk
    uri: some redisign for new task model
 
@@ -95,12 +98,13 @@ typedef struct
 }
 start_data;
 
-static int
+static void *
 task_run(void *data)
 {
 	start_data *sp = (start_data*) data;
 	ClipMachine *mp = sp->mp;
 	int r;
+	void *ret;
 
 	sp->mp = new_ClipMachine(mp->screen);
 
@@ -113,8 +117,7 @@ task_run(void *data)
 		_clip_logg(0, "task_run: cannot start function '%s'", sp->name);
 
 	/*printf("\ntask_run done\n");*/
-
-	return r;
+	return ret;
 }
 
 static void
@@ -179,6 +182,9 @@ clip_START(ClipMachine * mp)
 	sp->mp = mp;
 
 	tp = Task_new(tname, 4096*32, sp, task_run, task_destroy);
+
+	if (tp == NULL)
+		_clip_retnl(mp,-1);
 
 	_clip_retnl(mp, Task_get_id(tp));
 

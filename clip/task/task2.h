@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.2  2007/01/23 14:12:12  itk
+ uri: some new code for new tasks
+
  Revision 1.1  2007/01/23 10:46:23  itk
  uri: some redisign for new task model
 
@@ -14,6 +17,7 @@
 #define TASK_STACK_MIN        16384
 #define NEW(typ) ((typ*) calloc(sizeof(typ),1))
 
+#include <setjmp.h>
 #include "../list.h"
 #include "../coll.h"
 #include "../hash.h"
@@ -60,7 +64,7 @@ struct Task
 	long wakeUp;		/*  срок побудки задачи */
 
 	Task *parent;		/*  родитель задачи, выполняющейся через spawn */
-	int result;		/*  результат выполнения run() */
+	void * result;		/*  reference to результат выполнения run() */
 
 	TaskState state;	/*  состояние задачи */
 
@@ -79,11 +83,12 @@ struct Task
 	   # Выход из метода run означает окончание задачи.
 	 */
 	
-	int (*run) (void *data);
+	void * (*run) (void *data);
 	void (*destroy) (void *data);
 	void *data;
+	void *ref;  /*other reference to any data*/
 	
 };
 
-
 static int seqNo = 0;		/*  постоянно-нарастающий номер */
+

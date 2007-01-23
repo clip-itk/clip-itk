@@ -33,7 +33,7 @@ links:
 
 clean:
 	cp Makefile.empty Makefile
-	rm -f $(LIB) $(PROGS) *.o core *.bak *.BAK *.a
+	rm -f $(LIB) $(PROGS) task_tst *.o core *.bak *.BAK *.a
 	rm -f USE*
 	rm -f cl_cfg.h
 	rm -f $(LINKS)

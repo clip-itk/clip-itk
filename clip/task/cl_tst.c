@@ -1,7 +1,11 @@
 /* $Log$
-/* Revision 1.2  2007/01/23 10:46:22  itk
-/* uri: some redisign for new task model
+/* Revision 1.3  2007/01/23 14:12:10  itk
+/* uri: some new code for new tasks
 /*
+
+ Revision 1.2  2007/01/23 10:46:22  itk
+ uri: some redisign for new task model
+
  Revision 1.1  2007/01/22 12:38:02  itk
  uri: initial pth support
 
@@ -20,17 +24,18 @@
 #include <stdio.h>
 #include "task.h"
 
-int
+void *
 run(void *data)
 {
 	int i;
+	void *ret=NULL;
 
 	for (i = 0; i < 5; i++)
 	{
 		printf("task %ld cycle %d\n", Task_get_id(Task_get_currTask()), i);
 		Task_sleep(100);
 	}
-	return 0;
+	return ret;
 }
 
 int

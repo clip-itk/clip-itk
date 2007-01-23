@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.3  2007/01/23 14:12:10  itk
+ uri: some new code for new tasks
+
  Revision 1.2  2007/01/23 10:46:22  itk
  uri: some redisign for new task model
 
@@ -213,10 +216,10 @@ static int t_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exce
 #define t_select select
 #endif
 
-TASK_DLLEXPORT int 
+TASK_DLLEXPORT long 
 Task_version()
 {
-	return 10;
+	return 1000L;
 }
 
 TASK_DLLEXPORT void
@@ -421,7 +424,7 @@ static struct tms tms_buf;
 
 TASK_DLLEXPORT Task *
 Task_new(const char *name, long stacksize, void *data
-	 ,int (*run) (void *data), void (*destroy) (void *data))
+	 ,void * (*run) (void *data), void (*destroy) (void *data))
 {
 	Task *task = NEW(Task);
 	int psize;
@@ -497,12 +500,16 @@ Task_delete(Task * task)
 TASK_DLLEXPORT long
 Task_get_id(Task * task)
 {
+	if (task == NULL )
+		return -1;
 	return task->id;
 }
 
 TASK_DLLEXPORT const char *
 Task_get_name(Task * task)
 {
+	if (task == NULL )
+		return NULL;
 	return task->name;
 }
 
@@ -512,7 +519,7 @@ Task_get_count(void)
 	return activeCount;
 }
 
-TASK_DLLEXPORT int
+TASK_DLLEXPORT void *
 Task_spawn(Task * task, Task * chield)
 {
 	chield->parent = task;

@@ -13,7 +13,7 @@ then
 #    make clean
     #exit 0
 fi
-rm -f USE_PTH
+rm -f USE_PTH pth_tst
 #make clean
 ./cl_conf
 cp Makefile.cl Makefile
@@ -27,7 +27,7 @@ then
     #make clean
     exit 0
 fi
-rm -f USE_CL
+rm -f USE_CL cl_tst
 echo Warning:Workable library for tasks not detected.
 echo Please install packages libpth2, libpth-dev
 #make clean

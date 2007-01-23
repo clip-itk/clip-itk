@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.5  2007/01/23 14:12:12  itk
+ uri: some new code for new tasks
+
  Revision 1.4  2007/01/23 10:46:23  itk
  uri: some redisign for new task model
 
@@ -43,7 +46,7 @@
 typedef struct TaskMessage TaskMessage;
 typedef struct Task Task;
 
-int Task_version(); /* return version of library */
+long Task_version(); /* return version of library */
 void Task_init(); /* init task internals */
 void Task_START();
 void Task_STOP();
@@ -84,7 +87,7 @@ void *TaskMessage_get_data(TaskMessage *msg);
 
 
 Task *Task_new(const char *name, long stacksize, void *data
-	, int (* run)(void *data), void (* destroy)(void *data));
+	, void * (* run)(void *data), void (* destroy)(void *data));
 
 void Task_delete(Task *task);
 
@@ -98,7 +101,7 @@ int Task_get_count(void);
 	# возвращает общее число активных задач (без sheduler и zombie)
 */
 
-int Task_spawn(Task *task, Task *chield);
+void * Task_spawn(Task *task, Task *chield);
 /*
 	#note russian
 	# запускает chield в отдельном стеке и ждет его завершения
