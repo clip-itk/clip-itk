@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.2  2007/01/23 10:46:22  itk
+   uri: some redisign for new task model
+
    Revision 1.1  2006/06/22 19:01:31  itk
    uri: initial
 
@@ -191,9 +194,6 @@ clip_START(ClipMachine * mp)
 }
 
 
-static int stopcount = 0;
-
-
 
 #else
 
@@ -210,13 +210,7 @@ int
 clip_TASKSTOP(ClipMachine * mp)
 {
 #ifdef USE_TASKS
-	if (!stopcount)
-	{
-		if (Task_get_currTask())
-			Task_stop_sheduler();
-	}
-
-	++stopcount;
+	Task_STOP();
 #endif
 	return 0;
 }
@@ -225,16 +219,7 @@ int
 clip_TASKSTART(ClipMachine * mp)
 {
 #ifdef USE_TASKS
-	--stopcount;
-	if (stopcount <= 0)
-	{
-		if (Task_get_currTask())
-		{
-			Task_start_sheduler();
-			Task_yield();
-		}
-		stopcount = 0;
-	}
+	Task_START();
 #endif
 	return 0;
 }
@@ -246,12 +231,16 @@ int
 clip_TASKID(ClipMachine *mp)
 {
 #ifdef USE_TASKS
-	Task *tp = Task_get_currTask();
+	_clip_retnl(mp, Task_ID());
+#endif
+	return 0;
+}
 
-	if (!tp)
-		_clip_retni(mp, -1);
-	else
-		_clip_retnl(mp, Task_get_id(tp));
+int
+clip_TASKVERSION(ClipMachine *mp)
+{
+#ifdef USE_TASKS
+	_clip_retni(mp, Task_version());
 #endif
 	return 0;
 }

@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.2  2007/01/23 10:46:22  itk
+ uri: some redisign for new task model
+
  Revision 1.1  2007/01/22 12:38:02  itk
  uri: initial pth support
 
@@ -106,9 +109,9 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-#include "list.h"
-#include "coll.h"
-#include "hash.h"
+#include "../list.h"
+#include "../coll.h"
+#include "../hash.h"
 
 #include "cl_cfg.h"
 #ifdef OS_MINGW
@@ -117,71 +120,10 @@
 #include <sys/times.h>
 #endif
 #include "task.h"
+#include "task2.h"
 
-struct TaskMessage
-{
-	long sender;
-	long receiver;
-	long id;
-	int needResp:1;
-	int needDel:1;
 
-	void *data;
-	void (*destroy) (void *data);
-};
-
-typedef enum
-{
-	Task_initial,		/*  создана, но не стартовала */
-	Task_ready,		/*  готова к выполнению */
-	Task_wait,		/*  ждет готовности файла или таймаут */
-	Task_msg,		/*  ждет сообщения */
-	Task_resp,		/*  ждет ответа */
-	Task_zombie		/*  уже умерла, но еще не похоронена */
-}
-TaskState;
-
-struct Task
-{
-	ListEl listel;
-
-	List recvlist;		/*  входная очередь сообщений */
-	List proclist;		/*  обрабатываемые сообщения */
-
-	int isMain:1;
-	int isInited:1;		/*  инициализирована и готова к выполнению */
-	int isTimed:1;		/*  ждет таймаут */
-	int isRead:1;		/*  ждет чтение из файла */
-	int isWrite:1;		/*  ждет запись в файл */
-	int isExcept:1;		/*  ждет sigexcept */
-
-	char *name;		/*  имя задачи */
-	long id;		/*  идентификатор задачи (pid) */
-	long wakeUp;		/*  срок побудки задачи */
-
-	Task *parent;		/*  родитель задачи, выполняющейся через spawn */
-	int result;		/*  результат выполнения run() */
-
-	TaskState state;	/*  состояние задачи */
-
-	long stacklen;		/*  length of task's stack */
-
-	jmp_buf taskEnv;	/* environment for context switching */
-	char *stack;		/* this task's stack space */
-	fd_set rfileset;	/* read-wait fileset */
-	fd_set wfileset;	/* write-wait fileset */
-	fd_set efileset;	/* except fileset */
-
-	/*
-	   #note russian
-	   # Стартовая точка задачи. Этот метод должен быть переопределен
-	   # в производном классе для выполнения реальной работы.
-	   # Выход из метода run означает окончание задачи.
-	 */
-	int (*run) (void *data);
-	void (*destroy) (void *data);
-	void *data;
-};
+#undef TASK_STACK_MIN
 
 #ifdef OS_LINUX
 #ifdef ARCH_S390
@@ -230,8 +172,8 @@ static Task *currTask = 0;	/*  текущая задача */
 static Task *mainTask = 0;	/*  главная задача */
 static Task *sheduler = 0;	/*  задача-планировщик */
 
-static int seqNo = 0;		/*  постоянно-нарастающий номер */
 static int activeCount = 0;	/*  количество активных задач (без zombie и без sheduler) */
+static int stopcount = 0;
 
 /* флаги */
 static int canSwitch = 0;	/*  переключение задач разрешено */
@@ -271,8 +213,49 @@ static int t_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exce
 #define t_select select
 #endif
 
+TASK_DLLEXPORT int 
+Task_version()
+{
+	return 10;
+}
 
-#define NEW(typ) ((typ*) calloc(sizeof(typ),1))
+TASK_DLLEXPORT void
+Task_STOP()
+{
+	if (!stopcount)
+	{
+		if (Task_get_currTask())
+			Task_stop_sheduler();
+	}
+
+	++stopcount;
+}
+
+TASK_DLLEXPORT void
+Task_START()
+{
+	--stopcount;
+	if (stopcount <= 0)
+	{
+		if (Task_get_currTask())
+		{
+			Task_start_sheduler();
+			Task_yield();
+		}
+		stopcount = 0;
+	}
+}
+
+TASK_DLLEXPORT long 
+Task_ID()
+{
+	Task *tp = Task_get_currTask();
+	if (!tp)
+		return -1;
+	else
+		return Task_get_id(tp);
+}
+
 
 /*  ][ Message */
 

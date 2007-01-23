@@ -30,4 +30,4 @@ case "$osname" in
 		;;
 esac
 
-cp Makefile.cl Makefile
+#cp Makefile.cl Makefile

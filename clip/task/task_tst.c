@@ -1,5 +1,5 @@
 /* $Log$
-/* Revision 1.2  2007/01/23 10:46:22  itk
+/* Revision 1.3  2007/01/23 10:46:23  itk
 /* uri: some redisign for new task model
 /*
  Revision 1.1  2007/01/22 12:38:02  itk
@@ -27,7 +27,7 @@ run(void *data)
 
 	for (i = 0; i < 5; i++)
 	{
-		printf("task %ld cycle %d\n", Task_get_id(Task_get_currTask()), i);
+		printf("task %ld cycle %d\n", Task_ID(), i);
 		Task_sleep(100);
 	}
 	return 0;
@@ -47,10 +47,10 @@ main(int argc, char **argv)
 
 	Task_start_sheduler();
 
-	for (i = 0; i < 15; i++)
+	for (i = 0; i < 7; i++)
 	{
 		printf("main task: cycle %d\n", i);
-		Task_sleep(50);
+		Task_sleep(100);
 	}
 
 	/*Task_killAll(); */

@@ -8,4 +8,5 @@ clean:
 	rm -f $(LIB) $(PROGS) *.o core *.bak *.BAK *.a
 	rm -f cl_cfg.h
 	rm -f $(PTH_TEST)
+	rm -f USE*
 	cp Makefile.empty Makefile

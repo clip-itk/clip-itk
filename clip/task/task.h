@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.4  2007/01/23 10:46:23  itk
+ uri: some redisign for new task model
+
  Revision 1.3  2007/01/22 12:38:02  itk
  uri: initial pth support
 
@@ -40,7 +43,11 @@
 typedef struct TaskMessage TaskMessage;
 typedef struct Task Task;
 
-void Task_init(void); /* init task internals */
+int Task_version(); /* return version of library */
+void Task_init(); /* init task internals */
+void Task_START();
+void Task_STOP();
+long Task_ID();
 
 TaskMessage *TaskMessage_new(long id
 	, void *data, void (*destroy)(void *data));

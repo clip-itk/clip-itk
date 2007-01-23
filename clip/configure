@@ -375,7 +375,7 @@ if [ "$USE_TASKS" = yes -a ! -f task/task.o ]
 then
 	cd task
 	./configure
-#	make clean std_tst >/dev/null 2>&1
+	#	make clean std_tst >/dev/null 2>&1
 	if [ $? = 0 ]
 	then
 		USE_TASKS=yes
@@ -386,6 +386,10 @@ then
 	cd ..
 fi
 
+if [ "$USE_TASKS" = yes -a -f task/USE_PTH ]
+then
+    ADDLIBS="$ADDLIBS -lpth"
+fi
 
 cd xclip
 	if xmkmf >/dev/null 2>&1
