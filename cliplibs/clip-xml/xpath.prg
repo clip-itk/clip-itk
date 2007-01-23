@@ -133,8 +133,11 @@ static _xpath_axis := { ;
 
 /* xml_XPath() */
 function xml_XPath( context, path )
-	local i, res, b, t, n
+	local i, res, b, t, n, oErr
 	
+	oErr := errorBlock({|e| break(e) })
+	
+	begin sequence
 	// Split to tokens
 	res := _xpath_splitToken( path )
 	
@@ -184,6 +187,11 @@ function xml_XPath( context, path )
 
 	// Evaluate expression
 	res := _xpath_evaluate( @b, context )
+	
+	recover using oErr
+		?? "XPath error:", errorMessage(oErr), chr(10)		
+		return NIL
+	end sequence
 
 return res
 

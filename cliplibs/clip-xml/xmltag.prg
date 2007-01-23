@@ -31,6 +31,7 @@ function _recover_XMLTAG( obj )
 	obj:getName			:= @xml_TagGetName()
 	obj:addChild 		:= @xml_TagAddChild()
 	obj:removeChild 	:= @xml_TagRemoveChild()
+	obj:remove			:= @xml_TagRemove()
 	obj:countChilds 	:= @xml_TagCountChilds()
 	obj:getChild 		:= @xml_TagGetChild()
 	obj:getChilds 		:= @xml_TagGetChilds()
@@ -70,6 +71,16 @@ static function xml_TagRemoveChild( self, position )
 	endif
 	adel( self:childs, position )
 	asize( self:childs, self:countChilds()-1 )
+return .T.
+
+/* Remove current tag */
+static function xml_TagRemove( self )
+	local p, off
+	p := self:getParent()
+	off := self:pos 
+	if valtype(p) == "O"
+		p:removeChild( ascan(p:getChilds(), {|e| e:pos == off }) )
+	endif
 return .T.
 
 /* Number of child tags */
