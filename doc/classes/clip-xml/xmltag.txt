@@ -14,8 +14,12 @@ $LANG_RU$
 	XMLTag(<name>)	--> Объект XMLTag
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "XMLTag".
+	<pos>		- Number. Byte offset from XML file or string begin.
+	<offset>	- Number. Position in mixed text/tag content.
 $LANG_RU$
 	<className>	- Имя класса. Значение: "XMLTag".
+	<pos>		- Число. Смещение в байтах с начала файла или строки XML.
+	<offset>	- Число. Позиция в смешанном содержимом с текстом и тегами.
 
 $METHODNAME$
 	XMLTag()
@@ -73,6 +77,16 @@ $ARGUMENTS$
 	<position>	- Number. Child tag position.
 $LANG_RU$
 	<position>	- Число. Позиция удаляемого дочернего тега.
+$ENDMETHOD$
+
+$METHODNAME$
+	remove()
+$SUMMARY$
+	Remove current tag from parent tag.
+$LANG_RU$
+	Удалить текущий тег из родительского тега.
+$SYNTAX$
+	remove()
 $ENDMETHOD$
 
 $METHODNAME$
