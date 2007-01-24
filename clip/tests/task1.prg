@@ -1,4 +1,5 @@
-clear screen
+//clear screen
+? "aaa"
 ? taskversion()
 ? "begin"
 nnn:=5
@@ -8,8 +9,10 @@ for i=1 to NNN
     sleep(0.1)
 next
 ?
-? "end,waiting any key"
-inkey(0)
+? "end,waiting 1 sec"
+sleep(1)
+? "quit"
+?
 
 static function asdf(n)
 	sleep(0.01)

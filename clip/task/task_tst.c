@@ -1,7 +1,11 @@
 /* $Log$
-/* Revision 1.4  2007/01/23 14:12:14  itk
-/* uri: some new code for new tasks
+/* Revision 1.5  2007/01/24 13:05:45  itk
+/* uri: new task model under PTH minimal works !
 /*
+
+ Revision 1.4  2007/01/23 14:12:14  itk
+ uri: some new code for new tasks
+
 
  Revision 1.3  2007/01/23 10:46:23  itk
  uri: some redisign for new task model
@@ -33,7 +37,7 @@ run(void *data)
 	for (i = 0; i < 5; i++)
 	{
 		printf("task %ld cycle %d\n", Task_ID(), i);
-		Task_sleep(100);
+		Task_sleep(50);
 	}
 	return ret;
 }
@@ -43,14 +47,16 @@ main(int argc, char **argv)
 {
 	int i;
 	Task *tp;
-
+	
+	printf("\nbegin. version=%ld\n",Task_version());
 	printf("\nAAAA\n");
 	for (i = 0; i < 3; i++)
 	{
 		tp = Task_new("task_test", 8192, 0, run, 0);
-		printf("\nBBBB=%d\n",i);
+//    		printf("\nBBBB=%d,%p\n",i,tp);
 		Task_start(tp);
-		printf("\nCCCCC=%d\n",i);
+		Task_sleep(50);
+//		printf("\nCCCCC=%d\n",i);
 	}
 
 	printf("\nDDDDD\n");

@@ -11,7 +11,7 @@ then
     echo Library PTH detected. CLIP will use it.
     echo USE_PTH=yes >USE_PTH
 #    make clean
-    #exit 0
+#    exit 0
 fi
 rm -f USE_PTH pth_tst
 #make clean
