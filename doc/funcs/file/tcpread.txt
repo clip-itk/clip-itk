@@ -35,7 +35,7 @@ con := TCPCONNECT("http://www.itk.ru")
 
 if con > -1
 	? "connection: ", con
-	buf := ""
+	buf := SPACE(1024)
 	tr := TCPREAD(con, @buf, 1024)
 	if tr > -1
 		? buf
