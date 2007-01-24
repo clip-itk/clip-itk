@@ -245,3 +245,11 @@ return __copyFile(f1,f2)
 **********************************************************
 function copyFile(f1, f2,lMode)
 return __copyFile(f1,f2)
+**********************************************************
+FUNCTION FSize( nHandle )
+  LOCAL nCurrent, nLength
+  nCurrent := FPOS( nHandle )
+  nLength := FGOBOTTOM( nHandle )
+  FSEEK( nHandle, nCurrent, FS_SET ) 
+  RETURN ( nLength )
+
