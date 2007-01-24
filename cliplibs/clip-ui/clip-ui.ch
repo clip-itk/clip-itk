@@ -9,6 +9,8 @@
 /*   published by the Free Software Foundation; either version 2 of the    */
 /*   License, or (at your option) any later version.                       */
 /*-------------------------------------------------------------------------*/
+#ifndef CLIP_UI_CH
+#define CLIP_UI_CH
 
 /* Header file for common CLIP-UI definition */
 #define lib_version 	"0.1.4"
@@ -42,3 +44,14 @@
 #define TABLE_COLUMN_DATE		4
 #define TABLE_COLUMN_CHECK		5
 #define TABLE_COLUMN_COUNTER	6
+
+/* Alignment */
+#define ALIGN_LEFT	0
+#define ALIGN_CENTER	1
+#define ALIGN_RIGHT	2
+#define ALIGN_JUSTIFY	3
+#define ALIGN_TOP	0
+#define ALIGN_MIDDLE	1
+#define ALIGN_BOTTOM	2
+
+#endif
