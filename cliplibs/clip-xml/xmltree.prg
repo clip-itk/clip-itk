@@ -183,34 +183,25 @@ return
 
 /* Handler function for close tag */
 function xml_handleElementEnd( vUser, name )
-	//vUser:ct:text := substr(vUser:ct:text, 1, len(vUser:ct:text)-1)
 	vUser:pt := vUser:pt:parent
 	vUser:ct := vUser:pt
 return
 
 /* Handler function for text processing */
 function xml_handleText( vUser, sStr, nLen )
-	local s, l
+	local s, i:=1
 	
 	s := translate_charset( "utf-8", host_charset(), sStr )
-/*	
-	if .not. empty(sStr)
-		?? "TEXT:", host_charset(), sStr, translate_charset( "utf-8", "koi8-r", alltrim(sStr) ), chr(10)
-	endif
-*/
-/*
-	if .not. empty(s)
-		?? len(s), "'"+strtran(s,chr(10),'\n')+"'", chr(10)
-	endif
-*/
-//	if .not. empty(s) .and. .not. empty(vUser:ct)
 	if .not. empty(vUser:ct)
-		/*if len(s) == 1 .and. s $ '"<>'+chr(38)+chr(39)
-			l := len(vUser:ct:text)
-			vUser:ct:text := left(vUser:ct:text, len(vUser:ct:text)-1) + s
-			//?? "'"+vUser:ct:text+"'", l, chr(10)
-		else */
-			vUser:ct:text += s // + chr(10)
-		//endif
+		// Remove lead spaces and tabs
+		s := alltrim(s)
+		//?? "==="+s+"===",len(s), right(s,1) == chr(10),"&\n"
+		if len(s) == 1 .and. right(s,1) == chr(10)
+			if right(vUser:ct:text,1) == chr(10) .or. len(vUser:ct:text) == 0
+				s := ""
+			endif
+		endif
+		//s := strtran( sn, chr(9), '' )
+		vUser:ct:text += s
 	endif
 return
