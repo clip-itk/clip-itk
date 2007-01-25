@@ -69,21 +69,24 @@ return .T.
 
 /* Remove child tag by its number */
 static function xml_TagRemoveChild( self, position )
-	if empty(position) .or. self:countChilds() > position
-		self:childs := array(0)
-		return .T.
+	local t
+	if valtype(position) != 'N' .or. position == 0 .or. self:countChilds() < position
+		return .F.
 	endif
+	t := self:childs[position]
+	t:parent := NIL
 	adel( self:childs, position )
-	asize( self:childs, self:countChilds()-1 )
+	asize( self:childs, len(self:childs)-1 )
 return .T.
 
 /* Remove current tag */
 static function xml_TagRemove( self )
-	local p, off
+	local p, off, pos
 	p := self:getParent()
-	off := self:pos 
-	if valtype(p) == "O"
-		p:removeChild( ascan(p:getChilds(), {|e| e:pos == off }) )
+	off := self:pos
+	pos := ascan(p:getChilds(), {|e| e:pos == off })
+	if valtype(p) == "O" .and. pos > 0
+		p:removeChild( pos )
 	endif
 return .T.
 

@@ -7,7 +7,7 @@
 /* TODO: decorated output for XPath result */
 
 function main( cmd, path )
-	local f, tm, c, t1, t2, t3, i, node, tstr, attr
+	local f, tm, c, t1, t2, t3, i, node, tstr, attr, tr, tr2
 
 	tm := seconds()
 
@@ -38,9 +38,18 @@ function main( cmd, path )
 		t3:setAttribute( "code", "ru" )
 		t3:setText( "Русский" )
 		
+		// Create empty tag
+		tr := XMLTag("to-remove")
+		tr:pos := 5
+		tr2 := XMLTag("to-remove2")
+		tr2:pos := 15
+		tr:addChild( tr2 )
+		
 		// Add child tags
 		t1:addChild( t2 )
 		t1:addChild( t3 )
+		t1:addChild( tr )
+		tr:remove()
 
 	endif
 	
