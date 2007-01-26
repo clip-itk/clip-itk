@@ -34,6 +34,7 @@ function getDriver( name, params )
 		name := currentDriverName
 	endif
 
+	set translate path off
 	drv_file := cygwinroot() + DRIVERSDIR + PATH_DELIM + 'driver-' + name + '.po'
 	?? "Loading",drv_file,"...&\n"
 	if file( drv_file )
