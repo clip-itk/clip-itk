@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.3  2007/01/29 12:58:59  itk
+   uri: some fix for rational numbers.
+
    Revision 1.2  2006/07/17 08:12:17  itk
    uri: small fix about pcol() and qout()
 
@@ -1716,7 +1719,24 @@ _clip_strFunc(ClipMachine * mp,ClipVar *v,int len, int dec, int pad)
 		}
 	}
 	if ( v->t.memo)
-		buf = rational_toString(v->r.r, lend, decd, 0);
+	{
+		int _lend;
+		char * _buf;
+		_buf = rational_toString(v->r.r, 10, decd, 0);
+		_lend = strlen(_buf);
+		if (_lend < lend)
+		{
+			buf = malloc(lend+1);
+			memset(buf,' ',lend);
+			memcpy(buf+(lend-_lend),_buf,_lend);
+			free(_buf);
+		}
+		else
+		{
+			buf = _buf;
+			lend = _lend;
+		}
+	}
 	else
 	{
 		buf = malloc(lend+1);

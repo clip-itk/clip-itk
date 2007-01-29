@@ -1,5 +1,8 @@
 /*
 $Log$
+Revision 1.2  2007/01/29 12:58:59  itk
+uri: some fix for rational numbers.
+
 Revision 1.1  2006/06/22 19:01:36  itk
 uri: initial
 
@@ -53,7 +56,7 @@ rational * rational_init()
 	rational * ret=(rational *) calloc( sizeof(rational),1 );
 	ret->num= integer_long_init(0L);
 	ret->den= integer_long_init(1L);
-		return ret;
+	return ret;
 }
 
 /*********************************************/
@@ -316,28 +319,28 @@ integer * rational_toInteger(rational * data)
 /*********************************************/
 rational * rational_double_adda(rational * data,double y)
 {
-		rational * a= rational_double_init(y);
-		rational_adda(data,a);
-		rational_destroy(a);
-		return data;
+	rational * a= rational_double_init(y);
+	rational_adda(data,a);
+	rational_destroy(a);
+	return data;
 
 }
 
 /*********************************************/
 rational * rational_adda(rational * data, rational * a)
 {
-		integer * tmp;
+	integer * tmp;
 
-		tmp=integer_copy(a->num);
+	tmp=integer_copy(a->num);
 	integer_mula(data->num,a->den);
-		integer_mula(data->den,a->den);
-		integer_mula(tmp,data->den);
-		integer_adda(data->num,tmp);
-		integer_destroy(tmp);
+	integer_mula(data->den,a->den);
+	integer_mula(tmp,data->den);
+	integer_adda(data->num,tmp);
+	integer_destroy(tmp);
 
 	integer_mula(data->den,a->den);
 	rational_normalize(data);
-		return data;
+	return data;
 }
 
 /***********************************************/
@@ -370,17 +373,17 @@ rational * rational_double_suba(rational * data,double y)
 /*********************************************/
 rational * rational_suba(rational * data, rational * a)
 {
-		integer * tmp;
+	integer * tmp;
 
-		tmp=integer_copy(a->num);
+	tmp=integer_copy(a->num);
 	integer_mula(data->num,a->den);
-		integer_mula(data->den,a->den);
-		integer_mula(tmp,data->den);
-		integer_suba(data->num,tmp);
-		integer_destroy(tmp);
+	integer_mula(data->den,a->den);
+	integer_mula(tmp,data->den);
+	integer_suba(data->num,tmp);
+	integer_destroy(tmp);
 
 	rational_normalize(data);
-		return data;
+	return data;
 }
 
 /***********************************************/
@@ -480,9 +483,9 @@ rational * rational_fmod(rational * data, rational * y)
 rational * rational_double_div(rational * data, double y)
 {
 	rational * ret = rational_copy(data);
-		rational * a   = rational_double_init(y);
-		rational_diva(ret,a);
-		rational_destroy(a);
+	rational * a   = rational_double_init(y);
+	rational_diva(ret,a);
+	rational_destroy(a);
 	return ret;
 }
 
@@ -490,7 +493,7 @@ rational * rational_double_div(rational * data, double y)
 rational * rational_div(rational * data, rational * y)
 {
 	rational * ret = rational_copy(data);
-		rational_diva(ret,y);
+	rational_diva(ret,y);
 	return ret;
 }
 
@@ -498,25 +501,25 @@ rational * rational_div(rational * data, rational * y)
 void rational_destroy(rational * data)
 {
 	if (data==NULL)
-			return;
-	integer_destroy(data->num);
-		integer_destroy(data->den);
-		free(data);
 		return;
+	integer_destroy(data->num);
+	integer_destroy(data->den);
+	free(data);
+	return;
 }
 
 /*********************************************/
 rational * rational_inv(rational * data)
 {
 	rational * ret = rational_copy(data);
-		integer_inverse(ret->num);
+	integer_inverse(ret->num);
 	return ret;
 }
 
 /*********************************************/
 rational * rational_inverse(rational * data)
 {
-		integer_inverse(data->num);
+	integer_inverse(data->num);
 	return data;
 }
 
@@ -528,14 +531,18 @@ void rational_normalize(rational * data)
 	if ( s==0 )
 	{
 		integer_clear(data->num);
-		integer_clear(data->den);
+		integer_destroy(data->den);
+		data->den= integer_long_init(1L);
+		//integer_clear(data->den);
 		return;
 	}
-		if ( integer_empty(data->num) )
-		{
-			integer_clear(data->den);
-				return;
-		}
+	if ( integer_empty(data->num) )
+	{
+		integer_destroy(data->den);
+		data->den= integer_long_init(1L);
+		//integer_clear(data->den);
+		return;
+	}
 	if ( s<0  )
 	{
 		integer_inverse(data->num);
@@ -544,8 +551,8 @@ void rational_normalize(rational * data)
 	g=integer_gcd(data->num,data->den);
 	integer_diva(data->num,g);
 	integer_diva(data->den,g);
-		integer_destroy(g);
-		return;
+	integer_destroy(g);
+	return;
 }
 
 /*********************************************/
@@ -578,56 +585,60 @@ char * rational_toString(rational * data ,int base, int dec, int group)
 	int i,ptr=0;
 	char * ret, * buf;
 	integer * koef=integer_long_init(base);
-		if (dec<0) dec=0;
+
+	if (dec<0) dec=0;
+
 	integer_powa(koef,dec+1);
 	integer_mula(koef,data->num);
 	integer_diva(koef,data->den);
-		if ( integer_empty(data->num) || integer_empty(koef) )
+
+	if ( integer_empty(data->num) || integer_empty(koef) )
+	{
+		ret=calloc(dec+3,1);
+		ret[0]='0';
+		ret[1]='.';
+		for (i=0; i<dec; i++)
+			ret[i+2]='0';
+		integer_destroy(koef);
+		return ret;
+	}
+
+	buf=integer_toString(koef,base);
+	i=strlen(buf);
+	if ( i>1 )
+	{
+		if (buf[i-1]>='5')
+			buf[i-2]++;
+	}
+	if (dec!=0)
+	{
+		dec++;
+		if ( dec==i )
+			ptr++;
+		ret=calloc(i+2+ptr,1);
+		if ( dec==i )
+			ret[0]='0';
+		memcpy(ret+ptr,buf,i-dec);
+		ret[i-dec+ptr]='.';
+		memcpy(ret+ptr+i-dec+1,buf+i-dec,dec-1);
+	}
+	else
+	{
+		dec++;
+		if ( dec==i )
 		{
-			ret=calloc(dec+3,1);
-				ret[0]='0';
-				ret[1]='.';
-				for (i=0; i<dec; i++)
-					ret[i+2]='0';
+			ret=calloc(2,1);
+			ret[0]='0';
 		}
 		else
 		{
-		buf=integer_toString(koef,base);
-			i=strlen(buf);
-		if ( i>1 )
-				{
-					if (buf[i-1]>='5')
-						buf[i-2]++;
-				}
-				if (dec!=0)
-				{
-					dec++;
-						if ( dec==i )
-							ptr++;
-				ret=calloc(i+2+ptr,1);
-						if ( dec==i )
-							ret[0]='0';
-				memcpy(ret+ptr,buf,i-dec);
-				ret[i-dec+ptr]='.';
-				memcpy(ret+ptr+i-dec+1,buf+i-dec,dec-1);
-				}
-				else
-				{
-					dec++;
-						if ( dec==i )
-						{
-					ret=calloc(2,1);
-								ret[0]='0';
-						}
-						else
-						{
-					ret=calloc(i,1);
-					memcpy(ret,buf,i-1);
-						}
-				}
-			free(buf);
+			ret=calloc(i,1);
+			memcpy(ret,buf,i-1);
 		}
-		integer_destroy(koef);
+	}
+	free(buf);
+
+	integer_destroy(koef);
 	return ret;
 }
 
@@ -637,18 +648,24 @@ double      rational_toDouble(rational * data)
 	int i;
 	double ret,d1=0,d2=0,base;
 
-		for (i=0; i<data->num->len; i++)
-		{
-			base=pow( (double)2, (double)(i*INTEGER_HALF));
-				d1+=base*data->num->vec[i];
-		}
-		for (i=0; i<data->den->len; i++)
-		{
-			base=pow((double)2,(double)(i*INTEGER_HALF));
-				d2+=base*data->den->vec[i];
-		}
-		ret=d1/d2;
-		return ret;
+	rational_normalize(data);
+
+	for (i=0; i<data->num->len; i++)
+	{
+		base=pow( (double)2, (double)(i*INTEGER_HALF));
+		d1+=base*data->num->vec[i];
+	}
+	if (data->num->sign)
+		d1=0-d1;
+	for (i=0; i<data->den->len; i++)
+	{
+		base=pow((double)2,(double)(i*INTEGER_HALF));
+		d2+=base*data->den->vec[i];
+	}
+	if (data->den->sign)
+		d2=0-d2;
+	ret=d1/d2;
+	return ret;
 }
 
 
