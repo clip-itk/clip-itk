@@ -24,7 +24,7 @@ return
 
 /* Connect driver */
 function getDriver( name, params )
-	local drv_file, drv_get
+	local drv_file, drv_get, old
 
 	if .not. empty(currentDriver)
 		return currentDriver
@@ -34,6 +34,7 @@ function getDriver( name, params )
 		name := currentDriverName
 	endif
 
+	old := set(_SET_TRANSLATE_PATH, .F.) // turn DOS mode off
 	drv_file := cygwinroot() + DRIVERSDIR + PATH_DELIM + 'driver-' + name + '.po'
 	//?? "Loading",drv_file,"...&\n"
 	if file( drv_file )
@@ -43,6 +44,7 @@ function getDriver( name, params )
 		CANCEL
 		return NIL
 	endif
+	set(_SET_TRANSLATE_PATH, old)
 
 	drv_get  := upper("get"+name+"Driver")
 	//?? "Run",drv_get,"...&\n"
