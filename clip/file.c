@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.3  2007/01/30 07:55:25  itk
+   uri: small fix
+
    Revision 1.2  2006/10/17 08:01:32  itk
    uri: small fixes
 
@@ -1522,7 +1525,8 @@ compile_CFile(char *name)
 	/*snprintf(cname, sizeof(cname), "/tmp/clip.XXXXXX");
 	   mktemp(cname);
 	   strcat(cname, ".c"); */
-	snprintf(cname, sizeof(cname), "/tmp/clipar.%lx%lx.pa", (long) getpid(), (long) random());
+	//snprintf(cname, sizeof(cname), "/tmp/clipar.%lx%lx.pa", (long) getpid(), (long) random());
+	snprintf(cname, sizeof(cname), "/tmp/clipar.%lx%lx.c", (long) getpid(), (long) random());
 
 	preprocCFile(name, cname);
 	if (clic_errorcount)
