@@ -1,7 +1,11 @@
 /* $Log$
-/* Revision 1.5  2007/01/24 13:05:45  itk
-/* uri: new task model under PTH minimal works !
+/* Revision 1.6  2007/01/30 13:43:06  itk
+/* *** empty log message ***
 /*
+
+ Revision 1.5  2007/01/24 13:05:45  itk
+ uri: new task model under PTH minimal works !
+
 
  Revision 1.4  2007/01/23 14:12:14  itk
  uri: some new code for new tasks
@@ -28,17 +32,31 @@
 #include <stdio.h>
 #include "task.h"
 
+void
+_destroy(void *_data)
+{
+	char *data;
+	
+	data = (char *)_data;
+	printf("		task function destroy, data=%s\n",data);
+	return ;
+}
+
 void *
-run(void *data)
+run(void *_data)
 {
 	int i;
 	void *ret = NULL;
-
+	char *data;
+	
+	data = (char *)_data;
+	printf("		task function begin, data=%s\n",data);
 	for (i = 0; i < 5; i++)
 	{
-		printf("task %ld cycle %d\n", Task_ID(), i);
+		printf("		task %ld cycle %d\n", Task_ID(), i);
 		Task_sleep(50);
 	}
+	printf("		task function return, data=%s\n",data);
 	return ret;
 }
 
@@ -48,26 +66,26 @@ main(int argc, char **argv)
 	int i;
 	Task *tp;
 	
-	printf("\nbegin. version=%ld\n",Task_version());
-	printf("\nAAAA\n");
+	printf("\n		begin. version=%ld\n",Task_version());
+	printf("		AAAA\n");
 	for (i = 0; i < 3; i++)
 	{
-		tp = Task_new("task_test", 8192, 0, run, 0);
-//    		printf("\nBBBB=%d,%p\n",i,tp);
+		tp = Task_new("task_test", 8192, (void*)"ASDF", run, _destroy);
+    		printf("		BBBB=%d,%p\n",i,tp);
 		Task_start(tp);
 		Task_sleep(50);
-//		printf("\nCCCCC=%d\n",i);
+		printf("		CCCCC=%d\n",i);
 	}
 
-	printf("\nDDDDD\n");
+	printf("		DDDDD\n");
 	Task_start_sheduler();
 
 	for (i = 0; i < 7; i++)
 	{
-		printf("main task: cycle %d\n", i);
+		printf("		main task: cycle %d\n", i);
 		Task_sleep(100);
 	}
-
+	printf("		EEEEE\n");
 	/*Task_killAll(); */
 	return 0;
 

@@ -22,7 +22,7 @@ cl_task.c: task.h cl_cfg.h
 cl_cfg.h:
 	./configure
 
-cl_tst: $(OBJS) cl_tst.o $(LIB)
+cl_tst: $(OBJS) $(LIBOBJS) cl_tst.o $(LIB)
 	$(CC) $(CFLAGS) -o cl_tst cl_tst.o $(OBJS) $(LIB)
 	
 task_tst: $(OBJS) $(LIB) task_tst.c

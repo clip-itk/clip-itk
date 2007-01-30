@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.4  2007/01/30 13:43:06  itk
+ *** empty log message ***
+
  Revision 1.3  2007/01/23 14:12:10  itk
  uri: some new code for new tasks
 
@@ -156,41 +159,104 @@
 #define TASK_STACK_MIN 4096
 #endif
 
+struct TaskMessage
+{
+	long sender;
+	long receiver;
+	long id;
+	int needResp:1;
+	int needDel:1;
+
+	void *data;
+	void (*destroy) (void *data);
+};
+
+typedef enum
+{
+	Task_initial,		/*  О©╫О©╫О©╫О©╫ О©╫ О©╫ О©╫О©╫О©╫О©╫О©╫ */
+	Task_ready,		/*  О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ */
+	Task_wait,		/*  О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
+	Task_msg,		/*  О©╫О©╫ О©╫О©╫О©╫О©╫О©╫*/
+	Task_resp,		/*  О©╫О©╫ О©╫О©╫О©╫ */
+	Task_zombie		/*  О©╫О©╫О©╫О©╫О©╫, О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ */
+}
+TaskState;
+
+struct Task
+{
+	
+	ListEl listel;
+
+	List recvlist;		/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
+	List proclist;		/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫*/
+
+	int isMain:1;
+	int isInited:1;		/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ */
+	int isTimed:1;		/*  О©╫О©╫ О©╫О©╫О©╫О©╫*/
+	int isRead:1;		/*  О©╫О©╫ О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫*/
+	int isWrite:1;		/*  О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫ */
+	int isExcept:1;		/*  О©╫О©╫ sigexcept */
+
+	char *name;		/*  О©╫О©╫О©╫О©╫О©╫ */
+	long id;		/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ (pid) */
+	long wakeUp;		/*  О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+
+	Task *parent;		/*  О©╫О©╫О©╫О©╫ О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫spawn */
+	void * result;		/*  reference to О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ run() */
+
+	TaskState state;	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+
+	long stacklen;		/*  length of task's stack */
+
+	jmp_buf taskEnv;	/* environment for context switching */
+	char *stack;		/* this task's stack space */
+	fd_set rfileset;	/* read-wait fileset */
+	fd_set wfileset;	/* write-wait fileset */
+	fd_set efileset;	/* except fileset */
+
+
+	void * (*run) (void *data);
+	void (*destroy) (void *data);
+	void *data;
+	void *ref;  /*other reference to any data*/
+};
+
+
 static List readyTasks =
-{0, 0};				/*  активные задачи */
+{0, 0};				/*  О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ */
 static List waitTasks =
-{0, 0};				/*  ожидают ввода-вывода */
+{0, 0};				/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
 static List msgTasks =
-{0, 0};				/*  ожидают сообщения */
+{0, 0};				/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
 static List respTasks =
-{0, 0};				/*  ожидают ответа на сообщение */
+{0, 0};				/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫О©╫*/
 static List zombieTasks =
-{0, 0};				/*  законченные */
+{0, 0};				/*  О©╫О©╫О©╫О©╫О©╫О©╫*/
 
-static HashTable *hashs;	/*  для поиска по номеру */
+static HashTable *hashs;	/*  О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫ */
 static Coll allTasks =
-{0, 0, 0, 0, 0, 0};		/*  мешок для всех задач */
+{0, 0, 0, 0, 0, 0};		/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫*/
 
-static Task *currTask = 0;	/*  текущая задача */
-static Task *mainTask = 0;	/*  главная задача */
-static Task *sheduler = 0;	/*  задача-планировщик */
+static Task *currTask = 0;	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+static Task *mainTask = 0;	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+static Task *sheduler = 0;	/*  О©╫О©╫О©╫-О©╫О©╫О©╫О©╫О©╫О©╫*/
 
-static int activeCount = 0;	/*  количество активных задач (без zombie и без sheduler) */
+static int activeCount = 0;	/*  О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫(О©╫О©╫zombie О©╫О©╫О©╫sheduler) */
 static int stopcount = 0;
 
-/* флаги */
-static int canSwitch = 0;	/*  переключение задач разрешено */
+/* О©╫О©╫О©╫*/
+static int canSwitch = 0;	/*  О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
 
 static fd_set readFiles;
 static fd_set writeFiles;
 static fd_set exceptFiles;
 static jmp_buf shedEnv, mainEnv;
 
-static void runSheduler(Task * task);	/*  выполняет sheduler */
-static void initTask(Task * task);	/*  инициализирует taskEnv */
-static int initStack(Task * task);	/*  инициализирует стек задачи */
-static void initMainTask(Task * task);	/*  инициализирует главную задачу */
-static void resumeTask(Task * task, int code);	/*  возвращает в точку taskEnv */
+static void runSheduler(Task * task);	/*  О©╫О©╫О©╫О©╫О©╫sheduler */
+static void initTask(Task * task);	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ taskEnv */
+static int initStack(Task * task);	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫ */
+static void initMainTask(Task * task);	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+static void resumeTask(Task * task, int code);	/*  О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫taskEnv */
 
 static void suicide(Task * task);
 
@@ -201,13 +267,13 @@ static void deathMatch(void);
 static void waitEvent(int block);
 static long calcWakeup(long msec);
 
-static void addToReady(Task * task);	/*  вставляет в список и устанавливает состояние */
+static void addToReady(Task * task);	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
 static void addToWait(Task * task);
 static void addToMsg(Task * task);
 static void addToResp(Task * task);
 static void addToZombie(Task * task);
 
-static void removeFromList(Task * task);	/*  удаляет из списка, соответствующего состоянию */
+static void removeFromList(Task * task);	/*  О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫*/
 
 #ifdef _WIN32
 static int t_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds,
@@ -534,7 +600,7 @@ Task_wakeup(Task * task)
 {
 	if (task->state == Task_wait)
 	{
-		/*  разблокировать задачу */
+		/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ */
 		removeFromList(task);
 		task->isTimed = 1;
 		addToReady(task);
@@ -977,10 +1043,10 @@ Task_sendMessage(long receiver, /* new */ TaskMessage * msg)
 	msg->receiver = tp->id;
 	msg->sender = currTask->id;
 
-	/*  добавляем сообщение во входную очередь задачи */
+	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
 	append_List(&tp->recvlist, msg);
 
-	/*  если задача ждет сообщения, активизируем ее */
+	/*  О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ */
 	if (tp->state == Task_msg)
 	{
 		removeFromList(tp);
@@ -1011,17 +1077,17 @@ Task_sendMessageWait(int receiver, TaskMessage * msg)
 	msg->receiver = tp->id;
 	msg->sender = ct->id;
 
-	/*  добавляем сообщение во входную очередь задачи */
+	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
 	append_List(&tp->recvlist, msg);
 
-	/*  если задача ждет сообщения, активизируем ее */
+	/*  О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ */
 	if (tp->state == Task_msg)
 	{
 		removeFromList(tp);
 		addToReady(tp);
 	}
 
-	/*  ждем ответа */
+	/*  О©╫О©╫ О©╫О©╫О©╫ */
 	removeFromList(ct);
 	addToResp(ct);
 
@@ -1047,12 +1113,12 @@ Task_sendAll(TaskMessage * msg)
 		tp = (Task *) msgTasks.current;
 		msg->receiver = tp->id;
 
-		/*  добавляем сообщение во входную очередь задачи */
+		/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
 		append_List(&tp->recvlist, msg);
 		removeFromList(tp);
 		addToReady(tp);
 
-		/*  ждем ответа */
+		/*  О©╫О©╫ О©╫О©╫О©╫ */
 		removeFromList(ct);
 		addToResp(ct);
 
@@ -1090,7 +1156,7 @@ Task_getMessage(void)
 
 	if (empty_List(&ct->recvlist))
 	{
-		/*  блокировка */
+		/*  О©╫О©╫О©╫О©╫О©╫ */
 		removeFromList(ct);
 		addToMsg(ct);
 		Task_yield();
@@ -1117,10 +1183,10 @@ Task_forward(long receiver, TaskMessage * msg)
 
 	removeIt_List(&currTask->proclist, msg);
 
-	/*  добавляем сообщение во входную очередь задачи */
+	/*  О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
 	append_List(&tp->recvlist, msg);
 
-	/*  если задача ждет сообщения, активизируем ее */
+	/*  О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ */
 	if (tp->state == Task_msg)
 	{
 		removeFromList(tp);
