@@ -1,5 +1,6 @@
 CC= gcc
 CFLAGS = -O -g -Wall -fPIC
+OBJS = ../coll.o ../list.o ../hash.o
 PTH_LIBS= -lpth
 PTH_TEST= pth_tst
 LIBOBJS = pth_task.o
@@ -17,7 +18,7 @@ pth_task.c: task.h
 	$(CC) -c pth_task.c -o pth_task.o $(PTH_LIBS)
 
 task_tst: $(OBJS) task_tst.o $(LIB)
-	$(CC) $(CFLAGS) task_tst.c -o task_tst $(LIB) $(PTH_LIBS)
+	$(CC) $(CFLAGS) task_tst.c -o task_tst $(OBJS) $(LIB) $(PTH_LIBS)
 
 std_tst: pth_tst
 pth_tst: pth_tst.c

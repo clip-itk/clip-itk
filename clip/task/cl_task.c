@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.5  2007/01/31 13:48:21  itk
+ uri:some new code for pth
+
  Revision 1.4  2007/01/30 13:43:06  itk
  *** empty log message ***
 
@@ -246,6 +249,7 @@ static int stopcount = 0;
 
 /* ���*/
 static int canSwitch = 0;	/*  ������ ��������*/
+static int seqNo = 0;		/*  ��������������*/
 
 static fd_set readFiles;
 static fd_set writeFiles;

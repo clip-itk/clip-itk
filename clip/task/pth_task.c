@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.5  2007/01/31 13:48:21  itk
+ uri:some new code for pth
+
  Revision 1.4  2007/01/30 13:43:06  itk
  *** empty log message ***
 
@@ -46,6 +49,10 @@ struct TaskMessage
 
 struct Task
 {
+	ListEl listel;
+
+	List recvlist;		/*  �������������*/
+	List proclist;		/*  ������� �����*/
 
 	char *name;		/*  ����� */
 	long id;		/*  ���������� (pid) */
@@ -58,21 +65,22 @@ struct Task
 	
 };
 
+static int seqNo = 2;		/*  ��������������*/
+
 static int pth_inited = 0;
 static int stopcount = 0;
+static int canSwitch = 0;	/*  task switch disabled flag */
 
-static int local_pth_init(void)
+static List Tasks = {NULL, NULL};
+
+static void
+calcTv(struct timeval *tv, long msec)
 {
-	int ret = FALSE;
-	if ( pth_inited == 0 )
-	{
-		ret = pth_init();
-		if (ret == TRUE)
-			pth_inited = 1;
-	}
-	return ret;
+	if (msec == 0)
+		msec = 1;
+	tv->tv_sec = msec / 1000;
+	tv->tv_usec = (msec % 1000) * 1000;
 }
-
 
 TASK_DLLEXPORT long
 Task_version(void)
@@ -92,6 +100,8 @@ Task_yield(void)
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	
+	if (!canSwitch)
+		return 0;
 	if (pth_inited)
 		pth_yield(NULL);
 #ifdef _LDEBUG
@@ -100,18 +110,44 @@ Task_yield(void)
 	return 0;	
 }
 
+static Task *
+seach_task_in_list(List *list, pth_t ref)
+{
+	int r;
+	Task * ret = NULL;
+	Task * tp;
+	pth_t ptask;
+
+	for (r = first_List(list); r; r = next_List(list))
+	{
+		tp = (Task*)list->current;
+		ptask = tp->ref;
+		if ( ptask == ref)
+		{
+			ret = (Task *) tp;
+			break;
+		}
+	}
+	return ret;
+}
+
+
 TASK_DLLEXPORT long 
 Task_ID()
 {
 	long id;
 	pth_t ptask;
+	Task * task;
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	if (!pth_inited)
 		return -1;
 	ptask = pth_self();
-	id = (long) ptask;
+	task = seach_task_in_list(&Tasks,ptask);
+	if (task == NULL)
+		return -1L;
+	id = task->id;
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
@@ -122,7 +158,7 @@ TASK_DLLEXPORT long
 Task_get_id(Task * task)
 {
 #ifdef _LDEBUG
-	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+	printf("F=%s,L=%d,name=%s,%p\n",__FILE__,__LINE__,task->name,task->name);
 #endif
 	if (!pth_inited)
 		return -1;
@@ -142,6 +178,14 @@ Task_sleep(long msec)
 #endif
 	if (!pth_inited)
 		return 0;
+	if (!canSwitch)
+	{
+		struct timeval tv;
+
+		calcTv(&tv, msec);
+		select(0, 0, 0, 0, &tv);
+		return 1;
+	}
 	pth_usleep(msec*1000);
 	return 0;
 }
@@ -149,53 +193,67 @@ Task_sleep(long msec)
 TASK_DLLEXPORT int
 Task_start_sheduler(void)
 {
+	int ret = canSwitch;
     /* not need under PTH*/
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
-	return 0;
+	canSwitch = 1;
+	return ret;
 }
 
-void 
-task_pth_destroy(void * data)
+TASK_DLLEXPORT int
+Task_stop_sheduler(void)
 {
-	Task *task;
-	task = (Task *) data;
+	int ret = canSwitch;
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
-	if (task == NULL)
-		return ;
+	canSwitch = 0;
+	return ret;
+}
 
+
+static void local_print_List(List * list)
+{
+	int r;
+	Task *tp;
+
+	for (r = first_List(list); r; r = next_List(list))
+	{
+		tp = (Task *) list->current;
 #ifdef _LDEBUG
-	printf("	task destroy=%p\n",task);
-	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+		printf("list-print,task=%p,task->id=%ld,namename=%s,%p,data=%s#\n",(void *)tp,tp->id,tp->name,tp->name,(char *) tp->data);
 #endif
-	if ( task->destroy )
-		task->destroy(task->data);
-	free(task->name);
-	free(task);
-	return ;
+	}
+
 }
 
 void *
 task_pth_run(void * data)
 {
 	Task *task;
+	
 	task = (Task *) data;
 #ifdef _LDEBUG
-	printf("F=%s,L=%d,data_pth_run=%p,%p\n",__FILE__,__LINE__,data,task);
+	printf("F=%s,L=%d,data_pth_run=%p,%p,name=%s,%p\n",__FILE__,__LINE__,data,task,task->name,task->name);
 #endif
 	if (task == NULL)
 		return NULL;
+	append_List(&Tasks, (void *)task);
+//	local_print_List(&Tasks);
 	if ( task->run )
 		task->run(task->data);
 	if ( task->destroy )
 		task->destroy(task->data);
+	stopcount = 0;
+	Task_START();
+	removeIt_List(&Tasks, task);
+//	local_print_List(&Tasks);
 	free(task->name);
 	free(task);
 #ifdef _LDEBUG
-	printf("	task run=%p\n",task);
+	printf("	task end run=%p\n",task);
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	return NULL;
@@ -223,8 +281,8 @@ Task_new(const char *name, long stacksize, void *data
 		stacksize = TASK_STACK_MIN;
 
 	++seqNo;
-	task->stacklen = stacksize;
 	task->id = seqNo;	
+	task->stacklen = stacksize;
 	task->name = strdup(name);
 	task->data = data;
 	task->run = run;
@@ -243,7 +301,7 @@ Task_new(const char *name, long stacksize, void *data
 	task->ref = (void *)ptask;
 
 #ifdef _LDEBUG
-	printf("	open ptask=%p,task=%p\n",(void*)ptask,(void*)task);
+	printf("	open ptask=%p,task=%p,name=%s,%p\n",(void*)ptask,(void*)task,task->name,task->name);
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	return task;
@@ -254,20 +312,49 @@ Task_start(Task *tp)
 {
 /* not need under PTH*/
 #ifdef _LDEBUG
-	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+	printf("F=%s,L=%d,name=%s,%p\n",__FILE__,__LINE__,tp->name,tp->name);
 #endif
 	return 1;
 }
+
+static void
+task_pth_stop(List *list, pth_t _ptask)
+{
+	int r;
+	Task *tp;
+	pth_t ptask;
+#ifdef _LDEBUG
+	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+#endif
+	for (r = first_List(list); r; r = next_List(list))
+	{
+		tp = (Task*)list->current;
+		ptask = tp->ref;
+		if ( _ptask == ptask)
+			continue;
+		pth_suspend(ptask);
+	}
+#ifdef _LDEBUG
+	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+#endif
+	return;
+}
+
 TASK_DLLEXPORT void
 Task_STOP()
 {
-	if (!pth_inited)
-		return ;
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	if (!stopcount)
 	{
+		if (pth_inited)
+		{
+			pth_t ptask;
+			ptask = pth_self();
+			task_pth_stop(&Tasks,ptask);
+		}
+		Task_stop_sheduler();
 	}
 
 	++stopcount;
@@ -275,19 +362,44 @@ Task_STOP()
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 }
+static void
+task_pth_start(List *list)
+{
+	int r;
+	Task *tp;
+	pth_t ptask;
+#ifdef _LDEBUG
+	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+#endif
+	for (r = first_List(list); r; r = next_List(list))
+	{
+		tp = (Task*)list->current;
+		ptask = tp->ref;
+		pth_resume(ptask);
+	}
+#ifdef _LDEBUG
+	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+#endif
+	return;
+}
 
 TASK_DLLEXPORT void
 Task_START()
 {
-	if (!pth_inited)
-		return ;
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	--stopcount;
 	if (stopcount <= 0)
 	{
-		stopcount = 0;
+		if (pth_inited)
+		{
+			pth_t ptask;
+			ptask = pth_self();
+			task_pth_start(&Tasks);
+		}
+		Task_start_sheduler();
+		Task_yield();
 	}
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
@@ -304,9 +416,12 @@ task_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds,
 #endif
 	if (!pth_inited)
 		return -1;
-
+	if (!canSwitch)
+		ret = select(nfds, readfds, writefds, exceptfds, timeout);
+	else
+		ret = pth_select(nfds, readfds, writefds, exceptfds, timeout);
 	return ret;
-}	
+}
 
 TASK_DLLEXPORT int
 clip_task_select_if(int fd, void *rp, void *wp, void *ep, void *to)
@@ -382,7 +497,6 @@ TaskMessage_new(long id, void *data, void (*destroy) (void *data))
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
-	local_pth_init();
 	return msg;
 }
 

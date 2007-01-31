@@ -1,7 +1,11 @@
 /* $Log$
-/* Revision 1.6  2007/01/30 13:43:06  itk
-/* *** empty log message ***
+/* Revision 1.7  2007/01/31 13:48:21  itk
+/* uri:some new code for pth
 /*
+
+ Revision 1.6  2007/01/30 13:43:06  itk
+ *** empty log message ***
+
 
  Revision 1.5  2007/01/24 13:05:45  itk
  uri: new task model under PTH minimal works !
@@ -38,7 +42,7 @@ _destroy(void *_data)
 	char *data;
 	
 	data = (char *)_data;
-	printf("		task function destroy, data=%s\n",data);
+	printf("		task %ld function destroy, data=%s\n",Task_ID(),data);
 	return ;
 }
 
@@ -50,13 +54,33 @@ run(void *_data)
 	char *data;
 	
 	data = (char *)_data;
-	printf("		task function begin, data=%s\n",data);
+	printf("		task %ld function begin, data=%s\n",Task_ID(),data);
 	for (i = 0; i < 5; i++)
 	{
 		printf("		task %ld cycle %d\n", Task_ID(), i);
 		Task_sleep(50);
 	}
-	printf("		task function return, data=%s\n",data);
+	printf("		task %ld function return, data=%s\n",Task_ID(),data);
+	return ret;
+}
+
+void *
+run1(void *_data)
+{
+	int i;
+	void *ret = NULL;
+	char *data;
+	
+	data = (char *)_data;
+	printf("		supertask %ld function begin, data=%s\n",Task_ID(),data);
+	Task_STOP();
+	for (i = 0; i < 5; i++)
+	{
+		printf("		supertask %ld cycle %d\n", Task_ID(), i);
+		Task_sleep(50);
+	}
+	printf("		supertask function return, data=%s\n",data);
+	Task_START();
 	return ret;
 }
 
@@ -71,21 +95,26 @@ main(int argc, char **argv)
 	for (i = 0; i < 3; i++)
 	{
 		tp = Task_new("task_test", 8192, (void*)"ASDF", run, _destroy);
-    		printf("		BBBB=%d,%p\n",i,tp);
+		printf("		BBBB=%d,%p\n",i,tp);
 		Task_start(tp);
 		Task_sleep(50);
 		printf("		CCCCC=%d\n",i);
 	}
-
-	printf("		DDDDD\n");
 	Task_start_sheduler();
+	printf("		DDDDD\n");
+	Task_sleep(25);
+/**/
+	tp = Task_new("task_stop", 8192, (void*)"STOP", run1, _destroy);
+	Task_start(tp);
+	printf("		EEEEE\n");
+/**/
 
 	for (i = 0; i < 7; i++)
 	{
-		printf("		main task: cycle %d\n", i);
+		printf("		maintask: cycle %d\n", i);
 		Task_sleep(100);
 	}
-	printf("		EEEEE\n");
+	printf("		XXXXX\n");
 	/*Task_killAll(); */
 	return 0;
 

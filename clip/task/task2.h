@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.4  2007/01/31 13:48:21  itk
+ uri:some new code for pth
+
  Revision 1.3  2007/01/30 13:43:06  itk
  *** empty log message ***
 
@@ -26,5 +29,4 @@
 #include "../hash.h"
 
 
-static int seqNo = 0;		/*  ��������������*/
 
