@@ -189,12 +189,16 @@ return
 
 /* Handler function for text processing */
 function xml_handleText( vUser, sStr, nLen )
-	local s, i:=1
+	local s, i:=1, sTrimmed
 	
 	s := translate_charset( "utf-8", host_charset(), sStr )
 	if .not. empty(vUser:ct)
-		// Remove lead spaces and tabs
-		s := alltrim(s)
+		// Remove lead spaces and tabs (for empty string)
+		sTrimmed := alltrim(s)
+		if len(sTrimmed) == 0
+			s := sTrimmed
+		endif
+					
 		//?? "==="+s+"===",len(s), right(s,1) == chr(10),"&\n"
 		if len(s) == 1 .and. right(s,1) == chr(10)
 			if right(vUser:ct:text,1) == chr(10) .or. len(vUser:ct:text) == 0
