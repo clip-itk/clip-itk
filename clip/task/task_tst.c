@@ -1,7 +1,11 @@
 /* $Log$
-/* Revision 1.7  2007/01/31 13:48:21  itk
-/* uri:some new code for pth
+/* Revision 1.8  2007/02/08 11:50:00  itk
+/* uri: new task model based on PTH .... finished (may be finished :))
 /*
+
+ Revision 1.7  2007/01/31 13:48:21  itk
+ uri:some new code for pth
+
 
  Revision 1.6  2007/01/30 13:43:06  itk
  *** empty log message ***
@@ -52,15 +56,23 @@ run(void *_data)
 	int i;
 	void *ret = NULL;
 	char *data;
+	TaskMessage * msg;
 	
 	data = (char *)_data;
 	printf("		task %ld function begin, data=%s\n",Task_ID(),data);
+	printf("		task %ld waiting message ....\n",Task_ID());
+	msg = Task_getMessage();
+	if (msg==NULL)
+		printf("		task %ld BAD MESSAGE\n",Task_ID());
+	else
+		printf("		task %ld get message, data=%s\n",Task_ID(),(char *)TaskMessage_get_data(msg));
 	for (i = 0; i < 5; i++)
 	{
 		printf("		task %ld cycle %d\n", Task_ID(), i);
 		Task_sleep(50);
 	}
 	printf("		task %ld function return, data=%s\n",Task_ID(),data);
+	
 	return ret;
 }
 
@@ -89,6 +101,7 @@ main(int argc, char **argv)
 {
 	int i;
 	Task *tp;
+	TaskMessage *msg;
 	
 	printf("\n		begin. version=%ld\n",Task_version());
 	printf("		AAAA\n");
@@ -112,6 +125,9 @@ main(int argc, char **argv)
 	for (i = 0; i < 7; i++)
 	{
 		printf("		maintask: cycle %d\n", i);
+		printf("		maintask: send message to task:%d\n", i);
+		msg = TaskMessage_new(i,"msg",NULL);
+		Task_sendMessageWait(i,msg);
 		Task_sleep(100);
 	}
 	printf("		XXXXX\n");

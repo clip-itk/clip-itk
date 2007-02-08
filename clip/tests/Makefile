@@ -1,7 +1,7 @@
 TESTS = test.dbf mathtest type_field obj obj_p ttt_p ttt param set_t err \
 	macro1 param1 loop mem_file mainp.pa main a_flag replace memo_t \
 	run dutil wind wind2 wind3 key  mouse tbldec pload a dbg pg testlock \
-	dispbox inkey memoline hparse transform attoken task1 task2
+	dispbox inkey memoline hparse transform attoken task1 task2 task3
 	#loadso
 
 #CLIP = $(CLIPROOT)/bin/clip
@@ -115,6 +115,9 @@ task1: task1.prg $(CLIPLIB)
 
 task2: task2.prg $(CLIPLIB) 
 	$(CLIP) $(CLPFLAGS) $(SF) -I. -e -M task2.prg 
+
+task3: task3.prg $(CLIPLIB) 
+	$(CLIP) $(CLPFLAGS) $(SF) -I. -e -M task3.prg 
 
 testlock: testlock.prg
 	$(CLIP) $(CLPFLAGS) -I. -e -M testlock.prg

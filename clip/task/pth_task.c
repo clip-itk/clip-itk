@@ -5,6 +5,11 @@
  */
 /*
  $Log$
+ Revision 1.6  2007/02/08 11:50:00  itk
+ uri: new task model based on PTH .... finished (may be finished :))
+
+
+
  Revision 1.5  2007/01/31 13:48:21  itk
  uri:some new code for pth
 
@@ -33,9 +38,10 @@
 #include "task2.h"
 
 //#define _LDEBUG
+//#define _MDEBUG
 struct TaskMessage
 {
-/*
+
 	long sender;
 	long receiver;
 	long id;
@@ -44,7 +50,7 @@ struct TaskMessage
 
 	void *data;
 	void (*destroy) (void *data);
-*/
+
 };
 
 struct Task
@@ -222,7 +228,7 @@ static void local_print_List(List * list)
 	for (r = first_List(list); r; r = next_List(list))
 	{
 		tp = (Task *) list->current;
-#ifdef _LDEBUG
+#if defined(_LDEBUG) || defined(_MDEBUG)
 		printf("list-print,task=%p,task->id=%ld,namename=%s,%p,data=%s#\n",(void *)tp,tp->id,tp->name,tp->name,(char *) tp->data);
 #endif
 	}
@@ -233,17 +239,33 @@ void *
 task_pth_run(void * data)
 {
 	Task *task;
-	
 	task = (Task *) data;
+	char msgPortName[10];
+
+	pth_msgport_t mp;
+	pth_event_t ev;
+
 #ifdef _LDEBUG
 	printf("F=%s,L=%d,data_pth_run=%p,%p,name=%s,%p\n",__FILE__,__LINE__,data,task,task->name,task->name);
 #endif
 	if (task == NULL)
 		return NULL;
 	append_List(&Tasks, (void *)task);
-//	local_print_List(&Tasks);
+	local_print_List(&Tasks);
+
+	snprintf(msgPortName,10,"%ld",task->id);
+#ifdef _MDEBUG
+	printf("F=%s,L=%d,task->id=%ld,msgPortName=%s\n",__FILE__,__LINE__,task->id,msgPortName);
+#endif
+	mp = pth_msgport_create(msgPortName);
+	ev = pth_event(PTH_EVENT_MSG, mp);
+
 	if ( task->run )
 		task->run(task->data);
+
+    	pth_event_free(ev, PTH_FREE_THIS);
+    	pth_msgport_destroy(mp);
+
 	if ( task->destroy )
 		task->destroy(task->data);
 	stopcount = 0;
@@ -443,18 +465,64 @@ Task_respond(TaskMessage * msg)
 #endif
 	if (!pth_inited)
 		return -1;
+/* not need for PTH */
+	return ret;
+}
+int
+__Task_sendMessage(long receiver, TaskMessage * msg, int wait)
+{
+	pth_t ptask;
+	Task * task;
+	pth_event_t ev = NULL;
+	pth_msgport_t selfPort = NULL;
+	pth_msgport_t recvPort = NULL;
+	char msgPortName[10];
+	int ret;
+
+#ifdef _MDEBUG
+	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+#endif
+	if (!pth_inited)
+		return 0;
+	snprintf(msgPortName,10,"%ld",receiver);
+	recvPort = pth_msgport_find(msgPortName);
+#ifdef _MDEBUG
+	printf("F=%s,L=%d,msgPortName=%s,recvPort=%p\n",__FILE__,__LINE__,msgPortName,recvPort);
+#endif
+	if (recvPort == NULL)
+		return 0;
+	ptask = pth_self();
+	task = seach_task_in_list(&Tasks,ptask);
+//	printf("F=%s,L=%d,%p,%p\n",__FILE__,__LINE__,ptask,task);
+//	local_print_List(&Tasks);
+	msg->receiver = receiver;
+	if (task != NULL )
+		msg->sender = task->id;
+	ret = pth_msgport_put(recvPort, (pth_message_t *)msg);
+	if (!wait)
+		return ret;
+	if (task == NULL )
+		return ret;
+	snprintf(msgPortName,10,"%ld",task->id);
+	selfPort = pth_msgport_find(msgPortName);
+	ev = pth_event(PTH_EVENT_MSG, selfPort);
+	pth_wait(ev);
+		
+	if (msg->destroy)
+		msg->destroy((void *)msg->data);
+#ifdef _MDEBUG
+	printf("F=%s,L=%d\n",__FILE__,__LINE__);
+#endif
 	return ret;
 }
 
 TASK_DLLEXPORT int
-Task_sendMessage(long receiver, /* new */ TaskMessage * msg)
+Task_sendMessage(long receiver, TaskMessage * msg)
 {
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
-	if (!pth_inited)
-		return -1;
-	return 0;
+	return __Task_sendMessage(receiver,msg,0);
 }
 
 TASK_DLLEXPORT int
@@ -463,9 +531,7 @@ Task_sendMessageWait(int receiver, TaskMessage * msg)
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
-	if (!pth_inited)
-		return -1;
-	return 0;
+	return __Task_sendMessage(receiver,msg,1);
 }
 
 TASK_DLLEXPORT void *
@@ -474,9 +540,11 @@ TaskMessage_get_data(TaskMessage * msg)
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
+	if (msg == NULL)
+		return NULL;
 	if (!pth_inited)
 		return NULL;
-	return NULL; //msg->data;
+	return msg->data;
 }
 
 TASK_DLLEXPORT TaskMessage *
@@ -488,11 +556,9 @@ TaskMessage_new(long id, void *data, void (*destroy) (void *data))
 #endif
 	if (!pth_inited)
 		return NULL;
-/*
 	msg->id = id;
 	msg->data = data;
 	msg->destroy = destroy;
-*/
 
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
@@ -503,60 +569,64 @@ TaskMessage_new(long id, void *data, void (*destroy) (void *data))
 TASK_DLLEXPORT TaskMessage *
 Task_peekMessage(void)
 {
-	/*Task *ct;*/
-	TaskMessage *mp;
+	pth_t ptask;
+	Task * task;
+	pth_msgport_t selfPort = NULL;
+	char msgPortName[10];
 
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	if (!pth_inited)
 		return NULL;
+	ptask = pth_self();
+	task = seach_task_in_list(&Tasks,ptask);
+	if (task == NULL)
+		return NULL;
+	snprintf(msgPortName,10,"%ld",task->id);
+	selfPort = pth_msgport_find(msgPortName);
+	if (selfPort == NULL)
+		return NULL;
+	if ( pth_msgport_pending(selfPort) )
+		return Task_getMessage();
+
 	Task_yield();
-/*
-	ct = currTask;
-	if (empty_List(&ct->recvlist))
-		return 0;
-	first_List(&ct->recvlist);
-	mp = (TaskMessage *) ct->recvlist.current;
-	remove_List(&ct->recvlist);
-	append_List(&ct->proclist, mp);
-*/
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
-	return mp;
+	return NULL;
 }
 
 TASK_DLLEXPORT TaskMessage *
 Task_getMessage(void)
 {
-	TaskMessage *mp = NULL;
+	pth_t ptask;
+	Task * task;
+	pth_msgport_t selfPort = NULL;
+    	pth_event_t ev;
+	char msgPortName[10];
+	TaskMessage *msg = NULL;
+
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
 	if (!pth_inited)
 		return NULL;
-/*	Task *ct = currTask;
+	ptask = pth_self();
+	task = seach_task_in_list(&Tasks,ptask);
+	if (task == NULL)
+		return NULL;
+	snprintf(msgPortName,10,"%ld",task->id);
+	selfPort = pth_msgport_find(msgPortName);
+	if (selfPort == NULL)
+		return NULL;
+	ev = pth_event(PTH_EVENT_MSG, selfPort);
+	if (pth_wait(ev) != 1)
+		return NULL;
+         msg = (TaskMessage *)pth_msgport_get(selfPort);
 
-	if (empty_List(&ct->recvlist))
-	{
-		removeFromList(ct);
-		addToMsg(ct);
-		Task_yield();
-		if (empty_List(&ct->recvlist))
-			return 0;
-
-	}
-	else
-		Task_yield();
-
-	first_List(&ct->recvlist);
-	mp = (TaskMessage *) ct->recvlist.current;
-	remove_List(&ct->recvlist);
-	append_List(&ct->proclist, mp);
-*/
 #ifdef _LDEBUG
 	printf("F=%s,L=%d\n",__FILE__,__LINE__);
 #endif
-	return mp;
+	return msg;
 }
