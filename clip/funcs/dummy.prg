@@ -42,9 +42,6 @@ function setblink()
 return .t.
 
 *****************************************************
-function msetcursor(lvisible)
-return .f.
-*****************************************************
 function csetcurs(lvisible)
 	local ret
 	ret:=setcursor()!=0
@@ -55,9 +52,6 @@ return ret
 *****************************************************
 function _isgraphics()
 return .f.
-*****************************************************
-function low_alt(s)
-return lower(s)
 ************************************************************
 function cretry()
 return 0
