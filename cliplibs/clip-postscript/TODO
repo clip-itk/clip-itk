@@ -1,0 +1,10 @@
+
+
+TODO: clip-postscript
+=====================
+
+- show in viewer without block work (thread or background job)
+- top margin is too small on view in the Evince (margin printed correctly)
+- support Kugar form templates
+- text-decoration: underline
+- text alignment: justify
