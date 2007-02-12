@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.2  2007/02/12 16:13:08  itk
+   uri: some fix about task_select and some fix for amd64
+
    Revision 1.1  2006/06/22 19:01:29  itk
    uri: initial
 
@@ -114,7 +117,7 @@
    uri: fix for fopen(FO_TRUNC)
 
    Revision 1.136  2003/04/14 14:01:24  clip
-   rust: bug in fclose(), reported by IstvАn FЖldi <foldii@terrasoft.hu>
+   rust: bug in fclose(), reported by IstvО©╫ FО©╫di <foldii@terrasoft.hu>
 
    Revision 1.135  2003/04/14 07:37:37  clip
    uri: small fix in ftrunc()
@@ -366,10 +369,10 @@
    uri: bug in directory() with mask "C:/ *"
 
    Revision 1.56  2001/04/16 13:41:49  clip
-   serg: исправления в fopen в режимах share
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫fopen О©╫О©╫О©╫О©╫О©╫share
 
    Revision 1.55  2001/04/15 11:25:07  clip
-   serg: в fopen добавлены share режимы для блокировок
+   serg: О©╫fopen О©╫О©╫О©╫О©╫О©╫share О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 
    Revision 1.54  2001/04/05 11:17:41  clip
    remake function round()
@@ -388,11 +391,10 @@
    bug in fwrite , new #define in dbinfo.ch
 
    Revision 1.49  2001/01/24 14:02:29  clip
-   serg: подправлены блокировки файлов
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫
 
    Revision 1.48  2001/01/24 13:14:46  clip
-   serg: добавлена обработка блокировок на файлы
-
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫
    Revision 1.47  2001/01/22 13:31:43  clip
    bugfixes
    paul
@@ -404,7 +406,7 @@
    alena: new function in _string.c clip_RGCOMP, clip_RGEXEC, clip_RGCANCEL
 
    Revision 1.44  2000/12/25 14:15:11  clip
-   uri: gzip*() вынесены в отдельный файл, Makefile -> EXTOBJS
+   uri: gzip*() О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫, Makefile -> EXTOBJS
 
    Revision 1.43  2000/12/20 11:09:36  clip
    HAVE_ZLIB_H
@@ -417,8 +419,7 @@
    paul
 
    Revision 1.40  2000/11/23 15:00:18  clip
-   GETENV(NIL) теперь возвращает обЪект со значениями всех переменных окружения
-
+   GETENV(NIL) О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫
    Revision 1.39  2000/11/23 09:35:10  clip
    INIT -> INI_ctools_diskfunc()
 
@@ -434,11 +435,9 @@
    serg: fopen() small fix
 
    Revision 1.35  2000/11/08 13:49:42  clip
-   serg: добавлена возможность работы с потоками в семейство fopen:
-   fopen( "-|" ) - стандартный ввод
-   fopen( "|-" ) - стандартный вывод
-   fopen( "ls -l |" ) - на стандартном вводе вывод команды
-   fopen( "| gzip > a.gz" ) - stdout через gzip складывается в файл.
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫fopen:
+   fopen( "-|" ) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+   fopen( "|-" ) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫   fopen( "ls -l |" ) - О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫   fopen( "| gzip > a.gz" ) - stdout О©╫О©╫О©╫gzip О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫.
 
    Revision 1.34  2000/10/27 07:50:17  clip
    rational NUMERIC_t gluks
@@ -485,8 +484,7 @@
    Paul Lasarev <paul@itk.ru>
 
    Revision 1.22  2000/05/23 23:05:36  clip
-   uri: не помню чего ломал
-
+   uri: О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫
    Revision 1.21  2000/05/20 18:37:22  clip
    change hash function
    append HASH_xxxx extraction into hashcode.h
@@ -517,7 +515,7 @@
    freebsd fix
 
    Revision 1.12  2000/03/30 19:44:06  uri
-   новый error
+   О©╫О©╫О©╫error
 
    Revision 1.11  2000/03/22 19:10:00  uri
    *** empty log message ***
@@ -529,14 +527,13 @@
    *** empty log message ***
 
    Revision 1.6  1999/12/09 21:19:20  uri
-   убрал warnings и начал misc functions of tools
+   О©╫О©╫О©╫warnings О©╫О©╫О©╫О©╫misc functions of tools
 
    Revision 1.5  1999/12/04 22:16:36  uri
-   вычистил все предупреждения
+   О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 
    Revision 1.4  1999/12/04 20:08:26  uri
-   убрал warning нового компилятора
-
+   О©╫О©╫О©╫warning О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫
    Revision 1.3  1999/10/26 19:11:08  paul
    start cvs logging
 */
@@ -949,6 +946,7 @@ _clip_select(int n, fd_set *rfds, fd_set *wfds, fd_set *efds, struct timeval *tv
 #endif
 
 #ifdef USE_TASKS
+		//ret = select(n, rfds, wfds, efds, tv);
 		ret = task_select(n, rfds, wfds, efds, tv);
 #else
 		ret = select(n, rfds, wfds, efds, tv);
@@ -1306,10 +1304,10 @@ clip_FOPEN(ClipMachine * mp)
 	switch (m)
 	{
 	case 0:
-		mode = O_RDONLY;	/* это чтобы блокировки ниже могли работать */
-/*mode = O_RDWR; *//* например при открытии файла на чтение */
-		fmode = "r";	/* в exclusive ставится блокировка на */
-		break;		/* запись, это коряво, но надо Юрке */
+		mode = O_RDONLY;	/* О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+/*mode = O_RDWR; *//* О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ */
+		fmode = "r";	/* О©╫exclusive О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫ */
+		break;		/* О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫, О©╫ О©╫О©╫ О©╫О©╫ */
 	case 1:
 		mode = O_WRONLY;
 		/*mode = O_RDWR; */
@@ -1436,12 +1434,12 @@ clip_FOPEN(ClipMachine * mp)
 		if (type == FT_FILE)
 #endif
 		{
-#define FO_COMPAT	 0	/* Режим совместимости (по умолчанию) */
-#define FO_EXCLUSIVE	16	/* Монопольное использование (Exclusive) */
-#define FO_DENYWRITE	32	/* Предупреждение от записи другими процессами */
-#define FO_DENYREAD	48	/* Предупреждение от чтения другими процессами */
-#define FO_SHARED	64	/* Разрешение чтения и записи другими процессами */
-#define FO_DENYNONE	64	/* (то же самое, что и FO_SHARED) */
+#define FO_COMPAT	 0	/* О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫(О©╫ О©╫О©╫О©╫О©╫О©╫ */
+#define FO_EXCLUSIVE	16	/* О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫(Exclusive) */
+#define FO_DENYWRITE	32	/* О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+#define FO_DENYREAD	48	/* О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+#define FO_SHARED	64	/* О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
+#define FO_DENYNONE	64	/* (О©╫ О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫FO_SHARED) */
 			/*int l_type = F_WRLCK; */
 			int l_type = -1;
 

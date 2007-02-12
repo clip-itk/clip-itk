@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.3  2007/02/12 16:13:08  itk
+   uri: some fix about task_select and some fix for amd64
+
    Revision 1.2  2007/01/09 12:11:14  itk
    uri: small fix for compare rational numbers
 
@@ -252,7 +255,7 @@
    paul
 
    Revision 1.374  2003/04/14 14:01:24  clip
-   rust: bug in fclose(), reported by IstvАn FЖldi <foldii@terrasoft.hu>
+   rust: bug in fclose(), reported by IstvО©╫ FО©╫di <foldii@terrasoft.hu>
 
    Revision 1.373  2003/04/02 10:53:19  clip
    rust: _clip_close() added
@@ -1409,8 +1412,8 @@
    Paul Lasarev <paul@itk.ru>
 
    Revision 1.116  2000/11/28 14:01:10  clip
-   serg: начал прикручивать X-window на GTK,
-   функции xcreatewindow, xcreatebutton
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ X-window О©╫ GTK,
+   О©╫О©╫О©╫О©╫xcreatewindow, xcreatebutton
 
    Revision 1.115  2000/11/24 12:03:09  clip
    append _clip_mget()
@@ -1463,11 +1466,9 @@
    paul
 
    Revision 1.103  2000/11/08 13:49:42  clip
-   serg: добавлена возможность работы с потоками в семейство fopen:
-   fopen( "-|" ) - стандартный ввод
-   fopen( "|-" ) - стандартный вывод
-   fopen( "ls -l |" ) - на стандартном вводе вывод команды
-   fopen( "| gzip > a.gz" ) - stdout через gzip складывается в файл.
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫fopen:
+   fopen( "-|" ) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+   fopen( "|-" ) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫   fopen( "ls -l |" ) - О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫   fopen( "| gzip > a.gz" ) - stdout О©╫О©╫О©╫gzip О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫.
 
    Revision 1.102  2000/11/04 11:00:11  clip
    sync_mp
@@ -1494,9 +1495,8 @@
    Paul Lasarev <paul@itk.ru>
 
    Revision 1.96  2000/10/20 08:03:23  clip
-   Вкрутил rational везде где упоминается NUMERIC_t
-   может чего и осталось неотловленное, но это может быть только в тех
-   местах где нет использования NUMERIC_t !!!!!
+   О©╫О©╫О©╫О©╫rational О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t
+   О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫   О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t !!!!!
    from uri:
 
    Revision 1.95  2000/10/18 10:56:17  clip
@@ -1504,12 +1504,11 @@
    Paul Lasarev <paul@itk.ru>
 
    Revision 1.94  2000/09/27 11:30:55  clip
-   small fix decimal точность
+   small fix decimal О©╫О©╫О©╫О©╫
    from uri:
 
    Revision 1.93  2000/09/27 09:33:55  clip
-   изменение точности чисел при операциях умножения и деления
-   from uri:
+   О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫   from uri:
 
    Revision 1.92  2000/09/06 12:16:41  clip
    rust: bug in _clip_destroy_c_item
@@ -1543,8 +1542,7 @@
    Paul Lasarev <paul@itk.ru>
 
    Revision 1.84  2000/05/23 23:05:38  clip
-   uri: не помню чего ломал
-
+   uri: О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫
    Revision 1.83  2000/05/23 18:59:54  clip
    append window functions
    Paul Lasarev <paul@itk.ru>
@@ -1759,17 +1757,17 @@
    *** empty log message ***
 
    Revision 1.18  1999/12/10 21:16:38  uri
-   в typename добавил MEMO_t
+   О©╫typename О©╫О©╫О©╫О©╫MEMO_t
 
    Revision 1.17  1999/12/10 21:14:02  paul
    gluk in _clip_date_to_str()
 
    Revision 1.16  1999/12/10 17:28:32  uri
-   убрал предупреждения в cliprt, добавил MEMO_t, сделал несколько misc
-   функций из тулзов
+   О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫cliprt, О©╫О©╫О©╫О©╫MEMO_t, О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫misc
+   О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫
 
    Revision 1.15  1999/12/04 21:25:36  uri
-   немного *DATE* функций из тулзов
+   О©╫О©╫О©╫О©╫*DATE* О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫
 
    Revision 1.14  1999/11/30 18:39:09  paul
    ref bug
@@ -8943,6 +8941,13 @@ putLong_Buf(OutBuf * bp, long l)
 }
 
 void
+putInt32_Buf(OutBuf * bp, long l)
+{
+	int r = (int) l;
+	putBuf_Buf(bp, (char *) &r, 4 /*sizeof(int)*/);
+}
+
+void
 putDouble_Buf(OutBuf * bp, double d)
 {
 	putBuf_Buf(bp, (char *) &d, sizeof(d));
@@ -8957,8 +8962,7 @@ putStr_Buf(OutBuf * bp, char *str)
 /* ] OutBuf */
 /* [ utils */
 /*
- *    Юлианская -> Календарная
- *    ww - номер дня недели (0 - Вск, 1 - Пнд и т.д.)
+ *    О©╫О©╫О©╫О©╫О©╫-> О©╫О©╫О©╫О©╫О©╫О©╫ *    ww - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ (0 - О©╫О©╫ 1 - О©╫О©╫О©╫О©╫О©╫)
  */
 CLIP_DLLEXPORT void
 _clip_cdate(long ju, int *dd, int *mm, int *yy, int *ww)
@@ -8986,8 +8990,7 @@ _clip_cdate(long ju, int *dd, int *mm, int *yy, int *ww)
 }
 
 /*
- *    Календарная -> Юлианская
- */
+ *    О©╫О©╫О©╫О©╫О©╫О©╫-> О©╫О©╫О©╫О©╫О©╫ */
 CLIP_DLLEXPORT long
 _clip_jdate(int dd, int mm, int yy)
 {

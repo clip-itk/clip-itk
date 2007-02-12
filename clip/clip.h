@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.4  2007/02/12 16:13:08  itk
+   uri: some fix about task_select and some fix for amd64
+
    Revision 1.3  2007/02/12 09:13:17  itk
    uri: many fixes for amd64
 
@@ -2052,6 +2055,7 @@ void destroy_Buf(OutBuf * bp);
 void putByte_Buf(OutBuf * bp, unsigned char byte);
 void putShort_Buf(OutBuf * bp, short s);
 void putLong_Buf(OutBuf * bp, long l);
+void putInt32_Buf(OutBuf * bp, long l);
 void putDouble_Buf(OutBuf * bp, double d);
 void putStr_Buf(OutBuf * bp, char *str);
 void putBuf_Buf(OutBuf * bp, char *buf, int len);

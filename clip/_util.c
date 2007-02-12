@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.3  2007/02/12 16:13:08  itk
+   uri: some fix about task_select and some fix for amd64
+
    Revision 1.2  2006/11/16 13:32:34  itk
    uri: fix in dosparam(). delete program name from result  string
 
@@ -299,7 +302,7 @@
    uri: add function MEMVARGET(varname), MEMVARSET(varname,data)
 
    Revision 1.74  2001/06/20 08:20:01  clip
-   добавила в ains() третий параметр - что именно вставляем в массив или map
+   О©╫О©╫О©╫О©╫ О©╫ains() О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ - О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫map
    alena
 
    Revision 1.73  2001/06/15 11:32:11  clip
@@ -439,9 +442,8 @@
    paul
 
    Revision 1.40  2000/10/20 08:03:23  clip
-   Вкрутил rational везде где упоминается NUMERIC_t
-   может чего и осталось неотловленное, но это может быть только в тех
-   местах где нет использования NUMERIC_t !!!!!
+   О©╫О©╫О©╫О©╫rational О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t
+   О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫   О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t !!!!!
    from uri:
 
    Revision 1.39  2000/10/11 06:30:55  clip
@@ -549,8 +551,8 @@
    *** empty log message ***
 
    Revision 1.4  1999/12/10 17:28:30  uri
-   убрал предупреждения в cliprt, добавил MEMO_t, сделал несколько misc
-   функций из тулзов
+   О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫cliprt, О©╫О©╫О©╫О©╫MEMO_t, О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫misc
+   О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫
 
    Revision 1.3  1999/10/27 19:48:12  uri
    type & mptr
@@ -2250,7 +2252,7 @@ clip_GLOB(ClipMachine * mp)
 static void
 put_str(OutBuf * bp, char *str, long len)
 {
-	putLong_Buf(bp, htonl(len));
+	putInt32_Buf(bp, htonl(len));
 	putBuf_Buf(bp, str, len);
 }
 
@@ -2311,7 +2313,7 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll * refs)
 		putByte_Buf(bp, vp->l.val);
 		break;
 	case DATE_t:
-		putLong_Buf(bp, htonl(vp->d.julian));
+		putInt32_Buf(bp, htonl(vp->d.julian));
 		break;
 	case OBJECT_t:
 		vp->o.rtti->print(mp, vp->o.obj, vp->o.rtti, &mp->buf, &mp->buflen);
@@ -2326,7 +2328,7 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll * refs)
 			int i;
 
 			insert_Coll(refs, vp);
-			putLong_Buf(bp, htonl(vp->a.count));
+			putInt32_Buf(bp, htonl(vp->a.count));
 			for (i = 0; i < vp->a.count; ++i)
 				put_var(mp, vp->a.items + i, bp, refs);
 		}
@@ -2336,10 +2338,10 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll * refs)
 			int i;
 
 			insert_Coll(refs, vp);
-			putLong_Buf(bp, htonl(vp->m.count));
+			putInt32_Buf(bp, htonl(vp->m.count));
 			for (i = 0; i < vp->m.count; ++i)
 			{
-				putLong_Buf(bp, htonl(vp->m.items[i].no));
+				putInt32_Buf(bp, htonl(vp->m.items[i].no));
 				put_var(mp, &(vp->m.items[i].v), bp, refs);
 			}
 		}

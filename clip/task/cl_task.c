@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.6  2007/02/12 16:13:08  itk
+ uri: some fix about task_select and some fix for amd64
+
  Revision 1.5  2007/01/31 13:48:21  itk
  uri:some new code for pth
 
@@ -285,6 +288,11 @@ static int t_select(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exce
 #else
 #define t_select select
 #endif
+
+TASK_DLLEXPORT void
+Task_INIT(void)
+{
+}
 
 TASK_DLLEXPORT long 
 Task_version()

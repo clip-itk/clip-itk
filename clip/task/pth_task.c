@@ -5,6 +5,9 @@
  */
 /*
  $Log$
+ Revision 1.7  2007/02/12 16:13:08  itk
+ uri: some fix about task_select and some fix for amd64
+
  Revision 1.6  2007/02/08 11:50:00  itk
  uri: new task model based on PTH .... finished (may be finished :))
 
@@ -86,6 +89,15 @@ calcTv(struct timeval *tv, long msec)
 		msec = 1;
 	tv->tv_sec = msec / 1000;
 	tv->tv_usec = (msec % 1000) * 1000;
+}
+
+TASK_DLLEXPORT void
+Task_INIT(void)
+{
+	if ( pth_inited != 0)
+		return;
+	pth_init();
+	pth_inited = 1;
 }
 
 TASK_DLLEXPORT long

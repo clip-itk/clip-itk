@@ -1,6 +1,9 @@
 
 /*
    $Log$
+   Revision 1.2  2007/02/12 16:13:08  itk
+   uri: some fix about task_select and some fix for amd64
+
    Revision 1.1  2006/06/22 19:01:33  itk
    uri: initial
 
@@ -41,6 +44,7 @@ main(int argc, char **argv)
 	int ret;
 	ClipMachine *mp = new_ClipMachine(0);
 
+	Task_INIT();
 	ret = _clip_main(mp, HASH_main, argc, argv, environ);
 	return ret;
 }
