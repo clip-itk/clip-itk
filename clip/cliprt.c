@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.4  2007/02/12 16:36:24  itk
+   uri: some fix tasks
+
    Revision 1.3  2007/02/12 16:13:08  itk
    uri: some fix about task_select and some fix for amd64
 
@@ -9574,6 +9577,9 @@ CLIP_DLLEXPORT int
 _clip_main(ClipMachine * mp, long hash, int argc, char **argv, char **envp)
 {
 	int ret;
+	
+	if (mp->main_func_level == 0)
+		Task_INIT();
 	mp->main_func_level++;
 	ret = do_main(mp, hash, NULL, NULL, argc, argv, envp);
 	mp->main_func_level--;
