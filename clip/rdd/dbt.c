@@ -88,7 +88,7 @@ static int dbt_getvalue(ClipMachine* cm,RDD_MEMO* rm,int id,ClipVar* vp,const ch
 	if(!id)
 		return 0;
 
-	if((int)rm->file.md==-1){
+	if(rm->file.md==(caddr_t)-1){
 		struct stat st;
 		fstat(rm->file.fd,&st);
 		fsize = st.st_size;

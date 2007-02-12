@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.4  2007/02/12 09:13:17  itk
+   uri: many fixes for amd64
+
    Revision 1.3  2007/01/30 07:55:25  itk
    uri: small fix
 
@@ -1371,7 +1374,7 @@ write_File(File * file)
 		VAR(ConstNode, sp, file->unsortedStrings.items[j]);
 		fprintf(out, "static ClipVarStr _str_%d = { { { CHARACTER_t,%d,0,F_MSTAT,0 }, { ", j, haveMacro(sp->val));
 		printString(out, sp->val);
-		fprintf(out, ", %d } } };\n", strlen(sp->val));
+		fprintf(out, ", %ld } } };\n", (long)strlen(sp->val));
 	}
 
 	if (main_flag)
@@ -2088,6 +2091,7 @@ write_OFile(File * file, long *len)
 		for (i = 0; i < file->staticNo + 1; ++i)
 			fprintf(out, "\t{{0, 0}},\n");
 		fprintf(out, "\n};\n");
+		fprintf(out,"/*body1 of module %s*/\n",name);
 		fprintf(out, "\nstatic const char %s_body[]=\n{\n", name);
 
 		mp = bp->buf;
@@ -2099,7 +2103,7 @@ write_OFile(File * file, long *len)
 		{
 			fprintf(out, "\t");
 			for (k = 0; k < 32 && j < modlen; ++j, ++k, ++size)
-				fprintf(out, "%d,", mp[j]);
+				fprintf(out, "%ld,", (long)mp[j]);
 			fprintf(out, "\n");
 		}
 
@@ -3245,9 +3249,9 @@ write_Cfunc(const char *name, int argc, char **argv, Coll * ex, Coll * nm)
 				fprintf(out, "\tmovl %s%s_libcpfiles_%s,%%eax\n", IMP, US, s);
 				fprintf(out, "\tmovl %%eax,%s_libcpfiles+%d\n", US, i * sizeof(ClipFile ***));
 #else
-				fprintf(out, "\tmovl $%s%s_libinits_%s,%s_libinits+%d\n", IMP, US, s, US, i * sizeof(ClipFunction ***));
-				fprintf(out, "\tmovl $%s%s_libexits_%s,%s_libexits+%d\n", IMP, US, s, US, i * sizeof(ClipFunction ***));
-				fprintf(out, "\tmovl $%s%s_libcpfiles_%s,%s_libcpfiles+%d\n", IMP, US, s, US, i * sizeof(ClipFile ***));
+				fprintf(out, "\tmovl $%s%s_libinits_%s,%s_libinits+%ld\n", IMP, US, s, US, (long)(i * sizeof(ClipFunction ***)));
+				fprintf(out, "\tmovl $%s%s_libexits_%s,%s_libexits+%ld\n", IMP, US, s, US, (long)(i * sizeof(ClipFunction ***)));
+				fprintf(out, "\tmovl $%s%s_libcpfiles_%s,%s_libcpfiles+%ld\n", IMP, US, s, US, (long)(i * sizeof(ClipFile ***)));
 #endif
 			}
 		}

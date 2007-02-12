@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log$
+	Revision 1.2  2007/02/12 09:13:17  itk
+	uri: many fixes for amd64
+	
 	Revision 1.1  2006/06/22 19:35:31  itk
 	uri: init sf.net repository
 	
@@ -973,7 +976,7 @@ static int _ntx_free_page(ClipMachine* cm,RDD_ORDER* ro,unsigned int* page,
 	*page = _rdd_uint(hdr.fuu);
 	if(!*page){
 		int delta;
-		if((int)ro->index->file.md==-1){
+		if(ro->index->file.md==(caddr_t)-1){
 			struct stat st;
 			fstat(ro->index->file.fd,&st);
 			fsize = st.st_size;
@@ -1858,7 +1861,7 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	if((er = rdd_write(cm,&ri->file,ro->header,sizeof(NTX_HEADER),(char*)&hdr,__PROC__)))
 		return er;
 
-	if((int)ri->file.md==-1){
+	if(ri->file.md==(caddr_t)-1){
 		struct stat st;
 		fstat(ri->file.fd,&st);
 		_rdd_put_uint(hdr.root,st.st_size);
@@ -2956,7 +2959,7 @@ static int ctx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	}
 	for(i=0;i<chdr.ntags;i++){
 		if(strcasecmp((const char *)chdr.tags[i].tagname,tag)==0){
-			if((int)ri->file.md==-1){
+			if(ri->file.md==(caddr_t)-1){
 				struct stat st;
 				fstat(ri->file.fd,&st);
 				_rdd_put_uint(chdr.tags[i].header,st.st_size);
@@ -2973,7 +2976,7 @@ static int ctx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 				"Too many tags");
 		strncpy((char *)chdr.tags[i].tagname,tag,MAX_TAG_LEN);
 		chdr.tags[i].tagname[MAX_TAG_LEN] = 0;
-		if((int)ri->file.md==-1){
+		if(ri->file.md==(caddr_t)-1){
 			struct stat st;
 			fstat(ri->file.fd,&st);
 			_rdd_put_uint(chdr.tags[i].header,st.st_size);

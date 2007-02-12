@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log$
+	Revision 1.2  2007/02/12 09:13:17  itk
+	uri: many fixes for amd64
+	
 	Revision 1.1  2006/06/22 19:35:30  itk
 	uri: init sf.net repository
 	
@@ -945,7 +948,7 @@ static int _flex_addstick(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* child,unsigned
 		if((er = _flex_newpage(cm,rm,&newroot,0,__PROC__)))
 			return er;
 		_rdd_put_uint((unsigned char *)buf,newroot);
-		if((er = rdd_write(cm,&rm->file,(int)(size?&hdr->flexsize:&hdr->flexoffs),4,buf,__PROC__)))
+		if((er = rdd_write(cm,&rm->file,(long)(size?&hdr->flexsize:&hdr->flexoffs),4,buf,__PROC__)))
 			return er;
 
 		parent = (FLEX_TREE*)calloc(1,sizeof(FLEX_TREE));

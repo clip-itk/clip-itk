@@ -6,6 +6,9 @@
 
 /*
  * $Log$
+ * Revision 1.2  2007/02/12 09:13:14  itk
+ * uri: many fixes for amd64
+ *
  * Revision 1.1  2006/06/22 19:01:32  itk
  * uri: initial
  *
@@ -443,6 +446,8 @@ char *prgname;
 
 #ifdef USE_AS
 static int use_asm = 1;
+#else
+static int use_asm = 0;
 #endif
 
 static void

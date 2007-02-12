@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.2  2007/02/12 09:13:17  itk
+   uri: many fixes for amd64
+
    Revision 1.1  2006/06/22 19:01:34  itk
    uri: initial
 
@@ -1204,9 +1207,11 @@ destroy_ClipFile(ClipMachine * mp, ClipFile * fp)
 	switch (fp->bodyMem)
 	{
 #ifndef OS_MINGW
+#ifdef HAVE_MMAN_H
 	case 0:
 		munmap(fp->mem, fp->bodySize);
 		break;
+#endif
 #endif
 	case 1:
 		free(fp->mem);
@@ -1221,9 +1226,11 @@ destroy_ClipFile(ClipMachine * mp, ClipFile * fp)
 	switch (fp->staticsMem)
 	{
 #ifndef OS_MINGW
+#ifdef HAVE_MMAN_H
 	case 0:
 		munmap((void *) fp->statics, sizeof(ClipVar) * fp->nstatics);
 		break;
+#endif
 #endif
 	case 1:
 		free(fp->statics);

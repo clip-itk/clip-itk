@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log$
+	Revision 1.2  2007/02/12 09:13:17  itk
+	uri: many fixes for amd64
+	
 	Revision 1.1  2006/06/22 19:35:30  itk
 	uri: init sf.net repository
 	
@@ -64,7 +67,7 @@
 	rust: 'structural index present' attribute in .dbf header
 
 	Revision 1.169  2003/06/13 12:07:04  clip
-	uri: HZ, вроде всЕ было скинуто.
+	uri: HZ, О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
 
 	Revision 1.168  2003/06/11 09:57:08  clip
 	rust: speed up optimization level 2
@@ -1652,7 +1655,7 @@ static int dbf_append(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 
 	if(!rd->shared){
 		flen = rd->hdrsize+rd->recsize*(lastrec+1)+1;
-		if((int)rd->file.md!=-1){
+		if(rd->file.md!=(caddr_t)-1){
 			if(flen>rd->file.mapsize){
 				int delta = lastrec/5;
 				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(lastrec+1+delta)-1,
@@ -2395,9 +2398,9 @@ static int dbf_setstruct(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 }
 
 static int _dbf_compare(void* op,void* lp,void* rp,int* uniq){
-	if((unsigned int)lp < (unsigned int)rp)
+	if((unsigned long)lp < (unsigned long)rp)
 		return -1;
-	if((unsigned int)lp > (unsigned int)rp)
+	if((unsigned long)lp > (unsigned long)rp)
 		return 1;
 	return 0;
 }

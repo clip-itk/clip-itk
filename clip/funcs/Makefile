@@ -1,7 +1,8 @@
 CLIPROOT = ..
 CLIP	= ../clip
-CLIPFLAGS = -a  -l -O -n -I .. -I ../include
-CLIPFLAGS2 = -a -O -n -I .. -I ../include
+#CLIPFLAGS = -R -a -n -I .. -I ../include
+CLIPFLAGS = -a -l -O -n -I .. -I ../include
+#CLIPFLAGS2 = -a -O -n -I .. -I ../include
 CLIPLIBS  =
 OBJS  = _prompt.o a2edit.o achoice.o bl_func.o blank.o box.o browse.o \
 	db_func.o dbedit.o dbeval.o dtools.o dummy.o errorsys.o fdummy.o \
@@ -22,7 +23,7 @@ OBJS2 =  key_func.o key_func2.o
 all:    $(OBJS) $(OBJS2)
 #	ar -r libclipfuncs.a *.o
 	../clip_makelib libclipfuncs.a *.o
-	rm -rf *.c
+#	rm -rf *.c
 
 clean:
 	rm -rf *.o *.c *.s *.a *.so *.b *.BAK *.bak *~ core* *core

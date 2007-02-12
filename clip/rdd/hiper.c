@@ -706,7 +706,7 @@ static int _hs_getfuu(ClipMachine* cm,HIPER* hs,unsigned int* poffs,const char* 
 		int delta;
 		unsigned int fsize;
 
-		if((int)hs->file.md==-1){
+		if(hs->file.md==(caddr_t)-1){
 			struct stat st;
 			fstat(hs->file.fd,&st);
 			fsize = st.st_size;
@@ -1211,7 +1211,7 @@ static int hs_add(ClipMachine* cm,HIPER* hs,const char* str,int len,unsigned int
 }
 
 static int hs_close(ClipMachine* cm,HIPER* hs,const char* __PROC__){
-	if((int)hs->file.md != -1)
+	if(hs->file.md != (caddr_t)-1)
 #ifdef OS_MINGW
 		free(hs->file.md);
 #else

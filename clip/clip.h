@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.3  2007/02/12 09:13:17  itk
+   uri: many fixes for amd64
+
    Revision 1.2  2007/01/09 11:41:30  itk
    uri: add set(_SET_IDLE_INKEY) for minimize traffic from terminal
 
@@ -102,7 +105,7 @@
    paul
 
    Revision 1.218  2003/04/14 14:01:24  clip
-   rust: bug in fclose(), reported by IstvАn FЖldi <foldii@terrasoft.hu>
+   rust: bug in fclose(), reported by IstvО©╫ FО©╫di <foldii@terrasoft.hu>
 
    Revision 1.217  2003/04/02 10:53:19  clip
    rust: _clip_close() added
@@ -766,7 +769,7 @@
    alena: new function in _string.c clip_RGCOMP, clip_RGEXEC, clip_RGCANCEL
 
    Revision 1.74  2001/01/05 12:44:30  clip
-   serg: исправлен глюк в __CopyFile, развиваем X
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫__CopyFile, О©╫О©╫О©╫О©╫О©╫X
 
    Revision 1.73  2000/12/27 10:13:58  clip
    *** empty log message ***
@@ -797,8 +800,8 @@
    paul
 
    Revision 1.66  2000/11/28 14:01:10  clip
-   serg: начал прикручивать X-window на GTK,
-	функции xcreatewindow, xcreatebutton
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ X-window О©╫ GTK,
+	О©╫О©╫О©╫О©╫xcreatewindow, xcreatebutton
 
    Revision 1.65  2000/11/24 12:03:09  clip
    append _clip_mget()
@@ -829,11 +832,9 @@
    paul
 
    Revision 1.58  2000/11/08 13:49:42  clip
-   serg: добавлена возможность работы с потоками в семейство fopen:
-	 fopen( "-|" ) - стандартный ввод
-	 fopen( "|-" ) - стандартный вывод
-	 fopen( "ls -l |" ) - на стандартном вводе вывод команды
-	 fopen( "| gzip > a.gz" ) - stdout через gzip складывается в файл.
+   serg: О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫fopen:
+	 fopen( "-|" ) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	 fopen( "|-" ) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫	 fopen( "ls -l |" ) - О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫	 fopen( "| gzip > a.gz" ) - stdout О©╫О©╫О©╫gzip О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫.
 
    Revision 1.57  2000/10/25 12:52:46  clip
    for..next
@@ -844,9 +845,8 @@
    from uri:
 
    Revision 1.55  2000/10/20 08:03:23  clip
-   Вкрутил rational везде где упоминается NUMERIC_t
-   может чего и осталось неотловленное, но это может быть только в тех
-   местах где нет использования NUMERIC_t !!!!!
+   О©╫О©╫О©╫О©╫rational О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t
+   О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫   О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t !!!!!
    from uri:
 
    Revision 1.54  2000/10/18 10:56:17  clip
@@ -887,8 +887,7 @@
 
    Revision 1.45  2000/05/19 01:07:07  clip
    setshare, getshare (serg)
-   пока только сами функции, нигде не проверяется чего там установлено
-
+   О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
    Revision 1.44  2000/05/14 00:36:20  clip
    setfcreate, strfile (serg)
 
@@ -911,11 +910,10 @@
    freebsd fix
 
    Revision 1.38  2000/04/14 00:51:20  uri
-   Кучка функций для math+tools
+   О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫math+tools
 
    Revision 1.37  2000/04/11 00:21:22  serg
-   заработала FILESEEK - база для группы функций, пока не до конца
-
+   О©╫О©╫О©╫О©╫О©╫ FILESEEK - О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫ О©╫ О©╫ О©╫О©╫О©╫
    Revision 1.36  2000/04/10 21:42:14  paul
    field->&asdf := expr
 
@@ -992,11 +990,11 @@
    *** empty log message ***
 
    Revision 1.11  1999/12/10 17:28:31  uri
-   убрал предупреждения в cliprt, добавил MEMO_t, сделал несколько misc
-   функций из тулзов
+   О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫cliprt, О©╫О©╫О©╫О©╫MEMO_t, О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫misc
+   О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫
 
    Revision 1.10  1999/12/08 21:01:25  uri
-   доделал фйнкции с датами из тулзов
+   О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫
 
    Revision 1.9  1999/12/04 20:05:28  serg
    *** empty log message ***
@@ -1455,9 +1453,8 @@ typedef struct
 Container;
 
 /*
- * Для хранения номера процесса, который работает
- * с нашим файлом через поток
- */
+ * О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+ * О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ */
 typedef struct
 {
 	int type;	/* type of opened file, see fileio.ch:FT_* */
@@ -1568,7 +1565,7 @@ typedef struct ClipMachine
 	struct _HashTable *aliases;
 	ClipVect *areas;
 	ClipVect *areaStack;
-	int curArea;
+	long curArea;
 
 	void *driver;
 

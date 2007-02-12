@@ -5,6 +5,9 @@
 */
 /*
 $Log$
+Revision 1.2  2007/02/12 09:13:17  itk
+uri: many fixes for amd64
+
 Revision 1.1  2006/06/22 19:35:17  itk
 uri: init sf.net repository
 
@@ -1486,7 +1489,7 @@ rt_error(Parser *parser, char *fmt,...)
 
 	l = strlen(parser->errbuf);
 
-	snprintf(parser->errbuf, ERRBUFSIZE-l, "\n%d: pos %d: ", parser->errcount, (parser->ptr-parser->beg)+1);
+	snprintf(parser->errbuf, ERRBUFSIZE-l, "\n%ld: pos %ld: ", (long)(parser->errcount), (long)((parser->ptr-parser->beg)+1));
 	l = strlen(parser->errbuf);
 	va_start(ap, fmt);
 	vsnprintf(parser->errbuf, ERRBUFSIZE-l, fmt, ap);

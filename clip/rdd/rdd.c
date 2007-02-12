@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log$
+	Revision 1.3  2007/02/12 09:13:17  itk
+	uri: many fixes for amd64
+	
 	Revision 1.2  2006/12/11 12:23:22  foldi
 	Manage custom index.
 	
@@ -17,7 +20,7 @@
 	rust: fix SIGSEGV
 
 	Revision 1.321  2005/11/30 16:27:58  clip
-	rust: HZ ÞÅ, ÎÅ ÐÏÍÎÀ...
+	rust: HZ ï¿½, ï¿½ ï¿½ï¿½ï¿½..
 
 	Revision 1.320  2005/08/08 09:00:31  clip
 	alena: fix for gcc 4
@@ -232,7 +235,7 @@
 	rust: set update flag in rdd_rawwrite()
 
 	Revision 1.251  2003/01/17 15:44:46  clip
-	rust: INDEX FOR bug reported and fixed by István Földi" <foldii@terrasoft.hu>
+	rust: INDEX FOR bug reported and fixed by Istvï¿½ Fï¿½di" <foldii@terrasoft.hu>
 
 	Revision 1.250  2003/01/15 10:42:34  clip
 	rust: small fix in rdd_createindex()
@@ -1407,7 +1410,7 @@ int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const cha
 		_clip_flush_log();
 	}
 #ifdef HAVE_MMAN_H
-	if((int)file->md!=-1){
+	if(file->md!=(caddr_t)-1){
 		if(pos+len>file->mapsize){
 			if(fstat(file->fd,&st)==-1) goto err;
 			if(file->mapsize < st.st_size){
@@ -1457,7 +1460,7 @@ int _rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,
 		_clip_flush_log();
 	}
 #ifdef HAVE_MMAN_H
-	if((int)file->md!=-1){
+	if(file->md!=(caddr_t)-1){
 		if(pos+len>file->mapsize){
 			if(munmap(file->md,file->mapsize)==-1) goto err;
 #ifdef _WIN32
@@ -1507,7 +1510,7 @@ err:
 
 int _rdd_trunc(ClipMachine* cm,RDD_FILE* file,unsigned int len,const char* __PROC__){
 #ifdef HAVE_MMAN_H
-	if((int)file->md!=-1){
+	if(file->md!=(caddr_t)-1){
 		if(munmap(file->md,file->mapsize)==-1) goto err;
 		if(ftruncate(file->fd,len)==-1) goto err;
 		file->mapsize = len;
@@ -1673,7 +1676,7 @@ int rdd_pack(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 
 #ifdef HAVE_MMAN_H
-	if((int)rd->file.md != -1){
+	if(rd->file.md != (caddr_t)-1){
 		if(munmap(rd->file.md,rd->file.mapsize)==-1) goto err;
 	}
 #endif
@@ -2083,7 +2086,7 @@ int rdd_createindex(ClipMachine* cm,RDD_DATA* rd,const char* driver,
 			rd->ords_opened -= rd->indices[i]->norders;
 			if(rd->indices[i] != ri){
 #ifdef HAVE_MMAN_H
-				if((int)(rd->indices[i]->file.md)!=-1){
+				if((rd->indices[i]->file.md)!=(caddr_t)-1){
 					if(munmap(rd->indices[i]->file.md,rd->indices[i]->file.mapsize)==-1)
 						goto err_close;
 				}
@@ -2218,12 +2221,12 @@ int rdd_closearea(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
 #ifdef HAVE_MMAN_H
-	if((int)(rd->file.md)!=-1){
+	if((rd->file.md)!=(caddr_t)-1){
 		if(msync(rd->file.md,rd->file.mapsize,MS_SYNC|MS_INVALIDATE)) goto err;
 		if(munmap(rd->file.md,rd->file.mapsize)==-1) goto err;
 		rd->file.md = (caddr_t)-1;
 	}
-	if((rd->memo) && ((int)(rd->memo->file.md)!=-1)){
+	if((rd->memo) && ((rd->memo->file.md)!=(caddr_t)-1)){
 		if(msync(rd->memo->file.md,rd->memo->file.mapsize,MS_SYNC|MS_INVALIDATE)) goto err;
 		if(munmap(rd->memo->file.md,rd->memo->file.mapsize)==-1) goto err;
 		if(rd->memo->updated){
@@ -2235,7 +2238,7 @@ int rdd_closearea(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		}
 	}
 	for(i=0;i<rd->idxs_opened;i++){
-		if((int)(rd->indices[i]->file.md)!=-1){
+		if((rd->indices[i]->file.md)!=(caddr_t)-1){
 			if(msync(rd->indices[i]->file.md,rd->indices[i]->file.mapsize,
 				MS_SYNC|MS_INVALIDATE)) goto err;
 			if(munmap(rd->indices[i]->file.md,rd->indices[i]->file.mapsize)==-1)
@@ -3100,7 +3103,7 @@ int rdd_clearindex(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 			structural = i;
 		} else {
 #ifdef HAVE_MMAN_H
-			if((int)(rd->indices[i]->file.md)!=-1){
+			if((rd->indices[i]->file.md)!=(caddr_t)-1){
 				if(munmap(rd->indices[i]->file.md,rd->indices[i]->file.mapsize)==-1)
 					return rdd_err(cm,EG_CLOSE,errno,__FILE__,__LINE__,__PROC__,rd->indices[i]->path);
 			}
@@ -3233,7 +3236,7 @@ int rdd_commit(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 		rd->changed = 0;
 	}
 #ifdef HAVE_MMAN_H
-	if(rd->shared && (int)rd->file.md!=-1){
+	if(rd->shared && (rd->file.md!=(caddr_t)-1)){
 		if(msync(rd->file.md,rd->file.mapsize,MS_ASYNC)==-1)
 			return rdd_err(cm,EG_WRITE,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
 		if(rd->memo){
@@ -4469,14 +4472,13 @@ int rdd_rawwrite(ClipMachine* cm,RDD_DATA* rd,void* buf,int append,const char* _
 		buf,__PROC__))) return er;
 	if(append){
 		unsigned char lr[4];
-		int flen;
+		long flen;
 
 		_rdd_put_uint(lr,rd->recno);
 		if((er = rdd_write(cm,&rd->file,4,4,lr,__PROC__))) return er;
 		rd->recno++;
-
-		flen = rd->hdrsize+rd->recsize*rd->recno+1;
-		if((int)rd->file.md!=-1){
+		flen =rd->hdrsize+rd->recsize*rd->recno+1;
+		if(rd->file.md!=(caddr_t)(-1)){
 			if(flen>rd->file.mapsize){
 				int delta = rd->recno/5;
 				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno+delta)-1,

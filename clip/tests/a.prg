@@ -1,4 +1,8 @@
-#define BUG162
+? "hello"
+?
+return
+
+#define BUG165
 
 #ifdef BUG165
 
@@ -38,13 +42,14 @@ ttt:=ttt+1      //ошибка
 ? ttt
 ?
 
-PROC ErrorSys()
+/*PROC ErrorSys()
 RETURN ErrorBlock({|e| DefError(e)})
 **********
 FUNC DefError(e)
 ? 'error ', e
 ?
 RETURN 5
+*/
 
 
 #endif

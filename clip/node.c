@@ -1,6 +1,9 @@
 
  /*
  * $Log$
+ * Revision 1.3  2007/02/12 09:13:17  itk
+ * uri: many fixes for amd64
+ *
  * Revision 1.2  2007/01/12 08:10:10  itk
  * uri: dangerous fix. crash reference in get-object
  *
@@ -636,8 +639,7 @@
  * preprocessor bug fix, warnings removed
  *
  * Revision 1.5  1999/12/04 20:08:29  uri
- * убрал warning нового компилятора
- *
+ * О©╫О©╫О©╫warning О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ *
  * Revision 1.4  1999/10/29 19:28:32  paul
  * bug in macroassign (stack was corrupted)
  *
@@ -1082,7 +1084,7 @@ pass_ConstNode(void *self, Pass pass, int level, void *par)
 			case CONST_STRING:
 				fprintfOffs(out, level, "{ { { CHARACTER_t,%d,0,F_MSTAT,0 }, {", haveMacro(np->val));
 				printString(out, np->val);
-				fprintf(out, ", %d } } }", strlen(np->val));
+				fprintf(out, ", %ld } } }", (long)strlen(np->val));
 				break;
 			case CONST_NIL:
 				fprintfOffs(out, level, "{ { UNDEF_t,0,0,0,0 } }");

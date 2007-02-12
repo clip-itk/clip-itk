@@ -5,6 +5,9 @@
 */
 /*
 	$Log$
+	Revision 1.5  2007/02/12 09:13:17  itk
+	uri: many fixes for amd64
+	
 	Revision 1.4  2007/01/19 08:05:25  itk
 	uri: small fix for gcc4.1
 	
@@ -184,7 +187,7 @@
 
 	Revision 1.322  2003/02/28 09:26:11  clip
 	rust: ordsetfocus() without parameters,
-	reported by Анатолий Колотовкин <abakkav@rol.ru>
+	reported by О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ <abakkav@rol.ru>
 
 	Revision 1.321  2003/02/23 17:18:34  clip
 	rust: small fixes
@@ -1569,7 +1572,7 @@ _clip_pop_area(ClipMachine * cm)
 		return rdd_err(cm, EG_NOALIAS, 0, __FILE__, __LINE__, "_clip_pop_area", er_noalias);
 
 	cm->areaStack->count--;
-	cm->curArea = (int) cm->areaStack->items[no - 1];
+	cm->curArea = (long) cm->areaStack->items[no - 1];
 	return 0;
 }
 

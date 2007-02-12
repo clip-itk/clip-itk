@@ -4,6 +4,9 @@
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
 	$Log$
+	Revision 1.2  2007/02/12 09:13:17  itk
+	uri: many fixes for amd64
+	
 	Revision 1.1  2006/06/22 19:35:31  itk
 	uri: init sf.net repository
 	
@@ -1604,7 +1607,7 @@ int clip_SX_MEMOPACK(ClipMachine* cm){
 	if((er = rdd_checkifnew(cm,wa->rd,__PROC__))) goto err;
 
 #ifdef HAVE_MMAN_H
-	if((int)wa->rd->memo->file.md != -1){
+	if(wa->rd->memo->file.md != (caddr_t)-1){
 		if(munmap(wa->rd->memo->file.md,wa->rd->memo->file.mapsize)==-1)
 			goto err_write;
 	}
@@ -2488,7 +2491,7 @@ int clip_SX_KILLTAG(ClipMachine* cm){
 
 	if(ri->norders==0){
 #ifdef HAVE_MMAN_H
-		if((int)(ri->file.md)!=-1){
+		if((ri->file.md)!=(caddr_t)-1){
 			if(munmap(ri->file.md,ri->file.mapsize)==-1) goto err_close;
 		}
 #endif

@@ -7,7 +7,7 @@ TESTS = test.dbf mathtest type_field obj obj_p ttt_p ttt param set_t err \
 #CLIP = $(CLIPROOT)/bin/clip
 CLIP = clip
 #CLPFLAGS = $(CLIPFLAGS)
-CLPFLAGS = -v2 -g #-l
+CLPFLAGS = -v2 -g -l
 SF = -s
 DBFS = test.dbf ttt.dbf ttt.dbt
 

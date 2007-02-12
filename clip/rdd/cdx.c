@@ -4,6 +4,9 @@
 	Licence : (GPL) http://www.itk.ru/clipper/licence.html
 
 	$Log$
+	Revision 1.7  2007/02/12 09:13:17  itk
+	uri: many fixes for amd64
+	
 	Revision 1.6  2007/01/19 13:39:51  itk
 	uri: fixed bad code. sigsegv under gcc4.1
 	
@@ -92,7 +95,7 @@
 	rust: 'structural index present' attribute in .dbf header
 
 	Revision 1.136  2003/06/13 12:07:04  clip
-	uri: HZ, вроде всЕ было скинуто.
+	uri: HZ, О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
 
 	Revision 1.135  2003/06/11 09:57:08  clip
 	rust: speed up optimization level 2
@@ -619,7 +622,7 @@ static int _cdx_getfreepage(ClipMachine* cm,RDD_INDEX* ri,unsigned int* page,con
 	*page = _rdd_uint((unsigned char *)fuu);
 	if(!*page){
 		int delta;
-		if((int)ri->file.md==-1){
+		if(ri->file.md==(caddr_t)-1){
 			struct stat st;
 			fstat(ri->file.fd,&st);
 			fsize = st.st_size;
@@ -2645,7 +2648,7 @@ static int _cdx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** ro
 	if((er = rdd_write(cm,&ri->file,ro->header,sizeof(CDX_HEADER),(char*)&hdr,__PROC__)))
 		return er;
 
-	if((int)ri->file.md==-1){
+	if(ri->file.md==(caddr_t)-1){
 		struct stat st;
 		fstat(ri->file.fd,&st);
 		_rdd_put_uint(hdr.root,st.st_size);
@@ -4451,7 +4454,7 @@ static int cdx_ii_createtag(ClipMachine* cm,RDD_INDEX* ri,const char* tag,const 
 	if((er = rdd_write(cm,&ri->file,ro->header,sizeof(CDX_HEADER),(char*)&hdr,__PROC__)))
 		goto err;
 
-	if((int)ri->file.md==-1){
+	if(ri->file.md==(caddr_t)-1){
 		struct stat st;
 		fstat(ri->file.fd,&st);
 		_rdd_put_uint(hdr.root,st.st_size);

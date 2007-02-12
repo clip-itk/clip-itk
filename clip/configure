@@ -593,6 +593,7 @@ echo '#define DLLREALSUFF "'$DLLREALSUFF'"' >&3
 echo "#define CLIP_DLLEXPORT $CLIP_DLLEXPORT" >&3
 echo "#define CLIP_DLLIMPORT $CLIP_DLLIMPORT" >&3
 echo '#define NM_PRG '$NM_PRG'' >&3
+USE_AS=no
 if [ "$USE_AS" = no ]
 then
 	echo '#undef USE_AS' >&3
