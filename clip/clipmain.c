@@ -1,6 +1,9 @@
 
 /*
    $Log$
+   Revision 1.3  2007/02/21 12:56:20  itk
+   uri: small fix, HZ.
+
    Revision 1.2  2007/02/12 16:13:08  itk
    uri: some fix about task_select and some fix for amd64
 
@@ -44,7 +47,9 @@ main(int argc, char **argv)
 	int ret;
 	ClipMachine *mp = new_ClipMachine(0);
 
+#ifdef USE_TASK
 	Task_INIT();
+#endif
 	ret = _clip_main(mp, HASH_main, argc, argv, environ);
 	return ret;
 }

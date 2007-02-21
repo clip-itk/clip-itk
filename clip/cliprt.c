@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.5  2007/02/21 12:56:20  itk
+   uri: small fix, HZ.
+
    Revision 1.4  2007/02/12 16:36:24  itk
    uri: some fix tasks
 
@@ -9578,8 +9581,10 @@ _clip_main(ClipMachine * mp, long hash, int argc, char **argv, char **envp)
 {
 	int ret;
 	
+#ifdef USE_TASK
 	if (mp->main_func_level == 0)
 		Task_INIT();
+#endif
 	mp->main_func_level++;
 	ret = do_main(mp, hash, NULL, NULL, argc, argv, envp);
 	mp->main_func_level--;
