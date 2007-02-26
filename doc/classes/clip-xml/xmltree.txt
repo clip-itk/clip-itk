@@ -20,7 +20,7 @@ $LANG_RU$
 $METHODNAME$
 	XMLTree()
 $SUMMARY$
-	Constructor. Create object for manipulate XML DOM tree..
+	Constructor. Create object for manipulate XML DOM tree.
 $LANG_RU$
 	Конструктор. Создать объект для работы с деревом DOM XML.
 $SYNTAX$
