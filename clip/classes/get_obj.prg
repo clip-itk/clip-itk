@@ -1147,7 +1147,8 @@ return s
 **********************************************
 static func __analizePic()
   local s1:="",s2:="",s3:="",s4,i,j,sf:=.f.,df
-  local len,p:="ANX9#LY!$* "
+  //local len,p:="ANX9#LY!$* "
+  local len,p:="ANX9#LY!$*"
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"__analizePic",::name)
 #endif
