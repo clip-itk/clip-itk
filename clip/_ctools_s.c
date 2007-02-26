@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.2  2007/02/26 08:39:28  itk
+   uri: small fix in charrepl()
+
    Revision 1.1  2006/06/22 19:01:29  itk
    uri: initial
 
@@ -1167,6 +1170,11 @@ clip_CHARREPL(ClipMachine * mp)
 	memcpy(ret, str, l);
 	ret[l] = 0;
 	if (l1 == 0)
+	{
+		_clip_retcn_m(mp, (char *)ret, l);
+		return 0;
+	}
+	if (l1==l3 && memcmp(sstr,rstr,l1)==0 )
 	{
 		_clip_retcn_m(mp, (char *)ret, l);
 		return 0;
