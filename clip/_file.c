@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.3  2007/03/07 10:56:57  itk
+   uri: small fix
+
    Revision 1.2  2007/02/12 16:13:08  itk
    uri: some fix about task_select and some fix for amd64
 
@@ -2832,6 +2835,8 @@ clip_FILE(ClipMachine * mp)
 	else if((mp->flags & TRANSLATE_FLAG) && ((filename[0] == '\\') || (filename[0] == '/')))
 	{
 		char *dname = _clip_fetch_item(mp, CLIP_CUR_DRIVE);
+		if (dname == NULL)
+			dname = "C";
 		snprintf(fn,PATH_MAX,"%c:%s",*dname,filename);
 	}
 	else
