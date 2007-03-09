@@ -647,7 +647,7 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 10 "hasher.lex"
-printf( "#define\t%-32s\t0x%lx /*%d,%ld*/\n", yytext, (clip_hash_t) _clip_casehashstr(yytext+5), (int)_clip_casehashstr(yytext+5),(long)_clip_casehashstr(yytext+5)); 
+printf( "#define\t%-32s\t%ld /*%d,%ld*/\n", yytext, (clip_hash_t) _clip_casehashstr(yytext+5), (int)_clip_casehashstr(yytext+5),(long)_clip_casehashstr(yytext+5)); 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP

@@ -1,6 +1,9 @@
 
  /*
  * $Log$
+ * Revision 1.4  2007/03/09 14:42:12  itk
+ * uri: many fix for AMD64
+ *
  * Revision 1.3  2007/02/12 09:13:17  itk
  * uri: many fixes for amd64
  *
@@ -665,7 +668,7 @@
 static void flush_codestr(CodestrNode *np, void *nod);
 static int loopNo, loopPart=0;
 
-static long
+static clip_hash_t
 n_hashstr(char *str)
 {
 	char *s;
@@ -680,7 +683,7 @@ n_hashstr(char *str)
 	}
 
 	if (is_dig)
-		return atol(str);
+		return (clip_hash_t)atol(str);
 	else
 		return hashstr(str);
 }
@@ -1659,16 +1662,16 @@ pass_CreateVarNode(void *self, Pass pass, int level, void *par)
 				else if (np->space == 0)
 					fprintfOffs(out, level, "_clip_add_private( _mp, _clip_pop_hash( _mp ) );\n");
 				else
-					fprintfOffs(out, level, "_clip_memvar_space( _mp, _clip_space( _mp, 0x%x /* %s */) ,  _clip_pop_hash( _mp ), 1 );\n", np->space, np->spacename);
+					fprintfOffs(out, level, "_clip_memvar_space( _mp, _clip_space( _mp, %ld /* %s */) ,  _clip_pop_hash( _mp ), 1 );\n", (long)np->space, np->spacename);
 			}
 			else
 			{
 				if (np->space == 1)
-					fprintfOffs(out, level, "_clip_memvar_public( _mp, 0x%x /* %s */ );\n", hashstr(np->vp->name), np->vp->name);
+					fprintfOffs(out, level, "_clip_memvar_public( _mp, %ld /* %s */ );\n", (long)hashstr(np->vp->name), np->vp->name);
 				else if (np->space == 0)
-					fprintfOffs(out, level, "_clip_memvar_private( _mp, 0x%x /* %s */ );\n", hashstr(np->vp->name), np->vp->name);
+					fprintfOffs(out, level, "_clip_memvar_private( _mp, %ld /* %s */ );\n", (long)hashstr(np->vp->name), np->vp->name);
 				else
-					fprintfOffs(out, level, "_clip_memvar_space( _mp, _clip_space( _mp, 0x%x /* %s */) , 0x%x /* %s */, 1 );\n", np->space, np->spacename, hashstr(np->vp->name), np->vp->name);
+					fprintfOffs(out, level, "_clip_memvar_space( _mp, _clip_space( _mp, %ld /* %s */) , %ld /* %s */, 1 );\n", (long)np->space, np->spacename, (long)hashstr(np->vp->name), np->vp->name);
 			}
 		}
 		break;
@@ -1864,8 +1867,8 @@ pass_ParametersDefNode(void *self, Pass pass, int level, void *par)
 			for (i = count - 1; i >= 0; --i)
 			{
 				VAR(Var, vp, np->cp->unsorted.items[i]);
-				fprintfOffs(out, level, "_clip_memvar_param( _mp, 0x%x /* %s */, %d );\n",
-					    hashstr(vp->name), vp->name, vp->no);
+				fprintfOffs(out, level, "_clip_memvar_param( _mp, %ld /* %s */, %d );\n",
+					(long)hashstr(vp->name), vp->name, vp->no);
 			}
 		}
 		break;
@@ -2211,16 +2214,16 @@ pass_MemvarNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "if ( (_ret=_clip_memvar( _mp, 0x%x /* %s */ ))) goto _trap_%d;\n", hashstr(np->vp->name), np->vp->name, np->node.seqNo);
+			fprintfOffs(out, level, "if ( (_ret=_clip_memvar( _mp, %ld /* %s */ ))) goto _trap_%d;\n", (long)hashstr(np->vp->name), np->vp->name, np->node.seqNo);
 		}
 		break;
 	case CTextLval:
 		{
 			VAR(FILE, out, par);
 			if (np->node.isAssignLval)
-				fprintf(out, "_clip_ref_memvar( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+				fprintf(out, "_clip_ref_memvar( _mp, %ld /* %s */ )", (long)hashstr(np->vp->name), np->vp->name);
 			else
-				fprintf(out, "_clip_ref_memvar_noadd( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+				fprintf(out, "_clip_ref_memvar_noadd( _mp, %ld /* %s */ )", (long)hashstr(np->vp->name), np->vp->name);
 		}
 		break;
 	case OText:
@@ -2298,15 +2301,15 @@ pass_FMemvarNode(void *self, Pass pass, int level, void *par)
 		{
 			VAR(FILE, out, par);
 			if (np->p1)
-				fprintfOffs(out, level, "if ( (_ret=_clip_memvarf( _mp, 0x%x /* %s */ ))) goto _trap_%d;\n", hashstr(np->vp->name), np->vp->name, np->node.seqNo);
+				fprintfOffs(out, level, "if ( (_ret=_clip_memvarf( _mp, %ld /* %s */ ))) goto _trap_%d;\n", (long)hashstr(np->vp->name), np->vp->name, np->node.seqNo);
 			else
-				fprintfOffs(out, level, "if ( (_ret=_clip_fmemvar( _mp, 0x%x /* %s */ ))) goto _trap_%d;\n", hashstr(np->vp->name), np->vp->name, np->node.seqNo);
+				fprintfOffs(out, level, "if ( (_ret=_clip_fmemvar( _mp, %ld /* %s */ ))) goto _trap_%d;\n", (long)hashstr(np->vp->name), np->vp->name, np->node.seqNo);
 		}
 		break;
 	case CTextLval:
 		{
 			VAR(FILE, out, par);
-			fprintf(out, "_clip_ref_memvar( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+			fprintf(out, "_clip_ref_memvar( _mp, %ld /* %s */ )", (long)hashstr(np->vp->name), np->vp->name);
 		}
 		break;
 	case CTextRef:
@@ -2315,12 +2318,12 @@ pass_FMemvarNode(void *self, Pass pass, int level, void *par)
 			if (np->isArg)
 			{
 				fprintfOffs(out, level, "if ((_ret=_clip_ref( _mp, ");
-				fprintf(out, "_clip_ref_memvar_noadd( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+				fprintf(out, "_clip_ref_memvar_noadd( _mp, %ld /* %s */ )", (long)hashstr(np->vp->name), np->vp->name);
 				fprintf(out, ", 0 ))) goto _trap_%d;\n", np->node.seqNo);
 			}
 			else
 			{
-				fprintfOffs(out, level, "if ( (_ret=_clip_ref_fmemvar( _mp, 0x%x /* %s */ ))) goto _trap_%d;\n", hashstr(np->vp->name), np->vp->name, np->node.seqNo);
+				fprintfOffs(out, level, "if ( (_ret=_clip_ref_fmemvar( _mp, %ld /* %s */ ))) goto _trap_%d;\n", (long)hashstr(np->vp->name), np->vp->name, np->node.seqNo);
 			}
 		}
 		break;
@@ -2488,23 +2491,23 @@ pass_FieldNode(void *self, Pass pass, int level, void *par)
 		{
 			VAR(FILE, out, par);
 			if (np->name && !np->area && !np->areaExpr)
-				fprintfOffs(out, level, "if ( (_ret=_clip_field( _mp, 0x%x /* %s */, -1 ))) goto _trap_%d;\n", hashstr(np->name), np->name, np->node.seqNo);
+				fprintfOffs(out, level, "if ( (_ret=_clip_field( _mp, %ld /* %s */, -1 ))) goto _trap_%d;\n", (long)hashstr(np->name), np->name, np->node.seqNo);
 			else if (np->name && np->area)
-				fprintfOffs(out, level, "if ( (_ret=_clip_field( _mp, 0x%x /* %s */, 0x%x /* %s */ ))) goto _trap_%d;\n"
-					    ,hashstr(np->name), np->name
-					    ,n_hashstr(np->area), np->area, np->node.seqNo);
+				fprintfOffs(out, level, "if ( (_ret=_clip_field( _mp, %ld /* %s */, %ld /* %s */ ))) goto _trap_%d;\n"
+					    ,(long)hashstr(np->name), np->name
+					    ,(long)n_hashstr(np->area), np->area, np->node.seqNo);
 			else if (np->name && np->areaExpr)
 			{
 				if (np->areaExpr->isMacro)
 					np->areaExpr->pass(np->areaExpr, CTextLval, level, par);
 				else
 					np->areaExpr->pass(np->areaExpr, pass, level, par);
-				fprintfOffs(out, level, "if ( (_ret=_clip_field( _mp, 0x%x /* %s */, _clip_pop_hash(_mp) ))) goto _trap_%d;\n"
-					    ,hashstr(np->name), np->name, np->node.seqNo);
+				fprintfOffs(out, level, "if ( (_ret=_clip_field( _mp, %ld /* %s */, _clip_pop_hash(_mp) ))) goto _trap_%d;\n"
+					    ,(long)hashstr(np->name), np->name, np->node.seqNo);
 			}
 			else if (np->area && np->nameExpr)
 			{
-				fprintfOffs(out, level, "if ( (_ret=_clip_push_area( _mp, 0x%x /* %s */ ))) goto _trap_%d;\n", n_hashstr(np->area), np->area, np->node.seqNo);
+				fprintfOffs(out, level, "if ( (_ret=_clip_push_area( _mp, %ld /* %s */ ))) goto _trap_%d;\n", (long)n_hashstr(np->area), np->area, np->node.seqNo);
 				np->nameExpr->pass(np->nameExpr, pass, level + 1, par);
 				fprintfOffs(out, level, "if ( (_ret=_clip_pop_area( _mp ) )) goto _trap_%d;\n", np->node.seqNo);
 			}
@@ -2664,13 +2667,13 @@ pass_PublicNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "if ( (_ret=_clip_public( _mp, 0x%lx /* %s */ ) )) goto _trap_%d;\n", hashstr(np->vp->name), np->vp->name, np->node.seqNo);
+			fprintfOffs(out, level, "if ( (_ret=_clip_public( _mp, %ld /* %s */ ) )) goto _trap_%d;\n", (long)hashstr(np->vp->name), np->vp->name, np->node.seqNo);
 		}
 		break;
 	case CTextLval:
 		{
 			VAR(FILE, out, par);
-			fprintf(out, "_clip_ref_public( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+			fprintf(out, "_clip_ref_public( _mp, %ld /* %s */ )", (long)hashstr(np->vp->name), np->vp->name);
 		}
 		break;
 	case OText:
@@ -2743,13 +2746,13 @@ pass_PrivateNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "if ( (_ret=_clip_memvar( _mp, 0x%lx /* %s */ ) )) goto _trap_%d;\n", hashstr(np->vp->name), np->vp->name, np->node.seqNo);
+			fprintfOffs(out, level, "if ( (_ret=_clip_memvar( _mp, %ld /* %s */ ) )) goto _trap_%d;\n", (long)hashstr(np->vp->name), np->vp->name, np->node.seqNo);
 		}
 		break;
 	case CTextLval:
 		{
 			VAR(FILE, out, par);
-			fprintf(out, "_clip_ref_memvar( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+			fprintf(out, "_clip_ref_memvar( _mp, %ld /* %s */ )", (long)hashstr(np->vp->name), np->vp->name);
 		}
 		break;
 	case OText:
@@ -2822,13 +2825,13 @@ pass_ParameterNode(void *self, Pass pass, int level, void *par)
 	case CText:
 		{
 			VAR(FILE, out, par);
-			fprintfOffs(out, level, "if ( (_ret=_clip_memvar( _mp, 0x%x /* %s */ ) )) goto _trap_%d;\n", hashstr(np->vp->name), np->vp->name, np->node.seqNo);
+			fprintfOffs(out, level, "if ( (_ret=_clip_memvar( _mp, %ld /* %s */ ) )) goto _trap_%d;\n", (long)hashstr(np->vp->name), np->vp->name, np->node.seqNo);
 		}
 		break;
 	case CTextLval:
 		{
 			VAR(FILE, out, par);
-			fprintf(out, "_clip_ref_memvar( _mp, 0x%lx /* %s */ )", hashstr(np->vp->name), np->vp->name);
+			fprintf(out, "_clip_ref_memvar( _mp, %ld /* %s */ )", (long)hashstr(np->vp->name), np->vp->name);
 		}
 		break;
 	case OText:
@@ -3242,8 +3245,8 @@ pass_CallNode(void *self, Pass pass, int level, void *par)
 				break;
 			case 1:
 			case 0:
-				fprintfOffs(out, level, "if ( (_ret=_clip_%s_hash(_mp, 0x%lx /* %s */, %d, %d, %s))) goto _trap_%d;\n",
-					    np->node.isTop ? "proc" : "func", hashstr(np->name), np->name, np->argc, np->rest,
+				fprintfOffs(out, level, "if ( (_ret=_clip_%s_hash(_mp, %ld /* %s */, %d, %d, %s))) goto _trap_%d;\n",
+					    np->node.isTop ? "proc" : "func", (long)hashstr(np->name), np->name, np->argc, np->rest,
 					    ref_name(np), np->node.seqNo);
 				break;
 			}
@@ -4069,14 +4072,14 @@ pass_AssignFmemvarNode(void *self, Pass pass, int level, void *par)
 			if (np->node.isTop)
 			{
 				fprintfOffs(out, level, "if ((_ret=_clip_fm_assign( _mp, "
-					    "0x%x /* %s */  ))) goto _trap_%d;\n"
-					    ,hashstr(vp->vp->name), vp->vp->name, np->node.seqNo);
+					    "%ld /* %s */  ))) goto _trap_%d;\n"
+					    ,(long)hashstr(vp->vp->name), vp->vp->name, np->node.seqNo);
 			}
 			else
 			{
 				fprintfOffs(out, level, "if ((_ret=_clip_fm_iassign( _mp, "
-					    "0x%x /* %s */  ))) goto _trap_%d;\n"
-					    ,hashstr(vp->vp->name), vp->vp->name, np->node.seqNo);
+					    "%ld /* %s */  ))) goto _trap_%d;\n"
+					    ,(long)hashstr(vp->vp->name), vp->vp->name, np->node.seqNo);
 			}
 		}
 		return 0;
@@ -4233,7 +4236,7 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 					fprintf(out, "_clip_pop_hash(_mp) ))) goto _trap_%d;\n", np->node.seqNo);
 			}
 			else
-				fprintf(out, "( _mp, 0x%lx /* %s */, ", hashstr(np->name), np->name);
+				fprintf(out, "( _mp, %ld /* %s */, ", (long)hashstr(np->name), np->name);
 
 			if (np->areaExpr)
 			{
@@ -4242,8 +4245,8 @@ pass_AssignFieldNode(void *self, Pass pass, int level, void *par)
 			else
 			{
 				if (np->area)
-					fprintf(out, "0x%lx /* %s */))) goto _trap_%d;\n",
-						n_hashstr(np->area), np->area, np->node.seqNo);
+					fprintf(out, "%ld /* %s */))) goto _trap_%d;\n",
+						(long)n_hashstr(np->area), np->area, np->node.seqNo);
 				else if (np->nameExpr && np->nameExpr->isMacro )
 					;
 				else
@@ -4614,8 +4617,8 @@ pass_MethodNode(void *self, Pass pass, int level, void *par)
 			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			np->obj->pass(np->obj, pass, level, par);
 			pass_Node(self, pass, level - 1, par);
-			fprintfOffs(out, level, "if ( (_ret=_clip_call(_mp, %d, 0x%lx /* %s */))) goto _trap_%d;\n",
-				    np->argc, hashstr(np->name), np->name, np->node.seqNo);
+			fprintfOffs(out, level, "if ( (_ret=_clip_call(_mp, %d, %ld /* %s */))) goto _trap_%d;\n",
+				    np->argc, (long)hashstr(np->name), np->name, np->node.seqNo);
 			return 0;
 		}
 		break;
@@ -4702,8 +4705,8 @@ pass_GetNode(void *self, Pass pass, int level, void *par)
 			VAR(FILE, out, par);
 			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			np->obj->pass(np->obj, pass, level, par);
-			fprintfOffs(out, level, "if ( (_ret=_clip_get(_mp, 0x%lx /* %s */))) goto _trap_%d;\n",
-				    hashstr(np->name), np->name, np->node.seqNo);
+			fprintfOffs(out, level, "if ( (_ret=_clip_get(_mp, %ld /* %s */))) goto _trap_%d;\n",
+				    (long)hashstr(np->name), np->name, np->node.seqNo);
 			return 0;
 		}
 		break;
@@ -4780,8 +4783,8 @@ pass_SetNode(void *self, Pass pass, int level, void *par)
 			fprintfOffs(out, level, "_clip_push_nil( _mp );\n");
 			pass_Node(self, pass, level - 1, par);
 			np->obj->pass(np->obj, pass, level, par);
-			fprintfOffs(out, level, "if ( (_ret=_clip_set(_mp, 0x%lx /* %s */))) goto _trap_%d;\n",
-				    hashstr(np->name), np->name, np->node.seqNo);
+			fprintfOffs(out, level, "if ( (_ret=_clip_set(_mp, %ld /* %s */))) goto _trap_%d;\n",
+				    (long)hashstr(np->name), np->name, np->node.seqNo);
 			return 0;
 		}
 		break;
@@ -7606,7 +7609,7 @@ typedef struct
 }
 CaseLabel;
 
-static long
+static clip_hash_t
 hash_const(Node *npp)
 {
 	ConstNode *np;
@@ -7634,9 +7637,8 @@ hash_const(Node *npp)
 	}
 
 	if (npp->isMinus)
-		return -r;
-	else
-		return r;
+		r = 0-r;
+	return (clip_hash_t) r;
 }
 
 static char*
@@ -7704,7 +7706,7 @@ pass_SwitchNode(void *self, Pass pass, int level, void *par)
 			for(j = 0; j < ep->labels->count; j++)
 			{
 				VAR(Node,cp,ep->labels->items[j]);
-				fprintfOffs(stdout, level+2, "hash: 0x%lx\n", hash_const(cp));
+				fprintfOffs(stdout, level+2, "hash: %ld\n", (long)hash_const(cp));
 				cp->pass(cp, pass, level+2, par);
 			}
 			fprintfOffs(stdout, level+1, "operlist:\n");
@@ -7732,7 +7734,7 @@ pass_SwitchNode(void *self, Pass pass, int level, void *par)
 				for(j = 0; j < ep->labels->count; j++)
 				{
 					VAR(Node,cp,ep->labels->items[j]);
-					fprintfOffs(out, level, "case 0x%lx:\n", hash_const(cp));
+					fprintfOffs(out, level, "case %ld:\n", (long)hash_const(cp));
 				}
 				ep->operlist->pass(ep->operlist, pass, level+1, par);
 				fprintfOffs(out, level+1, "break;\n");

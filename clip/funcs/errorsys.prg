@@ -28,6 +28,7 @@ local i, cMessage, aOptions, nChoice
 	endif
 
 	outlog("object error:",e)
+	outlog("object mapkeys:",mapkeys(e))
 
 	cMessage := ErrorMessage(e)
 

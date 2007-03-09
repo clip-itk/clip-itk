@@ -160,12 +160,8 @@ function varToString( var,len,dec, lAtype )
 		if lAtype
 			ret := "obj:=map()"
 			arr := mapkeys(var)
-			asort(arr)
-	//outlog(__FILE__,__LINE__,arr)
-
 			for i:= 1 to len(arr)
 				ret += ", obj:"+alltrim(hashname(arr[i]))+":="+varToString(var[arr[i]], len, dec, lAtype)
-			//	outlog(__FILE__,__LINE__,arr[i],hashname(arr[i]))
 			next
 		else
 			ret := "{object}"
@@ -179,8 +175,8 @@ return ret
 
 ****************************************************************************
 function funcname(pn)
-	local str,i := 2 // i>1 О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ FUNCNAME()
-		   // О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	local str,i := 2 // i>1 начинаем не с функции, которая вызывает FUNCNAME()
+		   // а с предыдущей
 	pn := upper(pn)
 	do while .t.
 		str := procname(i)

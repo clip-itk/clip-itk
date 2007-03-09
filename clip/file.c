@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.5  2007/03/09 14:42:12  itk
+   uri: many fix for AMD64
+
    Revision 1.4  2007/02/12 09:13:17  itk
    uri: many fixes for amd64
 
@@ -983,9 +986,9 @@ write_Function(FILE * out, File * file, Function * fp)
 		{
 			VAR(Var, vp, fp->locals->coll.items[j]);
 			if (vp->isRef)
-				fprintf(out, "\t\t{ 0x%lx, _reflocals+%d },\n", hashstr(vp->name), -vp->no);
+				fprintf(out, "\t\t{ %ld, _reflocals+%d },\n", (long)hashstr(vp->name), -vp->no);
 			else
-				fprintf(out, "\t\t{ 0x%lx, &%s },\n", hashstr(vp->name), vp->name);
+				fprintf(out, "\t\t{ %ld, &%s },\n", (long)hashstr(vp->name), vp->name);
 		}
 		fprintf(out, "\t};\n");
 	}
@@ -1092,12 +1095,12 @@ write_Function(FILE * out, File * file, Function * fp)
 		for (j = fp->privates->unsorted.count - 1; j >= 0; --j)
 		{
 			VAR(Var, vp, fp->privates->unsorted.items[j]);
-			fprintf(out, ", 0x%lx", hashstr(vp->name));
+			fprintf(out, ", %ld", (long)hashstr(vp->name));
 		}
 		for (j = fp->parameters->unsorted.count - 1; j >= 0; --j)
 		{
 			VAR(Var, vp, fp->parameters->unsorted.items[j]);
-			fprintf(out, ", 0x%lx", hashstr(vp->name));
+			fprintf(out, ", %ld", (long)hashstr(vp->name));
 		}
 		fprintf(out, ");\n");
 	}
@@ -1156,7 +1159,7 @@ write_staticDefs(FILE * out, VarColl * statics)
 	for (j = 0; j < statics->coll.count; j++)
 	{
 		VAR(Var, vp, statics->coll.items[j]);
-		fprintf(out, "\t{ 0x%lx, &s_%s_%s },\n", hashstr(vp->name), vp->func->name, vp->name);
+		fprintf(out, "\t{ %ld, &s_%s_%s },\n", (long)hashstr(vp->name), vp->func->name, vp->name);
 	}
 }
 
@@ -1172,6 +1175,7 @@ write_Main(File * file, FILE * out, const char *start)
 	fprintf(out, "\nint\nmain(int argc, char **argv)\n{\n");
 	fprintf(out, "\tClipMachine *mp;\n\n");
 	fprintf(out, "\t_clip_init_dll();\n");
+	fprintf(out, "\tTask_INIT();\n");
 	fprintf(out, "\tmp = new_ClipMachine(0);\n");
 	fprintf(out, "\treturn _clip_main_func( mp, clip_%s, argc, argv, environ);\n", start);
 	fprintf(out, "}\n");
@@ -1256,7 +1260,7 @@ write_File(File * file)
 	{
 		VAR(Function, fp, file->functions.items[i]);
 		if (fp->isPublic == 1)
-			fprintf(out, "\t{ 0x%lx, clip_%s },\n", hashstr(fp->name), fp->name);
+			fprintf(out, "\t{ %ld, clip_%s },\n", (long)hashstr(fp->name), fp->name);
 	}
 	fprintf(out, "\t{ 0, 0 }\n};\n\n");
 
@@ -1304,7 +1308,7 @@ write_File(File * file)
 			int l;
 			char *s = (char *) file->names.items[i];
 
-			snprintf(buf, sizeof(buf), "\t{ 0x%08lx, %d }, /* %s */\n", hashstr(s), sum, s);
+			snprintf(buf, sizeof(buf), "\t{ %ld, %d }, /* %s */\n", (long)hashstr(s), sum, s);
 			insert_Coll(&coll, strdup(buf));
 			l = strlen(s) + 1;
 			sum += l;
@@ -2691,7 +2695,7 @@ write_Cfunc(const char *name, int argc, char **argv, Coll * ex, Coll * nm)
 
 			if (!memcmp(s + 5, "INIT_", 5) || !memcmp(s + 5, "EXIT_", 5))
 				continue;
-			fprintf(out, "\tcase 0x%lx:\n", hashstr(s + 5));
+			fprintf(out, "\tcase %ld:\n", (long)hashstr(s + 5));
 			fprintf(out, "\t\treturn %s;\n", s);
 		}
 		fprintf(out, "\tdefault:\n\t\treturn 0;\n");
@@ -3286,11 +3290,12 @@ main(int argc, char **argv)\n\
 {\n\
 	ClipMachine *mp;\n\
 	_clip_init_dll();\n\
+	Task_INIT();\n\
 \n\
 	mp = new_ClipMachine(0);\n\
-	return _clip_main(mp, 0x%lx, argc, argv, environ);\n\
+	return _clip_main(mp, %ld, argc, argv, environ);\n\
 }\n\
-", hashstr("MAIN"));
+", (long)hashstr("MAIN"));
 
 		}
 		else

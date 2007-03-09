@@ -1,7 +1,7 @@
 CLIPROOT = ..
 CLIP	= ../clip
-CLIPFLAGS = -R -a -n -I .. -I ../include
-#CLIPFLAGS = -a -l -O -n -I .. -I ../include
+#CLIPFLAGS = -R -a -n -I .. -I ../include
+CLIPFLAGS = -a -l -O -n -I .. -I ../include
 #CLIPFLAGS2 = -a -O -n -I .. -I ../include
 CLIPLIBS  =
 OBJS  = _prompt.o a2edit.o achoice.o bl_func.o blank.o box.o browse.o \

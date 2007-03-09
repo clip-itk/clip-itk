@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.4  2007/03/09 14:42:12  itk
+   uri: many fix for AMD64
+
    Revision 1.3  2007/01/29 12:58:59  itk
    uri: some fix for rational numbers.
 
@@ -635,7 +638,7 @@
    paul
 
    Revision 1.107  2001/06/08 13:23:45  clip
-   убрала комментарий на вызов clip_region в _SETPOS
+   О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫clip_region О©╫_SETPOS
    alena:
 
    Revision 1.106  2001/06/07 13:44:42  clip
@@ -821,7 +824,7 @@
    paul
 
    Revision 1.56  2000/11/04 11:08:29  clip
-   bug in set(_SET_CANCEL), заткнут но не выправил
+   bug in set(_SET_CANCEL), О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫
    from uri:
 
    Revision 1.55  2000/11/04 11:00:11  clip
@@ -841,9 +844,8 @@
    from uri:
 
    Revision 1.51  2000/10/20 08:03:23  clip
-   Вкрутил rational везде где упоминается NUMERIC_t
-   может чего и осталось неотловленное, но это может быть только в тех
-   местах где нет использования NUMERIC_t !!!!!
+   О©╫О©╫О©╫О©╫rational О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t
+   О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫   О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫NUMERIC_t !!!!!
    from uri:
 
    Revision 1.50  2000/10/11 11:31:53  clip
@@ -988,7 +990,7 @@
    set(_SET_LOGFILE)
 
    Revision 1.13  2000/03/24 19:14:12  uri
-   доделал OUTLOG
+   О©╫О©╫О©╫О©╫OUTLOG
 
    Revision 1.12  2000/03/24 19:02:52  paul
    logg
@@ -1003,13 +1005,13 @@
    *** empty log message ***
 
    Revision 1.8  1999/12/10 21:16:37  uri
-   в typename добавил MEMO_t
+   О©╫typename О©╫О©╫О©╫О©╫MEMO_t
 
    Revision 1.7  1999/12/10 21:14:01  paul
    gluk in _clip_date_to_str()
 
    Revision 1.6  1999/12/09 21:19:22  uri
-   убрал warnings и начал misc functions of tools
+   О©╫О©╫О©╫warnings О©╫О©╫О©╫О©╫misc functions of tools
 
    Revision 1.5  1999/10/29 20:31:44  uri
    fill in dispbox
@@ -6915,8 +6917,8 @@ static void destroy_WinBuf(void *item);
 static WinBuf *find_WinBuf(int no);
 
 /*
-   buf = winbuf_create(height,width) - создает буфер размером height x width
-	   (могут быть больше физических размеров экрана).
+   buf = winbuf_create(height,width) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ height x width
+	   (О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫).
 */
 int
 clip_WINBUF_CREATE(ClipMachine * mp)
@@ -7032,8 +7034,7 @@ find_WinBuf(int no)
 }
 
 /*
-  winbuf_out_at(buf,top,left,str,color) - выводит строку str в относительных
-  координатах top,left цветом color. Вывод обрезается по границам буфера.
+  winbuf_out_at(buf,top,left,str,color) - О©╫О©╫О©╫О©╫О©╫О©╫О©╫ str О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫  О©╫О©╫О©╫О©╫О©╫О©╫top,left О©╫О©╫О©╫ color. О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫.
 */
 int
 clip_WINBUF_OUT_AT(ClipMachine * mp)
@@ -7104,7 +7105,7 @@ clip_WINBUF_OUT_AT(ClipMachine * mp)
 
 /*
 winbuf_attr_at(buf,top,left,bottom,right,cAttr)
-Заполняет прямоугольник top,left,bottom,right атрибутами cAttr в буфере buf.
+О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫top,left,bottom,right О©╫О©╫О©╫О©╫О©╫ cAttr О©╫О©╫О©╫О©╫ buf.
 */
 
 int
@@ -7160,8 +7161,8 @@ clip_WINBUF_ATTR_AT(ClipMachine * mp)
 
 /*
   winbuf_copy(scr_buf,top1,left1,height1,width1,dest_buf,top2,left2) -
-  копируется часть буфера scr_buf, ограниченная координатами
-  top1,left1,height1,width1 в dest_buf по координатам top2,left2
+  О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ scr_buf, О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫
+  top1,left1,height1,width1 О©╫dest_buf О©╫ О©╫О©╫О©╫О©╫О©╫О©╫top2,left2
 */
 int
 clip_WINBUF_COPY(ClipMachine * mp)
@@ -7223,9 +7224,8 @@ clip_WINBUF_COPY(ClipMachine * mp)
 
 /*
   winbuf_display(buf,top,left[,r_top,r_left[,r_height,r_width]]) -
-	отображается буфер buf в абсолютных координатах top,left. Если указаны
-	r_top,r_left,r_height,r_width - отображается не buf, а только область,
-	ограниченная этими координатами. При этом r_top,r_left помещается в top,left
+	О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫buf О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫top,left. О©╫О©╫ О©╫О©╫О©╫О©╫	r_top,r_left,r_height,r_width - О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ buf, О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
+	О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫. О©╫О©╫О©╫О©╫ r_top,r_left О©╫О©╫О©╫О©╫О©╫ О©╫top,left
 */
 
 int

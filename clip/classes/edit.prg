@@ -172,15 +172,18 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 
 	::__mapKeys     := HK_get("edit")
 
-	set("edit_margin_right","50") // О©╫О©╫О©╫О©╫О©╫О©╫
-	set("edit_page_len","20")     // О©╫О©╫О©╫О©╫О©╫О©╫О©╫
-	set("edit_txtdir", curdir())   // О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫	set("edit_colors_edit",'11/1,0/2,0/3,0/7,1/3, 15/R') // О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫
-	set("edit_colors_window",'14/1') // О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫
-	set("edit_colors_view",'0/7,7/1,0/3,,1/3')  // О©╫О©╫ О©╫О©╫О©╫О©╫О©╫	set("edit_colors_menu","0/7,0/2,r/7,g/rb,15/7,0/7") // О©╫О©╫ О©╫О©╫
-	set("edit_colors_list","0/3,0/2,15/7,15/3,14/3,14/2,0/2")   // О©╫О©╫ list О©╫О©╫О©╫О©╫
-	//set("edit_colors_dialog","0/7,0/2,w+/b,g/rb,15/7,0/7")   // О©╫О©╫ О©╫О©╫О©╫О©╫
-	set("edit_colors_dialog","0/7,15/1,0/7,g/rb,15/3,0/7,0/7,15/7")   // О©╫О©╫ О©╫О©╫О©╫О©╫
-	set("edit_tabpack",'yes')   // О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫	set(_SET_SCOREBOARD,.t.)
+	set("edit_margin_right","50") // длина строки
+	set("edit_page_len","20")     // длина страницы
+	set("edit_txtdir", curdir())   // где храняться документы
+	set("edit_colors_edit",'11/1,0/2,0/3,0/7,1/3, 15/R') // цвет редактирования
+	set("edit_colors_window",'14/1') // цвет окна редактирования
+	set("edit_colors_view",'0/7,7/1,0/3,,1/3')  // цвет просмотра
+	set("edit_colors_menu","0/7,0/2,r/7,g/rb,15/7,0/7") // цвет меню
+	set("edit_colors_list","0/3,0/2,15/7,15/3,14/3,14/2,0/2")   // цвет list объектов
+	//set("edit_colors_dialog","0/7,0/2,w+/b,g/rb,15/7,0/7")   // цвет диалогов
+	set("edit_colors_dialog","0/7,15/1,0/7,g/rb,15/3,0/7,0/7,15/7")   // цвет диалогов
+	set("edit_tabpack",'yes')   // сжимать пробелы в табуляции
+	set(_SET_SCOREBOARD,.t.)
 	setcursor(1)
 	//setcancel(.f.)
 	::oMenu := ::menu()
@@ -1988,9 +1991,7 @@ local nfile, str
 	dirmake(::__dirEdit)
 	nfile := fcreate(::__dirEdit+PATH_DELIM+".edit")
 
-	//outlog(__FILE__,__LINE__,::opt)
 	str := "Options := "+varToString(::Opt)+"&\n"
-	//outlog(__FILE__,__LINE__,str)
 	fwrite(nfile, str, len(str))
 	fclose(nfile)
 return .t.

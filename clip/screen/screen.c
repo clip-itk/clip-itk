@@ -1,6 +1,9 @@
 
 /*
    $Log$
+   Revision 1.2  2007/03/09 14:42:13  itk
+   uri: many fix for AMD64
+
    Revision 1.1  2006/06/22 19:35:31  itk
    uri: init sf.net repository
 
@@ -102,8 +105,7 @@
    asdf
 
    Revision 1.80  2002/06/22 09:34:16  clip
-   uri: shift & alt залипание
-
+   uri: shift & alt О©╫О©╫О©╫О©╫О©╫
    Revision 1.79  2002/05/31 09:32:20  clip
    again label under CYGWIN
 
@@ -154,7 +156,7 @@
    paul
 
    Revision 1.66  2002/03/05 11:52:44  clip
-   redrawing on console fix 'д'
+   redrawing on console fix 'О©╫
    paul
 
    Revision 1.65  2002/03/05 09:39:47  clip
@@ -393,7 +395,7 @@
    add correct terminal init/resume
 
    Revision 1.3  1999/12/04 19:15:13  uri
-   новый gcc
+   О©╫О©╫О©╫gcc
 
    Revision 1.2  1999/11/02 23:05:52  axl
    start of logging CVS
@@ -3436,7 +3438,7 @@ get_wait_key(ScreenBase * base, long milliseconds, int raw)
 		}
 #endif
 
-		r = select(n + 1, &rfs, 0, 0, &timeout);
+		r = task_select(n + 1, &rfs, 0, 0, &timeout);
 
 		if (r == 0 && esc_tv && has_esc)
 		{

@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.4  2007/03/09 14:42:12  itk
+   uri: many fix for AMD64
+
    Revision 1.3  2007/02/12 16:13:08  itk
    uri: some fix about task_select and some fix for amd64
 
@@ -2425,6 +2428,7 @@ get_byte(char **buf, long *buflen, int *resp)
 	return 1;
 }
 
+/*
 static int
 get_long(char **buf, long *buflen, long *resp)
 {
@@ -2437,13 +2441,30 @@ get_long(char **buf, long *buflen, long *resp)
 
 	return 4;
 }
+*/
+
+static int
+get_int32(char **buf, long *buflen, long *resp)
+{
+	int res;
+	if (*buflen < 4)
+		return 0;
+	
+	res = (ntohl(*((int *) *buf)));
+	*resp = (long) res;
+
+	(*buf) += sizeof(res);
+	(*buflen) -= sizeof(res);
+
+	return 4;
+}
 
 static int
 get_str(char **buf, long *buflen, char **strp, long *lenp)
 {
 	long l;
 
-	if (get_long(buf, buflen, &l) != 4)
+	if (get_int32(buf, buflen, &l) != 4)
 		return 0;
 	if (*buflen < l)
 		return 0;
@@ -2542,7 +2563,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 		{
 			long n;
 
-			if (!get_long(str, len, &n))
+			if (!get_int32(str, len, &n))
 				return -1;
 			vp->t.type = DATE_t;
 			vp->t.flags = F_NONE;
@@ -2581,7 +2602,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			long i, size;
 			ClipVar *ap;
 
-			if (!get_long(str, len, &size))
+			if (!get_int32(str, len, &size))
 				return -1;
 
 			ap = (ClipVar *) calloc(1, sizeof(ClipVar));
@@ -2605,7 +2626,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			long size;
 			ClipVar *ap;
 
-			if (!get_long(str, len, &size))
+			if (!get_int32(str, len, &size))
 				return -1;
 
 			ap = (ClipVar *) calloc(1, sizeof(ClipVar));
@@ -2620,7 +2641,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 
 			for (i = 0; i < size; ++i)
 			{
-				if (!get_long(str, len, &(ap->m.items[i].no)))
+				if (!get_int32(str, len, &(ap->m.items[i].no)))
 					return -1;
 				if (get_var(mp, &(ap->m.items[i].v), str, len) < 0)
 					return -1;

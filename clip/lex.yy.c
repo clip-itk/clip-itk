@@ -6896,8 +6896,8 @@ char *yytext_ptr;
 #line 7 "clic.lex"
 /*
  * $Log$
- * Revision 1.2  2007/03/09 09:19:20  itk
- * uri:small fix
+ * Revision 1.3  2007/03/09 14:42:12  itk
+ * uri: many fix for AMD64
  *
  * Revision 1.1  2006/06/22 19:35:15  itk
  * uri: init sf.net repository

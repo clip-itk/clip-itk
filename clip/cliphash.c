@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "cliphash.h"
 
@@ -162,35 +163,28 @@ _clip_hashbytes32(long seed, const char *bytes, int len)
 {
 	unsigned int i;
 	unsigned long crc32val;
+	long ret;
 	unsigned char *s = (unsigned char *) bytes;
 
 	crc32val = (unsigned long) seed;
 	for (i = 0; i < len; i++)
 		crc32val = crc32_tab[(crc32val ^ s[i]) & 0xff] ^ (crc32val >> 8);
-	return (clip_hash_t)crc32val;
+//	printf("\nhash32=%s,%d,%ld,%ld,%d,",bytes,len,seed,(clip_hash_t)crc32val,crc32val> 0x7FFFFFFF);
+	
+	if (sizeof(long /*clip_hash_t*/) <= 4 )
+		return (clip_hash_t)crc32val;
+	ret = (long)crc32val;
+ 	if (crc32val > 0x7FFFFFFFL)
+		ret = ret - 0XFFFFFFFFL-1;
+//	printf("%ld,%ld,%ld\n",0xFFFFFFFFL,ret,(clip_hash_t)ret);
+	return (clip_hash_t)ret;
+	
 }
 
 CLIP_DLLEXPORT clip_hash_t
 _clip_hashbytes(long seed, const char *bytes, int len)
 {
-#ifdef USE_CRC
 	return _clip_hashbytes32(seed, bytes, len);
-#else
-	unsigned long h = seed;
-	unsigned long g;
-
-
-	while (len)
-	{
-		h = (h << 4) + *bytes;
-		++bytes;
-		--len;
-		if ((g = h & 0xf0000000) != 0)
-			h = (h ^ (g >> 24)) ^ g;
-	}
-	h |= 0x40000000;
-	return (clip_hash_t)h;
-#endif
 }
 
 
@@ -226,25 +220,13 @@ is_hex(int b)
 		return 0;
 	}
 }
-
 CLIP_DLLEXPORT clip_hash_t
-_clip_casehashbytes(long seed, const char *bytes, int len)
+_clip_casehashbytes_(long seed, const char *bytes, int len)
 {
-#ifdef USE_CRC
 	unsigned int i;
-	unsigned long crc32val;
+	clip_hash_t ret;
 	unsigned char *s = (unsigned char *) bytes;
-
-	/* 0xXXXXXXXX handled specially */
-	if (seed == 0 && len==10 && bytes[0]=='0' && toupper(bytes[1])=='X'
-		 && is_hex(bytes[2]) && is_hex(bytes[3]) && is_hex(bytes[4]) && is_hex(bytes[5])
-		 && is_hex(bytes[6]) && is_hex(bytes[7]) && is_hex(bytes[8]) && is_hex(bytes[9])
-		)
-	{
-		crc32val = strtoul((const char *)s,0,16);
-		return (clip_hash_t)crc32val;
-	}
-
+#if 0
 	crc32val = (unsigned long) seed;
 	for (i = 0; i < len; i++)
 	{
@@ -252,22 +234,31 @@ _clip_casehashbytes(long seed, const char *bytes, int len)
 			crc32_tab[(crc32val ^ ((unsigned char) toupper(s[i]))) & 0xff] ^
 			(crc32val >> 8);
 	}
-	return (clip_hash_t)crc32val;
 #else
-	unsigned long h = seed;
-	unsigned long g;
-
-	while (len)
-	{
-		h = (h << 4) + toupper(*bytes);
-		++bytes;
-		--len;
-		if ((g = h & 0xf0000000) != 0)
-			h = (h ^ (g >> 24)) ^ g;
-	}
-	h |= 0x40000000;
-	return (clip_hash_t)h;
+	s = malloc(len);
+	memcpy(s,bytes,len);
+	for (i = 0; i < len; i++)
+		s[i] = ((unsigned char) toupper(s[i]));
+	ret = _clip_hashbytes32(seed, (const char *)s, len);
+	free(s);
+	return ret;
 #endif
+}
+
+CLIP_DLLEXPORT clip_hash_t
+_clip_casehashbytes(long seed, const char *bytes, int len)
+{
+	unsigned long crc32val;
+	/* 0xXXXXXXXX handled specially */
+	if (seed == 0 && len==10 && bytes[0]=='0' && toupper(bytes[1])=='X'
+		 && is_hex(bytes[2]) && is_hex(bytes[3]) && is_hex(bytes[4]) && is_hex(bytes[5])
+		 && is_hex(bytes[6]) && is_hex(bytes[7]) && is_hex(bytes[8]) && is_hex(bytes[9])
+		)
+	{
+		crc32val = strtoul((const char *)bytes,0,16);
+		return (clip_hash_t)crc32val;
+	}
+	return _clip_casehashbytes_(seed, (const char *)bytes, len);
 }
 
 CLIP_DLLEXPORT clip_hash_t

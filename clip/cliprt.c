@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.6  2007/03/09 14:42:12  itk
+   uri: many fix for AMD64
+
    Revision 1.5  2007/02/21 12:56:20  itk
    uri: small fix, HZ.
 
@@ -8950,7 +8953,7 @@ void
 putInt32_Buf(OutBuf * bp, long l)
 {
 	int r = (int) l;
-	putBuf_Buf(bp, (char *) &r, 4 /*sizeof(int)*/);
+	putBuf_Buf(bp, (char *) &r, sizeof(r));
 }
 
 void
@@ -9685,6 +9688,9 @@ _clip_hash_name(ClipMachine * mp, long hash, char *buf, int buflen)
 	{
 	case HASH_main:
 		s = "MAIN";
+		break;
+	case HASH_name:
+		s = "NAME";
 		break;
 	case HASH_filename:
 		s = "filename";
