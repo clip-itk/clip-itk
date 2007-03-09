@@ -143,7 +143,7 @@ static int crc16_tab[] =
       0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040
 };
 
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_hashbytes16(long seed, const char *bytes, int len)
 {
 	unsigned int i;
@@ -154,10 +154,10 @@ _clip_hashbytes16(long seed, const char *bytes, int len)
 	for ( i=0; i<len; i++ )
 		crc16val = (crc16val >> 8) ^ crc16_tab[ (crc16val & 0xff) ^ s[i] ];
 
-	return crc16val;
+	return (clip_hash_t)crc16val;
 }
 
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_hashbytes32(long seed, const char *bytes, int len)
 {
 	unsigned int i;
@@ -166,15 +166,11 @@ _clip_hashbytes32(long seed, const char *bytes, int len)
 
 	crc32val = (unsigned long) seed;
 	for (i = 0; i < len; i++)
-	{
-		crc32val =
-			crc32_tab[(crc32val ^ s[i]) & 0xff] ^
-			(crc32val >> 8);
-	}
-	return crc32val;
+		crc32val = crc32_tab[(crc32val ^ s[i]) & 0xff] ^ (crc32val >> 8);
+	return (clip_hash_t)crc32val;
 }
 
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_hashbytes(long seed, const char *bytes, int len)
 {
 #ifdef USE_CRC
@@ -193,7 +189,7 @@ _clip_hashbytes(long seed, const char *bytes, int len)
 			h = (h ^ (g >> 24)) ^ g;
 	}
 	h |= 0x40000000;
-	return h;
+	return (clip_hash_t)h;
 #endif
 }
 
@@ -231,7 +227,7 @@ is_hex(int b)
 	}
 }
 
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_casehashbytes(long seed, const char *bytes, int len)
 {
 #ifdef USE_CRC
@@ -246,7 +242,7 @@ _clip_casehashbytes(long seed, const char *bytes, int len)
 		)
 	{
 		crc32val = strtoul((const char *)s,0,16);
-		return crc32val;
+		return (clip_hash_t)crc32val;
 	}
 
 	crc32val = (unsigned long) seed;
@@ -256,7 +252,7 @@ _clip_casehashbytes(long seed, const char *bytes, int len)
 			crc32_tab[(crc32val ^ ((unsigned char) toupper(s[i]))) & 0xff] ^
 			(crc32val >> 8);
 	}
-	return crc32val;
+	return (clip_hash_t)crc32val;
 #else
 	unsigned long h = seed;
 	unsigned long g;
@@ -270,24 +266,24 @@ _clip_casehashbytes(long seed, const char *bytes, int len)
 			h = (h ^ (g >> 24)) ^ g;
 	}
 	h |= 0x40000000;
-	return h;
+	return (clip_hash_t)h;
 #endif
 }
 
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_hashstr(const char *x)
 {
 	return _clip_hashbytes(0, x, strlen(x));
 }
 
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_casehashstr(const char *x)
 {
 	return _clip_casehashbytes(0, x, strlen(x));
 }
 
 /* trim head and tail spaces */
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_hashword(const char *x, int l)
 {
 	const char *e;
@@ -300,7 +296,7 @@ _clip_hashword(const char *x, int l)
 	return _clip_hashbytes(0, x, e - x);
 }
 
-CLIP_DLLEXPORT long
+CLIP_DLLEXPORT clip_hash_t
 _clip_casehashword(const char *x, int l)
 {
 	const char *e;

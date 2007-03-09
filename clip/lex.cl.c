@@ -42,12 +42,6 @@
 #include <stdlib.h>
 #ifndef _WIN32
 #include <unistd.h>
-#else
-#ifndef YY_ALWAYS_INTERACTIVE
-#ifndef YY_NEVER_INTERACTIVE
-extern int isatty YY_PROTO(( int ));
-#endif
-#endif
 #endif
 
 /* Use prototypes in function declarations. */
@@ -87,6 +81,7 @@ extern int isatty YY_PROTO(( int ));
 #else
 #define YY_PROTO(proto) ()
 #endif
+
 
 /* Returned upon end-of-file. */
 #define YY_NULL 0
@@ -494,11 +489,11 @@ char *yytext;
 #line 7 "clic_c.lex"
 /*
 $Log$
-Revision 1.1  2006/06/22 19:01:35  itk
-uri: initial
+Revision 1.2  2007/03/09 09:19:20  itk
+uri:small fix
 
-Revision 1.8  2005/05/25 10:33:03  clip
-uri: small fix
+Revision 1.1  2006/06/22 19:35:15  itk
+uri: init sf.net repository
 
 Revision 1.5  2004/04/21 08:06:53  clip
 uri: some fix for new flex
@@ -530,7 +525,7 @@ static int string_caller;
 #define string 4
 #define string1 5
 
-#line 528 "lex.cl.c"
+#line 526 "lex.cl.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -692,10 +687,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 40 "clic_c.lex"
+#line 43 "clic_c.lex"
 
 
-#line 693 "lex.cl.c"
+#line 691 "lex.cl.c"
 
 	if ( yy_init )
 		{
@@ -780,17 +775,17 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 42 "clic_c.lex"
+#line 45 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 43 "clic_c.lex"
+#line 46 "clic_c.lex"
 fputc('\n',yyout);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 45 "clic_c.lex"
+#line 48 "clic_c.lex"
 {
 		char *s, *beg=0, *end=0, nl=0;
                 for(s=yytext+7; *s; ++s)
@@ -838,97 +833,97 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 91 "clic_c.lex"
+#line 94 "clic_c.lex"
 ECHO; string_caller=YYSTATE; BEGIN(string);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 92 "clic_c.lex"
+#line 95 "clic_c.lex"
 ECHO; string_caller=YYSTATE; BEGIN(string1);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 93 "clic_c.lex"
+#line 96 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 94 "clic_c.lex"
+#line 97 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 95 "clic_c.lex"
+#line 98 "clic_c.lex"
 ECHO; BEGIN(string_caller);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 96 "clic_c.lex"
+#line 99 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 97 "clic_c.lex"
+#line 100 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 98 "clic_c.lex"
+#line 101 "clic_c.lex"
 ECHO; BEGIN(string_caller);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 99 "clic_c.lex"
+#line 102 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 101 "clic_c.lex"
+#line 104 "clic_c.lex"
 ECHO; comment_caller=YYSTATE; BEGIN(comment);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 102 "clic_c.lex"
+#line 105 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 103 "clic_c.lex"
+#line 106 "clic_c.lex"
 ECHO; BEGIN(comment_caller);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 104 "clic_c.lex"
+#line 107 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 106 "clic_c.lex"
+#line 109 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 107 "clic_c.lex"
+#line 110 "clic_c.lex"
 ECHO; BEGIN(func); brack=1;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 108 "clic_c.lex"
+#line 111 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 110 "clic_c.lex"
+#line 113 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 111 "clic_c.lex"
+#line 114 "clic_c.lex"
 ECHO; brack++;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 112 "clic_c.lex"
+#line 115 "clic_c.lex"
 {
 		brack--;
 		if (!brack)
@@ -944,7 +939,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 124 "clic_c.lex"
+#line 127 "clic_c.lex"
 {
 			char *s;
 			fprintf(yyout, "return 0;");
@@ -955,20 +950,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 131 "clic_c.lex"
+#line 134 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 133 "clic_c.lex"
+#line 136 "clic_c.lex"
 ECHO;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 135 "clic_c.lex"
+#line 138 "clic_c.lex"
 ECHO;
 	YY_BREAK
-#line 966 "lex.cl.c"
+#line 964 "lex.cl.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(begfunc):
 case YY_STATE_EOF(func):
@@ -1863,7 +1858,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 135 "clic_c.lex"
+#line 138 "clic_c.lex"
 
 int yywrap()
 {

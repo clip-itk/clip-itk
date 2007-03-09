@@ -42,12 +42,6 @@
 #include <stdlib.h>
 #ifndef _WIN32
 #include <unistd.h>
-#else
-#ifndef YY_ALWAYS_INTERACTIVE
-#ifndef YY_NEVER_INTERACTIVE
-extern int isatty YY_PROTO(( int ));
-#endif
-#endif
 #endif
 
 /* Use prototypes in function declarations. */
@@ -87,6 +81,7 @@ extern int isatty YY_PROTO(( int ));
 #else
 #define YY_PROTO(proto) ()
 #endif
+
 
 /* Returned upon end-of-file. */
 #define YY_NULL 0
@@ -396,7 +391,7 @@ char *yytext;
 #define INITIAL 0
 #line 2 "hasher.lex"
 #include "cliphash.h"
-#line 400 "lex.hash.c"
+#line 395 "lex.hash.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -561,7 +556,7 @@ YY_DECL
 #line 7 "hasher.lex"
 
 
-#line 565 "lex.hash.c"
+#line 560 "lex.hash.c"
 
 	if ( yy_init )
 		{
@@ -652,7 +647,7 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 10 "hasher.lex"
-printf( "#define\t%-32s\t0x%08lX\n", yytext, _clip_casehashstr(yytext+5) );
+printf( "#define\t%-32s\t0x%lx /*%d,%ld*/\n", yytext, (clip_hash_t) _clip_casehashstr(yytext+5), (int)_clip_casehashstr(yytext+5),(long)_clip_casehashstr(yytext+5)); 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -664,7 +659,7 @@ YY_RULE_SETUP
 #line 13 "hasher.lex"
 ECHO;
 	YY_BREAK
-#line 668 "lex.hash.c"
+#line 663 "lex.hash.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

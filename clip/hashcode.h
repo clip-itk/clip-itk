@@ -1,66 +1,66 @@
-#define	HASH_args                       	0x01CA1C0A
-#define	HASH_canDefault                 	0xC1045A83
-#define	HASH_canRetry                   	0x6FAAB491
-#define	HASH_canSubstitute              	0x085912E3
-#define	HASH_cargo                      	0x0A9862DC
-#define	HASH_charsort_param             	0xAA873412
-#define	HASH_CLASSNAME                  	0xC70A1541
-#define	HASH_csetatmupa                 	0x394B3016
-#define	HASH_csetref                    	0x560CFF4A
-#define	HASH_description                	0x8B606322
-#define	HASH_destroy                    	0xDE63A71F
-#define	HASH_f                          	0x9FBFE4A5
-#define	HASH_ferror                     	0xB5AA60AD
-#define	HASH_field                      	0x6A8370F5
-#define	HASH__field                     	0x975BCAD7
-#define	HASH___field__                  	0xDED46C74
-#define	HASH_filename                   	0x9F1AAA40
-#define	HASH_first_day_week             	0x3D8918B0
-#define	HASH_fsdata                     	0x1C909DA1
-#define	HASH_gencode                    	0x593E3430
-#define	HASH_genCode                    	0x593E3430
-#define	HASH_if                         	0xBE0410E9
-#define	HASH_iif                        	0xC14FA6A6
-#define	HASH_m                          	0x086D3D2D
-#define	HASH_main                       	0xA8F9FFCC
-#define	HASH_memv                       	0xD8F00A42
-#define	HASH_memva                      	0x99D1A1B0
-#define	HASH_memvar                     	0x4E9D52F5
-#define	HASH_modify                     	0xB6CCAEDC
-#define	HASH_nil                        	0x24D5593D
-#define	HASH_numcount                   	0x4A937EB2
-#define	HASH_onerror                    	0xEBBAE750
-#define	HASH_operation                  	0xBB4AAC2C
-#define	HASH_operator_add               	0x979C8CFF
-#define	HASH_operator_and               	0x6D736475
-#define	HASH_operator_div               	0xD7404111
-#define	HASH_operator_eeq               	0xE453F189
-#define	HASH_operator_eq                	0x47E456A0
-#define	HASH_operator_ge                	0x6F08E05F
-#define	HASH_operator_gt                	0x05B8C0AD
-#define	HASH_operator_in                	0x66591459
-#define	HASH_operator_le                	0x8CFC3994
-#define	HASH_operator_lt                	0xE64C1966
-#define	HASH_operator_mod               	0x7D72AC50
-#define	HASH_operator_mul               	0xC384DEB9
-#define	HASH_operator_neq               	0xE8061E68
-#define	HASH_operator_or                	0x2402EF90
-#define	HASH_operator_pow               	0xED32DDAD
-#define	HASH_operator_sub               	0x32847DC4
-#define	HASH_osCode                     	0xE1790F92
-#define	HASH_param                      	0x958C4924
-#define	HASH_pcount                     	0xB8217938
-#define	HASH___rdd__                    	0xCF84585F
-#define	HASH_setatlike                  	0x4F1DBE47
-#define	HASH_setcleara                  	0xBD33B03C
-#define	HASH_setclearb                  	0x243AE186
-#define	HASH_severity                   	0x5571924E
-#define	HASH_subCode                    	0x0C896377
-#define	HASH_subSystem                  	0x0DFA93EF
-#define	HASH_syserr                     	0x1D18378A
-#define	HASH_token_atsep                	0xDAE3848F
-#define	HASH_token_delimiters           	0x1C2D52FD
-#define	HASH_token_string               	0xBE9CAB48
-#define	HASH_tries                      	0xACB0A363
-#define	HASH_VarMessage                 	0x7E7404EB
-#define	HASH_xxxx                       	0x7BC456DF
+#define	HASH_CLASSNAME                  	0xc70a1541 /*-955640511,-955640511*/
+#define	HASH_VarMessage                 	0x7e7404eb /*2121532651,2121532651*/
+#define	HASH___field__                  	0xded46c74 /*-556503948,-556503948*/
+#define	HASH___rdd__                    	0xcf84585f /*-813410209,-813410209*/
+#define	HASH__field                     	0x975bcad7 /*-1755591977,-1755591977*/
+#define	HASH_args                       	0x1ca1c0a /*30022666,30022666*/
+#define	HASH_canDefault                 	0xc1045a83 /*-1056679293,-1056679293*/
+#define	HASH_canRetry                   	0x6faab491 /*1873458321,1873458321*/
+#define	HASH_canSubstitute              	0x85912e3 /*140055267,140055267*/
+#define	HASH_cargo                      	0xa9862dc /*177758940,177758940*/
+#define	HASH_charsort_param             	0xaa873412 /*-1433979886,-1433979886*/
+#define	HASH_csetatmupa                 	0x394b3016 /*961228822,961228822*/
+#define	HASH_csetref                    	0x560cff4a /*1443692362,1443692362*/
+#define	HASH_description                	0x8b606322 /*-1956617438,-1956617438*/
+#define	HASH_destroy                    	0xde63a71f /*-563894497,-563894497*/
+#define	HASH_f                          	0x9fbfe4a5 /*-1614814043,-1614814043*/
+#define	HASH_ferror                     	0xb5aa60ad /*-1247125331,-1247125331*/
+#define	HASH_field                      	0x6a8370f5 /*1786999029,1786999029*/
+#define	HASH_filename                   	0x9f1aaa40 /*-1625642432,-1625642432*/
+#define	HASH_first_day_week             	0x3d8918b0 /*1032394928,1032394928*/
+#define	HASH_fsdata                     	0x1c909da1 /*479239585,479239585*/
+#define	HASH_genCode                    	0x593e3430 /*1497248816,1497248816*/
+#define	HASH_gencode                    	0x593e3430 /*1497248816,1497248816*/
+#define	HASH_if                         	0xbe0410e9 /*-1107029783,-1107029783*/
+#define	HASH_iif                        	0xc14fa6a6 /*-1051744602,-1051744602*/
+#define	HASH_m                          	0x86d3d2d /*141376813,141376813*/
+#define	HASH_main                       	0xa8f9ffcc /*-1460011060,-1460011060*/
+#define	HASH_memv                       	0xd8f00a42 /*-655357374,-655357374*/
+#define	HASH_memva                      	0x99d1a1b0 /*-1714314832,-1714314832*/
+#define	HASH_memvar                     	0x4e9d52f5 /*1318933237,1318933237*/
+#define	HASH_modify                     	0xb6ccaedc /*-1228099876,-1228099876*/
+#define	HASH_nil                        	0x24d5593d /*617961789,617961789*/
+#define	HASH_numcount                   	0x4a937eb2 /*1251180210,1251180210*/
+#define	HASH_onerror                    	0xebbae750 /*-340072624,-340072624*/
+#define	HASH_operation                  	0xbb4aac2c /*-1152734164,-1152734164*/
+#define	HASH_operator_add               	0x979c8cff /*-1751347969,-1751347969*/
+#define	HASH_operator_and               	0x6d736475 /*1836278901,1836278901*/
+#define	HASH_operator_div               	0xd7404111 /*-683654895,-683654895*/
+#define	HASH_operator_eeq               	0xe453f189 /*-464260727,-464260727*/
+#define	HASH_operator_eq                	0x47e456a0 /*1206146720,1206146720*/
+#define	HASH_operator_ge                	0x6f08e05f /*1862852703,1862852703*/
+#define	HASH_operator_gt                	0x5b8c0ad /*95994029,95994029*/
+#define	HASH_operator_in                	0x66591459 /*1717113945,1717113945*/
+#define	HASH_operator_le                	0x8cfc3994 /*-1929627244,-1929627244*/
+#define	HASH_operator_lt                	0xe64c1966 /*-431220378,-431220378*/
+#define	HASH_operator_mod               	0x7d72ac50 /*2104667216,2104667216*/
+#define	HASH_operator_mul               	0xc384deb9 /*-1014702407,-1014702407*/
+#define	HASH_operator_neq               	0xe8061e68 /*-402252184,-402252184*/
+#define	HASH_operator_or                	0x2402ef90 /*604172176,604172176*/
+#define	HASH_operator_pow               	0xed32ddad /*-315433555,-315433555*/
+#define	HASH_operator_sub               	0x32847dc4 /*847543748,847543748*/
+#define	HASH_osCode                     	0xe1790f92 /*-512159854,-512159854*/
+#define	HASH_param                      	0x958c4924 /*-1785968348,-1785968348*/
+#define	HASH_pcount                     	0xb8217938 /*-1205765832,-1205765832*/
+#define	HASH_setatlike                  	0x4f1dbe47 /*1327349319,1327349319*/
+#define	HASH_setcleara                  	0xbd33b03c /*-1120686020,-1120686020*/
+#define	HASH_setclearb                  	0x243ae186 /*607838598,607838598*/
+#define	HASH_severity                   	0x5571924e /*1433506382,1433506382*/
+#define	HASH_subCode                    	0xc896377 /*210330487,210330487*/
+#define	HASH_subSystem                  	0xdfa93ef /*234525679,234525679*/
+#define	HASH_syserr                     	0x1d18378a /*488126346,488126346*/
+#define	HASH_token_atsep                	0xdae3848f /*-622623601,-622623601*/
+#define	HASH_token_delimiters           	0x1c2d52fd /*472732413,472732413*/
+#define	HASH_token_string               	0xbe9cab48 /*-1097028792,-1097028792*/
+#define	HASH_tries                      	0xacb0a363 /*-1397709981,-1397709981*/
+#define	HASH_xxxx                       	0x7bc456df /*2076464863,2076464863*/

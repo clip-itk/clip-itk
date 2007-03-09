@@ -24,12 +24,6 @@
 #include <stdlib.h>
 #ifndef _WIN32
 #include <unistd.h>
-#else
-#ifndef YY_ALWAYS_INTERACTIVE
-#ifndef YY_NEVER_INTERACTIVE
-extern int isatty YY_PROTO(( int ));
-#endif
-#endif
 #endif
 
 /* Use prototypes in function declarations. */
@@ -69,6 +63,7 @@ extern int isatty YY_PROTO(( int ));
 #else
 #define YY_PROTO(proto) ()
 #endif
+
 
 /* Returned upon end-of-file. */
 #define YY_NULL 0
@@ -6901,10 +6896,13 @@ char *yytext_ptr;
 #line 7 "clic.lex"
 /*
  * $Log$
- * Revision 1.1  2006/06/22 19:01:35  itk
- * uri: initial
+ * Revision 1.2  2007/03/09 09:19:20  itk
+ * uri:small fix
  *
- * Revision 1.8  2005/05/25 10:33:03  clip
+ * Revision 1.1  2006/06/22 19:35:15  itk
+ * uri: init sf.net repository
+ *
+ * Revision 1.255  2005/05/25 10:33:02  clip
  * uri: small fix
  *
  * Revision 1.254  2005/05/11 11:39:48  clip
@@ -8341,7 +8339,7 @@ static void my_yy_set_bol(int val)
 
 #define static_words 37
 
-#line 8339 "lex.yy.c"
+#line 8340 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -8506,10 +8504,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 1442 "clic.lex"
+#line 1448 "clic.lex"
 
 
-#line 8507 "lex.yy.c"
+#line 8508 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -8619,7 +8617,7 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 1444 "clic.lex"
+#line 1450 "clic.lex"
 {
 			BEGIN(INITIAL);
 			if (preproc_flag && !subst_flag)
@@ -8631,7 +8629,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 1452 "clic.lex"
+#line 1458 "clic.lex"
 {
 	  newline();
 	  PECHO("\n");
@@ -8640,92 +8638,92 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 1458 "clic.lex"
+#line 1464 "clic.lex"
 newpos(); comment_caller=YYSTATE; full_string_flag=1;  BEGIN(lexEolComment);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 1459 "clic.lex"
+#line 1465 "clic.lex"
 newpos_t(); message_caller=2; BEGIN(messageState);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 1460 "clic.lex"
+#line 1466 "clic.lex"
 newpos_t();  message_caller=3; BEGIN(messageState);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 1461 "clic.lex"
+#line 1467 "clic.lex"
 newpos_t();  message_caller=4; BEGIN(messageState);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 1462 "clic.lex"
+#line 1468 "clic.lex"
 newpos(); newline();
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 1463 "clic.lex"
+#line 1469 "clic.lex"
 newpos(); comment_caller=YYSTATE; full_string_flag=1;  BEGIN(lexEolComment);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 1465 "clic.lex"
+#line 1471 "clic.lex"
 newpos(); comment_caller=YYSTATE; full_string_flag=1;  BEGIN(lexEolComment);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 1466 "clic.lex"
+#line 1472 "clic.lex"
 newpos(); comment_caller=YYSTATE; full_string_flag=0;  BEGIN(lexEolComment);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 1467 "clic.lex"
+#line 1473 "clic.lex"
 newpos(); comment_caller=YYSTATE; full_string_flag=0;  BEGIN(lexEolComment);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 1469 "clic.lex"
+#line 1475 "clic.lex"
 newpos_w(); MECHO; MRETURN(POW)
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 1470 "clic.lex"
+#line 1476 "clic.lex"
 newpos_w(); MECHO; MRETURN(ASSIGN)
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 1471 "clic.lex"
+#line 1477 "clic.lex"
 newpos_w(); MECHO; MRETURN(ADDA)
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 1472 "clic.lex"
+#line 1478 "clic.lex"
 newpos_w(); MECHO; MRETURN(SUBA)
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 1473 "clic.lex"
+#line 1479 "clic.lex"
 newpos_w(); MECHO; MRETURN(MULA)
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 1474 "clic.lex"
+#line 1480 "clic.lex"
 newpos_w(); MECHO; MRETURN(DIVA)
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 1475 "clic.lex"
+#line 1481 "clic.lex"
 newpos_w(); MECHO; MRETURN(MODA)
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 1476 "clic.lex"
+#line 1482 "clic.lex"
 newpos_w(); MECHO; MRETURN(MODA)
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 1478 "clic.lex"
+#line 1484 "clic.lex"
 {
 			newpos_w();
 			if (subst_flag)
@@ -8736,7 +8734,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 1485 "clic.lex"
+#line 1491 "clic.lex"
 {
 			newpos_w();
 			if (subst_flag)
@@ -8747,42 +8745,42 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 1493 "clic.lex"
+#line 1499 "clic.lex"
 newpos_w(); PECHO("m"); yyless(yyleng-4); if (!subst_flag) yylval.string=strdup("M"); MRETURN(NAME)
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 1494 "clic.lex"
+#line 1500 "clic.lex"
 newpos_w(); PECHO("m"); yyless(yyleng-5); if (!subst_flag) yylval.string=strdup("M"); MRETURN(NAME)
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 1495 "clic.lex"
+#line 1501 "clic.lex"
 newpos_w(); PECHO("m"); yyless(yyleng-3); if (!subst_flag) yylval.string=strdup("M"); MRETURN(NAME)
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 1496 "clic.lex"
+#line 1502 "clic.lex"
 newpos_w(); PECHO("m"); yyless(yyleng-3); if (!subst_flag) yylval.string=strdup("M"); MRETURN(NAME)
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 1497 "clic.lex"
+#line 1503 "clic.lex"
 newpos_w(); PECHO("m"); yyless(yyleng-3); if (!subst_flag) yylval.string=strdup("M"); MRETURN(NAME)
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 1498 "clic.lex"
+#line 1504 "clic.lex"
 newpos_w(); PECHO("m"); yyless(yyleng-3); if (!subst_flag) yylval.string=strdup("M"); MRETURN(NAME)
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 1499 "clic.lex"
+#line 1505 "clic.lex"
 newpos_w(); MECHO;  MRETURN(MEMVARPTR)
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 1501 "clic.lex"
+#line 1507 "clic.lex"
 {
 	/*printf("found 'f'");*/
 	newpos_w(); PECHO("f"); yyless(yyleng-2); if (!subst_flag) yylval.string=strdup("F"); MRETURN(NAME)
@@ -8790,7 +8788,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 1505 "clic.lex"
+#line 1511 "clic.lex"
 {
 	/*printf("found '_field'");*/
 	newpos_w(); MECHO;  MRETURN(FIELDPTR)
@@ -8798,7 +8796,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 1509 "clic.lex"
+#line 1515 "clic.lex"
 {
 	/*printf("found 'field'");*/
 	newpos_w(); MECHO;  MRETURN(FIELDPTR)
@@ -8806,7 +8804,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 1514 "clic.lex"
+#line 1520 "clic.lex"
 {
 		newpos_w();
 		/*vo_printf(4,0,"found ->: bad_translate=%d callName=%s\n",
@@ -8831,72 +8829,72 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 1535 "clic.lex"
+#line 1541 "clic.lex"
 newpos_w(); MECHO; MRETURN(REPTR)
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 1537 "clic.lex"
+#line 1543 "clic.lex"
 newpos_w(); MECHO; MRETURN(INCR)
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 1538 "clic.lex"
+#line 1544 "clic.lex"
 newpos_w(); MECHO; MRETURN(DECR)
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 1540 "clic.lex"
+#line 1546 "clic.lex"
 newpos_w(); MECHO; MRETURN(OR)
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 1541 "clic.lex"
+#line 1547 "clic.lex"
 newpos_w(); MECHO; MRETURN(AND)
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 1542 "clic.lex"
+#line 1548 "clic.lex"
 newpos_w(); MECHO; MRETURN(NOT)
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 1543 "clic.lex"
+#line 1549 "clic.lex"
 newpos_w(); MECHO; MRETURN(GE)
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 1544 "clic.lex"
+#line 1550 "clic.lex"
 newpos_w(); MECHO; MRETURN(LE)
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 1545 "clic.lex"
+#line 1551 "clic.lex"
 newpos_w(); MECHO; MRETURN(EQ)
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 1546 "clic.lex"
+#line 1552 "clic.lex"
 newpos_w(); MECHO; MRETURN(NE)
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 1547 "clic.lex"
+#line 1553 "clic.lex"
 newpos_w(); MECHO; MRETURN(NE)
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 1548 "clic.lex"
+#line 1554 "clic.lex"
 newpos_w(); MECHO; MRETURN(NE)
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 1549 "clic.lex"
+#line 1555 "clic.lex"
 newpos_w(); MECHO; MRETURN(NOT)
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 1550 "clic.lex"
+#line 1556 "clic.lex"
 {
 		newpos_w();
 		if ( !bad_translate && !callName && (curCommand=findFirst_Translate(yytext,&commandInd)) )
@@ -8919,7 +8917,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 1572 "clic.lex"
+#line 1578 "clic.lex"
 {
 	unsigned long h;
 	char buf[16];
@@ -8933,7 +8931,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 1583 "clic.lex"
+#line 1589 "clic.lex"
 {
 	newpos_w();
 	if (!subst_flag) yylval.string=strdup(yytext);
@@ -8943,7 +8941,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 1590 "clic.lex"
+#line 1596 "clic.lex"
 {
 	newpos_w();
 	if (!subst_flag) yylval.string=strdup(yytext);
@@ -8952,10 +8950,10 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case 50:
-#line 1598 "clic.lex"
+#line 1604 "clic.lex"
 case 51:
 YY_RULE_SETUP
-#line 1598 "clic.lex"
+#line 1604 "clic.lex"
 {
 	newpos_w();
 	if (!subst_flag) yylval.string=strdup(yytext);
@@ -8965,7 +8963,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 1605 "clic.lex"
+#line 1611 "clic.lex"
 {
 	newpos_w();
 	if (!subst_flag) yylval.string=strdup(yytext);
@@ -8974,10 +8972,10 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case 53:
-#line 1613 "clic.lex"
+#line 1619 "clic.lex"
 case 54:
 YY_RULE_SETUP
-#line 1613 "clic.lex"
+#line 1619 "clic.lex"
 {
 	newpos_w();
 	MECHO;
@@ -8986,7 +8984,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 1619 "clic.lex"
+#line 1625 "clic.lex"
 {
 		int l1, l2;
 		char *s;
@@ -9004,7 +9002,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 1634 "clic.lex"
+#line 1640 "clic.lex"
 {
 	newpos_w();
 	if (!subst_flag) yylval.string=strdup(yytext);
@@ -9014,7 +9012,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 1642 "clic.lex"
+#line 1648 "clic.lex"
 {
 	newpos(); string_buf_ptr = string_buf; strLine=clic_line;
 	strPos=clic_pos; strFile=currentFile();
@@ -9023,7 +9021,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 1648 "clic.lex"
+#line 1654 "clic.lex"
 {
 	newpos(); string_buf_ptr = string_buf; strLine=clic_line;
 	strPos=clic_pos; strFile=currentFile(); str_caller = YYSTATE;
@@ -9032,7 +9030,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 1654 "clic.lex"
+#line 1660 "clic.lex"
 {
 	newpos(); string_buf_ptr = string_buf; strLine=clic_line;
 	strPos=clic_pos; strFile=currentFile(); str_caller = YYSTATE;
@@ -9040,10 +9038,10 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case 60:
-#line 1661 "clic.lex"
+#line 1667 "clic.lex"
 case 61:
 YY_RULE_SETUP
-#line 1661 "clic.lex"
+#line 1667 "clic.lex"
 {
 	char *clic_text_ptr = yytext;
 	newpos_t();
@@ -9053,7 +9051,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 1668 "clic.lex"
+#line 1674 "clic.lex"
 {
 	newpos_t();
 		addch_string_buf(strtol(yytext+2,0,8));
@@ -9061,7 +9059,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 1673 "clic.lex"
+#line 1679 "clic.lex"
 { /* saw closing clic_quote - all done */
 	BEGIN(str_caller);
 	newpos_w();
@@ -9093,7 +9091,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 1702 "clic.lex"
+#line 1708 "clic.lex"
 {
 	BEGIN(str_caller);
 	newpos_w();
@@ -9124,7 +9122,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 1730 "clic.lex"
+#line 1736 "clic.lex"
 {
 	char buf[32], *s;
 	BEGIN(str_caller);
@@ -9142,7 +9140,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 1745 "clic.lex"
+#line 1751 "clic.lex"
 {
 	BEGIN(str_caller);
 	newpos_w();
@@ -9174,7 +9172,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 1774 "clic.lex"
+#line 1780 "clic.lex"
 {
 	yyerror("newline in string");
 	newline();
@@ -9184,7 +9182,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 1781 "clic.lex"
+#line 1787 "clic.lex"
 {
 	char *clic_text_ptr = yytext;
 	newpos_t();
@@ -9194,7 +9192,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 1788 "clic.lex"
+#line 1794 "clic.lex"
 {
 	char *clic_text_ptr = yytext;
 	newpos_t();
@@ -9204,7 +9202,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 1796 "clic.lex"
+#line 1802 "clic.lex"
 {
 	char *clic_text_ptr = yytext;
 	newpos_t();
@@ -9214,7 +9212,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 1803 "clic.lex"
+#line 1809 "clic.lex"
 {
 	char *clic_text_ptr = yytext;
 	newpos_t();
@@ -9224,7 +9222,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 1810 "clic.lex"
+#line 1816 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -9233,7 +9231,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 1815 "clic.lex"
+#line 1821 "clic.lex"
 {
 		newpos(); comment_depth++; comment_caller=skipState;
 		commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
@@ -9243,32 +9241,32 @@ YY_RULE_SETUP
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 1822 "clic.lex"
+#line 1828 "clic.lex"
 newpos(); yyerror("end-of-comment without begin");
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 1824 "clic.lex"
+#line 1830 "clic.lex"
 newpos();
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 1825 "clic.lex"
+#line 1831 "clic.lex"
 newpos();
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 1826 "clic.lex"
+#line 1832 "clic.lex"
 newline(); comment_eol++;
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 1827 "clic.lex"
+#line 1833 "clic.lex"
 newpos(); comment_depth++;
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 1828 "clic.lex"
+#line 1834 "clic.lex"
 {
 		newpos();
 		if (--comment_depth==0)
@@ -9281,32 +9279,32 @@ YY_RULE_SETUP
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 1837 "clic.lex"
+#line 1843 "clic.lex"
 newpos();
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 1839 "clic.lex"
+#line 1845 "clic.lex"
 newpos(); comment_caller=skipState; full_string_flag=1; BEGIN(lexEolComment);
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 1840 "clic.lex"
+#line 1846 "clic.lex"
 newpos(); comment_caller=skipState; full_string_flag=1; BEGIN(lexEolComment);
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 1841 "clic.lex"
+#line 1847 "clic.lex"
 newpos(); comment_caller=skipState; full_string_flag=1; BEGIN(lexEolComment);
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 1842 "clic.lex"
+#line 1848 "clic.lex"
 newpos();
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 1843 "clic.lex"
+#line 1849 "clic.lex"
 {
 		if ( !full_string_flag )
 		{
@@ -9319,12 +9317,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 1853 "clic.lex"
+#line 1859 "clic.lex"
 newpos(); BEGIN(ctextEolState);
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 1854 "clic.lex"
+#line 1860 "clic.lex"
 {
 				newline();
 				BEGIN(INITIAL);
@@ -9334,7 +9332,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 1861 "clic.lex"
+#line 1867 "clic.lex"
 {
 				newpos();
 				ctextLen=256;
@@ -9349,7 +9347,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 1872 "clic.lex"
+#line 1878 "clic.lex"
 {
 				newpos();
 				ctextLen=256;
@@ -9361,7 +9359,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 1880 "clic.lex"
+#line 1886 "clic.lex"
 {
 			  char *s;
 			  for( s=yytext ; *s ; s++ )
@@ -9375,7 +9373,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 1890 "clic.lex"
+#line 1896 "clic.lex"
 {
 			  newpos();
 			  if (ctextQuota!='{')
@@ -9396,7 +9394,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 1907 "clic.lex"
+#line 1913 "clic.lex"
 {
 			  newpos();
 			  if (ctextQuota!='(')
@@ -9418,7 +9416,7 @@ case 93:
 yy_c_buf_p = yy_cp = yy_bp + 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1922 "clic.lex"
+#line 1928 "clic.lex"
 {
 			  char *s;
 			  for( s=yytext ; *s ; s++ )
@@ -9432,12 +9430,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 1933 "clic.lex"
+#line 1939 "clic.lex"
 newpos();  yyerror("'@}' without '@{'");
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 1936 "clic.lex"
+#line 1942 "clic.lex"
 {newpos(); MECHO;
 
 /*
@@ -9453,7 +9451,7 @@ case 96:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1946 "clic.lex"
+#line 1952 "clic.lex"
 newpos_w(); MECHO; BEGIN(static_words); MRETURN(STATIC)
 	YY_BREAK
 case 97:
@@ -9461,7 +9459,7 @@ case 97:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1947 "clic.lex"
+#line 1953 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(FUNCTION)
 	YY_BREAK
 case 98:
@@ -9469,17 +9467,17 @@ case 98:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1948 "clic.lex"
+#line 1954 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PROCEDURE)
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 1949 "clic.lex"
+#line 1955 "clic.lex"
 newpos();MECHO;
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 1950 "clic.lex"
+#line 1956 "clic.lex"
 BEGIN(INITIAL); yyless(0);
 	YY_BREAK
 case 101:
@@ -9487,7 +9485,7 @@ case 101:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1953 "clic.lex"
+#line 1959 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PUBLIC)
 	YY_BREAK
 case 102:
@@ -9495,7 +9493,7 @@ case 102:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1954 "clic.lex"
+#line 1960 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PRIVATE)
 	YY_BREAK
 case 103:
@@ -9503,7 +9501,7 @@ case 103:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1955 "clic.lex"
+#line 1961 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PRIVATE)
 	YY_BREAK
 case 104:
@@ -9511,7 +9509,7 @@ case 104:
 yy_c_buf_p = yy_cp = yy_bp + 9;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1956 "clic.lex"
+#line 1962 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(DIMENSION)
 	YY_BREAK
 case 105:
@@ -9519,7 +9517,7 @@ case 105:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1957 "clic.lex"
+#line 1963 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(LOCAL)
 	YY_BREAK
 case 106:
@@ -9527,7 +9525,7 @@ case 106:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1958 "clic.lex"
+#line 1964 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(EXTERN)
 	YY_BREAK
 case 107:
@@ -9535,12 +9533,12 @@ case 107:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1959 "clic.lex"
+#line 1965 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PARAMETERS)
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 1960 "clic.lex"
+#line 1966 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(RETURN)
 	YY_BREAK
 case 109:
@@ -9548,7 +9546,7 @@ case 109:
 yy_c_buf_p = yy_cp = yy_bp + 7;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1962 "clic.lex"
+#line 1968 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(REQUEST)
 	YY_BREAK
 case 110:
@@ -9556,7 +9554,7 @@ case 110:
 yy_c_buf_p = yy_cp = yy_bp + 8;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1963 "clic.lex"
+#line 1969 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(ANNOUNCE)
 	YY_BREAK
 case 111:
@@ -9564,7 +9562,7 @@ case 111:
 yy_c_buf_p = yy_cp = yy_bp + 6;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1966 "clic.lex"
+#line 1972 "clic.lex"
 {
 	newpos_w(); MECHO;
 	BEGIN(INITIAL); MRETURN(MEMVAR)
@@ -9575,7 +9573,7 @@ case 112:
 yy_c_buf_p = yy_cp = yy_bp + 5;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1971 "clic.lex"
+#line 1977 "clic.lex"
 {
 	/* [^-_a-ZA_Z0-9] */
 	newpos_w();
@@ -9590,7 +9588,7 @@ case 113:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1979 "clic.lex"
+#line 1985 "clic.lex"
 newpos_w(); MECHO; BEGIN(for_words); MRETURN(FOR)
 	YY_BREAK
 case 114:
@@ -9598,12 +9596,12 @@ case 114:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 1980 "clic.lex"
+#line 1986 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(NEXT)
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 1981 "clic.lex"
+#line 1987 "clic.lex"
 {
 		char *s = yytext+4, *e;
 		if (subst_flag)
@@ -9632,7 +9630,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 2006 "clic.lex"
+#line 2012 "clic.lex"
 {
 	int i;
 	newline();
@@ -9665,7 +9663,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 2036 "clic.lex"
+#line 2042 "clic.lex"
 {
 		int l=yyleng;
 		newline();
@@ -9688,7 +9686,7 @@ case 118:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2053 "clic.lex"
+#line 2059 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(BEGSEQ)
 	YY_BREAK
 case 119:
@@ -9696,12 +9694,12 @@ case 119:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2054 "clic.lex"
+#line 2060 "clic.lex"
 newpos_w(); MECHO; BEGIN(recover_words); MRETURN(RECOVER)
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 2055 "clic.lex"
+#line 2061 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(EBREAK)
 	YY_BREAK
 case 121:
@@ -9709,7 +9707,7 @@ case 121:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2056 "clic.lex"
+#line 2062 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(BREAK)
 	YY_BREAK
 case 122:
@@ -9717,7 +9715,7 @@ case 122:
 yy_c_buf_p = yy_cp = yy_bp + 5;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2057 "clic.lex"
+#line 2063 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(USING)
 	YY_BREAK
 case 123:
@@ -9725,7 +9723,7 @@ case 123:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2059 "clic.lex"
+#line 2065 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(FUNCTION)
 	YY_BREAK
 case 124:
@@ -9733,7 +9731,7 @@ case 124:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2060 "clic.lex"
+#line 2066 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PROCEDURE)
 	YY_BREAK
 case 125:
@@ -9741,7 +9739,7 @@ case 125:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2061 "clic.lex"
+#line 2067 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(IPROCEDURE)
 	YY_BREAK
 case 126:
@@ -9749,7 +9747,7 @@ case 126:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2062 "clic.lex"
+#line 2068 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(EPROCEDURE)
 	YY_BREAK
 case 127:
@@ -9757,7 +9755,7 @@ case 127:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2063 "clic.lex"
+#line 2069 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(RETURN)
 	YY_BREAK
 case 128:
@@ -9765,7 +9763,7 @@ case 128:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2064 "clic.lex"
+#line 2070 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(END)
 	YY_BREAK
 case 129:
@@ -9773,7 +9771,7 @@ case 129:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2067 "clic.lex"
+#line 2073 "clic.lex"
 newpos_w(); MECHO; MRETURN(IF)
 	YY_BREAK
 case 130:
@@ -9781,7 +9779,7 @@ case 130:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2068 "clic.lex"
+#line 2074 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(IF)
 	YY_BREAK
 case 131:
@@ -9789,7 +9787,7 @@ case 131:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2069 "clic.lex"
+#line 2075 "clic.lex"
 newpos_w(); MECHO; MRETURN(IIF)
 	YY_BREAK
 case 132:
@@ -9797,7 +9795,7 @@ case 132:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2070 "clic.lex"
+#line 2076 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(IIF)
 	YY_BREAK
 case 133:
@@ -9805,7 +9803,7 @@ case 133:
 yy_c_buf_p = yy_cp = yy_bp + 6;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2071 "clic.lex"
+#line 2077 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(ELSEIF)
 	YY_BREAK
 case 134:
@@ -9813,7 +9811,7 @@ case 134:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2072 "clic.lex"
+#line 2078 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(ELSE)
 	YY_BREAK
 case 135:
@@ -9821,7 +9819,7 @@ case 135:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2073 "clic.lex"
+#line 2079 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(ENDIF)
 	YY_BREAK
 case 136:
@@ -9829,7 +9827,7 @@ case 136:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2076 "clic.lex"
+#line 2082 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(DO)
 	YY_BREAK
 case 137:
@@ -9837,7 +9835,7 @@ case 137:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2077 "clic.lex"
+#line 2083 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(CALL)
 	YY_BREAK
 case 138:
@@ -9845,7 +9843,7 @@ case 138:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2078 "clic.lex"
+#line 2084 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(WITH)
 	YY_BREAK
 case 139:
@@ -9853,7 +9851,7 @@ case 139:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2079 "clic.lex"
+#line 2085 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(WHILE)
 	YY_BREAK
 case 140:
@@ -9861,7 +9859,7 @@ case 140:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2080 "clic.lex"
+#line 2086 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(WHILE)
 	YY_BREAK
 case 141:
@@ -9869,7 +9867,7 @@ case 141:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2081 "clic.lex"
+#line 2087 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(ENDDO)
 	YY_BREAK
 case 142:
@@ -9877,7 +9875,7 @@ case 142:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2082 "clic.lex"
+#line 2088 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(LOOP)
 	YY_BREAK
 case 143:
@@ -9885,7 +9883,7 @@ case 143:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2083 "clic.lex"
+#line 2089 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(EXIT)
 	YY_BREAK
 case 144:
@@ -9893,7 +9891,7 @@ case 144:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2085 "clic.lex"
+#line 2091 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(DOCASE)
 	YY_BREAK
 case 145:
@@ -9901,7 +9899,7 @@ case 145:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2086 "clic.lex"
+#line 2092 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(CASE)
 	YY_BREAK
 case 146:
@@ -9909,7 +9907,7 @@ case 146:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2087 "clic.lex"
+#line 2093 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(ENDCASE)
 	YY_BREAK
 case 147:
@@ -9917,7 +9915,7 @@ case 147:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2088 "clic.lex"
+#line 2094 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(OTHERWISE)
 	YY_BREAK
 case 148:
@@ -9925,7 +9923,7 @@ case 148:
 yy_c_buf_p = yy_cp = yy_bp + 6;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2089 "clic.lex"
+#line 2095 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(SWITCH)
 	YY_BREAK
 case 149:
@@ -9933,12 +9931,12 @@ case 149:
 yy_c_buf_p = yy_cp = yy_bp + 9;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2090 "clic.lex"
+#line 2096 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(ENDSWITCH)
 	YY_BREAK
 case 150:
 YY_RULE_SETUP
-#line 2094 "clic.lex"
+#line 2100 "clic.lex"
 {
 		/*yylval.string=mem_Dup(yytext,yyleng);*/
 		newpos_w();
@@ -9962,7 +9960,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 151:
 YY_RULE_SETUP
-#line 2115 "clic.lex"
+#line 2121 "clic.lex"
 {
 		/*yylval.string=mem_Dup(yytext,yyleng);*/
 		newpos_w();
@@ -9985,7 +9983,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 152:
 YY_RULE_SETUP
-#line 2136 "clic.lex"
+#line 2142 "clic.lex"
 {
 		BEGIN(INITIAL);
 		MECHO;
@@ -10009,7 +10007,7 @@ case 153:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2154 "clic.lex"
+#line 2160 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(IN);
 	YY_BREAK
 case 154:
@@ -10017,7 +10015,7 @@ case 154:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2155 "clic.lex"
+#line 2161 "clic.lex"
 newpos_w(); MECHO; MRETURN(TO);
 	YY_BREAK
 case 155:
@@ -10025,7 +10023,7 @@ case 155:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2156 "clic.lex"
+#line 2162 "clic.lex"
 newpos_w(); MECHO; MRETURN(STEP);
 	YY_BREAK
 case 156:
@@ -10033,7 +10031,7 @@ case 156:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2157 "clic.lex"
+#line 2163 "clic.lex"
 newpos_w(); MECHO; MRETURN(IN);
 	YY_BREAK
 case 157:
@@ -10041,7 +10039,7 @@ case 157:
 yy_c_buf_p = yy_cp = yy_bp + 4;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2158 "clic.lex"
+#line 2164 "clic.lex"
 newpos_w(); MECHO; MRETURN(KEYS);
 	YY_BREAK
 case 158:
@@ -10049,7 +10047,7 @@ case 158:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2160 "clic.lex"
+#line 2166 "clic.lex"
 newpos_w(); MECHO; MRETURN(AS);
 	YY_BREAK
 case 159:
@@ -10057,7 +10055,7 @@ case 159:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2161 "clic.lex"
+#line 2167 "clic.lex"
 newpos_w(); MECHO; MRETURN(REF);
 	YY_BREAK
 case 160:
@@ -10065,7 +10063,7 @@ case 160:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2163 "clic.lex"
+#line 2169 "clic.lex"
 newpos_w(); MECHO; MRETURN(TRUE)
 	YY_BREAK
 case 161:
@@ -10073,7 +10071,7 @@ case 161:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2164 "clic.lex"
+#line 2170 "clic.lex"
 newpos_w(); MECHO; MRETURN(FALSE)
 	YY_BREAK
 case 162:
@@ -10081,7 +10079,7 @@ case 162:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2165 "clic.lex"
+#line 2171 "clic.lex"
 newpos_w(); MECHO; MRETURN(TRUE)
 	YY_BREAK
 case 163:
@@ -10089,7 +10087,7 @@ case 163:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2166 "clic.lex"
+#line 2172 "clic.lex"
 newpos_w(); MECHO; MRETURN(FALSE)
 	YY_BREAK
 case 164:
@@ -10097,7 +10095,7 @@ case 164:
 yy_c_buf_p = yy_cp = yy_bp + 3;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2168 "clic.lex"
+#line 2174 "clic.lex"
 newpos_w(); MECHO; MRETURN(NIL)
 	YY_BREAK
 case 165:
@@ -10105,7 +10103,7 @@ case 165:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2170 "clic.lex"
+#line 2176 "clic.lex"
 newpos_w(); MECHO; MRETURN(PALL)
 	YY_BREAK
 case 166:
@@ -10113,7 +10111,7 @@ case 166:
 yy_c_buf_p = yy_cp = yy_bp + 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2171 "clic.lex"
+#line 2177 "clic.lex"
 newpos_w(); MECHO; MRETURN(PSHIFT)
 	YY_BREAK
 case 167:
@@ -10121,32 +10119,32 @@ case 167:
 yy_c_buf_p = yy_cp = yy_bp + 5;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2173 "clic.lex"
+#line 2179 "clic.lex"
 newpos_w(); MECHO; MRETURN(CGET)
 	YY_BREAK
 case 168:
 YY_RULE_SETUP
-#line 2174 "clic.lex"
+#line 2180 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PCOUNT)
 	YY_BREAK
 case 169:
 YY_RULE_SETUP
-#line 2175 "clic.lex"
+#line 2181 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(PARAMBEG)
 	YY_BREAK
 case 170:
 YY_RULE_SETUP
-#line 2176 "clic.lex"
+#line 2182 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(CODESTR)
 	YY_BREAK
 case 171:
 YY_RULE_SETUP
-#line 2177 "clic.lex"
+#line 2183 "clic.lex"
 newpos_w(); MECHO; BEGIN(INITIAL); MRETURN(CODEBLOCK)
 	YY_BREAK
 case 172:
 YY_RULE_SETUP
-#line 2178 "clic.lex"
+#line 2184 "clic.lex"
 {
 		char buf[32];
 		snprintf(buf, sizeof(buf), "%ld", _clip_hashstr(yytext+5));
@@ -10157,53 +10155,53 @@ YY_RULE_SETUP
 	YY_BREAK
 case 173:
 YY_RULE_SETUP
-#line 2185 "clic.lex"
+#line 2191 "clic.lex"
 { char *file=((IncludeFile*) includes.items[includes.count-1])->name;
 		  sprintf(string_buf, "\"%s\"", file); put_buf(); }
 	YY_BREAK
 case 174:
 YY_RULE_SETUP
-#line 2187 "clic.lex"
+#line 2193 "clic.lex"
 { char *file=((IncludeFile*) includes.items[0])->name;
 		  sprintf(string_buf, "\"%s\"", file); put_buf(); }
 	YY_BREAK
 case 175:
 YY_RULE_SETUP
-#line 2189 "clic.lex"
+#line 2195 "clic.lex"
 { sprintf(string_buf, "\"%ld\"", clic_line ); put_buf(); }
 	YY_BREAK
 case 176:
 YY_RULE_SETUP
-#line 2191 "clic.lex"
+#line 2197 "clic.lex"
 { sprintf(string_buf, "\"%s\"", CLIP_VERSION ); put_buf(); }
 	YY_BREAK
 case 177:
 YY_RULE_SETUP
-#line 2193 "clic.lex"
+#line 2199 "clic.lex"
 { sprintf(string_buf, "\"%s\"", OSNAME  ); put_buf(); }
 	YY_BREAK
 case 178:
 YY_RULE_SETUP
-#line 2195 "clic.lex"
+#line 2201 "clic.lex"
 { time_t timer; time(&timer);
 		  strftime(string_buf, 32, "\"%b %d %Y\"", localtime(&timer) );
 		  put_buf(); }
 	YY_BREAK
 case 179:
 YY_RULE_SETUP
-#line 2199 "clic.lex"
+#line 2205 "clic.lex"
 { time_t timer; time(&timer);
 		  strftime(string_buf, 32, "\"%H:%M:%S\"", localtime(&timer) );
 		  put_buf(); }
 	YY_BREAK
 case 180:
 YY_RULE_SETUP
-#line 2202 "clic.lex"
+#line 2208 "clic.lex"
 { newpos_w(); MECHO; field_flag = !field_flag; }
 	YY_BREAK
 case 181:
 YY_RULE_SETUP
-#line 2204 "clic.lex"
+#line 2210 "clic.lex"
 {
 		char *s = targetCharset;
 		if (!s || (!strcasecmp(s, "c")))
@@ -10216,7 +10214,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 182:
 YY_RULE_SETUP
-#line 2214 "clic.lex"
+#line 2220 "clic.lex"
 {
 			sprintf(string_buf, "\"%s\"", CLIP_MODULE);
 			put_buf();
@@ -10224,22 +10222,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 183:
 YY_RULE_SETUP
-#line 2219 "clic.lex"
+#line 2225 "clic.lex"
 newpos_t(); message_caller=0; BEGIN(messageState);
 	YY_BREAK
 case 184:
 YY_RULE_SETUP
-#line 2220 "clic.lex"
+#line 2226 "clic.lex"
 newpos_t(); message_caller=1; BEGIN(messageState);
 	YY_BREAK
 case 185:
 YY_RULE_SETUP
-#line 2221 "clic.lex"
+#line 2227 "clic.lex"
 newpos_t(); yymore();
 	YY_BREAK
 case 186:
 YY_RULE_SETUP
-#line 2222 "clic.lex"
+#line 2228 "clic.lex"
 {
 		newline();
 		if (message_caller==0)
@@ -10312,7 +10310,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 187:
 YY_RULE_SETUP
-#line 2291 "clic.lex"
+#line 2297 "clic.lex"
 {
 		newline();
 		if (!message_caller)
@@ -10324,7 +10322,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 188:
 YY_RULE_SETUP
-#line 2299 "clic.lex"
+#line 2305 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -10333,26 +10331,26 @@ YY_RULE_SETUP
 	YY_BREAK
 case 189:
 YY_RULE_SETUP
-#line 2304 "clic.lex"
+#line 2310 "clic.lex"
 newpos_t(); yymore();
 	YY_BREAK
 case 190:
 YY_RULE_SETUP
-#line 2307 "clic.lex"
+#line 2313 "clic.lex"
 newpos_t(); curInclude=new_IncludeFile(0,clic_line); BEGIN(includeState);
 	YY_BREAK
 case 191:
 YY_RULE_SETUP
-#line 2309 "clic.lex"
+#line 2315 "clic.lex"
 newpos_t();
 	YY_BREAK
 case 192:
-#line 2311 "clic.lex"
+#line 2317 "clic.lex"
 case 193:
-#line 2312 "clic.lex"
+#line 2318 "clic.lex"
 case 194:
 YY_RULE_SETUP
-#line 2312 "clic.lex"
+#line 2318 "clic.lex"
 {
 				char *name=strdup(yytext+1);
 				name[strlen(name)-1]=0;
@@ -10372,7 +10370,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 195:
 YY_RULE_SETUP
-#line 2329 "clic.lex"
+#line 2335 "clic.lex"
 {
 			if (!startCurInclude())
 				yyterminate();
@@ -10380,7 +10378,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 196:
 YY_RULE_SETUP
-#line 2333 "clic.lex"
+#line 2339 "clic.lex"
 {
 			if (!startCurInclude())
 				yyterminate();
@@ -10388,7 +10386,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 197:
 YY_RULE_SETUP
-#line 2338 "clic.lex"
+#line 2344 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -10397,7 +10395,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 198:
 YY_RULE_SETUP
-#line 2344 "clic.lex"
+#line 2350 "clic.lex"
 {
 					  newpos_t(); ifdef_caller=INITIAL;
 					  curIfdef=new_IfdefState(0,1);
@@ -10406,7 +10404,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 199:
 YY_RULE_SETUP
-#line 2349 "clic.lex"
+#line 2355 "clic.lex"
 {
 					  newpos_t(); ifdef_caller=skipState;
 					  curIfdef=new_IfdefState(0,1);
@@ -10415,7 +10413,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 200:
 YY_RULE_SETUP
-#line 2354 "clic.lex"
+#line 2360 "clic.lex"
 {
 					  newpos_t(); ifdef_caller=INITIAL;
 					  curIfdef=new_IfdefState(0,0);
@@ -10424,7 +10422,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 201:
 YY_RULE_SETUP
-#line 2359 "clic.lex"
+#line 2365 "clic.lex"
 {
 					  newpos_t(); ifdef_caller=skipState;
 					  curIfdef=new_IfdefState(0,0);
@@ -10433,12 +10431,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 202:
 YY_RULE_SETUP
-#line 2365 "clic.lex"
+#line 2371 "clic.lex"
 newpos();
 	YY_BREAK
 case 203:
 YY_RULE_SETUP
-#line 2366 "clic.lex"
+#line 2372 "clic.lex"
 {
 			newpos();
 			if ( findMacro(yytext)
@@ -10456,7 +10454,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 204:
 YY_RULE_SETUP
-#line 2380 "clic.lex"
+#line 2386 "clic.lex"
 {
 			newline();
 			curIfdef->state=ifdef_caller;
@@ -10469,7 +10467,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 205:
 YY_RULE_SETUP
-#line 2389 "clic.lex"
+#line 2395 "clic.lex"
 {
 			newline();
 			curIfdef->state=ifdef_caller;
@@ -10482,7 +10480,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 206:
 YY_RULE_SETUP
-#line 2398 "clic.lex"
+#line 2404 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -10491,12 +10489,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 207:
 YY_RULE_SETUP
-#line 2404 "clic.lex"
+#line 2410 "clic.lex"
 newpos_t();
 	YY_BREAK
 case 208:
 YY_RULE_SETUP
-#line 2406 "clic.lex"
+#line 2412 "clic.lex"
 {
 			newline();
 			if (ifdefs.count<1)
@@ -10514,7 +10512,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 209:
 YY_RULE_SETUP
-#line 2421 "clic.lex"
+#line 2427 "clic.lex"
 {
 			newline();
 			if (ifdefs.count<1)
@@ -10532,7 +10530,7 @@ case 210:
 yy_c_buf_p = yy_cp -= 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2433 "clic.lex"
+#line 2439 "clic.lex"
 newpos();
 	YY_BREAK
 case 211:
@@ -10540,27 +10538,27 @@ case 211:
 yy_c_buf_p = yy_cp -= 2;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2434 "clic.lex"
+#line 2440 "clic.lex"
 newpos();
 	YY_BREAK
 case 212:
 YY_RULE_SETUP
-#line 2435 "clic.lex"
+#line 2441 "clic.lex"
 newline();
 	YY_BREAK
 case 213:
 YY_RULE_SETUP
-#line 2436 "clic.lex"
+#line 2442 "clic.lex"
 newpos();
 	YY_BREAK
 case 214:
 YY_RULE_SETUP
-#line 2438 "clic.lex"
+#line 2444 "clic.lex"
 { newpos_t(); BEGIN(undefState); }
 	YY_BREAK
 case 215:
 YY_RULE_SETUP
-#line 2440 "clic.lex"
+#line 2446 "clic.lex"
 newpos();
 	YY_BREAK
 case 216:
@@ -10568,17 +10566,17 @@ case 216:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2441 "clic.lex"
+#line 2447 "clic.lex"
 newpos();
 	YY_BREAK
 case 217:
 YY_RULE_SETUP
-#line 2442 "clic.lex"
+#line 2448 "clic.lex"
 newpos();
 	YY_BREAK
 case 218:
 YY_RULE_SETUP
-#line 2443 "clic.lex"
+#line 2449 "clic.lex"
 {
 			newpos();
 			if ( (curMacroFunc=findMacroFunc(yytext))!=0 )
@@ -10595,19 +10593,19 @@ YY_RULE_SETUP
 	YY_BREAK
 case 219:
 YY_RULE_SETUP
-#line 2457 "clic.lex"
+#line 2463 "clic.lex"
 newline(); BEGIN(INITIAL);
 	YY_BREAK
 case 220:
 YY_RULE_SETUP
-#line 2458 "clic.lex"
+#line 2464 "clic.lex"
 {
 				newline(); BEGIN(INITIAL);
 			}
 	YY_BREAK
 case 221:
 YY_RULE_SETUP
-#line 2461 "clic.lex"
+#line 2467 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -10616,29 +10614,29 @@ YY_RULE_SETUP
 	YY_BREAK
 case 222:
 YY_RULE_SETUP
-#line 2466 "clic.lex"
+#line 2472 "clic.lex"
 newpos();
 	YY_BREAK
 case 223:
 YY_RULE_SETUP
-#line 2469 "clic.lex"
+#line 2475 "clic.lex"
 { newpos_t(); xdefine=0; BEGIN(defineState); }
 	YY_BREAK
 case 224:
 YY_RULE_SETUP
-#line 2470 "clic.lex"
+#line 2476 "clic.lex"
 { newpos_t(); xdefine=1; BEGIN(defineState); }
 	YY_BREAK
 case 225:
 YY_RULE_SETUP
-#line 2472 "clic.lex"
+#line 2478 "clic.lex"
 {
 		   newline();
 		 }
 	YY_BREAK
 case 226:
 YY_RULE_SETUP
-#line 2476 "clic.lex"
+#line 2482 "clic.lex"
 {
 			newline();
 			yyerror("invalid #define directive");
@@ -10647,7 +10645,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 227:
 YY_RULE_SETUP
-#line 2482 "clic.lex"
+#line 2488 "clic.lex"
 {
 			newline();
 			yyerror("invalid #define directive");
@@ -10656,7 +10654,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 228:
 YY_RULE_SETUP
-#line 2487 "clic.lex"
+#line 2493 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -10665,7 +10663,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 229:
 YY_RULE_SETUP
-#line 2493 "clic.lex"
+#line 2499 "clic.lex"
 {
 		   char *name=strdup(yytext);
 		   newpos();
@@ -10688,7 +10686,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 230:
 YY_RULE_SETUP
-#line 2515 "clic.lex"
+#line 2521 "clic.lex"
 {
 		   int c;
 		   newpos();
@@ -10716,7 +10714,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 231:
 YY_RULE_SETUP
-#line 2540 "clic.lex"
+#line 2546 "clic.lex"
 {
 		   int c;
 		   char *text;
@@ -10748,14 +10746,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 232:
 YY_RULE_SETUP
-#line 2569 "clic.lex"
+#line 2575 "clic.lex"
 { newpos();
 			 insert_Coll(& curMacroFunc->macroArgs, strdup(yytext));
 		   }
 	YY_BREAK
 case 233:
 YY_RULE_SETUP
-#line 2574 "clic.lex"
+#line 2580 "clic.lex"
 {
 			 int c;
 			 newpos_t();
@@ -10765,24 +10763,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 234:
 YY_RULE_SETUP
-#line 2581 "clic.lex"
+#line 2587 "clic.lex"
 newpos();
 	YY_BREAK
 case 235:
 YY_RULE_SETUP
-#line 2583 "clic.lex"
+#line 2589 "clic.lex"
 newline();
 	YY_BREAK
 case 236:
-YY_RULE_SETUP
-#line 2585 "clic.lex"
-{
-			newline();
-			yyerror("invalid #define directive");
-			BEGIN(INITIAL);
-		}
-	YY_BREAK
-case 237:
 YY_RULE_SETUP
 #line 2591 "clic.lex"
 {
@@ -10791,9 +10780,18 @@ YY_RULE_SETUP
 			BEGIN(INITIAL);
 		}
 	YY_BREAK
+case 237:
+YY_RULE_SETUP
+#line 2597 "clic.lex"
+{
+			newline();
+			yyerror("invalid #define directive");
+			BEGIN(INITIAL);
+		}
+	YY_BREAK
 case 238:
 YY_RULE_SETUP
-#line 2596 "clic.lex"
+#line 2602 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -10802,7 +10800,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 239:
 YY_RULE_SETUP
-#line 2602 "clic.lex"
+#line 2608 "clic.lex"
 {
 		   newpos();
 		   add_string_buf(yytext, yyleng);
@@ -10810,14 +10808,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 240:
 YY_RULE_SETUP
-#line 2607 "clic.lex"
+#line 2613 "clic.lex"
 {
 		   newline();
 		 }
 	YY_BREAK
 case 241:
 YY_RULE_SETUP
-#line 2611 "clic.lex"
+#line 2617 "clic.lex"
 {
 		newpos();
 		addch_string_buf('"');
@@ -10829,7 +10827,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 242:
 YY_RULE_SETUP
-#line 2620 "clic.lex"
+#line 2626 "clic.lex"
 {
 		newpos();
 		addch_string_buf('\'');
@@ -10841,7 +10839,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 243:
 YY_RULE_SETUP
-#line 2629 "clic.lex"
+#line 2635 "clic.lex"
 {
 		newpos();
 		addch_string_buf('[');
@@ -10860,7 +10858,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 244:
 YY_RULE_SETUP
-#line 2646 "clic.lex"
+#line 2652 "clic.lex"
 {
 		   newline();
 		   while(string_buf_ptr>string_buf && isspace(string_buf_ptr[-1]))
@@ -10878,7 +10876,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 245:
 YY_RULE_SETUP
-#line 2661 "clic.lex"
+#line 2667 "clic.lex"
 {
 		   newpos();
 		   addch_string_buf(*yytext);
@@ -10886,7 +10884,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 246:
 YY_RULE_SETUP
-#line 2666 "clic.lex"
+#line 2672 "clic.lex"
 {
 			int find=0,i;
 			newpos();
@@ -10899,7 +10897,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 247:
 YY_RULE_SETUP
-#line 2676 "clic.lex"
+#line 2682 "clic.lex"
 {
 		   newline();
 		   #if 0
@@ -10909,7 +10907,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 248:
 YY_RULE_SETUP
-#line 2683 "clic.lex"
+#line 2689 "clic.lex"
 {
 		   newpos();
 		   insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(yytext),0));
@@ -10917,7 +10915,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 249:
 YY_RULE_SETUP
-#line 2688 "clic.lex"
+#line 2694 "clic.lex"
 {
 		   newpos();
 		   insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(yytext),0));
@@ -10925,7 +10923,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 250:
 YY_RULE_SETUP
-#line 2693 "clic.lex"
+#line 2699 "clic.lex"
 {
 		newpos(); string_buf_ptr = string_buf;
 		strLine=clic_line; strPos=clic_pos; strFile=currentFile();
@@ -10934,7 +10932,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 251:
 YY_RULE_SETUP
-#line 2699 "clic.lex"
+#line 2705 "clic.lex"
 {
 		newpos(); string_buf_ptr = string_buf;
 		strLine=clic_line; strPos=clic_pos; strFile=currentFile();
@@ -10943,7 +10941,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 252:
 YY_RULE_SETUP
-#line 2705 "clic.lex"
+#line 2711 "clic.lex"
 {
 		newpos(); string_buf_ptr = string_buf;
 		strLine=clic_line; strPos=clic_pos; strFile=currentFile();
@@ -10952,7 +10950,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 253:
 YY_RULE_SETUP
-#line 2712 "clic.lex"
+#line 2718 "clic.lex"
 {
 		newline();
 		finale_MacroFunc(curMacroFunc);
@@ -10965,7 +10963,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 254:
 YY_RULE_SETUP
-#line 2721 "clic.lex"
+#line 2727 "clic.lex"
 {
 		newline();
 		finale_MacroFunc(curMacroFunc);
@@ -10978,7 +10976,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 255:
 YY_RULE_SETUP
-#line 2731 "clic.lex"
+#line 2737 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -10987,7 +10985,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 256:
 YY_RULE_SETUP
-#line 2737 "clic.lex"
+#line 2743 "clic.lex"
 {
 		   newpos();
 		   insert_Coll(& curMacroFunc->parts, new_MacroPart(strdup(yytext),0));
@@ -10995,17 +10993,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 257:
 YY_RULE_SETUP
-#line 2743 "clic.lex"
+#line 2749 "clic.lex"
 newpos_t();
 	YY_BREAK
 case 258:
 YY_RULE_SETUP
-#line 2744 "clic.lex"
+#line 2750 "clic.lex"
 newline();
 	YY_BREAK
 case 259:
 YY_RULE_SETUP
-#line 2745 "clic.lex"
+#line 2751 "clic.lex"
 {
 	newpos_t();
 	string_buf[0]=0;
@@ -11018,72 +11016,72 @@ YY_RULE_SETUP
 	YY_BREAK
 case 260:
 YY_RULE_SETUP
-#line 2754 "clic.lex"
+#line 2760 "clic.lex"
 { yyerror("invalid macro call"); }
 	YY_BREAK
 case 261:
 YY_RULE_SETUP
-#line 2755 "clic.lex"
+#line 2761 "clic.lex"
 { }
 	YY_BREAK
 case 262:
 YY_RULE_SETUP
-#line 2757 "clic.lex"
+#line 2763 "clic.lex"
 newpos();add_string_buf(yytext, yyleng);
 	YY_BREAK
 case 263:
 YY_RULE_SETUP
-#line 2758 "clic.lex"
+#line 2764 "clic.lex"
 newline();
 	YY_BREAK
 case 264:
 YY_RULE_SETUP
-#line 2759 "clic.lex"
+#line 2765 "clic.lex"
 newline();
 	YY_BREAK
 case 265:
 YY_RULE_SETUP
-#line 2760 "clic.lex"
+#line 2766 "clic.lex"
 newpos();if (clic_quote=='\"') clic_quote=0; else if (!clic_quote) clic_quote='\"';addch_string_buf(*yytext);
 	YY_BREAK
 case 266:
 YY_RULE_SETUP
-#line 2761 "clic.lex"
+#line 2767 "clic.lex"
 newpos();if (clic_quote=='\'') clic_quote=0; else if (!clic_quote) clic_quote='\'';addch_string_buf(*yytext);
 	YY_BREAK
 case 267:
 YY_RULE_SETUP
-#line 2762 "clic.lex"
+#line 2768 "clic.lex"
 newpos();if (clic_quote=='`') clic_quote=0; else if (!clic_quote) clic_quote='`';addch_string_buf(*yytext);
 	YY_BREAK
 case 268:
 YY_RULE_SETUP
-#line 2763 "clic.lex"
+#line 2769 "clic.lex"
 newpos();if (!clic_quote) clic_brack1++; addch_string_buf(*yytext);
 	YY_BREAK
 case 269:
 YY_RULE_SETUP
-#line 2764 "clic.lex"
+#line 2770 "clic.lex"
 newpos();if (!clic_quote) clic_brack3++; addch_string_buf(*yytext);
 	YY_BREAK
 case 270:
 YY_RULE_SETUP
-#line 2765 "clic.lex"
+#line 2771 "clic.lex"
 newpos();if (!clic_quote) clic_brack2++; addch_string_buf(*yytext);
 	YY_BREAK
 case 271:
 YY_RULE_SETUP
-#line 2766 "clic.lex"
+#line 2772 "clic.lex"
 newpos();if (clic_brack1&&!clic_quote) clic_brack1--; addch_string_buf(*yytext);
 	YY_BREAK
 case 272:
 YY_RULE_SETUP
-#line 2767 "clic.lex"
+#line 2773 "clic.lex"
 newpos();if (clic_brack3&&!clic_quote) clic_brack3--; addch_string_buf(*yytext);
 	YY_BREAK
 case 273:
 YY_RULE_SETUP
-#line 2768 "clic.lex"
+#line 2774 "clic.lex"
 {
 	newpos_t();
 	if (clic_quote || clic_brack1 || clic_brack2 || clic_brack3)
@@ -11104,7 +11102,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 274:
 YY_RULE_SETUP
-#line 2785 "clic.lex"
+#line 2791 "clic.lex"
 {
 	newpos_t();
 	if (clic_brack2 || clic_quote)
@@ -11152,17 +11150,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 275:
 YY_RULE_SETUP
-#line 2829 "clic.lex"
+#line 2835 "clic.lex"
 newpos(); addch_string_buf(*yytext);
 	YY_BREAK
 case 276:
 YY_RULE_SETUP
-#line 2832 "clic.lex"
+#line 2838 "clic.lex"
 newline();
 	YY_BREAK
 case 277:
 YY_RULE_SETUP
-#line 2833 "clic.lex"
+#line 2839 "clic.lex"
 newline();
 	YY_BREAK
 case 278:
@@ -11170,12 +11168,12 @@ case 278:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 2834 "clic.lex"
+#line 2840 "clic.lex"
 newpos();BEGIN(macroCall);
 	YY_BREAK
 case 279:
 YY_RULE_SETUP
-#line 2837 "clic.lex"
+#line 2843 "clic.lex"
 {
 		char *id;
 		int l;
@@ -11200,7 +11198,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 280:
 YY_RULE_SETUP
-#line 2859 "clic.lex"
+#line 2865 "clic.lex"
 {
 		char *id;
 		int l;
@@ -11225,7 +11223,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 281:
 YY_RULE_SETUP
-#line 2881 "clic.lex"
+#line 2887 "clic.lex"
 {
 		char *id;
 		newpos_t();
@@ -11241,7 +11239,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 282:
 YY_RULE_SETUP
-#line 2894 "clic.lex"
+#line 2900 "clic.lex"
 {
 		char *id;
 		newpos_t();
@@ -11257,7 +11255,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 283:
 YY_RULE_SETUP
-#line 2907 "clic.lex"
+#line 2913 "clic.lex"
 {
 		insertCommandList( new_CommandPart(SM_norm, marker_id(yytext)));
 		newpos();
@@ -11265,7 +11263,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 284:
 YY_RULE_SETUP
-#line 2911 "clic.lex"
+#line 2917 "clic.lex"
 {
 		insertCommandList( new_CommandPart(SM_extend, marker_id(yytext)));
 		newpos();
@@ -11273,7 +11271,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 285:
 YY_RULE_SETUP
-#line 2915 "clic.lex"
+#line 2921 "clic.lex"
 {
 		insertCommandList( new_CommandPart(SM_list,marker_id(yytext)));
 		newpos();
@@ -11281,7 +11279,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 286:
 YY_RULE_SETUP
-#line 2919 "clic.lex"
+#line 2925 "clic.lex"
 {
 		char *s;
 		CommandPart *cp;
@@ -11299,7 +11297,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 287:
 YY_RULE_SETUP
-#line 2934 "clic.lex"
+#line 2940 "clic.lex"
 {
 		insert_Coll(sm_enum_coll, strdup(yytext));
 		newpos();
@@ -11307,28 +11305,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 288:
 YY_RULE_SETUP
-#line 2939 "clic.lex"
+#line 2945 "clic.lex"
 {
 		newpos();
 	}
 	YY_BREAK
 case 289:
 YY_RULE_SETUP
-#line 2943 "clic.lex"
+#line 2949 "clic.lex"
 {
 			newline();
 			 }
 	YY_BREAK
 case 290:
 YY_RULE_SETUP
-#line 2947 "clic.lex"
+#line 2953 "clic.lex"
 {
 			newline();
 			 }
 	YY_BREAK
 case 291:
 YY_RULE_SETUP
-#line 2951 "clic.lex"
+#line 2957 "clic.lex"
 {
 			yyerror("unexpected EOL in SM_ENUM");
 			newline();
@@ -11336,7 +11334,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 292:
 YY_RULE_SETUP
-#line 2956 "clic.lex"
+#line 2962 "clic.lex"
 {	newpos(); comment_depth++; comment_caller=YYSTATE;
 			commentLine=clic_line; commentPos=clic_pos; commentFile=currentFile();
 			comment_eol = 0;
@@ -11345,7 +11343,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 293:
 YY_RULE_SETUP
-#line 2962 "clic.lex"
+#line 2968 "clic.lex"
 {
 		BEGIN(commandState);
 		newpos();
@@ -11353,7 +11351,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 294:
 YY_RULE_SETUP
-#line 2967 "clic.lex"
+#line 2973 "clic.lex"
 {
 		BEGIN(commandState);
 		yyerror("bad symbol in SM_ENUM: '%s'", yytext);
@@ -11362,7 +11360,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 295:
 YY_RULE_SETUP
-#line 2973 "clic.lex"
+#line 2979 "clic.lex"
 {
 		yytext[yyleng-2]=0;
 		insertCommandList( new_CommandPart(SM_patt,yytext+2));
@@ -11371,14 +11369,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 296:
 YY_RULE_SETUP
-#line 2979 "clic.lex"
+#line 2985 "clic.lex"
 {
 		newpos_t();
 	}
 	YY_BREAK
 case 297:
 YY_RULE_SETUP
-#line 2983 "clic.lex"
+#line 2989 "clic.lex"
 {
 		newpos();
 		if (optLevel)
@@ -11396,7 +11394,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 298:
 YY_RULE_SETUP
-#line 2997 "clic.lex"
+#line 3003 "clic.lex"
 { /* word */
 		char *s;
 #if 0
@@ -11413,7 +11411,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 299:
 YY_RULE_SETUP
-#line 3010 "clic.lex"
+#line 3016 "clic.lex"
 {
 		Coll *coll=new_Coll(delete_CommandPart,NULL);
 		CommandPart *cp=new_CommandPart(SM_option,NULL);
@@ -11429,7 +11427,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 300:
 YY_RULE_SETUP
-#line 3022 "clic.lex"
+#line 3028 "clic.lex"
 {
 		newpos();
 		optLevel--;
@@ -11446,7 +11444,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 301:
 YY_RULE_SETUP
-#line 3035 "clic.lex"
+#line 3041 "clic.lex"
 { /* literal text */
 		insertCommandList( new_CommandPart(SM_literal, yytext));
 		newpos();
@@ -11454,7 +11452,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 302:
 YY_RULE_SETUP
-#line 3039 "clic.lex"
+#line 3045 "clic.lex"
 {
 
 		insertCommandList( new_CommandPart(SM_literal, yytext));
@@ -11463,22 +11461,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 303:
 YY_RULE_SETUP
-#line 3044 "clic.lex"
+#line 3050 "clic.lex"
 { newline();/* skip \n */ }
 	YY_BREAK
 case 304:
 YY_RULE_SETUP
-#line 3045 "clic.lex"
+#line 3051 "clic.lex"
 { newline(); }
 	YY_BREAK
 case 305:
 YY_RULE_SETUP
-#line 3046 "clic.lex"
+#line 3052 "clic.lex"
 { newline(); }
 	YY_BREAK
 case 306:
 YY_RULE_SETUP
-#line 3047 "clic.lex"
+#line 3053 "clic.lex"
 {
 		newline();
 		yyerror("unexpected end of #command directive");
@@ -11488,7 +11486,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 307:
 YY_RULE_SETUP
-#line 3053 "clic.lex"
+#line 3059 "clic.lex"
 { /* literal text */
 		insertCommandList( new_CommandPart(SM_literal, yytext));
 		newpos();
@@ -11496,7 +11494,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 308:
 YY_RULE_SETUP
-#line 3058 "clic.lex"
+#line 3064 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_norm, marker_id(yytext)));
 		newpos();
@@ -11504,7 +11502,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 309:
 YY_RULE_SETUP
-#line 3062 "clic.lex"
+#line 3068 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_noni, marker_id(yytext)));
 		newpos();
@@ -11512,7 +11510,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 310:
 YY_RULE_SETUP
-#line 3066 "clic.lex"
+#line 3072 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_str, marker_id(yytext)));
 		newpos();
@@ -11520,7 +11518,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 311:
 YY_RULE_SETUP
-#line 3070 "clic.lex"
+#line 3076 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_intel, marker_id(yytext)));
 		newpos();
@@ -11528,7 +11526,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 312:
 YY_RULE_SETUP
-#line 3074 "clic.lex"
+#line 3080 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_block, marker_id(yytext)));
 		newpos();
@@ -11536,7 +11534,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 313:
 YY_RULE_SETUP
-#line 3078 "clic.lex"
+#line 3084 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_log, marker_id(yytext)));
 		newpos();
@@ -11544,7 +11542,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 314:
 YY_RULE_SETUP
-#line 3082 "clic.lex"
+#line 3088 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_var, marker_id(yytext)));
 		newpos();
@@ -11552,7 +11550,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 315:
 YY_RULE_SETUP
-#line 3086 "clic.lex"
+#line 3092 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_join, yytext));
 		newpos();
@@ -11560,14 +11558,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 316:
 YY_RULE_SETUP
-#line 3091 "clic.lex"
+#line 3097 "clic.lex"
 {
 		newpos_t();
 	}
 	YY_BREAK
 case 317:
 YY_RULE_SETUP
-#line 3095 "clic.lex"
+#line 3101 "clic.lex"
 {
 		Coll *coll=new_Coll(delete_CommandPart,NULL);
 		CommandPart *cp=new_CommandPart(TM_option,NULL);
@@ -11583,7 +11581,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 318:
 YY_RULE_SETUP
-#line 3108 "clic.lex"
+#line 3114 "clic.lex"
 {
 		newpos();
 		optLevel--;
@@ -11600,7 +11598,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 319:
 YY_RULE_SETUP
-#line 3122 "clic.lex"
+#line 3128 "clic.lex"
 { /* literal text */
 		insertCommandList( new_CommandPart(TM_literal, yytext));
 		newpos();
@@ -11608,7 +11606,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 320:
 YY_RULE_SETUP
-#line 3127 "clic.lex"
+#line 3133 "clic.lex"
 { /* literal text */
 		insertCommandList( new_CommandPart(TM_literal, yytext));
 		newpos();
@@ -11616,7 +11614,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 321:
 YY_RULE_SETUP
-#line 3132 "clic.lex"
+#line 3138 "clic.lex"
 { /* literal text */
 		insertCommandList( new_CommandPart(TM_literal, yytext));
 		newpos();
@@ -11624,7 +11622,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 322:
 YY_RULE_SETUP
-#line 3137 "clic.lex"
+#line 3143 "clic.lex"
 {
 		/*char *s;
 		for(s=yytext; *s; ++s)
@@ -11635,7 +11633,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 323:
 YY_RULE_SETUP
-#line 3145 "clic.lex"
+#line 3151 "clic.lex"
 {
 
 		insertCommandList( new_CommandPart(TM_literal, yytext));
@@ -11644,7 +11642,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 324:
 YY_RULE_SETUP
-#line 3150 "clic.lex"
+#line 3156 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_literal, yytext+1));
 		newpos();
@@ -11652,7 +11650,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 325:
 YY_RULE_SETUP
-#line 3154 "clic.lex"
+#line 3160 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_literal, "["));
 		newpos();
@@ -11660,7 +11658,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 326:
 YY_RULE_SETUP
-#line 3158 "clic.lex"
+#line 3164 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_literal, "]"));
 		newpos();
@@ -11668,7 +11666,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 327:
 YY_RULE_SETUP
-#line 3162 "clic.lex"
+#line 3168 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_literal, "{"));
 		newpos();
@@ -11676,7 +11674,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 328:
 YY_RULE_SETUP
-#line 3166 "clic.lex"
+#line 3172 "clic.lex"
 {
 		insertCommandList( new_CommandPart(TM_literal, "}"));
 		newpos();
@@ -11684,7 +11682,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 329:
 YY_RULE_SETUP
-#line 3171 "clic.lex"
+#line 3177 "clic.lex"
 {
 		/* skip \n */
 		newline();
@@ -11692,17 +11690,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 330:
 YY_RULE_SETUP
-#line 3175 "clic.lex"
+#line 3181 "clic.lex"
 { newline(); }
 	YY_BREAK
 case 331:
 YY_RULE_SETUP
-#line 3176 "clic.lex"
+#line 3182 "clic.lex"
 { newline(); }
 	YY_BREAK
 case 332:
 YY_RULE_SETUP
-#line 3178 "clic.lex"
+#line 3184 "clic.lex"
 {
 		/* end of state */
 		newline();
@@ -11720,7 +11718,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 333:
 YY_RULE_SETUP
-#line 3192 "clic.lex"
+#line 3198 "clic.lex"
 {
 		/* end of state */
 		newline();
@@ -11739,7 +11737,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 334:
 YY_RULE_SETUP
-#line 3207 "clic.lex"
+#line 3213 "clic.lex"
 { /* literal text */
 		insertCommandList( new_CommandPart(TM_literal, yytext));
 		newpos();
@@ -11747,7 +11745,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 335:
 YY_RULE_SETUP
-#line 3212 "clic.lex"
+#line 3218 "clic.lex"
 {
 		newpos_t();
 		yymore();
@@ -11755,7 +11753,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 336:
 YY_RULE_SETUP
-#line 3217 "clic.lex"
+#line 3223 "clic.lex"
 {
 		newpos();
 		yymore();
@@ -11763,27 +11761,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 337:
 YY_RULE_SETUP
-#line 3222 "clic.lex"
+#line 3228 "clic.lex"
 newpos(); yymore();
 	YY_BREAK
 case 338:
 YY_RULE_SETUP
-#line 3223 "clic.lex"
+#line 3229 "clic.lex"
 newpos(); yymore();
 	YY_BREAK
 case 339:
 YY_RULE_SETUP
-#line 3224 "clic.lex"
+#line 3230 "clic.lex"
 newpos(); yymore();
 	YY_BREAK
 case 340:
 YY_RULE_SETUP
-#line 3225 "clic.lex"
+#line 3231 "clic.lex"
 newpos(); yymore();
 	YY_BREAK
 case 341:
 YY_RULE_SETUP
-#line 3227 "clic.lex"
+#line 3233 "clic.lex"
 {
 #if 1
 			newpos();
@@ -11814,27 +11812,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 342:
 YY_RULE_SETUP
-#line 3255 "clic.lex"
+#line 3261 "clic.lex"
 comment_beg = yyleng-2; newpos(); BEGIN(cmdEolComment); yymore();
 	YY_BREAK
 case 343:
 YY_RULE_SETUP
-#line 3256 "clic.lex"
+#line 3262 "clic.lex"
 comment_beg = yyleng-2; newpos(); BEGIN(cmdEolComment); yymore();
 	YY_BREAK
 case 344:
 YY_RULE_SETUP
-#line 3257 "clic.lex"
+#line 3263 "clic.lex"
 comment_beg = yyleng-2; newpos(); BEGIN(cmdComment); yymore();
 	YY_BREAK
 case 345:
 YY_RULE_SETUP
-#line 3258 "clic.lex"
+#line 3264 "clic.lex"
 newpos(); yymore();
 	YY_BREAK
 case 346:
 YY_RULE_SETUP
-#line 3259 "clic.lex"
+#line 3265 "clic.lex"
 {
 		int i;
 		for(i=comment_beg; i<yyleng; i++)
@@ -11846,22 +11844,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 347:
 YY_RULE_SETUP
-#line 3267 "clic.lex"
+#line 3273 "clic.lex"
 newpos(); yymore();
 	YY_BREAK
 case 348:
 YY_RULE_SETUP
-#line 3268 "clic.lex"
+#line 3274 "clic.lex"
 newpos(); yymore();
 	YY_BREAK
 case 349:
 YY_RULE_SETUP
-#line 3269 "clic.lex"
+#line 3275 "clic.lex"
 newline(); yymore();
 	YY_BREAK
 case 350:
 YY_RULE_SETUP
-#line 3270 "clic.lex"
+#line 3276 "clic.lex"
 {
 		int i;
 		newpos();
@@ -11873,39 +11871,39 @@ YY_RULE_SETUP
 	YY_BREAK
 case 351:
 YY_RULE_SETUP
-#line 3281 "clic.lex"
+#line 3287 "clic.lex"
 newpos(); stringQuota='"'; strLine=clic_line; strPos=clic_pos; strFile=currentFile(); BEGIN(cmdString); yymore();
 	YY_BREAK
 case 352:
 YY_RULE_SETUP
-#line 3282 "clic.lex"
+#line 3288 "clic.lex"
 newpos(); stringQuota='\''; strLine=clic_line; strPos=clic_pos; strFile=currentFile(); BEGIN(cmdString); yymore();
 	YY_BREAK
 case 353:
 YY_RULE_SETUP
-#line 3283 "clic.lex"
+#line 3289 "clic.lex"
 newpos(); stringQuota='`'; strLine=clic_line; strPos=clic_pos; strFile=currentFile(); BEGIN(cmdString); yymore();
 	YY_BREAK
 case 354:
 YY_RULE_SETUP
-#line 3284 "clic.lex"
+#line 3290 "clic.lex"
 newpos(); stringQuota=']'; strLine=clic_line; strPos=clic_pos; strFile=currentFile(); brack_level=1; BEGIN(cmdString); yymore();
 	YY_BREAK
 case 355:
 YY_RULE_SETUP
-#line 3285 "clic.lex"
+#line 3291 "clic.lex"
 newpos(); stringQuota='}'; strLine=clic_line; strPos=clic_pos; strFile=currentFile(); brack_level=1; BEGIN(cmdString); yymore();
 	YY_BREAK
 case 356:
 YY_RULE_SETUP
-#line 3286 "clic.lex"
+#line 3292 "clic.lex"
 newpos(); stringQuota=')'; strLine=clic_line; strPos=clic_pos; strFile=currentFile(); brack_level=1; BEGIN(cmdString); yymore();
 	YY_BREAK
 case 357:
-#line 3289 "clic.lex"
+#line 3295 "clic.lex"
 case 358:
 YY_RULE_SETUP
-#line 3289 "clic.lex"
+#line 3295 "clic.lex"
 {
 	newpos_t();
 	yymore();
@@ -11913,7 +11911,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 359:
 YY_RULE_SETUP
-#line 3294 "clic.lex"
+#line 3300 "clic.lex"
 {
 		newpos_t();
 		if (yytext[yyleng-1] == stringQuota)
@@ -11935,7 +11933,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 360:
 YY_RULE_SETUP
-#line 3313 "clic.lex"
+#line 3319 "clic.lex"
 {
 		newpos_t();
 		if (yytext[yyleng-1] == stringQuota2)
@@ -11949,7 +11947,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 361:
 YY_RULE_SETUP
-#line 3324 "clic.lex"
+#line 3330 "clic.lex"
 {
 		newpos_t();
 		yymore();
@@ -11957,7 +11955,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 362:
 YY_RULE_SETUP
-#line 3329 "clic.lex"
+#line 3335 "clic.lex"
 {
 		if (stringQuota==']')
 		{
@@ -11979,7 +11977,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 363:
 YY_RULE_SETUP
-#line 3347 "clic.lex"
+#line 3353 "clic.lex"
 {
 		if (stringQuota=='}')
 		{
@@ -12001,7 +11999,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 364:
 YY_RULE_SETUP
-#line 3366 "clic.lex"
+#line 3372 "clic.lex"
 {
 		if (stringQuota==')')
 		{
@@ -12024,7 +12022,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 365:
 YY_RULE_SETUP
-#line 3386 "clic.lex"
+#line 3392 "clic.lex"
 {
 		if (stringQuota==')'||stringQuota =='}'||stringQuota==']')
 		{
@@ -12044,7 +12042,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 366:
 YY_RULE_SETUP
-#line 3403 "clic.lex"
+#line 3409 "clic.lex"
 {
 		if (stringQuota2==')'||stringQuota2 =='}'||stringQuota2==']')
 		{
@@ -12064,14 +12062,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 367:
 YY_RULE_SETUP
-#line 3420 "clic.lex"
+#line 3426 "clic.lex"
 {
 	newpos_t(); yymore();
 	}
 	YY_BREAK
 case 368:
 YY_RULE_SETUP
-#line 3424 "clic.lex"
+#line 3430 "clic.lex"
 {
 	yyerror("cmdstr: newline in string");
 	newline();
@@ -12082,7 +12080,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 369:
 YY_RULE_SETUP
-#line 3432 "clic.lex"
+#line 3438 "clic.lex"
 {
 	newpos_t();
 	yymore();
@@ -12090,7 +12088,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 370:
 YY_RULE_SETUP
-#line 3437 "clic.lex"
+#line 3443 "clic.lex"
 {
 		/* skip ;\n */
 		char *s;
@@ -12104,7 +12102,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 371:
 YY_RULE_SETUP
-#line 3448 "clic.lex"
+#line 3454 "clic.lex"
 { /* /[^ \r\n\032]  */
 	char *s;
 /*        vo_printf(3, 0, "commandCall; yytext: '%s'\n", yytext);*/
@@ -12122,7 +12120,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 372:
 YY_RULE_SETUP
-#line 3464 "clic.lex"
+#line 3470 "clic.lex"
 {
 		nlflag = 1;
 		/*printf("command_end:%d:'%.*s'\n", yyleng, yyleng, yytext);*/
@@ -12134,7 +12132,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 373:
 YY_RULE_SETUP
-#line 3473 "clic.lex"
+#line 3479 "clic.lex"
 {
 		newpos();
 		yymore();
@@ -12142,7 +12140,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 374:
 YY_RULE_SETUP
-#line 3479 "clic.lex"
+#line 3485 "clic.lex"
 {
 	char *s;
 	int l;
@@ -12190,7 +12188,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 375:
 YY_RULE_SETUP
-#line 3524 "clic.lex"
+#line 3530 "clic.lex"
 {
 		int l1, l2;
 		char *s;
@@ -12231,7 +12229,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 376:
 YY_RULE_SETUP
-#line 3562 "clic.lex"
+#line 3568 "clic.lex"
 {
 		/* [-+/=*^%$:<>!#] */
 		int l1, l2, force_name=0, i, l3;
@@ -12365,7 +12363,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 377:
 YY_RULE_SETUP
-#line 3693 "clic.lex"
+#line 3699 "clic.lex"
 { /*  +[^=]  */ /* /[;\r\n \t\032] */
 	char *s = 0;
 	int l;
@@ -12410,7 +12408,7 @@ cmd_id:
 	YY_BREAK
 case 378:
 YY_RULE_SETUP
-#line 3735 "clic.lex"
+#line 3741 "clic.lex"
 { /* {id}/{wt}*"(" */
 	int cw = clic_word;
 	newpos_w();
@@ -12446,7 +12444,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 379:
 YY_RULE_SETUP
-#line 3768 "clic.lex"
+#line 3774 "clic.lex"
 {
 	vo_printf(6,0, "{id}: %s state=%d\n", yytext, YYSTATE);
 	if (feof(yyin) && clic_pos==1)
@@ -12493,7 +12491,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 380:
 YY_RULE_SETUP
-#line 3812 "clic.lex"
+#line 3818 "clic.lex"
 {
 		char *s;
 		int l;
@@ -12528,7 +12526,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 381:
 YY_RULE_SETUP
-#line 3845 "clic.lex"
+#line 3851 "clic.lex"
 {
 		if (subst_flag!=2)
 		{
@@ -12555,7 +12553,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 382:
 YY_RULE_SETUP
-#line 3869 "clic.lex"
+#line 3875 "clic.lex"
 {
 		if (subst_flag!=2)
 		{
@@ -12582,7 +12580,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 383:
 YY_RULE_SETUP
-#line 3893 "clic.lex"
+#line 3899 "clic.lex"
 { newpos_t();
 	if (clic_errorcount>25)
 	{
@@ -12593,7 +12591,7 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case YY_STATE_EOF(commandCall):
-#line 3902 "clic.lex"
+#line 3908 "clic.lex"
 {
 			command_end();
 			/*goto clic_eof;*/
@@ -12636,7 +12634,7 @@ case YY_STATE_EOF(foreach_words):
 case YY_STATE_EOF(field):
 case YY_STATE_EOF(vardef_words):
 case YY_STATE_EOF(static_words):
-#line 3908 "clic.lex"
+#line 3914 "clic.lex"
 {
 	clic_eof:
 			if ( includes.count<2 )
@@ -12677,17 +12675,17 @@ case YY_STATE_EOF(static_words):
 	YY_BREAK
 case 384:
 YY_RULE_SETUP
-#line 3946 "clic.lex"
+#line 3952 "clic.lex"
 put_char('\n');  newpos();
 	YY_BREAK
 case 385:
 YY_RULE_SETUP
-#line 3948 "clic.lex"
+#line 3954 "clic.lex"
 newpos_w(); MECHO; MRETURN(POW)
 	YY_BREAK
 case 386:
 YY_RULE_SETUP
-#line 3950 "clic.lex"
+#line 3956 "clic.lex"
 {
 		yylval.string=mem_dup(yytext+1, yyleng-2);
 		newpos_w(); MECHO; MRETURN(DATE)
@@ -12695,7 +12693,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 387:
 YY_RULE_SETUP
-#line 3955 "clic.lex"
+#line 3961 "clic.lex"
 {
 		if(bracket_level <= 0)
 			bracket_buf.ptr = bracket_buf.buf;
@@ -12705,7 +12703,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 388:
 YY_RULE_SETUP
-#line 3962 "clic.lex"
+#line 3968 "clic.lex"
 {
 		newpos_w(); MECHO;
 		bracket_level--;
@@ -12716,7 +12714,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 389:
 YY_RULE_SETUP
-#line 3970 "clic.lex"
+#line 3976 "clic.lex"
 {
 		newpos_w();
 		if (subst_flag==1)
@@ -12755,15 +12753,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 390:
 YY_RULE_SETUP
-#line 4006 "clic.lex"
+#line 4012 "clic.lex"
 newpos_w(); MECHO; MRETURN(*yytext)
 	YY_BREAK
 case 391:
 YY_RULE_SETUP
-#line 4011 "clic.lex"
+#line 4017 "clic.lex"
 ECHO;
 	YY_BREAK
-#line 12761 "lex.yy.c"
+#line 12762 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -13647,7 +13645,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 4011 "clic.lex"
+#line 4017 "clic.lex"
 
 
 /* ][ common */
