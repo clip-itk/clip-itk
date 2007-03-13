@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.3  2007/03/13 13:20:26  itk
+   uri: fix small bug in tokennext()
+
    Revision 1.2  2007/02/26 08:39:28  itk
    uri: small fix in charrepl()
 
@@ -3189,12 +3192,16 @@ clip_TOKEN(ClipMachine * mp)
 	free(buf);
 	return 0;
 }
+#define D20070313
 
 int
 clip_TOKENNEXT(ClipMachine * mp)
 {
 	int l1, nt, *tmp1, tlen;
-	unsigned char ch,*e, *end, *ret, *tbeg, *tend, *tmp2;
+#ifndef  D20070313
+	unsigned char ch;
+#endif
+	unsigned char *e, *end, *ret, *tbeg, *tend, *tmp2;
 	void *atsep = _clip_fetch_item(mp, HASH_token_atsep);
 	unsigned char *str = _clip_fetch_item(mp, HASH_token_string);
 	unsigned char *buf = (unsigned char *) _clip_fetch_item(mp, HASH_token_delimiters);
@@ -3217,14 +3224,17 @@ clip_TOKENNEXT(ClipMachine * mp)
 	*(tmp2 + 2) = 0;
 
 	e = str + ignore;
+	//printf("\ne=%s,%d ",e,ignore);
 	end = str + l1;
 	for (nt = 0; nt < tlen && e < end && buf[(int) (*e)]; e++, nt++);
 	if (e != str)
 		*tmp2 = *(e - 1);
 	tbeg = e;
+	//printf("tbeg=%s ",tbeg);
 	for (; e < end && !buf[(int) (*e)]; e++);
 	*(tmp2 + 2) = *(e);
 	tend = e;
+	//printf("tend=%s",tend);
 /*        for(nt=0; nt<tlen && e<end && buf[*e];  e++,nt++);*/
 	*((int *) atsep) = e - str;
 
@@ -3233,8 +3243,11 @@ clip_TOKENNEXT(ClipMachine * mp)
 	memcpy(ret, tbeg, tend - tbeg);
 	ret[tend - tbeg] = 0;
 	_clip_retcn_m(mp, (char *)ret, tend - tbeg);
+#ifndef  D20070313
 	for (ch=*e; e < end && ch == *e; e++);
 	tend = e;
+#endif
+	//printf("tend=%s,%d\n",tend,tend - str);
 	*((int *) atsep) = tend - str;
 	tmp1 = (int *) atsep;
 	tmp1++;
