@@ -13,11 +13,10 @@
 #include "clip-gtk2.ch"
 #include "clip-gtk2.h"
 
-static struct column_format {
-	gint	column;
+typedef struct column_format {
+	guint	column;
 	gchar	*format;
-};
-
+}column_format;
 
 /*********************** SIGNALS **************************/
 
@@ -945,13 +944,13 @@ format_data_func (GtkTreeViewColumn *col,
                   GtkCellRenderer   *renderer,
                   GtkTreeModel      *model,
                   GtkTreeIter       *iter,
-                  gpointer           user_data)
+                  gpointer           u_data)
 {
 	gfloat  n;
 	gchar   buf[20];
-	struct column_format *data = (struct column_format *)user_data;
+	column_format *data = (column_format *)u_data;
 	
-	gtk_tree_model_get(model, iter, data->column-1, &n, -1);
+	gtk_tree_model_get(model, iter, data->column, &n, -1);
 	g_snprintf(buf, sizeof(buf), data->format, n);
 	g_object_set(renderer, "text", buf, NULL);
 }
@@ -961,21 +960,21 @@ clip_GTK_TREEVIEWCOLUMNSETFORMAT(ClipMachine * cm)
 {
 	C_object *ccolumn = _fetch_co_arg(cm);
 	C_object *ccell   = _fetch_cobject(cm, _clip_spar(cm, 2));
-    gint num          = _clip_parni(cm, 3);
-    gchar *format     = _clip_parc(cm, 4);
-	struct column_format *user_data;
+	gint num          = _clip_parni(cm, 3);
+	gchar *format     = _clip_parc(cm, 4);
+	column_format user_data;
 	
 	CHECKARG2(1,MAP_t, NUMERIC_t); CHECKCOBJOPT(ccolumn, GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(ccell, GTK_IS_CELL_RENDERER(ccell->object));
 	CHECKARG(3, NUMERIC_t)
 	CHECKARG(4, CHARACTER_t);
 
-    LOCALE_TO_UTF(format);
-	user_data->column = num;
-	user_data->format = format;  
+	LOCALE_TO_UTF(format);
+	user_data.column = num-1;
+	user_data.format = g_strdup(format);  
 	
-	gtk_tree_view_column_set_cell_data_func(GTK_TREE_VIEW_COLUMN(ccolumn->object), 
-		GTK_CELL_RENDERER(ccell->object), format_data_func, (gpointer)user_data, NULL);
+	//gtk_tree_view_column_set_cell_data_func(GTK_TREE_VIEW_COLUMN(ccolumn->object), 
+	//	GTK_CELL_RENDERER(ccell->object), format_data_func, (gpointer)&user_data, NULL);
 	
 	return 0;
 err:
@@ -985,4 +984,3 @@ err:
 
 
 #endif
-
