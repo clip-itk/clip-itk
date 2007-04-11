@@ -962,7 +962,7 @@ clip_GTK_TREEVIEWCOLUMNSETFORMAT(ClipMachine * cm)
 	C_object *ccell   = _fetch_cobject(cm, _clip_spar(cm, 2));
 	gint num          = _clip_parni(cm, 3);
 	gchar *format     = _clip_parc(cm, 4);
-	column_format user_data;
+	column_format *user_data;
 	
 	CHECKARG2(1,MAP_t, NUMERIC_t); CHECKCOBJOPT(ccolumn, GTK_IS_TREE_VIEW_COLUMN(ccolumn->object));
 	CHECKARG2(2,MAP_t,NUMERIC_t); CHECKCOBJOPT(ccell, GTK_IS_CELL_RENDERER(ccell->object));
@@ -970,11 +970,12 @@ clip_GTK_TREEVIEWCOLUMNSETFORMAT(ClipMachine * cm)
 	CHECKARG(4, CHARACTER_t);
 
 	LOCALE_TO_UTF(format);
-	user_data.column = num-1;
-	user_data.format = g_strdup(format);  
+	user_data = (column_format *)malloc(sizeof(column_format));
+	user_data->column = num-1;
+	user_data->format = g_strdup(format);  
 	
-	//gtk_tree_view_column_set_cell_data_func(GTK_TREE_VIEW_COLUMN(ccolumn->object), 
-	//	GTK_CELL_RENDERER(ccell->object), format_data_func, (gpointer)&user_data, NULL);
+	gtk_tree_view_column_set_cell_data_func(GTK_TREE_VIEW_COLUMN(ccolumn->object), 
+		GTK_CELL_RENDERER(ccell->object), format_data_func, (gpointer)user_data, NULL);
 	
 	return 0;
 err:
