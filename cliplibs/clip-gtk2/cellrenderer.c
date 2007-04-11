@@ -46,6 +46,7 @@ handle_cell_renderer_text_edited (GtkCellRendererText *cellrenderertext, gchar *
 {
 	OBJECTPREPARECV(cs,cv);
 	_clip_mputc(cs->co->cmachine, &cv, HASH_PATHSTRING, arg1, strlen(arg1));
+	arg2 = (arg2 ? arg2 : "");
 	LOCALE_FROM_UTF(arg2);
 	_clip_mputc(cs->co->cmachine, &cv, HASH_NEWTEXT, arg2, strlen(arg2));
         FREE_TEXT(arg2);
