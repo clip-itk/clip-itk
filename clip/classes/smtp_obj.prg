@@ -155,9 +155,9 @@ static function smtp_send(sFrom,sTo,sData)
 			endif
 			sData += chr(10)
 			if base64
-				sData += base64encode(filestr(::attachments[i]))+chr(10)
+				sData += base64encode(memoread(::attachments[i]))+chr(10)
 			else
-				sData += filestr(::attachments[i])+chr(10)
+				sData += memoread(::attachments[i])+chr(10)
 			endif
 		next
 		sData += "--"+boundary+"--"+chr(10)
