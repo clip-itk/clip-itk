@@ -1,5 +1,8 @@
 /*
 	$Log$
+	Revision 1.2  2007/05/07 05:32:16  itk
+	uri:some fix for NEWDECIMAL
+	
 	Revision 1.1  2006/06/22 20:12:11  itk
 	uri: init sf.net
 	
@@ -466,6 +469,7 @@ static char _ms_ctype(int type){
 		case MST_DOUBLE:
 		case MST_LONGLONG:
 		case MST_INT24:
+		case MST_NEWDECIMAL:
 		case MST_YEAR:
 			return 'N';
 

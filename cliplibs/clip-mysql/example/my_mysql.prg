@@ -10,6 +10,7 @@ LOCAL socket	// -s
 LOCAL flag		// -f
 
 ErrorBlock({|e| SQLError(e)})
+clear screen
 
 DO WHILE param(I) != NIL
 	IF param(I) == "--help" .OR. param(I) == "-?"

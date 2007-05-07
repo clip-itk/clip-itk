@@ -13,7 +13,8 @@ FUNCTION MS2CLIP(rowset,fieldno)
 	DO CASE
 		CASE type==MST_DECIMAL;
 			.OR. type==MST_FLOAT;
-			.OR. type==MST_DOUBLE
+			.OR. type==MST_DOUBLE;
+			.OR. type==MST_NEWDECIMAL
 			RETURN FLOATVAL(data,SQLFieldLen(rowset,fieldno),;
 				SQLFieldDec(rowset,fieldno))
 		CASE type==MST_TINY;
@@ -53,8 +54,13 @@ FUNCTION CLIP2MS(rowset,fieldno,value,totext)
 	DO CASE
 		CASE type==MST_DECIMAL;
 			.OR. type==MST_FLOAT;
-			.OR. type==MST_DOUBLE
-			RETURN STR(value,SQLFieldLen(rowset,fieldno),SQLFieldDec(rowset,fieldno))
+			.OR. type==MST_DOUBLE;
+			.OR. type==MST_NEWDECIMAL
+			if valtype(value) == "N"
+				RETURN STR(value,SQLFieldLen(rowset,fieldno),SQLFieldDec(rowset,fieldno))
+			else
+				RETURN toSTRing(value,SQLFieldLen(rowset,fieldno),SQLFieldDec(rowset,fieldno))
+			endif				
 		CASE type==MST_TINY;
 			.OR. type==MST_SHORT;
 			.OR. type==MST_INT24;

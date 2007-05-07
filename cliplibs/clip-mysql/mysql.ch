@@ -24,4 +24,6 @@
 #define MST_VAR_STRING		253		// Implemented!
 #define MST_STRING			254		// Implemented!
 
+#define MST_NEWDECIMAL			246		// Implemented!
+
 #endif
