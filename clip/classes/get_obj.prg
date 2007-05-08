@@ -750,6 +750,7 @@ static func toDecPos()
    //  		::__original=substr(::__original,1,p-1)+substr(::__original,p+1)+" "
    endif
   ::__firstKey:=.t.
+  ::changed:=.t.
   ::_display()
 return NIL
 
