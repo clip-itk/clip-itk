@@ -1001,6 +1001,9 @@ static function __install_tcolumn(oDict,oTcol,nLevel)
 		s1 := iif( s $ trans, trans[s],s)
 		if s1 $ oTcol
 			oData[s] := oTcol[s1]
+		endif			
+		if s $ oTcol
+			oData[s] := oTcol[s]
 		else
 			oData[s] := ""
 		endif
