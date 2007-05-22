@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is main part of library libcodb_query                            */
 /*                                                                         */
-/*   Copyright (C) 2005-2006 by E/AS Software Foundation                   */
+/*   Copyright (C) 2005-2007 by E/AS Software Foundation                   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>                          */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -18,6 +18,12 @@
 	- export/import
 	- use file content as command list
 	- SET DBF CHARSET TO <>
+	- Ошибка обновления имени метаобъекта в codb
+	- Документация по утилите codb отдельно
+	- Использование ; в строках
+	- DROP DATABASE <db>
+	
+	- При поиске по неиндексированным полям выдаёт все записи (в codb_ab ищет правильно!)
 */
 
 /* First key list */
@@ -108,13 +114,18 @@ function CODB_Result( data )
 	obj := map()
 	obj:className := "CODB_Result"
 	
-	obj:answer := "OK"
-	obj:fields := array(0)
-	obj:data   := data
+	obj:answer    := "OK"
+	obj:fields    := array(0)
+	obj:data      := data
 	
-	obj:error  := NIL 
-	obj:columns := 0
-	obj:rows    := 0
+	obj:error     := NIL 
+	obj:columns   := 0
+	obj:rows      := 0
+	obj:affected  := map() // Affected records
+	obj:affected:type  := 'N' // N - none, C - created, D - deleted, M - modified
+	obj:affected:class := ''
+	obj:affected:list  := array(0)
+	obj:affected:db    := ''
 	
 return obj
 
@@ -238,6 +249,7 @@ function codb_execute( self, cmd, db, files )
 	
 	// Create result object
 	r := CODB_Result()
+	r:affected:db := db
 
 	if valtype(self) != 'O' .or. ( "CLASSNAME" $ self .and. self:className != "CODB_Client")
 		r:answer := "ERROR"
@@ -316,6 +328,7 @@ function codb_execute( self, cmd, db, files )
 					r:answer := "ERROR"
 					r:error  := ret
 				endif
+				//?? "RESULT:", r, chr(10)
 				return r
 			endif
 		next
@@ -482,7 +495,7 @@ static function ec_help( self, cmd, res, files )
 			case 'metaput'
 				res:data := {{'metaput (<param1>=<value1>[, ...])','Create (id is NULL) or update metaobject'}}
 			case 'delete'
-				res:data := {{'delete <id>','Delete object or metaobject specified by <id>'}}
+				res:data := {{'delete <id>; delete from <class>','Delete object or metaobject specified by <id> or delte all objects of class name <class>'}}
 			case 'drop'
 				res:data := {{'drop <class> <name>','Drop metaobject class <class> and name <name>'}}
 			case 'select'
@@ -696,15 +709,22 @@ static function ec_put_object( self, obj, res, files, d, class )
 			else 
 				id := NIL
 			endif
+			res:affected:type  := 'M'
+			res:affected:class := obj:class_id
 		else
 			// Create object
 			id := d:append(obj, class)
+			res:affected:type  := 'C'
+			res:affected:class := class
 		endif
 		if .not. empty(d:error)
 			return "Cannot put "+cEnt+": "+d:error
 		endif
 		res:fields := array(0)
 		res:data   := id
+		if .not. empty(id)
+			res:affected:list := { id }
+		endif
 
 	recover using oErr
 		return "Error put '"+class+"': "+oErr:description
@@ -747,6 +767,11 @@ static function ec_get( self, cmd, res, files, d )
 		if val(d:error) > 0
 			return "Cannot get "+cEnt+" with id "+cmd[2]+": "+d:error
 		endif
+		
+		if '__VERSION' $ dbl .and. dbl:__version < 0
+			return "Cannot get "+cEnt+" with id "+cmd[2]+": "+cEnt+" was deleted"
+		endif
+		
 		res:fields := {"Attribute","Value"}
 		res:data   := array(0)
 		
@@ -820,7 +845,7 @@ return NIL
 /* 'PUT' command */
 static function ec_put( self, cmd, res, files, d, metaclass )
 	local oErr, cEnt, obj:=map(), i, e, name, value, shift:=0
-	local pos, pos2, class_id, class_name, j, cClass, cValue, cFile
+	local pos, pos2, class_id, class_name, j, cClass, cValue, cFile, nId
 	
 	if valtype(d) == 'O'
 		cEnt := 'metaobject'
@@ -993,7 +1018,11 @@ static function ec_put( self, cmd, res, files, d, metaclass )
 			//d:padrbody(obj, class_id)
 			
 			// TODO: error in '.NOT.' on extents appended
-			d:append(obj, class_id)
+			nId := d:append(obj, class_id)
+			res:affected:type  := 'C'
+			res:affected:class := class_id
+			res:affected:list  := { nId }
+			
 			//?? d:error,chr(10)
 			if .not. empty(d:error)
 				return "Cannot put "+cEnt+": "+d:error
@@ -1004,6 +1033,9 @@ static function ec_put( self, cmd, res, files, d, metaclass )
 			endif
 			
 			d:update(obj)
+			res:affected:type  := 'M'
+			res:affected:class := obj:class_id
+			res:affected:list  := { obj:id }
 			if .not. empty(d:error)
 				return "Cannot put "+cEnt+": "+d:error
 			endif
@@ -1025,7 +1057,7 @@ return ec_put( self, cmd, res, files, self:dict )
 
 /* 'DELETE' command */
 static function ec_delete( self, cmd, res, files )
-	local oErr, d:=self:dep, aKeys, k, p, v, dbl
+	local oErr, d:=self:dep, aKeys, k, p, v, dbl, class:="", oList, i
 	
 	if len(cmd) == 1
 		return "Id is missed"
@@ -1039,16 +1071,47 @@ static function ec_delete( self, cmd, res, files )
 	
 	//?? "delete",cmd[2],chr(10)
 	begin sequence
-		// Show object content
-		dbl := d:delete(cmd[2])
-		//?? dbl, d:error,chr(10)
-		if .not. empty(d:error)
-			dbl := self:dict:delete(cmd[2])
-			//?? dbl, self:dict:error,chr(10)
-			if .not. empty(self:dict:error)
-				return "Cannot delete object with id "+cmd[2]+": object not found"
+		if len(cmd) > 2 .and. lower(cmd[2]) == 'from'
+			// DELETE FROM <className>
+			class := codb_metaIdByName( d, cmd[3], 'CLASS' )
+			if class == ''
+				return "Cannot find ID of "+cmd[3]
 			endif
+			oList := d:select( class )
+		else
+			// Get object content
+			class := d:getValue(cmd[2])
+			if valtype(class) != 'O'
+				class := self:dict:getValue(cmd[2])
+			endif
+			if valtype(class) == 'O'
+				class := class:class_id
+			endif
+			oList := { cmd[2] }
 		endif
+		
+		// Check values
+		if valtype(oList) != 'A' .or. len(oList) == 0
+			return 'Nothing delete'
+		endif
+		
+		res:affected:type  := 'D'
+		res:affected:class := class
+		res:affected:list  := oList
+		
+		// Real delete
+		for i in oList
+			dbl := d:delete(i)
+			//?? 'delete from depository:', dbl, d:error,chr(10)
+			if .not. empty(d:error)
+				dbl := self:dict:delete(i)
+				//?? 'delete from dictionary:', dbl, self:dict:error,chr(10)
+				if .not. empty(self:dict:error)
+					return "Cannot delete object with id "+i+": object not found"
+				endif
+			endif
+		next
+		
 	recover using oErr
 		return "Error delete '"+cmd[2]+"': "+oErr:description
 	end sequence
@@ -1056,14 +1119,14 @@ return NIL
 
 /* 'DROP' command */
 static function ec_drop( self, cmd, res, files )
-	local dbl, oErr, d:=self:dict, j, class, id
+	local dbl, oErr, d:=self:dict, j, class, id, dep, aObj:=array(0), o
 	
 	if len(cmd) == 1
 		return "Metaobject class is missed"
 	endif
 	
 	if len(cmd) < 3
-		return "Name is missed"
+		return "Type or name is missed"
 	endif
 	
 	if empty(d)
@@ -1086,13 +1149,32 @@ static function ec_drop( self, cmd, res, files )
 		//?? "OBJECT:", dbl,chr(10)
 				
 		if len(dbl) == 0
-			return "Cannot drop object '"+cmd[2]+' '+cmd[3]+"': object not found"
+			return "Cannot drop "+cmd[2]+" '"+cmd[3]+"': metaobject was not found"
 		else
 			id := dbl[1]
 		endif
 		
 		// Delete metaobject
 		dbl := d:delete( id )
+		
+		// For class delete all its objects 
+		if class == 'CLASS'
+			dep := self:dep
+			if .not. empty(dep)
+				aObj := dep:select( id )
+				//?? 'Deleted objects:', aObj, chr(10)
+				for o in aObj
+					dbl := dep:delete( o )
+				next
+			endif
+		endif
+		
+		aadd(aObj, id)
+		
+		res:affected:type  := 'D'
+		res:affected:class := id
+		res:affected:list  := aObj
+		
 		//?? dbl, d:error,chr(10)
 		if .not. empty(d:error)
 			return "Cannot drop object '"+cmd[2]+' '+cmd[3]+"': object not found"
@@ -1203,7 +1285,7 @@ static function ec_select( self, cmd, res, files )
 	local attrs:=array(0), classes:=array(0), where:=array(0)
 	local status:=1, part, o, row, elem, classIds:=array(0)
 	local value, where_condition, field
-	local item, adAttrs:=array(0), oClass, oAttr, z
+	local item, adAttrs:=array(0), oClass, oAttr, z, oId
 	
 	if dict == NIL
 		return "Open database first"
@@ -1259,7 +1341,13 @@ static function ec_select( self, cmd, res, files )
 			classIds := dbl
 		else
 			for i in classes
-				aadd(classIds, codb_metaIdByName(dict,i,"CLASS"))
+				oId := codb_metaIdByName(dict,i,"CLASS")
+				//?? "CLASS ID:", oId, i, empty(oId), valtype(oId), chr(10)
+				if empty(oId) // Check if class exist
+					return "Class '"+i+"' is not found"
+				else
+					aadd(classIds, oId)
+				endif
 			next
 		endif
 		
@@ -1267,8 +1355,12 @@ static function ec_select( self, cmd, res, files )
 		for i=1 to len(attrs)
 			if attrs[i] == '*'
 				if len(adAttrs) == 0
-					for j in classIds
-						oClass := dict:getValue( j )
+					for j:=1 to len(classIds)
+						oClass := dict:getValue( classIds[j] )
+						//?? "CLASS:", classIds[j], valtype(oClass), 'ATTR_LIST' $ oClass
+						if valtype(oClass) != 'O'
+							return "Class '"+classes[j]+"' is not found"
+						endif
 						for item in oClass:attr_list
 							oAttr := dict:getValue( item )
 							if ascan(adAttrs, {|e| oAttr:name==e }) == 0
