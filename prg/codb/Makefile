@@ -18,7 +18,7 @@ clean:
 $(TARGET): $(OBJS)
 	$(CLIP) $(CLIPFLAGS) -eslM -o $(TARGET) $(OBJS) $(CLIPLIBS)
 
-install:
+install: all
 	mkdir -p $(DESTDIR)$(CLIPROOT)/bin
 	cp $(TARGET) $(DESTDIR)$(CLIPROOT)/bin
 

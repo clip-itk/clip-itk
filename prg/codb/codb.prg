@@ -11,9 +11,9 @@
 /*-------------------------------------------------------------------------*/
 
 #define FILE_BUFFER	4096
-#include "inkey.ch"
+#include <inkey.ch>
+#include <clipcfg.h>
 
-static clientVersion := "0.1"
 static db, dbname:="", fmt
 
 /* 
@@ -114,26 +114,25 @@ return 0
 static function printUsage(mode)
     // TODO: i18n for printUsage()
     if  mode == 0 // console mode
-	?? "codb  Ver. " + clientVersion + " Console client for CODB database.&\n&\n"
-	?? "Type 'help' for list of commands or 'quit' for exit&\n&\n"
+		?? "codb. Console client for CODB database.&\n&\n"
+		?? "Type 'help' for list of commands or 'quit' for exit&\n&\n"
     elseif mode == 2 // version
-	?? clientVersion,"&\n"
+		?? CLIP_VERSION, "&\n"
     else // help
-	?? "codb  Ver. " + clientVersion + " Console client for CODB database.&\n"
-	?? "Copyright (C) 2005 E/AS Software Foundation&\n"
-	?? "This software comes with ABSOLUTELY NO WARRANTY. This is free software,&\n"
-	?? "and you are welcome to modify and redistribute it under the GPL license&\n"
-	?? "&\n"
-	
-	// TODO: full list of command options
-	?? "Usage: codb [OPTIONS] [dbname[:depository]]&\n&\n"
-	?? "Options:&\n"
-	?? "  -?, -h, --help   Display this help and exit.&\n"
-	?? "  --version        Display program version and exit.&\n"
-	?? "  -c 'command'     Run command and exit.&\n"
-	?? "  --hide-titles    Suppress column names.&\n"
-	?? "  --delim='DELIM'  Set columns delimiter.&\n"
-	
+		?? "codb. Console client for CODB database.&\n"
+		?? "Copyright (C) 2005 E/AS Software Foundation&\n"
+		?? "This software comes with ABSOLUTELY NO WARRANTY. This is free software,&\n"
+		?? "and you are welcome to modify and redistribute it under the GPL license&\n"
+		?? "&\n"
+		
+		// TODO: full list of command options
+		?? "Usage: codb [OPTIONS] [dbname[:depository]]&\n&\n"
+		?? "Options:&\n"
+		?? "  -?, -h, --help   Display this help and exit.&\n"
+		?? "  --version        Display program version and exit.&\n"
+		?? "  -c 'command'     Run command and exit.&\n"
+		?? "  --hide-titles    Suppress column names.&\n"
+		?? "  --delim='DELIM'  Set columns delimiter.&\n"
     endif
 return 
 
@@ -184,7 +183,7 @@ return
 static function executeCommand(comm)
 	local i:=0, pos, string:=.F., buffer:='', ret:=NIL, is_filename:=.F.
 	local j, ampos, fileNames:=array(0), files, fH, s, ss
-	local fBuf:=space(FILE_BUFFER), rTotal
+	local fBuf:=space(FILE_BUFFER), rTotal, aff, aOp
 	
 //	?? 'EXECUTE:',comm,chr(10)
 	while len(comm) > 0 .and. i<=len(comm)
@@ -228,9 +227,24 @@ static function executeCommand(comm)
 			//?? files,chr(10)
 			ret := codb_execute( db, left(comm,i-1), NIL, files )
 			?? fmt:show( ret )
+			//?? ret, chr(10), chr(10)
+			if 'AFFECTED' $ ret .and. len(ret:affected:list) > 0 .and. .not. empty(ret:affected:list[1])
+				aff := ret:affected
+				switch aff:type
+					case 'C'
+						aOp := 'Created:'
+					case 'M'
+						aOp := 'Modified:'
+					case 'D'
+						aOp := 'Deleted:'
+					otherwise
+						aOp := 'Affected:'
+				endswitch
+				?? aOp+' '+ltrim(str(len(aff:list)))+chr(10)
+			endif
 			
 			// Database name change
-			if lower(left(comm, 4)) == 'use ' .and. .not. "ERROR" $ ret
+			if lower(left(comm, 4)) == 'use ' .and. empty(ret:error)
 				dbname := ret:answer
 			endif
 			
