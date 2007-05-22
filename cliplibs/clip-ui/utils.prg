@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library					   				   */
 /*																		   */
-/*   Copyright (C) 2003-2006 by E/AS Software Foundation 				   */
+/*   Copyright (C) 2003-2007 by E/AS Software Foundation 				   */
 /*   Author: Andrey Cherepanov <skull@eas.lrn.ru>						   */
 /*   																	   */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -155,3 +155,11 @@ function getLocaleStrings( parent, locale )
 	endif
 
 return mStr
+
+/* Dialog box */
+function dialogBox( caption, text, buttons, buttonNames, action, icon )
+	local win := getMainWindow()
+	if valtype(win) != 'O'
+		return NIL
+	endif
+return win:dialogBox( caption, text, buttons, buttonNames, action, icon )

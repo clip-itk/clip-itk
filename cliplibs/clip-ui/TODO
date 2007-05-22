@@ -2,11 +2,12 @@
 TODO
 ====
 
-Last change: 12 Jan 2007
+Last change: 11 Apr 2007
 
 FIRST
 =====
  - Set slot functions for window open, activation, close
+ - Lost focus for combobox cell in editable table
 
 
 CLIP-UI

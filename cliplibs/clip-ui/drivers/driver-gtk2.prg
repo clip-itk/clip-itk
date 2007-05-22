@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 /*   This is a part of CLIP-UI library									   */
 /*																		   */
-/*   Copyright (C) 2005-2006 by E/AS Software Foundation				   */
+/*   Copyright (C) 2005-2007 by E/AS Software Foundation				   */
 /*   Authors: 															   */
 /*  	     Andrey Cherepanov <skull@eas.lrn.ru>						   */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
@@ -447,6 +447,7 @@ return NIL
 static function ui_setDefault(self, window, widget)
 	gtk_WindowSetDefault(window, widget)
 	window:setFocus( widget )
+	gtk_SignalConnect(window, "key-press-event", {|w, e| iif(e:keyval==13, gtk_SignalEmit(widget, "activate"), .F.) })
 return NIL
 
 static function ui_setModal(self, window, modal)
@@ -1073,7 +1074,6 @@ return 0
 static function ui_createTable(self, columns)
 	local o, i, cc, store, model, renderer, c, frame, column, ic
 	local t, types:={}, x, searchColumn:=0, addColumns:=0
-
 	frame := gtk_ScrolledWindowNew()
 	gtk_ScrolledWindowSetPolicy( frame, GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC )
 	gtk_ScrolledWindowSetShadowType( frame, GTK_SHADOW_IN )
@@ -1132,7 +1132,6 @@ static function ui_createTable(self, columns)
 
 	o:store := store
 	o:model := model
-	
 	addColumns := cc + 3
 	// Append columns
 	for i:=1 to cc
@@ -1158,7 +1157,7 @@ static function ui_createTable(self, columns)
 				gtk_TreeViewColumnSetFormat(ic, renderer, c, column:format)
 			endif
 			if column:type == TABLE_COLUMN_NUMBER .or. column:type == TABLE_COLUMN_COUNTER
-					gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "xalign", cc+2)
+				gtk_TreeViewColumnSetAttributes(ic, renderer, "text", i, "xalign", cc+2)
 			endif
 		endif
 		gtk_TreeViewColumnSetResizable(ic, .T.)
@@ -2431,7 +2430,7 @@ static function ui_EditTableStartEdit(self, wid, ev, o, renderer)
 	endif
 	//gtk_CellRendererEditingCanceled(renderer)
 	gtk_CellRendererStopEditing(renderer, .T.)
-	//?? "end start&\n"
+	?? "end start&\n"
 return .T.
 
 static function ui_EditTableEndEdit(self, wid, ev, o, renderer)
@@ -2456,13 +2455,16 @@ static function ui_EditTableEdited(self, wid, ev, o)
 		ui_setTableValue(o, ltrim(str(row-1)), column, ev:NEWTEXT)
 	endif
 	
+	//?? "set focus to cell:", row, column, chr(10)
+	ui_setEditTableCursor(self, o, row, column, .F.)
+	
 	if 'ONCHANGED' $ o
 		if eval( o:onChanged, o, column, row, oldValue )
 			ui_setTableValue(o, ltrim(str(row-1)), column, oldValue)
 			return .T.
 		endif
 	endif
-
+	
 return .F.
 
 /* Toggle checked cell slot */
@@ -2502,7 +2504,7 @@ return row
 
 /* Wrappers for combobox and choice cell values */
 static function ui_setTableValue(table, row, column, value)
-	local c
+	local c, cValue
 	c := table:columns[column]
 	
 	if c:type == TABLE_COLUMN_COMBO .and. valtype(c:source) == 'O'
@@ -2513,7 +2515,12 @@ static function ui_setTableValue(table, row, column, value)
 	gtk_ListStoreSetValue(table:store, row, column, value)
 
 	if c:type == TABLE_COLUMN_CHOICE .and. valtype(c:source) == 'O' .and. "__TEXT" $ c
-		gtk_ListStoreSetValue(table:store, row, c:__text, c:source:getText(value))
+		if empty(value)
+			cValue := ""
+		else
+			cValue := c:source:getText(value)
+		endif
+		gtk_ListStoreSetValue(table:store, row, c:__text, cValue)
 	endif
 	
 return value
@@ -2533,7 +2540,7 @@ return value
 
 /* Set data for editable table row */
 static function ui_setEditTableRow(self, table, row, data)
-	local i, c
+	local i, c, src, def
 	if valtype(row) == 'N'
 		row := ltrim(str(row-1))
 	endif
@@ -2553,6 +2560,18 @@ static function ui_setEditTableRow(self, table, row, data)
 	else
 		for i:=1 to len( table:columns )
 			c := table:columns[i]:default
+			if table:columns[i]:type == TABLE_COLUMN_COMBO
+				c := ""
+				if "SOURCE" $ table:columns[i] .and. valtype(table:columns[i]:source) == "O"
+					src := table:columns[i]:source:getList()
+					def := table:columns[i]:source:getValueByText(table:columns[i]:default)
+					if len(src) > 0 .and. empty(def)
+						c := src[1][2]
+					elseif .not. empty(def)
+						c := def
+					endif
+				endif
+			endif
 			if table:columns[i]:type != TABLE_COLUMN_COUNTER
 				ui_setTableValue(table, row, i, c)
 			endif

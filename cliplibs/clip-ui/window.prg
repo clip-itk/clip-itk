@@ -3,7 +3,7 @@
 /*                                                                         */
 /*   Copyright (C) 2003-2007 by E/AS Software Foundation                   */
 /*   Authors:                                                              */
-/*               Andrey Cherepanov <skull@eas.lrn.ru>                      */
+/*           Andrey Cherepanov <skull@eas.lrn.ru>                          */
 /*           Igor Satsyuk <satsyuk@tut.by>                                 */
 /*                                                                         */
 /*   This program is free software; you can redistribute it and/or modify  */
@@ -242,6 +242,7 @@ static function ui_setObj(self, obj)
 	/* Store original object */
 	self:origObj := map()
 
+	//?? 'set obj', obj, chr(10)
 	for i in self:valueNames
 		vfl := ascan(self:valueTypes2, {|e| upper(i)==upper(e[1]) })
 		if vfl > 0
@@ -249,6 +250,7 @@ static function ui_setObj(self, obj)
 		else
 			rn := i
 		endif
+		//?? 'set:', rn, upper(rn) $ obj, chr(10) 
 		if at("\.",i) != 0
 			a := split(i,"\.")
 			//?? "set foreign object attribute:",a,chr(10)
@@ -272,7 +274,7 @@ static function ui_setObj(self, obj)
 		elseif upper(rn) $ obj
 			val := obj[upper(rn)]
 		else
-			?? "window:setObj(): item '"+rn+"' doesn't exist as object attribute&\n"
+			//?? "window:setObj(): item '"+rn+"' doesn't exist as object attribute&\n"
 			loop
 		endif
 		w := self:value[i]

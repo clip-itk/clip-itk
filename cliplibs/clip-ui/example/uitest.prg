@@ -171,7 +171,6 @@ return 0
 static function BankRefReq( sp )
 	local splitter, tree, table, vb, rc, tc
 	local node66, node67
-
 	splitter := UISplitter(SPLITTER_HORIZONTAL)
 	sp:add(splitter, .T., .T.)
 	splitter:setPosition( 170 )
@@ -180,7 +179,6 @@ static function BankRefReq( sp )
 	aadd(rc, UITableColumn('n1',  'N1', TABLE_COLUMN_TEXT))
 	aadd(rc, UITableColumn('n2',  'N2', TABLE_COLUMN_TEXT))
 	tree := UITree(rc)
-
 	tree:setAction("selected",{|w,e| listEventTree(tree, e) })
 	splitter:add( tree )
 
@@ -195,7 +193,7 @@ static function BankRefReq( sp )
 	tc[4]:format := "%'.2f"
 
 	table := UITable(tc)
-
+	
 	// Fill tree and table
 	updateTable(tree, table)
 	node66 := tree:addNode({"Parent_Last"})
