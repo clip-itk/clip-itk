@@ -6,7 +6,8 @@ function r2d2_classes_rdf()
 	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
 
 	cgi_xml_header()
-	put_rdf(m1,m2)
+//	put_rdf(m1,m2)
+	put_tree(m1,m2)
 return
 
 ******************
@@ -48,7 +49,7 @@ static function put_rdf(m1,m2)
 			? '   <RDF:Description about="urn:'+dname+':'+m1[i]+':'+class:id+'">'
 			? '      <DOCUM:firstname>'+rname+'</DOCUM:firstname>'
 			? '      <DOCUM:lastname>'+class:name+'</DOCUM:lastname>'
-			? '      <DOCUM:typename>tree</DOCUM:typename>'
+			? '      <DOCUM:typename>'+class:id+'</DOCUM:typename>'
 			? '   </RDF:Description>'
 		next
 	next
@@ -81,49 +82,28 @@ static function put_rdf(m1,m2)
 ?
 return
 
-/*
+
 ******************
 static function put_tree(m1,m2)
 local i, oDict
 
 	?
-	? '<overlay '
-	? ' title=" "'
-	? 'xmlns:html="http://www.w3.org/1999/xhtml"'
-	? 'xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">'
+	? '<classes '
+	? 'xmlns="http://itk.ru">'
 
-//	? '<box>'
-	? '<tree id="class_tree" flex="1">'
-	? ' <treecols>'
-	? ' <treecol id="firstname" primary="true" label="Имя класса" flex="1" />'
-	? ' <splitter class="tree-splitter"/>'
-	? ' <treecol id="lastname" primary="false" label="Адрес класса" flex="1" />'
-	? ' <splitter class="tree-splitter"/>'
-	? ' <treecol id="typename" primary="false" label="Тип" flex="1" />'
-	? ' <splitter class="tree-splitter"/>'
-	? ' </treecols>'
 
-	? ' <treechildren>'
 
 	for i=1 to len(m1)
 		oDict := codb_dict_reference(m1[i])
 
-		? '   <treeitem container="true" open="false">'
-		? '        <treerow>'
-		? '        <treecell label="'+m2[i]+'"/>'
-		? '        </treerow>'
-		? '        <treechildren>'
+		? '   <dictionary id="'+m1[i]+'" label="'+m2[i]+'">'
 
 		put_classes(oDict)
 
-		? '        </treechildren>'
-		? '   </treeitem>'
+		? '   </dictionary>'
 
 	next
-	? '</treechildren>'
-	? '</tree>'
-//	? '</box>'
-	? '</overlay>'
+	? '</classes>'
 ?
 return
 
@@ -144,13 +124,7 @@ static function put_classes(oDict)
 			col := oDict:getValue(k[1])
 		endif
 		rname := iif( empty(col), class:name, col:header)
-		? s+'<treeitem>'
-		? s+'   <treerow>'
-		? s+'   <treecell label="'+rname+'"/>'
-		? s+'   <treecell label="'+class:name+'" />'
-		? s+'   <treecell label="tree"/>'
-		? s+'   </treerow>'
-		? s+'</treeitem>'
+		? s+'<class id="'+class:id+'" label="'+rname+'" name="'+class:name+'"/>'
 	next
 return
-*/
+
