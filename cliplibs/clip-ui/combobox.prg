@@ -16,7 +16,6 @@ static driver := getDriver()
 
 /* NOTE: for Windows-like drop-down list add 
 	GtkComboBox::appears-as-list = 1
-	GtkButton::inner-border = { 0, 0, 0, 0 }
 	in used theme
 */
 
@@ -27,10 +26,13 @@ function UIComboBox( source, defaultItem )
 	obj:value		:= defaultItem
 	_recover_UICOMBOBOX(obj)
 	
-	obj:setSource( source )
+	if valtype( source ) != 'U'
+		obj:setSource( source )
+	endif
 	if .not. empty( defaultItem )
 		obj:setValue( defaultItem )
 	endif
+	
 return obj
 
 function _recover_UICOMBOBOX( obj )
@@ -41,6 +43,7 @@ return obj
 
 /* Set list of strings */
 static function ui_setSource(self, source)
+	
 	self:source := UISource(source)
 	driver:setComboBoxList( self, self:source:getList() )
 		

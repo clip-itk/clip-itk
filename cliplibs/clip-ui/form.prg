@@ -91,8 +91,11 @@ return self:parse()
 
 /* Parse form */
 static function ui_parse(self)
-	local win := NIL, res, t, i
+	local win := NIL, res, t, i, oErr, err
 
+ 	oErr := ErrorBlock({|e| break(e) })
+    begin sequence
+	
 	if DEBUG
 		?? "UIForm: form parsing...&\n"
 	endif
@@ -184,6 +187,12 @@ static function ui_parse(self)
 	if DEBUG
 		?? "UIForm: form parsing complete&\n"
 	endif
+	
+	// Error hangle
+	recover using oErr
+		?? "ERROR: UIForm form creation: " + errorMessage(oErr) + "&\n"
+		return NIL
+	end sequence
 
 return win
 
@@ -266,8 +275,10 @@ return a
 /* Return created widget from tag */
 static function ui_createWidget(self, tag, parent )
 	local o:=NIL, class, name, label, c, i, a, e, w, box, t:=tag
-	local add:=.F., gCol:=1, gRow:=1, gClass, rule, expanded:=.F.
+	local add:=.F., gCol:=1, gRow:=1, gClass, rule, expanded:=.F., oErr
 
+ 	oErr := ErrorBlock({|e| break(e) })
+    begin sequence
 	class := t:attribute("class","")
 	name  := t:attribute("name","")
 	label := self:i18n( t:attribute("label","") )
@@ -421,7 +432,7 @@ static function ui_createWidget(self, tag, parent )
 			o := UICheckBox(,label)
 			add = .T.
 		case "COMBOBOX"
-			o := UIComboBox(label)
+			o := UIComboBox()
 			add = .T.
 		case "IMAGE"
 			o := UIImage( iif(isfunction("GETRESOURCE"), ;
@@ -520,6 +531,12 @@ static function ui_createWidget(self, tag, parent )
 			?? "WARNING: tag "+c:getName()+" is ignored&\n"
 		endif
 	next
+	
+	// Error hangle
+	recover using oErr
+		?? "ERROR: UIForm widget creation: " + errorMessage(oErr) + "&\n"
+		return NIL
+	end sequence
 
 return o
 
@@ -868,7 +885,7 @@ return NIL
 /* Recursive action execution */
 static function ui_subActionHandler(self, tag, addVal)
 	local widget, method, ret, subItem, retAction, value, i, condVal, chkVal
-	local iArr
+	local iArr, widgetname
 	local e, c, p, params:=array(0), tmp
 
 	if tag:getName() == "returnedvalue"
@@ -912,10 +929,10 @@ static function ui_subActionHandler(self, tag, addVal)
 		return NIL
 	endif
 
-	widget := tag:attribute("widget","")
+	widgetname := tag:attribute("widget","")
 	method 	:= upper(tag:attribute("method",""))
 	
-	//?? "call "+iif(valtype(widget)=='C',widget,"")+":"+method+"()",tag:getAttributes(),"&\n"
+	//?? "call "+iif(valtype(widgetname)=='C',widgetname,"")+":"+method+"()",tag:getAttributes(),"&\n"
 	
 	c := tag:getChilds()
 	for p in c
@@ -950,11 +967,11 @@ static function ui_subActionHandler(self, tag, addVal)
 	next
 
 	outlog("CALL", method, "...")
-	if valtype(widget) == "C"
-		widget := mapget(self:widgets, widget, NIL)
+	if valtype(widgetname) == "C"
+		widget := mapget(self:widgets, widgetname, NIL)
 	endif
 
-	//?? "call widget: ", valtype(widget), iif(valtype(widget)=='O',widget:className,""),chr(10)
+	?? "call widget: ", widgetname, valtype(widget), iif(valtype(widget)=='O',widget:className,""),chr(10)
 	if widget != NIL .and. valtype(widget) == "O"
 		if method $ widget .and. valtype(widget[method]) == "B"
 			/* TODO: use clipa() or similar function
@@ -980,7 +997,7 @@ static function ui_subActionHandler(self, tag, addVal)
 					ret := eval(widget[method], widget)
 			endswitch
 		else
-			?? "ERROR: no method '"+method+"'&\n"
+			?? "ERROR: no method '"+method+"' or unknown widget '"+widgetname+"'&\n"
 			return NIL
 		endif
 	else

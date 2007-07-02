@@ -47,7 +47,6 @@ function UISource(source)
 	else
 		obj:source := NIL
 	endif
-	
 	_recover_UISOURCE(obj)
 
 return obj
