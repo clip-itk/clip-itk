@@ -324,6 +324,46 @@ function cgi_getValue(oId)
 	endif
 return codb_getValue(oId)
 /************************************************/
+function cgi_updateObj(obj)
+	local i,ret,oId,idLen1,idLen2,idDep,oDep
+	ret := .f.
+	if valtype(obj)=="O"
+		return ret
+	endif
+	if !("ID" $ obj) .or. empty(obj:id)
+		return ret
+	endif
+	if empty(obj:id)
+		return ret
+	endif
+	oId := obj:id
+	****** open new depository
+	idLen1:=codb_info("DICT_ID_LEN")
+	idLen2:=codb_info("DEPOSIT_ID_LEN")
+	if substr(oId,idLen1+1,idLen2) == "00"  // metadata
+		idDep := left(oId,idLen1)
+	else
+		idDep := left(oId,idLen1+idLen2)
+	endif
+	/* ************** HZ *********** */
+	/*
+	if idDep $ msDeps
+	     ********* 
+	else
+		oDep := codb_needDepository(idDep)
+		if empty(oDep) .or. !empty(oDep:error)
+		else
+			aadd(asDeps, oDep )
+		endif
+		msDeps[idDep] := idDep
+	endif
+	*/
+	oDep := codb_needDepository(idDep)
+	if empty(oDep) .or. !empty(oDep:error)
+		return ret
+	endif
+return	oDep:update(obj)
+/************************************************/
 function cgi_needDepository(sDict,sDep)
 	local ss
 
@@ -1526,15 +1566,17 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ iif(sTmp,"true","false")  + ""
 
 				elseif valtype(sTmp) == "N"
+					stmp4 := alltrim(str(stmp))
 					if col:datadec > 0
 					    sTmp3 := "'"+bal_summa(stmp)+"'"
 					else
 					    sTmp3 := "'"+alltrim(str(stmp))+"'"
 					    if "*" $ sTmp3
 						sTmp3 := "'"+alltrim(str(stmp),20,0)+"'"
+						stmp4 := "'"+stmp4+"'"
 					    endif
 					endif
-					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ alltrim(str(stmp))  + ""
+					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ stmp4  + ""
 				elseif valtype(sTmp) == "D"
 					refr  := refr+iif(refr=="","",",")+" "+col:name+":"+ iif(empty(sTmp),"'00000000'","'"+dtos(sTmp)+"'") + ""
 					sTmp3 := iif(empty(sTmp),'',"'"+dtoc(sTmp)+"'")

@@ -7,7 +7,7 @@ local sDict:="", sDep:=""
 local oDict,oDep, classDesc
 local connect_id:="", connect_data
 local beg_date:=date(),end_date:=date(),account:=""
-local periodic, mPeriod, nPer
+local periodic, mPeriod, nPer,  checkloop:= .t.
 local i,j,k,tmp,obj
 local an_data,an_level:=1, an_values:={" "," "," "," "," "," "}
 local urn:="", xslt:="", host:="", total:="", level:="", union:=""
@@ -141,6 +141,8 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 		    else
 		    periodic := ""
 		endif
+		?? iif(checkloop,"",",")
+		checkloop:=.f.
 		cgi_an_putRdf2(an_data,account,an_level,urn,total,beg_date,end_date,"",periodic,level)
 		//putRdf2(an_data,account,an_level)
 
