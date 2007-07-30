@@ -13,7 +13,7 @@ XSLIBREAL=libclip-gd$(DLLREALSUFF)
 all: build_gd
 
 build_gd:
-	cd gd && ./configure &&	$(MAKE)
+	cd gd && ./configure &&	$(MAKE) CFLAGS="$(C_FLAGS)"
 	$(CC) $(CFLAGS) -c _gd.c
 	$(CLIPROOT)/bin/clip -l gd_obj.prg
 	cd bsgraphic && $(MAKE)
