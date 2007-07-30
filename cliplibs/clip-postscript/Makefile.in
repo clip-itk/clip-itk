@@ -8,7 +8,6 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
-CLIPINCLUDE = -I$(CLIPROOT)/include
 CLIP = $(CLIPROOT)/bin/clip
 
 .SUFFIXES: .prg .o .po
@@ -51,7 +50,7 @@ dist: distclean
 	cd .. && tar cvfz clip-postscript.tgz clip-postscript
 
 .prg.o: clip-postscript.ch
-	$(CLIP) $(CLIPFLAGS) $(CLIPINCLUDE) $<
+	$(CLIP) $(CLIPFLAGS) $<
 
 commit:
 	_cvs commit

@@ -9,14 +9,10 @@ endif
 include $(CLIPROOT)/include/Makefile.inc
 
 DRIVERSDIR = $(DESTDIR)$(CLIPROOT)/lib/drivers
-CLIPINCLUDE = -I$(CLIPROOT)/include
 CLIP = $(CLIPROOT)/bin/clip
 
 .SUFFIXES: .prg .o .po
 
-# Here you can define appropriate compile settings
-#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
-#CC=gcc
 TARGET  = libclip-ui$(DLLSUFF)
 RTARGET = libclip-ui$(DLLREALSUFF)
 
@@ -73,7 +69,7 @@ dist: distclean
 	cd .. && tar cvfz clip-ui.tgz clip-ui
 
 .prg.o: clip-ui.ch
-	$(CLIP) -w $(CLIPINCLUDE) $<
+	$(CLIP) -w $<
 
 commit:
 	_cvs commit
