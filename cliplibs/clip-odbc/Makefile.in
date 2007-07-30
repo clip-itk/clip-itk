@@ -9,8 +9,6 @@ include $(CLIPROOT)/include/Makefile.inc
 LIBODBC=@LIBODBC@
 LIBOOB=@LIBOOB@
 CLIPINCLUDE=-I$(CLIPROOT)/include
-C_FLAGS=-Wall -g -I.
-#CC=gcc
 
 TARGET=libclip-odbc$(DLLSUFF)
 ATARGET=libclip-odbc.a
