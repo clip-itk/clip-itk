@@ -40,7 +40,7 @@ EOF
 
 EXPAT_EXIST=''
 
-gcc -o test_expat test_expat.c -I/usr/include -lexpat >/dev/null 2>&1 && EXPAT_EXIST="yes"]
+gcc -o test_expat test_expat.c -lexpat >/dev/null 2>&1 && EXPAT_EXIST="yes"]
 
 if [ -z $EXPAT_EXIST ]
 then
