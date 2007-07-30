@@ -41,12 +41,12 @@ have_libglade:
 
 $(XLIB): $(OBJS)
 	rm -f $(XLIB)
-	clip_makelib $(XLIB) $(OBJS) 
+	$(CLIPROOT)/bin/clip_makelib $(XLIB) $(OBJS) 
 	ranlib $(XLIB)
 
 $(XSLIB): $(XLIB)
 	rm -f $(XSLIB)
-	clip_makeslib $(XSLIB) $(XLIB) $(LIBS)
+	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) $(XLIB) $(LIBS)
 
 
 install: 
