@@ -6,14 +6,10 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
-CLIPINCLUDE=-I$(CLIPROOT)/include
-#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
-#CC=gcc
-
 TARGET=libclip-postgres$(DLLSUFF)
 ATARGET=libclip-postgres.a
 RTARGET=libclip-postgres$(DLLREALSUFF)
-PGINC = -I@PGINCDIR@
+CFLAGS=$(C_FLAGS) -I@PGINCDIR@
 PGLIB = -L@PGLIBDIR@
 OBJS=pg_clip.o pg.o
 
@@ -29,7 +25,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lpq $(PGLIB)
 
 pg_clip.o: pg_clip.c
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) $(PGINC) -c pg_clip.c
+	$(CC) $(CFLAGS) -c pg_clip.c
 
 pg.o: pg.prg postgres.ch
 	$(CLIPROOT)/bin/clip -l pg.prg

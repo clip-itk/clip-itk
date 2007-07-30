@@ -4,10 +4,6 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
-CLIPINCLUDE=-I$(CLIPROOT)/include
-
-#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
-#CC=gcc
 TARGET=libclip-com$(DLLSUFF)
 ATARGET=libclip-com.a
 RTARGET=libclip-com$(DLLREALSUFF)
@@ -31,7 +27,7 @@ $(LIBEZ):
 	cd libezV24 && $(MAKE)
 
 com.o: com.c hashcode.h
-	$(CC) $(CFLAGS) $(CLIPINCLUDE) -c com.c
+	$(CC) $(CFLAGS) -c com.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h

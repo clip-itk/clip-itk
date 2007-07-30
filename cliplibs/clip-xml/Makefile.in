@@ -13,17 +13,12 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
-CLIPINCLUDE = -I$(CLIPROOT)/include
 CLIP = $(CLIPROOT)/bin/clip
 
 .SUFFIXES: .prg .o .po
 
-COMPILER=gcc
-C_FLAGS=-Wall -g -I. -I$(CLIPROOT)/include -I/usr/include
 LIBS= -lexpat
-CC = $(COMPILER)
-CFLAGS  = $(C_FLAGS)
-
+CFLAGS  = $(C_FLAGS) $(XCFLAGS)
 
 XLIB=libclip-xml.a
 XSLIB=libclip-xml$(DLLSUFF)
@@ -85,10 +80,10 @@ shell:
 	sh
 
 .prg.o:
-	$(CLIP) -wn $(CLIPINCLUDE) $<
+	$(CLIP) -wn $<
 
 .c.o:
-	@echo $(CC) $(CDBGFLAGS) $(CFLAGS) -c $<
-	@$(CC) $(CDBGFLAGS) $(CFLAGS) $(XCFLAGS) -c $<
+	@echo $(CC) $(CFLAGS) -c $<
+	@$(CC) $(CFLAGS) -c $<
 
 

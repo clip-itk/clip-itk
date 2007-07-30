@@ -14,10 +14,7 @@ LIBGLADE_VER=$(shell pkg-config --modversion libglade-2.0 2> /dev/null )
 
 XTARGET=$(XLIB) $(XSLIB)
 
-CC=gcc
-
-CCFLAGS = -Wall `pkg-config --cflags libglade-2.0`
-CINCLUDE=-I$(CLIPROOT)/include
+CFLAGS = $(C_FLAGS) `pkg-config --cflags libglade-2.0` -I../clip-gtk2
 
 OBJS=clip_glade.o
 
@@ -58,7 +55,7 @@ install:
 	chmod 0755 $(DESTDIR)$(CLIPROOT)/lib/$(XSLIB)
 
 .c.o:
-	$(CC)  $(CINCLUDE) $(CCFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 clean:
 	rm -f *.o *~ *$(DLLSUFF) *.a *.nm *.ex

@@ -6,14 +6,10 @@ ifndef CLIPROOT
 endif
 include $(CLIPROOT)/include/Makefile.inc
 
-CLIPINCLUDE=-I$(CLIPROOT)/include
-#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
-#CC=gcc
-
 TARGET=libclip-mysql$(DLLSUFF)
 ATARGET=libclip-mysql.a
 RTARGET=libclip-mysql$(DLLREALSUFF)
-MSINC = -I/usr/include/mysql -I/usr/local/include/mysql
+CFLAGS=$(C_FLAGS) -I/usr/include/mysql -I/usr/local/include/mysql
 OBJS=ms_clip.o ms.o
 
 all:  have_lib	$(TARGET) $(ATARGET)
@@ -28,7 +24,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lmysqlclient -L/usr/lib/mysql
 
 ms_clip.o: ms_clip.c
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) $(MSINC) -c ms_clip.c
+	$(CC) $(CFLAGS) -c ms_clip.c
 
 ms.o: ms.prg mysql.ch
 	$(CLIPROOT)/bin/clip -l ms.prg

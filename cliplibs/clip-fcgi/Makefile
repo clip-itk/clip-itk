@@ -4,8 +4,6 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
-CLIPINCLUDE=-I$(CLIPROOT)/include
-
 TARGET=libclip-fcgi$(DLLSUFF)
 ATARGET=libclip-fcgi.a
 RTARGET=libclip-fcgi$(DLLREALSUFF)
@@ -24,7 +22,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lfcgi
 
 fcgi.o: fcgi.c hashcode.h
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c fcgi.c
+	$(CC) $(C_FLAGS) -c fcgi.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h

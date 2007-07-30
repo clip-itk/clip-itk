@@ -3,7 +3,6 @@ ifndef CLIPROOT
 endif
 
 include $(CLIPROOT)/include/Makefile.inc
-CLIPINCLUDE=-I$(CLIPROOT)/include
 
 TARGET=libclip-crypto$(DLLSUFF)
 ATARGET=libclip-crypto.a
@@ -24,7 +23,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lcrypto
 
 crypto.o: crypto.c hashcode.h
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c crypto.c
+	$(CC) $(C_FLAGS) -c crypto.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h

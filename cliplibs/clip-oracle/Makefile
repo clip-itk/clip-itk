@@ -10,10 +10,6 @@ ifndef ORACLE_HOME
 ORACLE_HOME=/usr/local/oracle_home
 endif
 
-CLIPINCLUDE=-I$(CLIPROOT)/include
-#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
-#CC=gcc
-
 TARGET=libclip-oracle$(DLLSUFF)
 RTARGET=libclip-oracle$(DLLREALSUFF)
 ORINC = -I$(ORACLE_HOME)/rdbms/demo -I$(ORACLE_HOME)/network/public -I$(ORACLE_HOME)/rdbms/public
@@ -28,7 +24,7 @@ $(TARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(ORACLE_HOME)/lib/libclntsh.so
 
 or_clip.o: or_clip.c
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) $(ORINC) -c or_clip.c
+	$(CC) $(C_FLAGS) $(ORINC) -c or_clip.c
 
 or.o: or.prg oracle.ch
 	$(CLIPROOT)/bin/clip -l or.prg

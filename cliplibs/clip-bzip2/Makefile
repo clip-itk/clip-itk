@@ -3,10 +3,7 @@ ifndef CLIPROOT
 endif
 
 include $(CLIPROOT)/include/Makefile.inc
-CLIPINCLUDE=-I$(CLIPROOT)/include
 
-#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
-#CC=gcc
 TARGET=libclip-bzip2$(DLLSUFF)
 ATARGET=libclip-bzip2.a
 RTARGET=libclip-bzip2$(DLLREALSUFF)
@@ -32,7 +29,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lbz2
 
 bzip2.o: bzip2.c hashcode.h bzpref.h
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c bzip2.c
+	$(CC) $(C_FLAGS) -c bzip2.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h

@@ -8,7 +8,6 @@ include $(CLIPROOT)/include/Makefile.inc
 
 LIBODBC=@LIBODBC@
 LIBOOB=@LIBOOB@
-CLIPINCLUDE=-I$(CLIPROOT)/include
 
 TARGET=libclip-odbc$(DLLSUFF)
 ATARGET=libclip-odbc.a
@@ -29,7 +28,7 @@ $(TARGET1): $(OBJS)
 	[ "$(LIBOOB)" = '' ] || $(CLIPROOT)/bin/clip_makeslib $(TARGET1) $(LIBOOB) $(OBJS)
 
 odbc_clip.o: odbc_clip.c odbc.ch
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c odbc_clip.c
+	$(CC) $(C_FLAGS) -c odbc_clip.c
 
 odbc.o: odbc.prg odbc.ch
 	$(CLIPROOT)/bin/clip odbc.prg

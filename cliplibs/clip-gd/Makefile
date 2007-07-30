@@ -4,9 +4,7 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
-CLIPINCLUDE=-I$(CLIPROOT)/include -I./gd
-C_FLAGS=-Wall -g -I.
-CC=gcc
+CFLAGS=$(C_FLAGS) -I./gd
 
 XLIB=libclip-gd.a
 XSLIB=libclip-gd$(DLLSUFF)
@@ -16,7 +14,7 @@ all: build_gd
 
 build_gd:
 	cd gd && ./configure &&	$(MAKE)
-	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c _gd.c
+	$(CC) $(CFLAGS) -c _gd.c
 	$(CLIPROOT)/bin/clip -l gd_obj.prg
 	cd bsgraphic && $(MAKE)
 	rm -f $(XLIB)
