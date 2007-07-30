@@ -30,7 +30,7 @@ all:    $(R2D2FLIB)
 
 $(R2D2FLIB): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(R2D2LIB) $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(R2D2FLIB) $(R2D2LIB)
+	$(CLIPROOT)/bin/clip_makeslib $(R2D2FLIB) $(R2D2LIB) $(C_LIBS)
 
 clean:
 	rm -f *.c *.s *.o *.po *.log *.bak *.a *.so *.ex *.nm

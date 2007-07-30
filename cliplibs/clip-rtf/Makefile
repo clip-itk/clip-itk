@@ -22,7 +22,7 @@ all:    $(RTFLIB)
 
 $(RTFLIB): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(RTLIB) $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(RTFLIB) $(RTLIB)
+	$(CLIPROOT)/bin/clip_makeslib $(RTFLIB) $(RTLIB) $(C_LIBS)
 
 clean:
 	rm -f *.exe *.c *.s *.o *.po *.log *.bak *.a *.so *.ex *.nm

@@ -8,6 +8,7 @@ TARGET=libclip-fcgi$(DLLSUFF)
 ATARGET=libclip-fcgi.a
 RTARGET=libclip-fcgi$(DLLREALSUFF)
 OBJS=fcgi.o
+LIBS= -lfcgi $(C_LIBS)
 
 all: have_lib	$(TARGET) $(ATARGET)
 
@@ -16,10 +17,10 @@ have_lib:
 	test -f /usr/include/fcgi_config.h
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lfcgi
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
 
 $(ATARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lfcgi
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 fcgi.o: fcgi.c hashcode.h
 	$(CC) $(C_FLAGS) -c fcgi.c

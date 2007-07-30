@@ -11,6 +11,7 @@ ATARGET=libclip-mysql.a
 RTARGET=libclip-mysql$(DLLREALSUFF)
 CFLAGS=$(C_FLAGS) -I/usr/include/mysql -I/usr/local/include/mysql
 OBJS=ms_clip.o ms.o
+LIBS=-L/usr/lib/mysql -lmysqlclient $(C_LIBS)
 
 all:  have_lib	$(TARGET) $(ATARGET)
 
@@ -18,10 +19,10 @@ have_lib:
 	test -f /usr/include/mysql/mysql.h -o -f /usr/local/include/mysql/mysql.h
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lmysqlclient -L/usr/lib/mysql
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
 
 $(ATARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lmysqlclient -L/usr/lib/mysql
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 ms_clip.o: ms_clip.c
 	$(CC) $(CFLAGS) -c ms_clip.c

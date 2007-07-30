@@ -35,7 +35,7 @@ driver:
 	cd drivers && $(MAKE) all
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS)
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(C_LIBS)
 
 clean:
 	cd drivers && $(MAKE) clean

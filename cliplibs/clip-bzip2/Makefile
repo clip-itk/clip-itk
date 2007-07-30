@@ -8,6 +8,7 @@ TARGET=libclip-bzip2$(DLLSUFF)
 ATARGET=libclip-bzip2.a
 RTARGET=libclip-bzip2$(DLLREALSUFF)
 OBJS=bzip2.o
+LIBS= -lbz2 $(C_LIBS)
 
 all:  have_lib $(TARGET) $(ATARGET)
 
@@ -23,10 +24,10 @@ bzpref.h:
 	fi
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lbz2
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
 
 $(ATARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lbz2
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 bzip2.o: bzip2.c hashcode.h bzpref.h
 	$(CC) $(C_FLAGS) -c bzip2.c

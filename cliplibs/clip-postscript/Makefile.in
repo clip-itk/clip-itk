@@ -23,7 +23,7 @@ OBJS    = psblock.o pscode.o psform.o pspage.o pspagesettings.o \
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS)
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(C_LIBS)
 
 clean:
 	rm -f $(OBJS) $(TARGET) *.bak *.nm *.ex *.ppo *.dll.a *.log *.dll *.so

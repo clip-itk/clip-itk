@@ -17,7 +17,7 @@ CLIP = $(CLIPROOT)/bin/clip
 
 .SUFFIXES: .prg .o .po
 
-LIBS= -lexpat
+LIBS= -lexpat $(C_LIBS)
 CFLAGS  = $(C_FLAGS) $(XCFLAGS)
 
 XLIB=libclip-xml.a

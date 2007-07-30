@@ -6,8 +6,8 @@ ifndef CLIPROOT
 endif
 include $(CLIPROOT)/include/Makefile.inc
 
-LIBODBC=@LIBODBC@
-LIBOOB=@LIBOOB@
+LIBODBC=@LIBODBC@ $(C_LIBS)
+LIBOOB=@LIBOOB@ $(C_LIBS)
 
 TARGET=libclip-odbc$(DLLSUFF)
 ATARGET=libclip-odbc.a
@@ -25,7 +25,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBODBC)
 
 $(TARGET1): $(OBJS)
-	[ "$(LIBOOB)" = '' ] || $(CLIPROOT)/bin/clip_makeslib $(TARGET1) $(LIBOOB) $(OBJS)
+	[ "$(LIBOOB)" = '' ] || $(CLIPROOT)/bin/clip_makeslib $(TARGET1) $(OBJS) $(LIBOOB)
 
 odbc_clip.o: odbc_clip.c odbc.ch
 	$(CC) $(C_FLAGS) -c odbc_clip.c

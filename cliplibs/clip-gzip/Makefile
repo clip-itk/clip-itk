@@ -8,14 +8,15 @@ TARGET=libclip-gzip$(DLLSUFF)
 ATARGET=libclip-gzip.a
 RTARGET=libclip-gzip$(DLLREALSUFF)
 OBJS=gzip.o
+LIBS=-lz $(C_LIBS)
 
 all:	$(TARGET) $(ATARGET)
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lz
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
 
 $(ATARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lz
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 gzip.o: gzip.c hashcode.h
 	$(CC) $(C_FLAGS) -c gzip.c

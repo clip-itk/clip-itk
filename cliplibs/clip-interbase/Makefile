@@ -12,6 +12,7 @@ TARGET=libclip-interbase$(DLLSUFF)
 RTARGET=libclip-interbase$(DLLREALSUFF)
 CFLAGS=$(C_FLAGS) -I$(IBROOT)/include
 OBJS=ib_clip.o ib.o
+LIBS= -lgds -L$(IBROOT)/lib -lcrypt $(C_LIBS)
 
 all:  have_lib	$(TARGET)
 #all: $(OBJS)
@@ -20,7 +21,7 @@ have_lib:
 	test -f $(IBROOT)/include/ibase.h -o -f /usr/include/ibase.h
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lgds -L$(IBROOT)/lib -lcrypt
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
 
 ib_clip.o: ib_clip.c interbase.ch
 	$(CC) $(CFLAGS) -c ib_clip.c

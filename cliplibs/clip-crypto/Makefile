@@ -8,6 +8,7 @@ TARGET=libclip-crypto$(DLLSUFF)
 ATARGET=libclip-crypto.a
 RTARGET=libclip-crypto$(DLLREALSUFF)
 OBJS=crypto.o
+LIBS=-lcrypto $(C_LIBS)
 
 all: have_lib	$(TARGET) $(ATARGET)
 
@@ -17,10 +18,10 @@ have_lib:
 	awk 'BEGIN{FS="\""} /^#define[ \t]+[SL]N_/{print "\""$$2"\","}' /usr/include/openssl/objects.h > names.h
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lcrypto
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
 
 $(ATARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lcrypto
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 crypto.o: crypto.c hashcode.h
 	$(CC) $(C_FLAGS) -c crypto.c

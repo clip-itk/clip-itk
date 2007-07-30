@@ -18,7 +18,7 @@ CFLAGS = $(C_FLAGS) `pkg-config --cflags libglade-2.0` -I../clip-gtk2
 
 OBJS=clip_glade.o
 
-LIBS=`pkg-config --libs libglade-2.0`
+LIBS=`pkg-config --libs libglade-2.0` $(C_LIBS)
 
 XLIB=libclip-glade2.a
 XSLIB=libclip-glade2$(DLLSUFF)

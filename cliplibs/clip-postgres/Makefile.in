@@ -10,7 +10,7 @@ TARGET=libclip-postgres$(DLLSUFF)
 ATARGET=libclip-postgres.a
 RTARGET=libclip-postgres$(DLLREALSUFF)
 CFLAGS=$(C_FLAGS) -I@PGINCDIR@
-PGLIB = -L@PGLIBDIR@
+PGLIB = -L@PGLIBDIR@ -lpq $(C_LIBS)
 OBJS=pg_clip.o pg.o
 
 all:  have_lib	$(TARGET) $(ATARGET)
@@ -19,10 +19,10 @@ have_lib:
 	test -f @PGINCDIR@/libpq-fe.h
 
 $(TARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) -lpq $(PGLIB)
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(PGLIB)
 
 $(ATARGET): $(OBJS)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) -lpq $(PGLIB)
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(PGLIB)
 
 pg_clip.o: pg_clip.c
 	$(CC) $(CFLAGS) -c pg_clip.c
