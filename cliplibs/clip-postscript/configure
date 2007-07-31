@@ -2,12 +2,6 @@
 
 libdir="$CLIPROOT/lib"
 
-if [ ! -f "$libdir/libclip-xml.so" ]
-then
-	echo "Warning: library clip-xml does not installed on your system"
-	exit 1
-fi
-
 cp Makefile.in Makefile
 
 exit 0
