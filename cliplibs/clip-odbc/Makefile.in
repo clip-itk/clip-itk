@@ -7,7 +7,8 @@ endif
 include $(CLIPROOT)/include/Makefile.inc
 
 LIBODBC=@LIBODBC@ $(C_LIBS)
-LIBOOB=@LIBOOB@ $(C_LIBS)
+# Note: below we check if LIBOOB is empty when library is missed
+LIBOOB=@LIBOOB@
 
 TARGET=libclip-odbc$(DLLSUFF)
 ATARGET=libclip-odbc.a
@@ -25,7 +26,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBODBC)
 
 $(TARGET1): $(OBJS)
-	[ "$(LIBOOB)" = '' ] || $(CLIPROOT)/bin/clip_makeslib $(TARGET1) $(OBJS) $(LIBOOB)
+	[ "$(LIBOOB)" = '' ] || $(CLIPROOT)/bin/clip_makeslib $(TARGET1) $(OBJS) $(LIBOOB) $(C_LIBS)
 
 odbc_clip.o: odbc_clip.c odbc.ch
 	$(CC) $(C_FLAGS) -c odbc_clip.c
