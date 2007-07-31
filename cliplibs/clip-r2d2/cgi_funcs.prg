@@ -327,7 +327,7 @@ return codb_getValue(oId)
 function cgi_updateObj(obj)
 	local i,ret,oId,idLen1,idLen2,idDep,oDep
 	ret := .f.
-	if valtype(obj)=="O"
+	if valtype(obj)!="O"
 		return ret
 	endif
 	if !("ID" $ obj) .or. empty(obj:id)

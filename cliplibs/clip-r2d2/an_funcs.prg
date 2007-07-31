@@ -207,6 +207,9 @@ outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 					    if len(kk)==12 .and. (substr(kk,1,3)=='GBL' .or. substr(kk,1,3)=='ACC')
 						essvalue:="'"+kk+"'"
 						kk:=codb_essence(kk)
+						kk:=strtran(kk,"'","\'")
+						kk:=strtran(kk,'"','\"')
+						kk:=strtran(kk,"&","&amp;")
 					    endif
 
 					endif
