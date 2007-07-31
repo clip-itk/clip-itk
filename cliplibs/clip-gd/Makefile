@@ -21,7 +21,7 @@ build_gd:
 	cd bsgraphic && $(MAKE)
 	rm -f $(XLIB)
 	$(CLIPROOT)/bin/clip_makelib $(XLIB) _gd.o gd_obj.o ./bsgraphic/*.o $(C_LIBS)
-	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) ./gd/libgd.a $(LIBS) $(C_LIBS)
+	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) $(XLIB) ./gd/libgd.a $(LIBS) $(C_LIBS)
 	touch build_gd
 
 install:
