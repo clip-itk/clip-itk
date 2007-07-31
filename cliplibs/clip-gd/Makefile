@@ -9,6 +9,8 @@ CFLAGS=$(C_FLAGS) -I./gd
 XLIB=libclip-gd.a
 XSLIB=libclip-gd$(DLLSUFF)
 XSLIBREAL=libclip-gd$(DLLREALSUFF)
+LIBS=-lz -lm $(LIBPNG) $(LIBJPEG) $(LIBFREETYPE) $(LIBTTF) $(LIBXPM)
+
 
 all: build_gd
 
@@ -18,8 +20,8 @@ build_gd:
 	$(CLIPROOT)/bin/clip -l gd_obj.prg
 	cd bsgraphic && $(MAKE)
 	rm -f $(XLIB)
-	$(CLIPROOT)/bin/clip_makelib $(XLIB) _gd.o gd_obj.o ./bsgraphic/*.o
-	./makegd.sh $(XLIB)
+	$(CLIPROOT)/bin/clip_makelib $(XLIB) _gd.o gd_obj.o ./bsgraphic/*.o $(C_LIBS)
+	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) ./gd/libgd.a $(LIBS) $(C_LIBS)
 	touch build_gd
 
 install:
