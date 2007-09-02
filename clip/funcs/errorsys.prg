@@ -164,14 +164,15 @@ function error2html(err)
 	?
 	?
 	? "system error:",err
-	? "<BR>"
+	? "<BR/>"
 	i := 1
 	while ( !Empty(ProcName(i)) )
 		? "Called from", allTrim(ProcName(i)) + ;
-			"(" + str(ProcLine(i)) + ")  <BR>"
+			"(" + str(ProcLine(i)) + ")  <BR/>"
 
 		i++
 	end
+	? "</RDF:RDF>"
 	outlog("object error:",err)
 	errorMessage(err)
 quit
