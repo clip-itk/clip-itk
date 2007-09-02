@@ -51,7 +51,6 @@ local urn, sprname:=""
 
 	cgi_xml_header()
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
 

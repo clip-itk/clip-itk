@@ -96,7 +96,7 @@ function cgi_error2xml(err)
 	i := 1
 	while ( !Empty(ProcName(i)) )
 		? "Called from", allTrim(ProcName(i)) + ;
-			"(" + str(ProcLine(i)) + ")  <BR>"
+			"(" + str(ProcLine(i)) + ")  <BR/>"
 
 		i++
 	end
@@ -1148,7 +1148,7 @@ function cgi_checkTreeArefs(arefs,oDep)
 return
 **********************
 function cgi_make_select_string(columns,_query, wrap,err)
-	local i,j,j1,j2,k, lor, col, attrName
+	local i,j,j1,j2,k,x, lor, col, attrName
 	local ret, expr:=space(7), refExpr
 	local tmp,tmp1,tmp2,classDesc, refName,fName, attrDesc, value
 	local wName, nIndex:=0
@@ -1247,6 +1247,10 @@ function cgi_make_select_string(columns,_query, wrap,err)
 			   endif
 			   if !empty(attrDesc)
 				if attrDesc:type $ "SRC"
+					x := atr('"',s)
+					if x>0
+					    s := substr(s,1,x-1)
+					endif	    			
 					value   := s
 					refExpr := fname+'="'+value+'"'
 				elseif attrDesc:type $ "N"
@@ -1272,6 +1276,18 @@ function cgi_make_select_string(columns,_query, wrap,err)
 			if col:DataType == "R" .and. !empty(col:attr_id)
 				tmp1 := col:name
 			endif
+			x := atr('"',s)
+			if x>0
+			    s := substr(s,1,x-1)
+			endif	    			
+			x := atr('"',s1)
+			if x>0
+			    s1 := substr(s1,1,x-1)
+			endif	    			
+			x := atr('"',s2)
+			if x>0
+			    s2 := substr(s2,1,x-1)
+			endif	    			
 			if s1==s2 .or. lor
 				if empty(s)
 					expr+= tmp1+'=="'+s+'"'+iif(lor," .or.  "," .and. ")
