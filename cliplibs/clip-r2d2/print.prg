@@ -6,7 +6,7 @@ static sprID:=""
 function r2d2_printobj_xml(_queryArr)
 
 local err,_query
-local lang:="",sDep:="",sDict,obj_id:="",id_list:={}
+local lang:="",sDep:="",sDict,obj_id:="",id_list:={},levels:=99
 local i,j,k,sTmp,obj,classDesc
 local sprName,sErr, s_obj
 local columns,oDep,oDict
@@ -16,10 +16,13 @@ local columns,oDep,oDict
 
 	_query:=d2ArrToMap(_queryArr)
 	outlog(__FILE__,__LINE__, _query)
-
 	if "ID" $ _query
 		obj_id := _query:id
 	endif
+	if "LEVELS" $ _query
+		levels := val(_query:levels)
+	endif
+
 	if "LANG" $ _query
 		lang := _query:lang
 	endif
@@ -84,7 +87,7 @@ local columns,oDep,oDict
 		sprID := ""
 	endif
 
-	calc_objs(id_list)
+	calc_objs(id_list,levels,1)
 
 	sTmp := varToString( id_list,,, .f.)
 	sTmp := substr(stmp,2,len(sTmp)-2)
@@ -125,7 +128,7 @@ local columns,oDep,oDict
 	id_list:=oDep:select(classDesc:id)
 
 	m_class := {}
-	calc_objs(id_list)
+	calc_objs(id_list,levels,1)
 	//? '<print id="myfirm_constant">'
 	for i=1 to len(m_class)
 		print_table(m_class[i][1],m_class[i][2])
@@ -295,7 +298,7 @@ static function print_tableHeader(classDesc,columns)
 	? s+'</headers>'
 return
 /********************************************/
-static function calc_objs(id_list)
+static function calc_objs(id_list,levels,level)
 	local i,j,k,m:={},x,obj,attr,classDesc
 	local s1,s2
 
@@ -330,6 +333,10 @@ static function calc_objs(id_list)
 			j := len(m_class)
 		endif
 		aadd(m_class[j][2],obj:id)
+		
+		if level >= levels
+		    loop
+		endif    
 
 		/* references and objs */
 		for j=1 to len(classDesc:attr_list)
@@ -363,8 +370,8 @@ static function calc_objs(id_list)
 			endif
 		next
 	next
-	if !empty(m)
-		calc_objs(m)
+	if !empty(m) .and. level < levels
+		calc_objs(m,levels,level+1)
 	endif
 return
 /********************************************/
