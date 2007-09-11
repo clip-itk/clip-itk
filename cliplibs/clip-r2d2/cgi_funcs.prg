@@ -241,7 +241,7 @@ return ret
 
 /************************************************/
 function cgi_connect_data(connect_id)
-	local tmpDep,tmp, ret,Odict, classDesc
+	local tmpDep,i, tmp, ret,Odict, classDesc
 	if tmpDep == NIL
 		 tmpDep := codb_needDepository("ETC0101")
 		 if empty(tmpDep)
@@ -254,9 +254,15 @@ function cgi_connect_data(connect_id)
 		return
 	endif
 	tmp:= tmpDep:select(tmp[1],,,'connect_id=="'+upper(connect_id)+'"')
+//	outlog(tmp)
+//	for i=1 to len(tmp)
+//		ret:= tmpDep:getValue(tmp[1])
+//		outlog(ret)
+//	next
 	if !empty(tmp)
-		ret:= tmpDep:getValue(tmp[1])
+		ret:= tmpDep:getValue(atail(tmp))
 	endif
+//	outlog(ret)
 	if !empty(ret)
 		if "ACC00" $ ret .and. !empty(ret:acc00)
 			set("ACC00",ret:acc00)
@@ -265,6 +271,7 @@ function cgi_connect_data(connect_id)
 			set("ACC01",ret:acc01)
 		endif
 	endif
+//	outlog(set("ACC00"),set("ACC01"))
 return	ret
 /************************************************/
 function cgi_essence(oId)

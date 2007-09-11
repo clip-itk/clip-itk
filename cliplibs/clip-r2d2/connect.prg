@@ -102,6 +102,7 @@ local i,j,x,y
 		? '</window>'
 		return
 	endif
+//	outlog(__FILE__,__LINE__)
 	if command=="BEGIN" .and. !empty(passwd)
 		tmp2:= oDep2:select(classDesc2:id,,,'passwd=="'+passwd+'"')
 		if !empty(tmp2)
@@ -109,22 +110,31 @@ local i,j,x,y
 		endif
 		if !empty(tmp2)
 			if empty(id) //.or. !empty(tmp)
-				id:="A"+padl(alltrim(ntoc(random(),32)),10,"0")
+				id:=upper("A"+padl(alltrim(ntoc(random(),32)),10,"0"))
 			endif
 			while .t.
 				tmp:= oDep:select(classDesc:id,,,'connect_id=="'+id+'"')
 				if empty(tmp)
 					exit
 				endif
-				id:="A"+padl(alltrim(ntoc(random(),32)),10,"0")
+				id:=upper("A"+padl(alltrim(ntoc(random(),32)),10,"0"))
 			end
 			user := tmp2:username
 			usergroup_id := tmp2:usergroup
 			usergroup := cgi_essence(tmp2:usergroup)
 		endif
 	endif
+	tmp := oDep:select(classDesc:id,,,'connect_id=="'+id+'"')
+	if !empty(tmp)
+	    obj_id := atail(tmp)
+	endif	    
+//	outlog(__FILE__,__LINE__)
 	if command=="BEGIN" .and. !empty(id)
-		obj:=map()
+		if empty(obj_id)
+			obj:=map()
+		else
+			obj:= oDep:getValue(obj_id)
+		endif			
 		obj:user := user
 		obj:passwd := passwd
 		obj:connect_id := id
@@ -134,7 +144,11 @@ local i,j,x,y
 		obj:end_date := iif(empty(end_date),date(),end_date)
 		obj:acc00 := acc00
 		obj:acc01 := acc01
-		obj_id:=oDep:append(obj,classDesc:id)
+		if empty(obj_id)
+			obj_id:=oDep:append(obj,classDesc:id)
+		else			
+			oDep:update(obj)
+		endif
 		if empty(obj_id)
 //			cgi_xml_error(oDep:error,"5")
 			?'</window>'
@@ -142,24 +156,28 @@ local i,j,x,y
 		endif
 		obj:= oDep:getValue(obj_id)
 	endif
+//	outlog(__FILE__,__LINE__)
 	if empty(obj_id) .and. !empty(id)
 		tmp:= oDep:select(classDesc:id,,,'connect_id=="'+id+'"')
 		if !empty(tmp)
 			obj_id := tmp[1]
-			obj:= oDep:getValue(obj_id)
 		endif
 	endif
+	obj:= oDep:getValue(obj_id)
+//	outlog(__FILE__,__LINE__)
 	if !empty(oDep:error)
 		cgi_xml_error(oDep:error,"6")
 		? '</window>'
 		return
 	endif
+//	outlog(__FILE__,__LINE__)
 	if empty(obj)
 		cgi_xml_error("Connection ID not found:"+id,"7")
 		? '</window>'
 		return
 	endif
 	//? "obj1=",id,obj
+//	outlog(__FILE__,__LINE__)
 	if command=="SET" .or. command=="BEGIN"
 		if !empty(beg_date)
 			obj:beg_date := beg_date
@@ -167,6 +185,13 @@ local i,j,x,y
 		if !empty(end_date)
 			obj:end_date := end_date
 		endif
+		if !empty(acc00)
+			obj:acc00 := acc00
+		endif
+		if !empty(acc01)
+			obj:acc01 := acc01
+		endif
+		
 		for i=1 to len(_queryArr)
 			x := upper(_queryArr[i][1])
 			y := _queryArr[i][2]
@@ -180,7 +205,9 @@ local i,j,x,y
 				aadd(obj:user_data,{x,y})
 			endif
 		next
+//		outlog(__FILE__,__LINE__,obj)
 		oDep:update(obj)
+		
 		if !empty(oDep:error)
 			cgi_xml_error(oDep:error,"8")
 			?'</window>'
