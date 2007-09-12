@@ -3,8 +3,8 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
-#include "common.ch"
 #include "bdbfmsg.ch"
+#include "common.ch"
 #include "inkey.ch"
 
 #define ElseUse() NFIND(_ElseUse);_req:=0
