@@ -347,12 +347,16 @@ static function command_frame()
 	if !(f==::fileName)
 		_paths:=split(::_path,DBG_DELIM)
 		for i=1 to len(_paths)
-		   flag := ::viewFile(alltrim(_paths[i])+PATH_DELIM+f)
-		   if flag
-			exit
-		   endif
+			if i = len(_paths)
+				flag := ::viewFile(alltrim(_paths[i])+PATH_DELIM+f, .t.)
+			else
+				flag := ::viewFile(alltrim(_paths[i])+PATH_DELIM+f, .f.)
+			Endif
+			if flag
+				exit
+			endif
 		next
-		if !flag .and. !::viewFile(f)
+		if !flag .and. !::viewFile(f, .f.)
 				::fileName:=""
 				::numStr:=0
 				::funcName:=""
@@ -569,8 +573,9 @@ static function viewWorkSel(self)
 	self:windows[self:curWin]:setFocus()
 return x
 ************************************************
-static function command_viewFile(filename)
+static function command_viewFile(filename, lShow)
 	local x,y,fname,i,ccc:=::curWin
+	lShow := if(lShow == NIL, .f., .t.)
 	if empty(filename)
 		wopen(0,0,::maxrow,::maxcol,.f.)
 		setcolor(set("debug_colors_menu"))
@@ -590,7 +595,9 @@ static function command_viewFile(filename)
 		next
 	endif
 	if !file(filename)
-		::command:put([File not found:]+fileName)
+		if lShow
+			::command:put([File not found:]+fileName)
+		EndIf
 		//::curSrcWin:=0
 		return .f.
 	endif
@@ -1225,7 +1232,7 @@ static function command_run(str,add_flag)
 		     if len(mcomm)<2
 			::viewFile()
 		     else
-			::viewFile(mcomm[2])
+			::viewFile(mcomm[2], .f.)
 		     endif
 		case ncom==27  // "VIEWPOINT"
 		     if len(mcomm)<2
