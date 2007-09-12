@@ -10,6 +10,7 @@ RTARGET=libclip-com$(DLLREALSUFF)
 OBJS=com.o
 CFLAGS=-IlibezV24 $(C_FLAGS)
 LIBS=libezV24/libezV24-0.a $(C_LIBS)
+LIBEZ_OBJS=libezV24/*.o
 
 all:  have_lib $(TARGET) $(ATARGET)
 
@@ -21,7 +22,7 @@ $(TARGET): $(OBJS) $(LIBEZ)
 	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
 
 $(ATARGET): $(OBJS) $(LIBEZ)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBEZ_OBJS)
 
 $(LIBEZ):
 	cd libezV24 && $(MAKE)
