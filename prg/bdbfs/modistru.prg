@@ -262,9 +262,16 @@ BEGIN SEQU
   ENDIF
 
   FOR _a=1 to Len(cFld)
-	IF !(((_tm:=Substr(cFld,_a,1)) $ '0123456789_') .OR. IsAlpha(_tm))
-		Break(_badName)
-	ENDIF
+    _tm = Substr(cFld,_a,1)
+    IF _a == 1
+      IF !IsAlpha(_tm)
+        Break(_badName)
+      ENDIF
+    ELSE
+      IF !_tm $ '0123456789_' .AND. !isAlpha(_tm)
+        Break(_badName)
+      ENDIF
+    ENDIF
   NEXT
 
   IF __DBLocate({|| Trim(Field_Name)=cFld .AND. Recno()<>_tmprc })
