@@ -3145,6 +3145,8 @@ destroy_Function(Function *fp)
 {
 	free(fp->memvars);
 	destroy_Buf(& fp->out);
+	if(fp->params)
+		free(fp->params);
 }
 
 int

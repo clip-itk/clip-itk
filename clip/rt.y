@@ -5,6 +5,9 @@
 */
 /*
 $Log$
+Revision 1.3  2007/09/12 19:22:35  estiloinfo
+Fixed memory leak in the parser
+
 Revision 1.2  2007/02/12 09:13:17  itk
 uri: many fixes for amd64
 
@@ -1539,6 +1542,8 @@ destroy_Function(Function *fp)
 {
 	free(fp->memvars);
 	destroy_Buf(& fp->out);
+	if(fp->params)
+		free(fp->params);
 }
 
 int
