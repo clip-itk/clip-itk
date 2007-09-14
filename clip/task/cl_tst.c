@@ -1,10 +1,20 @@
-/* $Log$
-/* Revision 1.9  2007/05/07 06:05:17  itk
-/* uri: HZ:).
 /*
-/* Revision 1.7  2007/02/21 12:56:20  itk
-/* uri: small fix, HZ.
+   Copyright (C) 2007  ITK
+   Author   : Uri <uri@itk.ru>
+   License : (GPL) http://www.itk.ru/clipper/license.html
+*/
+
 /*
+ $Log$
+ Revision 1.10  2007/09/14 12:56:49  itk
+ uri: fix warnings
+
+ Revision 1.9  2007/05/07 06:05:17  itk
+ uri: HZ:).
+
+ Revision 1.7  2007/02/21 12:56:20  itk
+ uri: small fix, HZ.
+
 
  Revision 1.6  2007/01/31 13:48:21  itk
  uri:some new code for pth
