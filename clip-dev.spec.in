@@ -88,7 +88,7 @@ pushd %{DESTDIR}%{BINDIR}
 popd
 mkdir -p %{DESTDIR}%{LIBDIR}
 pushd %{DESTDIR}%{LIBDIR}
-	LIBS=`cd %{DESTDIR}%{CLIPROOT}/lib; ls libclip* 2>/dev/null`
+	LIBS=`cd %{DESTDIR}%{CLIPROOT}/lib; ls libclip* 2>/dev/null; ls libcodb* 2>/dev/null`
 	if [ -n "$LIBS" ]
 	then
 		rm -rf $LIBS
@@ -173,6 +173,9 @@ chmod -R g+w $LOCALEDIRS || true
 %{CLIPROOT}/locale.po/es_ES.8859-1/clip.po
 %{CLIPROOT}/locale.po/es_ES.8859-1/cliprt.po
 %{CLIPROOT}/locale.po/es_ES.8859-1/sys.po
+%{CLIPROOT}/locale.po/pt_BR.8859-1/clip.po
+%{CLIPROOT}/locale.po/pt_BR.8859-1/cliprt.po
+%{CLIPROOT}/locale.po/pt_BR.8859-1/sys.po
 %{CLIPROOT}/locale.po/es_ES.ISO01/clip.po
 %{CLIPROOT}/locale.po/es_ES.ISO01/cliprt.po
 %{CLIPROOT}/locale.po/es_ES.ISO01/sys.po
@@ -182,8 +185,10 @@ chmod -R g+w $LOCALEDIRS || true
 %{CLIPROOT}/locale.po/ru_RU.KOI8-R/codb.po
 %{LIBDIR}/libclip.so
 %{LIBDIR}/libclip-codb.so
+%{LIBDIR}/libcodb-query.so
 %{CLIPROOT}/lib/libclip.so
 %{CLIPROOT}/lib/libclip-codb.so
+%{CLIPROOT}/lib/libcodb-query.so
 %{CLIPROOT}/charsets
 %{CLIPROOT}/keymaps
 %{CLIPROOT}/lang
