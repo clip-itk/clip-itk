@@ -5,7 +5,7 @@ function r2d2_addinfo_xml(_queryStr)
 local err,_query,_queryArr
 local i,j,k,m,obj,id:=""
 local aTree:={}, aRefs:={}
-local connect_id:="", connect_data
+local connect_id:="", acclog_id, connect_data
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc
 local columns,col,mas:={},objs:={}
@@ -15,7 +15,7 @@ local urn,a,b,xmlitem
 local p_list,pdoc_del:=map()
 local sprname:=""
 
-//#define NEW_ACCPOST
+#define NEW_ACCPOST
 
 	errorblock({|err|error2html(err)})
 
@@ -106,9 +106,6 @@ local sprname:=""
 
 	columns := cgi_make_columns(oDict,sprname)
 
-	if classDesc:name == "accpost"
-		r2d2_accpost_log(oDep,"CGIADD","",_queryStr)
-	endif
 
 	if "};" $ _queryStr
 		while !empty(_queryStr)
@@ -123,6 +120,9 @@ local sprname:=""
 	endif
 	if !oDict:lockID(classDesc:id,10000)
 		return
+	endif
+	if classDesc:name == "accpost"
+		acclog_id := r2d2_accpost_log_beg(oDep,"CGIADD","",_queryStr)
 	endif
 
 
@@ -300,6 +300,9 @@ local sprname:=""
 			endif
 		endif
 	next
+	if classDesc:name == "accpost"
+		r2d2_accpost_log_end(oDep,acclog_id )
+	endif
 	oDict:unLockID(classDesc:id)
 
 	if set("XML_OUT")=="NO"

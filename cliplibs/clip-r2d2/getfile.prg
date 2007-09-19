@@ -66,7 +66,7 @@ static function _normalize(data,file)
 		{;
 			{"HOSTNAME",getHostName()},;
 			{"AQUARUM","cgi-bin/aquarum/"},;
-			{FILE,file};
+			{"FILE",file};
 		}
 	for i=1 to len(ndata)
 		ret := strtran(ret,"$"+ndata[i][1]+"$",ndata[i][2])

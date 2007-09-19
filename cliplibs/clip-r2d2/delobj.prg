@@ -6,6 +6,7 @@ local _query,_queryArr,sprname:=""
 local lang:="",sDep:="",obj_id:="",objs_id:={}
 local oDep,oDict,obj, classDesc,defClass, attr_list,attr
 local i,j,k,x,tcol,rname,ind_list
+local acclog_id
 local needDelete:=.t.
 local first_flag := .t.
 
@@ -53,7 +54,7 @@ local first_flag := .t.
 		return
 	endif
 	oDict := oDep:dictionary()
-    defClass := oDict:classBodyByName(sprname)
+	defClass := oDict:classBodyByName(sprname)
 
 	if "," $ obj_id
 		objs_id := split(obj_id,"[,]")
@@ -67,11 +68,11 @@ local first_flag := .t.
 		obj:=oDep:getValue(obj_id)
 
 		if empty(obj)
-        	if empty(defClass)
+			if empty(defClass)
 				oDep:delete(obj_id)
-            else
+			else
 				oDep:delete(obj_id,,defClass:id)
-            endif
+			endif
 			cgi_xml_error("Object not found for:"+obj_id)
 			cgi_xml_error("Object not found for:"+oDep:error)
 			?
@@ -85,13 +86,12 @@ local first_flag := .t.
 			loop
 		endif
 
-		if classDesc:name == "accpost" .and. first_flag
-			r2d2_accpost_log(oDep,"CGIDEL","",_queryStr)
-			first_flag := .f.
-		endif
 
 		if !oDict:lockID(classDesc:id,10000)
 			return
+		endif
+		if classDesc:name == "accpost" .and. first_flag
+			acclog_id := r2d2_accpost_log_beg(oDep,"CGIDEL","",_queryStr)
 		endif
 		if .f. //classDesc:name == "accpost"
 			oDep:error := r2d2_mt_oper("delete_accpost",oDep,obj)
@@ -101,6 +101,10 @@ local first_flag := .t.
 			else
 				oDep:unDelete(obj_id)
 			endif
+		endif
+		if classDesc:name == "accpost" .and. first_flag
+			r2d2_accpost_log_end(oDep,acclog_id)
+			first_flag := .f.
 		endif
 		oDict:unLockID(classDesc:id)
 
