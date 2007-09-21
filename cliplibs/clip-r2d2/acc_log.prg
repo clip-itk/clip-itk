@@ -47,7 +47,7 @@ return ret
 
 **************************
 function r2d2_accpost_log_end(oDep,log_id)
-	local oDict,obj,accpost_log
+	local oDict,obj,obj2,accpost_log
 	local tmp
 	if set("ACCPOST_LOG")=="NO"
 		return
@@ -72,8 +72,13 @@ function r2d2_accpost_log_end(oDep,log_id)
 	if empty(tmp)
 		return .t.
 	endif
+	obj2 := oDep:getValue(tmp[1])
 	? "<error>"
 	? [analitic balance have error]
+	if !empty(obj2)
+		? obj2:opertype,obj2:realDate, obj2:realTime
+		? obj2:diffobj
+	endif
 	? "</error>"
 return .t.
 
