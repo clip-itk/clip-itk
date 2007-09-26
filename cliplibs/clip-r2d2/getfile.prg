@@ -36,11 +36,14 @@ local data,ldata,file:="",c_type:="",locale:=""
 	c_type = _get_contentType(file)
 
 	?? "Content-type: "+c_type
-	?
+	? 
 
 	ldata := _get_localeData(file,locale)
 	if empty(ldata)
-		? memoread(file)
+		
+		data := memoread(file)
+		data := _normalize(@data,file)
+		? data
 		return
 	endif
 	data := memoread(file)

@@ -41,7 +41,7 @@ function cgi_text_header()
 	qout()
 /************************************************/
 function cgi_xml_header()
-	qqout("Content-type: text/xml")
+	qqout('Content-type: text/xml; charset='+host_charset())
 	qout()
 	qout('<?xml version="1.0" encoding="'+host_charset()+'"?>')
 //	qout()
