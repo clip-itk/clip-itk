@@ -8,6 +8,8 @@ local data,ldata,file:="",c_type:="",locale:=""
 
 	errorblock({|err|error2html(err)})
 
+	set translate path off
+
 	_query:=d2ArrToMap(_queryArr)
 	outlog(__FILE__,__LINE__, _query)
 
