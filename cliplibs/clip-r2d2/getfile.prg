@@ -45,6 +45,9 @@ local data,ldata,file:="",c_type:="",locale:=""
 		
 		data := memoread(file)
 		data := _normalize(@data,file)
+		if empty(data)
+		data:="<error>file not found </error>"
+		endif
 		? data
 		return
 	endif
