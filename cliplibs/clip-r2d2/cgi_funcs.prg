@@ -355,7 +355,7 @@ function cgi_updateObj(obj)
 	/* ************** HZ *********** */
 	/*
 	if idDep $ msDeps
-	     ********* 
+	     *********
 	else
 		oDep := codb_needDepository(idDep)
 		if empty(oDep) .or. !empty(oDep:error)
@@ -527,6 +527,7 @@ function r2d2_get_osb_data(oDep,bal_id,account,beg_date,end_date,s1,s2)
 	data:smallname	:= account:smallname
 	data:code	:= account:code
 	data:owner_id	:= account:owner_id
+	data:points_count:= 0
 	data:bd_summa	:= 0.00
 	data:bk_summa	:= 0.00
 	data:od_summa	:= 0.00
@@ -1257,7 +1258,7 @@ function cgi_make_select_string(columns,_query, wrap,err)
 					x := atr('"',s)
 					if x>0
 					    s := substr(s,1,x-1)
-					endif	    			
+					endif
 					value   := s
 					refExpr := fname+'="'+value+'"'
 				elseif attrDesc:type $ "N"
@@ -1286,15 +1287,15 @@ function cgi_make_select_string(columns,_query, wrap,err)
 			x := atr('"',s)
 			if x>0
 			    s := substr(s,1,x-1)
-			endif	    			
+			endif
 			x := atr('"',s1)
 			if x>0
 			    s1 := substr(s1,1,x-1)
-			endif	    			
+			endif
 			x := atr('"',s2)
 			if x>0
 			    s2 := substr(s2,1,x-1)
-			endif	    			
+			endif
 			if s1==s2 .or. lor
 				if empty(s)
 					expr+= tmp1+'=="'+s+'"'+iif(lor," .or.  "," .and. ")

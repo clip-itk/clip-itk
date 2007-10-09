@@ -181,6 +181,14 @@ errorblock({|err|error2html(err)})
 	      aadd(columns,"")
 	      ains(columns,i+1)
 	      columns[i+1] := tmp
+
+	      tmp := oclone(col)
+	      tmp:name := "points_count"
+	      tmp:header := "Позиций"
+	      tmp:expr := "points_count"
+	      tmp:datatype := "N"
+	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
+	      aadd(columns,tmp)
 	endif
 	******
 	mperiod := periodic2date(beg_date,end_date,periodic)
@@ -257,12 +265,12 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 			if empty(account)
 				loop
 			endif
-	    if account:code == cAccount
-		idOwner := account:id
-		exit
-	    endif
-	next
-    endif
+			if account:code == cAccount
+				idOwner := account:id
+				exit
+			endif
+		next
+	endif
 	for i=1 to len(acc_chart_list)
 		account := m->oDep02:getValue(acc_chart_list[i])
 		if empty(account)
@@ -291,27 +299,27 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 		endif
 	next
 	asort(aRefs,,,{|x,y| x[3] <= y[3] })
-    if  empty(cAccount)
+	if  empty(cAccount)
 		fillTree(aRefs,atree,"",1)
-    else
+	else
 		fillTree(aRefs,atree,idOwner,1)
-    endif
+	endif
 	if !empty(aTree) //empty(cAccount)
 		adata1:=reSummTree(aTree,0)
 		data:=map()
-	if empty(cAccount)
+		if empty(cAccount)
 			data:account	:= cType
 			data:smallname	:= cgi_essence(cType)
 			data:id 	:= "TOTAL_LINE_"+ntoc(m->start_id,32,4,"0")
-	else
-		if empty(idOwner)
+		else
+			if empty(idOwner)
 				data:account	:= cAccount
-	    else
+			else
 				data:account	:= idOwner
-	    endif
+			endif
 			data:smallname	:= cgi_essence(idOwner)
 			data:id 	:= "TOTAL_"+cAccount
-	endif
+		endif
 		data:code	    := [Total]
 		data:owner_id	:= ""
 		data:bd_summa	:= aData1[1]
@@ -329,7 +337,7 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 return aTree
 /************************************************/
 static function reSummTree(aTree,level)
-	local i, tItem,	adata1,adata :={0.00,0.00,0.00,0.00,0.00,0.00}
+	local i, tItem,	adata1,adata :={0.00,0.00,0.00,0.00,0.00,0.00,0}
 	for i=1 to len(atree)
 		tItem := atree[i][4]
 		if !empty(aTree[i][5])
@@ -340,6 +348,7 @@ static function reSummTree(aTree,level)
 			tItem:ok_summa += aData1[4]
 			tItem:ed_summa += aData1[5]
 			tItem:ek_summa += aData1[6]
+			tItem:points_count := aData1[7]
 		endif
 		aData[1] += tItem:bd_summa
 		aData[2] += tItem:bk_summa
@@ -347,6 +356,7 @@ static function reSummTree(aTree,level)
 		aData[4] += tItem:ok_summa
 		aData[5] += tItem:ed_summa
 		aData[6] += tItem:ek_summa
+		aData[7] ++
 	next
 return aData
 /************************************************/
