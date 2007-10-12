@@ -182,6 +182,7 @@ errorblock({|err|error2html(err)})
 	      ains(columns,i+1)
 	      columns[i+1] := tmp
 
+	      /*
 	      tmp := oclone(col)
 	      tmp:name := "points_count"
 	      tmp:header := "Позиций"
@@ -189,6 +190,7 @@ errorblock({|err|error2html(err)})
 	      tmp:datatype := "N"
 	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
 	      aadd(columns,tmp)
+	      */
 	endif
 	******
 	mperiod := periodic2date(beg_date,end_date,periodic)
