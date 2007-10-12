@@ -1,12 +1,24 @@
 #define NEW_VARIANTS
 ***********************
 function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
-	local oDict,an_info,an_balance,osb_class,anb_list:=map()
+	local oDict,an_info,an_balance,am_balance,osb_class
+	local anb_list:=map(),an_level2,an_values2,anb_list2
 	local as,as1,s:="",s0,s1,s2,obj,aObj,tObj,tmp,data:={}
-	local i,j,k,kk,x,y,z,itogCel,aOst:={},typeval,essvalue
+	local i,j,k,kk,x,y,z,itogCel,oOst,aOst:={},typeval,essvalue
 	local max_date,min_date,variants:={},nFilled, call_an := .f.
 	local an_obj,class,cId,tmpDict,tcol,tcol_list,err
 	local classes:=map(), tCols := map()
+	local acc_data
+
+	acc_data := cgi_getValue(account)
+	if empty(acc_data)
+		acc_data := map()
+	endif
+	if !("METHOD" $ acc_data)
+		acc_data:method :=""
+	endif
+	//acc_data:method := "A"
+	acc_data:method := upper(acc_data:method)
 
 	//outlog(__FILE__,__LINE__,an_level,an_values)
 	oDict := oDep:dictionary()
@@ -33,6 +45,11 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		call_an := .t.
 	endif
 	//outlog(__FILE__,__LINE__,
+	am_balance := oDict:classBodyByName("am_balance")
+	if empty(am_balance)
+		outlog("Error: class AM_BALANCE not found in ACC01")
+		return data
+	endif
 	if an_level <= 1 .and. call_an
 		an_balance := oDict:classBodyByName("an_balance")
 		if empty(an_balance)
@@ -40,11 +57,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			return data
 		endif
 	else
-		an_balance := oDict:classBodyByName("am_balance")
-		if empty(an_balance)
-			outlog("Error: class AM_BALANCE not found in ACC01")
-			return data
-		endif
+		an_balance := am_balance
 	endif
 
 	if nFilled == 0 //.or. empty(an_values[an_level])//if an_level>1 .and. empty(an_values[1])
@@ -76,27 +89,62 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		endif
 
 	endif
-	//outlog("anb_list=",anb_list)
-	//outlog("an_values=",an_values)
-
+	//outlog(__FILE__,__LINE__,an_level,anb_list)
+	//outlog(__FILE__,__LINE__,an_values)
 	variants := r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
-    /*
+	//outlog(__FILE__,__LINE__,len(variants))
+
+	/*
 	outlog("var_params=",account,an_level,beg_date,end_date,an_values,anb_list)
 	outlog("variants =",len(variants),variants)
 	for i=1 to len(variants)
 		outlog("variant",i,variants[i])
 	next
-    */
+	*/
+
 
 	for i=1 to len(variants)
-		j := r2d2_calc_an_summ(oDep,an_balance,account,iif(call_an,an_level,2),beg_date,end_date,variants[i])
-		//outlog("variant",i,variants[i])
-		//outlog("summ=",j)
-		aadd(aOst,j)
+		oOst:= r2d2_calc_an_summ(oDep,an_balance,account,iif(call_an,an_level,2),beg_date,end_date,variants[i])
+		oOst:points_count := 1
 		tmp :=  variants[i][an_level]
 		if !empty(tmp)
 			anb_list[ tmp ] := tmp
 		endif
+		if acc_data:method == "A" .and. an_level<len(an_values)
+			an_level2 := max(1,an_level+1)
+			an_values2:=aClone(variants[i])
+			anb_list2 := map()
+
+			//anb_list2[an_values2[an_level2]] := an_values2[an_level2]
+
+			//outlog(__FILE__,__LINE__)
+			/*
+			s := 'account=="'+account+'"'
+			s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
+			s1:= '.and. an_level=='+alltrim(str(an_level2,2,0))+' '
+			//outlog(__FILE__,__LINE__)
+			tmp:=oDep:select(an_info:id,,,s+s1+s2)
+
+			for j=1 to len(tmp)
+				obj:=oDep:getValue(tmp[j])
+				if empty(obj)
+					outlog("Error: can`t load object:",tmp[j])
+					loop
+				endif
+				anb_list2[obj:an_value] := obj:an_value
+			next
+			//outlog(__FILE__,__LINE__,s+s1+s2)
+			//outlog(__FILE__,__LINE__,len(tmp))
+			*/
+			//outlog(__FILE__,__LINE__,an_level2,anb_list2)
+			//outlog(__FILE__,__LINE__,an_values2)
+			tmp := r2d2_calc_an_variants(oDep,account,an_level2,beg_date,end_date,an_values2,anb_list2)
+			//outlog(__FILE__,__LINE__,i,variants[i][1],len(tmp),tmp)
+			//outlog("summ=",j)
+			//outlog(__FILE__,__LINE__,len(tmp),variants[i])
+			oOst:points_count := len(tmp)
+		endif
+		aadd(aOst,oOst)
 	next
 
 	for i in anb_list KEYS
@@ -191,7 +239,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 						kk:=iif(valtype(k)=="N", bal_summa(k), bal_summa(val(k)))
 					    //kk:=bal_summa(k)
 					    essvalue:="'"+toString(k)+"'"
-outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
+//outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 					else
 					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
 					    essvalue:=strtran(essvalue,"'","\'")
@@ -244,6 +292,7 @@ outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 		aObj:end_num  := 0
 		aObj:unit_num := ""
 		aObj:accpost_list := {}
+		aObj:points_count := 0
 		for j=1 to len(variants)
 			//outlog(__FILE__,__LINE__, variants[j][an_level], anb_list[i])
 			if !(variants[j][an_level] == anb_list[i])
@@ -259,6 +308,7 @@ outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 			aObj:in_num   += aOst[j]:in_num
 			aObj:out_num  += aOst[j]:out_num
 			aObj:end_num  += aOst[j]:end_num
+			aObj:points_count += aOst[j]:points_count
 			if !empty(aOst[j]:unit_num)
 				aObj:unit_num  := aOst[j]:unit_num
 			endif
@@ -287,6 +337,7 @@ outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 	aObj:end_num  := 0
 	aObj:unit_num := "all"
 	aObj:accpost_list := {}
+	aObj:points_count := 1
 	//outlog(__FILE__,__LINE__,data)
 	if len(data) == 0
 		aObj:an_value := "EMPTY"
@@ -304,10 +355,37 @@ outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 			aObj:end_num  += data[i]:end_num
 			aObj:in_num   += data[i]:in_num
 			aObj:out_num  += data[i]:out_num
+			aObj:points_count += data[i]:points_count
+			if acc_data:method == "A"
+				data[i]:bd_summa /= data[i]:points_count
+				data[i]:bk_summa /= data[i]:points_count
+				data[i]:od_summa /= data[i]:points_count
+				data[i]:ok_summa /= data[i]:points_count
+				data[i]:ed_summa /= data[i]:points_count
+				data[i]:ek_summa /= data[i]:points_count
+				data[i]:beg_num  /= data[i]:points_count
+				data[i]:end_num  /= data[i]:points_count
+				data[i]:in_num   /= data[i]:points_count
+				data[i]:out_num  /= data[i]:points_count
+			endif
 		next
 	endif
+	if acc_data:method == "A"
+		aObj:bd_summa /= aObj:points_count
+		aObj:bk_summa /= aObj:points_count
+		aObj:od_summa /= aObj:points_count
+		aObj:ok_summa /= aObj:points_count
+		aObj:ed_summa /= aObj:points_count
+		aObj:ek_summa /= aObj:points_count
+		aObj:beg_num  /= aObj:points_count
+		aObj:end_num  /= aObj:points_count
+		aObj:in_num   /= aObj:points_count
+		aObj:out_num  /= aObj:points_count
+	endif
+	//outlog(__FILE__,__LINE__,"len(data)=",len(data))
 	//outlog(__FILE__,__LINE__,"data=",data)
 	aadd(data,aObj)
+	//outlog(__FILE__,__LINE__,"union=",union)
 	if !empty(union)
 		for i=len(data) to 1 step -1
 			for j=1 to len(data)
@@ -335,6 +413,7 @@ outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
 			asize(data,len(data)-1)
 		next
 	endif
+	//outlog(__FILE__,__LINE__,"len(data)=",len(data))
 return data
 
 *********************************
@@ -519,7 +598,7 @@ function r2d2_calc_an_summ(oDep,an_balance,account,an_level,beg_date,end_date,va
 	local i,j,k,y,z:=.f.
 	local max_date,min_date
 	local tobj,tmp
-
+	local p_name:="", p_value, p_count:=map()
 
 	ret:an_value := vartostring(variant,,,.f.)
 	ret:tCols := ""
@@ -536,8 +615,10 @@ function r2d2_calc_an_summ(oDep,an_balance,account,an_level,beg_date,end_date,va
 	ret:end_num  := 0
 	ret:unit_num := ""
 	ret:accpost_list := {}
+	ret:points_count := 0
 
 	s:= ""
+	//outlog(__FILE__,__LINE__,an_level,variant)
 	if an_level <= 1
 		s += 'an_value=="'+variant[1]+'" .and. '
 	else
@@ -549,6 +630,10 @@ function r2d2_calc_an_summ(oDep,an_balance,account,an_level,beg_date,end_date,va
 			as1:="AN_VALUE"+alltrim(str(i,2,0))
 			s+=as1+'=="'+variant[i]+'" .and. '
 		next
+		if an_level < len(variant)
+			p_name:="AN_VALUE"+alltrim(str(an_level+1,2,0))
+		endif
+		//outlog(__FILE__,__LINE__,p_name)
 	endif
 	s += ' account="'+account+'" '
 	s1 := ' .and. odate>=stod("'+dtos(beg_date)+'") .and. odate<=stod("'+dtos(end_date)+'")'
@@ -615,7 +700,17 @@ function r2d2_calc_an_summ(oDep,an_balance,account,an_level,beg_date,end_date,va
 		for k=1 to len(tobj:accpost_list)
 			aadd(ret:accpost_list,tobj:accpost_list[k])
 		next
+		if !empty(p_name) .and. p_name $ tObj
+			p_value := tObj[p_name]
+			if !empty(p_value)
+				if !(p_value $ p_count)
+					p_count[p_value] := p_value
+				endif
+			endif
+		endif
 	next
+	ret:points_count := len(p_value)
+	//outlog(__FILE__,__LINE__,variant,ret:points_count)
 return ret
 ************************************
 function r2d2_amLastValue(oDep,_account,variant)
