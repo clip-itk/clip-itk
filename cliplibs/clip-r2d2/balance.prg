@@ -328,8 +328,9 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 		data:ok_summa	:= aData1[4]
 		data:ed_summa	:= aData1[5]
 		data:ek_summa	:= aData1[6]
+		data:points_count := aData1[7]
 		m->start_id++
-		outlog(__FILE__,__LINE__, itogo)
+		//outlog(__FILE__,__LINE__, itogo)
 		if itogo // =="true"
 		    aadd(aTree,{[Total]+cType,"",[Total],data,{}})
 		endif
