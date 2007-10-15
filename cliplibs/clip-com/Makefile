@@ -4,13 +4,16 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
+CLIPINCLUDE=-I$(CLIPROOT)/include
+
+#C_FLAGS=-Wall -g -I. $(CLIPINCLUDE)
+#CC=gcc
 TARGET=libclip-com$(DLLSUFF)
 ATARGET=libclip-com.a
 RTARGET=libclip-com$(DLLREALSUFF)
 OBJS=com.o
-CFLAGS=-IlibezV24 $(C_FLAGS)
-LIBS=libezV24/libezV24-0.a $(C_LIBS)
-LIBEZ_OBJS=libezV24/*.o
+CFLAGS+=-IlibezV24 -Wall -g
+LIBEZ=libezV24/libezV24-0.a
 
 all:  have_lib $(TARGET) $(ATARGET)
 
@@ -19,16 +22,16 @@ have_lib:
 #	test -f /usr/include/bzlib.h
 
 $(TARGET): $(OBJS) $(LIBEZ)
-	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBS)
+	$(CLIPROOT)/bin/clip_makeslib $(TARGET) $(OBJS) $(LIBEZ)
 
 $(ATARGET): $(OBJS) $(LIBEZ)
-	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBEZ_OBJS)
+	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBEZ)
 
 $(LIBEZ):
 	cd libezV24 && $(MAKE)
 
 com.o: com.c hashcode.h
-	$(CC) $(CFLAGS) -c com.c
+	$(CC) $(CFLAGS) $(CLIPINCLUDE) -c com.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h
