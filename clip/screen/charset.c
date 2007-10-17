@@ -6,6 +6,9 @@
 */
 /*
 	$Log$
+	Revision 1.2  2007/10/17 13:30:03  itk
+	uri: fix warnings for gcc 4.2
+	
 	Revision 1.1  2006/06/22 19:35:31  itk
 	uri: init sf.net repository
 	
@@ -418,7 +421,7 @@ load_charset_tables(char *bname, unsigned char *cmptbl, unsigned char *uptbl, un
 			if (lowtbl)
 					lowtbl[i] = tolower(i);
 			if (alphatbl)
-					alphatbl[i] = isalpha(i);
+					alphatbl[i] = (unsigned char)isalpha(i);
 			if (pgtbl)
 					pgtbl[i] = 0;
 		}
@@ -471,7 +474,7 @@ load_charset_tables(char *bname, unsigned char *cmptbl, unsigned char *uptbl, un
 		if (sscanf(buf, "%d", &val) != 1)
 			goto err;
 		if (alphatbl)
-			alphatbl[i] = val;
+			alphatbl[i] = (unsigned char) val;
 	}
 
 	for (i = 0; i < 256; i++)

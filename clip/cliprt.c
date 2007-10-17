@@ -5,6 +5,9 @@
  */
 /*
    $Log$
+   Revision 1.7  2007/10/17 13:30:03  itk
+   uri: fix warnings for gcc 4.2
+
    Revision 1.6  2007/03/09 14:42:12  itk
    uri: many fix for AMD64
 
@@ -10563,9 +10566,11 @@ _clip_translate_path(ClipMachine * mp, const char *str, char *buf, int buflen)
 	else
 	{
 		char * _str = NULL;
-		_str = _clip_normalize_path( ( char *) str);
+		char * tmp = strdup(str);
+		_str = _clip_normalize_path(tmp);
 		snprintf(buf,buflen-1,"%s%s",mp->rootpath,_str);
 		free(_str);
+		free(tmp);
 	}
 	return 0;
 #else
@@ -10632,7 +10637,10 @@ _clip_translate_path(ClipMachine * mp, const char *str, char *buf, int buflen)
 		snprintf(buf,buflen, "%s%s",mp->rootpath,tmp);
 		free(tmp);
 		bl = strlen(buf);
-		_str = _clip_normalize_path( ( char *) str);
+		
+		tmp = strdup(str);
+		_str = (char *)_clip_normalize_path(tmp);
+		free(tmp);
 		snprintf(buf + bl, buflen - bl, "%s", _str);
 		free(_str);
 	}
