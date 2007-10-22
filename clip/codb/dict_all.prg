@@ -129,11 +129,11 @@ static function _dict_update(self,oData,metaName,aRecursive,lOut)
 	__objCache := map()
 return ret
 ************************************************************
-static function _dict_delete(self,cId)
+static function _dict_delete(self,cId,lErase)
 	local ret
 	adel(__objCache,cId)
 	taskStop()
-	ret := self:_delete(cId)
+	ret := self:_delete(cId,lErase)
 	taskStart()
 return ret
 ************************************************************

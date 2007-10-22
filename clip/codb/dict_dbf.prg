@@ -313,9 +313,13 @@ static function _dict_select(self,metaName,nIndex,sName,sWhere,nCount,deleted)
 		s+=alltrim(sWhere)
 	endif
 
-	self:runTrigger(metaname,"BEFORE_SELECT_DICTIONARY",nIndex,s)
+	if !empty(metaName)
+		self:runTrigger(metaname,"BEFORE_SELECT_DICTIONARY",nIndex,s)
+	endif
 	taskstop()
-	rddSetFilter(self:hDbMeta,s)
+	if !empty(s)
+		rddSetFilter(self:hDbMeta,s)
+	endif
 	rddGoTop(self:hDbMeta)
 	while !rddEof(self:hDbMeta)
 		rec := rddRead(self:hDbMeta)
@@ -362,8 +366,10 @@ static function _dict_hashName(nHCode)
 	endif
 return ret
 ************************************************************
-static function _dict__delete(self,cId)
+static function _dict__delete(self,cId,lErase)
 	local rec,oData,version
+
+	lErase := iif(valtype(lErase) == "L", lErase, .f.)
 
 	self:error := ""
 	self:runTrigger(cId,"BEFORE_DELETE_CLASS")
@@ -389,8 +395,12 @@ static function _dict__delete(self,cId)
 		version --
 	endif
 	version := max(version,-99)
-	rddSetValue(self:hDbMeta,"ISOLD",.f.)
-	rddSetValue(self:hDbMeta,"VERSION",version)
+	if lErase
+		rddDelete(self:hDbMeta)
+	else
+		rddSetValue(self:hDbMeta,"ISOLD",.f.)
+		rddSetValue(self:hDbMeta,"VERSION",version)
+	endif
 	***
 	rddUnLock(self:hDbMeta)
 	codb_outlog(self:user,"delete",oData)
