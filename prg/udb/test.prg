@@ -1,6 +1,19 @@
-? random(val(param(1)))
+oDep02 := coDepository():new("GBL0201","sdfsd")
+oDep02:open()
+oDict02:=oDep02:dictionary()
+tmp := oDict02:select("") //"GBL02000001G",,,'acc_chart_type="GBL0201000C7"')
+? tmp
+return
+
+tmp := oDep02:select("GBL02000001G",,,'acc_chart_type="GBL0201000C7"')
+//14:32:39: balance.prg, 264, GBL02000001G, GBL0201000C7
+? tmp
+for i=1 to len(tmp)
+	? oDep02:getValue(tmp[i]):code
+next
 ?
 return
+*/
 
 set date format to "dd/mm/yyyy"
 set optimize on

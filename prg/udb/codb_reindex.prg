@@ -10,12 +10,19 @@
 #include "codbcfg.ch"
 #include "inkey.ch"
 
-local dList,list
+local lClean,dList,list
 local i,j,k,id,tmp,key
 local dictlist:={}, oDicts:={}, dictId, oDict
 local deplist:={} , oDeps:={},  depId, oDep
 local classes,class,a,b,c,obj,count
 local plugins,oPlug,m
+
+	lClean := param(1)
+	if empty(lClean)
+		lClean := .f.
+	else
+		lClean := lower(left(lClean,1)) $ "1ty"
+	endif
 
 
 	set exclusive on
@@ -105,11 +112,11 @@ local plugins,oPlug,m
 			loop
 		endif
 		?? "OK"
-		? "Check indexes for classes and objects:"
-		count := 0
 		oDep  := oDeps[i]
 		oDict := oDep:dictionary()
 		oDict:stopTriggers()
+		? "Check indexes for classes and objects:"
+		count := 0
 		classes := oDict:select("CLASS")
 		for a=1 to len(classes)
 			class := oDict:getValue(classes[a])
@@ -119,7 +126,7 @@ local plugins,oPlug,m
 			if empty(class)
 				loop
 			endif
-			if !class:unstable
+			if !class:unstable .and. !lClean
 				?? "","stable"
 				loop
 			endif
@@ -140,6 +147,9 @@ local plugins,oPlug,m
 					loop
 				endif
 				oDep:update(obj)
+				if lClean .and. obj:__version <0
+					oDep:delete(obj:id,.t.)
+				endif
 			next
 			?? "",len(tmp),"objects"
 			/*
@@ -156,6 +166,33 @@ local plugins,oPlug,m
 		? "Checked",count,"objects in depository"
 		oDict:startTriggers()
 
+	next
+	if !lClean
+		return
+	endif
+
+	for i=1 to len(Odicts)
+		oDict := oDicts[i]
+		if empty(oDict)
+			loop
+		endif
+		oDict:stopTriggers()
+		? "Clean deleted  metaobjects",oDict:id,":"
+		tmp := oDict:select("",,,,,.t.)
+		? "&\t found",len(tmp),"metaobjects:"
+		?? space(CODB_ID_LEN+1)
+		for b=1 to len(tmp)
+			obj := oDict:getValue(tmp[b])
+			if empty(obj)
+				loop
+			endif
+			?? replicate(chr(K_BS),CODB_ID_LEN+1),padr(tmp[b],CODB_ID_LEN)
+			if obj:__version <0
+			//? padr(tmp[b],CODB_ID_LEN), obj:__version
+				oDict:delete(obj:id,.t.)
+			endif
+		next
+		oDict:startTriggers()
 	next
 	?
 return
