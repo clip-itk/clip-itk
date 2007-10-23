@@ -1853,6 +1853,96 @@ function cgi_putArefs2Rdf1(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 #endif
 	?
 return ret
+
+/************************************************/
+function cgi_putArefs2Rdf3(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
+	local s:=replicate("   ",level),sOut,col
+	local obj,obj2,i,j,k,tmp,sTmp,sTmp2,sTmp3,stmp4,essenc:=""
+	local sid,dName := urn // "docum"
+	local ret := .f., ltree:= .f.
+	local sdata,rerr,errBlock
+
+	if level==0
+		errblock:=errorBlock({|err|cgi_error2xml(err)})
+	endif
+
+	if empty(ext_urn)
+		ext_urn := ""
+	endif
+	atom := iif(valType(atom)!="L",.f.,atom)
+	
+	for i=1 to len(aRefs)
+		? "a"
+		if empty(aRefs[i][5])
+			loop
+		endif
+		lTree := .t.
+		exit
+	next
+	
+	
+	
+	if level==0
+		? s+"<RDF:Seq about='"+dname+"'>"
+		//if lTree
+		//	? s+"<RDF:Li>"
+		//endif
+	endif
+
+	for i=1 to len(Arefs)
+		tmp:=aRefs[i][4]
+		sid := ""
+		if "ID" $ tmp .and. !empty(tmp:id)
+			sid := tmp:id
+
+			essenc:=cgi_essence(tmp:id)
+			essenc := strtran(essenc,'&',"&amp;")
+			essenc := strtran(essenc,'"','&quot;')
+			essenc := strtran(essenc,"'","&apos;")
+			essenc := strtran(essenc,'<',"&lt;")
+			essenc := strtran(essenc,'>',"&gt;")
+		else
+			sid := "XXXXXXXXXXXX"
+		endif
+		sid+=ext_urn
+		if lTree 
+			//? s+"<RDF:Seq about='"+dname+sTree+":"+sid+"' >"
+		    	? s+"<RDF:li resource='"+dname+sTree+":"+sid+"' >"
+			//? s+"<RDF:Seq about='"+dname+sTree+":"+sid+"' >"
+		else
+			//? s+"<RDF:Seq about='"+dname+sTree+":"+sid+"' >"
+			? s+"<RDF:li resource='"+dname+sTree+":"+sid+"'>"
+		endif
+		? s+"	<RDF:Description about='"+dname+sTree+":"+sid+"' id='"+sid+"' D:about='"+dname+sTree+":"+sid+"' D:essences='"+essenc+"'"
+		? s+'	/>'
+		
+		
+		
+		? s+"</RDF:li>"
+		/*
+		if !empty(aRefs[i][5])
+			ret := .t.
+			aRefs[i][3] := cgi_putArefs2Rdf3(aRefs[i][5],oDep,level+1,urn,columns,sTree+":"+tmp:id,ext_urn)
+		endif
+		*/
+		if lTree
+			//? s+"</RDF:li >"
+		else
+			//? s+"</RDF:Seq >"
+		endif
+	next
+	if level==0
+		errorBlock(errBlock)
+		if lTree
+		? s+'</RDF:li>'
+		? s+'</RDF:Seq>'
+		else 
+		? s+'</RDF:Seq>'
+		endif
+	endif
+	?
+return ret
+
 /************************************************/
 function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree,ext_urn)
 	local s:=replicate("   ",level),sOut,col
@@ -1867,8 +1957,10 @@ function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree,ext_urn)
 	if empty(ext_urn)
 		ext_urn := ""
 	endif
+	
 	*****
 	llTree := .f.
+	 
 	for j=1 to len(aRefs)
 		tmp2 := aRefs[j]
 		if !empty(tmp2[5])
@@ -1877,12 +1969,15 @@ function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree,ext_urn)
 		endif
 	next
 	****
+	
 	if level==0
 		? s+'<RDF:Seq about="'+dname+'">'
 	endif
 	if llTree
 		? s+'<RDF:li>'
 	endif
+	
+	
 	for i=1 to len(aRefs)
 		tmp:=aRefs[i][4]
 
@@ -1914,6 +2009,143 @@ function cgi_putArefs2Rdf2(aRefs,oDep,level,urn,columns,sTree,ext_urn)
 	?
 
 return
+
+
+/************************************************/
+function cgi_putArefs2Rdf4(aRefs,oDep,level,urn,columns,sTree,ext_urn)
+local s:=replicate("   ",level),sOut,col
+local obj,obj2,i,j,u,tmp,sTmp,tmp2,sid 
+local arr, dname 
+local z:=1
+	if empty(ext_urn)
+		ext_urn := ""
+	endif
+	*****
+	for i=1 to len(aRefs)
+	    arr := aRefs[i]
+	    dname:=urn+iif(empty(arr[1]),'' ,':'+arr[1])
+	    ? s+'<RDF:Seq RDF:about="'+dname+'">'
+		for j=1 to len(arr[2])
+		    cgi_putObjRdf(arr[2][j],columns, urn)
+		next 
+	    ? s+'</RDF:Seq>'	
+	next
+return
+
+/**************************************************/
+function cgi_putObjRdf(obj,columns, urn)
+local sTmp, sTmp2, sTmp3, sTmp4 
+local tmp:=obj
+local j, col, s := "", obj2, k
+local essenc, rerr
+
+    urn:= urn+':'+obj:id
+    ? '<RDF:li  resource="'+urn+'">'
+    ? '<RDF:Description  about="'+urn+'"'
+	?  'id="'+tmp:id+'"'
+	essenc := cgi_essence(tmp:id)
+	essenc := strtran(essenc,'&',"&amp;")
+	essenc := strtran(essenc,'"',"&quot;")
+	essenc := strtran(essenc,"'","&apos;")
+	essenc := strtran(essenc,'<',"&lt;")
+	essenc := strtran(essenc,'>',"&gt;")
+	?  'D:essence="'+essenc+'"'
+
+    for j=1 to len(columns)
+	col := columns[j]
+	sTmp := mapEval(tmp,col:block)
+	begin sequence
+	sTmp3 := ""
+	sTmp2 := ""
+
+	if "DATATYPE" $ col 
+	    if  col:datatype == "C" 
+		if !empty(sTmp)	    
+		    sTmp := strtran(sTmp,'&',"&amp;")
+		    sTmp := strtran(sTmp,'"',"&quot;")
+		    sTmp := strtran(sTmp,"'","&apos;")
+		    sTmp := strtran(sTmp,'<',"&lt;")
+		    sTmp := strtran(sTmp,'>',"&gt;")
+		endif    
+    		? 'D:'+col:name+'="'+sTmp+'" '
+	    elseif  col:datatype == "N" 
+        	? 'D:'+col:name+'="'+bal_summa(sTmp)+'" '
+		? 'S:'+col:name+'="'+sort_summa(sTmp)+'" '
+	    elseif  col:datatype == "D" 
+	    	? 'D:'+col:name+'="'+dtoc(sTmp)+'" '
+		? 'S:'+col:name+'="'+iif(empty(sTmp),"00000000",dtos(sTmp))+'" '	
+	    elseif  col:datatype == "L" 
+		? 'D:'+col:name+'="'+iif(sTmp,"'true'","'false'")+'" '
+	    elseif  col:datatype == "R" 
+    
+		if "OBJ_ID" $ col
+		    sTmp2 := mapEval(tmp,col:obj_id)
+		elseif upper(col:name) $ tmp
+		    sTmp2 := tmp[upper(col:name)]
+		else
+		    sTmp2 := sTmp
+		endif
+		
+		if empty(sTmp2)
+		    sTmp3 := cgi_getValue(stmp)
+    		    if !empty(stmp3)
+			sTmp2 := sTmp3:id
+    	    	    endif
+		    sTmp3 := ""
+    		endif
+	    
+		if !empty(stmp2)
+		    sTmp3 := cgi_essence(sTmp2)
+		    sTmp3 := strtran(sTmp3,'&',"&amp;")
+		    sTmp3 := strtran(sTmp3,'"','\"')
+		    sTmp3 := strtran(sTmp3,"'","\'")
+		    sTmp3 := strtran(sTmp3,'<',"&lt;")
+		    sTmp3 := strtran(sTmp3,'>',"&gt;")
+		endif
+	    
+	    
+		? 'D:'+col:name+'="'+sTmp3+'" '
+		? 'R:'+col:name+'="'+sTmp2+'" '
+
+	    elseif  col:datatype == "S" 
+	    
+	        obj2:=cgi_getValue(sTmp)
+		if !empty(obj2)
+		    k:= codb_tColumnBody(obj2:id)
+		    if !empty(k)
+	    		sTmp3 := "'"+k:header+"'" 
+		    else
+			sTmp3 := "'"+obj2:name+"'" 
+		    endif
+		endif
+	    	? 'D:'+col:name+'="'+sTmp3+'" '	
+		? 'R:'+col:name+'="'+sTmp+'" '	
+		
+	    elseif  col:datatype == "M" .or. col:datatype == "A" .or. col:datatype == "X" 	
+		loop	
+	    endif	
+
+	elseif valtype(sTmp) == "C"
+	    sTmp := strtran(sTmp,'&',"&amp;")
+	    sTmp := strtran(sTmp,'"','\"')
+	    sTmp := strtran(sTmp,"'","\'")
+	    sTmp := strtran(sTmp,'<',"&lt;")
+	    sTmp := strtran(sTmp,'>',"&gt;")
+	    ? 'D:'+col:name+'="'+sTmp+'" '
+
+	endif
+
+	
+	recover using rerr
+	    cgi_error2xml(rerr)
+	end sequence
+    next	
+    ? '/>'
+    ? '</RDF:li>'
+    
+
+return
+
 
 /************************************************/
 function cgi_putTreeHeader(columns)
@@ -2059,12 +2291,11 @@ function cgi_fillTreeRdf(aRefs,atree,owner_id,level)
 			aadd(mdel,i)
 		endif
 	next
-
+	
 	for i=len(mdel) to 1 step -1
 		adel(aRefs,mdel[i])
 	next
 	asize(aRefs,len(aRefs)-len(mdel))
-
 	for i=1 to len(aTree)
 		cgi_fillTreeRdf(aRefs,atree[i][5],atree[i][1],level+1)
 	next

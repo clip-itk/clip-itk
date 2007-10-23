@@ -260,13 +260,17 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 
 	s1:= ' .and. odate>=stod("'+dtos(beg_date)+ '") .and. odate<=stod("'+dtos(end_date)+ '")'
 	s2:= ' .and. odate<stod("'+dtos(beg_date)+ '")'
-	acc_chart_list := m->oDep02:select(acc_chart_class:id,,,'acc_chart_type="'+cType+'"')
+//	acc_chart_list := m->oDep02:select(acc_chart_class:id,,,'acc_chart_type="'+cType+'"')
+	acc_chart_list := m->oDep02:select(acc_chart_class:id)
 	if !empty(cAccount)
 		for i=1 to len(acc_chart_list)
 			account := m->oDep02:getValue(acc_chart_list[i])
 			if empty(account)
 				loop
 			endif
+			if !(account:acc_chart_type == cType)
+			    loop
+			endif    
 			if account:code == cAccount
 				idOwner := account:id
 				exit
@@ -278,6 +282,10 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 		if empty(account)
 			loop
 		endif
+		if !(account:acc_chart_type == cType)
+		    loop
+		endif    
+		//outlog(__FILE__,__LINE__,cType,account:code)
 		if !empty(cAccount)
 			if account:id == cAccount .or. at(cAccount,account:code)==1
 			else
@@ -300,12 +308,15 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 			aadd(aRefs,{account:id,idOwner,account:code,atail(adata)})
 		endif
 	next
+	//outlog(__FILE__,__LINE__,cAccount)
+	//outlog(__FILE__,__LINE__,aRefs)
 	asort(aRefs,,,{|x,y| x[3] <= y[3] })
 	if  empty(cAccount)
 		fillTree(aRefs,atree,"",1)
 	else
 		fillTree(aRefs,atree,idOwner,1)
 	endif
+	//outlog(__FILE__,__LINE__,aTree)
 	if !empty(aTree) //empty(cAccount)
 		adata1:=reSummTree(aTree,0)
 		data:=map()
@@ -337,6 +348,7 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 		    aadd(aTree,{[Total]+cType,"",[Total],data,{}})
 		endif
 	endif
+//	outlog(__FILE__,__LINE__,aTree)
 return aTree
 /************************************************/
 static function reSummTree(aTree,level)

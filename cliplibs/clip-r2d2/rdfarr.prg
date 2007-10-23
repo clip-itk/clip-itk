@@ -160,7 +160,6 @@ local urn, sprname:=""
 
 	if isRDF
 		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
-	//cgi_putArefs2RdfLevels(aTree,oDep,0,urn,columns,"",,atom)
 	else
 		cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 		?
