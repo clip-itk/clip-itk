@@ -4,24 +4,24 @@ endif
 
 include $(CLIPROOT)/include/Makefile.inc
 
-CFLAGS=$(C_FLAGS) -I./gd
+CLIPINCLUDE=-I$(CLIPROOT)/include -I./gd
+C_FLAGS=-fPIC -Wall -g -I.
+CC=gcc
 
 XLIB=libclip-gd.a
 XSLIB=libclip-gd$(DLLSUFF)
 XSLIBREAL=libclip-gd$(DLLREALSUFF)
-LIBS=-lz -lm $(LIBPNG) $(LIBJPEG) $(LIBFREETYPE) $(LIBTTF) $(LIBXPM)
-
 
 all: build_gd
 
 build_gd:
-	cd gd && ./configure &&	$(MAKE) CFLAGS="$(C_FLAGS)"
-	$(CC) $(CFLAGS) -c _gd.c
+	cd gd && ./configure &&	$(MAKE)
+	$(CC) $(C_FLAGS) $(CLIPINCLUDE) -c _gd.c
 	$(CLIPROOT)/bin/clip -l gd_obj.prg
 	cd bsgraphic && $(MAKE)
 	rm -f $(XLIB)
-	$(CLIPROOT)/bin/clip_makelib $(XLIB) _gd.o gd_obj.o ./bsgraphic/*.o $(C_LIBS)
-	$(CLIPROOT)/bin/clip_makeslib $(XSLIB) $(XLIB) ./gd/libgd.a $(LIBS) $(C_LIBS)
+	$(CLIPROOT)/bin/clip_makelib $(XLIB) _gd.o gd_obj.o ./bsgraphic/*.o
+	./makegd.sh $(XLIB)
 	touch build_gd
 
 install:
