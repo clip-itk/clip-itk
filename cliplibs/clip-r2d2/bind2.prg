@@ -223,7 +223,6 @@ errorblock({|err|error2html(err)})
 		cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns2,"")
 	else
 		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns2,"")
-		//cgi_putArefs2RdfLevels(aTree,oDep,0,urn,columns,"")
 	endif
 
 	? '</RDF:RDF>'

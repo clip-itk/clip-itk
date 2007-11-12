@@ -1,6 +1,6 @@
 #include "r2d2lib.ch"
 
-function r2d2_rdfinfo3(_queryArr, isRDF)
+function r2d2_rdfinfo3(_queryArr, typeNode)
 
 local err,_query
 local i,j,u,obj,idlist,sErr
@@ -9,9 +9,9 @@ local connect_id:="", connect_data
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
-local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f., aTree2
-
-	isRDF := iif( valType(isRDF)=="L", isRDF, ".t.")
+local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f.
+local aTree2:={}
+local s_obj
 
 	errorblock({|err|error2html(err)})
 
@@ -42,6 +42,7 @@ local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f., aTree2
 	if !empty(values)
 		values := split(values,"[,]")
 	endif
+	
 	if "ATOM" $ _query
 		atom := upper(_query:atom)
 	endif
@@ -100,11 +101,18 @@ local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f., aTree2
 	endif
 
 	cgi_xml_header()
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	? 'xmlns:D="http://itk.ru/D#" '
-	? 'xmlns:R="http://itk.ru/R#" '
-	? 'xmlns:S="http://itk.ru/S#">'
-	?
+	if typeNode == 'rdf3'
+    	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	    ? 'xmlns:D="http://itk.ru/D#" '
+	    ? 'xmlns:R="http://itk.ru/R#" '
+	    ? 'xmlns:S="http://itk.ru/S#">'
+	    ?
+	elseif typeNode == 'rdf'
+	  ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'                                                 
+          ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'         
+	else
+	  ? '<root xmlns="http://itk.ru/json#">'         
+	endif
 
 	if empty(id)
 		oDep := cgi_needDepository(sDict,sDep)
@@ -131,20 +139,26 @@ local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f., aTree2
 		cgi_xml_error("Empty table description for "+sprname)
 		return
 	endif
+	
 
 	if empty(id) .and. empty(values)
-		aRefs := cgi_aRefs(oDep,classDesc,columns,_query,,@Serr,.f.,.t.,,needDeleted)
+
+		aTree := cgi_aRefs2(oDep,classDesc,columns,_query,,@Serr,.f.,.t.,.f.,needDeleted)
 		if !empty(serr)
 			cgi_xml_error("Error in parameters:"+Serr)
 		endif
 	endif
 
-	if aRefs == NIL
+//*---------------------------------------------------
+	
+	if aTree == NIL
 	    aRefs := {}
 	    idList := {}
 	    if !empty(id)
+	    
 		idList := split(id,"[,]")
 	    elseif !empty(values) .and. !empty(attr)
+    
 		for i=1 to len(values)
 		    s_select := attr+'=="'+values[i]+'"'
 		    tmp:=oDep:select(classDesc:id,,,s_select,,needDeleted)
@@ -155,54 +169,59 @@ local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f., aTree2
 	    else 
 		iDlist:=oDep:select(classDesc:id,,,s_select,,needDeleted)
 	    endif
-	    
-		//asize
-
-	    if len(idList)>0
-	        obj := oDep:getValue(idList[1])
-	        
-	        aTree := {}
-		if "OWNER_ID" $ obj
-		    iftree:=.t.
-		else
-		    aadd(aTree,{'',{}})
-		endif	
-		    j:=1
-		    for i=1 to len(idList)
-			obj := oDep:getValue(idList[i])
-			
-			if empty(obj)
-			    loop
-			endif
-			if needDeleted .and. obj:__version >=0
-			    loop
-			endif
-			
-			if iftree    
-			    tmp1 := obj:owner_id
-			    j := ascan(aTree,{|x|x[1]==tmp1})
-			    if j<=0
-				aadd(aTree,{tmp1, {}})
-				j := len(aTree)
-			    endif
-			endif    
-			    aadd(aTree[j][2], obj)
-		    next	    
-	    endif
 	endif    
 
-
+	if len(idList)>0
+	    obj := oDep:getValue(idList[1])
+	    aTree := {}
+	    if "OWNER_ID" $ obj
+	        iftree:=.t.
+	        j:=1
+	        for i=1 to len(idList)
+		    obj := oDep:getValue(idList[i])
+		    if empty(obj)
+		        loop
+		    endif
+		    if needDeleted .and. obj:__version >=0
+		        loop
+		    endif
+		    tmp1 := obj:owner_id
+		    j := ascan(aTree,{|x|x[1]==tmp1})
+		    if j<=0
+		        aadd(aTree,{tmp1, {}})
+		        j := len(aTree)
+		    endif
+		    aadd(aTree[j][2], obj)
+		next
+	    else    
+		aadd(aTree,{'',{}})
+		for i=1 to len(idList)
+		    obj := oDep:getValue(idList[i])
+		    if empty(obj)
+		        loop
+		    endif
+		    if needDeleted .and. obj:__version >=0
+		        loop
+		    endif
+		    aadd(aTree[1][2], obj)
+		next
+	    endif
+	endif
+	
+	
 	if empty(urn)
 		urn := 'urn:'+sprname
 	endif
-
-	if isRDF
-		cgi_putArefs2Rdf4(aTree,oDep,0,urn,columns,"",,atom)
+	if typeNode == 'rdf3'
+	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
+	    ? '</RDF:RDF>'
+	elseif	typeNode == 'rdf'
+	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
+	    ? '</RDF:RDF>'
 	else
-		cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"",,atom)
-		?
-		cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"",,atom)
+	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
+	    ? '</root>'
 	endif
-	? '</RDF:RDF>'
+	
 ?
 return

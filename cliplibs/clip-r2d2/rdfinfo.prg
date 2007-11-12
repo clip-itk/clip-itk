@@ -11,7 +11,7 @@ local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
 local urn, sprname:="", values := "", attr := "", atom:="", iftree
 
-	isRDF := iif( valType(isRDF)=="L", isRDF, ".t.")
+	isRDF := iif( valType(isRDF)=="L", isRDF, .t.)
 
 	errorblock({|err|error2html(err)})
 
@@ -137,7 +137,6 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
 			cgi_xml_error("Error in parameters:"+Serr)
 		endif
 	endif
-
 	if aRefs == NIL
 		aRefs := {}
 		idList := {}
@@ -145,6 +144,8 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
 			idList := split(id,"[,]")
 		elseif !empty(values) .and. !empty(attr)
 			for i=1 to len(values)
+			? attr
+			? values[i]
 				s_select := attr+'=="'+values[i]+'"'
 				tmp:=oDep:select(classDesc:id,,,s_select,,needDeleted)
 				for j=1 to len(tmp)
@@ -198,6 +199,7 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
 		urn := 'urn:'+sprname
 	endif
 	//outlog(__FILE__,__LINE__,len(aTree))
+	
 	if isRDF
 		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"",,atom)
 	else
