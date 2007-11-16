@@ -6,6 +6,9 @@
 
 /*
   $Log$
+  Revision 1.3  2007/11/16 13:42:09  itk
+  uri: some fix from slavaz@cis.by about numbers of ports and fixed small bug
+
   Revision 1.2  2006/10/17 08:01:34  itk
   uri: small fixes
 
@@ -75,7 +78,7 @@ clip_COM_OPEN(ClipMachine * mp)
 {
 	int no = _clip_parni(mp, 1);
 	char *dev = _clip_parc(mp, 1);
-	char buf[V24_SZ_PORTNAME];
+	char buf[V24_SZ_PORTNAME+1];
 	int ctsrts = _clip_parl(mp, 5);
 	int xonxoff = _clip_parl(mp, 6);
 	int dbg = _clip_parl(mp, 7);

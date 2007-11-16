@@ -15,6 +15,9 @@
  *
  * --------------------------------------------------------------------------
  * $Log$
+ * Revision 1.2  2007/11/16 13:42:09  itk
+ * uri: some fix from slavaz@cis.by about numbers of ports and fixed small bug
+ *
  * Revision 1.1  2006/06/22 20:12:02  itk
  * uri: init sf.net
  *
@@ -51,6 +54,7 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 
 #define __EZV24_C__
@@ -126,11 +130,31 @@ static int buildLockName (v24_port_t *port, char* TheName, size_t Len);
 /*|                     IMPLEMENTATION OF THE FUNCTIONS                     |*/
 /*`========================================================================='*/
 
+#define SYSTTYDIR "/sys/class/tty"
+int v24CountSysPorts ( unsigned long* BitMask ){
+    DIR *dh;
+    struct dirent *direntry;
+    struct stat statInfo;
+    char linkName[1024];
+    int ret=0;
+    dh = opendir(SYSTTYDIR);
+    if (dh == NULL ){
+	reportError(NULL,V24_E_NO_PROC_FILE,"v24CountPorts");
+        return -1;
+    }
+    
+    while ((direntry = readdir(dh)) != NULL){
+	sprintf(linkName,"%s/%s/device",SYSTTYDIR,direntry->d_name);
+	if (stat(linkName,&statInfo) < 0) continue;
+	ret++;
+    }
+    closedir(dh);
+    return (ret>0)?ret-1:0;
+}
 
 int v24CountPorts ( unsigned long* BitMask )
 {
     int count=-1;
-
 #if defined(__LINUX__) && !defined(__CYGWIN__)
     FILE* proc_fd=NULL;
     char proc_line[80];
@@ -151,8 +175,7 @@ int v24CountPorts ( unsigned long* BitMask )
     proc_fd = fopen("/proc/tty/driver/serial","r");
     if ( proc_fd==NULL )
     {
-	reportError(NULL,V24_E_NO_PROC_FILE,"v24CountPorts");
-	return -1;
+	return v24CountSysPorts ( BitMask );
     }
 
     // here we have to detect the portnumber and the uart. The port exist, if
