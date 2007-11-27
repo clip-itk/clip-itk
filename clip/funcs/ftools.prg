@@ -29,7 +29,7 @@ return .f.
 ************************************************************
 function makeDirectory(path,mode)
 	local curdir:=curDir()
-	local r3, p:=path, i, s
+	local r3, p:=path, i, s, q
 
 	if empty(mode)
 		mode := "777"
@@ -54,9 +54,13 @@ function makeDirectory(path,mode)
 			dirChange(PATH_DELIM+curDir)
 			return .f.
 		endif
-		chmod(s,mode)
+		//chmod(s,mode)
+		q := s
 		r3:=dirChange(s)
 	enddo
+	if !empty(q)
+		chmod(q,mode)
+	endif
 	dirChange(PATH_DELIM+curDir)
 return .t.
 **********************************************************
@@ -250,6 +254,6 @@ FUNCTION FSize( nHandle )
   LOCAL nCurrent, nLength
   nCurrent := FPOS( nHandle )
   nLength := FGOBOTTOM( nHandle )
-  FSEEK( nHandle, nCurrent, FS_SET ) 
+  FSEEK( nHandle, nCurrent, FS_SET )
   RETURN ( nLength )
 
