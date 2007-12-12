@@ -35,14 +35,14 @@ local data,ldata,file:="",c_type:="",locale:=""
 		return
 	endif
 
-	c_type = _get_contentType(file)
+	c_type = get_contentType(file)
 
 	?? "Content-type: "+c_type
-	? 
+	?
 
 	ldata := _get_localeData(file,locale)
 	if empty(ldata)
-		
+
 		data := memoread(file)
 		data := _normalize(@data,file)
 		if empty(data)
@@ -140,36 +140,4 @@ static function _get_localeData(file,locale)
 	set(_SET_TRANSLATE_PATH,oldset)
 	//? lfile,ret
 return ret
-*******************
-static function _get_contentType(file)
-	local c_type:="text/html"
-	local fext,j
-	local mime := ;
-		{;
-			{"txt","text/plain"},;
-			{"css","text/css"},;
-			{"js","application/x-javascript"},;
-			{"xul","application/vnd.mozilla.xul+xml"},;
-			{"rdf","application/rdf+xml"},;
-			{"xhtml","application/xhtml+xml"},;
-			{"xht","application/xhtml+xml"},;
-			{"xml","application/xml"},;
-			{"xls","application/xml"};
-		}
-
-	fext := atr(".",file)
-	if fext>0
-		fext := substr(file,fext+1)
-	else
-		fext := ""
-	endif
-	j := ascan(mime,{|x|x[1]==fext})
-	if empty(fext)
-		c_type := mime[1][2]
-	elseif 	j<=0
-		c_type := "text/"+fext
-	else
-		c_type := mime[j][2]
-	endif
-return  c_type
 
