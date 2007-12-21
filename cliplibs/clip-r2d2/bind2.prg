@@ -121,7 +121,7 @@ errorblock({|err|error2html(err)})
 	endif
 
 	columns := cgi_make_columns(oDict,sprname)
-	columns2 := cgi_make_columns(oDict,sprname,2)
+	columns2 := cgi_make_columns(oDict,sprname,"",2)
 	for i=1 to 9
 		col := "FIND"+str(i,1,0)
 		if col $ _query

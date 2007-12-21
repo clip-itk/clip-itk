@@ -9,7 +9,7 @@ local connect_id:="", connect_data
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
-local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f.
+local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f., tview:=""
 local aTree2:={}
 local s_obj
 
@@ -35,6 +35,9 @@ local s_obj
 	endif
 	if "ATTR" $ _query
 		attr := _query:attr
+	endif
+	if "TVIEW" $ _query
+		tview := _query:tview
 	endif
 	if "VALUES" $ _query
 		values := _query:values
@@ -130,9 +133,9 @@ local s_obj
 		return
 	endif
 	if lower(sprname) == "accpost"
-		columns := cgi_accpost_columns(oDict)
+		columns := cgi_accpost_columns(oDict,tview)
 	else
-		columns := cgi_make_columns(oDict,sprname) //,,atom)
+		columns := cgi_make_columns(oDict,sprname,tview) //,,atom)
 	endif
 
 	if empty(columns)

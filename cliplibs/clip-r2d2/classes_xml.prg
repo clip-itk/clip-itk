@@ -99,6 +99,7 @@ static function put_class2(oDict,class,tColumns,tIndexes)
 		? s1+s2+'label="'+iif(!empty(col),col,attr:name)+'" '
 		if "DATALEN" $ attr
 			? s1+s2+'datalen="'+alltrim(toString(attr:datalen))+'" '
+			? s1+s2+'datadec="'+alltrim(toString(attr:datadec))+'" '
 			? s1+s2+'datatype="'+attr:datatype+'"'
 			? s1+s2+'datamask="'+attr:datamask+'"'
 			? s1+s2+'dataisindex="'+iif( !empty(attr:isIndex),"true","false")+'"'
@@ -136,6 +137,7 @@ static function put_class2(oDict,class,tColumns,tIndexes)
 		? s1+s2+'name="'+attr:name+'" '
 		? s1+s2+'label="'+iif(!empty(col),col,attr:name)+'" '
 		? s1+s2+'datalen="'+alltrim(toString(attr:len))+'" '
+		? s1+s2+'datadec="'+alltrim(toString(attr:dec))+'" '
 		? s1+s2+'datatype="'+attr:type+'"'
 		? s1+s2+'datamask="'+attr:mask+'"'
 		lIndex := attr:name $ tIndexes

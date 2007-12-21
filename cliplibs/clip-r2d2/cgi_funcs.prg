@@ -599,7 +599,7 @@ function r2d2_get_osb_data(oDep,bal_id,account,beg_date,end_date,s1,s2)
 return data
 
 ***********************
-function cgi_make_columns(oDict,sprname,type,atom)
+function cgi_make_columns(oDict,sprname,tview,type,atom)
 	// type is
 	// 0 - default, all columns
 	// 1 - only attr_find or first 2 attributes
@@ -654,7 +654,10 @@ function cgi_make_columns(oDict,sprname,type,atom)
 		endif
 	endif
 	tmp := NIL
-	if type == 0
+	if type == 0 .and. !empty(tview)
+		tmp := oDict:select("TVIEW",,,'class_id=="'+classDesc:id+'" .and. name=="'+tview+'"')
+	endif
+	if type == 0 .and. empty(tmp)
 		tmp := oDict:select("TVIEW",,,'class_id=="'+classDesc:id+'"')
 	endif
 	if empty(tmp)
@@ -1660,10 +1663,10 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 		essenc := strtran(essenc,'>',"&gt;")
 		refr:= "id:'"+essenc+"' "
 		//?? s+" {id:'" +sid+ "' , essence:'" +essenc+ "', "
-		?? s+" {id:'" +sid+ "' , essence:'" +essenc+ "', "
-		?? s+" a: {"
-		?? s+" level:"+alltrim(str(level,3,0))+", "
-		?? s+" isContainer:"+iif(empty(aRefs[i][5]),'false','true')
+		?? s+" {'id':'" +sid+ "' , essence:'" +essenc+ "', "
+		?? s+" 'a': {"
+		?? s+" 'level':"+alltrim(str(level,3,0))+", "
+		?? s+" 'isContainer':"+iif(empty(aRefs[i][5]),'false','true')
 		?? s+" },"
 
 		begin sequence
@@ -1750,16 +1753,16 @@ function cgi_putArefs2Rdf(aRefs,oDep,level,urn,columns,sTree,ext_urn,atom)
 				endif
 
 				if !empty(stmp3) .and. len(stmp3) > 2
-				    ?? s+" "+col:name+":"+sTmp3+iif( j==len(columns), "",",")
+				    ?? s+" '"+col:name+"':"+sTmp3+iif( j==len(columns), "",",")
 				else
-				    ?? s+" "+col:name+":'"+iif(col:name=='essence',essenc,'')+" '"+iif( j==len(columns), "",",")
+				    ?? s+" '"+col:name+"':'"+iif(col:name=='essence',essenc,'')+" '"+iif( j==len(columns), "",",")
 				endif
 			next
 		recover using rerr
 			cgi_error2xml(rerr)
 		end sequence
 			if len(refr) >0
-				?? s+", r:{"+refr+"}"
+				?? s+", 'r':{"+refr+"}"
 			endif
 		?? s+'}'+iif( i==aLen, '',',')
 	next
@@ -2182,9 +2185,9 @@ local essenc, rerr, refs:=""
 		refs+=' ,'+col:name+':"'+iif(empty(sTmp),"00000000",dtos(sTmp))+'"'
 	    elseif  col:datatype == "L"
 		if valtype(sTmp)=="L"
-		    ?? ','+col:name+':"'+iif(sTmp,"true","false")  +'" '
+		    ?? ',"'+col:name+'":"'+iif(sTmp,"true","false")  +'" '
 		else
-		    ?? ','+col:name+':"'+sTmp  +'" '
+		    ?? ',"'+col:name+'":"'+sTmp  +'" '
 		endif
 		refs+= ','+col:name+':'+ iif(tmp[upper(col:name)],"true","false")
 	    elseif  col:datatype == "R"
@@ -2214,7 +2217,6 @@ local essenc, rerr, refs:=""
 		    sTmp3 := strtran(sTmp3,'>',"&gt;")
 		endif
 
-
 		?? ','+col:name+':"'+sTmp3+'" '
 		refs+=','+col:name+':"'+sTmp2+'"'
 
@@ -2238,7 +2240,7 @@ local essenc, rerr, refs:=""
 	    sTmp := strtran(sTmp,"'","\'")
 	    sTmp := strtran(sTmp,'<',"&lt;")
 	    sTmp := strtran(sTmp,'>',"&gt;")
-	    ?? ', '+col:name+':"'+sTmp+'" '
+	    ?? ', "'+col:name+'":"'+sTmp+'" '
 	else
 	    loop
 	endif
