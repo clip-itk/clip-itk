@@ -658,7 +658,8 @@ function cgi_make_columns(oDict,sprname,tview,type,atom)
 		tmp := oDict:select("TVIEW",,,'class_id=="'+classDesc:id+'" .and. name=="'+tview+'"')
 	endif
 	if type == 0 .and. empty(tmp)
-		tmp := oDict:select("TVIEW",,,'class_id=="'+classDesc:id+'"')
+		//tmp := oDict:select("TVIEW",,,'class_id=="'+classDesc:id+'"')
+		tmp := oDict:select("CLASS",,,'class_id=="'+classDesc:id+'"')
 	endif
 	if empty(tmp)
 		for i=1 to len(attr_list)
