@@ -1,20 +1,84 @@
 #include "r2d2lib.ch"
 
-function r2d2_classes_xml()
+function r2d2_classes_xml(flag)
 
 	local m1:={"GBL01","GBL02","ACC00","ACC01","ETC01"}
 	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
 	local i
-
+	if empty(flag)
 	cgi_xml_header()
-
 	? '<metadata>'
 	for i=1 to len(m1)
 		put_xml(m1[i],m2[i])
 	next
-	? '</metadata>'
+	? '</metadata>'	
+	?
+	else
+	                                                                                                                                                                
+       //?? "Content-type: application/x-javascript"
+	
+	for i=1 to len(m1)
+	    put_json(m1[i],m2[i])
+	next
+	
+	endif
+return
+
+
+******************
+static function put_json(m1,m2)
+	local i,j, oDict, list, class
+	local tColumns, tIndexes, atrib, tmp, col
+
+	oDict := codb_dict_reference(m1)
+	if empty(oDict)
+		return
+	endif
+
+	tcolumns := map()
+	tindexes := map()
+	make_tcolumns(oDict,tcolumns)
+	make_indexes(oDict,tIndexes)
+
+	
+	list := oDict:select("CLASS")
+	for i=1 to len(list)
+	    class := oDict:getValue(list[i])
+	    ? 'class["'+class:name+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)+'",unique_key:"'+class:unique_key+'",'
+	    ??'attr_list:['
+	    tmp := class:attr_list
+	    for j=1 to len(tmp)	    
+		?? iif(j==1,'',',')+'"'+oDict:getValue(tmp[j]):name+'"'
+	    next
+	    ??']};'
+	next
+
+
+        list := oDict:select("ATTR")
+	for i=1 to len(list)
+		atrib := oDict:getValue(list[i])
+		? 'atribut["'+atrib:name+'"]={id:"'+atrib:id+'", name:"'+atrib:name+'", label:"'+iif( atrib:name $ tColumns, tColumns[atrib:name]:header, "")+'",datatype:"'+atrib:type+'",datalen:"'
+		??alltrim(str(atrib:len))+'",datadec:"'+alltrim(str(atrib:dec))+'",datamask:"'+atrib:mask+'"'
+		??',defvalue:"'+atrib:defvalue+'",dataRefTo:"' 
+		?? iif(!empty(atrib:ref_to), cgi_getValue(atrib:ref_to):name,'')+'"};'
+	next
+	
+	list := oDict:select("TVIEW")
+	for i=1 to len(list)
+		tmp := oDict:getValue(list[i])
+		? 'tview["'+tmp:name+'"]={id:"'+tmp:id+'", tcol_list:['				
+		for j=1 to len(tmp:col_list)
+    		    col := oDict:getValue(tmp:col_list[j]) 
+		    if !empty(col)
+			?? iif(j==1,'',',')+'"'+col:name+'"'
+		    endif
+		next
+		??']};'
+	next
 	?
 return
+
+
 
 ******************
 static function put_xml(m1,m2)
