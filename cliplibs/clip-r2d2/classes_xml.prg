@@ -5,22 +5,23 @@ function r2d2_classes_xml(flag)
 	local m1:={"GBL01","GBL02","ACC00","ACC01","ETC01"}
 	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
 	local i
+
 	if empty(flag)
-	cgi_xml_header()
-	? '<metadata>'
-	for i=1 to len(m1)
+	    cgi_xml_header()
+	    ? '<metadata>'
+	    for i=1 to len(m1)
 		put_xml(m1[i],m2[i])
-	next
-	? '</metadata>'	
-	?
+    	    next
+	    ? '</metadata>'	
+	    ?
 	else
 	                                                                                                                                                                
-       //?? "Content-type: application/x-javascript"
+        ?? "Content-type: application/x-javascript;charset="+host_charset()
 	
-	for i=1 to len(m1)
-	    put_json(m1[i],m2[i])
-	next
-	
+	    for i=1 to len(m1)
+		put_json(m1[i],m2[i])
+	    next
+	?? 'ATTRIBUT["id"]={id:"", name:"id", label:"ID",datatype:"C",datalen:"12",datadec:"0",datamask:"",dataisindex:true,defvalue:"",dataRefTo:""};'    
 	endif
 return
 
@@ -44,7 +45,7 @@ static function put_json(m1,m2)
 	list := oDict:select("CLASS")
 	for i=1 to len(list)
 	    class := oDict:getValue(list[i])
-	    ? 'class["'+class:name+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)+'",unique_key:"'+class:unique_key+'",'
+	    ? 'CLASS["'+class:name+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)+'",unique_key:"'+class:unique_key+'",'
 	    ??'attr_list:['
 	    tmp := class:attr_list
 	    for j=1 to len(tmp)	    
@@ -57,16 +58,20 @@ static function put_json(m1,m2)
         list := oDict:select("ATTR")
 	for i=1 to len(list)
 		atrib := oDict:getValue(list[i])
-		? 'atribut["'+atrib:name+'"]={id:"'+atrib:id+'", name:"'+atrib:name+'", label:"'+iif( atrib:name $ tColumns, tColumns[atrib:name]:header, "")+'",datatype:"'+atrib:type+'",datalen:"'
-		??alltrim(str(atrib:len))+'",datadec:"'+alltrim(str(atrib:dec))+'",datamask:"'+atrib:mask+'"'
+		? 'ATTRIBUT["'+atrib:name+'"]={id:"'+atrib:id+'", name:"'+atrib:name+'", label:"'+iif( atrib:name $ tColumns, tColumns[atrib:name]:header, "")+'",datatype:"'+atrib:type+'",datalen:"'
+		?? alltrim(str(atrib:len))+'",datadec:"'+alltrim(str(atrib:dec))+'",datamask:"'+atrib:mask+'"'
+		??',dataisindex:'+iif(atrib:name $ tIndexes,'true' , 'false')+''
 		??',defvalue:"'+atrib:defvalue+'",dataRefTo:"' 
 		?? iif(!empty(atrib:ref_to), cgi_getValue(atrib:ref_to):name,'')+'"};'
 	next
+
+		
+
 	
 	list := oDict:select("TVIEW")
 	for i=1 to len(list)
 		tmp := oDict:getValue(list[i])
-		? 'tview["'+tmp:name+'"]={id:"'+tmp:id+'", tcol_list:['				
+		? 'TVIEW["'+tmp:name+'"]={id:"'+tmp:id+'", tcol_list:['				
 		for j=1 to len(tmp:col_list)
     		    col := oDict:getValue(tmp:col_list[j]) 
 		    if !empty(col)
