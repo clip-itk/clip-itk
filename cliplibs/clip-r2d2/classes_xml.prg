@@ -17,10 +17,11 @@ function r2d2_classes_xml(flag)
 	else
 	                                                                                                                                                                
         ?? "Content-type: application/x-javascript;charset="+host_charset()
-	
+	    ?
 	    for i=1 to len(m1)
 		put_json(m1[i],m2[i])
 	    next
+	    ?
 	?? 'ATTRIBUT["id"]={id:"", name:"id", label:"ID",datatype:"C",datalen:"12",datadec:"0",datamask:"",dataisindex:true,defvalue:"",dataRefTo:""};'    
 	endif
 return
@@ -28,9 +29,10 @@ return
 
 ******************
 static function put_json(m1,m2)
-	local i,j, oDict, list, class
-	local tColumns, tIndexes, atrib, tmp, col
-
+	
+	local i,oDict,list,class
+	local tColumns,tIndexes
+	local j,tmp,col,atrib
 	oDict := codb_dict_reference(m1)
 	if empty(oDict)
 		return
@@ -44,12 +46,14 @@ static function put_json(m1,m2)
 	
 	list := oDict:select("CLASS")
 	for i=1 to len(list)
+	    
 	    class := oDict:getValue(list[i])
-	    ? 'CLASS["'+class:name+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)+'",unique_key:"'+class:unique_key+'",'
+	    ? 'CLASS["'+class:name+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)
+	    ??'",unique_key:"'+ iif('unique_key' $ class, class:unique_key,'')+'",'
 	    ??'attr_list:['
 	    tmp := class:attr_list
 	    for j=1 to len(tmp)	    
-		?? iif(j==1,'',',')+'"'+oDict:getValue(tmp[j]):name+'"'
+		?? iif(j==1,'',',')+'"'+tmp[j]+'"'
 	    next
 	    ??']};'
 	next
@@ -58,16 +62,13 @@ static function put_json(m1,m2)
         list := oDict:select("ATTR")
 	for i=1 to len(list)
 		atrib := oDict:getValue(list[i])
-		? 'ATTRIBUT["'+atrib:name+'"]={id:"'+atrib:id+'", name:"'+atrib:name+'", label:"'+iif( atrib:name $ tColumns, tColumns[atrib:name]:header, "")+'",datatype:"'+atrib:type+'",datalen:"'
+		? 'ATTRIBUT["'+atrib:id+'"]={id:"'+atrib:id+'", name:"'+atrib:name+'", label:"'+iif( atrib:name $ tColumns, tColumns[atrib:name]:header, "")+'",datatype:"'+atrib:type+'",datalen:"'
 		?? alltrim(str(atrib:len))+'",datadec:"'+alltrim(str(atrib:dec))+'",datamask:"'+atrib:mask+'"'
 		??',dataisindex:'+iif(atrib:name $ tIndexes,'true' , 'false')+''
-		??',defvalue:"'+atrib:defvalue+'",dataRefTo:"' 
-		?? iif(!empty(atrib:ref_to), cgi_getValue(atrib:ref_to):name,'')+'"};'
+		??',defvalue:"'+atrib:defvalue+'",dataRefTo:"'+atrib:ref_to+'"};'
 	next
 
-		
 
-	
 	list := oDict:select("TVIEW")
 	for i=1 to len(list)
 		tmp := oDict:getValue(list[i])
@@ -80,6 +81,7 @@ static function put_json(m1,m2)
 		next
 		??']};'
 	next
+	
 	?
 return
 

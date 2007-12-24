@@ -2179,7 +2179,10 @@ local essenc, rerr, refs:=""
 		endif
 		?? ','+col:name+':"'+sTmp+'" '
 	    elseif  col:datatype == "N"
-		?? ','+col:name+':"'+str(sTmp,12,2)+'" '
+		if valtype(sTmp)!="N"
+		    sTmp:=val(stmp)
+		endif		
+		?? ','+col:name+':"'+toString(sTmp)+'" '
 		refs+=' ,'+col:name+':"'+sort_summa(sTmp)+'"'
 	    elseif  col:datatype == "D"
 		?? ','+col:name+':"'+dtoc(sTmp)+'" '
@@ -2292,6 +2295,9 @@ local essenc, rerr
 		endif
 		? 'D:'+col:name+'="'+sTmp+'" '
 	    elseif  col:datatype == "N"
+		if valtype(stmp)!="N"
+    		    stmp:=val(stmp)
+		endif
 		? 'D:'+col:name+'="'+str(sTmp,12,2)+'" '
 		? 'S:'+col:name+'="'+sort_summa(sTmp)+'" '
 	    elseif  col:datatype == "D"
@@ -2407,6 +2413,9 @@ local essenc, rerr
 		endif
 		? 'DOCUM:'+col:name+'="'+sTmp+'" '
 	    elseif  col:datatype == "N"
+		if valtype(stmp)!="N"
+		    stmp:=val(stmp)
+		endif
 		? 'DOCUM:'+col:name+'="'+str(sTmp,12,2)+'" '
 		? 'DOCUM:sort_'+col:name+'="'+sort_summa(sTmp)+'" '
 	    elseif  col:datatype == "D"

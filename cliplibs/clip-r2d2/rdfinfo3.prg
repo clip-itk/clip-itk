@@ -56,18 +56,7 @@ local s_obj
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-/*
-	if "IFTREE" $ _query
-		iftree := _query:iftree
-	endif
-*/
 
-    /*
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
-	endif
-    */
 
 
        if "ACC01" $ _query .and. !empty(_query:acc01)
@@ -143,6 +132,11 @@ local s_obj
 		return
 	endif
 	
+	for i=1 to len(columns)
+	    if columns[i]:name = 'owner_id'
+		iftree := .t.
+	    endif
+	next
 
 	if empty(id) .and. empty(values)
 
@@ -177,7 +171,7 @@ local s_obj
 	if len(idList)>0
 	    obj := oDep:getValue(idList[1])
 	    aTree := {}
-	    if "OWNER_ID" $ obj
+	    if iftree=.t. 
 	        iftree:=.t.
 	        j:=1
 	        for i=1 to len(idList)
@@ -196,7 +190,7 @@ local s_obj
 		    endif
 		    aadd(aTree[j][2], obj)
 		next
-	    else    
+	    else 
 		aadd(aTree,{'',{}})
 		for i=1 to len(idList)
 		    obj := oDep:getValue(idList[i])
