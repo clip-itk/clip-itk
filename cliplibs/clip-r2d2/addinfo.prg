@@ -300,15 +300,21 @@ local sprname:=""
 			endif
 		endif
 	next
+/*
 	if classDesc:name == "accpost"
 		r2d2_accpost_log_end(oDep,acclog_id )
 	endif
 	oDict:unLockID(classDesc:id)
-
+*/
 	if set("XML_OUT")=="NO"
 	else
 	    if xmlitem=='yes'
 		? '<xmlitems>'
+	if classDesc:name == "accpost"
+		r2d2_accpost_log_end(oDep,acclog_id )
+	endif
+	oDict:unLockID(classDesc:id)		
+		
 		cgi_fillTreeRdf(aRefs,aTree,"",1)
 		if empty(urn)
 			urn := 'urn:'+sprname
@@ -319,6 +325,10 @@ local sprname:=""
 		? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 		? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 		?
+	if classDesc:name == "accpost"
+		r2d2_accpost_log_end(oDep,acclog_id )
+	endif
+	oDict:unLockID(classDesc:id)		
 		cgi_fillTreeRdf(aRefs,aTree,"",1)
 
 		if empty(urn)

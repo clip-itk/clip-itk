@@ -73,12 +73,18 @@ function r2d2_accpost_log_end(oDep,log_id)
 		return .t.
 	endif
 	obj2 := oDep:getValue(tmp[1])
-	? "<error>"
-	? [analitic balance have error]
+
 	if !empty(obj2)
-		? obj2:opertype,obj2:realDate, obj2:realTime
-		? obj2:diffobj
+	? "<error>"
+	    ? "<mess>"    
+	    ? [analitic balance have error]
+	    ? obj2:opertype,obj2:realDate, obj2:realTime
+	    ? "</mess>"
+	    ? "<mess>"    
+	    ? obj2:diffobj
+    	    ? "</mess>"    
+	? "</error>"		
 	endif
-	? "</error>"
+
 return .t.
 

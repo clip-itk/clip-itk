@@ -6,7 +6,7 @@ local obj,err,_query
 local sDict:="", sDep:=""
 local oDict,oDep, tmp, classDesc
 local oDict2, oDep2, tmp2, classDesc2
-local obj_id:="",id:="",command:="",user:="",passwd:="",usergroup_id:="",usergroup:="", rang:=""
+local obj_id:="",id:="",command:="",user:="",passwd:="",usergroup_id:="",usergroup:="", rang:="", userid:=""
 local beg_date,end_date,acc00:="ACC0001",acc01:="ACC0101"
 local i,j,x,y
 
@@ -120,6 +120,7 @@ local i,j,x,y
 				id:=upper("A"+padl(alltrim(ntoc(random(),32)),10,"0"))
 			end
 			user := tmp2:username
+			userid:=tmp2:employee
 			rang := tmp2:rang_user
 			usergroup_id := tmp2:usergroup
 			usergroup := cgi_essence(tmp2:usergroup)
@@ -137,6 +138,7 @@ local i,j,x,y
 			obj:= oDep:getValue(obj_id)
 		endif			
 		obj:user := user
+		obj:userid := userid
 		obj:rang := rang		
 		obj:passwd := passwd
 		obj:connect_id := id
@@ -221,6 +223,7 @@ local i,j,x,y
 	?? 'beg_date="'+dtoc(obj:beg_date)+'" end_date="'+dtoc(obj:end_date)+'" '
 	?? 'acc00="'+acc00+'" acc01="'+acc01+'" '
 	?? 'usergroup="'+usergroup+'" '
+	?? 'userid="'+userid+'" '
 	?? 'usergroup_id="'+usergroup_id+'" '
 	for i=1 to len(obj:user_data)
 		x:=lower(obj:user_data[i][1])

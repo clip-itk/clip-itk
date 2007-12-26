@@ -2,7 +2,7 @@
 
 function r2d2_classes_xml(flag)
 
-	local m1:={"GBL01","GBL02","ACC00","ACC01","ETC01"}
+	local m1:={"ACC01","ACC00","GBL02","GBL01","ETC01"}
 	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
 	local i
 
@@ -48,7 +48,7 @@ static function put_json(m1,m2)
 	for i=1 to len(list)
 	    
 	    class := oDict:getValue(list[i])
-	    ? 'CLASS["'+class:name+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)
+	    ? 'CLASS["'+class:id+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)
 	    ??'",unique_key:"'+ iif('unique_key' $ class, class:unique_key,'')+'",'
 	    ??'attr_list:['
 	    tmp := class:attr_list
