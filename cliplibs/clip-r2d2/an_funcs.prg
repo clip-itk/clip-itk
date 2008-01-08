@@ -60,17 +60,11 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		an_balance := am_balance
 	endif
 
-	if nFilled == 0 //.or. empty(an_values[an_level])//if an_level>1 .and. empty(an_values[1])
+	if nFilled == 0
 		s := 'account=="'+account+'"'
-		//s2:= '.and. beg_date>=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
 		s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
-		//s2:= '.and. beg_date>=stod("'+dtos(beg_date)+'") '
-	//s2:=""
 		s1:= '.and. an_level=='+alltrim(str(an_level,2,0))+' '
 		tmp:=oDep:select(an_info:id,,,s+s1+s2)
-		//outlog(__FILE__,__LINE__,s+s1+s2,tmp)
-		//outlog("an_values=",an_values,s)
-		//outlog("an_info",s+s1+s2,tmp)
 
 		for i=1 to len(tmp)
 			obj:=oDep:getValue(tmp[i])
@@ -78,32 +72,20 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 				outlog("Error: can`t load object:",tmp[i])
 				loop
 			endif
-			//outlog("an_info",i,tmp[i],obj:an_value,obj:beg_date,obj:end_date,obj:accpost_list)
 			anb_list[obj:an_value] := obj:an_value
 		next
 	else
 		if an_level>0 .and. an_level<=len(an_values) ;
 			.and. !empty(an_values[an_level])
-
 			anb_list[an_values[an_level]] := an_values[an_level]
 		endif
 
 	endif
-	//outlog(__FILE__,__LINE__,an_level,anb_list)
-	//outlog(__FILE__,__LINE__,an_values)
+
 	variants := r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
-	//outlog(__FILE__,__LINE__,len(variants))
-
-	/*
-	outlog("var_params=",account,an_level,beg_date,end_date,an_values,anb_list)
-	outlog("variants =",len(variants),variants)
-	for i=1 to len(variants)
-		outlog("variant",i,variants[i])
-	next
-	*/
-
 
 	for i=1 to len(variants)
+
 		oOst:= r2d2_calc_an_summ(oDep,an_balance,account,iif(call_an,an_level,2),beg_date,end_date,variants[i])
 		oOst:points_count := 1
 		tmp :=  variants[i][an_level]
@@ -114,65 +96,36 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			an_level2 := max(1,an_level+1)
 			an_values2:=aClone(variants[i])
 			anb_list2 := map()
-
-			//anb_list2[an_values2[an_level2]] := an_values2[an_level2]
-
-			//outlog(__FILE__,__LINE__)
-			/*
-			s := 'account=="'+account+'"'
-			s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
-			s1:= '.and. an_level=='+alltrim(str(an_level2,2,0))+' '
-			//outlog(__FILE__,__LINE__)
-			tmp:=oDep:select(an_info:id,,,s+s1+s2)
-
-			for j=1 to len(tmp)
-				obj:=oDep:getValue(tmp[j])
-				if empty(obj)
-					outlog("Error: can`t load object:",tmp[j])
-					loop
-				endif
-				anb_list2[obj:an_value] := obj:an_value
-			next
-			//outlog(__FILE__,__LINE__,s+s1+s2)
-			//outlog(__FILE__,__LINE__,len(tmp))
-			*/
-			//outlog(__FILE__,__LINE__,an_level2,anb_list2)
-			//outlog(__FILE__,__LINE__,an_values2)
 			tmp := r2d2_calc_an_variants(oDep,account,an_level2,beg_date,end_date,an_values2,anb_list2)
-			//outlog(__FILE__,__LINE__,i,variants[i][1],len(tmp),tmp)
-			//outlog("summ=",j)
-			//outlog(__FILE__,__LINE__,len(tmp),variants[i])
 			oOst:points_count := len(tmp)
 		endif
 		aadd(aOst,oOst)
 	next
 
 	for i in anb_list KEYS
-		aObj := NIL
+
+		aObj:= NIL
 		aObj:=map()
 		aObj:an_value := anb_list[i]
 		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		***** calc tcol_list
-		aObj:tCols := ""
-		aObj:essence := anb_list[i]
-		aObj:union := ""
-		aObj:attr := ""
-		aObj:esse := ""
+		aObj:tCols:= ""
+		aObj:essence:= anb_list[i]
+		aObj:union:= ""
+		aObj:attr:= ""
+		aObj:esse:= ""
 		an_obj := cgi_getValue(anb_list[i])
 		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
 		if empty(an_obj)
-//			cgi_xml_error( "Object not readable:"+anb_list[i] )
-			//loop
+			cgi_xml_error( "Object not readable:"+anb_list[i] )
+			loop
 		endif
-		class := NIL; tmpDict := NIL
-		/*
-		if !("CLASS_ID" $ an_obj)
-			//quit
-		endif
-		*/
+		class:=NIL; tmpDict:=NIL
+
 		if !empty(an_obj) .and. "CLASS_ID" $ an_obj .and. an_obj:class_id $ classes
 			class := classes[an_obj:class_id]
 		else
+
 			if !empty(an_obj)
 				cId := substr(an_obj:class_id,1,codb_info("DICT_ID_LEN"))
 				tmpDict := codb_dict_reference(cId)
@@ -205,7 +158,6 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			aObj:essence  := class:essence(an_obj)
 			for j=1 to len(class:tcol_list)
 				tCol := NIL; k:=""
-
 				if class:tcol_list[j] $ tCols
 					tCol := tCols[class:tcol_list[j]]
 				endif
@@ -226,7 +178,6 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 				if !empty(k) .or. valtype(k)=="N"
 				kk:=""
 //*--------------------------------
-
 					typeval := valtype(an_obj[upper(class:tcol_list[j])])
 					essvalue:= an_obj[upper(class:tcol_list[j])]
 					if typeval=="L"
@@ -237,9 +188,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					    kk:=toString(k)
 					elseif  typeval=="N"
 						kk:=iif(valtype(k)=="N", bal_summa(k), bal_summa(val(k)))
-					    //kk:=bal_summa(k)
 					    essvalue:="'"+toString(k)+"'"
-//outlog( class:tcol_list[j] ,k , kk, essvalue, typeval, valtype(k) )
+
 					else
 					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
 					    essvalue:=strtran(essvalue,"'","\'")
@@ -252,12 +202,13 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					    kk:=strtran(kk,"'","\'")
 					    kk:=strtran(kk,'"','\"')
 					    kk:=strtran(kk,"&","&amp;")
+
 					    if len(kk)==12 .and. (substr(kk,1,3)=='GBL' .or. substr(kk,1,3)=='ACC')
-						essvalue:="'"+kk+"'"
-						kk:=codb_essence(kk)
-						kk:=strtran(kk,"'","\'")
-						kk:=strtran(kk,'"','\"')
-						kk:=strtran(kk,"&","&amp;")
+							essvalue:="'"+kk+"'"
+							kk:=codb_essence(kk)
+							kk:=strtran(kk,"'","\'")
+							kk:=strtran(kk,'"','\"')
+							kk:=strtran(kk,"&","&amp;")
 					    endif
 
 					endif
@@ -273,7 +224,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 				endif
 			next
 		else
-			aObj:essence  := class:essence(an_obj)
+			aObj:essence:= class:essence(an_obj)
 		endif
 
 //outlog(aObj:esse)
@@ -322,8 +273,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 	next
 	aObj:=NIL; aObj:=map()
 	aObj:an_value := "total"
-	aObj:essence  := "éÔÏÇÏ"
-	aObj:union    := "éÔÏÇÏ"
+	aObj:essence  := "ï¿½ï¿½ï¿½ï¿½ï¿½"
+	aObj:union    := "ï¿½ï¿½ï¿½ï¿½ï¿½"
 	aObj:tcols    := ""
 	aObj:bd_summa := 0
 	aObj:bk_summa := 0
@@ -341,7 +292,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 	//outlog(__FILE__,__LINE__,data)
 	if len(data) == 0
 		aObj:an_value := "EMPTY"
-		aObj:essence  := "ðõóôï"
+		aObj:essence  := "ï¿½ï¿½ï¿½ï¿½ï¿½"
 		aObj:unit_num := "EMPTY"
 	else
 		for i=1 to len(data)

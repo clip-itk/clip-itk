@@ -120,7 +120,7 @@ local i,j,x,y
 				id:=upper("A"+padl(alltrim(ntoc(random(),32)),10,"0"))
 			end
 			user := tmp2:username
-			userid:=tmp2:employee
+			userid:=tmp2:id
 			rang := tmp2:rang_user
 			usergroup_id := tmp2:usergroup
 			usergroup := cgi_essence(tmp2:usergroup)

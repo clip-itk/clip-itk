@@ -45,35 +45,40 @@ local s_obj
 	if !empty(values)
 		values := split(values,"[,]")
 	endif
-	
+
 	if "ATOM" $ _query
 		atom := upper(_query:atom)
 	endif
 	atom := (left(atom,1) == "Y")
 	if "__DELETED" $ _query
-		needDeleted := (left(_query:__deleted,1) $ "YyäÄ")
+		needDeleted := (left(_query:__deleted,1) $ "Yyï¿½ï¿½")
 	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
 
+	if empty(urn)
+		urn := 'urn:'+sprname
+	endif
 
-
-       if "ACC01" $ _query .and. !empty(_query:acc01)
-	   set("ACC01",_query:acc01)
-       endif
-       if "ACC00" $ _query .and. !empty(_query:acc00)
-	   set("ACC00",_query:acc00)
-       endif
+	if "ACC01" $ _query .and. !empty(_query:acc01)
+		set("ACC01",_query:acc01)
+	endif
+	if "ACC00" $ _query .and. !empty(_query:acc00)
+		set("ACC00",_query:acc00)
+	endif
 
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang,sDict)
-	//sprname := lower(sprname)
+	sprname := lower(sprname)
+
 	sDict:= cgi_choice_sDict(@sprname)
+
 	if !empty(id)
 		sDict := left(id,codb_info("DICT_ID_LEN"))
 		sDep  := substr(id,codb_info("DICT_ID_LEN")+1,codb_info("DEPOSIT_ID_LEN"))
 	endif
+
 
 	if empty(sprname) .or. empty(sDep) .or. empty(sDict)
 		?? "Content-type: text/html"
@@ -84,7 +89,8 @@ local s_obj
 			?? "Depository not defined "
 		endif
 		if empty (sdict)
-			?? "DICTIONARY not defined "
+
+			?? "DICTIONARY not defined "//
 		endif
 		? "Usage:"
 		? "    rdfinfo?spr=<spr_name>"
@@ -100,10 +106,10 @@ local s_obj
 	    ? 'xmlns:S="http://itk.ru/S#">'
 	    ?
 	elseif typeNode == 'rdf'
-	  ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'                                                 
-          ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'         
+	  ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+          ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	else
-	  ? '<root xmlns="http://itk.ru/json#">'         
+	  ? '<root xmlns="http://itk.ru/json#">'
 	endif
 
 	if empty(id)
@@ -111,12 +117,15 @@ local s_obj
 	else
 		oDep := codb_needDepository(sDict+sDep)
 	endif
+
 	if empty(oDep)
 		cgi_xml_error( "Depository not found: "+sDict+sDep )
 		return
 	endif
+
 	oDict := oDep:dictionary()
 	classDesc:=oDict:classBodyByName(sprname)
+
 	if empty(classDesc)
 		cgi_xml_error("Class definition not found for:"+sprname)
 		return
@@ -131,94 +140,33 @@ local s_obj
 		cgi_xml_error("Empty table description for "+sprname)
 		return
 	endif
-	
-	for i=1 to len(columns)
-	    if columns[i]:name = 'owner_id'
-		iftree := .t.
-	    endif
-	next
 
 	if empty(id) .and. empty(values)
-
-		aTree := cgi_aRefs2(oDep,classDesc,columns,_query,,@Serr,.f.,.t.,.f.,needDeleted)
-		if !empty(serr)
+	    aTree := cgi_aRefs2(oDep,classDesc,columns,_query,,@Serr,.f.,.t.,.f.,needDeleted)
+	    if !empty(serr)
 			cgi_xml_error("Error in parameters:"+Serr)
-		endif
-	endif
-
-//*---------------------------------------------------
-	
-	if aTree == NIL
-	    aRefs := {}
-	    idList := {}
-	    if !empty(id)
-	    
-		idList := split(id,"[,]")
-	    elseif !empty(values) .and. !empty(attr)
-    
-		for i=1 to len(values)
-		    s_select := attr+'=="'+values[i]+'"'
-		    tmp:=oDep:select(classDesc:id,,,s_select,,needDeleted)
-		    for j=1 to len(tmp)
-			aadd(idList,tmp[j])
-		    next
-		next
-	    else 
-		iDlist:=oDep:select(classDesc:id,,,s_select,,needDeleted)
-	    endif
-	endif    
-
-	if len(idList)>0
-	    obj := oDep:getValue(idList[1])
-	    aTree := {}
-	    if iftree=.t. 
-	        iftree:=.t.
-	        j:=1
-	        for i=1 to len(idList)
-		    obj := oDep:getValue(idList[i])
-		    if empty(obj)
-		        loop
-		    endif
-		    if needDeleted .and. obj:__version >=0
-		        loop
-		    endif
-		    tmp1 := obj:owner_id
-		    j := ascan(aTree,{|x|x[1]==tmp1})
-		    if j<=0
-		        aadd(aTree,{tmp1, {}})
-		        j := len(aTree)
-		    endif
-		    aadd(aTree[j][2], obj)
-		next
-	    else 
-		aadd(aTree,{'',{}})
-		for i=1 to len(idList)
-		    obj := oDep:getValue(idList[i])
-		    if empty(obj)
-		        loop
-		    endif
-		    if needDeleted .and. obj:__version >=0
-		        loop
-		    endif
-		    aadd(aTree[1][2], obj)
-		next
 	    endif
 	endif
-	
-	
-	if empty(urn)
-		urn := 'urn:'+sprname
+	if !empty(id)
+	    idList := split(id,"[,]")
+		iftree:=.f.
 	endif
+
+
+
+	if len(aTree)>0
+		cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode,needDeleted)
+	endif
+
 	if typeNode == 'rdf3'
-	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
 	    ? '</RDF:RDF>'
 	elseif	typeNode == 'rdf'
-	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
 	    ? '</RDF:RDF>'
 	else
-	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
 	    ? '</root>'
 	endif
-	
+
 ?
 return
+
+

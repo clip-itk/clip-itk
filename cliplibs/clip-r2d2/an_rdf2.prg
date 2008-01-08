@@ -117,8 +117,9 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 	if len(xslt)>0
 	? '<?xml-stylesheet type="text/xsl" href="http://'+host+'/xslt/'+xslt+'"?>'
 	endif
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	//? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	//? '	xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	? '<root xmlns="http://itk.ru/json#">'
 	oDep := cgi_needDepository("ACC01","01")
 	if empty(oDep)
 //		cgi_xml_error( "Depository not found: ACC0101" )
@@ -147,7 +148,7 @@ local urn:="", xslt:="", host:="", total:="", level:="", union:=""
 		//putRdf2(an_data,account,an_level)
 
 	next
-	? ']</items></RDF:RDF>'
+	? ']</items></root>'
 	return
 ******************************
 function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn,level)
@@ -189,37 +190,24 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		promt:= iif(tmp:an_value=="total","",tmp:an_value)
 		?? iif(checkloop,"",",")
 		checkloop:=.f.
-		?? "{ a:{level:'"+level+"', "
-		?? " isContainer:false }, "
-		?? " r:{ "+idan+tmp:esse+"account:'"+account+"', unit:'"+tmp:unit_num+"', an_value:'"+tmp:an_value+"'}, "
-		?? " beg_date:'"+dtoc(beg_date)+"', "
-		?? " end_date:'"+dtoc(end_date)+"', "
-		?? " account:'"+cgi_essence(account)+"', "
+		?? "{ a:{level:'"+level+"', isContainer:false }, "
+
 		masan:=split(urn_id,":")
 		stran:=""
 		idan:=""
 
-		for u=1 to len(masan)
-
-		 sTmp := cgi_essence(masan[u])
-		 sTmp := strtran(sTmp,'&',"&amp;")
-		 sTmp := strtran(sTmp,'"','\"')
-		 sTmp := strtran(sTmp,"'","\'")
-		 sTmp := strtran(sTmp,'<',"&lt;")
-		 sTmp := strtran(sTmp,'>',"&gt;")
-		    stran+="stran"+alltrim(str(u))+":'"+sTmp+"', "
-		    idan+="idan"+alltrim(str(u))+":'"+masan[u]+"', "
+		for u=2 to len(masan)
+			sTmp := cgi_essence(masan[u])
+			stran+="stran"+alltrim(str(u))+":'"+sTmp+"', "
 		next
-//		outlog(__FILE__,__LINE__, tmp:esse)
-//		outlog(__FILE__,__LINE__, tmp:attr)
-		?? stran
-
-		 sTmp := tmp:essence
-		 sTmp := strtran(sTmp,'&',"&amp;")
-		 sTmp := strtran(sTmp,'"','\"')
-		 sTmp := strtran(sTmp,"'","\'")
-		 sTmp := strtran(sTmp,'<',"&lt;")
-		 sTmp := strtran(sTmp,'>',"&gt;")
+		?? " r:{ "+tmp:esse+"account:'"+account+"', unit:'"+tmp:unit_num+"', an_value:'"+tmp:an_value+"'}, "
+		//?? stran
+		sTmp := tmp:essence
+		sTmp := strtran(sTmp,'&',"&amp;")
+		sTmp := strtran(sTmp,'"','\"')
+		sTmp := strtran(sTmp,"'","\'")
+		sTmp := strtran(sTmp,'<',"&lt;")
+		sTmp := strtran(sTmp,'>',"&gt;")
 
 		?? " account_name:'"+sTmp+"' ,"
 		?? " id:'"+urn_id+":"+tmp:an_value+"', "+tmp:attr

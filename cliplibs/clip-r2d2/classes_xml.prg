@@ -43,7 +43,7 @@ static function put_json(m1,m2)
 	make_tcolumns(oDict,tcolumns)
 	make_indexes(oDict,tIndexes)
 
-	
+
 	list := oDict:select("CLASS")
 	for i=1 to len(list)
 	    
@@ -62,10 +62,13 @@ static function put_json(m1,m2)
         list := oDict:select("ATTR")
 	for i=1 to len(list)
 		atrib := oDict:getValue(list[i])
-		? 'ATTRIBUT["'+atrib:id+'"]={id:"'+atrib:id+'", name:"'+atrib:name+'", label:"'+iif( atrib:name $ tColumns, tColumns[atrib:name]:header, "")+'",datatype:"'+atrib:type+'",datalen:"'
-		?? alltrim(str(atrib:len))+'",datadec:"'+alltrim(str(atrib:dec))+'",datamask:"'+atrib:mask+'"'
-		??',dataisindex:'+iif(atrib:name $ tIndexes,'true' , 'false')+''
-		??',defvalue:"'+atrib:defvalue+'",dataRefTo:"'+atrib:ref_to+'"};'
+		? 'ATTRIBUT["'+atrib:id+'"]={id:"'+atrib:id+'", name:"'+atrib:name
+		?? '",label:"'+iif( atrib:name $ tColumns, tColumns[atrib:name]:header, atrib:name)
+		?? '",datatype:"'+atrib:type
+		?? '",datalen:"'+iif( atrib:name $ tColumns, alltrim(toString(tColumns[atrib:name]:width)), "12")
+		?? '",datadec:"'+alltrim(str(atrib:dec))+'",datamask:"'+atrib:mask
+		?? '",dataisindex:'+iif(atrib:name $ tIndexes,'true' , 'false')
+		?? ',defvalue:"'+atrib:defvalue+'",dataRefTo:"'+atrib:ref_to+'"};'
 	next
 
 
