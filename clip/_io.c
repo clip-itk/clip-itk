@@ -5,6 +5,9 @@
 */
 /*
    $Log$
+   Revision 1.5  2008/01/29 14:26:20  itk
+   uri: wboard() fixed
+
    Revision 1.4  2007/03/09 14:42:12  itk
    uri: many fix for AMD64
 
@@ -5730,7 +5733,31 @@ clip_WACLOSE(ClipMachine * mp)
 int
 clip_WBOARD(ClipMachine * mp)
 {
+	int top, left, bottom, right;
+
 	_clip_fullscreen(mp);
+
+	if (_clip_parinfo(mp,0) == 0)
+	{
+		Screen *sp = mp->screen;
+		top = left = 0;
+		bottom = sp->base->Lines-1;
+		right = sp->base->Columns-1;
+	}
+	else
+	{
+		top = _clip_parni(mp, 1);
+		left = _clip_parni(mp, 2);
+		bottom = _clip_parni(mp, 3);
+		right = _clip_parni(mp, 4);
+	}
+
+	mp->wboard.top = top;
+	mp->wboard.left = left;
+	mp->wboard.bottom = bottom;
+	mp->wboard.right = right;
+
+	_clip_retni(mp, 0);
 
 	return 0;
 }
@@ -6103,6 +6130,7 @@ clip_WOPEN(ClipMachine * mp)
 	int erase;
 	int no = -1, i;
 	ClipWindow *wp = 0;
+	ClipRect wb = mp->wboard;
 
 	_clip_fullscreen(mp);
 	if (mp->argc < 4)
@@ -6113,6 +6141,13 @@ clip_WOPEN(ClipMachine * mp)
 	bottom = _clip_parni(mp, 3);
 	right = _clip_parni(mp, 4);
 	erase = _clip_parl(mp, 5);
+
+	{
+	top    = top    > wb.top    ? top    : wb.top;
+	left   = left   > wb.left   ? left   : wb.left;
+	bottom = bottom < wb.bottom ? bottom : wb.bottom;
+	right  = right  < wb.right  ? right  : wb.right;
+	}
 
 	if (top > bottom || left > right)
 		return EG_ARG;
