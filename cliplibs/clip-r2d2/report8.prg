@@ -152,7 +152,7 @@ local urn,sprname,cache:=map()
 	tmp := map()
 	post_objs:={}
 	for i=1 to len(post_list)
-		/* не показывать дубликаты проводок */
+		/* О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ */
 		if post_list[i] $ tmp
 			loop
 		endif
@@ -208,11 +208,12 @@ local urn,sprname,cache:=map()
 	for i=1 to len(post_objs)
 		obj:=post_objs[i]
 		aadd(aRefs,{obj:id,"",dtos(obj:odate)+":"+obj:primary_document,obj,{}})
+		
 	next
 
 	asort(aRefs,,,{|x,y| x[3] <= y[3] })
 	//cgi_fillTreeRdf(aRefs,aTree,"",1)
-	aTree := aRefs
+	//aTree := aRefs
 	oEmp := oDict:padrBody(map(),accPost:id,.t.)
 	if !empty(aRefs)
 		old_date := aRefs[1][4]:oDate
@@ -250,18 +251,13 @@ local urn,sprname,cache:=map()
 		aadd(aRefs, {tmp:id,"",dtos(tmp:odate)+":"+"XXXX",tmp,{}})
 	endif
 
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
-	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
-	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-	? '<RDF:account>'+cgi_essence(account)+'</RDF:account>'
-
-
+	? '<root>'      	    
 	if empty(urn)
 		urn := sprname
 	endif
-	cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-	?
-	cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
-	? '</RDF:RDF>'
+	aadd(aTree,{'level0',{}})                                                                                                                        
+	for j=1 to len(aRefs)
+    	    aadd(aTree[1][2],aRefs[j][4])	
+	next
+	cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,'xml',.f.,sprname)
+	?'</root>'

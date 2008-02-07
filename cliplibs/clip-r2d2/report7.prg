@@ -217,6 +217,7 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 		?
 	    cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
 		?
+		
 	else
 	    cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
 

@@ -8,7 +8,7 @@ local accPost,chess, acc_chart, osb_class
 local beg_date:=date(),end_date:=date(), account:=""
 local connect_id:="", connect_data
 local i,j,k,x,s1,s2,summ:=0,tmp,obj
-local acc_list, acc_objs,acc_s
+local acc_list, acc_objs,acc_s,accname:=""
 local post_list, d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
 local c_data, itogo:={0.00,0.00,0.00,0.00,0.00,0.00}
@@ -111,10 +111,12 @@ local cache:=map()
 		aadd(acc_list,account)
 		cache[obj:id] := obj
 	else
+
 		set exact off
 		tmp := oDep02:select(acc_chart:id,,,'code="'+account+'"')
 		set exact on
 	endif
+
 	if !empty(tmp)
 		for i=1 to len(tmp)
 			obj:=oDep02:getValue(tmp[i])
@@ -126,16 +128,19 @@ local cache:=map()
 			aadd(acc_objs,obj)
 			aadd(acc_list,tmp[i])
 			cache[obj:id] := obj
+			else
+			    accname:=obj:smallname
 			endif
+
 		next
 
 	endif
-
+/*
 	if empty(acc_list)
 		cgi_html_error( "ACCOUNT not found: "+account )
 		return
 	endif
-
+*/
 	d_data := {}; k_data := {}
 	d_list := {}; k_list := {}
 	post_list := {}
@@ -291,7 +296,12 @@ local cache:=map()
 			acc_s+=","
 		endif
 	next
-	? '<div><span>Справка по оборотам проводок по счету: '+codb_essence(account)+'</span>'
+	? '<div><span>Ведомость по счету</span>'
+	if len(account)==12
+	? '<span> '+codb_essence(account)+'</span>'
+	else
+	? '<span> '+codb_essence(account)+':'+accname+'</span>'
+	endif
 	? '<span>за период с '+dtoc(beg_date)+' по '+dtoc(end_date)+'</span></div>'
 	? '<table cellpadding="2" cellspacing="0" border="1" width="80%" align="center">'
 	? '<tr>'

@@ -108,8 +108,10 @@ local s_obj
 	elseif typeNode == 'rdf'
 	  ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
           ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	elseif typeNode == 'xml'
+	  ? '<root>'
 	else
-	  ? '<root xmlns="http://itk.ru/json#">'
+	  ? '<root xmlns="http://itk.ru/json#">'	  
 	endif
 
 	if empty(id)
@@ -147,15 +149,24 @@ local s_obj
 			cgi_xml_error("Error in parameters:"+Serr)
 	    endif
 	endif
+
 	if !empty(id)
-	    idList := split(id,"[,]")
+		aadd(aTree,{'level0',{}})
+		idList := split(id,"[,]")
 		iftree:=.f.
+		for i=1 to len(idList)
+			obj:= cgi_getValue(idList[i])
+			if needDeleted .and. obj:__version >=0
+				loop
+			endif
+			aadd(aTree[1][2], obj)
+		next
 	endif
 
 
 
 	if len(aTree)>0
-		cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode,needDeleted)
+		cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode,needDeleted, sprname)
 	endif
 
 	if typeNode == 'rdf3'

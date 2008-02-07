@@ -82,7 +82,7 @@ local urn, sprname:=""
 	endif
 
 
-	if attr $ obj .and. valtype(obj[attr])=="A"
+	if attr $ obj //.and. valtype(obj[attr])=="A"
 
 //Когда создается новый объект у него этот атрибут пустой и возвращается как С!!!!!!
 	else

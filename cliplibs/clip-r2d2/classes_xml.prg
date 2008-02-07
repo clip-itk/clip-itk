@@ -5,38 +5,141 @@ function r2d2_classes_xml(flag)
 	local m1:={"ACC01","ACC00","GBL02","GBL01","ETC01"}
 	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
 	local i
+	//local meta:= {"tcolumn","attr","class","index","deposit","extent","plugins","counter"}
 
-	if empty(flag)
-	    cgi_xml_header()
-	    ? '<metadata>'
-	    for i=1 to len(m1)
-		put_xml(m1[i],m2[i])
-    	    next
+	if  flag =='cls3'
+			?? "Content-type: application/x-javascript;charset="+host_charset()
+			?
+			for i=1 to len(m1)
+				put_json(m1[i],m2[i])
+			next
+			?
+			?? 'ATTRIBUT["id"]={id:"", name:"id", label:"ID",datatype:"C",datalen:"12",datadec:"0",datamask:"",dataisindex:true,defvalue:"",dataRefTo:""};'
+	elseif flag == 'cls2'
+			cgi_xml_header()
+			? '<metadata>'
+			for i=1 to len(m1)
+				put_xml(m1[i],m2[i])
+			next
 	    ? '</metadata>'	
-	    ?
-	else
-	                                                                                                                                                                
-        ?? "Content-type: application/x-javascript;charset="+host_charset()
-	    ?
-	    for i=1 to len(m1)
-		put_json(m1[i],m2[i])
-	    next
-	    ?
-	?? 'ATTRIBUT["id"]={id:"", name:"id", label:"ID",datatype:"C",datalen:"12",datadec:"0",datamask:"",dataisindex:true,defvalue:"",dataRefTo:""};'    
+	elseif flag == 'cls4'
+			?? "Content-type: application/x-javascript;charset="+host_charset()
+			?
+			for i=1 to len(m1)
+				put_json2(m1[i])
+			next
+			?
+
 	endif
+
 return
 
+
+static function put_json2(m1,m2)
+	
+	local i, oDict, list, class2, atrib, tcol, index2, extent,counter
+	local j,tmp
+	oDict := codb_dict_reference(m1)
+	if empty(oDict)
+		return
+	endif
+
+	list := oDict:select("CLASS")
+	for i=1 to len(list)
+		class2 := oDict:getValue(list[i])
+			? 'CLASS["'+class2:id+'"]={id:"'+class2:id
+			?? '",name:"'+class2:name
+			?? '",expr_essence:"'+class2:expr_essence
+			?? '",super_id:"'+class2:super_id
+			?? '",unique_key:"'+class2:unique_key
+			?? '",extent_id:"'+class2:extent_id
+			?? '",idx_list:['
+				tmp := class2:idx_list
+				for j=1 to len(tmp)
+					?? iif(j==1,'',',')+'"'+tmp[j]+'"'
+				next
+			?? '], tcol_list:['
+				tmp := class2:tcol_list
+				for j=1 to len(tmp)
+					?? iif(j==1,'',',')+'"'+tmp[j]+'"'
+				next
+			??'], attr_list:['
+				tmp := class2:attr_list
+				for j=1 to len(tmp)
+					?? iif(j==1,'',',')+'"'+tmp[j]+'"'
+				next
+	    ??']};'
+	next
+
+	list := oDict:select("ATTR")
+	for i=1 to len(list)
+		atrib := oDict:getValue(list[i])
+		? 'ATTRIBUT["'+atrib:id+'"]={id:"'+atrib:id
+		?? '",name:"'+atrib:name
+		?? '",type:"'+atrib:type
+		?? '",lentype:'+alltrim(str(atrib:lentype))
+		?? ',len:'+alltrim(str(atrib:len))
+		?? ',dec:'+alltrim(str(atrib:dec))
+		?? ',mask:"'+atrib:mask
+		?? ',counter:"'+atrib:counter
+		?? '",defvalue:"'+atrib:defvalue
+		?? '",ref_to:"'+atrib:ref_to+'"};'
+	next
+
+	list := oDict:select("TCOLUMN")
+	for i=1 to len(list)
+		tcol := oDict:getValue(list[i])
+		? 'TCOLUMN["'+tcol:name+'"]={name:"'+tcol:name
+		?? '",header:"'+tcol:header
+		?? '",width:'+alltrim(str(tcol:width))
+		?? ',expr:"'+tcol:expr
+		??'"};'
+	next
+
+	list := oDict:select("INDEX")
+	for i=1 to len(list)
+		index2 := oDict:getValue(list[i])
+		? 'INDEX["'+index2:id+'"]={name:"'+index2:name
+		?? ',expr:"'+index2:expr
+		??'"};'
+	next
+
+	list := oDict:select("EXTENT")
+	for i=1 to len(list)
+		extent := oDict:getValue(list[i])
+		? 'EXTENT["'
+		?? extent:id
+		?? '"]={name:"'
+		?? extent:name
+		??'"};'
+	next
+
+	list := oDict:select("counter")
+	for i=1 to len(list)
+		counter:= oDict:getValue(list[i])
+		? 'COUNTER["'
+		?? counter:name
+		?? '"]={name:"'
+		?? counter:name
+		?? '",type:"'
+		?? counter:type
+		??'"};'
+	next
+
+	?
+return
 
 ******************
 static function put_json(m1,m2)
 	
-	local i,oDict,list,class
+	local i,oDict,list,class2
 	local tColumns,tIndexes
 	local j,tmp,col,atrib
 	oDict := codb_dict_reference(m1)
 	if empty(oDict)
 		return
 	endif
+
 
 	tcolumns := map()
 	tindexes := map()
@@ -46,20 +149,19 @@ static function put_json(m1,m2)
 
 	list := oDict:select("CLASS")
 	for i=1 to len(list)
-	    
-	    class := oDict:getValue(list[i])
-	    ? 'CLASS["'+class:id+'"]={id:"'+class:id+'",name:"'+class:name+'",label:"'+iif( class:name $ tColumns, tColumns[class:name]:header, class:name)
-	    ??'",unique_key:"'+ iif('unique_key' $ class, class:unique_key,'')+'",'
-	    ??'attr_list:['
-	    tmp := class:attr_list
-	    for j=1 to len(tmp)	    
-		?? iif(j==1,'',',')+'"'+tmp[j]+'"'
+		class2 := oDict:getValue(list[i])
+			? 'CLASS["'+class2:id+'"]={id:"'+class2:id+'",name:"'+class2:name+'",label:"'+iif( class2:name $ tColumns, tColumns[class2:name]:header, class2:name)
+			??'",unique_key:"'+ iif('unique_key' $ class2, class2:unique_key,'')+'",'
+			??'attr_list:['
+			tmp := class2:attr_list
+			for j=1 to len(tmp)
+				?? iif(j==1,'',',')+'"'+tmp[j]+'"'
 	    next
 	    ??']};'
 	next
 
 
-        list := oDict:select("ATTR")
+	list := oDict:select("ATTR")
 	for i=1 to len(list)
 		atrib := oDict:getValue(list[i])
 		? 'ATTRIBUT["'+atrib:id+'"]={id:"'+atrib:id+'", name:"'+atrib:name

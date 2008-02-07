@@ -39,8 +39,9 @@ local data,ldata,file:="",c_type:="",locale:=""
 
 	?? "Content-type: "+c_type
 	?
-
+	
 	ldata := _get_localeData(file,locale)
+	
 	if empty(ldata)
 
 		data := memoread(file)
@@ -51,6 +52,7 @@ local data,ldata,file:="",c_type:="",locale:=""
 		? data
 		return
 	endif
+	
 	data := memoread(file)
 	data := _localize(@data,ldata)
 	data := _normalize(@data,file)

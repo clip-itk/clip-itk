@@ -10,7 +10,7 @@ local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc
 local columns,col,mas:={},objs:={}
 local err_desc:="",keyValue
-local urn,a,b,xmlitem
+local urn,a,b,nodeType
 
 local p_list,pdoc_del:=map()
 local sprname:=""
@@ -38,18 +38,13 @@ local sprname:=""
 	if "URN" $ _query
 		URN := _query:URN
 	endif
-	if "XMLITEM" $ _query
-		XMLITEM := _query:xmlitem
+	if "NODETYPE" $ _query
+		NODETYPE := _query:nodetype
 	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
 	endif
-    /*
-	if !empty(connect_data)
-		beg_date := connect_data:beg_date
-		end_date := connect_data:end_date
-	endif
-    */
+
 	if "ACC01" $ _query .and. !empty(_query:acc01)
 		set("ACC01",_query:acc01)
 	endif
@@ -59,7 +54,6 @@ local sprname:=""
 
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang)
-	//sprname := lower(sprname)
 	sDict:= cgi_choice_sDict(@sprname)
 
 	if !empty(id)
@@ -105,7 +99,6 @@ local sprname:=""
 	endif
 
 	columns := cgi_make_columns(oDict,sprname)
-
 
 	if "};" $ _queryStr
 		while !empty(_queryStr)
@@ -229,6 +222,7 @@ local sprname:=""
 				pdoc_del[a+b] := a+b
 			endif
 		endif
+
 		if "CLASS_ID" $ obj
 		else
 			obj:class_id := classDesc:id
@@ -242,6 +236,7 @@ local sprname:=""
 		endif
 
 		if !empty(id)
+
 			obj:id := id
 			if .f. //classDesc:name == "accpost"
 				oDep:error := r2d2_mt_oper("update_accpost",oDep,obj)
@@ -249,6 +244,7 @@ local sprname:=""
 			else
 				oDep:update(obj)
 			endif
+			
 		else
 			if .f. //classDesc:name == "accpost"
 				oDep:error := r2d2_mt_oper("append_accpost",oDep,obj)
@@ -257,8 +253,10 @@ local sprname:=""
 				id := oDep:append(obj,classDesc:id)
 			endif
 		endif
-		if !empty(oDep:error)
 
+		aadd(aTree,{'level0',{}})
+
+		if !empty(oDep:error)
 			if val(oDep:error) != 1143 /* non unique value */
 				outlog(__FILE__,__LINE__, odep:error)
 			cgi_xml_error(odep:error) //не надо выводить xml вне корневого тега!!!!!!!
@@ -271,14 +269,12 @@ local sprname:=""
 				if empty(keyValue)
 				outlog(__FILE__,__LINE__, odep:error)
 					cgi_xml_error(err_desc+":"+oDep:error)
-			//		return
 				endif
 				tmp := oDep:id4PrimaryKey(classDesc:name,classDesc:unique_key,keyValue,.t.)
 				for i=1 to len(tmp)
-					k := oDep:getValue(tmp[i])
+					k := cgi_getValue(tmp[i])
 					if !empty(k)
-						aadd(aRefs,{k:id,"",.f.,k})
-						aadd(objs,k)
+						aadd(aTree[1][2], k)
 					endif
 				next
 			endif
@@ -287,97 +283,30 @@ local sprname:=""
 				objs := {}
 				p_list := oDep:select(classDesc:id,,,'primary_document=="'+obj:primary_document+'" .and. document_record=="'+obj:document_record+'"')
 				for i=1 to len(p_list)
-					k := oDep:getValue(p_list[i])
+					k := cgi_getValue(p_list[i])
 					if !empty(k)
-						aadd(aRefs,{k:id,"",.f.,k})
-						aadd(objs,k)
+						aadd(aTree[1][2], k)
 					endif
 				next
 			else
-				obj := oDep:getValue(id)
-				aadd(aRefs,{obj:id,"",.f.,obj})
-				aadd(objs,obj)
+				obj := cgi_getValue(id)
+				aadd(aTree[1][2], obj)
+
 			endif
 		endif
 	next
-/*
-	if classDesc:name == "accpost"
-		r2d2_accpost_log_end(oDep,acclog_id )
-	endif
-	oDict:unLockID(classDesc:id)
-*/
-	if set("XML_OUT")=="NO"
-	else
-	    if xmlitem=='yes'
-		? '<xmlitems>'
-	if classDesc:name == "accpost"
-		r2d2_accpost_log_end(oDep,acclog_id )
-	endif
-	oDict:unLockID(classDesc:id)		
-		
-		cgi_fillTreeRdf(aRefs,aTree,"",1)
-		if empty(urn)
-			urn := 'urn:'+sprname
-		endif
-		cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
-		? '</xmlitems>'
-	    else
-		? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-		? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-		?
-	if classDesc:name == "accpost"
-		r2d2_accpost_log_end(oDep,acclog_id )
-	endif
-	oDict:unLockID(classDesc:id)		
-		cgi_fillTreeRdf(aRefs,aTree,"",1)
 
-		if empty(urn)
-			urn := 'urn:'+sprname
-		endif
-		cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-		? '</RDF:RDF>'
-	    endif
+	if empty(nodeType)
+		nodeType:='json'
 	endif
+	if empty(urn)
+		urn := 'urn:'+sprname
+	endif
+	cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,'','',nodeType)
 
-?
 return
 
-/************************************************/
-static function put_object(obj,oDep,columns,_queryArr,err_desc)
-	local level:=1,s:=replicate("   ",level),col
-	local i,j, oOut,sout
-	if "ID" $ obj
-		sOut:=s+' <treeitem id="'+obj:id+'" '
-	else
-		sOut:=s+' <treeitem '
-	endif
-	if !empty(err_desc)
-		sOut += ' error="true" errmsg="'+err_desc+'"'
-	endif
-	sOut += ' >'
-	? cgi_dataTran(sOut,_queryArr)
-	sOut := s+"   <treerow>"
-	? cgi_dataTran(sOut,_queryArr)
 
-	for j=1 to len(columns)
-		col := columns[j]
-		oOut := cgi_objDesc(obj,col)
-		? s+"      "+'<treecell label="'+oOut:label+'" '
-		if !empty(oOut:obj_id)
-			?? 'obj_id="'+oOut:obj_id+'" '
-		endif
-		if !empty(oOut:obj_name)
-			?? 'obj_name="'+oOut:obj_name+'" '
-		endif
-		if !empty(oOut:Out)
-			?? oOut:out
-		endif
-		?? '/>'
-	next
-
-	? s,"  </treerow>"
-	? s,' </treeitem>'
-return
 ****************************************
 function accpost_stop_date(oDep,oData)
 	static stop_dates := map() /* для сервера надо как то иначе */

@@ -29,7 +29,10 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
 	endif
 	if "ID" $ _query
 		id := _query:id
+		? id 
+		? '----'
 	endif
+	? 'ssssssss'
 	if "URN" $ _query
 		URN := _query:URN
 	endif
@@ -72,7 +75,7 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
        if "ACC00" $ _query .and. !empty(_query:acc00)
 	   set("ACC00",_query:acc00)
        endif
-
+? id
 	lang := cgi_choice_lang(lang)
 	sDep := cgi_choice_sDep(lang,sDict)
 	//sprname := lower(sprname)
@@ -114,6 +117,7 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
 		cgi_xml_error( "Depository not found: "+sDict+sDep )
 		return
 	endif
+	? id
 	oDict := oDep:dictionary()
 	classDesc:=oDict:classBodyByName(sprname)
 	if empty(classDesc)
@@ -137,11 +141,14 @@ local urn, sprname:="", values := "", attr := "", atom:="", iftree
 			cgi_xml_error("Error in parameters:"+Serr)
 		endif
 	endif
+	? id
 	if aRefs == NIL
 		aRefs := {}
 		idList := {}
 		if !empty(id)
 			idList := split(id,"[,]")
+			?id
+			?idList
 		elseif !empty(values) .and. !empty(attr)
 			for i=1 to len(values)
 			? attr

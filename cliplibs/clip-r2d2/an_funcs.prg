@@ -8,7 +8,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 	local max_date,min_date,variants:={},nFilled, call_an := .f.
 	local an_obj,class,cId,tmpDict,tcol,tcol_list,err
 	local classes:=map(), tCols := map()
-	local acc_data
+	local acc_data, tattrib:={}
+	
 
 	acc_data := cgi_getValue(account)
 	if empty(acc_data)
@@ -137,16 +138,16 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 				aObj:essence  := class:essence(an_obj)
 				if "TCOL_LIST" $ class
 					for j=1 to len(class:tcol_list)
-						tcol_list:=tmpDict:select("TCOLUMN",,class:tcol_list[j])
-						if empty(tcol_list)
-							loop
-						endif
-						tcol := NIL
-						tcol := tmpDict:getValue(tcol_list[1])
-						if empty(tcol)
-							loop
-						endif
-						tCols[class:tcol_list[j]] := tCol
+					    tcol_list:=tmpDict:select("TCOLUMN",,class:tcol_list[j])
+					    if empty(tcol_list)
+					    	loop
+					    endif
+					    tcol := NIL
+					    tcol := tmpDict:getValue(tcol_list[1])
+					    if empty(tcol)
+						loop
+					    endif
+					    tCols[class:tcol_list[j]] := tCol
 					next
 				endif
 				classes[class:id] := class
@@ -156,12 +157,13 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			aObj:essence  := cgi_essence(anb_list[i])
 		elseif "TCOL_LIST" $ class
 			aObj:essence  := class:essence(an_obj)
+			tattrib:={}
 			for j=1 to len(class:tcol_list)
 				tCol := NIL; k:=""
 				if class:tcol_list[j] $ tCols
 					tCol := tCols[class:tcol_list[j]]
 				endif
-
+				
 				err := errorBlock({|oErr|break(oErr)})
 				begin sequence
 					if "EXPR_BLOCK" $ tCol
@@ -175,60 +177,27 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					  k:= "error in tcolumn expr:"+tCol:expr
 				end sequence
 				errorBlock(err)
+				
 				if !empty(k) .or. valtype(k)=="N"
-				kk:=""
 //*--------------------------------
-					typeval := valtype(an_obj[upper(class:tcol_list[j])])
-					essvalue:= an_obj[upper(class:tcol_list[j])]
-					if typeval=="L"
-					    essvalue:=iif(essvalue,'true','false')
-					    kk:=toString(k)
-					elseif  typeval=="D"
-					    essvalue:=iif(empty(essvalue),"''","'"+dtos(essvalue)+"'")
-					    kk:=toString(k)
-					elseif  typeval=="N"
-						kk:=iif(valtype(k)=="N", bal_summa(k), bal_summa(val(k)))
-					    essvalue:="'"+toString(k)+"'"
-
-					else
-					    essvalue:= alltrim(toString(an_obj[upper(class:tcol_list[j])]))
-					    essvalue:=strtran(essvalue,"'","\'")
-					    essvalue:=strtran(essvalue,'"','\"')
-					    essvalue:=iif(len(essvalue)==0,' ',essvalue)
-					    essvalue:=strtran(essvalue,"&","&amp;")
-					    essvalue:="'"+essvalue+"'"
-
-					    kk:=alltrim(toString(k))
-					    kk:=strtran(kk,"'","\'")
-					    kk:=strtran(kk,'"','\"')
-					    kk:=strtran(kk,"&","&amp;")
-
-					    if len(kk)==12 .and. (substr(kk,1,3)=='GBL' .or. substr(kk,1,3)=='ACC')
-							essvalue:="'"+kk+"'"
-							kk:=codb_essence(kk)
-							kk:=strtran(kk,"'","\'")
-							kk:=strtran(kk,'"','\"')
-							kk:=strtran(kk,"&","&amp;")
-					    endif
-
-					endif
-					aObj:esse  += class:tcol_list[j]+":"+essvalue+', '
-					aObj:attr  += class:tcol_list[j]+":'"+kk+"',  "
-
-					k:=alltrim(toString(k))
-					k:=strtran(k,"&","&amp;")
-					aObj:tCols += ' '+class:tcol_list[j]+'="'+k+'" '
+				    typeval := valtype(an_obj[upper(class:tcol_list[j])])
+				    essvalue:= an_obj[upper(class:tcol_list[j])]
+				    aadd(tattrib,{class:tcol_list[j],{k,essvalue,typeval}})	
+				//? class:tcol_list[j]
+				//? k
+				//? essvalue
+				//? typeval
 				endif
 				if !empty(k) .and. union==class:tcol_list[j]
 					aObj:union := k
 				endif
+				
 			next
+				aObj:tattrib := tattrib
+				
 		else
 			aObj:essence:= class:essence(an_obj)
 		endif
-
-//outlog(aObj:esse)
-//outlog(aObj:attr)
 
 
 		aObj:bd_summa := 0
