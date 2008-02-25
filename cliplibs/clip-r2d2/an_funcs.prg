@@ -177,20 +177,27 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					  k:= "error in tcolumn expr:"+tCol:expr
 				end sequence
 				errorBlock(err)
+				/*
+				?    
+				? class:tcol_list[j]
+				? k
+				? essvalue
+				? valtype(k)
+				?'-------'
+				*/
 				
-				if !empty(k) .or. valtype(k)=="N"
+//				if !empty(k) .or. valtype(k)=="N"
 //*--------------------------------
 				    typeval := valtype(an_obj[upper(class:tcol_list[j])])
 				    essvalue:= an_obj[upper(class:tcol_list[j])]
 				    aadd(tattrib,{class:tcol_list[j],{k,essvalue,typeval}})	
-				//? class:tcol_list[j]
-				//? k
-				//? essvalue
-				//? typeval
-				endif
-				if !empty(k) .and. union==class:tcol_list[j]
+				    
+//				elseif valtype(k)!="N"
+//				    aadd(tattrib,{class:tcol_list[j],{k,essvalue,typeval}})	
+//				endif
+//				if !empty(k) .and. union==class:tcol_list[j]
 					aObj:union := k
-				endif
+//				endif
 				
 			next
 				aObj:tattrib := tattrib

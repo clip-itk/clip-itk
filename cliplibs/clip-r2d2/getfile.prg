@@ -4,7 +4,7 @@
 function r2d2_getfile_xml(_queryArr)
 
 local err, _query, connect_id
-local data,ldata,file:="",c_type:="",locale:=""
+local data,ldata,file:="",c_type:="",locale:="",hostname:=""
 
 	errorblock({|err|error2html(err)})
 
@@ -23,7 +23,12 @@ local data,ldata,file:="",c_type:="",locale:=""
 	if "LOCALE" $ _query
 		locale := _query:locale
 	endif
-
+	if "HOSTNAME" $ _query
+	    hostname := _query:hostname
+	endif
+	if empty(hostname)
+	    hostname := getHostName()
+	endif
 	if empty(file)
 		?? "Content-type: text/html"
 		?
@@ -45,7 +50,7 @@ local data,ldata,file:="",c_type:="",locale:=""
 	if empty(ldata)
 
 		data := memoread(file)
-		data := _normalize(@data,file)
+		data := _normalize(@data,file,hostname)
 		if empty(data)
 		data:="<error>file not found </error>"
 		endif
@@ -55,7 +60,7 @@ local data,ldata,file:="",c_type:="",locale:=""
 	
 	data := memoread(file)
 	data := _localize(@data,ldata)
-	data := _normalize(@data,file)
+	data := _normalize(@data,file,hostname)
 	? data
 return
 *******************
@@ -70,11 +75,11 @@ static function _localize(data,ldata)
 	next
 return ret
 *******************
-static function _normalize(data,file)
+static function _normalize(data,file, hostname)
 	local i, ret := data
 	local ndata := ;
 		{;
-			{"HOSTNAME",getHostName()},;
+			{"HOSTNAME",hostname},;
 			{"AQUARUM","cgi-bin/aquarum/"},;
 			{"FILE",file};
 		}

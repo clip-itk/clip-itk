@@ -81,7 +81,7 @@ static function put_json2(m1,m2)
 		?? ',len:'+alltrim(str(atrib:len))
 		?? ',dec:'+alltrim(str(atrib:dec))
 		?? ',mask:"'+atrib:mask
-		?? ',counter:"'+atrib:counter
+		?? '",counter:"'+atrib:counter
 		?? '",defvalue:"'+atrib:defvalue
 		?? '",ref_to:"'+atrib:ref_to+'"};'
 	next
@@ -100,7 +100,7 @@ static function put_json2(m1,m2)
 	for i=1 to len(list)
 		index2 := oDict:getValue(list[i])
 		? 'INDEX["'+index2:id+'"]={name:"'+index2:name
-		?? ',expr:"'+index2:expr
+		?? '",expr:"'+index2:expr
 		??'"};'
 	next
 

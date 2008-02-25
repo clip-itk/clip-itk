@@ -360,6 +360,10 @@ function cgi_an_putRdf3(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 				?? ' D:'+tmp:tattrib[j][1]+'="'
 				?? tmp:tattrib[j][2][1]
 				?? '"'
+			else//if tmp:tattrib[j][2][3]=="N"
+				?? ' D:'+tmp:tattrib[j][1]+'="'
+				?? tmp:tattrib[j][2][1]
+				?? '"'	
 			endif
 		next
 

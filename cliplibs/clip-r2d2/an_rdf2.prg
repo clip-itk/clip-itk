@@ -165,6 +165,7 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 	if empty(ext_urn)
 		ext_urn := ""
 	endif
+	/*
 	for i=1 to len(bal_data)
 		tmp:=bal_data[i]
 
@@ -224,9 +225,8 @@ function cgi_an_putRdf2(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		?? " end_num:'" +bal_summa(tmp:end_num) +"', "
 		?? " unit:'"+cgi_essence(tmp:unit_num)  +"' "
 		?? "}"//+iif(i==len(bal_data),"","")
-
-
 	next
+	*/
 return
 
 

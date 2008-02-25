@@ -2192,7 +2192,6 @@ local essenc:="", rerr, refs:=""
 		begin sequence
 		sTmp3 := ""
 		sTmp2 := ""
-
 	if "DATATYPE" $ col
 	    if  col:datatype == "C"
     	    //? col:name
@@ -2215,7 +2214,7 @@ local essenc:="", rerr, refs:=""
 		    	?? ',"'+col:name+'":"'+sTmp  +'" '
 			endif
 			refs+= ','+col:name+':'+ iif(tmp[upper(col:name)],"true","false")
-	    elseif  col:datatype == "R"
+	    elseif  col:datatype == "R" .and. col:name!='essence'
 			if "OBJ_ID" $ col
 			    sTmp2 := mapEval(tmp,col:obj_id)
 			elseif upper(col:name) $ tmp
@@ -2305,7 +2304,7 @@ local essenc, rerr
 		    ? 'D:'+col:name+'="'+sTmp  +'" '
 		endif
 		?  'R:'+col:name+'="'+ iif(tmp[upper(col:name)],"true","false")+'" '
-	    elseif  col:datatype == "R"
+	    elseif  col:datatype == "R" .and. col:name!='essence'
 		if "OBJ_ID" $ col
 		    sTmp2 := mapEval(tmp,col:obj_id)
 		elseif upper(col:name) $ tmp
@@ -2401,7 +2400,7 @@ local essenc, rerr
 		    ? 'DOCUM:'+col:name+'="'+sTmp  +'" '
 		endif
 		?  'DOCUM:sort_'+col:name+'="'+ iif(tmp[upper(col:name)],"true","false")+'" '
-	    elseif  col:datatype == "R"
+	    elseif  col:datatype == "R" .and. col:name!='essence'
 		if "OBJ_ID" $ col
 		    sTmp2 := mapEval(tmp,col:obj_id)
 		elseif upper(col:name) $ tmp

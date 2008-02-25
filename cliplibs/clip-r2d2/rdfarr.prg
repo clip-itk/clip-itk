@@ -141,6 +141,7 @@ local urn, sprname:=""
 
 		columns := cgi_make_columns(oDict,sprname)
 	else
+	
 		columns :={}
 		col := map()
 		col:datatype := "R"

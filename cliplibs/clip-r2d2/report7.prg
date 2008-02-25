@@ -26,8 +26,8 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 	if "URN" $ _query
 		URN := _query:URN
 	endif
-	if "TYPE" $ _query
-		type := _query:type
+	if "TYPENODE" $ _query
+		type := _query:typenode
 	endif
 	if "BEG_DATE" $ _query
 		beg_date := ctod(_query:beg_date,"dd.mm.yyyy")
@@ -236,7 +236,8 @@ local i,j,k,s,s1,s2,tmp,obj,col,type
 		    cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",":"+accounts[i])
 		else
 		?' <items id="level'+alltrim(str(i,2,0))+'">['
-		    cgi_an_putRdf2(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')
+		    //cgi_an_putRdf2(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')
+		    cgi_an_putJson(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')
 		?' ]</items>'
 		endif
 
