@@ -155,8 +155,10 @@ static function smtp_send(sFrom,sTo,sData)
 			endif
 			sData += chr(10)
 			if base64
+				//sData += base64encode(filestr(::attachments[i]))+chr(10)
 				sData += base64encode(memoread(::attachments[i]))+chr(10)
 			else
+				//sData += filestr(::attachments[i])+chr(10)
 				sData += memoread(::attachments[i])+chr(10)
 			endif
 		next
@@ -192,11 +194,12 @@ static function smtp_send(sFrom,sTo,sData)
 	endif
 	sData := fields+sData
 	if !empty(sData)
-		ret:=tcpwrite(::handle,"DATA&\n"+sData,,::timeout)
+		ret:=tcpwrite(::handle,"DATA&\n",,::timeout)
 		if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 			::error:=substr(buf,1,ret)
 			return .f.
 		endif
+		ret:=tcpwrite(::handle,sData,,::timeout)
 	endif
 	ret:=tcpwrite(::handle,"&\n.&\n",,::timeout)
 	if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
