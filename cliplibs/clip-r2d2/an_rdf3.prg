@@ -221,7 +221,6 @@ function cgi_an_putJson(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		stran:=""
 		idan:=""
 
-
 		for u=2 to len(masan)
 			sTmp := cgi_essence(masan[u])
 			stran+="stran"+alltrim(str(u))+":'"+sTmp+"', "
