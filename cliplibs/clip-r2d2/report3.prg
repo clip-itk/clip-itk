@@ -13,7 +13,7 @@ local d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
 local c_data, aRefs:={},aTree:={}
 local post,post_list,post_objs
-local urn,sprname,type,cache:=map()
+local urn,sprname,typenode,cache:=map()
 
 	errorblock({|err|error2html(err)})
 
@@ -42,8 +42,8 @@ local urn,sprname,type,cache:=map()
 	if "URN" $ _query
 		URN := _query:URN
 	endif
-	if "TYPE" $ _query
-		TYPE := _query:TYPE
+	if "TYPENODE" $ _query
+		TYPENODE := _query:TYPENODE
 	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)
@@ -88,6 +88,11 @@ local urn,sprname,type,cache:=map()
 		cgi_xml_error( "Class description not found: "+sprname )
 		return
 	endif
+	
+	
+	if empty(urn)                                                                                                                                        
+	    urn := 'urn:'+sprname                                                                                                                        
+        endif        
 
 	oDep02 := cgi_needDepository("GBL02","01")
 	if empty(oDep)
@@ -253,10 +258,49 @@ local urn,sprname,type,cache:=map()
 		aadd(aRefs,{obj:id,"",dtos(obj:odate)+":"+obj:primary_document,obj})
 	next
 
-#ifndef ___1
 	asort(aRefs,,,{|x,y| x[3] <= y[3] })
-	cgi_fillTreeRdf(aRefs,aTree,"",1)
 
+	if typeNode == 'rdf3'                                                                                                                                
+	     ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'                                                                             
+	     ? 'xmlns:D="http://itk.ru/D#" '                                                                                                                  
+	     ? 'xmlns:R="http://itk.ru/R#" '                                                                                                                  
+	     ? 'xmlns:S="http://itk.ru/S#">'                                                                                                                  
+	     ?                                                                                                                                                
+	 elseif typeNode == 'rdf'                                                                                                                             
+	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'                                                                               
+	    ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'                                                                                                        
+	 elseif typeNode == 'xml'                                                                                                                             
+	    ? '<root>'                                                                                                                                         
+	 else                                                                                                                                                 
+	    ? '<root xmlns="http://itk.ru/json#">'                                                                                                             
+         endif                 
+
+	aadd(aTree,{'level0',{}})                                                                                                                    
+	for i=1 to len(aRefs)                                                                                                                       
+	    obj:= aRefs[i][4]                                                                                                        
+	    aadd(aTree[1][2], obj)                                                                                                               
+	next                                                                                                                                         
+																											                                                                                                                                                               
+          if len(aTree)>0                                                                                                                                      
+              cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode,.f., sprname)                                                                
+          endif                                                                                                                                                
+
+
+
+	if typeNode == 'rdf3'                                                                                                                                
+    	    ? '</RDF:RDF>'                                                                                                                                   
+	elseif  typeNode == 'rdf'                                                                                                                            
+	    ? '</RDF:RDF>'                                                                                                                                   
+	else                                                                                                                                                 
+	    ? '</root>'                                                                                                                                      
+	endif                                                                                                                                                
+	?						                                  
+
+
+
+
+/*
+	cgi_fillTreeRdf(aRefs,aTree,"",1)
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	?
@@ -290,19 +334,6 @@ local urn,sprname,type,cache:=map()
 	endif
 
 	? '</RDF:RDF>'
-#else
-	cgi_putTreeHeader(columns)
-	? '<treechildren id="data">'
+*/
 
-	if !empty(aRefs)
-		//cgi_fillTreeArefs(aRefs,aTree,"",1)
-		atree := aRefs
-		cgi_putTreeArefs(aTree,oDep,0,_queryArr,columns)
-	endif
-
-	? '<treeitem id="end"/>'
-	? '</treechildren>'
-
-	cgi_putTreeFooter()
-#endif
 

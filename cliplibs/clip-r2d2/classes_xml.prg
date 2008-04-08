@@ -45,24 +45,28 @@ static function put_json2(m1,m2)
 	endif
 
 	list := oDict:select("CLASS")
+	//? len(list)
 	for i=1 to len(list)
 		class2 := oDict:getValue(list[i])
 			? 'CLASS["'+class2:id+'"]={id:"'+class2:id
 			?? '",name:"'+class2:name
-			?? '",expr_essence:"'+class2:expr_essence
-			?? '",super_id:"'+class2:super_id
-			?? '",unique_key:"'+class2:unique_key
+			?? '",expr_essence:"'+strtran_json(class2:expr_essence)
+			?? '",super_id:"'+iif(('super_id' $  class2),class2:super_id, '')
+			?? '",unique_key:"'+iif(('unique_key' $ class2),class2:unique_key,'')
 			?? '",extent_id:"'+class2:extent_id
+			?? '",dict:"'+m1			
 			?? '",idx_list:['
 				tmp := class2:idx_list
 				for j=1 to len(tmp)
 					?? iif(j==1,'',',')+'"'+tmp[j]+'"'
 				next
 			?? '], tcol_list:['
-				tmp := class2:tcol_list
-				for j=1 to len(tmp)
+				if 'TCOL_LIST' $ class2
+				    tmp := class2:tcol_list   
+				    for j=1 to len(tmp)
 					?? iif(j==1,'',',')+'"'+tmp[j]+'"'
-				next
+	    			    next
+				endif
 			??'], attr_list:['
 				tmp := class2:attr_list
 				for j=1 to len(tmp)
@@ -75,6 +79,7 @@ static function put_json2(m1,m2)
 	for i=1 to len(list)
 		atrib := oDict:getValue(list[i])
 		? 'ATTRIBUT["'+atrib:id+'"]={id:"'+atrib:id
+		?? '",dict:"'+m1					
 		?? '",name:"'+atrib:name
 		?? '",type:"'+atrib:type
 		?? '",lentype:'+alltrim(str(atrib:lentype))
@@ -89,8 +94,10 @@ static function put_json2(m1,m2)
 	list := oDict:select("TCOLUMN")
 	for i=1 to len(list)
 		tcol := oDict:getValue(list[i])
-		? 'TCOLUMN["'+tcol:name+'"]={name:"'+tcol:name
-		?? '",header:"'+tcol:header
+		? 'TCOLUMN["'+tcol:id+'"]={name:"'+tcol:name
+		?? '",id:"'+tcol:id		
+		?? '",dict:"'+m1					
+		?? '",header:"'+strtran_json(tcol:header)
 		?? '",width:'+alltrim(str(tcol:width))
 		?? ',expr:"'+tcol:expr
 		??'"};'
@@ -100,6 +107,7 @@ static function put_json2(m1,m2)
 	for i=1 to len(list)
 		index2 := oDict:getValue(list[i])
 		? 'INDEX["'+index2:id+'"]={name:"'+index2:name
+		?? '",dict:"'+m1			
 		?? '",expr:"'+index2:expr
 		??'"};'
 	next
@@ -111,6 +119,7 @@ static function put_json2(m1,m2)
 		?? extent:id
 		?? '"]={name:"'
 		?? extent:name
+		?? '",dict:"'+m1					
 		??'"};'
 	next
 
@@ -118,11 +127,12 @@ static function put_json2(m1,m2)
 	for i=1 to len(list)
 		counter:= oDict:getValue(list[i])
 		? 'COUNTER["'
-		?? counter:name
+		?? counter:id
 		?? '"]={name:"'
 		?? counter:name
 		?? '",type:"'
 		?? counter:type
+		?? '",dict:"'+m1					
 		??'"};'
 	next
 
