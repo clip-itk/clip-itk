@@ -100,7 +100,7 @@ static function _ext_select(self,s,aWrapNames,sIndex,nIndex,nCount,deleted)
 	else
 		i:=0
 		rddGoBottom(self:hDbData)
-		while !rddEof(self:hDbData) .and. i>nCount
+		while !rddBof(self:hDbData) .and. i>nCount
 			if deleted .or. rddGetvalue(self:hDbData,"VERSION") >= 0
 				aadd(ret,rddGetvalue(self:hDbData,"OBJECT_ID"))
 				i--

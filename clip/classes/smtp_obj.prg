@@ -20,6 +20,8 @@ function smtpNew(host)
 	obj:classname   := "SMTP"
 	obj:host        := iif(host==NIL,"localhost",host)
 	obj:timeout     := 6000
+	obj:EOL     	:= "&\n"
+	obj:LF     	:= CHR(10)
 	obj:handle      := NIL
 	obj:error       := ""
 	obj:fields      := {}
@@ -46,7 +48,7 @@ static function smtp_new(self,host)
 ****************************************************************
 static function smtp_destroy()
 	if ::handle != NIL
-		tcpwrite(::handle,"QUIT&\n",,::timeout)
+		tcpwrite(::handle,"QUIT"+::EOL,,::timeout)
 		tcpclose(::handle)
 		::handle := NIL
 	endif
@@ -70,7 +72,7 @@ static function smtp_connect()
 		return .f.
 	endif
 	/* check connect with server */
-	tcpwrite(::handle,"NOOP&\n",,::timeout)
+	tcpwrite(::handle,"NOOP"+::EOL,,::timeout)
 	if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 		::error := ferrorstr()+" "+substr(buf,1,ret)
 		tcpclose(::handle)
@@ -100,7 +102,7 @@ static function smtp_hello(sData)
 		return .f.
 	endif
 	if !empty(sData)
-		ret:=tcpwrite(::handle,"HELO "+sData+"&\n",,::timeout)
+		ret:=tcpwrite(::handle,"HELO "+sData+::EOL,,::timeout)
 		if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 			::error:=substr(buf,1,ret)
 			return .f.
@@ -121,18 +123,18 @@ static function smtp_send(sFrom,sTo,sData)
 		::error:=[Connect not activated]
 		return .f.
 	endif
-	fields += "From: "+sFrom+chr(10)
-	fields += "To: "+sTo+chr(10)
+	fields += "From: "+sFrom+::LF
+	fields += "To: "+sTo+::LF
 	if empty(::attachments)
 		content_type := "text/plain; charset="+host_charset()
 	else
-		fields += "MIME-Version: 1.0"+chr(10)
+		fields += "MIME-Version: 1.0"+::LF
 		content_type := 'multipart/mixed; boundary="'+boundary+'"'
-		sData := "--"+boundary+chr(10);
-			+"Content-Type: text/plain; charset="+host_charset()+chr(10);
-			+"Content-Transfer-Encoding: 8bit"+chr(10)+chr(10)+sData+chr(10)
+		sData := "--"+boundary+::LF;
+			+"Content-Type: text/plain; charset="+host_charset()+::LF;
+			+"Content-Transfer-Encoding: 8bit"+::LF+::LF+sData+::LF
 		for i=1 to len(::attachments)
-			sData += "--"+boundary+chr(10)
+			sData += "--"+boundary+::LF
 			pos := rat(".",::attachments[i])
 			if pos >0
 				ct := mimeTypeGet(substr(::attachments[i],pos+1))
@@ -148,45 +150,45 @@ static function smtp_send(sFrom,sTo,sData)
 			pos2 := rat("\",::attachments[i])
 			pos := max(pos1,pos2)
 			fname := substr(::attachments[i],pos+1)
-			sData += fname+'"'+chr(10)
-			sData += 'Content-Disposition: attachment; filename="'+fname+'"'+chr(10)
+			sData += fname+'"'+::LF
+			sData += 'Content-Disposition: attachment; filename="'+fname+'"'+::LF
 			if base64
-				sData += "Content-Transfer-Encoding: base64"+chr(10)
+				sData += "Content-Transfer-Encoding: base64"+::LF
 			endif
-			sData += chr(10)
+			sData += ::LF
 			if base64
-				//sData += base64encode(filestr(::attachments[i]))+chr(10)
-				sData += base64encode(memoread(::attachments[i]))+chr(10)
+				//sData += base64encode(filestr(::attachments[i]))+::LF
+				sData += base64encode(memoread(::attachments[i]))+::LF
 			else
-				//sData += filestr(::attachments[i])+chr(10)
-				sData += memoread(::attachments[i])+chr(10)
+				//sData += filestr(::attachments[i])+::LF
+				sData += memoread(::attachments[i])+::LF
 			endif
 		next
-		sData += "--"+boundary+"--"+chr(10)
+		sData += "--"+boundary+"--"+::LF
 	endif
-	fields += "Content-Type: "+content_type+chr(10)
+	fields += "Content-Type: "+content_type+::LF
 	for i=1 to len(::fields)
-		fields += ::fields[i][1]+": "+::fields[i][2]+chr(10)
+		fields += ::fields[i][1]+": "+::fields[i][2]+::LF
 	next
 	if !empty(fields)
-		fields+=chr(10)
+		fields+=::LF
 	endif
 	/* check connect with server */
-	tcpwrite(::handle,"NOOP&\n",,::timeout)
+	tcpwrite(::handle,"NOOP"+::EOL,,::timeout)
 	if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 		::error := ferrorstr()+" "+substr(buf,1,ret)
 		tcpclose(::handle)
 		return .f.
 	endif
 	if !empty(sFrom)
-		ret:=tcpwrite(::handle,"MAIL FROM:"+sFrom+"&\n",,::timeout)
+		ret:=tcpwrite(::handle,"MAIL FROM:"+sFrom+""+::EOL,,::timeout)
 		if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 			::error:=substr(buf,1,ret)
 			return .f.
 		endif
 	endif
 	if !empty(sTo)
-		ret:=tcpwrite(::handle,"RCPT TO:"+sTo+"&\n",,::timeout)
+		ret:=tcpwrite(::handle,"RCPT TO:"+sTo+""+::EOL,,::timeout)
 		if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 			::error:=substr(buf,1,ret)
 			return .f.
@@ -194,14 +196,14 @@ static function smtp_send(sFrom,sTo,sData)
 	endif
 	sData := fields+sData
 	if !empty(sData)
-		ret:=tcpwrite(::handle,"DATA&\n",,::timeout)
+		ret:=tcpwrite(::handle,"DATA"+::EOL,,::timeout)
 		if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 			::error:=substr(buf,1,ret)
 			return .f.
 		endif
-		ret:=tcpwrite(::handle,sData,,::timeout)
+        	ret:=tcpwrite(::handle,sData,,::timeout)
 	endif
-	ret:=tcpwrite(::handle,"&\n.&\n",,::timeout)
+	ret:=tcpwrite(::handle,::EOL+"."+::EOL,,::timeout)
 	if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 		::error:=substr(buf,1,ret)
 		return .f.
@@ -217,7 +219,7 @@ static function smtp_noop()
 		return .f.
 	endif
 	/* check connect with server */
-	tcpwrite(::handle,"NOOP&\n",,::timeout)
+	tcpwrite(::handle,"NOOP"+::EOL,,::timeout)
 	if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 		::error := ferrorstr()+" "+substr(buf,1,ret)
 		tcpclose(::handle)
@@ -236,7 +238,7 @@ static function smtp_reset()
 		return .f.
 	endif
 	/* send RSET command to the server */
-	tcpwrite(::handle,"RSET&\n",,::timeout)
+	tcpwrite(::handle,"RSET"+::EOL,,::timeout)
 	if (ret:=tcpread(::handle,@buf,BUF_LEN,::timeout))<=0 .or. val(buf)>=500
 		::error := ferrorstr()+" "+substr(buf,1,ret)
 		tcpclose(::handle)
