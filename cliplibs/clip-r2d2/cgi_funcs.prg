@@ -150,7 +150,7 @@ return sDep
 /************************************************/
 function cgi_choice_sDict(sprname)
 	local i,sDict := "", oDict,tmp
-	local aDicts:=	{;
+	local aDicts:= 	{;
 			{"currency","GBL01"},;
 			{"country","GBL01"},;
 			{"units","GBL01"},;
@@ -164,6 +164,7 @@ function cgi_choice_sDict(sprname)
 			{"region","GBL01"},;
 			{"document_type","GBL01"};
 			}
+
 
 	i := ascan(aDicts,{|x|x[1]==sprname})
 
@@ -182,10 +183,10 @@ function cgi_choice_sDict(sprname)
 		oDict := codb_needDepository(asDicts[i])
 
 		if empty(oDict)
-			return ""
+			loop
 		endif
 		if !empty(oDict:error)
-			return ""
+			loop
 		endif
 		tmp := oDict:getValue(upper(sprname))
 
