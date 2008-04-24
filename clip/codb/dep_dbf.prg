@@ -252,6 +252,7 @@ static function _dep_append(self,oData,class_id,obj_id)
 	oData:extent_id := class_desc:extent_id
 
 	self:runTrigger(class_id,"BEFORE_APPEND_OBJECT",oData)
+	oData := self:checkObjBody(oData,class_desc)
 	if "UNIQUE_KEY" $ class_desc .and. !empty(class_desc:unique_key)
 		/* check unique value */
 		keyValue:=self:eval(class_desc:unique_key,oData)
@@ -336,6 +337,7 @@ static function _dep__update(self,oData)
 	endif
 	oData := self:checkObjBody(oData,class_desc)
 	self:runTrigger(class_id,"BEFORE_UPDATE_OBJECT",oData,oldData)
+	oData := self:checkObjBody(oData,class_desc)
 	if "UNIQUE_KEY" $ class_desc .and. !empty(class_desc:unique_key)
 		/* check unique value */
 		keyValue1:=self:eval(class_desc:unique_key,oData)
@@ -464,8 +466,13 @@ static function _dep_id4PrimaryKey(self,classname,keyName,keyValue,lList)
 	/* seek data in Extent */
 	sIndex := "data"+alltrim(str(nIndex,2,0))
 	//s:="class_id=='"+class_id+"'"
+	//outlog(__FILE__,__LINE__,class_id,keyValue,valtype(keyValue),sIndex,nIndex,lList)
 
-return oExt:id4PrimaryKey(class_id,keyValue,sIndex,nIndex,lList)
+	ret := oExt:id4PrimaryKey(class_id,keyValue,sIndex,nIndex,lList)
+	if empty(ret) .and. valtype(keyValue)=="C"
+		ret := oExt:id4PrimaryKey(class_id,val(keyValue),sIndex,nIndex,lList)
+	endif
+return ret
 ************************************************************
 static function _dep__GetValue(self,objId,nLocks,version)
 	local i:=0,ret:=map(),refData,oExt,class_desc

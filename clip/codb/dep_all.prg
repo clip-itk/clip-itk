@@ -169,6 +169,7 @@ static function _dep_eval(self,Expr,oData)
 		endif
 	recover
 		self:error := codb_error(1140)+":"+expr
+		//outlog(__FILE__,__LINE__,expr,oData)
 	end sequence
 	errorBlock(bErr)
 return ret
