@@ -415,11 +415,12 @@ static function __install_object(oDep,oClass,obj,nLevel)
 		attr := oClass:attr_list[i]
 		name := upper(attr:name)
 		j := ascan(obj, {|x| upper(x:name) == name} )
+		//? "a2",name,x
 		if j <= 0
 			loop
 		endif
 		data := ___convertData(oDep,obj[j],attr:type,oClass:name,nLevel+1)
-		//? "a1",name,data
+		//? "a3",name,data
 		if data == NIL
 			loop
 		endif
@@ -437,6 +438,8 @@ static function __install_object(oDep,oClass,obj,nLevel)
 		if empty(data)
 		else
 			id := oDep:id4primaryKey(oClass:id,oClass:unique_key,data)
+			//? oData
+			//? name,data,id
 			oData:id := id
 		endif
 	endif
@@ -825,7 +828,7 @@ static function __install_class(oDict,oClass,nLevel)
 		return error
 	endif
 	__trans_meta_names(stru,odata,oClass,trans)
-	
+
 	if empty(oData:name)
 		error := [Bad name of CLASS]
 		ocmngMessage(error,nLevel)
@@ -1275,12 +1278,12 @@ static function __trans_meta_names(stru,odata,oObj,trans)
 		oData[s] := ""
 		if s1 $ oObj
 			oData[s] := oObj[s1]
-		endif			
+		endif
 		if empty(oData[s]) .and. s $ oObj
 			oData[s] := oObj[s]
 		endif
 	next
-return	
+return
 *****************************************
 static function __decoding(cVal)
 return	translate_charset(set("COMPONENT_ENCODING"),host_charset(),cVal)
