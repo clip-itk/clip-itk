@@ -308,6 +308,7 @@ return essence
 
 function cgi_essence(oId)
 	local ret,idLen1,idLen2,idDep,oDep
+
 	ret:=codb_essence(oId)
 	if empty(ret) .or. ret==oId
 	else
@@ -316,6 +317,7 @@ function cgi_essence(oId)
 	****** open new depository
 	idLen1:=codb_info("DICT_ID_LEN")
 	idLen2:=codb_info("DEPOSIT_ID_LEN")
+
 	if substr(oId,idLen1+1,idLen2) == "00"  // metadata
 		idDep := left(oId,idLen1)
 	else
@@ -1171,6 +1173,9 @@ local obj
 			endif
 
 			obj:=cgi_getValue(aTree[i][1])
+			if empty(obj)
+			    loop
+			endif    
 			tmp1 := iif(empty(obj:owner_id),'level0',obj:owner_id)
 			j := ascan(aTree,{|x|x[1]==tmp1})
 

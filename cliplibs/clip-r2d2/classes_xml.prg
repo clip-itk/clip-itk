@@ -51,8 +51,8 @@ static function put_json2(m1,m2)
 			? 'CLASS["'+class2:id+'"]={id:"'+class2:id
 			?? '",name:"'+class2:name
 			?? '",expr_essence:"'+strtran_json(class2:expr_essence)
-			?? '",super_id:"'+iif(('super_id' $  class2),class2:super_id, '')
-			?? '",unique_key:"'+iif(('unique_key' $ class2),class2:unique_key,'')
+			?? '",super_id:"'+ class2:super_id 
+			?? '",unique_key:"'+class2:unique_key
 			?? '",extent_id:"'+class2:extent_id
 			?? '",dict:"'+m1			
 			?? '",idx_list:['
