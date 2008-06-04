@@ -1150,6 +1150,9 @@ local obj
 				loop
 			endif
 			aadd(aTree[1][2], obj)
+			if i==5000
+			    exit
+			endif    
 		next
 	else
 		//*--------------if tree
@@ -1165,6 +1168,10 @@ local obj
 				j := len(aTree)
 			endif
 			aadd(aTree[j][2], obj)
+			if i==3000
+			    exit
+			endif    			
+			
 		next
 		//*----------add parent item
 		for i=1 to len(aTree)
@@ -2173,20 +2180,21 @@ return
 /**************************************************/
 
 function cgi_putObjJson(obj,columns, urn, aTree)
-local sTmp, sTmp2, sTmp3, sTmp4
+local sTmp, sTmp2, sTmp3, sTmp4, sTmp5
 local tmp:=obj
 local j, col, s := "", obj2, k
-local essenc:="", rerr, refs:=""
+local essenc:="", rerr, refs:="", cid:=""
 	urn:= urn+':'+obj:id
 
-	?  'id:"'+tmp:id+'", '
+	??  'id:"'+tmp:id+'", '
 	essenc := strtran_json(cgi_essence(tmp:id))
-	?  'essence:"'+essenc+'", '
+	??  'essence:"'+essenc+'", '
 
 	k := ascan(aTree,{|x|x[1]==tmp:id})
 	s := iif(k==0,'false','true')
-	? 'a:{ isContainer:'+s+', level:0, isContainerOpen:false }'
+	?? 'a:{ isContainer:'+s+', level:0, isContainerOpen:false }'
 	refs:=',r:{id:"'+essenc+'"'
+	cid:=',cid:{a:""'
 
     for j=1 to len(columns)
 		col := columns[j]
@@ -2198,11 +2206,10 @@ local essenc:="", rerr, refs:=""
 		begin sequence
 		sTmp3 := ""
 		sTmp2 := ""
+		stmp4 := ""
+		stmp5 := ""		
 	if "DATATYPE" $ col
 	    if  col:datatype == "C"
-    	    //? col:name
-	    //? valtype(sTmp)
-	    //? col:datatype
 			?? ','+col:name+':"'+strtran_json(sTmp)+'" '
 	    elseif  col:datatype == "N"
 			if valtype(sTmp)!="N"
@@ -2221,34 +2228,31 @@ local essenc:="", rerr, refs:=""
 			endif
 			refs+= ','+col:name+':'+ iif(tmp[upper(col:name)],"true","false")
 	    elseif  col:datatype == "R" .and. col:name!='essence'
-			if "OBJ_ID" $ col
+			if upper(col:name) $ tmp
+		    	    sTmp2 := tmp[upper(col:name)]
+			elseif "OBJ_ID" $ col    
 			    sTmp2 := mapEval(tmp,col:obj_id)
-			elseif upper(col:name) $ tmp
-		    	sTmp2 := tmp[upper(col:name)]
-			else
-		    	sTmp2 := sTmp
 			endif
 
-			if empty(sTmp2)
-		    	sTmp3 := cgi_getValue(stmp)
-		    	if !empty(stmp3)
-					sTmp2 := sTmp3:id
-		    	endif
-		    	sTmp3 := ""
-			endif
 			if !empty(stmp2)
-				sTmp3 := cgi_essence(sTmp2)
+				sTmp3 := strtran_json(cgi_essence(sTmp2))
+				sTmp4 := cgi_getValue(stmp2)
+				
+				if !empty(stmp4)
+				    stmp5:=stmp4:class_id
+				endif
 			endif
-			?? ','+col:name+':"'+strtran_json(sTmp3)+'" '
+			?? ','+col:name+':"'+sTmp3+'" '
 			refs+=','+col:name+':"'+sTmp2+'"'
+			cid+=','+col:name+':"'+sTmp5+'"'
 	    elseif  col:datatype == "S"
 			obj2:=cgi_getValue(sTmp)
 			if !empty(obj2)
 				k:= codb_tColumnBody(obj2:id)
 				if !empty(k)
-					sTmp3 := "'"+k:header+"'"
+					sTmp3 := k:header
 				else
-					sTmp3 := "'"+obj2:name+"'"
+					sTmp3 := obj2:name
 				endif
 			endif
 			?? ', '+col:name+':"'+sTmp3+'" '
@@ -2265,7 +2269,7 @@ local essenc:="", rerr, refs:=""
 	end sequence
     next
 	? refs+'}'
-
+	? cid+'}'
 
 return
 

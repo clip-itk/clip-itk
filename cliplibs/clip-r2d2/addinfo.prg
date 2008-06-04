@@ -274,7 +274,17 @@ local sprname:=""
 				for i=1 to len(tmp)
 					k := cgi_getValue(tmp[i])
 					if !empty(k)
-						aadd(aTree[1][2], k)
+					?'<items id="objectexist">'
+					?'[{id:"objectexist",essence:"object already exist",unique_key:"'
+					if valtype(keyValue)=='N'
+					    ?? alltrim(str(keyValue))
+					else
+					    ?? keyValue					    				
+	    				endif
+					    ??'", name:"'+classDesc:unique_key+'"}]' 
+					?'</items>'
+					    return
+						//aadd(aTree[1][2], k)
 					endif
 				next
 			endif

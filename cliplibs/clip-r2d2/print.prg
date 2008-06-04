@@ -92,16 +92,12 @@ local columns,oDep,oDict
 	sTmp := varToString( id_list,,, .f.)
 	sTmp := substr(stmp,2,len(sTmp)-2)
 	sTmp:=strtran(sTmp,'"',"")
-	//? '<body>'
-	//?
-	//? '<print id="'+sTmp+'">'
 	? '<print id="'+sTmp+'">'
 
 	for i=1 to len(m_class)
 		print_table(m_class[i][1],m_class[i][2])
 	next
-	//? '</print>'
-	?
+	??
 
 	sDep:="ACC00"
 	oDep := cgi_needDepository(sDep,"01")
@@ -129,7 +125,6 @@ local columns,oDep,oDict
 
 	m_class := {}
 	calc_objs(id_list,levels,1)
-	//? '<print id="myfirm_constant">'
 	for i=1 to len(m_class)
 		print_table(m_class[i][1],m_class[i][2])
 	next
@@ -139,7 +134,7 @@ local columns,oDep,oDict
 
 /********************************************/
 static function print_table(class_id,_id_list)
-	local i,j,k,x,id_list, s:=space(4)
+	local i,j,k,x,id_list, s:=''//space(4)
 	local obj_id,obj,attr,classDesc,columns
 	local idDict,oDict
 
@@ -187,15 +182,13 @@ static function print_table(class_id,_id_list)
 	if k>0
 		s := left(classDesc:name,k-1)
 	endif
-	? '</'+s+'>'
-	//? '</table>'
-	?
+	?? '</'+s+'>'
+	??
 return
 /********************************************/
 static function print_obj(obj,columns)
-	local i,j,col,k,obj2,sTmp,id_ref, s:=space(4), midref:=""
-	//? s+'<tr name="object" id="'+obj:id+'">'
-	? s+'<object id="'+obj:id+'" '
+	local i,j,col,k,obj2,sTmp,id_ref, s:='', midref:=""
+	?? s+'<object id="'+obj:id+'" '
 	if "VALUE" $ obj
 		?? 'value="'+obj:value+'"'
 	endif
@@ -204,8 +197,7 @@ static function print_obj(obj,columns)
 		midref:=""
 		id_ref := ""
 		col:=columns[i]
-		//? s+'<td name="'+col:name+'"'
-		? space(4)+s+'<'+col:name+' '
+		?? s+'<'+col:name+' '
 		sTmp := mapEval(obj,col:block)
 		if "DATATYPE" $ col .and. col:datatype == "R"
 			id_ref := obj[upper(col:name)]
@@ -246,31 +238,27 @@ static function print_obj(obj,columns)
 		else
 			sTmp := toString(sTmp)
 		endif
-
-		//midref := iif(valtype(sTmp) == "A", 'idrefs', 'idref')
-		//?? midref+'="'+id_ref+'">'+alltrim(sTmp)+'</'+col:name+'>'
 		?? midref+'>'+alltrim(sTmp)+'</'+col:name+'>'
 
 	next
-	? s+'</object>'
+	?? s+'</object>'
 return
 
 /************************************************/
 static function print_tableHeader(classDesc,columns)
-	local i,j,col,k, s:=space(4)
+	local i,j,col,k, s:=''
 	/* put table header */
 	k := atl(".",classDesc:name)
 	s:=classDesc:name
 	if k>0
 		s := left(classDesc:name,k-1)
 	endif
-	//? '<table id="'+classDesc:id+'" name="'+s+'">'
-	? '<'+s+' id="'+classDesc:id+'" name="'+s+'">'
-	s:=space(4)
-	? s+'<headers>'
+	?? '<'+s+' id="'+classDesc:id+'" name="'+s+'" nameclass="'+classDesc:name+'">'
+	s:=''
+	?? s+'<headers>'
 	for i=1 to len(columns)
 		col:=columns[i]
-		? s+'<col name="'+col:name+'"'
+		?? s+'<col name="'+col:name+'"'
 		if "ATTR_ID" $ col
 			?? ' id="'+col:attr_id+'"'
 		endif
@@ -295,7 +283,7 @@ static function print_tableHeader(classDesc,columns)
 		endif
 		?? '>'+col:header+'</col>'
 	next
-	? s+'</headers>'
+	?? s+'</headers>'
 return
 /********************************************/
 static function calc_objs(id_list,levels,level)

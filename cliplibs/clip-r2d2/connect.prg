@@ -150,15 +150,19 @@ local i,j,x,y
 		obj:acc01 := acc01
 		if empty(obj_id)
 			obj_id:=oDep:append(obj,classDesc:id)
-		else			
+		else	
+				
 			oDep:update(obj)
 		endif
+
 		if empty(obj_id)
 //			cgi_xml_error(oDep:error,"5")
 			?'</window>'
 			return
 		endif
-		obj:= oDep:getValue(obj_id)
+		
+		//obj:= oDep:getValue(obj_id)
+		
 	endif
 //	outlog(__FILE__,__LINE__)
 	if empty(obj_id) .and. !empty(id)
@@ -199,6 +203,7 @@ local i,j,x,y
 		for i=1 to len(_queryArr)
 			x := upper(_queryArr[i][1])
 			y := _queryArr[i][2]
+			
 			if x $ "USER PASSWD BEG_DATE END_DATE COMMAND ACC00 ACC01 ID CLASS_ID"
 				loop
 			endif
