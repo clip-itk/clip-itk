@@ -9,7 +9,7 @@ local chess_bal, acc_chart, columns
 local connect_id:="", connect_data
 local i,j,k,s1,s2,tmp,obj,col
 local acc_list, acc_objs
-local k_list, d_list, arefs:={}, atree:={}
+local k_list, d_list, arefs:={}, atree:=map()
 
 	errorblock({|err|error2html(err)})
 

@@ -10,7 +10,7 @@ local an_info, columns,acc_chart, accounts:={}
 local an_valuess:={},an_values:={},an_levels:={},an_level,an_data
 local acc_obj,acc_list:={}, acc_objs:={}
 local urn:="",connect_id:="", connect_data, sprname:="accpost"
-local k_list, d_list, arefs:={}, atree:={}
+local k_list, d_list, arefs:={}, aTree:=map()
 local post_list:={},post_objs:={}
 local paraSumm:={}
 local i,j,k,s,s1,s2,tmp,obj,col,typenode
@@ -44,7 +44,9 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 	if "HUDDLE" $ _query
 		huddle := upper(_query:huddle)
 		if upper(left(huddle,1)) $ "TYä"
-			huddle := .t.
+		    huddle := .t.
+		else 	
+		    huddle := .f.
 		endif
 	endif
 
@@ -124,9 +126,9 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 	//s2:= '.and. beg_date>=stod("'+dtos(end_date)+'") .and. end_date>=stod("'+dtos(beg_date)+'") '
 	s:= 'end_date>=stod("'+dtos(beg_date)+'") '
 	if !empty(account)
-		s+= '.and. account=="'+account+'" '
+	    s+= '.and. account=="'+account+'" '
 	endif
-	s+= '.and. an_value=="'+an_value+'" '
+	    s+= '.and. an_value=="'+an_value+'" '
 	tmp:=oDep:select(an_info:id,,,s)
 //	? s,tmp
 	for i=1 to len(tmp)
@@ -200,23 +202,21 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 	columns := cgi_accpost_columns(oDict)
 
 	asort(aRefs,,,{|x,y| x[3] <= y[3] })
-//	cgi_fillTreeRdf(aRefs,aTree,"",1)
 
 
-	aadd(aTree,{'level0',{}})
+	aTree['level0']:={}
     	for i=1 to len(aRefs)
 	   obj:= aRefs[i][4]
-	   aadd(aTree[1][2], obj)
+	   aadd(aTree['level0'], obj)
 	next
 
 
-
+	
 
 	if empty(urn)
 		urn := sprname
 	endif
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	//? 'xmlns:docum="http://last/cbt_new/rdf#">'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
@@ -229,12 +229,11 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 		?
 		
 	else
-	    //cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
-	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode,.f., sprname)
-
+	    cgi_putArefs2Rdf3(aTree, oDep, 0, urn, columns,"",, typeNode,.f., sprname)
 	endif
 
 	for i=1 to len(accounts)
+	
 		//? "acc=",accounts[i],an_levels[i]
 		an_values:={" "," "," "," "," "," "}
 		an_values[ an_levels[i] ] := an_value
@@ -246,13 +245,13 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 		if empty(typenode)
 		    cgi_an_putRdf1(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",":"+accounts[i])
 		else
-		?' <items id="level'+alltrim(str(i,2,0))+'">['
-		    //cgi_an_putRdf2(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')
+		
+		k:=iif( len(aTree['level0'])==0, (i-1), i)
+		
+		?' <items id="level'+alltrim(str((k),2,0))+'">['
 		    cgi_an_putJson(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')
 		?' ]</items>'
 		endif
-
-		     //cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
 
 	next
 	? '</RDF:RDF>'

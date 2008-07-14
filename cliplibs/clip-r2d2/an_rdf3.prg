@@ -257,7 +257,9 @@ function cgi_an_putJson(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		?? " account_name:'"+sTmp+"' ,"
 		?? " account:'"+codb_essence(account)+"' ,"
 		?? " id:'"+urn_id+":"+tmp:an_value+"', "+tmp:attr
-		?? " union:'"+tmp:union+"', "
+		?? " union:'"
+		?? tmp:union
+		?? "', "
 		?? " bd_summa:'"
 		?? tmp:bd_summa 
 		?? "', "

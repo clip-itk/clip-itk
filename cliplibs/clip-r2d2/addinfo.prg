@@ -4,7 +4,7 @@ function r2d2_addinfo_xml(_queryStr)
 
 local err,_query,_queryArr
 local i,j,k,m,obj,id:=""
-local aTree:={}, aRefs:={}
+local aTree:=map(), aRefs:={}
 local connect_id:="", acclog_id, connect_data
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc
@@ -254,7 +254,7 @@ local sprname:=""
 			endif
 		endif
 
-		aadd(aTree,{'level0',{}})
+		aTree['level0']:={}
 
 		if !empty(oDep:error)
 			if val(oDep:error) != 1143 /* non unique value */
@@ -284,7 +284,6 @@ local sprname:=""
 					    ??'", name:"'+classDesc:unique_key+'"}]' 
 					?'</items>'
 					    return
-						//aadd(aTree[1][2], k)
 					endif
 				next
 			endif
@@ -295,12 +294,12 @@ local sprname:=""
 				for i=1 to len(p_list)
 					k := cgi_getValue(p_list[i])
 					if !empty(k)
-						aadd(aTree[1][2], k)
+						aadd(aTree['level0'], k)
 					endif
 				next
 			else
 				obj := cgi_getValue(id)
-				aadd(aTree[1][2], obj)
+				aadd(aTree['level0'], obj)
 
 			endif
 		endif

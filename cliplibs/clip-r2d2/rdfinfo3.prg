@@ -4,13 +4,13 @@ function r2d2_rdfinfo3(_queryArr, typeNode)
 
 local err,_query
 local i,j,u,obj,idlist,sErr
-local aRefs, aTree :={}, needDeleted := .f.
+local aRefs, needDeleted := .f.
 local connect_id:="", connect_data
 local lang:="", sDict:="", sDep:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="", owner_map:=map(),map2:=map(),aData, sId
 local urn, sprname:="", values := "", attr := "", atom:="",iftree:=.f., tview:=""
-local aTree2:={}
+local aTree:=map()
 local s_obj
 
 	errorblock({|err|error2html(err)})
@@ -151,7 +151,8 @@ local s_obj
 	endif
 
 	if !empty(id)
-		aadd(aTree,{'level0',{}})
+
+		aTree['level0']:=[]
 		idList := split(id,"[,]")
 		iftree:=.f.
 		for i=1 to len(idList)
@@ -159,14 +160,12 @@ local s_obj
 			if needDeleted .and. obj:__version >=0
 				loop
 			endif
-			aadd(aTree[1][2], obj)
+			aadd(aTree['level0'], obj)
 		next
 	endif
 
-
-
 	if len(aTree)>0
-		cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode,needDeleted, sprname)
+		cgi_putArefs2Rdf3(aTree, oDep, 0, urn, columns, "", , typeNode, needDeleted, sprname)
 	endif
 
 	if typeNode == 'rdf3'

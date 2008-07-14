@@ -12,7 +12,7 @@ local i,j,k,s,s1,s2,tmp,obj,col,columns,oEmp
 local acc_list, acc_objs, an_data
 local d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
-local c_data, aRefs:={},aTree:={}
+local c_data, aRefs:={},aTree:=map()
 local post,post_list,post_objs
 local urn,sprname,cache:=map()
 
@@ -255,9 +255,9 @@ local urn,sprname,cache:=map()
 	if empty(urn)
 		urn := sprname
 	endif
-	aadd(aTree,{'level0',{}})                                                                                                                        
+	aTree['level0']:={}                                                                                                                        
 	for j=1 to len(aRefs)
-    	    aadd(aTree[1][2],aRefs[j][4])	
+    	    aadd(aTree['level0'],aRefs[j][4])	
 	next
 	cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,'xml',.f.,sprname)
 	?'</root>'

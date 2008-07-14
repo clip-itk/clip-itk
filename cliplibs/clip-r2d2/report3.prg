@@ -11,7 +11,7 @@ local i,j,k,s,s1,s2,s3,tmp,obj,col,columns
 local acc_list, acc_objs
 local d_data,k_data, d_list,k_list, d_res,k_res
 local d_cache:=map(), k_cache:=map()
-local c_data, aRefs:={},aTree:={}
+local c_data, aRefs:={},aTree:=map()
 local post,post_list,post_objs
 local urn,sprname,typenode,cache:=map()
 
@@ -275,10 +275,10 @@ local urn,sprname,typenode,cache:=map()
 	    ? '<root xmlns="http://itk.ru/json#">'                                                                                                             
          endif                 
 
-	aadd(aTree,{'level0',{}})                                                                                                                    
+	aTree['level0']:={}                                                                                                                    
 	for i=1 to len(aRefs)                                                                                                                       
 	    obj:= aRefs[i][4]                                                                                                        
-	    aadd(aTree[1][2], obj)                                                                                                               
+	    aadd(aTree['level0'], obj)                                                                                                               
 	next                                                                                                                                         
 																											                                                                                                                                                               
           if len(aTree)>0                                                                                                                                      
@@ -295,45 +295,3 @@ local urn,sprname,typenode,cache:=map()
 	    ? '</root>'                                                                                                                                      
 	endif                                                                                                                                                
 	?						                                  
-
-
-
-
-/*
-	cgi_fillTreeRdf(aRefs,aTree,"",1)
-	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	?
-
-	if empty(beg_date)
-		? '<RDF:beg_date>с самого начала</RDF:beg_date>'
-	else
-		? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
-	endif
-
-	if empty(end_date)
-		? '<RDF:end_date>до самого конца</RDF:end_date>'
-	else
-		? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
-	endif
-	if empty(account)
-		? '<RDF:account> Все счета</RDF:account>'
-	else
-		? '<RDF:account>'+cgi_essence(account)+'</RDF:account>'
-	endif
-	? '<RDF:an_value>'+cgi_essence(an_value)+'</RDF:an_value>'
-	if empty(type)
-	    if empty(urn)
-		urn := sprname
-		endif
-	    cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
-		?
-	    cgi_putArefs2Rdf2(aTree,oDep,0,urn,columns,"")
-	else
-	    cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"")
-	endif
-
-	? '</RDF:RDF>'
-*/
-
-

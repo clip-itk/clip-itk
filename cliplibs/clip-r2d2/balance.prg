@@ -132,31 +132,30 @@ errorblock({|err|error2html(err)})
 	next
 	i := ascan(columns,{|x| lower(x:name)=="account"})
 	if i>0
-	      col := columns[i]
-	      col:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code)"
-	      col:header := "КодСч"
-	      col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
+		col := columns[i]
+		col:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code)"
+		col:header := "КодСч"
+		col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
 
-	      tmp := oclone(col)
-	      tmp:name := "account_name"
-	      tmp:header := "СчНазвание"
-	      tmp:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code+':'+__obj:smallname)"
-	      tmp:datatype := "R"
-	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
-	      aadd(columns,"")
-	      ains(columns,i+1)
-			columns[i+1] := tmp
+		tmp := oclone(col)
+		tmp:name := "account_name"
+		tmp:header := "СчНазвание"
+		tmp:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code+':'+__obj:smallname)"
+		tmp:datatype := "R"
+		tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
+		aadd(columns,"")
+		ains(columns,i+1)
+		columns[i+1] := tmp
 
-			tmp := oclone(col)
-			tmp:name := "owner_id"
-			tmp:header := "РодСчет"
-			tmp:expr := "__obj:=cgi_getValue(account), iif( empty(__obj), account,__obj:code+':'+__obj:smallname)"
-			tmp:datatype := "R"
-			tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
-			aadd(columns,"")
-			ains(columns,i+1)
-			columns[i+1] := tmp
-
+		tmp := oclone(col)
+		tmp:name := "owner_id"
+		tmp:header := "РодСчет"
+		tmp:expr := "__obj:=cgi_getValue(account), iif( empty(__obj), account,__obj:code+':'+__obj:smallname)"
+		tmp:datatype := "R"
+		tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
+		aadd(columns,"")
+		ains(columns,i+1)
+		columns[i+1] := tmp
 	endif
 	******
 	mperiod := periodic2date(beg_date,end_date,periodic)
@@ -225,7 +224,7 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 	local aData := {},data,adata1,account
 	local i,j,k,l,m,item,tmp,tmp1,tmp2,tmp3,obj,s1,s2,s
 	local min_date := end_date
-	local aTree:={},aRefs:={}
+	local aTree:=map(),aRefs:={}
 	*****
 	acc_chart_class := m->oDict02:classBodyByName("acc_chart")
 	if empty(acc_chart_class)
@@ -286,17 +285,14 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 		endif
 	next
 
-
-
-
 	asort(aRefs,,,{|x,y| x[3] < y[3] })
 
-	aadd(aTree,{'level0',{}})
-
-	tmp:=cgi_getValue(cType)
+	aTree['level0']:={}
 	
-	tmp:owner_id = ""
-	tmp:account = cType
+	tmp:=cgi_getValue(cType)
+	tmp:owner_id := ""
+	tmp:account := "Всего:"
+	tmp:account_name := tmp:code+":"+tmp:smallname
 	tmp:bd_summa:=0.00
 	tmp:bk_summa:=0.00
 	tmp:od_summa:=0.00
@@ -310,63 +306,43 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 		tmp3 := aRefs[i][2]
 		obj:owner_id:=aRefs[i][2]
 		tmp1 := iif( empty(tmp3),'level0',tmp3)
-		j:= ascan(aTree,{|x|x[1]==tmp1})
-		if j<=0
-			aadd(aTree,{tmp1, {}})
-			j:= len(aTree)
+		if !(tmp1 $ aTree)
+			aTree[tmp1]:={}
 		endif
-		aadd(aTree[j][2], obj)
-
-		k:= ascan(aRefs,{|x|x[1]==tmp3})
-		if k>0
-			tmp2:=aRefs[k][4]
-			tmp2:bd_summa +=obj:bd_summa
-			tmp2:bk_summa +=obj:bk_summa
-			tmp2:od_summa +=obj:od_summa
-			tmp2:ok_summa +=obj:ok_summa
-			tmp2:ed_summa +=obj:ed_summa
-			tmp2:ek_summa +=obj:ek_summa
-		endif
+		aadd(aTree[tmp1], obj)
 	next
-	aadd(aTree[1][2], tmp)
 
-	k:= ascan(aTree,{|x|x[1]=='level0'})
-	tmp3:=aTree[k][2]
-	for i=1 to len(tmp3)
+	for i=1 to len(aTree['level0'])
+		item:=aTree['level0'][i]
+		summaItem(aTree, aTree[item:id], item)
+	next
+
+	for i=1 to len(aTree['level0'])		
+		obj:=aTree['level0'][i]
+		tmp:bd_summa +=obj:bd_summa
+		tmp:bk_summa +=obj:bk_summa
+		tmp:od_summa +=obj:od_summa
+		tmp:ok_summa +=obj:ok_summa
+		tmp:ed_summa +=obj:ed_summa
+		tmp:ek_summa +=obj:ek_summa
 		
-		if tmp3[i]:id=cType
-			loop
-		endif
-		
-		m:= ascan(aTree,{|x|x[1]==tmp3[i]:id})
-		if m>0
-			item:=aTree[m][2]
-			tmp2:=tmp3[i]
-			tmp2:bd_summa:=0
-			tmp2:bk_summa:=0
-			tmp2:od_summa:=0
-			tmp2:ok_summa:=0
-			tmp2:ed_summa:=0
-			tmp2:ek_summa:=0
-			for j=1 to len(item)
-				obj:=item[j]
-				tmp2:bd_summa +=obj:bd_summa
-				tmp2:bk_summa +=obj:bk_summa
-				tmp2:od_summa +=obj:od_summa
-				tmp2:ok_summa +=obj:ok_summa
-				tmp2:ed_summa +=obj:ed_summa
-				tmp2:ek_summa +=obj:ek_summa
-			next
-		endif
+	next
+	aadd(aTree['level0'], tmp)
+return aTree
 
-		if !empty(tmp2)
-			tmp:bd_summa +=tmp3[i]:bd_summa
-			tmp:bk_summa +=tmp3[i]:bk_summa
-			tmp:od_summa +=tmp3[i]:od_summa
-			tmp:ok_summa +=tmp3[i]:ok_summa
-			tmp:ed_summa +=tmp3[i]:ed_summa
-			tmp:ek_summa +=tmp3[i]:ek_summa
+function summaItem(aTree, items, parentItem)
+local i, id, oid, obj
+	for i=1 to len(items)
+		id:= items[i]:id
+		if id $ aTree
+			summaItem(aTree, aTree[id], items[i])
 		endif
-
+		obj:=items[i]
+		parentItem:bd_summa +=obj:bd_summa
+		parentItem:bk_summa +=obj:bk_summa
+		parentItem:od_summa +=obj:od_summa
+		parentItem:ok_summa +=obj:ok_summa
+		parentItem:ed_summa +=obj:ed_summa
+		parentItem:ek_summa +=obj:ek_summa
 	next
 return aTree
