@@ -152,8 +152,8 @@ local s_obj
 
 	if !empty(id)
 
-		aTree['level0']:=[]
-		idList := split(id,"[,]")
+		aTree['level0']:={}
+		idList := split(id,",")
 		iftree:=.f.
 		for i=1 to len(idList)
 			obj:= cgi_getValue(idList[i])
@@ -162,6 +162,7 @@ local s_obj
 			endif
 			aadd(aTree['level0'], obj)
 		next
+		
 	endif
 
 	if len(aTree)>0

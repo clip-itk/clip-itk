@@ -161,7 +161,7 @@ static function put_json(m1,m2)
 	for i=1 to len(list)
 		class2 := oDict:getValue(list[i])
 			? 'CLASS["'+class2:id+'"]={id:"'+class2:id+'",name:"'+class2:name+'",label:"'+iif( class2:name $ tColumns, tColumns[class2:name]:header, class2:name)
-			??'",unique_key:"'+ iif('unique_key' $ class2, class2:unique_key,'')+'",'
+			??'",unique_key:"'+ iif('UNIQUE_KEY' $ class2, class2:unique_key,'')+'",'
 //			??'",unique_key:"'+  class2:unique_key+'",'
 			??'attr_list:['
 			tmp := class2:attr_list

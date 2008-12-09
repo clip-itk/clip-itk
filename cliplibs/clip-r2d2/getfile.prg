@@ -44,15 +44,13 @@ local data,ldata,file:="",c_type:="",locale:="",hostname:=""
 
 	?? "Content-type: "+c_type
 	?
-	
 	ldata := _get_localeData(file,locale)
 	
 	if empty(ldata)
-
 		data := memoread(file)
 		data := _normalize(@data,file,hostname)
 		if empty(data)
-		data:="<error>file not found </error>"
+		    data:="<error>file not found </error>"
 		endif
 		? data
 		return
@@ -61,7 +59,6 @@ local data,ldata,file:="",c_type:="",locale:="",hostname:=""
 	data := memoread(file)
 	data := _localize(@data,ldata)
 	data := _normalize(@data,file,hostname)
-	? data
 return
 *******************
 static function _localize(data,ldata)
@@ -92,6 +89,8 @@ static function _get_localeData(file,locale)
 	local ret := {}, oldset
 	local i,s1,s2,lfile,fh
 
+
+
 	i := atr("/",file)
 	if i<=0
 		i := atr("\",file)
@@ -103,7 +102,7 @@ static function _get_localeData(file,locale)
 	s1 := substr(file,1,i)
 	s2 := substr(file,i+1)
 
-	lfile := s1+"locale/"+locale+"/"+s2
+	lfile := s1+"locale/"+locale+""+s2
 
 	i := atr(".",lfile)
 	if i<=0
@@ -119,9 +118,12 @@ static function _get_localeData(file,locale)
 		set(_SET_TRANSLATE_PATH,oldset)
 		return ret
 	endif
+	
+	
 /*<!ENTITY button.proba.parent "asdf"> */
 
 	fh:=fopen(lfile,FO_READ)
+	
 	if fh < 0
 		set(_SET_TRANSLATE_PATH,oldset)
 		outlog(__FILE__,__LINE__,[Can`t open file:]+lfile)

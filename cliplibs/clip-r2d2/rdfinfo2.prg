@@ -188,7 +188,6 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 		urn := 'urn:'+sprname
 	endif
 	cgi_putArefs2Rdf(aTree,oDep,0,urn,columns,"",,atom)
-	//cgi_putArefs2RdfLevels(aTree,oDep,0,urn,columns,"",,atom)
 	? '</RDF:RDF>'
 ?
 return

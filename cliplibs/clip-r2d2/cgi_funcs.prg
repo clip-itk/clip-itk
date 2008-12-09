@@ -292,7 +292,7 @@ function strtran_rdf(essence)
 	endif
 	essence:= strtran(essence,'&',"&amp;")
 	essence:= strtran(essence,'"','&quot;')
-	essence:= strtran(essence,"'","apos;")
+	essence:= strtran(essence,"'","&apos;")
 	essence:= strtran(essence,'<',"&lt;")
 	essence:= strtran(essence,'>',"&gt;")
 return essence
@@ -307,7 +307,6 @@ function strtran_json(essence)
 	essence:= strtran(essence,"&","&amp;")
 	essence:= strtran(essence,"<","&lt;")
 	essence:= strtran(essence,">","&gt;")
-	
 return essence
 /************************************************/
 
@@ -316,14 +315,16 @@ function cgi_essence(oId)
 	local ret,idLen1,idLen2,idDep,oDep
 
 	ret:=codb_essence(oId)
-	if empty(ret) .or. ret==oId
+	
+	if empty(ret) .and. valtype(oId)=="C" //.or. ret==oId
 	else
-		return ret
+	    return ret
 	endif
 
 	****** open new depository
 	idLen1:=codb_info("DICT_ID_LEN")
 	idLen2:=codb_info("DEPOSIT_ID_LEN")
+
 
 	if substr(oId,idLen1+1,idLen2) == "00"  // metadata
 		idDep := left(oId,idLen1)
@@ -342,6 +343,7 @@ function cgi_essence(oId)
 		msDeps[idDep] := idDep
 	//outlog(__FILE__,__LINE__,idDep,msDeps)
 	endif
+
 
 	//outlog(__FILE__,__LINE__,len(asDeps),len(msDeps))
 return codb_essence(oId)
@@ -474,7 +476,7 @@ function bal_summa(summa)
 return ret
 ***********************
 function sort_summa(summa,len,dec)
-	 local ret := 0
+local ret := 0
 	 if summa<0
 	     ret := '-'+padl(alltrim(str(abs(summa),len,dec)),14,"0")
 	 else
@@ -2099,7 +2101,7 @@ local essenc:="", rerr, refs:=""
     tmp:=obj
 	urn:= urn+':'+obj:id
 
-	? '<object id="'+obj:id+'" essence="'+strtran_rdf(cgi_essence(obj:id))+'">'
+	? '<object id="'+obj:id+'" essence="'+strtran_rdf(cgi_essence(obj))+'">'
 
     for j=1 to len(columns)
 		col := columns[j]
@@ -2185,11 +2187,12 @@ return
 
 /**************************************************/
 function cgi_putObjJson(obj,columns, urn, aTree, lencol)
-local sTmp, sTmp2, sTmp3, sTmp4, sTmp5
-local tmp
+local sTmp, sTmp2, sTmp3, sTmp4
+local tmp, str:=""
 local j, col, s := "", obj2, k:=0, t:='false'
-local essenc:="", rerr, refs:="", cid:="", colname:="", coldtp
+local essenc:="", rerr, refs:="", cid:="", colname:="", coldtp:=""
 local cClass 
+
 
     if valtype(obj)=="C" 
 	obj:= cgi_getValue(obj)
@@ -2199,18 +2202,8 @@ local cClass
 	return
     endif
     
-    
-      if valtype(obj)== "O" .and. "CLASS_ID" $ obj
-          cClass := cgi_getValue(obj:class_id)
-          if !empty(cClass)
-              essenc := cClass:essence(obj)
-          endif
-      endif
-    
-    
-    essenc := strtran_json(cgi_essence(obj:id))
-    ??  'id:"'+obj:id+'", '
-    ??  'essence:"'+essenc+'", '
+    essenc := strtran_json(cgi_essence(obj))
+    ??  'id:"'+obj:id+'", essence:"'+essenc+'", '
 
     s := obj:id
     if s $ aTree
@@ -2224,59 +2217,60 @@ local cClass
     
     for j=1 to lencol
     	begin sequence
-    
+	sTmp3 := ""
+	sTmp2 := ""
+	stmp4 := ""    
     	col := columns[j]
-	if col:name=='id'
+	colname:=col:name
+	coldtp:=col:datatype
+	if colname=='id' //.or. coldtp=="A" .or. coldtp=="M"
     	    loop
 	endif
 
 	sTmp := mapEval(obj,col:block)
 
-	sTmp3 := ""
-	sTmp2 := ""
-	stmp4 := ""
-	stmp5 := ""		
-	colname:=col:name
-	coldtp:=col:datatype
-	
 	if "DATATYPE" $ col
 	    if  coldtp == "C"
-			?? ','+colname+':"'+strtran_json(sTmp)+'" '
+			str+=','+colname+':"'+strtran_json(sTmp)+'" '
 	    elseif  coldtp == "N"
 			if valtype(sTmp)!="N"
-				sTmp:=val(stmp)
+				sTmp:=val(sTmp)
 			endif
-			?? ','+colname+':"'+toString(sTmp)+'" '
-			refs+=' ,'+colname+':"'+sort_summa(sTmp)+'"'
+			str+=','+colname+':'+toString(sTmp)+' '
 	    elseif  coldtp == "D"
-			?? ','+colname+':"'+dtoc(sTmp)+'" '
+			str+=','+colname+':"'+dtoc(sTmp)+'" '
 			refs+=' ,'+colname+':"'+iif(empty(sTmp),"00000000",dtos(sTmp))+'"'
 	    elseif  coldtp == "L"
 			if valtype(sTmp)=="L"
-		    	?? ',"'+colname+'":"'+iif(sTmp,"true","false")  +'" '
+				str+=','+colname+':"'+iif(sTmp,"true","false")+'" '
 			else
-		    	?? ',"'+colname+'":"'+sTmp  +'" '
+				str+=','+colname+':"'+sTmp+'" '
 			endif
 			refs+= ','+colname+':'+ iif(obj[upper(colname)],"true","false")
 	    elseif  coldtp == "R" .and. colname!='essence'
-			if upper(colname) $ obj
-			    sTmp2 := obj[upper(colname)]
-			elseif "OBJ_ID" $ col    
-			    sTmp2 := mapEval(obj,col:obj_id)
+			if !empty(stmp)			
+			    if upper(colname) $ obj
+				sTmp2 := obj[upper(colname)]
+			    elseif "OBJ_ID" $ col    
+				sTmp2 := mapEval(obj,col:obj_id)
+			    endif
+			    
+			    if !empty(stmp2)
+				sTmp3 := strtran_json(cgi_essence(sTmp2))			    
+			    endif
+			    
+			    sTmp4 := cgi_getValue(stmp2)
+			    if !empty(stmp4)
+				//sTmp3 := strtran_json(cgi_essence(sTmp4))
+				cid+=','+colname+':"'+sTmp4:class_id+'"'    
+			    endif
+			    
+			    
 			endif
 
-			if !empty(stmp2)
-				sTmp3 := strtran_json(cgi_essence(sTmp2))
-				
-				sTmp4 := cgi_getValue(stmp2)
-				if !empty(stmp4)
-				    stmp5:=stmp4:class_id
-				endif
-				
-			endif
-			?? ','+colname+':"'+sTmp3+'" '
+			str+=','+colname+':"'+sTmp3+'" '
 			refs+=','+colname+':"'+sTmp2+'"'
-			cid+=','+colname+':"'+sTmp5+'"'
+
 	    elseif  coldtp == "S"
 			obj2:=cgi_getValue(sTmp)
 			if !empty(obj2)
@@ -2287,11 +2281,11 @@ local cClass
 					sTmp3 := obj2:name
 				endif
 			endif
-			?? ', '+colname+':"'+sTmp3+'" '
+			str+=', '+colname+':"'+sTmp3+'" '
 			refs+=' ,'+colname+':"'+sTmp+'"'
-		endif
+	    endif		
 	elseif valtype(sTmp) == "C"
-		?? ', "'+colname+'":"'+strtran_json(sTmp)+'" '
+		str+=', "'+colname+'":"'+strtran_json(sTmp)+'" '
 	endif
 	
 	recover using rerr
@@ -2299,9 +2293,8 @@ local cClass
 	end sequence
     	
     next
-    
-	? refs+'}'
-	? cid+'}'
+	 str+=refs+'}'+ cid+'}'
+	 ? str
 
 return
 
@@ -2822,7 +2815,16 @@ function get_contentType(file)
 			{"rdf","application/rdf+xml"},;
 			{"xhtml","application/xhtml+xml"},;
 			{"xht","application/xhtml+xml"},;
+			{"xbl","application/xml"},;
 			{"xml","application/xml"},;
+			{"gif","image/gif"},;                                       
+			{"jpeg","image/jpeg"},;                                  
+			{"jpg","image/jpeg"},;                                   
+			{"jpe","image/jpeg"},;                                      
+			{"pcx","image/pcx"},;                                      
+			{"png","image/png"},;                                     
+			{"svg","image/svg+xml"},;                                   
+			{"svgz","image/svg+xml"},;                                  
 			{"xls","application/xml"};
 		}
 

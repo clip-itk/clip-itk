@@ -218,10 +218,12 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 	endif
 	? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	/*
 	? '<RDF:beg_date>'+dtoc(beg_date)+'</RDF:beg_date>'
 	? '<RDF:end_date>'+dtoc(end_date)+'</RDF:end_date>'
 	? '<RDF:account>'+cgi_essence(account)+'</RDF:account>'
 	? '<RDF:an_value>'+cgi_essence(an_value)+'</RDF:an_value>'
+	*/
 	if empty(typenode)
 	    cgi_putArefs2Rdf1(aTree,oDep,0,urn,columns,"")
 		?
@@ -249,7 +251,7 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 		k:=iif( len(aTree['level0'])==0, (i-1), i)
 		
 		?' <items id="level'+alltrim(str((k),2,0))+'">['
-		    cgi_an_putJson(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0')
+		    cgi_an_putJson(an_data,accounts[i],an_levels[i],urn,'no',beg_date,end_date,"",accounts[i],'0', 'rep7')
 		?' ]</items>'
 		endif
 

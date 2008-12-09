@@ -1,6 +1,6 @@
 #define NEW_VARIANTS
 ***********************
-function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union)
+function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,union,total)
 	local oDict,an_info,an_balance,am_balance,osb_class
 	local anb_list:=map(),an_level2,an_values2,anb_list2
 	local as,as1,s:="",s0,s1,s2,obj,aObj,tObj,tmp,data:={}
@@ -8,8 +8,9 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 	local max_date,min_date,variants:={},nFilled, call_an := .f.
 	local an_obj,class,cId,tmpDict,tcol,tcol_list,err
 	local classes:=map(), tCols := map()
-	local acc_data, tattrib:={}
+	local acc_data, tattrib:={}, attr_list
 	
+
 
 	acc_data := cgi_getValue(account)
 	if empty(acc_data)
@@ -61,12 +62,13 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		an_balance := am_balance
 	endif
 
+	//outlog(__FILE__,__LINE__,'nFilled',nFilled)
+
 	if nFilled == 0
 		s := 'account=="'+account+'"'
 		s2:= '.and. end_date>=stod("'+dtos(beg_date)+'") '
 		s1:= '.and. an_level=='+alltrim(str(an_level,2,0))+' '
 		tmp:=oDep:select(an_info:id,,,s+s1+s2)
-
 		for i=1 to len(tmp)
 			obj:=oDep:getValue(tmp[i])
 			if empty(obj)
@@ -83,7 +85,11 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 
 	endif
 
+
+
 	variants := r2d2_calc_an_variants(oDep,account,an_level,beg_date,end_date,an_values,anb_list)
+
+	//outlog(__FILE__,__LINE__,'len_variants',len(variants))
 
 	for i=1 to len(variants)
 
@@ -102,7 +108,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		endif
 		aadd(aOst,oOst)
 	next
-
+ 
+ 	//outlog(__FILE__,__LINE__,'len_aOst',len(aOst))
 	for i in anb_list KEYS
 
 		aObj:= NIL
@@ -116,13 +123,13 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		aObj:attr:= ""
 		aObj:esse:= ""
 		an_obj := cgi_getValue(anb_list[i])
-		//outlog(__FILE__,__LINE__,"AAAA",anb_list[i])
+
 		if empty(an_obj)
 			cgi_xml_error( "Object not readable:"+anb_list[i] )
 			loop
 		endif
 		class:=NIL; tmpDict:=NIL
-
+/*
 		if !empty(an_obj) .and. "CLASS_ID" $ an_obj .and. an_obj:class_id $ classes
 			class := classes[an_obj:class_id]
 		else
@@ -134,11 +141,14 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 					class := tmpDict:getValue(an_obj:class_id)
 				endif
 			endif
+			
 			if !empty(class)
+
 				aObj:essence  := class:essence(an_obj)
 				if "TCOL_LIST" $ class
 					for j=1 to len(class:tcol_list)
 					    tcol_list:=tmpDict:select("TCOLUMN",,class:tcol_list[j])
+					    
 					    if empty(tcol_list)
 					    	loop
 					    endif
@@ -156,48 +166,40 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		if empty(class)
 			aObj:essence  := cgi_essence(anb_list[i])
 		elseif "TCOL_LIST" $ class
+			
 			aObj:essence  := class:essence(an_obj)
 			tattrib:={}
-			for j=1 to len(class:tcol_list)
-				tCol := NIL; k:=""
-				if class:tcol_list[j] $ tCols
-					tCol := tCols[class:tcol_list[j]]
-				endif
-				
-				err := errorBlock({|oErr|break(oErr)})
-				begin sequence
-					if "EXPR_BLOCK" $ tCol
-						k := mapEval(an_obj,tCol:expr_block)
-					else
-						x := "{||"+tCol:expr+"}"
-						tCol:expr_block := &x
-						k := mapEval(an_obj,tCol:expr_block)
-					endif
-				recover
-					  k:= "error in tcolumn expr:"+tCol:expr
-				end sequence
-				errorBlock(err)
-				/*
-				?    
-				? class:tcol_list[j]
-				? k
-				? essvalue
-				? valtype(k)
-				?'-------'
-				*/
-				
-//				if !empty(k) .or. valtype(k)=="N"
-//*--------------------------------
-				    typeval := valtype(an_obj[upper(class:tcol_list[j])])
-				    essvalue:= an_obj[upper(class:tcol_list[j])]
-				    aadd(tattrib,{class:tcol_list[j],{k,essvalue,typeval}})	
-				    
-//				elseif valtype(k)!="N"
-//				    aadd(tattrib,{class:tcol_list[j],{k,essvalue,typeval}})	
-//				endif
-//				if !empty(k) .and. union==class:tcol_list[j]
-					aObj:union := k
-//				endif
+			attr_list:={}
+			
+			for j=1 to len(class:attr_list)
+			    aadd(attr_list, cgi_getValue(class:attr_list[j]) )
+			next
+			
+			for j=1 to len(attr_list)
+			    k:=ascan(class:tcol_list, attr_list[j]:name)
+			    if k==0
+				loop
+			    endif				
+			
+			    if class:tcol_list[k] $ tCols
+				tCol := tCols[class:tcol_list[k]]
+			    endif
+															      
+			    err := errorBlock({|oErr|break(oErr)})
+                    	    begin sequence
+			    if "EXPR_BLOCK" $ tCol
+				k := mapEval(an_obj,tCol:expr_block)
+			    else
+				x := "{||"+tCol:expr+"}"
+				tCol:expr_block := &x
+				k := mapEval(an_obj,tCol:expr_block)
+                            endif
+			    recover
+			    k:= "error in tcolumn expr:"+tCol:expr
+			    end sequence
+			    errorBlock(err)
+			
+			    aadd(tattrib,{attr_list[j]:name,{ k, attr_list[j]:type}})	
 				
 			next
 				aObj:tattrib := tattrib
@@ -205,8 +207,10 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		else
 			aObj:essence:= class:essence(an_obj)
 		endif
+*/
 
-
+//		aObj:essence:= class:essence(an_obj)
+		aObj:essence  := cgi_essence(anb_list[i])
 		aObj:bd_summa := 0
 		aObj:bk_summa := 0
 		aObj:od_summa := 0
@@ -221,7 +225,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 		aObj:accpost_list := {}
 		aObj:points_count := 0
 		for j=1 to len(variants)
-			//outlog(__FILE__,__LINE__, variants[j][an_level], anb_list[i])
+		//outlog(__FILE__,__LINE__,'----', variants[j][an_level], anb_list[i])
+		
 			if !(variants[j][an_level] == anb_list[i])
 				loop
 			endif
@@ -245,8 +250,17 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			next
 		next
 		//outlog(__FILE__,__LINE__,"add data",aObj)
-		aadd(data,aObj)
+		i:=0
+		i:=aObj:od_summa+aObj:ok_summa+aObj:ed_summa+aObj:ek_summa+aObj:in_num+aObj:out_num+aObj:end_num
+		
+		//*------------------------------------
+		if i>0
+		    aadd(data,aObj)
+		endif    
 	next
+	if !(empty(total))
+	    return data
+	endif    
 	aObj:=NIL; aObj:=map()
 	aObj:an_value := "total"
 	aObj:essence  := "�����"
@@ -265,8 +279,8 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 	aObj:unit_num := "all"
 	aObj:accpost_list := {}
 	aObj:points_count := 1
-	//outlog(__FILE__,__LINE__,data)
-	if len(data) == 0
+
+	if len(data) == 0 
 		aObj:an_value := "EMPTY"
 		aObj:essence  := "�����"
 		aObj:unit_num := "EMPTY"
@@ -340,7 +354,7 @@ function cgi_an_make_data(beg_date,end_date,oDep,account,an_values,an_level,unio
 			asize(data,len(data)-1)
 		next
 	endif
-	//outlog(__FILE__,__LINE__,"len(data)=",len(data))
+	//outlog(__FILE__,__LINE__,"len(data)===",len(data))
 return data
 
 *********************************

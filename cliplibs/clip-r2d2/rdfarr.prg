@@ -7,7 +7,7 @@ local aRefs, aTree :={}
 local lang:="", sDict:="", sDep:="",connect_id:=""
 local oDict,oDep, tmp,tmp1,tmp2, classDesc, s_select:=""
 local columns,col, id:="",attr:="", owner_map:=map(),map2:=map(),aData, sId
-local i,j,obj,idlist,_idList, iftree:=.f.
+local i,j,obj,idlist,_idList, iftree:=.f., istree:=""
 local urn, sprname:=""
 
 
@@ -36,6 +36,10 @@ local urn, sprname:=""
 	endif
 	if "URN" $ _query
 		URN := _query:URN
+	endif
+
+	if "__ISTREE" $ _query
+		istree := _query:__istree
 	endif
 
 	lang := cgi_choice_lang(lang)
@@ -159,15 +163,18 @@ local urn, sprname:=""
 		return
 	endif
 
-	for i=1 to len(columns)
+	if empty(istree)    
+	    for i=1 to len(columns)
 		if columns[i]:name = 'owner_id'
-			iftree := .t.
-			exit
+	    	    iftree := .t.
+		    exit
 		endif
-	next
+	    next
+	else
+	    iftree:=iif(istree=='false', .f., .t.)
+	endif 
 
-
-	aTree:=idlist_atree(idList, iftree, oDep,.f.)
+	aTree:=idlist_atree(idList, iftree, oDep, .f., 'exp')
 //*--------------------В этом месте перескочить
 
 	if empty(urn)

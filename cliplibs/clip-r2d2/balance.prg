@@ -162,58 +162,53 @@ errorblock({|err|error2html(err)})
 	if empty(urn)
 		urn := sprname
 	endif
+	cgi_xml_header()
+	
+	?
+	if typeNode == 'rdf3'
+	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	    ? 'xmlns:D="http://itk.ru/D#" '
+	    ? 'xmlns:R="http://itk.ru/R#" '
+	    ? 'xmlns:S="http://itk.ru/S#">'
+	elseif typeNode == 'rdf'
+	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	    ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	elseif typeNode == 'xml'
+	    ? '<root>'
+	elseif typeNode == 'json'
+	    ? '<root xmlns="http://itk.ru/json#">'
+	endif
+	
 	for nPer = 1 to len(mPeriod)
-		beg_date = mPeriod[nPer][1]
-		end_date = mPeriod[nPer][2]
-
-		aBal_data:={}
-		for i=1 to len(acc_chartt_list)
-			bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i],account,itogo)
-			aadd(aBal_data,bal_data)
-		next
-
-
-		for i=1 to len(aBal_data)
-			aTree := aBal_data[i]
-			if empty(atree)
-				loop
-			endif
-			if empty(periodic)
-			    level:= ""
-			    else
-			    level:= ':'+alltrim(str(nPer))
-			endif
-
-			cgi_xml_header()
-			?
-			if typeNode == 'rdf3'
-	    		    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	    		    ? 'xmlns:D="http://itk.ru/D#" '
-	    		    ? 'xmlns:R="http://itk.ru/R#" '
-	    		    ? 'xmlns:S="http://itk.ru/S#">'
-			elseif typeNode == 'rdf'
-	    		    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	    		    ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-			elseif typeNode == 'xml'
-	    		    ? '<root>'
-			elseif typeNode == 'json'
-	    		    ? '<root xmlns="http://itk.ru/json#">'
-			endif
-
-			cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
-
-			if typeNode == 'rdf3'
-	    		    ? '</RDF:RDF>'
-			elseif  typeNode == 'rdf'
-	    		    ? '</RDF:RDF>'
-			elseif  typeNode == 'xml'
-	    		    ? '</root>'
-			elseif  typeNode == 'json'
-	    		    ? '</root>'
-			endif
-		next
+	    beg_date = mPeriod[nPer][1]
+	    end_date = mPeriod[nPer][2]
+    	    aBal_data:={}
+	    for i=1 to len(acc_chartt_list)
+		bal_data := make_balance(beg_date,end_date,oDep,acc_chartt_list[i],account,itogo)
+		aadd(aBal_data,bal_data)
+	    next
+    	    for i=1 to len(aBal_data)
+		aTree := aBal_data[i]
+		if empty(atree)
+		    loop
+		endif
+		if empty(periodic)
+		    level:= ""
+		else
+		    level:= ':'+alltrim(str(nPer))
+		endif
+		cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
+	    next
 	next
-
+	if typeNode == 'rdf3'
+	    ? '</RDF:RDF>'
+	elseif  typeNode == 'rdf'
+	    ? '</RDF:RDF>'
+	elseif  typeNode == 'xml'
+	    ? '</root>'
+	elseif  typeNode == 'json'
+	    ? '</root>'
+	endif
 
 return
 
@@ -314,7 +309,9 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo)
 
 	for i=1 to len(aTree['level0'])
 		item:=aTree['level0'][i]
-		summaItem(aTree, aTree[item:id], item)
+		if item:id $ aTree
+		    summaItem(aTree, aTree[item:id], item)
+		endif
 	next
 
 	for i=1 to len(aTree['level0'])		
