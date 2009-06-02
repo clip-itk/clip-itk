@@ -37,16 +37,20 @@ function cgi_query(p,prg,line)
 return ret
 
 /************************************************/
+function cgi_any_header(mimeType)
+	qqout( "Content-type: "+mimeType+";charset="+host_charset() )
+	qout()
+
+/************************************************/
 function cgi_text_header()
-	qqout("Content-type: text/plain")
+	qqout('Content-type: text/plain; charset='+host_charset())
+//	qqout("Content-type: text/plain")
 	qout()
 /************************************************/
 function cgi_xml_header()
 	qqout('Content-type: text/xml; charset='+host_charset())
 	qout()
 	qout('<?xml version="1.0" encoding="'+host_charset()+'"?>')
-//	qout()
-//	qout('<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>')
 return ""
 /************************************************/
 function cgi_html_header(title, charSet)
@@ -302,11 +306,8 @@ function strtran_json(essence)
 	if empty(essence)
 		return ""
 	endif
+	essence:= strtran(essence,'\','\\')
 	essence:= strtran(essence,'"','\"')
-	essence:= strtran(essence,"'","\'")
-	essence:= strtran(essence,"&","&amp;")
-	essence:= strtran(essence,"<","&lt;")
-	essence:= strtran(essence,">","&gt;")
 return essence
 /************************************************/
 
@@ -580,13 +581,13 @@ function r2d2_get_osb_data(oDep,bal_id,account,beg_date,end_date,s1,s2)
 	data:ok_summa	:= 0.00
 	data:ed_summa	:= 0.00
 	data:ek_summa	:= 0.00
-
 	if empty(s1)
 		s1:= ' .and. odate>=stod("'+dtos(beg_date)+ '") .and. odate<=stod("'+dtos(end_date)+ '")'
 	endif
 	s:='account=="'+account:id+'"'
 	tmp := oDep:select(bal_id,1,,s+s1)
 	//outlog(__FILE__,__LINE__,s+s1,len(tmp))
+
 
 	for j=1 to len(tmp)
 		obj:=oDep:getValue(tmp[j])
@@ -1152,7 +1153,7 @@ function cgi_aRefs2(oDep,classDesc,columns,_query,find_wrap,Serr,includeAll,lOwn
 	endif
 	set exact off
         idList:=oDep:select(classDesc:id,s_obj:nIndex,,s_obj:expr,,needDeleted)
-	aTree:=idlist_atree(idList, iftree, oDep,needDeleted,s_obj:expr)
+		aTree:=idlist_atree(idList, iftree, oDep,needDeleted,s_obj:expr)
 return aTree
 
 
@@ -1166,7 +1167,18 @@ local obj, lenmas, mas, owid
 	lenmas:= len(idList) // iif( len(idList) > 10000, 10000, len(idList))
 
 	if !iftree
-		aTree['level0']:=idList
+		if needDeleted 
+			for i=1 to lenmas
+				obj:=cgi_getValue(idList[i])
+				if needDeleted .and. obj:__version >=0
+					loop
+				endif
+			    aadd(aTree['level0'],obj)
+			next
+		else
+			aTree['level0']:=idList
+		endif
+		
 	else
 		//*--------------if tree
 		for i=1 to lenmas
@@ -1190,14 +1202,14 @@ local obj, lenmas, mas, owid
 
 		for mas in aTree
 		    if empty(mas)
-			loop
+				loop
 		    else
-			if empty(mas[1]:owner_id)
-			    loop
-			endif    	
+				if empty(mas[1]:owner_id)
+				    loop
+				endif    	
 		    endif
 		    if len(mas)>0
-			findOwnerIdObject(mas[1]:owner_id, aTree)
+				findOwnerIdObject(mas[1]:owner_id, aTree)
 		    end
 		next
 		
@@ -2037,6 +2049,7 @@ local z:=1, lencol:=len(columns), lenTree:= len(aTree), lenarr, lentmp
 	    next
 
 	elseif typeNode=='json'
+		tmp:=''
 	    for arr in aTree
 		lenarr:=len(arr)
 		if lenarr==0
@@ -2044,28 +2057,31 @@ local z:=1, lencol:=len(columns), lenTree:= len(aTree), lenarr, lentmp
 		else  
 		    obj:=arr[1]
 		    if 'OWNER_ID' $ obj
-			dname:=iif( empty(obj:owner_id), 'level0', obj:owner_id)
+				dname:=iif( empty(obj:owner_id), 'level0', obj:owner_id)
 		    else 
 		    	dname:='level0'
 		    endif
 		endif
-	    	? '<items id="'+dname+'">['
+		//if tmp == ','
+			?? tmp
+		//endif
+			tmp:=','			
+	    	? ' "'+dname+'":['
 			if lenarr>=1
-		    	    ?'{'
+		    	    ??'{'
 		    		cgi_putObjJson(arr[1],columns, urn, aTree, lencol)
-		    	    ?'}'
+		    	    ??'}'
 			endif
 			if lenarr>=2
 		    	    for j=2 to lenarr
-				?',{'
+				??',{'
 				    cgi_putObjJson(arr[j],columns, urn, aTree, lencol)
-				?'}'
+				??'}'
 		    	    next
 			endif
-	    
-	    	    ? ']</items>'
-		    
+				?? ']'
 	    next
+	    
 	else    
 	    for arr in aTree
 	    	lenarr:=len(arr)
@@ -2203,16 +2219,16 @@ local cClass
     endif
     
     essenc := strtran_json(cgi_essence(obj))
-    ??  'id:"'+obj:id+'", essence:"'+essenc+'", '
+    ??  '"id":"'+obj:id+'", "essence":"'+essenc+'", '
 
     s := obj:id
     if s $ aTree
         t:="true"
     endif 
 	
-    ?? 'a:{ isContainer:'+t+', level:0, isContainerOpen:false }'
-    refs:=',r:{id:"'+essenc+'"'
-    cid:=',cid:{a:""'
+    ?? '"a":{ "isContainer":'+t+', "level":0, "isContainerOpen":false }'
+    refs:=',"r":{"id":"'+essenc+'"'
+    cid:=',"cid":{"a":""'
 
     
     for j=1 to lencol
@@ -2222,31 +2238,33 @@ local cClass
 	stmp4 := ""    
     	col := columns[j]
 	colname:=col:name
-	coldtp:=col:datatype
-	if colname=='id' //.or. coldtp=="A" .or. coldtp=="M"
-    	    loop
-	endif
+
 
 	sTmp := mapEval(obj,col:block)
 
 	if "DATATYPE" $ col
+	    coldtp:=col:datatype
+	    if colname=='id' .or. coldtp=="A" .or. coldtp=="M"
+    		loop
+    	    endif
+	
 	    if  coldtp == "C"
-			str+=','+colname+':"'+strtran_json(sTmp)+'" '
+			str+=',"'+colname+'":"'+strtran_json(sTmp)+'" '
 	    elseif  coldtp == "N"
 			if valtype(sTmp)!="N"
 				sTmp:=val(sTmp)
 			endif
-			str+=','+colname+':'+toString(sTmp)+' '
+			str+=',"'+colname+'":'+toString(sTmp)+' '
 	    elseif  coldtp == "D"
-			str+=','+colname+':"'+dtoc(sTmp)+'" '
-			refs+=' ,'+colname+':"'+iif(empty(sTmp),"00000000",dtos(sTmp))+'"'
+			str+=',"'+colname+'":"'+dtoc(sTmp)+'" '
+			refs+=',"'+colname+'":"'+iif(empty(sTmp),"00000000",dtos(sTmp))+'"'
 	    elseif  coldtp == "L"
 			if valtype(sTmp)=="L"
-				str+=','+colname+':"'+iif(sTmp,"true","false")+'" '
+				str+=',"'+colname+'":"'+iif(sTmp,"true","false")+'" '
 			else
-				str+=','+colname+':"'+sTmp+'" '
+				str+=',"'+colname+'":"'+sTmp+'" '
 			endif
-			refs+= ','+colname+':'+ iif(obj[upper(colname)],"true","false")
+			refs+= ',"'+colname+'":'+ iif(obj[upper(colname)],"true","false")
 	    elseif  coldtp == "R" .and. colname!='essence'
 			if !empty(stmp)			
 			    if upper(colname) $ obj
@@ -2262,14 +2280,14 @@ local cClass
 			    sTmp4 := cgi_getValue(stmp2)
 			    if !empty(stmp4)
 				//sTmp3 := strtran_json(cgi_essence(sTmp4))
-				cid+=','+colname+':"'+sTmp4:class_id+'"'    
+				cid+=',"'+colname+'":"'+sTmp4:class_id+'"'    
 			    endif
 			    
 			    
 			endif
 
-			str+=','+colname+':"'+sTmp3+'" '
-			refs+=','+colname+':"'+sTmp2+'"'
+			str+=',"'+colname+'":"'+sTmp3+'" '
+			refs+=',"'+colname+'":"'+sTmp2+'"'
 
 	    elseif  coldtp == "S"
 			obj2:=cgi_getValue(sTmp)
@@ -2281,8 +2299,8 @@ local cClass
 					sTmp3 := obj2:name
 				endif
 			endif
-			str+=', '+colname+':"'+sTmp3+'" '
-			refs+=' ,'+colname+':"'+sTmp+'"'
+			str+=', "'+colname+'":"'+sTmp3+'" '
+			refs+=',"'+colname+'":"'+sTmp+'"'
 	    endif		
 	elseif valtype(sTmp) == "C"
 		str+=', "'+colname+'":"'+strtran_json(sTmp)+'" '
@@ -2294,7 +2312,7 @@ local cClass
     	
     next
 	 str+=refs+'}'+ cid+'}'
-	 ? str
+	 ?? str
 
 return
 

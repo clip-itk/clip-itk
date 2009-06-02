@@ -10,7 +10,7 @@ local beg_date:=date(),end_date:=date(),account:=""
 local periodic, mPeriod, nPer,  checkloop:= .t.
 local i,j,k,tmp,obj
 local an_data,an_level:=1, an_values:={" "," "," "," "," "," "}
-local urn:="", host:="", total:="", level:="", union:=""
+local urn:="level0", host:="", total:="", level:="", union:=""
 	errorblock({|err|error2html(err)})
 
 	_query := d2ArrToMap(_queryArr)
@@ -67,6 +67,7 @@ local urn:="", host:="", total:="", level:="", union:=""
 	if "URN" $ _query
 		URN := _query:URN
 	endif
+	
 	if "TOTAL" $ _query
 		total := _query:total
 	endif
@@ -109,8 +110,9 @@ local urn:="", host:="", total:="", level:="", union:=""
 		return
 	endif
 
-	cgi_xml_header()
+
 	if typeNode == 'rdf3'
+		cgi_xml_header()
 	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	    ? 'xmlns:D="http://itk.ru/D#" '
 	    ? 'xmlns:R="http://itk.ru/R#" '
@@ -118,16 +120,19 @@ local urn:="", host:="", total:="", level:="", union:=""
 		? '<RDF:Seq RDF:about="'+urn+'">'
 	    ?
 	elseif typeNode == 'rdf'
+		cgi_xml_header()
 	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	    ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	elseif typeNode == 'xml'
+		cgi_xml_header()
 	    ? '<root>'
 		? '<item id="'+urn+'"'
 		?? ' essence="'+codb_essence(urn)
 		?? '">'
 	else 
-	    ? '<root xmlns="http://itk.ru/json#">'
-	    ? '<items id="'+urn+'">['
+		cgi_text_header()
+		
+		? '{"'+urn+'":['
 	endif
 
 
@@ -173,39 +178,36 @@ local urn:="", host:="", total:="", level:="", union:=""
 		? '</item>'
 	    ? '</root>'
 	else
-	    ?? ']</items>'
-	    ? '</root>'
+		? ']}'
 	endif
 
 	return
 ******************************
 function cgi_an_putJson(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn,level, rep7)
 local ss,i,j,k,tmp,s,obj_value,urn_id,cClass,mcolumns:=map(),sTmp:=""
-local masan, u, stran:="", idan:="", checkloop:= .t.
+local masan, u, stran:="", idan:="", checkloop:= .t., class_id, acolumn:=map()
 	if empty(ext_urn)
 		ext_urn := ""
 	endif
 
-	if len(bal_data)>=1 
-		tmp:=bal_data[1]
-		
-		
-		if tmp:an_value == 'total' .or. tmp:an_value == 'EMPTY'
-		    return    
-		endif 
-		    obj_value:=cgi_getValue(tmp:an_value)	
-		    if "CLASS_ID" $ obj_value
-			tmp:=insert_tcol_in_class(obj_value:class_id)
-			cClass:=tmp:class			
-			mcolumns:=tmp:mcolumns
-		    endif
-	endif
-
-
-
 	for i=1 to len(bal_data)
+	
 		tmp:=bal_data[i]
 		obj_value:=cgi_getValue(tmp:an_value)	
+
+    	if "CLASS_ID" $ obj_value		
+			class_id:= upper(obj_value:class_id)					 	
+			if class_id $ acolumn
+				mcolumns:=acolumn[class_id]
+			else
+				s:=insert_tcol_in_class(obj_value:class_id)
+				mcolumns:=s:mcolumns
+				acolumn[class_id]:=mcolumns
+			endif
+		
+		endif
+	
+	
 		stran:=""
 		idan:=""
 		
@@ -213,84 +215,84 @@ local masan, u, stran:="", idan:="", checkloop:= .t.
 		?? iif(checkloop,"",",")
 		checkloop:=.f.
 		
-		?? "{ a:{level:'"+level+"', isContainer:false }, "
+		?? '{ "a":{"level":'+level+', "isContainer":false }, '
 		
-		?? "p:{"
-		?? 'beg_date:"'
+		?? ' "p":{'
+		?? '"beg_date":"'
 		?? beg_date
 		?? '",'
 
-		?? 'end_date:"'
+		?? '"end_date":"'
 		?? end_date
 		?? '"},'
 		
 		if  empty(rep7)	
 		    for j in mcolumns
-			k := obj_value[upper(j:name)]
-    			if j:datatype=='R'
-			    idan+= j:name+':"'+k+'",'   
-			    stran+= j:name+':"'+strtran_json(codb_essence(k))+'",'   
-			elseif  j:datatype=='D'
-		    	    stran+= j:name+':"'+dtoc(k)+'",'   
-			    idan+= j:name+':"'+iif(empty(k),"00000000",dtos(k))+'",'   
-			elseif  j:datatype=='N'
-		    	    stran+= j:name+':"'+str(k)+'",'   
-			elseif  j:datatype=='C'	
-		    	    stran+= j:name+':"'+strtran_json(codb_essence(k))+'",'   
-			elseif  j:datatype=='L'
-			    //stran+= j:name+':"'+k+'",'   
-			    idan+= j:name+':"'+iif(k,"true","false")+'",'   
-			//else	
-		    	//    stran+= j:name+':"'+k+'",'   
+			if 'NAME' $ j
+			if upper(j:name) $ obj_value
+			    k := mapEval(obj_value,j:block)
+    			    if j:datatype=='R' .or. j:datatype=='S'
+						idan+= '"'+j:name+'":"'+k+'",'   
+						stran+= '"'+j:name+'":"'+strtran_json(codb_essence(k))+'",'   
+			    	elseif  j:datatype=='D'
+		    			stran+= '"'+j:name+'":"'+dtoc(k)+'",'   
+						idan+= '"'+j:name+'":"'+iif(empty(k),"00000000",dtos(k))+'",'   
+			    	elseif  j:datatype=='N'
+		    			stran+= '"'+j:name+'":'+str(k)+','   
+			    	elseif  j:datatype=='C'	
+		    			stran+= '"'+j:name+'":"'+strtran_json(codb_essence(k))+'",'   
+			    	elseif  j:datatype=='L'
+						idan+= '"'+j:name+'":"'+iif(k,"true","false")+'",'   
+					//else	
+		    		//    stran+= '"'+j:name+'":"'+k+'",'   
+			    endif
+			endif
 			endif
 		    next
 		endif
 		
 		
-		?? ' r:{ '
+		?? ' "r":{ '
 		?? idan
-		?? 'account_name:"'+tmp:an_value+'",'
-		?? 'account:"'+account+'"'
+		?? '"account_name":"'+tmp:an_value+'",'
+		?? '"account":"'+account+'"'
 		?? " }, "
 		?? stran
-		?? ' account_name:"'+strtran_json(cClass:essence(obj_value))+'", '
-		?? ' account:"'+strtran_json(codb_essence(account))+'", '
-		?? " id:'"+urn_id+":"+tmp:an_value+"', "
-//		?? " union:'"
-//		?? tmp:union
-//		?? "', "
-		?? " bd_summa:'"
+		?? ' "account_name":"'+strtran_json(codb_essence(tmp:an_value))+'", '
+		?? ' "account":"'+strtran_json(codb_essence(account))+'", '
+		?? ' "id":"'+urn_id+':'+tmp:an_value+'", '
+		?? ' "bd_summa":'
 		?? tmp:bd_summa 
-		?? "', "
-		?? " bk_summa:'"
+		?? ', '
+		?? ' "bk_summa":'
 		?? tmp:bk_summa 
-		?? "', "
-		?? " od_summa:'"
+		?? ', '
+		?? ' "od_summa":'
 		?? tmp:od_summa 
-		?? "', "
-		?? " ok_summa:'"
+		?? ', '
+		?? ' "ok_summa":'
 		?? tmp:ok_summa 
-		?? "', "
-		?? " ed_summa:'"
+		?? ', '
+		?? ' "ed_summa":'
 		?? tmp:ed_summa 
-		?? "', "
-		?? " ek_summa:'"
+		?? ', '
+		?? ' "ek_summa":'
 		?? tmp:ek_summa 
-		?? "', "
-		?? " beg_num:'" 
+		?? ', '
+		?? ' "beg_num":' 
 		?? tmp:beg_num 
-		?? "', "
-		?? " in_num:'" 
+		?? ', '
+		?? ' "in_num":' 
 		?? tmp:in_num 
-		?? "', "
-		?? " out_num:'" 
+		?? ', '
+		?? ' "out_num":' 
 		?? tmp:out_num 
-		?? "', "
-		?? " end_num:'" 
+		?? ', '
+		?? ' "end_num":' 
 		?? tmp:end_num 
-		?? "', "
-		?? " unit:'"+cgi_essence(tmp:unit_num)  +"' "
-		?? "}"
+		?? ', '
+		?? ' "unit":"'+cgi_essence(tmp:unit_num)  +'" '
+		?? '}'
 
 
 	next
@@ -301,54 +303,52 @@ return
 function cgi_an_putRdf3(bal_data,account,an_level,urn,total,beg_date,end_date,sTree,ext_urn)
 local ss,i,j,k,tmp,s,urn_id,promt,columns,mcolumns:=map(),essenc
 local obj_value:=map(), tcol_list:={}, cClass:=map(), oDep, oDict
-	
+local acolumn:=map(), class_id
 	if empty(ext_urn)
 		ext_urn := ""
 	endif
 	
 	
-	if len(bal_data)>=1	
-		tmp:=bal_data[1]
-		if tmp:an_value != 'total'
-		    obj_value:=cgi_getValue(tmp:an_value)	
-		    if "CLASS_ID" $ obj_value
-			tmp:=insert_tcol_in_class(obj_value:class_id)
-			cClass:=tmp:class			
-			mcolumns:=tmp:mcolumns
-		    endif
-		endif    
-	endif
-
-	
-
-	
 	for i=1 to len(bal_data)
+	
 		tmp:=bal_data[i]
-		urn_id := urn
 		obj_value:=cgi_getValue(tmp:an_value)	
+
+    	if "CLASS_ID" $ obj_value		
+			class_id:= upper(obj_value:class_id)					 	
+			if class_id $ acolumn
+				mcolumns:=acolumn[class_id]
+			else
+				s:=insert_tcol_in_class(obj_value:class_id)
+				mcolumns:=s:mcolumns
+				acolumn[class_id]:=mcolumns
+			endif
+		
+		endif
+		
+		
+		urn_id := urn
+		
 		? '<RDF:li resource="'+urn_id+':'+tmp:an_value+ext_urn+'">'
 		? '<RDF:Description about="'+urn_id+':'+tmp:an_value+ext_urn+'" id="'+tmp:an_value+ext_urn+'" D:about="'+urn_id+':'+tmp:an_value+ext_urn+'"'
-			
-		? '     D:an_value="'+strtran_rdf(cClass:essence(obj_value))+'"'
-		? ' 	R:an_value="'+tmp:an_value+'"'
-
-
+		? '	D:an_value="'+strtran_rdf(codb_essence(obj_value))+'"'
+		? '	R:an_value="'+tmp:an_value+'"'
 		
 		for j in mcolumns
-		    k := obj_value[upper(j:name)]
+			k:= mapEval(obj_value,j:block)
 		    if j:datatype=='R'
-			? ' 	D:'+j:name+'="'+ strtran_rdf(codb_essence(k))+'"'
-			? ' 	R:'+j:name+'="'+ k+'"'
-		    elseif  j:datatype=='D'
-			? ' 	D:'+j:name+'="'+ dtoc(k)+'"'
-			? ' 	S:'+j:name+'="'+ dtos(k)+'"'
-		    elseif  j:datatype=='N'
-			? ' 	D:'+j:name+'="'+ alltrim(str(k))+'"'
-			? ' 	S:'+j:name+'="'+ sort_summa( k,j:datalen,j:datadec)+'"'
+				? ' D:'+j:name+'="'+ strtran_rdf(codb_essence(k))+'"'
+				? '	R:'+j:name+'="'+ k+'"'
+		    elseif  j:datatype=='D' .and. valtype(k)=='D'
+				? ' D:'+j:name+'="'+ dtoc(k)+'"'
+				? '	S:'+j:name+'="'+ dtos(k)+'"'
+		    elseif  j:datatype=='N' .and. valtype(k)=='N'
+				? ' D:'+j:name+'="'+ alltrim(str(k))+'"'
+				? ' S:'+j:name+'="'+ sort_summa( k,j:datalen,j:datadec)+'"'
 		    elseif  j:datatype=='C'	
-		    	? ' 	D:'+j:name+'="'+ strtran_rdf(k)+'"'
+		    	? ' D:'+j:name+'="'+ strtran_rdf(k)+'"'
 		    else
-		    	? ' 	D:'+j:name+'="' 
+		    	? ' D:'+j:name+'="' 
 		    	? k 
 		    	? '"'
 		    endif
@@ -459,17 +459,16 @@ local tcol_list, mcolumns:=map(), columns, col:=map()
     if !empty(tmpDict) 
         class := tmpDict:getValue(class_id) 
         tcol_list := class:tcol_list
-	oDep := cgi_needDepository(substr(class:id,1,5))
-	oDict := oDep:dictionary()
-	columns:=cgi_make_columns(oDict,class:name) 
-	for i=1 to len(columns)
-	    j:= ascan(tcol_list,columns[i]:name)
-	    if j>0
-		mcolumns[columns[i]:name]:=columns[i]
-	    endif
-	
-	next
-	ret:class := class
+		oDep := cgi_needDepository(substr(class:id,1,5))
+		oDict := oDep:dictionary()
+		columns:=cgi_make_columns(oDict,class:name) 
+		for i=1 to len(columns)
+	    	j:= ascan(tcol_list,columns[i]:name)
+	    	if j>0
+				mcolumns[columns[i]:name]:=columns[i]
+	    	endif
+		next
+		ret:class := class
         ret:mcolumns := mcolumns
     endif
 return ret

@@ -98,21 +98,6 @@ local s_obj
 		return
 	endif
 
-	cgi_xml_header()
-	if typeNode == 'rdf3'
-    	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-	    ? 'xmlns:D="http://itk.ru/D#" '
-	    ? 'xmlns:R="http://itk.ru/R#" '
-	    ? 'xmlns:S="http://itk.ru/S#">'
-	    ?
-	elseif typeNode == 'rdf'
-	  ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-          ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
-	elseif typeNode == 'xml'
-	  ? '<root>'
-	else
-	  ? '<root xmlns="http://itk.ru/json#">'	  
-	endif
 
 	if empty(id)
 		oDep := cgi_needDepository(sDict,sDep)
@@ -151,7 +136,6 @@ local s_obj
 	endif
 
 	if !empty(id)
-
 		aTree['level0']:={}
 		idList := split(id,",")
 		iftree:=.f.
@@ -165,16 +149,38 @@ local s_obj
 		
 	endif
 
+
+
+	if typeNode == 'rdf3'
+		cgi_xml_header()
+    	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+	    ? 'xmlns:D="http://itk.ru/D#" '
+	    ? 'xmlns:R="http://itk.ru/R#" '
+	    ? 'xmlns:S="http://itk.ru/S#">'
+	    ?
+	elseif typeNode == 'rdf'
+		cgi_xml_header()
+	  ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+          ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
+	elseif typeNode == 'xml'
+			cgi_xml_header()
+		?	
+		? '<root xmlns="http://itk.ru#">'
+	else 
+			cgi_text_header()
+	  	? '{'
+	endif
+
 	if len(aTree)>0
 		cgi_putArefs2Rdf3(aTree, oDep, 0, urn, columns, "", , typeNode, needDeleted, sprname)
 	endif
 
-	if typeNode == 'rdf3'
+	if typeNode == 'rdf3' .or. typeNode == 'rdf'
 	    ? '</RDF:RDF>'
-	elseif	typeNode == 'rdf'
-	    ? '</RDF:RDF>'
-	else
+	elseif	typeNode == 'xml'
 	    ? '</root>'
+	else
+		? '}'
 	endif
 
 ?

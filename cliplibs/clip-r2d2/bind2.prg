@@ -63,17 +63,20 @@ errorblock({|err|error2html(err)})
 		return
 	endif
 
-	cgi_xml_header()
+
 	if typeNode == 'rdf3'
+	
 	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	    ? 'xmlns:D="http://itk.ru/D#" '
 	    ? 'xmlns:R="http://itk.ru/R#" '
 	    ? 'xmlns:S="http://itk.ru/S#">'
 	elseif typeNode == 'rdf'
+		cgi_xml_header()
 	    ? '<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
 	    ? 'xmlns:DOCUM="http://last/cbt_new/rdf#">'
 	else
-	    ? '<root xmlns="http://itk.ru/json#">'
+		cgi_text_header()
+	    ? '{'
 	endif
 
 	oDep := cgi_needDepository(sDict,sDep)
@@ -128,7 +131,7 @@ errorblock({|err|error2html(err)})
 	    ? '</RDF:RDF>'
 	else
 	    cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,"",,typeNode)
-	    ? '</root>'
+	    ? '}'
 	endif
 
 ?

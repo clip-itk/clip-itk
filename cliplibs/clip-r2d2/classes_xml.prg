@@ -184,7 +184,7 @@ static function put_json(m1,m2)
 		?? ',defvalue:"'+atrib:defvalue+'",dataRefTo:"'+atrib:ref_to+'"};'
 	next
 
-
+/*
 	list := oDict:select("TVIEW")
 	for i=1 to len(list)
 		tmp := oDict:getValue(list[i])
@@ -197,7 +197,7 @@ static function put_json(m1,m2)
 		next
 		??']};'
 	next
-	
+*/	
 	?
 return
 

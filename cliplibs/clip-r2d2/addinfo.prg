@@ -79,7 +79,7 @@ local sprname:=""
 		return
 	endif
 
-	cgi_xml_header()
+//	cgi_xml_header()
 
 	if empty(id)
 		oDep := cgi_needDepository(sDict,sDep)
@@ -274,15 +274,14 @@ local sprname:=""
 				for i=1 to len(tmp)
 					k := cgi_getValue(tmp[i])
 					if !empty(k)
-					?'<items id="objectexist">'
-					?'[{id:"objectexist",essence:"object already exist",unique_key:"'
+					//?'<items id="objectexist">'
+					?'{"id":"objectexist","essence":"object already exist","unique_key":"'
 					if valtype(keyValue)=='N'
 					    ?? alltrim(str(keyValue))
 					else
 					    ?? keyValue					    				
 	    				endif
-					    ??'", name:"'+classDesc:unique_key+'"}]' 
-					?'</items>'
+					    ??'", "name":"'+classDesc:unique_key+'"}' 
 					    return
 					endif
 				next
@@ -305,13 +304,22 @@ local sprname:=""
 		endif
 	next
 
+
+
 	if empty(nodeType)
 		nodeType:='json'
+		cgi_text_header()
+	else
+		cgi_xml_header()
 	endif
 	if empty(urn)
 		urn := 'urn:'+sprname
 	endif
-	cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,'','',nodeType)
+	? "{"
+	cgi_putObjJson(obj,columns, urn, aTree, len(columns))
+	
+	//cgi_putArefs2Rdf3(aTree,oDep,0,urn,columns,'','',nodeType)
+	?? "}"
 
 return
 

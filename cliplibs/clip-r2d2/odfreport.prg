@@ -59,13 +59,13 @@ local i,j,s1,s2
 		?
 		return
 	endif
+//	c_type = get_contentType(file)
 
-	c_type = get_contentType(file)
-
-	?? "Content-type: "+c_type
+	?? "Content-type: application/vnd.oasis.opendocument.spreadsheet"
+	//?? "Content-type: application/xml"//+c_type
 	?
 	data = odf_make_report(file,prg1,par1,prg2,par2)
-	? data
+	
 return
 *******************
 static function odf_make_report(file,prg1,par1,prg2,par2)
@@ -74,27 +74,22 @@ static function odf_make_report(file,prg1,par1,prg2,par2)
 	local tPath, fname
 	local cmd,out:=space(0), err:=space(0)
 	local bl1,bl2,pars1,pars2
-
 	tPath := PATH_DELIM+"tmp"+PATH_DELIM+"r2d2"+;
 		PATH_DELIM+"odfreport"+PATH_DELIM+alltrim(str(pid()))
+		
 	if !makeDirectory(tPath)
 		data:="<error>Can`t create tmp directory."+tPath+"</error>"
 		return data
 	endif
-	x := at("/",file)
-	if x <= 0
-		x := at("\",file)
-	endif
-	if x <= 0
-		fName := file
-	else
-		fName := substr(file,x+1)
-	endif
+	x := split(file, "/")
+	fName:=x[len(x)]
 
 	cmd := 'cp '+file+" "+tPath
 	cmd += "; cd "+tPath
 	cmd += '; unzip -x '+fname
 	cmd += '; rm -f '+fname
+	
+	outlog(__FILE__,__LINE__, cmd) 	
 	syscmd(cmd,"",@out,@err)
 	if !empty(err)
 		data:="<error>"+err+"</error>"
@@ -111,16 +106,20 @@ static function odf_make_report(file,prg1,par1,prg2,par2)
 
 	if !empty(bl1)
 		x := evala(bl1,par1)
+		
 	endif
+	/*
 	if !empty(bl2)
 		pars2 := aclone(par2)
 		aadd(pars2,"")
 		ains(pars2,1)
 		pars2[1] = x
 		y := evala(bl2,pars2)
+		
 	endif
-
+	*/	
 	data := memoread(tPath+PATH_DELIM+"content.xml")
+outlog(__FILE__,__LINE__, tPath+PATH_DELIM+"content.xml")	
 	if empty(data)
 		data:="<error>file not found:"+tPath+PATH_DELIM+"content.xml </error>"
 		return data
@@ -129,28 +128,42 @@ static function odf_make_report(file,prg1,par1,prg2,par2)
 	i := at("<office:spreadsheet>",data)
 	j := at("</office:spreadsheet>",data)
 
-	data := substr(data,1,i+19)+CRLF+y+CRLF+substr(data,j)
-	memowrit(tPath+PATH_DELIM+"content.xml",data)
+	if y==NIL
+	    y:=""
+	endif
+//	data := substr(data,1,i+19)+CRLF+y+CRLF+substr(data,j)
+
+	data := substr(data,1,i+19)+x+substr(data,j)
+	memowrit(tPath+PATH_DELIM+"content",data)
+
+
 
 	cmd := " cd "+tPath
-	cmd += '; zip '+fname+" *"
+	cmd += "; iconv -f koi8-r -t utf-8 -o content.xml content"
+	cmd += "; rm content"
+	cmd += "; zip -r "+fname+" *"
+outlog(__FILE__,__LINE__, cmd)
 	syscmd(cmd,"",@out,@err)
 	if !empty(err)
 		data:="<error>"+err+"</error>"
 		return data
 	endif
-
+outlog(__FILE__,__LINE__, tPath+PATH_DELIM+fname)
 	data := memoread(tPath+PATH_DELIM+fname)
 	if empty(data)
 		data:="<error>file not found:"+tPath+PATH_DELIM+fname+" </error>"
 		return data
 	endif
 
+
+
 	cmd := " rm -rf "+tPath
-	syscmd(cmd,"",@out,@err)
+outlog(__FILE__,__LINE__, cmd)	
+//	syscmd(cmd,"",@out,@err)
 	if !empty(err)
 		data:="<error>"+err+"</error>"
 		return data
 	endif
+
 return data
 
