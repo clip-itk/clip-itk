@@ -2322,7 +2322,6 @@ local sTmp, sTmp2, sTmp3, sTmp4
 local tmp
 local j, col, s := "", obj2, k
 local essenc, rerr
-local nPosDec, cSort_summa
     obj:= iif (valtype(obj)=="O", obj, cgi_getValue(obj))
     tmp:=obj
     urn:= urn+':'+obj:id
@@ -2347,15 +2346,7 @@ local nPosDec, cSort_summa
 		if valtype(stmp)!="N"
     		    stmp:=val(stmp)
 		endif
-
-		cSort_summa:=sort_summa(sTmp)
-		nPosDec:=AT(".",cSort_summa)
-		if nPosDec == 0
-		    nPosDec:=0
-		else
-		    nPosDec:=len(substr(cSort_summa,nPosDec+1))
-		endif
-		? 'D:'+col:name+'="'+str(sTmp,12,nPosDec)+'" '
+		? 'D:'+col:name+'="'+str(sTmp,12,col:datadec)+'" '
 		? 'S:'+col:name+'="'+sort_summa(sTmp)+'" '
 	    elseif  col:datatype == "D"
 		? 'D:'+col:name+'="'+dtoc(sTmp)+'" '
