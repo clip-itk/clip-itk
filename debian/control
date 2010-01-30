@@ -2,7 +2,7 @@ Source: clip
 Section: devel
 Priority: optional
 Maintainer: Paul Lasarev <paul@itk.ru>
-Build-depends: gcc, flex, bison, libc6-dev, make, binutils, fakeroot, libgpmg1-dev
+Build-depends: gcc, flex, bison, libc6-dev, make, binutils, fakeroot, libgpmg1-dev, libpth-dev
 Standards-Version: 3.0.1
 
 Package: clip-dev
