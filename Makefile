@@ -61,4 +61,3 @@ src_p: clean
 #	cd tdoc && $(MAKE)
 
 .PHONY: deb rpm
-

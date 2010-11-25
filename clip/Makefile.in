@@ -496,9 +496,6 @@ depend:
 lex: yacc _lex.yy.c _lex.cl.c _lex.hash.c
 yacc: clic.tab.c rt.tab.c plural.tab.c
 
-shell:
-	sh
-
 #modu.po: modu.prg $(CLIP)
 
 # DO NOT DELETE

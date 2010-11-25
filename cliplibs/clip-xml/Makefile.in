@@ -67,14 +67,9 @@ clean:
 	cd example && $(MAKE) clean
 	rm -rf Makefile *.o *.s *.b *.bak *.a *.so *.ex *.nm
 
-shell:
-	sh
-
 .prg.o:
 	$(CLIP) -wn $<
 
 .c.o:
 	@echo $(CC) $(CFLAGS) -c $<
 	@$(CC) $(CFLAGS) -c $<
-
-

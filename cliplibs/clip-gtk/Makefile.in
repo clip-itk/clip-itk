@@ -150,7 +150,3 @@ install:
 depend:
 	$(MAKE) hash
 	makedepend -Y  -- $(CFLAGS) -- $(SRCS) 2>/dev/null
-
-shell:
-	sh
-

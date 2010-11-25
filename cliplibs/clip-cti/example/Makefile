@@ -17,14 +17,6 @@ clean:
 	rm -rf *.o *.c *.a *.so *.po *.pa *.log *.b *.ex *.exe *.nm *.BAK *.bak *~ core* *core
 	rm -f ctitest ctifd browsecombo
 
-commit:
-	cvs commit
-
-update:
-	cvs update -dP
-
-ucommit: update commit
-
 ctitest: ctitest.prg $(OBJS)
 	$(CLIP) -swe ctitest.prg $(OBJS) $(ADD_OBJS) $(CLIPLIBS)
 
