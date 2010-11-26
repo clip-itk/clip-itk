@@ -224,8 +224,10 @@ tr_charset(Locale *lp, char *msg)
 	if (lp && lp->charset && out_charset && strcasecmp(lp->charset, out_charset))
 	{
 #ifdef HAVE_ICONV
+		char fastbuf[1024];
 		char *rp, *ip, *op;
-		int l, il, ol, rl;
+		size_t il, ol, rl, ret;
+
 		if (!lp->tr_inited)
 		{
 			lp->it = iconv_open(out_charset, lp->charset);
@@ -233,16 +235,53 @@ tr_charset(Locale *lp, char *msg)
 		}
 		if (lp->it == (iconv_t)-1)
 			return msg;
-		il = l = strlen(msg);
-		rl = ol = l*3;
-		rp = (char*) malloc(ol);
+
+		il = strlen(msg);
+		ol = il * 3;
+
+		if (ol > sizeof(fastbuf)) {
+			rp = malloc(ol);
+			if (!rp) {
+				/* TODO: log failure */
+				return msg;
+			}
+		} else {
+			rp = fastbuf;
+			ol = sizeof(fastbuf);
+		}
+
 		ip = msg;
 		op = rp;
-		iconv(lp->it, &ip, (size_t*)&il, &op, (size_t*)&ol);
-		rl -= ol;
-		rp = (char*) realloc(rp, rl+1);
-		rp[rl] = 0;
-		return rp;
+		rl = --ol;
+
+		ret = iconv(lp->it, &ip, &il, &op, &ol);
+
+		if (ret == (size_t) -1) {
+			/* TODO: log failure + errno */
+			if (rp != fastbuf)
+				free(rp);
+			return msg;
+		}
+
+		ol = rl - ol;
+		if (rp == fastbuf) {
+			/* strndup() */
+			rp = malloc(ol + 1);
+			memcpy(rp, fastbuf, ol);
+			rp[ol] = '\0';
+			return rp;
+		} else {
+			op = realloc(rp, ol + 1);
+			if (!op) {
+				/* TODO: log failure + errno */
+				free(rp);
+				return msg;
+			} else {
+				op[ol] = '\0';
+				return op;
+			}
+		}
+		return msg;
 #else
 		char *rp;
 		int i, rl;
