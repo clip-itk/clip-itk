@@ -9,6 +9,7 @@ ATARGET=libclip-gzip.a
 RTARGET=libclip-gzip$(DLLREALSUFF)
 OBJS=gzip.o
 LIBS=-lz $(C_LIBS)
+CFLAGS=$(C_FLAGS) -fPIC
 
 all:	$(TARGET) $(ATARGET)
 
@@ -19,7 +20,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 gzip.o: gzip.c hashcode.h
-	$(CC) $(C_FLAGS) -c gzip.c
+	$(CC) $(CFLAGS) -c gzip.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h
