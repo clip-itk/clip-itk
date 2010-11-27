@@ -9,6 +9,7 @@ ATARGET=libclip-bzip2.a
 RTARGET=libclip-bzip2$(DLLREALSUFF)
 OBJS=bzip2.o
 LIBS= -lbz2 $(C_LIBS)
+CFLAGS=-fPIC $(C_FLAGS)
 
 all:  have_lib $(TARGET) $(ATARGET)
 
@@ -30,7 +31,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 bzip2.o: bzip2.c hashcode.h bzpref.h
-	$(CC) $(C_FLAGS) -c bzip2.c
+	$(CC) $(CFLAGS) -c bzip2.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h
