@@ -14,7 +14,7 @@ LIBGLADE_VER=$(shell pkg-config --modversion libglade-2.0 2> /dev/null )
 
 XTARGET=$(XLIB) $(XSLIB)
 
-CFLAGS = $(C_FLAGS) `pkg-config --cflags libglade-2.0` -I../clip-gtk2
+CFLAGS = -fPIC $(C_FLAGS) `pkg-config --cflags libglade-2.0` -I../clip-gtk2
 
 OBJS=clip_glade.o
 
