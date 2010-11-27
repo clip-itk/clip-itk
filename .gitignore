@@ -1,0 +1,6 @@
+*.o
+*.ex
+*.nm
+*.a
+*.so
+hashcode.h
