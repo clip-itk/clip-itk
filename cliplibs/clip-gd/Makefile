@@ -44,7 +44,7 @@ install:
 	cp -R example/* $(DESTDIR)$(CLIPROOT)/doc/example/clip-gd/
 
 clean:
-	-cd gd; $(MAKE) clean
-	cd bsgraphic && $(MAKE) clean
-	cd example; $(MAKE) clean
+	-$(MAKE) -C gd clean
+	$(MAKE) -C bsgraphic clean
+	$(MAKE) -C example clean
 	rm -rf *.o gd_obj.c *.s *.bak *.a *.so gd_obj.c *.dll build_gd  *.ex *.nm
