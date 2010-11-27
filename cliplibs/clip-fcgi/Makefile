@@ -9,6 +9,7 @@ ATARGET=libclip-fcgi.a
 RTARGET=libclip-fcgi$(DLLREALSUFF)
 OBJS=fcgi.o
 LIBS= -lfcgi $(C_LIBS)
+CFLAGS=-fPIC $(C_FLAGS)
 
 all: have_lib	$(TARGET) $(ATARGET)
 
@@ -23,7 +24,7 @@ $(ATARGET): $(OBJS)
 	$(CLIPROOT)/bin/clip_makelib $(ATARGET) $(OBJS) $(LIBS)
 
 fcgi.o: fcgi.c hashcode.h
-	$(CC) $(C_FLAGS) -c fcgi.c
+	$(CC) $(CFLAGS) -c fcgi.c
 
 hashcode.h:
 	echo '#define HASH_ferror ' $$(echo ferror| $(CLIPROOT)/bin/cliphash | cut -d' ' -f2) >hashcode.h
