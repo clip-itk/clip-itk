@@ -15,6 +15,7 @@ CLIP = $(CLIPROOT)/bin/clip
 TARGET  = libclip-postscript$(DLLSUFF)
 RTARGET = libclip-postscript$(DLLREALSUFF)
 CLIPFLAGS = -aObwn $(BUILDFLAGS)
+CFLAGS  = -fPIC $(C_FLAGS)
 OBJS    = psblock.o pscode.o psform.o pspage.o pspagesettings.o \
 		  psprinter.o psstyle.o pstemplate.o psvariable.o
 
