@@ -181,11 +181,11 @@ po_compat$(EXESUFF): po_util.o po_compat.o
 	$(CC) $(CFLAGS) -o po_compat po_compat.o po_util.o
 
 
-hash: _hashcode.h
+hash: hashcode.h
 
-_hashcode.h: hashextract $(HASHSRCS)
+hashcode.h: hashextract $(HASHSRCS)
 	./hashextract $(HASHSRCS) | sort -u > _hashcode.h
-	cmp _hashcode.h hashcode.h || cp _hashcode.h hashcode.h
+	cmp _hashcode.h hashcode.h || mv _hashcode.h hashcode.h
 
 hashextract: lex.hash.o clip_hash.o
 	$(CC) -O -o hashextract lex.hash.o clip_hash.o
@@ -429,7 +429,7 @@ inst_end:
 .prg.po:
 	$(CLIP) $(CLIPFLAGS) -p $<
 
-cliprt.o: cliprt.c
+cliprt.o: cliprt.c hashcode.h
 	$(CC) $(CFLAGS) -c -O $<
 
 .c.o:
