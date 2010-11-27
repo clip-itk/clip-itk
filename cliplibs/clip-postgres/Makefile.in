@@ -9,7 +9,7 @@ include $(CLIPROOT)/include/Makefile.inc
 TARGET=libclip-postgres$(DLLSUFF)
 ATARGET=libclip-postgres.a
 RTARGET=libclip-postgres$(DLLREALSUFF)
-CFLAGS=$(C_FLAGS) -I@PGINCDIR@
+CFLAGS=-fPIC $(C_FLAGS) -I@PGINCDIR@
 PGLIB = -L@PGLIBDIR@ -lpq $(C_LIBS)
 OBJS=pg_clip.o pg.o
 
