@@ -728,17 +728,15 @@ static func toDecPos()
       ::__original:=strtran(::__original,".","")
       ::__fillBuffer()
    endif
-   if pos==::pos
-     ::pos:=atail(::__posArr)
-   endif
    if ::decpos!=0
 	neg := (left(alltrim(::__original),1)=="-")
 	s1:=left(::__original,len(::__original)-::__dec)
 	s2:=right(::__original,::__dec)
 	s2:=strtran(s2," ","0")
-	s1:=val(s1,len(s1),0)
+	i := Len(s1)
+	s1:=val(s1,i,0)
 	neg := (neg .and. s1==0)
-	s1:=str(s1,len(s1),0)
+	s1:=str(s1,i,0)
 	if neg
 		::__original='-'+right(s1,len(s1)-1)+s2
 		::__original=strtran(::__original,' ','0')
