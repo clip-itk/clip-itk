@@ -521,11 +521,11 @@ IF _nmoves=0 .AND. Between(_a, 1, 31)
 	_search=''
 ENDIF
 @ m->_awb,_left SAY Padc(_search,nWide,'Ä');
-	COLOR IF(EMPTY(_search), "n/b*", )
+	COLOR IF(EMPTY(_search), "n/b", )
 
 IF !EMPTY(m->aDescr)
 	@ m->_awb-1,_left SAY Padc(m->aDescr[_numb],nWide,'Ä');
-		COLOR IF(EMPTY(m->aDescr[_numb]),"w/b*",_HdColor)
+		COLOR IF(EMPTY(m->aDescr[_numb]),"w/b",_HdColor)
 ENDIF
 
 IF _la<>_length

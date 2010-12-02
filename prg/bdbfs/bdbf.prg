@@ -131,11 +131,11 @@ IF !EMPTY(_tmp)
 	Stor 'n/w,W+/n' to _Im,_CM,_MenuColor,_HdColor
 ELSE
 	_CM:='Gr+/N'
-	_BM:='w/b,n/bg,N,w+/r,r/w*,w+/b,w+/r'
+	_BM:='w/b,n/bg,N,w+/r,r/w,w+/b,w+/r'
 	_rev:='n/bg'
-	_Im:='w+/b*,n/w'
+	_Im:='w+/b,n/w'
 	_MenuColor:='Gr+/b,g+/b'
-	_HdColor:='G+/b*'
+	_HdColor:='G+/b'
 ENDIF
 _DosC:=SetColor(_bm)
 
