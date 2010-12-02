@@ -61,6 +61,23 @@
 #define EMAIL2 'Bondar_Eugen@yahoo.com'
 #define BDBF_VERSION [Bdbf-C,1.27a]
 
+#define _MSG_A_DS_F2 [Print]
+#define _MSG_A_DS_F3 [AddTag]
+#define _MSG_A_DS_F4 [File]
+#define _MSG_A_DS_F5 [Ext.Str]
+#define _MSG_A_DS_F6 [Struct]
+#define _MSG_A_DS_F8 [DelTag]
+#define _MSG_A_DS_F9 [Config]
+#define _MSG_A_DS_F10 [MakePrg]
+	
+#define _MSG_A_ST_F2 [Print]
+#define _MSG_A_ST_F3 [AddTag]
+#define _MSG_A_ST_F4 [MakePrg]
+#define _MSG_A_ST_F5 [Reindex]
+#define _MSG_A_ST_F6 [Rebuild]
+#define _MSG_A_ST_F8 [DelTag]
+#define _MSG_A_ST_F9 [Config]
+
 #IFNDEF ENGLISH
 
 #define ANY [Нажмите любую клавишу для пpодолжения]
@@ -586,20 +603,6 @@
 				[Меньшее или равное текущей ячейке],;
 				[Другое]}
 
-	#define _MSG_A_DS_F2 [Print]
-	#define _MSG_A_DS_F4 [File]
-	#define _MSG_A_DS_F5 [Ext.Str]
-	#define _MSG_A_DS_F6 [Struct]
-	#define _MSG_A_DS_F9 [Config]
-	#define _MSG_A_DS_F10 [MakePrg]
-
-	#define _MSG_A_ST_F2 [Print]
-	#define _MSG_A_ST_F3 [AddTag]
-	#define _MSG_A_ST_F4 [MakePrg]
-	#define _MSG_A_ST_F5 [Reindex]
-	#define _MSG_A_ST_F6 [Rebuild]
-	#define _MSG_A_ST_F8 [DelTag]
-	#define _MSG_A_ST_F9 [Config]
 
 
 	#define _MSG_A_SDF_FILE_TYPE [Тип файла:]
@@ -1211,14 +1214,6 @@
 				[Less or Equal Than Current Cell],;
 				[Another]}
 
-	#define _MSG_A_DS_F2 [Print]
-	#define _MSG_A_DS_F3 [AddTag]
-	#define _MSG_A_DS_F4 [File]
-	#define _MSG_A_DS_F5 [Ext.Str]
-	#define _MSG_A_DS_F6 [Struct]
-	#define _MSG_A_DS_F8 [DelTag]
-	#define _MSG_A_DS_F9 [Config]
-	#define _MSG_A_DS_F10 [MakePrg]
 
 	#define _MSG_A_SDF_FILE_TYPE [File type]
 	#define _MSG_A_SDF_F_DELIM [Text fields delimiter:]
