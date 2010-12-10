@@ -264,11 +264,11 @@ BEGIN SEQU
   FOR _a=1 to Len(cFld)
     _tm = Substr(cFld,_a,1)
     IF _a == 1
-      IF !IsAlpha(_tm)
+      IF Asc(_tm)<65 .or. Asc(_tm)>90
         Break(_badName)
       ENDIF
     ELSE
-      IF !_tm $ '0123456789_' .AND. !isAlpha(_tm)
+      IF !_tm $ '0123456789_' .and. (Asc(_tm)<65 .or. Asc(_tm)>90)
         Break(_badName)
       ENDIF
     ENDIF
