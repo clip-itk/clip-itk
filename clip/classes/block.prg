@@ -6,7 +6,7 @@ function TBlock()
 	obj:classname   := "FBLOCK"
 	obj:cExpression := NIL
 	obj:bBlock      := NIL
-	obj:new         := @block_new()            
+	obj:new         := @block_new()
 	obj:eval        := @block_eval()
 	obj:exec        := @block_eval()
 

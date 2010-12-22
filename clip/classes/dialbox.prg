@@ -19,16 +19,16 @@
 /*
 say, get, qout
 color="col1, col2, col3, col4, col5, col6, col7, col8"
-col1 - простой текст
-col2 - выделенный текст
-col3 - кнопка
-col4 - активная кнопка
-col5 - get объект не активный
-col6 - get объект активный
-col7 - checkbox объект не активный
-col8 - checkbox объект активный
-col9 - radiogroup объект не активный
-col10 - radiogroup объект активный
+col1 - simple text
+col2 - selected text
+col3 - button
+col4 - active button
+col5 - 'get' object (non active)
+col6 - 'get' object (active)
+col7 - 'checkbox' object (non active)
+col8 - 'checkbox' object (active)
+col9 - 'radiogroup' object (non active)
+col10 - 'radiogroup' object (active)
 */
 function dialogBox(Lrow, Lcol, Rrow, Rcol, color)
 local obj
@@ -72,7 +72,7 @@ local obj
        obj:__oldscr	:= 0
        obj:__oldcolr	:= 0
        obj:__oldcursor	:= 0
-       obj:__colors 	:= {}      // палитры цветов
+       obj:__colors 	:= {}      // colors palettes
 
        _recover_dialogbox(obj)
 
@@ -144,9 +144,9 @@ local str
 	::__oldcursor := setcursor()
 	::leninfo := maxcol()-maxcol()*3/4 - 1
 	setcolor(::colorSpec)
-	set("dbox_colors_list","15/3,15/7,0/7,0/3,")   // цвет list объектов
-	set("dbox_colors_dialog","15/7,14/1,w+/b,g/rb,15/7,0/7")   // цвет диалогов
-	set("dbox_colors_menu","0/7,0/2,r/7,g/rb,15/7,0/7") // цвет меню
+	set("dbox_colors_list","15/3,15/7,0/7,0/3,")   // color of 'list' objects
+	set("dbox_colors_dialog","15/7,14/1,w+/b,g/rb,15/7,0/7")   // dialog colors
+	set("dbox_colors_menu","0/7,0/2,r/7,g/rb,15/7,0/7") // menu colors
 	::item:hasFocus := .f.
 	asize(::item_area, 0)
 	::Find := findOptions(,,set("dbox_colors_dialog"), set("dbox_colors_list"))

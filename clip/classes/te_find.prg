@@ -34,7 +34,7 @@ local obj
        obj:sethistrepl	:= @sethistrepl()
        obj:sethistorysize := @sethistorysize()
 
-       obj:__colors 	:= {}      // палитры цветов
+       obj:__colors 	:= {}      // colors palettes
        obj:__setColor 	:= @__setcolor()
        obj:__setcolor()
 return obj
@@ -265,7 +265,7 @@ wclose()
 setcolor(oldcolor)
 return ret
 
-*********** Установить find history
+*********** Set find history
 static function sethistfind(hist)
 local i
 	if valtype(hist) == "A"
@@ -277,7 +277,7 @@ local i
 	endif
 return
 
-*********** Установить replace history
+*********** Set replace history
 static function sethistrepl(hist)
 local i
 	if valtype(hist) == "A"

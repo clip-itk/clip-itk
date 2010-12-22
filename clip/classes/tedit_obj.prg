@@ -33,8 +33,8 @@ local obj
        obj:=map()
 
        obj:classname    := "TEXTEDIT"
-       obj:path         := ""  // ĞÕÔØ Ë ÆÁÊÌÕ
-       obj:filename     := ""  // ÉÍÑ ÆÁÊÌÁ
+       obj:path         := ""  // file path
+       obj:filename     := ""  // file name
        obj:lines        := 0
        obj:colorSpec    := iif(empty(color),setcolor(),color)
        obj:line         := 1
@@ -56,9 +56,9 @@ local obj
        obj:autoWrap     := TE_AUTO_WRAP
 
        obj:mkblock      := .f.
-       obj:strblock     := .f.          // ÓÔÒÏŞÎÙÊ ÂÌÏË
-       obj:rectblock    := .f.          // ĞÒÑÍÏÕÇÏÌØÎÙÊ ÂÌÏË
-       obj:koordblock   := {NIL, NIL, NIL, NIL} // ËÏÏÒÄÉÎÁÔÙ ÂÌÏËÁ
+       obj:strblock     := .f.          // multiline block
+       obj:rectblock    := .f.          // rectangular block
+       obj:koordblock   := {NIL, NIL, NIL, NIL} // block coordinates
 
        obj:__findR      := {}
        obj:__regSearch  := {}
@@ -78,7 +78,7 @@ local obj
        obj:__LNstyle    := 0
 
        obj:edbuffer     := {}
-       obj:__colors     := {}      // ĞÁÌÉÔÒÙ Ã×ÅÔÏ×
+       obj:__colors     := {}      // colors palettes
        obj:__leninfo    := maxcol()-maxcol()*3/4 - 1
 
        _recover_textedit(obj)
@@ -315,11 +315,11 @@ static function __te_nullInit()
   ::mkblock := .f.
 return
 
-*********** ĞÅÒÅÚÁÇÒÕÚËÁ ÆÁÊÌÁ Ó ÄÉÓËÁ
+*********** file rereading from filesystem
 static function te_reLoadFile()
 return .t.
 
-*********** ÚÁÇÒÕÚËÁ ÆÁÊÌÁ Ó ÄÉÓËÁ
+*********** Loading file from filesystem
 static function te_loadFile(filename, lRefresh)
 local nfile, scr, i
   lRefresh := iif(empty(lRefresh), .t., lRefresh)
@@ -383,7 +383,7 @@ local nfile, scr, i
   endif
 RETURN .t.
 
-*********** ÚÁÇÒÕÚËÁ ÔÅËÓÔÁ ÉÚ ÓÔÒÏËÉ
+*********** Loading text from string
 static function te_loadString(str)
 local ts
 	if str==NIL .or. (valtype(str)!="C" .and. valtype(str)!="M")
@@ -433,7 +433,7 @@ local i, oldcolor
        endif
        ::refresh()
 return
-*********** ÚÁĞÏÌÎÅÎÉÅ ÜËÒÁÎÁ ÔÅËÓÔÏÍ
+*********** Filling screen by text
 static function te_refresh()
 local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
 
@@ -522,6 +522,10 @@ local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
 	   endif
 	   if ::Nstyle .and. (bl+i) < ::lines+iif(::lEofString,1,0)
 		@ ::ntop+i-1, ::nLeft-::__LNstyle say str(bl+i, ::__LNstyle-1, 0)+"" color clr_st
+		/*
+		utf-8:
+		@ ::ntop+i-1, ::nLeft-::__LNstyle say str(bl+i, ::__LNstyle-1, 0)+"â”‚" color clr_st
+		*/
 	   endif
 	   if (bl+i) > ::lines+iif(::lEofString,1,0)
 	      @ ::ntop+i-1, ::nLeft-::__LNstyle say space(l) color ::__colors[1]
@@ -531,7 +535,7 @@ local bp,bl,l,i,dev, str, str1, block, min, max, fnd, clr_st
        dispend()
 return
 
-*********** ÚÁĞÏÌÎÅÎÉÅ ÓÔÒÏËÉ
+*********** Filling string
 static function te_refreshStr(Step)
 return
 
@@ -545,7 +549,7 @@ static function te_clear()
        ::refresh()
 return
 
-*********** ĞÅÒÅÍÅİÅÎÉÅ ÎÁ ÏÄÎÕ ÓÔÒÏËÕ ×ÎÉÚ
+*********** move down by one line
 static function te_down( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
@@ -563,7 +567,7 @@ static function te_down( undo )
     endif
 RETURN
 
-*********** ĞÅÒÅÍÅİÅÎÉÅ ÎÁ ÏÄÎÕ ÓÔÒÏËÕ ××ÅÒÈ
+*********** move up by one line
 static function te_up( undo )
      undo := iif(undo==NIL, .t., undo)
      if undo
@@ -581,7 +585,7 @@ static function te_up( undo )
      endif
 RETURN
 
-*********** ĞÅÒÅÍÅİÅÎÉÅ ĞÏ PgDn
+*********** move by PgDn
 static function te_PageDown( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
@@ -593,7 +597,7 @@ static function te_PageDown( undo )
     endif
 return
 
-*********** ĞÅÒÅÍÅİÅÎÉÅ ĞÏ PgUp
+*********** move by PgUp
 static function te_PageUp( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
@@ -605,7 +609,7 @@ static function te_PageUp( undo )
     endif
 RETURN
 
-*********** ĞÅÒÅÍÅİÅÎÉÅ ĞÏ ÓÔÒÅÌËÁÍ ×ÌÅ×Ï-×ĞÒÁ×Ï
+*********** move by left/right arrows
 static function te_cleft( undo )
     undo := iif(undo==NIL, .t., undo)
     if undo
@@ -638,7 +642,7 @@ static function te_cright( undo )
     endif
 return
 
-*********** × ÎÁŞÁÌÏ ÔÅËÓÔÁ
+*********** move to start of text
 static function te_goTop( undo )
    undo := iif(undo==NIL, .t., undo)
    if undo
@@ -651,7 +655,7 @@ static function te_goTop( undo )
    endif
 RETURN
 
-*********** × ËÏÎÅÃ ÔÅËÓÔÁ
+*********** move to end of text
 static function te_goBottom( undo )
    undo := iif(undo==NIL, .t., undo)
    if undo
@@ -664,7 +668,7 @@ static function te_goBottom( undo )
    endif
 RETURN
 
-*********** × ÎÁŞÁÌÏ ÓÔÒÏËÉ
+*********** move to start of line
 static function te_Home( undo )
 local homepos:=0, lt
   undo := iif(undo==NIL, .t., undo)
@@ -692,7 +696,7 @@ local homepos:=0, lt
   endif
 return
 
-*********** × ËÏÎÅÃ ÓÔÒÏËÉ
+*********** move to end of line
 static function te_end( undo )
    undo := iif(undo==NIL, .t., undo)
    if undo
@@ -711,7 +715,7 @@ static function te_end( undo )
    endif
 return
 
-*********** ÎÁ ÓÌÏ×Ï ×ĞÒÁ×Ï
+*********** move by word to right
 static function te_wordRight()
    local s,str, p:=::pos, fl:=.f.
    if ::line>::lines
@@ -734,7 +738,7 @@ static function te_wordRight()
    ::refresh()
 RETURN
 
-*********** ÎÁ ÓÌÏ×Ï ×ÌÅ×Ï
+*********** move by word to left
 static function te_wordLeft()
    local s,str, p:=::pos, fl:=.f., pl:=.f.
    if ::line>::lines
@@ -758,7 +762,7 @@ static function te_wordLeft()
    ::refresh()
 RETURN
 
-*********** ĞÅÒÅÈÏÄ ÎÁ ÓÔÒÏËÕ
+*********** go to line
 static function te_gotoLine(ln, rw, undo)
   if ln==NIL .or. ln < 1 .or. ln > ::lines
 	return .f.
@@ -780,7 +784,7 @@ static function te_gotoLine(ln, rw, undo)
   endif
 return .t.
 
-*********** ĞÅÒÅÈÏÄ ÎÁ ĞÏÚÉÃÉÀ
+*********** go to position
 static function te_gotoPos(pos, cw, undo)
 local len
 
@@ -812,7 +816,7 @@ local len
    endif
 return .t.
 
-*********** ĞÅÒÅÈÏÄ ÎÁ ÎÏ×ÕÀ ÓÔÒÏËÕ É ÎÏ×ÕÀ ËÏÌÏÎËÕ ĞÏ ÚÁÄÁÎÎÙÍ ËÏÏÒÄÉÎÁÔÁÍ × ÏËÎÅ
+*********** go to new line and new column by specified coordinates in window
 static function te_mgoto(nRow, nCol, undo)
 local len
 
@@ -865,7 +869,7 @@ static function te_newLine(undo, autoIndent)
     endif
 return
 
-*********** ×ÓÔÁ×ÉÔØ ÓÔÒÏËÕ
+*********** insert line
 static function te_insertLine(undo, autoIndent)
 local str, mrL, ol
    undo := iif(undo==NIL, .t., undo)
@@ -875,7 +879,7 @@ local str, mrL, ol
    if undo
 	::writeundo(HASH_INSLINE, ::edbuffer[::line])
    endif
-   if ol < ::lines  // Ô.Å. ÓÔÒÏËÁ ÕÖÅ ÄÏÂÁ×ÌÅÎÁ ÆÕÎËÃÉÅÊ check_line()
+   if ol < ::lines  // ie line already added by check_line() function
 	if undo
 		::refresh()
 	endif
@@ -902,7 +906,7 @@ local str, mrL, ol
    endif
 return
 
-*********** ×ÓÔÁ×ÉÔØ ÓÉÍ×ÏÌ
+*********** insert symbol
 static function te_insert(str, undo)
    local expstr, p, pos, colWin, tailstr
    undo := iif(undo==NIL, .t., undo)
@@ -943,7 +947,7 @@ static function te_insert(str, undo)
 	::refresh()
    endif
 return
-*********** ÚÁÍÅÎÉÔØ ÓÉÍ×ÏÌ
+*********** replace symbol
 static function te_overStrike(str, undo)
    local expstr, p, k, pos, colWin, tailstr, srcchr
    undo := iif(undo==NIL, .t., undo)
@@ -1061,7 +1065,7 @@ local i, m, p, l, srcstr, parr
 	::refresh()
    endif
 return
-*********** ÕÄÁÌÅÎÉÅ ÓÉÍ×ÏÌÁ ÓÌÅ×Á
+*********** delete symbol at left
 static function te_backSpace( undo )
 local min
    undo := iif(undo==NIL, .t., undo)
@@ -1116,7 +1120,7 @@ local min
    endif
 RETURN
 
-*********** ÕÄÁÌÅÎÉÅ ÓÉÍ×ÏÌÁ ÓĞÒÁ×Á
+*********** delete symbol at right
 static function te_delRight( undo )
 local min
    if ::line > ::lines
@@ -1165,7 +1169,7 @@ local min
    endif
 RETURN
 
-*********** ÕÄÁÌÅÎÉÅ ÓÔÒÏËÉ
+*********** delete line
 static function te_deleteLine(undo)
 local min, max
    undo := iif(undo==NIL, .t., undo)
@@ -1198,7 +1202,7 @@ local min, max
    endif
 return
 
-*********** ÃÅÎÔÒÉÒÏ×ÁÔØ ÓÔÒÏËÕ
+*********** center line
 static function te_centerLine()
    ::__check_line(::line)
    ::edbuffer[::line]=center(alltrim(::edbuffer[::line]),::marginRight,32,.f.)
@@ -1206,7 +1210,7 @@ static function te_centerLine()
    ::refresh()
 return
 
-*********** ÕÄÁÌÅÎÉÅ ÏÔ ËÕÒÓÏÒÁ ÄÏ ÎÁŞÁÌÁ ÓÔÒÏËÉ
+*********** delete from cursor to begin of line
 static function te_delHome(undo)
    undo := iif(undo==NIL, .t., undo)
    ::__check_line(::line)
@@ -1222,7 +1226,7 @@ static function te_delHome(undo)
    endif
 RETURN
 
-*********** ÕÄÁÌÅÎÉÅ ÏÔ ËÕÒÓÏÒÁ ÄÏ ËÏÎÃÁ ÓÔÒÏËÉ
+*********** delete from cursor to end of line
 static function te_delEnd(undo)
    undo := iif(undo==NIL, .t., undo)
    ::__check_line(::line)
@@ -1236,15 +1240,15 @@ static function te_delEnd(undo)
    endif
 RETURN
 
-*********** × ÎÁŞÁÌÏ ĞÒÅÄÙÄÕİÅÊ ÓÔÒÁÎÉÃÙ
+*********** move to begin of previous page
 static function te_prevPage()
 RETURN
 
-************ × ÎÁŞÁÌÏ ÓÌÅÄÕÀİÅÊ ÓÔÒÁÎÉÃÙ
+************ move to begin of next page
 static function te_nextPage()
 RETURN
 
-*********** ÓËÒÏÌÌÉÎÇÉ × ÒÁÚÎÙÅ ÓÔÏÒÏÎÙ
+*********** scroll to different direstions
 static function te_panHome()
 return
 
@@ -1263,7 +1267,7 @@ return
 static function te_panDown()
 return
 
-*********** ĞÏÉÓË ĞÏÄÓÔÒÏËÉ
+*********** substring search
 static function te_find(Find, undo)
 local str, scr
 local i, p, f, found:=.f., rr, st, en, _step
@@ -1359,7 +1363,7 @@ local i, p, f, found:=.f., rr, st, en, _step
 
 RETURN found
 
-*********** ÚÁÍÅÎÁ ĞÏÄÓÔÒÏË ÎÉÖÅ ËÕÒÓÏÒÁ
+*********** substring replacement below the cursor
 static function te_replace(Find, undo)
 local found:=.t., cstr:="", nkey, i, ret:=-1
 
@@ -1401,7 +1405,7 @@ local found:=.t., cstr:="", nkey, i, ret:=-1
 	endif
 RETURN ret
 
-********************* ÎÁÊÔÉ ÓÌÅÄÕÀİÕÀ
+********************* find next substring
 static function te_findNext(Find, undo)
 local ret:=.f., oldDirect
 	undo:=iif(undo==NIL, .t., undo)
@@ -1421,7 +1425,7 @@ local ret:=.f., oldDirect
 	endif
 return ret
 
-********************* ÎÁÊÔÉ ĞÒÅÄÙÄÕÀİÕÀ
+********************* find previous substring
 static function te_findPrev(Find, undo)
 local ret:=.f., oldDirect
 	undo:=iif(undo==NIL, .t., undo)
@@ -1442,7 +1446,7 @@ local ret:=.f., oldDirect
 	endif
 return ret
 
-*********** "ÔÅËÕİÅÅ" ÓÌÏ×Ï
+*********** "current" word
 static function te_curWord(pos, line)
 local ret:="", x, y, i, str, alpha, digit, ch
 	pos := iif(pos==NIL, ::pos, pos)
@@ -1482,7 +1486,7 @@ local ret:="", x, y, i, str, alpha, digit, ch
 	endif
 RETURN ret
 
-*********** "ĞÒÅÄÙÄÕİÅÅ" ÓÌÏ×Ï
+*********** "previous" word
 static function te_prevWord(pos, line, newpos)
 local ret:="", x, y, i, str, e:=.f., ch
 	pos := iif(pos==NIL, ::pos, pos)
@@ -1522,7 +1526,7 @@ local ret:="", x, y, i, str, e:=.f., ch
 	newpos := x
 RETURN ret
 
-*********** "ÓÌÅÄÕÀİÅÅ" ÓÌÏ×Ï
+*********** "next" word
 static function te_nextWord(pos, line, newpos)
 local ret:="", x, y, i, str, e:=.t., ch
 	pos := iif(pos==NIL, ::pos, pos)
@@ -1557,7 +1561,7 @@ local ret:="", x, y, i, str, e:=.t., ch
 	newpos := x
 RETURN ret
 
-****************** ĞÏÉÓË ÓÔÒÕËÔÕÒÙ ĞÏ ĞÒÁ×ÉÌÁÍ Clipper
+****************** Searching of structure by Clipper's rules
 static function te_matchStruct(curword, forward, undo)
 local found:=.f., f_found, prevword, nextword, ind:=0, arr:={}, i, cnt:=0, cntoth:=0
 local clip_synt_beg, clip_synt_end, clip_synt_loop, word
@@ -1796,7 +1800,7 @@ private st
 	endif
 return found
 
-*********** ĞÏÉÓË ĞÁÒÎÏÇÏ/ÉÄÅÎÔÉŞÎÏÇÏ ÓÉÍ×ÏÌÁ
+*********** search for pair/identity symbol
 static function te_Identity(symb, forward, undo)
 local found := .f., dbl:=.f.
 local i, j:=0, x, str1, str2, cnt:=0, ipos, iline, char, invchar, c
@@ -1948,11 +1952,11 @@ static function te_Frmt(str, len, s1, s2, spl, firstPos)
 local x, y, a1, a2, let, p, i
 	x := len
 	y := len
-	let := "[ÁÅÉÏÕÙÜÀÑaeiouy]"
+	let := "[ÁÅÉÏÕÙÜÀÑaeiouy]" // utf-8: "[Ğ°ĞµĞ¸Ğ¾ÑƒÑ‹ÑÑÑaeiouy]"
 	spl := iif(spl==NIL, .f., .t.)
 	firstPos := iif(firstPos==NIL, 0, firstPos)
 	if isalpha(substr(str, len, 1)) .or. isdigit(substr(str, len, 1)) .or. isdigit(::curword(len, str))
-		/* ÅÓÌÉ ÎÕÖÅÎ ĞÅÒÅÎÏÓ × ÓÌÏ×ÁÈ */
+		/* If need a hyphen in words */
 		if spl .and. !isdigit(::curword(len, str))
 			p := .t.
 		else
@@ -1976,6 +1980,10 @@ local x, y, a1, a2, let, p, i
 		next
 		a1 := {}
 		a2 := {}
+
+		/* Slavaz:
+		FIXME: This is code for Russian koi8-r only!!! Need to rewrite to respect all UTF-8 symbols...
+		*/
 		while (y < 1 .or. !(search(let, substr(s2, 1, y), a2) .and. search("([a-z]+)([Á-Ñ]+)", substr(s2, 1, y), a2) )) .and. (len(s1)-x > 1)//(len(s1)-x >= 2)
 			s2 := substr(s1, len(s1), 1) + s2
 			s1 := substr(s1, 1, len(s1)-1)
@@ -1997,7 +2005,7 @@ local x, y, a1, a2, let, p, i
 	endif
 	x := len - len(s1)
 	s1 := rtrim(s1)
-	/* ×ÓÔÁ×ÉÔØ ĞÒÏÂÅÌÙ ÄÌÑ ×ÙÒÁ×ÎÉ×ÁÎÉÑ ÄÌÉÎÙ ÓÔÒÏËÉ */
+	/* insert spaces for align strings length */
 	if spl .and. x > 0 .and. !empty(s2)
 		y := len(s1)
 		for i:= 1 to x
@@ -2014,7 +2022,7 @@ local x, y, a1, a2, let, p, i
 return
 
 
-*********** ÆÏÒÍÁÔÉÒÏ×ÁÎÉÅ ÓÔÒÏËÉ
+*********** line formatting
 static function te_formatLine(lAutoMargin, nMarginLeft, nMarginRight, nTabSize, lHyphen, undo)
 local s1, s2, firstPos
 	undo := iif(undo==NIL, .t., undo)
@@ -2053,7 +2061,7 @@ local s1, s2, firstPos
 	endif
 RETURN
 
-*********** ÆÏÒÍÁÔÉÒÏ×ÁÎÉÅ ÁÂÚÁÃÁ
+*********** paragraph formatting
 static function te_formatPart(lAutoMargin, nMarginLeft, nMarginRight, nTabSize, lHyphen, undo)
 local i, s1, s2, line, st, en, arr:={}, firstPos1, firstPos2, len
 
@@ -2132,7 +2140,7 @@ local i, s1, s2, line, st, en, arr:={}, firstPos1, firstPos2, len
 	endif
 RETURN
 
-*********** ÆÏÒÍÁÔÉÒÏ×ÁÎÉÅ  ĞÏ ĞÒÁ×ÉÌÁÍ clipper
+*********** Formatting by Clipper's rules
 static function te_insTempl(targ, undo)
 local i, j, p, target, start, en, spl
 	undo := iif(undo==NIL, .t., undo)
@@ -2359,7 +2367,7 @@ local i, n, str:="", ts, hch, ch
   ::updated:=.f.
 RETURN str
 
-*********** ÚÁĞÉÓØ ÂÌÏËÁ ÎÁ ÄÉÓË
+*********** save block to filesystem
 static function te_saveBlock( fileName, createbak )
 local nfile, nbakfile, i, n, str, scr, ps, pl, ts, hch, ch
   save screen to scr
@@ -2426,7 +2434,7 @@ local nfile, nbakfile, i, n, str, scr, ps, pl, ts, hch, ch
   restore screen from scr
 RETURN .t.
 
-*********** ÚÁÇÒÕÚËÁ ÂÌÏËÁ Ó ÄÉÓËÁ
+*********** load block from filesystem
 static function te_loadBlock(filename, undo)
 local nfile, i, path, s, arr, size, edb
 	undo := iif(undo==NIL, .t., undo)
@@ -2475,7 +2483,7 @@ local nfile, i, path, s, arr, size, edb
 	endif
 RETURN .t.
 
-*********** ËÏĞÉÒÏ×ÁÔØ ÂÌÏË
+*********** copy block
 static function te_copyBlock(mov, undo)
 local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
 
@@ -2483,7 +2491,7 @@ local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
     if !::strblock .and. !::rectblock
 	 return .F.
     endif
-    if mov == NIL   // ĞÅÒÅÍÅÓÔÉÔØ ÂÌÏË
+    if mov == NIL   // move block
 	mov := .f.
     endif
     if ::strblock
@@ -2575,13 +2583,13 @@ local i, lenbuf, stbl, endbl, rightbl, leftbl, rowblock, buf, colblock
     endif
 RETURN .T.
 
-*********** ĞÅÒÅÍÅÓÔÉÔØ ÂÌÏË
+*********** move block
 static function te_moveBlock(undo)
     undo := iif(undo==NIL, .t., undo)
 
 RETURN ::copyBlock(.t., undo)
 
-*********** ÕÄÁÌÉÔØ ÂÌÏË
+*********** delete block
 static function te_deleteBlock(undo)
 local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}, arr
     undo := iif(undo==NIL, .t., undo)
@@ -2654,7 +2662,7 @@ local rowblock, rightbl, leftbl, stbl, endbl, i, unarr:={}, arr
     endif
 RETURN .t.
 
-*********** ÎÁŞÁÔØ ÏÔÍÅÔËÕ ÂÌÏËÁ
+*********** block mark starting
 static function te_beginBlock( vid, undo )
     undo := iif(undo==NIL, .t., undo)
     vid := iif(vid==NIL, .t., vid)
@@ -2678,13 +2686,13 @@ static function te_beginBlock( vid, undo )
     endif
 RETURN
 
-*********** ÚÁËÏÎŞÉÔØ ÏÔÍÅÔËÕ ÂÌÏËÁ
+*********** block mark ending
 static function te_endBlock( vid )
     ::mkblock := .f.
     ::koordblock[3] := min(::koordblock[3], ::lines)
 RETURN
 
-*********** ÏÔÍÅÎÉÔØ ÏÔÍÅÔËÕ ÂÌÏËÁ
+*********** block mark canceling
 static function te_cancelBlock( undo )
     undo := iif (undo==NIL, .t., undo)
     ::mkblock := .f.
@@ -2698,13 +2706,13 @@ static function te_cancelBlock( undo )
     endif
 RETURN
 
-*********** ÏŞÉÓÔÉÔØ ÂÕÆÅÒ É ÄÏÂÁ×ÉÔØ ÔÕÄÁ ÂÌÏË
+*********** clear the buffer and add the block
 static function te_copyToClipboard( Clipboard )
     asize(Clipboard, 0)
     ::addToClipboard(@Clipboard)
 RETURN
 
-*********** ÄÏÂÁ×ÉÔØ ÂÌÏË × ÂÕÆÆÅÒ
+*********** add block in buffer
 static function te_addToClipboard(Clipboard)
     local i, j:=0, cb[2], nT, nL, nB, nR
     if ::strblock .or. ::rectblock
@@ -2725,13 +2733,13 @@ static function te_addToClipboard(Clipboard)
     endif
 RETURN
 
-*********** ĞÅÒÅÎÅÓÔÉ ÂÌÏË × ÂÕÆÆÅÒ
+*********** move block in buffer
 static function te_moveToClipboard(Clipboard)
 	::copyToClipboard(@Clipboard)
 	::deleteBlock()
 RETURN
 
-*********** ×ÓÔÁ×ÉÔØ ÂÌÏË ÉÚ ÂÕÆÆÅÒÁ
+*********** paste block from buffer
 static function te_pasteFromClipboard( Clipboard, it, undo )
 local i, j
 	if empty(Clipboard)
@@ -2743,7 +2751,7 @@ local i, j
 		::writeundo(HASH_PASTCLB, Clipboard[it])
 	endif
 	::line := ::__check_line(::line, .f.)
-	/* ×ÓÔÁ×ÉÔØ ÓÔÒÏŞÎÙÊ ÂÌÏË */
+	/* paste line block */
 	if Clipboard[it][1]
 		::lines += len(Clipboard[it][2])
 		asize(::edbuffer, ::lines)
@@ -2758,7 +2766,7 @@ local i, j
 			ains(::edbuffer, ::line+i-1)
 			::edbuffer[::line+i-1] := Clipboard[it][2][i]
 		next
-	else /* ×ÓÔÁ×ÉÔØ ĞÒÑÍÏÕÇÏÌØÎÙÊ ÂÌÏË */
+	else /* paste rectangular block */
 		::strblock := .f.
 		::rectblock := .t.
 		afill(::koordblock, NIL)
@@ -2779,7 +2787,7 @@ local i, j
 	endif
 RETURN .t.
 
-************ ÏÔËÁÔ ĞÏÓÌÅÄÎÉÈ ÄÅÊÓÔ×ÉÊ
+************ undo latest changes
 static function te_undo()
 local i, j, cmd, len, line, p, edb
 	if ::__curundo == ::__startundo
@@ -3007,7 +3015,7 @@ local i, j, cmd, len, line, p, edb
 	::refresh()
 return
 
-************ ÓÏÈÒÁÎÅÎÉÅ ĞÏÓÌÅÄÎÉÈ ÄÅÊÓÔ×ÉÊ
+************ save lastest actions
 static function te_writeundo( cmd, val )
 local st[11], prev
 
@@ -3105,7 +3113,7 @@ local st[11], prev
 	endif
 return
 
-****************** ĞÓÅ×ÄÏÇÒÁÆÉËÁ *********************************
+****************** pseudographics *********************************
 static function te_around_check(around_char, R_Mode, L_Mode, U_Mode, D_Mode)
 local ch, p
 	::__check_line(::line)
@@ -3114,7 +3122,7 @@ local ch, p
 
 	/* right */
 	around_char[1] := substr(::edbuffer[::line], ::pos+1, 1)
-	p := at(around_char[1], "‡´§­ƒ‰ˆ€Šº·½…²¦µ¨®¬»¸ ¾¹¶¼")
+	p := at(around_char[1], "‡´§­ƒ‰ˆ€Šº·½…²¦µ¨®¬»¸ ¾¹¶¼") // utf-8: "â”¤â•¢â•–â•œâ”â”´â”¬â”€â”¼â•¨â•¥â•«â”˜â•¡â••â•£â•—â•â•›â•©â•¦â•â•¬â•§â•¤â•ª"
 	if p>=1 .and. p<14
 		R_Mode=1
 	endif
@@ -3127,7 +3135,7 @@ local ch, p
 	else
 		around_char[2] := substr(::edbuffer[::line], ::pos-1, 1)
 	endif
-	p = at(around_char[2], "„‰ˆ†€Š°º·ª¤½‚¯«¥»¸± ¾¹¶©¢¼")
+	p = at(around_char[2], "„‰ˆ†€Š°º·ª¤½‚¯«¥»¸± ¾¹¶©¢¼") // utf-8: "â””â”´â”¬â”œâ”€â”¼â•Ÿâ•¨â•¥â•™â•“â•«â”Œâ•â•šâ•”â•©â•¦â• â•â•¬â•§â•¤â•˜â•’â•ª"
 	if p >=1 .and. p<14
 		L_Mode=1
 	endif
@@ -3140,7 +3148,7 @@ local ch, p
 	else
 		around_char[3] := substr(::edbuffer[::line-1], ::pos, 1)
 	endif
-	p := at(around_char[3], "‡²¦ƒˆ†Š¯¶¢¼‚´§µ¡¨°¥¸±¾·¤½")
+	p := at(around_char[3], "‡²¦ƒˆ†Š¯¶¢¼‚´§µ¡¨°¥¸±¾·¤½") // utf-8:"â”‚â”¤â•¡â••â”â”¬â”œâ”¼â•â•¤â•’â•ªâ”Œâ•¢â•–â•£â•‘â•—â•Ÿâ•”â•¦â• â•¬â•¥â•“â•«" 
 	if p >=1 .and. p <14
 		U_Mode = 1
 	endif
@@ -3153,7 +3161,7 @@ local ch, p
 	else
 		around_char[4] := substr(::edbuffer[::line+1], ::pos, 1)
 	endif
-	p := at(around_char[4], "‡²¬„‰†Š¯©¼…¹´µ¡®­°«»±¾ºª½")
+	p := at(around_char[4], "‡²¬„‰†Š¯©¼…¹´µ¡®­°«»±¾ºª½") // utf-8: "â”‚â”¤â•¡â•›â””â”´â”œâ”¼â•â•˜â•ªâ”˜â•§â•¢â•£â•‘â•â•œâ•Ÿâ•šâ•©â• â•¬â•¨â•™â•«"
 	if p >=1 .and. p < 14
 		D_Mode=1
 	endif
@@ -3168,35 +3176,35 @@ local A_Right:=1, A_Left:=2, A_Up:=3, A_Down:=4
 local R_Mode, L_Mode, U_Mode, D_Mode
 local p, ch_ret, line, pos, old_direction:=0, str, ch, i, j
 	undo := iif(undo == NIL, .t., undo)
-	draw_char := {{"€", " "}, {"", "¡"}}
-	back_cur_ch := {"ƒ§¦¨…¬­®‡´µ²",;
-			"‚¤¢¥„©ª«†°±¯",;
-			"ƒ¦§¨‚¤¢¥ˆ¶¸·",;
-			"…¬­®„ª©«‰¹»º"}
-	back_new_ch := {"ˆ·ˆ·‰‰ººŠ½½Š¸¸¶¸»¹»»¾¾¾¼",;
-			"ˆ·ˆ·‰‰ººŠ½½Š¸¸¶¸»¹»»¾¾¾¼",;
-			"‡²‡²††¯¯Š¼¼Šµµ´µ±°±±¾¾¾½",;
-			"‡²‡²††¯¯Š¼¼Šµµ´µ±°±±¾¾¾½"}
+	draw_char := {{"€", " "}, {"", "¡"}} /* uft-8: {{"â”€", "â•"}, {"â”‚", "â•‘"}} */
+	back_cur_ch := {"ƒ§¦¨…¬­®‡´µ²",; /* uft-8: "â”â•–â••â•—â”˜â•›â•œâ•â”¤â•¢â•£â•¡" */
+			"‚¤¢¥„©ª«†°±¯",; /* uft-8: "â”Œâ•“â•’â•”â””â•˜â•™â•šâ”œâ•Ÿâ• â•" */
+			"ƒ¦§¨‚¤¢¥ˆ¶¸·",; /* uft-8: "â”â••â•–â•—â”Œâ•“â•’â•”â”¬â•¤â•¦â•¥" */
+			"…¬­®„ª©«‰¹»º"}  /* uft-8: "â”˜â•›â•œâ•â””â•™â•˜â•šâ”´â•§â•©â•¨" */
+	back_new_ch := {"ˆ·ˆ·‰‰ººŠ½½Š¸¸¶¸»¹»»¾¾¾¼",; /* uft-8: "â”¬â•¥â”¬â•¥â”´â”´â•¨â•¨â”¼â•«â•«â”¼â•¦â•¦â•¤â•¦â•©â•§â•©â•©â•¬â•¬â•¬â•ª" */
+			"ˆ·ˆ·‰‰ººŠ½½Š¸¸¶¸»¹»»¾¾¾¼",; /* uft-8: "â”¬â•¥â”¬â•¥â”´â”´â•¨â•¨â”¼â•«â•«â”¼â•¦â•¦â•¤â•¦â•©â•§â•©â•©â•¬â•¬â•¬â•ª" */
+			"‡²‡²††¯¯Š¼¼Šµµ´µ±°±±¾¾¾½",; /* uft-8: "â”¤â•¡â”¤â•¡â”œâ”œâ•â•â”¼â•ªâ•ªâ”¼â•£â•£â•¢â•£â• â•Ÿâ• â• â•¬â•¬â•¬â•«" */
+			"‡²‡²††¯¯Š¼¼Šµµ´µ±°±±¾¾¾½"}  /* uft-8: "â”¤â•¡â”¤â•¡â”œâ”œâ•â•â”¼â•ªâ•ªâ”¼â•£â•£â•¢â•£â• â•Ÿâ• â• â•¬â•¬â•¬â•«" */
 	string :={;
    /* present_derection=A_Right*/;
-   /*up   */       {{"„©„©…¬„©…®‰»…®„©…¬„¬‰¹","ª«ª«ª«ª«­®º»­®ª«­®ª®º»"},;
-   /*down */        {"‚¢‚¢ƒ¦‚¢ƒ¨ˆ¸ƒ¨‚¢ƒ¦‚¦ˆ¶","¤¥¤¥¤¥¤¥§¨·¸§¨¤¥§¨¤¨·¸"},;
-   /*up down*/      {"†¯†¯¯±†¯‡µŠ¾‡µ†¯²²²²¼¾","°±°±°±°±´µ½¾´±°±‡µ‡µŠ¾"};
+   /*up   */       {{"„©„©…¬„©…®‰»…®„©…¬„¬‰¹","ª«ª«ª«ª«­®º»­®ª«­®ª®º»"},; /* uft-8: "â””â•˜â””â•˜â”˜â•›â””â•˜â”˜â•â”´â•©â”˜â•â””â•˜â”˜â•›â””â•›â”´â•§","â•™â•šâ•™â•šâ•™â•šâ•™â•šâ•œâ•â•¨â•©â•œâ•â•™â•šâ•œâ•â•™â•â•¨â•©" */
+   /*down */        {"‚¢‚¢ƒ¦‚¢ƒ¨ˆ¸ƒ¨‚¢ƒ¦‚¦ˆ¶","¤¥¤¥¤¥¤¥§¨·¸§¨¤¥§¨¤¨·¸"},; /* uft-8: "â”Œâ•’â”Œâ•’â”â••â”Œâ•’â”â•—â”¬â•¦â”â•—â”Œâ•’â”â••â”Œâ••â”¬â•¤","â•“â•”â•“â•”â•“â•”â•“â•”â•–â•—â•¥â•¦â•–â•—â•“â•”â•–â•—â•“â•—â•¥â•¦" */
+   /*up down*/      {"†¯†¯¯±†¯‡µŠ¾‡µ†¯²²²²¼¾","°±°±°±°±´µ½¾´±°±‡µ‡µŠ¾"};  /* uft-8: "â”œâ•â”œâ•â•â• â”œâ•â”¤â•£â”¼â•¬â”¤â•£â”œâ•â•¡â•¡â•¡â•¡â•ªâ•¬","â•Ÿâ• â•Ÿâ• â•Ÿâ• â•Ÿâ• â•¢â•£â•«â•¬â•¢â• â•Ÿâ• â”¤â•£â”¤â•£â”¼â•¬" */
 		     },;
    /* present_derection=A_Left*/;
-		   {{"…¬„«„©…¬…¬‰»…©…¬…¬„«‰¹","­®ª«ª«­®­®º»­«­®­®ª«º»"},;
-		    {"ƒ¦‚¥‚¢ƒ¦ƒ¦ˆ¸ƒ¢ƒ¦‚¢‚¥ˆ¶","§¨¤¥¤¥§¨§¨·¸§¥§¨§¨¤¥·¸"},;
-		    {"‡²†±¯¯‡²‡²Š¾‡¯‡²²µ†±¼¾","´µ°±†±´µ´µ½¾†±´µ´µ°µŠ¾"};
+		   {{"…¬„«„©…¬…¬‰»…©…¬…¬„«‰¹","­®ª«ª«­®­®º»­«­®­®ª«º»"},; /* uft-8: "â”˜â•›â””â•šâ””â•˜â”˜â•›â”˜â•›â”´â•©â”˜â•˜â”˜â•›â”˜â•›â””â•šâ”´â•§","â•œâ•â•™â•šâ•™â•šâ•œâ•â•œâ•â•¨â•©â•œâ•šâ•œâ•â•œâ•â•™â•šâ•¨â•©" */
+		    {"ƒ¦‚¥‚¢ƒ¦ƒ¦ˆ¸ƒ¢ƒ¦‚¢‚¥ˆ¶","§¨¤¥¤¥§¨§¨·¸§¥§¨§¨¤¥·¸"},; /* uft-8: "â”â••â”Œâ•”â”Œâ•’â”â••â”â••â”¬â•¦â”â•’â”â••â”Œâ•’â”Œâ•”â”¬â•¤","â•–â•—â•“â•”â•“â•”â•–â•—â•–â•—â•¥â•¦â•–â•”â•–â•—â•–â•—â•“â•”â•¥â•¦" */
+		    {"‡²†±¯¯‡²‡²Š¾‡¯‡²²µ†±¼¾","´µ°±†±´µ´µ½¾†±´µ´µ°µŠ¾"};  /* uft-8: "â”¤â•¡â”œâ• â•â•â”¤â•¡â”¤â•¡â”¼â•¬â”¤â•â”¤â•¡â•¡â•£â”œâ• â•ªâ•¬","â•¢â•£â•Ÿâ• â”œâ• â•¢â•£â•¢â•£â•«â•¬â”œâ• â•¢â•£â•¢â•£â•Ÿâ•£â”¼â•¬" */
 		     },;
    /* present_derection=A_Up*/;
-   /*left   */     {{"…­ƒ¨ƒ§…­…­‡µ…§…­…­ƒ¨‡´","¬®¦¨¦¨¬®¬®²µ¬¨¬®¬®¦¨²µ"},;
-   /*right  */      {"„ª‚¥‚¤„ª„ª†±„¤„ª„ª‚¥†°","©«¢¥¢¥©«©«¯±©¥©«©«¢¥¯±"},;
-   /*left right*/   {"‰ºˆ¸··‰º‰ºŠ¾‰·‰ºº»ˆ¸¾½","¹»¶¸ˆ¸¹»¹»¼¾ˆ¸¹»¹»¶»Š¾"};
+   /*left   */     {{"…­ƒ¨ƒ§…­…­‡µ…§…­…­ƒ¨‡´","¬®¦¨¦¨¬®¬®²µ¬¨¬®¬®¦¨²µ"},; /* uft-8: "â”˜â•œâ”â•—â”â•–â”˜â•œâ”˜â•œâ”¤â•£â”˜â•–â”˜â•œâ”˜â•œâ”â•—â”¤â•¢","â•›â•â••â•—â••â•—â•›â•â•›â•â•¡â•£â•›â•—â•›â•â•›â•â••â•—â•¡â•£" */
+   /*right  */      {"„ª‚¥‚¤„ª„ª†±„¤„ª„ª‚¥†°","©«¢¥¢¥©«©«¯±©¥©«©«¢¥¯±"},; /* uft-8: "â””â•™â”Œâ•”â”Œâ•“â””â•™â””â•™â”œâ• â””â•“â””â•™â””â•™â”Œâ•”â”œâ•Ÿ","â•˜â•šâ•’â•”â•’â•”â•˜â•šâ•˜â•šâ•â• â•˜â•”â•˜â•šâ•˜â•šâ•’â•”â•â• " */
+   /*left right*/   {"‰ºˆ¸··‰º‰ºŠ¾‰·‰ºº»ˆ¸¾½","¹»¶¸ˆ¸¹»¹»¼¾ˆ¸¹»¹»¶»Š¾"};  /* uft-8: "â”´â•¨â”¬â•¦â•¥â•¥â”´â•¨â”´â•¨â”¼â•¬â”´â•¥â”´â•¨â•¨â•©â”¬â•¦â•¬â•«","â•§â•©â•¤â•¦â”¬â•¦â•§â•©â•§â•©â•ªâ•¬â”¬â•¦â•§â•©â•§â•©â•¤â•©â”¼â•¬" */
 		     },;
    /* present_derection=A_Down*/;
-		   {{"ƒ§ƒ§ƒ§ƒ§…®‡µ…®ƒ§…­ƒ­‡´","¦¨¦¨¦¨¦¨¬®²µ¬®¦¨¬®¦®²µ"},;
-		    {"‚¤‚¤‚¤‚¤„«†±„«‚¤„ª‚ª†°","¢¥¢¥¢¥¢¥©«¯±©«¢¥©«¢«¯±"},;
-		    {"ˆ·ˆ··¸ˆ·‰»Š¾‰»ˆ·ººˆº½¾","¶¸¶¸¶¸¶¸¹»¼¾¹¸¶¸‰»‰»Š¾"};
+		   {{"ƒ§ƒ§ƒ§ƒ§…®‡µ…®ƒ§…­ƒ­‡´","¦¨¦¨¦¨¦¨¬®²µ¬®¦¨¬®¦®²µ"},; /* uft-8: "â”â•–â”â•–â”â•–â”â•–â”˜â•â”¤â•£â”˜â•â”â•–â”˜â•œâ”â•œâ”¤â•¢","â••â•—â••â•—â••â•—â••â•—â•›â•â•¡â•£â•›â•â••â•—â•›â•â••â•â•¡â•£" */
+		    {"‚¤‚¤‚¤‚¤„«†±„«‚¤„ª‚ª†°","¢¥¢¥¢¥¢¥©«¯±©«¢¥©«¢«¯±"},; /* uft-8: "â”Œâ•“â”Œâ•“â”Œâ•“â”Œâ•“â””â•šâ”œâ• â””â•šâ”Œâ•“â””â•™â”Œâ•™â”œâ•Ÿ","â•’â•”â•’â•”â•’â•”â•’â•”â•˜â•šâ•â• â•˜â•šâ•’â•”â•˜â•šâ•’â•šâ•â• " */
+		    {"ˆ·ˆ··¸ˆ·‰»Š¾‰»ˆ·ººˆº½¾","¶¸¶¸¶¸¶¸¹»¼¾¹¸¶¸‰»‰»Š¾"};  /* uft-8: "â”¬â•¥â”¬â•¥â•¥â•¦â”¬â•¥â”´â•©â”¼â•¬â”´â•©â”¬â•¥â•¨â•¨â”¬â•¨â•«â•¬","â•¤â•¦â•¤â•¦â•¤â•¦â•¤â•¦â•§â•©â•ªâ•¬â•§â•¦â•¤â•¦â”´â•©â”´â•©â”¼â•¬" */
 		    };
 		   }
 	Draw_Mode := iif(Draw_Mode, 1, 2)

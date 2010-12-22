@@ -51,7 +51,7 @@ local obj
        obj:findbuffer  	:= ""
 
        obj:item 	:= {}
-       obj:__colors	:= {}      // палитры цветов
+       obj:__colors	:= {}      // color palettes
 
        obj:__init()
        obj:__setcolor()
@@ -229,7 +229,7 @@ static func killFocus()
     ::refresh()
 return
 
-*********** заполнение
+*********** filling
 static func refresh()
 local cur, i, j, nl:=::nLeft
        if ::union
@@ -392,7 +392,7 @@ local i,a, j, nl:=::nLeft, s, es:="", cur
        dispend()
 return
 
-*********** перемещение на одну строку вниз
+*********** move one line down
 static func down
     ::line++
     ::buffer++
@@ -400,7 +400,7 @@ static func down
     ::refresh()
 RETURN
 
-*********** перемещение на одну строку вверх
+*********** move one line up
 static func up
      ::line--
      ::buffer--
@@ -408,14 +408,14 @@ static func up
      ::refresh()
 RETURN
 
-*********** перемещение по PgDn
+*********** move PgDn
 static func PageDown
     ::buffer += ::itemWin
     ::first += ::itemWin
     ::clearFindBuffer()
     ::refresh()
 return
-*********** перемещение по PgUp
+*********** move PgUp
 static func PageUp
     ::buffer -= ::itemWin
     ::first -= ::itemWin
@@ -423,7 +423,7 @@ static func PageUp
     ::refresh()
 RETURN
 
-*********** перемещение по стрелкам влево-вправо
+*********** move by left/roght arrows
 static func left()
     ::pos --
     ::buffer -= ::rowWin
@@ -438,7 +438,7 @@ static func right()
     ::refresh()
 return
 
-*********** в начало списка
+*********** move to begin of list
 static func Home
   ::pos := 1
   ::buffer := 1
@@ -448,7 +448,7 @@ static func Home
   ::refresh()
 return
 
-*********** в конец списка
+*********** move to end of list
 static func End
   ::pos := ::colWin
   ::buffer := ::itemCount
@@ -458,7 +458,7 @@ static func End
   ::refresh()
 return
 
-*********** поиск подстроки
+*********** substring search
 static func find(ch)
 local i, j, cur, oldfirst, oldline, oldbuff, oldpos, oldfb, found:=.f., cw
 
@@ -559,9 +559,9 @@ local Rcol:=::nRight, Lcol:=::nLeft
 return .t.
 *************
 /*
-width - это массив {}
-каждый элемент либо цифра, либо 0 - те все оставшееся, причем 0 - может
-быть несколько, тогда вся оставшаяся ширина делится по братски между ними
+width - it's array {}
+every element is number or 0 - all remaining, and zero may be somewhat,
+in this case remaining width is divided equally between them
 */
 static function setWidthCol(width)
 local i, az:={}, s:=0, len

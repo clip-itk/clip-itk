@@ -35,7 +35,7 @@ function html_tagNew(tagname, other, title, style, class, event, id, lang, langu
 		obj:addField("CLASS",class) // CLASS=string
 	endif
 	if event!=NIL
-		obj:addField("EVENT",event) // <название_события>=название_сценария
+		obj:addField("EVENT",event) // <event_name>=scenario_name
 	endif
 	if id!=NIL
 		obj:addField("ID",id)       // ID=string
@@ -59,7 +59,7 @@ function html_tagNew(tagname, other, title, style, class, event, id, lang, langu
 		next
 		obj:other	:= ""
 	else
-		obj:other	:= other // прочие поля
+		obj:other	:= other // other fields
 	endif
 
 

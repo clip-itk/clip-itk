@@ -50,9 +50,9 @@ function radioGroup(top,left,bottom,right)
    obj:=map()
    obj:classname:="RADIOGROUP"
    obj:bottom	:=bottom
-   obj:buffer	:=0       // почему-то в описании стоит buffer,а
-   obj:value	:=0        // почему-то в описании стоит buffer,а
-			   // в getsys.prg - value ??????
+   obj:buffer	:=0       // for some reason in the description is 'buffer', but
+   obj:value	:=0        // for some reason in the description is 'buffer', but
+			   // in getsys.prg - value ??????
    obj:capRow	:=top
    obj:capCol	:=left+2
    obj:caption	:=NIL

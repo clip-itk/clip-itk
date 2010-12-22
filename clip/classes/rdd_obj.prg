@@ -19,24 +19,24 @@
 #include "dbedit.ch"
 
 
-#define MY_HEADSEP      "═╤═"
-#define MY_COLSEP       " │ "
+#define MY_HEADSEP      "═╤═" // utf-8: "Б∙░Б∙╓Б∙░"
+#define MY_COLSEP       " │ " // utf-8: " Б■┌ "
 
 
 function RDDNew(Driver,f_name,Shared,ReadOnly)
   local RDDobj
 
   RDDobj:=map()
-// Атрибуты
+// Attributes
   RDDobj:classname:="RDD"
   RDDobj:handle:=NIL
-  RDDobj:table_driver:="DBF"		// имя драйвера таблиц по умолчанию
-  RDDobj:index_driver:="NTX"		// имя драйвера индексов по умолчанию
-  RDDobj:memo_driver:="DBT"		// имя драйвера мемо-файлов по умолчанию
-  RDDobj:share_mode:=RDD_SHARED		// режим открытия таблиц по умолчанию
-  RDDobj:read_only:=RDD_READ_WRITE	// режим открытия таблиц по умолчанию
-  RDDobj:soft_seek:=RDD_SEEK_SOFT	// режим индексного поиска по умолчанию
-  RDDobj:search_result:=.f.    		// здесь хранится результат последнего поиска
+  RDDobj:table_driver:="DBF"		// Default name of tables driver
+  RDDobj:index_driver:="NTX"		// Default name of indexes driver
+  RDDobj:memo_driver:="DBT"		// Default name of menu-files driver
+  RDDobj:share_mode:=RDD_SHARED		// Default tables opening mode
+  RDDobj:read_only:=RDD_READ_WRITE	// Default tables opening mode
+  RDDobj:soft_seek:=RDD_SEEK_SOFT	// Default search index mode
+  RDDobj:search_result:=.f.    		// Result of last search
 
   _recover_RDD(RDDObj)
 
@@ -46,7 +46,7 @@ function RDDNew(Driver,f_name,Shared,ReadOnly)
 return RDDobj
 
 function _recover_RDD(RDDObj)
-// Методы
+// Methods
   RDDobj:append:=@rddobj_append()
   RDDobj:bof:=@rddobj_bof()
   RDDobj:browse:=@rddobj_browse()
@@ -100,7 +100,7 @@ function _recover_RDD(RDDObj)
   RDDobj:struct:=@rddobj_struct()
   RDDobj:write:=@rddobj_write()
   RDDobj:zap:=@rddobj_zap()
-// Деструктор
+// Destructor
   RDDobj:destroy:=@rddobj_destroy()
 return RDDObj
 
@@ -115,29 +115,29 @@ return rddgobottom(::handle)
 static function rddobj_found()
 return ::search_result
 
-static function rddobj_fcount()		// Возвращает количество полей
+static function rddobj_fcount()		// Returns fields count
   __CHECKING_HANDLE
 return rddfcount(::handle)
 
-static function rddobj_fieldpos(FName)		// Возвращает номер указанного поля
+static function rddobj_fieldpos(FName)		// Returns index of specified field
   __CHECKING_HANDLE
 return rddfieldpos(::handle,FName)
 
-static function rddobj_fieldname(FNo)		// Возвращает имя поля по номеру
+static function rddobj_fieldname(FNo)		// Returns field name by index
   __CHECKING_HANDLE
 return rddfieldname(::handle,FNo)
 
-static function rddobj_locate(Expr,While,nNext,nRec,lRest)	// Поиск в таблице данных
+static function rddobj_locate(Expr,While,nNext,nRec,lRest)	// Search in table
   __CHECKING_HANDLE
   ::search_result:=rddlocate(::handle,Expr,While,nNext,nRec,lRest)
 return ::search_result
 
-static function rddobj_continue()  		// Продолжение поиска
+static function rddobj_continue()  		// Continue search
   __CHECKING_HANDLE
   ::search_result:=rddcontinue(::handle)
 return ::search_result
 
-static function rddobj_struct()  		// Возвращает структуру таблицы
+static function rddobj_struct()  		// Returns table structure
   __CHECKING_HANDLE
 return rddstruct(::handle)
 
@@ -389,7 +389,7 @@ static function rddobj_browse(self,top, left, down, right, fields, user_func, pi
             if browser:hitBottom
                status:=DE_HITBOTTOM
             endif
-            // DE_EXCEPT           4          // Клавиша не обрабатывается
+            // DE_EXCEPT           4          // Key don't handled
             if "(" $ user_func
                 __user_func:=user_func
             else
