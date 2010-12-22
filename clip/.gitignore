@@ -1,4 +1,10 @@
+_hashcode.h
+bin
 calchash
+charsets
+clic.output
+clic.tab.c
+clic.tab.h
 clip
 clipar
 clipcfg.h
@@ -18,6 +24,10 @@ hashextract
 license.h
 Makefile
 Makefile.inc
+plural.tab.c
 po_compat
 po_extr
 po_subst
+rt.tab.c
+rt.tab.h
+rt.output
