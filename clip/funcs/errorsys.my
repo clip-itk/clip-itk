@@ -1,20 +1,20 @@
 /***
 *	Errorsys.prg
-* Стандартный обработчик ошибок для Clipper 5.0
-* Copyright (c) 1990 Nantucket Corp.  Все права сохраняются.
+* Standard error handler for Clipper 5.0
+* Copyright (c) 1990 Nantucket Corp. All rights reserved.
 *
-* Компилировать с опциями /m/n/w
+* Compile with the options /m/n/w
 */
 
 #include "error.ch"
 
 
-// Вывод сообщений на стандартное устройство STDERR
+// Messages displayed on the standard device STDERR
 #command ? <list,...>   =>  ?? Chr(13) + Chr(10) ; ?? <list>
 #command ?? <list,...>  =>  OutErr(<list>)
 
 
-// Используется ниже
+// Used below
 #define NTRIM(n)		( LTrim(Str(n)) )
 
 
@@ -22,7 +22,7 @@
 /***
 *	ErrorSys()
 *
-* Замечание:  Автоматически запускается при начале работы
+* Note:  Automatically starts when start work
 */
 
 proc ErrorSys()
@@ -43,7 +43,7 @@ local i, cMessage, aOptions, nChoice
            dispend()
         enddo
 	outlog("error:",e)
-  // По умолчанию деление на ноль дает ноль
+  // The default divide by zero gives zero
 	if ( e:genCode == EG_ZERODIV )
 		return (0)
 	end
@@ -60,22 +60,22 @@ local i, cMessage, aOptions, nChoice
 
 
 
-  // Построение сообщения об ошибке
+  // Construction of the error message
 	cMessage := ErrorMessage(e)
 
-     // aOptions := {"Прервать", "Завершить"}  // 1,2
-        aOptions := {"Завершить"}                 // 1
+     // aOptions := {"Interrupt", "Finish"}    // 1,2
+        aOptions := {"Finish"}                 // 1
 
 	if (e:canRetry)
-            AAdd(aOptions, "Повторить")             // 2
+            AAdd(aOptions, "Repeat")           // 2
 	end
 
 	if (e:canDefault)
-           AAdd(aOptions, "Пропустить")            // 3
+           AAdd(aOptions, "Skip")              // 3
 	end
 
 
-  // активизация ALERT-меню
+  // activation ALERT-menu
 	nChoice := 0
 	while ( nChoice == 0 )
 
@@ -84,7 +84,7 @@ local i, cMessage, aOptions, nChoice
 
 		else
 			nChoice := Alert( cMessage + ;
-	      ";(Код DOS-ошибки: " + NTRIM(e:osCode) + ")", ;
+	      ";(DOS-error code: " + NTRIM(e:osCode) + ")", ;
 							aOptions )
 		end
 
@@ -98,17 +98,17 @@ local i, cMessage, aOptions, nChoice
 
 	if ( !Empty(nChoice) )
 
-    // Выполнение по инструкции оператора
-   if ( nChoice == 1 )                   // Прервать - Break
+    // Executing by user choise
+   if ( nChoice == 1 )                   // Break
       outlog("errorsys:",nchoice,"break")
       Break(e)
    endif
 
-    if ( nChoice == 2 )               // Повторить - Retry
+    if ( nChoice == 2 )               // Retry
       outlog("errorsys:",nchoice,"return .t.")
 			return (.t.)
 
-    elseif ( nChoice == 3 )               // Пропустить - Default
+    elseif ( nChoice == 3 )               // Skip - Default
       outlog("errorsys:",nchoice,"return .f.")
 			return (.f.)
 
@@ -117,22 +117,22 @@ local i, cMessage, aOptions, nChoice
 	end
 
 
-  // Отображение сообщения и стека вызов процедур (при Завершить)
+  // Display a message and call stack procedures (with Finish)
 	if ( !Empty(e:osCode) )
-    cMessage += " (Код DOS-ошибки: " + NTRIM(e:osCode) + ") "
+    cMessage += " (DOS-error code: " + NTRIM(e:osCode) + ") "
 	end
 
 	? cMessage
 	i := 2
 	while ( !Empty(ProcName(i)) )
-    ? "Вызов из ", Trim(ProcName(i)) + ;
+    ? "Called from ", Trim(ProcName(i)) + ;
 			"(" + NTRIM(ProcLine(i)) + ")  "
 
 		i++
 	end
 
 
-  // Возврат в DOS
+  // Return to DOS
 	ErrorLevel(1)
 	QUIT
 
@@ -148,11 +148,11 @@ static func ErrorMessage(e)
 local cMessage
 
 
-  // Начало сообщения об ошибке
-  cMessage := if( e:severity > ES_WARNING, "Ошибка ", "Предупреждение " )
+  // Message error starting
+  cMessage := if( e:severity > ES_WARNING, "Error ", "Warning " )
 
 
-  // добавление имени подсистемы (если доступно)
+  // add subsystem name (if available)
 	if ( ValType(e:subsystem) == "C" )
 		cMessage += e:subsystem()
 	else
@@ -160,7 +160,7 @@ local cMessage
 	end
 
 
-  // добавление SUBSYSTEM кода ошибки (если доступно)
+  // add SUBSYSTEM error code (if available)
 	if ( ValType(e:subCode) == "N" )
 		cMessage += ("/" + NTRIM(e:subCode))
 	else
@@ -168,13 +168,13 @@ local cMessage
 	end
 
 
-  // добавление описания ошибки (если доступно)
+  // add description of error (if available)
 	if ( ValType(e:description) == "C" )
     cMessage += (" " + e:description)
 	end
 
 
-  // добавление либо FILENAME, либо названия операции
+  // add FILENAME or name of operation
 	if ( !Empty(e:filename) )
 		cMessage += (": " + e:filename)
 

@@ -26,8 +26,8 @@ FUNCTION tbCreate( uOwner, nTop, nLeft, nBottom, nRight, cColorInfo, cBorder, lA
 
       oBrowse := tBrowseNew( nTop, nLeft, nBottom, nRight )
       oBrowse:AutoLite      := .F.
-      oBrowse:HeadSep       := "Ä"
-      oBrowse:ColSep        := "Å"
+      oBrowse:HeadSep       := "Ä" //utf-8: "‚îÄ"
+      oBrowse:ColSep        := "Å"//utf-8: "‚îÇ"
       oBrowse:SkipBlock     := { | x | tbSkip( aTBInfo, x ) }
 
       IF ( ValType( uOwner ) == "A" )

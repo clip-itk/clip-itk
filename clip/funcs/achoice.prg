@@ -331,7 +331,7 @@ static func Skipper(n)
     __ac_data:nRowMass:=min(__ac_data:lenMass,__ac_data:nRowMass)
 return __ac_data:nRowmass-i
 *****************************************************
-* по 1-му символу
+* by one symbol
 static func firstChr(chrKey,bb)
 	local ccc,retVal
 	ccc:=upper(chr(chrKey))

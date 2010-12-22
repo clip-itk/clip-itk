@@ -532,7 +532,7 @@ static function sql_parseFields()
                 k:dec  :=0
                 aadd(::fields,k)
         next
-        for i in ::fields      // дублирование имен
+        for i in ::fields      // duplicate names
         	xname:=i:xname
                 if empty(i:aname) // default table
                 	i:aname:=::from[1]:alias

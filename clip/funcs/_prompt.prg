@@ -5,7 +5,7 @@
 */
 #include "set.ch"
 
-#define HOT_KEYS "1234567890абвгдежзиклмнопрст"
+#define HOT_KEYS "1234567890абвгдежзиклмнопрст" // utf-8: "1234567890п╟п╠п╡пЁп╢п╣п╤п╥п╦п╨п╩п╪п╫п╬п©я─я│я┌"
 
 static massPrompt[0]
 static massHotKey[0]

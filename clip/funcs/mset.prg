@@ -5,7 +5,7 @@
 */
 #include "mset.ch"
 *-----------------*
-* MSET() подобна SET()
+* MSET() like to SET()
 *-----------------*
 func mSet( par1, par2 )
 static mset:={.f.,80,1,"PRN",.f.}

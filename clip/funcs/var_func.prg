@@ -175,8 +175,8 @@ return ret
 
 ****************************************************************************
 function funcname(pn)
-	local str,i := 2 // i>1 начинаем не с функции, которая вызывает FUNCNAME()
-		   // а с предыдущей
+	local str,i := 2 // i>1 start with previous function
+		   // (current is call FUNCNAME())
 	pn := upper(pn)
 	do while .t.
 		str := procname(i)
