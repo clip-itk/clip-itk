@@ -1,22 +1,22 @@
 <!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <HTML>
 <HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
 <TITLE>Clipper compiler</TITLE>
 </HEAD>
 <BODY>
 
-<h3>             Описание класса SMTP </h3>
+<h3>             п·п©п╦я│п╟п╫п╦п╣ п╨п╩п╟я│я│п╟ SMTP </h3>
 
-Обеспечивает отправление писем по протоколу SMTP.
+п·п╠п╣я│п©п╣я┤п╦п╡п╟п╣я┌ п╬я┌п©я─п╟п╡п╩п╣п╫п╦п╣ п©п╦я│п╣п╪ п©п╬ п©я─п╬я┌п╬п╨п╬п╩я┐ SMTP.
 
 <BR>
 <BR>
 <BR>
-Простенький пример использования:
+п÷я─п╬я│я┌п╣п╫я▄п╨п╦п╧ п©я─п╦п╪п╣я─ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐:
 <PRE>
-// открыть соединение
+// п╬я┌п╨я─я▀я┌я▄ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣
 u=smtpNew("mydomain.mail.ru")
 u:connect()
 ? u:error
@@ -26,10 +26,10 @@ u:close()
 ? u:error
 </PRE>
 
-<h3> Атрибуты/свойства </H3>
+<h3> п░я┌я─п╦п╠я┐я┌я▀/я│п╡п╬п╧я│я┌п╡п╟ </H3>
 <TABLE border=1>
-<th> Название атрибута </TH>
-<th> Значение атрибута </TH>
+<th> п²п╟п╥п╡п╟п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟ </TH>
+<th> п≈п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟ </TH>
 <TR>
 <td> host </td> <TD> host name in format "user@host.domain"
 		or IP-adrress in format "xxx.yyy.zzz.www"</TD>
@@ -42,19 +42,19 @@ u:close()
 <tr>
 </TABLE>
 
-<h3> Методы/функции </H3>
-<h4> функция smtpNew </h4>
-smtpNew(host) - инициализирует новый SMTP - объект. <BR>
-<h4> метод smtp:connect() </h4>
-Пытается соединится с сервером, возвращает .t. or .f.
-<h4> метод url:send(from,to,data) </h4>
-посылает письмо от имени from адресату to с содержимым data, возвращает .t. or .f.
-<h4> метод url:close() </h4>
-закрывает соединение, возвращает .t. or .f.
-<h4> метод url:noop() </h4>
-проверяет наличие соединения, возвращает .t. or .f.
+<h3> п°п╣я┌п╬п╢я▀/я└я┐п╫п╨я├п╦п╦ </H3>
+<h4> я└я┐п╫п╨я├п╦я▐ smtpNew </h4>
+smtpNew(host) - п╦п╫п╦я├п╦п╟п╩п╦п╥п╦я─я┐п╣я┌ п╫п╬п╡я▀п╧ SMTP - п╬п╠я┼п╣п╨я┌. <BR>
+<h4> п╪п╣я┌п╬п╢ smtp:connect() </h4>
+п÷я▀я┌п╟п╣я┌я│я▐ я│п╬п╣п╢п╦п╫п╦я┌я│я▐ я│ я│п╣я─п╡п╣я─п╬п╪, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .t. or .f.
+<h4> п╪п╣я┌п╬п╢ url:send(from,to,data) </h4>
+п©п╬я│я▀п╩п╟п╣я┌ п©п╦я│я▄п╪п╬ п╬я┌ п╦п╪п╣п╫п╦ from п╟п╢я─п╣я│п╟я┌я┐ to я│ я│п╬п╢п╣я─п╤п╦п╪я▀п╪ data, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .t. or .f.
+<h4> п╪п╣я┌п╬п╢ url:close() </h4>
+п╥п╟п╨я─я▀п╡п╟п╣я┌ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .t. or .f.
+<h4> п╪п╣я┌п╬п╢ url:noop() </h4>
+п©я─п╬п╡п╣я─я▐п╣я┌ п╫п╟п╩п╦я┤п╦п╣ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .t. or .f.
 
-<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+<center>&#169 п╝.п╔п╫я▀п╨п╦п╫, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
 </center>
 </body>
 </html>
