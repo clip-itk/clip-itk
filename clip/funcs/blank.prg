@@ -263,7 +263,7 @@ if _error:gencode==5
   return(0)
 endif
 if flagm==NIL
-messagep("You work with Form that contains errors. Most likely, you will receive;"+;
+messagep("You're working with Form that contains errors. Most likely, you will receive;"+;
 	 " not what you expect. Edit Form, otherwise the message you get tired.;"+;
 	 " Error : "+_error:description+" "+iif(empty(_error:operation),"",_error:operation)+";";
 	 +iif(!empty(_error:filename),_error:filename,"") )
