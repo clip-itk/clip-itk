@@ -7,7 +7,7 @@
 	#include "std50.ch"
 #else
 	#ifdef FOXPRO_COMPATIBLE
-        	// надо деалать fox.ch
+        	// need to done fox.ch
 		#include "std53.ch"
                 #include "fox.ch"
                 #include "foxsql.ch"

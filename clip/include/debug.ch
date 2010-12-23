@@ -10,8 +10,8 @@
 #define DBG_COLSEP       " Å "
 */
 
-#define DBG_HEADSEP      translate_charset(__CHARSET__,host_charset(),"∂†")
-#define DBG_COLSEP       translate_charset(__CHARSET__,host_charset(),"Å ")
+#define DBG_HEADSEP      translate_charset(__CHARSET__,host_charset(),"∂†") // utf-8: "‚ï§‚ïê"
+#define DBG_COLSEP       translate_charset(__CHARSET__,host_charset(),"Å ") // utf-8: "‚îÇ "
 
 #define DBG_BORDER_CLR   "15/7"
 #define DBG_DELIM       ";"

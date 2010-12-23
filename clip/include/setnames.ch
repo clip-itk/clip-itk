@@ -1,6 +1,6 @@
 /***
 *	setnames.ch
-*       Определения значений SET-установок Clipper
+*       Definitions of SET-names for Clipper
 */
 
 #ifndef _SETNAMES_DEFINED
