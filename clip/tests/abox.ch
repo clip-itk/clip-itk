@@ -2,13 +2,13 @@
 
 #ifndef _ABOX_DEFINED
 
-#define AB_SINGLE 'ÚÄ¿³ÙÄÀ³'
+#define AB_SINGLE 'ÚÄ¿³ÙÄÀ³' // cp866 -> utf-8: 'â”Œâ”€â”â”‚â”˜â”€â””â”‚'
 
-#define AB_DOUBLE 'ÉÍ»º¼ÍÈº'
+#define AB_DOUBLE 'ÉÍ»º¼ÍÈº' // cp866 -> utf-8: 'â•”â•â•—â•‘â•â•â•šâ•‘'
 
-#define AB_SINGLE_DOUBLE	'ÕÍ¸³¾ÍÔ³'
+#define AB_SINGLE_DOUBLE	'ÕÍ¸³¾ÍÔ³' // cp866 -> utf-8: 'â•’â•â••â”‚â•›â•â•˜â”‚'
 
-#define	AB_DOUBLE_SINGLE	'ÖÄ·º½ÄÓº'
+#define	AB_DOUBLE_SINGLE	'ÖÄ·º½ÄÓº' // cp866 -> utf-8: 'â•“â”€â•–â•‘â•œâ”€â•™â•‘'
 
 #define _ABOX_DEFINED
 

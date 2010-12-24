@@ -21,8 +21,8 @@ endcase
 */
 
 /*
-сменить текущий рабочий каталог, если в аргументе есть буква диска,
-то меняется и текущий диск
+Change current dir. If argiment have disk letter, then
+change current disk too
 DIRCHANGE()
 	0      NO_DISK_ERR         No error occurred
        -2      ER_FILE_NOT_FOUND   File not found
@@ -37,8 +37,8 @@ DIRCHANGE()
 */
 
 /*
-смена текущего диска, (A, B, C, D, ...),
-буквы могут быть с последующими двоеточками
+Change current disk, (A, B, C, D, ...),
+letters can be followed by a colon
 DISKCHANGE( ClipMachine *cm )
 */
 /*
@@ -48,7 +48,7 @@ DISKCHANGE( ClipMachine *cm )
 */
 
 /*
-создать каталог
+Create directory
 DIRMAKE( ClipMachine *cm )
 */
 /*
@@ -65,12 +65,12 @@ endcase
 */
 
 /*
-имя текущего рабочего каталога, возможен 1 параметр -- имя диска,
-если его нет, то берется текущий диск
+Name of current directory, possible one parameter -- disk name,
+if absent, current disk is taken
 DIRNAME( ClipMachine *cm )
 
-сменить текущий рабочий каталог
-если в аргументе есть буква диска, то меняется и текущий диск
+change current work directory
+if argument contain disk letter, then current disk changed too
 int DIRCHANGE( ClipMachine *cm )
 */
 
@@ -81,8 +81,8 @@ int DIRCHANGE( ClipMachine *cm )
 */
 
 /*
-удаление каталога, делается проверка на текущий каталог,
-т.к. его по досовским понятиям удалять нельзя
+Detele directory. checking for current directory - 
+current dir can't be deleted because of the DOS limitations
 DIRREMOVE( ClipMachine *cm )
 	0      Directory has been successfully removed.
        -3      Access path not found or directory not empty.
