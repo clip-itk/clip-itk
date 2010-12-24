@@ -9,7 +9,7 @@ msgstr ""
 "Last-Translator: Paul Lasarev <paul@itk.ru>\n"
 "Language-Team: Russian <clip-devel@itk.ru>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
@@ -19,117 +19,117 @@ msgstr ""
 #: clic.lex:7168
 #, c-format
 msgid "cannot load charset '%s': %s"
-msgstr "невозможно загрузить кодировку '%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╥п╟пЁя─я┐п╥п╦я┌я▄ п╨п╬п╢п╦я─п╬п╡п╨я┐ '%s': %s"
 
 #: clicgt.c:303
 #, c-format
 msgid "no access to file '%s': not a regular file\n"
-msgstr "нет доступа к файлу '%s': не регулярный файл\n"
+msgstr "п╫п╣я┌ п╢п╬я│я┌я┐п©п╟ п╨ я└п╟п╧п╩я┐ '%s': п╫п╣ я─п╣пЁя┐п╩я▐я─п╫я▀п╧ я└п╟п╧п╩\n"
 
 #: clicgt.c:309
 #, c-format
 msgid "no access to file '%s': %s\n"
-msgstr "нет доступа к файлу  '%s': %s\n"
+msgstr "п╫п╣я┌ п╢п╬я│я┌я┐п©п╟ п╨ я└п╟п╧п╩я┐  '%s': %s\n"
 
 #: clicgt.c:459
 #, c-format
 msgid "locale settings not found for module '%s'\n"
-msgstr "не найдены установки локализации '%s'\n"
+msgstr "п╫п╣ п╫п╟п╧п╢п╣п╫я▀ я┐я│я┌п╟п╫п╬п╡п╨п╦ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s'\n"
 
 #: clicgt.c:464
 #, c-format
 msgid "no access to locale file '%s': %s\n"
-msgstr "нет доступа к файлу локализации '%s': %s\n"
+msgstr "п╫п╣я┌ п╢п╬я│я┌я┐п©п╟ п╨ я└п╟п╧п╩я┐ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s': %s\n"
 
 #: clicgt.c:471
 #, c-format
 msgid "cannot open locale file '%s': %s\n"
-msgstr "невозможно открыть файл локализации '%s': %s\n"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s': %s\n"
 
 #: clicgt.c:475
 #, c-format
 msgid "open locale file '%s', charset '%s'\n"
-msgstr "открыт файл локализации '%s', кодировка '%s'\n"
+msgstr "п╬я┌п╨я─я▀я┌ я└п╟п╧п╩ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s', п╨п╬п╢п╦я─п╬п╡п╨п╟ '%s'\n"
 
 #: clicgt.c:480
 #, c-format
 msgid "cannot stat locale file '%s': %s\n"
-msgstr "невозможно получить состояние файла локализации '%s': %s\n"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п©п╬п╩я┐я┤п╦я┌я▄ я│п╬я│я┌п╬я▐п╫п╦п╣ я└п╟п╧п╩п╟ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s': %s\n"
 
 #: clicgt.c:516
 #, c-format
 msgid "cannot read locale file '%s': %s\n"
-msgstr "ошибка чтения файла локализации '%s': %s\n"
+msgstr "п╬я┬п╦п╠п╨п╟ я┤я┌п╣п╫п╦я▐ я└п╟п╧п╩п╟ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s': %s\n"
 
 #: clicgt.c:542
 #, c-format
 msgid "wrong magic number of locale file '%s'\n"
-msgstr "неправильный magic number файла локализации '%s'\n"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫я▀п╧ magic number я└п╟п╧п╩п╟ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s'\n"
 
 #: clicgt.c:564
 #, c-format
 msgid "illegal revision of locale file '%s': %d\n"
-msgstr "неизвестная версия файла локализации '%s': %d\n"
+msgstr "п╫п╣п╦п╥п╡п╣я│я┌п╫п╟я▐ п╡п╣я─я│п╦я▐ я└п╟п╧п╩п╟ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s': %d\n"
 
 #: /usr/share/bison/bison.simple:179
 msgid "syntax error: cannot back up"
-msgstr "синтаксическая ошибка: возврат невозможен"
+msgstr "я│п╦п╫я┌п╟п╨я│п╦я┤п╣я│п╨п╟я▐ п╬я┬п╦п╠п╨п╟: п╡п╬п╥п╡я─п╟я┌ п╫п╣п╡п╬п╥п╪п╬п╤п╣п╫"
 
 #: clic.y:625
 msgid "EXTERN after executable statements"
-msgstr "EXTERN после выполнимого оператора"
+msgstr "EXTERN п©п╬я│п╩п╣ п╡я▀п©п╬п╩п╫п╦п╪п╬пЁп╬ п╬п©п╣я─п╟я┌п╬я─п╟"
 
 #: clic.y:790
 msgid "EXIT statement out of loop"
-msgstr "оператор EXIT вне цикла"
+msgstr "п╬п©п╣я─п╟я┌п╬я─ EXIT п╡п╫п╣ я├п╦п╨п╩п╟"
 
 #: clic.y:797
 msgid "LOOP statement out of loop"
-msgstr "оператор LOOP вне цикла"
+msgstr "п╬п©п╣я─п╟я┌п╬я─ LOOP п╡п╫п╣ я├п╦п╨п╩п╟"
 
 #: clic.y:853
 msgid "please, use IIF function (not IF) on operator level to avoid conflicts"
 msgstr ""
-"пожалуйста, используйте функцию IIF (вместо IF) на уровне операторов, для "
-"избежания  конфликтов"
+"п©п╬п╤п╟п╩я┐п╧я│я┌п╟, п╦я│п©п╬п╩я▄п╥я┐п╧я┌п╣ я└я┐п╫п╨я├п╦я▌ IIF (п╡п╪п╣я│я┌п╬ IF) п╫п╟ я┐я─п╬п╡п╫п╣ п╬п©п╣я─п╟я┌п╬я─п╬п╡, п╢п╩я▐ "
+"п╦п╥п╠п╣п╤п╟п╫п╦я▐  п╨п╬п╫я└п╩п╦п╨я┌п╬п╡"
 
 #: clic.y:949
 msgid "unclosed BEGIN SEQUENCE"
-msgstr "незавершенный BEGIN SEQUENCE"
+msgstr "п╫п╣п╥п╟п╡п╣я─я┬п╣п╫п╫я▀п╧ BEGIN SEQUENCE"
 
 #: clic.y:1123
 msgid "invalid array call"
-msgstr "неверный вызов массива"
+msgstr "п╫п╣п╡п╣я─п╫я▀п╧ п╡я▀п╥п╬п╡ п╪п╟я│я│п╦п╡п╟"
 
 #: clic.y:1376 clic.y:1381
 msgid "only inline assign := allowed in initialisation"
-msgstr "только inline-присваивание ( :=) разрешено при инициализации"
+msgstr "я┌п╬п╩я▄п╨п╬ inline-п©я─п╦я│п╡п╟п╦п╡п╟п╫п╦п╣ ( :=) я─п╟п╥я─п╣я┬п╣п╫п╬ п©я─п╦ п╦п╫п╦я├п╦п╟п╩п╦п╥п╟я├п╦п╦"
 
 #: clic.y:1419
 #, c-format
 msgid "name '%s' duplication"
-msgstr "повторное использование '%s'"
+msgstr "п©п╬п╡я┌п╬я─п╫п╬п╣ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ '%s'"
 
 #: /usr/share/bison/bison.simple:795
 msgid "parse error; also virtual memory exhausted"
-msgstr "ошибка разбора; виртуальная память исчерпана"
+msgstr "п╬я┬п╦п╠п╨п╟ я─п╟п╥п╠п╬я─п╟; п╡п╦я─я┌я┐п╟п╩я▄п╫п╟я▐ п©п╟п╪я▐я┌я▄ п╦я│я┤п╣я─п©п╟п╫п╟"
 
 #: /usr/share/bison/bison.simple:799
 msgid "parse error"
-msgstr "ошибка разбора"
+msgstr "п╬я┬п╦п╠п╨п╟ я─п╟п╥п╠п╬я─п╟"
 
 #: /usr/share/bison/bison.simple:924
 msgid "parser stack overflow"
-msgstr "переполнение стека парсера"
+msgstr "п©п╣я─п╣п©п╬п╩п╫п╣п╫п╦п╣ я│я┌п╣п╨п╟ п©п╟я─я│п╣я─п╟"
 
 #: clic.y:1659
 #, c-format
 msgid "cannot open file '%s'"
-msgstr "невозможно открыть файл '%s'"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ '%s'"
 
 #: clic.y:1676
 msgid "executable operator outside of function (-n flag is active)"
-msgstr "выполнимый оператор вне функции (включен флаг -n)"
+msgstr "п╡я▀п©п╬п╩п╫п╦п╪я▀п╧ п╬п©п╣я─п╟я┌п╬я─ п╡п╫п╣ я└я┐п╫п╨я├п╦п╦ (п╡п╨п╩я▌я┤п╣п╫ я└п╩п╟пЁ -n)"
 
 #: clic.y:1690
 #, c-format
@@ -137,23 +137,23 @@ msgid ""
 "in file '%s',\n"
 "\tincluded at line %d "
 msgstr ""
-"в файле '%s',\n"
-"\tвключенном на строке %d "
+"п╡ я└п╟п╧п╩п╣ '%s',\n"
+"\tп╡п╨п╩я▌я┤п╣п╫п╫п╬п╪ п╫п╟ я│я┌я─п╬п╨п╣ %d "
 
 #: clic.y:1692
 #, c-format
 msgid "in file '%s'\n"
-msgstr "в файле '%s'\n"
+msgstr "п╡ я└п╟п╧п╩п╣ '%s'\n"
 
 #: clic.y:1694
 #, c-format
 msgid "  working directory : '%s'\n"
-msgstr "  рабочий каталог : '%s'\n"
+msgstr "  я─п╟п╠п╬я┤п╦п╧ п╨п╟я┌п╟п╩п╬пЁ : '%s'\n"
 
 #: clic.y:1707
 #, c-format
 msgid "error %d: "
-msgstr "ошибка %d: "
+msgstr "п╬я┬п╦п╠п╨п╟ %d: "
 
 #: clic.y:1711
 #, c-format
@@ -162,17 +162,17 @@ msgid ""
 "\tline %ld pos %ld (yychar=%d, '%c') "
 msgstr ""
 "\n"
-"\tстрока %ld позиция %ld (yychar=%d, '%c') "
+"\tя│я┌я─п╬п╨п╟ %ld п©п╬п╥п╦я├п╦я▐ %ld (yychar=%d, '%c') "
 
 #: clic.y:1714
 #, c-format
 msgid "error %d, (yychar=%d) "
-msgstr "ошибка %d, (yychar=%d) "
+msgstr "п╬я┬п╦п╠п╨п╟ %d, (yychar=%d) "
 
 #: clic.y:1731
 #, c-format
 msgid "warning %d: "
-msgstr "предупреждение %d: "
+msgstr "п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╣ %d: "
 
 #: clic.y:1735
 #, c-format
@@ -181,66 +181,66 @@ msgid ""
 "\tline %ld, pos %ld, "
 msgstr ""
 "\n"
-"\tстрока %ld, позиция %ld, "
+"\tя│я┌я─п╬п╨п╟ %ld, п©п╬п╥п╦я├п╦я▐ %ld, "
 
 #: clic.y:1738
 #, c-format
 msgid "warning %d, "
-msgstr "предупреждение %d, "
+msgstr "п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╣ %d, "
 
 #: clic.y:1749
 #, c-format
 msgid "unclosed loop statement (level %d, begin at line %d file %s)"
-msgstr "незавершенный оператор цикла (уровень %d, начало на строке %d file %s)"
+msgstr "п╫п╣п╥п╟п╡п╣я─я┬п╣п╫п╫я▀п╧ п╬п©п╣я─п╟я┌п╬я─ я├п╦п╨п╩п╟ (я┐я─п╬п╡п╣п╫я▄ %d, п╫п╟я┤п╟п╩п╬ п╫п╟ я│я┌я─п╬п╨п╣ %d file %s)"
 
 #: clic.y:1755
 #, c-format
 msgid "unclosed IF statement (level %d, begin at line %d file %s)"
-msgstr "незавершенный оператор IF (уровень %d, начало на строке %d файл %s)"
+msgstr "п╫п╣п╥п╟п╡п╣я─я┬п╣п╫п╫я▀п╧ п╬п©п╣я─п╟я┌п╬я─ IF (я┐я─п╬п╡п╣п╫я▄ %d, п╫п╟я┤п╟п╩п╬ п╫п╟ я│я┌я─п╬п╨п╣ %d я└п╟п╧п╩ %s)"
 
 #: clic.y:1761
 #, c-format
 msgid "unclosed SEQUENCE statement (level %d, begin at line %d file %s)"
 msgstr ""
-"незавершенный оператор SEQUENCE (уровень %d, начало на строке %d файл %s)"
+"п╫п╣п╥п╟п╡п╣я─я┬п╣п╫п╫я▀п╧ п╬п©п╣я─п╟я┌п╬я─ SEQUENCE (я┐я─п╬п╡п╣п╫я▄ %d, п╫п╟я┤п╟п╩п╬ п╫п╟ я│я┌я─п╬п╨п╣ %d я└п╟п╧п╩ %s)"
 
 #: clicutil.c:532
 #, c-format
 msgid ""
 "duplicate name '%s', previous name defined near line %d pos %d in file '%s'"
 msgstr ""
-"повторное определение имени '%s', предыдущее определение около строки %d "
-"позиция %d файл '%s'"
+"п©п╬п╡я┌п╬я─п╫п╬п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╦п╪п╣п╫п╦ '%s', п©я─п╣п╢я▀п╢я┐я┴п╣п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d "
+"п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%s'"
 
 #: clicutil.c:667
 #, c-format
 msgid "declaration function with module name '%s'; force -n flag"
-msgstr "объявление функции с именем модуля '%s';  установлен флаг -n "
+msgstr "п╬п╠я┼я▐п╡п╩п╣п╫п╦п╣ я└я┐п╫п╨я├п╦п╦ я│ п╦п╪п╣п╫п╣п╪ п╪п╬п╢я┐п╩я▐ '%s';  я┐я│я┌п╟п╫п╬п╡п╩п╣п╫ я└п╩п╟пЁ -n "
 
 #: clicutil.c:680
 #, c-format
 msgid "function '%s' already defined near line %d file %s"
-msgstr "функция '%s' уже определена около строки %d файла %s"
+msgstr "я└я┐п╫п╨я├п╦я▐ '%s' я┐п╤п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╟ п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d я└п╟п╧п╩п╟ %s"
 
 #: clicutil.c:685
 #, c-format
 msgid "static function '%s' already declared as external"
-msgstr "статическая функция '%s' уже определена как внешняя"
+msgstr "я│я┌п╟я┌п╦я┤п╣я│п╨п╟я▐ я└я┐п╫п╨я├п╦я▐ '%s' я┐п╤п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╟ п╨п╟п╨ п╡п╫п╣я┬п╫я▐я▐"
 
 #: clicutil.c:778 node.c:1389 node.c:1447 node.c:1490 node.c:1517 node.c:1912
 msgid "macro variable name not allowed here"
-msgstr "имя макро-переменной здесь не разрешено"
+msgstr "п╦п╪я▐ п╪п╟п╨я─п╬-п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╥п╢п╣я│я▄ п╫п╣ я─п╟п╥я─п╣я┬п╣п╫п╬"
 
 #: clicutil.c:964
 #, c-format
 msgid "name '%s' already declared as LOCAL near line %d pos %d file '%s'"
-msgstr "имя '%s' уже определено как LOCAL около строки %d позиция %d файл '%s'"
+msgstr "п╦п╪я▐ '%s' я┐п╤п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╬ п╨п╟п╨ LOCAL п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%s'"
 
 #: clicutil.c:970
 #, c-format
 msgid "name '%s' already declared as PARAMETER near line %d pos %d file '%s'"
 msgstr ""
-"имя '%s' уже определено как PARAMETER около строки %d позиция %d файл '%s'"
+"п╦п╪я▐ '%s' я┐п╤п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╬ п╨п╟п╨ PARAMETER п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%s'"
 
 #: clicutil.c:976
 #, c-format
@@ -248,39 +248,39 @@ msgid ""
 "name '%s' already declared as MEMVAR near line %d pos %d file '%s' (previous "
 "name will be hidden)"
 msgstr ""
-"имя '%s' уже определено как MEMVAR около строки %d позиция %d файл '%"
-"s' (предыдущее имя будет скрыто)"
+"п╦п╪я▐ '%s' я┐п╤п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╬ п╨п╟п╨ MEMVAR п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%"
+"s' (п©я─п╣п╢я▀п╢я┐я┴п╣п╣ п╦п╪я▐ п╠я┐п╢п╣я┌ я│п╨я─я▀я┌п╬)"
 
 #: clicutil.c:982
 #, c-format
 msgid "name '%s' already declared as FIELD near line %d pos %d file '%s'"
-msgstr "имя '%s' уже определено как FIELD около строки %d позиция %d файл '%s'"
+msgstr "п╦п╪я▐ '%s' я┐п╤п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╬ п╨п╟п╨ FIELD п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%s'"
 
 #: clicutil.c:988
 #, c-format
 msgid "name '%s' already declared as STATIC near line %d pos %d file '%s'"
 msgstr ""
-"имя '%s' уже определено как STATIC около строки %d позиция %d файл '%s'"
+"п╦п╪я▐ '%s' я┐п╤п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╬ п╨п╟п╨ STATIC п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%s'"
 
 #: clicutil.c:1136
 #, c-format
 msgid "namespace of name '%s' undeclared, assumed as FIELD-MEMVAR"
-msgstr "пространство имен для '%s' неопределено, установлено в FIELD-MEMVAR"
+msgstr "п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╬ п╦п╪п╣п╫ п╢п╩я▐ '%s' п╫п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╬, я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╬ п╡ FIELD-MEMVAR"
 
 #: clipar.c:147
 #, c-format
 msgid "file '%s' table:\n"
-msgstr "таблица файла '%s':\n"
+msgstr "я┌п╟п╠п╩п╦я├п╟ я└п╟п╧п╩п╟ '%s':\n"
 
 #: clipar.c:225
 #, c-format
 msgid "read module %s: %ld bytes\n"
-msgstr "прочитано для модуля %s: %ld байт\n"
+msgstr "п©я─п╬я┤п╦я┌п╟п╫п╬ п╢п╩я▐ п╪п╬п╢я┐п╩я▐ %s: %ld п╠п╟п╧я┌\n"
 
 #: clipar.c:256
 #, c-format
 msgid "%s: %d byte %d func %d pub %d inits %d exits %s"
-msgstr "%s: %d байт %d функций %d pub %d inits %d exits %s"
+msgstr "%s: %d п╠п╟п╧я┌ %d я└я┐п╫п╨я├п╦п╧ %d pub %d inits %d exits %s"
 
 #: clipar.c:260
 #, c-format
@@ -290,37 +290,37 @@ msgstr "\t%d:\thash=0x%x\toffs=%ld\n"
 #: clipar.c:301
 #, c-format
 msgid "read file '%s': %d modules\n"
-msgstr "файл '%s': %d модулей\n"
+msgstr "я└п╟п╧п╩ '%s': %d п╪п╬п╢я┐п╩п╣п╧\n"
 
 #: clipar.c:453
 #, c-format
 msgid "write file '%s', %d func\n"
-msgstr "записан файл '%s', %d функций\n"
+msgstr "п╥п╟п©п╦я│п╟п╫ я└п╟п╧п╩ '%s', %d я└я┐п╫п╨я├п╦п╧\n"
 
 #: clipar.c:523 clipar.c:652
 #, c-format
 msgid "done, %ld bytes\n"
-msgstr "сделано, %ld байт\n"
+msgstr "я│п╢п╣п╩п╟п╫п╬, %ld п╠п╟п╧я┌\n"
 
 #: clipar.c:572
 #, c-format
 msgid "write file '%s'\n"
-msgstr "запись файла '%s'\n"
+msgstr "п╥п╟п©п╦я│я▄ я└п╟п╧п╩п╟ '%s'\n"
 
 #: clip.c:805 clip.c:1531
 #, c-format
 msgid "set source charset to %s\n"
-msgstr "установлена исходная кодировка %s\n"
+msgstr "я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╟ п╦я│я┘п╬п╢п╫п╟я▐ п╨п╬п╢п╦я─п╬п╡п╨п╟ %s\n"
 
 #: clip.c:811 clip.c:1532
 #, c-format
 msgid "set target charset to %s\n"
-msgstr "установлена целевая кодировка %s\n"
+msgstr "я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╟ я├п╣п╩п╣п╡п╟я▐ п╨п╬п╢п╦я─п╬п╡п╨п╟ %s\n"
 
 #: clip.c:822
 #, c-format
 msgid "invalid argument for -E: '%s'"
-msgstr "неправильный аргумент для -E: '%s'"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫я▀п╧ п╟я─пЁя┐п╪п╣п╫я┌ п╢п╩я▐ -E: '%s'"
 
 #: clip.c:839
 #, c-format
@@ -328,13 +328,13 @@ msgid ""
 "invalid compatability word: '%s'\n"
 "possible values: as-word, no-as-word"
 msgstr ""
-"неправильная установка совместимости: '%s'\n"
-"возможные значения: as-word, no-as-word"
+"п╫п╣п©я─п╟п╡п╦п╩я▄п╫п╟я▐ я┐я│я┌п╟п╫п╬п╡п╨п╟ я│п╬п╡п╪п╣я│я┌п╦п╪п╬я│я┌п╦: '%s'\n"
+"п╡п╬п╥п╪п╬п╤п╫я▀п╣ п╥п╫п╟я┤п╣п╫п╦я▐: as-word, no-as-word"
 
 #: clip.c:845
 #, c-format
 msgid "try '%s --help' for options details\n"
-msgstr "попробуйте '%s --help' для описания опций\n"
+msgstr "п©п╬п©я─п╬п╠я┐п╧я┌п╣ '%s --help' п╢п╩я▐ п╬п©п╦я│п╟п╫п╦я▐ п╬п©я├п╦п╧\n"
 
 #: clip.c:849
 #, c-format
@@ -417,83 +417,83 @@ msgid ""
 " all above options may be placed in .cliprc file in current directory,\n"
 " in $HOME/.cliprc file, or in any file in $CLIPROOT/cliprc directory\n"
 msgstr ""
-"Использование: %s [опции] [<имяфайла.> ...]\n"
-"опции.:\n"
+"п≤я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣: %s [п╬п©я├п╦п╦] [<п╦п╪я▐я└п╟п╧п╩п╟.> ...]\n"
+"п╬п©я├п╦п╦.:\n"
 " -h, --help\n"
-"\tэта помощь\n"
+"\tя█я┌п╟ п©п╬п╪п╬я┴я▄\n"
 " -H, --help-environment\n"
-"\tописание переменных окружения\n"
+"\tп╬п©п╦я│п╟п╫п╦п╣ п©п╣я─п╣п╪п╣п╫п╫я▀я┘ п╬п╨я─я┐п╤п╣п╫п╦я▐\n"
 " -V, --version\n"
-"\tвыводит версию clip\n"
-" -v[<уровень>], --verbose[=<уровень>]\n"
-"\tустанавливает/увеличивает уровень сообщений отладки\n"
+"\tп╡я▀п╡п╬п╢п╦я┌ п╡п╣я─я│п╦я▌ clip\n"
+" -v[<я┐я─п╬п╡п╣п╫я▄>], --verbose[=<я┐я─п╬п╡п╣п╫я▄>]\n"
+"\tя┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌/я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌ я┐я─п╬п╡п╣п╫я▄ я│п╬п╬п╠я┴п╣п╫п╦п╧ п╬я┌п╩п╟п╢п╨п╦\n"
 " -a, --auto-memvar[=1|0]\n"
-"\tустанавливает режим объявления переменных auto memvar\n"
+"\tя┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я─п╣п╤п╦п╪ п╬п╠я┼я▐п╡п╩п╣п╫п╦я▐ п©п╣я─п╣п╪п╣п╫п╫я▀я┘ auto memvar\n"
 " -w, --namespace-warning[=1|0]\n"
-"\tвыводятся предупреждения при неявном определении переменной\n"
+"\tп╡я▀п╡п╬п╢я▐я┌я│я▐ п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦я▐ п©я─п╦ п╫п╣я▐п╡п╫п╬п╪ п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╦ п©п╣я─п╣п╪п╣п╫п╫п╬п╧\n"
 " -e, --exec\n"
-"\tгенерирует выполнимый файл\n"
+"\tпЁп╣п╫п╣я─п╦я─я┐п╣я┌ п╡я▀п©п╬п╩п╫п╦п╪я▀п╧ я└п╟п╧п╩\n"
 " -c, --compile\n"
-"\tостановка после генерации C кода\n"
+"\tп╬я│я┌п╟п╫п╬п╡п╨п╟ п©п╬я│п╩п╣ пЁп╣п╫п╣я─п╟я├п╦п╦ C п╨п╬п╢п╟\n"
 " -g,-b, --debug[=1|0]\n"
-"\tгенерировать отладочную информацию\n"
+"\tпЁп╣п╫п╣я─п╦я─п╬п╡п╟я┌я▄ п╬я┌п╩п╟п╢п╬я┤п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌\n"
 " -t, --show-syntax-tree\n"
-"\tвыводит синтаксическое дерево программы\n"
+"\tп╡я▀п╡п╬п╢п╦я┌ я│п╦п╫я┌п╟п╨я│п╦я┤п╣я│п╨п╬п╣ п╢п╣я─п╣п╡п╬ п©я─п╬пЁя─п╟п╪п╪я▀\n"
 " -o<name>, --output=<name>\n"
-"\tустанавливает имя выходного файла\n"
+"\tя┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╦п╪я▐ п╡я▀я┘п╬п╢п╫п╬пЁп╬ я└п╟п╧п╩п╟\n"
 " -d<name>, --outdir=<name>\n"
-"\tустанавливает выходной каталог\n"
+"\tя┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╡я▀я┘п╬п╢п╫п╬п╧ п╨п╟я┌п╟п╩п╬пЁ\n"
 " -O, --optimise[=<val>]\n"
-"\tустанавливает уровень оптимизации\n"
+"\tя┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я┐я─п╬п╡п╣п╫я▄ п╬п©я┌п╦п╪п╦п╥п╟я├п╦п╦\n"
 " -M, --main\n"
-"\tиспользовать первое <имяфайла> как стартовую точку программы\n"
+"\tп╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ п©п╣я─п╡п╬п╣ <п╦п╪я▐я└п╟п╧п╩п╟> п╨п╟п╨ я│я┌п╟я─я┌п╬п╡я┐я▌ я┌п╬я┤п╨я┐ п©я─п╬пЁя─п╟п╪п╪я▀\n"
 " -n, --nomain\n"
-"\tне объявлять процедуру с именем файла\n"
+"\tп╫п╣ п╬п╠я┼я▐п╡п╩я▐я┌я▄ п©я─п╬я├п╣п╢я┐я─я┐ я│ п╦п╪п╣п╫п╣п╪ я└п╟п╧п╩п╟\n"
 " -p, --pcode\n"
-"\tгенерировать модуль в псевдокоде\n"
+"\tпЁп╣п╫п╣я─п╦я─п╬п╡п╟я┌я▄ п╪п╬п╢я┐п╩я▄ п╡ п©я│п╣п╡п╢п╬п╨п╬п╢п╣\n"
 " -l, --c-pcode\n"
-"\tгенерировать модуль C-псевдокода.\n"
+"\tпЁп╣п╫п╣я─п╦я─п╬п╡п╟я┌я▄ п╪п╬п╢я┐п╩я▄ C-п©я│п╣п╡п╢п╬п╨п╬п╢п╟.\n"
 " -s, --shared\n"
-"\tсоздать разделяемый объект\n"
+"\tя│п╬п╥п╢п╟я┌я▄ я─п╟п╥п╢п╣п╩я▐п╣п╪я▀п╧ п╬п╠я┼п╣п╨я┌\n"
 " -r, --shared-exec\n"
-"\tвсегда когда возможно линковать с разделяемыми библиотеками\n"
+"\tп╡я│п╣пЁп╢п╟ п╨п╬пЁп╢п╟ п╡п╬п╥п╪п╬п╤п╫п╬ п╩п╦п╫п╨п╬п╡п╟я┌я▄ я│ я─п╟п╥п╢п╣п╩я▐п╣п╪я▀п╪п╦ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟п╪п╦\n"
 " --static\n"
 "\tstatic link CLIP libraries to executable\n"
 " --full-static\n"
 "\tstatic link all libraries to executable\n"
 " -I<path>, --include-path=<path>\n"
-"\tдобавить каталог для поиска включаемых файлов\n"
+"\tп╢п╬п╠п╟п╡п╦я┌я▄ п╨п╟я┌п╟п╩п╬пЁ п╢п╩я▐ п©п╬п╦я│п╨п╟ п╡п╨п╩я▌я┤п╟п╣п╪я▀я┘ я└п╟п╧п╩п╬п╡\n"
 " -L<path>, --library-path=<path>\n"
-"\tдобавить каталог для поиска библиотечных файлов\n"
+"\tп╢п╬п╠п╟п╡п╦я┌я▄ п╨п╟я┌п╟п╩п╬пЁ п╢п╩я▐ п©п╬п╦я│п╨п╟ п╠п╦п╠п╩п╦п╬я┌п╣я┤п╫я▀я┘ я└п╟п╧п╩п╬п╡\n"
 " -D<name>, --define=<name>\n"
-"\tопределить макро-имя\n"
+"\tп╬п©я─п╣п╢п╣п╩п╦я┌я▄ п╪п╟п╨я─п╬-п╦п╪я▐\n"
 " -D<name=value>, --define=<name=value>\n"
-"\tопределить макро-имя как значение <value>\n"
+"\tп╬п©я─п╣п╢п╣п╩п╦я┌я▄ п╪п╟п╨я─п╬-п╦п╪я▐ п╨п╟п╨ п╥п╫п╟я┤п╣п╫п╦п╣ <value>\n"
 " -U[<filename>], --use-std-ch[=<filename>]\n"
-"\tиспользовать альтернативное имя стандартного включаемого файла (std.ch)\n"
+"\tп╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡п╫п╬п╣ п╦п╪я▐ я│я┌п╟п╫п╢п╟я─я┌п╫п╬пЁп╬ п╡п╨п╩я▌я┤п╟п╣п╪п╬пЁп╬ я└п╟п╧п╩п╟ (std.ch)\n"
 " -S<charset>, --source-charset\n"
-"\tустановить исходную кодировку строковых констант\n"
+"\tя┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п╦я│я┘п╬п╢п╫я┐я▌ п╨п╬п╢п╦я─п╬п╡п╨я┐ я│я┌я─п╬п╨п╬п╡я▀я┘ п╨п╬п╫я│я┌п╟п╫я┌\n"
 " -T<charet>, --target-charset\n"
-"\tустановить целевую кодировку строковых констант\n"
+"\tя┐я│я┌п╟п╫п╬п╡п╦я┌я▄ я├п╣п╩п╣п╡я┐я▌ п╨п╬п╢п╦я─п╬п╡п╨я┐ я│я┌я─п╬п╨п╬п╡я▀я┘ п╨п╬п╫я│я┌п╟п╫я┌\n"
 " -P, --preprocess\n"
-"\tвыполнить только проход препроцессора\n"
+"\tп╡я▀п©п╬п╩п╫п╦я┌я▄ я┌п╬п╩я▄п╨п╬ п©я─п╬я┘п╬п╢ п©я─п╣п©я─п╬я├п╣я│я│п╬я─п╟\n"
 " -C, --show-command\n"
-"\tвыводить определения команд\n"
+"\tп╡я▀п╡п╬п╢п╦я┌я▄ п╬п©я─п╣п╢п╣п╩п╣п╫п╦я▐ п╨п╬п╪п╟п╫п╢\n"
 " -R, --noremove-c\n"
-"\tне удалять временные '.c' файлы\n"
+"\tп╫п╣ я┐п╢п╟п╩я▐я┌я▄ п╡я─п╣п╪п╣п╫п╫я▀п╣ '.c' я└п╟п╧п╩я▀\n"
 " -N, --names\n"
-"\tвыводить предупреждения на использование неопределенных функций\n"
+"\tп╡я▀п╡п╬п╢п╦я┌я▄ п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦я▐ п╫п╟ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╫п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀я┘ я└я┐п╫п╨я├п╦п╧\n"
 " -E<name=value>, --environment=<name=value>\n"
-"\tустановить значение переменной окружения\n"
+"\tя┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╬п╨я─я┐п╤п╣п╫п╦я▐\n"
 " -q <word>, --compat=<word>\n"
-" \tустановить режим совместимости с ключевыми словами:\n"
-" \t        no-as-word  \t- значение по умолчанию\n"
+" \tя┐я│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╣п╤п╦п╪ я│п╬п╡п╪п╣я│я┌п╦п╪п╬я│я┌п╦ я│ п╨п╩я▌я┤п╣п╡я▀п╪п╦ я│п╩п╬п╡п╟п╪п╦:\n"
+" \t        no-as-word  \t- п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌\n"
 " \t \tas-word\n"
 "\n"
-" <имяфайла> файлы для обработки\n"
+" <п╦п╪я▐я└п╟п╧п╩п╟> я└п╟п╧п╩я▀ п╢п╩я▐ п╬п╠я─п╟п╠п╬я┌п╨п╦\n"
 "\n"
-"Все вышеприведенные опции могут быть помещены в файл .cliprc \n"
-"в текущем каталоге, в файл $HOME/.cliprc, либо в любой файл в каталоге\n"
+"п▓я│п╣ п╡я▀я┬п╣п©я─п╦п╡п╣п╢п╣п╫п╫я▀п╣ п╬п©я├п╦п╦ п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п©п╬п╪п╣я┴п╣п╫я▀ п╡ я└п╟п╧п╩ .cliprc \n"
+"п╡ я┌п╣п╨я┐я┴п╣п╪ п╨п╟я┌п╟п╩п╬пЁп╣, п╡ я└п╟п╧п╩ $HOME/.cliprc, п╩п╦п╠п╬ п╡ п╩я▌п╠п╬п╧ я└п╟п╧п╩ п╡ п╨п╟я┌п╟п╩п╬пЁп╣\n"
 "$CLIPROOT/cliprc\n"
 
 #: clip.c:931
@@ -554,194 +554,194 @@ msgid ""
 "\t__CLIP_MODULE__      string - name of current locale module\n"
 msgstr ""
 "\n"
-"%s принимает следующие переменные.окружения:\n"
+"%s п©я─п╦п╫п╦п╪п╟п╣я┌ я│п╩п╣п╢я┐я▌я┴п╦п╣ п©п╣я─п╣п╪п╣п╫п╫я▀п╣.п╬п╨я─я┐п╤п╣п╫п╦я▐:\n"
 "\n"
 "CC\n"
-"\tпрограмма компилятора C  (default=='%s')\n"
+"\tп©я─п╬пЁя─п╟п╪п╪п╟ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ C  (default=='%s')\n"
 "CFLAGS\n"
-"\tопции компилятора .C (default=='%s')\n"
+"\tп╬п©я├п╦п╦ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ .C (default=='%s')\n"
 "COMPILE_FLAG\n"
-"\tфлаг 'compile-only' для компилятора C (default=='%s')\n"
+"\tя└п╩п╟пЁ 'compile-only' п╢п╩я▐ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ C (default=='%s')\n"
 "COPT\n"
-"\tфлаг оптимизации. для компилятора C (default=='%s')\n"
+"\tя└п╩п╟пЁ п╬п©я┌п╦п╪п╦п╥п╟я├п╦п╦. п╢п╩я▐ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ C (default=='%s')\n"
 "CDBG\n"
-"\tфлаг отладки для компилятора C (default=='%s')\n"
+"\tя└п╩п╟пЁ п╬я┌п╩п╟п╢п╨п╦ п╢п╩я▐ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ C (default=='%s')\n"
 "OUT_FLAG\n"
-"\tфлаг задания выходного файла для компилятора C  (default=='%s')\n"
+"\tя└п╩п╟пЁ п╥п╟п╢п╟п╫п╦я▐ п╡я▀я┘п╬п╢п╫п╬пЁп╬ я└п╟п╧п╩п╟ п╢п╩я▐ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ C  (default=='%s')\n"
 "INCLUDE_FLAG\n"
-"\tфлаг включения файлов для компилятора C (default=='%s')\n"
+"\tя└п╩п╟пЁ п╡п╨п╩я▌я┤п╣п╫п╦я▐ я└п╟п╧п╩п╬п╡ п╢п╩я▐ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ C (default=='%s')\n"
 "OBJSUF\n"
-"\tсуффикс для выходных объектных файлов (default=='%s')\n"
+"\tя│я┐я└я└п╦п╨я│ п╢п╩я▐ п╡я▀я┘п╬п╢п╫я▀я┘ п╬п╠я┼п╣п╨я┌п╫я▀я┘ я└п╟п╧п╩п╬п╡ (default=='%s')\n"
 "SOBJSUF\n"
-"\tсуффикс для выходных разделяемых объектных файлов (default=='%s')\n"
+"\tя│я┐я└я└п╦п╨я│ п╢п╩я▐ п╡я▀я┘п╬п╢п╫я▀я┘ я─п╟п╥п╢п╣п╩я▐п╣п╪я▀я┘ п╬п╠я┼п╣п╨я┌п╫я▀я┘ я└п╟п╧п╩п╬п╡ (default=='%s')\n"
 "LIBSUF\n"
-"\tсуффикс для библиотечных файлов (default=='%s')\n"
+"\tя│я┐я└я└п╦п╨я│ п╢п╩я▐ п╠п╦п╠п╩п╦п╬я┌п╣я┤п╫я▀я┘ я└п╟п╧п╩п╬п╡ (default=='%s')\n"
 "SLIBSUF\n"
-"\tсуффикс для разделяемых библиотек (default=='%s')\n"
+"\tя│я┐я└я└п╦п╨я│ п╢п╩я▐ я─п╟п╥п╢п╣п╩я▐п╣п╪я▀я┘ п╠п╦п╠п╩п╦п╬я┌п╣п╨ (default=='%s')\n"
 "SFLAGS\n"
-"\tопции для компилятора C - разделяемая версия (default=='%s')\n"
+"\tп╬п©я├п╦п╦ п╢п╩я▐ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟ C - я─п╟п╥п╢п╣п╩я▐п╣п╪п╟я▐ п╡п╣я─я│п╦я▐ (default=='%s')\n"
 "CLIPLIB\n"
-"\tосновная библиотека поддержки времени выполнения (default=='%s')\n"
+"\tп╬я│п╫п╬п╡п╫п╟я▐ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п©п╬п╢п╢п╣я─п╤п╨п╦ п╡я─п╣п╪п╣п╫п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ (default=='%s')\n"
 "CLIPSLIB\n"
-"\tразделяемая библиотека поддержки времени выполнения (default=='%s')\n"
+"\tя─п╟п╥п╢п╣п╩я▐п╣п╪п╟я▐ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п©п╬п╢п╢п╣я─п╤п╨п╦ п╡я─п╣п╪п╣п╫п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ (default=='%s')\n"
 "CLIPLIBS\n"
-"\tдополнительные библиотеки (default=='%s')\n"
+"\tп╢п╬п©п╬п╩п╫п╦я┌п╣п╩я▄п╫я▀п╣ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ (default=='%s')\n"
 "CLIPROOT\n"
-"\tкорневой каталог для clip (default=='%s')\n"
+"\tп╨п╬я─п╫п╣п╡п╬п╧ п╨п╟я┌п╟п╩п╬пЁ п╢п╩я▐ clip (default=='%s')\n"
 "CLIP_LOCALE_ROOT\n"
-"\tкорневой каталог для локализованных сообщений\n"
+"\tп╨п╬я─п╫п╣п╡п╬п╧ п╨п╟я┌п╟п╩п╬пЁ п╢п╩я▐ п╩п╬п╨п╟п╩п╦п╥п╬п╡п╟п╫п╫я▀я┘ я│п╬п╬п╠я┴п╣п╫п╦п╧\n"
 "CLIP_MODULE\n"
-"\tимя модуля локализации (default=='%s')\n"
+"\tп╦п╪я▐ п╪п╬п╢я┐п╩я▐ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ (default=='%s')\n"
 "CLIP_CMDSTR\n"
-"\tразделенный запятыми список опций командной строки\n"
+"\tя─п╟п╥п╢п╣п╩п╣п╫п╫я▀п╧ п╥п╟п©я▐я┌я▀п╪п╦ я│п©п╦я│п╬п╨ п╬п©я├п╦п╧ п╨п╬п╪п╟п╫п╢п╫п╬п╧ я│я┌я─п╬п╨п╦\n"
 "CLIP_NAMES\n"
-"\tгенерировать файлы .ex, .nm (возможны значения yes/no|on/off|0/1)\n"
-"предопределенные макросы:\n"
-"\t__FILE__      строка - имя текущего файла компиляции\n"
-"\t__BASE_FILE__ строка - имя корневого файла компиляции\n"
-"\t__LINE__      число - номер текущей строки в файле компиляции\n"
-"\t__VERSION__   строка - версия clip\n"
-"\t__CLIP__\tстрока - версия clip\n"
-"\t__SYSTEM__\tстрока - имя операционной системы\n"
-"\t__DATE__      строка - текущая дата в формате 'MON DD YYYY'\n"
-"\t__TIME__      строка - текущее время в формате 'HH:MM::SS'\n"
-"\t__CLIP_MODULE__      строка - имя текущего модуля локализации\n"
+"\tпЁп╣п╫п╣я─п╦я─п╬п╡п╟я┌я▄ я└п╟п╧п╩я▀ .ex, .nm (п╡п╬п╥п╪п╬п╤п╫я▀ п╥п╫п╟я┤п╣п╫п╦я▐ yes/no|on/off|0/1)\n"
+"п©я─п╣п╢п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╣ п╪п╟п╨я─п╬я│я▀:\n"
+"\t__FILE__      я│я┌я─п╬п╨п╟ - п╦п╪я▐ я┌п╣п╨я┐я┴п╣пЁп╬ я└п╟п╧п╩п╟ п╨п╬п╪п©п╦п╩я▐я├п╦п╦\n"
+"\t__BASE_FILE__ я│я┌я─п╬п╨п╟ - п╦п╪я▐ п╨п╬я─п╫п╣п╡п╬пЁп╬ я└п╟п╧п╩п╟ п╨п╬п╪п©п╦п╩я▐я├п╦п╦\n"
+"\t__LINE__      я┤п╦я│п╩п╬ - п╫п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╡ я└п╟п╧п╩п╣ п╨п╬п╪п©п╦п╩я▐я├п╦п╦\n"
+"\t__VERSION__   я│я┌я─п╬п╨п╟ - п╡п╣я─я│п╦я▐ clip\n"
+"\t__CLIP__\tя│я┌я─п╬п╨п╟ - п╡п╣я─я│п╦я▐ clip\n"
+"\t__SYSTEM__\tя│я┌я─п╬п╨п╟ - п╦п╪я▐ п╬п©п╣я─п╟я├п╦п╬п╫п╫п╬п╧ я│п╦я│я┌п╣п╪я▀\n"
+"\t__DATE__      я│я┌я─п╬п╨п╟ - я┌п╣п╨я┐я┴п╟я▐ п╢п╟я┌п╟ п╡ я└п╬я─п╪п╟я┌п╣ 'MON DD YYYY'\n"
+"\t__TIME__      я│я┌я─п╬п╨п╟ - я┌п╣п╨я┐я┴п╣п╣ п╡я─п╣п╪я▐ п╡ я└п╬я─п╪п╟я┌п╣ 'HH:MM::SS'\n"
+"\t__CLIP_MODULE__      я│я┌я─п╬п╨п╟ - п╦п╪я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╪п╬п╢я┐п╩я▐ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦\n"
 
 #: clip.c:1159
 #, c-format
 msgid "cannot open defname file '%s': %s"
-msgstr "невозможно открыть файл определений имен '%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╧ п╦п╪п╣п╫ '%s': %s"
 
 #: clip.c:1175
 #, c-format
 msgid "cannot open exname file '%s': %s"
-msgstr "невозможно открыть файл внешних имен'%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ п╡п╫п╣я┬п╫п╦я┘ п╦п╪п╣п╫'%s': %s"
 
 #: clip.c:1194
 #, c-format
 msgid "possible not defined function %s"
-msgstr "возможно не определена функция %s"
+msgstr "п╡п╬п╥п╪п╬п╤п╫п╬ п╫п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╟ я└я┐п╫п╨я├п╦я▐ %s"
 
 #: clip.c:1203 clip.c:1654
 msgid "error"
 msgid_plural "errors"
-msgstr[0] "ошибка"
-msgstr[1] "ошибки"
-msgstr[2] "ошибок"
+msgstr[0] "п╬я┬п╦п╠п╨п╟"
+msgstr[1] "п╬я┬п╦п╠п╨п╦"
+msgstr[2] "п╬я┬п╦п╠п╬п╨"
 
 #: clip.c:1463
 msgid "conflict between -s and -p flags\n"
-msgstr "конфликт между -s и -p флагами\n"
+msgstr "п╨п╬п╫я└п╩п╦п╨я┌ п╪п╣п╤п╢я┐ -s п╦ -p я└п╩п╟пЁп╟п╪п╦\n"
 
 #: clip.c:1470
 msgid "conflict between -c and -p flags\n"
-msgstr "конфликт между  -c и -p флагами\n"
+msgstr "п╨п╬п╫я└п╩п╦п╨я┌ п╪п╣п╤п╢я┐  -c п╦ -p я└п╩п╟пЁп╟п╪п╦\n"
 
 #: clip.c:1487
 msgid "conflict between -n and -m flags\n"
-msgstr "конфликт между -n и -m флагами\n"
+msgstr "п╨п╬п╫я└п╩п╦п╨я┌ п╪п╣п╤п╢я┐ -n п╦ -m я└п╩п╟пЁп╟п╪п╦\n"
 
 #: clip.c:1524
 #, c-format
 msgid "cannot change to output dir '%s': %s"
-msgstr "невозможно установить выходной каталог '%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п╡я▀я┘п╬п╢п╫п╬п╧ п╨п╟я┌п╟п╩п╬пЁ '%s': %s"
 
 #: clip.c:1565
 #, c-format
 msgid "unknown file type '' file '%s'"
-msgstr "неизвестный тип файла '' файл '%s'"
+msgstr "п╫п╣п╦п╥п╡п╣я│я┌п╫я▀п╧ я┌п╦п© я└п╟п╧п╩п╟ '' я└п╟п╧п╩ '%s'"
 
 #: clip.c:1578
 #, c-format
 msgid "unknown file type '%s' file '%s'"
-msgstr "неизвестный тип '%s' файла '%s'"
+msgstr "п╫п╣п╦п╥п╡п╣я│я┌п╫я▀п╧ я┌п╦п© '%s' я└п╟п╧п╩п╟ '%s'"
 
 #: clip.c:1589
 msgid "no input files, so use stdin; -h will help\n"
 msgstr ""
-"не заданы входные файлы, поэтому используем stdin;\n"
-"попробуйте флаг -h для помощи\n"
+"п╫п╣ п╥п╟п╢п╟п╫я▀ п╡я┘п╬п╢п╫я▀п╣ я└п╟п╧п╩я▀, п©п╬я█я┌п╬п╪я┐ п╦я│п©п╬п╩я▄п╥я┐п╣п╪ stdin;\n"
+"п©п╬п©я─п╬п╠я┐п╧я┌п╣ я└п╩п╟пЁ -h п╢п╩я▐ п©п╬п╪п╬я┴п╦\n"
 
 #: clip.c:1608
 #, c-format
 msgid "process file '%s' .."
-msgstr "обрабатывается файл '%s' .."
+msgstr "п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣я┌я│я▐ я└п╟п╧п╩ '%s' .."
 
 #: clip.c:1620 clip.c:1670 clip.c:1722 clip.c:1735 clip.c:1823 clip.c:1836
 #: clip.c:1918
 #, c-format
 msgid ".. done, %s\n"
-msgstr ".. готово, %s\n"
+msgstr ".. пЁп╬я┌п╬п╡п╬, %s\n"
 
 #: clip.c:1636
 #, c-format
 msgid "parsing file '%s' .."
-msgstr "разбор файла '%s' .."
+msgstr "я─п╟п╥п╠п╬я─ я└п╟п╧п╩п╟ '%s' .."
 
 #: clip.c:1648
 #, c-format
 msgid ".. done (%d/%d %s, %d %s, %s)\n"
-msgstr ".. готово (%d/%d %s, %d %s, %s)\n"
+msgstr ".. пЁп╬я┌п╬п╡п╬ (%d/%d %s, %d %s, %s)\n"
 
 #: clip.c:1649
 msgid "line"
 msgid_plural "lines"
-msgstr[0] "строка"
-msgstr[1] "строки"
-msgstr[2] "строк"
+msgstr[0] "я│я┌я─п╬п╨п╟"
+msgstr[1] "я│я┌я─п╬п╨п╦"
+msgstr[2] "я│я┌я─п╬п╨"
 
 #: clip.c:1650 clip.c:1655
 msgid "warning"
 msgid_plural "warnings"
-msgstr[0] "предупреждение"
-msgstr[1] "предупреждения"
-msgstr[2] "предупреждений"
+msgstr[0] "п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╣"
+msgstr[1] "п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦я▐"
+msgstr[2] "п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╧"
 
 #: clip.c:1663
 #, c-format
 msgid "codegen file '%s' .."
-msgstr "генерация кода для файла '%s' .."
+msgstr "пЁп╣п╫п╣я─п╟я├п╦я▐ п╨п╬п╢п╟ п╢п╩я▐ я└п╟п╧п╩п╟ '%s' .."
 
 #: clip.c:1684 clip.c:1699
 #, c-format
 msgid "writing file '%s' .."
-msgstr "запись файла '%s' .."
+msgstr "п╥п╟п©п╦я│я▄ я└п╟п╧п╩п╟ '%s' .."
 
 #: clip.c:1692
 #, c-format
 msgid ".. done, %ld %s ,%s\n"
-msgstr ".. готово, %ld %s ,%s\n"
+msgstr ".. пЁп╬я┌п╬п╡п╬, %ld %s ,%s\n"
 
 #: clip.c:1693
 msgid "byte"
 msgid_plural "bytes"
-msgstr[0] "байт"
-msgstr[1] "байта"
-msgstr[2] "байт"
+msgstr[0] "п╠п╟п╧я┌"
+msgstr[1] "п╠п╟п╧я┌п╟"
+msgstr[2] "п╠п╟п╧я┌"
 
 #: clip.c:1705
 msgid ".. done\n"
-msgstr ".. готово\n"
+msgstr ".. пЁп╬я┌п╬п╡п╬\n"
 
 #: clip.c:1715 clip.c:1829
 #, c-format
 msgid "compile file '%s' .."
-msgstr "компиляция файла '%s' .."
+msgstr "п╨п╬п╪п©п╦п╩я▐я├п╦я▐ я└п╟п╧п╩п╟ '%s' .."
 
 #: clip.c:1728
 #, c-format
 msgid "make shared object '%s' .."
-msgstr "делаем разделяемый объект '%s' .."
+msgstr "п╢п╣п╩п╟п╣п╪ я─п╟п╥п╢п╣п╩я▐п╣п╪я▀п╧ п╬п╠я┼п╣п╨я┌ '%s' .."
 
 #: clip.c:1815
 #, c-format
 msgid "generate reference file '%s' .."
-msgstr "генерируется файл ссылок '%s' .."
+msgstr "пЁп╣п╫п╣я─п╦я─я┐п╣я┌я│я▐ я└п╟п╧п╩ я│я│я▀п╩п╬п╨ '%s' .."
 
 #: clip.c:1903
 #, c-format
 msgid "make file '%s' .."
-msgstr "делаем файл '%s' .."
+msgstr "п╢п╣п╩п╟п╣п╪ я└п╟п╧п╩ '%s' .."
 
 #: clip.c:1906 file.c:1461 file.c:1493 file.c:1532 file.c:2525
 #, c-format
@@ -751,7 +751,7 @@ msgstr "%s\n"
 #: clip.c:1908 file.c:1463 file.c:1495 file.c:1534
 #, c-format
 msgid "C level error in command: %s"
-msgstr "ошибки уровня C в команде.: %s"
+msgstr "п╬я┬п╦п╠п╨п╦ я┐я─п╬п╡п╫я▐ C п╡ п╨п╬п╪п╟п╫п╢п╣.: %s"
 
 #: clip.c:1931
 #, c-format
@@ -761,59 +761,59 @@ msgstr "clip: %d %s, %s\n"
 #: clip.c:1931
 msgid "file"
 msgid_plural "files"
-msgstr[0] "файл"
-msgstr[1] "файла"
-msgstr[2] "файлов"
+msgstr[0] "я└п╟п╧п╩"
+msgstr[1] "я└п╟п╧п╩п╟"
+msgstr[2] "я└п╟п╧п╩п╬п╡"
 
 #: file.c:1173 file.c:1781 file.c:2547
 #, c-format
 msgid "cannot open output file '%s'"
-msgstr "невозможно открыть выходной файл. '%s'"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ п╡я▀я┘п╬п╢п╫п╬п╧ я└п╟п╧п╩. '%s'"
 
 #: file.c:1774
 msgid "cannot write PCODE module with c-texts"
-msgstr "невозможно записать PCODE модуль с встроенным c-текстом"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╥п╟п©п╦я│п╟я┌я▄ PCODE п╪п╬п╢я┐п╩я▄ я│ п╡я│я┌я─п╬п╣п╫п╫я▀п╪ c-я┌п╣п╨я│я┌п╬п╪"
 
 #: file.c:2143
 #, c-format
 msgid "error writing file '%s', %s"
-msgstr "ошибка записи файла '%s', %s"
+msgstr "п╬я┬п╦п╠п╨п╟ п╥п╟п©п╦я│п╦ я└п╟п╧п╩п╟ '%s', %s"
 
 #: file.c:2531
 #, c-format
 msgid "cannot open pipe '%s'"
-msgstr "невозможно открыть канал '%s'"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ п╨п╟п╫п╟п╩ '%s'"
 
 #: clic_c.lex:150 clic_c.lex:158
 #, c-format
 msgid "cannot open file '%s': %s"
-msgstr "невозможно открыть файл '%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩ '%s': %s"
 
 #: clic.lex:1616
 msgid "invalid chars in number"
-msgstr "неправильные символы в числе"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫я▀п╣ я│п╦п╪п╡п╬п╩я▀ п╡ я┤п╦я│п╩п╣"
 
 #: clic.lex:1775
 msgid "newline in string"
-msgstr "символ новой строки внутри строки"
+msgstr "я│п╦п╪п╡п╬п╩ п╫п╬п╡п╬п╧ я│я┌я─п╬п╨п╦ п╡п╫я┐я┌я─п╦ я│я┌я─п╬п╨п╦"
 
 #: clic.lex:1822
 msgid "end-of-comment without begin"
-msgstr "конец комментария без начала"
+msgstr "п╨п╬п╫п╣я├ п╨п╬п╪п╪п╣п╫я┌п╟я─п╦я▐ п╠п╣п╥ п╫п╟я┤п╟п╩п╟"
 
 #: clic.lex:1933
 msgid "'@}' without '@{'"
-msgstr "'@}' без '@{'"
+msgstr "'@}' п╠п╣п╥ '@{'"
 
 #: clic.lex:2123
 #, c-format
 msgid "id: non-matched command '%s'"
-msgstr "id: нераспознанная команда '%s'"
+msgstr "id: п╫п╣я─п╟я│п©п╬п╥п╫п╟п╫п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ '%s'"
 
 #: clic.lex:2143
 #, c-format
 msgid "non-matched command '%s'"
-msgstr "нераспознанная команда '%s'"
+msgstr "п╫п╣я─п╟я│п©п╬п╥п╫п╟п╫п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ '%s'"
 
 #: clic.lex:2225 clic.lex:2294
 #, c-format
@@ -822,99 +822,99 @@ msgstr "%s"
 
 #: clic.lex:2409
 msgid "#else without #ifdef or #ifndef"
-msgstr "#else без #ifdef или #ifndef"
+msgstr "#else п╠п╣п╥ #ifdef п╦п╩п╦ #ifndef"
 
 #: clic.lex:2424
 msgid "#endif without #ifdef or #ifndef"
-msgstr "#endif без #ifdef или #ifndef"
+msgstr "#endif п╠п╣п╥ #ifdef п╦п╩п╦ #ifndef"
 
 #: clic.lex:2478 clic.lex:2484 clic.lex:2587 clic.lex:2593
 msgid "invalid #define directive"
-msgstr "неправильная директива #define"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫п╟я▐ п╢п╦я─п╣п╨я┌п╦п╡п╟ #define"
 
 #: clic.lex:2499 clic.lex:2528 clic.lex:2558
 msgid "macro function redefined"
-msgstr "переопределение макро функции"
+msgstr "п©п╣я─п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╪п╟п╨я─п╬ я└я┐п╫п╨я├п╦п╦"
 
 #: clic.lex:2505 clic.lex:2522 clic.lex:2552
 msgid "macro redefined"
-msgstr "переопределение макро"
+msgstr "п©п╣я─п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╪п╟п╨я─п╬"
 
 #: clic.lex:2754
 msgid "invalid macro call"
-msgstr "неправильный вызов макро"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫я▀п╧ п╡я▀п╥п╬п╡ п╪п╟п╨я─п╬"
 
 #: clic.lex:2802
 #, c-format
 msgid "invalid number of macro arguments (%d instead %d)"
-msgstr "неправильное число аргументов макро-функции (%d вместо %d)"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫п╬п╣ я┤п╦я│п╩п╬ п╟я─пЁя┐п╪п╣п╫я┌п╬п╡ п╪п╟п╨я─п╬-я└я┐п╫п╨я├п╦п╦ (%d п╡п╪п╣я│я┌п╬ %d)"
 
 #: clic.lex:2952
 msgid "unexpected EOL in SM_ENUM"
-msgstr "неожиданный EOL в SM_ENUM"
+msgstr "п╫п╣п╬п╤п╦п╢п╟п╫п╫я▀п╧ EOL п╡ SM_ENUM"
 
 #: clic.lex:2969
 #, c-format
 msgid "bad symbol in SM_ENUM: '%s'"
-msgstr "неразрешенный символ в SM_ENUM: '%s'"
+msgstr "п╫п╣я─п╟п╥я─п╣я┬п╣п╫п╫я▀п╧ я│п╦п╪п╡п╬п╩ п╡ SM_ENUM: '%s'"
 
 #: clic.lex:2987 clic.lex:3183 clic.lex:3197
 msgid "non-balanced '[' in #command"
-msgstr "несбалансированная скобка '[' в #command"
+msgstr "п╫п╣я│п╠п╟п╩п╟п╫я│п╦я─п╬п╡п╟п╫п╫п╟я▐ я│п╨п╬п╠п╨п╟ '[' п╡ #command"
 
 #: clic.lex:3049
 msgid "unexpected end of #command directive"
-msgstr "неожиданный конец директивы #command"
+msgstr "п╫п╣п╬п╤п╦п╢п╟п╫п╫я▀п╧ п╨п╬п╫п╣я├ п╢п╦я─п╣п╨я┌п╦п╡я▀ #command"
 
 #: clic.lex:3425
 msgid "cmdstr: newline in string"
-msgstr "cmdstr: символ новой строки в строке."
+msgstr "cmdstr: я│п╦п╪п╡п╬п╩ п╫п╬п╡п╬п╧ я│я┌я─п╬п╨п╦ п╡ я│я┌я─п╬п╨п╣."
 
 #: clic.lex:3896
 msgid "too much errors"
-msgstr "слишком много ошибок"
+msgstr "я│п╩п╦я┬п╨п╬п╪ п╪п╫п╬пЁп╬ п╬я┬п╦п╠п╬п╨"
 
 #: clic.lex:3913
 msgid "#ifdef or #ifndef without #endif"
-msgstr "#ifdef или #ifndef без #endif"
+msgstr "#ifdef п╦п╩п╦ #ifndef п╠п╣п╥ #endif"
 
 #: clic.lex:3919
 #, c-format
 msgid ""
 "unterminated string constant (possible begin at line %d pos %d file '%s')"
 msgstr ""
-"незаконченная строчная константа (возможное начало на строке %d позиция %d "
-"файл '%s')"
+"п╫п╣п╥п╟п╨п╬п╫я┤п╣п╫п╫п╟я▐ я│я┌я─п╬я┤п╫п╟я▐ п╨п╬п╫я│я┌п╟п╫я┌п╟ (п╡п╬п╥п╪п╬п╤п╫п╬п╣ п╫п╟я┤п╟п╩п╬ п╫п╟ я│я┌я─п╬п╨п╣ %d п©п╬п╥п╦я├п╦я▐ %d "
+"я└п╟п╧п╩ '%s')"
 
 #: clic.lex:3923
 #, c-format
 msgid "unmatched bracket '%c' (possible begin at line %d pos %d file '%s')"
 msgstr ""
-"непарная скобка '%c' (возможное начало на строке %d позиция %d файл '%s')"
+"п╫п╣п©п╟я─п╫п╟я▐ я│п╨п╬п╠п╨п╟ '%c' (п╡п╬п╥п╪п╬п╤п╫п╬п╣ п╫п╟я┤п╟п╩п╬ п╫п╟ я│я┌я─п╬п╨п╣ %d п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%s')"
 
 #: clic.lex:3926
 #, c-format
 msgid "unclosed comment (possible begin at line %d pos %d file '%s')"
 msgstr ""
-"незакрытый комментарий (возможное начало на строке %d позиция %d файл '%s')"
+"п╫п╣п╥п╟п╨я─я▀я┌я▀п╧ п╨п╬п╪п╪п╣п╫я┌п╟я─п╦п╧ (п╡п╬п╥п╪п╬п╤п╫п╬п╣ п╫п╟я┤п╟п╩п╬ п╫п╟ я│я┌я─п╬п╨п╣ %d п©п╬п╥п╦я├п╦я▐ %d я└п╟п╧п╩ '%s')"
 
 #: clic.lex:3929
 msgid "no ENDTEXT"
-msgstr "нет ENDTEXT"
+msgstr "п╫п╣я┌ ENDTEXT"
 
 #: clic.lex:4284
 msgid "macro function with 0 count of arguments"
-msgstr "макро-функция с нулевым числом аргументов"
+msgstr "п╪п╟п╨я─п╬-я└я┐п╫п╨я├п╦я▐ я│ п╫я┐п╩п╣п╡я▀п╪ я┤п╦я│п╩п╬п╪ п╟я─пЁя┐п╪п╣п╫я┌п╬п╡"
 
 #: clic.lex:5169
 #, c-format
 msgid "no subst marker '%s' in pattern part of command"
-msgstr "нет маркера подстановки '%s' в части шаблона команды"
+msgstr "п╫п╣я┌ п╪п╟я─п╨п╣я─п╟ п©п╬п╢я│я┌п╟п╫п╬п╡п╨п╦ '%s' п╡ я┤п╟я│я┌п╦ я┬п╟п╠п╩п╬п╫п╟ п╨п╬п╪п╟п╫п╢я▀"
 
 #: clic.lex:5262
 #, c-format
 msgid "unmatched bracket '%c' "
-msgstr "непарная скобка '%c' "
+msgstr "п╫п╣п©п╟я─п╫п╟я▐ я│п╨п╬п╠п╨п╟ '%c' "
 
 #: clic.lex:5520
 #, c-format
@@ -923,25 +923,25 @@ msgstr "skip_norm: match delim '%s', return at '%s'\n"
 
 #: clic.lex:6331
 msgid "bad command definition: OPTION have only literals"
-msgstr "неправильное определение команды: OPTION состоит только из литералов"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫п╬п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╨п╬п╪п╟п╫п╢я▀: OPTION я│п╬я│я┌п╬п╦я┌ я┌п╬п╩я▄п╨п╬ п╦п╥ п╩п╦я┌п╣я─п╟п╩п╬п╡"
 
 #: clic.lex:6836
 msgid "endless subst loop detected"
-msgstr "найден бесконечный цикл подстановки"
+msgstr "п╫п╟п╧п╢п╣п╫ п╠п╣я│п╨п╬п╫п╣я┤п╫я▀п╧ я├п╦п╨п╩ п©п╬п╢я│я┌п╟п╫п╬п╡п╨п╦"
 
 #: clic.lex:6843
 #, c-format
 msgid "too many entries in OPTIONAL list: > %d\n"
-msgstr "слишком много вхождений в списке OPTIONAL: > %d\n"
+msgstr "я│п╩п╦я┬п╨п╬п╪ п╪п╫п╬пЁп╬ п╡я┘п╬п╤п╢п╣п╫п╦п╧ п╡ я│п©п╦я│п╨п╣ OPTIONAL: > %d\n"
 
 #: clic.lex:6926
 msgid "bad #include directive"
-msgstr "неправильная директива #include"
+msgstr "п╫п╣п©я─п╟п╡п╦п╩я▄п╫п╟я▐ п╢п╦я─п╣п╨я┌п╦п╡п╟ #include"
 
 #: clic.lex:6962
 #, c-format
 msgid "cannot open include file '%s': %s"
-msgstr "невозможно открыть включаемый файл '%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ п╡п╨п╩я▌я┤п╟п╣п╪я▀п╧ я└п╟п╧п╩ '%s': %s"
 
 #: clic.lex:7071
 #, c-format
@@ -955,12 +955,12 @@ msgstr "recode_string: subst %d: '%s'->'%s': '%s'\n"
 
 #: clic.lex:7243
 msgid "circular loop in macro/command substitution detected"
-msgstr "найден бесконечный цикл  макро/командных подстановок"
+msgstr "п╫п╟п╧п╢п╣п╫ п╠п╣я│п╨п╬п╫п╣я┤п╫я▀п╧ я├п╦п╨п╩  п╪п╟п╨я─п╬/п╨п╬п╪п╟п╫п╢п╫я▀я┘ п©п╬п╢я│я┌п╟п╫п╬п╡п╬п╨"
 
 #: clic.lex:7347
 #, c-format
 msgid "set file '%s' charset to '%s'\n"
-msgstr "кодировка файла '%s' установлена в '%s'\n"
+msgstr "п╨п╬п╢п╦я─п╬п╡п╨п╟ я└п╟п╧п╩п╟ '%s' я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╟ п╡ '%s'\n"
 
 #: clic.lex:7356
 #, c-format
@@ -974,17 +974,17 @@ msgstr "pop charset '%s' %d\n"
 
 #: clic.lex:8095 clic.lex:8108
 msgid "too long string"
-msgstr "слишком длинная строка"
+msgstr "я│п╩п╦я┬п╨п╬п╪ п╢п╩п╦п╫п╫п╟я▐ я│я┌я─п╬п╨п╟"
 
 #: locale.c:97 locale.c:106
 #, c-format
 msgid "cannot create dir '%s': %s"
-msgstr "невозможно создать каталог '%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ я│п╬п╥п╢п╟я┌я▄ п╨п╟я┌п╟п╩п╬пЁ '%s': %s"
 
 #: locale.c:157
 #, c-format
 msgid "cannot create file '%s': %s"
-msgstr "невозможно создать файл '%s': %s"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ я│п╬п╥п╢п╟я┌я▄ я└п╟п╧п╩ '%s': %s"
 
 #: locale.c:161
 #, c-format
@@ -993,118 +993,118 @@ msgid ""
 "open locale file '%s'\n"
 msgstr ""
 "\n"
-"открыт файл локали '%s'\n"
+"п╬я┌п╨я─я▀я┌ я└п╟п╧п╩ п╩п╬п╨п╟п╩п╦ '%s'\n"
 
 #: locale.c:244
 #, c-format
 msgid "wrote locale message entry '%s'\n"
-msgstr "записано сообщение локализации '%s'\n"
+msgstr "п╥п╟п©п╦я│п╟п╫п╬ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s'\n"
 
 #: locale.c:266
 #, c-format
 msgid "wrote plural locale message '%s' '%s'\n"
-msgstr "записано множественное сообщение локализации '%s' '%s'\n"
+msgstr "п╥п╟п©п╦я│п╟п╫п╬ п╪п╫п╬п╤п╣я│я┌п╡п╣п╫п╫п╬п╣ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ '%s' '%s'\n"
 
 #: node.c:692 node.c:708
 #, c-format
 msgid "po code too large at line %d"
-msgstr "псевдокод слишком длинный начиная со строки %d"
+msgstr "п©я│п╣п╡п╢п╬п╨п╬п╢ я│п╩п╦я┬п╨п╬п╪ п╢п╩п╦п╫п╫я▀п╧ п╫п╟я┤п╦п╫п╟я▐ я│п╬ я│я┌я─п╬п╨п╦ %d"
 
 #: node.c:1379
 msgid "LOCAL after executable statements"
-msgstr "LOCAL после выполнимого оператора"
+msgstr "LOCAL п©п╬я│п╩п╣ п╡я▀п©п╬п╩п╫п╦п╪п╬пЁп╬ п╬п©п╣я─п╟я┌п╬я─п╟"
 
 #: node.c:1440
 msgid "STATIC after executable statements"
-msgstr "STATIC после выполнимого оператора"
+msgstr "STATIC п©п╬я│п╩п╣ п╡я▀п©п╬п╩п╫п╦п╪п╬пЁп╬ п╬п©п╣я─п╟я┌п╬я─п╟"
 
 #: node.c:1459
 msgid "only constant expression allowed for static variable initialisation"
 msgstr ""
-"только константное выражение разрешено для инициализации статических "
-"переменных"
+"я┌п╬п╩я▄п╨п╬ п╨п╬п╫я│я┌п╟п╫я┌п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣ я─п╟п╥я─п╣я┬п╣п╫п╬ п╢п╩я▐ п╦п╫п╦я├п╦п╟п╩п╦п╥п╟я├п╦п╦ я│я┌п╟я┌п╦я┤п╣я│п╨п╦я┘ "
+"п©п╣я─п╣п╪п╣п╫п╫я▀я┘"
 
 #: node.c:1483
 msgid "MEMVAR after executable statements"
-msgstr "MEMVAR после выполнимых операторов"
+msgstr "MEMVAR п©п╬я│п╩п╣ п╡я▀п©п╬п╩п╫п╦п╪я▀я┘ п╬п©п╣я─п╟я┌п╬я─п╬п╡"
 
 #: node.c:1510
 msgid "FIELD after executable statements"
-msgstr "FIELD после выполнимых операторов"
+msgstr "FIELD п©п╬я│п╩п╣ п╡я▀п©п╬п╩п╫п╦п╪я▀я┘ п╬п©п╣я─п╟я┌п╬я─п╬п╡"
 
 #: node.c:1900
 msgid "PARAMETERS and '(' <paramlist> ')' are incompatible"
-msgstr "PARAMETERS и '(' <список_параметров> ')' несовместимы"
+msgstr "PARAMETERS п╦ '(' <я│п©п╦я│п╬п╨_п©п╟я─п╟п╪п╣я┌я─п╬п╡> ')' п╫п╣я│п╬п╡п╪п╣я│я┌п╦п╪я▀"
 
 #: node.c:1917
 msgid "init expression not allowed here"
-msgstr "выражение инициализации здесь недопустимо"
+msgstr "п╡я▀я─п╟п╤п╣п╫п╦п╣ п╦п╫п╦я├п╦п╟п╩п╦п╥п╟я├п╦п╦ п╥п╢п╣я│я▄ п╫п╣п╢п╬п©я┐я│я┌п╦п╪п╬"
 
 #: node.c:1922
 msgid "array declaration not allowed here"
-msgstr "определение массива здесь недопустимо"
+msgstr "п╬п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╪п╟я│я│п╦п╡п╟ п╥п╢п╣я│я▄ п╫п╣п╢п╬п©я┐я│я┌п╦п╪п╬"
 
 #: node.c:2945 node.c:3115
 msgid "reference to constant"
-msgstr "ссылка на константу"
+msgstr "я│я│я▀п╩п╨п╟ п╫п╟ п╨п╬п╫я│я┌п╟п╫я┌я┐"
 
 #: node.c:2947
 msgid "reference to temporary object"
-msgstr "ссылка на временный объект"
+msgstr "я│я│я▀п╩п╨п╟ п╫п╟ п╡я─п╣п╪п╣п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌"
 
 #: node.c:2979
 #, c-format
 msgid "reference to undeclared function '%s' near line %d"
-msgstr "ссылка на неопределенную функцию '%s' около строки %d"
+msgstr "я│я│я▀п╩п╨п╟ п╫п╟ п╫п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╫я┐я▌ я└я┐п╫п╨я├п╦я▌ '%s' п╬п╨п╬п╩п╬ я│я┌я─п╬п╨п╦ %d"
 
 #: node.c:3120
 msgid "reference to macro not allowed"
-msgstr "ссылка на макро не разрешена"
+msgstr "я│я│я▀п╩п╨п╟ п╫п╟ п╪п╟п╨я─п╬ п╫п╣ я─п╟п╥я─п╣я┬п╣п╫п╟"
 
 #: node.c:3127
 msgid "reference to non-lvalue object"
-msgstr "ссылка на не-lvalue объект"
+msgstr "я│я│я▀п╩п╨п╟ п╫п╟ п╫п╣-lvalue п╬п╠я┼п╣п╨я┌"
 
 #: node.c:3136
 msgid "reference to function with args not allowed"
-msgstr "ссылка на функцию с аргументами не разрешена"
+msgstr "я│я│я▀п╩п╨п╟ п╫п╟ я└я┐п╫п╨я├п╦я▌ я│ п╟я─пЁя┐п╪п╣п╫я┌п╟п╪п╦ п╫п╣ я─п╟п╥я─п╣я┬п╣п╫п╟"
 
 #: node.c:3474
 msgid "cannot GET constant"
-msgstr "невозможен ввод константы через GET"
+msgstr "п╫п╣п╡п╬п╥п╪п╬п╤п╣п╫ п╡п╡п╬п╢ п╨п╬п╫я│я┌п╟п╫я┌я▀ я┤п╣я─п╣п╥ GET"
 
 #: node.c:3993
 msgid "assign to non-lvalue"
-msgstr "присваивание для не-lvalue"
+msgstr "п©я─п╦я│п╡п╟п╦п╡п╟п╫п╦п╣ п╢п╩я▐ п╫п╣-lvalue"
 
 #: node.c:3996
 msgid "reference to macro assign not allowed"
-msgstr "ссылка на макро-присваивание не разрешена"
+msgstr "я│я│я▀п╩п╨п╟ п╫п╟ п╪п╟п╨я─п╬-п©я─п╦я│п╡п╟п╦п╡п╟п╫п╦п╣ п╫п╣ я─п╟п╥я─п╣я┬п╣п╫п╟"
 
 #: node.c:5075
 msgid "CTEXT in pcode module"
-msgstr "CTEXT в pcode модуле"
+msgstr "CTEXT п╡ pcode п╪п╬п╢я┐п╩п╣"
 
 #: node.c:5134
 msgid "assign to element of local array conflicts with macro"
-msgstr "присваивание элементу локального массива конфликтует с макро"
+msgstr "п©я─п╦я│п╡п╟п╦п╡п╟п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌я┐ п╩п╬п╨п╟п╩я▄п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟ п╨п╬п╫я└п╩п╦п╨я┌я┐п╣я┌ я│ п╪п╟п╨я─п╬"
 
 #: node.c:5784
 msgid "INCR with non-lvalue"
-msgstr "INCR для не-lvalue"
+msgstr "INCR п╢п╩я▐ п╫п╣-lvalue"
 
 #: node.c:6356 node.c:6455 node.c:6527 node.c:6667 node.c:6807
 #, c-format
 msgid "%s not allowed in CODESTR"
-msgstr "%s не допустимо в CODESTR"
+msgstr "%s п╫п╣ п╢п╬п©я┐я│я┌п╦п╪п╬ п╡ CODESTR"
 
 #: node.c:7848
 #, c-format
 msgid "CASE label duplication: '%s' at line %d and '%s' at line %d"
-msgstr "повторение метки CASE: '%s' на строке %d и '%s' на строке %d"
+msgstr "п©п╬п╡я┌п╬я─п╣п╫п╦п╣ п╪п╣я┌п╨п╦ CASE: '%s' п╫п╟ я│я┌я─п╬п╨п╣ %d п╦ '%s' п╫п╟ я│я┌я─п╬п╨п╣ %d"
 
 #~ msgid "%d errors\n"
-#~ msgstr "%d ошибок\n"
+#~ msgstr "%d п╬я┬п╦п╠п╬п╨\n"
 
 #~ msgid "%d errors, %d warnings\n"
-#~ msgstr "%d ошибок, %d предупреждений\n"
+#~ msgstr "%d п╬я┬п╦п╠п╬п╨, %d п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╧\n"

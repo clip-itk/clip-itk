@@ -9,7 +9,7 @@ msgstr ""
 "Last-Translator: Mauricio Abre <maurifull@datafull.com>\n"
 "Language-Team: Spanish <clip-devel@itk.ru>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Generator: Translated from rusian clip.po file\n"
@@ -33,43 +33,43 @@ msgstr "no hay acceso al archivo  '%s': %s\n"
 #: clicgt.c:459
 #, c-format
 msgid "locale settings not found for module '%s'\n"
-msgstr "no se encontraron par·metros de localizaciÛn para el mÛdulo '%s'\n"
+msgstr "no se encontraron par√°metros de localizaci√≥n para el m√≥dulo '%s'\n"
 
 #: clicgt.c:464
 #, c-format
 msgid "no access to locale file '%s': %s\n"
-msgstr "no hay acceso al archivo de localizaciÛn '%s': %s\n"
+msgstr "no hay acceso al archivo de localizaci√≥n '%s': %s\n"
 
 #: clicgt.c:471
 #, c-format
 msgid "cannot open locale file '%s': %s\n"
-msgstr "no se puede abrir el archivo de localizaciÛn '%s': %s\n"
+msgstr "no se puede abrir el archivo de localizaci√≥n '%s': %s\n"
 
 #: clicgt.c:475
 #, c-format
 msgid "open locale file '%s', charset '%s'\n"
-msgstr "abierlo el archivo de localizaciÛn '%s', juego de caracteres '%s'\n"
+msgstr "abierlo el archivo de localizaci√≥n '%s', juego de caracteres '%s'\n"
 
 #: clicgt.c:480
 #, c-format
 msgid "cannot stat locale file '%s': %s\n"
-msgstr "no se encuentra el archivo de localizaciÛn '%s': %s\n"
+msgstr "no se encuentra el archivo de localizaci√≥n '%s': %s\n"
 
 #: clicgt.c:516
 #, c-format
 msgid "cannot read locale file '%s': %s\n"
-msgstr "no se puede leer el archivo de localizaciÛn '%s': %s\n"
+msgstr "no se puede leer el archivo de localizaci√≥n '%s': %s\n"
 
 #: clicgt.c:542
 #, c-format
 msgid "wrong magic number of locale file '%s'\n"
 msgstr ""
-"cÛdigo de identificaciÛn equivocado en el archivo de localizaciÛn '%s'\n"
+"c√≥digo de identificaci√≥n equivocado en el archivo de localizaci√≥n '%s'\n"
 
 #: clicgt.c:564
 #, c-format
 msgid "illegal revision of locale file '%s': %d\n"
-msgstr "revisiÛn ilegal del archivo de localizaciÛn '%s': %d\n"
+msgstr "revisi√≥n ilegal del archivo de localizaci√≥n '%s': %d\n"
 
 #: /usr/share/bison/bison.simple:179
 msgid "syntax error: cannot back up"
@@ -90,7 +90,7 @@ msgstr "sentencia LOOP fuera de bucle"
 #: clic.y:853
 msgid "please, use IIF function (not IF) on operator level to avoid conflicts"
 msgstr ""
-"por favor, use funciÛn IIF (no IF) a nivel operador para evitar conflictos "
+"por favor, use funci√≥n IIF (no IF) a nivel operador para evitar conflictos "
 
 #: clic.y:949
 msgid "unclosed BEGIN SEQUENCE"
@@ -98,11 +98,11 @@ msgstr "BEGIN SEQUENCE no cerrado"
 
 #: clic.y:1123
 msgid "invalid array call"
-msgstr "llamada a array inv·lida"
+msgstr "llamada a array inv√°lida"
 
 #: clic.y:1376 clic.y:1381
 msgid "only inline assign := allowed in initialisation"
-msgstr "unicamente asignador en lÌnea (:=) permitido en inicializaciÛn"
+msgstr "unicamente asignador en l√≠nea (:=) permitido en inicializaci√≥n"
 
 #: clic.y:1419
 #, c-format
@@ -111,11 +111,11 @@ msgstr "nombre '%s' duplicado"
 
 #: /usr/share/bison/bison.simple:795
 msgid "parse error; also virtual memory exhausted"
-msgstr "error de an·lisis; y memoria virtual agotada"
+msgstr "error de an√°lisis; y memoria virtual agotada"
 
 #: /usr/share/bison/bison.simple:799
 msgid "parse error"
-msgstr "error de an·lisis"
+msgstr "error de an√°lisis"
 
 #: /usr/share/bison/bison.simple:924
 msgid "parser stack overflow"
@@ -128,7 +128,7 @@ msgstr "no se puede abrir el archivo '%s'"
 
 #: clic.y:1676
 msgid "executable operator outside of function (-n flag is active)"
-msgstr "operador ejecutable fuera de funciÛn (opciÛn -n activa)"
+msgstr "operador ejecutable fuera de funci√≥n (opci√≥n -n activa)"
 
 #: clic.y:1690
 #, c-format
@@ -137,7 +137,7 @@ msgid ""
 "\tincluded at line %d "
 msgstr ""
 "en archivo '%s',\n"
-"\tincluido en lÌnea %d "
+"\tincluido en l√≠nea %d "
 
 #: clic.y:1692
 #, c-format
@@ -161,7 +161,7 @@ msgid ""
 "\tline %ld pos %ld (yychar=%d, '%c') "
 msgstr ""
 "\n"
-"\tlÌnea %ld posiciÛn %ld (yychar=%d, '%c') "
+"\tl√≠nea %ld posici√≥n %ld (yychar=%d, '%c') "
 
 #: clic.y:1714
 #, c-format
@@ -180,7 +180,7 @@ msgid ""
 "\tline %ld, pos %ld, "
 msgstr ""
 "\n"
-"\tlÌnea %ld, posiciÛn %ld, "
+"\tl√≠nea %ld, posici√≥n %ld, "
 
 #: clic.y:1738
 #, c-format
@@ -190,58 +190,58 @@ msgstr "advertencia %d, "
 #: clic.y:1749
 #, c-format
 msgid "unclosed loop statement (level %d, begin at line %d file %s)"
-msgstr "bucle loop sin cerrar (nivel %d, comienza en lÌnea %d archivo %s)"
+msgstr "bucle loop sin cerrar (nivel %d, comienza en l√≠nea %d archivo %s)"
 
 #: clic.y:1755
 #, c-format
 msgid "unclosed IF statement (level %d, begin at line %d file %s)"
-msgstr "sentencia IF sin cerrar (nivel %d, comienza en lÌnea %d archivo %s)"
+msgstr "sentencia IF sin cerrar (nivel %d, comienza en l√≠nea %d archivo %s)"
 
 #: clic.y:1761
 #, c-format
 msgid "unclosed SEQUENCE statement (level %d, begin at line %d file %s)"
 msgstr ""
-"sentencia SEQUENCE sin cerrar (nivel %d, comienza en lÌnea %d archivo %s)"
+"sentencia SEQUENCE sin cerrar (nivel %d, comienza en l√≠nea %d archivo %s)"
 
 #: clicutil.c:532
 #, c-format
 msgid ""
 "duplicate name '%s', previous name defined near line %d pos %d in file '%s'"
 msgstr ""
-"nombre '%s' duplicado, nombre anterior definido cerca de la lÌnea %d "
-"posiciÛn %d en archivo '%s'"
+"nombre '%s' duplicado, nombre anterior definido cerca de la l√≠nea %d "
+"posici√≥n %d en archivo '%s'"
 
 #: clicutil.c:667
 #, c-format
 msgid "declaration function with module name '%s'; force -n flag"
-msgstr "declaraciÛn de funciÛn con nombre de mÛdulo '%s'; forzar opciÛn -n"
+msgstr "declaraci√≥n de funci√≥n con nombre de m√≥dulo '%s'; forzar opci√≥n -n"
 
 #: clicutil.c:680
 #, c-format
 msgid "function '%s' already defined near line %d file %s"
-msgstr "funciÛn '%s' ya definida cerca de la lÌnea %d archivo %s"
+msgstr "funci√≥n '%s' ya definida cerca de la l√≠nea %d archivo %s"
 
 #: clicutil.c:685
 #, c-format
 msgid "static function '%s' already declared as external"
-msgstr "funciÛn est·tica '%s' ya declarada como externa"
+msgstr "funci√≥n est√°tica '%s' ya declarada como externa"
 
 #: clicutil.c:778 node.c:1389 node.c:1447 node.c:1490 node.c:1517 node.c:1912
 msgid "macro variable name not allowed here"
-msgstr "nombre de variable macro no permitida aquÌ"
+msgstr "nombre de variable macro no permitida aqu√≠"
 
 #: clicutil.c:964
 #, c-format
 msgid "name '%s' already declared as LOCAL near line %d pos %d file '%s'"
 msgstr ""
-"nombre '%s' ya declarado como LOCAL cerca de la lÌnea %d posiciÛn %d archivo "
+"nombre '%s' ya declarado como LOCAL cerca de la l√≠nea %d posici√≥n %d archivo "
 "'%s'"
 
 #: clicutil.c:970
 #, c-format
 msgid "name '%s' already declared as PARAMETER near line %d pos %d file '%s'"
 msgstr ""
-"nombre '%s' ya declarado como PARAMETER cerca de la lÌnea %d posiciÛn %d "
+"nombre '%s' ya declarado como PARAMETER cerca de la l√≠nea %d posici√≥n %d "
 "archivo '%s'"
 
 #: clicutil.c:976
@@ -250,27 +250,27 @@ msgid ""
 "name '%s' already declared as MEMVAR near line %d pos %d file '%s' (previous "
 "name will be hidden)"
 msgstr ""
-"nombre '%s' ya declarado como MEMVAR cerca de la lÌnea %d posiciÛn %d "
-"archivo '%s' (nombre anterior ser· escondido)"
+"nombre '%s' ya declarado como MEMVAR cerca de la l√≠nea %d posici√≥n %d "
+"archivo '%s' (nombre anterior ser√° escondido)"
 
 #: clicutil.c:982
 #, c-format
 msgid "name '%s' already declared as FIELD near line %d pos %d file '%s'"
 msgstr ""
-"nombre '%s' ya declarado como FIELD cerca de la lÌnea %d posiciÛn %d archivo "
+"nombre '%s' ya declarado como FIELD cerca de la l√≠nea %d posici√≥n %d archivo "
 "'%s'"
 
 #: clicutil.c:988
 #, c-format
 msgid "name '%s' already declared as STATIC near line %d pos %d file '%s'"
 msgstr ""
-"nombre '%s' ya declarado como STATIC cerca de la lÌnea %d posiciÛn %d "
+"nombre '%s' ya declarado como STATIC cerca de la l√≠nea %d posici√≥n %d "
 "archivo '%s'"
 
 #: clicutil.c:1136
 #, c-format
 msgid "namespace of name '%s' undeclared, assumed as FIELD-MEMVAR"
-msgstr "·mbito del nombre '%s' no declarado, asumido como FIELD-MEMVAR"
+msgstr "√°mbito del nombre '%s' no declarado, asumido como FIELD-MEMVAR"
 
 #: clipar.c:147
 #, c-format
@@ -280,7 +280,7 @@ msgstr "archivo '%s' tabla:\n"
 #: clipar.c:225
 #, c-format
 msgid "read module %s: %ld bytes\n"
-msgstr "leÌdo mÛdulo %s: %ld bytes\n"
+msgstr "le√≠do m√≥dulo %s: %ld bytes\n"
 
 #: clipar.c:256
 #, c-format
@@ -295,7 +295,7 @@ msgstr "\t%d:\thash=0x%x\toffs=%ld\n"
 #: clipar.c:301
 #, c-format
 msgid "read file '%s': %d modules\n"
-msgstr "leÌdo archivo '%s': %d mÛdulos\n"
+msgstr "le√≠do archivo '%s': %d m√≥dulos\n"
 
 #: clipar.c:453
 #, c-format
@@ -325,7 +325,7 @@ msgstr "puesto juego de caracteres destino a %s\n"
 #: clip.c:822
 #, c-format
 msgid "invalid argument for -E: '%s'"
-msgstr "argumento inv·lido para -E: '%s'"
+msgstr "argumento inv√°lido para -E: '%s'"
 
 #: clip.c:839
 #, c-format
@@ -333,7 +333,7 @@ msgid ""
 "invalid compatability word: '%s'\n"
 "possible values: as-word, no-as-word"
 msgstr ""
-"compatibilidad para word inv·lida: '%s'\n"
+"compatibilidad para word inv√°lida: '%s'\n"
 "valores posibles: as-word, no-as-word"
 
 #: clip.c:845
@@ -429,55 +429,55 @@ msgstr ""
 " -H, --help-environment\n"
 "\tayuda sobre variables de entorno aceptadas\n"
 " -V, --version\n"
-"\timprimir la versiÛn de clip\n"
+"\timprimir la versi√≥n de clip\n"
 " -v[<nivel>], --verbose[=<nivel>]\n"
 "\tactivar/incrementar el nivel de mensajes\n"
 " -a, --auto-memvar[=1|0]\n"
-"\tactivar modo de variables memvar autom·tico\n"
+"\tactivar modo de variables memvar autom√°tico\n"
 " -w, --namespace-warning[=1|0]\n"
 "\talertar sobre variables declaradas implicitamente\n"
 " -e, --exec\n"
 "\tgenerar archivo ejecutable\n"
 " -c, --compile\n"
-"\tparar luego de generar el cÛdigo C\n"
+"\tparar luego de generar el c√≥digo C\n"
 " -g,-b, --debug[=1|0]\n"
-"\tgenerar informaciÛn de depuraciÛn\n"
+"\tgenerar informaci√≥n de depuraci√≥n\n"
 " -t, --show-syntax-tree\n"
-"\timprimir el ·rbol de sintaxis del programa\n"
+"\timprimir el √°rbol de sintaxis del programa\n"
 " -o<name>, --output=<name>\n"
 "\tnombre de archivo de salida\n"
 " -d<name>, --outdir=<name>\n"
 "\tdirectorio destino\n"
 " -O, --optimise[=<val>]\n"
-"\tnivel de optimizaciÛn\n"
+"\tnivel de optimizaci√≥n\n"
 " -M, --main\n"
 "\tusar el primer <archivo> como punto de comienzo del programa\n"
 " -n, --nomain\n"
-"\tno declarar nombre de mÛdulo automaticamente\n"
+"\tno declarar nombre de m√≥dulo automaticamente\n"
 " -p, --pcode\n"
-"\tgenerar mÛdulo de pseudocÛdigo\n"
+"\tgenerar m√≥dulo de pseudoc√≥digo\n"
 " -l, --c-pcode\n"
-"\tcompilar mÛdulo de pseudocÛdigo-C\n"
+"\tcompilar m√≥dulo de pseudoc√≥digo-C\n"
 " -s, --shared\n"
-"\tcompilar como objeto din·mico\n"
+"\tcompilar como objeto din√°mico\n"
 " -r, --shared-exec\n"
-"\tenlazar con librerÌas din·micas si es posible\n"
+"\tenlazar con librer√≠as din√°micas si es posible\n"
 " -I<ruta>, --include-path=<ruta>\n"
-"\tagregar ruta de b˙squeda de cabeceras\n"
+"\tagregar ruta de b√∫squeda de cabeceras\n"
 " -L<ruta>, --library-path=<ruta>\n"
-"\tagregar ruta de b˙squeda de librerÌas\n"
+"\tagregar ruta de b√∫squeda de librer√≠as\n"
 " -D<nombre>, --define=<nombre>\n"
 "\tdefinir <nombre> como macro\n"
 " -D<nombre=valor>, --define=<nombre=valor>\n"
 "\tdefinir <nombre> como macro igual a <valor>\n"
 " -U[<archivo>], --use-std-ch[=<archivo>]\n"
-"\tusar cabecera est·ndar alternativa (o ninguna, por defecto std.ch)\n"
+"\tusar cabecera est√°ndar alternativa (o ninguna, por defecto std.ch)\n"
 " -S<juego de caracteres>, --source-charset\n"
 "\tdefinir juego de caracteres fuente\n"
 " -T<charet>, --target-charset\n"
 "\tdefinir juego de caracteres destino\n"
 " -P, --preprocess\n"
-"\tsÛlo preprocesar\n"
+"\ts√≥lo preprocesar\n"
 " -C, --show-command\n"
 "\timprimir definiciones de comandos\n"
 " -R, --noremove-c\n"
@@ -562,51 +562,51 @@ msgstr ""
 "CFLAGS\n"
 "\topciones del compilador C (por defecto=='%s')\n"
 "COMPILE_FLAG\n"
-"\topciÛn para 'compilar solamente' del compilador C (por defecto=='%s')\n"
+"\topci√≥n para 'compilar solamente' del compilador C (por defecto=='%s')\n"
 "COPT\n"
-"\topciÛn de optimizaciÛn del compilador C (por defecto=='%s')\n"
+"\topci√≥n de optimizaci√≥n del compilador C (por defecto=='%s')\n"
 "CDBG\n"
-"\topciÛn de depuraciÛn del compilador C (por defecto=='%s')\n"
+"\topci√≥n de depuraci√≥n del compilador C (por defecto=='%s')\n"
 "OUT_FLAG\n"
-"\topciÛn de salida del compilador C  (por defecto=='%s')\n"
+"\topci√≥n de salida del compilador C  (por defecto=='%s')\n"
 "INCLUDE_FLAG\n"
-"\topciÛn de cabeceras del compilador C (por defecto=='%s')\n"
+"\topci√≥n de cabeceras del compilador C (por defecto=='%s')\n"
 "OBJSUF\n"
 "\tsufijo para archivos de salida objeto (por defecto=='%s')\n"
 "SOBJSUF\n"
-"\tsufijo para archivos de salida din·micos (por defecto=='%s')\n"
+"\tsufijo para archivos de salida din√°micos (por defecto=='%s')\n"
 "LIBSUF\n"
-"\tsufijo para librerÌas (por defecto=='%s')\n"
+"\tsufijo para librer√≠as (por defecto=='%s')\n"
 "SLIBSUF\n"
-"\tsufijo para librerÌas compartidas (por defecto=='%s')\n"
+"\tsufijo para librer√≠as compartidas (por defecto=='%s')\n"
 "SFLAGS\n"
-"\topciones del compilador C - versiÛn din·mica (por defecto=='%s')\n"
+"\topciones del compilador C - versi√≥n din√°mica (por defecto=='%s')\n"
 "CLIPLIB\n"
-"\tlibrerÌa de soporte en tiempo de ejecuciÛn (por defecto=='%s')\n"
+"\tlibrer√≠a de soporte en tiempo de ejecuci√≥n (por defecto=='%s')\n"
 "CLIPSLIB\n"
-"\tlibrerÌa din·mica de soporte en tiempo de ejecuciÛn (por defecto=='%s')\n"
+"\tlibrer√≠a din√°mica de soporte en tiempo de ejecuci√≥n (por defecto=='%s')\n"
 "CLIPLIBS\n"
-"\tlibrerÌas adicionales (por defecto=='%s')\n"
+"\tlibrer√≠as adicionales (por defecto=='%s')\n"
 "CLIPROOT\n"
-"\traÌz para todos los archivos relacionados a clip (por defecto=='%s')\n"
+"\tra√≠z para todos los archivos relacionados a clip (por defecto=='%s')\n"
 "CLIP_LOCALE_ROOT\n"
-"\traÌz para mensajes de localizaciÛn\n"
+"\tra√≠z para mensajes de localizaci√≥n\n"
 "CLIP_MODULE\n"
-"\tmÛdulo de localizaciÛn actual (por defecto=='%s')\n"
+"\tm√≥dulo de localizaci√≥n actual (por defecto=='%s')\n"
 "CLIP_CMDSTR\n"
 "\tlista separada por comas de opciones para clip\n"
 "CLIP_NAMES\n"
 "\tgenerar archivos .ex, .nm (valores posibles yes/no|on/off|0/1)\n"
 "macros predefinidas:\n"
 "\t__FILE__\t\ttexto  - nombre del archivo compilado actualmente\n"
-"\t__BASE_FILE__\t   texto  - nombre del archivo raÌz a compilar\n"
-"\t__LINE__\t\tn˙mero - n˙mero de lÌnea actual en archivo actual\n"
-"\t__VERSION__\t   texto  - versiÛn de clip\n"
-"\t__CLIP__\t\ttexto  - versiÛn de clip\n"
+"\t__BASE_FILE__\t   texto  - nombre del archivo ra√≠z a compilar\n"
+"\t__LINE__\t\tn√∫mero - n√∫mero de l√≠nea actual en archivo actual\n"
+"\t__VERSION__\t   texto  - versi√≥n de clip\n"
+"\t__CLIP__\t\ttexto  - versi√≥n de clip\n"
 "\t__SYSTEM__\t   texto  - nombre del sistema operativo\n"
 "\t__DATE__\t\ttexto  - fecha en formato 'MM DD AAAA'\n"
 "\t__TIME__\t\ttexto  - hora en formato 'HH:MM:SS'\n"
-"\t__CLIP_MODULE__\t texto  - nombre del mÛdulo de localizaciÛn actual\n"
+"\t__CLIP_MODULE__\t texto  - nombre del m√≥dulo de localizaci√≥n actual\n"
 
 #: clip.c:1159
 #, c-format
@@ -621,7 +621,7 @@ msgstr "no se puede abrir el archivo nombreej '%s': %s"
 #: clip.c:1194
 #, c-format
 msgid "possible not defined function %s"
-msgstr "funciÛn posiblemente no definida %s"
+msgstr "funci√≥n posiblemente no definida %s"
 
 #: clip.c:1203 clip.c:1654
 msgid "error"
@@ -659,7 +659,7 @@ msgstr "tipo de archivo desconocido '%s' archivo '%s'"
 
 #: clip.c:1589
 msgid "no input files, so use stdin; -h will help\n"
-msgstr "no se especificaron archivos de entrada, usando  stdin (-h ayudarÌa)\n"
+msgstr "no se especificaron archivos de entrada, usando  stdin (-h ayudar√≠a)\n"
 
 #: clip.c:1608
 #, c-format
@@ -685,9 +685,9 @@ msgstr ".. terminado (%d/%d %s, %d %s, %s)\n"
 #: clip.c:1649
 msgid "line"
 msgid_plural "lines"
-msgstr[0] "lÌnea"
-msgstr[1] "lÌneas"
-msgstr[2] "lÌneas"
+msgstr[0] "l√≠nea"
+msgstr[1] "l√≠neas"
+msgstr[2] "l√≠neas"
 
 #: clip.c:1650 clip.c:1655
 msgid "warning"
@@ -699,7 +699,7 @@ msgstr[2] "advertencias"
 #: clip.c:1663
 #, c-format
 msgid "codegen file '%s' .."
-msgstr "archivo de cÛdigo '%s' .."
+msgstr "archivo de c√≥digo '%s' .."
 
 #: clip.c:1684 clip.c:1699
 #, c-format
@@ -730,7 +730,7 @@ msgstr "compilando archivo '%s' .."
 #: clip.c:1728
 #, c-format
 msgid "make shared object '%s' .."
-msgstr "creando archivo din·mico '%s' .."
+msgstr "creando archivo din√°mico '%s' .."
 
 #: clip.c:1815
 #, c-format
@@ -771,7 +771,7 @@ msgstr "no se puede abrir el archivo de salida '%s'"
 
 #: file.c:1774
 msgid "cannot write PCODE module with c-texts"
-msgstr "no se pude escribir mÛdulo PCODE con textos-c"
+msgstr "no se pude escribir m√≥dulo PCODE con textos-c"
 
 #: file.c:2143
 #, c-format
@@ -781,7 +781,7 @@ msgstr "error escribiendo archivo '%s', %s"
 #: file.c:2531
 #, c-format
 msgid "cannot open pipe '%s'"
-msgstr "no se puede abrir tuberÌa '%s'"
+msgstr "no se puede abrir tuber√≠a '%s'"
 
 #: clic_c.lex:150 clic_c.lex:158
 #, c-format
@@ -790,11 +790,11 @@ msgstr "no se puede abrir el archivo '%s': %s"
 
 #: clic.lex:1616
 msgid "invalid chars in number"
-msgstr "caracteres inv·lidos en n˙mero"
+msgstr "caracteres inv√°lidos en n√∫mero"
 
 #: clic.lex:1775
 msgid "newline in string"
-msgstr "lÌnea nueva en cadena de texto"
+msgstr "l√≠nea nueva en cadena de texto"
 
 #: clic.lex:1822
 msgid "end-of-comment without begin"
@@ -829,11 +829,11 @@ msgstr "#endif sin #ifdef o #ifndef"
 
 #: clic.lex:2478 clic.lex:2484 clic.lex:2587 clic.lex:2593
 msgid "invalid #define directive"
-msgstr "directiva #define inv·lida"
+msgstr "directiva #define inv√°lida"
 
 #: clic.lex:2499 clic.lex:2528 clic.lex:2558
 msgid "macro function redefined"
-msgstr "funciÛn macro redefinida"
+msgstr "funci√≥n macro redefinida"
 
 #: clic.lex:2505 clic.lex:2522 clic.lex:2552
 msgid "macro redefined"
@@ -841,12 +841,12 @@ msgstr "macro redefinida"
 
 #: clic.lex:2754
 msgid "invalid macro call"
-msgstr "llamada a macro inv·lida"
+msgstr "llamada a macro inv√°lida"
 
 #: clic.lex:2802
 #, c-format
 msgid "invalid number of macro arguments (%d instead %d)"
-msgstr "n˙mero inv·lido de argumetos de macro (%d en vez de %d)"
+msgstr "n√∫mero inv√°lido de argumetos de macro (%d en vez de %d)"
 
 #: clic.lex:2952
 msgid "unexpected EOL in SM_ENUM"
@@ -855,7 +855,7 @@ msgstr "EOL inesperada in SM_ENUM"
 #: clic.lex:2969
 #, c-format
 msgid "bad symbol in SM_ENUM: '%s'"
-msgstr "sÌmbolo inv·lido en SM_ENUM: '%s'"
+msgstr "s√≠mbolo inv√°lido en SM_ENUM: '%s'"
 
 #: clic.lex:2987 clic.lex:3183 clic.lex:3197
 msgid "non-balanced '[' in #command"
@@ -867,7 +867,7 @@ msgstr "fin inesperado de directiva #command"
 
 #: clic.lex:3425
 msgid "cmdstr: newline in string"
-msgstr "cmdstr: nueva lÌnea en cadena de texto"
+msgstr "cmdstr: nueva l√≠nea en cadena de texto"
 
 #: clic.lex:3896
 msgid "too much errors"
@@ -882,21 +882,21 @@ msgstr "#ifdef o #ifndef sin #endif"
 msgid ""
 "unterminated string constant (possible begin at line %d pos %d file '%s')"
 msgstr ""
-"constante de texto no terminada (posible comienzo en lÌnea %d posiciÛn %d "
+"constante de texto no terminada (posible comienzo en l√≠nea %d posici√≥n %d "
 "archivo '%s')"
 
 #: clic.lex:3923
 #, c-format
 msgid "unmatched bracket '%c' (possible begin at line %d pos %d file '%s')"
 msgstr ""
-"llave no coincidida '%c' (posible comienzo en lÌnea %d posiciÛn %d archivo '%"
+"llave no coincidida '%c' (posible comienzo en l√≠nea %d posici√≥n %d archivo '%"
 "s')"
 
 #: clic.lex:3926
 #, c-format
 msgid "unclosed comment (possible begin at line %d pos %d file '%s')"
 msgstr ""
-"comentario no cerrado (posible comienzo en lÌnea %d posiciÛn %d archivo '%s')"
+"comentario no cerrado (posible comienzo en l√≠nea %d posici√≥n %d archivo '%s')"
 
 #: clic.lex:3929
 msgid "no ENDTEXT"
@@ -904,12 +904,12 @@ msgstr "sin ENDTEXT"
 
 #: clic.lex:4284
 msgid "macro function with 0 count of arguments"
-msgstr "funciÛn macro con 0 argumentos"
+msgstr "funci√≥n macro con 0 argumentos"
 
 #: clic.lex:5169
 #, c-format
 msgid "no subst marker '%s' in pattern part of command"
-msgstr "sin marca de sustituciÛn '%s' en patrÛn de comando"
+msgstr "sin marca de sustituci√≥n '%s' en patr√≥n de comando"
 
 #: clic.lex:5262
 #, c-format
@@ -923,7 +923,7 @@ msgstr "skip_norm: coincidencia delim '%s', devuelta en '%s'\n"
 
 #: clic.lex:6331
 msgid "bad command definition: OPTION have only literals"
-msgstr "definiciÛn de comando inv·lida: OPTION tiene sÛlo literales"
+msgstr "definici√≥n de comando inv√°lida: OPTION tiene s√≥lo literales"
 
 #: clic.lex:6836
 msgid "endless subst loop detected"
@@ -936,7 +936,7 @@ msgstr "demasiadas entradas en lista OPTIONAL: > %d\n"
 
 #: clic.lex:6926
 msgid "bad #include directive"
-msgstr "directiva #include inv·lida"
+msgstr "directiva #include inv√°lida"
 
 #: clic.lex:6962
 #, c-format
@@ -955,7 +955,7 @@ msgstr "recode_string: sust %d: '%s'->'%s': '%s'\n"
 
 #: clic.lex:7243
 msgid "circular loop in macro/command substitution detected"
-msgstr "bucle circular detectado en sustituciÛn de macro/comando"
+msgstr "bucle circular detectado en sustituci√≥n de macro/comando"
 
 #: clic.lex:7347
 #, c-format
@@ -970,7 +970,7 @@ msgstr "promovido juego de caracteres '%s' %d\n"
 #: clic.lex:7365
 #, c-format
 msgid "pop charset '%s' %d\n"
-msgstr "traÌdo juego de caracteres '%s' %d\n"
+msgstr "tra√≠do juego de caracteres '%s' %d\n"
 
 #: clic.lex:8095 clic.lex:8108
 msgid "too long string"
@@ -993,7 +993,7 @@ msgid ""
 "open locale file '%s'\n"
 msgstr ""
 "\n"
-"abierto archivo de localizaciÛn '%s'\n"
+"abierto archivo de localizaci√≥n '%s'\n"
 
 #: locale.c:244
 #, c-format
@@ -1021,8 +1021,8 @@ msgstr "STATIC luego de sentencias ejecutables"
 #: node.c:1459
 msgid "only constant expression allowed for static variable initialisation"
 msgstr ""
-"solo expresiones constantes permitidas para inicializaciÛn de variables "
-"est·ticas"
+"solo expresiones constantes permitidas para inicializaci√≥n de variables "
+"est√°ticas"
 
 #: node.c:1483
 msgid "MEMVAR after executable statements"
@@ -1038,11 +1038,11 @@ msgstr "PARAMETERS y '(' <listaparam> ')' son incompatibles"
 
 #: node.c:1917
 msgid "init expression not allowed here"
-msgstr "expresiÛn de inicio no permitida aquÌ"
+msgstr "expresi√≥n de inicio no permitida aqu√≠"
 
 #: node.c:1922
 msgid "array declaration not allowed here"
-msgstr "declaraciÛn de array no permitida aquÌ"
+msgstr "declaraci√≥n de array no permitida aqu√≠"
 
 #: node.c:2945 node.c:3115
 msgid "reference to constant"
@@ -1055,7 +1055,7 @@ msgstr "referencia a objeto temporal"
 #: node.c:2979
 #, c-format
 msgid "reference to undeclared function '%s' near line %d"
-msgstr "referencia a funciÛn no declarada '%s' cerca de la lÌnea %d"
+msgstr "referencia a funci√≥n no declarada '%s' cerca de la l√≠nea %d"
 
 #: node.c:3120
 msgid "reference to macro not allowed"
@@ -1067,7 +1067,7 @@ msgstr "referencia a objeto no-lvalor"
 
 #: node.c:3136
 msgid "reference to function with args not allowed"
-msgstr "referencia a funciÛn con argumentos no permitido"
+msgstr "referencia a funci√≥n con argumentos no permitido"
 
 #: node.c:3474
 msgid "cannot GET constant"
@@ -1075,19 +1075,19 @@ msgstr "no se puede hacer GET de constantes"
 
 #: node.c:3993
 msgid "assign to non-lvalue"
-msgstr "asignaciÛn a no-lvalor"
+msgstr "asignaci√≥n a no-lvalor"
 
 #: node.c:3996
 msgid "reference to macro assign not allowed"
-msgstr "asignaciÛn de referencia a macro no permitido"
+msgstr "asignaci√≥n de referencia a macro no permitido"
 
 #: node.c:5075
 msgid "CTEXT in pcode module"
-msgstr "CTEXT en mÛdulo pcodigo"
+msgstr "CTEXT en m√≥dulo pcodigo"
 
 #: node.c:5134
 msgid "assign to element of local array conflicts with macro"
-msgstr "conflicto de asignaciÛn a elemento de array local con macro"
+msgstr "conflicto de asignaci√≥n a elemento de array local con macro"
 
 #: node.c:5784
 msgid "INCR with non-lvalue"
@@ -1101,7 +1101,7 @@ msgstr "%s no permitido en CODESTR"
 #: node.c:7848
 #, c-format
 msgid "CASE label duplication: '%s' at line %d and '%s' at line %d"
-msgstr "etiqueta CASE duplicada: '%s' en lÌnea %d y '%s' en lÌnea %d"
+msgstr "etiqueta CASE duplicada: '%s' en l√≠nea %d y '%s' en l√≠nea %d"
 
 #~ msgid "%d errors\n"
 #~ msgstr "%d errores\n"

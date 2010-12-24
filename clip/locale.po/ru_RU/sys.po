@@ -9,7 +9,7 @@ msgstr ""
 "Last-Translator: Paul Lasarev <paul@itk.ru>\n"
 "Language-Team: Russian <clip-devel@itk.ru>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
@@ -17,232 +17,232 @@ msgstr ""
 
 #: block.prg:19
 msgid "Class TBlock constructor error:Invalid expression"
-msgstr "Класс TBlock ошибка создания:кривое выражение"
+msgstr "п п╩п╟я│я│ TBlock п╬я┬п╦п╠п╨п╟ я│п╬п╥п╢п╟п╫п╦я▐:п╨я─п╦п╡п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣"
 
 #: database.prg:18
 msgid "Beginning of file"
-msgstr "Начало файла"
+msgstr "п²п╟я┤п╟п╩п╬ я└п╟п╧п╩п╟"
 
 #: database.prg:19
 msgid "End of file"
-msgstr "Конец файла"
+msgstr "п п╬п╫п╣я├ я└п╟п╧п╩п╟"
 
 #: database.prg:20
 msgid "Record in use, Please, retry"
-msgstr "Запись занята, повторите"
+msgstr "п≈п╟п©п╦я│я▄ п╥п╟п╫я▐я┌п╟, п©п╬п╡я┌п╬я─п╦я┌п╣"
 
 #: database.prg:387
 msgid "Can~t lock dataBase ! Please try again"
-msgstr "Не могу заблокировать dataBase! Пожалуйста попробуйте снова"
+msgstr "п²п╣ п╪п╬пЁя┐ п╥п╟п╠п╩п╬п╨п╦я─п╬п╡п╟я┌я▄ dataBase! п÷п╬п╤п╟п╩я┐п╧я│я┌п╟ п©п╬п©я─п╬п╠я┐п╧я┌п╣ я│п╫п╬п╡п╟"
 
 #: database.prg:413
 msgid "Called Error:"
-msgstr "Ошибка вызова:"
+msgstr "п·я┬п╦п╠п╨п╟ п╡я▀п╥п╬п╡п╟:"
 
 #: dbm.prg:57
 msgid "Field not found in dictonary"
-msgstr "Поле не найдено в словаре"
+msgstr "п÷п╬п╩п╣ п╫п╣ п╫п╟п╧п╢п╣п╫п╬ п╡ я│п╩п╬п╡п╟я─п╣"
 
 #: dbm.prg:71
 msgid "Index not found in dictonary"
-msgstr "Индекс не найден в словаре"
+msgstr "п≤п╫п╢п╣п╨я│ п╫п╣ п╫п╟п╧п╢п╣п╫ п╡ я│п╩п╬п╡п╟я─п╣"
 
 #: dialbox.prg:728
 msgid "Line"
-msgstr "Строка "
+msgstr "п║я┌я─п╬п╨п╟ "
 
 #: dialbox.prg:747 dialbox.prg:754 hbrowse.prg:260 hbrowse.prg:267
 #: edit.prg:778 edit.prg:785 edit.prg:824 edit.prg:852 edit.prg:882
 #: edit.prg:889
 msgid "String;"
-msgstr "Строка;"
+msgstr "п║я┌я─п╬п╨п╟;"
 
 #: dialbox.prg:747 dialbox.prg:754 hbrowse.prg:260 hbrowse.prg:267
 #: edit.prg:778 edit.prg:785 edit.prg:824 edit.prg:852 edit.prg:882
 #: edit.prg:889 edit.prg:1169
 msgid ";not found!"
-msgstr ";не найдена!"
+msgstr ";п╫п╣ п╫п╟п╧п╢п╣п╫п╟!"
 
 #: dialbox.prg:1235 hbrowse.prg:1610 edit.prg:1323
 msgid "&File"
-msgstr "&Файл"
+msgstr "&п╓п╟п╧п╩"
 
 #: dialbox.prg:1247 hbrowse.prg:1629
 msgid "E&xit   "
-msgstr "&Выход   "
+msgstr "&п▓я▀я┘п╬п╢   "
 
 #: dialbox.prg:1247 hbrowse.prg:1629
 msgid "End of application"
-msgstr "Завершить работу"
+msgstr "п≈п╟п╡п╣я─я┬п╦я┌я▄ я─п╟п╠п╬я┌я┐"
 
 #: dialbox.prg:1252 hbrowse.prg:1659
 msgid "&Options"
-msgstr "&Опции "
+msgstr "&п·п©я├п╦п╦ "
 
 #: dialbox.prg:1255 hbrowse.prg:1662
 msgid "&Find   "
-msgstr "&Найти  "
+msgstr "&п²п╟п╧я┌п╦  "
 
 #: dialbox.prg:1255 hbrowse.prg:1662
 msgid "Find string"
-msgstr "Поиск строки"
+msgstr "п÷п╬п╦я│п╨ я│я┌я─п╬п╨п╦"
 
 #: dialbox.prg:1259 hbrowse.prg:1666
 msgid "&Resume   "
-msgstr "&Продолжить "
+msgstr "&п÷я─п╬п╢п╬п╩п╤п╦я┌я▄ "
 
 #: dialbox.prg:1259 hbrowse.prg:1666
 msgid "Resume find string"
-msgstr "Продолжить поиск строки"
+msgstr "п÷я─п╬п╢п╬п╩п╤п╦я┌я▄ п©п╬п╦я│п╨ я│я┌я─п╬п╨п╦"
 
 #: dialbox.prg:1263 hbrowse.prg:1670
 msgid "&Unmark   "
-msgstr "Сн&ять отметку "
+msgstr "п║п╫&я▐я┌я▄ п╬я┌п╪п╣я┌п╨я┐ "
 
 #: dialbox.prg:1263 hbrowse.prg:1670
 msgid "Unmark selected block"
-msgstr "Снять отметку блока"
+msgstr "п║п╫я▐я┌я▄ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟"
 
 #: get_obj.prg:225 get_obj.prg:988 get_obj.prg:1060 get_obj.prg:1110
 #: scr_func.prg:287 scr_func.prg:288
 msgid "Y"
-msgstr "Д"
+msgstr "п■"
 
 #: get_obj.prg:418 var_func.prg:35 var_func.prg:74 var_func.prg:102
 msgid "array"
-msgstr "массив"
+msgstr "п╪п╟я│я│п╦п╡"
 
 #: get_obj.prg:420 var_func.prg:37 var_func.prg:76 var_func.prg:104
 msgid "Block"
-msgstr "Блок"
+msgstr "п▒п╩п╬п╨"
 
 #: get_obj.prg:427 get_obj.prg:986 get_obj.prg:988 get_obj.prg:1058
 #: get_obj.prg:1060 var_func.prg:83 var_func.prg:111 scr_func.prg:326
 #: edit.prg:622 edit.prg:899 edit.prg:990 edit.prg:1030 edit.prg:1294
 #: edit.prg:1581 edit.prg:1589
 msgid "Yes"
-msgstr "Да "
+msgstr "п■п╟ "
 
 #: get_obj.prg:427 get_obj.prg:986 get_obj.prg:988 get_obj.prg:1058
 #: get_obj.prg:1060 var_func.prg:83 var_func.prg:111 scr_func.prg:327
 msgid "No "
-msgstr "Нет"
+msgstr "п²п╣я┌"
 
 #: get_obj.prg:434 var_func.prg:53 var_func.prg:90 var_func.prg:118
 msgid "Object"
-msgstr "Объект"
+msgstr "п·п╠я┼п╣п╨я┌"
 
 #: get_obj.prg:1110 scr_func.prg:289 scr_func.prg:290
 msgid "N"
-msgstr "Н"
+msgstr "п²"
 
 #: smtp_obj.prg:89 smtp_obj.prg:106 smtp_obj.prg:156
 msgid "Connect not activated"
-msgstr "Связь не установлена"
+msgstr "п║п╡я▐п╥я▄ п╫п╣ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╟"
 
 #: te_find.prg:84 te_find.prg:85
 msgid " Find & replace "
-msgstr " Поиск и замена "
+msgstr " п÷п╬п╦я│п╨ п╦ п╥п╟п╪п╣п╫п╟ "
 
 #: te_find.prg:87
 msgid "Find:"
-msgstr "Найти:"
+msgstr "п²п╟п╧я┌п╦:"
 
 #: te_find.prg:94
 msgid "Replace:"
-msgstr "Заменить:"
+msgstr "п≈п╟п╪п╣п╫п╦я┌я▄:"
 
 #: te_find.prg:99 te_find.prg:100
 msgid " Find "
-msgstr " Поиск "
+msgstr " п÷п╬п╦я│п╨ "
 
 #: te_find.prg:113
 msgid "Options"
-msgstr " Опции "
+msgstr " п·п©я├п╦п╦ "
 
 #: te_find.prg:117
 msgid "Case-sensitive"
-msgstr "Учитывать регистр"
+msgstr "пёя┤п╦я┌я▀п╡п╟я┌я▄ я─п╣пЁп╦я│я┌я─"
 
 #: te_find.prg:118
 msgid "Word only"
-msgstr "Только слово"
+msgstr "п╒п╬п╩я▄п╨п╬ я│п╩п╬п╡п╬"
 
 #: te_find.prg:119
 msgid "Reg. expression"
-msgstr "Рег.выражение"
+msgstr "п═п╣пЁ.п╡я▀я─п╟п╤п╣п╫п╦п╣"
 
 #: te_find.prg:120
 msgid "All windows"
-msgstr "Во всех окнах"
+msgstr "п▓п╬ п╡я│п╣я┘ п╬п╨п╫п╟я┘"
 
 #: te_find.prg:124
 msgid "Forward"
-msgstr "Вперед"
+msgstr "п▓п©п╣я─п╣п╢"
 
 #: te_find.prg:125
 msgid "Backward"
-msgstr "Назад"
+msgstr "п²п╟п╥п╟п╢"
 
 #: te_find.prg:126
 msgid "From begin"
-msgstr "От начала"
+msgstr "п·я┌ п╫п╟я┤п╟п╩п╟"
 
 #: te_find.prg:127
 msgid "Direction"
-msgstr "Направление"
+msgstr "п²п╟п©я─п╟п╡п╩п╣п╫п╦п╣"
 
 #: te_find.prg:130
 msgid "Global"
-msgstr "В тексте"
+msgstr "п▓ я┌п╣п╨я│я┌п╣"
 
 #: te_find.prg:131
 msgid "In block"
-msgstr "В блоке"
+msgstr "п▓ п╠п╩п╬п╨п╣"
 
 #: te_find.prg:132
 msgid "Where"
-msgstr "Где"
+msgstr "п⌠п╢п╣"
 
 #: sarray.prg:60
 msgid "Out from bound in sorted array"
-msgstr "Выход за границы сортированного массива"
+msgstr "п▓я▀я┘п╬п╢ п╥п╟ пЁя─п╟п╫п╦я├я▀ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟"
 
 #: sarray.prg:111 sarray.prg:165
 msgid "Unknown values for key or data"
-msgstr "Неизвестно значение ключа или данных"
+msgstr "п²п╣п╦п╥п╡п╣я│я┌п╫п╬ п╥п╫п╟я┤п╣п╫п╦п╣ п╨п╩я▌я┤п╟ п╦п╩п╦ п╢п╟п╫п╫я▀я┘"
 
 #: sarray.prg:152
 msgid "Out bounds in sorted array"
-msgstr "Выход за границы сортированного массива"
+msgstr "п▓я▀я┘п╬п╢ п╥п╟ пЁя─п╟п╫п╦я├я▀ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟"
 
 #: sarray.prg:198
 msgid "Key value not found in sorted array"
-msgstr "Значение ключа не найдено в сортированном массиве"
+msgstr "п≈п╫п╟я┤п╣п╫п╦п╣ п╨п╩я▌я┤п╟ п╫п╣ п╫п╟п╧п╢п╣п╫п╬ п╡ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬п╪ п╪п╟я│я│п╦п╡п╣"
 
 #: sarray.prg:215
 msgid "Unknown values for key"
-msgstr "Неизвестно значение ключа или данных"
+msgstr "п²п╣п╦п╥п╡п╣я│я┌п╫п╬ п╥п╫п╟я┤п╣п╫п╦п╣ п╨п╩я▌я┤п╟ п╦п╩п╦ п╢п╟п╫п╫я▀я┘"
 
 #: inifile.prg:103
 msgid ": create error:"
-msgstr ": ошибка создания:"
+msgstr ": п╬я┬п╦п╠п╨п╟ я│п╬п╥п╢п╟п╫п╦я▐:"
 
 #: inifile.prg:146
 msgid "Bad file name: name is not specified"
-msgstr "Не указано имя файла"
+msgstr "п²п╣ я┐п╨п╟п╥п╟п╫п╬ п╦п╪я▐ я└п╟п╧п╩п╟"
 
 #: inifile.prg:154
 msgid ": open error:"
-msgstr ": ошибка открытия:"
+msgstr ": п╬я┬п╦п╠п╨п╟ п╬я┌п╨я─я▀я┌п╦я▐:"
 
 #: inifile.prg:182
 msgid "Bad string in .ini file:"
-msgstr "Неправильная строка в .ini файле"
+msgstr "п²п╣п©я─п╟п╡п╦п╩я▄п╫п╟я▐ я│я┌я─п╬п╨п╟ п╡ .ini я└п╟п╧п╩п╣"
 
 #: cobra_service.prg:55
 msgid "TCP connection error:"
-msgstr "ошибка открытия TCP:"
+msgstr "п╬я┬п╦п╠п╨п╟ п╬я┌п╨я─я▀я┌п╦я▐ TCP:"
 
 #: cobra_service.prg:164 cobra_service.prg:203
 msgid "Bad cobraQuery object"
@@ -254,137 +254,137 @@ msgstr ""
 
 #: cobra_service.prg:237
 msgid "Answer ID not found"
-msgstr "ID ответа не найден"
+msgstr "ID п╬я┌п╡п╣я┌п╟ п╫п╣ п╫п╟п╧п╢п╣п╫"
 
 #: cobra_service.prg:368 cobra_service.prg:460 cobra_service.prg:481
 #: cobra_service.prg:513 cobra_service.prg:550
 msgid "CODB library not linked"
-msgstr "Библиотека CODB не подключена"
+msgstr "п▒п╦п╠п╩п╦п╬я┌п╣п╨п╟ CODB п╫п╣ п©п╬п╢п╨п╩я▌я┤п╣п╫п╟"
 
 #: cobra_service.prg:373 cobra_service.prg:414 cobra_service.prg:434
 #: cobra_service.prg:518
 msgid "Bad depository ID:"
-msgstr "Неизвестный ID депозитария:"
+msgstr "п²п╣п╦п╥п╡п╣я│я┌п╫я▀п╧ ID п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐:"
 
 #: cobra_service.prg:384 cobra_service.prg:529
 msgid "Bad class name or ID:"
-msgstr "Неизвестное имя или ID класса:"
+msgstr "п²п╣п╦п╥п╡п╣я│я┌п╫п╬п╣ п╦п╪я▐ п╦п╩п╦ ID п╨п╩п╟я│я│п╟:"
 
 #: cobra_service.prg:617
 msgid "File not found:"
-msgstr "Файл не найден:"
+msgstr "п╓п╟п╧п╩ п╫п╣ п╫п╟п╧п╢п╣п╫:"
 
 #: cobra_service.prg:674
 msgid "Need updating client"
-msgstr "Требуется обновить клиента"
+msgstr "п╒я─п╣п╠я┐п╣я┌я│я▐ п╬п╠п╫п╬п╡п╦я┌я▄ п╨п╩п╦п╣п╫я┌п╟"
 
 #: cobra_service.prg:694
 msgid "Client LANG value not supported"
-msgstr "LANG клиента не поддерживается"
+msgstr "LANG п╨п╩п╦п╣п╫я┌п╟ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐"
 
 #: cobra_service.prg:713
 msgid "Client CHARSET value not supported"
-msgstr "CHARSET клиента не поддерживается"
+msgstr "CHARSET п╨п╩п╦п╣п╫я┌п╟ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐"
 
 #: cobra_service.prg:732
 msgid "Client CRYPTO value not supported"
-msgstr "CRYPTO клиента не поддерживается"
+msgstr "CRYPTO п╨п╩п╦п╣п╫я┌п╟ п╫п╣ п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌я│я▐"
 
 #: a2edit.prg:33
 msgid "Error A2EDIT; What~s Edit ?"
-msgstr "Ошибка A2EDIT; Чего редактировать ?"
+msgstr "п·я┬п╦п╠п╨п╟ A2EDIT; п╖п╣пЁп╬ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄ ?"
 
 #: blank.prg:53 blank.prg:55
 msgid "cannot open file:"
-msgstr "не возможно открыть файл:"
+msgstr "п╫п╣ п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩:"
 
 #: browse.prg:50 sqlbrows.prg:19
 msgid "<bof>"
-msgstr "<начало>"
+msgstr "<п╫п╟я┤п╟п╩п╬>"
 
 #: browse.prg:51
 msgid "<new>"
-msgstr "<новая>"
+msgstr "<п╫п╬п╡п╟я▐>"
 
 #: browse.prg:71 sqlbrows.prg:89
 msgid "Record N "
-msgstr "Запись N"
+msgstr "п≈п╟п©п╦я│я▄ N"
 
 #: dtools.prg:16
 msgid "January"
-msgstr "Январь"
+msgstr "п╞п╫п╡п╟я─я▄"
 
 #: dtools.prg:17
 msgid "February"
-msgstr "Февраль"
+msgstr "п╓п╣п╡я─п╟п╩я▄"
 
 #: dtools.prg:18
 msgid "March"
-msgstr "Март"
+msgstr "п°п╟я─я┌"
 
 #: dtools.prg:19
 msgid "April"
-msgstr "Апрель"
+msgstr "п░п©я─п╣п╩я▄"
 
 #: dtools.prg:20
 msgid "May"
-msgstr "Май"
+msgstr "п°п╟п╧"
 
 #: dtools.prg:21
 msgid "June"
-msgstr "Июнь"
+msgstr "п≤я▌п╫я▄"
 
 #: dtools.prg:22
 msgid "July"
-msgstr "Июль"
+msgstr "п≤я▌п╩я▄"
 
 #: dtools.prg:23
 msgid "August"
-msgstr "Август"
+msgstr "п░п╡пЁя┐я│я┌"
 
 #: dtools.prg:24
 msgid "September"
-msgstr "Сентябрь"
+msgstr "п║п╣п╫я┌я▐п╠я─я▄"
 
 #: dtools.prg:25
 msgid "October"
-msgstr "Октябрь"
+msgstr "п·п╨я┌я▐п╠я─я▄"
 
 #: dtools.prg:26
 msgid "November"
-msgstr "Ноябрь"
+msgstr "п²п╬я▐п╠я─я▄"
 
 #: dtools.prg:27
 msgid "December"
-msgstr "Декабрь"
+msgstr "п■п╣п╨п╟п╠я─я▄"
 
 #: dtools.prg:30
 msgid "Sunday"
-msgstr "Воскресенье"
+msgstr "п▓п╬я│п╨я─п╣я│п╣п╫я▄п╣"
 
 #: dtools.prg:31
 msgid "Monday"
-msgstr "Понедельник"
+msgstr "п÷п╬п╫п╣п╢п╣п╩я▄п╫п╦п╨"
 
 #: dtools.prg:32
 msgid "Tuesday"
-msgstr "Вторник"
+msgstr "п▓я┌п╬я─п╫п╦п╨"
 
 #: dtools.prg:33
 msgid "Wednesday"
-msgstr "Среда"
+msgstr "п║я─п╣п╢п╟"
 
 #: dtools.prg:34
 msgid "Thursday"
-msgstr "Четверг"
+msgstr "п╖п╣я┌п╡п╣я─пЁ"
 
 #: dtools.prg:35
 msgid "Friday"
-msgstr "Пятница"
+msgstr "п÷я▐я┌п╫п╦я├п╟"
 
 #: dtools.prg:36
 msgid "Saturday"
-msgstr "Суббота"
+msgstr "п║я┐п╠п╠п╬я┌п╟"
 
 #: errorsys.prg:60 errorsys.prg:73
 msgid "Error"
@@ -392,35 +392,35 @@ msgstr ""
 
 #: filedd.prg:227
 msgid "Can't open;"
-msgstr "Невозможно открыть;"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄;"
 
 #: ftools.prg:117
 msgid "Database files"
-msgstr "Файлы баз данных"
+msgstr "п╓п╟п╧п╩я▀ п╠п╟п╥ п╢п╟п╫п╫я▀я┘"
 
 #: ftools.prg:117
 msgid "  # records"
-msgstr "  # записей"
+msgstr "  # п╥п╟п©п╦я│п╣п╧"
 
 #: ftools.prg:117
 msgid " last update"
-msgstr " изменен "
+msgstr " п╦п╥п╪п╣п╫п╣п╫ "
 
 #: ftools.prg:117
 msgid "  size "
-msgstr " размер "
+msgstr " я─п╟п╥п╪п╣я─ "
 
 #: memoedit.prg:133 sys_prn.prg:140
 msgid "Esc: Cancel"
-msgstr "Прервать"
+msgstr "п÷я─п╣я─п╡п╟я┌я▄"
 
 #: memoedit.prg:293
 msgid "<Ins>"
-msgstr "<Вст>"
+msgstr "<п▓я│я┌>"
 
 #: memoedit.prg:293
 msgid "<Ovr>"
-msgstr "<Зам>"
+msgstr "<п≈п╟п╪>"
 
 #: nation.prg:22
 msgid "CLIPMSGS v1.0 04/Sep/02"
@@ -432,75 +432,75 @@ msgstr "DD-MM-YYYY"
 
 #: nation.prg:30
 msgid "Invalid argument"
-msgstr "Плохой аргумент "
+msgstr "п÷п╩п╬я┘п╬п╧ п╟я─пЁя┐п╪п╣п╫я┌ "
 
 #: nation.prg:33
 msgid "Database Files    # Records    Last Update     Size"
-msgstr "Файлы БД         # Записей    Дата изм.     Размер"
+msgstr "п╓п╟п╧п╩я▀ п▒п■         # п≈п╟п©п╦я│п╣п╧    п■п╟я┌п╟ п╦п╥п╪.     п═п╟п╥п╪п╣я─"
 
 #: nation.prg:35
 msgid "Do you want more samples?"
-msgstr "Хотите еще примеров ?"
+msgstr "п╔п╬я┌п╦я┌п╣ п╣я┴п╣ п©я─п╦п╪п╣я─п╬п╡ ?"
 
 #: nation.prg:37
 msgid "Page No."
-msgstr "Стр.No."
+msgstr "п║я┌я─.No."
 
 #: nation.prg:39
 msgid "** Subtotal **"
-msgstr "** итого **"
+msgstr "** п╦я┌п╬пЁп╬ **"
 
 #: nation.prg:41
 msgid "* Subsubtotal *"
-msgstr "* всего *"
+msgstr "* п╡я│п╣пЁп╬ *"
 
 #: nation.prg:43
 msgid "*** Total ***"
-msgstr "*** итого ***"
+msgstr "*** п╦я┌п╬пЁп╬ ***"
 
 #: nation.prg:45
 msgid "Ins"
-msgstr "Вст"
+msgstr "п▓я│я┌"
 
 #: nation.prg:49
 msgid "Invalid date"
-msgstr "Плохая дата "
+msgstr "п÷п╩п╬я┘п╟я▐ п╢п╟я┌п╟ "
 
 #: nation.prg:51
 msgid "Range: "
-msgstr "Предел:"
+msgstr "п÷я─п╣п╢п╣п╩:"
 
 #: nation.prg:62
 msgid "YyTtYy1"
-msgstr "YyTtДд1"
+msgstr "YyTtп■п╢1"
 
 #: nation.prg:67
 msgid "NnFfNn0"
-msgstr "NnFfНн0"
+msgstr "NnFfп²п╫0"
 
 #: rtcompil.prg:47
 msgid "Plugin not found:"
-msgstr "Plugin не найден:"
+msgstr "Plugin п╫п╣ п╫п╟п╧п╢п╣п╫:"
 
 #: rtcompil.prg:76
 msgid "Error compiling plugin file:"
-msgstr "Ошибка компиляции plugin:"
+msgstr "п·я┬п╦п╠п╨п╟ п╨п╬п╪п©п╦п╩я▐я├п╦п╦ plugin:"
 
 #: rtcompil.prg:85
 msgid "Error loading plugin block from file:"
-msgstr "Ошибка чтения plugin-блока из файла:"
+msgstr "п·я┬п╦п╠п╨п╟ я┤я┌п╣п╫п╦я▐ plugin-п╠п╩п╬п╨п╟ п╦п╥ я└п╟п╧п╩п╟:"
 
 #: var_func.prg:57 var_func.prg:94 var_func.prg:122
 msgid "Unknown"
-msgstr "Неизвестен"
+msgstr "п²п╣п╦п╥п╡п╣я│я┌п╣п╫"
 
 #: var_func.prg:88
 msgid "Memo"
-msgstr "Текст"
+msgstr "п╒п╣п╨я│я┌"
 
 #: var_func.prg:92 var_func.prg:120
 msgid "Undef"
-msgstr "Неопределен"
+msgstr "п²п╣п╬п©я─п╣п╢п╣п╩п╣п╫"
 
 #: hbrowse.prg:159
 msgid ""
@@ -510,7 +510,7 @@ msgstr ""
 
 #: hbrowse.prg:241
 msgid "Where are you going?"
-msgstr "Куда пойдем?"
+msgstr "п я┐п╢п╟ п©п╬п╧п╢п╣п╪?"
 
 #: hbrowse.prg:1626
 msgid "&Charset"
@@ -518,485 +518,485 @@ msgstr ""
 
 #: hbrowse.prg:1634
 msgid "&Control"
-msgstr "&Управление"
+msgstr "&пёп©я─п╟п╡п╩п╣п╫п╦п╣"
 
 #: hbrowse.prg:1637
 msgid "&Next   "
-msgstr "&Дальше "
+msgstr "&п■п╟п╩я▄я┬п╣ "
 
 #: hbrowse.prg:1637
 msgid "Go next item"
-msgstr "Перейти на след. объект"
+msgstr "п÷п╣я─п╣п╧я┌п╦ п╫п╟ я│п╩п╣п╢. п╬п╠я┼п╣п╨я┌"
 
 #: hbrowse.prg:1641
 msgid "&Prev   "
-msgstr "&Назад  "
+msgstr "&п²п╟п╥п╟п╢  "
 
 #: hbrowse.prg:1641
 msgid "Go previous item"
-msgstr "Перейти на пред. объект"
+msgstr "п÷п╣я─п╣п╧я┌п╦ п╫п╟ п©я─п╣п╢. п╬п╠я┼п╣п╨я┌"
 
 #: hbrowse.prg:1645
 msgid "P&revUrl   "
-msgstr "Пред. документ "
+msgstr "п÷я─п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌ "
 
 #: hbrowse.prg:1645
 msgid "Go previous URL document"
-msgstr "Загрузить пред. документ"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ п©я─п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌"
 
 #: hbrowse.prg:1649
 msgid "Nex&tUrl   "
-msgstr "След. документ "
+msgstr "п║п╩п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌ "
 
 #: hbrowse.prg:1649
 msgid "Go next URL document"
-msgstr "Загрузить след. документ"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ я│п╩п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌"
 
 #: hbrowse.prg:1653
 msgid "&InfoUrl   "
-msgstr "Информация "
+msgstr "п≤п╫я└п╬я─п╪п╟я├п╦я▐ "
 
 #: hbrowse.prg:1653
 msgid "Get information about URL document"
-msgstr "Информация о URL"
+msgstr "п≤п╫я└п╬я─п╪п╟я├п╦я▐ п╬ URL"
 
 #: sqlbrows.prg:20
 msgid "<eof>"
-msgstr "<конец>"
+msgstr "<п╨п╬п╫п╣я├>"
 
 #: sqlbrows.prg:21
 msgid "<empty>"
-msgstr "<пусто>"
+msgstr "<п©я┐я│я┌п╬>"
 
 #: foxsel.prg:1700
 msgid "Press any key to continue"
-msgstr "Нажмите любую клавишу"
+msgstr "п²п╟п╤п╪п╦я┌п╣ п╩я▌п╠я┐я▌ п╨п╩п╟п╡п╦я┬я┐"
 
 #: sys_prn.prg:77
 msgid "View printer output in text editor"
-msgstr "Просмотр в текстовом редакторе"
+msgstr "п÷я─п╬я│п╪п╬я┌я─ п╡ я┌п╣п╨я│я┌п╬п╡п╬п╪ я─п╣п╢п╟п╨я┌п╬я─п╣"
 
 #: sys_prn.prg:81
 msgid "Printing to main printer on your host"
-msgstr "Печать на главном принтере"
+msgstr "п÷п╣я┤п╟я┌я▄ п╫п╟ пЁп╩п╟п╡п╫п╬п╪ п©я─п╦п╫я┌п╣я─п╣"
 
 #: sys_prn.prg:140
 msgid "choice printer"
-msgstr "Выберите принтер"
+msgstr "п▓я▀п╠п╣я─п╦я┌п╣ п©я─п╦п╫я┌п╣я─"
 
 #: sys_prn.prg:152
 msgid ": Printing pages range: from XXXX to YYYY"
-msgstr ": Печать страниц с XXXX до YYYY"
+msgstr ": п÷п╣я┤п╟я┌я▄ я│я┌я─п╟п╫п╦я├ я│ XXXX п╢п╬ YYYY"
 
 #: sys_prn.prg:159
 msgid ": Printing copies: XXXX "
-msgstr ": Кол-во копий: XXXX"
+msgstr ": п п╬п╩-п╡п╬ п╨п╬п©п╦п╧: XXXX"
 
 #: sys_prn.prg:207
 msgid "Printbegin(): printing already in process"
-msgstr "Printbegin(): печать уже активизирована"
+msgstr "Printbegin(): п©п╣я┤п╟я┌я▄ я┐п╤п╣ п╟п╨я┌п╦п╡п╦п╥п╦я─п╬п╡п╟п╫п╟"
 
 #: sys_prn.prg:254
 msgid "PrintEnd(): printing process not actived"
-msgstr "PrintEnd(): печать еше не активизирована"
+msgstr "PrintEnd(): п©п╣я┤п╟я┌я▄ п╣я┬п╣ п╫п╣ п╟п╨я┌п╦п╡п╦п╥п╦я─п╬п╡п╟п╫п╟"
 
 #: scr_func.prg:127
 msgid "Press any key"
-msgstr "Нажмите любую клавишу"
+msgstr "п²п╟п╤п╪п╦я┌п╣ п╩я▌п╠я┐я▌ п╨п╩п╟п╡п╦я┬я┐"
 
 #: edit.prg:77
 msgid "ESC -menu"
-msgstr "ESC - меню"
+msgstr "ESC - п╪п╣п╫я▌"
 
 #: edit.prg:277 edit.prg:327 edit.prg:732 edit.prg:906 edit.prg:1172
 msgid "Can't open file;"
-msgstr "Не могу открыть файл;"
+msgstr "п²п╣ п╪п╬пЁя┐ п╬я┌п╨я─я▀я┌я▄ я└п╟п╧п╩;"
 
 #: edit.prg:622 edit.prg:990 edit.prg:1030 edit.prg:1169 edit.prg:1294
 #: edit.prg:1589
 msgid "File;"
-msgstr "Файл;"
+msgstr "п╓п╟п╧п╩;"
 
 #: edit.prg:622 edit.prg:1030
 msgid ";not saved. Save it?"
-msgstr ";не сохранен. Сохранить?"
+msgstr ";п╫п╣ я│п╬я┘я─п╟п╫п╣п╫. п║п╬я┘я─п╟п╫п╦я┌я▄?"
 
 #: edit.prg:622 edit.prg:899 edit.prg:990 edit.prg:1030 edit.prg:1294
 #: edit.prg:1581 edit.prg:1589
 msgid "No"
-msgstr "Нет"
+msgstr "п²п╣я┌"
 
 #: edit.prg:622 edit.prg:1030 edit.prg:1581 edit.prg:1995
 msgid "Cancel"
-msgstr "Прервать"
+msgstr "п÷я─п╣я─п╡п╟я┌я▄"
 
 #: edit.prg:831
 msgid "Made "
-msgstr "Произведено "
+msgstr "п÷я─п╬п╦п╥п╡п╣п╢п╣п╫п╬ "
 
 #: edit.prg:831
 msgid " changes"
-msgstr " изменений"
+msgstr " п╦п╥п╪п╣п╫п╣п╫п╦п╧"
 
 #: edit.prg:840 edit.prg:870
 msgid "Nothing to find!!!"
-msgstr "А искать-то - нечего!!!"
+msgstr "п░ п╦я│п╨п╟я┌я▄-я┌п╬ - п╫п╣я┤п╣пЁп╬!!!"
 
 #: edit.prg:859
 msgid "String "
-msgstr "Строка "
+msgstr "п║я┌я─п╬п╨п╟ "
 
 #: edit.prg:859
 msgid " not found!"
-msgstr " не найдена!"
+msgstr " п╫п╣ п╫п╟п╧п╢п╣п╫п╟!"
 
 #: edit.prg:899
 msgid "There is a change in the file.;"
-msgstr "Файл был изменен.;"
+msgstr "п╓п╟п╧п╩ п╠я▀п╩ п╦п╥п╪п╣п╫п╣п╫.;"
 
 #: edit.prg:899
 msgid "; Reload?"
-msgstr "; Перечитать?"
+msgstr "; п÷п╣я─п╣я┤п╦я┌п╟я┌я▄?"
 
 #: edit.prg:958
 msgid "Symbol '"
-msgstr "Символ '"
+msgstr "п║п╦п╪п╡п╬п╩ '"
 
 #: edit.prg:958
 msgid "' not found!"
-msgstr "' не найден!"
+msgstr "' п╫п╣ п╫п╟п╧п╢п╣п╫!"
 
 #: edit.prg:969
 msgid "Structure not found!"
-msgstr "Структура не найдена!"
+msgstr "п║я┌я─я┐п╨я┌я┐я─п╟ п╫п╣ п╫п╟п╧п╢п╣п╫п╟!"
 
 #: edit.prg:982 edit.prg:1080
 msgid "Block not marked!"
-msgstr "Блок не отмечен!"
+msgstr "п▒п╩п╬п╨ п╫п╣ п╬я┌п╪п╣я┤п╣п╫!"
 
 #: edit.prg:990 edit.prg:1294 edit.prg:1589
 msgid ";already exists. Overwrite it?"
-msgstr ";уже существует. Переписать?"
+msgstr ";я┐п╤п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌. п÷п╣я─п╣п©п╦я│п╟я┌я▄?"
 
 #: edit.prg:1006 edit.prg:1007
 msgid " Windows list "
-msgstr " Список окон "
+msgstr " п║п©п╦я│п╬п╨ п╬п╨п╬п╫ "
 
 #: edit.prg:1210
 msgid "ESC - menu          <SINGLE GRAPHIC>"
-msgstr "ESC - меню          <SINGLE GRAPHIC>"
+msgstr "ESC - п╪п╣п╫я▌          <SINGLE GRAPHIC>"
 
 #: edit.prg:1213 edit.prg:1223
 msgid "ESC - menu "
-msgstr "ESC - меню "
+msgstr "ESC - п╪п╣п╫я▌ "
 
 #: edit.prg:1220
 msgid "ESC - menu           <DOUBLE GRAPHIC>"
-msgstr "ESC - меню           <DOUBLE GRAPHIC>"
+msgstr "ESC - п╪п╣п╫я▌           <DOUBLE GRAPHIC>"
 
 #: edit.prg:1266
 msgid "<R>"
-msgstr "<Ч>"
+msgstr "<п╖>"
 
 #: edit.prg:1266
 msgid "<Link>"
-msgstr "<Связь>"
+msgstr "<п║п╡я▐п╥я▄>"
 
 #: edit.prg:1266
 msgid "I"
-msgstr "В"
+msgstr "п▓"
 
 #: edit.prg:1266
 msgid "O"
-msgstr "З"
+msgstr "п≈"
 
 #: edit.prg:1304
 msgid "Can't save file ;"
-msgstr "Не возможно сохранить файл ;"
+msgstr "п²п╣ п╡п╬п╥п╪п╬п╤п╫п╬ я│п╬я┘я─п╟п╫п╦я┌я▄ я└п╟п╧п╩ ;"
 
 #: edit.prg:1326
 msgid "&New                "
-msgstr "&Новый              "
+msgstr "&п²п╬п╡я▀п╧              "
 
 #: edit.prg:1326
 msgid "Create a new file"
-msgstr "Создать новый файл"
+msgstr "п║п╬п╥п╢п╟я┌я▄ п╫п╬п╡я▀п╧ я└п╟п╧п╩"
 
 #: edit.prg:1330
 msgid "&Open...            "
-msgstr "&Открыть ...        "
+msgstr "&п·я┌п╨я─я▀я┌я▄ ...        "
 
 #: edit.prg:1330
 msgid "Open a file"
-msgstr "Открыть файл"
+msgstr "п·я┌п╨я─я▀я┌я▄ я└п╟п╧п╩"
 
 #: edit.prg:1334
 msgid "&Save               "
-msgstr "&Сохранить          "
+msgstr "&п║п╬я┘я─п╟п╫п╦я┌я▄          "
 
 #: edit.prg:1334
 msgid "Save a file"
-msgstr "Записать файл  на диск"
+msgstr "п≈п╟п©п╦я│п╟я┌я▄ я└п╟п╧п╩  п╫п╟ п╢п╦я│п╨"
 
 #: edit.prg:1338
 msgid "&Save as...         "
-msgstr "&Сохранить          "
+msgstr "&п║п╬я┘я─п╟п╫п╦я┌я▄          "
 
 #: edit.prg:1338
 msgid "Save a file as..."
-msgstr "Сохранение файла..."
+msgstr "п║п╬я┘я─п╟п╫п╣п╫п╦п╣ я└п╟п╧п╩п╟..."
 
 #: edit.prg:1342
 msgid "&Reload file        "
-msgstr "&Перечитать         "
+msgstr "&п÷п╣я─п╣я┤п╦я┌п╟я┌я▄         "
 
 #: edit.prg:1342
 msgid "Reload a file"
-msgstr "Перечитать файл"
+msgstr "п÷п╣я─п╣я┤п╦я┌п╟я┌я▄ я└п╟п╧п╩"
 
 #: edit.prg:1346
 msgid "Read on&ly          "
-msgstr "Только &чтение"
+msgstr "п╒п╬п╩я▄п╨п╬ &я┤я┌п╣п╫п╦п╣"
 
 #: edit.prg:1346
 msgid "Read only options"
-msgstr "Включить/выключить режим Только Чтение"
+msgstr "п▓п╨п╩я▌я┤п╦я┌я▄/п╡я▀п╨п╩я▌я┤п╦я┌я▄ я─п╣п╤п╦п╪ п╒п╬п╩я▄п╨п╬ п╖я┌п╣п╫п╦п╣"
 
 #: edit.prg:1352 edit.prg:1438
 msgid "&Print...           "
-msgstr "Печа&ть...          "
+msgstr "п÷п╣я┤п╟&я┌я▄...          "
 
 #: edit.prg:1352
 msgid "Print a file"
-msgstr "Печать файла"
+msgstr "п÷п╣я┤п╟я┌я▄ я└п╟п╧п╩п╟"
 
 #: edit.prg:1356
 msgid "Print &block...     "
-msgstr "Печа&ть блока...    "
+msgstr "п÷п╣я┤п╟&я┌я▄ п╠п╩п╬п╨п╟...    "
 
 #: edit.prg:1356 edit.prg:1438
 msgid "Print marked block"
-msgstr "Печа&ть блока...    "
+msgstr "п÷п╣я┤п╟&я┌я▄ п╠п╩п╬п╨п╟...    "
 
 #: edit.prg:1362
 msgid "E&xit with save     "
-msgstr "Выход с со&хранением"
+msgstr "п▓я▀я┘п╬п╢ я│ я│п╬&я┘я─п╟п╫п╣п╫п╦п╣п╪"
 
 #: edit.prg:1362
 msgid "End of application and save options"
-msgstr "Завершить работу и сохранить текущие установки"
+msgstr "п≈п╟п╡п╣я─я┬п╦я┌я▄ я─п╟п╠п╬я┌я┐ п╦ я│п╬я┘я─п╟п╫п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╣ я┐я│я┌п╟п╫п╬п╡п╨п╦"
 
 #: edit.prg:1366
 msgid "Exit with-out sa&ve "
-msgstr "Выйти &без сохранения"
+msgstr "п▓я▀п╧я┌п╦ &п╠п╣п╥ я│п╬я┘я─п╟п╫п╣п╫п╦я▐"
 
 #: edit.prg:1366
 msgid "End of application and not save options"
-msgstr "Завершить работу без сохранения текущих установок"
+msgstr "п≈п╟п╡п╣я─я┬п╦я┌я▄ я─п╟п╠п╬я┌я┐ п╠п╣п╥ я│п╬я┘я─п╟п╫п╣п╫п╦я▐ я┌п╣п╨я┐я┴п╦я┘ я┐я│я┌п╟п╫п╬п╡п╬п╨"
 
 #: edit.prg:1373
 msgid "&Window"
-msgstr "&Окно"
+msgstr "&п·п╨п╫п╬"
 
 #: edit.prg:1376
 msgid "&List    "
-msgstr "&Список   "
+msgstr "&п║п©п╦я│п╬п╨   "
 
 #: edit.prg:1376
 msgid "List of windows"
-msgstr "Список открытых окон"
+msgstr "п║п©п╦я│п╬п╨ п╬я┌п╨я─я▀я┌я▀я┘ п╬п╨п╬п╫"
 
 #: edit.prg:1380
 msgid "&Next    "
-msgstr "С&ледующее"
+msgstr "п║&п╩п╣п╢я┐я▌я┴п╣п╣"
 
 #: edit.prg:1380
 msgid "Next window"
-msgstr "Следующее окно"
+msgstr "п║п╩п╣п╢я┐я▌я┴п╣п╣ п╬п╨п╫п╬"
 
 #: edit.prg:1384
 msgid "&Prev    "
-msgstr "&Предыдущее"
+msgstr "&п÷я─п╣п╢я▀п╢я┐я┴п╣п╣"
 
 #: edit.prg:1384
 msgid "Prevoice window"
-msgstr "Предыдущее окно"
+msgstr "п÷я─п╣п╢я▀п╢я┐я┴п╣п╣ п╬п╨п╫п╬"
 
 #: edit.prg:1388
 msgid "&Close   "
-msgstr "&Закрыть"
+msgstr "&п≈п╟п╨я─я▀я┌я▄"
 
 #: edit.prg:1388
 msgid "Close window"
-msgstr "Закрыть окно"
+msgstr "п≈п╟п╨я─я▀я┌я▄ п╬п╨п╫п╬"
 
 #: edit.prg:1395
 msgid "&Block"
-msgstr "&Блок"
+msgstr "&п▒п╩п╬п╨"
 
 #: edit.prg:1398
 msgid "&Line block marker    "
-msgstr "&Строчный блок"
+msgstr "&п║я┌я─п╬я┤п╫я▀п╧ п╠п╩п╬п╨"
 
 #: edit.prg:1398
 msgid "Start/stop line block marker"
-msgstr "Начать/закончить отметку строчного блока"
+msgstr "п²п╟я┤п╟я┌я▄/п╥п╟п╨п╬п╫я┤п╦я┌я▄ п╬я┌п╪п╣я┌п╨я┐ я│я┌я─п╬я┤п╫п╬пЁп╬ п╠п╩п╬п╨п╟"
 
 #: edit.prg:1402
 msgid "&Column block marker  "
-msgstr "&Прямоугольный блок"
+msgstr "&п÷я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧ п╠п╩п╬п╨"
 
 #: edit.prg:1402
 msgid "Start/stop columns block marker"
-msgstr "Начать/закончить отметку прямоугольного блока"
+msgstr "п²п╟я┤п╟я┌я▄/п╥п╟п╨п╬п╫я┤п╦я┌я▄ п╬я┌п╪п╣я┌п╨я┐ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╬пЁп╬ п╠п╩п╬п╨п╟"
 
 #: edit.prg:1406
 msgid "&Unmark               "
-msgstr "Сн&ять                "
+msgstr "п║п╫&я▐я┌я▄                "
 
 #: edit.prg:1406
 msgid "Unmark block marker"
-msgstr "Снять отметку блока"
+msgstr "п║п╫я▐я┌я▄ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟"
 
 #: edit.prg:1410
 msgid "Co&py                 "
-msgstr "&Копировать           "
+msgstr "&п п╬п©п╦я─п╬п╡п╟я┌я▄           "
 
 #: edit.prg:1410
 msgid "Copy block "
-msgstr "Копировать блок"
+msgstr "п п╬п©п╦я─п╬п╡п╟я┌я▄ п╠п╩п╬п╨"
 
 #: edit.prg:1414
 msgid "&Move                 "
-msgstr "Пе&реместить          "
+msgstr "п÷п╣&я─п╣п╪п╣я│я┌п╦я┌я▄          "
 
 #: edit.prg:1414
 msgid "Move block "
-msgstr "Переместить блок"
+msgstr "п÷п╣я─п╣п╪п╣я│я┌п╦я┌я▄ п╠п╩п╬п╨"
 
 #: edit.prg:1418
 msgid "&Delete               "
-msgstr "&Удалить              "
+msgstr "&пёп╢п╟п╩п╦я┌я▄              "
 
 #: edit.prg:1418
 msgid "Delete block"
-msgstr "Удалить блок"
+msgstr "пёп╢п╟п╩п╦я┌я▄ п╠п╩п╬п╨"
 
 #: edit.prg:1422
 msgid "Copy to clip&board    "
-msgstr "Копировать в &буфер   "
+msgstr "п п╬п©п╦я─п╬п╡п╟я┌я▄ п╡ &п╠я┐я└п╣я─   "
 
 #: edit.prg:1422
 msgid "Copy block to clipboard"
-msgstr "Скопировать блок в буфер"
+msgstr "п║п╨п╬п©п╦я─п╬п╡п╟я┌я▄ п╠п╩п╬п╨ п╡ п╠я┐я└п╣я─"
 
 #: edit.prg:1426
 msgid "Pa&ste from clipboard "
-msgstr "Вставить из бу&фера   "
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄ п╦п╥ п╠я┐&я└п╣я─п╟   "
 
 #: edit.prg:1426
 msgid "Paste block from clipboard"
-msgstr "Вставить блок из буфера"
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄ п╠п╩п╬п╨ п╦п╥ п╠я┐я└п╣я─п╟"
 
 #: edit.prg:1430
 msgid "&Save to file         "
-msgstr "&Записать в файл      "
+msgstr "&п≈п╟п©п╦я│п╟я┌я▄ п╡ я└п╟п╧п╩      "
 
 #: edit.prg:1430
 msgid "Save block to file"
-msgstr "Записать выделенный блок в файл"
+msgstr "п≈п╟п©п╦я│п╟я┌я▄ п╡я▀п╢п╣п╩п╣п╫п╫я▀п╧ п╠п╩п╬п╨ п╡ я└п╟п╧п╩"
 
 #: edit.prg:1434
 msgid "&Load from file       "
-msgstr "П&рочитать из файла   "
+msgstr "п÷&я─п╬я┤п╦я┌п╟я┌я▄ п╦п╥ я└п╟п╧п╩п╟   "
 
 #: edit.prg:1434
 msgid "Load block from file"
-msgstr "Прочитать блок из файла"
+msgstr "п÷я─п╬я┤п╦я┌п╟я┌я▄ п╠п╩п╬п╨ п╦п╥ я└п╟п╧п╩п╟"
 
 #: edit.prg:1447
 msgid "&Service"
-msgstr "&Сервис"
+msgstr "&п║п╣я─п╡п╦я│"
 
 #: edit.prg:1450
 msgid "&Insert mode    "
-msgstr "&Режим вставки"
+msgstr "&п═п╣п╤п╦п╪ п╡я│я┌п╟п╡п╨п╦"
 
 #: edit.prg:1450
 msgid "On/off insert mode "
-msgstr "Вкл/выкл режим вставки"
+msgstr "п▓п╨п╩/п╡я▀п╨п╩ я─п╣п╤п╦п╪ п╡я│я┌п╟п╡п╨п╦"
 
 #: edit.prg:1455
 msgid "Find &string    "
-msgstr "&Поиск строки   "
+msgstr "&п÷п╬п╦я│п╨ я│я┌я─п╬п╨п╦   "
 
 #: edit.prg:1455
 msgid "Find string "
-msgstr "Поиск строки"
+msgstr "п÷п╬п╦я│п╨ я│я┌я─п╬п╨п╦"
 
 #: edit.prg:1459
 msgid "Find &next      "
-msgstr "Найти &следующее"
+msgstr "п²п╟п╧я┌п╦ &я│п╩п╣п╢я┐я▌я┴п╣п╣"
 
 #: edit.prg:1459
 msgid "Find next "
-msgstr "Найти следующее вхождение подстроки"
+msgstr "п²п╟п╧я┌п╦ я│п╩п╣п╢я┐я▌я┴п╣п╣ п╡я┘п╬п╤п╢п╣п╫п╦п╣ п©п╬п╢я│я┌я─п╬п╨п╦"
 
 #: edit.prg:1463
 msgid "Find pre&vious  "
-msgstr "Найти пре&дыдущее"
+msgstr "п²п╟п╧я┌п╦ п©я─п╣&п╢я▀п╢я┐я┴п╣п╣"
 
 #: edit.prg:1463
 msgid "Find previous "
-msgstr "П&родолжить поиск"
+msgstr "п÷&я─п╬п╢п╬п╩п╤п╦я┌я▄ п©п╬п╦я│п╨"
 
 #: edit.prg:1467
 msgid "&Replace        "
-msgstr "&Заменить       "
+msgstr "&п≈п╟п╪п╣п╫п╦я┌я▄       "
 
 #: edit.prg:1467
 msgid "Find and replace string "
-msgstr "Найти подстроку и заменить "
+msgstr "п²п╟п╧я┌п╦ п©п╬п╢я│я┌я─п╬п╨я┐ п╦ п╥п╟п╪п╣п╫п╦я┌я▄ "
 
 #: edit.prg:1471
 msgid "&Match symbol forward  "
-msgstr "Поиск &символа вперед"
+msgstr "п÷п╬п╦я│п╨ &я│п╦п╪п╡п╬п╩п╟ п╡п©п╣я─п╣п╢"
 
 #: edit.prg:1471
 msgid "Match identity symbol in forward "
-msgstr "Поиск похожего символа вперед по тексту"
+msgstr "п÷п╬п╦я│п╨ п©п╬я┘п╬п╤п╣пЁп╬ я│п╦п╪п╡п╬п╩п╟ п╡п©п╣я─п╣п╢ п©п╬ я┌п╣п╨я│я┌я┐"
 
 #: edit.prg:1475
 msgid "Match symbol &backward "
-msgstr "Поиск си&мвола назад"
+msgstr "п÷п╬п╦я│п╨ я│п╦&п╪п╡п╬п╩п╟ п╫п╟п╥п╟п╢"
 
 #: edit.prg:1475
 msgid "Match identity symbol in backward "
-msgstr "Поиск похожего символа в обратном направлении"
+msgstr "п÷п╬п╦я│п╨ п©п╬я┘п╬п╤п╣пЁп╬ я│п╦п╪п╡п╬п╩п╟ п╡ п╬п╠я─п╟я┌п╫п╬п╪ п╫п╟п©я─п╟п╡п╩п╣п╫п╦п╦"
 
 #: edit.prg:1479
 msgid "Match structure forward  "
-msgstr "По&иск структуры"
+msgstr "п÷п╬&п╦я│п╨ я│я┌я─я┐п╨я┌я┐я─я▀"
 
 #: edit.prg:1479
 msgid "Match Clipper structure to forward "
-msgstr "Поиск структуры по правилам Clipper вперед"
+msgstr "п÷п╬п╦я│п╨ я│я┌я─я┐п╨я┌я┐я─я▀ п©п╬ п©я─п╟п╡п╦п╩п╟п╪ Clipper п╡п©п╣я─п╣п╢"
 
 #: edit.prg:1483
 msgid "Match structure backward "
-msgstr "Поиск структуры &назад"
+msgstr "п÷п╬п╦я│п╨ я│я┌я─я┐п╨я┌я┐я─я▀ &п╫п╟п╥п╟п╢"
 
 #: edit.prg:1483
 msgid "Match Clipper structure to backward "
-msgstr "Поиск структуры по правилам Clipper назад"
+msgstr "п÷п╬п╦я│п╨ я│я┌я─я┐п╨я┌я┐я─я▀ п©п╬ п©я─п╟п╡п╦п╩п╟п╪ Clipper п╫п╟п╥п╟п╢"
 
 #: edit.prg:1487
 msgid "&Undo           "
-msgstr "О&ткат"
+msgstr "п·&я┌п╨п╟я┌"
 
 #: edit.prg:1487
 msgid "Undo operation"
-msgstr "Операция отката"
+msgstr "п·п©п╣я─п╟я├п╦я▐ п╬я┌п╨п╟я┌п╟"
 
 #: edit.prg:1495
 msgid "Forma&t"
@@ -1004,163 +1004,163 @@ msgstr "Forma&t"
 
 #: edit.prg:1498
 msgid "Format &line    "
-msgstr "Ф&ормат строка  "
+msgstr "п╓&п╬я─п╪п╟я┌ я│я┌я─п╬п╨п╟  "
 
 #: edit.prg:1498
 msgid "Format line"
-msgstr "Форматирование строки"
+msgstr "п╓п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦п╣ я│я┌я─п╬п╨п╦"
 
 #: edit.prg:1502
 msgid "Format &part    "
-msgstr "Формат абза&ц   "
+msgstr "п╓п╬я─п╪п╟я┌ п╟п╠п╥п╟&я├   "
 
 #: edit.prg:1502
 msgid "Format part"
-msgstr "Форматирование абзаца"
+msgstr "п╓п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦п╣ п╟п╠п╥п╟я├п╟"
 
 #: edit.prg:1509
 msgid "O&therwise"
-msgstr "П&рочее"
+msgstr "п÷&я─п╬я┤п╣п╣"
 
 #: edit.prg:1512
 msgid "&Template       "
-msgstr "&Шаблон         "
+msgstr "&п╗п╟п╠п╩п╬п╫         "
 
 #: edit.prg:1512
 msgid "Template "
-msgstr "Вставить строку по шаблону"
+msgstr "п▓я│я┌п╟п╡п╦я┌я▄ я│я┌я─п╬п╨я┐ п©п╬ я┬п╟п╠п╩п╬п╫я┐"
 
 #: edit.prg:1516
 msgid "Template &macro "
-msgstr "&Макроподстановка"
+msgstr "&п°п╟п╨я─п╬п©п╬п╢я│я┌п╟п╫п╬п╡п╨п╟"
 
 #: edit.prg:1516
 msgid "Template macro "
-msgstr "Выполнить макроподстановку"
+msgstr "п▓я▀п©п╬п╩п╫п╦я┌я▄ п╪п╟п╨я─п╬п©п╬п╢я│я┌п╟п╫п╬п╡п╨я┐"
 
 #: edit.prg:1520
 msgid "&Single graphic "
-msgstr "&Графика одиночная"
+msgstr "&п⌠я─п╟я└п╦п╨п╟ п╬п╢п╦п╫п╬я┤п╫п╟я▐"
 
 #: edit.prg:1520
 msgid "On/Off single graphic mode "
-msgstr "Вкл/выкл режим рисования одиночных линий"
+msgstr "п▓п╨п╩/п╡я▀п╨п╩ я─п╣п╤п╦п╪ я─п╦я│п╬п╡п╟п╫п╦я▐ п╬п╢п╦п╫п╬я┤п╫я▀я┘ п╩п╦п╫п╦п╧"
 
 #: edit.prg:1525
 msgid "&Double graphic "
-msgstr "Графика &двойная"
+msgstr "п⌠я─п╟я└п╦п╨п╟ &п╢п╡п╬п╧п╫п╟я▐"
 
 #: edit.prg:1525
 msgid "On/Off double graphic mode  "
-msgstr "Вкл/выкл режим рисования двойных линий"
+msgstr "п▓п╨п╩/п╡я▀п╨п╩ я─п╣п╤п╦п╪ я─п╦я│п╬п╡п╟п╫п╦я▐ п╢п╡п╬п╧п╫я▀я┘ п╩п╦п╫п╦п╧"
 
 #: edit.prg:1530
 msgid "&Choose code page "
-msgstr "&Выбрать кодировку"
+msgstr "&п▓я▀п╠я─п╟я┌я▄ п╨п╬п╢п╦я─п╬п╡п╨я┐"
 
 #: edit.prg:1530
 msgid "Choose code page  "
-msgstr "Выбрать кодировку"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п╨п╬п╢п╦я─п╬п╡п╨я┐"
 
 #: edit.prg:1534
 msgid "&Options...     "
-msgstr "Оп&ции...        "
+msgstr "п·п©&я├п╦п╦...        "
 
 #: edit.prg:1534
 msgid "Set options"
-msgstr "Настройка"
+msgstr "п²п╟я│я┌я─п╬п╧п╨п╟"
 
 #: edit.prg:1555
 msgid "R:"
-msgstr "Ч:"
+msgstr "п╖:"
 
 #: edit.prg:1581
 msgid "; not saved. Save?"
-msgstr "; не сохранен. Сохранить?"
+msgstr "; п╫п╣ я│п╬я┘я─п╟п╫п╣п╫. п║п╬я┘я─п╟п╫п╦я┌я▄?"
 
 #: edit.prg:1671 edit.prg:1672
 msgid " Options "
-msgstr " Опции "
+msgstr " п·п©я├п╦п╦ "
 
 #: edit.prg:1674
 msgid "Create .bak files"
-msgstr "Создавать .bak файлы"
+msgstr "п║п╬п╥п╢п╟п╡п╟я┌я▄ .bak я└п╟п╧п╩я▀"
 
 #: edit.prg:1677
 msgid "Tabulation size"
-msgstr "Шаг табуляции"
+msgstr "п╗п╟пЁ я┌п╟п╠я┐п╩я▐я├п╦п╦"
 
 #: edit.prg:1680
 msgid "Tabulation packing"
-msgstr "Оптимизация табуляций"
+msgstr "п·п©я┌п╦п╪п╦п╥п╟я├п╦я▐ я┌п╟п╠я┐п╩я▐я├п╦п╧"
 
 #: edit.prg:1683
 msgid "Open files in "
-msgstr "Открыть файлы в"
+msgstr "п·я┌п╨я─я▀я┌я▄ я└п╟п╧п╩я▀ п╡"
 
 #: edit.prg:1685
 msgid "current directory"
-msgstr "текущей директории"
+msgstr "я┌п╣п╨я┐я┴п╣п╧ п╢п╦я─п╣п╨я┌п╬я─п╦п╦"
 
 #: edit.prg:1686
 msgid "last directory"
-msgstr "последней директории"
+msgstr "п©п╬я│п╩п╣п╢п╫п╣п╧ п╢п╦я─п╣п╨я┌п╬я─п╦п╦"
 
 #: edit.prg:1691
 msgid "Autosave files"
-msgstr "Автосохранение"
+msgstr "п░п╡я┌п╬я│п╬я┘я─п╟п╫п╣п╫п╦п╣"
 
 #: edit.prg:1694
 msgid "Autosave time"
-msgstr "Время автосохр."
+msgstr "п▓я─п╣п╪я▐ п╟п╡я┌п╬я│п╬я┘я─."
 
 #: edit.prg:1705
 msgid "Save status"
-msgstr "Сохранять статус"
+msgstr "п║п╬я┘я─п╟п╫я▐я┌я▄ я│я┌п╟я┌я┐я│"
 
 #: edit.prg:1708
 msgid "Hypen in word"
-msgstr "Перенос в словах"
+msgstr "п÷п╣я─п╣п╫п╬я│ п╡ я│п╩п╬п╡п╟я┘"
 
 #: edit.prg:1711
 msgid "Auto wrap"
-msgstr "Автоперенос"
+msgstr "п░п╡я┌п╬п©п╣я─п╣п╫п╬я│"
 
 #: edit.prg:1714
 msgid "Auto margin left"
-msgstr "Автоматич. установка левой границы"
+msgstr "п░п╡я┌п╬п╪п╟я┌п╦я┤. я┐я│я┌п╟п╫п╬п╡п╨п╟ п╩п╣п╡п╬п╧ пЁя─п╟п╫п╦я├я▀"
 
 #: edit.prg:1718
 msgid "Margin left"
-msgstr "Левая граница"
+msgstr "п⌡п╣п╡п╟я▐ пЁя─п╟п╫п╦я├п╟"
 
 #: edit.prg:1721
 msgid "Margin right"
-msgstr "Правая граница"
+msgstr "п÷я─п╟п╡п╟я▐ пЁя─п╟п╫п╦я├п╟"
 
 #: edit.prg:1724
 msgid "Max strings"
-msgstr "Максимум строк"
+msgstr "п°п╟п╨я│п╦п╪я┐п╪ я│я┌я─п╬п╨"
 
 #: edit.prg:1916
 msgid "Line "
-msgstr "Строка "
+msgstr "п║я┌я─п╬п╨п╟ "
 
 #: edit.prg:1975
 msgid "Bad line number!"
-msgstr "Не правильно указан номер строки!"
+msgstr "п²п╣ п©я─п╟п╡п╦п╩я▄п╫п╬ я┐п╨п╟п╥п╟п╫ п╫п╬п╪п╣я─ я│я┌я─п╬п╨п╦!"
 
 #: edit.prg:1995
 msgid "New"
-msgstr "Новый"
+msgstr "п²п╬п╡я▀п╧"
 
 #: edit.prg:1995
 msgid "Link"
-msgstr "Связь"
+msgstr "п║п╡я▐п╥я▄"
 
 #: edit.prg:2030
 msgid " Source charset "
-msgstr " Исходная кодировка"
+msgstr " п≤я│я┘п╬п╢п╫п╟я▐ п╨п╬п╢п╦я─п╬п╡п╨п╟"
 
 #: edit.prg:2240
 msgid "Macros"
@@ -1172,55 +1172,55 @@ msgstr "<EOF>"
 
 #: tedit_obj.prg:327
 msgid "Load file..."
-msgstr "Чтение файла..."
+msgstr "п╖я┌п╣п╫п╦п╣ я└п╟п╧п╩п╟..."
 
 #: tedit_obj.prg:355 tedit_obj.prg:367
 msgid "The size of file ;"
-msgstr "Размер файла ;"
+msgstr "п═п╟п╥п╪п╣я─ я└п╟п╧п╩п╟ ;"
 
 #: tedit_obj.prg:355 tedit_obj.prg:367
 msgid "; most maximum size!;Last strings may be lost"
-msgstr "; превышает максимальный размер!;Последние строки текста могут быть утеряны"
+msgstr "; п©я─п╣п╡я▀я┬п╟п╣я┌ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫я▀п╧ я─п╟п╥п╪п╣я─!;п÷п╬я│п╩п╣п╢п╫п╦п╣ я│я┌я─п╬п╨п╦ я┌п╣п╨я│я┌п╟ п╪п╬пЁя┐я┌ п╠я▀я┌я▄ я┐я┌п╣я─я▐п╫я▀"
 
 #: tedit_obj.prg:355 tedit_obj.prg:367 tedit_obj.prg:452
 msgid "OK"
-msgstr "ОК"
+msgstr "п·п "
 
 #: tedit_obj.prg:452
 msgid ""
 "The size of file is a most maximum size!;Last strings may be lost; Please "
 "check MAXSTRINGS options"
 msgstr ""
-"Размер файла превышает максимальный!; Последние строки текста могут "
-"быть утеряны.; Пожалуйста проверьте настройки"
+"п═п╟п╥п╪п╣я─ я└п╟п╧п╩п╟ п©я─п╣п╡я▀я┬п╟п╣я┌ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫я▀п╧!; п÷п╬я│п╩п╣п╢п╫п╦п╣ я│я┌я─п╬п╨п╦ я┌п╣п╨я│я┌п╟ п╪п╬пЁя┐я┌ "
+"п╠я▀я┌я▄ я┐я┌п╣я─я▐п╫я▀.; п÷п╬п╤п╟п╩я┐п╧я│я┌п╟ п©я─п╬п╡п╣я─я▄я┌п╣ п╫п╟я│я┌я─п╬п╧п╨п╦"
 
 #: tedit_obj.prg:2211
 msgid "Save file..."
-msgstr "Сохранение файла..."
+msgstr "п║п╬я┘я─п╟п╫п╣п╫п╦п╣ я└п╟п╧п╩п╟..."
 
 #: tedit_obj.prg:2218
 msgid "file ;"
-msgstr "файл ;"
+msgstr "я└п╟п╧п╩ ;"
 
 #: tedit_obj.prg:2223 tedit_obj.prg:2321
 msgid "Can't create ;"
-msgstr "Не возможно создать ;"
+msgstr "п²п╣ п╡п╬п╥п╪п╬п╤п╫п╬ я│п╬п╥п╢п╟я┌я▄ ;"
 
 #: tedit_obj.prg:2223 tedit_obj.prg:2321
 msgid ".bak file"
-msgstr ".bak файл"
+msgstr ".bak я└п╟п╧п╩"
 
 #: tedit_obj.prg:2315
 msgid "Save block to file..."
-msgstr "Запись блока в файл..."
+msgstr "п≈п╟п©п╦я│я▄ п╠п╩п╬п╨п╟ п╡ я└п╟п╧п╩..."
 
 #: filed.prg:353
 msgid "Bad directory name!"
-msgstr "Не правильно указано имя каталога!"
+msgstr "п²п╣ п©я─п╟п╡п╦п╩я▄п╫п╬ я┐п╨п╟п╥п╟п╫п╬ п╦п╪я▐ п╨п╟я┌п╟п╩п╬пЁп╟!"
 
 #: sys_init.prg:43
 msgid "cp437"
 msgstr "cp866"
 
 #~ msgid "Exit from memoedit; Don~t save ?"
-#~ msgstr "Выйти из memoedit; без сохранения?"
+#~ msgstr "п▓я▀п╧я┌п╦ п╦п╥ memoedit; п╠п╣п╥ я│п╬я┘я─п╟п╫п╣п╫п╦я▐?"

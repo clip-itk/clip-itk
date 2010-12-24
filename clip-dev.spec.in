@@ -170,19 +170,16 @@ chmod -R g+w $LOCALEDIRS || true
 %defattr(-,root,root)
 %dir %{CLIPROOT}/locale.pot
 %dir %{CLIPROOT}/locale.po
-%{CLIPROOT}/locale.po/es_ES.8859-1/clip.po
-%{CLIPROOT}/locale.po/es_ES.8859-1/cliprt.po
-%{CLIPROOT}/locale.po/es_ES.8859-1/sys.po
-%{CLIPROOT}/locale.po/pt_BR.8859-1/clip.po
-%{CLIPROOT}/locale.po/pt_BR.8859-1/cliprt.po
-%{CLIPROOT}/locale.po/pt_BR.8859-1/sys.po
-%{CLIPROOT}/locale.po/es_ES.ISO01/clip.po
-%{CLIPROOT}/locale.po/es_ES.ISO01/cliprt.po
-%{CLIPROOT}/locale.po/es_ES.ISO01/sys.po
-%{CLIPROOT}/locale.po/ru_RU.KOI8-R/clip.po
-%{CLIPROOT}/locale.po/ru_RU.KOI8-R/cliprt.po
-%{CLIPROOT}/locale.po/ru_RU.KOI8-R/sys.po
-%{CLIPROOT}/locale.po/ru_RU.KOI8-R/codb.po
+%{CLIPROOT}/locale.po/pt_BR/clip.po
+%{CLIPROOT}/locale.po/pt_BR/cliprt.po
+%{CLIPROOT}/locale.po/pt_BR/sys.po
+%{CLIPROOT}/locale.po/es_ES/clip.po
+%{CLIPROOT}/locale.po/es_ES/cliprt.po
+%{CLIPROOT}/locale.po/es_ES/sys.po
+%{CLIPROOT}/locale.po/ru_RU/clip.po
+%{CLIPROOT}/locale.po/ru_RU/cliprt.po
+%{CLIPROOT}/locale.po/ru_RU/sys.po
+%{CLIPROOT}/locale.po/ru_RU/codb.po
 %{LIBDIR}/libclip.so
 %{LIBDIR}/libclip-codb.so
 %{LIBDIR}/libcodb-query.so
