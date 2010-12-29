@@ -2697,8 +2697,12 @@ clip_VAL(ClipMachine * mp)
 			;
 		len = sp - s;
 		if (dec)
-			dec = len - dec - 1;
-
+		{
+			if ( *s == '.' || *s == ',' )
+				dec = len - dec;
+			else
+				dec = len - dec - 1;
+		}
 		if (mp->flags & FIXED_FLAG)
 			dec = mp->decimals;
 		if (dec < 0 || dec == len)
