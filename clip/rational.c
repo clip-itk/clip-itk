@@ -18,9 +18,9 @@ round() and round in str() small bugs
 from uri:
 
 Revision 1.3  2000/10/20 08:03:24  clip
-Вкрутил rational везде где упоминается NUMERIC_t
-может чего и осталось неотловленное, но это может быть только в тех
-местах где нет использования NUMERIC_t !!!!!
+Added rational wherever mentioned NUMERIC_t
+maybe in some places this omitted
+(in places where don't use NUMERIC_t)!!!
 from uri:
 
 Revision 1.2  2000/09/12 07:45:47  clip
@@ -80,7 +80,7 @@ rational * rational_fromString(char * s)
 	}
 		for (i=0; i<lenstr && (s[i]!=' ' || s[i]==0); i++);
 	switch (s[i])
-	{    // если не в десятичном формате, а в формате 0x1234...
+	{    // if not in decimal format, but in format 0x1234...
 			case 'b': base=2;  break;
 			case 'o': base=8;  break;
 			case 'd': base=10; break;

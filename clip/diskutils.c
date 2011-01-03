@@ -176,7 +176,7 @@
    bug in fileseek for param "C:/ *"
 
    Revision 1.62  2001/04/15 11:25:07  clip
-   serg: в fopen добавлены share режимы для блокировок
+   serg: added share modes for locks in fopen
 
    Revision 1.61  2001/04/03 09:17:00  clip
    license errors
@@ -189,22 +189,22 @@
    add copyright
 
    Revision 1.58  2001/01/24 14:02:29  clip
-   serg: подправлены блокировки файлов
+   serg: fixed file locks
 
    Revision 1.57  2001/01/24 13:14:46  clip
-   serg: добавлена обработка блокировок на файлы
+   serg: added handling file locks
 
    Revision 1.56  2001/01/18 15:38:18  clip
-   serg: изменения в __COPYFILE
+   serg: changes in  __COPYFILE
 
    Revision 1.55  2001/01/18 15:30:28  clip
-   serg: изменения в __COPYFILE, развиваем X
+   serg: changes in __COPYFILE, develop X
 
    Revision 1.54  2001/01/09 13:15:06  clip
-   serg: вместо _clip_trap_printf теперь _clip_trap_err
+   serg: now use _clip_trap_err instead of _clip_trap_printf
 
    Revision 1.53  2001/01/09 12:51:18  clip
-   serg: изменения в __COPYFILE
+   serg: changes in  __COPYFILE
 
    Revision 1.52  2001/01/05 13:02:30  clip
    *** empty log message ***
@@ -213,7 +213,7 @@
    *** empty log message ***
 
    Revision 1.50  2001/01/05 12:44:30  clip
-   serg: исправлен глюк в __CopyFile, развиваем X
+   serg: fixed bug in __CopyFile, develop X
 
    Revision 1.49  2000/12/19 06:30:45  clip
    small bug in dospath()
@@ -225,7 +225,7 @@
    faccess
 
    Revision 1.46  2000/05/30 22:37:35  clip
-   serg: вроде доделал share-режимы работы с файлами, надо проверять
+   serg: propably completed share modes for files, need testing
 
    Revision 1.44  2000/05/20 18:37:31  clip
    change hash function
@@ -258,7 +258,7 @@
 
    Revision 1.35  2000/05/19 01:07:08  clip
    setshare, getshare (serg)
-   пока только сами функции, нигде не проверяется чего там установлено
+   while only the function, nowhere is checked then there is setted
 
    Revision 1.34  2000/05/19 00:17:19  clip
    filedelete (serg)
@@ -333,10 +333,10 @@
    dirchange "..\asdf" "\asdf"
 
    Revision 1.9  2000/04/11 00:21:23  serg
-   заработала FILESEEK - база для группы функций, пока не до конца
+   FILESEEK now worked - base for functions group, while incompleted
 
    Revision 1.8  2000/04/07 20:02:38  serg
-   добавлена __COPYFILE
+   added __COPYFILE
 
    Revision 1.7  2000/03/17 20:41:39  serg
    *** empty log message ***
@@ -401,18 +401,18 @@
 #include "hashcode.h"
 
 /*
- * для отладки
+ * for debug
  */
 #define PR(ptr)	printf( "'%s'\n", ptr ? ptr : "null" )
 
 /*
- * это массив hash-ключей для текущих рабочих каталогов на всех
- * возможных дисках
+ * this is array of hash-key for the current working directory at all
+ * possible disks
  */
 long _hash_cur_dir[26];
 
 /*
- * Досовские атрибуты файлов
+ * DOS file attributes
  *
  */
 #define FA_NORMAL	0
@@ -444,13 +444,13 @@ long _hash_cur_dir[26];
 const char *inv_arg = "invalid argument";
 
 /*
- * - здесь заполняется массив hash-кодов для быстрой выборки текущего
- *   пути на текущем диске (ключ - строка 'x_CUR_DIR', где вместо 'x'
- *   подставляется буква текущего диска), впоследствии индекс hash-ключа
- *   можно вычислить как <код_буквы_диска> - 65
- * - устанавливается так же соответствие диска "C:" корню в файловой
- *   системе unix
- * - на диске "C:" устанавливается текущий рабочий каталог -- корневой ("\")
+ * - here is filled  array of hash-codes for faster path selection
+ *   on current drive (key is string 'x_CUR_DIR', where instead of 'x'
+ *   substituted the letter of the current drive), index of hash-key
+ *   may be calculated as <drive letter code> - 65
+ * - also established relation between drive "C:" and root directory in
+ *   UNIX filesystem
+ * - set up current work directory ("\") on drive "C:"
  */
 
 int
@@ -468,9 +468,9 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	long len;
 #endif
 	/*
-	 * заполнение массива _hash_cur_dir для будущего быстрого
-	 * доступа к текущим путям на досовских дисках и установка
-	 * досовских путей для всех дисков в корень
+	 * filling _hash_cur_dir array for future fastest
+	 * access to current pathes on DOS drives and setting
+	 * DOS pathes to root directory
 	 */
 	strcpy(hstr, "__CUR_DIR");
 	for (i = 0, j = 'A'; i < 26; i++, j++)
@@ -483,9 +483,9 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	}
 
 	/*
-	 * проверяем рабочий каталог unix, и если он является подкаталогом
-	 * какого-либо досовского диска, делаем этот диск текущим и устанавливаем
-	 * рабочий каталог dos
+	 * checking UNIX working directory and if this directory is subdir
+	 * for some DOS drive, then making this drive as current and setting
+	 * current DOS directory
 	 */
 
 #ifdef _WIN32
@@ -542,7 +542,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	if ((s = (char *) calloc(MAXPATHLEN, 1)))
 	{
 
-		/* узнаем текущий путь unix */
+		/* current UNIX path */
 		if (getcwd(s, MAXPATHLEN))
 		{
 			char *d = NULL, *path = strdup(s);
@@ -551,7 +551,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 			hstr[2] = 0;
 			len = strlen(s);
 
-			/* перебор всех возможных дисков */
+			/* iterates through all possible drives */
 			for (i = 'A'; i <= 'Z'; i++)
 			{
 				hstr[0] = i;
@@ -563,10 +563,10 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 				{
 					char *ch = (char *) calloc(3, 1);
 
-					*ch = i;	/* буква диска */
+					*ch = i;	/* drive letter */
 					*(ch + 1) = ':';
 
-					/* установка текущего диска */
+					/* setting current drive */
 					/*
 					if (_clip_fetch_item(cm, CLIP_CUR_DRIVE) == NULL)
 					*/
@@ -579,7 +579,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 					*ch = '\\';
 					memcpy(ch + 1, path + j, len - j);
 
-					/* установка текущего досовского пути */
+					/* setting current DOS path */
 					_clip_store_item(cm, _hash_cur_dir[i - 65], ch);
 
 					//   break;
@@ -591,8 +591,8 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	}
 
 	/*
-	 * проверяем наличие информации о текущем досовском диске, если ее нет,
-	 * то устанавливаем текущим C:
+	 * check the availability of information about current DOS drive, if absent
+	 * setting current drive C:
 	 */
 #endif
 	if ((s = _clip_fetch_item(cm, CLIP_CUR_DRIVE)) == NULL)
@@ -602,11 +602,11 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 		_clip_store_item(cm, CLIP_CUR_DRIVE, s);
 	}
 
-	i = *s - 65;		/* индекс в _hash_cur_dir для текущего диска */
-	j = _clip_hashstr(s);	/* hash-код буквы текущего диска */
+	i = *s - 65;		/* index in _hash_cur_dir for current drive */
+	j = _clip_hashstr(s);	/* hash-code of current drive letter */
 	/*
-	 * проверяем установлена ли связь текущего досовского пути с unix,
-	 * если ее нет, устанавливаем в корневой каталог unix
+	 * check if have relation between current DOS path and UNIX path,
+	 * if absent, then setting to root UNIX directory
 	 */
 	if ((s = _clip_fetch_item(cm, j)) == NULL)
 	{
@@ -616,7 +616,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	}
 
 	/*
-	 * атрибут при создании файлов по умолчанию
+	 * default create file attribute
 	 */
 	f_attr = (int *) malloc(sizeof(int));
 
@@ -624,7 +624,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	_clip_store_item(cm, CLIP_CA_FCREATE_ATTR, f_attr);
 
 	/*
-	 * режим открытия файлов по умолчанию
+	 * default open file attribute
 	 */
 	f_attr = (int *) calloc(1, sizeof(int));
 
@@ -641,8 +641,8 @@ clip_INI__CTOOLS_DISKFUNC(ClipMachine * cm)
 }
 
 /*
- * возвращает имя каталога из полного пути в файловой системе unix,
- * снаружи его надо удалять, для внутреннего пользования
+ * returns name of directory from full path in UNIX filesystem,
+ * outside of it should be removed, for internal use
  */
 
 char *
@@ -666,9 +666,9 @@ _get_path(const char *fname)
 }
 
 /*
- * вызывается при ошибках операций с файлами, устанавливает
- * код Clipper-ошибки в зависимости от errno в unix,
- * для внутреннего пользования
+ * called when occured errors with file operations, setting
+ * Clipper-error code in relation to UNIX errno,
+ * for internal use
  */
 
 void
@@ -706,7 +706,7 @@ _check_error(ClipMachine * cm, const char *fname, int isdir)
 }
 
 /*
- * возвращает имя файла в файловой системе unix, снаружи надо удалять
+ * returns file name on UNIX filesystem, outside of it should be removed
  */
 
 char *
@@ -731,7 +731,7 @@ _get_unix_name(ClipMachine * cm, char *dname)
 }
 
 /*
- * возвращает путь в файловой системе - корень требуемого диска dos
+ * returns path in filesystem - root of DOS drive
  */
 char *
 _get_disk_path(ClipMachine * cm, char *dname)
@@ -761,7 +761,7 @@ extern int _set_lock(int fd, mode_t mode);
 /*extern int _check_lock( int fd, int l_type );*/
 
 /*
- * удалить файл
+ * delete file
  */
 int
 clip_DELETEFILE(ClipMachine * cm)
@@ -788,8 +788,8 @@ clip_DELETEFILE(ClipMachine * cm)
 }
 
 /*
- * сменить текущий рабочий каталог
- * если в аргументе есть буква диска, то меняется и текущий диск
+ * change current work directory
+ * also change current drive, if drive letter is present in argument
  */
 int
 clip_DIRCHANGE(ClipMachine * cm)
@@ -895,12 +895,12 @@ clip_DIRCHANGE(ClipMachine * cm)
 	else
 	{
 		/*
-		 * смена каталога unix успешна, теперь устанавливаем текущий
-		 * диск (если надо) и текущий досовский путь на этом диске
+		 * UNIX directory was changed successfully, now setting current
+		 * drive (if needed) and current DOS path on this drive
 		 */
 		char *dir = NULL, *ndir = NULL;
 		if (*dname == '\\' || *dname == '/')
-		{		/* абсолютный путь dos */
+		{		/* abcolute DOS path */
 			int len;
 
 			drv = strdup(dname);
@@ -910,7 +910,7 @@ clip_DIRCHANGE(ClipMachine * cm)
 			_clip_store_item(cm, hash_dir, drv);
 		}
 		else
-		{		/* путь неабсолютный, склейка путей */
+		{		/* relative path, merging pathes */
 			int dlen = 0;
 
 			dir = _clip_fetch_item(cm, hash_dir);
@@ -949,7 +949,7 @@ clip_DIRCHANGE(ClipMachine * cm)
 }
 
 /*
- * создать каталог, в пути может быть буква диска
+ * make directory, in path may be present drive letter
  */
 int
 clip_DIRMAKE(ClipMachine * cm)
@@ -969,8 +969,8 @@ clip_DIRMAKE(ClipMachine * cm)
 	}
 
 	/*
-	 * создаем каталог со всеми правами для всех, они обрежутся
-	 * в зависимости от установки umask для этого юзера
+	 * create directory with full-access rights, they will be truncated
+	 * relative to umask setting for this user
 	 */
 #ifdef OS_MINGW
 	if (mkdir(uname))
@@ -986,8 +986,8 @@ clip_DIRMAKE(ClipMachine * cm)
 }
 
 /*
- * имя текущего рабочего каталога, возможен 1 параметр -- имя диска,
- * если его нет, то берется текущий диск
+ * returns Current wirking directory name, possible one argument -- drive letter
+ * getting current drive, if absent
  */
 int
 clip_DIRNAME(ClipMachine * cm)
@@ -1014,8 +1014,8 @@ clip_DIRNAME(ClipMachine * cm)
 }
 
 /*
- * удаление каталога, делается проверка на текущий каталог,
- * т.к. его по досовским понятиям удалять нельзя
+ * delete directory, for some DOS-fs related reasons, we should make
+ * check for current directory (remowing of curr.dir is denied)
  */
 int
 clip_DIRREMOVE(ClipMachine * cm)
@@ -1048,7 +1048,7 @@ clip_DIRREMOVE(ClipMachine * cm)
 	}
 
 	/*
-	 * проверка на текущий каталог
+	 * checking for current directory
 	 */
 	if (st.st_ino == stcur.st_ino)
 	{
@@ -1067,8 +1067,8 @@ clip_DIRREMOVE(ClipMachine * cm)
 }
 
 /*
- * смена текущего диска, (A, B, C, D, ...),
- * буквы могут быть с последующими двоеточками
+ * change current drive (A, B, C, D, ...),
+ * letters can be with followed colons
  */
 int
 clip_DISKCHANGE(ClipMachine * cm)
@@ -1643,7 +1643,7 @@ clip___COPYFILE(ClipMachine * cm)
 	return r;
 }
 
-/* буфер хранения информации для FILESEEK */
+/* buffer for store information for FILESEEK */
 typedef struct
 {
 	char **fname;
@@ -1652,7 +1652,7 @@ typedef struct
 }
 FSdata;
 
-/* деструктор буфера FSdata */
+/* destructor of FSdata buffer */
 void
 destroy_FSdata(void *item)
 {
@@ -1831,8 +1831,8 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 }
 
 /*
- * если есть имя файла, то обрабатывается оно,
- * иначе текущая позиция в буфере FILESEEK
+ * if filename present, then it processed
+ * otherwise curent position in FILESEEK buffer
  */
 char *
 _get_fileseek_info(ClipMachine * cm, char **fname, struct stat *st)
@@ -2084,14 +2084,14 @@ int
 clip_SETFATTR(ClipMachine * cm)	/* Sets a file's attributes */
 {
 /*
-	   Возвращаемые значения:
+	   Returns:
 	   ~~~~~~~~~~~~~~~~~~~~~~
 	0      NO_DISK_ERR         No error found
 	   -2      ER_FILE_NOT_FOUND   File not found
 	   -3      ER_PATH_NOT_FOUND   Path not found
 	   -5      ER_ACCESS_DENIED    Access denied (e.g., in network)
 
-	   Устанавливаемые атрибуты:
+	   Attributes:
 	   ~~~~~~~~~~~~~~~~~~~~~~~~~
 	   0       FA_NORMAL
 	   1       FA_READONLY         READ ONLY (Read-only)
@@ -2403,14 +2403,14 @@ int
 clip_NUMDISKL(ClipMachine * cm)	/* Determines the number of available logical drives */
 {
 	/*
-	 * будем считать, что диск C: -> уже сетевой
+	 * assume that drive C: -> already is network share
 	 */
 	_clip_retni(cm, 0);
 	return 0;
 }
 
 /*
- * приходит имя файла unix, возвращается имя файла dos
+ * got UNIX file name, returns DOS file name
  */
 CLIP_DLLEXPORT int
 _dos_path(ClipMachine * cm, const char *fn, char *p, int len)
@@ -2419,7 +2419,7 @@ _dos_path(ClipMachine * cm, const char *fn, char *p, int len)
 }
 
 /*
- * приходит имя файла unix, возвращается имя файла dos
+ * got UNIX file name, returns DOS file name
  */
 int
 clip_DOSPATH(ClipMachine * cm)

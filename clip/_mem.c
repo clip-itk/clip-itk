@@ -250,7 +250,7 @@ dbf2clip(DbfData * dp, ClipVar * vp)
 		   vp->t.len = dp->u.c.len;
 		 */
 		vp->n.d = dp->u.n;
-		//vp->t.dec = dp->u.c.dec;   ???????? çÄÅ dec × dbf ?????
+		//vp->t.dec = dp->u.c.dec;   ???????? Where dec in dbf ?????
 		break;
 	case 'L':
 		vp->t.type = LOGICAL_t;

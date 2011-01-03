@@ -301,7 +301,7 @@
    add copyright
 
    Revision 1.25  2000/11/04 11:08:29  clip
-   bug in set(_SET_CANCEL), заткнут но не выправил
+   bug in set(_SET_CANCEL), was muted, but not fixed
    from uri:
 
    Revision 1.24  2000/10/31 11:50:07  clip
@@ -313,9 +313,9 @@
    paul
 
    Revision 1.22  2000/10/20 08:03:24  clip
-   Вкрутил rational везде где упоминается NUMERIC_t
-   может чего и осталось неотловленное, но это может быть только в тех
-   местах где нет использования NUMERIC_t !!!!!
+   Added rational wherever mentioned NUMERIC_t
+   maybe in some places this omitted
+   (in places where don't use NUMERIC_t)!!!
    from uri:
 
    Revision 1.21  2000/05/30 22:46:09  clip
@@ -362,7 +362,7 @@
    bsd fixes
 
    Revision 1.9  2000/03/30 17:04:09  uri
-   переделал под новые вызовы ошибок
+   rewritten for new erors calls
 
    Revision 1.8  2000/03/24 19:49:59  uri
    set(_SET_LOGFILE)
@@ -380,7 +380,7 @@
    preprocessor bug fix, warnings removed
 
    Revision 1.3  1999/11/17 22:27:23  uri
-   Немного стринг-функций из тоолсов сделал
+   Few STRING-funtions from tools
 
    Revision 1.2  1999/10/26 19:11:37  paul
    start cvs logging

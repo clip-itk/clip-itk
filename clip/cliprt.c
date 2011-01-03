@@ -1507,8 +1507,9 @@
    Paul Lasarev <paul@itk.ru>
 
    Revision 1.96  2000/10/20 08:03:23  clip
-   ����rational �����������NUMERIC_t
-   ����� ����� ������� � ������� ��� ���   ��� �����������NUMERIC_t !!!!!
+   Added rational wherever mentioned NUMERIC_t
+   maybe in some places this omitted
+   (in places where don't use NUMERIC_t)!!!
    from uri:
 
    Revision 1.95  2000/10/18 10:56:17  clip

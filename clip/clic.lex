@@ -1049,7 +1049,7 @@
  * preprocessor bug fix, warnings removed
  *
  * Revision 1.3  1999/12/04 20:08:28  uri
- * убрал warning нового компилятора
+ * warning cleanup for new compiler
  *
  * Revision 1.2  1999/10/29 20:09:45  paul
  * trailing spaces in preprocessor match

@@ -214,8 +214,8 @@
    isalpha_tbl in _clip_isalpha    and  atalpha()
 
    Revision 1.51  2000/12/18 10:20:01  clip
-   SEARCH() теперь ищет с REG_NEWLINE, если в начале регулярного выражения
-   стоит ^
+   SEARCH() now search with REG_NEWLINE, if regular expressiton 
+   prefixed by ^
 
    Revision 1.50  2000/12/11 12:37:30  clip
    bug in STUFF()
@@ -236,8 +236,8 @@
    alena: remove clipper-comments
 
    Revision 1.41  2000/11/20 07:03:44  clip
-   alena: исправила search - если массив не передается в функцию, то search
-   возвращает только .t. or .f.
+   alena: changed search - if argument is not array, then search
+   returns just .t. or .f.
 
    Revision 1.40  2000/11/10 13:33:02  clip
    alena: remove next gluck in search function
@@ -246,10 +246,10 @@
    alena: bug in return value
 
    Revision 1.38  2000/10/31 08:18:18  clip
-   alena: еще подправила search
+   alena: Already fixed search
 
    Revision 1.37  2000/10/31 06:14:34  clip
-   alena:  Исправила пожирание памяти в search
+   alena:  Fixed memory leak in search
 
    Revision 1.36  2000/10/27 07:50:17  clip
    rational NUMERIC_t gluks
@@ -272,9 +272,9 @@
    from uri:
 
    Revision 1.31  2000/10/20 08:03:23  clip
-   Вкрутил rational везде где упоминается NUMERIC_t
-   может чего и осталось неотловленное, но это может быть только в тех
-   местах где нет использования NUMERIC_t !!!!!
+   Added rational wherever mentioned NUMERIC_t
+   maybe in some places this omitted
+   (in places where don't use NUMERIC_t)!!!
    from uri:
 
    Revision 1.30  2000/10/16 09:51:05  clip
@@ -287,7 +287,7 @@
    from alena:
 
    Revision 1.27  2000/07/31 18:49:14  clip
-   Новая функция - поиск по регулярному выражению search
+   New function - search by regular expression
 
    Revision 1.26  2000/07/06 19:56:09  clip
    uri: bug in tabpack
@@ -330,19 +330,20 @@
    descend
 
    Revision 1.14  2000/03/30 01:54:07  uri
-   переделал под новый _clip_error
+   rewritted for new _clip_error
 
    Revision 1.13  1999/12/08 21:01:24  uri
-   доделал фйнкции с датами из тулзов
+   completed DATE fonctions from tools
 
    Revision 1.12  1999/12/04 22:16:37  uri
-   вычистил все предупреждения
+   warnings cleanup
 
    Revision 1.11  1999/12/04 16:41:21  uri
-   доделал все (кроме strdiff,pack,crypt) строковы функции из тулзов
+   all strings-related functions from tools now completed
+   (except strdiff,pack,crypt)
 
    Revision 1.10  1999/11/29 22:48:41  uri
-   еще немного функций из тулзов
+   few functions from tools
 
    Revision 1.9  1999/11/27 20:27:05  uri
    added function _clip_isalpha(unsigned cahr ch) to ISALPHA & POSALPHA clipper
@@ -355,10 +356,10 @@
    added isalpha table
 
    Revision 1.6  1999/11/23 22:38:19  uri
-   еще немного стринговских тулсов
+   Already few STRING-functions from tools
 
    Revision 1.5  1999/11/17 22:27:22  uri
-   Немного стринг-функций из тоолсов сделал
+   Few STRING-functions from tools
 
    Revision 1.4  1999/11/17 19:45:18  uri
    begin ctools.c

@@ -33,7 +33,7 @@
    preprocessor bug fix, warnings removed
 
    Revision 1.3  1999/12/04 20:08:27  uri
-   убрал warning нового компилятора
+   Warning cleanup for new compiler
 
    Revision 1.2  1999/10/26 19:11:15  paul
    start cvs logging

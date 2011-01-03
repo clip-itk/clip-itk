@@ -14,9 +14,9 @@ from uri:
 */
 /*
    note russian
-   класс integer - число с неограниченным кол-вом разрядов
-   деление на ноль - дает ноль !!!
-   никаких ошибочных ситуаций не создает !!!
+   class integer - number with an unlimited number of digits
+   division by zero returns zero !!!
+   no any error raising !!!
 
    (c) itk 2000, www.itk.ru
    autor - uri, uri@itk.ru
@@ -30,31 +30,31 @@ from uri:
                 /* malloc debiging */
 /* #define DMALLOC */
 
-               /* реализовать на 32 разрядах или на 64 разрядах */
+               /* need implement on 32 bits or 64 bits */
 #define INTEGER_SHORTB
-               /*  код символа 0 */
+               /*  code of symbol 0 */
 #define INTEGER_SYM_NULL  48
 #define INTEGER_SYM_A     65
 #define INTEGER_SYM_MINUS 45
 #define INTEGER_SYM_PLUS  43
 
 #ifdef INTEGER_SHORTB
-                        /* половинная точность - short */
+                        /* half-precision - short */
    #define  INTEGER_HALF       16
-                        /* полная точность - int */
+                        /* full-precision - int */
    #define  INTEGER_FULL       32
-                        /* максимальное число для 16 разряда */
+                        /* maximum number for 16 bits */
    #define  INTEGER_MAXNUM     0xffffL
 
    typedef  unsigned short *   INTEGER_VECTOR     ;
    typedef  unsigned short     INTEGER_HALF_TYPE  ;
    typedef  unsigned int       INTEGER_FULL_TYPE  ;
 #else
-                        /* половинная точность - int */
+                        /* half-precision - int */
    #define  INTEGER_HALF       32
-                        /* полная точность -long */
+                        /* full-precision -long */
    #define  INTEGER_FULL       64
-                        /* максимальное число для 32 разряда */
+                        /* maximum number for 32 bits */
    #define  INTEGER_MAXNUM     0xffffffffL
 
    typedef  unsigned int *     INTEGER_VECTOR    ;
@@ -76,39 +76,39 @@ integer;
 
 char *      integer_toString(integer * data, int base);
 		/*
-		переводит значение в строковое представление
-		base - в каком исчислении, но не более 16
+		convert 'data' to string
+		base - what base of number, but no more than 16
 		*/
 
 char *      integer_toString2(integer *data);
 		/*
-		переводит значение в строковое представление
-		в виде 999999 999999 999999 ..... в кол-ве равном
-		размерности объекта
+		convert 'data' to string
+		as 999999 999999 999999 ..... number is equal to
+		object dimension
 		*/
 
 long        integer_toLong(integer * data);
-		/*возвращает "свернутое" в 64 бита значение длинного целого */
+		/*returns long value "packed" to 64 bits */
 
 void        integer_destroy(integer *data);
-		/* уничтожает объект */
+		/* destroy object */
 
 integer *   integer_init ( );
-		/* создает пустой объект  */
+		/* create empty object  */
 
 integer *   integer_long_init ( long i);
-		/* создает объект и заполняет его значением
-		из знакового long объекта */
+		/* 
+		 from signed long object */
 
 integer *   integer_long2_init ( long low,long high);
-		/* создает объект и заполняет его значением
-		из long объектов
-		младший считается безнаковым,
-		старший знаковым */
+		/* create object and fill his by values
+		from long objects
+		low is unsigned
+		high is signed */
 
 integer *   integer_fromString(const char * s);
-		/* создает объект и заполняет его значением
-		из строкового выражения */
+		/* create object and fill his by value
+		from string expression */
 
 integer *   integer_mul(integer * d1, integer * d2);
 		/* d1 * d2 */
@@ -129,15 +129,15 @@ integer *   integer_powa(integer * data, long y );
 		/* data=pow(data,y) */
 
 integer *  integer_gcd(integer * data, integer * y);
-		/* возвращает наибольший общий делитель текущего
-		объекта и integer y */
+		/* returns the greatest common divisor of the current
+		object and integer y */
 
 integer *   integer_unscale(integer *data, INTEGER_HALF_TYPE y, INTEGER_HALF_TYPE * ost);
 integer *   integer_sunscale(integer *data, INTEGER_HALF_TYPE y, INTEGER_HALF_TYPE * ost);
-                /* делит себя на y, остаток записывает в ost */
+                /* divides itself by y, the remainder stored to the ost */
 
 integer *   integer_sdivide(integer * data, integer * y, integer ** div);
-                /* делит себя на y, остаток записывает в div */
+                /* divides itself by y, the remainder stored to the div */
 
 integer *   integer_div(integer * data, integer * y);
 		/*  return (data/y)  */
@@ -149,14 +149,14 @@ integer *   integer_mod(integer * data, integer * y);
 		/*  return (data%y) */
 
 int         integer_lg(integer * data);
-		/* возвращает логарифм двойки */
+		/* returns the logarithm of two */
 
 integer *   integer_sqrt(integer * data);
-		/* возвращает квадратный корень числа,
-		корень из отрицательного числа дает 0 */
+		/* returns the square,
+		Square from negative number returns 0 */
 
 integer *   integer_sadd(integer * d1, integer * d2);
-		/*  d1 += d2   без учета знака чисел */
+		/*  d1 += d2  without sign of numbers */
 
 integer *   integer_long_add(integer * data, long y);
 		/* return (data+y) */
@@ -171,13 +171,13 @@ integer *   integer_adda(integer * d1, integer * d2);
 		/* d1+=d2 */
 
 integer *   integer_inv(integer * data);
-		/* возвращает обратный объект, т.е. x=(-y); */
+		/* returns inverse object, ie x=(-y); */
 
 integer *   integer_inverse(integer * data);
-	        /* изменяет знак текущего объекта */
+	        /* Chenge sign of current object */
 
 integer *   integer_ssub(integer * d1, integer * d2);
-		/* d1-=d2 без учета знака числа */
+		/* d1-=d2 without sign of number */
 
 integer *   integer_long_sub(integer * data, long y);
 		/* return (data-y) */
@@ -204,74 +204,74 @@ integer *   integer_rshifta(integer * data, int y);
 		/* data>>=y */
 
 int         integer_getBit(integer * data, int ind);
-		/*возвращает значение бита с номером ind ( 0 || 1 )*/
+		/*returns value of bit with number ind ( 0 || 1 )*/
 
 integer *   integer_setBit (integer * data, int ind, int value);
 integer *   integer_setBita(integer * data, int ind, int value);
-		/* устанавливает бит с номером ind в
-		значение value ( 0 || 1 ) */
+		/* Set bit with number ind to
+		value ( 0 || 1 ) */
 
 integer *   integer_or(integer * d1, integer * d2);
 integer *   integer_long_or(integer * d1, long y);
 integer *   integer_ora(integer * d1, integer * d2);
-		/* побитовое OR */
+		/* bitwise OR */
 
 integer *   integer_and(integer * d1, integer * d2);
 integer *   integer_long_and(integer * d1, long y);
 integer *   integer_anda(integer * d1, integer * d2);
-		/* побитовое AND */
+		/* bitwise AND */
 
 integer *   integer_xor(integer * d1, integer * d2);
 integer *   integer_long_xor(integer * d1, long y);
 integer *   integer_xora(integer * d1, integer * d2);
-		/* побитовое XOR */
+		/* bitwise XOR */
 
 int         integer_abscmp(integer * d1, integer * d2);
-		/* сравнивает два integer по абсолютным значениям, возвращает:
-		-1 если объект меньше параметра
-		0 если равны
-		1 если объект больше параметра */
+		/* compares two integer values by absolute values, returns:
+		-1 if object is less than param
+		0 if equals
+		1 if object is greater than param */
 
 int         integer_cmp(integer * d1, integer * d2);
-		/*сравнивает два integer, возвращает:
-		-1 если объект меньше параметра
-		0 если равны
-		1 если объект больше параметра*/
+		/* compares two integer values, returns:
+		-1 if object is less than param
+		0 if equals
+		1 if object is greater than param */
 
 integer *   integer_abs(integer * data);
-		/*возвращает абсолютное значение*/
+		/* returns absolute value */
 
 int         integer_even(integer * data);
-		/* возвращает 1 - если четное число */
+		/* returns 1 if 'data' is even */
 
 integer *   integer_clear(integer * data);
-		/* очищает все составляющие числа в 0,
-		не освобождает и не перераспределяет память */
+		/* clear all elements to 0,
+		doesn't free or reallocate memory */
 
 integer *   integer_copy (integer * data);
-		/* перекопирует объект */
+		/* copy object */
 
 integer *   integer_assign (integer * dst, integer * src);
-		/* перекопирует src to dst */
+		/* copy src to dst */
 
 int	    integer_empty(integer * data);
-		/* проверяет пустой ли объект, все члены==0 */
+		/* check if object is empty, is elements count == 0 */
 
 int         integer_len(integer * data);
-		/* возвращает длину объекта */
+		/* returns the length of the object */
 
 INTEGER_VECTOR integer_vec(integer * data);
-		/* vec() возвращает массив элементов */
+		/* vec() returns array of elements */
 
 int         integer_realLen(integer * data);
-		/*  возвращает реальную длину т.е.
-		только значащие элементы  */
+		/*  returns real length, ie
+		only meaningful elements  */
 
 int         integer_sign(integer * data);
-		/* возвращает 0- если объект равен 0,
-		-1 -если меньше нуля, 1 -если больше */
+		/* returns 0 - if object is equal to 0,
+		-1 -if is less than zero, 1 - if is greater */
 
 integer *   integer_resize(integer * data, int newlen);
-		/* изменить размер объекта  */
+		/* change object size  */
 
 #endif

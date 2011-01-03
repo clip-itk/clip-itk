@@ -4,9 +4,9 @@ Revision 1.1  2006/06/22 19:35:17  itk
 uri: init sf.net repository
 
 Revision 1.4  2000/10/20 08:03:24  clip
-Вкрутил rational везде где упоминается NUMERIC_t
-может чего и осталось неотловленное, но это может быть только в тех
-местах где нет использования NUMERIC_t !!!!!
+Added rational wherever mentioned NUMERIC_t
+maybe in some places this omitted
+(in places where don't use NUMERIC_t)!!!
 from uri:
 
 Revision 1.3  2000/10/18 10:56:17  clip
