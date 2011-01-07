@@ -421,7 +421,7 @@ load_charset_tables(char *bname, unsigned char *cmptbl, unsigned char *uptbl, un
 			if (lowtbl)
 					lowtbl[i] = tolower(i);
 			if (alphatbl)
-					alphatbl[i] = (unsigned char)isalpha(i);
+					alphatbl[i] = isalpha(i) ? 1 : 0 ;
 			if (pgtbl)
 					pgtbl[i] = 0;
 		}
