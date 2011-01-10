@@ -233,7 +233,8 @@
 int
 clip_STOD(ClipMachine * mp)
 {
-	long d, m, y;
+	long  julian;
+	int  d, dd, m,  mm, y, yy, ww;
 	char *str = _clip_parc(mp, 1);
 
 	if (str == NULL)
@@ -249,10 +250,22 @@ clip_STOD(ClipMachine * mp)
 		_clip_retdj(mp, 0);
 		return 0;
 	}
-	y = atol(str) / 10000;
-	m = atol(str + 4) / 100;
-	d = atol(str + 6);
-	_clip_retdj(mp, _clip_jdate(d, m, y));
+	y = (int)(atol(str) / 10000);
+	m = (int)(atol(str + 4) / 100);
+	d = (int)(atol(str + 6));
+
+	yy = y;
+	mm = m;
+	dd = d;
+	ww = 0;
+
+	julian = _clip_jdate(d, m, y);
+	_clip_cdate(julian, &dd, &mm, &yy, &ww);
+	
+	if (d != dd || m != mm || y != yy)
+		julian = 0;
+
+	_clip_retdj(mp, julian);
 	return 0;
 }
 
