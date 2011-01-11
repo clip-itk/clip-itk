@@ -51,7 +51,7 @@ function cti_palette_new()
 	obj:ListNoFocusCurSelected	:= obj:ListSelected
 
 	obj:FillChar			:= ""
-//	obj:AppWorkspaceFill		:= "ê"
+//	obj:AppWorkspaceFill		:= "ê" // utf-8: "‚ñë"
 return obj
 
 function cti_get_system_palette()
