@@ -1,7 +1,7 @@
 /* XPM */
 
 static itkXPM := { ;
-"70 79 256 2",	;
+"70 79 256 2",  ;
 "   c #cacbe2", ;
 ".  c #cfd1e5", ;
 "X  c #d2d2e3", ;

@@ -15,8 +15,8 @@
 #define FM_LOSTFOCUS   WM_USER+1033
 #define FM_THUMBPOS    WM_USER+1034
 
-#define FM_CLOSEAREA   WM_USER+1035   
-                                      
+#define FM_CLOSEAREA   WM_USER+1035
+
 #define FM_VBXEVENT    WM_USER+1036
 #define FM_HELPF1      WM_USER+1037
 

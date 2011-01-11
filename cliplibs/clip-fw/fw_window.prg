@@ -549,8 +549,8 @@ local aRect := eval(Selector:GetCoors,self:hWnd)
 return
 ***************
 static function fw_copy(self, lAll)
-// lAll пока почему-то не используется.
-// См сырцы clasess/window.prg, а делается так:
+// lAll somenow not in use yet.
+// See sources clasess/window.prg, and done so:
 	if self:bCopy != NIL
 		eval(self:bCopy, self)
 	endif
@@ -786,7 +786,7 @@ self:CoorsUpdate()
 return cPrg
 ***************
 static function fw_nGetChrHeight(self)
-	// ?????????? тут нужна функция, определяющая высоту символа в окне
+	// ?????????? there need a function that determines the height of the symbol in the window
 	self:nChrHeight := nWndChrHeight( self:hWnd, If( self:oFont != nil, self:oFont:hFont,) )
 return
 ***************
