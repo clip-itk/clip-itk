@@ -78,7 +78,7 @@ CFLAGS = $(C_FLAG) $(C_DEFS)
 
 
 # --------------------------------------------------------------------------
-# ANHÄNGIGKEITEN
+# ANHÃ„NGIGKEITEN
 # --------------------------------------------------------------------------
 
 all:		shared static
@@ -97,7 +97,7 @@ $(LIBNAME):	$(OBJS)
 		$(RANLIB) $(LIBNAME)
 
 
-# Abhängigkeiten des Source, jedoch dann ohne Generierungsanweisung, wenn
+# AbhÃ¤ngigkeiten des Source, jedoch dann ohne Generierungsanweisung, wenn
 # die Extension durch obigen Automatismus abgedeckt wird!
 #
 
