@@ -14,14 +14,14 @@ local obj
 	obj:typeFile	:= GDFILE_PNG
 	obj:arr		:= {}
 	obj:legend	:= {}
-	obj:alignLeg	:= 0   // не надо легенду
+	obj:alignLeg	:= 0   // legend no needed
 	obj:signat	:= {}
 	obj:title	:= ""
 	obj:subTitle	:= ""
 	obj:vrtTitle	:= ""
 	obj:volume	:= .f.
-	obj:average	:= 0   //1-показать среднее значение, 2-показать критическое значение,
-			       //3-и среднее и критич, 0-ничего не показывать
+	obj:average	:= 0   //1-show average value, 2-show critical value,
+			       //3-average and critical, 0-don't show anything
 	obj:valAverage	:= 0
 	obj:valCritic	:= 0
 
@@ -176,7 +176,7 @@ local diametr1_o,diametr2_o
 				loop
 			endif
 		next
-		/* рисует объемный сектор */
+		/* draw 3D sector */
 		if ::volume
 			d1 := diametr1-2*colwidth1
 			d2 := diametr2-2*colwidth2
@@ -209,7 +209,7 @@ local diametr1_o,diametr2_o
 		radius2 := diametr2/2
 	next
 
-	/* рисует основной сектор */
+	/* draw main sector */
 	diametr1 := diametr1_o
 	radius1 := int(diametr1/2)
 	diametr2 := diametr2_o
@@ -240,13 +240,13 @@ local diametr1_o,diametr2_o
 			y := sin(radian)*(radius2/2)+cy
 			x := cos(radian)*radius1+cx
 			y := sin(radian)*radius2+cy
-			if (::isPice)      // доля в общем котле
+			if (::isPice)      // slice
 				//str := ZSTR(int(100*av/::summa[key]))+'%'
 				str := ZSTR(100*av/::summa[key])+'%'
-			else 	 // значение
+			else 	 // value
 				str := ZSTR(av)
 			endif
-			if v[1]<270 .and. v[1]>90  // надпись слева
+			if v[1]<270 .and. v[1]>90  // caption at left
 				x -= len(str)*::font_sign_width
 			else
 				x -= 2*::font_sign_width
@@ -264,7 +264,7 @@ local diametr1_o,diametr2_o
 		radius2 := diametr2/2
 	next
 
-	/* рисует среднее значение */
+	/* draw average value */
 	if ::average>0
 		diametr1 := diametr1_o
 		radius1 := int(diametr1/2)
@@ -287,9 +287,9 @@ local diametr1_o,diametr2_o
 		begang-=d
 		endang-=d
 
-		if ::isPice     // доля
+		if ::isPice     // slice
 			str := ZSTR(abs(::valAverage)*100/isumma)+"%"
-		else  // значение
+		else  // value
 			str := ZSTR(::valAverage)
 		endif
 		color := ::image:exactColor(::AvColor[1], ::AvColor[2], ::AvColor[3])
@@ -328,14 +328,14 @@ static function bg_setAverage(type, value)
 		return .f.
 	endif
 	do case
-	case type == 1	//показать только среднее значение
+	case type == 1	//show  average value
 		::average := 1
 	case type == 2
-		::average := 2 	//показать крит значение
+		::average := 2 	//show critical value
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value
 		endif
-	case type == 3	//показать и среднее и критич знач
+	case type == 3	//show average and critical values
 		::average := 3
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value

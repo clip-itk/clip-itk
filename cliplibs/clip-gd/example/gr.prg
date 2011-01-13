@@ -1,4 +1,4 @@
-/*   Тест библиотеки gd					     */
+/*   Test for gd library                                     */
 /*   Copyright (C) 2001  ITK                                 */
 /*   Author  : Alena Kornilova (alena@itk.ru)                */
 /*   Licence : (GPL) http://www.itk.ru/clipper/licence.html  */
@@ -10,21 +10,21 @@ local gd, red, white, black, blue, yellow, fon
 clear screen
 
 im=GdImageNew(200, 200)
-// создать цвет
-white=im:newColor(255, 255, 255) // белый
-black=im:newColor() // черный
-red=im:newColor(255) // красный
-blue=im:newColor(,,255) // синий
+// create color
+white=im:newColor(255, 255, 255) // white
+black=im:newColor() // black
+red=im:newColor(255) // red
+blue=im:newColor(,,255) // dark blue
 ? im:info( GDINFO_COLORRED, blue)
 ? im:info( GDINFO_COLORGREEN, blue)
 ? im:info( GDINFO_COLORBLUE, blue)
 ?
 yellow=im:newColor(255, 255)
 fon=im:newColor(0xDE,0xEF,0xF5)
-// заполнить все белым цветом
+// fill all by white color
 im:fill(0, 0, fon)
 im:filledArc(100, 100, 45, 45, yellow)
-// создать brush
+// create brush
 luch=GdImageNew(3, 3)
 luch:fill(0, 0, luch:newColor(255, 255))
 im:setBrush(luch)
@@ -40,7 +40,7 @@ next
 im:filledArc(93, 90, 6, 6, blue)
 im:filledArc(107, 90, 6, 6, blue)
 im:string("Hello world!", 50, 50, GDFONT_LARGE, black)
-im:stringVector("Привет мир!", 50, 150, 300, 0, black)
+im:stringVector("Hello, world!", 50, 150, 300, 0, black)
 im:filledTruncSector(100, 100, 30, 30, 26, 26, 40, 140, red)
 im:toPNG("asdf.png")
 im:toJPEG("|-")

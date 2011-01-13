@@ -14,15 +14,15 @@ local obj
 	obj:typeFile	:= GDFILE_PNG
 	obj:arr		:= {}
 	obj:legend	:= {}
-	obj:alignLeg	:= 0  // не надо легенду
+	obj:alignLeg	:= 0  // legend no needed
 	obj:signat	:= {}
 	obj:title	:= ""
 	obj:subTitle	:= ""
 	obj:vrtTitle	:= ""
 	obj:volume	:= .f.
 	obj:valVolume	:= 0
-	obj:average	:= 0   //1-показать среднее значение, 2-показать критическое значение,
-			       //3-и среднее и критич, 0-ничего не показывать
+	obj:average	:= 0   //1-show average value, 2-show critical value,
+			       //3-average and critical, 0-don't show anything
 	obj:valAverage	:= 0
 	obj:valCritic	:= 0
 
@@ -177,14 +177,14 @@ static function bg_setAverage(type, value)
 		return .f.
 	endif
 	do case
-	case type == 1	//показать только среднее значение
+	case type == 1	//show  average value
 		::average := 1
 	case type == 2
-		::average := 2 	//показать крит значение
+		::average := 2 	//show critical value
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value
 		endif
-	case type == 3	//показать и среднее и критич знач
+	case type == 3	//show average and critical values
 		::average := 3
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value
@@ -213,10 +213,10 @@ local y1,y2
 	colwidth := BG_DEF_WIDTH
 	volume := ::valVolume
 	::X -= volume
-	/* максимально возможная ширина одной колонки */
+	/* maximum possible width of one column */
 	wCol := ::X/::__category
 	do while (wCol-6<=colwidth)
-		colwidth-- // реальная ширина колонки
+		colwidth-- // real column width
 	enddo
 	for i=1 to ::__category
 		x := ::X0+((i-1)*wCol)+3

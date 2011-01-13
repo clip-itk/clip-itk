@@ -60,7 +60,7 @@ function _recover_bg_tools(obj)
 	obj:__createFonts:= @__bg_createFonts()
 return obj
 **************
-* ищет max/min положительные и отрицательные значения в одномерном массиве/мапе
+* looking for  max/min positive and negative values in one-dimensional array/map
 *
 static function bg_findVal(arr)
 local j
@@ -113,18 +113,18 @@ return .t.
 ************
 static function __bg_createColors()
 local color, i, dark
-	color := { {255,   0,   0},;  // т красный
-		   {  0, 170, 255},;  // голубой
-		   {  0, 255,   0},;  // зеленый
-		   {255, 255,   0},;  // желтый
-		   {  0,   0, 255},;  // синий
-		   {255,   0, 250},;  // розовый
-		   {255, 150,   0},;  // оранжевый
-		   {  0, 255, 255},;  // св голубой
-		   {255,   0, 170},;  // яр розовый
-		   {200, 255,   0};  // св зеленый
+	color := { {255,   0,   0},;  // red
+		   {  0, 170, 255},;  // blue
+		   {  0, 255,   0},;  // green
+		   {255, 255,   0},;  // yellow
+		   {  0,   0, 255},;  // dark blue
+		   {255,   0, 250},;  // pink
+		   {255, 150,   0},;  // orange
+		   {  0, 255, 255},;  // light blue
+		   {255,   0, 170},;  // light pink
+		   {200, 255,   0};   // light green
 		}
-	::avColor := {160, 160, 255}   // цвет среднего и крит знач значения
+	::avColor := {160, 160, 255}   // colour of average and critical value
 	for i=1 to len(color)
 		aadd(::arrColor, ::image:newColor(color[i][1], color[i][2], color[i][3]))
 	next
@@ -156,8 +156,8 @@ static function __bg_createFonts()
 	::font_sign_high  := (28 + 28/5)*::font_sign/1000
 return .t.
 ****************
-* ищет ближайшее целое кратное step, начиная с val
-* d 1/-1 - ищет в сторону увеличения/уменьшения исходного значения val
+* "looking for the nearest integer multiple of the step, starting with val
+* d 1/-1 - looking in the direction of increase/decrease the initial value of val
 static function bg_runVal(self, val, step, d)
 local ret
 	d := iif(d==NIL, 1, d)
@@ -183,7 +183,7 @@ local sk,va,xav,sk1,sk2
 	mixedColor := ::image:newColor(::avColor[1]+100, ::avColor[2]+100, ::avColor[3]+100)
 
 	if ::max-::min>1000 .or. ::log
-		::log := .t. 	// логарифмическая шкала
+		::log := .t. 	// logarithmic scale
 		smax := int(10^(log10(int(max(1, ::max)))+1))
 		if ::min<0
 			smin := -int(10^(log10(int(abs(::min)))+1))
@@ -200,7 +200,7 @@ local sk,va,xav,sk1,sk2
 		endif
 
 	else
-		::log := .f. 	// обычная шкала, не логаифмическая
+		::log := .f. 	// simple scale, non-logarithmic
 		smax := int(::runVal(::max, 5, iif(::max<=0, -1, 1)))
 		smin := int(::runval(::min, 5, -1))
 
@@ -229,8 +229,8 @@ local sk,va,xav,sk1,sk2
 
 	//* width grade scale
 	lsign := max(len(ZSTR(smax)), len(ZSTR(smin)))+iif("__ISNORM" $ selfs .and. selfs:__isNorm, 1, 0)
-	/* координаты оси Х и размер в пикселах обеих осей зависят от места */
-	/* заголовок к графику */
+	/* X coordinates and size in pixels of two axes depends on the location */
+	/* of chart header */
 	highTitle=10
 	if "TITLE"$selfs
 		symb := int(::LX/::font_title_width)
@@ -244,17 +244,17 @@ local sk,va,xav,sk1,sk2
 	endif
 
 	::X0 := lsign*::font_scale_width
-	::Y := ::LY-highTitle // длина шкалы y в пикселах
-	::X := ::LX-::X0-10                         // длина шкалы x в пикселах
+	::Y := ::LY-highTitle // y scale length, in pixels
+	::X := ::LX-::X0-10   // x scale length, in pixels
 
 	if selfs:average>0
 		::X -= ::font_scale_width*len(ZSTR(selfs:valAverage))
 	endif
-	/* положения легенды */
+	/* legend placement */
 	widthLegend=0  // 20% of LX, max size for legend
 	highLegend=0  // 20% of LY, max size for legend
 	t := 0
-	if selfs:__isLegend           // если есть легенда
+	if selfs:__isLegend           // if legend exists
 		if empty(selfs:legend)
 			for i=1 to selfs:__datarow
 				aadd(selfs:legend, "Row "+ZSTR(i))
@@ -265,19 +265,19 @@ local sk,va,xav,sk1,sk2
 		do case
 		case selfs:alignLeg == BG_ALIGN_LEFT      // left
 			::X0 += widthLegend
-			::X -= widthLegend     // длина шкалы x в пикселах
+			::X -= widthLegend     // x scale length, in pixels
 		case selfs:alignLeg == BG_ALIGN_TOP       // top
 			t := highLegend
-			::Y -= highLegend     // длина шкалы y в пикселах
+			::Y -= highLegend     // y scale length, in pixels
 		case selfs:alignLeg == BG_ALIGN_BOTTOM    // bottom
 			t := highLegend
-			::Y -= highLegend     // длина шкалы y в пикселах
+			::Y -= highLegend     // y scale length, in pixels
 		case selfs:alignLeg == BG_ALIGN_RIGHT    // right - default
-			::X -= widthLegend     // длина шкалы x в пикселах
+			::X -= widthLegend     // x scale length, in pixels
 		endcase
 	endif
 
-	/* подвал к графику */
+	/* footer for chart */
 	highSubTitle := 10
 	if !selfs:onlyLegend
 		if "SUBTITLE"$selfs
@@ -292,13 +292,13 @@ local sk,va,xav,sk1,sk2
 		endif
 	endif
 	::Y -= highSubTitle
-    /* подпись к шкале Y */
+    /* signature to the Y scale */
 	highVrtTitle=0
 	if !selfs:onlyLegend
 		if "VRTTITLE"$selfs .and. !empty(selfs:vrtTitle)
 			symb := int(::Y/::font_sign_width)
 			m := splitLen(selfs:vrtTitle, symb)
-			highVrtTitle := len(m)*(::font_sign_high+5)+5  // ширина в пикселах подписи к оси Y
+			highVrtTitle := len(m)*(::font_sign_high+5)+5  // height of signature to the Y scale, in pixels
 			xx := iif(selfs:alignLeg==0, widthLegend+5, 0)  // 0-left
 			yy := highTitle+::Y+t
 			for i in m
@@ -359,7 +359,7 @@ local sk,va,xav,sk1,sk2
 	elseif ::min<0 .and. ::max<=0
 		::Y0 := highTitle+t+volume
 	endif
-    /* drow оси координат */
+    /* draw axes */
 	if !selfs:onlyLegend
 		if !selfs:volume
 			::image:filledRectangle(::X0, ::sY0-::Y, ::X0+::X, ::sY0, fonColor)
@@ -413,7 +413,7 @@ local sk,va,xav,sk1,sk2
 			::image:polygon({{x1,::Y0},{x2,::Y0-volume},{x3,::Y0-volume},{x3-volume,::Y0}}, ::scaleColor)
 		endif
 		z := iif("__ISNORM" $ selfs .and. selfs:__isNorm, "%", "")
-		/*шкала справа
+		/* scale at right
 		if (element(set, "sc_right"))
 			scx=X0+X;
 			elf\gd\line(im, scx, highTitle+t+volume, scx, highTitle+t+Y+volume, color);
@@ -428,7 +428,7 @@ local sk,va,xav,sk1,sk2
 			::image:stringVector('0', ::X0-2-::font_scale_width, ::Y0, ::font_scale, 0, ::scaleColor)
 		endif
 
-		if ::log	//если шкала логарифмическая
+		if ::log	// if scale is logarithmic
 			i :=_step
 			/*
 			i := int(10^(len(ZSTR(int(::min)))-1))
@@ -468,7 +468,7 @@ local sk,va,xav,sk1,sk2
 				::image:line(::X0, y, ::X0+volume, y-volume, ::scaleColor)
 				i *= _step
 			enddo
-		else	// обычная шкала
+		else	// simple scale
 			i := _step
 			do while i<=smax
 				y := int(::Y0-i*::dskl)
@@ -494,7 +494,7 @@ local sk,va,xav,sk1,sk2
 		::min := smin
 	endif
 	::max := smax
-    /* нарисовать легенду, eсли есть */
+    /* draw legend, if exists */
 	if selfs:__isLegend .and. selfs:alignLeg > BG_ALIGN_NONE
 		do case
 		case selfs:alignLeg == BG_ALIGN_LEFT //left
@@ -545,7 +545,7 @@ local sk,va,xav,sk1,sk2
 
 	::__cleanVal()
 	if ::max-::min>1000
-		::log := .t. 	// логарифмическая шкала
+		::log := .t. 	// logarithmic scale
 		smax := int(10^(log10(int(max(1, ::max)))+1))
 		if ::min<0
 			smin := -int(10^(log10(int(abs(::min)))+1))
@@ -562,7 +562,7 @@ local sk,va,xav,sk1,sk2
 		endif
 
 	else
-		::log := .f. 	// обычная шкала, не логаифмическая
+		::log := .f. 	// simple scale, non-logarithmic
 		smax := int(::runVal(::max, 5, iif(::max<=0, -1, 1)))
 		smin := int(::runval(::min, 5, -1))
 
@@ -591,8 +591,8 @@ local sk,va,xav,sk1,sk2
 
 	//* width grade scale
 	lsign := max(len(ZSTR(smax)), len(ZSTR(smin)))+iif("__ISNORM" $ selfs .and. selfs:__isNorm, 1, 0)
-	/* координаты оси Х и размер в пикселах обеих осей зависят от места */
-	/* заголовок к графику */
+	/* X coordinates and size in pixels of two axes depends on the location */
+	/* of chart header */
 	highTitle=10
 	if "TITLE"$selfs
 		symb := int(::LX/::font_title_width)
@@ -606,17 +606,17 @@ local sk,va,xav,sk1,sk2
 	endif
 
 	::X0 := lsign*::font_scale_width
-	::Y := ::LY-highTitle // длина шкалы y в пикселах
-	::X := ::LX-::X0-10                         // длина шкалы x в пикселах
+	::Y := ::LY-highTitle // length of Y scale, in pixels
+	::X := ::LX-::X0-10   // length of X scale, in pixels
 
 	if selfs:average>0
 		::Y -= ::font_scale_width*len(ZSTR(selfs:valAverage))
 	endif
-	/* положения легенды */
+	/* legend placement */
 	widthLegend=0  // 20% of LX, max size for legend
 	highLegend=0  // 20% of LY, max size for legend
 	t := 0
-	if selfs:__isLegend           // если есть легенда
+	if selfs:__isLegend           // if legend exists
 		if empty(selfs:legend)
 			for i=1 to selfs:__datarow
 				aadd(selfs:legend, "Row "+ZSTR(i))
@@ -627,19 +627,19 @@ local sk,va,xav,sk1,sk2
 		do case
 		case selfs:alignLeg == BG_ALIGN_LEFT      // left
 			::X0 += widthLegend
-			::X -= widthLegend     // длина шкалы x в пикселах
+			::X -= widthLegend     // length of scale X, in pixels
 		case selfs:alignLeg == BG_ALIGN_TOP       // top
 			t := highLegend
-			::Y -= highLegend     // длина шкалы y в пикселах
+			::Y -= highLegend     // length of scale Y, in pixels
 		case selfs:alignLeg == BG_ALIGN_BOTTOM    // bottom
 			t := highLegend
-			::Y -= highLegend     // длина шкалы y в пикселах
+			::Y -= highLegend     // length of scale Y, in pixels
 		case selfs:alignLeg == BG_ALIGN_RIGHT    // right - default
-			::X -= widthLegend     // длина шкалы x в пикселах
+			::X -= widthLegend     // length of scale X, in pixels
 		endcase
 	endif
 
-	/* подвал к графику */
+	/* footer for chart */
 	highSubTitle := 10
 	if !selfs:onlyLegend
 		if "SUBTITLE"$selfs
@@ -654,13 +654,13 @@ local sk,va,xav,sk1,sk2
 		endif
 	endif
 	::Y -= highSubTitle
-    /* подпись к шкале Y */
+    /* signatore to the scale Y */
 	highVrtTitle=0
 	if !selfs:onlyLegend
 		if "VRTTITLE"$selfs .and. !empty(selfs:vrtTitle)
 			symb := int(::Y/::font_sign_width)
 			m := splitLen(selfs:vrtTitle, symb)
-			highVrtTitle := len(m)*(::font_sign_high+5)+5  // ширина в пикселах подписи к оси Y
+			highVrtTitle := len(m)*(::font_sign_high+5)+5  // height of signature to the Y scale, in pixels
 			xx := iif(selfs:alignLeg==0, widthLegend+5, 0)  // 0-left
 			yy := highTitle+::Y+t
 			for i in m
@@ -719,7 +719,7 @@ local sk,va,xav,sk1,sk2
 	elseif ::min<0 .and. ::max<=0
 		::X0 += ::X
 	endif
-    /* drow оси координат */
+    /* draw axes */
 	if !selfs:onlyLegend
 		if !selfs:volume
 			::image:filledRectangle(::sX0, ::Y0-::Y, ::sX0+::X, ::Y0, fonColor)
@@ -780,7 +780,7 @@ local sk,va,xav,sk1,sk2
 			::image:polygon({{x1,y1},{x2,y2},{x3,y3},{x1+volume,::Y0-volume}}, ::scaleColor)
 		endif
 		z := iif("__ISNORM" $ selfs .and. selfs:__isNorm, "%", "")
-		/*шкала справа
+		/* scale at right
 		if (element(set, "sc_right"))
 			scx=X0+X;
 			elf\gd\line(im, scx, highTitle+t+volume, scx, highTitle+t+Y+volume, color);
@@ -796,7 +796,7 @@ local sk,va,xav,sk1,sk2
 			::image:stringVector('0', ::X0, y+::font_scale_high+2, ::font_scale, 0, ::scaleColor)
 		endif
 
-		if ::log	//если шкала логарифмическая
+		if ::log	// if scale is logarithmic
 			i :=_step
 			/*
 			i := int(10^(len(ZSTR(int(::min)))-1))
@@ -836,7 +836,7 @@ local sk,va,xav,sk1,sk2
 				::image:line(x, y, x+volume, y-volume, ::scaleColor)
 				i *= _step
 			enddo
-		else	// обычная шкала
+		else	// simple scale
 			i := _step
 			do while i<=smax
 				x := int(::X0+i*::dskl)
@@ -862,7 +862,7 @@ local sk,va,xav,sk1,sk2
 		::min := smin
 	endif
 	::max := smax
-    /* нарисовать легенду, eсли есть */
+    /* draw legend, if exists */
 	if selfs:__isLegend  .and. selfs:alignLeg > BG_ALIGN_NONE
 		do case
 		case selfs:alignLeg == BG_ALIGN_LEFT //left

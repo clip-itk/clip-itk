@@ -14,14 +14,14 @@ local obj
 	obj:typeFile	:= GDFILE_PNG
 	obj:arr		:= {}
 	obj:legend	:= {}
-	obj:alignLeg	:= 0   // не надо легенду
+	obj:alignLeg	:= 0   // legend no needed
 	obj:signat	:= {}
 	obj:title	:= ""
 	obj:subTitle	:= ""
 	obj:vrtTitle	:= ""
 	obj:volume	:= .f.
-	obj:average	:= 0   //1-показать среднее значение, 2-показать критическое значение,
-			       //3-и среднее и критич, 0-ничего не показывать
+	obj:average	:= 0   //1-show average value, 2-show critical value,
+			       //3-average and critical, 0-don't show anything
 	obj:valAverage	:= 0
 	obj:valCritic	:= 0
 
@@ -115,7 +115,7 @@ local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 	len := len(::arr)
 	for i=1 to len
 		av := abs(::arr[i])
-		aadd(pice, 100*av/summa)                 // доля в общем котле
+		aadd(pice, 100*av/summa)                 // one slice of
 		begang := endang
 		//endang := mod(endang+int(360*av/summa), 360)
 		endang := mod(endang+360*av/summa, 360)
@@ -129,13 +129,13 @@ local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 		endif
 		ug := mod(ug, 360)
 		do case
-		case ug<=255 .and. ug>=105  // надпись слева
+		case ug<=255 .and. ug>=105  // label at left
 			aadd(left, {i, ug})
-		case ug<=285 .and. ug>=255  // надпись сверху
+		case ug<=285 .and. ug>=255  // label at top
 			aadd(top, {i, ug})
-		case ug<=105 .and. ug>=75  // надпись снизу
+		case ug<=105 .and. ug>=75  // label at bottom
 			aadd(bottom, {i, ug})
-		otherwise //case ug<=105 .and. ug>=75  // надпись справа
+		otherwise //case ug<=105 .and. ug>=75  // label at right
 			aadd(right, {i, ug})
 		endcase
 		if (av!=0)
@@ -206,9 +206,9 @@ local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 
 		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
-		if ::isPice     // доля
+		if ::isPice     // slice
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
-		else  // значение
+		else  // value
 			::image:stringVector(ZSTR(::arr[v[1]]), sx+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
 		endif
 		sy += len
@@ -230,9 +230,9 @@ local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 		a := {{sx-l, sy-1}, {sx-l, sy-1-8}, {sx-l+6, sy-1-8}, {sx-l+6, sy-1}}
 		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
-		if ::isPice     // доля
+		if ::isPice     // slice
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx-l+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
-		else  // значение
+		else  // value
 			::image:stringVector(ZSTR(::arr[v[1]]), sx-l+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
 		endif
 		sy -= len
@@ -255,9 +255,9 @@ local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 		kl := iif(kl==0, 10, kl)
 		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
-		if ::isPice     // доля
+		if ::isPice     // slice
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
-		else  // значение
+		else  // value
 			::image:stringVector(ZSTR(::arr[v[1]]), sx+8, sy-1-::font_scale_width, ::font_scale, 0, ::scaleColor)
 		endif
 		sx += ll
@@ -280,9 +280,9 @@ local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 		kl := iif(kl==0, 10, kl)
 		::image:filledPolygon(a, ::legendColor[kl])
 		::image:polygon(a, , ::scaleColor)
-		if ::isPice     // доля
+		if ::isPice     // slice
 			::image:stringVector(ZSTR(pice[v[1]])+"%", sx+8, sy+1+::font_scale_width, ::font_scale, 0, ::scaleColor)
-		else  // значение
+		else  // value
 			::image:stringVector(ZSTR(::arr[v[1]]), sx+8, sy+1+::font_scale_width, ::font_scale, 0, ::scaleColor)
 		endif
 		sx += ll
@@ -292,9 +292,9 @@ local a,d,kk,ll,str,color,colorV,radian,radius1_5,radius2_5
 		cx := iif(::alignLeg==BG_ALIGN_BOTTOM, cx - radius1 - volume , radius1+10)
 		cy := iif(::alignLeg==BG_ALIGN_BOTTOM, cy - 2*radius2 - volume, ::LY-radius2-volume-10)
 		cy := max(cy, 5)
-		if ::isPice     // доля
+		if ::isPice     // slice
 			str := ZSTR(abs(::valAverage)*100/summa)+"%"
-		else   // значение
+		else   // value
 			str := ZSTR(::valAverage)
 		endif
 		begang := 90
@@ -338,14 +338,14 @@ static function bg_setAverage(type, value)
 		return .f.
 	endif
 	do case
-	case type == 1	//показать только среднее значение
+	case type == 1	// show  average value
 		::average := 1
 	case type == 2
-		::average := 2 	//показать крит значение
+		::average := 2 	// show critical value
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value
 		endif
-	case type == 3	//показать и среднее и критич знач
+	case type == 3	// show average and critical values
 		::average := 3
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value
