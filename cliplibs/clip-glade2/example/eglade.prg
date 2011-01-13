@@ -47,8 +47,8 @@ return( 1 )
         signals in xml file.
           Warning : thats functions can't be statics.
 
-          Conecta automáticamente las funciones que tengan el mismo nombre
-        que la propiedad 'handler' de las señales con éstas.
+          Conecta automÃ¡ticamente las funciones que tengan el mismo nombre
+        que la propiedad 'handler' de las seÅ„ales con Ã©stas.
           Nota: Las funciones no pueden ser 'static'.
         */
         glade_xml_signal_autoconnect( xml )
@@ -57,7 +57,7 @@ return( 1 )
         /*
           clip-gtk bug : 'delete-event' signal name is wrong,
         must be 'delete_event'.
-          clip-gtk utiliza el nombre antiguo de la señal
+          clip-gtk utiliza el nombre antiguo de la seÅ„al
         'delete_event'.
         */
         gtk_signalConnect( widget, "delete-event",;
@@ -69,7 +69,7 @@ return( 1 )
         'visible=False'
 
           Nota: Si la propiedad 'visible'=True la ventana se
-        muestra de forma automática y sobraría la siguiente linea.
+        muestra de forma automÃ¡tica y sobrarÃ­a la siguiente linea.
         */
         gtk_widgetShow( widget )
 
@@ -83,11 +83,11 @@ return( 0 )
 
 
 
-/* Funciones gestoras de señales. */
+/* Funciones gestoras de seÅ„ales. */
 
 /*
   Main window delete_event handler
-  Señal recibida de la ventana principal
+  SeÅ„al recibida de la ventana principal
 */
 function on_main_window_delete_event( wid, event )
         ? "Press Ctrl+Q to quit..."
@@ -97,7 +97,7 @@ return( .t. )
 
 /*
   Option menu: New
-  Menú: Nuevo
+  MenÃº: Nuevo
 */
 procedure on_New_activate( wid )
         ? "New file..."
@@ -106,7 +106,7 @@ return
 
 /*
   Option menu: Open
-  Menú: Abrir
+  MenÃº: Abrir
 */
 procedure on_Open_activate( wid )
         local cfic
@@ -119,7 +119,7 @@ return
 
 /*
   Option menu: Save
-  Menú: Guardar
+  MenÃº: Guardar
 */
 procedure on_Save_activate( wid )
         local cfic
@@ -133,7 +133,7 @@ return
 
 /*
   Option menu: Save as...
-  Menú: Guardar como...
+  MenÃº: Guardar como...
 */
 procedure on_Save_As_activate( wid )
         ? "Save file as..."
@@ -143,7 +143,7 @@ return
 
 /*
   Option menu: Quit
-  Menú: Salir
+  MenÃº: Salir
 */
 procedure on_Exit_activate( wid )
         ? "Terminated"
@@ -153,7 +153,7 @@ return
 
 /*
   Option menu: Cut
-  Menú: Cortar
+  MenÃº: Cortar
 */
 procedure on_Cut_activate( wid )
         ? "Cut..."
@@ -161,7 +161,7 @@ return
 
 /*
   Option menu: Copy
-  Menú: Copiar
+  MenÃº: Copiar
 */
 procedure on_Copy_activate( wid )
         ? "Copy..."
@@ -169,7 +169,7 @@ return
 
 /*
   Optin menu: Paste
-  Menú : Pegar
+  MenÃº : Pegar
 */
 procedure on_Paste_activate( wid )
         ? "Paste..."
@@ -177,7 +177,7 @@ return
 
 /*
   Option menu: Clear
-  Menú: Borrar
+  MenÃº: Borrar
 */
 procedure on_Clear_activate( wid )
         ? "Clear..."
@@ -186,7 +186,7 @@ return
 
 /*
   Option menu: Change Font...
-  Menú: Cambiar Fuente...
+  MenÃº: Cambiar Fuente...
 */
 procedure on_Font_activate( wid )
 
@@ -200,7 +200,7 @@ return
 
 /*
   Option menu: About...
-  Menú: About...
+  MenÃº: About...
 */
 procedure on_About_activate( wid )
         about()

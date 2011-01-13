@@ -1,6 +1,6 @@
 /*
   About dialog.
-  Di·logo de autor.
+  Di√°logo de autor.
 */
 
 #define TL_WINDOW_NAME "about_dialog"
@@ -19,7 +19,7 @@ return; endif
 
         /*
           Manual connection signal to send a extra parameter.
-          ConexiÛn manual de la seÒal para pasarle un par·metro extra.
+          Conexi√≥n manual de la se≈Ñal para pasarle un par√°metro extra.
         */
         glade_xml_signal_connect( xml, "on_about_ok_clicked",;
            {|w| on_about_ok_clicked( w, dialog )})
@@ -31,7 +31,7 @@ return; endif
           This dialog have property 'visible=True', then
         gtk_widgetShow() is not called.
           Como la propiedad 'visible'=True
-        no es necesario ejecutar la siguiente lÌnea.
+        no es necesario ejecutar la siguiente l√≠nea.
         */
 //      gtk_widgetShow(dialog)
 

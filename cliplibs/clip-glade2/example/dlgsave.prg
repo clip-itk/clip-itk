@@ -1,4 +1,4 @@
-/* Módulo de selección de archivo. */
+/* MÃ³dulo de selecciÃ³n de archivo. */
 
 #define TL_WINDOW_NAME "save_file_selection"
 
@@ -23,7 +23,7 @@ return( "" ); endif
 
                 /*
                   Full manual signal connect sample.
-                  Conexión automática de señales.
+                  ConexiÃ³n automÃ¡tica de seÅ„ales.
                 */
 
                 gtk_signalConnect( dialog, "delete-event",;
@@ -41,7 +41,7 @@ return( "" ); endif
 
         /*
            Waiting for close dialog.
-           Se espera a que termine el diálogo.
+           Se espera a que termine el diÃ¡logo.
         */
         gtk_main()
 

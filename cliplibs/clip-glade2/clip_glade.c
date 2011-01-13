@@ -1,7 +1,7 @@
 /* 
 
  clip_glade.c
- Copyright (C) - Sergio Zayas Toré - 2.005
+ Copyright (C) - Sergio Zayas TorÃ© - 2.005
 
 
  function: static SignalTable *
@@ -27,7 +27,7 @@
 
 
 /* 
-   Implementation state (Estado de la implementación)
+   Implementation state (Estado de la implementaciÃ³n)
 
 State  = XXX-Ok || DDD-Not checked
 
@@ -230,12 +230,12 @@ int clip_GLADE_XML_GET_WIDGET( ClipMachine * cm )
         if( wid ) {
 
                 /*
-                   Aquí Clip crea sus estructuras para guardar el widget,
-                   pero se produce una creación parcial si el widget es
+                   AquÃ­ Clip crea sus estructuras para guardar el widget,
+                   pero se produce una creaciÃ³n parcial si el widget es
                    'compuesto'. p.ej. si es un widget GtkFileSelection
                    no se crean (en Clip) los widgets internos como filesel:okButton,
-                   por tanto no se le puede asignar una señal con gtk_signalConnect();
-                   hay que hacerlo con glade_xml_signal_connect() ó bien generar el
+                   por tanto no se le puede asignar una seÅ„al con gtk_signalConnect();
+                   hay que hacerlo con glade_xml_signal_connect() Ã³ bien generar el
                    widget con glade_xml_get_widget() y conectarlo con gtk_signalConnect().
                 */
                 cwid = _register_widget( cm, wid, NULL );
@@ -412,7 +412,7 @@ static void _signal_connect_func( const gchar *handler_name,
         GtkSignalFunc sfunc;
 
         if( ! c_wid )
-                /* Aquí Clip crea sus estructuras para guardar el widget. */
+                /* AquÃ­ Clip crea sus estructuras para guardar el widget. */
                 c_wid = _register_widget( c->cm, GTK_WIDGET(object), NULL );
 
         if( c_wid )
@@ -467,7 +467,7 @@ static void _signal_autoconnect_func( const gchar *handler_name,
                                   gboolean after,
                                   gpointer user_data)
 {
-/* Busca un función con el mismo nombre que handler_name y genera el gestor de señal. */
+/* Busca un funciÃ³n con el mismo nombre que handler_name y genera el gestor de seÅ„al. */
         ClipMachine * cm = (ClipMachine *) user_data;
         ClipFunction *fp;
         ClipBlock * bp;
@@ -508,7 +508,7 @@ return;
         cv->cm = cm;
         _clip_mclone( cm, &cv->cfunc, func );
 
-        // Esta es la llamada final, conecta la función.
+        // Esta es la llamada final, conecta la funciÃ³n.
         _signal_connect_func( handler_name, object,
                                   signal_name, signal_data,
                                   connect_object, after,
