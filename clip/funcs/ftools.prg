@@ -165,12 +165,12 @@ function tmpfile()
 	local f:=""
 	while .t.
 #ifdef __CLIP__
-		f=PATH_DELIM+"tmp"+PATH_DELIM+"clip"+alltrim(str(pid()))+'_'+str(random(pid()),6,0)
+		f=PATH_DELIM+"tmp"+PATH_DELIM+"clip"+alltrim(str(pid()))+'_'+alltrim(str(random(pid()),6,0))
 #else
-		f=currdrive()+"\"+curdir()+"\tmp\prom"+alltrim(str(pid()))+'_'+str(random(pid()),6,0)
+		f=currdrive()+"\"+curdir()+"\tmp\prom"+alltrim(str(pid()))+'_'+alltrim(str(random(pid()),6,0))
 #endif
 		f=strtran(f," ","0")
-		if !file(f+".dbf") .and. !file(f+".dbt") .and. !file(f+".txt") \
+		if !file(f+".dbf") .and. !file(f+".dbt") .and. !file(f+".txt");
 		    .and. !file(f+".prg") .and. !file(f+".po")
 			exit
 		endif
