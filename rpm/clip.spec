@@ -2,33 +2,33 @@
 
 %define _unpackaged_files_terminate_build  1
 
-%define with_bzip2    1
-%define with_cobra    1
-%define with_codb     1
-%define with_com      1
-%define with_crypto   1
-%define with_cti      0
-#%define with_expat    1
-#%define with_fw       1
-%define with_gtk      1
-%define with_gd       1
-%define with_gtk2     1
-%define with_gzip     1
-%define with_ui       1
-%define with_kamache  1
-%define with_mysql    0
-%define with_oasis    1
-%define with_odbc     0
-%define with_postgres 1
-%define with_rtf      1
-%define with_r2d2     1
-%define with_xml      1
+%define with_bzip2      1
+%define with_cobra      1
+%define with_codb       1
+%define with_com        1
+%define with_crypto     1
+%define with_cti        0
+%define with_fw         0
+%define with_gtk        0
+%define with_gd         1
+%define with_gtk2       1
+%define with_gzip       1
+%define with_ui         0
+%define with_kamache    1
+%define with_mysql      1
+%define with_oasis      1
+%define with_odbc       1
+%define with_postgres   1
+%define with_postscript 1
+%define with_rtf        1
+%define with_r2d2       1
+%define with_xml        0
 
 
 Summary:	XBASE/Clipper compatible program compiler
 Name:		clip
 Version:	1.2.0
-Release:	%{rel}asp11cis
+Release:	%{rel}cis
 Vendor:		CISLinux
 Packager:	Serge Dudko <serge@cis.by>
 URL:		http://www.itk.ru
@@ -37,8 +37,8 @@ License:        GPL
 Requires: 	clip-lib = %{version}-%{release}
 Requires:	gcc, make, binutils, readline, flex, gettext
 BuildRoot:	/tmp/%{name}-%{version}
-BuildRequires:  gcc, make, binutils, readline, flex, gettext, libpng-devel libjpeg-devel gd-devel gtk2-devel
-BuildRequires:  openssl-devel
+BuildRequires:  gcc, make, binutils, bison, flex, gettext, libpng-devel, libjpeg-devel, gd-devel, gtk2-devel
+BuildRequires:  openssl-devel, readline-devel, pth-devel, ncurses-devel, unixODBC-devel, mysql-devel
 Source0:         %{name}-prg-%{version}-0.tgz
 BuildRoot: 	%{_tmppath}/%{name}-root
 
@@ -118,18 +118,6 @@ Requires: clip-lib = %{version}-%{release}
 This package provides COM-port binding for CLIP
 %endif
 
-#%if "%{with_expat}" != "0"
-#%package expat
-#Summary: COM-port binding for CLIP
-#License: GPL
-#Group: System Environment/Libraries
-#Requires: clip-lib = %{version}-%{release}
-
-#%description expat
-#This package provides expat (XML) support for CLIP
-#%endif
-
-
 %if "%{with_crypto}" != "0"
 %package crypto
 Summary: CLIP cryptographic binding
@@ -151,6 +139,18 @@ Requires: clip-lib = %{version}-%{release}
 
 %description cti
 This package provides cti binding for CLIP
+%endif
+
+%if "%{with_gd}" != "0"
+%package gd
+Summary: CLIP ODBC binding
+License: GPL
+Group: System Environment/Libraries
+Requires: gd, clip-lib = %{version}-%{release}
+BuildRequires: gd-devel
+
+%description gd
+This package provides gd binding for CLIP
 %endif
 
 %if "%{with_gtk}" != "0"
@@ -189,15 +189,25 @@ BuildRequires: zlib-devel
 This package provides gzip binding for CLIP
 %endif
 
-%if "%{with_ui}" != "0"
-%package ui
-Summary: CLIP ui binding
+%if "%{with_fw}" != "0"
+%package fw
+Summary: CLIP fw binding
+License: GPL
+Group: System Environment/Libraries
+Requires: clip-lib = %{version}-%{release}
+%description fw
+This package provides fw binding for CLIP
+%endif
+
+%if "%{with_kamache}" != "0"
+%package kamache
+Summary: CLIP kamache binding
 License: GPL
 Group: System Environment/Libraries
 Requires: clip-lib = %{version}-%{release}
 
-%description ui
-This package provides libclip-ui
+%description kamache
+This package provides kamache for CLIP
 %endif
 
 %if "%{with_mysql}" != "0"
@@ -247,6 +257,17 @@ BuildRequires: postgresql-devel
 This package provides PostgreSQL binding for CLIP
 %endif
 
+%if "%{with_postscript}" != "0"
+%package postscript
+Summary: CLIP Postscript binding
+License: GPL
+Group: System Environment/Libraries
+Requires: clip-lib = %{version}-%{release}
+
+%description postscript
+This package provides Postscript binding for CLIP
+%endif
+
 %if "%{with_rtf}" != "0"
 %package rtf
 Summary: CLIP RTF binding
@@ -269,38 +290,16 @@ Requires: clip-lib = %{version}-%{release}
 This package provides r2d2 binding for CLIP
 %endif
 
-%if "%{with_gd}" != "0"
-%package gd
-Summary: CLIP ODBC binding
-License: GPL
-Group: System Environment/Libraries
-Requires: gd, clip-lib = %{version}-%{release}
-BuildRequires: gd-devel
 
-%description gd
-This package provides gd binding for CLIP
-%endif
-
-#%if "%{with_fw}" != "0"
-#%package fw
-#Summary: CLIP fw binding
-#License: GPL
-#Group: System Environment/Libraries
-#Requires: clip-lib = %{version}-%{release}
-
-#%description fw
-#This package provides fw binding for CLIP
-#%endif
-
-%if "%{with_kamache}" != "0"
-%package kamache
-Summary: CLIP kamache binding
+%if "%{with_ui}" != "0"
+%package ui
+Summary: CLIP ui binding
 License: GPL
 Group: System Environment/Libraries
 Requires: clip-lib = %{version}-%{release}
 
-%description kamache
-This package provides kamache for CLIP
+%description ui
+This package provides libclip-ui
 %endif
 
 %if "%{with_xml}" != "0"
@@ -355,6 +354,7 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %files
 %defattr(-,root,root)
 %{clipdir}/bin/add_meta_tag
+%{clipdir}/bin/cleanxmo.sh
 %{clipdir}/bin/clip
 %{clipdir}/bin/clip_bug
 %{clipdir}/bin/clip_conv
@@ -371,11 +371,13 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %{clipdir}/bin/gen_tbl
 %{clipdir}/bin/joinlib.sh
 %{clipdir}/bin/lowname
+%{clipdir}/bin/ocmng
 %{clipdir}/bin/po_compat
 %{clipdir}/bin/po_extr
 %{clipdir}/bin/po_subst
 %{clipdir}/bin/tconv
-%{clipdir}/bin/xclip
+#%{clipdir}/bin/xclip
+%{clipdir}/bin/xml2xmo
 %{clipdir}/cliprc/.notrm
 %{clipdir}/cliprc/clipflags
 %{clipdir}/doc/example/Makefile
@@ -395,6 +397,7 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %{clipdir}/include/btree.h
 %{clipdir}/include/screen/charset.h
 %{clipdir}/include/button.ch
+%{clipdir}/include/cl_cfg.h
 %{clipdir}/include/clip.ch
 %{clipdir}/include/clip.h
 %{clipdir}/include/clipbrd.ch
@@ -464,7 +467,8 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %{clipdir}/include/std50.ch
 %{clipdir}/include/std53.ch
 %{clipdir}/include/task.h
-%{clipdir}/include/taskcfg.h
+%{clipdir}/include/task2.h
+#%{clipdir}/include/taskcfg.h
 %{clipdir}/include/tbrowse.ch
 %{clipdir}/include/ulimit.ch
 %{clipdir}/lib/libclip.a
@@ -542,9 +546,9 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %defattr(-,root,root)
 %{clipdir}/charsets/*
 %{clipdir}/etc/environment
-#%{clipdir}/etc/printers.ini
+%{clipdir}/etc/printers.ini
 %{clipdir}/etc/termcap
-#%{clipdir}/etc/terminfo/*/*
+%{clipdir}/etc/terminfo/*/*
 %{clipdir}/keymaps/*
 %{clipdir}/lang/*
 %{clipdir}/term/*
@@ -669,7 +673,7 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %{clipdir}/include/clip-gtk2.h
 %{clipdir}/include/gtk2-stock.ch
 %{clipdir}/lib/libclip-gtk2.*
-%{clipdir}/lib/drivers/driver-gtk2.*
+#%{clipdir}/lib/drivers/driver-gtk2.*
 #%{clipdir}/locale.pot/gtk2/*
 %endif
 
@@ -713,6 +717,14 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %{clipdir}/lib/libclip-postgres.*
 %endif
 
+%if "%{with_postscript}" != "0"
+%files postscript
+%defattr(-,root,root)
+%{clipdir}/doc/example/clip-postscript/*
+%{clipdir}/include/clip-postscript.ch
+%{clipdir}/lib/libclip-postscript.*
+%endif
+
 %if "%{with_rtf}" != "0"
 %files rtf
 %defattr(-,root,root)
@@ -732,24 +744,16 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %{clipdir}/lib/libgd.*
 %endif
 
-
-#%if "%{with_expat}" != "0"
-#%files expat
-#%defattr(-,root,root)
-#%{clipdir}/doc/example/clip-expat/*
-#%{clipdir}/lib/libclip-expat.*
-#%endif
-
-#%if "%{with_fw}" != "0"
-#%files fw
-#%defattr(-,root,root)
-#%{clipdir}/doc/example/clip-fw/*
-#%{clipdir}/doc/example/clip-fw/.*
-#%{clipdir}/lib/libclip-fw.*
-#%{clipdir}/locale.mo/*/clip-fw.mo
-#%{clipdir}/locale.po/*/clip-fw.po
-#%{clipdir}/locale.pot/clip-fw/*
-#%endif
+%if "%{with_fw}" != "0"
+%files fw
+%defattr(-,root,root)
+%{clipdir}/doc/example/clip-fw/*
+%{clipdir}/doc/example/clip-fw/.*
+%{clipdir}/lib/libclip-fw.*
+%{clipdir}/locale.mo/*/clip-fw.mo
+%{clipdir}/locale.po/*/clip-fw.po
+%{clipdir}/locale.pot/clip-fw/*
+%endif
 
 %if "%{with_kamache}" != "0"
 %files kamache
