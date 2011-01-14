@@ -163,11 +163,17 @@ return
 **********************************************************
 function tmpfile()
 	local f:=""
+
+	local tmpdir:=getenv("TMPDIR")
+	if (tmpdir == "")
+		tmpdir:=PATH_DELIM+"tmp"
+	endif
+
 	while .t.
 #ifdef __CLIP__
-		f=PATH_DELIM+"tmp"+PATH_DELIM+"clip"+alltrim(str(pid()))+'_'+alltrim(str(random(pid()),6,0))
+		f=tmpdir+PATH_DELIM+"clip"+NTOC(PID(),10,4,'0')+NTOC(random(10000),10,4,'0')
 #else
-		f=currdrive()+"\"+curdir()+"\tmp\prom"+alltrim(str(pid()))+'_'+alltrim(str(random(pid()),6,0))
+		f=currdrive()+"\"+curdir()+"\tmp\prom"+NTOC(PID(),10,4,'0')+NTOC(random(10000),10,4,'0')
 #endif
 		f=strtran(f," ","0")
 		if !file(f+".dbf") .and. !file(f+".dbt") .and. !file(f+".txt");
