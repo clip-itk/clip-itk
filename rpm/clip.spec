@@ -1,4 +1,5 @@
-%define rel 0
+%define rel 1
+%define src_rel 0
 
 %define _unpackaged_files_terminate_build  1
 
@@ -28,22 +29,27 @@
 Summary:	XBASE/Clipper compatible program compiler
 Name:		clip
 Version:	1.2.0
-Release:	%{rel}cis
+Release:	%{rel}.centos
 Vendor:		CISLinux
-Packager:	Serge Dudko <serge@cis.by>
+Packager:	Slava Zanko <slavaz@cis.by>
 URL:		http://www.itk.ru
 Group:		Development
 License:        GPL
 Requires: 	clip-lib = %{version}-%{release}
-Requires:	gcc, make, binutils, readline, flex, gettext
-BuildRoot:	/tmp/%{name}-%{version}
-BuildRequires:  gcc, make, binutils, bison, flex, gettext, libpng-devel, libjpeg-devel, gd-devel, gtk2-devel
-BuildRequires:  openssl-devel, readline-devel, pth-devel, ncurses-devel, unixODBC-devel, mysql-devel
-Source0:         %{name}-prg-%{version}-0.tgz
+Requires:	gcc, make, binutils, readline, flex, gettext, pth
+BuildRequires:  gcc, make, binutils, readline, flex, gettext, libpng-devel, libjpeg-devel, gd-devel, gtk2-devel
+BuildRequires:  openssl-devel, pth-devel, chrpath
+
+Source0:         %{name}-prg-%{version}-%{src_rel}.tgz
+
+# some orphaned file from previous release. Is it necessary?
+Source1:         chLibPath.c
+
 BuildRoot: 	%{_tmppath}/%{name}-root
 
 
-%define clipdir /usr/clip/%{version}-%{rel}
+%define clipdir /usr/clip/%{version}
+%define tmpclipdir /tmp/clip/%{version}
 
 %description
 This package includes the clip compiler 
@@ -90,6 +96,7 @@ License: GPL
 Group: System Environment/Libraries
 Requires: clip-lib = %{version}-%{release}
 Requires: %{name}-oasis = %{version}-%{release}
+BuildRequires:  pam-devel
 
 %description codb
 This package provides CLIP object data base
@@ -153,6 +160,16 @@ BuildRequires: gd-devel
 This package provides gd binding for CLIP
 %endif
 
+%if "%{with_fw}" != "0"
+%package fw
+Summary: CLIP fw binding
+License: GPL
+Group: System Environment/Libraries
+Requires: clip-lib = %{version}-%{release}
+%description fw
+This package provides fw binding for CLIP
+%endif
+
 %if "%{with_gtk}" != "0"
 %package gtk
 Summary: CLIP gtk+ binding
@@ -187,16 +204,6 @@ BuildRequires: zlib-devel
 
 %description gzip
 This package provides gzip binding for CLIP
-%endif
-
-%if "%{with_fw}" != "0"
-%package fw
-Summary: CLIP fw binding
-License: GPL
-Group: System Environment/Libraries
-Requires: clip-lib = %{version}-%{release}
-%description fw
-This package provides fw binding for CLIP
 %endif
 
 %if "%{with_kamache}" != "0"
@@ -315,41 +322,28 @@ This package provides XML for CLIP
 
 %prep
 tar -xzf %{SOURCE0}
-cd %{name}-prg-%{version}-0
+cd %{name}-prg-%{version}-%{src_rel}
 
-
-#tar -xzf %{SOURCE1}
-#cp -f -R clip-prg/* ./
-#rm -f -R clip-prg
-
-#pushd cliplibs/clip-gtk2
-#%patch0 -p 0 -b .slavaz
-#popd
+sed -i 's/clip (%{version}-%{src_rel})/clip (%{version})/' debian/changelog
 
 %build
-if [ -d %{clipdir} ]; then
-    echo "Installed CLIP detected!!!"
-    echo
-    echo "HINT: you can change release number and rebuild again"
-    exit 1
-fi
 
-mkdir -p %{clipdir}
-export CLIPROOT=%{clipdir}
-cd %{name}-prg-%{version}-0
+mkdir -p %{tmpclipdir}
+export CLIPROOT=%{tmpclipdir}
+cd %{name}-prg-%{version}-%{src_rel}
 make local
+gcc %{SOURCE1} -o /tmp/chLibath
+find %{tmpclipdir} -type f -exec \
+    /bin/bash -c '/tmp/chLibath <{} >{}.chLibPath.tmp && { chmod --reference {} {}.chLibPath.tmp; mv -f {}{.chLibPath.tmp,}; }|| rm -f {}.chLibPath.tmp' \;
 
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT/usr/clip
-mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
-
-
+mv -f %{tmpclipdir} $RPM_BUILD_ROOT/usr/clip
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
-
 
 %files
 %defattr(-,root,root)
@@ -503,7 +497,6 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 
 %{clipdir}/locale.po/*/udb.po
 %{clipdir}/locale.mo/*/udb.mo
-#%{clipdir}/locale.pot/udb/*
 
 #%{clipdir}/locale.pot/udbx/*.pot
 %{clipdir}/locale.po/*/udbx.po
@@ -596,6 +589,7 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %{clipdir}/locale.po/es_*/codb.po
 %{clipdir}/lib/libcodb-query.*
 %{clipdir}/locale.po/pt_BR.8859-1/codb.po
+#%{clipdir}/locale.pot/udb/*
 %endif
 
 %if "%{with_bzip2}" != "0"
@@ -775,9 +769,16 @@ mv -f %{clipdir} $RPM_BUILD_ROOT/usr/clip
 %endif
 
 %changelog
+* Fri Jan 14 2011 Slava Zanko <slavaz@cis.by>
+- reorganize SPEC file for compile from repository
+
+* Fri Dec 14 2006 Serge Dudko <serge@cis.by>
+- build clip version 1.2.0-1
+- based on fixed by SlavaZ sources. COM-port problems fixed, new glibc, AMD CPU and much more
+- to be improved maybe by you  :)
 
 * Mon Dec 12 2006 Serge Dudko <serge@cis.by>
-- build clip version 1.2.0 .  Compatible with ASPLinux 11 and FC4.
+- build clip version 1.2.0
 - added XML package definition for this release
 
 * Wed Dec 28 2005 Slava Zanko <SlavaZ@cis.by>
