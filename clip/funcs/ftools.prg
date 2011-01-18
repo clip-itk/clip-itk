@@ -171,7 +171,7 @@ function tmpfile()
 
 	while .t.
 #ifdef __CLIP__
-		f=tmpdir+PATH_DELIM+"clip"+NTOC(PID(),10,4,'0')+NTOC(random(10000),10,4,'0')
+		f=tmpdir+PATH_DELIM+"clip"+LTRIM(STR(PID(),9))+'_'+NTOC(random(10000),10,4,'0')
 #else
 		f=currdrive()+"\"+curdir()+"\tmp\prom"+NTOC(PID(),10,4,'0')+NTOC(random(10000),10,4,'0')
 #endif
