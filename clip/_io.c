@@ -4455,6 +4455,26 @@ clip_SETLASTKEY(ClipMachine * mp)
 }
 
 int
+clip_KEYREAD(ClipMachine *mp)
+{
+	int i, count;
+	char *ptr;
+
+	for(count = 0; count < mp->typeahead && mp->kbdbuf[count] != 0; count++);
+
+	ptr = calloc(count*2, sizeof(char));
+
+	for(i = 0; i < count; i++)
+		ptr[i * 2] = mp->kbdbuf[i];
+
+	_clip_retcn(mp, ptr, count * 2);
+
+	free(ptr);
+
+	return 0;
+}
+
+int
 clip_NEXTKEY(ClipMachine * mp)
 {
 	int eventmask = _clip_parni(mp, 1);
@@ -4547,6 +4567,37 @@ clip_ASC(ClipMachine * mp)
 	  }										  \
   } while (0)
 
+static void
+cycle_kbdbuf(int *ptr, int len, int x)
+{
+	int i = len-1;
+
+	if (len == 0)
+		return;
+
+	while (ptr[i] == 0 && i > 0)
+		i--;
+
+	//First pos
+	if (ptr[i] == 0)
+	{
+		ptr[i] = x;
+		return;
+	}
+
+	// Intermedia pos
+	if (i != len - 1)
+	{
+		ptr[i+1] = x;
+		return;
+	}
+
+	// Must cycle
+	memmove(ptr, ptr + 1, (len - 1) * sizeof(int));
+
+	ptr[len - 1] = x;
+}
+
 CLIP_DLLEXPORT int
 _clip_key(ClipMachine * mp, int timeout_ms, int mask)
 {
@@ -4583,6 +4634,8 @@ _clip_key(ClipMachine * mp, int timeout_ms, int mask)
 
 		if (ckey != 0)
 		{
+			cycle_kbdbuf(mp->kbdbuf, mp->typeahead, ckey);
+
 			if (timeout_ms!=0)
 				mp->lastkey = ckey;
 

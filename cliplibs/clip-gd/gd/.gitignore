@@ -1,3 +1,15 @@
 Makefile
 Makefile.inc
 gdcfg.h
+gd2copypal
+gd2time
+gd2topng
+gddemo
+gdparttopng
+gdtest
+gdtestft
+gdtestttf
+gdtopng
+pngtogd
+pngtogd2
+webpng
