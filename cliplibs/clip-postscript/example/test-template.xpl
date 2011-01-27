@@ -3,33 +3,33 @@
 <form type="template">
   
   <head>
-    <!-- Общая информация. Обязательные теги. -->
+    <!-- Common information. Required tags. -->
     <name>Contact list</name>
     <description>Print contacts form</description>
     <version>1.0</version>
 
-    <!-- Сведения об авторе, лицензии, контактах. Необязательные поля. -->
+    <!-- Author, license, contact data. Optional fields. -->
     <author>Andrey Cherepanov</author>
     <copyright>This form in released under the GNU/GPL License</copyright> 
     <component>contact</component>
     <link type="email">skull@eas.lrn.ru</link> 
     <link type="URL">http://eas.lrn.ru/components/contact/</link> 
     
-	<!-- Параметры страницы по умолчанию -->
+	<!-- Default page settings -->
 	<page>
-		<format>A4</format> <!-- формат бумаги -->
-		<orientation>portrait</orientation> <!-- расположение -->
-		<units>mm</units> <!-- единицы измерения размеров: мм -->
-		<margins>20</margins> <!-- поля листа -->
+		<format>A4</format> <!-- paper size -->
+		<orientation>portrait</orientation> <!-- orientation -->
+		<units>mm</units> <!-- units of size: mm -->
+		<margins>20</margins> <!-- fields -->
 	</page>
 	
-	<!-- Стиль по умолчанию -->
+	<!-- Default style -->
 	<style name="default">
 		<font-family>Helvetica</font-family>
 		<font-size>10</font-size>
 	</style>
 	
-	<!-- Стиль для текста заголовка. Наследуется от стиля "default" -->
+	<!-- Style for text header. "Inherited from "default" style -->
 	<style name="title" inherits="default">
 		<font-family>TahomaCyr</font-family>
 		<font-weight>bold</font-weight>
@@ -38,7 +38,7 @@
 		<padding-top>2</padding-top>
 	</style>
 	
-	<!-- Стиль для даты -->
+	<!-- Style for date -->
 	<style name="title2" inherits="title">
 		<font-family>Helvetica</font-family>
 		<font-weight>normal</font-weight>
@@ -47,24 +47,24 @@
 		<padding-bottom>5</padding-bottom>
 	</style>
 	
-	<!-- Стиль для обычных строк таблицы -->
+	<!-- Style for table rows -->
 	<style name="tablerow" inherits="default">
 		<height>20</height>
 	</style>
 
-	<!-- Альтернативный стиль для обычных строк таблицы -->
+	<!-- Alternative style for table rows -->
 	<style name="tablerow_alt" inherits="tablerow">
 		<background-color>#d0d0d0</background-color>
 	</style>
 	
-	<!-- Стиль для заголовка таблицы -->
+	<!-- Style for table header -->
 	<style name="tablehead" inherits="tablerow">
 		<font-weight>bold</font-weight>
 		<text-align>center</text-align>
 		<height>7</height>
 	</style>
 	
-	<!-- Размеры ячеек таблицы -->
+	<!-- Sizes of table cells -->
 	<style name="ch1" inherits="tablehead">
 		<width>15</width>
 		<border>0.75</border>
@@ -93,35 +93,35 @@
     
   </head>
   
-  <!-- Содержимое -->
+  <!-- Content -->
   <content>
 	<section style="default">
-	<!-- Заголовок отчёта -->
+	<!-- Report Title -->
 	<section>
-		<text style="title">Контакты</text>
+		<text style="title">Contacts</text>
 		<text style="title2"><date /></text>
 	</section>    
 	
-	<!-- Подвал на каждой странице -->
+	<!-- Footer for any page -->
 	<pageFooter>
 		<text style="text-align:right;">
-			<pageNum />	<!-- номер страницы -->
+			<pageNum />	<!-- page number -->
 			<text> of </text>
-			<pageCount /> <!-- количество страниц -->
+			<pageCount /> <!-- page count -->
 		</text>
 	</pageFooter>
 	
-	<!-- Переменные -->
+	<!-- Variables -->
 	<value name="num">1</value>
 	<value name="set">
 		<call>getView("contacts")</call>
 	</value>
 	
-	<!-- Данные таблицы -->
-	<!-- Заголовок таблицы -->
+	<!-- Table datasource -->
+	<!-- Table header -->
 	<table name="Table1">
 		
-		<!-- Верхний коллонтитул -->
+		<!-- Header -->
 		<pageHeader>
 			<row style="tablehead">
 				<cell style="ch1">#</cell>
@@ -130,10 +130,10 @@
 			</row>
 		</pageHeader>
 		
-		<!-- Нижний коллонтитул -->
+		<!-- Footer -->
 		<pageFooter />
 		
-		<!-- Шапка таблицы -->
+		<!-- Table header -->
 		<!--header-->
 			<row style="tablehead">
 				<cell style="ch1">#</cell>
@@ -142,10 +142,10 @@
 			</row>
 		<!--/header-->
 			
-		<!-- Подвал таблицы -->
+		<!-- table footer -->
 		<!--footer /-->
 		
-		<!-- Строка таблицы -->
+		<!-- Table row -->
 		<data repeat="set">
 			<row name="TableRow" style="tablerow">
 				<cell style="c1"><value name="num" /></cell>
@@ -153,9 +153,9 @@
 				<cell style="c3"><value name="set:[2]" /></cell>
 			</row>
 			<value name="num" function="inc"/>
-			<!-- Чередуем цвета строк -->
+			<!-- Alternate row colors -->
 			<condition>
-				<call><value name="num" />%2</call> <!-- Условие -->
+				<call><value name="num" />%2</call> <!-- Condition -->
 				<option value="1"><call>setStyle("TableRow","tablerow_alt")</call></option>
 			</condition>
 		</data>
