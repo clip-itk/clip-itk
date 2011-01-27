@@ -55,7 +55,7 @@ buffer = gtk_TextBufferNew()
 view := gtk_TextViewNewWithBuffer( , buffer )
 gtk_TextViewSetWrapMode (view, GTK_WRAP_WORD)
 gtk_WidgetSetSizeRequest(view, 300, 50)
-str := "И текст по-русски"
+str := "п≤ я┌п╣п╨я│я┌ п©п╬-я─я┐я│я│п╨п╦"
 gtk_TextBufferSetText(buffer,str, len(str) )
 st3 := map()
 st3:base_color:=gtk_ColorNew(11111, 111111, 11111)

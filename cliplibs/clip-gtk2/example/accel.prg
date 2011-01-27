@@ -18,7 +18,7 @@ gtk_WidgetAddAccelerator(btn, GTK_CLICKED_SIGNAL, win, ;
 
 
 /* create button with mnemonic */
-btn1 := gtk_ButtonNewWithMnemonic(, "ф&ыва", "&")
+btn1 := gtk_ButtonNewWithMnemonic(, "q&wer", "&")
 gtk_ButtonModifyFont(btn1, "proof Medium 28")
 gtk_ButtonModifyFG(btn1, gtk_ColorNew(0, 50000, 50000))
 
@@ -30,7 +30,7 @@ gtk_SignalConnect(btn1, "clicked", {|w| gtk_WidgetSetFocus(w),qout("clicked " +g
 lab := gtk_LabelNew(, "Press ALT+S to accelerate asdf")
 gtk_WidgetModifyFG(lab, gtk_ColorNew(50000, 0, 65535))
 gtk_WidgetModifyFont(lab, "proof Medium 28")
-lab1 := gtk_LabelNew(, "Press ALT+Ы to accelerate фыва")
+lab1 := gtk_LabelNew(, "Press ALT+W to accelerate qwer")
 gtk_WidgetModifyFG(lab1, gtk_ColorNew(0, 50000, 50000))
 gtk_WidgetModifyFont(lab1, "proof Medium 28")
 

@@ -217,7 +217,7 @@ STATIC FUNCTION PangoText( )
    DC:hPen := hPen
 
    label := gtk_LabelNew()
-   pango := gtk_WidgetCreatePangoLayout(label, "Pango Text Текст панго")
+   pango := gtk_WidgetCreatePangoLayout(label, "Pango Text Pango Text")
    PangoLayoutSetFontDescription(pango, "Arial Italic 16")
    /* without color */
    gdk_DrawLayoutLine(DC:PIXMAP, hPen, ;

@@ -1,4 +1,4 @@
-// Drawing lines and some management colors                     ß
+// Drawing lines and some management colors
 /*
 File Name  : LINES.PRG
 

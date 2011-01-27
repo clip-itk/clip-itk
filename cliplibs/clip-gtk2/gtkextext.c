@@ -1366,7 +1366,7 @@ line_set (GtkExText * text, gint pos)
 void
 style_init_each (gpointer key, GtkExTextStyle * style, GtkExText * text)
 {
-    gint width;
+    gint width;
     GtkExTextStyle *def;
 
     def = gtk_extext_style_get (text, "Default");
@@ -1553,7 +1553,7 @@ property_remove_linked_list (GtkExText * text, GtkExTextProperty * cur)
     if (!next) {                /* LAST property */
         text->property_end = cur->prev;
         text->property_end->next = NULL;
-    } else {                   /* somewhere in list */
+    } else {                   /* somewhere in list */
 
         if (cur->prev)
             cur->prev->next = next;
