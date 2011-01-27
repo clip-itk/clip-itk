@@ -254,9 +254,9 @@ FUNCTION FT_DispMsg( aInfo, cKey, nBoxTop, nBoxLeft, cnBoxString, lShadow )
    // consistent with DISPBOX()
 
    IF cnBoxString == NIL .OR. cnBoxString == 2
-      cnBoxString := "赏缓纪群 "
+      cnBoxString := "赏缓纪群 " // utf-8: "鈺斺晲鈺椻晳鈺濃晲鈺氣晳 "
    ELSEIF cnBoxString == 1
-      cnBoxString := "谀砍倌莱 "
+      cnBoxString := "谀砍倌莱 " // utf-8: "鈹屸攢鈹愨攤鈹樷攢鈹斺攤 "
    ENDIF
 
    lShadow := IIF( lShadow == NIL, .T., lShadow )

@@ -109,7 +109,7 @@ static lMinit:=.F.
 
      * ..... Set up the screen
      cSavClr := setcolor( "w/n" )
-     @ 0,0,maxrow(),maxcol() box "°°°°°°°°°"
+     @ 0,0,maxrow(),maxcol() box "°°°°°°°°°" // utf-8: "â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘"
 
      setcolor( "GR+/RB" )
      scroll( 7,2,19,63,0 )
@@ -967,8 +967,8 @@ RETURN aReg[AX]                 // return button status
  *    intensity and forground and background colors. The mask is represented in
  *    the diagram below:
  *
- *    Bit:     ³15    ³14      12³11       ³10       8³7       0³
- *    Function:³blink ³background³intensity³foreground³character³
+ *    Bit:     |15    |14      12|11       |10       8|7       0|
+ *    Function:|blink |background|intensity|foreground|character|
  *
  *    Blinking and high intensity are on when the bit is 1. The background and
  *    foreground indicate which colors are used for each. The software mouse
@@ -978,10 +978,10 @@ RETURN aReg[AX]                 // return button status
  *    Thus to keep the character the same but invert the foreground and
  *    background colors the following values would be used:
  *
- *    Bit:     ³15    ³14      12³11       ³10       8³7       0³
- *    Function:³blink ³background³intensity³foreground³character³
- *    screen:  ³  0   ³   111    ³    0    ³   111    ³11111111 ³ =30719
- *    cursor:  ³  0   ³   111    ³    0    ³   111    ³00000000 ³ =30464
+ *    Bit:     |15    |14      12|11       |10       8|7       0|
+ *    Function:|blink |background|intensity|foreground|character|
+ *    screen:  |  0   |   111    |    0    |   111    |11111111 | =30719
+ *    cursor:  |  0   |   111    |    0    |   111    |00000000 | =30464
  *
  *    The hardware cursor is the text cursor provided by the video board. One
  *    specifies the range of scan lines which are on using <nScrMask> and

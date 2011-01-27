@@ -268,13 +268,13 @@ STATIC NHPOS, NVPOS, NMAXROW, NMAXCOL
    CLEAR SCREEN
    SETCOLOR( cNormN )
    @ nMaxRow, 0
-   @ nMaxRow, 0 SAY " FT_MENU1 1.0 ³ "
+   @ nMaxRow, 0 SAY " FT_MENU1 1.0 ³ " // utf-8: " FT_MENU1 1.0 â”‚ "
    @ NMAXROW,16 SAY "WRITTEN BY PAUL FERRARA [76702,556] FOR NANFORUM.LIB"
-   @ NMAXROW,69 SAY "³ "+DTOC( DATE() )
+   @ NMAXROW,69 SAY "³ "+DTOC( DATE() ) // utf-8: "â”‚ "
 
    SETCOLOR( cErrH )
-   @ nMaxRow-11, 23, nMaxRow-3, 56 BOX "ÚÄ¿³ÙÄÀ³ "
-   @ nMaxRow- 9,23 SAY "ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´"
+   @ nMaxRow-11, 23, nMaxRow-3, 56 BOX "ÚÄ¿³ÙÄÀ³ " // utf-8: "â”Œâ”€â”â”‚â”˜â”€â””â”‚ "
+   @ nMaxRow- 9,23 SAY "ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´" // utf-8: "â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤"
    SETCOLOR( cErrN )
    @ nMaxRow-10,33 SAY "Navigation Keys"
    @ nMaxRow- 8,25 SAY "LeftArrow   RightArrow   Alt-E"
@@ -395,7 +395,7 @@ FUNCTION FT_MENU1( aBar, aOptions, aColors, nTopRow, lShadow )
          FT_SHADOW( nTopRow+1, aBoxLoc[nHpos], LEN(aChoices[nHpos,1])+nTopRow+2, aBarWidth[nHpos]+3+aBoxLoc[nHpos] )
       ENDIF
       SETCOLOR( cBorder )
-      @  nTopRow+1, aBoxLoc[nHpos], LEN(aChoices[nHpos,1])+nTopRow+2, aBarWidth[nHpos]+3+aBoxLoc[nHpos] BOX "ÉÍ»º¼ÍÈº "
+      @  nTopRow+1, aBoxLoc[nHpos], LEN(aChoices[nHpos,1])+nTopRow+2, aBarWidth[nHpos]+3+aBoxLoc[nHpos] BOX "ÉÍ»º¼ÍÈº " // utf-8: "â•”â•â•—â•‘â•â•â•šâ•‘ "
       SETCOLOR( cBox +","+ cCurrent +",,,"+ cUnselec )
       nVpos := ACHOICE( nTopRow+2, aBoxLoc[nHpos]+2, LEN(aChoices[nHpos,1])+nTopRow+2, aBarWidth[nHpos]+1+aBoxLoc[nHpos], aChoices[nHpos,1], aChoices[nHpos,3], "__ftAcUdf", aLastSel[nHpos])
       DO CASE

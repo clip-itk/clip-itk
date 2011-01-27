@@ -114,9 +114,9 @@
 #include "inkey.ch"
 
 * Default heading, column, footer separators
-#define DEF_HSEP    "мям"
-#define DEF_CSEP    " Ё "
-#define DEF_FSEP    "мом"
+#define DEF_HSEP    "мям" // utf-8: "Б∙░Б∙╓Б∙░"
+#define DEF_CSEP    " Ё " // utf-8: " Б■┌ "
+#define DEF_FSEP    "мом" // utf-8: "Б∙░Б∙╖Б∙░"
 
 * Default info for tb_methods section
 #define KEY_ELEM 1
