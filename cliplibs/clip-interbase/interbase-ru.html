@@ -1,0 +1,73 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>СУБД Interbase (Firebird)</TITLE>
+</HEAD>
+<BODY>
+<b>СУБД Interbase (Firebird)</b><br>
+<hr><br>
+ Чтобы построить приложение с использованием DBFSQL для Interbase
+ его нужно слинковать с библиотекой libclip-interbase.so
+<br> <br>
+ Для подключения к серверу используйте конструктор класса TConnect
+ в следующем синтаксисе:
+<br> <br><b>
+ ConnectNew("IB",NIL,NIL,&lt;login&gt;,&lt;pwd&gt;,[&lt;dbname&gt;],
+ NIL,NIL,NIL,[&lt;cIsolation&gt;])</b>, где
+<br> <br>
+ "IB" - строка, идентифицирующая СУБД Interbase;
+<br> <br>
+ &lt;login&gt; - логин пользователя;
+<br> <br>
+ &lt;pwd&gt; - пароль пользователя;
+<br> <br>
+ &lt;dbname&gt; - имя базы данных;
+<br> <br>
+ &lt;cIsolation&gt; - уровень изоляции по умолчанию.
+<br> <br>
+ Для указания поля-идентификатора записи для связи набора записей TRowset
+ с физической таблицей базы данных в функции TConnect:CreateRowset()
+ предусмотрен параметр &lt;idname&gt;. Для полноценной работы
+ с набором (с возможностью отражения производимых изменений набора
+ записей в базе данных) в список запрашиваемых полей запроса SELECT
+ следует явно включать зто поле.
+<br> <br>
+ Кроме того, в функции TConnect:CreateRowset() предусмотрен параметр
+ &lt;gen_idSQL&gt; с запросом к генератору уникальных идентификаторов
+ СУБД Interbase. Это необходимо в случаях, когда вновь добавляемые
+ при помощи TRowset:Append() и TRowset:insertSQL записи предполагается
+ редактировать. В этом случае не следует делать триггер BEFORE INSERT.
+<br> <br>
+ Значения параметра &lt;cIsolation&gt; для ConnectNew() и TConnect:Start()
+ могут состоять из одной или нескольких из нижеследующих строк, разделенных
+ символом ';':<br> <br>
+ "CONCURRENCY"<br>
+ "READ COMMITTED" или "READ_COMMITTED"<br>
+ "REC VERSION" или "REC_VERSION"<br>
+ "NO REC VERSION" или "NO_REC_VERSION"<br>
+ "CONSISTENCY"<br>
+ "WAIT"<br>
+ "NOWAIT"<br>
+ "READ"<br>
+ "WRITE"<br> <br>
+ (Об уровнях изоляции и параметрах транзакций читайте документацию по Interbase).<br> <br>
+ Кроме того, функция TConnect:Start() может принимать второй параметр-строку
+ с параметрами блокировки отдельных таблиц. Эта строка должна иметь вид:<br> <br>
+ &lt;table_name&gt;=&lt;lock_type&gt;[;&lt;table_name&gt;=&lt;lock_type&gt;,...], где<br>
+ &lt;table_name&gt; - имя таблицы которую нужно заблокировать на время транзакции;<br>
+ &lt;lock_type&gt; - тип блокировки; возможны следующие типы:<br> <br>
+ "SHARED_READ"<br>
+ "SHARED_WRITE"<br>
+ "PROTECTED_READ"<br>
+ "PROTECTED_WRITE"<br> <br>
+ Например:<br> <br>
+ // начать транзакцию с уровнем изоляции READ COMMITTED, <br>
+ // только для чтения,<br>
+ // с блокировкой таблицы MYTABLE<br>
+ conn:Start("READ COMMITTED;READ ONLY","MYTABLE=PROTECTED_WRITE")
+<hr>
+</BODY>
+</HTML>
+
