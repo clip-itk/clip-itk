@@ -7,7 +7,7 @@ coun := 3
 
 function main()
 	local aTmp := {}, ;
-	w,  ;	// указатель на виджет ОКНО (главное окно программы)
+	w,  ;	// pointer to WINDOW widget (main application window)
 	f,  ;	//
 	vb,  ;	//
 	sw,  ;	//
@@ -39,33 +39,33 @@ DO WHILE .T.
 *	gtk_FixedPut(CLFx,clscr)
 	gtk_ContainerAdd(CLFrame,clscr)
 		gtk_BoxPackStart(vb,CLFrame,.T.,.T.,2)
-// собственно, когда спрашивал об иерархии, то имел в виду необходимость
-// тех или иных "промежуточных слоев" для вывода графической информации.
-// в данном примере, взятом из clipgtktest, выкинул все отмеченное выше
-// звездочкой и прога не рухнула. я на глаз не заметил изменений в ее
-// поведении.
+// in fact, when asked about the hierarchy, had in mind the need of any
+// "intermediate layers" to display graphical information.
+// in this example (taken from clipgtktest) threw all of the above-mentioned
+// by asterisk and program isn't crashed. I'm on the eye from noticing the 
+// changes in her behavior.
 
-//RE: Слои - отдаются ра рассмотрение программера. Все зависит от того, в каком
-//виде или порядке хотите увидеть те или иные виджеты. вертикально, горизонтально
-//строго в указанной точке ... Вот исходя из конечного вида и надо пользоваться
-//разными контейнерами.
+//RE: Layers - give to programmer for review. All depends, in any form or manner
+// you want to see those or other widgets: vertical, horizontal or strictly in
+// the specified location... That is based on the final form and have to use
+// different containers
 
-// второй вопрос в том, что при таком построении не срабатывает автоматическое
-// определенние размера окна, содержащего Clist. без выкидывания закоментареных
-// фрагментов окно для clist было вообще маленьким. в таком варианте прога
-// определила горизонтальный размер, как мне кажется, по размеру кнопок. а
-// по вертикали выделила место только на одну строку. толи я еще не все лишнее
-// удалил:), толи прога дура-программер молодец, толи есть еще неизвестный мне
-// метод или свойство ?
+// second question is that if such construction does not apply automatically
+// sizing the window containing the Clist. Without discarding commented
+// fragments clist window was generally small. In this case a program can
+// determine the horizontal dimension, as it seems to me the size of the buttons.
+// And vertical allocate only one row. I guess, I have not removed all
+// unnecessary:) ; or program is stupid - programmer is cool; or is still unknown
+// to me a method or property(?).
 
-//RE: Тут, как мне кажется, программа определила ширину по одному единственному
-//виджету, имеющему конкретный размер. Это statusBar Все остальные виджеты -
-//контейнеры, размер которых плавает и зависит от того, что у них внутри. И так как
-//размер окна не задан, то и прога установила минимальный с ее точки зрения. Для
-//каждого виджета выделив высоты столько, сколько необходимо для минимальной
-//информативности. Если хотите, чтобы этот пример показывал весь list, то можно или
-//убрать промежуточное окно scrolledwindow или задать размер основному окну w или
-//скроллируемому окну clscr.
+//RE: Here, I think, a program to determine the width of one single widget with
+// a specific size. This statusBar, All other widgets - containers that are
+// larger flies and depends on what's inside. And since the window size is not
+// specified, then the program has established minimum from her point of view.
+// For each widget, highlighting the height as long as necessary for the minimum
+// information content. If you want to see this example shows the entire list,
+// then You can remove intermediate window 'scrolledwindow', or specify the size
+// of the main window 'w' or scrollable window 'clscr'.
 
 	D_MSG("Create clist widget")
 	clist:= gtk_CListNew(,3,{"Column1","Column2","Column3"})
