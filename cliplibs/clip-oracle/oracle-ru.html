@@ -1,0 +1,224 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<LINK REL=STYLESHEET TYPE="text/css" HREF="styl.css">
+<TITLE>СУБД Oracle</TITLE>
+</HEAD>
+<BODY>
+<b>СУБД Oracle</b><br>
+<hr><br>
+ Данная реализация DBFSQL для Oracle тестировалась с версией 8.1.6.
+ <br> <br>
+ Чтобы построить приложение с использованием DBFSQL для Oracle
+ его нужно слинковать с библиотекой libclip-oracle.so
+<br> <br>
+ Для подключения к серверу используйте конструктор класса TConnect
+ в следующем синтаксисе:
+<br> <br><b>
+ ConnectNew("OR",NIL,NIL,&lt;login&gt;,&lt;pwd&gt;,[&lt;dbname&gt;],
+ NIL,NIL,NIL,[&lt;cIsolation&gt;])</b>, где
+<br> <br>
+ "OR" - строка, идентифицирующая СУБД Oracle;
+<br> <br>
+ &lt;login&gt; - логин пользователя;
+<br> <br>
+ &lt;pwd&gt; - пароль пользователя;
+<br> <br>
+ &lt;dbname&gt; - имя базы данных (connect string);
+<br> <br>
+ &lt;cIsolation&gt; - уровень изоляции по умолчанию.
+<br> <br>
+ Для связи записей набора (TRowset) и физической таблицы базы данных
+ Oracle испольуется поле с с именем ROWID. Для полноценной работы
+ с набором (с возможностью отражения производимых изменений набора
+ записей в базе данных) в список запрашиваемых полей запроса SELECT
+ следует явно включать зто поле.
+<br> <br>
+ В отличие от реализаций клиентов для других RDBMS (Postgres,MySQL),
+ массив параметров оператора SQL должен иметь вид:
+<br> <br>
+ { { &lt;parname&gt;, &lt;parvalue&gt;, &lt;partype&gt; } }
+<br> <br>
+ где &lt;partype&gt; тип данных Oracle. Символические имена типов определены в файле
+ oracle.ch. Например:
+<br> <br>
+ rs := conn:CreateRowset("SELECT * FROM test WHERE name=:name",{{"name","Вова",ORT_VARCHAR2}})
+<br> <br>
+ В операторах автоматического отражения (deleteSQL и updateSQL, передаваемых
+ конструктору TRowset) следует использовать предложение типа
+ WHERE rowid=:rowid.
+ Например:
+<br> <br>
+ DELETE FROM mytable WHERE rowid=:rowid
+<br> <br>
+ UPDATE mytable SET fname=:fname,lname=:lname WHERE rowid=:rowid
+<br> <br>
+ В операторе автоматического отражения insertSQL следует использовать
+ предложение RETURNING rowid INTO :rowid. Это необходимо для дальнейшего
+ изменения вновь добавленной записи в зтом же наборе данных. Например:
+<br> <br>
+ INSERT INTO mytable (fname,lname) VALUES (:fname,:lname)
+ RETURNING rowid INTO :rowid
+<br> <br>
+ Библиотекой накладываются следующие ограничения:
+<br> <br>
+ 1. Предложение RETURNING ... INTO ... понимается только для поля ROWID,
+ и лишь в операторе insertSQL.
+<br> <br>
+ 2. Не поддерживаются типы данных NAMED DATA TYPE (Object) и REF.
+<br> <br>
+ Возможно в следующих версиях библиотеки зти фичи будут реализованы.
+<br> <br>
+ Не рекомендуется использование типов CLOB и BLOB в связи с их гемморойностью.
+ Вместо зтого следует использовать LONG VARCHAR и LONG RAW.
+ О сложностях работы с полями LOB читайте руководство Oracle. Эти типы, включая
+ и тип FILE, тем не менее реализованы и вы можете их использовать,
+ руководствуясь правилами, описанными Oracle.
+<br> <br>
+ Значения параметра &lt;cIsolation&gt; для ConnectNew() и TConnect:Start()
+ могут состоять из одной или нескольких из нижеследующих строк, разделенных
+ символом ';':<br> <br>
+ "READ COMMITTED"<br>
+ "SERIALIZABLE"<br>
+ "READ ONLY"<br>
+ "READ WRITE".<br><br>
+ Например:<br> <br>
+ // начать транзакцию только для чтения с высоким уровнем изоляции<br>
+ conn:Start("SERIALIZABLE;READ ONLY")
+<br> <br>
+ Реализованы следующие типы Oracle:
+<pre>
+<b>Тип Oracle             <tab id=t1>Тип Clipper</b>
+<hr>
+VARCHAR2                  <tab to=t1>CHARACTER
+CHAR                      <tab to=t1>CHARACTER
+RAW                       <tab to=t1>CHARACTER
+NUMBER                    <tab to=t1>NUMERIC
+INTEGER                   <tab to=t1>NUMERIC
+FLOAT                     <tab to=t1>NUMERIC
+LONG                      <tab to=t1>CHARACTER
+LONG VARCHAR              <tab to=t1>CHARACTER
+LONG RAW                  <tab to=t1>CHARACTER
+DATE                      <tab to=t1>DATE
+CLOB                      <tab to=t1>CHARACTER
+BLOB                      <tab to=t1>CHARACTER
+FILE                      <tab to=t1>CHARACTER
+</pre>
+<hr>
+В качестве простейшего примера использования SQL с СУБД Oracle в комплект
+поставки включен файл mysqlplus.prg, функционально дублирующий утилиту sqlplus
+из комплекта поставки Oracle. Вот ее текст:
+<pre>
+PROCEDURE Main()
+
+LOCAL conn,rs,data
+LOCAL sql := ""
+LOCAL I := 1
+LOCAL user := "scott"	// -u
+LOCAL passwd := "tiger"	// -p
+LOCAL db := ""			// -d
+
+ErrorBlock({|e| SQLError(e)})
+DO WHILE param(I) != NIL
+	IF param(I) == "--help" .OR. param(I) == "-?"
+		? "mysqlplus  Ver 0.01 for Oracle Distrib 8.1.6, for pc-linux-gnu (i686)"
+		? "By ITK Ltd., by Rusty"
+		? "This software comes with ABSOLUTELY NO WARRANTY."
+		?
+		? "Usage: mymysql [OPTIONS]"
+		?
+		? "  -?, --help     Display this help and exit"
+		? "  -u             User for login if not current user"
+		? "  -p             Password to use when connecting to server"
+		? "  -d             Database to work with"
+		?
+		QUIT
+	ELSEIF param(I) == "-u"
+		user := param(++I)
+	ELSEIF param(I) == "-p"
+		passwd := param(++I)
+	ELSEIF param(I) == "-d"
+		db := param(++I)
+	ENDIF
+	I++
+ENDDO
+
+CLS
+
+BEGIN SEQUENCE
+	conn := ConnectNew("OR",NIL,NIL,user,passwd,db)
+RECOVER USING e
+	QUIT
+END SEQUENCE
+
+DO WHILE UPPER(sql := GetCommand()) != "Q"
+	IF UPPER(LEFT(sql,6))=="SELECT"
+		sql := LEFT(sql,LEN(sql)-1)
+		BEGIN SEQUENCE
+			rs := conn:CreateRowset(sql)
+		RECOVER USING e
+			LOOP
+		END SEQUENCE
+		FOR I:=1 TO rs:NFields()
+			?? PADR(rs:FieldName(I),10),"|"
+		NEXT
+		?
+		FOR I:=1 TO rs:NFields()
+			?? "----------","|"
+		NEXT
+		DO WHILE !rs:Eof()
+			?
+			data := rs:Read()
+			FOR I:=1 TO rs:NFields()
+				tmp := data[HASHSTR(UPPER(rs:FieldName(I)))]
+				IF tmp==NIL
+					?? "NIL       ","|"
+				ELSE
+					?? PADR(data[HASHSTR(UPPER(rs:FieldName(I)))],10),"|"
+				ENDIF
+			NEXT
+			rs:Skip()
+		ENDDO
+		rs:Destroy()
+	ELSE
+		BEGIN SEQUENCE
+			?? LEFT(sql,LEN(sql)-1)+": "
+			conn:Command(sql,NIL)
+			?? "OK"
+		RECOVER USING e
+			LOOP
+		END SEQUENCE
+	ENDIF
+	?
+ENDDO
+conn:Destroy()
+
+RETURN
+
+FUNCTION GetCommand()
+	LOCAL ret := ""
+	LOCAL tmp := ""
+	LOCAL first := .T.
+
+	@ MAXROW(),0 SAY ""
+	DO WHILE !(";" $ tmp) .AND. ALLTRIM(UPPER(ret)) != "Q"
+		IF first
+			ACCEPT "SQL> " TO tmp
+			first := .F.
+		ELSE
+			ACCEPT "SQL---> " TO tmp
+		ENDIF
+		ret += tmp + " "
+	ENDDO
+RETURN ALLTRIM(ret)
+
+FUNCTION SQLError(e)
+	?? e:operation
+	BREAK(e)
+RETURN NIL
+</pre>
+<hr>
+</BODY>
+</HTML>
+
