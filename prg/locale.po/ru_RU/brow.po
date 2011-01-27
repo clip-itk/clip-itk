@@ -10,101 +10,101 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: brows.prg:221
 msgid "Where are you going?"
-msgstr "Куда пойдем?"
+msgstr "п я┐п╢п╟ п©п╬п╧п╢п╣п╪?"
 
 #: brows.prg:240 brows.prg:247
 msgid "String;"
-msgstr "Строка;"
+msgstr "п║я┌я─п╬п╨п╟;"
 
 #: brows.prg:240 brows.prg:247
 msgid ";not found!"
-msgstr ";не найдена!"
+msgstr ";п╫п╣ п╫п╟п╧п╢п╣п╫п╟!"
 
 #: brows.prg:1643
 msgid "&File"
-msgstr "&Файл"
+msgstr "&п╓п╟п╧п╩"
 
 #: brows.prg:1653
 msgid "E&xit   "
-msgstr "&Выход  "
+msgstr "&п▓я▀я┘п╬п╢  "
 
 #: brows.prg:1653
 msgid "End of application"
-msgstr "Выйти из приложения"
+msgstr "п▓я▀п╧я┌п╦ п╦п╥ п©я─п╦п╩п╬п╤п╣п╫п╦я▐"
 
 #: brows.prg:1658
 msgid "&Control"
-msgstr "&Управление"
+msgstr "&пёп©я─п╟п╡п╩п╣п╫п╦п╣"
 
 #: brows.prg:1661
 msgid "&Next   "
-msgstr "&Дальше"
+msgstr "&п■п╟п╩я▄я┬п╣"
 
 #: brows.prg:1661
 msgid "Go next item"
-msgstr "Перейти на след. объект"
+msgstr "п÷п╣я─п╣п╧я┌п╦ п╫п╟ я│п╩п╣п╢. п╬п╠я┼п╣п╨я┌"
 
 #: brows.prg:1665
 msgid "&Prev   "
-msgstr "&Назад"
+msgstr "&п²п╟п╥п╟п╢"
 
 #: brows.prg:1665
 msgid "Go previous item"
-msgstr "Перейти на пред. объект"
+msgstr "п÷п╣я─п╣п╧я┌п╦ п╫п╟ п©я─п╣п╢. п╬п╠я┼п╣п╨я┌"
 
 #: brows.prg:1669
 msgid "P&revUrl   "
-msgstr "Пред. документ"
+msgstr "п÷я─п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌"
 
 #: brows.prg:1669
 msgid "Go previous URL document"
-msgstr "Загрузить пред. документ"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ п©я─п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌"
 
 #: brows.prg:1673
 msgid "Nex&tUrl   "
-msgstr "След. документ"
+msgstr "п║п╩п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌"
 
 #: brows.prg:1673
 msgid "Go next URL document"
-msgstr "Загрузить след. документ"
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ я│п╩п╣п╢. п╢п╬п╨я┐п╪п╣п╫я┌"
 
 #: brows.prg:1677
 msgid "&InfoUrl   "
-msgstr "Информация"
+msgstr "п≤п╫я└п╬я─п╪п╟я├п╦я▐"
 
 #: brows.prg:1677
 msgid "Get information about URL document"
-msgstr "Информация о URL"
+msgstr "п≤п╫я└п╬я─п╪п╟я├п╦я▐ п╬ URL"
 
 #: brows.prg:1683
 msgid "&Options"
-msgstr "&Опции"
+msgstr "&п·п©я├п╦п╦"
 
 #: brows.prg:1686
 msgid "&Find   "
-msgstr "&Поиск"
+msgstr "&п÷п╬п╦я│п╨"
 
 #: brows.prg:1686
 msgid "Find string"
-msgstr "Поиск строки"
+msgstr "п÷п╬п╦я│п╨ я│я┌я─п╬п╨п╦"
 
 #: brows.prg:1690
 msgid "&Resume   "
-msgstr "П&родолжить"
+msgstr "п÷&я─п╬п╢п╬п╩п╤п╦я┌я▄"
 
 #: brows.prg:1690
 msgid "Resume find string"
-msgstr "Продолжить поиск строки"
+msgstr "п÷я─п╬п╢п╬п╩п╤п╦я┌я▄ п©п╬п╦я│п╨ я│я┌я─п╬п╨п╦"
 
 #: brows.prg:1694
 msgid "&Unmark   "
-msgstr "&Снять"
+msgstr "&п║п╫я▐я┌я▄"
 
 #: brows.prg:1694
 msgid "Unmark selected block"
-msgstr "Снять отметку блока"
+msgstr "п║п╫я▐я┌я▄ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟"

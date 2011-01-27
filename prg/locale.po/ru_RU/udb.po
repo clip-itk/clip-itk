@@ -10,141 +10,141 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: codb_make.prg:21 ab_obj.prg:155
 msgid "Error open dictionary list!"
-msgstr "Ошибка открытия списка словарей!"
+msgstr "п·я┬п╦п╠п╨п╟ п╬я┌п╨я─я▀я┌п╦я▐ я│п©п╦я│п╨п╟ я│п╩п╬п╡п╟я─п╣п╧!"
 
 #: codb_pack.prg:23
 msgid "Error open dictionaries list:"
-msgstr "Ошибка открытия списка словарей:"
+msgstr "п·я┬п╦п╠п╨п╟ п╬я┌п╨я─я▀я┌п╦я▐ я│п©п╦я│п╨п╟ я│п╩п╬п╡п╟я─п╣п╧:"
 
 #: codb_addobj.prg:36 codb_export.prg:73
 msgid "Class description not found:"
-msgstr "Не найден описатель класса:"
+msgstr "п²п╣ п╫п╟п╧п╢п╣п╫ п╬п©п╦я│п╟я┌п╣п╩я▄ п╨п╩п╟я│я│п╟:"
 
 #: codb_addobj.prg:75
 msgid "Added(updated) object"
-msgstr "Объект добавлен(обновлен)"
+msgstr "п·п╠я┼п╣п╨я┌ п╢п╬п╠п╟п╡п╩п╣п╫(п╬п╠п╫п╬п╡п╩п╣п╫)"
 
 #: ab_obj.prg:30
 msgid "Esc-menu F1-help F2-add F3-card F4-edit F8-delete F10-closeWin"
 msgstr ""
-"Esc-меню F1-помощь F2-добавл. F3-карточка F4-редакт. F8-удалить F10-закрыть"
+"Esc-п╪п╣п╫я▌ F1-п©п╬п╪п╬я┴я▄ F2-п╢п╬п╠п╟п╡п╩. F3-п╨п╟я─я┌п╬я┤п╨п╟ F4-я─п╣п╢п╟п╨я┌. F8-я┐п╢п╟п╩п╦я┌я▄ F10-п╥п╟п╨я─я▀я┌я▄"
 
 #: ab_obj.prg:118
 msgid "Please fill data for query"
-msgstr "Заполните форму запроса"
+msgstr "п≈п╟п©п╬п╩п╫п╦я┌п╣ я└п╬я─п╪я┐ п╥п╟п©я─п╬я│п╟"
 
 #: ab_obj.prg:118
 msgid "Select.<classname>.."
-msgstr "Выбрать.<класс>...."
+msgstr "п▓я▀п╠я─п╟я┌я▄.<п╨п╩п╟я│я│>...."
 
 #: ab_obj.prg:119
 msgid "From <depository_id>"
-msgstr "Из <депозитарий_id>"
+msgstr "п≤п╥ <п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧_id>"
 
 #: ab_obj.prg:120
 msgid "Where <expr>........"
-msgstr "Что <выражение>...."
+msgstr "п╖я┌п╬ <п╡я▀я─п╟п╤п╣п╫п╦п╣>...."
 
 #: ab_obj.prg:161
 msgid "Create new dictionary     "
-msgstr "Создать новый словарь     "
+msgstr "п║п╬п╥п╢п╟я┌я▄ п╫п╬п╡я▀п╧ я│п╩п╬п╡п╟я─я▄     "
 
 #: ab_obj.prg:174
 msgid "Choice Dictionary"
-msgstr "Выбрать словарь"
+msgstr "п▓я▀п╠я─п╟я┌я▄ я│п╩п╬п╡п╟я─я▄"
 
 #: ab_obj.prg:244
 msgid "Please fill data of dictionary"
-msgstr "Заполните данные о словаре"
+msgstr "п≈п╟п©п╬п╩п╫п╦я┌п╣ п╢п╟п╫п╫я▀п╣ п╬ я│п╩п╬п╡п╟я─п╣"
 
 #: ab_obj.prg:244
 msgid "Ident..............."
-msgstr "Идентификатор......."
+msgstr "п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─......."
 
 #: ab_obj.prg:245
 msgid "Name................"
-msgstr "Название............"
+msgstr "п²п╟п╥п╡п╟п╫п╦п╣............"
 
 #: ab_obj.prg:250
 msgid "Type................"
-msgstr "Тип................."
+msgstr "п╒п╦п©................."
 
 #: ab_obj.prg:259
 msgid "Path................"
-msgstr "Путь к файлам......."
+msgstr "п÷я┐я┌я▄ п╨ я└п╟п╧п╩п╟п╪......."
 
 #: ab_obj.prg:260
 msgid "Host name..........."
-msgstr "Имя хоста..........."
+msgstr "п≤п╪я▐ я┘п╬я│я┌п╟..........."
 
 #: ab_obj.prg:261
 msgid "SQL port............"
-msgstr "SQL порт............"
+msgstr "SQL п©п╬я─я┌............"
 
 #: ab_obj.prg:262
 msgid "User name..........."
-msgstr "Имя пользователя...."
+msgstr "п≤п╪я▐ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐...."
 
 #: ab_obj.prg:263
 msgid "SQL DB name........."
-msgstr "SQL имя БД.........."
+msgstr "SQL п╦п╪я▐ п▒п■.........."
 
 #: ab_obj.prg:298
 msgid "Choice Depository"
-msgstr "Выбрать депозитарий"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧"
 
 #: ab_obj.prg:365
 msgid "Press any key to continue"
-msgstr "нажмите любую клавишу для продолжения"
+msgstr "п╫п╟п╤п╪п╦я┌п╣ п╩я▌п╠я┐я▌ п╨п╩п╟п╡п╦я┬я┐ п╢п╩я▐ п©я─п╬п╢п╬п╩п╤п╣п╫п╦я▐"
 
 #: ab_obj.prg:449
 msgid "Dictionary:"
-msgstr "Словарь:"
+msgstr "п║п╩п╬п╡п╟я─я▄:"
 
 #: ab_obj.prg:452
 msgid "Depository:"
-msgstr "Депозитарий:"
+msgstr "п■п╣п©п╬п╥п╦я┌п╟я─п╦п╧:"
 
 #: ab_menu.prg:155
 msgid "&Open"
-msgstr "&Открыть"
+msgstr "&п·я┌п╨я─я▀я┌я▄"
 
 #: ab_menu.prg:158
 msgid "&Dictionary        "
-msgstr "&Словарь           "
+msgstr "&п║п╩п╬п╡п╟я─я▄           "
 
 #: ab_menu.prg:158
 msgid "Open CODB dictionary"
-msgstr "Открыть CODB словарь"
+msgstr "п·я┌п╨я─я▀я┌я▄ CODB я│п╩п╬п╡п╟я─я▄"
 
 #: ab_menu.prg:162
 msgid "&Depository       "
-msgstr "&Депозитарий      "
+msgstr "&п■п╣п©п╬п╥п╦я┌п╟я─п╦п╧      "
 
 #: ab_menu.prg:162
 msgid "Open CODB depository"
-msgstr "Открыть CODB депозитарий"
+msgstr "п·я┌п╨я─я▀я┌я▄ CODB п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧"
 
 #: ab_menu.prg:170
 msgid "&OQL query        "
-msgstr "&OQL запрос       "
+msgstr "&OQL п╥п╟п©я─п╬я│       "
 
 #: ab_menu.prg:170
 msgid "Open result of OQL query"
-msgstr "Показать результат OQL запроса"
+msgstr "п÷п╬п╨п╟п╥п╟я┌я▄ я─п╣п╥я┐п╩я▄я┌п╟я┌ OQL п╥п╟п©я─п╬я│п╟"
 
 #: ab_menu.prg:176
 msgid "E&xit             "
-msgstr "&Выход            "
+msgstr "&п▓я▀я┘п╬п╢            "
 
 #: ab_menu.prg:176
 msgid "Exit to OS"
-msgstr "Завершение работы"
+msgstr "п≈п╟п╡п╣я─я┬п╣п╫п╦п╣ я─п╟п╠п╬я┌я▀"
 
 #: ab_menu.prg:182
 msgid "&Meta"
@@ -152,147 +152,147 @@ msgstr "&Meta"
 
 #: ab_menu.prg:186
 msgid "&Attributes    "
-msgstr "&Аттрибуты     "
+msgstr "&п░я┌я┌я─п╦п╠я┐я┌я▀     "
 
 #: ab_menu.prg:186
 msgid "View and edit attributes information"
-msgstr "Список и редактирование информации об аттрибутах"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬п╠ п╟я┌я┌я─п╦п╠я┐я┌п╟я┘"
 
 #: ab_menu.prg:192
 msgid "&Indexes       "
-msgstr "&Индексы       "
+msgstr "&п≤п╫п╢п╣п╨я│я▀       "
 
 #: ab_menu.prg:192
 msgid "View and edit data indexes information"
-msgstr "Список и редактирование информации об индексах"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬п╠ п╦п╫п╢п╣п╨я│п╟я┘"
 
 #: ab_menu.prg:199
 msgid "&Classes       "
-msgstr "&Классы        "
+msgstr "&п п╩п╟я│я│я▀        "
 
 #: ab_menu.prg:199
 msgid "View and edit classes information"
-msgstr "Список и редактирование информации о классах"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ п╨п╩п╟я│я│п╟я┘"
 
 #: ab_menu.prg:205
 msgid "&Extents       "
-msgstr "&Пространства  "
+msgstr "&п÷я─п╬я│я┌я─п╟п╫я│я┌п╡п╟  "
 
 #: ab_menu.prg:205
 msgid "View and edit extents information"
-msgstr "Список и редактирование информации о пространствах"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╟я┘"
 
 #: ab_menu.prg:213
 msgid "&Plugins     "
-msgstr "&Модули      "
+msgstr "&п°п╬п╢я┐п╩п╦      "
 
 #: ab_menu.prg:213
 msgid "View and edit plugin information"
-msgstr "Список и редактирование информации о модулях"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ п╪п╬п╢я┐п╩я▐я┘"
 
 #: ab_menu.prg:219
 msgid "&Counters      "
-msgstr "&Счетчики      "
+msgstr "&п║я┤п╣я┌я┤п╦п╨п╦      "
 
 #: ab_menu.prg:219
 msgid "View and edit data counters information"
-msgstr "Список и редактирование информации о счетчиках"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ я│я┤п╣я┌я┤п╦п╨п╟я┘"
 
 #: ab_menu.prg:227
 msgid "&Groups        "
-msgstr "&Группы        "
+msgstr "&п⌠я─я┐п©п©я▀        "
 
 #: ab_menu.prg:227
 msgid "View and edit groups information"
-msgstr "Список и редактирование информации о группах пользователей"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ пЁя─я┐п©п©п╟я┘ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╧"
 
 #: ab_menu.prg:233
 msgid "&Users         "
-msgstr "&Пользователи  "
+msgstr "&п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╦  "
 
 #: ab_menu.prg:233
 msgid "View and edit users information"
-msgstr "Список и редактирование информации о пользователях"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐я┘"
 
 #: ab_menu.prg:241
 msgid "&Depositories  "
-msgstr "&Депозитарии   "
+msgstr "&п■п╣п©п╬п╥п╦я┌п╟я─п╦п╦   "
 
 #: ab_menu.prg:241
 msgid "View and edit depositories information"
-msgstr "Список и редактирование информации о депозитариях"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐я┘"
 
 #: ab_menu.prg:249
 msgid "&Columns       "
-msgstr "&Столбцы       "
+msgstr "&п║я┌п╬п╩п╠я├я▀       "
 
 #: ab_menu.prg:249
 msgid "View and edit columns information"
-msgstr "Список и редактирование информации о столбцах"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ я│я┌п╬п╩п╠я├п╟я┘"
 
 #: ab_menu.prg:255
 msgid "&Table views   "
-msgstr "&Таблицы       "
+msgstr "&п╒п╟п╠п╩п╦я├я▀       "
 
 #: ab_menu.prg:255
 msgid "View and edit table views information"
-msgstr "Список и редактирование информации о табличных представлениях"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ я┌п╟п╠п╩п╦я┤п╫я▀я┘ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦я▐я┘"
 
 #: ab_menu.prg:263
 msgid "&Reports       "
-msgstr "&Отчеты        "
+msgstr "&п·я┌я┤п╣я┌я▀        "
 
 #: ab_menu.prg:263
 msgid "View and edit reports information"
-msgstr "Список и редактирование информации об отчетах"
+msgstr "п║п©п╦я│п╬п╨ п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬п╠ п╬я┌я┤п╣я┌п╟я┘"
 
 #: ab_menu.prg:271
 msgid "&Data"
-msgstr "&Данные"
+msgstr "&п■п╟п╫п╫я▀п╣"
 
 #: ab_menu.prg:274
 msgid "&View Objects   "
-msgstr "&Просмотр объектов"
+msgstr "&п÷я─п╬я│п╪п╬я┌я─ п╬п╠я┼п╣п╨я┌п╬п╡"
 
 #: ab_menu.prg:274
 msgid "View objects in one class "
-msgstr "Смотреть объекты одного класса"
+msgstr "п║п╪п╬я┌я─п╣я┌я▄ п╬п╠я┼п╣п╨я┌я▀ п╬п╢п╫п╬пЁп╬ п╨п╩п╟я│я│п╟"
 
 #: ab_menu.prg:282
 msgid "&Table view    "
-msgstr "&Вид таблицы   "
+msgstr "&п▓п╦п╢ я┌п╟п╠п╩п╦я├я▀   "
 
 #: ab_menu.prg:282 ab_funcs.prg:160
 msgid "Choice table view"
-msgstr "Выбрать вид табличного представления"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п╡п╦п╢ я┌п╟п╠п╩п╦я┤п╫п╬пЁп╬ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦я▐"
 
 #: ab_menu.prg:288
 msgid "&Order by      "
-msgstr "&В порядке     "
+msgstr "&п▓ п©п╬я─я▐п╢п╨п╣     "
 
 #: ab_menu.prg:288
 msgid "Choice data order"
-msgstr "Выбрать порядок следования объектов (index)"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п©п╬я─я▐п╢п╬п╨ я│п╩п╣п╢п╬п╡п╟п╫п╦я▐ п╬п╠я┼п╣п╨я┌п╬п╡ (index)"
 
 #: ab_menu.prg:294
 msgid "&Report run    "
-msgstr "&Отчет         "
+msgstr "&п·я┌я┤п╣я┌         "
 
 #: ab_menu.prg:294 ab_funcs.prg:192
 msgid "Choice report"
-msgstr "Выбрать отчет и исполнить его"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п╬я┌я┤п╣я┌ п╦ п╦я│п©п╬п╩п╫п╦я┌я▄ п╣пЁп╬"
 
 #: ab_menu.prg:302
 msgid "&Service"
-msgstr "&Сервис "
+msgstr "&п║п╣я─п╡п╦я│ "
 
 #: ab_menu.prg:305
 msgid "&Text Editor    "
-msgstr "&Редактор текста"
+msgstr "&п═п╣п╢п╟п╨я┌п╬я─ я┌п╣п╨я│я┌п╟"
 
 #: ab_menu.prg:305
 msgid "Call text editor "
-msgstr "Редактор текста"
+msgstr "п═п╣п╢п╟п╨я┌п╬я─ я┌п╣п╨я│я┌п╟"
 
 #: ab_menu.prg:312
 msgid "&Load meta XML "
@@ -300,7 +300,7 @@ msgstr "&Load meta XML"
 
 #: ab_menu.prg:312
 msgid "Load meta data from XML file"
-msgstr "Считать данные из XML файла"
+msgstr "п║я┤п╦я┌п╟я┌я▄ п╢п╟п╫п╫я▀п╣ п╦п╥ XML я└п╟п╧п╩п╟"
 
 #: ab_menu.prg:318
 msgid "&Save meta XML "
@@ -308,80 +308,80 @@ msgstr "&Save meta XML "
 
 #: ab_menu.prg:318
 msgid "Save meta data to XML file"
-msgstr "Сохранить данные словаря в XML файл"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ п╢п╟п╫п╫я▀п╣ я│п╩п╬п╡п╟я─я▐ п╡ XML я└п╟п╧п╩"
 
 #: ab_brow.prg:45 ab_brow.prg:364
 msgid "Edit card not found !"
-msgstr "Карточка редактирования не найдена !"
+msgstr "п п╟я─я┌п╬я┤п╨п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ п╫п╣ п╫п╟п╧п╢п╣п╫п╟ !"
 
 #: ab_brow.prg:90
 msgid "MetaData name"
-msgstr "название meta данных"
+msgstr "п╫п╟п╥п╡п╟п╫п╦п╣ meta п╢п╟п╫п╫я▀я┘"
 
 #: ab_brow.prg:181
 msgid "Delete all objects, are you sure ?"
-msgstr "Вы уверены, что надо удалить все объекты ?"
+msgstr "п▓я▀ я┐п╡п╣я─п╣п╫я▀, я┤я┌п╬ п╫п╟п╢п╬ я┐п╢п╟п╩п╦я┌я▄ п╡я│п╣ п╬п╠я┼п╣п╨я┌я▀ ?"
 
 #: ab_brow.prg:203
 msgid "Delete, are you sure ?"
-msgstr "Удалить объект, вы уверены ?"
+msgstr "пёп╢п╟п╩п╦я┌я▄ п╬п╠я┼п╣п╨я┌, п╡я▀ я┐п╡п╣я─п╣п╫я▀ ?"
 
 #: ab_brow.prg:349
 msgid "Can`t load default plugins or plugins for subject:"
-msgstr "Невозможно загрузить модуль для:"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╥п╟пЁя─я┐п╥п╦я┌я▄ п╪п╬п╢я┐п╩я▄ п╢п╩я▐:"
 
 #: ab_funcs.prg:30
 msgid "Choice class"
-msgstr "Выберите класс"
+msgstr "п▓я▀п╠п╣я─п╦я┌п╣ п╨п╩п╟я│я│"
 
 #: ab_funcs.prg:30 ab_funcs.prg:64 ab_funcs.prg:97 ab_funcs.prg:128
 #: ab_funcs.prg:160 ab_funcs.prg:192
 msgid "Esc: Cancel"
-msgstr "Esc: Отказ"
+msgstr "Esc: п·я┌п╨п╟п╥"
 
 #: ab_funcs.prg:32
 msgid "CLASS list is empty"
-msgstr "Список классов пуст"
+msgstr "п║п©п╦я│п╬п╨ п╨п╩п╟я│я│п╬п╡ п©я┐я│я┌"
 
 #: ab_funcs.prg:64 ab_funcs.prg:128
 msgid "Choice attribute"
-msgstr "Выберите аттрибут"
+msgstr "п▓я▀п╠п╣я─п╦я┌п╣ п╟я┌я┌я─п╦п╠я┐я┌"
 
 #: ab_funcs.prg:66
 msgid "ATTRIBUTE list is empty"
-msgstr "Список аттрибутов пуст"
+msgstr "п║п©п╦я│п╬п╨ п╟я┌я┌я─п╦п╠я┐я┌п╬п╡ п©я┐я│я┌"
 
 #: ab_funcs.prg:97
 msgid "Choice index"
-msgstr "Выберите индекс"
+msgstr "п▓я▀п╠п╣я─п╦я┌п╣ п╦п╫п╢п╣п╨я│"
 
 #: ab_funcs.prg:99
 msgid "INDEX list is empty"
-msgstr "Список индексов пуст"
+msgstr "п║п©п╦я│п╬п╨ п╦п╫п╢п╣п╨я│п╬п╡ п©я┐я│я┌"
 
 #: ab_funcs.prg:130
 msgid "TCOLUMN list is empty"
-msgstr "Список столбцов пуст"
+msgstr "п║п©п╦я│п╬п╨ я│я┌п╬п╩п╠я├п╬п╡ п©я┐я│я┌"
 
 #: ab_funcs.prg:162
 msgid "TVIEW list is empty"
-msgstr "Список представлений пуст"
+msgstr "п║п©п╦я│п╬п╨ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦п╧ п©я┐я│я┌"
 
 #: ab_funcs.prg:194
 msgid "REPORT list is empty"
-msgstr "Список отчетов пуст"
+msgstr "п║п©п╦я│п╬п╨ п╬я┌я┤п╣я┌п╬п╡ п©я┐я│я┌"
 
 #: ab_funcs.prg:252
 msgid "Error creating file:"
-msgstr "Ошибка создания файла:"
+msgstr "п·я┬п╦п╠п╨п╟ я│п╬п╥п╢п╟п╫п╦я▐ я└п╟п╧п╩п╟:"
 
 #: ab_funcs.prg:286
 msgid "Error writing to file:"
-msgstr "Ошибка записи в файл:"
+msgstr "п·я┬п╦п╠п╨п╟ п╥п╟п©п╦я│п╦ п╡ я└п╟п╧п╩:"
 
 #: ab_report.prg:47
 msgid "Report:"
-msgstr "Отчет:"
+msgstr "п·я┌я┤п╣я┌:"
 
 #: acc_oper.prg:24
 msgid "ACC_OPER plugins not supported function:"
@@ -396,7 +396,7 @@ msgstr ""
 #: group.prg:40 index.prg:40 plugins.prg:50 report.prg:50 tcolumn.prg:41
 #: tview.prg:44 user.prg:41
 msgid "Can`t display information"
-msgstr "Невозможно отобразить информацию"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╬п╠я─п╟п╥п╦я┌я▄ п╦п╫я└п╬я─п╪п╟я├п╦я▌"
 
 #: acc_oper.prg:59 acc_oper.prg:116 acc_oper.prg:118 attr.prg:58 attr.prg:149
 #: attr.prg:151 class.prg:52 class.prg:155 class.prg:157 counter.prg:55
@@ -407,63 +407,63 @@ msgstr "Невозможно отобразить информацию"
 #: report.prg:131 tcolumn.prg:45 tcolumn.prg:82 tcolumn.prg:84 tview.prg:48
 #: tview.prg:127 tview.prg:129 user.prg:45 user.prg:85 user.prg:87
 msgid "Identification.."
-msgstr "Идентификатор..."
+msgstr "п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─..."
 
 #: acc_oper.prg:60 acc_oper.prg:120
 msgid "Code............"
-msgstr "Код............."
+msgstr "п п╬п╢............."
 
 #: acc_oper.prg:61 acc_oper.prg:122
 msgid "Small name......"
-msgstr "Короткое имя...."
+msgstr "п п╬я─п╬я┌п╨п╬п╣ п╦п╪я▐...."
 
 #: acc_oper.prg:62 acc_oper.prg:124
 msgid "User name......."
-msgstr "Имя пользователя...."
+msgstr "п≤п╪я▐ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐...."
 
 #: acc_oper.prg:63 acc_oper.prg:126
 msgid "Data class......"
-msgstr "Класс данных...."
+msgstr "п п╩п╟я│я│ п╢п╟п╫п╫я▀я┘...."
 
 #: acc_oper.prg:65 acc_oper.prg:128
 msgid "List of posting"
-msgstr "Список проводок"
+msgstr "п║п©п╦я│п╬п╨ п©я─п╬п╡п╬п╢п╬п╨"
 
 #: acc_oper.prg:66 acc_oper.prg:129
 msgid "Debet..............Kredit"
-msgstr "Дебет..............Кредит"
+msgstr "п■п╣п╠п╣я┌..............п я─п╣п╢п╦я┌"
 
 #: acc_oper.prg:116 attr.prg:149 class.prg:155 counter.prg:102 deposit.prg:73
 #: extent.prg:82 group.prg:71 index.prg:74 plugins.prg:106 report.prg:129
 #: tcolumn.prg:82 tview.prg:127 user.prg:85
 msgid "Generation avtomatically "
-msgstr "Присваивается автоматически"
+msgstr "п÷я─п╦я│п╡п╟п╦п╡п╟п╣я┌я│я▐ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦"
 
 #: acc_oper.prg:186
 msgid "Choice debet account"
-msgstr "Выбрать дебетовый счет"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п╢п╣п╠п╣я┌п╬п╡я▀п╧ я│я┤п╣я┌"
 
 #: acc_oper.prg:188
 msgid "Choice kredit account"
-msgstr "Выбрать кредитовый счет"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п╨я─п╣п╢п╦я┌п╬п╡я▀п╧ я│я┤п╣я┌"
 
 #: acc_oper.prg:215 attr.prg:250 extent.prg:106
 msgid "Error writing tmp file:"
-msgstr "Ошибка записи во временный файл:"
+msgstr "п·я┬п╦п╠п╨п╟ п╥п╟п©п╦я│п╦ п╡п╬ п╡я─п╣п╪п╣п╫п╫я▀п╧ я└п╟п╧п╩:"
 
 #: acc_oper.prg:217 class.prg:341 tview.prg:275
 msgid "Save changed data ?"
-msgstr "Сохранить измененные данные ?"
+msgstr "п║п╬я┘я─п╟п╫п╦я┌я▄ п╦п╥п╪п╣п╫п╣п╫п╫я▀п╣ п╢п╟п╫п╫я▀п╣ ?"
 
 #: acc_oper.prg:217 attr.prg:87 attr.prg:88 attr.prg:91 class.prg:79
 #: class.prg:81 class.prg:171 class.prg:173 class.prg:341 tview.prg:275
 msgid "Yes"
-msgstr "Да "
+msgstr "п■п╟ "
 
 #: acc_oper.prg:217 class.prg:79 class.prg:81 class.prg:171 class.prg:173
 #: class.prg:341 tview.prg:275
 msgid "No"
-msgstr "Нет"
+msgstr "п²п╣я┌"
 
 #: attr.prg:24
 msgid "ATTR plugins not supported function:"
@@ -471,7 +471,7 @@ msgstr ""
 
 #: attr.prg:50 attr.prg:135
 msgid "Attribute parameters"
-msgstr "Параметры аттрибута"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п╟я┌я┌я─п╦п╠я┐я┌п╟"
 
 #: attr.prg:59 attr.prg:155 class.prg:53 class.prg:159 counter.prg:56
 #: counter.prg:108 deposit.prg:45 deposit.prg:77 extent.prg:46 extent.prg:86
@@ -479,20 +479,20 @@ msgstr "Параметры аттрибута"
 #: plugins.prg:110 report.prg:55 report.prg:133 tcolumn.prg:46 tcolumn.prg:88
 #: tview.prg:49 tview.prg:131 user.prg:46 user.prg:89
 msgid "Name............"
-msgstr "Название........"
+msgstr "п²п╟п╥п╡п╟п╫п╦п╣........"
 
 #: attr.prg:62 counter.prg:59 plugins.prg:58 report.prg:58
 msgid "Undefined"
-msgstr "Неопределен"
+msgstr "п²п╣п╬п©я─п╣п╢п╣п╩п╣п╫"
 
 #: attr.prg:63 attr.prg:159 counter.prg:60 counter.prg:112 plugins.prg:59
 #: plugins.prg:114 report.prg:59 report.prg:137
 msgid "Type............"
-msgstr "Тип............."
+msgstr "п╒п╦п©............."
 
 #: attr.prg:65 attr.prg:162
 msgid "Length.........."
-msgstr "Длина..........."
+msgstr "п■п╩п╦п╫п╟..........."
 
 #: attr.prg:67
 msgid "??????"
@@ -500,57 +500,57 @@ msgstr "??????"
 
 #: attr.prg:68 attr.prg:165
 msgid "Type  length...."
-msgstr "Тип длины......."
+msgstr "п╒п╦п© п╢п╩п╦п╫я▀......."
 
 #: attr.prg:70 attr.prg:168
 msgid "Decimals........"
-msgstr "Точность........"
+msgstr "п╒п╬я┤п╫п╬я│я┌я▄........"
 
 #: attr.prg:74 attr.prg:76 attr.prg:78 attr.prg:182
 msgid "Reference to...."
-msgstr "Ссылка на ......"
+msgstr "п║я│я▀п╩п╨п╟ п╫п╟ ......"
 
 #: attr.prg:76
 msgid "(Unknown name)"
-msgstr "(неизвестно)"
+msgstr "(п╫п╣п╦п╥п╡п╣я│я┌п╫п╬)"
 
 #: attr.prg:78 attr.prg:172
 msgid "(ANY OBJECT)"
-msgstr "(ЛЮБОЙ ОБЪЕКТ)"
+msgstr "(п⌡п╝п▒п·п≥ п·п▒п╙п∙п п╒)"
 
 #: attr.prg:81 attr.prg:185
 msgid "Picture mask...."
-msgstr "Шаблон формата.."
+msgstr "п╗п╟п╠п╩п╬п╫ я└п╬я─п╪п╟я┌п╟.."
 
 #: attr.prg:83 attr.prg:188
 msgid "Default value..."
-msgstr "Значение по умол."
+msgstr "п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩."
 
 #: attr.prg:84 attr.prg:202
 msgid "Counter name...."
-msgstr "Имя счетчика...."
+msgstr "п≤п╪я▐ я│я┤п╣я┌я┤п╦п╨п╟...."
 
 #: attr.prg:87 attr.prg:88 attr.prg:91
 msgid "No "
-msgstr "Нет"
+msgstr "п²п╣я┌"
 
 #: attr.prg:91 attr.prg:216
 msgid "Source code....."
-msgstr "Текст программы."
+msgstr "п╒п╣п╨я│я┌ п©я─п╬пЁя─п╟п╪п╪я▀."
 
 #: attr.prg:104
 msgid "This attribute have ###### references from classes"
-msgstr "Аттрибут имеет ###### ссылок из классов"
+msgstr "п░я┌я┌я─п╦п╠я┐я┌ п╦п╪п╣п╣я┌ ###### я│я│я▀п╩п╬п╨ п╦п╥ п╨п╩п╟я│я│п╬п╡"
 
 #: attr.prg:140 class.prg:150 counter.prg:94 deposit.prg:65 extent.prg:74
 #: group.prg:63 index.prg:66 plugins.prg:101 report.prg:124 tcolumn.prg:74
 #: tview.prg:122 user.prg:77
 msgid "Can`t edit information"
-msgstr "Невозможно редактировать информацию"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄ п╦п╫я└п╬я─п╪п╟я├п╦я▌"
 
 #: attr.prg:192
 msgid "(NONE COUNTER)"
-msgstr "(НЕТ СЧЕТЧИКА)"
+msgstr "(п²п∙п╒ п║п╖п∙п╒п╖п≤п п░)"
 
 #: class.prg:24
 msgid "CLASS plugins not supported function:"
@@ -558,12 +558,12 @@ msgstr ""
 
 #: class.prg:41 class.prg:139
 msgid "CLASS parameters"
-msgstr "параметры класса"
+msgstr "п©п╟я─п╟п╪п╣я┌я─я▀ п╨п╩п╟я│я│п╟"
 
 #: class.prg:57 class.prg:59 class.prg:160 report.prg:64 report.prg:66
 #: report.prg:155 tview.prg:53 tview.prg:55 tview.prg:146
 msgid "Extent.........."
-msgstr "Пространство...."
+msgstr "п÷я─п╬я│я┌я─п╟п╫я│я┌п╡п╬...."
 
 #: class.prg:59 class.prg:66 class.prg:203 plugins.prg:67 plugins.prg:124
 #: report.prg:66 report.prg:73 report.prg:80 report.prg:87 report.prg:145
@@ -571,63 +571,63 @@ msgstr "Пространство...."
 #: tview.prg:69 tview.prg:76 tview.prg:136 tview.prg:150 tview.prg:164
 #: tview.prg:178
 msgid "(NONE)"
-msgstr "(НЕТ)"
+msgstr "(п²п∙п╒)"
 
 #: class.prg:64 class.prg:66 class.prg:161
 msgid "Super class....."
-msgstr "Супер класс....."
+msgstr "п║я┐п©п╣я─ п╨п╩п╟я│я│....."
 
 #: class.prg:69 class.prg:162
 msgid "Essence........."
-msgstr "Суть............"
+msgstr "п║я┐я┌я▄............"
 
 #: class.prg:70 class.prg:163
 msgid "Unique key......"
-msgstr "Уникальный ключ."
+msgstr "пёп╫п╦п╨п╟п╩я▄п╫я▀п╧ п╨п╩я▌я┤."
 
 #: class.prg:76 class.prg:168
 msgid "Logging need...."
-msgstr "Журналирование.."
+msgstr "п√я┐я─п╫п╟п╩п╦я─п╬п╡п╟п╫п╦п╣.."
 
 #: class.prg:81 class.prg:173
 msgid "Status:"
-msgstr "статус:"
+msgstr "я│я┌п╟я┌я┐я│:"
 
 #: class.prg:81 class.prg:173
 msgid "Unstable"
-msgstr "Нестаб."
+msgstr "п²п╣я│я┌п╟п╠."
 
 #: class.prg:81 class.prg:173
 msgid "Stable"
-msgstr "Стаб.."
+msgstr "п║я┌п╟п╠.."
 
 #: class.prg:81 class.prg:173
 msgid "Have counters:"
-msgstr "Есть счетчик:"
+msgstr "п∙я│я┌я▄ я│я┤п╣я┌я┤п╦п╨:"
 
 #: class.prg:85
 msgid "Attributes.Name.............Type..Len...Dec.."
-msgstr "Аттритуты..Имя..............Тип..Длина..Точн."
+msgstr "п░я┌я┌я─п╦я┌я┐я┌я▀..п≤п╪я▐..............п╒п╦п©..п■п╩п╦п╫п╟..п╒п╬я┤п╫."
 
 #: class.prg:95 class.prg:114 tview.prg:88
 msgid "Error access to identification:"
-msgstr "Ошибка доступа к идентификатору:"
+msgstr "п·я┬п╦п╠п╨п╟ п╢п╬я│я┌я┐п©п╟ п╨ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐:"
 
 #: class.prg:104
 msgid "Indexes....Name.............Expression......."
-msgstr "Индексы....Название.........Выражение........"
+msgstr "п≤п╫п╢п╣п╨я│я▀....п²п╟п╥п╡п╟п╫п╦п╣.........п▓я▀я─п╟п╤п╣п╫п╦п╣........"
 
 #: class.prg:180
 msgid "Attributes....Name.............Type..Len...Dec.."
-msgstr "Аттрибуты.....Имя..............Тип..Длина..Точн."
+msgstr "п░я┌я┌я─п╦п╠я┐я┌я▀.....п≤п╪я▐..............п╒п╦п©..п■п╩п╦п╫п╟..п╒п╬я┤п╫."
 
 #: class.prg:182
 msgid "Indexes.......Name.............Expression......."
-msgstr "Индексы.......Название.........Выражение........"
+msgstr "п≤п╫п╢п╣п╨я│я▀.......п²п╟п╥п╡п╟п╫п╦п╣.........п▓я▀я─п╟п╤п╣п╫п╦п╣........"
 
 #: class.prg:245
 msgid "Error loading attribute metadata"
-msgstr "Ошибка чтения метаданных аттрибута"
+msgstr "п·я┬п╦п╠п╨п╟ я┤я┌п╣п╫п╦я▐ п╪п╣я┌п╟п╢п╟п╫п╫я▀я┘ п╟я┌я┌я─п╦п╠я┐я┌п╟"
 
 #: counter.prg:24
 msgid "COUNTER plugins not supported function:"
@@ -635,19 +635,19 @@ msgstr ""
 
 #: counter.prg:48 counter.prg:90
 msgid "Counter parameters"
-msgstr "Параметры счетчика"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ я│я┤п╣я┌я┤п╦п╨п╟"
 
 #: counter.prg:61 counter.prg:115
 msgid "Depository......"
-msgstr "Депозитарий....."
+msgstr "п■п╣п©п╬п╥п╦я┌п╟я─п╦п╧....."
 
 #: counter.prg:63 counter.prg:117
 msgid "MAX value......."
-msgstr "MAX значение...."
+msgstr "MAX п╥п╫п╟я┤п╣п╫п╦п╣...."
 
 #: counter.prg:64 counter.prg:120
 msgid "LAST value......"
-msgstr "LAST значение..."
+msgstr "LAST п╥п╫п╟я┤п╣п╫п╦п╣..."
 
 #: default.prg:25
 msgid "DEFAULT plugins not supported function:"
@@ -655,15 +655,15 @@ msgstr ""
 
 #: default.prg:45 default.prg:120
 msgid "OBJECT parameters"
-msgstr "Параметры объекта"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п╬п╠я┼п╣п╨я┌п╟"
 
 #: default.prg:56 default.prg:132
 msgid "This object don`t have CLASS description"
-msgstr "Этот объект не имеет описателя класса"
+msgstr "п╜я┌п╬я┌ п╬п╠я┼п╣п╨я┌ п╫п╣ п╦п╪п╣п╣я┌ п╬п©п╦я│п╟я┌п╣п╩я▐ п╨п╩п╟я│я│п╟"
 
 #: default.prg:62 default.prg:139
 msgid "This object of CLASS:"
-msgstr "Объект класса:"
+msgstr "п·п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟:"
 
 #: default.prg:71 default.prg:147
 msgid "(Error ! Attribute abscent in data object)"
@@ -675,15 +675,15 @@ msgstr ""
 
 #: deposit.prg:37 deposit.prg:62
 msgid "Depository parameters"
-msgstr "Параметры депозитария"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐"
 
 #: deposit.prg:46 deposit.prg:78
 msgid "Cluster size...."
-msgstr "Размер кластера."
+msgstr "п═п╟п╥п╪п╣я─ п╨п╩п╟я│я┌п╣я─п╟."
 
 #: deposit.prg:47
 msgid "Number.........."
-msgstr "Номер..........."
+msgstr "п²п╬п╪п╣я─..........."
 
 #: extent.prg:24
 msgid "EXTENT plugins not supported function:"
@@ -691,11 +691,11 @@ msgstr ""
 
 #: extent.prg:38 extent.prg:71
 msgid "Extent parameters"
-msgstr "Параметры пространства"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╟"
 
 #: extent.prg:48 extent.prg:87
 msgid "Description....."
-msgstr "Описание........"
+msgstr "п·п©п╦я│п╟п╫п╦п╣........"
 
 #: group.prg:24
 msgid "GROUP plugins not supported function:"
@@ -703,7 +703,7 @@ msgstr ""
 
 #: group.prg:37 group.prg:60
 msgid "Group parameters"
-msgstr "Параметры группы"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ пЁя─я┐п©п©я▀"
 
 #: index.prg:24
 msgid "index plugins not supported function:"
@@ -711,11 +711,11 @@ msgstr ""
 
 #: index.prg:37 index.prg:63
 msgid "INDEX parameters"
-msgstr "Параметры индекса"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п╦п╫п╢п╣п╨я│п╟"
 
 #: index.prg:46 index.prg:83 tcolumn.prg:50 tcolumn.prg:100
 msgid "Expression......"
-msgstr "Выражение......."
+msgstr "п▓я▀я─п╟п╤п╣п╫п╦п╣......."
 
 #: plugins.prg:24
 msgid "PLUGINS plugins not supported function:"
@@ -723,20 +723,20 @@ msgstr ""
 
 #: plugins.prg:47 plugins.prg:95
 msgid "PLUGINS parameters"
-msgstr "Параметры модуля"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п╪п╬п╢я┐п╩я▐"
 
 #: plugins.prg:60 plugins.prg:117 report.prg:60 report.prg:141
 msgid "File name......."
-msgstr "Имя файла......."
+msgstr "п≤п╪я▐ я└п╟п╧п╩п╟......."
 
 #: plugins.prg:61 plugins.prg:120
 msgid "Main function..."
-msgstr "Главная функция."
+msgstr "п⌠п╩п╟п╡п╫п╟я▐ я└я┐п╫п╨я├п╦я▐."
 
 #: plugins.prg:65 plugins.prg:67 plugins.prg:134 report.prg:71 report.prg:73
 #: report.prg:169 tview.prg:60 tview.prg:62 tview.prg:160
 msgid "Class..........."
-msgstr "Имя класса......"
+msgstr "п≤п╪я▐ п╨п╩п╟я│я│п╟......"
 
 #: report.prg:24
 msgid "REPORT plugins not supported function:"
@@ -744,17 +744,17 @@ msgstr ""
 
 #: report.prg:47 report.prg:118
 msgid "REPORT parameters"
-msgstr "Парметры отчета"
+msgstr "п÷п╟я─п╪п╣я┌я─я▀ п╬я┌я┤п╣я┌п╟"
 
 #: report.prg:78 report.prg:80 report.prg:183 tview.prg:67 tview.prg:69
 #: tview.prg:174 user.prg:56 user.prg:90
 msgid "Group..........."
-msgstr "Имя группы......"
+msgstr "п≤п╪я▐ пЁя─я┐п©п©я▀......"
 
 #: report.prg:85 report.prg:87 report.prg:197 tview.prg:74 tview.prg:76
 #: tview.prg:188
 msgid "User............"
-msgstr "Пользователь...."
+msgstr "п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄...."
 
 #: tcolumn.prg:24
 msgid "TCOLUMN plugins not supported function:"
@@ -762,27 +762,27 @@ msgstr ""
 
 #: tcolumn.prg:38 tcolumn.prg:71
 msgid "TColumn parameters"
-msgstr "Параметры столбца"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ я│я┌п╬п╩п╠я├п╟"
 
 #: tcolumn.prg:47 tcolumn.prg:91
 msgid "Width..........."
-msgstr "Ширина.........."
+msgstr "п╗п╦я─п╦п╫п╟.........."
 
 #: tcolumn.prg:48 tcolumn.prg:94
 msgid "Header.........."
-msgstr "Заголовок......."
+msgstr "п≈п╟пЁп╬п╩п╬п╡п╬п╨......."
 
 #: tcolumn.prg:49 tcolumn.prg:97
 msgid "Footer.........."
-msgstr "Подвал.........."
+msgstr "п÷п╬п╢п╡п╟п╩.........."
 
 #: tcolumn.prg:51
 msgid "Depend of......."
-msgstr "Зависит от......"
+msgstr "п≈п╟п╡п╦я│п╦я┌ п╬я┌......"
 
 #: tcolumn.prg:52
 msgid "References to"
-msgstr "Ссылается на"
+msgstr "п║я│я▀п╩п╟п╣я┌я│я▐ п╫п╟"
 
 #: tview.prg:24
 msgid "TVIEW plugins not supported function:"
@@ -790,15 +790,15 @@ msgstr ""
 
 #: tview.prg:41 tview.prg:116
 msgid "TVIEW parameters"
-msgstr "Параметры таблицы"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ я┌п╟п╠п╩п╦я├я▀"
 
 #: tview.prg:79 tview.prg:191
 msgid "Columns.......Name.............Header..........."
-msgstr "Столбец.......Название.........Заголовок........"
+msgstr "п║я┌п╬п╩п╠п╣я├.......п²п╟п╥п╡п╟п╫п╦п╣.........п≈п╟пЁп╬п╩п╬п╡п╬п╨........"
 
 #: tview.prg:232
 msgid "Error access"
-msgstr "Ошибка доступа"
+msgstr "п·я┬п╦п╠п╨п╟ п╢п╬я│я┌я┐п©п╟"
 
 #: user.prg:24
 msgid "USER plugins not supported function:"
@@ -806,25 +806,25 @@ msgstr ""
 
 #: user.prg:38 user.prg:74
 msgid "User parameters"
-msgstr "Параметры пользователя"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐"
 
 #: user.prg:58 user.prg:91
 msgid "Access rules...."
-msgstr "Правила доступа."
+msgstr "п÷я─п╟п╡п╦п╩п╟ п╢п╬я│я┌я┐п©п╟."
 
 #: codb_export.prg:113 codb_export.prg:155 codb_export.prg:166
 #: codb_export.prg:185 codb_export.prg:196 codb_export.prg:215
 #: codb_export.prg:232 codb_export.prg:269 codb_export.prg:284
 #: codb_export.prg:315 codb_export.prg:351
 msgid "Object not found:"
-msgstr "Объект не найден:"
+msgstr "п·п╠я┼п╣п╨я┌ п╫п╣ п╫п╟п╧п╢п╣п╫:"
 
 #: codb_export.prg:311
 msgid "Counter name not found:"
-msgstr "Не найдено имя счетчика:"
+msgstr "п²п╣ п╫п╟п╧п╢п╣п╫п╬ п╦п╪я▐ я│я┤п╣я┌я┤п╦п╨п╟:"
 
 #~ msgid "Status.........."
-#~ msgstr "Состояние......."
+#~ msgstr "п║п╬я│я┌п╬я▐п╫п╦п╣......."
 
 #~ msgid "Have counters..."
-#~ msgstr "Есть счетчики..."
+#~ msgstr "п∙я│я┌я▄ я│я┤п╣я┌я┤п╦п╨п╦..."
