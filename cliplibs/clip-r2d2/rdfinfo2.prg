@@ -45,7 +45,7 @@ local urn, sprname:="", values := "", attr := "", atom:=""
 	endif
 	atom := (left(atom,1) == "Y")
 	if "__DELETED" $ _query
-		needDeleted := (left(_query:__deleted,1) $ "YyäÄ")
+		needDeleted := (left(_query:__deleted,1) $ "YyDd")
 	endif
 	if !empty(connect_id)
 		connect_data := cgi_connect_data(connect_id)

@@ -132,12 +132,12 @@ errorblock({|err|error2html(err)})
 	if i>0
 		col := columns[i]
 		col:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code)"
-		col:header := "КодСч"
+		col:header := "AccCode"
 		col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
 
 		tmp := oclone(col)
 		tmp:name := "account_name"
-		tmp:header := "СчНазвание"
+		tmp:header := "AccName"
 		tmp:expr := "__obj:=cgi_getValue(account), iif(empty(__obj),account,__obj:code+':'+__obj:smallname)"
 		tmp:datatype := "R"
 		tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
@@ -147,7 +147,7 @@ errorblock({|err|error2html(err)})
 
 		tmp := oclone(col)
 		tmp:name := "owner_id"
-		tmp:header := "РодСчет"
+		tmp:header := "OwnrCode"
 		tmp:expr := "__obj:=cgi_getValue(account), iif( empty(__obj), account,__obj:code+':'+__obj:smallname)"
 		tmp:datatype := "R"
 		tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
@@ -301,7 +301,7 @@ static function	make_balance(beg_date,end_date,oDep,cType,cAccount,itogo,periodi
 	
 	tmp:=cgi_getValue(cType)
 	tmp:owner_id := ""
-	tmp:account := "Всего:"
+	tmp:account := "Total:"
 	tmp:account_name := tmp:code+":"+tmp:smallname
 	tmp:bd_summa:=0.00
 	tmp:bk_summa:=0.00

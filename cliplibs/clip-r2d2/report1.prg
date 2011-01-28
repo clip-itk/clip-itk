@@ -65,7 +65,7 @@ local cache:=map()
 		return
 	endif
 
-//	cgi_html_header("Справка по счету")
+//	cgi_html_header("Account report")
 	cgi_xml_header()
 	? '<body>'
 
@@ -296,22 +296,22 @@ local cache:=map()
 			acc_s+=","
 		endif
 	next
-	? '<div><span>Ведомость по счету</span>'
+	? '<div><span>Account report</span>'
 	if len(account)==12
 	? '<span> '+codb_essence(account)+'</span>'
 	else
 	? '<span> '+codb_essence(account)+':'+accname+'</span>'
 	endif
-	? '<span>за период с '+dtoc(beg_date)+' по '+dtoc(end_date)+'</span></div>'
+	? '<span>period from '+dtoc(beg_date)+' to '+dtoc(end_date)+'</span></div>'
 	? '<table cellpadding="2" cellspacing="0" border="1" width="80%" align="center">'
 	? '<tr>'
 	? '	<th valign="top" width="10%"><br/></th>'
 	? '	<th valign="top" width="10%"><br/></th>'
-	? '	<th valign="top" width="30%">Оборот по дебету</th>'
+	? '	<th valign="top" width="30%">The motion of the debit</th>'
 
 	? '	<th valign="top" width="10%"><br/></th>'
 	? '	<th valign="top" width="10%"><br/></th>'
-	? '	<th valign="top" width="30%">Оборот по кредиту</th>'
+	? '	<th valign="top" width="30%">The motion of the credit</th>'
 	? '</tr>'
 	? '<tbody>'
 
@@ -343,16 +343,16 @@ local cache:=map()
 	? '</table>'
 	? '<BR/>'
 	**********************
-	? '<div>Справка по оборотам:</div>'
+	? '<div>Motion report:</div>'
 	? '<table cellpadding="2" cellspacing="2" border="1" width="80%" align="center">'
 	? '<tr>'
-	? '	<th valign="top" width="10%">Счет</th>'
-	? '	<th valign="top">Начало дебет</th>'
-	? '	<th valign="top">Начало кредит</th>'
-	? '	<th valign="top">Оборот дебет</th>'
-	? '	<th valign="top">Оборот кредит</th>'
-	? '	<th valign="top">Конец дебет</th>'
-	? '	<th valign="top">Конец кредит</th>'
+	? '	<th valign="top" width="10%">Account</th>'
+	? '	<th valign="top">Debet begin</th>'
+	? '	<th valign="top">Credit begin</th>'
+	? '	<th valign="top">Debet motion</th>'
+	? '	<th valign="top">Credit motion</th>'
+	? '	<th valign="top">Debet end</th>'
+	? '	<th valign="top">Credit end</th>'
 	? '</tr>'
 	? '<tbody>'
 

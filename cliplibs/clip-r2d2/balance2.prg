@@ -137,12 +137,12 @@ errorblock({|err|error2html(err)})
 	if i>0
 	      col := columns[i]
 	      col:expr := "cgi_getValue(account):code"
-	      col:header := "КодСч"
+	      col:header := "AccCode"
 	      col:block := &("{|p1,p2,p3,p4|"+col:expr+"}")
 
 	      tmp := oclone(col)
 	      tmp:name := "account_name"
-	      tmp:header := "СчНазвание"
+	      tmp:header := "AccName"
 	      //tmp:expr := "cgi_getValue(account):code"
 	      tmp:expr := "cgi_getValue(account):smallname"
 	      tmp:datatype := "C"
@@ -153,7 +153,7 @@ errorblock({|err|error2html(err)})
 
 	      tmp := oclone(col)
 	      tmp:name := "end_date"
-	      tmp:header := "Конец"
+	      tmp:header := "End"
 	      tmp:expr := "m->end_date"
 	      tmp:datatype := "C"
 	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
@@ -163,7 +163,7 @@ errorblock({|err|error2html(err)})
 
 	      tmp := oclone(col)
 	      tmp:name := "beg_date"
-	      tmp:header := "Начало"
+	      tmp:header := "Begin"
 	      tmp:expr := "m->beg_date"
 	      tmp:datatype := "C"
 	      tmp:block := &("{|p1,p2,p3,p4|"+tmp:expr+"}")
