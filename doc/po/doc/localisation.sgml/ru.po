@@ -8,21 +8,21 @@ msgstr ""
 "Last-Translator: Paul Lasarev <paul@itk.ru>\n"
 "Language-Team: Russian <clip-devel@itk.ru>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
 #: template/./doc/localisation.sgml:2
 msgid "CLIP localisation"
-msgstr "Локализация CLIP"
+msgstr "п⌡п╬п╨п╟п╩п╦п╥п╟я├п╦я▐ CLIP"
 
 #: template/./doc/localisation.sgml:5
 msgid "CLIP runtime localisation"
-msgstr "Локализация среды выполнения CLIP"
+msgstr "п⌡п╬п╨п╟п╩п╦п╥п╟я├п╦я▐ я│я─п╣п╢я▀ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ CLIP"
 
 #: template/./doc/localisation.sgml:9
 msgid "The LANG environment variable, directory $CLIPROOT/lang"
-msgstr "Переменная окружения LANG, каталог $CLIPROOT/lang"
+msgstr "п÷п╣я─п╣п╪п╣п╫п╫п╟я▐ п╬п╨я─я┐п╤п╣п╫п╦я▐ LANG, п╨п╟я┌п╟п╩п╬пЁ $CLIPROOT/lang"
 
 #: template/./doc/localisation.sgml:12
 msgid ""
@@ -30,9 +30,9 @@ msgid ""
 "and treat it content as environment variables name/value pairs.\n"
 "(See <link linkend=\"envir\">CLIP environment description</link>)"
 msgstr ""
-"Библиотека времени выполнения CLIP при старте программы провераят наличие "
-"некоторых файлов, и использует их содержимое в качестве значений переменных "
-"окружения.(См. <link linkend=\"envir\">Переменные окружения CLIP</link>)"
+"п▒п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╡я─п╣п╪п╣п╫п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ CLIP п©я─п╦ я│я┌п╟я─я┌п╣ п©я─п╬пЁя─п╟п╪п╪я▀ п©я─п╬п╡п╣я─п╟я▐я┌ п╫п╟п╩п╦я┤п╦п╣ "
+"п╫п╣п╨п╬я┌п╬я─я▀я┘ я└п╟п╧п╩п╬п╡, п╦ п╦я│п©п╬п╩я▄п╥я┐п╣я┌ п╦я┘ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╡ п╨п╟я┤п╣я│я┌п╡п╣ п╥п╫п╟я┤п╣п╫п╦п╧ п©п╣я─п╣п╪п╣п╫п╫я▀я┘ "
+"п╬п╨я─я┐п╤п╣п╫п╦я▐.(п║п╪. <link linkend=\"envir\">п÷п╣я─п╣п╪п╣п╫п╫я▀п╣ п╬п╨я─я┐п╤п╣п╫п╦я▐ CLIP</link>)"
 
 #: template/./doc/localisation.sgml:18
 msgid ""
@@ -41,32 +41,32 @@ msgid ""
 "(compiled-in) value, and LANG is a value of environment (also known as\n"
 "locale). If LANG is empty, CLIP check also CHARSET variable."
 msgstr ""
-"Первым провераяется файл $CLIPROOT/lang/$LANG, где CLIPROOT\n"
-"берется из переменной окружения, либо использется значение, заданное\n"
-"при компиляции, LANG является значение соответствующей переменной "
-"окружения,\n"
-"(известной также как локаль). Если LANG не задана, CLIP проверяет значение "
-"переменной окружения CHARSET."
+"п÷п╣я─п╡я▀п╪ п©я─п╬п╡п╣я─п╟я▐п╣я┌я│я▐ я└п╟п╧п╩ $CLIPROOT/lang/$LANG, пЁп╢п╣ CLIPROOT\n"
+"п╠п╣я─п╣я┌я│я▐ п╦п╥ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╬п╨я─я┐п╤п╣п╫п╦я▐, п╩п╦п╠п╬ п╦я│п©п╬п╩я▄п╥п╣я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦п╣, п╥п╟п╢п╟п╫п╫п╬п╣\n"
+"п©я─п╦ п╨п╬п╪п©п╦п╩я▐я├п╦п╦, LANG я▐п╡п╩я▐п╣я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦п╣ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╣п╧ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ "
+"п╬п╨я─я┐п╤п╣п╫п╦я▐,\n"
+"(п╦п╥п╡п╣я│я┌п╫п╬п╧ я┌п╟п╨п╤п╣ п╨п╟п╨ п╩п╬п╨п╟п╩я▄). п∙я│п╩п╦ LANG п╫п╣ п╥п╟п╢п╟п╫п╟, CLIP п©я─п╬п╡п╣я─я▐п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ "
+"п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╬п╨я─я┐п╤п╣п╫п╦я▐ CHARSET."
 
 #: template/./doc/localisation.sgml:25
 msgid "Sample $CLIPROOT/lang/ru_RU.KOI8-R file"
-msgstr "Пример файла $CLIPROOT/lang/ru_RU.KOI8-R"
+msgstr "п÷я─п╦п╪п╣я─ я└п╟п╧п╩п╟ $CLIPROOT/lang/ru_RU.KOI8-R"
 
 #: template/./doc/localisation.sgml:33
 msgid ""
 "The next file is $CLIPROOT/term/$TERM, where TERM is variable, \n"
 "which identified type of used terminal."
 msgstr ""
-"Затем проверяется файл $CLIPROOT/term/$TERM, где TERM является, \n"
-"переменной окружения, которая задает тип используемого терминала."
+"п≈п╟я┌п╣п╪ п©я─п╬п╡п╣я─я▐п╣я┌я│я▐ я└п╟п╧п╩ $CLIPROOT/term/$TERM, пЁп╢п╣ TERM я▐п╡п╩я▐п╣я┌я│я▐, \n"
+"п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╬п╨я─я┐п╤п╣п╫п╦я▐, п╨п╬я┌п╬я─п╟я▐ п╥п╟п╢п╟п╣я┌ я┌п╦п© п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬пЁп╬ я┌п╣я─п╪п╦п╫п╟п╩п╟."
 
 #: template/./doc/localisation.sgml:38
 msgid "Sample $CLIPROOT/term/linux-console file"
-msgstr "Пример файла $CLIPROOT/term/linux-console"
+msgstr "п÷я─п╦п╪п╣я─ я└п╟п╧п╩п╟ $CLIPROOT/term/linux-console"
 
 #: template/./doc/localisation.sgml:48
 msgid "Keymaps and keymap table generation."
-msgstr "Keymaps. утилиты генерации"
+msgstr "Keymaps. я┐я┌п╦п╩п╦я┌я▀ пЁп╣п╫п╣я─п╟я├п╦п╦"
 
 #: template/./doc/localisation.sgml:51
 msgid ""
@@ -74,10 +74,10 @@ msgid ""
 "Linux console, and on some kind of terminals, which can be switched into\n"
 "scancode mode by escape sequence."
 msgstr ""
-"Keymap  используется в режиме \"сырой\" клавиатуры (работа со скан-кодами), "
-"этот режим сейчас доступен на Линукс-консоли, а также на некоторых "
-"терминалах (или эмуляторах терминалов), которые могут работать в режиме скан-"
-"кодов."
+"Keymap  п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╡ я─п╣п╤п╦п╪п╣ \"я│я▀я─п╬п╧\" п╨п╩п╟п╡п╦п╟я┌я┐я─я▀ (я─п╟п╠п╬я┌п╟ я│п╬ я│п╨п╟п╫-п╨п╬п╢п╟п╪п╦), "
+"я█я┌п╬я┌ я─п╣п╤п╦п╪ я│п╣п╧я┤п╟я│ п╢п╬я│я┌я┐п©п╣п╫ п╫п╟ п⌡п╦п╫я┐п╨я│-п╨п╬п╫я│п╬п╩п╦, п╟ я┌п╟п╨п╤п╣ п╫п╟ п╫п╣п╨п╬я┌п╬я─я▀я┘ "
+"я┌п╣я─п╪п╦п╫п╟п╩п╟я┘ (п╦п╩п╦ я█п╪я┐п╩я▐я┌п╬я─п╟я┘ я┌п╣я─п╪п╦п╫п╟п╩п╬п╡), п╨п╬я┌п╬я─я▀п╣ п╪п╬пЁя┐я┌ я─п╟п╠п╬я┌п╟я┌я▄ п╡ я─п╣п╤п╦п╪п╣ я│п╨п╟п╫-"
+"п╨п╬п╢п╬п╡."
 
 #: template/./doc/localisation.sgml:57
 msgid ""
@@ -85,13 +85,13 @@ msgid ""
 "borrowed from the kernel sources. That means, you can easy add new keymaps\n"
 "and to modify it as required."
 msgstr ""
-"CLIP использует те же keymaps, как и ядро Линукса, обработка скан-кодов "
-"также во многом заимствована из кода ядра. Это означает, что можно легко "
-"добавить новый keymap, а также модифицировать его в случае необходимости."
+"CLIP п╦я│п©п╬п╩я▄п╥я┐п╣я┌ я┌п╣ п╤п╣ keymaps, п╨п╟п╨ п╦ я▐п╢я─п╬ п⌡п╦п╫я┐п╨я│п╟, п╬п╠я─п╟п╠п╬я┌п╨п╟ я│п╨п╟п╫-п╨п╬п╢п╬п╡ "
+"я┌п╟п╨п╤п╣ п╡п╬ п╪п╫п╬пЁп╬п╪ п╥п╟п╦п╪я│я┌п╡п╬п╡п╟п╫п╟ п╦п╥ п╨п╬п╢п╟ я▐п╢я─п╟. п╜я┌п╬ п╬п╥п╫п╟я┤п╟п╣я┌, я┤я┌п╬ п╪п╬п╤п╫п╬ п╩п╣пЁп╨п╬ "
+"п╢п╬п╠п╟п╡п╦я┌я▄ п╫п╬п╡я▀п╧ keymap, п╟ я┌п╟п╨п╤п╣ п╪п╬п╢п╦я└п╦я├п╦я─п╬п╡п╟я┌я▄ п╣пЁп╬ п╡ я│п╩я┐я┤п╟п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌п╦."
 
 #: template/./doc/localisation.sgml:63
 msgid "Adding new keymap:"
-msgstr "Добавление нового keymap:"
+msgstr "п■п╬п╠п╟п╡п╩п╣п╫п╦п╣ п╫п╬п╡п╬пЁп╬ keymap:"
 
 #: template/./doc/localisation.sgml:68
 msgid ""
@@ -99,37 +99,37 @@ msgid ""
 "<command>/usr/share/keymaps</command>\n"
 "(on any Linux distribution):"
 msgstr ""
-"Скопируйте подходящий keymap из каталога \n"
+"п║п╨п╬п©п╦я─я┐п╧я┌п╣ п©п╬п╢я┘п╬п╢я▐я┴п╦п╧ keymap п╦п╥ п╨п╟я┌п╟п╩п╬пЁп╟ \n"
 "<command>/usr/share/keymaps</command>\n"
-"(доступного практически в любом дистрибутиве Linux):"
+"(п╢п╬я│я┌я┐п©п╫п╬пЁп╬ п©я─п╟п╨я┌п╦я┤п╣я│п╨п╦ п╡ п╩я▌п╠п╬п╪ п╢п╦я│я┌я─п╦п╠я┐я┌п╦п╡п╣ Linux):"
 
 #: template/./doc/localisation.sgml:82
 msgid ""
 "Use <command>$CLIPROOT/keymaps/genmap.sh</command>\n"
 "for generation CLIP-readable keymap:"
 msgstr ""
-"Используйте <command>$CLIPROOT/keymaps/genmap.sh</command>\n"
-"для генерации keymap в формате CLIP:"
+"п≤я│п©п╬п╩я▄п╥я┐п╧я┌п╣ <command>$CLIPROOT/keymaps/genmap.sh</command>\n"
+"п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ keymap п╡ я└п╬я─п╪п╟я┌п╣ CLIP:"
 
 #: template/./doc/localisation.sgml:91
 msgid "Absolute path warning"
-msgstr "Предупреждение относительно полного пути"
+msgstr "п÷я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╣ п╬я┌п╫п╬я│п╦я┌п╣п╩я▄п╫п╬ п©п╬п╩п╫п╬пЁп╬ п©я┐я┌п╦"
 
 #: template/./doc/localisation.sgml:92
 msgid ""
 "Parameter of <command>genmap.sh</command>\n"
 "must have absolute pathname."
 msgstr ""
-"Парамет скрипта <command>genmap.sh</command>\n"
-"должен записан с полным путем (от корня файловой системы)."
+"п÷п╟я─п╟п╪п╣я┌ я│п╨я─п╦п©я┌п╟ <command>genmap.sh</command>\n"
+"п╢п╬п╩п╤п╣п╫ п╥п╟п©п╦я│п╟п╫ я│ п©п╬п╩п╫я▀п╪ п©я┐я┌п╣п╪ (п╬я┌ п╨п╬я─п╫я▐ я└п╟п╧п╩п╬п╡п╬п╧ я│п╦я│я┌п╣п╪я▀)."
 
 #: template/./doc/localisation.sgml:101
 msgid "Copy keymap to <command>$CLIPROOT/keymaps</command>:"
-msgstr "Скопируйте keymap в <command>$CLIPROOT/keymaps</command>:"
+msgstr "п║п╨п╬п©п╦я─я┐п╧я┌п╣ keymap п╡ <command>$CLIPROOT/keymaps</command>:"
 
 #: template/./doc/localisation.sgml:115
 msgid "Charsets, uni-files, utilites for generation"
-msgstr "Charsets, uni-файлы, утилиты генерации"
+msgstr "Charsets, uni-я└п╟п╧п╩я▀, я┐я┌п╦п╩п╦я┌я▀ пЁп╣п╫п╣я─п╟я├п╦п╦"
 
 #: template/./doc/localisation.sgml:118
 msgid ""
@@ -137,9 +137,9 @@ msgid ""
 "for dealing with terminal pseudographics, to determine the sort order,\n"
 "and for recoding file and database in/out througput."
 msgstr ""
-"Charsets используются для перекодирования ввода/вывода на терминал, "
-"обработки псевдографики, определения порядка сортировки, а также для "
-"перекодирования ввода/вывода в файлы и базы данных."
+"Charsets п╦я│п©п╬п╩я▄п╥я┐я▌я┌я│я▐ п╢п╩я▐ п©п╣я─п╣п╨п╬п╢п╦я─п╬п╡п╟п╫п╦я▐ п╡п╡п╬п╢п╟/п╡я▀п╡п╬п╢п╟ п╫п╟ я┌п╣я─п╪п╦п╫п╟п╩, "
+"п╬п╠я─п╟п╠п╬я┌п╨п╦ п©я│п╣п╡п╢п╬пЁя─п╟я└п╦п╨п╦, п╬п©я─п╣п╢п╣п╩п╣п╫п╦я▐ п©п╬я─я▐п╢п╨п╟ я│п╬я─я┌п╦я─п╬п╡п╨п╦, п╟ я┌п╟п╨п╤п╣ п╢п╩я▐ "
+"п©п╣я─п╣п╨п╬п╢п╦я─п╬п╡п╟п╫п╦я▐ п╡п╡п╬п╢п╟/п╡я▀п╡п╬п╢п╟ п╡ я└п╟п╧п╩я▀ п╦ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘."
 
 #: template/./doc/localisation.sgml:124
 msgid ""
@@ -147,13 +147,13 @@ msgid ""
 "have utilite for generation from standard charset-to-unicode\n"
 "mapping."
 msgstr ""
-"Также как с keymap, CLIP использует свой формат для хранения charset, и "
-"предоставляет утилиты для генерации charset из стандартного отображения "
-"нужной кодировки в Unicode."
+"п╒п╟п╨п╤п╣ п╨п╟п╨ я│ keymap, CLIP п╦я│п©п╬п╩я▄п╥я┐п╣я┌ я│п╡п╬п╧ я└п╬я─п╪п╟я┌ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐ charset, п╦ "
+"п©я─п╣п╢п╬я│я┌п╟п╡п╩я▐п╣я┌ я┐я┌п╦п╩п╦я┌я▀ п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ charset п╦п╥ я│я┌п╟п╫п╢п╟я─я┌п╫п╬пЁп╬ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦я▐ "
+"п╫я┐п╤п╫п╬п╧ п╨п╬п╢п╦я─п╬п╡п╨п╦ п╡ Unicode."
 
 #: template/./doc/localisation.sgml:130
 msgid "Adding new charset:"
-msgstr "Добавление нового charset:"
+msgstr "п■п╬п╠п╟п╡п╩п╣п╫п╦п╣ п╫п╬п╡п╬пЁп╬ charset:"
 
 #: template/./doc/localisation.sgml:135
 msgid ""
@@ -161,13 +161,13 @@ msgid ""
 "<command>/usr/share/consoletrans</command>\n"
 "(on any Linux distribution):"
 msgstr ""
-"Скопируйте подходящее отображение кодировки из каталога\n"
+"п║п╨п╬п©п╦я─я┐п╧я┌п╣ п©п╬п╢я┘п╬п╢я▐я┴п╣п╣ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦п╣ п╨п╬п╢п╦я─п╬п╡п╨п╦ п╦п╥ п╨п╟я┌п╟п╩п╬пЁп╟\n"
 "<command>/usr/share/consoletrans</command>\n"
-"(для Linux):"
+"(п╢п╩я▐ Linux):"
 
 #: template/./doc/localisation.sgml:145
 msgid "Fullness of Unicode mapping"
-msgstr "Полнота отображения в Unicode"
+msgstr "п÷п╬п╩п╫п╬я┌п╟ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦я▐ п╡ Unicode"
 
 #: template/./doc/localisation.sgml:147
 msgid ""
@@ -175,33 +175,33 @@ msgid ""
 "full 256 symbols in charset. For such exceptions, you probably must\n"
 "manually append absent characters."
 msgstr ""
-"Некоторые файлы не содержат отображение для всех 256 символов кодировки. Для "
-"таких файлов может понадобиться ручное редактирование."
+"п²п╣п╨п╬я┌п╬я─я▀п╣ я└п╟п╧п╩я▀ п╫п╣ я│п╬п╢п╣я─п╤п╟я┌ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦п╣ п╢п╩я▐ п╡я│п╣я┘ 256 я│п╦п╪п╡п╬п╩п╬п╡ п╨п╬п╢п╦я─п╬п╡п╨п╦. п■п╩я▐ "
+"я┌п╟п╨п╦я┘ я└п╟п╧п╩п╬п╡ п╪п╬п╤п╣я┌ п©п╬п╫п╟п╢п╬п╠п╦я┌я▄я│я▐ я─я┐я┤п╫п╬п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣."
 
 #: template/./doc/localisation.sgml:158
 msgid "Use the <command>gen_tbl</command> utilite for .tbl file generation:"
 msgstr ""
-"Используйте утилиту <command>gen_tbl</command> для генерации .tbl файла:"
+"п≤я│п©п╬п╩я▄п╥я┐п╧я┌п╣ я┐я┌п╦п╩п╦я┌я┐ <command>gen_tbl</command> п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ .tbl я└п╟п╧п╩п╟:"
 
 #: template/./doc/localisation.sgml:171
 msgid "Copy .uni and .tbl files to <command>$CLIPROOT/charsets</command>:"
-msgstr "Скопируйте .uni и .tbl файлы в <command>$CLIPROOT/charsets</command>:"
+msgstr "п║п╨п╬п©п╦я─я┐п╧я┌п╣ .uni п╦ .tbl я└п╟п╧п╩я▀ п╡ <command>$CLIPROOT/charsets</command>:"
 
 #: template/./doc/localisation.sgml:187
 msgid "Message translation"
-msgstr "Перевод сообщений"
+msgstr "п÷п╣я─п╣п╡п╬п╢ я│п╬п╬п╠я┴п╣п╫п╦п╧"
 
 #: template/./doc/localisation.sgml:190
 msgid "Gettext and utils for po-files translation"
-msgstr "Пакет Gettext и утилиты для работы с .po файлами"
+msgstr "п÷п╟п╨п╣я┌ Gettext п╦ я┐я┌п╦п╩п╦я┌я▀ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ .po я└п╟п╧п╩п╟п╪п╦"
 
 #: template/./doc/localisation.sgml:193
 msgid ""
 "<firstterm>Gettext</firstterm> is a common package, widely used\n"
 "for message <firstterm>localisation</firstterm>."
 msgstr ""
-"<firstterm>Gettext</firstterm> является широко используемым пакетом,\n"
-"предназначенным для локализации сообщений."
+"<firstterm>Gettext</firstterm> я▐п╡п╩я▐п╣я┌я│я▐ я┬п╦я─п╬п╨п╬ п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀п╪ п©п╟п╨п╣я┌п╬п╪,\n"
+"п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫п╫я▀п╪ п╢п╩я▐ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦ я│п╬п╬п╠я┴п╣п╫п╦п╧."
 
 #: template/./doc/localisation.sgml:198
 msgid ""
@@ -209,9 +209,9 @@ msgid ""
 "the message extraction and preparing utilites, \n"
 "and a library for runtime message handling."
 msgstr ""
-"Пакет <quote>gettext</quote> состоит из двух основных частей -\n"
-"утилит для извлечения и форматирования сообщений \n"
-"и библиотеки доступа к сообщениям."
+"п÷п╟п╨п╣я┌ <quote>gettext</quote> я│п╬я│я┌п╬п╦я┌ п╦п╥ п╢п╡я┐я┘ п╬я│п╫п╬п╡п╫я▀я┘ я┤п╟я│я┌п╣п╧ -\n"
+"я┐я┌п╦п╩п╦я┌ п╢п╩я▐ п╦п╥п╡п╩п╣я┤п╣п╫п╦я▐ п╦ я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦я▐ я│п╬п╬п╠я┴п╣п╫п╦п╧ \n"
+"п╦ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ п╢п╬я│я┌я┐п©п╟ п╨ я│п╬п╬п╠я┴п╣п╫п╦я▐п╪."
 
 #: template/./doc/localisation.sgml:204
 msgid ""
@@ -219,28 +219,28 @@ msgid ""
 "extracting and preparing of message files, but use own code for runtime \n"
 "message handling."
 msgstr ""
-"CLIP использует некоторые утилиты <quote>gettext</quote> для\n"
-"подготовки файлов сообщений, но применяет свой собственный код для доступа к "
-"сообщениям во время выполнения \n"
+"CLIP п╦я│п©п╬п╩я▄п╥я┐п╣я┌ п╫п╣п╨п╬я┌п╬я─я▀п╣ я┐я┌п╦п╩п╦я┌я▀ <quote>gettext</quote> п╢п╩я▐\n"
+"п©п╬п╢пЁп╬я┌п╬п╡п╨п╦ я└п╟п╧п╩п╬п╡ я│п╬п╬п╠я┴п╣п╫п╦п╧, п╫п╬ п©я─п╦п╪п╣п╫я▐п╣я┌ я│п╡п╬п╧ я│п╬п╠я│я┌п╡п╣п╫п╫я▀п╧ п╨п╬п╢ п╢п╩я▐ п╢п╬я│я┌я┐п©п╟ п╨ "
+"я│п╬п╬п╠я┴п╣п╫п╦я▐п╪ п╡п╬ п╡я─п╣п╪я▐ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ \n"
 "."
 
 #: template/./doc/localisation.sgml:213
 msgid "CLIP po-files and dirs, clip_msg* utils"
-msgstr "CLIP .po файлы и каталоги, утилиты clip_msg*"
+msgstr "CLIP .po я└п╟п╧п╩я▀ п╦ п╨п╟я┌п╟п╩п╬пЁп╦, я┐я┌п╦п╩п╦я┌я▀ clip_msg*"
 
 #: template/./doc/localisation.sgml:216
 msgid ""
 "CLIP have number of utilites to make the message handling\n"
 "easier."
-msgstr "CLIP имеет ряд утилит для облегчения работы с сообщениями."
+msgstr "CLIP п╦п╪п╣п╣я┌ я─я▐п╢ я┐я┌п╦п╩п╦я┌ п╢п╩я▐ п╬п╠п╩п╣пЁя┤п╣п╫п╦я▐ я─п╟п╠п╬я┌я▀ я│ я│п╬п╬п╠я┴п╣п╫п╦я▐п╪п╦."
 
 #: template/./doc/localisation.sgml:221
 msgid "Locale message roadmap:"
-msgstr "Подготовка локализованных сообщений:"
+msgstr "п÷п╬п╢пЁп╬я┌п╬п╡п╨п╟ п╩п╬п╨п╟п╩п╦п╥п╬п╡п╟п╫п╫я▀я┘ я│п╬п╬п╠я┴п╣п╫п╦п╧:"
 
 #: template/./doc/localisation.sgml:226
 msgid "Extracting of message and creating the .pot (po-template) file."
-msgstr "Извлечение сообщений и создание .pot (po-template) файлов."
+msgstr "п≤п╥п╡п╩п╣я┤п╣п╫п╦п╣ я│п╬п╬п╠я┴п╣п╫п╦п╧ п╦ я│п╬п╥п╢п╟п╫п╦п╣ .pot (po-template) я└п╟п╧п╩п╬п╡."
 
 #: template/./doc/localisation.sgml:229
 msgid ""
@@ -248,8 +248,8 @@ msgid ""
 "<command>xgettext</command> command from <command>gettext</command>\n"
 "package."
 msgstr ""
-"Для извлечения сообщений из C текстов может быть использована утилита\n"
-"<command>xgettext</command> пакета <command>gettext</command>\n"
+"п■п╩я▐ п╦п╥п╡п╩п╣я┤п╣п╫п╦я▐ я│п╬п╬п╠я┴п╣п╫п╦п╧ п╦п╥ C я┌п╣п╨я│я┌п╬п╡ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╟ я┐я┌п╦п╩п╦я┌п╟\n"
+"<command>xgettext</command> п©п╟п╨п╣я┌п╟ <command>gettext</command>\n"
 "."
 
 #: template/./doc/localisation.sgml:234
@@ -260,8 +260,8 @@ msgid ""
 "emphasis>\n"
 "file."
 msgstr ""
-"CLIP автоматически извлекает сообщения, заключенные в скобки [], и\n"
-"записывает их в файл\n"
+"CLIP п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ п╦п╥п╡п╩п╣п╨п╟п╣я┌ я│п╬п╬п╠я┴п╣п╫п╦я▐, п╥п╟п╨п╩я▌я┤п╣п╫п╫я▀п╣ п╡ я│п╨п╬п╠п╨п╦ [], п╦\n"
+"п╥п╟п©п╦я│я▀п╡п╟п╣я┌ п╦я┘ п╡ я└п╟п╧п╩\n"
 "<emphasis>$CLIPROOT/locale/pot/&lt;modulename&gt;/&lt;filename&gt;.pot</"
 "emphasis>\n"
 "."
@@ -272,9 +272,9 @@ msgid ""
 "working directory name, or may be specified by environment variable \n"
 "<link linkend=\"envir\">CLIP_MODULE</link>."
 msgstr ""
-"<emphasis>&lt;modulename&gt;</emphasis> определяется CLIP из имени\n"
-"каталога, в котором расположен исходный файл, либо может быть задан "
-"переменной окружения \n"
+"<emphasis>&lt;modulename&gt;</emphasis> п╬п©я─п╣п╢п╣п╩я▐п╣я┌я│я▐ CLIP п╦п╥ п╦п╪п╣п╫п╦\n"
+"п╨п╟я┌п╟п╩п╬пЁп╟, п╡ п╨п╬я┌п╬я─п╬п╪ я─п╟я│п©п╬п╩п╬п╤п╣п╫ п╦я│я┘п╬п╢п╫я▀п╧ я└п╟п╧п╩, п╩п╦п╠п╬ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╥п╟п╢п╟п╫ "
+"п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╬п╨я─я┐п╤п╣п╫п╦я▐ \n"
 "<link linkend=\"envir\">CLIP_MODULE</link>."
 
 #: template/./doc/localisation.sgml:245
@@ -282,8 +282,8 @@ msgid ""
 "The <emphasis>&lt;filename&gt;</emphasis> determined from name\n"
 "of compiled file."
 msgstr ""
-"<emphasis>&lt;filename&gt;</emphasis> определяется по имени компилируемого "
-"файла."
+"<emphasis>&lt;filename&gt;</emphasis> п╬п©я─п╣п╢п╣п╩я▐п╣я┌я│я▐ п©п╬ п╦п╪п╣п╫п╦ п╨п╬п╪п©п╦п╩п╦я─я┐п╣п╪п╬пЁп╬ "
+"я└п╟п╧п╩п╟."
 
 #: template/./doc/localisation.sgml:254
 msgid ""
@@ -291,9 +291,9 @@ msgid ""
 "from directory $CLIPROOT/locale.pot with translated .po files\n"
 "in directory $CLIPROOT/locale.po."
 msgstr ""
-"Используйте скрипт <command>clip_msgmerge</command> для слияния .pot файлов\n"
-"из каталога $CLIPROOT/locale.pot с переведенными .po файлами\n"
-"в каталоге $CLIPROOT/locale.po."
+"п≤я│п©п╬п╩я▄п╥я┐п╧я┌п╣ я│п╨я─п╦п©я┌ <command>clip_msgmerge</command> п╢п╩я▐ я│п╩п╦я▐п╫п╦я▐ .pot я└п╟п╧п╩п╬п╡\n"
+"п╦п╥ п╨п╟я┌п╟п╩п╬пЁп╟ $CLIPROOT/locale.pot я│ п©п╣я─п╣п╡п╣п╢п╣п╫п╫я▀п╪п╦ .po я└п╟п╧п╩п╟п╪п╦\n"
+"п╡ п╨п╟я┌п╟п╩п╬пЁп╣ $CLIPROOT/locale.po."
 
 #: template/./doc/localisation.sgml:260
 msgid ""
@@ -302,10 +302,10 @@ msgid ""
 "create appropriate directory, for example, $CLIPROOT/locale.po/ru_RU.KOI8-R\n"
 "for locale ru_RU.KOI8-R."
 msgstr ""
-"<command>clip_msgmerge</command> сливает файлы для всех локалей\n"
-"в каталоге $CLIPROOT/locale.po/&lt;locale&gt;. Для добавления новой локали "
-"нужно только создать нужный каталог, например $CLIPROOT/locale.po/ru_RU.KOI8-"
-"R для локали ru_RU.KOI8-R."
+"<command>clip_msgmerge</command> я│п╩п╦п╡п╟п╣я┌ я└п╟п╧п╩я▀ п╢п╩я▐ п╡я│п╣я┘ п╩п╬п╨п╟п╩п╣п╧\n"
+"п╡ п╨п╟я┌п╟п╩п╬пЁп╣ $CLIPROOT/locale.po/&lt;locale&gt;. п■п╩я▐ п╢п╬п╠п╟п╡п╩п╣п╫п╦я▐ п╫п╬п╡п╬п╧ п╩п╬п╨п╟п╩п╦ "
+"п╫я┐п╤п╫п╬ я┌п╬п╩я▄п╨п╬ я│п╬п╥п╢п╟я┌я▄ п╫я┐п╤п╫я▀п╧ п╨п╟я┌п╟п╩п╬пЁ, п╫п╟п©я─п╦п╪п╣я─ $CLIPROOT/locale.po/ru_RU.KOI8-"
+"R п╢п╩я▐ п╩п╬п╨п╟п╩п╦ ru_RU.KOI8-R."
 
 #: template/./doc/localisation.sgml:271
 msgid ""
@@ -313,14 +313,14 @@ msgid ""
 "specialized po-file editor, like <command>kbabel</command>\n"
 "from KDE suite."
 msgstr ""
-"Вы можете отредактировать  созданные.po файлы в любом текстовом редакторе, "
-"либо\n"
-"использовать специализированный редактор .po-файлов, например "
-"<command>kbabel</command> из KDE."
+"п▓я▀ п╪п╬п╤п╣я┌п╣ п╬я┌я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄  я│п╬п╥п╢п╟п╫п╫я▀п╣.po я└п╟п╧п╩я▀ п╡ п╩я▌п╠п╬п╪ я┌п╣п╨я│я┌п╬п╡п╬п╪ я─п╣п╢п╟п╨я┌п╬я─п╣, "
+"п╩п╦п╠п╬\n"
+"п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ я│п©п╣я├п╦п╟п╩п╦п╥п╦я─п╬п╡п╟п╫п╫я▀п╧ я─п╣п╢п╟п╨я┌п╬я─ .po-я└п╟п╧п╩п╬п╡, п╫п╟п©я─п╦п╪п╣я─ "
+"<command>kbabel</command> п╦п╥ KDE."
 
 #: template/./doc/localisation.sgml:277
 msgid "Charset definition in .po file."
-msgstr "Задание кодировки в .po файле."
+msgstr "п≈п╟п╢п╟п╫п╦п╣ п╨п╬п╢п╦я─п╬п╡п╨п╦ п╡ .po я└п╟п╧п╩п╣."
 
 #: template/./doc/localisation.sgml:279
 msgid ""
@@ -331,12 +331,12 @@ msgid ""
 "<quote>Content-Type: text/plain; charset=KOI8-R</quote>).\n"
 "This is very important for correct message handling."
 msgstr ""
-"Пожалуйста проверьте поле \n"
+"п÷п╬п╤п╟п╩я┐п╧я│я┌п╟ п©я─п╬п╡п╣я─я▄я┌п╣ п©п╬п╩п╣ \n"
 "<quote>Content-Type: text/plain; charset=ASCII</quote>\n"
-"в начале .po файла. Вы должны установать правильное значение\n"
-"кодировки, используемой в файле (например, \n"
+"п╡ п╫п╟я┤п╟п╩п╣ .po я└п╟п╧п╩п╟. п▓я▀ п╢п╬п╩п╤п╫я▀ я┐я│я┌п╟п╫п╬п╡п╟я┌я▄ п©я─п╟п╡п╦п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣\n"
+"п╨п╬п╢п╦я─п╬п╡п╨п╦, п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬п╧ п╡ я└п╟п╧п╩п╣ (п╫п╟п©я─п╦п╪п╣я─, \n"
 "<quote>Content-Type: text/plain; charset=KOI8-R</quote>).\n"
-"Это очень важно для правильной обработки сообщений."
+"п╜я┌п╬ п╬я┤п╣п╫я▄ п╡п╟п╤п╫п╬ п╢п╩я▐ п©я─п╟п╡п╦п╩я▄п╫п╬п╧ п╬п╠я─п╟п╠п╬я┌п╨п╦ я│п╬п╬п╠я┴п╣п╫п╦п╧."
 
 #: template/./doc/localisation.sgml:293
 msgid ""
@@ -344,8 +344,8 @@ msgid ""
 "to format messages into compiled message file in directory\n"
 "$CLIPROOT/locale.mo"
 msgstr ""
-"И, наконец, запустите скрипт <command>clip_msgfmt</command>\n"
-"чтобы отформатировать сообщения в .mo файл в каталоге\n"
+"п≤, п╫п╟п╨п╬п╫п╣я├, п╥п╟п©я┐я│я┌п╦я┌п╣ я│п╨я─п╦п©я┌ <command>clip_msgfmt</command>\n"
+"я┤я┌п╬п╠я▀ п╬я┌я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟я┌я▄ я│п╬п╬п╠я┴п╣п╫п╦я▐ п╡ .mo я└п╟п╧п╩ п╡ п╨п╟я┌п╟п╩п╬пЁп╣\n"
 "$CLIPROOT/locale.mo"
 
 #: template/./doc/localisation.sgml:299
@@ -353,12 +353,12 @@ msgid ""
 "Now, CLIP runtime will fetch nesessary messages from this\n"
 "files, and substitute it in your program."
 msgstr ""
-"Теперь библиотека времени выполнения CLIP сможет извлечь необходимые "
-"сообщения из этих файлов и подставить в нужное место программы."
+"п╒п╣п©п╣я─я▄ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╡я─п╣п╪п╣п╫п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ CLIP я│п╪п╬п╤п╣я┌ п╦п╥п╡п╩п╣я┤я▄ п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ "
+"я│п╬п╬п╠я┴п╣п╫п╦я▐ п╦п╥ я█я┌п╦я┘ я└п╟п╧п╩п╬п╡ п╦ п©п╬п╢я│я┌п╟п╡п╦я┌я▄ п╡ п╫я┐п╤п╫п╬п╣ п╪п╣я│я┌п╬ п©я─п╬пЁя─п╟п╪п╪я▀."
 
 #: template/./doc/localisation.sgml:313
 msgid "Writing and translation the CLIP documentation."
-msgstr "Написание и перевод документации CLIP"
+msgstr "п²п╟п©п╦я│п╟п╫п╦п╣ п╦ п©п╣я─п╣п╡п╬п╢ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ CLIP"
 
 #: template/./doc/localisation.sgml:316
 msgid ""
@@ -367,26 +367,26 @@ msgid ""
 "documentation system to provide multiformat and multilanguage\n"
 "documentation in the strong and regular fasion."
 msgstr ""
-"Проект CLIP теперь использует систему документации \n"
+"п÷я─п╬п╣п╨я┌ CLIP я┌п╣п©п╣я─я▄ п╦я│п©п╬п╩я▄п╥я┐п╣я┌ я│п╦я│я┌п╣п╪я┐ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ \n"
 "<ulink url=\"http://www.docbook.org\">DocBook</ulink>\n"
-"для получения многоформатной и многонациональной\n"
-"документации."
+"п╢п╩я▐ п©п╬п╩я┐я┤п╣п╫п╦я▐ п╪п╫п╬пЁп╬я└п╬я─п╪п╟я┌п╫п╬п╧ п╦ п╪п╫п╬пЁп╬п╫п╟я├п╦п╬п╫п╟п╩я▄п╫п╬п╧\n"
+"п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦."
 
 #: template/./doc/localisation.sgml:323
 msgid "The good introduction into DocBook is"
-msgstr "Хорошее введение в DocBook"
+msgstr "п╔п╬я─п╬я┬п╣п╣ п╡п╡п╣п╢п╣п╫п╦п╣ п╡ DocBook"
 
 #: template/./doc/localisation.sgml:329
 msgid ""
 "A simple introduction into DocBook is\n"
 "<link linkend=\"writing-docbook\">here</link>."
 msgstr ""
-"Простое введение в DocBook доступно\n"
-"<link linkend=\"writing-docbook\">здесь</link>."
+"п÷я─п╬я│я┌п╬п╣ п╡п╡п╣п╢п╣п╫п╦п╣ п╡ DocBook п╢п╬я│я┌я┐п©п╫п╬\n"
+"<link linkend=\"writing-docbook\">п╥п╢п╣я│я▄</link>."
 
 #: template/./doc/localisation.sgml:334
 msgid "CLIP makefiles and .po manipulation utilities"
-msgstr "Утилиты CLIP для манипуляции .po файлами."
+msgstr "пёя┌п╦п╩п╦я┌я▀ CLIP п╢п╩я▐ п╪п╟п╫п╦п©я┐п╩я▐я├п╦п╦ .po я└п╟п╧п╩п╟п╪п╦."
 
 #: template/./doc/localisation.sgml:336
 msgid ""
@@ -394,9 +394,9 @@ msgid ""
 "is not so trivial, so we develop some helper programs to make\n"
 "our life a bit easier."
 msgstr ""
-"Создание и поддержка документации на нескольких языках является непростой "
-"задачей, поэтому мы разработали несколько программ для облегчения нашей "
-"жизни."
+"п║п╬п╥п╢п╟п╫п╦п╣ п╦ п©п╬п╢п╢п╣я─п╤п╨п╟ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ п╫п╟ п╫п╣я│п╨п╬п╩я▄п╨п╦я┘ я▐п╥я▀п╨п╟я┘ я▐п╡п╩я▐п╣я┌я│я▐ п╫п╣п©я─п╬я│я┌п╬п╧ "
+"п╥п╟п╢п╟я┤п╣п╧, п©п╬я█я┌п╬п╪я┐ п╪я▀ я─п╟п╥я─п╟п╠п╬я┌п╟п╩п╦ п╫п╣я│п╨п╬п╩я▄п╨п╬ п©я─п╬пЁя─п╟п╪п╪ п╢п╩я▐ п╬п╠п╩п╣пЁя┤п╣п╫п╦я▐ п╫п╟я┬п╣п╧ "
+"п╤п╦п╥п╫п╦."
 
 #: template/./doc/localisation.sgml:345
 msgid ""
@@ -404,26 +404,26 @@ msgid ""
 "extract all strings, delimited by start and stop strings, into\n"
 "output standard .po file."
 msgstr ""
-"Утилита <command>po_extr</command> обрабатывает заданные файлы,\n"
-"извлекает все строки, ограниченные заданными начальной и конечной\n"
-"строками, и выводит стантартный .po файл."
+"пёя┌п╦п╩п╦я┌п╟ <command>po_extr</command> п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣я┌ п╥п╟п╢п╟п╫п╫я▀п╣ я└п╟п╧п╩я▀,\n"
+"п╦п╥п╡п╩п╣п╨п╟п╣я┌ п╡я│п╣ я│я┌я─п╬п╨п╦, п╬пЁя─п╟п╫п╦я┤п╣п╫п╫я▀п╣ п╥п╟п╢п╟п╫п╫я▀п╪п╦ п╫п╟я┤п╟п╩я▄п╫п╬п╧ п╦ п╨п╬п╫п╣я┤п╫п╬п╧\n"
+"я│я┌я─п╬п╨п╟п╪п╦, п╦ п╡я▀п╡п╬п╢п╦я┌ я│я┌п╟п╫я┌п╟я─я┌п╫я▀п╧ .po я└п╟п╧п╩."
 
 #: template/./doc/localisation.sgml:350
 msgid ""
 "By default, as start string used <quote>&#095;&#040;</quote>,\n"
 "and as stop string <quote>&#041;&#095;</quote>."
 msgstr ""
-"По умолчанию, в качестве начальной используется строка <quote>&#095;&#040;</"
+"п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌, п╡ п╨п╟я┤п╣я│я┌п╡п╣ п╫п╟я┤п╟п╩я▄п╫п╬п╧ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ я│я┌я─п╬п╨п╟ <quote>&#095;&#040;</"
 "quote>,\n"
-"и в качестве конечной <quote>&#041;&#095;</quote>."
+"п╦ п╡ п╨п╟я┤п╣я│я┌п╡п╣ п╨п╬п╫п╣я┤п╫п╬п╧ <quote>&#041;&#095;</quote>."
 
 #: template/./doc/localisation.sgml:357
 msgid ""
 "The companion program is <command>po_subst</command>, which\n"
 "substitute translated values from .po files into source text."
 msgstr ""
-"Вторая программа - <command>po_subst</command>, подставляет\n"
-"переведенные строки из.po файла в исходный текст документа."
+"п▓я┌п╬я─п╟я▐ п©я─п╬пЁя─п╟п╪п╪п╟ - <command>po_subst</command>, п©п╬п╢я│я┌п╟п╡п╩я▐п╣я┌\n"
+"п©п╣я─п╣п╡п╣п╢п╣п╫п╫я▀п╣ я│я┌я─п╬п╨п╦ п╦п╥.po я└п╟п╧п╩п╟ п╡ п╦я│я┘п╬п╢п╫я▀п╧ я┌п╣п╨я│я┌ п╢п╬п╨я┐п╪п╣п╫я┌п╟."
 
 #: template/./doc/localisation.sgml:365
 msgid ""
@@ -432,8 +432,8 @@ msgid ""
 "building."
 msgstr ""
 "Makefile <command>$CLIPROOT/include/Makefile.tdoc</command>\n"
-"может быть использован в качестве включаемого файла для упрощения и "
-"унификации процесса создания документации."
+"п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫ п╡ п╨п╟я┤п╣я│я┌п╡п╣ п╡п╨п╩я▌я┤п╟п╣п╪п╬пЁп╬ я└п╟п╧п╩п╟ п╢п╩я▐ я┐п©я─п╬я┴п╣п╫п╦я▐ п╦ "
+"я┐п╫п╦я└п╦п╨п╟я├п╦п╦ п©я─п╬я├п╣я│я│п╟ я│п╬п╥п╢п╟п╫п╦я▐ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦."
 
 #: template/./doc/localisation.sgml:371
 msgid ""
@@ -443,43 +443,43 @@ msgid ""
 "will be ./html for HTML output, ./ps for Postscript output,\n"
 "./pdf for PDF output, ./text for text output."
 msgstr ""
-"Этот файл предполагает, что исходные .sgml файлы \n"
-"расположены в каталоге ./template, переведенные.po файлы располагаются в \n"
-"./po/&lt;sgml-file-name&gt;/*.po, и выходными каталогами являются\n"
-"./html для вывода HTML  ./ps для вывода Postscript,\n"
-"./pdf для вывода PDF output, ./text для текстового вывода."
+"п╜я┌п╬я┌ я└п╟п╧п╩ п©я─п╣п╢п©п╬п╩п╟пЁп╟п╣я┌, я┤я┌п╬ п╦я│я┘п╬п╢п╫я▀п╣ .sgml я└п╟п╧п╩я▀ \n"
+"я─п╟я│п©п╬п╩п╬п╤п╣п╫я▀ п╡ п╨п╟я┌п╟п╩п╬пЁп╣ ./template, п©п╣я─п╣п╡п╣п╢п╣п╫п╫я▀п╣.po я└п╟п╧п╩я▀ я─п╟я│п©п╬п╩п╟пЁп╟я▌я┌я│я▐ п╡ \n"
+"./po/&lt;sgml-file-name&gt;/*.po, п╦ п╡я▀я┘п╬п╢п╫я▀п╪п╦ п╨п╟я┌п╟п╩п╬пЁп╟п╪п╦ я▐п╡п╩я▐я▌я┌я│я▐\n"
+"./html п╢п╩я▐ п╡я▀п╡п╬п╢п╟ HTML  ./ps п╢п╩я▐ п╡я▀п╡п╬п╢п╟ Postscript,\n"
+"./pdf п╢п╩я▐ п╡я▀п╡п╬п╢п╟ PDF output, ./text п╢п╩я▐ я┌п╣п╨я│я┌п╬п╡п╬пЁп╬ п╡я▀п╡п╬п╢п╟."
 
 #: template/./doc/localisation.sgml:379
 msgid "Provided targets are:"
-msgstr "Целями make могут быть:"
+msgstr "п╕п╣п╩я▐п╪п╦ make п╪п╬пЁя┐я┌ п╠я▀я┌я▄:"
 
 #: template/./doc/localisation.sgml:381
 msgid "to merge sources and .po translations"
-msgstr "для слияния исходных текстов и .po трансляций"
+msgstr "п╢п╩я▐ я│п╩п╦я▐п╫п╦я▐ п╦я│я┘п╬п╢п╫я▀я┘ я┌п╣п╨я│я┌п╬п╡ п╦ .po я┌я─п╟п╫я│п╩я▐я├п╦п╧"
 
 #: template/./doc/localisation.sgml:382
 msgid "to produce translated SGML files"
-msgstr "для генерации переведенных файлов SGML"
+msgstr "п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ п©п╣я─п╣п╡п╣п╢п╣п╫п╫я▀я┘ я└п╟п╧п╩п╬п╡ SGML"
 
 #: template/./doc/localisation.sgml:383
 msgid "to generate documentation in HTML format"
-msgstr "для генерации документации в формате HTML"
+msgstr "п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ п╡ я└п╬я─п╪п╟я┌п╣ HTML"
 
 #: template/./doc/localisation.sgml:384
 msgid "to generate documentation in Postscript format"
-msgstr "для генерации документации в формате Postscript"
+msgstr "п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ п╡ я└п╬я─п╪п╟я┌п╣ Postscript"
 
 #: template/./doc/localisation.sgml:385
 msgid "to generate documentation in Adobe PDF format"
-msgstr "для генерации документации в формате Adobe PDF"
+msgstr "п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ п╡ я└п╬я─п╪п╟я┌п╣ Adobe PDF"
 
 #: template/./doc/localisation.sgml:386
 msgid "to generate documentation in TeX format"
-msgstr "для генерации документации в формате TeX"
+msgstr "п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ п╡ я└п╬я─п╪п╟я┌п╣ TeX"
 
 #: template/./doc/localisation.sgml:387
 msgid "to generate documentation in plain text format"
-msgstr "для генерации документации в формате простого текста"
+msgstr "п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ п╡ я└п╬я─п╪п╟я┌п╣ п©я─п╬я│я┌п╬пЁп╬ я┌п╣п╨я│я┌п╟"
 
 #: template/./doc/localisation.sgml:392
 msgid ""
@@ -487,6 +487,6 @@ msgid ""
 "which contain documentation in this layout (\"template doc, tdoc\"),\n"
 "and we have planes make it for all."
 msgstr ""
-"Часть пакетов CLIP уже имеет каталог <quote>tdoc</quote> directory,\n"
-"который содержит документацию в этом формате (\"template doc, tdoc\"),\n"
-"и мы планируем перевести всю документацию в этот формат."
+"п╖п╟я│я┌я▄ п©п╟п╨п╣я┌п╬п╡ CLIP я┐п╤п╣ п╦п╪п╣п╣я┌ п╨п╟я┌п╟п╩п╬пЁ <quote>tdoc</quote> directory,\n"
+"п╨п╬я┌п╬я─я▀п╧ я│п╬п╢п╣я─п╤п╦я┌ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦я▌ п╡ я█я┌п╬п╪ я└п╬я─п╪п╟я┌п╣ (\"template doc, tdoc\"),\n"
+"п╦ п╪я▀ п©п╩п╟п╫п╦я─я┐п╣п╪ п©п╣я─п╣п╡п╣я│я┌п╦ п╡я│я▌ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦я▌ п╡ я█я┌п╬я┌ я└п╬я─п╪п╟я┌."

@@ -5,21 +5,21 @@ $CATEGORY$
 $SUMMARY$
 	Convert string as "double"  to xClipper-numeric.
 $LANG_RU$
-	Преобразует строку c "double"-представлнием в xClipper-число.
+	п÷я─п╣п╬п╠я─п╟п╥я┐п╣я┌ я│я┌я─п╬п╨я┐ c "double"-п©я─п╣п╢я│я┌п╟п╡п╩п╫п╦п╣п╪ п╡ xClipper-я┤п╦я│п╩п╬.
 $SYNTAX$
      DSTRTON(<sString>) 	--> <nValue>
 $ARGUMENTS$
      <sString>	String, is the source string
 $LANG_RU$
-     <sString>	String, исходная строка
+     <sString>	String, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟
 $RETURNS$
      Returns the numeric value, what was converted from string with "double"  representation.
 $LANG_RU$
-     Возвращает числовое значение, сконвертированное из строки с "double" представлением.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, я│п╨п╬п╫п╡п╣я─я┌п╦я─п╬п╡п╟п╫п╫п╬п╣ п╦п╥ я│я┌я─п╬п╨п╦ я│ "double" п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦п╣п╪.
 $DESCRIPTION$
      DSTRTON() converts string <sString> to numeric values and returns it.
 $LANG_RU$
-     DSTRTON() преобразует строку <sString> в число и возвращает его.
+     DSTRTON() п©я─п╣п╬п╠я─п╟п╥я┐п╣я┌ я│я┌я─п╬п╨я┐ <sString> п╡ я┤п╦я│п╩п╬ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬.
 $EXAMPLES$
 
 fread(file,@str,8)<BR>
@@ -28,11 +28,11 @@ n=DSTRTON(str)
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

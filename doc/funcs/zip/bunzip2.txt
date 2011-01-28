@@ -5,28 +5,28 @@ $CATEGORY$
 $SUMMARY$
 	Uncompress string with BZIP2 alghoritm.
 $LANG_RU$
-	Распаковывает строку по BZIP2 алгоритму.
+	п═п╟я│п©п╟п╨п╬п╡я▀п╡п╟п╣я┌ я│я┌я─п╬п╨я┐ п©п╬ BZIP2 п╟п╩пЁп╬я─п╦я┌п╪я┐.
 $SYNTAX$
 	bUnZip2(<cData>) --> cResult
 $LANG_RU$
 $ARGUMENTS$
 	<cData> - data for uncompress.
 $LANG_RU$
-	<cData> - данные для распаковки.
+	<cData> - п╢п╟п╫п╫я▀п╣ п╢п╩я▐ я─п╟я│п©п╟п╨п╬п╡п╨п╦.
 $RETURNS$
 	bUnZip2() returns uncompressed string.
 $LANG_RU$
-	bUnZip2() возвращает распакованную строку.
+	bUnZip2() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╟я│п©п╟п╨п╬п╡п╟п╫п╫я┐я▌ я│я┌я─п╬п╨я┐.
 $DESCRIPTION$
 	Unompress string, compressed by bZip2().
 $LANG_RU$
-	Распаковывает строку, запакованную ранее bZip2().
+	п═п╟я│п©п╟п╨п╬п╡я▀п╡п╟п╣я┌ я│я┌я─п╬п╨я┐, п╥п╟п©п╟п╨п╬п╡п╟п╫п╫я┐я▌ я─п╟п╫п╣п╣ bZip2().
 $EXAMPLES$
 	cResult := bUnZip2(bZip2(space(1000)))
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
    bZip2()
 $AUTHOR$

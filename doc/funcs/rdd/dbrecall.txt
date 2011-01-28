@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Reinstate a record marked for deletion
 $LANG_RU$
-   Восстанавливает запись, помеченную для удаления.
+   п▓п╬я│я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╥п╟п©п╦я│я▄, п©п╬п╪п╣я┤п╣п╫п╫я┐я▌ п╢п╩я▐ я┐п╢п╟п╩п╣п╫п╦я▐.
 $SYNTAX$
      DBRECALL() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBRECALL() always returns NIL.
 $LANG_RU$
-     DBRECALL() всегда возвращает NIL.
+     DBRECALL() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBRECALL() causes the current record to be reinstated if it is marked
      for deletion.
@@ -21,11 +21,11 @@ $DESCRIPTION$
      DBRECALL() performs the same function as the RECALL command.  For more
      information, refer to the DELETE and RECALL commands.
 $LANG_RU$
-     DBRECALL() восстанавливает текущую запись, если она помечена для
-     удаления.
+     DBRECALL() п╡п╬я│я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я┌п╣п╨я┐я┴я┐я▌ п╥п╟п©п╦я│я▄, п╣я│п╩п╦ п╬п╫п╟ п©п╬п╪п╣я┤п╣п╫п╟ п╢п╩я▐
+     я┐п╢п╟п╩п╣п╫п╦я▐.
 
-     DBRECALL() выполняет те же функции, что и стандартная команда RECALL.
-     Более подробную информацию смотрите в команде RECALL.
+     DBRECALL() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ RECALL.
+     п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ RECALL.
 $EXAMPLES$
        The following example recalls a record if it is deleted and
 	attempts to lock the record if successful:

@@ -3,19 +3,19 @@ $CLASSNAME$
 $SUMMARY$
 	Class UISource
 $LANG_RU$
-	Класс UISource
+	п п╩п╟я│я│ UISource
 $ABOUT$
 	Source for widgets with drop-down or external list.
 $LANG_RU$
-	Источник данных для выпадающих или внешних списков.
+	п≤я│я┌п╬я┤п╫п╦п╨ п╢п╟п╫п╫я▀я┘ п╢п╩я▐ п╡я▀п©п╟п╢п╟я▌я┴п╦я┘ п╦п╩п╦ п╡п╫п╣я┬п╫п╦я┘ я│п©п╦я│п╨п╬п╡.
 $SYNTAX$
 	UISource(<source>)	--> UISource object.
 $LANG_RU$
-	UISource(<source>)	--> Объект UISource.
+	UISource(<source>)	--> п·п╠я┼п╣п╨я┌ UISource.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UISource".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UISource".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UISource".
 
 
 $METHODNAME$
@@ -23,11 +23,11 @@ $METHODNAME$
 $SUMMARY$
 	Constructor. Create source.
 $LANG_RU$
-	Конструктор. Создать источник.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╦я│я┌п╬я┤п╫п╦п╨.
 $SYNTAX$
 	UISource(<source>)	--> UISource object.
 $LANG_RU$
-	UISource(<source>)	--> Объект UISource.
+	UISource(<source>)	--> п·п╠я┼п╣п╨я┌ UISource.
 $ARGUMENTS$
 	<source>	- String, array of string or array of arrays. Source of values. If type 
 	of parameter is string it is external source (all operation required user-defined 
@@ -35,13 +35,13 @@ $ARGUMENTS$
 	is passed for each element is generated id (number of element from 1) as string. 
 	Array of arrays should contains at least pairs of { <text>, <id> }. 
 $LANG_RU$
-	<source>	- Строка, массив строк или массив массивов. Источник данных. 
-	Если передаётся строка, то для всех операций используется внешний источник 
-	через функцию <command>getAttributeValue(<source>,[<id>])</command>, 
-	определённую пользователем. Если передаётся массив строк, для каждого 
-	элемента генерируется идентификатор в виде строки (порядковый номер 
-	элемента, начиная с 1). Массив массивов должен содержать как минимум 
-	пары значений  { <текст>, <идентификатор> }.
+	<source>	- п║я┌я─п╬п╨п╟, п╪п╟я│я│п╦п╡ я│я┌я─п╬п╨ п╦п╩п╦ п╪п╟я│я│п╦п╡ п╪п╟я│я│п╦п╡п╬п╡. п≤я│я┌п╬я┤п╫п╦п╨ п╢п╟п╫п╫я▀я┘. 
+	п∙я│п╩п╦ п©п╣я─п╣п╢п╟я▒я┌я│я▐ я│я┌я─п╬п╨п╟, я┌п╬ п╢п╩я▐ п╡я│п╣я┘ п╬п©п╣я─п╟я├п╦п╧ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╡п╫п╣я┬п╫п╦п╧ п╦я│я┌п╬я┤п╫п╦п╨ 
+	я┤п╣я─п╣п╥ я└я┐п╫п╨я├п╦я▌ <command>getAttributeValue(<source>,[<id>])</command>, 
+	п╬п©я─п╣п╢п╣п╩я▒п╫п╫я┐я▌ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╪. п∙я│п╩п╦ п©п╣я─п╣п╢п╟я▒я┌я│я▐ п╪п╟я│я│п╦п╡ я│я┌я─п╬п╨, п╢п╩я▐ п╨п╟п╤п╢п╬пЁп╬ 
+	я█п╩п╣п╪п╣п╫я┌п╟ пЁп╣п╫п╣я─п╦я─я┐п╣я┌я│я▐ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡ п╡п╦п╢п╣ я│я┌я─п╬п╨п╦ (п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ 
+	я█п╩п╣п╪п╣п╫я┌п╟, п╫п╟я┤п╦п╫п╟я▐ я│ 1). п°п╟я│я│п╦п╡ п╪п╟я│я│п╦п╡п╬п╡ п╢п╬п╩п╤п╣п╫ я│п╬п╢п╣я─п╤п╟я┌я▄ п╨п╟п╨ п╪п╦п╫п╦п╪я┐п╪ 
+	п©п╟я─я▀ п╥п╫п╟я┤п╣п╫п╦п╧  { <я┌п╣п╨я│я┌>, <п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─> }.
 $ENDMETHOD$
 
 
@@ -50,17 +50,17 @@ $METHODNAME$
 $SUMMARY$
 	Get source list.
 $LANG_RU$
-	Получить список значений источника.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│п©п╦я│п╬п╨ п╥п╫п╟я┤п╣п╫п╦п╧ п╦я│я┌п╬я┤п╫п╦п╨п╟.
 $SYNTAX$
 	getList()	--> <list>
 $ARGUMENTS$
 	None.
 $LANG_RU$
-	Нет.
+	п²п╣я┌.
 $RETURNS$
 	<list>	- Array of pairs { <text>, <id> }.
 $LANG_RU$
-	<list>	- Массив пар значений в виде { <текст>, <идентификатор> }.
+	<list>	- п°п╟я│я│п╦п╡ п©п╟я─ п╥п╫п╟я┤п╣п╫п╦п╧ п╡ п╡п╦п╢п╣ { <я┌п╣п╨я│я┌>, <п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─> }.
 $ENDMETHOD$
 	
 
@@ -69,17 +69,17 @@ $METHODNAME$
 $SUMMARY$
 	Get id by position.
 $LANG_RU$
-	Получить идентификтор по порядковому номеру элемента.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╦п╢п╣п╫я┌п╦я└п╦п╨я┌п╬я─ п©п╬ п©п╬я─я▐п╢п╨п╬п╡п╬п╪я┐ п╫п╬п╪п╣я─я┐ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	getValue(<num>)	--> <id>
 $ARGUMENTS$
 	<num>	- Number or string. Position of element or id.
 $LANG_RU$
-	<num>	- Число или строка. Порядковый номер или идентификатор.
+	<num>	- п╖п╦я│п╩п╬ п╦п╩п╦ я│я┌я─п╬п╨п╟. п÷п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ п╦п╩п╦ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─.
 $RETURNS$
 	<id>	- String. Identifier of element. If position is not found NIL is returned.
 $LANG_RU$
-	<id>	- Строка. Идентификтор элмента. Если указан неверный номер, возвращается NIL.
+	<id>	- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨я┌п╬я─ я█п╩п╪п╣п╫я┌п╟. п∙я│п╩п╦ я┐п╨п╟п╥п╟п╫ п╫п╣п╡п╣я─п╫я▀п╧ п╫п╬п╪п╣я─, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ NIL.
 $ENDMETHOD$
 	
 	
@@ -88,17 +88,17 @@ $METHODNAME$
 $SUMMARY$
 	Get id by element text.
 $LANG_RU$
-	Получить идентификтор по тексту элемента.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╦п╢п╣п╫я┌п╦я└п╦п╨я┌п╬я─ п©п╬ я┌п╣п╨я│я┌я┐ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	getValueByText(<text>)	--> <id>
 $ARGUMENTS$
 	<text>	- String. Element text.
 $LANG_RU$
-	<text>	- Строка. Текст элемента.
+	<text>	- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ я█п╩п╣п╪п╣п╫я┌п╟.
 $RETURNS$
 	<id>	- String. Identifier of element. If text is not found NIL is returned.
 $LANG_RU$
-	<id>	- Строка. Идентификтор элмента. Если текст не найден, возвращается NIL.
+	<id>	- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨я┌п╬я─ я█п╩п╪п╣п╫я┌п╟. п∙я│п╩п╦ я┌п╣п╨я│я┌ п╫п╣ п╫п╟п╧п╢п╣п╫, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ NIL.
 $ENDMETHOD$
 
 
@@ -107,17 +107,17 @@ $METHODNAME$
 $SUMMARY$
 	Get position by id.
 $LANG_RU$
-	Получить позицию элемента по его идентификатору.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п©п╬п╥п╦я├п╦я▌ я█п╩п╣п╪п╣п╫я┌п╟ п©п╬ п╣пЁп╬ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐.
 $SYNTAX$
 	setValue(<id>)	--> <num>
 $ARGUMENTS$
 	<id>	- String. Identifier of element.
 $LANG_RU$
-	<id>	- Строка. Идентификтор элмента.
+	<id>	- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨я┌п╬я─ я█п╩п╪п╣п╫я┌п╟.
 $RETURNS$
 	<num>	- Number. Position of element or 0 if element with specified id is not found.
 $LANG_RU$
-	<num>	- Число. Порядковый номер элемента или 0 если элемент с указанным идентификатором не найден.
+	<num>	- п╖п╦я│п╩п╬. п÷п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ я█п╩п╣п╪п╣п╫я┌п╟ п╦п╩п╦ 0 п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌ я│ я┐п╨п╟п╥п╟п╫п╫я▀п╪ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ п╫п╣ п╫п╟п╧п╢п╣п╫.
 $ENDMETHOD$
 
 
@@ -126,17 +126,17 @@ $METHODNAME$
 $SUMMARY$
 	Get text by id.
 $LANG_RU$
-	Получить текст элемента по его идентификатору.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я┌п╣п╨я│я┌ я█п╩п╣п╪п╣п╫я┌п╟ п©п╬ п╣пЁп╬ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐.
 $SYNTAX$
 	getText(<id>)	--> <text>
 $ARGUMENTS$
 	<id>	- String. Identifier of element.
 $LANG_RU$
-	<id>	- Строка. Идентификтор элмента.
+	<id>	- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨я┌п╬я─ я█п╩п╪п╣п╫я┌п╟.
 $RETURNS$
 	<text>	- String. Element text. If id is not found NIL is returned.
 $LANG_RU$
-	<text>	- Строка. Текст элемента. Если идентификатор не найден, возвращается NIL.
+	<text>	- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ я█п╩п╣п╪п╣п╫я┌п╟. п∙я│п╩п╦ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╫п╣ п╫п╟п╧п╢п╣п╫, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ NIL.
 $ENDMETHOD$
 
 
@@ -149,11 +149,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UICHOICE UICOMBOBOX UITABLECOLUMN
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

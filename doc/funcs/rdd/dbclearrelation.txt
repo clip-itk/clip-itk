@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Clear active relations
 $LANG_RU$
-   Уничтожает активные связи.
+   пёп╫п╦я┤я┌п╬п╤п╟п╣я┌ п╟п╨я┌п╦п╡п╫я▀п╣ я│п╡я▐п╥п╦.
 $SYNTAX$
      DBCLEARRELATION() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBCLEARRELATION() always returns NIL.
 $LANG_RU$
-     DBCLEARRELATION() всегда возвращает NIL.
+     DBCLEARRELATION() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBCLEARRELATION() clears any active relations for the current work area.
 
@@ -21,12 +21,12 @@ $DESCRIPTION$
      RELATION TO command with no clauses specified.  For more information,
      refer to the SET RELATION command.
 $LANG_RU$
-     DBCLEARRELATION() уничтожает все активные связи для текущей рабочей
-     области.
+     DBCLEARRELATION() я┐п╫п╦я┤я┌п╬п╤п╟п╣я┌ п╡я│п╣ п╟п╨я┌п╦п╡п╫я▀п╣ я│п╡я▐п╥п╦ п╢п╩я▐ я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧
+     п╬п╠п╩п╟я│я┌п╦.
 
-     DBCLEARRELATION() выполняет те же функции, что и стандартная команда
-     SET RELATION TO без аргументов. Более подробную информацию смотрите в
-     описании команды SET RELATION.
+     DBCLEARRELATION() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟
+     SET RELATION TO п╠п╣п╥ п╟я─пЁя┐п╪п╣п╫я┌п╬п╡. п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡
+     п╬п©п╦я│п╟п╫п╦п╦ п╨п╬п╪п╟п╫п╢я▀ SET RELATION.
 $EXAMPLES$
        The following example sets a relation, lists data, and then
 	clears the relation:

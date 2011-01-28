@@ -3,40 +3,40 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIGrid
 $LANG_RU$
-	Класс UIGrid
+	п п╩п╟я│я│ UIGrid
 $ABOUT$
 	Class of grid for placement widgets.
 $LANG_RU$
-	Класс таблицы размещения виджетов.
+	п п╩п╟я│я│ я┌п╟п╠п╩п╦я├я▀ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╡.
 $SYNTAX$
 	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> UIGrid object
 $LANG_RU$
-	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> Объект UIGrid
+	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> п·п╠я┼п╣п╨я┌ UIGrid
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIGrid".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIGrid".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIGrid".
 
 $METHODNAME$
 	UIGrid()
 $SUMMARY$
 	Constructor. Create grid for placement widgets.
 $LANG_RU$
-	Конструктор. Создать таблицу размещения виджетов.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я┌п╟п╠п╩п╦я├я┐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╡.
 $SYNTAX$
 	UIGrid([<o>],<grow>,<gcol>,[<spacing>],[<padding>])	--> UIGrid object
 $ARGUMENTS$
-	<o>		- Widget objecеt. Widget in which grid is inserted.
+	<o>		- Widget objecп╣t. Widget in which grid is inserted.
 	<grow>		- Number. Number of rows in grid.
 	<gcol>		- Number. Number of columns in grid.
 	<spacing>	- Number. Space between grid cells in pixels (default is 0).
 	<padding>	- Number. Space between widget and cell border in pixels (default is 2).
 $LANG_RU$
-	<o>		- Объект виджета. Виджет, в который вставляется таблица.
-	<grow>		- Число. Количество строк в таблице.
-	<gcol>		- Число. Количество столбцов в таблице.
-	<spacing>	- Число. Расстояние в точках между ячейками в таблице (по умолчанию 0).
-	<padding>	- Число. Расстояние в точках между краем виджета и границей ячейки (по умолчанию 2).
+	<o>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п╡ п╨п╬я┌п╬я─я▀п╧ п╡я│я┌п╟п╡п╩я▐п╣я┌я│я▐ я┌п╟п╠п╩п╦я├п╟.
+	<grow>		- п╖п╦я│п╩п╬. п п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨ п╡ я┌п╟п╠п╩п╦я├п╣.
+	<gcol>		- п╖п╦я│п╩п╬. п п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌п╬п╩п╠я├п╬п╡ п╡ я┌п╟п╠п╩п╦я├п╣.
+	<spacing>	- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ я▐я┤п╣п╧п╨п╟п╪п╦ п╡ я┌п╟п╠п╩п╦я├п╣ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 0).
+	<padding>	- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ п╨я─п╟п╣п╪ п╡п╦п╢п╤п╣я┌п╟ п╦ пЁя─п╟п╫п╦я├п╣п╧ я▐я┤п╣п╧п╨п╦ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 2).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -44,7 +44,7 @@ $METHODNAME$
 $SUMMARY$
 	Add widget to grid.
 $LANG_RU$
-	Добавить виджет в таблицу.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╡п╦п╢п╤п╣я┌ п╡ я┌п╟п╠п╩п╦я├я┐.
 $SYNTAX$
 	add(<o>,<pos>,[<h_expand>],[<v_expand>])
 $ARGUMENTS$
@@ -53,10 +53,10 @@ $ARGUMENTS$
 	<h_expand>	- Boolean. Possibility of expand widget horizontally on window size changed.
 	<v_expand>	- Boolean. Possibility of expand widget vertically on window size changed.
 $LANG_RU$
-	<o>		- Объект виджета. Виджет, вставляемый в таблицу.
-	<pos>		- Cтрока. Адрес ячейки или диапазона ячеек для вставки виджета. Номер строки/диапазона строк отделяется от номера столбца/диапазона столбцов запятой. Диапазоны указываются через дефис. Нумерация строк начинается c 1 и осуществляется сверху, а нумерация столбцов тоже начинается с 1 и осуществляется слева. Например, размещение виджета в первой строке и столбцах 2..4 задаётся строкой: "1,2-4".
-	<h_expand>	- Логическое значение. Возможность растягивания виджета по горизонтали при изменении размеров окна.
-	<v_expand>	- Логическое значение. Возможность растягивания виджета по вертикали при изменении размеров окна.
+	<o>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п╡я│я┌п╟п╡п╩я▐п╣п╪я▀п╧ п╡ я┌п╟п╠п╩п╦я├я┐.
+	<pos>		- Cя┌я─п╬п╨п╟. п░п╢я─п╣я│ я▐я┤п╣п╧п╨п╦ п╦п╩п╦ п╢п╦п╟п©п╟п╥п╬п╫п╟ я▐я┤п╣п╣п╨ п╢п╩я▐ п╡я│я┌п╟п╡п╨п╦ п╡п╦п╢п╤п╣я┌п╟. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦/п╢п╦п╟п©п╟п╥п╬п╫п╟ я│я┌я─п╬п╨ п╬я┌п╢п╣п╩я▐п╣я┌я│я▐ п╬я┌ п╫п╬п╪п╣я─п╟ я│я┌п╬п╩п╠я├п╟/п╢п╦п╟п©п╟п╥п╬п╫п╟ я│я┌п╬п╩п╠я├п╬п╡ п╥п╟п©я▐я┌п╬п╧. п■п╦п╟п©п╟п╥п╬п╫я▀ я┐п╨п╟п╥я▀п╡п╟я▌я┌я│я▐ я┤п╣я─п╣п╥ п╢п╣я└п╦я│. п²я┐п╪п╣я─п╟я├п╦я▐ я│я┌я─п╬п╨ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ c 1 п╦ п╬я│я┐я┴п╣я│я┌п╡п╩я▐п╣я┌я│я▐ я│п╡п╣я─я┘я┐, п╟ п╫я┐п╪п╣я─п╟я├п╦я▐ я│я┌п╬п╩п╠я├п╬п╡ я┌п╬п╤п╣ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ я│ 1 п╦ п╬я│я┐я┴п╣я│я┌п╡п╩я▐п╣я┌я│я▐ я│п╩п╣п╡п╟. п²п╟п©я─п╦п╪п╣я─, я─п╟п╥п╪п╣я┴п╣п╫п╦п╣ п╡п╦п╢п╤п╣я┌п╟ п╡ п©п╣я─п╡п╬п╧ я│я┌я─п╬п╨п╣ п╦ я│я┌п╬п╩п╠я├п╟я┘ 2..4 п╥п╟п╢п╟я▒я┌я│я▐ я│я┌я─п╬п╨п╬п╧: "1,2-4".
+	<h_expand>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п▓п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ я─п╟я│я┌я▐пЁп╦п╡п╟п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╟ п©п╬ пЁп╬я─п╦п╥п╬п╫я┌п╟п╩п╦ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ я─п╟п╥п╪п╣я─п╬п╡ п╬п╨п╫п╟.
+	<v_expand>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п▓п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ я─п╟я│я┌я▐пЁп╦п╡п╟п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╟ п©п╬ п╡п╣я─я┌п╦п╨п╟п╩п╦ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ я─п╟п╥п╪п╣я─п╬п╡ п╬п╨п╫п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -64,13 +64,13 @@ $METHODNAME$
 $SUMMARY$
 	Set space between widgets in grid.
 $LANG_RU$
-	Установить расстояние между виджетами в таблице.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟я│я│я┌п╬я▐п╫п╦п╣ п╪п╣п╤п╢я┐ п╡п╦п╢п╤п╣я┌п╟п╪п╦ п╡ я┌п╟п╠п╩п╦я├п╣.
 $SYNTAX$
 	setSpacing(<space>)
 $ARGUMENTS$
 	<space>		- Number. Space between widgets in pixels.
 $LANG_RU$
-	<space>		- Число. Расстояние в точках между виджетами в таблице.
+	<space>		- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ п╡п╦п╢п╤п╣я┌п╟п╪п╦ п╡ я┌п╟п╠п╩п╦я├п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -78,13 +78,13 @@ $METHODNAME$
 $SUMMARY$
 	Set grid border width.
 $LANG_RU$
-	Установить ширину границы таблицы.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┬п╦я─п╦п╫я┐ пЁя─п╟п╫п╦я├я▀ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	setPadding(<space>)
 $ARGUMENTS$
 	<space>		- Number. Width of grid border in pixels.
 $LANG_RU$
-	<space>		- Число. Ширина границы таблицы в точках.
+	<space>		- п╖п╦я│п╩п╬. п╗п╦я─п╦п╫п╟ пЁя─п╟п╫п╦я├я▀ я┌п╟п╠п╩п╦я├я▀ п╡ я┌п╬я┤п╨п╟я┘.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -92,7 +92,7 @@ $METHODNAME$
 $SUMMARY$
 	Set alignment of widgets in grid.
 $LANG_RU$
-	Установить выравнивание элементов в таблице.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ я┌п╟п╠п╩п╦я├п╣.
 $SYNTAX$
 	setAlignment(<align>,<valign>)
 $ARGUMENTS$
@@ -105,14 +105,14 @@ $ARGUMENTS$
 	vertically</listitem><listitem><command>ALIGN_BOTTOM</command> &mdash; aligns with the 
 	bottom</listitem></itemizedlist>
 $LANG_RU$
-	<align>		- Число. Горизонтальное выравнивание элементов. Значения: <itemizedlist mark="bullet"><listitem><command>ALIGN_LEFT</command> &mdash; выравнивание по левому краю 
-	(значение по умолчанию)</listitem><listitem><command>ALIGN_CENTER</command> &mdash; выравнивание по 
-	центру</listitem><listitem><command>ALIGN_RIGHT</command> &mdash; выравнивание по правому 
-	краю</listitem></itemizedlist>
-	<valign>	- Число. Вертикальное выравнивание элементов. Значения: <itemizedlist mark="bullet"><listitem><command>ALIGN_TOP</command> &mdash; выравнивание по верхнему краю 
-	(значение по умолчанию)</listitem><listitem><command>ALIGN_MIDDLE</command> &mdash; выравнивание по 
-	середине</listitem><listitem><command>ALIGN_BOTTOM</command> &mdash; выравнивание по нижнему 
-	краю</listitem></itemizedlist>
+	<align>		- п╖п╦я│п╩п╬. п⌠п╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫п╬п╣ п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╬п╡. п≈п╫п╟я┤п╣п╫п╦я▐: <itemizedlist mark="bullet"><listitem><command>ALIGN_LEFT</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п╩п╣п╡п╬п╪я┐ п╨я─п╟я▌ 
+	(п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌)</listitem><listitem><command>ALIGN_CENTER</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ 
+	я├п╣п╫я┌я─я┐</listitem><listitem><command>ALIGN_RIGHT</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п©я─п╟п╡п╬п╪я┐ 
+	п╨я─п╟я▌</listitem></itemizedlist>
+	<valign>	- п╖п╦я│п╩п╬. п▓п╣я─я┌п╦п╨п╟п╩я▄п╫п╬п╣ п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╬п╡. п≈п╫п╟я┤п╣п╫п╦я▐: <itemizedlist mark="bullet"><listitem><command>ALIGN_TOP</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п╡п╣я─я┘п╫п╣п╪я┐ п╨я─п╟я▌ 
+	(п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌)</listitem><listitem><command>ALIGN_MIDDLE</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ 
+	я│п╣я─п╣п╢п╦п╫п╣</listitem><listitem><command>ALIGN_BOTTOM</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п╫п╦п╤п╫п╣п╪я┐ 
+	п╨я─п╟я▌</listitem></itemizedlist>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -120,13 +120,13 @@ $METHODNAME$
 $SUMMARY$
 	Set equals cells size for widget placement.
 $LANG_RU$
-	Установить равными размеры мест для размещения элементов в таблице.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟п╡п╫я▀п╪п╦ я─п╟п╥п╪п╣я─я▀ п╪п╣я│я┌ п╢п╩я▐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ я┌п╟п╠п╩п╦я├п╣.
 $SYNTAX$
 	setEqualSize(<isEqual>)
 $ARGUMENTS$
 	<isEqual>	- Boolean. Flag for equal cells size in grid.
 $LANG_RU$
-	<isEqual>	- Логическое значение. Флаг установки равных размеров для элементов в таблице.
+	<isEqual>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ я┐я│я┌п╟п╫п╬п╡п╨п╦ я─п╟п╡п╫я▀я┘ я─п╟п╥п╪п╣я─п╬п╡ п╢п╩я▐ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ я┌п╟п╠п╩п╦я├п╣.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -139,10 +139,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

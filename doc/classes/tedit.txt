@@ -6,20 +6,20 @@ $SUMMARY$
 	clipboard, formated text and more. TEXTEDIT is a base class for
 	function memoedit and class MEDIT.
 $LANG_RU$
-	Класс предназначен для работы с текстом. Чтение/запись в файл или
-	строку, редактирование данных, манипуляции с блоками, форматирование
-	текста. TEXTEDIT используется как базовый класс для функции
-	memoedit() и для класса MEDIT.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ я┌п╣п╨я│я┌п╬п╪. п╖я┌п╣п╫п╦п╣/п╥п╟п©п╦я│я▄ п╡ я└п╟п╧п╩ п╦п╩п╦
+	я│я┌я─п╬п╨я┐, я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╢п╟п╫п╫я▀я┘, п╪п╟п╫п╦п©я┐п╩я▐я├п╦п╦ я│ п╠п╩п╬п╨п╟п╪п╦, я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦п╣
+	я┌п╣п╨я│я┌п╟. TEXTEDIT п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╨п╟п╨ п╠п╟п╥п╬п╡я▀п╧ п╨п╩п╟я│я│ п╢п╩я▐ я└я┐п╫п╨я├п╦п╦
+	memoedit() п╦ п╢п╩я▐ п╨п╩п╟я│я│п╟ MEDIT.
 $ABOUT$
 	Class are destined to manipulating text data - load/save from
 	file/string, insert, delete, manipulation with marked data and
 	clipboard, formated text and more. TEXTEDIT is a base class for
 	function memoedit and class MEDIT.
 $LANG_RU$
-	Класс предназначен для работы с текстом. Чтение/запись в файл или
-	строку, редактирование данных, манипуляции с блоками, форматирование
-	текста. TEXTEDIT используется как базовый класс для функции
-	memoedit() и для класса MEDIT.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ я┌п╣п╨я│я┌п╬п╪. п╖я┌п╣п╫п╦п╣/п╥п╟п©п╦я│я▄ п╡ я└п╟п╧п╩ п╦п╩п╦
+	я│я┌я─п╬п╨я┐, я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╣ п╢п╟п╫п╫я▀я┘, п╪п╟п╫п╦п©я┐п╩я▐я├п╦п╦ я│ п╠п╩п╬п╨п╟п╪п╦, я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦п╣
+	я┌п╣п╨я│я┌п╟. TEXTEDIT п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╨п╟п╨ п╠п╟п╥п╬п╡я▀п╧ п╨п╩п╟я│я│ п╢п╩я▐ я└я┐п╫п╨я├п╦п╦
+	memoedit() п╦ п╢п╩я▐ п╨п╩п╟я│я│п╟ MEDIT.
 $SYNTAX$
 	TextEditNew(<Lrow>, <Lcol>, <Rrow>, <Rcol>, [<color>]) 	--> new TEXTEDIT object
 $ATTRIBUTES$
@@ -70,55 +70,55 @@ $ATTRIBUTES$
 
 $LANG_RU$
 	<ClassName> 	TEXTEDIT
-	<Path>		String, путь к редактируемому файлую
-	<FileName>   	String, имя файла.
-	<ColorSpec>	String, цветовая спецификация. Если параметр <color> не задан,
-			атрибут принимает значение SetColor()
+	<Path>		String, п©я┐я┌я▄ п╨ я─п╣п╢п╟п╨я┌п╦я─я┐п╣п╪п╬п╪я┐ я└п╟п╧п╩я┐я▌
+	<FileName>   	String, п╦п╪я▐ я└п╟п╧п╩п╟.
+	<ColorSpec>	String, я├п╡п╣я┌п╬п╡п╟я▐ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▐. п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ <color> п╫п╣ п╥п╟п╢п╟п╫,
+			п╟я┌я─п╦п╠я┐я┌ п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ SetColor()
 
 			"clr1, clr2, clr3, clr4"
-			clr1 - основной цвет символа
-			clr2 - цвет строки EOF
-			clr3 - цвет выделенных строк/подстрок
-			clr4 - цвет найденой подстроки
+			clr1 - п╬я│п╫п╬п╡п╫п╬п╧ я├п╡п╣я┌ я│п╦п╪п╡п╬п╩п╟
+			clr2 - я├п╡п╣я┌ я│я┌я─п╬п╨п╦ EOF
+			clr3 - я├п╡п╣я┌ п╡я▀п╢п╣п╩п╣п╫п╫я▀я┘ я│я┌я─п╬п╨/п©п╬п╢я│я┌я─п╬п╨
+			clr4 - я├п╡п╣я┌ п╫п╟п╧п╢п╣п╫п╬п╧ п©п╬п╢я│я┌я─п╬п╨п╦
 
-	<nTop> 		координаты области редакторования TEXTEDIT, задается параметром <Lrow>
-	<nLeft>         координаты области редакторования TEXTEDIT, задается параметром <Lcol>
-	<nBottom>       координаты области редакторования TEXTEDIT, задается параметром <Rrow>
-	<nRight>        координаты области редакторования TEXTEDIT, задается параметром <Rcol>
-	<Lines>		Numeric, количество строк в редактируемом объекте TEXTEDIT
-	<Line>		Numeric, номер текущей строки.
-	<Pos>		Numeric, позиция курсора в строке.
-	<ColWin>	Numeric, позиция курсора в строке в области редактирования.
-	<RowWin>	Numeric, позиция курсора - строка - в области редактирования.
-	<Updated>	Logical, TRUE, если данные изменены и изменения не сохранены.
-	<MarginLeft>	Numeric, левая граница текста, по умолчанию TE_MARGIN_LEFT
-	<MarginRight>	Numeric, правая граница, по умолчанию TE_MARGIN_RIGHT
-	<TabSize>	Numeric, шаг табуляции, по умолчанию TE_TABSIZE
-	<Hyphen>	Logical, если TRUE, то при форматировании текства в словах возможен перено, по умолчанию TE_HYPHEN
-	<MaxStrings>	Numeric, максимальное количество строк в буфере редактирования TEXTEDIT, по умолчанию TE_MAXSTRINGS
-	<TabPack>	Logical, если TRUE, символы "пробел" по возможности упакуются в <Tab>
-			По умолчанию set("edit_tabpack")
-	<InFocus>	Logical, если  TRUE, объект в фокусе.
-	<MkBlock>	Logical, если TRUE, отмечен какой-либо блок.
-	<StrBlock>	Logical, если TRUE, отмечен строчный блок.
-	<RectBlock>	Logical, если TRUE, отмечен прямоугольный блок.
-	<KoordBlock>	Array of numeric value, координаты блока в буфере редактирования  {<nTop>, <nLeft>, <nBottom>, <nRight>} или
+	<nTop> 		п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╬я─п╬п╡п╟п╫п╦я▐ TEXTEDIT, п╥п╟п╢п╟п╣я┌я│я▐ п©п╟я─п╟п╪п╣я┌я─п╬п╪ <Lrow>
+	<nLeft>         п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╬я─п╬п╡п╟п╫п╦я▐ TEXTEDIT, п╥п╟п╢п╟п╣я┌я│я▐ п©п╟я─п╟п╪п╣я┌я─п╬п╪ <Lcol>
+	<nBottom>       п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╬я─п╬п╡п╟п╫п╦я▐ TEXTEDIT, п╥п╟п╢п╟п╣я┌я│я▐ п©п╟я─п╟п╪п╣я┌я─п╬п╪ <Rrow>
+	<nRight>        п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╬я─п╬п╡п╟п╫п╦я▐ TEXTEDIT, п╥п╟п╢п╟п╣я┌я│я▐ п©п╟я─п╟п╪п╣я┌я─п╬п╪ <Rcol>
+	<Lines>		Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨ п╡ я─п╣п╢п╟п╨я┌п╦я─я┐п╣п╪п╬п╪ п╬п╠я┼п╣п╨я┌п╣ TEXTEDIT
+	<Line>		Numeric, п╫п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦.
+	<Pos>		Numeric, п©п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟ п╡ я│я┌я─п╬п╨п╣.
+	<ColWin>	Numeric, п©п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟ п╡ я│я┌я─п╬п╨п╣ п╡ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
+	<RowWin>	Numeric, п©п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟ - я│я┌я─п╬п╨п╟ - п╡ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
+	<Updated>	Logical, TRUE, п╣я│п╩п╦ п╢п╟п╫п╫я▀п╣ п╦п╥п╪п╣п╫п╣п╫я▀ п╦ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╫п╣ я│п╬я┘я─п╟п╫п╣п╫я▀.
+	<MarginLeft>	Numeric, п╩п╣п╡п╟я▐ пЁя─п╟п╫п╦я├п╟ я┌п╣п╨я│я┌п╟, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TE_MARGIN_LEFT
+	<MarginRight>	Numeric, п©я─п╟п╡п╟я▐ пЁя─п╟п╫п╦я├п╟, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TE_MARGIN_RIGHT
+	<TabSize>	Numeric, я┬п╟пЁ я┌п╟п╠я┐п╩я▐я├п╦п╦, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TE_TABSIZE
+	<Hyphen>	Logical, п╣я│п╩п╦ TRUE, я┌п╬ п©я─п╦ я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦п╦ я┌п╣п╨я│я┌п╡п╟ п╡ я│п╩п╬п╡п╟я┘ п╡п╬п╥п╪п╬п╤п╣п╫ п©п╣я─п╣п╫п╬, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TE_HYPHEN
+	<MaxStrings>	Numeric, п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬п╣ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨ п╡ п╠я┐я└п╣я─п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ TEXTEDIT, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TE_MAXSTRINGS
+	<TabPack>	Logical, п╣я│п╩п╦ TRUE, я│п╦п╪п╡п╬п╩я▀ "п©я─п╬п╠п╣п╩" п©п╬ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌п╦ я┐п©п╟п╨я┐я▌я┌я│я▐ п╡ <Tab>
+			п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ set("edit_tabpack")
+	<InFocus>	Logical, п╣я│п╩п╦  TRUE, п╬п╠я┼п╣п╨я┌ п╡ я└п╬п╨я┐я│п╣.
+	<MkBlock>	Logical, п╣я│п╩п╦ TRUE, п╬я┌п╪п╣я┤п╣п╫ п╨п╟п╨п╬п╧-п╩п╦п╠п╬ п╠п╩п╬п╨.
+	<StrBlock>	Logical, п╣я│п╩п╦ TRUE, п╬я┌п╪п╣я┤п╣п╫ я│я┌я─п╬я┤п╫я▀п╧ п╠п╩п╬п╨.
+	<RectBlock>	Logical, п╣я│п╩п╦ TRUE, п╬я┌п╪п╣я┤п╣п╫ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧ п╠п╩п╬п╨.
+	<KoordBlock>	Array of numeric value, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╠п╩п╬п╨п╟ п╡ п╠я┐я└п╣я─п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐  {<nTop>, <nLeft>, <nBottom>, <nRight>} п╦п╩п╦
 			{<nBottom>, <nRight>, <nTop>, <nLeft>}
-	<LenUndo>	Numeric, размер буфера отката (undo). По умолчанию 100.
-	<Charset>	String, кодировка.
-	<EofString>	String, текст строки <end of file>. По умолчанию <EOF>
-	<lEofString>	Logical, если TRUE, показывать строку <EofString> по достижени
-			конца буфера редактирования.
-	<HighLightColor>MAP, АМ, содержаший номера строк отображаемых специально заданным цветом.
-	<Nstyle>	Logical, если TRUE, каждая строка текста в области редактирования содержит порядковый номер.
-	<EdBuffer>	Array, array of string to edit. Буфер редактирования.
+	<LenUndo>	Numeric, я─п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ п╬я┌п╨п╟я┌п╟ (undo). п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 100.
+	<Charset>	String, п╨п╬п╢п╦я─п╬п╡п╨п╟.
+	<EofString>	String, я┌п╣п╨я│я┌ я│я┌я─п╬п╨п╦ <end of file>. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <EOF>
+	<lEofString>	Logical, п╣я│п╩п╦ TRUE, п©п╬п╨п╟п╥я▀п╡п╟я┌я▄ я│я┌я─п╬п╨я┐ <EofString> п©п╬ п╢п╬я│я┌п╦п╤п╣п╫п╦
+			п╨п╬п╫я├п╟ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
+	<HighLightColor>MAP, п░п°, я│п╬п╢п╣я─п╤п╟я┬п╦п╧ п╫п╬п╪п╣я─п╟ я│я┌я─п╬п╨ п╬я┌п╬п╠я─п╟п╤п╟п╣п╪я▀я┘ я│п©п╣я├п╦п╟п╩я▄п╫п╬ п╥п╟п╢п╟п╫п╫я▀п╪ я├п╡п╣я┌п╬п╪.
+	<Nstyle>	Logical, п╣я│п╩п╦ TRUE, п╨п╟п╤п╢п╟я▐ я│я┌я─п╬п╨п╟ я┌п╣п╨я│я┌п╟ п╡ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я│п╬п╢п╣я─п╤п╦я┌ п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─.
+	<EdBuffer>	Array, array of string to edit. п▒я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
 
 $METHODNAME$
 	TextEditNew()
 $SUMMARY$
 	TEXTEDIT object constructor.
 $LANG_RU$
-	Конструктор объекта TEXTEDIT.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟ TEXTEDIT.
 $SYNTAX$
 	TextEditNew(<Lrow>, <Lcol>, <Rrow>, <Rcol>, [<color>]) 	--> new TEXTEDIT object
 $ARGUMENTS$
@@ -129,23 +129,23 @@ $ARGUMENTS$
 	<Rcol> a TEXTEDIT coordinates.
 	<color> a TEXTEDIT color string.
 $LANG_RU$
-	<Lrow>  координаты TEXTEDIT.
-	<Lcol>  координаты TEXTEDIT.
-	<Rrow>  координаты TEXTEDIT.
-	<Rcol>  координаты TEXTEDIT.
-	<color> TEXTEDIT цветовая спецификация.
+	<Lrow>  п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ TEXTEDIT.
+	<Lcol>  п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ TEXTEDIT.
+	<Rrow>  п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ TEXTEDIT.
+	<Rcol>  п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ TEXTEDIT.
+	<color> TEXTEDIT я├п╡п╣я┌п╬п╡п╟я▐ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▐.
 $RETURNS$
 	Method returns new TEXTEDIT object.
 $LANG_RU$
-	Метод возвращает новый объект TEXTEDIT.
+	п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ TEXTEDIT.
 $DESCRIPTION$
 	TextEditNew() is constructs and returns new TEXTEDIT object.
 	That class can be used to edit, view, control some data - string or
 	file.
 $LANG_RU$
-	TextEditNew() создает и возвращает объект TEXTEDIT.
-	Объект этого класса может быть использован для просмотра, редактирования,
-	управления текстовыми данными.
+	TextEditNew() я│п╬п╥п╢п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ TEXTEDIT.
+	п·п╠я┼п╣п╨я┌ я█я┌п╬пЁп╬ п╨п╩п╟я│я│п╟ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫ п╢п╩я▐ п©я─п╬я│п╪п╬я┌я─п╟, я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐,
+	я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я┌п╣п╨я│я┌п╬п╡я▀п╪п╦ п╢п╟п╫п╫я▀п╪п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -153,28 +153,28 @@ $METHODNAME$
 $SUMMARY$
 	Goes down one line.
 $LANG_RU$
-	Перемещение вниз на одну строку.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п╫п╦п╥ п╫п╟ п╬п╢п╫я┐ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	Down([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Down() is skipped editor buffer on the new position <::Line>+1.
 	The <::Line> and <::RowWin> attributes increased by 1. If <::RowWin>
 	is more then  bottom boundary of viewport, <::RowWin> take value
 	<::nBottom>-<::nTop>+1 and text in viewport scrolled up on 1 line.
 $LANG_RU$
-	Down() перемещает курсор на новую строку <::Line>+1.
-	Атрибуты <::Line> и <::RowWin> увеличиваются на 1. Если <::RowWin>
-	больше чем нижняя граница области редактирования, то <::RowWin> принимает значение
-	<::nBottom>-<::nTop>+1 и текст в области редактирования скроллируется вверх на 1 строку.
+	Down() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐ <::Line>+1.
+	п░я┌я─п╦п╠я┐я┌я▀ <::Line> п╦ <::RowWin> я┐п╡п╣п╩п╦я┤п╦п╡п╟я▌я┌я│я▐ п╫п╟ 1. п∙я│п╩п╦ <::RowWin>
+	п╠п╬п╩я▄я┬п╣ я┤п╣п╪ п╫п╦п╤п╫я▐я▐ пЁя─п╟п╫п╦я├п╟ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐, я┌п╬ <::RowWin> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣
+	<::nBottom>-<::nTop>+1 п╦ я┌п╣п╨я│я┌ п╡ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я│п╨я─п╬п╩п╩п╦я─я┐п╣я┌я│я▐ п╡п╡п╣я─я┘ п╫п╟ 1 я│я┌я─п╬п╨я┐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -182,18 +182,18 @@ $METHODNAME$
 $SUMMARY$
 	Goes up one line.
 $LANG_RU$
-	Перемещение вверх на одну строку.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п╡п╣я─я┘ п╫п╟ п╬п╢п╫я┐ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	Up([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Up() is skipped editor buffer on the new position <::Line>-1.
 	The <::Line> and <::RowWin> attributes decreased by 1. If <::RowWin>
@@ -201,10 +201,10 @@ $DESCRIPTION$
 	and text in viewport scrolled down on 1 line.
 
 $LANG_RU$
-	Up() перемещает курсор на новую строку <::Line>-1.
-	Атрибуты <::Line> и <::RowWin> уменьшаются на 1. Если <::RowWin>
-	меньше 1, <::RowWin> принимает значение 1 и текст в области редактирования
-	скроллируется вниз на 1 строку.
+	Up() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐ <::Line>-1.
+	п░я┌я─п╦п╠я┐я┌я▀ <::Line> п╦ <::RowWin> я┐п╪п╣п╫я▄я┬п╟я▌я┌я│я▐ п╫п╟ 1. п∙я│п╩п╦ <::RowWin>
+	п╪п╣п╫я▄я┬п╣ 1, <::RowWin> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ 1 п╦ я┌п╣п╨я│я┌ п╡ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐
+	я│п╨я─п╬п╩п╩п╦я─я┐п╣я┌я│я▐ п╡п╫п╦п╥ п╫п╟ 1 я│я┌я─п╬п╨я┐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -212,19 +212,19 @@ $METHODNAME$
 $SUMMARY$
 	Goes left one column.
 $LANG_RU$
-	Перемещение влево на одну позицию.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п╩п╣п╡п╬ п╫п╟ п╬п╢п╫я┐ п©п╬п╥п╦я├п╦я▌.
 $SYNTAX$
 	Left([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Left() goes left one column.
 	The <::Pos> and <::ColWin> attributes decreased by 1. If <::ColWin>
@@ -232,10 +232,10 @@ $DESCRIPTION$
 	and text in viewport scrolled one column to right.
 
 $LANG_RU$
-	Left() перемещает курсор на 1 позицию влево.
-	Атрибуты <::Pos> и <::ColWin> уменьшаются на  1. если <::ColWin>
-	меньше 1, <::ColWin> принимает значение  1  и текст в области редактирования
-	скроллируется вправо на 1.
+	Left() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ 1 п©п╬п╥п╦я├п╦я▌ п╡п╩п╣п╡п╬.
+	п░я┌я─п╦п╠я┐я┌я▀ <::Pos> п╦ <::ColWin> я┐п╪п╣п╫я▄я┬п╟я▌я┌я│я▐ п╫п╟  1. п╣я│п╩п╦ <::ColWin>
+	п╪п╣п╫я▄я┬п╣ 1, <::ColWin> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣  1  п╦ я┌п╣п╨я│я┌ п╡ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐
+	я│п╨я─п╬п╩п╩п╦я─я┐п╣я┌я│я▐ п╡п©я─п╟п╡п╬ п╫п╟ 1.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -243,18 +243,18 @@ $METHODNAME$
 $SUMMARY$
 	Goes right one column.
 $LANG_RU$
-	Перемещение вправо на 1 позицию.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п©я─п╟п╡п╬ п╫п╟ 1 п©п╬п╥п╦я├п╦я▌.
 $SYNTAX$
 	Right([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Вовращает NIL.
+	п▓п╬п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Right() goes right one column.
 	The <::Pos> and <::ColWin> attributes increased by 1. If <::ColWin>
@@ -262,10 +262,10 @@ $DESCRIPTION$
 	<::nRight>-<nLeft> + 1 and text in viewport scrolled one column to left.
 
 $LANG_RU$
-	Right() перемещает курсор вправо на 1 позицию.
-	Атрибуты <::Pos> и <::ColWin> увеличиваются на 1. Если <::ColWin>
-	больше чем правая граница области редактирования, <::ColWin> принимает значение
-	<::nRight>-<nLeft> + 1 и текст в области редактирования скроллируется влево на 1 колонку.
+	Right() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╡п©я─п╟п╡п╬ п╫п╟ 1 п©п╬п╥п╦я├п╦я▌.
+	п░я┌я─п╦п╠я┐я┌я▀ <::Pos> п╦ <::ColWin> я┐п╡п╣п╩п╦я┤п╦п╡п╟я▌я┌я│я▐ п╫п╟ 1. п∙я│п╩п╦ <::ColWin>
+	п╠п╬п╩я▄я┬п╣ я┤п╣п╪ п©я─п╟п╡п╟я▐ пЁя─п╟п╫п╦я├п╟ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐, <::ColWin> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣
+	<::nRight>-<nLeft> + 1 п╦ я┌п╣п╨я│я┌ п╡ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я│п╨я─п╬п╩п╩п╦я─я┐п╣я┌я│я▐ п╡п╩п╣п╡п╬ п╫п╟ 1 п╨п╬п╩п╬п╫п╨я┐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -273,28 +273,28 @@ $METHODNAME$
 $SUMMARY$
 	Goes left one word.
 $LANG_RU$
-	Перемещение влево на одно слово.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п╩п╣п╡п╬ п╫п╟ п╬п╢п╫п╬ я│п╩п╬п╡п╬.
 
 $SYNTAX$
 	WordLeft([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	WordLeft() moves cursor to begin left word from current word.
 	The <::Pos> and <::ColWin> attributes takes new value corresponded
 	first character new word.
 
 $LANG_RU$
-	WordLeft() перемещает курсор на начало левого слова от текущего.
-	Атрибуты <::Pos> и <::ColWin> принимают значения соответстующие
-	позиции первого символа в слове.
+	WordLeft() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╟я┤п╟п╩п╬ п╩п╣п╡п╬пЁп╬ я│п╩п╬п╡п╟ п╬я┌ я┌п╣п╨я┐я┴п╣пЁп╬.
+	п░я┌я─п╦п╠я┐я┌я▀ <::Pos> п╦ <::ColWin> п©я─п╦п╫п╦п╪п╟я▌я┌ п╥п╫п╟я┤п╣п╫п╦я▐ я│п╬п╬я┌п╡п╣я┌я│я┌я┐я▌я┴п╦п╣
+	п©п╬п╥п╦я├п╦п╦ п©п╣я─п╡п╬пЁп╬ я│п╦п╪п╡п╬п╩п╟ п╡ я│п╩п╬п╡п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -302,27 +302,27 @@ $METHODNAME$
 $SUMMARY$
 	Goes right one word.
 $LANG_RU$
-	Перемещение вправо на одно слово.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п©я─п╟п╡п╬ п╫п╟ п╬п╢п╫п╬ я│п╩п╬п╡п╬.
 $SYNTAX$
 	WordRight([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	WordRight() moves cursor to begin right word from current word.
 	The <::Pos> and <::ColWin> attributes takes new value corresponded
 	first character new word.
 
 $LANG_RU$
-	WordRight() перемещает курсор на начало правого слова от текущего.
-	Атрибуты <::Pos> и <::ColWin> принимают значения соответстующие
-	позиции первого символа в новом слове.
+	WordRight() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╟я┤п╟п╩п╬ п©я─п╟п╡п╬пЁп╬ я│п╩п╬п╡п╟ п╬я┌ я┌п╣п╨я┐я┴п╣пЁп╬.
+	п░я┌я─п╦п╠я┐я┌я▀ <::Pos> п╦ <::ColWin> п©я─п╦п╫п╦п╪п╟я▌я┌ п╥п╫п╟я┤п╣п╫п╦я▐ я│п╬п╬я┌п╡п╣я┌я│я┌я┐я▌я┴п╦п╣
+	п©п╬п╥п╦я├п╦п╦ п©п╣я─п╡п╬пЁп╬ я│п╦п╪п╡п╬п╩п╟ п╡ п╫п╬п╡п╬п╪ я│п╩п╬п╡п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -330,28 +330,28 @@ $METHODNAME$
 $SUMMARY$
 	Goes to the last string of editor buffer.
 $LANG_RU$
-	Перемещение на последнюю строку буфера редактирования.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п©п╬я│п╩п╣п╢п╫я▌я▌ я│я┌я─п╬п╨я┐ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
 $SYNTAX$
 	Bottom([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Bottom() is scrolled data to the last string of editor buffer
 	(last element of <::EdBuffer>).
 	The <::Line> attribute set to <::Lines>
 	 and <::RowWin>  set to <::nBottom>-<::nTop>.
 $LANG_RU$
-	Bottom() перемещает указатель на последнюю строку
-	буфера редактирования.
-	Атрибут <::Line> принимает значение равное <::Lines>,
-	а <::RowWin> значение, равное <::nBottom>-<::nTop>.
+	Bottom() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╬я│п╩п╣п╢п╫я▌я▌ я│я┌я─п╬п╨я┐
+	п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
+	п░я┌я─п╦п╠я┐я┌ <::Line> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я─п╟п╡п╫п╬п╣ <::Lines>,
+	п╟ <::RowWin> п╥п╫п╟я┤п╣п╫п╦п╣, я─п╟п╡п╫п╬п╣ <::nBottom>-<::nTop>.
 
 $ENDMETHOD$
 
@@ -360,24 +360,24 @@ $METHODNAME$
 $SUMMARY$
 	Goes to the first string of editor buffer.
 $LANG_RU$
-	Перемещение на начало.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п╫п╟я┤п╟п╩п╬.
 $SYNTAX$
 	Top([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Top() is scrolled data to the first string of editor buffer.
 	The <::Line> and <::RowWin> attributes set to 1.
 $LANG_RU$
-	Top() перемещает указатель на первую строку буфера редактирования.
-	Атрибуты  <::Line> и <::RowWin> устанавливаются равными 1.
+	Top() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╣я─п╡я┐я▌ я│я┌я─п╬п╨я┐ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
+	п░я┌я─п╦п╠я┐я┌я▀  <::Line> п╦ <::RowWin> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟я▌я┌я│я▐ я─п╟п╡п╫я▀п╪п╦ 1.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -385,27 +385,27 @@ $METHODNAME$
 $SUMMARY$
 	Goes to the first line postion.
 $LANG_RU$
-	Перемещение на начало строки.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п╫п╟я┤п╟п╩п╬ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	Home([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Home() is scrolled data to the first character not equal <space> of current line <::Line>.
 
 	The second call this method moves cursor to begin line.
 $LANG_RU$
-	Home() скроллирует текст на первый отличный от пробела символ текущей строки <::Line>.
+	Home() я│п╨я─п╬п╩п╩п╦я─я┐п╣я┌ я┌п╣п╨я│я┌ п╫п╟ п©п╣я─п╡я▀п╧ п╬я┌п╩п╦я┤п╫я▀п╧ п╬я┌ п©я─п╬п╠п╣п╩п╟ я│п╦п╪п╡п╬п╩ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ <::Line>.
 
-	Повторный вызов метода для этой же строки приводит к перемещению курсора
-	на начало строки.
+	п÷п╬п╡я┌п╬я─п╫я▀п╧ п╡я▀п╥п╬п╡ п╪п╣я┌п╬п╢п╟ п╢п╩я▐ я█я┌п╬п╧ п╤п╣ я│я┌я─п╬п╨п╦ п©я─п╦п╡п╬п╢п╦я┌ п╨ п©п╣я─п╣п╪п╣я┴п╣п╫п╦я▌ п╨я┐я─я│п╬я─п╟
+	п╫п╟ п╫п╟я┤п╟п╩п╬ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 
@@ -414,24 +414,24 @@ $METHODNAME$
 $SUMMARY$
 	Goes to the last line postion.
 $LANG_RU$
-	Перемещение в конец строки.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡ п╨п╬п╫п╣я├ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	End([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	End() is scrolled data to the end current line <::Line>.
 	The <::Pos> attribute sets to len(<::Edbuffer[::Line]>)+1.
 $LANG_RU$
-	End() перемещает курсор в конец текущей строки <::Line>.
-	Атрибут <::Pos> принимает значение len(<::Edbuffer[::Line]>)+1.
+	End() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╡ п╨п╬п╫п╣я├ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ <::Line>.
+	п░я┌я─п╦п╠я┐я┌ <::Pos> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ len(<::Edbuffer[::Line]>)+1.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -439,28 +439,28 @@ $METHODNAME$
 $SUMMARY$
 	Goes down one page.
 $LANG_RU$
-	Перемещение вниз на одну страницу.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п╫п╦п╥ п╫п╟ п╬п╢п╫я┐ я│я┌я─п╟п╫п╦я├я┐.
 $SYNTAX$
 	PageDown([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	PageDown() is skipped editor buffer on the new position <::Line>+<::nBottom>-<nTop>.
 	The <::Line> attribute increased by <::nBottom>-<nTop>.
 	Data in viewport scrolled up on <::nBottom>-<nTop> line.
 $LANG_RU$
-	PageDown() перемещает курсор с текущей строки на новую строку
-	с номером <::Line>+<::nBottom>-<nTop>.
+	PageDown() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ я│ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╫п╟ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐
+	я│ п╫п╬п╪п╣я─п╬п╪ <::Line>+<::nBottom>-<nTop>.
 
-	Атрибут <::Line> увеличивается на  <::nBottom>-<nTop> и текст в окне
-	редактирования скроллируется вверх на <::nBottom>-<nTop> строк.
+	п░я┌я─п╦п╠я┐я┌ <::Line> я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌я│я▐ п╫п╟  <::nBottom>-<nTop> п╦ я┌п╣п╨я│я┌ п╡ п╬п╨п╫п╣
+	я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я│п╨я─п╬п╩п╩п╦я─я┐п╣я┌я│я▐ п╡п╡п╣я─я┘ п╫п╟ <::nBottom>-<nTop> я│я┌я─п╬п╨.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -468,29 +468,29 @@ $METHODNAME$
 $SUMMARY$
 	Goes up one page.
 $LANG_RU$
-	Перемещение вверх на одну страницу.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п╡п╣я─я┘ п╫п╟ п╬п╢п╫я┐ я│я┌я─п╟п╫п╦я├я┐.
 $SYNTAX$
 	PageUp([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	PageUp() is skipped editor buffer on the new position <::Line>-<::nBottom>-<nTop>.
 	The <::Line> attribute decreased by <::nBottom>-<nTop>.
 	Data in viewport scrolled down on <::nBottom>-<nTop> line.
 
 $LANG_RU$
-	PageUp() перемещает курсор с текущей строки на новую строку
-	с номером <::Line>-<::nBottom>-<nTop>.
+	PageUp() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ я│ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╫п╟ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐
+	я│ п╫п╬п╪п╣я─п╬п╪ <::Line>-<::nBottom>-<nTop>.
 
-	Атрибут <::Line> уменьшается на  <::nBottom>-<nTop> и текст в окне
-	редактирования скроллируется вниз на <::nBottom>-<nTop> строк.
+	п░я┌я─п╦п╠я┐я┌ <::Line> я┐п╪п╣п╫я▄я┬п╟п╣я┌я│я▐ п╫п╟  <::nBottom>-<nTop> п╦ я┌п╣п╨я│я┌ п╡ п╬п╨п╫п╣
+	я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я│п╨я─п╬п╩п╩п╦я─я┐п╣я┌я│я▐ п╡п╫п╦п╥ п╫п╟ <::nBottom>-<nTop> я│я┌я─п╬п╨.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -498,26 +498,26 @@ $METHODNAME$
 $SUMMARY$
 	Simple handle key.
 $LANG_RU$
-	Обработчик кодов.
+	п·п╠я─п╟п╠п╬я┌я┤п╦п╨ п╨п╬п╢п╬п╡.
 $SYNTAX$
 	HandleKey(<nKey>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
 	<nKey> - Numeric, specified in <inkey.ch> key code
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<nKey> - Numeric, описанный в <inkey.ch> код клавиши.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<nKey> - Numeric, п╬п©п╦я│п╟п╫п╫я▀п╧ п╡ <inkey.ch> п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if key will be processed else returns FALSE.
 $LANG_RU$
-	Возвращает TRUE если код был обработан и FALSE в противном случае.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╨п╬п╢ п╠я▀п╩ п╬п╠я─п╟п╠п╬я┌п╟п╫ п╦ FALSE п╡ п©я─п╬я┌п╦п╡п╫п╬п╪ я│п╩я┐я┤п╟п╣.
 $DESCRIPTION$
 	HandleKey() is taked key code and try processed operation equal this
 	code (Moves up, down, left, right and more).
 $LANG_RU$
-	HandleKey() получает код клавиши и пытается выполнить операцию,
-	соответствующую коду(например, перемещение вверх, вниз и прочее)
+	HandleKey() п©п╬п╩я┐я┤п╟п╣я┌ п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦ п╦ п©я▀я┌п╟п╣я┌я│я▐ п╡я▀п©п╬п╩п╫п╦я┌я▄ п╬п©п╣я─п╟я├п╦я▌,
+	я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴я┐я▌ п╨п╬п╢я┐(п╫п╟п©я─п╦п╪п╣я─, п©п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п╡п╣я─я┘, п╡п╫п╦п╥ п╦ п©я─п╬я┤п╣п╣)
 
 $ENDMETHOD$
 
@@ -526,7 +526,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to specified line.
 $LANG_RU$
-	Перемещение на заданную строку.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п╥п╟п╢п╟п╫п╫я┐я▌ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	GotoLine(<nLine>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
@@ -534,12 +534,12 @@ $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<nLine> - Numeric, номер строки.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<nLine> - Numeric, п╫п╬п╪п╣я─ я│я┌я─п╬п╨п╦.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns TRUE if <nLine> >=1 and <nLine> <= <::Lines> else return FALSE.
 $LANG_RU$
-	Возвращает TRUE если <nLine> >=1 и <nLine> <= <::Lines>, иначе возвращает FALSE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ <nLine> >=1 п╦ <nLine> <= <::Lines>, п╦п╫п╟я┤п╣ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 $DESCRIPTION$
 	GotoLine() is moved cursor to the new row position <nLine>
 	if <nLine> between 1 and <::Lines>. editor buffer scrolled to the new
@@ -547,9 +547,9 @@ $DESCRIPTION$
 
 	In other cursor not moved and method returns FALSE.
 $LANG_RU$
-	GotoLine() перемещает курсор на новую строку с номером <nLine>
-	если <nLine> в пределах  1 и <::Lines>.
-	Атрибут  <::Line> принимает значение <nLine>.
+	GotoLine() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐ я│ п╫п╬п╪п╣я─п╬п╪ <nLine>
+	п╣я│п╩п╦ <nLine> п╡ п©я─п╣п╢п╣п╩п╟я┘  1 п╦ <::Lines>.
+	п░я┌я─п╦п╠я┐я┌  <::Line> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ <nLine>.
 
 $ENDMETHOD$
 
@@ -558,7 +558,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to specified column.
 $LANG_RU$
-	Перемещение на новую колонку.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п╫п╬п╡я┐я▌ п╨п╬п╩п╬п╫п╨я┐.
 $SYNTAX$
 	GotoPos(<nPos>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
@@ -566,12 +566,12 @@ $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<nPos> - Numeric, номер новой колонки.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<nPos> - Numeric, п╫п╬п╪п╣я─ п╫п╬п╡п╬п╧ п╨п╬п╩п╬п╫п╨п╦.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns TRUE if <nPos> >1 else return FALSE.
 $LANG_RU$
-	Возвращает TRUE если <nPos> >1, иначе FALSE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ <nPos> >1, п╦п╫п╟я┤п╣ FALSE.
 $DESCRIPTION$
 	GotoPos() is moved cursor to the new column position <nPos>.
 	editor buffer scrolled to the new position.
@@ -579,8 +579,8 @@ $DESCRIPTION$
 
 	In other cursor not moved and method returns FALSE.
 $LANG_RU$
-	GotoPos() перемещает курсор в текущей строке <::Line> на новую колонку <nPos>.
-	Атрибут <::Pos> принимает значение <nPos>.
+	GotoPos() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╡ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╣ <::Line> п╫п╟ п╫п╬п╡я┐я▌ п╨п╬п╩п╬п╫п╨я┐ <nPos>.
+	п░я┌я─п╦п╠я┐я┌ <::Pos> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ <nPos>.
 
 $ENDMETHOD$
 
@@ -589,7 +589,7 @@ $METHODNAME$
 $SUMMARY$
 	Finds string into editor buffer.
 $LANG_RU$
-	Поиск подстроки.
+	п÷п╬п╦я│п╨ п©п╬п╢я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	Find(<oFind>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
@@ -597,13 +597,13 @@ $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
-	выражение, а также параметры поиска.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<oFind> - FIND object, п╬п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╦я│п╨п╬п╪я┐я▌ я│я┌я─п╬п╨я┐ п╦п╩п╦ я─п╣пЁя┐п╩я▐я─п╫п╬п╣
+	п╡я▀я─п╟п╤п╣п╫п╦п╣, п╟ я┌п╟п╨п╤п╣ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns TRUE if searches string is found.
 $LANG_RU$
-	Возвращает TRUE если искомая строка/выражение найдена.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╦я│п╨п╬п╪п╟я▐ я│я┌я─п╬п╨п╟/п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╟.
 $DESCRIPTION$
 	Find() is make the search string or regular expression in editor buffer.
 	The <oFind> contain searching parameters(expression, direct, case-sensitive and the like).
@@ -613,12 +613,12 @@ $DESCRIPTION$
 	If find is success, method returns TRUE. In other returns FALSE.
 
 $LANG_RU$
-	Find() осуществляет поиск подстроки или регулярного выражения в тексте.
-	<oFind> содержит параметры поиска(выражение, направление, регистр и прочие).
-	Если выражение найдено, курсор перемещается на начало найденого слова.
-	Это слово выделяется специальным цветом  (<clr4> из <::ColorSpec>).
+	Find() п╬я│я┐я┴п╣я│я┌п╡п╩я▐п╣я┌ п©п╬п╦я│п╨ п©п╬п╢я│я┌я─п╬п╨п╦ п╦п╩п╦ я─п╣пЁя┐п╩я▐я─п╫п╬пЁп╬ п╡я▀я─п╟п╤п╣п╫п╦я▐ п╡ я┌п╣п╨я│я┌п╣.
+	<oFind> я│п╬п╢п╣я─п╤п╦я┌ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟(п╡я▀я─п╟п╤п╣п╫п╦п╣, п╫п╟п©я─п╟п╡п╩п╣п╫п╦п╣, я─п╣пЁп╦я│я┌я─ п╦ п©я─п╬я┤п╦п╣).
+	п∙я│п╩п╦ п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╬, п╨я┐я─я│п╬я─ п©п╣я─п╣п╪п╣я┴п╟п╣я┌я│я▐ п╫п╟ п╫п╟я┤п╟п╩п╬ п╫п╟п╧п╢п╣п╫п╬пЁп╬ я│п╩п╬п╡п╟.
+	п╜я┌п╬ я│п╩п╬п╡п╬ п╡я▀п╢п╣п╩я▐п╣я┌я│я▐ я│п©п╣я├п╦п╟п╩я▄п╫я▀п╪ я├п╡п╣я┌п╬п╪  (<clr4> п╦п╥ <::ColorSpec>).
 
-	Если поиск был успешен, метод возвращает TRUE, иначе возвращает FALSE.
+	п∙я│п╩п╦ п©п╬п╦я│п╨ п╠я▀п╩ я┐я│п©п╣я┬п╣п╫, п╪п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╦п╫п╟я┤п╣ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 
 $ENDMETHOD$
 
@@ -627,32 +627,32 @@ $METHODNAME$
 $SUMMARY$
 	Continue search forward.
 $LANG_RU$
-	Продолжение поиска вперед по тексту.
+	п÷я─п╬п╢п╬п╩п╤п╣п╫п╦п╣ п©п╬п╦я│п╨п╟ п╡п©п╣я─п╣п╢ п©п╬ я┌п╣п╨я│я┌я┐.
 $SYNTAX$
 	FindNext(<oFind>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
 	<oFind> - FIND object, the object contain searches string and parameters.
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
-	выражение, а также параметры поиска.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<oFind> - FIND object, п╬п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╦я│п╨п╬п╪я┐я▌ я│я┌я─п╬п╨я┐ п╦п╩п╦ я─п╣пЁя┐п╩я▐я─п╫п╬п╣
+	п╡я▀я─п╟п╤п╣п╫п╦п╣, п╟ я┌п╟п╨п╤п╣ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if searches string is found.
 $LANG_RU$
-	Возвращает TRUE если строка/выражение найдена.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я│я┌я─п╬п╨п╟/п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╟.
 $DESCRIPTION$
 	FindNext() is continued search started in <::Find()> to forward.
 	The <oFind> contain searching parameters(expression, case-sensitive and the like).
 	The attribute <::Direct> of <oFind> sets to 1.
 	If expression found cursor moved to the founded word.
 $LANG_RU$
-	FindNext() продолжает поиск начатый методом <::Find()> вперед по тексту.
-	<oFind> содержит параметры поиска(выражение, регистр и прочие).
-	Атрибут <::Direct> объекта <oFind> устанавливается равным 1.
-	Если выражение найдено, курсор перемещается на начало найденого слова.
-	Это слово выделяется специальным цветом  (<clr4> из <::ColorSpec>).
+	FindNext() п©я─п╬п╢п╬п╩п╤п╟п╣я┌ п©п╬п╦я│п╨ п╫п╟я┤п╟я┌я▀п╧ п╪п╣я┌п╬п╢п╬п╪ <::Find()> п╡п©п╣я─п╣п╢ п©п╬ я┌п╣п╨я│я┌я┐.
+	<oFind> я│п╬п╢п╣я─п╤п╦я┌ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟(п╡я▀я─п╟п╤п╣п╫п╦п╣, я─п╣пЁп╦я│я┌я─ п╦ п©я─п╬я┤п╦п╣).
+	п░я┌я─п╦п╠я┐я┌ <::Direct> п╬п╠я┼п╣п╨я┌п╟ <oFind> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ я─п╟п╡п╫я▀п╪ 1.
+	п∙я│п╩п╦ п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╬, п╨я┐я─я│п╬я─ п©п╣я─п╣п╪п╣я┴п╟п╣я┌я│я▐ п╫п╟ п╫п╟я┤п╟п╩п╬ п╫п╟п╧п╢п╣п╫п╬пЁп╬ я│п╩п╬п╡п╟.
+	п╜я┌п╬ я│п╩п╬п╡п╬ п╡я▀п╢п╣п╩я▐п╣я┌я│я▐ я│п©п╣я├п╦п╟п╩я▄п╫я▀п╪ я├п╡п╣я┌п╬п╪  (<clr4> п╦п╥ <::ColorSpec>).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -660,21 +660,21 @@ $METHODNAME$
 $SUMMARY$
 	Continue search backward.
 $LANG_RU$
-	Продолжение поиска назад по тексту.
+	п÷я─п╬п╢п╬п╩п╤п╣п╫п╦п╣ п©п╬п╦я│п╨п╟ п╫п╟п╥п╟п╢ п©п╬ я┌п╣п╨я│я┌я┐.
 $SYNTAX$
 	FindPrev(<oFind>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
 	<oFind> - FIND object, the object contain searches string and parameters.
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
-	выражение, а также параметры поиска.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<oFind> - FIND object, п╬п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╦я│п╨п╬п╪я┐я▌ я│я┌я─п╬п╨я┐ п╦п╩п╦ я─п╣пЁя┐п╩я▐я─п╫п╬п╣
+	п╡я▀я─п╟п╤п╣п╫п╦п╣, п╟ я┌п╟п╨п╤п╣ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if searches string is found.
 $LANG_RU$
-	Возвращает TRUE если строка/выражение найдена.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я│я┌я─п╬п╨п╟/п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╟.
 $DESCRIPTION$
 	FindNext() is continued search started in <::Find()> to forward.
 	The <oFind> contain searching parameters(expression, case-sensitive and the like).
@@ -682,11 +682,11 @@ $DESCRIPTION$
 	If expression found cursor moved to the founded word.
 
 $LANG_RU$
-	FindPrev() продолжает поиск начатый методом <::Find()> назад по тексту.
-	<oFind> содержит параметры поиска(выражение, регистр и прочие).
-	Атрибут <::Direct> объекта <oFind> устанавливается равным 2.
-	Если выражение найдено, курсор перемещается на начало найденого слова.
-	Это слово выделяется специальным цветом  (<clr4> из <::ColorSpec>).
+	FindPrev() п©я─п╬п╢п╬п╩п╤п╟п╣я┌ п©п╬п╦я│п╨ п╫п╟я┤п╟я┌я▀п╧ п╪п╣я┌п╬п╢п╬п╪ <::Find()> п╫п╟п╥п╟п╢ п©п╬ я┌п╣п╨я│я┌я┐.
+	<oFind> я│п╬п╢п╣я─п╤п╦я┌ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟(п╡я▀я─п╟п╤п╣п╫п╦п╣, я─п╣пЁп╦я│я┌я─ п╦ п©я─п╬я┤п╦п╣).
+	п░я┌я─п╦п╠я┐я┌ <::Direct> п╬п╠я┼п╣п╨я┌п╟ <oFind> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ я─п╟п╡п╫я▀п╪ 2.
+	п∙я│п╩п╦ п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╬, п╨я┐я─я│п╬я─ п©п╣я─п╣п╪п╣я┴п╟п╣я┌я│я▐ п╫п╟ п╫п╟я┤п╟п╩п╬ п╫п╟п╧п╢п╣п╫п╬пЁп╬ я│п╩п╬п╡п╟.
+	п╜я┌п╬ я│п╩п╬п╡п╬ п╡я▀п╢п╣п╩я▐п╣я┌я│я▐ я│п©п╣я├п╦п╟п╩я▄п╫я▀п╪ я├п╡п╣я┌п╬п╪  (<clr4> п╦п╥ <::ColorSpec>).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -694,21 +694,21 @@ $METHODNAME$
 $SUMMARY$
 	Find with replace string into editor buffer.
 $LANG_RU$
-	Поиск с заменой.
+	п÷п╬п╦я│п╨ я│ п╥п╟п╪п╣п╫п╬п╧.
 $SYNTAX$
 	Replace(<oFind>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
 	<oFind> - FIND object, the object contain searches string and parameters.
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<oFind> - FIND object, объект, содержащий искомую строку или регулярное
-	выражение, а также параметры поиска.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<oFind> - FIND object, п╬п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╦я│п╨п╬п╪я┐я▌ я│я┌я─п╬п╨я┐ п╦п╩п╦ я─п╣пЁя┐п╩я▐я─п╫п╬п╣
+	п╡я▀я─п╟п╤п╣п╫п╦п╣, п╟ я┌п╟п╨п╤п╣ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if searches string is found.
 $LANG_RU$
-	Возвращает TRUE если строка/выражение найдена.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я│я┌я─п╬п╨п╟/п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╟.
 $DESCRIPTION$
 	Replace() is make the search string or regular expression in editor buffer.
 	The <oFind> contain searching parameters(searchin expression, replaced string, direct, case-sensitive and the like).
@@ -718,10 +718,10 @@ $DESCRIPTION$
 	If operation is success, method returns TRUE. In other returns FALSE.
 
 $LANG_RU$
-	Replace() ищет строку или выражение в тексте.
-	Объект <oFind> содержит параметры поиска (искомое выражение, выражение для замены, направление поиска и прочее).
-	Если выражение найдено, оно будет заменено на строку или выражение <oFind:Rstring>. Эта подстрока
-	будет отмечена специальным цветом (<clr4> из <::ColorSpec>).
+	Replace() п╦я┴п╣я┌ я│я┌я─п╬п╨я┐ п╦п╩п╦ п╡я▀я─п╟п╤п╣п╫п╦п╣ п╡ я┌п╣п╨я│я┌п╣.
+	п·п╠я┼п╣п╨я┌ <oFind> я│п╬п╢п╣я─п╤п╦я┌ п©п╟я─п╟п╪п╣я┌я─я▀ п©п╬п╦я│п╨п╟ (п╦я│п╨п╬п╪п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣, п╡я▀я─п╟п╤п╣п╫п╦п╣ п╢п╩я▐ п╥п╟п╪п╣п╫я▀, п╫п╟п©я─п╟п╡п╩п╣п╫п╦п╣ п©п╬п╦я│п╨п╟ п╦ п©я─п╬я┤п╣п╣).
+	п∙я│п╩п╦ п╡я▀я─п╟п╤п╣п╫п╦п╣ п╫п╟п╧п╢п╣п╫п╬, п╬п╫п╬ п╠я┐п╢п╣я┌ п╥п╟п╪п╣п╫п╣п╫п╬ п╫п╟ я│я┌я─п╬п╨я┐ п╦п╩п╦ п╡я▀я─п╟п╤п╣п╫п╦п╣ <oFind:Rstring>. п╜я┌п╟ п©п╬п╢я│я┌я─п╬п╨п╟
+	п╠я┐п╢п╣я┌ п╬я┌п╪п╣я┤п╣п╫п╟ я│п©п╣я├п╦п╟п╩я▄п╫я▀п╪ я├п╡п╣я┌п╬п╪ (<clr4> п╦п╥ <::ColorSpec>).
 
 $ENDMETHOD$
 
@@ -730,7 +730,7 @@ $METHODNAME$
 $SUMMARY$
 	Take word specified by position line and column.
 $LANG_RU$
-	Дать текущее слово.
+	п■п╟я┌я▄ я┌п╣п╨я┐я┴п╣п╣ я│п╩п╬п╡п╬.
 $SYNTAX$
 	CurWord([<nPos>], [nLine>],[ <lUndo>]) 	--> sCurrentWord
 $ARGUMENTS$
@@ -741,13 +741,13 @@ $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<nPos> - Numeric, исходная колонка в строке <nLine>. Если не передан, то		<::Pos>
-	<nLine> - Numeric, исходная строка. Если параметр не передан, то <::Line>
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<nPos> - Numeric, п╦я│я┘п╬п╢п╫п╟я▐ п╨п╬п╩п╬п╫п╨п╟ п╡ я│я┌я─п╬п╨п╣ <nLine>. п∙я│п╩п╦ п╫п╣ п©п╣я─п╣п╢п╟п╫, я┌п╬		<::Pos>
+	<nLine> - Numeric, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟. п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ п©п╣я─п╣п╢п╟п╫, я┌п╬ <::Line>
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns curren word in specified position column and line.
 $LANG_RU$
-	Возвращает слово, определенное <nLine> и <nPos>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╩п╬п╡п╬, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ <nLine> п╦ <nPos>.
 $DESCRIPTION$
 	CurWord() is searched word by position <nLine> and <nPos> and return it if
 	found. Oher return empty string.
@@ -755,11 +755,11 @@ $DESCRIPTION$
 	Word it is sequential of symbols without space and comma <,> and point <.>
 
 $LANG_RU$
-	CurWord() ищет слово в заданных координатах <nLine>, <nPos>  и возвращает
-	его если найдет. В противном случае возвращается пустая строка.
+	CurWord() п╦я┴п╣я┌ я│п╩п╬п╡п╬ п╡ п╥п╟п╢п╟п╫п╫я▀я┘ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟я┘ <nLine>, <nPos>  п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+	п╣пЁп╬ п╣я│п╩п╦ п╫п╟п╧п╢п╣я┌. п▓ п©я─п╬я┌п╦п╡п╫п╬п╪ я│п╩я┐я┤п╟п╣ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ п©я┐я│я┌п╟я▐ я│я┌я─п╬п╨п╟.
 
-	"Слово" определяется как последовательность символов исключая пробелы,
-	запятые и точки.
+	"п║п╩п╬п╡п╬" п╬п©я─п╣п╢п╣п╩я▐п╣я┌я│я▐ п╨п╟п╨ п©п╬я│п╩п╣п╢п╬п╡п╟я┌п╣п╩я▄п╫п╬я│я┌я▄ я│п╦п╪п╡п╬п╩п╬п╡ п╦я│п╨п╩я▌я┤п╟я▐ п©я─п╬п╠п╣п╩я▀,
+	п╥п╟п©я▐я┌я▀п╣ п╦ я┌п╬я┤п╨п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -767,7 +767,7 @@ $METHODNAME$
 $SUMMARY$
 	Take previous word of word specified by position line and column.
 $LANG_RU$
-	Предыдущее слово.
+	п÷я─п╣п╢я▀п╢я┐я┴п╣п╣ я│п╩п╬п╡п╬.
 $SYNTAX$
 	PrevWord([<nPos>], [nLine>],[ <lUndo>]) 	--> sPrevWord
 $ARGUMENTS$
@@ -778,20 +778,20 @@ $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<nPos> - Numeric, исходная колонка в строке <nLine>. Если не передан, то		<::Pos>
-	<nLine> - Numeric, исходная строка. Если параметр не передан, то <::Line>
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<nPos> - Numeric, п╦я│я┘п╬п╢п╫п╟я▐ п╨п╬п╩п╬п╫п╨п╟ п╡ я│я┌я─п╬п╨п╣ <nLine>. п∙я│п╩п╦ п╫п╣ п©п╣я─п╣п╢п╟п╫, я┌п╬		<::Pos>
+	<nLine> - Numeric, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟. п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ п©п╣я─п╣п╢п╟п╫, я┌п╬ <::Line>
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns previous word of word specified with column and line.
 $LANG_RU$
-	Возвращает слово, предшествующее заданному слову в координатах <nLine>, <nPos>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╩п╬п╡п╬, п©я─п╣п╢я┬п╣я│я┌п╡я┐я▌я┴п╣п╣ п╥п╟п╢п╟п╫п╫п╬п╪я┐ я│п╩п╬п╡я┐ п╡ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟я┘ <nLine>, <nPos>
 $DESCRIPTION$
 	PrevWord() is searched word preceding of word specified <nLine> and <nPos>
 	and return it if found. Oher return empty string.
 $LANG_RU$
-	PrevWord() ищет  предшествующее слово заданному в координатах <nLine>, <nPos>
-	и возвращает его если найдет. В противном случае PrevWord() возвращает пустую
-	строку.
+	PrevWord() п╦я┴п╣я┌  п©я─п╣п╢я┬п╣я│я┌п╡я┐я▌я┴п╣п╣ я│п╩п╬п╡п╬ п╥п╟п╢п╟п╫п╫п╬п╪я┐ п╡ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟я┘ <nLine>, <nPos>
+	п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬ п╣я│п╩п╦ п╫п╟п╧п╢п╣я┌. п▓ п©я─п╬я┌п╦п╡п╫п╬п╪ я│п╩я┐я┤п╟п╣ PrevWord() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я┐я│я┌я┐я▌
+	я│я┌я─п╬п╨я┐.
 
 $ENDMETHOD$
 
@@ -800,7 +800,7 @@ $METHODNAME$
 $SUMMARY$
 	Take next word of word specified by position line and column.
 $LANG_RU$
-	Следующее слово.
+	п║п╩п╣п╢я┐я▌я┴п╣п╣ я│п╩п╬п╡п╬.
 $SYNTAX$
 	NextWord([<nPos>], [nLine>],[ <lUndo>]) 	--> sPrevWord
 $ARGUMENTS$
@@ -810,22 +810,22 @@ $ARGUMENTS$
 		sets to <::Line>
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<nPos> - Numeric, исходная колонка в строке <nLine>. Если не передан, то		<::Pos>
-	<nLine> - Numeric, исходная строка. Если параметр не передан, то <::Line>
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<nPos> - Numeric, п╦я│я┘п╬п╢п╫п╟я▐ п╨п╬п╩п╬п╫п╨п╟ п╡ я│я┌я─п╬п╨п╣ <nLine>. п∙я│п╩п╦ п╫п╣ п©п╣я─п╣п╢п╟п╫, я┌п╬		<::Pos>
+	<nLine> - Numeric, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟. п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ п©п╣я─п╣п╢п╟п╫, я┌п╬ <::Line>
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns next word of word specified with column and line.
 $LANG_RU$
-	Возвращает слово, следующее за заданным в координатах <nLine>, <nPos> словом
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╩п╬п╡п╬, я│п╩п╣п╢я┐я▌я┴п╣п╣ п╥п╟ п╥п╟п╢п╟п╫п╫я▀п╪ п╡ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟я┘ <nLine>, <nPos> я│п╩п╬п╡п╬п╪
 $DESCRIPTION$
 	NextWord() is searched word following for word specified <nLine> and <nPos>
 	and return it if found. Oher return empty string.
 
 $LANG_RU$
-	NextWord() ищет следующее слово за заданным в координатах <nLine>, <nPos>
-	и возвращает его если найдет. В противном случае NextWord() возвращает пустую
-	строку.
+	NextWord() п╦я┴п╣я┌ я│п╩п╣п╢я┐я▌я┴п╣п╣ я│п╩п╬п╡п╬ п╥п╟ п╥п╟п╢п╟п╫п╫я▀п╪ п╡ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟я┘ <nLine>, <nPos>
+	п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬ п╣я│п╩п╦ п╫п╟п╧п╢п╣я┌. п▓ п©я─п╬я┌п╦п╡п╫п╬п╪ я│п╩я┐я┤п╟п╣ NextWord() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я┐я│я┌я┐я▌
+	я│я┌я─п╬п╨я┐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -833,7 +833,7 @@ $METHODNAME$
 $SUMMARY$
 	Search identity alpha character.
 $LANG_RU$
-	Поиск парного( или идентичного) символа.
+	п÷п╬п╦я│п╨ п©п╟я─п╫п╬пЁп╬( п╦п╩п╦ п╦п╢п╣п╫я┌п╦я┤п╫п╬пЁп╬) я│п╦п╪п╡п╬п╩п╟.
 $SYNTAX$
 	Identity(<sSymb>, [<lDirect>],[ <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
@@ -841,21 +841,21 @@ $ARGUMENTS$
 	<lDirect> - Logical, if TRUE, make search to forward. By default TRUE.
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<sSymb> - Char, символ.
-	<lDirect> - Logical, если TRUE, поик вперед по тексту. По умолчанию TRUE.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<sSymb> - Char, я│п╦п╪п╡п╬п╩.
+	<lDirect> - Logical, п╣я│п╩п╦ TRUE, п©п╬п╦п╨ п╡п©п╣я─п╣п╢ п©п╬ я┌п╣п╨я│я┌я┐. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TRUE.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if search is success.
 $LANG_RU$
-	Возвращает TRUE если парный или идентичный символ найден.b
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п©п╟я─п╫я▀п╧ п╦п╩п╦ п╦п╢п╣п╫я┌п╦я┤п╫я▀п╧ я│п╦п╪п╡п╬п╩ п╫п╟п╧п╢п╣п╫.b
 $DESCRIPTION$
 	Identity() is searched identical or pair symbols: (), <>, {}, [];
 	and set cursor to founded symbol if search is success.
 
 $LANG_RU$
-	Identity() ищет идентичный заданному или парный символ: (), <>, {}, [];
-	и устанавливает курсор на найденный символ возвращая при этом TRUE.
+	Identity() п╦я┴п╣я┌ п╦п╢п╣п╫я┌п╦я┤п╫я▀п╧ п╥п╟п╢п╟п╫п╫п╬п╪я┐ п╦п╩п╦ п©п╟я─п╫я▀п╧ я│п╦п╪п╡п╬п╩: (), <>, {}, [];
+	п╦ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╟п╧п╢п╣п╫п╫я▀п╧ я│п╦п╪п╡п╬п╩ п╡п╬п╥п╡я─п╟я┴п╟я▐ п©я─п╦ я█я┌п╬п╪ TRUE.
 
 $ENDMETHOD$
 
@@ -864,7 +864,7 @@ $METHODNAME$
 $SUMMARY$
 	Matching structure.
 $LANG_RU$
-	Поиск элементов структуры.
+	п÷п╬п╦я│п╨ я█п╩п╣п╪п╣п╫я┌п╬п╡ я│я┌я─я┐п╨я┌я┐я─я▀.
 $SYNTAX$
 	MatchStruct(<sWord>, [<lDirect>],[ <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
@@ -872,14 +872,14 @@ $ARGUMENTS$
 	<lDirect> - Logical, if TRUE, make search to forward. By default TRUE.
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<sWord> - String, ключевое слово.
-	<lDirect> - Logical, направление поиска TRUE(по умолчанию) поиск вперед по тексту.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<sWord> - String, п╨п╩я▌я┤п╣п╡п╬п╣ я│п╩п╬п╡п╬.
+	<lDirect> - Logical, п╫п╟п©я─п╟п╡п╩п╣п╫п╦п╣ п©п╬п╦я│п╨п╟ TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п©п╬п╦я│п╨ п╡п©п╣я─п╣п╢ п©п╬ я┌п╣п╨я│я┌я┐.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if search is success.
 $LANG_RU$
-	Возвращает TRUE если поиск был успешен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п©п╬п╦я│п╨ п╠я▀п╩ я┐я│п©п╣я┬п╣п╫.
 $DESCRIPTION$
 	MatchStruct() is searched item of Clipper-like structures:
 
@@ -897,7 +897,7 @@ $DESCRIPTION$
 	others.
 
 $LANG_RU$
-	MatchStruct() ищет в тексте элементы Clipper структур:
+	MatchStruct() п╦я┴п╣я┌ п╡ я┌п╣п╨я│я┌п╣ я█п╩п╣п╪п╣п╫я┌я▀ Clipper я│я┌я─я┐п╨я┌я┐я─:
 
 	DO CASE; CASE; OTHERWISE; END[CASE]
 
@@ -907,10 +907,10 @@ $LANG_RU$
 
 	...
 
-	и устанавливает курсор на найденный элемент.
+	п╦ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╟п╧п╢п╣п╫п╫я▀п╧ я█п╩п╣п╪п╣п╫я┌.
 
-	Поиск не зависит от регистра, в каком были набраны символы. Структуры
-	могут быть вложенными.
+	п÷п╬п╦я│п╨ п╫п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ я─п╣пЁп╦я│я┌я─п╟, п╡ п╨п╟п╨п╬п╪ п╠я▀п╩п╦ п╫п╟п╠я─п╟п╫я▀ я│п╦п╪п╡п╬п╩я▀. п║я┌я─я┐п╨я┌я┐я─я▀
+	п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п╡п╩п╬п╤п╣п╫п╫я▀п╪п╦.
 
 $ENDMETHOD$
 
@@ -919,7 +919,7 @@ $METHODNAME$
 $SUMMARY$
 	Clear editor buffer.
 $LANG_RU$
-	Очистка буфера редактирования.
+	п·я┤п╦я│я┌п╨п╟ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
 $SYNTAX$
 	Clear() 	--> NIL
 $ARGUMENTS$
@@ -927,7 +927,7 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL
 $LANG_RU$
-	Возвращает NIL
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL
 $DESCRIPTION$
 	Clear() is cleared editor buffer and init all counters to zero.
 	Size array <::EdBuffer> trucate to 1 and it element sets to
@@ -936,11 +936,11 @@ $DESCRIPTION$
 	Attention! This method not writing undo information.
 
 $LANG_RU$
-	Clear() очищает буфер редактирования и сбрасывает все счетчики.
-	Размер массива <::EdBuffer> усекается то 1 и этому элементу
-	присваивается значение - пустая строка.
+	Clear() п╬я┤п╦я┴п╟п╣я┌ п╠я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ п╦ я│п╠я─п╟я│я▀п╡п╟п╣я┌ п╡я│п╣ я│я┤п╣я┌я┤п╦п╨п╦.
+	п═п╟п╥п╪п╣я─ п╪п╟я│я│п╦п╡п╟ <::EdBuffer> я┐я│п╣п╨п╟п╣я┌я│я▐ я┌п╬ 1 п╦ я█я┌п╬п╪я┐ я█п╩п╣п╪п╣п╫я┌я┐
+	п©я─п╦я│п╡п╟п╦п╡п╟п╣я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦п╣ - п©я┐я│я┌п╟я▐ я│я┌я─п╬п╨п╟.
 
-	Внимание! Этот метод не сохраняет данные для операции отката.
+	п▓п╫п╦п╪п╟п╫п╦п╣! п╜я┌п╬я┌ п╪п╣я┌п╬п╢ п╫п╣ я│п╬я┘я─п╟п╫я▐п╣я┌ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╬п©п╣я─п╟я├п╦п╦ п╬я┌п╨п╟я┌п╟.
 $ENDMETHOD$
 
 
@@ -949,17 +949,17 @@ $METHODNAME$
 $SUMMARY$
 	Load string to editor buffer.
 $LANG_RU$
-	Загрузка строки.
+	п≈п╟пЁя─я┐п╥п╨п╟ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	LoadString(<sStr>) 	--> .T.
 $ARGUMENTS$
 	<sStr> - String, string to edit.
 $LANG_RU$
-	<sStr> - String, строка для редактирования.
+	<sStr> - String, я│я┌я─п╬п╨п╟ п╢п╩я▐ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
 $RETURNS$
 	Returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	LoadString() is loaded string to editor buffer.
 	Method splitted input string on substring with delimiter - hard carriage.
@@ -969,13 +969,13 @@ $DESCRIPTION$
 	Attention! This method not writing undo information.
 
 $LANG_RU$
-	LoadString() загружает строку в буфер редактирования.
-	Строка разбивается на подстроки, в качестве разделителя используется
-	жесткий возврат каретки.
-	Подстроки транслируются из кодировки <::CharSet> в кодировку CLIP-машины
-	и записываются в <::Edbuffer>.  Прежнее содержимое <::EdBuffer> уничтожается.
+	LoadString() п╥п╟пЁя─я┐п╤п╟п╣я┌ я│я┌я─п╬п╨я┐ п╡ п╠я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
+	п║я┌я─п╬п╨п╟ я─п╟п╥п╠п╦п╡п╟п╣я┌я│я▐ п╫п╟ п©п╬п╢я│я┌я─п╬п╨п╦, п╡ п╨п╟я┤п╣я│я┌п╡п╣ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐
+	п╤п╣я│я┌п╨п╦п╧ п╡п╬п╥п╡я─п╟я┌ п╨п╟я─п╣я┌п╨п╦.
+	п÷п╬п╢я│я┌я─п╬п╨п╦ я┌я─п╟п╫я│п╩п╦я─я┐я▌я┌я│я▐ п╦п╥ п╨п╬п╢п╦я─п╬п╡п╨п╦ <::CharSet> п╡ п╨п╬п╢п╦я─п╬п╡п╨я┐ CLIP-п╪п╟я┬п╦п╫я▀
+	п╦ п╥п╟п©п╦я│я▀п╡п╟я▌я┌я│я▐ п╡ <::Edbuffer>.  п÷я─п╣п╤п╫п╣п╣ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ <::EdBuffer> я┐п╫п╦я┤я┌п╬п╤п╟п╣я┌я│я▐.
 
-	Внимание! Этот метод не сохраняет данные для операции отката.
+	п▓п╫п╦п╪п╟п╫п╦п╣! п╜я┌п╬я┌ п╪п╣я┌п╬п╢ п╫п╣ я│п╬я┘я─п╟п╫я▐п╣я┌ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╬п©п╣я─п╟я├п╦п╦ п╬я┌п╨п╟я┌п╟.
 
 $ENDMETHOD$
 
@@ -984,17 +984,17 @@ $METHODNAME$
 $SUMMARY$
 	Load file.
 $LANG_RU$
-	Загрузка файла.
+	п≈п╟пЁя─я┐п╥п╨п╟ я└п╟п╧п╩п╟.
 $SYNTAX$
 	LoadFile(<sFileName>) 	--> .T.
 $ARGUMENTS$
 	<sFileName> - String, files name.
 $LANG_RU$
-	<sFileName> - String, полный путь к файлу.
+	<sFileName> - String, п©п╬п╩п╫я▀п╧ п©я┐я┌я▄ п╨ я└п╟п╧п╩я┐.
 $RETURNS$
 	Returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	LoadFile() is loaded file to editor buffer.
 	Method splitted input string on substring with delimiter - hard carriage.
@@ -1007,16 +1007,16 @@ $DESCRIPTION$
 	Attention! This method not writing undo information.
 
 $LANG_RU$
-	LoadFile() загружает файл в буфер редактирования.
-	Содержимое файла разбивается на подстроки, в качестве разделителя используется
-	жесткий возврат каретки.
-	Подстроки транслируются из кодировки <::CharSet> в кодировку CLIP-машины
-	и записываются в <::Edbuffer>. Прежнее содержимое <::EdBuffer> уничтожается.
+	LoadFile() п╥п╟пЁя─я┐п╤п╟п╣я┌ я└п╟п╧п╩ п╡ п╠я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
+	п║п╬п╢п╣я─п╤п╦п╪п╬п╣ я└п╟п╧п╩п╟ я─п╟п╥п╠п╦п╡п╟п╣я┌я│я▐ п╫п╟ п©п╬п╢я│я┌я─п╬п╨п╦, п╡ п╨п╟я┤п╣я│я┌п╡п╣ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐
+	п╤п╣я│я┌п╨п╦п╧ п╡п╬п╥п╡я─п╟я┌ п╨п╟я─п╣я┌п╨п╦.
+	п÷п╬п╢я│я┌я─п╬п╨п╦ я┌я─п╟п╫я│п╩п╦я─я┐я▌я┌я│я▐ п╦п╥ п╨п╬п╢п╦я─п╬п╡п╨п╦ <::CharSet> п╡ п╨п╬п╢п╦я─п╬п╡п╨я┐ CLIP-п╪п╟я┬п╦п╫я▀
+	п╦ п╥п╟п©п╦я│я▀п╡п╟я▌я┌я│я▐ п╡ <::Edbuffer>. п÷я─п╣п╤п╫п╣п╣ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ <::EdBuffer> я┐п╫п╦я┤я┌п╬п╤п╟п╣я┌я│я▐.
 
-	Если файл не существует или не доступен для чтения метод возвращает FALSE.
-	<::EdBuffer> не изменяется.
+	п∙я│п╩п╦ я└п╟п╧п╩ п╫п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╦п╩п╦ п╫п╣ п╢п╬я│я┌я┐п©п╣п╫ п╢п╩я▐ я┤я┌п╣п╫п╦я▐ п╪п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
+	<::EdBuffer> п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 
-	Внимание! Этот метод не сохраняет данные для операции отката.
+	п▓п╫п╦п╪п╟п╫п╦п╣! п╜я┌п╬я┌ п╪п╣я┌п╬п╢ п╫п╣ я│п╬я┘я─п╟п╫я▐п╣я┌ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╬п©п╣я─п╟я├п╦п╦ п╬я┌п╨п╟я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1024,19 +1024,19 @@ $METHODNAME$
 $SUMMARY$
 	Save to file.
 $LANG_RU$
-	Сохранение в файл.
+	п║п╬я┘я─п╟п╫п╣п╫п╦п╣ п╡ я└п╟п╧п╩.
 $SYNTAX$
 	SaveFile(<sFileName>[, <lCreateBak>]) 	--> .T.
 $ARGUMENTS$
 	<sFileName> - String, full file name.
 	<lCreateBak> - Logical, if TRUE, make .bak file. By default FALSE.
 $LANG_RU$
-	<sFileName> - String, полный путь к файлу.
-	<lCreateBak> - Logical, если TRUE, создать .bak файл. По умолчанию FALSE.
+	<sFileName> - String, п©п╬п╩п╫я▀п╧ п©я┐я┌я▄ п╨ я└п╟п╧п╩я┐.
+	<lCreateBak> - Logical, п╣я│п╩п╦ TRUE, я│п╬п╥п╢п╟я┌я▄ .bak я└п╟п╧п╩. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ FALSE.
 $RETURNS$
 	Returns TRUE in success.
 $LANG_RU$
-	Возвращает TRUE если данные успешно записаны в файл.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╢п╟п╫п╫я▀п╣ я┐я│п©п╣я┬п╫п╬ п╥п╟п©п╦я│п╟п╫я▀ п╡ я└п╟п╧п╩.
 $DESCRIPTION$
 	SaveFile() is saved editor buffer to file.
 
@@ -1049,14 +1049,14 @@ $DESCRIPTION$
 	Attention! This method not writing undo information.
 
 $LANG_RU$
-	SaveFile() записывает содержимое буфера редактирования <::EdBuffer> в файл.
+	SaveFile() п╥п╟п©п╦я│я▀п╡п╟п╣я┌ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ <::EdBuffer> п╡ я└п╟п╧п╩.
 
-	Если файл <sFileName> не существует, он создается. В противном случае
-	переписывается. Атрибут <::Updated> принимает значение FALSE.
+	п∙я│п╩п╦ я└п╟п╧п╩ <sFileName> п╫п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌, п╬п╫ я│п╬п╥п╢п╟п╣я┌я│я▐. п▓ п©я─п╬я┌п╦п╡п╫п╬п╪ я│п╩я┐я┤п╟п╣
+	п©п╣я─п╣п©п╦я│я▀п╡п╟п╣я┌я│я▐. п░я┌я─п╦п╠я┐я┌ <::Updated> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ FALSE.
 
-	Если при записи/создании файла произошла ошибка, SaveFile() возвращает FALSE.
+	п∙я│п╩п╦ п©я─п╦ п╥п╟п©п╦я│п╦/я│п╬п╥п╢п╟п╫п╦п╦ я└п╟п╧п╩п╟ п©я─п╬п╦п╥п╬я┬п╩п╟ п╬я┬п╦п╠п╨п╟, SaveFile() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 
-	Внимание! Этот метод не сохраняет данные для операции отката.
+	п▓п╫п╦п╪п╟п╫п╦п╣! п╜я┌п╬я┌ п╪п╣я┌п╬п╢ п╫п╣ я│п╬я┘я─п╟п╫я▐п╣я┌ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╬п©п╣я─п╟я├п╦п╦ п╬я┌п╨п╟я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1064,14 +1064,14 @@ $METHODNAME$
 $SUMMARY$
 	Save editor buffer to string.
 $LANG_RU$
-	Запись в строку
+	п≈п╟п©п╦я│я▄ п╡ я│я┌я─п╬п╨я┐
 $SYNTAX$
 	SaveString() 	--> sStr
 $ARGUMENTS$
 $RETURNS$
 	Returns string created from editor buffer.
 $LANG_RU$
-	Возвращает содержимое буфера редактирования, записанного в строку.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐, п╥п╟п©п╦я│п╟п╫п╫п╬пЁп╬ п╡ я│я┌я─п╬п╨я┐.
 $DESCRIPTION$
 	SaveString() is packed editor buffer to string and returns it.
 	Substrins tranlated to <::Charset> and write to result string with
@@ -1080,11 +1080,11 @@ $DESCRIPTION$
 	Attention! This method not writing undo information.
 
 $LANG_RU$
-	SaveString() записывает содержимое буфера редактирования в строку и
-	возвращает ее. Подстроки транслируются из кодировки CLIP-машины в
-	<::Charset> и записываются в результирующую строку через символ CR.
+	SaveString() п╥п╟п©п╦я│я▀п╡п╟п╣я┌ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ п╡ я│я┌я─п╬п╨я┐ п╦
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣п╣. п÷п╬п╢я│я┌я─п╬п╨п╦ я┌я─п╟п╫я│п╩п╦я─я┐я▌я┌я│я▐ п╦п╥ п╨п╬п╢п╦я─п╬п╡п╨п╦ CLIP-п╪п╟я┬п╦п╫я▀ п╡
+	<::Charset> п╦ п╥п╟п©п╦я│я▀п╡п╟я▌я┌я│я▐ п╡ я─п╣п╥я┐п╩я▄я┌п╦я─я┐я▌я┴я┐я▌ я│я┌я─п╬п╨я┐ я┤п╣я─п╣п╥ я│п╦п╪п╡п╬п╩ CR.
 
-	Внимание! Этот метод не сохраняет данные для операции отката.
+	п▓п╫п╦п╪п╟п╫п╦п╣! п╜я┌п╬я┌ п╪п╣я┌п╬п╢ п╫п╣ я│п╬я┘я─п╟п╫я▐п╣я┌ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╬п©п╣я─п╟я├п╦п╦ п╬я┌п╨п╟я┌п╟.
 
 $ENDMETHOD$
 
@@ -1093,20 +1093,20 @@ $METHODNAME$
 $SUMMARY$
 	Make load block from file.
 $LANG_RU$
-	Загрузка блока.
+	п≈п╟пЁя─я┐п╥п╨п╟ п╠п╩п╬п╨п╟.
 $SYNTAX$
 	LoadBlock(<sFileName>[, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
 	<sFileName> - String, file name.
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<sFileName> - String, полное имя файла.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<sFileName> - String, п©п╬п╩п╫п╬п╣ п╦п╪я▐ я└п╟п╧п╩п╟.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if block was load.
 $LANG_RU$
-	Возвращает TRUE если блок был загружен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╠п╩п╬п╨ п╠я▀п╩ п╥п╟пЁя─я┐п╤п╣п╫.
 $DESCRIPTION$
 	LoadBlock() is loaded data from file <sFileName> to block and inserted
 	block to editor buffer from a current line <::Line> and marked block.
@@ -1114,11 +1114,11 @@ $DESCRIPTION$
 	The size editor buffer <::EdBuffer> increased by size of block.
 
 $LANG_RU$
-	LoadBlock() читает содержимое файла <sFileName> и вставляет его
-	в буфер редактирования начиная с текущей строки <::Line>. Вставленные
-	строки помечаются как строчный блок.
+	LoadBlock() я┤п╦я┌п╟п╣я┌ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ я└п╟п╧п╩п╟ <sFileName> п╦ п╡я│я┌п╟п╡п╩я▐п╣я┌ п╣пЁп╬
+	п╡ п╠я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ п╫п╟я┤п╦п╫п╟я▐ я│ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ <::Line>. п▓я│я┌п╟п╡п╩п╣п╫п╫я▀п╣
+	я│я┌я─п╬п╨п╦ п©п╬п╪п╣я┤п╟я▌я┌я│я▐ п╨п╟п╨ я│я┌я─п╬я┤п╫я▀п╧ п╠п╩п╬п╨.
 
-	Размер буфера редактирования <::EdBuffer> увеличивается на количество вставленных строк.
+	п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ <::EdBuffer> я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌я│я▐ п╫п╟ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╡я│я┌п╟п╡п╩п╣п╫п╫я▀я┘ я│я┌я─п╬п╨.
 
 $ENDMETHOD$
 
@@ -1128,7 +1128,7 @@ $METHODNAME$
 $SUMMARY$
 	Make save block to file.
 $LANG_RU$
-	Записать блок в файл.
+	п≈п╟п©п╦я│п╟я┌я▄ п╠п╩п╬п╨ п╡ я└п╟п╧п╩.
 $SYNTAX$
 	SaveBlock(<sFileName>[, <lCreateBak>[, <lUndo>]]) 	--> .T. || .F.
 $ARGUMENTS$
@@ -1136,14 +1136,14 @@ $ARGUMENTS$
 	<lCreateBak> - Logical, if TRUE, make .bak file. By default FALSE.
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<sFileName> - String, имя файла с полным путем.
-	<lCreateBak> - Logical, если TRUE, создать .bak файл. По умолчанию FALSE.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<sFileName> - String, п╦п╪я▐ я└п╟п╧п╩п╟ я│ п©п╬п╩п╫я▀п╪ п©я┐я┌п╣п╪.
+	<lCreateBak> - Logical, п╣я│п╩п╦ TRUE, я│п╬п╥п╢п╟я┌я▄ .bak я└п╟п╧п╩. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ FALSE.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if block saved.
 $LANG_RU$
-	Возвращает TRUE если блок был успешно записан.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╠п╩п╬п╨ п╠я▀п╩ я┐я│п©п╣я┬п╫п╬ п╥п╟п©п╦я│п╟п╫.
 $DESCRIPTION$
 	SaveBlock() is saved  marked string/rectangle block to
 	file <sFileName>. If file <sFileName> not exist, method created it.
@@ -1151,12 +1151,12 @@ $DESCRIPTION$
 
 	If block not marked or error emerge by creating file, method returns FALSE.
 $LANG_RU$
-	SaveBlock() записывает отмеченный строчный или прямоугольный блок в
-	файл <sFileName>. Если  файл <sFileName> ранее не существовал, он будет
-	создан, иначе переписан.
+	SaveBlock() п╥п╟п©п╦я│я▀п╡п╟п╣я┌ п╬я┌п╪п╣я┤п╣п╫п╫я▀п╧ я│я┌я─п╬я┤п╫я▀п╧ п╦п╩п╦ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧ п╠п╩п╬п╨ п╡
+	я└п╟п╧п╩ <sFileName>. п∙я│п╩п╦  я└п╟п╧п╩ <sFileName> я─п╟п╫п╣п╣ п╫п╣ я│я┐я┴п╣я│я┌п╡п╬п╡п╟п╩, п╬п╫ п╠я┐п╢п╣я┌
+	я│п╬п╥п╢п╟п╫, п╦п╫п╟я┤п╣ п©п╣я─п╣п©п╦я│п╟п╫.
 
-	Если блок не был отмечен или произошла ошибка при записи/создании
-	файла, метод вернет FALSE.
+	п∙я│п╩п╦ п╠п╩п╬п╨ п╫п╣ п╠я▀п╩ п╬я┌п╪п╣я┤п╣п╫ п╦п╩п╦ п©я─п╬п╦п╥п╬я┬п╩п╟ п╬я┬п╦п╠п╨п╟ п©я─п╦ п╥п╟п©п╦я│п╦/я│п╬п╥п╢п╟п╫п╦п╦
+	я└п╟п╧п╩п╟, п╪п╣я┌п╬п╢ п╡п╣я─п╫п╣я┌ FALSE.
 
 $ENDMETHOD$
 
@@ -1166,24 +1166,24 @@ $METHODNAME$
 $SUMMARY$
 	Start block hightlighting.
 $LANG_RU$
-	Начать отметку блока.
+	п²п╟я┤п╟я┌я▄ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟.
 $SYNTAX$
 	BeginBlock(<lType>[, <lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lType> - Logical, if TRUE, do string block, else do rectangle block. By default TRUE.
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lType> - Logical, тип блока: TRUE строчный,FALSE прямоугольный. По умолчанию TRUE.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lType> - Logical, я┌п╦п© п╠п╩п╬п╨п╟: TRUE я│я┌я─п╬я┤п╫я▀п╧,FALSE п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TRUE.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	BeginBlock() is canceled old highlight and  started  new string/rectangle block.
 $LANG_RU$
-	BeginBlock() снимает отметку блока (если он был уже отмечен) и отмечает начало
-	нового строчноги или прямоугольного блока.
+	BeginBlock() я│п╫п╦п╪п╟п╣я┌ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟ (п╣я│п╩п╦ п╬п╫ п╠я▀п╩ я┐п╤п╣ п╬я┌п╪п╣я┤п╣п╫) п╦ п╬я┌п╪п╣я┤п╟п╣я┌ п╫п╟я┤п╟п╩п╬
+	п╫п╬п╡п╬пЁп╬ я│я┌я─п╬я┤п╫п╬пЁп╦ п╦п╩п╦ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╬пЁп╬ п╠п╩п╬п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1191,24 +1191,24 @@ $METHODNAME$
 $SUMMARY$
 	Stop block hightlighting.
 $LANG_RU$
-	Закончить отметку блока.
+	п≈п╟п╨п╬п╫я┤п╦я┌я▄ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟.
 $SYNTAX$
 	EndBlock(<lType>[, <lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lType> - Logical, if TRUE, do string block, else do rectangle block. By default TRUE.
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lType> - Logical, тип блока: TRUE строчный,FALSE прямоугольный. По умолчанию TRUE.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lType> - Logical, я┌п╦п© п╠п╩п╬п╨п╟: TRUE я│я┌я─п╬я┤п╫я▀п╧,FALSE п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ TRUE.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	EndBlock() is complited text highlighting.
 $LANG_RU$
-	EndBlock() заканчивает отметку блока - строчного или прямоугольного.
+	EndBlock() п╥п╟п╨п╟п╫я┤п╦п╡п╟п╣я┌ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟ - я│я┌я─п╬я┤п╫п╬пЁп╬ п╦п╩п╦ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╬пЁп╬.
 
 $ENDMETHOD$
 
@@ -1217,23 +1217,23 @@ $METHODNAME$
 $SUMMARY$
 	Unmarking block.
 $LANG_RU$
-	Снять отметку блока.
+	п║п╫я▐я┌я▄ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟.
 $SYNTAX$
 	CancelBlock([<lUndo>]) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	CancelBlock() is unmarked text highlight.
 $LANG_RU$
-	CancelBlock() снимает отметку блока. Атрибуты <::MkBlock>, <::StrBlock>,
-	<::RectBlock> принимают значение FALSE.
+	CancelBlock() я│п╫п╦п╪п╟п╣я┌ п╬я┌п╪п╣я┌п╨я┐ п╠п╩п╬п╨п╟. п░я┌я─п╦п╠я┐я┌я▀ <::MkBlock>, <::StrBlock>,
+	<::RectBlock> п©я─п╦п╫п╦п╪п╟я▌я┌ п╥п╫п╟я┤п╣п╫п╦п╣ FALSE.
 
 $ENDMETHOD$
 
@@ -1243,20 +1243,20 @@ $METHODNAME$
 $SUMMARY$
 	Make copy block.
 $LANG_RU$
-	Копировать блок.
+	п п╬п©п╦я─п╬п╡п╟я┌я▄ п╠п╩п╬п╨.
 $SYNTAX$
 	CopyBlock([<lMove>[, <lUndo>]]) 	--> .T. || .F.
 $ARGUMENTS$
 	<lMove> - Logical, is TRUE if operation block moving. By default FALSE.
 	<lUndo> - Logical, is TRUE (by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lMove> - Logical, если TRUE блок будет перемещен на новое место, иначе скопирован. По умолчанию FALSE.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lMove> - Logical, п╣я│п╩п╦ TRUE п╠п╩п╬п╨ п╠я┐п╢п╣я┌ п©п╣я─п╣п╪п╣я┴п╣п╫ п╫п╟ п╫п╬п╡п╬п╣ п╪п╣я│я┌п╬, п╦п╫п╟я┤п╣ я│п╨п╬п©п╦я─п╬п╡п╟п╫. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ FALSE.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if block copied or moved.
 $LANG_RU$
-	Возвращает TRUE если блок скопирован или перемещен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╠п╩п╬п╨ я│п╨п╬п©п╦я─п╬п╡п╟п╫ п╦п╩п╦ п©п╣я─п╣п╪п╣я┴п╣п╫.
 $DESCRIPTION$
 	CopyBlock() moved cursor to begin marked block (line and column) and
 	copied or moved (if <lMove> is TRUE) marked block
@@ -1270,18 +1270,18 @@ $DESCRIPTION$
 
 	Move is equaled to copy, but in the previous place the block is removed.
 $LANG_RU$
-	CopyBlock() перемещает курсор на начало(строка и колонка) блока
-	и копирует или перемещает отмеченный блок на новое место,
-	определенное текущим положением курсора: строка <::Line> и колонка
+	CopyBlock() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╟я┤п╟п╩п╬(я│я┌я─п╬п╨п╟ п╦ п╨п╬п╩п╬п╫п╨п╟) п╠п╩п╬п╨п╟
+	п╦ п╨п╬п©п╦я─я┐п╣я┌ п╦п╩п╦ п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╬я┌п╪п╣я┤п╣п╫п╫я▀п╧ п╠п╩п╬п╨ п╫п╟ п╫п╬п╡п╬п╣ п╪п╣я│я┌п╬,
+	п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ я┌п╣п╨я┐я┴п╦п╪ п©п╬п╩п╬п╤п╣п╫п╦п╣п╪ п╨я┐я─я│п╬я─п╟: я│я┌я─п╬п╨п╟ <::Line> п╦ п╨п╬п╩п╬п╫п╨п╟
 	<::Pos>.
 
-	Если блок не отмечен, CopyBlock() возвращает FALSE.
+	п∙я│п╩п╦ п╠п╩п╬п╨ п╫п╣ п╬я┌п╪п╣я┤п╣п╫, CopyBlock() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 
-	Когда выполняется операция "копирование", блок копируется в заданную
-	точку и длина буфера редактирования увеличивается на длину блока(количество строк в блоке)
+	п п╬пЁп╢п╟ п╡я▀п©п╬п╩п╫я▐п╣я┌я│я▐ п╬п©п╣я─п╟я├п╦я▐ "п╨п╬п©п╦я─п╬п╡п╟п╫п╦п╣", п╠п╩п╬п╨ п╨п╬п©п╦я─я┐п╣я┌я│я▐ п╡ п╥п╟п╢п╟п╫п╫я┐я▌
+	я┌п╬я┤п╨я┐ п╦ п╢п╩п╦п╫п╟ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌я│я▐ п╫п╟ п╢п╩п╦п╫я┐ п╠п╩п╬п╨п╟(п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨ п╡ п╠п╩п╬п╨п╣)
 
-	Операция "перемещение" аналогична опереции копирования, но блок удаляется
-	со старого места и длина буфера редактирования не изменяется.
+	п·п©п╣я─п╟я├п╦я▐ "п©п╣я─п╣п╪п╣я┴п╣п╫п╦п╣" п╟п╫п╟п╩п╬пЁп╦я┤п╫п╟ п╬п©п╣я─п╣я├п╦п╦ п╨п╬п©п╦я─п╬п╡п╟п╫п╦я▐, п╫п╬ п╠п╩п╬п╨ я┐п╢п╟п╩я▐п╣я┌я│я▐
+	я│п╬ я│я┌п╟я─п╬пЁп╬ п╪п╣я│я┌п╟ п╦ п╢п╩п╦п╫п╟ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1289,22 +1289,22 @@ $METHODNAME$
 $SUMMARY$
 	Make move block.
 $LANG_RU$
-	Переместить блок.
+	п÷п╣я─п╣п╪п╣я│я┌п╦я┌я▄ п╠п╩п╬п╨.
 $SYNTAX$
 	MoveBlock([<lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if block moved.
 $LANG_RU$
-	Возвращает TRUE если блок успешно перемещен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╠п╩п╬п╨ я┐я│п©п╣я┬п╫п╬ п©п╣я─п╣п╪п╣я┴п╣п╫.
 $DESCRIPTION$
 	MoveBlock() is called method CopyBlock() with first parameters TRUE.
 $LANG_RU$
-	MoveBlock() вызывает метод CopyBlock() с первым параметром TRUE.
+	MoveBlock() п╡я▀п╥я▀п╡п╟п╣я┌ п╪п╣я┌п╬п╢ CopyBlock() я│ п©п╣я─п╡я▀п╪ п©п╟я─п╟п╪п╣я┌я─п╬п╪ TRUE.
 
 $ENDMETHOD$
 
@@ -1313,18 +1313,18 @@ $METHODNAME$
 $SUMMARY$
 	Make remove block.
 $LANG_RU$
-	Удалить блок.
+	пёп╢п╟п╩п╦я┌я▄ п╠п╩п╬п╨.
 $SYNTAX$
 	DeleteBlock([<lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if block removed.
 $LANG_RU$
-	Возвращает TRUE если блок был удален.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╠п╩п╬п╨ п╠я▀п╩ я┐п╢п╟п╩п╣п╫.
 $DESCRIPTION$
 	DeleteBlock() moved cursor to begin marked block (line and column) and
 	removed marked block from editor buffer. The size
@@ -1332,12 +1332,12 @@ $DESCRIPTION$
 
 	If block not marked, DeleteBlock() returns FALSE.
 $LANG_RU$
-	DeleteBlock() перемещает курсор на начало(строка и колонка) блока и
-	удаляет отмеченный блок из буфера редактирования. Размер
-	<::Edbuffer> уменьшается на размер(количество строк) удаленного блока.
-	перемещает курсор на начало(строка и колонка) блока
+	DeleteBlock() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╟я┤п╟п╩п╬(я│я┌я─п╬п╨п╟ п╦ п╨п╬п╩п╬п╫п╨п╟) п╠п╩п╬п╨п╟ п╦
+	я┐п╢п╟п╩я▐п╣я┌ п╬я┌п╪п╣я┤п╣п╫п╫я▀п╧ п╠п╩п╬п╨ п╦п╥ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐. п═п╟п╥п╪п╣я─
+	<::Edbuffer> я┐п╪п╣п╫я▄я┬п╟п╣я┌я│я▐ п╫п╟ я─п╟п╥п╪п╣я─(п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨) я┐п╢п╟п╩п╣п╫п╫п╬пЁп╬ п╠п╩п╬п╨п╟.
+	п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╟я┤п╟п╩п╬(я│я┌я─п╬п╨п╟ п╦ п╨п╬п╩п╬п╫п╨п╟) п╠п╩п╬п╨п╟
 
-	Если блок не был отмечен, DeleteBlock() возвращает FALSE.
+	п∙я│п╩п╦ п╠п╩п╬п╨ п╫п╣ п╠я▀п╩ п╬я┌п╪п╣я┤п╣п╫, DeleteBlock() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 
 $ENDMETHOD$
 
@@ -1346,26 +1346,26 @@ $METHODNAME$
 $SUMMARY$
 	Copy block to clipboard.
 $LANG_RU$
-	Копировать блок в буфер.
+	п п╬п©п╦я─п╬п╡п╟я┌я▄ п╠п╩п╬п╨ п╡ п╠я┐я└п╣я─.
 $SYNTAX$
 	CopyToClipboard(<aClipbrd>) 	--> NIL
 $ARGUMENTS$
 	<aClipbrd> - Array, array of block what equal block.
 $LANG_RU$
-	<aClipbrd> - Array, буфер.
+	<aClipbrd> - Array, п╠я┐я└п╣я─.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	CopyToClipboard() is copied marked block from editor buffer to array
 	<aClipbrd>. <aClipbrd> - it is not system clipboard.
 	The size of <::Edbuffer> not changed. Mark block not unmarked.
 $LANG_RU$
-	CopyToClipboard() копирует отмеченный блок(строчный или прямоугольный) в буфер
-	<aClipbrd>, замещая при этом содержимое буфера. <aClipbrd> - это не системный буфер.
-	Размер буфера редактирования  <::Edbuffer> не изменяется. Отметка блока не снимается.
-	Позиция курсора не меняется.
+	CopyToClipboard() п╨п╬п©п╦я─я┐п╣я┌ п╬я┌п╪п╣я┤п╣п╫п╫я▀п╧ п╠п╩п╬п╨(я│я┌я─п╬я┤п╫я▀п╧ п╦п╩п╦ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧) п╡ п╠я┐я└п╣я─
+	<aClipbrd>, п╥п╟п╪п╣я┴п╟я▐ п©я─п╦ я█я┌п╬п╪ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╠я┐я└п╣я─п╟. <aClipbrd> - я█я┌п╬ п╫п╣ я│п╦я│я┌п╣п╪п╫я▀п╧ п╠я┐я└п╣я─.
+	п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐  <::Edbuffer> п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐. п·я┌п╪п╣я┌п╨п╟ п╠п╩п╬п╨п╟ п╫п╣ я│п╫п╦п╪п╟п╣я┌я│я▐.
+	п÷п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟ п╫п╣ п╪п╣п╫я▐п╣я┌я│я▐.
 
 $ENDMETHOD$
 
@@ -1374,27 +1374,27 @@ $METHODNAME$
 $SUMMARY$
 	Add block to clipboard.
 $LANG_RU$
-	Добавить блок в буфер.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╠п╩п╬п╨ п╡ п╠я┐я└п╣я─.
 $SYNTAX$
 	AddToClipboard(<aClipbrd>) 	--> NIL
 $ARGUMENTS$
 	<aClipbrd> - Array, array of block what equal block.
 $LANG_RU$
-	<aClipbrd> - Array, буфер.
+	<aClipbrd> - Array, п╠я┐я└п╣я─.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	AddToClipboard() is added marked block from editor buffer to the end of array
 	<aClipbrd>. <aClipbrd> - it is not system clipboard.
 	The size of <::Edbuffer> not changed. Mark block not unmarked.
 $LANG_RU$
-	AddToClipboard() добавляет отмеченный блок(строчный или прямоугольный) в конец буфер
-	<aClipbrd>, не замещая при этом содержимое буфера. <aClipbrd> - это не системный буфер.
-	Размер буфера редактирования  <::Edbuffer> не изменяется. Отметка блока не снимается.
-	Позиция курсора не меняется.
+	AddToClipboard() п╢п╬п╠п╟п╡п╩я▐п╣я┌ п╬я┌п╪п╣я┤п╣п╫п╫я▀п╧ п╠п╩п╬п╨(я│я┌я─п╬я┤п╫я▀п╧ п╦п╩п╦ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧) п╡ п╨п╬п╫п╣я├ п╠я┐я└п╣я─
+	<aClipbrd>, п╫п╣ п╥п╟п╪п╣я┴п╟я▐ п©я─п╦ я█я┌п╬п╪ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╠я┐я└п╣я─п╟. <aClipbrd> - я█я┌п╬ п╫п╣ я│п╦я│я┌п╣п╪п╫я▀п╧ п╠я┐я└п╣я─.
+	п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐  <::Edbuffer> п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐. п·я┌п╪п╣я┌п╨п╟ п╠п╩п╬п╨п╟ п╫п╣ я│п╫п╦п╪п╟п╣я┌я│я▐.
+	п÷п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟ п╫п╣ п╪п╣п╫я▐п╣я┌я│я▐.
 
 $ENDMETHOD$
 
@@ -1403,18 +1403,18 @@ $METHODNAME$
 $SUMMARY$
 	Move block to clipboard.
 $LANG_RU$
-	Переместить блок в буфер.
+	п÷п╣я─п╣п╪п╣я│я┌п╦я┌я▄ п╠п╩п╬п╨ п╡ п╠я┐я└п╣я─.
 $SYNTAX$
 	MoveToClipboard(<aClipbrd>) 	--> NIL
 $ARGUMENTS$
 	<aClipbrd> - Array, array of block what equal block.
 $LANG_RU$
-	<aClipbrd> - Array, буфер.
+	<aClipbrd> - Array, п╠я┐я└п╣я─.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	MoveToClipboard() is moved marked block from editor buffer to array
 	<aClipbrd>. <aClipbrd> - it is not system clipboard.
@@ -1422,11 +1422,11 @@ $DESCRIPTION$
 	Cursor moved to begin marked block and block removed from editor buffer.
 	The size of <::Edbuffer> is decreased by size block (block lines).
 $LANG_RU$
-	AddToClipboard() перемещает отмеченный блок(строчный или прямоугольный) в конец буфер
-	<aClipbrd>, замещая при этом содержимое буфера. <aClipbrd> - это не системный буфер.
+	AddToClipboard() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╬я┌п╪п╣я┤п╣п╫п╫я▀п╧ п╠п╩п╬п╨(я│я┌я─п╬я┤п╫я▀п╧ п╦п╩п╦ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫я▀п╧) п╡ п╨п╬п╫п╣я├ п╠я┐я└п╣я─
+	<aClipbrd>, п╥п╟п╪п╣я┴п╟я▐ п©я─п╦ я█я┌п╬п╪ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╠я┐я└п╣я─п╟. <aClipbrd> - я█я┌п╬ п╫п╣ я│п╦я│я┌п╣п╪п╫я▀п╧ п╠я┐я└п╣я─.
 
-	Курсор помещается на начало блока и блок удаляется. Размер буфера редактирования  <::Edbuffer>
-	уменьшается на размер удаленного блока.
+	п я┐я─я│п╬я─ п©п╬п╪п╣я┴п╟п╣я┌я│я▐ п╫п╟ п╫п╟я┤п╟п╩п╬ п╠п╩п╬п╨п╟ п╦ п╠п╩п╬п╨ я┐п╢п╟п╩я▐п╣я┌я│я▐. п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐  <::Edbuffer>
+	я┐п╪п╣п╫я▄я┬п╟п╣я┌я│я▐ п╫п╟ я─п╟п╥п╪п╣я─ я┐п╢п╟п╩п╣п╫п╫п╬пЁп╬ п╠п╩п╬п╨п╟.
 
 $ENDMETHOD$
 
@@ -1435,7 +1435,7 @@ $METHODNAME$
 $SUMMARY$
 	Paste block from clipboard.
 $LANG_RU$
-	Вставить блок из буфера.
+	п▓я│я┌п╟п╡п╦я┌я▄ п╠п╩п╬п╨ п╦п╥ п╠я┐я└п╣я─п╟.
 $SYNTAX$
 	PasteFromClipboard(<aClipbrd>[, <nItem>][, <lUndo>]) 	--> .T. || .F.
 $ARGUMENTS$
@@ -1443,14 +1443,14 @@ $ARGUMENTS$
 	<nItem> - Numeric, numer item in clipboard. By default it is 1.
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<aClipbrd> - Array, буфер.
-	<nItem> - Numeric, порядковый номер блока в буфере. По умолчанию 1.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<aClipbrd> - Array, п╠я┐я└п╣я─.
+	<nItem> - Numeric, п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ п╠п╩п╬п╨п╟ п╡ п╠я┐я└п╣я─п╣. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 1.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns TRUE if block inserted.
 $LANG_RU$
-	Возвращает TRUE если блок был вставлен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╠п╩п╬п╨ п╠я▀п╩ п╡я│я┌п╟п╡п╩п╣п╫.
 $DESCRIPTION$
 	PasteFromClipboard() is pasted block from clipboard to
 	current <::Line> and <::Pos> into editor buffer.
@@ -1462,14 +1462,14 @@ $DESCRIPTION$
 	in other returns TRUE.
 
 $LANG_RU$
-	PasteFromClipboard() вставляет блок ихз буфера в текущую позицию курсора
-	<::Line> и <::Pos>.
+	PasteFromClipboard() п╡я│я┌п╟п╡п╩я▐п╣я┌ п╠п╩п╬п╨ п╦я┘п╥ п╠я┐я└п╣я─п╟ п╡ я┌п╣п╨я┐я┴я┐я▌ п©п╬п╥п╦я├п╦я▌ п╨я┐я─я│п╬я─п╟
+	<::Line> п╦ <::Pos>.
 
-	Блок не удаляется из буфера <aClipbrd>.
-	Размер <::Edbuffer> увеличивается на размер вставленного блока (количество строк).
+	п▒п╩п╬п╨ п╫п╣ я┐п╢п╟п╩я▐п╣я┌я│я▐ п╦п╥ п╠я┐я└п╣я─п╟ <aClipbrd>.
+	п═п╟п╥п╪п╣я─ <::Edbuffer> я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌я│я▐ п╫п╟ я─п╟п╥п╪п╣я─ п╡я│я┌п╟п╡п╩п╣п╫п╫п╬пЁп╬ п╠п╩п╬п╨п╟ (п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨).
 
-	Если массив <aClipbrd> пуст, PasteFromClipboard() возвращает FALSE;
-	иначе возвращает TRUE.
+	п∙я│п╩п╦ п╪п╟я│я│п╦п╡ <aClipbrd> п©я┐я│я┌, PasteFromClipboard() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE;
+	п╦п╫п╟я┤п╣ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $ENDMETHOD$
 
 
@@ -1478,7 +1478,7 @@ $METHODNAME$
 $SUMMARY$
 	Refresh TEXTEDIT viewport.
 $LANG_RU$
-	Обновить область редактирования TEXTEDIT.
+	п·п╠п╫п╬п╡п╦я┌я▄ п╬п╠п╩п╟я│я┌я▄ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ TEXTEDIT.
 $SYNTAX$
 	Refresh() 	--> NIL
 $ARGUMENTS$
@@ -1486,17 +1486,17 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Refresh() is refreshed TEXTEDIT viewport and positioned cursor on the
 	screen to new position if it need.
 
 	Refresh() invoked automaticaly from all methods of TEXTEDIT.
 $LANG_RU$
-	Refresh() обновляет область редактирования TEXTEDIT.
+	Refresh() п╬п╠п╫п╬п╡п╩я▐п╣я┌ п╬п╠п╩п╟я│я┌я▄ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ TEXTEDIT.
 
-	Метод Refresh()вызывается автоматически из остальных методов класса TEXTEDIT
-	и не требует прямого вызова.
+	п°п╣я┌п╬п╢ Refresh()п╡я▀п╥я▀п╡п╟п╣я┌я│я▐ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ п╦п╥ п╬я│я┌п╟п╩я▄п╫я▀я┘ п╪п╣я┌п╬п╢п╬п╡ п╨п╩п╟я│я│п╟ TEXTEDIT
+	п╦ п╫п╣ я┌я─п╣п╠я┐п╣я┌ п©я─я▐п╪п╬пЁп╬ п╡я▀п╥п╬п╡п╟.
 
 $ENDMETHOD$
 
@@ -1505,23 +1505,23 @@ $METHODNAME$
 $SUMMARY$
 	Delete left letter.
 $LANG_RU$
-	Удалить символ слева от курсора.
+	пёп╢п╟п╩п╦я┌я▄ я│п╦п╪п╡п╬п╩ я│п╩п╣п╡п╟ п╬я┌ п╨я┐я─я│п╬я─п╟.
 $SYNTAX$
 	BackSpace( [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	BackSpace() is deleted one left letter from are current cursor position
 	<::Line> and <::Pos>.
 $LANG_RU$
-	BackSpace() удаляет в текущей строке <::Line> символ слева от <::Pos>.
+	BackSpace() я┐п╢п╟п╩я▐п╣я┌ п╡ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╣ <::Line> я│п╦п╪п╡п╬п╩ я│п╩п╣п╡п╟ п╬я┌ <::Pos>.
 
 $ENDMETHOD$
 
@@ -1531,22 +1531,22 @@ $METHODNAME$
 $SUMMARY$
 	Delete left letter.
 $LANG_RU$
-	Удалить символ слева от курсора.
+	пёп╢п╟п╩п╦я┌я▄ я│п╦п╪п╡п╬п╩ я│п╩п╣п╡п╟ п╬я┌ п╨я┐я─я│п╬я─п╟.
 $SYNTAX$
 	DelLeft( [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	DelLeft() is called method BackSpace().
 $LANG_RU$
-	DelLeft() вызывает метод BackSpace().
+	DelLeft() п╡я▀п╥я▀п╡п╟п╣я┌ п╪п╣я┌п╬п╢ BackSpace().
 
 $ENDMETHOD$
 
@@ -1555,25 +1555,25 @@ $METHODNAME$
 $SUMMARY$
 	Delete letters to begin of string.
 $LANG_RU$
-	Удалить все символы до начала строки.
+	пёп╢п╟п╩п╦я┌я▄ п╡я│п╣ я│п╦п╪п╡п╬п╩я▀ п╢п╬ п╫п╟я┤п╟п╩п╟ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	DelHome( [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	DelHome() is deleted all letters in line <::Line> with string begin to
 	column <::Pos>. The attribute <::Pos> and <::ColWin>  sets to 1.
 $LANG_RU$
-	DelHome() удаляет все символы в строке <::Line> начиная с колонки
-	<::Pos> до начала строки <::Line>. Атрибуты <::Pos> и <::ColWin>
-	принимают значение 1.
+	DelHome() я┐п╢п╟п╩я▐п╣я┌ п╡я│п╣ я│п╦п╪п╡п╬п╩я▀ п╡ я│я┌я─п╬п╨п╣ <::Line> п╫п╟я┤п╦п╫п╟я▐ я│ п╨п╬п╩п╬п╫п╨п╦
+	<::Pos> п╢п╬ п╫п╟я┤п╟п╩п╟ я│я┌я─п╬п╨п╦ <::Line>. п░я┌я─п╦п╠я┐я┌я▀ <::Pos> п╦ <::ColWin>
+	п©я─п╦п╫п╦п╪п╟я▌я┌ п╥п╫п╟я┤п╣п╫п╦п╣ 1.
 
 $ENDMETHOD$
 
@@ -1583,23 +1583,23 @@ $METHODNAME$
 $SUMMARY$
 	Delete letter.
 $LANG_RU$
-	Удалить символ.
+	пёп╢п╟п╩п╦я┌я▄ я│п╦п╪п╡п╬п╩.
 $SYNTAX$
 	DelRight( [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	DelRight() is deleted letter in line <::Line> and column <::Pos>.
 	The attribute <::Pos> and <::ColWin>  not changes.
 $LANG_RU$
-	DelRight() удаляет символ в строке <::Line> и колоне <::Pos>.
-	Атрибуты <::Pos> и <::ColWin> не изменяются.
+	DelRight() я┐п╢п╟п╩я▐п╣я┌ я│п╦п╪п╡п╬п╩ п╡ я│я┌я─п╬п╨п╣ <::Line> п╦ п╨п╬п╩п╬п╫п╣ <::Pos>.
+	п░я┌я─п╦п╠я┐я┌я▀ <::Pos> п╦ <::ColWin> п╫п╣ п╦п╥п╪п╣п╫я▐я▌я┌я│я▐.
 
 $ENDMETHOD$
 
@@ -1608,21 +1608,21 @@ $METHODNAME$
 $SUMMARY$
 	Delete letter.
 $LANG_RU$
-	Удалить символ.
+	пёп╢п╟п╩п╦я┌я▄ я│п╦п╪п╡п╬п╩.
 $SYNTAX$
 	Delete( [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Delete() is called method DelRight().
 $LANG_RU$
-	Delete() вызывает метод DelRight().
+	Delete() п╡я▀п╥я▀п╡п╟п╣я┌ п╪п╣я┌п╬п╢ DelRight().
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1630,23 +1630,23 @@ $METHODNAME$
 $SUMMARY$
 	Delete line.
 $LANG_RU$
-	Удалить строку.
+	пёп╢п╟п╩п╦я┌я▄ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	DeleteLine( [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	DeleteLine() is removed from editor buffer line specified <::Line> and
 	decreased size of <::Edbuffer> by 1.
 $LANG_RU$
-	DeleteLine() удаляет текущую строку <::Line>, размер буфера редактирования
-	<::Edbuffer> уменьшается <::Edbuffer> на 1.
+	DeleteLine() я┐п╢п╟п╩я▐п╣я┌ я┌п╣п╨я┐я┴я┐я▌ я│я┌я─п╬п╨я┐ <::Line>, я─п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐
+	<::Edbuffer> я┐п╪п╣п╫я▄я┬п╟п╣я┌я│я▐ <::Edbuffer> п╫п╟ 1.
 
 $ENDMETHOD$
 
@@ -1656,22 +1656,22 @@ $METHODNAME$
 $SUMMARY$
 	Delete letters to the end of string.
 $LANG_RU$
-	Удалить все символы до конца строки.
+	пёп╢п╟п╩п╦я┌я▄ п╡я│п╣ я│п╦п╪п╡п╬п╩я▀ п╢п╬ п╨п╬п╫я├п╟ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	DelEnd( [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	DelEnd() is deleted all letters begin with column specified <::Pos> to the
 	end of string <::Line>.
 $LANG_RU$
-	DelEnd() удаляет в строке <::Line> все символы, начиная с <::Pos> и до конца.
+	DelEnd() я┐п╢п╟п╩я▐п╣я┌ п╡ я│я┌я─п╬п╨п╣ <::Line> п╡я│п╣ я│п╦п╪п╡п╬п╩я▀, п╫п╟я┤п╦п╫п╟я▐ я│ <::Pos> п╦ п╢п╬ п╨п╬п╫я├п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1679,19 +1679,19 @@ $METHODNAME$
 $SUMMARY$
 	Insert alpha character or substring to the editor buffer.
 $LANG_RU$
-	Вставить символ или подстроку.
+	п▓я│я┌п╟п╡п╦я┌я▄ я│п╦п╪п╡п╬п╩ п╦п╩п╦ п©п╬п╢я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	Insert( <sStr>, [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<sStr> - String, alpha character or substring to be inserting
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<sStr> - String, символ или подстрока для вставки.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<sStr> - String, я│п╦п╪п╡п╬п╩ п╦п╩п╦ п©п╬п╢я│я┌я─п╬п╨п╟ п╢п╩я▐ п╡я│я┌п╟п╡п╨п╦.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Insert() is inserted substring <sStr> to the editor buffer begin of <::Pos>
 	and in line <::Line>.
@@ -1701,13 +1701,13 @@ $DESCRIPTION$
 
 	The new cursor position into editor buffer is <::Line> and <::Pos>+len(sStr).
 $LANG_RU$
-	Insert() вставляет подстроку <sStr> в текущую строку <::Line> начиная
-	с колонки <::Pos>.
+	Insert() п╡я│я┌п╟п╡п╩я▐п╣я┌ п©п╬п╢я│я┌я─п╬п╨я┐ <sStr> п╡ я┌п╣п╨я┐я┴я┐я▌ я│я┌я─п╬п╨я┐ <::Line> п╫п╟я┤п╦п╫п╟я▐
+	я│ п╨п╬п╩п╬п╫п╨п╦ <::Pos>.
 
-	Если <::Line> больше чем размер буфера редактирования <::Lines>, то
-	<::EdBuffer> увеличивается до <::Line> строк.
+	п∙я│п╩п╦ <::Line> п╠п╬п╩я▄я┬п╣ я┤п╣п╪ я─п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ <::Lines>, я┌п╬
+	<::EdBuffer> я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌я│я▐ п╢п╬ <::Line> я│я┌я─п╬п╨.
 
-	Новая позиция курсора после операции: строка <::Line> и колонка <::Pos>+len(sStr).
+	п²п╬п╡п╟я▐ п©п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟ п©п╬я│п╩п╣ п╬п©п╣я─п╟я├п╦п╦: я│я┌я─п╬п╨п╟ <::Line> п╦ п╨п╬п╩п╬п╫п╨п╟ <::Pos>+len(sStr).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1715,30 +1715,30 @@ $METHODNAME$
 $SUMMARY$
 	Replace alpha character or substring into editor buffer.
 $LANG_RU$
-	Заменить символ или подстроку.
+	п≈п╟п╪п╣п╫п╦я┌я▄ я│п╦п╪п╡п╬п╩ п╦п╩п╦ п©п╬п╢я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	OverStrike( <sStr>, [<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<sStr> - String, alpha character or substring to be replacing.
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<sStr> - String, строка или символ для замены.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<sStr> - String, я│я┌я─п╬п╨п╟ п╦п╩п╦ я│п╦п╪п╡п╬п╩ п╢п╩я▐ п╥п╟п╪п╣п╫я▀.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	OverStrike() is replaced substring with length len(sStr)
 	to <sStr>  into line <::Line> and begining with <::Pos> .
 
 	The new cursor position into editor buffer is <::Line> and <::Pos>+len(sStr).
 $LANG_RU$
-	OverStrike() заменяетв текщей строке <::Line> подстроку длиной len(sStr)
-	на <sStr> начиная с колонки <::Pos> .
+	OverStrike() п╥п╟п╪п╣п╫я▐п╣я┌п╡ я┌п╣п╨я┴п╣п╧ я│я┌я─п╬п╨п╣ <::Line> п©п╬п╢я│я┌я─п╬п╨я┐ п╢п╩п╦п╫п╬п╧ len(sStr)
+	п╫п╟ <sStr> п╫п╟я┤п╦п╫п╟я▐ я│ п╨п╬п╩п╬п╫п╨п╦ <::Pos> .
 
-	Новая позиция курсора: строка<::Line> и колонка <::Pos>+len(sStr).
+	п²п╬п╡п╟я▐ п©п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟: я│я┌я─п╬п╨п╟<::Line> п╦ п╨п╬п╩п╬п╫п╨п╟ <::Pos>+len(sStr).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1746,7 +1746,7 @@ $METHODNAME$
 $SUMMARY$
 	Insert new line.
 $LANG_RU$
-	Вставить новую строку.
+	п▓я│я┌п╟п╡п╦я┌я▄ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	InsertLine([<lUndo>][, [lAuto]] ) 	--> NIL
 $ARGUMENTS$
@@ -1754,13 +1754,13 @@ $ARGUMENTS$
 	<lAuto> - Logical, is TRUE(by default) if new cursor position equal to
 	column first not empty symbols  into previouse line.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
-	<lAuto> - Logical, если TRUE(по умолчанию) курсор будет установлен под первым
-	отличным от пробела символом предыдущей строки.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
+	<lAuto> - Logical, п╣я│п╩п╦ TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╨я┐я─я│п╬я─ п╠я┐п╢п╣я┌ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫ п©п╬п╢ п©п╣я─п╡я▀п╪
+	п╬я┌п╩п╦я┤п╫я▀п╪ п╬я┌ п©я─п╬п╠п╣п╩п╟ я│п╦п╪п╡п╬п╩п╬п╪ п©я─п╣п╢я▀п╢я┐я┴п╣п╧ я│я┌я─п╬п╨п╦.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	InsertLine() is inserted new line into editor buffer after line <::Line>-1.
 	The size editor buffer increased by 1 and lines begin with <::Line>+1 moved
@@ -1773,14 +1773,14 @@ $DESCRIPTION$
 
 	In other, <::Pos> sets to value <::MarginLeft>
 $LANG_RU$
-	InsertLine() вставляет в буфер редактирования новую строку сразу после строки <::Line>-1.
-	Размер буфера редактирования <::EdBuffer> увеличивается на 1.
+	InsertLine() п╡я│я┌п╟п╡п╩я▐п╣я┌ п╡ п╠я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐ я│я─п╟п╥я┐ п©п╬я│п╩п╣ я│я┌я─п╬п╨п╦ <::Line>-1.
+	п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ <::EdBuffer> я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌я│я▐ п╫п╟ 1.
 
-	Номер текущей строки остается прежним <::Line>.
+	п²п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╬я│я┌п╟п╣я┌я│я▐ п©я─п╣п╤п╫п╦п╪ <::Line>.
 
-	Если <lAuto>, курсор позиционируется в колонку, соответствующую первому,
-	отличному от пробела, символу предыдущей строки <::Line>-1. Иначе, курсор
-	позиционируется в колонку <::MarginLeft>
+	п∙я│п╩п╦ <lAuto>, п╨я┐я─я│п╬я─ п©п╬п╥п╦я├п╦п╬п╫п╦я─я┐п╣я┌я│я▐ п╡ п╨п╬п╩п╬п╫п╨я┐, я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴я┐я▌ п©п╣я─п╡п╬п╪я┐,
+	п╬я┌п╩п╦я┤п╫п╬п╪я┐ п╬я┌ п©я─п╬п╠п╣п╩п╟, я│п╦п╪п╡п╬п╩я┐ п©я─п╣п╢я▀п╢я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ <::Line>-1. п≤п╫п╟я┤п╣, п╨я┐я─я│п╬я─
+	п©п╬п╥п╦я├п╦п╬п╫п╦я─я┐п╣я┌я│я▐ п╡ п╨п╬п╩п╬п╫п╨я┐ <::MarginLeft>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1788,7 +1788,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes new line.
 $LANG_RU$
-	Переход на новую строку.
+	п÷п╣я─п╣я┘п╬п╢ п╫п╟ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	NewLine([<lUndo>][, <lAuto>] ) 	--> NIL
 $ARGUMENTS$
@@ -1796,13 +1796,13 @@ $ARGUMENTS$
 	<lAuto> - Logical, is TRUE(by default) if new cursor position equal to
 	column first not empty symbols  into previouse line.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
-	<lAuto> - Logical, если TRUE(по умолчанию) курсор будет установлен под первым
-	отличным от пробела символом предыдущей строки.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
+	<lAuto> - Logical, п╣я│п╩п╦ TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╨я┐я─я│п╬я─ п╠я┐п╢п╣я┌ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫ п©п╬п╢ п©п╣я─п╡я▀п╪
+	п╬я┌п╩п╦я┤п╫я▀п╪ п╬я┌ п©я─п╬п╠п╣п╩п╟ я│п╦п╪п╡п╬п╩п╬п╪ п©я─п╣п╢я▀п╢я┐я┴п╣п╧ я│я┌я─п╬п╨п╦.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	NewLine() is moved cursor to new line <::Line>+1.
 	The size editor buffer not changed.
@@ -1812,14 +1812,14 @@ $DESCRIPTION$
 	If <lAuto> is TRUE, then <::Pos> sets to column value of start not empty symbol.
 	In other, <::Pos> sets to value <::MarginLeft>.
 $LANG_RU$
-	InsertLine() перемещает курсор на новую строку <::Line>+1.
-	Размер буфера редактирования <::EdBuffer> не изменяется.
+	InsertLine() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п╫п╬п╡я┐я▌ я│я┌я─п╬п╨я┐ <::Line>+1.
+	п═п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ <::EdBuffer> п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 
-	Номер текущей строки остается прежним <::Line>.
+	п²п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╬я│я┌п╟п╣я┌я│я▐ п©я─п╣п╤п╫п╦п╪ <::Line>.
 
-	Если <lAuto>, курсор позиционируется в колонку, соответствующую первому,
-	отличному от пробела, символу предыдущей строки <::Line>-1. Иначе, курсор
-	позиционируется в колонку <::MarginLeft>
+	п∙я│п╩п╦ <lAuto>, п╨я┐я─я│п╬я─ п©п╬п╥п╦я├п╦п╬п╫п╦я─я┐п╣я┌я│я▐ п╡ п╨п╬п╩п╬п╫п╨я┐, я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴я┐я▌ п©п╣я─п╡п╬п╪я┐,
+	п╬я┌п╩п╦я┤п╫п╬п╪я┐ п╬я┌ п©я─п╬п╠п╣п╩п╟, я│п╦п╪п╡п╬п╩я┐ п©я─п╣п╢я▀п╢я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ <::Line>-1. п≤п╫п╟я┤п╣, п╨я┐я─я│п╬я─
+	п©п╬п╥п╦я├п╦п╬п╫п╦я─я┐п╣я┌я│я▐ п╡ п╨п╬п╩п╬п╫п╨я┐ <::MarginLeft>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1827,7 +1827,7 @@ $METHODNAME$
 $SUMMARY$
 	Draw one of box characters.
 $LANG_RU$
-	Вставить один из символов псевдографики.
+	п▓я│я┌п╟п╡п╦я┌я▄ п╬п╢п╦п╫ п╦п╥ я│п╦п╪п╡п╬п╩п╬п╡ п©я│п╣п╡п╢п╬пЁя─п╟я└п╦п╨п╦.
 $SYNTAX$
 	Draw(<lDrawMode>, <nKey>[, <lUndo>] ) 	--> .T. || .F.
 $ARGUMENTS$
@@ -1835,19 +1835,19 @@ $ARGUMENTS$
 	<nKey>  - Numeric, key code - draw direction. One of K_UP, K_DOWN, K_LEFT, K_RIGHT.
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lDrawMode> - Logical, если TRUE, одинарные символы, иначе - двойные.
-	<nKey>  - Numeric, код клавиши - направление рисования. Один из K_UP, K_DOWN, K_LEFT, K_RIGHT.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lDrawMode> - Logical, п╣я│п╩п╦ TRUE, п╬п╢п╦п╫п╟я─п╫я▀п╣ я│п╦п╪п╡п╬п╩я▀, п╦п╫п╟я┤п╣ - п╢п╡п╬п╧п╫я▀п╣.
+	<nKey>  - Numeric, п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦ - п╫п╟п©я─п╟п╡п╩п╣п╫п╦п╣ я─п╦я│п╬п╡п╟п╫п╦я▐. п·п╢п╦п╫ п╦п╥ K_UP, K_DOWN, K_LEFT, K_RIGHT.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns TRUE if symbol is drew.
 $LANG_RU$
-	Возвращает TRUE если символ нарисован.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я│п╦п╪п╡п╬п╩ п╫п╟я─п╦я│п╬п╡п╟п╫.
 $DESCRIPTION$
 	Draw() is drew box symbols in current position <::Line> and <::Pos>.
 $LANG_RU$
-	Draw() рисует символы псевдографики в текущей позиции строки <::Line> и
-	колонки <::Pos> в зависимости от кода нажатой клавиши, направления рисования
-	и окружающих уже нарисованных символов.
+	Draw() я─п╦я│я┐п╣я┌ я│п╦п╪п╡п╬п╩я▀ п©я│п╣п╡п╢п╬пЁя─п╟я└п╦п╨п╦ п╡ я┌п╣п╨я┐я┴п╣п╧ п©п╬п╥п╦я├п╦п╦ я│я┌я─п╬п╨п╦ <::Line> п╦
+	п╨п╬п╩п╬п╫п╨п╦ <::Pos> п╡ п╥п╟п╡п╦я│п╦п╪п╬я│я┌п╦ п╬я┌ п╨п╬п╢п╟ п╫п╟п╤п╟я┌п╬п╧ п╨п╩п╟п╡п╦я┬п╦, п╫п╟п©я─п╟п╡п╩п╣п╫п╦я▐ я─п╦я│п╬п╡п╟п╫п╦я▐
+	п╦ п╬п╨я─я┐п╤п╟я▌я┴п╦я┘ я┐п╤п╣ п╫п╟я─п╦я│п╬п╡п╟п╫п╫я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1855,7 +1855,7 @@ $METHODNAME$
 $SUMMARY$
 	Formatting line.
 $LANG_RU$
-	Форматировать строку.
+	п╓п╬я─п╪п╟я┌п╦я─п╬п╡п╟я┌я▄ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	FormatLine([<lAutoMargin>],[ <nMarginLeft>],[ <nMarginRight>],[ <nTabSize>],[ <lHyphen>][, <lUndo>] ) 	--> NIL
 $ARGUMENTS$
@@ -1866,21 +1866,21 @@ $ARGUMENTS$
 	<lHyphen> - Logical, is TRUE if hyphen (by default <::Hyphen>).
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lAutoMargin> - Logical, TRUE(по умолчанию) если автоматически выставляется левая граница.
-	<nMarginLeft> - Numeric, левая граница строки(по умолчанию <::MarginLeft>)
-	<nMarginRight> - Numeric, правая граница строки (по умолчанию <::MarginRight>)
-	<nTabSize> - Numeric, размер табуляции (по умолчанию <::TabSize>)
-	<lHyphen> - Logical, TRUE если допускается перенос в словах (по умолчанию <::Hyphen>).
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lAutoMargin> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ п╡я▀я│я┌п╟п╡п╩я▐п╣я┌я│я▐ п╩п╣п╡п╟я▐ пЁя─п╟п╫п╦я├п╟.
+	<nMarginLeft> - Numeric, п╩п╣п╡п╟я▐ пЁя─п╟п╫п╦я├п╟ я│я┌я─п╬п╨п╦(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::MarginLeft>)
+	<nMarginRight> - Numeric, п©я─п╟п╡п╟я▐ пЁя─п╟п╫п╦я├п╟ я│я┌я─п╬п╨п╦ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::MarginRight>)
+	<nTabSize> - Numeric, я─п╟п╥п╪п╣я─ я┌п╟п╠я┐п╩я▐я├п╦п╦ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::TabSize>)
+	<lHyphen> - Logical, TRUE п╣я│п╩п╦ п╢п╬п©я┐я│п╨п╟п╣я┌я│я▐ п©п╣я─п╣п╫п╬я│ п╡ я│п╩п╬п╡п╟я┘ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::Hyphen>).
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	FormatLine() is formatted current line <::Line> editor buffer.
 $LANG_RU$
-	FormatLine() форматирует текущую строку <::Line> в соответствии с
-	переданными параметрами.
+	FormatLine() я└п╬я─п╪п╟я┌п╦я─я┐п╣я┌ я┌п╣п╨я┐я┴я┐я▌ я│я┌я─п╬п╨я┐ <::Line> п╡ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╦п╦ я│
+	п©п╣я─п╣п╢п╟п╫п╫я▀п╪п╦ п©п╟я─п╟п╪п╣я┌я─п╟п╪п╦.
 $ENDMETHOD$
 
 
@@ -1889,7 +1889,7 @@ $METHODNAME$
 $SUMMARY$
 	Formatting part.
 $LANG_RU$
-	Форматировать абзац.
+	п╓п╬я─п╪п╟я┌п╦я─п╬п╡п╟я┌я▄ п╟п╠п╥п╟я├.
 $SYNTAX$
 	FormatPart([<lAutoMargin>],[ <nMarginLeft>],[ <nMarginRight>],[ <nTabSize>],[ <lHyphen>][, <lUndo>] ) 	--> NIL
 $ARGUMENTS$
@@ -1900,23 +1900,23 @@ $ARGUMENTS$
 	<lHyphen> - Logical, is TRUE if hyphen (by default <::Hyphen>).
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lAutoMargin> - Logical, TRUE(по умолчанию) если автоматически выставляется левая граница.
-	<nMarginLeft> - Numeric, левая граница строки(по умолчанию <::MarginLeft>)
-	<nMarginRight> - Numeric, правая граница строки (по умолчанию <::MarginRight>)
-	<nTabSize> - Numeric, размер табуляции (по умолчанию <::TabSize>)
-	<lHyphen> - Logical, TRUE если допускается перенос в словах (по умолчанию <::Hyphen>).
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lAutoMargin> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ п╡я▀я│я┌п╟п╡п╩я▐п╣я┌я│я▐ п╩п╣п╡п╟я▐ пЁя─п╟п╫п╦я├п╟.
+	<nMarginLeft> - Numeric, п╩п╣п╡п╟я▐ пЁя─п╟п╫п╦я├п╟ я│я┌я─п╬п╨п╦(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::MarginLeft>)
+	<nMarginRight> - Numeric, п©я─п╟п╡п╟я▐ пЁя─п╟п╫п╦я├п╟ я│я┌я─п╬п╨п╦ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::MarginRight>)
+	<nTabSize> - Numeric, я─п╟п╥п╪п╣я─ я┌п╟п╠я┐п╩я▐я├п╦п╦ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::TabSize>)
+	<lHyphen> - Logical, TRUE п╣я│п╩п╦ п╢п╬п©я┐я│п╨п╟п╣я┌я│я▐ п©п╣я─п╣п╫п╬я│ п╡ я│п╩п╬п╡п╟я┘ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <::Hyphen>).
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	FormatPart() is part formatted begin from <::Line> to the line whose
 	position first character in line not equal posiiotn first character formatted
 	part or to the end of editor buffer.
 $LANG_RU$
-	FormatPart() форматирует часть текста начиная со строки <::Line> до
-	следующего абзаца.
+	FormatPart() я└п╬я─п╪п╟я┌п╦я─я┐п╣я┌ я┤п╟я│я┌я▄ я┌п╣п╨я│я┌п╟ п╫п╟я┤п╦п╫п╟я▐ я│п╬ я│я┌я─п╬п╨п╦ <::Line> п╢п╬
+	я│п╩п╣п╢я┐я▌я┴п╣пЁп╬ п╟п╠п╥п╟я├п╟.
 $ENDMETHOD$
 
 
@@ -1925,23 +1925,23 @@ $METHODNAME$
 $SUMMARY$
 	Centering line.
 $LANG_RU$
-	Центрировать строку.
+	п╕п╣п╫я┌я─п╦я─п╬п╡п╟я┌я▄ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	CenterLine([<lUndo>] ) 	--> NIL
 $ARGUMENTS$
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	CenterLine() is centered current line <::Line>. The <::Pos> is rested
 	previouse.
 $LANG_RU$
-	CenterLine() сентрирует текущую строку <::Line>. Позиция курсора в строке
-	не меняется.
+	CenterLine() я│п╣п╫я┌я─п╦я─я┐п╣я┌ я┌п╣п╨я┐я┴я┐я▌ я│я┌я─п╬п╨я┐ <::Line>. п÷п╬п╥п╦я├п╦я▐ п╨я┐я─я│п╬я─п╟ п╡ я│я┌я─п╬п╨п╣
+	п╫п╣ п╪п╣п╫я▐п╣я┌я│я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1949,7 +1949,7 @@ $METHODNAME$
 $SUMMARY$
 	Insert substring by template.
 $LANG_RU$
-	Заменить шаблон на подстроку.
+	п≈п╟п╪п╣п╫п╦я┌я▄ я┬п╟п╠п╩п╬п╫ п╫п╟ п©п╬п╢я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	InsTempl(<aTempl>[, <lUndo>] ) 	--> NIL
 $ARGUMENTS$
@@ -1958,14 +1958,14 @@ $ARGUMENTS$
 
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<aTempl> - Map, массив строк. Ключ массива <sTm> есть шаблон, а значение по ключу <sStr>-
-	строка для замены.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<aTempl> - Map, п╪п╟я│я│п╦п╡ я│я┌я─п╬п╨. п п╩я▌я┤ п╪п╟я│я│п╦п╡п╟ <sTm> п╣я│я┌я▄ я┬п╟п╠п╩п╬п╫, п╟ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ п╨п╩я▌я┤я┐ <sStr>-
+	я│я┌я─п╬п╨п╟ п╢п╩я▐ п╥п╟п╪п╣п╫я▀.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	InsTempl() is replaced current word (template word) to value from a <aTempl>
 	whose key equal template.
@@ -1973,13 +1973,13 @@ $DESCRIPTION$
 	<sStr> can include symbol </> it is line delimiter. In this case will be
 	inserted some string begin with column <::Pos>.
 $LANG_RU$
-	Если текущее слово в строке <::Line> и колонке <::Pos> является одним
-	из ключей массива <aTempl>, InsTempl() заменит слово - шаблон на соответствующую
-	строку.
+	п∙я│п╩п╦ я┌п╣п╨я┐я┴п╣п╣ я│п╩п╬п╡п╬ п╡ я│я┌я─п╬п╨п╣ <::Line> п╦ п╨п╬п╩п╬п╫п╨п╣ <::Pos> я▐п╡п╩я▐п╣я┌я│я▐ п╬п╢п╫п╦п╪
+	п╦п╥ п╨п╩я▌я┤п╣п╧ п╪п╟я│я│п╦п╡п╟ <aTempl>, InsTempl() п╥п╟п╪п╣п╫п╦я┌ я│п╩п╬п╡п╬ - я┬п╟п╠п╩п╬п╫ п╫п╟ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴я┐я▌
+	я│я┌я─п╬п╨я┐.
 
-	<sStr> может содержать символы </>, они используются как разделители строк.
-	В этом случае в буфер редактирования мложет быть вставлено
-	сразу несколько строк, начиная с колонки <::Pos>.
+	<sStr> п╪п╬п╤п╣я┌ я│п╬п╢п╣я─п╤п╟я┌я▄ я│п╦п╪п╡п╬п╩я▀ </>, п╬п╫п╦ п╦я│п©п╬п╩я▄п╥я┐я▌я┌я│я▐ п╨п╟п╨ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩п╦ я│я┌я─п╬п╨.
+	п▓ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣ п╡ п╠я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ п╪п╩п╬п╤п╣я┌ п╠я▀я┌я▄ п╡я│я┌п╟п╡п╩п╣п╫п╬
+	я│я─п╟п╥я┐ п╫п╣я│п╨п╬п╩я▄п╨п╬ я│я┌я─п╬п╨, п╫п╟я┤п╦п╫п╟я▐ я│ п╨п╬п╩п╬п╫п╨п╦ <::Pos>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -1987,7 +1987,7 @@ $METHODNAME$
 $SUMMARY$
 	Make macro and insert result to editor buffer.
 $LANG_RU$
-	Выполнить макро-команду и вставить результат в буфер редактирования.
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ п╪п╟п╨я─п╬-п╨п╬п╪п╟п╫п╢я┐ п╦ п╡я│я┌п╟п╡п╦я┌я▄ я─п╣п╥я┐п╩я▄я┌п╟я┌ п╡ п╠я┐я└п╣я─ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
 $SYNTAX$
 	InsMacro(<aTempl>[, <lUndo>] ) 	--> NIL
 $ARGUMENTS$
@@ -1996,22 +1996,22 @@ $ARGUMENTS$
 
 	<lUndo> - Logical, is TRUE(by default) if operation saved in undo buffer.
 $LANG_RU$
-	<aTempl> - Map, массив макрокоманд. Ключ массива <sTm> есть шаблон, а значение по ключу <sStr>-
-	макро выражение.
-	<lUndo> - Logical, TRUE(по умолчанию) если операция записывается в буфер отката.
+	<aTempl> - Map, п╪п╟я│я│п╦п╡ п╪п╟п╨я─п╬п╨п╬п╪п╟п╫п╢. п п╩я▌я┤ п╪п╟я│я│п╦п╡п╟ <sTm> п╣я│я┌я▄ я┬п╟п╠п╩п╬п╫, п╟ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ п╨п╩я▌я┤я┐ <sStr>-
+	п╪п╟п╨я─п╬ п╡я▀я─п╟п╤п╣п╫п╦п╣.
+	<lUndo> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╡ п╠я┐я└п╣я─ п╬я┌п╨п╟я┌п╟.
 
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	InsMacro() made macro specified some template and replace this
 	template to result expression.  In this case  template
 	is word in line <::Line> and column <::Pos>.
 $LANG_RU$
-	Если текущее слово в строке <::Line> и колонке <::Pos> является одним
-	из ключей массива <aTempl>, InsMacro() заменит слово - шаблон на результат
-	макрокоманды.
+	п∙я│п╩п╦ я┌п╣п╨я┐я┴п╣п╣ я│п╩п╬п╡п╬ п╡ я│я┌я─п╬п╨п╣ <::Line> п╦ п╨п╬п╩п╬п╫п╨п╣ <::Pos> я▐п╡п╩я▐п╣я┌я│я▐ п╬п╢п╫п╦п╪
+	п╦п╥ п╨п╩я▌я┤п╣п╧ п╪п╟я│я│п╦п╡п╟ <aTempl>, InsMacro() п╥п╟п╪п╣п╫п╦я┌ я│п╩п╬п╡п╬ - я┬п╟п╠п╩п╬п╫ п╫п╟ я─п╣п╥я┐п╩я▄я┌п╟я┌
+	п╪п╟п╨я─п╬п╨п╬п╪п╟п╫п╢я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -2019,7 +2019,7 @@ $METHODNAME$
 $SUMMARY$
 	Make undo operation.
 $LANG_RU$
-	Выпольнить откат.
+	п▓я▀п©п╬п╩я▄п╫п╦я┌я▄ п╬я┌п╨п╟я┌.
 $SYNTAX$
 	Undo() 	--> NIL
 $ARGUMENTS$
@@ -2027,16 +2027,16 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Undo() made last operation what be saved into undo buffer. The size of undo
 	buffer specified attribute <::LenUndo>.
 $LANG_RU$
-	Undo() выполняет операцию "откат" по данным, сохраненным в буфере
-	отката. Размер этого буфера задается атрибутом <::LenUndo>.
+	Undo() п╡я▀п©п╬п╩п╫я▐п╣я┌ п╬п©п╣я─п╟я├п╦я▌ "п╬я┌п╨п╟я┌" п©п╬ п╢п╟п╫п╫я▀п╪, я│п╬я┘я─п╟п╫п╣п╫п╫я▀п╪ п╡ п╠я┐я└п╣я─п╣
+	п╬я┌п╨п╟я┌п╟. п═п╟п╥п╪п╣я─ я█я┌п╬пЁп╬ п╠я┐я└п╣я─п╟ п╥п╟п╢п╟п╣я┌я│я▐ п╟я┌я─п╦п╠я┐я┌п╬п╪ <::LenUndo>.
 
-	Почти все методы класса по умолчанию сохраняют данные для выполнения отката если
-	пераметр <lUndo> TRUE.
+	п÷п╬я┤я┌п╦ п╡я│п╣ п╪п╣я┌п╬п╢я▀ п╨п╩п╟я│я│п╟ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ я│п╬я┘я─п╟п╫я▐я▌я┌ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ п╬я┌п╨п╟я┌п╟ п╣я│п╩п╦
+	п©п╣я─п╟п╪п╣я┌я─ <lUndo> TRUE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -2044,28 +2044,28 @@ $METHODNAME$
 $SUMMARY$
 	Save undo information.
 $LANG_RU$
-	Сохранить данные для операции "откат".
+	п║п╬я┘я─п╟п╫п╦я┌я▄ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╬п©п╣я─п╟я├п╦п╦ "п╬я┌п╨п╟я┌".
 $SYNTAX$
 	WriteUndo(<nCMD>, <vData>) 	--> NIL
 $ARGUMENTS$
 	<nCMD> - Numeric, hash code operation.
 	<vData> - Data to saving.
 $LANG_RU$
-	<nCMD> - Numeric, хэш-код операции.
-	<vData> - данные для сохранения..
+	<nCMD> - Numeric, я┘я█я┬-п╨п╬п╢ п╬п©п╣я─п╟я├п╦п╦.
+	<vData> - п╢п╟п╫п╫я▀п╣ п╢п╩я▐ я│п╬я┘я─п╟п╫п╣п╫п╦я▐..
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	WriteUndo() is saved some data into undo buffer for undo operation.
 
 	WriteUndo() invoked automaticaly from  methods TEXTEDIT and not
 	required direct activation.
 $LANG_RU$
-	WriteUndo() сохраняет данные для операции "откат".
+	WriteUndo() я│п╬я┘я─п╟п╫я▐п╣я┌ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п╬п©п╣я─п╟я├п╦п╦ "п╬я┌п╨п╟я┌".
 
-	WriteUndo() вызывается автоматически из всех методов класса TEXTEDIT.
+	WriteUndo() п╡я▀п╥я▀п╡п╟п╣я┌я│я▐ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ п╦п╥ п╡я│п╣я┘ п╪п╣я┌п╬п╢п╬п╡ п╨п╩п╟я│я│п╟ TEXTEDIT.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -2073,7 +2073,7 @@ $METHODNAME$
 $SUMMARY$
 	Print.
 $LANG_RU$
-	Печать.
+	п÷п╣я┤п╟я┌я▄.
 $SYNTAX$
 	Print() 	--> .T.
 $ARGUMENTS$
@@ -2081,11 +2081,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	Print() is printed editor buffer.
 $LANG_RU$
-	Print() осуществляет печать всего текста из буфера редактирования.
+	Print() п╬я│я┐я┴п╣я│я┌п╡п╩я▐п╣я┌ п©п╣я┤п╟я┌я▄ п╡я│п╣пЁп╬ я┌п╣п╨я│я┌п╟ п╦п╥ п╠я┐я└п╣я─п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
 
 $ENDMETHOD$
 
@@ -2094,7 +2094,7 @@ $METHODNAME$
 $SUMMARY$
 	Print marked block.
 $LANG_RU$
-	Печать блока.
+	п÷п╣я┤п╟я┌я▄ п╠п╩п╬п╨п╟.
 $SYNTAX$
 	PrintBlock() 	--> .T. || .F.
 $ARGUMENTS$
@@ -2102,11 +2102,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if block marked and FALSE in other.
 $LANG_RU$
-	Возвращает TRUE если блок отмечен и отправлен на печать.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╠п╩п╬п╨ п╬я┌п╪п╣я┤п╣п╫ п╦ п╬я┌п©я─п╟п╡п╩п╣п╫ п╫п╟ п©п╣я┤п╟я┌я▄.
 $DESCRIPTION$
 	PrintBlock() is printed block if it marked.
 $LANG_RU$
-	PrintBlock() осуществляет печать отмеченного блока (строчного или прямоугольного)
+	PrintBlock() п╬я│я┐я┴п╣я│я┌п╡п╩я▐п╣я┌ п©п╣я┤п╟я┌я▄ п╬я┌п╪п╣я┤п╣п╫п╫п╬пЁп╬ п╠п╩п╬п╨п╟ (я│я┌я─п╬я┤п╫п╬пЁп╬ п╦п╩п╦ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╬пЁп╬)
 
 $ENDMETHOD$
 
@@ -2115,7 +2115,7 @@ $METHODNAME$
 $SUMMARY$
 	Mark highlight line some colors.
 $LANG_RU$
-	Выделить строку цветом.
+	п▓я▀п╢п╣п╩п╦я┌я▄ я│я┌я─п╬п╨я┐ я├п╡п╣я┌п╬п╪.
 $SYNTAX$
 	HighLightAdd(<nLine>, <nColorItem>) 	--> .T. || .F.
 $ARGUMENTS$
@@ -2123,24 +2123,24 @@ $ARGUMENTS$
 
 	<nColorItem> - Numeric, the number color item in <::ColorSpec>
 $LANG_RU$
-	<nLine> - Numeric, номер строки.
+	<nLine> - Numeric, п╫п╬п╪п╣я─ я│я┌я─п╬п╨п╦.
 
-	<nColorItem> - Numeric, порядковый номер цвета в спецификации <::ColorSpec>
+	<nColorItem> - Numeric, п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ я├п╡п╣я┌п╟ п╡ я│п©п╣я├п╦я└п╦п╨п╟я├п╦п╦ <::ColorSpec>
 $RETURNS$
 	Returns TRUE if line marked and FALSE in other.
 $LANG_RU$
-	Возвращает TRUE если строка выделена.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я│я┌я─п╬п╨п╟ п╡я▀п╢п╣п╩п╣п╫п╟.
 $DESCRIPTION$
 	HighLightAdd() is highlighted line <nLine> and added information about
 	color highlighting to map <::HighLightColor>.
 
 	One line can take a few colors to highlighting.
 $LANG_RU$
-	HighLightAdd() выделяет строку <nLine> цветом <nColorItem> из спецификации
-	<::ColorSpec> и сохраняет эту информацию в массиве <::HighLightColor>.
+	HighLightAdd() п╡я▀п╢п╣п╩я▐п╣я┌ я│я┌я─п╬п╨я┐ <nLine> я├п╡п╣я┌п╬п╪ <nColorItem> п╦п╥ я│п©п╣я├п╦я└п╦п╨п╟я├п╦п╦
+	<::ColorSpec> п╦ я│п╬я┘я─п╟п╫я▐п╣я┌ я█я┌я┐ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╡ п╪п╟я│я│п╦п╡п╣ <::HighLightColor>.
 
-	Для одной строки метод может быть вызван несколько раз с разными цветами.
-	В этом случае, строка отображается последним из заданных цветов.
+	п■п╩я▐ п╬п╢п╫п╬п╧ я│я┌я─п╬п╨п╦ п╪п╣я┌п╬п╢ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╡я▀п╥п╡п╟п╫ п╫п╣я│п╨п╬п╩я▄п╨п╬ я─п╟п╥ я│ я─п╟п╥п╫я▀п╪п╦ я├п╡п╣я┌п╟п╪п╦.
+	п▓ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣, я│я┌я─п╬п╨п╟ п╬я┌п╬п╠я─п╟п╤п╟п╣я┌я│я▐ п©п╬я│п╩п╣п╢п╫п╦п╪ п╦п╥ п╥п╟п╢п╟п╫п╫я▀я┘ я├п╡п╣я┌п╬п╡.
 
 $ENDMETHOD$
 
@@ -2149,24 +2149,24 @@ $METHODNAME$
 $SUMMARY$
 	Unmark highlight line some color.
 $LANG_RU$
-	Отказаться от выделения строки заданным цветом.
+	п·я┌п╨п╟п╥п╟я┌я▄я│я▐ п╬я┌ п╡я▀п╢п╣п╩п╣п╫п╦я▐ я│я┌я─п╬п╨п╦ п╥п╟п╢п╟п╫п╫я▀п╪ я├п╡п╣я┌п╬п╪.
 $SYNTAX$
 	HighLightDel(<nLine>, <nColorItem>) 	--> .T. || .F.
 $ARGUMENTS$
 	<nLine> - Numeric, the line number to highlighting.
 	<nColorItem> - Numeric, the number color item in <::ColorSpec>
 $LANG_RU$
-	<nLine> - Numeric, номер строки.
-	<nColorItem> - Numeric, порядковый номер цвета в спецификации <::ColorSpec>
+	<nLine> - Numeric, п╫п╬п╪п╣я─ я│я┌я─п╬п╨п╦.
+	<nColorItem> - Numeric, п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ я├п╡п╣я┌п╟ п╡ я│п©п╣я├п╦я└п╦п╨п╟я├п╦п╦ <::ColorSpec>
 $RETURNS$
 $LANG_RU$
-	Возвращает TRUE если выделение строки цветом снято.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╡я▀п╢п╣п╩п╣п╫п╦п╣ я│я┌я─п╬п╨п╦ я├п╡п╣я┌п╬п╪ я│п╫я▐я┌п╬.
 $DESCRIPTION$
 	HighLightDel() is undo highlight line <nLine> with color specified <nColorItem>.
 	and removed information about this color highlighting from map <::HighLightColor>.
 $LANG_RU$
-	HighLightDel() снимает для строки выделение <nLine> цветом с номером <nColorItem> в
-	спецификации <::ColorSpec> и удаляет информацию из массива <::HighLightColor>.
+	HighLightDel() я│п╫п╦п╪п╟п╣я┌ п╢п╩я▐ я│я┌я─п╬п╨п╦ п╡я▀п╢п╣п╩п╣п╫п╦п╣ <nLine> я├п╡п╣я┌п╬п╪ я│ п╫п╬п╪п╣я─п╬п╪ <nColorItem> п╡
+	я│п©п╣я├п╦я└п╦п╨п╟я├п╦п╦ <::ColorSpec> п╦ я┐п╢п╟п╩я▐п╣я┌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╦п╥ п╪п╟я│я│п╦п╡п╟ <::HighLightColor>.
 $ENDMETHOD$
 
 
@@ -2175,24 +2175,24 @@ $METHODNAME$
 $SUMMARY$
 	On/Off the draw style "NUMERIC"
 $LANG_RU$
-	Установить/снять стиль "NUMERIC"
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄/я│п╫я▐я┌я▄ я│я┌п╦п╩я▄ "NUMERIC"
 $SYNTAX$
 	SetNumStyle([<lNum>]) 	--> NIL
 $ARGUMENTS$
 	<lNum> - Logical, if TRUE(default), numeric style ON.
 $LANG_RU$
-	<lNum> - Logical, TRUE(по умолчанию), стиль "NUMERIC" включен.
+	<lNum> - Logical, TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌), я│я┌п╦п╩я▄ "NUMERIC" п╡п╨п╩я▌я┤п╣п╫.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	SetNumStyle() is sets to ON/OFF numeric style. If ON, then every line
 	of editor buffer draw into viewport with same number.
 $LANG_RU$
-	SetNumStyle() устанавливает/снимает режим отображения строк в области
-	редактирования. Если <lNum> TRUE, в левой части области редактирования
-	отображаются порядковые номера строк в буфере редактирования.
+	SetNumStyle() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌/я│п╫п╦п╪п╟п╣я┌ я─п╣п╤п╦п╪ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦я▐ я│я┌я─п╬п╨ п╡ п╬п╠п╩п╟я│я┌п╦
+	я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐. п∙я│п╩п╦ <lNum> TRUE, п╡ п╩п╣п╡п╬п╧ я┤п╟я│я┌п╦ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐
+	п╬я┌п╬п╠я─п╟п╤п╟я▌я┌я│я▐ п©п╬я─я▐п╢п╨п╬п╡я▀п╣ п╫п╬п╪п╣я─п╟ я│я┌я─п╬п╨ п╡ п╠я┐я└п╣я─п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐.
 
 $ENDMETHOD$
 
@@ -2201,7 +2201,7 @@ $METHODNAME$
 $SUMMARY$
 	Off the style "NUMERIC"
 $LANG_RU$
-	Снять стиль "NUMERIC"
+	п║п╫я▐я┌я▄ я│я┌п╦п╩я▄ "NUMERIC"
 $SYNTAX$
 	KillNumStyle() 	--> NIL
 $ARGUMENTS$
@@ -2209,11 +2209,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	KillNumStyle() is sets to OFF numeric style.
 $LANG_RU$
-	KillNumStyle() снимает режим отображения порядковых номеров строк.
+	KillNumStyle() я│п╫п╦п╪п╟п╣я┌ я─п╣п╤п╦п╪ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦я▐ п©п╬я─я▐п╢п╨п╬п╡я▀я┘ п╫п╬п╪п╣я─п╬п╡ я│я┌я─п╬п╨.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -2221,17 +2221,17 @@ $METHODNAME$
 $SUMMARY$
 	Set new colors TEXTEDIT.
 $LANG_RU$
-	Установить новую цветовую спецификацию.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╫п╬п╡я┐я▌ я├п╡п╣я┌п╬п╡я┐я▌ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▌.
 $SYNTAX$
 	SetNewColor(<sNewColor>) 	--> NIL
 $ARGUMENTS$
 	<sNewColor> - String, the color specification.
 $LANG_RU$
-	<sNewColor> - String, строка - цветовая палитра.b
+	<sNewColor> - String, я│я┌я─п╬п╨п╟ - я├п╡п╣я┌п╬п╡п╟я▐ п©п╟п╩п╦я┌я─п╟.b
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	SetNewColor() is sets new color specification to TEXTEDIT.
 	The method Refresh() used 4 colors item to draw editor buffer:
@@ -2244,16 +2244,16 @@ $DESCRIPTION$
 	 ...
 	<clrN> - users color
 $LANG_RU$
-	SetNewColor() устанавливает новую цветовую спецификацию.
-	Метод Refresh() использует первые 4 цвета для прорисовки данных:
+	SetNewColor() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╫п╬п╡я┐я▌ я├п╡п╣я┌п╬п╡я┐я▌ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▌.
+	п°п╣я┌п╬п╢ Refresh() п╦я│п©п╬п╩я▄п╥я┐п╣я┌ п©п╣я─п╡я▀п╣ 4 я├п╡п╣я┌п╟ п╢п╩я▐ п©я─п╬я─п╦я│п╬п╡п╨п╦ п╢п╟п╫п╫я▀я┘:
 
 	<sNewColor> := "<clr1>, <clr2>, <clr3>, <clr4>[, ...<clrN>]"
-	<clr1> - основной цвет символов
-	<clr2> - цвет строки EOF
-	<clr3> - цвет выделенного текста
-	<clr4> - цвет текста, выделенного операциями поиска
+	<clr1> - п╬я│п╫п╬п╡п╫п╬п╧ я├п╡п╣я┌ я│п╦п╪п╡п╬п╩п╬п╡
+	<clr2> - я├п╡п╣я┌ я│я┌я─п╬п╨п╦ EOF
+	<clr3> - я├п╡п╣я┌ п╡я▀п╢п╣п╩п╣п╫п╫п╬пЁп╬ я┌п╣п╨я│я┌п╟
+	<clr4> - я├п╡п╣я┌ я┌п╣п╨я│я┌п╟, п╡я▀п╢п╣п╩п╣п╫п╫п╬пЁп╬ п╬п©п╣я─п╟я├п╦я▐п╪п╦ п©п╬п╦я│п╨п╟
 	 ...
-	<clrN> - пользовательский цвет
+	<clrN> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ я├п╡п╣я┌
 $ENDMETHOD$
 
 
@@ -2262,23 +2262,23 @@ $METHODNAME$
 $SUMMARY$
 	Set charset to translate editor data.
 $LANG_RU$
-	Установить новую колировку.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╫п╬п╡я┐я▌ п╨п╬п╩п╦я─п╬п╡п╨я┐.
 $SYNTAX$
 	SetCharset(<sCharset>) 	--> NIL
 $ARGUMENTS$
 	<sCharset> - String, the charset.
 $LANG_RU$
-	<sCharset> - String, кодировка.
+	<sCharset> - String, п╨п╬п╢п╦я─п╬п╡п╨п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	SetCharset() set a new charset  <sCharset> and translated data of
 	editor buffer to host charset.
 $LANG_RU$
-	SetCharset() устанавливает кодировку <sCharset> и транслирует данные
-	в буфере редактирования (если он не пуст) в кодировку CLIP-машины.
+	SetCharset() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╨п╬п╢п╦я─п╬п╡п╨я┐ <sCharset> п╦ я┌я─п╟п╫я│п╩п╦я─я┐п╣я┌ п╢п╟п╫п╫я▀п╣
+	п╡ п╠я┐я└п╣я─п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ (п╣я│п╩п╦ п╬п╫ п╫п╣ п©я┐я│я┌) п╡ п╨п╬п╢п╦я─п╬п╡п╨я┐ CLIP-п╪п╟я┬п╦п╫я▀.
 
 $ENDMETHOD$
 
@@ -2288,20 +2288,20 @@ $METHODNAME$
 $SUMMARY$
 	Set a code block associated with code key value.
 $LANG_RU$
-	Установить блок кода, связанный с кодом клавиши.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╠п╩п╬п╨ п╨п╬п╢п╟, я│п╡я▐п╥п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ п╨п╩п╟п╡п╦я┬п╦.
 $SYNTAX$
 	SetKey(<nKey>[, <bData>]) 	--> bPreviouse
 $ARGUMENTS$
 	<nKey> - Numeric, the key code.
 	<bData> - Block code, block to runing.
 $LANG_RU$
-	<nKey> - Numeric, код клавиши.
-	<bData> - Block code, кодовый блок.
+	<nKey> - Numeric, п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦.
+	<bData> - Block code, п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨.
 $RETURNS$
 	Returns the previouse block code if exist or returns current one <bData>.
 $LANG_RU$
-	Возвращает предыдущий кодовый блок ассоциированный с кодом <nKey>(если такой имеется)
-	или возвращает блок <bData>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я─п╣п╢я▀п╢я┐я┴п╦п╧ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨ п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>(п╣я│п╩п╦ я┌п╟п╨п╬п╧ п╦п╪п╣п╣я┌я│я▐)
+	п╦п╩п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╠п╩п╬п╨ <bData>.
 $DESCRIPTION$
 	SetKey() is sets a new code block associated with code <nKey>.
 	When replacing an existing code block definition, it returns previous
@@ -2316,18 +2316,18 @@ $DESCRIPTION$
 	K_PGDN, K_HOME, K_END ....) associates with corresponded methods Left(),
 	Right(), Up(), Down() and more.
 $LANG_RU$
-	SetKey() устанавливает новый кодовый блок, ассоциированный с кодом <nKey>.
-	Когда при этом замещается существующий блок кода, метод возвращает этот
-	существующий блок, иначе возвращает вновь установленный.
-	Коды клавиш и связанные с ними кодовые блоки обрабатываются методом
+	SetKey() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╫п╬п╡я▀п╧ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨, п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>.
+	п п╬пЁп╢п╟ п©я─п╦ я█я┌п╬п╪ п╥п╟п╪п╣я┴п╟п╣я┌я│я▐ я│я┐я┴п╣я│я┌п╡я┐я▌я┴п╦п╧ п╠п╩п╬п╨ п╨п╬п╢п╟, п╪п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я█я┌п╬я┌
+	я│я┐я┴п╣я│я┌п╡я┐я▌я┴п╦п╧ п╠п╩п╬п╨, п╦п╫п╟я┤п╣ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╡п╫п╬п╡я▄ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╫я▀п╧.
+	п п╬п╢я▀ п╨п╩п╟п╡п╦я┬ п╦ я│п╡я▐п╥п╟п╫п╫я▀п╣ я│ п╫п╦п╪п╦ п╨п╬п╢п╬п╡я▀п╣ п╠п╩п╬п╨п╦ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟я▌я┌я│я▐ п╪п╣я┌п╬п╢п╬п╪
 	ApplyKey().
 
-	Если <bData> NIL, SetKey() возвращает старый кодовый блок
-	и удаляет код клавиши с ассоциированым с ним кодовым блоком.
+	п∙я│п╩п╦ <bData> NIL, SetKey() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌п╟я─я▀п╧ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨
+	п╦ я┐п╢п╟п╩я▐п╣я┌ п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦ я│ п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫я▀п╪ я│ п╫п╦п╪ п╨п╬п╢п╬п╡я▀п╪ п╠п╩п╬п╨п╬п╪.
 
-	По умолчанию с клавишами перемещения курсора(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
-	K_PGDN, K_HOME, K_END ....) ассоциированы соответствующие методы Left(),
-	Right(), Up(), Down() и тд.
+	п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ я│ п╨п╩п╟п╡п╦я┬п╟п╪п╦ п©п╣я─п╣п╪п╣я┴п╣п╫п╦я▐ п╨я┐я─я│п╬я─п╟(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
+	K_PGDN, K_HOME, K_END ....) п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫я▀ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╦п╣ п╪п╣я┌п╬п╢я▀ Left(),
+	Right(), Up(), Down() п╦ я┌п╢.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -2335,13 +2335,13 @@ $METHODNAME$
 $SUMMARY$
 	Evalute the code block.
 $LANG_RU$
-	Выполнить кодовый блок.
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨.
 $SYNTAX$
 	ApplyKey(<nKey>) 	--> nResult
 $ARGUMENTS$
 	<nKey> - Numeric, the key code.
 $LANG_RU$
-	<nKey> - Numeric, код клавиши.
+	<nKey> - Numeric, п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦.
 $RETURNS$
 	Returns one of numeric value what definited in edit.ch.
 
@@ -2351,19 +2351,19 @@ $RETURNS$
 
 	TE_EXCEPTION	1  Unable to locate <nKey> in the dictionary, key was not processed
 $LANG_RU$
-	Возвращает одно из определенных в edit.ch кодов:
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╢п╫п╬ п╦п╥ п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀я┘ п╡ edit.ch п╨п╬п╢п╬п╡:
 
-	TE_EXIT		-1 Пользовательский запрос к TEXTEDIT потерять фокус
+	TE_EXIT		-1 п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ п╥п╟п©я─п╬я│ п╨ TEXTEDIT п©п╬я┌п╣я─я▐я┌я▄ я└п╬п╨я┐я│
 
-	TE_CONTINUE	0  Кодовый блок, ассоциированный с кодом <nKey>, был выполнен
+	TE_CONTINUE	0  п п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨, п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>, п╠я▀п╩ п╡я▀п©п╬п╩п╫п╣п╫
 
-	TE_EXCEPTION	1  Неопределенный в словаре код <nKey>, код не был обработан
+	TE_EXCEPTION	1  п²п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╧ п╡ я│п╩п╬п╡п╟я─п╣ п╨п╬п╢ <nKey>, п╨п╬п╢ п╫п╣ п╠я▀п╩ п╬п╠я─п╟п╠п╬я┌п╟п╫
 $DESCRIPTION$
 	ApplyKey() evaluates the code block associeated with key code <nKey>
 	that is contained whithin SetKey() dictionary and returns <nResult>.
 $LANG_RU$
-	ApplyKey() выполняет кодовый блок ассоциированный с кодом <nKey>,
-	который содержится в словаре, созданном в SetKey(), и возвращает <nResult>.
+	ApplyKey() п╡я▀п©п╬п╩п╫я▐п╣я┌ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨ п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>,
+	п╨п╬я┌п╬я─я▀п╧ я│п╬п╢п╣я─п╤п╦я┌я│я▐ п╡ я│п╩п╬п╡п╟я─п╣, я│п╬п╥п╢п╟п╫п╫п╬п╪ п╡ SetKey(), п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <nResult>.
 $ENDMETHOD$
 
 
@@ -2372,23 +2372,23 @@ $METHODNAME$
 $SUMMARY$
 	Set/kill focus.
 $LANG_RU$
-	Установить/снять фокус
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄/я│п╫я▐я┌я▄ я└п╬п╨я┐я│
 $SYNTAX$
 	SetFocus([<lFocus>]) 	--> lNewFocus
 $ARGUMENTS$
 	<lFocus> - Logical, if TRUE object take focus.
 $LANG_RU$
-	<lFocus> - Logical, если TRUE объект в фокусе.
+	<lFocus> - Logical, п╣я│п╩п╦ TRUE п╬п╠я┼п╣п╨я┌ п╡ я└п╬п╨я┐я│п╣.
 $RETURNS$
 	Returns new focused value TRUE or FALSE.
 $LANG_RU$
-	Возвращает состояние объекта - в фокусе или нет - TRUE или FALSE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╬я│я┌п╬я▐п╫п╦п╣ п╬п╠я┼п╣п╨я┌п╟ - п╡ я└п╬п╨я┐я│п╣ п╦п╩п╦ п╫п╣я┌ - TRUE п╦п╩п╦ FALSE.
 $DESCRIPTION$
 	SetFocus() sets or kills focus.
 	If <lFocus> not specifyed, then <::InFocus> take new value !<::InFocus>
 $LANG_RU$
-	SetFocus() устанавливает или снимает фокус.
-	Если <lFocus> не определен, <lFocus> принимает значение !<::InFocus>
+	SetFocus() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╦п╩п╦ я│п╫п╦п╪п╟п╣я┌ я└п╬п╨я┐я│.
+	п∙я│п╩п╦ <lFocus> п╫п╣ п╬п©я─п╣п╢п╣п╩п╣п╫, <lFocus> п©я─п╦п╫п╦п╪п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ !<::InFocus>
 $ENDMETHOD$
 
 $EXAMPLES$

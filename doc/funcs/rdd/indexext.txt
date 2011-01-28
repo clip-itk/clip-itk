@@ -5,29 +5,29 @@ $CATEGORY$
 $SUMMARY$
    Return the default index extension based on the database driver currently
 $LANG_RU$
-   Возвращает расширение имени индексного файла, принятое по умолчанию
+   п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╟я│я┬п╦я─п╣п╫п╦п╣ п╦п╪п╣п╫п╦ п╦п╫п╢п╣п╨я│п╫п╬пЁп╬ я└п╟п╧п╩п╟, п©я─п╦п╫я▐я┌п╬п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌
 $SYNTAX$
      INDEXEXT() --> cExtension
 $LANG_RU$
-     INDEXEXT() --> расширение имени индекса
+     INDEXEXT() --> я─п╟я│я┬п╦я─п╣п╫п╦п╣ п╦п╪п╣п╫п╦ п╦п╫п╢п╣п╨я│п╟
 $RETURNS$
      Unless you have linked another database driver, INDEXEXT() returns
      ".ntx" to indicate that the default xClipper driver is in effect.  If
      the dBASE III PLUS compatible database driver is linked, the function
      returns ".ndx".
 $LANG_RU$
-     Пока не скомпонован другой драйвер базы данных, INDEXEXT() возвращает
-     значение ".NTX.", означающее, что по умолчанию действует штатный
-     драйвер xClipper. Если скомпонован драйвер баз данных, совместимых с
-     dBASEIII PLUS, функция возвратит значение ".NDX.".
+     п÷п╬п╨п╟ п╫п╣ я│п╨п╬п╪п©п╬п╫п╬п╡п╟п╫ п╢я─я┐пЁп╬п╧ п╢я─п╟п╧п╡п╣я─ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘, INDEXEXT() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+     п╥п╫п╟я┤п╣п╫п╦п╣ ".NTX.", п╬п╥п╫п╟я┤п╟я▌я┴п╣п╣, я┤я┌п╬ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╢п╣п╧я│я┌п╡я┐п╣я┌ я┬я┌п╟я┌п╫я▀п╧
+     п╢я─п╟п╧п╡п╣я─ xClipper. п∙я│п╩п╦ я│п╨п╬п╪п©п╬п╫п╬п╡п╟п╫ п╢я─п╟п╧п╡п╣я─ п╠п╟п╥ п╢п╟п╫п╫я▀я┘, я│п╬п╡п╪п╣я│я┌п╦п╪я▀я┘ я│
+     dBASEIII PLUS, я└я┐п╫п╨я├п╦я▐ п╡п╬п╥п╡я─п╟я┌п╦я┌ п╥п╫п╟я┤п╣п╫п╦п╣ ".NDX.".
 $DESCRIPTION$
      INDEXEXT() returns the default index file extension by determining which
      database driver is currently linked. Note that it is preferable to use
      ORDBAGEXT() than INDEXEXT().
 $LANG_RU$
-     INDEXEXT() возвращает расширение имени индексного файла, принятое по
-     умолчанию определяя, какой драйвер базы данных скомпонован в текущий
-     момент.
+     INDEXEXT() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╟я│я┬п╦я─п╣п╫п╦п╣ п╦п╪п╣п╫п╦ п╦п╫п╢п╣п╨я│п╫п╬пЁп╬ я└п╟п╧п╩п╟, п©я─п╦п╫я▐я┌п╬п╣ п©п╬
+     я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╬п©я─п╣п╢п╣п╩я▐я▐, п╨п╟п╨п╬п╧ п╢я─п╟п╧п╡п╣я─ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘ я│п╨п╬п╪п©п╬п╫п╬п╡п╟п╫ п╡ я┌п╣п╨я┐я┴п╦п╧
+     п╪п╬п╪п╣п╫я┌.
 $EXAMPLES$
        In this example, INDEXEXT() creates an existence test for the
 	Customer index file independent of the database driver linked into
@@ -39,9 +39,9 @@ $EXAMPLES$
 	   INDEX ON CustName TO Customer
 	ENDIF
 $LANG_RU$
-      В этом примере INDEXEXT() используется для проверки на
-       существование индексного файла Customer независимо от того, какой
-       драйвер используется в текущей программе:
+      п▓ я█я┌п╬п╪ п©я─п╦п╪п╣я─п╣ INDEXEXT() п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╢п╩я▐ п©я─п╬п╡п╣я─п╨п╦ п╫п╟
+       я│я┐я┴п╣я│я┌п╡п╬п╡п╟п╫п╦п╣ п╦п╫п╢п╣п╨я│п╫п╬пЁп╬ я└п╟п╧п╩п╟ Customer п╫п╣п╥п╟п╡п╦я│п╦п╪п╬ п╬я┌ я┌п╬пЁп╬, п╨п╟п╨п╬п╧
+       п╢я─п╟п╧п╡п╣я─ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╡ я┌п╣п╨я┐я┴п╣п╧ п©я─п╬пЁя─п╟п╪п╪п╣:
 
        USE Customer NEW
        //

@@ -3,32 +3,32 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIMenuCheckedItem
 $LANG_RU$
-	Класс UIMenuCheckedItem
+	п п╩п╟я│я│ UIMenuCheckedItem
 $ABOUT$
 	Class of checked menu item. Object of this class was created by method addChecked() of class <link linkend="classuimenu">UIMenu</link>.
 $LANG_RU$
-	Класс пункта меню-переключатель. Объект создаётся при в методе addChecked() класса <link linkend="classuimenu">UIMenu</link>.
+	п п╩п╟я│я│ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌-п©п╣я─п╣п╨п╩я▌я┤п╟я┌п╣п╩я▄. п·п╠я┼п╣п╨я┌ я│п╬п╥п╢п╟я▒я┌я│я▐ п©я─п╦ п╡ п╪п╣я┌п╬п╢п╣ addChecked() п╨п╩п╟я│я│п╟ <link linkend="classuimenu">UIMenu</link>.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIMenuCheckedItem".
 	<label>		- Label.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIMenuCheckedItem".
-	<label>		- Надпись.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIMenuCheckedItem".
+	<label>		- п²п╟п╢п©п╦я│я▄.
 
 $METHODNAME$
 	setAction()
 $SUMMARY$
 	Set action executed on menu item activation.
 $LANG_RU$
-	Установить действие, выполняемое при выборе пункта меню.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п©п╬п╩п╫я▐п╣п╪п╬п╣ п©я─п╦ п╡я▀п╠п╬я─п╣ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $SYNTAX$
 	setAction([<signal>],<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -36,22 +36,22 @@ $METHODNAME$
 $SUMMARY$
 	Get checked status of checked menu item.
 $LANG_RU$
-	Вернуть статус пункта меню-переключателя.
+	п▓п╣я─п╫я┐я┌я▄ я│я┌п╟я┌я┐я│ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌-п©п╣я─п╣п╨п╩я▌я┤п╟я┌п╣п╩я▐.
 $SYNTAX$
 	isChecked()	--> <bChecked>
 $RETURNS$
 	Checked status of checked menu item.
 $LANG_RU$
-	Статус пункта меню-переключателя.
+	п║я┌п╟я┌я┐я│ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌-п©п╣я─п╣п╨п╩я▌я┤п╟я┌п╣п╩я▐.
 $ENDMETHOD$
 
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

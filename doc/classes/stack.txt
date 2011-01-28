@@ -3,24 +3,24 @@ $CLASSNAME$
 $SUMMARY$
 	Class are destined to control stack arbitrary data.
 $LANG_RU$
-	Класс предназначен для управления стеком.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│я┌п╣п╨п╬п╪.
 $ABOUT$
 	Class are destined to control stack arbitrary data.
 $LANG_RU$
-	Класс предназначен для управления стеком.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│я┌п╣п╨п╬п╪.
 $SYNTAX$
 	StackNew() 	--> new Stack object
 $ATTRIBUTES$
 	<Data> Array, an array of data.
 $LANG_RU$
-	<Data> Array, стек
+	<Data> Array, я│я┌п╣п╨
 
 $METHODNAME$
 	StackNew()
 $SUMMARY$
 	STACK object constructor.
 $LANG_RU$
-	Конструктор объекта STACK.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟ STACK.
 $SYNTAX$
 	StackNew() 	--> new Stack object
 $ARGUMENTS$
@@ -28,13 +28,13 @@ $ARGUMENTS$
 $RETURNS$
 	Method returns new STACK object.
 $LANG_RU$
-	Возвращает объект класса STACK.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ STACK.
 $DESCRIPTION$
 	StackNew() is constructs and returns new stack object.
 	That class can be used to storage, access, control arbitrary data.
 $LANG_RU$
-	StackNew() создает и возвращает новый объект класса STACK.
-	Объект может быть использован для хранения, управления разнотипными данными в стеке.
+	StackNew() я│п╬п╥п╢п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ STACK.
+	п·п╠я┼п╣п╨я┌ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐, я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я─п╟п╥п╫п╬я┌п╦п©п╫я▀п╪п╦ п╢п╟п╫п╫я▀п╪п╦ п╡ я│я┌п╣п╨п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -42,21 +42,21 @@ $METHODNAME$
 $SUMMARY$
 	Push data to the stack.
 $LANG_RU$
-	Поместить данные в стек.
+	п÷п╬п╪п╣я│я┌п╦я┌я▄ п╢п╟п╫п╫я▀п╣ п╡ я│я┌п╣п╨.
 $SYNTAX$
 	Push(<vData>) 	--> nLenStack
 $ARGUMENTS$
 	<vData> - a data to be insert.
 $LANG_RU$
-	<vData> - данные, для помещения в стек
+	<vData> - п╢п╟п╫п╫я▀п╣, п╢п╩я▐ п©п╬п╪п╣я┴п╣п╫п╦я▐ п╡ я│я┌п╣п╨
 $RETURNS$
 	Returns numeric value is a number pushed element in to stack.
 $LANG_RU$
-	Возвращает номер помещенного в стек элемента.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ п©п╬п╪п╣я┴п╣п╫п╫п╬пЁп╬ п╡ я│я┌п╣п╨ я█п╩п╣п╪п╣п╫я┌п╟.
 $DESCRIPTION$
 	Push() is inserted arbitrary data to the end of stack.
 $LANG_RU$
-	Push() помещает разнотипные данные в стек.
+	Push() п©п╬п╪п╣я┴п╟п╣я┌ я─п╟п╥п╫п╬я┌п╦п©п╫я▀п╣ п╢п╟п╫п╫я▀п╣ п╡ я│я┌п╣п╨.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -64,7 +64,7 @@ $METHODNAME$
 $SUMMARY$
 	Get last pushed data.
 $LANG_RU$
-	Извлечь из стека.
+	п≤п╥п╡п╩п╣я┤я▄ п╦п╥ я│я┌п╣п╨п╟.
 $SYNTAX$
 	Pop() 	--> vData
 $ARGUMENTS$
@@ -72,15 +72,15 @@ $ARGUMENTS$
 $RETURNS$
 	Returns a last pushed element.
 $LANG_RU$
-	Возвращает последний элемент, помещенный в стек.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬я│п╩п╣п╢п╫п╦п╧ я█п╩п╣п╪п╣п╫я┌, п©п╬п╪п╣я┴п╣п╫п╫я▀п╧ п╡ я│я┌п╣п╨.
 $DESCRIPTION$
 	Pop() is return last pushed data in to stack. If stack has no
 	elements function return NIL
 $LANG_RU$
-	Pop() возвращает последний, помещенный в стек элемент. Этот элемент
-	извлекается из стека.
+	Pop() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬я│п╩п╣п╢п╫п╦п╧, п©п╬п╪п╣я┴п╣п╫п╫я▀п╧ п╡ я│я┌п╣п╨ я█п╩п╣п╪п╣п╫я┌. п╜я┌п╬я┌ я█п╩п╣п╪п╣п╫я┌
+	п╦п╥п╡п╩п╣п╨п╟п╣я┌я│я▐ п╦п╥ я│я┌п╣п╨п╟.
 
-	Если стек пуст, Pop() возвращает NIL.
+	п∙я│п╩п╦ я│я┌п╣п╨ п©я┐я│я┌, Pop() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -88,7 +88,7 @@ $METHODNAME$
 $SUMMARY$
 	Get stack length.
 $LANG_RU$
-	Вернуть длину стека.
+	п▓п╣я─п╫я┐я┌я▄ п╢п╩п╦п╫я┐ я│я┌п╣п╨п╟.
 $SYNTAX$
 	Len() 	--> nLenStack
 $ARGUMENTS$
@@ -96,11 +96,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns a numeric value - elements count of stack.
 $LANG_RU$
-	Возвращает число - длину стека.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - п╢п╩п╦п╫я┐ я│я┌п╣п╨п╟.
 $DESCRIPTION$
 	Len() is return  elements count of stack.
 $LANG_RU$
-	Len() возвращает длину стека - количество элементов в массиве <::Data>
+	Len() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╢п╩п╦п╫я┐ я│я┌п╣п╨п╟ - п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ п╪п╟я│я│п╦п╡п╣ <::Data>
 $ENDMETHOD$
 
 
@@ -109,7 +109,7 @@ $METHODNAME$
 $SUMMARY$
 	Free stack.
 $LANG_RU$
-	Очистить стек.
+	п·я┤п╦я│я┌п╦я┌я▄ я│я┌п╣п╨.
 $SYNTAX$
 	Free() 	--> .t.
 $ARGUMENTS$
@@ -117,11 +117,11 @@ $ARGUMENTS$
 $RETURNS$
 	Always returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	Free() is removed all elements from stack.
 $LANG_RU$
-	Free() удаляет все данные из стека.
+	Free() я┐п╢п╟п╩я▐п╣я┌ п╡я│п╣ п╢п╟п╫п╫я▀п╣ п╦п╥ я│я┌п╣п╨п╟.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -138,7 +138,7 @@ st:Free()	// --> .T.
 $PLATFORMS$
    No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 ITK

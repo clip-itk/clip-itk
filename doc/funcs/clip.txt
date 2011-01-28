@@ -5,25 +5,25 @@ $CATEGORY$
 $SUMMARY$
    Evaluate function.
 $LANG_RU$
-   Выполнить функцию.
+   п▓я▀п©п╬п╩п╫п╦я┌я▄ я└я┐п╫п╨я├п╦я▌.
 $SYNTAX$
      CLIP(<sFuncName>, [<Param1>, ..., <ParamN>) 	--> <vData>
 $ARGUMENTS$
      <sFuncName>	String, is the function name.
      <Param1>,...<paramN>	is are parameters for function <sFuncName>.
 $LANG_RU$
-     <sFuncName>	String, имя функции
-     <Param1>,...<paramN>	параметры, передаваемые в функцию <sFuncName>.
+     <sFuncName>	String, п╦п╪я▐ я└я┐п╫п╨я├п╦п╦
+     <Param1>,...<paramN>	п©п╟я─п╟п╪п╣я┌я─я▀, п©п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п╡ я└я┐п╫п╨я├п╦я▌ <sFuncName>.
 $RETURNS$
      Returns the result of evaluate <sFuncName> function.
 $LANG_RU$
-     Возвращает результат выполнения функции <sFuncName>.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╣п╥я┐п╩я▄я┌п╟я┌ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ я└я┐п╫п╨я├п╦п╦ <sFuncName>.
 $DESCRIPTION$
 
      CLIP() evaluates function with name <sFuncName> and returns result this function.
 $LANG_RU$
 
-     CLIP()  выполняет функцию с именем <sFuncName>  и возвращает результат выполнения.
+     CLIP()  п╡я▀п©п╬п╩п╫я▐п╣я┌ я└я┐п╫п╨я├п╦я▌ я│ п╦п╪п╣п╫п╣п╪ <sFuncName>  п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╣п╥я┐п╩я▄я┌п╟я┌ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐.
 $EXAMPLES$
 
 CLIP("substr","asdfghjkl",2,3) 		// --> "sdf"
@@ -31,12 +31,12 @@ CLIP("substr","asdfghjkl",2,3) 		// --> "sdf"
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 

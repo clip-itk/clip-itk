@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Opens the port and initializes the buffer
 $LANG_RU$
-	Открывает порт и инициализирует буффер.
+	п·я┌п╨я─я▀п╡п╟п╣я┌ п©п╬я─я┌ п╦ п╦п╫п╦я├п╦п╟п╩п╦п╥п╦я─я┐п╣я┌ п╠я┐я└я└п╣я─.
 $SYNTAX$
 	COM_OPEN(<nComPort>,<notused>,<notused>,<notused>,
 		[<lRTSCTS>],[<lXONXOFF>],[<lDebug>]) --> lStatus
@@ -15,18 +15,18 @@ $ARGUMENTS$
 	<lXONXOFF> - Enable or disable use of software flow control.
 	<lDebug> - True value enable com port debug output
 $LANG_RU$
-	<nComPort> - Номер порта (от 1 до N).
-	<lRTSCRS> - Разрешает или запрещает использование аппаратного управления потоком символов.
-	<lXONXOFF> - Разрешает или запрещает использование программного управления потоком символов.
-	<lDebug> - Включает отладочный вывод библиотеки.
+	<nComPort> - п²п╬п╪п╣я─ п©п╬я─я┌п╟ (п╬я┌ 1 п╢п╬ N).
+	<lRTSCRS> - п═п╟п╥я─п╣я┬п╟п╣я┌ п╦п╩п╦ п╥п╟п©я─п╣я┴п╟п╣я┌ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╟п©п©п╟я─п╟я┌п╫п╬пЁп╬ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п©п╬я┌п╬п╨п╬п╪ я│п╦п╪п╡п╬п╩п╬п╡.
+	<lXONXOFF> - п═п╟п╥я─п╣я┬п╟п╣я┌ п╦п╩п╦ п╥п╟п©я─п╣я┴п╟п╣я┌ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п©я─п╬пЁя─п╟п╪п╪п╫п╬пЁп╬ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п©п╬я┌п╬п╨п╬п╪ я│п╦п╪п╡п╬п╩п╬п╡.
+	<lDebug> - п▓п╨п╩я▌я┤п╟п╣я┌ п╬я┌п╩п╟п╢п╬я┤п╫я▀п╧ п╡я▀п╡п╬п╢ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦.
 $RETURNS$
 	Returns .T. when the port has been successfully opened and you can select the buffer.
 $LANG_RU$
-	Возвращает .T. если порт был успешно открыт.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ .T. п╣я│п╩п╦ п©п╬я─я┌ п╠я▀п╩ я┐я│п©п╣я┬п╫п╬ п╬я┌п╨я─я▀я┌.
 $DESCRIPTION$
 	This function allows you to open a serial interface port.
 $LANG_RU$
-	Эта функция открывает порт последовательного интерфейса.
+	п╜я┌п╟ я└я┐п╫п╨я├п╦я▐ п╬я┌п╨я─я▀п╡п╟п╣я┌ п©п╬я─я┌ п©п╬я│п╩п╣п╢п╬п╡п╟я┌п╣п╩я▄п╫п╬пЁп╬ п╦п╫я┌п╣я─я└п╣п╧я│п╟.
 $EXAMPLES$
 	IF COM_NUM() > 0
 	    ComOk  :=  COM_OPEN(1)     // Open COM1
@@ -40,7 +40,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_FLUSH(),COM_INIT(),COM_READ(),COM_SEND(),COM_SFLUSH()
 $AUTHOR$

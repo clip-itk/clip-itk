@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Recreate all active indexes for the current work area
 $LANG_RU$
-   Воссоздает все активные индексы в текущей рабочей области.
+   п▓п╬я│я│п╬п╥п╢п╟п╣я┌ п╡я│п╣ п╟п╨я┌п╦п╡п╫я▀п╣ п╦п╫п╢п╣п╨я│я▀ п╡ я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
 $SYNTAX$
      DBREINDEX() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBREINDEX() always returns NIL.
 $LANG_RU$
-     DBREINDEX() всегда возвращает NIL.
+     DBREINDEX() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBREINDEX() rebuilds all active indexes associated with the current work
      area.  After the indexes are recreated, the work area is moved to the
@@ -22,13 +22,13 @@ $DESCRIPTION$
      DBREINDEX() performs the same function as the standard REINDEX command.
      For more information, refer to the REINDEX command.
 $LANG_RU$
-     DBREINDEX() заново строит все активные индексы в текущей рабочей
-     области. После индексации указатель записи в текущей рабочей области
-     устанавливается на первую логическую запись согласно управляющему
-     индексу.
+     DBREINDEX() п╥п╟п╫п╬п╡п╬ я│я┌я─п╬п╦я┌ п╡я│п╣ п╟п╨я┌п╦п╡п╫я▀п╣ п╦п╫п╢п╣п╨я│я▀ п╡ я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧
+     п╬п╠п╩п╟я│я┌п╦. п÷п╬я│п╩п╣ п╦п╫п╢п╣п╨я│п╟я├п╦п╦ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╥п╟п©п╦я│п╦ п╡ я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦
+     я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╫п╟ п©п╣я─п╡я┐я▌ п╩п╬пЁп╦я┤п╣я│п╨я┐я▌ п╥п╟п©п╦я│я▄ я│п╬пЁп╩п╟я│п╫п╬ я┐п©я─п╟п╡п╩я▐я▌я┴п╣п╪я┐
+     п╦п╫п╢п╣п╨я│я┐.
 
-     DBREINDEX() выполняет те же функции, что и стандартная команда
-     REINDEX.  Более подробную информацию смотрите в команде REINDEX.
+     DBREINDEX() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟
+     REINDEX.  п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ REINDEX.
 $EXAMPLES$
        The following example reindexes the work area:
 

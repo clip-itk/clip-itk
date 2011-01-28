@@ -5,11 +5,11 @@ $CATEGORY$
 $SUMMARY$
    Position record pointer to a specific identity
 $LANG_RU$
-   Перемещает указатель на запись с заданным номером.
+   п÷п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╥п╟п©п╦я│я▄ я│ п╥п╟п╢п╟п╫п╫я▀п╪ п╫п╬п╪п╣я─п╬п╪.
 $SYNTAX$
      DBGOTO(<xIdentity>) --> NIL
 $LANG_RU$
-     DBGOTO(<номер записи>) --> NIL
+     DBGOTO(<п╫п╬п╪п╣я─ п╥п╟п©п╦я│п╦>) --> NIL
 $ARGUMENTS$
      <xIdentity> is a unique value guaranteed by the structure of the
      data file to reference a specific item in a data source (database).  In
@@ -18,12 +18,12 @@ $ARGUMENTS$
      <xIdentity> could be an array offset or virtual memory handle if the
      data set is in memory instead of on disk.
 $LANG_RU$
-     <номер записи> - числовое значение, которое определяет номер записи,
-     на которую должен быть установлен указатель.
+     <п╫п╬п╪п╣я─ п╥п╟п©п╦я│п╦> - я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ п╬п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╬п╪п╣я─ п╥п╟п©п╦я│п╦,
+     п╫п╟ п╨п╬я┌п╬я─я┐я▌ п╢п╬п╩п╤п╣п╫ п╠я▀я┌я▄ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫ я┐п╨п╟п╥п╟я┌п╣п╩я▄.
 $RETURNS$
      DBGOTO() always returns NIL.
 $LANG_RU$
-     DBGOTO() всегда возвращает NIL.
+     DBGOTO() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBGOTO() is a database function that positions the record pointer in the
      current work area at the specified <xIdentity>.  In an Xbase data
@@ -31,13 +31,13 @@ $DESCRIPTION$
      an empty record, has a record number.  In non-Xbase data structures,
      identity may be defined as something other than record number.
 $LANG_RU$
-     DBGOTO() перемещает указатель на запись, номер которой равен <номер
-     записи>. Если такой номер не существует, указатель устанавливается на
-     запись LASTREC()+1, а значение, возвращаемое функциями как EOF(), так
-     и BOF() - "истина" (.T.).
+     DBGOTO() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╥п╟п©п╦я│я▄, п╫п╬п╪п╣я─ п╨п╬я┌п╬я─п╬п╧ я─п╟п╡п╣п╫ <п╫п╬п╪п╣я─
+     п╥п╟п©п╦я│п╦>. п∙я│п╩п╦ я┌п╟п╨п╬п╧ п╫п╬п╪п╣я─ п╫п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌, я┐п╨п╟п╥п╟я┌п╣п╩я▄ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╫п╟
+     п╥п╟п©п╦я│я▄ LASTREC()+1, п╟ п╥п╫п╟я┤п╣п╫п╦п╣, п╡п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ я└я┐п╫п╨я├п╦я▐п╪п╦ п╨п╟п╨ EOF(), я┌п╟п╨
+     п╦ BOF() - "п╦я│я┌п╦п╫п╟" (.T.).
 
-     DBGOTO() выполняет те же функции, что и стандартная команда GO. Более
-     подробную информацию смотрите в команде GO.
+     DBGOTO() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ GO. п▒п╬п╩п╣п╣
+     п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ GO.
 $SEEALSO$
   BOF(),DBGOBOTTOM(),DBGOTOP(),DBSEEK(),DBSKIP(),EOF()
 $END$

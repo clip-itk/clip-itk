@@ -5,35 +5,35 @@ $CATEGORY$
 $SUMMARY$
    Return the default database driver and optionally set a new driver
 $LANG_RU$
-   Возвращает имя используемого по умолчанию драйвера баз данных и
+   п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╪я▐ п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬пЁп╬ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╢я─п╟п╧п╡п╣я─п╟ п╠п╟п╥ п╢п╟п╫п╫я▀я┘ п╦
 $SYNTAX$
      DBSETDRIVER([<cDriver>]) --> cCurrentDriver
 $LANG_RU$
-     DBSETDRIVER([<драйвер>]) --> текущий драйвер
+     DBSETDRIVER([<п╢я─п╟п╧п╡п╣я─>]) --> я┌п╣п╨я┐я┴п╦п╧ п╢я─п╟п╧п╡п╣я─
 $ARGUMENTS$
      <cDriver> is an optional character value that specifies the name of
      the database driver that should be used to activate and manage new work
      areas when no driver is explicitly specified.
 $LANG_RU$
-     <драйвер> - необязательное символьное выражение, определяющее имя
-     драйвера баз данных, используемого для активизации и управления
-     новыми рабочими областями, когда в командах USE драйвер не задан
-     явным образом.
+     <п╢я─п╟п╧п╡п╣я─> - п╫п╣п╬п╠я▐п╥п╟я┌п╣п╩я▄п╫п╬п╣ я│п╦п╪п╡п╬п╩я▄п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣, п╬п©я─п╣п╢п╣п╩я▐я▌я┴п╣п╣ п╦п╪я▐
+     п╢я─п╟п╧п╡п╣я─п╟ п╠п╟п╥ п╢п╟п╫п╫я▀я┘, п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬пЁп╬ п╢п╩я▐ п╟п╨я┌п╦п╡п╦п╥п╟я├п╦п╦ п╦ я┐п©я─п╟п╡п╩п╣п╫п╦я▐
+     п╫п╬п╡я▀п╪п╦ я─п╟п╠п╬я┤п╦п╪п╦ п╬п╠п╩п╟я│я┌я▐п╪п╦, п╨п╬пЁп╢п╟ п╡ п╨п╬п╪п╟п╫п╢п╟я┘ USE п╢я─п╟п╧п╡п╣я─ п╫п╣ п╥п╟п╢п╟п╫
+     я▐п╡п╫я▀п╪ п╬п╠я─п╟п╥п╬п╪.
 $RETURNS$
      DBSETDRIVER() returns the name of the current default driver.
 $LANG_RU$
-     DBSETDRIVER() возвращает имя текущего драйвера баз данных.
+     DBSETDRIVER() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╪я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╢я─п╟п╧п╡п╣я─п╟ п╠п╟п╥ п╢п╟п╫п╫я▀я┘.
 $DESCRIPTION$
      DBSETDRIVER() sets the database driver to be used when activating new
      work areas without specifying a driver.  If the specified driver is not
      available to the application, the call has no effect.  DBSETDRIVER()
      returns the name of the current default driver, if any.
 $LANG_RU$
-     DBSETDRIVER() устанавливает драйвер баз данных, используемый при
-     активации новых рабочих областей без явно заданного драйвера. Если
-     указанный драйвер недоступен, то функция не оказывает действия.
-     DBSETDRIVER() - возвращает имя текущего драйвера баз данных,
-     используемого по умолчанию  при открытии баз данных.
+     DBSETDRIVER() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╢я─п╟п╧п╡п╣я─ п╠п╟п╥ п╢п╟п╫п╫я▀я┘, п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀п╧ п©я─п╦
+     п╟п╨я┌п╦п╡п╟я├п╦п╦ п╫п╬п╡я▀я┘ я─п╟п╠п╬я┤п╦я┘ п╬п╠п╩п╟я│я┌п╣п╧ п╠п╣п╥ я▐п╡п╫п╬ п╥п╟п╢п╟п╫п╫п╬пЁп╬ п╢я─п╟п╧п╡п╣я─п╟. п∙я│п╩п╦
+     я┐п╨п╟п╥п╟п╫п╫я▀п╧ п╢я─п╟п╧п╡п╣я─ п╫п╣п╢п╬я│я┌я┐п©п╣п╫, я┌п╬ я└я┐п╫п╨я├п╦я▐ п╫п╣ п╬п╨п╟п╥я▀п╡п╟п╣я┌ п╢п╣п╧я│я┌п╡п╦я▐.
+     DBSETDRIVER() - п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╪я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╢я─п╟п╧п╡п╣я─п╟ п╠п╟п╥ п╢п╟п╫п╫я▀я┘,
+     п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬пЁп╬ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌  п©я─п╦ п╬я┌п╨я─я▀я┌п╦п╦ п╠п╟п╥ п╢п╟п╫п╫я▀я┘.
 $EXAMPLES$
        This example makes the "DBFNDX" driver the default driver.  If
 	the driver is unavailable, a message is issued:
@@ -43,13 +43,13 @@ $EXAMPLES$
 	   ? "DBFNDX driver not available"
 	ENDIF
 $LANG_RU$
-      В этом примере устанавливается драйвер "DBFNTX". В случае
-       недоступности драйвера выдается сообщение.
+      п▓ я█я┌п╬п╪ п©я─п╦п╪п╣я─п╣ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╢я─п╟п╧п╡п╣я─ "DBFNTX". п▓ я│п╩я┐я┤п╟п╣
+       п╫п╣п╢п╬я│я┌я┐п©п╫п╬я│я┌п╦ п╢я─п╟п╧п╡п╣я─п╟ п╡я▀п╢п╟п╣я┌я│я▐ я│п╬п╬п╠я┴п╣п╫п╦п╣.
 
        DBSETDRIVER("DBFNTX")
 
        IF ( DBSETDRIVER() <> "DBFNTX" )
-	  ? "DBFNTX драйвер не доступен"
+	  ? "DBFNTX п╢я─п╟п╧п╡п╣я─ п╫п╣ п╢п╬я│я┌я┐п©п╣п╫"
        ENDIF
 $SEEALSO$
   DBUSEAREA(),RLOCK()

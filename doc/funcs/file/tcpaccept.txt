@@ -12,13 +12,13 @@ $ARGUMENTS$
 	<nSock>		Numeric, is the source socket.
 	<nTimeout>	Numeric, is the timeout.
 $LANG_RU$
-	<nSock>		Numeric, исходный сокет.
-	<nTimeout>	Numeric, время ожидания.
+	<nSock>		Numeric, п╦я│я┘п╬п╢п╫я▀п╧ я│п╬п╨п╣я┌.
+	<nTimeout>	Numeric, п╡я─п╣п╪я▐ п╬п╤п╦п╢п╟п╫п╦я▐.
 $RETURNS$
 	Returns numeric value <nNewSocket> handler of new socket or -1 if error occurced.
 $LANG_RU$
-	Возвращает числовое значение <nNewSocket> дескриптор нового сокета или -1,
-	если произошла ошибка.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ <nNewSocket> п╢п╣я│п╨я─п╦п©я┌п╬я─ п╫п╬п╡п╬пЁп╬ я│п╬п╨п╣я┌п╟ п╦п╩п╦ -1,
+	п╣я│п╩п╦ п©я─п╬п╦п╥п╬я┬п╩п╟ п╬я┬п╦п╠п╨п╟.
 $DESCRIPTION$
 	TCPACCEPT() extracts the first connection  request  on  the  queue  of
 	pending  connections,  creates a new connected socket with
@@ -27,11 +27,11 @@ $DESCRIPTION$
 
 	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
 $LANG_RU$
-	TCPACCEPT() выбирает первый запрос на соединение из очереди ожидающих,
-	создает новый сокет со свойствами исходного <nSock>, и возвращает
-	новый дескриптор файла <nNewSocket>.
+	TCPACCEPT() п╡я▀п╠п╦я─п╟п╣я┌ п©п╣я─п╡я▀п╧ п╥п╟п©я─п╬я│ п╫п╟ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣ п╦п╥ п╬я┤п╣я─п╣п╢п╦ п╬п╤п╦п╢п╟я▌я┴п╦я┘,
+	я│п╬п╥п╢п╟п╣я┌ п╫п╬п╡я▀п╧ я│п╬п╨п╣я┌ я│п╬ я│п╡п╬п╧я│я┌п╡п╟п╪п╦ п╦я│я┘п╬п╢п╫п╬пЁп╬ <nSock>, п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+	п╫п╬п╡я▀п╧ п╢п╣я│п╨я─п╦п©я┌п╬я─ я└п╟п╧п╩п╟ <nNewSocket>.
 
-	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+	<link linkend="functionFERROR">FERROR()</link> п╦ <link linkend="functionFERRORSTR">FERRORSTR()</link> я┘я─п╟п╫я▐я┌ п╫п╬п╪п╣я─ п╦ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $EXAMPLES$
 
 #define DEFPORT	3000

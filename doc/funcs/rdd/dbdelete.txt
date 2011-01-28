@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Mark a record for deletion
 $LANG_RU$
-   Помечает запись для удаления.
+   п÷п╬п╪п╣я┤п╟п╣я┌ п╥п╟п©п╦я│я▄ п╢п╩я▐ я┐п╢п╟п╩п╣п╫п╦я▐.
 $SYNTAX$
      DBDELETE() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBDELETE() always returns NIL.
 $LANG_RU$
-     DBDELETE() всегда возвращает NIL.
+     DBDELETE() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBDELETE() marks the current record as deleted.  Records marked for
      deletion can be filtered using SET DELETED or removed from the file
@@ -23,13 +23,13 @@ $DESCRIPTION$
      with a scope of the current record.  For more information, refer to the
      DELETE command.
 $LANG_RU$
-     DBDELETE() помечает текущую запись как удаленную. Записи, помеченные
-     для удаления, могут быть отфильтрованы с помощью команды SET DELETE
-     или удалены из файла командой PACK.
+     DBDELETE() п©п╬п╪п╣я┤п╟п╣я┌ я┌п╣п╨я┐я┴я┐я▌ п╥п╟п©п╦я│я▄ п╨п╟п╨ я┐п╢п╟п╩п╣п╫п╫я┐я▌. п≈п╟п©п╦я│п╦, п©п╬п╪п╣я┤п╣п╫п╫я▀п╣
+     п╢п╩я▐ я┐п╢п╟п╩п╣п╫п╦я▐, п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п╬я┌я└п╦п╩я▄я┌я─п╬п╡п╟п╫я▀ я│ п©п╬п╪п╬я┴я▄я▌ п╨п╬п╪п╟п╫п╢я▀ SET DELETE
+     п╦п╩п╦ я┐п╢п╟п╩п╣п╫я▀ п╦п╥ я└п╟п╧п╩п╟ п╨п╬п╪п╟п╫п╢п╬п╧ PACK.
 
-     DBDELETE() выполняет те же функции, что и стандартная команда DELETE,
-     область действия которой - текущая запись. Более подробную информацию
-     смотрите в команде DELETE.
+     DBDELETE() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ DELETE,
+     п╬п╠п╩п╟я│я┌я▄ п╢п╣п╧я│я┌п╡п╦я▐ п╨п╬я┌п╬я─п╬п╧ - я┌п╣п╨я┐я┴п╟я▐ п╥п╟п©п╦я│я▄. п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌
+     я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ DELETE.
 $EXAMPLES$
        The following example deletes a record after a successful
 	record lock:

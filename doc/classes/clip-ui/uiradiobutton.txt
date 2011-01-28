@@ -3,34 +3,34 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIRadioButton.
 $LANG_RU$
-	Класс UIRadioButton.
+	п п╩п╟я│я│ UIRadioButton.
 $ABOUT$
 	Class of radio button.
 $LANG_RU$
-	Класс кнопки альтернативы.
+	п п╩п╟я│я│ п╨п╫п╬п©п╨п╦ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀.
 $SYNTAX$
 	UIRadioButton(<radiogroup>, <text>)	--> UIRadioButton object.
 $LANG_RU$
-	UIRadioButton(<radiogroup>, <text>)	--> Объект UIRadioButton.
+	UIRadioButton(<radiogroup>, <text>)	--> п·п╠я┼п╣п╨я┌ UIRadioButton.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIRadioButton".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIRadioButton".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIRadioButton".
 
 $METHODNAME$
 	UIRadioButton()
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIRadioButton(<radiogroup>, <text>)	--> UIRadioButton object.
 $ARGUMENTS$
 	<radiogroup>	- Object <link linkend="classuiradiogroup">UIRadioGroup</link>. Radio buttons group.
 	<text>		- String. Radio button label.
 $LANG_RU$
-	<radiogroup>	- Объект <link linkend="classuiradiogroup">UIRadioGroup</link>. Группа кнопок альтернатив.
-	<text>		- Строка. Надпись кнопки альтернативы.
+	<radiogroup>	- п·п╠я┼п╣п╨я┌ <link linkend="classuiradiogroup">UIRadioGroup</link>. п⌠я─я┐п©п©п╟ п╨п╫п╬п©п╬п╨ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡.
+	<text>		- п║я┌я─п╬п╨п╟. п²п╟п╢п©п╦я│я▄ п╨п╫п╬п©п╨п╦ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -38,13 +38,13 @@ $METHODNAME$
 $SUMMARY$
 	Set radio button selected/unselected.
 $LANG_RU$
-	Сделать кнопку альтернативы выбранной/невыбранной.
+	п║п╢п╣п╩п╟я┌я▄ п╨п╫п╬п©п╨я┐ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀ п╡я▀п╠я─п╟п╫п╫п╬п╧/п╫п╣п╡я▀п╠я─п╟п╫п╫п╬п╧.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
 	<value>		- Boolean. Radio button status.
 $LANG_RU$
-	<value>		- Логическое значение. Статус кнопки альтернативы.
+	<value>		- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п║я┌п╟я┌я┐я│ п╨п╫п╬п©п╨п╦ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -52,13 +52,13 @@ $METHODNAME$
 $SUMMARY$
 	Get radio button status.
 $LANG_RU$
-	Вернуть состояние кнопки альтернативы.
+	п▓п╣я─п╫я┐я┌я▄ я│п╬я│я┌п╬я▐п╫п╦п╣ п╨п╫п╬п©п╨п╦ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀.
 $SYNTAX$
 	getValue()	--> <lStatus>
 $RETURNS$
 	Radio button status. Type of returned value is boolean.
 $LANG_RU$
-	Состояние кнопки альтернативы. Тип возвращаемого значения: логическое значение.
+	п║п╬я│я┌п╬я▐п╫п╦п╣ п╨п╫п╬п©п╨п╦ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀. п╒п╦п© п╡п╬п╥п╡я─п╟я┴п╟п╣п╪п╬пЁп╬ п╥п╫п╟я┤п╣п╫п╦я▐: п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -69,11 +69,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UIRADIOGROUP
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

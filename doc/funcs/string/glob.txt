@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Check confirmity string to regular expression.
 $LANG_RU$
-	Проверка на соответствие строки регулярному выражению.
+	п÷я─п╬п╡п╣я─п╨п╟ п╫п╟ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╦п╣ я│я┌я─п╬п╨п╦ я─п╣пЁя┐п╩я▐я─п╫п╬п╪я┐ п╡я▀я─п╟п╤п╣п╫п╦я▌.
 $SYNTAX$
      GLOB(<sString>, <sReg>, [<lIgnoreCase>]) 	--> TRUE || FALSE
 $ARGUMENTS$
@@ -13,19 +13,19 @@ $ARGUMENTS$
      <sReg>	String, is the simple regular expression.
      <lIgnoreCase>	Logical, is TRUE if ignore case sensitive (by default FALSE)
 $LANG_RU$
-     <sString>	String, исходная строка
-     <sReg>	String, простое регулярное выражение
-     <lIgnoreCase>	Logical, TRUE, если не учитывать регистр (по умолчанию FALSE)
+     <sString>	String, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟
+     <sReg>	String, п©я─п╬я│я┌п╬п╣ я─п╣пЁя┐п╩я▐я─п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣
+     <lIgnoreCase>	Logical, TRUE, п╣я│п╩п╦ п╫п╣ я┐я┤п╦я┌я▀п╡п╟я┌я▄ я─п╣пЁп╦я│я┌я─ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ FALSE)
 $RETURNS$
      Returns TRUE if string corresponding to regular expression.
 $LANG_RU$
-     Возвращает TRUE, если строка соответствует регулярному выражению.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ я│я┌я─п╬п╨п╟ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐п╣я┌ я─п╣пЁя┐п╩я▐я─п╫п╬п╪я┐ п╡я▀я─п╟п╤п╣п╫п╦я▌.
 $DESCRIPTION$
      GLOB() returns TRUE if string corresponding to regular expression.
      The expression <sReg> is the simple regular expression by DOS rules.
 $LANG_RU$
-     GLOB() возвращает TRUE, если строка соответствует регулярному выражению.
-     Выражение <sReg>  это простое регулярное выражение, принятое в DOS.
+     GLOB() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ я│я┌я─п╬п╨п╟ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐п╣я┌ я─п╣пЁя┐п╩я▐я─п╫п╬п╪я┐ п╡я▀я─п╟п╤п╣п╫п╦я▌.
+     п▓я▀я─п╟п╤п╣п╫п╦п╣ <sReg>  я█я┌п╬ п©я─п╬я│я┌п╬п╣ я─п╣пЁя┐п╩я▐я─п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣, п©я─п╦п╫я▐я┌п╬п╣ п╡ DOS.
 $EXAMPLES$
 
 ? GLOB("aaa", "aaa") 		// --> TRUE
@@ -38,11 +38,11 @@ $EXAMPLES$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

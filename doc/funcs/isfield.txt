@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Checks if a varialbe name is a field name of DB.
 $LANG_RU$
-	Проверка, является ли имя переменной именем поля БД.
+	п÷я─п╬п╡п╣я─п╨п╟, я▐п╡п╩я▐п╣я┌я│я▐ п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╦п╪п╣п╫п╣п╪ п©п╬п╩я▐ п▒п■.
 $SYNTAX$
      ISFIELD(<sVarName>) 	--> TRUE || FALSE
 $ARGUMENTS$
      <sVarName>	String, is the variable name.
 $LANG_RU$
-     <sVarName>	String, имя переменной.
+     <sVarName>	String, п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧.
 $RETURNS$
      Returns TRUE if a varialbe name is a field name of DB.
 $LANG_RU$
-     Возвращает TRUE, если имя переменной является именем поля БД.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ я▐п╡п╩я▐п╣я┌я│я▐ п╦п╪п╣п╫п╣п╪ п©п╬п╩я▐ п▒п■.
 $DESCRIPTION$
 
 	ISFIELD() returns TRUE if a varialbe name <sVarName> is a field name of DB.
 $LANG_RU$
 
-	ISFIELD() возвращает TRUE, если имя переменной <sVarName> является именем поля БД.
+	ISFIELD() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ <sVarName> я▐п╡п╩я▐п╣я┌я│я▐ п╦п╪п╣п╫п╣п╪ п©п╬п╩я▐ п▒п■.
 $EXAMPLES$
 
 USE adressbook.dbf
@@ -36,11 +36,11 @@ endif
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

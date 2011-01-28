@@ -5,21 +5,21 @@ $CATEGORY$
 $SUMMARY$
 	Sleep for the specified number of seconds and milliseconds.
 $LANG_RU$
-	Остановить выполнение программы на заданное количество секунд и(или) милисекунд.
+	п·я│я┌п╟п╫п╬п╡п╦я┌я▄ п╡я▀п©п╬п╩п╫п╣п╫п╦п╣ п©я─п╬пЁя─п╟п╪п╪я▀ п╫п╟ п╥п╟п╢п╟п╫п╫п╬п╣ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│п╣п╨я┐п╫п╢ п╦(п╦п╩п╦) п╪п╦п╩п╦я│п╣п╨я┐п╫п╢.
 $SYNTAX$
      SLEEP(<nSec>) 	--> NIL
 $ARGUMENTS$
 	<nSec>		Numeric, is the number os seconds and/or milliseconds.
 $LANG_RU$
-	<nSec>		Numeric, количество секунд и/или милисекунд ожидания.
+	<nSec>		Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│п╣п╨я┐п╫п╢ п╦/п╦п╩п╦ п╪п╦п╩п╦я│п╣п╨я┐п╫п╢ п╬п╤п╦п╢п╟п╫п╦я▐.
 $RETURNS$
      Returns NIL.
 $LANG_RU$
-     Возвращает NIL.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	SLEEP() makes the program sleep until seconds have  elapsed.
 $LANG_RU$
-	SLEEP() останавливает программу на время, пока не истекли указанные секунды.
+	SLEEP() п╬я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п©я─п╬пЁя─п╟п╪п╪я┐ п╫п╟ п╡я─п╣п╪я▐, п©п╬п╨п╟ п╫п╣ п╦я│я┌п╣п╨п╩п╦ я┐п╨п╟п╥п╟п╫п╫я▀п╣ я│п╣п╨я┐п╫п╢я▀.
 $EXAMPLES$
 
 do while 100
@@ -31,13 +31,13 @@ $PLATFORMS$
    Nothing guarantee for the specified MILLISECONDS, if this guarantee have't
    OS.
    $LANG_RU$
-   Никаких гарантий на заданное количество МИЛИСЕКУНД нет, если такой гарантии
-   не дает операционная система.
+   п²п╦п╨п╟п╨п╦я┘ пЁп╟я─п╟п╫я┌п╦п╧ п╫п╟ п╥п╟п╢п╟п╫п╫п╬п╣ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п°п≤п⌡п≤п║п∙п пёп²п■ п╫п╣я┌, п╣я│п╩п╦ я┌п╟п╨п╬п╧ пЁп╟я─п╟п╫я┌п╦п╦
+   п╫п╣ п╢п╟п╣я┌ п╬п©п╣я─п╟я├п╦п╬п╫п╫п╟я▐ я│п╦я│я┌п╣п╪п╟.
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -48,7 +48,7 @@ $CATEGORY$
 $SUMMARY$
 	Run system command.
 $LANG_RU$
-	Выполнить системную команду.
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ я│п╦я│я┌п╣п╪п╫я┐я▌ п╨п╬п╪п╟п╫п╢я┐.
 $SYNTAX$
      SYSCMD(<sCmd>, <sStdin>, @<sResult>, @<sError>) 	--> <nResultCode>
 $ARGUMENTS$
@@ -57,14 +57,14 @@ $ARGUMENTS$
 	<sResult>	String, is the string of result.
 	<sErrot>	String, is the error description.
 $LANG_RU$
-	<sCmd>		String, команда.
-	<sStdin>	String, входящая строка.
-	<sResult>	String, строка результата.
-	<sErrot>	String, описание ошибки.
+	<sCmd>		String, п╨п╬п╪п╟п╫п╢п╟.
+	<sStdin>	String, п╡я┘п╬п╢я▐я┴п╟я▐ я│я┌я─п╬п╨п╟.
+	<sResult>	String, я│я┌я─п╬п╨п╟ я─п╣п╥я┐п╩я▄я┌п╟я┌п╟.
+	<sErrot>	String, п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $RETURNS$
      Returns -1 on error or returns status of command.
 $LANG_RU$
-     Возвращает -1 если произошла ошибка или возвращает статус завершения команды.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ -1 п╣я│п╩п╦ п©я─п╬п╦п╥п╬я┬п╩п╟ п╬я┬п╦п╠п╨п╟ п╦п╩п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌п╟я┌я┐я│ п╥п╟п╡п╣я─я┬п╣п╫п╦я▐ п╨п╬п╪п╟п╫п╢я▀.
 $DESCRIPTION$
 	SYSCMD() runs system command <sCmd> and sends to this command string <sStdin>
 	to a standart input. All output stream will be write to <sResult>, and
@@ -72,11 +72,11 @@ $DESCRIPTION$
 
 	<sResult> and <sError> can't be constants.
 $LANG_RU$
-	SYSCMD() выполняет системную команду <sCmd>, посылая ей на входной
-	стандартный поток строку <sStdin>. Весь stdout будет записан
-	в буфер <sResult>, а весь stderr - в <sErr>.
+	SYSCMD() п╡я▀п©п╬п╩п╫я▐п╣я┌ я│п╦я│я┌п╣п╪п╫я┐я▌ п╨п╬п╪п╟п╫п╢я┐ <sCmd>, п©п╬я│я▀п╩п╟я▐ п╣п╧ п╫п╟ п╡я┘п╬п╢п╫п╬п╧
+	я│я┌п╟п╫п╢п╟я─я┌п╫я▀п╧ п©п╬я┌п╬п╨ я│я┌я─п╬п╨я┐ <sStdin>. п▓п╣я│я▄ stdout п╠я┐п╢п╣я┌ п╥п╟п©п╦я│п╟п╫
+	п╡ п╠я┐я└п╣я─ <sResult>, п╟ п╡п╣я│я▄ stderr - п╡ <sErr>.
 
-	<sResult> и <sError> не могут быть объявлены как константы.
+	<sResult> п╦ <sError> п╫п╣ п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п╬п╠я┼я▐п╡п╩п╣п╫я▀ п╨п╟п╨ п╨п╬п╫я│я┌п╟п╫я┌я▀.
 $EXAMPLES$
 
 err_buf1=space(0)
@@ -102,12 +102,12 @@ result_code2 := SYSCMD("grep test ", res_buf1, @res_buf2, @err_buf2)
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -118,30 +118,30 @@ $CATEGORY$
 $SUMMARY$
 	Set limit to use system resources.
 $LANG_RU$
-	Установить лимит на использование системных ресурсов.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╩п╦п╪п╦я┌ п╫п╟ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ я│п╦я│я┌п╣п╪п╫я▀я┘ я─п╣я│я┐я─я│п╬п╡.
 $SYNTAX$
      ULIMIT(<sResName>, <vLimitVal>) 	--> <vOldLimitValue>
 $ARGUMENTS$
 	<sResName>	String, is the resource name.
 	<vLimitVal>	is the new limit value.
 $LANG_RU$
-	<sResName>	String, название ресурса.
-	<vLimitVal>	новое значение.
+	<sResName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ я─п╣я│я┐я─я│п╟.
+	<vLimitVal>	п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
 $RETURNS$
      Returns old limit value for system resource <sResName>.
 $LANG_RU$
-     Возвращает старое значение предельной величины для системного ресурса <sResName>.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌п╟я─п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п©я─п╣п╢п╣п╩я▄п╫п╬п╧ п╡п╣п╩п╦я┤п╦п╫я▀ п╢п╩я▐ я│п╦я│я┌п╣п╪п╫п╬пЁп╬ я─п╣я│я┐я─я│п╟ <sResName>.
 $DESCRIPTION$
 	ULIMIT() sets new limit value <vLimitVal> to use system resource with name <sResName>
 	 and returns old value for this resource.
 
 	The list of resource names see in ulimit.ch
 $LANG_RU$
-	ULIMIT() устанавливает новое значение <vLimitVal> на использование
-	системного ресурса с именем <sResName> и возвращает старое значение
-	этого ресурса.
+	ULIMIT() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ <vLimitVal> п╫п╟ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣
+	я│п╦я│я┌п╣п╪п╫п╬пЁп╬ я─п╣я│я┐я─я│п╟ я│ п╦п╪п╣п╫п╣п╪ <sResName> п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌п╟я─п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣
+	я█я┌п╬пЁп╬ я─п╣я│я┐я─я│п╟.
 
-	Список возможных значений ресурсов см. в ulimit.ch
+	п║п©п╦я│п╬п╨ п╡п╬п╥п╪п╬п╤п╫я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ я─п╣я│я┐я─я│п╬п╡ я│п╪. п╡ ulimit.ch
 $EXAMPLES$
 
 #include <ulimit.ch>
@@ -153,12 +153,12 @@ $EXAMPLES$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 

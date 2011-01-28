@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Retrieve a numeric parameter as a double.
 $LANG_RU$
-	Принимает числовой параметр как double.
+	п÷я─п╦п╫п╦п╪п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╧ п©п╟я─п╟п╪п╣я┌я─ п╨п╟п╨ double.
 $SYNTAX$
 	_clip_parnd(ClipMachine * cm,int num) --> double
 $ARGUMENTS$
 	<num> - position of the parameter in parameters list
 $LANG_RU$
-	<num> - позиция параметра в списке параметров
+	<num> - п©п╬п╥п╦я├п╦я▐ п©п╟я─п╟п╪п╣я┌я─п╟ п╡ я│п©п╦я│п╨п╣ п©п╟я─п╟п╪п╣я┌я─п╬п╡
 $RETURNS$
 	_clip_parnd() returns the value of the specified parameter as a double type.
 $LANG_RU$
-	_clip_parnd() возващает значение указанного параметр как double.
+	_clip_parnd() п╡п╬п╥п╡п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─ п╨п╟п╨ double.
 $DESCRIPTION$
 	_clip_parnd() retrieves a numeric value passed as a parameter from CLIP
 	and converts it to a double type.
 $LANG_RU$
-	_clip_parnd() принимает числовое значение переданное в качестве параметра
-	из CLIP и преобразует его в double.
+	_clip_parnd() п©я─п╦п╫п╦п╪п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╢п╟п╫п╫п╬п╣ п╡ п╨п╟я┤п╣я│я┌п╡п╣ п©п╟я─п╟п╪п╣я┌я─п╟
+	п╦п╥ CLIP п╦ п©я─п╣п╬п╠я─п╟п╥я┐п╣я┌ п╣пЁп╬ п╡ double.
 $EXAMPLES$
 	#include "clip.h"
 

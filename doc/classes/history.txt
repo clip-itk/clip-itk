@@ -3,11 +3,11 @@ $CLASSNAME$
 $SUMMARY$
 	Class are destined to control listing of history.
 $LANG_RU$
-	Класс предназначен для управления списком "истории"
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│п©п╦я│п╨п╬п╪ "п╦я│я┌п╬я─п╦п╦"
 $ABOUT$
 	Class are destined to control listing of history.
 $LANG_RU$
-	Класс предназначен для управления списком "истории"
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│п©п╦я│п╨п╬п╪ "п╦я│я┌п╬я─п╦п╦"
 $SYNTAX$
 	HistoryObj(nLrow, nLcol, nRrow, nRcol, sColor) --> QUEUE object
 $ATTRIBUTES$
@@ -27,27 +27,27 @@ $ATTRIBUTES$
 			clr4 - title colors
 $LANG_RU$
 	<ClassName> 	HISTORY
-	<Lrow> 		Numeric, координаты области просмотра HISTORY
-	<Lcol>         	Numeric, координаты области просмотра HISTORY
-	<Rrow>       	Numeric, координаты области просмотра HISTORY
-	<Rcol>        	Numeric, координаты области просмотра HISTORY
-	<History>	Array, массив элементов "истории"
-	<Header>	String, заголовок окна
-	<Size>		Numeric, максимальный размер массива "истории"
-	<ColorSpec>	String, цветовая спецификация.
+	<Lrow> 		Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<Lcol>         	Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<Rrow>       	Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<Rcol>        	Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<History>	Array, п╪п╟я│я│п╦п╡ я█п╩п╣п╪п╣п╫я┌п╬п╡ "п╦я│я┌п╬я─п╦п╦"
+	<Header>	String, п╥п╟пЁп╬п╩п╬п╡п╬п╨ п╬п╨п╫п╟
+	<Size>		Numeric, п╪п╟п╨я│п╦п╪п╟п╩я▄п╫я▀п╧ я─п╟п╥п╪п╣я─ п╪п╟я│я│п╦п╡п╟ "п╦я│я┌п╬я─п╦п╦"
+	<ColorSpec>	String, я├п╡п╣я┌п╬п╡п╟я▐ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▐.
 
 			"clr1, clr2, clr3, clr4"
-			clr1 - основной цвет и цвет обрамления
-			clr2 - цвет текущего элемента, если объект в фокусе
-			clr3 - цвет текущего элемента, если объект не в фокусе
-			clr4 - цвет заголовков
+			clr1 - п╬я│п╫п╬п╡п╫п╬п╧ я├п╡п╣я┌ п╦ я├п╡п╣я┌ п╬п╠я─п╟п╪п╩п╣п╫п╦я▐
+			clr2 - я├п╡п╣я┌ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟, п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╡ я└п╬п╨я┐я│п╣
+			clr3 - я├п╡п╣я┌ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟, п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╫п╣ п╡ я└п╬п╨я┐я│п╣
+			clr4 - я├п╡п╣я┌ п╥п╟пЁп╬п╩п╬п╡п╨п╬п╡
 
 $METHODNAME$
 	HistoryObj()
 $SUMMARY$
 	HISTORY object constructor.
 $LANG_RU$
-	Конструктор объекта HISTORY.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟ HISTORY.
 $SYNTAX$
 	HistoryObj(nLrow, nLcol, nRrow, nRcol, sColor) --> QUEUE object
 $ARGUMENTS$
@@ -57,23 +57,23 @@ $ARGUMENTS$
 	<nRCol>         Numeric, a HISTORY viewport coordinates
 	<sColor>        String, color specification.
 $LANG_RU$
-	<nLrow>		Numeric, координаты области просмотра HISTORY
-	<nLcol>         Numeric, координаты области просмотра HISTORY
-	<nRrow>         Numeric, координаты области просмотра HISTORY
-	<nRCol>         Numeric, координаты области просмотра HISTORY
-	<sColor>        String, цветовая спецификация.
+	<nLrow>		Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<nLcol>         Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<nRrow>         Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<nRCol>         Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟ HISTORY
+	<sColor>        String, я├п╡п╣я┌п╬п╡п╟я▐ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▐.
 $RETURNS$
 	Method returns new HISTORY object.
 $LANG_RU$
-	Метод возвращает новый объект HISTORY.
+	п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ HISTORY.
 $DESCRIPTION$
 	HistoryObj() is constructs and returns new HISTORY object.
 	That class can be use to manipulating listing of history( for example,
 	history listing of loaded files)
 $LANG_RU$
-	HistoryObj() создает и возвращает новый объект класса HISTORY.
-	Этот объект может использоваться для управления списком "истории"
-	(например, списком "истории" загруженных файлов)
+	HistoryObj() я│п╬п╥п╢п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ HISTORY.
+	п╜я┌п╬я┌ п╬п╠я┼п╣п╨я┌ п╪п╬п╤п╣я┌ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄я│я▐ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│п©п╦я│п╨п╬п╪ "п╦я│я┌п╬я─п╦п╦"
+	(п╫п╟п©я─п╦п╪п╣я─, я│п©п╦я│п╨п╬п╪ "п╦я│я┌п╬я─п╦п╦" п╥п╟пЁя─я┐п╤п╣п╫п╫я▀я┘ я└п╟п╧п╩п╬п╡)
 $ENDMETHOD$
 
 $METHODNAME$
@@ -81,17 +81,17 @@ $METHODNAME$
 $SUMMARY$
 	Insert item to first position.
 $LANG_RU$
-	Вставить элемент на первую позицию.
+	п▓я│я┌п╟п╡п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌ п╫п╟ п©п╣я─п╡я┐я▌ п©п╬п╥п╦я├п╦я▌.
 $SYNTAX$
 	InsertToFirst(<sData>) --> NIL
 $ARGUMENTS$
 	<sData>  - String, data to inserting
 $LANG_RU$
-	<sData>	 - String, данные для сохранении в "истории"
+	<sData>	 - String, п╢п╟п╫п╫я▀п╣ п╢п╩я▐ я│п╬я┘я─п╟п╫п╣п╫п╦п╦ п╡ "п╦я│я┌п╬я─п╦п╦"
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	InsertToFirst() is inserts data <sData> to history array <::History> begin with
 	first position. All items with one will be shifted down one position.
@@ -99,11 +99,11 @@ $DESCRIPTION$
 	If <sData> already exist within <::History>, it removes from old place and
 	insert to first position.
 $LANG_RU$
-	InsertToFirst() вставляет новый элемент "истории" <sData> на первую позицию
-	в массив <::History>
+	InsertToFirst() п╡я│я┌п╟п╡п╩я▐п╣я┌ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ "п╦я│я┌п╬я─п╦п╦" <sData> п╫п╟ п©п╣я─п╡я┐я▌ п©п╬п╥п╦я├п╦я▌
+	п╡ п╪п╟я│я│п╦п╡ <::History>
 
-	Если <sData> уже существует в массиве <::History>, он просто перемещается
-	на первую позицию.
+	п∙я│п╩п╦ <sData> я┐п╤п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╡ п╪п╟я│я│п╦п╡п╣ <::History>, п╬п╫ п©я─п╬я│я┌п╬ п©п╣я─п╣п╪п╣я┴п╟п╣я┌я│я▐
+	п╫п╟ п©п╣я─п╡я┐я▌ п©п╬п╥п╦я├п╦я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -111,27 +111,27 @@ $METHODNAME$
 $SUMMARY$
 	Add item into history.
 $LANG_RU$
-	Добавить элемент.
+	п■п╬п╠п╟п╡п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	Add(<sData>) --> NIL
 $ARGUMENTS$
 	<sData>  - String, data to adding
 $LANG_RU$
-	<sData>	 - String, данные для сохранении в "истории"
+	<sData>	 - String, п╢п╟п╫п╫я▀п╣ п╢п╩я▐ я│п╬я┘я─п╟п╫п╣п╫п╦п╦ п╡ "п╦я│я┌п╬я─п╦п╦"
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Add() is addes data <sData> to the end of history array <::History>.
 
 	If <sData> already exist within <::History>, it removes from old place and
 	addes to the end of <::History>.
 $LANG_RU$
-	Add() добавляет новый элемент <sData> в конец массива <::History>
+	Add() п╢п╬п╠п╟п╡п╩я▐п╣я┌ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ <sData> п╡ п╨п╬п╫п╣я├ п╪п╟я│я│п╦п╡п╟ <::History>
 
-	Если <sData> уже существует в массиве <::History>, он удаляется со старого
-	места и добавляется в конец <::History>.
+	п∙я│п╩п╦ <sData> я┐п╤п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╡ п╪п╟я│я│п╦п╡п╣ <::History>, п╬п╫ я┐п╢п╟п╩я▐п╣я┌я│я▐ я│п╬ я│я┌п╟я─п╬пЁп╬
+	п╪п╣я│я┌п╟ п╦ п╢п╬п╠п╟п╡п╩я▐п╣я┌я│я▐ п╡ п╨п╬п╫п╣я├ <::History>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -139,17 +139,17 @@ $METHODNAME$
 $SUMMARY$
 	Delete item from history.
 $LANG_RU$
-	Удалить элемент.
+	пёп╢п╟п╩п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	Delete(<sData>) --> TRUE || FALSE
 $ARGUMENTS$
 	<sData>  - String, data to deleting
 $LANG_RU$
-	<sData>	 - String, данные для удаления.
+	<sData>	 - String, п╢п╟п╫п╫я▀п╣ п╢п╩я▐ я┐п╢п╟п╩п╣п╫п╦я▐.
 $RETURNS$
 	Returns TRUE if element <sData> exists and removes.
 $LANG_RU$
-	Возвращает TRUE если элемент <sData> существует и удален.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌ <sData> я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╦ я┐п╢п╟п╩п╣п╫.
 $DESCRIPTION$
 	Delete() is deletes data <sData> from the history array <::History>.
 	The size of <::History> not changes.
@@ -157,11 +157,11 @@ $DESCRIPTION$
 	If <sData> exist into <::History>, it removes, all lower items shift up one
 	position  and Delete() returns TRUE.
 $LANG_RU$
-	Delete() удаляет элемент <sData> из массива <::History>. Размер
-	<::History> не изменяется.
+	Delete() я┐п╢п╟п╩я▐п╣я┌ я█п╩п╣п╪п╣п╫я┌ <sData> п╦п╥ п╪п╟я│я│п╦п╡п╟ <::History>. п═п╟п╥п╪п╣я─
+	<::History> п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 
-	Если элемент <sData> существует в массиве <::History>, он удаляется со старого
-	места, все нижние элементы сдвигаются вверх и Delete() возвращает TRUE.
+	п∙я│п╩п╦ я█п╩п╣п╪п╣п╫я┌ <sData> я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╡ п╪п╟я│я│п╦п╡п╣ <::History>, п╬п╫ я┐п╢п╟п╩я▐п╣я┌я│я▐ я│п╬ я│я┌п╟я─п╬пЁп╬
+	п╪п╣я│я┌п╟, п╡я│п╣ п╫п╦п╤п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌я▀ я│п╢п╡п╦пЁп╟я▌я┌я│я▐ п╡п╡п╣я─я┘ п╦ Delete() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -169,21 +169,21 @@ $METHODNAME$
 $SUMMARY$
 	Set new size history array.
 $LANG_RU$
-	Изменить размер массива "истории"
+	п≤п╥п╪п╣п╫п╦я┌я▄ я─п╟п╥п╪п╣я─ п╪п╟я│я│п╦п╡п╟ "п╦я│я┌п╬я─п╦п╦"
 $SYNTAX$
 	SetSize(<nSize>) -->
 $ARGUMENTS$
 	<sSize>  - Numeric, new history array size.
 $LANG_RU$
-	<sSize>  - Numeric, новый размер массива
+	<sSize>  - Numeric, п╫п╬п╡я▀п╧ я─п╟п╥п╪п╣я─ п╪п╟я│я│п╦п╡п╟
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	SetSize() set new size <nSize> for history array <::History>.
 $LANG_RU$
-	SetSize() устанавливает новый размер массива  <::History> равный <nSize>
+	SetSize() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╫п╬п╡я▀п╧ я─п╟п╥п╪п╣я─ п╪п╟я│я│п╦п╡п╟  <::History> я─п╟п╡п╫я▀п╧ <nSize>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -191,20 +191,20 @@ $METHODNAME$
 $SUMMARY$
 	Get first item.
 $LANG_RU$
-	Получить первый элемент.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	First() --> <sData>
 $ARGUMENTS$
 $RETURNS$
 	Returns first item of <::History>.
 $LANG_RU$
-	Возвращает первый элемент <::History>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ <::History>.
 $DESCRIPTION$
 	First() returns first item of history array <::History> as string <sData>
 	without removes element from array.
 $LANG_RU$
-	First() возвращает первый элемент массива  <::History> не удаляя его из
-	массива.
+	First() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╪п╟я│я│п╦п╡п╟  <::History> п╫п╣ я┐п╢п╟п╩я▐я▐ п╣пЁп╬ п╦п╥
+	п╪п╟я│я│п╦п╡п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -212,19 +212,19 @@ $METHODNAME$
 $SUMMARY$
 	Init history.
 $LANG_RU$
-	Инициализировать "историю".
+	п≤п╫п╦я├п╦п╟п╩п╦п╥п╦я─п╬п╡п╟я┌я▄ "п╦я│я┌п╬я─п╦я▌".
 $SYNTAX$
 	Set(<aArr>[, <nSize>]) --> NIL
 $ARGUMENTS$
 	<aArr>		Array, array of strings - new history items
 	<nSize>		Numeric, the size of history buffer.
 $LANG_RU$
-	<aArr>		Array, массив строк - элементов массива "истьрия"
-	<nSize>		Numeric, размер массива.
+	<aArr>		Array, п╪п╟я│я│п╦п╡ я│я┌я─п╬п╨ - я█п╩п╣п╪п╣п╫я┌п╬п╡ п╪п╟я│я│п╦п╡п╟ "п╦я│я┌я▄я─п╦я▐"
+	<nSize>		Numeric, я─п╟п╥п╪п╣я─ п╪п╟я│я│п╦п╡п╟.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Set() truncates <::History> to zero and addes to <::History>
 	items from <aArr>.
@@ -232,11 +232,11 @@ $DESCRIPTION$
 	New size of history buffer is <nSize>. If <nSize> not specified, then
 	new size is size of <aArr>
 $LANG_RU$
-	Set() усекает длину  массива <::History> до 0 и добавляет в него
-	элементы из массива <aArr>.
+	Set() я┐я│п╣п╨п╟п╣я┌ п╢п╩п╦п╫я┐  п╪п╟я│я│п╦п╡п╟ <::History> п╢п╬ 0 п╦ п╢п╬п╠п╟п╡п╩я▐п╣я┌ п╡ п╫п╣пЁп╬
+	я█п╩п╣п╪п╣п╫я┌я▀ п╦п╥ п╪п╟я│я│п╦п╡п╟ <aArr>.
 
-	Новый размер "истории" - <nSize>. Если параметр <nSize> не определен, то
-	размер буфера истории определяется размером массива <aArr>.
+	п²п╬п╡я▀п╧ я─п╟п╥п╪п╣я─ "п╦я│я┌п╬я─п╦п╦" - <nSize>. п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ <nSize> п╫п╣ п╬п©я─п╣п╢п╣п╩п╣п╫, я┌п╬
+	я─п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟ п╦я│я┌п╬я─п╦п╦ п╬п©я─п╣п╢п╣п╩я▐п╣я┌я│я▐ я─п╟п╥п╪п╣я─п╬п╪ п╪п╟я│я│п╦п╡п╟ <aArr>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -244,25 +244,25 @@ $METHODNAME$
 $SUMMARY$
 	Run history.
 $LANG_RU$
-	Выполнить "историю"
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ "п╦я│я┌п╬я─п╦я▌"
 $SYNTAX$
 	Run([<nPos>][, <lItem>]) --> <vData>
 $ARGUMENTS$
 	<nPos>		Numeric, the current position into <::History>(default 1)
 	<lItem>		Logical, if TRUE(default) returns items value, else returns item number.
 $LANG_RU$
-	<nPos>		Numeric, текущая позиция в массиве <::History>(по умолчанию 1)
-	<lItem>		Logical, если TRUE(по умолчанию) метод возвращает значение элемента, иначе - его индекс.
+	<nPos>		Numeric, я┌п╣п╨я┐я┴п╟я▐ п©п╬п╥п╦я├п╦я▐ п╡ п╪п╟я│я│п╦п╡п╣ <::History>(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 1)
+	<lItem>		Logical, п╣я│п╩п╦ TRUE(п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) п╪п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╟, п╦п╫п╟я┤п╣ - п╣пЁп╬ п╦п╫п╢п╣п╨я│.
 $RETURNS$
 	Returns value or index of selected item.
 $LANG_RU$
-	Возвращает значение или индекс выбранного элемента.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п╦п╩п╦ п╦п╫п╢п╣п╨я│ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $DESCRIPTION$
 	Run() is drows history and it
 	is simple key handler and returns by press <ENTER> value or index of selected item.
 $LANG_RU$
-	Run() прорисовывает объект HISTORY, обрабатывает нажатие клавиш и возвращает по
-	<ENTER> значение или индекс выбранного элемента.
+	Run() п©я─п╬я─п╦я│п╬п╡я▀п╡п╟п╣я┌ п╬п╠я┼п╣п╨я┌ HISTORY, п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣я┌ п╫п╟п╤п╟я┌п╦п╣ п╨п╩п╟п╡п╦я┬ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬
+	<ENTER> п╥п╫п╟я┤п╣п╫п╦п╣ п╦п╩п╦ п╦п╫п╢п╣п╨я│ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -286,7 +286,7 @@ enddo
 $PLATFORMS$
    No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 ITK

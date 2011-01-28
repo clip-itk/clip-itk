@@ -3,15 +3,15 @@ $CLASSNAME$
 $SUMMARY$
 	Class UITableColumn
 $LANG_RU$
-	Класс UITableColumn
+	п п╩п╟я│я│ UITableColumn
 $ABOUT$
 	Class of multicolumn list column.
 $LANG_RU$
-	Класс столбца таблицы.
+	п п╩п╟я│я│ я│я┌п╬п╩п╠я├п╟ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	UITableColumn(<name>,<caption>,<type>)	--> UITableColumn object
 $LANG_RU$
-	UITableColumn(<name>,<caption>,<type>)	--> Объект UITableColumn
+	UITableColumn(<name>,<caption>,<type>)	--> п·п╠я┼п╣п╨я┌ UITableColumn
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITableColumn".
 	<name>		- String. Unique name of column.
@@ -23,15 +23,15 @@ $ATTRIBUTES$
 	<source>	- Object of class <link linkend="classuisource">UISource</link>. Source for choose value for column of type <command>TABLE_COLUMN_CHOICE</command> or <command>TABLE_COLUMN_COMBO</command>.
 	<lookup>	- Logical. If .T. fot this column is enabled lookup mode: search value begins from typed characters.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UITableColumn".
-	<name>		- Строка. Уникальное имя столбца.
-	<caption>	- Строка. Заголовок столбца.
-	<type>		- Число. Тип значений в столбце.
-	<editable>	- Логическое значение. Для столбцов виджета <link linkend="classuiedittable">UIEdittable</link> устанавливает возможность редактирования ячеек.
-	<default>	- Любой тип. Значение по умолчанию для новых строк.
-	<format>	- Строка. Шаблон форматирования столбца с числами, использующий синтаксис функции <command>printf</command>. Значение по умолчанию "%'.2f" (два знака дробной части и разделитель тысячных разрядов).
-	<source>	- Объект класса <link linkend="classuisource">UISource</link>. Источник значений столбцов типа <command>TABLE_COLUMN_CHOICE</command> или <command>TABLE_COLUMN_COMBO</command>.
-	<lookup>	- Логическое значение. Если значение равно .T., при наборе символов будет осуществляться поиск значения в указанном столбце, начинающийся с введённых символов.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UITableColumn".
+	<name>		- п║я┌я─п╬п╨п╟. пёп╫п╦п╨п╟п╩я▄п╫п╬п╣ п╦п╪я▐ я│я┌п╬п╩п╠я├п╟.
+	<caption>	- п║я┌я─п╬п╨п╟. п≈п╟пЁп╬п╩п╬п╡п╬п╨ я│я┌п╬п╩п╠я├п╟.
+	<type>		- п╖п╦я│п╩п╬. п╒п╦п© п╥п╫п╟я┤п╣п╫п╦п╧ п╡ я│я┌п╬п╩п╠я├п╣.
+	<editable>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п■п╩я▐ я│я┌п╬п╩п╠я├п╬п╡ п╡п╦п╢п╤п╣я┌п╟ <link linkend="classuiedittable">UIEdittable</link> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я▐я┤п╣п╣п╨.
+	<default>	- п⌡я▌п╠п╬п╧ я┌п╦п©. п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╢п╩я▐ п╫п╬п╡я▀я┘ я│я┌я─п╬п╨.
+	<format>	- п║я┌я─п╬п╨п╟. п╗п╟п╠п╩п╬п╫ я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦я▐ я│я┌п╬п╩п╠я├п╟ я│ я┤п╦я│п╩п╟п╪п╦, п╦я│п©п╬п╩я▄п╥я┐я▌я┴п╦п╧ я│п╦п╫я┌п╟п╨я│п╦я│ я└я┐п╫п╨я├п╦п╦ <command>printf</command>. п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ "%'.2f" (п╢п╡п╟ п╥п╫п╟п╨п╟ п╢я─п╬п╠п╫п╬п╧ я┤п╟я│я┌п╦ п╦ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▄ я┌я▀я│я▐я┤п╫я▀я┘ я─п╟п╥я─я▐п╢п╬п╡).
+	<source>	- п·п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ <link linkend="classuisource">UISource</link>. п≤я│я┌п╬я┤п╫п╦п╨ п╥п╫п╟я┤п╣п╫п╦п╧ я│я┌п╬п╩п╠я├п╬п╡ я┌п╦п©п╟ <command>TABLE_COLUMN_CHOICE</command> п╦п╩п╦ <command>TABLE_COLUMN_COMBO</command>.
+	<lookup>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п∙я│п╩п╦ п╥п╫п╟я┤п╣п╫п╦п╣ я─п╟п╡п╫п╬ .T., п©я─п╦ п╫п╟п╠п╬я─п╣ я│п╦п╪п╡п╬п╩п╬п╡ п╠я┐п╢п╣я┌ п╬я│я┐я┴п╣я│я┌п╡п╩я▐я┌я▄я│я▐ п©п╬п╦я│п╨ п╥п╫п╟я┤п╣п╫п╦я▐ п╡ я┐п╨п╟п╥п╟п╫п╫п╬п╪ я│я┌п╬п╩п╠я├п╣, п╫п╟я┤п╦п╫п╟я▌я┴п╦п╧я│я▐ я│ п╡п╡п╣п╢я▒п╫п╫я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡.
 
 
 $METHODNAME$
@@ -39,7 +39,7 @@ $METHODNAME$
 $SUMMARY$
 	Constructor. Create table column.
 $LANG_RU$
-	Конструктор. Создать столбец таблицы.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я│я┌п╬п╩п╠п╣я├ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	UITableColumn(<name>,<caption>,<type>)	--> UITableColumn object
 $ARGUMENTS$
@@ -55,17 +55,17 @@ $ARGUMENTS$
 	row number (ignored in 
 	classes <link linkend="classuitable">UITable</link> and <link linkend="classuitree">UITree</link>)</listitem></itemizedlist>
 $LANG_RU$
-	<name>		- Строка. Уникальное имя столбца.
-	<caption>	- Строка. Заголовок столбца.
-	<type>		- Число. Тип значений в столбце. Поддерживаемые типы: <itemizedlist mark="bullet"><listitem><command>TABLE_COLUMN_TEXT</command> &mdash; 
-	текст</listitem><listitem><command>TABLE_COLUMN_CHOICE</command> &mdash; 
-	выбор из отдельного окна</listitem><listitem><command>TABLE_COLUMN_COMBO</command> &mdash; 
-	выбор из выпадающего списка</listitem><istitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
-	число</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
-	дата</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
-	флажок</listitem><listitem><command>TABLE_COLUMN_COUNTER</command> &mdash; 
-	порядковый номер строки (игнорируется 
-	в <link linkend="classuitable">UITable</link> и <link linkend="classuitree">UITree</link>)</listitem></itemizedlist>
+	<name>		- п║я┌я─п╬п╨п╟. пёп╫п╦п╨п╟п╩я▄п╫п╬п╣ п╦п╪я▐ я│я┌п╬п╩п╠я├п╟.
+	<caption>	- п║я┌я─п╬п╨п╟. п≈п╟пЁп╬п╩п╬п╡п╬п╨ я│я┌п╬п╩п╠я├п╟.
+	<type>		- п╖п╦я│п╩п╬. п╒п╦п© п╥п╫п╟я┤п╣п╫п╦п╧ п╡ я│я┌п╬п╩п╠я├п╣. п÷п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╣ я┌п╦п©я▀: <itemizedlist mark="bullet"><listitem><command>TABLE_COLUMN_TEXT</command> &mdash; 
+	я┌п╣п╨я│я┌</listitem><listitem><command>TABLE_COLUMN_CHOICE</command> &mdash; 
+	п╡я▀п╠п╬я─ п╦п╥ п╬я┌п╢п╣п╩я▄п╫п╬пЁп╬ п╬п╨п╫п╟</listitem><listitem><command>TABLE_COLUMN_COMBO</command> &mdash; 
+	п╡я▀п╠п╬я─ п╦п╥ п╡я▀п©п╟п╢п╟я▌я┴п╣пЁп╬ я│п©п╦я│п╨п╟</listitem><istitem><command>TABLE_COLUMN_NUMBER</command> &mdash; 
+	я┤п╦я│п╩п╬</listitem><listitem><command>TABLE_COLUMN_DATE</command> &mdash; 
+	п╢п╟я┌п╟</listitem><listitem><command>TABLE_COLUMN_CHECK</command> &mdash; 
+	я└п╩п╟п╤п╬п╨</listitem><listitem><command>TABLE_COLUMN_COUNTER</command> &mdash; 
+	п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (п╦пЁп╫п╬я─п╦я─я┐п╣я┌я│я▐ 
+	п╡ <link linkend="classuitable">UITable</link> п╦ <link linkend="classuitree">UITree</link>)</listitem></itemizedlist>
 $EXAMPLES$
 	oColumn := UITableColumn( 'name', 'Name', TABLE_COLUMN_TEXT ) )
 $ENDMETHOD$
@@ -83,11 +83,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UISOURCE UITABLE UIEDITTABLE UITREE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

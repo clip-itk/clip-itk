@@ -10,60 +10,60 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: template/./doc/introduction.sgml:1 template/./doc/introduction.sgml:8
 msgid "Introduction"
-msgstr "Введение"
+msgstr "п▓п╡п╣п╢п╣п╫п╦п╣"
 
 #: template/./doc/introduction.sgml:3
 msgid "Clip team searches for sponsor or investor"
-msgstr "Команда разработки Clip ищет спонсоров и/или инвесторов"
+msgstr "п п╬п╪п╟п╫п╢п╟ я─п╟п╥я─п╟п╠п╬я┌п╨п╦ Clip п╦я┴п╣я┌ я│п©п╬п╫я│п╬я─п╬п╡ п╦/п╦п╩п╦ п╦п╫п╡п╣я│я┌п╬я─п╬п╡"
 
 #: template/./doc/introduction.sgml:4
 msgid "clip future notes"
 msgstr ""
-"  Если вы читаете эту страницу, значит вас тоже волнует будущее Clipper,\n"
-"  прочитайте пожалуйста внимательнее информацию от начала и до конца.\n"
-"  Многое из ненаписанного вы найдете \"между строк\".\n"
+"  п∙я│п╩п╦ п╡я▀ я┤п╦я┌п╟п╣я┌п╣ я█я┌я┐ я│я┌я─п╟п╫п╦я├я┐, п╥п╫п╟я┤п╦я┌ п╡п╟я│ я┌п╬п╤п╣ п╡п╬п╩п╫я┐п╣я┌ п╠я┐п╢я┐я┴п╣п╣ Clipper,\n"
+"  п©я─п╬я┤п╦я┌п╟п╧я┌п╣ п©п╬п╤п╟п╩я┐п╧я│я┌п╟ п╡п╫п╦п╪п╟я┌п╣п╩я▄п╫п╣п╣ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╬я┌ п╫п╟я┤п╟п╩п╟ п╦ п╢п╬ п╨п╬п╫я├п╟.\n"
+"  п°п╫п╬пЁп╬п╣ п╦п╥ п╫п╣п╫п╟п©п╦я│п╟п╫п╫п╬пЁп╬ п╡я▀ п╫п╟п╧п╢п╣я┌п╣ \"п╪п╣п╤п╢я┐ я│я┌я─п╬п╨\".\n"
 "\n"
-"  Если у вас есть мысли и пожелания по развитию безвременно зачахшей\n"
-"  лучшей среды разработки последнего десятилетия - обязательно напишите\n"
-"  нам и мы постараемся учесть ваши пожелания."
+"  п∙я│п╩п╦ я┐ п╡п╟я│ п╣я│я┌я▄ п╪я▀я│п╩п╦ п╦ п©п╬п╤п╣п╩п╟п╫п╦я▐ п©п╬ я─п╟п╥п╡п╦я┌п╦я▌ п╠п╣п╥п╡я─п╣п╪п╣п╫п╫п╬ п╥п╟я┤п╟я┘я┬п╣п╧\n"
+"  п╩я┐я┤я┬п╣п╧ я│я─п╣п╢я▀ я─п╟п╥я─п╟п╠п╬я┌п╨п╦ п©п╬я│п╩п╣п╢п╫п╣пЁп╬ п╢п╣я│я▐я┌п╦п╩п╣я┌п╦я▐ - п╬п╠я▐п╥п╟я┌п╣п╩я▄п╫п╬ п╫п╟п©п╦я┬п╦я┌п╣\n"
+"  п╫п╟п╪ п╦ п╪я▀ п©п╬я│я┌п╟я─п╟п╣п╪я│я▐ я┐я┤п╣я│я┌я▄ п╡п╟я┬п╦ п©п╬п╤п╣п╩п╟п╫п╦я▐."
 
 #: template/./doc/introduction.sgml:12
 msgid "Download and mirrors"
-msgstr "Где взять"
+msgstr "п⌠п╢п╣ п╡п╥я▐я┌я▄"
 
 #: template/./doc/introduction.sgml:16
 msgid "Very fast mirror linux.ru.net"
-msgstr "Очень быстрое зеркало на linux.ru.net"
+msgstr "п·я┤п╣п╫я▄ п╠я▀я│я┌я─п╬п╣ п╥п╣я─п╨п╟п╩п╬ п╫п╟ linux.ru.net"
 
 #: template/./doc/introduction.sgml:19
 msgid "Home ftp ftp.itk.ru"
-msgstr "Домашнее ftp на ftp.itk.ru"
+msgstr "п■п╬п╪п╟я┬п╫п╣п╣ ftp п╫п╟ ftp.itk.ru"
 
 #: template/./doc/introduction.sgml:22
 msgid "Irkutsk mirror ftp.lastik.ru"
-msgstr "Домашнее ftp ftp.itk.ru)"
+msgstr "п■п╬п╪п╟я┬п╫п╣п╣ ftp ftp.itk.ru)"
 
 #: template/./doc/introduction.sgml:35
 msgid "Trademarks"
-msgstr "Зарегестрированные торговые марки"
+msgstr "п≈п╟я─п╣пЁп╣я│я┌я─п╦я─п╬п╡п╟п╫п╫я▀п╣ я┌п╬я─пЁп╬п╡я▀п╣ п╪п╟я─п╨п╦"
 
 #: template/./doc/introduction.sgml:37
 msgid "Clipper - trademark of Computer Associates International Inc"
-msgstr "Clipper - торговые марка Computer Associates International Inc"
+msgstr "Clipper - я┌п╬я─пЁп╬п╡я▀п╣ п╪п╟я─п╨п╟ Computer Associates International Inc"
 
 #: template/./doc/introduction.sgml:39
 msgid "UNIX - trademark of SCO Inc"
-msgstr "UNIX - торговые марка SCO Inc"
+msgstr "UNIX - я┌п╬я─пЁп╬п╡я▀п╣ п╪п╟я─п╨п╟ SCO Inc"
 
 #: template/./doc/introduction.sgml:41
 msgid "Linux - trademark of  Linus Torwalds"
-msgstr "Linux - торговые марка  Linus Torwalds"
+msgstr "Linux - я┌п╬я─пЁп╬п╡я▀п╣ п╪п╟я─п╨п╟  Linus Torwalds"
 
 #: template/./doc/introduction.sgml:43
 msgid "DOS, Windows, FoxPro - are  trademarks of Microsoft Corporation"
-msgstr "DOS, Windows, FoxPro - торговые марки Microsoft Corporation"
+msgstr "DOS, Windows, FoxPro - я┌п╬я─пЁп╬п╡я▀п╣ п╪п╟я─п╨п╦ Microsoft Corporation"

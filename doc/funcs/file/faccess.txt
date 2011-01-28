@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Check access to file.
 $LANG_RU$
-	Проверка прав доступа к файлу.
+	п÷я─п╬п╡п╣я─п╨п╟ п©я─п╟п╡ п╢п╬я│я┌я┐п©п╟ п╨ я└п╟п╧п╩я┐.
 $SYNTAX$
 
      FACCESS(<sFileName>, <sMode>) 	--> TRUE || FALSE
@@ -15,8 +15,8 @@ $ARGUMENTS$
      <sMode>		String, is the access mode.
 
 $LANG_RU$
-     <sFileName>	String, имя файла.
-     <sMode>		String, права доступа.
+     <sFileName>	String, п╦п╪я▐ я└п╟п╧п╩п╟.
+     <sMode>		String, п©я─п╟п╡п╟ п╢п╬я│я┌я┐п©п╟.
 
 $RETURNS$
 
@@ -24,7 +24,7 @@ $RETURNS$
 
 $LANG_RU$
 
-	Возвращает TRUE, если заданные права доступа к файлу истинны.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╥п╟п╢п╟п╫п╫я▀п╣ п©я─п╟п╡п╟ п╢п╬я│я┌я┐п©п╟ п╨ я└п╟п╧п╩я┐ п╦я│я┌п╦п╫п╫я▀.
 
 $DESCRIPTION$
 
@@ -33,9 +33,9 @@ $DESCRIPTION$
 	<sMode> is the string in UNIX format "rwx-rwx-rwx" (owner-group-other)
 $LANG_RU$
 
-     FACCESS() проверяет права доступа <sMode> к файлу <sFileName>.
+     FACCESS() п©я─п╬п╡п╣я─я▐п╣я┌ п©я─п╟п╡п╟ п╢п╬я│я┌я┐п©п╟ <sMode> п╨ я└п╟п╧п╩я┐ <sFileName>.
 
-     <sMode> это строка в UNIX формате : "rwx-rwx-rwx" (владелец-группа-прочие)
+     <sMode> я█я┌п╬ я│я┌я─п╬п╨п╟ п╡ UNIX я└п╬я─п╪п╟я┌п╣ : "rwx-rwx-rwx" (п╡п╩п╟п╢п╣п╩п╣я├-пЁя─я┐п©п©п╟-п©я─п╬я┤п╦п╣)
 $EXAMPLES$
 
 FACCESS("/usr/home/user1/mbox", "rw--") 	// TRUE
@@ -46,6 +46,6 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

@@ -3,23 +3,23 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIComboBox.
 $LANG_RU$
-	Класс UIComboBox.
+	п п╩п╟я│я│ UIComboBox.
 $ABOUT$
 	Class of combo box.
 $LANG_RU$
-	Класс поля с выпадающим списком.
+	п п╩п╟я│я│ п©п╬п╩я▐ я│ п╡я▀п©п╟п╢п╟я▌я┴п╦п╪ я│п©п╦я│п╨п╬п╪.
 $SYNTAX$
 	UIComboBox(<source>,[<defaultItem>])	--> UIComboBox object
 $LANG_RU$
-	UIComboBox(<source>,[<defaultItem>])	--> Объект UIComboBox
+	UIComboBox(<source>,[<defaultItem>])	--> п·п╠я┼п╣п╨я┌ UIComboBox
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIComboBox".
 	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
 	Source of list.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIComboBox".
-	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
-	Источник значений.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIComboBox".
+	<source>	- п╒п╦п©, п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╧ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─п╬п╪ <link linkend="classuisource">UISource</link>.
+	п≤я│я┌п╬я┤п╫п╦п╨ п╥п╫п╟я┤п╣п╫п╦п╧.
 
 
 $METHODNAME$
@@ -27,15 +27,15 @@ $METHODNAME$
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIComboBox([<source>],[<defaultItem>])
 $ARGUMENTS$
 	<source>		- Type supported for <link linkend="classuisource">UISource</link> constructor. Source for drop-down list.
 	<defaultItem>	- String. Selected element by its id.
 $LANG_RU$
-	<source>		- Тип, поддерживаемый конструктором класса <link linkend="classuisource">UISource</link>. Источник данных для списка.
-	<defaultItem>	- Строка. Выбранный элемент по его идентификатору.
+	<source>		- п╒п╦п©, п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╧ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─п╬п╪ п╨п╩п╟я│я│п╟ <link linkend="classuisource">UISource</link>. п≤я│я┌п╬я┤п╫п╦п╨ п╢п╟п╫п╫я▀я┘ п╢п╩я▐ я│п©п╦я│п╨п╟.
+	<defaultItem>	- п║я┌я─п╬п╨п╟. п▓я▀п╠я─п╟п╫п╫я▀п╧ я█п╩п╣п╪п╣п╫я┌ п©п╬ п╣пЁп╬ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐.
 
 
 $METHODNAME$
@@ -43,15 +43,15 @@ $METHODNAME$
 $SUMMARY$
 	Set source for drop-down list.
 $LANG_RU$
-	Установить источник данных для списка.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╦я│я┌п╬я┤п╫п╦п╨ п╢п╟п╫п╫я▀я┘ п╢п╩я▐ я│п©п╦я│п╨п╟.
 $SYNTAX$
 	setSource(<source>)
 $ARGUMENTS$
 	<source>		- Type supported for <link linkend="classuisource">UISource</link> constructor. 
 	Source for drop-down list.
 $LANG_RU$
-	<source>		- Тип, поддерживаемый конструктором 
-	класса <link linkend="classuisource">UISource</link>. Источник данных для списка.
+	<source>		- п╒п╦п©, п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╧ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─п╬п╪ 
+	п╨п╩п╟я│я│п╟ <link linkend="classuisource">UISource</link>. п≤я│я┌п╬я┤п╫п╦п╨ п╢п╟п╫п╫я▀я┘ п╢п╩я▐ я│п©п╦я│п╨п╟.
 $ENDMETHOD$
 
 
@@ -60,13 +60,13 @@ $METHODNAME$
 $SUMMARY$
 	Select element by id.
 $LANG_RU$
-	Выбрать элемент по идентификатору.
+	п▓я▀п╠я─п╟я┌я▄ я█п╩п╣п╪п╣п╫я┌ п©п╬ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
 	<value>		- String. Id of list element.
 $LANG_RU$
-	<value>		- Строка. Идентификатор элемента списка.
+	<value>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я█п╩п╣п╪п╣п╫я┌п╟ я│п©п╦я│п╨п╟.
 $ENDMETHOD$
 
 
@@ -75,13 +75,13 @@ $METHODNAME$
 $SUMMARY$
 	Get id of selected string from combo box.
 $LANG_RU$
-	Вернуть идентификатор выбранной строки из списка значений.
+	п▓п╣я─п╫я┐я┌я▄ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╠я─п╟п╫п╫п╬п╧ я│я┌я─п╬п╨п╦ п╦п╥ я│п©п╦я│п╨п╟ п╥п╫п╟я┤п╣п╫п╦п╧.
 $SYNTAX$
 	getValue()	--> <sValue>
 $RETURNS$
 	Selected item id from combo box. Returned value is string.
 $LANG_RU$
-	Идентификатор выбранной строки из списка значений. Возвращаемое значение: строка.
+	п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╠я─п╟п╫п╫п╬п╧ я│я┌я─п╬п╨п╦ п╦п╥ я│п©п╦я│п╨п╟ п╥п╫п╟я┤п╣п╫п╦п╧. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: я│я┌я─п╬п╨п╟.
 $ENDMETHOD$
 
 
@@ -94,11 +94,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UISOURCE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

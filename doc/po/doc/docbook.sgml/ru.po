@@ -8,13 +8,13 @@ msgstr ""
 "Last-Translator: Paul Lasarev <paul@itk.ru>\n"
 "Language-Team: Russian <clip-devel@itk.ru>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
 #: template/./doc/docbook.sgml:1
 msgid "Writing Documentation with DocBook"
-msgstr "Использование DocBook для написания документации"
+msgstr "п≤я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ DocBook п╢п╩я▐ п╫п╟п©п╦я│п╟п╫п╦я▐ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦"
 
 #: template/./doc/docbook.sgml:4
 msgid ""
@@ -25,16 +25,16 @@ msgid ""
 "DocBook markup looks very similar to HTML markup, although\n"
 "the names of the markup tags differ."
 msgstr ""
-"DocBook является вариантом <acronym>SGML</acronym>\n"
+"DocBook я▐п╡п╩я▐п╣я┌я│я▐ п╡п╟я─п╦п╟п╫я┌п╬п╪ <acronym>SGML</acronym>\n"
 "(<firstterm>Standard Generalized Markup\n"
-"Language</firstterm>), предназначенным для описания\n"
-"документации.  HTML это другой широко используемый вариант SGML;\n"
-"Разметка DocBook очень похожа на HTML, хотя\n"
-"имена тэгов различаются."
+"Language</firstterm>), п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫п╫я▀п╪ п╢п╩я▐ п╬п©п╦я│п╟п╫п╦я▐\n"
+"п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦.  HTML я█я┌п╬ п╢я─я┐пЁп╬п╧ я┬п╦я─п╬п╨п╬ п╦я│п©п╬п╩я▄п╥я┐п╣п╪я▀п╧ п╡п╟я─п╦п╟п╫я┌ SGML;\n"
+"п═п╟п╥п╪п╣я┌п╨п╟ DocBook п╬я┤п╣п╫я▄ п©п╬я┘п╬п╤п╟ п╫п╟ HTML, я┘п╬я┌я▐\n"
+"п╦п╪п╣п╫п╟ я┌я█пЁп╬п╡ я─п╟п╥п╩п╦я┤п╟я▌я┌я│я▐."
 
 #: template/./doc/docbook.sgml:13
 msgid "Terminology"
-msgstr "Терминология"
+msgstr "п╒п╣я─п╪п╦п╫п╬п╩п╬пЁп╦я▐"
 
 #: template/./doc/docbook.sgml:16
 msgid ""
@@ -43,9 +43,9 @@ msgid ""
 "the basics here to make sure we're on the same page when\n"
 "we refer to SGML semantics."
 msgstr ""
-"Разметка SGML содержит ряд синтаксических элементов, которые выполняют "
-"различные функции. Мы опишем здесь базовые элементы, чтобы быть уверенными в "
-"точном понимании семантики SGML."
+"п═п╟п╥п╪п╣я┌п╨п╟ SGML я│п╬п╢п╣я─п╤п╦я┌ я─я▐п╢ я│п╦п╫я┌п╟п╨я│п╦я┤п╣я│п╨п╦я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡, п╨п╬я┌п╬я─я▀п╣ п╡я▀п©п╬п╩п╫я▐я▌я┌ "
+"я─п╟п╥п╩п╦я┤п╫я▀п╣ я└я┐п╫п╨я├п╦п╦. п°я▀ п╬п©п╦я┬п╣п╪ п╥п╢п╣я│я▄ п╠п╟п╥п╬п╡я▀п╣ я█п╩п╣п╪п╣п╫я┌я▀, я┤я┌п╬п╠я▀ п╠я▀я┌я▄ я┐п╡п╣я─п╣п╫п╫я▀п╪п╦ п╡ "
+"я┌п╬я┤п╫п╬п╪ п©п╬п╫п╦п╪п╟п╫п╦п╦ я│п╣п╪п╟п╫я┌п╦п╨п╦ SGML."
 
 #: template/./doc/docbook.sgml:22
 msgid ""

@@ -3,36 +3,36 @@ $CLASSNAME$
 $SUMMARY$
 	Class UITable
 $LANG_RU$
-	Класс UITable
+	п п╩п╟я│я│ UITable
 $ABOUT$
 	Class of table (multicolumn list).
 $LANG_RU$
-	Класс таблицы (многоколоночного списка).
+	п п╩п╟я│я│ я┌п╟п╠п╩п╦я├я▀ (п╪п╫п╬пЁп╬п╨п╬п╩п╬п╫п╬я┤п╫п╬пЁп╬ я│п©п╦я│п╨п╟).
 $SYNTAX$
 	UITable(<columns>)	--> UITable object
 $LANG_RU$
-	UITable(<columns>)	--> Объект UITable
+	UITable(<columns>)	--> п·п╠я┼п╣п╨я┌ UITable
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITable".
 	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects. Table columns.
 	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UITable".
-	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы таблицы.
-	<onSelect> 	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UITable".
+	<columns>	- п°п╟я│я│п╦п╡ п╬п╠я┼п╣п╨я┌п╬п╡ <link linkend="classuitablecolumn">UITableColumn</link>. п║я┌п╬п╩п╠я├я▀ я┌п╟п╠п╩п╦я├я▀.
+	<onSelect> 	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©я─п╦ п╡я▀п╠п╬я─п╣ я│я┌я─п╬п╨п╦ п╢п╡п╬п╧п╫я▀п╪ я┴п╣п╩я┤п╨п╬п╪ п╪я▀я┬п╦ п╦п╩п╦ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╩п╟п╡п╦я┬п╦ 'Enter'.
 
 $METHODNAME$
 	UITable()
 $SUMMARY$
 	Constructor. Create table.
 $LANG_RU$
-	Конструктор. Создать таблицу.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я┌п╟п╠п╩п╦я├я┐.
 $SYNTAX$
 	UITable(<columns>)	--> UITable object
 $ARGUMENTS$
 	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects. Table columns.
 $LANG_RU$
-	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы таблицы.
+	<columns>	- п°п╟я│я│п╦п╡ п╬п╠я┼п╣п╨я┌п╬п╡ <link linkend="classuitablecolumn">UITableColumn</link>. п║я┌п╬п╩п╠я├я▀ я┌п╟п╠п╩п╦я├я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -40,19 +40,19 @@ $METHODNAME$
 $SUMMARY$
 	Add row into table.
 $LANG_RU$
-	Добавить строку в таблицу.
+	п■п╬п╠п╟п╡п╦я┌я▄ я│я┌я─п╬п╨я┐ п╡ я┌п╟п╠п╩п╦я├я┐.
 $SYNTAX$
 	addRow(<data>,[<id>])	--> <oTableItem>
 $ARGUMENTS$
 	<data>		- Array of strings. Array of values by columns.
 	<id>		- String. Row identifier.
 $LANG_RU$
-	<data>		- Mассив строк. Массив значений по столбцам соответственно.
-	<id>		- Строка. Идентификатор строки.
+	<data>		- Mп╟я│я│п╦п╡ я│я┌я─п╬п╨. п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п©п╬ я│я┌п╬п╩п╠я├п╟п╪ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╣п╫п╫п╬.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я│я┌я─п╬п╨п╦.
 $RETURNS$
 	String. Row address.
 $LANG_RU$
-	Строка. Адрес строки.
+	п║я┌я─п╬п╨п╟. п░п╢я─п╣я│ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -60,7 +60,7 @@ $METHODNAME$
 $SUMMARY$
 	Fill row by values.
 $LANG_RU$
-	Заполнить строку значениями.
+	п≈п╟п©п╬п╩п╫п╦я┌я▄ я│я┌я─п╬п╨я┐ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦.
 $SYNTAX$
 	setRow(<row>,<data>,[<id>])
 $ARGUMENTS$
@@ -68,9 +68,9 @@ $ARGUMENTS$
 	<data>		- Array or object. Array of values by columns or object contains fields with column names.
 	<id>		- String. Node identifier.
 $LANG_RU$
-	<row>		- Число. Номер строки (c 1).
-	<data>		- Mассив или объект. Массив значений по столбцам или объект, содержащий поля с именами столбцов.
-	<id>		- Строка. Идентификатор элемента.
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1).
+	<data>		- Mп╟я│я│п╦п╡ п╦п╩п╦ п╬п╠я┼п╣п╨я┌. п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п©п╬ я│я┌п╬п╩п╠я├п╟п╪ п╦п╩п╦ п╬п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п©п╬п╩я▐ я│ п╦п╪п╣п╫п╟п╪п╦ я│я┌п╬п╩п╠я├п╬п╡.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я█п╩п╣п╪п╣п╫я┌п╟.
 $EXAMPLES$
 	table:setRow( 1, { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
 	m := map()
@@ -88,17 +88,17 @@ $METHODNAME$
 $SUMMARY$
 	Get row from table as object with values.
 $LANG_RU$
-	Получить строку из таблицы в виде объекта со значениями.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│я┌я─п╬п╨я┐ п╦п╥ я┌п╟п╠п╩п╦я├я▀ п╡ п╡п╦п╢п╣ п╬п╠я┼п╣п╨я┌п╟ я│п╬ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦.
 $SYNTAX$
 	getRow(<row>)	--> oRow
 $ARGUMENTS$
 	<row>		- Number. Row number (from 1).
 $LANG_RU$
-	<row>		- Число. Номер строки (c 1).
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1).
 $RETURNS$
 	Object contains fields with column names. 
 $LANG_RU$
-	Объект, содержащий поля с именами столбцов.
+	п·п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п©п╬п╩я▐ я│ п╦п╪п╣п╫п╟п╪п╦ я│я┌п╬п╩п╠я├п╬п╡.
 $EXAMPLES$
 	oRow := table:getRow(2)
 	? oRow:company
@@ -110,13 +110,13 @@ $METHODNAME$
 $SUMMARY$
 	Remove row from table.
 $LANG_RU$
-	Удалить строку из таблицы.
+	пёп╢п╟п╩п╦я┌я▄ я│я┌я─п╬п╨я┐ п╦п╥ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	removeRow(<row>)
 $ARGUMENTS$
 	<row>		- Number. Row number (from 1).
 $LANG_RU$
-	<row>		- Число. Номер строки (c 1).
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1).
 $EXAMPLES$
 	table:removeRow(2)
 $ENDMETHOD$
@@ -127,15 +127,15 @@ $METHODNAME$
 $SUMMARY$
 	Set action that will be call on selection by double click or 'Enter' key pressed.
 $LANG_RU$
-	Указать действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
+	пёп╨п╟п╥п╟я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©я─п╦ п╡я▀п╠п╬я─п╣ я│я┌я─п╬п╨п╦ п╢п╡п╬п╧п╫я▀п╪ я┴п╣п╩я┤п╨п╬п╪ п╪я▀я┬п╦ п╦п╩п╦ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╩п╟п╡п╦я┬п╦ 'Enter'.
 $SYNTAX$
 	setAction(<signal>,<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name. Should be 'selected'.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала. Допустимое значение: 'selected'.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟. п■п╬п©я┐я│я┌п╦п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: 'selected'.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 
@@ -144,7 +144,7 @@ $METHODNAME$
 $SUMMARY$
 	Clear table: remove all rows.
 $LANG_RU$
-	Очистить таблицу: удалить все строки.
+	п·я┤п╦я│я┌п╦я┌я▄ я┌п╟п╠п╩п╦я├я┐: я┐п╢п╟п╩п╦я┌я▄ п╡я│п╣ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	clear()
 $ENDMETHOD$
@@ -155,13 +155,13 @@ $METHODNAME$
 $SUMMARY$
 	Get selected row identifier.
 $LANG_RU$
-	Возвращает идентификатор выделенной строки.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	getSelection()	--> <sRow>
 $RETURNS$
 	The identifier of selected row.
 $LANG_RU$
-	Идентификатор выделенной строки.
+	п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 
@@ -170,28 +170,28 @@ $METHODNAME$
 $SUMMARY$
 	Get user identifier of selected row.
 $LANG_RU$
-	Возвращает пользовательский идентификатор выделенной строки.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	getValue()	--> <id>
 $RETURNS$
 	The user identifier of selected row.
 $LANG_RU$
-	Пользовательский идентификатор выделенной строки.
+	п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 
 $METHODNAME$
 	setValue()
 $SUMMARY$
-	Seе focus to row by its id.
+	Seп╣ focus to row by its id.
 $LANG_RU$
-	Устанавливает фокус на строку с заданным идентификатором.
+	пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я└п╬п╨я┐я│ п╫п╟ я│я┌я─п╬п╨я┐ я│ п╥п╟п╢п╟п╫п╫я▀п╪ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪.
 $SYNTAX$
 	setValue(<id>) 
 $ARGUMENTS$
 	<id>		- String. Row identifier.
 $LANG_RU$
-	<id>		- Строка. Идентификатор строки.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -199,13 +199,13 @@ $METHODNAME$
 $SUMMARY$
 	Get current selected row position.
 $LANG_RU$
-	Сохранение текущей выделенной строки.
+	п║п╬я┘я─п╟п╫п╣п╫п╦п╣ я┌п╣п╨я┐я┴п╣п╧ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	savePosition()	--> <aPos>
 $RETURNS$
 	Array with selected row position: row address, column address, horizontal and vertical adjustments.
 $LANG_RU$
-	Массив с координатами текущей выделенной строки: адреса строки и столбца, горизонтальное и вертикальное смещение.
+	п°п╟я│я│п╦п╡ я│ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟п╪п╦ я┌п╣п╨я┐я┴п╣п╧ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦: п╟п╢я─п╣я│п╟ я│я┌я─п╬п╨п╦ п╦ я│я┌п╬п╩п╠я├п╟, пЁп╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫п╬п╣ п╦ п╡п╣я─я┌п╦п╨п╟п╩я▄п╫п╬п╣ я│п╪п╣я┴п╣п╫п╦п╣.
 $ENDMETHOD$
 
 
@@ -214,13 +214,13 @@ $METHODNAME$
 $SUMMARY$
 	Restore saved row position.
 $LANG_RU$
-	Восстановление cохранённой позиции строки.
+	п▓п╬я│я│я┌п╟п╫п╬п╡п╩п╣п╫п╦п╣ cп╬я┘я─п╟п╫я▒п╫п╫п╬п╧ п©п╬п╥п╦я├п╦п╦ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	restorePosition(<aPos>)
 $ARGUMENTS$
 	<aPos>		- Array with selected row position returned by savePosition() function.
 $LANG_RU$
-	<aPos>		- Массив с координатами текущей выделенной строки, возвращаемый функцией savePosition().
+	<aPos>		- п°п╟я│я│п╦п╡ я│ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟п╪п╦ я┌п╣п╨я┐я┴п╣п╧ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦, п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ savePosition().
 $ENDMETHOD$
 
 
@@ -237,11 +237,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UITABLECOLUMN UITABLEEDIT UITREE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

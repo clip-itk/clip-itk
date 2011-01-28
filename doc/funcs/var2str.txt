@@ -5,22 +5,22 @@ $CATEGORY$
 $SUMMARY$
 	Convert data to uucode string.
 $LANG_RU$
-	Конвертировать данные в uucode строку.
+	п п╬п╫п╡п╣я─я┌п╦я─п╬п╡п╟я┌я▄ п╢п╟п╫п╫я▀п╣ п╡ uucode я│я┌я─п╬п╨я┐.
 $SYNTAX$
      VAR2STR(<vData>) 	--> <sUucodeStr>
 $ARGUMENTS$
      <vData>	Data to convert.
 $LANG_RU$
-     <vData> 	Данные для преобразования.
+     <vData> 	п■п╟п╫п╫я▀п╣ п╢п╩я▐ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦я▐.
 $RETURNS$
      Returns uucode string <sUucodeStr>.
 $LANG_RU$
-     Возвращает uucode строку <sUucodeStr>.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ uucode я│я┌я─п╬п╨я┐ <sUucodeStr>.
 $DESCRIPTION$
 	VAR2STR() converts source data <vData> to uucode string <sUucodeStr> and returns it.
 $LANG_RU$
-	VAR2STR() возвращает исходную строку <vData> в uucode строку <sUucodeStr> и
-	возвращает ее.
+	VAR2STR() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦я│я┘п╬п╢п╫я┐я▌ я│я┌я─п╬п╨я┐ <vData> п╡ uucode я│я┌я─п╬п╨я┐ <sUucodeStr> п╦
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣п╣.
 $EXAMPLES$
 
 f1 := fopen("test.txt")
@@ -34,12 +34,12 @@ fclose(f1)
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	STR2VAR()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

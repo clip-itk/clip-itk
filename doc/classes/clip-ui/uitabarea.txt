@@ -3,21 +3,21 @@ $CLASSNAME$
 $SUMMARY$
 	Class UITabArea
 $LANG_RU$
-	Класс UITabArea
+	п п╩п╟я│я│ UITabArea
 $ABOUT$
 	Class of area for tabs. See also <link linkend="classuitab">UITab</link> class.
 $LANG_RU$
-	Класс области для размещения вкладок. См. также класс <link linkend="classuitab">UITab</link>.
+	п п╩п╟я│я│ п╬п╠п╩п╟я│я┌п╦ п╢п╩я▐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╨п╩п╟п╢п╬п╨. п║п╪. я┌п╟п╨п╤п╣ п╨п╩п╟я│я│ <link linkend="classuitab">UITab</link>.
 $SYNTAX$
 	UITabArea()	--> UITabArea object
 $LANG_RU$
-	UITabArea()	--> Объект UITabArea
+	UITabArea()	--> п·п╠я┼п╣п╨я┌ UITabArea
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITabArea".
 	<tabs>		- Array. List of <link linkend="classuitab">UITab</link> object in this area.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UITabArea".
-	<tabs>		- Массив. Список объектов класса <link linkend="classuitab">UITab</link> в этой области.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UITabArea".
+	<tabs>		- п°п╟я│я│п╦п╡. п║п©п╦я│п╬п╨ п╬п╠я┼п╣п╨я┌п╬п╡ п╨п╩п╟я│я│п╟ <link linkend="classuitab">UITab</link> п╡ я█я┌п╬п╧ п╬п╠п╩п╟я│я┌п╦.
 
 
 $METHODNAME$
@@ -25,7 +25,7 @@ $METHODNAME$
 $SUMMARY$
 	Constructor. Create new empty tab area.
 $LANG_RU$
-	Конструктор. Создать новую пустую область для размещения вкладок.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╫п╬п╡я┐я▌ п©я┐я│я┌я┐я▌ п╬п╠п╩п╟я│я┌я▄ п╢п╩я▐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╨п╩п╟п╢п╬п╨.
 $SYNTAX$
 	UITabArea()	--> UITabArea object
 $EXAMPLES$
@@ -38,13 +38,13 @@ $METHODNAME$
 $SUMMARY$
 	Add tab to tab area.
 $LANG_RU$
-	Добавить вкладку в область.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╡п╨п╩п╟п╢п╨я┐ п╡ п╬п╠п╩п╟я│я┌я▄.
 $SYNTAX$
 	add(<tab>)
 $ARGUMENTS$
 	<tab>	- <link linkend="classuitab">UITab</link> object. Tab to be added.
 $LANG_RU$
-	<tab<	- Объект класса <link linkend="classuitab">UITab</link>. Добавляемый объект.
+	<tab<	- п·п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ <link linkend="classuitab">UITab</link>. п■п╬п╠п╟п╡п╩я▐п╣п╪я▀п╧ п╬п╠я┼п╣п╨я┌.
 $EXAMPLES$
 	oTabs := UITabArea()
 	t1 := UITab('First', 'first')
@@ -62,11 +62,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UITAB
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

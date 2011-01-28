@@ -5,19 +5,19 @@ $CATEGORY$
 $SUMMARY$
 	Include/exclude control mode for attributes changing.
 $LANG_RU$
-	Включает/отключает режим контроля измений атрибутов.
+	п▓п╨п╩я▌я┤п╟п╣я┌/п╬я┌п╨п╩я▌я┤п╟п╣я┌ я─п╣п╤п╦п╪ п╨п╬п╫я┌я─п╬п╩я▐ п╦п╥п╪п╣п╫п╦п╧ п╟я┌я─п╦п╠я┐я┌п╬п╡.
 $SYNTAX$
      MAPMODIFY(<oObj>, <lMode>) 	--> <lOldMode>
 $ARGUMENTS$
      <oObj>	Object, is the source object.
      <lMode>	Logical, is the new mode value.
 $LANG_RU$
-     <oObj>	Object, исходный объект.
-     <lMode>	Logical, новое значение режима.
+     <oObj>	Object, п╦я│я┘п╬п╢п╫я▀п╧ п╬п╠я┼п╣п╨я┌.
+     <lMode>	Logical, п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я─п╣п╤п╦п╪п╟.
 $RETURNS$
      Returns logical value - old control mode.
 $LANG_RU$
-     Возвращает логическое значение - старое значение режима контроля.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ - я│я┌п╟я─п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я─п╣п╤п╦п╪п╟ п╨п╬п╫я┌я─п╬п╩я▐.
 $DESCRIPTION$
      MAPMODIFY() includes/excludes the control mode for attributes when
      this attributes try changes.
@@ -29,14 +29,14 @@ $DESCRIPTION$
      The <Modify> method must returned realy value for modifyed attribute.
 
 $LANG_RU$
-     MAPMODIFY() включает/отключает режим контроля изменения атрибутов.
+     MAPMODIFY() п╡п╨п╩я▌я┤п╟п╣я┌/п╬я┌п╨п╩я▌я┤п╟п╣я┌ я─п╣п╤п╦п╪ п╨п╬п╫я┌я─п╬п╩я▐ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╟я┌я─п╦п╠я┐я┌п╬п╡.
 
-     Если <lMode> TRUE и объект <oObj> содержит метод <Modify>,
-     то перед изменением значения атрибута будет автоматически вызван метод
-     oObj:Modify(<nHashAttr>, <vNewValue>). Где <nHashAttr> хэш-код
-     изменяемого атрибута, <vNewValue> новое значение атрибута.
-     Метод <Modify> должен вернуть реальное значение, которое будет присвоено
-     модифицируемому атрибуту.
+     п∙я│п╩п╦ <lMode> TRUE п╦ п╬п╠я┼п╣п╨я┌ <oObj> я│п╬п╢п╣я─п╤п╦я┌ п╪п╣я┌п╬п╢ <Modify>,
+     я┌п╬ п©п╣я─п╣п╢ п╦п╥п╪п╣п╫п╣п╫п╦п╣п╪ п╥п╫п╟я┤п╣п╫п╦я▐ п╟я┌я─п╦п╠я┐я┌п╟ п╠я┐п╢п╣я┌ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ п╡я▀п╥п╡п╟п╫ п╪п╣я┌п╬п╢
+     oObj:Modify(<nHashAttr>, <vNewValue>). п⌠п╢п╣ <nHashAttr> я┘я█я┬-п╨п╬п╢
+     п╦п╥п╪п╣п╫я▐п╣п╪п╬пЁп╬ п╟я┌я─п╦п╠я┐я┌п╟, <vNewValue> п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟.
+     п°п╣я┌п╬п╢ <Modify> п╢п╬п╩п╤п╣п╫ п╡п╣я─п╫я┐я┌я▄ я─п╣п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ п╠я┐п╢п╣я┌ п©я─п╦я│п╡п╬п╣п╫п╬
+     п╪п╬п╢п╦я└п╦я├п╦я─я┐п╣п╪п╬п╪я┐ п╟я┌я─п╦п╠я┐я┌я┐.
 $EXAMPLES$
 static function modify(selfobj, HashAttr, Val)
 local ret
@@ -75,7 +75,7 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 

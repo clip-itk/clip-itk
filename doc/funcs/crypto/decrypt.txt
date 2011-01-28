@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Decrypt string encrypted by ENV_ENCRYPT().
 $LANG_RU$
-	Расшифровывает строку, зашифрованную функцией ENV_ENCRYPT().
+	п═п╟я│я┬п╦я└я─п╬п╡я▀п╡п╟п╣я┌ я│я┌я─п╬п╨я┐, п╥п╟я┬п╦я└я─п╬п╡п╟п╫п╫я┐я▌ я└я┐п╫п╨я├п╦п╣п╧ ENV_ENCRYPT().
 $SYNTAX$
 	EVP_DECRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>]) --> cDecrypted
 $ARGUMENTS$
@@ -15,21 +15,21 @@ $ARGUMENTS$
 	<cDigestMethod>	- the digest method. Default value 'md5'.
 	<cInitVector> - initial vector for decryption. Default value ''.
 $LANG_RU$
-	<cData> - строка для расшифровки.
-	<cKey>  - ключ для расшифровки.
-	<cCipherMethod> - метод дешифрации, по умолчанию 'des-ede3-cbc'.
-	<cDigestMethod>	- метод хеширования, по умолчанию 'md5'.
-	<cInitVector> - начальный вектор дешифрации, по умолчанию ''.
+	<cData> - я│я┌я─п╬п╨п╟ п╢п╩я▐ я─п╟я│я┬п╦я└я─п╬п╡п╨п╦.
+	<cKey>  - п╨п╩я▌я┤ п╢п╩я▐ я─п╟я│я┬п╦я└я─п╬п╡п╨п╦.
+	<cCipherMethod> - п╪п╣я┌п╬п╢ п╢п╣я┬п╦я└я─п╟я├п╦п╦, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 'des-ede3-cbc'.
+	<cDigestMethod>	- п╪п╣я┌п╬п╢ я┘п╣я┬п╦я─п╬п╡п╟п╫п╦я▐, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 'md5'.
+	<cInitVector> - п╫п╟я┤п╟п╩я▄п╫я▀п╧ п╡п╣п╨я┌п╬я─ п╢п╣я┬п╦я└я─п╟я├п╦п╦, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ ''.
 $RETURNS$
 	Decrypted string.
 $LANG_RU$
-	Расшифрованную строку.
+	п═п╟я│я┬п╦я└я─п╬п╡п╟п╫п╫я┐я▌ я│я┌я─п╬п╨я┐.
 $DESCRIPTION$
 	Decrypt string, encrypted by EVP_ENCRYPT(), using
 	one of symmetric block algoritm and given key string.
 $LANG_RU$
-	Дешифрует строку, зашифрованную функцией ENV_ENCRYPT(),
-	используя один из симметричных алгоритмов и возвращает результат.
+	п■п╣я┬п╦я└я─я┐п╣я┌ я│я┌я─п╬п╨я┐, п╥п╟я┬п╦я└я─п╬п╡п╟п╫п╫я┐я▌ я└я┐п╫п╨я├п╦п╣п╧ ENV_ENCRYPT(),
+	п╦я│п©п╬п╩я▄п╥я┐я▐ п╬п╢п╦п╫ п╦п╥ я│п╦п╪п╪п╣я┌я─п╦я┤п╫я▀я┘ п╟п╩пЁп╬я─п╦я┌п╪п╬п╡ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╣п╥я┐п╩я▄я┌п╟я┌.
 $EXAMPLES$
 $LANG_RU$
 $PECULIARITIES$
@@ -37,7 +37,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
    EVP_ENCRYPT(),EVP_ALG_LIST()
 $AUTHOR$

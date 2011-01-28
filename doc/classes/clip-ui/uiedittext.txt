@@ -3,32 +3,32 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIEditText
 $LANG_RU$
-	Класс UIEditText
+	п п╩п╟я│я│ UIEditText
 $ABOUT$
 	Class for multi-line text editor.
 $LANG_RU$
-	Класс многострочного поля ввода.
+	п п╩п╟я│я│ п╪п╫п╬пЁп╬я│я┌я─п╬я┤п╫п╬пЁп╬ п©п╬п╩я▐ п╡п╡п╬п╢п╟.
 $SYNTAX$
 	UIEditText(<value>)	--> UIEditText object
 $LANG_RU$
-	UIEditText(<value>)	--> Объект UIEditText
+	UIEditText(<value>)	--> п·п╠я┼п╣п╨я┌ UIEditText
 $ATTRIBUTES$
 	<className>	Class name. Value should be "UIEditText".
 $LANG_RU$
-	<className>	Имя класса. Значение: "UIEditText".
+	<className>	п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIEditText".
 
 $METHODNAME$
 	UIEditText()
 $SUMMARY$
 	Constructor. Create multi-line text editor.
 $LANG_RU$
-	Конструктор. Создать многострочное поле ввода.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╪п╫п╬пЁп╬я│я┌я─п╬я┤п╫п╬п╣ п©п╬п╩п╣ п╡п╡п╬п╢п╟.
 $SYNTAX$
 	UIEditText(<value>)	--> UIEditText object
 $ARGUMENTS$
 	<value>		- String. Text in multi-line text editor.
 $LANG_RU$
-	<value>		- Строка. Строка текста в многострочном поле ввода.
+	<value>		- п║я┌я─п╬п╨п╟. п║я┌я─п╬п╨п╟ я┌п╣п╨я│я┌п╟ п╡ п╪п╫п╬пЁп╬я│я┌я─п╬я┤п╫п╬п╪ п©п╬п╩п╣ п╡п╡п╬п╢п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -36,13 +36,13 @@ $METHODNAME$
 $SUMMARY$
 	Get size and position of multi-line text editor.
 $LANG_RU$
-	Вернуть размеры и координаты поля ввода.
+	п▓п╣я─п╫я┐я┌я▄ я─п╟п╥п╪п╣я─я▀ п╦ п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п©п╬п╩я▐ п╡п╡п╬п╢п╟.
 $SYNTAX$
 	getGeometry()	--> <aRect>
 $RETURNS$
 	Array of elements: width, height, x, y in pixels respectively.
 $LANG_RU$
-	Массив с элементами: ширина, высота, x, y.
+	п°п╟я│я│п╦п╡ я│ я█п╩п╣п╪п╣п╫я┌п╟п╪п╦: я┬п╦я─п╦п╫п╟, п╡я▀я│п╬я┌п╟, x, y.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -50,13 +50,13 @@ $METHODNAME$
 $SUMMARY$
 	Change size and/or position of multi-line text editor.
 $LANG_RU$
-	Изменить размеры и/или координаты поля ввода.
+	п≤п╥п╪п╣п╫п╦я┌я▄ я─п╟п╥п╪п╣я─я▀ п╦/п╦п╩п╦ п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п©п╬п╩я▐ п╡п╡п╬п╢п╟.
 $SYNTAX$
 	setGeometry(<geom>)
 $ARGUMENTS$
 	<geom>		- Array of number or number. Size and position as array of elements: width, height, x, y in pixels respectively. If parameter type is number it is mean widget width in pixels.
 $LANG_RU$
-	<geom>		- Массив чисел или число. Размеры и положение поля в виде массива элементов: ширина, высота, x, y. При указании параметра в виде числа подразумевается ширина в точках.
+	<geom>		- п°п╟я│я│п╦п╡ я┤п╦я│п╣п╩ п╦п╩п╦ я┤п╦я│п╩п╬. п═п╟п╥п╪п╣я─я▀ п╦ п©п╬п╩п╬п╤п╣п╫п╦п╣ п©п╬п╩я▐ п╡ п╡п╦п╢п╣ п╪п╟я│я│п╦п╡п╟ я█п╩п╣п╪п╣п╫я┌п╬п╡: я┬п╦я─п╦п╫п╟, п╡я▀я│п╬я┌п╟, x, y. п÷я─п╦ я┐п╨п╟п╥п╟п╫п╦п╦ п©п╟я─п╟п╪п╣я┌я─п╟ п╡ п╡п╦п╢п╣ я┤п╦я│п╩п╟ п©п╬п╢я─п╟п╥я┐п╪п╣п╡п╟п╣я┌я│я▐ я┬п╦я─п╦п╫п╟ п╡ я┌п╬я┤п╨п╟я┘.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -64,13 +64,13 @@ $METHODNAME$
 $SUMMARY$
 	Put text in edit field.
 $LANG_RU$
-	Поместить текст в поле ввода.
+	п÷п╬п╪п╣я│я┌п╦я┌я▄ я┌п╣п╨я│я┌ п╡ п©п╬п╩п╣ п╡п╡п╬п╢п╟.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
 	<value>		- String. Text in multi-line text editor.
 $LANG_RU$
-	<value>		- Строка. Строка текста в многострочном поле ввода.
+	<value>		- п║я┌я─п╬п╨п╟. п║я┌я─п╬п╨п╟ я┌п╣п╨я│я┌п╟ п╡ п╪п╫п╬пЁп╬я│я┌я─п╬я┤п╫п╬п╪ п©п╬п╩п╣ п╡п╡п╬п╢п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -78,13 +78,13 @@ $METHODNAME$
 $SUMMARY$
 	Get text from edit field.
 $LANG_RU$
-	Вернуть текст из поля ввода.
+	п▓п╣я─п╫я┐я┌я▄ я┌п╣п╨я│я┌ п╦п╥ п©п╬п╩я▐ п╡п╡п╬п╢п╟.
 $SYNTAX$
 	getValue()	--> <sText>
 $RETURNS$
 	Text from edit field. Type of returned value is string.
 $LANG_RU$
-	Текст из поля ввода. Тип возвращаемого значения: строка.
+	п╒п╣п╨я│я┌ п╦п╥ п©п╬п╩я▐ п╡п╡п╬п╢п╟. п╒п╦п© п╡п╬п╥п╡я─п╟я┴п╟п╣п╪п╬пЁп╬ п╥п╫п╟я┤п╣п╫п╦я▐: я│я┌я─п╬п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -92,13 +92,13 @@ $METHODNAME$
 $SUMMARY$
 	Set flag of protection against change content in edit field.
 $LANG_RU$
-	Установить флаг запрета изменения содержимого поля ввода.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я└п╩п╟пЁ п╥п╟п©я─п╣я┌п╟ п╦п╥п╪п╣п╫п╣п╫п╦я▐ я│п╬п╢п╣я─п╤п╦п╪п╬пЁп╬ п©п╬п╩я▐ п╡п╡п╬п╢п╟.
 $SYNTAX$
 	readOnly(<flag>)
 $ARGUMENTS$
 	<flag> 		- Boolean. Flag of protection against change content in edit field.
 $LANG_RU$
-	<flag>		- Логическое значение. Флаг запрета изменения содержимого поля ввода.
+	<flag>		- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ п╥п╟п©я─п╣я┌п╟ п╦п╥п╪п╣п╫п╣п╫п╦я▐ я│п╬п╢п╣я─п╤п╦п╪п╬пЁп╬ п©п╬п╩я▐ п╡п╡п╬п╢п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -106,15 +106,15 @@ $METHODNAME$
 $SUMMARY$
 	Set action executed on content changed.
 $LANG_RU$
-	Установить действие, выполняемое при измении содержимого поля.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п©п╬п╩п╫я▐п╣п╪п╬п╣ п©я─п╦ п╦п╥п╪п╣п╫п╦п╦ я│п╬п╢п╣я─п╤п╦п╪п╬пЁп╬ п©п╬п╩я▐.
 $SYNTAX$
 	setAction([<signal>],<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -122,13 +122,13 @@ $METHODNAME$
 $SUMMARY$
 	Append text to field content.
 $LANG_RU$
-	Добавить текст к содержимому поля.
+	п■п╬п╠п╟п╡п╦я┌я▄ я┌п╣п╨я│я┌ п╨ я│п╬п╢п╣я─п╤п╦п╪п╬п╪я┐ п©п╬п╩я▐.
 $SYNTAX$
 	appendText(<text>)
 $ARGUMENTS$
 	<text> 		- String. Appended text.
 $LANG_RU$
-	<text>		- Строка. Добавляемая строка
+	<text>		- п║я┌я─п╬п╨п╟. п■п╬п╠п╟п╡п╩я▐п╣п╪п╟я▐ я│я┌я─п╬п╨п╟
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -137,10 +137,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

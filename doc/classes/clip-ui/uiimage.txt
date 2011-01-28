@@ -3,34 +3,34 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIImage
 $LANG_RU$
-	Класс UIImage
+	п п╩п╟я│я│ UIImage
 $ABOUT$
 	Class of image.
 $LANG_RU$
-	Класс изображения.
+	п п╩п╟я│я│ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐.
 $SYNTAX$
 	UIImage(<file>,[<isString>])	--> UIImage object.
 $LANG_RU$
-	UIImage(<file>,[<isString>])	--> Объект UIImage.
+	UIImage(<file>,[<isString>])	--> п·п╠я┼п╣п╨я┌ UIImage.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIImage".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIImage".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIImage".
 
 $METHODNAME$
 	UIImage()
 $SUMMARY$
 	Constructor. Create image widget.
 $LANG_RU$
-	Конструктор. Создать объект показа изображения.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╬п╠я┼п╣п╨я┌ п©п╬п╨п╟п╥п╟ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐.
 $SYNTAX$
 	UIImage(<file>,[<isString>])	--> UIImage object.
 $ARGUMENTS$
 	<file>		- String or number. File name, identifier of system image or content of image file. Identifiers are described in function <link linkend="functiongetsysimage">getSysImage()</link>.
 	<isString>	- Boolean. Flag to interpret file parameter as image content.
 $LANG_RU$
-	<file>		- Строка или число. Имя файла, идентификатор системного изображения или содержимое файла изображения. Значения идентификаторов даны в описании функции <link linkend="functiongetsysimage">getSysImage()</link>.
-	<isString>	- Логическое значение. Флаг указания обрабатывать <file> как содержимое изображения.
+	<file>		- п║я┌я─п╬п╨п╟ п╦п╩п╦ я┤п╦я│п╩п╬. п≤п╪я▐ я└п╟п╧п╩п╟, п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я│п╦я│я┌п╣п╪п╫п╬пЁп╬ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐ п╦п╩п╦ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ я└п╟п╧п╩п╟ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐. п≈п╫п╟я┤п╣п╫п╦я▐ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╡ п╢п╟п╫я▀ п╡ п╬п©п╦я│п╟п╫п╦п╦ я└я┐п╫п╨я├п╦п╦ <link linkend="functiongetsysimage">getSysImage()</link>.
+	<isString>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ я┐п╨п╟п╥п╟п╫п╦я▐ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟я┌я▄ <file> п╨п╟п╨ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -39,10 +39,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

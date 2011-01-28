@@ -5,25 +5,25 @@ $CATEGORY$
 $SUMMARY$
    Retrieve the value of a field using the ordinal position of the field in the
 $LANG_RU$
-   Возвращает значение поля, используя порядковый номер поля в структуре
+   п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬п╩я▐, п╦я│п©п╬п╩я▄п╥я┐я▐ п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ п©п╬п╩я▐ п╡ я│я┌я─я┐п╨я┌я┐я─п╣
 $SYNTAX$
      FIELDGET(<nField>) --> ValueField
 $LANG_RU$
-     FIELDGET(<номер поля>)  --> значение поля
+     FIELDGET(<п╫п╬п╪п╣я─ п©п╬п╩я▐>)  --> п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬п╩я▐
 $ARGUMENTS$
      <nField> is the ordinal position of the field in the record
      structure for the current work area.
 $LANG_RU$
-     <номер поля> - порядковый номер поля в структуре базы данных в
-     текущей рабочей области
+     <п╫п╬п╪п╣я─ п©п╬п╩я▐> - п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ п©п╬п╩я▐ п╡ я│я┌я─я┐п╨я┌я┐я─п╣ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘ п╡
+     я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦
 $RETURNS$
      FIELDGET() returns the value of the specified field.  If <nField> does
      not correspond to the position of any field in the current database
      file, FIELDGET() returns NIL.
 $LANG_RU$
-     FIELDGET() возвращает значение определенного поля. Если <номер поля>
-     не соответствует номеру какого-либо поля в текущей базе данных, то
-     FIELDGET() возвратит NIL.
+     FIELDGET() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬пЁп╬ п©п╬п╩я▐. п∙я│п╩п╦ <п╫п╬п╪п╣я─ п©п╬п╩я▐>
+     п╫п╣ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐п╣я┌ п╫п╬п╪п╣я─я┐ п╨п╟п╨п╬пЁп╬-п╩п╦п╠п╬ п©п╬п╩я▐ п╡ я┌п╣п╨я┐я┴п╣п╧ п╠п╟п╥п╣ п╢п╟п╫п╫я▀я┘, я┌п╬
+     FIELDGET() п╡п╬п╥п╡я─п╟я┌п╦я┌ NIL.
 $DESCRIPTION$
      FIELDGET() is a database function that retrieves the value of a field
      using its position within the database file structure rather than its
@@ -31,10 +31,10 @@ $DESCRIPTION$
      among other things the retrieval of field values without use of the
      macro operator.
 $LANG_RU$
-     FIELDGET() - функция баз данных, возвращающая значение поля,
-     указанного его порядковым номером в структуре базы данных. Это
-     позволяет, кроме всего прочего, получать значение поля без
-     использования оператора макроподстановки.
+     FIELDGET() - я└я┐п╫п╨я├п╦я▐ п╠п╟п╥ п╢п╟п╫п╫я▀я┘, п╡п╬п╥п╡я─п╟я┴п╟я▌я┴п╟я▐ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬п╩я▐,
+     я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ п╣пЁп╬ п©п╬я─я▐п╢п╨п╬п╡я▀п╪ п╫п╬п╪п╣я─п╬п╪ п╡ я│я┌я─я┐п╨я┌я┐я─п╣ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘. п╜я┌п╬
+     п©п╬п╥п╡п╬п╩я▐п╣я┌, п╨я─п╬п╪п╣ п╡я│п╣пЁп╬ п©я─п╬я┤п╣пЁп╬, п©п╬п╩я┐я┤п╟я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬п╩я▐ п╠п╣п╥
+     п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐ п╬п©п╣я─п╟я┌п╬я─п╟ п╪п╟п╨я─п╬п©п╬п╢я│я┌п╟п╫п╬п╡п╨п╦.
 $EXAMPLES$
        This example compares FIELDGET() to functionally equivalent
 	code that uses the macro operator to retrieve the value of a field:
@@ -48,18 +48,18 @@ $EXAMPLES$
 	// Using FIELDGET()
 	FVal := FIELDGET( nField )         // Get field value
 $LANG_RU$
-      Следующий пример позволяет сравнить функцию FIELDGET() и
-       эквивалентный фрагмент программы, использующий операцию
-       макроподстановки для получения значения поля:
+      п║п╩п╣п╢я┐я▌я┴п╦п╧ п©я─п╦п╪п╣я─ п©п╬п╥п╡п╬п╩я▐п╣я┌ я│я─п╟п╡п╫п╦я┌я▄ я└я┐п╫п╨я├п╦я▌ FIELDGET() п╦
+       я█п╨п╡п╦п╡п╟п╩п╣п╫я┌п╫я▀п╧ я└я─п╟пЁп╪п╣п╫я┌ п©я─п╬пЁя─п╟п╪п╪я▀, п╦я│п©п╬п╩я▄п╥я┐я▌я┴п╦п╧ п╬п©п╣я─п╟я├п╦я▌
+       п╪п╟п╨я─п╬п©п╬п╢я│я┌п╟п╫п╬п╡п╨п╦ п╢п╩я▐ п©п╬п╩я┐я┤п╣п╫п╦я▐ п╥п╫п╟я┤п╣п╫п╦я▐ п©п╬п╩я▐:
 
        LOCAL nField := 1, FName, FVal
        USE Customer NEW
        //
-       // Использование оператора макроподстановки
+       // п≤я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╬п©п╣я─п╟я┌п╬я─п╟ п╪п╟п╨я─п╬п©п╬п╢я│я┌п╟п╫п╬п╡п╨п╦
        FName := FIELD( nField )
        FVal := &amp;FName
 
-       // Использование FIELDGET()
+       // п≤я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ FIELDGET()
        FVal := FIELDGET( nField )
 $SEEALSO$
   FIELDPUT()

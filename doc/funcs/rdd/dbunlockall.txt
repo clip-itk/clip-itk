@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Release all locks for all work areas
 $LANG_RU$
-   Снимает все блокировки для всех рабочих областей.
+   п║п╫п╦п╪п╟п╣я┌ п╡я│п╣ п╠п╩п╬п╨п╦я─п╬п╡п╨п╦ п╢п╩я▐ п╡я│п╣я┘ я─п╟п╠п╬я┤п╦я┘ п╬п╠п╩п╟я│я┌п╣п╧.
 $SYNTAX$
      DBUNLOCKALL() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBUNLOCKALL() always returns NIL.
 $LANG_RU$
-     DBUNLOCKALL() всегда возвращает NIL.
+     DBUNLOCKALL() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBUNLOCKALL() releases any record or file locks obtained by the current
      process for any work area.  DBUNLOCKALL() is only meaningful on a shared
@@ -23,15 +23,15 @@ $DESCRIPTION$
      DBUNLOCKALL() performs the same function as the UNLOCK ALL command.  For
      more information, refer to the UNLOCK ALL command.
 $LANG_RU$
-     DBUNLOCKALL() снимает блокировки записи или всей базы данных,
-     установленные текущим процессом для всех рабочих областей.
-     DBUNLOCKALL() используется только для баз данных, открытых для
-     совместного использования в сетевой среде. Вызов функции
-     DBUNLOCKALL() эквивалентен вызову функции  DBUNLOCK() в каждой
-     рабочей области.
+     DBUNLOCKALL() я│п╫п╦п╪п╟п╣я┌ п╠п╩п╬п╨п╦я─п╬п╡п╨п╦ п╥п╟п©п╦я│п╦ п╦п╩п╦ п╡я│п╣п╧ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘,
+     я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╫я▀п╣ я┌п╣п╨я┐я┴п╦п╪ п©я─п╬я├п╣я│я│п╬п╪ п╢п╩я▐ п╡я│п╣я┘ я─п╟п╠п╬я┤п╦я┘ п╬п╠п╩п╟я│я┌п╣п╧.
+     DBUNLOCKALL() п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ я┌п╬п╩я▄п╨п╬ п╢п╩я▐ п╠п╟п╥ п╢п╟п╫п╫я▀я┘, п╬я┌п╨я─я▀я┌я▀я┘ п╢п╩я▐
+     я│п╬п╡п╪п╣я│я┌п╫п╬пЁп╬ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐ п╡ я│п╣я┌п╣п╡п╬п╧ я│я─п╣п╢п╣. п▓я▀п╥п╬п╡ я└я┐п╫п╨я├п╦п╦
+     DBUNLOCKALL() я█п╨п╡п╦п╡п╟п╩п╣п╫я┌п╣п╫ п╡я▀п╥п╬п╡я┐ я└я┐п╫п╨я├п╦п╦  DBUNLOCK() п╡ п╨п╟п╤п╢п╬п╧
+     я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
 
-     DBUNLOCKALL() выполняет те же функции, что и стандартная команда
-     UNLOCK ALL.  Более подробную информацию смотрите в команде UNLOCK
+     DBUNLOCKALL() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟
+     UNLOCK ALL.  п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ UNLOCK
      ALL.
 $EXAMPLES$
        The following example marks a record for deletion if an

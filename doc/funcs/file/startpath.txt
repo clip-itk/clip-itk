@@ -5,20 +5,20 @@ $CATEGORY$
 $SUMMARY$
 	Returns full path and name of program.
 $LANG_RU$
-	Возвращает полный путь и имя программы.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╩п╫я▀п╧ п©я┐я┌я▄ п╦ п╦п╪я▐ п©я─п╬пЁя─п╟п╪п╪я▀.
 $SYNTAX$
      STARTPATH() 	--> <sPath>
 $ARGUMENTS$
 $RETURNS$
      Returns the string <sPath> what contain full path and name of started program.
 $LANG_RU$
-     Возвращает строку <sPath>, содержащую полный путь и имя стартовавшей программы..
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sPath>, я│п╬п╢п╣я─п╤п╟я┴я┐я▌ п©п╬п╩п╫я▀п╧ п©я┐я┌я▄ п╦ п╦п╪я▐ я│я┌п╟я─я┌п╬п╡п╟п╡я┬п╣п╧ п©я─п╬пЁя─п╟п╪п╪я▀..
 $DESCRIPTION$
 
 	STARTPATH() returns the string <sPath> what contain full path and name of started program.
 $LANG_RU$
 
-	STARTPATH() возвращает строку <sPath>, содержащую полный путь и имя стартовавшей программы..
+	STARTPATH() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sPath>, я│п╬п╢п╣я─п╤п╟я┴я┐я▌ п©п╬п╩п╫я▀п╧ п©я┐я┌я▄ п╦ п╦п╪я▐ я│я┌п╟я─я┌п╬п╡п╟п╡я┬п╣п╧ п©я─п╬пЁя─п╟п╪п╪я▀..
 $EXAMPLES$
 
 ? CURDIR()		// --> /usr/home/user1/test
@@ -32,12 +32,12 @@ $EXAMPLES$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	CURDIR(), DIRCHANGE()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

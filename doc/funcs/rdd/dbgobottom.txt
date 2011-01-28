@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Move to the last logical record
 $LANG_RU$
-   Перемещает указатель на последнюю логическую запись.
+   п÷п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╬я│п╩п╣п╢п╫я▌я▌ п╩п╬пЁп╦я┤п╣я│п╨я┐я▌ п╥п╟п©п╦я│я▄.
 $SYNTAX$
      DBGOBOTTOM() --> NIL
 $LANG_RU$
@@ -13,18 +13,18 @@ $LANG_RU$
 $RETURNS$
      DBGOBOTTOM() always returns NIL.
 $LANG_RU$
-     DBGOBOTTOM() всегда возвращает NIL.
+     DBGOBOTTOM() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBGOBOTTOM() moves to the last logical record in the current work area.
 
      DBGOBOTTOM() performs the same function as the standard GO BOTTOM
      command.  For more information, refer to the GO command.
 $LANG_RU$
-     DBGOBOTTOM() Перемещает указатель на последнюю логическую запись в
-     текущей рабочей области.
+     DBGOBOTTOM() п÷п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╬я│п╩п╣п╢п╫я▌я▌ п╩п╬пЁп╦я┤п╣я│п╨я┐я▌ п╥п╟п©п╦я│я▄ п╡
+     я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
 
-     DBGOBOTTOM() выполняет те же функции, что и стандартная команда GO
-     BOTTOM. Более подробную информацию смотрите в команде GO.
+     DBGOBOTTOM() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ GO
+     BOTTOM. п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ GO.
 $EXAMPLES$
        The following example uses DBGOBOTTOM() to position the record
 	pointer on the last logical record:

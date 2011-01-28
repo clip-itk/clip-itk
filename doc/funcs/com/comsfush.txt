@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Flush sending buffer.
 $LANG_RU$
-	Очищает буфер передачи.
+	п·я┤п╦я┴п╟п╣я┌ п╠я┐я└п╣я─ п©п╣я─п╣п╢п╟я┤п╦.
 $SYNTAX$
 	COM_SFLUSH(<nComPort>) --> lDeleted
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N).
 $LANG_RU$
-	<nComPort> - Определяет номер порта.
+	<nComPort> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╬п╪п╣я─ п©п╬я─я┌п╟.
 $RETURNS$
 	On success returns .T..
 $LANG_RU$
-	В случае успеха возвращает .T..
+	п▓ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .T..
 $DESCRIPTION$
 	This function remove all characters from sending buffer not yet
 	transmitted.
 $LANG_RU$
-	Эта функция удаляет все символы из буфера передачи, которые еще
-	не переданы.
+	п╜я┌п╟ я└я┐п╫п╨я├п╦я▐ я┐п╢п╟п╩я▐п╣я┌ п╡я│п╣ я│п╦п╪п╡п╬п╩я▀ п╦п╥ п╠я┐я└п╣я─п╟ п©п╣я─п╣п╢п╟я┤п╦, п╨п╬я┌п╬я─я▀п╣ п╣я┴п╣
+	п╫п╣ п©п╣я─п╣п╢п╟п╫я▀.
 $EXAMPLES$
 	cHayes  :=  "ATZ"           // Hayes modem reset command
 	COM_SEND(1, cHayes)         // Issue Hayes command
@@ -32,7 +32,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_FLUSH(),COM_INIT(),COM_OPEN(),COM_READ(),COM_SEND()
 $AUTHOR$

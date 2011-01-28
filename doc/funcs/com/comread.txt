@@ -5,20 +5,20 @@ $CATEGORY$
 $SUMMARY$
 	Reads characters from the receiving buffer.
 $LANG_RU$
-	Читает символы из буфера приема.
+	п╖п╦я┌п╟п╣я┌ я│п╦п╪п╡п╬п╩я▀ п╦п╥ п╠я┐я└п╣я─п╟ п©я─п╦п╣п╪п╟.
 $SYNTAX$
 	COM_READ(<nComPort>,[<nLength>]) --> cData
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N) that is read.
 	<nLength> - Designates the number of the characters in the buffer that are read. The default value reads all characters.
 $LANG_RU$
-	<nComPort> - Определяет порт для чтения.
-	<nLength> - Определяет число символов для чтения. По умолчанию - все символы.
+	<nComPort> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ п©п╬я─я┌ п╢п╩я▐ я┤я┌п╣п╫п╦я▐.
+	<nLength> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ я┤п╦я│п╩п╬ я│п╦п╪п╡п╬п╩п╬п╡ п╢п╩я▐ я┤я┌п╣п╫п╦я▐. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ - п╡я│п╣ я│п╦п╪п╡п╬п╩я▀.
 $RETURNS$
 	The returned string contains the corresponding characters from
 	the receiving buffer.
 $LANG_RU$
-	Возвращается строка, содержащая заданное число принятых символов.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ я│я┌я─п╬п╨п╟, я│п╬п╢п╣я─п╤п╟я┴п╟я▐ п╥п╟п╢п╟п╫п╫п╬п╣ я┤п╦я│п╩п╬ п©я─п╦п╫я▐я┌я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡.
 $DESCRIPTION$
 	All characters arriving at the serial port are stored in the
 	appropriate buffer under interrupt control. It is possible to determine
@@ -29,13 +29,13 @@ $DESCRIPTION$
 	Remember that you can receive additional characters between
 	calling COM_COUNT() and COM_READ().
 $LANG_RU$
-	Принимаемые символы запоминаются во внутреннем буфере.
-	Существует возможность определить число символов в буфере, и чтения
-	одного, нескольких, или всех символов. Если не задан параметр <nLength>,
-	то читаются все доступные символы.
+	п÷я─п╦п╫п╦п╪п╟п╣п╪я▀п╣ я│п╦п╪п╡п╬п╩я▀ п╥п╟п©п╬п╪п╦п╫п╟я▌я┌я│я▐ п╡п╬ п╡п╫я┐я┌я─п╣п╫п╫п╣п╪ п╠я┐я└п╣я─п╣.
+	п║я┐я┴п╣я│я┌п╡я┐п╣я┌ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п╬п©я─п╣п╢п╣п╩п╦я┌я▄ я┤п╦я│п╩п╬ я│п╦п╪п╡п╬п╩п╬п╡ п╡ п╠я┐я└п╣я─п╣, п╦ я┤я┌п╣п╫п╦я▐
+	п╬п╢п╫п╬пЁп╬, п╫п╣я│п╨п╬п╩я▄п╨п╦я┘, п╦п╩п╦ п╡я│п╣я┘ я│п╦п╪п╡п╬п╩п╬п╡. п∙я│п╩п╦ п╫п╣ п╥п╟п╢п╟п╫ п©п╟я─п╟п╪п╣я┌я─ <nLength>,
+	я┌п╬ я┤п╦я┌п╟я▌я┌я│я▐ п╡я│п╣ п╢п╬я│я┌я┐п©п╫я▀п╣ я│п╦п╪п╡п╬п╩я▀.
 
-	Учтите, что порт может принять дополнительные символы между
-	вызовами COM_COUNT() и COM_READ().
+	пёя┤я┌п╦я┌п╣, я┤я┌п╬ п©п╬я─я┌ п╪п╬п╤п╣я┌ п©я─п╦п╫я▐я┌я▄ п╢п╬п©п╬п╩п╫п╦я┌п╣п╩я▄п╫я▀п╣ я│п╦п╪п╡п╬п╩я▀ п╪п╣п╤п╢я┐
+	п╡я▀п╥п╬п╡п╟п╪п╦ COM_COUNT() п╦ COM_READ().
 $EXAMPLES$
 	DO WHILE COM_COUNT(1) < 10
 	    // Wait until 10 characters in buffer
@@ -48,7 +48,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_FLUSH(),COM_INIT(),COM_OPEN(),COM_SEND(),COM_SFLUSH()
 $AUTHOR$

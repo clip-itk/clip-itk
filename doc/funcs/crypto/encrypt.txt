@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Encrypt string using one of symmetric block algoritm and given key string.
 $LANG_RU$
-	Шифрует строку, используя один из алгоритмов.
+	п╗п╦я└я─я┐п╣я┌ я│я┌я─п╬п╨я┐, п╦я│п©п╬п╩я▄п╥я┐я▐ п╬п╢п╦п╫ п╦п╥ п╟п╩пЁп╬я─п╦я┌п╪п╬п╡.
 $SYNTAX$
 	EVP_ENCRYPT(<cData>, <cKey> , [<cCipherMethod> , [<cDigestMethod>] , [<cInitVector>]) --> cEncrypted
 $ARGUMENTS$
@@ -15,19 +15,19 @@ $ARGUMENTS$
 	<cDigestMethod>	- the digest method. Default value 'md5'.
 	<cInitVector> - initial vector for encryption. Default value ''.
 $LANG_RU$
-	<cData> - шифруемая строка.
-	<cKey>  - ключ для шифрации.
-	<cCipherMethod> - метод шифрации, по умолчанию 'des-ede3-cbc'.
-	<cDigestMethod>	- метод хеширования, по умолчанию 'md5'.
-	<cInitVector> - начальный вектор шифрации, по умолчанию ''.
+	<cData> - я┬п╦я└я─я┐п╣п╪п╟я▐ я│я┌я─п╬п╨п╟.
+	<cKey>  - п╨п╩я▌я┤ п╢п╩я▐ я┬п╦я└я─п╟я├п╦п╦.
+	<cCipherMethod> - п╪п╣я┌п╬п╢ я┬п╦я└я─п╟я├п╦п╦, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 'des-ede3-cbc'.
+	<cDigestMethod>	- п╪п╣я┌п╬п╢ я┘п╣я┬п╦я─п╬п╡п╟п╫п╦я▐, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 'md5'.
+	<cInitVector> - п╫п╟я┤п╟п╩я▄п╫я▀п╧ п╡п╣п╨я┌п╬я─ я┬п╦я└я─п╟я├п╦п╦, п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ ''.
 $RETURNS$
 	Encrypted string.
 $LANG_RU$
-	Зашифрованную строку.
+	п≈п╟я┬п╦я└я─п╬п╡п╟п╫п╫я┐я▌ я│я┌я─п╬п╨я┐.
 $DESCRIPTION$
 	Encrypt string using one of symmetric block algoritm and given key string.
 $LANG_RU$
-	Шифрует строку одним из симметричных алгоритмов и возвращает результат.
+	п╗п╦я└я─я┐п╣я┌ я│я┌я─п╬п╨я┐ п╬п╢п╫п╦п╪ п╦п╥ я│п╦п╪п╪п╣я┌я─п╦я┤п╫я▀я┘ п╟п╩пЁп╬я─п╦я┌п╪п╬п╡ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╣п╥я┐п╩я▄я┌п╟я┌.
 $EXAMPLES$
 $LANG_RU$
 $PECULIARITIES$
@@ -35,7 +35,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
    EVP_DECRYPT(),EVP_ALG_LIST()
 $AUTHOR$

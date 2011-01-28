@@ -5,25 +5,25 @@ $CATEGORY$
 $SUMMARY$
 	Sets MEMVAR value.
 $LANG_RU$
-	Устанавливает значение переменной MEMVAR.
+	пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ MEMVAR.
 $SYNTAX$
      MEMVARSET(<sVarName>, <vData>) 	--> TRUE || FALSE
 $ARGUMENTS$
      <sVarName>	String, is the variable name.
      <vData>	is the new value of MEMVAR.
 $LANG_RU$
-     <sVarName>	String, имя переменной.
-     <vData>  	новое значение переменной MEMVAR.
+     <sVarName>	String, п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧.
+     <vData>  	п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ MEMVAR.
 $RETURNS$
      Returns TRUE if successfully.
 $LANG_RU$
-     Возвращает TRUE в случае успеха.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╡ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟.
 $DESCRIPTION$
 
 	MEMVARSET() sets new MEMVAR value with name <sVarName>.
 $LANG_RU$
 
-	MEMVARSET() устанавливает новое значение переменной MEMVAR с именем <sVarName>.
+	MEMVARSET() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ MEMVAR я│ п╦п╪п╣п╫п╣п╪ <sVarName>.
 $EXAMPLES$
 
 MEMVARSET(Mem, "asdf")
@@ -33,12 +33,12 @@ MEMVARSET(Mem, "asdf")
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	MEMVARGET()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

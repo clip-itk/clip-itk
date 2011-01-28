@@ -5,18 +5,18 @@ $CATEGORY$
 $SUMMARY$
 	Create new empty object (associative array)
 $LANG_RU$
-	Создает новый пустой объект (ассоциативный массив)
+	п║п╬п╥п╢п╟п╣я┌ п╫п╬п╡я▀п╧ п©я┐я│я┌п╬п╧ п╬п╠я┼п╣п╨я┌ (п╟я│я│п╬я├п╦п╟я┌п╦п╡п╫я▀п╧ п╪п╟я│я│п╦п╡)
 $SYNTAX$
      MAP() 	--> <oObject>
 $ARGUMENTS$
 $RETURNS$
      Returns empty object.
 $LANG_RU$
-     Возвращает пустой объект.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я┐я│я┌п╬п╧ п╬п╠я┼п╣п╨я┌.
 $DESCRIPTION$
      MAP() createst new empty object (associative array) and returns it.
 $LANG_RU$
-     Map() создает новый пустой объект (ассоциативный массив) и возвращает его.
+     Map() я│п╬п╥п╢п╟п╣я┌ п╫п╬п╡я▀п╧ п©я┐я│я┌п╬п╧ п╬п╠я┼п╣п╨я┌ (п╟я│я│п╬я├п╦п╟я┌п╦п╡п╫я▀п╧ п╪п╟я│я│п╦п╡) п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬.
 $EXAMPLES$
 aMap := MAP()
 aMap:Name := "User1"
@@ -38,7 +38,7 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 

@@ -5,19 +5,19 @@ $CATEGORY$
 $SUMMARY$
 	Get current <link linkend="classuidriver">UIDriver</link> object.
 $LANG_RU$
-	Получить объект драйвера <link linkend="classuidriver">UIDriver</link> по умолчанию.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╢я─п╟п╧п╡п╣я─п╟ <link linkend="classuidriver">UIDriver</link> п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌.
 $SYNTAX$
 	getDriver([<name>],[<params>])	--> <oDriver>
 $ARGUMENTS$
 	<name>		- String. Driver name. By default driver 'gtk' is used.
 	<params>	- Array of strings. Optional parametrs to driver.
 $LANG_RU$
-	<name>		- Строка. Имя драйвера. По умолчанию используется драйвер 'gtk'.
-	<params>	- Массив строк. Параметры запуска драйвера.
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╢я─п╟п╧п╡п╣я─п╟. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╢я─п╟п╧п╡п╣я─ 'gtk'.
+	<params>	- п°п╟я│я│п╦п╡ я│я┌я─п╬п╨. п÷п╟я─п╟п╪п╣я┌я─я▀ п╥п╟п©я┐я│п╨п╟ п╢я─п╟п╧п╡п╣я─п╟.
 $RETURNS$
 	Current <link linkend="classuidriver">UIDriver</link> object.
 $LANG_RU$
-	Текущий объект драйвера <link linkend="classuidriver">UIDriver</link>.
+	п╒п╣п╨я┐я┴п╦п╧ п╬п╠я┼п╣п╨я┌ п╢я─п╟п╧п╡п╣я─п╟ <link linkend="classuidriver">UIDriver</link>.
 $EXAMPLES$
 	static driver := getDriver()
 $SEEALSO$
@@ -31,13 +31,13 @@ $CATEGORY$
 $SUMMARY$
 	Use specified driver.
 $LANG_RU$
-	Использовать указанный драйвер.
+	п≤я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ я┐п╨п╟п╥п╟п╫п╫я▀п╧ п╢я─п╟п╧п╡п╣я─.
 $SYNTAX$
 	useDriver(<name>)	--> NIL
 $ARGUMENTS$
 	<name>		- String. Driver name.
 $LANG_RU$
-	<name>		- Строка. Имя драйвера.
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╢я─п╟п╧п╡п╣я─п╟.
 $EXAMPLES$
 	useDriver("gtk2")
 $SEEALSO$
@@ -52,13 +52,13 @@ $CATEGORY$
 $SUMMARY$
 	Get current application main window <link linkend="classuimainwindow">UIMainWindow</link> object.
 $LANG_RU$
-	Получить объект текущего главного окна приложения <link linkend="classuimainwindow">UIMainWindow</link>.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╬п╠я┼п╣п╨я┌ я┌п╣п╨я┐я┴п╣пЁп╬ пЁп╩п╟п╡п╫п╬пЁп╬ п╬п╨п╫п╟ п©я─п╦п╩п╬п╤п╣п╫п╦я▐ <link linkend="classuimainwindow">UIMainWindow</link>.
 $SYNTAX$
 	getMainWindow()	--> <oMainWindow>
 $RETURNS$
 	Current application main window <link linkend="classuimainwindow">UIMainWindow</link> object.
 $LANG_RU$
-	Объект текущего главного окна приложения <link linkend="classuimainwindow">UIMainWindow</link>.
+	п·п╠я┼п╣п╨я┌ я┌п╣п╨я┐я┴п╣пЁп╬ пЁп╩п╟п╡п╫п╬пЁп╬ п╬п╨п╫п╟ п©я─п╦п╩п╬п╤п╣п╫п╦я▐ <link linkend="classuimainwindow">UIMainWindow</link>.
 $EXAMPLES$
 	static window := getMainWindow()
 $SEEALSO$
@@ -73,7 +73,7 @@ $CATEGORY$
 $SUMMARY$
 	Get content of predefined icons (XPM format).
 $LANG_RU$
-	Получить содержимое предопределённых значков в формате XPM.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п©я─п╣п╢п╬п©я─п╣п╢п╣п╩я▒п╫п╫я▀я┘ п╥п╫п╟я┤п╨п╬п╡ п╡ я└п╬я─п╪п╟я┌п╣ XPM.
 $SYNTAX$
 	getSysImage(<id>)	--> <sImage>
 $ARGUMENTS$
@@ -84,17 +84,17 @@ $ARGUMENTS$
 	yellow triangle with exclamation mark (32x32)</listitem><listitem><command>IMG_QUESTION</command> &mdash;
 	symbol "?" in blue circle (32x32)</listitem></itemizedlist>
 $LANG_RU$
-	<id>		- Число. Идентификатор предопределённого изображения.<itemizedlist mark="bullet"><listitem><command>IMG_EMPTY</command> &mdash; 
-	пустой (прозрачный) рисунок (16х16)</listitem><listitem><command>IMG_OK</command> &mdash; 
-	символ "i" в синем кружочке (32х32)</listitem><listitem><command>IMG_ERROR</command> &mdash; 
-	символ "х" в красном кружочке (32х32)</listitem><listitem><command>IMG_WARNING</command> &mdash; 
-	жёлтый треугольник с восклицательным знаком (32х32)</listitem><listitem><command>IMG_QUESTION</command> &mdash; 
-	символ "?" в синем кружочке (32х32)</listitem></itemizedlist>
+	<id>		- п╖п╦я│п╩п╬. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п©я─п╣п╢п╬п©я─п╣п╢п╣п╩я▒п╫п╫п╬пЁп╬ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐.<itemizedlist mark="bullet"><listitem><command>IMG_EMPTY</command> &mdash; 
+	п©я┐я│я┌п╬п╧ (п©я─п╬п╥я─п╟я┤п╫я▀п╧) я─п╦я│я┐п╫п╬п╨ (16я┘16)</listitem><listitem><command>IMG_OK</command> &mdash; 
+	я│п╦п╪п╡п╬п╩ "i" п╡ я│п╦п╫п╣п╪ п╨я─я┐п╤п╬я┤п╨п╣ (32я┘32)</listitem><listitem><command>IMG_ERROR</command> &mdash; 
+	я│п╦п╪п╡п╬п╩ "я┘" п╡ п╨я─п╟я│п╫п╬п╪ п╨я─я┐п╤п╬я┤п╨п╣ (32я┘32)</listitem><listitem><command>IMG_WARNING</command> &mdash; 
+	п╤я▒п╩я┌я▀п╧ я┌я─п╣я┐пЁп╬п╩я▄п╫п╦п╨ я│ п╡п╬я│п╨п╩п╦я├п╟я┌п╣п╩я▄п╫я▀п╪ п╥п╫п╟п╨п╬п╪ (32я┘32)</listitem><listitem><command>IMG_QUESTION</command> &mdash; 
+	я│п╦п╪п╡п╬п╩ "?" п╡ я│п╦п╫п╣п╪ п╨я─я┐п╤п╬я┤п╨п╣ (32я┘32)</listitem></itemizedlist>
 
 $RETURNS$
 	Content of specified predefined images.
 $LANG_RU$
-	Содержимое указанного предопределённого изображения.
+	п║п╬п╢п╣я─п╤п╦п╪п╬п╣ я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ п©я─п╣п╢п╬п©я─п╣п╢п╣п╩я▒п╫п╫п╬пЁп╬ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐.
 $EXAMPLES$
 	imgContent := getSysImage( IMG_OK )
 $SEEALSO$
@@ -108,13 +108,13 @@ $CATEGORY$
 $SUMMARY$
 	Get CLIP-UI library version.
 $LANG_RU$
-	Получить версию используемой библиотеки CLIP-UI.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╡п╣я─я│п╦я▌ п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬п╧ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ CLIP-UI.
 $SYNTAX$
 	getClipUIVersion()	--> <sVersion>
 $RETURNS$
 	CLIP-UI library version.
 $LANG_RU$
-	Версия используемой библиотеки CLIP-UI.
+	п▓п╣я─я│п╦я▐ п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬п╧ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ CLIP-UI.
 $END$
 
 $FUNCNAME$
@@ -124,7 +124,7 @@ $CATEGORY$
 $SUMMARY$
 	Get value from associated array by its key. If specified key is not found, value <defVal> is returned.
 $LANG_RU$
-	Возвращает значение из ассоциативного массива по ключу. Если ключ не найден, возвращается значение <defVal>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п╦п╥ п╟я│я│п╬я├п╦п╟я┌п╦п╡п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟ п©п╬ п╨п╩я▌я┤я┐. п∙я│п╩п╦ п╨п╩я▌я┤ п╫п╣ п╫п╟п╧п╢п╣п╫, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦п╣ <defVal>.
 $SYNTAX$
 	mapget(<m>,<key>,<defVal>)	--> <val>
 $ARGUMENTS$
@@ -132,13 +132,13 @@ $ARGUMENTS$
 	<key>		- String. Key.
 	<defVal>	- Any type. Value by defult on failed key lookup.
 $LANG_RU$
-	<m>		- Ассоциативный массив. Ассоциативный массив.
-	<key>		- Строка. Ключ.
-	<defVal>	- Любой тип. Значение по умолчанию при неудачном поиске ключа.
+	<m>		- п░я│я│п╬я├п╦п╟я┌п╦п╡п╫я▀п╧ п╪п╟я│я│п╦п╡. п░я│я│п╬я├п╦п╟я┌п╦п╡п╫я▀п╧ п╪п╟я│я│п╦п╡.
+	<key>		- п║я┌я─п╬п╨п╟. п п╩я▌я┤.
+	<defVal>	- п⌡я▌п╠п╬п╧ я┌п╦п©. п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п©я─п╦ п╫п╣я┐п╢п╟я┤п╫п╬п╪ п©п╬п╦я│п╨п╣ п╨п╩я▌я┤п╟.
 $RETURNS$
 	Value by specified key or <defVal>.
 $LANG_RU$
-	Значение по указанному ключу или <defVal>.
+	п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╨п╟п╥п╟п╫п╫п╬п╪я┐ п╨п╩я▌я┤я┐ п╦п╩п╦ <defVal>.
 $EXAMPLES$
 	m := mapget( tag:attr, "METHOD", "" )
 $END$
@@ -150,19 +150,19 @@ $CATEGORY$
 $SUMMARY$
 	Extract array from string.
 $LANG_RU$
-	Выделяет из строки массив значений.
+	п▓я▀п╢п╣п╩я▐п╣я┌ п╦п╥ я│я┌я─п╬п╨п╦ п╪п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧.
 $SYNTAX$
 	splitGeom(<str>,[<alen>])	--> <aGeometry>
 $ARGUMENTS$
 	<str>		- String. String of values delimited by commas.
 	<alen>		- Number. Required number of elements in array. If necessary array size is corrected.
 $LANG_RU$
-	<str>		- Строка. Строка значений, разделённых запятыми.
-	<alen>		- Число. Необходимое количество элементов в массиве. При необходимости размер массива корректируется для соответствия заданному количеству.
+	<str>		- п║я┌я─п╬п╨п╟. п║я┌я─п╬п╨п╟ п╥п╫п╟я┤п╣п╫п╦п╧, я─п╟п╥п╢п╣п╩я▒п╫п╫я▀я┘ п╥п╟п©я▐я┌я▀п╪п╦.
+	<alen>		- п╖п╦я│п╩п╬. п²п╣п╬п╠я┘п╬п╢п╦п╪п╬п╣ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ п╪п╟я│я│п╦п╡п╣. п÷я─п╦ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌п╦ я─п╟п╥п╪п╣я─ п╪п╟я│я│п╦п╡п╟ п╨п╬я─я─п╣п╨я┌п╦я─я┐п╣я┌я│я▐ п╢п╩я▐ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╦я▐ п╥п╟п╢п╟п╫п╫п╬п╪я┐ п╨п╬п╩п╦я┤п╣я│я┌п╡я┐.
 $RETURNS$
 	Array of values.
 $LANG_RU$
-	Массив значений.
+	п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧.
 $EXAMPLES$
 	a := splitGeom( "22", 2 ) 	// {22,NIL}
 $END$
@@ -174,19 +174,19 @@ $CATEGORY$
 $SUMMARY$
 	Transform value to string.
 $LANG_RU$
-	Преобразовать значение в строку.
+	п÷я─п╣п╬п╠я─п╟п╥п╬п╡п╟я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п╡ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	val2str(<value>,[<format>])	--> <sVal>
 $ARGUMENTS$
 	<value>		- Number|string|date|boolean|NIL. Transformed value.
 	<format>	- String. Format for translation to string.
 $LANG_RU$
-	<value>		- Число|строка|дата|логическое значение|пустое значение. Преобразуемое значение.
-	<format>	- Строка. Формат преобразования значения в строку.
+	<value>		- п╖п╦я│п╩п╬|я│я┌я─п╬п╨п╟|п╢п╟я┌п╟|п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣|п©я┐я│я┌п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п÷я─п╣п╬п╠я─п╟п╥я┐п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
+	<format>	- п║я┌я─п╬п╨п╟. п╓п╬я─п╪п╟я┌ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦я▐ п╥п╫п╟я┤п╣п╫п╦я▐ п╡ я│я┌я─п╬п╨я┐.
 $RETURNS$
 	Value as string.
 $LANG_RU$
-	Значение в виде строки.
+	п≈п╫п╟я┤п╣п╫п╦п╣ п╡ п╡п╦п╢п╣ я│я┌я─п╬п╨п╦.
 $EXAMPLES$
 	s := val2str( 55 )	// "55"
 $SEEALSO$
@@ -195,12 +195,12 @@ $END$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

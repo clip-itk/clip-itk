@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
    Returns xClipper version
 $LANG_RU$
-   Возвращает номер версии xClipper.
+   п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ п╡п╣я─я│п╦п╦ xClipper.
 $SYNTAX$
      VERSION() --> cVersion
 $LANG_RU$
-     VERSION() --> номер версии
+     VERSION() --> п╫п╬п╪п╣я─ п╡п╣я─я│п╦п╦
 $RETURNS$
      VERSION() returns the version number of the xClipper library,
      EXTEND.LIB, as a character value.
 $LANG_RU$
-     VERSION() возвращает номер версии xClipper библиотеки EXTEND.LIB в
-     виде символьной строки.
+     VERSION() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ п╡п╣я─я│п╦п╦ xClipper п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ EXTEND.LIB п╡
+     п╡п╦п╢п╣ я│п╦п╪п╡п╬п╩я▄п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $DESCRIPTION$
      VERSION() is an environment function that returns the version of the
      xClipper library, EXTEND.LIB.
 $LANG_RU$
-     VERSION() - функция среды, которая возвращает номер версии xClipper
-     библиотеки EXTEND.LIB.
+     VERSION() - я└я┐п╫п╨я├п╦я▐ я│я─п╣п╢я▀, п╨п╬я┌п╬я─п╟я▐ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ п╡п╣я─я│п╦п╦ xClipper
+     п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ EXTEND.LIB.
 $SEEALSO$
 
 $END$

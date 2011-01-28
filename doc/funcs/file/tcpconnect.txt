@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Connect with server.
 $LANG_RU$
-	Установить соединение с сервером.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣ я│ я│п╣я─п╡п╣я─п╬п╪.
 $SYNTAX$
 	TCPCONNECT(<sHostName>[, <nPort>][, <nTimeout>])	--> <nConnection>
 $ARGUMENTS$
@@ -13,21 +13,21 @@ $ARGUMENTS$
 	<nPort>		Numeric, is the port number.
 	<nTimeout>	Numeric, is the timeout.( default 60000 )
 $LANG_RU$
-	<sHostName>	String, имя сервера.
-	<nPort>		Numeric, номер порта.
-	<nTimeout>	Numeric, время ожидания ответа.( default 60000 )
+	<sHostName>	String, п╦п╪я▐ я│п╣я─п╡п╣я─п╟.
+	<nPort>		Numeric, п╫п╬п╪п╣я─ п©п╬я─я┌п╟.
+	<nTimeout>	Numeric, п╡я─п╣п╪я▐ п╬п╤п╦п╢п╟п╫п╦я▐ п╬я┌п╡п╣я┌п╟.( default 60000 )
 $RETURNS$
 	Returns the connection number or -1.
 $LANG_RU$
-	Возвращает номер соединения или -1.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐ п╦п╩п╦ -1.
 $DESCRIPTION$
 	TCPCONNECT() makes connect to server <sHostName> and creates socket
 	to port <nPort>. Returns connection number <nConnection> or -1 on error.
 	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
 $LANG_RU$
-	TCPCONNECT() устанавливает соединение с сервером <sHostName> и создает сокет
-	к порту <nPort>.Возвращат номер соединения <nConnection> или -1 в случае ошибки.
-	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+	TCPCONNECT() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣ я│ я│п╣я─п╡п╣я─п╬п╪ <sHostName> п╦ я│п╬п╥п╢п╟п╣я┌ я│п╬п╨п╣я┌
+	п╨ п©п╬я─я┌я┐ <nPort>.п▓п╬п╥п╡я─п╟я┴п╟я┌ п╫п╬п╪п╣я─ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐ <nConnection> п╦п╩п╦ -1 п╡ я│п╩я┐я┤п╟п╣ п╬я┬п╦п╠п╨п╦.
+	<link linkend="functionFERROR">FERROR()</link> п╦ <link linkend="functionFERRORSTR">FERRORSTR()</link> я┘я─п╟п╫я▐я┌ п╫п╬п╪п╣я─ п╦ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $EXAMPLES$
 
 

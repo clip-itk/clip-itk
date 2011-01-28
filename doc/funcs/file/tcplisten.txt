@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Listen port.
 $LANG_RU$
-	Слушать порт.
+	п║п╩я┐я┬п╟я┌я▄ п©п╬я─я┌.
 $SYNTAX$
 	TCPLISTEN(<nPort>[, <nBackLog>])	--> <nErrNo>
 $ARGUMENTS$
 	<nPort>		Numeric, is the port number.
 	<nBackLog>	Numeric, is the  maximum length the queue of  pending  connections.
 $LANG_RU$
-	<nPort>		Numeric, номер порта.
-	<nBackLog>	Numeric, максимальная длина очереди ожидающих соединения.
+	<nPort>		Numeric, п╫п╬п╪п╣я─ п©п╬я─я┌п╟.
+	<nBackLog>	Numeric, п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╟я▐ п╢п╩п╦п╫п╟ п╬я┤п╣я─п╣п╢п╦ п╬п╤п╦п╢п╟я▌я┴п╦я┘ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐.
 $RETURNS$
 	Returns the numeric value <nErrNo>: on zero - operation was successfully, <nErrNo> < 0 - error code.
 $LANG_RU$
-	Возвращает числовое значение <nErrNo>: ноль - операция завершилась успешно, <nErrNo> - код ошибки.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ <nErrNo>: п╫п╬п╩я▄ - п╬п©п╣я─п╟я├п╦я▐ п╥п╟п╡п╣я─я┬п╦п╩п╟я│я▄ я┐я│п©п╣я┬п╫п╬, <nErrNo> - п╨п╬п╢ п╬я┬п╦п╠п╨п╦.
 $DESCRIPTION$
 	TCPLISTEN() creates socket and stands for incomming connections.
 $LANG_RU$
-	TCPLISTEN() создает сокет и устанавливает прослушивание входящих соединений.
+	TCPLISTEN() я│п╬п╥п╢п╟п╣я┌ я│п╬п╨п╣я┌ п╦ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п©я─п╬я│п╩я┐я┬п╦п╡п╟п╫п╦п╣ п╡я┘п╬п╢я▐я┴п╦я┘ я│п╬п╣п╢п╦п╫п╣п╫п╦п╧.
 $EXAMPLES$
 
 #define DEFPORT	3000

@@ -5,14 +5,14 @@ $CATEGORY$
 $SUMMARY$
 	Return the number of the highest available serial interface port
 $LANG_RU$
-	Возвращает кол-во доступных COM-портов.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╩-п╡п╬ п╢п╬я│я┌я┐п©п╫я▀я┘ COM-п©п╬я─я┌п╬п╡.
 $SYNTAX$
 	COM_NUM() --> nMaxCom
 $ARGUMENTS$
 $RETURNS$
 	Return the number of the highest available serial interface port
 $LANG_RU$
-	Возвращает кол-во доступных COM-портов.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╩-п╡п╬ п╢п╬я│я┌я┐п©п╫я▀я┘ COM-п©п╬я─я┌п╬п╡.
 $DESCRIPTION$
 	This function returns the number of the serial interface port
 	available. This is not to say that a return value of 3 necessarily means
@@ -20,11 +20,11 @@ $DESCRIPTION$
 	missing. Whether or not a serial port can actually be used can be tested
 	using the COM_OPEN() or COM_INIT() functions.
 $LANG_RU$
-	Эта функция позволяет узнать максимальное число последовательных
-	портов в системе. Однако, она не гарантирует доступность портов.
-	Например, если функция вернула 3, то COM2 может отсутствовать или быть
-	недоступен. Реальная доступность порта проверяется функциями COM_OPEN()
-	или COM_INIT().
+	п╜я┌п╟ я└я┐п╫п╨я├п╦я▐ п©п╬п╥п╡п╬п╩я▐п╣я┌ я┐п╥п╫п╟я┌я▄ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬п╣ я┤п╦я│п╩п╬ п©п╬я│п╩п╣п╢п╬п╡п╟я┌п╣п╩я▄п╫я▀я┘
+	п©п╬я─я┌п╬п╡ п╡ я│п╦я│я┌п╣п╪п╣. п·п╢п╫п╟п╨п╬, п╬п╫п╟ п╫п╣ пЁп╟я─п╟п╫я┌п╦я─я┐п╣я┌ п╢п╬я│я┌я┐п©п╫п╬я│я┌я▄ п©п╬я─я┌п╬п╡.
+	п²п╟п©я─п╦п╪п╣я─, п╣я│п╩п╦ я└я┐п╫п╨я├п╦я▐ п╡п╣я─п╫я┐п╩п╟ 3, я┌п╬ COM2 п╪п╬п╤п╣я┌ п╬я┌я│я┐я┌я│я┌п╡п╬п╡п╟я┌я▄ п╦п╩п╦ п╠я▀я┌я▄
+	п╫п╣п╢п╬я│я┌я┐п©п╣п╫. п═п╣п╟п╩я▄п╫п╟я▐ п╢п╬я│я┌я┐п©п╫п╬я│я┌я▄ п©п╬я─я┌п╟ п©я─п╬п╡п╣я─я▐п╣я┌я│я▐ я└я┐п╫п╨я├п╦я▐п╪п╦ COM_OPEN()
+	п╦п╩п╦ COM_INIT().
 $EXAMPLES$
 	? COM_NUM()                 // e.g. 4
 $LANG_RU$
@@ -33,7 +33,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_DTR(),COM_RTS(),COM_SOFT(),COM_TIMEOUT(),COM_HARD(),COM_COUNT()
 $AUTHOR$

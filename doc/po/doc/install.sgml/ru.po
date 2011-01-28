@@ -8,17 +8,17 @@ msgstr ""
 "Last-Translator: Guest007 <guest007@vbg.herzen.spb.ru>\n"
 "Language-Team:  <ru@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.0\n"
 
 #: template/./doc/install.sgml:1
 msgid "Clip installation"
-msgstr "Установка Clip"
+msgstr "пёя│я┌п╟п╫п╬п╡п╨п╟ Clip"
 
 #: template/./doc/install.sgml:4
 msgid "Before install"
-msgstr "Предисловие"
+msgstr "п÷я─п╣п╢п╦я│п╩п╬п╡п╦п╣"
 
 #: template/./doc/install.sgml:6
 #, fuzzy
@@ -26,8 +26,8 @@ msgid ""
 "Clip is distributing in a source and binaries variants from the main ftp\n"
 "server and mirrors."
 msgstr ""
-"Clip распространяется в виде пакетов с исходным кодом и в виде бинарных "
-"пакетов с главного ftp сервера и его зеркал."
+"Clip я─п╟я│п©я─п╬я│я┌я─п╟п╫я▐п╣я┌я│я▐ п╡ п╡п╦п╢п╣ п©п╟п╨п╣я┌п╬п╡ я│ п╦я│я┘п╬п╢п╫я▀п╪ п╨п╬п╢п╬п╪ п╦ п╡ п╡п╦п╢п╣ п╠п╦п╫п╟я─п╫я▀я┘ "
+"п©п╟п╨п╣я┌п╬п╡ я│ пЁп╩п╟п╡п╫п╬пЁп╬ ftp я│п╣я─п╡п╣я─п╟ п╦ п╣пЁп╬ п╥п╣я─п╨п╟п╩."
 
 #: template/./doc/install.sgml:8
 #, fuzzy
@@ -35,8 +35,8 @@ msgid ""
 "Binaries variant (except Cygwin) depends on a distributive\n"
 "and not available from ftp servers."
 msgstr ""
-"Бинарные (прекомпилированные) пакеты (за исключением Cygwin) являются "
-"дистрибутивозависимыми и не доступны для скачивания."
+"п▒п╦п╫п╟я─п╫я▀п╣ (п©я─п╣п╨п╬п╪п©п╦п╩п╦я─п╬п╡п╟п╫п╫я▀п╣) п©п╟п╨п╣я┌я▀ (п╥п╟ п╦я│п╨п╩я▌я┤п╣п╫п╦п╣п╪ Cygwin) я▐п╡п╩я▐я▌я┌я│я▐ "
+"п╢п╦я│я┌я─п╦п╠я┐я┌п╦п╡п╬п╥п╟п╡п╦я│п╦п╪я▀п╪п╦ п╦ п╫п╣ п╢п╬я│я┌я┐п©п╫я▀ п╢п╩я▐ я│п╨п╟я┤п╦п╡п╟п╫п╦я▐."
 
 #: template/./doc/install.sgml:11
 #, fuzzy
@@ -44,34 +44,34 @@ msgid ""
 "Source distributions present in two variants: splitted by packages and\n"
 "all-in-one variant."
 msgstr ""
-"Пакеты с исходными текстами и документацией представлены в двух вариантах: "
-"полный комплект и с разбиением по пакетам."
+"п÷п╟п╨п╣я┌я▀ я│ п╦я│я┘п╬п╢п╫я▀п╪п╦ я┌п╣п╨я│я┌п╟п╪п╦ п╦ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╣п╧ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫я▀ п╡ п╢п╡я┐я┘ п╡п╟я─п╦п╟п╫я┌п╟я┘: "
+"п©п╬п╩п╫я▀п╧ п╨п╬п╪п©п╩п╣п╨я┌ п╦ я│ я─п╟п╥п╠п╦п╣п╫п╦п╣п╪ п©п╬ п©п╟п╨п╣я┌п╟п╪."
 
 #: template/./doc/install.sgml:14
 msgid ""
 "You can download all that you need from the main ftp server\n"
 "ftp://ftp.itk.ru/pub/clip or from mirrors:"
 msgstr ""
-"Вы можете загрузить все необходимое с главного ftp сервера ftp://ftp.itk.ru/"
-"pub/clip или с одного из зеркал:"
+"п▓я▀ п╪п╬п╤п╣я┌п╣ п╥п╟пЁя─я┐п╥п╦я┌я▄ п╡я│п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬п╣ я│ пЁп╩п╟п╡п╫п╬пЁп╬ ftp я│п╣я─п╡п╣я─п╟ ftp://ftp.itk.ru/"
+"pub/clip п╦п╩п╦ я│ п╬п╢п╫п╬пЁп╬ п╦п╥ п╥п╣я─п╨п╟п╩:"
 
 #: template/./doc/install.sgml:17
 msgid "very fast, every night updated ftp://ftp.linux.ru.net/mirrors/clip"
 msgstr ""
-"очень быстрое зеркало, синхронизируемое каждую ночь, ftp://ftp.linux.ru.net/"
+"п╬я┤п╣п╫я▄ п╠я▀я│я┌я─п╬п╣ п╥п╣я─п╨п╟п╩п╬, я│п╦п╫я┘я─п╬п╫п╦п╥п╦я─я┐п╣п╪п╬п╣ п╨п╟п╤п╢я┐я▌ п╫п╬я┤я▄, ftp://ftp.linux.ru.net/"
 "mirrors/clip"
 
 #: template/./doc/install.sgml:18
 msgid "another good server ftp://ftp.lastik.ru/clip"
-msgstr "еще один хороший сервер ftp://ftp.lastik.ru/clip"
+msgstr "п╣я┴п╣ п╬п╢п╦п╫ я┘п╬я─п╬я┬п╦п╧ я│п╣я─п╡п╣я─ ftp://ftp.lastik.ru/clip"
 
 #: template/./doc/install.sgml:19
 msgid "or from sourceforge.net server http://sourceforge.net/projects/x-clip"
-msgstr "или с сервера sourceforge.net: http://sourceforge.net/projects/x-clip"
+msgstr "п╦п╩п╦ я│ я│п╣я─п╡п╣я─п╟ sourceforge.net: http://sourceforge.net/projects/x-clip"
 
 #: template/./doc/install.sgml:22
 msgid "There you can find many files:"
-msgstr "На них вы обнаружите множество файлов:"
+msgstr "п²п╟ п╫п╦я┘ п╡я▀ п╬п╠п╫п╟я─я┐п╤п╦я┌п╣ п╪п╫п╬п╤п╣я│я┌п╡п╬ я└п╟п╧п╩п╬п╡:"
 
 #: template/./doc/install.sgml:25
 msgid "clip-prg-&lt;version&gt;.tgz"
@@ -79,7 +79,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:26
 msgid "SRC: all source packages and documentation"
-msgstr "SRC: все исходные тексты и документация"
+msgstr "SRC: п╡я│п╣ п╦я│я┘п╬п╢п╫я▀п╣ я┌п╣п╨я│я┌я▀ п╦ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦я▐"
 
 #: template/./doc/install.sgml:27
 msgid "clip_dev.tgz"
@@ -87,7 +87,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:28
 msgid "SRC: base package, == CA-Clipper 5.3"
-msgstr "SRC: основной пакет, соответствующий clipper 5.3"
+msgstr "SRC: п╬я│п╫п╬п╡п╫п╬п╧ п©п╟п╨п╣я┌, я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╦п╧ clipper 5.3"
 
 #: template/./doc/install.sgml:29
 msgid "clip_docs.tgz"
@@ -98,8 +98,8 @@ msgid ""
 "HTML: base documentation, all packages including private documentation of "
 "private functions."
 msgstr ""
-"HTML:основная документация, все пакеты включают в себе свою документацию по "
-"своим расширениям"
+"HTML:п╬я│п╫п╬п╡п╫п╟я▐ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦я▐, п╡я│п╣ п©п╟п╨п╣я┌я▀ п╡п╨п╩я▌я┤п╟я▌я┌ п╡ я│п╣п╠п╣ я│п╡п╬я▌ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦я▌ п©п╬ "
+"я│п╡п╬п╦п╪ я─п╟я│я┬п╦я─п╣п╫п╦я▐п╪"
 
 #: template/./doc/install.sgml:31
 msgid "clip_mysql.tgz"
@@ -107,7 +107,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:32
 msgid "SRC: MySQL client"
-msgstr "SRC: MySQL клиент"
+msgstr "SRC: MySQL п╨п╩п╦п╣п╫я┌"
 
 #: template/./doc/install.sgml:33
 msgid "clip_oracle.tgz"
@@ -115,7 +115,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:34
 msgid "SRC: Oracle client"
-msgstr "SRC: Oracle клиент"
+msgstr "SRC: Oracle п╨п╩п╦п╣п╫я┌"
 
 #: template/./doc/install.sgml:35
 msgid "clip_odbc.tgz"
@@ -123,7 +123,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:36
 msgid "SRC: ODBC client"
-msgstr "SRC: ODBC клиент"
+msgstr "SRC: ODBC п╨п╩п╦п╣п╫я┌"
 
 #: template/./doc/install.sgml:37
 msgid "clip_postgres.tgz"
@@ -131,7 +131,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:38
 msgid "SRC: Postgres client"
-msgstr "SRC: Postgres клиент"
+msgstr "SRC: Postgres п╨п╩п╦п╣п╫я┌"
 
 #: template/./doc/install.sgml:39
 msgid "clip_interbase.tgz"
@@ -140,7 +140,7 @@ msgstr ""
 #: template/./doc/install.sgml:40
 #, fuzzy
 msgid "SRC: Interbase &amp; FireBird client"
-msgstr "SRC: Interbase & FireBird клиент"
+msgstr "SRC: Interbase & FireBird п╨п╩п╦п╣п╫я┌"
 
 #: template/./doc/install.sgml:41
 msgid "clip_gtk.tgz"
@@ -148,7 +148,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:42
 msgid "SRC: GUI library over GTK"
-msgstr "SRC: GUI библиотека поверх GTK"
+msgstr "SRC: GUI п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п©п╬п╡п╣я─я┘ GTK"
 
 #: template/./doc/install.sgml:43
 msgid "clip_gtkextra.tgz"
@@ -156,7 +156,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:44
 msgid "SRC: GUI library over GTKextra"
-msgstr "SRC: GUI библиотека поверх GTKextra"
+msgstr "SRC: GUI п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п©п╬п╡п╣я─я┘ GTKextra"
 
 #: template/./doc/install.sgml:45
 msgid "clip_fw.tgz"
@@ -165,7 +165,7 @@ msgstr ""
 #: template/./doc/install.sgml:46
 #, fuzzy
 msgid "SRC: FiveWin-like classes &amp; commands"
-msgstr "SRC: FiveWin-like классы и команды"
+msgstr "SRC: FiveWin-like п╨п╩п╟я│я│я▀ п╦ п╨п╬п╪п╟п╫п╢я▀"
 
 #: template/./doc/install.sgml:47
 msgid "clip_gd.tgz"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:48
 msgid "SRC: library for PNG (and more) files and business histograms"
-msgstr "SRC: библиотека для работы с графическими файлами и бизнес-графиками"
+msgstr "SRC: п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ пЁя─п╟я└п╦я┤п╣я│п╨п╦п╪п╦ я└п╟п╧п╩п╟п╪п╦ п╦ п╠п╦п╥п╫п╣я│-пЁя─п╟я└п╦п╨п╟п╪п╦"
 
 #: template/./doc/install.sgml:49
 msgid "clip_gzip.tgz"
@@ -181,7 +181,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:50
 msgid "SRC: library for supprt gz files"
-msgstr "SRC: библиотека для поддержки gz-файлов"
+msgstr "SRC: п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╢п╩я▐ п©п╬п╢п╢п╣я─п╤п╨п╦ gz-я└п╟п╧п╩п╬п╡"
 
 #: template/./doc/install.sgml:51
 msgid "clip_bzip2.tgz"
@@ -189,7 +189,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:52
 msgid "SRC: library for supprt bz2 files"
-msgstr "SRC: библиотека для поддержки bz2-файлов"
+msgstr "SRC: п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╢п╩я▐ п©п╬п╢п╢п╣я─п╤п╨п╦ bz2-я└п╟п╧п╩п╬п╡"
 
 #: template/./doc/install.sgml:53
 msgid "clip_com.tgz"
@@ -197,7 +197,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:54
 msgid "SRC: COM_*() functions from Tools"
-msgstr "SRC: COM_*() функции из Tools"
+msgstr "SRC: COM_*() я└я┐п╫п╨я├п╦п╦ п╦п╥ Tools"
 
 #: template/./doc/install.sgml:55
 msgid "clip_crypto.tgz"
@@ -205,7 +205,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:56
 msgid "SRC: Simmetric block ciphers encrypt/decrypt functions"
-msgstr "SRC: Криптографическая библиотека"
+msgstr "SRC: п я─п╦п©я┌п╬пЁя─п╟я└п╦я┤п╣я│п╨п╟я▐ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟"
 
 #: template/./doc/install.sgml:57
 msgid "clip_rtf.tgz"
@@ -214,7 +214,7 @@ msgstr ""
 #: template/./doc/install.sgml:58
 msgid "SRC: Rich text format library by Thomas Marchione"
 msgstr ""
-"SRC: Библиотека Thomas Marchione для работы с Rich text format документами"
+"SRC: п▒п╦п╠п╩п╦п╬я┌п╣п╨п╟ Thomas Marchione п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ Rich text format п╢п╬п╨я┐п╪п╣п╫я┌п╟п╪п╦"
 
 #: template/./doc/install.sgml:59
 msgid "clip_cti.tgz"
@@ -225,8 +225,8 @@ msgid ""
 "SRC: Clip text interface library, base for text FiveWin and FoxPro-like "
 "windows"
 msgstr ""
-"SRC: CLIP text interface библиотека, основа для FiveWin текстового режима и "
-"FoxPro-like окошек."
+"SRC: CLIP text interface п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟, п╬я│п╫п╬п╡п╟ п╢п╩я▐ FiveWin я┌п╣п╨я│я┌п╬п╡п╬пЁп╬ я─п╣п╤п╦п╪п╟ п╦ "
+"FoxPro-like п╬п╨п╬я┬п╣п╨."
 
 #: template/./doc/install.sgml:61
 msgid "clip_udb.tgz"
@@ -235,7 +235,7 @@ msgstr ""
 #: template/./doc/install.sgml:62
 msgid "SRC: Clip universal (object) data base, the object orientired data base"
 msgstr ""
-"SRC: Universal (object) database, объектно-ориентированная база данных."
+"SRC: Universal (object) database, п╬п╠я┼п╣п╨я┌п╫п╬-п╬я─п╦п╣п╫я┌п╦я─п╬п╡п╟п╫п╫п╟я▐ п╠п╟п╥п╟ п╢п╟п╫п╫я▀я┘."
 
 #: template/./doc/install.sgml:63
 msgid "clip_oasis.tgz"
@@ -243,7 +243,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:64
 msgid "SRC: libraries from the-oasis.net"
-msgstr "SRC: библиотеки с сервера the-oasis.net"
+msgstr "SRC: п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ я│ я│п╣я─п╡п╣я─п╟ the-oasis.net"
 
 #: template/./doc/install.sgml:65
 msgid "clip_prg.tgz"
@@ -254,8 +254,8 @@ msgid ""
 "SRC: base utils - debugger, text editor, ... include preprocessor (PP) by "
 "Ron Pinkas, bdbf by Yevgen Bondar, ...."
 msgstr ""
-"SRC: основные утилиты - отладчик, текстовый редактор и другие, включая "
-"препроцессор (PP) от Ron Pinkas, дбушка от Евгения Бондаря. "
+"SRC: п╬я│п╫п╬п╡п╫я▀п╣ я┐я┌п╦п╩п╦я┌я▀ - п╬я┌п╩п╟п╢я┤п╦п╨, я┌п╣п╨я│я┌п╬п╡я▀п╧ я─п╣п╢п╟п╨я┌п╬я─ п╦ п╢я─я┐пЁп╦п╣, п╡п╨п╩я▌я┤п╟я▐ "
+"п©я─п╣п©я─п╬я├п╣я│я│п╬я─ (PP) п╬я┌ Ron Pinkas, п╢п╠я┐я┬п╨п╟ п╬я┌ п∙п╡пЁп╣п╫п╦я▐ п▒п╬п╫п╢п╟я─я▐. "
 
 #: template/./doc/install.sgml:67
 msgid "clip_dbu.tgz"
@@ -264,7 +264,7 @@ msgstr ""
 #: template/./doc/install.sgml:68
 #, fuzzy
 msgid "SRC: CA_DBU &amp; CA_DBU53 adapted for Clip"
-msgstr "SRC: CA_DBU & CA_DBU53 адаптированные для Clip"
+msgstr "SRC: CA_DBU & CA_DBU53 п╟п╢п╟п©я┌п╦я─п╬п╡п╟п╫п╫я▀п╣ п╢п╩я▐ Clip"
 
 #: template/./doc/install.sgml:69
 msgid "clip_fcgi.tgz"
@@ -280,7 +280,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:72
 msgid "SRC: DBU (C) Aleksandr Kresin"
-msgstr "SRC: утилита работы с DBF и индексами (c) Александр Кресин"
+msgstr "SRC: я┐я┌п╦п╩п╦я┌п╟ я─п╟п╠п╬я┌я▀ я│ DBF п╦ п╦п╫п╢п╣п╨я│п╟п╪п╦ (c) п░п╩п╣п╨я│п╟п╫п╢я─ п я─п╣я│п╦п╫"
 
 #: template/./doc/install.sgml:73
 msgid "cygwin_trunc.rar"
@@ -291,9 +291,9 @@ msgid ""
 "BIN: Cygwin developer tools for migration from unix to win32 platforms "
 "(trunc - it`s truncated by ITK distribution)"
 msgstr ""
-"BIN: Сygwin - это комплект средств разработчика, облегчающий перенос "
-"разработок с unix на win32 платформу (trunc означает, что пакет урезан "
-"фирмой ITK до минимально необходимого размера)"
+"BIN: п║ygwin - я█я┌п╬ п╨п╬п╪п©п╩п╣п╨я┌ я│я─п╣п╢я│я┌п╡ я─п╟п╥я─п╟п╠п╬я┌я┤п╦п╨п╟, п╬п╠п╩п╣пЁя┤п╟я▌я┴п╦п╧ п©п╣я─п╣п╫п╬я│ "
+"я─п╟п╥я─п╟п╠п╬я┌п╬п╨ я│ unix п╫п╟ win32 п©п╩п╟я┌я└п╬я─п╪я┐ (trunc п╬п╥п╫п╟я┤п╟п╣я┌, я┤я┌п╬ п©п╟п╨п╣я┌ я┐я─п╣п╥п╟п╫ "
+"я└п╦я─п╪п╬п╧ ITK п╢п╬ п╪п╦п╫п╦п╪п╟п╩я▄п╫п╬ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬пЁп╬ я─п╟п╥п╪п╣я─п╟)"
 
 #: template/./doc/install.sgml:75
 msgid "clip_win32_bin.rar"
@@ -301,7 +301,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:76
 msgid "BIN: Clip and base libraries for Win32+Cygwin"
-msgstr "BIN: Clip и базовые библиотеки для Win32+Cygwin."
+msgstr "BIN: Clip п╦ п╠п╟п╥п╬п╡я▀п╣ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ п╢п╩я▐ Win32+Cygwin."
 
 #: template/./doc/install.sgml:77
 msgid "gtk_std_win32.rar"
@@ -312,8 +312,8 @@ msgid ""
 "BIN: GTK+ standart libraries for Windows, installing after Cygwin and before "
 "Clip"
 msgstr ""
-"BIN: стандартная GTK+ библиотека для Windows, устанавливать после Cygwin и "
-"перед Clip"
+"BIN: я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ GTK+ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╢п╩я▐ Windows, я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟я┌я▄ п©п╬я│п╩п╣ Cygwin п╦ "
+"п©п╣я─п╣п╢ Clip"
 
 #: template/./doc/install.sgml:79
 msgid "gtkextra_std_win32.rar"
@@ -324,8 +324,8 @@ msgid ""
 "BIN: extension for GTK+ libraries for Windows, installing after Cygwin and "
 "GTK+, and before Clip"
 msgstr ""
-"BIN: пакет расширений для GTK+ Win32 библиотек, устанавливается после Cygwin "
-"и GTK+ и перед Clip"
+"BIN: п©п╟п╨п╣я┌ я─п╟я│я┬п╦я─п╣п╫п╦п╧ п╢п╩я▐ GTK+ Win32 п╠п╦п╠п╩п╦п╬я┌п╣п╨, я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п©п╬я│п╩п╣ Cygwin "
+"п╦ GTK+ п╦ п©п╣я─п╣п╢ Clip"
 
 #: template/./doc/install.sgml:81
 msgid "clip_gtk_win32.rar"
@@ -334,8 +334,8 @@ msgstr ""
 #: template/./doc/install.sgml:82
 msgid "BIN: Clip library over GTK+, generated from clip_gtk package"
 msgstr ""
-"BIN: библиотека GUI функций для Clip, базируется на GTK+, сгенерирована из "
-"пакета clip_gtk."
+"BIN: п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ GUI я└я┐п╫п╨я├п╦п╧ п╢п╩я▐ Clip, п╠п╟п╥п╦я─я┐п╣я┌я│я▐ п╫п╟ GTK+, я│пЁп╣п╫п╣я─п╦я─п╬п╡п╟п╫п╟ п╦п╥ "
+"п©п╟п╨п╣я┌п╟ clip_gtk."
 
 #: template/./doc/install.sgml:83
 msgid "clip_gtkextra_win32.rar"
@@ -343,7 +343,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:84
 msgid "BIN: Clip library over GTK+ extra, generated from clip_gtkextra package"
-msgstr "BIN: Библиотека Clip поверх GTKextra, создана из пакета clip_gtkextra"
+msgstr "BIN: п▒п╦п╠п╩п╦п╬я┌п╣п╨п╟ Clip п©п╬п╡п╣я─я┘ GTKextra, я│п╬п╥п╢п╟п╫п╟ п╦п╥ п©п╟п╨п╣я┌п╟ clip_gtkextra"
 
 #: template/./doc/install.sgml:85
 msgid "cygwin_patch.rar"
@@ -351,7 +351,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:86
 msgid "BIN: fixing some problems with Cygwin"
-msgstr "BIN: исправляет некоторые ошибки Cygwin"
+msgstr "BIN: п╦я│п©я─п╟п╡п╩я▐п╣я┌ п╫п╣п╨п╬я┌п╬я─я▀п╣ п╬я┬п╦п╠п╨п╦ Cygwin"
 
 #: template/./doc/install.sgml:87
 msgid "patch.tgz"
@@ -361,8 +361,8 @@ msgstr ""
 #, fuzzy
 msgid "SRC: latest fixes and addons for Clip base packages (dev &amp; doc)"
 msgstr ""
-"SRC: последние изменения и добавления для базовых пакетов Clip (dev & doc) в "
-"одном кумулятивном патче"
+"SRC: п©п╬я│п╩п╣п╢п╫п╦п╣ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╦ п╢п╬п╠п╟п╡п╩п╣п╫п╦я▐ п╢п╩я▐ п╠п╟п╥п╬п╡я▀я┘ п©п╟п╨п╣я┌п╬п╡ Clip (dev & doc) п╡ "
+"п╬п╢п╫п╬п╪ п╨я┐п╪я┐п╩я▐я┌п╦п╡п╫п╬п╪ п©п╟я┌я┤п╣"
 
 #: template/./doc/install.sgml:91
 #, fuzzy
@@ -370,32 +370,32 @@ msgid ""
 "The easiest way to install the whole Clip is getting all-in-one package\n"
 "clip-prg-&lt;version&gt;.tgz unpack it and compile."
 msgstr ""
-"Самый простой вариант установить весь Clip это забрать clip-prg-&lt;"
-"version&gt;.tgz пакет, распаковать его и скомпилировать."
+"п║п╟п╪я▀п╧ п©я─п╬я│я┌п╬п╧ п╡п╟я─п╦п╟п╫я┌ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п╡п╣я│я▄ Clip я█я┌п╬ п╥п╟п╠я─п╟я┌я▄ clip-prg-&lt;"
+"version&gt;.tgz п©п╟п╨п╣я┌, я─п╟я│п©п╟п╨п╬п╡п╟я┌я▄ п╣пЁп╬ п╦ я│п╨п╬п╪п©п╦п╩п╦я─п╬п╡п╟я┌я▄."
 
 #: template/./doc/install.sgml:95
 msgid "To download and unpack:"
-msgstr "Для загрузки и распаковки:"
+msgstr "п■п╩я▐ п╥п╟пЁя─я┐п╥п╨п╦ п╦ я─п╟я│п©п╟п╨п╬п╡п╨п╦:"
 
 #: template/./doc/install.sgml:96
 msgid ""
 "Download file(s) from ITK's ftp server or it mirrors and save it in a safe "
 "place."
 msgstr ""
-"Скачайте файл(ы) с ftp сервера ITK или с одного из зеркал и сохраните их в "
-"удобном месте. "
+"п║п╨п╟я┤п╟п╧я┌п╣ я└п╟п╧п╩(я▀) я│ ftp я│п╣я─п╡п╣я─п╟ ITK п╦п╩п╦ я│ п╬п╢п╫п╬пЁп╬ п╦п╥ п╥п╣я─п╨п╟п╩ п╦ я│п╬я┘я─п╟п╫п╦я┌п╣ п╦я┘ п╡ "
+"я┐п╢п╬п╠п╫п╬п╪ п╪п╣я│я┌п╣. "
 
 #: template/./doc/install.sgml:97
 msgid ""
 "Untar it with the command #tar xzf clip-prg-&lt;version&gt;.tgz Now you have "
 "directory clip-prg-&lt;version&gt;."
 msgstr ""
-"Распакуйте используя команду #tar xzf clip-prg-&lt;version&gt;.tgz Теперь у "
-"вас есть каталог clip-prg-&lt;version&gt;."
+"п═п╟я│п©п╟п╨я┐п╧я┌п╣ п╦я│п©п╬п╩я▄п╥я┐я▐ п╨п╬п╪п╟п╫п╢я┐ #tar xzf clip-prg-&lt;version&gt;.tgz п╒п╣п©п╣я─я▄ я┐ "
+"п╡п╟я│ п╣я│я┌я▄ п╨п╟я┌п╟п╩п╬пЁ clip-prg-&lt;version&gt;."
 
 #: template/./doc/install.sgml:98
 msgid "#cd clip-prg-&lt;version&gt; Now you are in your new directory"
-msgstr "#cd clip-prg-&lt;version&gt; Теперь вы в новом каталоге."
+msgstr "#cd clip-prg-&lt;version&gt; п╒п╣п©п╣я─я▄ п╡я▀ п╡ п╫п╬п╡п╬п╪ п╨п╟я┌п╟п╩п╬пЁп╣."
 
 #: template/./doc/install.sgml:101
 #, fuzzy
@@ -403,8 +403,8 @@ msgid ""
 "You have two choices for the next step: you may install in local or system\n"
 "variant. What is that means?"
 msgstr ""
-"Установку можно произвести двумя способами: испльзуяиспользуя локальный и "
-"общесистемный варианты. Что это значит?"
+"пёя│я┌п╟п╫п╬п╡п╨я┐ п╪п╬п╤п╫п╬ п©я─п╬п╦п╥п╡п╣я│я┌п╦ п╢п╡я┐п╪я▐ я│п©п╬я│п╬п╠п╟п╪п╦: п╦я│п©п╩я▄п╥я┐я▐п╦я│п©п╬п╩я▄п╥я┐я▐ п╩п╬п╨п╟п╩я▄п╫я▀п╧ п╦ "
+"п╬п╠я┴п╣я│п╦я│я┌п╣п╪п╫я▀п╧ п╡п╟я─п╦п╟п╫я┌я▀. п╖я┌п╬ я█я┌п╬ п╥п╫п╟я┤п╦я┌?"
 
 #: template/./doc/install.sgml:105
 msgid ""
@@ -413,11 +413,11 @@ msgid ""
 "cliproot, shared libraries would be with the full path in executable. This "
 "variant is easier and not need to act as root."
 msgstr ""
-"при локальной установке все файлы, относящиеся к Clip'у будут размещены в "
-"вашем домашнем каталоге, в $HOME/bin будут созданы ссылки на исполняемые "
-"файлы, CLIPROOT по умолчанию установлен в ../cliproot, исполняемые файлы "
-"будут собраны с полными путями к разделяемым библиотекам. Этот вариант проще "
-"и не требует действий от рута."
+"п©я─п╦ п╩п╬п╨п╟п╩я▄п╫п╬п╧ я┐я│я┌п╟п╫п╬п╡п╨п╣ п╡я│п╣ я└п╟п╧п╩я▀, п╬я┌п╫п╬я│я▐я┴п╦п╣я│я▐ п╨ Clip'я┐ п╠я┐п╢я┐я┌ я─п╟п╥п╪п╣я┴п╣п╫я▀ п╡ "
+"п╡п╟я┬п╣п╪ п╢п╬п╪п╟я┬п╫п╣п╪ п╨п╟я┌п╟п╩п╬пЁп╣, п╡ $HOME/bin п╠я┐п╢я┐я┌ я│п╬п╥п╢п╟п╫я▀ я│я│я▀п╩п╨п╦ п╫п╟ п╦я│п©п╬п╩п╫я▐п╣п╪я▀п╣ "
+"я└п╟п╧п╩я▀, CLIPROOT п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫ п╡ ../cliproot, п╦я│п©п╬п╩п╫я▐п╣п╪я▀п╣ я└п╟п╧п╩я▀ "
+"п╠я┐п╢я┐я┌ я│п╬п╠я─п╟п╫я▀ я│ п©п╬п╩п╫я▀п╪п╦ п©я┐я┌я▐п╪п╦ п╨ я─п╟п╥п╢п╣п╩я▐п╣п╪я▀п╪ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟п╪. п╜я┌п╬я┌ п╡п╟я─п╦п╟п╫я┌ п©я─п╬я┴п╣ "
+"п╦ п╫п╣ я┌я─п╣п╠я┐п╣я┌ п╢п╣п╧я│я┌п╡п╦п╧ п╬я┌ я─я┐я┌п╟."
 
 #: template/./doc/install.sgml:106
 msgid ""
@@ -426,10 +426,10 @@ msgid ""
 "executable are linked into /usr/lib. This type of installation requires is "
 "action with superuser rights."
 msgstr ""
-"при общесистемной установке в /usr/local/bin создаются ссылки на исполняемые "
-"файлы, CLIPROOT указывает на /usr/local/clip, исполняемые файлы линкуются "
-"без указания путей разделяемым библиотекам, которые располагаются в /usr/"
-"lib. Этот вариант установки требует прав супервизора при установке."
+"п©я─п╦ п╬п╠я┴п╣я│п╦я│я┌п╣п╪п╫п╬п╧ я┐я│я┌п╟п╫п╬п╡п╨п╣ п╡ /usr/local/bin я│п╬п╥п╢п╟я▌я┌я│я▐ я│я│я▀п╩п╨п╦ п╫п╟ п╦я│п©п╬п╩п╫я▐п╣п╪я▀п╣ "
+"я└п╟п╧п╩я▀, CLIPROOT я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ /usr/local/clip, п╦я│п©п╬п╩п╫я▐п╣п╪я▀п╣ я└п╟п╧п╩я▀ п╩п╦п╫п╨я┐я▌я┌я│я▐ "
+"п╠п╣п╥ я┐п╨п╟п╥п╟п╫п╦я▐ п©я┐я┌п╣п╧ я─п╟п╥п╢п╣п╩я▐п╣п╪я▀п╪ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟п╪, п╨п╬я┌п╬я─я▀п╣ я─п╟я│п©п╬п╩п╟пЁп╟я▌я┌я│я▐ п╡ /usr/"
+"lib. п╜я┌п╬я┌ п╡п╟я─п╦п╟п╫я┌ я┐я│я┌п╟п╫п╬п╡п╨п╦ я┌я─п╣п╠я┐п╣я┌ п©я─п╟п╡ я│я┐п©п╣я─п╡п╦п╥п╬я─п╟ п©я─п╦ я┐я│я┌п╟п╫п╬п╡п╨п╣."
 
 #: template/./doc/install.sgml:109
 #, fuzzy
@@ -439,31 +439,31 @@ msgid ""
 "and new versions) if you make a test or working on your system as a single "
 "person."
 msgstr ""
-"Локальный вариант может быть более удобным выбором для вас (особенно "
-"учитывая частые патчи и обновления) если вы просто пробуете продукт или "
-"являетесь единственным пользователем в системе."
+"п⌡п╬п╨п╟п╩я▄п╫я▀п╧ п╡п╟я─п╦п╟п╫я┌ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╠п╬п╩п╣п╣ я┐п╢п╬п╠п╫я▀п╪ п╡я▀п╠п╬я─п╬п╪ п╢п╩я▐ п╡п╟я│ (п╬я│п╬п╠п╣п╫п╫п╬ "
+"я┐я┤п╦я┌я▀п╡п╟я▐ я┤п╟я│я┌я▀п╣ п©п╟я┌я┤п╦ п╦ п╬п╠п╫п╬п╡п╩п╣п╫п╦я▐) п╣я│п╩п╦ п╡я▀ п©я─п╬я│я┌п╬ п©я─п╬п╠я┐п╣я┌п╣ п©я─п╬п╢я┐п╨я┌ п╦п╩п╦ "
+"я▐п╡п╩я▐п╣я┌п╣я│я▄ п╣п╢п╦п╫я│я┌п╡п╣п╫п╫я▀п╪ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╪ п╡ я│п╦я│я┌п╣п╪п╣."
 
 #: template/./doc/install.sgml:114
 msgid "Local installation."
-msgstr "Локальная установка."
+msgstr "п⌡п╬п╨п╟п╩я▄п╫п╟я▐ я┐я│я┌п╟п╫п╬п╡п╨п╟."
 
 #: template/./doc/install.sgml:116
 msgid "Firstly you must set up CLIPROOT environment variable."
-msgstr "Прежде всего вы должны установить переменную окружения CLIPROOT."
+msgstr "п÷я─п╣п╤п╢п╣ п╡я│п╣пЁп╬ п╡я▀ п╢п╬п╩п╤п╫я▀ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╣я─п╣п╪п╣п╫п╫я┐я▌ п╬п╨я─я┐п╤п╣п╫п╦я▐ CLIPROOT."
 
 #: template/./doc/install.sgml:116
 msgid ""
 "Also you must add\n"
 "$CLIPROOT/bin to your path."
-msgstr "Вы так же должны будете добавить $CLIPROOT/bin к переменной PATH."
+msgstr "п▓я▀ я┌п╟п╨ п╤п╣ п╢п╬п╩п╤п╫я▀ п╠я┐п╢п╣я┌п╣ п╢п╬п╠п╟п╡п╦я┌я▄ $CLIPROOT/bin п╨ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ PATH."
 
 #: template/./doc/install.sgml:117
 msgid ""
 "You can do this (if your command interpreter is bash) by\n"
 "adding following lines at the end of your local bash_profile:"
 msgstr ""
-"Это можно сделать (если вы пользуетесь bash) добавив следующие строки в "
-"конец файла $HOME/.bash_profile:"
+"п╜я┌п╬ п╪п╬п╤п╫п╬ я│п╢п╣п╩п╟я┌я▄ (п╣я│п╩п╦ п╡я▀ п©п╬п╩я▄п╥я┐п╣я┌п╣я│я▄ bash) п╢п╬п╠п╟п╡п╦п╡ я│п╩п╣п╢я┐я▌я┴п╦п╣ я│я┌я─п╬п╨п╦ п╡ "
+"п╨п╬п╫п╣я├ я└п╟п╧п╩п╟ $HOME/.bash_profile:"
 
 #: template/./doc/install.sgml:120
 msgid "export CLIP_LANG=en_EN.CP437 #or ru_RU.KOI8-R"
@@ -480,7 +480,7 @@ msgstr ""
 #: template/./doc/install.sgml:124
 msgid "and relogin to make this settings actual."
 msgstr ""
-"и не забудьте перелогиниться для того, чтобы изменения вступили в силу."
+"п╦ п╫п╣ п╥п╟п╠я┐п╢я▄я┌п╣ п©п╣я─п╣п╩п╬пЁп╦п╫п╦я┌я▄я│я▐ п╢п╩я▐ я┌п╬пЁп╬, я┤я┌п╬п╠я▀ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╡я│я┌я┐п©п╦п╩п╦ п╡ я│п╦п╩я┐."
 
 #: template/./doc/install.sgml:126
 #, fuzzy
@@ -493,22 +493,22 @@ msgid ""
 "be\n"
 "soft-linked in your $HOME/bin."
 msgstr ""
-"Можно не устанавливать переменную CLIPROOT. В этом случае CLIPROOT будет "
-"указывать на тот уровень, в котором находится каталог clip-prg-&lt;"
-"version&gt; (make local создаст каталог ../cliproot). Исполняемые файлы "
-"пакета clip_dev будут иметь ссылки в $HOME/bin."
+"п°п╬п╤п╫п╬ п╫п╣ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟я┌я▄ п©п╣я─п╣п╪п╣п╫п╫я┐я▌ CLIPROOT. п▓ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣ CLIPROOT п╠я┐п╢п╣я┌ "
+"я┐п╨п╟п╥я▀п╡п╟я┌я▄ п╫п╟ я┌п╬я┌ я┐я─п╬п╡п╣п╫я▄, п╡ п╨п╬я┌п╬я─п╬п╪ п╫п╟я┘п╬п╢п╦я┌я│я▐ п╨п╟я┌п╟п╩п╬пЁ clip-prg-&lt;"
+"version&gt; (make local я│п╬п╥п╢п╟я│я┌ п╨п╟я┌п╟п╩п╬пЁ ../cliproot). п≤я│п©п╬п╩п╫я▐п╣п╪я▀п╣ я└п╟п╧п╩я▀ "
+"п©п╟п╨п╣я┌п╟ clip_dev п╠я┐п╢я┐я┌ п╦п╪п╣я┌я▄ я│я│я▀п╩п╨п╦ п╡ $HOME/bin."
 
 #: template/./doc/install.sgml:132
 msgid "Some notes:"
-msgstr "Примечания:"
+msgstr "п÷я─п╦п╪п╣я┤п╟п╫п╦я▐:"
 
 #: template/./doc/install.sgml:133
 msgid ""
 "In OS Solaris must be installed \"GNU bin utils\" and path for it must be "
 "in  first: export PATH=/usr/local/bin;..."
 msgstr ""
-"В ОС Solaris должны быть установлены пакеты \"GNU bin utils\", и путь к ним "
-"должен быть прописан раньше чем до родных утилит: export PATH=/usr/local/bin;"
+"п▓ п·п║ Solaris п╢п╬п╩п╤п╫я▀ п╠я▀я┌я▄ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫я▀ п©п╟п╨п╣я┌я▀ \"GNU bin utils\", п╦ п©я┐я┌я▄ п╨ п╫п╦п╪ "
+"п╢п╬п╩п╤п╣п╫ п╠я▀я┌я▄ п©я─п╬п©п╦я│п╟п╫ я─п╟п╫я▄я┬п╣ я┤п╣п╪ п╢п╬ я─п╬п╢п╫я▀я┘ я┐я┌п╦п╩п╦я┌: export PATH=/usr/local/bin;"
 "$PATH"
 
 #: template/./doc/install.sgml:134
@@ -516,12 +516,12 @@ msgid ""
 "If GNU maker in your system have name \"gmake\", add to environment variable "
 "MAKE=gmake"
 msgstr ""
-"Если GNU maker у вашей системе называется \"gmake\", добавьте в окружение "
-"переменную MAKE=gmake."
+"п∙я│п╩п╦ GNU maker я┐ п╡п╟я┬п╣п╧ я│п╦я│я┌п╣п╪п╣ п╫п╟п╥я▀п╡п╟п╣я┌я│я▐ \"gmake\", п╢п╬п╠п╟п╡я▄я┌п╣ п╡ п╬п╨я─я┐п╤п╣п╫п╦п╣ "
+"п©п╣я─п╣п╪п╣п╫п╫я┐я▌ MAKE=gmake."
 
 #: template/./doc/install.sgml:137
 msgid "Now you can go in your clip-prg-&lt;version&gt; and"
-msgstr "Теперь вы можете перейти в clip-prg-&lt;version&gt; и сделать"
+msgstr "п╒п╣п©п╣я─я▄ п╡я▀ п╪п╬п╤п╣я┌п╣ п©п╣я─п╣п╧я┌п╦ п╡ clip-prg-&lt;version&gt; п╦ я│п╢п╣п╩п╟я┌я▄"
 
 #: template/./doc/install.sgml:139
 msgid "#make local"
@@ -530,17 +530,17 @@ msgstr ""
 #: template/./doc/install.sgml:141
 msgid "If your PATH is setted, you can start working with Clip immediately."
 msgstr ""
-"Если переменная PATH дополнена, то можно немедленно приступать к работе с "
+"п∙я│п╩п╦ п©п╣я─п╣п╪п╣п╫п╫п╟я▐ PATH п╢п╬п©п╬п╩п╫п╣п╫п╟, я┌п╬ п╪п╬п╤п╫п╬ п╫п╣п╪п╣п╢п╩п╣п╫п╫п╬ п©я─п╦я│я┌я┐п©п╟я┌я▄ п╨ я─п╟п╠п╬я┌п╣ я│ "
 "Clip."
 
 #: template/./doc/install.sgml:145
 msgid "System-wide installation"
-msgstr "Общесистемная установка"
+msgstr "п·п╠я┴п╣я│п╦я│я┌п╣п╪п╫п╟я▐ я┐я│я┌п╟п╫п╬п╡п╨п╟"
 
 #: template/./doc/install.sgml:147
 msgid "Just go in your clip-prg-&lt;version&gt; and"
 msgstr ""
-"Просто перейдите в ваш clip-prg-&lt;version&gt; каталог и дайте команду"
+"п÷я─п╬я│я┌п╬ п©п╣я─п╣п╧п╢п╦я┌п╣ п╡ п╡п╟я┬ clip-prg-&lt;version&gt; п╨п╟я┌п╟п╩п╬пЁ п╦ п╢п╟п╧я┌п╣ п╨п╬п╪п╟п╫п╢я┐"
 
 #: template/./doc/install.sgml:149
 msgid "#make system"
@@ -549,22 +549,22 @@ msgstr ""
 #: template/./doc/install.sgml:151
 msgid "Remember, that CLIPROOT points to /usr/local/clip by default."
 msgstr ""
-"Помните, что в этом случае по умолчанию CLIPROOT указывает в /usr/local/clip "
+"п÷п╬п╪п╫п╦я┌п╣, я┤я┌п╬ п╡ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ CLIPROOT я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╡ /usr/local/clip "
 
 #: template/./doc/install.sgml:151
 #, fuzzy
 msgid ""
 "Don't forget\n"
 "to set CLIPROOT variable in your .profile"
-msgstr "Не забудьте установить CLIPROOT переменную в вашем .profile файле."
+msgstr "п²п╣ п╥п╟п╠я┐п╢я▄я┌п╣ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ CLIPROOT п©п╣я─п╣п╪п╣п╫п╫я┐я▌ п╡ п╡п╟я┬п╣п╪ .profile я└п╟п╧п╩п╣."
 
 #: template/./doc/install.sgml:154
 msgid "Now you can use your Clip."
-msgstr "Теперь можете использовать Clip."
+msgstr "п╒п╣п©п╣я─я▄ п╪п╬п╤п╣я┌п╣ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ Clip."
 
 #: template/./doc/install.sgml:158
 msgid "Selective installation"
-msgstr "Выборочная установка"
+msgstr "п▓я▀п╠п╬я─п╬я┤п╫п╟я▐ я┐я│я┌п╟п╫п╬п╡п╨п╟"
 
 #: template/./doc/install.sgml:160
 #, fuzzy
@@ -574,10 +574,10 @@ msgid ""
 "standard debugger. For installing this package you need to download it from\n"
 "ftp server and unpack in convenient directory."
 msgstr ""
-"Вы можете захотеть установить только необходимые вам пакеты. В этом случае "
-"вы обязательно должны скачать и установить пакет clip_dev.tgz, содержащий "
-"собственно компилятор, некоторые утилиты и стандартный отладчик. После "
-"скачивания распакуйте его в удобный для вас катклогкаталог."
+"п▓я▀ п╪п╬п╤п╣я┌п╣ п╥п╟я┘п╬я┌п╣я┌я▄ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ я┌п╬п╩я▄п╨п╬ п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ п╡п╟п╪ п©п╟п╨п╣я┌я▀. п▓ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣ "
+"п╡я▀ п╬п╠я▐п╥п╟я┌п╣п╩я▄п╫п╬ п╢п╬п╩п╤п╫я▀ я│п╨п╟я┤п╟я┌я▄ п╦ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╟п╨п╣я┌ clip_dev.tgz, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ "
+"я│п╬п╠я│я┌п╡п╣п╫п╫п╬ п╨п╬п╪п©п╦п╩я▐я┌п╬я─, п╫п╣п╨п╬я┌п╬я─я▀п╣ я┐я┌п╦п╩п╦я┌я▀ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫я▀п╧ п╬я┌п╩п╟п╢я┤п╦п╨. п÷п╬я│п╩п╣ "
+"я│п╨п╟я┤п╦п╡п╟п╫п╦я▐ я─п╟я│п©п╟п╨я┐п╧я┌п╣ п╣пЁп╬ п╡ я┐п╢п╬п╠п╫я▀п╧ п╢п╩я▐ п╡п╟я│ п╨п╟я┌п╨п╩п╬пЁп╨п╟я┌п╟п╩п╬пЁ."
 
 #: template/./doc/install.sgml:165
 #, fuzzy
@@ -586,9 +586,9 @@ msgid ""
 "environment variable (for example: export CLIPROOT=~/cliproot) and start\n"
 "./configure from where you unpack your file."
 msgstr ""
-"Теперь, если вам необходима локальная установка, установите CLIPROOT "
-"переменную (например: export CLIPROOT=~/cliproot) и выполните ./configure в "
-"том каталоге, который образовался при распаковке пакета."
+"п╒п╣п©п╣я─я▄, п╣я│п╩п╦ п╡п╟п╪ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╟ п╩п╬п╨п╟п╩я▄п╫п╟я▐ я┐я│я┌п╟п╫п╬п╡п╨п╟, я┐я│я┌п╟п╫п╬п╡п╦я┌п╣ CLIPROOT "
+"п©п╣я─п╣п╪п╣п╫п╫я┐я▌ (п╫п╟п©я─п╦п╪п╣я─: export CLIPROOT=~/cliproot) п╦ п╡я▀п©п╬п╩п╫п╦я┌п╣ ./configure п╡ "
+"я┌п╬п╪ п╨п╟я┌п╟п╩п╬пЁп╣, п╨п╬я┌п╬я─я▀п╧ п╬п╠я─п╟п╥п╬п╡п╟п╩я│я▐ п©я─п╦ я─п╟я│п©п╟п╨п╬п╡п╨п╣ п©п╟п╨п╣я┌п╟."
 
 #: template/./doc/install.sgml:169
 #, fuzzy
@@ -596,14 +596,14 @@ msgid ""
 "If you want to make system-wide installation start ./configure -r (that key\n"
 "means \"release\"; other keys you can get by ./configure -h)."
 msgstr ""
-"Если вы решили выполнить общесистемную установку, то выполните ./configure -"
-"r (этот ключ означает \"release\"; остальные ключи можно узнать по ./"
+"п∙я│п╩п╦ п╡я▀ я─п╣я┬п╦п╩п╦ п╡я▀п©п╬п╩п╫п╦я┌я▄ п╬п╠я┴п╣я│п╦я│я┌п╣п╪п╫я┐я▌ я┐я│я┌п╟п╫п╬п╡п╨я┐, я┌п╬ п╡я▀п©п╬п╩п╫п╦я┌п╣ ./configure -"
+"r (я█я┌п╬я┌ п╨п╩я▌я┤ п╬п╥п╫п╟я┤п╟п╣я┌ \"release\"; п╬я│я┌п╟п╩я▄п╫я▀п╣ п╨п╩я▌я┤п╦ п╪п╬п╤п╫п╬ я┐п╥п╫п╟я┌я▄ п©п╬ ./"
 "configure -h)."
 
 #: template/./doc/install.sgml:172
 msgid "After this run \"make\" and (with appropriate rights) \"make install\"."
 msgstr ""
-"После чего выполните \"make\" и (с соответствующими правами) \"make install"
+"п÷п╬я│п╩п╣ я┤п╣пЁп╬ п╡я▀п©п╬п╩п╫п╦я┌п╣ \"make\" п╦ (я│ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╦п╪п╦ п©я─п╟п╡п╟п╪п╦) \"make install"
 "\"."
 
 #: template/./doc/install.sgml:174
@@ -613,29 +613,29 @@ msgid ""
 "as\n"
 "described above."
 msgstr ""
-"Для нормальной работы вам по-прежнему необходимо добавить CLIPROOT к вашему "
-"профилю как описано выше."
+"п■п╩я▐ п╫п╬я─п╪п╟п╩я▄п╫п╬п╧ я─п╟п╠п╬я┌я▀ п╡п╟п╪ п©п╬-п©я─п╣п╤п╫п╣п╪я┐ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬ п╢п╬п╠п╟п╡п╦я┌я▄ CLIPROOT п╨ п╡п╟я┬п╣п╪я┐ "
+"п©я─п╬я└п╦п╩я▌ п╨п╟п╨ п╬п©п╦я│п╟п╫п╬ п╡я▀я┬п╣."
 
 #: template/./doc/install.sgml:177
 msgid "Each other clip_* package can be installed by the same way."
 msgstr ""
-"Каждый последующий clip_* пакет, необходимый вам устанавливается тем же "
-"способом."
+"п п╟п╤п╢я▀п╧ п©п╬я│п╩п╣п╢я┐я▌я┴п╦п╧ clip_* п©п╟п╨п╣я┌, п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╧ п╡п╟п╪ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ я┌п╣п╪ п╤п╣ "
+"я│п©п╬я│п╬п╠п╬п╪."
 
 #: template/./doc/install.sgml:181
 msgid "Patching your distribution"
-msgstr "Наложение патчей"
+msgstr "п²п╟п╩п╬п╤п╣п╫п╦п╣ п©п╟я┌я┤п╣п╧"
 
 #: template/./doc/install.sgml:183
 msgid "On ftp server you can find patch.tgz"
-msgstr "На ftp сервере вы можете найти файл patch.tgz"
+msgstr "п²п╟ ftp я│п╣я─п╡п╣я─п╣ п╡я▀ п╪п╬п╤п╣я┌п╣ п╫п╟п╧я┌п╦ я└п╟п╧п╩ patch.tgz"
 
 #: template/./doc/install.sgml:183
 #, fuzzy
 msgid ""
 "That file contains the last cumulative\n"
 "patch for clip_dev package."
-msgstr "Этот файл содержит последний кумулятивный патч для пакета clip_dev."
+msgstr "п╜я┌п╬я┌ я└п╟п╧п╩ я│п╬п╢п╣я─п╤п╦я┌ п©п╬я│п╩п╣п╢п╫п╦п╧ п╨я┐п╪я┐п╩я▐я┌п╦п╡п╫я▀п╧ п©п╟я┌я┤ п╢п╩я▐ п©п╟п╨п╣я┌п╟ clip_dev."
 
 #: template/./doc/install.sgml:184
 #, fuzzy
@@ -644,13 +644,13 @@ msgid ""
 "and remake (by the same way as described in \"Selective installation\" "
 "section)."
 msgstr ""
-"Просто распакуйте его (при этом некоторые файлы перезапишутся) и "
-"пересоберите (так же, как описано выше в разделе \"Выборочная установка\")."
+"п÷я─п╬я│я┌п╬ я─п╟я│п©п╟п╨я┐п╧я┌п╣ п╣пЁп╬ (п©я─п╦ я█я┌п╬п╪ п╫п╣п╨п╬я┌п╬я─я▀п╣ я└п╟п╧п╩я▀ п©п╣я─п╣п╥п╟п©п╦я┬я┐я┌я│я▐) п╦ "
+"п©п╣я─п╣я│п╬п╠п╣я─п╦я┌п╣ (я┌п╟п╨ п╤п╣, п╨п╟п╨ п╬п©п╦я│п╟п╫п╬ п╡я▀я┬п╣ п╡ я─п╟п╥п╢п╣п╩п╣ \"п▓я▀п╠п╬я─п╬я┤п╫п╟я▐ я┐я│я┌п╟п╫п╬п╡п╨п╟\")."
 
 #: template/./doc/install.sgml:187
 msgid "Other libraries and packages some time updating also."
 msgstr ""
-"Остальные библиотеки и пакеты периодически обновляются таким же образом."
+"п·я│я┌п╟п╩я▄п╫я▀п╣ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ п╦ п©п╟п╨п╣я┌я▀ п©п╣я─п╦п╬п╢п╦я┤п╣я│п╨п╦ п╬п╠п╫п╬п╡п╩я▐я▌я┌я│я▐ я┌п╟п╨п╦п╪ п╤п╣ п╬п╠я─п╟п╥п╬п╪."
 
 #: template/./doc/install.sgml:187
 #, fuzzy
@@ -658,11 +658,11 @@ msgid ""
 "Their installation not\n"
 "different from described in \"Selective installation\"."
 msgstr ""
-"Их установка не отличается от описанной в разделе \"Выборочная установка\""
+"п≤я┘ я┐я│я┌п╟п╫п╬п╡п╨п╟ п╫п╣ п╬я┌п╩п╦я┤п╟п╣я┌я│я▐ п╬я┌ п╬п©п╦я│п╟п╫п╫п╬п╧ п╡ я─п╟п╥п╢п╣п╩п╣ \"п▓я▀п╠п╬я─п╬я┤п╫п╟я▐ я┐я│я┌п╟п╫п╬п╡п╨п╟\""
 
 #: template/./doc/install.sgml:192
 msgid "Cygwin installation"
-msgstr "Установка в Cygwin"
+msgstr "пёя│я┌п╟п╫п╬п╡п╨п╟ п╡ Cygwin"
 
 #: template/./doc/install.sgml:194
 #, fuzzy
@@ -670,8 +670,8 @@ msgid ""
 "Firstly you have need to install a Cygwin package. Better way is taking the\n"
 "full version from Cygwin main site (cygwin.com)."
 msgstr ""
-"В первую очередь вы должны установить Cygwin. Проще всего взять полную "
-"версию с официального сайта (cygwin.com)."
+"п▓ п©п╣я─п╡я┐я▌ п╬я┤п╣я─п╣п╢я▄ п╡я▀ п╢п╬п╩п╤п╫я▀ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ Cygwin. п÷я─п╬я┴п╣ п╡я│п╣пЁп╬ п╡п╥я▐я┌я▄ п©п╬п╩п╫я┐я▌ "
+"п╡п╣я─я│п╦я▌ я│ п╬я└п╦я├п╦п╟п╩я▄п╫п╬пЁп╬ я│п╟п╧я┌п╟ (cygwin.com)."
 
 #: template/./doc/install.sgml:195
 #, fuzzy
@@ -680,8 +680,8 @@ msgid ""
 "Alternative way has taken cygwin_trunc.tgz from ITK's ftp site or from the\n"
 "mirrors."
 msgstr ""
-"Но это весьма значительный объем (~200Mb). Хорошей альтернативой будет пакет "
-"cygwin_trunc.rar с ftp сайта ITK или с одного из зеркал."
+"п²п╬ я█я┌п╬ п╡п╣я│я▄п╪п╟ п╥п╫п╟я┤п╦я┌п╣п╩я▄п╫я▀п╧ п╬п╠я┼п╣п╪ (~200Mb). п╔п╬я─п╬я┬п╣п╧ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡п╬п╧ п╠я┐п╢п╣я┌ п©п╟п╨п╣я┌ "
+"cygwin_trunc.rar я│ ftp я│п╟п╧я┌п╟ ITK п╦п╩п╦ я│ п╬п╢п╫п╬пЁп╬ п╦п╥ п╥п╣я─п╨п╟п╩."
 
 #: template/./doc/install.sgml:197
 #, fuzzy
@@ -689,8 +689,8 @@ msgid ""
 "It's truncated version, but this is quite enough for using Clip (even\n"
 "for building Clip from sources)."
 msgstr ""
-"Это урезанная версия, обеспечивающая всю необходимую для работы Clip "
-"функциональность (даже для построения Clip из исходных текстов)."
+"п╜я┌п╬ я┐я─п╣п╥п╟п╫п╫п╟я▐ п╡п╣я─я│п╦я▐, п╬п╠п╣я│п©п╣я┤п╦п╡п╟я▌я┴п╟я▐ п╡я│я▌ п╫п╣п╬п╠я┘п╬п╢п╦п╪я┐я▌ п╢п╩я▐ я─п╟п╠п╬я┌я▀ Clip "
+"я└я┐п╫п╨я├п╦п╬п╫п╟п╩я▄п╫п╬я│я┌я▄ (п╢п╟п╤п╣ п╢п╩я▐ п©п╬я│я┌я─п╬п╣п╫п╦я▐ Clip п╦п╥ п╦я│я┘п╬п╢п╫я▀я┘ я┌п╣п╨я│я┌п╬п╡)."
 
 #: template/./doc/install.sgml:200
 #, fuzzy
@@ -702,11 +702,11 @@ msgid ""
 "work), add c:\\cygwin\\bin in your PATH and add cygwin.reg in your system\n"
 "registry. After rebooting you can use Cygwin."
 msgstr ""
-"Вы должны распаковать cygwin_trunc.rar на C:\\ (корневой каталог диска C), "
-"распаковать cygwin_patch.rar туда же (этот файл содержит последние "
-"исправления, необходимые для корректной работы), добавить c:\\cygwin\\bin к "
-"переменной PATH в файле autoexec.bat и добавить cygwin.reg в ваш системный "
-"реестр. После перезагрузки вы можете использовать Cygwin."
+"п▓я▀ п╢п╬п╩п╤п╫я▀ я─п╟я│п©п╟п╨п╬п╡п╟я┌я▄ cygwin_trunc.rar п╫п╟ C:\\ (п╨п╬я─п╫п╣п╡п╬п╧ п╨п╟я┌п╟п╩п╬пЁ п╢п╦я│п╨п╟ C), "
+"я─п╟я│п©п╟п╨п╬п╡п╟я┌я▄ cygwin_patch.rar я┌я┐п╢п╟ п╤п╣ (я█я┌п╬я┌ я└п╟п╧п╩ я│п╬п╢п╣я─п╤п╦я┌ п©п╬я│п╩п╣п╢п╫п╦п╣ "
+"п╦я│п©я─п╟п╡п╩п╣п╫п╦я▐, п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ п╢п╩я▐ п╨п╬я─я─п╣п╨я┌п╫п╬п╧ я─п╟п╠п╬я┌я▀), п╢п╬п╠п╟п╡п╦я┌я▄ c:\\cygwin\\bin п╨ "
+"п©п╣я─п╣п╪п╣п╫п╫п╬п╧ PATH п╡ я└п╟п╧п╩п╣ autoexec.bat п╦ п╢п╬п╠п╟п╡п╦я┌я▄ cygwin.reg п╡ п╡п╟я┬ я│п╦я│я┌п╣п╪п╫я▀п╧ "
+"я─п╣п╣я│я┌я─. п÷п╬я│п╩п╣ п©п╣я─п╣п╥п╟пЁя─я┐п╥п╨п╦ п╡я▀ п╪п╬п╤п╣я┌п╣ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ Cygwin."
 
 #: template/./doc/install.sgml:205
 #, fuzzy
@@ -714,20 +714,20 @@ msgid ""
 "In addition you may install GTK+ packages (gtk_std_win32.rar and\n"
 "gtkextra_std_win32.rar) if you planing to work with GUI."
 msgstr ""
-"В дополнение вы можете установить GTK+ пакеты gtk_std_win32.rar и \n"
-"gtkextra_std_win32.rar) если вы планируете разрабатывать GUI приложения."
+"п▓ п╢п╬п©п╬п╩п╫п╣п╫п╦п╣ п╡я▀ п╪п╬п╤п╣я┌п╣ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ GTK+ п©п╟п╨п╣я┌я▀ gtk_std_win32.rar п╦ \n"
+"gtkextra_std_win32.rar) п╣я│п╩п╦ п╡я▀ п©п╩п╟п╫п╦я─я┐п╣я┌п╣ я─п╟п╥я─п╟п╠п╟я┌я▀п╡п╟я┌я▄ GUI п©я─п╦п╩п╬п╤п╣п╫п╦я▐."
 
 #: template/./doc/install.sgml:208
 msgid ""
 "More information about working with Cygwin you can find in \"Beginner's guide"
 "\"."
 msgstr ""
-"Больше информации о работе с Cygwin вы найдете в \"Руководстве для начинающих"
+"п▒п╬п╩я▄я┬п╣ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ я─п╟п╠п╬я┌п╣ я│ Cygwin п╡я▀ п╫п╟п╧п╢п╣я┌п╣ п╡ \"п═я┐п╨п╬п╡п╬п╢я│я┌п╡п╣ п╢п╩я▐ п╫п╟я┤п╦п╫п╟я▌я┴п╦я┘"
 "\"."
 
 #: template/./doc/install.sgml:213
 msgid "Clip Cygwin binaries"
-msgstr "Прекомпилированный Clip для Cygwin"
+msgstr "п÷я─п╣п╨п╬п╪п©п╦п╩п╦я─п╬п╡п╟п╫п╫я▀п╧ Clip п╢п╩я▐ Cygwin"
 
 #: template/./doc/install.sgml:215
 #, fuzzy
@@ -737,9 +737,9 @@ msgid ""
 "Needed file named clip_win32_bin.rar and it be precompiled equivalent of\n"
 "current release (clip-prg-&lt;version&gt;.tgz)"
 msgstr ""
-"Для ознакомления с Clip вам достаточно установить бинарный (Win32) вариант "
-"Clip. Необходимый файл -- clip_win32_bin.rar. Это прекомпилированный вариант "
-"clip-prg-&lt;version&gt;.tgz (без более поздних патчей и исправлений)."
+"п■п╩я▐ п╬п╥п╫п╟п╨п╬п╪п╩п╣п╫п╦я▐ я│ Clip п╡п╟п╪ п╢п╬я│я┌п╟я┌п╬я┤п╫п╬ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п╠п╦п╫п╟я─п╫я▀п╧ (Win32) п╡п╟я─п╦п╟п╫я┌ "
+"Clip. п²п╣п╬п╠я┘п╬п╢п╦п╪я▀п╧ я└п╟п╧п╩ -- clip_win32_bin.rar. п╜я┌п╬ п©я─п╣п╨п╬п╪п©п╦п╩п╦я─п╬п╡п╟п╫п╫я▀п╧ п╡п╟я─п╦п╟п╫я┌ "
+"clip-prg-&lt;version&gt;.tgz (п╠п╣п╥ п╠п╬п╩п╣п╣ п©п╬п╥п╢п╫п╦я┘ п©п╟я┌я┤п╣п╧ п╦ п╦я│п©я─п╟п╡п╩п╣п╫п╦п╧)."
 
 #: template/./doc/install.sgml:219
 msgid ""
@@ -747,9 +747,9 @@ msgid ""
 "through\n"
 "c:\\autoexec.bat:"
 msgstr ""
-"Устанавливается он так же как и сам Cygwin (каталог Clip располагается в "
-"каталоге Cygwin). Так же необходимо установить некоторые системные "
-"переменные (например через autoexec.bat):"
+"пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╬п╫ я┌п╟п╨ п╤п╣ п╨п╟п╨ п╦ я│п╟п╪ Cygwin (п╨п╟я┌п╟п╩п╬пЁ Clip я─п╟я│п©п╬п╩п╟пЁп╟п╣я┌я│я▐ п╡ "
+"п╨п╟я┌п╟п╩п╬пЁп╣ Cygwin). п╒п╟п╨ п╤п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п╫п╣п╨п╬я┌п╬я─я▀п╣ я│п╦я│я┌п╣п╪п╫я▀п╣ "
+"п©п╣я─п╣п╪п╣п╫п╫я▀п╣ (п╫п╟п©я─п╦п╪п╣я─ я┤п╣я─п╣п╥ autoexec.bat):"
 
 #: template/./doc/install.sgml:222
 msgid "set CLIPROOT=/clip"
@@ -761,7 +761,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:224
 msgid "#or"
-msgstr "#или"
+msgstr "#п╦п╩п╦"
 
 #: template/./doc/install.sgml:225
 msgid "set CLIP_LANG=ru_RU.CP1251"
@@ -770,8 +770,8 @@ msgstr ""
 #: template/./doc/install.sgml:226
 msgid "If you use truncated CygWin from ftp.itk.ru - add to autoexec.bat:"
 msgstr ""
-"Если вы используете урезанную версию Cygwin с сайта ftp.itk.ru или его "
-"зеркал -- добавьте в autoexec.bat так же"
+"п∙я│п╩п╦ п╡я▀ п╦я│п©п╬п╩я▄п╥я┐п╣я┌п╣ я┐я─п╣п╥п╟п╫п╫я┐я▌ п╡п╣я─я│п╦я▌ Cygwin я│ я│п╟п╧я┌п╟ ftp.itk.ru п╦п╩п╦ п╣пЁп╬ "
+"п╥п╣я─п╨п╟п╩ -- п╢п╬п╠п╟п╡я▄я┌п╣ п╡ autoexec.bat я┌п╟п╨ п╤п╣"
 
 #: template/./doc/install.sgml:227
 msgid "set PATH= c:\\cygwin\\bin;c:\\cygwin\\clip\\bin;"
@@ -779,7 +779,7 @@ msgstr ""
 
 #: template/./doc/install.sgml:233
 msgid "Building Clip for Cygwin from the sources"
-msgstr "Сборка Clip для Cygwin из исходных текстов"
+msgstr "п║п╠п╬я─п╨п╟ Clip п╢п╩я▐ Cygwin п╦п╥ п╦я│я┘п╬п╢п╫я▀я┘ я┌п╣п╨я│я┌п╬п╡"
 
 #: template/./doc/install.sgml:235
 #, fuzzy
@@ -788,14 +788,14 @@ msgid ""
 "sources. Mostly this process will be flows as describe above in local or\n"
 "system-wide installation sections."
 msgstr ""
-"Если вы планируете работать с Clip под Win32 платформой, вы наверняка "
-"захотите собирать его из исходных текстов. Этот процесс практически ни чем "
-"не отличается от описанного выше в разделах о Локальной и Общесистемной "
-"установках."
+"п∙я│п╩п╦ п╡я▀ п©п╩п╟п╫п╦я─я┐п╣я┌п╣ я─п╟п╠п╬я┌п╟я┌я▄ я│ Clip п©п╬п╢ Win32 п©п╩п╟я┌я└п╬я─п╪п╬п╧, п╡я▀ п╫п╟п╡п╣я─п╫я▐п╨п╟ "
+"п╥п╟я┘п╬я┌п╦я┌п╣ я│п╬п╠п╦я─п╟я┌я▄ п╣пЁп╬ п╦п╥ п╦я│я┘п╬п╢п╫я▀я┘ я┌п╣п╨я│я┌п╬п╡. п╜я┌п╬я┌ п©я─п╬я├п╣я│я│ п©я─п╟п╨я┌п╦я┤п╣я│п╨п╦ п╫п╦ я┤п╣п╪ "
+"п╫п╣ п╬я┌п╩п╦я┤п╟п╣я┌я│я▐ п╬я┌ п╬п©п╦я│п╟п╫п╫п╬пЁп╬ п╡я▀я┬п╣ п╡ я─п╟п╥п╢п╣п╩п╟я┘ п╬ п⌡п╬п╨п╟п╩я▄п╫п╬п╧ п╦ п·п╠я┴п╣я│п╦я│я┌п╣п╪п╫п╬п╧ "
+"я┐я│я┌п╟п╫п╬п╡п╨п╟я┘."
 
 #~ msgid ""
 #~ "Be shure that you are operate with gcc 2.9* and not 3.* due to some "
 #~ "troubles"
 #~ msgstr ""
-#~ "Удостоверьтесь, что сборка Clip будет производиться GCC версии 2.9*, а не "
-#~ "3.* в связи с некоторыми проблемами."
+#~ "пёп╢п╬я│я┌п╬п╡п╣я─я▄я┌п╣я│я▄, я┤я┌п╬ я│п╠п╬я─п╨п╟ Clip п╠я┐п╢п╣я┌ п©я─п╬п╦п╥п╡п╬п╢п╦я┌я▄я│я▐ GCC п╡п╣я─я│п╦п╦ 2.9*, п╟ п╫п╣ "
+#~ "3.* п╡ я│п╡я▐п╥п╦ я│ п╫п╣п╨п╬я┌п╬я─я▀п╪п╦ п©я─п╬п╠п╩п╣п╪п╟п╪п╦."

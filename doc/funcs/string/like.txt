@@ -5,25 +5,25 @@ $CATEGORY$
 $SUMMARY$
 	Check confirmity string to simple mask.
 $LANG_RU$
-	Проверка на соответствие строки простой маске.
+	п÷я─п╬п╡п╣я─п╨п╟ п╫п╟ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╦п╣ я│я┌я─п╬п╨п╦ п©я─п╬я│я┌п╬п╧ п╪п╟я│п╨п╣.
 $SYNTAX$
      LIKE(<sMask>, <sString>) 	--> TRUE || FALSE
 $ARGUMENTS$
      <sMask>	String, is the mask.
      <sString>	String, is the source string.
 $LANG_RU$
-     <sMask>	String, маска
-     <sString>	String, исходная строка
+     <sMask>	String, п╪п╟я│п╨п╟
+     <sString>	String, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟
 $RETURNS$
      Returns TRUE if string corresponding to mask.
 $LANG_RU$
-     Возвращает TRUE, если строка соответствует маске.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ я│я┌я─п╬п╨п╟ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐п╣я┌ п╪п╟я│п╨п╣.
 $DESCRIPTION$
      LIKE() returns TRUE if string corresponding to mask.
      The string <sMask> can contents special symbols: <?>, <*>, <.>
 $LANG_RU$
-     LIKE() возвращает TRUE, если строка соответствует маске.
-     Строка <sMask> может содержать специальные символы: <?>, <*>, <.>
+     LIKE() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ я│я┌я─п╬п╨п╟ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐п╣я┌ п╪п╟я│п╨п╣.
+     п║я┌я─п╬п╨п╟ <sMask> п╪п╬п╤п╣я┌ я│п╬п╢п╣я─п╤п╟я┌я▄ я│п©п╣я├п╦п╟п╩я▄п╫я▀п╣ я│п╦п╪п╡п╬п╩я▀: <?>, <*>, <.>
 $EXAMPLES$
 
 ? LIKE("aaa", "aaa") 		// --> TRUE
@@ -35,11 +35,11 @@ $EXAMPLES$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

@@ -3,32 +3,32 @@ $CLASSNAME$
 $SUMMARY$
 	Class XMLTree
 $LANG_RU$
-	Класс XMLTree
+	п п╩п╟я│я│ XMLTree
 $ABOUT$
 	Class of XML DOM tree. This class is used for manipulate XML DOM tree.
 $LANG_RU$
-	Класс дерева XML DOM. Служит для работы с деревом DOM XML.
+	п п╩п╟я│я│ п╢п╣я─п╣п╡п╟ XML DOM. п║п╩я┐п╤п╦я┌ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ п╢п╣я─п╣п╡п╬п╪ DOM XML.
 $SYNTAX$
 	XMLTree(<name>)	--> XMLTag object
 $LANG_RU$
-	XMLTree(<name>)	--> Объект XMLTag
+	XMLTree(<name>)	--> п·п╠я┼п╣п╨я┌ XMLTag
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "XMLTree".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "XMLTree".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "XMLTree".
 
 $METHODNAME$
 	XMLTree()
 $SUMMARY$
 	Constructor. Create object for manipulate XML DOM tree.
 $LANG_RU$
-	Конструктор. Создать объект для работы с деревом DOM XML.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╬п╠я┼п╣п╨я┌ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ п╢п╣я─п╣п╡п╬п╪ DOM XML.
 $SYNTAX$
 	XMLTree(<encoding>)	--> XMLTree object
 $ARGUMENTS$
 	<encoding>		- String. Encoding of dumped XML file.
 $LANG_RU$
-	<encoding>		- Строка. Кодировка выдаваемого файла XML.
+	<encoding>		- п║я┌я─п╬п╨п╟. п п╬п╢п╦я─п╬п╡п╨п╟ п╡я▀п╢п╟п╡п╟п╣п╪п╬пЁп╬ я└п╟п╧п╩п╟ XML.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -36,13 +36,13 @@ $METHODNAME$
 $SUMMARY$
 	Parse XML file.
 $LANG_RU$
-	Обработать файл XML.
+	п·п╠я─п╟п╠п╬я┌п╟я┌я▄ я└п╟п╧п╩ XML.
 $SYNTAX$
 	parseFile(<filename>)
 $ARGUMENTS$
 	<filename>		- String. File name.
 $LANG_RU$
-	<filename>		- Строка. Имя файла.
+	<filename>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ я└п╟п╧п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -50,13 +50,13 @@ $METHODNAME$
 $SUMMARY$
 	Parse XML file contents.
 $LANG_RU$
-	Обработать строку с содержмым файла XML.
+	п·п╠я─п╟п╠п╬я┌п╟я┌я▄ я│я┌я─п╬п╨я┐ я│ я│п╬п╢п╣я─п╤п╪я▀п╪ я└п╟п╧п╩п╟ XML.
 $SYNTAX$
 	parseString(<string>)
 $ARGUMENTS$
 	<string>		- String. XML file contents.
 $LANG_RU$
-	<string>		- Строка. Содержимое файла XML.
+	<string>		- п║я┌я─п╬п╨п╟. п║п╬п╢п╣я─п╤п╦п╪п╬п╣ я└п╟п╧п╩п╟ XML.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -64,13 +64,13 @@ $METHODNAME$
 $SUMMARY$
 	Get DOM root tag.
 $LANG_RU$
-	Получить корневой тег DOM.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╨п╬я─п╫п╣п╡п╬п╧ я┌п╣пЁ DOM.
 $SYNTAX$
 	getRoot()	--> <oRootTag>
 $RETURNS$
 	Root tag (XMLTag object).
 $LANG_RU$
-	Корневой тег (объект XMLTag).
+	п п╬я─п╫п╣п╡п╬п╧ я┌п╣пЁ (п╬п╠я┼п╣п╨я┌ XMLTag).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -78,13 +78,13 @@ $METHODNAME$
 $SUMMARY$
 	Set new root tag.
 $LANG_RU$
-	Установить новый корневой тег.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╫п╬п╡я▀п╧ п╨п╬я─п╫п╣п╡п╬п╧ я┌п╣пЁ.
 $SYNTAX$
 	setRoot(<tag>)
 $ARGUMENTS$
 	<tag>	- XMLTag object. New root tag.
 $LANG_RU$
-	<tag>	- Объект XMLTag. Новый корневой тег.
+	<tag>	- п·п╠я┼п╣п╨я┌ XMLTag. п²п╬п╡я▀п╧ п╨п╬я─п╫п╣п╡п╬п╧ я┌п╣пЁ.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -92,13 +92,13 @@ $METHODNAME$
 $SUMMARY$
 	Get parse error description.
 $LANG_RU$
-	Получить описание ошибки обработки.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦.
 $SYNTAX$
 	getError() --> <cError>
 $RETURNS$
 	Parse error description.
 $LANG_RU$
-	Описание ошибки обработки
+	п·п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦
 $ENDMETHOD$
 
 $METHODNAME$
@@ -106,17 +106,17 @@ $METHODNAME$
 $SUMMARY$
 	Dump DOM to XML format.
 $LANG_RU$
-	Выдать строку в формате XML для текущего DOM.
+	п▓я▀п╢п╟я┌я▄ я│я┌я─п╬п╨я┐ п╡ я└п╬я─п╪п╟я┌п╣ XML п╢п╩я▐ я┌п╣п╨я┐я┴п╣пЁп╬ DOM.
 $SYNTAX$
 	dump([<tag>])	--> <cXML>
 $ARGUMENTS$
 	<tag>	- XMLTag object. Dump only this tag and all its children.
 $LANG_RU$
-	<tag>	- Объект XMLTag. Выдать указанный тег и все его дочерние теги.
+	<tag>	- п·п╠я┼п╣п╨я┌ XMLTag. п▓я▀п╢п╟я┌я▄ я┐п╨п╟п╥п╟п╫п╫я▀п╧ я┌п╣пЁ п╦ п╡я│п╣ п╣пЁп╬ п╢п╬я┤п╣я─п╫п╦п╣ я┌п╣пЁп╦.
 $RETURNS$
 	DOM in XML format.
 $LANG_RU$
-	DOM в формате XML.
+	DOM п╡ я└п╬я─п╪п╟я┌п╣ XML.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -124,19 +124,19 @@ $METHODNAME$
 $SUMMARY$
 	Execute XPath query.
 $LANG_RU$
-	Выполнить запрос XPath.
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ п╥п╟п©я─п╬я│ XPath.
 $SYNTAX$
 	XPath(<path>,[<tag>])	--> <Result>
 $ARGUMENTS$
 	<path>	- String. XPath query.
 	<tag>	- XMLTag object. Context tag insead root.
 $LANG_RU$
-	<path>	- Строка. Запрос XPath.
-	<tag>	- Объект XMLTag. Тег контекста вместо корневого.
+	<path>	- п║я┌я─п╬п╨п╟. п≈п╟п©я─п╬я│ XPath.
+	<tag>	- п·п╠я┼п╣п╨я┌ XMLTag. п╒п╣пЁ п╨п╬п╫я┌п╣п╨я│я┌п╟ п╡п╪п╣я│я┌п╬ п╨п╬я─п╫п╣п╡п╬пЁп╬.
 $RETURNS$
 	XPath query result.
 $LANG_RU$
-	Результат запроса XPath.
+	п═п╣п╥я┐п╩я▄я┌п╟я┌ п╥п╟п©я─п╬я│п╟ XPath.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -147,12 +147,12 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

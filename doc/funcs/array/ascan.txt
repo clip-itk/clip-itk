@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
   Scan an array
 $LANG_RU$
-	Просмотр массива
+	п÷я─п╬я│п╪п╬я┌я─ п╪п╟я│я│п╦п╡п╟
 $SYNTAX$
 	ASCAN(<aArr>, <Expression>, [<nStart>], [<nCount>], [lBack])	--> <nStoppedAt>
 $ARGUMENTS$
@@ -15,24 +15,24 @@ $ARGUMENTS$
 	<nCount>	Numeric, is the number element to scan from the starting position.
 	<lBack>		Logical, if TRUE - scan from end of array (default FALSE)
 $LANG_RU$
-	<aArr>		Array, исходный массив
-	<Expression>	простое значение для поиска или кодовый блок.
-	<nStart>	Numeric, стартовая позиция просмотра.
-	<nCount>	Numeric, количество элементов для просмотра, начиная со стартовой позиции.
-	<lBack>		Logical, если TRUE - просмор массива с конца (по умолчанию FALSE).
+	<aArr>		Array, п╦я│я┘п╬п╢п╫я▀п╧ п╪п╟я│я│п╦п╡
+	<Expression>	п©я─п╬я│я┌п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╩я▐ п©п╬п╦я│п╨п╟ п╦п╩п╦ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨.
+	<nStart>	Numeric, я│я┌п╟я─я┌п╬п╡п╟я▐ п©п╬п╥п╦я├п╦я▐ п©я─п╬я│п╪п╬я┌я─п╟.
+	<nCount>	Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╢п╩я▐ п©я─п╬я│п╪п╬я┌я─п╟, п╫п╟я┤п╦п╫п╟я▐ я│п╬ я│я┌п╟я─я┌п╬п╡п╬п╧ п©п╬п╥п╦я├п╦п╦.
+	<lBack>		Logical, п╣я│п╩п╦ TRUE - п©я─п╬я│п╪п╬я─ п╪п╟я│я│п╦п╡п╟ я│ п╨п╬п╫я├п╟ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ FALSE).
 $RETURNS$
 	Returns a numeric value representing the array position of the last
 	element scanned.
 $LANG_RU$
-	Возвращает числовое значение, соответствующее позиции в массиве последнего
-	просмотренного элемента.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╣п╣ п©п╬п╥п╦я├п╦п╦ п╡ п╪п╟я│я│п╦п╡п╣ п©п╬я│п╩п╣п╢п╫п╣пЁп╬
+	п©я─п╬я│п╪п╬я┌я─п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $DESCRIPTION$
 	ASCAN() scanns an array  <aArr> for a value <Expression> or until a code block <Expression> returns TRUE
 	and uses for comparions operator (=).
 $LANG_RU$
-	ASCAN() просматривает массив <aArr> до совпадения со значением <Expression> или
-	пока кодовый блок <Expression > возвращает TRUE.
-	ASCAN() использует для сравнения оператор (=).
+	ASCAN() п©я─п╬я│п╪п╟я┌я─п╦п╡п╟п╣я┌ п╪п╟я│я│п╦п╡ <aArr> п╢п╬ я│п╬п╡п©п╟п╢п╣п╫п╦я▐ я│п╬ п╥п╫п╟я┤п╣п╫п╦п╣п╪ <Expression> п╦п╩п╦
+	п©п╬п╨п╟ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨ <Expression > п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
+	ASCAN() п╦я│п©п╬п╩я▄п╥я┐п╣я┌ п╢п╩я▐ я│я─п╟п╡п╫п╣п╫п╦я▐ п╬п©п╣я─п╟я┌п╬я─ (=).
 
 $EXAMPLES$
 	arr := {"Ann", "Mary", "Jhon", "Suzi"}
@@ -40,14 +40,14 @@ $EXAMPLES$
 $PECULIARITIES$
 	In CLIP add new parameters <lBack> for scanning array from back.
 $LANG_RU$
-	В CLIP добавлен новый параметр <lBack> для просмотра массива с конца.
+	п▓ CLIP п╢п╬п╠п╟п╡п╩п╣п╫ п╫п╬п╡я▀п╧ п©п╟я─п╟п╪п╣я┌я─ <lBack> п╢п╩я▐ п©я─п╬я│п╪п╬я┌я─п╟ п╪п╟я│я│п╦п╡п╟ я│ п╨п╬п╫я├п╟.
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$

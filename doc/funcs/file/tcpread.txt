@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Read to buffer data from connection.
 $LANG_RU$
-	Прочитать в буфер данные из соединения.
+	п÷я─п╬я┤п╦я┌п╟я┌я▄ п╡ п╠я┐я└п╣я─ п╢п╟п╫п╫я▀п╣ п╦п╥ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐.
 $SYNTAX$
 	TCPREAD(<nConnection>, @<sBuffer>, <nLen>[, <nTimeout>])	--> <nLenBuf>
 $ARGUMENTS$
@@ -14,10 +14,10 @@ $ARGUMENTS$
 	<nLen>		Numeric, is the buffer size.
 	<nTimeout>	NUmeric, is the timeout.
 $LANG_RU$
-	<nConnection>	Numeric, номер соединения.
-	<sBuffer>	String, принимающий буфер.
-	<nLen>		Numeric, размер буфера.
-	<nTimeout>	NUmeric, время ожидания.
+	<nConnection>	Numeric, п╫п╬п╪п╣я─ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐.
+	<sBuffer>	String, п©я─п╦п╫п╦п╪п╟я▌я┴п╦п╧ п╠я┐я└п╣я─.
+	<nLen>		Numeric, я─п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟.
+	<nTimeout>	NUmeric, п╡я─п╣п╪я▐ п╬п╤п╦п╢п╟п╫п╦я▐.
 $RETURNS$
 	Returns numeric value - is the realy number of bytes received, or -1
 	if an error occurred.
@@ -26,9 +26,9 @@ $DESCRIPTION$
 	to buffer <sBuffer>.
 	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
 $LANG_RU$
-	TCPREAD() читает из соединения  <nConnection> данные (не больше <nLen> байт) и записывает их
-	в буфер <sBuffer>.
-	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+	TCPREAD() я┤п╦я┌п╟п╣я┌ п╦п╥ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐  <nConnection> п╢п╟п╫п╫я▀п╣ (п╫п╣ п╠п╬п╩я▄я┬п╣ <nLen> п╠п╟п╧я┌) п╦ п╥п╟п©п╦я│я▀п╡п╟п╣я┌ п╦я┘
+	п╡ п╠я┐я└п╣я─ <sBuffer>.
+	<link linkend="functionFERROR">FERROR()</link> п╦ <link linkend="functionFERRORSTR">FERRORSTR()</link> я┘я─п╟п╫я▐я┌ п╫п╬п╪п╣я─ п╦ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $EXAMPLES$
 
 con := TCPCONNECT("http://www.itk.ru")

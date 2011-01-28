@@ -5,16 +5,16 @@ $CATEGORY$
 $SUMMARY$
    Determine the maximum visible screen column
 $LANG_RU$
-   Определяет максимальный номер колонки, видимой на экране.
+   п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫я▀п╧ п╫п╬п╪п╣я─ п╨п╬п╩п╬п╫п╨п╦, п╡п╦п╢п╦п╪п╬п╧ п╫п╟ я█п╨я─п╟п╫п╣.
 $SYNTAX$
      MAXCOL() --> nColumn
 $LANG_RU$
-     MAXCOL() --> номер колонки
+     MAXCOL() --> п╫п╬п╪п╣я─ п╨п╬п╩п╬п╫п╨п╦
 $RETURNS$
      MAXCOL() returns the column number of the rightmost visible column for
      display purposes.
 $LANG_RU$
-     MAXCOL() возвращает номер самой правой колонки экрана.
+     MAXCOL() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ я│п╟п╪п╬п╧ п©я─п╟п╡п╬п╧ п╨п╬п╩п╬п╫п╨п╦ я█п╨я─п╟п╫п╟.
 $DESCRIPTION$
      MAXCOL() is a screen function that determines the maximum visible column
      of the screen.  Row and column numbers start at zero in xClipper.
@@ -23,9 +23,9 @@ $DESCRIPTION$
      SETMODE() function so your xClipper application returns the correct
      value for MAXCOL().
 $LANG_RU$
-     MAXCOL() является функцией работы с экраном, используемой для
-     определения максимального номера видимой колонки на экране.
-     В xClipper номера строк и колонок начинаются с нуля.
+     MAXCOL() я▐п╡п╩я▐п╣я┌я│я▐ я└я┐п╫п╨я├п╦п╣п╧ я─п╟п╠п╬я┌я▀ я│ я█п╨я─п╟п╫п╬п╪, п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬п╧ п╢п╩я▐
+     п╬п©я─п╣п╢п╣п╩п╣п╫п╦я▐ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬пЁп╬ п╫п╬п╪п╣я─п╟ п╡п╦п╢п╦п╪п╬п╧ п╨п╬п╩п╬п╫п╨п╦ п╫п╟ я█п╨я─п╟п╫п╣.
+     п▓ xClipper п╫п╬п╪п╣я─п╟ я│я┌я─п╬п╨ п╦ п╨п╬п╩п╬п╫п╬п╨ п╫п╟я┤п╦п╫п╟я▌я┌я│я▐ я│ п╫я┐п╩я▐.
 $EXAMPLES$
        This example uses MAXROW() and MAXCOL() to determine the area
 	in which to draw a box, and then executes DBEDIT() within the box
@@ -35,9 +35,9 @@ $EXAMPLES$
 	@ 0, 0 TO MAXROW(), MAXCOL() DOUBLE
 	DBEDIT(1, 1, MAXROW() + 1, MAXCOL() - 1)
 $LANG_RU$
-      Следующий пример демонстрирует использование MAXROW() и MAXCOL()
-       для того, чтобы определить координаты для рисования прямоугольника
-       и задания области для DBEDIT():
+      п║п╩п╣п╢я┐я▌я┴п╦п╧ п©я─п╦п╪п╣я─ п╢п╣п╪п╬п╫я│я┌я─п╦я─я┐п╣я┌ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ MAXROW() п╦ MAXCOL()
+       п╢п╩я▐ я┌п╬пЁп╬, я┤я┌п╬п╠я▀ п╬п©я─п╣п╢п╣п╩п╦я┌я▄ п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╢п╩я▐ я─п╦я│п╬п╡п╟п╫п╦я▐ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╦п╨п╟
+       п╦ п╥п╟п╢п╟п╫п╦я▐ п╬п╠п╩п╟я│я┌п╦ п╢п╩я▐ DBEDIT():
 
        CLS
        @ 0, 0 TO MAXCOL(), MAXROW() DOUBLE

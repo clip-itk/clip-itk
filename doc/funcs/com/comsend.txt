@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Transmits data.
 $LANG_RU$
-	Передача данных.
+	п÷п╣я─п╣п╢п╟я┤п╟ п╢п╟п╫п╫я▀я┘.
 $SYNTAX$
 	COM_SEND(<nComPort>,<cString>) --> nLength
 $ARGUMENTS$
@@ -15,22 +15,22 @@ $ARGUMENTS$
 	second parameter can also be numeric and thereby pass the ASCII
 	character code directly.
 $LANG_RU$
-	<nComPort> - Определяет порт передачи.
-	<cString> - Определяет строку для передачи через порт. Если
-	необходимо передать один символ, второй параметр может быть числовым и
-	задавать ASCII код символа.
+	<nComPort> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ п©п╬я─я┌ п©п╣я─п╣п╢п╟я┤п╦.
+	<cString> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ я│я┌я─п╬п╨я┐ п╢п╩я▐ п©п╣я─п╣п╢п╟я┤п╦ я┤п╣я─п╣п╥ п©п╬я─я┌. п∙я│п╩п╦
+	п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬ п©п╣я─п╣п╢п╟я┌я▄ п╬п╢п╦п╫ я│п╦п╪п╡п╬п╩, п╡я┌п╬я─п╬п╧ п©п╟я─п╟п╪п╣я┌я─ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ я┤п╦я│п╩п╬п╡я▀п╪ п╦
+	п╥п╟п╢п╟п╡п╟я┌я▄ ASCII п╨п╬п╢ я│п╦п╪п╡п╬п╩п╟.
 $RETURNS$
 	When transmission is successful, a 0 is returned. If
 	transmission is not successful, the number of characters that have not
 	been transmitted or could not be placed in the sending buffer is
 	returned.
 $LANG_RU$
-	Если передача была успешной, возвращает 0. Если передача была
-	неполной, возвращает число непереданных символов.
+	п∙я│п╩п╦ п©п╣я─п╣п╢п╟я┤п╟ п╠я▀п╩п╟ я┐я│п©п╣я┬п╫п╬п╧, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ 0. п∙я│п╩п╦ п©п╣я─п╣п╢п╟я┤п╟ п╠я▀п╩п╟
+	п╫п╣п©п╬п╩п╫п╬п╧, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ п╫п╣п©п╣я─п╣п╢п╟п╫п╫я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡.
 $DESCRIPTION$
 	Transmits one or more characters from one of four ports.
 $LANG_RU$
-	Передает один или более символов через выбранный порт.
+	п÷п╣я─п╣п╢п╟п╣я┌ п╬п╢п╦п╫ п╦п╩п╦ п╠п╬п╩п╣п╣ я│п╦п╪п╡п╬п╩п╬п╡ я┤п╣я─п╣п╥ п╡я▀п╠я─п╟п╫п╫я▀п╧ п©п╬я─я┌.
 $EXAMPLES$
 	COM_OPEN(1)    //
 	COM_HARD(.T.)  // Hardware handshake
@@ -46,7 +46,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_FLUSH(),COM_INIT(),COM_OPEN(),COM_READ(),COM_SFLUSH()
 $AUTHOR$

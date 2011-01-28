@@ -5,28 +5,28 @@ $CATEGORY$
 $SUMMARY$
 	Uncompress string with GZIP alghoritm.
 $LANG_RU$
-	Распаковывает строку по GZIP алгоритму.
+	п═п╟я│п©п╟п╨п╬п╡я▀п╡п╟п╣я┌ я│я┌я─п╬п╨я┐ п©п╬ GZIP п╟п╩пЁп╬я─п╦я┌п╪я┐.
 $SYNTAX$
 	gUnZip(<cData>) --> cResult
 $LANG_RU$
 $ARGUMENTS$
 	<cData> - data for uncompress.
 $LANG_RU$
-	<cData> - данные для распаковки.
+	<cData> - п╢п╟п╫п╫я▀п╣ п╢п╩я▐ я─п╟я│п©п╟п╨п╬п╡п╨п╦.
 $RETURNS$
 	gUnZip() returns uncompressed string.
 $LANG_RU$
-	gUnZip() возвращает распакованную строку.
+	gUnZip() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╟я│п©п╟п╨п╬п╡п╟п╫п╫я┐я▌ я│я┌я─п╬п╨я┐.
 $DESCRIPTION$
 	Unompress string, compressed by gZip().
 $LANG_RU$
-	Распаковывает строку, запакованную ранее gZip().
+	п═п╟я│п©п╟п╨п╬п╡я▀п╡п╟п╣я┌ я│я┌я─п╬п╨я┐, п╥п╟п©п╟п╨п╬п╡п╟п╫п╫я┐я▌ я─п╟п╫п╣п╣ gZip().
 $EXAMPLES$
 	cResult := gUnZip(gZip(space(1000)))
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
    gZip()
 $AUTHOR$

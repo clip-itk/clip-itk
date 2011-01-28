@@ -3,36 +3,36 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIMainWindow
 $LANG_RU$
-	Класс UIMainWindow
+	п п╩п╟я│я│ UIMainWindow
 $ABOUT$
 	Class of main application window. It is inherited from class <link linkend="classuiwindow">UIWindow</link>. On main application window close application will be exited.
 $LANG_RU$
-	Класс главного окна приложения. Наследуется от класса <link linkend="classuiwindow">UIWindow</link>. Может изменять размеры и при его закрытии завершается работа программы.
+	п п╩п╟я│я│ пЁп╩п╟п╡п╫п╬пЁп╬ п╬п╨п╫п╟ п©я─п╦п╩п╬п╤п╣п╫п╦я▐. п²п╟я│п╩п╣п╢я┐п╣я┌я│я▐ п╬я┌ п╨п╩п╟я│я│п╟ <link linkend="classuiwindow">UIWindow</link>. п°п╬п╤п╣я┌ п╦п╥п╪п╣п╫я▐я┌я▄ я─п╟п╥п╪п╣я─я▀ п╦ п©я─п╦ п╣пЁп╬ п╥п╟п╨я─я▀я┌п╦п╦ п╥п╟п╡п╣я─я┬п╟п╣я┌я│я▐ я─п╟п╠п╬я┌п╟ п©я─п╬пЁя─п╟п╪п╪я▀.
 $SYNTAX$
 	UIMainWindow([<caption>],[<name>])	--> UIMainWindow object
 $LANG_RU$
-	UIMainWindow([<caption>],[<name>])	--> Объект UIMainWindow
+	UIMainWindow([<caption>],[<name>])	--> п·п╠я┼п╣п╨я┌ UIMainWindow
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIMainWindow".
 	<sysMenus>	- Associated array of system menus.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIMainWindow".
-	<sysMenus>	- Ассоциативный массив системных меню.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIMainWindow".
+	<sysMenus>	- п░я│я│п╬я├п╦п╟я┌п╦п╡п╫я▀п╧ п╪п╟я│я│п╦п╡ я│п╦я│я┌п╣п╪п╫я▀я┘ п╪п╣п╫я▌.
 
 $METHODNAME$
 	UIMainWindow()
 $SUMMARY$
 	Constructor. Create main application window.
 $LANG_RU$
-	Конструктор. Создать главное окно программы.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ пЁп╩п╟п╡п╫п╬п╣ п╬п╨п╫п╬ п©я─п╬пЁя─п╟п╪п╪я▀.
 $SYNTAX$
 	UIMainWindow([<caption>],[<name>])	--> UIMainWindowText object
 $ARGUMENTS$
 	<caption>	- String. Window title.
 	<name>		- String. Window name.
 $LANG_RU$
-	<caption>	- Строка. Заголовок окна.
-	<name>		- Строка. Имя окна для его поиска.
+	<caption>	- п║я┌я─п╬п╨п╟. п≈п╟пЁп╬п╩п╬п╡п╬п╨ п╬п╨п╫п╟.
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╬п╨п╫п╟ п╢п╩я▐ п╣пЁп╬ п©п╬п╦я│п╨п╟.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -41,10 +41,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

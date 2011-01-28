@@ -5,19 +5,19 @@ $CATEGORY$
 $SUMMARY$
 	Flush all buffered data to FCGI server peer.
 $LANG_RU$
-	Сбрасывает все буферизованные данные на FCGI сервер.
+	п║п╠я─п╟я│я▀п╡п╟п╣я┌ п╡я│п╣ п╠я┐я└п╣я─п╦п╥п╬п╡п╟п╫п╫я▀п╣ п╢п╟п╫п╫я▀п╣ п╫п╟ FCGI я│п╣я─п╡п╣я─.
 $SYNTAX$
 	FCGI_FLUSH() --> NIL
 $ARGUMENTS$
 	None.
 $LANG_RU$
-	Нет.
+	п²п╣я┌.
 $RETURNS$
 $LANG_RU$
 $DESCRIPTION$
 	Flush all buffered data to FCGI server peer.
 $LANG_RU$
-	Сбрасывает все буферизованные данные на FCGI сервер.
+	п║п╠я─п╟я│я▀п╡п╟п╣я┌ п╡я│п╣ п╠я┐я└п╣я─п╦п╥п╬п╡п╟п╫п╫я▀п╣ п╢п╟п╫п╫я▀п╣ п╫п╟ FCGI я│п╣я─п╡п╣я─.
 $EXAMPLES$
 $LANG_RU$
 $PECULIARITIES$
@@ -25,7 +25,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
 $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	FCGI_GETENV(),FCGI_READ(),FCGI_ACCEPT()
 $AUTHOR$

@@ -3,26 +3,26 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIStatusBar
 $LANG_RU$
-	Класс UIStatusBar
+	п п╩п╟я│я│ UIStatusBar
 $ABOUT$
 	Class of statusbar.
 $LANG_RU$
-	Класс строки состояния.
+	п п╩п╟я│я│ я│я┌я─п╬п╨п╦ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $SYNTAX$
 	UIStatusBar()	--> UIStatusBar object
 $LANG_RU$
-	UIStatusBar()	--> Объект UIStatusBar
+	UIStatusBar()	--> п·п╠я┼п╣п╨я┌ UIStatusBar
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIStatusBar".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIStatusBar".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIStatusBar".
 
 $METHODNAME$
 	UIStatusBar()
 $SUMMARY$
 	Constructor. Create statusbar.
 $LANG_RU$
-	Конструктор. Создать строку состояния.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я│я┌я─п╬п╨я┐ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $SYNTAX$
 	UIStatusBar()	--> UIStatusBar object
 $ENDMETHOD$
@@ -32,13 +32,13 @@ $METHODNAME$
 $SUMMARY$
 	Change text on statusbar.
 $LANG_RU$
-	Изменить текст в строке состояния.
+	п≤п╥п╪п╣п╫п╦я┌я▄ я┌п╣п╨я│я┌ п╡ я│я┌я─п╬п╨п╣ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $SYNTAX$
 	setText(<text>)
 $ARGUMENTS$
 	<text>		- String. New text on statusbar.
 $LANG_RU$
-	<text>		- Строка. Новый текст в строке состояния.
+	<text>		- п║я┌я─п╬п╨п╟. п²п╬п╡я▀п╧ я┌п╣п╨я│я┌ п╡ я│я┌я─п╬п╨п╣ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -46,13 +46,13 @@ $METHODNAME$
 $SUMMARY$
 	Show/hide statusbar.
 $LANG_RU$
-	Показать/скрыть строку состояния.
+	п÷п╬п╨п╟п╥п╟я┌я▄/я│п╨я─я▀я┌я▄ я│я┌я─п╬п╨я┐ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $SYNTAX$
 	show([<f>])
 $ARGUMENTS$
 	<f>		- Boolean. Flag of statusbar visibility. Default value is true.
 $LANG_RU$
-	<f>		- Логическое значение. Флаг показа строки состояния. Значение по умолчанию: истина.
+	<f>		- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ п©п╬п╨п╟п╥п╟ я│я┌я─п╬п╨п╦ я│п╬я│я┌п╬я▐п╫п╦я▐. п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌: п╦я│я┌п╦п╫п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -60,7 +60,7 @@ $METHODNAME$
 $SUMMARY$
 	Hide statusbar.
 $LANG_RU$
-	Скрыть строку состояния.
+	п║п╨я─я▀я┌я▄ я│я┌я─п╬п╨я┐ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $SYNTAX$
 	hide()
 $ENDMETHOD$
@@ -72,10 +72,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

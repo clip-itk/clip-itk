@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Commit data from buffer to connection.
 $LANG_RU$
-	Передать данные из буфера в соединения.
+	п÷п╣я─п╣п╢п╟я┌я▄ п╢п╟п╫п╫я▀п╣ п╦п╥ п╠я┐я└п╣я─п╟ п╡ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐.
 $SYNTAX$
 	TCPWRITE(<nConnection>, <sBuffer>, <nLen>[, <nTimeout>])	--> <nLenBuf>
 $ARGUMENTS$
@@ -14,10 +14,10 @@ $ARGUMENTS$
 	<nLen>		Numeric, is the buffer size.
 	<nTimeout>	NUmeric, is the timeout.
 $LANG_RU$
-	<nConnection>	Numeric, номер соединения.
-	<sBuffer>	String, буфер данных.
-	<nLen>		Numeric, размер буфера.
-	<nTimeout>	NUmeric, время ожидания.
+	<nConnection>	Numeric, п╫п╬п╪п╣я─ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐.
+	<sBuffer>	String, п╠я┐я└п╣я─ п╢п╟п╫п╫я▀я┘.
+	<nLen>		Numeric, я─п╟п╥п╪п╣я─ п╠я┐я└п╣я─п╟.
+	<nTimeout>	NUmeric, п╡я─п╣п╪я▐ п╬п╤п╦п╢п╟п╫п╦я▐.
 $RETURNS$
 	Returns numeric value - is the realy number of bytes commited, or -1
 	if an error occurred.
@@ -25,8 +25,8 @@ $DESCRIPTION$
 	TCPWRITE() trys write some data <sBuffer> (with length <nLen> bytes)to connection <nConnection>.
 	<link linkend="functionFERROR">FERROR()</link> and <link linkend="functionFERRORSTR">FERRORSTR()</link>kept the error description.
 $LANG_RU$
-	TCPWRITE() пытается передать некоторые данные <sBuffer> (длиной <nLen> байт) в соединение <nConnection> данные (не больше <nLen> байт).
-	<link linkend="functionFERROR">FERROR()</link> и <link linkend="functionFERRORSTR">FERRORSTR()</link> хранят номер и описание ошибки.
+	TCPWRITE() п©я▀я┌п╟п╣я┌я│я▐ п©п╣я─п╣п╢п╟я┌я▄ п╫п╣п╨п╬я┌п╬я─я▀п╣ п╢п╟п╫п╫я▀п╣ <sBuffer> (п╢п╩п╦п╫п╬п╧ <nLen> п╠п╟п╧я┌) п╡ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣ <nConnection> п╢п╟п╫п╫я▀п╣ (п╫п╣ п╠п╬п╩я▄я┬п╣ <nLen> п╠п╟п╧я┌).
+	<link linkend="functionFERROR">FERROR()</link> п╦ <link linkend="functionFERRORSTR">FERRORSTR()</link> я┘я─п╟п╫я▐я┌ п╫п╬п╪п╣я─ п╦ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $EXAMPLES$
 
 local cBuf := space(5), nL, cTxt, nH, nPort

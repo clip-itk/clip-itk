@@ -5,26 +5,26 @@ $CATEGORY$
 $SUMMARY$
 	Load byte-code file or dynamic library.
 $LANG_RU$
-	Загрузка байт-кода или динамической библиотеки.
+	п≈п╟пЁя─я┐п╥п╨п╟ п╠п╟п╧я┌-п╨п╬п╢п╟ п╦п╩п╦ п╢п╦п╫п╟п╪п╦я┤п╣я│п╨п╬п╧ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦.
 $SYNTAX$
      LOAD(<sFileName>) 	--> <CodeBlock>
 $ARGUMENTS$
      <sFileName>	String, is the byte-code file name od dymanic library file name.
 $LANG_RU$
-     <sFileName>	String, имя байт-код файла или имя файла динамической библиотеки.
+     <sFileName>	String, п╦п╪я▐ п╠п╟п╧я┌-п╨п╬п╢ я└п╟п╧п╩п╟ п╦п╩п╦ п╦п╪я▐ я└п╟п╧п╩п╟ п╢п╦п╫п╟п╪п╦я┤п╣я│п╨п╬п╧ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦.
 $RETURNS$
      Returns code block, what was loaded from file.
 $LANG_RU$
-     Возвращает кодовый блок, загруженный из файла.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨, п╥п╟пЁя─я┐п╤п╣п╫п╫я▀п╧ п╦п╥ я└п╟п╧п╩п╟.
 $DESCRIPTION$
      LOAD() reades file <sFileName> and returns code block.
      <sFile> is the byte-code file "filename.po" or dynamic library "filename.so".
      After loading all not static functions are accessible to use.
 $LANG_RU$
-     LOAD() зачитывает файл <sFileName> и возвращает кодовый блок.
-     <sFile> это байт-код файл "filename.po" или динамическая библиотека "filename.so".
-     Все не статик функции, объявленные в файле, становятся доступными для
-     использования.
+     LOAD() п╥п╟я┤п╦я┌я▀п╡п╟п╣я┌ я└п╟п╧п╩ <sFileName> п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨.
+     <sFile> я█я┌п╬ п╠п╟п╧я┌-п╨п╬п╢ я└п╟п╧п╩ "filename.po" п╦п╩п╦ п╢п╦п╫п╟п╪п╦я┤п╣я│п╨п╟я▐ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╟ "filename.so".
+     п▓я│п╣ п╫п╣ я│я┌п╟я┌п╦п╨ я└я┐п╫п╨я├п╦п╦, п╬п╠я┼я▐п╡п╩п╣п╫п╫я▀п╣ п╡ я└п╟п╧п╩п╣, я│я┌п╟п╫п╬п╡я▐я┌я│я▐ п╢п╬я│я┌я┐п©п╫я▀п╪п╦ п╢п╩я▐
+     п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐.
 $EXAMPLES$
 
 /* test.po */
@@ -42,7 +42,7 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 

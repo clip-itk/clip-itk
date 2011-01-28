@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Open bZip2 file.
 $LANG_RU$
-	Открывает bZIP2 файл.
+	п·я┌п╨я─я▀п╡п╟п╣я┌ bZIP2 я└п╟п╧п╩.
 $SYNTAX$
 	bZip2Open(<filename> [,<mode>]) --> nHandle
 $LANG_RU$
@@ -13,12 +13,12 @@ $ARGUMENTS$
 	<filename> - name of file with bZIP2 archive.
 	<mode> - file open mode.
 $LANG_RU$
-	<filename> - имя файла с bZIP2 архивом.
-	<mode> - режим открытия файла.
+	<filename> - п╦п╪я▐ я└п╟п╧п╩п╟ я│ bZIP2 п╟я─я┘п╦п╡п╬п╪.
+	<mode> - я─п╣п╤п╦п╪ п╬я┌п╨я─я▀я┌п╦я▐ я└п╟п╧п╩п╟.
 $RETURNS$
        bZip2Open() returns number of opened file or -1 if error.
 $LANG_RU$
-       bZip2Open() возвращает номер открытого файла или -1 при ошибке.
+       bZip2Open() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ п╬я┌п╨я─я▀я┌п╬пЁп╬ я└п╟п╧п╩п╟ п╦п╩п╦ -1 п©я─п╦ п╬я┬п╦п╠п╨п╣.
 $DESCRIPTION$
 	Open bZIP2 file with name <filename> and mode <mode> , by default
 	for reading.
@@ -26,17 +26,17 @@ $DESCRIPTION$
 	"rb" - binary read (no cr/lf translation)
 	"wbX" - set compression level X in range 0 to 9
 $LANG_RU$
-	Открывает bZIP2 файл с именем <filename> в режиме <mode> , если режим
-	не указан - файл открывается для чтения.
-	Возможные режимы открытия:
-	"rb" - бинарное чтение без трансляции символов cr/lf.
-	"wbX" - открыть для записи с уровнем компресии X от 0 до 9.
+	п·я┌п╨я─я▀п╡п╟п╣я┌ bZIP2 я└п╟п╧п╩ я│ п╦п╪п╣п╫п╣п╪ <filename> п╡ я─п╣п╤п╦п╪п╣ <mode> , п╣я│п╩п╦ я─п╣п╤п╦п╪
+	п╫п╣ я┐п╨п╟п╥п╟п╫ - я└п╟п╧п╩ п╬я┌п╨я─я▀п╡п╟п╣я┌я│я▐ п╢п╩я▐ я┤я┌п╣п╫п╦я▐.
+	п▓п╬п╥п╪п╬п╤п╫я▀п╣ я─п╣п╤п╦п╪я▀ п╬я┌п╨я─я▀я┌п╦я▐:
+	"rb" - п╠п╦п╫п╟я─п╫п╬п╣ я┤я┌п╣п╫п╦п╣ п╠п╣п╥ я┌я─п╟п╫я│п╩я▐я├п╦п╦ я│п╦п╪п╡п╬п╩п╬п╡ cr/lf.
+	"wbX" - п╬я┌п╨я─я▀я┌я▄ п╢п╩я▐ п╥п╟п©п╦я│п╦ я│ я┐я─п╬п╡п╫п╣п╪ п╨п╬п╪п©я─п╣я│п╦п╦ X п╬я┌ 0 п╢п╬ 9.
 $EXAMPLES$
 	h := bZip2Open("a.gz","rb")
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	bZip2Read(),bZip2Write(),bZip2Close()
 $AUTHOR$

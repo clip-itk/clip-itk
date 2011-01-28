@@ -5,19 +5,19 @@ $CATEGORY$
 $SUMMARY$
 	Compile string.
 $LANG_RU$
-	Компиляция строки.
+	п п╬п╪п©п╦п╩я▐я├п╦я▐ я│я┌я─п╬п╨п╦.
 $SYNTAX$
      COMPILESTRING(<sString>, <@sError>) 	--> <CodeBlock>
 $ARGUMENTS$
      <sString>	String, is the source string
      <sError>	String, is the error description
 $LANG_RU$
-     <sString>	String, исходная строка
-     <sError>	String, описание ошибки
+     <sString>	String, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟
+     <sError>	String, п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦
 $RETURNS$
      Returns the code block, what was compilled from a source string.
 $LANG_RU$
-     Возвращает блок кода, что был скомпилирован из исходной строки.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╠п╩п╬п╨ п╨п╬п╢п╟, я┤я┌п╬ п╠я▀п╩ я│п╨п╬п╪п©п╦п╩п╦я─п╬п╡п╟п╫ п╦п╥ п╦я│я┘п╬п╢п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $DESCRIPTION$
 
      COMPILESTRING() compiles string <sString> to code block and returns it.
@@ -28,13 +28,13 @@ $DESCRIPTION$
      parameters descriptions (if it need) without functions/procedures declaration. See examples.
 $LANG_RU$
 
-     COMPILESTRING() компилирует строку <sString>  и возвращает полученный
-     кодовый блок. <sError> содержит описание ошибки, если таковая возникла в процессе
-     компиляции.
+     COMPILESTRING() п╨п╬п╪п©п╦п╩п╦я─я┐п╣я┌ я│я┌я─п╬п╨я┐ <sString>  п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╩я┐я┤п╣п╫п╫я▀п╧
+     п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨. <sError> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п╡п╬п╥п╫п╦п╨п╩п╟ п╡ п©я─п╬я├п╣я│я│п╣
+     п╨п╬п╪п©п╦п╩я▐я├п╦п╦.
 
-     Исходная строка может содержать любые CLIP конструкции, команды, за исключением
-     описания нестатических функций. <sString> должна начинаться с описания параметров
-     (если они есть) без описания названий функции или процедуры. См пример.
+     п≤я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟ п╪п╬п╤п╣я┌ я│п╬п╢п╣я─п╤п╟я┌я▄ п╩я▌п╠я▀п╣ CLIP п╨п╬п╫я│я┌я─я┐п╨я├п╦п╦, п╨п╬п╪п╟п╫п╢я▀, п╥п╟ п╦я│п╨п╩я▌я┤п╣п╫п╦п╣п╪
+     п╬п©п╦я│п╟п╫п╦я▐ п╫п╣я│я┌п╟я┌п╦я┤п╣я│п╨п╦я┘ я└я┐п╫п╨я├п╦п╧. <sString> п╢п╬п╩п╤п╫п╟ п╫п╟я┤п╦п╫п╟я┌я▄я│я▐ я│ п╬п©п╦я│п╟п╫п╦я▐ п©п╟я─п╟п╪п╣я┌я─п╬п╡
+     (п╣я│п╩п╦ п╬п╫п╦ п╣я│я┌я▄) п╠п╣п╥ п╬п©п╦я│п╟п╫п╦я▐ п╫п╟п╥п╡п╟п╫п╦п╧ я└я┐п╫п╨я├п╦п╦ п╦п╩п╦ п©я─п╬я├п╣п╢я┐я─я▀. п║п╪ п©я─п╦п╪п╣я─.
 $EXAMPLES$
 /* source string */
 str:="
@@ -60,7 +60,7 @@ $SEEALSO$
 $AUTHOR$
 ITK
 $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -71,7 +71,7 @@ $CATEGORY$
 $SUMMARY$
 	Compile file.
 $LANG_RU$
-	Компиляция файла.
+	п п╬п╪п©п╦п╩я▐я├п╦я▐ я└п╟п╧п╩п╟.
 $SYNTAX$
      COMPILEFILE(<sFileName>, <sFlags>, <@sError>) 	--> TRUE || FALSE
 $ARGUMENTS$
@@ -79,13 +79,13 @@ $ARGUMENTS$
      <sFlags>		String, is the compiller flags (by default "-p").
      <sError>		String, is the error description
 $LANG_RU$
-     <sFileName>	String, имя файла для компиляции.
-     <sFlags>		String, флаги компиляции (по умолчанию "-p")
-     <sError>		String, описание ошибки
+     <sFileName>	String, п╦п╪я▐ я└п╟п╧п╩п╟ п╢п╩я▐ п╨п╬п╪п©п╦п╩я▐я├п╦п╦.
+     <sFlags>		String, я└п╩п╟пЁп╦ п╨п╬п╪п©п╦п╩я▐я├п╦п╦ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ "-p")
+     <sError>		String, п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦
 $RETURNS$
      Returns TRUE if file compilled without errors.
 $LANG_RU$
-     Возвращает TRUE, если файл скомпилировался без ошибок.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ я└п╟п╧п╩ я│п╨п╬п╪п©п╦п╩п╦я─п╬п╡п╟п╩я│я▐ п╠п╣п╥ п╬я┬п╦п╠п╬п╨.
 $DESCRIPTION$
 
      COMPILEFILE() compiles file <sFileName> with flags <sFlags> and returns
@@ -93,9 +93,9 @@ $DESCRIPTION$
 
 $LANG_RU$
 
-     COMPILEFILE() компилирует файл <sFileName> с флагами <sFlags> и возвращает
-     TRUE в случае успеха, иначе возвращает FALSE и <sError> содержит описание
-     ошибки.
+     COMPILEFILE() п╨п╬п╪п©п╦п╩п╦я─я┐п╣я┌ я└п╟п╧п╩ <sFileName> я│ я└п╩п╟пЁп╟п╪п╦ <sFlags> п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+     TRUE п╡ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟, п╦п╫п╟я┤п╣ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE п╦ <sError> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣
+     п╬я┬п╦п╠п╨п╦.
 $EXAMPLES$
 
 sFileName := FILEDIALOG("*.prg")
@@ -112,7 +112,7 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -125,17 +125,17 @@ $CATEGORY$
 $SUMMARY$
 	Load byte-code file.
 $LANG_RU$
-	Загрузка байт-кода.
+	п≈п╟пЁя─я┐п╥п╨п╟ п╠п╟п╧я┌-п╨п╬п╢п╟.
 $SYNTAX$
      LOADBLOCK(<sFileName>) 	--> <CodeBlock>
 $ARGUMENTS$
      <sFileName>	String, is the byte-code file name.
 $LANG_RU$
-     <sFileName>	String, имя байт-код файла.
+     <sFileName>	String, п╦п╪я▐ п╠п╟п╧я┌-п╨п╬п╢ я└п╟п╧п╩п╟.
 $RETURNS$
      Returns code block, what was loaded from byte-code file.
 $LANG_RU$
-     Возвращает кодовый блок, загруженный из байт-код файла.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨, п╥п╟пЁя─я┐п╤п╣п╫п╫я▀п╧ п╦п╥ п╠п╟п╧я┌-п╨п╬п╢ я└п╟п╧п╩п╟.
 $DESCRIPTION$
 
      LOADBLOCK() loades byte-code file <sFileName> and returns code block.
@@ -147,13 +147,13 @@ $DESCRIPTION$
      for string from function <link linkend="functionCOMPILESTRING">COMPILESTRING()</link>.
 $LANG_RU$
 
-     LOADBLOCK() загружает байт-код файл <sFileName> и возвращает кодовый блок.
-     Байт-код файл может быть создан:
+     LOADBLOCK() п╥п╟пЁя─я┐п╤п╟п╣я┌ п╠п╟п╧я┌-п╨п╬п╢ я└п╟п╧п╩ <sFileName> п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨.
+     п▒п╟п╧я┌-п╨п╬п╢ я└п╟п╧п╩ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ я│п╬п╥п╢п╟п╫:
 
      clip -p filename.prg
 
-     Правила и структура файла filename.prg должны соответствовать правилам для
-     строки из функции <link linkend="functionCOMPILESTRING">COMPILESTRING()</link>.
+     п÷я─п╟п╡п╦п╩п╟ п╦ я│я┌я─я┐п╨я┌я┐я─п╟ я└п╟п╧п╩п╟ filename.prg п╢п╬п╩п╤п╫я▀ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╬п╡п╟я┌я▄ п©я─п╟п╡п╦п╩п╟п╪ п╢п╩я▐
+     я│я┌я─п╬п╨п╦ п╦п╥ я└я┐п╫п╨я├п╦п╦ <link linkend="functionCOMPILESTRING">COMPILESTRING()</link>.
 $EXAMPLES$
 
 block := LOADBLOCK("test.po")
@@ -165,7 +165,7 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
