@@ -188,7 +188,7 @@ echo "DLLSUFF='$DLLSUFF'" >&3
 echo "DLLREALSUFF='$DLLREALSUFF'" >&3
 echo 'INCLUDEDIRS=-I. -I$(CLIPROOT)/include -I'$gtkprefix'/include -I'$gtkextraprefix'/include' >&3
 echo "XTARGETS='"'$(XLIB) $(XSLIB)'"'" >&3
-echo "C_FLAGS=-Wall '"'$(INCLUDEDIRS)'"' '$EXTRACFLAGS'" >&3
+echo "C_FLAGS=-Wall -Wextra '"'$(INCLUDEDIRS)'"' '$EXTRACFLAGS'" >&3
 echo "LIBS='$LIBS'" >&3
 
 if [ "$USE_GTK" = yes ]

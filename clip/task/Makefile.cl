@@ -3,7 +3,7 @@ OBJS = ../coll.o ../list.o ../hash.o
 LIBOBJS = cl_task.o
 LIB = task.a
 PROGS = cl_tst
-CFLAGS = -O -g -Wall -fPIC 
+CFLAGS = -O -g -Wall -Wextra -fPIC
 LINKS = coll.h coll.c list.h list.c hash.h hash.c
 
 all: $(LIB)

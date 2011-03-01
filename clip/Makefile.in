@@ -4,7 +4,7 @@
 
 #export CC
 #DBGFLAGS	= -g #-DMEMDBG
-#WARNFLAGS	= -Wimplicit -Wall
+#WARNFLAGS	= -Wimplicit -Wall -Wextra
 
 CLIPFLAGS	= -g -v2 -N#-O
 CLIP	= ./clip

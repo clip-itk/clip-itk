@@ -5,7 +5,7 @@ endif
 include $(CLIPROOT)/include/Makefile.inc
 
 CLIPINCLUDE=-I$(CLIPROOT)/include -I./gd
-C_FLAGS=-fPIC -Wall -g -I.
+C_FLAGS=-fPIC -Wall -Wextra -g -I.
 CC=gcc
 
 XLIB=libclip-gd.a

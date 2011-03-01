@@ -44,16 +44,16 @@ LIBS =
 
 
 ifeq "${RELEASE}" "DEBUG"
-C_FLAG = -c -Wall -fPIC -D$(PLATFORM) $(INCDIR)
+C_FLAG = -c -Wall -Wextra -fPIC -D$(PLATFORM) $(INCDIR)
 C_DEFS = -DDEBUG -DBETA
 LFLAGS = $(LIBDIR)
 else 
 ifeq "${RELEASE}" "BETA"
-C_FLAG = -c -Wall -fPIC -O2 -D$(PLATFORM) $(INCDIR)
+C_FLAG = -c -Wall -Wextra -fPIC -O2 -D$(PLATFORM) $(INCDIR)
 C_DEFS = -DBETA
 LFLAGS = $(LIBDIR)
 else
-C_FLAG = -c -Wall  -fPIC -O2 -D$(PLATFORM) $(INCDIR)
+C_FLAG = -c -Wall -Wextra -fPIC -O2 -D$(PLATFORM) $(INCDIR)
 C_DEFS = -DFINAL
 LFLAGS = -s $(LIBDIR)
 endif
@@ -156,9 +156,9 @@ api-ref:	doc++.conf manual.dxx ezV24.h
 # installed!
 
 test-v24:	test-v24.c ezV24.h
-		gcc -o test-v24 -Wall test-v24.c -l$(SOBASE)
+		gcc -o test-v24 -Wall -Wextra test-v24.c -l$(SOBASE)
 #		# to use the static library call:
-#		# gcc -o test-v24 -Wall test-v24.c -L./ $(LIBNAME)
+#		# gcc -o test-v24 -Wall -Wextra test-v24.c -L./ $(LIBNAME)
 
 
 # --------------------------------------------------------------------------

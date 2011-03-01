@@ -2,7 +2,7 @@
 CLIP	= $(CLIPROOT)/bin/clip
 CLIPFLAGS = -g -w -l -I .. $(INCLUDEDIRS)
 CC = gcc
-CFLAGS = -Wall -g -I. -I$(CLIPROOT)/include
+CFLAGS = -Wall -Wextra -g -I. -I$(CLIPROOT)/include
 
 CLIPLIBS  =
 FWLIB = libclip-fw.a

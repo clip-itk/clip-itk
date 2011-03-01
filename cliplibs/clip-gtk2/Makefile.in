@@ -3,7 +3,7 @@
 #
 
 #DBGFLAGS	= -g #-DMEMDBG
-#WARNFLAGS	= -Wimplicit -Wall
+#WARNFLAGS	= -Wimplicit -Wall -Wextra
 
 ifdef CLIPROOT
 	CLIP = $(CLIPROOT)/bin/clip

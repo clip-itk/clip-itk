@@ -1,5 +1,5 @@
 CC= gcc
-CFLAGS = -O -g -Wall -fPIC
+CFLAGS = -O -g -Wall -Wextra -fPIC
 OBJS = ../coll.o ../list.o ../hash.o
 PTH_LIBS= -lpth
 PTH_TEST= pth_tst

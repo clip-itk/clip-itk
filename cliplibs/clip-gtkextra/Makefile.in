@@ -4,7 +4,7 @@
 
 #export CC
 #DBGFLAGS	= -g #-DMEMDBG
-#WARNFLAGS	= -Wimplicit -Wall
+#WARNFLAGS	= -Wimplicit -Wall -Wextra
 
 .SUFFIXES: .prg .c .po
 .PHONY:	tests screen hash
