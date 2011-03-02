@@ -25,8 +25,7 @@ function make_debug_viewali_window(dbg_obj,ntop,nleft,nbottom,nright,nwin)
 	obj:blob	:= __blob_names
 	obj:menuItems	:= {}
 	obj:menuPos	:= 1
-	obj:cardActive	:= .f.	// или по списку alias или по
-				// информации
+	obj:cardActive	:= .f.	// by alias list or by information
 	obj:name	:= [View work selects]
 	obj:top		:= ntop
 	obj:left	:= nleft
@@ -260,9 +259,9 @@ static function window_redraw()
 	@ -1, ::right-5 say "["+alltrim(str(::headWin))+"]"
 
 	::browse:configure()
-	@ 1, ::cardPos say replicate("─", ::right )
+	@ 1, ::cardPos say replicate("─", ::right ) // utf-8: "Б■─"
 	for i=0 to ::bottom
-		@ i, ::cardPos say "█"
+		@ i, ::cardPos say "█" // utf-8: "Б√┬"
 	next
 	::redrawMenu()
 	if !::focus

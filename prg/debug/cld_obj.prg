@@ -15,54 +15,54 @@
 ************************************************
 static com_names:={;
     {"rem","#", "*", "//" } ;
-   ,{"I","õ","INPUT", "õðòá÷ìåîéå" } ;
-   ,{"M","í","MONITOR","íïîéôïò"} ;
+   ,{"I","Ð£","INPUT", "Ð£ÐŸÐ ÐÐ’Ð›Ð•ÐÐ˜Ð•" } ;
+   ,{"M","Ðœ","MONITOR","ÐœÐžÐÐ˜Ð¢ÐžÐ "} ;
    ,{ "?","??" } ;
-   ,{"A","á","ANIMATE","áîéíáãéñ" } ;
-   ,{"B","BP","ôï","BREAKPOINT" } ;
-   ,{"C","÷ùúï÷","CALLSTACK" } ;
-   ,{"D","ä","õäáìéôø","DELETE" } ;
+   ,{"A","Ð","ANIMATE","ÐÐÐ˜ÐœÐÐ¦Ð˜Ð¯" } ;
+   ,{"B","BP","Ð¢Ðž","BREAKPOINT" } ;
+   ,{"C","Ð’Ð«Ð—ÐžÐ’","CALLSTACK" } ;
+   ,{"D","Ð”","Ð£Ð”ÐÐ›Ð˜Ð¢Ð¬","DELETE" } ;
    ,{"DOS","OS" } ;
    ,{"RUN" } ;
-   ,{"F","FIND","ðïéóë" } ;
-   ,{"GO","ðõóë" } ;
-   ,{"G","GOTO","ðåòåèïä" } ;
-   ,{"H","HELP","ðïíïýø" } ;
-   ,{"L","LIST","óðéóïë" } ;
-   ,{"N","NEXT","óìåäõàýåå" } ;
-   ,{"NUM","îõíåòáãéñ" } ;
-   ,{"O","OUTPUT","üëòáî" } ;
-   ,{"P","PREV","ðòåäùäõýåå" } ;
-   ,{"Q","QUIT","ëïîåã" } ;
-   ,{"R","RESTART","òåóôáòô" } ;
-   ,{"RESUME","éóèïäîïå" } ;
-   ,{"SPEED","óëïòïóôø" } ;
-   ,{"S","STEP","ûáç" } ;
-   ,{"T","TP","ôô","TRACEPOINT" } ;
-   ,{"V","VIEW","úáçòõúéôø" } ;
-   ,{"W","WP","ôú","VIEWPOINT" } ;
+   ,{"F","FIND","ÐŸÐžÐ˜Ð¡Ðš" } ;
+   ,{"GO","ÐŸÐ£Ð¡Ðš" } ;
+   ,{"G","GOTO","ÐŸÐ•Ð Ð•Ð¥ÐžÐ”" } ;
+   ,{"H","HELP","ÐŸÐžÐœÐžÐ©Ð¬" } ;
+   ,{"L","LIST","Ð¡ÐŸÐ˜Ð¡ÐžÐš" } ;
+   ,{"N","NEXT","Ð¡Ð›Ð•Ð”Ð£Ð®Ð©Ð•Ð•" } ;
+   ,{"NUM","ÐÐ£ÐœÐ•Ð ÐÐ¦Ð˜Ð¯" } ;
+   ,{"O","OUTPUT","Ð­ÐšÐ ÐÐ" } ;
+   ,{"P","PREV","ÐŸÐ Ð•Ð”Ð«Ð”Ð£Ð©Ð•Ð•" } ;
+   ,{"Q","QUIT","ÐšÐžÐÐ•Ð¦" } ;
+   ,{"R","RESTART","Ð Ð•Ð¡Ð¢ÐÐ Ð¢" } ;
+   ,{"RESUME","Ð˜Ð¡Ð¥ÐžÐ”ÐÐžÐ•" } ;
+   ,{"SPEED","Ð¡ÐšÐžÐ ÐžÐ¡Ð¢Ð¬" } ;
+   ,{"S","STEP","Ð¨ÐÐ“" } ;
+   ,{"T","TP","Ð¢Ð¢","TRACEPOINT" } ;
+   ,{"V","VIEW","Ð—ÐÐ“Ð Ð£Ð—Ð˜Ð¢Ð¬" } ;
+   ,{"W","WP","Ð¢Ð—","VIEWPOINT" } ;
    ,{"CONNECT","CO" } ;
    ,{"!","!!" } ;
-   ,{"TABSIZE","TS","ôáâ" } ;
-   ,{"PATH","PATH","ðõôø" } ;
-   ,{"CBTRACE","CB","âìïë" } ;
-   ,{"PPVIEW","PP","ðð" } ;
-   ,{"SAVE","óïèòáîéôø" } ;
-   ,{"VIEWALIASES","VA","òï"} ;
+   ,{"TABSIZE","TS","Ð¢ÐÐ‘" } ;
+   ,{"PATH","PATH","ÐŸÐ£Ð¢Ð¬" } ;
+   ,{"CBTRACE","CB","Ð‘Ð›ÐžÐš" } ;
+   ,{"PPVIEW","PP","ÐŸÐŸ" } ;
+   ,{"SAVE","Ð¡ÐžÐ¥Ð ÐÐÐ˜Ð¢Ð¬" } ;
+   ,{"VIEWALIASES","VA","Ð Ðž"} ;
    }
 
 static mon_names:={ ;
-    {"PU","PUBLIC","ðõ","ðõâìéó"};
-   ,{"PR","PRIVATE","ðò","ðòé÷üêô"};
-   ,{"ST","STATIC","óô","óôáôéë"};
-   ,{"LO","LOCAL","ìï","ìïëáì"};
-   ,{"FI","FIELD","æé","æéìä"};
+    {"PU","PUBLIC","ÐŸÐ£","ÐŸÐ£Ð‘Ð›Ð˜Ð¡"};
+   ,{"PR","PRIVATE","ÐŸÐ ","ÐŸÐ Ð˜Ð’Ð­Ð™Ð¢"};
+   ,{"ST","STATIC","Ð¡Ð¢","Ð¡Ð¢ÐÐ¢Ð˜Ðš"};
+   ,{"LO","LOCAL","Ð›Ðž","Ð›ÐžÐšÐÐ›"};
+   ,{"FI","FIELD","Ð¤Ð˜","Ð¤Ð˜Ð›Ð”"};
    }
 
 static point_names:={ ;
-    {"B","BP","ôï","BREAKPOINT" } ;
-   ,{"T","TP","ôô","TRACEPOINT" } ;
-   ,{"W","WP","ôú","VIEWPOINT" } ;
+    {"B","BP","Ð¢Ðž","BREAKPOINT" } ;
+   ,{"T","TP","Ð¢Ð¢","TRACEPOINT" } ;
+   ,{"W","WP","Ð¢Ð—","VIEWPOINT" } ;
    }
 
 
@@ -439,7 +439,7 @@ function dbg_viewvar(vname,level,p,flag)
 			memoedit(p)
 		case t=="A"
 			for i=1 to len(p)
-				aadd(m,str(i,4,0)+""+::viewVar(vname,level,p[i],.f.))
+				aadd(m,str(i,4,0)+""+::viewVar(vname,level,p[i],.f.)) // utf-8: "â”‚"
 			next
 			do while !empty(m)
 				curPos=achoice(0,0,maxrow(),maxcol(),m,,,curPos,curPos)
@@ -466,9 +466,9 @@ function dbg_viewvar(vname,level,p,flag)
 					h=substr(h,at(DBG_DELIM,h)+1)
 					h=substr(h,at(DBG_DELIM,h)+2)
 					h=substr(h,1,len(h)-1)
-					hashstr(upper(h))  // ÞÔÏÂ ÚÄÅÓØ ÚÁÐÏÍÎÉÔØ
+					hashstr(upper(h))  // to remember here
 				endif
-				aadd(m,padr(h,15)+""+::viewVar(vname,level,p[mv[i]],.f.) )
+				aadd(m,padr(h,15)+""+::viewVar(vname,level,p[mv[i]],.f.) ) // utf-8: "â”‚"
 			next
 			do while !empty(m)
 				curPos=achoice(0,0,maxrow(),maxcol(),m,,,curPos,curPos)
@@ -881,7 +881,7 @@ static function command_addBP(numLine,fileName)
 	endif
 	n=ascan(::breakPoints,{|x|x[1]==numLine .and. x[2]==fileName})
 	if n==0
-		// ÄÁÔØ ËÏÍÁÎÄÕ RT_CLIP
+		// command RT_CLIP
 		if ::curSrcWin!=0
 			::windows[::curSrcWin]:highLightAdd(numLine,5)
 		endif
@@ -890,7 +890,7 @@ static function command_addBP(numLine,fileName)
 		sss:=[ADD ]
 		n=len(::breakPoints)
 	else
-		// ÄÁÔØ ËÏÍÁÎÄÕ RT_CLIP
+		// command RT_CLIP
 		::dbg_command("rm "+filename+":"+alltrim(str(numLine)))
 		if ::curSrcWin!=0
 			::windows[::curSrcWin]:highLightDel(numLine,5)
@@ -914,12 +914,12 @@ static function command_addTP(vstr)
 	endif
 	n=ascan(::TracePoints,vstr)
 	if n==0
-		// ÄÁÔØ ËÏÍÁÎÄÕ RT_CLIP
+		// command RT_CLIP
 		aadd(::TracePoints,vstr)
 		sss:="ADD "
 		n=len(::TracePoints)
 	else
-		// ÄÁÔØ ËÏÍÁÎÄÕ RT_CLIP
+		// command RT_CLIP
 		adel(::TracePoints,n)
 		asize(::TracePoints,len(::TracePoints)-1)
 		sss:="DELETE "
@@ -1194,7 +1194,7 @@ static function command_run(str,add_flag)
 		case ncom==17  // "NUM"
 		     if len(mcomm)>1
 			fstr=upper(alltrim(mcomm[2]))
-			if fstr=="ON" .or. fstr=="÷ëì"
+			if fstr=="ON" .or. fstr=="Ð’ÐšÐ›"
 				::menu:numeration(.t.)
 			else
 				::menu:numeration(.f.)
@@ -1274,7 +1274,7 @@ static function command_run(str,add_flag)
 		case ncom==32  // "CBTRACE"
 		     if len(mcomm)>1
 			fstr=upper(alltrim(mcomm[2]))
-			if fstr=="ON" .or. fstr=="÷ëì"
+			if fstr=="ON" .or. fstr=="Ð’ÐšÐ›"
 				::menu:cbTraceStyle(.t.)
 			else
 				::menu:cbTraceStyle(.f.)
@@ -1286,7 +1286,7 @@ static function command_run(str,add_flag)
 		case ncom==33  // "PPVIEW"
 		     if len(mcomm)>1
 			fstr=upper(alltrim(mcomm[2]))
-			if fstr=="ON" .or. fstr=="÷ëì"
+			if fstr=="ON" .or. fstr=="Ð’ÐšÐ›"
 				::menu:preprocStyle(.t.)
 			else
 				::menu:preprocStyle(.f.)

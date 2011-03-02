@@ -126,7 +126,7 @@ return .f.
 static function window_redrawMenu(flag)
 	static oldMenuPos:=0
 	local i, j
-	@ 1,0 say replicate("€",::right)
+	@ 1,0 say replicate("€",::right) // utf-8: "â”€"
 	flag:=iif(flag==NIL,.f.,flag)
 	if ::menuPos<=0
 		::menuPos:=len(::menuItems)
