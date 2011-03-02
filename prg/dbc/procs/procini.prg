@@ -6,7 +6,7 @@
  *         www - http://www.geocities.com/alkresin/
  * Released to Public Domain
 */
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 *+
 *+    Source Module => PROCINI.PRG
 *+
@@ -16,7 +16,7 @@
 *+
 *+    Reformatted by Click! 2.00 on May-31-2000 at  7:29 pm
 *+
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 
 /*
  Procini.prg           written by Alexander Kresin in 1996.
@@ -63,11 +63,11 @@
 
 #include "fileio.ch"
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function RDINI()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION RDINI( fname, prm1, prm2, prm3, prm4 )
 
@@ -158,14 +158,14 @@ LOCAL iniDbf := ( Upper( FilExten( fname ) ) == "DBF" )
    ENDIF
 RETURN kolstr
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function RDZNACH()
 *+
 *+    Called from ( procini.prg  )   1 - function rdini()
 *+                                   1 - function rdarr()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 STATIC FUNCTION RDZNACH( ps )
 
@@ -181,14 +181,14 @@ LOCAL poz, znc
    ENDIF
 RETURN znc
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function RDARR()
 *+
 *+    Called from ( procini.prg  )   1 - function rdini()
 *+                                   1 - function rdarr()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 STATIC FUNCTION RDARR( vname, stroka )
 

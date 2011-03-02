@@ -6,7 +6,7 @@
  *         www - http://www.geocities.com/alkresin/
  * Released to Public Domain
 */
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 *+
 *+    Source Module => D:\MYAPPS\SOURCE\PROCS\PROCS7.PRG
 *+
@@ -16,13 +16,13 @@
 *+
 *+    Reformatted by Click! 2.00 on Jul-3-2001 at  2:59 pm
 *+
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function RDSTR()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION RDSTR( han, strbuf, poz, buflen )
 
@@ -67,11 +67,11 @@ LOCAL stro := "", rez, oldpoz, poz1 := 1
    ENDIF
 RETURN stro
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function getNextVar()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION getNextVar( stroka, varValue )
 
@@ -89,13 +89,13 @@ LOCAL varName, iPosEnd, iPos3
    ENDIF
 RETURN varName
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function FIND_Z()
 *+
 *+    Called from ( procs7.prg   )   2 - function getnextvar()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION FIND_Z( stroka, symb )
 
@@ -124,22 +124,22 @@ LOCAL poz, poz1 := 1, i, j, ms1 := "(){}[]", ms2 := { 0, 0, 0, 0, 0, 0 }
    ENDDO
 RETURN poz
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function CutExten()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION CutExten( fname )
 
 LOCAL i
 RETURN IIF( ( i := RAT( '.', fname ) ) = 0, fname, SUBSTR( fname, 1, i - 1 ) )
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function FilExten()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION FilExten( fname )
 

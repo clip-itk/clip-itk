@@ -6,7 +6,7 @@
  *         www - http://www.geocities.com/alkresin/
  * Released to Public Domain
 */
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 *+
 *+    Source Module => D:\MYAPPS\SOURCE\PROCS\PROCARED.PRG
 *+
@@ -15,7 +15,7 @@
 *+
 *+    Reformatted by Click! 2.00 on Apr-17-2001 at  2:11 pm
 *+
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 
 #ifdef RDD_AX
 #include "dbfcdxax.ch"
@@ -52,11 +52,11 @@ RETURN DBFLIST( mslist, x1, y1, x2, y2, title, maskey, ctrl_ar )
 RETURN DBFLIST( mslist, x1, y1, x2, y2, title, maskey )
 #endif
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function InitArEdit()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION InitArEdit
 
@@ -80,13 +80,13 @@ LOCAL mslist := ARRAY( LI_LEN )
    LI_SEPARATOR := " "
 RETURN mslist
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Procedure ARSKIP()
 *+
 *+    Called from ( procared.prg )   1 - function initaredit()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 PROCEDURE ARSKIP( mslist, kolskip )
 
