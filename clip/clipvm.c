@@ -548,8 +548,14 @@
 #ifdef OS_MINGW
 	#include <ltdl.h>
 	#define dlerror lt_dlerror
+	#define dlopen(B, F)	lt_dlopen(B)
+
+	#define alloca(K)	malloc(K)
+	#define dealloca(P)	free(P)
 #else
 	#include <dlfcn.h>
+
+	#define dealloca(P)
 #endif
 #include <ctype.h>
 
@@ -919,11 +925,7 @@ load_dll(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * resp)
 			return 0;
 	}
 
-#ifdef OS_MINGW
-	hp = lt_dlopen(buf);
-#else
 	hp = dlopen(buf, RTLD_NOW);
-#endif
 	if (!hp)
 	{
 		_clip_trap_printf(mp, __FILE__, __LINE__, "shared loading problem: %s: file %s", dlerror(), buf);
@@ -959,11 +961,7 @@ load_dll(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * resp)
 	uname[l] = 0;
 	snprintf(buf, sizeof(buf), "clip__MODULE_%s", uname);
 
-#ifdef OS_MINGW
-	entry = (ClipModule *) lt_dlsym(hp, buf);
-#else
 	entry = (ClipModule *) dlsym(hp, buf);
-#endif
 
 	if (!entry)
 	{
@@ -1536,11 +1534,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	ClipVar *locals /* = (ClipVar *) alloca(sizeof(ClipVar) * nlocals) */ ;
 #endif
 	int maxdeep = GETSHORT(F_OFFS(func, 3, 2, 1));
-#ifdef OS_MINGW
-	ClipVar *stack = (ClipVar *) malloc(sizeof(ClipVar) * maxdeep);
-#else
 	ClipVar *stack = (ClipVar *) alloca(sizeof(ClipVar) * maxdeep);
-#endif
 	char *filename = F_OFFS(modbeg, 7, 4, 0);
 	int nprivates = GETSHORT(F_OFFS(func, 3, 3, 1));
 
@@ -2394,9 +2388,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 #endif
 /*_clip_vremove_privates(mp, nprivates, privates);*/
 
-#ifdef OS_MINGW
-	free(stack);
-#endif
+	dealloca(stack);
 	return ret;
 }
 
