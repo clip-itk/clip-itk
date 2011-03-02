@@ -6,9 +6,9 @@
 #include "box.ch"
 #include "Inkey.ch"
 
-#define MY_HEADSEP      translate_charset(__CHARSET__,host_charset(),"†∂†")
-#define MY_COLSEP       translate_charset(__CHARSET__,host_charset()," Å ")
-#define MY_FOOTSEP      translate_charset(__CHARSET__,host_charset(),"†π†")
+#define MY_HEADSEP      translate_charset(__CHARSET__,host_charset(),"†∂†") // utf-8: "‚ïê‚ï§‚ïê"
+#define MY_COLSEP       translate_charset(__CHARSET__,host_charset()," Å ") // utf-8: " ‚îÇ "
+#define MY_FOOTSEP      translate_charset(__CHARSET__,host_charset(),"†π†") // utf-8: "‚ïê‚ïß‚ïê"
 
 memvar __a2_data, curr_record,__userfunc
 
