@@ -57,7 +57,7 @@ do case
 	browse(2,3,15,45)
    case nfunc==2
 	fields:={"FIRM_NO","FIRM_KEY","TELEFON"}
-	h:={"a","Название","Телефон"}
+	h:={"a","Name","Phone"}
 	fields:=NIL
 	h:=NIL
 	dbedit(2,3,15,78,fields,,,h)
