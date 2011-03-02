@@ -4,7 +4,7 @@
 */
 
 /*
-Специальные "банковские" функции
+Special "banking" functions
 */
 #define BIT(n) (VAL(SUBSTR(N0,n,1)))
 
@@ -13,7 +13,7 @@ FUNC Vkrz1(n0)
 n0:=PADL(n0,5)
 RETU n0+ SUBSTR(STR ( (BIT(1)+BIT(2)*3+BIT(3)*7+BIT(4)+BIT(5)*3) * 7 ), -1)
 **********
-FUNC Vkrz14(account,Amf)     && счет,6(5)-значный МФО
+FUNC Vkrz14(account,Amf)     && account,6(5)-digit MFI
 LOCAL n0
 n0:=Padl(amf,5)+(Account:=PadR(Account,14))
 Amf:= Str(  (	BIT(1)+(BIT(2)*3) % 10+(BIT(3)*7) % 10+BIT(4)+(BIT(5)*3) % 10+;
@@ -25,12 +25,12 @@ Amf:= Str(  (	BIT(1)+(BIT(2)*3) % 10+(BIT(3)*7) % 10+BIT(4)+(BIT(5)*3) % 10+;
 
 RETU LEFT(Account,4)+SUBSTR(Amf,-1)+SUBSTR(Account,6)
 **********
-FUNC Vkrz20(account,Amf)     && счет,3(2)-значный номер РКЦ
+FUNC Vkrz20(account,Amf)     && account,3(2)-digit RKC number
 LOCAL n0,cAcc,aRz:={7,1,3},i,kr:=0
 
 Account:=PadR(Account,20)
 cAcc:=SUBSTR(Account,6,1)
-IF (i:=AT(cAcc,'АВСЕНКМРТХABCEHKMPTX'))<>0
+IF (i:=AT(cAcc,'АВСЕНКМРТХABCEHKMPTX'))<>0 // utf-8: '╨Р╨Т╨б╨Х╨Э╨Ъ╨Ь╨а╨в╨еABCEHKMPTX'
      cAcc:=STR((i-1) % 10,1)
 ENDIF
 

@@ -3,7 +3,7 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
- Генерация меню из ELB.LIB. Слегка упрощенные версии для BDBF
+ Menu generation from ELB.LIB. Simplified versions for BDBF
 */
 
 #include 'common.ch'
@@ -17,40 +17,40 @@ FUNC MakeMenu(_A_P, _H_P, _Aktions, _M_Title, _M_Row, _M_Col, _H_Row,;
 LOCAL i,lg,LgMax,HMax,hMin,Smlen,lExact,cColor,adjust,B_row,;
       MenuItems:={},lWhen,_n_p,ch,np1,scr
 /*
- АВТОГенерация меню. См. также команду READMENU.
+ Menu AUTOgeneration. See also READMENU command.
 
-Параметры: (в квадратных скобках - умолчание)
-  _A_P - массив Prompt
-  _H_P - массив MESS
-  _Aktions - массив действий выбора по меню
-  _M_Title - заголовок меню ['']
-  _M_Row - строка начала меню  [row()+2]
-  _M_Col - столбец начала меню, если <0 - центрируется
-  _H_Row - строка для Mess [сразу под меню]
-  _Horiz - .t.,если меню располагать горизонтально [.t.]
-  _NeedBorder - .t.,если нужна рамка вокруг [.t.]
-  _StepMenu - промежуток между элементами [1],если <0 - MAX
-  _MenuChoice - начальный элемент и элемент выбора
-  _Color - Цвет меню {основной,выделенный,подсвеченный,скрытый}
-  _Level - Уровень подменю
-  _WhenNot - параллельный массив выражений запрета доступа [.f.]
+Parameters: (defaults in brackets)
+  _A_P - array Prompt
+  _H_P - array MESS
+  _Aktions - menu select actions array
+  _M_Title - menu header ['']
+  _M_Row - manu begins string  [row()+2]
+  _M_Col - menu begins column, if less than 0 - centered
+  _H_Row - string for Mess [below menu]
+  _Horiz - .t., if menu is horizontal [.t.]
+  _NeedBorder - .t. if need frame around [.t.]
+  _StepMenu - the gap between the elements [1], if less than 0 - MAX
+  _MenuChoice - Start element and selected element
+  _Color - Menu colour {main,selected,highlighted,hidden}
+  _Level - Submenu level
+  _WhenNot - additional array of expressions for restrict access [.f.]
 
 
-  Только параметр _A_P является обязательным
-  Возвращает выбранный элемент меню
-  Если тип выбранного элемента в массиве действий - строка,то выполняется
-  процедура с таким именем,
-  Если тип выбранного элемента в массиве действий - блок кода,то он
-  выполняется.
-  Если тип выбранного элемента в массиве действий - массив,то строится
-  рекурсивно вызываемое подменю на основании элементов массива.
+  Just _A_P is required
+  Returns selected menu element
+  If type of selected element is string in actions array, then call
+  procedure with same name,
+  If type of selected element is gode block in actions array, then
+  this code block is run
+  If type of selected element in actions array is code block, then it run
+  If type of selected element in actions array is an array, then recursivelly
+  builds called submenu by array elements.
 
-  Символ ~ в элементе меню перед следующей за ним буквой,означает,
-  что эта буква будет  использоваться как Hot-Key. По умолчанию таковой
-  считается первая буква.
+  Symbol '~' before letter in menu element means, that this letter will be a
+  Hot-Key. By default HokHey is a first letter.
 
-  Пример:
-	Doing:={'Продолжить','П~ропустить','Отказаться'}
+  Example:
+	Doing:={'Continue','Skip','C~ancel'}
 	MakeMenu(Doing)
 */
 lExact:=Set(_SET_EXACT,.t.)
@@ -74,12 +74,12 @@ IF VALType(_M_Row)#'N' THEN _m_row=Row()+2
 
 IF VALType(_M_Title)#'C' THEN _M_Title=''
 
-_n_p=Len(_A_P)	// к-во элементов меню
+_n_p=Len(_A_P)	// menu elements count
 np1:=_n_p-1
 
 _Aktions:=Ext_Arr(_Aktions, _n_p)
 
-_WhenNot:=Ext_Arr(_WhenNot, _n_p, .F.)	// массив запретов
+_WhenNot:=Ext_Arr(_WhenNot, _n_p, .F.)	// array of restrictions
 
 _H_P:=Ext_Arr(_H_P, _n_p, '')
 
@@ -99,15 +99,15 @@ LgMax=Min(__mcol-1, MAX(LgMax,Len(_M_Title)))
 BEGIN SEQUENCE
   IF  _Horiz
 	_H_Row=_m_row+1
-	IF  _m_col<0		&& надо центрировать
-		IF _StepMenu<0  && макс.шаг
+	IF  _m_col<0		&& need centering
+		IF _StepMenu<0  && max.step
 			_m_col=2
 			_StepMenu=INT((__mcol-2-SmLen)/np1)
 		ELSE
 			_m_col=INT((__mcol+1-SmLen-np1*_StepMenu)/2)
 		ENDIF
 	ELSE
-		IF _StepMenu<0  && макс.шаг
+		IF _StepMenu<0  && max.step
 			_m_col=2
 			_StepMenu=INT((__mcol-2-_m_col-SmLen)/np1)
 		ENDIF
@@ -174,23 +174,23 @@ FUNC PROMS(ArrP,current,ArrC,nhRow,nhCol,nhMax,nLevel,lMain)
 LOCAL _ff:='',_ff_e,i,j,cp,_k,char,_mox,_moy,aEl,;
       cKey,clr,nlArrp,OldPos
 /*
- Обеспечивает меню с возможностью выбора мышкой
- На вход передается n-мерный массив следующей структуры
- {строка,
-  столбец,
+ Provides a menu with a choice by mouse
+ Got n-dimension array with structure
+ {row,
+  column,
   Prompt,
   Message,
-  признак запрета выбора,обычно .f.
+  is disabled, usually .f.
  }
 
-  Current - предпочтительный элемент
-  ArrC - массив цветов
-  { основной, реверс, подсветка "горячей" буквы, цвет запрещенного элемента
+  Current - preferred element
+  ArrC - array of colors
+  { main, reverse, HotKey highlight, color of disabled element
   }
   HelpRow
-  Признак смены вертикального меню
+  Is vertical menu was changed
 
- Возвращает выбранный элемент.
+ Returns selected element.
 */
 
 #define P_ROW 1
@@ -203,7 +203,7 @@ LOCAL _ff:='',_ff_e,i,j,cp,_k,char,_mox,_moy,aEl,;
 #define E_Prm(el)  (ArrP[el][P_PROMPT])
 #define E_Ms(el)  ArrP[el][P_MESS]
 #define E_Sel(el)  ArrP[el][NOSELECT]
-#define UsualColor ArrC[1]		//Выгоднее, чем LOCAL
+#define UsualColor ArrC[1]		//Better that LOCAL
 #define ReversColor ArrC[2]
 #define HilightColor ArrC[3]
 #define HiddenColor ArrC[4]
@@ -239,7 +239,7 @@ FOR i:=1 to nLArrp
 	ENDIF
 
 	@ aEl[P_ROW],aEl[P_COL] SAY aEl[P_PROMPT] COLOR ArrC[clr]
-	IF clr==1 THEN;	//Обычный пункт
+	IF clr==1 THEN;	//Ordinary element
 		Ch_Attr(aEl[P_ROW],aEl[HI_POS],char)
 NEXT
 DispEnd()
@@ -247,7 +247,7 @@ _ff_e:=Nation2Usa(_ff)
 
 DO WHILE .t.
 	IF !EMPTY(cKey:=E_Ms(Current))
-		@ nhRow,nhCol SAY Padc(cKey,nhMax,'═')
+		@ nhRow,nhCol SAY Padc(cKey,nhMax,'═') // utf-8: 'тХР'
 	ENDIF
 	cKey:=UPPER(CHR(_k:=WaitKey(0)))
 	IF cKey $ _ESC+_ENTER+_DOWN+_UP+_PGDN+_PGUP+_LEFT+_RIGHT+_END+_HOME+_ff+_ff_e
@@ -305,11 +305,11 @@ DO WHILE .t.
 
 		CASE cKey $ _END+_PGDN
 			Current:=nlArrP
-			_k:=K_UP	//движение назад (если запрет)
+			_k:=K_UP	//move back (if denied)
 
 		CASE ckey $ _HOME+_PGUP
 			Current:=1
-			_k:=K_DOWN	//инициируем движение вперед
+			_k:=K_DOWN	//initialize forward moving
 
 		OTHER	//CASE (_k:=AT(cKey,_ff+_ff_e)) <> 0
 			Current:=((AT(cKey,_ff+_ff_e) -1) % LEN(_ff))+1
@@ -397,7 +397,7 @@ DO WHILE .T.
 				IF MouseInRegion(aItem[1],aItem[2],aItem[3],aItem[4])
 					Current:=i
 					KEYB _ENTER
-					*BREAK		//Так вдавливается предыдущий
+					*BREAK		//Previous processed like this
 				ENDIF
 			  NEXT
 			END SEQU

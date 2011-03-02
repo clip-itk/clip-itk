@@ -244,12 +244,12 @@ _OtherW:={EMPTY(m->_macro),.F.,.F.,;
 	  .F.}
 
 #IFNDEF ENGLISH
-	cTypWhen:='Контрольный разряд '
+	cTypWhen:='Check digit '
 	AADD(_OtherF,{||SecondMenu(;
-				{cTypWhen+"счета в банке Украины",;
-				 cTypWhen+"счета в банке России",;
-				 cTypWhen+"МФО",;
-				 cTypWhen+"ОКПО"},;
+				{cTypWhen+"a bank account in Ukraine",;
+				 cTypWhen+"a bank account in Russia",;
+				 cTypWhen+"MFI",;
+				 cTypWhen+"OKPO"},;
 				{{||TakeKR(1)},;
 				 {||TakeKR(2)},;
 				 {||TakeKR(3)},;
@@ -281,7 +281,7 @@ nLevel:=1
 DO WHILE ch1<>0 .AND. !_Finish
 	IF !EMPTY(m->__Menu_Col)
 		ch1:=MAX(ASCAN(aStart,{|el|el>m->__Menu_Col})-1,1)
-		KEYBOARD _DOWN	//Сразу раскрыть
+		KEYBOARD _DOWN	//Immediately expand
 	ENDIF
 	READMENU PROMPTS Mp;
 		 MAKE mf STEP 4 ROW 1 COL 1 NOBORDER ;

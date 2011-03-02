@@ -2,7 +2,7 @@
     Copyright (C) 1998-2004 Yevgen Bondar <elb@lg.bank.gov.ua>
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
-// Немножечко оптимизированные функции Nantucket Forum
+// A little bit optimized functions 'Nantucket Forum'
 
 #include "common.ch"
 
@@ -81,10 +81,10 @@ LOCAL i
 cTypeToConvertTo:=UPPER(cTypeToConvertTo)
 
 DO CASE
-      CASE cTypeToConvertTo == 'V'	//и так хорошо
+      CASE cTypeToConvertTo == 'V'	//and so well
 	IF xValueToConvert==NIL THEN xValueToConvert:=''
 
-      CASE cTypeToConvertTo == 'X'	//и так хорошо
+      CASE cTypeToConvertTo == 'X'	//and so well
 
       CASE cTypeToConvertTo $ "CM" .AND.; // They Want a Character String
 	   IS_NOT_CHAR(xValueToConvert)
@@ -779,7 +779,7 @@ RETURN FT_AEmaxlen( aArray, nDimension, nStart, nCount, .T.)
 **********
 
 FUNC FT_TEMPFILE( cPath, lHide )
-// в отличие от оригинальной функции допускает числовой атрибут
+// possible numeric attribute in opposition to original function.
 IF valType(lHide) = "L" .AND. lHide
 	lHide:=1
 ENDIF

@@ -50,16 +50,16 @@ LOCAL _sp:=Repl(SCROLL_FILL,_wide),;
 IF_NIL aPictures IS {}
 IF_NIL aWidths IS {}
 PRIVATE _BdbfBrow,_c_f
-//  Создаем экземпляр объекта TBROWSE:
+//  Create instance of TBROWSE object:
 _BdbfBrow:= tbrowseNew(top,left,bottom,right)
 _BdbfBrow:goTopBlock    := {|| DbGoTop() }
 _BdbfBrow:goBottomBlock := {|| DbGoBottom() }
 _BdbfBrow:skipBlock     := {|n| Skipper(n) }
-_BdbfBrow:headSep       := '═╤═'
-_BdbfBrow:colSep        := ' │'
+_BdbfBrow:headSep       := '═╤═' // utf-8: 'тХРтХдтХР'
+_BdbfBrow:colSep        := ' │'  // utf-8: ' тФВ'
 _BdbfBrow:colorSpec     := SetColor()
 
-// Строим объекты - столбцы и добавляем к экземпляру объекта TBROWSE:
+// Builds objects-columns and adds to TBROWSE:
 nMaxColumn:=MIN(_Fc,m->_nBrowMaxField)
 ASIZE(colHeaders,nMaxColumn)
 ASIZE(aPictures,nMaxColumn)
@@ -79,13 +79,13 @@ NEXT
 IF !EMPTY(nFreeze) THEN FreezeFields(nFreeze)
 
 DispBegin()
-// начальная разрисовка экрана
+// Screen draw begining
 Window(t_bord,l_bord,b_bord,r_bord,WinHeader)
-@ top+_h,l_bord Say '╠'
-@ top+_h,r_bord Say '╣'
+@ top+_h,l_bord Say '╠' // utf-8: 'тХа'
+@ top+_h,r_bord Say '╣' // utf-8: 'тХг'
 _length:=bottom-top-3-_h
 
-// начальная разрисовка скроллингов
+// Scrolls draw beginning
 
 ClearHScroll()
 DEVOUT( SCROLL_RIGHT, _cm)
@@ -94,24 +94,24 @@ DEVOUT( SCROLL_RIGHT, _cm)
 @ bottom,r_bord say SCROLL_DOWN color _cm
 Fkeys()
 DispEnd()
-// Главный цикл:
+// Main loop:
 *_bdbfbrow:ForceStable()
-Keyb(260)	//чтобы 1-й раз нарисовать - незначащий код
+Keyb(260)	//For 1-st drawing - minor code
 
 _lr:=KeyCount()
 WHILE .T.
    ShowMouse(); ShowMouse(); ShowMouse()
    WHILE .T.
-// Проверяем наличие управляющей клавиши в буфере:
+// Check for control key in buffer:
 	_nKey := INKEY(0.01, 254)
 	IF _nKey>1001
 		WaitMouse0()
 		GetMouseXY()
 
-		cScr:=ScreenString(_tp1,left)		//Для определения координат нажатия
+		cScr:=ScreenString(_tp1,left)		//To determine the coordinates of pression
 		nVs:=0
 		FOR i:=1 TO _mox-1
-			IF SUBSTR(cScr, i, 1)=="╤" THEN nVs++
+			IF SUBSTR(cScr, i, 1)=="╤" THEN nVs++ // utf-8: "тХд"
 		NEXT
 
 		IF (i:=_bdbfbrow:Freeze)>0
@@ -150,7 +150,7 @@ WHILE .T.
 					_mox:=repl(IF(column<nVs,_RIGHT,_LEFT),abs(column-nVs))+_EMP
 					_mox:=_mox+repl(IF(_Moy<_r,_UP,_DOWN),abs(_moy-_r))
 				ENDCASE
-			CASE _moy=b_bord	//гориз.скроллинг
+			CASE _moy=b_bord	//horiz.scroll
 				IF _mox==left
 					_mox:=_LEFT
 				ELSEIF _mox==Right
@@ -166,7 +166,7 @@ WHILE .T.
 			CASE _moy=_tp1
 				_mox:=K_PGUP
 			CASE _moy=1 .AND. SELECT()=1
-				m->__Menu_Col:=_mox	//в MainMenu() анализ
+				m->__Menu_Col:=_mox	//analyzation in MainMenu()
 				_mox:=K_F10
 			CASE _moy=m->__mrow
 				_mox:=Int(_mox/8)
@@ -222,17 +222,17 @@ WHILE .T.
    ENDDO
 
    rec_no:= recno()
-   _oldCol:=MIN(Max(_BdbfBrow:ColPos,1),nMaxColumn)	//keyboard  не всегда правильно
-							//работает - дает 65535
+   _oldCol:=MIN(Max(_BdbfBrow:ColPos,1),nMaxColumn)	//keyboard sometime is wrong
+							//works - got 65535
 
-   m->_c_f:=m->_Pole[_oldCol]	//здесь, чтобы в SetKey() было
+   m->_c_f:=m->_Pole[_oldCol]	//here, because need in SetKey()
    HideMouse()
    DO CASE
 
-// Обработка ранее назначенных клавиш
+// Handling of previously assigning keys
 
 	CASE (baction:= setkey(_nkey)) # NIL
-		eval(baction,ProcName(1))	// ProcName() для Help
+		eval(baction,ProcName(1))	// ProcName() for Help
 		_lr:=KeyCount()
 		LOOP
 
@@ -252,7 +252,7 @@ WHILE .T.
 				    MAX(_Flen[_oldCol],LEN(_Works[_oldCol])),;
 				    1 ) )
 
-// Обработка стандартных клавиш навигации
+// Handling of standard navigation keys
 	CASE (baction:=Ascan(tbKey,{|elem|_nkey=elem[1]}))<>0
 		eval(tbKey[baction,2])
 
@@ -260,10 +260,10 @@ WHILE .T.
 		__KeyBoard(IF(_nkey==K_ALT_PGDN,_PGDN,_PGUP)+;
 				     _EMP+REPL(_UP,_bdbfbrow:rowpos-1))
 
-	CASE TestMacro(_nKey,1)	//Здесь выполнится
+	CASE TestMacro(_nKey,1)	//Here execute
 
 	OTHER
-// Обработка исключительных клавиш
+// Handling of exception keys
 
 		i:=m->Main_Keys
 		rc:=&userfunc.(_oldcol,_nkey)
@@ -279,12 +279,12 @@ WHILE .T.
 			_bdbfbrow:refreshall()
 			_bdbfbrow:cargo:= .F.
 		ELSEIF !EOF()
-// "Освежить" текущую запись
+// Current record refresh
 			_bdbfbrow:refreshcurrent()
 		ENDIF
    ENDCASE
 
-// "Освежить", если переместился указатель:
+// Refresh, if pointer was moved
    IF NextKey(254)=0
 	Stable()
 	DispBegin()
@@ -304,7 +304,7 @@ WHILE .T.
    ENDIF
 ENDDO
 **********
-// Стандартная функция перехода:
+// Standard transition function
 
 STATIC FUNC Skipper(x)
 LOCAL i:=0

@@ -22,14 +22,14 @@ ViewFiles(cFile)
 **********
 PROC ViewFiles(cFile,bApply,lCheckExist)
 /*
-Версия упрощена для bdbf.
-Показывает файл cFile.
-Может использовать встроенный вьюер (с возможностью печати,подсветки и т.д.).
-или внешний,определенный в переменной _TextViewer.
-При использовании встроенного можно задать дополнительный блок кода bApply
-для преобразования строк.
+Lightweight version for bdbf.
+Show file cFile.
+May use internal viewer (with printing, syntax highlighting etc).
+or external defined in _TextViewer variable.
+If used internal viewer, you may specify 'bApply' code block
+for transform strings.
 
-Примеры:
+Examples:
 	_TextViewer:='WpView'
 	ViewFiles('MyFile.prn')
 	ViewFiles('Help.txt',{|_1|StrTran(_1,chr(K_TAB),SPACE(8))})
@@ -68,7 +68,7 @@ ENDDO
 RETURN cOut
 /*************************************************************************
  Browse Function By: Tom Claffy  March 1993
- Адаптировано для BDBF by ELB :-)
+ Adopted for BDBF by ELB :-)
 
 */
 
@@ -129,7 +129,7 @@ PRIVATE _CodePage
 SavePos()
 
 _cLookText:='' 	//need for Getname()
-bOrigin:=bApplyText	//переключать будем по F8
+bOrigin:=bApplyText	//switch by F8
 
 // move back to the top of the file
 FSEEK(nHandle,0)
@@ -164,9 +164,9 @@ DISPBOX(nTop,nLeft,nBottom,nRight,FRAME1,cBoxColor)
 *@ nTop,nRight SAY '' COLOR cBoxColor
 *@ nBottom,nRight SAY '' COLOR cBoxColor
 
-// Первичный ScrollBar
+// Primary ScrollBar
 FOR i := nBarTop TO nBarBottom
-	@ i,nRight SAY '░' COLOR cBarColor
+	@ i,nRight SAY '░' COLOR cBarColor // utf-8: 'тЦС'
 NEXT
 
 DISPEND()
@@ -183,9 +183,9 @@ WHILE .t.
 				  nTop+nHighliteLine,nLeft+1)
    ENDIF
 
-//Обновим ScrollBar
+//ScrollBar refresh
    // erase the old button - where's the whiteout
-   @ nRow,nRight SAY '░' COLOR cBarColor
+   @ nRow,nRight SAY '░' COLOR cBarColor // utf-8: 'тЦС'
    IF (nStart:=aLines[1,2]) = 0		// figger out the new row
 	nRow = nBarTop
    ELSEIF nLastOffset >= nSize -1
@@ -535,7 +535,7 @@ WHILE nCounter < nEnd
       nTempCount = LEN( aOffsets )
 
       IF !lEof .AND. nTempCount==1
-	//Одна длинная строка в бинарном файле
+	//One long string in binary file
 	nTempCount:=2
 	AADD( aOffsets, nBlock )
       ENDIF

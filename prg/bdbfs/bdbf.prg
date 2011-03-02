@@ -15,7 +15,7 @@ REQUEST dbfidx
 REQUEST sixcdx
 
 
-* Системные сообщения
+* System messages
 
 MEMVAR _DefaultRDD,_DefaultMemo,_DefaultCDX,__ContentType,_fc,;
 	_bm,_cm,_im,_rev,_HdColor,_MenuColor,__mcol,__mrow,_middlecol,;
@@ -35,16 +35,16 @@ m->_base:=p01
 Devices()
 m->_AutoSave:=.F.
 m->_AutoRestore:=.F.
-m->_aGlbHCond:={}	// история команд
-m->_aGlbHRes:={}	// история результатов
-m->_aCommand:={}	// транслированные команды
-m->_MacroTable:={}	// Макроклавиши
+m->_aGlbHCond:={}	// command history
+m->_aGlbHRes:={}	// result history
+m->_aCommand:={}	// translated commands
+m->_MacroTable:={}	// Macrokeys
 
 m->_UndoSize:=1024
-m->_UndoBuff:=NIL	//Массив будет объявлен в MainCycle()
-m->_UndoNew:=.T.	//Очистить буфер
+m->_UndoBuff:=NIL	//Array will be declated in MainCycle()
+m->_UndoNew:=.T.	//Clear buffer
 
-m->bAutoExec:=NIL	//блок из комстроки
+m->bAutoExec:=NIL	//Block from command line
 m->Main_keys:=Brow_M_Keys
 m->Alt_Keys:=Brow_A_Keys
 m->Ctrl_Keys:=Brow_C_Keys
@@ -59,7 +59,7 @@ _i:=.F.
 IF  PCount()=0
 	m->_base:=''
 	Read1StIni()
-	IF Really(m->_AutoRestore)	// из INI
+	IF Really(m->_AutoRestore)	// from INI
 		m->_NeedRestoreVue:=.T.
 	ELSE
 		#IFDEF __CLIP__
@@ -82,7 +82,7 @@ m->_Iv:=PRV_IV
 m->_ABORT:=PRV_ABORT
 
 Set(_SET_CONSOLE,.F.)
-Set(_SET_SCOREBOARD,.F.)	// ДЛЯ МЕМО
+Set(_SET_SCOREBOARD,.F.)	// FOR MENU
 m->score_row:=0
 m->score_col:=16
 
@@ -93,7 +93,7 @@ Set(_SET_CONFIRM,.t.)
 Set(_SET_EXCLUSIVE,.f.)
 Set(_SET_EXIT, .t.)
 Set(_SET_INSERT, .t.)
-Set(_SET_CANCEL,.f.)		&&Отменить AltC-только культурно
+Set(_SET_CANCEL,.f.)		&&Cancel AltC - only culturally
 Set(_SET_WRAP, .t.)
 SetBlink(.F.)
 SetCursor(0)
@@ -117,7 +117,7 @@ m->_lMeter:=.T.
 m->_MemoEditor:=''
 m->_TextViewer:=''
 m->_timing:=.T.
-m->_cPsw:=""	//Пароль криптованных баз
+m->_cPsw:=""	//Password for crypted bases
 
 m->HiddenColor:='w/b'
 FOR i:=2 TO PCOUNT()
@@ -150,12 +150,12 @@ Stor 0 to m->__sum,m->__Count,m->__go,m->_fc,;
 #ENDIF
 
 m->_MemoPrnt:=80	//as FoxPro
-m->_MemoNumLines:=10	//Строк в длинных при печати
-m->_nMemoWrap:=255	//больше нельзя
+m->_MemoNumLines:=10	//Strings in memo while printed
+m->_nMemoWrap:=255	//no longer
 m->_nMemoTab:=8
-m->_DefaultBorder:=':'	// в Medi
+m->_DefaultBorder:=':'	// in Medi
 m->_DefaultHBorder:=':'
-m->_DirShow:=32		// Ширина показа имен файлов
+m->_DirShow:=32		// Width of the filenames display
 m->_USA_Keyboard:=SET_OF_USA
 m->_My_Keyboard:=SET_OF_MYKB
 m->_Ansi_Set:=SET_OF_ANSI
@@ -182,19 +182,19 @@ STORE .f. TO m->_replay,m->_ResetFields,m->_NeedCentr,m->_NeedRestIni,;
 	     m->_NeedApFile, m->_PrintZero,m->_lDgtHdr,m->_lDhAll,;
 	     m->_lPckCheck,;
 	     m->_lTitleAll,m->_lGSExp //,_lHasMemo
-m->_ClipText:={}	//Внутренний буфер
-m->_ClipChoice:=.T.	//Если .T. - будем предлагать выбор.
-m->_ClipWText:={}       //Буфер системы
-m->_ClipWChoice:=.F.	//Если .T. - будем предлагать выбор.
-m->_lCnvWClip:=.F.	//Преобразовывать при копировании в буфер
+m->_ClipText:={}	// Internal buffer
+m->_ClipChoice:=.T.	// If .T. - we offer a choise.
+m->_ClipWText:={}       // System buffer
+m->_ClipWChoice:=.F.	// If .T. - we offer a choise.
+m->_lCnvWClip:=.F.	// Transform while copyed to buffer
 
 m->_Scatter:=NIL
-m->__aExt:={{"" , ""}}		//Файловые ассоциации
+m->__aExt:={{"" , ""}}		//File associations
 
 m->_printer:='PRN'
 m->_StackPos:={0,0,0,0,0,0,0,0,0,0}
 STORE 1 to m->_tmr,m->_Pspacing,m->_pageno,m->_plineNo,m->_nSm
-m->_told:=Seconds() //Счетчик времени
+m->_told:=Seconds() // Timer
 
 m->__aRdd:={'DBFCDX','DBFNTX','DBFCTX','VFPCDX','SIXCDX','DBFIDX'}
 m->__aDrv:={'FoxPro  (CDX,FPT)',;
@@ -211,22 +211,22 @@ m->_DefaultRDD:='DBFCDX'
 m->_DefaultMemo:='.FPT'
 m->_DefaultCDX:='.CDX'
 
-IF _i	//Без параметра или вопрос
+IF _i	//Without parameter or question
 	HELP("CMDLINE",,,_CopyRight)
 	Quit
 ENDIF
 
-PRIVATE _MainMemoFile,;	//Имя файла Memo
-	_nMemoBlSize,;	//Размер блока Memo
-	_aCommon,;	//Информация о базе в целом, массив будет заполнен в RealStruct()
-	_aDbStruct,;	//Переменная структуры (глобальная)
-	__aDbStruct,;	//без фиктивных полей
-	___aDbStruct,;	//без фиктивных полей и доп.параметров
-	__RealFlds	//Реальный заголовок - будет записан RealStruct()
-			//и возвращен в MakeRealStruct()
+PRIVATE _MainMemoFile,;	//Memo file name
+	_nMemoBlSize,;	//Memo block size
+	_aCommon,;	//Common information about DB, array will filled in RealStruct()
+	_aDbStruct,;	//Structure variable (global)
+	__aDbStruct,;	//without the fiction fields
+	___aDbStruct,;	//without the fiction fields and additional parameters
+	__RealFlds	//real header - will written in RealStruct()
+			//and will returned to MakeRealStruct()
 
-m->_lForced:=.F.	//Форсированный режим
-m->__aPrev:=Array(2)	//Используется для быстрого переоткрытия
+m->_lForced:=.F.	//Forced mode
+m->__aPrev:=Array(2)	//Use for fast reopening
 
 IF (_i:=FOPEN('European.Mem',64))>0
 	m->European:=ReadBin(_i,32,255)
@@ -239,7 +239,7 @@ IF  '.MEM' $ m->_base .AND. FileExist(@_base)
 ENDIF
 
 Read1stIni()
-Devices()	// может быть ошибка в INI - и тогда переменные нужны
+Devices()	// may be mistake in INI - then variables needed
 
 FOR i:=2 TO PCOUNT()
   _tmp:=Exclude(UPPER(aParams[i]),"/")
@@ -271,7 +271,7 @@ FOR i:=2 TO PCOUNT()
   ELSEIF m->_tmp=='PACK'
 	m->bAutoExec:={|| PackProg()}
   ELSEIF IsLefts(m->_tmp,'STRUCT_')
-	IF (_i:=AT(SUBSTR(m->_tmp,8,4), 'PRIN    FILEEXTECOPY            PROG'))<>0 .AND.;
+	IF (_i:=AT(SUBSTR(m->_tmp,8,4), 'PRIN    FILEEXTECOPY            PROG'))<>0 .AND.;
 	   (_i % 4 = 1)
 		m->bAutoExec:={|| DispStru( INT(_i / 4)+1 )}
 	ENDIF
@@ -279,7 +279,7 @@ FOR i:=2 TO PCOUNT()
 	*m->bBeforeMain:={|| NewBase(m->_base), m->bBeforeMain:=NIL}
 	IF !EMPTY(NewBase(m->_base,.t.));
 		THEN  m->bAutoExec:={||NewBase(m->_Base) }
-  ELSEIF m->_tmp $ 'DBFCDX DBFNTX DBFCTX VFPCDX SIXCDX DBFIDX'
+  ELSEIF m->_tmp $ 'DBFCDX DBFNTX DBFCTX VFPCDX SIXCDX DBFIDX'
 	m->_DefaultRDD:=m->__aRdd[ ASCAN(m->__aRdd,{|_1|m->_tmp $ _1})]
   ELSEIF m->_tmp=='FORCED'
 	m->_lForced:=.T.
@@ -297,7 +297,7 @@ DO WHILE .t.
 	IF m->_NeedRestoreVue
 		REST FROM (m->_VueFile) ADDI
 
-//Издержки наследования предыдущих версий
+//The costs of inheritance of previous versions
 		lNewMemoFormat:=(TYPE('__DPct001')=='C')
 		lSavedForced:=(TYPE('__DRT001')=='C')
 
@@ -356,12 +356,12 @@ Scroll() ; DevPos(0,0) ; erase (_setfBase)
 **********
 STATIC PROC Read1stIni()
 STATIC lWas:=.F.
-IF lWas THEN RETURN	//уже читали
-m->_lPlain:=.T.		//если ошибки, то Nfind выведет текстом
+IF lWas THEN RETURN	//have read
+m->_lPlain:=.T.		//if errors, then Nfind outputs as text
 m->_IniFile:=Sx_FnameParser(GetPath(),.t.)+'.INI'
 IF FileExist(@_IniFile) .AND.;
-   (m->_IniFile<>Currentdir()+PATH_DELIM+'BDBFS.INI');	//чтобы дважды не считывать
-	THEN RestoreIni(m->_iniFile)	// первичный
+   (m->_IniFile<>Currentdir()+PATH_DELIM+'BDBFS.INI');	//to avoid twice reading
+	THEN RestoreIni(m->_iniFile)	// primary
 m->_IniFile:='BDBFS.INI'
 IF '.INI' $ m->_base
 	m->_IniFile:=m->_base
@@ -403,7 +403,7 @@ RDDSetDefault(_i)
 BEGIN SEQU
 	dbUseArea( .F.,, (m->_base), "_mBase", M_SHARED)
 	IF Sx_TableName()#_alias
-	  m->__nFreeze:=0	//заморозка
+	  m->__nFreeze:=0	//Freeze
 	  IF Sx_TableType()=2
 		m->_cPsw:=''
 		IF GetName(GET_PSW,"_cPsw",,,,,.T.)
@@ -430,7 +430,7 @@ BEGIN SEQU
 	dbSetIndex(m->_oldind)
 RECOVER USING _error
 
-	IF _error<>21	// Неверное индексное
+	IF _error<>21	// Incorrect index
 		m->_base:='*'
 		MakeRealStruct(m->__CurBase)
 		RETURN !EMPTY(m->bAutoExec)
@@ -438,7 +438,7 @@ RECOVER USING _error
 
 END
 IF Sx_TableName()==_alias
-	__DBSetLoc(_iloc)		// для продолжения LOCATE
+	__DBSetLoc(_iloc)		// for continue LOCATE
 	IF FileExist(@__CdxName)
 		ordListAdd(m->__CdxName)
 		IF EMPTY(_oldind) THEN OrdSetFocus(m->__tagnom)
@@ -518,7 +518,7 @@ IF !m->_replay
 			FWRITE(m->_MainHandle,cFirstByte,1)
 			FCLOSE(m->_MainHandle)
 		ELSE
-			m->_base:='*'	//Перейдем на выбор
+			m->_base:='*'	//Turn to the choise
 		ENDIF
 		RETURN .F.
 	ENDIF
@@ -551,7 +551,7 @@ ELSE
 	BEGIN SEQU
 		EVAL(m->bAutoExec)
 	END
-	IF !EMPTY(m->bAutoExec) THEN m->_base:=''	//выйти
+	IF !EMPTY(m->bAutoExec) THEN m->_base:=''	//exit
 ENDIF
 
 RETU (m->_base=='')
@@ -564,7 +564,7 @@ m->_ResetFields:=.T.
 m->_lIsClose:=!EMPTY(lClose)
 IF m->_lIsClose .AND. !USED() THEN RETURN
 IF FileExist(@_iniFile) THEN RestoreIni(_IniFile)
-IF m->_lIsClose THEN RETURN		//Достаточно!
+IF m->_lIsClose THEN RETURN		//Enought!
 
 IF VALTYPE(m->_afExclude)=='C' THEN m->_afExclude:=SplitLine(m->_afExclude)
 IF VALTYPE(m->Fields)=='A' .OR. VALTYPE(m->Heads)=='A' .OR.;
@@ -635,14 +635,14 @@ FUNC GetName
 
 PARAM _Whead,_vars,cMask,_cGetMask,lCanSelect,_Return,lPsw,cOrig,cValType,;
 	_lNoEmpty
-/*заголовок, переменная(должна начинаться с _), маска файлов, маска GET, ;
-  возможность выбора полей, признак возврата в текущий каталог,признак
-  пароля,оригинал (без препроцессора, передается по ссылке),тип целевого
-  выражения (для текстовых возможно преобразование),возможность пустого ввода
+/*header, variable(sould begin with _), file mask, GET kasj, ;
+  chouse fields possibility, sign of returns to current directory, password
+  sign, original (without preprocessor, passed by reference), type of target
+  expression (possible transformation for text type), possibility of empty input
 */
 LOCAL	_c:=4,_c1:=__MCol-4,_lh:=Len(m->_Whead)/2+1,aF,;
 	cFld
-PRIVATE _aGetKeys	//Клавиши
+PRIVATE _aGetKeys	//Keys
 IF TYPE(m->_aar:=StrTran(m->_vars,'_','_H'))#'A' THEN PUBLIC &_aar:={}
 
 IF !EMPTY(m->_Return) THEN m->_Return:=CurrentDir()
@@ -739,7 +739,7 @@ IF m->_vars=='_SIMPLELOC'
 		m->_SimpleLoc:=Pad(m->_simpleLoc,_wide)
 	ENDIF
 ELSEIF m->_tv
-*	IF TYPE(_vars)<>'C' THEN &_vars:=''	// из-за странных проблем в
+*	IF TYPE(_vars)<>'C' THEN &_vars:=''	// because strange problems in 
 *						// ViewFile
 	&(m->_vars)=IF(Upper(&(m->_vars))='.T.',Space(255),Pad(&(m->_vars),255))
 
@@ -792,23 +792,23 @@ InsString(GetList[1],ALLTRIM(cKb))
 FUNC Xbrowse
 LOCAL	_i,_var,_R:=Row(),_C:=Col(),;
 	_ik:=Upper(OrdKey(0)),nKey
-LOCAL	_ce:=IF(Empty(_ik),'',&_ik)	// Тек.значение индекса
+LOCAL	_ce:=IF(Empty(_ik),'',&_ik)	// Current index value
 PARA _ptr,_a
 nKey:=m->_a
 PRIVATE _req,_CurType,_IsField,__Content,__ContentType
 m->_req:=1
 
-m->_tmr:=Recno()		&& объявлена ранее
+m->_tmr:=Recno()		&& early declared
 
 m->_CurRType:=m->_FrType[m->_Ptr]
 m->_IsField=LEFT(m->_c_f,1)<>'(' .AND.;
 	   (Ascan(m->_dubl,AllTrim(m->_c_f))#0) .AND.;
 	    m->_CurRType<>'AI'
-// возвращает не 0 при полях типа _Pole<не буква>, пр: bank*2
+// returns not 0 with fields such as  _Pole<non-letter>, others: bank*2
 
 IF (m->_CurType:=m->_FType[m->_Ptr])=='M'
 	m->_CurType:='C'
-	m->_c_f=RealMemoryName(m->_c_f)	// _c_f определена в Mdbedit
+	m->_c_f=RealMemoryName(m->_c_f)	// _c_f defined in Mdbedit
 	m->_isField:=.t.
 ENDIF
 m->__Content:=&(m->_C_F)
@@ -821,7 +821,7 @@ DO CASE
 	CASE nKey=K_ESC .OR. nKey=K_ALT_X
 
 		IF (m->_req:=IF( nKey=K_ALT_X,0,IF(Continue(NEED_FINISH),0,1))) =0
-			ReadAutoOpen(.T.)	//Секцию закрытия
+			ReadAutoOpen(.T.)	//Section close
 			IF Really(m->_AutoSave) THEN SaveEnv(.T.)
 			m->_base=''
 		ENDIF
@@ -834,7 +834,7 @@ DO CASE
 			go top  ;__Keyboard() ; m->_req:=2
 		ENDIF
 	      ELSE
-		__KeyBoard()	// от зацикливания
+		__KeyBoard()	// for avoid looping
 	      ENDIF
 
 	CASE nKey=K_F2
@@ -1007,7 +1007,7 @@ DO CASE
 		ENDIF
 
 	CASE nKey==_AltUp
-		CopyField(IF(ISShift(),8,1)) // 8,9- обмен
+		CopyField(IF(ISShift(),8,1)) // 8,9- exchange
 
 	CASE nKey==_AltDown
 		CopyField(IF(ISShift(),9,2))
@@ -1019,7 +1019,7 @@ DO CASE
 		CopyField(4)
 
 #IFNDEF ENGLISH
-	CASE nKey=K_ALT_A		&&Для ОДБ
+	CASE nKey=K_ALT_A		&&For ODB
 		TakeKr()
 #ENDIF
 	CASE nKey=K_ALT_I
@@ -1164,7 +1164,7 @@ BEGIN SEQU
 	BREAK
   ELSEIF (_a:=RealFldName(_c_f)) # _c_f
 	IF m->_CurRType $ '28M'
-		_xFld:=&_a	//Реальное значение
+		_xFld:=&_a	//Real value
 
 		DO CASE
 			CASE m->_CurRType $ '28'
@@ -1352,7 +1352,7 @@ IF LastKey()==K_F10 .OR. !EMPTY(lAuto)
 		sele 1
 		BEGIN SEQUENCE
 			IF (nFld:=ASCAN(m->__aDBSTRUCT, {|_1|_1[1]==UPPER(cFld)}))==0
-				_j:=ValType(&cFld)	&&Есть ли смысл
+				_j:=ValType(&cFld)	&&Is have sence?
 			ENDIF
 			SELE _tmpb
 			AADD(m->_pole,IF(nFld=0,cFld,m->_dubl[nFld]))
@@ -1385,7 +1385,7 @@ Ferase(_tmpBase)
 **********
 FUNC FldBrow(_ptr,nKey)
 LOCAL i,_req:=2
-m->_c_f:=Field(_ptr)	//Используются в CopyField
+m->_c_f:=Field(_ptr)	//Used in CopyField
 m->__Content:=&_c_F
 DO CASE
 	CASE nKey=K_ENTER
@@ -1418,7 +1418,7 @@ DO CASE
 		Chg_Recs(1)
 
 	CASE nKey==_AltUp
-		CopyField(IF(ISShift(),8,1)) // 8,9- обмен
+		CopyField(IF(ISShift(),8,1)) // 8,9- exchange
 
 	CASE nKey==_AltDown
 		CopyField(IF(ISShift(),9,2))
@@ -1453,7 +1453,7 @@ IF LEN(m->_pole)/(__mrow-6) > _pages THEN _pages++
 
 PUSH KEYS COLOR _im
 Panel(1,0,__mrow,__mcol,{FULL_ED},{_im,_HdColor,_im})
-BEGIN SEQUENCE	//Против слетов для исправления Header
+BEGIN SEQUENCE	//For avoid breaks and for fixing Header
 DO WHILE .t.
   _r:=4
   IF !Empty(m->_fltrcond) .AND. !&_fltrcond THEN	go top
@@ -1527,7 +1527,7 @@ LOCAL _old,nRec:=RECNO()
 IF EMPTY(lFast)
 	IF !TryRLock() THEN RETU
 	dest:=RealFldName(dest)
-	m->_req:=2	//А вдруг фильтр нарушился
+	m->_req:=2	//If filter was broken
 	IF_NIL cType IS IF(Select()==1,m->_CurRType,VALTYPE(source))
 ENDIF
 
@@ -1617,17 +1617,17 @@ aLTable:=ACLONE(m->_aCommand)
 IF !FileOnPath(@_Ini) .OR. (_h:=FOPEN(m->_Ini,64))<=0
 	NFIND(PRV_NOMEMO + m->_Ini)
 ELSE
-//1-й IF зарезервирован для секция закрытия в AOP.
+//1-st IF reserved for closing section in AOP.
   aIf[1]:=!Really(_lIsClose)
   aIfWas[1]:=aIf[1]
-//aIfWas нужен для ELSEIF/CASE
+//aIfWas needed for ELSEIF/CASE
   _s:=''
    DO While FreadLn(_h, @_s1, 512)
 	_nTotRead:=FSEEK(_h, 0, 1)
 	m->_nLines++
 	_s1:=StrTran(ALLTRIM(_s1), chr(9),' ')
 	_s += _s1
-	IF SUBSTR(_s1,-1)==';'		// перенос
+	IF SUBSTR(_s1,-1)==';'		// carriage
 		_s:=Strip(_s,1)
 		LOOP
 	ENDIF
@@ -1640,14 +1640,14 @@ ELSE
 	*Parce(_s,'/*',@_s)
 
 	_s1:=SX_SlimFast(SUBST(_s,1,512))
-//SUBST потому что SlimFast портит _s
+//SUBST because SlimFast broke _s
 
 	IF LEFT(_s1,7)=='DO WHIL' THEN _s:=LTRIM(SUBSTR(_s,4))
 	Parce(_s,' ', @cKeyWord, @cArgs)
 	cKeyWord:=UPPER(cKeyWord)
 	cArgs:=LTRIM(cArgs)
-//Вариант с первичным поиском в полной таблице команд хуже
-//и по скорости и по размеру
+//Variant with the primary finding in full command table worse
+// by speed and by size
 
     BEGIN SEQUENCE
 	lSkipIf:=!aIf[nIf]
@@ -1655,10 +1655,10 @@ ELSE
 	lNoSkipPrev:=!lSkipWhile .AND. nIf>1 .AND. aIf[nIf-1]
 
 	IF (LEFT(_s1,3) $ '#IF ' .OR. _s1=='DO CASE');
-	   .AND. !lSkipWhile	//Не попутать с #INCLUDE
+	   .AND. !lSkipWhile	//Not lured to #INCLUDE
 
 		IF lSkipIf .OR. cKeyWord=='DO'
-//По предыдущему IF или инициация DO CASE
+//By previous IF or initialization of DO CASE
 			aIf[++nIf]:=.F.
 		ELSE
 			IF SUBSTR(cKeyWord,4,3) $ 'NDEF'
@@ -1675,10 +1675,10 @@ ELSE
 		ENDIF
 		aIfWas[nIf]:=aIf[nIf]
 	ELSEIF IsOperator(cKeyWord,'ELSE,OTHERWISE') .AND. lNoSkipPrev
-//Можно сделать отдельный IF, не будет выходить на ошибку
-//при неверной конструкции. Сейчас говорит: нет переменной.
+//You can make a separate IF, will not enter to error when wrong
+// expresstion. Now says: no variable.
 		aIf[nIf]:=!aIfWas[nIf]
-	ELSEIF cKeyWord=='ELSE'	//Чтобы с ELSEIF  не путать
+	ELSEIF cKeyWord=='ELSE'	//In order not to be confused with ELSEIF
 	ELSEIF IsOperator(cKeyWord,'ELSEIF,CASE')
 		IF lNoSkipPrev .AND. lSkipIf .AND. !aIfWas[nIf]
 			aIf[nIf]:=aIfWas[nIf]:=Evaluate(cArgs)
@@ -1688,10 +1688,10 @@ ELSE
 	ELSEIF IsOperator(cKeyWord,'ENDIF,ENDCASE');
 	 .AND. !lSkipWhile .AND. nIf>1
 		aIf[nIf--]:=.F.
-	ELSEIF cKeyWord=='[CLOSE]'	//Секция AOP
+	ELSEIF cKeyWord=='[CLOSE]'	//AOP section
 		aIf[1]:=!aIf[1]
 	ELSEIF lSkipIf
-//проигнорируем
+//ignore
 	ELSEIF IsOperator(cKeyWord,'WHILE') .OR. cKeyWord=='FOR'
 		IF cKeyWord=='FOR'
 			Parce(SUBSTR(_s1,5),'=',@_var,@_Init)
@@ -1724,7 +1724,7 @@ ELSE
 		ENDIF
 
 	ELSEIF lSkipWhile
-//проигнорируем
+//ignore
 	ELSEIF cKeyWord=='#INCLUDE'
 		IF LEFT(cArgs,1) + SUBSTR(cArgs,-1) $ "''"+ '""'
 			cArgs:=ALLTRIM(SUBSTR(cArgs,2,LEN(cArgs)-2))
@@ -1732,7 +1732,7 @@ ELSE
 		_i:=m->_req
 		RestoreIni(cArgs)
 		m->_req:=_i
-	ELSEIF cKeyWord=='#EXCLUDE'		//Поля
+	ELSEIF cKeyWord=='#EXCLUDE'		//Fields
 		Parce(cArgs,' ',@_afExclude)
 	ELSEIF cKeyWord=='#DEFINE'
 		Parce(cArgs,' ',@_var,@_Init)//<>0
@@ -1785,17 +1785,17 @@ ELSE
 	ELSEIF IsOperator(cKeyWord,'RETURN')
 		___Ret:=IF( EMPTY(cArgs), NIL, Evaluate(cArgs))
 	ELSEIF IsOperator(cKeyWord,'MEMVAR,FIELD,EXTERNAL')
-		//игнорируем
+		//ignore
 	ELSEIF '=' $ _s
 		Parce(_s,'=',@_var,@_Init)
-		IF EMPTY(_Var)		// только функция без переменной
+		IF EMPTY(_Var)		// just function without variable
 			Aktion(Compile(Preproc(_Init)))
 		ELSE
 			StripRight(@_var,':')	//:=
 
 			InitVar(_var,&_Init)
 			*&_var := EVAL(Preproc(_Init))
-			//Нельзя при присвоении блоков, они сразу выполняются
+			//Not allowed while assigning blocks - they immediately started
 		ENDIF
 	ELSE
 		Aktion(Compile(Preproc(_s)))
@@ -1811,8 +1811,8 @@ Fclose(_h)
 AEVAL(aLocals,{|_1| __MxRelease(_1)})
 IF lLTable THEN m->_aCommand:=ACLONE(aLTable)
 
-IF !m->lNoReOpen	// Может быть переопределена в ini
-	m->_req:=0	// перечитать
+IF !m->lNoReOpen	// May be redefined in ini
+	m->_req:=0	// reread
 ENDIF
 RETURN ___ret
 **********
@@ -1837,7 +1837,7 @@ ENDIF
 **********
 FUNC CheckDbf(cName,lNeedMemo,cFirstByte)
 LOCAL _handle,i,cRdd,_memo,_mFile,_cdx,lExit,NeedForced
-// Параметры - по ссылке
+// Parameters - by reference
 cFirstByte:=' '
 m->_MainMemoFile:=''
 
@@ -1845,7 +1845,7 @@ IF (_handle:=FOPEN(cName,66))<0
 	NFIND(cName+CORRUPT_OR_LOCKED)
 ELSE
   WHILE .T.
-	m->_aDbStruct:=RealStruct(_handle,@NeedForced)	//Переменная структуры (глобальная)
+	m->_aDbStruct:=RealStruct(_handle,@NeedForced)	//Structure variable (global)
 	IF EMPTY(m->_aDbStruct)
 		NFIND(cName+UNSUPPORT)
 		lExit:=.t.
@@ -1855,7 +1855,7 @@ ELSE
 #ifdef __CLIP__
 	IF !(cFirstByte $ chr(3)+chr(245)+chr(131)+chr(48)+chr(49)) .OR. !EMPTY(NeedForced)
 #else
-	IF !(cFirstByte $ 'їГЖЛхцЎ') .OR. !EMPTY(NeedForced)
+	IF !(cFirstByte $ 'їГЖЛхцЎ') .OR. !EMPTY(NeedForced) // utf-8: '╤Ч╨У╨Ц╨Ы╤Е╤Ж╨О'
 #endif
 	  IF !EMPTY(NeedForced)
 		NeedForced:=CHECK_DBF_FORCED[NeedForced]
@@ -1873,7 +1873,7 @@ ELSE
   ENDDO
 
   Fclose(_handle)
-  m->_MainHandle:=_handle	// если нормально открыт будет глобально доступен
+  m->_MainHandle:=_handle	// global access if normally opened
   IF EMPTY(lExit)
     m->__aDbStruct:={}
     m->___aDbStruct:={}
@@ -1891,20 +1891,20 @@ ELSE
 		ENDIF
 		i:=4
 
-	CASE m->_aCommon[2] $ chr(245)	//'ї' DBFCDX
+	CASE m->_aCommon[2] $ chr(245)	//'╤Ч' DBFCDX
 		IF UPPER(Substr(cName,-4))<>'.DBF';
 			THEN _memo:='.'+SUBSTR(cName,-3,2)+'T'
 		i:=1
 
-	CASE cFirstByte $ chr(131)	//'Г'	DBFNTX
+	CASE cFirstByte $ chr(131)	//'╨У'	DBFNTX
 		i:=2
 
 	CASE cFirstByte<>'0' .AND. IsVFP()
-		i:=1				//VFPCDX не открывает
+		i:=1				//VFPCDX not open
 
 	OTHER
 		IF (i:=ASCAN(m->__aRdd,_DefaultRDD))==0
-//н-р в ini неверно задан
+//number in ini specified incorrectly
 			IF (i:=SelectRdd())==0
 				_DefaultRdd:='DBFCDX'
 				i:=1
@@ -1916,7 +1916,7 @@ ELSE
     m->__CdxName:=_mFile+_DefaultCdx
     cRdd:=m->__aRdd[i]
     IF EMPTY(_memo) THEN _memo:=m->__aMem[i]
-    lNeedMemo:=(cFirstByte $ chr(245)+chr(131)+chr(48)+chr(49))	//'їГ01'
+    lNeedMemo:=(cFirstByte $ chr(245)+chr(131)+chr(48)+chr(49))	//'╤Ч╨У01'
     IF lNeedMemo .AND. !IsFileExist(@_mFile,_memo, , (cFirstByte $ '01'))
         IF !(cFirstByte $ '01')
 		cRdd:=''
@@ -1927,7 +1927,7 @@ ELSE
 	Sx_MemoExt(_memo)
 	m->_MainMemoFile:=_mFile
     ENDIF
-    cFirstByte:=SUBSTR(chr(245)+chr(131)+CHR(48)+CHR(49),i,1)	//Для возможного исправления MEMO
+    cFirstByte:=SUBSTR(chr(245)+chr(131)+CHR(48)+CHR(49),i,1)	//For a possible fix MEMO
 
     IF EMPTY(_DefaultCdx) .OR. !('.DBF' $ UPPER(m->_base))
 	m->__CdxName:=''

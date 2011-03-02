@@ -11,21 +11,21 @@ MEMVAR _mask
 **********
 FUNC Filer(cMask,cTopMess,bAction,aAddLines,abAction,bSearch,hTopic)
 /*
-  Параметры (все необязательные):
-	cMask - маска вызова [*.*].
-	cTopMess - сообщение на рамке [Выбирайте файл].
-	bAction - блок кода,выполняющийся при считывании файла
-		  (для дополнительного описания) [{||bDefault(имя файла)}]
-		  по умолчанию - не добавляется ничего. Блоку передается
-		  соответствующий элемент Directory.
-	aAddLines - массив строк,которые надо добавить к массиву файлов.
-	abAction - двумерный массив клавиша/ее действие (F2-F10).
-	bSearch - блок поиска в полученном массиве
-	hTopic - имя главы в Help
+  Parameters (All optional):
+	cMask - call mask [*.*].
+	cTopMess - message on frame [Select file].
+	bAction - code block executing while file is reading
+		  (for additional description) [{||bDefault(file name)}]
+		  adds nothing by default. To block transferred the
+		  corresponding Directory element.
+	aAddLines - array of strings, which needed append to files array
+	abAction - Bi-dimensional array key/action (F2-F10).
+	bSearch - Searching block in resulting array
+	hTopic - Charter title in the Help
 
-	Возвращает {0,''} (при ESC) или
-		   {номер выбранного элемента,имя файла,выбран доп.элемент}
-		   (при ENTER)
+	Returns {0,''} (with ESC) or
+		   {number of selected element,file name,selected additional element}
+		   (with ENTER)
 */
 LOCAL	aDirs,aFiles,aFile,aTemp,aMain,i,nMaxLen,;
 	nDirs,cTemp,aRet,cTop,aDscr,bEval,;

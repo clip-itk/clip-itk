@@ -30,7 +30,7 @@ STATIC aPrint:={ "_NeedRec","_RecRight","_NeedCentr","_printZero",;
 		"_NeedMainHead","_NeedPrPage",;
 		"_NeedHeadPage","_lTitleAll",;
 		"_lDgtHdr","_lDHAll",;
-		"_DefaultHBorder","_DefaultBorder",;//В зависимости от места вызова
+		"_DefaultHBorder","_DefaultBorder",;//Depending on where the call
 		"_NeedEject","_Printer","_NeedApFile"}
 
 STATIC aSet:={	"EXACT","FIXED","DECIMALS","DATEFORMAT","EPOCH","PATH",;
@@ -87,7 +87,7 @@ FOR i:=1 TO LEN(aColor)
 	cColor:=aColor[i]
 	AADD(Sets, IF(TYPE(cColor)=='C', PAD(&(cColor),42), &(cColor) ) )
 NEXT
-* Конструкция AEVAL(aColor, ... дает больший .о
+* Construction AEVAL(aColor, ... give more 
 
 Gets:={ {05,05,_MSG_A_C_ED},;
 	{07,05,_MSG_A_C_HLP},;
@@ -156,7 +156,7 @@ IF ConfigWindow(Gets,Sets,_MSG_A_O_TOP,{})
 		ENDIF
 	END
 	IF TYPE(_MemoEditor)=='A' THEN _memoEditor:=&(_MemoEditor)
-	m->_req:=0	//Из-за _lForced,_nBrowMaxField
+	m->_req:=0	//because _lForced,_nBrowMaxField
 ENDIF
 **********
 PROC OtherConf1()
@@ -235,7 +235,7 @@ IF ConfigWindow(Gets,Sets,SELECT_PRINT,{{8,START_CHAR},{10,END_CHAR}})
 	FOR i:=1 TO LEN(aPrint)
 		&(aPrint[i]):=Sets[i]
 	NEXT
-	*AEVAL(Sets, {|el,i| &(aPrint[i]):=el}) //Не работает
+	*AEVAL(Sets, {|el,i| &(aPrint[i]):=el}) //Don't work
 	m->_psCode:=TRIM(Sets[7])
 	m->_peCode:=TRIM(Sets[8])
 	m->_Printer:=ALLTRIM(Sets[22])
@@ -323,7 +323,7 @@ IF ((i:=ForAch(5,DRV_DEFAULT,;
 	m->_DefaultMemo:=m->__aMem[i]
 	m->_DefaultCdx:=m->__aCdx[i]
 	RDDSetDefault(m->_DefaultRdd)
-/*Это в CheckDbf сделается
+/*This is done inCheckDbf
 	SX_MemoExt(m->_DefaultMemo)
 	__CdxName:=Sx_FnameParser(_base,.t.)+m->_DefaultCdx
 */
@@ -342,7 +342,7 @@ IF aNames[1]#0
 		m->_req:=0
 		Set("DBF_CHARSET", Sx_FNameParser(aNames[2]))
 	ELSE
-		xCp:=aNames[2]	//по ссылке
+		xCp:=aNames[2]	//by reference
 	ENDIF
 	RETU .T.
 ENDIF

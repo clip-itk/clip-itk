@@ -26,7 +26,7 @@ IF !TestWriteFile(@_HtmlFile,'.HTM');
 lConv:= IF(EMPTY(_lexp_o2aq), _lexp_o2a, Continue(NEED_OEM2ANSI, 1))
 
 bEval:=Compile(m->_HtmlCond)
-CheckEsc(.T.)	//счетчик
+CheckEsc(.T.)	//counter
 
 SET(_SET_PRINTFILE,m->_HtmlFile)
 SET DEVI TO PRINT
@@ -35,25 +35,25 @@ SET DEVI TO PRINT
 HtmlHeader(@cTitle, @aDesign, lConv)
 
 PSAY('<H2>'+cTitle)
-/*определим таблицу*/;
+/*define table*/;
 PSAY(	'<TABLE BGCOLOR="'+ aDesign[2] + '" '+;
 	'BORDER=8 FRAME=ALL CellPadding=4 CellSpacing=0 '+;
 	'COLS=' + NTRIM(m->_fc)+'>')
 PSAY()
 FOR i := 1 TO m->_fc
-	// Для многострочных заголовков вставляется line break
+	// Insert like break for multiline headers
 	*DevOut("<TH COLSPAN=1 VALIGN=BOTTOM>"+;
 	cLine:=StrTran(m->_Works[i], ';', '<BR>')
 	IF lConv THEN cLine:=OemToAnsi(cLine)
 	DEVOUT('<TH VALIGN=BOTTOM>'+cLine)
 NEXT
-// пошла сама таблица
+// here table body
 PSAY('<TBODY>')
 
 DO WHILE !EOF() .AND. CheckEsc()
     IF EVAL(bEval)
 
-      cLine:='<TR>'  // строка
+      cLine:='<TR>'  // string
 
       FOR i := 1 TO m->_fc
 
@@ -68,8 +68,7 @@ DO WHILE !EOF() .AND. CheckEsc()
 		cLine += 'Right'
 
 		/*
-		Если есть желание, можно aligning сделать по десятичной
-		точке
+		Align by decimal dot, if needed
 		    IF "," $ cCell
 			cAlign := "<TD Align=Char Char=,>"
 		    ENDIF
@@ -93,15 +92,15 @@ DO WHILE !EOF() .AND. CheckEsc()
 
 	IF lConv THEN cCell:=OemToAnsi(cCell)
 	cLine+='>'+IF(DELETED(),'<FONT COLOR="' +aDesign[4]+'">','')+;
-		IF(EMPTY(cCell),'&nbsp',cCell)	// пустая ячейка
+		IF(EMPTY(cCell),'&nbsp',cCell)	// empty cell
 
       NEXT
-      PSAY(cLine)	//+'</TR>'//Необязательно
+      PSAY(cLine)	//+'</TR>'//Optional
     ENDIF
     DBSKIP()
 ENDDO
 PSAY('</TABLE></BODY></HTML>')
-//свистнем о завершении
+//Say about ending
 File_Dial(m->_HtmlFile)
 GO m->_tmr
 
@@ -130,7 +129,7 @@ PSAY('	<TITLE>'+cTitle+'</TITLE>')
 #ENDIF
 PSAY('	<META NAME="generator" CONTENT="' + BDBF_VERSION +'">')
 PSAY('</HEAD>')
-// установим цвета (кроме линков)
+// set colors (exclude links)
 PSAY('<BODY BGCOLOR="'+ aDesign[1]+ '" TEXT="' + aDesign[3] + '">')
 PSAY('<CENTER>')
 
@@ -153,7 +152,7 @@ IF !TestWriteFile(@_XLSFile,'.XLS');
 
 lConv:= IF(EMPTY(_lexp_o2aq), _lexp_o2a, Continue(NEED_OEM2ANSI, 1))
 bEval:=Compile(m->_XLSCond)
-CheckEsc(.T.)	//счетчик
+CheckEsc(.T.)	//counter
 
 // header
 //header OpenOffice.org excelfileformat.pdf, MSDN ID: Q178605
@@ -169,7 +168,7 @@ IF !EMPTY(cTitle)
 ENDIF
 
 FOR i := 1 TO m->_fc
-	// Для многострочных заголовков вставляется line break
+	// Insert like break for multiline headers
 	cCell:=StrTran(m->_Works[i], ';', CHR(10))
 	WriteCell(_h, cCell, i, nRow, 0, lConv, lYesNo)
 NEXT
@@ -192,7 +191,7 @@ DO WHILE !EOF() .AND. CheckEsc()
 ENDDO
 FWRITE(_h, I2Bin(10)+I2Bin(0))	//XLSEOF
 FCLOSE(_h)
-//свистнем о завершении
+//Say about ending
 File_Dial(m->_XLSFile)
 GO m->_tmr
 
@@ -248,7 +247,7 @@ lConv:= IF(EMPTY(_lexp_o2aq), _lexp_o2a, Continue(NEED_OEM2ANSI, 1))
 IF_NIL cRecName IS 'Record'
 
 bEval:=Compile(m->_XMLCond)
-CheckEsc(.T.)	//счетчик
+CheckEsc(.T.)	//counter
 
 SET(_SET_PRINTFILE,m->_XMLFile)
 SET DEVI TO PRINT
@@ -262,7 +261,7 @@ SET DEVI TO PRINT
 cBase:=SX_FNameParser(m->_base)
 cBaseTrue:=SX_FNameParser(m->_base,.F.,.T.)
 IF lConv THEN cBase:=OemToAnsi(cBase)
-IF cBase<'A'	//С цифры
+IF cBase<'A'	//from number
 	cBase:='_'+cBase
 ENDIF
 //DTD
@@ -305,7 +304,7 @@ PSAY('	>')
 AEVAL(aTypes, {|_el| PSAY('	'+_el)})
 
 PSAY(']>')
-//Сама база пошла
+//Database here
 PSAY('<'+cBase+'>')
 IF_NIL cTitle IS m->_base
 cTitle+=' '+Description(cBaseTrue)
@@ -314,7 +313,7 @@ IF lConv THEN cTitle:=OemToAnsi(cTitle)
 
 PSAY('<!--'+_CRLF+'    '+cTitle+_CRLF+'-->')
 
-// пошла сама таблица
+// table here
 
 DO WHILE !EOF() .AND. CheckEsc()
     IF EVAL(bEval)
@@ -359,7 +358,7 @@ DO WHILE !EOF() .AND. CheckEsc()
     DBSKIP()
 ENDDO
 PSAY('</'+cBase+'>'+_CRLF)
-//свистнем о завершении
+//Say about ending
 File_Dial(m->_XMLFile)
 GO m->_tmr
 
