@@ -624,30 +624,32 @@ SETINT(void *ptr, int l)
 	memcpy(ptr, &l, sizeof(l));
 }
 
-static short get_short(void* ptr)
+static short get_short(char** ptr)
 {
 	short **pp = (short**)ptr;
 	short r;
 
-	memcpy(&r, pp, sizeof(r));
+	memcpy(&r, *pp, sizeof(r));
 	(*pp)++;
 	return r;
 }
 
-static long get_long(void* ptr)
+static long get_long(char** ptr)
 {
 	long **pp = (long**)ptr;
 	long r;
 
-	memcpy(&r, pp, sizeof(r));
+	memcpy(&r, *pp, sizeof(r));
 	(*pp)++;
 	return r;
 }
 
-static unsigned char get_byte(void* ptr)
+static unsigned char get_byte(char** ptr)
 {
-	unsigned char **pp = (unsigned char**)ptr;
-	return *(*pp)++;
+	unsigned char r = **ptr;
+
+	(*ptr)++;
+	return r;
 }
 
 #else
@@ -657,22 +659,31 @@ static unsigned char get_byte(void* ptr)
 #define SETLONG(ptr,l) (*(long*)(ptr)=(l))
 #define SETINT(ptr,l) (*(int*)(ptr)=(l))
 
-static short get_short(void* ptr)
+static short get_short(char **ptr)
 {
 	short **pp = (short**)ptr;
-	return *(*pp)++;
+	short r = **pp;
+
+	*ptr += sizeof(r);
+	return r;
 }
 
-static long get_long(void* ptr)
+static long get_long(char **ptr)
 {
 	long **pp = (long**)ptr;
-	return *(*pp)++;
+	long r = **pp;
+
+	*ptr += sizeof(r);
+	return r;
 }
 
-static unsigned char get_byte(void* ptr)
+static unsigned char get_byte(char **ptr)
 {
 	unsigned char **pp = (unsigned char**)ptr;
-	return *(*pp)++;
+	unsigned char r = **pp;
+
+	*ptr += sizeof(r);
+	return r;
 }
 
 #endif
