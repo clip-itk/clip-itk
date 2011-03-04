@@ -11,10 +11,10 @@
 #define K_UNDO          K_CTRL_U
 
 #ifdef LANG_RUSSIAN
-      #define MSG_INSERT     "Вст"
-      #define MSG_OVERWRITE  "Зам"
-      #define MSG_DATE_ERROR "Ошибка Даты "
-      #define MSG_RANGE_ERROR "Диапазон: "
+      #define MSG_INSERT     "Вст"          //utf-8: "п▓я│я┌"
+      #define MSG_OVERWRITE  "Зам"          //utf-8: "п≈п╟п╪"
+      #define MSG_DATE_ERROR "Ошибка Даты " //utf-8: "п·я┬п╦п╠п╨п╟ п■п╟я┌я▀ "
+      #define MSG_RANGE_ERROR "Диапазон: "  //utf-8: "п■п╦п╟п©п╟п╥п╬п╫: "
 #else
       #define MSG_INSERT    "Ins"
       #define MSG_OVERWRITE "Ovr"
@@ -22,11 +22,11 @@
       #define MSG_RANGE_ERROR "In range: "
 #endif
 
-// Координаты SCOREBOARD - области состояния на экране
+// Coordinates SCOREBOARD - the status area on the screen
 #define SCORE_ROW		0
 #define SCORE_COL		60
 
-// Глобальные переменные состояния для активации READ
+// Global status variables to activate READ
 static status
 static __getlist
 
@@ -266,7 +266,7 @@ func GetPostValidate(get)
 		get:UpdateBuffer()
 		status:Updated := saveUpdated
 		if ( status:KillRead )
-			get:exitState := GE_ESCAPE  // вызвать выход из ReadModal()
+			get:exitState := GE_ESCAPE  // call exit from ReadModal()
 			valid := .t.
 		end
 	end
@@ -285,7 +285,7 @@ proc GetDoSetKey(keyBlock, get)
 	get:UpdateBuffer()
 	status:Updated := saveUpdated
 	if ( status:KillRead )
-	     get:exitState := GE_ESCAPE    // вызвать выход из ReadModal()
+	     get:exitState := GE_ESCAPE    // call exit from ReadModal()
 	end
 return
 
@@ -326,13 +326,13 @@ static func Settle(GetList, pos)
 		pos ++
 	endcase
 
-	if ( pos == 0 )             // слишком резко вверх
+	if ( pos == 0 )             // too sharply upward
 		if ( !ReadExit() .and. !status:BumpBot )
 			status:BumpTop := .T.
 			pos := status:LastPos
 			exitState := GE_DOWN
 		end
-	elseif ( pos == Len(GetList) + 1 )    // слишком резко вниз
+	elseif ( pos == Len(GetList) + 1 )    // too sharply downward
 		if ( !ReadExit() .and. exitState <> GE_ENTER .and. !status:BumpTop )
 			status:BumpBot := .T.
 			pos := status:LastPos

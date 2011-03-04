@@ -5,17 +5,17 @@ $CATEGORY$
 $SUMMARY$
 	Counts the number of characters in the input buffer.
 $LANG_RU$
-	Определяет число доступных символов в буфере приема.
+	п·п©я─п╣п╢п╣п╩я▐п╣я┌ я┤п╦я│п╩п╬ п╢п╬я│я┌я┐п©п╫я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡ п╡ п╠я┐я└п╣я─п╣ п©я─п╦п╣п╪п╟.
 $SYNTAX$
 	COM_COUNT(<nComPort>) --> nTotalCharacters
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N) for which the number of characters in the input buffer is determined.
 $LANG_RU$
-	<nComPort> - Определяет номер порта.
+	<nComPort> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╬п╪п╣я─ п©п╬я─я┌п╟.
 $RETURNS$
 	Return the number of characters in the selected buffer.
 $LANG_RU$
-	Возвращает число доступных символов в буфере приема.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ п╢п╬я│я┌я┐п©п╫я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡ п╡ п╠я┐я└п╣я─п╣ п©я─п╦п╣п╪п╟.
 $DESCRIPTION$
 	This function allows you to determine the number of characters
 	in recieve buffer. This lets you determine how many characters can be
@@ -24,11 +24,11 @@ $DESCRIPTION$
 	If an attempt is made to read the number of characters available
 	in a closed port, the function returns a value of -1.
 $LANG_RU$
-	Эта функция позволяет узнать число доступных символов в буфере
-	приема. Это позволяет определить, сколько символов может быть прочитано
-	функцией COM_READ().
+	п╜я┌п╟ я└я┐п╫п╨я├п╦я▐ п©п╬п╥п╡п╬п╩я▐п╣я┌ я┐п╥п╫п╟я┌я▄ я┤п╦я│п╩п╬ п╢п╬я│я┌я┐п©п╫я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡ п╡ п╠я┐я└п╣я─п╣
+	п©я─п╦п╣п╪п╟. п╜я┌п╬ п©п╬п╥п╡п╬п╩я▐п╣я┌ п╬п©я─п╣п╢п╣п╩п╦я┌я▄, я│п╨п╬п╩я▄п╨п╬ я│п╦п╪п╡п╬п╩п╬п╡ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п©я─п╬я┤п╦я┌п╟п╫п╬
+	я└я┐п╫п╨я├п╦п╣п╧ COM_READ().
 
-	Если функция вызывается для закрытого порта, возвращается -1.
+	п∙я│п╩п╦ я└я┐п╫п╨я├п╦я▐ п╡я▀п╥я▀п╡п╟п╣я┌я│я▐ п╢п╩я▐ п╥п╟п╨я─я▀я┌п╬пЁп╬ п©п╬я─я┌п╟, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ -1.
 $EXAMPLES$
 	nCharacter  :=  COM_COUNT(1)   // Number of characters-port 1
 	IF nCharacter > 0
@@ -39,7 +39,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_DTR(),COM_RTS(),COM_SOFT(),COM_TIMEOUT(),COM_HARD(),COM_NUM()
 $AUTHOR$

@@ -26,7 +26,7 @@ function menuitem(caption,data,shortcut,message,id)
 #ifdef __UNIX__
    obj:style	:= "*>"
 #else
-   obj:style	:= "–"+chr(16)
+   obj:style	:= chr(150)+chr(16) // "âˆš"+chr(16)
 #endif
 
    _recover_menuitem(obj)

@@ -169,7 +169,7 @@
    Paul Lasarev <paul@itk.ru>
 
    Revision 1.29  2000/05/17 01:21:58  clip
-   uri: я не помнню что я тут сделал - sorry !
+   uri: I do not remember what I did here - sorry !
 
    Revision 1.28  2000/05/16 15:12:49  clip
    uri: (ret=) realloc
@@ -178,59 +178,60 @@
    add prefix 'clip_' to all clip functions
 
    Revision 1.26  2000/04/21 18:16:52  clip
-   мелкий глюк в remall
+   little bug in remall
 
    Revision 1.25  2000/04/14 19:11:40  uri
-   кучка функций num* из tools
+   few functions num* from tools
 
    Revision 1.24  2000/03/30 17:04:08  uri
-   переделал под новые вызовы ошибок
+   rewriten for new error calls
 
    Revision 1.23  2000/03/21 19:20:26  uri
    bug in tabexpand, tabpack
 
    Revision 1.22  1999/12/13 21:21:36  uri
-   добавил unsigned в стринковских функциях
+   added 'unsigned' to string functions
 
    Revision 1.21  1999/12/10 21:16:34  uri
-   в typename добавил MEMO_t
+   added MEMO_t in 'typename'
 
    Revision 1.20  1999/12/10 17:28:28  uri
-   убрал предупреждения в cliprt, добавил MEMO_t, сделал несколько misc
-   функций из тулзов
+   deleted  warnings in 'cliprt', added MEMO_t, made few 'misc'
+   functions from tools
 
    Revision 1.19  1999/12/09 21:19:19  uri
-   убрал warnings и начал misc functions of tools
+   deleted warnings and started misc* functions from tools
 
    Revision 1.18  1999/12/08 21:01:21  uri
-   доделал фйнкции с датами из тулзов
+   completed DATE-functions from tools
 
    Revision 1.17  1999/12/04 22:16:34  uri
-   вычистил все предупреждения
+   warnings cleanup
 
    Revision 1.16  1999/12/04 20:43:06  uri
    bug in tokennext()
 
    Revision 1.15  1999/12/04 19:15:03  uri
-   новый gcc
+   new gcc
 
    Revision 1.14  1999/12/04 16:41:19  uri
-   доделал все (кроме strdiff,pack,crypt) строковы функции из тулзов
+   all strings-related functions from tools now completed
+   (except strdiff,pack,crypt)
 
    Revision 1.13  1999/12/02 22:03:23  uri
-   еще не доделал token*
+   not completed token*
 
    Revision 1.12  1999/12/01 17:29:28  uri
    functions word*, token
 
    Revision 1.11  1999/11/30 22:18:44  uri
-   остановился на tabpack
+   stopped on tabpack
 
    Revision 1.10  1999/11/30 18:02:19  uri
    strswap problems
 
    Revision 1.9  1999/11/29 22:48:39  uri
-   еще немного функций из тулзов
+   some functions from tools
 
    Revision 1.8  1999/11/27 20:28:49  uri
    test for logged _ctools_s.c

@@ -7,8 +7,8 @@
 #include "button.ch"
 
 #ifdef __UNIX__
-  #define SB_UPSYM      "ì"
-  #define SB_DOWNSYM    "õ"
+  #define SB_UPSYM      "ì" // utf-8: "‚å†"
+  #define SB_DOWNSYM    "õ" // utf-8: "‚å°"
   #define SB_LEFTSYM    "<"
   #define SB_RIGHTSYM   ">"
   #define SB_THUMBSYM   "#"
@@ -17,9 +17,9 @@
   #define SB_DOWNSYM    chr(25)
   #define SB_LEFTSYM    chr(27)
   #define SB_RIGHTSYM   chr(26)
-  #define SB_THUMBSYM   "í"
+  #define SB_THUMBSYM   "í" // utf-8: "‚ñì"
 #endif
-#define SB_FILLSYM    "ê"
+#define SB_FILLSYM    "ê" // utf-8: "‚ñë"
 
 ***************************************************
 function scrollBar(nstart,nend,noffset,bsBlock,orient)

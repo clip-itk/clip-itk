@@ -41,13 +41,13 @@ IF EMPTY(m->_MemoEditor) .OR. !m->lEdit
 		ShowMouse();ShowMouse()
 		i:=MemoEdit(m->cFld,6,3,__mrow-6,__mcol-3,m->lEdit,;
 			    'FileEditor', m->nrBorder,m->_nMemoTab)
-		inkey()		//вычитать лишний ESC
+		inkey()		//reads extraneus ESC
 		IF !m->lReload
 			cFld:=i
 			m->lReload:=.F.
 		ENDIF
 		IF m->lFinish THEN EXIT
-//Произошли изменения конфигурации
+//Configuration changes was occured
 		m->nrBorder:=m->_nMemoWrap
 	ENDDO
 	IF !m->lEdit .OR. LastKey()==K_ESC;
@@ -60,7 +60,7 @@ ELSE
 		lSpec:=.T.
 		IF (i:=ASCAN(m->_memoEditor,{|x|LIKE(x[1],_c_f)}))==0;
 			THEN i:=1
-// если не найдено - первый
+// If not found - first
 		amEd:=m->_MemoEditor[i]
 		ASIZE(amEd,5)
 		cEditor:=amEd[2]
@@ -116,7 +116,7 @@ ELSE
 					nRes:=ME_IGNORE
 				ELSEIF nKey=2
 					oEd:updated:=.F.
-					KEYBOARD _ESC	//Далее есть обработка LastKey()
+					KEYBOARD _ESC	//Further is LastKey() processing
 				ELSEIF nKey=3
 					nRes:=K_CTRL_W
 				ENDIF
@@ -124,7 +124,7 @@ ELSE
 
 		CASE nKey==K_ALT_X
 			oEd:updated:=.F.
-			KEYBOARD _ESC	//Не допустить повтора
+			KEYBOARD _ESC	//Prevent repeat
 			nRes:=K_ESC
 
 		CASE nKey==K_F2
@@ -156,14 +156,14 @@ ELSE
 		CASE nKey==K_F6 .OR. (nKey==K_INS .AND. IsShift())
 			InsString(oEd, GetWinClip(), .T.)
 			nRes:=ME_IGNORE
-			__Keyboard(_RIGHT+_LEFT)	//курсор не устанавливается
+			__Keyboard(_RIGHT+_LEFT)	//cursor is not set
 
 		CASE nKey==K_CTRL_GMINUS
 			InsString(oEd, FT_XTOY(GetClipBoard(), 'C'), .T.)
 			__Keyboard(_RIGHT+_LEFT)
 
 		CASE nKey==K_F9 .AND. GetMemoVars()
-			m->lFinish:=.F.		//перечитать
+			m->lFinish:=.F.		//reread
 			nRes:=K_CTRL_W
 
 		CASE nKey==K_F10
@@ -171,7 +171,7 @@ ELSE
 
 		CASE nKey==K_CTRL_F10
 			InsString(oEd, AsciiTbl(CHR(ch)), .T. )
-			__Keyboard(_RIGHT+_LEFT)	//курсор не устанавливается
+			__Keyboard(_RIGHT+_LEFT)	//cursor is not set
 
 		CASE nKey==K_INS .AND. m->lEdit
 			Set( _SET_INSERT, !Set(_SET_INSERT) )

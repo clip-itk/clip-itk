@@ -5,28 +5,28 @@ $CATEGORY$
 $SUMMARY$
 	Close GZIP file.
 $LANG_RU$
-	Закрывает GZIP файл.
+	п≈п╟п╨я─я▀п╡п╟п╣я┌ GZIP я└п╟п╧п╩.
 $SYNTAX$
 	gZipClose(<nHandle>) --> lRet
 $LANG_RU$
 $ARGUMENTS$
 	<nHandle> - number of opened file.
 $LANG_RU$
-	<nHandle> - номер открытого файла.
+	<nHandle> - п╫п╬п╪п╣я─ п╬я┌п╨я─я▀я┌п╬пЁп╬ я└п╟п╧п╩п╟.
 $RETURNS$
        gZipClose() returns .t. or .f. as information about error.
 $LANG_RU$
-       gZipClose() возвращает .t. или .f. в зависимости от наличия ошибки.
+       gZipClose() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .t. п╦п╩п╦ .f. п╡ п╥п╟п╡п╦я│п╦п╪п╬я│я┌п╦ п╬я┌ п╫п╟п╩п╦я┤п╦я▐ п╬я┬п╦п╠п╨п╦.
 $DESCRIPTION$
 	gZipClose() must be called explicitly, to clear and sync all buffers.
 $LANG_RU$
-	gZipClose() сбрасывает все буффера на диск и закрывает файл.
+	gZipClose() я│п╠я─п╟я│я▀п╡п╟п╣я┌ п╡я│п╣ п╠я┐я└я└п╣я─п╟ п╫п╟ п╢п╦я│п╨ п╦ п╥п╟п╨я─я▀п╡п╟п╣я┌ я└п╟п╧п╩.
 $EXAMPLES$
 	lRet := gzipClose(h)
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	gZipOpen(),gZipRead(),gZipWrite()
 $AUTHOR$

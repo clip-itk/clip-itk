@@ -9,12 +9,12 @@ static key_maps
 
 /********************************************
 * func HK_load()
-* читает переназначение клавиш для пользовательских программ
-* типа "редактор", "отладчик", .........
-* из файла keymaps, который может лежать в:
-* 1. в /usr/local/lib/clip/
-* 2. по пути, указанному в setenv("RTCLIP_PATH")
-* 3. в $HOME/.clip
+* reads keys remapping for user programs
+* such as "editor", "debugger", .........
+* from keymaps file, which can be:
+* 1. in /usr/local/lib/clip/
+* 2. in path specified in setenv("RTCLIP_PATH")
+* 3. in $HOME/.clip
 */
 function HK_load()
 local nfile
@@ -122,7 +122,7 @@ function HK_init
 	key_maps:edit:=map()
 	k:=key_maps:edit
 
-	/* Код клавиши 	  Команда */
+	/* Key code 	  Command */
 	k[ K_ESC ]	:=HASH_CallMenu		// call Menu
 	k[ K_ALT_X ]	:=HASH_ExitSave		// exit from editor witch save
 	k[ K_ALT_B ]	:=HASH_ExitNoSave	// exit from editor witchout save
@@ -170,7 +170,7 @@ function HK_init
 	key_maps:dialog:=map()
 	k:=key_maps:dialog
 
-	/* Код клавиши 	  Команда */
+	/* Key code 	  Command */
 	k[ K_ESC ]	:=HASH_CallMenu		// call Menu
 	k[ K_ALT_X ]	:=HASH_Exit		// exit from dialog box
 	k[ K_F6 ]	:=HASH_Find		// find string
@@ -181,7 +181,7 @@ function HK_init
 	key_maps:commander:=map()
 	k:=key_maps:commander
 
-	/* Код клавиши 	  Команда */
+	/* Key code 	  Command */
 	k[ K_F9 ]	:=HASH_CallMenu		// call Menu
 	k[ K_ESC ]	:=HASH_CallMenu		// call Menu
 
@@ -197,7 +197,7 @@ function HK_init
 	key_maps:htmlBrowser:=map()
 	k:=key_maps:htmlBrowser
 
-	/* Код клавиши 	  Команда */
+	/* Key code 	  Command */
 	k[ K_F9 ]	:=HASH_CallMenu		// call Menu
 	k[ K_F2 ]	:=HASH_CallMenu		// call Menu
 	k[ K_ESC ]	:=HASH_Exit		// call Menu
@@ -244,8 +244,8 @@ function HK_add(name,data)
 return map()
 
 ***********************************************
-* по массиву назначенных клавиш и хеш-коду
-* возвращает активную клавишу
+* returns active key by HASH-code from
+* array of assigned keys
 ***********************************************
 function HK_get_key(keymap,hashKey)
    local ret:=0,i,m

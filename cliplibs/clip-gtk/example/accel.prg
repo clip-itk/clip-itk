@@ -9,7 +9,7 @@ gtk_WindowSetIconPixmap(win, pix)
 gtk_signalConnect(win, "delete-event", {|| gtk_quit()})
 
 //gtk_SignalConnect(win, GTK_EVENT, {|wgt, ev| iif(ev:event!=GTK_KEY_PRESS, .f., (qout(ev:keyval, chr(ev:keyval))))})
-btn := gtk_ButtonNew(, "ф&ыва", "&")
+btn := gtk_ButtonNew(, "q&wer", "&")
 //btn:AccelKey=115
 gtk_SignalConnect(btn, "clicked", {|| qout("clicked asdf")})
 gtk_WidgetAddAccelerator(btn, GTK_CLICKED_SIGNAL, win, ;

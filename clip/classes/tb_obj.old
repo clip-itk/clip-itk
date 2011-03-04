@@ -51,7 +51,7 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	   obj:leftVisible	:= 1
 	   obj:rightVisible	:= 1
 	   obj:message	:= ""
-	   obj:chop		:= .f. /* показывать неполностью вмещаемые колонки ?*/
+	   obj:chop		:= .f. /* show incompletely accommodates columns? */
 	   obj:hiliteType	:= 1   /* 0 -none
 					  1 - current ceil
 					  2 - current line
@@ -84,7 +84,7 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	  obj:_stableColPos	:=NIL
 	  obj:_stablefreeze	:=NIL
 
-	  obj:__firstStab	:=.f.  // был ли первый stabilize
+	  obj:__firstStab	:=.f.  // Was the first 'stabilize'?
 	  obj:__rect	:={0,0,0,0}
 
 	  obj:__colorCells	:={}  // items for colorRect()
@@ -94,24 +94,24 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	  obj:__columns	:={}
 
 	  obj:__lRedrawTable    := .t. // need redraw headers & footers
-	  obj:__columnsLen	:={} // длины колонок
-	  obj:__colVisible	:={} // видимые колонки
-	  obj:__colpos		:=1  // текущая колонка из числа видимых
-	  obj:__whereVisible	:={} // row для каждой видимой колонки
-	  obj:__headStrings	:={} // надписи заголовков по строкам
-	  obj:__footStrings	:={} // надписи подвалов по строкам
+	  obj:__columnsLen	:={} // length of columns
+	  obj:__colVisible	:={} // visible columns
+	  obj:__colpos		:=1  // current column (one of visible columns)
+	  obj:__whereVisible	:={} // row for every visible column
+	  obj:__headStrings	:={} // text in line headers
+	  obj:__footStrings	:={} // text in line footers
 
-	  obj:__colors	:={} // палитры цветов
+	  obj:__colors	:={} // colors palettes
 	  obj:__keys	:=map() // array for ::setkey()
 
-	  obj:__headRows	:=0  // строк в заголовке
-	  obj:__footRows	:=0  // строк в подвале
+	  obj:__headRows	:=0  // count lines in header
+	  obj:__footRows	:=0  // count lines in footer
 	  obj:__dummyRows	:=0
 
-	  obj:__stablePos	:=0  // скока записей уже отрисовалось во время стабилизации
-	  obj:__stableSkips	:=0  // скока надо сделать skip чтобы вернуться на текущую
-				 // запись после стабилизации
-	  obj:__rightAll	:=.f. // больше справа никого нет
+	  obj:__stablePos	:=0  // how many records already draw during stabilization
+	  obj:__stableSkips	:=0  // how much do 'skip' operations for return to the current
+				 // record after stabilization
+	  obj:__rightAll	:=.f. // there is nothing at right side
 
 	  obj:winbuffer		:= nil
 
@@ -161,10 +161,10 @@ function _recover_tbrowse(obj)
 	   obj:stabilize	:= @stabilize()
 	   obj:forceStable	:= @forceStable()
 
-	   obj:__whoVisible	:= @__whoVisible() // вычислить кто видимый
+	   obj:__whoVisible	:= @__whoVisible() // who is visible
 	   obj:__reMakeColumns	:= @__remakeColumns()
 	   obj:__dummyRow	:= @__dummyRow()
-	   obj:__sayTable	:= @__sayTable() // рисовать обрамление, заголовки, подвалы
+	   obj:__sayTable	:= @__sayTable() // draw framing, heares, footers
 	   obj:__setColor	:= @__setcolor()
 	   obj:__checkRow	:= @__checkRow()
 
@@ -1612,7 +1612,7 @@ static func stabilize(self)
 	return self:stable
   endif
   self:__checkRow()
-	// нуль-стабилизация
+	// null-stabilization
   if self:__stablePos==-1
 	eval(self:skipBlock,0)
 		self:__stablePos:=0
@@ -1630,9 +1630,9 @@ static func stabilize(self)
 #endif
 		return self:stable
   endif
-	// конец стабилизации
+	// end of stabilization
   if self:__stablePos >= self:rowcount
-		// возврат на текущую запись
+		// return to current record
 		if self:__stableSkips<0
 			self:rowPos+=self:__stableSkips
 			self:__stableSkips=0
@@ -1671,7 +1671,7 @@ static func stabilize(self)
   self:__stablePos++
   self:_outCurrent(self:__stablepos)
   if nskip==0 .and. self:__stablePos>1
-	 // дорисовать остаток экрана
+	 // finish screen rect drawing
 	 row:=row()-1; col:=col()
 	 self:dummyRows:=0
 	 for i=self:__stablePos to self:rowcount

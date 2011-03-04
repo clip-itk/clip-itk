@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Compress string with GZIP alghoritm.
 $LANG_RU$
-	Пакует строку по GZIP алгоритму.
+	п÷п╟п╨я┐п╣я┌ я│я┌я─п╬п╨я┐ п©п╬ GZIP п╟п╩пЁп╬я─п╦я┌п╪я┐.
 $SYNTAX$
 	gZip(<cData> [,<nLevel>]) --> cResult
 $LANG_RU$
@@ -13,22 +13,22 @@ $ARGUMENTS$
 	<cData> - data for compress.
 	<nLevel> - level of compress.
 $LANG_RU$
-	<cData> - данные для упаковки.
-	<nLevel> - уровень сжатия.
+	<cData> - п╢п╟п╫п╫я▀п╣ п╢п╩я▐ я┐п©п╟п╨п╬п╡п╨п╦.
+	<nLevel> - я┐я─п╬п╡п╣п╫я▄ я│п╤п╟я┌п╦я▐.
 $RETURNS$
 	gZip() returns compressed string.
 $LANG_RU$
-	gZip() возвращает упакованную строку.
+	gZip() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┐п©п╟п╨п╬п╡п╟п╫п╫я┐я▌ я│я┌я─п╬п╨я┐.
 $DESCRIPTION$
 	Compress string with given compression level (default 6).
 $LANG_RU$
-	Упаковывает строку с указанным уровнем сжатия (по умолчанию - 6).
+	пёп©п╟п╨п╬п╡я▀п╡п╟п╣я┌ я│я┌я─п╬п╨я┐ я│ я┐п╨п╟п╥п╟п╫п╫я▀п╪ я┐я─п╬п╡п╫п╣п╪ я│п╤п╟я┌п╦я▐ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ - 6).
 $EXAMPLES$
 	cResult := gZip(space(1000))
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	gUnZip()
 $AUTHOR$

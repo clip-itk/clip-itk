@@ -14,7 +14,7 @@ clear screen
 */
 
 ? [asdf"rqew], [&F"ile], [3a23], [3a23]
-//? search("[Æa]Ù×Á", "asdfÆÙ×Áasdf" )
+//? search("[Æa]Ù×Á", "asdfÆÙ×Áasdf" ) // utf-8: search("[Ñ„a]Ñ‹Ð²Ð°", "asdfÑ„Ñ‹Ð²Ð°asdf" )
 
 while .t.
 	key:=inkey(0, INKEY_ALL)

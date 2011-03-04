@@ -3,15 +3,15 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIForm
 $LANG_RU$
-	Класс UIForm
+	п п╩п╟я│я│ UIForm
 $ABOUT$
 	Class for manipulate form in XML format. It supported forms in <link linkend="classxflforms">XFL format</link>, Qt Designer and Glade forms.
 $LANG_RU$
-	Класс работы с формами в формате XML. Поддерживаются формы в <link linkend="classxflforms">формате XFL</link>, а также формы Qt Designer и Glade.
+	п п╩п╟я│я│ я─п╟п╠п╬я┌я▀ я│ я└п╬я─п╪п╟п╪п╦ п╡ я└п╬я─п╪п╟я┌п╣ XML. п÷п╬п╢п╢п╣я─п╤п╦п╡п╟я▌я┌я│я▐ я└п╬я─п╪я▀ п╡ <link linkend="classxflforms">я└п╬я─п╪п╟я┌п╣ XFL</link>, п╟ я┌п╟п╨п╤п╣ я└п╬я─п╪я▀ Qt Designer п╦ Glade.
 $SYNTAX$
 	UIForm(<fileName>,<parent>,[<context>])	--> UIForm object
 $LANG_RU$
-	UIForm(<fileName>,<parent>,[<context>])	--> Объект UIForm
+	UIForm(<fileName>,<parent>,[<context>])	--> п·п╠я┼п╣п╨я┌ UIForm
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIForm".
 	<parent>	- Window object. Parent window.
@@ -24,16 +24,16 @@ $ATTRIBUTES$
 	<locale>	- Associated array. Array of localization strings.
 	<context>	- Any type. Context of opened form.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIForm".
-	<parent>	- Объект окна. Родительское окно.
-	<fileName>	- Строка. Имя файла формы.
-	<root>		- Объект <link linkend="classxmltag">XMLTag</link>. Корневой элемент формы.
-	<widgets>	- Ассоциативный массив. Массив поименованных виджетов.
-	<names>		- Массив. Массив имён виджетов.
-	<actions>	- Массив. Массив действий формы.
-	<src>		- Объект. Объект класса htmlParser.
-	<locale>	- Ассоциативный массив. Массив строк для локализации.
-	<context>	- Любой тип. Контекст открываемой формы.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIForm".
+	<parent>	- п·п╠я┼п╣п╨я┌ п╬п╨п╫п╟. п═п╬п╢п╦я┌п╣п╩я▄я│п╨п╬п╣ п╬п╨п╫п╬.
+	<fileName>	- п║я┌я─п╬п╨п╟. п≤п╪я▐ я└п╟п╧п╩п╟ я└п╬я─п╪я▀.
+	<root>		- п·п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п п╬я─п╫п╣п╡п╬п╧ я█п╩п╣п╪п╣п╫я┌ я└п╬я─п╪я▀.
+	<widgets>	- п░я│я│п╬я├п╦п╟я┌п╦п╡п╫я▀п╧ п╪п╟я│я│п╦п╡. п°п╟я│я│п╦п╡ п©п╬п╦п╪п╣п╫п╬п╡п╟п╫п╫я▀я┘ п╡п╦п╢п╤п╣я┌п╬п╡.
+	<names>		- п°п╟я│я│п╦п╡. п°п╟я│я│п╦п╡ п╦п╪я▒п╫ п╡п╦п╢п╤п╣я┌п╬п╡.
+	<actions>	- п°п╟я│я│п╦п╡. п°п╟я│я│п╦п╡ п╢п╣п╧я│я┌п╡п╦п╧ я└п╬я─п╪я▀.
+	<src>		- п·п╠я┼п╣п╨я┌. п·п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ htmlParser.
+	<locale>	- п░я│я│п╬я├п╦п╟я┌п╦п╡п╫я▀п╧ п╪п╟я│я│п╦п╡. п°п╟я│я│п╦п╡ я│я┌я─п╬п╨ п╢п╩я▐ п╩п╬п╨п╟п╩п╦п╥п╟я├п╦п╦.
+	<context>	- п⌡я▌п╠п╬п╧ я┌п╦п©. п п╬п╫я┌п╣п╨я│я┌ п╬я┌п╨я─я▀п╡п╟п╣п╪п╬п╧ я└п╬я─п╪я▀.
 
 
 $METHODNAME$
@@ -41,15 +41,15 @@ $METHODNAME$
 $SUMMARY$
 	Constructor. Init form object.
 $LANG_RU$
-	Конструктор. Инициализировать объект формы.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п≤п╫п╦я├п╦п╟п╩п╦п╥п╦я─п╬п╡п╟я┌я▄ п╬п╠я┼п╣п╨я┌ я└п╬я─п╪я▀.
 $SYNTAX$
 	UIForm(<fileName>,<parent>)	--> UIForm object
 $ARGUMENTS$
 	<fileName>	- String. Name of form file.
 	<parent>	- Window object. Parent window.
 $LANG_RU$
-	<fileName>	- Строка. Имя файла формы.
-	<parent>	- Объект окна. Родительское окно.
+	<fileName>	- п║я┌я─п╬п╨п╟. п≤п╪я▐ я└п╟п╧п╩п╟ я└п╬я─п╪я▀.
+	<parent>	- п·п╠я┼п╣п╨я┌ п╬п╨п╫п╟. п═п╬п╢п╦я┌п╣п╩я▄я│п╨п╬п╣ п╬п╨п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -57,13 +57,13 @@ $METHODNAME$
 $SUMMARY$
 	Parse form from file.
 $LANG_RU$
-	Обработать файл формы.
+	п·п╠я─п╟п╠п╬я┌п╟я┌я▄ я└п╟п╧п╩ я└п╬я─п╪я▀.
 $SYNTAX$
 	parseFile()	--> <oWin>
 $RETURNS$
 	Returns created object as window object filled by widgets.
 $LANG_RU$
-	Возвращает созданный объект описанного в форме окна со всеми виджетами.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╬п╥п╢п╟п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ п╬п©п╦я│п╟п╫п╫п╬пЁп╬ п╡ я└п╬я─п╪п╣ п╬п╨п╫п╟ я│п╬ п╡я│п╣п╪п╦ п╡п╦п╢п╤п╣я┌п╟п╪п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -71,17 +71,17 @@ $METHODNAME$
 $SUMMARY$
 	Parse form from string.
 $LANG_RU$
-	Обработать форму, заданную в строке.
+	п·п╠я─п╟п╠п╬я┌п╟я┌я▄ я└п╬я─п╪я┐, п╥п╟п╢п╟п╫п╫я┐я▌ п╡ я│я┌я─п╬п╨п╣.
 $SYNTAX$
 	parseString(<str>)	--> <oWin>
 $ARGUMENTS$
 	<str>		- String. String contained form in XFL format.
 $LANG_RU$
-	<str>		- Строка. Строка, содержащая форму в формате XFL.
+	<str>		- п║я┌я─п╬п╨п╟. п║я┌я─п╬п╨п╟, я│п╬п╢п╣я─п╤п╟я┴п╟я▐ я└п╬я─п╪я┐ п╡ я└п╬я─п╪п╟я┌п╣ XFL.
 $RETURNS$
 	Returns created object as window object filled by widgets.
 $LANG_RU$
-	Возвращает созданный объект описанного в форме окна со всеми виджетами.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╬п╥п╢п╟п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ п╬п©п╦я│п╟п╫п╫п╬пЁп╬ п╡ я└п╬я─п╪п╣ п╬п╨п╫п╟ я│п╬ п╡я│п╣п╪п╦ п╡п╦п╢п╤п╣я┌п╟п╪п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -89,13 +89,13 @@ $METHODNAME$
 $SUMMARY$
 	Parse htmlParser object. This method is internal and called from methods parseFile() or parseString().
 $LANG_RU$
-	Обработать объект htmlParser. Метод является внутренним и вызывается из метода parseFile() или parseString().
+	п·п╠я─п╟п╠п╬я┌п╟я┌я▄ п╬п╠я┼п╣п╨я┌ htmlParser. п°п╣я┌п╬п╢ я▐п╡п╩я▐п╣я┌я│я▐ п╡п╫я┐я┌я─п╣п╫п╫п╦п╪ п╦ п╡я▀п╥я▀п╡п╟п╣я┌я│я▐ п╦п╥ п╪п╣я┌п╬п╢п╟ parseFile() п╦п╩п╦ parseString().
 $SYNTAX$
 	parse()	--> <oWin>
 $RETURNS$
 	Returns created object as window object filled by widgets.
 $LANG_RU$
-	Возвращает созданный объект описанного в форме окна со всеми виджетами.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╬п╥п╢п╟п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ п╬п©п╦я│п╟п╫п╫п╬пЁп╬ п╡ я└п╬я─п╪п╣ п╬п╨п╫п╟ я│п╬ п╡я│п╣п╪п╦ п╡п╦п╢п╤п╣я┌п╟п╪п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -103,19 +103,19 @@ $METHODNAME$
 $SUMMARY$
 	Create widget from the tag.
 $LANG_RU$
-	Создать виджет, описанный в теге.
+	п║п╬п╥п╢п╟я┌я▄ п╡п╦п╢п╤п╣я┌, п╬п©п╦я│п╟п╫п╫я▀п╧ п╡ я┌п╣пЁп╣.
 $SYNTAX$
 	createWidget(<tag>,[<parent>])	--> <oWidget>
 $ARGUMENTS$
 	<tag>		- Object <link linkend="classxmltag">XMLTag</link>. Tag described widget.
 	<parent>	- Object. Widget, which contains this widget (parent widget).
 $LANG_RU$
-	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий виджет.
-	<parent>	- Объект. Виджет-контейнер, содержащий этот виджет.
+	<tag>		- п·п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п╒п╣пЁ, п╬п©п╦я│я▀п╡п╟я▌я┴п╦п╧ п╡п╦п╢п╤п╣я┌.
+	<parent>	- п·п╠я┼п╣п╨я┌. п▓п╦п╢п╤п╣я┌-п╨п╬п╫я┌п╣п╧п╫п╣я─, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ я█я┌п╬я┌ п╡п╦п╢п╤п╣я┌.
 $RETURNS$
 	Object of created widget.
 $LANG_RU$
-	Объект созданного виджета.
+	п·п╠я┼п╣п╨я┌ я│п╬п╥п╢п╟п╫п╫п╬пЁп╬ п╡п╦п╢п╤п╣я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -123,7 +123,7 @@ $METHODNAME$
 $SUMMARY$
 	Set widget property described in given tag.
 $LANG_RU$
-	Изменить свойство виджета, описанное в теге.
+	п≤п╥п╪п╣п╫п╦я┌я▄ я│п╡п╬п╧я│я┌п╡п╬ п╡п╦п╢п╤п╣я┌п╟, п╬п©п╦я│п╟п╫п╫п╬п╣ п╡ я┌п╣пЁп╣.
 $SYNTAX$
 	setProperty(<tag>,[<obj>],[<value>])
 $ARGUMENTS$
@@ -131,9 +131,9 @@ $ARGUMENTS$
 	<obj>		- Object. By default object is defined by its name given in the tag .
 	<value>		- Any type. Property value. By default value is taken from the tag.
 $LANG_RU$
-	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий свойство.
-	<obj>		- Объект. По умолчанию определяется по имени, заданному в теге.
-	<value>		- Любой тип. Значение свойства. По умолчанию определяется из тега.
+	<tag>		- п·п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п╒п╣пЁ, п╬п©п╦я│я▀п╡п╟я▌я┴п╦п╧ я│п╡п╬п╧я│я┌п╡п╬.
+	<obj>		- п·п╠я┼п╣п╨я┌. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╬п©я─п╣п╢п╣п╩я▐п╣я┌я│я▐ п©п╬ п╦п╪п╣п╫п╦, п╥п╟п╢п╟п╫п╫п╬п╪я┐ п╡ я┌п╣пЁп╣.
+	<value>		- п⌡я▌п╠п╬п╧ я┌п╦п©. п≈п╫п╟я┤п╣п╫п╦п╣ я│п╡п╬п╧я│я┌п╡п╟. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╬п©я─п╣п╢п╣п╩я▐п╣я┌я│я▐ п╦п╥ я┌п╣пЁп╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -141,17 +141,17 @@ $METHODNAME$
 $SUMMARY$
 	Get the property from the widget.
 $LANG_RU$
-	Получить значение свойства виджета.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ я│п╡п╬п╧я│я┌п╡п╟ п╡п╦п╢п╤п╣я┌п╟.
 $SYNTAX$
 	getPropertyValue(<tagObj>)	--> <oVal>
 $ARGUMENTS$
 	<tagObj>	- Object <link linkend="classxmltag">XMLTag</link>. Tag &lt;property&gt; contained widget name and property name.
 $LANG_RU$
-	<tagObj>	- Объект <link linkend="classxmltag">XMLTag</link>. Тег &lt;property&gt;, содержащий имя виджета и название свойства.
+	<tagObj>	- п·п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п╒п╣пЁ &lt;property&gt;, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╦п╪я▐ п╡п╦п╢п╤п╣я┌п╟ п╦ п╫п╟п╥п╡п╟п╫п╦п╣ я│п╡п╬п╧я│я┌п╡п╟.
 $RETURNS$
 	Property value.
 $LANG_RU$
-	Значение свойства.
+	п≈п╫п╟я┤п╣п╫п╦п╣ я│п╡п╬п╧я│я┌п╡п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -159,15 +159,15 @@ $METHODNAME$
 $SUMMARY$
 	Set action described in tag &lt;rule&gt;.
 $LANG_RU$
-	Установить действие, описанное в теге &lt;rule&gt;.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╬п©п╦я│п╟п╫п╫п╬п╣ п╡ я┌п╣пЁп╣ &lt;rule&gt;.
 $SYNTAX$
 	setAction(<tag>,[<lObj>])
 $ARGUMENTS$
 	<tag>		- Object <link linkend="classxmltag">XMLTag</link>. Tag described action (&lt;rule&gt;).
 	<lObj>		- Widget object. Widget received signal.
 $LANG_RU$
-	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий действие (&lt;rule&gt;).
-	<lObj>		- Объект виджета. Виджет, принимающий сигнал.
+	<tag>		- п·п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п╒п╣пЁ, п╬п©п╦я│я▀п╡п╟я▌я┴п╦п╧ п╢п╣п╧я│я┌п╡п╦п╣ (&lt;rule&gt;).
+	<lObj>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п©я─п╦п╫п╦п╪п╟я▌я┴п╦п╧ я│п╦пЁп╫п╟п╩.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -175,15 +175,15 @@ $METHODNAME$
 $SUMMARY$
 	Set pre-action described in form header and run it.
 $LANG_RU$
-	Установить предварительное действие, описанное в заголовке формы и запустить его.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©я─п╣п╢п╡п╟я─п╦я┌п╣п╩я▄п╫п╬п╣ п╢п╣п╧я│я┌п╡п╦п╣, п╬п©п╦я│п╟п╫п╫п╬п╣ п╡ п╥п╟пЁп╬п╩п╬п╡п╨п╣ я└п╬я─п╪я▀ п╦ п╥п╟п©я┐я│я┌п╦я┌я▄ п╣пЁп╬.
 $SYNTAX$
 	setPreAction(<tag>,[<lObj>])
 $ARGUMENTS$
 	<tag>		- Object <link linkend="classxmltag">XMLTag</link>. Header tag (&lt;head&gt;).
 	<lObj>		- Widget object. Widget received signal.
 $LANG_RU$
-	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег заголовка формы (&lt;head&gt;).
-	<lObj>		- Объект виджета. Виджет, принимающий сигнал.
+	<tag>		- п·п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п╒п╣пЁ п╥п╟пЁп╬п╩п╬п╡п╨п╟ я└п╬я─п╪я▀ (&lt;head&gt;).
+	<lObj>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п©я─п╦п╫п╦п╪п╟я▌я┴п╦п╧ я│п╦пЁп╫п╟п╩.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -191,15 +191,15 @@ $METHODNAME$
 $SUMMARY$
 	Run actions rule.
 $LANG_RU$
-	Выполнить правило.
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ п©я─п╟п╡п╦п╩п╬.
 $SYNTAX$
 	actionHandler(<id>,[<addVal>])
 $ARGUMENTS$
 	<id>		- Number or object <link linkend="classxmltag">XMLTag</link>. Index of rule in <actions> array or rule tag contained several actions.
 	<addVal>	- Any type. Returned value.
 $LANG_RU$
-	<id>		- Число или объект <link linkend="classxmltag">XMLTag</link>. Индекс правила в массиве <actions> или тег правила, содержащий описание нескольких действий.
-	<addVal>	- Любой тип. Возвращаемое значение.
+	<id>		- п╖п╦я│п╩п╬ п╦п╩п╦ п╬п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п≤п╫п╢п╣п╨я│ п©я─п╟п╡п╦п╩п╟ п╡ п╪п╟я│я│п╦п╡п╣ <actions> п╦п╩п╦ я┌п╣пЁ п©я─п╟п╡п╦п╩п╟, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╬п©п╦я│п╟п╫п╦п╣ п╫п╣я│п╨п╬п╩я▄п╨п╦я┘ п╢п╣п╧я│я┌п╡п╦п╧.
+	<addVal>	- п⌡я▌п╠п╬п╧ я┌п╦п©. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -207,15 +207,15 @@ $METHODNAME$
 $SUMMARY$
 	Run one action.
 $LANG_RU$
-	Выполнить одно действие
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ п╬п╢п╫п╬ п╢п╣п╧я│я┌п╡п╦п╣
 $SYNTAX$
 	subActionHandler(<tag>,[<addVal>])
 $ARGUMENTS$
 	<tag>		- <link linkend="classxmltag">XMLTag</link> object. Tag described one action.
 	<addVal>	- Any type. Returned value.
 $LANG_RU$
-	<tag>		- Объект <link linkend="classxmltag">XMLTag</link>. Тег, описывающий действие.
-	<addVal>	- Любой тип. Возвращаемое значение.
+	<tag>		- п·п╠я┼п╣п╨я┌ <link linkend="classxmltag">XMLTag</link>. п╒п╣пЁ, п╬п©п╦я│я▀п╡п╟я▌я┴п╦п╧ п╢п╣п╧я│я┌п╡п╦п╣.
+	<addVal>	- п⌡я▌п╠п╬п╧ я┌п╦п©. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -223,17 +223,17 @@ $METHODNAME$
 $SUMMARY$
 	Returns localized string.
 $LANG_RU$
-	Возвращает локализованную строку.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╩п╬п╨п╟п╩п╦п╥п╬п╡п╟п╫п╫я┐я▌ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	i18n(<str>)	--> <sLocalString>
 $ARGUMENTS$
 	<str>		- String. Original form string.
 $LANG_RU$
-	<str>		- Строка. Оригинальная строка формы.
+	<str>		- п║я┌я─п╬п╨п╟. п·я─п╦пЁп╦п╫п╟п╩я▄п╫п╟я▐ я│я┌я─п╬п╨п╟ я└п╬я─п╪я▀.
 $RETURNS$
 	Localized string.
 $LANG_RU$
-	Локализованная строка.
+	п⌡п╬п╨п╟п╩п╦п╥п╬п╡п╟п╫п╫п╟я▐ я│я┌я─п╬п╨п╟.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -247,10 +247,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

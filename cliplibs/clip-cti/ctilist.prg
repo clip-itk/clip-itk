@@ -41,8 +41,8 @@ function cti_list_new(nColumns)
 	obj:__cur_row		:= 0
 	obj:__cur_col		:= 0
 
-	obj:__col_separator	:=  ""
-	obj:__title_separator	:= "€Š€"
+	obj:__col_separator	:=  ""  // utf-8:  "â”‚"
+	obj:__title_separator	:= "€Š€" // utf-8: "â”€â”¼â”€"
 
 	obj:__real_draw			:= @cti_list_real_draw()
 	obj:__refresh_columns		:= @cti_list_refresh_columns()

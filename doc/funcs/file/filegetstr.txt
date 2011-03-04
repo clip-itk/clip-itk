@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Returns string.
 $LANG_RU$
-	Возвращает строку.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 
      FILEGETSTR(<nFileHandle>, <nSize>) 	--> <sFileStr>
@@ -15,8 +15,8 @@ $ARGUMENTS$
      <nSize>		Numeric, is the size string.
 
 $LANG_RU$
-     <nFileHandle>	Numeric, дескриптор файла.
-     <nSize>		Numeric, размер строки.
+     <nFileHandle>	Numeric, п╢п╣я│п╨я─п╦п©я┌п╬я─ я└п╟п╧п╩п╟.
+     <nSize>		Numeric, я─п╟п╥п╪п╣я─ я│я┌я─п╬п╨п╦.
 
 $RETURNS$
 
@@ -24,7 +24,7 @@ $RETURNS$
 
 $LANG_RU$
 
-	Возвращает строку <sFileStr>, прочитанную из файла <nFileHandle>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sFileStr>, п©я─п╬я┤п╦я┌п╟п╫п╫я┐я▌ п╦п╥ я└п╟п╧п╩п╟ <nFileHandle>.
 
 $DESCRIPTION$
 
@@ -32,8 +32,8 @@ $DESCRIPTION$
      <CRLF> or <CR>, but no more then <nSize> symbols.
 $LANG_RU$
 
-     FILEGETSTR() читает строку из ранее открытого файла. Размер строки ограничивается
-     <CRLF> или <CR>, но не белее чем <nSize> символов.
+     FILEGETSTR() я┤п╦я┌п╟п╣я┌ я│я┌я─п╬п╨я┐ п╦п╥ я─п╟п╫п╣п╣ п╬я┌п╨я─я▀я┌п╬пЁп╬ я└п╟п╧п╩п╟. п═п╟п╥п╪п╣я─ я│я┌я─п╬п╨п╦ п╬пЁя─п╟п╫п╦я┤п╦п╡п╟п╣я┌я│я▐
+     <CRLF> п╦п╩п╦ <CR>, п╫п╬ п╫п╣ п╠п╣п╩п╣п╣ я┤п╣п╪ <nSize> я│п╦п╪п╡п╬п╩п╬п╡.
 $EXAMPLES$
 nFile := FOPEN("test.txt")
 do while !feof(nFile)
@@ -47,6 +47,6 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

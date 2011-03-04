@@ -286,7 +286,7 @@ static function COBRA_answerWait(nQuery)
 				exit
 			endif
 		endif
-		/* во время получения ответа - пришел запрос :) */
+		/* got request during getting response :) */
 		if cAnswer == "QUERY"
 			err := errorBlock({|e|break(e)})
 			::cLine := ""

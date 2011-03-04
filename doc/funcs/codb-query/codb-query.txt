@@ -3,7 +3,7 @@ $ABOUTCATEG$
 $SUMMARY$
 	Library for work with CODB databases by queries.
 $LANG_RU$
-	Библиотека для работы с базами данных CODB посредством запросов.
+	п▒п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ п╠п╟п╥п╟п╪п╦ п╢п╟п╫п╫я▀я┘ CODB п©п╬я│я─п╣п╢я│я┌п╡п╬п╪ п╥п╟п©я─п╬я│п╬п╡.
 $DESCRIPTION$
 	codb-query library provides unified access to CODB databases by
 	queries instead call of	methods of classes <link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
@@ -233,233 +233,233 @@ codb_close( db ) // Close databases</pre>
 	Change current work database and depository.
 
 $LANG_RU$
-	Библиотека codb-query предоставляет унифицированный способ работы с базами 
-	данным CODB посредством запросов вместо вызовов методов классов 
+	п▒п╦п╠п╩п╦п╬я┌п╣п╨п╟ codb-query п©я─п╣п╢п╬я│я┌п╟п╡п╩я▐п╣я┌ я┐п╫п╦я└п╦я├п╦я─п╬п╡п╟п╫п╫я▀п╧ я│п©п╬я│п╬п╠ я─п╟п╠п╬я┌я▀ я│ п╠п╟п╥п╟п╪п╦ 
+	п╢п╟п╫п╫я▀п╪ CODB п©п╬я│я─п╣п╢я│я┌п╡п╬п╪ п╥п╟п©я─п╬я│п╬п╡ п╡п╪п╣я│я┌п╬ п╡я▀п╥п╬п╡п╬п╡ п╪п╣я┌п╬п╢п╬п╡ п╨п╩п╟я│я│п╬п╡ 
 	<link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, 
 	<link linkend="classCODBDICTIONARY">CODBDICTIONARY</link>, 
-	<link linkend="classCODBLIST">CODBLIST</link> и
+	<link linkend="classCODBLIST">CODBLIST</link> п╦
 	<link linkend="classCODBIDLIST">CODBIDLIST</link>.
 	
-	Запросы строятся на языке CQL (диалекте SQL, адаптированном для CODB). Вы
-	можете задействовать эту библиотеку как программно, так и используя
-	консольный клиент codb.
+	п≈п╟п©я─п╬я│я▀ я│я┌я─п╬я▐я┌я│я▐ п╫п╟ я▐п╥я▀п╨п╣ CQL (п╢п╦п╟п╩п╣п╨я┌п╣ SQL, п╟п╢п╟п©я┌п╦я─п╬п╡п╟п╫п╫п╬п╪ п╢п╩я▐ CODB). п▓я▀
+	п╪п╬п╤п╣я┌п╣ п╥п╟п╢п╣п╧я│я┌п╡п╬п╡п╟я┌я▄ я█я┌я┐ п╠п╦п╠п╩п╦п╬я┌п╣п╨я┐ п╨п╟п╨ п©я─п╬пЁя─п╟п╪п╪п╫п╬, я┌п╟п╨ п╦ п╦я│п©п╬п╩я▄п╥я┐я▐
+	п╨п╬п╫я│п╬п╩я▄п╫я▀п╧ п╨п╩п╦п╣п╫я┌ codb.
 	
-	<command>Использование в программах.</command>
+	<command>п≤я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╡ п©я─п╬пЁя─п╟п╪п╪п╟я┘.</command>
 	
-	Для использования библиотеки codb-query в программах вы должны собрать свою
-	программу с этой библиотекой. Укажите при сборке '-lcodb-query'.
+	п■п╩я▐ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ codb-query п╡ п©я─п╬пЁя─п╟п╪п╪п╟я┘ п╡я▀ п╢п╬п╩п╤п╫я▀ я│п╬п╠я─п╟я┌я▄ я│п╡п╬я▌
+	п©я─п╬пЁя─п╟п╪п╪я┐ я│ я█я┌п╬п╧ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╬п╧. пёп╨п╟п╤п╦я┌п╣ п©я─п╦ я│п╠п╬я─п╨п╣ '-lcodb-query'.
 	
-	Типичный сеанс работы состоит из следующих этапов:
-<pre>db := codb_connect() // Подключение к базам данных
-e := codb_get_error( db ) // Проверка ошибок
+	п╒п╦п©п╦я┤п╫я▀п╧ я│п╣п╟п╫я│ я─п╟п╠п╬я┌я▀ я│п╬я│я┌п╬п╦я┌ п╦п╥ я│п╩п╣п╢я┐я▌я┴п╦я┘ я█я┌п╟п©п╬п╡:
+<pre>db := codb_connect() // п÷п╬п╢п╨п╩я▌я┤п╣п╫п╦п╣ п╨ п╠п╟п╥п╟п╪ п╢п╟п╫п╫я▀я┘
+e := codb_get_error( db ) // п÷я─п╬п╡п╣я─п╨п╟ п╬я┬п╦п╠п╬п╨
 if e != NIL
 	?? "ERROR codb_connect(): " + e + chr(10)
 	return 1
 endif
 
-// Выполнение запроса
+// п▓я▀п©п╬п╩п╫п╣п╫п╦п╣ п╥п╟п©я─п╬я│п╟
 oRes := codb_execute( db, 'show databases' )
 
-// Обработка результата
+// п·п╠я─п╟п╠п╬я┌п╨п╟ я─п╣п╥я┐п╩я▄я┌п╟я┌п╟
 aResult := codb_get_result( oRes )
 
-codb_close( db ) // Закрытие баз данных</pre>
+codb_close( db ) // п≈п╟п╨я─я▀я┌п╦п╣ п╠п╟п╥ п╢п╟п╫п╫я▀я┘</pre>
 	
-	Подключение к базам данных обеспечивает функция 
-	<link linkend="functionCODBCONNECT">codb_connect()</link>. При этом открываются
-	все доступные базы данных. Закрытие баз данных обеспечивается функцией 
+	п÷п╬п╢п╨п╩я▌я┤п╣п╫п╦п╣ п╨ п╠п╟п╥п╟п╪ п╢п╟п╫п╫я▀я┘ п╬п╠п╣я│п©п╣я┤п╦п╡п╟п╣я┌ я└я┐п╫п╨я├п╦я▐ 
+	<link linkend="functionCODBCONNECT">codb_connect()</link>. п÷я─п╦ я█я┌п╬п╪ п╬я┌п╨я─я▀п╡п╟я▌я┌я│я▐
+	п╡я│п╣ п╢п╬я│я┌я┐п©п╫я▀п╣ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘. п≈п╟п╨я─я▀я┌п╦п╣ п╠п╟п╥ п╢п╟п╫п╫я▀я┘ п╬п╠п╣я│п©п╣я┤п╦п╡п╟п╣я┌я│я▐ я└я┐п╫п╨я├п╦п╣п╧ 
 	<link linkend="functionCODBCLOSE">codb_close()</link>.
 	
-	Собственно операции с базой данных обеспечивают функции:
+	п║п╬п╠я│я┌п╡п╣п╫п╫п╬ п╬п©п╣я─п╟я├п╦п╦ я│ п╠п╟п╥п╬п╧ п╢п╟п╫п╫я▀я┘ п╬п╠п╣я│п©п╣я┤п╦п╡п╟я▌я┌ я└я┐п╫п╨я├п╦п╦:
 	<link linkend="functionCODBEXECUTE">codb_execute()</link>, 
 	<link linkend="functionCODBGETMETAOBJECT">codb_get_metaobject()</link>,
 	<link linkend="functionCODBGETOBJECT">codb_get_object()</link>,
 	<link linkend="functionCODBPUTMETAOBJECT">codb_put_metaobject()</link>,
 	<link linkend="functionCODBPUTOBJECT">codb_put_object()</link>.
 	
-	Отличие этих функций в том, что 
-	<link linkend="functionCODBEXECUTE">codb_execute()</link> возвращает объект, из
-	которого собственно данные можно получить функцией 
-	<link linkend="functionCODBGETRESULT">codb_get_result()</link>, а
-	остальные функции оперируют готовыми объектами. 
+	п·я┌п╩п╦я┤п╦п╣ я█я┌п╦я┘ я└я┐п╫п╨я├п╦п╧ п╡ я┌п╬п╪, я┤я┌п╬ 
+	<link linkend="functionCODBEXECUTE">codb_execute()</link> п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌, п╦п╥
+	п╨п╬я┌п╬я─п╬пЁп╬ я│п╬п╠я│я┌п╡п╣п╫п╫п╬ п╢п╟п╫п╫я▀п╣ п╪п╬п╤п╫п╬ п©п╬п╩я┐я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╣п╧ 
+	<link linkend="functionCODBGETRESULT">codb_get_result()</link>, п╟
+	п╬я│я┌п╟п╩я▄п╫я▀п╣ я└я┐п╫п╨я├п╦п╦ п╬п©п╣я─п╦я─я┐я▌я┌ пЁп╬я┌п╬п╡я▀п╪п╦ п╬п╠я┼п╣п╨я┌п╟п╪п╦. 
 	
-	Для контроля ошибок используются функции 
-	<link linkend="functionCODBGETANSWER">codb_get_answer()</link> и 
+	п■п╩я▐ п╨п╬п╫я┌я─п╬п╩я▐ п╬я┬п╦п╠п╬п╨ п╦я│п©п╬п╩я▄п╥я┐я▌я┌я│я▐ я└я┐п╫п╨я├п╦п╦ 
+	<link linkend="functionCODBGETANSWER">codb_get_answer()</link> п╦ 
 	<link linkend="functionCODBGETERROR">codb_get_error()</link>.
 	
-	Результат запроса, полученный при выполнении 
-	<link linkend="functionCODBEXECUTE">codb_execute()</link>, можно обработать,
-	используя функции 
+	п═п╣п╥я┐п╩я▄я┌п╟я┌ п╥п╟п©я─п╬я│п╟, п©п╬п╩я┐я┤п╣п╫п╫я▀п╧ п©я─п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦п╦ 
+	<link linkend="functionCODBEXECUTE">codb_execute()</link>, п╪п╬п╤п╫п╬ п╬п╠я─п╟п╠п╬я┌п╟я┌я▄,
+	п╦я│п©п╬п╩я▄п╥я┐я▐ я└я┐п╫п╨я├п╦п╦ 
 	<link linkend="functionCODBGETRESULT">codb_get_result()</link>, 
 	<link linkend="functionCODBNUMCOLUMNS">codb_num_columns()</link>,
-	<link linkend="functionCODBNUMROWS">codb_num_rows()</link> и 
+	<link linkend="functionCODBNUMROWS">codb_num_rows()</link> п╦ 
 	<link linkend="functionCODBGETCOLUMN">codb_get_column()</link>.
 	
-	Кроме этого, результат можно получить в отформатированном виде. Для этого
-	объект результата передаётся в метод 'show' объекта класса 
+	п я─п╬п╪п╣ я█я┌п╬пЁп╬, я─п╣п╥я┐п╩я▄я┌п╟я┌ п╪п╬п╤п╫п╬ п©п╬п╩я┐я┤п╦я┌я▄ п╡ п╬я┌я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╫п╬п╪ п╡п╦п╢п╣. п■п╩я▐ я█я┌п╬пЁп╬
+	п╬п╠я┼п╣п╨я┌ я─п╣п╥я┐п╩я▄я┌п╟я┌п╟ п©п╣я─п╣п╢п╟я▒я┌я│я▐ п╡ п╪п╣я┌п╬п╢ 'show' п╬п╠я┼п╣п╨я┌п╟ п╨п╩п╟я│я│п╟ 
 	<link linkend="classCODBFORMATTER">CODBFormatter()</link>.
 	
-	<command>Использование консоли codb.</command>
+	<command>п≤я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╨п╬п╫я│п╬п╩п╦ codb.</command>
 	
-	<pre>codb [параметры] [словарь[:депозитарий]]</pre>
-	При запуске codb без параметров, он будет работать в интерактивном режиме.
+	<pre>codb [п©п╟я─п╟п╪п╣я┌я─я▀] [я│п╩п╬п╡п╟я─я▄[:п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧]]</pre>
+	п÷я─п╦ п╥п╟п©я┐я│п╨п╣ codb п╠п╣п╥ п©п╟я─п╟п╪п╣я┌я─п╬п╡, п╬п╫ п╠я┐п╢п╣я┌ я─п╟п╠п╬я┌п╟я┌я▄ п╡ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫п╬п╪ я─п╣п╤п╦п╪п╣.
 	
-	Параметры codb:
+	п÷п╟я─п╟п╪п╣я┌я─я▀ codb:
 	<itemizedlist>
-	<listitem><command>-c 'команда'</command> - Выполнить запрос и выйти.</listitem>
-  	<listitem><command>--hide-titles</command> - Не показывать заголовки столбцов.</listitem>
-  	<listitem><command>--delim='DELIM'</command> - Установить разделитель между столбцами.</listitem>
+	<listitem><command>-c 'п╨п╬п╪п╟п╫п╢п╟'</command> - п▓я▀п©п╬п╩п╫п╦я┌я▄ п╥п╟п©я─п╬я│ п╦ п╡я▀п╧я┌п╦.</listitem>
+  	<listitem><command>--hide-titles</command> - п²п╣ п©п╬п╨п╟п╥я▀п╡п╟я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╨п╦ я│я┌п╬п╩п╠я├п╬п╡.</listitem>
+  	<listitem><command>--delim='DELIM'</command> - пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▄ п╪п╣п╤п╢я┐ я│я┌п╬п╩п╠я├п╟п╪п╦.</listitem>
   	</itemizedlist>
   	
-  	Полный перечень команд можно посмотреть, запустив <command>codb -h</command>.
+  	п÷п╬п╩п╫я▀п╧ п©п╣я─п╣я┤п╣п╫я▄ п╨п╬п╪п╟п╫п╢ п╪п╬п╤п╫п╬ п©п╬я│п╪п╬я┌я─п╣я┌я▄, п╥п╟п©я┐я│я┌п╦п╡ <command>codb -h</command>.
   	
-  	Примеры:
+  	п÷я─п╦п╪п╣я─я▀:
   	<pre>codb ETC01 -c 'show classes;'</pre>
-  	Будет выведен список классов в базе данных ETC01.
+  	п▒я┐п╢п╣я┌ п╡я▀п╡п╣п╢п╣п╫ я│п©п╦я│п╬п╨ п╨п╩п╟я│я│п╬п╡ п╡ п╠п╟п╥п╣ п╢п╟п╫п╫я▀я┘ ETC01.
   	<pre>codb ETC01:ETC0101 -c 'select * from mng_vendor,mng_author;' --delim='|'</pre>
-	Будет выведены все поля объектов классов mng_vendor и mng_author из базы 
-	данных ETC01 и депозитария ETC0101 с разделителем '|'.
+	п▒я┐п╢п╣я┌ п╡я▀п╡п╣п╢п╣п╫я▀ п╡я│п╣ п©п╬п╩я▐ п╬п╠я┼п╣п╨я┌п╬п╡ п╨п╩п╟я│я│п╬п╡ mng_vendor п╦ mng_author п╦п╥ п╠п╟п╥я▀ 
+	п╢п╟п╫п╫я▀я┘ ETC01 п╦ п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐ ETC0101 я│ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩п╣п╪ '|'.
 	
-	Примечание: данные выводятся в табличном виде, то есть поля дополняются 
-	пробелами до ширины максимального элемента.
+	п÷я─п╦п╪п╣я┤п╟п╫п╦п╣: п╢п╟п╫п╫я▀п╣ п╡я▀п╡п╬п╢я▐я┌я│я▐ п╡ я┌п╟п╠п╩п╦я┤п╫п╬п╪ п╡п╦п╢п╣, я┌п╬ п╣я│я┌я▄ п©п╬п╩я▐ п╢п╬п©п╬п╩п╫я▐я▌я┌я│я▐ 
+	п©я─п╬п╠п╣п╩п╟п╪п╦ п╢п╬ я┬п╦я─п╦п╫я▀ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
   	
-  	<command>Команды CQL.</command>
+  	<command>п п╬п╪п╟п╫п╢я▀ CQL.</command>
   	
-  	Каждая команда должна заканчиваться точкой с запятой. Вы можете
-	использовать комментарии, начинающиеся с символа '#' до конца строки
-	(символа '\n'). Строки ограничиваются одинарными кавычками ('). При
-	употреблении кавычки в строке она экранируется обратной косой чертой (\').	
+  	п п╟п╤п╢п╟я▐ п╨п╬п╪п╟п╫п╢п╟ п╢п╬п╩п╤п╫п╟ п╥п╟п╨п╟п╫я┤п╦п╡п╟я┌я▄я│я▐ я┌п╬я┤п╨п╬п╧ я│ п╥п╟п©я▐я┌п╬п╧. п▓я▀ п╪п╬п╤п╣я┌п╣
+	п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ п╨п╬п╪п╪п╣п╫я┌п╟я─п╦п╦, п╫п╟я┤п╦п╫п╟я▌я┴п╦п╣я│я▐ я│ я│п╦п╪п╡п╬п╩п╟ '#' п╢п╬ п╨п╬п╫я├п╟ я│я┌я─п╬п╨п╦
+	(я│п╦п╪п╡п╬п╩п╟ '\n'). п║я┌я─п╬п╨п╦ п╬пЁя─п╟п╫п╦я┤п╦п╡п╟я▌я┌я│я▐ п╬п╢п╦п╫п╟я─п╫я▀п╪п╦ п╨п╟п╡я▀я┤п╨п╟п╪п╦ ('). п÷я─п╦
+	я┐п©п╬я┌я─п╣п╠п╩п╣п╫п╦п╦ п╨п╟п╡я▀я┤п╨п╦ п╡ я│я┌я─п╬п╨п╣ п╬п╫п╟ я█п╨я─п╟п╫п╦я─я┐п╣я┌я│я▐ п╬п╠я─п╟я┌п╫п╬п╧ п╨п╬я│п╬п╧ я┤п╣я─я┌п╬п╧ (\').	
 	
-	Вы можете также передать несколько команд как в параметре -c, так и через
-	каналы:
+	п▓я▀ п╪п╬п╤п╣я┌п╣ я┌п╟п╨п╤п╣ п©п╣я─п╣п╢п╟я┌я▄ п╫п╣я│п╨п╬п╩я▄п╨п╬ п╨п╬п╪п╟п╫п╢ п╨п╟п╨ п╡ п©п╟я─п╟п╪п╣я┌я─п╣ -c, я┌п╟п╨ п╦ я┤п╣я─п╣п╥
+	п╨п╟п╫п╟п╩я▀:
   	<pre>echo 'show classes;show indexes;' | codb ETC01</pre>
 
-	Краткое описание команд CQL.
+	п я─п╟я┌п╨п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╨п╬п╪п╟п╫п╢ CQL.
 	
 	<itemizedlist>
-	<listitem><command>help</command> - помощь по команде;</listitem>
-	<listitem><command>create</command> - создать базу данных или метаобъект;</listitem>
-	<listitem><command>delete</command> - удалить объект или метаобъект;</listitem>
-	<listitem><command>describe</command> - показать структуру класса;</listitem>
-	<listitem><command>drop</command> - удалить метаобъект по его имени;</listitem>
-	<listitem><command>get</command> - получить содержимое объекта из депозитария;</listitem>
-	<listitem><command>metaget</command> - получить метаобъект;</listitem>
-	<listitem><command>metaput</command> - создать или изменить метаобъект;</listitem>
-	<listitem><command>put</command> - создать или изменить объект в депозитарии;</listitem>
-	<listitem><command>select</command> - получить список полей объектов;</listitem>
-	<listitem><command>show</command> - показать список метаобъектов;</listitem>
-	<listitem><command>use</command> - изменить текущую базу данных и депозитарий.</listitem>
+	<listitem><command>help</command> - п©п╬п╪п╬я┴я▄ п©п╬ п╨п╬п╪п╟п╫п╢п╣;</listitem>
+	<listitem><command>create</command> - я│п╬п╥п╢п╟я┌я▄ п╠п╟п╥я┐ п╢п╟п╫п╫я▀я┘ п╦п╩п╦ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌;</listitem>
+	<listitem><command>delete</command> - я┐п╢п╟п╩п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╦п╩п╦ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌;</listitem>
+	<listitem><command>describe</command> - п©п╬п╨п╟п╥п╟я┌я▄ я│я┌я─я┐п╨я┌я┐я─я┐ п╨п╩п╟я│я│п╟;</listitem>
+	<listitem><command>drop</command> - я┐п╢п╟п╩п╦я┌я▄ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌ п©п╬ п╣пЁп╬ п╦п╪п╣п╫п╦;</listitem>
+	<listitem><command>get</command> - п©п╬п╩я┐я┤п╦я┌я▄ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╬п╠я┼п╣п╨я┌п╟ п╦п╥ п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐;</listitem>
+	<listitem><command>metaget</command> - п©п╬п╩я┐я┤п╦я┌я▄ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌;</listitem>
+	<listitem><command>metaput</command> - я│п╬п╥п╢п╟я┌я▄ п╦п╩п╦ п╦п╥п╪п╣п╫п╦я┌я▄ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌;</listitem>
+	<listitem><command>put</command> - я│п╬п╥п╢п╟я┌я▄ п╦п╩п╦ п╦п╥п╪п╣п╫п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╡ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╦;</listitem>
+	<listitem><command>select</command> - п©п╬п╩я┐я┤п╦я┌я▄ я│п©п╦я│п╬п╨ п©п╬п╩п╣п╧ п╬п╠я┼п╣п╨я┌п╬п╡;</listitem>
+	<listitem><command>show</command> - п©п╬п╨п╟п╥п╟я┌я▄ я│п©п╦я│п╬п╨ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌п╬п╡;</listitem>
+	<listitem><command>use</command> - п╦п╥п╪п╣п╫п╦я┌я▄ я┌п╣п╨я┐я┴я┐я▌ п╠п╟п╥я┐ п╢п╟п╫п╫я▀я┘ п╦ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧.</listitem>
 	</itemizedlist>
 	
-	В интерактивном режиме доступна команда <command>quit</command> - выход из
-	консоли. Вы можете также выйти из консоли, нажав клавишу Esc.
+	п▓ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫п╬п╪ я─п╣п╤п╦п╪п╣ п╢п╬я│я┌я┐п©п╫п╟ п╨п╬п╪п╟п╫п╢п╟ <command>quit</command> - п╡я▀я┘п╬п╢ п╦п╥
+	п╨п╬п╫я│п╬п╩п╦. п▓я▀ п╪п╬п╤п╣я┌п╣ я┌п╟п╨п╤п╣ п╡я▀п╧я┌п╦ п╦п╥ п╨п╬п╫я│п╬п╩п╦, п╫п╟п╤п╟п╡ п╨п╩п╟п╡п╦я┬я┐ Esc.
 
-	Подробное описание команд CQL:
+	п÷п╬п╢я─п╬п╠п╫п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╨п╬п╪п╟п╫п╢ CQL:
 	
-	<command>help [<команда>]</command>
-	Помощь по команде. Если команда не указывается, показывается список
-	доступных команд с их кратким описанием.
+	<command>help [<п╨п╬п╪п╟п╫п╢п╟>]</command>
+	п÷п╬п╪п╬я┴я▄ п©п╬ п╨п╬п╪п╟п╫п╢п╣. п∙я│п╩п╦ п╨п╬п╪п╟п╫п╢п╟ п╫п╣ я┐п╨п╟п╥я▀п╡п╟п╣я┌я│я▐, п©п╬п╨п╟п╥я▀п╡п╟п╣я┌я│я▐ я│п©п╦я│п╬п╨
+	п╢п╬я│я┌я┐п©п╫я▀я┘ п╨п╬п╪п╟п╫п╢ я│ п╦я┘ п╨я─п╟я┌п╨п╦п╪ п╬п©п╦я│п╟п╫п╦п╣п╪.
 	
-	<command>create <метакласс> (<поле1>=<значение1>[, ...])</command>
-	или <command>create database <имя> <путь> [<описание>]</command>
-	Создать базу данных или метаобъект.
-	Примеры:
-	create database EAS01 /var/lib/db 'База данных E/AS';
+	<command>create <п╪п╣я┌п╟п╨п╩п╟я│я│> (<п©п╬п╩п╣1>=<п╥п╫п╟я┤п╣п╫п╦п╣1>[, ...])</command>
+	п╦п╩п╦ <command>create database <п╦п╪я▐> <п©я┐я┌я▄> [<п╬п©п╦я│п╟п╫п╦п╣>]</command>
+	п║п╬п╥п╢п╟я┌я▄ п╠п╟п╥я┐ п╢п╟п╫п╫я▀я┘ п╦п╩п╦ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌.
+	п÷я─п╦п╪п╣я─я▀:
+	create database EAS01 /var/lib/db 'п▒п╟п╥п╟ п╢п╟п╫п╫я▀я┘ E/AS';
 	create attribute (name='phone',type='C',len=20);
 	
-	Доступные классы метаобъектов: 
+	п■п╬я│я┌я┐п©п╫я▀п╣ п╨п╩п╟я│я│я▀ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌п╬п╡: 
 	<itemizedlist>
-	<listitem><command>depository</command> - депозитарий;</listitem>
-	<listitem><command>extent</command> - пространство имён;</listitem>
-	<listitem><command>attribute</command> - атрибут;</listitem>
-	<listitem><command>counter</command> - счётчик;</listitem>
-	<listitem><command>index</command> - индекс;</listitem>
-	<listitem><command>class</command> - класс;</listitem>
-	<listitem><command>tcolumn</command> - столбец вида;</listitem>
-	<listitem><command>tview</command> - вид;</listitem>
-	<listitem><command>report</command> - отчёт;</listitem>
-	<listitem><command>plugin</command> - подключаемый модуль;</listitem>
-	<listitem><command>user</command> - пользователь;</listitem>
-	<listitem><command>group</command> - группа пользователей.</listitem>
+	<listitem><command>depository</command> - п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧;</listitem>
+	<listitem><command>extent</command> - п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╬ п╦п╪я▒п╫;</listitem>
+	<listitem><command>attribute</command> - п╟я┌я─п╦п╠я┐я┌;</listitem>
+	<listitem><command>counter</command> - я│я┤я▒я┌я┤п╦п╨;</listitem>
+	<listitem><command>index</command> - п╦п╫п╢п╣п╨я│;</listitem>
+	<listitem><command>class</command> - п╨п╩п╟я│я│;</listitem>
+	<listitem><command>tcolumn</command> - я│я┌п╬п╩п╠п╣я├ п╡п╦п╢п╟;</listitem>
+	<listitem><command>tview</command> - п╡п╦п╢;</listitem>
+	<listitem><command>report</command> - п╬я┌я┤я▒я┌;</listitem>
+	<listitem><command>plugin</command> - п©п╬п╢п╨п╩я▌я┤п╟п╣п╪я▀п╧ п╪п╬п╢я┐п╩я▄;</listitem>
+	<listitem><command>user</command> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄;</listitem>
+	<listitem><command>group</command> - пЁя─я┐п©п©п╟ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╧.</listitem>
 	</itemizedlist>
 	
 	<command>delete <id></command>
-	Удалить объект или метаобъект по его идентификатору.
+	пёп╢п╟п╩п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╦п╩п╦ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌ п©п╬ п╣пЁп╬ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐.
 	
-	<command>describe <имя_класса></command>
-	Показать структуру класса по его имени.
+	<command>describe <п╦п╪я▐_п╨п╩п╟я│я│п╟></command>
+	п÷п╬п╨п╟п╥п╟я┌я▄ я│я┌я─я┐п╨я┌я┐я─я┐ п╨п╩п╟я│я│п╟ п©п╬ п╣пЁп╬ п╦п╪п╣п╫п╦.
 	
-	<command>drop <метакласс> <имя_метаобъекта></command>
-	Удалить метаобъект по его имени.
+	<command>drop <п╪п╣я┌п╟п╨п╩п╟я│я│> <п╦п╪я▐_п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌п╟></command>
+	пёп╢п╟п╩п╦я┌я▄ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌ п©п╬ п╣пЁп╬ п╦п╪п╣п╫п╦.
 	
-	Доступные классы метаобъектов: 
+	п■п╬я│я┌я┐п©п╫я▀п╣ п╨п╩п╟я│я│я▀ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌п╬п╡: 
 	<itemizedlist>
-	<listitem><command>depository</command> - депозитарий;</listitem>
-	<listitem><command>extent</command> - пространство имён;</listitem>
-	<listitem><command>attribute</command> - атрибут;</listitem>
-	<listitem><command>counter</command> - счётчик;</listitem>
-	<listitem><command>index</command> - индекс;</listitem>
-	<listitem><command>class</command> - класс;</listitem>
-	<listitem><command>tcolumn</command> - столбец вида;</listitem>
-	<listitem><command>tview</command> - вид;</listitem>
-	<listitem><command>report</command> - отчёт;</listitem>
-	<listitem><command>plugin</command> - подключаемый модуль;</listitem>
-	<listitem><command>user</command> - пользователь;</listitem>
-	<listitem><command>group</command> - группа пользователей.</listitem>
+	<listitem><command>depository</command> - п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧;</listitem>
+	<listitem><command>extent</command> - п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╬ п╦п╪я▒п╫;</listitem>
+	<listitem><command>attribute</command> - п╟я┌я─п╦п╠я┐я┌;</listitem>
+	<listitem><command>counter</command> - я│я┤я▒я┌я┤п╦п╨;</listitem>
+	<listitem><command>index</command> - п╦п╫п╢п╣п╨я│;</listitem>
+	<listitem><command>class</command> - п╨п╩п╟я│я│;</listitem>
+	<listitem><command>tcolumn</command> - я│я┌п╬п╩п╠п╣я├ п╡п╦п╢п╟;</listitem>
+	<listitem><command>tview</command> - п╡п╦п╢;</listitem>
+	<listitem><command>report</command> - п╬я┌я┤я▒я┌;</listitem>
+	<listitem><command>plugin</command> - п©п╬п╢п╨п╩я▌я┤п╟п╣п╪я▀п╧ п╪п╬п╢я┐п╩я▄;</listitem>
+	<listitem><command>user</command> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄;</listitem>
+	<listitem><command>group</command> - пЁя─я┐п©п©п╟ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╧.</listitem>
 	</itemizedlist>
 	
 	<command>get <id></command>
-	Получить содержимое объекта из депозитария по его идентификатору.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╬п╠я┼п╣п╨я┌п╟ п╦п╥ п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐ п©п╬ п╣пЁп╬ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐.
 	
 	<command>metaget <id></command>
-	Получить метаобъект из словаря по его идентификатору.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌ п╦п╥ я│п╩п╬п╡п╟я─я▐ п©п╬ п╣пЁп╬ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─я┐.
 	
-	<command>metaput (<поле1>=<значение1>[, ...])</command>
-	Создать или изменить метаобъект в словаре. Если в списке полей указан
-	идентификатор (id), будет заменён существующий объект.
+	<command>metaput (<п©п╬п╩п╣1>=<п╥п╫п╟я┤п╣п╫п╦п╣1>[, ...])</command>
+	п║п╬п╥п╢п╟я┌я▄ п╦п╩п╦ п╦п╥п╪п╣п╫п╦я┌я▄ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌ п╡ я│п╩п╬п╡п╟я─п╣. п∙я│п╩п╦ п╡ я│п©п╦я│п╨п╣ п©п╬п╩п╣п╧ я┐п╨п╟п╥п╟п╫
+	п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ (id), п╠я┐п╢п╣я┌ п╥п╟п╪п╣п╫я▒п╫ я│я┐я┴п╣я│я┌п╡я┐я▌я┴п╦п╧ п╬п╠я┼п╣п╨я┌.
 	
-	<command>put (<поле1>=<значение1>[, ...])</command>
-	Создать или изменить объект в депозитарии. Если в списке полей указан
-	идентификатор (id), будет заменён существующий объект.
+	<command>put (<п©п╬п╩п╣1>=<п╥п╫п╟я┤п╣п╫п╦п╣1>[, ...])</command>
+	п║п╬п╥п╢п╟я┌я▄ п╦п╩п╦ п╦п╥п╪п╣п╫п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╡ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╦. п∙я│п╩п╦ п╡ я│п©п╦я│п╨п╣ п©п╬п╩п╣п╧ я┐п╨п╟п╥п╟п╫
+	п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ (id), п╠я┐п╢п╣я┌ п╥п╟п╪п╣п╫я▒п╫ я│я┐я┴п╣я│я┌п╡я┐я▌я┴п╦п╧ п╬п╠я┼п╣п╨я┌.
 	
-	<command>select <поля> from <класс> [where <условия>]</command>
-	Получить список полей объектов, удовлетворяющих указанным критериям. 
+	<command>select <п©п╬п╩я▐> from <п╨п╩п╟я│я│> [where <я┐я│п╩п╬п╡п╦я▐>]</command>
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│п©п╦я│п╬п╨ п©п╬п╩п╣п╧ п╬п╠я┼п╣п╨я┌п╬п╡, я┐п╢п╬п╡п╩п╣я┌п╡п╬я─я▐я▌я┴п╦я┘ я┐п╨п╟п╥п╟п╫п╫я▀п╪ п╨я─п╦я┌п╣я─п╦я▐п╪. 
 	
-	<поля> - список полей, разделённых запятыми. Поля с пробелами 
-	заключаются в кавычки. Вы можете указать * для показа всех полей всех 
-	указанных классов.
+	<п©п╬п╩я▐> - я│п©п╦я│п╬п╨ п©п╬п╩п╣п╧, я─п╟п╥п╢п╣п╩я▒п╫п╫я▀я┘ п╥п╟п©я▐я┌я▀п╪п╦. п÷п╬п╩я▐ я│ п©я─п╬п╠п╣п╩п╟п╪п╦ 
+	п╥п╟п╨п╩я▌я┤п╟я▌я┌я│я▐ п╡ п╨п╟п╡я▀я┤п╨п╦. п▓я▀ п╪п╬п╤п╣я┌п╣ я┐п╨п╟п╥п╟я┌я▄ * п╢п╩я▐ п©п╬п╨п╟п╥п╟ п╡я│п╣я┘ п©п╬п╩п╣п╧ п╡я│п╣я┘ 
+	я┐п╨п╟п╥п╟п╫п╫я▀я┘ п╨п╩п╟я│я│п╬п╡.
 	
-	<класс> - список имён классов, разделённых запятыми. Имена классов с 
-	пробелами заключаются в кавычки.
+	<п╨п╩п╟я│я│> - я│п©п╦я│п╬п╨ п╦п╪я▒п╫ п╨п╩п╟я│я│п╬п╡, я─п╟п╥п╢п╣п╩я▒п╫п╫я▀я┘ п╥п╟п©я▐я┌я▀п╪п╦. п≤п╪п╣п╫п╟ п╨п╩п╟я│я│п╬п╡ я│ 
+	п©я─п╬п╠п╣п╩п╟п╪п╦ п╥п╟п╨п╩я▌я┤п╟я▌я┌я│я▐ п╡ п╨п╟п╡я▀я┤п╨п╦.
 	
-	<условия> - условие по правилам CLIP. Поддерживаются операции 
-	сравнения '==', '!=', '>', '>=', '<=', '<' и логические операции
-	'.not.', '.and.', '.or.'. Значения должны заключаться в двойные кавычки ("),
-	а между условиями не должно быть пробелов.
+	<я┐я│п╩п╬п╡п╦я▐> - я┐я│п╩п╬п╡п╦п╣ п©п╬ п©я─п╟п╡п╦п╩п╟п╪ CLIP. п÷п╬п╢п╢п╣я─п╤п╦п╡п╟я▌я┌я│я▐ п╬п©п╣я─п╟я├п╦п╦ 
+	я│я─п╟п╡п╫п╣п╫п╦я▐ '==', '!=', '>', '>=', '<=', '<' п╦ п╩п╬пЁп╦я┤п╣я│п╨п╦п╣ п╬п©п╣я─п╟я├п╦п╦
+	'.not.', '.and.', '.or.'. п≈п╫п╟я┤п╣п╫п╦я▐ п╢п╬п╩п╤п╫я▀ п╥п╟п╨п╩я▌я┤п╟я┌я▄я│я▐ п╡ п╢п╡п╬п╧п╫я▀п╣ п╨п╟п╡я▀я┤п╨п╦ ("),
+	п╟ п╪п╣п╤п╢я┐ я┐я│п╩п╬п╡п╦я▐п╪п╦ п╫п╣ п╢п╬п╩п╤п╫п╬ п╠я▀я┌я▄ п©я─п╬п╠п╣п╩п╬п╡.
 	
-	Пример:
+	п÷я─п╦п╪п╣я─:
 	<pre>select id,author_name,email from mng_author where code=="Uri";</pre>
 	
-	<command>show <метакласс></command>
-	Показать список метаобъектов.
+	<command>show <п╪п╣я┌п╟п╨п╩п╟я│я│></command>
+	п÷п╬п╨п╟п╥п╟я┌я▄ я│п©п╦я│п╬п╨ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌п╬п╡.
 	
-	Доступные классы метаобъектов: 
+	п■п╬я│я┌я┐п©п╫я▀п╣ п╨п╩п╟я│я│я▀ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌п╬п╡: 
 	<itemizedlist>
-	<listitem><command>databases</command> - базы данных;</listitem> 
-	<listitem><command>depositories</command> - депозитарии;</listitem>
-	<listitem><command>extents</command> - пространства имён;</listitem>
-	<listitem><command>attributes</command> - атрибуты;</listitem>
-	<listitem><command>counters</command> - счётчики;</listitem>
-	<listitem><command>indexes</command> - индексы;</listitem>
-	<listitem><command>classes</command> - классы;</listitem>
-	<listitem><command>tcolumns</command> - столбцы видов;</listitem>
-	<listitem><command>tviews</command> - виды;</listitem>
-	<listitem><command>reports</command> - отчёты;</listitem>
-	<listitem><command>plugins</command> - подключаемые модули;</listitem>
-	<listitem><command>users</command> - пользователи;</listitem>
-	<listitem><command>groups</command> - группы пользователей;</listitem>
-	<listitem><command>statistics</command> - общая статистика по количеству метаобъектов.</listitem>
+	<listitem><command>databases</command> - п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘;</listitem> 
+	<listitem><command>depositories</command> - п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╦;</listitem>
+	<listitem><command>extents</command> - п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╟ п╦п╪я▒п╫;</listitem>
+	<listitem><command>attributes</command> - п╟я┌я─п╦п╠я┐я┌я▀;</listitem>
+	<listitem><command>counters</command> - я│я┤я▒я┌я┤п╦п╨п╦;</listitem>
+	<listitem><command>indexes</command> - п╦п╫п╢п╣п╨я│я▀;</listitem>
+	<listitem><command>classes</command> - п╨п╩п╟я│я│я▀;</listitem>
+	<listitem><command>tcolumns</command> - я│я┌п╬п╩п╠я├я▀ п╡п╦п╢п╬п╡;</listitem>
+	<listitem><command>tviews</command> - п╡п╦п╢я▀;</listitem>
+	<listitem><command>reports</command> - п╬я┌я┤я▒я┌я▀;</listitem>
+	<listitem><command>plugins</command> - п©п╬п╢п╨п╩я▌я┤п╟п╣п╪я▀п╣ п╪п╬п╢я┐п╩п╦;</listitem>
+	<listitem><command>users</command> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╦;</listitem>
+	<listitem><command>groups</command> - пЁя─я┐п©п©я▀ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╧;</listitem>
+	<listitem><command>statistics</command> - п╬п╠я┴п╟я▐ я│я┌п╟я┌п╦я│я┌п╦п╨п╟ п©п╬ п╨п╬п╩п╦я┤п╣я│я┌п╡я┐ п╪п╣я┌п╟п╬п╠я┼п╣п╨я┌п╬п╡.</listitem>
 	</itemizedlist>
 	
-	<command>use <база_данных> [<депозитарий>]</command>
-	Изменить текущую базу данных и депозитарий.
+	<command>use <п╠п╟п╥п╟_п╢п╟п╫п╫я▀я┘> [<п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧>]</command>
+	п≤п╥п╪п╣п╫п╦я┌я▄ я┌п╣п╨я┐я┴я┐я▌ п╠п╟п╥я┐ п╢п╟п╫п╫я▀я┘ п╦ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧.

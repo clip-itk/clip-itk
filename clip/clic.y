@@ -162,7 +162,7 @@
  * paul
  *
  * Revision 1.49  2001/12/21 11:48:20  clip
- *  (cAlias)->&(cf) := nSum    // этого не было
+ *  (cAlias)->&(cf) := nSum    // this was not
  * paul
  *
  * Revision 1.48  2001/12/18 10:23:17  clip

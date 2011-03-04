@@ -38,7 +38,7 @@ END
 #ifdef BUG162
 
 ttt:=.T.
-ttt:=ttt+1      //ошибка
+ttt:=ttt+1      // error
 ? ttt
 ?
 
@@ -1293,7 +1293,7 @@ return
 ? 'ANSI', getANSIcp()
 ? 'CONSOLE', getCONSOLEcp()
 ? 'CONSOLEOUTPUT', getCONSOLEOUTPUTcp()
-? 'ТШБЮ'
+? 'qwerty' // cp1251 -> utf-8: 'я└я▀п╡п╟'
 ?
 inkey(0)
 
@@ -1303,7 +1303,7 @@ clear screen
 ? 'ANSI', getANSIcp()
 ? 'CONSOLE', getCONSOLEcp()
 ? 'CONSOLEOUTPUT', getCONSOLEOUTPUTcp()
-? 'ТШБЮ'
+? 'qwerty' // cp1251 -> utf-8: 'я└я▀п╡п╟'
 ?
 inkey(0)
 */
@@ -1526,7 +1526,7 @@ return
 #define end        END
 
 do while .t.
-end   // clipper это не заменяет !
+end   // clipper doesn't replace this !
 */
 
 /*
@@ -1579,7 +1579,7 @@ return
 */
 
 
-/*/  это длинный коментраий */
+/*/  this is a long comment */
 
 
 /*
@@ -1606,7 +1606,7 @@ OBJECT oNewGauge:Gauge
  [ ; ATail( GetList ):<msg> ]
 
 
-@ nRow+3, nLeft+34 GET lOrient CONDITION {"вертик.", " гориз."}
+@ nRow+3, nLeft+34 GET lOrient CONDITION {"vertic.", " horiz."}
 */
 
 
@@ -1679,6 +1679,10 @@ return
 
 /*
 #defin ATOP_CHOICE_PA { " N/N ;╓╝╙Ц╛", "▐╝АБ═╒И╗╙;╖═╙═╖Г╗╙", " └═Б═ ;╝БёЮЦ╖╙╗","└═Б═;╞Ю╗╔╛╙╗","▒Ц╛╛═ ╞╝;╞Ю╝╓═╕╜╝╘","▒Ц╛╛═ ╞╝;╖═╙Ц╞╝Г╜╝╘","▒Ц╛╛═; ╙╝╞╚═Б╔","▌Б╓╔╚" }
+// cp866 -> utf-8:
+// { " N/N ;п╢п╬п╨я┐п╪", "п÷п╬я│я┌п╟п╡я┴п╦п╨;п╥п╟п╨п╟п╥я┤п╦п╨", " п■п╟я┌п╟ ;п╬я┌пЁя─я┐п╥п╨п╦","п■п╟я┌п╟;п©я─п╦п╣п╪п╨п╦","п║я┐п╪п╪п╟ п©п╬;п©я─п╬п╢п╟п╤п╫п╬п╧","п║я┐п╪п╪п╟ п©п╬;п╥п╟п╨я┐п©п╬я┤п╫п╬п╧","п║я┐п╪п╪п╟; п╨п╬п©п╩п╟я┌п╣","п·я┌п╢п╣п╩" }
+// { " N/N ;docum", "Supplier;customer", " Date of;shipment","Date of;acceptance","amount of;sales","amount of;Procurement","Amount;Due","Section" }
+
 #define AFIELD_CHOICE_PA { "Nd", "Kod", "DataOt","DataPr","SumRo","SumOp","SumPay",{||m_pa_ttn->OtdelEx} }
 
 ? ATOP_CHOICE_PA
@@ -1710,8 +1714,8 @@ field->first:=time()
 first := "sdfsdfsd"
 ? field->first,m->first, first
 //                        ````````
-//  при компиляции с ключиком clip -a , последний first должен браться
-//  из memvar
+//  when compiling in CLIP with an option -a , latest 'first' should be got
+//  from 'memvar'
 ?
 return
 */
@@ -1741,8 +1745,8 @@ field->first:=time()
 first := "sdfsdfsd"
 ? field->first,m->first, first
 //                        ````````
-//  при компиляции с ключиком clip -a , последний first должен браться
-//  из memvar
+//  when compiling in CLIP with an option -a , latest 'first' should be got
+//  from 'memvar'
 ?
 return
 */
@@ -1878,7 +1882,7 @@ set filter to &fff
 
 /*
       Devpos( Prow() + 1, 0 )
-      Devout( Replicate( "д", IIF( lSaldo, n_field - 2, n_field ) * 15 + 15 ;
+      Devout( Replicate( "д", IIF( lSaldo, n_field - 2, n_field ) * 15 + 15 ; // cp866->utf-8: "Б■─"
                          * ( Len( _Undef ) - nItogk - IIF( lSaldo, 2, 0 ) ) ;
                        )                                                   ;
             )
@@ -2025,7 +2029,7 @@ return
 */
 
 /*
-*reference aaa // вот это перестало работать
+*reference aaa // here it has stopped working
 memvar x
 x:="asdasdasdas"
 ? "by default reference"
@@ -2148,7 +2152,7 @@ return
 //o := NewWindow(10, 20, 18, 59)
 //? owDisplay
 o:a:dasdf()
-o:o:owDisplay() // выдает [1()]  "()" лишние получаются
+o:o:owDisplay() // show [1()]  "()" is an odd
 */
 
 /*
@@ -2172,7 +2176,7 @@ o:o:owDisplay
 //Local key_to, akey_to
 thread key key_to
 thread key akey_to  //2
-//препроцессор не опознает 1-ю конструкцию (key key_to)
+//preprocessor does not recognize the 1-st construction (key key_to)
 //THREAD   Key key_to
 //THREAD  (GETLIST , { akey_to } )
 //GETLIST := {}
@@ -2208,7 +2212,7 @@ LOCAL tmpVar
   SvErrorBlock := ERRORBLOCK( { || VarBreak() } )
   BEGIN SEQUENCE
     ? cNameVar, isMemvar(cnamevar)
-    // переменной нет, а varbreak() не вызывается
+    // no such variable, and varbreak() not called
     ? &cNameVar
     ? cNameVar, isMemvar(cnamevar)
     tmpVar := &(cNameVar)
@@ -2349,11 +2353,11 @@ Eval(y,1)
 
 /*
 clear screen
-? scankey(0)   // вот если сразу нажать ALT
+? scankey(0)   // But if just press ALT
 ? scankey(0)
 ? nextkey()
-? "inkey1=",inkey(0) // а тут пробел
-? scankey(0)   // то вот тут выдается скан-код отпускания пробела
+? "inkey1=",inkey(0) // and then press SPACE key
+? scankey(0)   // then issued the scan code of release SPACE key
 ? scankey(0)
 ? nextkey()
 ? "inkey2=",inkey(0)
@@ -2363,24 +2367,24 @@ clear screen
 */
 /*
 clear screen
-? 1,scankey(0) // выдает код нажатия
-? 2,scankey(0) // выдает код отпускания
-? 11,scankey(0) // выдает код нажатия
-? 22,scankey(0) // выдает код отпускания
-? 3,nextkey()  // ничего не дает - это неправильно
-? 4,inkey(0)   // ожидает следующего нажатия, хотя пробел уже полностью
-             // отработан и в буфере уже должен быть.
-? 5,inkey()   // а этот выдает 0 - как ему и положено.
+? 1,scankey(0) // gives the code press
+? 2,scankey(0) // gives the code release
+? 11,scankey(0) // gives the code press
+? 22,scankey(0) // gives the code release
+? 3,nextkey()  // does nothing - it's wrong
+? 4,inkey(0)   // forward to the next pressing, although space is already fully
+             // processed and should be in buffer.
+? 5,inkey()   // and this gives 0 - as it should
 
 ?
 */
 /*
 //#translate memv -> s_cur_t => thcurt()
 #translate memv->s_cur_t => thcurt()
-//, препроцессор превращает
+//, preprocessor converts
 ? memv->s_cur_t
 ? memv->s_clrsong
-//в thcurt() -> s_clrsong
+//in thcurt() -> s_clrsong
 ?
 
 */
@@ -2405,9 +2409,10 @@ SET MACRO_IN_STRING OFF
 */
 
 /*
-// вот это не компилируется
+// here it does not compile
 @ 5,15 SAY "▒ " GET TopData VALID ADDMONTH(dbalans,1)>TopData.and.TopData>=dbalans
-// а вот это нормально - хотя вроде одинаковые конструкции !
+// @ 5,15 SAY "Б√▓ " GET TopData VALID ADDMONTH(dbalans,1)>TopData.and.TopData>=dbalans
+// but this is normal - look as the same code!
 @ 1,2 say "a" GET TopData VALID a>b.and.b>=c
 */
 /*
@@ -2425,7 +2430,7 @@ return
 */
 /*
 _field -> (a) -> fieldname := "asdf"
-// такое clipper воспринимает как
+// clipper this is perceived as
 (a) -> fieldname := "asdf"
 
 */
@@ -2486,7 +2491,7 @@ s:="param"
 /*
 param:="dsfsfs"
 s:="m->param"
-? &s  // не компилируется в run-time
+? &s  // not compiled at run-time
 ?
 return
 */
@@ -2565,10 +2570,10 @@ while .f.
 	? 'aa'
 enddo
 ? 'bbb'
-PUBLIC row_a[3]        && первая строка для каждой секции
-PUBLIC row_x[3]        && последняя строка для каждой секции
+PUBLIC row_a[3]        && first row for each section
+PUBLIC row_x[3]        && last row for each section
 
-* заполнение константами
+* filling by constants
 row_a[1] = 6
 
 ? row_a
@@ -2583,8 +2588,8 @@ aaa("&a[1]")
 
 function aaa(a1)
 ? a1
-// clipper здесть выводит "&a[1]"
-// видимо не раскручивает "&a" если в A лежит не строка.
+// clipper here displays "&a[1]"
+// may be, doesn't recognize the "&a" if 'A' isn't a string.
 ?
 return
 
@@ -2602,11 +2607,11 @@ use test
 
 IIndex On &(a[1]) To (b)
 IIndex On &b To (b)
-   //       ``````   вот это не раскручивается ни через codestr
-   // ни при передаче параметров в функцию,
-   // а вообще-то клиппер-препроцессор умудряется строку
-   // "&(a)" странслировать в просто (a) без всяких строк - т.е. просто
-   // сокращает "&" и убирает и макро и кавычки
+   //       ``````   here it is not recognized neither by 'codestr'
+   // or when passing parameters to a function
+   // "Generally speaking, CLIPPER preprocessor recognize string
+   // "&(a)" as simple (a) without any strings - just reduces "&"
+   // and deletes macro and quotes
 
 
 function aaa(a1,a2,a3,a4)
@@ -2631,8 +2636,8 @@ for n := 1 to len( aColor )
   cVar := "C_" + aColor[n,1]
   //? 'cVar', cVar
   //? aColor[n,2]
-  public &cVar := aColor[n,2]  // именно в этой строке видимо неправильно
-                              // обрабатывается [n,2]
+  public &cVar := aColor[n,2]  // It is in this line probably does't properly
+                              // handle [n,2]
 	? cVar, &cVar
 
 next
@@ -2766,7 +2771,7 @@ dispbegin()
               restscreen(,,,,scr)
       dispend()
         dispbegin()
-                // вот эта выводится до последнего dispend()
+                // This displays until the last dispend()
               dispOutAt(10, 10, "get1", "1/2" )
       dispend()
 
@@ -2838,20 +2843,20 @@ return nil
 */
 
 /*
-//не отрабатывается комментарий:
+//Comment not processed:
 #translate .<object>:AliasDBF   => <object> //[ _AliasDBF \]
 
-//и команда похоже что не работает (если убрать комментарий):
+//and command looks as not processed too (if comment deleted):
 //#command .<object>:AliasDBF   => <object>\[ _AliasDBF \]
  .oArcDic:AliasDBF # "CLIE"
 */
 /*
 
-//вот не компилируется
+//this not compile
 #define SET_OF_USA  [{}] + "[]" + [l;']
 //#define SET_OF_USA  a+[l']
 
-//а вот на таком вообще падает
+//on this generally crashed
 //#define SET_OF_USA  ["{}]
 
 ? SET_OF_USA
@@ -2866,9 +2871,9 @@ return nil
   .oArcDic:AliasDBF # "CLIE"
 
 
-//а еще лучше вот такое:
-//именно в конце просто "]", а не  "\]".
-//Это уже не в ервый раз попадается, видимо будут еще подобные вещи.
+//better yet here is:
+//exactly at end just "]", but no  "\]".
+//This not at one happens, probably still be such a thing
 
 //#translate .<object>:AliasDBF   => <object>\[ _AliasDBF ]
   .oArcDic:AliasDBF # "CLIE"
@@ -2987,10 +2992,11 @@ a->b='bbb'
 clear screen
 set color to 1/2
 @ 10,20 to 15,60 DOUBLE
-@ 12,30 say "▐Ю╝╒╔Ю╝Г╙═"
+//@ 12,30 say "▐Ю╝╒╔Ю╝Г╙═" // cp866->utf-8: "п÷я─п╬п╡п╣я─п╬я┤п╨п╟" 
+@ 12,30 say "Checking"
 inkey(0)
 set color to 3/4
-@ 0,0,24,79 box "╟╟╟╟╟╟╟╟╟"
+@ 0,0,24,79 box "╟╟╟╟╟╟╟╟╟" // cp866->utf-8: "Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒"
 inkey(0)
 
 */
@@ -2998,17 +3004,17 @@ inkey(0)
 str1:="ab"+chr(0)+"c"
 str2:="ab"+chr(0)+"d"
 set exact on
-? "вот это точно из 0-символа в строке"
+? "This is exactly from 0-symbol in string"
 ? str1 = str2, str1 != str2, " => .f., .t."
 set exact off
 ? str1 = str2, str1 != str2, " => .f., .t."
 ? str1 == str2   // .f.
 ?
-? "это пока правильно :)"
+? ""this is still correct :)"
 set exact on
 ? "abc" = "", "abc" >= "", "abc" > "", " => .f., .t., .t."
 ? "abc" = "", "abc" <= "", "abc" < "", " => .f., .f., .f. "
-? "а вот это не пойму почему"
+? "but it doesn't understand why"
 set exact off
 ? "abc" = "", "abc" >= "", "abc" > "", " => .t., .t., .f. "
 ? "abc" = "", "abc" <= "", "abc" < "", " => .t., .t., .f. "
@@ -3042,7 +3048,7 @@ IF VALType(_StepMenu)#'N 'THEN _StepMenu=1
 stable()
 */
 /*
-#define ClearVScroll() FOR i:=_tp2+_h to bottom-1 ;  @ i,r_bord say '╠'; NEXT
+#define ClearVScroll() FOR i:=_tp2+_h to bottom-1 ;  @ i,r_bord say '╠'; NEXT // cp866->utf-8: 'Б√▓'
 #define ClearHScroll()  @ b_Bord,l_1 Say _Sp
 
 ClearVScroll()
@@ -3077,15 +3083,15 @@ return
 clear screen
 //dispbegin()
 DispBox(0,0,10,50)
-@ 0,5 say 'Распределение года'
-@ 1,5 say 'Распределение года'
+@ 0,5 say 'Distribution of the year'
+@ 1,5 say 'Distribution of the year'
 //dispend()
 wait
 */
 /*
 #xtranslate Really(<var>)=> (TYPE(<'var'>)=='L' .AND. <var>)
 
-      IF Really(m->_AutoRestore)      // ╗╖ INI
+      IF Really(m->_AutoRestore)      // from INI
               m->_NeedRestoreVue:=.T.
       ELSE
               _i:=.T.
@@ -3254,15 +3260,15 @@ if isCharacter( cStr) do ? cStr
 #include"inkey.ch"
 
 cls
-?Inkey(0,INKEY_KEYBOARD) // при любом движении мыши возвращает 0
+?Inkey(0,INKEY_KEYBOARD) // returns 0 with any mouse movement
 ?INKEY(0,INKEY_ALL)
 ?
 return
 */
 /*
-#define MENU_RECS() Menu2({ALL_RECS,'▌АБ═╒Х╗╔АО'},;
+#define MENU_RECS() Menu2({ALL_RECS,'The remaining'},;
                            _scope,;
-             '┌К║╗Ю═╘Б╔ ╝║╚═АБЛ ╓╔╘АБ╒╗О')
+             'Choose the scope')
 
 MENU_RECS()
 */
@@ -3381,8 +3387,8 @@ ABC x := 1 AS intvar
 #command XLOCAL <xx,...> AS <yy> => LOCAL <xx>
 
 
-local x:=1 AS INTVAR // вот это не транслируется
-Xlocal x:=1 AS INTVAR // а эта транслируется.
+local x:=1 AS INTVAR // this not translated
+Xlocal x:=1 AS INTVAR // but this translated.
 ? x
 return nil
 */
@@ -3402,7 +3408,7 @@ return nil
 #translate .<Object>:ManualSld     => <Object>\[ _ManualSld  \]
 .oF:manualSld()
 
-// именно если нету определения для:
+// specifically, if no definitions for:
 .oF:DicInitget()
 */
 /*
@@ -3428,7 +3434,7 @@ return nil
 /*
 set Key K_F2 to asdf()
 
-//в clipper`е получается
+//in clipper obtained
 //setket(K_F2,{|p,l,v| asdf(p,l,v)})
 
 */
@@ -3443,13 +3449,13 @@ ENDDO
 
 */
 /*
-#define GET_COL         (oG:cargo[2])  // Номер колонки GET
+#define GET_COL         (oG:cargo[2])  // Column number of GET
 
 oG:=map()
 oG:cargo:={1,2}
 col:=-10
 ? og
-GET_COL      = col - 1          //  <=== строка 132
+GET_COL      = col - 1          //  <=== line 132
 ? og
 (oG:cargo[2]) = col - 1
 ? og
@@ -3474,10 +3480,10 @@ select sklad_id from ostatok ;
 #xtranslate IFLEX ( <a> ) => IF (LX () == <a>) ; NEXT_LEXEM ()
 
 func a
-        IFLEX(L_EOL)  // вот эту строку берет
+        IFLEX(L_EOL)  // Here takes this line
             ? 1
         ENDIF
-        IFLEX (L_EOL) // а эту нет :)
+        IFLEX (L_EOL) // but this line not :)
             ? 2
         ENDIF
     return Nil
@@ -3499,7 +3505,7 @@ clear screen
 #include "ASSERT.CH"
 
 FUNCTION uTop(aStack)
-ASSERT( LEN( aStack) > 0, "Попытка применить uTop к пустому стеку" )
+ASSERT( LEN( aStack) > 0, "Attempt to apply uTop to an empty stack" )
 RETURN aTail( aStack)
 
 */
@@ -3515,9 +3521,9 @@ Private cName2 := "Pearson"
 */
 /*
 (oG:cargo[2]) = col -1
-#define GET_COL         (oG:cargo[2])  // Номер колонки GET
+#define GET_COL         (oG:cargo[2])  // Column number of GET
 
-GET_COL      = col - 1          //  <=== строка 132
+GET_COL      = col - 1          //  <=== line 132
 */
 
 /*
@@ -3568,18 +3574,18 @@ altd(2)
 */
 /*
 local a:={"asdf"}
-errorBlock({|x|break(x)})  // это чтобы в рекурсию не улетало
-_alert("1",a)   // вот это работает
-_alert("2",@a)  // а вт этот :)
+errorBlock({|x|break(x)})  // for avoid recursion
+_alert("1",a)   // this works
+_alert("2",@a)  // but this :)
 ? a
 ?
 return
 
 ***************************************************************
 function _alert(str, mmes,colorp)
-? mmes  // массив выводится
+? mmes  // displays array
 //? len(mmes)
-? mmes[1] // а элемент не хочет
+? mmes[1] // but element doesn't
 return
 */
 
@@ -3604,11 +3610,11 @@ use /home/ostatok/temp/body.dbf  SHARED
 local am :={}
 
 ? am
-asdf2( am )    // вот здесь массив не должен изменится
-                // и в клипе массив не меняется
+asdf2( am )    // here the array should not be changed
+                // and in CLIP array doesn't change
 ? am
-asdf2(@am)     // а вот здесь должен
-               // и в клиппере реально массив изменяется - проверил
+asdf2(@am)     // but there must
+               // and in Clipper actually an array changed - I was check.
 ? am
 ?
 ?
@@ -3713,7 +3719,7 @@ skip //rew
 skip ::a
 				change ++
 
-        QUIT               && -=[Bye]=- выход
+        QUIT               && -=[Bye]=- exit
 quit
 
 if .t.
@@ -3723,7 +3729,7 @@ end
 skip   += 5
 skip -= 10
 skip 3
-  funcn = boxarray[M->cursor] && в нормальную переменную для макро
+  funcn = boxarray[M->cursor] && to normal variable for macro
 
   if ++a
    	?
@@ -3801,8 +3807,8 @@ begin sequence
   break
 recover using err
   ? "recover"
-  ? err  // вот эта перменная должна быть NIL - потому-что break вызывается
-        // без параметров
+  ? err  // this variable should be NIL - because break is called
+        // wothout parameters
 end sequence
   ? "end"
   return
@@ -3888,7 +3894,7 @@ return
           THWND [COL <col>] [ROW <row>]          ;
                  TIME <time>                     ;
                 [COLOR <cl>]                     ;
-                 HELP 'нажмите любую клавишу'    ;
+                 HELP 'press any key'            ;
                 [HEAD <head>]                    ;
                  FLAG POINTS .f.                 ;
                  CLEARKEY                        ;
@@ -3901,7 +3907,7 @@ return
           =>                                     ;
           THWND [COL <col>] [ROW <row>]          ;
                 [COLOR <cl>]                     ;
-                 HELP 'нажмите любую клавишу'    ;
+                 HELP 'press any key'            ;
                 [HEAD <head>]                    ;
                  FLAG POINTS .f.                 ;
                  CLEARKEY                       ;
@@ -3915,7 +3921,7 @@ return
 //cls
 THMSG COL 1 ROW 3 TIME 15 COLOR s_clr_msg 'list'
 //THMSG COL LOW ROW LOW TIME 15 COLOR s_clr_msg 'list'
-setmsg 'Ура Ура ...', 'aasdf'
+setmsg 'Wooohoooo ...', 'aasdf'
 */
 
 /*
@@ -4014,7 +4020,7 @@ use test
 ? first
 TEST->(dbskip(1))
 ? first
-test->(dbskip(1))    // при выполнении - bad alias
+test->(dbskip(1))    // while executing - bad alias
 ? first
 ?
 
@@ -4065,13 +4071,13 @@ RETURN M->i
 */
 
 /*
-STATIC aFLitem  := {,, " ~Файл                    ",, .t., -1000,"Перенаправить печать в файл",}
+STATIC aFLitem  := {,, " ~File                    ",, .t., -1000,"Redirect printing to file",}
 
 #define Redirect aFLitem[4]
 
 func fff
 aFLitem:={}
-Redirect:=4        // На этом операторе выдается сообщение о неописанной переменной
+Redirect:=4        // On this statement got message about undefined variable
 ? aFLitem[1]
 return nil
 
@@ -4235,7 +4241,7 @@ endcase*/
 
 /*
 text ->(dbclose())
-close text    // Команда text
+close text    // Command text
 */
 /*
 function xyz()
@@ -4309,16 +4315,16 @@ Type;
 
 */
 /*
-//при TERM=linux-console - работает нормально,
-//а при TERM=linux-koi8 - такое чудо на экране получается :)
+//with TERM=linux-console - works as well,
+//but with TERM=linux-koi8 - such a miracle on the screen displays :)
 *charset cp866
 clear screen
 set color to 1/2
 @ 10,20 to 15,60 DOUBLE
-@ 12,30 say "▐Ю╝╒╔Ю╝Г╙═"
+@ 12,30 say "Checking"
 inkey(0)
 set color to 3/4
-@ 0,0,24,79 box "╟╟╟╟╟╟╟╟╟"
+@ 0,0,24,79 box "╟╟╟╟╟╟╟╟╟" // cp866->utf-8: "Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒Б√▒"
 inkey(0)
 
 */
@@ -4329,7 +4335,7 @@ nsum :=time()
 use test
 select 0
 ? test->first
-(cAlias)->&(cf) := nSum    // этого
+(cAlias)->&(cf) := nSum    // this
 ? test->first
 ?
 return
@@ -4346,7 +4352,7 @@ for nm := if(lMes == nil, 1, m_mes) to m_mes
 next
 */
 /*
- (cAlias)->&(cf) := nSum    // этого
+ (cAlias)->&(cf) := nSum    // this
 
 */
 /*
@@ -4449,7 +4455,7 @@ func b
 return
 */
 /*
-Static aNachs  := {'nachs',, .t., {, 'NN'}}     // ┬╚╗ ╞╝ ╜╝╒╝╛Ц
+Static aNachs  := {'nachs',, .t., {, 'NN'}}     // utf-8: Б■╛Б∙ Б∙≈ Б∙·Б∙² Б∙°Б∙²Б∙▓Б∙²Б∙⌡п╕
 field;
    xx // asdf
 local a
@@ -4494,12 +4500,12 @@ ordBagExt()
 clear screen
 //	 <*x*> ;
 
-//вот эта клманда переваривается
+//this command is executed
 
     define window moddays at 1,1 size 1,20 system shadow ZOOM float;
         title '╜в╖О╓И╢а' color N/W+
 
-// а эта нет - видимо что-то цвет не воспринимается
+// but this not - probably color is not perceived
 
     define window moddays at 1,1 size 1,20 system shadow ZOOM float;
          color N/W+ title '╜в╖О╓И╢а'
@@ -4515,7 +4521,7 @@ weekstr(5)='5╔|'
 weekstr(6)='6╓╜'
 weekstr(7)='7╓╩'
 wk:=1
-// weekstr воспринимается как функция
+// weekstr perceived as function
 ? weekstr(val(wk)+1)
 ? weekstr(2)
 ?
@@ -4615,7 +4621,7 @@ Static aNachs  := {'nachs',, .t., {, 'NN'}}
 
 field;
   xx // asdf
- /* вот из-за этого переноса XX */
+ /* because of this transfer XX */
 Memvar IsPred
 
 Function Main(cPath, cPal, cName)
@@ -4855,11 +4861,11 @@ _Undef7 := Tbcolumnne( XTOC(xValue), _Undef4[ nNum ], ;
 	  S_ThWnd( <col>, <row>, <cl>, <help>,,, <time>,  ;
 		  { <list> }, <fp>, <head>, <.ck.> )
 /*
-S_ThWnd( "low", "low", s_clr_msg, "нажмите любую клавишу",,, 15, { "Ура Ура
+S_ThWnd( "low", "low", s_clr_msg, "press any key",,, 15, { "Woohooo
 ..." }, .F.,, .T. )
 
-Clip препроцессор
-S_THWND( 'low', 'low', S_CLR_MSG, 'нажмите любую клавишу',,, 15, { 'Ура Ура
+Clip preprocessor
+S_THWND( 'low', 'low', S_CLR_MSG, 'press any key',,, 15, { 'Woohooo
 ...' }, .F. CLEARKEY ,,.F. )
 */
 

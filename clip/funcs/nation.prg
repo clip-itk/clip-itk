@@ -6,8 +6,8 @@
 #include "config.ch"
 #include "lang.ch"
 /*
-	Кто знает что тут еще должно быть
-        напишите.
+	Who knows what else must be -
+        write.
 */
 /*
 #define _GET_INSERT_ON   7     // "Ins"

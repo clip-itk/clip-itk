@@ -62,7 +62,7 @@
  *  $EXAMPLES$
  *  nOpt := A_CHOICE( 7,9,, ARRAY:t_arrey USERFUNC:{|a,b| UserFunc(a,b,any1)};
  *          BOXTYPE:B_SINGLE  BOXTITLE:title  SHADOW:"R" TAGCHAR:chr(17);
- *          REST_SCREEN:.F. AUTOEXEC:.F. MES_COLOR:MSG_COLOR ELEVBAR:"±" ;
+ *          REST_SCREEN:.F. AUTOEXEC:.F. MES_COLOR:MSG_COLOR ELEVBAR:"â–’" ;
  *          NOSELCOLOR:"bg/n")
  *
  *  Check only the RETURNed element:

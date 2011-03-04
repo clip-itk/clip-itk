@@ -56,7 +56,7 @@ ENDIF
 RestPos()
 **********
 PROC Information(aFileStr)
-// В aFileStr по ссылке передается информация для File в DispStru
+// Got information by reference in aFileStr for File in DispStru
 LOCAL _a,aTagInfo,aTag,_i,nCnt,_ndb
 dbcommit()
 _Ndb:= {DATE_UPDATE+DTOC(LUpdate()),;
@@ -99,8 +99,8 @@ aEval(_ndb,{|_handle| Hi_String(PADC(_handle,_i*2-3),++nCnt,_middlecol-_i+2)})
 IF Waitkey(0)<>K_ESC
 
   IF (_a:=Sx_TagCount(1))<>0
-	aTagInfo := TagInfo(1)	// Получить информацию о тегах для текущего .CDX
-				// Теперь нарисуем дисплей
+	aTagInfo := TagInfo(1)	// Get information about tags for current .CDX
+				// now draw display
 	DispBegin()
 	Panel(4,2,18,77,_MSG_H_TITLE+Rdd_Info(1)[1] + ')',;
 			{_im,_HdColor,_im},2)
@@ -118,9 +118,9 @@ IF Waitkey(0)<>K_ESC
 	Center(17," PgUp  PgDn "+_Abort,,_HdColor)
 	DispEnd()
 
-	nCnt := 1	// Начать с первого тега
+	nCnt := 1	// Begins from first tag
 
-			//Отобразить информацию о тегах,
+			//Show info about tags
 
 	DO WHILE (.T.)
 	        DispBegin()

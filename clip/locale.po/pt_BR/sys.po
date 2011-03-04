@@ -1,0 +1,1203 @@
+# tradução de sys.po para Português Brasileiro
+# Module sys.
+#
+# TEAM : Clip-BR <http://clip-br.web.br.com>, 2006.
+# FIRST AUTHOR Edson Leonel de Oliveira <elo.msn@hotmail.com>, 2006.
+# ELO <elo.msn@hotmail.com>, 2006.
+msgid ""
+msgstr ""
+"Project-Id-Version: sys\n"
+"POT-Creation-Date: 2004-02-03 19:57+0400\n"
+"PO-Revision-Date: 2006-07-20 22:12-0300\n"
+"Last-Translator: ELO <elo.msn@hotmail.com>\n"
+"Language-Team: Português Brasileiro <pt@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Generator: KBabel 1.11.2\n"
+
+#: block.prg:19
+msgid "Class TBlock constructor error:Invalid expression"
+msgstr "Erro do construtor da classe TBlock: Expressão inválida"
+
+#: database.prg:18
+msgid "Beginning of file"
+msgstr "Inicio do arquivo"
+
+#: database.prg:19
+msgid "End of file"
+msgstr "Fim do arquivo"
+
+#: database.prg:20
+msgid "Record in use, Please, retry"
+msgstr "Registro em uso. Por favor, tente novamente"
+
+#: database.prg:387
+msgid "Can~t lock dataBase ! Please try again"
+msgstr "Não pode bloquear a base de dados. Por favor, tente novamente"
+
+#: database.prg:413
+msgid "Called Error:"
+msgstr "Erro de chamada:"
+
+#: dbm.prg:57
+msgid "Field not found in dictonary"
+msgstr "Campo não encontrado não dicionário"
+
+#: dbm.prg:71
+msgid "Index not found in dictonary"
+msgstr "Indice não encontrado não dicionário"
+
+#: dialbox.prg:728
+msgid "Line"
+msgstr "Linha"
+
+#: dialbox.prg:747 dialbox.prg:754 edit.prg:732 edit.prg:739 edit.prg:775
+#: edit.prg:803 edit.prg:833 edit.prg:840 hbrowse.prg:260 hbrowse.prg:267
+msgid "String;"
+msgstr "Texto (string);"
+
+#: dialbox.prg:747 dialbox.prg:754 edit.prg:732 edit.prg:739 edit.prg:775
+#: edit.prg:803 edit.prg:833 edit.prg:840 edit.prg:1111 hbrowse.prg:260
+#: hbrowse.prg:267
+msgid ";not found!"
+msgstr ";não encontrado!"
+
+#: dialbox.prg:1235 edit.prg:1261 hbrowse.prg:1610
+msgid "&File"
+msgstr "&Arquivo"
+
+#: dialbox.prg:1247 hbrowse.prg:1629
+msgid "E&xit   "
+msgstr "&Sair\t"
+
+#: dialbox.prg:1247 hbrowse.prg:1629
+msgid "End of application"
+msgstr "Fim a aplicação"
+
+#: dialbox.prg:1252 hbrowse.prg:1659
+msgid "&Options"
+msgstr "&Opções"
+
+#: dialbox.prg:1255 hbrowse.prg:1662
+msgid "&Find   "
+msgstr "&Buscar "
+
+#: dialbox.prg:1255 hbrowse.prg:1662
+msgid "Find string"
+msgstr "Buscar um texto (string)"
+
+#: dialbox.prg:1259 hbrowse.prg:1666
+msgid "&Resume   "
+msgstr "&Resumir  "
+
+#: dialbox.prg:1259 hbrowse.prg:1666
+msgid "Resume find string"
+msgstr "Continua a busca do texto (string)"
+
+#: dialbox.prg:1263 hbrowse.prg:1670
+msgid "&Unmark   "
+msgstr "&Desmarcar"
+
+#: dialbox.prg:1263 hbrowse.prg:1670
+msgid "Unmark selected block"
+msgstr "Desmarcar bloco selecionado"
+
+#: edit.prg:76
+msgid "ESC -menu"
+msgstr "ESC - menu"
+
+#: edit.prg:269 edit.prg:315 edit.prg:690 edit.prg:857 edit.prg:1114
+msgid "Can't open file;"
+msgstr "Não pode abrir o arquivo;"
+
+#: edit.prg:590 edit.prg:938 edit.prg:978 edit.prg:1111 edit.prg:1232
+#: edit.prg:1518
+msgid "File;"
+msgstr "Arquivo;"
+
+#: edit.prg:590 edit.prg:978
+msgid ";not saved. Save it?"
+msgstr ";não foi salvo. Salva?"
+
+#: edit.prg:590 edit.prg:850 edit.prg:938 edit.prg:978 edit.prg:1232
+#: edit.prg:1513 edit.prg:1518 get_obj.prg:427 get_obj.prg:986 get_obj.prg:988
+#: get_obj.prg:1058 get_obj.prg:1060 var_func.prg:83 var_func.prg:111
+#: scr_func.prg:326
+msgid "Yes"
+msgstr "Sim"
+
+#: edit.prg:590 edit.prg:850 edit.prg:938 edit.prg:978 edit.prg:1232
+#: edit.prg:1513 edit.prg:1518
+msgid "No"
+msgstr "Não"
+
+#: edit.prg:590 edit.prg:978 edit.prg:1513 edit.prg:1893
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: edit.prg:782
+msgid "Made "
+msgstr "Feito "
+
+#: edit.prg:782
+msgid " changes"
+msgstr " alterações"
+
+#: edit.prg:791 edit.prg:821
+msgid "Nothing to find!!!"
+msgstr "Nada para buscar!!!"
+
+#: edit.prg:810
+msgid "String "
+msgstr "Texto (string) "
+
+#: edit.prg:810
+msgid " not found!"
+msgstr " não encontrado!"
+
+#: edit.prg:850
+msgid "There is a change in the file.;"
+msgstr "Tem alteração não arquivo.;"
+
+#: edit.prg:850
+msgid "; Reload?"
+msgstr "; Recarrega?"
+
+#: edit.prg:909
+msgid "Symbol '"
+msgstr "Símbolo '"
+
+#: edit.prg:909
+msgid "' not found!"
+msgstr "' não encontrado!"
+
+#: edit.prg:920
+msgid "Structure not found!"
+msgstr "Estrutura não encontrada!"
+
+#: edit.prg:933 edit.prg:1025
+msgid "Block not marked!"
+msgstr "Bloco não marcado!"
+
+#: edit.prg:938 edit.prg:1232 edit.prg:1518
+msgid ";already exists. Overwrite it?"
+msgstr ";já existe. Substitui?"
+
+#: edit.prg:954 edit.prg:955
+msgid " Windows list "
+msgstr " Lista de janelas "
+
+#: edit.prg:1152
+msgid "ESC - menu          <SINGLE GRAPHIC>"
+msgstr "ESC - menu         <GRÁFICO SIMPLES>"
+
+#: edit.prg:1155 edit.prg:1165
+msgid "ESC - menu "
+msgstr "ESC - menu "
+
+#: edit.prg:1162
+msgid "ESC - menu           <DOUBLE GRAPHIC>"
+msgstr "ESC - menu           <GRÁFICO DUPLO>"
+
+#: edit.prg:1207
+msgid "<R>"
+msgstr "<R>"
+
+#: edit.prg:1207
+msgid "<Link>"
+msgstr "<Link>"
+
+#: edit.prg:1207
+msgid "I"
+msgstr "I"
+
+#: edit.prg:1207
+msgid "O"
+msgstr "O"
+
+#: edit.prg:1242
+msgid "Can't save file ;"
+msgstr "Não pode salvar o arquivo ;"
+
+#: edit.prg:1264
+msgid "&New                "
+msgstr "&Novo               "
+
+#: edit.prg:1264
+msgid "Create a new file"
+msgstr "Criar um arquivo novo"
+
+#: edit.prg:1268
+msgid "&Open...            "
+msgstr "&Abrir..            "
+
+#: edit.prg:1268
+msgid "Open a file"
+msgstr "Abrir um arquivo"
+
+#: edit.prg:1272
+msgid "&Save               "
+msgstr "&Salvar              "
+
+#: edit.prg:1272
+msgid "Save a file"
+msgstr "Salvar um arquivo"
+
+#: edit.prg:1276
+msgid "&Save as...         "
+msgstr "Salvar c&omo...    "
+
+#: edit.prg:1276
+msgid "Save a file as..."
+msgstr "Salvar um arquivo como..."
+
+#: edit.prg:1280
+msgid "&Reload file        "
+msgstr "&Recarregar arquivo   "
+
+#: edit.prg:1280
+msgid "Reload a file"
+msgstr "Recarregar um arquivo"
+
+#: edit.prg:1284
+msgid "Read on&ly          "
+msgstr "Somente &leitura\t    "
+
+#: edit.prg:1284
+msgid "Read only options"
+msgstr "Opções de somente leitura"
+
+#: edit.prg:1290 edit.prg:1376
+msgid "&Print...           "
+msgstr "Im&primir...   "
+
+#: edit.prg:1290
+msgid "Print a file"
+msgstr "Imprimir um arquivo"
+
+#: edit.prg:1294
+msgid "Print &block...     "
+msgstr "Imprimir &bloco     "
+
+#: edit.prg:1294 edit.prg:1376
+msgid "Print marked block"
+msgstr "Imprimir um bloco marcado"
+
+#: edit.prg:1300
+msgid "E&xit with save     "
+msgstr "&Sair salvando    "
+
+#: edit.prg:1300
+msgid "End of application and save options"
+msgstr "Terminar a aplicação e salvar as opções"
+
+#: edit.prg:1304
+msgid "Exit with-out sa&ve "
+msgstr "Sair sem g&uardar  "
+
+#: edit.prg:1304
+msgid "End of application and not save options"
+msgstr "Terminar a aplicação sem salvar as opções"
+
+#: edit.prg:1311
+msgid "&Window"
+msgstr "&Janela"
+
+#: edit.prg:1314
+msgid "&List    "
+msgstr "&Listar"
+
+#: edit.prg:1314
+msgid "List of windows"
+msgstr "Lista de janelas"
+
+#: edit.prg:1318
+msgid "&Next    "
+msgstr "&Seguinte"
+
+#: edit.prg:1318
+msgid "Next window"
+msgstr "Próxima janela"
+
+#: edit.prg:1322
+msgid "&Prev    "
+msgstr "&Anterior"
+
+#: edit.prg:1322
+msgid "Prevoice window"
+msgstr "Janela anterior"
+
+#: edit.prg:1326
+msgid "&Close   "
+msgstr "Fe&char  "
+
+#: edit.prg:1326
+msgid "Close window"
+msgstr "Fechar janela"
+
+#: edit.prg:1333
+msgid "&Block"
+msgstr "&Bloco"
+
+#: edit.prg:1336
+msgid "&Line block marker    "
+msgstr "Marca de &linha de bloco"
+
+#: edit.prg:1336
+msgid "Start/stop line block marker"
+msgstr "Iniciar/Parar marcador de linha de bloco"
+
+#: edit.prg:1340
+msgid "&Column block marker  "
+msgstr "Marcador de bloco por &colunas"
+
+#: edit.prg:1340
+msgid "Start/stop columns block marker"
+msgstr "Iniciar/Parar marcador de linha de bloco por colunas"
+
+#: edit.prg:1344
+msgid "&Unmark               "
+msgstr "&Desmarcar     "
+
+#: edit.prg:1344
+msgid "Unmark block marker"
+msgstr "Desmarcar bloco"
+
+#: edit.prg:1348
+msgid "Co&py                 "
+msgstr "Co&piar               "
+
+#: edit.prg:1348
+msgid "Copy block "
+msgstr "Copiar bloco "
+
+#: edit.prg:1352
+msgid "&Move                 "
+msgstr "&Mover                "
+
+#: edit.prg:1352
+msgid "Move block "
+msgstr "Mover bloco "
+
+#: edit.prg:1356
+msgid "&Delete               "
+msgstr "&Deletar      "
+
+#: edit.prg:1356
+msgid "Delete block"
+msgstr "Apagar bloco"
+
+#: edit.prg:1360
+msgid "Copy to clip&board    "
+msgstr "Copiar para área de transf&erência"
+
+#: edit.prg:1360
+msgid "Copy block to clipboard"
+msgstr "Copiar bloco para área de transferência"
+
+#: edit.prg:1364
+msgid "Pa&ste from clipboard "
+msgstr "Pegar &da área de transferência"
+
+#: edit.prg:1364
+msgid "Paste block from clipboard"
+msgstr "Pegar bloco da área de transferência"
+
+#: edit.prg:1368
+msgid "&Save to file         "
+msgstr "&Gravar para arquivo\t"
+
+#: edit.prg:1368
+msgid "Save block to file"
+msgstr "Gravar o bloco em um arquivo"
+
+#: edit.prg:1372
+msgid "&Load from file       "
+msgstr "Carregar a partir de um arqui&vo  "
+
+#: edit.prg:1372
+msgid "Load block from file"
+msgstr "Carrregar um bloco a partir de um arquivo"
+
+#: edit.prg:1385
+msgid "&Service"
+msgstr "&Serviços"
+
+#: edit.prg:1388
+msgid "&Insert mode    "
+msgstr "Modo &inserir"
+
+#: edit.prg:1388
+msgid "On/off insert mode "
+msgstr "Liga/Desliga modo inserir"
+
+#: edit.prg:1393
+msgid "Find &string    "
+msgstr "&Buscar texto"
+
+#: edit.prg:1393
+msgid "Find string "
+msgstr "Buscar um texto (string)"
+
+#: edit.prg:1397
+msgid "Find &next      "
+msgstr "Bu&scar próximo  "
+
+#: edit.prg:1397
+msgid "Find next "
+msgstr "Buscar próxima ocorrência"
+
+#: edit.prg:1401
+msgid "Find pre&vious  "
+msgstr "Buscar &anterior"
+
+#: edit.prg:1401
+msgid "Find previous "
+msgstr "Buscar ocorrência anterior"
+
+#: edit.prg:1405
+msgid "&Replace        "
+msgstr "Substitui&r\t"
+
+#: edit.prg:1405
+msgid "Find and replace string "
+msgstr "Localizar e substituir o texto"
+
+#: edit.prg:1409
+msgid "&Match symbol forward  "
+msgstr "Encontrar o próximo &símbolo"
+
+#: edit.prg:1409
+msgid "Match identity symbol in forward "
+msgstr "Encontrar o próximo símbolo"
+
+#: edit.prg:1413
+msgid "Match symbol &backward "
+msgstr "Encontrar símbolo &anterior"
+
+#: edit.prg:1413
+msgid "Match identity symbol in backward "
+msgstr "Encontrar o símbolo anterior"
+
+#: edit.prg:1417
+msgid "Match structure forward  "
+msgstr "Encontrar a próxima &estrutura"
+
+#: edit.prg:1417
+msgid "Match Clipper structure to forward "
+msgstr "Encontrar a próxima estrutura Clipper"
+
+#: edit.prg:1421
+msgid "Match structure backward "
+msgstr "Encontrar estrutura an&terior"
+
+#: edit.prg:1421
+msgid "Match Clipper structure to backward "
+msgstr "Encontrar estrutura Clipper anterior"
+
+#: edit.prg:1425
+msgid "&Undo           "
+msgstr "&Desfazer\t"
+
+#: edit.prg:1425
+msgid "Undo operation"
+msgstr "Desfazer operação"
+
+#: edit.prg:1433
+msgid "Forma&t"
+msgstr "Forma&tar"
+
+#: edit.prg:1436
+msgid "Format &line    "
+msgstr "Dar formato à &linha  "
+
+#: edit.prg:1436
+msgid "Format line"
+msgstr "Dar formato para a linha"
+
+#: edit.prg:1440
+msgid "Format &part    "
+msgstr "Dar formato à &parte   "
+
+#: edit.prg:1440
+msgid "Format part"
+msgstr "Dar formato para a parte"
+
+#: edit.prg:1447
+msgid "O&therwise"
+msgstr "&Outros\t  "
+
+#: edit.prg:1450
+msgid "&Template       "
+msgstr "&Template       "
+
+#: edit.prg:1450
+msgid "Template "
+msgstr "Template "
+
+#: edit.prg:1454
+msgid "Template &macro "
+msgstr "Template de &macro "
+
+#: edit.prg:1454
+msgid "Template macro "
+msgstr "Template de macro "
+
+#: edit.prg:1458
+msgid "&Single graphic "
+msgstr "Gráfico &simples "
+
+#: edit.prg:1458
+msgid "On/Off single graphic mode "
+msgstr "Liga/Desliga modo de gráfico simples "
+
+#: edit.prg:1463
+msgid "&Double graphic "
+msgstr "Gráfico &duplo\t"
+
+#: edit.prg:1463
+msgid "On/Off double graphic mode  "
+msgstr "Liga/Desliga modo de gráfico duplo "
+
+#: edit.prg:1468
+msgid "&Choose code page "
+msgstr "Tro&car página de códigos "
+
+#: edit.prg:1468
+msgid "Choose code page  "
+msgstr "Trocar página de códigos  "
+
+#: edit.prg:1472
+msgid "&Options...     "
+msgstr "&Opções...\t"
+
+#: edit.prg:1472
+msgid "Set options"
+msgstr "Define opções"
+
+#: edit.prg:1491
+msgid "R:"
+msgstr "R:"
+
+#: edit.prg:1513
+msgid "; not saved. Save?"
+msgstr "; não foi salvo. Grava?"
+
+#: edit.prg:1593 edit.prg:1594
+msgid " Options "
+msgstr " Opções "
+
+#: edit.prg:1596
+msgid "Create .bak files"
+msgstr "Criar arquivos .bak"
+
+#: edit.prg:1599
+msgid "Tabulation size"
+msgstr "Tamanho de tabulação"
+
+#: edit.prg:1602
+msgid "Tabulation packing"
+msgstr "Formato da tabulação"
+
+#: edit.prg:1607
+msgid "Autosave files"
+msgstr "Autogravar arquivos"
+
+#: edit.prg:1610
+msgid "Autosave time"
+msgstr "Tempo de autogravação"
+
+#: edit.prg:1621
+msgid "Save status"
+msgstr "Status de gravação"
+
+#: edit.prg:1624
+msgid "Hypen in word"
+msgstr "Hyfenação"
+
+#: edit.prg:1627
+msgid "Auto wrap"
+msgstr "Wrap automático"
+
+#: edit.prg:1630
+msgid "Auto margin left"
+msgstr "Margem esquerda automática"
+
+#: edit.prg:1634
+msgid "Margin left"
+msgstr "Margem esquerda"
+
+#: edit.prg:1637
+msgid "Margin right"
+msgstr "Margem direita"
+
+#: edit.prg:1640
+msgid "Max strings"
+msgstr "Tamanho máximo de texto (string)"
+
+#: edit.prg:1814
+msgid "Line "
+msgstr "Linha "
+
+#: edit.prg:1873
+msgid "Bad line number!"
+msgstr "Número de linha inválido!"
+
+#: edit.prg:1893
+msgid "New"
+msgstr "Novo"
+
+#: edit.prg:1893
+msgid "Link"
+msgstr "Link"
+
+#: edit.prg:1927
+msgid " Source charset "
+msgstr " Caracteres de origem "
+
+#: edit.prg:2137
+msgid "Macros"
+msgstr "Macros"
+
+#: get_obj.prg:225 get_obj.prg:988 get_obj.prg:1060 get_obj.prg:1110
+#: scr_func.prg:287 scr_func.prg:288
+msgid "Y"
+msgstr "S"
+
+#: get_obj.prg:418 var_func.prg:35 var_func.prg:74 var_func.prg:102
+msgid "array"
+msgstr "matriz"
+
+#: get_obj.prg:420 var_func.prg:37 var_func.prg:76 var_func.prg:104
+msgid "Block"
+msgstr "Bloco"
+
+#: get_obj.prg:427 get_obj.prg:986 get_obj.prg:988 get_obj.prg:1058
+#: get_obj.prg:1060 var_func.prg:83 var_func.prg:111 scr_func.prg:327
+msgid "No "
+msgstr "Não "
+
+#: get_obj.prg:434 var_func.prg:53 var_func.prg:90 var_func.prg:118
+msgid "Object"
+msgstr "Objeto"
+
+#: get_obj.prg:1110 scr_func.prg:289 scr_func.prg:290
+msgid "N"
+msgstr "N"
+
+#: smtp_obj.prg:78 smtp_obj.prg:121
+msgid "Connect not activated"
+msgstr "Conexão não ativada "
+
+#: te_find.prg:81 te_find.prg:82
+msgid " Find & replace "
+msgstr " Buscar e substituir "
+
+#: te_find.prg:84
+msgid "Find:"
+msgstr "Buscar:"
+
+#: te_find.prg:91
+msgid "Replace:"
+msgstr "Substituir:"
+
+#: te_find.prg:96 te_find.prg:97
+msgid " Find "
+msgstr " Buscar "
+
+#: te_find.prg:110
+msgid "Options"
+msgstr "Opções"
+
+#: te_find.prg:114
+msgid "Case-sensitive"
+msgstr "Sensitivo a caracteres Maiúsculo/Minúsculo"
+
+#: te_find.prg:115
+msgid "Word only"
+msgstr "Somente palavra"
+
+#: te_find.prg:116
+msgid "Reg. expression"
+msgstr "Expressão reg. "
+
+#: te_find.prg:117
+msgid "All windows"
+msgstr "Todas as janelas"
+
+#: te_find.prg:121
+msgid "Forward"
+msgstr "Avança"
+
+#: te_find.prg:122
+msgid "Backward"
+msgstr "Volta"
+
+#: te_find.prg:123
+msgid "From begin"
+msgstr "Desde o começo"
+
+#: te_find.prg:124
+msgid "Direction"
+msgstr "Direção"
+
+#: te_find.prg:127
+msgid "Global"
+msgstr "Global"
+
+#: te_find.prg:128
+msgid "In block"
+msgstr "Em bloco"
+
+#: te_find.prg:129
+msgid "Where"
+msgstr "Onde"
+
+#: tedit_obj.prg:64
+msgid "<EOF>"
+msgstr "<EOF>"
+
+#: tedit_obj.prg:319
+msgid "Load file..."
+msgstr "Carrega arquivo..."
+
+#: tedit_obj.prg:343 tedit_obj.prg:355
+msgid "The size of file ;"
+msgstr "O tamanho do arquivo;"
+
+#: tedit_obj.prg:343 tedit_obj.prg:355
+msgid "; most maximum size!;Last strings may be lost"
+msgstr "; tamanho exagerado!;Últimas strings podem se perder"
+
+#: tedit_obj.prg:343 tedit_obj.prg:355 tedit_obj.prg:440
+msgid "OK"
+msgstr "OK"
+
+#: tedit_obj.prg:440
+msgid ""
+"The size of file is a most maximum size!;Last strings may be lost; Please "
+"check MAXSTRINGS options"
+msgstr "O tamanho do arquivo é exagerado!; Últimas strings podem se perder; Por favor, cheque as opções MAXSTRINGS"
+
+#: tedit_obj.prg:2181
+msgid "Save file..."
+msgstr "Salvar arquivo..."
+
+#: tedit_obj.prg:2188 tedit_obj.prg:2274
+msgid "Can't create ;"
+msgstr "Não pode criar ;"
+
+#: tedit_obj.prg:2188 tedit_obj.prg:2274
+msgid ".bak file"
+msgstr "arquivo .bak"
+
+#: tedit_obj.prg:2268
+msgid "Save block to file..."
+msgstr "Salvar bloco para arquivo..."
+
+#: sarray.prg:60
+msgid "Out from bound in sorted array"
+msgstr "Fora de límite em matriz ordenada"
+
+#: sarray.prg:111 sarray.prg:165
+msgid "Unknown values for key or data"
+msgstr "Valor desconheido para dados de chave"
+
+#: sarray.prg:152
+msgid "Out bounds in sorted array"
+msgstr "Fora de límite em matriz ordenada"
+
+#: sarray.prg:198
+msgid "Key value not found in sorted array"
+msgstr "Valor de chave não encontrado em matriz ordenada"
+
+#: sarray.prg:215
+msgid "Unknown values for key"
+msgstr "Valores desconhecidos para clave"
+
+#: inifile.prg:103
+msgid ": create error:"
+msgstr ": erro de criação:"
+
+#: inifile.prg:146
+msgid "Bad file name: name is not specified"
+msgstr "Nome do arquivo inválido: nome não especificado"
+
+#: inifile.prg:154
+msgid ": open error:"
+msgstr ": erro de abertura:"
+
+#: inifile.prg:182
+msgid "Bad string in .ini file:"
+msgstr "Cadeia de texto inválida no arquivo .ini:"
+
+#: cobra_service.prg:55
+msgid "TCP connection error:"
+msgstr "TCP erro de conecção:"
+
+#: cobra_service.prg:164 cobra_service.prg:203
+msgid "Bad cobraQuery object"
+msgstr "Objeto cobraQuery ruim"
+
+#: cobra_service.prg:181
+msgid "Bad cobraAnswer object"
+msgstr "Objeto cobraAnswer ruim"
+
+#: cobra_service.prg:237
+msgid "Answer ID not found"
+msgstr "Resposta ID não encontrada!"
+
+#: cobra_service.prg:366 cobra_service.prg:432 cobra_service.prg:453
+#: cobra_service.prg:485 cobra_service.prg:522
+msgid "CODB library not linked"
+msgstr "biblioteca CODB não lincada"
+
+#: cobra_service.prg:371 cobra_service.prg:412 cobra_service.prg:490
+msgid "Bad depository ID:"
+msgstr "ID de armazenagem ruim:"
+
+#: cobra_service.prg:382 cobra_service.prg:501
+msgid "Bad class name or ID:"
+msgstr "nome de clasee ou ID ruim:"
+
+#: cobra_service.prg:576
+msgid "File not found:"
+msgstr "Arquivo não encontrado!"
+
+#: cobra_service.prg:633
+msgid "Need updating client"
+msgstr "Precisa atualizar cliente"
+
+#: cobra_service.prg:653
+msgid "Client LANG value not supported"
+msgstr "Valor de LANG do cliente não suportado"
+
+#: cobra_service.prg:672
+msgid "Client CHARSET value not supported"
+msgstr "Valor de CHARSET do cliente não suportado"
+
+#: cobra_service.prg:691
+msgid "Client CRYPTO value not supported"
+msgstr "Valor de CRYPTO do cliente não suportado"
+
+#: a2edit.prg:33
+msgid "Error A2EDIT; What~s Edit ?"
+msgstr "Erro em A2EDIT; Quer Editar?"
+
+#: blank.prg:53 blank.prg:55
+msgid "cannot open file:"
+msgstr "Não pode abrir o arquivo;"
+
+#: browse.prg:50 sqlbrows.prg:19
+msgid "<bof>"
+msgstr "<bof>"
+
+#: browse.prg:51
+msgid "<new>"
+msgstr "<new>"
+
+#: browse.prg:71 sqlbrows.prg:89
+msgid "Record N "
+msgstr "Registro N"
+
+#: dtools.prg:16
+msgid "January"
+msgstr "Janeiro"
+
+#: dtools.prg:17
+msgid "February"
+msgstr "Fevereiro"
+
+#: dtools.prg:18
+msgid "March"
+msgstr "Março"
+
+#: dtools.prg:19
+msgid "April"
+msgstr "Abril"
+
+#: dtools.prg:20
+msgid "May"
+msgstr "Maio"
+
+#: dtools.prg:21
+msgid "June"
+msgstr "Junho"
+
+#: dtools.prg:22
+msgid "July"
+msgstr "Julho"
+
+#: dtools.prg:23
+msgid "August"
+msgstr "Agosto"
+
+#: dtools.prg:24
+msgid "September"
+msgstr "Setembro"
+
+#: dtools.prg:25
+msgid "October"
+msgstr "Outubro"
+
+#: dtools.prg:26
+msgid "November"
+msgstr "Novembro"
+
+#: dtools.prg:27
+msgid "December"
+msgstr "Dezembro"
+
+#: dtools.prg:30
+msgid "Sunday"
+msgstr "Domingo"
+
+#: dtools.prg:31
+msgid "Monday"
+msgstr "Segunda"
+
+#: dtools.prg:32
+msgid "Tuesday"
+msgstr "Terça"
+
+#: dtools.prg:33
+msgid "Wednesday"
+msgstr "Quarta"
+
+#: dtools.prg:34
+msgid "Thursday"
+msgstr "Quinta"
+
+#: dtools.prg:35
+msgid "Friday"
+msgstr "Sexta"
+
+#: dtools.prg:36
+msgid "Saturday"
+msgstr "Sábado"
+
+#: errorsys.prg:60 errorsys.prg:73
+msgid "Error"
+msgstr "Erro"
+
+#: filedd.prg:227
+msgid "Can't open;"
+msgstr "Não pode abrir;"
+
+#: ftools.prg:117
+msgid "Database files"
+msgstr "Arquivos de base de dados"
+
+#: ftools.prg:117
+msgid "  # records"
+msgstr "  # registros"
+
+#: ftools.prg:117
+msgid " last update"
+msgstr " última atualização "
+
+#: ftools.prg:117
+msgid "  size "
+msgstr " tamanho "
+
+#: memoedit.prg:133 sys_prn.prg:140
+msgid "Esc: Cancel"
+msgstr "Esc: Cancela"
+
+#: memoedit.prg:293
+msgid "<Ins>"
+msgstr "<Ins>"
+
+#: memoedit.prg:293
+msgid "<Ovr>"
+msgstr "<Ovr>"
+
+#: nation.prg:22
+msgid "CLIPMSGS v1.0 04/Sep/02"
+msgstr "CLIPMSGS v1.0 04/Sep/02"
+
+#: nation.prg:26
+msgid "DD-MM-YYYY"
+msgstr "DD-MM-YYYY"
+
+#: nation.prg:30
+msgid "Invalid argument"
+msgstr "Argumento inválido"
+
+#: nation.prg:33
+msgid "Database Files    # Records    Last Update     Size"
+msgstr "Base de dados\t # Registros  Ult. Atualiz.   Tamanho"
+
+#: nation.prg:35
+msgid "Do you want more samples?"
+msgstr "Quer mais exemplos?"
+
+#: nation.prg:37
+msgid "Page No."
+msgstr "Pág. No."
+
+#: nation.prg:39
+msgid "** Subtotal **"
+msgstr "** Subtotal **"
+
+#: nation.prg:41
+msgid "* Subsubtotal *"
+msgstr "* Subsubtotal *"
+
+#: nation.prg:43
+msgid "*** Total ***"
+msgstr "*** Total ***"
+
+#: nation.prg:45
+msgid "Ins"
+msgstr "Ins"
+
+#: nation.prg:49
+msgid "Invalid date"
+msgstr "Data inválida"
+
+#: nation.prg:51
+msgid "Range: "
+msgstr "Range:"
+
+#: nation.prg:62
+msgid "YyTtYy1"
+msgstr "SsVvSs1"
+
+#: nation.prg:67
+msgid "NnFfNn0"
+msgstr "NnFfNn0"
+
+#: rtcompil.prg:47
+msgid "Plugin not found:"
+msgstr "Plugin não encontrado:"
+
+#: rtcompil.prg:76
+msgid "Error compiling plugin file:"
+msgstr "Erro compilando arquivo plugin:"
+
+#: rtcompil.prg:85
+msgid "Error loading plugin block from file:"
+msgstr "Erro carregando bloco de plugin a partir do arquivo:"
+
+#: var_func.prg:57 var_func.prg:94 var_func.prg:122
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: var_func.prg:88
+msgid "Memo"
+msgstr "Memo"
+
+#: var_func.prg:92 var_func.prg:120
+msgid "Undef"
+msgstr "Indef"
+
+#: hbrowse.prg:159
+msgid ""
+"<   >-go next item  i-info  <F5>-go line  <F6>-find  <F9>-menu  <ESC>,<F10>-"
+"exit"
+msgstr "<   >-ir prox. item  i-info <F5>-ir línha <F6>-buscar <F9>-menu <ESC>,<F10>-sair"
+
+#: hbrowse.prg:241
+msgid "Where are you going?"
+msgstr "Para onde está indo?"
+
+#: hbrowse.prg:1626
+msgid "&Charset"
+msgstr "&Jogo de caracteres"
+
+#: hbrowse.prg:1634
+msgid "&Control"
+msgstr "&Controle"
+
+#: hbrowse.prg:1637
+msgid "&Next   "
+msgstr "&Seguir"
+
+#: hbrowse.prg:1637
+msgid "Go next item"
+msgstr "Ir para o item seguinte"
+
+#: hbrowse.prg:1641
+msgid "&Prev   "
+msgstr "&Anterior"
+
+#: hbrowse.prg:1641
+msgid "Go previous item"
+msgstr "Ir para o item anterior"
+
+#: hbrowse.prg:1645
+msgid "P&revUrl   "
+msgstr "URL An&t."
+
+#: hbrowse.prg:1645
+msgid "Go previous URL document"
+msgstr "Ir para o documento URL anterior"
+
+#: hbrowse.prg:1649
+msgid "Nex&tUrl   "
+msgstr "URL Se&g.  "
+
+#: hbrowse.prg:1649
+msgid "Go next URL document"
+msgstr "Ir para o documento URL seguinte"
+
+#: hbrowse.prg:1653
+msgid "&InfoUrl   "
+msgstr "&Info URL  "
+
+#: hbrowse.prg:1653
+msgid "Get information about URL document"
+msgstr "Informação a respeito do documento URL"
+
+#: sqlbrows.prg:20
+msgid "<eof>"
+msgstr "<eof>"
+
+#: sqlbrows.prg:21
+msgid "<empty>"
+msgstr "<empty>"
+
+#: foxsel.prg:1700
+msgid "Press any key to continue"
+msgstr "Pressione uma tecla para continuar"
+
+#: sys_prn.prg:77
+msgid "View printer output in text editor"
+msgstr "Ver saida de impressora em editor de texto"
+
+#: sys_prn.prg:81
+msgid "Printing to main printer on your host"
+msgstr "Imprimindo para a impresora principal em seu servidor"
+
+#: sys_prn.prg:140
+msgid "choice printer"
+msgstr "escolha impressora"
+
+#: sys_prn.prg:152
+msgid ": Printing pages range: from XXXX to YYYY"
+msgstr ": Imprimindo páginas: de XXXX a YYYY"
+
+#: sys_prn.prg:159
+msgid ": Printing copies: XXXX "
+msgstr ": Imprimindo copias: XXXX"
+
+#: sys_prn.prg:207
+msgid "Printbegin(): printing already in process"
+msgstr "Printbegin(): impressão atualmente em andamento"
+
+#: sys_prn.prg:254
+msgid "PrintEnd(): printing process not actived"
+msgstr "PrintEnd(): processo de impressão não ativado"
+
+#: scr_func.prg:127
+msgid "Press any key"
+msgstr "Pressione qualquer tecla"
+
+#: sys_init.prg:43
+msgid "cp437"
+msgstr "cp437"
+
+

@@ -3,7 +3,7 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
-//Слегка усовершенствованные функции Netto.Lib
+//Slightly enhanced Netto.Lib functions
 
 #include "common.ch"
 *#include "netto.ch"

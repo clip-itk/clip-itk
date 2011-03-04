@@ -57,7 +57,7 @@ if _pnumber==-1
    return ""
 endif
 
-// чтобы правильно работали bSkip(), bGoTop()....
+// for properly work bSkip(), bGoTop()....
 if type("__flHaveProm")!="U"
    prevFlProm:=m->__flHaveProm
    if type("__flprom")=="L"
@@ -84,7 +84,7 @@ endif
 if stdin
 	aaaaaaaaaa(,,,,.t.)
 endif
-aaaaaaaaaa(, n+1,"Интерпретация Бланка")
+aaaaaaaaaa(, n+1,"Form interpretation")
 _run_blank2(retstr,stdin)
 ret=fclose(_pnumber)
 commit
@@ -144,7 +144,7 @@ do while !(_s1=="")
 		_nesc=0
 	     endif
 	     if _nesc=2
-	       buffer=" Цикл прекращен по клавише <ESC>! "+vk
+	       buffer=" Cycle interrupted by key <ESC>! "+vk
 	       fwrite(_pnumber,buffer,len(buffer))
 	       exit
 	     endif
@@ -211,7 +211,7 @@ do while !(_s1=="")
        inkey()
     endif
     if _nesc=2
-      buffer=" Заполнение Бланка прервано клавишей <ESC>! "+vk
+      buffer=" Filling Form interrupted by key <ESC>! "+vk
       fwrite(_pnumber,buffer,len(buffer))
       exit
     endif
@@ -220,8 +220,8 @@ ERRORBLOCK(olderror)
 return
 ***************************************************
 static function  get_end (str,begstr,endstr)
-* str передавать по указателю, она будет обкушена
-* возвращает строку без начальной #if и конечной #endif
+* str pass by pointer, it will be cut
+* returns string without  #if and #endif
 local promstr,begpos,endpos,nlspace
 local countv,begz,i,retstr,a,b
 promstr=upper(ltrim(str))
@@ -263,9 +263,9 @@ if _error:gencode==5
   return(0)
 endif
 if flagm==NIL
-messagep("Вы работаете с Бланком, в котором есть ошибки. Наверняка получите;"+;
-	 " что-то не то. Отредактируйте Бланк, иначе это сообщение Вам надоест.;"+;
-	 " Ошибка : "+_error:description+" "+iif(empty(_error:operation),"",_error:operation)+";";
+messagep("You're working with Form that contains errors. Most likely, you will receive;"+;
+	 " not what you expect. Edit Form, otherwise the message you get tired.;"+;
+	 " Error : "+_error:description+" "+iif(empty(_error:operation),"",_error:operation)+";";
 	 +iif(!empty(_error:filename),_error:filename,"") )
 endif
 Break(_error)
@@ -291,8 +291,8 @@ return n
 
 #include "mset.ch"
 *************************************************************
-*     используется для вывода на экран процента
-*     выполнения в цикле DO REPEAT
+*     used for showing percentage of
+*     execution in DO REPEAT cycle
 *
 static func aaaaaaaaaa(v,x,str,div,set)
 static x1:=0,x2:=0
@@ -315,8 +315,8 @@ do case
        i:=abs(i)
        j:=iif(i>100,100,i)
        j:=int(j/2.5)
-       dispOutAt( T+1,L+20, "Выполнено "+alltrim(str(i))+"%" )
-       dispOutAt( T+3,L+10, replicate("█",j) )
+       dispOutAt( T+1,L+20, "Completed "+alltrim(str(i))+"%" )
+       dispOutAt( T+3,L+10, replicate("█",j) ) // utf-8: "Б√┬"
    case pcount()==4 .and. div<>NIL
        x1+=div
        return 0
@@ -325,7 +325,7 @@ do case
        x2:=0
        dbox(T,L,B,R)
        dispOutAt( T+2,L+10, padc(alltrim(str),40) )
-       dispOutAt( T+3,L+10, replicate("░",40) )
+       dispOutAt( T+3,L+10, replicate("░",40) ) // utf-8: "Б√▒"
 endcase
 return 0
 

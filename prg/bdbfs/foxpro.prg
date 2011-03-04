@@ -3,7 +3,7 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 
-// Эмуляция функций FoxPro и FlexMemo
+// FoxPro and FlexMemo Functions emulation
 
 #include "common.ch"
 #include "bdbfmsg.ch"
@@ -15,10 +15,10 @@ LOCAL aCol,nLen:=0
 IF !EMPTY(aArr) .AND. ValType(aArr)=='A'
 	nLen:=LEN(aArr)
 	aCol:=aArr[1]
-	IF nDim # 1		//Строк
-		IF EMPTY(nDim)	//Элементов
+	IF nDim # 1		//Lines
+		IF EMPTY(nDim)	//Elements
 			IF ValType(aCol)='A' THEN nLen:=nLen*LEN(aCol)
-		ELSE	//Столбцов
+		ELSE	//Columns
 			nLen:=IF( ValType(aCol)='A', LEN(aCol), 0)
 		ENDIF
 	ENDIF
@@ -177,7 +177,7 @@ RETURN {0,437,620,737,850,852,857,861,865,866,895,;
 	1250,1251,1252,1253,1254,;
 	10000,10006,10007,10029;
 	}[AT(SUBSTR(m->__RealFlds,2,1),CHR(1)+'ij'+CHR(2)+'dkgfeh'+;
-		    CHR(200)+CHR(201)+CHR(3)+CHR(203)+CHR(202)+CHR(4)+'ШЦЧ')+1]
+		    CHR(200)+CHR(201)+CHR(3)+CHR(203)+CHR(202)+CHR(4)+'ШЦЧ')+1] // utf-8: '╨и╨ж╨з'
 *********
 FUNC ShowForced(xFld,nEl)
 LOCAL cType,nLen
@@ -232,13 +232,13 @@ ELSE
 ENDIF
 RETURN cDate
 **********
-FUNC MemoSrc(cFld,nbSize,nPos,cType)	//"Ручное" чтение VFP-полей
+FUNC MemoSrc(cFld,nbSize,nPos,cType)	//"Manual" VFP-fields reading
 LOCAL h,cT,cf1,cf2, cMemo
 IF MemoEmpty(cFld)
 	cFld:=''
 	nPos:=0
 	nbSize:=0
-	cType:='0'+CHR(3)	//Для DbFlex
+	cType:='0'+CHR(3)	//For DbFlex
 ELSEIF m->_aCommon[5]	//DbFlex
 	nPos:=Bin2L(SUBSTR(cFld,5))
 	nbSize:=Bin2L(cFld)
@@ -289,7 +289,7 @@ nSize:=FSeek(h,0,2)
 
 IF m->_aCommon[5]	//DbFlex
 	cT:=VALTYPE(cNew)
-	IF cT=='C'		//Все уже хорошо
+	IF cT=='C'		//All right
 		IF LEN(TRIM(cNew))==0 THEN RETU SPACE(10)
 		cType:='C'+CHR(3)
 	ELSEIF cT=='D'
@@ -312,7 +312,7 @@ IF m->_aCommon[5]	//DbFlex
 		cType:=CHR(0)+CHR(0)
 	ENDIF
 	lNew:=(LEN(cNew) > nOldSize) .AND.;
-		(nPos+nOldSize+6 < nSize)	//Хвост можно и переписать
+		(nPos+nOldSize+6 < nSize)	//Tail can be rewritten
 ELSE
 	cNew:=FT_XTOY(cNew,'C')
 	IF LEN(TRIM(cNew))==0 THEN;

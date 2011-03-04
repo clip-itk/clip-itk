@@ -77,7 +77,7 @@ WHILE ( pos <> 0 )
 	get := GetList[pos]
 	IF !EMPTY(lPassword) THEN get:ColorSpec:="w/w"
 
-//Текст PostActiveGet( get )
+//Text PostActiveGet( get )
 	name := Upper(get:name)
 	_aSub:=get:subscript
 
@@ -154,7 +154,7 @@ WHILE ( get:exitstate == GE_NOEXIT )
 		ShowMouse()
 		GetApplyKey( get, WaitKey(0), lCycle )
 		HideMouse()
-		IF  _NeedScroll THEN @ 13, __c say '▒'
+		IF  _NeedScroll THEN @ 13, __c say '▒' // utf-8: 'тЦТ'
 	END
 
 	// disallow exit IF the VALID condition is not satisfied
@@ -188,7 +188,7 @@ DO CASE
 
 	CASE (_cGetType == "C") .AND. key==K_CTRL_X .AND. IsCtrlShift()
 		get:buffer:=IF(_cGetBuffer>='А',Nation2Usa(_cGetBuffer),;
-			    Usa2Nation(_cGetBuffer))
+			    Usa2Nation(_cGetBuffer)) // utf-8: '╨Р'
 		get:VarPut(get:buffer)
 		get:Changed:=.t.
 
@@ -542,7 +542,7 @@ ENDIF
 RETU _var
 **********
 PROC InsString(oGet,cStr,lMemo)
-//Вместо KeyBoard из-за возможного наличия в строке управляющих символов
+//Instead KeyBoard, because may be present control characters in string
 LOCAL i
 FOR i:=1 TO LEN(cStr)
 	IF ( _ReadInsert )
@@ -570,7 +570,7 @@ nR1:=m->_middlerow+7
 nC:=m->_middlecol-17
 Window(nR, nC, nR1, m->_middlecol+17, _MSG_ASCII)
 
-@ nR+2, nC SAY (cStr:='╟'+REPL('─', 33)+'╢')
+@ nR+2, nC SAY (cStr:='╟'+REPL('─', 33)+'╢')// utf-8: (cStr:='тХЯ'+REPL('тФА', 33)+'тХв')
 @ nR1-2, nC++ SAY cStr
 
 FOR i:=0 TO 7

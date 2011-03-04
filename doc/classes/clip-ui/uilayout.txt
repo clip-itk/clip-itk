@@ -3,26 +3,26 @@ $CLASSNAME$
 $SUMMARY$
 	Class UILayout
 $LANG_RU$
-	Класс UILayout
+	п п╩п╟я│я│ UILayout
 $ABOUT$
 	Class of area for placement widgets at fixed positions.
 $LANG_RU$
-	Класс области размещения виджетов в фиксированных позициях.
+	п п╩п╟я│я│ п╬п╠п╩п╟я│я┌п╦ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╡ п╡ я└п╦п╨я│п╦я─п╬п╡п╟п╫п╫я▀я┘ п©п╬п╥п╦я├п╦я▐я┘.
 $SYNTAX$
 	UILayout()	--> UILayout object
 $LANG_RU$
-	UILayout()	--> Объект UILayout
+	UILayout()	--> п·п╠я┼п╣п╨я┌ UILayout
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UILayout".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UILayout".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UILayout".
 
 $METHODNAME$
 	UILayout()
 $SUMMARY$
 	Constructor. Create area for placement widgets at fixed positions.
 $LANG_RU$
-	Конструктор. Создать область размещения виджетов в фиксированных позициях.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╬п╠п╩п╟я│я┌я▄ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╡ п╡ я└п╦п╨я│п╦я─п╬п╡п╟п╫п╫я▀я┘ п©п╬п╥п╦я├п╦я▐я┘.
 $SYNTAX$
 	UILayout()	--> UILayout object
 $ENDMETHOD$
@@ -32,15 +32,15 @@ $METHODNAME$
 $SUMMARY$
 	Place widget to area.
 $LANG_RU$
-	Поместить виджет в область.
+	п÷п╬п╪п╣я│я┌п╦я┌я▄ п╡п╦п╢п╤п╣я┌ п╡ п╬п╠п╩п╟я│я┌я▄.
 $SYNTAX$
 	add(<o>,[<pos>])
 $ARGUMENTS$
 	<o>		- Widget object. Widget placed on the area.
 	<pos>		- String. Widget position. Horizontal position (in pixels) is separated from vertical position (in pixels) by comma.
 $LANG_RU$
-	<o>		- Объект виджета. Виджет, размещаемый в области.
-	<pos>		- Cтрока. Позиция виджета. Горизонтальная позиция (в точках) отделяется от вертикальной позиции (в точках) запятой.
+	<o>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, я─п╟п╥п╪п╣я┴п╟п╣п╪я▀п╧ п╡ п╬п╠п╩п╟я│я┌п╦.
+	<pos>		- Cя┌я─п╬п╨п╟. п÷п╬п╥п╦я├п╦я▐ п╡п╦п╢п╤п╣я┌п╟. п⌠п╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫п╟я▐ п©п╬п╥п╦я├п╦я▐ (п╡ я┌п╬я┤п╨п╟я┘) п╬я┌п╢п╣п╩я▐п╣я┌я│я▐ п╬я┌ п╡п╣я─я┌п╦п╨п╟п╩я▄п╫п╬п╧ п©п╬п╥п╦я├п╦п╦ (п╡ я┌п╬я┤п╨п╟я┘) п╥п╟п©я▐я┌п╬п╧.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -48,15 +48,15 @@ $METHODNAME$
 $SUMMARY$
 	Move widget to new position.
 $LANG_RU$
-	Изменить позицию виджета в области.
+	п≤п╥п╪п╣п╫п╦я┌я▄ п©п╬п╥п╦я├п╦я▌ п╡п╦п╢п╤п╣я┌п╟ п╡ п╬п╠п╩п╟я│я┌п╦.
 $SYNTAX$
 	move(<o>,[<pos>])
 $ARGUMENTS$
 	<o>		- Widget object. Widget placed on the area.
 	<pos>		- String. New widget position. Horizontal position (in pixels) is separated from vertical position (in pixels) by comma.
 $LANG_RU$
-	<o>		- Объект виджета. Виджет, размещаемый в области.
-	<pos>		- Cтрока. Новая позиция виджета. Горизонтальная позиция (в точках) отделяется от вертикальной позиции (в точках) запятой.
+	<o>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, я─п╟п╥п╪п╣я┴п╟п╣п╪я▀п╧ п╡ п╬п╠п╩п╟я│я┌п╦.
+	<pos>		- Cя┌я─п╬п╨п╟. п²п╬п╡п╟я▐ п©п╬п╥п╦я├п╦я▐ п╡п╦п╢п╤п╣я┌п╟. п⌠п╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫п╟я▐ п©п╬п╥п╦я├п╦я▐ (п╡ я┌п╬я┤п╨п╟я┘) п╬я┌п╢п╣п╩я▐п╣я┌я│я▐ п╬я┌ п╡п╣я─я┌п╦п╨п╟п╩я▄п╫п╬п╧ п©п╬п╥п╦я├п╦п╦ (п╡ я┌п╬я┤п╨п╟я┘) п╥п╟п©я▐я┌п╬п╧.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -67,10 +67,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

@@ -1,18 +1,18 @@
 
-- 	в функциях gtk_signal_connect кодовый блок должен возвращать FALSE чтобы
-	отработали следующие(если есть) блоки кода, повешанные на этот сигнал.
-        В gtk1.2 такого нет. Там автоматически отрабатываются все кодовые блоки.
-        Ж:-( (/usr/share/gtk2/.../examples/helloworld signale_connect на окно)
+-       in the functions gtk_signal_connect code block must return FALSE so that
+        worked out the following (if any) blocks of code that handle this signal.
+        In gtk1.2 this absent. There are processed automatically all the code
+        blocks. :-( (/usr/share/gtk2/.../examples/helloworld signale_connect
+        on window)
 
+-       not present and will not present functions gtk_widgetsetposition() and
+        gtk_widgetsetsize(); present just gtk_widgetsetUposition(), works only with
+        containers. For any others inserted into the container should use one of:
+         * gtk_ContainerAdd()
+         * gtk_FixedPut()
+         * gtk_LayoutPut()
+         * etc
 
-- 	нет и не будет функций gtk_widgetsetposition() & gtk_widgetsetsize()
-	есть только gtk_widgetsetUposition() работает только с контейнерами.
-        Для всех остальных, вставленных в контейнер, нужно использовать либо
-        gtk_ContainerAdd() or gtk_FixedPut() or gtk_LayoutPut() и в том же
-        духе
-
-- 	функция gtk_window_set_default() устанавливает активный виджет
-	только для диалогов. Для окон не работает. :( В gtk1.2 работала
-        и требует вызова GTK_WIDGET_SET_FLAGS(widget, GTK_CAN_DEFAULT) для
-        того widget, который д.б. активным
-
+-       function gtk_window_set_default () sets the widget is active only for dialogs,
+        but for windows doesn't work. In gtk1.2 worked and require call of 
+        GTK_WIDGET_SET_FLAGS(widget, GTK_CAN_DEFAULT) for active widget.

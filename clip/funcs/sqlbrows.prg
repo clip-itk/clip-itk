@@ -4,8 +4,8 @@
 #include "Error.ch"
 #include "config.ch"
 
-#define MY_HEADSEP      translate_charset(__CHARSET__,host_charset(),"∂†")
-#define MY_COLSEP       translate_charset(__CHARSET__,host_charset(),"Å ")
+#define MY_HEADSEP      translate_charset(__CHARSET__,host_charset(),"∂†") //utf-8: "‚ï§‚ïê"
+#define MY_COLSEP       translate_charset(__CHARSET__,host_charset(),"Å ") //utf-8: "‚îÇ "
 
 #define MSG_RECORDS [Record N ]
 

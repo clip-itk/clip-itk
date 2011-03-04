@@ -5,29 +5,29 @@ $CATEGORY$
 $SUMMARY$
 	Returns list of algoritms, registered in used version of OpenSSL library.
 $LANG_RU$
-	Возвращает список алгоритмов шифрации, доступных через библиотеку OpenSSL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п©п╦я│п╬п╨ п╟п╩пЁп╬я─п╦я┌п╪п╬п╡ я┬п╦я└я─п╟я├п╦п╦, п╢п╬я│я┌я┐п©п╫я▀я┘ я┤п╣я─п╣п╥ п╠п╦п╠п╩п╦п╬я┌п╣п╨я┐ OpenSSL.
 $SYNTAX$
 	EVP_ALG_LIST() --> aAlgoritmes
 
 $ARGUMENTS$
 	None.
 $LANG_RU$
-	Нет.
+	п²п╣я┌.
 $RETURNS$
 	Returns array of crypt algoritmes. Possible values of crypt algoritmes:
 	"desx","des","idea","rc2","bf","blowfish","cast","cast-cbc","rc5".
 	Possible values of digest algoritmes:
 	"md5","md4","sha","sha1","dss","dss1","mdc2","ripemd160" .
 $LANG_RU$
-	Возвращает массив алгоритмов шифрования.
-	Возможные значения методов шифрования:
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╪п╟я│я│п╦п╡ п╟п╩пЁп╬я─п╦я┌п╪п╬п╡ я┬п╦я└я─п╬п╡п╟п╫п╦я▐.
+	п▓п╬п╥п╪п╬п╤п╫я▀п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п╪п╣я┌п╬п╢п╬п╡ я┬п╦я└я─п╬п╡п╟п╫п╦я▐:
 	"desx","des","idea","rc2","bf","blowfish","cast","cast-cbc","rc5"
-	Возможные значения методов хеширования:
+	п▓п╬п╥п╪п╬п╤п╫я▀п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п╪п╣я┌п╬п╢п╬п╡ я┘п╣я┬п╦я─п╬п╡п╟п╫п╦я▐:
 	"md5","md4","sha","sha1","dss","dss1","mdc2","ripemd160" .
 $DESCRIPTION$
 	Returns list of algoritms, registered in used version of OpenSSL library.
 $LANG_RU$
-	Возвращает список алгоритмов шифрации, доступных через библиотеку OpenSSL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п©п╦я│п╬п╨ п╟п╩пЁп╬я─п╦я┌п╪п╬п╡ я┬п╦я└я─п╟я├п╦п╦, п╢п╬я│я┌я┐п©п╫я▀я┘ я┤п╣я─п╣п╥ п╠п╦п╠п╩п╦п╬я┌п╣п╨я┐ OpenSSL.
 $EXAMPLES$
 $LANG_RU$
 $PECULIARITIES$
@@ -35,7 +35,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
    EVP_ENCRYPT(),EVP_DECRYPT()
 $AUTHOR$

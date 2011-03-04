@@ -6,7 +6,7 @@
  *         www - http://www.geocities.com/alkresin/
  * Released to Public Domain
 */
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 *+
 *+    Source Module => D:\MYAPPS\SOURCE\PROCS\PROCS5.PRG
 *+
@@ -23,7 +23,7 @@
 *+
 *+    Reformatted by Click! 2.00 on Apr-17-2001 at  1:48 pm
 *+
-*+膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊膊
+*+鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔鈻撯枔
 
 #ifdef RDD_AX
 #include "dbfcdxax.ch"
@@ -31,11 +31,11 @@
 // #include "fileio.ch"
 #include "deflist.ch"
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function InitList()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION InitList
 
@@ -48,7 +48,7 @@ LOCAL mslist := ARRAY( LI_LEN )
    LI_BGBOT   := { | a | FGOBOT( a ) }
    LI_BEOF    := { | a | FEOF( a ) }
    LI_BBOF    := { | a | FBOF( a ) }
-   LI_B1      := { | a | DEVPOS( LI_Y2, LI_X1 + 2 ), DEVOUT( IIF( LI_PRFLT, "敤忄" + STR( LI_TEKZP, 5 ), STR( RECNO(), 6 ) ) + "/" + STR( LI_KOLZ, 6 ) ) }
+   LI_B1      := { | a | DEVPOS( LI_Y2, LI_X1 + 2 ), DEVOUT( IIF( LI_PRFLT, "肖懈谢褜褌褉" + STR( LI_TEKZP, 5 ), STR( RECNO(), 6 ) ) + "/" + STR( LI_KOLZ, 6 ) ) }
    LI_FREEZE  := 0
    LI_RCOU    := { || RECCOUNT() }
    LI_MSREC   := Nil
@@ -61,13 +61,13 @@ LOCAL mslist := ARRAY( LI_LEN )
    LI_SEPARATOR := " "
 RETURN mslist
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function FGOTOP()
 *+
 *+    Called from ( procs5.prg   )   1 - function initlist()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION FGOTOP( mslist )
 
@@ -81,13 +81,13 @@ FUNCTION FGOTOP( mslist )
    ENDIF
 RETURN Nil
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function FGOBOT()
 *+
 *+    Called from ( procs5.prg   )   1 - function initlist()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION FGOBOT( mslist )
 
@@ -99,13 +99,13 @@ FUNCTION FGOBOT( mslist )
    ENDIF
 RETURN Nil
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Procedure FSKIP()
 *+
 *+    Called from ( procs5.prg   )   1 - function initlist()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 PROCEDURE FSKIP( mslist, kolskip )
 
@@ -134,13 +134,13 @@ LOCAL tekzp1
    ENDIF
 RETURN
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function FBOF()
 *+
 *+    Called from ( procs5.prg   )   1 - function initlist()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION FBOF( mslist )
 
@@ -149,13 +149,13 @@ FUNCTION FBOF( mslist )
    ENDIF
 RETURN BOF()
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function FEOF()
 *+
 *+    Called from ( procs5.prg   )   1 - function initlist()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION FEOF( mslist )
 
@@ -164,11 +164,11 @@ FUNCTION FEOF( mslist )
    ENDIF
 RETURN EOF()
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Procedure FLMSFLD()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 PROCEDURE FLMSFLD( mspic, lValue, maxlen )
 
@@ -182,13 +182,13 @@ LOCAL i, varname, mslen := FCOUNT()
    NEXT
 RETURN
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function Defpict()
 *+
 *+    Called from ( procs5.prg   )   1 - procedure flmsfld()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION Defpict( i, maxlen )
 
@@ -204,13 +204,13 @@ LOCAL spict, fldd, fldtype := FIELDTYPE( i ), fldlen := FIELDSIZE( i )
    ENDCASE
 RETURN spict
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function EMPVAR()
 *+
 *+    Called from ( procs5.prg   )   1 - procedure flmsfld()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION EMPVAR( numf )
 
@@ -227,11 +227,11 @@ LOCAL rez, fldtype := FIELDTYPE( numf )
    ENDCASE
 RETURN rez
 
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 *+    Function FLDS()
 *+
-*+北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北北
+*+鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓鈻掆枓
 *+
 FUNCTION FLDS( numf, znch, pr )
 

@@ -3,15 +3,15 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIFont
 $LANG_RU$
-	Класс UIFont
+	п п╩п╟я│я│ UIFont
 $ABOUT$
 	Font class.
 $LANG_RU$
-	Класс шрифта.
+	п п╩п╟я│я│ я┬я─п╦я└я┌п╟.
 $SYNTAX$
 	UIFont(<family>,<style>,<size>,<encoding>)	--> UIFont object
 $LANG_RU$
-	UIFont(<family>,<style>,<size>,<encoding>)	--> Объект UIFont
+	UIFont(<family>,<style>,<size>,<encoding>)	--> п·п╠я┼п╣п╨я┌ UIFont
 $ATTRIBUTES$
 	<font>		- String of X Window System font description.
 	<family>	- Font family.
@@ -19,18 +19,18 @@ $ATTRIBUTES$
 	<size>		- Font size in points.
 	<encoding>	- Codepage of the font.
 $LANG_RU$
-	<font>		- Строка описания шрифта X Window System.
-	<family>	- Семейство шрифта.
-	<style>		- Стиль шрифта.
-	<size>		- Размер шрифта в пунктах.
-	<encoding>	- Кодировка шрифта.
+	<font>		- п║я┌я─п╬п╨п╟ п╬п©п╦я│п╟п╫п╦я▐ я┬я─п╦я└я┌п╟ X Window System.
+	<family>	- п║п╣п╪п╣п╧я│я┌п╡п╬ я┬я─п╦я└я┌п╟.
+	<style>		- п║я┌п╦п╩я▄ я┬я─п╦я└я┌п╟.
+	<size>		- п═п╟п╥п╪п╣я─ я┬я─п╦я└я┌п╟ п╡ п©я┐п╫п╨я┌п╟я┘.
+	<encoding>	- п п╬п╢п╦я─п╬п╡п╨п╟ я┬я─п╦я└я┌п╟.
 
 $METHODNAME$
 	UIFont()
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIFont([<family>],[<style>],[<size>],[<encoding>])	--> UIFont object
 $ARGUMENTS$
@@ -39,10 +39,10 @@ $ARGUMENTS$
 	<size>		- String. Font size in points.
 	<encoding>	- String. Codepage of the font.
 $LANG_RU$
-	<family>	- Строка. Семейство шрифта или строка описания шрифта X Window System в виде "-monotype-arial-medium-r-normal--12-120-0-0-p-0-koi8-r".
-	<style>		- Строка. Стиль шрифта. "normal" - обычный, "bold" - полужирный, "italic" - курсив,  "bolditalic" - полужирный курсив.
-	<size>		- Строка. Размер шрифта в пунктах.
-	<encoding>	- Строка. Кодировка шрифта.
+	<family>	- п║я┌я─п╬п╨п╟. п║п╣п╪п╣п╧я│я┌п╡п╬ я┬я─п╦я└я┌п╟ п╦п╩п╦ я│я┌я─п╬п╨п╟ п╬п©п╦я│п╟п╫п╦я▐ я┬я─п╦я└я┌п╟ X Window System п╡ п╡п╦п╢п╣ "-monotype-arial-medium-r-normal--12-120-0-0-p-0-koi8-r".
+	<style>		- п║я┌я─п╬п╨п╟. п║я┌п╦п╩я▄ я┬я─п╦я└я┌п╟. "normal" - п╬п╠я▀я┤п╫я▀п╧, "bold" - п©п╬п╩я┐п╤п╦я─п╫я▀п╧, "italic" - п╨я┐я─я│п╦п╡,  "bolditalic" - п©п╬п╩я┐п╤п╦я─п╫я▀п╧ п╨я┐я─я│п╦п╡.
+	<size>		- п║я┌я─п╬п╨п╟. п═п╟п╥п╪п╣я─ я┬я─п╦я└я┌п╟ п╡ п©я┐п╫п╨я┌п╟я┘.
+	<encoding>	- п║я┌я─п╬п╨п╟. п п╬п╢п╦я─п╬п╡п╨п╟ я┬я─п╦я└я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -50,7 +50,7 @@ $METHODNAME$
 $SUMMARY$
 	Change font property.
 $LANG_RU$
-	Изменить параметр шрифта.
+	п≤п╥п╪п╣п╫п╦я┌я▄ п©п╟я─п╟п╪п╣я┌я─ я┬я─п╦я└я┌п╟.
 $SYNTAX$
 	setProperty(<property>,<value>)
 $ARGUMENTS$
@@ -66,13 +66,13 @@ $METHODNAME$
 $SUMMARY$
 	Generate X Window System font description and put it in object field 'font'.
 $LANG_RU$
-	Генерация строки описания шрифта X Window System в атрибуте объекта 'font'.
+	п⌠п╣п╫п╣я─п╟я├п╦я▐ я│я┌я─п╬п╨п╦ п╬п©п╦я│п╟п╫п╦я▐ я┬я─п╦я└я┌п╟ X Window System п╡ п╟я┌я─п╦п╠я┐я┌п╣ п╬п╠я┼п╣п╨я┌п╟ 'font'.
 $SYNTAX$
 	parseFont([<string>])
 $ARGUMENTS$
 	<string>	- String. String of X Window System font description.
 $LANG_RU$
-	<string>	- Строка. Строка описания шрифта X Window System.
+	<string>	- п║я┌я─п╬п╨п╟. п║я┌я─п╬п╨п╟ п╬п©п╦я│п╟п╫п╦я▐ я┬я─п╦я└я┌п╟ X Window System.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -83,12 +83,12 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

@@ -3,28 +3,28 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIButton.
 $LANG_RU$
-	Класс UIButton.
+	п п╩п╟я│я│ UIButton.
 $ABOUT$
 	Class of button.
 $LANG_RU$
-	Класс кнопки.
+	п п╩п╟я│я│ п╨п╫п╬п©п╨п╦.
 $SYNTAX$
 	UIButton(<label>,<action>,[<val>])	--> UIButton object
 $LANG_RU$
-	UIButton(<label>,<action>,[<val>])	--> Объект UIButton
+	UIButton(<label>,<action>,[<val>])	--> п·п╠я┼п╣п╨я┌ UIButton
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIButton".
 	<val>		- Value by default which is stored in widget.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIButton".
-	<val>		- Значение по умолчанию, которое будет хранится в элементе интерфейса.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIButton".
+	<val>		- п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌, п╨п╬я┌п╬я─п╬п╣ п╠я┐п╢п╣я┌ я┘я─п╟п╫п╦я┌я│я▐ п╡ я█п╩п╣п╪п╣п╫я┌п╣ п╦п╫я┌п╣я─я└п╣п╧я│п╟.
 
 $METHODNAME$
 	UIButton()
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIButton(<label>,<action>,[<val>])
 $ARGUMENTS$
@@ -32,9 +32,9 @@ $ARGUMENTS$
 	<action>	- Codeblock. Code block which is executed when button is pressed.
 	<val>		- String, number or boolean. Value which is stored in widget.
 $LANG_RU$
-	<label>		- Строка. Надпись на кнопке. В надписи можно задать акселератор для активации элемента интерфейса, указав символ "&" перед необходимой буквой. Эта буква будет подчёркнута и элемент можно активировать нажатием комбинации клавиш Alt-буква.
-	<action>	- Блок кода. Блок кода, которые будет запущен при нажатии на кнопку.
-	<val>		- Строка, число или логическое значение. Значение, которое будет хранится в элементе интерфейса.
+	<label>		- п║я┌я─п╬п╨п╟. п²п╟п╢п©п╦я│я▄ п╫п╟ п╨п╫п╬п©п╨п╣. п▓ п╫п╟п╢п©п╦я│п╦ п╪п╬п╤п╫п╬ п╥п╟п╢п╟я┌я▄ п╟п╨я│п╣п╩п╣я─п╟я┌п╬я─ п╢п╩я▐ п╟п╨я┌п╦п╡п╟я├п╦п╦ я█п╩п╣п╪п╣п╫я┌п╟ п╦п╫я┌п╣я─я└п╣п╧я│п╟, я┐п╨п╟п╥п╟п╡ я│п╦п╪п╡п╬п╩ "&" п©п╣я─п╣п╢ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬п╧ п╠я┐п╨п╡п╬п╧. п╜я┌п╟ п╠я┐п╨п╡п╟ п╠я┐п╢п╣я┌ п©п╬п╢я┤я▒я─п╨п╫я┐я┌п╟ п╦ я█п╩п╣п╪п╣п╫я┌ п╪п╬п╤п╫п╬ п╟п╨я┌п╦п╡п╦я─п╬п╡п╟я┌я▄ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬ Alt-п╠я┐п╨п╡п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п▒п╩п╬п╨ п╨п╬п╢п╟, п╨п╬я┌п╬я─я▀п╣ п╠я┐п╢п╣я┌ п╥п╟п©я┐я┴п╣п╫ п©я─п╦ п╫п╟п╤п╟я┌п╦п╦ п╫п╟ п╨п╫п╬п©п╨я┐.
+	<val>		- п║я┌я─п╬п╨п╟, я┤п╦я│п╩п╬ п╦п╩п╦ п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п≈п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ п╠я┐п╢п╣я┌ я┘я─п╟п╫п╦я┌я│я▐ п╡ я█п╩п╣п╪п╣п╫я┌п╣ п╦п╫я┌п╣я─я└п╣п╧я│п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -42,15 +42,15 @@ $METHODNAME$
 $SUMMARY$
 	Redefine action which executed when button is pressed.
 $LANG_RU$
-	Переназначить действие, выполняемое при нажатии кнопки.
+	п÷п╣я─п╣п╫п╟п╥п╫п╟я┤п╦я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п©п╬п╩п╫я▐п╣п╪п╬п╣ п©я─п╦ п╫п╟п╤п╟я┌п╦п╦ п╨п╫п╬п©п╨п╦.
 $SYNTAX$
 	setAction([<signal>],<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -58,13 +58,13 @@ $METHODNAME$
 $SUMMARY$
 	Set indent of label text to button margin.
 $LANG_RU$
-	Установить отступ от текста надписи до края кнопки.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╬я┌я│я┌я┐п© п╬я┌ я┌п╣п╨я│я┌п╟ п╫п╟п╢п©п╦я│п╦ п╢п╬ п╨я─п╟я▐ п╨п╫п╬п©п╨п╦.
 $SYNTAX$
 	setPadding(<padding>)
 $ARGUMENTS$
 	<padding>	- Number. Indent of label text to button margin in pixels.
 $LANG_RU$
-	<padding>	- Число. Отступ от текста надписи до края кнопки в точках.
+	<padding>	- п╖п╦я│п╩п╬. п·я┌я│я┌я┐п© п╬я┌ я┌п╣п╨я│я┌п╟ п╫п╟п╢п©п╦я│п╦ п╢п╬ п╨я─п╟я▐ п╨п╫п╬п©п╨п╦ п╡ я┌п╬я┤п╨п╟я┘.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -72,13 +72,13 @@ $METHODNAME$
 $SUMMARY$
 	Set new value which will be stored in widget.
 $LANG_RU$
-	Установить новое значение, которое хранится в элементе интерфейса.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ я┘я─п╟п╫п╦я┌я│я▐ п╡ я█п╩п╣п╪п╣п╫я┌п╣ п╦п╫я┌п╣я─я└п╣п╧я│п╟.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
 	<value>		- String, number or boolean. Value which will be stored in widget.
 $LANG_RU$
-	<value>		- Строка, число или логическое значение. Значение, которое будет хранится в элементе интерфейса.
+	<value>		- п║я┌я─п╬п╨п╟, я┤п╦я│п╩п╬ п╦п╩п╦ п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п≈п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ п╠я┐п╢п╣я┌ я┘я─п╟п╫п╦я┌я│я▐ п╡ я█п╩п╣п╪п╣п╫я┌п╣ п╦п╫я┌п╣я─я└п╣п╧я│п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -86,13 +86,13 @@ $METHODNAME$
 $SUMMARY$
 	Get value which is stored in widget.
 $LANG_RU$
-	Возвращает значение, которое хранится в элементе интерфейса.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ я┘я─п╟п╫п╦я┌я│я▐ п╡ я█п╩п╣п╪п╣п╫я┌п╣ п╦п╫я┌п╣я─я└п╣п╧я│п╟.
 $SYNTAX$
 	getValue() 	--> <value>
 $RETURNS$
 	Get value which is stored in widget.
 $LANG_RU$
-	Возвращает значение, которое хранится в элементе интерфейса.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ я┘я─п╟п╫п╦я┌я│я▐ п╡ я█п╩п╣п╪п╣п╫я┌п╣ п╦п╫я┌п╣я─я└п╣п╧я│п╟.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -101,10 +101,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

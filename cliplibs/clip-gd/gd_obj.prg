@@ -1,4 +1,4 @@
-/*   GD - класс  					     */
+/*   GD - class                                              */
 /*   Copyright (C) 2001  ITK                                 */
 /*   Author  : Elena Kornilova (alena@itk.ru)                */
 /*   Licence : (GPL) http://www.itk.ru/clipper/licence.html  */

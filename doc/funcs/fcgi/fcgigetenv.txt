@@ -5,26 +5,26 @@ $CATEGORY$
 $SUMMARY$
 	Return value of environment variable, or map all variables as name/value pairs.
 $LANG_RU$
-	Возвращает значения переменных окружения, либо map со всеми переменными в виде пар имя/значение.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦я▐ п©п╣я─п╣п╪п╣п╫п╫я▀я┘ п╬п╨я─я┐п╤п╣п╫п╦я▐, п╩п╦п╠п╬ map я│п╬ п╡я│п╣п╪п╦ п©п╣я─п╣п╪п╣п╫п╫я▀п╪п╦ п╡ п╡п╦п╢п╣ п©п╟я─ п╦п╪я▐/п╥п╫п╟я┤п╣п╫п╦п╣.
 $SYNTAX$
 	FCGI_GETENV(<cName>) --> cValue
 	FCGI_GETENV() --> mapEnv
 $ARGUMENTS$
 	<cName> - name of environment variable.
 $LANG_RU$
-	<cName> - имя переменной окружения.
+	<cName> - п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╬п╨я─я┐п╤п╣п╫п╦я▐.
 $RETURNS$
 	Return value of environment variable, or map all variables as name/value pairs.
 $LANG_RU$
-	Возвращает значения переменных окружения, либо map со всеми переменными в виде пар имя/значение.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦я▐ п©п╣я─п╣п╪п╣п╫п╫я▀я┘ п╬п╨я─я┐п╤п╣п╫п╦я▐, п╩п╦п╠п╬ map я│п╬ п╡я│п╣п╪п╦ п©п╣я─п╣п╪п╣п╫п╫я▀п╪п╦ п╡ п╡п╦п╢п╣ п©п╟я─ п╦п╪я▐/п╥п╫п╟я┤п╣п╫п╦п╣.
 $DESCRIPTION$
 	When the connection is accepted, WWW server sends some
 	environment variables (well-known in CGI programming) via FCGI protocol.
 	The function FCGI_GETENV() give access to this variables.
 $LANG_RU$
-	Когда соединение установлено, WWW сервер посылает некоторые
-	переменные окружения (хорошо известные в CGI-программировании) через
-	протокол FCGI. Функция FCGI_GETENV() дает доступ к этим переменным.
+	п п╬пЁп╢п╟ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╬, WWW я│п╣я─п╡п╣я─ п©п╬я│я▀п╩п╟п╣я┌ п╫п╣п╨п╬я┌п╬я─я▀п╣
+	п©п╣я─п╣п╪п╣п╫п╫я▀п╣ п╬п╨я─я┐п╤п╣п╫п╦я▐ (я┘п╬я─п╬я┬п╬ п╦п╥п╡п╣я│я┌п╫я▀п╣ п╡ CGI-п©я─п╬пЁя─п╟п╪п╪п╦я─п╬п╡п╟п╫п╦п╦) я┤п╣я─п╣п╥
+	п©я─п╬я┌п╬п╨п╬п╩ FCGI. п╓я┐п╫п╨я├п╦я▐ FCGI_GETENV() п╢п╟п╣я┌ п╢п╬я│я┌я┐п© п╨ я█я┌п╦п╪ п©п╣я─п╣п╪п╣п╫п╫я▀п╪.
 $EXAMPLES$
 $LANG_RU$
 $PECULIARITIES$
@@ -32,7 +32,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
 $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	FCGI_READ(),FCGI_FLUSH(),FCGI_ACCEPT()
 $AUTHOR$

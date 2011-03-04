@@ -165,7 +165,7 @@
  * paul
  *
  * Revision 1.16  2000/10/31 12:21:45  clip
- * приоритет видимости параметров перед локальными переменных в блоках
+ * priority arguments appear before the local variables in blocks
  * paul
  *
  * Revision 1.15  2000/05/25 17:34:31  clip

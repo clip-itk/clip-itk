@@ -1,0 +1,2484 @@
+# Module bdbfs.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2004.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2004-10-12 11:20+0500\n"
+"PO-Revision-Date: 2002-11-29 11:54+0400\n"
+"Last-Translator: Uri Lasarev <uri@itk.ru>\n"
+"Language-Team: Russian <clip-devel@itk.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: getsys.prg:50
+msgid "ASCII"
+msgstr ""
+
+#: getsys.prg:247 getsys.prg:251 bdbf.prg:1119
+msgid "YyTt1"
+msgstr ""
+
+#: getsys.prg:247 bdbf.prg:1119
+msgid "NnFf0"
+msgstr ""
+
+#: getsys.prg:534
+msgid "Ins"
+msgstr ""
+
+#: getsys.prg:534
+msgid "Ovr"
+msgstr ""
+
+#: getsys.prg:571 mainmenu.prg:28
+msgid "ASCII-Table"
+msgstr ""
+
+#: getsys.prg:594
+msgid "Char: "
+msgstr ""
+
+#: getsys.prg:594
+msgid "   Dec: "
+msgstr ""
+
+#: getsys.prg:594
+msgid "   Hex: "
+msgstr ""
+
+#: getsys.prg:617
+msgid "Selected: "
+msgstr ""
+
+#: common.prg:40
+msgid "To Calc"
+msgstr ""
+
+#: common.prg:40
+msgid "ToField"
+msgstr ""
+
+#: common.prg:40 bdbf.prg:682
+msgid "InsMenu"
+msgstr ""
+
+#: common.prg:97
+msgid "Put this result into: "
+msgstr ""
+
+#: common.prg:97
+msgid "Current field"
+msgstr ""
+
+#: common.prg:97 aktions.prg:1303
+msgid "Clipboard"
+msgstr ""
+
+#: common.prg:97
+msgid "System clipboard"
+msgstr ""
+
+#: common.prg:211
+msgid " Ok "
+msgstr ""
+
+#: common.prg:274 help.prg:134 help.prg:135 help.prg:136 editor.prg:114
+#: tb2html.prg:79 tb2html.prg:213 tb2html.prg:341
+msgid "Yes"
+msgstr ""
+
+#: common.prg:274 help.prg:134 help.prg:135 help.prg:136 tb2html.prg:79
+#: tb2html.prg:213 tb2html.prg:341
+msgid "No "
+msgstr ""
+
+#: common.prg:286
+msgid "UNKNOWN CLASS"
+msgstr ""
+
+#: common.prg:304
+msgid "inserting"
+msgstr ""
+
+#: common.prg:360
+msgid "Bad name or writing is prohibited"
+msgstr ""
+
+#: common.prg:363
+msgid " already exists. Overwrite ?"
+msgstr ""
+
+#: common.prg:366
+msgid "Writing is prohibited"
+msgstr ""
+
+#: common.prg:400
+msgid "File not found "
+msgstr ""
+
+#: common.prg:456 aktions.prg:849
+msgid "Wrong expression "
+msgstr ""
+
+#: common.prg:472 mainmenu.prg:28 modistru.prg:26 bdbf.prg:50
+msgid "Delete"
+msgstr ""
+
+#: common.prg:651 common.prg:1294 mainmenu.prg:28
+msgid "Help"
+msgstr ""
+
+#: common.prg:665 common.prg:926
+msgid "Waiting, "
+msgstr ""
+
+#: common.prg:706
+msgid "1-YES"
+msgstr ""
+
+#: common.prg:706
+msgid "0-NO"
+msgstr ""
+
+#: common.prg:706
+msgid "ARE YOU SURE?"
+msgstr ""
+
+#: common.prg:735
+msgid "Record is out of filter"
+msgstr ""
+
+#: common.prg:745 aktions.prg:155
+msgid "No such record"
+msgstr ""
+
+#: common.prg:873 common.prg:886 config.prg:291
+msgid "READY !"
+msgstr ""
+
+#: common.prg:873 aktions.prg:345
+msgid "File created: "
+msgstr ""
+
+#: common.prg:876
+msgid "Show it?"
+msgstr ""
+
+#: common.prg:876 aktions.prg:376 aktions.prg:1739 viewer.prg:295
+msgid "Abort"
+msgstr ""
+
+#: common.prg:884
+msgid "Time:"
+msgstr ""
+
+#: common.prg:884
+msgid " Processed: "
+msgstr ""
+
+#: common.prg:893 aktions.prg:20
+msgid "Not found"
+msgstr ""
+
+#: common.prg:918
+msgid " s."
+msgstr ""
+
+#: common.prg:930
+msgid "Processed: "
+msgstr ""
+
+#: common.prg:973 common.prg:976
+msgid "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
+msgstr ""
+
+#: common.prg:997
+msgid "String is too short."
+msgstr ""
+
+#: common.prg:997
+msgid "Probably It will not be effective."
+msgstr ""
+
+#: common.prg:997
+msgid "Compress it ?"
+msgstr ""
+
+#: common.prg:1219 bdbf.prg:1618
+msgid "Can not open file "
+msgstr ""
+
+#: common.prg:1298
+msgid "Os Exit"
+msgstr ""
+
+#: common.prg:1409
+msgid "Use history"
+msgstr ""
+
+#: common.prg:1676
+msgid "Align:"
+msgstr ""
+
+#: common.prg:1676
+msgid "Left"
+msgstr ""
+
+#: common.prg:1676
+msgid "Center"
+msgstr ""
+
+#: common.prg:1676
+msgid "Right"
+msgstr ""
+
+#: common.prg:1676
+msgid "Justify"
+msgstr ""
+
+#: common.prg:1676
+msgid "Spread"
+msgstr ""
+
+#: common.prg:1676
+msgid "Reduce"
+msgstr ""
+
+#: help.prg:49
+msgid "Sorry, no help here"
+msgstr ""
+
+#: help.prg:69
+msgid "Last update:"
+msgstr ""
+
+#: help.prg:69
+msgid "Total fields:"
+msgstr ""
+
+#: help.prg:69
+msgid "Header size:"
+msgstr ""
+
+#: help.prg:69 help.prg:73 help.prg:76 help.prg:89 filer.prg:135
+msgid " b"
+msgstr ""
+
+#: help.prg:69
+msgid "Record size:"
+msgstr ""
+
+#: help.prg:69
+msgid "Disk size:"
+msgstr ""
+
+#: help.prg:69
+msgid "Driver (type):"
+msgstr ""
+
+#: help.prg:69
+msgid "Code page:"
+msgstr ""
+
+#: help.prg:73
+msgid "Memo-file size:"
+msgstr ""
+
+#: help.prg:76
+msgid "Block size in it:"
+msgstr ""
+
+#: help.prg:89
+msgid "Free memory:"
+msgstr ""
+
+#: help.prg:89
+msgid " Kb"
+msgstr ""
+
+#: help.prg:89
+msgid "Free disk space:"
+msgstr ""
+
+#: help.prg:89
+msgid "Current dir:"
+msgstr ""
+
+#: help.prg:89 aktions.prg:764
+msgid "Memo block size:"
+msgstr ""
+
+#: help.prg:89
+msgid "OS version:"
+msgstr ""
+
+#: help.prg:106
+msgid "TAGS INFORMATION (RDD : "
+msgstr ""
+
+#: help.prg:107 print.prg:80
+msgid "Index file "
+msgstr ""
+
+#: help.prg:108
+msgid "TAG      /  "
+msgstr ""
+
+#: help.prg:109
+msgid "Tag Name"
+msgstr ""
+
+#: help.prg:111
+msgid "Filter expression"
+msgstr ""
+
+#: help.prg:112
+msgid "Is unique ?"
+msgstr ""
+
+#: help.prg:113
+msgid "Is descent ?"
+msgstr ""
+
+#: help.prg:114
+msgid "RYO-type ?"
+msgstr ""
+
+#: help.prg:115
+msgid "Keys total"
+msgstr ""
+
+#: help.prg:116
+msgid "Current key"
+msgstr ""
+
+#: print.prg:77
+msgid " : situation by "
+msgstr ""
+
+#: print.prg:78
+msgid "Last update: "
+msgstr ""
+
+#: print.prg:83 bdbf.prg:1149
+msgid "All records"
+msgstr ""
+
+#: print.prg:83
+msgid "Condition:"
+msgstr ""
+
+#: print.prg:88 bdbf.prg:1461
+msgid "Page "
+msgstr ""
+
+#: print.prg:129 print.prg:768
+msgid "Record: "
+msgstr ""
+
+#: print.prg:231
+msgid "NN"
+msgstr ""
+
+#: print.prg:268 print.prg:274 mainmenu.prg:28
+msgid "Record"
+msgstr ""
+
+#: print.prg:373 print.prg:403
+msgid "Code "
+msgstr ""
+
+#: print.prg:531
+msgid "On page"
+msgstr ""
+
+#: print.prg:540
+msgid "Total in group"
+msgstr ""
+
+#: print.prg:546 aktions.prg:863
+msgid "Total "
+msgstr ""
+
+#: print.prg:605 print.prg:632
+msgid "printing"
+msgstr ""
+
+#: print.prg:610
+msgid "To file"
+msgstr ""
+
+#: print.prg:610
+msgid "To HTML"
+msgstr ""
+
+#: print.prg:610
+msgid "To printer"
+msgstr ""
+
+#: print.prg:610
+msgid "Device of output? (ESC-abort, F9-tune)"
+msgstr ""
+
+#: print.prg:610 aktions.prg:345 editor.prg:23
+msgid "Config"
+msgstr ""
+
+#: print.prg:632
+msgid "printing to "
+msgstr ""
+
+#: print.prg:706 aktions.prg:927
+msgid "of initialization"
+msgstr ""
+
+#: mdbedit.prg:145
+msgid "D"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "System"
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:345
+msgid "File"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Base"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Fiel~d"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Fi~nd"
+msgstr ""
+
+#: mainmenu.prg:28 filer.prg:50 bdbf.prg:49
+msgid "Info"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Other"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Default RDD "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Default codepage"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Settings "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Save settings"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Calculate"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Set variable"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "About"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Quit"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Open base"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Reopen last"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Change structure"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Create new"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Check header"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Save environment"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Restore environment"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Read ini-file"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Create Auto-Open file"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Shell to DOS"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Change disk/directory"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:49
+msgid "Filer"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Modify text"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Export to HTML"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Export to XML"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Export to XLS"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Append from"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:50
+msgid "Copy To"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Copy with MEMO converting"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:1250
+msgid "Restore"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Invert deleted"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:48
+msgid "Pack"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:50
+msgid "Sort"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:49
+msgid "Total"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Index"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:49
+msgid "Reindex"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Set index"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "TAGS "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Descend index"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Set filter "
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:50
+msgid "Count"
+msgstr ""
+
+#: mainmenu.prg:28 mainmenu.prg:55 aktions.prg:345 viewer.prg:156
+#: editor.prg:23 bdbf.prg:48
+msgid "Print"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Read report template"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:49
+msgid "Sum"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Replace all by constant "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Replace all by expression "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Replace only current "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Clear"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Undo replace"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Translate "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Align "
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:513
+msgid "Crypt"
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:513
+msgid "DeCrypt"
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:513
+msgid "Check sum of record"
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:513
+msgid "Delete slim"
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:513
+msgid "Compress"
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:513
+msgid "DeCompress"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Copy "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Unf"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "F"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "reese"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Set color condition for current field"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Reset normal color"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Add new"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Insert before"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Write to clipboard"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Read from clipboard"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Change with upper record"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Change with lower record"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:48
+msgid "Go To"
+msgstr ""
+
+#: mainmenu.prg:28 aktions.prg:1593
+msgid "Edit"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Print To File"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Go to"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:48
+msgid "Seek"
+msgstr ""
+
+#: mainmenu.prg:28 bdbf.prg:48
+msgid "Locate"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Continue"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Locate backwards"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Continue backwards"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Context (all fields)"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Context with expression"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "In current field only "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Maximum in field"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Minimum in field"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Longest in field"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Double in index"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "WildSeek in index"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Continue WildSeek"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Environment,base,indexes"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Base structure"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Play macro"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Restore fields"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Set fields"
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "Clipboard operations "
+msgstr ""
+
+#: mainmenu.prg:28
+msgid "User menu "
+msgstr ""
+
+#: mainmenu.prg:55 config.prg:286
+msgid "Colors"
+msgstr ""
+
+#: mainmenu.prg:55
+msgid "SET-s"
+msgstr ""
+
+#: mainmenu.prg:55
+msgid "Other-1"
+msgstr ""
+
+#: mainmenu.prg:55
+msgid "Other-2"
+msgstr ""
+
+#: mainmenu.prg:55
+msgid "DBF - editor"
+msgstr ""
+
+#: mainmenu.prg:55 tb2html.prg:131 bdbf.prg:387
+msgid "Bdbf-C,1.27a"
+msgstr ""
+
+#: mainmenu.prg:55
+msgid "Author: Eugen Bondar"
+msgstr ""
+
+#: mainmenu.prg:55
+msgid "Lugansk, Ukraine"
+msgstr ""
+
+#: mainmenu.prg:55
+msgid "E-MAIL: "
+msgstr ""
+
+#: mainmenu.prg:101 bdbf.prg:945
+msgid "deleting"
+msgstr ""
+
+#: mainmenu.prg:101 bdbf.prg:939
+msgid "recalling"
+msgstr ""
+
+#: mainmenu.prg:101 bdbf.prg:942
+msgid "inverting"
+msgstr ""
+
+#: mainmenu.prg:101 aktions.prg:1186
+msgid "Set tag"
+msgstr ""
+
+#: mainmenu.prg:101 aktions.prg:1186
+msgid "Delete tag"
+msgstr ""
+
+#: mainmenu.prg:101 aktions.prg:1186
+msgid "Add tag"
+msgstr ""
+
+#: mainmenu.prg:101 aktions.prg:1186
+msgid "Set another CDX"
+msgstr ""
+
+#: mainmenu.prg:101 aktions.prg:1083 aktions.prg:1186
+msgid "Create all tags anew"
+msgstr ""
+
+#: mainmenu.prg:116
+msgid "NTX"
+msgstr ""
+
+#: mainmenu.prg:155
+msgid "With confirming"
+msgstr ""
+
+#: mainmenu.prg:155
+msgid "Without confirming"
+msgstr ""
+
+#: mainmenu.prg:178 aktions.prg:513
+msgid "UPPER CASE"
+msgstr ""
+
+#: mainmenu.prg:178 aktions.prg:513
+msgid "lower case"
+msgstr ""
+
+#: mainmenu.prg:178 aktions.prg:513
+msgid "Proper"
+msgstr ""
+
+#: mainmenu.prg:178 aktions.prg:513
+msgid "All Words Proper"
+msgstr ""
+
+#: mainmenu.prg:178 aktions.prg:513
+msgid "OemToAnsi"
+msgstr ""
+
+#: mainmenu.prg:178 aktions.prg:513
+msgid "AnsiToOem"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "To National keyboard"
+msgstr ""
+
+#: mainmenu.prg:178 aktions.prg:513
+msgid "To USA keyboard"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "Upper field "
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "Lower field"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "Left field"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "Right field"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "From clipboard"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "To clipboard"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "From System clipboard"
+msgstr ""
+
+#: mainmenu.prg:178
+msgid "To System clipboard"
+msgstr ""
+
+#: mainmenu.prg:179
+msgid "C"
+msgstr ""
+
+#: mainmenu.prg:197
+msgid "NC"
+msgstr ""
+
+#: mainmenu.prg:230
+msgid "NLFD"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Read field to clipboard"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Show clipboard"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Write clipboard to field"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Clipboard + field"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Clipboard - field"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Clipboard * field"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Clipboard / field"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Write current record to clipboard"
+msgstr ""
+
+#: mainmenu.prg:241
+msgid "Write to current record from clipboard"
+msgstr ""
+
+#: aktions.prg:20 viewer.prg:679 bdbf.prg:27
+msgid " is corrupted"
+msgstr ""
+
+#: aktions.prg:20
+msgid "Base is in use by another."
+msgstr ""
+
+#: aktions.prg:20
+msgid "Enter "
+msgstr ""
+
+#: aktions.prg:20
+msgid "No index set"
+msgstr ""
+
+#: aktions.prg:20
+msgid "F10 - Exit and save, Esc - Abort"
+msgstr ""
+
+#: aktions.prg:20
+msgid "Input the expression "
+msgstr ""
+
+#: aktions.prg:20
+msgid " Other name"
+msgstr ""
+
+#: aktions.prg:21 bdbf.prg:1442
+msgid "Wrong type "
+msgstr ""
+
+#: aktions.prg:73 aktions.prg:1215
+msgid "Select index"
+msgstr ""
+
+#: aktions.prg:73 aktions.prg:1215
+msgid " No Index"
+msgstr ""
+
+#: aktions.prg:94
+msgid "Index does not match the base. Reindex?"
+msgstr ""
+
+#: aktions.prg:96
+msgid "reindexing (index does not match)"
+msgstr ""
+
+#: aktions.prg:136 aktions.prg:1248
+msgid "index "
+msgstr ""
+
+#: aktions.prg:141
+msgid "Find record based on: "
+msgstr ""
+
+#: aktions.prg:141
+msgid "Record number"
+msgstr ""
+
+#: aktions.prg:141
+msgid "Shift from current"
+msgstr ""
+
+#: aktions.prg:141
+msgid "Key number"
+msgstr ""
+
+#: aktions.prg:148
+msgid "Position from current record (+ -): "
+msgstr ""
+
+#: aktions.prg:152
+msgid "Go to the record:"
+msgstr ""
+
+#: aktions.prg:165 aktions.prg:1686 bdbf.prg:1142
+msgid "searching"
+msgstr ""
+
+#: aktions.prg:184 aktions.prg:985
+msgid "It is prohibited in \"forced\" mode"
+msgstr ""
+
+#: aktions.prg:188
+msgid "Delete marked records"
+msgstr ""
+
+#: aktions.prg:192
+msgid "Deleted records are not found"
+msgstr ""
+
+#: aktions.prg:194
+msgid "packing"
+msgstr ""
+
+#: aktions.prg:204
+msgid " records was killed"
+msgstr ""
+
+#: aktions.prg:217 aktions.prg:250
+msgid "searching through index."
+msgstr ""
+
+#: aktions.prg:244
+msgid "Current index is not character!"
+msgstr ""
+
+#: aktions.prg:246 aktions.prg:571
+msgid "There is not of searching condition"
+msgstr ""
+
+#: aktions.prg:269
+msgid "Find Expression in Current Field:"
+msgstr ""
+
+#: aktions.prg:269 aktions.prg:637
+msgid "Equal to Current Cell"
+msgstr ""
+
+#: aktions.prg:269 aktions.prg:637
+msgid "Not Equal to Current Cell"
+msgstr ""
+
+#: aktions.prg:269 aktions.prg:637
+msgid "Greater Than Current Cell"
+msgstr ""
+
+#: aktions.prg:269 aktions.prg:637
+msgid "Less Than Current Cell"
+msgstr ""
+
+#: aktions.prg:269 aktions.prg:637
+msgid "Greater or Equal Than Current Cell"
+msgstr ""
+
+#: aktions.prg:269 aktions.prg:637
+msgid "Less or Equal Than Current Cell"
+msgstr ""
+
+#: aktions.prg:269
+msgid "Another"
+msgstr ""
+
+#: aktions.prg:282
+msgid "for searching:"
+msgstr ""
+
+#: aktions.prg:311
+msgid "Base structure "
+msgstr ""
+
+#: aktions.prg:345
+msgid "Ext.Str"
+msgstr ""
+
+#: aktions.prg:345
+msgid "Struct"
+msgstr ""
+
+#: aktions.prg:345
+msgid "MakePrg"
+msgstr ""
+
+#: aktions.prg:376
+msgid "What record: "
+msgstr ""
+
+#: aktions.prg:376
+msgid "Current"
+msgstr ""
+
+#: aktions.prg:376
+msgid "Last"
+msgstr ""
+
+#: aktions.prg:388
+msgid "The operation is prohibited when index is open"
+msgstr ""
+
+#: aktions.prg:402 aktions.prg:1253
+msgid "Can not replace calculated field"
+msgstr ""
+
+#: aktions.prg:410
+msgid " for replacing "
+msgstr ""
+
+#: aktions.prg:427
+msgid "replacing"
+msgstr ""
+
+#: aktions.prg:439 aktions.prg:454
+msgid "Replace: "
+msgstr ""
+
+#: aktions.prg:495
+msgid "1-Yes"
+msgstr ""
+
+#: aktions.prg:495
+msgid "2-No"
+msgstr ""
+
+#: aktions.prg:495
+msgid "3-Skip"
+msgstr ""
+
+#: aktions.prg:495
+msgid "0-Abort"
+msgstr ""
+
+#: aktions.prg:513
+msgid "Change symbols(StrTran)"
+msgstr ""
+
+#: aktions.prg:513
+msgid "Translate symbols(ChrTran)"
+msgstr ""
+
+#: aktions.prg:513
+msgid "To national keyboard"
+msgstr ""
+
+#: aktions.prg:513
+msgid "Align"
+msgstr ""
+
+#: aktions.prg:513
+msgid "Descend"
+msgstr ""
+
+#: aktions.prg:513
+msgid "Soundex"
+msgstr ""
+
+#: aktions.prg:535
+msgid "Select function: "
+msgstr ""
+
+#: aktions.prg:542
+msgid "Reindex the base"
+msgstr ""
+
+#: aktions.prg:544 aktions.prg:613 aktions.prg:1138
+msgid "indexing"
+msgstr ""
+
+#: aktions.prg:560
+msgid "Current field is not numeric"
+msgstr ""
+
+#: aktions.prg:561 aktions.prg:914
+msgid "summarizing"
+msgstr ""
+
+#: aktions.prg:566
+msgid "The sum  = "
+msgstr ""
+
+#: aktions.prg:583
+msgid "ZAP the base"
+msgstr ""
+
+#: aktions.prg:604 aktions.prg:1122
+msgid "for indexing"
+msgstr ""
+
+#: aktions.prg:610 aktions.prg:1129
+msgid "Unique index"
+msgstr ""
+
+#: aktions.prg:637
+msgid "SET FILTER TO:"
+msgstr ""
+
+#: aktions.prg:637
+msgid "Condition"
+msgstr ""
+
+#: aktions.prg:637
+msgid "No Filter"
+msgstr ""
+
+#: aktions.prg:659
+msgid "filter"
+msgstr ""
+
+#: aktions.prg:665
+msgid "No such records"
+msgstr ""
+
+#: aktions.prg:709
+msgid "Select the fields"
+msgstr ""
+
+#: aktions.prg:721
+msgid "for copying"
+msgstr ""
+
+#: aktions.prg:730
+msgid "Fields ( Empty means \"ALL\" )"
+msgstr ""
+
+#: aktions.prg:730 tb2html.prg:15 tb2html.prg:143 tb2html.prg:236
+msgid "copying"
+msgstr ""
+
+#: aktions.prg:752
+msgid "RDD for new base"
+msgstr ""
+
+#: aktions.prg:771
+msgid "for appending"
+msgstr ""
+
+#: aktions.prg:781
+msgid "Append from itself?"
+msgstr ""
+
+#: aktions.prg:781
+msgid "appending"
+msgstr ""
+
+#: aktions.prg:818
+msgid "File type"
+msgstr ""
+
+#: aktions.prg:818
+msgid "SDF"
+msgstr ""
+
+#: aktions.prg:818
+msgid "DELIMITED"
+msgstr ""
+
+#: aktions.prg:818
+msgid "DELIMITED WITH BLANK"
+msgstr ""
+
+#: aktions.prg:818
+msgid "DBF"
+msgstr ""
+
+#: aktions.prg:830
+msgid "Text fields delimiter:"
+msgstr ""
+
+#: aktions.prg:841
+msgid "the variable and expression (f.e. xVar:=xVal)"
+msgstr ""
+
+#: aktions.prg:861
+msgid "counting"
+msgstr ""
+
+#: aktions.prg:863
+msgid " records"
+msgstr ""
+
+#: aktions.prg:877
+msgid "the disk and dir"
+msgstr ""
+
+#: aktions.prg:881
+msgid " - directory does not exist or locked"
+msgstr ""
+
+#: aktions.prg:894
+msgid "for sorting"
+msgstr ""
+
+#: aktions.prg:894
+msgid "sorting"
+msgstr ""
+
+#: aktions.prg:914
+msgid "New file name: "
+msgstr ""
+
+#: aktions.prg:914
+msgid "Key expression"
+msgstr ""
+
+#: aktions.prg:914
+msgid "Fields to TOTAL"
+msgstr ""
+
+#: aktions.prg:939
+msgid "for environment saving"
+msgstr ""
+
+#: aktions.prg:973
+msgid "of environment"
+msgstr ""
+
+#: aktions.prg:981
+msgid "No free disk space"
+msgstr ""
+
+#: aktions.prg:983
+msgid "Bad extension(BAK)"
+msgstr ""
+
+#: aktions.prg:999 aktions.prg:1080 aktions.prg:1114 aktions.prg:1160
+msgid "Not supported for RDD NTX"
+msgstr ""
+
+#: aktions.prg:1007 aktions.prg:1088 aktions.prg:1164 aktions.prg:1422
+msgid "No opened index files"
+msgstr ""
+
+#: aktions.prg:1015
+msgid "tag number"
+msgstr ""
+
+#: aktions.prg:1019 aktions.prg:1122
+msgid "tag name"
+msgstr ""
+
+#: aktions.prg:1041 aktions.prg:1055 aktions.prg:1183
+msgid "NAME"
+msgstr ""
+
+#: aktions.prg:1041 aktions.prg:1055 aktions.prg:1183
+msgid "EXPRESSION"
+msgstr ""
+
+#: aktions.prg:1041 aktions.prg:1055 aktions.prg:1183
+msgid "CONDITION"
+msgstr ""
+
+#: aktions.prg:1055
+msgid " No Order"
+msgstr ""
+
+#: aktions.prg:1176
+msgid "tag name for removing"
+msgstr ""
+
+#: aktions.prg:1188
+msgid "removing"
+msgstr ""
+
+#: aktions.prg:1393
+msgid "Color separation condition"
+msgstr ""
+
+#: aktions.prg:1403
+msgid "Maximum"
+msgstr ""
+
+#: aktions.prg:1403
+msgid "Minimum"
+msgstr ""
+
+#: aktions.prg:1403
+msgid "What do we need ?"
+msgstr ""
+
+#: aktions.prg:1414
+msgid "Longest is: "
+msgstr ""
+
+#: aktions.prg:1416
+msgid "Current field is not character"
+msgstr ""
+
+#: aktions.prg:1446
+msgid "context searching"
+msgstr ""
+
+#: aktions.prg:1454
+msgid "CASE SENSITIVE"
+msgstr ""
+
+#: aktions.prg:1457
+msgid "Additional condition"
+msgstr ""
+
+#: aktions.prg:1522
+msgid "for calculating "
+msgstr ""
+
+#: aktions.prg:1527
+msgid "The result of: "
+msgstr ""
+
+#: aktions.prg:1593
+msgid "View"
+msgstr ""
+
+#: aktions.prg:1676
+msgid "filename"
+msgstr ""
+
+#: aktions.prg:1692
+msgid "User-menu not defined"
+msgstr ""
+
+#: aktions.prg:1696
+msgid "User menu"
+msgstr ""
+
+#: aktions.prg:1700
+msgid "Can not lock file. Repeat?"
+msgstr ""
+
+#: aktions.prg:1709
+msgid "Can not lock record. Repeat?"
+msgstr ""
+
+#: aktions.prg:1730
+msgid "No errors found"
+msgstr ""
+
+#: aktions.prg:1735
+msgid "The divergences in definition of the database size were found out"
+msgstr ""
+
+#: aktions.prg:1735
+msgid "Logical size:      "
+msgstr ""
+
+#: aktions.prg:1735
+msgid "Header-based size: "
+msgstr ""
+
+#: aktions.prg:1735
+msgid "Disk file size:    "
+msgstr ""
+
+#: aktions.prg:1735
+msgid "What is right?"
+msgstr ""
+
+#: aktions.prg:1739
+msgid "Logical"
+msgstr ""
+
+#: aktions.prg:1739
+msgid "(recommended)"
+msgstr ""
+
+#: aktions.prg:1739
+msgid "Header"
+msgstr ""
+
+#: aktions.prg:1739 filer.prg:45
+msgid "Disk"
+msgstr ""
+
+#: aktions.prg:1766
+msgid "Select the base"
+msgstr ""
+
+#: aktions.prg:1811
+msgid "Field redaction "
+msgstr ""
+
+#: aktions.prg:1836
+msgid " ( Empty means \"ALL\" )"
+msgstr ""
+
+#: cliplib.prg:129
+msgid "Warning! It was fixed a numeric overflow."
+msgstr ""
+
+#: cliplib.prg:442
+msgid "Any correct field or expression is not given"
+msgstr ""
+
+#: filer.prg:37
+msgid "Select file: "
+msgstr ""
+
+#: filer.prg:48
+msgid "Go Home"
+msgstr ""
+
+#: filer.prg:49
+msgid "Mask"
+msgstr ""
+
+#: filer.prg:135
+msgid "File:"
+msgstr ""
+
+#: filer.prg:135
+msgid "Directory:"
+msgstr ""
+
+#: filer.prg:135
+msgid "Size:"
+msgstr ""
+
+#: filer.prg:135
+msgid "Last updated:"
+msgstr ""
+
+#: filer.prg:135
+msgid "Attributes:"
+msgstr ""
+
+#: filer.prg:138
+msgid "Index information:"
+msgstr ""
+
+#: filer.prg:138
+msgid "<KEY>"
+msgstr ""
+
+#: filer.prg:197
+msgid "Input file mask"
+msgstr ""
+
+#: viewer.prg:156
+msgid "Find"
+msgstr ""
+
+#: viewer.prg:156
+msgid "Win"
+msgstr ""
+
+#: viewer.prg:156
+msgid "Dos"
+msgstr ""
+
+#: viewer.prg:156
+msgid "Exit"
+msgstr ""
+
+#: viewer.prg:158
+msgid "FindNxt"
+msgstr ""
+
+#: viewer.prg:159
+msgid "Sel.CP"
+msgstr ""
+
+#: viewer.prg:295
+msgid "Whole file"
+msgstr ""
+
+#: viewer.prg:295
+msgid "Rest of file"
+msgstr ""
+
+#: viewer.prg:295
+msgid "PRINT:"
+msgstr ""
+
+#: viewer.prg:631
+msgid "Enter Search Phrase: "
+msgstr ""
+
+#: viewer.prg:671
+msgid " Occurrences Found - No More Finds (Press Any Key) "
+msgstr ""
+
+#: viewer.prg:679 bdbf.prg:1845
+msgid " or locked"
+msgstr ""
+
+#: viewer.prg:685
+msgid "it is printing"
+msgstr ""
+
+#: viewer.prg:693
+msgid " lines printed"
+msgstr ""
+
+#: editor.prg:23
+msgid "Write"
+msgstr ""
+
+#: editor.prg:23
+msgid "Load"
+msgstr ""
+
+#: editor.prg:23
+msgid "UnWrap"
+msgstr ""
+
+#: editor.prg:23
+msgid "Wrap"
+msgstr ""
+
+#: editor.prg:23
+msgid "SysClpb"
+msgstr ""
+
+#: editor.prg:23 config.prg:259
+msgid "Save"
+msgstr ""
+
+#: editor.prg:114
+msgid "No"
+msgstr ""
+
+#: editor.prg:114
+msgid "Save and quit"
+msgstr ""
+
+#: editor.prg:114
+msgid "File not saved! Are you sure you want to exit?"
+msgstr ""
+
+#: editor.prg:234 config.prg:145 config.prg:181
+msgid "Different system variables"
+msgstr ""
+
+#: editor.prg:241 config.prg:142
+msgid "Tab width in memo fields"
+msgstr ""
+
+#: editor.prg:241 config.prg:142
+msgid "Wrap position in memo fields"
+msgstr ""
+
+#: editor.prg:241 config.prg:233
+msgid "Memo-fields width"
+msgstr ""
+
+#: tb2html.prg:26 tb2html.prg:154 tb2html.prg:247
+msgid "Convert OEM to ANSI?"
+msgstr ""
+
+#: modistru.prg:26 bdbf.prg:48 bdbf.prg:1187
+msgid "Append"
+msgstr ""
+
+#: modistru.prg:26 bdbf.prg:51
+msgid "Insert"
+msgstr ""
+
+#: modistru.prg:26
+msgid "MakeOpt"
+msgstr ""
+
+#: modistru.prg:26
+msgid "Q/Save"
+msgstr ""
+
+#: modistru.prg:33
+msgid "Modify Structure"
+msgstr ""
+
+#: modistru.prg:48
+msgid "modification"
+msgstr ""
+
+#: modistru.prg:110
+msgid "Select field type"
+msgstr ""
+
+#: modistru.prg:120 modistru.prg:293
+msgid "Wrong field length"
+msgstr ""
+
+#: modistru.prg:138
+msgid "Cancel modification"
+msgstr ""
+
+#: modistru.prg:157
+msgid "Delete the field"
+msgstr ""
+
+#: modistru.prg:165
+msgid "Make optimization"
+msgstr ""
+
+#: modistru.prg:172
+msgid " fields are optimized"
+msgstr ""
+
+#: modistru.prg:175
+msgid "Make permanent changes"
+msgstr ""
+
+#: modistru.prg:258
+msgid "Bad field name"
+msgstr ""
+
+#: modistru.prg:271
+msgid "The name already exists"
+msgstr ""
+
+#: errorsys.prg:20
+msgid "Not object in DefError"
+msgstr ""
+
+#: errorsys.prg:30
+msgid "Printer is not ready.Repeat"
+msgstr ""
+
+#: errorsys.prg:35
+msgid "Network error"
+msgstr ""
+
+#: config.prg:75
+msgid "Program settings"
+msgstr ""
+
+#: config.prg:100
+msgid "Main edition color         "
+msgstr ""
+
+#: config.prg:100
+msgid "Help, dialogues, results   "
+msgstr ""
+
+#: config.prg:100
+msgid "Markers & special symbols  "
+msgstr ""
+
+#: config.prg:100
+msgid "Main menu                  "
+msgstr ""
+
+#: config.prg:100
+msgid "Unselectable menu elements "
+msgstr ""
+
+#: config.prg:100
+msgid "Panels headers             "
+msgstr ""
+
+#: config.prg:100
+msgid "Blinking"
+msgstr ""
+
+#: config.prg:100
+msgid "Intensity"
+msgstr ""
+
+#: config.prg:102
+msgid "Color settings"
+msgstr ""
+
+#: config.prg:142
+msgid "Forced mode"
+msgstr ""
+
+#: config.prg:142
+msgid "Command timing"
+msgstr ""
+
+#: config.prg:142
+msgid "Indicator"
+msgstr ""
+
+#: config.prg:142
+msgid "Indicator refreshing frequency (in records)"
+msgstr ""
+
+#: config.prg:142
+msgid "Default database mask"
+msgstr ""
+
+#: config.prg:142
+msgid "Max UNDO count"
+msgstr ""
+
+#: config.prg:142
+msgid "Macro (called on Ctrl+F1)"
+msgstr ""
+
+#: config.prg:142
+msgid "Memo and wide fields editor (empty-embedded)"
+msgstr ""
+
+#: config.prg:142
+msgid "Print files viewer (empty-embedded)         "
+msgstr ""
+
+#: config.prg:142
+msgid "Plugins search path"
+msgstr ""
+
+#: config.prg:142
+msgid "File names width in FILER"
+msgstr ""
+
+#: config.prg:142
+msgid "Auto-Save"
+msgstr ""
+
+#: config.prg:142
+msgid "Auto-Restore"
+msgstr ""
+
+#: config.prg:142
+msgid "Max number of shown fields"
+msgstr ""
+
+#: config.prg:142
+msgid "PACK confirm"
+msgstr ""
+
+#: config.prg:142
+msgid "Locate for Deleted before PACK"
+msgstr ""
+
+#: config.prg:177
+msgid "Choice from internal clipboard"
+msgstr ""
+
+#: config.prg:177
+msgid "OEM/ANSI with Sys clipboard"
+msgstr ""
+
+#: config.prg:177
+msgid "OEM->ANSI during the exports"
+msgstr ""
+
+#: config.prg:177
+msgid "Ask for OEM->ANSI before the exports"
+msgstr ""
+
+#: config.prg:177
+msgid "Expand the context search expression"
+msgstr ""
+
+#: config.prg:177
+msgid "Additional condition of context search"
+msgstr ""
+
+#: config.prg:181
+msgid "File associations in FILER"
+msgstr ""
+
+#: config.prg:191
+msgid " print codes"
+msgstr ""
+
+#: config.prg:233
+msgid "Record numbers print"
+msgstr ""
+
+#: config.prg:233
+msgid "At right side?"
+msgstr ""
+
+#: config.prg:233
+msgid "Center justifying"
+msgstr ""
+
+#: config.prg:233
+msgid "Print of zero values"
+msgstr ""
+
+#: config.prg:233
+msgid "Lines in memo-fields"
+msgstr ""
+
+#: config.prg:233
+msgid "Lines per page(0-no paging)"
+msgstr ""
+
+#: config.prg:233
+msgid " Left margin"
+msgstr ""
+
+#: config.prg:233
+msgid "Line feed number after each line"
+msgstr ""
+
+#: config.prg:233
+msgid "Summing of Numeric"
+msgstr ""
+
+#: config.prg:233
+msgid "Standard title"
+msgstr ""
+
+#: config.prg:233
+msgid "Page numbers"
+msgstr ""
+
+#: config.prg:233
+msgid "Head's names on each page"
+msgstr ""
+
+#: config.prg:233
+msgid "Title on each page"
+msgstr ""
+
+#: config.prg:233
+msgid "Head's numbers: on 1st page"
+msgstr ""
+
+#: config.prg:233
+msgid "on next pages"
+msgstr ""
+
+#: config.prg:233
+msgid "Field's delimiter: in header"
+msgstr ""
+
+#: config.prg:233
+msgid "in body"
+msgstr ""
+
+#: config.prg:233
+msgid "Page eject"
+msgstr ""
+
+#: config.prg:233
+msgid "Print device"
+msgstr ""
+
+#: config.prg:233
+msgid "Append to output file?"
+msgstr ""
+
+#: config.prg:234
+msgid "Print tuning"
+msgstr ""
+
+#: config.prg:234
+msgid "Starting"
+msgstr ""
+
+#: config.prg:234
+msgid "Ending"
+msgstr ""
+
+#: config.prg:248
+msgid " (F10 - saving)"
+msgstr ""
+
+#: config.prg:284
+msgid "Data Driver"
+msgstr ""
+
+#: config.prg:285
+msgid "System variables"
+msgstr ""
+
+#: config.prg:287
+msgid "Printer"
+msgstr ""
+
+#: config.prg:288
+msgid "Clipper standard SETs"
+msgstr ""
+
+#: config.prg:321
+msgid "Select default RDD"
+msgstr ""
+
+#: config.prg:338
+msgid "Select default codepage"
+msgstr ""
+
+#: bdbf.prg:48
+msgid "Set Dbf"
+msgstr ""
+
+#: bdbf.prg:48
+msgid "Set IDX"
+msgstr ""
+
+#: bdbf.prg:48
+msgid "Menu"
+msgstr ""
+
+#: bdbf.prg:48
+msgid "S/Locat"
+msgstr ""
+
+#: bdbf.prg:48
+msgid "UsrMenu"
+msgstr ""
+
+#: bdbf.prg:49
+msgid "Struct."
+msgstr ""
+
+#: bdbf.prg:49
+msgid "Copy"
+msgstr ""
+
+#: bdbf.prg:49
+msgid "Repl /C"
+msgstr ""
+
+#: bdbf.prg:49
+msgid "Contin."
+msgstr ""
+
+#: bdbf.prg:49
+msgid "Zap"
+msgstr ""
+
+#: bdbf.prg:49
+msgid "MakeInd"
+msgstr ""
+
+#: bdbf.prg:49
+msgid "Filter"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "SaveAop"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Macro"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "RstFlds"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "SetFlds"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Repl /V"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Set var"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "LocBack"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Recall"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Invert"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Ap/from"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Ch.Dir"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "Cur.Loc"
+msgstr ""
+
+#: bdbf.prg:50
+msgid "ReadIni"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "SaveVue"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "Modify"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "MakeEmp"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "RestVue"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "Compute"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "TagNumb"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "TagName"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "MakeTag"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "DelTag"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "Set CDX"
+msgstr ""
+
+#: bdbf.prg:51
+msgid "Set Tag"
+msgstr ""
+
+#: bdbf.prg:79
+msgid "Input the condition of "
+msgstr ""
+
+#: bdbf.prg:80
+msgid "File name "
+msgstr ""
+
+#: bdbf.prg:81
+msgid "Index key "
+msgstr ""
+
+#: bdbf.prg:83
+msgid " (Esc - abort)"
+msgstr ""
+
+#: bdbf.prg:89
+msgid "mm/dd/yyyy"
+msgstr "dd/mm/yyyy"
+
+#: bdbf.prg:105
+msgid "cp437"
+msgstr "cp866"
+
+#: bdbf.prg:159
+msgid "QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>qwertyuiop"
+msgstr ""
+
+#: bdbf.prg:160
+msgid "asdfghjkl;'zxcvbnm,."
+msgstr ""
+
+#: bdbf.prg:409
+msgid "Password:"
+msgstr ""
+
+#: bdbf.prg:515
+msgid "MEMO-field exists, but it[s no signed in header"
+msgstr ""
+
+#: bdbf.prg:515
+msgid "Correct header?"
+msgstr ""
+
+#: bdbf.prg:603
+msgid "Fields, orders, conditions"
+msgstr ""
+
+#: bdbf.prg:682
+msgid "FdName"
+msgstr ""
+
+#: bdbf.prg:682
+msgid "Head"
+msgstr ""
+
+#: bdbf.prg:682 bdbf.prg:687
+msgid "History"
+msgstr ""
+
+#: bdbf.prg:682
+msgid "FdValue"
+msgstr ""
+
+#: bdbf.prg:682
+msgid "DbfName"
+msgstr ""
+
+#: bdbf.prg:683
+msgid "FdsName"
+msgstr ""
+
+#: bdbf.prg:683
+msgid "FdsHead"
+msgstr ""
+
+#: bdbf.prg:683
+msgid "Res.Hst"
+msgstr ""
+
+#: bdbf.prg:683
+msgid "Quoted"
+msgstr ""
+
+#: bdbf.prg:685
+msgid "Glb.Hst"
+msgstr ""
+
+#: bdbf.prg:691
+msgid "Select"
+msgstr ""
+
+#: bdbf.prg:698
+msgid "InsFunc"
+msgstr ""
+
+#: bdbf.prg:703
+msgid "Fields"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Base name"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Field value"
+msgstr ""
+
+#: bdbf.prg:761 bdbf.prg:1332
+msgid "Field name"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Field header"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Clipboard value"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Any field name"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Any field header"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Quoted field value"
+msgstr ""
+
+#: bdbf.prg:761
+msgid "Symbol"
+msgstr ""
+
+#: bdbf.prg:762
+msgid "Insert at the cursor: "
+msgstr ""
+
+#: bdbf.prg:823
+msgid "Finish working"
+msgstr ""
+
+#: bdbf.prg:1149
+msgid " Rest "
+msgstr ""
+
+#: bdbf.prg:1149
+msgid " Select the scope of "
+msgstr ""
+
+#: bdbf.prg:1156
+msgid "Usual Enter"
+msgstr ""
+
+#: bdbf.prg:1156
+msgid "Lock Enter "
+msgstr ""
+
+#: bdbf.prg:1156
+msgid "Enter /skip"
+msgstr ""
+
+#: bdbf.prg:1156
+msgid "Enter /stop"
+msgstr ""
+
+#: bdbf.prg:1187
+msgid "EntMode"
+msgstr ""
+
+#: bdbf.prg:1250
+msgid "New"
+msgstr ""
+
+#: bdbf.prg:1250
+msgid "Rec.Rst"
+msgstr ""
+
+#: bdbf.prg:1250
+msgid "Del.Rst"
+msgstr ""
+
+#: bdbf.prg:1250
+msgid "Set"
+msgstr ""
+
+#: bdbf.prg:1332
+msgid "Field"
+msgstr ""
+
+#: bdbf.prg:1332
+msgid "Picture"
+msgstr ""
+
+#: bdbf.prg:1332
+msgid "Wide"
+msgstr ""
+
+#: bdbf.prg:1332
+msgid "Set fields:"
+msgstr ""
+
+#: bdbf.prg:1455
+msgid "Up Down PgUp PgDn, Esc - browse"
+msgstr ""
+
+#: bdbf.prg:1850
+msgid " - unsupported format"
+msgstr ""
+
+#: bdbf.prg:1861
+msgid "dBase IV  and above"
+msgstr ""
+
+#: bdbf.prg:1861
+msgid "FlagShip"
+msgstr ""
+
+#: bdbf.prg:1861
+msgid "FlexMemo"
+msgstr ""
+
+#: bdbf.prg:1861
+msgid "dBase II  or Foxbase 1.0"
+msgstr ""
+
+#: bdbf.prg:1861
+msgid "Unknown"
+msgstr ""
+
+#: bdbf.prg:1864
+msgid "The opening of this base is unsupported in standard mode"
+msgstr ""
+
+#: bdbf.prg:1864
+msgid "Possible format: "
+msgstr ""
+
+#: bdbf.prg:1864
+msgid "Should we try open it in forced mode ?"
+msgstr ""
+
+#: bdbf.prg:1864
+msgid "(See also ch.34 bdbfs.txt for explaining)"
+msgstr ""
+
+#: bdbf.prg:1937
+msgid ". Erase it?"
+msgstr ""

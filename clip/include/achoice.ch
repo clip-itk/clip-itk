@@ -6,18 +6,18 @@
 #define AC_NONE_STRINGS [ None selected strings ]
 
 /* code of user fuction messages */
-#define AC_IDLE            0          /* Ожидание нажатия клавиш          */
-#define AC_HITTOP          1          /* Попытка движения вверх за список */
-#define AC_HITBOTTOM       2          /* Попытка движения вниз за список  */
-#define AC_EXCEPT          3          /* Необрабатываемая клавиша         */
-#define AC_NOITEM          4          /* Нет выбранной позиции            */
+#define AC_IDLE            0          /* Waiting for keystrokes               */
+#define AC_HITTOP          1          /* attempt to move up beyond the list   */
+#define AC_HITBOTTOM       2          /* attempt to move down beyond the list */
+#define AC_EXCEPT          3          /* Unhandled key                        */
+#define AC_NOITEM          4          /* There is no selected position        */
 
 /* return code from user function */
-#define AC_ABORT            0     /* Прервать ACHOICE(), вернуть 0              */
-#define AC_SELECT           1     /* Выбрать текущую позицию, вернуть ее номер  */
-#define AC_CONT             2     /* Продолжить ACHOICE()                       */
-#define AC_GOTO             3     /* Перейти к следующей позиции с первой       */
-				  /* буквой, соответствующей нажатой клавише    */
+#define AC_ABORT            0     /* Abort ACHOICE(), return 0                  */
+#define AC_SELECT           1     /* "Choose current position, return number    */
+#define AC_CONT             2     /* Continue ACHOICE()                         */
+#define AC_GOTO             3     /* Go to the next position from the first     */
+				  /* symbol with appropriate keystroke          */
 #define AC_REDRAW           4     /* Re-Draw the ACHOICE() window. */
 
 #endif

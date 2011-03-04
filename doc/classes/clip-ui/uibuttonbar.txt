@@ -3,26 +3,26 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIButtonBar.
 $LANG_RU$
-	Класс UIButtonBar.
+	п п╩п╟я│я│ UIButtonBar.
 $ABOUT$
 	Class for panel with buttons. Inherit properties and methods of class <link linkend="classuihbox">UIHBox</link>.
 $LANG_RU$
-	Класс панели с кнопками. Наследует свойства и методы класса <link linkend="classuihbox">UIHBox</link>.
+	п п╩п╟я│я│ п©п╟п╫п╣п╩п╦ я│ п╨п╫п╬п©п╨п╟п╪п╦. п²п╟я│п╩п╣п╢я┐п╣я┌ я│п╡п╬п╧я│я┌п╡п╟ п╦ п╪п╣я┌п╬п╢я▀ п╨п╩п╟я│я│п╟ <link linkend="classuihbox">UIHBox</link>.
 $SYNTAX$
 	UIButtonBar()	--> UIButtonBar object
 $LANG_RU$
-	UIButtonBar()	--> Объект UIButtonBar
+	UIButtonBar()	--> п·п╠я┼п╣п╨я┌ UIButtonBar
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIButtonBar".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIButtonBar".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIButtonBar".
 
 $METHODNAME$
 	UIButtonBar()
 $SUMMARY$
 	Condtructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIButtonBar()
 $ENDMETHOD$
@@ -34,16 +34,16 @@ $EXAMPLES$
 $LANG_RU$
 	bb  := UIButtonBar()
 	bb:add( UIButton(, "&Ok", {|o,e| ok_function() } ) )
-	bb:add( UIButton(, "&Выход", {|o,e| exit_function() } ) )
+	bb:add( UIButton(, "&п▓я▀я┘п╬п╢", {|o,e| exit_function() } ) )
 
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UIBUTTON
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

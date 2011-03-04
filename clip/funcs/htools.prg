@@ -5,12 +5,12 @@
 */
 
 /*****************************************
-Делит строку типа
+Splits a string
      "<t1><t2><t3>"
-     или
+     or
      "t1 t2 t3"
-на составляющие теги
-и возвращает массив тегов
+by tokens
+and returns array of tags
 *****************************************/
 function html_tagSplit(str)
 	LOCAL temp:={}, arr:={}, i:=1 ,s

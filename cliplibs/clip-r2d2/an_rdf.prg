@@ -204,7 +204,7 @@ function cgi_an_putRdf1(bal_data,account,an_level,urn,total,beg_date,end_date,sT
 		     essenc := strtran(essenc,"'","&apos;")
 		     essenc := strtran(essenc,'<',"&lt;")
 		     essenc := strtran(essenc,'>',"&gt;")
-		     essenc := iif(tmp:an_value=="total","Bсего",essenc)
+		     essenc := iif(tmp:an_value=="total","Total",essenc)
 		     if tmp:an_value=="total"
 		? '     DOCUM:rfl.name="'+essenc+'"'
 		    endif

@@ -3,13 +3,13 @@ $ABOUTCATEG$
 $SUMMARY$
 	Functions for access to some information about values, functions, parameters, and so.
 $LANG_RU$
-	Функции	доступа к информации о переменных, функциях, параметрах и тп.
+	п╓я┐п╫п╨я├п╦п╦	п╢п╬я│я┌я┐п©п╟ п╨ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ п©п╣я─п╣п╪п╣п╫п╫я▀я┘, я└я┐п╫п╨я├п╦я▐я┘, п©п╟я─п╟п╪п╣я┌я─п╟я┘ п╦ я┌п©.
 $DESCRIPTION$
 	Categories <command>INFO</command> is the set of functions for getting
 	some information about values, functions, parameters, and so.
 $LANG_RU$
-	К категории <command>INFO</command> относятся функции, предназначенные
-	для получения информации о переменных, функциях, параметрах и тп.
+	п  п╨п╟я┌п╣пЁп╬я─п╦п╦ <command>INFO</command> п╬я┌п╫п╬я│я▐я┌я│я▐ я└я┐п╫п╨я├п╦п╦, п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫п╫я▀п╣
+	п╢п╩я▐ п©п╬п╩я┐я┤п╣п╫п╦я▐ п╦п╫я└п╬я─п╪п╟я├п╦п╦ п╬ п©п╣я─п╣п╪п╣п╫п╫я▀я┘, я└я┐п╫п╨я├п╦я▐я┘, п©п╟я─п╟п╪п╣я┌я─п╟я┘ п╦ я┌п©.
 
 $ABOUTCATEG$
 	TCP
@@ -19,8 +19,8 @@ $DESCRIPTION$
 
 	For functions TCPListen() and TCPAccept() many thanks to Sergio Zayas.
 $LANG_RU$
-	Категория <command>TCP</command> представляет собой набор функция для работы
-	с сокетами.
+	п п╟я┌п╣пЁп╬я─п╦я▐ <command>TCP</command> п©я─п╣п╢я│я┌п╟п╡п╩я▐п╣я┌ я│п╬п╠п╬п╧ п╫п╟п╠п╬я─ я└я┐п╫п╨я├п╦я▐ п╢п╩я▐ я─п╟п╠п╬я┌я▀
+	я│ я│п╬п╨п╣я┌п╟п╪п╦.
 
-	Благодарим Sergio Zayas за помощь в создании функций TCPListen() и TCPAccept().
+	п▒п╩п╟пЁп╬п╢п╟я─п╦п╪ Sergio Zayas п╥п╟ п©п╬п╪п╬я┴я▄ п╡ я│п╬п╥п╢п╟п╫п╦п╦ я└я┐п╫п╨я├п╦п╧ TCPListen() п╦ TCPAccept().
 

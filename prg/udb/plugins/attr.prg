@@ -48,7 +48,7 @@ static function ab_attr_view_card(oDep,data,oBox,colorSpec)
 	x1++; y1++
 
 	@ x1++,y1 say padc([Attribute parameters],y2-y1)
-	@ x1++,y1 say replicate("€",y2-y1)
+	@ x1++,y1 say replicate("€",y2-y1) // utf-8: "â”€"
 	if empty(data)
 		//@ x1++,y1 say [Can`t display information]
 		@ x1++,y1 say [Can`t display information]
@@ -106,7 +106,7 @@ static function ab_attr_view_card(oDep,data,oBox,colorSpec)
 		next
 	endif
 	x1:=oBox:nBottom-2
-	@ x1++ ,y1 say replicate("€",y2-y1)
+	@ x1++ ,y1 say replicate("€",y2-y1) // utf-8: "â”€"
 	sss:=[This attribute have ###### references from classes]
 	sss:=strtran(sss,"######",str(data:count,6,0))
 	@ x1++,y1 say sss
@@ -140,7 +140,7 @@ static function ab_attr_edit_card(oDep,data,oBox,colorSpec)
 	x1++; y1++
 
 	@ x1++,y1 say padc([Attribute parameters],y2-y1)
-	@ x1++,y1 say replicate("€",y2-y1)
+	@ x1++,y1 say replicate("€",y2-y1) // utf-8: "â”€"
 
 	if empty(data)
 		//@ x1++,y1 say [Can`t edit information]

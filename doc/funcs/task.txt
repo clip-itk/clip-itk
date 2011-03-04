@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Start task.
 $LANG_RU$
-	Начать задачу.
+	п²п╟я┤п╟я┌я▄ п╥п╟п╢п╟я┤я┐.
 $SYNTAX$
      START(<vTask>, [<vPar1>,,, <vParN>]) 	--> <nTaskID>
 $ARGUMENTS$
 	<vTask>		Is the function name, or code block, or address of static function.
 	<vPar1>...<vParN> Is are some parameters for task.
 $LANG_RU$
-	<vTask>		Имя функции, или блок кода, или адрес статической функции.
-	<vPar1>...<vParN> Параметры, передаваемые в задачу.
+	<vTask>		п≤п╪я▐ я└я┐п╫п╨я├п╦п╦, п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟, п╦п╩п╦ п╟п╢я─п╣я│ я│я┌п╟я┌п╦я┤п╣я│п╨п╬п╧ я└я┐п╫п╨я├п╦п╦.
+	<vPar1>...<vParN> п÷п╟я─п╟п╪п╣я┌я─я▀, п©п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п╡ п╥п╟п╢п╟я┤я┐.
 $RETURNS$
      Returns numeric value - is the task identifier.
 $LANG_RU$
-     Возвращает числовое значение - идентификатор задания.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ - п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╥п╟п╢п╟п╫п╦я▐.
 $DESCRIPTION$
 	START() starts task in parallel mode and passes it some parameters <vPar1>,,, <vParN>.
 $LANG_RU$
-	START() запускает задачу в параллельном режиме и передает ей параметры
+	START() п╥п╟п©я┐я│п╨п╟п╣я┌ п╥п╟п╢п╟я┤я┐ п╡ п©п╟я─п╟п╩п╩п╣п╩я▄п╫п╬п╪ я─п╣п╤п╦п╪п╣ п╦ п©п╣я─п╣п╢п╟п╣я┌ п╣п╧ п©п╟я─п╟п╪п╣я┌я─я▀
 	<vPar1>,,, <vParN>
 $EXAMPLES$
 
@@ -52,13 +52,13 @@ return
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	TASKSTOP(), TASKSTART()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 $FUNCNAME$
@@ -68,18 +68,18 @@ $CATEGORY$
 $SUMMARY$
 	Stop all tasks with the exclusion current task.
 $LANG_RU$
-	Остановить все задания, за исключением текущего.
+	п·я│я┌п╟п╫п╬п╡п╦я┌я▄ п╡я│п╣ п╥п╟п╢п╟п╫п╦я▐, п╥п╟ п╦я│п╨п╩я▌я┤п╣п╫п╦п╣п╪ я┌п╣п╨я┐я┴п╣пЁп╬.
 $SYNTAX$
      TASKSTOP() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
      Returns NIL.
 $LANG_RU$
-     Возвращает NIL.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	TASKSTOP() stopeds all tasks with the exclusion current task.
 $LANG_RU$
-	TASKSTOP() останавливает все задания, за исключением текущего.
+	TASKSTOP() п╬я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╡я│п╣ п╥п╟п╢п╟п╫п╦я▐, п╥п╟ п╦я│п╨п╩я▌я┤п╣п╫п╦п╣п╪ я┌п╣п╨я┐я┴п╣пЁп╬.
 $EXAMPLES$
 
 
@@ -91,13 +91,13 @@ return
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	TASKSTART()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 $FUNCNAME$
@@ -107,18 +107,18 @@ $CATEGORY$
 $SUMMARY$
 	Resume all tasks what was stopped.
 $LANG_RU$
-	Возобновить все задания, которые были остановлены.
+	п▓п╬п╥п╬п╠п╫п╬п╡п╦я┌я▄ п╡я│п╣ п╥п╟п╢п╟п╫п╦я▐, п╨п╬я┌п╬я─я▀п╣ п╠я▀п╩п╦ п╬я│я┌п╟п╫п╬п╡п╩п╣п╫я▀.
 $SYNTAX$
      TASKSTART() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
      Returns NIL.
 $LANG_RU$
-     Возвращает NIL.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	TASKSTART() resumes all tasks what was stopped of function TASKSTOP().
 $LANG_RU$
-	TASKSTART() возобновляет все задания, которые были остановлены функцией TASKSTOP().
+	TASKSTART() п╡п╬п╥п╬п╠п╫п╬п╡п╩я▐п╣я┌ п╡я│п╣ п╥п╟п╢п╟п╫п╦я▐, п╨п╬я┌п╬я─я▀п╣ п╠я▀п╩п╦ п╬я│я┌п╟п╫п╬п╡п╩п╣п╫я▀ я└я┐п╫п╨я├п╦п╣п╧ TASKSTOP().
 $EXAMPLES$
 
 
@@ -135,13 +135,13 @@ TASKSTART()
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	TASKSTOP()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -153,18 +153,18 @@ $CATEGORY$
 $SUMMARY$
 	Return task identifier.
 $LANG_RU$
-	Возвращает идентификатор задания.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╥п╟п╢п╟п╫п╦я▐.
 $SYNTAX$
      TASKID() 	--> <nTaskID>
 $ARGUMENTS$
 $RETURNS$
      Returns task identifier as numeric value.
 $LANG_RU$
-     Возвращает идентификатор задания как числовое значение.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╥п╟п╢п╟п╫п╦я▐ п╨п╟п╨ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
 $DESCRIPTION$
 	TASKID() returns current task identifier <nTaskID> as numeric value.
 $LANG_RU$
-	TASKID() возвращает идентификатор текущего задания <nTaskID> как числовое значение.
+	TASKID() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я┌п╣п╨я┐я┴п╣пЁп╬ п╥п╟п╢п╟п╫п╦я▐ <nTaskID> п╨п╟п╨ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
 $EXAMPLES$
 
 
@@ -177,12 +177,12 @@ TASKSTART()
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -194,7 +194,7 @@ $CATEGORY$
 $SUMMARY$
 	Send message to task.
 $LANG_RU$
-	Отправить сообщение заданию.
+	п·я┌п©я─п╟п╡п╦я┌я▄ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╥п╟п╢п╟п╫п╦я▌.
 $SYNTAX$
      TASKSENDMSG(<nReceiverID>, <vMsg>[, <lWait>]) 	--> <lResult>
 $ARGUMENTS$
@@ -202,19 +202,19 @@ $ARGUMENTS$
 	<vMsg>		is the any type data - message to task.
 	<lWait>		Logical, is TRUE if function must wait processed.
 $LANG_RU$
-	<nReceiverID>	NUMERIC, идентификатор задания-получателя.
-	<vMsg>		данные "посылка"  для задания.
-	<lWait>		Logical, TRUE, если функция должна дождаться окончания процесса.
+	<nReceiverID>	NUMERIC, п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╥п╟п╢п╟п╫п╦я▐-п©п╬п╩я┐я┤п╟я┌п╣п╩я▐.
+	<vMsg>		п╢п╟п╫п╫я▀п╣ "п©п╬я│я▀п╩п╨п╟"  п╢п╩я▐ п╥п╟п╢п╟п╫п╦я▐.
+	<lWait>		Logical, TRUE, п╣я│п╩п╦ я└я┐п╫п╨я├п╦я▐ п╢п╬п╩п╤п╫п╟ п╢п╬п╤п╢п╟я┌я▄я│я▐ п╬п╨п╬п╫я┤п╟п╫п╦я▐ п©я─п╬я├п╣я│я│п╟.
 $RETURNS$
      Returns logical value <lResult>, TRUE if message was delivered.
 $LANG_RU$
-     Возвращает логическое значение <lResult>, TRUE если сообщение было доставлено.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ <lResult>, TRUE п╣я│п╩п╦ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╠я▀п╩п╬ п╢п╬я│я┌п╟п╡п╩п╣п╫п╬.
 $DESCRIPTION$
 	TASKSENDMSG() sends var <vMsg> to task with identifier <nReceiverID> and returns
 	returns TRUE if operation successfully.
 $LANG_RU$
-	TASKSENDMSG() отправляет значение <vMsg> заданию с идентификатором <nReceiverID> и
-	возвращает TRUE, если операция завершилась успешно.
+	TASKSENDMSG() п╬я┌п©я─п╟п╡п╩я▐п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ <vMsg> п╥п╟п╢п╟п╫п╦я▌ я│ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ <nReceiverID> п╦
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╬п©п╣я─п╟я├п╦я▐ п╥п╟п╡п╣я─я┬п╦п╩п╟я│я▄ я┐я│п©п╣я┬п╫п╬.
 $EXAMPLES$
 
 static id
@@ -237,13 +237,13 @@ return
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	TASKGETMSG(), TASKPEEKMSG()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -255,20 +255,20 @@ $CATEGORY$
 $SUMMARY$
 	Get message.
 $LANG_RU$
-	Прочитать полученное сообщение.
+	п÷я─п╬я┤п╦я┌п╟я┌я▄ п©п╬п╩я┐я┤п╣п╫п╫п╬п╣ я│п╬п╬п╠я┴п╣п╫п╦п╣.
 $SYNTAX$
      TASKGETMSG() 	--> <vMsg>
 $ARGUMENTS$
 $RETURNS$
      Returns var <vMsg>, what was sended from a TASKSENDMSG().
 $LANG_RU$
-     Возвращает полученные данные, что были отправлены функцией TASKSENDMSG().
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╩я┐я┤п╣п╫п╫я▀п╣ п╢п╟п╫п╫я▀п╣, я┤я┌п╬ п╠я▀п╩п╦ п╬я┌п©я─п╟п╡п╩п╣п╫я▀ я└я┐п╫п╨я├п╦п╣п╧ TASKSENDMSG().
 $DESCRIPTION$
 	TASKGETMSG() gets message from task input queue and returns it. If no
 	message available, waits forever.
 $LANG_RU$
-	TASKGETMSG() читает сообщение из входной очереди задания и возвращает его.
-	Если в очереди нет сообщений - ожидает бесконечно.
+	TASKGETMSG() я┤п╦я┌п╟п╣я┌ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╦п╥ п╡я┘п╬п╢п╫п╬п╧ п╬я┤п╣я─п╣п╢п╦ п╥п╟п╢п╟п╫п╦я▐ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬.
+	п∙я│п╩п╦ п╡ п╬я┤п╣я─п╣п╢п╦ п╫п╣я┌ я│п╬п╬п╠я┴п╣п╫п╦п╧ - п╬п╤п╦п╢п╟п╣я┌ п╠п╣я│п╨п╬п╫п╣я┤п╫п╬.
 $EXAMPLES$
 
 static id
@@ -291,13 +291,13 @@ return
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	TASKSENDMSG(), TASKPEEKMSG()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -308,20 +308,20 @@ $CATEGORY$
 $SUMMARY$
 	Get message.
 $LANG_RU$
-	Прочитать полученное сообщение.
+	п÷я─п╬я┤п╦я┌п╟я┌я▄ п©п╬п╩я┐я┤п╣п╫п╫п╬п╣ я│п╬п╬п╠я┴п╣п╫п╦п╣.
 $SYNTAX$
      TASKPEEKMSG() 	--> <vMsg>
 $ARGUMENTS$
 $RETURNS$
      Returns var <vMsg>, what was sended from a TASKSENDMSG().
 $LANG_RU$
-     Возвращает полученные данные, что были отправлены функцией TASKSENDMSG().
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╩я┐я┤п╣п╫п╫я▀п╣ п╢п╟п╫п╫я▀п╣, я┤я┌п╬ п╠я▀п╩п╦ п╬я┌п©я─п╟п╡п╩п╣п╫я▀ я└я┐п╫п╨я├п╦п╣п╧ TASKSENDMSG().
 $DESCRIPTION$
 	TASKPEEKMSG() gets message from task input queue and returns it. If no
 	message available, immediatly returns NIL.
 $LANG_RU$
-	TASKPEEKMSG() читает сообщение из входной очереди задания и возвращает его.
-	Если в очереди нет сообщений - немедленно возвращает NIL.
+	TASKPEEKMSG() я┤п╦я┌п╟п╣я┌ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╦п╥ п╡я┘п╬п╢п╫п╬п╧ п╬я┤п╣я─п╣п╢п╦ п╥п╟п╢п╟п╫п╦я▐ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬.
+	п∙я│п╩п╦ п╡ п╬я┤п╣я─п╣п╢п╦ п╫п╣я┌ я│п╬п╬п╠я┴п╣п╫п╦п╧ - п╫п╣п╪п╣п╢п╩п╣п╫п╫п╬ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $EXAMPLES$
 
 static id
@@ -344,12 +344,12 @@ return
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	TASKSENDMSG(), TASKGETMSG()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

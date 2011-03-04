@@ -4,7 +4,7 @@
 static hb, uTmp1 := 'no1', uTmp2 := 'no2', st, nEntry_ := {0,0}, bEntry_ := {.F.,.F.}, sEntry_ := {"Enter a access code","Enter a parol"}
 
 function main()
-	local w,  ;	// указатель на виджет ОКНО (главное окно программы)
+	local w,  ;	// pointer to widget WINDOW (main application window)
 	f,  ;	//
 	vb,  ;	//
 	sw,  ;	//
@@ -33,78 +33,74 @@ function main()
 	gtk_WidgetSetFocus(nEntry_[1])
 
 	gtk_SignalConnect(nEntry_[1],GTK_EVENT, @KEY_HANDLER())
-//при таком
-//подключении поля ввода вообще не проявляются
-// на экране. честно говоря, вообще не помню, где я выкопал такой пример.
-//так что вопрос скорее теоретический - почему не работает ?
+// with this connection type input fields do not appear on the screen.
+// Honestly I don't remember where I dug up an example.
+// so the question is more theoretical - why not working?
 
-//Re: все дело в том, что GTK_EVENT включает в себя вообще ВСЕ события,
-// каждое движение мышкой, нажатие клавиши, перерисовка и прочее.
-// Это не совсем верно отслеживать это событие. Правильнее Ваш второй
-// вариант. И еще KEY_HANDLER() должен вернуть .t. || .f.. Если return NIL,
-// то считается, что возвращено значение .t. и обработка сигнала останавливалась
-// .f. - значит, что сигнал возможно обработан, но еще должна выполнится стандартная
-// обработка сигнала. В Вашем случае, когда отлавливался сигнал GTK_EVENT
-// функция KEY_HANDLER() должна возвращать .f.. Те виджет создался, ему послался
-// каккой-нибудь сигнал прорисовки, а он у вас не обрабатывается ни по одной
-// ветке и все - приехали, вернули NIL и обработка сигнала прекратилась.
-// Виджет как таковой существует, но не может нарисоваться.
+// Re: the thing is that GTK_EVENT includes generally all events,
+// every move the mouse, keystroke, repaint and other stuff.
+// It's not entirely true to track this event. Your second choice is correct.
+// And KEY_HANDLER () should return. t. || .f.. If returns NIL, it is
+// believed that the return value is .t. and signal processing stopped,
+// .f. - it means that the signal may processed, but has yet to execute
+// a standard signal processing. Function KEY_HANDLER() should returns .f..
+// Ie widget is created, he sent some signal to draw, but this signal
+// not processed for any of the branch and this all - returns NIL and signal
+// processing is stopped.  Widget as it exists, but cann't draw.
 
-
-// при таком включении ОК, но первое нажатие сьрелки вних вызывает сигнал,
-//но не выхывает перемещения фокуса. второе нажатие и все последующие проходят
-//нормально
+// when such inclusion is OK but the first press of the arrow vnih causes a
+// signal, but does not cause displacement of focus. Second pressing and all
+// subsequent proceed normally
 //	gtk_SignalConnect(nEntry_[1],"key-press-event", @KEY_HANDLER())
 //	gtk_SignalConnect(nEntry_[1],"focus-out-event", @KEY_HANDLER())
 
-//RE:Тут функция работает потому, что вызывается только когда виджет получает
-//сигнал key-press-event или focus-out-event. Они в KEY_HANDLER обрабатываются.
+// RE: Here the function works because only called when the widget receives a
+// signal key-press-event or focus-out-event. These signals not processed
+// in KEY_HANDLER.
 
-
-// и ликбез - такое включение аналогично указанию на блок кода типа:
+// such inclusion is similar to the instructions on the unit type code:
 // 	gtk_SignalConnect(w,"delete-event",{|wid,e|gtk_Quit()})
-// где в нее параметрами передаются те же значения, что и в блок кода
-//( в данном случае wid,e) ?
+// where the parameters are passed to it the same meaning as in the block of
+// code (in this case, wid, e)?
 
-// RE: да, конечно! Только конкретно в этой строчке
+// RE: Yes, of course! Only specifically in this line
 // gtk_SignalConnect(w,"delete-event",{|wid,e|gtk_Quit()})
-// ни к какому конкретному виджету функция не применяется. Просто говорится -
-// quit и все.
+// function doesn't apply to any particular widget.
+// Simply stated - 'quit' and this all.
 
-// есть ли где в исходниках список сигналов, их применимость к объектам
-//и список передаваемых параметров ?
+// is there any where in the source list of signals, their applicability to the
+// objects and the list of parameters passed?"
 
-// RE: Есть. Для ЛЮБОГО виджета применимы сигналы и события описаные в
-// widget.c В начале файла есть массив widget_signals вот в нем и описаны
-// все доступные сигналы. Например,
+// RE: Present. For any widget applicable signals and events described in
+// widget.c At the beginning of the file is an array widget_signals here it is
+// given and all available signals. For example,
 //static SignalTable widget_signals[] =
 //{
 //       /* signals */
 //       {"map",                 GSF( widget_signal_handler ),   ESF( object_emit
 //       {"unmap",               GSF( widget_signal_handler ),   ESF( object_emit
 //	.....
-// то, что в кавычках - имя сигнала.
-// Для каждого конкретного виджета может быть, а может и не быть в дополнение
-// к сигналам, описаным в widget_signals свои сигналы. Если они есть, то они
-// описаны подобным образом в соответствующем файле. Например, для виджета
-// button, а файле button.c есть массив button_signals.
-// Со списками параметров сложнее. После названия сигнала, стоит имя обработчика.
-// По большей части это функция widget_signal_handler() в этом случае обработчик
-// получает виджет, событие и какой-нибудь еще один параметр(если надо), Этот
-// параметр должен быть только один, но любого типа. При желании  можно передать
-// несколько параметров поместив их в массив или map
-// Если имя функции обработчика другое, то уже нужно смотреть исходники. Потому
-// как набор параметров может быть различен, или еще что-нибудь.
-// вот например, для сигнала "size-allocate"  будет вызван обработчик
-// handle_size_allocate_signal() в котором будет автоматически сформирован
-// третий параметр для пользовательской функции - map . Он  будет содержать
-// 4 атрибута: X, Y, WIDTH, HEIGHT. Те пользовательская функция получит
-// виджет, сигнал и этот третий - map.	  См widget.c
-// Понимаю, что немного сложновато, но оно так и есть. Приходится постоянно
-// пользоваться стандартой документацией на gtk , Кстати в ней есть и
-// дерево наследования или может его лучше назвать иерархией наследования конкретным
-// виджетом свойств родителей?
-
+// that in quotes - the signal name.
+// For each particular widget may or may not be in addition to the signals,
+// described in widget_signals. If they are, they are described like this in
+// the appropriate file.  For example, for the widget button, in file button.c
+// is an array button_signals. With lists of parameters is more complicated.
+// After the signal name, is the name of the handler. For the most part this
+// is a widget_signal_handler() function, in this case the handler receives a
+// widget, event, and any another option (if necessary). This option should
+// only be one, but any type. If desired, you can pass a few parameters
+// putting them into an array or map. If the name of the handler function is
+// different then need to watch the source (because the set of parameters can
+// be different, or something else).
+// For example, for signal "size-allocate" will called handle_size_allocate_signal()
+// handler which will be automatically generated third parameter for user
+// defined function - map. It will contain 4 attributes: X, Y, WIDTH, HEIGHT.
+// Ie user-defined function receives a widget, signal, and this third - map.
+// See widget.c
+// I understand that a little difficult, but it's true. Have to continually
+// use the standard documentation for gtk.
+// By the way, is documentation have a tree of inheritance or can it best be
+// called widget inheritance properties hierarchy of their parents?
 
 	hb1 := gtk_HBoxNew()
 	gtk_BoxPackStart(vb,hb1,.T.,.T.,2)
@@ -152,33 +148,34 @@ gtk_Quit()
 RETURN .T.
 
 STATIC FUNCTION Check_OK_(nWidg_, Event)
-// можно ли пользоваться таким циклом для проверки возникновения сигнала на виджете ????????
-// RE: не поняла, Какого сигнала и что значит проверить возникновение сигнала?
+// Can I use this cycle to verify the occurrence of a signal on a widget ????????
+// RE: don't understand: what signal and what it means to check the appearance 
+// of the signal?
 
 
 FOR nTmp = 1 TO LEN(nEntry_)
     IF nWidg_ == nEntry_[nTmp]
 	    sTmp := gtk_EntryGetText(nEntry_[nTmp])
-	    IF LEN(TRIM(sTmp)) = 0				// не ввели данные
-		bEntry_[nTmp] = .F.                         // данные не введены
-		  qout('fak '+ntoc(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+	    IF LEN(TRIM(sTmp)) = 0				// didn't enter data
+		bEntry_[nTmp] = .F.                         // didn't enter data
+		  qout('fak '+ntoc(nTmp))      // show tooltip in the status bar about the need of input data
 	    ELSE
-		bEntry_[nTmp] = .T.                         // данные введены
-		  qout('OK '+ntoc(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+		bEntry_[nTmp] = .T.                         // data is entered
+		  qout('OK '+ntoc(nTmp))      // show tooltip in the status bar about the need of input data
 	    ENDIF
     ENDIF
 NEXT
-qout(';;;;OK ')      // выводим в статус бар подсказку о необходимости ввода
+qout(';;;;OK ')      // show tooltip in the status bar about the need of input data
 RETURN .T.
 
 STATIC FUNCTION KEY_HANDLER(nWidg_, Event)
 LOCAL sTmp, sTmp1 := 'Enter ', nTmp, ;
-bReady_ := .T.		// готовность всех полей ввода
-// где посмотреть список свойств каждого события ??????
-// RE: вообще-то каждое событие/сигнал имеет железно свойство EVENT код события
-// или сигнала, а остальные можно посмотреть в файле object.c функция handle_events()
-// и object_emit_event()
-// список кодов см в clip-gtk.ch
+bReady_ := .T.		// the willingness of all input fields
+// where to see a list of properties of each event ??????
+// RE: In general, each event/signal always has an EVENT property - event/signal code,
+// and the rest can be found in the file object.c in functions handle_events()
+// and object_emit_event()
+// see clip-gtk.ch for getting list of codes
 nTmp1 = Event:event
 
 IF nTmp1 = GTK_KEY_PRESS
@@ -187,28 +184,28 @@ IF nTmp1 = GTK_KEY_PRESS
 	   EXIT
        ENDIF
     NEXT
-    qout('GTK_KEY_PRESS'+STR(nTmp1)+'/'+STR(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+    qout('GTK_KEY_PRESS'+STR(nTmp1)+'/'+STR(nTmp))      // show tooltip in the status bar about the need of input data
     IF Event:keyval == K_ENTER
 	FOR nTmp = 1 TO LEN(nEntry_)
 	    IF nWidg_ == nEntry_[nTmp]
 		sTmp := gtk_EntryGetText(nEntry_[nTmp])
-		IF LEN(TRIM(sTmp)) = 0				// не ввели данные
-			  gtk_StatusBarSetText(st,sEntry_[nTmp])      // выводим в статус бар подсказку о необходимости ввода
-			  gtk_WidgetSetFocus(nEntry_[nTmp])           // устанавливаем фокус
-		    bEntry_[nTmp] = .F.                         // данные не введены
-		    bReady_ := .F.                              // значит, не все данные готовы
-			  qout(sEntry_[nTmp])      // выводим в статус бар подсказку о необходимости ввода
+		IF LEN(TRIM(sTmp)) = 0				// didn't enter data
+			  gtk_StatusBarSetText(st,sEntry_[nTmp])      // show tooltip in the status bar about the need of input data
+			  gtk_WidgetSetFocus(nEntry_[nTmp])           // set focus
+		    bEntry_[nTmp] = .F.                         // didn't enter data
+		    bReady_ := .F.                              // not all data is ready
+			  qout(sEntry_[nTmp])      // show tooltip in the status bar about the need of input data
 		ELSE
-		    bEntry_[nTmp] = .T.                         // данные введены
-		    IF nTmp = LEN(nEntry_)           // Enter на последнем поле ввода
+		    bEntry_[nTmp] = .T.                         // data is entered
+		    IF nTmp = LEN(nEntry_)           // 'Enter' key was pressed on the last input field
 			Check_Entry_()
 		    ENDIF
 		ENDIF
 		EXIT
 	    ENDIF
 	 NEXT
-*        IF .NOT. bReady_          // если не все данные готовы
-*    	       qout('Check_Entry_')      // выводим в статус бар подсказку о необходимости ввода
+*        IF .NOT. bReady_          // if not all data is ready
+*    	       qout('Check_Entry_')      // show tooltip in the status bar about the need of input data
 	    Check_Entry_()
 *        ENDIF
     ENDIF
@@ -219,15 +216,15 @@ ELSE
        ENDIF
     NEXT
     IF nTmp1 = GTK_LEAVE_NOTIFY
-	qout('GTK_LEAVE_NOTIFY'+STR(nTmp1)+'/'+STR(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+	qout('GTK_LEAVE_NOTIFY'+STR(nTmp1)+'/'+STR(nTmp))      // show tooltip in the status bar about the need of input data
     ELSEIF nTmp1 = GTK_ENTER_NOTIFY
-	qout('GTK_ENTER_NOTIFY'+STR(nTmp1)+'/'+STR(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+	qout('GTK_ENTER_NOTIFY'+STR(nTmp1)+'/'+STR(nTmp))      // show tooltip in the status bar about the need of input data
     ELSEIF nTmp1 = GTK_FOCUS_OUT_EVENT
-	qout('GTK_FOCUS_OUT_EVENT'+STR(nTmp1)+'/'+STR(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+	qout('GTK_FOCUS_OUT_EVENT'+STR(nTmp1)+'/'+STR(nTmp))      // show tooltip in the status bar about the need of input data
     ELSEIF nTmp1 = GTK_FOCUS_CHANGE
-	qout('GTK_FOCUS_CHANGE'+STR(nTmp1)+'/'+STR(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+	qout('GTK_FOCUS_CHANGE'+STR(nTmp1)+'/'+STR(nTmp))      // show tooltip in the status bar about the need of input data
     ELSE
-	qout('Event'+STR(nTmp1)+'/'+STR(nTmp))      // выводим в статус бар подсказку о необходимости ввода
+	qout('Event'+STR(nTmp1)+'/'+STR(nTmp))      // show tooltip in the status bar about the need of input data
     ENDIF
 ENDIF
 RETURN .f.

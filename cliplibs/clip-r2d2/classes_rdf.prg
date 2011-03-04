@@ -3,7 +3,7 @@
 
 function r2d2_classes_rdf()
 	local m1:={"GBL01","GBL02","ACC00","ACC01","ETC01"}
-	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
+	local m2:={"Global","Common","Personnel department","Accounting","Settings"}
 
 	cgi_xml_header()
 //	put_rdf(m1,m2)

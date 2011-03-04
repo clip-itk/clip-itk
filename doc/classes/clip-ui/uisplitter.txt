@@ -3,36 +3,36 @@ $CLASSNAME$
 $SUMMARY$
 	Class UISplitter
 $LANG_RU$
-	Класс UISplitter
+	п п╩п╟я│я│ UISplitter
 $ABOUT$
 	Line with two panes arranged vertically or horizontally.
 $LANG_RU$
-	Линия, разделяющая две панели вертикально или горизонтально.
+	п⌡п╦п╫п╦я▐, я─п╟п╥п╢п╣п╩я▐я▌я┴п╟я▐ п╢п╡п╣ п©п╟п╫п╣п╩п╦ п╡п╣я─я┌п╦п╨п╟п╩я▄п╫п╬ п╦п╩п╦ пЁп╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫п╬.
 $SYNTAX$
 	UISplitter([<type>])	--> UISplitter object.
 $LANG_RU$
-	UISplitter([<type>])	--> Объект UISplitter.
+	UISplitter([<type>])	--> п·п╠я┼п╣п╨я┌ UISplitter.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UISplitter".
 	<first>		- Container object. Top/left pane.
 	<second> 	- Container object. Bottom/right pane.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UISplitter".
-	<first>		- Объект контейнера. Верхняя/левая панель.
-	<second> 	- Объект контейнера. Нижняя/правая панель.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UISplitter".
+	<first>		- п·п╠я┼п╣п╨я┌ п╨п╬п╫я┌п╣п╧п╫п╣я─п╟. п▓п╣я─я┘п╫я▐я▐/п╩п╣п╡п╟я▐ п©п╟п╫п╣п╩я▄.
+	<second> 	- п·п╠я┼п╣п╨я┌ п╨п╬п╫я┌п╣п╧п╫п╣я─п╟. п²п╦п╤п╫я▐я▐/п©я─п╟п╡п╟я▐ п©п╟п╫п╣п╩я▄.
 
 $METHODNAME$
 	UISplitter()
 $SUMMARY$
 	Constructor. Create splitter.
 $LANG_RU$
-	Конструктор. Создать разделитель.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▄.
 $SYNTAX$
 	UISplitter([<type>])	--> UISplitter object.
 $ARGUMENTS$
 	<type>		- Number. Splitter direction. <constant>SPLITTER_HORIZONTAL<constant> &mdash; horizontal splitter, <constant>SPLITTER_VERTICAL<constant> (default) &mdash; vertical splitter.
 $LANG_RU$
-	<type>		- Число. Направление разделителя. <constant>SPLITTER_HORIZONTAL<constant> &mdash; горизонтальный разделитель, <constant>SPLITTER_VERTICAL<constant> (значение по умолчанию) &mdash; вертикальный разделитель.
+	<type>		- п╖п╦я│п╩п╬. п²п╟п©я─п╟п╡п╩п╣п╫п╦п╣ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐. <constant>SPLITTER_HORIZONTAL<constant> &mdash; пЁп╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫я▀п╧ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▄, <constant>SPLITTER_VERTICAL<constant> (п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌) &mdash; п╡п╣я─я┌п╦п╨п╟п╩я▄п╫я▀п╧ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▄.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -40,13 +40,13 @@ $METHODNAME$
 $SUMMARY$
 	Place panel to top/left from splitter.
 $LANG_RU$
-	Поместить панель сверху/слева от разделителя.
+	п÷п╬п╪п╣я│я┌п╦я┌я▄ п©п╟п╫п╣п╩я▄ я│п╡п╣я─я┘я┐/я│п╩п╣п╡п╟ п╬я┌ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐.
 $SYNTAX$
 	add(<obj>)
 $ARGUMENTS$
 	<obj>		- Widget object. Widget placed to top/left from splitter.
 $LANG_RU$
-	<obj>		- Объект виджета. Виджет, добавляемый сверху/слева от разделителя.
+	<obj>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п╢п╬п╠п╟п╡п╩я▐п╣п╪я▀п╧ я│п╡п╣я─я┘я┐/я│п╩п╣п╡п╟ п╬я┌ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -54,13 +54,13 @@ $METHODNAME$
 $SUMMARY$
 	Place panel to bottom/right from splitter.
 $LANG_RU$
-	Поместить панель снизу/справа от разделителя.
+	п÷п╬п╪п╣я│я┌п╦я┌я▄ п©п╟п╫п╣п╩я▄ я│п╫п╦п╥я┐/я│п©я─п╟п╡п╟ п╬я┌ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐.
 $SYNTAX$
 	addEnd(<obj>)
 $ARGUMENTS$
 	<obj>		- Widget object. Widget placed to bottom/right from splitter.
 $LANG_RU$
-	<obj>		- Объект виджета. Виджет, добавляемый снизу/справа от разделителя.
+	<obj>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п╢п╬п╠п╟п╡п╩я▐п╣п╪я▀п╧ я│п╫п╦п╥я┐/я│п©я─п╟п╡п╟ п╬я┌ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -68,13 +68,13 @@ $METHODNAME$
 $SUMMARY$
 	Set splitter position.
 $LANG_RU$
-	Установить позицию разделителя.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╬п╥п╦я├п╦я▌ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐.
 $SYNTAX$
 	setPosition(<pos>)
 $ARGUMENTS$
 	<pos>		- Number. Splitter position in pixels.
 $LANG_RU$
-	<pos>		- Число. Позиция разделителя в точках.
+	<pos>		- п╖п╦я│п╩п╬. п÷п╬п╥п╦я├п╦я▐ я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▐ п╡ я┌п╬я┤п╨п╟я┘.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -83,12 +83,12 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

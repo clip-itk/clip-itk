@@ -172,17 +172,17 @@ local nfile, str, spl, i, fd, curwin, oldwin, home, percent, nWin
 
 	::__mapKeys     := HK_get("edit")
 
-	set("edit_margin_right","50") // длина строки
-	set("edit_page_len","20")     // длина страницы
-	set("edit_txtdir", curdir())   // где храняться документы
-	set("edit_colors_edit",'11/1,0/2,0/3,0/7,1/3, 15/R') // цвет редактирования
-	set("edit_colors_window",'14/1') // цвет окна редактирования
-	set("edit_colors_view",'0/7,7/1,0/3,,1/3')  // цвет просмотра
-	set("edit_colors_menu","0/7,0/2,r/7,g/rb,15/7,0/7") // цвет меню
-	set("edit_colors_list","0/3,0/2,15/7,15/3,14/3,14/2,0/2")   // цвет list объектов
-	//set("edit_colors_dialog","0/7,0/2,w+/b,g/rb,15/7,0/7")   // цвет диалогов
-	set("edit_colors_dialog","0/7,15/1,0/7,g/rb,15/3,0/7,0/7,15/7")   // цвет диалогов
-	set("edit_tabpack",'yes')   // сжимать пробелы в табуляции
+	set("edit_margin_right","50") // line length
+	set("edit_page_len","20")     // page length
+	set("edit_txtdir", curdir())   // where documents are stored
+	set("edit_colors_edit",'11/1,0/2,0/3,0/7,1/3, 15/R') // editor color
+	set("edit_colors_window",'14/1') // editor window color
+	set("edit_colors_view",'0/7,7/1,0/3,,1/3')  // viewer color
+	set("edit_colors_menu","0/7,0/2,r/7,g/rb,15/7,0/7") // menu color
+	set("edit_colors_list","0/3,0/2,15/7,15/3,14/3,14/2,0/2")   // color of 'list' objects
+	//set("edit_colors_dialog","0/7,0/2,w+/b,g/rb,15/7,0/7")   // dialog colors
+	set("edit_colors_dialog","0/7,15/1,0/7,g/rb,15/3,0/7,0/7,15/7")   // dialog colors
+	set("edit_tabpack",'yes')   // compress spaces in tabs
 	set(_SET_SCOREBOARD,.t.)
 	setcursor(1)
 	//setcancel(.f.)

@@ -1,0 +1,492 @@
+# Module pp.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2002.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-08-16 12:04+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: pp.prg:253
+msgid "    -CCH     = Generate a .cch file (compiled command header)."
+msgstr ""
+"    -CCH     = Generate a .cch file (compiled command header)."
+
+#: pp.prg:254
+msgid "    -D<id>   = #define <id>."
+msgstr ""
+"    -D<id>   = #define <id>."
+
+#: pp.prg:255
+msgid "    -D:E     = Show tracing information into the Expression Scanner."
+msgstr ""
+"    -D:E     = Show tracing information into the Expression Scanner."
+
+#: pp.prg:256
+msgid "    -D:M     = Show tracing information into the Match Engine."
+msgstr ""
+"    -D:M     = Show tracing information into the Match Engine."
+
+#: pp.prg:257
+msgid "    -D:P     = Show tracing information into the Output Generator."
+msgstr ""
+"    -D:P     = Show tracing information into the Output Generator."
+
+#: pp.prg:258
+msgid "    -I<path> = #include file search path(s) (';' seperated)."
+msgstr ""
+"    -I<path> = #include file search path(s) (';' seperated)."
+
+#: pp.prg:259
+msgid "    -P       = Generate .pp$ pre-processed output file."
+msgstr ""
+"    -P       = Generate .pp$ pre-processed output file."
+
+#: pp.prg:260
+msgid "    -R       = Run filename as a script."
+msgstr ""
+"    -R       = Run filename as a script."
+
+#: pp.prg:261
+msgid ""
+"    -STRICT  = Strict Clipper compatability (clone Clipper PreProcessor "
+"bugs)."
+msgstr ""
+"    -STRICT  = Strict Clipper compatability (clone Clipper PreProcessor "
+"bugs)."
+
+#: pp.prg:262
+msgid "    -U       = Use command definitions set in <ch-file> (or none)."
+msgstr ""
+"    -U       = Use command definitions set in <ch-file> (or none)."
+
+#: pp.prg:393
+msgid "Loading standard definitions from: '"
+msgstr ""
+"Loading standard definitions from: '"
+
+#: pp.prg:417 pp.prg:423
+msgid "#DEFINE Rules size mismatch"
+msgstr ""
+"#DEFINE Rules size mismatch"
+
+#: pp.prg:420
+msgid "#TRANSLATE Rules size mismatch"
+msgstr ""
+"#TRANSLATE Rules size mismatch"
+
+#: pp.prg:432
+msgid "Not using standard rules."
+msgstr ""
+"Not using standard rules."
+
+#: pp.prg:555
+msgid "Missing Method: "
+msgstr ""
+"Missing Method: "
+
+#: pp.prg:960 pp.prg:1292
+msgid "NEXT does not match FOR"
+msgstr ""
+"NEXT does not match FOR"
+
+#: pp.prg:990 pp.prg:1322
+msgid "LOOP with no loop in sight!"
+msgstr ""
+"LOOP with no loop in sight!"
+
+#: pp.prg:1005 pp.prg:1337
+msgid "EXIT with no loop in sight!"
+msgstr ""
+"EXIT with no loop in sight!"
+
+#: pp.prg:1015 pp.prg:1347
+msgid "ENDDO does not match WHILE"
+msgstr ""
+"ENDDO does not match WHILE"
+
+#: pp.prg:1045 pp.prg:1377
+msgid "CASE does not match DO CASE"
+msgstr ""
+"CASE does not match DO CASE"
+
+#: pp.prg:1061 pp.prg:1393
+msgid "OTHERWISE does not match DO CASE"
+msgstr ""
+"OTHERWISE does not match DO CASE"
+
+#: pp.prg:1075 pp.prg:1407 pp.prg:2075
+msgid "ENDCASE with no DO CASE in sight!"
+msgstr ""
+"ENDCASE with no DO CASE in sight!"
+
+#: pp.prg:1105 pp.prg:1437
+msgid "ELSEIF does not match IF"
+msgstr ""
+"ELSEIF does not match IF"
+
+#: pp.prg:1122 pp.prg:1454
+msgid "ELSE does not match IF"
+msgstr ""
+"ELSE does not match IF"
+
+#: pp.prg:1135 pp.prg:1467
+msgid "ENDIF does not match IF"
+msgstr ""
+"ENDIF does not match IF"
+
+#: pp.prg:1153 pp.prg:1485
+msgid "END with no Flow-Control structure in sight!"
+msgstr ""
+"END with no Flow-Control structure in sight!"
+
+#: pp.prg:1606
+msgid " Declared Parameter redeclaration: "
+msgstr ""
+" Declared Parameter redeclaration: "
+
+#: pp.prg:1632
+msgid " Parameter redeclaration: "
+msgstr ""
+" Parameter redeclaration: "
+
+#: pp.prg:1657
+msgid " Private redeclaration: "
+msgstr ""
+" Private redeclaration: "
+
+#: pp.prg:1682
+msgid "Local redeclaration: "
+msgstr ""
+"Local redeclaration: "
+
+#: pp.prg:1706
+msgid "Public redeclaration: "
+msgstr ""
+"Public redeclaration: "
+
+#: pp.prg:1731
+msgid "Type: "
+msgstr ""
+"Type: "
+
+#: pp.prg:1731
+msgid "Static redeclaration: '"
+msgstr ""
+"Static redeclaration: '"
+
+#: pp.prg:1753 pp.prg:1759
+msgid "Run #DEFINE Rules size mismatch"
+msgstr ""
+"Run #DEFINE Rules size mismatch"
+
+#: pp.prg:1756
+msgid "Run #TRANSLATE Rules size mismatch"
+msgstr ""
+"Run #TRANSLATE Rules size mismatch"
+
+#: pp.prg:1833
+msgid "Sorry, could not execute: "
+msgstr ""
+"Sorry, could not execute: "
+
+#: pp.prg:1885
+msgid "Line: "
+msgstr ""
+"Line: "
+
+#: pp.prg:1885
+msgid " could not compile: "
+msgstr ""
+" could not compile: "
+
+#: pp.prg:1960
+msgid "Must Default: "
+msgstr ""
+"Must Default: "
+
+#: pp.prg:1963
+msgid "No Recovery for: "
+msgstr ""
+"No Recovery for: "
+
+#: pp.prg:1970
+msgid "Sorry, R/T Error: "
+msgstr ""
+"Sorry, R/T Error: "
+
+#: pp.prg:2025
+msgid "END with no IF in sight!"
+msgstr ""
+"END with no IF in sight!"
+
+#: pp.prg:2205
+msgid "ERROR! opening: "
+msgstr ""
+"ERROR! opening: "
+
+#: pp.prg:2205
+msgid " O/S Error: "
+msgstr ""
+" O/S Error: "
+
+#: pp.prg:2229
+msgid "ERROR! creating '.pp$' file, O/S Error: "
+msgstr ""
+"ERROR! creating '.pp$' file, O/S Error: "
+
+#: pp.prg:2287
+msgid "ERROR! Unterminated '/**/' "
+msgstr ""
+"ERROR! Unterminated '/**/' "
+
+#: pp.prg:2720
+msgid "ERROR! Circularity detected "
+msgstr ""
+"ERROR! Circularity detected "
+
+#: pp.prg:2760 pp.prg:2930
+msgid "ERROR! Unknown directive: "
+msgstr ""
+"ERROR! Unknown directive: "
+
+#: pp.prg:2797
+msgid "ERROR! #endif with no #ifdef in sight"
+msgstr ""
+"ERROR! #endif with no #ifdef in sight"
+
+#: pp.prg:2858 pp.prg:2864 pp.prg:2875 pp.prg:2881
+msgid "Class #DEFINE Rules size mismatch"
+msgstr ""
+"Class #DEFINE Rules size mismatch"
+
+#: pp.prg:2861 pp.prg:2878
+msgid "Class #TRANSLATE Rules size mismatch"
+msgstr ""
+"Class #TRANSLATE Rules size mismatch"
+
+#: pp.prg:2887 pp.prg:2893
+msgid "FW #DEFINE Rules size mismatch"
+msgstr ""
+"FW #DEFINE Rules size mismatch"
+
+#: pp.prg:2890
+msgid "FW #TRANSLATE Rules size mismatch"
+msgstr ""
+"FW #TRANSLATE Rules size mismatch"
+
+#: pp.prg:3580
+msgid "Unexpected case "
+msgstr ""
+"Unexpected case "
+
+#: pp.prg:3936
+msgid "ERROR! Logic failure"
+msgstr ""
+"ERROR! Logic failure"
+
+#: pp.prg:3959
+msgid "!!!Left Pad: "
+msgstr ""
+"!!!Left Pad: "
+
+#: pp.prg:4160
+msgid "Unexpected case: "
+msgstr ""
+"Unexpected case: "
+
+#: pp.prg:4438
+msgid "ERROR! Invalid '&' at: "
+msgstr ""
+"ERROR! Invalid '&' at: "
+
+#: pp.prg:4460
+msgid "ERROR!(1) No content at: "
+msgstr ""
+"ERROR!(1) No content at: "
+
+#: pp.prg:4460
+msgid " After: "
+msgstr ""
+" After: "
+
+#: pp.prg:4470
+msgid "ERROR!(2) Unbalanced '(' at: "
+msgstr ""
+"ERROR!(2) Unbalanced '(' at: "
+
+#: pp.prg:4477
+msgid "ERROR!(3) Unbalanced '(' Found: "
+msgstr ""
+"ERROR!(3) Unbalanced '(' Found: "
+
+#: pp.prg:4477 pp.prg:4605 pp.prg:4613 pp.prg:4619
+msgid " at: "
+msgstr ""
+" at: "
+
+#: pp.prg:4574
+msgid "ERROR! Unbalanced '{...'"
+msgstr ""
+"ERROR! Unbalanced '{...'"
+
+#: pp.prg:4583 pp.prg:4590
+msgid "ERROR! Unbalanced '{' at: "
+msgstr ""
+"ERROR! Unbalanced '{' at: "
+
+#: pp.prg:4605 pp.prg:4613 pp.prg:4619
+msgid "ERROR! Unbalanced "
+msgstr ""
+"ERROR! Unbalanced "
+
+#: pp.prg:5355
+msgid "ERROR! Invalid translation format: "
+msgstr ""
+"ERROR! Invalid translation format: "
+
+#: pp.prg:5480 pp.prg:5495
+msgid "ERROR! Unblanced MP: '<*' : '"
+msgstr ""
+"ERROR! Unblanced MP: '<*' : '"
+
+#: pp.prg:5517 pp.prg:5532
+msgid "ERROR! Unblanced MP: '<(' : '"
+msgstr ""
+"ERROR! Unblanced MP: '<(' : '"
+
+#: pp.prg:5554 pp.prg:5569
+msgid "ERROR! Unblanced MP: '<!' : '"
+msgstr ""
+"ERROR! Unblanced MP: '<!' : '"
+
+#: pp.prg:5644
+msgid "ERROR! Unblanced MP: ''<:' at: "
+msgstr ""
+"ERROR! Unblanced MP: ''<:' at: "
+
+#: pp.prg:5676
+msgid "ERROR! Unbalanced MP: '<' at: "
+msgstr ""
+"ERROR! Unbalanced MP: '<' at: "
+
+#: pp.prg:5734
+msgid "UnExpected Case: "
+msgstr ""
+"UnExpected Case: "
+
+#: pp.prg:5763
+msgid "ERROR! Unclosed Optional group, nOptional = "
+msgstr ""
+"ERROR! Unclosed Optional group, nOptional = "
+
+#: pp.prg:5918
+msgid "ERROR! Nested repeatable RP.;"
+msgstr ""
+"ERROR! Nested repeatable RP.;"
+
+#: pp.prg:5990
+msgid "ERROR! Unbalanced RP: '<-' : '"
+msgstr ""
+"ERROR! Unbalanced RP: '<-' : '"
+
+#: pp.prg:6000
+msgid "ERROR! Unrecognized RP: '<-' : '"
+msgstr ""
+"ERROR! Unrecognized RP: '<-' : '"
+
+#: pp.prg:6014
+msgid "ERROR! Unbalanced RP: '#<' "
+msgstr ""
+"ERROR! Unbalanced RP: '#<' "
+
+#: pp.prg:6022
+msgid "ERROR! Unrecognized RP: '#<' : "
+msgstr ""
+"ERROR! Unrecognized RP: '#<' : "
+
+#: pp.prg:6038
+msgid "ERROR! Unbalanced RP: '<\"' : '"
+msgstr ""
+"ERROR! Unbalanced RP: '<\"' : '"
+
+#: pp.prg:6048
+msgid "ERROR! Unrecognized RP: '<\"' : '"
+msgstr ""
+"ERROR! Unrecognized RP: '<\"' : '"
+
+#: pp.prg:6065
+msgid "ERROR! Unbalanced RP: '<(' : '"
+msgstr ""
+"ERROR! Unbalanced RP: '<(' : '"
+
+#: pp.prg:6075
+msgid "ERROR! Unrecognized RP: '<(' : '"
+msgstr ""
+"ERROR! Unrecognized RP: '<(' : '"
+
+#: pp.prg:6092
+msgid "ERROR! Unbalanced RP: '<{' : '"
+msgstr ""
+"ERROR! Unbalanced RP: '<{' : '"
+
+#: pp.prg:6102
+msgid "ERROR! Unrecognized RP: '<{' : '"
+msgstr ""
+"ERROR! Unrecognized RP: '<{' : '"
+
+#: pp.prg:6119
+msgid "ERROR! Unbalanced RP: '<.' : '"
+msgstr ""
+"ERROR! Unbalanced RP: '<.' : '"
+
+#: pp.prg:6129
+msgid "ERROR! Unrecognized RP: '<.' : '"
+msgstr ""
+"ERROR! Unrecognized RP: '<.' : '"
+
+#: pp.prg:6142
+msgid "ERROR! Unbalanced RP: <"
+msgstr ""
+"ERROR! Unbalanced RP: <"
+
+#: pp.prg:6152
+msgid "ERROR! Unrecognized RP: '<'"
+msgstr ""
+"ERROR! Unrecognized RP: '<'"
+
+#: pp.prg:6182
+msgid "ERROR! Internal logic failure, nOptional = "
+msgstr ""
+"ERROR! Internal logic failure, nOptional = "
+
+#: pp.prg:6225
+msgid "ERROR! Internal logic failed! Missing marker # "
+msgstr ""
+"ERROR! Internal logic failed! Missing marker # "
+
+#: pp.prg:6438
+msgid "Redefinition of "
+msgstr ""
+"Redefinition of "
+
+#: pp.prg:6438
+msgid " in file: "
+msgstr ""
+" in file: "
+
+#: pp.prg:8095
+msgid "Invalid parameters to: "
+msgstr ""
+"Invalid parameters to: "
+
+#: pp.prg:8095
+msgid " must be Arrays!"
+msgstr ""
+" must be Arrays!"

@@ -3,30 +3,30 @@ $CLASSNAME$
 $SUMMARY$
 	Class UITree
 $LANG_RU$
-	Класс UITree
+	п п╩п╟я│я│ UITree
 $ABOUT$
 	Class of hierarchical multi-column lists (tree view).
 $LANG_RU$
-	Класс иерархического многоколоночного списка (дерева).
+	п п╩п╟я│я│ п╦п╣я─п╟я─я┘п╦я┤п╣я│п╨п╬пЁп╬ п╪п╫п╬пЁп╬п╨п╬п╩п╬п╫п╬я┤п╫п╬пЁп╬ я│п©п╦я│п╨п╟ (п╢п╣я─п╣п╡п╟).
 $SYNTAX$
 	UITree(<acNameColumns>,[<nTreeColumn>])	--> UITree object
 $LANG_RU$
-	UITree(<acNameColumns>,[<nTreeColumn>])	--> Объект UITree
+	UITree(<acNameColumns>,[<nTreeColumn>])	--> п·п╠я┼п╣п╨я┌ UITree
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITree".
 	<columns>	- Array of <link linkend="classuitablecolumn">UITableColumn</link> objects. Table columns.
 	<onSelect> 	- Code block. Action that will be call on row selection by double click or 'Enter' key pressed.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UITree".
-	<columns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы таблицы.
-	<onSelect>	- Блок кода. Действие, вызываемое при выборе строки двойным щелчком мыши или нажатием клавиши 'Enter'.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UITree".
+	<columns>	- п°п╟я│я│п╦п╡ п╬п╠я┼п╣п╨я┌п╬п╡ <link linkend="classuitablecolumn">UITableColumn</link>. п║я┌п╬п╩п╠я├я▀ я┌п╟п╠п╩п╦я├я▀.
+	<onSelect>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©я─п╦ п╡я▀п╠п╬я─п╣ я│я┌я─п╬п╨п╦ п╢п╡п╬п╧п╫я▀п╪ я┴п╣п╩я┤п╨п╬п╪ п╪я▀я┬п╦ п╦п╩п╦ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╩п╟п╡п╦я┬п╦ 'Enter'.
 
 $METHODNAME$
 	UITree()
 $SUMMARY$
 	Constructor. Create tree view.
 $LANG_RU$
-	Конструктор. Создать дерево.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╢п╣я─п╣п╡п╬.
 $SYNTAX$
 	UITree(<acNameColumns>,[<nTreeColumn>])	--> UITree object
 $ARGUMENTS$
@@ -34,9 +34,9 @@ $ARGUMENTS$
 	<nTreeColumn>	- Number. Column for show hierarchy. Column numbering is begun from 1. 
 	By default it is first column.
 $LANG_RU$
-	<acNameColumns>	- Массив объектов <link linkend="classuitablecolumn">UITableColumn</link>. Столбцы дерева.
-	<nTreeColumn>	- Число. Номер столбца для размещения линий иерархии. 
-	Нумерация столбцов начинается с 1. По умолчанию - первый столбец.
+	<acNameColumns>	- п°п╟я│я│п╦п╡ п╬п╠я┼п╣п╨я┌п╬п╡ <link linkend="classuitablecolumn">UITableColumn</link>. п║я┌п╬п╩п╠я├я▀ п╢п╣я─п╣п╡п╟.
+	<nTreeColumn>	- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌п╬п╩п╠я├п╟ п╢п╩я▐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╩п╦п╫п╦п╧ п╦п╣я─п╟я─я┘п╦п╦. 
+	п²я┐п╪п╣я─п╟я├п╦я▐ я│я┌п╬п╩п╠я├п╬п╡ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ я│ 1. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ - п©п╣я─п╡я▀п╧ я│я┌п╬п╩п╠п╣я├.
 $ENDMETHOD$
 
 
@@ -45,7 +45,7 @@ $METHODNAME$
 $SUMMARY$
 	Add node to tree view.
 $LANG_RU$
-	Добавить элемент в дерево.
+	п■п╬п╠п╟п╡п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌ п╡ п╢п╣я─п╣п╡п╬.
 $SYNTAX$
 	addNode(<data>,[<id>],[<parent>],[<sibling>],[<expanded>])	--> <sNode>
 $ARGUMENTS$
@@ -55,15 +55,15 @@ $ARGUMENTS$
 	<sibling>	- String. Node address. Put node before specified node on such level.
 	<expanded>	- Boolean. Expand child nodes.
 $LANG_RU$
-	<columns>	- Массив любых типов. Массив значений по столбцам соответственно.
-	<id>		- Строка. Идентификатор элемента.
-	<parent>	- Строка. Адрес родительского элемента.
-	<sibling>	- Строка. Адрес элемента. Поместить перед элементом того же уровня.
-	<expanded>	- Логическое значение. Сразу показывать дочерние элементы.
+	<columns>	- п°п╟я│я│п╦п╡ п╩я▌п╠я▀я┘ я┌п╦п©п╬п╡. п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п©п╬ я│я┌п╬п╩п╠я├п╟п╪ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╣п╫п╫п╬.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я█п╩п╣п╪п╣п╫я┌п╟.
+	<parent>	- п║я┌я─п╬п╨п╟. п░п╢я─п╣я│ я─п╬п╢п╦я┌п╣п╩я▄я│п╨п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
+	<sibling>	- п║я┌я─п╬п╨п╟. п░п╢я─п╣я│ я█п╩п╣п╪п╣п╫я┌п╟. п÷п╬п╪п╣я│я┌п╦я┌я▄ п©п╣я─п╣п╢ я█п╩п╣п╪п╣п╫я┌п╬п╪ я┌п╬пЁп╬ п╤п╣ я┐я─п╬п╡п╫я▐.
+	<expanded>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п║я─п╟п╥я┐ п©п╬п╨п╟п╥я▀п╡п╟я┌я▄ п╢п╬я┤п╣я─п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌я▀.
 $RETURNS$
 	String. Node address. 
 $LANG_RU$
-	Строка. Адрес элемента.
+	п║я┌я─п╬п╨п╟. п░п╢я─п╣я│ я█п╩п╣п╪п╣п╫я┌п╟.
 $ENDMETHOD$
 
 
@@ -72,7 +72,7 @@ $METHODNAME$
 $SUMMARY$
 	Fill row by values.
 $LANG_RU$
-	Заполнить строку значениями.
+	п≈п╟п©п╬п╩п╫п╦я┌я▄ я│я┌я─п╬п╨я┐ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦.
 $SYNTAX$
 	setRow(<row>,<data>,[<id>])
 $ARGUMENTS$
@@ -80,9 +80,9 @@ $ARGUMENTS$
 	<data>		- Array or object. Array of values by columns or object contains fields with column names.
 	<id>		- String. Node identifier.
 $LANG_RU$
-	<row>		- Строка. Адрес элемента.
-	<data>		- Mассив или объект. Массив значений по столбцам или объект, содержащий поля с именами столбцов.
-	<id>		- Строка. Идентификатор элемента.
+	<row>		- п║я┌я─п╬п╨п╟. п░п╢я─п╣я│ я█п╩п╣п╪п╣п╫я┌п╟.
+	<data>		- Mп╟я│я│п╦п╡ п╦п╩п╦ п╬п╠я┼п╣п╨я┌. п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п©п╬ я│я┌п╬п╩п╠я├п╟п╪ п╦п╩п╦ п╬п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п©п╬п╩я▐ я│ п╦п╪п╣п╫п╟п╪п╦ я│я┌п╬п╩п╠я├п╬п╡.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я█п╩п╣п╪п╣п╫я┌п╟.
 $EXAMPLES$
 	tree:setRow( "0", { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
 	m := map()
@@ -100,17 +100,17 @@ $METHODNAME$
 $SUMMARY$
 	Get row from tree as object with values.
 $LANG_RU$
-	Получить строку из таблицы в виде объекта со значениями.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│я┌я─п╬п╨я┐ п╦п╥ я┌п╟п╠п╩п╦я├я▀ п╡ п╡п╦п╢п╣ п╬п╠я┼п╣п╨я┌п╟ я│п╬ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦.
 $SYNTAX$
 	getRow(<row>)	--> oRow
 $ARGUMENTS$
 	<row>		- String. Node address.
 $LANG_RU$
-	<row>		- Строка. Адрес элемента.
+	<row>		- п║я┌я─п╬п╨п╟. п░п╢я─п╣я│ я█п╩п╣п╪п╣п╫я┌п╟.
 $RETURNS$
 	Object contains fields with column names. 
 $LANG_RU$
-	Объект, содержащий поля с именами столбцов.
+	п·п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п©п╬п╩я▐ я│ п╦п╪п╣п╫п╟п╪п╦ я│я┌п╬п╩п╠я├п╬п╡.
 $EXAMPLES$
 	oRow := tree:getRow("0")
 	? oRow:company
@@ -122,13 +122,13 @@ $METHODNAME$
 $SUMMARY$
 	Remove row from table.
 $LANG_RU$
-	Удалить строку из таблицы.
+	пёп╢п╟п╩п╦я┌я▄ я│я┌я─п╬п╨я┐ п╦п╥ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	removeRow(<row>)
 $ARGUMENTS$
 	<row>		- String. Node address.
 $LANG_RU$
-	<row>		- Строка. Адрес элемента.
+	<row>		- п║я┌я─п╬п╨п╟. п░п╢я─п╣я│ я█п╩п╣п╪п╣п╫я┌п╟.
 $EXAMPLES$
 	tree:removeRow("0")
 $ENDMETHOD$
@@ -139,15 +139,15 @@ $METHODNAME$
 $SUMMARY$
 	Set action that will be executed if tree node selected by double click or 'Enter' key pressed.
 $LANG_RU$
-	Указать действие, вызываемое при выборе элемента одним щелчком мыши или нажатием клавиши 'Enter'.
+	пёп╨п╟п╥п╟я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©я─п╦ п╡я▀п╠п╬я─п╣ я█п╩п╣п╪п╣п╫я┌п╟ п╬п╢п╫п╦п╪ я┴п╣п╩я┤п╨п╬п╪ п╪я▀я┬п╦ п╦п╩п╦ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╩п╟п╡п╦я┬п╦ 'Enter'.
 $SYNTAX$
 	setAction(<signal>,<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name. Should be 'selected'.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала. Допустимое значение: 'selected'.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟. п■п╬п©я┐я│я┌п╦п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: 'selected'.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 
@@ -156,7 +156,7 @@ $METHODNAME$
 $SUMMARY$
 	Clear tree: remove all nodes.
 $LANG_RU$
-	Очистить дерево: удалить все элементы.
+	п·я┤п╦я│я┌п╦я┌я▄ п╢п╣я─п╣п╡п╬: я┐п╢п╟п╩п╦я┌я▄ п╡я│п╣ я█п╩п╣п╪п╣п╫я┌я▀.
 $SYNTAX$
 	clear()
 $ENDMETHOD$
@@ -167,13 +167,13 @@ $METHODNAME$
 $SUMMARY$
 	Get identifier of selected node.
 $LANG_RU$
-	Возвращает идентификатор выделенного элемента.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	getSelection()	--> <sNode>
 $RETURNS$
 	The selected node identifier.
 $LANG_RU$
-	Идентификатор выделенного элемента.
+	п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $ENDMETHOD$
 
 
@@ -182,28 +182,28 @@ $METHODNAME$
 $SUMMARY$
 	Get user identifier of selected row.
 $LANG_RU$
-	Возвращает пользовательский идентификатор выделенной строки.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	getValue()	--> <id>
 $RETURNS$
 	The user identifier of selected row.
 $LANG_RU$
-	Пользовательский идентификатор выделенной строки.
+	п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 
 $METHODNAME$
 	setValue()
 $SUMMARY$
-	Seе focus to row by its id.
+	Seп╣ focus to row by its id.
 $LANG_RU$
-	Устанавливает фокус на строку с заданным идентификатором.
+	пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я└п╬п╨я┐я│ п╫п╟ я│я┌я─п╬п╨я┐ я│ п╥п╟п╢п╟п╫п╫я▀п╪ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪.
 $SYNTAX$
 	setValue(<id>) 
 $ARGUMENTS$
 	<id>		- String. Row identifier.
 $LANG_RU$
-	<id>		- Строка. Идентификатор строки.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 
@@ -212,13 +212,13 @@ $METHODNAME$
 $SUMMARY$
 	Get current selected row position.
 $LANG_RU$
-	Сохранение текущей выделенной строки.
+	п║п╬я┘я─п╟п╫п╣п╫п╦п╣ я┌п╣п╨я┐я┴п╣п╧ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	savePosition()	--> <aPos>
 $RETURNS$
 	Array with selected row position: row address, column address, horizontal and vertical adjustments.
 $LANG_RU$
-	Массив с координатами текущей выделенной строки: адреса строки и столбца, горизонтальное и вертикальное смещение.
+	п°п╟я│я│п╦п╡ я│ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟п╪п╦ я┌п╣п╨я┐я┴п╣п╧ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦: п╟п╢я─п╣я│п╟ я│я┌я─п╬п╨п╦ п╦ я│я┌п╬п╩п╠я├п╟, пЁп╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫п╬п╣ п╦ п╡п╣я─я┌п╦п╨п╟п╩я▄п╫п╬п╣ я│п╪п╣я┴п╣п╫п╦п╣.
 $ENDMETHOD$
 
 
@@ -227,13 +227,13 @@ $METHODNAME$
 $SUMMARY$
 	Restore saved row position.
 $LANG_RU$
-	Восстановление cохранённой позиции строки.
+	п▓п╬я│я│я┌п╟п╫п╬п╡п╩п╣п╫п╦п╣ cп╬я┘я─п╟п╫я▒п╫п╫п╬п╧ п©п╬п╥п╦я├п╦п╦ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	restorePosition(<aPos>)
 $ARGUMENTS$
 	<aPos>		- Array with selected row position returned by savePosition() function.
 $LANG_RU$
-	<aPos>		- Массив с координатами текущей выделенной строки, возвращаемый функцией savePosition().
+	<aPos>		- п°п╟я│я│п╦п╡ я│ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟п╪п╦ я┌п╣п╨я┐я┴п╣п╧ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦, п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ savePosition().
 $ENDMETHOD$
 
 
@@ -249,11 +249,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UITABLECOLUMN UITABLE UIEDITTABLE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

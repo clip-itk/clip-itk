@@ -8,13 +8,13 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team:  <ru@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
 #: template/./doc/capi.sgml:0
 msgid "Extend System"
-msgstr "Система расширения "
+msgstr "п║п╦я│я┌п╣п╪п╟ я─п╟я│я┬п╦я─п╣п╫п╦я▐ "
 
 #: template/./doc/capi.sgml:2
 msgid ""
@@ -23,8 +23,8 @@ msgid ""
 "base.\n"
 msgstr ""
 "\n"
-"Практически 90% функциональных возможностей CLIP сделаны на базе его системы "
-"расширения\n"
+"п÷я─п╟п╨я┌п╦я┤п╣я│п╨п╦ 90% я└я┐п╫п╨я├п╦п╬п╫п╟п╩я▄п╫я▀я┘ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌п╣п╧ CLIP я│п╢п╣п╩п╟п╫я▀ п╫п╟ п╠п╟п╥п╣ п╣пЁп╬ я│п╦я│я┌п╣п╪я▀ "
+"я─п╟я│я┬п╦я─п╣п╫п╦я▐\n"
 
 #: template/./doc/capi.sgml:6
 #, fuzzy
@@ -36,9 +36,9 @@ msgid ""
 "execution functions in C/C++ representation.\n"
 msgstr ""
 "\n"
-"Система расширения представляет собой набор функций для получения вызываемых "
-"параметров, передачи данных, генерации ошибок, некоторые другие функции для "
-"обработки массивов, объектов и других типов в представлении на языке C/C++.\n"
+"п║п╦я│я┌п╣п╪п╟ я─п╟я│я┬п╦я─п╣п╫п╦я▐ п©я─п╣п╢я│я┌п╟п╡п╩я▐п╣я┌ я│п╬п╠п╬п╧ п╫п╟п╠п╬я─ я└я┐п╫п╨я├п╦п╧ п╢п╩я▐ п©п╬п╩я┐я┤п╣п╫п╦я▐ п╡я▀п╥я▀п╡п╟п╣п╪я▀я┘ "
+"п©п╟я─п╟п╪п╣я┌я─п╬п╡, п©п╣я─п╣п╢п╟я┤п╦ п╢п╟п╫п╫я▀я┘, пЁп╣п╫п╣я─п╟я├п╦п╦ п╬я┬п╦п╠п╬п╨, п╫п╣п╨п╬я┌п╬я─я▀п╣ п╢я─я┐пЁп╦п╣ я└я┐п╫п╨я├п╦п╦ п╢п╩я▐ "
+"п╬п╠я─п╟п╠п╬я┌п╨п╦ п╪п╟я│я│п╦п╡п╬п╡, п╬п╠я┼п╣п╨я┌п╬п╡ п╦ п╢я─я┐пЁп╦я┘ я┌п╦п©п╬п╡ п╡ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦п╦ п╫п╟ я▐п╥я▀п╨п╣ C/C++.\n"
 
 #: template/./doc/capi.sgml:11
 #, fuzzy
@@ -48,12 +48,12 @@ msgid ""
 "orientally:\n"
 msgstr ""
 "\n"
-"Например, простейшая функция будет представляться в C-сырце примерно так:\n"
+"п²п╟п©я─п╦п╪п╣я─, п©я─п╬я│я┌п╣п╧я┬п╟я▐ я└я┐п╫п╨я├п╦я▐ п╠я┐п╢п╣я┌ п©я─п╣п╢я│я┌п╟п╡п╩я▐я┌я▄я│я▐ п╡ C-я│я▀я─я├п╣ п©я─п╦п╪п╣я─п╫п╬ я┌п╟п╨:\n"
 
 #: template/./doc/capi.sgml:16
 #, fuzzy
 msgid "also here must be stdlib, stdio, etc."
-msgstr "должны быть также stdlib, stdio, и.т.д."
+msgstr "п╢п╬п╩п╤п╫я▀ п╠я▀я┌я▄ я┌п╟п╨п╤п╣ stdlib, stdio, п╦.я┌.п╢."
 
 #: template/./doc/capi.sgml:20
 msgid ""
@@ -66,50 +66,50 @@ msgid ""
 "// If this function returns 0 there are no error;\n"
 "// if it returns not 0 it is error code."
 msgstr ""
-"Название подключаемой функции должно начинаться с \"clip_\" и далее\n"
-"// название CLIPPER-функции в верхнем регистре.\n"
-"// такие имена CLIP-компилятор помещает в специальный список доступных\n"
-"// в run-time функций.\n"
-"// mp - это описание текущего состояния CLIP-машины, лучше смотрите ее "
-"структуру\n"
-"// непосредственно в clip.h\n"
-"// Если эта функция возвращает 0 - то ошибок не произошло, если\n"
-"// не 0 - то это будет код ошибки."
+"п²п╟п╥п╡п╟п╫п╦п╣ п©п╬п╢п╨п╩я▌я┤п╟п╣п╪п╬п╧ я└я┐п╫п╨я├п╦п╦ п╢п╬п╩п╤п╫п╬ п╫п╟я┤п╦п╫п╟я┌я▄я│я▐ я│ \"clip_\" п╦ п╢п╟п╩п╣п╣\n"
+"// п╫п╟п╥п╡п╟п╫п╦п╣ CLIPPER-я└я┐п╫п╨я├п╦п╦ п╡ п╡п╣я─я┘п╫п╣п╪ я─п╣пЁп╦я│я┌я─п╣.\n"
+"// я┌п╟п╨п╦п╣ п╦п╪п╣п╫п╟ CLIP-п╨п╬п╪п©п╦п╩я▐я┌п╬я─ п©п╬п╪п╣я┴п╟п╣я┌ п╡ я│п©п╣я├п╦п╟п╩я▄п╫я▀п╧ я│п©п╦я│п╬п╨ п╢п╬я│я┌я┐п©п╫я▀я┘\n"
+"// п╡ run-time я└я┐п╫п╨я├п╦п╧.\n"
+"// mp - я█я┌п╬ п╬п©п╦я│п╟п╫п╦п╣ я┌п╣п╨я┐я┴п╣пЁп╬ я│п╬я│я┌п╬я▐п╫п╦я▐ CLIP-п╪п╟я┬п╦п╫я▀, п╩я┐я┤я┬п╣ я│п╪п╬я┌я─п╦я┌п╣ п╣п╣ "
+"я│я┌я─я┐п╨я┌я┐я─я┐\n"
+"// п╫п╣п©п╬я│я─п╣п╢я│я┌п╡п╣п╫п╫п╬ п╡ clip.h\n"
+"// п∙я│п╩п╦ я█я┌п╟ я└я┐п╫п╨я├п╦я▐ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ 0 - я┌п╬ п╬я┬п╦п╠п╬п╨ п╫п╣ п©я─п╬п╦п╥п╬я┬п╩п╬, п╣я│п╩п╦\n"
+"// п╫п╣ 0 - я┌п╬ я█я┌п╬ п╠я┐п╢п╣я┌ п╨п╬п╢ п╬я┬п╦п╠п╨п╦."
 
 #: template/./doc/capi.sgml:32
 msgid "We get first parameter as fix length string."
-msgstr "получаем первый параметр в виде строки с конкретной длиной."
+msgstr "п©п╬п╩я┐я┤п╟п╣п╪ п©п╣я─п╡я▀п╧ п©п╟я─п╟п╪п╣я┌я─ п╡ п╡п╦п╢п╣ я│я┌я─п╬п╨п╦ я│ п╨п╬п╫п╨я─п╣я┌п╫п╬п╧ п╢п╩п╦п╫п╬п╧."
 
 #: template/./doc/capi.sgml:35
 msgid ""
 "We get second and third parameter as the automatical converting to int-number"
 msgstr ""
-"получаем второй и третий параметр в виде числа с автоматическим "
-"преобразованием в int - тип"
+"п©п╬п╩я┐я┤п╟п╣п╪ п╡я┌п╬я─п╬п╧ п╦ я┌я─п╣я┌п╦п╧ п©п╟я─п╟п╪п╣я┌я─ п╡ п╡п╦п╢п╣ я┤п╦я│п╩п╟ я│ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦п╪ "
+"п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦п╣п╪ п╡ int - я┌п╦п©"
 
 #: template/./doc/capi.sgml:36
 #, fuzzy
 msgid "If the pass parameters were incorect types"
-msgstr "если передаваемые параметры были не того типа - в качестве С-значений"
+msgstr "п╣я│п╩п╦ п©п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀ п╠я▀п╩п╦ п╫п╣ я┌п╬пЁп╬ я┌п╦п©п╟ - п╡ п╨п╟я┤п╣я│я┌п╡п╣ п║-п╥п╫п╟я┤п╣п╫п╦п╧"
 
 #: template/./doc/capi.sgml:37
 msgid "it will be retrieved NULL as C-values."
-msgstr "будет получено NULL"
+msgstr "п╠я┐п╢п╣я┌ п©п╬п╩я┐я┤п╣п╫п╬ NULL"
 
 #: template/./doc/capi.sgml:42
 #, fuzzy
 msgid ""
 "Test of retrieved string and error generation in case of\n"
 "// the incorrect passing parameter."
-msgstr "проверка полученной строки и генерация ошибки в случае неправильно"
+msgstr "п©я─п╬п╡п╣я─п╨п╟ п©п╬п╩я┐я┤п╣п╫п╫п╬п╧ я│я┌я─п╬п╨п╦ п╦ пЁп╣п╫п╣я─п╟я├п╦я▐ п╬я┬п╦п╠п╨п╦ п╡ я│п╩я┐я┤п╟п╣ п╫п╣п©я─п╟п╡п╦п╩я▄п╫п╬"
 
 #: template/./doc/capi.sgml:45
 msgid "The execution algorithm itself."
-msgstr "собственно алгоритм обработки"
+msgstr "я│п╬п╠я│я┌п╡п╣п╫п╫п╬ п╟п╩пЁп╬я─п╦я┌п╪ п╬п╠я─п╟п╠п╬я┌п╨п╦"
 
 #: template/./doc/capi.sgml:46
 msgid "It's not necessary to pay your attention to it."
-msgstr "на него можно не обращать внимания"
+msgstr "п╫п╟ п╫п╣пЁп╬ п╪п╬п╤п╫п╬ п╫п╣ п╬п╠я─п╟я┴п╟я┌я▄ п╡п╫п╦п╪п╟п╫п╦я▐"
 
 #: template/./doc/capi.sgml:66
 msgid ""
@@ -121,7 +121,7 @@ msgstr ""
 
 #: template/./doc/capi.sgml:71
 msgid "The message to CLIP-machine is that function terminates correct."
-msgstr "сообщение CLIP-машине что функция завершилась без ошибок"
+msgstr "я│п╬п╬п╠я┴п╣п╫п╦п╣ CLIP-п╪п╟я┬п╦п╫п╣ я┤я┌п╬ я└я┐п╫п╨я├п╦я▐ п╥п╟п╡п╣я─я┬п╦п╩п╟я│я▄ п╠п╣п╥ п╬я┬п╦п╠п╬п╨"
 
 #: template/./doc/capi.sgml:75
 msgid ""
@@ -131,13 +131,13 @@ msgid ""
 "If you easy read and write in C it's better to see in clip.h file.\n"
 msgstr ""
 "\n"
-"Ну а теперь собственно коротко о тех функциях расширения, которыми надо "
-"пользоваться при написании новых возможностей для CLIP.Для тех, кто легко "
-"читает и пишет на Си, лучше ознакомиться с файлом clip.h.\n"
+"п²я┐ п╟ я┌п╣п©п╣я─я▄ я│п╬п╠я│я┌п╡п╣п╫п╫п╬ п╨п╬я─п╬я┌п╨п╬ п╬ я┌п╣я┘ я└я┐п╫п╨я├п╦я▐я┘ я─п╟я│я┬п╦я─п╣п╫п╦я▐, п╨п╬я┌п╬я─я▀п╪п╦ п╫п╟п╢п╬ "
+"п©п╬п╩я▄п╥п╬п╡п╟я┌я▄я│я▐ п©я─п╦ п╫п╟п©п╦я│п╟п╫п╦п╦ п╫п╬п╡я▀я┘ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌п╣п╧ п╢п╩я▐ CLIP.п■п╩я▐ я┌п╣я┘, п╨я┌п╬ п╩п╣пЁп╨п╬ "
+"я┤п╦я┌п╟п╣я┌ п╦ п©п╦я┬п╣я┌ п╫п╟ п║п╦, п╩я┐я┤я┬п╣ п╬п╥п╫п╟п╨п╬п╪п╦я┌я▄я│я▐ я│ я└п╟п╧п╩п╬п╪ clip.h.\n"
 
 #: template/./doc/capi.sgml:81
 msgid "The passed parameters retrieving functions"
-msgstr "Функции получения передаваемых параметров"
+msgstr "п╓я┐п╫п╨я├п╦п╦ п©п╬п╩я┐я┤п╣п╫п╦я▐ п©п╣я─п╣п╢п╟п╡п╟п╣п╪я▀я┘ п©п╟я─п╟п╪п╣я┌я─п╬п╡"
 
 #: template/./doc/capi.sgml:89 template/./doc/capi.sgml:111
 #: template/./doc/capi.sgml:134 template/./doc/capi.sgml:157
@@ -159,7 +159,7 @@ msgstr "Функции получения передаваемых параметров"
 #: template/./doc/capi.sgml:990 template/./doc/capi.sgml:1016
 #: template/./doc/capi.sgml:1041 template/./doc/capi.sgml:1073
 msgid "Parameters"
-msgstr "Параметры"
+msgstr "п÷п╟я─п╟п╪п╣я┌я─я▀"
 
 #: template/./doc/capi.sgml:91
 msgid ""
@@ -168,7 +168,7 @@ msgid ""
 "description.\n"
 msgstr ""
 "\n"
-"<emphasis>mp</emphasis> - указывает на текущее состояние CLIP-машины\n"
+"<emphasis>mp</emphasis> - я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я┌п╣п╨я┐я┴п╣п╣ я│п╬я│я┌п╬я▐п╫п╦п╣ CLIP-п╪п╟я┬п╦п╫я▀\n"
 
 #: template/./doc/capi.sgml:94
 #, fuzzy
@@ -177,7 +177,7 @@ msgid ""
 "<emphasis>num</emphasis> is the position of parameter.\n"
 msgstr ""
 "\n"
-"<emphasis>num</emhpasis> - позиция параметра в списке параметров\n"
+"<emphasis>num</emhpasis> - п©п╬п╥п╦я├п╦я▐ п©п╟я─п╟п╪п╣я┌я─п╟ п╡ я│п©п╦я│п╨п╣ п©п╟я─п╟п╪п╣я┌я─п╬п╡\n"
 
 #: template/./doc/capi.sgml:97 template/./doc/capi.sgml:119
 #: template/./doc/capi.sgml:142 template/./doc/capi.sgml:165
@@ -199,7 +199,7 @@ msgstr ""
 #: template/./doc/capi.sgml:1002 template/./doc/capi.sgml:1028
 #: template/./doc/capi.sgml:1056 template/./doc/capi.sgml:1115
 msgid "Description"
-msgstr "Описание"
+msgstr "п·п©п╦я│п╟п╫п╦п╣"
 
 #: template/./doc/capi.sgml:99
 msgid ""
@@ -207,7 +207,7 @@ msgid ""
 "If"
 msgstr ""
 "\n"
-"Если "
+"п∙я│п╩п╦ "
 
 #: template/./doc/capi.sgml:99
 #, fuzzy
@@ -217,8 +217,8 @@ msgid ""
 "number.\n"
 msgstr ""
 "\n"
-" возвращяет число параметров; если не 0, то возвращает тип передаваемого "
-"параметра под номером num.\n"
+" п╡п╬п╥п╡я─п╟я┴я▐п╣я┌ я┤п╦я│п╩п╬ п©п╟я─п╟п╪п╣я┌я─п╬п╡; п╣я│п╩п╦ п╫п╣ 0, я┌п╬ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┌п╦п© п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ "
+"п©п╟я─п╟п╪п╣я┌я─п╟ п©п╬п╢ п╫п╬п╪п╣я─п╬п╪ num.\n"
 
 #: template/./doc/capi.sgml:113
 msgid ""
@@ -227,7 +227,7 @@ msgid ""
 "description\n"
 msgstr ""
 "\n"
-"<emphasis>mp</emphasis> - указывает на текущее состояние CLIP-машины\n"
+"<emphasis>mp</emphasis> - я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я┌п╣п╨я┐я┴п╣п╣ я│п╬я│я┌п╬я▐п╫п╦п╣ CLIP-п╪п╟я┬п╦п╫я▀\n"
 
 #: template/./doc/capi.sgml:116 template/./doc/capi.sgml:139
 #: template/./doc/capi.sgml:162 template/./doc/capi.sgml:185
@@ -239,7 +239,7 @@ msgid ""
 "<emphasis>num</emphasis>  is the position of parameter\n"
 msgstr ""
 "\n"
-"<emphasis>num</emhpasis> - позиция параметра в списке параметров\n"
+"<emphasis>num</emhpasis> - п©п╬п╥п╦я├п╦я▐ п©п╟я─п╟п╪п╣я┌я─п╟ п╡ я│п©п╦я│п╨п╣ п©п╟я─п╟п╪п╣я┌я─п╬п╡\n"
 
 #: template/./doc/capi.sgml:122
 #, fuzzy
@@ -249,8 +249,8 @@ msgid ""
 "returns converted to int type value of parameter with num number\n"
 msgstr ""
 "\n"
-"Возвращает значение передаваемого параметра с номером num преобразованное к "
-"типу int\n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫п╬п╣ п╨ "
+"я┌п╦п©я┐ int\n"
 
 #: template/./doc/capi.sgml:136 template/./doc/capi.sgml:159
 #: template/./doc/capi.sgml:182 template/./doc/capi.sgml:213
@@ -272,7 +272,7 @@ msgid ""
 "context\n"
 msgstr ""
 "\n"
-"<emphasis>mp</emphasis> - указывает на текущее состояние CLIP-машины\n"
+"<emphasis>mp</emphasis> - я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я┌п╣п╨я┐я┴п╣п╣ я│п╬я│я┌п╬я▐п╫п╦п╣ CLIP-п╪п╟я┬п╦п╫я▀\n"
 
 #: template/./doc/capi.sgml:145
 #, fuzzy
@@ -283,8 +283,8 @@ msgid ""
 " "
 msgstr ""
 "\n"
-"Возвращает значение передаваемого параметра с номером num преобразованное к "
-"типу long \n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫п╬п╣ п╨ "
+"я┌п╦п©я┐ long \n"
 
 #: template/./doc/capi.sgml:168
 #, fuzzy
@@ -294,8 +294,8 @@ msgid ""
 " returns converted to double type value of parameter with num number\n"
 msgstr ""
 "\n"
-"Возвращает значение передаваемого параметра с номером num преобразованное к "
-"типу double\n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫п╬п╣ п╨ "
+"я┌п╦п©я┐ double\n"
 
 #: template/./doc/capi.sgml:188 template/./doc/capi.sgml:242
 msgid ""
@@ -303,7 +303,7 @@ msgid ""
 "<emphasis>len</emphasis>  is the parameter length\n"
 msgstr ""
 "\n"
-"<emphasis>len</emphasis> - длина передаваемого параметра\n"
+"<emphasis>len</emphasis> - п╢п╩п╦п╫п╟ п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟\n"
 
 #: template/./doc/capi.sgml:191
 msgid ""
@@ -311,7 +311,7 @@ msgid ""
 "<emphasis>dec</emphasis>  is the parameter precision\n"
 msgstr ""
 "\n"
-"<emphasis>dec</emphasis>- точность передаваемого параметра\n"
+"<emphasis>dec</emphasis>- я┌п╬я┤п╫п╬я│я┌я▄ п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟\n"
 
 #: template/./doc/capi.sgml:197
 #, fuzzy
@@ -324,8 +324,8 @@ msgid ""
 " returns converted to int type value of parameter with num number\n"
 msgstr ""
 "\n"
-"Возвращает значение передаваемого параметра с номером num преобразованное к "
-"типу int\n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫п╬п╣ п╨ "
+"я┌п╦п©я┐ int\n"
 
 #: template/./doc/capi.sgml:222
 #, fuzzy
@@ -335,8 +335,8 @@ msgid ""
 " returns converted to character type value of parameter with num number\n"
 msgstr ""
 "\n"
-"Возвращает значение передаваемого параметра с номером num преобразованное к "
-"типу char\n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫п╬п╣ п╨ "
+"я┌п╦п©я┐ char\n"
 
 #: template/./doc/capi.sgml:248
 #, fuzzy
@@ -349,8 +349,8 @@ msgid ""
 " "
 msgstr ""
 "\n"
-"Возвращает значение параметра с номером num как строку с длиной (в clipper-"
-"строках могут быть нулевые байты!)\n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п╨п╟п╨ я│я┌я─п╬п╨я┐ я│ п╢п╩п╦п╫п╬п╧ (п╡ clipper-"
+"я│я┌я─п╬п╨п╟я┘ п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п╫я┐п╩п╣п╡я▀п╣ п╠п╟п╧я┌я▀!)\n"
 
 #: template/./doc/capi.sgml:272
 #, fuzzy
@@ -361,7 +361,7 @@ msgid ""
 " value of parameter with num number\n"
 msgstr ""
 "\n"
-"Возвращает логическое значение параметра с номером num в виде 0/1\n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п╡ п╡п╦п╢п╣ 0/1\n"
 
 #: template/./doc/capi.sgml:296
 #, fuzzy
@@ -372,7 +372,7 @@ msgid ""
 " value of parameter with num number\n"
 msgstr ""
 "\n"
-"возвращает преобразованное к CLIP- типу значение параметра с номером num\n"
+"п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫п╬п╣ п╨ CLIP- я┌п╦п©я┐ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num\n"
 
 #: template/./doc/capi.sgml:320
 msgid ""
@@ -382,8 +382,8 @@ msgid ""
 " value of parameter with num number\n"
 msgstr ""
 "\n"
-"Возвращает значение параметра с номером num, как дату преобразованную в "
-"julian - представление\n"
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num, п╨п╟п╨ п╢п╟я┌я┐ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫я┐я▌ п╡ "
+"julian - п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦п╣\n"
 
 #: template/./doc/capi.sgml:341
 msgid ""
@@ -391,7 +391,7 @@ msgid ""
 "<emphasis>yy</emphasis>  is pointing to int contained year value\n"
 msgstr ""
 "\n"
-"<emphasis>yy</emphasis>-указывает на значение года\n"
+"<emphasis>yy</emphasis>-я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ п╥п╫п╟я┤п╣п╫п╦п╣ пЁп╬п╢п╟\n"
 
 #: template/./doc/capi.sgml:344
 msgid ""
@@ -399,7 +399,7 @@ msgid ""
 "<emphasis>mm</emphasis>  is pointing to int contained month value\n"
 msgstr ""
 "\n"
-"<emphasis>mm</emphasis>-указывает на значение месяца\n"
+"<emphasis>mm</emphasis>-я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ п╥п╫п╟я┤п╣п╫п╦п╣ п╪п╣я│я▐я├п╟\n"
 
 #: template/./doc/capi.sgml:347
 msgid ""
@@ -407,7 +407,7 @@ msgid ""
 "<emphasis>dd</emphasis>  is pointing to int contained day value\n"
 msgstr ""
 "\n"
-"<emphasis>dd</emphasis>-указывает на значение дня\n"
+"<emphasis>dd</emphasis>-я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╫я▐\n"
 
 #: template/./doc/capi.sgml:350
 msgid ""
@@ -415,7 +415,7 @@ msgid ""
 "<emphasis>ww</emphasis>  is pointing to int contained millenium format\n"
 msgstr ""
 "\n"
-"<emphasis>ww</emphasis>-указывает на формат столетия\n"
+"<emphasis>ww</emphasis>-я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я└п╬я─п╪п╟я┌ я│я┌п╬п╩п╣я┌п╦я▐\n"
 
 #: template/./doc/capi.sgml:356
 #, fuzzy
@@ -426,13 +426,13 @@ msgid ""
 " value of parameter with num number\n"
 msgstr ""
 "\n"
-"Возвращает значение параметра с номером num как дату представленную в виде "
+"п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╟я─п╟п╪п╣я┌я─п╟ я│ п╫п╬п╪п╣я─п╬п╪ num п╨п╟п╨ п╢п╟я┌я┐ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╫я┐я▌ п╡ п╡п╦п╢п╣ "
 "year,month,day, millenium\n"
 
 #: template/./doc/capi.sgml:364
 #, fuzzy
 msgid "The data post to CLIP-machine functions"
-msgstr " Функции возврата данных в CLIP-машину"
+msgstr " п╓я┐п╫п╨я├п╦п╦ п╡п╬п╥п╡я─п╟я┌п╟ п╢п╟п╫п╫я▀я┘ п╡ CLIP-п╪п╟я┬п╦п╫я┐"
 
 #: template/./doc/capi.sgml:377
 msgid ""
@@ -440,7 +440,7 @@ msgid ""
 "<emphasis>n</emphasis>  is a numerical expression of type int\n"
 msgstr ""
 "\n"
-"<emphasis>n</emphasis> - численное выражение типа int\n"
+"<emphasis>n</emphasis> - я┤п╦я│п╩п╣п╫п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣ я┌п╦п©п╟ int\n"
 
 #: template/./doc/capi.sgml:383
 msgid ""
@@ -448,7 +448,7 @@ msgid ""
 " post a int type value to a CLIP return value area\n"
 msgstr ""
 "\n"
-" передает значение типа int в область возвращаемых значений CLIP\n"
+" п©п╣я─п╣п╢п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я┌п╦п©п╟ int п╡ п╬п╠п╩п╟я│я┌я▄ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ CLIP\n"
 
 #: template/./doc/capi.sgml:399
 msgid ""
@@ -456,7 +456,7 @@ msgid ""
 "<emphasis>n</emphasis>  is a numerical expression of type long\n"
 msgstr ""
 "\n"
-"<emphasis>n</emphasis> - численное выражение типа long\n"
+"<emphasis>n</emphasis> - я┤п╦я│п╩п╣п╫п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣ я┌п╦п©п╟ long\n"
 
 #: template/./doc/capi.sgml:405
 msgid ""
@@ -464,7 +464,7 @@ msgid ""
 " post a long type value to a CLIP return value area\n"
 msgstr ""
 "\n"
-" передает значение типа long в область возвращаемых значений CLIP\n"
+" п©п╣я─п╣п╢п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я┌п╦п©п╟ long п╡ п╬п╠п╩п╟я│я┌я▄ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ CLIP\n"
 
 #: template/./doc/capi.sgml:421 template/./doc/capi.sgml:442
 msgid ""
@@ -472,7 +472,7 @@ msgid ""
 "<emphasis>n</emphasis>  is a numerical expression of type double\n"
 msgstr ""
 "\n"
-"<emphasis>n</emphasis> - численное выражение типа double\n"
+"<emphasis>n</emphasis> - я┤п╦я│п╩п╣п╫п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣ я┌п╦п©п╟ double\n"
 
 #: template/./doc/capi.sgml:427
 msgid ""
@@ -480,7 +480,7 @@ msgid ""
 " post a double type value to a CLIP return value area\n"
 msgstr ""
 "\n"
-"передает значение типа double в область возвращаемых значений CLIP\n"
+"п©п╣я─п╣п╢п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я┌п╦п©п╟ double п╡ п╬п╠п╩п╟я│я┌я▄ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ CLIP\n"
 
 #: template/./doc/capi.sgml:445 template/./doc/capi.sgml:622
 msgid ""
@@ -488,7 +488,7 @@ msgid ""
 "<emphasis>len</emphasis>  is a string length parameter\n"
 msgstr ""
 "\n"
-"<emphasis>len</emphasis> - длина строки\n"
+"<emphasis>len</emphasis> - п╢п╩п╦п╫п╟ я│я┌я─п╬п╨п╦\n"
 
 #: template/./doc/capi.sgml:448 template/./doc/capi.sgml:625
 msgid ""
@@ -496,7 +496,7 @@ msgid ""
 "<emphasis>dec</emphasis>  is a string precision parameter\n"
 msgstr ""
 "\n"
-"<emphasis>dec</emphasis>  - точность параметра\n"
+"<emphasis>dec</emphasis>  - я┌п╬я┤п╫п╬я│я┌я▄ п©п╟я─п╟п╪п╣я┌я─п╟\n"
 
 #: template/./doc/capi.sgml:454
 msgid ""
@@ -505,8 +505,8 @@ msgid ""
 " to a CLIP return value area\n"
 msgstr ""
 "\n"
-"возвращает число, преобразовав его из double в формате с длиной len и "
-"точностью dec .в область возвращаемых значений CLIP\n"
+"п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬, п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╡ п╣пЁп╬ п╦п╥ double п╡ я└п╬я─п╪п╟я┌п╣ я│ п╢п╩п╦п╫п╬п╧ len п╦ "
+"я┌п╬я┤п╫п╬я│я┌я▄я▌ dec .п╡ п╬п╠п╩п╟я│я┌я▄ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ CLIP\n"
 
 #: template/./doc/capi.sgml:471 template/./doc/capi.sgml:495
 msgid ""
@@ -514,7 +514,7 @@ msgid ""
 "<emphasis>str</emphasis>  is a string of type char\n"
 msgstr ""
 "\n"
-"<emphasis>str</emphasis>  - строка типа char\n"
+"<emphasis>str</emphasis>  - я│я┌я─п╬п╨п╟ я┌п╦п©п╟ char\n"
 
 #: template/./doc/capi.sgml:477
 msgid ""
@@ -524,8 +524,8 @@ msgid ""
 " Str must be released without CLIP-machine taking part!\n"
 msgstr ""
 "\n"
-"возвращает строку с длиной len, предварительно скопировав данные из str. Str "
-"должна быть освобождена без участия CLIP-машины!\n"
+"п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ я│ п╢п╩п╦п╫п╬п╧ len, п©я─п╣п╢п╡п╟я─п╦я┌п╣п╩я▄п╫п╬ я│п╨п╬п©п╦я─п╬п╡п╟п╡ п╢п╟п╫п╫я▀п╣ п╦п╥ str. Str "
+"п╢п╬п╩п╤п╫п╟ п╠я▀я┌я▄ п╬я│п╡п╬п╠п╬п╤п╢п╣п╫п╟ п╠п╣п╥ я┐я┤п╟я│я┌п╦я▐ CLIP-п╪п╟я┬п╦п╫я▀!\n"
 
 #: template/./doc/capi.sgml:498 template/./doc/capi.sgml:524
 #, fuzzy
@@ -534,7 +534,7 @@ msgid ""
 "<emphasis>len</emphasis>  is a string length\n"
 msgstr ""
 "\n"
-"<emphasis>len</emphasis> - длина строки\n"
+"<emphasis>len</emphasis> - п╢п╩п╦п╫п╟ я│я┌я─п╬п╨п╦\n"
 
 #: template/./doc/capi.sgml:504
 msgid ""
@@ -543,8 +543,8 @@ msgid ""
 " Str must be released without CLIP-machine taking part!\n"
 msgstr ""
 "\n"
-"возвращает строку с длиной len, предварительно скопировав данные из str. Str "
-"должна быть освобождена без участия CLI-машины!\n"
+"п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ я│ п╢п╩п╦п╫п╬п╧ len, п©я─п╣п╢п╡п╟я─п╦я┌п╣п╩я▄п╫п╬ я│п╨п╬п©п╦я─п╬п╡п╟п╡ п╢п╟п╫п╫я▀п╣ п╦п╥ str. Str "
+"п╢п╬п╩п╤п╫п╟ п╠я▀я┌я▄ п╬я│п╡п╬п╠п╬п╤п╢п╣п╫п╟ п╠п╣п╥ я┐я┤п╟я│я┌п╦я▐ CLI-п╪п╟я┬п╦п╫я▀!\n"
 
 #: template/./doc/capi.sgml:521
 msgid ""
@@ -552,7 +552,7 @@ msgid ""
 "<emphasis>str</emphasis>  is  pointing  to string\n"
 msgstr ""
 "\n"
-"<emphasis>str</emphasis> - указатель на строку\n"
+"<emphasis>str</emphasis> - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ я│я┌я─п╬п╨я┐\n"
 
 #: template/./doc/capi.sgml:530
 msgid ""
@@ -562,9 +562,9 @@ msgid ""
 " (i.e when number of references on this string will become equal to zero)\n"
 msgstr ""
 "\n"
-"возвращает строку c длиной len, без копирования данных из str. Str будет "
-"освобождена CLIP-машиной когда эта строка не будет больше использоваться "
-"(когда кол-во ссылок на эту строку станет равно 0).\n"
+"п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ c п╢п╩п╦п╫п╬п╧ len, п╠п╣п╥ п╨п╬п©п╦я─п╬п╡п╟п╫п╦я▐ п╢п╟п╫п╫я▀я┘ п╦п╥ str. Str п╠я┐п╢п╣я┌ "
+"п╬я│п╡п╬п╠п╬п╤п╢п╣п╫п╟ CLIP-п╪п╟я┬п╦п╫п╬п╧ п╨п╬пЁп╢п╟ я█я┌п╟ я│я┌я─п╬п╨п╟ п╫п╣ п╠я┐п╢п╣я┌ п╠п╬п╩я▄я┬п╣ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄я│я▐ "
+"(п╨п╬пЁп╢п╟ п╨п╬п╩-п╡п╬ я│я│я▀п╩п╬п╨ п╫п╟ я█я┌я┐ я│я┌я─п╬п╨я┐ я│я┌п╟п╫п╣я┌ я─п╟п╡п╫п╬ 0).\n"
 
 #: template/./doc/capi.sgml:548
 msgid ""
@@ -572,7 +572,7 @@ msgid ""
 "<emphasis>l</emphasis>  is a numerical expression of type logic\n"
 msgstr ""
 "\n"
-"<emphasis>l</emphasis>  - численное выражение типа  logic\n"
+"<emphasis>l</emphasis>  - я┤п╦я│п╩п╣п╫п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣ я┌п╦п©п╟  logic\n"
 
 #: template/./doc/capi.sgml:554
 msgid ""
@@ -580,7 +580,7 @@ msgid ""
 " post a logic type number to a CLIP return value area\n"
 msgstr ""
 "\n"
-"передает значение типа logic в область возвращаемых значений CLIP\n"
+"п©п╣я─п╣п╢п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я┌п╦п©п╟ logic п╡ п╬п╠п╩п╟я│я┌я▄ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ CLIP\n"
 
 #: template/./doc/capi.sgml:570
 msgid ""
@@ -588,7 +588,7 @@ msgid ""
 "<emphasis>l</emphasis>  is a julian parameter of type long\n"
 msgstr ""
 "\n"
-"<emphasis>l</emphasis>  - julian параметр типа long\n"
+"<emphasis>l</emphasis>  - julian п©п╟я─п╟п╪п╣я┌я─ я┌п╦п©п╟ long\n"
 
 #: template/./doc/capi.sgml:576
 msgid ""
@@ -596,7 +596,7 @@ msgid ""
 " post a julian format date to a CLIP return value area\n"
 msgstr ""
 "\n"
-"передает значение типа julian в область возвращаемых значений CLIP\n"
+"п©п╣я─п╣п╢п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я┌п╦п©п╟ julian п╡ п╬п╠п╩п╟я│я┌я▄ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ CLIP\n"
 
 #: template/./doc/capi.sgml:591
 msgid ""
@@ -604,7 +604,7 @@ msgid ""
 "<emphasis>yy</emphasis>  is a parameter contained year\n"
 msgstr ""
 "\n"
-"<emphasis>yy</emphasis>  - значение года\n"
+"<emphasis>yy</emphasis>  - п╥п╫п╟я┤п╣п╫п╦п╣ пЁп╬п╢п╟\n"
 
 #: template/./doc/capi.sgml:594
 msgid ""
@@ -612,7 +612,7 @@ msgid ""
 "<emphasis>len</emphasis>  is a parameter contained month\n"
 msgstr ""
 "\n"
-"<emphasis>len</emphasis>  - значение месяца\n"
+"<emphasis>len</emphasis>  - п╥п╫п╟я┤п╣п╫п╦п╣ п╪п╣я│я▐я├п╟\n"
 
 #: template/./doc/capi.sgml:597
 msgid ""
@@ -620,7 +620,7 @@ msgid ""
 "<emphasis>dec</emphasis>  is a parameter contained day\n"
 msgstr ""
 "\n"
-"<emphasis>dec</emphasis>  - значение дня\n"
+"<emphasis>dec</emphasis>  - п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╫я▐\n"
 
 #: template/./doc/capi.sgml:603
 msgid ""
@@ -629,7 +629,7 @@ msgid ""
 " "
 msgstr ""
 "\n"
-"передает значение года,месяца,дня типа date в область возвращаемых значений "
+"п©п╣я─п╣п╢п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ пЁп╬п╢п╟,п╪п╣я│я▐я├п╟,п╢п╫я▐ я┌п╦п©п╟ date п╡ п╬п╠п╩п╟я│я┌я▄ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧ "
 "CLIP\n"
 
 #: template/./doc/capi.sgml:619
@@ -639,7 +639,7 @@ msgid ""
 "<emphasis>r</emphasis>  is a numerical expression of type double\n"
 msgstr ""
 "\n"
-"<emphasis>n</emphasis> - численное выражение типа double\n"
+"<emphasis>n</emphasis> - я┤п╦я│п╩п╣п╫п╫п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣ я┌п╦п©п╟ double\n"
 
 #: template/./doc/capi.sgml:631
 #, fuzzy
@@ -649,11 +649,11 @@ msgid ""
 " to a CLIP return value area\n"
 msgstr ""
 "\n"
-"возвращает рациональное число в формате с длиной len и точностью dec.\n"
+"п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╟я├п╦п╬п╫п╟п╩я▄п╫п╬п╣ я┤п╦я│п╩п╬ п╡ я└п╬я─п╪п╟я┌п╣ я│ п╢п╩п╦п╫п╬п╧ len п╦ я┌п╬я┤п╫п╬я│я┌я▄я▌ dec.\n"
 
 #: template/./doc/capi.sgml:638
 msgid "The hash-codes evaluation functions"
-msgstr " Функции вычисления hash-кодов "
+msgstr " п╓я┐п╫п╨я├п╦п╦ п╡я▀я┤п╦я│п╩п╣п╫п╦я▐ hash-п╨п╬п╢п╬п╡ "
 
 #: template/./doc/capi.sgml:640
 msgid ""
@@ -662,8 +662,8 @@ msgid ""
 "to evaluate them often.\n"
 msgstr ""
 "\n"
-"hash-коды постоянно используются в CLIP-машине,поэтому часто возникает "
-"необходимость их вычисления.\n"
+"hash-п╨п╬п╢я▀ п©п╬я│я┌п╬я▐п╫п╫п╬ п╦я│п©п╬п╩я▄п╥я┐я▌я┌я│я▐ п╡ CLIP-п╪п╟я┬п╦п╫п╣,п©п╬я█я┌п╬п╪я┐ я┤п╟я│я┌п╬ п╡п╬п╥п╫п╦п╨п╟п╣я┌ "
+"п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌я▄ п╦я┘ п╡я▀я┤п╦я│п╩п╣п╫п╦я▐.\n"
 
 #: template/./doc/capi.sgml:652 template/./doc/capi.sgml:671
 #, fuzzy
@@ -672,7 +672,7 @@ msgid ""
 "<emphasis>x</emphasis> is a pointer to the string to be hashed\n"
 msgstr ""
 "\n"
-"<emphasis>x</emphasis> - указывает на строку для хэширования\n"
+"<emphasis>x</emphasis> - я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я│я┌я─п╬п╨я┐ п╢п╩я▐ я┘я█я┬п╦я─п╬п╡п╟п╫п╦я▐\n"
 
 #: template/./doc/capi.sgml:658
 #, fuzzy
@@ -681,7 +681,7 @@ msgid ""
 "hash a string without register accounting.\n"
 msgstr ""
 "\n"
-"хэширует без учета регистра клавиатуры\n"
+"я┘я█я┬п╦я─я┐п╣я┌ п╠п╣п╥ я┐я┤п╣я┌п╟ я─п╣пЁп╦я│я┌я─п╟ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀\n"
 
 #: template/./doc/capi.sgml:677
 #, fuzzy
@@ -690,7 +690,7 @@ msgid ""
 "hash a string with register accounting.\n"
 msgstr ""
 "\n"
-"хэширует с учетом регистра клавиатуры\n"
+"я┘я█я┬п╦я─я┐п╣я┌ я│ я┐я┤п╣я┌п╬п╪ я─п╣пЁп╦я│я┌я─п╟ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀\n"
 
 #: template/./doc/capi.sgml:690 template/./doc/capi.sgml:715
 #, fuzzy
@@ -699,8 +699,8 @@ msgid ""
 "<emphasis>seed</emphasis> is the down boundary hash beginned from\n"
 msgstr ""
 "\n"
-"<emphasis>seed</emphasis> - нижняя граница строки с которой начинается "
-"хэширование\n"
+"<emphasis>seed</emphasis> - п╫п╦п╤п╫я▐я▐ пЁя─п╟п╫п╦я├п╟ я│я┌я─п╬п╨п╦ я│ п╨п╬я┌п╬я─п╬п╧ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ "
+"я┘я█я┬п╦я─п╬п╡п╟п╫п╦п╣\n"
 
 #: template/./doc/capi.sgml:693
 #, fuzzy
@@ -709,7 +709,7 @@ msgid ""
 "<emphasis>bytes</emphasis> is a pointer to the len object\n"
 msgstr ""
 "\n"
-"<emphasis>bytes</emphasis> - указатель на объект len\n"
+"<emphasis>bytes</emphasis> - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╬п╠я┼п╣п╨я┌ len\n"
 
 #: template/./doc/capi.sgml:696 template/./doc/capi.sgml:721
 #, fuzzy
@@ -718,7 +718,7 @@ msgid ""
 "<emphasis>len</emphasis> is the object to be hashed\n"
 msgstr ""
 "\n"
-"<emphasis>len</emphasis> - объект для хэширования\n"
+"<emphasis>len</emphasis> - п╬п╠я┼п╣п╨я┌ п╢п╩я▐ я┘я█я┬п╦я─п╬п╡п╟п╫п╦я▐\n"
 
 #: template/./doc/capi.sgml:702
 #, fuzzy
@@ -727,7 +727,7 @@ msgid ""
 "hash object len without register accounting.\n"
 msgstr ""
 "\n"
-"хэширует объект len без учета регистра клавиатуры\n"
+"я┘я█я┬п╦я─я┐п╣я┌ п╬п╠я┼п╣п╨я┌ len п╠п╣п╥ я┐я┤п╣я┌п╟ я─п╣пЁп╦я│я┌я─п╟ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀\n"
 
 #: template/./doc/capi.sgml:718
 #, fuzzy
@@ -736,7 +736,7 @@ msgid ""
 "<emphasis>bytes</emphasis> is a pointer to the obect len\n"
 msgstr ""
 "\n"
-"<emphasis>bytes</emphasis> - указатель на объект len\n"
+"<emphasis>bytes</emphasis> - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╬п╠я┼п╣п╨я┌ len\n"
 
 #: template/./doc/capi.sgml:727
 #, fuzzy
@@ -745,7 +745,7 @@ msgid ""
 "hash  object len with register accounting.\n"
 msgstr ""
 "\n"
-"хэширует объект len с учетом регистра клавиатуры\n"
+"я┘я█я┬п╦я─я┐п╣я┌ п╬п╠я┼п╣п╨я┌ len я│ я┐я┤п╣я┌п╬п╪ я─п╣пЁп╦я│я┌я─п╟ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀\n"
 
 #: template/./doc/capi.sgml:743
 #, fuzzy
@@ -755,8 +755,8 @@ msgid ""
 "hashed\n"
 msgstr ""
 "\n"
-"<emphasis>vp</emphasis> - указатель на объект (типа ClipVar) для "
-"хэширования\n"
+"<emphasis>vp</emphasis> - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╬п╠я┼п╣п╨я┌ (я┌п╦п©п╟ ClipVar) п╢п╩я▐ "
+"я┘я█я┬п╦я─п╬п╡п╟п╫п╦я▐\n"
 
 #: template/./doc/capi.sgml:749
 #, fuzzy
@@ -765,7 +765,7 @@ msgid ""
 "hash the object of ClipVar type with register accounting.\n"
 msgstr ""
 "\n"
-"хэширует объект типа ClipVar с учетом регистра клавиатуры.\n"
+"я┘я█я┬п╦я─я┐п╣я┌ п╬п╠я┼п╣п╨я┌ я┌п╦п©п╟ ClipVar я│ я┐я┤п╣я┌п╬п╪ я─п╣пЁп╦я│я┌я─п╟ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀.\n"
 
 #: template/./doc/capi.sgml:765
 #, fuzzy
@@ -775,8 +775,8 @@ msgid ""
 "hashed\n"
 msgstr ""
 "\n"
-"<emphasis>vp</emphasis> - указатель на объект (типа ClipVar) для "
-"хэширования \n"
+"<emphasis>vp</emphasis> - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╬п╠я┼п╣п╨я┌ (я┌п╦п©п╟ ClipVar) п╢п╩я▐ "
+"я┘я█я┬п╦я─п╬п╡п╟п╫п╦я▐ \n"
 
 #: template/./doc/capi.sgml:771
 #, fuzzy
@@ -785,13 +785,13 @@ msgid ""
 "hash  the object of ClipVar type to be hashed without register accounting.\n"
 msgstr ""
 "\n"
-"хэширует объект типа ClipVar без учета регистра клавиатуры.\n"
+"я┘я█я┬п╦я─я┐п╣я┌ п╬п╠я┼п╣п╨я┌ я┌п╦п©п╟ ClipVar п╠п╣п╥ я┐я┤п╣я┌п╟ я─п╣пЁп╦я│я┌я─п╟ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀.\n"
 
 #: template/./doc/capi.sgml:777
 msgid "The run-time errors generation functions"
 msgstr ""
 "\n"
-" Функции генерации run-time ошибок\n"
+" п╓я┐п╫п╨я├п╦п╦ пЁп╣п╫п╣я─п╟я├п╦п╦ run-time п╬я┬п╦п╠п╬п╨\n"
 
 #: template/./doc/capi.sgml:779
 msgid ""
@@ -800,7 +800,7 @@ msgid ""
 "description.\n"
 msgstr ""
 "\n"
-"Для более полного понимания сущности \"ошибка\" читайте описание класса "
+"п■п╩я▐ п╠п╬п╩п╣п╣ п©п╬п╩п╫п╬пЁп╬ п©п╬п╫п╦п╪п╟п╫п╦я▐ я│я┐я┴п╫п╬я│я┌п╦ \"п╬я┬п╦п╠п╨п╟\" я┤п╦я┌п╟п╧я┌п╣ п╬п©п╦я│п╟п╫п╦п╣ п╨п╩п╟я│я│п╟ "
 "error \n"
 
 #: template/./doc/capi.sgml:794
@@ -809,7 +809,7 @@ msgid ""
 "<emphasis>genCode</emphasis> is an error code number\n"
 msgstr ""
 "\n"
-"<emphasis>genCode</emphasis>  - номер  кода ошибки\n"
+"<emphasis>genCode</emphasis>  - п╫п╬п╪п╣я─  п╨п╬п╢п╟ п╬я┬п╦п╠п╨п╦\n"
 
 #: template/./doc/capi.sgml:797
 msgid ""
@@ -817,8 +817,8 @@ msgid ""
 "<emphasis>canDefault</emphasis>  indicates if default recovery is available\n"
 msgstr ""
 "\n"
-"<emphasis>canDefault</emphasis>  - указывает, возможно ли восстановить по "
-"умолчанию\n"
+"<emphasis>canDefault</emphasis>  - я┐п╨п╟п╥я▀п╡п╟п╣я┌, п╡п╬п╥п╪п╬п╤п╫п╬ п╩п╦ п╡п╬я│я│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╬ "
+"я┐п╪п╬п╩я┤п╟п╫п╦я▌\n"
 
 #: template/./doc/capi.sgml:800
 msgid ""
@@ -827,8 +827,8 @@ msgid ""
 "error\n"
 msgstr ""
 "\n"
-"<emphasis>canRetry</emphasis>  - указывает, воможен ли перезапуск после "
-"ошибки\n"
+"<emphasis>canRetry</emphasis>  - я┐п╨п╟п╥я▀п╡п╟п╣я┌, п╡п╬п╪п╬п╤п╣п╫ п╩п╦ п©п╣я─п╣п╥п╟п©я┐я│п╨ п©п╬я│п╩п╣ "
+"п╬я┬п╦п╠п╨п╦\n"
 
 #: template/./doc/capi.sgml:803
 msgid ""
@@ -837,8 +837,8 @@ msgid ""
 "generation the error\n"
 msgstr ""
 "\n"
-"<emphasis>subSystem</emphasis> -  символьное описание подсистемы, "
-"сгенерировавшей ошибку\n"
+"<emphasis>subSystem</emphasis> -  я│п╦п╪п╡п╬п╩я▄п╫п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п©п╬п╢я│п╦я│я┌п╣п╪я▀, "
+"я│пЁп╣п╫п╣я─п╦я─п╬п╡п╟п╡я┬п╣п╧ п╬я┬п╦п╠п╨я┐\n"
 
 #: template/./doc/capi.sgml:806
 msgid ""
@@ -846,7 +846,7 @@ msgid ""
 "<emphasis>subCode</emphasis> is subsystem-cpecific error code number\n"
 msgstr ""
 "\n"
-"<emphasis>subCode</emphasis> -номер кода ошибки подсистемы\n"
+"<emphasis>subCode</emphasis> -п╫п╬п╪п╣я─ п╨п╬п╢п╟ п╬я┬п╦п╠п╨п╦ п©п╬п╢я│п╦я│я┌п╣п╪я▀\n"
 
 #: template/./doc/capi.sgml:809
 msgid ""
@@ -855,8 +855,8 @@ msgid ""
 "operation\n"
 msgstr ""
 "\n"
-"<emphasis>operation</emphasis>  - символьное описание операции, "
-"сгенерировавшей ошибку\n"
+"<emphasis>operation</emphasis>  - я│п╦п╪п╡п╬п╩я▄п╫п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╬п©п╣я─п╟я├п╦п╦, "
+"я│пЁп╣п╫п╣я─п╦я─п╬п╡п╟п╡я┬п╣п╧ п╬я┬п╦п╠п╨я┐\n"
 
 #: template/./doc/capi.sgml:815
 #, fuzzy
@@ -865,17 +865,17 @@ msgid ""
 "provides with information about runtime errors\n"
 msgstr ""
 "\n"
-"обеспечивает  информацией об ошибках \n"
+"п╬п╠п╣я│п©п╣я┤п╦п╡п╟п╣я┌  п╦п╫я└п╬я─п╪п╟я├п╦п╣п╧ п╬п╠ п╬я┬п╦п╠п╨п╟я┘ \n"
 
 #: template/./doc/capi.sgml:821
 msgid ""
 "\n"
 "In more simple cases one can use:\n"
-msgstr "Могут быть использованы также :"
+msgstr "п°п╬пЁя┐я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫я▀ я┌п╟п╨п╤п╣ :"
 
 #: template/./doc/capi.sgml:834
 msgid "The static data operating functions"
-msgstr " Функции управления статическими данными "
+msgstr " п╓я┐п╫п╨я├п╦п╦ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│я┌п╟я┌п╦я┤п╣я│п╨п╦п╪п╦ п╢п╟п╫п╫я▀п╪п╦ "
 
 #: template/./doc/capi.sgml:836
 #, fuzzy
@@ -890,11 +890,11 @@ msgid ""
 "CLIP-processes!\n"
 msgstr ""
 "\n"
-"Имеется небольшой набор функций для того, чтобы сохранять какие-либо "
-"статические данные (например, set(_MY_SET_1,MY_DATA)) в CLIP-машине.\n"
-"Внимание! В С запрещено явно объявлять конструкции таким образом: \n"
-"\"static my_type var_name\". Такие данные могут привести к конфликту между "
-"различными CLIP-процессами!\n"
+"п≤п╪п╣п╣я┌я│я▐ п╫п╣п╠п╬п╩я▄я┬п╬п╧ п╫п╟п╠п╬я─ я└я┐п╫п╨я├п╦п╧ п╢п╩я▐ я┌п╬пЁп╬, я┤я┌п╬п╠я▀ я│п╬я┘я─п╟п╫я▐я┌я▄ п╨п╟п╨п╦п╣-п╩п╦п╠п╬ "
+"я│я┌п╟я┌п╦я┤п╣я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣ (п╫п╟п©я─п╦п╪п╣я─, set(_MY_SET_1,MY_DATA)) п╡ CLIP-п╪п╟я┬п╦п╫п╣.\n"
+"п▓п╫п╦п╪п╟п╫п╦п╣! п▓ п║ п╥п╟п©я─п╣я┴п╣п╫п╬ я▐п╡п╫п╬ п╬п╠я┼я▐п╡п╩я▐я┌я▄ п╨п╬п╫я│я┌я─я┐п╨я├п╦п╦ я┌п╟п╨п╦п╪ п╬п╠я─п╟п╥п╬п╪: \n"
+"\"static my_type var_name\". п╒п╟п╨п╦п╣ п╢п╟п╫п╫я▀п╣ п╪п╬пЁя┐я┌ п©я─п╦п╡п╣я│я┌п╦ п╨ п╨п╬п╫я└п╩п╦п╨я┌я┐ п╪п╣п╤п╢я┐ "
+"я─п╟п╥п╩п╦я┤п╫я▀п╪п╦ CLIP-п©я─п╬я├п╣я│я│п╟п╪п╦!\n"
 
 #: template/./doc/capi.sgml:854
 #, fuzzy
@@ -903,7 +903,7 @@ msgid ""
 "<emphasis>hash</emphasis>  is the identificator of item data to be stored\n"
 msgstr ""
 "\n"
-"<emphasis>hash</emphasis>  - идентификатор данных item для сохранения\n"
+"<emphasis>hash</emphasis>  - п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╢п╟п╫п╫я▀я┘ item п╢п╩я▐ я│п╬я┘я─п╟п╫п╣п╫п╦я▐\n"
 
 #: template/./doc/capi.sgml:857
 #, fuzzy
@@ -912,7 +912,7 @@ msgid ""
 "<emphasis>item</emphasis>  is the pointer  to item data to be stored\n"
 msgstr ""
 "\n"
-"<emphasis>item</emphasis>  - указатель на данные item для сохранения\n"
+"<emphasis>item</emphasis>  - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╢п╟п╫п╫я▀п╣ item п╢п╩я▐ я│п╬я┘я─п╟п╫п╣п╫п╦я▐\n"
 
 #: template/./doc/capi.sgml:863
 msgid ""
@@ -920,31 +920,31 @@ msgid ""
 " store "
 msgstr ""
 "\n"
-"сохраняет"
+"я│п╬я┘я─п╟п╫я▐п╣я┌"
 
 #: template/./doc/capi.sgml:863
 msgid " data with "
-msgstr " данные с "
+msgstr " п╢п╟п╫п╫я▀п╣ я│ "
 
 #: template/./doc/capi.sgml:863
 msgid ""
 " identificator,\n"
 " the best way to generate it is to use"
 msgstr ""
-"идентификатором;\n"
-"для его генерации лучше всего использовать\n"
+"п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪;\n"
+"п╢п╩я▐ п╣пЁп╬ пЁп╣п╫п╣я─п╟я├п╦п╦ п╩я┐я┤я┬п╣ п╡я│п╣пЁп╬ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄\n"
 
 #: template/./doc/capi.sgml:864
 msgid ""
 " functions.\n"
 " A memory for"
 msgstr ""
-"функции.\n"
-"Память для"
+"я└я┐п╫п╨я├п╦п╦.\n"
+"п÷п╟п╪я▐я┌я▄ п╢п╩я▐"
 
 #: template/./doc/capi.sgml:865
 msgid "must be allocated explicitly.\n"
-msgstr "должна быть выделена явно.\n"
+msgstr "п╢п╬п╩п╤п╫п╟ п╠я▀я┌я▄ п╡я▀п╢п╣п╩п╣п╫п╟ я▐п╡п╫п╬.\n"
 
 #: template/./doc/capi.sgml:881 template/./doc/capi.sgml:932
 #: template/./doc/capi.sgml:954
@@ -954,7 +954,7 @@ msgid ""
 "<emphasis>hash</emphasis>  is the identificator of item data\n"
 msgstr ""
 "\n"
-"<emphasis>hash</emphasis>  - идентификатор данных item \n"
+"<emphasis>hash</emphasis>  - п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╢п╟п╫п╫я▀я┘ item \n"
 
 #: template/./doc/capi.sgml:884
 #, fuzzy
@@ -963,7 +963,7 @@ msgid ""
 "<emphasis>item</emphasis>  is the pointer to  data\n"
 msgstr ""
 "\n"
-"<emphasis>item</emphasis>  - указатель на данные\n"
+"<emphasis>item</emphasis>  - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╢п╟п╫п╫я▀п╣\n"
 
 #: template/./doc/capi.sgml:887
 msgid ""
@@ -971,7 +971,7 @@ msgid ""
 "<emphasis>destroy</emphasis>  is the destroy function\n"
 msgstr ""
 "\n"
-"<emphasis>destroy</emphasis>  - функция уничтожения\n"
+"<emphasis>destroy</emphasis>  - я└я┐п╫п╨я├п╦я▐ я┐п╫п╦я┤я┌п╬п╤п╣п╫п╦я▐\n"
 
 #: template/./doc/capi.sgml:893
 msgid ""
@@ -979,13 +979,13 @@ msgid ""
 " set a function of the memory release for the static data with a "
 msgstr ""
 "\n"
-" набор функций освобождения памяти для статических данных с "
+" п╫п╟п╠п╬я─ я└я┐п╫п╨я├п╦п╧ п╬я│п╡п╬п╠п╬п╤п╢п╣п╫п╦я▐ п©п╟п╪я▐я┌п╦ п╢п╩я▐ я│я┌п╟я┌п╦я┤п╣я│п╨п╦я┘ п╢п╟п╫п╫я▀я┘ я│ "
 
 #: template/./doc/capi.sgml:894 template/./doc/capi.sgml:916
 #: template/./doc/capi.sgml:938
 #, fuzzy
 msgid "identificator\n"
-msgstr " идентификатором \n"
+msgstr " п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ \n"
 
 #: template/./doc/capi.sgml:910
 msgid ""
@@ -993,7 +993,7 @@ msgid ""
 "<emphasis>hash</emphasis>  is the identificator  of item data\n"
 msgstr ""
 "\n"
-"<emphasis>hash</emphasis>  - идентификатор данных item\n"
+"<emphasis>hash</emphasis>  - п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╢п╟п╫п╫я▀я┘ item\n"
 
 #: template/./doc/capi.sgml:916
 msgid ""
@@ -1001,7 +1001,7 @@ msgid ""
 " release the memory for "
 msgstr ""
 "\n"
-" освобождает память для "
+" п╬я│п╡п╬п╠п╬п╤п╢п╟п╣я┌ п©п╟п╪я▐я┌я▄ п╢п╩я▐ "
 
 #: template/./doc/capi.sgml:938
 msgid ""
@@ -1009,7 +1009,7 @@ msgid ""
 " destroy all information about "
 msgstr ""
 "\n"
-" уничтожает всю информацию о "
+" я┐п╫п╦я┤я┌п╬п╤п╟п╣я┌ п╡я│я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╬ "
 
 #: template/./doc/capi.sgml:960
 msgid ""
@@ -1017,15 +1017,15 @@ msgid ""
 " return pointer to  "
 msgstr ""
 "\n"
-" возвращает  указатель на идентифицируемую "
+" п╡п╬п╥п╡я─п╟я┴п╟п╣я┌  я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╦п╢п╣п╫я┌п╦я└п╦я├п╦я─я┐п╣п╪я┐я▌ "
 
 #: template/./doc/capi.sgml:960
 msgid "identificator memory\n"
-msgstr " - ем область памяти  \n"
+msgstr " - п╣п╪ п╬п╠п╩п╟я│я┌я▄ п©п╟п╪я▐я┌п╦  \n"
 
 #: template/./doc/capi.sgml:966
 msgid "The containers operating functions"
-msgstr " Функции управления контейнерами "
+msgstr " п╓я┐п╫п╨я├п╦п╦ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п╨п╬п╫я┌п╣п╧п╫п╣я─п╟п╪п╦ "
 
 #: template/./doc/capi.sgml:968
 msgid ""
@@ -1035,8 +1035,8 @@ msgid ""
 "machine:\n"
 msgstr ""
 "\n"
-"Контейнер - это еще одно средство для хранения статических данных. Например, "
-"в CLIP-машину трудно вернуть какой-нибудь Си-указатель на структуру:\n"
+"п п╬п╫я┌п╣п╧п╫п╣я─ - я█я┌п╬ п╣я┴п╣ п╬п╢п╫п╬ я│я─п╣п╢я│я┌п╡п╬ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐ я│я┌п╟я┌п╦я┤п╣я│п╨п╦я┘ п╢п╟п╫п╫я▀я┘. п²п╟п©я─п╦п╪п╣я─, "
+"п╡ CLIP-п╪п╟я┬п╦п╫я┐ я┌я─я┐п╢п╫п╬ п╡п╣я─п╫я┐я┌я▄ п╨п╟п╨п╬п╧-п╫п╦п╠я┐п╢я▄ п║п╦-я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ я│я┌я─я┐п╨я┌я┐я─я┐:\n"
 
 #: template/./doc/capi.sgml:976
 msgid ""
@@ -1051,11 +1051,11 @@ msgid ""
 "To store that structures a container is intend for.\n"
 msgstr ""
 "\n"
-"Что делать с указателем \"FILE * fh\"? А ведь в clipper-функции "
-"<command>fopen()</command> возвращаемое значение - простое число.Или, "
-"например, структура открытого соединения с ORACLE,MYSQL и т.п. Также "
-"желательно внутри clip-программы оперировать числом.Вот именно для хранения "
-"таких структур и предназначен контейнер.\n"
+"п╖я┌п╬ п╢п╣п╩п╟я┌я▄ я│ я┐п╨п╟п╥п╟я┌п╣п╩п╣п╪ \"FILE * fh\"? п░ п╡п╣п╢я▄ п╡ clipper-я└я┐п╫п╨я├п╦п╦ "
+"<command>fopen()</command> п╡п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ - п©я─п╬я│я┌п╬п╣ я┤п╦я│п╩п╬.п≤п╩п╦, "
+"п╫п╟п©я─п╦п╪п╣я─, я│я┌я─я┐п╨я┌я┐я─п╟ п╬я┌п╨я─я▀я┌п╬пЁп╬ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐ я│ ORACLE,MYSQL п╦ я┌.п©. п╒п╟п╨п╤п╣ "
+"п╤п╣п╩п╟я┌п╣п╩я▄п╫п╬ п╡п╫я┐я┌я─п╦ clip-п©я─п╬пЁя─п╟п╪п╪я▀ п╬п©п╣я─п╦я─п╬п╡п╟я┌я▄ я┤п╦я│п╩п╬п╪.п▓п╬я┌ п╦п╪п╣п╫п╫п╬ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐ "
+"я┌п╟п╨п╦я┘ я│я┌я─я┐п╨я┌я┐я─ п╦ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╨п╬п╫я┌п╣п╧п╫п╣я─.\n"
 
 #: template/./doc/capi.sgml:992 template/./doc/capi.sgml:1018
 #: template/./doc/capi.sgml:1043
@@ -1065,7 +1065,7 @@ msgid ""
 "context\n"
 msgstr ""
 "\n"
-"<emphasis>cm</emphasis>  - указывает на текущее состояние CLIP-машины\n"
+"<emphasis>cm</emphasis>  - я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я┌п╣п╨я┐я┴п╣п╣ я│п╬я│я┌п╬я▐п╫п╦п╣ CLIP-п╪п╟я┬п╦п╫я▀\n"
 
 #: template/./doc/capi.sgml:995 template/./doc/capi.sgml:1021
 #, fuzzy
@@ -1074,7 +1074,7 @@ msgid ""
 "<emphasis>key</emphasis> is file, connection etc. number\n"
 msgstr ""
 "\n"
-"<emphasis>key</emphasis>  - номер файла,соединения и т.п.\n"
+"<emphasis>key</emphasis>  - п╫п╬п╪п╣я─ я└п╟п╧п╩п╟,я│п╬п╣п╢п╦п╫п╣п╫п╦я▐ п╦ я┌.п©.\n"
 
 #: template/./doc/capi.sgml:998 template/./doc/capi.sgml:1024
 #: template/./doc/capi.sgml:1049
@@ -1082,8 +1082,8 @@ msgid ""
 "is a stored information type\n"
 "(it's for impossibility to set file number instead of connection one)\n"
 msgstr ""
-" - тип хранимой информации (необходимо для исключения возможности поставить "
-"номер файла вместо номера соединения).\n"
+" - я┌п╦п© я┘я─п╟п╫п╦п╪п╬п╧ п╦п╫я└п╬я─п╪п╟я├п╦п╦ (п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬ п╢п╩я▐ п╦я│п╨п╩я▌я┤п╣п╫п╦я▐ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌п╦ п©п╬я│я┌п╟п╡п╦я┌я▄ "
+"п╫п╬п╪п╣я─ я└п╟п╧п╩п╟ п╡п╪п╣я│я┌п╬ п╫п╬п╪п╣я─п╟ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐).\n"
 
 #: template/./doc/capi.sgml:1005
 msgid ""
@@ -1091,7 +1091,7 @@ msgid ""
 " fetch item object with key number\n"
 msgstr ""
 "\n"
-"загружает объект item с номером key\n"
+"п╥п╟пЁя─я┐п╤п╟п╣я┌ п╬п╠я┼п╣п╨я┌ item я│ п╫п╬п╪п╣я─п╬п╪ key\n"
 
 #: template/./doc/capi.sgml:1031
 msgid ""
@@ -1100,7 +1100,7 @@ msgid ""
 " "
 msgstr ""
 "\n"
-"уничтожает объект item с номером key\n"
+"я┐п╫п╦я┤я┌п╬п╤п╟п╣я┌ п╬п╠я┼п╣п╨я┌ item я│ п╫п╬п╪п╣я─п╬п╪ key\n"
 
 #: template/./doc/capi.sgml:1046
 #, fuzzy
@@ -1109,11 +1109,11 @@ msgid ""
 "<emphasis>item</emphasis> is file, connection etc. number\n"
 msgstr ""
 "\n"
-"<emphasis>key</emphasis>  - номер файла,соединения и т.п.\n"
+"<emphasis>key</emphasis>  - п╫п╬п╪п╣я─ я└п╟п╧п╩п╟,я│п╬п╣п╢п╦п╫п╣п╫п╦я▐ п╦ я┌.п©.\n"
 
 #: template/./doc/capi.sgml:1053
 msgid "is a stored structure destroy/close function"
-msgstr "- функция уничтожения/закрытия хранимой структуры."
+msgstr "- я└я┐п╫п╨я├п╦я▐ я┐п╫п╦я┤я┌п╬п╤п╣п╫п╦я▐/п╥п╟п╨я─я▀я┌п╦я▐ я┘я─п╟п╫п╦п╪п╬п╧ я│я┌я─я┐п╨я┌я┐я─я▀."
 
 #: template/./doc/capi.sgml:1059
 msgid ""
@@ -1121,27 +1121,27 @@ msgid ""
 " store item object with key number\n"
 msgstr ""
 "\n"
-" сохраняет объект item с номером key\n"
+" я│п╬я┘я─п╟п╫я▐п╣я┌ п╬п╠я┼п╣п╨я┌ item я│ п╫п╬п╪п╣я─п╬п╪ key\n"
 
 #: template/./doc/capi.sgml:1065
 msgid "The CLIP function/procedure calling from C"
-msgstr "Вызов функции/процедуры, написанной на CLIPе, из C "
+msgstr "п▓я▀п╥п╬п╡ я└я┐п╫п╨я├п╦п╦/п©я─п╬я├п╣п╢я┐я─я▀, п╫п╟п©п╦я│п╟п╫п╫п╬п╧ п╫п╟ CLIPп╣, п╦п╥ C "
 
 #: template/./doc/capi.sgml:1075
 msgid "is pointing to a current CLIP-machine task context"
-msgstr " указывает на текущее состояние CLIP-машины"
+msgstr " я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я┌п╣п╨я┐я┴п╣п╣ я│п╬я│я┌п╬я▐п╫п╦п╣ CLIP-п╪п╟я┬п╦п╫я▀"
 
 #: template/./doc/capi.sgml:1078
 msgid "is a function name in CLIP"
-msgstr " имя функции на CLIP"
+msgstr " п╦п╪я▐ я└я┐п╫п╨я├п╦п╦ п╫п╟ CLIP"
 
 #: template/./doc/capi.sgml:1081
 msgid "is a number of arguments\n"
-msgstr " - число аргументов\n"
+msgstr " - я┤п╦я│п╩п╬ п╟я─пЁя┐п╪п╣п╫я┌п╬п╡\n"
 
 #: template/./doc/capi.sgml:1084
 msgid "is pointing to array of argc ClipVar type elements\n"
-msgstr " - указывает на массив из argc элементов типа ClipVar\n"
+msgstr " - я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ п╪п╟я│я│п╦п╡ п╦п╥ argc я█п╩п╣п╪п╣п╫я┌п╬п╡ я┌п╦п©п╟ ClipVar\n"
 
 #: template/./doc/capi.sgml:1087
 msgid ""
@@ -1149,42 +1149,42 @@ msgid ""
 "in wich returned value will be located.\n"
 "One can use macros RETPTR to get that pointer.\n"
 msgstr ""
-" - указатель на ячейку стека\n"
-" в который будет помещено возвращаемое значение\n"
+" - я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ я▐я┤п╣п╧п╨я┐ я│я┌п╣п╨п╟\n"
+" п╡ п╨п╬я┌п╬я─я▀п╧ п╠я┐п╢п╣я┌ п©п╬п╪п╣я┴п╣п╫п╬ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣\n"
 
 #: template/./doc/capi.sgml:1092
 msgid ""
 "\n"
 "For example :\n"
-msgstr "Например: \n"
+msgstr "п²п╟п©я─п╦п╪п╣я─: \n"
 
 #: template/./doc/capi.sgml:1098
 msgid "RETPTR is macros that returns pointer to"
-msgstr "RETPTR - макрос, возращает указатель"
+msgstr "RETPTR - п╪п╟п╨я─п╬я│, п╡п╬п╥я─п╟я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄"
 
 #: template/./doc/capi.sgml:1099
 msgid "stack cell returned value will be in"
-msgstr " на ячейку стека, в которой будет возвращаемое значение"
+msgstr " п╫п╟ я▐я┤п╣п╧п╨я┐ я│я┌п╣п╨п╟, п╡ п╨п╬я┌п╬я─п╬п╧ п╠я┐п╢п╣я┌ п╡п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣"
 
 #: template/./doc/capi.sgml:1101
 msgid "to be on a safe side"
-msgstr "на всякий случай "
+msgstr "п╫п╟ п╡я│я▐п╨п╦п╧ я│п╩я┐я┤п╟п╧ "
 
 #: template/./doc/capi.sgml:1103
 msgid "first argument is a string (\"Baby\")"
-msgstr "первый аргумент - строка (\"Baby\")"
+msgstr "п©п╣я─п╡я▀п╧ п╟я─пЁя┐п╪п╣п╫я┌ - я│я┌я─п╬п╨п╟ (\"Baby\")"
 
 #: template/./doc/capi.sgml:1104
 msgid "element s of union ClipVar is for strings"
-msgstr "элемент s юниона ClipVar - для строк"
+msgstr "я█п╩п╣п╪п╣п╫я┌ s я▌п╫п╦п╬п╫п╟ ClipVar - п╢п╩я▐ я│я┌я─п╬п╨"
 
 #: template/./doc/capi.sgml:1107
 msgid "second argument is number"
-msgstr "второй - число"
+msgstr "п╡я┌п╬я─п╬п╧ - я┤п╦я│п╩п╬"
 
 #: template/./doc/capi.sgml:1108
 msgid "element n of union ClipVar is for numbers"
-msgstr "элемент n юниона ClipVar - для чисел"
+msgstr "я█п╩п╣п╪п╣п╫я┌ n я▌п╫п╦п╬п╫п╟ ClipVar - п╢п╩я▐ я┤п╦я│п╣п╩"
 
 #: template/./doc/capi.sgml:1118
 #, fuzzy
@@ -1193,11 +1193,11 @@ msgid ""
 "allow to call a written in CLIP function/procedure from C\n"
 msgstr ""
 "\n"
-" позволяет вызвать из С написанную на CLIP функцию/процедуру  \n"
+" п©п╬п╥п╡п╬п╩я▐п╣я┌ п╡я▀п╥п╡п╟я┌я▄ п╦п╥ п║ п╫п╟п©п╦я│п╟п╫п╫я┐я▌ п╫п╟ CLIP я└я┐п╫п╨я├п╦я▌/п©я─п╬я├п╣п╢я┐я─я┐  \n"
 
 #: template/./doc/capi.sgml:1124
 msgid "The CLIP dynamics loading modules creating"
-msgstr "Создание динамически загружаемых модулей для clip"
+msgstr "п║п╬п╥п╢п╟п╫п╦п╣ п╢п╦п╫п╟п╪п╦я┤п╣я│п╨п╦ п╥п╟пЁя─я┐п╤п╟п╣п╪я▀я┘ п╪п╬п╢я┐п╩п╣п╧ п╢п╩я▐ clip"
 
 #: template/./doc/capi.sgml:1126
 #, fuzzy
@@ -1208,9 +1208,9 @@ msgid ""
 "or byte-code (*.po) and libraries of byte-codes (*.pa).\n"
 msgstr ""
 "\n"
-"В CLIP имеется функция <command>load()</command>, которая загружает "
-"динамические модули (*.so)\n"
-"или байт-код (*.po) и библиотеки байт-кодов (*.pa).\n"
+"п▓ CLIP п╦п╪п╣п╣я┌я│я▐ я└я┐п╫п╨я├п╦я▐ <command>load()</command>, п╨п╬я┌п╬я─п╟я▐ п╥п╟пЁя─я┐п╤п╟п╣я┌ "
+"п╢п╦п╫п╟п╪п╦я┤п╣я│п╨п╦п╣ п╪п╬п╢я┐п╩п╦ (*.so)\n"
+"п╦п╩п╦ п╠п╟п╧я┌-п╨п╬п╢ (*.po) п╦ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ п╠п╟п╧я┌-п╨п╬п╢п╬п╡ (*.pa).\n"
 
 #: template/./doc/capi.sgml:1130
 #, fuzzy
@@ -1219,7 +1219,7 @@ msgid ""
 "It's easy to make byte-code and so-modules from prg-files by commands:\n"
 msgstr ""
 "\n"
-"Байт-код и so-модули легко получить из prg-файлов командами:\n"
+"п▒п╟п╧я┌-п╨п╬п╢ п╦ so-п╪п╬п╢я┐п╩п╦ п╩п╣пЁп╨п╬ п©п╬п╩я┐я┤п╦я┌я▄ п╦п╥ prg-я└п╟п╧п╩п╬п╡ п╨п╬п╪п╟п╫п╢п╟п╪п╦:\n"
 
 #: template/./doc/capi.sgml:1135
 msgid ""
@@ -1227,7 +1227,7 @@ msgid ""
 "And it's possible to write the same loading module in C in such way:\n"
 msgstr ""
 "\n"
-"Написать на Си такой же загружаемый модуль можно таким способом:\n"
+"п²п╟п©п╦я│п╟я┌я▄ п╫п╟ п║п╦ я┌п╟п╨п╬п╧ п╤п╣ п╥п╟пЁя─я┐п╤п╟п╣п╪я▀п╧ п╪п╬п╢я┐п╩я▄ п╪п╬п╤п╫п╬ я┌п╟п╨п╦п╪ я│п©п╬я│п╬п╠п╬п╪:\n"
 
 #: template/./doc/capi.sgml:1138
 #, fuzzy
@@ -1237,7 +1237,7 @@ msgid ""
 "it:\n"
 msgstr ""
 "\n"
-"Создается module.prg и в нем описываются все необходимые пустые функции\n"
+"п║п╬п╥п╢п╟п╣я┌я│я▐ module.prg п╦ п╡ п╫п╣п╪ п╬п©п╦я│я▀п╡п╟я▌я┌я│я▐ п╡я│п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ п©я┐я│я┌я▀п╣ я└я┐п╫п╨я├п╦п╦\n"
 
 #: template/./doc/capi.sgml:1147
 msgid ""
@@ -1245,7 +1245,7 @@ msgid ""
 "Then this module is compilied\n"
 msgstr ""
 "\n"
-"Затем этот модуль компилируется\n"
+"п≈п╟я┌п╣п╪ я█я┌п╬я┌ п╪п╬п╢я┐п╩я▄ п╨п╬п╪п©п╦п╩п╦я─я┐п╣я┌я│я▐\n"
 
 #: template/./doc/capi.sgml:1151
 #, fuzzy
@@ -1259,16 +1259,16 @@ msgid ""
 "whith key -shared or with analogous one (it depends on compilier).\n"
 msgstr ""
 "\n"
-"В результате получается Си-текст в файле module.c.\n"
-"Этот текст имеет заготовки для описанных функций my_func1,my_func2,....\n"
-"Остается просто поменять тело функций по вышеописанным правилам для C-API \n"
-"и получится so-модуль написанный на Си. Далее его останется только\n"
-"скомпилировать Си-компилятором с ключиком -shared или аналогичным,\n"
-"в зависимости от компилятора.\n"
+"п▓ я─п╣п╥я┐п╩я▄я┌п╟я┌п╣ п©п╬п╩я┐я┤п╟п╣я┌я│я▐ п║п╦-я┌п╣п╨я│я┌ п╡ я└п╟п╧п╩п╣ module.c.\n"
+"п╜я┌п╬я┌ я┌п╣п╨я│я┌ п╦п╪п╣п╣я┌ п╥п╟пЁп╬я┌п╬п╡п╨п╦ п╢п╩я▐ п╬п©п╦я│п╟п╫п╫я▀я┘ я└я┐п╫п╨я├п╦п╧ my_func1,my_func2,....\n"
+"п·я│я┌п╟п╣я┌я│я▐ п©я─п╬я│я┌п╬ п©п╬п╪п╣п╫я▐я┌я▄ я┌п╣п╩п╬ я└я┐п╫п╨я├п╦п╧ п©п╬ п╡я▀я┬п╣п╬п©п╦я│п╟п╫п╫я▀п╪ п©я─п╟п╡п╦п╩п╟п╪ п╢п╩я▐ C-API \n"
+"п╦ п©п╬п╩я┐я┤п╦я┌я│я▐ so-п╪п╬п╢я┐п╩я▄ п╫п╟п©п╦я│п╟п╫п╫я▀п╧ п╫п╟ п║п╦. п■п╟п╩п╣п╣ п╣пЁп╬ п╬я│я┌п╟п╫п╣я┌я│я▐ я┌п╬п╩я▄п╨п╬\n"
+"я│п╨п╬п╪п©п╦п╩п╦я─п╬п╡п╟я┌я▄ п║п╦-п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╬п╪ я│ п╨п╩я▌я┤п╦п╨п╬п╪ -shared п╦п╩п╦ п╟п╫п╟п╩п╬пЁп╦я┤п╫я▀п╪,\n"
+"п╡ п╥п╟п╡п╦я│п╦п╪п╬я│я┌п╦ п╬я┌ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╟.\n"
 
 #: template/./doc/capi.sgml:1159
 msgid "Other features"
-msgstr "Другие возможности"
+msgstr "п■я─я┐пЁп╦п╣ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌п╦"
 
 #: template/./doc/capi.sgml:1161
 msgid ""
@@ -1278,9 +1278,9 @@ msgid ""
 "code blocks calling and others.\n"
 msgstr ""
 "\n"
-"Кроме описанных выше в C-API существует множество других функций для работы "
-"с массивами, объектами, процессами ввода-вывода, вызовами кодовых блоков и "
-"многое другое.\n"
+"п я─п╬п╪п╣ п╬п©п╦я│п╟п╫п╫я▀я┘ п╡я▀я┬п╣ п╡ C-API я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╪п╫п╬п╤п╣я│я┌п╡п╬ п╢я─я┐пЁп╦я┘ я└я┐п╫п╨я├п╦п╧ п╢п╩я▐ я─п╟п╠п╬я┌я▀ "
+"я│ п╪п╟я│я│п╦п╡п╟п╪п╦, п╬п╠я┼п╣п╨я┌п╟п╪п╦, п©я─п╬я├п╣я│я│п╟п╪п╦ п╡п╡п╬п╢п╟-п╡я▀п╡п╬п╢п╟, п╡я▀п╥п╬п╡п╟п╪п╦ п╨п╬п╢п╬п╡я▀я┘ п╠п╩п╬п╨п╬п╡ п╦ "
+"п╪п╫п╬пЁп╬п╣ п╢я─я┐пЁп╬п╣.\n"
 
 #: template/./doc/capi.sgml:1166
 #, fuzzy
@@ -1292,10 +1292,10 @@ msgid ""
 "memory losing etc.\n"
 msgstr ""
 "\n"
-"Но данная информация будет предоставляться только тем, кто имеет\n"
-"соответствующую квалификацию, так как некорректное и\n"
-"неквалифицированное использование данных возможностей может привести к\n"
-"непонятным \"падениям\" прикладных программ, утечке памяти и.т.п.\n"
+"п²п╬ п╢п╟п╫п╫п╟я▐ п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╠я┐п╢п╣я┌ п©я─п╣п╢п╬я│я┌п╟п╡п╩я▐я┌я▄я│я▐ я┌п╬п╩я▄п╨п╬ я┌п╣п╪, п╨я┌п╬ п╦п╪п╣п╣я┌\n"
+"я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴я┐я▌ п╨п╡п╟п╩п╦я└п╦п╨п╟я├п╦я▌, я┌п╟п╨ п╨п╟п╨ п╫п╣п╨п╬я─я─п╣п╨я┌п╫п╬п╣ п╦\n"
+"п╫п╣п╨п╡п╟п╩п╦я└п╦я├п╦я─п╬п╡п╟п╫п╫п╬п╣ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╢п╟п╫п╫я▀я┘ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌п╣п╧ п╪п╬п╤п╣я┌ п©я─п╦п╡п╣я│я┌п╦ п╨\n"
+"п╫п╣п©п╬п╫я▐я┌п╫я▀п╪ \"п©п╟п╢п╣п╫п╦я▐п╪\" п©я─п╦п╨п╩п╟п╢п╫я▀я┘ п©я─п╬пЁя─п╟п╪п╪, я┐я┌п╣я┤п╨п╣ п©п╟п╪я▐я┌п╦ п╦.я┌.п©.\n"
 
 #: template/./doc/capi.sgml:1172
 msgid ""
@@ -1310,33 +1310,33 @@ msgid ""
 "of inner structure of CLIP-machine garantee.\n"
 msgstr ""
 "\n"
-"Желающих усовершенствовать CLIP просим обращаться по адресу \n"
-"- дадим и информацию и примеры, поможем в работе и освоении внутреннего\n"
-"устройства CLIP-машины.\n"
+"п√п╣п╩п╟я▌я┴п╦я┘ я┐я│п╬п╡п╣я─я┬п╣п╫я│я┌п╡п╬п╡п╟я┌я▄ CLIP п©я─п╬я│п╦п╪ п╬п╠я─п╟я┴п╟я┌я▄я│я▐ п©п╬ п╟п╢я─п╣я│я┐ \n"
+"- п╢п╟п╢п╦п╪ п╦ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╦ п©я─п╦п╪п╣я─я▀, п©п╬п╪п╬п╤п╣п╪ п╡ я─п╟п╠п╬я┌п╣ п╦ п╬я│п╡п╬п╣п╫п╦п╦ п╡п╫я┐я┌я─п╣п╫п╫п╣пЁп╬\n"
+"я┐я│я┌я─п╬п╧я│я┌п╡п╟ CLIP-п╪п╟я┬п╦п╫я▀.\n"
 
 #~ msgid ""
 #~ "\n"
 #~ "<emphasis>num</emhpasis> is the position of parameter.\n"
 #~ msgstr ""
 #~ "\n"
-#~ "<emphasis>num</emhpasis> - позиция параметра в списке параметров\n"
+#~ "<emphasis>num</emhpasis> - п©п╬п╥п╦я├п╦я▐ п©п╟я─п╟п╪п╣я┌я─п╟ п╡ я│п©п╦я│п╨п╣ п©п╟я─п╟п╪п╣я┌я─п╬п╡\n"
 
 #~ msgid "the incorrect passing parameter."
-#~ msgstr " переданного параметра"
+#~ msgstr " п©п╣я─п╣п╢п╟п╫п╫п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─п╟"
 
 #~ msgid "The returning of the value to the CLIP-machine as the string"
 #~ msgstr ""
-#~ "возврат значения в clip-машину в виде строки (с выделенной областью "
-#~ "памяти)"
+#~ "п╡п╬п╥п╡я─п╟я┌ п╥п╫п╟я┤п╣п╫п╦я▐ п╡ clip-п╪п╟я┬п╦п╫я┐ п╡ п╡п╦п╢п╣ я│я┌я─п╬п╨п╦ (я│ п╡я▀п╢п╣п╩п╣п╫п╫п╬п╧ п╬п╠п╩п╟я│я┌я▄я▌ "
+#~ "п©п╟п╪я▐я┌п╦)"
 
 #~ msgid ""
 #~ "with fix length (because of clipper-strings may have the zero bytes!)"
 #~ msgstr ""
-#~ "с указанной длиной (потому что в clipper-строках могут быть нулевые байты)"
+#~ "я│ я┐п╨п╟п╥п╟п╫п╫п╬п╧ п╢п╩п╦п╫п╬п╧ (п©п╬я┌п╬п╪я┐ я┤я┌п╬ п╡ clipper-я│я┌я─п╬п╨п╟я┘ п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п╫я┐п╩п╣п╡я▀п╣ п╠п╟п╧я┌я▀)"
 
 #~ msgid "If it nothing returns by _CLIP_.... , then NIL will returns."
 #~ msgstr ""
-#~ "если ничего не вернуть посредством _clip_.... , то в clip-машину вернется "
+#~ "п╣я│п╩п╦ п╫п╦я┤п╣пЁп╬ п╫п╣ п╡п╣я─п╫я┐я┌я▄ п©п╬я│я─п╣п╢я│я┌п╡п╬п╪ _clip_.... , я┌п╬ п╡ clip-п╪п╟я┬п╦п╫я┐ п╡п╣я─п╫п╣я┌я│я▐ "
 #~ "NIL"
 
 #, fuzzy
@@ -1345,15 +1345,15 @@ msgstr ""
 #~ "<emphasis>x</emphasis> is a pointer to the string to be hased\n"
 #~ msgstr ""
 #~ "\n"
-#~ "<emphasis>x</emphasis> - указывает на строку для hash\n"
+#~ "<emphasis>x</emphasis> - я┐п╨п╟п╥я▀п╡п╟п╣я┌ п╫п╟ я│я┌я─п╬п╨я┐ п╢п╩я▐ hash\n"
 
 #~ msgid ""
 #~ "\n"
 #~ "<emphasis>seed</emphasis> is the doun boundary hash beginned from\n"
 #~ msgstr ""
 #~ "\n"
-#~ "<emphasis>seed</emphasis> - нижняя граница строки с которой начинается "
-#~ "хэширование\n"
+#~ "<emphasis>seed</emphasis> - п╫п╦п╤п╫я▐я▐ пЁя─п╟п╫п╦я├п╟ я│я┌я─п╬п╨п╦ я│ п╨п╬я┌п╬я─п╬п╧ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ "
+#~ "я┘я█я┬п╦я─п╬п╡п╟п╫п╦п╣\n"
 
 #~ msgid ""
 #~ "\n"
@@ -1362,29 +1362,29 @@ msgstr ""
 #~ " returns 0 in correct case and -1 in incorrect one\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Заполняет информацию о параметре с номером num - длину и точность "
-#~ "представления\n"
+#~ "п≈п╟п©п╬п╩п╫я▐п╣я┌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╬ п©п╟я─п╟п╪п╣я┌я─п╣ я│ п╫п╬п╪п╣я─п╬п╪ num - п╢п╩п╦п╫я┐ п╦ я┌п╬я┤п╫п╬я│я┌я▄ "
+#~ "п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦я▐\n"
 
 #~ msgid ""
 #~ "\n"
 #~ " returns converted from int type value\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Вернуть число, преобразовав его из int.\n"
+#~ "п▓п╣я─п╫я┐я┌я▄ я┤п╦я│п╩п╬, п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╡ п╣пЁп╬ п╦п╥ int.\n"
 
 #~ msgid ""
 #~ "\n"
 #~ " returns converted from long type value\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Вернуть число, преобразовав его из long.\n"
+#~ "п▓п╣я─п╫я┐я┌я▄ я┤п╦я│п╩п╬, п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╡ п╣пЁп╬ п╦п╥ long.\n"
 
 #~ msgid ""
 #~ "\n"
 #~ " returns converted from double type value\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Вернуть число, преобразовав его из double.\n"
+#~ "п▓п╣я─п╫я┐я┌я▄ я┤п╦я│п╩п╬, п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╡ п╣пЁп╬ п╦п╥ double.\n"
 
 #~ msgid ""
 #~ "\n"
@@ -1392,22 +1392,22 @@ msgstr ""
 #~ " Str must be released without CLIP-machine taking part!\n"
 #~ msgstr ""
 #~ "\n"
-#~ "возвращает строку, предварительно скопировав данные из str. Str должна "
-#~ "быть освобождена без участия clip-машины!\n"
+#~ "п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐, п©я─п╣п╢п╡п╟я─п╦я┌п╣п╩я▄п╫п╬ я│п╨п╬п©п╦я─п╬п╡п╟п╡ п╢п╟п╫п╫я▀п╣ п╦п╥ str. Str п╢п╬п╩п╤п╫п╟ "
+#~ "п╠я▀я┌я▄ п╬я│п╡п╬п╠п╬п╤п╢п╣п╫п╟ п╠п╣п╥ я┐я┤п╟я│я┌п╦я▐ clip-п╪п╟я┬п╦п╫я▀!\n"
 
 #~ msgid ""
 #~ "\n"
 #~ " returns converted from logic type number\n"
 #~ msgstr ""
 #~ "\n"
-#~ "возвращает  логическое значение.\n"
+#~ "п╡п╬п╥п╡я─п╟я┴п╟п╣я┌  п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.\n"
 
 #~ msgid ""
 #~ "\n"
 #~ " returns date converted from julian format\n"
 #~ msgstr ""
 #~ "\n"
-#~ "возвращает дату, преобразовав из формата julian.\n"
+#~ "п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╢п╟я┌я┐, п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╡ п╦п╥ я└п╬я─п╪п╟я┌п╟ julian.\n"
 
 #~ msgid ""
 #~ "\n"
@@ -1415,7 +1415,7 @@ msgstr ""
 #~ " "
 #~ msgstr ""
 #~ "\n"
-#~ " возвращает дату, преобразовав из формата year, month, day.\n"
+#~ " п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╢п╟я┌я┐, п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╡ п╦п╥ я└п╬я─п╪п╟я┌п╟ year, month, day.\n"
 #~ " "
 
 #~ msgid ""
@@ -1436,7 +1436,7 @@ msgstr ""
 #~ "In more simple cases one can use:\n"
 #~ msgstr ""
 #~ "\n"
-#~ "предоставляет объекты с информацией об ошибках выполнения\n"
+#~ "п©я─п╣п╢п╬я│я┌п╟п╡п╩я▐п╣я┌ п╬п╠я┼п╣п╨я┌я▀ я│ п╦п╫я└п╬я─п╪п╟я├п╦п╣п╧ п╬п╠ п╬я┬п╦п╠п╨п╟я┘ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐\n"
 
 #~ msgid ""
 #~ "\n"

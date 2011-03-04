@@ -5,17 +5,17 @@ $CATEGORY$
 $SUMMARY$
 	Clears the receiving buffer.
 $LANG_RU$
-	Очищает буфер приема.
+	п·я┤п╦я┴п╟п╣я┌ п╠я┐я└п╣я─ п©я─п╦п╣п╪п╟.
 $SYNTAX$
 	COM_FLUSH(<nComPort>) --> lClear
 $ARGUMENTS$
 	<nComPort> - Designates the port (1 to N).
 $LANG_RU$
-	<nComPort> - Определяет номер порта.
+	<nComPort> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╬п╪п╣я─ п©п╬я─я┌п╟.
 $RETURNS$
 	If the receiving buffer can be cleared successfully, the function returns .T..
 $LANG_RU$
-	В случае успеха возвращает .T..
+	п▓ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .T..
 $DESCRIPTION$
 	This function allows you to flush all the characters in a
 	receiving buffer. This makes it unnecessary to tediously determine how
@@ -26,10 +26,10 @@ $DESCRIPTION$
 	character can be received between the time that you call a COM_COUNT()
 	and a COM_READ().
 $LANG_RU$
-	Эта функция позволяет очистить все символы в буфере приема.
+	п╜я┌п╟ я└я┐п╫п╨я├п╦я▐ п©п╬п╥п╡п╬п╩я▐п╣я┌ п╬я┤п╦я│я┌п╦я┌я▄ п╡я│п╣ я│п╦п╪п╡п╬п╩я▀ п╡ п╠я┐я└п╣я─п╣ п©я─п╦п╣п╪п╟.
 
-	COM_FLUSH() гарантирует полную очистку буфера приема. Однако,
-	новые символы могут быть приняты между вызовом COM_COUNT() и COM_READ().
+	COM_FLUSH() пЁп╟я─п╟п╫я┌п╦я─я┐п╣я┌ п©п╬п╩п╫я┐я▌ п╬я┤п╦я│я┌п╨я┐ п╠я┐я└п╣я─п╟ п©я─п╦п╣п╪п╟. п·п╢п╫п╟п╨п╬,
+	п╫п╬п╡я▀п╣ я│п╦п╪п╡п╬п╩я▀ п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п©я─п╦п╫я▐я┌я▀ п╪п╣п╤п╢я┐ п╡я▀п╥п╬п╡п╬п╪ COM_COUNT() п╦ COM_READ().
 $EXAMPLES$
 	cHayes  :=  "ATZ"           // Hayes modem reset command
 	COM_SEND(1, cHayes)         // Issue Hayes command
@@ -40,7 +40,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_INIT(),COM_OPEN(),COM_READ(),COM_SEND(),COM_SFLUSH()
 $AUTHOR$

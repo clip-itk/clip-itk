@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Read output of WWW server, passed via FCGI protocol.
 $LANG_RU$
-	Читает вывод WWW сервера, переданный через протокол FCGI.
+	п╖п╦я┌п╟п╣я┌ п╡я▀п╡п╬п╢ WWW я│п╣я─п╡п╣я─п╟, п©п╣я─п╣п╢п╟п╫п╫я▀п╧ я┤п╣я─п╣п╥ п©я─п╬я┌п╬п╨п╬п╩ FCGI.
 $SYNTAX$
 	FCGI_READ() --> cStdInData
 $ARGUMENTS$
 	None.
 $LANG_RU$
-	Нет.
+	п²п╣я┌.
 $RETURNS$
 	Data from StdIn.
 $LANG_RU$
-	Данные из входного потока.
+	п■п╟п╫п╫я▀п╣ п╦п╥ п╡я┘п╬п╢п╫п╬пЁп╬ п©п╬я┌п╬п╨п╟.
 $DESCRIPTION$
 	This function read exactly CONTENT_LENGTH bytes, where
 	CONTENT_LENGTH is a number, supplied by HTTP client
 $LANG_RU$
-	Эта функция читает ровно CONTENT_LENGTH байт, где CONTENT_LENGTH
-	это число, задаваемое HTTP-клиентом.
+	п╜я┌п╟ я└я┐п╫п╨я├п╦я▐ я┤п╦я┌п╟п╣я┌ я─п╬п╡п╫п╬ CONTENT_LENGTH п╠п╟п╧я┌, пЁп╢п╣ CONTENT_LENGTH
+	я█я┌п╬ я┤п╦я│п╩п╬, п╥п╟п╢п╟п╡п╟п╣п╪п╬п╣ HTTP-п╨п╩п╦п╣п╫я┌п╬п╪.
 $EXAMPLES$
 $LANG_RU$
 $PECULIARITIES$
@@ -29,7 +29,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
 $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	FCGI_GETENV(),FCGI_FLUSH(),FCGI_ACCEPT()
 $AUTHOR$

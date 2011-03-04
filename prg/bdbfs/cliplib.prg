@@ -4,8 +4,8 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-В основном, модификация стандартных клипперовских функций,
-а также работа в "форсированном" режиме.
+Basically, the modification of standard CLIPPER functions,
+also work in "forced" mode.
 */
 
 #include "inkey.ch"
@@ -55,7 +55,7 @@ IF _error THEN BREAK(RetError)
 
 RETURN .T.
 **********
-EXTE SDF	// драйвер SDF
+EXTE SDF	// driver SDF
 EXTE DELIM
 **********
 /*
@@ -93,7 +93,7 @@ IF (nRec <> Nil)
 	nNext:= 1
 ENDIF
 ErrorSys(.t.)
-CheckEsc(.T.)	//счетчик
+CheckEsc(.T.)	// counter
 IF EMPTY(lRest) THEN GO TOP
 DO WHILE !EOF() .AND. Eval(bWhile) .AND. nNext-- # 0 .AND. CheckEsc(,nfSize)
 	IF EVAL(bFor)
@@ -111,7 +111,7 @@ DO WHILE !EOF() .AND. Eval(bWhile) .AND. nNext-- # 0 .AND. CheckEsc(,nfSize)
 							&cfName)
 			RECOVER
 				lErr:=.T.
-				IF cTdest=='N'	//переполнение
+				IF cTdest=='N'	// overflow
 				   nDec:=aFld[4]
 				   cTSrc:=REPL('9',aFld[3]-nDec-1)+;
 					  IF(nDec>0,;
@@ -212,7 +212,7 @@ RETURN lRes
 **********
 FUNC __DBLOCATE(_bFor, _bWhile, _next, _rec, _rest, lBack)
 LOCAL _lFound
-CheckEsc(.T.)	//Счетчик
+CheckEsc(.T.)	// Counter
 IF EMPTY(lBack)
 	IF EMPTY(_next) .AND. EMPTY(_rest) THEN DbGoTop()
 	IF_NIL _BFor IS {|| .T.}
@@ -262,10 +262,10 @@ IF EMPTY(lStart)
 	IF _tally >= nLast
 		IF Inkey()==K_ESC THEN RETURN .F.
 		nLast+=m->_sx_step
-		IF !EMPTY(m->_lMeter) THEN Meter(2,,_tally,nTotal)	//nTotal только для SDF
+		IF !EMPTY(m->_lMeter) THEN Meter(2,,_tally,nTotal)	//nTotal just for SDF
 	ENDIF
 	_tally++
-ELSE		//обнуление
+ELSE		// Zeroing
 	nLast:=m->_sx_step
 	m->_tally:=0
 ENDIF
@@ -369,7 +369,7 @@ RETURN Strip5(aDest)
 STATIC FUNC Strip5(aDest)
 LOCAL aItem
 IF LEN(aDest)>4
-//Если массив не четырехмерный.
+// If array isn't 4-dimensional.
 	FOR i:=1 TO LEN(aDest)
 		aItem:=aDest[i]
 		aDest[i]:={aItem[1], aItem[2], aItem[3], aItem[4]}
@@ -393,7 +393,7 @@ _Tally:=0
 FOR i:=1 TO LEN(aFlds)
 	cF:=UPPER(aFlds[i])
 	IF Parce(cF,' AS ',@cF, @cFn) = 0 THEN cFn:=cF
-	cF:=ALLTRIM(cF)		//а вдруг пробелы перед AS или после запятой
+	cF:=ALLTRIM(cF)		// What if a space before AS or after the comma
 	cFn:=ALLTRIM(cFn)
 
 	IF (j:=AMScan(_aEt,1,cF))<>0
@@ -416,7 +416,7 @@ FOR i:=1 TO LEN(aFlds)
 					_len:=1
 				CASE _type=='D'
 					_len:=8
-				OTHER		//_type=='M' и возможно A
+				OTHER		//_type=='M' and probably A
 					_len:=10
 			END
 			j:=IF(cF==cFN,'EXP_'+NTRIM(i),cFN)
@@ -463,7 +463,7 @@ ENDIF
 IF !lRest THEN dbGoTop()
 OldBase:= Select()
 
-/* Так в стандарте
+/* Same as in standard
 aTotal:= {}
 Aeval(Dbstruct(), {|_1| IIF(_1[2] == "M", Nil, AAdd(aTotal, _1))})
 
@@ -471,8 +471,8 @@ IF (Empty(aTotal))
 	RETURN .F.
 ENDIF
 */
-aTotal:=DbStruct_()	//да мы и Memo возьмем
-CheckEsc(.T.)	//счетчик
+aTotal:=DbStruct_()	// Memo taken too
+CheckEsc(.T.)	// counter
 
 BEGIN SEQUENCE
 	aSumFields:= {}
@@ -547,29 +547,29 @@ LOCAL	aStr:={},i,nStart,nFld,;
 	cNewByte,cNewType,lWasMemo, lCpDBF, lWasVFP
 #define DBASE4 CHR(139)+CHR(142)+CHR(123)+CHR(203)
 #define DBASE7 CHR(4)+CHR(5)
-nFld:=Fseek(_handle,0,2)	//Размер для проверки
+nFld:=Fseek(_handle,0,2)	//Size for checking
 FSeek(_handle,0)
 Fread(_handle,@cFld,28)
-//Тип базы, CDX_flag,CodePage
+//Database type, CDX_flag,CodePage
 cNewType:=First(cFld)
-nStart:=Bin2I(SUBSTR(cFld,9,2))		//Начало данных
-IF nStart>nFld .OR. nStart<65 .OR. nFld<65 THEN RETURN aStr	//Фигня какая-то
+nStart:=Bin2I(SUBSTR(cFld,9,2))		//Begin data
+IF nStart>nFld .OR. nStart<65 .OR. nFld<65 THEN RETURN aStr	//Garbage here
 
 m->__RealFlds:=ReadBin(_handle,0,nStart-36,1)
 lCpDBF:=BETWEEN(CPDBF(),1200,1299)
-m->_aCommon:={lCpDBF .AND. !EMPTY(m->_lForced),;//Вообще форсированна
-	      cNewType,;			//Оригинал 1-го байта
-	      cNewType,;			//Измененный 1-й байт
-	      lCpDBF,;				//Надо OemToAnsi
-	      .F.;				//Есть AutoInc
+m->_aCommon:={lCpDBF .AND. !EMPTY(m->_lForced),;//is forced
+	      cNewType,;			//Original of 1'st byte
+	      cNewType,;			//Changed 1'st byte
+	      lCpDBF,;				//Need OemToAnsi
+	      .F.;				//Have AutoInc
 	      }
 
 lWasMemo:=.F.
 FSeek(_handle,32)
-DO WHILE .T.	//окончание полей
+DO WHILE .T.	//fields ending
 	IF (Fread(_handle,@cFld,32) <>32) .OR.;
 	   (First(cFld) == _ENTER) .OR.;
-	   (FSeek(_handle,0,1)>nStart) THEN EXIT	//окончание полей
+	   (FSeek(_handle,0,1)>nStart) THEN EXIT	//fields ending
 
 	cfName:=TRIM(FN_NoNull(cFld))
 	IF lCpDBF
@@ -593,7 +593,7 @@ DO WHILE .T.	//окончание полей
 			NeedForced:=2	//bmp D5
 
 		CASE (cfType $ 'CNFLDYTGPBIX') .OR.;
-		     (cfType=='V' .AND. cfLen > 2)	//известные
+		     (cfType=='V' .AND. cfLen > 2)	//known
 			IF cfType=='I' .AND. cfFlag=12
 				cfType:='AI'
 				m->_aCommon[6]:=.T.
@@ -650,8 +650,8 @@ ENDDO
 IF !EMPTY(m->_lForced)
 	i:=FSeek(_handle,0,1)
 
-	IF i < nStart	//Не в начале данных, н-р контейнер FoxPro нашли
-		i:=i-32	//Позиция ENTER
+	IF i < nStart	//Not at begin of data, for example, found FoxPro container
+		i:=i-32	//ENTER position
 		FSEEK(_handle,i)
 
 		cFld:=' '+REPL(CHR(0),10)+'C'+REPL(CHR(0),4)+CHR(1)+;
@@ -664,7 +664,7 @@ IF !EMPTY(m->_lForced)
 		FWRITE(_handle,_ENTER,1)
 	ENDIF
 
-	IF !InList(ASC(cNewType),3,131,245,48,49)	//известные RDD
+	IF !InList(ASC(cNewType),3,131,245,48,49)	// Know RDD
 		FSeek(_handle,0)
 
 		cNewType:=IF(cNewType $ DBASE4,;
@@ -676,7 +676,7 @@ IF !EMPTY(m->_lForced)
 		m->_aCommon[3]:=cNewType
 		m->_aCommon[1]:=.t.
 	ENDIF
-	NeedForced:=0	//Зафорсировали уже
+	NeedForced:=0	//Already forced
 ELSE
 	IF cNewType $ DBASE4+DBASE7
 		NeedForced:=2
@@ -702,12 +702,12 @@ FOR i:=1 TO LEN(cFld)
 NEXT
 IF cNew < 'A' THEN cNew:='_'+cNew
 lRes:=(cFld<>cNew)
-cFld:=cNew	//По ссылке
+cFld:=cNew	//By reference
 RETU lRes
 **********
 PROC MakeRealStr(cBase)
 LOCAL hBase
-IF VALTYPE(_aCommon)=='A' .AND. !EMPTY(_aCommon[1])	//ValType из-за старых мемо
+IF VALTYPE(_aCommon)=='A' .AND. !EMPTY(_aCommon[1])	//ValType because old memo
 	hBase:=FOPEN(cBase, 2)
 	FSeek(hBase,0)
 	Fwrite(hBase,m->_aCommon[2],1)
@@ -716,6 +716,6 @@ IF VALTYPE(_aCommon)=='A' .AND. !EMPTY(_aCommon[1])	//ValType из-за старых мемо
 	FCLOSE(hBase)
 ENDIF
 **********
-FUNC DbStruct_()		//В CH хуже
+FUNC DbStruct_()		//In CH worse
 RETURN IF(SELECT()=1, m->__aDbStruct, DBStruct())
 

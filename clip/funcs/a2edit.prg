@@ -11,8 +11,8 @@
 #include "dbedit.ch"
 
 
-#define MY_HEADSEP      translate_charset(__CHARSET__,host_charset(),"═╤═")
-#define MY_COLSEP       translate_charset(__CHARSET__,host_charset()," │ ")
+#define MY_HEADSEP      translate_charset(__CHARSET__,host_charset(),"═╤═") // utf-8: "Б∙░Б∙╓Б∙░"
+#define MY_COLSEP       translate_charset(__CHARSET__,host_charset()," │ ") // utf-8: " Б■┌ "
 
 memvar __a2_data, curr_record,__userfunc
 
@@ -90,7 +90,7 @@ function a2edit
 	    if browse:hitBottom
 	       status:=DE_HITBOTTOM
 	    endif
-	    // DE_EXCEPT           4          // Клавиша не обрабатывается DBEDIT()
+	    // DE_EXCEPT           4          // Key don't handled in DBEDIT()
 	    if "(" $ user_func
 		__userfunc:=user_func
 	    else

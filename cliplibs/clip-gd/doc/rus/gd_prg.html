@@ -1,41 +1,41 @@
 <HTML>
 <HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <LINK REL=STYLESHEET TYPE="text/css" HREF="../styl.css">
 <TITLE>Clipper compiler</TITLE>
 </HEAD>
 </HEAD>
 <BODY>
 <center>
-<A HREF="index.html" target='pole'>Главная страница о компиляторе</a>
+<A HREF="index.html" target='pole'>п⌠п╩п╟п╡п╫п╟я▐ я│я┌я─п╟п╫п╦я├п╟ п╬ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╣</a>
 
 
-<h2>             Описание  функций gd*() </h2>
+<h2>             п·п©п╦я│п╟п╫п╦п╣  я└я┐п╫п╨я├п╦п╧ gd*() </h2>
 </center>
 
-Функции gd* предназначены для генерации графических примитивов (прямоугольники,
-окружности, линии и т.п. ) и обработки файлов графических форматов PNG,JPEG,...
-<a href=gd_lib.html>Оригинальная документация самой библиотеки libgd</a> <br>
-<a href=o_gdimage.html>класс gdImage</a> <br>
+п╓я┐п╫п╨я├п╦п╦ gd* п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫я▀ п╢п╩я▐ пЁп╣п╫п╣я─п╟я├п╦п╦ пЁя─п╟я└п╦я┤п╣я│п╨п╦я┘ п©я─п╦п╪п╦я┌п╦п╡п╬п╡ (п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╦п╨п╦,
+п╬п╨я─я┐п╤п╫п╬я│я┌п╦, п╩п╦п╫п╦п╦ п╦ я┌.п©. ) п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ я└п╟п╧п╩п╬п╡ пЁя─п╟я└п╦я┤п╣я│п╨п╦я┘ я└п╬я─п╪п╟я┌п╬п╡ PNG,JPEG,...
+<a href=gd_lib.html>п·я─п╦пЁп╦п╫п╟п╩я▄п╫п╟я▐ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦я▐ я│п╟п╪п╬п╧ п╠п╦п╠п╩п╦п╬я┌п╣п╨п╦ libgd</a> <br>
+<a href=o_gdimage.html>п╨п╩п╟я│я│ gdImage</a> <br>
 
 <h4> imagePtr=gdImageCreate(xSize, ySize) </H4>
-Создает в памяти графический образ размером xSize * ySize,
-возвращает указатель на графический образ <i>imagePtr</i>, который в последствии используется
-во всех других функциях.
+п║п╬п╥п╢п╟п╣я┌ п╡ п©п╟п╪я▐я┌п╦ пЁя─п╟я└п╦я┤п╣я│п╨п╦п╧ п╬п╠я─п╟п╥ я─п╟п╥п╪п╣я─п╬п╪ xSize * ySize,
+п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ пЁя─п╟я└п╦я┤п╣я│п╨п╦п╧ п╬п╠я─п╟п╥ <i>imagePtr</i>, п╨п╬я┌п╬я─я▀п╧ п╡ п©п╬я│п╩п╣п╢я│я┌п╡п╦п╦ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐
+п╡п╬ п╡я│п╣я┘ п╢я─я┐пЁп╦я┘ я└я┐п╫п╨я├п╦я▐я┘.
 <h4> imagePtr=gdImageCreateFromPNG(filename)<br>
  imagePtr=gdImageCreateFromGD(filename)     <br>
  imagePtr=gdImageCreateFromGD2(filename)    <br>
  imagePtr=gdImageCreateFromXBM(filename)    <br>
  imagePtr=gdImageCreateFromJPEG(filename)   </h4>
- Зачитывает образ из файла соотвествующего формата.
+ п≈п╟я┤п╦я┌я▀п╡п╟п╣я┌ п╬п╠я─п╟п╥ п╦п╥ я└п╟п╧п╩п╟ я│п╬п╬я┌п╡п╣я│я┌п╡я┐я▌я┴п╣пЁп╬ я└п╬я─п╪п╟я┌п╟.
 <h4> imagePtr=gdImageCreateFromXPM(filename)    <br>
- На сегодняшний день этот формат не удалось заставить работать -
- он тянет за собой кучу X11 библиотек и конца им не видно :)
- Может она и заработает когда clip будет генерить X-Windows
- программы.
+ п²п╟ я│п╣пЁп╬п╢п╫я▐я┬п╫п╦п╧ п╢п╣п╫я▄ я█я┌п╬я┌ я└п╬я─п╪п╟я┌ п╫п╣ я┐п╢п╟п╩п╬я│я▄ п╥п╟я│я┌п╟п╡п╦я┌я▄ я─п╟п╠п╬я┌п╟я┌я▄ -
+ п╬п╫ я┌я▐п╫п╣я┌ п╥п╟ я│п╬п╠п╬п╧ п╨я┐я┤я┐ X11 п╠п╦п╠п╩п╦п╬я┌п╣п╨ п╦ п╨п╬п╫я├п╟ п╦п╪ п╫п╣ п╡п╦п╢п╫п╬ :)
+ п°п╬п╤п╣я┌ п╬п╫п╟ п╦ п╥п╟я─п╟п╠п╬я┌п╟п╣я┌ п╨п╬пЁп╢п╟ clip п╠я┐п╢п╣я┌ пЁп╣п╫п╣я─п╦я┌я▄ X-Windows
+ п©я─п╬пЁя─п╟п╪п╪я▀.
 <h4> imagePtr=gdImageCreateFromFILE(filename[, typeFile])</H4>
- Зачитывает образ из файла с указанием нужного типа формата.<br>
- Поддерживаются типы файлов:<br>
+ п≈п╟я┤п╦я┌я▀п╡п╟п╣я┌ п╬п╠я─п╟п╥ п╦п╥ я└п╟п╧п╩п╟ я│ я┐п╨п╟п╥п╟п╫п╦п╣п╪ п╫я┐п╤п╫п╬пЁп╬ я┌п╦п©п╟ я└п╬я─п╪п╟я┌п╟.<br>
+ п÷п╬п╢п╢п╣я─п╤п╦п╡п╟я▌я┌я│я▐ я┌п╦п©я▀ я└п╟п╧п╩п╬п╡:<br>
  <pre>
 	#define	GDFILE_PNG	1
 	#define	GDFILE_GD	2
@@ -43,39 +43,39 @@
 	#define GDFILE_XBM	4
 	#define GDFILE_JPEG	6
  </pre><br>
- По умолчанию GDFILE_PNG.
- Типы описаны в include/gdinfo.ch
- Вместо <i>filename</i> можно указать "-|", в этом случае образ будет считываться
- из потока <i>stdin</i>
+ п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ GDFILE_PNG.
+ п╒п╦п©я▀ п╬п©п╦я│п╟п╫я▀ п╡ include/gdinfo.ch
+ п▓п╪п╣я│я┌п╬ <i>filename</i> п╪п╬п╤п╫п╬ я┐п╨п╟п╥п╟я┌я▄ "-|", п╡ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣ п╬п╠я─п╟п╥ п╠я┐п╢п╣я┌ я│я┤п╦я┌я▀п╡п╟я┌я▄я│я▐
+ п╦п╥ п©п╬я┌п╬п╨п╟ <i>stdin</i>
 <H4> gdImageDestroy(imagePtr) </H4>
-Уничтожает графический образ.
+пёп╫п╦я┤я┌п╬п╤п╟п╣я┌ пЁя─п╟я└п╦я┤п╣я│п╨п╦п╧ п╬п╠я─п╟п╥.
 <h4> gdImagePNG(imagePtr, filename) <br>
  gdImageGD(imagePtr, filename)      <br>
  gdImageGD2(imagePtr, filename)     <br>
  gdImageJPEG(imagePtr, filename) </H4>
-Записывает графический образ imagePtr в файл filename в соответсвующем формате.
-Расширения файла указывать обязательно.
- Вместо <i>filename</i> можно указать "|-", в этом случае образ будет записываться
- в поток <i>stdout</i>
+п≈п╟п©п╦я│я▀п╡п╟п╣я┌ пЁя─п╟я└п╦я┤п╣я│п╨п╦п╧ п╬п╠я─п╟п╥ imagePtr п╡ я└п╟п╧п╩ filename п╡ я│п╬п╬я┌п╡п╣я┌я│п╡я┐я▌я┴п╣п╪ я└п╬я─п╪п╟я┌п╣.
+п═п╟я│я┬п╦я─п╣п╫п╦я▐ я└п╟п╧п╩п╟ я┐п╨п╟п╥я▀п╡п╟я┌я▄ п╬п╠я▐п╥п╟я┌п╣п╩я▄п╫п╬.
+ п▓п╪п╣я│я┌п╬ <i>filename</i> п╪п╬п╤п╫п╬ я┐п╨п╟п╥п╟я┌я▄ "|-", п╡ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣ п╬п╠я─п╟п╥ п╠я┐п╢п╣я┌ п╥п╟п©п╦я│я▀п╡п╟я┌я▄я│я▐
+ п╡ п©п╬я┌п╬п╨ <i>stdout</i>
 <h4> gdImageToFile(imagePtr, filename[, typeFile]) </H4>
-Записывает графический образ imagePtr в файл filename в формате typeFile.
-по умолчанию тип файла - GDFILE_PNG.
- Типы описаны в include/gdinfo.ch
- Вместо <i>filename</i> можно указать "|-", в этом случае образ будет записываться
- в поток <i>stdout</i>
+п≈п╟п©п╦я│я▀п╡п╟п╣я┌ пЁя─п╟я└п╦я┤п╣я│п╨п╦п╧ п╬п╠я─п╟п╥ imagePtr п╡ я└п╟п╧п╩ filename п╡ я└п╬я─п╪п╟я┌п╣ typeFile.
+п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ я┌п╦п© я└п╟п╧п╩п╟ - GDFILE_PNG.
+ п╒п╦п©я▀ п╬п©п╦я│п╟п╫я▀ п╡ include/gdinfo.ch
+ п▓п╪п╣я│я┌п╬ <i>filename</i> п╪п╬п╤п╫п╬ я┐п╨п╟п╥п╟я┌я▄ "|-", п╡ я█я┌п╬п╪ я│п╩я┐я┤п╟п╣ п╬п╠я─п╟п╥ п╠я┐п╢п╣я┌ п╥п╟п©п╦я│я▀п╡п╟я┌я▄я│я▐
+ п╡ п©п╬я┌п╬п╨ <i>stdout</i>
 <h4> color_index=gdColorCreate(imagePtr, Red, Green, Blue) </H4>
-Резервирует и возвращает номер цвета (<a href="#color_index">color_index</a>) для заказанной палитры RGB.
- Если лимит в 256 цветов уже выбран, то подбирает ближайший
-    похожий и возращает индекс поборанного цвета.
+п═п╣п╥п╣я─п╡п╦я─я┐п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ я├п╡п╣я┌п╟ (<a href="#color_index">color_index</a>) п╢п╩я▐ п╥п╟п╨п╟п╥п╟п╫п╫п╬п╧ п©п╟п╩п╦я┌я─я▀ RGB.
+ п∙я│п╩п╦ п╩п╦п╪п╦я┌ п╡ 256 я├п╡п╣я┌п╬п╡ я┐п╤п╣ п╡я▀п╠я─п╟п╫, я┌п╬ п©п╬п╢п╠п╦я─п╟п╣я┌ п╠п╩п╦п╤п╟п╧я┬п╦п╧
+    п©п╬я┘п╬п╤п╦п╧ п╦ п╡п╬п╥я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│ п©п╬п╠п╬я─п╟п╫п╫п╬пЁп╬ я├п╡п╣я┌п╟.
 <h4> gdColorTransparent(imagePtr, color_index) </H4>
-Устанавливает цвет прозрачности изображения.
+пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я├п╡п╣я┌ п©я─п╬п╥я─п╟я┤п╫п╬я│я┌п╦ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐.
 <h4> gdImageInterlace(imagePtr, interlaced) </H4>
-Устанавливает черезстрочную "развертку".
+пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я┤п╣я─п╣п╥я│я┌я─п╬я┤п╫я┐я▌ "я─п╟п╥п╡п╣я─я┌п╨я┐".
 <h4> gdImageCompare(imagePtr1, imagePtr2) </H4>
-Сравнивает два образа побитно.
+п║я─п╟п╡п╫п╦п╡п╟п╣я┌ п╢п╡п╟ п╬п╠я─п╟п╥п╟ п©п╬п╠п╦я┌п╫п╬.
 <h4> gdColorInfo(imagePtr, infoIndex, color_index) </H4>
-Возвращает различную информацию о цветовых значениях <BR>
-infoIndex может принимать значения:<br>
+п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╟п╥п╩п╦я┤п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╬ я├п╡п╣я┌п╬п╡я▀я┘ п╥п╫п╟я┤п╣п╫п╦я▐я┘ <BR>
+infoIndex п╪п╬п╤п╣я┌ п©я─п╦п╫п╦п╪п╟я┌я▄ п╥п╫п╟я┤п╣п╫п╦я▐:<br>
 GDINFO_COLORSTOTAL<BR>
 GDINFO_TRANSPARENT<BR>
 GDINFO_INTERLACED <BR>
@@ -84,46 +84,46 @@ GDINFO_COLORGREEN <BR>
 GDINFO_COLORBLUE  <BR>
 GDINFO_SIZEX      <BR>
 GDINFO_SIZEY      <BR>
-Эти значения описаны в gdinfo.ch
+п╜я┌п╦ п╥п╫п╟я┤п╣п╫п╦я▐ п╬п©п╦я│п╟п╫я▀ п╡ gdinfo.ch
 <h4> gdImageGetPixel(imagePtr, x_coord, y_coord) </H4>
-Возвращает индекс цвета в указанной точке <BR>
+п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│ я├п╡п╣я┌п╟ п╡ я┐п╨п╟п╥п╟п╫п╫п╬п╧ я┌п╬я┤п╨п╣ <BR>
 <h4> gdImageSetPixel(imagePtr, x_coord, y_coord, color_index) </H4>
-Рисует точку указанным цветом <a href="#color_index">color_index</a><BR>
+п═п╦я│я┐п╣я┌ я┌п╬я┤п╨я┐ я┐п╨п╟п╥п╟п╫п╫я▀п╪ я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a><BR>
 <h4> gdImageBoundsSafe(imagePtr,x_coord,y_coord) </H4>
-Определяет находится ли указанная точка внутри образа или находится за
-границами образа. <BR>
+п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╟я┘п╬п╢п╦я┌я│я▐ п╩п╦ я┐п╨п╟п╥п╟п╫п╫п╟я▐ я┌п╬я┤п╨п╟ п╡п╫я┐я┌я─п╦ п╬п╠я─п╟п╥п╟ п╦п╩п╦ п╫п╟я┘п╬п╢п╦я┌я│я▐ п╥п╟
+пЁя─п╟п╫п╦я├п╟п╪п╦ п╬п╠я─п╟п╥п╟. <BR>
 <h4> gdImageLine(imagePtr, x1, y1, x2, y2, color_index) </H4>
-Рисует линию указанным цветом <BR>
+п═п╦я│я┐п╣я┌ п╩п╦п╫п╦я▌ я┐п╨п╟п╥п╟п╫п╫я▀п╪ я├п╡п╣я┌п╬п╪ <BR>
 <h4> gdImageDashedLine(imagePtr, x1, y1, x2, y2, color_index) </H4>
-Рисует прерывистую линию указанным цветом <BR>
+п═п╦я│я┐п╣я┌ п©я─п╣я─я▀п╡п╦я│я┌я┐я▌ п╩п╦п╫п╦я▌ я┐п╨п╟п╥п╟п╫п╫я▀п╪ я├п╡п╣я┌п╬п╪ <BR>
 <h4> gdImageRectangle(imagePtr, x1, y1, x2, y2, color_index) </H4>
-Рисует прямоугольник указанным цветом <BR>
+п═п╦я│я┐п╣я┌ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╦п╨ я┐п╨п╟п╥п╟п╫п╫я▀п╪ я├п╡п╣я┌п╬п╪ <BR>
 <h4> gdImageFilledRectangle(imagePtr, x1, y1, x2, y2, color_index) </H4>
-Рисует прямоугольник заполненный указанным цветом <BR>
+п═п╦я│я┐п╣я┌ п©я─я▐п╪п╬я┐пЁп╬п╩я▄п╫п╦п╨ п╥п╟п©п╬п╩п╫п╣п╫п╫я▀п╧ я┐п╨п╟п╥п╟п╫п╫я▀п╪ я├п╡п╣я┌п╬п╪ <BR>
 <h4> gdImageArc(imagePtr, cx, cy, width, high, startangle, endangle, color_index) </H4>
-Рисует круг, эллипс или дугу с центром cx, cy  цветом <a href="#color_index">color_index</a> и радиусом width по оси Х и high по оси Y,
-начиная с угла startangle и заканчивая endangle.
+п═п╦я│я┐п╣я┌ п╨я─я┐пЁ, я█п╩п╩п╦п©я│ п╦п╩п╦ п╢я┐пЁя┐ я│ я├п╣п╫я┌я─п╬п╪ cx, cy  я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a> п╦ я─п╟п╢п╦я┐я│п╬п╪ width п©п╬ п╬я│п╦ п╔ п╦ high п©п╬ п╬я│п╦ Y,
+п╫п╟я┤п╦п╫п╟я▐ я│ я┐пЁп╩п╟ startangle п╦ п╥п╟п╨п╟п╫я┤п╦п╡п╟я▐ endangle.
 <h4> gdImageFilledArc(imagePtr, cx, cy, width, high, color_index) </H4>
-Рисует заполненный круг или эллипс с центром cx, cy  цветом <a href="#color_index">color_index</a> и радиусом width по оси Х и high по оси Y.
+п═п╦я│я┐п╣я┌ п╥п╟п©п╬п╩п╫п╣п╫п╫я▀п╧ п╨я─я┐пЁ п╦п╩п╦ я█п╩п╩п╦п©я│ я│ я├п╣п╫я┌я─п╬п╪ cx, cy  я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a> п╦ я─п╟п╢п╦я┐я│п╬п╪ width п©п╬ п╬я│п╦ п╔ п╦ high п©п╬ п╬я│п╦ Y.
 <h4> gdImageFill(imagePtr, x, y, color_index) </H4>
-Заполняет цветом <a href="#color_index">color_index</a> начиная с точки (x,y) в пределах цветовой границы <BR>
+п≈п╟п©п╬п╩п╫я▐п╣я┌ я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a> п╫п╟я┤п╦п╫п╟я▐ я│ я┌п╬я┤п╨п╦ (x,y) п╡ п©я─п╣п╢п╣п╩п╟я┘ я├п╡п╣я┌п╬п╡п╬п╧ пЁя─п╟п╫п╦я├я▀ <BR>
 <h4> gdImageFillToBorder(imagePtr, x, y, bordercolor, color_index) </H4>
-Заполняет цветом <a href="#color_index">color_index</a> регион с граничным цветом  bordercolor начиная с
-точки (x,y) <BR>
+п≈п╟п©п╬п╩п╫я▐п╣я┌ я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a> я─п╣пЁп╦п╬п╫ я│ пЁя─п╟п╫п╦я┤п╫я▀п╪ я├п╡п╣я┌п╬п╪  bordercolor п╫п╟я┤п╦п╫п╟я▐ я│
+я┌п╬я┤п╨п╦ (x,y) <BR>
 <h4> gdImagePolygon(imagePtr, {{x1,y1}, {x2,y2}, ...{xn,yn}}, color_index) </H4>
-Рисует область(регион) по указанным координатам цветом <a href="#color_index">color_index</a>
+п═п╦я│я┐п╣я┌ п╬п╠п╩п╟я│я┌я▄(я─п╣пЁп╦п╬п╫) п©п╬ я┐п╨п╟п╥п╟п╫п╫я▀п╪ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟п╪ я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a>
 <h4> gdImageFilledPolygon(imagePtr, {{x1,y1}, {x2,y2}, ...{xn,yn}}, color_index) </H4>
-Рисует заполненную область(регион) по указанным координатам цветом <a href="#color_index">color_index</a>
+п═п╦я│я┐п╣я┌ п╥п╟п©п╬п╩п╫п╣п╫п╫я┐я▌ п╬п╠п╩п╟я│я┌я▄(я─п╣пЁп╦п╬п╫) п©п╬ я┐п╨п╟п╥п╟п╫п╫я▀п╪ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟п╪ я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a>
 <h4> gdImageSetBrush(imagePtr, imagePtrBrush) </H4>
-Устанавливает образ кисти, которым будут пользоваться функции рисующие
-линии и границы
+пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╬п╠я─п╟п╥ п╨п╦я│я┌п╦, п╨п╬я┌п╬я─я▀п╪ п╠я┐п╢я┐я┌ п©п╬п╩я▄п╥п╬п╡п╟я┌я▄я│я▐ я└я┐п╫п╨я├п╦п╦ я─п╦я│я┐я▌я┴п╦п╣
+п╩п╦п╫п╦п╦ п╦ пЁя─п╟п╫п╦я├я▀
 <h4> gdImageSetTile(imagePtr, imagePtrTile) </H4>
-Устанавливает изображение, которым будут пльзоваться fill-функции.
+пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦п╣, п╨п╬я┌п╬я─я▀п╪ п╠я┐п╢я┐я┌ п©п╩я▄п╥п╬п╡п╟я┌я▄я│я▐ fill-я└я┐п╫п╨я├п╦п╦.
 <h4> gdImageSetStYle(imagePtr, colorsArray) </H4>
-Устанавливает стиль прорисовки прерывистых и т.п. линий.
-В colorsArray надо набить цвета каждой точки, из которых будет состоять
-прерывистая линия. А также можно использовать специальные цвета описанные
-в gdinfo.ch <BR>
+пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я│я┌п╦п╩я▄ п©я─п╬я─п╦я│п╬п╡п╨п╦ п©я─п╣я─я▀п╡п╦я│я┌я▀я┘ п╦ я┌.п©. п╩п╦п╫п╦п╧.
+п▓ colorsArray п╫п╟п╢п╬ п╫п╟п╠п╦я┌я▄ я├п╡п╣я┌п╟ п╨п╟п╤п╢п╬п╧ я┌п╬я┤п╨п╦, п╦п╥ п╨п╬я┌п╬я─я▀я┘ п╠я┐п╢п╣я┌ я│п╬я│я┌п╬я▐я┌я▄
+п©я─п╣я─я▀п╡п╦я│я┌п╟я▐ п╩п╦п╫п╦я▐. п░ я┌п╟п╨п╤п╣ п╪п╬п╤п╫п╬ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ я│п©п╣я├п╦п╟п╩я▄п╫я▀п╣ я├п╡п╣я┌п╟ п╬п©п╦я│п╟п╫п╫я▀п╣
+п╡ gdinfo.ch <BR>
 GDSTYLE_STYLED		 <BR>
 GDSTYLE_BRUSHED		 <BR>
 GDSTYLE_STYLEDBRUSHED	 <BR>
@@ -133,40 +133,40 @@ GDSTYLE_TRANSPARENT	 <BR>
     gdImageCharUP(imagePtr, str, x, y, color_index, fontPtr)<br>
     gdImageString(imagePtr, str, x, y, color_index, fontPtr)<br>
     gdImageStringUP(imagePtr, str, x, y, color_index, fontPtr) </h4>
-Рисует изображение символа или строки str фонтом fontPtr цветом <a href="#color_index">color_index</a>, который может иметь
-одно из описанных в gdinfo.ch значений. <BR>
+п═п╦я│я┐п╣я┌ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦п╣ я│п╦п╪п╡п╬п╩п╟ п╦п╩п╦ я│я┌я─п╬п╨п╦ str я└п╬п╫я┌п╬п╪ fontPtr я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a>, п╨п╬я┌п╬я─я▀п╧ п╪п╬п╤п╣я┌ п╦п╪п╣я┌я▄
+п╬п╢п╫п╬ п╦п╥ п╬п©п╦я│п╟п╫п╫я▀я┘ п╡ gdinfo.ch п╥п╫п╟я┤п╣п╫п╦п╧. <BR>
 GDFONT_GIANT		<BR>
 GDFONT_LARGE		<BR>
 GDFONT_NEDIUMBOLD	<BR>
 GDFONT_SMALL		<BR>
 GDFONT_TINY		<BR>
-Функции gdImageCharUp() и gdImageStringUp() рисуют символ или строку, повернутую
-на 270 градусов.
+п╓я┐п╫п╨я├п╦п╦ gdImageCharUp() п╦ gdImageStringUp() я─п╦я│я┐я▌я┌ я│п╦п╪п╡п╬п╩ п╦п╩п╦ я│я┌я─п╬п╨я┐, п©п╬п╡п╣я─п╫я┐я┌я┐я▌
+п╫п╟ 270 пЁя─п╟п╢я┐я│п╬п╡.
 <h4> gdImageCharRotate(imagePtr, str, x, y, color_index, fontPtr, angle)<br>
      gdImageStringRotate(imagePtr, str, x, y, color_index, fontPtr, angle) </h4>
-Выводит строку или символ str под углом angle цветом <a href="#color_index">color_index</a>  и размером fontPtr
-(см. include/gdinfo.ch)
+п▓я▀п╡п╬п╢п╦я┌ я│я┌я─п╬п╨я┐ п╦п╩п╦ я│п╦п╪п╡п╬п╩ str п©п╬п╢ я┐пЁп╩п╬п╪ angle я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a>  п╦ я─п╟п╥п╪п╣я─п╬п╪ fontPtr
+(я│п╪. include/gdinfo.ch)
 <h4> gdImageCharVector(imagePtr, str, x, y, angle, color_index, fontSize)<br>
     gdImageStringVector(imagePtr, str, x, y, angle, color_index, fontSize) </h4>
-Выводит строку или символ str под нужным углом angle в векторной графике с размером
-fontSize (не путайте с fontPtr) и цветом <a href="#color_index">color_index</a>.
+п▓я▀п╡п╬п╢п╦я┌ я│я┌я─п╬п╨я┐ п╦п╩п╦ я│п╦п╪п╡п╬п╩ str п©п╬п╢ п╫я┐п╤п╫я▀п╪ я┐пЁп╩п╬п╪ angle п╡ п╡п╣п╨я┌п╬я─п╫п╬п╧ пЁя─п╟я└п╦п╨п╣ я│ я─п╟п╥п╪п╣я─п╬п╪
+fontSize (п╫п╣ п©я┐я┌п╟п╧я┌п╣ я│ fontPtr) п╦ я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a>.
 <h4> gdImageSector(imagePtr, cx, cy, width, high, startangle, endangle, color_index) <br>
      gdImageFilledSector(imagePtr, cx, cy, width, high, startangle, endangle, color_index) </h4>
-Рисует сектор с центром cx, cy  цветом <a href="#color_index">color_index</a> и радиусом width по оси Х и high по оси Y,
-начиная с угла startangle и заканчивая endangle.
+п═п╦я│я┐п╣я┌ я│п╣п╨я┌п╬я─ я│ я├п╣п╫я┌я─п╬п╪ cx, cy  я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a> п╦ я─п╟п╢п╦я┐я│п╬п╪ width п©п╬ п╬я│п╦ п╔ п╦ high п©п╬ п╬я│п╦ Y,
+п╫п╟я┤п╦п╫п╟я▐ я│ я┐пЁп╩п╟ startangle п╦ п╥п╟п╨п╟п╫я┤п╦п╡п╟я▐ endangle.
 
 <h4> gdImageTruncSector(imagePtr, cx, cy, width, high, widthtr, hightr, startangle, endangle, color_index)<br>
      gdImageFilledTruncSector(imagePtr, cx, cy, width, high, widthtr, hightr, startangle, endangle, color_index) </h4>
-Рисует усеченный сектор с центром cx, cy  и внешним радиусом width по оси Х и high по оси Y,
-и внутренним widthtr (X) hightr (Y), цветом <a href="#color_index">color_index</a>, начиная с угла startangle и
-заканчивая endangle.
+п═п╦я│я┐п╣я┌ я┐я│п╣я┤п╣п╫п╫я▀п╧ я│п╣п╨я┌п╬я─ я│ я├п╣п╫я┌я─п╬п╪ cx, cy  п╦ п╡п╫п╣я┬п╫п╦п╪ я─п╟п╢п╦я┐я│п╬п╪ width п©п╬ п╬я│п╦ п╔ п╦ high п©п╬ п╬я│п╦ Y,
+п╦ п╡п╫я┐я┌я─п╣п╫п╫п╦п╪ widthtr (X) hightr (Y), я├п╡п╣я┌п╬п╪ <a href="#color_index">color_index</a>, п╫п╟я┤п╦п╫п╟я▐ я│ я┐пЁп╩п╟ startangle п╦
+п╥п╟п╨п╟п╫я┤п╦п╡п╟я▐ endangle.
 
 
 <a name="color_index"><h4>Color index</h4></a>
 Color index:<br>
 - color_index<br>
 <pre>
-Например:
+п²п╟п©я─п╦п╪п╣я─:
 	#include <gdinfo.ch>
 	.....
 	image=gdImageCreate(100, 100)
@@ -206,8 +206,8 @@ For example:
 	....
 </pre>
 
-<br><A HREF="index.html" target='pole'>Главная страница о компиляторе</a>
+<br><A HREF="index.html" target='pole'>п⌠п╩п╟п╡п╫п╟я▐ я│я┌я─п╟п╫п╦я├п╟ п╬ п╨п╬п╪п©п╦п╩я▐я┌п╬я─п╣</a>
 <HR>
-<center>&#169 Ю.Хныкин, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
+<center>&#169 п╝.п╔п╫я▀п╨п╦п╫, <A HREF="mailto:uri@itk.ru">uri@itk.ru</A>, 2000
 </center>
 

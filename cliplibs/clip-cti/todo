@@ -3,9 +3,9 @@
 - - skipped
 
 
-+ один список для всех виджетов в cti_application
++ one list for all widgets in cti_application
 + cti_application:__focus_to_top()
-+ cti_menu -> в ZOrder
++ cti_menu -> to ZOrder
 + cti_optionmenu widget
 + signal-based mechanism (signal->action vs action->signal)
 + gtk_main() nesting

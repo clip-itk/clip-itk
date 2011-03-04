@@ -5,25 +5,25 @@ $CATEGORY$
 $SUMMARY$
 	Checks if a varialbe name is a function name.
 $LANG_RU$
-	Проверка, является ли имя переменной именем функции.
+	п÷я─п╬п╡п╣я─п╨п╟, я▐п╡п╩я▐п╣я┌я│я▐ п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╦п╪п╣п╫п╣п╪ я└я┐п╫п╨я├п╦п╦.
 $SYNTAX$
      ISFUNCTION(<sVarName>) 	--> TRUE || FALSE
 $ARGUMENTS$
      <sVarName>	String, is the variable name.
 $LANG_RU$
-     <sVarName>	String, имя переменной.
+     <sVarName>	String, п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧.
 $RETURNS$
      Returns TRUE if a varialbe name is a function name.
 $LANG_RU$
-     Возвращает TRUE, если имя переменной является именем функции.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ я▐п╡п╩я▐п╣я┌я│я▐ п╦п╪п╣п╫п╣п╪ я└я┐п╫п╨я├п╦п╦.
 $DESCRIPTION$
 
 	ISFUNCTION() returns TRUE if a varialbe name <sVarName> is a
 	function name.
 $LANG_RU$
 
-	ISFUNCTION() возвращает TRUE, если имя переменной <sVarName> является именем
-	функции.
+	ISFUNCTION() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ <sVarName> я▐п╡п╩я▐п╣я┌я│я▐ п╦п╪п╣п╫п╣п╪
+	я└я┐п╫п╨я├п╦п╦.
 $EXAMPLES$
 
 PRIVATE VarName
@@ -43,11 +43,11 @@ VarName := "Fnc"
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

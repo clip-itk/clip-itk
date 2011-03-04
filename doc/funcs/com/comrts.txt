@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Queries/sets the RTS status.
 $LANG_RU$
-	Запрашивает/устанавливает сигнал RTS.
+	п≈п╟п©я─п╟я┬п╦п╡п╟п╣я┌/я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я│п╦пЁп╫п╟п╩ RTS.
 $SYNTAX$
 	COM_RTS(<nComPort>,[<lNewRTSStatus>]) --> lOldRTSStatus
 $ARGUMENTS$
@@ -15,10 +15,10 @@ $ARGUMENTS$
 	inactive. If the parameter is not specified, does not affect the RTS
 	exit signal.
 $LANG_RU$
-	<nComPort> - Определяет номер порта.
-	<lNewRTSStatus> - Определяет статус RTS: .T. для активации
-	сигнала, .F. для сброса сигнала. Если параметр не задан, статус RTS не
-	изменяется.
+	<nComPort> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╬п╪п╣я─ п©п╬я─я┌п╟.
+	<lNewRTSStatus> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ я│я┌п╟я┌я┐я│ RTS: .T. п╢п╩я▐ п╟п╨я┌п╦п╡п╟я├п╦п╦
+	я│п╦пЁп╫п╟п╩п╟, .F. п╢п╩я▐ я│п╠я─п╬я│п╟ я│п╦пЁп╫п╟п╩п╟. п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ п╥п╟п╢п╟п╫, я│я┌п╟я┌я┐я│ RTS п╫п╣
+	п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 $RETURNS$
 	The returned value corresponds to the RTS signal status prior to
 	the new setting, or in the absence of <lNewRTSStatus>, the returned
@@ -26,9 +26,9 @@ $RETURNS$
 	RTS is active (MCR bit 1 = 1). A return of .F. indicates that the RTS is
 	inactive (MCR bit 1 = 0).
 $LANG_RU$
-	Возвращается .T. если RTS активен, .F. если нет. Если задан
-	параметр <lNewRTSStatus>, возвращается значение сигнала перед вызовом
-	функции.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ .T. п╣я│п╩п╦ RTS п╟п╨я┌п╦п╡п╣п╫, .F. п╣я│п╩п╦ п╫п╣я┌. п∙я│п╩п╦ п╥п╟п╢п╟п╫
+	п©п╟я─п╟п╪п╣я┌я─ <lNewRTSStatus>, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟ п©п╣я─п╣п╢ п╡я▀п╥п╬п╡п╬п╪
+	я└я┐п╫п╨я├п╦п╦.
 $DESCRIPTION$
 	COM_RTS() queries the RTS signal status.
 	If the second parameter is not supplied, the signal status does not change.
@@ -38,11 +38,11 @@ $DESCRIPTION$
 	COM_OPEN does not automatically make RTS active!
 
 $LANG_RU$
-	COM_RTS() запрашивает или устанавливает статус сигнала RTS.
-	Если второй параметр не указан, статус сигнала не изменяется.
+	COM_RTS() п╥п╟п©я─п╟я┬п╦п╡п╟п╣я┌ п╦п╩п╦ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я│я┌п╟я┌я┐я│ я│п╦пЁп╫п╟п╩п╟ RTS.
+	п∙я│п╩п╦ п╡я┌п╬я─п╬п╧ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ я┐п╨п╟п╥п╟п╫, я│я┌п╟я┌я┐я│ я│п╦пЁп╫п╟п╩п╟ п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 
-	Функция COM_CLOSE() сбрасывает сигнал RTS. Однако, COM_OPEN не
-	устанавливает RTS автоматически.
+	п╓я┐п╫п╨я├п╦я▐ COM_CLOSE() я│п╠я─п╟я│я▀п╡п╟п╣я┌ я│п╦пЁп╫п╟п╩ RTS. п·п╢п╫п╟п╨п╬, COM_OPEN п╫п╣
+	я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ RTS п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦.
 $EXAMPLES$
 	lComOk  :=  COM_OPEN(1)	       // Open COM1
 	IF lComOk
@@ -54,7 +54,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_SOFT(),COM_DTR(),COM_TIMEOUT(),COM_HARD(),COM_NUM(),COM_COUNT()
 $AUTHOR$

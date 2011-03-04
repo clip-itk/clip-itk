@@ -43,7 +43,7 @@ $CATEGORY$
 $SUMMARY$
 	Returns string - file attributes.
 $LANG_RU$
-	Возвращает строку - атрибуты файла.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ - п╟я┌я─п╦п╠я┐я┌я▀ я└п╟п╧п╩п╟.
 $SYNTAX$
 
      FILEATTRS(<sFileName>) 	--> <sFileAttrs>
@@ -52,7 +52,7 @@ $ARGUMENTS$
      <sFileName>	String, is the file name.
 
 $LANG_RU$
-     <sFileName>	String, имя файла.
+     <sFileName>	String, п╦п╪я▐ я└п╟п╧п╩п╟.
 
 $RETURNS$
 
@@ -60,7 +60,7 @@ $RETURNS$
 
 $LANG_RU$
 
-	Возвращает строку <sFileAttrs>, содержащую атрибуты файла.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sFileAttrs>, я│п╬п╢п╣я─п╤п╟я┴я┐я▌ п╟я┌я─п╦п╠я┐я┌я▀ я└п╟п╧п╩п╟.
 
 $DESCRIPTION$
 
@@ -68,8 +68,8 @@ $DESCRIPTION$
      returns string <sFileAttrs>, what contents file attributes.
 $LANG_RU$
 
-     FILEATTRS() подобна функции <link linkend="functionFILEATTR">FILEATTR()</link>, но
-     возвращает строку <sFileAttrs>, содержащую атрибуты файла.
+     FILEATTRS() п©п╬п╢п╬п╠п╫п╟ я└я┐п╫п╨я├п╦п╦ <link linkend="functionFILEATTR">FILEATTR()</link>, п╫п╬
+     п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sFileAttrs>, я│п╬п╢п╣я─п╤п╟я┴я┐я▌ п╟я┌я─п╦п╠я┐я┌я▀ я└п╟п╧п╩п╟.
 $EXAMPLES$
 
 SET("C:", "/usr/home/user1")
@@ -84,7 +84,7 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 
 
@@ -96,7 +96,7 @@ $CATEGORY$
 $SUMMARY$
 	Returns path to file in UNIX style.
 $LANG_RU$
-	Возвращает путь к файлу в UNIX стиле.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я┐я┌я▄ п╨ я└п╟п╧п╩я┐ п╡ UNIX я│я┌п╦п╩п╣.
 $SYNTAX$
 
      MAKEPATH(<sDosPath>) 	--> <sUnixPath>
@@ -104,20 +104,20 @@ $SYNTAX$
 $ARGUMENTS$
      <sDosPath>		String, is the path to file in DOS style.
 $LANG_RU$
-     <sDosPath>		String, путь к файлу в DOS стиле.
+     <sDosPath>		String, п©я┐я┌я▄ п╨ я└п╟п╧п╩я┐ п╡ DOS я│я┌п╦п╩п╣.
 $RETURNS$
 
      Returns string <sUnixPath>, what equal the DOS-style path to file <sDosPath>
 
 $LANG_RU$
 
-	Возвращает строку <sUnixPath>, соответствующую  пути к файлу в DOS-стиле.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sUnixPath>, я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴я┐я▌  п©я┐я┌п╦ п╨ я└п╟п╧п╩я┐ п╡ DOS-я│я┌п╦п╩п╣.
 
 $DESCRIPTION$
 
      MAKEPATH() converts string with path to file in DOS-style <sDosPath> to string with path in UNIX-style <sUnixPath>
 $LANG_RU$
-     MAKEPATH() преобразует строку, содержащую путь к файлу в DOS стиле <sDosPath> в строку, содержащую путь к файлу в UNIX стиле <sUnixPath>
+     MAKEPATH() п©я─п╣п╬п╠я─п╟п╥я┐п╣я┌ я│я┌я─п╬п╨я┐, я│п╬п╢п╣я─п╤п╟я┴я┐я▌ п©я┐я┌я▄ п╨ я└п╟п╧п╩я┐ п╡ DOS я│я┌п╦п╩п╣ <sDosPath> п╡ я│я┌я─п╬п╨я┐, я│п╬п╢п╣я─п╤п╟я┴я┐я▌ п©я┐я┌я▄ п╨ я└п╟п╧п╩я┐ п╡ UNIX я│я┌п╦п╩п╣ <sUnixPath>
 
 $EXAMPLES$
 
@@ -132,5 +132,5 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$

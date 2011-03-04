@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Queries/sets the Data Terminal Ready (DTR) status.
 $LANG_RU$
-	Запрашивает/устанавливает сигнал Data Terminal Ready (DTR).
+	п≈п╟п©я─п╟я┬п╦п╡п╟п╣я┌/я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я│п╦пЁп╫п╟п╩ Data Terminal Ready (DTR).
 $SYNTAX$
 	COM_DTR(<nComPort>,[<lNewDTRStatus>]) --> lOldDTRStatus
 $ARGUMENTS$
@@ -15,10 +15,10 @@ $ARGUMENTS$
 	inactive. If the parameter is not specified, does not affect the DTR
 	exit signal.
 $LANG_RU$
-	<nComPort> - Определяет номер порта.
-	<lNewDTRStatus> - Определяет статус DTR: .T. для активации
-	сигнала, .F. для сброса сигнала. Если параметр не задан, статус DTR не
-	изменяется.
+	<nComPort> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╬п╪п╣я─ п©п╬я─я┌п╟.
+	<lNewDTRStatus> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ я│я┌п╟я┌я┐я│ DTR: .T. п╢п╩я▐ п╟п╨я┌п╦п╡п╟я├п╦п╦
+	я│п╦пЁп╫п╟п╩п╟, .F. п╢п╩я▐ я│п╠я─п╬я│п╟ я│п╦пЁп╫п╟п╩п╟. п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ п╥п╟п╢п╟п╫, я│я┌п╟я┌я┐я│ DTR п╫п╣
+	п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 $RETURNS$
 	The returned value corresponds to the DTR signal status prior to
 	the new setting, or in the absence of <lNewDTRStatus>, the returned
@@ -26,9 +26,9 @@ $RETURNS$
 	DTR is active (MCR bit 1 = 1). A return of .F. indicates that the DTR is
 	inactive (MCR bit 1 = 0).
 $LANG_RU$
-	Возвращается .T. если DTR активен, .F. если нет. Если задан
-	параметр <lNewDTRStatus>, возвращается значение сигнала перед вызовом
-	функции.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ .T. п╣я│п╩п╦ DTR п╟п╨я┌п╦п╡п╣п╫, .F. п╣я│п╩п╦ п╫п╣я┌. п∙я│п╩п╦ п╥п╟п╢п╟п╫
+	п©п╟я─п╟п╪п╣я┌я─ <lNewDTRStatus>, п╡п╬п╥п╡я─п╟я┴п╟п╣я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟ п©п╣я─п╣п╢ п╡я▀п╥п╬п╡п╬п╪
+	я└я┐п╫п╨я├п╦п╦.
 $DESCRIPTION$
 	COM_DTR() queries the DTR signal status.
 	If the second parameter is not supplied, the signal status does not change.
@@ -38,11 +38,11 @@ $DESCRIPTION$
 	COM_OPEN does not automatically make DTR active!
 
 $LANG_RU$
-	COM_DTR() запрашивает или устанавливает статус сигнала DTR.
-	Если второй параметр не указан, статус сигнала не изменяется.
+	COM_DTR() п╥п╟п©я─п╟я┬п╦п╡п╟п╣я┌ п╦п╩п╦ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я│я┌п╟я┌я┐я│ я│п╦пЁп╫п╟п╩п╟ DTR.
+	п∙я│п╩п╦ п╡я┌п╬я─п╬п╧ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ я┐п╨п╟п╥п╟п╫, я│я┌п╟я┌я┐я│ я│п╦пЁп╫п╟п╩п╟ п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐.
 
-	Функция COM_CLOSE() сбрасывает сигнал DTR. Однако, COM_OPEN не
-	устанавливает DTR автоматически.
+	п╓я┐п╫п╨я├п╦я▐ COM_CLOSE() я│п╠я─п╟я│я▀п╡п╟п╣я┌ я│п╦пЁп╫п╟п╩ DTR. п·п╢п╫п╟п╨п╬, COM_OPEN п╫п╣
+	я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ DTR п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦.
 $EXAMPLES$
 	lComOk  :=  COM_OPEN(1)	       // Open COM1
 	IF lComOk
@@ -54,7 +54,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_SOFT(),COM_RTS(),COM_TIMEOUT(),COM_HARD(),COM_NUM(),COM_COUNT()
 $AUTHOR$

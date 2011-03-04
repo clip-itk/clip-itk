@@ -3,26 +3,26 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIRadioGroup.
 $LANG_RU$
-	Класс UIRadioGroup.
+	п п╩п╟я│я│ UIRadioGroup.
 $ABOUT$
 	Class of radio buttons group.
 $LANG_RU$
-	Класс группы кнопок альтернатив.
+	п п╩п╟я│я│ пЁя─я┐п©п©я▀ п╨п╫п╬п©п╬п╨ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡.
 $SYNTAX$
 	UIRadioGroup()	--> UIRadioGroup object.
 $LANG_RU$
-	UIRadioGroup()	--> Объект UIRadioGroup.
+	UIRadioGroup()	--> п·п╠я┼п╣п╨я┌ UIRadioGroup.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIRadioGroup".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIRadioGroup".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIRadioGroup".
 
 $METHODNAME$
 	UIRadioGroup()
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIRadioGroup()
 $ENDMETHOD$
@@ -32,13 +32,13 @@ $METHODNAME$
 $SUMMARY$
 	Append radio button to group.
 $LANG_RU$
-	Добавить кнопку альтернативы в группу.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╨п╫п╬п©п╨я┐ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀ п╡ пЁя─я┐п©п©я┐.
 $SYNTAX$
 	addButton(<text>)
 $ARGUMENTS$
 	<text>		- String. Label for appending radio button.
 $LANG_RU$
-	<text>		- Строка. Надпись для добавляемой кнопки альтернативы.
+	<text>		- п║я┌я─п╬п╨п╟. п²п╟п╢п©п╦я│я▄ п╢п╩я▐ п╢п╬п╠п╟п╡п╩я▐п╣п╪п╬п╧ п╨п╫п╬п©п╨п╦ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡я▀.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -49,13 +49,13 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UIRADIOBUTTON
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

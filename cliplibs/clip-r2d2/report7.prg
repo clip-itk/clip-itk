@@ -43,7 +43,7 @@ local i,j,k,s,s1,s2,tmp,obj,col,typenode
 	endif
 	if "HUDDLE" $ _query
 		huddle := upper(_query:huddle)
-		if upper(left(huddle,1)) $ "TYä"
+		if upper(left(huddle,1)) $ "TYD"
 		    huddle := .t.
 		else 	
 		    huddle := .f.

@@ -6,9 +6,9 @@
 /***
 	DAYS( <nSeconds> )
 
- Возвращает целое число дней исходя из заданного числа секунд
+ Returns an integer number of days based on the specified number of seconds
 
- Замечание: Остаток от деления на 24 часа возвращается функцией TSTRING().
+ Note: The remainder of the division by 24 is returned by TSTRING() function.
 */
 
 FUNC DAYS(cl_secs)
@@ -16,7 +16,7 @@ RETURN INT( cl_secs / 86400 )
 
 /***
 	LENNUM( <nNum> )
- Возвращает длину при преобразовании числа в строку
+ Returns length of string while nubmer convert to string
 */
 
 FUNC LENNUM(cl_number)
@@ -24,15 +24,15 @@ RETURN	LEN(LTRIM(STR(cl_number)))
 
 
 /***
- SECS( <строка времени>)
+ SECS( <time string>)
 
- Возвращает число секунд, содержащихся в переданном параметре
+ Returns the number of seconds contained in the parameter
 
-	Число секунд в периоде
+	The number of seconds in the period
 	-------    -----------
-	     60    1 минута
-	   3600    1 час
-	  86400    1 день
+	     60    1 minute
+	   3600    1 hour
+	  86400    1 day
 */
 
 FUNC SECS(cl_time)

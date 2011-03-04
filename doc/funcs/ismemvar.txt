@@ -5,25 +5,25 @@ $CATEGORY$
 $SUMMARY$
 	Checks if a varialbe name is a memory variable name.
 $LANG_RU$
-	Проверка, является ли имя переменной именем переменной памяти.
+	п÷я─п╬п╡п╣я─п╨п╟, я▐п╡п╩я▐п╣я┌я│я▐ п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п╦п╪п╣п╫п╣п╪ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п©п╟п╪я▐я┌п╦.
 $SYNTAX$
      ISMEMVAR(<sVarName>) 	--> TRUE || FALSE
 $ARGUMENTS$
      <sVarName>	String, is the variable name.
 $LANG_RU$
-     <sVarName>	String, имя переменной.
+     <sVarName>	String, п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧.
 $RETURNS$
      Returns TRUE if a varialbe name is a memory variable name.
 $LANG_RU$
-     Возвращает TRUE, если имя переменной является именем переменной памяти.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ я▐п╡п╩я▐п╣я┌я│я▐ п╦п╪п╣п╫п╣п╪ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п©п╟п╪я▐я┌п╦.
 $DESCRIPTION$
 
 	ISMEMVAR() returns TRUE if a varialbe name <sVarName> is a memory
 	variable name (PRIVATE, PUBLIC).
 $LANG_RU$
 
-	ISMEMVAR() возвращает TRUE, если имя переменной <sVarName> является именем
-	переменной памяти (PRIVATE, PUBLIC).
+	ISMEMVAR() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ п╦п╪я▐ п©п╣я─п╣п╪п╣п╫п╫п╬п╧ <sVarName> я▐п╡п╩я▐п╣я┌я│я▐ п╦п╪п╣п╫п╣п╪
+	п©п╣я─п╣п╪п╣п╫п╫п╬п╧ п©п╟п╪я▐я┌п╦ (PRIVATE, PUBLIC).
 $EXAMPLES$
 
 PRIVATE VarName
@@ -35,11 +35,11 @@ LOCAL _VarName
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

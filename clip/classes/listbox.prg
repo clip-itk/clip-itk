@@ -111,7 +111,7 @@ function listBox(top,left,bottom,right,ldrop)
    obj:__mData	:= {}
    obj:__SB	:= NIL
    obj:__colors	:= {}
-   obj:__bufType:= 0  // тип данных в буфере - 0-число,1-текст,2-данные
+   obj:__bufType:= 0  // data type in buffer - 0-number, 1-text, 2-some data
    obj:__scr	:= savescreen(top+iif(ldrop,1,0),left,bottom,right)
    obj:__setColor()
 

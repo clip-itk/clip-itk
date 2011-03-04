@@ -214,7 +214,7 @@ static function fw_Redefine( self, nID, nMin, nMax, nPgStep, oWnd, bUpAction, bD
    self:bPageDown  = bPgDown
    self:bPos       = bPos
    self:oWnd       = oWnd
-   self:lIsChild   = .f. // .t. only for Windows with WS_HSCROLL × WS_VSCROLL style
+   self:lIsChild   = .f. // .t. only for Windows with WS_HSCROLL in WS_VSCROLL style
    self:lRedraw    = .t.
    self:oWnd       = oWnd
    self:lDrag      = .f.

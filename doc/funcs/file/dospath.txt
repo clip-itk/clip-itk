@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Returns file name as DOS file name.
 $LANG_RU$
-	Возвращает имя файла как в DOS системах.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╪я▐ я└п╟п╧п╩п╟ п╨п╟п╨ п╡ DOS я│п╦я│я┌п╣п╪п╟я┘.
 $SYNTAX$
      DOSPATH(<sUnixFileName>) 	--> <sDosFileName>
 $ARGUMENTS$
      <sUnixFileName>	String, is the file name in UNIX style.
 $LANG_RU$
-     <sUnixFileName>	String, имя файла в формате UNIX систем.
+     <sUnixFileName>	String, п╦п╪я▐ я└п╟п╧п╩п╟ п╡ я└п╬я─п╪п╟я┌п╣ UNIX я│п╦я│я┌п╣п╪.
 $RETURNS$
      Returns file name in DOS style.
 $LANG_RU$
-	Возвращает имя файла как в DOS системах.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╪я▐ я└п╟п╧п╩п╟ п╨п╟п╨ п╡ DOS я│п╦я│я┌п╣п╪п╟я┘.
 $DESCRIPTION$
      DOSPATH() uses specified in CLIP function <link linkend="functionSET">SET("C", ...)</link>
      values and returns UNIX file name as DOS file name.
 $LANG_RU$
-     DOSPATH() использует определенные CLIP функцией <link linkend="functionSET">SET("C", ...)</link>
-     значения и возвращает UNIX имя файла в стиле DOS.
+     DOSPATH() п╦я│п©п╬п╩я▄п╥я┐п╣я┌ п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╣ CLIP я└я┐п╫п╨я├п╦п╣п╧ <link linkend="functionSET">SET("C", ...)</link>
+     п╥п╫п╟я┤п╣п╫п╦я▐ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ UNIX п╦п╪я▐ я└п╟п╧п╩п╟ п╡ я│я┌п╦п╩п╣ DOS.
 $EXAMPLES$
 
 SET("C:", "/usr/home/user1")
@@ -34,6 +34,6 @@ $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

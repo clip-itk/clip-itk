@@ -4,20 +4,20 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-Наращенная сумма обычной ренты (Future value investment)
-R_FVI(постоянный платеж,процент,число платежей)
+Accrued amount of ordinary rent (Future value investment)
+R_FVI(permanent payment, percentage, the number of payments)
 
-Наращенная сумма при N начислениях и M выплатах в год
-R_FVI(годовой платеж,процент,всего лет,начислений в год,выплат в год)
+Accrued amount for N accrual and M payments per year
+R_FVI"(Annual fee, percentage, all years,  accruals per year , payments per year)
 
-Современная величина ренты (Present value investment)
-R_PVI(постоянный платеж,процент,число платежей)
+Modern amount of rent (Present value investment)
+R_PVI(permanent payment, percentage, the number of payments)
 
-Современная величина при N начислениях и M выплатах в год
-R_PVI(годовой платеж,процент,всего лет,начислений в год,выплат в год)
+Modern amount for N accrual and M payments per year
+R_PVI(Annual fee, percentage, all years,  accruals per year , payments per year)
 
-Величина постоянной выплаты (Investment Payment)
-R_Payment(сумма,процент,всего лет,начислений в год,выплат в год)
+Amount of constant payment (Investment Payment)
+R_Payment(sum,percentage, all years,  accruals per year , payments per year)
 */
 
 **********
@@ -54,7 +54,7 @@ ENDIF
 RETURN res
 **********
 FUNC R_Payment(nTotal,nPercent,nNumber,nPay,nInv)
-//обратное от FV()
+//the opposite of FV ()
 LOCAL res
 DEFAULT nPay TO 1,nInv TO 1
 nPercent:=nPercent*0.01

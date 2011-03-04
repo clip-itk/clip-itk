@@ -1,13 +1,13 @@
 /*
-‚€ Programa €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ƒ
-   Aplication: Header file for class TReport                              
-         File: REPORT.CH                                                  
-       Author: Ignacio Ortiz de ZÇÄiga EcheverrÂa                         
-          CIS: Ignacio Ortiz (100042,3051)                                
-         Date: 07/28/94                                                   
-         Time: 20:20:07                                                   
-    Copyright: 1994 by Ortiz de ZuÄiga, S.L.                              
-„€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€…
++- Programa ---------------------------------------------------------------+
+|   Aplication: Header file for class TReport                              |
+|         File: REPORT.CH                                                  |
+|       Author: Ignacio Ortiz de ZÇÄiga EcheverrÂa                         |
+|          CIS: Ignacio Ortiz (100042,3051)                                |
+|         Date: 07/28/94                                                   |
+|         Time: 20:20:07                                                   |
+|    Copyright: 1994 by Ortiz de ZuÄiga, S.L.                              |
++--------------------------------------------------------------------------+
 */
 
 #define RPT_LEFT        1

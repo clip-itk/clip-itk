@@ -143,7 +143,7 @@
  *
  *  <cTagchar> is the ASCII character to use to draw tags that would
  *     appear to the right of each option.  The default is *DIS*abled
- *     tagging.  The default tag is "û" (chr(251)).
+ *     tagging.  The default tag is "âˆš" (chr(251)).
  *
  *  <nStartelem>  is the number of the option where the selection bar
  *     will first be placed.  Leave this NIL to begin at option 1.
@@ -218,7 +218,7 @@
  *     fly when FT_ACH2TB() is called...thanks to the Inkey() replacement,
  *     SKINkey().
  *
- *     The pi‚ce de resistance of FT_ACH2TB() is its ability to execute
+ *     The piÃ©ce de resistance of FT_ACH2TB() is its ability to execute
  *     a user function designed entirely by you.  It is called after each
  *     keypress, and because it is completely open-ended, extends the
  *     the reach of FT_ACH2TB() to the limits of Clipper.  See the docu-
@@ -273,7 +273,7 @@
  *            REST_SCREEN:.F. ;
  *            AUTOEXEC:.F. ;
  *            MES_COLOR:MSG_COLOR ;
- *            ELEVBAR:"±" ;
+ *            ELEVBAR:"â–’" ;
  *            NOSELCOLOR:"bg/n" ;
  *            MES_COL:"C" )
  *
@@ -318,7 +318,7 @@
 #define SELECTABLE       (if(len(arrey[aindex])==5 .and. arrey[aindex][5]<> NIL,;
 			 arrey[aindex][5],aexec))
 #define NOSELECT         (len(arrey[aindex])==5 .and. !(arrey[aindex][5]))
-#define DEFAULT_TAG      "û"
+#define DEFAULT_TAG      "âˆš"
 #define UP_ARROW_POS     t+2,col4bar
 #define DN_ARROW_POS     b-2,col4bar
 #define UP_ARROW         if(top_elem > 1,chr(24),chr(25))
@@ -397,7 +397,7 @@ FOR xx:= 1 to passes
   ret1:= A_CHOICE( 7,9,, ARRAY:t_arrey TITLEPOS:2 START_ELEM:ret1 ;
 	   USERFUNC:{|a,b| UserFunc(a,b,any1,.F.,1,.T.)} ;
 	   BOXTYPE:B_SINGLE  BOXTITLE:title  SHADOW:"FT" TAGCHAR:chr(17);
-	   REST_SCREEN:.F. AUTOEXEC:.F. MES_COLOR:"+w/b" ELEVBAR:"±" )
+	   REST_SCREEN:.F. AUTOEXEC:.F. MES_COLOR:"+w/b" ELEVBAR:"±" ) // utf-8: "â–’"
   @ 1,0 say "Returned element "+Ltrim(str(ret1))+" "
   IF ret1 > 0
      @ 2,0 say "That was "+IF( Was_Tagged(chr(17),t_arrey,ret1) ,;
@@ -409,7 +409,7 @@ FOR xx:= 1 to passes
 	    BOXTITLE:" SK Test2 " AUTOEXEC:.T. ELEVBAR_COLOR:"+w/r" ;
 	    MES_COLOR:"+w/gr" USERFUNC:{|a,b| UserFunc(a,b,any2,.T.,3,.F.,4)} ;
 	    REST_SCREEN:.F. ELEVBAR_SIDE:"R" TIME_OUT:4 MES_COL:"C" ;
-	    START_ELEM:3 SHADOW:"L" BAR_COLOR:"+r/gr*" TIME_OUT VALUE:-999 )
+	    START_ELEM:3 SHADOW:"L" BAR_COLOR:"+r/gr*" TIME_OUT VALUE:-999 ) // utf-8: "â–‘"
 
   @ 1,0 say "Returned element "+Ltrim(str(ret2))+" "
   IF ret2 > 0

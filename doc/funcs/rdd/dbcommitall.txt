@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Flush pending updates in all work areas
 $LANG_RU$
-   Записывает данные из буферов на диск для всех рабочих областей.
+   п≈п╟п©п╦я│я▀п╡п╟п╣я┌ п╢п╟п╫п╫я▀п╣ п╦п╥ п╠я┐я└п╣я─п╬п╡ п╫п╟ п╢п╦я│п╨ п╢п╩я▐ п╡я│п╣я┘ я─п╟п╠п╬я┤п╦я┘ п╬п╠п╩п╟я│я┌п╣п╧.
 $SYNTAX$
      DBCOMMITALL() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBCOMMITALL() always returns NIL.
 $LANG_RU$
-     DBCOMMITALL() всегда возвращает NIL.
+     DBCOMMITALL() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBCOMMITALL() causes all pending updates to all work areas to be written
      to disk.  It is equivalent to calling DBCOMMIT() for every occupied work
@@ -21,12 +21,12 @@ $DESCRIPTION$
 
      For more information, refer to DBCOMMIT() and the COMMIT command.
 $LANG_RU$
-     При вызове функции DBCOMMITALL() все изменения во всех рабочих
-     областях записываются из буферов на диск. Это эквивалентно вызову
-     функции DBCOMMIT() для каждой рабочей области.
+     п÷я─п╦ п╡я▀п╥п╬п╡п╣ я└я┐п╫п╨я├п╦п╦ DBCOMMITALL() п╡я│п╣ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╡п╬ п╡я│п╣я┘ я─п╟п╠п╬я┤п╦я┘
+     п╬п╠п╩п╟я│я┌я▐я┘ п╥п╟п©п╦я│я▀п╡п╟я▌я┌я│я▐ п╦п╥ п╠я┐я└п╣я─п╬п╡ п╫п╟ п╢п╦я│п╨. п╜я┌п╬ я█п╨п╡п╦п╡п╟п╩п╣п╫я┌п╫п╬ п╡я▀п╥п╬п╡я┐
+     я└я┐п╫п╨я├п╦п╦ DBCOMMIT() п╢п╩я▐ п╨п╟п╤п╢п╬п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
 
-     Более подробная информация находится в описании функции DBCOMMIT() и
-     команды COMMIT.
+     п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫п╟я▐ п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╫п╟я┘п╬п╢п╦я┌я│я▐ п╡ п╬п©п╦я│п╟п╫п╦п╦ я└я┐п╫п╨я├п╦п╦ DBCOMMIT() п╦
+     п╨п╬п╪п╟п╫п╢я▀ COMMIT.
 $EXAMPLES$
        The following example writes all pending updates to disk:
 

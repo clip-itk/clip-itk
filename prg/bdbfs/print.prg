@@ -41,7 +41,7 @@ BEGIN SEQUENCE
 	nFlen:=_FLen[i]
 	cFtype:=_Ftype[i]
 	_i:=m->_Widths[i]
-	IF EMPTY(_i)	//Принудительно не задано
+	IF EMPTY(_i)	//Forcibly is unset
 	   IF cFtype=='M' .OR. (cFtype=='V' .AND. nFlen>5)
 		_i:=IF(EMPTY(m->_MemoPrnt),10,m->_MemoPrnt)
 		IF cFType=='M' .AND. !EMPTY(m->_MemoPrnt)
@@ -50,7 +50,7 @@ BEGIN SEQUENCE
 	    ELSEIF cFtype=='D' .OR. (cFtype=='V' .AND. nFlen==3)
 		_i:=10
 	    ELSE
-		_i:=nFlen+2		//для сумм на 2 разряда больше
+		_i:=nFlen+2		//for amounts more that two digits
 	    ENDIF
 	ENDIF
 	AADD(_aExpr,_el)
@@ -132,7 +132,7 @@ PROC PrintArr(_Fname,_head,_array,_footer)
 SET DEVI TO PRINT
 SET(_SET_PRINTFILE,IF(EMPTY(_Fname),_printer,_Fname),m->_NeedApFile)
 IF 'U' $ TYPE('_l') THEN _l:=38
-lIsHtml:=.F.	//Никаких HTML
+lIsHtml:=.F.	//No any HTML
 BEGIN SEQUENCE
 	Pc(1,_head)
 	Line()
@@ -151,7 +151,7 @@ IF TYPE('_nDouble')=='N' .AND. _nDouble>0 THEN;
 @ prow()+_r,_Lmargin SAY _s//+IF(lIsHtml,'<br>','')
 _plineNo+=_r
 *****************
-*Генерация отчета
+*Report generation
 *
 FUNC MakeReport
 LOCAL nHead,_nl:=0,nPos,nMax,cHead,NeedCounter
@@ -160,53 +160,53 @@ PARAM lUsual,_aExpr, _aHead, _aElen, _aPict, _aTitle, _cFile,/*_aSecond,*/ _aSum
 	_NoAsk,_nCounter,_aFooter,_pEveryStep,_aGroup,;
 	_nDouble,_NoShow,_lAddi,_aPage,cDivideT,cDivide,countName
 /*
-	Автогенерация и вывод отчета
+	Report autogeneration and printing
 
-  _aHead - массив заголовков колонок
-  _aExpr - массив выражений для каждой колонки
-  _aElen - массив ширин колонок
-  _aPict - массив картинок колонки
-  _aTitle - массив заголовка отчета
-  _cFile - файл вывода
-  _aSecond - массив вторых строчек вывода
-  _aSum    - массив необходимости суммирования
-  _fCondit - условие печати
-  _NoAsk - молчание- ничего не спрашиваем
-  _nCounter - если >0, то слева выводит порядковый номер шириной _nCounter
-  _aFooter  - имя дополнительной процедуры,печатающей подвал или имя массива,
-	    содержащего подвал
-  _pEveryStep - имя дополнительной процедуры или блока выполняющейся перед
-  	     печатью каждой строки,удовлетворяющей условию _fCondit
-  _aGroup - массив подгруппировок {'поле группировки',bHead|aHead,bFoot|aFoot,lMore1}
-  _nDouble - признак необходимости вывода в две колонки на листе.Если 0 или не
-	задан - печатается одна.Если задан числовой параметр - воспринимается
-	как количество пробелов между двумя колонками.
-  _lAddi -  файл дописывается.
-  _aPage -  {xHeader,xFooter} если определен, то печатаются итоги по странице,
-	    причем Header печатается, начиная со второй.
-  cDivideT,cDivide - символ разделения колонок в заголовке и инфостроках
-	    (умолчание - ':')
-  CountName - название колонки Номер по порядку
+  _aHead - Columns header
+  _aExpr - Expressions for aech column
+  _aElen - Array of columns width
+  _aPict - Array of columns pictures
+  _aTitle - Report header
+  _cFile - output file
+  _aSecond - Array of second output strings
+  _aSum    - Array of 'needed calculate' flags
+  _fCondit - print condition
+  _NoAsk - mute - no ask
+  _nCounter - if  >0, then prints at left the serial number with _nCounter witdh.
+  _aFooter  - name of callback function for printing footer or name of array
+            contains footer strings
+  _pEveryStep - name of callback funtion or eval'ed code block (runs before
+                printing every string by condition _fCondit)
+  _aGroup - array of subgroups {'group field',bHead|aHead,bFoot|aFoot,lMore1}
+  _nDouble - sign of the need to display in two columns on a worksheet. If zero
+             or unspecified, then prints one column. If specified numeric value,
+             then this mean count of spaces between columns.
+  _lAddi -  append to file.
+  _aPage -  {xHeader,xFooter} if specified, then prints summary by page, and
+	    Header printed begins from second page.
+  cDivideT,cDivide - separator for header columns and information strings
+  (':' by default)
+  CountName - name of column 'serial number'
 
-  Выводит отчет в файл,предлагает для просмотра и печатает.
+  Outputs report to file, show preview and print.
 
-  В заголовках колонок символ ; означает, что с этого места начинается
-  следующая строчка заголовка
-  Ширина колонки определяется как максимальная среди ширины заголовка
-  колонки и заданной в массиве _aElen
-  Если ширина выводимого поля больше, чем ширина колонки,то делается
-  корректный перенос (до 6-и строк на колонку) по разделителям
-  пробел,точка,запятая,точка с запятой,табуляция
+  In the column headings character ';' means that from this point begins the
+  next line header.
+  Column width is defined as the maximum width between the column title and
+  given in the array _aElen.
+  If the width of the displayed field is greater than the width of the column,
+  then it is done correctly newline (up to 6 lines per column) by the dividers
+  'space', dot, comma, semicolon, tabulation.
 
-  Пример :
-	Heads:={'Код;клиента','Наименование'}
-	Funcs:={'KOD','NAME'}
+  Example :
+	Heads:={'Client;code','Name'}
+	Funcs:={'COD','NAME'}
 	Lens:={5,40}
-	MakeReport(Heads,Funcs,Lens,,'Клиенты банка')
+	MakeReport(Heads,Funcs,Lens,,'Bank clients')
 
-  См.также команду MAKE REPORT, облегчающую использование функции.
+  See also MAKE REPORT, ease to use function.
 
-  Упрощенная для BDBFS версия.
+  Lightweight version for BDBFS.
 
 */
 PRIVATE _Head,ISum,PSum,NeedPart:=.f.,nCol,PGrSum,NeedPgGrp:=.F.,_nPp
@@ -239,7 +239,7 @@ IF !BeginPrint(m->_cFile, m->_fcondit)
 	RETU .f.
 ENDIF
 
-* Если количество заголовков < количества столбцов - сделаем пустые заголовки
+* If the number of titles less than number of columns - make empty headlines.
 IF !IsPArray('_aHead') THEN m->_aHead := {}
 FOR i:=Len(m->_aHead)+1 TO nCol ;
 	DO AADD(m->_aHead,m->_aExpr[i])
@@ -292,14 +292,14 @@ IF Empty(m->_aTitle) .OR. (Type('_aTitle')#'A') ;
 	THEN m->_aTitle:=IF(IsPCharacter('_aTitle'),{ m->_aTitle },{})
 
 nGrpLines:=0
-IF !Empty(m->_aGroup) 	//нужна группировка
+IF !Empty(m->_aGroup)        //needed grouping
 	NeedPart:=.t.
 	Asize(m->_aGroup,4)
 	PSum := ACLONE(m->iSum)
 	*Psum2:= AClone(Psum)
 ENDIF
 
-IF !Empty(m->_aPage) 	//нужна группировка по странице
+IF !Empty(m->_aPage) 	//needed grouping by pages
 	NeedPgGrp:=.T.
 	Asize(m->_aPage,2)
 	PGrSum := ACLONE(m->iSum)
@@ -309,12 +309,12 @@ ENDIF
 IF Empty(m->_fCondit) THEN m->_fCondit := '.t.'
 
 
-* определим число строк в заголовке
+* determine lines count in header
 nHead:=1
 FOR i=1 to nCol DO;
 	nHead:=Max(nHead,FT_NOOCCUR(';',m->_aHead[i])+1)
 
-* определим детальные строки заголовка
+* determine detail header lines
 
 _Head:=Ext_Arr(,nHead,'')
 FOR i:=1 to nCol
@@ -328,12 +328,12 @@ FOR i:=1 to nCol
 		nMax:=Max(nMax,Len(cCurr))
 	ENDDO
 
-	IF  j<=nHead	//подцентрируем строчки заголовка по вертикали
+	IF  j<=nHead	//vertical centering header lines
 		A_Ins(aCurr,'')
 	ENDIF
 
 
-* определим ширину колонки
+* determine column width
 	IF  ValType( m->_aElen[i] )<>'N'
 		m->_aElen[i]:=0
 		j:=m->_aExpr[i]
@@ -351,21 +351,21 @@ FOR i:=1 to nCol
 	ENDIF
 
 
-* добавляем клетки
+* adds ceils
 	FOR j:=1 to nHead ;
 		DO _Head[j]+=Medi(aCurr[j],m->_aElen[i],m->cDivideT)
 
 NEXT
 
-* начинаем печать
+* begin printing
 BEGIN SEQUENCE
 
   _L:=Len(TRIM(_Head[1]))+1
-* А вдруг заголовок шире
-*Заголовок отчета
-*Plen()		&& включить сжатие при необходимости
+* What if the title is wider
+*Report header
+*Plen()		&& switch on compres if needed
 
-  PrintHead()			&& заголовок
+  PrintHead()			&& header
 
   IF NeedPart
 	pKod := &(m->_aGroup[1])
@@ -378,18 +378,18 @@ BEGIN SEQUENCE
 	Line()
   ENDIF
 
-  CheckEsc(.T.)	//Счетчик
-  m->_NPp:=0	//Счетчик п.п
+  CheckEsc(.T.)	//counter
+  m->_NPp:=0	//serial counter
   DO WHILE !EOF() .AND. CheckEsc()
 	IF &(m->_fCondit)
 	  SET DEVICE TO PRINT
 	  m->_nPp++
 
-	 nGrpLines++		// строк в группе
-	 IF NeedPart .AND. pKod<>&(m->_aGroup[1])	// Группировка?
-		Line(,.T.)  	// не допустим Eject
-		IF EMPTY(m->_aGroup[4]).OR.;	// в любом случае или
-		   (nGrpLines>1)		// более одной строки
+	 nGrpLines++		// lines in group
+	 IF NeedPart .AND. pKod<>&(m->_aGroup[1])	// Grouping?
+		Line(,.T.)  	// Eject not allow
+		IF EMPTY(m->_aGroup[4]).OR.;	// in any case or
+		   (nGrpLines>1)		// more that one line
 			ShowSum(PSum,.T.,.F.)
 		ENDIF
 
@@ -412,7 +412,7 @@ BEGIN SEQUENCE
 	  ShowLine(m->_aExpr,.t.)
 	  *IF IsPArray('_aSecond') THEN ShowLine(m->_aSecond,.f.)
 	ENDIF
-	SET(_SET_DEVICE,'')	//для вывода счетчика
+	SET(_SET_DEVICE,'')	//for counter printing
   ENDSCAN
 
   SET DEVICE TO PRINT
@@ -420,8 +420,8 @@ BEGIN SEQUENCE
   IF !Empty(m->_pEveryStep) THEN Aktion(m->_pEveryStep)
 
   IF NeedPart
-	IF EMPTY(m->_aGroup[4]).OR.;	// в любом случае
-		   (nGrpLines>1)	// или более одной строки
+	IF EMPTY(m->_aGroup[4]).OR.;	// in any case
+		   (nGrpLines>1)	// or more that one line
 		Line(,.T.)
 		ShowSum(PSum,.T.,.F.)
 	ENDIF
@@ -440,7 +440,7 @@ BEGIN SEQUENCE
 
   EvalA(m->_aFooter)
 
-*DevOut(NORMAL+_CRLF)		&& включили нормальный шрифт на принтере
+*DevOut(NORMAL+_CRLF)		&& Switch on to normal font on the printer
 
   IF TYPE(_PeCode)=='C' THEN Psay(&_PeCode)
   Psay(IF(lIsHTML,'</PRE></BODY></HTML>',),.T.)
@@ -457,8 +457,8 @@ RETU .t.
 **********
 STATIC PROC ShowLine(arr,IsFirst)
 LOCAL nItem,cCurr:=ARRAY(_MemoNumLines),aCurr,nCurr,i,ii,jj,nLen,nTot
-nItem:=1			// по-крайней мере одна строка
-AFILL(cCurr,'')			// строки(возможно мемо)
+nItem:=1			// At leat one line
+AFILL(cCurr,'')			// lines (probably MEMO)
 
 FOR i:=1 to nCol
 	nCurr:=arr[i]
@@ -513,19 +513,19 @@ NEXT
 Asize(cCurr,nItem)
 AEval(cCurr,{|el|Psay(IF(deleted(),'*',' ')+el)})
 **********
-PROC ShowSum(_sum,lPart,need2,lPage)	//используется и из Psay()
-					//при печати подвала страницы
+PROC ShowSum(_sum,lPart,need2,lPage)	//also used from Psay()
+					//while printing page footer
 LOCAL i,ii,cCurr,start:=ASCAN(m->_aSum,.T.),n1Wide
 lPage:=!EMPTY(lPage)
-IF Ascan(_sum,{|_1|_1>0})==0	// Нет сумм>0
+IF Ascan(_sum,{|_1|_1>0})==0	// No summ>0
 	RETURN
 ENDIF
 SUM ARRAY m->_aElen FROM 1 COUNT start-1 TO i
 
-n1Wide:=i+(start-2)*LEN(cDivide)+1	// Ширина для вывода
-					// итогового сообщения
+n1Wide:=i+(start-2)*LEN(cDivide)+1	// Width for summary message output
+
 cCurr:=' '
-IF !need2 .AND. start>1			// Есть куда всунуть
+IF !need2 .AND. start>1			// Have place for output
    IF lPage
 	cCurr:=ON_PAGE_TOTAL
 	IF EMPTY(m->_aPage[2])
@@ -556,20 +556,20 @@ FOR i:=start TO nCol
 NEXT
 IF lIsHtml THEN cCurr:='<b><i>'+cCurr+'</b></i>'
 Psay(cCurr,.T.)
-IF lPage	// страница
+IF lPage	// page
 /*
 	IF IsPArray('_aSecond') .AND. !need2
 		ShowSum(PGrsum2,.F.,.T.,.T.)
 	ENDIF
 */
-ELSEIF lPart	// группа
+ELSEIF lPart	// group
 *	IF IsPArray('_aSecond') .AND. !need2
 *		ShowSum(Psum2,.T.,.T.)
 *		Line()
 *	ELSEIF !IsPArray('_aSecond')
 		Line()
 *	ENDIF
-ELSE		// подвал
+ELSE		// footer
 *	IF IsPArray('_aSecond') .AND. !need2
 *		ShowSum(Isum2,.F.,.T.)
 *		Line('=',.T.)
@@ -639,7 +639,7 @@ IF m->_NoAsk .OR. (TakeScope(FOROTBOR) .AND. GetName(_ZU+FOROTBOR,'_PCond') .AND
   _PlineNo:=1
   lRes:=.T.
   IF lIsHtml
-	HtmlHeader(cTitle, aDesign)	//Параметры - на всяк случай
+	HtmlHeader(cTitle, aDesign)	//Options - just in case
 	PSAY('<PRE>')
   ENDIF
   IF TYPE(_PsCode)=='C' THEN Psay(&_PsCode)
@@ -664,7 +664,7 @@ _plineno+=_pspacing
 IF EMPTY(lPageNo) .AND. _PlineNo > _plength .AND. (_plength#0)
 	_pageno++
 	_plineNo=1
-	IF Really(NeedPgGrp)	// итоги по странице
+	IF Really(NeedPgGrp)	// summary by page
 		LINE(,.T.)
 		ShowSum(m->PGrsum,.F.,.F.,.T.)
 		LINE(,.T.)
@@ -677,7 +677,7 @@ IF EMPTY(lPageNo) .AND. _PlineNo > _plength .AND. (_plength#0)
 	ELSE
 		@ prow()+2,0 say ''
 	ENDIF
-// если случайно попали на конец файла - печатать страницу не надо
+// no need to ptrint page if accidentally got on the end of file
 	IF USED()
 		SKIP
 		IF EOF()
@@ -687,7 +687,7 @@ IF EMPTY(lPageNo) .AND. _PlineNo > _plength .AND. (_plength#0)
 			SKIP -1
 		ENDIF
 	ENDIF
-	IF Really(NeedPgGrp)	// заглавие страниц
+	IF Really(NeedPgGrp)	// pages header
 		IF !EMPTY(_aPage[1]) THEN EvalA(m->_aPage[1])
 	ENDIF
 	PrintHead()
@@ -723,15 +723,15 @@ END
 #define divisor ' ;.,!?'+chr(9)//+chr(10)
 **********
 FUNC DivideStr(cStr,NumItem,nLen,_Border, aArr, lTrunc )
-// Разбивает строку на NumItem клеток длиной nLen
+// Split string by NumItem items by length nLen
 LOCAL i:=1, nSp, j, cItem, cRest
 aArr:=Array(NumItem)
-cStr:=StrTran(StrTran(cStr,'Н'+chr(10)),chr(10))
+cStr:=StrTran(StrTran(cStr,'Н'+chr(10)),chr(10)) // utf-8: '╨Э'
 *IF_NIL _Border IS ':'
 
 DO WHILE !Empty(cStr) .AND. i<=NumItem
 	Parce(cStr,chr(13),@cItem,@cRest)
-//cItem уже сделан
+//cItem already done
 	IF  Len(cItem) > nLen
 		j:=nLen
 		DO WHILE j>1

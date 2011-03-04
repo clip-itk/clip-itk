@@ -3,30 +3,30 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIWindow.
 $LANG_RU$
-	Класс UIWindow.
+	п п╩п╟я│я│ UIWindow.
 $ABOUT$
 	Class of separate window.
 $LANG_RU$
-	Класс отдельного окна.
+	п п╩п╟я│я│ п╬я┌п╢п╣п╩я▄п╫п╬пЁп╬ п╬п╨п╫п╟.
 $SYNTAX$
 	UIWindow([<caption>],<parent>,[<name>],[<close>],[<resizeable>])	--> UIWindow object
 $LANG_RU$
-	UIWindow([<caption>],<parent>,[<name>],[<close>],[<resizeable>])	--> Объект UIWindow
+	UIWindow([<caption>],<parent>,[<name>],[<close>],[<resizeable>])	--> п·п╠я┼п╣п╨я┌ UIWindow
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIWindow".
 	<name>		- Window name defined in constructor.
 	<userSpace>	- Layout for widget placement. <link linkend="classuivbox">UIVBox</link> object.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIWindow".
-	<name>		- Имя окна для его поиска, заданное в конструкторе.
-	<userSpace>	- Область размещения виджетов. Объект <link linkend="classuivbox">UIVBox</link>.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIWindow".
+	<name>		- п≤п╪я▐ п╬п╨п╫п╟ п╢п╩я▐ п╣пЁп╬ п©п╬п╦я│п╨п╟, п╥п╟п╢п╟п╫п╫п╬п╣ п╡ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─п╣.
+	<userSpace>	- п·п╠п╩п╟я│я┌я▄ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╡. п·п╠я┼п╣п╨я┌ <link linkend="classuivbox">UIVBox</link>.
 
 $METHODNAME$
 	UIWindow()
 $SUMMARY$
 	Constructor. Create separate window.
 $LANG_RU$
-	Конструктор. Создать отдельное окно.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╬я┌п╢п╣п╩я▄п╫п╬п╣ п╬п╨п╫п╬.
 $SYNTAX$
 	UIWindow([<caption>],<parent>,[<name>],[<close>],[<resizeable>])
 $ARGUMENTS$
@@ -36,18 +36,18 @@ $ARGUMENTS$
 	<close>		- Boolean. Quit application if window is closed.
 	<resizeable>	- Boolean. Ability of change window size manually.
 $LANG_RU$
-	<caption> 	- Строка. Заголовок окна.
-	<parent>	- Объект окна. Родительское окно.
-	<name> 		- Строка. Имя окна для его поиска.
-	<close>		- Логическое значение. Закончить работу приложения при закрытии окна.
-	<resizeable>	- Логическое значение. Возможность изменения размеров окна вручную.
+	<caption> 	- п║я┌я─п╬п╨п╟. п≈п╟пЁп╬п╩п╬п╡п╬п╨ п╬п╨п╫п╟.
+	<parent>	- п·п╠я┼п╣п╨я┌ п╬п╨п╫п╟. п═п╬п╢п╦я┌п╣п╩я▄я│п╨п╬п╣ п╬п╨п╫п╬.
+	<name> 		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╬п╨п╫п╟ п╢п╩я▐ п╣пЁп╬ п©п╬п╦я│п╨п╟.
+	<close>		- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п≈п╟п╨п╬п╫я┤п╦я┌я▄ я─п╟п╠п╬я┌я┐ п©я─п╦п╩п╬п╤п╣п╫п╦я▐ п©я─п╦ п╥п╟п╨я─я▀я┌п╦п╦ п╬п╨п╫п╟.
+	<resizeable>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п▓п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п╦п╥п╪п╣п╫п╣п╫п╦я▐ я─п╟п╥п╪п╣я─п╬п╡ п╬п╨п╫п╟ п╡я─я┐я┤п╫я┐я▌.
 
 $METHODNAME$
 	close()
 $SUMMARY$
 	Close window.
 $LANG_RU$
-	Закрыть окно.
+	п≈п╟п╨я─я▀я┌я▄ п╬п╨п╫п╬.
 $SYNTAX$
 	close()
 $ENDMETHOD$
@@ -57,7 +57,7 @@ $METHODNAME$
 $SUMMARY$
 	Close current child window.
 $LANG_RU$
-	Закрыть текущее дочернее окно.
+	п≈п╟п╨я─я▀я┌я▄ я┌п╣п╨я┐я┴п╣п╣ п╢п╬я┤п╣я─п╫п╣п╣ п╬п╨п╫п╬.
 $SYNTAX$
 	childClose()
 $ENDMETHOD$
@@ -67,7 +67,7 @@ $METHODNAME$
 $SUMMARY$
 	Close all child windows.
 $LANG_RU$
-	Закрыть все дочерние окна.
+	п≈п╟п╨я─я▀я┌я▄ п╡я│п╣ п╢п╬я┤п╣я─п╫п╦п╣ п╬п╨п╫п╟.
 $SYNTAX$
 	childCloseAll()
 $ENDMETHOD$
@@ -77,13 +77,13 @@ $METHODNAME$
 $SUMMARY$
 	Set new window caption.
 $LANG_RU$
-	Изменить заголовок окна.
+	п≤п╥п╪п╣п╫п╦я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╬п╨ п╬п╨п╫п╟.
 $SYNTAX$
 	setCaption(<caption>)
 $ARGUMENTS$
 	<caption>	- String. Text of window title.
 $LANG_RU$
-	<caption>	- Строка. Текст заголовка окна.
+	<caption>	- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ п╥п╟пЁп╬п╩п╬п╡п╨п╟ п╬п╨п╫п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -91,13 +91,13 @@ $METHODNAME$
 $SUMMARY$
 	Get size and position of window.
 $LANG_RU$
-	Вернуть размеры и координаты расположения окна.
+	п▓п╣я─п╫я┐я┌я▄ я─п╟п╥п╪п╣я─я▀ п╦ п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦я▐ п╬п╨п╫п╟.
 $SYNTAX$
 	getGeometry()	--> <aRect>
 $RETURNS$
 	Array of elements: width, height, x, y in pixels respectively.
 $LANG_RU$
-	Массив с элементами: ширина, высота, x, y.
+	п°п╟я│я│п╦п╡ я│ я█п╩п╣п╪п╣п╫я┌п╟п╪п╦: я┬п╦я─п╦п╫п╟, п╡я▀я│п╬я┌п╟, x, y.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -105,13 +105,13 @@ $METHODNAME$
 $SUMMARY$
 	Change size and/or position of window.
 $LANG_RU$
-	Изменить размеры и/или координаты расположения окна.
+	п≤п╥п╪п╣п╫п╦я┌я▄ я─п╟п╥п╪п╣я─я▀ п╦/п╦п╩п╦ п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦я▐ п╬п╨п╫п╟.
 $SYNTAX$
 	setGeometry(<geom>)
 $ARGUMENTS$
 	<geom>		- Array of number or number. Size and position as array of elements: width, height, x, y in pixels respectively. If parameter type is number it is mean widget width in pixels.
 $LANG_RU$
-	<geom>		- Массив чисел или число. Размеры и положение окна в виде массива элементов: ширина, высота, x, y. При указании параметра в виде числа подразумевается ширина в точках.
+	<geom>		- п°п╟я│я│п╦п╡ я┤п╦я│п╣п╩ п╦п╩п╦ я┤п╦я│п╩п╬. п═п╟п╥п╪п╣я─я▀ п╦ п©п╬п╩п╬п╤п╣п╫п╦п╣ п╬п╨п╫п╟ п╡ п╡п╦п╢п╣ п╪п╟я│я│п╦п╡п╟ я█п╩п╣п╪п╣п╫я┌п╬п╡: я┬п╦я─п╦п╫п╟, п╡я▀я│п╬я┌п╟, x, y. п÷я─п╦ я┐п╨п╟п╥п╟п╫п╦п╦ п©п╟я─п╟п╪п╣я┌я─п╟ п╡ п╡п╦п╢п╣ я┤п╦я│п╩п╟ п©п╬п╢я─п╟п╥я┐п╪п╣п╡п╟п╣я┌я│я▐ я┬п╦я─п╦п╫п╟ п╡ я┌п╬я┤п╨п╟я┘.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -119,13 +119,13 @@ $METHODNAME$
 $SUMMARY$
 	Set window at center of the screen.
 $LANG_RU$
-	Разместить окно по центру экрана.
+	п═п╟п╥п╪п╣я│я┌п╦я┌я▄ п╬п╨п╫п╬ п©п╬ я├п╣п╫я┌я─я┐ я█п╨я─п╟п╫п╟.
 $SYNTAX$
 	setPlacement(<centered>)
 $ARGUMENTS$
 	<centered>	- Boolean. Flag of placement window at center of the screen.
 $LANG_RU$
-	<centered>	- Логическое значение. Флаг размещения окна по центру экрана.
+	<centered>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╬п╨п╫п╟ п©п╬ я├п╣п╫я┌я─я┐ я█п╨я─п╟п╫п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -133,7 +133,7 @@ $METHODNAME$
 $SUMMARY$
 	Create area for child window placement. This method must be call after placement of menu. toolbar(s), statusbar and/or other fixed element(s) into window.
 $LANG_RU$
-	Установить рабочую область для размещения дочерних окон. Вызывается после размещения на окне меню, панелей инструментов, строки состояния и прочих постоянных элементов.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟п╠п╬я┤я┐я▌ п╬п╠п╩п╟я│я┌я▄ п╢п╩я▐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╢п╬я┤п╣я─п╫п╦я┘ п╬п╨п╬п╫. п▓я▀п╥я▀п╡п╟п╣я┌я│я▐ п©п╬я│п╩п╣ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╫п╟ п╬п╨п╫п╣ п╪п╣п╫я▌, п©п╟п╫п╣п╩п╣п╧ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡, я│я┌я─п╬п╨п╦ я│п╬я│я┌п╬я▐п╫п╦я▐ п╦ п©я─п╬я┤п╦я┘ п©п╬я│я┌п╬я▐п╫п╫я▀я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡.
 $SYNTAX$
 	setMDI()
 $ENDMETHOD$
@@ -143,13 +143,13 @@ $METHODNAME$
 $SUMMARY$
 	Set icon for the window.
 $LANG_RU$
-	Присвоить пиктограмму окну.
+	п÷я─п╦я│п╡п╬п╦я┌я▄ п©п╦п╨я┌п╬пЁя─п╟п╪п╪я┐ п╬п╨п╫я┐.
 $SYNTAX$
 	setIcon(<pic>)
 $ARGUMENTS$
 	<pic> - Object UIImage. Icon object.
 $LANG_RU$
-	<pic> - Объект UIImage. Объект пиктограммы.
+	<pic> - п·п╠я┼п╣п╨я┌ UIImage. п·п╠я┼п╣п╨я┌ п©п╦п╨я┌п╬пЁя─п╟п╪п╪я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -157,13 +157,13 @@ $METHODNAME$
 $SUMMARY$
 	Set focus to specified widget.
 $LANG_RU$
-	Установить фокус ввода на указанный виджет.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я└п╬п╨я┐я│ п╡п╡п╬п╢п╟ п╫п╟ я┐п╨п╟п╥п╟п╫п╫я▀п╧ п╡п╦п╢п╤п╣я┌.
 $SYNTAX$
 	setFocus(<obj>)
 $ARGUMENTS$
 	<obj>		- Widget. Focused widget.
 $LANG_RU$
-	<obj>		- Виджет. Виджет, на который передаётся фокус.
+	<obj>		- п▓п╦п╢п╤п╣я┌. п▓п╦п╢п╤п╣я┌, п╫п╟ п╨п╬я┌п╬я─я▀п╧ п©п╣я─п╣п╢п╟я▒я┌я│я▐ я└п╬п╨я┐я│.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -171,13 +171,13 @@ $METHODNAME$
 $SUMMARY$
 	Set button as default in window.
 $LANG_RU$
-	Установить кнопку по умолчанию для окна.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╨п╫п╬п©п╨я┐ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╢п╩я▐ п╬п╨п╫п╟.
 $SYNTAX$
 	setDefault()
 $ARGUMENTS$
 	<obj>		- Widget. Default button.
 $LANG_RU$
-	<obj>		- Виджет. Кнопка, выбранная по умолчанию.
+	<obj>		- п▓п╦п╢п╤п╣я┌. п п╫п╬п©п╨п╟, п╡я▀п╠я─п╟п╫п╫п╟я▐ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -185,15 +185,15 @@ $METHODNAME$
 $SUMMARY$
 	Set action to shortcut in the window.
 $LANG_RU$
-	Привязать действие к комбинации клавиш в окне.
+	п÷я─п╦п╡я▐п╥п╟я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣ п╨ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬ п╡ п╬п╨п╫п╣.
 $SYNTAX$
 	setKeyEvent(<cKey>,<action>)
 $ARGUMENTS$
 	<cKey>		- String. Shortcut definition. For example, "F5" or "Alt+M".
 	<action>	- Code block. Action.
 $LANG_RU$
-	<cKey>		- Строка. Определение комбинации клавиш. Например, "F5" или "Alt+M".
-	<action>	- Блок кода. Действие.
+	<cKey>		- п║я┌я─п╬п╨п╟. п·п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬. п²п╟п©я─п╦п╪п╣я─, "F5" п╦п╩п╦ "Alt+M".
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -201,13 +201,13 @@ $METHODNAME$
 $SUMMARY$
 	Unset action from shortcut in the window.
 $LANG_RU$
-	Отвязать действие от комбинации клавиш в окне.
+	п·я┌п╡я▐п╥п╟я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣ п╬я┌ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬ п╡ п╬п╨п╫п╣.
 $SYNTAX$
 	unSetKeyEvent(<cKey>)
 $ARGUMENTS$
 	<cKey>		- String. Shortcut definition. For example, "F5" or "Alt+M".
 $LANG_RU$
-	<cKey>		- Строка. Определение комбинации клавиш. Например, "F5" или "Alt+M".
+	<cKey>		- п║я┌я─п╬п╨п╟. п·п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬. п²п╟п©я─п╦п╪п╣я─, "F5" п╦п╩п╦ "Alt+M".
 $ENDMETHOD$
 
 $METHODNAME$
@@ -215,13 +215,13 @@ $METHODNAME$
 $SUMMARY$
 	Fill widgets by object fields.
 $LANG_RU$
-	Заполнить поля окна значениями атрибутов заданного объекта.
+	п≈п╟п©п╬п╩п╫п╦я┌я▄ п©п╬п╩я▐ п╬п╨п╫п╟ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦ п╟я┌я─п╦п╠я┐я┌п╬п╡ п╥п╟п╢п╟п╫п╫п╬пЁп╬ п╬п╠я┼п╣п╨я┌п╟.
 $SYNTAX$
 	setObj(<obj>)
 $ARGUMENTS$
 	<obj> 		- Object. Object contained fields with data.
 $LANG_RU$
-	<obj> 		- Объект. Объект, содержащий атрибуты с данными.
+	<obj> 		- п·п╠я┼п╣п╨я┌. п·п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╟я┌я─п╦п╠я┐я┌я▀ я│ п╢п╟п╫п╫я▀п╪п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -229,13 +229,13 @@ $METHODNAME$
 $SUMMARY$
 	Get object with filled fields from window widgets contents.
 $LANG_RU$
-	Возвращает объект, поля которого заполнены данными из полей окна.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌, п©п╬п╩я▐ п╨п╬я┌п╬я─п╬пЁп╬ п╥п╟п©п╬п╩п╫п╣п╫я▀ п╢п╟п╫п╫я▀п╪п╦ п╦п╥ п©п╬п╩п╣п╧ п╬п╨п╫п╟.
 $SYNTAX$
 	getObj()	--> <object>
 $RETURNS$
 	Array of widget values.
 $LANG_RU$
-	Объект, поля которого заполнены данными из полей окна.
+	п·п╠я┼п╣п╨я┌, п©п╬п╩я▐ п╨п╬я┌п╬я─п╬пЁп╬ п╥п╟п©п╬п╩п╫п╣п╫я▀ п╢п╟п╫п╫я▀п╪п╦ п╦п╥ п©п╬п╩п╣п╧ п╬п╨п╫п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -245,9 +245,9 @@ $SUMMARY$
 	these widgets is processing in functions setObj(), getObj(), 
 	setValues() and getValues().
 $LANG_RU$
-	Установить правила преобразования значения в содержимое виджета. Если
-	форматирование установлено для виджетов, только эти виджеты могут 
-	обрабатываться в функциях setObj(), getObj(), setValues() и getValues().
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©я─п╟п╡п╦п╩п╟ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦я▐ п╥п╫п╟я┤п╣п╫п╦я▐ п╡ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╡п╦п╢п╤п╣я┌п╟. п∙я│п╩п╦
+	я└п╬я─п╪п╟я┌п╦я─п╬п╡п╟п╫п╦п╣ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╬ п╢п╩я▐ п╡п╦п╢п╤п╣я┌п╬п╡, я┌п╬п╩я▄п╨п╬ я█я┌п╦ п╡п╦п╢п╤п╣я┌я▀ п╪п╬пЁя┐я┌ 
+	п╬п╠я─п╟п╠п╟я┌я▀п╡п╟я┌я▄я│я▐ п╡ я└я┐п╫п╨я├п╦я▐я┘ setObj(), getObj(), setValues() п╦ getValues().
 $SYNTAX$
 	setFormat(<name>,[<type>],[<length>],[<decLen>],[<format>],[<flags>])
 $ARGUMENTS$
@@ -259,13 +259,13 @@ $ARGUMENTS$
 	<format> - String. Value format. Not yet implemented.
 	<flags>  - String. Value flags. Not yet implemented.
 $LANG_RU$
-	<widget> - Строка. Имя виджета.
-	<name>   - Строка. Имя значения.
-	<type>   - Строка. Тип значения. Допустимые варианты: 'string', 'number', 'date', 'boolean' или 'array'.
-	<length> - Число. Длина значения.
-	<decLen> - Число. Количество знаков дробной части.
-	<format> - Строка. Формат значения. Пока не реализовано.
-	<flags>  - СТрока. Флаги значения. Пока не реализовано.
+	<widget> - п║я┌я─п╬п╨п╟. п≤п╪я▐ п╡п╦п╢п╤п╣я┌п╟.
+	<name>   - п║я┌я─п╬п╨п╟. п≤п╪я▐ п╥п╫п╟я┤п╣п╫п╦я▐.
+	<type>   - п║я┌я─п╬п╨п╟. п╒п╦п© п╥п╫п╟я┤п╣п╫п╦я▐. п■п╬п©я┐я│я┌п╦п╪я▀п╣ п╡п╟я─п╦п╟п╫я┌я▀: 'string', 'number', 'date', 'boolean' п╦п╩п╦ 'array'.
+	<length> - п╖п╦я│п╩п╬. п■п╩п╦п╫п╟ п╥п╫п╟я┤п╣п╫п╦я▐.
+	<decLen> - п╖п╦я│п╩п╬. п п╬п╩п╦я┤п╣я│я┌п╡п╬ п╥п╫п╟п╨п╬п╡ п╢я─п╬п╠п╫п╬п╧ я┤п╟я│я┌п╦.
+	<format> - п║я┌я─п╬п╨п╟. п╓п╬я─п╪п╟я┌ п╥п╫п╟я┤п╣п╫п╦я▐. п÷п╬п╨п╟ п╫п╣ я─п╣п╟п╩п╦п╥п╬п╡п╟п╫п╬.
+	<flags>  - п║п╒я─п╬п╨п╟. п╓п╩п╟пЁп╦ п╥п╫п╟я┤п╣п╫п╦я▐. п÷п╬п╨п╟ п╫п╣ я─п╣п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -273,7 +273,7 @@ $METHODNAME$
 $SUMMARY$
 	Show dialog window with message.
 $LANG_RU$
-	Показать диалоговое окно.
+	п÷п╬п╨п╟п╥п╟я┌я▄ п╢п╦п╟п╩п╬пЁп╬п╡п╬п╣ п╬п╨п╫п╬.
 $SYNTAX$
 	dialogBox(<caption>,<text>,[<buttons>],[<buttonNames>],[<action>])
 $ARGUMENTS$
@@ -283,11 +283,11 @@ $ARGUMENTS$
 	<buttonNames> 	- String. In the string defined array of name for button. For example, "'SAVE','CANCEL'".
 	<action>	- Code block. Code block which is executed on any defined button on dialog window. As parameters of this call name of pressed button is used.
 $LANG_RU$
-	<caption>	- Строка. Строка заголовка диалога.
-	<text>		- Строка. Текст в окне диалога.
-	<buttons> 	- Строка. Строка массива кнопок. Например, "'&amp;Сохранить','&amp;Отменить'". Если параметр не указан, будет показана одна кнопка 'OK'.
-	<buttonNames> 	- Строка. Cтрока массива имён кнопок. Например, "'SAVE','CANCEL'".
-	<action>	- Блок кода. Блок кода, который выполняется при нажатии любой объявленной кнопки диалога. В качестве параметра блоку кода передаётся имя нажатой кнопки.
+	<caption>	- п║я┌я─п╬п╨п╟. п║я┌я─п╬п╨п╟ п╥п╟пЁп╬п╩п╬п╡п╨п╟ п╢п╦п╟п╩п╬пЁп╟.
+	<text>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ п╡ п╬п╨п╫п╣ п╢п╦п╟п╩п╬пЁп╟.
+	<buttons> 	- п║я┌я─п╬п╨п╟. п║я┌я─п╬п╨п╟ п╪п╟я│я│п╦п╡п╟ п╨п╫п╬п©п╬п╨. п²п╟п©я─п╦п╪п╣я─, "'&amp;п║п╬я┘я─п╟п╫п╦я┌я▄','&amp;п·я┌п╪п╣п╫п╦я┌я▄'". п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─ п╫п╣ я┐п╨п╟п╥п╟п╫, п╠я┐п╢п╣я┌ п©п╬п╨п╟п╥п╟п╫п╟ п╬п╢п╫п╟ п╨п╫п╬п©п╨п╟ 'OK'.
+	<buttonNames> 	- п║я┌я─п╬п╨п╟. Cя┌я─п╬п╨п╟ п╪п╟я│я│п╦п╡п╟ п╦п╪я▒п╫ п╨п╫п╬п©п╬п╨. п²п╟п©я─п╦п╪п╣я─, "'SAVE','CANCEL'".
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п▒п╩п╬п╨ п╨п╬п╢п╟, п╨п╬я┌п╬я─я▀п╧ п╡я▀п©п╬п╩п╫я▐п╣я┌я│я▐ п©я─п╦ п╫п╟п╤п╟я┌п╦п╦ п╩я▌п╠п╬п╧ п╬п╠я┼я▐п╡п╩п╣п╫п╫п╬п╧ п╨п╫п╬п©п╨п╦ п╢п╦п╟п╩п╬пЁп╟. п▓ п╨п╟я┤п╣я│я┌п╡п╣ п©п╟я─п╟п╪п╣я┌я─п╟ п╠п╩п╬п╨я┐ п╨п╬п╢п╟ п©п╣я─п╣п╢п╟я▒я┌я│я▐ п╦п╪я▐ п╫п╟п╤п╟я┌п╬п╧ п╨п╫п╬п©п╨п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -295,7 +295,7 @@ $METHODNAME$
 $SUMMARY$
 	Show window.
 $LANG_RU$
-	Показать окно.
+	п÷п╬п╨п╟п╥п╟я┌я▄ п╬п╨п╫п╬.
 $SYNTAX$
 	show()
 $ENDMETHOD$
@@ -305,7 +305,7 @@ $METHODNAME$
 $SUMMARY$
 	Attach to window menubar, toolbar and/or statusbar.
 $LANG_RU$
-	Привязать к окну меню, панель инструментов и строку состояния.
+	п÷я─п╦п╡я▐п╥п╟я┌я▄ п╨ п╬п╨п╫я┐ п╪п╣п╫я▌, п©п╟п╫п╣п╩я▄ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡ п╦ я│я┌я─п╬п╨я┐ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $SYNTAX$
 	setPanels([<menu>],[<toolBar>],[<statusBar>])
 $ARGUMENTS$
@@ -313,9 +313,9 @@ $ARGUMENTS$
 	<toolBar> 	- Object <link linkend="classuitoolbar">UIToolBar</link>. Toolbar.
 	<statusBar> 	- Object <link linkend="classuistatusbar">UIStatusBar</link>. Statusbar.
 $LANG_RU$
-	<menu>		- Объект <link linkend="classuimenu">UIMenu</link>. Меню.
-	<toolBar> 	- Объект <link linkend="classuitoolbar">UIToolBar</link>. Панель инструментов.
-	<statusBar> 	- Объект <link linkend="classuistatusbar">UIStatusBar</link>. Строка состояния.
+	<menu>		- п·п╠я┼п╣п╨я┌ <link linkend="classuimenu">UIMenu</link>. п°п╣п╫я▌.
+	<toolBar> 	- п·п╠я┼п╣п╨я┌ <link linkend="classuitoolbar">UIToolBar</link>. п÷п╟п╫п╣п╩я▄ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡.
+	<statusBar> 	- п·п╠я┼п╣п╨я┌ <link linkend="classuistatusbar">UIStatusBar</link>. п║я┌я─п╬п╨п╟ я│п╬я│я┌п╬я▐п╫п╦я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -323,19 +323,19 @@ $METHODNAME$
 $SUMMARY$
 	Set name for widget.
 $LANG_RU$
-	Присвоить имя полю окна.
+	п÷я─п╦я│п╡п╬п╦я┌я▄ п╦п╪я▐ п©п╬п╩я▌ п╬п╨п╫п╟.
 $SYNTAX$
 	setName(<name>,<o>) --> <o>
 $ARGUMENTS$
 	<name>		- String. Field name.
 	<o>		- Object. Widget object.
 $LANG_RU$
-	<name>		- Строка. Имя поля.
-	<o>		- Объект. Объект виджета.
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п©п╬п╩я▐.
+	<o>		- п·п╠я┼п╣п╨я┌. п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟.
 $RETURNS$
 	Named widget object.
 $LANG_RU$
-	Объект именованного виджета.
+	п·п╠я┼п╣п╨я┌ п╦п╪п╣п╫п╬п╡п╟п╫п╫п╬пЁп╬ п╡п╦п╢п╤п╣я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -343,13 +343,13 @@ $METHODNAME$
 $SUMMARY$
 	Get widget value by its name.
 $LANG_RU$
-	Вернуть значение поля по его имени.
+	п▓п╣я─п╫я┐я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬п╩я▐ п©п╬ п╣пЁп╬ п╦п╪п╣п╫п╦.
 $SYNTAX$
 	val(<name>)
 $ARGUMENTS$
 	<name>		- String. Widget name. Setting up name for widget should be done by method setName().
 $LANG_RU$
-	<name>		- Строка. Имя поля. Привязка имён к полям осуществляется методом setName().
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п©п╬п╩я▐. п÷я─п╦п╡я▐п╥п╨п╟ п╦п╪я▒п╫ п╨ п©п╬п╩я▐п╪ п╬я│я┐я┴п╣я│я┌п╡п╩я▐п╣я┌я│я▐ п╪п╣я┌п╬п╢п╬п╪ setName().
 $ENDMETHOD$
 
 $METHODNAME$
@@ -357,13 +357,13 @@ $METHODNAME$
 $SUMMARY$
 	Fill widget values from array.
 $LANG_RU$
-	Заполнить поля окна значениями из массива.
+	п≈п╟п©п╬п╩п╫п╦я┌я▄ п©п╬п╩я▐ п╬п╨п╫п╟ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦ п╦п╥ п╪п╟я│я│п╦п╡п╟.
 $SYNTAX$
 	setValues(<values>)
 $ARGUMENTS$
 	<values>	- Array. Array of named values. Each element must be array consisted from two elements: string with widget name and string with its value.
 $LANG_RU$
-	<values>	- Массив. Массив именованных значений. Каждый элемент массива является массивом, состоящим из двух элементов: строки имени поля и его значения.
+	<values>	- п°п╟я│я│п╦п╡. п°п╟я│я│п╦п╡ п╦п╪п╣п╫п╬п╡п╟п╫п╫я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧. п п╟п╤п╢я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╪п╟я│я│п╦п╡п╟ я▐п╡п╩я▐п╣я┌я│я▐ п╪п╟я│я│п╦п╡п╬п╪, я│п╬я│я┌п╬я▐я┴п╦п╪ п╦п╥ п╢п╡я┐я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡: я│я┌я─п╬п╨п╦ п╦п╪п╣п╫п╦ п©п╬п╩я▐ п╦ п╣пЁп╬ п╥п╫п╟я┤п╣п╫п╦я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -371,13 +371,13 @@ $METHODNAME$
 $SUMMARY$
 	Get array of values from window widgets.
 $LANG_RU$
-	Возвратить массив значений из полей окна.
+	п▓п╬п╥п╡я─п╟я┌п╦я┌я▄ п╪п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п╦п╥ п©п╬п╩п╣п╧ п╬п╨п╫п╟.
 $SYNTAX$
 	getValues()	--> <array>
 $RETURNS$
 	Array of values from window widgets. Each element is array consisted from two elements: string with widget name and string with its value.
 $LANG_RU$
-	Массив значений из полей окна. Каждый элемент массива является массивом, состоящим из двух элементов: строки имени поля и его значения.
+	п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п╦п╥ п©п╬п╩п╣п╧ п╬п╨п╫п╟. п п╟п╤п╢я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╪п╟я│я│п╦п╡п╟ я▐п╡п╩я▐п╣я┌я│я▐ п╪п╟я│я│п╦п╡п╬п╪, я│п╬я│я┌п╬я▐я┴п╦п╪ п╦п╥ п╢п╡я┐я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡: я│я┌я─п╬п╨п╦ п╦п╪п╣п╫п╦ п©п╬п╩я▐ п╦ п╣пЁп╬ п╥п╫п╟я┤п╣п╫п╦я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -385,13 +385,13 @@ $METHODNAME$
 $SUMMARY$
 	Send value to window which initiated creation of this window.
 $LANG_RU$
-	Возвратить определённое значение в окно, инициировавшее создание данного окна.
+	п▓п╬п╥п╡я─п╟я┌п╦я┌я▄ п╬п©я─п╣п╢п╣п╩я▒п╫п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╡ п╬п╨п╫п╬, п╦п╫п╦я├п╦п╦я─п╬п╡п╟п╡я┬п╣п╣ я│п╬п╥п╢п╟п╫п╦п╣ п╢п╟п╫п╫п╬пЁп╬ п╬п╨п╫п╟.
 $SYNTAX$
 	return(<val>)
 $ARGUMENTS$
 	<val>		- Any type. Value transmitted via return function.
 $LANG_RU$
-	<val>		- Значение любого типа. Значение, передаваемое через функцию возврата.
+	<val>		- п≈п╫п╟я┤п╣п╫п╦п╣ п╩я▌п╠п╬пЁп╬ я┌п╦п©п╟. п≈п╫п╟я┤п╣п╫п╦п╣, п©п╣я─п╣п╢п╟п╡п╟п╣п╪п╬п╣ я┤п╣я─п╣п╥ я└я┐п╫п╨я├п╦я▌ п╡п╬п╥п╡я─п╟я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -399,15 +399,15 @@ $METHODNAME$
 $SUMMARY$
 	Send value for <link linkend="classuichoice">UIChoice</link> to window which initiated creation of this window.
 $LANG_RU$
-	Возвратить значение для <link linkend="classuichoice">UIChoice</link> в окно, инициировавшее создание данного окна.
+	п▓п╬п╥п╡я─п╟я┌п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╩я▐ <link linkend="classuichoice">UIChoice</link> п╡ п╬п╨п╫п╬, п╦п╫п╦я├п╦п╦я─п╬п╡п╟п╡я┬п╣п╣ я│п╬п╥п╢п╟п╫п╦п╣ п╢п╟п╫п╫п╬пЁп╬ п╬п╨п╫п╟.
 $SYNTAX$
 	select(<table>,<column>)
 $ARGUMENTS$
 	<table>		- String. Name of <link linkend="classuitable">UITable</link> widget in current window.
 	<column>	- Number. Column number from <link linkend="classuitable">UITable</link>.
 $LANG_RU$
-	<table>		- Строка. Имя виджета типа <link linkend="classuitable">UITable</link> в текущем окне.
-	<column>	- Число. Номер столбца в <link linkend="classuitable">UITable</link>.
+	<table>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╡п╦п╢п╤п╣я┌п╟ я┌п╦п©п╟ <link linkend="classuitable">UITable</link> п╡ я┌п╣п╨я┐я┴п╣п╪ п╬п╨п╫п╣.
+	<column>	- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌п╬п╩п╠я├п╟ п╡ <link linkend="classuitable">UITable</link>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -415,13 +415,13 @@ $METHODNAME$
 $SUMMARY$
 	Return true if any field in window was changed.
 $LANG_RU$
-	Возвращает логическое значение, было ли изменено хотя одно поле изменяемого в окне объекта.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, п╠я▀п╩п╬ п╩п╦ п╦п╥п╪п╣п╫п╣п╫п╬ я┘п╬я┌я▐ п╬п╢п╫п╬ п©п╬п╩п╣ п╦п╥п╪п╣п╫я▐п╣п╪п╬пЁп╬ п╡ п╬п╨п╫п╣ п╬п╠я┼п╣п╨я┌п╟.
 $SYNTAX$
 	isChanged()	--> <bChanged>
 $RETURNS$
 	Boolean value. If value is true, one or more window fields was/were changed. False is mean that all fields are unchanged.
 $LANG_RU$
-	Логическое значение. Если значение истина, одно или больше полей окна были изменены. Ложь означает что ни одно поле не было изменено.
+	п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п∙я│п╩п╦ п╥п╫п╟я┤п╣п╫п╦п╣ п╦я│я┌п╦п╫п╟, п╬п╢п╫п╬ п╦п╩п╦ п╠п╬п╩я▄я┬п╣ п©п╬п╩п╣п╧ п╬п╨п╫п╟ п╠я▀п╩п╦ п╦п╥п╪п╣п╫п╣п╫я▀. п⌡п╬п╤я▄ п╬п╥п╫п╟я┤п╟п╣я┌ я┤я┌п╬ п╫п╦ п╬п╢п╫п╬ п©п╬п╩п╣ п╫п╣ п╠я▀п╩п╬ п╦п╥п╪п╣п╫п╣п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -429,13 +429,13 @@ $METHODNAME$
 $SUMMARY$
 	Set object identifier changed in this window.
 $LANG_RU$
-	Установить идентификатор объекта, изменяемого в окне.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟, п╦п╥п╪п╣п╫я▐п╣п╪п╬пЁп╬ п╡ п╬п╨п╫п╣.
 $SYNTAX$
 	setId(<id>)
 $ARGUMENTS$
 	<id>		- String. Object identifier changed in window.
 $LANG_RU$
-	<id>		- Строка. Идентификатор объекта, изменяемого в окне.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟, п╦п╥п╪п╣п╫я▐п╣п╪п╬пЁп╬ п╡ п╬п╨п╫п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -443,13 +443,13 @@ $METHODNAME$
 $SUMMARY$
 	Set space between widgets in window.
 $LANG_RU$
-	Установить расстояние между виджетами в окне.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟я│я│я┌п╬я▐п╫п╦п╣ п╪п╣п╤п╢я┐ п╡п╦п╢п╤п╣я┌п╟п╪п╦ п╡ п╬п╨п╫п╣.
 $SYNTAX$
 	setSpacing(<space>)
 $ARGUMENTS$
 	<space>		- Number. Space between widgets in pixels.
 $LANG_RU$
-	<space>		- Число. Расстояние в точках между виджетами в окне.
+	<space>		- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ п╡п╦п╢п╤п╣я┌п╟п╪п╦ п╡ п╬п╨п╫п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -457,13 +457,13 @@ $METHODNAME$
 $SUMMARY$
 	Set window border width.
 $LANG_RU$
-	Установить ширину границы окна.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┬п╦я─п╦п╫я┐ пЁя─п╟п╫п╦я├я▀ п╬п╨п╫п╟.
 $SYNTAX$
 	setPadding(<space>)
 $ARGUMENTS$
 	<space>		- Number. Width of window border in pixels.
 $LANG_RU$
-	<space>		- Число. Ширина границы окна в точках.
+	<space>		- п╖п╦я│п╩п╬. п╗п╦я─п╦п╫п╟ пЁя─п╟п╫п╦я├я▀ п╬п╨п╫п╟ п╡ я┌п╬я┤п╨п╟я┘.
 $ENDMETHOD$
 
 
@@ -475,10 +475,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

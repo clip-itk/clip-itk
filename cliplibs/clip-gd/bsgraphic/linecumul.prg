@@ -14,15 +14,15 @@ local obj
 	obj:typeFile	:= GDFILE_PNG
 	obj:arr		:= {}
 	obj:legend	:= {}
-	obj:alignLeg	:= 0  // не надо легенду
+	obj:alignLeg	:= 0  // legend no needed
 	obj:signat	:= {}
 	obj:title	:= ""
 	obj:subTitle	:= ""
 	obj:vrtTitle	:= ""
 	obj:volume	:= .f.
 	obj:valVolume	:= 0
-	obj:average	:= 0   //1-показать среднее значение, 2-показать критическое значение,
-			       //3-и среднее и критич, 0-ничего не показывать
+	obj:average	:= 0   //1-show average value, 2-show critical value,
+			       //3-average and critical, 0-don't show anything
 	obj:valAverage	:= 0
 	obj:valCritic	:= 0
 
@@ -149,14 +149,14 @@ static function bg_setAverage(type, value)
 		return .f.
 	endif
 	do case
-	case type == 1	//показать только среднее значение
+	case type == 1	//show  average value
 		::average := 1
 	case type == 2
-		::average := 2 	//показать крит значение
+		::average := 2 	//show critical value
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value
 		endif
-	case type == 3	//показать и среднее и критич знач
+	case type == 3	//show average and critical values
 		::average := 3
 		if value!=NIL .and. valtype(value)=="N"
 			::valCritic := value
@@ -184,10 +184,10 @@ local val,x4,y4
 	colwidth := BG_DEF_WIDTH
 	volume := ::valVolume
 	::Y -= volume
-	/* максимально возможная ширина одной колонки */
+	/* maximum possible width of one column */
 	wCol := ::Y/::__category
 	do while (wCol-6<=colwidth)
-		colwidth-- // реальная ширина колонки
+		colwidth-- // real column width
 	enddo
 	for i=1 to ::__category
 		y := ::Y0-((i-1)*wCol)+3
@@ -286,13 +286,13 @@ local val,x4,y4
 					a := {{x2, y1}, {x2+volume, y1-volume}, {x1+volume, y1-volume}, {x4, y4}, {x1, y2}, {x2, y2}}
 					::image:filledPolygon(a, ::legendColor[kl])
 					::image:polygon(a, ::scaleColor)
-					// подошва
+					// footer
 					if x1==::X0
 						a := {{x1, y2}, {x1, y1-volume}, {x1+volume, y1-volume}, {x1+volume, y2-volume}}
 						::image:filledPolygon(a, ::legendColor[kl+cntColor])
 						::image:polygon(a, ::scaleColor)
 					endif
-					// средняя линия
+					// average line
 					if ::average>0 .and. ::valAverage<0
 						if x2+volume<=xav .and. between(xav, x1, x2) .and. between(xav, x1+volume, x2+volume)
 							a := {{xav, y1}, {xav, y1-volume}, {xav+volume, y1-volume}}

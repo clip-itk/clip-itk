@@ -3,30 +3,30 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIMenuItem
 $LANG_RU$
-	Класс UIMenuItem
+	п п╩п╟я│я│ UIMenuItem
 $ABOUT$
 	Class of menu item. Object of this class was created by method add() of class <link linkend="classuimenu">UIMenu</link>.
 $LANG_RU$
-	Класс пункта меню. Объект создаётся в методе add() класса <link linkend="classuimenu">UIMenu</link>.
+	п п╩п╟я│я│ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌. п·п╠я┼п╣п╨я┌ я│п╬п╥п╢п╟я▒я┌я│я▐ п╡ п╪п╣я┌п╬п╢п╣ add() п╨п╩п╟я│я│п╟ <link linkend="classuimenu">UIMenu</link>.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIMenuItem".
 	<label>		- Label.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIMenuItem".
-	<label>		- Надпись.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIMenuItem".
+	<label>		- п²п╟п╢п©п╦я│я▄.
 
 $METHODNAME$
 	setIcon()
 $SUMMARY$
 	Set icon for menu item.
 $LANG_RU$
-	Установить пиктограмму пункта меню.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╦п╨я┌п╬пЁя─п╟п╪п╪я┐ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $SYNTAX$
 	setIcon(<icon>)
 $ARGUMENTS$
 	<icon>		- Object of class <link linkend="classuiimage">UIImage</link>. Icon of menu item.
 $LANG_RU$
-	<icon>		- Объект <link linkend="classuiimage">UIImage</link>. Пиктограмма пункта меню.
+	<icon>		- п·п╠я┼п╣п╨я┌ <link linkend="classuiimage">UIImage</link>. п÷п╦п╨я┌п╬пЁя─п╟п╪п╪п╟ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -34,24 +34,24 @@ $METHODNAME$
 $SUMMARY$
 	Set action executed on menu item activation.
 $LANG_RU$
-	Установить действие, выполняемое при выборе пункта меню.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п©п╬п╩п╫я▐п╣п╪п╬п╣ п©я─п╦ п╡я▀п╠п╬я─п╣ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $SYNTAX$
 	setAction([<signal>],<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

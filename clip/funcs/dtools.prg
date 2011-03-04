@@ -47,9 +47,9 @@ lMode:=iif(lMode==NIL,.f.,lMode)
 str:=alltrim(monates[month(d)])
 if "ru" $ lower(getenv("LANG")) .or. "ru" $ lower(getenv("CLIP_LANG"))
     if month(d)==3 .or. month(d)==8
-      str:=str+"¡"
+      str:=str+"¡" //utf-8: "–∞"
     else
-      str:=left(str,len(str)-1)+"—"
+      str:=left(str,len(str)-1)+"—" //utf-8: "—è"
     endif
 endif
 
@@ -65,9 +65,9 @@ d:=iif(d==NIL,date(),d)
 str:=alltrim(monates[month(d)])
 if "ru" $ lower(getenv("LANG")) .or. "ru" $ lower(getenv("CLIP_LANG"))
     if month(d)==3 .or. month(d)==8
-      str:=str+"¡"
+      str:=str+"¡" //utf-8: "–∞"
     else
-      str:=left(str,len(str)-1)+"—"
+      str:=left(str,len(str)-1)+"—" //utf-8: "—è"
     endif
 endif
 str:=str+" "+str(day(d),2,0)+", "+;
@@ -112,7 +112,7 @@ return cdow(var)
 function maxday(xxx)
 return lastdayom(xxx)
 ********************************************************************
-func last_day(dat)  //"D"-–œ”Ã≈ƒŒ…  ƒ≈Œÿ Õ≈”—√¡
+func last_day(dat)  //"D"-last day of month
 return eom(dat)
 ********************************************************************
 function maxdayg(xxx)
@@ -146,18 +146,18 @@ endif
 if valtype(var)=='D'
    str_mon=" "+alltrim(monates[month(var)])
    if month(var)==3 .or. month(var)==8
-      ccc="¡"
+      ccc="¡" //utf-8: "¡"
       str_mon=rtrim(str_mon)+ccc
    else
-      ccc="—"
+      ccc="—" //utf-8: "—"
       str_mon=substr(str_mon,1,len(str_mon)-1)+ccc
    endif
-   str=str(day(var),2,0)+" "+str_mon+" "+str(year(var),4,0)+" «."
+   str=str(day(var),2,0)+" "+str_mon+" "+str(year(var),4,0)+" «." //utf-8: " –≥."
 endif
 return str
 ********************************************************************
 func date_r(dat)
-return date_rus(month(dat))+str(year(dat))+" «."
+return date_rus(month(dat))+str(year(dat))+" «." //utf-8: " –≥."
 ********************************************************************
 * test for sdtod()
 ******
@@ -209,7 +209,7 @@ function sdtod(s,d1,d2)
 	next
 	s2 := upper(substr(s3,1,i-1))
 	s3 := substr(s3,i+1)
-	if s2 $ [KQÎ]     /* quartel */
+	if s2 $ [KQÎ]     /* quartel */ //utf-8: [KQ–ö]
 		s1 := val(s1)
 		if s1<1 .or. s1>4
 			return .f.
@@ -219,7 +219,7 @@ function sdtod(s,d1,d2)
 		d2 := ctod(s3+"."+str(s1+2,2,0)+".01","yy.mm.dd")
 		d2 := eom(d2)
 		return .t.
-	elseif s2 $ [MÌ]  /* month   */
+	elseif s2 $ [MÌ]  /* month   */ //utf-8: [M–ú]
 		i := val(s1)
 		if i<1 .or. i>12
 			return .f.
@@ -227,7 +227,7 @@ function sdtod(s,d1,d2)
 		d1 := ctod(s3+"."+s1+".01","yy.mm.dd")
 		d2 := eom(d1)
 		return .t.
-	elseif s2 $ [WNÓ] /* week    */
+	elseif s2 $ [WNÓ] /* week    */ //utf-8: [WN–ù]
 		s1 := val(s1)
 		if s1<1 .or. s1>60
 			return .f.

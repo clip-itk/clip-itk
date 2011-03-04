@@ -3,28 +3,28 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIMenu
 $LANG_RU$
-	Класс UIMenu
+	п п╩п╟я│я│ UIMenu
 $ABOUT$
 	Class of menu bar.
 $LANG_RU$
-	Класс полосы меню.
+	п п╩п╟я│я│ п©п╬п╩п╬я│я▀ п╪п╣п╫я▌.
 $SYNTAX$
 	UIMenu()	--> UIMenu object
 $LANG_RU$
-	UIMenu()	--> Объект UIMenu
+	UIMenu()	--> п·п╠я┼п╣п╨я┌ UIMenu
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIMenu".
 	<elem>		- Array of menu items.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIMenu".
-	<elem>		- Массив пунктов меню.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIMenu".
+	<elem>		- п°п╟я│я│п╦п╡ п©я┐п╫п╨я┌п╬п╡ п╪п╣п╫я▌.
 
 $METHODNAME$
 	UIMenu()
 $SUMMARY$
 	Constructor. Create horizontal menubar.
 $LANG_RU$
-	Конструктор. Создать полосу меню.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п©п╬п╩п╬я│я┐ п╪п╣п╫я▌.
 $SYNTAX$
 	UIMenu() --> UIMenu object
 $ENDMETHOD$
@@ -34,7 +34,7 @@ $METHODNAME$
 $SUMMARY$
 	Add menu item.
 $LANG_RU$
-	Добавить пункт меню.
+	п■п╬п╠п╟п╡п╦я┌я▄ п©я┐п╫п╨я┌ п╪п╣п╫я▌.
 $SYNTAX$
 	add([<pic>],<name>,<action>,[<isEnabled>])	--> <nItem>
 $ARGUMENTS$
@@ -43,18 +43,18 @@ $ARGUMENTS$
 	<action>	- Code block or <link linkend="classuipopupmenu">UIPopupMenu</link> object. Executed code block or sub-menu.
 	<isEnabled>	- Boolean. Flag of activity menu item.
 $LANG_RU$
-	<pic>		- Объект <link linkend="classuiimage">UIImage</link>. Пиктограмма пункта меню.
-	<name>		- Строка. Текст пункта меню. В надписи можно задать акселератор для активации элемента интерфейса, указав символ "&" перед необходимой буквой. Эта буква будет подчёркнута и элемент можно активировать нажатием комбинации клавиш Alt-буква.
-	<action>	- Блок кода или объект <link linkend="classuipopupmenu">UIPopupMenu</link>. Вызываемый блок кода или подменю.
-	<isEnabled>	- Логическое значение. Флаг активности пункта меню.
+	<pic>		- п·п╠я┼п╣п╨я┌ <link linkend="classuiimage">UIImage</link>. п÷п╦п╨я┌п╬пЁя─п╟п╪п╪п╟ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
+	<name>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌. п▓ п╫п╟п╢п©п╦я│п╦ п╪п╬п╤п╫п╬ п╥п╟п╢п╟я┌я▄ п╟п╨я│п╣п╩п╣я─п╟я┌п╬я─ п╢п╩я▐ п╟п╨я┌п╦п╡п╟я├п╦п╦ я█п╩п╣п╪п╣п╫я┌п╟ п╦п╫я┌п╣я─я└п╣п╧я│п╟, я┐п╨п╟п╥п╟п╡ я│п╦п╪п╡п╬п╩ "&" п©п╣я─п╣п╢ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬п╧ п╠я┐п╨п╡п╬п╧. п╜я┌п╟ п╠я┐п╨п╡п╟ п╠я┐п╢п╣я┌ п©п╬п╢я┤я▒я─п╨п╫я┐я┌п╟ п╦ я█п╩п╣п╪п╣п╫я┌ п╪п╬п╤п╫п╬ п╟п╨я┌п╦п╡п╦я─п╬п╡п╟я┌я▄ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬ Alt-п╠я┐п╨п╡п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟ п╦п╩п╦ п╬п╠я┼п╣п╨я┌ <link linkend="classuipopupmenu">UIPopupMenu</link>. п▓я▀п╥я▀п╡п╟п╣п╪я▀п╧ п╠п╩п╬п╨ п╨п╬п╢п╟ п╦п╩п╦ п©п╬п╢п╪п╣п╫я▌.
+	<isEnabled>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ п╟п╨я┌п╦п╡п╫п╬я│я┌п╦ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $RETURNS$
 	Index of added object <link linkend="classuimenuitem">UIMenuItem</link> in array <elem>.
 $LANG_RU$
-	Индекс добавленного объекта <link linkend="classuimenuitem">UIMenuItem</link> в массиве <elem>.
+	п≤п╫п╢п╣п╨я│ п╢п╬п╠п╟п╡п╩п╣п╫п╫п╬пЁп╬ п╬п╠я┼п╣п╨я┌п╟ <link linkend="classuimenuitem">UIMenuItem</link> п╡ п╪п╟я│я│п╦п╡п╣ <elem>.
 $DESCRIPTION$
 	In this method the object <link linkend="classuimenuitem">UIMenuItem</link> is placed in the <elem> array. Method returns index of added object in this array.
 $LANG_RU$
-	При добавлении пункта меню в массив <elem> помещается объект <link linkend="classuimenuitem">UIMenuItem</link>. Метод возвращает индекс добавленного элемента в этом массиве.
+	п÷я─п╦ п╢п╬п╠п╟п╡п╩п╣п╫п╦п╦ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌ п╡ п╪п╟я│я│п╦п╡ <elem> п©п╬п╪п╣я┴п╟п╣я┌я│я▐ п╬п╠я┼п╣п╨я┌ <link linkend="classuimenuitem">UIMenuItem</link>. п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│ п╢п╬п╠п╟п╡п╩п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╡ я█я┌п╬п╪ п╪п╟я│я│п╦п╡п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -62,13 +62,13 @@ $METHODNAME$
 $SUMMARY$
 	Make menu item active.
 $LANG_RU$
-	Сделать пункт меню активным.
+	п║п╢п╣п╩п╟я┌я▄ п©я┐п╫п╨я┌ п╪п╣п╫я▌ п╟п╨я┌п╦п╡п╫я▀п╪.
 $SYNTAX$
 	enable(<pos>)
 $ARGUMENTS$
 	<pos>		- Number. Index of menu item.
 $LANG_RU$
-	<pos>		- Число. Номер пункта меню.
+	<pos>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -76,13 +76,13 @@ $METHODNAME$
 $SUMMARY$
 	Disable menu item.
 $LANG_RU$
-	Сделать пункт меню неактивным.
+	п║п╢п╣п╩п╟я┌я▄ п©я┐п╫п╨я┌ п╪п╣п╫я▌ п╫п╣п╟п╨я┌п╦п╡п╫я▀п╪.
 $SYNTAX$
 	disable(<pos>)
 $ARGUMENTS$
 	<pos>		- Number. Index of menu item.
 $LANG_RU$
-	<pos>		- Число. Номер пункта меню.
+	<pos>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -90,13 +90,13 @@ $METHODNAME$
 $SUMMARY$
 	Delete item from menu.
 $LANG_RU$
-	Удалить пункт меню.
+	пёп╢п╟п╩п╦я┌я▄ п©я┐п╫п╨я┌ п╪п╣п╫я▌.
 $SYNTAX$
 	remove(<pos>)
 $ARGUMENTS$
 	<pos>		- Number. Index of menu item.
 $LANG_RU$
-	<pos>		- Число. Номер пункта меню.
+	<pos>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -104,7 +104,7 @@ $METHODNAME$
 $SUMMARY$
 	Clear menu.
 $LANG_RU$
-	Очистить меню.
+	п·я┤п╦я│я┌п╦я┌я▄ п╪п╣п╫я▌.
 $SYNTAX$
 	clear()
 $ENDMETHOD$
@@ -114,17 +114,17 @@ $METHODNAME$
 $SUMMARY$
 	Get object of menu item by its index.
 $LANG_RU$
-	Вернуть объект пункта меню.
+	п▓п╣я─п╫я┐я┌я▄ п╬п╠я┼п╣п╨я┌ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $SYNTAX$
 	getElement(<pos>)	--> <oItem>
 $ARGUMENTS$
 	<pos>		- Number. Index of menu item.
 $LANG_RU$
-	<pos>		- Число. Номер пункта меню.
+	<pos>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $RETURNS$
 	<link linkend="classuimenuitem">UIMenuItem</link> or <link linkend="classuipopupmenu">UIPopupMenu</link> object. Menu item object.
 $LANG_RU$
-	Объект <link linkend="classuimenuitem">UIMenuItem</link> или <link linkend="classuipopupmenu">UIPopupMenu</link>. Объект пункта меню.
+	п·п╠я┼п╣п╨я┌ <link linkend="classuimenuitem">UIMenuItem</link> п╦п╩п╦ <link linkend="classuipopupmenu">UIPopupMenu</link>. п·п╠я┼п╣п╨я┌ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -132,17 +132,17 @@ $METHODNAME$
 $SUMMARY$
 	Get flag of activity of menu item.
 $LANG_RU$
-	Вернуть флаг активности пункта меню.
+	п▓п╣я─п╫я┐я┌я▄ я└п╩п╟пЁ п╟п╨я┌п╦п╡п╫п╬я│я┌п╦ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $SYNTAX$
 	isEnabled(<pos>)	--> <bEnabled>
 $ARGUMENTS$
 	<pos>		- Number. Index of menu item.
 $LANG_RU$
-	<pos>		- Число. Номер пункта меню.
+	<pos>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $RETURNS$
 	Flag of activity of menu item.
 $LANG_RU$
-	Флаг активности пункта меню.
+	п╓п╩п╟пЁ п╟п╨я┌п╦п╡п╫п╬я│я┌п╦ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -150,15 +150,15 @@ $METHODNAME$
 $SUMMARY$
 	Set menu item activation by shortcut.
 $LANG_RU$
-	Привязать активацию пункта меню к комбинации клавиш.
+	п÷я─п╦п╡я▐п╥п╟я┌я▄ п╟п╨я┌п╦п╡п╟я├п╦я▌ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌ п╨ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬.
 $SYNTAX$
 	setKeyEvent(<pos>,<cKey>)
 $ARGUMENTS$
 	<pos>		- Number. Index of menu item.
 	<cKey>		- String. Shortcut definition. For example, "F5" or "Alt+M".
 $LANG_RU$
-	<pos>		- Число. Номер пункта меню.
-	<cKey>		- Строка. Определение комбинации клавиш. Например, "F5" или "Alt+M".
+	<pos>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
+	<cKey>		- п║я┌я─п╬п╨п╟. п·п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬. п²п╟п©я─п╦п╪п╣я─, "F5" п╦п╩п╦ "Alt+M".
 $ENDMETHOD$
 
 $METHODNAME$
@@ -166,15 +166,15 @@ $METHODNAME$
 $SUMMARY$
 	Unset menu item activation from shortcut.
 $LANG_RU$
-	Отвязать активацию пункта меню от комбинации клавиш.
+	п·я┌п╡я▐п╥п╟я┌я▄ п╟п╨я┌п╦п╡п╟я├п╦я▌ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌ п╬я┌ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬.
 $SYNTAX$
 	unSetKey(<pos>,<cKey>)
 $ARGUMENTS$
 	<pos>		- Number. Index of menu item.
 	<cKey>		- String. Shortcut definition. For example, "F5" or "Alt+M".
 $LANG_RU$
-	<pos>		- Число. Номер пункта меню.
-	<cKey>		- Строка. Определение комбинации клавиш. Например, "F5" или "Alt+M".
+	<pos>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ п©я┐п╫п╨я┌п╟ п╪п╣п╫я▌.
+	<cKey>		- п║я┌я─п╬п╨п╟. п·п©я─п╣п╢п╣п╩п╣п╫п╦п╣ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬. п²п╟п©я─п╦п╪п╣я─, "F5" п╦п╩п╦ "Alt+M".
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -188,10 +188,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

@@ -44,7 +44,7 @@
    uri: clipBoard functions.
 
    Revision 1.1  2002/09/11 09:08:39  clip
-   uri: sorry, забыл добавить файл.
+   uri: sorry, forgot to add the file.
 
 
 */

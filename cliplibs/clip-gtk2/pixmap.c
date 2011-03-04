@@ -574,10 +574,3 @@ clip_GDK_PIXMAPCOLORMAPCREATEFROMXPM(ClipMachine * cm)
 err:
 	return 1;
 }
-
-
-
-
-
-
-

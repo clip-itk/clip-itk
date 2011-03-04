@@ -31,7 +31,7 @@ local window, buffer, view, layout, bins
 	gtk_ItemFactoryCreateItems(ifactory, imenu, window)
 
 
-	/* добавить accel_group в объект window */
+	/* add accel_group to object window */
 	gtk_WindowAddAccelGroup (window, accel)
 
 	vbox := gtk_vboxNew()

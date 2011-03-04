@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Check value.
 $LANG_RU$
-   Проверка значения
+   п÷я─п╬п╡п╣я─п╨п╟ п╥п╫п╟я┤п╣п╫п╦я▐
 $SYNTAX$
      BETWEEN(<TargetData>, <FirstData>, <SecondData>) 	--> TRUE || FALSE
 $ARGUMENTS$
@@ -13,13 +13,13 @@ $ARGUMENTS$
      <FirstData>	is the first data to comparing
      <SecondData>	is the second data to comparing
 $LANG_RU$
-     <TargetData>	исходное значение
-     <FirstData>	первое значение для сравнения
-     <SecondData>	второе значение для сравнения
+     <TargetData>	п╦я│я┘п╬п╢п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣
+     <FirstData>	п©п╣я─п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╩я▐ я│я─п╟п╡п╫п╣п╫п╦я▐
+     <SecondData>	п╡я┌п╬я─п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╩я▐ я│я─п╟п╡п╫п╣п╫п╦я▐
 $RETURNS$
      Returns TRUE if <TargetData> is located berween <FirstData>  and <SecondData>.
 $LANG_RU$
-     Возвращает TRUE если <TargetData> располагается между <FirstData> и <SecondData> включительно.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ <TargetData> я─п╟я│п©п╬п╩п╟пЁп╟п╣я┌я│я▐ п╪п╣п╤п╢я┐ <FirstData> п╦ <SecondData> п╡п╨п╩я▌я┤п╦я┌п╣п╩я▄п╫п╬.
 $DESCRIPTION$
 
      BETWEEN() compares source value <TargetData> with <FirstData> and <SecondData>.
@@ -28,10 +28,10 @@ $DESCRIPTION$
      All values must be ones type (string, numeric, date, ...).
 $LANG_RU$
 
-     BETWEEN() сравнивает исходное значение <TargetData> с <FirstData> и <SecondData>.
-     Если <TargetData> находится в границах между <FirstData> и <SecondData>, BETWEEN() возвращает TRUE.
+     BETWEEN() я│я─п╟п╡п╫п╦п╡п╟п╣я┌ п╦я│я┘п╬п╢п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ <TargetData> я│ <FirstData> п╦ <SecondData>.
+     п∙я│п╩п╦ <TargetData> п╫п╟я┘п╬п╢п╦я┌я│я▐ п╡ пЁя─п╟п╫п╦я├п╟я┘ п╪п╣п╤п╢я┐ <FirstData> п╦ <SecondData>, BETWEEN() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 
-     Все сравниваемые значения должны принадлежать какому-либо одному типу (строка, число, дата, ...).
+     п▓я│п╣ я│я─п╟п╡п╫п╦п╡п╟п╣п╪я▀п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п╢п╬п╩п╤п╫я▀ п©я─п╦п╫п╟п╢п╩п╣п╤п╟я┌я▄ п╨п╟п╨п╬п╪я┐-п╩п╦п╠п╬ п╬п╢п╫п╬п╪я┐ я┌п╦п©я┐ (я│я┌я─п╬п╨п╟, я┤п╦я│п╩п╬, п╢п╟я┌п╟, ...).
 
 $EXAMPLES$
 
@@ -43,11 +43,11 @@ $EXAMPLES$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

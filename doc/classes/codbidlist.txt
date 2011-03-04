@@ -4,14 +4,14 @@ $SUMMARY$
 	CODB class are destined to select objects by assertion and represenation
 	its in table-navigationy mode.
 $LANG_RU$
-	CODB класс предназначен для отбора объектов удовлетворяющих условию и
-	представления их в таблично-навигационном виде.
+	CODB п╨п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ п╬я┌п╠п╬я─п╟ п╬п╠я┼п╣п╨я┌п╬п╡ я┐п╢п╬п╡п╩п╣я┌п╡п╬я─я▐я▌я┴п╦я┘ я┐я│п╩п╬п╡п╦я▌ п╦
+	п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦я▐ п╦я┘ п╡ я┌п╟п╠п╩п╦я┤п╫п╬-п╫п╟п╡п╦пЁп╟я├п╦п╬п╫п╫п╬п╪ п╡п╦п╢п╣.
 $ABOUT$
 	CODB class are destined to select objects by assertion and represenation
 	its in table-navigationy mode.
 $LANG_RU$
-	CODB класс предназначен для отбора объектов удовлетворяющих условию и
-	представления их в таблично-навигационном виде.
+	CODB п╨п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ п╬я┌п╠п╬я─п╟ п╬п╠я┼п╣п╨я┌п╬п╡ я┐п╢п╬п╡п╩п╣я┌п╡п╬я─я▐я▌я┴п╦я┘ я┐я│п╩п╬п╡п╦я▌ п╦
+	п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦я▐ п╦я┘ п╡ я┌п╟п╠п╩п╦я┤п╫п╬-п╫п╟п╡п╦пЁп╟я├п╦п╬п╫п╫п╬п╪ п╡п╦п╢п╣.
 $SYNTAX$
 	CODB_IdList(<oDbm>,<sMetaName>,<nIndex>,<sName>,<sWhereExpr>,<nCount>) --> CODBIDLIST object
 $ATTRIBUTES$
@@ -19,14 +19,14 @@ $ATTRIBUTES$
 	<Error>		String, the error description what araised within running last operation.
 $LANG_RU$
 	<ClassName> 	CODBIDLIST
-	<Error>		String, описание ошибки, возникшей при выполнении последней операции.
+	<Error>		String, п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╡п╬п╥п╫п╦п╨я┬п╣п╧ п©я─п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦п╦ п©п╬я│п╩п╣п╢п╫п╣п╧ п╬п©п╣я─п╟я├п╦п╦.
 
 $METHODNAME$
 	CODB_IdList()
 $SUMMARY$
 	Constructor CODBIDLIST class.
 $LANG_RU$
-	Конструктор класса CODBIDLIST.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╨п╩п╟я│я│п╟ CODBIDLIST.
 $SYNTAX$
 	CODB_IdList(<oDbm>,<sMetaName>,<nIndex>,<sName>,<sWhereExpr>,<nCount>) --> CODBIDLIST object
 $ARGUMENTS$
@@ -38,21 +38,21 @@ $ARGUMENTS$
 	<sWhereExpr>	String, the searching condition
 	<nCount>	Numeric, the maximize count objects in list
 $LANG_RU$
-	<oDbm>		Object, объект класса CODBDICTIONARY или CODBDEPOSITORY
-	<sMetaName>	String, имя метакласса или идентификатор хранимого объекта
-	<nIndex>	Numeric, порядковый номер индекса
-	<sName>		String, значение атрибута <Name>; список хранит только те объекты,
-			свойство <Name> которых равно <sName>
-	<sWhereExpr>	String, выражение условия
-	<nCount>	Numeric, максимальное количество объектов в списке
+	<oDbm>		Object, п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ CODBDICTIONARY п╦п╩п╦ CODBDEPOSITORY
+	<sMetaName>	String, п╦п╪я▐ п╪п╣я┌п╟п╨п╩п╟я│я│п╟ п╦п╩п╦ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я┘я─п╟п╫п╦п╪п╬пЁп╬ п╬п╠я┼п╣п╨я┌п╟
+	<nIndex>	Numeric, п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ п╦п╫п╢п╣п╨я│п╟
+	<sName>		String, п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟ <Name>; я│п©п╦я│п╬п╨ я┘я─п╟п╫п╦я┌ я┌п╬п╩я▄п╨п╬ я┌п╣ п╬п╠я┼п╣п╨я┌я▀,
+			я│п╡п╬п╧я│я┌п╡п╬ <Name> п╨п╬я┌п╬я─я▀я┘ я─п╟п╡п╫п╬ <sName>
+	<sWhereExpr>	String, п╡я▀я─п╟п╤п╣п╫п╦п╣ я┐я│п╩п╬п╡п╦я▐
+	<nCount>	Numeric, п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬п╣ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╬п╠я┼п╣п╨я┌п╬п╡ п╡ я│п©п╦я│п╨п╣
 $RETURNS$
 	Method returns new CODBIDLIST object.
 $LANG_RU$
-	Метод возвращает новый объект CODBIDLIST.
+	п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ CODBIDLIST.
 $DESCRIPTION$
 	CODB_IdList() inits new CODBIDLIST object and returns it.
 $LANG_RU$
-	CODB_IdList() инициализирует новый объект CODBIDLIST возвращает его.
+	CODB_IdList() п╦п╫п╦я├п╦п╟п╩п╦п╥п╦я─я┐п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ CODBIDLIST п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -60,7 +60,7 @@ $METHODNAME$
 $SUMMARY$
 	Returns object CDOBDICTIONARY, what <::sMetaName> belong.
 $LANG_RU$
-	Возвращает объект CODBDITIONARY, которому принадлежит <::sMetaName>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ CODBDITIONARY, п╨п╬я┌п╬я─п╬п╪я┐ п©я─п╦п╫п╟п╢п╩п╣п╤п╦я┌ <::sMetaName>
 $SYNTAX$
 	Dictionary() 	--> <oDict>
 $ARGUMENTS$
@@ -68,11 +68,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns object CDOBDICTIONARY, what <::sMetaName> belong.
 $LANG_RU$
-	Возвращает объект CODBDITIONARY, которому принадлежит <::sMetaName>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ CODBDITIONARY, п╨п╬я┌п╬я─п╬п╪я┐ п©я─п╦п╫п╟п╢п╩п╣п╤п╦я┌ <::sMetaName>
 $DESCRIPTION$
 	Dictionary() returns <oDict> object <link linkend="classCODBDICTIONARY">CDOBDICTIONARY</link>, what <::sMetaName> belong.
 $LANG_RU$
-	Dictionary() возвращает <oDict> объект <link linkend="classCODBDICTIONARY">CODBDITIONARY</link>, которому принадлежит <::sMetaName>
+	Dictionary() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <oDict> п╬п╠я┼п╣п╨я┌ <link linkend="classCODBDICTIONARY">CODBDITIONARY</link>, п╨п╬я┌п╬я─п╬п╪я┐ п©я─п╦п╫п╟п╢п╩п╣п╤п╦я┌ <::sMetaName>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -80,7 +80,7 @@ $METHODNAME$
 $SUMMARY$
 	Returns object CDOBDEPOSITORY, what <::sMetaName> belong.
 $LANG_RU$
-	Возвращает объект CODBDEPOSITORY, которому принадлежит <::sMetaName>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ CODBDEPOSITORY, п╨п╬я┌п╬я─п╬п╪я┐ п©я─п╦п╫п╟п╢п╩п╣п╤п╦я┌ <::sMetaName>
 $SYNTAX$
 	Depository() 	--> <oDep>
 $ARGUMENTS$
@@ -88,11 +88,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns object CDOBDEPOSITORY, what <::sMetaName> belong.
 $LANG_RU$
-	Возвращает объект CODBDITIONARY, которому принадлежит <::sMetaName>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ CODBDITIONARY, п╨п╬я┌п╬я─п╬п╪я┐ п©я─п╦п╫п╟п╢п╩п╣п╤п╦я┌ <::sMetaName>
 $DESCRIPTION$
 	Depository() returns <oDep> object <link linkend="classCODBDEPOSITORY">CDOBDEPOSITORY</link>, what <::sMetaName> belong.
 $LANG_RU$
-	Depository() возвращает <oDep> объект <link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, которому принадлежит <::sMetaName>
+	Depository() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <oDep> п╬п╠я┼п╣п╨я┌ <link linkend="classCODBDEPOSITORY">CODBDEPOSITORY</link>, п╨п╬я┌п╬я─п╬п╪я┐ п©я─п╦п╫п╟п╢п╩п╣п╤п╦я┌ <::sMetaName>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -100,7 +100,7 @@ $METHODNAME$
 $SUMMARY$
 	Cancel job.
 $LANG_RU$
-	Закончить работу.
+	п≈п╟п╨п╬п╫я┤п╦я┌я▄ я─п╟п╠п╬я┌я┐.
 $SYNTAX$
 	Close() 	--> TRUE
 $ARGUMENTS$
@@ -108,11 +108,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	Close() closes dictionary or depository and canceles job.
 $LANG_RU$
-	Close() закрывает словарь или депозитарий и заканчивает работу.
+	Close() п╥п╟п╨я─я▀п╡п╟п╣я┌ я│п╩п╬п╡п╟я─я▄ п╦п╩п╦ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧ п╦ п╥п╟п╨п╟п╫я┤п╦п╡п╟п╣я┌ я─п╟п╠п╬я┌я┐.
 $ENDMETHOD$
 
 
@@ -121,7 +121,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to first position.
 $LANG_RU$
-	Перейти на начало.
+	п÷п╣я─п╣п╧я┌п╦ п╫п╟ п╫п╟я┤п╟п╩п╬.
 $SYNTAX$
 	GoTop() 	--> FALSE
 	GotoTop() 	--> FALSE
@@ -130,11 +130,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns FALSE.
 $LANG_RU$
-	Возвращает FALSE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 $DESCRIPTION$
 	GoTop() and GotoTop() goes to first position.
 $LANG_RU$
-	GoTop() и GotoTop() перемещают указатель на первую позицию списка.
+	GoTop() п╦ GotoTop() п©п╣я─п╣п╪п╣я┴п╟я▌я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╣я─п╡я┐я▌ п©п╬п╥п╦я├п╦я▌ я│п©п╦я│п╨п╟.
 $ENDMETHOD$
 
 
@@ -143,7 +143,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to last position.
 $LANG_RU$
-	Перейти вм конец.
+	п÷п╣я─п╣п╧я┌п╦ п╡п╪ п╨п╬п╫п╣я├.
 $SYNTAX$
 	GoBottom() 	--> FALSE
 	GotoBottom() 	--> FALSE
@@ -152,11 +152,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns FALSE.
 $LANG_RU$
-	Возвращает FALSE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 $DESCRIPTION$
 	GoBottom() and GotoBottom() goes to last position.
 $LANG_RU$
-	GoBottom() и GotoBottom() перемещают указатель на последнюю позицию списка.
+	GoBottom() п╦ GotoBottom() п©п╣я─п╣п╪п╣я┴п╟я▌я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╬я│п╩п╣п╢п╫я▌я▌ п©п╬п╥п╦я├п╦я▌ я│п©п╦я│п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -164,28 +164,28 @@ $METHODNAME$
 $SUMMARY$
 	Move relative to the current position.
 $LANG_RU$
-	Переместить относительно текущей позиции.
+	п÷п╣я─п╣п╪п╣я│я┌п╦я┌я▄ п╬я┌п╫п╬я│п╦я┌п╣п╩я▄п╫п╬ я┌п╣п╨я┐я┴п╣п╧ п©п╬п╥п╦я├п╦п╦.
 $SYNTAX$
 	Skip([<nSkip>]) 	--> NIL
 $ARGUMENTS$
 	<nSkip>		Numeric, the numer of position move relative to the current position.
 			If <nSkip> > 0 skip to forward, else backward.
 $LANG_RU$
-	<nSkip>		Numeric, количество позиций, на которое перемещается указатель.
-			Если <nSkip> > 0 перемещение вперед, иначе назад.
+	<nSkip>		Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п©п╬п╥п╦я├п╦п╧, п╫п╟ п╨п╬я┌п╬я─п╬п╣ п©п╣я─п╣п╪п╣я┴п╟п╣я┌я│я▐ я┐п╨п╟п╥п╟я┌п╣п╩я▄.
+			п∙я│п╩п╦ <nSkip> > 0 п©п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╡п©п╣я─п╣п╢, п╦п╫п╟я┤п╣ п╫п╟п╥п╟п╢.
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Skip() moves either forward or backward relative to the current position.
 
 	If <nSkip> not specified, it is 1.
 $LANG_RU$
-	Skip() перемещает вперед или назад указатель на <nSkip> позиций относительно
-	текущей.
+	Skip() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╡п©п╣я─п╣п╢ п╦п╩п╦ п╫п╟п╥п╟п╢ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ <nSkip> п©п╬п╥п╦я├п╦п╧ п╬я┌п╫п╬я│п╦я┌п╣п╩я▄п╫п╬
+	я┌п╣п╨я┐я┴п╣п╧.
 
-	Если <nSkip> не определено, <nSkip> == 1.
+	п∙я│п╩п╦ <nSkip> п╫п╣ п╬п©я─п╣п╢п╣п╩п╣п╫п╬, <nSkip> == 1.
 $ENDMETHOD$
 
 
@@ -194,21 +194,21 @@ $METHODNAME$
 $SUMMARY$
 	Goes to the new position.
 $LANG_RU$
-	Перейти на новую позицию.
+	п÷п╣я─п╣п╧я┌п╦ п╫п╟ п╫п╬п╡я┐я▌ п©п╬п╥п╦я├п╦я▌.
 $SYNTAX$
 	Goto(<nPos>]) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<nPos>		Numeric, the new position
 $LANG_RU$
-	<nPos>		Numeric, новая позиция
+	<nPos>		Numeric, п╫п╬п╡п╟я▐ п©п╬п╥п╦я├п╦я▐
 $RETURNS$
 	Returns FALSE if goes unfortunately.
 $LANG_RU$
-	Возвращает FALSE, если переход  не состоялся.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE, п╣я│п╩п╦ п©п╣я─п╣я┘п╬п╢  п╫п╣ я│п╬я│я┌п╬я▐п╩я│я▐.
 $DESCRIPTION$
 	Goto() goes to the new position <nPos>.
 $LANG_RU$
-	Goto() перемещает указатель на новую позицию <nPos>.
+	Goto() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п╫п╬п╡я┐я▌ п©п╬п╥п╦я├п╦я▌ <nPos>.
 $ENDMETHOD$
 
 
@@ -217,18 +217,18 @@ $METHODNAME$
 $SUMMARY$
 	Returns current position.
 $LANG_RU$
-	Вернуть текущую позицию.
+	п▓п╣я─п╫я┐я┌я▄ я┌п╣п╨я┐я┴я┐я▌ п©п╬п╥п╦я├п╦я▌.
 $SYNTAX$
 	Recno() 	--> <nPos>
 $ARGUMENTS$
 $RETURNS$
 	Returns <nPos> the current position.
 $LANG_RU$
-	Возвращает <nPos> текущую позицию.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <nPos> я┌п╣п╨я┐я┴я┐я▌ п©п╬п╥п╦я├п╦я▌.
 $DESCRIPTION$
 	Recno() returns <nPos> the current position.
 $LANG_RU$
-	Recno() возвращает <nPos> текущую позицию.
+	Recno() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <nPos> я┌п╣п╨я┐я┴я┐я▌ п©п╬п╥п╦я├п╦я▌.
 $ENDMETHOD$
 
 
@@ -237,18 +237,18 @@ $METHODNAME$
 $SUMMARY$
 	Check BOF.
 $LANG_RU$
-	Проверить на начало файла.
+	п÷я─п╬п╡п╣я─п╦я┌я▄ п╫п╟ п╫п╟я┤п╟п╩п╬ я└п╟п╧п╩п╟.
 $SYNTAX$
 	Bof() 	--> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if arrive at bottom of file.
 $LANG_RU$
-	Возвращает TRUE если достигнуто начало файла.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╢п╬я│я┌п╦пЁп╫я┐я┌п╬ п╫п╟я┤п╟п╩п╬ я└п╟п╧п╩п╟.
 $DESCRIPTION$
 	Bof() returns TRUE if arrive at top of file.
 $LANG_RU$
-	Bof() возвращает TRUE если достигнуто начало файла.
+	Bof() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╢п╬я│я┌п╦пЁп╫я┐я┌п╬ п╫п╟я┤п╟п╩п╬ я└п╟п╧п╩п╟.
 $ENDMETHOD$
 
 
@@ -257,18 +257,18 @@ $METHODNAME$
 $SUMMARY$
 	Check EOF.
 $LANG_RU$
-	Проверить на конец файла.
+	п÷я─п╬п╡п╣я─п╦я┌я▄ п╫п╟ п╨п╬п╫п╣я├ я└п╟п╧п╩п╟.
 $SYNTAX$
 	Eof() 	--> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if arrive at bottom of file.
 $LANG_RU$
-	Возвращает TRUE если достигнут конец файла.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╢п╬я│я┌п╦пЁп╫я┐я┌ п╨п╬п╫п╣я├ я└п╟п╧п╩п╟.
 $DESCRIPTION$
 	Eof() returns TRUE if arrive at bottom of file.
 $LANG_RU$
-	Eof() возвращает TRUE если достигнут конец файла.
+	Eof() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╢п╬я│я┌п╦пЁп╫я┐я┌ п╨п╬п╫п╣я├ я└п╟п╧п╩п╟.
 $ENDMETHOD$
 
 
@@ -277,21 +277,21 @@ $METHODNAME$
 $SUMMARY$
 	Locate first object, what equal some condition.
 $LANG_RU$
-	Найти первый объект, удовлетворяющий выражению.
+	п²п╟п╧я┌п╦ п©п╣я─п╡я▀п╧ п╬п╠я┼п╣п╨я┌, я┐п╢п╬п╡п╩п╣я┌п╡п╬я─я▐я▌я┴п╦п╧ п╡я▀я─п╟п╤п╣п╫п╦я▌.
 $SYNTAX$
 	Locate(Expr) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<Expr>	String or block code - the locate condition.
 $LANG_RU$
-	<Expr>	String or block code - условия поиска
+	<Expr>	String or block code - я┐я│п╩п╬п╡п╦я▐ п©п╬п╦я│п╨п╟
 $RETURNS$
 	Returns TRUE if locate.
 $LANG_RU$
-	Возвращает TRUE если объект найден.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╫п╟п╧п╢п╣п╫.
 $DESCRIPTION$
 	Locate() returns TRUE if object, what equal condition <Expr> is locate.
 $LANG_RU$
-	Locate() возвращает TRUE если объект, удовлетворяющий условию <Expr> найден.
+	Locate() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌, я┐п╢п╬п╡п╩п╣я┌п╡п╬я─я▐я▌я┴п╦п╧ я┐я│п╩п╬п╡п╦я▌ <Expr> п╫п╟п╧п╢п╣п╫.
 $ENDMETHOD$
 
 
@@ -300,18 +300,18 @@ $METHODNAME$
 $SUMMARY$
 	Restore locate with old condition.
 $LANG_RU$
-	Продолжить поиск с прежними условиями.
+	п÷я─п╬п╢п╬п╩п╤п╦я┌я▄ п©п╬п╦я│п╨ я│ п©я─п╣п╤п╫п╦п╪п╦ я┐я│п╩п╬п╡п╦я▐п╪п╦.
 $SYNTAX$
 	LocateRest() 	--> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if locate.
 $LANG_RU$
-	Возвращает TRUE если объект найден.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╫п╟п╧п╢п╣п╫.
 $DESCRIPTION$
 	LocateRest() returns TRUE if object, what equal previouse condition is locate.
 $LANG_RU$
-	LocateRest() возвращает TRUE если объект, удовлетворяющий предыдущему условию найден.
+	LocateRest() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌, я┐п╢п╬п╡п╩п╣я┌п╡п╬я─я▐я▌я┴п╦п╧ п©я─п╣п╢я▀п╢я┐я┴п╣п╪я┐ я┐я│п╩п╬п╡п╦я▌ п╫п╟п╧п╢п╣п╫.
 $ENDMETHOD$
 
 
@@ -320,21 +320,21 @@ $METHODNAME$
 $SUMMARY$
 	Set new condition to object selection.
 $LANG_RU$
-	Задать новые условия для выбора объектов.
+	п≈п╟п╢п╟я┌я▄ п╫п╬п╡я▀п╣ я┐я│п╩п╬п╡п╦я▐ п╢п╩я▐ п╡я▀п╠п╬я─п╟ п╬п╠я┼п╣п╨я┌п╬п╡.
 $SYNTAX$
 	SetWhere(<sWhereExpr>) 	--> NIL
 $ARGUMENTS$
 	<sWhereExpr>  String, condition of select.
 $LANG_RU$
-	<sWhereExpr>	String, условия отбора
+	<sWhereExpr>	String, я┐я│п╩п╬п╡п╦я▐ п╬я┌п╠п╬я─п╟
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	SetWhere() sets new condition <sWhereExpr> to object selection.
 $LANG_RU$
-	SetWhere() задает новые условия <sWhereExpr> отбора объектов.
+	SetWhere() п╥п╟п╢п╟п╣я┌ п╫п╬п╡я▀п╣ я┐я│п╩п╬п╡п╦я▐ <sWhereExpr> п╬я┌п╠п╬я─п╟ п╬п╠я┼п╣п╨я┌п╬п╡.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -342,23 +342,23 @@ $METHODNAME$
 $SUMMARY$
 	Get values of attribute.
 $LANG_RU$
-	Получить значение атрибута.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟.
 $SYNTAX$
 	GetValue([<sAttrName>]) 	--> <vData>
 $ARGUMENTS$
 	<sAttrName>  String, the attribute name
 $LANG_RU$
-	<sAttrName>	String, название атрибута
+	<sAttrName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟
 $RETURNS$
 	Returns attribute value <vData>.
 $LANG_RU$
-	Возвращает значение атрибута <vData>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟ <vData>.
 $DESCRIPTION$
 	GetValue() returns attribute value <vData> or if <sAttrName> not
 	specified returns whole object.
 $LANG_RU$
-	GetValue() возвращает значение атрибута <vData> или, если атрибут <sAttrName>
-	не задан - весь объект.
+	GetValue() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟ <vData> п╦п╩п╦, п╣я│п╩п╦ п╟я┌я─п╦п╠я┐я┌ <sAttrName>
+	п╫п╣ п╥п╟п╢п╟п╫ - п╡п╣я│я▄ п╬п╠я┼п╣п╨я┌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -366,22 +366,22 @@ $METHODNAME$
 $SUMMARY$
 	Compute expression for current object.
 $LANG_RU$
-	Вычислить выражение для текущего объекта.
+	п▓я▀я┤п╦я│п╩п╦я┌я▄ п╡я▀я─п╟п╤п╣п╫п╦п╣ п╢п╩я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╬п╠я┼п╣п╨я┌п╟.
 $SYNTAX$
 	GetExpr(<sExpr>) 	--> <vData>
 $ARGUMENTS$
 	<sExpr>  String, the expression for computing.
 $LANG_RU$
-	<sExpr>	String, выражение для вычисления.
+	<sExpr>	String, п╡я▀я─п╟п╤п╣п╫п╦п╣ п╢п╩я▐ п╡я▀я┤п╦я│п╩п╣п╫п╦я▐.
 $RETURNS$
 	Returns the result of computing <sExpr>.
 $LANG_RU$
-	Возвращает результат вычисления выражения <sExpr>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я─п╣п╥я┐п╩я▄я┌п╟я┌ п╡я▀я┤п╦я│п╩п╣п╫п╦я▐ п╡я▀я─п╟п╤п╣п╫п╦я▐ <sExpr>.
 $DESCRIPTION$
 	GetExpr() compute expression for current object and returns result <vData>.
 $LANG_RU$
-	GetExpr() вычисляет выражение <sExpr> для текущего объекта и возвращает
-	не задан - весь объект.
+	GetExpr() п╡я▀я┤п╦я│п╩я▐п╣я┌ п╡я▀я─п╟п╤п╣п╫п╦п╣ <sExpr> п╢п╩я▐ я┌п╣п╨я┐я┴п╣пЁп╬ п╬п╠я┼п╣п╨я┌п╟ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+	п╫п╣ п╥п╟п╢п╟п╫ - п╡п╣я│я▄ п╬п╠я┼п╣п╨я┌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -389,24 +389,24 @@ $METHODNAME$
 $SUMMARY$
 	Returns object of class <sMetaName>
 $LANG_RU$
-	Вернуть объект класса <sMetaName>.
+	п▓п╣я─п╫я┐я┌я▄ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ <sMetaName>.
 $SYNTAX$
 	GetBlank() 	--> <oData>
 $ARGUMENTS$
 $RETURNS$
 	Returns <oData> - the object of class <sMetaName>.
 $LANG_RU$
-	Возвращает <oData> - объект класса <sMetaName>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <oData> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ <sMetaName>.
 $DESCRIPTION$
 	GetBlank() returns <oData> - the object of class <sMetaName>.
 	All atributes <oData> filled values by default.
 
 	Class <sMetaName> - that class what was passed to constructor of CODBIDLIST.
 $LANG_RU$
-	GetBlank() возвращает <oData> - объект класса <sMetaName>. Все атрибуты
-	объекта заполняются значениями по умолчанию.
+	GetBlank() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <oData> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ <sMetaName>. п▓я│п╣ п╟я┌я─п╦п╠я┐я┌я▀
+	п╬п╠я┼п╣п╨я┌п╟ п╥п╟п©п╬п╩п╫я▐я▌я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌.
 
-	Класс <sMetaName> - это класс, который был передан в конструктор CODBIDLIST.
+	п п╩п╟я│я│ <sMetaName> - я█я┌п╬ п╨п╩п╟я│я│, п╨п╬я┌п╬я─я▀п╧ п╠я▀п╩ п©п╣я─п╣п╢п╟п╫ п╡ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─ CODBIDLIST.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -414,23 +414,23 @@ $METHODNAME$
 $SUMMARY$
 	Set index.
 $LANG_RU$
-	Установить индекс.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╦п╫п╢п╣п╨я│.
 $SYNTAX$
 	SetIndex(<vIndex>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<vIndex>	The number or name of index.
 $LANG_RU$
-	<vIndex>	Номер или название индекса.
+	<vIndex>	п²п╬п╪п╣я─ п╦п╩п╦ п╫п╟п╥п╡п╟п╫п╦п╣ п╦п╫п╢п╣п╨я│п╟.
 $RETURNS$
 	Returns TRUE if index setted.
 $LANG_RU$
-	Возвращает TRUE если индекс устаовлен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╦п╫п╢п╣п╨я│ я┐я│я┌п╟п╬п╡п╩п╣п╫.
 $DESCRIPTION$
 	SetIndex() returns TRUE if index with number <vIndex> or with
 	name <vIndex> setted. In other returns FALSE.
 $LANG_RU$
-	SetIndex() возвращает TRUE если индекс с номером <vIndex> или названием
-	<vIndex> установлен. Иначе - возвращает FALSE.
+	SetIndex() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╦п╫п╢п╣п╨я│ я│ п╫п╬п╪п╣я─п╬п╪ <vIndex> п╦п╩п╦ п╫п╟п╥п╡п╟п╫п╦п╣п╪
+	<vIndex> я┐я│я┌п╟п╫п╬п╡п╩п╣п╫. п≤п╫п╟я┤п╣ - п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -438,20 +438,20 @@ $METHODNAME$
 $SUMMARY$
 	Delete current object.
 $LANG_RU$
-	Удалить текущий объект.
+	пёп╢п╟п╩п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ п╬п╠я┼п╣п╨я┌.
 $SYNTAX$
 	Delete() 	--> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if current object deleted.
 $LANG_RU$
-	Возвращает TRUE если текущий объект удален.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я┌п╣п╨я┐я┴п╦п╧ п╬п╠я┼п╣п╨я┌ я┐п╢п╟п╩п╣п╫.
 $DESCRIPTION$
 	Delete() returns TRUE if current object deleted from a dictionary or
 	from a depository. In other returns FALSE.
 $LANG_RU$
-	Delete() возвращает TRUE если текущий объект удален из словаря или
-	депозитария. Иначе - возвращает FALSE.
+	Delete() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я┌п╣п╨я┐я┴п╦п╧ п╬п╠я┼п╣п╨я┌ я┐п╢п╟п╩п╣п╫ п╦п╥ я│п╩п╬п╡п╟я─я▐ п╦п╩п╦
+	п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐. п≤п╫п╟я┤п╣ - п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -459,17 +459,17 @@ $METHODNAME$
 $SUMMARY$
 	Append new object.
 $LANG_RU$
-	Добавить новый объект.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌.
 $SYNTAX$
 	Append(<oData>) 	--> <sDataID>
 $ARGUMENTS$
 	<oData> 	Object, new object to keeping
 $LANG_RU$
-	<oData> 	Object, новый объект для хранения.
+	<oData> 	Object, п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐.
 $RETURNS$
 	Returns <sDataID> - identifier registered object.
 $LANG_RU$
-	Возвращает <sDataID> - идентификатор добавленного объекта.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <sDataID> - п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╢п╬п╠п╟п╡п╩п╣п╫п╫п╬пЁп╬ п╬п╠я┼п╣п╨я┌п╟.
 $DESCRIPTION$
 	Append() appends new object <oData> to storehouse as object of
 	class <sMetaName> and returns objects identifier <sDataID>.
@@ -478,13 +478,13 @@ $DESCRIPTION$
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Append() добавляет новый объект <oData> в хранилище как объект класса
-	<sMetaName> и возвращает идентификатор зарегистрированного
-	объекта <sDataID>.
+	Append() п╢п╬п╠п╟п╡п╩я▐п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ <oData> п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣ п╨п╟п╨ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟
+	<sMetaName> п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╥п╟я─п╣пЁп╦я│я┌я─п╦я─п╬п╡п╟п╫п╫п╬пЁп╬
+	п╬п╠я┼п╣п╨я┌п╟ <sDataID>.
 
-	Класс <sMetaName> - это класс, который был передан в конструктор CODBIDLIST.
+	п п╩п╟я│я│ <sMetaName> - я█я┌п╬ п╨п╩п╟я│я│, п╨п╬я┌п╬я─я▀п╧ п╠я▀п╩ п©п╣я─п╣п╢п╟п╫ п╡ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─ CODBIDLIST.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -492,27 +492,27 @@ $METHODNAME$
 $SUMMARY$
 	Update object.
 $LANG_RU$
-	Обновить объект.
+	п·п╠п╫п╬п╡п╦я┌я▄ п╬п╠я┼п╣п╨я┌.
 $SYNTAX$
 	Update(<oData>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<oData> 	Object, object to updating
 $LANG_RU$
-	<oData> 	Object, объект для обновления
+	<oData> 	Object, п╬п╠я┼п╣п╨я┌ п╢п╩я▐ п╬п╠п╫п╬п╡п╩п╣п╫п╦я▐
 $RETURNS$
 	Returns TRUE if object updated.
 $LANG_RU$
-	Возвращает TRUE если объект обновлен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╬п╠п╫п╬п╡п╩п╣п╫.
 $DESCRIPTION$
 	Update() updates object <oData> into storehouse. If dictionary or depository have not
 	object with identifier <oData:ID>, Update() returns FALSE.
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Update() обновляет объект <oData> в хранилище. Если словарь или депозитарий не содержит
-	объект с идентификатором <oData:ID>, Update() возвращает FALSE.
+	Update() п╬п╠п╫п╬п╡п╩я▐п╣я┌ п╬п╠я┼п╣п╨я┌ <oData> п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣. п∙я│п╩п╦ я│п╩п╬п╡п╟я─я▄ п╦п╩п╦ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╧ п╫п╣ я│п╬п╢п╣я─п╤п╦я┌
+	п╬п╠я┼п╣п╨я┌ я│ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ <oData:ID>, Update() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -520,14 +520,14 @@ $METHODNAME$
 $SUMMARY$
 	Refresh object list.
 $LANG_RU$
-	Перечитать список объектов.
+	п÷п╣я─п╣я┤п╦я┌п╟я┌я▄ я│п©п╦я│п╬п╨ п╬п╠я┼п╣п╨я┌п╬п╡.
 $SYNTAX$
 	Refresh() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Refresh() updates object list. Every object in this list is content
 	strart conditions <sName> and <sWhereExpr>.
@@ -536,12 +536,12 @@ $DESCRIPTION$
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Refresh() обновляет список объектов. Каждый элемент списка удовлетворяет
-	начальным условиям <sName> и <sWhereExpr>.
+	Refresh() п╬п╠п╫п╬п╡п╩я▐п╣я┌ я│п©п╦я│п╬п╨ п╬п╠я┼п╣п╨я┌п╬п╡. п п╟п╤п╢я▀п╧ я█п╩п╣п╪п╣п╫я┌ я│п©п╦я│п╨п╟ я┐п╢п╬п╡п╩п╣я┌п╡п╬я─я▐п╣я┌
+	п╫п╟я┤п╟п╩я▄п╫я▀п╪ я┐я│п╩п╬п╡п╦я▐п╪ <sName> п╦ <sWhereExpr>.
 
-	<sName> и <sWhereExpr> - это параметры, которые были переданы в конструктор CODBIDLIST.
+	<sName> п╦ <sWhereExpr> - я█я┌п╬ п©п╟я─п╟п╪п╣я┌я─я▀, п╨п╬я┌п╬я─я▀п╣ п╠я▀п╩п╦ п©п╣я─п╣п╢п╟п╫я▀ п╡ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─ CODBIDLIST.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 
@@ -550,23 +550,23 @@ $METHODNAME$
 $SUMMARY$
 	Check object a existence storehouse.
 $LANG_RU$
-	Проверить объект на существование в хранилище.
+	п÷я─п╬п╡п╣я─п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╫п╟ я│я┐я┴п╣я│я┌п╡п╬п╡п╟п╫п╦п╣ п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣.
 $SYNTAX$
 	IdExist(<sDataID>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<sDataID>	String, object identifier
 $LANG_RU$
-	<sDataID>	String, идентификатор объекта.
+	<sDataID>	String, п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟.
 $RETURNS$
 	Returns TRUE if object exist into storehouse.
 $LANG_RU$
-	Возвращает TRUE если объект существует в хранилище.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣.
 $DESCRIPTION$
 	IdExist() returns TRUE if object with identifier <sDataID> exist into dictionary
 	or depository.
 $LANG_RU$
-	IdExist() возвращает TRUE если объект с идентификатором <sDataID> зарегистрирован в словаре
-	или депозитарии.
+	IdExist() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ я│ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ <sDataID> п╥п╟я─п╣пЁп╦я│я┌я─п╦я─п╬п╡п╟п╫ п╡ я│п╩п╬п╡п╟я─п╣
+	п╦п╩п╦ п╢п╣п©п╬п╥п╦я┌п╟я─п╦п╦.
 $ENDMETHOD$
 
 

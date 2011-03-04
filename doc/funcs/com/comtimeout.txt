@@ -5,19 +5,19 @@ $CATEGORY$
 $SUMMARY$
 	Set timeout for all operations in 1/10 seconds.
 $LANG_RU$
-	Установливает таймаут операций в единицах 1/10 секунды.
+	пёя│я┌п╟п╫п╬п╡п╩п╦п╡п╟п╣я┌ я┌п╟п╧п╪п╟я┐я┌ п╬п©п╣я─п╟я├п╦п╧ п╡ п╣п╢п╦п╫п╦я├п╟я┘ 1/10 я│п╣п╨я┐п╫п╢я▀.
 $SYNTAX$
 	COM_TIMEOUT(<nComPort>[,<nTimeout>]) --> nOldTimeout
 $ARGUMENTS$
 	<nComPort> - Designates the number of the port (1 to N).
 	<nTimeout> - Designates operation timeout in tenth (1/10) seconds.
 $LANG_RU$
-	<nComPort> - Номер порта (от 1 до N).
-	<nTimeout> - Определяет таймаут операций в единицах 1/10 секунды.
+	<nComPort> - п²п╬п╪п╣я─ п©п╬я─я┌п╟ (п╬я┌ 1 п╢п╬ N).
+	<nTimeout> - п·п©я─п╣п╢п╣п╩я▐п╣я┌ я┌п╟п╧п╪п╟я┐я┌ п╬п©п╣я─п╟я├п╦п╧ п╡ п╣п╢п╦п╫п╦я├п╟я┘ 1/10 я│п╣п╨я┐п╫п╢я▀.
 $RETURNS$
 	Return previous value of operation timeout.
 $LANG_RU$
-	Возвращает предыдщее значение таймаута.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я─п╣п╢я▀п╢я┴п╣п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я┌п╟п╧п╪п╟я┐я┌п╟.
 $DESCRIPTION$
 	All read functions may use a timeout mechanism while waiting for
 	characters. If this time limit is exceeded the function abort reading.
@@ -26,11 +26,11 @@ $DESCRIPTION$
 	TenthOfSeconds. This value is given as a multiple of a thenth of a
 	second.
 $LANG_RU$
-	Все фукции чтения могут использовать механизм таймаута при
-	ожидании символов. Если таймаут первышен, функция обрывает ожидание.
+	п▓я│п╣ я└я┐п╨я├п╦п╦ я┤я┌п╣п╫п╦я▐ п╪п╬пЁя┐я┌ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ п╪п╣я┘п╟п╫п╦п╥п╪ я┌п╟п╧п╪п╟я┐я┌п╟ п©я─п╦
+	п╬п╤п╦п╢п╟п╫п╦п╦ я│п╦п╪п╡п╬п╩п╬п╡. п∙я│п╩п╦ я┌п╟п╧п╪п╟я┐я┌ п©п╣я─п╡я▀я┬п╣п╫, я└я┐п╫п╨я├п╦я▐ п╬п╠я─я▀п╡п╟п╣я┌ п╬п╤п╦п╢п╟п╫п╦п╣.
 
-	Длительность таймаута определяется параметром TenthOfSeconds.
-	Значение задается в десятых долях секунды.
+	п■п╩п╦я┌п╣п╩я▄п╫п╬я│я┌я▄ я┌п╟п╧п╪п╟я┐я┌п╟ п╬п©я─п╣п╢п╣п╩я▐п╣я┌я│я▐ п©п╟я─п╟п╪п╣я┌я─п╬п╪ TenthOfSeconds.
+	п≈п╫п╟я┤п╣п╫п╦п╣ п╥п╟п╢п╟п╣я┌я│я▐ п╡ п╢п╣я│я▐я┌я▀я┘ п╢п╬п╩я▐я┘ я│п╣п╨я┐п╫п╢я▀.
 $EXAMPLES$
 	COM_OPEN(2)
 	COM_TIMEOUT(6000)
@@ -39,7 +39,7 @@ $LANG_RU$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	COM_DTR(),COM_RTS(),COM_SOFT(),COM_HARD(),COM_NUM(),COM_COUNT()
 $AUTHOR$

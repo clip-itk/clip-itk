@@ -71,9 +71,9 @@
    from uri:
 
    Revision 1.18  2000/10/20 08:03:23  clip
-   Вкрутил rational везде где упоминается NUMERIC_t
-   может чего и осталось неотловленное, но это может быть только в тех
-   местах где нет использования NUMERIC_t !!!!!
+   Added rational wherever mentioned NUMERIC_t
+   maybe in some places this omitted
+   (in places where don't use NUMERIC_t)!!!
    from uri:
 
    Revision 1.17  2000/05/03 19:32:25  clip
@@ -83,13 +83,13 @@
    freebsd fix
 
    Revision 1.15  2000/04/14 19:11:42  uri
-   кучка функций num* из tools
+   few num* functions from tools
 
    Revision 1.14  2000/04/14 00:51:19  uri
-   Кучка функций для math+tools
+   few math* functions from tools
 
    Revision 1.13  2000/03/30 21:17:09  uri
-   переделал под новый error
+   rewritted for new error calls
 
    Revision 1.12  2000/03/22 21:10:16  uri
    bug in dbselectarea with numeric parameter
@@ -101,26 +101,26 @@
    *** empty log message ***
 
    Revision 1.9  1999/12/23 17:12:39  vlad
-   Полная обработка ошибок
+   Full errors handling
 
    Revision 1.8  1999/12/16 17:43:52  vlad
    SETBIT, ISBIT, NUMXOR, NUMAND, NUMOR, NUMNOT
-   Добавлена обработка ошибок
+   Added errors handling
 
    Revision 1.7  1999/12/10 23:06:28  vlad
-   Изменен алгоритм BITTOC
+   Changed algorithm BITTOC
 
    Revision 1.6  1999/12/10 14:57:50  vlad
    *** empty log message ***
 
    Revision 1.5  1999/12/09 16:11:05  uri
-   доделал несколько math функций
+   Completed few math finctions
 
    Revision 1.4  1999/12/09 15:02:01  vlad
    CTOBIT, CELSIUS, FAHRENHEIT
 
    Revision 1.3  1999/12/08 15:28:17  vlad
-   Сделана BITTOC
+   Completed BITTOC
 
    Revision 1.2  1999/10/26 19:11:11  paul
    start cvs logging

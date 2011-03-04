@@ -3,34 +3,34 @@ $CLASSNAME$
 $SUMMARY$
 	Class UILabel
 $LANG_RU$
-	Класс UILabel
+	п п╩п╟я│я│ UILabel
 $ABOUT$
 	Class of text label.
 $LANG_RU$
-	Класс надписи.
+	п п╩п╟я│я│ п╫п╟п╢п©п╦я│п╦.
 $SYNTAX$
 	UILabel(<text>) --> UILabel object
 $LANG_RU$
-	UILabel(<text>) --> Объект UILabel
+	UILabel(<text>) --> п·п╠я┼п╣п╨я┌ UILabel
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UILabel".
 	<value>		- String. Label text.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UILabel".
-	<value>		- Строка. Текст надписи.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UILabel".
+	<value>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦.
 
 $METHODNAME$
 	UILabel()
 $SUMMARY$
 	Constructor. Create text label.
 $LANG_RU$
-	Конструктор. Создать надпись.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╫п╟п╢п©п╦я│я▄.
 $SYNTAX$
 	UILabel(<text>) --> UILabel object
 $ARGUMENTS$
 	<text>		- String. Label text. You can define accel key for widget activation. Just place symbol "&" before accel letter. This letter will be underlined and widget will be activated with key Alt-letter.
 $LANG_RU$
-	<text>		- Строка. Текст надписи. В надписи можно задать акселератор для активации элемента интерфейса, указав символ "&" перед необходимой буквой. Эта буква будет подчёркнута и элемент можно активировать нажатием комбинации клавиш Alt-буква.
+	<text>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦. п▓ п╫п╟п╢п©п╦я│п╦ п╪п╬п╤п╫п╬ п╥п╟п╢п╟я┌я▄ п╟п╨я│п╣п╩п╣я─п╟я┌п╬я─ п╢п╩я▐ п╟п╨я┌п╦п╡п╟я├п╦п╦ я█п╩п╣п╪п╣п╫я┌п╟ п╦п╫я┌п╣я─я└п╣п╧я│п╟, я┐п╨п╟п╥п╟п╡ я│п╦п╪п╡п╬п╩ "&" п©п╣я─п╣п╢ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬п╧ п╠я┐п╨п╡п╬п╧. п╜я┌п╟ п╠я┐п╨п╡п╟ п╠я┐п╢п╣я┌ п©п╬п╢я┤я▒я─п╨п╫я┐я┌п╟ п╦ я█п╩п╣п╪п╣п╫я┌ п╪п╬п╤п╫п╬ п╟п╨я┌п╦п╡п╦я─п╬п╡п╟я┌я▄ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬ Alt-п╠я┐п╨п╡п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -38,13 +38,13 @@ $METHODNAME$
 $SUMMARY$
 	Set text of label.
 $LANG_RU$
-	Изменить текст надписи.
+	п≤п╥п╪п╣п╫п╦я┌я▄ я┌п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦.
 $SYNTAX$
 	setText(<text>)
 $ARGUMENTS$
 	<text>		- String. Label text. It is duplicate for method setValue.You can define accel key for widget activation. Just place symbol "&" before accel letter. This letter will be underlined and widget will be activated with key Alt-letter.
 $LANG_RU$
-	<text>		- Строка. Текст надписи. Дублирует метод setValue. В надписи можно задать акселератор для активации элемента интерфейса, указав символ "&" перед необходимой буквой. Эта буква будет подчёркнута и элемент можно активировать нажатием комбинации клавиш Alt-буква.
+	<text>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦. п■я┐п╠п╩п╦я─я┐п╣я┌ п╪п╣я┌п╬п╢ setValue. п▓ п╫п╟п╢п©п╦я│п╦ п╪п╬п╤п╫п╬ п╥п╟п╢п╟я┌я▄ п╟п╨я│п╣п╩п╣я─п╟я┌п╬я─ п╢п╩я▐ п╟п╨я┌п╦п╡п╟я├п╦п╦ я█п╩п╣п╪п╣п╫я┌п╟ п╦п╫я┌п╣я─я└п╣п╧я│п╟, я┐п╨п╟п╥п╟п╡ я│п╦п╪п╡п╬п╩ "&" п©п╣я─п╣п╢ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬п╧ п╠я┐п╨п╡п╬п╧. п╜я┌п╟ п╠я┐п╨п╡п╟ п╠я┐п╢п╣я┌ п©п╬п╢я┤я▒я─п╨п╫я┐я┌п╟ п╦ я█п╩п╣п╪п╣п╫я┌ п╪п╬п╤п╫п╬ п╟п╨я┌п╦п╡п╦я─п╬п╡п╟я┌я▄ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬ Alt-п╠я┐п╨п╡п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -52,13 +52,13 @@ $METHODNAME$
 $SUMMARY$
 	Set text of label.
 $LANG_RU$
-	Изменить текст надписи.
+	п≤п╥п╪п╣п╫п╦я┌я▄ я┌п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦.
 $SYNTAX$
 	setValue(<text>)
 $ARGUMENTS$
 	<text>		- String. Label text. You can define accel key for widget activation. Just place symbol "&" before accel letter. This letter will be underlined and widget will be activated with key Alt-letter.
 $LANG_RU$
-	<text>		- Строка. Текст надписи. В надписи можно задать акселератор для активации элемента интерфейса, указав символ "&" перед необходимой буквой. Эта буква будет подчёркнута и элемент можно активировать нажатием комбинации клавиш Alt-буква.
+	<text>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦. п▓ п╫п╟п╢п©п╦я│п╦ п╪п╬п╤п╫п╬ п╥п╟п╢п╟я┌я▄ п╟п╨я│п╣п╩п╣я─п╟я┌п╬я─ п╢п╩я▐ п╟п╨я┌п╦п╡п╟я├п╦п╦ я█п╩п╣п╪п╣п╫я┌п╟ п╦п╫я┌п╣я─я└п╣п╧я│п╟, я┐п╨п╟п╥п╟п╡ я│п╦п╪п╡п╬п╩ "&" п©п╣я─п╣п╢ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬п╧ п╠я┐п╨п╡п╬п╧. п╜я┌п╟ п╠я┐п╨п╡п╟ п╠я┐п╢п╣я┌ п©п╬п╢я┤я▒я─п╨п╫я┐я┌п╟ п╦ я█п╩п╣п╪п╣п╫я┌ п╪п╬п╤п╫п╬ п╟п╨я┌п╦п╡п╦я─п╬п╡п╟я┌я▄ п╫п╟п╤п╟я┌п╦п╣п╪ п╨п╬п╪п╠п╦п╫п╟я├п╦п╦ п╨п╩п╟п╡п╦я┬ Alt-п╠я┐п╨п╡п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -66,12 +66,12 @@ $METHODNAME$
 $SUMMARY$
 	Get label text.
 $LANG_RU$
-	Вернуть текст надписи.
+	п▓п╣я─п╫я┐я┌я▄ я┌п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦.
 $SYNTAX$getValue()	--> <sValue>
 $RETURNS$
 	Label text.
 $LANG_RU$
-	Текст надписи.
+	п╒п╣п╨я│я┌ п╫п╟п╢п©п╦я│п╦.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -80,10 +80,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

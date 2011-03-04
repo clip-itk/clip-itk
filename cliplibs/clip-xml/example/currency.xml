@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="koi8-r" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 
 <package>
 
@@ -59,26 +59,26 @@ lalala2
 
 
 		<tcolumn name="code"		width="10"
-				header="Код"
+				header="п п╬п╢"
 				footer=""
 				expression="code"
 		/>
 		<tcolumn name="unit"		width="4"
-				header="ЕдИзм"
+				header="п∙п╢п≤п╥п╪"
 				footer=""
 				expression="unit"
 		/>
 		<tcolumn name="name"		width="30"
-				header="Наименование"
+				header="п²п╟п╦п╪п╣п╫п╬п╡п╟п╫п╦п╣"
 				footer=""
 				expression="name"
 		/>
 		<tcolumn name="smallname"		width="50"
-				header="Наименование"
+				header="п²п╟п╦п╪п╣п╫п╬п╡п╟п╫п╦п╣"
 				footer=""
 				expression="smallname"
 		/>
-		<tview name="Коды валют"
+		<tview name="п п╬п╢я▀ п╡п╟п╩я▌я┌"
 				class="currency"
 				columns="code,unit,name,smallname"
 		/>
@@ -90,1094 +90,1094 @@ lalala2
 		<object>
 			<attr name="code">004</attr>
 			<attr name="unit">AFA</attr>
-			<attr name="name">Афгани</attr>
-			<attr name="smallname">Афганистан</attr>
+			<attr name="name">п░я└пЁп╟п╫п╦</attr>
+			<attr name="smallname">п░я└пЁп╟п╫п╦я│я┌п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">008</attr>
 			<attr name="unit">ALL</attr>
-			<attr name="name">Лек</attr>
-			<attr name="smallname">Албания</attr>
+			<attr name="name">п⌡п╣п╨</attr>
+			<attr name="smallname">п░п╩п╠п╟п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">012</attr>
 			<attr name="unit">DZD</attr>
-			<attr name="name">Алжирский динар</attr>
-			<attr name="smallname">Алжир</attr>
+			<attr name="name">п░п╩п╤п╦я─я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п░п╩п╤п╦я─</attr>
 		</object>
 		<object>
 			<attr name="code">020</attr>
 			<attr name="unit">ADP</attr>
-			<attr name="name">Андорская песета</attr>
-			<attr name="smallname">Андорра</attr>
+			<attr name="name">п░п╫п╢п╬я─я│п╨п╟я▐ п©п╣я│п╣я┌п╟</attr>
+			<attr name="smallname">п░п╫п╢п╬я─я─п╟</attr>
 		</object>
 		<object>
 			<attr name="code">031</attr>
 			<attr name="unit">AZM</attr>
-			<attr name="name">Азербайджанский манат</attr>
-			<attr name="smallname">Азербайджан</attr>
+			<attr name="name">п░п╥п╣я─п╠п╟п╧п╢п╤п╟п╫я│п╨п╦п╧ п╪п╟п╫п╟я┌</attr>
+			<attr name="smallname">п░п╥п╣я─п╠п╟п╧п╢п╤п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">032</attr>
 			<attr name="unit">ARS</attr>
-			<attr name="name">Аргентинское песо</attr>
-			<attr name="smallname">Аргентина</attr>
+			<attr name="name">п░я─пЁп╣п╫я┌п╦п╫я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">п░я─пЁп╣п╫я┌п╦п╫п╟</attr>
 		</object>
 		<object>
 			<attr name="code">036</attr>
 			<attr name="unit">AUD</attr>
-			<attr name="name">Австралийский доллар</attr>
-			<attr name="smallname">Австралия; Кирибати; Кокосовые (Килинг) острова Науру; Норфолк</attr>
+			<attr name="name">п░п╡я│я┌я─п╟п╩п╦п╧я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п░п╡я│я┌я─п╟п╩п╦я▐; п п╦я─п╦п╠п╟я┌п╦; п п╬п╨п╬я│п╬п╡я▀п╣ (п п╦п╩п╦п╫пЁ) п╬я│я┌я─п╬п╡п╟ п²п╟я┐я─я┐; п²п╬я─я└п╬п╩п╨</attr>
 		</object>
 		<object>
 			<attr name="code">040</attr>
 			<attr name="unit">ATS</attr>
-			<attr name="name">Шиллинг</attr>
-			<attr name="smallname">Австрия</attr>
+			<attr name="name">п╗п╦п╩п╩п╦п╫пЁ</attr>
+			<attr name="smallname">п░п╡я│я┌я─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">044</attr>
 			<attr name="unit">BSD</attr>
-			<attr name="name">Багамский доллар</attr>
-			<attr name="smallname">Багамские острова</attr>
+			<attr name="name">п▒п╟пЁп╟п╪я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п▒п╟пЁп╟п╪я│п╨п╦п╣ п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">048</attr>
 			<attr name="unit">BHD</attr>
-			<attr name="name">Бахрейнский динар</attr>
-			<attr name="smallname">Бахрейн</attr>
+			<attr name="name">п▒п╟я┘я─п╣п╧п╫я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п▒п╟я┘я─п╣п╧п╫</attr>
 		</object>
 		<object>
 			<attr name="code">050</attr>
 			<attr name="unit">BDT</attr>
-			<attr name="name">Така</attr>
-			<attr name="smallname">Бангладеш</attr>
+			<attr name="name">п╒п╟п╨п╟</attr>
+			<attr name="smallname">п▒п╟п╫пЁп╩п╟п╢п╣я┬</attr>
 		</object>
 		<object>
 			<attr name="code">051</attr>
 			<attr name="unit">AMD</attr>
-			<attr name="name">Армянский драм</attr>
-			<attr name="smallname">Армения</attr>
+			<attr name="name">п░я─п╪я▐п╫я│п╨п╦п╧ п╢я─п╟п╪</attr>
+			<attr name="smallname">п░я─п╪п╣п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">052</attr>
 			<attr name="unit">BBD</attr>
-			<attr name="name">Барбадосский доллар</attr>
-			<attr name="smallname">Барбадос</attr>
+			<attr name="name">п▒п╟я─п╠п╟п╢п╬я│я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п▒п╟я─п╠п╟п╢п╬я│</attr>
 		</object>
 		<object>
 			<attr name="code">056</attr>
 			<attr name="unit">BEF</attr>
-			<attr name="name">Бельгийский франк</attr>
-			<attr name="smallname">Бельгия</attr>
+			<attr name="name">п▒п╣п╩я▄пЁп╦п╧я│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п▒п╣п╩я▄пЁп╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">060</attr>
 			<attr name="unit">BMD</attr>
-			<attr name="name">Бермудский доллар</attr>
-			<attr name="smallname">Бермудские острова</attr>
+			<attr name="name">п▒п╣я─п╪я┐п╢я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п▒п╣я─п╪я┐п╢я│п╨п╦п╣ п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">064</attr>
 			<attr name="unit">BTN</attr>
-			<attr name="name">Нгултрум</attr>
-			<attr name="smallname">Бутан</attr>
+			<attr name="name">п²пЁя┐п╩я┌я─я┐п╪</attr>
+			<attr name="smallname">п▒я┐я┌п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">068</attr>
 			<attr name="unit">BOB</attr>
-			<attr name="name">Боливиано</attr>
-			<attr name="smallname">Боливия</attr>
+			<attr name="name">п▒п╬п╩п╦п╡п╦п╟п╫п╬</attr>
+			<attr name="smallname">п▒п╬п╩п╦п╡п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">072</attr>
 			<attr name="unit">BWP</attr>
-			<attr name="name">Пула</attr>
-			<attr name="smallname">Ботсвана</attr>
+			<attr name="name">п÷я┐п╩п╟</attr>
+			<attr name="smallname">п▒п╬я┌я│п╡п╟п╫п╟</attr>
 		</object>
 		<object>
 			<attr name="code">084</attr>
 			<attr name="unit">BZD</attr>
-			<attr name="name">Белизский доллар</attr>
-			<attr name="smallname">Белиз</attr>
+			<attr name="name">п▒п╣п╩п╦п╥я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п▒п╣п╩п╦п╥</attr>
 		</object>
 		<object>
 			<attr name="code">090</attr>
 			<attr name="unit">SBD</attr>
-			<attr name="name">Доллар Соломоновых островов</attr>
-			<attr name="smallname">Соломоновы острова</attr>
+			<attr name="name">п■п╬п╩п╩п╟я─ п║п╬п╩п╬п╪п╬п╫п╬п╡я▀я┘ п╬я│я┌я─п╬п╡п╬п╡</attr>
+			<attr name="smallname">п║п╬п╩п╬п╪п╬п╫п╬п╡я▀ п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">096</attr>
 			<attr name="unit">BND</attr>
-			<attr name="name">Брунейский доллар</attr>
-			<attr name="smallname">Бруней Даруссалам</attr>
+			<attr name="name">п▒я─я┐п╫п╣п╧я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п▒я─я┐п╫п╣п╧ п■п╟я─я┐я│я│п╟п╩п╟п╪</attr>
 		</object>
 		<object>
 			<attr name="code">100</attr>
 			<attr name="unit">BGL</attr>
-			<attr name="name">Лев</attr>
-			<attr name="smallname">Болгария</attr>
+			<attr name="name">п⌡п╣п╡</attr>
+			<attr name="smallname">п▒п╬п╩пЁп╟я─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">104</attr>
 			<attr name="unit">MMK</attr>
-			<attr name="name">Кьят</attr>
-			<attr name="smallname">Мьянма</attr>
+			<attr name="name">п я▄я▐я┌</attr>
+			<attr name="smallname">п°я▄я▐п╫п╪п╟</attr>
 		</object>
 		<object>
 			<attr name="code">108</attr>
 			<attr name="unit">BIF</attr>
-			<attr name="name">Бурундийский франк</attr>
-			<attr name="smallname">Бурунди</attr>
+			<attr name="name">п▒я┐я─я┐п╫п╢п╦п╧я│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п▒я┐я─я┐п╫п╢п╦</attr>
 		</object>
 		<object>
 			<attr name="code">116</attr>
 			<attr name="unit">KHR</attr>
-			<attr name="name">Риель</attr>
-			<attr name="smallname">Камбоджа</attr>
+			<attr name="name">п═п╦п╣п╩я▄</attr>
+			<attr name="smallname">п п╟п╪п╠п╬п╢п╤п╟</attr>
 		</object>
 		<object>
 			<attr name="code">124</attr>
 			<attr name="unit">CAD</attr>
-			<attr name="name">Канадский доллар</attr>
-			<attr name="smallname">Канада</attr>
+			<attr name="name">п п╟п╫п╟п╢я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п п╟п╫п╟п╢п╟</attr>
 		</object>
 		<object>
 			<attr name="code">132</attr>
 			<attr name="unit">CVE</attr>
-			<attr name="name">Эскудо Кабо-Верде</attr>
-			<attr name="smallname">Кабо-Верде</attr>
+			<attr name="name">п╜я│п╨я┐п╢п╬ п п╟п╠п╬-п▓п╣я─п╢п╣</attr>
+			<attr name="smallname">п п╟п╠п╬-п▓п╣я─п╢п╣</attr>
 		</object>
 		<object>
 			<attr name="code">136</attr>
 			<attr name="unit">KYD</attr>
-			<attr name="name">Доллар Каймановых островов</attr>
-			<attr name="smallname">Каймановы острова</attr>
+			<attr name="name">п■п╬п╩п╩п╟я─ п п╟п╧п╪п╟п╫п╬п╡я▀я┘ п╬я│я┌я─п╬п╡п╬п╡</attr>
+			<attr name="smallname">п п╟п╧п╪п╟п╫п╬п╡я▀ п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">144</attr>
 			<attr name="unit">LKR</attr>
-			<attr name="name">Шри-Ланкийская рупия</attr>
-			<attr name="smallname">Шри-Ланка</attr>
+			<attr name="name">п╗я─п╦-п⌡п╟п╫п╨п╦п╧я│п╨п╟я▐ я─я┐п©п╦я▐</attr>
+			<attr name="smallname">п╗я─п╦-п⌡п╟п╫п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">152</attr>
-			<attr name="unit">CLР</attr>
-			<attr name="name">Чилийское песо</attr>
-			<attr name="smallname">Чили</attr>
+			<attr name="unit">CLп═</attr>
+			<attr name="name">п╖п╦п╩п╦п╧я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">п╖п╦п╩п╦</attr>
 		</object>
 		<object>
 			<attr name="code">156</attr>
 			<attr name="unit">CNY</attr>
-			<attr name="name">Юань Ренминби</attr>
-			<attr name="smallname">Китай</attr>
+			<attr name="name">п╝п╟п╫я▄ п═п╣п╫п╪п╦п╫п╠п╦</attr>
+			<attr name="smallname">п п╦я┌п╟п╧</attr>
 		</object>
 		<object>
 			<attr name="code">170</attr>
 			<attr name="unit">COP</attr>
-			<attr name="name">Колумбийское песо</attr>
-			<attr name="smallname">Колумбия</attr>
+			<attr name="name">п п╬п╩я┐п╪п╠п╦п╧я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">п п╬п╩я┐п╪п╠п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">174</attr>
 			<attr name="unit">KMF</attr>
-			<attr name="name">Франк Коморских островов</attr>
-			<attr name="smallname">Коморские острова</attr>
+			<attr name="name">п╓я─п╟п╫п╨ п п╬п╪п╬я─я│п╨п╦я┘ п╬я│я┌я─п╬п╡п╬п╡</attr>
+			<attr name="smallname">п п╬п╪п╬я─я│п╨п╦п╣ п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">188</attr>
 			<attr name="unit">CRC</attr>
-			<attr name="name">Костариканский колон</attr>
-			<attr name="smallname">Коста-Рика</attr>
+			<attr name="name">п п╬я│я┌п╟я─п╦п╨п╟п╫я│п╨п╦п╧ п╨п╬п╩п╬п╫</attr>
+			<attr name="smallname">п п╬я│я┌п╟-п═п╦п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">191</attr>
 			<attr name="unit">HRK</attr>
-			<attr name="name">Куна</attr>
-			<attr name="smallname">Хорватия</attr>
+			<attr name="name">п я┐п╫п╟</attr>
+			<attr name="smallname">п╔п╬я─п╡п╟я┌п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">192</attr>
 			<attr name="unit">CUP</attr>
-			<attr name="name">Кубинское песо</attr>
-			<attr name="smallname">Куба</attr>
+			<attr name="name">п я┐п╠п╦п╫я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">п я┐п╠п╟</attr>
 		</object>
 		<object>
 			<attr name="code">196</attr>
 			<attr name="unit">CYP</attr>
-			<attr name="name">Кипрский фунт</attr>
-			<attr name="smallname">Кипр</attr>
+			<attr name="name">п п╦п©я─я│п╨п╦п╧ я└я┐п╫я┌</attr>
+			<attr name="smallname">п п╦п©я─</attr>
 		</object>
 		<object>
 			<attr name="code">203</attr>
 			<attr name="unit">CZK</attr>
-			<attr name="name">Чешская крона</attr>
-			<attr name="smallname">Чешская Республика</attr>
+			<attr name="name">п╖п╣я┬я│п╨п╟я▐ п╨я─п╬п╫п╟</attr>
+			<attr name="smallname">п╖п╣я┬я│п╨п╟я▐ п═п╣я│п©я┐п╠п╩п╦п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">208</attr>
 			<attr name="unit">DKK</attr>
-			<attr name="name">Датская крона</attr>
-			<attr name="smallname">Гренландия; Дания; Фарерские острова</attr>
+			<attr name="name">п■п╟я┌я│п╨п╟я▐ п╨я─п╬п╫п╟</attr>
+			<attr name="smallname">п⌠я─п╣п╫п╩п╟п╫п╢п╦я▐; п■п╟п╫п╦я▐; п╓п╟я─п╣я─я│п╨п╦п╣ п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">214</attr>
 			<attr name="unit">DOP</attr>
-			<attr name="name">Доминиканское песо</attr>
-			<attr name="smallname">Доминиканская Республика</attr>
+			<attr name="name">п■п╬п╪п╦п╫п╦п╨п╟п╫я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">п■п╬п╪п╦п╫п╦п╨п╟п╫я│п╨п╟я▐ п═п╣я│п©я┐п╠п╩п╦п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">218</attr>
 			<attr name="unit">ECS</attr>
-			<attr name="name">Сукре</attr>
-			<attr name="smallname">Эквадор</attr>
+			<attr name="name">п║я┐п╨я─п╣</attr>
+			<attr name="smallname">п╜п╨п╡п╟п╢п╬я─</attr>
 		</object>
 		<object>
 			<attr name="code">222</attr>
 			<attr name="unit">SVC</attr>
-			<attr name="name">Сальвадорский колон</attr>
-			<attr name="smallname">Сальвадор</attr>
+			<attr name="name">п║п╟п╩я▄п╡п╟п╢п╬я─я│п╨п╦п╧ п╨п╬п╩п╬п╫</attr>
+			<attr name="smallname">п║п╟п╩я▄п╡п╟п╢п╬я─</attr>
 		</object>
 		<object>
 			<attr name="code">230</attr>
 			<attr name="unit">ETB</attr>
-			<attr name="name">Эфиопский быр</attr>
-			<attr name="smallname">Эфиопия</attr>
+			<attr name="name">п╜я└п╦п╬п©я│п╨п╦п╧ п╠я▀я─</attr>
+			<attr name="smallname">п╜я└п╦п╬п©п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">232</attr>
 			<attr name="unit">ERN</attr>
-			<attr name="name">Накфа</attr>
-			<attr name="smallname">Эритрея</attr>
+			<attr name="name">п²п╟п╨я└п╟</attr>
+			<attr name="smallname">п╜я─п╦я┌я─п╣я▐</attr>
 		</object>
 		<object>
 			<attr name="code">233</attr>
 			<attr name="unit">EEK</attr>
-			<attr name="name">Крона</attr>
-			<attr name="smallname">Эстония</attr>
+			<attr name="name">п я─п╬п╫п╟</attr>
+			<attr name="smallname">п╜я│я┌п╬п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">238</attr>
 			<attr name="unit">FKP</attr>
-			<attr name="name">Фунт Фолклендских островов</attr>
-			<attr name="smallname">Фолклендские (Мальвинские) острова</attr>
+			<attr name="name">п╓я┐п╫я┌ п╓п╬п╩п╨п╩п╣п╫п╢я│п╨п╦я┘ п╬я│я┌я─п╬п╡п╬п╡</attr>
+			<attr name="smallname">п╓п╬п╩п╨п╩п╣п╫п╢я│п╨п╦п╣ (п°п╟п╩я▄п╡п╦п╫я│п╨п╦п╣) п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">242</attr>
 			<attr name="unit">FJD</attr>
-			<attr name="name">Доллар Фиджи</attr>
-			<attr name="smallname">Фиджи</attr>
+			<attr name="name">п■п╬п╩п╩п╟я─ п╓п╦п╢п╤п╦</attr>
+			<attr name="smallname">п╓п╦п╢п╤п╦</attr>
 		</object>
 		<object>
 			<attr name="code">246</attr>
 			<attr name="unit">FIM</attr>
-			<attr name="name">Марка</attr>
-			<attr name="smallname">Финляндия</attr>
+			<attr name="name">п°п╟я─п╨п╟</attr>
+			<attr name="smallname">п╓п╦п╫п╩я▐п╫п╢п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">250</attr>
 			<attr name="unit">FRF</attr>
-			<attr name="name">Французский франк</attr>
-			<attr name="smallname">Андорра; Гваделупа; Мартиника; Монако; Реюньон; Сен-Пьер и Микелон; Франция; Французская Гвиана; Французские Южные территории</attr>
+			<attr name="name">п╓я─п╟п╫я├я┐п╥я│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п░п╫п╢п╬я─я─п╟; п⌠п╡п╟п╢п╣п╩я┐п©п╟; п°п╟я─я┌п╦п╫п╦п╨п╟; п°п╬п╫п╟п╨п╬; п═п╣я▌п╫я▄п╬п╫; п║п╣п╫-п÷я▄п╣я─ п╦ п°п╦п╨п╣п╩п╬п╫; п╓я─п╟п╫я├п╦я▐; п╓я─п╟п╫я├я┐п╥я│п╨п╟я▐ п⌠п╡п╦п╟п╫п╟; п╓я─п╟п╫я├я┐п╥я│п╨п╦п╣ п╝п╤п╫я▀п╣ я┌п╣я─я─п╦я┌п╬я─п╦п╦</attr>
 		</object>
 		<object>
 			<attr name="code">262</attr>
 			<attr name="unit">DJF</attr>
-			<attr name="name">Франк Джибути</attr>
-			<attr name="smallname">Джибути</attr>
+			<attr name="name">п╓я─п╟п╫п╨ п■п╤п╦п╠я┐я┌п╦</attr>
+			<attr name="smallname">п■п╤п╦п╠я┐я┌п╦</attr>
 		</object>
 		<object>
 			<attr name="code">270</attr>
 			<attr name="unit">GMD</attr>
-			<attr name="name">Даласи</attr>
-			<attr name="smallname">Гамбия</attr>
+			<attr name="name">п■п╟п╩п╟я│п╦</attr>
+			<attr name="smallname">п⌠п╟п╪п╠п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">276</attr>
 			<attr name="unit">DEM</attr>
-			<attr name="name">Немецкая марка</attr>
-			<attr name="smallname">Германия</attr>
+			<attr name="name">п²п╣п╪п╣я├п╨п╟я▐ п╪п╟я─п╨п╟</attr>
+			<attr name="smallname">п⌠п╣я─п╪п╟п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">288</attr>
 			<attr name="unit">GHC</attr>
-			<attr name="name">Седи</attr>
-			<attr name="smallname">Гана</attr>
+			<attr name="name">п║п╣п╢п╦</attr>
+			<attr name="smallname">п⌠п╟п╫п╟</attr>
 		</object>
 		<object>
 			<attr name="code">292</attr>
 			<attr name="unit">GIP</attr>
-			<attr name="name">Гибралтарский фунт</attr>
-			<attr name="smallname">Гибралтар</attr>
+			<attr name="name">п⌠п╦п╠я─п╟п╩я┌п╟я─я│п╨п╦п╧ я└я┐п╫я┌</attr>
+			<attr name="smallname">п⌠п╦п╠я─п╟п╩я┌п╟я─</attr>
 		</object>
 		<object>
 			<attr name="code">300</attr>
 			<attr name="unit">GRD</attr>
-			<attr name="name">Драхма</attr>
-			<attr name="smallname">Греция</attr>
+			<attr name="name">п■я─п╟я┘п╪п╟</attr>
+			<attr name="smallname">п⌠я─п╣я├п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">320</attr>
 			<attr name="unit">GTQ</attr>
-			<attr name="name">Кетсаль</attr>
-			<attr name="smallname">Гватемала</attr>
+			<attr name="name">п п╣я┌я│п╟п╩я▄</attr>
+			<attr name="smallname">п⌠п╡п╟я┌п╣п╪п╟п╩п╟</attr>
 		</object>
 		<object>
 			<attr name="code">324</attr>
 			<attr name="unit">GNF</attr>
-			<attr name="name">Гвинейский франк</attr>
-			<attr name="smallname">Гвинея</attr>
+			<attr name="name">п⌠п╡п╦п╫п╣п╧я│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п⌠п╡п╦п╫п╣я▐</attr>
 		</object>
 		<object>
 			<attr name="code">328</attr>
 			<attr name="unit">GYD</attr>
-			<attr name="name">Гайанский доллар</attr>
-			<attr name="smallname">Гайана</attr>
+			<attr name="name">п⌠п╟п╧п╟п╫я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п⌠п╟п╧п╟п╫п╟</attr>
 		</object>
 		<object>
 			<attr name="code">332</attr>
 			<attr name="unit">HTG</attr>
-			<attr name="name">Гурд</attr>
-			<attr name="smallname">Гаити</attr>
+			<attr name="name">п⌠я┐я─п╢</attr>
+			<attr name="smallname">п⌠п╟п╦я┌п╦</attr>
 		</object>
 		<object>
 			<attr name="code">340</attr>
 			<attr name="unit">HNL</attr>
-			<attr name="name">Лемпира</attr>
-			<attr name="smallname">Гондурас</attr>
+			<attr name="name">п⌡п╣п╪п©п╦я─п╟</attr>
+			<attr name="smallname">п⌠п╬п╫п╢я┐я─п╟я│</attr>
 		</object>
 		<object>
 			<attr name="code">344</attr>
 			<attr name="unit">HKD</attr>
-			<attr name="name">Гонконгский доллар</attr>
-			<attr name="smallname">Гонконг</attr>
+			<attr name="name">п⌠п╬п╫п╨п╬п╫пЁя│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п⌠п╬п╫п╨п╬п╫пЁ</attr>
 		</object>
 		<object>
 			<attr name="code">348</attr>
 			<attr name="unit">HUF</attr>
-			<attr name="name">Форинт</attr>
-			<attr name="smallname">Венгрия</attr>
+			<attr name="name">п╓п╬я─п╦п╫я┌</attr>
+			<attr name="smallname">п▓п╣п╫пЁя─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">352</attr>
 			<attr name="unit">ISK</attr>
-			<attr name="name">Исландская крона</attr>
-			<attr name="smallname">Исландия</attr>
+			<attr name="name">п≤я│п╩п╟п╫п╢я│п╨п╟я▐ п╨я─п╬п╫п╟</attr>
+			<attr name="smallname">п≤я│п╩п╟п╫п╢п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">356</attr>
 			<attr name="unit">INR</attr>
-			<attr name="name">Индийская рупия</attr>
-			<attr name="smallname">Бутан; Индия</attr>
+			<attr name="name">п≤п╫п╢п╦п╧я│п╨п╟я▐ я─я┐п©п╦я▐</attr>
+			<attr name="smallname">п▒я┐я┌п╟п╫; п≤п╫п╢п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">360</attr>
 			<attr name="unit">IDR</attr>
-			<attr name="name">Рупия</attr>
-			<attr name="smallname">Восточный Тимор; Индонезия</attr>
+			<attr name="name">п═я┐п©п╦я▐</attr>
+			<attr name="smallname">п▓п╬я│я┌п╬я┤п╫я▀п╧ п╒п╦п╪п╬я─; п≤п╫п╢п╬п╫п╣п╥п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">364</attr>
 			<attr name="unit">IRR</attr>
-			<attr name="name">Иранский риал</attr>
-			<attr name="smallname">Иран (Исламская Республика)</attr>
+			<attr name="name">п≤я─п╟п╫я│п╨п╦п╧ я─п╦п╟п╩</attr>
+			<attr name="smallname">п≤я─п╟п╫ (п≤я│п╩п╟п╪я│п╨п╟я▐ п═п╣я│п©я┐п╠п╩п╦п╨п╟)</attr>
 		</object>
 		<object>
 			<attr name="code">368</attr>
 			<attr name="unit">IQD</attr>
-			<attr name="name">Иракский динар</attr>
-			<attr name="smallname">Ирак</attr>
+			<attr name="name">п≤я─п╟п╨я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п≤я─п╟п╨</attr>
 		</object>
 		<object>
 			<attr name="code">372</attr>
 			<attr name="unit">IEP</attr>
-			<attr name="name">Ирландский фунт</attr>
-			<attr name="smallname">Ирландия</attr>
+			<attr name="name">п≤я─п╩п╟п╫п╢я│п╨п╦п╧ я└я┐п╫я┌</attr>
+			<attr name="smallname">п≤я─п╩п╟п╫п╢п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">376</attr>
 			<attr name="unit">ILS</attr>
-			<attr name="name">Новый израильский шекель</attr>
-			<attr name="smallname">Израиль</attr>
+			<attr name="name">п²п╬п╡я▀п╧ п╦п╥я─п╟п╦п╩я▄я│п╨п╦п╧ я┬п╣п╨п╣п╩я▄</attr>
+			<attr name="smallname">п≤п╥я─п╟п╦п╩я▄</attr>
 		</object>
 		<object>
 			<attr name="code">380</attr>
 			<attr name="unit">ITL</attr>
-			<attr name="name">Итальянская лира</attr>
-			<attr name="smallname">Ватикан</attr>
+			<attr name="name">п≤я┌п╟п╩я▄я▐п╫я│п╨п╟я▐ п╩п╦я─п╟</attr>
+			<attr name="smallname">п▓п╟я┌п╦п╨п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">388</attr>
 			<attr name="unit">JMD</attr>
-			<attr name="name">Ямайский доллар</attr>
-			<attr name="smallname">Ямайка</attr>
+			<attr name="name">п╞п╪п╟п╧я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п╞п╪п╟п╧п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">392</attr>
 			<attr name="unit">JPY</attr>
-			<attr name="name">Йена</attr>
-			<attr name="smallname">Япония</attr>
+			<attr name="name">п≥п╣п╫п╟</attr>
+			<attr name="smallname">п╞п©п╬п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">398</attr>
 			<attr name="unit">KZT</attr>
-			<attr name="name">Тенге</attr>
-			<attr name="smallname">Казахстан</attr>
+			<attr name="name">п╒п╣п╫пЁп╣</attr>
+			<attr name="smallname">п п╟п╥п╟я┘я│я┌п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">400</attr>
 			<attr name="unit">JOD</attr>
-			<attr name="name">Иорданский динар</attr>
-			<attr name="smallname">Иордания</attr>
+			<attr name="name">п≤п╬я─п╢п╟п╫я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п≤п╬я─п╢п╟п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">404</attr>
 			<attr name="unit">KES</attr>
-			<attr name="name">Кенийский шиллинг</attr>
-			<attr name="smallname">Кения</attr>
+			<attr name="name">п п╣п╫п╦п╧я│п╨п╦п╧ я┬п╦п╩п╩п╦п╫пЁ</attr>
+			<attr name="smallname">п п╣п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">408</attr>
 			<attr name="unit">KPW</attr>
-			<attr name="name">Северо-корейская вона</attr>
-			<attr name="smallname">Корея</attr>
+			<attr name="name">п║п╣п╡п╣я─п╬-п╨п╬я─п╣п╧я│п╨п╟я▐ п╡п╬п╫п╟</attr>
+			<attr name="smallname">п п╬я─п╣я▐</attr>
 		</object>
 		<object>
 			<attr name="code">410</attr>
 			<attr name="unit">KRW</attr>
-			<attr name="name">Вона</attr>
-			<attr name="smallname">Корея</attr>
+			<attr name="name">п▓п╬п╫п╟</attr>
+			<attr name="smallname">п п╬я─п╣я▐</attr>
 		</object>
 		<object>
 			<attr name="code">414</attr>
 			<attr name="unit">KWD</attr>
-			<attr name="name">Кувейтский динар</attr>
-			<attr name="smallname">Кувейт</attr>
+			<attr name="name">п я┐п╡п╣п╧я┌я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п я┐п╡п╣п╧я┌</attr>
 		</object>
 		<object>
 			<attr name="code">417</attr>
 			<attr name="unit">KGS</attr>
-			<attr name="name">Сом</attr>
-			<attr name="smallname">Киргизия</attr>
+			<attr name="name">п║п╬п╪</attr>
+			<attr name="smallname">п п╦я─пЁп╦п╥п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">418</attr>
 			<attr name="unit">LAK</attr>
-			<attr name="name">Кип</attr>
-			<attr name="smallname">Лаос</attr>
+			<attr name="name">п п╦п©</attr>
+			<attr name="smallname">п⌡п╟п╬я│</attr>
 		</object>
 		<object>
 			<attr name="code">422</attr>
 			<attr name="unit">LBP</attr>
-			<attr name="name">Ливанский фунт</attr>
-			<attr name="smallname">Ливан</attr>
+			<attr name="name">п⌡п╦п╡п╟п╫я│п╨п╦п╧ я└я┐п╫я┌</attr>
+			<attr name="smallname">п⌡п╦п╡п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">426</attr>
 			<attr name="unit">LSL</attr>
-			<attr name="name">Лоти</attr>
-			<attr name="smallname">Лесото</attr>
+			<attr name="name">п⌡п╬я┌п╦</attr>
+			<attr name="smallname">п⌡п╣я│п╬я┌п╬</attr>
 		</object>
 		<object>
 			<attr name="code">428</attr>
 			<attr name="unit">LVL</attr>
-			<attr name="name">Латвийский лат</attr>
-			<attr name="smallname">Латвия</attr>
+			<attr name="name">п⌡п╟я┌п╡п╦п╧я│п╨п╦п╧ п╩п╟я┌</attr>
+			<attr name="smallname">п⌡п╟я┌п╡п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">430</attr>
 			<attr name="unit">LRD</attr>
-			<attr name="name">Либерийский доллар</attr>
-			<attr name="smallname">Либерия</attr>
+			<attr name="name">п⌡п╦п╠п╣я─п╦п╧я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п⌡п╦п╠п╣я─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">434</attr>
 			<attr name="unit">LYD</attr>
-			<attr name="name">Ливийский динар</attr>
-			<attr name="smallname">Ливийская Арабская Джамахирия</attr>
+			<attr name="name">п⌡п╦п╡п╦п╧я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п⌡п╦п╡п╦п╧я│п╨п╟я▐ п░я─п╟п╠я│п╨п╟я▐ п■п╤п╟п╪п╟я┘п╦я─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">440</attr>
 			<attr name="unit">LTL</attr>
-			<attr name="name">Литовский лит</attr>
-			<attr name="smallname">Литва</attr>
+			<attr name="name">п⌡п╦я┌п╬п╡я│п╨п╦п╧ п╩п╦я┌</attr>
+			<attr name="smallname">п⌡п╦я┌п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">442</attr>
 			<attr name="unit">LUF</attr>
-			<attr name="name">Люксембургский франк</attr>
-			<attr name="smallname">Люксембург</attr>
+			<attr name="name">п⌡я▌п╨я│п╣п╪п╠я┐я─пЁя│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п⌡я▌п╨я│п╣п╪п╠я┐я─пЁ</attr>
 		</object>
 		<object>
 			<attr name="code">446</attr>
 			<attr name="unit">MOP</attr>
-			<attr name="name">Патака</attr>
-			<attr name="smallname">Макао</attr>
+			<attr name="name">п÷п╟я┌п╟п╨п╟</attr>
+			<attr name="smallname">п°п╟п╨п╟п╬</attr>
 		</object>
 		<object>
 			<attr name="code">450</attr>
 			<attr name="unit">MGF</attr>
-			<attr name="name">Малагасийский франк</attr>
-			<attr name="smallname">Мадагаскар</attr>
+			<attr name="name">п°п╟п╩п╟пЁп╟я│п╦п╧я│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п°п╟п╢п╟пЁп╟я│п╨п╟я─</attr>
 		</object>
 		<object>
 			<attr name="code">454</attr>
 			<attr name="unit">MWK</attr>
-			<attr name="name">Квача</attr>
-			<attr name="smallname">Малави</attr>
+			<attr name="name">п п╡п╟я┤п╟</attr>
+			<attr name="smallname">п°п╟п╩п╟п╡п╦</attr>
 		</object>
 		<object>
 			<attr name="code">458</attr>
 			<attr name="unit">MYR</attr>
-			<attr name="name">Малайзийский ринггит</attr>
-			<attr name="smallname">Малайзия</attr>
+			<attr name="name">п°п╟п╩п╟п╧п╥п╦п╧я│п╨п╦п╧ я─п╦п╫пЁпЁп╦я┌</attr>
+			<attr name="smallname">п°п╟п╩п╟п╧п╥п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">462</attr>
 			<attr name="unit">MVR</attr>
-			<attr name="name">Руфия</attr>
-			<attr name="smallname">Мальдивы</attr>
+			<attr name="name">п═я┐я└п╦я▐</attr>
+			<attr name="smallname">п°п╟п╩я▄п╢п╦п╡я▀</attr>
 		</object>
 		<object>
 			<attr name="code">470</attr>
 			<attr name="unit">MTL</attr>
-			<attr name="name">Мальтийская лира</attr>
-			<attr name="smallname">Мальта</attr>
+			<attr name="name">п°п╟п╩я▄я┌п╦п╧я│п╨п╟я▐ п╩п╦я─п╟</attr>
+			<attr name="smallname">п°п╟п╩я▄я┌п╟</attr>
 		</object>
 		<object>
 			<attr name="code">478</attr>
 			<attr name="unit">MRO</attr>
-			<attr name="name">Угия</attr>
-			<attr name="smallname">Мавритания</attr>
+			<attr name="name">пёпЁп╦я▐</attr>
+			<attr name="smallname">п°п╟п╡я─п╦я┌п╟п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">480</attr>
 			<attr name="unit">MUR</attr>
-			<attr name="name">Маврикийская рупия</attr>
-			<attr name="smallname">Маврикий</attr>
+			<attr name="name">п°п╟п╡я─п╦п╨п╦п╧я│п╨п╟я▐ я─я┐п©п╦я▐</attr>
+			<attr name="smallname">п°п╟п╡я─п╦п╨п╦п╧</attr>
 		</object>
 		<object>
 			<attr name="code">484</attr>
 			<attr name="unit">MXN</attr>
-			<attr name="name">Мексиканское песо</attr>
-			<attr name="smallname">Мексика</attr>
+			<attr name="name">п°п╣п╨я│п╦п╨п╟п╫я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">п°п╣п╨я│п╦п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">496</attr>
 			<attr name="unit">MNT</attr>
-			<attr name="name">Тугрик</attr>
-			<attr name="smallname">Монголия</attr>
+			<attr name="name">п╒я┐пЁя─п╦п╨</attr>
+			<attr name="smallname">п°п╬п╫пЁп╬п╩п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">498</attr>
 			<attr name="unit">MDL</attr>
-			<attr name="name">Молдавский лей</attr>
-			<attr name="smallname">Молдова</attr>
+			<attr name="name">п°п╬п╩п╢п╟п╡я│п╨п╦п╧ п╩п╣п╧</attr>
+			<attr name="smallname">п°п╬п╩п╢п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">504</attr>
 			<attr name="unit">MAD</attr>
-			<attr name="name">Марокканский дирхам</attr>
-			<attr name="smallname">Западная Сахара; Марокко</attr>
+			<attr name="name">п°п╟я─п╬п╨п╨п╟п╫я│п╨п╦п╧ п╢п╦я─я┘п╟п╪</attr>
+			<attr name="smallname">п≈п╟п©п╟п╢п╫п╟я▐ п║п╟я┘п╟я─п╟; п°п╟я─п╬п╨п╨п╬</attr>
 		</object>
 		<object>
 			<attr name="code">508</attr>
 			<attr name="unit">MZM</attr>
-			<attr name="name">Метикал</attr>
-			<attr name="smallname">Мозамбик</attr>
+			<attr name="name">п°п╣я┌п╦п╨п╟п╩</attr>
+			<attr name="smallname">п°п╬п╥п╟п╪п╠п╦п╨</attr>
 		</object>
 		<object>
 			<attr name="code">512</attr>
 			<attr name="unit">OMR</attr>
-			<attr name="name">Оманский риал</attr>
-			<attr name="smallname">Оман</attr>
+			<attr name="name">п·п╪п╟п╫я│п╨п╦п╧ я─п╦п╟п╩</attr>
+			<attr name="smallname">п·п╪п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">516</attr>
 			<attr name="unit">NAD</attr>
-			<attr name="name">Доллар Намибии</attr>
-			<attr name="smallname">Намибия</attr>
+			<attr name="name">п■п╬п╩п╩п╟я─ п²п╟п╪п╦п╠п╦п╦</attr>
+			<attr name="smallname">п²п╟п╪п╦п╠п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">524</attr>
 			<attr name="unit">NPR</attr>
-			<attr name="name">Непальская рупия</attr>
-			<attr name="smallname">Непал</attr>
+			<attr name="name">п²п╣п©п╟п╩я▄я│п╨п╟я▐ я─я┐п©п╦я▐</attr>
+			<attr name="smallname">п²п╣п©п╟п╩</attr>
 		</object>
 		<object>
 			<attr name="code">528</attr>
 			<attr name="unit">NLG</attr>
-			<attr name="name">Нидерландский гульден</attr>
-			<attr name="smallname">Нидерланды</attr>
+			<attr name="name">п²п╦п╢п╣я─п╩п╟п╫п╢я│п╨п╦п╧ пЁя┐п╩я▄п╢п╣п╫</attr>
+			<attr name="smallname">п²п╦п╢п╣я─п╩п╟п╫п╢я▀</attr>
 		</object>
 		<object>
 			<attr name="code">532</attr>
 			<attr name="unit">ANG</attr>
-			<attr name="name">Нидерландский антильский гульден</attr>
-			<attr name="smallname">Нидерландские Антильские острова</attr>
+			<attr name="name">п²п╦п╢п╣я─п╩п╟п╫п╢я│п╨п╦п╧ п╟п╫я┌п╦п╩я▄я│п╨п╦п╧ пЁя┐п╩я▄п╢п╣п╫</attr>
+			<attr name="smallname">п²п╦п╢п╣я─п╩п╟п╫п╢я│п╨п╦п╣ п░п╫я┌п╦п╩я▄я│п╨п╦п╣ п╬я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">533</attr>
 			<attr name="unit">AWG</attr>
-			<attr name="name">Арубанский гульден</attr>
-			<attr name="smallname">Аруба</attr>
+			<attr name="name">п░я─я┐п╠п╟п╫я│п╨п╦п╧ пЁя┐п╩я▄п╢п╣п╫</attr>
+			<attr name="smallname">п░я─я┐п╠п╟</attr>
 		</object>
 		<object>
 			<attr name="code">548</attr>
 			<attr name="unit">VUV</attr>
-			<attr name="name">Вату</attr>
-			<attr name="smallname">Вануату</attr>
+			<attr name="name">п▓п╟я┌я┐</attr>
+			<attr name="smallname">п▓п╟п╫я┐п╟я┌я┐</attr>
 		</object>
 		<object>
 			<attr name="code">554</attr>
 			<attr name="unit">NZD</attr>
-			<attr name="name">Новозеландский доллар</attr>
-			<attr name="smallname">Ниуэ; Новая Зеландия; Острова Кука; Питкерн; Токелау</attr>
+			<attr name="name">п²п╬п╡п╬п╥п╣п╩п╟п╫п╢я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п²п╦я┐я█; п²п╬п╡п╟я▐ п≈п╣п╩п╟п╫п╢п╦я▐; п·я│я┌я─п╬п╡п╟ п я┐п╨п╟; п÷п╦я┌п╨п╣я─п╫; п╒п╬п╨п╣п╩п╟я┐</attr>
 		</object>
 		<object>
 			<attr name="code">558</attr>
 			<attr name="unit">NIO</attr>
-			<attr name="name">Золотая кордоба</attr>
-			<attr name="smallname">Никарагуа</attr>
+			<attr name="name">п≈п╬п╩п╬я┌п╟я▐ п╨п╬я─п╢п╬п╠п╟</attr>
+			<attr name="smallname">п²п╦п╨п╟я─п╟пЁя┐п╟</attr>
 		</object>
 		<object>
 			<attr name="code">566</attr>
 			<attr name="unit">NGN</attr>
-			<attr name="name">Найра</attr>
-			<attr name="smallname">Нигерия</attr>
+			<attr name="name">п²п╟п╧я─п╟</attr>
+			<attr name="smallname">п²п╦пЁп╣я─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">578</attr>
 			<attr name="unit">NOK</attr>
-			<attr name="name">Норвежская крона</attr>
-			<attr name="smallname">Буве</attr>
+			<attr name="name">п²п╬я─п╡п╣п╤я│п╨п╟я▐ п╨я─п╬п╫п╟</attr>
+			<attr name="smallname">п▒я┐п╡п╣</attr>
 		</object>
 		<object>
 			<attr name="code">586</attr>
 			<attr name="unit">PKR</attr>
-			<attr name="name">Пакистанская рупия</attr>
-			<attr name="smallname">Пакистан</attr>
+			<attr name="name">п÷п╟п╨п╦я│я┌п╟п╫я│п╨п╟я▐ я─я┐п©п╦я▐</attr>
+			<attr name="smallname">п÷п╟п╨п╦я│я┌п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">590</attr>
 			<attr name="unit">PAB</attr>
-			<attr name="name">Бальбоа</attr>
-			<attr name="smallname">Панама</attr>
+			<attr name="name">п▒п╟п╩я▄п╠п╬п╟</attr>
+			<attr name="smallname">п÷п╟п╫п╟п╪п╟</attr>
 		</object>
 		<object>
 			<attr name="code">598</attr>
 			<attr name="unit">PGK</attr>
-			<attr name="name">Кина</attr>
-			<attr name="smallname">Папуа-Новая Гвинея</attr>
+			<attr name="name">п п╦п╫п╟</attr>
+			<attr name="smallname">п÷п╟п©я┐п╟-п²п╬п╡п╟я▐ п⌠п╡п╦п╫п╣я▐</attr>
 		</object>
 		<object>
 			<attr name="code">600</attr>
 			<attr name="unit">PYG</attr>
-			<attr name="name">Гуарани</attr>
-			<attr name="smallname">Парагвай</attr>
+			<attr name="name">п⌠я┐п╟я─п╟п╫п╦</attr>
+			<attr name="smallname">п÷п╟я─п╟пЁп╡п╟п╧</attr>
 		</object>
 		<object>
 			<attr name="code">604</attr>
 			<attr name="unit">PEN</attr>
-			<attr name="name">Новый соль</attr>
-			<attr name="smallname">Перу</attr>
+			<attr name="name">п²п╬п╡я▀п╧ я│п╬п╩я▄</attr>
+			<attr name="smallname">п÷п╣я─я┐</attr>
 		</object>
 		<object>
 			<attr name="code">608</attr>
-			<attr name="unit">PНP</attr>
-			<attr name="name">Филиппинское песо</attr>
-			<attr name="smallname">Филиппины</attr>
+			<attr name="unit">Pп²P</attr>
+			<attr name="name">п╓п╦п╩п╦п©п©п╦п╫я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">п╓п╦п╩п╦п©п©п╦п╫я▀</attr>
 		</object>
 		<object>
 			<attr name="code">620</attr>
 			<attr name="unit">PTE</attr>
-			<attr name="name">Португальское эскудо</attr>
-			<attr name="smallname">Португалия</attr>
+			<attr name="name">п÷п╬я─я┌я┐пЁп╟п╩я▄я│п╨п╬п╣ я█я│п╨я┐п╢п╬</attr>
+			<attr name="smallname">п÷п╬я─я┌я┐пЁп╟п╩п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">624</attr>
 			<attr name="unit">GWP</attr>
-			<attr name="name">Песо Гвинеи-Бисау</attr>
-			<attr name="smallname">Гвинея-Бисау</attr>
+			<attr name="name">п÷п╣я│п╬ п⌠п╡п╦п╫п╣п╦-п▒п╦я│п╟я┐</attr>
+			<attr name="smallname">п⌠п╡п╦п╫п╣я▐-п▒п╦я│п╟я┐</attr>
 		</object>
 		<object>
 			<attr name="code">626</attr>
 			<attr name="unit">TPE</attr>
-			<attr name="name">Тиморское эскудо</attr>
-			<attr name="smallname">Восточный Тимор</attr>
+			<attr name="name">п╒п╦п╪п╬я─я│п╨п╬п╣ я█я│п╨я┐п╢п╬</attr>
+			<attr name="smallname">п▓п╬я│я┌п╬я┤п╫я▀п╧ п╒п╦п╪п╬я─</attr>
 		</object>
 		<object>
 			<attr name="code">634</attr>
 			<attr name="unit">QAR</attr>
-			<attr name="name">Катарский риал</attr>
-			<attr name="smallname">Катар</attr>
+			<attr name="name">п п╟я┌п╟я─я│п╨п╦п╧ я─п╦п╟п╩</attr>
+			<attr name="smallname">п п╟я┌п╟я─</attr>
 		</object>
 		<object>
 			<attr name="code">642</attr>
 			<attr name="unit">ROL</attr>
-			<attr name="name">Лей</attr>
-			<attr name="smallname">Румыния</attr>
+			<attr name="name">п⌡п╣п╧</attr>
+			<attr name="smallname">п═я┐п╪я▀п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">643</attr>
 			<attr name="unit">RUB</attr>
-			<attr name="name">Российский рубль</attr>
-			<attr name="smallname">Россия</attr>
+			<attr name="name">п═п╬я│я│п╦п╧я│п╨п╦п╧ я─я┐п╠п╩я▄</attr>
+			<attr name="smallname">п═п╬я│я│п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">646</attr>
 			<attr name="unit">RWF</attr>
-			<attr name="name">Франк Руанды</attr>
-			<attr name="smallname">Руанда</attr>
+			<attr name="name">п╓я─п╟п╫п╨ п═я┐п╟п╫п╢я▀</attr>
+			<attr name="smallname">п═я┐п╟п╫п╢п╟</attr>
 		</object>
 		<object>
 			<attr name="code">654</attr>
 			<attr name="unit">SHP</attr>
-			<attr name="name">Фунт Острова Святой Елены</attr>
-			<attr name="smallname">Остров Святой Елены</attr>
+			<attr name="name">п╓я┐п╫я┌ п·я│я┌я─п╬п╡п╟ п║п╡я▐я┌п╬п╧ п∙п╩п╣п╫я▀</attr>
+			<attr name="smallname">п·я│я┌я─п╬п╡ п║п╡я▐я┌п╬п╧ п∙п╩п╣п╫я▀</attr>
 		</object>
 		<object>
 			<attr name="code">678</attr>
 			<attr name="unit">STD</attr>
-			<attr name="name">Добра</attr>
-			<attr name="smallname">Сан-Томе и Принсипи</attr>
+			<attr name="name">п■п╬п╠я─п╟</attr>
+			<attr name="smallname">п║п╟п╫-п╒п╬п╪п╣ п╦ п÷я─п╦п╫я│п╦п©п╦</attr>
 		</object>
 		<object>
 			<attr name="code">682</attr>
 			<attr name="unit">SAR</attr>
-			<attr name="name">Саудовский риял</attr>
-			<attr name="smallname">Саудовская Аравия</attr>
+			<attr name="name">п║п╟я┐п╢п╬п╡я│п╨п╦п╧ я─п╦я▐п╩</attr>
+			<attr name="smallname">п║п╟я┐п╢п╬п╡я│п╨п╟я▐ п░я─п╟п╡п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">690</attr>
 			<attr name="unit">SCR</attr>
-			<attr name="name">Сейшельская рупия</attr>
-			<attr name="smallname">Сейшельские Острова</attr>
+			<attr name="name">п║п╣п╧я┬п╣п╩я▄я│п╨п╟я▐ я─я┐п©п╦я▐</attr>
+			<attr name="smallname">п║п╣п╧я┬п╣п╩я▄я│п╨п╦п╣ п·я│я┌я─п╬п╡п╟</attr>
 		</object>
 		<object>
 			<attr name="code">694</attr>
 			<attr name="unit">SLL</attr>
-			<attr name="name">Леоне</attr>
-			<attr name="smallname">Сьерра-Леоне</attr>
+			<attr name="name">п⌡п╣п╬п╫п╣</attr>
+			<attr name="smallname">п║я▄п╣я─я─п╟-п⌡п╣п╬п╫п╣</attr>
 		</object>
 		<object>
 			<attr name="code">702</attr>
 			<attr name="unit">SGD</attr>
-			<attr name="name">Сингапурский доллар</attr>
-			<attr name="smallname">Сингапур</attr>
+			<attr name="name">п║п╦п╫пЁп╟п©я┐я─я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п║п╦п╫пЁп╟п©я┐я─</attr>
 		</object>
 		<object>
 			<attr name="code">703</attr>
 			<attr name="unit">SKK</attr>
-			<attr name="name">Словацкая крона</attr>
-			<attr name="smallname">Словакия</attr>
+			<attr name="name">п║п╩п╬п╡п╟я├п╨п╟я▐ п╨я─п╬п╫п╟</attr>
+			<attr name="smallname">п║п╩п╬п╡п╟п╨п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">704</attr>
 			<attr name="unit">VND</attr>
-			<attr name="name">Донг</attr>
-			<attr name="smallname">Вьетнам</attr>
+			<attr name="name">п■п╬п╫пЁ</attr>
+			<attr name="smallname">п▓я▄п╣я┌п╫п╟п╪</attr>
 		</object>
 		<object>
 			<attr name="code">705</attr>
 			<attr name="unit">SIT</attr>
-			<attr name="name">Толар</attr>
-			<attr name="smallname">Словения</attr>
+			<attr name="name">п╒п╬п╩п╟я─</attr>
+			<attr name="smallname">п║п╩п╬п╡п╣п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">706</attr>
 			<attr name="unit">SOS</attr>
-			<attr name="name">Сомалийский шиллинг</attr>
-			<attr name="smallname">Сомали</attr>
+			<attr name="name">п║п╬п╪п╟п╩п╦п╧я│п╨п╦п╧ я┬п╦п╩п╩п╦п╫пЁ</attr>
+			<attr name="smallname">п║п╬п╪п╟п╩п╦</attr>
 		</object>
 		<object>
 			<attr name="code">710</attr>
 			<attr name="unit">ZAR</attr>
-			<attr name="name">Рэнд</attr>
-			<attr name="smallname">Лесото; Намибия; Южная Африка</attr>
+			<attr name="name">п═я█п╫п╢</attr>
+			<attr name="smallname">п⌡п╣я│п╬я┌п╬; п²п╟п╪п╦п╠п╦я▐; п╝п╤п╫п╟я▐ п░я└я─п╦п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">716</attr>
 			<attr name="unit">ZWD</attr>
-			<attr name="name">Доллар Зимбабве</attr>
-			<attr name="smallname">Зимбабве</attr>
+			<attr name="name">п■п╬п╩п╩п╟я─ п≈п╦п╪п╠п╟п╠п╡п╣</attr>
+			<attr name="smallname">п≈п╦п╪п╠п╟п╠п╡п╣</attr>
 		</object>
 		<object>
 			<attr name="code">724</attr>
 			<attr name="unit">ESP</attr>
-			<attr name="name">Испанская песета</attr>
-			<attr name="smallname">Андорра; Испания</attr>
+			<attr name="name">п≤я│п©п╟п╫я│п╨п╟я▐ п©п╣я│п╣я┌п╟</attr>
+			<attr name="smallname">п░п╫п╢п╬я─я─п╟; п≤я│п©п╟п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">736</attr>
 			<attr name="unit">SDD</attr>
-			<attr name="name">Суданский динар</attr>
-			<attr name="smallname">Судан</attr>
+			<attr name="name">п║я┐п╢п╟п╫я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п║я┐п╢п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">740</attr>
 			<attr name="unit">SRG</attr>
-			<attr name="name">Суринамский гульден</attr>
-			<attr name="smallname">Суринам</attr>
+			<attr name="name">п║я┐я─п╦п╫п╟п╪я│п╨п╦п╧ пЁя┐п╩я▄п╢п╣п╫</attr>
+			<attr name="smallname">п║я┐я─п╦п╫п╟п╪</attr>
 		</object>
 		<object>
 			<attr name="code">748</attr>
 			<attr name="unit">SZL</attr>
-			<attr name="name">Лилангени</attr>
-			<attr name="smallname">Свазиленд</attr>
+			<attr name="name">п⌡п╦п╩п╟п╫пЁп╣п╫п╦</attr>
+			<attr name="smallname">п║п╡п╟п╥п╦п╩п╣п╫п╢</attr>
 		</object>
 		<object>
 			<attr name="code">752</attr>
 			<attr name="unit">SEK</attr>
-			<attr name="name">Шведская крона</attr>
-			<attr name="smallname">Швеция</attr>
+			<attr name="name">п╗п╡п╣п╢я│п╨п╟я▐ п╨я─п╬п╫п╟</attr>
+			<attr name="smallname">п╗п╡п╣я├п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">756</attr>
 			<attr name="unit">CHF</attr>
-			<attr name="name">Швейцарский франк</attr>
-			<attr name="smallname">Лихтенштейн; Швейцария</attr>
+			<attr name="name">п╗п╡п╣п╧я├п╟я─я│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п⌡п╦я┘я┌п╣п╫я┬я┌п╣п╧п╫; п╗п╡п╣п╧я├п╟я─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">760</attr>
 			<attr name="unit">SYP</attr>
-			<attr name="name">Сирийский фунт</attr>
-			<attr name="smallname">Сирийская Арабская Республика</attr>
+			<attr name="name">п║п╦я─п╦п╧я│п╨п╦п╧ я└я┐п╫я┌</attr>
+			<attr name="smallname">п║п╦я─п╦п╧я│п╨п╟я▐ п░я─п╟п╠я│п╨п╟я▐ п═п╣я│п©я┐п╠п╩п╦п╨п╟</attr>
 		</object>
 		<object>
 			<attr name="code">762</attr>
 			<attr name="unit">TJR</attr>
-			<attr name="name">Таджикский рубл</attr>
-			<attr name="smallname">Таджикистан</attr>
+			<attr name="name">п╒п╟п╢п╤п╦п╨я│п╨п╦п╧ я─я┐п╠п╩</attr>
+			<attr name="smallname">п╒п╟п╢п╤п╦п╨п╦я│я┌п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">764</attr>
 			<attr name="unit">THB</attr>
-			<attr name="name">Бат</attr>
-			<attr name="smallname">Таиланд</attr>
+			<attr name="name">п▒п╟я┌</attr>
+			<attr name="smallname">п╒п╟п╦п╩п╟п╫п╢</attr>
 		</object>
 		<object>
 			<attr name="code">776</attr>
 			<attr name="unit">TOP</attr>
-			<attr name="name">Паанга</attr>
-			<attr name="smallname">Тонга</attr>
+			<attr name="name">п÷п╟п╟п╫пЁп╟</attr>
+			<attr name="smallname">п╒п╬п╫пЁп╟</attr>
 		</object>
 		<object>
 			<attr name="code">780</attr>
 			<attr name="unit">TTD</attr>
-			<attr name="name">Доллар Тринидада и Тобаго</attr>
-			<attr name="smallname">Тринидад и Тобаго</attr>
+			<attr name="name">п■п╬п╩п╩п╟я─ п╒я─п╦п╫п╦п╢п╟п╢п╟ п╦ п╒п╬п╠п╟пЁп╬</attr>
+			<attr name="smallname">п╒я─п╦п╫п╦п╢п╟п╢ п╦ п╒п╬п╠п╟пЁп╬</attr>
 		</object>
 		<object>
 			<attr name="code">784</attr>
 			<attr name="unit">AED</attr>
-			<attr name="name">Дирхам (ОАЭ)</attr>
-			<attr name="smallname">Объединенные Арабские Эмираты (ОАЭ)</attr>
+			<attr name="name">п■п╦я─я┘п╟п╪ (п·п░п╜)</attr>
+			<attr name="smallname">п·п╠я┼п╣п╢п╦п╫п╣п╫п╫я▀п╣ п░я─п╟п╠я│п╨п╦п╣ п╜п╪п╦я─п╟я┌я▀ (п·п░п╜)</attr>
 		</object>
 		<object>
 			<attr name="code">788</attr>
 			<attr name="unit">TND</attr>
-			<attr name="name">Тунисский динар</attr>
-			<attr name="smallname">Тунис</attr>
+			<attr name="name">п╒я┐п╫п╦я│я│п╨п╦п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п╒я┐п╫п╦я│</attr>
 		</object>
 		<object>
 			<attr name="code">792</attr>
 			<attr name="unit">TRL</attr>
-			<attr name="name">Турецкая лира</attr>
-			<attr name="smallname">Турция</attr>
+			<attr name="name">п╒я┐я─п╣я├п╨п╟я▐ п╩п╦я─п╟</attr>
+			<attr name="smallname">п╒я┐я─я├п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">795</attr>
 			<attr name="unit">TMM</attr>
-			<attr name="name">Манат</attr>
-			<attr name="smallname">Туркмения</attr>
+			<attr name="name">п°п╟п╫п╟я┌</attr>
+			<attr name="smallname">п╒я┐я─п╨п╪п╣п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">800</attr>
 			<attr name="unit">UGX</attr>
-			<attr name="name">Угандийский шиллинг</attr>
-			<attr name="smallname">Уганда</attr>
+			<attr name="name">пёпЁп╟п╫п╢п╦п╧я│п╨п╦п╧ я┬п╦п╩п╩п╦п╫пЁ</attr>
+			<attr name="smallname">пёпЁп╟п╫п╢п╟</attr>
 		</object>
 		<object>
 			<attr name="code">807</attr>
 			<attr name="unit">MKD</attr>
-			<attr name="name">Динар</attr>
-			<attr name="smallname">Македония</attr>
+			<attr name="name">п■п╦п╫п╟я─</attr>
+			<attr name="smallname">п°п╟п╨п╣п╢п╬п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">810</attr>
 			<attr name="unit">RUR</attr>
-			<attr name="name">Российский рубль</attr>
-			<attr name="smallname">Россия</attr>
+			<attr name="name">п═п╬я│я│п╦п╧я│п╨п╦п╧ я─я┐п╠п╩я▄</attr>
+			<attr name="smallname">п═п╬я│я│п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">818</attr>
-			<attr name="unit">ЕGP</attr>
-			<attr name="name">Египетский фунт</attr>
-			<attr name="smallname">Египет</attr>
+			<attr name="unit">п∙GP</attr>
+			<attr name="name">п∙пЁп╦п©п╣я┌я│п╨п╦п╧ я└я┐п╫я┌</attr>
+			<attr name="smallname">п∙пЁп╦п©п╣я┌</attr>
 		</object>
 		<object>
 			<attr name="code">826</attr>
 			<attr name="unit">GBP</attr>
-			<attr name="name">Фунт стерлингов</attr>
-			<attr name="smallname">Соединенное королевство (Великобритания)</attr>
+			<attr name="name">п╓я┐п╫я┌ я│я┌п╣я─п╩п╦п╫пЁп╬п╡</attr>
+			<attr name="smallname">п║п╬п╣п╢п╦п╫п╣п╫п╫п╬п╣ п╨п╬я─п╬п╩п╣п╡я│я┌п╡п╬ (п▓п╣п╩п╦п╨п╬п╠я─п╦я┌п╟п╫п╦я▐)</attr>
 		</object>
 		<object>
 			<attr name="code">834</attr>
 			<attr name="unit">TZS</attr>
-			<attr name="name">Танзанийский шиллинг</attr>
-			<attr name="smallname">Танзания</attr>
+			<attr name="name">п╒п╟п╫п╥п╟п╫п╦п╧я│п╨п╦п╧ я┬п╦п╩п╩п╦п╫пЁ</attr>
+			<attr name="smallname">п╒п╟п╫п╥п╟п╫п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">840</attr>
 			<attr name="unit">USD</attr>
-			<attr name="name">Доллар США</attr>
-			<attr name="smallname">Американское Самоа; Британская территория в Индийском океане; Виргинские острова (Британские); Виргинские острова (США); Гаити; Гуам; Малые Тихоокеанские Отдаленные острова США; Маршалловы острова; Микронезия; Палау; Панама; Пуэрто-Рико; Северные Мар</attr>
+			<attr name="name">п■п╬п╩п╩п╟я─ п║п╗п░</attr>
+			<attr name="smallname">п░п╪п╣я─п╦п╨п╟п╫я│п╨п╬п╣ п║п╟п╪п╬п╟; п▒я─п╦я┌п╟п╫я│п╨п╟я▐ я┌п╣я─я─п╦я┌п╬я─п╦я▐ п╡ п≤п╫п╢п╦п╧я│п╨п╬п╪ п╬п╨п╣п╟п╫п╣; п▓п╦я─пЁп╦п╫я│п╨п╦п╣ п╬я│я┌я─п╬п╡п╟ (п▒я─п╦я┌п╟п╫я│п╨п╦п╣); п▓п╦я─пЁп╦п╫я│п╨п╦п╣ п╬я│я┌я─п╬п╡п╟ (п║п╗п░); п⌠п╟п╦я┌п╦; п⌠я┐п╟п╪; п°п╟п╩я▀п╣ п╒п╦я┘п╬п╬п╨п╣п╟п╫я│п╨п╦п╣ п·я┌п╢п╟п╩п╣п╫п╫я▀п╣ п╬я│я┌я─п╬п╡п╟ п║п╗п░; п°п╟я─я┬п╟п╩п╩п╬п╡я▀ п╬я│я┌я─п╬п╡п╟; п°п╦п╨я─п╬п╫п╣п╥п╦я▐; п÷п╟п╩п╟я┐; п÷п╟п╫п╟п╪п╟; п÷я┐я█я─я┌п╬-п═п╦п╨п╬; п║п╣п╡п╣я─п╫я▀п╣ п°п╟я─</attr>
 		</object>
 		<object>
 			<attr name="code">858</attr>
 			<attr name="unit">UYU</attr>
-			<attr name="name">Уругвайское песо</attr>
-			<attr name="smallname">Уругвай</attr>
+			<attr name="name">пёя─я┐пЁп╡п╟п╧я│п╨п╬п╣ п©п╣я│п╬</attr>
+			<attr name="smallname">пёя─я┐пЁп╡п╟п╧</attr>
 		</object>
 		<object>
 			<attr name="code">860</attr>
 			<attr name="unit">UZS</attr>
-			<attr name="name">Узбекский сум</attr>
-			<attr name="smallname">Узбекистан</attr>
+			<attr name="name">пёп╥п╠п╣п╨я│п╨п╦п╧ я│я┐п╪</attr>
+			<attr name="smallname">пёп╥п╠п╣п╨п╦я│я┌п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">862</attr>
 			<attr name="unit">VEB</attr>
-			<attr name="name">Боливар</attr>
-			<attr name="smallname">Венесуэла</attr>
+			<attr name="name">п▒п╬п╩п╦п╡п╟я─</attr>
+			<attr name="smallname">п▓п╣п╫п╣я│я┐я█п╩п╟</attr>
 		</object>
 		<object>
 			<attr name="code">882</attr>
 			<attr name="unit">WST</attr>
-			<attr name="name">Тала</attr>
-			<attr name="smallname">Самоа</attr>
+			<attr name="name">п╒п╟п╩п╟</attr>
+			<attr name="smallname">п║п╟п╪п╬п╟</attr>
 		</object>
 		<object>
 			<attr name="code">886</attr>
 			<attr name="unit">YER</attr>
-			<attr name="name">Йеменский риал</attr>
-			<attr name="smallname">Йемен</attr>
+			<attr name="name">п≥п╣п╪п╣п╫я│п╨п╦п╧ я─п╦п╟п╩</attr>
+			<attr name="smallname">п≥п╣п╪п╣п╫</attr>
 		</object>
 		<object>
 			<attr name="code">891</attr>
 			<attr name="unit">YUM</attr>
-			<attr name="name">Новый динар</attr>
-			<attr name="smallname">Югославия</attr>
+			<attr name="name">п²п╬п╡я▀п╧ п╢п╦п╫п╟я─</attr>
+			<attr name="smallname">п╝пЁп╬я│п╩п╟п╡п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">894</attr>
 			<attr name="unit">ZMK</attr>
-			<attr name="name">Квача (замбийская)</attr>
-			<attr name="smallname">Замбия</attr>
+			<attr name="name">п п╡п╟я┤п╟ (п╥п╟п╪п╠п╦п╧я│п╨п╟я▐)</attr>
+			<attr name="smallname">п≈п╟п╪п╠п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">901</attr>
 			<attr name="unit">TWD</attr>
-			<attr name="name">Новый тайваньский доллар</attr>
-			<attr name="smallname">Тайвань</attr>
+			<attr name="name">п²п╬п╡я▀п╧ я┌п╟п╧п╡п╟п╫я▄я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п╒п╟п╧п╡п╟п╫я▄</attr>
 		</object>
 		<object>
 			<attr name="code">950</attr>
 			<attr name="unit">XAF</attr>
-			<attr name="name">Франк КФА ВЕАС</attr>
-			<attr name="smallname">Габон; Камерун; Конго;  Центральноафриканская Республика; Чад; Экваториальная Гвинея</attr>
+			<attr name="name">п╓я─п╟п╫п╨ п п╓п░ п▓п∙п░п║</attr>
+			<attr name="smallname">п⌠п╟п╠п╬п╫; п п╟п╪п╣я─я┐п╫; п п╬п╫пЁп╬;  п╕п╣п╫я┌я─п╟п╩я▄п╫п╬п╟я└я─п╦п╨п╟п╫я│п╨п╟я▐ п═п╣я│п©я┐п╠п╩п╦п╨п╟; п╖п╟п╢; п╜п╨п╡п╟я┌п╬я─п╦п╟п╩я▄п╫п╟я▐ п⌠п╡п╦п╫п╣я▐</attr>
 		</object>
 		<object>
 			<attr name="code">951</attr>
 			<attr name="unit">XCD</attr>
-			<attr name="name">Восточно-карибский доллар</attr>
-			<attr name="smallname">Ангилья; Антигуа и Барбуда; Гренада; Доминика; Монтсеррат; Сент-Винсент и Гренадины; Сент-Китс и Невис; Сент-Люсия</attr>
+			<attr name="name">п▓п╬я│я┌п╬я┤п╫п╬-п╨п╟я─п╦п╠я│п╨п╦п╧ п╢п╬п╩п╩п╟я─</attr>
+			<attr name="smallname">п░п╫пЁп╦п╩я▄я▐; п░п╫я┌п╦пЁя┐п╟ п╦ п▒п╟я─п╠я┐п╢п╟; п⌠я─п╣п╫п╟п╢п╟; п■п╬п╪п╦п╫п╦п╨п╟; п°п╬п╫я┌я│п╣я─я─п╟я┌; п║п╣п╫я┌-п▓п╦п╫я│п╣п╫я┌ п╦ п⌠я─п╣п╫п╟п╢п╦п╫я▀; п║п╣п╫я┌-п п╦я┌я│ п╦ п²п╣п╡п╦я│; п║п╣п╫я┌-п⌡я▌я│п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">952</attr>
 			<attr name="unit">XOF</attr>
-			<attr name="name">Франк КФА ВСЕАО</attr>
-			<attr name="smallname">Бенин; Буркина-Фасо; Гвинея-Бисау; Кот д'Ивуар; Мали; Нигер; Сенегал; Того</attr>
+			<attr name="name">п╓я─п╟п╫п╨ п п╓п░ п▓п║п∙п░п·</attr>
+			<attr name="smallname">п▒п╣п╫п╦п╫; п▒я┐я─п╨п╦п╫п╟-п╓п╟я│п╬; п⌠п╡п╦п╫п╣я▐-п▒п╦я│п╟я┐; п п╬я┌ п╢'п≤п╡я┐п╟я─; п°п╟п╩п╦; п²п╦пЁп╣я─; п║п╣п╫п╣пЁп╟п╩; п╒п╬пЁп╬</attr>
 		</object>
 		<object>
 			<attr name="code">953</attr>
 			<attr name="unit">XPF</attr>
-			<attr name="name">Франк КФП</attr>
-			<attr name="smallname">Французская Полинезия; Новая Каледония; Уоллис и Футуна</attr>
+			<attr name="name">п╓я─п╟п╫п╨ п п╓п÷</attr>
+			<attr name="smallname">п╓я─п╟п╫я├я┐п╥я│п╨п╟я▐ п÷п╬п╩п╦п╫п╣п╥п╦я▐; п²п╬п╡п╟я▐ п п╟п╩п╣п╢п╬п╫п╦я▐; пёп╬п╩п╩п╦я│ п╦ п╓я┐я┌я┐п╫п╟</attr>
 		</object>
 		<object>
 			<attr name="code">960</attr>
 			<attr name="unit">XDR</attr>
-			<attr name="name">СДР (специальные права заимствования)</attr>
-			<attr name="smallname">Международный валютный фонд</attr>
+			<attr name="name">п║п■п═ (я│п©п╣я├п╦п╟п╩я▄п╫я▀п╣ п©я─п╟п╡п╟ п╥п╟п╦п╪я│я┌п╡п╬п╡п╟п╫п╦я▐)</attr>
+			<attr name="smallname">п°п╣п╤п╢я┐п╫п╟я─п╬п╢п╫я▀п╧ п╡п╟п╩я▌я┌п╫я▀п╧ я└п╬п╫п╢</attr>
 		</object>
 		<object>
 			<attr name="code">972</attr>
 			<attr name="unit">TJS</attr>
-			<attr name="name">Сомони</attr>
-			<attr name="smallname">Таджикистан</attr>
+			<attr name="name">п║п╬п╪п╬п╫п╦</attr>
+			<attr name="smallname">п╒п╟п╢п╤п╦п╨п╦я│я┌п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">973</attr>
 			<attr name="unit">AOA</attr>
-			<attr name="name">Кванза</attr>
-			<attr name="smallname">Ангола</attr>
+			<attr name="name">п п╡п╟п╫п╥п╟</attr>
+			<attr name="smallname">п░п╫пЁп╬п╩п╟</attr>
 		</object>
 		<object>
 			<attr name="code">974</attr>
 			<attr name="unit">BYR</attr>
-			<attr name="name">Белорусский рубль</attr>
-			<attr name="smallname">Беларусь</attr>
+			<attr name="name">п▒п╣п╩п╬я─я┐я│я│п╨п╦п╧ я─я┐п╠п╩я▄</attr>
+			<attr name="smallname">п▒п╣п╩п╟я─я┐я│я▄</attr>
 		</object>
 		<object>
 			<attr name="code">975</attr>
 			<attr name="unit">BGN</attr>
-			<attr name="name">Болгарский лев</attr>
-			<attr name="smallname">Болгария</attr>
+			<attr name="name">п▒п╬п╩пЁп╟я─я│п╨п╦п╧ п╩п╣п╡</attr>
+			<attr name="smallname">п▒п╬п╩пЁп╟я─п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">976</attr>
 			<attr name="unit">CDF</attr>
-			<attr name="name">Конголезский франк</attr>
-			<attr name="smallname">Конго</attr>
+			<attr name="name">п п╬п╫пЁп╬п╩п╣п╥я│п╨п╦п╧ я└я─п╟п╫п╨</attr>
+			<attr name="smallname">п п╬п╫пЁп╬</attr>
 		</object>
 		<object>
 			<attr name="code">977</attr>
 			<attr name="unit">BAM</attr>
-			<attr name="name">Конвертируемая марка</attr>
-			<attr name="smallname">Босния и Герцеговина</attr>
+			<attr name="name">п п╬п╫п╡п╣я─я┌п╦я─я┐п╣п╪п╟я▐ п╪п╟я─п╨п╟</attr>
+			<attr name="smallname">п▒п╬я│п╫п╦я▐ п╦ п⌠п╣я─я├п╣пЁп╬п╡п╦п╫п╟</attr>
 		</object>
 		<object>
 			<attr name="code">978</attr>
 			<attr name="unit">EUR</attr>
-			<attr name="name">Евро</attr>
-			<attr name="smallname">Австрия; Андорра; Бельгия; Ватикан</attr>
+			<attr name="name">п∙п╡я─п╬</attr>
+			<attr name="smallname">п░п╡я│я┌я─п╦я▐; п░п╫п╢п╬я─я─п╟; п▒п╣п╩я▄пЁп╦я▐; п▓п╟я┌п╦п╨п╟п╫</attr>
 		</object>
 		<object>
 			<attr name="code">980</attr>
 			<attr name="unit">UAH</attr>
-			<attr name="name">Гривна</attr>
-			<attr name="smallname">Украина</attr>
+			<attr name="name">п⌠я─п╦п╡п╫п╟</attr>
+			<attr name="smallname">пёп╨я─п╟п╦п╫п╟</attr>
 		</object>
 		<object>
 			<attr name="code">981</attr>
 			<attr name="unit">GEL</attr>
-			<attr name="name">Лари</attr>
-			<attr name="smallname">Грузия</attr>
+			<attr name="name">п⌡п╟я─п╦</attr>
+			<attr name="smallname">п⌠я─я┐п╥п╦я▐</attr>
 		</object>
 		<object>
 			<attr name="code">985</attr>
-			<attr name="unit">РLN</attr>
-			<attr name="name">Злотый</attr>
-			<attr name="smallname">Польша</attr>
+			<attr name="unit">п═LN</attr>
+			<attr name="name">п≈п╩п╬я┌я▀п╧</attr>
+			<attr name="smallname">п÷п╬п╩я▄я┬п╟</attr>
 		</object>
 		<object>
 			<attr name="code">986</attr>
 			<attr name="unit">BRL</attr>
-			<attr name="name">Бразильский реал</attr>
-			<attr name="smallname">Бразилия</attr>
+			<attr name="name">п▒я─п╟п╥п╦п╩я▄я│п╨п╦п╧ я─п╣п╟п╩</attr>
+			<attr name="smallname">п▒я─п╟п╥п╦п╩п╦я▐</attr>
 		</object>
 		</class>
 	</data>

@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Browse 2D array in a table layout
 $LANG_RU$
-   Просмотр двухмерного массива в виде таблицы
+   п÷я─п╬я│п╪п╬я┌я─ п╢п╡я┐я┘п╪п╣я─п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟ п╡ п╡п╦п╢п╣ я┌п╟п╠п╩п╦я├я▀
 $SYNTAX$
 
      A2EDIT(<nTop>, <nLeft>, <nBottom>, <nRight>, <aData>, <cUserFunc>, <aSay>, <aHeaders>, <aHeadSep>, <aColSep>, <aFootSep>, <aFooters>) --> NIL
@@ -27,18 +27,18 @@ $ARGUMENTS$
 
 $LANG_RU$
 
-     <nTop> 	Numeric, верхняя координата A2EDIT() окна.
-     <nLeft> 	Numeric, левая координата.
-     <nBottom> 	Numeric, нижняя координата.
-     <nRight> 	Numeric, правая координата.
-     <aData> 	Array, массив для просмотра.
-     <cUserFunc> 	String, имя функции пользователя.
-     <aSay> 	Array, шаблоны для представления содержимого колонок.
-     <aHeaders>	Array, заголовки колонок.
-     <aHeadSep>	Array or character, разделители колонок заголовков.
-     <aColSep>	Array or character, разделители колонок.
-     <aFootSep>	Array or character, разделители колонок подвала.
-     <aFooters>	Array, строки подписей к колонкам.
+     <nTop> 	Numeric, п╡п╣я─я┘п╫я▐я▐ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟ A2EDIT() п╬п╨п╫п╟.
+     <nLeft> 	Numeric, п╩п╣п╡п╟я▐ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟.
+     <nBottom> 	Numeric, п╫п╦п╤п╫я▐я▐ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟.
+     <nRight> 	Numeric, п©я─п╟п╡п╟я▐ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟.
+     <aData> 	Array, п╪п╟я│я│п╦п╡ п╢п╩я▐ п©я─п╬я│п╪п╬я┌я─п╟.
+     <cUserFunc> 	String, п╦п╪я▐ я└я┐п╫п╨я├п╦п╦ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐.
+     <aSay> 	Array, я┬п╟п╠п╩п╬п╫я▀ п╢п╩я▐ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦я▐ я│п╬п╢п╣я─п╤п╦п╪п╬пЁп╬ п╨п╬п╩п╬п╫п╬п╨.
+     <aHeaders>	Array, п╥п╟пЁп╬п╩п╬п╡п╨п╦ п╨п╬п╩п╬п╫п╬п╨.
+     <aHeadSep>	Array or character, я─п╟п╥п╢п╣п╩п╦я┌п╣п╩п╦ п╨п╬п╩п╬п╫п╬п╨ п╥п╟пЁп╬п╩п╬п╡п╨п╬п╡.
+     <aColSep>	Array or character, я─п╟п╥п╢п╣п╩п╦я┌п╣п╩п╦ п╨п╬п╩п╬п╫п╬п╨.
+     <aFootSep>	Array or character, я─п╟п╥п╢п╣п╩п╦я┌п╣п╩п╦ п╨п╬п╩п╬п╫п╬п╨ п©п╬п╢п╡п╟п╩п╟.
+     <aFooters>	Array, я│я┌я─п╬п╨п╦ п©п╬п╢п©п╦я│п╣п╧ п╨ п╨п╬п╩п╬п╫п╨п╟п╪.
 
 $RETURNS$
 
@@ -46,7 +46,7 @@ $RETURNS$
 
 $LANG_RU$
 
-     A2EDIT() возвращает NIL.
+     A2EDIT() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 
 $DESCRIPTION$
 
@@ -57,11 +57,11 @@ $DESCRIPTION$
 
 $LANG_RU$
 
-     A2EDIT() - это функция работы с массивом, которая
-     предназначена для просмотра 2-мерного массива.
+     A2EDIT() - я█я┌п╬ я└я┐п╫п╨я├п╦я▐ я─п╟п╠п╬я┌я▀ я│ п╪п╟я│я│п╦п╡п╬п╪, п╨п╬я┌п╬я─п╟я▐
+     п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫п╟ п╢п╩я▐ п©я─п╬я│п╪п╬я┌я─п╟ 2-п╪п╣я─п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟.
 
-     A2EDIT()  это таже <link linkend="functionDBEDIT">DBEDIT()</link>, но только
-     работает с массивом, а не с БД.
+     A2EDIT()  я█я┌п╬ я┌п╟п╤п╣ <link linkend="functionDBEDIT">DBEDIT()</link>, п╫п╬ я┌п╬п╩я▄п╨п╬
+     я─п╟п╠п╬я┌п╟п╣я┌ я│ п╪п╟я│я│п╦п╡п╬п╪, п╟ п╫п╣ я│ п▒п■.
 
 $EXAMPLES$
 
@@ -71,11 +71,11 @@ $EXAMPLES$
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	DBEDIT()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$

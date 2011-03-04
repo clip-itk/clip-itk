@@ -3,19 +3,19 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIProgressBar.
 $LANG_RU$
-	Класс UIProgressBar.
+	п п╩п╟я│я│ UIProgressBar.
 $ABOUT$
 	Progress indicator class.
 $LANG_RU$
-	Класс индикатора хода выполнения.
+	п п╩п╟я│я│ п╦п╫п╢п╦п╨п╟я┌п╬я─п╟ я┘п╬п╢п╟ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐.
 $SYNTAX$
 	UIProgressBar(<text>)	--> UIProgressBar object.
 $LANG_RU$
-	UIProgressBar(<text>)	--> Объект UIProgressBar.
+	UIProgressBar(<text>)	--> п·п╠я┼п╣п╨я┌ UIProgressBar.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIProgressBar".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIProgressBar".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIProgressBar".
 
 
 $METHODNAME$
@@ -23,13 +23,13 @@ $METHODNAME$
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIProgressBar(<text>)	--> UIProgressBar object.
 $ARGUMENTS$
 	<text>		- String. Label on progress indicator.
 $LANG_RU$
-	<text>		- Строка. Надпись на индикаторе хода выполнения.
+	<text>		- п║я┌я─п╬п╨п╟. п²п╟п╢п©п╦я│я▄ п╫п╟ п╦п╫п╢п╦п╨п╟я┌п╬я─п╣ я┘п╬п╢п╟ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐.
 $ENDMETHOD$
 
 
@@ -38,15 +38,15 @@ $METHODNAME$
 $SUMMARY$
 	Set status of progress and change label.
 $LANG_RU$
-	Установить статус выполнения и поменять надпись на индикаторе.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я│я┌п╟я┌я┐я│ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ п╦ п©п╬п╪п╣п╫я▐я┌я▄ п╫п╟п╢п©п╦я│я▄ п╫п╟ п╦п╫п╢п╦п╨п╟я┌п╬я─п╣.
 $SYNTAX$
 	setValue(<percent>, [<text>])
 $ARGUMENTS$
 	<percent>	- Number or string. Status of progress (0..1 or 1..100)
 	<text>		- String. Label on progress indicator. If missed, show percent as integer number with suffix '%'.
 $LANG_RU$
-	<percent>	- Число. Статус выполнения (от 0 до 1 или от 1 до 100)
-	<text>		- Строка. Надпись на индикаторе хода выполнения. Если не указан, показывается процент выполнения в виде целого числа с суффиксом '%'.
+	<percent>	- п╖п╦я│п╩п╬. п║я┌п╟я┌я┐я│ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ (п╬я┌ 0 п╢п╬ 1 п╦п╩п╦ п╬я┌ 1 п╢п╬ 100)
+	<text>		- п║я┌я─п╬п╨п╟. п²п╟п╢п©п╦я│я▄ п╫п╟ п╦п╫п╢п╦п╨п╟я┌п╬я─п╣ я┘п╬п╢п╟ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐. п∙я│п╩п╦ п╫п╣ я┐п╨п╟п╥п╟п╫, п©п╬п╨п╟п╥я▀п╡п╟п╣я┌я│я▐ п©я─п╬я├п╣п╫я┌ п╡я▀п©п╬п╩п╫п╣п╫п╦я▐ п╡ п╡п╦п╢п╣ я├п╣п╩п╬пЁп╬ я┤п╦я│п╩п╟ я│ я│я┐я└я└п╦п╨я│п╬п╪ '%'.
 $ENDMETHOD$
 
 
@@ -58,12 +58,12 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

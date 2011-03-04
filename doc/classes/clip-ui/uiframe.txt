@@ -3,34 +3,34 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIFrame
 $LANG_RU$
-	Класс UIFrame
+	п п╩п╟я│я│ UIFrame
 $ABOUT$
 	Class of frame.
 $LANG_RU$
-	Класс рамки.
+	п п╩п╟я│я│ я─п╟п╪п╨п╦.
 $SYNTAX$
 	UIFrame([<caption>],[<type>])	--> UIFrame object
 $LANG_RU$
-	UIFrame([<caption>],[<type>])	--> Объект UIFrame
+	UIFrame([<caption>],[<type>])	--> п·п╠я┼п╣п╨я┌ UIFrame
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIFrame".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIFrame".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIFrame".
 
 $METHODNAME$
 	UIFrame()
 $SUMMARY$
 	Constructor. Create frame with label.
 $LANG_RU$
-	Конструктор. Создать рамку с надписью.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я─п╟п╪п╨я┐ я│ п╫п╟п╢п©п╦я│я▄я▌.
 $SYNTAX$
 	UIFrame([<caption>],[<type>])	--> UIFrame object
 $ARGUMENTS$
 	<caption>	- String. Label at top of the frame.
 	<type>		- Number. Frame type.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; no border</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; all frame is sunken</listitem><listitem><command>FRAME_RAISED</command> &mdash; all frame is raised like a button</listitem><listitem><command>FRAME_IN</command> &mdash; only sunken border (default)</listitem><listitem><command>FRAME_OUT</command> &mdash; only raised border</listitem></itemizedlist>
 $LANG_RU$
-	<caption>	- Строка. Надпись на рамке.
-	<type>		- Число. Тип рамки.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; без рамки</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; вдавленная панель</listitem><listitem><command>FRAME_RAISED</command> &mdash; приподнятая панель </listitem><listitem><command>FRAME_IN</command> &mdash; вдавленная рамка (значение по умолчанию)</listitem><listitem><command>FRAME_OUT</command> &mdash; выпуклая рамка</listitem></itemizedlist>
+	<caption>	- п║я┌я─п╬п╨п╟. п²п╟п╢п©п╦я│я▄ п╫п╟ я─п╟п╪п╨п╣.
+	<type>		- п╖п╦я│п╩п╬. п╒п╦п© я─п╟п╪п╨п╦.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; п╠п╣п╥ я─п╟п╪п╨п╦</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; п╡п╢п╟п╡п╩п╣п╫п╫п╟я▐ п©п╟п╫п╣п╩я▄</listitem><listitem><command>FRAME_RAISED</command> &mdash; п©я─п╦п©п╬п╢п╫я▐я┌п╟я▐ п©п╟п╫п╣п╩я▄ </listitem><listitem><command>FRAME_IN</command> &mdash; п╡п╢п╟п╡п╩п╣п╫п╫п╟я▐ я─п╟п╪п╨п╟ (п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌)</listitem><listitem><command>FRAME_OUT</command> &mdash; п╡я▀п©я┐п╨п╩п╟я▐ я─п╟п╪п╨п╟</listitem></itemizedlist>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -38,13 +38,13 @@ $METHODNAME$
 $SUMMARY$
 	Set placement widget inside frame.
 $LANG_RU$
-	Установить размещение в рамке.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟п╥п╪п╣я┴п╣п╫п╦п╣ п╡ я─п╟п╪п╨п╣.
 $SYNTAX$
 	add(<grid>)
 $ARGUMENTS$
 	<grid>		- Placement object. Set placement widget inside frame. Possible classes for placement object: <link linkend="classuigrid">UIGrid</link>, <link linkend="classuihbox">UIHBox</link>, <link linkend="classuivbox">UIVBox</link>.
 $LANG_RU$
-	<grid>		- Объект размещения. Установить объект размещение в рамке. Возможно использование объектов следующих типов: <link linkend="classuigrid">UIGrid</link>, <link linkend="classuihbox">UIHBox</link>, <link linkend="classuivbox">UIVBox</link>.
+	<grid>		- п·п╠я┼п╣п╨я┌ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐. пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╬п╠я┼п╣п╨я┌ я─п╟п╥п╪п╣я┴п╣п╫п╦п╣ п╡ я─п╟п╪п╨п╣. п▓п╬п╥п╪п╬п╤п╫п╬ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╬п╠я┼п╣п╨я┌п╬п╡ я│п╩п╣п╢я┐я▌я┴п╦я┘ я┌п╦п©п╬п╡: <link linkend="classuigrid">UIGrid</link>, <link linkend="classuihbox">UIHBox</link>, <link linkend="classuivbox">UIVBox</link>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -52,13 +52,13 @@ $METHODNAME$
 $SUMMARY$
 	Set frame label.
 $LANG_RU$
-	Установить надпись на рамке.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╫п╟п╢п©п╦я│я▄ п╫п╟ я─п╟п╪п╨п╣.
 $SYNTAX$
 	setLabel(<label>)
 $ARGUMENTS$
 	<label>		- String. Label at top of the frame.
 $LANG_RU$
-	<label>		- Строка. Надпись на рамке.
+	<label>		- п║я┌я─п╬п╨п╟. п²п╟п╢п©п╦я│я▄ п╫п╟ я─п╟п╪п╨п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -66,13 +66,13 @@ $METHODNAME$
 $SUMMARY$
 	Set frame type.
 $LANG_RU$
-	Установить тип рамки.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┌п╦п© я─п╟п╪п╨п╦.
 $SYNTAX$
 	setType(<type>)
 $ARGUMENTS$
 	<type>		- Number. Frame type.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; no border</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; all frame is sunken</listitem><listitem><command>FRAME_RAISED</command> &mdash; all frame is raised like a button</listitem><listitem><command>FRAME_IN</command> &mdash; only sunken border (default)</listitem><listitem><command>FRAME_OUT</command> &mdash; only raised border</listitem></itemizedlist>
 $LANG_RU$
-	<type>		- Число. Тип рамки.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; без рамки</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; вдавленная панель</listitem><listitem><command>FRAME_RAISED</command> &mdash; приподнятая панель </listitem><listitem><command>FRAME_IN</command> &mdash; вдавленная рамка (значение по умолчанию)</listitem><listitem><command>FRAME_OUT</command> &mdash; выпуклая рамка</listitem></itemizedlist>
+	<type>		- п╖п╦я│п╩п╬. п╒п╦п© я─п╟п╪п╨п╦.<itemizedlist mark="bullet"><listitem><command>FRAME_PLAIN</command> &mdash; п╠п╣п╥ я─п╟п╪п╨п╦</listitem><listitem><command>FRAME_SUNKEN</command> &mdash; п╡п╢п╟п╡п╩п╣п╫п╫п╟я▐ п©п╟п╫п╣п╩я▄</listitem><listitem><command>FRAME_RAISED</command> &mdash; п©я─п╦п©п╬п╢п╫я▐я┌п╟я▐ п©п╟п╫п╣п╩я▄ </listitem><listitem><command>FRAME_IN</command> &mdash; п╡п╢п╟п╡п╩п╣п╫п╫п╟я▐ я─п╟п╪п╨п╟ (п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌)</listitem><listitem><command>FRAME_OUT</command> &mdash; п╡я▀п©я┐п╨п╩п╟я▐ я─п╟п╪п╨п╟</listitem></itemizedlist>
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -83,10 +83,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

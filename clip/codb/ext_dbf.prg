@@ -295,7 +295,7 @@ static function _ext_update(self,oData, xData, lUnique)
 
 	rec:object_id   := oData:id
 	rec:class_id    := oData:class_id
-	rec:version	:= 0 //version  // доделать
+	rec:version	:= 0 //version  // TODO: need to finish
 	rec:isOld 	:= .f.
 	rec:body        := oData
 	rec:crc32     := self:objCRC(rec:body)

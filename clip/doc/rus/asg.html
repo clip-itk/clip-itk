@@ -5,7 +5,7 @@
 <body>
 <pre>
   1. Introduction
-  
+
    Any time ago i have downloaded from Oasis hintp - .ppo interpreter. It
    works but not as good as i expected. So i wrote my own interpreter -
    BL. BL is scripting language for Clipper programs. Source code of BL
@@ -13,28 +13,28 @@
    FlagShip. BL is simple and rather fast because uses Clipper for
    expression evaluation. BL is not a ppo interpreter, it's a different
    language.
-   
+
     1.1 Where to get BL
-    
+
    You can download sources <a href="bl.zip">here</a> (about 12Kb)
-   
+
     1.2 How to contact author
-    
+
    My name is Sergey Aleshin, i am programmer from Russia
-   
+
    e-mail: <a href="mailto:asg2@mail.ru">asg2@mail.ru</a>
-   
+
   2. Expressions
-  
+
    Expressions in BL same as Clipper expressions except for ++,--,+= etc.
    You can't write code blocks like in Clipper but can use 'block'
    function: {|x,y,..| f(x,y,...)} must be replaced with
    block("f(x,y,...)",{"x","y",...})
-   
+
    In short, you can use any expression that allowed in code block.
-   
+
   3. Program structure
-  
+
    BL program consists from main part - sequence of operators, and
    procedure definitions:
 &lt;operator0&gt;
@@ -49,14 +49,14 @@ proc pN
 endp
 
    For BL program sample see *.bl files.
-   
+
    Operators delimited by CR+LF (LF on UNIX) so you can write only one
    operator per line.
-   
+
   4. Operators
-  
+
     4.1 If
-    
+
    Syntax:
 if &lt;expr&gt;
 &lt;operators&gt;
@@ -70,7 +70,7 @@ if &lt;expr&gt;
 endif
 
     4.2 For
-    
+
    Syntax (similar to C):
 for [&lt;init_expr&gt;];[&lt;exit_expr&gt;];[&lt;iteration_expr&gt;]
 &lt;operators&gt;
@@ -90,48 +90,48 @@ endif
 next
 
     4.3 While
-    
+
    Syntax:
 while &lt;expr&gt;
 &lt;operators&gt;
 endw
 
     4.4 Exit
-    
+
    Exits closest For or While.
-   
+
     4.5 Loop
-    
+
    Go to next loop iteration.
-   
+
     4.6 Call
-    
+
    Syntax:
 call &lt;BL procedure name&gt;
 
     4.7 Return
-    
+
    Return from any place of BL procedure  Syntax:
 return [&lt;expr&gt;]
 
    If &lt;expr&gt; is specified, it will evaluated and pushed to stack
-   
+
     4.8 Private
-    
+
    Declare private variables. Syntax:
 private var1,...,varN
 
     4.9 Public
-    
+
    Declare public variables. Syntax same as for private.
-   
+
     4.10 Release
-    
+
    Destroy any private or public variables. Syntax:
 release var1,...,varN
 
   5. Procedures
-  
+
    Syntax:
 proc &lt;procedure name&gt;
 [param p1,...,pN]
@@ -158,32 +158,32 @@ pop pN
 pop p1
 
    You can use recursion in BL.
-   
+
   6. Using external scripts
-  
+
    You can use loadlib operator to include code from other file to your
    script. Syntax:
 loadlib &lt;filename.ext&gt;
 
   7. Using BL from Clipper
-  
+
    There are 2 functions, 'progparse' and 'progrun'. PROGPARSE takes the
    text of program and produces array with precompiled code. Then code
    can be executed with PROGRUN function. See main.prg for example.
-   
+
   8. Licence
-  
+
    Public Domain
-   
+
   9. Known problems
-  
+
    BL stores procedures entry points in static array. So you can't
    execute more than one precompiled script if it uses procedures:
    progparse clears that array. You'll need to call both progparse and
    progrun for such scripts.
-   
+
   10. Future plans
-  
+
    I think that simple visual debugger like cld may be useful.
 </pre>
 </body>

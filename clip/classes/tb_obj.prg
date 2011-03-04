@@ -3,13 +3,13 @@
 	Author   : Uri (uri@itk.ru)
 	License : (GPL) http://www.itk.ru/clipper/license.html
 
-	Изменения в функциях
+	Changes in functions
 	    refreshCurrent
 	    refreshAll
 	    cleft
 	    cright
 	    stabilize
-	    функция  panRight работает не совсем правильно
+	    function panRight works not well
 
 	20.07.2004 john (sneshka@online.bryansk.ru)
 
@@ -62,7 +62,7 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	   obj:leftVisible	:= 1
 	   obj:rightVisible	:= 1
 	   obj:message	:= ""
-	   obj:chop		:= .f. /* показывать неполностью вмещаемые колонки ?*/
+	   obj:chop		:= .f. /* show incompletely accommodates columns? ?*/
 	   obj:hiliteType	:= 1   /* 0 -none
 					  1 - current ceil
 					  2 - current line
@@ -91,7 +91,7 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	   obj:cursorLen:=0
 
 	  *************************************
-	  obj:__firstStab	:=.f.  // был ли первый stabilize
+	  obj:__firstStab	:=.f.  // Was the first 'stabilize'?
 	  obj:__rect	:={0,0,0,0}
 
 	  obj:__colorCells	:={}  // items for colorRect()
@@ -101,21 +101,21 @@ func TBrowseNew(Lrow,Lcol,Rrow,Rcol,db)
 	  obj:__columns	:={}
 
 	  obj:__lRedrawTable    := .t. // need redraw headers & footers
-	  obj:__columnsLen	:={} // длины колонок
-	  obj:__colVisible	:={} // видимые колонки
-	  obj:__colpos		:=1  // текущая колонка из числа видимых
-	  obj:__whereVisible	:={} // row для каждой видимой колонки
-	  obj:__headStrings	:={} // надписи заголовков по строкам
-	  obj:__footStrings	:={} // надписи подвалов по строкам
+	  obj:__columnsLen	:={} // length of columns
+	  obj:__colVisible	:={} // visible columns
+	  obj:__colpos		:=1  // current column (one of visible columns)
+	  obj:__whereVisible	:={} // row for every visible column
+	  obj:__headStrings	:={} // text in line headers
+	  obj:__footStrings	:={} // text in line footers
 
-	  obj:__colors	:={} // палитры цветов
+	  obj:__colors	:={} // colors palettes
 	  obj:__keys	:=map() // array for ::setkey()
 
 	  obj:__refreshLine     :={}
-	  obj:__headRows	:=0  // строк в заголовке
-	  obj:__footRows	:=0  // строк в подвале
+	  obj:__headRows	:=0  // count lines in header
+	  obj:__footRows	:=0  // count lines in footer
 
-	  obj:__rightAll	:=.f. // больше справа никого нет
+	  obj:__rightAll	:=.f. // there is nothing at right side
 
 	  obj:winbuffer		:= NIL
 
@@ -165,10 +165,10 @@ function _recover_tbrowse(obj)
 	obj:stabilize	:= @stabilize()
 	obj:forceStable	:= @forceStable()
 
-	obj:__whoVisible	:= @__whoVisible() // вычислить кто видимый
+	obj:__whoVisible	:= @__whoVisible() // who is visible
 	obj:__reMakeColumns	:= @__remakeColumns()
 	obj:__dummyRow	:= @__dummyRow()
-	obj:__sayTable	:= @__sayTable() // рисовать обрамление, заголовки, подвалы
+	obj:__sayTable	:= @__sayTable() // draw framing, heares, footers
 	obj:__setColor	:= @__setcolor()
 	obj:__getColor	:= @__getcolor()
 //	obj:__checkRow	:= @__checkRow()

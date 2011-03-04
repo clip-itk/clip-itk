@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Flush pending updates
 $LANG_RU$
-   Записывает данные из буферов на диск
+   п≈п╟п©п╦я│я▀п╡п╟п╣я┌ п╢п╟п╫п╫я▀п╣ п╦п╥ п╠я┐я└п╣я─п╬п╡ п╫п╟ п╢п╦я│п╨
 $SYNTAX$
      DBCOMMIT() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBCOMMIT() always returns NIL.
 $LANG_RU$
-     DBCOMMIT() всегда возвращает NIL.
+     DBCOMMIT() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBCOMMIT() causes all updates to the current work area to be written to
      disk.  All updated database and index buffers are written to DOS and a
@@ -24,12 +24,12 @@ $DESCRIPTION$
      except that it operates only on the current work area.  For more
      information, refer to the COMMIT command.
 $LANG_RU$
-     При вызове функции DBCOMMIT() все изменения в текущей рабочей области
-     записываются из буферов на диск.
+     п÷я─п╦ п╡я▀п╥п╬п╡п╣ я└я┐п╫п╨я├п╦п╦ DBCOMMIT() п╡я│п╣ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╡ я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦
+     п╥п╟п©п╦я│я▀п╡п╟я▌я┌я│я▐ п╦п╥ п╠я┐я└п╣я─п╬п╡ п╫п╟ п╢п╦я│п╨.
 
-     DBCOMMIT() - выполняет те же функции, что и стандартная команда
-     COMMIT, кроме того, что действует только в текущей рабочей области.
-     Более подробную информацию смотрите в команде COMMIT.
+     DBCOMMIT() - п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟
+     COMMIT, п╨я─п╬п╪п╣ я┌п╬пЁп╬, я┤я┌п╬ п╢п╣п╧я│я┌п╡я┐п╣я┌ я┌п╬п╩я▄п╨п╬ п╡ я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
+     п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ COMMIT.
 $EXAMPLES$
        In this example, COMMIT is used to force a write to disk after
 	a series of memory variables are assigned to field variables:

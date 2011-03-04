@@ -5,28 +5,28 @@ $CATEGORY$
 $SUMMARY$
 	Close bZIP2 file.
 $LANG_RU$
-	Закрывает bZIP2 файл.
+	п≈п╟п╨я─я▀п╡п╟п╣я┌ bZIP2 я└п╟п╧п╩.
 $SYNTAX$
 	bZip2Close(<nHandle>) --> lRet
 $LANG_RU$
 $ARGUMENTS$
 	<nHandle> - number of opened file.
 $LANG_RU$
-	<nHandle> - номер открытого файла.
+	<nHandle> - п╫п╬п╪п╣я─ п╬я┌п╨я─я▀я┌п╬пЁп╬ я└п╟п╧п╩п╟.
 $RETURNS$
        bZip2Close() returns .t. or .f. as information about error.
 $LANG_RU$
-       bZip2Close() возвращает .t. или .f. в зависимости от наличия ошибки.
+       bZip2Close() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .t. п╦п╩п╦ .f. п╡ п╥п╟п╡п╦я│п╦п╪п╬я│я┌п╦ п╬я┌ п╫п╟п╩п╦я┤п╦я▐ п╬я┬п╦п╠п╨п╦.
 $DESCRIPTION$
 	bZip2Close() must be called explicitly, to clear and sync all buffers.
 $LANG_RU$
-	bZip2Close() сбрасывает все буффера на диск и закрывает файл.
+	bZip2Close() я│п╠я─п╟я│я▀п╡п╟п╣я┌ п╡я│п╣ п╠я┐я└я└п╣я─п╟ п╫п╟ п╢п╦я│п╨ п╦ п╥п╟п╨я─я▀п╡п╟п╣я┌ я└п╟п╧п╩.
 $EXAMPLES$
 	lRet := bZip2Close(h)
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	bZip2Open(),bZip2Read(),bZip2Write()
 $AUTHOR$

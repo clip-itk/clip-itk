@@ -36,7 +36,7 @@ function main( cmd, path )
 		
 		t3 := XMLTag( "lang" )
 		t3:setAttribute( "code", "ru" )
-		t3:setText( "Ú’””À… " )
+		t3:setText( "–†—É—Å—Å–∫–∏–π" )
 		
 		// Create empty tag
 		tr := XMLTag("to-remove")

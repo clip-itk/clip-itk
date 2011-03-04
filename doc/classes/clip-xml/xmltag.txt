@@ -3,36 +3,36 @@ $CLASSNAME$
 $SUMMARY$
 	Class XMLTag
 $LANG_RU$
-	Класс XMLTag
+	п п╩п╟я│я│ XMLTag
 $ABOUT$
 	Class of XML tag. This class is used in XML parsing.
 $LANG_RU$
-	Класс описания тега XML. Служит для обработки файлов XML.
+	п п╩п╟я│я│ п╬п©п╦я│п╟п╫п╦я▐ я┌п╣пЁп╟ XML. п║п╩я┐п╤п╦я┌ п╢п╩я▐ п╬п╠я─п╟п╠п╬я┌п╨п╦ я└п╟п╧п╩п╬п╡ XML.
 $SYNTAX$
 	XMLTag(<name>)	--> XMLTag object
 $LANG_RU$
-	XMLTag(<name>)	--> Объект XMLTag
+	XMLTag(<name>)	--> п·п╠я┼п╣п╨я┌ XMLTag
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "XMLTag".
 	<pos>		- Number. Byte offset from XML file or string begin.
 	<offset>	- Number. Position in mixed text/tag content.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "XMLTag".
-	<pos>		- Число. Смещение в байтах с начала файла или строки XML.
-	<offset>	- Число. Позиция в смешанном содержимом с текстом и тегами.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "XMLTag".
+	<pos>		- п╖п╦я│п╩п╬. п║п╪п╣я┴п╣п╫п╦п╣ п╡ п╠п╟п╧я┌п╟я┘ я│ п╫п╟я┤п╟п╩п╟ я└п╟п╧п╩п╟ п╦п╩п╦ я│я┌я─п╬п╨п╦ XML.
+	<offset>	- п╖п╦я│п╩п╬. п÷п╬п╥п╦я├п╦я▐ п╡ я│п╪п╣я┬п╟п╫п╫п╬п╪ я│п╬п╢п╣я─п╤п╦п╪п╬п╪ я│ я┌п╣п╨я│я┌п╬п╪ п╦ я┌п╣пЁп╟п╪п╦.
 
 $METHODNAME$
 	XMLTag()
 $SUMMARY$
 	Constructor. Create tag object.
 $LANG_RU$
-	Конструктор. Создать объект тега.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╬п╠я┼п╣п╨я┌ я┌п╣пЁп╟.
 $SYNTAX$
 	XMLTag(<name>)	--> XMLTag object
 $ARGUMENTS$
 	<name>		- String. Name of tag.
 $LANG_RU$
-	<name>		- Строка. Имя тега.
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ я┌п╣пЁп╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -40,13 +40,13 @@ $METHODNAME$
 $SUMMARY$
 	Get tag name.
 $LANG_RU$
-	Возвращает имя тега.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╪я▐ я┌п╣пЁп╟.
 $SYNTAX$
 	getName()	--> <cName>
 $RETURNS$
 	Tag name.
 $LANG_RU$
-	Имя тега.
+	п≤п╪я▐ я┌п╣пЁп╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -54,15 +54,15 @@ $METHODNAME$
 $SUMMARY$
 	Add child tag.
 $LANG_RU$
-	Добавить дочерний тег.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╢п╬я┤п╣я─п╫п╦п╧ я┌п╣пЁ.
 $SYNTAX$
 	addChild(<tag>,[<position>])
 $ARGUMENTS$
 	<tag>		- XMLTag object. Child tag to be added.
 	<position>	- Number. Tag position.
 $LANG_RU$
-	<tag>		- Объект XMLTag. Добавляемый дочерний тег.
-	<position>	- Число. Позиция добавляемого дочернего тега.
+	<tag>		- п·п╠я┼п╣п╨я┌ XMLTag. п■п╬п╠п╟п╡п╩я▐п╣п╪я▀п╧ п╢п╬я┤п╣я─п╫п╦п╧ я┌п╣пЁ.
+	<position>	- п╖п╦я│п╩п╬. п÷п╬п╥п╦я├п╦я▐ п╢п╬п╠п╟п╡п╩я▐п╣п╪п╬пЁп╬ п╢п╬я┤п╣я─п╫п╣пЁп╬ я┌п╣пЁп╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -70,13 +70,13 @@ $METHODNAME$
 $SUMMARY$
 	Remove child tag.
 $LANG_RU$
-	Удалить дочерний тег.
+	пёп╢п╟п╩п╦я┌я▄ п╢п╬я┤п╣я─п╫п╦п╧ я┌п╣пЁ.
 $SYNTAX$
 	removeChild(<position>)
 $ARGUMENTS$
 	<position>	- Number. Child tag position.
 $LANG_RU$
-	<position>	- Число. Позиция удаляемого дочернего тега.
+	<position>	- п╖п╦я│п╩п╬. п÷п╬п╥п╦я├п╦я▐ я┐п╢п╟п╩я▐п╣п╪п╬пЁп╬ п╢п╬я┤п╣я─п╫п╣пЁп╬ я┌п╣пЁп╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -84,7 +84,7 @@ $METHODNAME$
 $SUMMARY$
 	Remove current tag from parent tag.
 $LANG_RU$
-	Удалить текущий тег из родительского тега.
+	пёп╢п╟п╩п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ я┌п╣пЁ п╦п╥ я─п╬п╢п╦я┌п╣п╩я▄я│п╨п╬пЁп╬ я┌п╣пЁп╟.
 $SYNTAX$
 	remove()
 $ENDMETHOD$
@@ -94,13 +94,13 @@ $METHODNAME$
 $SUMMARY$
 	Get child tag count.
 $LANG_RU$
-	Количество дочерних тегов.
+	п п╬п╩п╦я┤п╣я│я┌п╡п╬ п╢п╬я┤п╣я─п╫п╦я┘ я┌п╣пЁп╬п╡.
 $SYNTAX$
 	countChilds()	--> <nCount>
 $RETURNS$
 	Number of child tags.
 $LANG_RU$
-	Количество дочерних тегов.
+	п п╬п╩п╦я┤п╣я│я┌п╡п╬ п╢п╬я┤п╣я─п╫п╦я┘ я┌п╣пЁп╬п╡.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -108,17 +108,17 @@ $METHODNAME$
 $SUMMARY$
 	Get child tag by its number.
 $LANG_RU$
-	Получить дочерний тег по его номеру.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╢п╬я┤п╣я─п╫п╦п╧ я┌п╣пЁ п©п╬ п╣пЁп╬ п╫п╬п╪п╣я─я┐.
 $SYNTAX$
 	getChild(<position>) --> <oTag>
 $ARGUMENTS$
 	<position>	- Number. Child tag position.
 $LANG_RU$
-	<position>	- Число. Позиция дочернего тега.
+	<position>	- п╖п╦я│п╩п╬. п÷п╬п╥п╦я├п╦я▐ п╢п╬я┤п╣я─п╫п╣пЁп╬ я┌п╣пЁп╟.
 $RETURNS$
 	Child tag.
 $LANG_RU$
-	Дочерний тег.
+	п■п╬я┤п╣я─п╫п╦п╧ я┌п╣пЁ.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -126,13 +126,13 @@ $METHODNAME$
 $SUMMARY$
 	Get all child tags.
 $LANG_RU$
-	Получить все дочерние теги.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╡я│п╣ п╢п╬я┤п╣я─п╫п╦п╣ я┌п╣пЁп╦.
 $SYNTAX$
 	getChilds() --> <aTags>
 $RETURNS$
 	Array of child tags.
 $LANG_RU$
-	Массив дочерних тегов.
+	п°п╟я│я│п╦п╡ п╢п╬я┤п╣я─п╫п╦я┘ я┌п╣пЁп╬п╡.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -140,15 +140,15 @@ $METHODNAME$
 $SUMMARY$
 	Set value to attribute.
 $LANG_RU$
-	Присвоить значение атрибуту.
+	п÷я─п╦я│п╡п╬п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌я┐.
 $SYNTAX$
 	setAttribute(<attrName>,<attrValue>)
 $ARGUMENTS$
 	<attrName>	- String. Attribute name.
 	<attrValue>	- Any type. Attribute value. If type of value is number, boolean or date value will be converted to string.
 $LANG_RU$
-	<attrName>	- Строка. Имя атрибута.
-	<attrValue>	- Любой тип. Значение атрибута. Если тип значения - число, логическое значение или дата, то значение преобразуется в строку.
+	<attrName>	- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╟я┌я─п╦п╠я┐я┌п╟.
+	<attrValue>	- п⌡я▌п╠п╬п╧ я┌п╦п©. п≈п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟. п∙я│п╩п╦ я┌п╦п© п╥п╫п╟я┤п╣п╫п╦я▐ - я┤п╦я│п╩п╬, п╩п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╦п╩п╦ п╢п╟я┌п╟, я┌п╬ п╥п╫п╟я┤п╣п╫п╦п╣ п©я─п╣п╬п╠я─п╟п╥я┐п╣я┌я│я▐ п╡ я│я┌я─п╬п╨я┐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -156,19 +156,19 @@ $METHODNAME$
 $SUMMARY$
 	Get child tag by its number.
 $LANG_RU$
-	Получить дочерний тег по его номеру.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╢п╬я┤п╣я─п╫п╦п╧ я┌п╣пЁ п©п╬ п╣пЁп╬ п╫п╬п╪п╣я─я┐.
 $SYNTAX$
 	attribute(<attrName>,<defVal>) --> <cValue>
 $ARGUMENTS$
 	<attrName>	- String. Attribute name.
 	<defVal>	- Any type. Default value for non-existing attribute.
 $LANG_RU$
-	<attrName>	- Строка. Имя атрибута.
-	<defVal>	- Любой тип. Значение по умолчанию для несуществующего атрибута.
+	<attrName>	- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╟я┌я─п╦п╠я┐я┌п╟.
+	<defVal>	- п⌡я▌п╠п╬п╧ я┌п╦п©. п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╢п╩я▐ п╫п╣я│я┐я┴п╣я│я┌п╡я┐я▌я┴п╣пЁп╬ п╟я┌я─п╦п╠я┐я┌п╟.
 $RETURNS$
 	Attribute value.
 $LANG_RU$
-	Значение атрибута.
+	п≈п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -176,13 +176,13 @@ $METHODNAME$
 $SUMMARY$
 	Get all attributes with their values.
 $LANG_RU$
-	Получить все атрибуты с их значениями.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╡я│п╣ п╟я┌я─п╦п╠я┐я┌я▀ я│ п╦я┘ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦.
 $SYNTAX$
 	getAttributes() --> <aAttributes>
 $RETURNS$
 	Two-dimensional array of pair attribute and value.
 $LANG_RU$
-	Двумерный массив пар атрибутов и их значений.
+	п■п╡я┐п╪п╣я─п╫я▀п╧ п╪п╟я│я│п╦п╡ п©п╟я─ п╟я┌я─п╦п╠я┐я┌п╬п╡ п╦ п╦я┘ п╥п╫п╟я┤п╣п╫п╦п╧.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -190,13 +190,13 @@ $METHODNAME$
 $SUMMARY$
 	Remove attribute.
 $LANG_RU$
-	Удалить атрибут.
+	пёп╢п╟п╩п╦я┌я▄ п╟я┌я─п╦п╠я┐я┌.
 $SYNTAX$
 	removeAttribute(<attrName>)
 $ARGUMENTS$
 	<attrName>	- String. Attribute name.
 $LANG_RU$
-	<attrName>	- Строка. Имя атрибута.
+	<attrName>	- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╟я┌я─п╦п╠я┐я┌п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -204,13 +204,13 @@ $METHODNAME$
 $SUMMARY$
 	Set text into the tag.
 $LANG_RU$
-	Установить текст тега.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┌п╣п╨я│я┌ я┌п╣пЁп╟.
 $SYNTAX$
 	setText(<text>)
 $ARGUMENTS$
 	<text>	- String. Text into the tag.
 $LANG_RU$
-	<text>	- Строка. Текст тега.
+	<text>	- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌ я┌п╣пЁп╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -218,13 +218,13 @@ $METHODNAME$
 $SUMMARY$
 	Get text into the tag.
 $LANG_RU$
-	Получить текст тега.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я┌п╣п╨я│я┌ я┌п╣пЁп╟.
 $SYNTAX$
 	getText()	--> <cText>
 $RETURNS$
 	Text into the tag.
 $LANG_RU$
-	Текст тега.
+	п╒п╣п╨я│я┌ я┌п╣пЁп╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -232,13 +232,13 @@ $METHODNAME$
 $SUMMARY$
 	Get parent tag.
 $LANG_RU$
-	Получить родительский тег.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я─п╬п╢п╦я┌п╣п╩я▄я│п╨п╦п╧ я┌п╣пЁ.
 $SYNTAX$
 	getParent()	--> <oParentTag>
 $RETURNS$
 	Parent tag.
 $LANG_RU$
-	Родительский тег.
+	п═п╬п╢п╦я┌п╣п╩я▄я│п╨п╦п╧ я┌п╣пЁ.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -246,19 +246,19 @@ $METHODNAME$
 $SUMMARY$
 	Dump current tag and all its children to XML format.
 $LANG_RU$
-	Выдать строку в формате XML для текущего тега и всех его дочерних тегов.
+	п▓я▀п╢п╟я┌я▄ я│я┌я─п╬п╨я┐ п╡ я└п╬я─п╪п╟я┌п╣ XML п╢п╩я▐ я┌п╣п╨я┐я┴п╣пЁп╬ я┌п╣пЁп╟ п╦ п╡я│п╣я┘ п╣пЁп╬ п╢п╬я┤п╣я─п╫п╦я┘ я┌п╣пЁп╬п╡.
 $SYNTAX$
 	dump([<encoding>],[<level>])	--> <cXML>
 $ARGUMENTS$
 	<encoding>	- String. Text encoding.
 	<level>		- Number. Indent level (*4 spaces). Default value is 0.
 $LANG_RU$
-	<encoding>	- Строка. Кодировка текста.
-	<level>		- Число. Уровень отступа (*4 пробела). Значение по умолчанию - 0.
+	<encoding>	- п║я┌я─п╬п╨п╟. п п╬п╢п╦я─п╬п╡п╨п╟ я┌п╣п╨я│я┌п╟.
+	<level>		- п╖п╦я│п╩п╬. пёя─п╬п╡п╣п╫я▄ п╬я┌я│я┌я┐п©п╟ (*4 п©я─п╬п╠п╣п╩п╟). п≈п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ - 0.
 $RETURNS$
 	Tag and all its children in XML format.
 $LANG_RU$
-	Текущий тег и все его дочерние теги в формате XML.
+	п╒п╣п╨я┐я┴п╦п╧ я┌п╣пЁ п╦ п╡я│п╣ п╣пЁп╬ п╢п╬я┤п╣я─п╫п╦п╣ я┌п╣пЁп╦ п╡ я└п╬я─п╪п╟я┌п╣ XML.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -266,13 +266,13 @@ $METHODNAME$
 $SUMMARY$
 	Execute XPath query with the current tag context.
 $LANG_RU$
-	Выполнить запрос XPath в контексте текущего тега.
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ п╥п╟п©я─п╬я│ XPath п╡ п╨п╬п╫я┌п╣п╨я│я┌п╣ я┌п╣п╨я┐я┴п╣пЁп╬ я┌п╣пЁп╟.
 $SYNTAX$
 	XPath()	--> <Result>
 $RETURNS$
 	XPath query result.
 $LANG_RU$
-	Результат запроса XPath.
+	п═п╣п╥я┐п╩я▄я┌п╟я┌ п╥п╟п©я─п╬я│п╟ XPath.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -285,12 +285,12 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

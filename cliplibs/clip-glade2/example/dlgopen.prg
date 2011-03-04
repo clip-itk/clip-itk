@@ -1,6 +1,6 @@
 /*
   File selection dialog.
-  MÛdulo de selecciÛn de archivo.
+  M√≥dulo de selecci√≥n de archivo.
 */
 
 #define DIALOG_NAME "open_file_selection"
@@ -25,7 +25,7 @@ return( "" ); endif
 
                 /*
                   Automatic signals connection.
-                  ConexiÛn autom·tica de seÒales.
+                  Conexi√≥n autom√°tica de se≈Ñales.
                 */
                 glade_xml_signal_autoconnect( xml )
 
@@ -33,8 +33,8 @@ return( "" ); endif
                 /*
                   This signal is not defined in xmlfile, then
                 manual connection.
-                  Esta seÒal no est· definida en el archivo xml,
-                entonces conexiÛn manual.
+                  Esta se≈Ñal no est√° definida en el archivo xml,
+                entonces conexi√≥n manual.
                 */
                 gtk_signalConnect( dialog, "delete-event",;
                   {|w,e| on_open_filesel_delete_event(w,e)} )
@@ -45,7 +45,7 @@ return( "" ); endif
 
         /*
            Waiting for close dialog.
-           Se espera a que termine el di·logo.
+           Se espera a que termine el di√°logo.
         */
         gtk_main()
 

@@ -3,7 +3,7 @@
 function r2d2_classes_xml(flag)
 
 	local m1:={"ACC01","ACC00","GBL02","GBL01","ETC01"}
-	local m2:={"Глобальные","Общие","Отдел кадров","Бухгалтерские","Настройки"}
+	local m2:={"Global","Common","Personnel department","Accounting","Settings"}
 	local i
 	//local meta:= {"tcolumn","attr","class","index","deposit","extent","plugins","counter"}
 

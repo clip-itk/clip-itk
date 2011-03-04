@@ -3,11 +3,11 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIEditTable
 $LANG_RU$
-	Класс UIEditTable
+	п п╩п╟я│я│ UIEditTable
 $ABOUT$
 	Class of editable multicolumn list.
 $LANG_RU$
-	Класс редактируемой таблицы (многоколоночного списка).
+	п п╩п╟я│я│ я─п╣п╢п╟п╨я┌п╦я─я┐п╣п╪п╬п╧ я┌п╟п╠п╩п╦я├я▀ (п╪п╫п╬пЁп╬п╨п╬п╩п╬п╫п╬я┤п╫п╬пЁп╬ я│п©п╦я│п╨п╟).
 $DESCRIPTION$
 	Editable multicolumn list allow to manually create and modify two-dimensional array of values. 
 	On each cell allowed to edit you can press <keycap>Enter</keycap> key and go to edit mode. 
@@ -17,25 +17,25 @@ $DESCRIPTION$
 	press <keycap>Delete</keycap>. Confirmation dialog will be appeared and you can confirm 
 	deletion or cancel operation.
 $LANG_RU$
-	Редактируемая таблица (многоколоночный список) предназначена для создания и изменения двумерного 
-	массива значений. Любую ячейку, разрешённую для изменения, вы можете редактировать, нажав 
-	клавишу <keycap>Enter</keycap>. Для сохранения изменённого значения, 
-	нажмите <keycap>Enter</keycap> или <keycap>Esc</keycap> для отмены изменений. Новую строку можно 
-	создать из любого места, нажав клавишу <keycap>Insert</keycap>, или <keycap>Down arrow</keycap> на
-	последней строке таблицы. Для удаления выбранной строки нажмите <keycap>Delete</keycap>. Появится 
-	диалог подтверждения где вы можете подтвердить удаление строки или отменить операцию.	
+	п═п╣п╢п╟п╨я┌п╦я─я┐п╣п╪п╟я▐ я┌п╟п╠п╩п╦я├п╟ (п╪п╫п╬пЁп╬п╨п╬п╩п╬п╫п╬я┤п╫я▀п╧ я│п©п╦я│п╬п╨) п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫п╟ п╢п╩я▐ я│п╬п╥п╢п╟п╫п╦я▐ п╦ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п╢п╡я┐п╪п╣я─п╫п╬пЁп╬ 
+	п╪п╟я│я│п╦п╡п╟ п╥п╫п╟я┤п╣п╫п╦п╧. п⌡я▌п╠я┐я▌ я▐я┤п╣п╧п╨я┐, я─п╟п╥я─п╣я┬я▒п╫п╫я┐я▌ п╢п╩я▐ п╦п╥п╪п╣п╫п╣п╫п╦я▐, п╡я▀ п╪п╬п╤п╣я┌п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄, п╫п╟п╤п╟п╡ 
+	п╨п╩п╟п╡п╦я┬я┐ <keycap>Enter</keycap>. п■п╩я▐ я│п╬я┘я─п╟п╫п╣п╫п╦я▐ п╦п╥п╪п╣п╫я▒п╫п╫п╬пЁп╬ п╥п╫п╟я┤п╣п╫п╦я▐, 
+	п╫п╟п╤п╪п╦я┌п╣ <keycap>Enter</keycap> п╦п╩п╦ <keycap>Esc</keycap> п╢п╩я▐ п╬я┌п╪п╣п╫я▀ п╦п╥п╪п╣п╫п╣п╫п╦п╧. п²п╬п╡я┐я▌ я│я┌я─п╬п╨я┐ п╪п╬п╤п╫п╬ 
+	я│п╬п╥п╢п╟я┌я▄ п╦п╥ п╩я▌п╠п╬пЁп╬ п╪п╣я│я┌п╟, п╫п╟п╤п╟п╡ п╨п╩п╟п╡п╦я┬я┐ <keycap>Insert</keycap>, п╦п╩п╦ <keycap>Down arrow</keycap> п╫п╟
+	п©п╬я│п╩п╣п╢п╫п╣п╧ я│я┌я─п╬п╨п╣ я┌п╟п╠п╩п╦я├я▀. п■п╩я▐ я┐п╢п╟п╩п╣п╫п╦я▐ п╡я▀п╠я─п╟п╫п╫п╬п╧ я│я┌я─п╬п╨п╦ п╫п╟п╤п╪п╦я┌п╣ <keycap>Delete</keycap>. п÷п╬я▐п╡п╦я┌я│я▐ 
+	п╢п╦п╟п╩п╬пЁ п©п╬п╢я┌п╡п╣я─п╤п╢п╣п╫п╦я▐ пЁп╢п╣ п╡я▀ п╪п╬п╤п╣я┌п╣ п©п╬п╢я┌п╡п╣я─п╢п╦я┌я▄ я┐п╢п╟п╩п╣п╫п╦п╣ я│я┌я─п╬п╨п╦ п╦п╩п╦ п╬я┌п╪п╣п╫п╦я┌я▄ п╬п©п╣я─п╟я├п╦я▌.	
 $SYNTAX$
 	UIEditTable(<aColumns>)	--> UIEditTable object
 $LANG_RU$
-	UIEditTable(<aColumns>)	--> Объект UIEditTable
+	UIEditTable(<aColumns>)	--> п·п╠я┼п╣п╨я┌ UIEditTable
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIEditTable".
 	<columns>	- Array of <link linkend="classuiedittablecolumn">UIEditTableColumn</link> objects.
 	<onChanged> - Code block. Action that will be call after cell edit by user.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIEditTable".
-	<columns>	- Массив объектов <link linkend="classuiedittablecolumn">UIEditTableColumn</link>.
-	<onChanged> - Блок кода. Действие, вызываемое после редактирования ячейки пользователем.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIEditTable".
+	<columns>	- п°п╟я│я│п╦п╡ п╬п╠я┼п╣п╨я┌п╬п╡ <link linkend="classuiedittablecolumn">UIEditTableColumn</link>.
+	<onChanged> - п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©п╬я│п╩п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я▐я┤п╣п╧п╨п╦ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╪.
 
 
 $METHODNAME$
@@ -43,13 +43,13 @@ $METHODNAME$
 $SUMMARY$
 	Constructor. Create editable table.
 $LANG_RU$
-	Конструктор. Создать редактируемую таблицу.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я─п╣п╢п╟п╨я┌п╦я─я┐п╣п╪я┐я▌ я┌п╟п╠п╩п╦я├я┐.
 $SYNTAX$
 	UIEditTable(<aColumns>)	--> UIEditTable object
 $ARGUMENTS$
 	<aColumns>	- Array of <link linkend="classuiedittablecolumn">UIEditTableColumn</link> objects.
 $LANG_RU$
-	<aColumns>	- Массив объектов <link linkend="classuiedittablecolumn">UIEditTableColumn</link>.
+	<aColumns>	- п°п╟я│я│п╦п╡ п╬п╠я┼п╣п╨я┌п╬п╡ <link linkend="classuiedittablecolumn">UIEditTableColumn</link>.
 $EXAMPLES$
 	cols := array(0)
 	aadd( cols, UIEditTableColumn( 'num', 'N', TABLE_COLUMN_COUNTER ) )
@@ -66,15 +66,15 @@ $METHODNAME$
 $SUMMARY$
 	Append row into table.
 $LANG_RU$
-	Добавить строку в конец таблицы.
+	п■п╬п╠п╟п╡п╦я┌я▄ я│я┌я─п╬п╨я┐ п╡ п╨п╬п╫п╣я├ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	addRow([<data>],[<id>])
 $ARGUMENTS$
 	<data>		- Array of values. Array of values by columns.
 	<id>		- String. Row identifier.
 $LANG_RU$
-	<data>		- Mассив значений. Массив значений по столбцам соответственно.
-	<id>		- Строка. Идентификатор строки.
+	<data>		- Mп╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧. п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п©п╬ я│я┌п╬п╩п╠я├п╟п╪ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╣п╫п╫п╬.
+	<id>		- п║я┌я─п╬п╨п╟. п≤п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я│я┌я─п╬п╨п╦.
 $EXAMPLES$
 	table:addRow( { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
 	table:addRow( )
@@ -86,15 +86,15 @@ $METHODNAME$
 $SUMMARY$
 	Fill row by values.
 $LANG_RU$
-	Заполнить строку значениями.
+	п≈п╟п©п╬п╩п╫п╦я┌я▄ я│я┌я─п╬п╨я┐ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦.
 $SYNTAX$
 	setRow(<row>,<data>)
 $ARGUMENTS$
 	<row>		- Number. Row number (from 1).
 	<data>		- Array or object. Array of values by columns or object contains fields with column names.
 $LANG_RU$
-	<row>		- Число. Номер строки (c 1).
-	<data>		- Mассив или объект. Массив значений по столбцам или объект, содержащий поля с именами столбцов.
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1).
+	<data>		- Mп╟я│я│п╦п╡ п╦п╩п╦ п╬п╠я┼п╣п╨я┌. п°п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ п©п╬ я│я┌п╬п╩п╠я├п╟п╪ п╦п╩п╦ п╬п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п©п╬п╩я▐ я│ п╦п╪п╣п╫п╟п╪п╦ я│я┌п╬п╩п╠я├п╬п╡.
 $EXAMPLES$
 	table:setRow( 1, { 1, "20.10.03", '"John Corp."', 20000.00, .T. } )
 	m := map()
@@ -112,17 +112,17 @@ $METHODNAME$
 $SUMMARY$
 	Get row from table as object with values.
 $LANG_RU$
-	Получить строку из таблицы в виде объекта со значениями.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│я┌я─п╬п╨я┐ п╦п╥ я┌п╟п╠п╩п╦я├я▀ п╡ п╡п╦п╢п╣ п╬п╠я┼п╣п╨я┌п╟ я│п╬ п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦.
 $SYNTAX$
 	getRow(<row>)	--> oRow
 $ARGUMENTS$
 	<row>		- Number. Row number (from 1).
 $LANG_RU$
-	<row>		- Число. Номер строки (c 1).
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1).
 $RETURNS$
 	Object contains fields with column names. 
 $LANG_RU$
-	Объект, содержащий поля с именами столбцов.
+	п·п╠я┼п╣п╨я┌, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п©п╬п╩я▐ я│ п╦п╪п╣п╫п╟п╪п╦ я│я┌п╬п╩п╠я├п╬п╡.
 $EXAMPLES$
 	oRow := table:getRow(2)
 	? oRow:company
@@ -134,13 +134,13 @@ $METHODNAME$
 $SUMMARY$
 	Remove row from table.
 $LANG_RU$
-	Удалить строку из таблицы.
+	пёп╢п╟п╩п╦я┌я▄ я│я┌я─п╬п╨я┐ п╦п╥ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	removeRow(<row>)
 $ARGUMENTS$
 	<row>		- Number. Row number (from 1).
 $LANG_RU$
-	<row>		- Число. Номер строки (c 1).
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1).
 $EXAMPLES$
 	table:removeRow(2)
 $ENDMETHOD$
@@ -151,7 +151,7 @@ $METHODNAME$
 $SUMMARY$
 	Clear table: remove all rows.
 $LANG_RU$
-	Очистить таблицу: удалить все строки.
+	п·я┤п╦я│я┌п╦я┌я▄ я┌п╟п╠п╩п╦я├я┐: я┐п╢п╟п╩п╦я┌я▄ п╡я│п╣ я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	clear()
 $EXAMPLES$
@@ -165,8 +165,8 @@ $SUMMARY$
 	Set action that will be call after cell edit by user. If action returns .T. old value is 
 	recovered in target cell.
 $LANG_RU$
-	Указать действие, вызываемое после редактирования ячейки пользователем. Если действие 
-	возвращает .T., в ячейке восстанавливается старое значение. 
+	пёп╨п╟п╥п╟я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©п╬я│п╩п╣ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я▐я┤п╣п╧п╨п╦ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╪. п∙я│п╩п╦ п╢п╣п╧я│я┌п╡п╦п╣ 
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ .T., п╡ я▐я┤п╣п╧п╨п╣ п╡п╬я│я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ я│я┌п╟я─п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. 
 $SYNTAX$
 	setAction(<signal>,<action>,[<column>])
 $ARGUMENTS$
@@ -175,11 +175,11 @@ $ARGUMENTS$
 	<action>	- Code block. Action.
 	<column>	- String. Name of column with type TABLE_COLUMN_CHOICE for signal 'select'.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала. Допустимое значение: 'changed' для вызова действия при 
-	редактировании ячейки и 'select' для вызова действия выбора значений столбца типа 
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟. п■п╬п©я┐я│я┌п╦п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: 'changed' п╢п╩я▐ п╡я▀п╥п╬п╡п╟ п╢п╣п╧я│я┌п╡п╦я▐ п©я─п╦ 
+	я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦п╦ я▐я┤п╣п╧п╨п╦ п╦ 'select' п╢п╩я▐ п╡я▀п╥п╬п╡п╟ п╢п╣п╧я│я┌п╡п╦я▐ п╡я▀п╠п╬я─п╟ п╥п╫п╟я┤п╣п╫п╦п╧ я│я┌п╬п╩п╠я├п╟ я┌п╦п©п╟ 
 	TABLE_COLUMN_CHOICE.
-	<action>	- Блок кода. Действие.
-	<column>	- Строка. Имя столбца типа TABLE_COLUMN_CHOICE для сигнала 'select'.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
+	<column>	- п║я┌я─п╬п╨п╟. п≤п╪я▐ я│я┌п╬п╩п╠я├п╟ я┌п╦п©п╟ TABLE_COLUMN_CHOICE п╢п╩я▐ я│п╦пЁп╫п╟п╩п╟ 'select'.
 $EXAMPLES$
 	table:setAction( 'changed', {|table,row,column,oldValue| onEditTableChanged(table, row, column, oldValue) })
 $ENDMETHOD$
@@ -190,7 +190,7 @@ $METHODNAME$
 $SUMMARY$
 	Change cell value.
 $LANG_RU$
-	Изменить значение отдельной ячейки.
+	п≤п╥п╪п╣п╫п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п╬я┌п╢п╣п╩я▄п╫п╬п╧ я▐я┤п╣п╧п╨п╦.
 $SYNTAX$
 	setField(<column>,[<row>],<value>)
 $ARGUMENTS$
@@ -198,9 +198,9 @@ $ARGUMENTS$
 	<row>		- Number. Row number (from 1). If NIL current row is used.
 	<value>		- Any type. Value of appropriated column type.
 $LANG_RU$
-	<column>	- Число или строка. Номер столбца (с 1) или имя столбца.
-	<row>		- Число. Номер строки (c 1). Если NIL, используется текущая выделенная строка.
-	<value>		- Любой тип. Значение с типом соответствующего столбца.
+	<column>	- п╖п╦я│п╩п╬ п╦п╩п╦ я│я┌я─п╬п╨п╟. п²п╬п╪п╣я─ я│я┌п╬п╩п╠я├п╟ (я│ 1) п╦п╩п╦ п╦п╪я▐ я│я┌п╬п╩п╠я├п╟.
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1). п∙я│п╩п╦ NIL, п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ я┌п╣п╨я┐я┴п╟я▐ п╡я▀п╢п╣п╩п╣п╫п╫п╟я▐ я│я┌я─п╬п╨п╟.
+	<value>		- п⌡я▌п╠п╬п╧ я┌п╦п©. п≈п╫п╟я┤п╣п╫п╦п╣ я│ я┌п╦п©п╬п╪ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╣пЁп╬ я│я┌п╬п╩п╠я├п╟.
 $EXAMPLES$
 	table:setField( 4, 1, 5600.00 )
 	table:setField( 'name', , 'John Bull')
@@ -212,19 +212,19 @@ $METHODNAME$
 $SUMMARY$
 	Get cell value.
 $LANG_RU$
-	Получить значение ячейки.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ я▐я┤п╣п╧п╨п╦.
 $SYNTAX$
 	getField([<column>],[<row>]) --> vValue
 $ARGUMENTS$
 	<column>	- Number or string. Number of column (from 1) or name of column. If NIL method returns array with row values.
 	<row>		- Number. Row number (from 1). If NIL current row is used.
 $LANG_RU$
-	<column>	- Число или строка. Номер столбца (с 1) или имя столбца. Если NIL, метод возвращает массив значений строки.
-	<row>		- Число. Номер строки (c 1). Если NIL, используется текущая выделенная строка.
+	<column>	- п╖п╦я│п╩п╬ п╦п╩п╦ я│я┌я─п╬п╨п╟. п²п╬п╪п╣я─ я│я┌п╬п╩п╠я├п╟ (я│ 1) п╦п╩п╦ п╦п╪я▐ я│я┌п╬п╩п╠я├п╟. п∙я│п╩п╦ NIL, п╪п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╪п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ я│я┌я─п╬п╨п╦.
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1). п∙я│п╩п╦ NIL, п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ я┌п╣п╨я┐я┴п╟я▐ п╡я▀п╢п╣п╩п╣п╫п╫п╟я▐ я│я┌я─п╬п╨п╟.
 $RETURNS$
 	Value in speciefied cell or array of row values if <column> is NIL. 
 $LANG_RU$
-	Значение указанной ячейки или массив значений строки если <column> не указан.
+	п≈п╫п╟я┤п╣п╫п╦п╣ я┐п╨п╟п╥п╟п╫п╫п╬п╧ я▐я┤п╣п╧п╨п╦ п╦п╩п╦ п╪п╟я│я│п╦п╡ п╥п╫п╟я┤п╣п╫п╦п╧ я│я┌я─п╬п╨п╦ п╣я│п╩п╦ <column> п╫п╣ я┐п╨п╟п╥п╟п╫.
 $EXAMPLES$
 	name := table:getField( 'name', 1 )
 $ENDMETHOD$
@@ -235,13 +235,13 @@ $METHODNAME$
 $SUMMARY$
 	Fill table. All existed content will be replaced by new content.
 $LANG_RU$
-	Заполнить таблицу. Все содержимое будет заменено указанным значением.
+	п≈п╟п©п╬п╩п╫п╦я┌я▄ я┌п╟п╠п╩п╦я├я┐. п▓я│п╣ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╠я┐п╢п╣я┌ п╥п╟п╪п╣п╫п╣п╫п╬ я┐п╨п╟п╥п╟п╫п╫я▀п╪ п╥п╫п╟я┤п╣п╫п╦п╣п╪.
 $SYNTAX$
 	setValue(<data>)
 $ARGUMENTS$
 	<data>		- Array. Content for fill table.
 $LANG_RU$
-	<data>		- Массив. Содержимое для заполнения таблицы.
+	<data>		- п°п╟я│я│п╦п╡. п║п╬п╢п╣я─п╤п╦п╪п╬п╣ п╢п╩я▐ п╥п╟п©п╬п╩п╫п╣п╫п╦я▐ я┌п╟п╠п╩п╦я├я▀.
 $EXAMPLES$
 	data := table:getValue( )
 	table:setValue( data )
@@ -253,13 +253,13 @@ $METHODNAME$
 $SUMMARY$
 	Get table content.
 $LANG_RU$
-	Получить содержимое таблицы.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ я┌п╟п╠п╩п╦я├я▀.
 $SYNTAX$
 	getValue() --> data
 $RETURNS$
 	Array. Table content. 
 $LANG_RU$
-	Массив. Содержимое таблицы.
+	п°п╟я│я│п╦п╡. п║п╬п╢п╣я─п╤п╦п╪п╬п╣ я┌п╟п╠п╩п╦я├я▀.
 $EXAMPLES$
 	data := table:getValue( )
 	table:setValue( data )
@@ -271,7 +271,7 @@ $METHODNAME$
 $SUMMARY$
 	Set cursor to cpecified cell.
 $LANG_RU$
-	Установить фокус на указанную ячейку.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я└п╬п╨я┐я│ п╫п╟ я┐п╨п╟п╥п╟п╫п╫я┐я▌ я▐я┤п╣п╧п╨я┐.
 $SYNTAX$
 	setCursor(<row>,<column>,<beginEdit>)
 $ARGUMENTS$
@@ -279,9 +279,9 @@ $ARGUMENTS$
 	<column>	- Number. Number of column (from 1).
 	<beginEdit>	- Logical. Start editing of cell.
 $LANG_RU$
-	<column>	- Число. Номер столбца (с 1).
-	<row>		- Число. Номер строки (c 1).
-	<beginEdit>	- Логическое значение. Флаг начала редактирования ячейки.
+	<column>	- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌п╬п╩п╠я├п╟ (я│ 1).
+	<row>		- п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я│я┌я─п╬п╨п╦ (c 1).
+	<beginEdit>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ п╫п╟я┤п╟п╩п╟ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ я▐я┤п╣п╧п╨п╦.
 $EXAMPLES$
 	table:setCursor( 2, 3 )
 $ENDMETHOD$
@@ -292,13 +292,13 @@ $METHODNAME$
 $SUMMARY$
 	Get number of rows in the table.
 $LANG_RU$
-	Получить количество строк в таблице.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨ п╡ я┌п╟п╠п╩п╦я├п╣.
 $SYNTAX$
 	getRowCount() --> nRows
 $RETURNS$
 	Number. Number of rows in the table. 
 $LANG_RU$
-	Число. Количество строк в таблице.
+	п╖п╦я│п╩п╬. п п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨ п╡ я┌п╟п╠п╩п╦я├п╣.
 $EXAMPLES$
 	nRows := table:getRowCount( )
 $ENDMETHOD$
@@ -309,13 +309,13 @@ $METHODNAME$
 $SUMMARY$
 	Get number of columns in the table.
 $LANG_RU$
-	Получить количество столбцов в таблице.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌п╬п╩п╠я├п╬п╡ п╡ я┌п╟п╠п╩п╦я├п╣.
 $SYNTAX$
 	getColumnCount() --> nColumns
 $RETURNS$
 	Number. Number of columns in the table. 
 $LANG_RU$
-	Число. Количество столбцов в таблице.
+	п╖п╦я│п╩п╬. п п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌п╬п╩п╠я├п╬п╡ п╡ я┌п╟п╠п╩п╦я├п╣.
 $EXAMPLES$
 	nColumns := table:getColumnCount( )
 $ENDMETHOD$
@@ -326,13 +326,13 @@ $METHODNAME$
 $SUMMARY$
 	Get current row in the table.
 $LANG_RU$
-	Получить текущую строку в таблице.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я┌п╣п╨я┐я┴я┐я▌ я│я┌я─п╬п╨я┐ п╡ я┌п╟п╠п╩п╦я├п╣.
 $SYNTAX$
 	getSelectedRow() --> nRow
 $RETURNS$
 	Number. Number of rows in the table. 
 $LANG_RU$
-	Число. Номер текущей строки в таблице.
+	п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╡ я┌п╟п╠п╩п╦я├п╣.
 $EXAMPLES$
 	nRow := table:getSelectedRow( )
 $ENDMETHOD$
@@ -343,13 +343,13 @@ $METHODNAME$
 $SUMMARY$
 	Get current column in the table.
 $LANG_RU$
-	Получить текущий столбец в таблице.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ я│я┌п╬п╩п╠п╣я├ п╡ я┌п╟п╠п╩п╦я├п╣.
 $SYNTAX$
 	getSelectedColumn() --> nColumn
 $RETURNS$
 	Number. Number of rows in the table. 
 $LANG_RU$
-	Число. Номер текущего столбца в таблице.
+	п╖п╦я│п╩п╬. п²п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣пЁп╬ я│я┌п╬п╩п╠я├п╟ п╡ я┌п╟п╠п╩п╦я├п╣.
 $EXAMPLES$
 	nColumn := table:getSelectedColumn( )
 $ENDMETHOD$
@@ -369,11 +369,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UIEDITTABLECOLUMN UITABLEEDIT 
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

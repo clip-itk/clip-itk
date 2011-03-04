@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Retrieve a numeric parameter as a long.
 $LANG_RU$
-	Принимает числовой параметр как long.
+	п÷я─п╦п╫п╦п╪п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╧ п©п╟я─п╟п╪п╣я┌я─ п╨п╟п╨ long.
 $SYNTAX$
 	_clip_parnl(ClipMachine * cm,int num) --> long
 $ARGUMENTS$
 	<num> - position of the parameter in parameters list
 $LANG_RU$
-	<num> - позиция параметра в списке параметров
+	<num> - п©п╬п╥п╦я├п╦я▐ п©п╟я─п╟п╪п╣я┌я─п╟ п╡ я│п©п╦я│п╨п╣ п©п╟я─п╟п╪п╣я┌я─п╬п╡
 $RETURNS$
 	_clip_parnl() returns the value of the specified parameter as a long type.
 $LANG_RU$
-	_clip_parnl() возващает значение указанного параметр как long.
+	_clip_parnl() п╡п╬п╥п╡п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ п©п╟я─п╟п╪п╣я┌я─ п╨п╟п╨ long.
 $DESCRIPTION$
 	_clip_parnl() retrieves a numeric value passed as a parameter from CLIP
 	and converts it to a long type.
 $LANG_RU$
-	_clip_parnl() принимает числовое значение переданное в качестве параметра
-	из CLIP и преобразует его в long.
+	_clip_parnl() п©я─п╦п╫п╦п╪п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╣п╢п╟п╫п╫п╬п╣ п╡ п╨п╟я┤п╣я│я┌п╡п╣ п©п╟я─п╟п╪п╣я┌я─п╟
+	п╦п╥ CLIP п╦ п©я─п╣п╬п╠я─п╟п╥я┐п╣я┌ п╣пЁп╬ п╡ long.
 $EXAMPLES$
 	#include "clip.h"
 

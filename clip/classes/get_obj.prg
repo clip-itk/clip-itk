@@ -165,9 +165,9 @@ function _recover_get(obj)
   obj:Insert 		:= @Insert()
   obj:overStrike   	:= @overStrike()
   obj:__analizePic 	:= @__analizePic()   // analize PICTURE string
-  obj:__fillBuffer 	:= @__fillBuffer()   // заполнитель буфера
-  obj:__updateInfo 	:= @__updateInfo()   // читает вновь переменную и обновляет
-					// служебную инфу
+  obj:__fillBuffer 	:= @__fillBuffer()   // bufer filler
+  obj:__updateInfo 	:= @__updateInfo()   // read variable again and update
+					// system info
   obj:__checkSym   	:= @__checkSym()
   obj:__toString   	:= @__toString()
   obj:__toString   	:= @__toString()
@@ -201,7 +201,7 @@ static func unTransform()
 #ifdef DEBUG
 	outlog(__FILE__,__LINE__,"untransform",::name)
 #endif
-    // buffer надо почистить от ненужных символов
+    // need to cleanup 'buffer'
     if "R" $ ::__flags .or. ::type!="C"
        s=""
        for i=1 to len(::__posArr)
@@ -1168,7 +1168,7 @@ static func __analizePic()
   endif
   */
   if !empty(::picture)
-	  // разбор команд в PICTURE-строке
+	  // parse commands in PICTURE-string
 	s1:=::picture
 	if substr(s1,1,1)=="@"
 		i:=at(" ",s1)
@@ -1253,7 +1253,7 @@ static func __analizePic()
      return NIL
   endif
   if empty(s4) //empty(::picture)
-     // сделать шаблон по умолчанию
+     // make default template
 	do case
 	case ::type=="C"
 		  ::__len:=len(::__original)
@@ -1322,7 +1322,7 @@ static func __analizePic()
 	endif
 
   else
-	//  разбор шаблона вывода данных
+	//  parse input template
 	::__format:=""
 	::__dataSay:=""
 	for i=1 to len(s4)

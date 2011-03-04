@@ -5,14 +5,14 @@ $CATEGORY$
 $SUMMARY$
 	Returns the weight table of characters.
 $LANG_RU$
-	Возвращает весовую таблицу символов.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╡п╣я│п╬п╡я┐я▌ я┌п╟п╠п╩п╦я├я┐ я│п╦п╪п╡п╬п╩п╬п╡.
 $SYNTAX$
 	WEIGHTTABLE() 	--> <sTable>
 $ARGUMENTS$
 $RETURNS$
      Returns the string <sTable> - weight table of characters.
 $LANG_RU$
-     Возвращает строку <sTable>, содержащую весовую таблицу символов.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sTable>, я│п╬п╢п╣я─п╤п╟я┴я┐я▌ п╡п╣я│п╬п╡я┐я▌ я┌п╟п╠п╩п╦я├я┐ я│п╦п╪п╡п╬п╩п╬п╡.
 $DESCRIPTION$
 
 	WEIGHTTABLE() returns the string <sTable> - weight table. This table
@@ -20,8 +20,8 @@ $DESCRIPTION$
 	regular expressions and more.
 $LANG_RU$
 
-	WEIGHTTABLE() возвращает строку <sTable>, весовую таблицу. Эта таблица
-	содержит вес всех 256 символов и используется в операциях сравнения строк, индексации, регулярных выражениях и пр.
+	WEIGHTTABLE() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ <sTable>, п╡п╣я│п╬п╡я┐я▌ я┌п╟п╠п╩п╦я├я┐. п╜я┌п╟ я┌п╟п╠п╩п╦я├п╟
+	я│п╬п╢п╣я─п╤п╦я┌ п╡п╣я│ п╡я│п╣я┘ 256 я│п╦п╪п╡п╬п╩п╬п╡ п╦ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╡ п╬п©п╣я─п╟я├п╦я▐я┘ я│я─п╟п╡п╫п╣п╫п╦я▐ я│я┌я─п╬п╨, п╦п╫п╢п╣п╨я│п╟я├п╦п╦, я─п╣пЁя┐п╩я▐я─п╫я▀я┘ п╡я▀я─п╟п╤п╣п╫п╦я▐я┘ п╦ п©я─.
 $EXAMPLES$
 
 wt := WEIGHTTABLE()
@@ -33,12 +33,12 @@ next
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформ
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	WEIGHTASC(), WEIGHTCHR(), ASC()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

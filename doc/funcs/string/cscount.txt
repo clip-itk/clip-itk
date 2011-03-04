@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Returns the number specified chars into source string.
 $LANG_RU$
-	Возвращает количество заданных символов в строке.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╥п╟п╢п╟п╫п╫я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡ п╡ я│я┌я─п╬п╨п╣.
 $SYNTAX$
-     CSCOUNT(<сChar>, <sString>) 	--> <nCount>
+     CSCOUNT(<я│Char>, <sString>) 	--> <nCount>
 $ARGUMENTS$
      <cChar>	Character, is the character for scanning.
      <sString>	String, is the source string
 $LANG_RU$
-     <cChar>	Character, символ для поиска
-     <sString>	String, исходная строка
+     <cChar>	Character, я│п╦п╪п╡п╬п╩ п╢п╩я▐ п©п╬п╦я│п╨п╟
+     <sString>	String, п╦я│я┘п╬п╢п╫п╟я▐ я│я┌я─п╬п╨п╟
 $RETURNS$
      Returns the number of character <cChar> into source string <sString>.
 $LANG_RU$
-     Возвращает количество символов <cChar> в строке <sString>.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│п╦п╪п╡п╬п╩п╬п╡ <cChar> п╡ я│я┌я─п╬п╨п╣ <sString>.
 $DESCRIPTION$
      CSCOUNT() returns the number of character <cChar> into source string <sString>.
 $LANG_RU$
-     CSCOUNT() возвращает количество символов <cChar> в строке <sString>.
+     CSCOUNT() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│п╦п╪п╡п╬п╩п╬п╡ <cChar> п╡ я│я┌я─п╬п╨п╣ <sString>.
 $EXAMPLES$
 
 CSCOUNT("s", "substr") 		// --> 2
@@ -30,11 +30,11 @@ CSCOUNT("a", "substr") 		// --> 0
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

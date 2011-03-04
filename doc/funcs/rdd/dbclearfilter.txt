@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Clear a filter condition
 $LANG_RU$
-   Снимает условие фильтрации базы данных, установленное командой SET FILTER.
+   п║п╫п╦п╪п╟п╣я┌ я┐я│п╩п╬п╡п╦п╣ я└п╦п╩я▄я┌я─п╟я├п╦п╦ п╠п╟п╥я▀ п╢п╟п╫п╫я▀я┘, я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╫п╬п╣ п╨п╬п╪п╟п╫п╢п╬п╧ SET FILTER.
 $SYNTAX$
      DBCLEARFILTER() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBCLEARFILTER() always returns NIL.
 $LANG_RU$
-     DBCLEARFILTER() всегда возвращает NIL.
+     DBCLEARFILTER() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBCLEARFILTER() clears the logical filter condition, if any, for the
      current work area.
@@ -22,12 +22,12 @@ $DESCRIPTION$
      command with no expression specified.  For more information, refer to
      the SET FILTER command.
 $LANG_RU$
-     DBCLEARFILTER() снимает условие фильтрации, если оно установлено в
-     текущей рабочей области.
+     DBCLEARFILTER() я│п╫п╦п╪п╟п╣я┌ я┐я│п╩п╬п╡п╦п╣ я└п╦п╩я▄я┌я─п╟я├п╦п╦, п╣я│п╩п╦ п╬п╫п╬ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╬ п╡
+     я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
 
-     DBCLEARFILTER() выполняет те же функции, что и стандартная команда
-     SET FILTER TO без логического выражения. Более подробную информацию
-     смотрите в команде SET FILTER.
+     DBCLEARFILTER() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟
+     SET FILTER TO п╠п╣п╥ п╩п╬пЁп╦я┤п╣я│п╨п╬пЁп╬ п╡я▀я─п╟п╤п╣п╫п╦я▐. п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌
+     я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ SET FILTER.
 $EXAMPLES$
        The following example sets a filter, lists data as filtered,
 	and then clears the filter:

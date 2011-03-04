@@ -79,7 +79,7 @@ IF Type('_tmr')=='N' .AND. USED() THEN go m->_tmr
 BREAK(gCode)
 **********
 STATIC PROC WriteLog(cMessage)
-* При отладке - более подробно
+* When debugging - more detail
 LOCAL i
 cMessage:=_CRLF+DTOC(date())+' '+TIME()+_CRLF+cMessage
 i:=2

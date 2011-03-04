@@ -74,7 +74,7 @@
  *                 a more appropriate test display.
  *
  *         [4]  cFillChar  is the character (for desktop background only)
- *                 Default is CHR(177) "ฑฑฑฑฑฑฑฑฑฑฑฑฑฑ"
+ *                 Default is CHR(177) "โ–’โ–’โ–’โ–’โ–’โ–’โ–’โ–’โ–’โ–’โ–’โ–’โ–’โ–’"
  *
  *
  *     <lClrMode>   .T.  use colour palette
@@ -106,7 +106,7 @@
  *     *.... a typical application might have the following different settings
  *     *     normally these would be stored in a .dbf/.dbv
  *     aClrs := {;
- *        { "Desktop",        "N/BG",                         "D", "ฑ" }, ;
+ *        { "Desktop",        "N/BG",                         "D", "โ–’" }, ;
  *        { "Title",          "N/W",                          "T"      }, ;
  *        { "Top Menu",       "N/BG,N/W,W+/BG,W+/N,GR+/N",    "M"      }, ;
  *        { "Sub Menu",       "W+/N*,GR+/N*,GR+/N*,W+/R,G+/R","M"      }, ;
@@ -223,7 +223,7 @@
   *.... a typical application might have the following different settings
   *     normally these would be stored in a .dbf/.dbv
   aClrs := {;
-     { "Desktop",        "N/BG",                         "D", "ฑ" }, ;
+     { "Desktop",        "N/BG",                         "D", "โ–’" }, ;
      { "Title",          "N/W",                          "T"      }, ;
      { "Top Menu",       "N/BG,N/W,W+/BG,W+/N,GR+/N",    "M"      }, ;
      { "Sub Menu",       "W+/N*,GR+/N*,GR+/N*,W+/R,G+/R","M"      }, ;
@@ -430,7 +430,7 @@ DO WHILE .T.
   *.... allow change to specific part of colour string
   IF aOpt[ C_TYPE ] <> "T"
     Single( nT, nL+1, nB, nR-1 )
-    @ nT, nL+2 SAY PadC( " "+ aOpt[C_NAME] +" ", nR -nL -3, "ฤ" )
+    @ nT, nL+2 SAY PadC( " "+ aOpt[C_NAME] +" ", nR -nL -3, "ฤ" ) // utf-8: "โ”€"
   ENDIF
   cClr := _ftClrSel( aClrPal, cClr, nChoice, aOpt )  //  selection routine
   aClrs[ nChoice ] := cClr               // put colour back in array
@@ -495,7 +495,7 @@ DO CASE
      ClearS( 19, 41, 24, 66 )
      Single( 19, 42, 24, 65 )
      @ 20,43 SAY  "    Invoice Entry    "
-     @ 21,42 SAY "รฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด"
+     @ 21,42 SAY "รฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด" // utf-8: "โ”โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”ค"
      @ 22,43 SAY  "   Amount            "
      @ 23,43 SAY  "   Date              "
      SETCOLOR( aClr[2] )
@@ -510,7 +510,7 @@ DO CASE
      @ 19,42 SAY  "                       "
      @ 20,42 SAY  "     Test Message      "
      @ 21,42 SAY  "                       "
-     @ 22,41 SAY "รฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด"
+     @ 22,41 SAY "รฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤฤด" // utf-8: "โ”โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”ค"
      SETCOLOR( aClr[2] )
      @ 23,44 SAY  " Accept "
      SETCOLOR( aClr[5] )
@@ -521,12 +521,12 @@ DO CASE
      ClearS( 18, 37, 24, 70 )
      Single( 18, 38, 24, 69 )
      @ 19,39 SAY  " Cust   Name           Amount "
-     @ 20,38 SAY "ฦออออออัออออออออออออออัออออออออต"
+     @ 20,38 SAY "ฦออออออัออออออออออออออัออออออออต" // utf-8: "โ•โ•โ•โ•โ•โ•โ•โ•คโ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•คโ•โ•โ•โ•โ•โ•โ•โ•โ•ก"
      @ 21,39 SAY  "  312 ณ Rick Shaw    ณ 143.25 "
      @ 23,39 SAY  "      ณ              ณ        "
-     @ 24,38 SAY "ิออออออฯออออออออออออออฯออออออออพ"
+     @ 24,38 SAY "ิออออออฯออออออออออออออฯออออออออพ" // utf-8: "โ•โ•โ•โ•โ•โ•โ•โ•งโ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•โ•งโ•โ•โ•โ•โ•โ•โ•โ•โ•"
      SETCOLOR( aClr[2] )
-     @ 22,39 SAY  " 1005 ณ Harry Pitts  ณ  78.95 "
+     @ 22,39 SAY  " 1005 ณ Harry Pitts  ณ  78.95 " // utf-8: " 1005 โ” Harry Pitts  โ”  78.95 "
      SETCOLOR( aClr[5] )
      @ 23,39 SAY  " 3162 "
      @ 23,46 SAY         " Barb Wire    "

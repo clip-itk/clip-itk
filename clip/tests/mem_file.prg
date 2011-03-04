@@ -8,8 +8,8 @@ restore from my.mem additive
 ? 'save to my2.mem'
 save all like my_* to my2.mem
 ? 'now:'
-my_firma:="———————"
-my_bank:="’’’’’’’’’"
+my_firma:="XXXXXXXXXXXXXXX"
+my_bank:="YYYYYYYYYYYYYYY"
 ? 'my_firma=',my_firma
 ? 'my_bank=',my_bank
 restore from my2.mem additive

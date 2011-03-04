@@ -10,7 +10,7 @@
 #define CLIP_GTK_MAX_COLOR	65535
 
 
-/* события */
+/* events */
 /*
  *   Nothing: No event occurred.
  *   Delete: A window delete event was sent by the window manager.
@@ -235,7 +235,7 @@
 
 
 
-/* клавиатурные состояния */
+/* keyboard statuses */
 
 #define GDK_SHIFT_MASK		    1
 #define GDK_LOCK_MASK		    2
@@ -262,7 +262,7 @@
 #define GTK_ACCEL_LOCKED		4
 #define GTK_ACCEL_MASK			7
 
-/* объекты */
+/* objects */
 #define GTK_OBJ_OBJECT			HASH___GTK_OBJ_OBJECT
 #define GDK_OBJECT_FONT			HASH___GDK_OBJECT_FONT
 #define GDK_OBJECT_GC			HASH___GDK_OBJECT_GC
@@ -275,7 +275,7 @@
 #define GTK_OBJ_WIDGET			HASH___GTK_OBJ_WIDGET
 #define GTK_OBJECT_ITEM_FACTORY		HASH___GTK_OBJECT_ITEM_FACTORY
 
-/* типы виджетов */
+/* widget types */
 #define GTK_WIDGET_OBJECT		HASH___GTK_WIDGET_OBJECT
 #define GTK_WIDGET_WIDGET		HASH___GTK_WIDGET_WIDGET
 #define GTK_WIDGET_UNKNOWN		HASH___GTK_WIDGET_UNKNOWN

@@ -3,15 +3,15 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIColor.
 $LANG_RU$
-	Класс UIColor.
+	п п╩п╟я│я│ UIColor.
 $ABOUT$
 	Color class.
 $LANG_RU$
-	Класс цвета.
+	п п╩п╟я│я│ я├п╡п╣я┌п╟.
 $SYNTAX$
 	UIColor(<color>,[<opacity>])	--> UIColor object
 $LANG_RU$
-	UIColor(<color>,[<opacity>])	--> Объект UIColor
+	UIColor(<color>,[<opacity>])	--> п·п╠я┼п╣п╨я┌ UIColor
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIColor".
 	<red>		- Red constituent of color. Value should be from 0 to 255.
@@ -19,26 +19,26 @@ $ATTRIBUTES$
 	<blue>		- Blue constituent of color. Value should be from 0 to 255.
 	<opacity>	- Opacity of color. Value should be from 0 to 255.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIColor".
-	<red>		- Красная составляющая указанного цвета. Значение от 0 до 255.
-	<green>		- Зелёная составляющая указанного цвета. Значение от 0 до 255.
-	<blue>		- Синяя составляющая указанного цвета. Значение от 0 до 255.
-	<opacity>	- Прозрачность указанного цвета. Значение от 0 до 255.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIColor".
+	<red>		- п я─п╟я│п╫п╟я▐ я│п╬я│я┌п╟п╡п╩я▐я▌я┴п╟я▐ я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ я├п╡п╣я┌п╟. п≈п╫п╟я┤п╣п╫п╦п╣ п╬я┌ 0 п╢п╬ 255.
+	<green>		- п≈п╣п╩я▒п╫п╟я▐ я│п╬я│я┌п╟п╡п╩я▐я▌я┴п╟я▐ я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ я├п╡п╣я┌п╟. п≈п╫п╟я┤п╣п╫п╦п╣ п╬я┌ 0 п╢п╬ 255.
+	<blue>		- п║п╦п╫я▐я▐ я│п╬я│я┌п╟п╡п╩я▐я▌я┴п╟я▐ я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ я├п╡п╣я┌п╟. п≈п╫п╟я┤п╣п╫п╦п╣ п╬я┌ 0 п╢п╬ 255.
+	<opacity>	- п÷я─п╬п╥я─п╟я┤п╫п╬я│я┌я▄ я┐п╨п╟п╥п╟п╫п╫п╬пЁп╬ я├п╡п╣я┌п╟. п≈п╫п╟я┤п╣п╫п╦п╣ п╬я┌ 0 п╢п╬ 255.
 
 $METHODNAME$
 	UIColor()
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UIColor(<color>,[<opacity>])
 $ARGUMENTS$
 	<color>		- String. Color. Defined in format '#RRGGBB': hexadecimal value in two bytes of red, green and blue color constituents respectively. '00' - minimal value, 'FF' - maximum value of each constituent. For example, '#FFFF00' is value for yellow color.
 	<opacity>	- Number. Opacity. Value should be from 0 (full opacity color) to 1 (absolutely transparent color).
 $LANG_RU$
-	<color>		- Строка. Цвет. Указывается в формате '#RRGGBB': шестнадцатеричное представление в двух байтах соответственно красной, зелёной и синей составляющей цвета. '00' - минимальное значение, 'FF' - максимальное значение. Например, '#FFFF00' - жёлтый цвет.
-	<opacity>	- Число. Непрозрачность. Значение от 0 (совершенно непрозрачный цвет) до 1 (абсолютно прозрачный цвет).
+	<color>		- п║я┌я─п╬п╨п╟. п╕п╡п╣я┌. пёп╨п╟п╥я▀п╡п╟п╣я┌я│я▐ п╡ я└п╬я─п╪п╟я┌п╣ '#RRGGBB': я┬п╣я│я┌п╫п╟п╢я├п╟я┌п╣я─п╦я┤п╫п╬п╣ п©я─п╣п╢я│я┌п╟п╡п╩п╣п╫п╦п╣ п╡ п╢п╡я┐я┘ п╠п╟п╧я┌п╟я┘ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╣п╫п╫п╬ п╨я─п╟я│п╫п╬п╧, п╥п╣п╩я▒п╫п╬п╧ п╦ я│п╦п╫п╣п╧ я│п╬я│я┌п╟п╡п╩я▐я▌я┴п╣п╧ я├п╡п╣я┌п╟. '00' - п╪п╦п╫п╦п╪п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, 'FF' - п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п²п╟п©я─п╦п╪п╣я─, '#FFFF00' - п╤я▒п╩я┌я▀п╧ я├п╡п╣я┌.
+	<opacity>	- п╖п╦я│п╩п╬. п²п╣п©я─п╬п╥я─п╟я┤п╫п╬я│я┌я▄. п≈п╫п╟я┤п╣п╫п╦п╣ п╬я┌ 0 (я│п╬п╡п╣я─я┬п╣п╫п╫п╬ п╫п╣п©я─п╬п╥я─п╟я┤п╫я▀п╧ я├п╡п╣я┌) п╢п╬ 1 (п╟п╠я│п╬п╩я▌я┌п╫п╬ п©я─п╬п╥я─п╟я┤п╫я▀п╧ я├п╡п╣я┌).
 
 $EXAMPLES$
 	color := UIColor("#0000FF") /* Blue color */
@@ -47,10 +47,10 @@ $ENDMETHOD$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

@@ -50,14 +50,14 @@
  *
  *      There are a few HOT Keys while using the Adder:
  *
- *             <D>ecimals Ä change # of decimals
- *             <M>ove     Ä the Adder from right display to left
- *             <T>ape     Ä turn the Tape Display On or Off
- *             <S>croll   Ä the tape display
- *             <DEL> ÄÄÄÂÄÄ 1st Clear entry
- *                      ÀÄÄ 2nd Clear ADDER
- *             <ESC>      Ä Quit
- *             <F10>      Ä return a <TOTAL> to the active get
+ *             <D>ecimals - change # of decimals
+ *             <M>ove     - the Adder from right display to left
+ *             <T>ape     - turn the Tape Display On or Off
+ *             <S>croll   - the tape display
+ *             <DEL> ---+-- 1st Clear entry
+ *                      +-- 2nd Clear ADDER
+ *             <ESC>      - Quit
+ *             <F10>      - return a <TOTAL> to the active get
  *
  *
  *      A couple of notes about the adder:
@@ -137,8 +137,8 @@
 #define K_MULTIPLY 42
 #define K_DIVIDE   47
 #define K_ZERO     48
-#define B_DOUBLE 'ÉÍ»º¼ÍÈº '
-#define B_SINGLE 'ÚÄ¿³ÙÄÀ³ '
+#define B_DOUBLE 'ÉÍ»º¼ÍÈº ' // utf-8: 'â•”â•â•—â•‘â•â•â•šâ•‘ '
+#define B_SINGLE 'ÚÄ¿³ÙÄÀ³ ' // utf-8: 'â”Œâ”€â”â”‚â”˜â”€â””â”‚ '
 
 #undef CRLF
 #define CRLF CHR(13)+CHR(10)
@@ -246,21 +246,21 @@ STATIC lAdderOpen := .F.,                                                    ;
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: FT_Adder()            Docs: Keith A. Wire                  ³
-  ³  Description: Pop Up Adder / Calculator with Tape Display                ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 11:18:40am            Time updated: ş11:18:40am            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ³        Notes: To make FT_Adder() pop up from any wait state in your      ³
-  ³             : application just insert the line:                          ³
-  ³             :   SET KEY K_ALT_A  TO FT_Adder                             ³
-  ³             : at the top of your application                             ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: FT_Adder()            Docs: Keith A. Wire                  |
+  |  Description: Pop Up Adder / Calculator with Tape Display                |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated: 10-03-93               |
+  | Time created: 11:18:40am            Time updated: 11:18:40am             |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: NIL                                                        |
+  |        Notes: To make FT_Adder() pop up from any wait state in your      |
+  |             : application just insert the line:                          |
+  |             :   SET KEY K_ALT_A  TO FT_Adder                             |
+  |             : at the top of your application                             |
+  +--------------------------------------------------------------------------+
 */
 FUNCTION FT_Adder()
 
@@ -433,38 +433,38 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftAddScreen()        Docs: Keith A. Wire                  ³
-  ³  Description: Display the Adder                                          ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 11:24:29am            Time updated: ş11:24:29am            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftAddScreen()        Docs: Keith A. Wire                  |
+  |  Description: Display the Adder                                          |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated: 10-03-93               |
+  | Time created: 11:24:29am            Time updated: 11:24:29am             |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftAddScreen(aAdder)
   LOCAL nCol
   _ftPushWin(2+nTopOS,2+nAddSpace,22+nTopOS,30+nAddSpace,'   Adder   ',      ;
           '<F-1> for Help',,B_DOUBLE)
   nCol := 5+nAddSpace
-  @  7+nTopOS, nCol SAY '      ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿'
-  @  8+nTopOS, nCol SAY '      ³   ³ ³   ³ ³   ³'
-  @  9+nTopOS, nCol SAY '      ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ'
-  @ 10+nTopOS, nCol SAY 'ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿'
-  @ 11+nTopOS, nCol SAY '³   ³ ³   ³ ³   ³ ³   ³'
-  @ 12+nTopOS, nCol SAY 'ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ ³   ³'
-  @ 13+nTopOS, nCol SAY 'ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿ ³   ³'
-  @ 14+nTopOS, nCol SAY '³   ³ ³   ³ ³   ³ ³   ³'
-  @ 15+nTopOS, nCol SAY 'ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ'
-  @ 16+nTopOS, nCol SAY 'ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿'
-  @ 17+nTopOS, nCol SAY '³   ³ ³   ³ ³   ³ ³   ³'
-  @ 18+nTopOS, nCol SAY 'ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ ³   ³'
-  @ 19+nTopOS, nCol SAY 'ÚÄÄÄÄÄÄÄÄÄ¿ ÚÄÄÄ¿ ³   ³'
-  @ 20+nTopOS, nCol SAY '³         ³ ³   ³ ³   ³'
-  @ 21+nTopOS, nCol SAY 'ÀÄÄÄÄÄÄÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ'
+  @  7+nTopOS, nCol SAY '      ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿' // utf-8:    '      â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â”'
+  @  8+nTopOS, nCol SAY '      ³   ³ ³   ³ ³   ³' // utf-8: '      â”‚   â”‚ â”‚   â”‚ â”‚   â”‚'
+  @  9+nTopOS, nCol SAY '      ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ' // utf-8: '      â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜'
+  @ 10+nTopOS, nCol SAY 'ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿' // utf-8:     'â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â”'
+  @ 11+nTopOS, nCol SAY '³   ³ ³   ³ ³   ³ ³   ³' // utf-8: 'â”‚   â”‚ â”‚   â”‚ â”‚   â”‚ â”‚   â”‚'
+  @ 12+nTopOS, nCol SAY 'ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ ³   ³' // utf-8: 'â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â”‚   â”‚' 
+  @ 13+nTopOS, nCol SAY 'ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿ ³   ³' // utf-8:    'â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â” â”‚   â”‚'
+  @ 14+nTopOS, nCol SAY '³   ³ ³   ³ ³   ³ ³   ³' // utf-8: 'â”‚   â”‚ â”‚   â”‚ â”‚   â”‚ â”‚   â”‚'
+  @ 15+nTopOS, nCol SAY 'ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ' // utf-8: 'â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜'
+  @ 16+nTopOS, nCol SAY 'ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿ ÚÄÄÄ¿' // utf-8:     'â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â” â”Œâ”€â”€â”€â”'
+  @ 17+nTopOS, nCol SAY '³   ³ ³   ³ ³   ³ ³   ³' // utf-8: 'â”‚   â”‚ â”‚   â”‚ â”‚   â”‚ â”‚   â”‚'
+  @ 18+nTopOS, nCol SAY 'ÀÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ ³   ³' // utf-8: 'â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â”‚   â”‚'
+  @ 19+nTopOS, nCol SAY 'ÚÄÄÄÄÄÄÄÄÄ¿ ÚÄÄÄ¿ ³   ³' // utf-8:   'â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”Œâ”€â”€â”€â” â”‚   â”‚'
+  @ 20+nTopOS, nCol SAY '³         ³ ³   ³ ³   ³' // utf-8: 'â”‚         â”‚ â”‚   â”‚ â”‚   â”‚'
+  @ 21+nTopOS, nCol SAY 'ÀÄÄÄÄÄÄÄÄÄÙ ÀÄÄÄÙ ÀÄÄÄÙ' // utf-8: 'â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”˜ â””â”€â”€â”€â”˜'
   _ftSetWinColor(W_CURR,W_TITLE)
   nCol := 7+nAddSpace
   @ 11+nTopOS, nCol SAY '7'
@@ -493,18 +493,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftChangeDec()        Docs: Keith A. Wire                  ³
-  ³  Description: Change the decimal position in the display                 ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 11:25:17am            Time updated: ş11:25:17am            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³             : nNumDec                                                    ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftChangeDec()        Docs: Keith A. Wire                  |
+  |  Description: Change the decimal position in the display                 |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 11:25:17am            Time updated:  11:25:17am            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  |             : nNumDec                                                    |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftChangeDec(aAdder, nNumDec)
 
@@ -535,17 +535,17 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftDispTotal()        Docs: Keith A. Wire                  ³
-  ³  Description: Display total number to Adder Window                       ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 11:25:58am            Time updated: ş11:25:58am            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftDispTotal()        Docs: Keith A. Wire                  |
+  |  Description: Display total number to Adder Window                       |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 11:25:58am            Time updated:  11:25:58am            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftDispTotal(aAdder)
 
@@ -571,17 +571,17 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftDispSubTot()       Docs: Keith A. Wire                  ³
-  ³  Description: Display subtotal number                                    ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 11:26:31am            Time updated: ş11:26:31am            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftDispSubTot()       Docs: Keith A. Wire                  |
+  |  Description: Display subtotal number                                    |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 11:26:31am            Time updated:  11:26:31am            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftDispSubTot(aAdder)
 
@@ -605,18 +605,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftProcessNumb()      Docs: Keith A. Wire                  ³
-  ³  Description: Act on NUMBER key pressed                                  ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 11:38:34am            Time updated: ş11:38:34am            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³             : nKey                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftProcessNumb()      Docs: Keith A. Wire                  |
+  |  Description: Act on NUMBER key pressed                                  |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 11:38:34am            Time updated:  11:38:34am            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  |             : nKey                                                       |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftProcessNumb(aAdder, nKey)
   LOCAL nNum
@@ -652,17 +652,17 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftAddTotal()         Docs: Keith A. Wire                  ³
-  ³  Description: Enter key - SUBTOTAL\TOTAL                                 ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:05:29pm            Time updated: ş12:05:29pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftAddTotal()         Docs: Keith A. Wire                  |
+  |  Description: Enter key - SUBTOTAL\TOTAL                                 |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:05:29pm            Time updated:  12:05:29pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftAddTotal(aAdder)
   _ftEraseTotSubTot(aAdder)
@@ -738,18 +738,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftAddSub()           Docs: Keith A. Wire                  ³
-  ³  Description: Process + or - keypress                                    ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:06:13pm            Time updated: ş12:06:13pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³             : nKey                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftAddSub()           Docs: Keith A. Wire                  |
+  |  Description: Process + or - keypress                                    |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:06:13pm            Time updated:  12:06:13pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  |             : nKey                                                       |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftAddSub(aAdder, nKey)
 
@@ -795,18 +795,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftMultDiv()          Docs: Keith A. Wire                  ³
-  ³  Description: Process * or / keypress                                    ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:06:43pm            Time updated: ş12:06:43pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³             : nKey                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftMultDiv()          Docs: Keith A. Wire                  |
+  |  Description: Process * or / keypress                                    |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:06:43pm            Time updated:  12:06:43pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  |             : nKey                                                       |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftMultDiv(aAdder, nKey)
 
@@ -856,17 +856,17 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftAddHelp            Docs: Keith A. Wire                  ³
-  ³  Description: Help window                                                ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:07:07pm            Time updated: ş12:07:07pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftAddHelp            Docs: Keith A. Wire                  |
+  |  Description: Help window                                                |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:07:07pm            Time updated:  12:07:07pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftAddHelp
 
@@ -879,14 +879,14 @@ STATIC FUNCTION _ftAddHelp
                  'adder is Totaled. When multiplying or dividing the '      +;
                  '<ENTER> is a Total the first time pressed.' + CRLF + CRLF +;
                  'Hot Keys:'                                           +CRLF+;
-                 '         <D>ecimals Ä change # of decimals'          +CRLF+;
-                 '         <M>ove     Ä the Adder from right to left'  +CRLF+;
-                 '         <T>ape     Ä turn Tape Display On or Off'   +CRLF+;
-                 '         <S>croll   Ä the tape display'       + CRLF +CRLF+;
-                 '         <DEL> ÄÄÄÂÄÄ 1st Clear entry'               +CRLF+;
-                 '                  ÀÄÄ 2nd Clear ADDER'               +CRLF+;
-                 '         <ESC>      Ä Quit'                          +CRLF+;
-                 '         <F10>      Ä return a <TOTAL> to the active get'
+                 '         <D>ecimals - change # of decimals'          +CRLF+;
+                 '         <M>ove     - the Adder from right to left'  +CRLF+;
+                 '         <T>ape     - turn Tape Display On or Off'   +CRLF+;
+                 '         <S>croll   - the tape display'       + CRLF +CRLF+;
+                 '         <DEL> ---+-- 1st Clear entry'               +CRLF+;
+                 '                  +-- 2nd Clear ADDER'               +CRLF+;
+                 '         <ESC>      - Quit'                          +CRLF+;
+                 '         <F10>      - return a <TOTAL> to the active get'
 
    _ftPushMessage(cMess, .T., 'ADDER HELP', 'press any key to continue...',  ;
                   'QUIET')
@@ -897,17 +897,17 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftClearAdder()       Docs: Keith A. Wire                  ³
-  ³  Description: Clear entry / Clear Adder                                  ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:07:33pm            Time updated: ş12:07:33pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftClearAdder()       Docs: Keith A. Wire                  |
+  |  Description: Clear entry / Clear Adder                                  |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:07:33pm            Time updated:  12:07:33pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftClearAdder(aAdder)
 
@@ -930,19 +930,19 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftUpdateTrans()      Docs: Keith A. Wire                  ³
-  ³  Description: Update transactions array                                  ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:07:55pm            Time updated: ş12:07:55pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³             : lTypeTotal                                                 ³
-  ³             : nAmount                                                    ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftUpdateTrans()      Docs: Keith A. Wire                  |
+  |  Description: Update transactions array                                  |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:07:55pm            Time updated:  12:07:55pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  |             : lTypeTotal                                                 |
+  |             : nAmount                                                    |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftUpdateTrans(aAdder, lTypeTotal, nAmount)
 
@@ -980,17 +980,17 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftEraseTotSubTot()   Docs: Keith A. Wire                  ³
-  ³  Description: Clear the <TOTAL> & <SUBTOTAL> from Adder                  ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:08:14pm            Time updated: ş12:08:14pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftEraseTotSubTot()   Docs: Keith A. Wire                  |
+  |  Description: Clear the <TOTAL> & <SUBTOTAL> from Adder                  |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:08:14pm            Time updated:  12:08:14pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftEraseTotSubTot(aAdder)
   _ftSetWinColor(W_CURR,W_SCREEN)
@@ -1000,19 +1000,19 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftRoundIt()          Docs: Keith A. Wire                  ³
-  ³  Description: Adder Rounding function                                    ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:09:00pm            Time updated: ş12:09:00pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: nNumber                                                    ³
-  ³             : nPlaces                                                    ³
-  ³ Return Value: INT@( ABS@(nNumber@) @* 10 @^ nPlaces @+ 0@.50 @+ 10 @^ - ;³
-  ³             :    12 @) / 10 @^ nPlaces                                   ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftRoundIt()          Docs: Keith A. Wire                  |
+  |  Description: Adder Rounding function                                    |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated: ş10-03-93              |
+  | Time created: 12:09:00pm            Time updated: ş12:09:00pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: nNumber                                                    |
+  |             : nPlaces                                                    |
+  | Return Value: INT@( ABS@(nNumber@) @* 10 @^ nPlaces @+ 0@.50 @+ 10 @^ - ;|
+  |             :    12 @) / 10 @^ nPlaces                                   |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftRoundIt(nNumber, nPlaces)
   nPlaces := IF( nPlaces == NIL, 0, nPlaces )
@@ -1022,19 +1022,19 @@ RETURN IF(nNumber < 0.0, -1.0, 1.0) *                                        ;
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftDivide()           Docs: Keith A. Wire                  ³
-  ³  Description: Check divide by zero not allowed                           ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:10:41pm            Time updated: ş12:10:41pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³             : nNumerator                                                 ³
-  ³             : nDenominator                                               ³
-  ³ Return Value: @(nNumerator/nDenominator@)                                ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftDivide()           Docs: Keith A. Wire                  |
+  |  Description: Check divide by zero not allowed                           |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:10:41pm            Time updated:  12:10:41pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  |             : nNumerator                                                 |
+  |             : nDenominator                                               |
+  | Return Value: @(nNumerator/nDenominator@)                                |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftDivide(aAdder, nNumerator,nDenominator)
   IF nDenominator==0.0
@@ -1047,17 +1047,17 @@ RETURN(nNumerator/nDenominator)
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftValDeci()          Docs: Keith A. Wire                  ³
-  ³  Description: Validate the number of decimals                            ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:10:56pm            Time updated: ş12:10:56pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: oGet                                                       ³
-  ³ Return Value: lRtnValue                                                  ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftValDeci()          Docs: Keith A. Wire                  |
+  |  Description: Validate the number of decimals                            |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:10:56pm            Time updated:  12:10:56pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: oGet                                                       |
+  | Return Value: lRtnValue                                                  |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftValDeci(oGet)
 
@@ -1072,18 +1072,18 @@ RETURN lRtnValue
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftDisplayTape()      Docs: Keith A. Wire                  ³
-  ³  Description: Display the Tape                                           ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:11:28pm            Time updated: ş12:11:28pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: aAdder                                                     ³
-  ³             : nKey                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftDisplayTape()      Docs: Keith A. Wire                  |
+  |  Description: Display the Tape                                           |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:11:28pm            Time updated:  12:11:28pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: aAdder                                                     |
+  |             : nKey                                                       |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftDisplayTape(aAdder, nKey)
   LOCAL nDispTape, nTopTape := 1
@@ -1123,19 +1123,19 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftSetLastKey()       Docs: Keith A. Wire                  ³
-  ³  Description: Sets the LASTKEY() value to value of nLastKey              ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:12:00pm            Time updated: ş12:12:00pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: nLastKey                                                   ³
-  ³ Return Value: NIL                                                        ³
-  ³        Notes: I use this in most of my Pop-Up routines to reset the      ³
-  ³             : original value of LASTKEY() when quitting.                 ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftSetLastKey()       Docs: Keith A. Wire                  |
+  |  Description: Sets the LASTKEY() value to value of nLastKey              |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:12:00pm            Time updated:  12:12:00pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: nLastKey                                                   |
+  | Return Value: NIL                                                        |
+  |        Notes: I use this in most of my Pop-Up routines to reset the      |
+  |             : original value of LASTKEY() when quitting.                 |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftSetLastKey(nLastKey)
   _ftPushKeys()
@@ -1148,18 +1148,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPushKeys           Docs: Keith A. Wire                  ³
-  ³  Description: Push any keys in the Keyboard buffer on the array aKeys[]  ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:16:09pm            Time updated: ş12:16:09pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ³        Notes: Save any keys in the buffer... for FAST typists <g>.       ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPushKeys           Docs: Keith A. Wire                  |
+  |  Description: Push any keys in the Keyboard buffer on the array aKeys[]  |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:16:09pm            Time updated:  12:16:09pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: NIL                                                        |
+  |        Notes: Save any keys in the buffer... for FAST typists <g>.       |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPushKeys
   DO WHILE NEXTKEY() != 0
@@ -1171,18 +1171,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPopKeys            Docs: Keith A. Wire                  ³
-  ³  Description: Restore the keyboard with any keystrokes that were saved   ³
-  ³             :   with _ftPushKeys                                         ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:17:58pm            Time updated: ş12:17:58pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPopKeys            Docs: Keith A. Wire                  |
+  |  Description: Restore the keyboard with any keystrokes that were saved   |
+  |             :   with _ftPushKeys                                         |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:17:58pm            Time updated:  12:17:58pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPopKeys
   LOCAL cKeys := ''
@@ -1194,23 +1194,23 @@ STATIC FUNCTION _ftPopKeys
 RETURN NIL
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPushMessage()      Docs: Keith A. Wire                  ³
-  ³  Description: Display a message on the screen in a window                ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:18:53pm            Time updated: ş12:18:53pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cMessage                                                   ³
-  ³             : lWait                                                      ³
-  ³             : cTitle                                                     ³
-  ³             : cBotTitle                                                  ³
-  ³             : xQuiet                                                     ³
-  ³             : nTop                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ³     See Also: _ftPopMessage                                              ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPushMessage()      Docs: Keith A. Wire                  |
+  |  Description: Display a message on the screen in a window                |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:18:53pm            Time updated:  12:18:53pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cMessage                                                   |
+  |             : lWait                                                      |
+  |             : cTitle                                                     |
+  |             : cBotTitle                                                  |
+  |             : xQuiet                                                     |
+  |             : nTop                                                       |
+  | Return Value: NIL                                                        |
+  |     See Also: _ftPopMessage                                              |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPushMessage(cMessage,lWait,cTitle,cBotTitle,xQuiet, nTop)
   LOCAL nMessLen, nNumRows, nWide, nLeft, nBottom, nRight, nKey, cOldDevic,  ;
@@ -1257,18 +1257,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPopMessage         Docs: Keith A. Wire                  ³
-  ³  Description: Pop off the Message Box                                    ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:24:22pm            Time updated: ş12:24:22pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ³     See Also: _ftPushMessage()                                           ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPopMessage         Docs: Keith A. Wire                  |
+  |  Description: Pop off the Message Box                                    |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:24:22pm            Time updated:  12:24:22pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: NIL                                                        |
+  |     See Also: _ftPushMessage()                                           |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPopMessage
   _ftPopWin()
@@ -1277,24 +1277,24 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftQuest()            Docs: Keith A. Wire                  ³
-  ³  Description: Push a Question Box on the Screen                          ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:25:32pm            Time updated: ş12:25:32pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cMessage                                                   ³
-  ³             : xVarVal                                                    ³
-  ³             : cPict                                                      ³
-  ³             : bValid                                                     ³
-  ³             : lNoESC                                                     ³
-  ³             : nWinColor                                                  ³
-  ³             : nTop                                                       ³
-  ³ Return Value: xVarVal                                                    ³
-  ³        Notes: This function will work for all Data Types                 ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftQuest()            Docs: Keith A. Wire                  |
+  |  Description: Push a Question Box on the Screen                          |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:25:32pm            Time updated:  12:25:32pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cMessage                                                   |
+  |             : xVarVal                                                    |
+  |             : cPict                                                      |
+  |             : bValid                                                     |
+  |             : lNoESC                                                     |
+  |             : nWinColor                                                  |
+  |             : nTop                                                       |
+  | Return Value: xVarVal                                                    |
+  |        Notes: This function will work for all Data Types                 |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftQuest(cMessage,xVarVal,cPict,bValid,lNoESC,nWinColor,nTop)
 
@@ -1384,19 +1384,19 @@ RETURN xVarVal
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftAdderTapeUDF()    Docs: Keith A. Wire                   ³
-  ³  Description: User function for ACHOICE() when scrolling tape            ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:26:44pm            Time updated: ş12:26:44pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: mode                                                       ³
-  ³             : cur_elem                                                   ³
-  ³             : rel_pos                                                    ³
-  ³ Return Value: nRtnVal                                                    ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftAdderTapeUDF()    Docs: Keith A. Wire                   |
+  |  Description: User function for ACHOICE() when scrolling tape            |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:26:44pm            Time updated:  12:26:44pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: mode                                                       |
+  |             : cur_elem                                                   |
+  |             : rel_pos                                                    |
+  | Return Value: nRtnVal                                                    |
+  +--------------------------------------------------------------------------+
 */
 FUNCTION _ftAdderTapeUDF(mode,cur_elem,rel_pos)
   LOCAL nKey,nRtnVal
@@ -1425,18 +1425,18 @@ RETURN nRtnVal
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftError()            Docs: Keith A. Wire                  ³
-  ³  Description: Display an ERROR message in a window                       ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:27:43pm            Time updated: ş12:27:43pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cMessage                                                   ³
-  ³             : xDontReset                                                 ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftError()            Docs: Keith A. Wire                  |
+  |  Description: Display an ERROR message in a window                       |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:27:43pm            Time updated:  12:27:43pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cMessage                                                   |
+  |             : xDontReset                                                 |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftError(cMessage, xDontReset)
   LOCAL nOldRow,nOldCol,nOldCurs,nTop,nLeft,nBot,nRight,cOldColor,           ;
@@ -1486,18 +1486,18 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftStuffComma()       Docs: Keith A. Wire                  ³
-  ³  Description: Stuff a Comma in a string                                  ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:28:19pm            Time updated: ş12:28:19pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cStrToStuff                                                ³
-  ³             : lTrimStuffedStr                                            ³
-  ³ Return Value: cStrToStuff                                                ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftStuffComma()       Docs: Keith A. Wire                  |
+  |  Description: Stuff a Comma in a string                                  |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:28:19pm            Time updated:  12:28:19pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cStrToStuff                                                |
+  |             : lTrimStuffedStr                                            |
+  | Return Value: cStrToStuff                                                |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftStuffComma(cStrToStuff,lTrimStuffedStr)
 
@@ -1538,24 +1538,24 @@ RETURN cStrToStuff
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftSetSCRColor()      Docs: Keith A. Wire                  ³
-  ³  Description: Set the standard screen colors to the color requested.     ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:28:48pm            Time updated: ş12:28:48pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: nStd                                                       ³
-  ³             : nEnh                                                       ³
-  ³             : nBord                                                      ³
-  ³             : nBack                                                      ³
-  ³             : nUnsel                                                     ³
-  ³ Return Value: SETCOLOR(aStdColor[nStd] + ',' + aStdColor[nEnh] + ',' + ; ³
-  ³             :   aStdColor[nBord] + ',' + aStdColor[nBack] + ',' +      ; ³
-  ³             :   aStdColor[nUnsel])                                       ³
-  ³     See Also: _ftSetWinColor()                                           ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftSetSCRColor()      Docs: Keith A. Wire                  |
+  |  Description: Set the standard screen colors to the color requested.     |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:28:48pm            Time updated:  12:28:48pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: nStd                                                       |
+  |             : nEnh                                                       |
+  |             : nBord                                                      |
+  |             : nBack                                                      |
+  |             : nUnsel                                                     |
+  | Return Value: SETCOLOR(aStdColor[nStd] + ',' + aStdColor[nEnh] + ',' + ; |
+  |             :   aStdColor[nBord] + ',' + aStdColor[nBack] + ',' +      ; |
+  |             :   aStdColor[nUnsel])                                       |
+  |     See Also: _ftSetWinColor()                                           |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftSetSCRColor(nStd,nEnh,nBord,nBack,nUnsel)
 
@@ -1575,38 +1575,38 @@ RETURN SETCOLOR(aStdColor[nStd]+','+aStdColor[nEnh]+','+aStdColor[nBord]+','+;
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPushWin()          Docs: Keith A. Wire                  ³
-  ³  Description: Push a new window on the screen                            ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:34:38pm            Time updated: ş12:34:38pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: t                                                          ³
-  ³             : l                                                          ³
-  ³             : b                                                          ³
-  ³             : r                                                          ³
-  ³             : cTitle                                                     ³
-  ³             : cBotTitle                                                  ³
-  ³             : nWinColor                                                  ³
-  ³ Return Value: NIL                                                        ³
-  ³     See Also:                                                            ³
-  ³        Notes: Push a new window on the screen in the position t,l,b,r    ³
-  ³             :   and if cTitle is not NIL print the title for the window  ³
-  ³             :   in centered in the top line of the box. Similarly do     ³
-  ³             :   the same for cBotTitle. If nWinColor=NIL get the next    ³
-  ³             :   window color and use it for all the colors. If           ³
-  ³             :   cTypeBord=NIL use the single line border, else use the   ³
-  ³             :   one they requested. Push the window coordinates, the     ³
-  ³             :   color number, the SAVESCREEN() value, and whether they   ³
-  ³             :   picked the window color they wanted to use. If           ³
-  ³             :   lAutoWindow=.F. then the window color was incremented    ³
-  ³             :   and we will will restore the color number when we pop    ³
-  ³             :   the window off.                                          ³
-  ³             :                                                            ³
-  ³             :      nWinColor DEFAULT == _ftNextWinColor()                ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPushWin()          Docs: Keith A. Wire                  |
+  |  Description: Push a new window on the screen                            |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:34:38pm            Time updated:  12:34:38pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: t                                                          |
+  |             : l                                                          |
+  |             : b                                                          |
+  |             : r                                                          |
+  |             : cTitle                                                     |
+  |             : cBotTitle                                                  |
+  |             : nWinColor                                                  |
+  | Return Value: NIL                                                        |
+  |     See Also:                                                            |
+  |        Notes: Push a new window on the screen in the position t,l,b,r    |
+  |             :   and if cTitle is not NIL print the title for the window  |
+  |             :   in centered in the top line of the box. Similarly do     |
+  |             :   the same for cBotTitle. If nWinColor=NIL get the next    |
+  |             :   window color and use it for all the colors. If           |
+  |             :   cTypeBord=NIL use the single line border, else use the   |
+  |             :   one they requested. Push the window coordinates, the     |
+  |             :   color number, the SAVESCREEN() value, and whether they   |
+  |             :   picked the window color they wanted to use. If           |
+  |             :   lAutoWindow=.F. then the window color was incremented    |
+  |             :   and we will will restore the color number when we pop    |
+  |             :   the window off.                                          |
+  |             :                                                            |
+  |             :      nWinColor DEFAULT == _ftNextWinColor()                |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPushWin(t,l,b,r,cTitle,cBotTitle,nWinColor)
 
@@ -1637,22 +1637,22 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPopWin             Docs: Keith A. Wire                  ³
-  ³  Description: Pop a Window off the screen                                ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 12:52:34pm            Time updated: ş12:52:34pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ³        Notes: Pop the currently active window off the screen by restoring³
-  ³             :   it from the aWindow Array and if they pushed a new window³
-  ³             :   automatically selecting the color we will roll back the  ³
-  ³             :   current window setting using _ftLastWinColor() and reset ³
-  ³             :   the color to the color setting when window was pushed.   ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPopWin             Docs: Keith A. Wire                  |
+  |  Description: Pop a Window off the screen                                |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 12:52:34pm            Time updated:  12:52:34pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: NIL                                                        |
+  |        Notes: Pop the currently active window off the screen by restoring|
+  |             :   it from the aWindow Array and if they pushed a new window|
+  |             :   automatically selecting the color we will roll back the  |
+  |             :   current window setting using _ftLastWinColor() and reset |
+  |             :   the color to the color setting when window was pushed.   |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPopWin
 
@@ -1680,27 +1680,27 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftSetWinColor()      Docs: Keith A. Wire                  ³
-  ³  Description: Set the Color to the Window Colors requested               ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:37:32pm            Time updated: ş01:37:32pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: nWin                                                       ³
-  ³             : nStd                                                       ³
-  ³             : nEnh                                                       ³
-  ³             : nBord                                                      ³
-  ³             : nBack                                                      ³
-  ³             : nUnsel                                                     ³
-  ³ Return Value:SETCOLOR(aWinColor[nStd,nWin]+','+aWinColor[nEnh,nWin]+','+;³
-  ³             :  aWinColor[nBord,nWin]+','+aWinColor[nBack,nWin]+','+     ;³
-  ³             :  aWinColor[nUnsel,nWin])                                   ³
-  ³     See Also: _ftSetSCRColor()                                           ³
-  ³        Notes: If the window number is not passed use the currently active³
-  ³             :   window number nWinColor.                                 ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftSetWinColor()      Docs: Keith A. Wire                  |
+  |  Description: Set the Color to the Window Colors requested               |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:37:32pm            Time updated:  01:37:32pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: nWin                                                       |
+  |             : nStd                                                       |
+  |             : nEnh                                                       |
+  |             : nBord                                                      |
+  |             : nBack                                                      |
+  |             : nUnsel                                                     |
+  | Return Value:SETCOLOR(aWinColor[nStd,nWin]+','+aWinColor[nEnh,nWin]+','+;|
+  |             :  aWinColor[nBord,nWin]+','+aWinColor[nBack,nWin]+','+     ;|
+  |             :  aWinColor[nUnsel,nWin])                                   |
+  |     See Also: _ftSetSCRColor()                                           |
+  |        Notes: If the window number is not passed use the currently active|
+  |             :   window number nWinColor.                                 |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftSetWinColor(nWin,nStd,nEnh,nBord,nBack,nUnsel)
 
@@ -1719,21 +1719,21 @@ RETURN SETCOLOR(aWinColor[nStd,nWin]+','+aWinColor[nEnh,nWin]+','+           ;
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftShadow()           Docs: Keith A. Wire                  ³
-  ³  Description: Create a shadow on the screen in the coordinates given     ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:40:56pm            Time updated: ş01:40:56pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: nTop                                                       ³
-  ³             : nLeft                                                      ³
-  ³             : nBottom                                                    ³
-  ³             : nRight                                                     ³
-  ³ Return Value: NIL                                                        ³
-  ³     See Also: _ftPushWin()                                               ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftShadow()           Docs: Keith A. Wire                  |
+  |  Description: Create a shadow on the screen in the coordinates given     |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:40:56pm            Time updated:  01:40:56pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: nTop                                                       |
+  |             : nLeft                                                      |
+  |             : nBottom                                                    |
+  |             : nRight                                                     |
+  | Return Value: NIL                                                        |
+  |     See Also: _ftPushWin()                                               |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftShadow( nTop, nLeft, nBottom, nRight )
 
@@ -1748,19 +1748,19 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftLastWinColor       Docs: Keith A. Wire                  ³
-  ³  Description: Decrement the active window color number and return the    ³
-  ³             :   current value                                            ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:49:19pm            Time updated: ş01:49:19pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: nWinColor := IF(nWinColor=1,4,nWinColor-1)                 ³
-  ³        Notes: If we are already on window #1 restart count by using # 4. ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftLastWinColor       Docs: Keith A. Wire                  |
+  |  Description: Decrement the active window color number and return the    |
+  |             :   current value                                            |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:49:19pm            Time updated:  01:49:19pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: nWinColor := IF(nWinColor=1,4,nWinColor-1)                 |
+  |        Notes: If we are already on window #1 restart count by using # 4. |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftLastWinColor
 RETURN nWinColor := IF(nWinColor=1,4,nWinColor-1)
@@ -1770,19 +1770,19 @@ RETURN nWinColor := IF(nWinColor=1,4,nWinColor-1)
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftNextWinColor       Docs: Keith A. Wire                  ³
-  ³  Description: Increment the active window color number and return the    ³
-  ³             :   current value                                            ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:51:12pm            Time updated: ş01:51:12pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: nWinColor := (IF(nWinColor<4,nWinColor+1,1))               ³
-  ³        Notes: If we are already on window #4 restart count by using # 1. ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftNextWinColor       Docs: Keith A. Wire                  |
+  |  Description: Increment the active window color number and return the    |
+  |             :   current value                                            |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:51:12pm            Time updated:  01:51:12pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: nWinColor := (IF(nWinColor<4,nWinColor+1,1))               |
+  |        Notes: If we are already on window #4 restart count by using # 1. |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftNextWinColor
   IF EMPTY(aWinColor)
@@ -1795,19 +1795,19 @@ RETURN nWinColor := (IF(nWinColor<4,nWinColor+1,1))
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftWinTitle()         Docs: Keith A. Wire                  ³
-  ³  Description: Print the top or bottom titles on the border of the        ³
-  ³             :   currently active window.                                 ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:52:29pm            Time updated: ş01:52:29pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cTheTitle                                                  ³
-  ³             : cTopOrBot                                                  ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftWinTitle()         Docs: Keith A. Wire                  |
+  |  Description: Print the top or bottom titles on the border of the        |
+  |             :   currently active window.                                 |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:52:29pm            Time updated:  01:52:29pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cTheTitle                                                  |
+  |             : cTopOrBot                                                  |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftWinTitle(cTheTitle,cTopOrBot)
 
@@ -1822,17 +1822,17 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftInitColors         Docs: Keith A. Wire                  ³
-  ³  Description: Initilize the colors for the Adder                         ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 02:59:58pm            Time updated: ş02:59:58pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: None                                                       ³
-  ³ Return Value: NIL                                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftInitColors         Docs: Keith A. Wire                  |
+  |  Description: Initilize the colors for the Adder                         |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated: ş10-03-93              |
+  | Time created: 02:59:58pm            Time updated: ş02:59:58pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: None                                                       |
+  | Return Value: NIL                                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftInitColors
 
@@ -1858,19 +1858,19 @@ RETURN NIL
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftCharOdd()          Docs: Keith A. Wire                  ³
-  ³  Description: Remove all the even numbered characters in a string.       ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:41:50pm            Time updated: ş01:41:50pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cString                                                    ³
-  ³ Return Value: STRTRAN(cString,'')                                       ³
-  ³        Notes: Used for example to strip all the attribute characters     ³
-  ³             : from a screen save.                                        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftCharOdd()          Docs: Keith A. Wire                  |
+  |  Description: Remove all the even numbered characters in a string.       |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:41:50pm            Time updated:  01:41:50pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cString                                                    |
+  | Return Value: STRTRAN(cString,'.')                                       |
+  |        Notes: Used for example to strip all the attribute characters     |
+  |             : from a screen save.                                        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftCharOdd(cString)
   cString := TRANSFORM(cString,REPLICATE("X", LEN(cString)/2 ) )
@@ -1880,19 +1880,19 @@ RETURN STRTRAN(cString,'')
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPosRepl()          Docs: Keith A. Wire                  ³
-  ³  Description: Replace the Character at nPosit in cString with cChar      ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:44:21pm            Time updated: ş01:44:21pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cString                                                    ³
-  ³             : cChar                                                      ³
-  ³             : nPosit                                                     ³
-  ³ Return Value: STRTRAN(cString,'9',cChar,nPosit,1)+''                     ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPosRepl()          Docs: Keith A. Wire                  |
+  |  Description: Replace the Character at nPosit in cString with cChar      |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated: ş10-03-93              |
+  | Time created: 01:44:21pm            Time updated: ş01:44:21pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cString                                                    |
+  |             : cChar                                                      |
+  |             : nPosit                                                     |
+  | Return Value: STRTRAN(cString,'9',cChar,nPosit,1)+''                     |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPosRepl(cString,cChar,nPosit)
 RETURN STRTRAN(cString,'9',cChar,nPosit,1)+''
@@ -1901,18 +1901,18 @@ RETURN STRTRAN(cString,'9',cChar,nPosit,1)+''
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftCharRem()          Docs: Keith A. Wire                  ³
-  ³  Description: Removes all occurances of cChar from cString.              ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:45:41pm            Time updated: ş01:45:41pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cChar                                                      ³
-  ³             : cString                                                    ³
-  ³ Return Value: STRTRAN(cString,cChar)                                     ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftCharRem()          Docs: Keith A. Wire                  |
+  |  Description: Removes all occurances of cChar from cString.              |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:45:41pm            Time updated:  01:45:41pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cChar                                                      |
+  |             : cString                                                    |
+  | Return Value: STRTRAN(cString,cChar)                                     |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftCharRem(cChar,cString)
 RETURN STRTRAN(cString,cChar)
@@ -1924,17 +1924,17 @@ RETURN STRTRAN(cString,cChar)
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftCountLeft()        Docs: Keith A. Wire                  ³
-  ³  Description: Returns the number of spaces on the Left side of the String³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:47:00pm            Time updated: ş01:47:00pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cString                                                    ³
-  ³ Return Value: LEN(cString)-LEN(LTRIM(cString))                           ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftCountLeft()        Docs: Keith A. Wire                  |
+  |  Description: Returns the number of spaces on the Left side of the String|
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:47:00pm            Time updated:  01:47:00pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cString                                                    |
+  | Return Value: LEN(cString)-LEN(LTRIM(cString))                           |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftCountLeft(cString)
 RETURN LEN(cString)-LEN(LTRIM(cString))
@@ -1943,19 +1943,19 @@ RETURN LEN(cString)-LEN(LTRIM(cString))
 
 
 
-/*ÚÄ Function ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-  ³         Name: _ftPosIns()           Docs: Keith A. Wire                  ³
-  ³  Description: Insert the Character cChar in cString at position nPosit   ³
-  ³       Author: Keith A. Wire                                              ³
-  ³ Date created: 10-03-93              Date updated: ş10-03-93              ³
-  ³ Time created: 01:48:30pm            Time updated: ş01:48:30pm            ³
-  ³    Copyright: None - Public Domain                                       ³
-  ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´
-  ³    Arguments: cString                                                    ³
-  ³             : cChar                                                      ³
-  ³             : nPosit                                                     ³
-  ³ Return Value: LEFT(cString,nPosit-1)+cChar+SUBSTR(cString,nPosit)        ³
-  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+/*+- Function ---------------------------------------------------------------+
+  |         Name: _ftPosIns()           Docs: Keith A. Wire                  |
+  |  Description: Insert the Character cChar in cString at position nPosit   |
+  |       Author: Keith A. Wire                                              |
+  | Date created: 10-03-93              Date updated:  10-03-93              |
+  | Time created: 01:48:30pm            Time updated:  01:48:30pm            |
+  |    Copyright: None - Public Domain                                       |
+  +--------------------------------------------------------------------------+
+  |    Arguments: cString                                                    |
+  |             : cChar                                                      |
+  |             : nPosit                                                     |
+  | Return Value: LEFT(cString,nPosit-1)+cChar+SUBSTR(cString,nPosit)        |
+  +--------------------------------------------------------------------------+
 */
 STATIC FUNCTION _ftPosIns(cString,cChar,nPosit)
 RETURN LEFT(cString,nPosit-1)+cChar+SUBSTR(cString,nPosit)

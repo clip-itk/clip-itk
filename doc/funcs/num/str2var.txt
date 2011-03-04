@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Convert uucode string to data.
 $LANG_RU$
-	Конвертировать uucode строку в исходные данные.
+	п п╬п╫п╡п╣я─я┌п╦я─п╬п╡п╟я┌я▄ uucode я│я┌я─п╬п╨я┐ п╡ п╦я│я┘п╬п╢п╫я▀п╣ п╢п╟п╫п╫я▀п╣.
 $SYNTAX$
      STR2VAR(<sUucodeStr>) 	--> <vData>
 $ARGUMENTS$
      <sUucodeStr>	String, is the source uucode string.
 $LANG_RU$
-     <sUucodeStr>	String, исходная uucode строка.
+     <sUucodeStr>	String, п╦я│я┘п╬п╢п╫п╟я▐ uucode я│я┌я─п╬п╨п╟.
 $RETURNS$
      Returns some data wath equal source uucode string <sUucodeStr>.
 $LANG_RU$
-     Возвращает исходные данные, соответствующие uucode строке <sUucodeStr>.
+     п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦я│я┘п╬п╢п╫я▀п╣ п╢п╟п╫п╫я▀п╣, я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╦п╣ uucode я│я┌я─п╬п╨п╣ <sUucodeStr>.
 $DESCRIPTION$
      STR2VAR() deconverts uucode string <sUucodeStr> to source data <vData> to uucode string and returns it.
      This function is conversely for <link linkend="functionVAR2STR">VAR2STR()</link> function.
 $LANG_RU$
-     STR2VAR() производит обратное преобразование uucode строки <sUucodeStr> в
-     исходные данные и возвращает их. Функция обратна функции <link linkend="functionVAR2STR">VAR2STR()</link>
+     STR2VAR() п©я─п╬п╦п╥п╡п╬п╢п╦я┌ п╬п╠я─п╟я┌п╫п╬п╣ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╦п╣ uucode я│я┌я─п╬п╨п╦ <sUucodeStr> п╡
+     п╦я│я┘п╬п╢п╫я▀п╣ п╢п╟п╫п╫я▀п╣ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦я┘. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟я┌п╫п╟ я└я┐п╫п╨я├п╦п╦ <link linkend="functionVAR2STR">VAR2STR()</link>
 $EXAMPLES$
 
 f1 := fopen("test.txt")
@@ -44,12 +44,12 @@ fclose(f1)
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	STR2VAR()
 $AUTHOR$
 ITK
    $LANG_RU$
-ИТК
+п≤п╒п 
 $END$
 

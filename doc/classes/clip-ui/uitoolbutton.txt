@@ -3,28 +3,28 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIToolButton
 $LANG_RU$
-	Класс UIToolButton
+	п п╩п╟я│я│ UIToolButton
 $ABOUT$
 	Class of menu item. Object of this class was created by method addButton() of class <link linkend="classuitoolbar">UIToolBar</link>.
 $LANG_RU$
-	Класс кнопки на панели инструментов. Объект создаётся при в методе addButton() класса <link linkend="classuitoolbar">UIToolBar</link>.
+	п п╩п╟я│я│ п╨п╫п╬п©п╨п╦ п╫п╟ п©п╟п╫п╣п╩п╦ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡. п·п╠я┼п╣п╨я┌ я│п╬п╥п╢п╟я▒я┌я│я▐ п©я─п╦ п╡ п╪п╣я┌п╬п╢п╣ addButton() п╨п╩п╟я│я│п╟ <link linkend="classuitoolbar">UIToolBar</link>.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIToolButton".
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIToolButton".
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIToolButton".
 
 $METHODNAME$
 	setIcon()
 $SUMMARY$
 	Set icon for button on toolbar.
 $LANG_RU$
-	Установить значок, отображаемый на кнопке панели инструментов.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╥п╫п╟я┤п╬п╨, п╬я┌п╬п╠я─п╟п╤п╟п╣п╪я▀п╧ п╫п╟ п╨п╫п╬п©п╨п╣ п©п╟п╫п╣п╩п╦ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡.
 $SYNTAX$
 	setIcon(<icon>)
 $ARGUMENTS$
 	<icon>		- Object of class <link linkend="classuiimage">UIImage</link>. Icon on the button.
 $LANG_RU$
-	<icon>		- Объект <link linkend="classuiimage">UIImage</link>. Значок на кнопке.
+	<icon>		- п·п╠я┼п╣п╨я┌ <link linkend="classuiimage">UIImage</link>. п≈п╫п╟я┤п╬п╨ п╫п╟ п╨п╫п╬п©п╨п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -32,24 +32,24 @@ $METHODNAME$
 $SUMMARY$
 	Set action that will be executed if button pressed.
 $LANG_RU$
-	Установить действие, выполняемое по нажатию кнопки на панель инструментов.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п©п╬п╩п╫я▐п╣п╪п╬п╣ п©п╬ п╫п╟п╤п╟я┌п╦я▌ п╨п╫п╬п©п╨п╦ п╫п╟ п©п╟п╫п╣п╩я▄ п╦п╫я│я┌я─я┐п╪п╣п╫я┌п╬п╡.
 $SYNTAX$
 	setAction([<signal>],<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

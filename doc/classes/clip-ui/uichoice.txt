@@ -3,25 +3,25 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIChoice
 $LANG_RU$
-	Класс UIChoice
+	п п╩п╟я│я│ UIChoice
 $ABOUT$
 	Edit field with choice button. Inherits fields and method from class <link linkend="classuiedit">UIEdit</link>.
 $LANG_RU$
-	Поле ввода с кнопкой выбора элемента. Унаследуетс свойства класса <link linkend="classuiedit">UIEdit</link>.
+	п÷п╬п╩п╣ п╡п╡п╬п╢п╟ я│ п╨п╫п╬п©п╨п╬п╧ п╡я▀п╠п╬я─п╟ я█п╩п╣п╪п╣п╫я┌п╟. пёп╫п╟я│п╩п╣п╢я┐п╣я┌я│ я│п╡п╬п╧я│я┌п╡п╟ п╨п╩п╟я│я│п╟ <link linkend="classuiedit">UIEdit</link>.
 $SYNTAX$
 	UIChoice(<action>,[<value>],[<text>])	--> UIChoice object
 $LANG_RU$
-	UIChoice(<action>,[<value>],[<text>])	--> Объект UIChoice
+	UIChoice(<action>,[<value>],[<text>])	--> п·п╠я┼п╣п╨я┌ UIChoice
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIChoice".
 	<button>	- <link linkend="classuibutton">UIButton</link> object. Button for select element.
 	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
 	Source of list.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIChoice".
-	<button>	- Объект <link linkend="classuibutton">UIButton</link>. Кнопка выбора элемента.
-	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
-	Источник значений.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIChoice".
+	<button>	- п·п╠я┼п╣п╨я┌ <link linkend="classuibutton">UIButton</link>. п п╫п╬п©п╨п╟ п╡я▀п╠п╬я─п╟ я█п╩п╣п╪п╣п╫я┌п╟.
+	<source>	- п╒п╦п©, п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╧ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─п╬п╪ <link linkend="classuisource">UISource</link>.
+	п≤я│я┌п╬я┤п╫п╦п╨ п╥п╫п╟я┤п╣п╫п╦п╧.
 
 
 $METHODNAME$
@@ -29,21 +29,21 @@ $METHODNAME$
 $SUMMARY$
 	Constructor. Create edit field with choice button.
 $LANG_RU$
-	Конструктор. Создать поле ввода с кнопкой выбора элемента.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п©п╬п╩п╣ п╡п╡п╬п╢п╟ я│ п╨п╫п╬п©п╨п╬п╧ п╡я▀п╠п╬я─п╟ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	UIChoice(<action>,<source>,[<value>])	--> UIChoice object
 $LANG_RU$
-	UIChoice(<action>,<source>,[<value>])	--> Объект UIChoice
+	UIChoice(<action>,<source>,[<value>])	--> п·п╠я┼п╣п╨я┌ UIChoice
 $ARGUMENTS$
 	<action>	- Code block. Action called on button press.
 	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
 	Source of list.
 	<value>		- String. Value stored in widget.
 $LANG_RU$
-	<action>	- Блок кода. Действие, вызываемое при нажатии на кнопку.
-	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
-	Источник значений.
-	<value>		- Строка. Значение, хранимое в виджете.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©я─п╦ п╫п╟п╤п╟я┌п╦п╦ п╫п╟ п╨п╫п╬п©п╨я┐.
+	<source>	- п╒п╦п©, п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╧ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─п╬п╪ <link linkend="classuisource">UISource</link>.
+	п≤я│я┌п╬я┤п╫п╦п╨ п╥п╫п╟я┤п╣п╫п╦п╧.
+	<value>		- п║я┌я─п╬п╨п╟. п≈п╫п╟я┤п╣п╫п╦п╣, я┘я─п╟п╫п╦п╪п╬п╣ п╡ п╡п╦п╢п╤п╣я┌п╣.
 $ENDMETHOD$
 
 
@@ -52,15 +52,15 @@ $METHODNAME$
 $SUMMARY$
 	Set action for button.
 $LANG_RU$
-	Установить действие по нажатию на кнопку выбора.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣ п©п╬ п╫п╟п╤п╟я┌п╦я▌ п╫п╟ п╨п╫п╬п©п╨я┐ п╡я▀п╠п╬я─п╟.
 $SYNTAX$
 	setAction(<signal>,<action>)
 $ARGUMENTS$
 	<signal>	- String. Should be "clicked".
 	<action>	- Code block. Action called on button press.
 $LANG_RU$
-	<signal>	- Строка. Значение: "clicked".
-	<action>	- Блок кода. Действие, вызываемое при нажатии на кнопку.
+	<signal>	- п║я┌я─п╬п╨п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "clicked".
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣, п╡я▀п╥я▀п╡п╟п╣п╪п╬п╣ п©я─п╦ п╫п╟п╤п╟я┌п╦п╦ п╫п╟ п╨п╫п╬п©п╨я┐.
 $ENDMETHOD$
 
 
@@ -69,13 +69,13 @@ $METHODNAME$
 $SUMMARY$
 	Set id for selected element.
 $LANG_RU$
-	Установить идентификатор выбранного элемента.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
 	<value>		- String. Value.
 $LANG_RU$
-	<value>		- Строка. Значение идентификатора.
+	<value>		- п║я┌я─п╬п╨п╟. п≈п╫п╟я┤п╣п╫п╦п╣ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╟.
 $ENDMETHOD$
 
 
@@ -84,13 +84,13 @@ $METHODNAME$
 $SUMMARY$
 	Get id for selected element.
 $LANG_RU$
-	Получить идентификатор выбранного элемента.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	getValue()  --> <value>
 $RETURNS$
 	<value>		- String. Value.
 $LANG_RU$
-	<value>		- Строка. Значение идентификатора.
+	<value>		- п║я┌я─п╬п╨п╟. п≈п╫п╟я┤п╣п╫п╦п╣ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╟.
 $ENDMETHOD$
 
 
@@ -99,13 +99,13 @@ $METHODNAME$
 $SUMMARY$
 	Set text description for selected element.
 $LANG_RU$
-	Установить текстовое описание выбранного элемента.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┌п╣п╨я│я┌п╬п╡п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	setText(<text>)
 $ARGUMENTS$
 	<text>		- String. Text description of selected element.
 $LANG_RU$
-	<text>		- Строка. Текстовое описание выбранного элемента.
+	<text>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌п╬п╡п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $ENDMETHOD$
 
 
@@ -114,13 +114,13 @@ $METHODNAME$
 $SUMMARY$
 	Get text description for selected element.
 $LANG_RU$
-	Получить текстовое описание выбранного элемента.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я┌п╣п╨я│я┌п╬п╡п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	getText()  --> <text>
 $RETURNS$
 	<text>		- String. Text description of selected element.
 $LANG_RU$
-	<text>		- Строка. Текстовое описание выбранного элемента.
+	<text>		- п║я┌я─п╬п╨п╟. п╒п╣п╨я│я┌п╬п╡п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╡я▀п╠я─п╟п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $ENDMETHOD$
 
 
@@ -129,15 +129,15 @@ $METHODNAME$
 $SUMMARY$
 	Set address of source to get text description for set value.
 $LANG_RU$
-	Установить адрес ресурса для получения текстового описания устанавливаемого значения.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╟п╢я─п╣я│ я─п╣я│я┐я─я│п╟ п╢п╩я▐ п©п╬п╩я┐я┤п╣п╫п╦я▐ я┌п╣п╨я│я┌п╬п╡п╬пЁп╬ п╬п©п╦я│п╟п╫п╦я▐ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣п╪п╬пЁп╬ п╥п╫п╟я┤п╣п╫п╦я▐.
 $SYNTAX$
 	setSource(<source>)
 $ARGUMENTS$
 	<source>	- Type supported <link linkend="classuisource">UISource</link> constructor. 
 	Source of list.
 $LANG_RU$
-	<source>	- Тип, поддерживаемый конструктором <link linkend="classuisource">UISource</link>.
-	Источник значений.
+	<source>	- п╒п╦п©, п©п╬п╢п╢п╣я─п╤п╦п╡п╟п╣п╪я▀п╧ п╨п╬п╫я│я┌я─я┐п╨я┌п╬я─п╬п╪ <link linkend="classuisource">UISource</link>.
+	п≤я│я┌п╬я┤п╫п╦п╨ п╥п╫п╟я┤п╣п╫п╦п╧.
 $ENDMETHOD$
 
 
@@ -149,13 +149,13 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UISOURCE
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

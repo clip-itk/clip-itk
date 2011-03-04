@@ -25,7 +25,7 @@
 #define DIALOG_COLORS	"0/7"
 #define LIST_COLORS	"0/3,0/2,15/3,0/3,14/3,14/2,15/2"
 #define CNT_COLUMNS	3
-/*#define DELIMITER	translate_charset(__CHARSET__, host_charset(), "Å")*/
+/*#define DELIMITER	translate_charset(__CHARSET__, host_charset(), "‚îÇ")*/
 /*#define DELIMITER 	chr(PGCH_VLINE)*/
 #define DELIMITER	iif(set(_SET_DISPBOX),translate_charset("cp437", host_charset(), CHR(179)),chr(PGCH_VLINE))
 

@@ -3,7 +3,7 @@ dispbox(1,1,5,40,1)
 private w1
 set color to 15/7
 mopen()
-? 'w1фыва=', w1
+? 'w1qwerty=', w1
 set color to 15/3
 w2:=wopen(7,15,19,60)
 wbox(2)

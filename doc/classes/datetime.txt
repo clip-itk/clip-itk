@@ -3,11 +3,11 @@ $CLASSNAME$
 $SUMMARY$
 	Class are destined to control of date and time values.
 $LANG_RU$
-	Класс предназначен для управления датами и временем.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п╢п╟я┌п╟п╪п╦ п╦ п╡я─п╣п╪п╣п╫п╣п╪.
 $ABOUT$
 	Class are destined to control of date and time values.
 $LANG_RU$
-	Класс предназначен для управления датами и временем.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п╢п╟я┌п╟п╪п╦ п╦ п╡я─п╣п╪п╣п╫п╣п╪.
 $SYNTAX$
 	DateTimeNew([<nYear>,[<nMonth>,[<nDay>,[<nHour>[,<nMin>[,<nSec>[,<nMsec>]]]]]]]) --> DATETIME object
 $ATTRIBUTES$
@@ -15,14 +15,14 @@ $ATTRIBUTES$
 	<Data>		Date, are some date value
 $LANG_RU$
 	<ClassName> 	DATETIME
-	<Data>		Date, дата
+	<Data>		Date, п╢п╟я┌п╟
 
 $METHODNAME$
 	DateTimeNew()
 $SUMMARY$
 	DATETIME object constructor.
 $LANG_RU$
-	Конструктор объекта DATETIME.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟ DATETIME.
 $SYNTAX$
 	DateTimeNew([<nYear>,[<nMonth>,[<nDay>,[<nHour>[,<nMin>[,<nSec>[,<nMsec>]]]]]]]) --> DATETIME object
 $ARGUMENTS$
@@ -34,18 +34,18 @@ $ARGUMENTS$
 	<nSec>   - Numeric, contain secundes value
 	<nMsec>  - Numeric, contain millisecundes value
 $LANG_RU$
-	<nYear>	 - Numeric, определяет год
-	<nMonth> - Numeric, определяет месяц
-	<nDay>   - Numeric, определяет день
-	<nHour>  - Numeric, определяет часы
-	<nMin>   - Numeric, определяет минуты
-	<nSec>   - Numeric, определяет секунды
-	<nMsec>  - Numeric, определяет миллисекунды
+	<nYear>	 - Numeric, п╬п©я─п╣п╢п╣п╩я▐п╣я┌ пЁп╬п╢
+	<nMonth> - Numeric, п╬п©я─п╣п╢п╣п╩я▐п╣я┌ п╪п╣я│я▐я├
+	<nDay>   - Numeric, п╬п©я─п╣п╢п╣п╩я▐п╣я┌ п╢п╣п╫я▄
+	<nHour>  - Numeric, п╬п©я─п╣п╢п╣п╩я▐п╣я┌ я┤п╟я│я▀
+	<nMin>   - Numeric, п╬п©я─п╣п╢п╣п╩я▐п╣я┌ п╪п╦п╫я┐я┌я▀
+	<nSec>   - Numeric, п╬п©я─п╣п╢п╣п╩я▐п╣я┌ я│п╣п╨я┐п╫п╢я▀
+	<nMsec>  - Numeric, п╬п©я─п╣п╢п╣п╩я▐п╣я┌ п╪п╦п╩п╩п╦я│п╣п╨я┐п╫п╢я▀
 
 $RETURNS$
 	Method returns new DATETIME object.
 $LANG_RU$
-	Метод возвращает новый объект DATETIME.
+	п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ DATETIME.
 $DESCRIPTION$
 	DateTimeNew() is constructs and returns new DATETIME object.
 	That class can be used to control date and time values.
@@ -54,13 +54,13 @@ $DESCRIPTION$
 
 	Attention! Object contain not normalized date.
 $LANG_RU$
-	DateTimeNew() создает и возвращает объект DATETIME.
-	Объект этого класса может быть использован для создания, управления
-	данными типа дата и время.
+	DateTimeNew() я│п╬п╥п╢п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ DATETIME.
+	п·п╠я┼п╣п╨я┌ я█я┌п╬пЁп╬ п╨п╩п╟я│я│п╟ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫ п╢п╩я▐ я│п╬п╥п╢п╟п╫п╦я▐, я┐п©я─п╟п╡п╩п╣п╫п╦я▐
+	п╢п╟п╫п╫я▀п╪п╦ я┌п╦п©п╟ п╢п╟я┌п╟ п╦ п╡я─п╣п╪я▐.
 
-	Если параметры не переданы, объект создастся с нулевой датой.
+	п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─я▀ п╫п╣ п©п╣я─п╣п╢п╟п╫я▀, п╬п╠я┼п╣п╨я┌ я│п╬п╥п╢п╟я│я┌я│я▐ я│ п╫я┐п╩п╣п╡п╬п╧ п╢п╟я┌п╬п╧.
 
-	Внимаение! Объект содержит не нормализованную дату.
+	п▓п╫п╦п╪п╟п╣п╫п╦п╣! п·п╠я┼п╣п╨я┌ я│п╬п╢п╣я─п╤п╦я┌ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╫я┐я▌ п╢п╟я┌я┐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -68,7 +68,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets date values.
 $LANG_RU$
-	Получить дату.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╢п╟я┌я┐.
 $SYNTAX$
 	Date() 	--> <dData>
 $ARGUMENTS$
@@ -76,13 +76,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns <Data> value as date value.
 $LANG_RU$
-	Возвращает <Data> как переменную типа дата.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <Data> п╨п╟п╨ п©п╣я─п╣п╪п╣п╫п╫я┐я▌ я┌п╦п©п╟ п╢п╟я┌п╟.
 $DESCRIPTION$
 	Date() converts DATETIME data value to normal calendar date
 	and returns  it as date values.
 $LANG_RU$
-	Date() преобразует DATETIME атрибут <::Data> в нормализованную
-	календарную дату и возвращает полученное значение типа дата.
+	Date() п©я─п╣п╬п╠я─п╟п╥я┐п╣я┌ DATETIME п╟я┌я─п╦п╠я┐я┌ <::Data> п╡ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╫я┐я▌
+	п╨п╟п╩п╣п╫п╢п╟я─п╫я┐я▌ п╢п╟я┌я┐ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╩я┐я┤п╣п╫п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я┌п╦п©п╟ п╢п╟я┌п╟.
 $ENDMETHOD$
 
 
@@ -91,7 +91,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets the string in time format.
 $LANG_RU$
-	Получить строку в формате "время".
+	п÷п╬п╩я┐я┤п╦я┌я▄ я│я┌я─п╬п╨я┐ п╡ я└п╬я─п╪п╟я┌п╣ "п╡я─п╣п╪я▐".
 $SYNTAX$
 	Time() 	--> <sTime>
 $ARGUMENTS$
@@ -99,7 +99,7 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the string in time format.
 $LANG_RU$
-	Возвращает строку в формате "время".
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌я─п╬п╨я┐ п╡ я└п╬я─п╪п╟я┌п╣ "п╡я─п╣п╪я▐".
 $DESCRIPTION$
 	Time() returns the normalized time value of the specified <Data>
 	as string value in the format <hh:mm:ss:ms>
@@ -108,11 +108,11 @@ $DESCRIPTION$
 	is two-digit minutes value, <ss> is two-digit secundes value and
 	<ms> is two-digit milisecundes value.
 $LANG_RU$
-	Time() возвращает нормализованное значение времени, определенное в <::Data>
-	объекта DATETIME, в виде строки формата <hh:mm:ss:ms> или возвращает
-	"00:00:00:00" , если DATETIME объект содержит нулевую дату.
-	Где <hh> двухзначное значение час, <mm> - двухзначное згачение минуты,
-	<ss> двухзначное значение секундыи <ms> двухзначное значение миллисекунды.
+	Time() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╡я─п╣п╪п╣п╫п╦, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data>
+	п╬п╠я┼п╣п╨я┌п╟ DATETIME, п╡ п╡п╦п╢п╣ я│я┌я─п╬п╨п╦ я└п╬я─п╪п╟я┌п╟ <hh:mm:ss:ms> п╦п╩п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+	"00:00:00:00" , п╣я│п╩п╦ DATETIME п╬п╠я┼п╣п╨я┌ я│п╬п╢п╣я─п╤п╦я┌ п╫я┐п╩п╣п╡я┐я▌ п╢п╟я┌я┐.
+	п⌠п╢п╣ <hh> п╢п╡я┐я┘п╥п╫п╟я┤п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я┤п╟я│, <mm> - п╢п╡я┐я┘п╥п╫п╟я┤п╫п╬п╣ п╥пЁп╟я┤п╣п╫п╦п╣ п╪п╦п╫я┐я┌я▀,
+	<ss> п╢п╡я┐я┘п╥п╫п╟я┤п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я│п╣п╨я┐п╫п╢я▀п╦ <ms> п╢п╡я┐я┘п╥п╫п╟я┤п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╪п╦п╩п╩п╦я│п╣п╨я┐п╫п╢я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -120,7 +120,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets year value.
 $LANG_RU$
-	Получить значение "год"
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ "пЁп╬п╢"
 $SYNTAX$
 	Year() 	--> <nYear>
 $ARGUMENTS$
@@ -128,13 +128,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the numeric value specified year value.
 $LANG_RU$
-	Возвращает число - год.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - пЁп╬п╢.
 $DESCRIPTION$
 	Year() returns year of the specified <::Data>
 	as four-digit numeric value. Not normalized.
 $LANG_RU$
-	Year() возвращает числовое значение (4 цифры): год, определенное в <::Data> объекта
-	DATETIME. Возвращаемое значение не нормализовано.
+	Year() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ (4 я├п╦я└я─я▀): пЁп╬п╢, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data> п╬п╠я┼п╣п╨я┌п╟
+	DATETIME. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -142,7 +142,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets month value.
 $LANG_RU$
-	Получить значение "месяц"
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ "п╪п╣я│я▐я├"
 $SYNTAX$
 	Month() 	--> <nMonth>
 $ARGUMENTS$
@@ -150,13 +150,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the numeric value specified month value.
 $LANG_RU$
-	Возвращает число - месяц.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - п╪п╣я│я▐я├.
 $DESCRIPTION$
 	Month() returns month of the specified <Data>
 	as numeric value. Not normalized.
 $LANG_RU$
-	Month() возвращает числовое значение: месяц, определенное в <::Data> объекта
-	DATETIME. Возвращаемое значение не нормализовано.
+	Month() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: п╪п╣я│я▐я├, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data> п╬п╠я┼п╣п╨я┌п╟
+	DATETIME. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 
@@ -165,7 +165,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets day value.
 $LANG_RU$
-	Получить значение "день"
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ "п╢п╣п╫я▄"
 $SYNTAX$
 	Day() 	--> <nDay>
 $ARGUMENTS$
@@ -173,13 +173,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the numeric value specified day value.
 $LANG_RU$
-	Возвращает число - день.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - п╢п╣п╫я▄.
 $DESCRIPTION$
 	Day() returns day of the specified <Data>
 	as numeric value. Not normalized.
 $LANG_RU$
-	Day() возвращает числовое значение: день, определенное в <::Data> объекта
-	DATETIME. Возвращаемое значение не нормализовано.
+	Day() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: п╢п╣п╫я▄, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data> п╬п╠я┼п╣п╨я┌п╟
+	DATETIME. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -187,7 +187,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets hour value.
 $LANG_RU$
-	Получить значение "часы"
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ "я┤п╟я│я▀"
 $SYNTAX$
 	Hour() 	--> <nHour>
 $ARGUMENTS$
@@ -195,13 +195,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the numeric value specified hour value.
 $LANG_RU$
-	Возвращает число - часы.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - я┤п╟я│я▀.
 $DESCRIPTION$
 	Hour() returns hour of the specified <Data>
 	as numeric value. Not normalized.
 $LANG_RU$
-	Hour() возвращает числовое значение: часы, определенное в <::Data> объекта
-	DATETIME. Возвращаемое значение не нормализовано.
+	Hour() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: я┤п╟я│я▀, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data> п╬п╠я┼п╣п╨я┌п╟
+	DATETIME. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -209,7 +209,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets minutes value.
 $LANG_RU$
-	Получить значение "минуты"
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ "п╪п╦п╫я┐я┌я▀"
 $SYNTAX$
 	Min() 	--> <nMin>
 $ARGUMENTS$
@@ -217,13 +217,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the numeric value specified minutes value.
 $LANG_RU$
-	Возвращает число - минуты.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - п╪п╦п╫я┐я┌я▀.
 $DESCRIPTION$
 	Min() returns minutes of the specified <Data>
 	as numeric value. Not normalized.
 $LANG_RU$
-	Min() возвращает числовое значение: минуты, определенное в <::Data> объекта
-	DATETIME. Возвращаемое значение не нормализовано.
+	Min() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: п╪п╦п╫я┐я┌я▀, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data> п╬п╠я┼п╣п╨я┌п╟
+	DATETIME. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -231,7 +231,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets secundes value.
 $LANG_RU$
-	Получить значение "секунды"
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ "я│п╣п╨я┐п╫п╢я▀"
 $SYNTAX$
 	Sec() 	--> <nSec>
 $ARGUMENTS$
@@ -239,13 +239,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the numeric value specified secundes value.
 $LANG_RU$
-	Возвращает число - секунды.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - я│п╣п╨я┐п╫п╢я▀.
 $DESCRIPTION$
 	Sec() returns secundes of the specified <Data>
 	as numeric value. Not normalized.
 $LANG_RU$
-	Sec() возвращает числовое значение: секунды, определенное в <::Data> объекта
-	DATETIME. Возвращаемое значение не нормализовано.
+	Sec() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: я│п╣п╨я┐п╫п╢я▀, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data> п╬п╠я┼п╣п╨я┌п╟
+	DATETIME. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -253,7 +253,7 @@ $METHODNAME$
 $SUMMARY$
 	Gets millisecundes value.
 $LANG_RU$
-	Получить значение "миллисекунды"
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ "п╪п╦п╩п╩п╦я│п╣п╨я┐п╫п╢я▀"
 $SYNTAX$
 	Msec() 	--> <nMsec>
 $ARGUMENTS$
@@ -261,13 +261,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns the numeric value specified millisecundes value.
 $LANG_RU$
-	Возвращает число - миллисекунды.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬ - п╪п╦п╩п╩п╦я│п╣п╨я┐п╫п╢я▀.
 $DESCRIPTION$
 	Msec() returns millisecundes of the specified <Data>
 	as numeric value. Not normalized.
 $LANG_RU$
-	Msec() возвращает числовое значение: миллисекунды, определенное в <::Data> объекта
-	DATETIME. Возвращаемое значение не нормализовано.
+	Msec() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣: п╪п╦п╩п╩п╦я│п╣п╨я┐п╫п╢я▀, п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╬п╣ п╡ <::Data> п╬п╠я┼п╣п╨я┌п╟
+	DATETIME. п▓п╬п╥п╡я─п╟я┴п╟п╣п╪п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╬.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -275,7 +275,7 @@ $METHODNAME$
 $SUMMARY$
 	Normalize object DATETIME.
 $LANG_RU$
-	Нормализовать объект DATETIME.
+	п²п╬я─п╪п╟п╩п╦п╥п╬п╡п╟я┌я▄ п╬п╠я┼п╣п╨я┌ DATETIME.
 $SYNTAX$
 	Normalize() 	--> <oDateTime>
 $ARGUMENTS$
@@ -283,13 +283,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns normalized object DATETIME.
 $LANG_RU$
-	Возвращает нормализованный объект DATETIME.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ DATETIME.
 $DESCRIPTION$
 	Normalize() converts DATETIME-data to normal calendar date and
 	returns some one object.
 $LANG_RU$
-	Normalize() преобразует DATETIME <::Data> в нормальную календарную
-	дату и возвращает преобразованный объект.
+	Normalize() п©я─п╣п╬п╠я─п╟п╥я┐п╣я┌ DATETIME <::Data> п╡ п╫п╬я─п╪п╟п╩я▄п╫я┐я▌ п╨п╟п╩п╣п╫п╢п╟я─п╫я┐я▌
+	п╢п╟я┌я┐ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я─п╣п╬п╠я─п╟п╥п╬п╡п╟п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -297,7 +297,7 @@ $METHODNAME$
 $SUMMARY$
 	Addition two DateTime date-object
 $LANG_RU$
-	Сложить два объекта DATETIME.
+	п║п╩п╬п╤п╦я┌я▄ п╢п╡п╟ п╬п╠я┼п╣п╨я┌п╟ DATETIME.
 $SYNTAX$
 	Add(<oDt>) 	--> <oDateTime>
 $ARGUMENTS$
@@ -305,13 +305,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns  object DATETIME.
 $LANG_RU$
-	Возвращает измененный объект DATETIME.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╥п╪п╣п╫п╣п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ DATETIME.
 $DESCRIPTION$
 	Add() addes <oDt> to DDATETIME-data and returns some one witch
 	increased data. New DATETIME-data is't normalize.
 $LANG_RU$
-	Add() добавляет <oDt> к содержимому объекта DATETIME и возвращает последний.
-	Полученный объект содержит не нормализованное значение даты.
+	Add() п╢п╬п╠п╟п╡п╩я▐п╣я┌ <oDt> п╨ я│п╬п╢п╣я─п╤п╦п╪п╬п╪я┐ п╬п╠я┼п╣п╨я┌п╟ DATETIME п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬я│п╩п╣п╢п╫п╦п╧.
+	п÷п╬п╩я┐я┤п╣п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ я│п╬п╢п╣я─п╤п╦я┌ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╟я┌я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -319,7 +319,7 @@ $METHODNAME$
 $SUMMARY$
 	Subtraction two DateTime date-object
 $LANG_RU$
-	Вычесть из объекта DATETIME другой.
+	п▓я▀я┤п╣я│я┌я▄ п╦п╥ п╬п╠я┼п╣п╨я┌п╟ DATETIME п╢я─я┐пЁп╬п╧.
 $SYNTAX$
 	Sub(<oDt>) 	--> <oDateTime>
 $ARGUMENTS$
@@ -327,14 +327,14 @@ $ARGUMENTS$
 $RETURNS$
 	Returns  object DATETIME.
 $LANG_RU$
-	Возвращает измененный объект DATETIME.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╥п╪п╣п╫п╣п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ DATETIME.
 $DESCRIPTION$
 	Sub() subtracts <oDt> from DATETIME-data and returns some one
 	witch decreased data. New DATETIME-data is't normalize.
 	</para>
 $LANG_RU$
-	Sub() вычитает <oDt> из содержимого объекта DATETIME и возвращает последний.
-	Полученный объект содержит не нормализованное значение даты.
+	Sub() п╡я▀я┤п╦я┌п╟п╣я┌ <oDt> п╦п╥ я│п╬п╢п╣я─п╤п╦п╪п╬пЁп╬ п╬п╠я┼п╣п╨я┌п╟ DATETIME п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬я│п╩п╣п╢п╫п╦п╧.
+	п÷п╬п╩я┐я┤п╣п╫п╫я▀п╧ п╬п╠я┼п╣п╨я┌ я│п╬п╢п╣я─п╤п╦я┌ п╫п╣ п╫п╬я─п╪п╟п╩п╦п╥п╬п╡п╟п╫п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╟я┌я▀.
 $ENDMETHOD$
 
 

@@ -1,9 +1,9 @@
 /***
 *	extend.h
-* Определения Системы Расширения Clipper 5.0 для языка C.
-* Copyright (c) 1987,1988,1989,1990 Nantucket Corp.  Все права сохраняются.
+* Definitions of System Exstentions Clipper 5.0 for C.
+* Copyright (c) 1987,1988,1989,1990 Nantucket Corp.  All rights reserved.
 *
-* Clipper использует соглашения большой модели памяти Microsoft C (large model)
+* Clipper used large memory model by Microsoft C
 */
 
 #ifndef EXTEND_H
@@ -36,18 +36,18 @@ typedef double XDOUBLE;
 #define LOGICAL		4
 #define DATE		8
 #define ALIAS		16
-#define MPTR    32		/* OR с типом при передаче по ссылке */
+#define MPTR    32		/* OR with type while transmitted by reference */
 #define MEMO		65
 #define WORD		128
 #define ARRAY		512
 
 #endif
 
-/* количество/тип параметров */
+/* parameters count/type */
 extern int _parinfo(int);
 extern int _parinfa(int, unsigned int);
 
-/* значения параметров */
+/* parameters values */
 extern char *_parc(int,...);
 extern unsigned int _parcsiz(int,...);
 extern unsigned int _parclen(int,...);
@@ -57,7 +57,7 @@ extern XDOUBLE _parnd(int,...);
 extern int _parl(int,...);
 extern char *_pards(int,...);
 
-/* возврат значения */
+/* return values */
 extern void _retc(char far *);
 extern void _retclen(char far *, unsigned int);
 extern void _retni(int);
@@ -66,10 +66,10 @@ extern void _retnd(XDOUBLE);
 extern void _retl(int);
 extern void _retds(char far *);
 
-/* нет возвращаемого значения (возврат NIL) */
+/* no returned values (returns NIL) */
 extern void _ret(void);
 
-/* запись значения */
+/* record values */
 int _storc(char far *, int,...);
 int _storclen(char far *, int,...);
 int _storni(int, int,...);
@@ -79,21 +79,21 @@ int _storl(int, int,...);
 int _stords(char far *, int,...);
 
 /***
-* Замечание:
-* _xalloc() возвращает NULL при невозможности удовлетворения запроса
-* _xgrab() формирует сообщение об ошибке при невозможности удовлетворения запроса
+* Remark:
+* _xalloc() returns NULL if request can't be satisfied
+* _xgrab()  generates an error message if request can't be satisfied
 */
 
-/*  распределение памяти */
+/*  memory allocation */
 extern void far *_xalloc(unsigned int numberOfBytes);
 extern void far *_xgrab(unsigned int numberOfBytes);
 extern void _xfree(void far * allocatedBlock);
 
-/* совместимость с Summer '87 */
+/* compability with '87 */
 #define _exmgrab(size)			_xgrab(size)
 #define _exmback(ptr, size)		_xfree(ptr)
 
-/* макросы для проверки параметров */
+/* macroses for parameters checking */
 #define PCOUNT		(_parinfo(0))
 #define ISCHAR(n)	(_parinfo(n) & CHARACTER)
 #define ISNUM(n)	(_parinfo(n) & NUMERIC)

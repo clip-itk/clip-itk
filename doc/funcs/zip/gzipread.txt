@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
 	Read data from GZIP file.
 $LANG_RU$
-	Читает данные из GZIP файла.
+	п╖п╦я┌п╟п╣я┌ п╢п╟п╫п╫я▀п╣ п╦п╥ GZIP я└п╟п╧п╩п╟.
 $SYNTAX$
 	gZipRead(<nHandle>, <@cBuffer> [,<nLen>]) --> realLen
 $LANG_RU$
@@ -14,27 +14,27 @@ $ARGUMENTS$
 	<cBuffer> - buffer for read data.
 	<nLen> - number of read bytes.
 $LANG_RU$
-	<nHandle> - номер открытого файла.
-	<cBuffer> - буффер для чтения данных.
-	<nLen> - кол-во байт для чтения.
+	<nHandle> - п╫п╬п╪п╣я─ п╬я┌п╨я─я▀я┌п╬пЁп╬ я└п╟п╧п╩п╟.
+	<cBuffer> - п╠я┐я└я└п╣я─ п╢п╩я▐ я┤я┌п╣п╫п╦я▐ п╢п╟п╫п╫я▀я┘.
+	<nLen> - п╨п╬п╩-п╡п╬ п╠п╟п╧я┌ п╢п╩я▐ я┤я┌п╣п╫п╦я▐.
 $RETURNS$
 
        gZipRead() returns number of readed bytes or -1 if error.
 $LANG_RU$
-       gZipRead() возвращает кол-во прочитанных байт или -1 при ошибке.
+       gZipRead() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╬п╩-п╡п╬ п©я─п╬я┤п╦я┌п╟п╫п╫я▀я┘ п╠п╟п╧я┌ п╦п╩п╦ -1 п©я─п╦ п╬я┬п╦п╠п╨п╣.
 $DESCRIPTION$
 	Read and unpack data from opened GZIP file with <nHandle>
 	into preallocated <cBuffer> <nLen> bytes.
 $LANG_RU$
-	Читает и распаковывает <nLen> данных из открытого GZIP файла
-	с номером <nHandle> в зарезервированный <cBuffer> .
+	п╖п╦я┌п╟п╣я┌ п╦ я─п╟я│п©п╟п╨п╬п╡я▀п╡п╟п╣я┌ <nLen> п╢п╟п╫п╫я▀я┘ п╦п╥ п╬я┌п╨я─я▀я┌п╬пЁп╬ GZIP я└п╟п╧п╩п╟
+	я│ п╫п╬п╪п╣я─п╬п╪ <nHandle> п╡ п╥п╟я─п╣п╥п╣я─п╡п╦я─п╬п╡п╟п╫п╫я▀п╧ <cBuffer> .
 $EXAMPLES$
 	s := space(1000)
 	realLen := gzipRead(h,@s,300)
 $PLATFORMS$
    No dependies of platform.
    $LANG_RU$
-   Не зависит от платформ
+   п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪
 $SEEALSO$
 	gZipOpen(),gZipWrite(),gZipClose()
 $AUTHOR$

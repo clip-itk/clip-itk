@@ -11,10 +11,10 @@ function getClrPair(color, num )
   end:=iif(end==0,len(color), end)
 return substr(color, beg+1, end-beg)
 *****************************
-*  getSayColor( number, color ) - Возвращает нужный цветвой набор из
-*                                 цветовой строки
-*  number - номер нужного цвета ( по умолчанию 1 )
-*  color  - из какой строки брать ( по умолчанию SetColor() )
+*  getSayColor( number, color ) - Returns the desired color set from the
+*                                 strings of colors
+*  number - desired color number ( 1 by default )
+*  color  - from which line to take ( SetColor() by default )
 *****************************
 FUNC getSayColor( number,color )
 local mass[0], pos
@@ -33,9 +33,9 @@ enddo
 return IIF ( number > len( mass ), "", mass[number] )
 *
 *****************************
-*  getDrawColor( chrColor ) - Меняет в строке цветов первый элемент на chrColor
+*  getDrawColor( chrColor ) - Change in the line of colors the first element by chrColor
 * * * * * * *
-*  chrColor  - цвет символа
+*  chrColor  - symbol's color
 *  color
 *****************************
 FUNC getDrawColor( chrColor, color )

@@ -30,14 +30,14 @@
 #define PGCH_RARROW	16
 #define PGCH_LARROW     17
 
-/* B_SINGLE '‚€ƒ…€„' */
+/* B_SINGLE 'â”Œâ”€â”â”‚â”˜â”€â””â”‚' */
 #define PGCH_B_SINGLE '&\010&\001&\016&\017&\003&\001&\002&\017'
 
-/* B_DOUBLE '¥ ¨¡® «¡' */
+/* B_DOUBLE 'â•”â•â•—â•‘â•â•â•šâ•‘' */
 #define PGCH_B_DOUBLE '&\031&\022&\032&\033&\024&\022&\023&\033'
 
-/* B_SINGLE_DOUBLE '¢ ¦¬ ©' */
-/* B_DOUBLE_SINGLE '¤€§¡­€ª¡' */
+/* B_SINGLE_DOUBLE 'â•’â•â••â”‚â•›â•â•˜â”‚' */
+/* B_DOUBLE_SINGLE 'â•“â”€â•–â•‘â•œâ”€â•™â•‘' */
 
 
 #endif

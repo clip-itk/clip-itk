@@ -143,7 +143,7 @@ return
 static function tt_drawTable()//Doc, Color) //::doc, ::clr
 local i, j, s, s1, w, t, k, arr, c_repl, e_str, c_str, cell, ctbl, celine
 local tcolor, wfact, symb, x, y, dc, elem, spos, kx,dataOk
-local box:={"Ç","Ä","à","É","Å","Ü","á","ä","Ñ","â","Ö"}
+local box:={"Ç","Ä","à","É","Å","Ü","á","ä","Ñ","â","Ö"} //utf-8: {"‚îå","‚îÄ","‚î¨","‚îê","‚îÇ","‚îú","‚î§","‚îº","‚îî","‚î¥","‚îò"}
       //     1   2   3   4   5   6   7   8   9   0   1
 
 	// write caption
@@ -167,7 +167,7 @@ local box:={"Ç","Ä","à","É","Å","Ü","á","ä","Ñ","â","Ö"}
 			::doc:Text(padc(i, j),,,,,::clr)
 		next
 	endif
-	tcolor := ::clr // √◊≈‘ ‘¡¬Ã…√Ÿ
+	tcolor := ::clr // table color
 	::doc:n_Pos := ::doc:marginLeft
 	::doc:Text(s,,,,,tcolor)
 
@@ -189,13 +189,13 @@ local box:={"Ç","Ä","à","É","Å","Ü","á","ä","Ñ","â","Ö"}
 				elem:items := ::Titems[i][j+elem:colspan-1]:items
 			endif
 
-			w := ::Tcolumns[j] //€…“…Œ¡ —ﬁ≈ À…
-			// Œ…÷Œ—— «“¡Œ…√¡ —ﬁ≈≈À
+			w := ::Tcolumns[j] // cell width
+			// bottom cell border
 			if j==1
 				s1 := symb_tbl(::Titems, i, j-1)
 			endif
 			s1 += replicate(iif(elem:rowspan>1 .and. i!=len(::Titems), " ", box[2]), ::Tcolumns[j])
-			// €…“…Œ¡ ‘≈À’›≈  —ﬁ≈ À…/—ﬁ≈≈À, ≈”Ã… col > 1
+			// Current ceil(s) width, if col > 1
 			for k=2 to elem:colspan
 				w += ::Tcolumns[j+k-1]
 				s1 += symb_tbl(::Titems, i, j+k-2)
@@ -204,7 +204,7 @@ local box:={"Ç","Ä","à","É","Å","Ü","á","ä","Ñ","â","Ö"}
 			j += elem:colspan-1
 			w += elem:colspan-1
 
-			wfact := 0 // ∆¡À‘…ﬁ≈”À¡— €…“…Œ¡ n-”‘œÃ¬√œ◊
+			wfact := 0 // actual width of the n-columns in table
 			y := 0
 			for x=1 to len(elem:items)
 				if ::tblNewLine
@@ -338,7 +338,7 @@ return ::width
 **************
 function symb_tbl(arr, row, col)
 local symb:=" ", elem, elemD, elemR, len
-local box:={"Ç","Ä","à","É","Å","Ü","á","ä","Ñ","â","Ö"}
+local box:={"Ç","Ä","à","É","Å","Ü","á","ä","Ñ","â","Ö"} //utf-8: {"‚îå","‚îÄ","‚î¨","‚îê","‚îÇ","‚îú","‚î§","‚îº","‚îî","‚î¥","‚îò"}
       //     1   2   3   4   5   6   7   8   9   0   1
 	len := len(arr[row])
 	elem := arr[row][max(1, min(col, len))]

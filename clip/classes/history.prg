@@ -29,7 +29,7 @@ local obj
        obj:set		:= @set()
 
        obj:colorSpec    := iif(empty(color),setcolor(),color)
-       obj:__colors 	:= {}      // палитры цветов
+       obj:__colors 	:= {}      // colors palettes
        obj:__setColor 	:= @__setcolor()
        obj:__setcolor()
 return obj

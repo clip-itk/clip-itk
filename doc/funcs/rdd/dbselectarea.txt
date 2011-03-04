@@ -5,11 +5,11 @@ $CATEGORY$
 $SUMMARY$
    Change the current work area
 $LANG_RU$
-   Изменяет текущую рабочую область.
+   п≤п╥п╪п╣п╫я▐п╣я┌ я┌п╣п╨я┐я┴я┐я▌ я─п╟п╠п╬я┤я┐я▌ п╬п╠п╩п╟я│я┌я▄.
 $SYNTAX$
      DBSELECTAREA(<nArea> | <cAlias>) --> NIL
 $LANG_RU$
-     DBSELECTAREA(<номер рабочей области> | <алиас>)  --> NIL
+     DBSELECTAREA(<п╫п╬п╪п╣я─ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦> | <п╟п╩п╦п╟я│>)  --> NIL
 $ARGUMENTS$
      <nArea> is a numeric value between zero and 250, inclusive, that
      specifies the work area being selected.
@@ -17,15 +17,15 @@ $ARGUMENTS$
      <cAlias> is a character value that specifies the alias of a
      currently occupied work area being selected.
 $LANG_RU$
-     <номер рабочей области> - числовое значение между нулем и 250
-     включительно, которое определяет выбираемую рабочую область.
+     <п╫п╬п╪п╣я─ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦> - я┤п╦я│п╩п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╪п╣п╤п╢я┐ п╫я┐п╩п╣п╪ п╦ 250
+     п╡п╨п╩я▌я┤п╦я┌п╣п╩я▄п╫п╬, п╨п╬я┌п╬я─п╬п╣ п╬п©я─п╣п╢п╣п╩я▐п╣я┌ п╡я▀п╠п╦я─п╟п╣п╪я┐я▌ я─п╟п╠п╬я┤я┐я▌ п╬п╠п╩п╟я│я┌я▄.
 
-     <алиас> - символьное значение, которое определяет алиас выбираемой
-     рабочей области.
+     <п╟п╩п╦п╟я│> - я│п╦п╪п╡п╬п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ п╬п©я─п╣п╢п╣п╩я▐п╣я┌ п╟п╩п╦п╟я│ п╡я▀п╠п╦я─п╟п╣п╪п╬п╧
+     я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
 $RETURNS$
      DBSELECTAREA() always returns NIL.
 $LANG_RU$
-     DBSELECTAREA() всегда возвращает NIL.
+     DBSELECTAREA() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBSELECTAREA() causes the specified work area to become the current work
      area.  All subsequent database operations will apply to this work area
@@ -33,12 +33,12 @@ $DESCRIPTION$
      DBSELECTAREA() performs the same function as the standard SELECT
      command.  For more information, refer to the SELECT command.
 $LANG_RU$
-     При помощи DBSELECTAREA() определенная рабочая область становится
-     текущей рабочей областью.  Все последующие операции над базой данных
-     будут применяться к этой рабочей области до тех пор, пока другая
-     рабочая область не будет явно задана. DBSELECTAREA() выполняет те же
-     функции, что и стандартная команда SELECT. Более подробную информацию
-     смотрите в команде SELECT.
+     п÷я─п╦ п©п╬п╪п╬я┴п╦ DBSELECTAREA() п╬п©я─п╣п╢п╣п╩п╣п╫п╫п╟я▐ я─п╟п╠п╬я┤п╟я▐ п╬п╠п╩п╟я│я┌я▄ я│я┌п╟п╫п╬п╡п╦я┌я│я▐
+     я┌п╣п╨я┐я┴п╣п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌я▄я▌.  п▓я│п╣ п©п╬я│п╩п╣п╢я┐я▌я┴п╦п╣ п╬п©п╣я─п╟я├п╦п╦ п╫п╟п╢ п╠п╟п╥п╬п╧ п╢п╟п╫п╫я▀я┘
+     п╠я┐п╢я┐я┌ п©я─п╦п╪п╣п╫я▐я┌я▄я│я▐ п╨ я█я┌п╬п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦ п╢п╬ я┌п╣я┘ п©п╬я─, п©п╬п╨п╟ п╢я─я┐пЁп╟я▐
+     я─п╟п╠п╬я┤п╟я▐ п╬п╠п╩п╟я│я┌я▄ п╫п╣ п╠я┐п╢п╣я┌ я▐п╡п╫п╬ п╥п╟п╢п╟п╫п╟. DBSELECTAREA() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣
+     я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ SELECT. п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌
+     я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ SELECT.
 $EXAMPLES$
        The following example selects a work area via the alias name:
 

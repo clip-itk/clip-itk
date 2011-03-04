@@ -5,23 +5,23 @@ $CATEGORY$
 $SUMMARY$
 	Close connection.
 $LANG_RU$
-	Закрыть соединение.
+	п≈п╟п╨я─я▀я┌я▄ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣.
 $SYNTAX$
 	TCPCLOSE(<nConnection>)		--> TRUE || FALSE
 $ARGUMENTS$
 	<nConnaction>	Numeric, is the connection number.
 $LANG_RU$
-	<nConnection>	Numeric, номер соединения.
+	<nConnection>	Numeric, п╫п╬п╪п╣я─ я│п╬п╣п╢п╦п╫п╣п╫п╦я▐.
 $RETURNS$
 	Returns TRUE if connection was successfully closed.
 $LANG_RU$
-	Возвращает TRUE, если соединение успешно закрыто.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣ я┐я│п©п╣я┬п╫п╬ п╥п╟п╨я─я▀я┌п╬.
 $DESCRIPTION$
 	TCPCLOSE() closes opened connections and returns TRUE if operation was
 	successfully.
 $LANG_RU$
-	TCPCLOSE() закрывает открытое соединене и возвращает TRUE в случае
-	успешного завершения операции.
+	TCPCLOSE() п╥п╟п╨я─я▀п╡п╟п╣я┌ п╬я┌п╨я─я▀я┌п╬п╣ я│п╬п╣п╢п╦п╫п╣п╫п╣ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╡ я│п╩я┐я┤п╟п╣
+	я┐я│п©п╣я┬п╫п╬пЁп╬ п╥п╟п╡п╣я─я┬п╣п╫п╦я▐ п╬п©п╣я─п╟я├п╦п╦.
 $EXAMPLES$
 
 nH := TCPLISTEN(3000)

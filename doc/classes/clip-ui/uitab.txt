@@ -3,23 +3,23 @@ $CLASSNAME$
 $SUMMARY$
 	Class UITab
 $LANG_RU$
-	Класс UITab
+	п п╩п╟я│я│ UITab
 $ABOUT$
 	Class of single tab. Inherits <link linkend="classuivbox">UIVBox</link> class.
 $LANG_RU$
-	Класс одиночной вкладки. Наследует методы класса <link linkend="classuivbox">UIVBox</link>.
+	п п╩п╟я│я│ п╬п╢п╦п╫п╬я┤п╫п╬п╧ п╡п╨п╩п╟п╢п╨п╦. п²п╟я│п╩п╣п╢я┐п╣я┌ п╪п╣я┌п╬п╢я▀ п╨п╩п╟я│я│п╟ <link linkend="classuivbox">UIVBox</link>.
 $SYNTAX$
 	UITab(<caption>,<name>)	--> UITab object
 $LANG_RU$
-	UITab()	--> Объект UITab
+	UITab()	--> п·п╠я┼п╣п╨я┌ UITab
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UITab".
 	<name>		- String. Tab name.
 	<parent>	- <link linkend="classuitabarea">UITabArea</link> object. Area for this tab.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UITab".
-	<name>		- Строка. Имя вкладки. 
-	<parent>	- Объект класса <link linkend="classuitabarea">UITabArea</link>. Область размещения вкладки.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UITab".
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╡п╨п╩п╟п╢п╨п╦. 
+	<parent>	- п·п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ <link linkend="classuitabarea">UITabArea</link>. п·п╠п╩п╟я│я┌я▄ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╨п╩п╟п╢п╨п╦.
 
 
 $METHODNAME$
@@ -27,15 +27,15 @@ $METHODNAME$
 $SUMMARY$
 	Constructor. Create new tab.
 $LANG_RU$
-	Конструктор. Создать новую вкладку.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╫п╬п╡я┐я▌ п╡п╨п╩п╟п╢п╨я┐.
 $SYNTAX$
 	UITab(<caption>,<name>)	--> UITab object
 $ATTRIBUTES$
 	<caption>	- String. Tab caption.
 	<name>		- String. Tab name.
 $LANG_RU$
-	<caption>	- Строка. Заголовок вкладки. 
-	<name>		- Строка. Имя вкладки. 
+	<caption>	- п║я┌я─п╬п╨п╟. п≈п╟пЁп╬п╩п╬п╡п╬п╨ п╡п╨п╩п╟п╢п╨п╦. 
+	<name>		- п║я┌я─п╬п╨п╟. п≤п╪я▐ п╡п╨п╩п╟п╢п╨п╦. 
 $EXAMPLES$
 	oTab := UITab("Tab 1", "tab1")
 $ENDMETHOD$
@@ -46,7 +46,7 @@ $METHODNAME$
 $SUMMARY$
 	Show hidden tab.
 $LANG_RU$
-	Показать скрытую вкладку.
+	п÷п╬п╨п╟п╥п╟я┌я▄ я│п╨я─я▀я┌я┐я▌ п╡п╨п╩п╟п╢п╨я┐.
 $SYNTAX$
 	show()
 $EXAMPLES$
@@ -63,7 +63,7 @@ $METHODNAME$
 $SUMMARY$
 	Hide tab.
 $LANG_RU$
-	Скрыть вкладку.
+	п║п╨я─я▀я┌я▄ п╡п╨п╩п╟п╢п╨я┐.
 $SYNTAX$
 	hide()
 $EXAMPLES$
@@ -80,7 +80,7 @@ $METHODNAME$
 $SUMMARY$
 	Set focus to tab.
 $LANG_RU$
-	Перейти на вкладку.
+	п÷п╣я─п╣п╧я┌п╦ п╫п╟ п╡п╨п╩п╟п╢п╨я┐.
 $SYNTAX$
 	activate()
 $EXAMPLES$
@@ -94,13 +94,13 @@ $METHODNAME$
 $SUMMARY$
 	Change tab caption.
 $LANG_RU$
-	Изменить заголовок вкладки.
+	п≤п╥п╪п╣п╫п╦я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╬п╨ п╡п╨п╩п╟п╢п╨п╦.
 $SYNTAX$
 	setCaption(<caption>)
 $ATTRIBUTES$
 	<caption>	- String. New tab caption.
 $LANG_RU$
-	<caption>	- Строка. Новый заголовок вкладки. 
+	<caption>	- п║я┌я─п╬п╨п╟. п²п╬п╡я▀п╧ п╥п╟пЁп╬п╩п╬п╡п╬п╨ п╡п╨п╩п╟п╢п╨п╦. 
 $EXAMPLES$
 	t1 := UITab('First', 'first')
 	t1:setCaption('First tab')
@@ -116,11 +116,11 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 	UITABAREA UIVBOX
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

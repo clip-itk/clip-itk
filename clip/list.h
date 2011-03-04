@@ -45,18 +45,18 @@ int Next_List(List * list);	/* ring next */
 
 int prev_List(List * list);
 int Prev_List(List * list);	/* ring prev */
-int seek_List(List * list, void *item);		/* устанавливает текущий */
+int seek_List(List * list, void *item);		/* set current */
 
-void remove_List(List * list);	/* удаляет текущий; текущим становится следующий */
+void remove_List(List * list);	/* delete current; next will be current */
 void removeIt_List(List * list, void *item);
 
-void insert_List(List * list, void *item);	/* вставляет после текущего */
-void insertBefore_List(List * list, void *item);	/* вставляет перед текущим  */
-void append_List(List * list, void *item);	/* вставляет в конец        */
-void prepend_List(List * list, void *item);	/* вставляет в начало       */
+void insert_List(List * list, void *item);	/* insert after current */
+void insertBefore_List(List * list, void *item);	/* insert before current */
+void append_List(List * list, void *item);	/* insert at end            */
+void prepend_List(List * list, void *item);	/* insert at begin          */
 
 void removeAll_List(List * list);
 
-void put_List(List * list, void *item);		/* замещает текущий */
+void put_List(List * list, void *item);		/* replace current */
 
 #endif

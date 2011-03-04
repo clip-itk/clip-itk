@@ -237,7 +237,7 @@ do while len<=lenStr
    endif
    if !(chr==" ") .and. EndChoice
 	  aadd(mass,{0,0,0,0})
-	  i++    // óÞÅÔÞÉË ÜÌ-Ï× ÍÁÓÓÉ×Á
+	  i++    // Counter of array elements
 	  mass[i][1]:=y
 	  mass[i][2]:=Len+x-1
 	  EndChoice:=.f.
@@ -257,14 +257,14 @@ return mass
 
 ****************************************************************
 * function otvet
-* parameters str - ÓÔÒÏËÁ ÓÏÏÂÝÅÎÉÑ
-*            y,x - ËÏÏÒÄÉÎÁÔÙ ÌÅ×ÏÇÏ ×ÅÒÈÎÅÇÏ ÕÇÌÁ
-*            EscExit - .t. - ÎÅÔ ÚÁÃÉËÌÉ×ÁÎÉÑ ÐÒÉ ÎÁÖÁÔÉÉ ESC ÂÅÚ ÏÞÉÓÔËÉ lastkey()
+* parameters str - message string
+*            y,x - "coordinates of the upper-left corner
+*            EscExit - .t. - no loops while ESC is preseed and without cleanup of lastkey()
 *            color
 * ****
 // OTVET() ....
-// EscExit==.f. .or. NIL - ÎÅ ÒÅÁÇÉÒÏ×ÁÔØ ÎÁ ÎÁÖÁÔÉÅ ESC
-//        ==.t. - ×ÙÈÏÄ
+// EscExit==.f. .or. NIL - not respond to pressing ESC
+//        ==.t. - exit
 function otvet
 local i,j,otv,oldcolor,scr
 local row,col,mas[0],lenMas
@@ -284,10 +284,10 @@ if funcname("OTVET")
    return .f.
 endif
 iif(y==NIL, y:=_maxRowN,)
-blD1:=setkey(asc(LANG_YES_CHAR)       ,{|| in_key(__nm,.t.)})    // ä || Y
-blD2:=setkey(asc(lower(LANG_YES_CHAR)),{|| in_key(__nm,.t.)})    // Ä || y
-blN1:=setkey(asc(LANG_NO_CHAR)        ,{|| in_key(__nm,.f.)})    // î || N
-blN2:=setkey(asc(lower(LANG_NO_CHAR)) ,{|| in_key(__nm,.f.)})    // Î || n
+blD1:=setkey(asc(LANG_YES_CHAR)       ,{|| in_key(__nm,.t.)})    // Ð” || Y
+blD2:=setkey(asc(lower(LANG_YES_CHAR)),{|| in_key(__nm,.t.)})    // Ð´ || y
+blN1:=setkey(asc(LANG_NO_CHAR)        ,{|| in_key(__nm,.f.)})    // Ð || N
+blN2:=setkey(asc(lower(LANG_NO_CHAR)) ,{|| in_key(__nm,.f.)})    // Ð½ || n
 do while .t.
    j=at(";",str)
    if j!=0
@@ -344,10 +344,10 @@ do while .t.
 	  clearkey()
    endif
 enddo
-setkey(asc("Y")       ,blD1)    // ä || Y
-setkey(asc("y"),blD2)    // Ä || y
-setkey(asc("N")        ,blN1)    // î || N
-setkey(asc("n") ,blN2)    // Î || n
+setkey(asc("Y")       ,blD1)    // Ð” || Y
+setkey(asc("y"),blD2)    // Ð´ || y
+setkey(asc("N")        ,blN1)    // Ð || N
+setkey(asc("n") ,blN2)    // Ð½ || n
 if !EscExit
    clearkey()
 endif
@@ -510,6 +510,7 @@ Function dispboxSay(top, left, bottom, right, xType,color)
 	local ch,ch1,ch2,x,y,sStyle
 	local row:=row(),col:=col()
 	//local d_string :=[¥ ¨¡® «¡], s_string :=[‚€ƒ…€„]
+	//utf-8: local d_string :=[â•”â•â•—â•‘â•â•â•šâ•‘], s_string :=[â”Œâ”€â”â”‚â”˜â”€â””â”‚]
 	local d_string := B_DOUBLE
 	local s_string := B_SINGLE
 	dispbegin()
@@ -565,6 +566,7 @@ return
 Function winbuf_dispbox(winbuffer,top, left, bottom, right, xType,color)
 	local ch,ch1,ch2,x,y,sStyle
 	//local d_string :=[¥ ¨¡® «¡], s_string :=[‚€ƒ…€„]
+	//utf-8: local d_string :=[â•”â•â•—â•‘â•â•â•šâ•‘], s_string :=[â”Œâ”€â”â”‚â”˜â”€â””â”‚]
 	local d_string := B_DOUBLE
 	local s_string := B_SINGLE
 	if valtype(xType)=="N"

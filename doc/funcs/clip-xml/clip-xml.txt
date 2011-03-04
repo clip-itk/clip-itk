@@ -5,19 +5,19 @@ $CATEGORY$
 $SUMMARY$
 	Execute XPath query.
 $LANG_RU$
-	Выполнить запрос XPath.
+	п▓я▀п©п╬п╩п╫п╦я┌я▄ п╥п╟п©я─п╬я│ XPath.
 $SYNTAX$
 	xml_XPath(<context>,<path>)	--> <Result>
 $ARGUMENTS$
 	<context>	- XMLTag object. Context tag.
 	<path>		- String. XPath query.
 $LANG_RU$
-	<context>	- Объект XMLTag. Тег контекста.
-	<path>		- Строка. Запрос XPath.
+	<context>	- п·п╠я┼п╣п╨я┌ XMLTag. п╒п╣пЁ п╨п╬п╫я┌п╣п╨я│я┌п╟.
+	<path>		- п║я┌я─п╬п╨п╟. п≈п╟п©я─п╬я│ XPath.
 $RETURNS$
 	XPath query result.
 $LANG_RU$
-	Результат запроса XPath.
+	п═п╣п╥я┐п╩я▄я┌п╟я┌ п╥п╟п©я─п╬я│п╟ XPath.
 $EXAMPLES$
 	f := XMLTree()
 	f:parseFile( "component.xml" )
@@ -32,17 +32,17 @@ $CATEGORY$
 $SUMMARY$
 	Get XML parse error description.
 $LANG_RU$
-	Получить описание ошибки обработки XML.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ XML.
 $SYNTAX$
 	xml_errorString(<parser>)	--> <cError>
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
 $RETURNS$
 	XML parse error description.
 $LANG_RU$
-	Описание ошибки обработки XML.
+	п·п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ XML.
 $EXAMPLES$
 	? xml_errorString( parser )
 $SEEALSO$
@@ -55,17 +55,17 @@ $CATEGORY$
 $SUMMARY$
 	Get current column number in parsed XML file.
 $LANG_RU$
-	Получить номер текущего столбца в обрабатываемом файле XML.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╫п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣пЁп╬ я│я┌п╬п╩п╠я├п╟ п╡ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪п╬п╪ я└п╟п╧п╩п╣ XML.
 $SYNTAX$
 	xml_getCurrentColumnNumber(<parser>)	--> <nColumn>
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
 $RETURNS$
 	Current column number in parsed XML file.
 $LANG_RU$
-	Номер текущего столбца в обрабатываемом файле XML.
+	п²п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣пЁп╬ я│я┌п╬п╩п╠я├п╟ п╡ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪п╬п╪ я└п╟п╧п╩п╣ XML.
 $EXAMPLES$
 	? xml_getCurrentColumnNumber( parser )
 $SEEALSO$
@@ -78,17 +78,17 @@ $CATEGORY$
 $SUMMARY$
 	Get current line number in parsed XML file.
 $LANG_RU$
-	Получить номер текущей строки в обрабатываемом файле XML.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╫п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╡ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪п╬п╪ я└п╟п╧п╩п╣ XML.
 $SYNTAX$
 	xml_getCurrentLineNumber(<parser>)	--> <nLine>
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
 $RETURNS$
 	Current line number in parsed XML file.
 $LANG_RU$
-	Номер текущей строки в обрабатываемом файле XML.
+	п²п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣п╧ я│я┌я─п╬п╨п╦ п╡ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪п╬п╪ я└п╟п╧п╩п╣ XML.
 $EXAMPLES$
 	? xml_getCurrentLineNumber( parser )
 $SEEALSO$
@@ -101,17 +101,17 @@ $CATEGORY$
 $SUMMARY$
 	Get XML parse error code.
 $LANG_RU$
-	Получить код ошибки обработки XML.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╨п╬п╢ п╬я┬п╦п╠п╨п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ XML.
 $SYNTAX$
 	xml_getErrorCode(<parser>)	--> <cError>
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
 $RETURNS$
 	XML parse error code.
 $LANG_RU$
-	Код ошибки обработки XML.
+	п п╬п╢ п╬я┬п╦п╠п╨п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ XML.
 $EXAMPLES$
 	? xml_getErrorCode( parser )
 $SEEALSO$
@@ -124,7 +124,7 @@ $CATEGORY$
 $SUMMARY$
 	Parse string.
 $LANG_RU$
-	Обработать строку.
+	п·п╠я─п╟п╠п╬я┌п╟я┌я▄ я│я┌я─п╬п╨я┐.
 $SYNTAX$
 	xml_parse(<parser>,<cString>,<nLen>,<isFinal>)
 $ARGUMENTS$
@@ -133,10 +133,10 @@ $ARGUMENTS$
 	<nLen>		- Number. Length of string.
 	<isFinal>	- Boolean. Flag for end XML stream.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<cString>	- Строка. Буфер со строкой из файла XML.
-	<nLen>		- Число. Длина строки.
-	<isFinal>	- Логическое значение. Признак заверщения потока из файла XML.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<cString>	- п║я┌я─п╬п╨п╟. п▒я┐я└п╣я─ я│п╬ я│я┌я─п╬п╨п╬п╧ п╦п╥ я└п╟п╧п╩п╟ XML.
+	<nLen>		- п╖п╦я│п╩п╬. п■п╩п╦п╫п╟ я│я┌я─п╬п╨п╦.
+	<isFinal>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п÷я─п╦п╥п╫п╟п╨ п╥п╟п╡п╣я─я┴п╣п╫п╦я▐ п©п╬я┌п╬п╨п╟ п╦п╥ я└п╟п╧п╩п╟ XML.
 $EXAMPLES$
 	parser := xml_ParserCreate()
 
@@ -159,17 +159,17 @@ $CATEGORY$
 $SUMMARY$
 	Create parser object.
 $LANG_RU$
-	Создать объект парсера.
+	п║п╬п╥п╢п╟я┌я▄ п╬п╠я┼п╣п╨я┌ п©п╟я─я│п╣я─п╟.
 $SYNTAX$
 	xml_parserCreate([<encoding>])	--> <oParser>
 $ARGUMENTS$
 	<encoding>	- String. XML encoding.
 $LANG_RU$
-	<encoding>	- Строка. Кодировка XML.
+	<encoding>	- п║я┌я─п╬п╨п╟. п п╬п╢п╦я─п╬п╡п╨п╟ XML.
 $RETURNS$
 	Parser object.
 $LANG_RU$
-	Объект парсера.
+	п·п╠я┼п╣п╨я┌ п©п╟я─я│п╣я─п╟.
 $EXAMPLES$
 	xml_parserCreate()
 $SEEALSO$
@@ -182,13 +182,13 @@ $CATEGORY$
 $SUMMARY$
 	Free parser object.
 $LANG_RU$
-	Освободить память от объекта парсера.
+	п·я│п╡п╬п╠п╬п╢п╦я┌я▄ п©п╟п╪я▐я┌я▄ п╬я┌ п╬п╠я┼п╣п╨я┌п╟ п©п╟я─я│п╣я─п╟.
 $SYNTAX$
 	xml_parserFree(<parser>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
 $EXAMPLES$
 	xml_parserFree( parser )
 $SEEALSO$
@@ -201,7 +201,7 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle start and end of CDATA block.
 $LANG_RU$
-	Подключить функции обработки начала и конца блока CDATA.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╫п╟я┤п╟п╩п╟ п╦ п╨п╬п╫я├п╟ п╠п╩п╬п╨п╟ CDATA.
 $SYNTAX$
 	xml_setCDataSectionHandler(<parser>,<fStart>,<fEnd>)
 $ARGUMENTS$
@@ -209,9 +209,9 @@ $ARGUMENTS$
 	<fStart>	- Function or code block. Handle function for start of CDATA block. Passed parameters: <userData> - user data.
 	<fEnd>		- Function or code block. Handle function for end of CDATA block. Passed parameters: <userData> - user data.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fStart>	- Функция или блок кода. Функция обработчика начала блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
-	<fEnd>		- Функция или блок кода. Функция обработчика конца блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fStart>	- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╫п╟я┤п╟п╩п╟ п╠п╩п╬п╨п╟ CDATA. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣.
+	<fEnd>		- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╨п╬п╫я├п╟ п╠п╩п╬п╨п╟ CDATA. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣.
 $EXAMPLES$
 	xml_setCDataSectionHandler( parser, @myStartCData(), @myEndCData() )
 $SEEALSO$
@@ -224,15 +224,15 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle text block.
 $LANG_RU$
-	Подключить функции обработки блоков текста.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╠п╩п╬п╨п╬п╡ я┌п╣п╨я│я┌п╟.
 $SYNTAX$
 	xml_setCharacterDataHandler(<parser>,<fText>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<fText>		- Function or code block. Handle function for text block. Passed parameters: <userData> - user data, <cStr> - text, <nLen> - text length. 
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fText>		- Функция или блок кода. Функция обработчика текста. Передаваемые параметры: <userData> - пользовательские данные, <cStr> - текст, <nLen> - длина текста.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fText>		- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ я┌п╣п╨я│я┌п╟. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣, <cStr> - я┌п╣п╨я│я┌, <nLen> - п╢п╩п╦п╫п╟ я┌п╣п╨я│я┌п╟.
 $EXAMPLES$
 	xml_setCharacterDataHandler( parser, @myText() )
 $SEEALSO$
@@ -245,15 +245,15 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle comments.
 $LANG_RU$
-	Подключить функции обработки комментариев.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╨п╬п╪п╪п╣п╫я┌п╟я─п╦п╣п╡.
 $SYNTAX$
 	xml_setCommentHandler(<parser>,<fComments>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<fComments>		- Function or code block. Handle function for comments. Passed parameters: <userData> - user data, <cStr> - comment text. 
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fComments>		- Функция или блок кода. Функция обработчика комментариев. Передаваемые параметры: <userData> - пользовательские данные, <cStr> - текст комментариев.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fComments>		- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╨п╬п╪п╪п╣п╫я┌п╟я─п╦п╣п╡. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣, <cStr> - я┌п╣п╨я│я┌ п╨п╬п╪п╪п╣п╫я┌п╟я─п╦п╣п╡.
 $EXAMPLES$
 	xml_setCommentHandler( parser, @myComments() )
 $SEEALSO$
@@ -266,15 +266,15 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle text which wouldn't otherwise be handled.
 $LANG_RU$
-	Подключить функции обработки текста, не обрабатываемого другими обработчиками.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ я┌п╣п╨я│я┌п╟, п╫п╣ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪п╬пЁп╬ п╢я─я┐пЁп╦п╪п╦ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟п╪п╦.
 $SYNTAX$
 	xml_setDefaultHandler(<parser>,<fText>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<fText>		- Function or code block. Handle function for text which wouldn't otherwise be handled. Passed parameters: <userData> - user data, <cStr> -  text, <nLen> - text length. 
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fText>		- Функция или блок кода. Функция обработчика текста, не обрабатываемого другими обработчиками. Передаваемые параметры: <userData> - пользовательские данные, <cStr> - текст, <nLen> - длина текста.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fText>		- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ я┌п╣п╨я│я┌п╟, п╫п╣ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟п╣п╪п╬пЁп╬ п╢я─я┐пЁп╦п╪п╦ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟п╪п╦. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣, <cStr> - я┌п╣п╨я│я┌, <nLen> - п╢п╩п╦п╫п╟ я┌п╣п╨я│я┌п╟.
 $EXAMPLES$
 	xml_setDefaultHandler( parser, @myOtherText() )
 $SEEALSO$
@@ -287,7 +287,7 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle start and end tags.
 $LANG_RU$
-	Подключить функции обработки открывающих и закрывающих тегов.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╬я┌п╨я─я▀п╡п╟я▌я┴п╦я┘ п╦ п╥п╟п╨я─я▀п╡п╟я▌я┴п╦я┘ я┌п╣пЁп╬п╡.
 $SYNTAX$
 	xml_setElementHandler(<parser>,<fStart>,<fEnd>)
 $ARGUMENTS$
@@ -295,9 +295,9 @@ $ARGUMENTS$
 	<fStart>	- Function or code block. Handle function for start tag. Passed parameters: <userData> - user data, <cName> - tag name, <aAttrs> - array of pair attribute name and its value.
 	<fEnd>		- Function or code block. Handle function for end tag. Passed parameters: <userData> - user data, <cName> - tag name.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fStart>	- Функция или блок кода. Функция обработчика открывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега, <aAttrs> - массив пар атрибутов и их значений.
-	<fEnd>		- Функция или блок кода. Функция обработчика закрывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fStart>	- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╬я┌п╨я─я▀п╡п╟я▌я┴п╣пЁп╬ я┌п╣пЁп╟. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣, <cName> - п╦п╪я▐ я┌п╣пЁп╟, <aAttrs> - п╪п╟я│я│п╦п╡ п©п╟я─ п╟я┌я─п╦п╠я┐я┌п╬п╡ п╦ п╦я┘ п╥п╫п╟я┤п╣п╫п╦п╧.
+	<fEnd>		- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╥п╟п╨я─я▀п╡п╟я▌я┴п╣пЁп╬ я┌п╣пЁп╟. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣, <cName> - п╦п╪я▐ я┌п╣пЁп╟.
 $EXAMPLES$
 	xml_setElementHandler( parser, @myStartElement(), @myEndElement() )
 $SEEALSO$
@@ -310,15 +310,15 @@ $CATEGORY$
 $SUMMARY$
 	Set mode for parsing of parameter entities.
 $LANG_RU$
-	Установить режим обработки включений (entity).
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╣п╤п╦п╪ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╡п╨п╩я▌я┤п╣п╫п╦п╧ (entity).
 $SYNTAX$
 	xml_setParamEntityParsing(<parser>,<mode>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<mode>		- Number. This enables parsing of parameter entities, including the external parameter entity that is the external DTD subset, according to <mode>. Include clip-expat.ch and see Expat documentation.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<mode>		- Число. Режим обработки включений (entity), в том числе и определённых в DTD. Включите заголовочный файл clip-expat.ch и обратитесь к документации по Expat.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<mode>		- п╖п╦я│п╩п╬. п═п╣п╤п╦п╪ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╡п╨п╩я▌я┤п╣п╫п╦п╧ (entity), п╡ я┌п╬п╪ я┤п╦я│п╩п╣ п╦ п╬п©я─п╣п╢п╣п╩я▒п╫п╫я▀я┘ п╡ DTD. п▓п╨п╩я▌я┤п╦я┌п╣ п╥п╟пЁп╬п╩п╬п╡п╬я┤п╫я▀п╧ я└п╟п╧п╩ clip-expat.ch п╦ п╬п╠я─п╟я┌п╦я┌п╣я│я▄ п╨ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦ п©п╬ Expat.
 $EXAMPLES$
 	xml_setParamEntityParsing( parser, XML_PARAM_ENTITY_PARSING_NEVER )
 $SEEALSO$
@@ -331,15 +331,15 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle start of CDATA block.
 $LANG_RU$
-	Подключить функции обработки начала блока CDATA.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╫п╟я┤п╟п╩п╟ п╠п╩п╬п╨п╟ CDATA.
 $SYNTAX$
 	xml_setStartCDataSectionHandler(<parser>,<fStart>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<fStart>	- Function or code block. Handle function for start of CDATA block. Passed parameters: <userData> - user data.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fStart>	- Функция или блок кода. Функция обработчика начала блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fStart>	- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╫п╟я┤п╟п╩п╟ п╠п╩п╬п╨п╟ CDATA. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣.
 $EXAMPLES$
 	xml_setStartCDataSectionHandler( parser, @myStartCData() )
 $SEEALSO$
@@ -352,15 +352,15 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle end of CDATA block.
 $LANG_RU$
-	Подключить функции обработки конца блока CDATA.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╨п╬п╫я├п╟ п╠п╩п╬п╨п╟ CDATA.
 $SYNTAX$
 	xml_setEndCDataSectionHandler(<parser>,<fEnd>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<fEnd>		- Function or code block. Handle function for end of CDATA block. Passed parameters: <userData> - user data.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fEnd>		- Функция или блок кода. Функция обработчика конца блока CDATA. Передаваемые параметры: <userData> - пользовательские данные.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fEnd>		- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╨п╬п╫я├п╟ п╠п╩п╬п╨п╟ CDATA. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣.
 $EXAMPLES$
 	xml_setEndCDataSectionHandler( parser, @myEndCData() )
 $SEEALSO$
@@ -373,15 +373,15 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle start tags.
 $LANG_RU$
-	Подключить функции обработки открывающих тегов.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╬я┌п╨я─я▀п╡п╟я▌я┴п╦я┘ я┌п╣пЁп╬п╡.
 $SYNTAX$
 	xml_setStartElementHandler(<parser>,<fStart>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<fStart>	- Function or code block. Handle function for start tag. Passed parameters: <userData> - user data, <cName> - tag name, <aAttrs> - array of pair attribute name and its value.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fStart>	- Функция или блок кода. Функция обработчика открывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега, <aAttrs> - массив пар атрибутов и их значений.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fStart>	- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╬я┌п╨я─я▀п╡п╟я▌я┴п╣пЁп╬ я┌п╣пЁп╟. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣, <cName> - п╦п╪я▐ я┌п╣пЁп╟, <aAttrs> - п╪п╟я│я│п╦п╡ п©п╟я─ п╟я┌я─п╦п╠я┐я┌п╬п╡ п╦ п╦я┘ п╥п╫п╟я┤п╣п╫п╦п╧.
 $EXAMPLES$
 	xml_setStartElementHandler( parser, @myStartElement() )
 $SEEALSO$
@@ -394,15 +394,15 @@ $CATEGORY$
 $SUMMARY$
 	Set functions for handle end tags.
 $LANG_RU$
-	Подключить функции обработки закрывающих тегов.
+	п÷п╬п╢п╨п╩я▌я┤п╦я┌я▄ я└я┐п╫п╨я├п╦п╦ п╬п╠я─п╟п╠п╬я┌п╨п╦ п╥п╟п╨я─я▀п╡п╟я▌я┴п╦я┘ я┌п╣пЁп╬п╡.
 $SYNTAX$
 	xml_setEndElementHandler(<parser>,<fEnd>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<fEnd>		- Function or code block. Handle function for end tag. Passed parameters: <userData> - user data, <cName> - tag name.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<fEnd>		- Функция или блок кода. Функция обработчика закрывающего тега. Передаваемые параметры: <userData> - пользовательские данные, <cName> - имя тега.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<fEnd>		- п╓я┐п╫п╨я├п╦я▐ п╦п╩п╦ п╠п╩п╬п╨ п╨п╬п╢п╟. п╓я┐п╫п╨я├п╦я▐ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п╥п╟п╨я─я▀п╡п╟я▌я┴п╣пЁп╬ я┌п╣пЁп╟. п÷п╣я─п╣п╢п╟п╡п╟п╣п╪я▀п╣ п©п╟я─п╟п╪п╣я┌я─я▀: <userData> - п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣, <cName> - п╦п╪я▐ я┌п╣пЁп╟.
 $EXAMPLES$
 	xml_setEndElementHandler( parser, @myEndElement() )
 $SEEALSO$
@@ -415,15 +415,15 @@ $CATEGORY$
 $SUMMARY$
 	Set user data for parser.
 $LANG_RU$
-	Задать пользовательские данные для парсера.
+	п≈п╟п╢п╟я┌я▄ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п©п╟я─я│п╣я─п╟.
 $SYNTAX$
 	xml_setUserData(<parser>,<data>)
 $ARGUMENTS$
 	<parser>	- Object created by function xml_ParserCreate().
 	<data>		- Any type. User data for parser.
 $LANG_RU$
-	<parser>	- Объект, созданный функцией xml_ParserCreate().
-	<data>		- Любой тип. Пользовательские данные для парсера.
+	<parser>	- п·п╠я┼п╣п╨я┌, я│п╬п╥п╢п╟п╫п╫я▀п╧ я└я┐п╫п╨я├п╦п╣п╧ xml_ParserCreate().
+	<data>		- п⌡я▌п╠п╬п╧ я┌п╦п©. п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╣ п╢п╟п╫п╫я▀п╣ п╢п╩я▐ п©п╟я─я│п╣я─п╟.
 $EXAMPLES$
 	xml_setUserData( parser, { "user data" } )
 $SEEALSO$

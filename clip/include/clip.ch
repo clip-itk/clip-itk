@@ -1,4 +1,4 @@
-/*  для нового клиппера */
+/*  for new Clipper */
 #ifndef _CLIP_DEFINED
 #define _CLIP_DEFINED
 

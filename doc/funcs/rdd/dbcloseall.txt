@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Close all occupied work areas
 $LANG_RU$
-   Закрывает все открытые рабочие области.
+   п≈п╟п╨я─я▀п╡п╟п╣я┌ п╡я│п╣ п╬я┌п╨я─я▀я┌я▀п╣ я─п╟п╠п╬я┤п╦п╣ п╬п╠п╩п╟я│я┌п╦.
 $SYNTAX$
      DBCLOSEALL() --> NIL
 $LANG_RU$
@@ -13,7 +13,7 @@ $LANG_RU$
 $RETURNS$
      DBCLOSEALL() always returns NIL.
 $LANG_RU$
-     DBCLOSEALL() всегда возвращает NIL.
+     DBCLOSEALL() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBCLOSEALL() releases all occupied work areas from use.  It is
      equivalent to calling DBCLOSEAREA() on every occupied work area.
@@ -22,13 +22,13 @@ $DESCRIPTION$
 
 
 $LANG_RU$
-     DBCLOSEALL() закрывает все открытые рабочие области, запрещая их
-     дальнейшее использование. Это эквивалентно вызову функции
-     DBCLOSEAREA() для каждой рабочей области в отдельности.
+     DBCLOSEALL() п╥п╟п╨я─я▀п╡п╟п╣я┌ п╡я│п╣ п╬я┌п╨я─я▀я┌я▀п╣ я─п╟п╠п╬я┤п╦п╣ п╬п╠п╩п╟я│я┌п╦, п╥п╟п©я─п╣я┴п╟я▐ п╦я┘
+     п╢п╟п╩я▄п╫п╣п╧я┬п╣п╣ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣. п╜я┌п╬ я█п╨п╡п╦п╡п╟п╩п╣п╫я┌п╫п╬ п╡я▀п╥п╬п╡я┐ я└я┐п╫п╨я├п╦п╦
+     DBCLOSEAREA() п╢п╩я▐ п╨п╟п╤п╢п╬п╧ я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦ п╡ п╬я┌п╢п╣п╩я▄п╫п╬я│я┌п╦.
 
-     DBCLOSEALL() имеет такой же эффект, что и стандартная команда CLOSE
-     DATABASES. Более подробную информацию смотрите в описаниях команд USE
-     и CLOSE.
+     DBCLOSEALL() п╦п╪п╣п╣я┌ я┌п╟п╨п╬п╧ п╤п╣ я█я└я└п╣п╨я┌, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ CLOSE
+     DATABASES. п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╬п©п╦я│п╟п╫п╦я▐я┘ п╨п╬п╪п╟п╫п╢ USE
+     п╦ CLOSE.
 $EXAMPLES$
        The following example closes all work areas:
 

@@ -5,31 +5,31 @@
 #ifndef _WB_DEFINED
 #define _WB_DEFINED
 
-#define WB_DOUBLE_CLEAR 	 0     /* •†® */
-#define WB_SINGLE_CLEAR 	 1     /* ÇÄÉ */
-#define WB_DOUBLE_SINGLE_CLEAR	 2     /* ¢†¶ */
-#define WB_SINGLE_DOUBLE_CLEAR	 3     /* §Äß */
+#define WB_DOUBLE_CLEAR 	 0     /* utf-8: ‚ïî‚ïê‚ïó */
+#define WB_SINGLE_CLEAR 	 1     /* utf-8: ‚îå‚îÄ‚îê */
+#define WB_DOUBLE_SINGLE_CLEAR	 2     /* utf-8: ‚ïí‚ïê‚ïï */
+#define WB_SINGLE_DOUBLE_CLEAR	 3     /* utf-8: ‚ïì‚îÄ‚ïñ */
 
-#define WB_DOUBLE		 4     /* •†® */
-#define WB_SINGLE		 5     /* ÇÄÉ */
-#define WB_DOUBLE_SINGLE	 6     /* ¢†¶ */
-#define WB_SINGLE_DOUBLE	 7     /* §Äß */
+#define WB_DOUBLE		 4     /* utf-8: ‚ïî‚ïê‚ïó */
+#define WB_SINGLE		 5     /* utf-8: ‚îå‚îÄ‚îê */
+#define WB_DOUBLE_SINGLE	 6     /* utf-8: ‚ïí‚ïê‚ïï */
+#define WB_SINGLE_DOUBLE	 7     /* utf-8: ‚ïì‚îÄ‚ïñ */
 
-#define WB_HALF_FULL_CLEAR	 8     /* çãç */
+#define WB_HALF_FULL_CLEAR	 8     /* utf-8: ‚ñà‚ñÄ‚ñà */
 
-#define WB_HALF_CLEAR		 9     /* èãé */
+#define WB_HALF_CLEAR		 9     /* utf-8: ‚ñê‚ñÄ‚ñå */
 
-#define WB_FULL_HALF_CLEAR	10     /* èçé */
+#define WB_FULL_HALF_CLEAR	10     /* utf-8: ‚ñê‚ñà‚ñå */
 
-#define WB_FULL_CLEAR		11     /* ççç */
+#define WB_FULL_CLEAR		11     /* utf-8: ‚ñà‚ñà‚ñà */
 
-#define WB_HALF_FULL		12     /* çãç */
+#define WB_HALF_FULL		12     /* utf-8: ‚ñà‚ñÄ‚ñà */
 
-#define WB_HALF 		13     /* èãé */
+#define WB_HALF 		13     /* utf-8: ‚ñê‚ñÄ‚ñå */
 
-#define WB_FULL_HALF		14     /* èçé */
+#define WB_FULL_HALF		14     /* utf-8: ‚ñê‚ñà‚ñå */
 
-#define WB_FULL 		15     /* ççç */
+#define WB_FULL 		15     /* utf-8: ‚ñà‚ñà‚ñà */
 
 #ifdef __CLIP__
 

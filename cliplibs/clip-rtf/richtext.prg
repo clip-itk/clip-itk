@@ -1,37 +1,37 @@
 /*
-‚€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ƒ
-        Class: RichText                                                   
-  Description: System for generating simple RTF files.                    
-     Language: Clipper/Fivewin                                            
-      Version: 0.90 -- This is a usable, but incomplete, version that is  
-               being distributed in case anyone cares to use it as-is,    
-               or wants to comment on it.                                 
-         Date: 01/28/97                                                   
-       Author: Tom Marchione                                              
-     Internet: 73313,3626@compuserve.com                                  
-                                                                          
-    Copyright: (C) 1997, Thomas R. Marchione                              
-       Rights: Use/modify freely for applicaton work, under the condition 
-               that you include the original author's credits (i.e., this 
-               header), and you do not offer the source code for sale.    
-               The author may or may not supply updates and revisions     
-               to this code as "freeware".                                
-                                                                          
-   Warranties: None. The code has not been rigorously tested in a formal  
-               development environment, and is offered as-is.  The author 
-               assumes no responsibility for its use.                     
-                                                                          
-    Revisions:                                                            
-                                                                          
-    DATE       AUTHOR  COMMENTS                                           
-€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
-    01/28/97   TRM     Date of initial release                            
-                                                                          
-                                                                          
-                                                                          
-                                                                          
-                                                                          
-„€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€…
++--------------------------------------------------------------------------+
+|        Class: RichText                                                   |
+|  Description: System for generating simple RTF files.                    |
+|     Language: Clipper/Fivewin                                            |
+|      Version: 0.90 -- This is a usable, but incomplete, version that is  |
+|               being distributed in case anyone cares to use it as-is,    |
+|               or wants to comment on it.                                 |
+|         Date: 01/28/97                                                   |
+|       Author: Tom Marchione                                              |
+|     Internet: 73313,3626@compuserve.com                                  |
+|                                                                          |
+|    Copyright: (C) 1997, Thomas R. Marchione                              |
+|       Rights: Use/modify freely for applicaton work, under the condition |
+|               that you include the original author's credits (i.e., this |
+|               header), and you do not offer the source code for sale.    |
+|               The author may or may not supply updates and revisions     |
+|               to this code as "freeware".                                |
+|                                                                          |
+|   Warranties: None. The code has not been rigorously tested in a formal  |
+|               development environment, and is offered as-is.  The author |
+|               assumes no responsibility for its use.                     |
+|                                                                          |
+|    Revisions:                                                            |
+|                                                                          |
+|    DATE       AUTHOR  COMMENTS                                           |
++--------------------------------------------------------------------------+
+|    01/28/97   TRM     Date of initial release                            |
+|                                                                          |
+|                                                                          |
+|                                                                          |
+|                                                                          |
+|                                                                          |
++--------------------------------------------------------------------------+
 */
 
 

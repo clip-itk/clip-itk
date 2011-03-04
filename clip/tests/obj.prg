@@ -6,7 +6,7 @@ o:a := 0
 ? o
 o:a += 2
 ? o
-? 'фыва'
+? 'qwerty'
 o:a += 2
 ? o
 //o:destroy()

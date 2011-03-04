@@ -198,7 +198,7 @@ local urn,sprname,typenode,cache:=map()
 	tmp := map()
 	post_objs:={}
 	for i=1 to len(post_list)
-		/* не показывать дубликаты проводок */
+		/* skip duplicate entries */
 		if post_list[i] $ tmp
 			loop
 		endif

@@ -1,0 +1,110 @@
+# Module brow.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2001.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2001-10-23 15:24+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: brows.prg:221
+msgid "Where are you going?"
+msgstr "Куда пойдем?"
+
+#: brows.prg:240 brows.prg:247
+msgid "String;"
+msgstr "Строка;"
+
+#: brows.prg:240 brows.prg:247
+msgid ";not found!"
+msgstr ";не найдена!"
+
+#: brows.prg:1643
+msgid "&File"
+msgstr "&Файл"
+
+#: brows.prg:1653
+msgid "E&xit   "
+msgstr "&Выход  "
+
+#: brows.prg:1653
+msgid "End of application"
+msgstr "Выйти из приложения"
+
+#: brows.prg:1658
+msgid "&Control"
+msgstr "&Управление"
+
+#: brows.prg:1661
+msgid "&Next   "
+msgstr "&Дальше"
+
+#: brows.prg:1661
+msgid "Go next item"
+msgstr "Перейти на след. объект"
+
+#: brows.prg:1665
+msgid "&Prev   "
+msgstr "&Назад"
+
+#: brows.prg:1665
+msgid "Go previous item"
+msgstr "Перейти на пред. объект"
+
+#: brows.prg:1669
+msgid "P&revUrl   "
+msgstr "Пред. документ"
+
+#: brows.prg:1669
+msgid "Go previous URL document"
+msgstr "Загрузить пред. документ"
+
+#: brows.prg:1673
+msgid "Nex&tUrl   "
+msgstr "След. документ"
+
+#: brows.prg:1673
+msgid "Go next URL document"
+msgstr "Загрузить след. документ"
+
+#: brows.prg:1677
+msgid "&InfoUrl   "
+msgstr "Информация"
+
+#: brows.prg:1677
+msgid "Get information about URL document"
+msgstr "Информация о URL"
+
+#: brows.prg:1683
+msgid "&Options"
+msgstr "&Опции"
+
+#: brows.prg:1686
+msgid "&Find   "
+msgstr "&Поиск"
+
+#: brows.prg:1686
+msgid "Find string"
+msgstr "Поиск строки"
+
+#: brows.prg:1690
+msgid "&Resume   "
+msgstr "П&родолжить"
+
+#: brows.prg:1690
+msgid "Resume find string"
+msgstr "Продолжить поиск строки"
+
+#: brows.prg:1694
+msgid "&Unmark   "
+msgstr "&Снять"
+
+#: brows.prg:1694
+msgid "Unmark selected block"
+msgstr "Снять отметку блока"

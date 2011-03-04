@@ -3,34 +3,34 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIWorkSpace
 $LANG_RU$
-	Класс UIWorkSpace
+	п п╩п╟я│я│ UIWorkSpace
 $ABOUT$
 	Class of application instance.
 $LANG_RU$
-	Класс экземпляра приложения.
+	п п╩п╟я│я│ я█п╨п╥п╣п╪п©п╩я▐я─п╟ п©я─п╦п╩п╬п╤п╣п╫п╦я▐.
 $SYNTAX$
 	UIWorkSpace()	--> UIWorkSpace object
 $LANG_RU$
-	UIWorkSpace()	--> Объект UIWorkSpace
+	UIWorkSpace()	--> п·п╠я┼п╣п╨я┌ UIWorkSpace
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIWorkSpace".
 	<onQuit>	- Action executed on application quit.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIWorkSpace".
-	<onQuit>	- Действие, выполняемое при выходе из приложения.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIWorkSpace".
+	<onQuit>	- п■п╣п╧я│я┌п╡п╦п╣, п╡я▀п©п╬п╩п╫я▐п╣п╪п╬п╣ п©я─п╦ п╡я▀я┘п╬п╢п╣ п╦п╥ п©я─п╦п╩п╬п╤п╣п╫п╦я▐.
 
 $METHODNAME$
 	UIWorkSpace()
 $SUMMARY$
 	Constructor. Create application instance.
 $LANG_RU$
-	Конструктор. Создать экземпляр приложения.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ я█п╨п╥п╣п╪п©п╩я▐я─ п©я─п╦п╩п╬п╤п╣п╫п╦я▐.
 $SYNTAX$
 	UIWorkSpace([<params>])	--> UIWorkSpace object
 $ARGUMENTS$
 	<params>	- Array. List of command line options.
 $LANG_RU$
-	<params>	- Массив. Список параметров командной строки.
+	<params>	- п°п╟я│я│п╦п╡. п║п©п╦я│п╬п╨ п©п╟я─п╟п╪п╣я┌я─п╬п╡ п╨п╬п╪п╟п╫п╢п╫п╬п╧ я│я┌я─п╬п╨п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -38,7 +38,7 @@ $METHODNAME$
 $SUMMARY$
 	Run application instance.
 $LANG_RU$
-	Запустить экземпляр приложения.
+	п≈п╟п©я┐я│я┌п╦я┌я▄ я█п╨п╥п╣п╪п©п╩я▐я─ п©я─п╦п╩п╬п╤п╣п╫п╦я▐.
 $SYNTAX$
 	run()
 $ENDMETHOD$
@@ -48,7 +48,7 @@ $METHODNAME$
 $SUMMARY$
 	Quit application instance work.
 $LANG_RU$
-	Завершить работу экземпляра приложения.
+	п≈п╟п╡п╣я─я┬п╦я┌я▄ я─п╟п╠п╬я┌я┐ я█п╨п╥п╣п╪п©п╩я▐я─п╟ п©я─п╦п╩п╬п╤п╣п╫п╦я▐.
 $SYNTAX$
 	quit()
 $ENDMETHOD$
@@ -58,15 +58,15 @@ $METHODNAME$
 $SUMMARY$
 	Set action that will be call on application quit.
 $LANG_RU$
-	Указать действие, выполняемое при выходе из приложения.
+	пёп╨п╟п╥п╟я┌я▄ п╢п╣п╧я│я┌п╡п╦п╣, п╡я▀п©п╬п╩п╫я▐п╣п╪п╬п╣ п©я─п╦ п╡я▀я┘п╬п╢п╣ п╦п╥ п©я─п╦п╩п╬п╤п╣п╫п╦я▐.
 $SYNTAX$
 	setAction([<signal>],<action>)
 $ARGUMENTS$
 	<signal>	- String. Signal name.
 	<action>	- Code block. Action.
 $LANG_RU$
-	<signal>	- Строка. Название сигнала.
-	<action>	- Блок кода. Действие.
+	<signal>	- п║я┌я─п╬п╨п╟. п²п╟п╥п╡п╟п╫п╦п╣ я│п╦пЁп╫п╟п╩п╟.
+	<action>	- п▒п╩п╬п╨ п╨п╬п╢п╟. п■п╣п╧я│я┌п╡п╦п╣.
 $ENDMETHOD$
 
 $EXAMPLES$
@@ -76,10 +76,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

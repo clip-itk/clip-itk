@@ -4,14 +4,14 @@ $SUMMARY$
 	Class are destined to control of
 	associated in list data values. For example, it can be list of files.
 $LANG_RU$
-	Класс предназначен для управления данными, организованными в список.
-	Например, это может быть список файлов.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п╢п╟п╫п╫я▀п╪п╦, п╬я─пЁп╟п╫п╦п╥п╬п╡п╟п╫п╫я▀п╪п╦ п╡ я│п©п╦я│п╬п╨.
+	п²п╟п©я─п╦п╪п╣я─, я█я┌п╬ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ я│п©п╦я│п╬п╨ я└п╟п╧п╩п╬п╡.
 $ABOUT$
 	Class are destined to control of
 	associated in list data values. For example, it can be list of files.
 $LANG_RU$
-	Класс предназначен для управления данными, организованными в список.
-	Например, это может быть список файлов.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п╢п╟п╫п╫я▀п╪п╦, п╬я─пЁп╟п╫п╦п╥п╬п╡п╟п╫п╫я▀п╪п╦ п╡ я│п©п╦я│п╬п╨.
+	п²п╟п©я─п╦п╪п╣я─, я█я┌п╬ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ я│п©п╦я│п╬п╨ я└п╟п╧п╩п╬п╡.
 $SYNTAX$
 	ListItemNew(<nLrow>,<nLcol>,<nRrow>,<nRcol>[,<nColumns>[,<sDelimiter>[,<sColor>]]]) --> ListItem object
 $ATTRIBUTES$
@@ -50,43 +50,43 @@ $ATTRIBUTES$
 
 $LANG_RU$
 	<ClassName> 	LISTITEM
-	<Item>		Array, массив элементов.
-	<nTop> 		Numeric, координаты области редактирования LISTITEM
-	<nLeft>         Numeric, координаты области редактирования LISTITEM
-	<nBottom>       Numeric, координаты области редактирования LISTITEM
-	<nRight>        Numeric, координаты области редактирования LISTITEM
-	<ColorSpec>	String, цветовая спецификация.
+	<Item>		Array, п╪п╟я│я│п╦п╡ я█п╩п╣п╪п╣п╫я┌п╬п╡.
+	<nTop> 		Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ LISTITEM
+	<nLeft>         Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ LISTITEM
+	<nBottom>       Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ LISTITEM
+	<nRight>        Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐ LISTITEM
+	<ColorSpec>	String, я├п╡п╣я┌п╬п╡п╟я▐ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▐.
 
 			"clr1, clr2, clr3, clr4, clr5, clr6, clr7"
-			clr1 - основной цвет и цвет обрамления
-			clr2 - цвет текущего элемента, если объект в фокусе
-			clr3 - цвет текущего элемента, если объект не в фокусе
-			clr4 - цвет заголовков
-			clr5 - цвет выделенных элементов
-			clr6 - цвет текущего выделенного элемента
-			clr7 - цвет выделенных операцией поиска символов
+			clr1 - п╬я│п╫п╬п╡п╫п╬п╧ я├п╡п╣я┌ п╦ я├п╡п╣я┌ п╬п╠я─п╟п╪п╩п╣п╫п╦я▐
+			clr2 - я├п╡п╣я┌ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟, п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╡ я└п╬п╨я┐я│п╣
+			clr3 - я├п╡п╣я┌ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟, п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╫п╣ п╡ я└п╬п╨я┐я│п╣
+			clr4 - я├п╡п╣я┌ п╥п╟пЁп╬п╩п╬п╡п╨п╬п╡
+			clr5 - я├п╡п╣я┌ п╡я▀п╢п╣п╩п╣п╫п╫я▀я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡
+			clr6 - я├п╡п╣я┌ я┌п╣п╨я┐я┴п╣пЁп╬ п╡я▀п╢п╣п╩п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟
+			clr7 - я├п╡п╣я┌ п╡я▀п╢п╣п╩п╣п╫п╫я▀я┘ п╬п©п╣я─п╟я├п╦п╣п╧ п©п╬п╦я│п╨п╟ я│п╦п╪п╡п╬п╩п╬п╡
 
-	<ItemCount>	Numeric, количество элементов в <::Item>
-	<Buffer>	Numeric, номер текущего элемента
-	<First>		Numeric, номер первого элемента в области просмотра
-	<ItemWin>	Numeric, количество элементов в области просмотра
-	<Line>		Numeric, текущая координата курсора - строка
-	<Col>		Numeric, текущая координата курсора - колонка
-	<Pos>		Numeric, номер текщей колонки
-	<ColWin>	Numeric, количество колонок в области просмотра
-	<RowWin>	Numeric, количество строк в области просмотра
-	<LenCol>	Array, массив, содержащий ширину колонок
-	<Title>		Array, массив заголовков колонок
-	<Delim>		String, разделитель колонок
-	<HasFocus>	Logical, если TRUE объект находится в фокусе
-	<FindBuffer>	String, буфер поиска
+	<ItemCount>	Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ <::Item>
+	<Buffer>	Numeric, п╫п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟
+	<First>		Numeric, п╫п╬п╪п╣я─ п©п╣я─п╡п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<ItemWin>	Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<Line>		Numeric, я┌п╣п╨я┐я┴п╟я▐ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟ п╨я┐я─я│п╬я─п╟ - я│я┌я─п╬п╨п╟
+	<Col>		Numeric, я┌п╣п╨я┐я┴п╟я▐ п╨п╬п╬я─п╢п╦п╫п╟я┌п╟ п╨я┐я─я│п╬я─п╟ - п╨п╬п╩п╬п╫п╨п╟
+	<Pos>		Numeric, п╫п╬п╪п╣я─ я┌п╣п╨я┴п╣п╧ п╨п╬п╩п╬п╫п╨п╦
+	<ColWin>	Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╨п╬п╩п╬п╫п╬п╨ п╡ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<RowWin>	Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│я┌я─п╬п╨ п╡ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<LenCol>	Array, п╪п╟я│я│п╦п╡, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ я┬п╦я─п╦п╫я┐ п╨п╬п╩п╬п╫п╬п╨
+	<Title>		Array, п╪п╟я│я│п╦п╡ п╥п╟пЁп╬п╩п╬п╡п╨п╬п╡ п╨п╬п╩п╬п╫п╬п╨
+	<Delim>		String, я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▄ п╨п╬п╩п╬п╫п╬п╨
+	<HasFocus>	Logical, п╣я│п╩п╦ TRUE п╬п╠я┼п╣п╨я┌ п╫п╟я┘п╬п╢п╦я┌я│я▐ п╡ я└п╬п╨я┐я│п╣
+	<FindBuffer>	String, п╠я┐я└п╣я─ п©п╬п╦я│п╨п╟
 
 $METHODNAME$
 	ListItemNew()
 $SUMMARY$
 	LISTITEM object constructor.
 $LANG_RU$
-	Конструктор объекта LISTITEM.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟ LISTITEM.
 $SYNTAX$
 	ListItemNew(<nLrow>,<nLcol>,<nRrow>,<nRcol>[,<nColumns>[,<sDelimiter>[,<sColor>]]]) --> ListItem object
 $ARGUMENTS$
@@ -98,24 +98,24 @@ $ARGUMENTS$
 	<sDelimiter>	String, a columns delimiter. By default <|>
 	<sColor>	String, a colors specification. By default "7/0, 7/0, 7/0, 7/0, 7/0, 7/0, 7/0"
 $LANG_RU$
-	<nLrow> 	Numeric, координаты области просмотра
-	<nLcol>		Numeric, координаты области просмотра
-	<nRrow>		Numeric, координаты области просмотра
-	<nRcol>		Numeric, координаты области просмотра
-	<nColumns>	Numeric, количество колонок. По умолчанию 1.
-	<sDelimiter>	String, разделитель колонок. По умолчанию <|>
-	<sColor>	String, цветовая спецификация. По умолчанию "7/0, 7/0, 7/0, 7/0, 7/0, 7/0, 7/0"
+	<nLrow> 	Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<nLcol>		Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<nRrow>		Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<nRcol>		Numeric, п╨п╬п╬я─п╢п╦п╫п╟я┌я▀ п╬п╠п╩п╟я│я┌п╦ п©я─п╬я│п╪п╬я┌я─п╟
+	<nColumns>	Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╨п╬п╩п╬п╫п╬п╨. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ 1.
+	<sDelimiter>	String, я─п╟п╥п╢п╣п╩п╦я┌п╣п╩я▄ п╨п╬п╩п╬п╫п╬п╨. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <|>
+	<sColor>	String, я├п╡п╣я┌п╬п╡п╟я▐ я│п©п╣я├п╦я└п╦п╨п╟я├п╦я▐. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ "7/0, 7/0, 7/0, 7/0, 7/0, 7/0, 7/0"
 $RETURNS$
 	Method returns new LISTITEM object.
 $LANG_RU$
-	Метод возвращает новый объект LISTITEM.
+	п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ LISTITEM.
 $DESCRIPTION$
 	ListItemNew() is constructs and returns new LISTITEM object.
 	That class can be used to edit, view, control associated in list data.
 $LANG_RU$
-	ListItemNew() создает и возвращает объект LISTITEM.
-	Объект этого класса может быть использован для просмотра, редактирования,
-	управления данными, организованными в список.
+	ListItemNew() я│п╬п╥п╢п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ LISTITEM.
+	п·п╠я┼п╣п╨я┌ я█я┌п╬пЁп╬ п╨п╩п╟я│я│п╟ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫ п╢п╩я▐ п©я─п╬я│п╪п╬я┌я─п╟, я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟п╫п╦я▐,
+	я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п╢п╟п╫п╫я▀п╪п╦, п╬я─пЁп╟п╫п╦п╥п╬п╡п╟п╫п╫я▀п╪п╦ п╡ я│п©п╦я│п╬п╨.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -123,7 +123,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes next element.
 $LANG_RU$
-	Перемещение  на следующий элемент.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣  п╫п╟ я│п╩п╣п╢я┐я▌я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	Down() 	--> NIL
 $ARGUMENTS$
@@ -131,11 +131,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Down() is moves cursor to next element of <::Item>.
 $LANG_RU$
-	Down() перемещает курсор на следующий элемент массива <::Item>.
+	Down() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ я│п╩п╣п╢я┐я▌я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╪п╟я│я│п╦п╡п╟ <::Item>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -143,7 +143,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes previous element.
 $LANG_RU$
-	Перемещение на предыдущий элемент.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п©я─п╣п╢я▀п╢я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	Up() 	--> NIL
 $ARGUMENTS$
@@ -151,11 +151,11 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Up() is moves cursor to previouse  element of <::Item>.
 $LANG_RU$
-	Up() перемещает курсор на предыдущий элемент массива <::Item>.
+	Up() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п©я─п╣п╢я▀п╢я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╪п╟я│я│п╦п╡п╟ <::Item>.
 $ENDMETHOD$
 
 
@@ -164,7 +164,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to left.
 $LANG_RU$
-	Перемещение налево.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟п╩п╣п╡п╬.
 $SYNTAX$
 	Left() 	--> NIL
 $ARGUMENTS$
@@ -172,13 +172,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Left() is moves cursor to left of current column.
 	The new current element will be <::Buffer> - <::RowWin>.
 $LANG_RU$
-	Left() перемещает курсор в левую от текущей колонку.
-	Новый текущий элемент будет <::Buffer> - <::RowWin>.
+	Left() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╡ п╩п╣п╡я┐я▌ п╬я┌ я┌п╣п╨я┐я┴п╣п╧ п╨п╬п╩п╬п╫п╨я┐.
+	п²п╬п╡я▀п╧ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╠я┐п╢п╣я┌ <::Buffer> - <::RowWin>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -186,7 +186,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to right.
 $LANG_RU$
-	Перемещение направо.
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟п©я─п╟п╡п╬.
 $SYNTAX$
 	Right() 	--> NIL
 $ARGUMENTS$
@@ -194,13 +194,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Right() is moves cursor to right of current column.
 	The new current element will be <::Buffer> + <::RowWin>.
 $LANG_RU$
-	Right() перемещает курсор в правую от текущей колонку.
-	Новый текущий элемент будет <::Buffer> + <::RowWin>.
+	Right() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╡ п©я─п╟п╡я┐я▌ п╬я┌ я┌п╣п╨я┐я┴п╣п╧ п╨п╬п╩п╬п╫п╨я┐.
+	п²п╬п╡я▀п╧ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╠я┐п╢п╣я┌ <::Buffer> + <::RowWin>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -208,7 +208,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to first element of array <::Item>.
 $LANG_RU$
-	Перемещение на первый элемент массива <::Item>
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╪п╟я│я│п╦п╡п╟ <::Item>
 $SYNTAX$
 	Home() 	--> NIL
 $ARGUMENTS$
@@ -216,13 +216,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Home() is moves cursor to the first element of <::Item> listing.
 	The new current element will be 1.
 $LANG_RU$
-	Home() перемещает курсор на первый элемент списка <::Item>.
-	Новый текущий элемент будет 1.
+	Home() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ я│п©п╦я│п╨п╟ <::Item>.
+	п²п╬п╡я▀п╧ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╠я┐п╢п╣я┌ 1.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -230,7 +230,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to last element of array <::Item>.
 $LANG_RU$
-	Перемещение на последний элемент массива <::Item>
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п©п╬я│п╩п╣п╢п╫п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╪п╟я│я│п╦п╡п╟ <::Item>
 $SYNTAX$
 	End() 	--> NIL
 $ARGUMENTS$
@@ -238,13 +238,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	End() is moves cursor to the last element of <::Item> listing.
 	The new current element will be len(<::Item>).
 $LANG_RU$
-	End() перемещает курсор на последний элемент списка <::Item>.
-	Новый текущий элемент будет len(<::Item>).
+	End() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ п©п╬я│п╩п╣п╢п╫п╦п╧ я█п╩п╣п╪п╣п╫я┌ я│п©п╦я│п╨п╟ <::Item>.
+	п²п╬п╡я▀п╧ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╠я┐п╢п╣я┌ len(<::Item>).
 $ENDMETHOD$
 
 $METHODNAME$
@@ -252,7 +252,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to next page of array <::Item>.
 $LANG_RU$
-	Перемещение на следующую страницу массива <::Item>
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ я│п╩п╣п╢я┐я▌я┴я┐я▌ я│я┌я─п╟п╫п╦я├я┐ п╪п╟я│я│п╦п╡п╟ <::Item>
 $SYNTAX$
 	PageDown() 	--> NIL
 $ARGUMENTS$
@@ -260,13 +260,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	PageDown() is moves cursor to the next page  of <::Item> listing.
 	The size of page is <::ItemWin>. The current element will be <::Buffer>+<::ItemWin>.
 $LANG_RU$
-	PageDown() перемещает курсор на страницу вниз  списка <::Item>.
-	Размер страницы -  <::ItemWin>. Текущий элемент будет <::Buffer>+<::ItemWin>.
+	PageDown() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ я│я┌я─п╟п╫п╦я├я┐ п╡п╫п╦п╥  я│п©п╦я│п╨п╟ <::Item>.
+	п═п╟п╥п╪п╣я─ я│я┌я─п╟п╫п╦я├я▀ -  <::ItemWin>. п╒п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╠я┐п╢п╣я┌ <::Buffer>+<::ItemWin>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -274,7 +274,7 @@ $METHODNAME$
 $SUMMARY$
 	Goes to previouse page of array <::Item>.
 $LANG_RU$
-	Перемещение на предыдущую страницу массива <::Item>
+	п÷п╣я─п╣п╪п╣я┴п╣п╫п╦п╣ п╫п╟ п©я─п╣п╢я▀п╢я┐я┴я┐я▌ я│я┌я─п╟п╫п╦я├я┐ п╪п╟я│я│п╦п╡п╟ <::Item>
 $SYNTAX$
 	PageUp() 	--> NIL
 $ARGUMENTS$
@@ -282,13 +282,13 @@ $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	PageUp() is moves cursor to the previouse page of <::Item> listing.
 	The size of page is <::ItemWin>. The current element will be <::Buffer>-<::ItemWin>.
 $LANG_RU$
-	PageUp() перемещает курсор на страницу вверх списка <::Item>.
-	Размер страницы -  <::ItemWin>. Текущий элемент будет <::Buffer>-<::ItemWin>.
+	PageUp() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ п╨я┐я─я│п╬я─ п╫п╟ я│я┌я─п╟п╫п╦я├я┐ п╡п╡п╣я─я┘ я│п©п╦я│п╨п╟ <::Item>.
+	п═п╟п╥п╪п╣я─ я│я┌я─п╟п╫п╦я├я▀ -  <::ItemWin>. п╒п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╠я┐п╢п╣я┌ <::Buffer>-<::ItemWin>.
 $ENDMETHOD$
 
 
@@ -297,7 +297,7 @@ $METHODNAME$
 $SUMMARY$
 	Add new element to listing.
 $LANG_RU$
-	Добавить новый элемент в список.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╡ я│п©п╦я│п╬п╨.
 $SYNTAX$
 	AddItem(<vData>[, <sColor>][, <sSelColor>]) 	--> 0 || 1
 $ARGUMENTS$
@@ -305,17 +305,17 @@ $ARGUMENTS$
 	<sColor> - the base element colors
 	<sSelColor> - the selected element colors
 $LANG_RU$
-	<vData> - новый элемент списка.
-	<sColor> - основной цвет элемента в списке.
-	<sSelColor> - цвет выделенного элемента.
+	<vData> - п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ я│п©п╦я│п╨п╟.
+	<sColor> - п╬я│п╫п╬п╡п╫п╬п╧ я├п╡п╣я┌ я█п╩п╣п╪п╣п╫я┌п╟ п╡ я│п©п╦я│п╨п╣.
+	<sSelColor> - я├п╡п╣я┌ п╡я▀п╢п╣п╩п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $RETURNS$
 	Returns 1 if element will be added.
 $LANG_RU$
-	Возвращает 1, если элемент добавлен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ 1, п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌ п╢п╬п╠п╟п╡п╩п╣п╫.
 $DESCRIPTION$
 	AddItem() added new element to the end listing <::Item>.
 $LANG_RU$
-	AddItem() добавляет новый элемент в конец списка <::Item>.
+	AddItem() п╢п╬п╠п╟п╡п╩я▐п╣я┌ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╡ п╨п╬п╫п╣я├ я│п©п╦я│п╨п╟ <::Item>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -323,7 +323,7 @@ $METHODNAME$
 $SUMMARY$
 	Insert new element into listing.
 $LANG_RU$
-	Вставить новый элемент в список.
+	п▓я│я┌п╟п╡п╦я┌я▄ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╡ я│п©п╦я│п╬п╨.
 $SYNTAX$
 	InsItem(<vData>, <nPos>[, <sColor>][, <sSelColor>][, <lSelected>]) 	--> 0 || 1
 $ARGUMENTS$
@@ -333,23 +333,23 @@ $ARGUMENTS$
 	<sSelColor> - the selected element colors
 	<lSelected> - if TRUE, element will be selected (by default FALSE)
 $LANG_RU$
-	<vData> - новый элемент списка.
-	<nPos> - номер элемента в списке
-	<sColor> - основной цвет элемента в списке.
-	<sSelColor> - цвет выделенного элемента.
-	<lSelected> - если TRUE, элемент будет помечен как выделенный (по умолчанию FALSE).
+	<vData> - п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ я│п©п╦я│п╨п╟.
+	<nPos> - п╫п╬п╪п╣я─ я█п╩п╣п╪п╣п╫я┌п╟ п╡ я│п©п╦я│п╨п╣
+	<sColor> - п╬я│п╫п╬п╡п╫п╬п╧ я├п╡п╣я┌ я█п╩п╣п╪п╣п╫я┌п╟ п╡ я│п©п╦я│п╨п╣.
+	<sSelColor> - я├п╡п╣я┌ п╡я▀п╢п╣п╩п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
+	<lSelected> - п╣я│п╩п╦ TRUE, я█п╩п╣п╪п╣п╫я┌ п╠я┐п╢п╣я┌ п©п╬п╪п╣я┤п╣п╫ п╨п╟п╨ п╡я▀п╢п╣п╩п╣п╫п╫я▀п╧ (п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ FALSE).
 $RETURNS$
 	Returns 1 if element will be inserted.
 $LANG_RU$
-	Возвращает 1, если элемент вставлен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ 1, п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌ п╡я│я┌п╟п╡п╩п╣п╫.
 $DESCRIPTION$
 	InsItem() inserted new element <vData> into  listing <::Item>. New element inserted
 	at position <nPos>. Before insertion, size of <::Item> increased by 1 and all
 	elements with <nPos> shifted down one elemen.
 $LANG_RU$
-	InsItem() вставляет новый элемент <vData> в список <::Item>. Новый элемент
-	будет иметь <nPos> номер в списке. Перед вставлением, размер <::Item> увеличивается
-	на 1 и все элементы начиная с <nPos>  сдвигаются вниз.
+	InsItem() п╡я│я┌п╟п╡п╩я▐п╣я┌ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ <vData> п╡ я│п©п╦я│п╬п╨ <::Item>. п²п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌
+	п╠я┐п╢п╣я┌ п╦п╪п╣я┌я▄ <nPos> п╫п╬п╪п╣я─ п╡ я│п©п╦я│п╨п╣. п÷п╣я─п╣п╢ п╡я│я┌п╟п╡п╩п╣п╫п╦п╣п╪, я─п╟п╥п╪п╣я─ <::Item> я┐п╡п╣п╩п╦я┤п╦п╡п╟п╣я┌я│я▐
+	п╫п╟ 1 п╦ п╡я│п╣ я█п╩п╣п╪п╣п╫я┌я▀ п╫п╟я┤п╦п╫п╟я▐ я│ <nPos>  я│п╢п╡п╦пЁп╟я▌я┌я│я▐ п╡п╫п╦п╥.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -357,25 +357,25 @@ $METHODNAME$
 $SUMMARY$
 	Delete an listing element.
 $LANG_RU$
-	Удалить элемент из списка.
+	пёп╢п╟п╩п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌ п╦п╥ я│п©п╦я│п╨п╟.
 $SYNTAX$
 	DelItem(<nPos>) 	--> 0 || 1
 $ARGUMENTS$
 	<nPos> - a elements position
 $LANG_RU$
-	<nPos> - номер элемента в списке
+	<nPos> - п╫п╬п╪п╣я─ я█п╩п╣п╪п╣п╫я┌п╟ п╡ я│п©п╦я│п╨п╣
 $RETURNS$
 	Returns 1 if element will be deleted.
 $LANG_RU$
-	Возвращает 1, если элемент удален.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ 1, п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌ я┐п╢п╟п╩п╣п╫.
 $DESCRIPTION$
 	DelItem() is deletes an element <nPos> from an listing <::Item>. The contents of the
 	element is lost, and all elements from <nPos>+1 position shifted up one element.
 	The last element in the array discarded.
 $LANG_RU$
-	DelItem() удаляет элемент с номером <nPos> из списка <::Item>. Содержимое
-	элемента будет потеряно и все элементы начиная с <nPos>+1 будут сдвинуты
-	вверх на 1 позицию. Последний элемент списка будет уничтожен.
+	DelItem() я┐п╢п╟п╩я▐п╣я┌ я█п╩п╣п╪п╣п╫я┌ я│ п╫п╬п╪п╣я─п╬п╪ <nPos> п╦п╥ я│п©п╦я│п╨п╟ <::Item>. п║п╬п╢п╣я─п╤п╦п╪п╬п╣
+	я█п╩п╣п╪п╣п╫я┌п╟ п╠я┐п╢п╣я┌ п©п╬я┌п╣я─я▐п╫п╬ п╦ п╡я│п╣ я█п╩п╣п╪п╣п╫я┌я▀ п╫п╟я┤п╦п╫п╟я▐ я│ <nPos>+1 п╠я┐п╢я┐я┌ я│п╢п╡п╦п╫я┐я┌я▀
+	п╡п╡п╣я─я┘ п╫п╟ 1 п©п╬п╥п╦я├п╦я▌. п÷п╬я│п╩п╣п╢п╫п╦п╧ я█п╩п╣п╪п╣п╫я┌ я│п©п╦я│п╨п╟ п╠я┐п╢п╣я┌ я┐п╫п╦я┤я┌п╬п╤п╣п╫.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -383,20 +383,20 @@ $METHODNAME$
 $SUMMARY$
 	Gets current item.
 $LANG_RU$
-	Получить текущий элемент.
+	п÷п╬п╩я┐я┤п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	GetItem() 	--> <vData>
 $ARGUMENTS$
 $RETURNS$
 	Returns data value of current element.
 $LANG_RU$
-	Возвращает текущий элемент списка.b
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ я│п©п╦я│п╨п╟.b
 $DESCRIPTION$
 	GetItem() is gets the current element <::Buffer> into listing <::Item>.
 	If array <::Item> is empty, method return NIL.
 $LANG_RU$
-	GetItem() возвращает текущий элемент <::Buffer> списка <::Item>.
-	Если массив <::Item> пуст, метод возвращает NIL.
+	GetItem() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ <::Buffer> я│п©п╦я│п╨п╟ <::Item>.
+	п∙я│п╩п╦ п╪п╟я│я│п╦п╡ <::Item> п©я┐я│я┌, п╪п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -404,25 +404,25 @@ $METHODNAME$
 $SUMMARY$
 	Sets new current item.
 $LANG_RU$
-	Установить текущий элемент.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	SetItem(<nPos>) 	--> 0 || 1
 $ARGUMENTS$
 	<nPos> - the number new current elements.
 $LANG_RU$
-	<nPos> - номер нового текущего элемента.
+	<nPos> - п╫п╬п╪п╣я─ п╫п╬п╡п╬пЁп╬ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $RETURNS$
 	Returns 1 if element with number <nPos>  exist.
 $LANG_RU$
-	Возвращает 1, если элемент с номером <nPos> существует.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ 1, п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌ я│ п╫п╬п╪п╣я─п╬п╪ <nPos> я│я┐я┴п╣я│я┌п╡я┐п╣я┌.
 $DESCRIPTION$
 	SetItem() is sets new current element with number <nPos>. If <nPos> is more
 	than length of <::Item>, method returns 0.
 	If array <::Item> is empty, method return NIL.
 $LANG_RU$
-	SetItem() устанавливает новый текущий элемент с номером <nPos>. Если <nPos>
-	больше, чем элементов в списке, мето возвращает NIL, номер текущего элемента не
-	меняется.
+	SetItem() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╫п╬п╡я▀п╧ я┌п╣п╨я┐я┴п╦п╧ я█п╩п╣п╪п╣п╫я┌ я│ п╫п╬п╪п╣я─п╬п╪ <nPos>. п∙я│п╩п╦ <nPos>
+	п╠п╬п╩я▄я┬п╣, я┤п╣п╪ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ я│п©п╦я│п╨п╣, п╪п╣я┌п╬ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL, п╫п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╫п╣
+	п╪п╣п╫я▐п╣я┌я│я▐.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -430,20 +430,20 @@ $METHODNAME$
 $SUMMARY$
 	Refreshed viewport.
 $LANG_RU$
-	Перерисовать область просмотра..
+	п÷п╣я─п╣я─п╦я│п╬п╡п╟я┌я▄ п╬п╠п╩п╟я│я┌я▄ п©я─п╬я│п╪п╬я┌я─п╟..
 $SYNTAX$
 	Refresh() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Refresh() is refreshes viewport. Called within methods of class LISTITEM
 	automaticaly.
 $LANG_RU$
-	Refresh() перерисовывает обоасть просмотра. Вызывается из методов класса
-	LISTITEM автоматически и не требует прямого вызова.
+	Refresh() п©п╣я─п╣я─п╦я│п╬п╡я▀п╡п╟п╣я┌ п╬п╠п╬п╟я│я┌я▄ п©я─п╬я│п╪п╬я┌я─п╟. п▓я▀п╥я▀п╡п╟п╣я┌я│я▐ п╦п╥ п╪п╣я┌п╬п╢п╬п╡ п╨п╩п╟я│я│п╟
+	LISTITEM п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦ п╦ п╫п╣ я┌я─п╣п╠я┐п╣я┌ п©я─я▐п╪п╬пЁп╬ п╡я▀п╥п╬п╡п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -451,19 +451,19 @@ $METHODNAME$
 $SUMMARY$
 	Set focus to object.
 $LANG_RU$
-	Установить фокус.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я└п╬п╨я┐я│.
 $SYNTAX$
 	SetFocus() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	SetFocus() is sets focus to object of LISTITEM class. Attribute <::HasFocus> take value TRUE.
 $LANG_RU$
-	SetFocus() устанавливает фокус для объекта класса LISTITEM. Атрибут
-	<::HasFocus> приобретает значение TRUE.
+	SetFocus() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я└п╬п╨я┐я│ п╢п╩я▐ п╬п╠я┼п╣п╨я┌п╟ п╨п╩п╟я│я│п╟ LISTITEM. п░я┌я─п╦п╠я┐я┌
+	<::HasFocus> п©я─п╦п╬п╠я─п╣я┌п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ TRUE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -471,19 +471,19 @@ $METHODNAME$
 $SUMMARY$
 	Kill focus.
 $LANG_RU$
-	Снять фокус.
+	п║п╫я▐я┌я▄ я└п╬п╨я┐я│.
 $SYNTAX$
 	KillFocus() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	KillFocus() is kils focus for object of LISTITEM class. Attribute <::HasFocus> take value FALSE.
 $LANG_RU$
-	KillFocus() снимает фокус для объекта класса LISTITEM. Атрибут
-	<::HasFocus> приобретает значение FALSE.
+	KillFocus() я│п╫п╦п╪п╟п╣я┌ я└п╬п╨я┐я│ п╢п╩я▐ п╬п╠я┼п╣п╨я┌п╟ п╨п╩п╟я│я│п╟ LISTITEM. п░я┌я─п╦п╠я┐я┌
+	<::HasFocus> п©я─п╦п╬п╠я─п╣я┌п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ FALSE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -491,19 +491,19 @@ $METHODNAME$
 $SUMMARY$
 	Remove all items from listing.
 $LANG_RU$
-	Удалить все элементы из списка.
+	пёп╢п╟п╩п╦я┌я▄ п╡я│п╣ я█п╩п╣п╪п╣п╫я┌я▀ п╦п╥ я│п©п╦я│п╨п╟.
 $SYNTAX$
 	Clear() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	Clear() removes all items from a <::Item> and sets counters to zero.
 $LANG_RU$
-	Crear() удаляет из списка все элементы и устанавливает счетчики в
-	нулевое положение.
+	Crear() я┐п╢п╟п╩я▐п╣я┌ п╦п╥ я│п©п╦я│п╨п╟ п╡я│п╣ я█п╩п╣п╪п╣п╫я┌я▀ п╦ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я│я┤п╣я┌я┤п╦п╨п╦ п╡
+	п╫я┐п╩п╣п╡п╬п╣ п©п╬п╩п╬п╤п╣п╫п╦п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -511,18 +511,18 @@ $METHODNAME$
 $SUMMARY$
 	Crears find buffer.
 $LANG_RU$
-	Очистить буфер поиска.
+	п·я┤п╦я│я┌п╦я┌я▄ п╠я┐я└п╣я─ п©п╬п╦я│п╨п╟.
 $SYNTAX$
 	ClearFindBuffer() 	--> NIL
 $ARGUMENTS$
 $RETURNS$
 	Returns NIL.
 $LANG_RU$
-	Возвращает NIL.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
 	ClearFindBuffer() is clears find buffer. <::FindBuffer> sets to empty string.
 $LANG_RU$
-	CrearFindBuffer() очищает буфер поиска. <::FindBuffer> присваивается пустая строка.
+	CrearFindBuffer() п╬я┤п╦я┴п╟п╣я┌ п╠я┐я└п╣я─ п©п╬п╦я│п╨п╟. <::FindBuffer> п©я─п╦я│п╡п╟п╦п╡п╟п╣я┌я│я▐ п©я┐я│я┌п╟я▐ я│я┌я─п╬п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -530,24 +530,24 @@ $METHODNAME$
 $SUMMARY$
 	Set columns header.
 $LANG_RU$
-	Задать заголовки колонкам.
+	п≈п╟п╢п╟я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╨п╦ п╨п╬п╩п╬п╫п╨п╟п╪.
 $SYNTAX$
 	SetTitle(<aTitle>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<aTitle>  - Array, array of columns header
 $LANG_RU$
-	<aTitle>  - Array, массив заголовков колонок.
+	<aTitle>  - Array, п╪п╟я│я│п╦п╡ п╥п╟пЁп╬п╩п╬п╡п╨п╬п╡ п╨п╬п╩п╬п╫п╬п╨.
 $RETURNS$
 	Returns TRUE if <aTitle> not empty.
 $LANG_RU$
-	Возвращает TRUE, если <aTitle> не пуст.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╣я│п╩п╦ <aTitle> п╫п╣ п©я┐я│я┌.
 $DESCRIPTION$
 	SetTitle() is sets headers for listing columns. Headers sets for first len(<aTitle>)
 	columns, the rest columns becomes empty header.
 $LANG_RU$
-	SetTitle() устанавливает заголоки для колонок списка. Заголовки
-	устанавливаются для первых len(<aTitle>) колонок, остальные колонки
-	будут иметь пустые заголовки.
+	SetTitle() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╥п╟пЁп╬п╩п╬п╨п╦ п╢п╩я▐ п╨п╬п╩п╬п╫п╬п╨ я│п©п╦я│п╨п╟. п≈п╟пЁп╬п╩п╬п╡п╨п╦
+	я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟я▌я┌я│я▐ п╢п╩я▐ п©п╣я─п╡я▀я┘ len(<aTitle>) п╨п╬п╩п╬п╫п╬п╨, п╬я│я┌п╟п╩я▄п╫я▀п╣ п╨п╬п╩п╬п╫п╨п╦
+	п╠я┐п╢я┐я┌ п╦п╪п╣я┌я▄ п©я┐я│я┌я▀п╣ п╥п╟пЁп╬п╩п╬п╡п╨п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -555,18 +555,18 @@ $METHODNAME$
 $SUMMARY$
 	Draw columns header.
 $LANG_RU$
-	Нарисовать заголовки колонок.
+	п²п╟я─п╦я│п╬п╡п╟я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╨п╦ п╨п╬п╩п╬п╫п╬п╨.
 $SYNTAX$
 	DrawTitle() 	--> TRUE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	DrawTitle() is drew headers for listing columns.
 $LANG_RU$
-	DrawTitle() прорисовывает заголовки списка.
+	DrawTitle() п©я─п╬я─п╦я│п╬п╡я▀п╡п╟п╣я┌ п╥п╟пЁп╬п╩п╬п╡п╨п╦ я│п©п╦я│п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -574,22 +574,22 @@ $METHODNAME$
 $SUMMARY$
 	Set columns count.
 $LANG_RU$
-	Задать количество колонок.
+	п≈п╟п╢п╟я┌я▄ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╨п╬п╩п╬п╫п╬п╨.
 $SYNTAX$
 	SetColumns(<nCol>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<nCol> - Numeric, the columns count
 $LANG_RU$
-	<nCol> - Numeric, количество колонок
+	<nCol> - Numeric, п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╨п╬п╩п╬п╫п╬п╨
 $RETURNS$
 	Returns TRUE i success.
 $LANG_RU$
-	Возвращает TRUE  в случае успеха.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE  п╡ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟.
 $DESCRIPTION$
 	SetColumns() is sets columns count and sets new balanced width  for all columns.
 $LANG_RU$
-	SetColumns() устанавливает количество колонок в списке и задает новую сбалансированную ширину
-	колонок.
+	SetColumns() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╨п╬п╩п╬п╫п╬п╨ п╡ я│п©п╦я│п╨п╣ п╦ п╥п╟п╢п╟п╣я┌ п╫п╬п╡я┐я▌ я│п╠п╟п╩п╟п╫я│п╦я─п╬п╡п╟п╫п╫я┐я▌ я┬п╦я─п╦п╫я┐
+	п╨п╬п╩п╬п╫п╬п╨.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -597,23 +597,23 @@ $METHODNAME$
 $SUMMARY$
 	Set columns width.
 $LANG_RU$
-	Задать ширину колонок.
+	п≈п╟п╢п╟я┌я▄ я┬п╦я─п╦п╫я┐ п╨п╬п╩п╬п╫п╬п╨.
 $SYNTAX$
 	SetWidthCol(<aWidth>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<aWidth> - Array, array of width for columns
 $LANG_RU$
-	<aWidth> - Array, массив, содержащий ширины колонок.
+	<aWidth> - Array, п╪п╟я│я│п╦п╡, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ я┬п╦я─п╦п╫я▀ п╨п╬п╩п╬п╫п╬п╨.
 $RETURNS$
 	Returns TRUE in success.
 $LANG_RU$
-	Возвращает TRUE  в случае успеха.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE  п╡ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟.
 $DESCRIPTION$
 	SetWidthCol() is sets columns width. If <aWidth[i]>==0, for column with
 	number <i> automaticaly sets balanced width.
 $LANG_RU$
-	SetWidthCol() устанавливает ширину колонок в списке. Если <aWidth[i]>==0,
-	то для колонки с номером <i> ширина устанавливается автоматически.
+	SetWidthCol() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ я┬п╦я─п╦п╫я┐ п╨п╬п╩п╬п╫п╬п╨ п╡ я│п©п╦я│п╨п╣. п∙я│п╩п╦ <aWidth[i]>==0,
+	я┌п╬ п╢п╩я▐ п╨п╬п╩п╬п╫п╨п╦ я│ п╫п╬п╪п╣я─п╬п╪ <i> я┬п╦я─п╦п╫п╟ я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -621,22 +621,22 @@ $METHODNAME$
 $SUMMARY$
 	Select item.
 $LANG_RU$
-	Выделить элемент.
+	п▓я▀п╢п╣п╩п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	Select([<vItem>]) 	--> TRUE
 $ARGUMENTS$
 	<vItem> - Array or Numeric, array of items numbers for selection or items number. (By default current item <::Buffer>)
 $LANG_RU$
-	<vItem> - Array or Numeric, массив с номерами элементов для выделения
-	или конкретный номер элемента. (По умолчанию номер текущего элемента <::Buffer>)
+	<vItem> - Array or Numeric, п╪п╟я│я│п╦п╡ я│ п╫п╬п╪п╣я─п╟п╪п╦ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╢п╩я▐ п╡я▀п╢п╣п╩п╣п╫п╦я▐
+	п╦п╩п╦ п╨п╬п╫п╨я─п╣я┌п╫я▀п╧ п╫п╬п╪п╣я─ я█п╩п╣п╪п╣п╫я┌п╟. (п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╫п╬п╪п╣я─ я┌п╣п╨я┐я┴п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ <::Buffer>)
 $RETURNS$
 	Returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	Select() is sets selected (one or more) items of listing <::Item>.
 $LANG_RU$
-	Select() выделяет цветом один или несколько элементов списка <::Item>
+	Select() п╡я▀п╢п╣п╩я▐п╣я┌ я├п╡п╣я┌п╬п╪ п╬п╢п╦п╫ п╦п╩п╦ п╫п╣я│п╨п╬п╩я▄п╨п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ я│п©п╦я│п╨п╟ <::Item>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -644,18 +644,18 @@ $METHODNAME$
 $SUMMARY$
 	Returns selected items numbers.
 $LANG_RU$
-	Возвращает номера выделенных элементов.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─п╟ п╡я▀п╢п╣п╩п╣п╫п╫я▀я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡.
 $SYNTAX$
 	GetSelected() 	--> <aSelectedItems>
 $ARGUMENTS$
 $RETURNS$
 	Returns array of selected items numbers.
 $LANG_RU$
-	Возвращает массив номеров выделенных элементов.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╪п╟я│я│п╦п╡ п╫п╬п╪п╣я─п╬п╡ п╡я▀п╢п╣п╩п╣п╫п╫я▀я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡.
 $DESCRIPTION$
 	GetSelected() returns array of selected items numbers.
 $LANG_RU$
-	GetSelected() возвращает массив номеров выделенных элементов.
+	GetSelected() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╪п╟я│я│п╦п╡ п╫п╬п╪п╣я─п╬п╡ п╡я▀п╢п╣п╩п╣п╫п╫я▀я┘ я█п╩п╣п╪п╣п╫я┌п╬п╡.
 $ENDMETHOD$
 
 
@@ -664,17 +664,17 @@ $METHODNAME$
 $SUMMARY$
 	Find substring.
 $LANG_RU$
-	Поиск подстроки.
+	п÷п╬п╦я│п╨ п©п╬п╢я│я┌я─п╬п╨п╦.
 $SYNTAX$
 	Find(<sStr>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<sStr> - String, substring to searching
 $LANG_RU$
-	<sStr> - String, строка для поиска
+	<sStr> - String, я│я┌я─п╬п╨п╟ п╢п╩я▐ п©п╬п╦я│п╨п╟
 $RETURNS$
 	Returns TRUE if searching is success.
 $LANG_RU$
-	Возвращает TRUE если поиск успешен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п©п╬п╦я│п╨ я┐я│п©п╣я┬п╣п╫.
 $DESCRIPTION$
 	Find() is addes substring <sStr> to the end of find buffer <::FindBuffer> and
 	searching <::FindBuffer> within <::Item>.
@@ -688,17 +688,17 @@ $DESCRIPTION$
 	returns TRUE. If there is no match, <::Buffer> no changed, <sStr> removes from a <::FIndBuffer>
 	and Find() returns FALSE.
 $LANG_RU$
-	Find() добавляет <sStr> в конец буфера поиска <::FindBuffer> и
-	ищет <::FindBuffer> в списке <::Item>.
-	Если буфер<::FindBuffer> пуст, поиск начинается с первого элемента <::Item>,
-	иначе, поиск начинается с текущей позиции <::Buffer>.
+	Find() п╢п╬п╠п╟п╡п╩я▐п╣я┌ <sStr> п╡ п╨п╬п╫п╣я├ п╠я┐я└п╣я─п╟ п©п╬п╦я│п╨п╟ <::FindBuffer> п╦
+	п╦я┴п╣я┌ <::FindBuffer> п╡ я│п©п╦я│п╨п╣ <::Item>.
+	п∙я│п╩п╦ п╠я┐я└п╣я─<::FindBuffer> п©я┐я│я┌, п©п╬п╦я│п╨ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ я│ п©п╣я─п╡п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ <::Item>,
+	п╦п╫п╟я┤п╣, п©п╬п╦я│п╨ п╫п╟я┤п╦п╫п╟п╣я┌я│я▐ я│ я┌п╣п╨я┐я┴п╣п╧ п©п╬п╥п╦я├п╦п╦ <::Buffer>.
 
-	Строка <::FindBuffer> сравнивается с самыми левыми символами элементов массива <::Item>.
-	Поиск продолжается пока <::FindBuffer> не будет найден или до конца массива.
-	Если строка <::FindBuffer> найдена, поиск останавливается, <::Buffer> принимает
-	значение соответствующее позиции найденного элемента в массиве <::Item> и Find()
-	возвращает TRUE. Если поиск не удачен, <::Buffer> не изменяется, подстрока <sStr>
-	удаляется из строки <::FIndBuffer> и Find() возвращает FALSE.
+	п║я┌я─п╬п╨п╟ <::FindBuffer> я│я─п╟п╡п╫п╦п╡п╟п╣я┌я│я▐ я│ я│п╟п╪я▀п╪п╦ п╩п╣п╡я▀п╪п╦ я│п╦п╪п╡п╬п╩п╟п╪п╦ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╪п╟я│я│п╦п╡п╟ <::Item>.
+	п÷п╬п╦я│п╨ п©я─п╬п╢п╬п╩п╤п╟п╣я┌я│я▐ п©п╬п╨п╟ <::FindBuffer> п╫п╣ п╠я┐п╢п╣я┌ п╫п╟п╧п╢п╣п╫ п╦п╩п╦ п╢п╬ п╨п╬п╫я├п╟ п╪п╟я│я│п╦п╡п╟.
+	п∙я│п╩п╦ я│я┌я─п╬п╨п╟ <::FindBuffer> п╫п╟п╧п╢п╣п╫п╟, п©п╬п╦я│п╨ п╬я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐, <::Buffer> п©я─п╦п╫п╦п╪п╟п╣я┌
+	п╥п╫п╟я┤п╣п╫п╦п╣ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╣п╣ п©п╬п╥п╦я├п╦п╦ п╫п╟п╧п╢п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╪п╟я│я│п╦п╡п╣ <::Item> п╦ Find()
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE. п∙я│п╩п╦ п©п╬п╦я│п╨ п╫п╣ я┐п╢п╟я┤п╣п╫, <::Buffer> п╫п╣ п╦п╥п╪п╣п╫я▐п╣я┌я│я▐, п©п╬п╢я│я┌я─п╬п╨п╟ <sStr>
+	я┐п╢п╟п╩я▐п╣я┌я│я▐ п╦п╥ я│я┌я─п╬п╨п╦ <::FIndBuffer> п╦ Find() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -706,20 +706,20 @@ $METHODNAME$
 $SUMMARY$
 	Set a code block associated with code key value.
 $LANG_RU$
-	Установить блок кода, связанный с кодом клавиши.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╠п╩п╬п╨ п╨п╬п╢п╟, я│п╡я▐п╥п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ п╨п╩п╟п╡п╦я┬п╦.
 $SYNTAX$
 	SetKey(<nKey>[, <bData>]) 	--> bPreviouse
 $ARGUMENTS$
 	<nKey> - Numeric, the key code.
 	<bData> - Block code, block to runing.
 $LANG_RU$
-	<nKey> - Numeric, код клавиши.
-	<bData> - Block code, кодовый блок.
+	<nKey> - Numeric, п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦.
+	<bData> - Block code, п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨.
 $RETURNS$
 	Returns the previouse block code if exist or returns current one <bData>.
 $LANG_RU$
-	Возвращает предыдущий кодовый блок ассоциированный с кодом <nKey>(если такой имеется)
-	или возвращает блок <bData>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я─п╣п╢я▀п╢я┐я┴п╦п╧ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨ п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>(п╣я│п╩п╦ я┌п╟п╨п╬п╧ п╦п╪п╣п╣я┌я│я▐)
+	п╦п╩п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╠п╩п╬п╨ <bData>.
 $DESCRIPTION$
 	SetKey() is sets a new code block associated with code <nKey>.
 	When replacing an existing code block definition, it returns previous
@@ -744,28 +744,28 @@ $DESCRIPTION$
 	1  Unable to locate <nKey> in the dictionary, key was not processed
 
 $LANG_RU$
-	SetKey() устанавливает новый кодовый блок, ассоциированный с кодом <nKey>.
-	Когда при этом замещается существующий блок кода, метод возвращает этот
-	существующий блок, иначе возвращает вновь установленный.
-	Коды клавиш и связанные с ними кодовые блоки обрабатываются методом
+	SetKey() я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌ п╫п╬п╡я▀п╧ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨, п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>.
+	п п╬пЁп╢п╟ п©я─п╦ я█я┌п╬п╪ п╥п╟п╪п╣я┴п╟п╣я┌я│я▐ я│я┐я┴п╣я│я┌п╡я┐я▌я┴п╦п╧ п╠п╩п╬п╨ п╨п╬п╢п╟, п╪п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я█я┌п╬я┌
+	я│я┐я┴п╣я│я┌п╡я┐я▌я┴п╦п╧ п╠п╩п╬п╨, п╦п╫п╟я┤п╣ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╡п╫п╬п╡я▄ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╫я▀п╧.
+	п п╬п╢я▀ п╨п╩п╟п╡п╦я┬ п╦ я│п╡я▐п╥п╟п╫п╫я▀п╣ я│ п╫п╦п╪п╦ п╨п╬п╢п╬п╡я▀п╣ п╠п╩п╬п╨п╦ п╬п╠я─п╟п╠п╟я┌я▀п╡п╟я▌я┌я│я▐ п╪п╣я┌п╬п╢п╬п╪
 	HandleKey().
 
-	Если <bData> NIL, SetKey() возвращает старый кодовый блок
-	и удаляет код клавиши с ассоциированым с ним кодовым блоком.
+	п∙я│п╩п╦ <bData> NIL, SetKey() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│я┌п╟я─я▀п╧ п╨п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨
+	п╦ я┐п╢п╟п╩я▐п╣я┌ п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦ я│ п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫я▀п╪ я│ п╫п╦п╪ п╨п╬п╢п╬п╡я▀п╪ п╠п╩п╬п╨п╬п╪.
 
-	По умолчанию с клавишами перемещения курсора(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
-	K_PGDN, K_HOME, K_END ....) ассоциированы соответствующие методы Left(),
-	Right(), Up(), Down() и тд.
+	п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ я│ п╨п╩п╟п╡п╦я┬п╟п╪п╦ п©п╣я─п╣п╪п╣я┴п╣п╫п╦я▐ п╨я┐я─я│п╬я─п╟(K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PGUP,
+	K_PGDN, K_HOME, K_END ....) п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫я▀ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╦п╣ п╪п╣я┌п╬п╢я▀ Left(),
+	Right(), Up(), Down() п╦ я┌п╢.
 
-	Блок кода, ассоциированный пользователем с кодом клавиши, получает два
-	параметра: сам объект LISTITEM и код клавиши; и должен вернуть
-	одно из следующих значений:
+	п▒п╩п╬п╨ п╨п╬п╢п╟, п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╪ я│ п╨п╬п╢п╬п╪ п╨п╩п╟п╡п╦я┬п╦, п©п╬п╩я┐я┤п╟п╣я┌ п╢п╡п╟
+	п©п╟я─п╟п╪п╣я┌я─п╟: я│п╟п╪ п╬п╠я┼п╣п╨я┌ LISTITEM п╦ п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦; п╦ п╢п╬п╩п╤п╣п╫ п╡п╣я─п╫я┐я┌я▄
+	п╬п╢п╫п╬ п╦п╥ я│п╩п╣п╢я┐я▌я┴п╦я┘ п╥п╫п╟я┤п╣п╫п╦п╧:
 
-	-1 Пользовательский запрос к LISTITEM потерять фокус
+	-1 п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ п╥п╟п©я─п╬я│ п╨ LISTITEM п©п╬я┌п╣я─я▐я┌я▄ я└п╬п╨я┐я│
 
-	0  Кодовый блок, ассоциированный с кодом <nKey>, был выполнен
+	0  п п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨, п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>, п╠я▀п╩ п╡я▀п©п╬п╩п╫п╣п╫
 
-	1  Неопределенный в словаре код <nKey>, код не был обработан
+	1  п²п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╧ п╡ я│п╩п╬п╡п╟я─п╣ п╨п╬п╢ <nKey>, п╨п╬п╢ п╫п╣ п╠я▀п╩ п╬п╠я─п╟п╠п╬я┌п╟п╫
 
 $ENDMETHOD$
 
@@ -774,13 +774,13 @@ $METHODNAME$
 $SUMMARY$
 	Simple handle key.
 $LANG_RU$
-	Обработчик кодов.
+	п·п╠я─п╟п╠п╬я┌я┤п╦п╨ п╨п╬п╢п╬п╡.
 $SYNTAX$
 	HandleKey(<nKey>) 	--> .T. || .F.
 $ARGUMENTS$
 	<nKey> - Numeric, specified in <inkey.ch> key code
 $LANG_RU$
-	<nKey> - Numeric, описанный в <inkey.ch> код клавиши.
+	<nKey> - Numeric, п╬п©п╦я│п╟п╫п╫я▀п╧ п╡ <inkey.ch> п╨п╬п╢ п╨п╩п╟п╡п╦я┬п╦.
 
 $RETURNS$
 	Returns one of numeric value :
@@ -791,13 +791,13 @@ $RETURNS$
 
 	1  Unable to locate <nKey> in the dictionary, key was not processed
 $LANG_RU$
-	Возвращает одно из значений:
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╢п╫п╬ п╦п╥ п╥п╫п╟я┤п╣п╫п╦п╧:
 
-	-1 Пользовательский запрос к LISTITEM потерять фокус
+	-1 п÷п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╦п╧ п╥п╟п©я─п╬я│ п╨ LISTITEM п©п╬я┌п╣я─я▐я┌я▄ я└п╬п╨я┐я│
 
-	0  Кодовый блок, ассоциированный с кодом <nKey>, был выполнен
+	0  п п╬п╢п╬п╡я▀п╧ п╠п╩п╬п╨, п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ <nKey>, п╠я▀п╩ п╡я▀п©п╬п╩п╫п╣п╫
 
-	1  Неопределенный в словаре код <nKey>, код не был обработан
+	1  п²п╣п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╧ п╡ я│п╩п╬п╡п╟я─п╣ п╨п╬п╢ <nKey>, п╨п╬п╢ п╫п╣ п╠я▀п╩ п╬п╠я─п╟п╠п╬я┌п╟п╫
 $DESCRIPTION$
 	HandleKey() is evaluates code block that associated with key code
 	<nKey>. The keypress/code block definition creates within SetKey() method.
@@ -805,10 +805,10 @@ $DESCRIPTION$
 	A default key code  cursor moves  associates with corresponded methods Left(),
 	Right(), Up(), Down() and more of LISTITEM class.
 $LANG_RU$
-	HandleKey() выполняет блок кода, ассоциированный с кодом клавиши
-	<nKey>. Список кодов клавиш и связанных с ними блоков кода создается методом
-	SetKey(). По умолчанию в этом списке находятся коды клавиш управления курсором,
-	связанные с соответствующими методами класса LISTITEM.
+	HandleKey() п╡я▀п©п╬п╩п╫я▐п╣я┌ п╠п╩п╬п╨ п╨п╬п╢п╟, п╟я│я│п╬я├п╦п╦я─п╬п╡п╟п╫п╫я▀п╧ я│ п╨п╬п╢п╬п╪ п╨п╩п╟п╡п╦я┬п╦
+	<nKey>. п║п©п╦я│п╬п╨ п╨п╬п╢п╬п╡ п╨п╩п╟п╡п╦я┬ п╦ я│п╡я▐п╥п╟п╫п╫я▀я┘ я│ п╫п╦п╪п╦ п╠п╩п╬п╨п╬п╡ п╨п╬п╢п╟ я│п╬п╥п╢п╟п╣я┌я│я▐ п╪п╣я┌п╬п╢п╬п╪
+	SetKey(). п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╡ я█я┌п╬п╪ я│п©п╦я│п╨п╣ п╫п╟я┘п╬п╢я▐я┌я│я▐ п╨п╬п╢я▀ п╨п╩п╟п╡п╦я┬ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ п╨я┐я─я│п╬я─п╬п╪,
+	я│п╡я▐п╥п╟п╫п╫я▀п╣ я│ я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╦п╪п╦ п╪п╣я┌п╬п╢п╟п╪п╦ п╨п╩п╟я│я│п╟ LISTITEM.
 
 $ENDMETHOD$
 

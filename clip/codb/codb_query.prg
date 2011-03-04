@@ -18,12 +18,12 @@
 	- export/import
 	- use file content as command list
 	- SET DBF CHARSET TO <>
-	- Ошибка обновления имени метаобъекта в codb
-	- Документация по утилите codb отдельно
-	- Использование ; в строках
+	- Error updating name of metaobject in codb
+	- Different docs about codb utility
+	- usage of ';' in strings
 	- DROP DATABASE <db>
 	
-	- При поиске по неиндексированным полям выдаёт все записи (в codb_ab ищет правильно!)
+	- FIXME: Got all records while searching by non-indexing fields (but in codb_ab search as well!)
 */
 
 /* First key list */

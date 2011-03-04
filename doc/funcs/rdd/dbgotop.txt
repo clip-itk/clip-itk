@@ -5,7 +5,7 @@ $CATEGORY$
 $SUMMARY$
    Move to the first logical record
 $LANG_RU$
-   Перемещает указатель на первую логическую запись.
+   п÷п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╣я─п╡я┐я▌ п╩п╬пЁп╦я┤п╣я│п╨я┐я▌ п╥п╟п©п╦я│я▄.
 $SYNTAX$
      DBGOTOP() --> NIL
 $LANG_RU$
@@ -13,18 +13,18 @@ $LANG_RU$
 $RETURNS$
      DBGOTOP() always returns NIL.
 $LANG_RU$
-     DBGOTOP() всегда возвращает NIL.
+     DBGOTOP() п╡я│п╣пЁп╢п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $DESCRIPTION$
      DBGOTOP() moves to the first logical record in the current work area.
 
      DBGOTOP() performs the same function as the standard GO TOP command.
      For more information, refer to the GO TOP command.
 $LANG_RU$
-     DBGOTOP() Перемещает указатель на первую логическую запись в текущей
-     рабочей области.
+     DBGOTOP() п÷п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╣я─п╡я┐я▌ п╩п╬пЁп╦я┤п╣я│п╨я┐я▌ п╥п╟п©п╦я│я▄ п╡ я┌п╣п╨я┐я┴п╣п╧
+     я─п╟п╠п╬я┤п╣п╧ п╬п╠п╩п╟я│я┌п╦.
 
-     DBGOTOP() выполняет те же функции, что и стандартная команда GO TOP.
-     Более подробную информацию смотрите в команде GO.
+     DBGOTOP() п╡я▀п©п╬п╩п╫я▐п╣я┌ я┌п╣ п╤п╣ я└я┐п╫п╨я├п╦п╦, я┤я┌п╬ п╦ я│я┌п╟п╫п╢п╟я─я┌п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ GO TOP.
+     п▒п╬п╩п╣п╣ п©п╬п╢я─п╬п╠п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ я│п╪п╬я┌я─п╦я┌п╣ п╡ п╨п╬п╪п╟п╫п╢п╣ GO.
 $EXAMPLES$
        This example demonstrates the typical use of DBGOTOP():
 

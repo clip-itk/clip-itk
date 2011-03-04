@@ -5,16 +5,16 @@ $CATEGORY$
 $SUMMARY$
    Determine the maximum visible screen row
 $LANG_RU$
-   Определяет наибольший номер видимой строки на экране.
+   п·п©я─п╣п╢п╣п╩я▐п╣я┌ п╫п╟п╦п╠п╬п╩я▄я┬п╦п╧ п╫п╬п╪п╣я─ п╡п╦п╢п╦п╪п╬п╧ я│я┌я─п╬п╨п╦ п╫п╟ я█п╨я─п╟п╫п╣.
 $SYNTAX$
      MAXROW() --> nRow
 $LANG_RU$
-     MAXROW() --> номер строки
+     MAXROW() --> п╫п╬п╪п╣я─ я│я┌я─п╬п╨п╦
 $RETURNS$
      MAXROW() returns the row number of the bottommost visible row for
      display purposes.
 $LANG_RU$
-     MAXROW() возвращает номер самой нижней строки экрана
+     MAXROW() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╪п╣я─ я│п╟п╪п╬п╧ п╫п╦п╤п╫п╣п╧ я│я┌я─п╬п╨п╦ я█п╨я─п╟п╫п╟
 $DESCRIPTION$
      MAXROW() is a screen function that determines the maximum visible row of
      the screen.  Row and column numbers start at zero in xClipper.
@@ -23,9 +23,9 @@ $DESCRIPTION$
      SETMODE() function so your xClipper application returns the correct
      value for MAXCOL().
 $LANG_RU$
-     MAXROW() является функцией работы с экраном, используемой для
-     определения максимального номера видимой строки на экране. Номера
-     строк и колонок в xClipper начинаются с нуля.
+     MAXROW() я▐п╡п╩я▐п╣я┌я│я▐ я└я┐п╫п╨я├п╦п╣п╧ я─п╟п╠п╬я┌я▀ я│ я█п╨я─п╟п╫п╬п╪, п╦я│п©п╬п╩я▄п╥я┐п╣п╪п╬п╧ п╢п╩я▐
+     п╬п©я─п╣п╢п╣п╩п╣п╫п╦я▐ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬пЁп╬ п╫п╬п╪п╣я─п╟ п╡п╦п╢п╦п╪п╬п╧ я│я┌я─п╬п╨п╦ п╫п╟ я█п╨я─п╟п╫п╣. п²п╬п╪п╣я─п╟
+     я│я┌я─п╬п╨ п╦ п╨п╬п╩п╬п╫п╬п╨ п╡ xClipper п╫п╟я┤п╦п╫п╟я▌я┌я│я▐ я│ п╫я┐п╩я▐.
 $EXAMPLES$
        This user-defined function, ScreenSize(), uses MAXROW() and
 	MAXCOL() to return an array containing the current screen size:
@@ -33,9 +33,9 @@ $EXAMPLES$
 	FUNCTION ScreenSize
 	   RETURN { MAXROW(), MAXCOL() }
 $LANG_RU$
-      В следующем примере функция пользователя ScreenSize() использует
-       MAXROW() и MAXCOL() для того, чтобы возвратить массив, содержащий
-       текущие размеры экрана:
+      п▓ я│п╩п╣п╢я┐я▌я┴п╣п╪ п©я─п╦п╪п╣я─п╣ я└я┐п╫п╨я├п╦я▐ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐ ScreenSize() п╦я│п©п╬п╩я▄п╥я┐п╣я┌
+       MAXROW() п╦ MAXCOL() п╢п╩я▐ я┌п╬пЁп╬, я┤я┌п╬п╠я▀ п╡п╬п╥п╡я─п╟я┌п╦я┌я▄ п╪п╟я│я│п╦п╡, я│п╬п╢п╣я─п╤п╟я┴п╦п╧
+       я┌п╣п╨я┐я┴п╦п╣ я─п╟п╥п╪п╣я─я▀ я█п╨я─п╟п╫п╟:
 
        FUNCTION ScreenSize
 	  RETURN { MAXROW(), MAXCOL() }

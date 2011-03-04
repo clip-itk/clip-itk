@@ -150,7 +150,7 @@
 // *reference DISPEND
 *reference  DISPOUT
 *reference  DISPOUTAT
-// *reference DOSERROR        // возвращает системно-зависимые коды
+// *reference DOSERROR        // returns system-related codes
 *reference  DOW
 *reference  DTOC
 *reference  DTOS
@@ -206,7 +206,7 @@
 // *reference ISCOLOR
 *reference  ISDIGIT
 *reference  ISLOWER
-// *reference ISPRINTER           // всегда готов
+// *reference ISPRINTER           // always ready
 *reference  ISUPPER
 *reference  L2BIN
 // *reference LASTKEY
@@ -225,7 +225,7 @@
 // *reference MEMOEDIT
 *reference  MEMOLINE
 // *reference MEMOREAD
-// *reference MEMORY             // возвращает большое число
+// *reference MEMORY             // returns large number
 // *reference MEMOTRAN
 *reference  MEMOWRIT
 // *reference MEMVARBLOCK

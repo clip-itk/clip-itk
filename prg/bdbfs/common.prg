@@ -3,7 +3,7 @@
     License : (GPL) http://www.itk.ru/clipper/license.html
 */
 /*
-Библиотечные функции ELB.LIB, специально адаптированные для bdbfs.
+Library functions ELB.LIB, specially adopted for bdbfs.
 */
 
 #include "common.ch"
@@ -21,13 +21,13 @@ PROC Devices
 PUBLIC _mins:=IsMouse(),__mcol:=MaxCol(),__mrow:=MaxRow(),_ms:=0
 PUBLIC _middleCol:=INT(__mcol/2),_middleRow:=INT(__mrow/2)
 IF _mins THEN SetMouseXY(__mcol,__mrow)
-PUBLIC __Menu_Row:=0,__Menu_Col:=0,__Menu_Prom:=''	//Используется в Меню
+PUBLIC __Menu_Row:=0,__Menu_Col:=0,__Menu_Prom:=''	//Used in menu
 **********
 FUNC NFIND(_mess,_var,_color,_Footer,lNeedTone,nTimeWait,nlShine,nMuch)
 LOCAL i,sc:=SetCursor(0),_r,_c,nStr,aDvd:={},cTst:='',nWide:=__mcol-12,aMess
 IF TYPE('_lPlain')<>'U'
 	? _mess
-	QUIT	//все равно ошибка восстановления при RETURN
+	QUIT	//Still recovery error while RETURN
 ENDIF
 IF_NIL _color IS m->_im
 IF_NIL _Footer IS ''
@@ -115,21 +115,19 @@ END
 **********
 FUNC ShowButton(_x01,_y01,_x02,_y02,_s,_color,_Frame,_ColorBorder,_Selected)
 /*
- Пpи наличии массива сообщения _s они появляются,начиная с первой строки окна
- Пpи _ColordBorder вокpуг pамки есть тень заданного цвета (в числовом виде)
- При задании _COLOR - устанавливается временно этот цвет
- _FRAME определяет вид рамочки - по умолчанию - одинарная
- Если определена символьная пара _Selected, то она окаймляет все сообщения
- (это используется в меню)
+ In the presence of an array messages '_s' they appear, beginning with the first
+ line of the window. With _ColordBorder around frame is the shadow with specified
+ color (as numeric). When set _COLOR - temporarily set the color _FRAME determines
+ the form of frames - by default - single. If defined character pair '_Selected',
+ it is bordered all the messages (this is used in menus).
 
- Если координаты окна заданы неполностью,то используются максимальные
- размеры.
+ If the window coordinates are given incomplete, then used the maximum dimensions.
 
-	Пример:
-// Рамочка в центре заданного цвета
-	ShowButton(10,10,14,69,[Нажмите что нибудь],NewColor,FRAME2)
+	Example:
+// Frame with specified color in center
+	ShowButton(10,10,14,69,[Press any key],NewColor,FRAME2)
 
- См.также WaitWindow(),Nfind(),Waiting()
+ See WaitWindow(),Nfind(),Waiting()
 */
 
 LOCAL	_wide,nX1,_sc,_front,_lft,_i
@@ -140,7 +138,7 @@ IF_NIL _x02 IS __mrow
 IF_NIL _y02 IS __mcol
 IF_NIL _s IS ''
 IF_NIL _color IS SetColor()
-IF_NIL _frame IS '┌─┐│┘─└│ '
+IF_NIL _frame IS '┌─┐│┘─└│ ' // utf-8: 'тФМтФАтФРтФВтФШтФАтФФтФВ '
 
 _x01:=INT(_x01)
 _x02:=INT(_x02)
@@ -180,8 +178,8 @@ DispEnd()
 RETURN {_x01,_y01,_x02,_y02,_front,_sc,_frame}
 **********
 PROC DownButton(_aHandle,_waiting)
-* Показывает вдавленную кнопку по хэндлу,сохраненному в ShowButton
-* При наличии _waiting ждет указанное время
+* Shows a depressed button on the handle stored in ShowButton
+* In the presence of _waiting waits a specified time
 
 LOCAL _i,_front:=_aHandle[5],;
 	_x01 :=_aHandle[1],;
@@ -194,14 +192,14 @@ IF_NIL _waiting IS 0.001
 
 HideMouse()
 DispBegin()
-DispBox(_x01,_y01,_x02,_y02,TRIM(_frame)/*'┌─┐│┘─└│ '*/,_aHandle[6])
-@ _x02,_y01+1 SAY Repl(Substr(_frame,2,1)/*'─'*/,_y02-_y01-1)+;
-		  Substr(_frame,5,1) /*'┘'*/ COLOR _front
+DispBox(_x01,_y01,_x02,_y02,TRIM(_frame)/*'тФМтФАтФРтФВтФШтФАтФФтФВ '*/,_aHandle[6])
+@ _x02,_y01+1 SAY Repl(Substr(_frame,2,1)/*'тФА'*/,_y02-_y01-1)+;
+		  Substr(_frame,5,1) /*'тФШ'*/ COLOR _front
 
 FOR _i:=_x01+1 To _x02-1
-	@ _i,_y02 Say Substr(_frame,4,1)/*'│'*/ COLOR _front
+	@ _i,_y02 Say Substr(_frame,4,1)/*'тФВ'*/ COLOR _front
 NEXT
-@ _x01,_y02 SAY Substr(_frame,3,1) /*'┐'*/ COLOR _front
+@ _x01,_y02 SAY Substr(_frame,3,1) /*'тФР'*/ COLOR _front
 
 ShowMouse()
 DispEnd()
@@ -258,7 +256,7 @@ DO CASE
 	ELSE				//IF INT(_s)#_S
 		IF '*' $ (s1:=STR(_s))
 			_Decim:=SET(_SET_DECIMALS)
-// Обеспечим отбрасывание дроби при переполнении
+// Provide rejection fraction if overflow
 			WHILE '*' $ Str(_s,_n,_decim) .AND. _Decim>0
 				_decim--
 			END
@@ -406,7 +404,7 @@ IF EMPTY(lNoMsg) THEN Nfind(PRV_NOFILE+_NameFile)
 RETU .F.
 **********
 FUNC FileExist(cName)
-*Не File(), чтобы с PATH не путалось
+*Not File(), that are not confused with PATH
 LOCAL lRes:=.T.
 IF !EMPTY(Directory(cName))
 ELSEIF !EMPTY(Directory(LOWER(cName)))
@@ -484,10 +482,10 @@ FOR _i:=m->_Awt+1 to m->_awb-1 DO @ _i,m->_awr say SCROLL_FILL
 @ m->_awt,m->_awr say SCROLL_UP color _cm
 @ m->_awb,m->_awr say SCROLL_DOWN color _cm
 
-FT_PutKey(260)	&& Чтобы активировать L_ACH
+FT_PutKey(260)	&& To activate L_ACH
 ShowMouse()
 m->lRepeat:=.T.
-m->lAchFinish:=.F.	// Завершить из пользовательской функции
+m->lAchFinish:=.F.	// Finish from user-defuned function
 WHILE m->lRepeat
 	_i=Achoice(m->_awt+1,m->_awl+1,m->_awb-2,m->_awr-2,;
 		   m->_acItems,,'L_Ach',IF(PCount()<6,1,m->_Current))
@@ -513,7 +511,7 @@ LOCAL bSelect:={|_n,lSlct| m->alSelect[_n]:=lSlct,;
 				Strtran(m->_acItems[_n],'[ ]','[x]'),;
 				Strtran(m->_acItems[_n],'[x]','[ ]'))}
 m->lRepeat:=.F.
-m->nItem:=_numb		//Для SetKey
+m->nItem:=_numb		//For SetKey
 
 DispBegin()
 @ cRowMark,m->_awr SAY SCROLL_MARK COLOR _cm
@@ -521,16 +519,16 @@ IF _nmoves=0 .AND. Between(_a, 1, 31)
 	_search=''
 ENDIF
 @ m->_awb,_left SAY Padc(_search,nWide,'─');
-	COLOR IF(EMPTY(_search), "n/b", )
+	COLOR IF(EMPTY(_search), "n/b", ) // utf-8: 'тФА'
 
 IF !EMPTY(m->aDescr)
 	@ m->_awb-1,_left SAY Padc(m->aDescr[_numb],nWide,'─');
-		COLOR IF(EMPTY(m->aDescr[_numb]),"w/b",_HdColor)
+		COLOR IF(EMPTY(m->aDescr[_numb]),"w/b",_HdColor) // utf-8: 'тФА'
 ENDIF
 
 IF _la<>_length
-	@ m->_awb, _right SAY IF(_numb+_length-_posit > _la, '─', '+') COLOR _HdColor
-	@ m->_awt, _right SAY IF(_numb-_posit > 1, '+', '┐') COLOR _HdColor
+	@ m->_awb, _right SAY IF(_numb+_length-_posit > _la, '─', '+') COLOR _HdColor // utf-8: 'тФА'
+	@ m->_awt, _right SAY IF(_numb-_posit > 1, '+', '┐') COLOR _HdColor // utf-8: 'тФР'
 ENDIF
 DispEnd()
 
@@ -541,14 +539,14 @@ DO CASE
 	CASE _a=K_ENTER
 		RETU 1
 
-	CASE _a=K_F8 .OR. (_a=K_CTRL_D .AND. Altf()=2)	//Отличать от ->
+	CASE _a=K_F8 .OR. (_a=K_CTRL_D .AND. Altf()=2)	//Distinguished from ->
 		IF m->_lHist
 			A_Del(m->_acItems,_numb)
 			IF m->_lOwn THEN A_Del(m->_ClipText,_numb)
 			RETU 5
 		ELSEIF	'SETTAG' $ CalledFrom()
 			DelTag(1,_numb)
-			m->lAgain:=.T.	//Повторить выбор
+			m->lAgain:=.T.	//Repeat choise
 			RETU 0
 		ENDIF
 
@@ -655,7 +653,7 @@ IF lSet
 	aKeys:={_MSG_F1}
 	AEVAL(abAction,{|_1,i|AADD(aKeys,_1[1]),SETKEY(0 - i,_1[2])})
 ELSE
-	SET KEY K_SH_TAB TO	//где надо
+	SET KEY K_SH_TAB TO	//where need
 	POP KEYS
 ENDIF
 RETURN aKeys
@@ -670,10 +668,10 @@ ShowButton(_middlerow-2,8,;
 **********
 FUNC MENU2(aPrompt,_start,aMsg,cAdd,aKeys)
 /*
-aPrompt - массив альтернатив
-_start -  Нач. элемент выбора
-aMsg - массив заглавия
-cAdd - доп. разъяснение (см.Continue())
+aPrompt - array of alternatives
+_start -  Start element
+aMsg - header array
+cAdd - additional comment (see Continue())
 */
 LOCAL i,_r,aMenu:={},aCol,nLeft, nRight
 aMsg:=FT_XTOY(aMsg,'A')
@@ -709,7 +707,7 @@ FUNC Continue(_Mess,_choice)
 IF_NIL _choice IS 2
 RETU (MSG_MNU_YESNO = 1)
 **********
-* * * * * *  В Ы З Ы В А Е М Ы Е  Ф У Н К Ц И И
+* * * * * *  C A L L E D   F U N C T I O N S
 **********
 FUNC Sum( _Fld,_cond)
 m->__sum := 0
@@ -825,7 +823,7 @@ IF EMPTY(_fld) THEN _fld:=_C_F
 IF EMPTY(_bFld) THEN _bFld:={|i| IF(VALTYPE(i)=='A',LEN(i), i) }
 lMeter:=!EMPTY(lMeter)
 MaxVal:=Eval(_bFld,&_fld)
-cvt:=VALTYPE(MaxVal)	//из-за V
+cvt:=VALTYPE(MaxVal)	//because V
 CheckEsc(.T.)
 MaxRec:=RecNo()
 IF lMeter THEN IniSearching()
@@ -907,15 +905,15 @@ IF_NIL nCurr IS m->_tally
 DispBegin()
 
 DO CASE
-// Сначала - частая проверка
+// First - frequent checking
 	CASE lWas .AND. nStep=2 .AND. nCurr>=nLast .AND. !EMPTY(m->_lMeter)
 		nLast:=nCurr
-		IF nMuch==0 THEN nMuch:=KeyCount()	//В Append может проявиться
+		IF nMuch==0 THEN nMuch:=KeyCount()	//In Append can occur
 		IF !EMPTY(nTotal) THEN nMuch:=nTotal
 		nCurr:=MIN(nCurr,nMuch-1)
-		@ 13,nL SAY REPL('▄',nCurr*57/nMuch-1) COLOR _im
+		@ 13,nL SAY REPL('▄',nCurr*57/nMuch-1) COLOR _im // utf-8: 'тЦД'
 
-		SAY_HERE '│' COLOR _HdColor
+		SAY_HERE '│' COLOR _HdColor // utf-8: 'тФВ'
 		@ 15,nL+14  SAY NTRIM(nCurr)+'/'+NTRIM(nMuch) +;
 				' ( '+NTRIM(nCurr*100/nMuch)+ ' % ) '+;
 				IF(EMPTY(_timing),'',Ntrim(Seconds()-_tOld)+SEC_M);
@@ -924,13 +922,13 @@ DO CASE
 	CASE nStep==1
 		lWas:=.T.
 		ScrSave(@scr)
-		IF !EMPTY(m->_lMeter)		//Не запрещен бар
+		IF !EMPTY(m->_lMeter)		//Bar accepted
 			Panel(8,nL-2,17,_middlecol+30,;
 				{WAIT_WIND+cMsg+'...'+m->_abort},;
 				{_im,_HdColor,_im})
 			@ 11,nL SAY '0 %' COLOR _HdColor
 			@ 11,_middlecol+24 SAY '100 %' COLOR _HdColor
-			@ 13,nL SAY REPL('▀',57) COLOR _im
+			@ 13,nL SAY REPL('▀',57) COLOR _im // utf-8: 'тЦД'
 			@ 15,nL SAY PROCESSED COLOR _im
 			nLast:=m->_SX_Step
 			nMuch:=IF(EMPTY(nTotal),KeyCount()-KeyNo()+1,nTotal)
@@ -1032,7 +1030,7 @@ PROC ShowNum(nVal,cMsg)
 Nfind(nVal,,,cMsg)
 **********
 PROC Cdd(cWhere)
-*Переход в каталог,независимо от диска
+*Go to the directory, regardless of the disc
 StripRight(@cWhere,'\')
 ChDisk(cWhere)
 ChDir(cWhere)
@@ -1072,17 +1070,17 @@ RETURN (t1==t2 .OR. (t1 $ 'NFV' .AND. t2 $ 'NFV') .OR. ;
 FUNC Preproc(cExp)
 LOCAL	i,j,jr,cCmd,cFcmd,cPar
 
-cExp:=Sx_SlimFast(ALLTRIM(cExp))	//Сам SlimFast не обрезает последний пробел
+cExp:=Sx_SlimFast(ALLTRIM(cExp))	//SlimFast not trim the last space
 
 FOR i:=1 TO LEN(m->_aCommand)
 	cFcmd:=m->_aCommand[i,1]
 	cCmd:=IF( (j:=AT('<',cFcmd))=0,cFcmd,LEFT(cFcmd,j-1) )
 	IF IsLefts(cExp,UPPER(cCmd)) THEN EXIT
 NEXT
-IF i<=LEN(m->_aCommand)	//найдено
+IF i<=LEN(m->_aCommand)	//found
 	jr:=AT('>',cFcmd)
 	cPar:=IF(jr==0,'',SUBSTR(cFcmd,j,jr-j+1))	//<x>
-	cFcmd:=m->_aCommand[i,2]	//результат
+	cFcmd:=m->_aCommand[i,2]	//resultat
 	cExp := ALLTRIM(IF( EMPTY(cPar), cFcmd,;
 				 StrTran(cFcmd,cPar,SUBSTR(cExp,LEN(cCmd)+1)) ))
 
@@ -1091,13 +1089,13 @@ IF i<=LEN(m->_aCommand)	//найдено
 	ENDIF
 ENDIF
 
-* Проверка предопределенных замен
+* Check the predefined replacements
 cPar:=Exclude(cExp,' ')
 DO CASE
-	CASE '{^' $ cExp	//VFP формат
+	CASE '{^' $ cExp	//format VFP
 		j:= AT('{^',cPar)
 		jr:=AT( '}', SUBSTR(cPar,j+2))
-		IF Between(jr,9,11)	//datetime преобразовывать не будем
+		IF Between(jr,9,11)	//will not convert datetime
 			cFcmd:=SET(_SET_DATEFORMAT)
 			SET DATE JAPAN
 			cCmd:=CTOD(SUBSTR(cPar,j+2,jr-1))
@@ -1115,7 +1113,7 @@ LOCAL key,keyBlock,_timeBegin:=Seconds(),_oldAlt:=-1
 IF PCount()=0
 	_time:=-1
 ELSE
-	IF _time=0 THEN _time:=36000	// 10 часов ожидания
+	IF _time=0 THEN _time:=36000	// 10 hours for waiting
 	ShowMouse();ShowMouse()
 ENDIF
 m->_ms:=0
@@ -1164,7 +1162,7 @@ DO WHILE .T.
 			IF _time>0 THEN HideMouse()
 			RETU key
 		ENDCASE
-		_TimeBegin:=Seconds()	// Что-то все-таки нажато
+		_TimeBegin:=Seconds()	// Something is pressed
 	ENDIF
 
 	IF _time>0 .AND. NextKey()=0 .AND. ((key:=KbdStat()) # _OldAlt)
@@ -1174,10 +1172,10 @@ ENDDO
 **********
 PROC Panel(nTop,nLeft,nBottom,nRight,aMess,aColor,nBottomBord)
 /*
- Рисует "3-х мерную" панель.
+ Draw 3D panel.
 
- Пример:
-	Panel(10,10,16,69,'Ошибка записи !',AlarmColor)
+ Example:
+	Panel(10,10,16,69,'Write error !',AlarmColor)
 */
 IF_NIL nBottomBord IS 1
 IF ValType(aColor)=='C' THEN;
@@ -1193,11 +1191,11 @@ ShowMouse()
 ************
 PROC WINDOW(_x01,_y01,_x02,_y02,_s,_Mess)
 /*
- Сообщение _S появляется на pамке
-Упрощенная версия
+ _S Message appears on frame
+A simplified version
 */
 LOCAL	_wide:=_y02-_y01
-BoxShadow(_x01,_y01,_x02,_y02,7,'╔═╗║╝═╚║ ' )
+BoxShadow(_x01,_y01,_x02,_y02,7,'╔═╗║╝═╚║ ' ) // utf-8: 'тХФтХРтХЧтХСтХЭтХРтХЪтХС '
 _s:=LEFT(_s,_wide--)
 @ _x01,_y01+1+Centr(_s,_wide) say _s
 **********
@@ -1254,7 +1252,7 @@ IF EMPTY(anKeys)
 	NEXT
 	anKeys:=Base_M_Keys
 ENDIF
-//названия
+//names
 AADD(_PushKeys,{ACLONE(m->Main_keys),ACLONE(m->Alt_Keys),;
 		ACLONE(m->Ctrl_Keys),ACLONE(m->Shift_Keys),scr,SetColor(color)})
 
@@ -1313,10 +1311,10 @@ ShowMouse()
 **********
 FUNC Parce(cStr,cTest,cBefore,cAfter)
 /*
-Если в строке cStr содержится cTest, то в ссылочные переменные
-cBefore, cAfter записываются соответствующие подстроки cStr.
-Иначе cBefore:=cStr, cAfter:=''
-Возвращает позицию cTest.
+If the string contains cStr cTest, then the corresponding substrings
+cStr written to the  reference variables cBefore, cAfter.
+Otherwise cBefore:=cStr, cAfter:=''
+Returns position of cTest.
 */
 LOCAL i:=AT(cTest, cStr)
 IF i>0
@@ -1341,7 +1339,7 @@ LOCAL nL:=LEN(cRght)
 IF SUBSTR(cStr, -nL ) == cRght THEN cStr:=Strip(cStr,nL)
 **********
 FUNC RealFldName(cDest)
-IF PAD(cDest,11) $  'ShowVaried( ShowForced('
+IF PAD(cDest,11) $  'ShowVaried( ShowForced('
 	Parce(Substr(cDest,12),',',@cDest)
 ENDIF
 RETURN cDest
@@ -1363,10 +1361,10 @@ __KeyBoard()
 SetCursor(cursor)
 RestPos()
 ScrRest(scr)
-SetBlink(.F.)	// почему-то портится
+SetBlink(.F.)	// somehow spoil
 RETURN error
 **********
-// Для подключения ONIDLE
+// For connection of ONIDLE
 PROC TimeShow()
 STATIC oldTime
 LOCAL cT
@@ -1409,15 +1407,15 @@ ENDIF
 RETURN xRes
 **********
 FUNC HistClip(aClip,lInClip)
-m->_lOwn:=!EMPTY(lInClip)	//Признак вызова GetClipboard
+m->_lOwn:=!EMPTY(lInClip)	//Call sign GetClipboard
 RETURN ForAch(10,USE_HISTORY,aClip,1,'H1')
 **********
 FUNC Compile(cBlock)
-ErrorBlock({|e|Break(.T.)})	//Из-за ошибки вложенных блоков
+ErrorBlock({|e|Break(.T.)})	//Due to an error of nested blocks
 IF_NIL cBlock IS ".T."
 BEGIN SEQU
 	cBlock:=&("{||"+ ALLTRIM(cBlock)+"}")
-// брякнет, если не C
+// raise break if not C
 END
 ErrorSys()
 RETURN cBlock
@@ -1458,7 +1456,7 @@ Fseek(_handle,_from,nType) ; Fread(_handle,@cRet,_num)
 RETU cRet
 **********
 FUNC IsLefts(cLong,cShort,lNeedTrim)
-*Проверяет на равенство cShort и соотв.левой подстроки cLong
+*Checks for equality cShort and the corresponding left substring of cLong
 LOCAL i:=LEN(cShort)
 IF IsNILorTRUE(lNeedTrim) THEN cLong:=LTRIM(cLong)
 RETURN (LEFT(cLong,i)==cShort)
@@ -1493,15 +1491,15 @@ RETURN i
 **********
 PROC ScrSave(_var)
 /*
- Сохраняет содержимое экрана и прячет мышь
- Экран сохранненый в переданной по ссылке переменной _var может быть
- восстановлен либо по команде Clipper Rest Screen From,
- либо парной функцией ScrRest().
- Примеры :
+ Saves the contents of the screen and hides the mouse
+ Saved in the passed by reference variable _var screen
+ can be restored by command 'Clipper Rest Screen From',
+ or by steam function ScrRest ()
+ Examples :
 	ScrSave()
 	ScrSave(@current)
 
- См. также SaveEkr() ScrRest()
+ See also SaveEkr() ScrRest()
 */
 HideMouse()
 IF Pcount()=0
@@ -1520,14 +1518,14 @@ ShowMouse()
 **********
 FUNC Ext_Arr(aName,size,Init)
 /*
-	Функция инициализации массива по другому массиву aName
-	Если массив не существует то он образуется (размером size)
-	и заполняется величиной Init
+	Initialization of array by other aName array 
+	If array doesn't extsts, then it will created with size 'size'
+	and will filled by 'Init'
 
-	Если массив меньшей длины чем задано в size , то он наращивается
-	и приращенные элементы заполняются init
+	If array size less than specified in 'size' , then array will increased
+	and new element will filled by 'Init'
 
-	Возвращает полученный массив.
+	Returns the array.
 */
 LOCAL arr,i
 IF (ValType(aName)=='A')
@@ -1541,15 +1539,15 @@ FOR i:=1 TO size
 NEXT
 RETU arr
 **********
-PROC CenterB(_x,_s,_n,ccolor)		//B, чтобы не путать с тулзами
+PROC CenterB(_x,_s,_n,ccolor)		//B, not to be confused with TOOLS
 /*
-*Центрирует строку текста на экране
-_x-Номер строки экрана
-_s-Центрируемая строка
-_n-Ширина "клетки" (умолчание-полный экран)
-_ccolor - цвет вывода (умолчание-текущий)
+*Centers the line of text on screen
+_x-Line number
+_s-Text
+_n-Width of "cell" (default: full screen)
+_ccolor - output color (default: current)
 
-См.также Centr(),Medi(),Pc()
+See also Centr(),Medi(),Pc()
 */
 IF_NIL _n IS m->__mcol
 _s:=LEFT(_s,_n)
@@ -1557,27 +1555,27 @@ _s:=LEFT(_s,_n)
 **********
 FUNC Centr(_s,_n)
 /*
-Центр строки текста
-_s-строка
-_n-Ширина "клетки" (умолчание-полный экран)
+Line center of text
+_s-string
+_n-Width of "cell" (default: full screen)
 
-См.также Center(),Medi(),Pc()
+See also Center(),Medi(),Pc()
 */
 IF EMPTY(_n) THEN _n:=m->__mcol
 RETU MAX(0,(_n-Len(_s))/2)
 ************
 Func ReadFromFile(_handle,_from,_num)
 /*
- Читает _num байт с позиции _from из файла с дескрипторм _handle
- Возвращает строку
+ Read _num bytes by _from position from file with _handle descriptor
+ Returns the string
 
- Пример : читаем тип базы
+ Epample : reads type from database
 	Handle:=Fopen('base',64)
 	If ReadFromFile(handle,0,1)==chr(245)
-		NFind('Это база FoxPro с мемо-полем.')
+		NFind('this is FoxPro database with memo-filed.')
 	ENDIF
 
- См.также WriteToFile(),FreadLn()
+ See also WriteToFile(),FreadLn()
 */
 
 Fseek(_handle,_from,0)
@@ -1585,11 +1583,11 @@ RETU FreadStr(_handle,_num)
 **********
 FUNC Rand (nStart)
 /*
- Возвращает последовательность псевдо-случайных чисел от 0.00 до 1.00
- Если указан параметр nStart,то последовательность начинается заново.
- От каждого nStart всегда возвращается одинаковая последовательность.
- Пример:
-	? Rand(seconds()) - первый элемент
+ Returns a sequence of pseudo-random numbers from 0.00 to 1.00
+ If nStart parameter is specified, then then the sequence begins again.
+ From each nStart always returns the same sequence.
+ Example:
+	? Rand(seconds()) - first element
 	While !Waitkey(3)<>xbeK_ESC
 		? Rand()
 	end
@@ -1627,12 +1625,18 @@ RETURN cRet
 ************
 FUNC SayData(data)
 /*
-	Возвращает строку типа 01 января 1995 года
+	Returns string as 01 January 1995
 */
 local Cmth:=Cmonth(data)
+RETURN  NTRIM(day(data))+"'th "+;
+	Cmth+' ')+;
+	NTRIM(Year(data))
+
+/* Russian
 RETURN  NTRIM(day(data))+' '+;
-	IF(SUBSTR(Cmth,-1)=='т', Cmth+'а ', LEFT(Cmth,Len(cmth)-1)+'я ')+;
-	NTRIM(Year(data))+ ' года'
+	IF(SUBSTR(Cmth,-1)=='╤В', Cmth+'╨░ ', LEFT(Cmth,Len(cmth)-1)+'╤П ')+;
+	NTRIM(Year(data))+ ' ╨│╨╛╨┤╨░'
+*/
 #ENDIF
 **********
 FUNC ChrTran(c1,c2,c3)
@@ -1648,8 +1652,8 @@ NEXT
 RETURN cRet
 **********
 PROC Hilite(_color,_front,_back)
-* Определяет подсветку и обратный к подсветке цвет ,исходя из текущего цвета,
-* передает их в ссылочных переменных _front,_back
+* Defines the highlight, and the inverse of the highlight color, based on the current color
+* returns them in reference variables _front,_back
 
 LOCAL _lft
 
@@ -1699,7 +1703,7 @@ DO CASE
 		cStr:=Expand(cStr,1,cFill)
 	CASE cJust=='U'
 		cStr:=CharOne(cFill,cStr)
-	OTHER //н-р, просто PAD
+	OTHER //n-r, just PAD
 		cStr:=PADL(cStr,nLen,cFill)
 ENDCASE
 RETURN cStr

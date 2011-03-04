@@ -1,0 +1,699 @@
+# Module udbx.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2001.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2003-07-12 16:03+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: abx_obj.prg:22 abx_obj.prg:24 abx_obj.prg:195 abx_obj.prg:203
+msgid "Not opened"
+msgstr "Не открыт"
+
+#: abx_obj.prg:63
+msgid "Object Database Administration Tool"
+msgstr "Утилита админитрирования объектной БД"
+
+#: abx_obj.prg:209
+msgid "Exit"
+msgstr "Выход"
+
+#: abx_obj.prg:212
+msgid "Do you want to exit ?"
+msgstr "Закончить работу ?"
+
+#: abx_obj.prg:217 abx_funcs.prg:42 abx_funcs.prg:47 abx_funcs.prg:129
+msgid "Ok"
+msgstr ""
+
+#: abx_obj.prg:221 abx_obj.prg:386 abx_funcs.prg:133 abx_meta_browse.prg:108
+#: abx_data_browse.prg:155
+msgid "Cancel"
+msgstr "Прервать"
+
+#: abx_obj.prg:248
+msgid "Dictionary"
+msgstr "Словарь"
+
+#: abx_obj.prg:249 counter.prg:55
+msgid "Depository"
+msgstr "Депозитарий"
+
+#: abx_obj.prg:261
+msgid "Error open dictionary list"
+msgstr "Ошибка открытия списка словарей"
+
+#: abx_obj.prg:268
+msgid "Create new dictionary     "
+msgstr "Создать новый словарь     "
+
+#: abx_obj.prg:270
+msgid "Choice Dictionary"
+msgstr "Выберите словарь"
+
+#: abx_obj.prg:286
+msgid "Error creating dictionary"
+msgstr "Ошибка создания словаря"
+
+#: abx_obj.prg:295
+msgid "Error connect to dictionary"
+msgstr "Ошибка открытия словаря"
+
+#: abx_obj.prg:308
+msgid "Error opening dictionary"
+msgstr "Ошибка открытия словаря"
+
+#: abx_obj.prg:333
+msgid "Please fill dictionary parameters"
+msgstr "Заполните параметры словаря"
+
+#: abx_obj.prg:343
+msgid "Ident"
+msgstr "Идентификатор"
+
+#: abx_obj.prg:346 attr.prg:59 class.prg:44 class.prg:90 class.prg:109
+#: counter.prg:42 deposit.prg:42 group.prg:42 index.prg:41 plugins.prg:43
+#: report.prg:46 tcolumn.prg:45 tcolumn.prg:71 tview.prg:46 tview.prg:107
+#: user.prg:43
+msgid "Name"
+msgstr "Название"
+
+#: abx_obj.prg:355 attr.prg:63 class.prg:91 counter.prg:51 plugins.prg:52
+#: report.prg:55
+msgid "Type"
+msgstr "Тип"
+
+#: abx_obj.prg:360
+msgid "Data type"
+msgstr "Тип данных"
+
+#: abx_obj.prg:364
+msgid "Path"
+msgstr "Путь к файлам"
+
+#: abx_obj.prg:367
+msgid "Host name"
+msgstr "Имя хоста"
+
+#: abx_obj.prg:370
+msgid "SQL port"
+msgstr "SQL порт"
+
+#: abx_obj.prg:373
+msgid "User name"
+msgstr "Имя пользователя"
+
+#: abx_obj.prg:376
+msgid "SQL DB name"
+msgstr "SQL имя БД"
+
+#: abx_obj.prg:381 abx_meta_browse.prg:103 abx_data_browse.prg:150
+msgid "Save"
+msgstr "Сохранить"
+
+#: abx_obj.prg:429
+msgid "Dictionary is not opened"
+msgstr "Словарь не открыт"
+
+#: abx_obj.prg:429 abx_funcs.prg:234 abx_funcs.prg:256 abx_funcs.prg:305
+#: abx_funcs.prg:327 abx_funcs.prg:349 abx_meta_browse.prg:84
+#: abx_data_browse.prg:131
+msgid "Error"
+msgstr "Ошибка"
+
+#: abx_obj.prg:439
+msgid "Choice Depository"
+msgstr "Выберите депозитарий"
+
+#: abx_obj.prg:455
+msgid "Error opening depository"
+msgstr "Ошибка открытия депозитария"
+
+#: abx_obj.prg:477 abx_obj.prg:482
+msgid "Error browsing meta"
+msgstr "Ошибка навигации"
+
+#: abx_obj.prg:505 abx_obj.prg:510
+msgid "Error browsing data"
+msgstr "Ошибка навигации"
+
+#: abx_obj.prg:517
+msgid "Select XML file to load metadata"
+msgstr "Выберите XML файл для чтения мета данных"
+
+#: abx_obj.prg:552
+msgid "Select XML file to save metadata"
+msgstr "Выберите XML файл для сохранения"
+
+#: abx_funcs.prg:14
+msgid "Message"
+msgstr "Сообщение"
+
+#: abx_funcs.prg:234
+msgid "Attributes list is empty!"
+msgstr "Список аттрибутов пуст"
+
+#: abx_funcs.prg:237
+msgid "Choose attribute"
+msgstr "Выберите аттрибут"
+
+#: abx_funcs.prg:256
+msgid "Classes list is empty!"
+msgstr "Список классов пуст"
+
+#: abx_funcs.prg:259
+msgid "Choose class"
+msgstr "Выберите класс"
+
+#: abx_funcs.prg:305
+msgid "No objects of class"
+msgstr "Нет объектов класса"
+
+#: abx_funcs.prg:308
+msgid "Choose object"
+msgstr "Выберите объект"
+
+#: abx_funcs.prg:327
+msgid "Indices list is empty!"
+msgstr "Список индексов пуст"
+
+#: abx_funcs.prg:330
+msgid "Choose index"
+msgstr "Выберите индекс"
+
+#: abx_funcs.prg:349
+msgid "Columns list is empty!"
+msgstr "Список столбцов пуст"
+
+#: abx_funcs.prg:352
+msgid "Choose column"
+msgstr "Выберите столюец"
+
+#: abx_funcs.prg:384
+msgid "Error creating file:"
+msgstr "Ошибка создания файла:"
+
+#: abx_funcs.prg:418
+msgid "Error writing to file:"
+msgstr "Ошибка записи в файл:"
+
+#: abx_meta_browse.prg:41
+msgid "Metadata name"
+msgstr "Имя мета данных"
+
+#: abx_meta_browse.prg:66 abx_data_browse.prg:112
+msgid "Error loading plugin"
+msgstr "Ошибка чтения модуля"
+
+#: abx_meta_browse.prg:72 abx_data_browse.prg:119
+msgid "Error initialising edit card"
+msgstr "Ошибка инициализации карточки"
+
+#: abx_meta_browse.prg:78 abx_data_browse.prg:125
+msgid "Can`t fill edit card"
+msgstr "Невозможно заполнить карточку"
+
+#: abx_meta_browse.prg:78 abx_data_browse.prg:125
+msgid "Error filling card"
+msgstr "Невозможно заполнить карточку"
+
+#: abx_meta_browse.prg:84 abx_data_browse.prg:131
+msgid "Can`t save object"
+msgstr "Невозможно сохранить объект"
+
+#: abx_meta_browse.prg:127 abx_data_browse.prg:174
+msgid "Add"
+msgstr "Добавить"
+
+#: abx_meta_browse.prg:132 abx_meta_browse.prg:232 abx_data_browse.prg:179
+#: abx_data_browse.prg:304
+msgid "Delete"
+msgstr "Удалить"
+
+#: abx_meta_browse.prg:178 abx_data_browse.prg:239
+msgid "Error adding new object"
+msgstr "Ошибка добавления объекта"
+
+#: abx_meta_browse.prg:187 abx_data_browse.prg:255
+msgid "Error updating data"
+msgstr "Ошибка обновления объекта"
+
+#: abx_meta_browse.prg:232 abx_data_browse.prg:304
+msgid "Delete, are you sure?"
+msgstr "Вы уверены, что надо удалить ?"
+
+#: abx_meta_browse.prg:232 abx_data_browse.prg:304
+msgid "Object"
+msgstr "Объект"
+
+#: abx_meta_browse.prg:232 abx_getobj.prg:78 abx_data_browse.prg:304
+#: class.prg:149
+msgid "Yes"
+msgstr "Да"
+
+#: abx_meta_browse.prg:232 abx_getobj.prg:78 abx_data_browse.prg:304
+#: class.prg:149
+msgid "No"
+msgstr "Нет"
+
+#: abx_meta_browse.prg:240 abx_data_browse.prg:312
+msgid "Object identificator"
+msgstr "Идентификатор объекта"
+
+#: abx_meta_browse.prg:240 abx_data_browse.prg:312
+msgid "not found in IdList"
+msgstr "не найден в списке"
+
+#: abx_meta_browse.prg:240 abx_meta_browse.prg:245 abx_data_browse.prg:312
+#: abx_data_browse.prg:317
+msgid "Delete error"
+msgstr "Ошибка удаления"
+
+#: abx_getobj.prg:238
+msgid "Value must be in interval:"
+msgstr "Значение должно быть в пределах:"
+
+#: abx_getobj.prg:238
+msgid "Input error"
+msgstr "Ошибка ввода"
+
+#: abx_data_browse.prg:112
+msgid "Can`t load default plugin or plugin for object:"
+msgstr "Невозможно загрузить модуль"
+
+#: attr.prg:23
+msgid "ATTR plugin does not supports function:"
+msgstr ""
+
+#: attr.prg:46
+msgid "Attribute parameters"
+msgstr "Параметры аттрибута"
+
+#: attr.prg:54 class.prg:40 counter.prg:38 deposit.prg:38 group.prg:38
+#: index.prg:37 plugins.prg:39 report.prg:42 tcolumn.prg:41 tview.prg:42
+#: user.prg:39
+msgid "Identification"
+msgstr "Идентификатор"
+
+#: attr.prg:68
+msgid "Length"
+msgstr "Длина"
+
+#: attr.prg:73
+msgid "Type length"
+msgstr "Тип длины"
+
+#: attr.prg:77
+msgid "Decimals"
+msgstr "Точность"
+
+#: attr.prg:82
+msgid "ANY OBJECT"
+msgstr "ЛЮБОЙ ОБЪЕКТ"
+
+#: attr.prg:92
+msgid "Reference to"
+msgstr "Ссылается на"
+
+#: attr.prg:97
+msgid "Picture mask"
+msgstr "Шаблон формата"
+
+#: attr.prg:101
+msgid "Default value"
+msgstr "Значение по умол."
+
+#: attr.prg:105
+msgid "NONE COUNTER"
+msgstr "НЕТ СЧЕТЧИКА"
+
+#: attr.prg:114
+msgid "Counter name"
+msgstr "Имя счетчика"
+
+#: attr.prg:119
+msgid "Unique values"
+msgstr "Уникальность"
+
+#: attr.prg:123
+msgid "Not null"
+msgstr ""
+
+#: attr.prg:127
+msgid "Not empty"
+msgstr ""
+
+#: attr.prg:131
+msgid "Source code"
+msgstr "Текст программы"
+
+#: attr.prg:156 class.prg:135 counter.prg:81 deposit.prg:70 group.prg:62
+#: index.prg:64 plugins.prg:91 report.prg:130 tcolumn.prg:95 tview.prg:133
+#: user.prg:79
+msgid "Automatically generating"
+msgstr "Создается автоматически"
+
+#: attr.prg:176
+msgid "This attribute has ###### references from classes"
+msgstr "Аттрибут имеет ###### ссылок из классов"
+
+#: class.prg:22
+msgid "CLASS plugin does not supports function:"
+msgstr ""
+
+#: class.prg:33
+msgid "CLASS parameters"
+msgstr "Параметры класса"
+
+#: class.prg:58 report.prg:71 tview.prg:58
+msgid "Extent"
+msgstr "Пространство"
+
+#: class.prg:61 plugins.prg:61 report.prg:61 report.prg:74 report.prg:87
+#: report.prg:100 tview.prg:48 tview.prg:61 tview.prg:74 tview.prg:87
+#: user.prg:45
+msgid "none"
+msgstr "ничего"
+
+#: class.prg:71
+msgid "Super class"
+msgstr "Супер класс"
+
+#: class.prg:75
+msgid "Essence"
+msgstr "Суть"
+
+#: class.prg:78
+msgid "Log need"
+msgstr "Журналирование"
+
+#: class.prg:81 class.prg:146
+msgid "Status"
+msgstr "Статус"
+
+#: class.prg:82 class.prg:149
+msgid "Have counters"
+msgstr "Есть счетчик"
+
+#: class.prg:89
+msgid "Attribute"
+msgstr "Аттрибуты"
+
+#: class.prg:92
+msgid "Len"
+msgstr "Длина"
+
+#: class.prg:93
+msgid "Dec"
+msgstr "Точн."
+
+#: class.prg:108
+msgid "Index"
+msgstr "Индекс"
+
+#: class.prg:110 index.prg:44 tcolumn.prg:57
+msgid "Expression"
+msgstr "Выражение"
+
+#: class.prg:146
+msgid "Unstable"
+msgstr "Нестаб."
+
+#: class.prg:146
+msgid "Stable"
+msgstr "Стаб."
+
+#: class.prg:162
+msgid "Error loading attribute metadata"
+msgstr "Ошибка чтения метаданных аттрибута"
+
+#: counter.prg:22
+msgid "COUNTER plugin does not supports function:"
+msgstr ""
+
+#: counter.prg:32
+msgid "Counter parameters"
+msgstr "Параметры счетчика"
+
+#: counter.prg:58
+msgid "MAX value"
+msgstr "MAX значение"
+
+#: counter.prg:61
+msgid "LAST value"
+msgstr "LAST значение"
+
+#: default.prg:22
+msgid "DEFAULT plugin does not supports function:"
+msgstr ""
+
+#: default.prg:33
+msgid "OBJECT attributes"
+msgstr "Параметры объекта"
+
+#: default.prg:79
+msgid "Can`t display information"
+msgstr "Невозможно отобразить информацию"
+
+#: default.prg:81
+msgid "This object don`t have CLASS description"
+msgstr "Этот объект не имеет описателя класса"
+
+#: default.prg:84
+msgid "This is an object of class:"
+msgstr "Объект класса:"
+
+#: default.prg:104
+msgid "(Error ! Attribute absent in data object)"
+msgstr "Ошибка ! Аттрибут отсутствует в объекте)"
+
+#: deposit.prg:22
+msgid "DEPOSIT plugin does not supports function:"
+msgstr ""
+
+#: deposit.prg:32
+msgid "Depository parameters"
+msgstr "Параметры депозитария"
+
+#: deposit.prg:45
+msgid "Cluster size"
+msgstr "Размер кластера"
+
+#: deposit.prg:49
+msgid "Number"
+msgstr "Номер"
+
+#: group.prg:22
+msgid "GROUP plugin does not supports function:"
+msgstr ""
+
+#: group.prg:32
+msgid "Group parameters"
+msgstr "Параметры группы"
+
+#: index.prg:21
+msgid "INDEX plugin does not supports function:"
+msgstr ""
+
+#: index.prg:31
+msgid "Index parameters"
+msgstr "Параметры индекса"
+
+#: plugins.prg:22
+msgid "PLUGINS plugin does not supports function:"
+msgstr ""
+
+#: plugins.prg:33
+msgid "Plugin parameters"
+msgstr "Параметры модуля"
+
+#: plugins.prg:56 report.prg:59
+msgid "File name"
+msgstr "Имя файла"
+
+#: plugins.prg:59
+msgid "Main function"
+msgstr "Главная функция"
+
+#: plugins.prg:71 report.prg:84 tcolumn.prg:70 tview.prg:71
+msgid "Class"
+msgstr "Класс"
+
+#: report.prg:22
+msgid "REPORT plugin does not supports function:"
+msgstr ""
+
+#: report.prg:36
+msgid "REPORT parameters"
+msgstr "Параметры отчета"
+
+#: report.prg:97 tview.prg:84 user.prg:55
+msgid "Group"
+msgstr "Группа"
+
+#: report.prg:110 tview.prg:97
+msgid "User"
+msgstr "Пользователь"
+
+#: tcolumn.prg:22
+msgid "TCOLUMN plugin does not supports function:"
+msgstr ""
+
+#: tcolumn.prg:34
+msgid "TCOLUMN parameters"
+msgstr "Параметры столбца"
+
+#: tcolumn.prg:48
+msgid "Width"
+msgstr "Ширина"
+
+#: tcolumn.prg:51 tview.prg:108
+msgid "Header"
+msgstr "Заголовок"
+
+#: tcolumn.prg:54
+msgid "Footer"
+msgstr "Подвал"
+
+#: tcolumn.prg:60
+msgid "Depends of"
+msgstr "Зависит от"
+
+#: tcolumn.prg:63
+msgid "References to"
+msgstr "Ссылается на"
+
+#: tview.prg:22
+msgid "TVIEW plugin does not supports function:"
+msgstr ""
+
+#: tview.prg:35
+msgid "TVIEW parameters"
+msgstr "Параметры таблицы"
+
+#: tview.prg:106
+msgid "Column"
+msgstr "Столбец"
+
+#: user.prg:22
+msgid "USER plugin does not supports function:"
+msgstr ""
+
+#: user.prg:33
+msgid "User parameters"
+msgstr "Параметры пользователя"
+
+#: user.prg:59
+msgid "Access rules"
+msgstr "Правила доступа"
+
+#: abx_menu.prg:49
+msgid "&Open"
+msgstr "&Открыть"
+
+#: abx_menu.prg:52
+msgid "&Meta"
+msgstr "&Мета"
+
+#: abx_menu.prg:55
+msgid "&Data"
+msgstr "&Данные"
+
+#: abx_menu.prg:58
+msgid "&Services"
+msgstr "&Сервис"
+
+#: abx_menu.prg:64
+msgid "Dictio&nary"
+msgstr "&Словарь"
+
+#: abx_menu.prg:65
+msgid "&Depository"
+msgstr "&Депозитарий"
+
+#: abx_menu.prg:67
+msgid "&Oql query"
+msgstr "&OQL запрос"
+
+#: abx_menu.prg:69
+msgid "E&xit"
+msgstr "&Выход"
+
+#: abx_menu.prg:74
+msgid "&Attributes"
+msgstr "&Аттрибуты"
+
+#: abx_menu.prg:75
+msgid "&Indexes"
+msgstr "&Индексы"
+
+#: abx_menu.prg:76
+msgid "&Classes"
+msgstr "&Классы"
+
+#: abx_menu.prg:77
+msgid "&Extents"
+msgstr "&Пространства"
+
+#: abx_menu.prg:79
+msgid "&Plugins"
+msgstr "&Модули"
+
+#: abx_menu.prg:80
+msgid "&Counters"
+msgstr "&Счетчики"
+
+#: abx_menu.prg:82
+msgid "&Groups"
+msgstr "&Группы"
+
+#: abx_menu.prg:83
+msgid "&Users"
+msgstr "&Пользователи"
+
+#: abx_menu.prg:85
+msgid "&Depositiories"
+msgstr "&Депозитарии"
+
+#: abx_menu.prg:87
+msgid "&Columns"
+msgstr "&Столбецы"
+
+#: abx_menu.prg:88 abx_menu.prg:95
+msgid "&Table view"
+msgstr "&Представления"
+
+#: abx_menu.prg:90
+msgid "&Reports"
+msgstr "&Отчеты"
+
+#: abx_menu.prg:93
+msgid "&View Objects"
+msgstr "&Объекты"
+
+#: abx_menu.prg:96
+msgid "&Order by"
+msgstr "&Порядок"
+
+#: abx_menu.prg:97
+msgid "&Run report"
+msgstr "&Выполнить отчет"
+
+#: abx_menu.prg:100
+msgid "&Text editor"
+msgstr "&Текстовый редактор"
+
+#: abx_menu.prg:102
+msgid "&Load XML Meta"
+msgstr ""
+
+#: abx_menu.prg:103
+msgid "&Save XML Meta"
+msgstr ""

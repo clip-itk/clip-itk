@@ -25,7 +25,7 @@ function Main()
 	gtk_WindowSetPolicy(w,.f.,.t.,.t.)
 	gtk_ContainerSetBorderWidth(w,0)
 	gtk_ContainerSetResizeMode(w, GTK_RESIZE_QUEUE)
-//		Обработка "delete-event" окна w
+//		Processing "delete-event" of window w
 	gtk_SignalConnect(w,"delete-event",{|wid,e|gtk_WidgetDestroy(w),gtk_Quit()})
 	vb:= gtk_VBoxNew()
 	vb:name = "VBox 1"

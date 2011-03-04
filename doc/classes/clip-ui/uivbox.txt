@@ -3,28 +3,28 @@ $CLASSNAME$
 $SUMMARY$
 	Class UIVBox
 $LANG_RU$
-	Класс UIVBox
+	п п╩п╟я│я│ UIVBox
 $ABOUT$
 	Class of vertical widget placement panel.
 $LANG_RU$
-	Класс вертикальной полосы размещения виджетов.
+	п п╩п╟я│я│ п╡п╣я─я┌п╦п╨п╟п╩я▄п╫п╬п╧ п©п╬п╩п╬я│я▀ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╡.
 $SYNTAX$
 	UIVBox([<o>],[<spacing>],[<padding>])	--> UIVBox object
 $LANG_RU$
-	UIVBox([<o>],[<spacing>],[<padding>])	--> Объект UIVBox
+	UIVBox([<o>],[<spacing>],[<padding>])	--> п·п╠я┼п╣п╨я┌ UIVBox
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UIVBox".
 	<elem>		- Widgets on the panel.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UIVBox".
-	<elem>		- Массив виджетов на полосе.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UIVBox".
+	<elem>		- п°п╟я│я│п╦п╡ п╡п╦п╢п╤п╣я┌п╬п╡ п╫п╟ п©п╬п╩п╬я│п╣.
 
 $METHODNAME$
 	UIVBox()
 $SUMMARY$
 	Constructor. Create vertical widget placement panel.
 $LANG_RU$
-	Конструктор. Создать вертикальную полосу размещения виджетов.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─. п║п╬п╥п╢п╟я┌я▄ п╡п╣я─я┌п╦п╨п╟п╩я▄п╫я┐я▌ п©п╬п╩п╬я│я┐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╡.
 $SYNTAX$
 	UIVBox([<o>],[<spacing>],[<padding>])	--> UIVBox object
 $ARGUMENTS$
@@ -32,9 +32,9 @@ $ARGUMENTS$
        <spacing> 	- Number. Space between cells on panel in pixels.
        <padding>	- Number. Space between widget and cell border on panel in pixels.
 $LANG_RU$
-       <o>		- Объект виджета. Виджет, в который вставляется полоса.
-       <spacing> 	- Число. Расстояние в точках между ячейками на полосе.
-       <padding>	- Число. Расстояние в точках между краем виджета и границей полосы.
+       <o>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п╡ п╨п╬я┌п╬я─я▀п╧ п╡я│я┌п╟п╡п╩я▐п╣я┌я│я▐ п©п╬п╩п╬я│п╟.
+       <spacing> 	- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ я▐я┤п╣п╧п╨п╟п╪п╦ п╫п╟ п©п╬п╩п╬я│п╣.
+       <padding>	- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ п╨я─п╟п╣п╪ п╡п╦п╢п╤п╣я┌п╟ п╦ пЁя─п╟п╫п╦я├п╣п╧ п©п╬п╩п╬я│я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -42,7 +42,7 @@ $METHODNAME$
 $SUMMARY$
 	Append widget to panel from right side.
 $LANG_RU$
-	Добавить виджет на полосу справа.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╡п╦п╢п╤п╣я┌ п╫п╟ п©п╬п╩п╬я│я┐ я│п©я─п╟п╡п╟.
 $SYNTAX$
 	add(<o>,[<expand>],[<fill>],[<padding>])
 $ARGUMENTS$
@@ -51,10 +51,10 @@ $ARGUMENTS$
 	<fill>   	- Boolean. Ability of fill by widget all free space on panel.
 	<padding>	- Number. Space between widget and cell border in pixels.
 $LANG_RU$
-	<o>		- Объект виджета. Виджет, вставляемый на полосу.
-	<expand>	- Логическое значение. Возможность растягивания виджета по горизонтали при изменении размеров окна.
-	<fill>   	- Логическое значение. Возможность заполнения виджетом всего доступного пространства.
-	<padding>	- Число. Расстояние в точках между краем вставляемого виджета и границей полосы.
+	<o>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п╡я│я┌п╟п╡п╩я▐п╣п╪я▀п╧ п╫п╟ п©п╬п╩п╬я│я┐.
+	<expand>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п▓п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ я─п╟я│я┌я▐пЁп╦п╡п╟п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╟ п©п╬ пЁп╬я─п╦п╥п╬п╫я┌п╟п╩п╦ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ я─п╟п╥п╪п╣я─п╬п╡ п╬п╨п╫п╟.
+	<fill>   	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п▓п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п╥п╟п©п╬п╩п╫п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╪ п╡я│п╣пЁп╬ п╢п╬я│я┌я┐п©п╫п╬пЁп╬ п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╟.
+	<padding>	- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ п╨я─п╟п╣п╪ п╡я│я┌п╟п╡п╩я▐п╣п╪п╬пЁп╬ п╡п╦п╢п╤п╣я┌п╟ п╦ пЁя─п╟п╫п╦я├п╣п╧ п©п╬п╩п╬я│я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -62,7 +62,7 @@ $METHODNAME$
 $SUMMARY$
 	Append widget to panel from left side.
 $LANG_RU$
-	Добавить виджет на полосу слева.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╡п╦п╢п╤п╣я┌ п╫п╟ п©п╬п╩п╬я│я┐ я│п╩п╣п╡п╟.
 $SYNTAX$
 	addEnd(<o>,[<expand>],[<fill>],[<padding>])
 $ARGUMENTS$
@@ -71,10 +71,10 @@ $ARGUMENTS$
 	<fill>   	- Boolean. Ability of fill by widget all free space on panel.
 	<padding>	- Number. Space between widget and cell border in pixels.
 $LANG_RU$
-	<o>		- Объект виджета. Виджет, вставляемый на полосу.
-	<expand>	- Логическое значение. Возможность растягивания виджета по горизонтали при изменении размеров окна.
-	<fill>   	- Логическое значение. Возможность заполнения виджетом всего доступного пространства.
-	<padding>	- Число. Расстояние в точках между краем вставляемого виджета и границей полосы.
+	<o>		- п·п╠я┼п╣п╨я┌ п╡п╦п╢п╤п╣я┌п╟. п▓п╦п╢п╤п╣я┌, п╡я│я┌п╟п╡п╩я▐п╣п╪я▀п╧ п╫п╟ п©п╬п╩п╬я│я┐.
+	<expand>	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п▓п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ я─п╟я│я┌я▐пЁп╦п╡п╟п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╟ п©п╬ пЁп╬я─п╦п╥п╬п╫я┌п╟п╩п╦ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ я─п╟п╥п╪п╣я─п╬п╡ п╬п╨п╫п╟.
+	<fill>   	- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п▓п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п╥п╟п©п╬п╩п╫п╣п╫п╦я▐ п╡п╦п╢п╤п╣я┌п╬п╪ п╡я│п╣пЁп╬ п╢п╬я│я┌я┐п©п╫п╬пЁп╬ п©я─п╬я│я┌я─п╟п╫я│я┌п╡п╟.
+	<padding>	- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ п╨я─п╟п╣п╪ п╡я│я┌п╟п╡п╩я▐п╣п╪п╬пЁп╬ п╡п╦п╢п╤п╣я┌п╟ п╦ пЁя─п╟п╫п╦я├п╣п╧ п©п╬п╩п╬я│я▀.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -82,13 +82,13 @@ $METHODNAME$
 $SUMMARY$
 	Set space between widgets on the panel.
 $LANG_RU$
-	Установить расстояние между виджетами на полосе.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟я│я│я┌п╬я▐п╫п╦п╣ п╪п╣п╤п╢я┐ п╡п╦п╢п╤п╣я┌п╟п╪п╦ п╫п╟ п©п╬п╩п╬я│п╣.
 $SYNTAX$
 	setSpacing(<space>)
 $ARGUMENTS$
 	<space>		- Number. Space between widgets on the panel in pixels.
 $LANG_RU$
-	<space>		- Число. Расстояние в точках между виджетами на полосе.
+	<space>		- п╖п╦я│п╩п╬. п═п╟я│я│я┌п╬я▐п╫п╦п╣ п╡ я┌п╬я┤п╨п╟я┘ п╪п╣п╤п╢я┐ п╡п╦п╢п╤п╣я┌п╟п╪п╦ п╫п╟ п©п╬п╩п╬я│п╣.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -96,13 +96,13 @@ $METHODNAME$
 $SUMMARY$
 	Set width of panel border.
 $LANG_RU$
-	Установить ширину границы полосы.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┬п╦я─п╦п╫я┐ пЁя─п╟п╫п╦я├я▀ п©п╬п╩п╬я│я▀.
 $SYNTAX$
 	setPadding(<space>)
 $ARGUMENTS$
 	<space>		- Number. Width of panel border.
 $LANG_RU$
-	<space>		- Число. Ширина границы полосы в точках.
+	<space>		- п╖п╦я│п╩п╬. п╗п╦я─п╦п╫п╟ пЁя─п╟п╫п╦я├я▀ п©п╬п╩п╬я│я▀ п╡ я┌п╬я┤п╨п╟я┘.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -110,7 +110,7 @@ $METHODNAME$
 $SUMMARY$
 	Set alignment of widget on the panel.
 $LANG_RU$
-	Установить выравнивание элементов на полосе.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╫п╟ п©п╬п╩п╬я│п╣.
 $SYNTAX$
 	setAlignment(<align>,<valign>)
 $ARGUMENTS$
@@ -123,14 +123,14 @@ $ARGUMENTS$
 	vertically</listitem><listitem><command>ALIGN_BOTTOM</command> &mdash; aligns with the 
 	bottom</listitem></itemizedlist>
 $LANG_RU$
-	<align>		- Число. Горизонтальное выравнивание элементов. Значения: <itemizedlist mark="bullet"><listitem><command>ALIGN_LEFT</command> &mdash; выравнивание по левому краю (значение 
-	по умолчанию)</listitem><listitem><command>ALIGN_CENTER</command> &mdash; выравнивание по 
-	центру</listitem><listitem><command>ALIGN_RIGHT</command> &mdash; выравнивание по правому 
-	краю</listitem></itemizedlist>
-	<valign>	- Число. Вертикальное выравнивание элементов. Значения: <itemizedlist mark="bullet"><listitem><command>ALIGN_TOP</command> &mdash; выравнивание по верхнему краю 
-	(значение по умолчанию)</listitem><listitem><command>ALIGN_MIDDLE</command> &mdash; выравнивание по 
-	середине</listitem><listitem><command>ALIGN_BOTTOM</command> &mdash; выравнивание по нижнему 
-	краю</listitem></itemizedlist>
+	<align>		- п╖п╦я│п╩п╬. п⌠п╬я─п╦п╥п╬п╫я┌п╟п╩я▄п╫п╬п╣ п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╬п╡. п≈п╫п╟я┤п╣п╫п╦я▐: <itemizedlist mark="bullet"><listitem><command>ALIGN_LEFT</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п╩п╣п╡п╬п╪я┐ п╨я─п╟я▌ (п╥п╫п╟я┤п╣п╫п╦п╣ 
+	п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌)</listitem><listitem><command>ALIGN_CENTER</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ 
+	я├п╣п╫я┌я─я┐</listitem><listitem><command>ALIGN_RIGHT</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п©я─п╟п╡п╬п╪я┐ 
+	п╨я─п╟я▌</listitem></itemizedlist>
+	<valign>	- п╖п╦я│п╩п╬. п▓п╣я─я┌п╦п╨п╟п╩я▄п╫п╬п╣ п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╬п╡. п≈п╫п╟я┤п╣п╫п╦я▐: <itemizedlist mark="bullet"><listitem><command>ALIGN_TOP</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п╡п╣я─я┘п╫п╣п╪я┐ п╨я─п╟я▌ 
+	(п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌)</listitem><listitem><command>ALIGN_MIDDLE</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ 
+	я│п╣я─п╣п╢п╦п╫п╣</listitem><listitem><command>ALIGN_BOTTOM</command> &mdash; п╡я▀я─п╟п╡п╫п╦п╡п╟п╫п╦п╣ п©п╬ п╫п╦п╤п╫п╣п╪я┐ 
+	п╨я─п╟я▌</listitem></itemizedlist>
 $ENDMETHOD$
 
 $METHODNAME$
@@ -138,13 +138,13 @@ $METHODNAME$
 $SUMMARY$
 	Set equal cells size for any widget on the panel.
 $LANG_RU$
-	Установить равными размеры мест для размещения элементов на полосе.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я─п╟п╡п╫я▀п╪п╦ я─п╟п╥п╪п╣я─я▀ п╪п╣я│я┌ п╢п╩я▐ я─п╟п╥п╪п╣я┴п╣п╫п╦я▐ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╫п╟ п©п╬п╩п╬я│п╣.
 $SYNTAX$
 	setEqualSize(<isEqual>)
 $ARGUMENTS$
 	<isEqual>		- Boolean. Flag for equal size of cells on the panel.
 $LANG_RU$
-	<isEqual>		- Логическое значение. Флаг установки равных размеров для элементов на полосе.
+	<isEqual>		- п⌡п╬пЁп╦я┤п╣я│п╨п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣. п╓п╩п╟пЁ я┐я│я┌п╟п╫п╬п╡п╨п╦ я─п╟п╡п╫я▀я┘ я─п╟п╥п╪п╣я─п╬п╡ п╢п╩я▐ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╫п╟ п©п╬п╩п╬я│п╣.
 $ENDMETHOD$
 
 
@@ -155,10 +155,10 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$

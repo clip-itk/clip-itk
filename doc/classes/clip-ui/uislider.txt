@@ -3,32 +3,32 @@ $CLASSNAME$
 $SUMMARY$
 	Class UISlider.
 $LANG_RU$
-	Класс UISlider.
+	п п╩п╟я│я│ UISlider.
 $ABOUT$
 	Slider class.
 $LANG_RU$
-	Класс ползунка.
+	п п╩п╟я│я│ п©п╬п╩п╥я┐п╫п╨п╟.
 $SYNTAX$
 	UISlider([<value>],[<lower>],[<upper>],[<step>])	--> UISlider object.
 $LANG_RU$
-	UISlider([<value>],[<lower>],[<upper>],[<step>])	--> Объект UISlider.
+	UISlider([<value>],[<lower>],[<upper>],[<step>])	--> п·п╠я┼п╣п╨я┌ UISlider.
 $ATTRIBUTES$
 	<className>	- Class name. Value should be "UISlider".
 	<lower>		- The minimum value.
 	<upper>		- The maximum value.
 	<step>		- The increment to use to make changes to the value.
 $LANG_RU$
-	<className>	- Имя класса. Значение: "UISlider".
-	<lower>		- Минимальное значение.
-	<upper>		- Максимальное значение.
-	<step>		- Приращение значения при изменении позиции ползунка.
+	<className>	- п≤п╪я▐ п╨п╩п╟я│я│п╟. п≈п╫п╟я┤п╣п╫п╦п╣: "UISlider".
+	<lower>		- п°п╦п╫п╦п╪п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
+	<upper>		- п°п╟п╨я│п╦п╪п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
+	<step>		- п÷я─п╦я─п╟я┴п╣п╫п╦п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ п©п╬п╥п╦я├п╦п╦ п©п╬п╩п╥я┐п╫п╨п╟.
 
 $METHODNAME$
 	UISlider()
 $SUMMARY$
 	Constructor.
 $LANG_RU$
-	Конструктор.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─.
 $SYNTAX$
 	UISlider([<value>],[<lower>],[<upper>],[<step>])	--> UISlider object.
 $ARGUMENTS$
@@ -37,10 +37,10 @@ $ARGUMENTS$
 	<upper>		- Number. The maximum value.
 	<step>		- Number. The increment to use to make changes to the value.
 $LANG_RU$
-	<value>		- Число. Позиция ползунка.
-	<lower>		- Число. Минимальное значение.
-	<upper>		- Число. Максимальное значение.
-	<step>		- Число. Приращение значения при изменении позиции ползунка.
+	<value>		- п╖п╦я│п╩п╬. п÷п╬п╥п╦я├п╦я▐ п©п╬п╩п╥я┐п╫п╨п╟.
+	<lower>		- п╖п╦я│п╩п╬. п°п╦п╫п╦п╪п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
+	<upper>		- п╖п╦я│п╩п╬. п°п╟п╨я│п╦п╪п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣.
+	<step>		- п╖п╦я│п╩п╬. п÷я─п╦я─п╟я┴п╣п╫п╦п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ п©п╬п╥п╦я├п╦п╦ п©п╬п╩п╥я┐п╫п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -48,13 +48,13 @@ $METHODNAME$
 $SUMMARY$
 	Set slider position.
 $LANG_RU$
-	Установить позицию ползунка.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©п╬п╥п╦я├п╦я▌ п©п╬п╩п╥я┐п╫п╨п╟.
 $SYNTAX$
 	setValue(<value>)
 $ARGUMENTS$
 	<value>		- Number. Position of the slider.
 $LANG_RU$
-	<value>		- Число. Позиция ползунка.
+	<value>		- п╖п╦я│п╩п╬. п÷п╬п╥п╦я├п╦я▐ п©п╬п╩п╥я┐п╫п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -62,13 +62,13 @@ $METHODNAME$
 $SUMMARY$
 	Get slider position.
 $LANG_RU$
-	Получить позицию ползунка.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п©п╬п╥п╦я├п╦я▌ п©п╬п╩п╥я┐п╫п╨п╟.
 $SYNTAX$
 	getValue() 	--> <value>
 $RETURNS$
 	Returns slider position.
 $LANG_RU$
-	Возвращает позицию ползунка.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬п╥п╦я├п╦я▌ п©п╬п╩п╥я┐п╫п╨п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -76,13 +76,13 @@ $METHODNAME$
 $SUMMARY$
 	Set range of slider positions.
 $LANG_RU$
-	Установить диапазон позиций ползунка.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╢п╦п╟п©п╟п╥п╬п╫ п©п╬п╥п╦я├п╦п╧ п©п╬п╩п╥я┐п╫п╨п╟.
 $SYNTAX$
 	setRange(<range>)
 $ARGUMENTS$
 	<range>		- String. Range in form "min-max", where minimum and maximum values of range is separated by '-'. 
 $LANG_RU$
-	<range>		- Строка. Диапазон позиций ползунка в виде "мин-макс", где минимальное и максимальное значения диапазона разделены символом '-'.
+	<range>		- п║я┌я─п╬п╨п╟. п■п╦п╟п©п╟п╥п╬п╫ п©п╬п╥п╦я├п╦п╧ п©п╬п╩п╥я┐п╫п╨п╟ п╡ п╡п╦п╢п╣ "п╪п╦п╫-п╪п╟п╨я│", пЁп╢п╣ п╪п╦п╫п╦п╪п╟п╩я▄п╫п╬п╣ п╦ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п╢п╦п╟п©п╟п╥п╬п╫п╟ я─п╟п╥п╢п╣п╩п╣п╫я▀ я│п╦п╪п╡п╬п╩п╬п╪ '-'.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -90,13 +90,13 @@ $METHODNAME$
 $SUMMARY$
 	Set increment to use to make changes to the value.
 $LANG_RU$
-	Установить приращение значения при изменении позиции ползунка.
+	пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©я─п╦я─п╟я┴п╣п╫п╦п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ п©п╬п╥п╦я├п╦п╦ п©п╬п╩п╥я┐п╫п╨п╟.
 $SYNTAX$
 	setStep(<step>)
 $ARGUMENTS$
 	<step>		- Number. The increment to use to make changes to the value.
 $LANG_RU$
-	<step>		- Число. Приращение значения при изменении позиции ползунка.
+	<step>		- п╖п╦я│п╩п╬. п÷я─п╦я─п╟я┴п╣п╫п╦п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п©я─п╦ п╦п╥п╪п╣п╫п╣п╫п╦п╦ п©п╬п╥п╦я├п╦п╦ п©п╬п╩п╥я┐п╫п╨п╟.
 $ENDMETHOD$
 
 
@@ -106,12 +106,12 @@ $EXAMPLES$
 $PLATFORMS$
 	No dependies of platform.
 $LANG_RU$
-	Не зависит от платформы.
+	п²п╣ п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀.
 $SEEALSO$
 $AUTHOR$
 	Andrey Cherepanov <skull@eas.lrn.ru>
 $LANG_RU$
-	Андрей Черепанов <skull@eas.lrn.ru>
+	п░п╫п╢я─п╣п╧ п╖п╣я─п╣п©п╟п╫п╬п╡ <skull@eas.lrn.ru>
 $LASTDATE$
 
 

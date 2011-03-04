@@ -22,7 +22,7 @@
 #define FA_VOLUME	8
 #define FA_DIRECTORY	16
 #define FA_ARCHIVE	32
-//#define FD_DELIM	translate_charset(__CHARSET__, host_charset(), "Å")
+//#define FD_DELIM	translate_charset(__CHARSET__, host_charset(), "‚îÇ")
 /*#define FD_DELIM 	chr(PGCH_VLINE)*/
 #define FD_DELIM	iif(set(_SET_DISPBOX),translate_charset("cp437", host_charset(), CHR(179)),chr(PGCH_VLINE))
 

@@ -8,17 +8,17 @@ msgstr ""
 "Last-Translator: Rushad <rust@itk.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
 #: template/./doc/sockets.sgml:0
 msgid "Working with sockets"
-msgstr "Работа с сокетами"
+msgstr "п═п╟п╠п╬я┌п╟ я│ я│п╬п╨п╣я┌п╟п╪п╦"
 
 #: template/./doc/sockets.sgml:2
 msgid "Introduction"
-msgstr "Введение"
+msgstr "п▓п╡п╣п╢п╣п╫п╦п╣"
 
 #: template/./doc/sockets.sgml:4
 msgid ""
@@ -28,41 +28,41 @@ msgid ""
 "writing application servers and clients.\n"
 msgstr ""
 "\n"
-"CLIP имеет набор функций для работы с сокетами с использованием протокола "
-"TCP. В сочетании с многозадачностью они могут быть использованы для "
-"написания серверов приложений и клиентов.\n"
+"CLIP п╦п╪п╣п╣я┌ п╫п╟п╠п╬я─ я└я┐п╫п╨я├п╦п╧ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│ я│п╬п╨п╣я┌п╟п╪п╦ я│ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣п╪ п©я─п╬я┌п╬п╨п╬п╩п╟ "
+"TCP. п▓ я│п╬я┤п╣я┌п╟п╫п╦п╦ я│ п╪п╫п╬пЁп╬п╥п╟п╢п╟я┤п╫п╬я│я┌я▄я▌ п╬п╫п╦ п╪п╬пЁя┐я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫я▀ п╢п╩я▐ "
+"п╫п╟п©п╦я│п╟п╫п╦я▐ я│п╣я─п╡п╣я─п╬п╡ п©я─п╦п╩п╬п╤п╣п╫п╦п╧ п╦ п╨п╩п╦п╣п╫я┌п╬п╡.\n"
 
 #: template/./doc/sockets.sgml:10
 msgid "TCP functions"
-msgstr "Функции TCP"
+msgstr "п╓я┐п╫п╨я├п╦п╦ TCP"
 
 #: template/./doc/sockets.sgml:14
 msgid "Listen for connections from a client"
-msgstr "Установка обработчика подключений от клиента"
+msgstr "пёя│я┌п╟п╫п╬п╡п╨п╟ п╬п╠я─п╟п╠п╬я┌я┤п╦п╨п╟ п©п╬п╢п╨п╩я▌я┤п╣п╫п╦п╧ п╬я┌ п╨п╩п╦п╣п╫я┌п╟"
 
 #: template/./doc/sockets.sgml:17
 msgid "Accept a connection from a client"
-msgstr "Принятие подключения от клиента"
+msgstr "п÷я─п╦п╫я▐я┌п╦п╣ п©п╬п╢п╨п╩я▌я┤п╣п╫п╦я▐ п╬я┌ п╨п╩п╦п╣п╫я┌п╟"
 
 #: template/./doc/sockets.sgml:20
 msgid "Initiate a connection to the server"
-msgstr "Подключение к серверу"
+msgstr "п÷п╬п╢п╨п╩я▌я┤п╣п╫п╦п╣ п╨ я│п╣я─п╡п╣я─я┐"
 
 #: template/./doc/sockets.sgml:23
 msgid "Close a socket"
-msgstr "Закрытие сокета"
+msgstr "п≈п╟п╨я─я▀я┌п╦п╣ я│п╬п╨п╣я┌п╟"
 
 #: template/./doc/sockets.sgml:26
 msgid "Send a message to the connected peer"
-msgstr "Отправка сообщения другой стороне"
+msgstr "п·я┌п©я─п╟п╡п╨п╟ я│п╬п╬п╠я┴п╣п╫п╦я▐ п╢я─я┐пЁп╬п╧ я│я┌п╬я─п╬п╫п╣"
 
 #: template/./doc/sockets.sgml:29
 msgid "Receive a message from the connected peer"
-msgstr "Прием сообщения от другой стороны"
+msgstr "п÷я─п╦п╣п╪ я│п╬п╬п╠я┴п╣п╫п╦я▐ п╬я┌ п╢я─я┐пЁп╬п╧ я│я┌п╬я─п╬п╫я▀"
 
 #: template/./doc/sockets.sgml:34
 msgid "Example"
-msgstr "Пример"
+msgstr "п÷я─п╦п╪п╣я─"
 
 #: template/./doc/sockets.sgml:36
 msgid ""
@@ -74,15 +74,15 @@ msgid ""
 "sends them to the server, and prints what server returns.\n"
 msgstr ""
 "\n"
-"Ниже приведены исходные тексты простого сервера приложений и клиента. Сервер "
-"ожидает подключения от клиентов, получает от них сообщения и посылает их "
-"обратно. Клиент подключается к серверу, получает данные с клавиатуры, "
-"посылает их серверу и выводит на экран то, что возвращает сервер.\n"
+"п²п╦п╤п╣ п©я─п╦п╡п╣п╢п╣п╫я▀ п╦я│я┘п╬п╢п╫я▀п╣ я┌п╣п╨я│я┌я▀ п©я─п╬я│я┌п╬пЁп╬ я│п╣я─п╡п╣я─п╟ п©я─п╦п╩п╬п╤п╣п╫п╦п╧ п╦ п╨п╩п╦п╣п╫я┌п╟. п║п╣я─п╡п╣я─ "
+"п╬п╤п╦п╢п╟п╣я┌ п©п╬п╢п╨п╩я▌я┤п╣п╫п╦я▐ п╬я┌ п╨п╩п╦п╣п╫я┌п╬п╡, п©п╬п╩я┐я┤п╟п╣я┌ п╬я┌ п╫п╦я┘ я│п╬п╬п╠я┴п╣п╫п╦я▐ п╦ п©п╬я│я▀п╩п╟п╣я┌ п╦я┘ "
+"п╬п╠я─п╟я┌п╫п╬. п п╩п╦п╣п╫я┌ п©п╬п╢п╨п╩я▌я┤п╟п╣я┌я│я▐ п╨ я│п╣я─п╡п╣я─я┐, п©п╬п╩я┐я┤п╟п╣я┌ п╢п╟п╫п╫я▀п╣ я│ п╨п╩п╟п╡п╦п╟я┌я┐я─я▀, "
+"п©п╬я│я▀п╩п╟п╣я┌ п╦я┘ я│п╣я─п╡п╣я─я┐ п╦ п╡я▀п╡п╬п╢п╦я┌ п╫п╟ я█п╨я─п╟п╫ я┌п╬, я┤я┌п╬ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п╣я─п╡п╣я─.\n"
 
 #: template/./doc/sockets.sgml:44
 msgid "Server source:"
-msgstr "Сервер:"
+msgstr "п║п╣я─п╡п╣я─:"
 
 #: template/./doc/sockets.sgml:100
 msgid "Client source:"
-msgstr "Клиент:"
+msgstr "п п╩п╦п╣п╫я┌:"

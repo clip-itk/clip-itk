@@ -1,0 +1,1110 @@
+# Module clip.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2005-12-19 14:36+0400\n"
+"PO-Revision-Date: 2002-11-29 11:53+0400\n"
+"Last-Translator: Paul Lasarev <paul@itk.ru>\n"
+"Language-Team: Russian <clip-devel@itk.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: KBabel 0.9.6\n"
+
+#: clicgt.c:260 clicgt.c:265 clic.lex:7092 clic.lex:7099 clic.lex:7161
+#: clic.lex:7168
+#, c-format
+msgid "cannot load charset '%s': %s"
+msgstr "невозможно загрузить кодировку '%s': %s"
+
+#: clicgt.c:303
+#, c-format
+msgid "no access to file '%s': not a regular file\n"
+msgstr "нет доступа к файлу '%s': не регулярный файл\n"
+
+#: clicgt.c:309
+#, c-format
+msgid "no access to file '%s': %s\n"
+msgstr "нет доступа к файлу  '%s': %s\n"
+
+#: clicgt.c:459
+#, c-format
+msgid "locale settings not found for module '%s'\n"
+msgstr "не найдены установки локализации '%s'\n"
+
+#: clicgt.c:464
+#, c-format
+msgid "no access to locale file '%s': %s\n"
+msgstr "нет доступа к файлу локализации '%s': %s\n"
+
+#: clicgt.c:471
+#, c-format
+msgid "cannot open locale file '%s': %s\n"
+msgstr "невозможно открыть файл локализации '%s': %s\n"
+
+#: clicgt.c:475
+#, c-format
+msgid "open locale file '%s', charset '%s'\n"
+msgstr "открыт файл локализации '%s', кодировка '%s'\n"
+
+#: clicgt.c:480
+#, c-format
+msgid "cannot stat locale file '%s': %s\n"
+msgstr "невозможно получить состояние файла локализации '%s': %s\n"
+
+#: clicgt.c:516
+#, c-format
+msgid "cannot read locale file '%s': %s\n"
+msgstr "ошибка чтения файла локализации '%s': %s\n"
+
+#: clicgt.c:542
+#, c-format
+msgid "wrong magic number of locale file '%s'\n"
+msgstr "неправильный magic number файла локализации '%s'\n"
+
+#: clicgt.c:564
+#, c-format
+msgid "illegal revision of locale file '%s': %d\n"
+msgstr "неизвестная версия файла локализации '%s': %d\n"
+
+#: /usr/share/bison/bison.simple:179
+msgid "syntax error: cannot back up"
+msgstr "синтаксическая ошибка: возврат невозможен"
+
+#: clic.y:625
+msgid "EXTERN after executable statements"
+msgstr "EXTERN после выполнимого оператора"
+
+#: clic.y:790
+msgid "EXIT statement out of loop"
+msgstr "оператор EXIT вне цикла"
+
+#: clic.y:797
+msgid "LOOP statement out of loop"
+msgstr "оператор LOOP вне цикла"
+
+#: clic.y:853
+msgid "please, use IIF function (not IF) on operator level to avoid conflicts"
+msgstr ""
+"пожалуйста, используйте функцию IIF (вместо IF) на уровне операторов, для "
+"избежания  конфликтов"
+
+#: clic.y:949
+msgid "unclosed BEGIN SEQUENCE"
+msgstr "незавершенный BEGIN SEQUENCE"
+
+#: clic.y:1123
+msgid "invalid array call"
+msgstr "неверный вызов массива"
+
+#: clic.y:1376 clic.y:1381
+msgid "only inline assign := allowed in initialisation"
+msgstr "только inline-присваивание ( :=) разрешено при инициализации"
+
+#: clic.y:1419
+#, c-format
+msgid "name '%s' duplication"
+msgstr "повторное использование '%s'"
+
+#: /usr/share/bison/bison.simple:795
+msgid "parse error; also virtual memory exhausted"
+msgstr "ошибка разбора; виртуальная память исчерпана"
+
+#: /usr/share/bison/bison.simple:799
+msgid "parse error"
+msgstr "ошибка разбора"
+
+#: /usr/share/bison/bison.simple:924
+msgid "parser stack overflow"
+msgstr "переполнение стека парсера"
+
+#: clic.y:1659
+#, c-format
+msgid "cannot open file '%s'"
+msgstr "невозможно открыть файл '%s'"
+
+#: clic.y:1676
+msgid "executable operator outside of function (-n flag is active)"
+msgstr "выполнимый оператор вне функции (включен флаг -n)"
+
+#: clic.y:1690
+#, c-format
+msgid ""
+"in file '%s',\n"
+"\tincluded at line %d "
+msgstr ""
+"в файле '%s',\n"
+"\tвключенном на строке %d "
+
+#: clic.y:1692
+#, c-format
+msgid "in file '%s'\n"
+msgstr "в файле '%s'\n"
+
+#: clic.y:1694
+#, c-format
+msgid "  working directory : '%s'\n"
+msgstr "  рабочий каталог : '%s'\n"
+
+#: clic.y:1707
+#, c-format
+msgid "error %d: "
+msgstr "ошибка %d: "
+
+#: clic.y:1711
+#, c-format
+msgid ""
+"\n"
+"\tline %ld pos %ld (yychar=%d, '%c') "
+msgstr ""
+"\n"
+"\tстрока %ld позиция %ld (yychar=%d, '%c') "
+
+#: clic.y:1714
+#, c-format
+msgid "error %d, (yychar=%d) "
+msgstr "ошибка %d, (yychar=%d) "
+
+#: clic.y:1731
+#, c-format
+msgid "warning %d: "
+msgstr "предупреждение %d: "
+
+#: clic.y:1735
+#, c-format
+msgid ""
+"\n"
+"\tline %ld, pos %ld, "
+msgstr ""
+"\n"
+"\tстрока %ld, позиция %ld, "
+
+#: clic.y:1738
+#, c-format
+msgid "warning %d, "
+msgstr "предупреждение %d, "
+
+#: clic.y:1749
+#, c-format
+msgid "unclosed loop statement (level %d, begin at line %d file %s)"
+msgstr "незавершенный оператор цикла (уровень %d, начало на строке %d file %s)"
+
+#: clic.y:1755
+#, c-format
+msgid "unclosed IF statement (level %d, begin at line %d file %s)"
+msgstr "незавершенный оператор IF (уровень %d, начало на строке %d файл %s)"
+
+#: clic.y:1761
+#, c-format
+msgid "unclosed SEQUENCE statement (level %d, begin at line %d file %s)"
+msgstr ""
+"незавершенный оператор SEQUENCE (уровень %d, начало на строке %d файл %s)"
+
+#: clicutil.c:532
+#, c-format
+msgid ""
+"duplicate name '%s', previous name defined near line %d pos %d in file '%s'"
+msgstr ""
+"повторное определение имени '%s', предыдущее определение около строки %d "
+"позиция %d файл '%s'"
+
+#: clicutil.c:667
+#, c-format
+msgid "declaration function with module name '%s'; force -n flag"
+msgstr "объявление функции с именем модуля '%s';  установлен флаг -n "
+
+#: clicutil.c:680
+#, c-format
+msgid "function '%s' already defined near line %d file %s"
+msgstr "функция '%s' уже определена около строки %d файла %s"
+
+#: clicutil.c:685
+#, c-format
+msgid "static function '%s' already declared as external"
+msgstr "статическая функция '%s' уже определена как внешняя"
+
+#: clicutil.c:778 node.c:1389 node.c:1447 node.c:1490 node.c:1517 node.c:1912
+msgid "macro variable name not allowed here"
+msgstr "имя макро-переменной здесь не разрешено"
+
+#: clicutil.c:964
+#, c-format
+msgid "name '%s' already declared as LOCAL near line %d pos %d file '%s'"
+msgstr "имя '%s' уже определено как LOCAL около строки %d позиция %d файл '%s'"
+
+#: clicutil.c:970
+#, c-format
+msgid "name '%s' already declared as PARAMETER near line %d pos %d file '%s'"
+msgstr ""
+"имя '%s' уже определено как PARAMETER около строки %d позиция %d файл '%s'"
+
+#: clicutil.c:976
+#, c-format
+msgid ""
+"name '%s' already declared as MEMVAR near line %d pos %d file '%s' (previous "
+"name will be hidden)"
+msgstr ""
+"имя '%s' уже определено как MEMVAR около строки %d позиция %d файл '%"
+"s' (предыдущее имя будет скрыто)"
+
+#: clicutil.c:982
+#, c-format
+msgid "name '%s' already declared as FIELD near line %d pos %d file '%s'"
+msgstr "имя '%s' уже определено как FIELD около строки %d позиция %d файл '%s'"
+
+#: clicutil.c:988
+#, c-format
+msgid "name '%s' already declared as STATIC near line %d pos %d file '%s'"
+msgstr ""
+"имя '%s' уже определено как STATIC около строки %d позиция %d файл '%s'"
+
+#: clicutil.c:1136
+#, c-format
+msgid "namespace of name '%s' undeclared, assumed as FIELD-MEMVAR"
+msgstr "пространство имен для '%s' неопределено, установлено в FIELD-MEMVAR"
+
+#: clipar.c:147
+#, c-format
+msgid "file '%s' table:\n"
+msgstr "таблица файла '%s':\n"
+
+#: clipar.c:225
+#, c-format
+msgid "read module %s: %ld bytes\n"
+msgstr "прочитано для модуля %s: %ld байт\n"
+
+#: clipar.c:256
+#, c-format
+msgid "%s: %d byte %d func %d pub %d inits %d exits %s"
+msgstr "%s: %d байт %d функций %d pub %d inits %d exits %s"
+
+#: clipar.c:260
+#, c-format
+msgid "\t%d:\thash=0x%x\toffs=%ld\n"
+msgstr "\t%d:\thash=0x%x\toffs=%ld\n"
+
+#: clipar.c:301
+#, c-format
+msgid "read file '%s': %d modules\n"
+msgstr "файл '%s': %d модулей\n"
+
+#: clipar.c:453
+#, c-format
+msgid "write file '%s', %d func\n"
+msgstr "записан файл '%s', %d функций\n"
+
+#: clipar.c:523 clipar.c:652
+#, c-format
+msgid "done, %ld bytes\n"
+msgstr "сделано, %ld байт\n"
+
+#: clipar.c:572
+#, c-format
+msgid "write file '%s'\n"
+msgstr "запись файла '%s'\n"
+
+#: clip.c:805 clip.c:1531
+#, c-format
+msgid "set source charset to %s\n"
+msgstr "установлена исходная кодировка %s\n"
+
+#: clip.c:811 clip.c:1532
+#, c-format
+msgid "set target charset to %s\n"
+msgstr "установлена целевая кодировка %s\n"
+
+#: clip.c:822
+#, c-format
+msgid "invalid argument for -E: '%s'"
+msgstr "неправильный аргумент для -E: '%s'"
+
+#: clip.c:839
+#, c-format
+msgid ""
+"invalid compatability word: '%s'\n"
+"possible values: as-word, no-as-word"
+msgstr ""
+"неправильная установка совместимости: '%s'\n"
+"возможные значения: as-word, no-as-word"
+
+#: clip.c:845
+#, c-format
+msgid "try '%s --help' for options details\n"
+msgstr "попробуйте '%s --help' для описания опций\n"
+
+#: clip.c:849
+#, c-format
+msgid ""
+"Usage: %s [options] [<filename> ...]\n"
+"options:\n"
+" -h, --help\n"
+"\tthis help\n"
+" -H, --help-environment\n"
+"\thelp about acceptable environment variables\n"
+" -V, --version\n"
+"\tprint clip version\n"
+" -v[<level>], --verbose[=<level>]\n"
+"\tset/increase verbose level\n"
+" -a, --auto-memvar[=1|0]\n"
+"\tset auto memvar variables mode\n"
+" -w, --namespace-warning[=1|0]\n"
+"\tset warning about implicit var declaration\n"
+" -e, --exec\n"
+"\tgenerate executable file\n"
+" -c, --compile\n"
+"\tstop after generation C code\n"
+" -g,-b, --debug[=1|0]\n"
+"\tgenerate debug info\n"
+" -t, --show-syntax-tree\n"
+"\tprint program syntax tree\n"
+" -o<name>, --output=<name>\n"
+"\tset output file name\n"
+" -d<name>, --outdir=<name>\n"
+"\tset output directory\n"
+" -O, --optimise[=<val>]\n"
+"\tset optimisation level\n"
+" -M, --main\n"
+"\tuse first <filename> as start program point\n"
+" -n, --nomain\n"
+"\tdon't declare module procedure\n"
+" -p, --pcode\n"
+"\tgenerate pseudocode module\n"
+" -l, --c-pcode\n"
+"\tcompile C-pseudocode module\n"
+" -s, --shared\n"
+"\tcompile into shared object\n"
+" -r, --shared-exec\n"
+"\talways when possible link with shared libraries\n"
+" --static\n"
+"\tstatic link CLIP libraries to executable\n"
+" --full-static\n"
+"\tstatic link all libraries to executable\n"
+" -I<path>, --include-path=<path>\n"
+"\tadd include search path\n"
+" -L<path>, --library-path=<path>\n"
+"\tadd library path\n"
+" -D<name>, --define=<name>\n"
+"\tdefine macro name\n"
+" -D<name=value>, --define=<name=value>\n"
+"\tdefine macro name as <value>\n"
+" -U[<filename>], --use-std-ch[=<filename>]\n"
+"\tuse alternate (or none) standard include file (default==std.ch)\n"
+" -S<charset>, --source-charset\n"
+"\tdefine source charset of string constants\n"
+" -T<charet>, --target-charset\n"
+"\tdefine target charset of string constants\n"
+" -P, --preprocess\n"
+"\tpreprocess only\n"
+" -C, --show-command\n"
+"\tprint command definitions\n"
+" -R, --noremove-c\n"
+"\tdo not remove temporary '.c' files\n"
+" -N, --names\n"
+"\twarning on unresolved function names (see CLIP_NAMES envar)\n"
+" -E<name=value>, --environment=<name=value>\n"
+"\texact to set same environ variable(see -H for details)\n"
+" -q <word>, --compat=<word>\n"
+"\tset syntax compatability modes:\n"
+"\t\tno-as-word  \t- default value\n"
+"\t\tas-word\n"
+"\n"
+" <filename> files to process\n"
+"\n"
+" all above options may be placed in .cliprc file in current directory,\n"
+" in $HOME/.cliprc file, or in any file in $CLIPROOT/cliprc directory\n"
+msgstr ""
+"Использование: %s [опции] [<имяфайла.> ...]\n"
+"опции.:\n"
+" -h, --help\n"
+"\tэта помощь\n"
+" -H, --help-environment\n"
+"\tописание переменных окружения\n"
+" -V, --version\n"
+"\tвыводит версию clip\n"
+" -v[<уровень>], --verbose[=<уровень>]\n"
+"\tустанавливает/увеличивает уровень сообщений отладки\n"
+" -a, --auto-memvar[=1|0]\n"
+"\tустанавливает режим объявления переменных auto memvar\n"
+" -w, --namespace-warning[=1|0]\n"
+"\tвыводятся предупреждения при неявном определении переменной\n"
+" -e, --exec\n"
+"\tгенерирует выполнимый файл\n"
+" -c, --compile\n"
+"\tостановка после генерации C кода\n"
+" -g,-b, --debug[=1|0]\n"
+"\tгенерировать отладочную информацию\n"
+" -t, --show-syntax-tree\n"
+"\tвыводит синтаксическое дерево программы\n"
+" -o<name>, --output=<name>\n"
+"\tустанавливает имя выходного файла\n"
+" -d<name>, --outdir=<name>\n"
+"\tустанавливает выходной каталог\n"
+" -O, --optimise[=<val>]\n"
+"\tустанавливает уровень оптимизации\n"
+" -M, --main\n"
+"\tиспользовать первое <имяфайла> как стартовую точку программы\n"
+" -n, --nomain\n"
+"\tне объявлять процедуру с именем файла\n"
+" -p, --pcode\n"
+"\tгенерировать модуль в псевдокоде\n"
+" -l, --c-pcode\n"
+"\tгенерировать модуль C-псевдокода.\n"
+" -s, --shared\n"
+"\tсоздать разделяемый объект\n"
+" -r, --shared-exec\n"
+"\tвсегда когда возможно линковать с разделяемыми библиотеками\n"
+" --static\n"
+"\tstatic link CLIP libraries to executable\n"
+" --full-static\n"
+"\tstatic link all libraries to executable\n"
+" -I<path>, --include-path=<path>\n"
+"\tдобавить каталог для поиска включаемых файлов\n"
+" -L<path>, --library-path=<path>\n"
+"\tдобавить каталог для поиска библиотечных файлов\n"
+" -D<name>, --define=<name>\n"
+"\tопределить макро-имя\n"
+" -D<name=value>, --define=<name=value>\n"
+"\tопределить макро-имя как значение <value>\n"
+" -U[<filename>], --use-std-ch[=<filename>]\n"
+"\tиспользовать альтернативное имя стандартного включаемого файла (std.ch)\n"
+" -S<charset>, --source-charset\n"
+"\tустановить исходную кодировку строковых констант\n"
+" -T<charet>, --target-charset\n"
+"\tустановить целевую кодировку строковых констант\n"
+" -P, --preprocess\n"
+"\tвыполнить только проход препроцессора\n"
+" -C, --show-command\n"
+"\tвыводить определения команд\n"
+" -R, --noremove-c\n"
+"\tне удалять временные '.c' файлы\n"
+" -N, --names\n"
+"\tвыводить предупреждения на использование неопределенных функций\n"
+" -E<name=value>, --environment=<name=value>\n"
+"\tустановить значение переменной окружения\n"
+" -q <word>, --compat=<word>\n"
+" \tустановить режим совместимости с ключевыми словами:\n"
+" \t        no-as-word  \t- значение по умолчанию\n"
+" \t \tas-word\n"
+"\n"
+" <имяфайла> файлы для обработки\n"
+"\n"
+"Все вышеприведенные опции могут быть помещены в файл .cliprc \n"
+"в текущем каталоге, в файл $HOME/.cliprc, либо в любой файл в каталоге\n"
+"$CLIPROOT/cliprc\n"
+
+#: clip.c:931
+#, c-format
+msgid ""
+"\n"
+"%s can accept next environment variables:\n"
+"\n"
+"CC\n"
+"\tname of C compiler (default=='%s')\n"
+"CFLAGS\n"
+"\toptions for C compiler (default=='%s')\n"
+"COMPILE_FLAG\n"
+"\t'compile-only' flag for C compiler (default=='%s')\n"
+"COPT\n"
+"\toptimisation flag for C compiler (default=='%s')\n"
+"CDBG\n"
+"\tdebug flag for C compiler (default=='%s')\n"
+"OUT_FLAG\n"
+"\toutput flag for C compiler (default=='%s')\n"
+"INCLUDE_FLAG\n"
+"\tinclude flag for C compiler (default=='%s')\n"
+"OBJSUF\n"
+"\tsuffix for output object files (default=='%s')\n"
+"SOBJSUF\n"
+"\tsuffix for output shared files (default=='%s')\n"
+"LIBSUF\n"
+"\tsuffix for library files (default=='%s')\n"
+"SLIBSUF\n"
+"\tsuffix for shared library files (default=='%s')\n"
+"SFLAGS\n"
+"\toptions for C compiler - shared version (default=='%s')\n"
+"CLIPLIB\n"
+"\truntime support library (default=='%s')\n"
+"CLIPSLIB\n"
+"\truntime support shared library (default=='%s')\n"
+"CLIPLIBS\n"
+"\tadditional libs (default=='%s')\n"
+"CLIPROOT\n"
+"\troot for all clip related files (default=='%s')\n"
+"CLIP_LOCALE_ROOT\n"
+"\troot for locale messages\n"
+"CLIP_MODULE\n"
+"\tcurrent locale module (default=='%s')\n"
+"CLIP_CMDSTR\n"
+"\tcomma-separated list of command-line options\n"
+"CLIP_NAMES\n"
+"\tgenerate .ex, .nm files (possible values yes/no|on/off|0/1)\n"
+"predefined macros:\n"
+"\t__FILE__      string - name of current compile file\n"
+"\t__BASE_FILE__ string - name of root compile file\n"
+"\t__LINE__      numeric - number of current line in current file\n"
+"\t__VERSION__   string - version of clip\n"
+"\t__CLIP__\tstring - version of clip\n"
+"\t__SYSTEM__\tstring - name of operating system\n"
+"\t__DATE__      string - date in format 'MON DD YYYY'\n"
+"\t__TIME__      string - current time in format 'HH:MM::SS'\n"
+"\t__CLIP_MODULE__      string - name of current locale module\n"
+msgstr ""
+"\n"
+"%s принимает следующие переменные.окружения:\n"
+"\n"
+"CC\n"
+"\tпрограмма компилятора C  (default=='%s')\n"
+"CFLAGS\n"
+"\tопции компилятора .C (default=='%s')\n"
+"COMPILE_FLAG\n"
+"\tфлаг 'compile-only' для компилятора C (default=='%s')\n"
+"COPT\n"
+"\tфлаг оптимизации. для компилятора C (default=='%s')\n"
+"CDBG\n"
+"\tфлаг отладки для компилятора C (default=='%s')\n"
+"OUT_FLAG\n"
+"\tфлаг задания выходного файла для компилятора C  (default=='%s')\n"
+"INCLUDE_FLAG\n"
+"\tфлаг включения файлов для компилятора C (default=='%s')\n"
+"OBJSUF\n"
+"\tсуффикс для выходных объектных файлов (default=='%s')\n"
+"SOBJSUF\n"
+"\tсуффикс для выходных разделяемых объектных файлов (default=='%s')\n"
+"LIBSUF\n"
+"\tсуффикс для библиотечных файлов (default=='%s')\n"
+"SLIBSUF\n"
+"\tсуффикс для разделяемых библиотек (default=='%s')\n"
+"SFLAGS\n"
+"\tопции для компилятора C - разделяемая версия (default=='%s')\n"
+"CLIPLIB\n"
+"\tосновная библиотека поддержки времени выполнения (default=='%s')\n"
+"CLIPSLIB\n"
+"\tразделяемая библиотека поддержки времени выполнения (default=='%s')\n"
+"CLIPLIBS\n"
+"\tдополнительные библиотеки (default=='%s')\n"
+"CLIPROOT\n"
+"\tкорневой каталог для clip (default=='%s')\n"
+"CLIP_LOCALE_ROOT\n"
+"\tкорневой каталог для локализованных сообщений\n"
+"CLIP_MODULE\n"
+"\tимя модуля локализации (default=='%s')\n"
+"CLIP_CMDSTR\n"
+"\tразделенный запятыми список опций командной строки\n"
+"CLIP_NAMES\n"
+"\tгенерировать файлы .ex, .nm (возможны значения yes/no|on/off|0/1)\n"
+"предопределенные макросы:\n"
+"\t__FILE__      строка - имя текущего файла компиляции\n"
+"\t__BASE_FILE__ строка - имя корневого файла компиляции\n"
+"\t__LINE__      число - номер текущей строки в файле компиляции\n"
+"\t__VERSION__   строка - версия clip\n"
+"\t__CLIP__\tстрока - версия clip\n"
+"\t__SYSTEM__\tстрока - имя операционной системы\n"
+"\t__DATE__      строка - текущая дата в формате 'MON DD YYYY'\n"
+"\t__TIME__      строка - текущее время в формате 'HH:MM::SS'\n"
+"\t__CLIP_MODULE__      строка - имя текущего модуля локализации\n"
+
+#: clip.c:1159
+#, c-format
+msgid "cannot open defname file '%s': %s"
+msgstr "невозможно открыть файл определений имен '%s': %s"
+
+#: clip.c:1175
+#, c-format
+msgid "cannot open exname file '%s': %s"
+msgstr "невозможно открыть файл внешних имен'%s': %s"
+
+#: clip.c:1194
+#, c-format
+msgid "possible not defined function %s"
+msgstr "возможно не определена функция %s"
+
+#: clip.c:1203 clip.c:1654
+msgid "error"
+msgid_plural "errors"
+msgstr[0] "ошибка"
+msgstr[1] "ошибки"
+msgstr[2] "ошибок"
+
+#: clip.c:1463
+msgid "conflict between -s and -p flags\n"
+msgstr "конфликт между -s и -p флагами\n"
+
+#: clip.c:1470
+msgid "conflict between -c and -p flags\n"
+msgstr "конфликт между  -c и -p флагами\n"
+
+#: clip.c:1487
+msgid "conflict between -n and -m flags\n"
+msgstr "конфликт между -n и -m флагами\n"
+
+#: clip.c:1524
+#, c-format
+msgid "cannot change to output dir '%s': %s"
+msgstr "невозможно установить выходной каталог '%s': %s"
+
+#: clip.c:1565
+#, c-format
+msgid "unknown file type '' file '%s'"
+msgstr "неизвестный тип файла '' файл '%s'"
+
+#: clip.c:1578
+#, c-format
+msgid "unknown file type '%s' file '%s'"
+msgstr "неизвестный тип '%s' файла '%s'"
+
+#: clip.c:1589
+msgid "no input files, so use stdin; -h will help\n"
+msgstr ""
+"не заданы входные файлы, поэтому используем stdin;\n"
+"попробуйте флаг -h для помощи\n"
+
+#: clip.c:1608
+#, c-format
+msgid "process file '%s' .."
+msgstr "обрабатывается файл '%s' .."
+
+#: clip.c:1620 clip.c:1670 clip.c:1722 clip.c:1735 clip.c:1823 clip.c:1836
+#: clip.c:1918
+#, c-format
+msgid ".. done, %s\n"
+msgstr ".. готово, %s\n"
+
+#: clip.c:1636
+#, c-format
+msgid "parsing file '%s' .."
+msgstr "разбор файла '%s' .."
+
+#: clip.c:1648
+#, c-format
+msgid ".. done (%d/%d %s, %d %s, %s)\n"
+msgstr ".. готово (%d/%d %s, %d %s, %s)\n"
+
+#: clip.c:1649
+msgid "line"
+msgid_plural "lines"
+msgstr[0] "строка"
+msgstr[1] "строки"
+msgstr[2] "строк"
+
+#: clip.c:1650 clip.c:1655
+msgid "warning"
+msgid_plural "warnings"
+msgstr[0] "предупреждение"
+msgstr[1] "предупреждения"
+msgstr[2] "предупреждений"
+
+#: clip.c:1663
+#, c-format
+msgid "codegen file '%s' .."
+msgstr "генерация кода для файла '%s' .."
+
+#: clip.c:1684 clip.c:1699
+#, c-format
+msgid "writing file '%s' .."
+msgstr "запись файла '%s' .."
+
+#: clip.c:1692
+#, c-format
+msgid ".. done, %ld %s ,%s\n"
+msgstr ".. готово, %ld %s ,%s\n"
+
+#: clip.c:1693
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "байт"
+msgstr[1] "байта"
+msgstr[2] "байт"
+
+#: clip.c:1705
+msgid ".. done\n"
+msgstr ".. готово\n"
+
+#: clip.c:1715 clip.c:1829
+#, c-format
+msgid "compile file '%s' .."
+msgstr "компиляция файла '%s' .."
+
+#: clip.c:1728
+#, c-format
+msgid "make shared object '%s' .."
+msgstr "делаем разделяемый объект '%s' .."
+
+#: clip.c:1815
+#, c-format
+msgid "generate reference file '%s' .."
+msgstr "генерируется файл ссылок '%s' .."
+
+#: clip.c:1903
+#, c-format
+msgid "make file '%s' .."
+msgstr "делаем файл '%s' .."
+
+#: clip.c:1906 file.c:1461 file.c:1493 file.c:1532 file.c:2525
+#, c-format
+msgid "%s\n"
+msgstr "%s\n"
+
+#: clip.c:1908 file.c:1463 file.c:1495 file.c:1534
+#, c-format
+msgid "C level error in command: %s"
+msgstr "ошибки уровня C в команде.: %s"
+
+#: clip.c:1931
+#, c-format
+msgid "clip: %d %s, %s\n"
+msgstr "clip: %d %s, %s\n"
+
+#: clip.c:1931
+msgid "file"
+msgid_plural "files"
+msgstr[0] "файл"
+msgstr[1] "файла"
+msgstr[2] "файлов"
+
+#: file.c:1173 file.c:1781 file.c:2547
+#, c-format
+msgid "cannot open output file '%s'"
+msgstr "невозможно открыть выходной файл. '%s'"
+
+#: file.c:1774
+msgid "cannot write PCODE module with c-texts"
+msgstr "невозможно записать PCODE модуль с встроенным c-текстом"
+
+#: file.c:2143
+#, c-format
+msgid "error writing file '%s', %s"
+msgstr "ошибка записи файла '%s', %s"
+
+#: file.c:2531
+#, c-format
+msgid "cannot open pipe '%s'"
+msgstr "невозможно открыть канал '%s'"
+
+#: clic_c.lex:150 clic_c.lex:158
+#, c-format
+msgid "cannot open file '%s': %s"
+msgstr "невозможно открыть файл '%s': %s"
+
+#: clic.lex:1616
+msgid "invalid chars in number"
+msgstr "неправильные символы в числе"
+
+#: clic.lex:1775
+msgid "newline in string"
+msgstr "символ новой строки внутри строки"
+
+#: clic.lex:1822
+msgid "end-of-comment without begin"
+msgstr "конец комментария без начала"
+
+#: clic.lex:1933
+msgid "'@}' without '@{'"
+msgstr "'@}' без '@{'"
+
+#: clic.lex:2123
+#, c-format
+msgid "id: non-matched command '%s'"
+msgstr "id: нераспознанная команда '%s'"
+
+#: clic.lex:2143
+#, c-format
+msgid "non-matched command '%s'"
+msgstr "нераспознанная команда '%s'"
+
+#: clic.lex:2225 clic.lex:2294
+#, c-format
+msgid "%s"
+msgstr "%s"
+
+#: clic.lex:2409
+msgid "#else without #ifdef or #ifndef"
+msgstr "#else без #ifdef или #ifndef"
+
+#: clic.lex:2424
+msgid "#endif without #ifdef or #ifndef"
+msgstr "#endif без #ifdef или #ifndef"
+
+#: clic.lex:2478 clic.lex:2484 clic.lex:2587 clic.lex:2593
+msgid "invalid #define directive"
+msgstr "неправильная директива #define"
+
+#: clic.lex:2499 clic.lex:2528 clic.lex:2558
+msgid "macro function redefined"
+msgstr "переопределение макро функции"
+
+#: clic.lex:2505 clic.lex:2522 clic.lex:2552
+msgid "macro redefined"
+msgstr "переопределение макро"
+
+#: clic.lex:2754
+msgid "invalid macro call"
+msgstr "неправильный вызов макро"
+
+#: clic.lex:2802
+#, c-format
+msgid "invalid number of macro arguments (%d instead %d)"
+msgstr "неправильное число аргументов макро-функции (%d вместо %d)"
+
+#: clic.lex:2952
+msgid "unexpected EOL in SM_ENUM"
+msgstr "неожиданный EOL в SM_ENUM"
+
+#: clic.lex:2969
+#, c-format
+msgid "bad symbol in SM_ENUM: '%s'"
+msgstr "неразрешенный символ в SM_ENUM: '%s'"
+
+#: clic.lex:2987 clic.lex:3183 clic.lex:3197
+msgid "non-balanced '[' in #command"
+msgstr "несбалансированная скобка '[' в #command"
+
+#: clic.lex:3049
+msgid "unexpected end of #command directive"
+msgstr "неожиданный конец директивы #command"
+
+#: clic.lex:3425
+msgid "cmdstr: newline in string"
+msgstr "cmdstr: символ новой строки в строке."
+
+#: clic.lex:3896
+msgid "too much errors"
+msgstr "слишком много ошибок"
+
+#: clic.lex:3913
+msgid "#ifdef or #ifndef without #endif"
+msgstr "#ifdef или #ifndef без #endif"
+
+#: clic.lex:3919
+#, c-format
+msgid ""
+"unterminated string constant (possible begin at line %d pos %d file '%s')"
+msgstr ""
+"незаконченная строчная константа (возможное начало на строке %d позиция %d "
+"файл '%s')"
+
+#: clic.lex:3923
+#, c-format
+msgid "unmatched bracket '%c' (possible begin at line %d pos %d file '%s')"
+msgstr ""
+"непарная скобка '%c' (возможное начало на строке %d позиция %d файл '%s')"
+
+#: clic.lex:3926
+#, c-format
+msgid "unclosed comment (possible begin at line %d pos %d file '%s')"
+msgstr ""
+"незакрытый комментарий (возможное начало на строке %d позиция %d файл '%s')"
+
+#: clic.lex:3929
+msgid "no ENDTEXT"
+msgstr "нет ENDTEXT"
+
+#: clic.lex:4284
+msgid "macro function with 0 count of arguments"
+msgstr "макро-функция с нулевым числом аргументов"
+
+#: clic.lex:5169
+#, c-format
+msgid "no subst marker '%s' in pattern part of command"
+msgstr "нет маркера подстановки '%s' в части шаблона команды"
+
+#: clic.lex:5262
+#, c-format
+msgid "unmatched bracket '%c' "
+msgstr "непарная скобка '%c' "
+
+#: clic.lex:5520
+#, c-format
+msgid "skip_norm: match delim '%s', return at '%s'\n"
+msgstr "skip_norm: match delim '%s', return at '%s'\n"
+
+#: clic.lex:6331
+msgid "bad command definition: OPTION have only literals"
+msgstr "неправильное определение команды: OPTION состоит только из литералов"
+
+#: clic.lex:6836
+msgid "endless subst loop detected"
+msgstr "найден бесконечный цикл подстановки"
+
+#: clic.lex:6843
+#, c-format
+msgid "too many entries in OPTIONAL list: > %d\n"
+msgstr "слишком много вхождений в списке OPTIONAL: > %d\n"
+
+#: clic.lex:6926
+msgid "bad #include directive"
+msgstr "неправильная директива #include"
+
+#: clic.lex:6962
+#, c-format
+msgid "cannot open include file '%s': %s"
+msgstr "невозможно открыть включаемый файл '%s': %s"
+
+#: clic.lex:7071
+#, c-format
+msgid "recodeString: subst %d: '%s'->'%s': '%s'\n"
+msgstr "recodeString: subst %d: '%s'->'%s': '%s'\n"
+
+#: clic.lex:7138
+#, c-format
+msgid "recode_string: subst %d: '%s'->'%s': '%s'\n"
+msgstr "recode_string: subst %d: '%s'->'%s': '%s'\n"
+
+#: clic.lex:7243
+msgid "circular loop in macro/command substitution detected"
+msgstr "найден бесконечный цикл  макро/командных подстановок"
+
+#: clic.lex:7347
+#, c-format
+msgid "set file '%s' charset to '%s'\n"
+msgstr "кодировка файла '%s' установлена в '%s'\n"
+
+#: clic.lex:7356
+#, c-format
+msgid "push charset '%s' %d\n"
+msgstr "push charset '%s' %d\n"
+
+#: clic.lex:7365
+#, c-format
+msgid "pop charset '%s' %d\n"
+msgstr "pop charset '%s' %d\n"
+
+#: clic.lex:8095 clic.lex:8108
+msgid "too long string"
+msgstr "слишком длинная строка"
+
+#: locale.c:97 locale.c:106
+#, c-format
+msgid "cannot create dir '%s': %s"
+msgstr "невозможно создать каталог '%s': %s"
+
+#: locale.c:157
+#, c-format
+msgid "cannot create file '%s': %s"
+msgstr "невозможно создать файл '%s': %s"
+
+#: locale.c:161
+#, c-format
+msgid ""
+"\n"
+"open locale file '%s'\n"
+msgstr ""
+"\n"
+"открыт файл локали '%s'\n"
+
+#: locale.c:244
+#, c-format
+msgid "wrote locale message entry '%s'\n"
+msgstr "записано сообщение локализации '%s'\n"
+
+#: locale.c:266
+#, c-format
+msgid "wrote plural locale message '%s' '%s'\n"
+msgstr "записано множественное сообщение локализации '%s' '%s'\n"
+
+#: node.c:692 node.c:708
+#, c-format
+msgid "po code too large at line %d"
+msgstr "псевдокод слишком длинный начиная со строки %d"
+
+#: node.c:1379
+msgid "LOCAL after executable statements"
+msgstr "LOCAL после выполнимого оператора"
+
+#: node.c:1440
+msgid "STATIC after executable statements"
+msgstr "STATIC после выполнимого оператора"
+
+#: node.c:1459
+msgid "only constant expression allowed for static variable initialisation"
+msgstr ""
+"только константное выражение разрешено для инициализации статических "
+"переменных"
+
+#: node.c:1483
+msgid "MEMVAR after executable statements"
+msgstr "MEMVAR после выполнимых операторов"
+
+#: node.c:1510
+msgid "FIELD after executable statements"
+msgstr "FIELD после выполнимых операторов"
+
+#: node.c:1900
+msgid "PARAMETERS and '(' <paramlist> ')' are incompatible"
+msgstr "PARAMETERS и '(' <список_параметров> ')' несовместимы"
+
+#: node.c:1917
+msgid "init expression not allowed here"
+msgstr "выражение инициализации здесь недопустимо"
+
+#: node.c:1922
+msgid "array declaration not allowed here"
+msgstr "определение массива здесь недопустимо"
+
+#: node.c:2945 node.c:3115
+msgid "reference to constant"
+msgstr "ссылка на константу"
+
+#: node.c:2947
+msgid "reference to temporary object"
+msgstr "ссылка на временный объект"
+
+#: node.c:2979
+#, c-format
+msgid "reference to undeclared function '%s' near line %d"
+msgstr "ссылка на неопределенную функцию '%s' около строки %d"
+
+#: node.c:3120
+msgid "reference to macro not allowed"
+msgstr "ссылка на макро не разрешена"
+
+#: node.c:3127
+msgid "reference to non-lvalue object"
+msgstr "ссылка на не-lvalue объект"
+
+#: node.c:3136
+msgid "reference to function with args not allowed"
+msgstr "ссылка на функцию с аргументами не разрешена"
+
+#: node.c:3474
+msgid "cannot GET constant"
+msgstr "невозможен ввод константы через GET"
+
+#: node.c:3993
+msgid "assign to non-lvalue"
+msgstr "присваивание для не-lvalue"
+
+#: node.c:3996
+msgid "reference to macro assign not allowed"
+msgstr "ссылка на макро-присваивание не разрешена"
+
+#: node.c:5075
+msgid "CTEXT in pcode module"
+msgstr "CTEXT в pcode модуле"
+
+#: node.c:5134
+msgid "assign to element of local array conflicts with macro"
+msgstr "присваивание элементу локального массива конфликтует с макро"
+
+#: node.c:5784
+msgid "INCR with non-lvalue"
+msgstr "INCR для не-lvalue"
+
+#: node.c:6356 node.c:6455 node.c:6527 node.c:6667 node.c:6807
+#, c-format
+msgid "%s not allowed in CODESTR"
+msgstr "%s не допустимо в CODESTR"
+
+#: node.c:7848
+#, c-format
+msgid "CASE label duplication: '%s' at line %d and '%s' at line %d"
+msgstr "повторение метки CASE: '%s' на строке %d и '%s' на строке %d"
+
+#~ msgid "%d errors\n"
+#~ msgstr "%d ошибок\n"
+
+#~ msgid "%d errors, %d warnings\n"
+#~ msgstr "%d ошибок, %d предупреждений\n"

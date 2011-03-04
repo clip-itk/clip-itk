@@ -28,7 +28,7 @@ local i
         for i=1 to 10
                 iter := NIL
 
-                gtk_ListStoreAppend(list, 1, "str строка"+alltrim(str(i)), ;
+                gtk_ListStoreAppend(list, 1, "str string"+alltrim(str(i)), ;
                                           2, .t., ;
                 		          3, (111.0*i), ;
                                           4, date(), ;
@@ -55,7 +55,7 @@ local i
         gtk_SignalConnect(renderer, "edited", {|w, e| edited(w, e, model, 1)})
 
   	*** insert new column to view
-  	col1 = gtk_TreeViewInsertColumnWithAttributes(view, -1, "Строка 1", renderer, ;
+  	col1 = gtk_TreeViewInsertColumnWithAttributes(view, -1, "String 1", renderer, ;
   		"text", 1, ;
   		"editable", 2, ;
   		"background", 5)
@@ -77,7 +77,7 @@ local i
   	renderer = gtk_CellRendererTextNew ()
         gtk_SignalConnect(renderer, "edited", {|w, e| edited(w, e, model, 3)})
 
-  	col3 = gtk_TreeViewInsertColumnWithAttributes(view, -1, "А вот и число", renderer, ;
+  	col3 = gtk_TreeViewInsertColumnWithAttributes(view, -1, "Number here", renderer, ;
   		"text", 3, "editable", 2)
         column3 = gtk_TreeViewGetColumn(view, 3)
         gtk_TreeViewColumnSetSortColumnId(column3, 3)
@@ -102,7 +102,7 @@ local i
 
   	*** create column1
   	column1 = gtk_TreeViewColumnNew()
-        gtk_TreeViewColumnSetTitle(column1, "Строка 1")
+        gtk_TreeViewColumnSetTitle(column1, "String 1")
         gtk_TreeViewColumnPackStart(column1, renderer, .t.)
         //gtk_TreeViewAppendColumn(view, column1)
         gtk_TreeViewInsertColumn(view, column1, 1)
@@ -132,7 +132,7 @@ local i
 
   	*** create column3
   	column3 = gtk_TreeViewColumnNew()
-        gtk_TreeViewColumnSetTitle(column3, "А вот и число")
+        gtk_TreeViewColumnSetTitle(column3, "Number here")
         gtk_TreeViewColumnPackStart(column3, renderer, .t.)
         gtk_TreeViewColumnAddAttribute(column3, renderer, "text", 3)
         gtk_TreeViewColumnAddAttribute(column3, renderer, "editable", 2)
@@ -216,7 +216,7 @@ local i
   	gtk_TreeViewSetHeadersVisible (tview, .t.)
 
         for i=1 to 10
-                path = gtk_TreeStoreAppend(tree, NIL, 1, "tree строка"+alltrim(str(i)), ;
+                path = gtk_TreeStoreAppend(tree, NIL, 1, "tree string"+alltrim(str(i)), ;
                                           2, .t. , ;
                 		          3, (111.0*i), ;
                                           4, date(), ;
@@ -240,7 +240,7 @@ local i
         gtk_SignalConnect(renderer, "edited", {|w, e| edited(w, e, tmodel, 1, .f.)})
 
   	*** insert new column to view
-  	col1 = gtk_TreeViewInsertColumnWithAttributes(tview, -1, "Строка 1", renderer, ;
+  	col1 = gtk_TreeViewInsertColumnWithAttributes(tview, -1, "String 1", renderer, ;
   		"text", 1, ;
   		"editable", 2)
 
@@ -259,7 +259,7 @@ local i
   	renderer = gtk_CellRendererTextNew ()
         gtk_SignalConnect(renderer, "edited", {|w, e| edited(w, e, tmodel, 3, .f.)})
 
-  	col3 = gtk_TreeViewInsertColumnWithAttributes(tview, -1, "А вот и число", renderer, ;
+  	col3 = gtk_TreeViewInsertColumnWithAttributes(tview, -1, "Number here", renderer, ;
   		"text", 3, "editable", 2)
         tcolumn3 = gtk_TreeViewGetColumn(tview, 3)
         gtk_TreeViewColumnSetSortColumnId(tcolumn3, 3)

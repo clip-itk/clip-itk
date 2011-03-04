@@ -445,8 +445,9 @@
    paul
 
    Revision 1.40  2000/10/20 08:03:23  clip
-   ����rational �����������NUMERIC_t
-   ����� ����� ������� � ������� ��� ���   ��� �����������NUMERIC_t !!!!!
+   Added rational wherever mentioned NUMERIC_t
+   maybe in some places this omitted
+   (in places where don't use NUMERIC_t)!!!
    from uri:
 
    Revision 1.39  2000/10/11 06:30:55  clip

@@ -5,32 +5,32 @@ $CATEGORY$
 $SUMMARY$
    Returns the true path defined in SET DEFAULT command.
    $LANG_RU$
-   Возвращает правильный путь, установленный по SET DEFAULT.
+   п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я─п╟п╡п╦п╩я▄п╫я▀п╧ п©я┐я┌я▄, я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╫я▀п╧ п©п╬ SET DEFAULT.
    $LANG_UA$
-   Поверта╨ вЁрний шлях, встановлений командою SET DEFAULT.
+   п÷п╬п╡п╣я─я┌п╟Б∙╗ п╡п│я─п╫п╦п╧ я┬п╩я▐я┘, п╡я│я┌п╟п╫п╬п╡п╩п╣п╫п╦п╧ п╨п╬п╪п╟п╫п╢п╬я▌ SET DEFAULT.
 $SYNTAX$
   DefPath() --> <cPath>
 $ARGNAME$
 $RETURNS$
    The new path string.
    $LANG_RU$
-   Новый путь.
+   п²п╬п╡я▀п╧ п©я┐я┌я▄.
    $LANG_UA$
-   Новий шлях.
+   п²п╬п╡п╦п╧ я┬п╩я▐я┘.
 $DESCRIPTION$
    Returns the path defined in SET DEFAULT command with ending
    PATH_DELIM or ":" symbol. If SET DEFAULT path isn't defined (empty),
    nothing is added.
    $LANG_RU$
-   Возвращает путь, установленный по SET DEFAULT, с завершающим
-   символом PATH_DELIM или :.
-   Если SET DEFAULT специально не задан (пуст), то ничего не добавляет.
+   п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©я┐я┌я▄, я┐я│я┌п╟п╫п╬п╡п╩п╣п╫п╫я▀п╧ п©п╬ SET DEFAULT, я│ п╥п╟п╡п╣я─я┬п╟я▌я┴п╦п╪
+   я│п╦п╪п╡п╬п╩п╬п╪ PATH_DELIM п╦п╩п╦ :.
+   п∙я│п╩п╦ SET DEFAULT я│п©п╣я├п╦п╟п╩я▄п╫п╬ п╫п╣ п╥п╟п╢п╟п╫ (п©я┐я│я┌), я┌п╬ п╫п╦я┤п╣пЁп╬ п╫п╣ п╢п╬п╠п╟п╡п╩я▐п╣я┌.
    $LANG_UA$
-   Поверта╨ шлях, встановлений командою SET DEFAULT, Ёз додатковим
-символом
-   PATH_DELIM або ":". Якщо шлях SET DEFAULT не визначений (пустий),
-нЁчого
-   не дода╨ться.
+   п÷п╬п╡п╣я─я┌п╟Б∙╗ я┬п╩я▐я┘, п╡я│я┌п╟п╫п╬п╡п╩п╣п╫п╦п╧ п╨п╬п╪п╟п╫п╢п╬я▌ SET DEFAULT, п│п╥ п╢п╬п╢п╟я┌п╨п╬п╡п╦п╪
+я│п╦п╪п╡п╬п╩п╬п╪
+   PATH_DELIM п╟п╠п╬ ":". п╞п╨я┴п╬ я┬п╩я▐я┘ SET DEFAULT п╫п╣ п╡п╦п╥п╫п╟я┤п╣п╫п╦п╧ (п©я┐я│я┌п╦п╧),
+п╫п│я┤п╬пЁп╬
+   п╫п╣ п╢п╬п╢п╟Б∙╗я┌я▄я│я▐.
 $EXAMPLES$
 	SET DEFAULT TO c:\FOX
 	? Set(_SET_DEFAULT) // 'c:\fox'
@@ -42,26 +42,26 @@ $EXAMPLES$
 $PECULIARITIES$
    DefPath() is undocumented in xClipper.
    $LANG_RU$
-   Функция DefPath() не документирована (но активно используется) в xClipper.
+   п╓я┐п╫п╨я├п╦я▐ DefPath() п╫п╣ п╢п╬п╨я┐п╪п╣п╫я┌п╦я─п╬п╡п╟п╫п╟ (п╫п╬ п╟п╨я┌п╦п╡п╫п╬ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐) п╡ xClipper.
    $LANG_UA$
-   ФункцЁя DefPath() не документована (але активно використову╨ться) в xClipper.
+   п╓я┐п╫п╨я├п│я▐ DefPath() п╫п╣ п╢п╬п╨я┐п╪п╣п╫я┌п╬п╡п╟п╫п╟ (п╟п╩п╣ п╟п╨я┌п╦п╡п╫п╬ п╡п╦п╨п╬я─п╦я│я┌п╬п╡я┐Б∙╗я┌я▄я│я▐) п╡ xClipper.
 $PLATFORMS$
    The ending symbol PATH_DELIM depends of platform. It is "\" in DOS/WINDOWS
    and "/" in UNIX.
    $LANG_RU$
-   Завершающий символ PATH_DELIM зависит от платформы. Это "\" в DOS/WINDOWS
-   и "/" в UNIX.
+   п≈п╟п╡п╣я─я┬п╟я▌я┴п╦п╧ я│п╦п╪п╡п╬п╩ PATH_DELIM п╥п╟п╡п╦я│п╦я┌ п╬я┌ п©п╩п╟я┌я└п╬я─п╪я▀. п╜я┌п╬ "\" п╡ DOS/WINDOWS
+   п╦ "/" п╡ UNIX.
    $LANG_UA$
-   Символ PATH_DELIM залежить вЁд платформи. Це "\" в DOS/WINDOWS
-   та "/" в UNIX.
+   п║п╦п╪п╡п╬п╩ PATH_DELIM п╥п╟п╩п╣п╤п╦я┌я▄ п╡п│п╢ п©п╩п╟я┌я└п╬я─п╪п╦. п╕п╣ "\" п╡ DOS/WINDOWS
+   я┌п╟ "/" п╡ UNIX.
 $CONFORMS$
 $SEEALSO$
 
 $AUTHOR$
    Yevgen Bondar
    $LANG_RU$
-   Евгений Бондарь
+   п∙п╡пЁп╣п╫п╦п╧ п▒п╬п╫п╢п╟я─я▄
    $LANG_UA$
-   Евгений Бондарь
+   п∙п╡пЁп╣п╫п╦п╧ п▒п╬п╫п╢п╟я─я▄
 
 

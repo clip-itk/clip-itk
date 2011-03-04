@@ -9,11 +9,11 @@ gtk_signalConnect(win, "delete-event", {|| gtk_quit()})
 
 l1 := gtk_layoutNew()
 gtk_WidgetSetSizeRequest(l1, 400, 500)
-lab1 := gtk_LabelNew(, "Строка по-русски")
+lab1 := gtk_LabelNew(, "п║я┌я─п╬п╨п╟ п©п╬-я─я┐я│я│п╨п╦")
 gtk_MiscSetAlignment(lab1, 0.5, 0.5)
 gtk_MiscSetPadding(lab1, 10, 10)
 gtk_LayoutPut(l1, lab1, 5, 5)
-btn1 := gtk_ButtonNew(, "Сменить страницу ")
+btn1 := gtk_ButtonNew(, "Change page ")
 gtk_SignalConnect(btn1, "clicked", {|| gtk_NotebookSetPage(note, 2)})
 gtk_LayoutPut(l1, btn1, 5, 50)
 
@@ -28,13 +28,13 @@ gtk_SignalConnect(btn2, "clicked", {|| gtk_NotebookSetPage(note, 1)})
 gtk_LayoutPut(l2, btn2, 5, 5)
 
 note  := gtk_NoteBookNew()
-gtk_NoteBookAppendPage(note, l1, "первая")
-gtk_NoteBookAppendPage(note, l2, "вторая")
+gtk_NoteBookAppendPage(note, l1, "first")
+gtk_NoteBookAppendPage(note, l2, "second")
 
-lab3 := gtk_LabelNew(, "Метка")
+lab3 := gtk_LabelNew(, "Label")
 gtk_MiscSetAlignment(lab3, 0.5, 0.5)
 gtk_MiscSetPadding(lab3, 10, 10)
-gtk_NotebookAppendPage(note, lab3, "третья")
+gtk_NotebookAppendPage(note, lab3, "third")
 
 vbox := gtk_VboxNew()
 

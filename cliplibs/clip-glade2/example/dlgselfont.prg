@@ -1,6 +1,6 @@
 /*
   Selection font dialog.
-  Diálogo de selección de fuentes.
+  DiÃ¡logo de selecciÃ³n de fuentes.
 */
 
 #define TL_WINDOW_NAME "font_selection"
@@ -25,7 +25,7 @@ return( "" ); endif
 
                 /*
                   Automatic signal connection.
-                  Conexión automática de señales.
+                  ConexiÃ³n automÃ¡tica de seÅ„ales.
                 */
                 glade_xml_signal_autoconnect( xml )
 
@@ -38,7 +38,7 @@ return( "" ); endif
 
         /*
            Waiting for close dialog.
-           Se espera a que termine el diálogo.
+           Se espera a que termine el diÃ¡logo.
         */
         gtk_main()
 

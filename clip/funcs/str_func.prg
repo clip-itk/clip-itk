@@ -54,11 +54,11 @@ aadd(temp, s1)
 RETURN temp*/
 ****************************************************************
 /*
-делит строку на подстроки заданной длины,
-записывает подстроки в arr и возвращает полученный массив
-str -  исходная строка
-len -  длина подстроки
-delim - разделитель
+split the string into substrings of a given length,
+write substrings in arr and returns this array
+str -  source string
+len -  substring length
+delim - delimiter
 */
 FUNCTION splitLen(str, len, delim)
 local m, nstr, i, arr := {}

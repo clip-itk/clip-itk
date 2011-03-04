@@ -4,14 +4,14 @@ $SUMMARY$
 	The essence this CODB class is storehouse of metadata - objects
 	what keeping specifier other objects of classes: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
 $LANG_RU$
-	Суть этого CODB класса - хранилище метаданных - объектов,
-	хранящих описание других объектов классов: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
+	п║я┐я┌я▄ я█я┌п╬пЁп╬ CODB п╨п╩п╟я│я│п╟ - я┘я─п╟п╫п╦п╩п╦я┴п╣ п╪п╣я┌п╟п╢п╟п╫п╫я▀я┘ - п╬п╠я┼п╣п╨я┌п╬п╡,
+	я┘я─п╟п╫я▐я┴п╦я┘ п╬п©п╦я│п╟п╫п╦п╣ п╢я─я┐пЁп╦я┘ п╬п╠я┼п╣п╨я┌п╬п╡ п╨п╩п╟я│я│п╬п╡: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
 $ABOUT$
 	The essence this CODB class is storehouse of metadata - objects
 	what keeping specifier other objects of classes: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
 $LANG_RU$
-	Суть этого CODB класса - хранилище метаданных - объектов,
-	хранящих описание других объектов классов: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
+	п║я┐я┌я▄ я█я┌п╬пЁп╬ CODB п╨п╩п╟я│я│п╟ - я┘я─п╟п╫п╦п╩п╦я┴п╣ п╪п╣я┌п╟п╢п╟п╫п╫я▀я┘ - п╬п╠я┼п╣п╨я┌п╬п╡,
+	я┘я─п╟п╫я▐я┴п╦я┘ п╬п©п╦я│п╟п╫п╦п╣ п╢я─я┐пЁп╦я┘ п╬п╠я┼п╣п╨я┌п╬п╡ п╨п╩п╟я│я│п╬п╡: DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP
 $SYNTAX$
 	coDictionaryNew(<sDictID>, <sUser>, <sPasswd>) --> CODBDICTIONARY object
 	coDictionary:New(<sDictID>, <sUser>, <sPasswd>)  --> CODBDICTIONARY object
@@ -20,14 +20,14 @@ $ATTRIBUTES$
 	<Error>		String, the error description what araised within running last operation.
 $LANG_RU$
 	<ClassName> 	CODBDICTIONARY
-	<Error>		String, описание ошибки, возникшей при выполнении последней операции.
+	<Error>		String, п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╡п╬п╥п╫п╦п╨я┬п╣п╧ п©я─п╦ п╡я▀п©п╬п╩п╫п╣п╫п╦п╦ п©п╬я│п╩п╣п╢п╫п╣п╧ п╬п©п╣я─п╟я├п╦п╦.
 
 $METHODNAME$
 	New()
 $SUMMARY$
 	Initiation new CODBDICTIONARY object.
 $LANG_RU$
-	Инициализация нового объекта CODBDICTIONARY.
+	п≤п╫п╦я├п╦п╟п╩п╦п╥п╟я├п╦я▐ п╫п╬п╡п╬пЁп╬ п╬п╠я┼п╣п╨я┌п╟ CODBDICTIONARY.
 $SYNTAX$
 	New(<sDictID>, <sUser>, <sPasswd>) --> CODBDICTIONARY object
 $ARGUMENTS$
@@ -35,23 +35,23 @@ $ARGUMENTS$
 	<sUser>		String, the user name
 	<sPasswd>       String, the password to access
 $LANG_RU$
-	<sDictID>	Stirng, идентификатор словаря
-	<sUser>		String, имя пользователя
-	<sPasswd>       String, пароль доступа
+	<sDictID>	Stirng, п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ я│п╩п╬п╡п╟я─я▐
+	<sUser>		String, п╦п╪я▐ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐
+	<sPasswd>       String, п©п╟я─п╬п╩я▄ п╢п╬я│я┌я┐п©п╟
 $RETURNS$
 	Method returns new CODBDICTIONARY object.
 $LANG_RU$
-	Метод возвращает новый объект CODBDICTIONARY.
+	п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ CODBDICTIONARY.
 $DESCRIPTION$
 	New() inits new CODBDICTIONARY object and returns it.
 
 	If object <sDictID> already exist, New() openes and returns this
 	dictionary.
 $LANG_RU$
-	New() инициализирует новый объект CODBDICTIONARY возвращает его.
+	New() п╦п╫п╦я├п╦п╟п╩п╦п╥п╦я─я┐п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ CODBDICTIONARY п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╣пЁп╬.
 
-	Если объект <sDictID> уже существует, New() открывает и возвращает
-	этот словарь.
+	п∙я│п╩п╦ п╬п╠я┼п╣п╨я┌ <sDictID> я┐п╤п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌, New() п╬я┌п╨я─я▀п╡п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+	я█я┌п╬я┌ я│п╩п╬п╡п╟я─я▄.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -59,14 +59,14 @@ $METHODNAME$
 $SUMMARY$
 	Create empty dictionary.
 $LANG_RU$
-	Создать пустой словарь.
+	п║п╬п╥п╢п╟я┌я▄ п©я┐я│я┌п╬п╧ я│п╩п╬п╡п╟я─я▄.
 $SYNTAX$
 	Create() 	--> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if new empty dictionary created.
 $LANG_RU$
-	Возвращает TRUE если создан пустой новый словарь.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я│п╬п╥п╢п╟п╫ п©я┐я│я┌п╬п╧ п╫п╬п╡я▀п╧ я│п╩п╬п╡п╟я─я▄.
 $DESCRIPTION$
 	Create() returns TRUE if new empty ditionary created.
 	Usualy, this method do not needy to direct invitation. It's call automaticaly
@@ -74,11 +74,11 @@ $DESCRIPTION$
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Create() возвращает TRUE если создан пустой новый словарь.
-	Обычно, этот метод не требует прямого вызова, а вызывается автоматически
-	при добавлении нового словаря в CODBLIST.
+	Create() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я│п╬п╥п╢п╟п╫ п©я┐я│я┌п╬п╧ п╫п╬п╡я▀п╧ я│п╩п╬п╡п╟я─я▄.
+	п·п╠я▀я┤п╫п╬, я█я┌п╬я┌ п╪п╣я┌п╬п╢ п╫п╣ я┌я─п╣п╠я┐п╣я┌ п©я─я▐п╪п╬пЁп╬ п╡я▀п╥п╬п╡п╟, п╟ п╡я▀п╥я▀п╡п╟п╣я┌я│я▐ п╟п╡я┌п╬п╪п╟я┌п╦я┤п╣я│п╨п╦
+	п©я─п╦ п╢п╬п╠п╟п╡п╩п╣п╫п╦п╦ п╫п╬п╡п╬пЁп╬ я│п╩п╬п╡п╟я─я▐ п╡ CODBLIST.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -86,23 +86,23 @@ $METHODNAME$
 $SUMMARY$
 	Open all necessary files.
 $LANG_RU$
-	Открыть все необходимые файлы.
+	п·я┌п╨я─я▀я┌я▄ п╡я│п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ я└п╟п╧п╩я▀.
 $SYNTAX$
 	Open() 	--> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if files opened.
 $LANG_RU$
-	Возвращает TRUE если файлы открыты.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я└п╟п╧п╩я▀ п╬я┌п╨я─я▀я┌я▀.
 $DESCRIPTION$
 	Open() openes all necessary files or openes connection with SQL server.
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Open() открывает все необходимые для работы словаря файлы или соединение
-	с SQL сервером.
+	Open() п╬я┌п╨я─я▀п╡п╟п╣я┌ п╡я│п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│п╩п╬п╡п╟я─я▐ я└п╟п╧п╩я▀ п╦п╩п╦ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣
+	я│ SQL я│п╣я─п╡п╣я─п╬п╪.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 
@@ -111,19 +111,19 @@ $METHODNAME$
 $SUMMARY$
 	Close opened files.
 $LANG_RU$
-	Закрыть открытые файлы.
+	п≈п╟п╨я─я▀я┌я▄ п╬я┌п╨я─я▀я┌я▀п╣ я└п╟п╧п╩я▀.
 $SYNTAX$
 	Close() 	--> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if files closed.
 $LANG_RU$
-	Возвращает TRUE если файлы закрыты.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ я└п╟п╧п╩я▀ п╥п╟п╨я─я▀я┌я▀.
 $DESCRIPTION$
 	Close() is close files or connection with SQL server.
 $LANG_RU$
-	Open() закрывает все необходимые для работы словаря файлы или соединение
-	с SQL сервером.
+	Open() п╥п╟п╨я─я▀п╡п╟п╣я┌ п╡я│п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ п╢п╩я▐ я─п╟п╠п╬я┌я▀ я│п╩п╬п╡п╟я─я▐ я└п╟п╧п╩я▀ п╦п╩п╦ я│п╬п╣п╢п╦п╫п╣п╫п╦п╣
+	я│ SQL я│п╣я─п╡п╣я─п╬п╪.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -131,7 +131,7 @@ $METHODNAME$
 $SUMMARY$
 	Append object to storehouse.
 $LANG_RU$
-	Добавить объект в хранилище.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣.
 $SYNTAX$
 	Append(<oData>, <sClassName>) 	--> <sDataID>
 $ARGUMENTS$
@@ -139,12 +139,12 @@ $ARGUMENTS$
 	<sClassName>	String, class name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 
 $LANG_RU$
-	<oData> 	Object, новый объект для хранения.
-	<sClassName>	String, название класса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<oData> 	Object, п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐.
+	<sClassName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╨п╩п╟я│я│п╟ - п╬п╢п╫п╬ п╦п╥ DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 $RETURNS$
 	Returns <sDataID> - identifier registered object.
 $LANG_RU$
-	Возвращает <sDataID> - идентификатор добавленного объекта.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <sDataID> - п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╢п╬п╠п╟п╡п╩п╣п╫п╫п╬пЁп╬ п╬п╠я┼п╣п╨я┌п╟.
 $DESCRIPTION$
 	Append() appends new object <oData> to storehouse as object of
 	class <sClassName> and returns objects identifier <sDataID>.
@@ -153,13 +153,13 @@ $DESCRIPTION$
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Append() добавляет новый объект <oData> в хранилище как объект класса
-	<sClassName> и возвращает идентификатор зарегистрированного
-	объекта <sDataID>.
+	Append() п╢п╬п╠п╟п╡п╩я▐п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ <oData> п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣ п╨п╟п╨ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟
+	<sClassName> п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╥п╟я─п╣пЁп╦я│я┌я─п╦я─п╬п╡п╟п╫п╫п╬пЁп╬
+	п╬п╠я┼п╣п╨я┌п╟ <sDataID>.
 
-	Описание структур добавляемых метаданных смотрите в разделе <link linkend="codbMETADATA">CODB метаданные</link>.
+	п·п©п╦я│п╟п╫п╦п╣ я│я┌я─я┐п╨я┌я┐я─ п╢п╬п╠п╟п╡п╩я▐п╣п╪я▀я┘ п╪п╣я┌п╟п╢п╟п╫п╫я▀я┘ я│п╪п╬я┌я─п╦я┌п╣ п╡ я─п╟п╥п╢п╣п╩п╣ <link linkend="codbMETADATA">CODB п╪п╣я┌п╟п╢п╟п╫п╫я▀п╣</link>.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -167,18 +167,18 @@ $METHODNAME$
 $SUMMARY$
 	Update object into storehouse.
 $LANG_RU$
-	Обновить объект в хранилище.
+	п·п╠п╫п╬п╡п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣.
 $SYNTAX$
 	Update(<oData>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<oData> 	Object, object to updating
 
 $LANG_RU$
-	<oData> 	Object, объект для обновления
+	<oData> 	Object, п╬п╠я┼п╣п╨я┌ п╢п╩я▐ п╬п╠п╫п╬п╡п╩п╣п╫п╦я▐
 $RETURNS$
 	Returns TRUE if object updated.
 $LANG_RU$
-	Возвращает TRUE если объект обновлен.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╬п╠п╫п╬п╡п╩п╣п╫.
 $DESCRIPTION$
 	Update() updates object <oData> into storehouse. If dictinary have not
 	object with identifier <oData:ID>, Update() returns FALSE.
@@ -187,12 +187,12 @@ $DESCRIPTION$
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Update() обновляет объект <oData> в хранилище. Если словарь не содержит
-	объект с идентификатором <oData:ID>, Update() возвращает FALSE.
+	Update() п╬п╠п╫п╬п╡п╩я▐п╣я┌ п╬п╠я┼п╣п╨я┌ <oData> п╡ я┘я─п╟п╫п╦п╩п╦я┴п╣. п∙я│п╩п╦ я│п╩п╬п╡п╟я─я▄ п╫п╣ я│п╬п╢п╣я─п╤п╦я┌
+	п╬п╠я┼п╣п╨я┌ я│ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ <oData:ID>, Update() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE.
 
-	Описание структур метаданных смотрите в разделе <link linkend="codbMETADATA">CODB метаданные</link>.
+	п·п©п╦я│п╟п╫п╦п╣ я│я┌я─я┐п╨я┌я┐я─ п╪п╣я┌п╟п╢п╟п╫п╫я▀я┘ я│п╪п╬я┌я─п╦я┌п╣ п╡ я─п╟п╥п╢п╣п╩п╣ <link linkend="codbMETADATA">CODB п╪п╣я┌п╟п╢п╟п╫п╫я▀п╣</link>.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -200,26 +200,26 @@ $METHODNAME$
 $SUMMARY$
 	Delete object from storehouse.
 $LANG_RU$
-	Удалить объект из хранилища.
+	пёп╢п╟п╩п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╦п╥ я┘я─п╟п╫п╦п╩п╦я┴п╟.
 $SYNTAX$
 	Delete(<sDataID>) 	--> TRUE || FALSE
 $ARGUMENTS$
 	<sDataID> 	String, the objects identifier
 
 $LANG_RU$
-	<sDataID> 	String, идентификатор объекта
+	<sDataID> 	String, п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟
 $RETURNS$
 	Returns TRUE if object was deleted.
 $LANG_RU$
-	Возвращает TRUE если объект был удален.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬п╠я┼п╣п╨я┌ п╠я▀п╩ я┐п╢п╟п╩п╣п╫.
 $DESCRIPTION$
 	Delete() deletes object with identifier <sDataID> from dictionary.
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Delete() удаляет объект с идентификатором <sDataID> из словаря.
+	Delete() я┐п╢п╟п╩я▐п╣я┌ п╬п╠я┼п╣п╨я┌ я│ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ <sDataID> п╦п╥ я│п╩п╬п╡п╟я─я▐.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 
@@ -228,28 +228,28 @@ $METHODNAME$
 $SUMMARY$
 	Get object from storehouse.
 $LANG_RU$
-	Получить объект из хранилища.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╦п╥ я┘я─п╟п╫п╦п╩п╦я┴п╟.
 $SYNTAX$
 	GetValue(<sDataID>) 	--> <oData>
 $ARGUMENTS$
 	<sDataID> 	String, the objects identifier
 
 $LANG_RU$
-	<sDataID> 	String, идентификатор объекта
+	<sDataID> 	String, п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟
 $RETURNS$
 	Returns object <oData> with identifier <sDataID>.
 $LANG_RU$
-	Возвращает объект <oData> с идентификатором <sDataID>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ <oData> я│ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ <sDataID>.
 $DESCRIPTION$
 	GetValue() gets form dictionary and returns object <oData> with
 	identifier <sDataID>.
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	GetValue() достает из словаря и возвращает объект <oData> с
-	идентификатором <sDataID>.
+	GetValue() п╢п╬я│я┌п╟п╣я┌ п╦п╥ я│п╩п╬п╡п╟я─я▐ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ <oData> я│
+	п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╪ <sDataID>.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 
@@ -258,7 +258,7 @@ $METHODNAME$
 $SUMMARY$
 	Checks object a valid metaclass.
 $LANG_RU$
-	Проверить объект на принадлежность к метаклассу.
+	п÷я─п╬п╡п╣я─п╦я┌я▄ п╬п╠я┼п╣п╨я┌ п╫п╟ п©я─п╦п╫п╟п╢п╩п╣п╤п╫п╬я│я┌я▄ п╨ п╪п╣я┌п╟п╨п╩п╟я│я│я┐.
 $SYNTAX$
 	CheckBody(<oData>, <sClassName>) 	--> <oData>
 $ARGUMENTS$
@@ -266,12 +266,12 @@ $ARGUMENTS$
 	<sClassName>	String, metaclass name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 
 $LANG_RU$
-	<oData> 	Object, объект для проверки.
-	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<oData> 	Object, п╬п╠я┼п╣п╨я┌ п╢п╩я▐ п©я─п╬п╡п╣я─п╨п╦.
+	<sClassName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╪п╣я┌п╟п╨п╩п╟я│я│п╟ - п╬п╢п╫п╬ п╦п╥ DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 $RETURNS$
 	Returns object <oData>.
 $LANG_RU$
-	Возвращает объект <oData>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ <oData>.
 $DESCRIPTION$
 	CheckBody() checks object <oData> a valid metaclass <sClassName>.
 	If object is a valid, CheckBody() fills <oData> properties the default values
@@ -279,10 +279,10 @@ $DESCRIPTION$
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	CheckBody() проверяет объект <oData> на принадлежность к классу <sClassName>
-	и при необходимости заполняет атрибуты <oData> значениями по умолчанию.
+	CheckBody() п©я─п╬п╡п╣я─я▐п╣я┌ п╬п╠я┼п╣п╨я┌ <oData> п╫п╟ п©я─п╦п╫п╟п╢п╩п╣п╤п╫п╬я│я┌я▄ п╨ п╨п╩п╟я│я│я┐ <sClassName>
+	п╦ п©я─п╦ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌п╦ п╥п╟п©п╬п╩п╫я▐п╣я┌ п╟я┌я─п╦п╠я┐я┌я▀ <oData> п╥п╫п╟я┤п╣п╫п╦я▐п╪п╦ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -290,7 +290,7 @@ $METHODNAME$
 $SUMMARY$
 	Makes data representation.
 $LANG_RU$
-	Привести объект в соответствие классу.
+	п÷я─п╦п╡п╣я│я┌п╦ п╬п╠я┼п╣п╨я┌ п╡ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╦п╣ п╨п╩п╟я│я│я┐.
 $SYNTAX$
 	PadrBody(<oData>, <sClassName>) 	--> <oData>
 $ARGUMENTS$
@@ -298,20 +298,20 @@ $ARGUMENTS$
 	<sClassName>	String, metaclass name - one of DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 
 $LANG_RU$
-	<oData> 	Object, исходный объект
-	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<oData> 	Object, п╦я│я┘п╬п╢п╫я▀п╧ п╬п╠я┼п╣п╨я┌
+	<sClassName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╪п╣я┌п╟п╨п╩п╟я│я│п╟ - п╬п╢п╫п╬ п╦п╥ DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 $RETURNS$
 	Returns object <oData>.
 $LANG_RU$
-	Возвращает объект <oData>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╬п╠я┼п╣п╨я┌ <oData>.
 $DESCRIPTION$
 	PadrBody() makes data representation for <oData> to metaclass <sClassName>.
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	PadrBody() приводит объект <oData> в соответствие метаклассу <sClassName>.
+	PadrBody() п©я─п╦п╡п╬п╢п╦я┌ п╬п╠я┼п╣п╨я┌ <oData> п╡ я│п╬п╬я┌п╡п╣я┌я│я┌п╡п╦п╣ п╪п╣я┌п╟п╨п╩п╟я│я│я┐ <sClassName>.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -319,7 +319,7 @@ $METHODNAME$
 $SUMMARY$
 	Returns identifier list of selected objects.
 $LANG_RU$
-	Вернуть список идентификаторов выбранных объектов.
+	п▓п╣я─п╫я┐я┌я▄ я│п©п╦я│п╬п╨ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╡ п╡я▀п╠я─п╟п╫п╫я▀я┘ п╬п╠я┼п╣п╨я┌п╬п╡.
 $SYNTAX$
 	Select(<sClassName>[, <nOrder>][, <sName>][, <sWhere>]) 	--> <aIdent>
 $ARGUMENTS$
@@ -328,25 +328,25 @@ $ARGUMENTS$
 	<sName>		String, value <Name> attribute to search
 	<sWhere>	String, the searching condition
 $LANG_RU$
-	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<sClassName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╪п╣я┌п╟п╨п╩п╟я│я│п╟ - п╬п╢п╫п╬ п╦п╥ DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 	<nOrder>	Numeric, the index number
-	<sName>		String, значение атрибута <Name>
-	<sWhere>	String, условие поиска
+	<sName>		String, п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟ <Name>
+	<sWhere>	String, я┐я│п╩п╬п╡п╦п╣ п©п╬п╦я│п╨п╟
 $RETURNS$
 	Returns <aIdent> array of object identifier what equal searching condition.
 $LANG_RU$
-	Возвращает <aIdent> массив идентификаторов объектов, соответствующих заданным условиям.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <aIdent> п╪п╟я│я│п╦п╡ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╡ п╬п╠я┼п╣п╨я┌п╬п╡, я│п╬п╬я┌п╡п╣я┌я│я┌п╡я┐я▌я┴п╦я┘ п╥п╟п╢п╟п╫п╫я▀п╪ я┐я│п╩п╬п╡п╦я▐п╪.
 $DESCRIPTION$
 	Select() returns for class <sClassName> identifier list <aIdent> selected objects in order <nOrder>
 	whose attribute <Name> == <sName> and attributes equal <sWhere>.
 
 	<::Error> contain error descriptions if araised.
 $LANG_RU$
-	Select() возвращает список идентификаторов объектов, принадлежащих классу <sClassName> в порядке <nOrder>,
-	у которых аттрибут <Name> точно равен <sName> и содержимое аттрибутов
-	соответсвует выражению <sWhere>.
+	Select() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ я│п©п╦я│п╬п╨ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я┌п╬я─п╬п╡ п╬п╠я┼п╣п╨я┌п╬п╡, п©я─п╦п╫п╟п╢п╩п╣п╤п╟я┴п╦я┘ п╨п╩п╟я│я│я┐ <sClassName> п╡ п©п╬я─я▐п╢п╨п╣ <nOrder>,
+	я┐ п╨п╬я┌п╬я─я▀я┘ п╟я┌я┌я─п╦п╠я┐я┌ <Name> я┌п╬я┤п╫п╬ я─п╟п╡п╣п╫ <sName> п╦ я│п╬п╢п╣я─п╤п╦п╪п╬п╣ п╟я┌я┌я─п╦п╠я┐я┌п╬п╡
+	я│п╬п╬я┌п╡п╣я┌я│п╡я┐п╣я┌ п╡я▀я─п╟п╤п╣п╫п╦я▌ <sWhere>.
 
-	<::Error> содержит описание ошибки, если таковая произошла.
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ я┌п╟п╨п╬п╡п╟я▐ п©я─п╬п╦п╥п╬я┬п╩п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -354,7 +354,7 @@ $METHODNAME$
 $SUMMARY$
 	Returns object of class IDLIST.
 $LANG_RU$
-	Вернуть объект класса IDLIST.
+	п▓п╣я─п╫я┐я┌я▄ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ IDLIST.
 $SYNTAX$
 	IdList(<sClassName>[, <nOrder>][, <sName>][, <sWhere>]) 	--> <oIDList>
 $ARGUMENTS$
@@ -363,18 +363,18 @@ $ARGUMENTS$
 	<sName>		String, value <Name> attribute to search
 	<sWhere>	String, the searching condition
 $LANG_RU$
-	<sClassName>	String, название метакласса - одно из DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
+	<sClassName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╪п╣я┌п╟п╨п╩п╟я│я│п╟ - п╬п╢п╫п╬ п╦п╥ DEPOSIT,EXTENT,ATTR,COUNTER,INDEX,CLASS,TCOLUMN,TVIEW,REPORT,PLUGINS,USER,GROUP.
 	<nOrder>	Numeric, the index number
-	<sName>		String, значение атрибута <Name>
-	<sWhere>	String, условие поиска
+	<sName>		String, п╥п╫п╟я┤п╣п╫п╦п╣ п╟я┌я─п╦п╠я┐я┌п╟ <Name>
+	<sWhere>	String, я┐я│п╩п╬п╡п╦п╣ п©п╬п╦я│п╨п╟
 $RETURNS$
 	Returns <oIDList> - object of class IDLIST.
 $LANG_RU$
-	Возвращает <oIDList> - объект класса IDLIST.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <oIDList> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ IDLIST.
 $DESCRIPTION$
 	IdList() returns <oIDList> - object of class <link linkend="classCODBIDLIST">CODBIDLIST</link>.
 $LANG_RU$
-	IdList() возвращает <oIDList> - объект класса <link linkend="classCODBIDLIST">CODBIDLIST</link>.
+	IdList() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <oIDList> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ <link linkend="classCODBIDLIST">CODBIDLIST</link>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -382,21 +382,21 @@ $METHODNAME$
 $SUMMARY$
 	Returns object of metaclass CLASS.
 $LANG_RU$
-	Вернуть объект метакласса CLASS
+	п▓п╣я─п╫я┐я┌я▄ п╬п╠я┼п╣п╨я┌ п╪п╣я┌п╟п╨п╩п╟я│я│п╟ CLASS
 $SYNTAX$
 	ClassBodyByName(<sObjClassName>) 	--> <oData>
 $ARGUMENTS$
 	<sClassObjName>	String, class name.
 $LANG_RU$
-	<sClassObjName>	String, название класса.
+	<sClassObjName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╨п╩п╟я│я│п╟.
 $RETURNS$
 	Returns <oData> - object of class CLASS.
 $LANG_RU$
-	Возвращает <oData> - объект класса CLASS.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <oData> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ CLASS.
 $DESCRIPTION$
 	ClassBodyByName() returns <oData> - object of class CLASS with name <sClassObjName>.
 $LANG_RU$
-	ClassBodyByName() возвращает <oData> - объект класса CLASS с именем <sClassObjName>.
+	ClassBodyByName() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <oData> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ CLASS я│ п╦п╪п╣п╫п╣п╪ <sClassObjName>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -404,21 +404,21 @@ $METHODNAME$
 $SUMMARY$
 	Returns object of metaclass ATTR.
 $LANG_RU$
-	Вернуть объект метакласса ATTR.
+	п▓п╣я─п╫я┐я┌я▄ п╬п╠я┼п╣п╨я┌ п╪п╣я┌п╟п╨п╩п╟я│я│п╟ ATTR.
 $SYNTAX$
 	AttrBodyByName(<sObjClassName>) 	--> <oData>
 $ARGUMENTS$
 	<sClassObjName>	String, class name.
 $LANG_RU$
-	<sClassObjName>	String, название класса.
+	<sClassObjName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ п╨п╩п╟я│я│п╟.
 $RETURNS$
 	Returns <oData> - object of class ATTR.
 $LANG_RU$
-	Возвращает <oData> - объект класса ATTR.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ <oData> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ ATTR.
 $DESCRIPTION$
 	AttrBodyByName() returns <oData> - object of class ATTR with name <sClassObjName>.
 $LANG_RU$
-	AttrBodyByName() возвращает <oData> - объект класса ATTR с именем <sClassObjName>.
+	AttrBodyByName() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <oData> - п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ ATTR я│ п╦п╪п╣п╫п╣п╪ <sClassObjName>.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -426,23 +426,23 @@ $METHODNAME$
 $SUMMARY$
 	Returns properties name by hashcode.
 $LANG_RU$
-	Вернуть название свойства по хэш-коду.
+	п▓п╣я─п╫я┐я┌я▄ п╫п╟п╥п╡п╟п╫п╦п╣ я│п╡п╬п╧я│я┌п╡п╟ п©п╬ я┘я█я┬-п╨п╬п╢я┐.
 $SYNTAX$
 	HashName(<nHashCode>) 	--> <sName>
 $ARGUMENTS$
 	<nHashCode>	Numeric, hashcode
 $LANG_RU$
-	<nHashCode>	Numeric, хэш-код
+	<nHashCode>	Numeric, я┘я█я┬-п╨п╬п╢
 $RETURNS$
 	Returns properties name by hashcode.
 $LANG_RU$
-	Возвращает название свойства по хэш-коду.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╟п╥п╡п╟п╫п╦п╣ я│п╡п╬п╧я│я┌п╡п╟ п©п╬ я┘я█я┬-п╨п╬п╢я┐.
 $DESCRIPTION$
 	HashName() returns <sName> properties name by hashcode <nHashCode> or
 	empty string if unfortunately.
 $LANG_RU$
-	HashName() возвращает <sName> название свойства по хэш-коду <nHashCode> или
-	пустую строку в случае неуспеха.
+	HashName() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <sName> п╫п╟п╥п╡п╟п╫п╦п╣ я│п╡п╬п╧я│я┌п╡п╟ п©п╬ я┘я█я┬-п╨п╬п╢я┐ <nHashCode> п╦п╩п╦
+	п©я┐я│я┌я┐я▌ я│я┌я─п╬п╨я┐ п╡ я│п╩я┐я┤п╟п╣ п╫п╣я┐я│п©п╣я┘п╟.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -450,7 +450,7 @@ $METHODNAME$
 $SUMMARY$
 	Returns counter value.
 $LANG_RU$
-	Вернуть значение счетчика.
+	п▓п╣я─п╫я┐я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ я│я┤п╣я┌я┤п╦п╨п╟.
 $SYNTAX$
 	Counter(<sCounterName>, <nDep>[, <nValue>]) 	--> <nCounter>
 $ARGUMENTS$
@@ -458,24 +458,24 @@ $ARGUMENTS$
 	<nDep>		Numeric, the depository number
 	<nValue>	Numeric, the new counter value
 $LANG_RU$
-	<sCounterName>	String, название счетчика
-	<nDep>		Numeric, номер депозитария
-	<nValue>	Numeric, новое значение счетчика
+	<sCounterName>	String, п╫п╟п╥п╡п╟п╫п╦п╣ я│я┤п╣я┌я┤п╦п╨п╟
+	<nDep>		Numeric, п╫п╬п╪п╣я─ п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐
+	<nValue>	Numeric, п╫п╬п╡п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я│я┤п╣я┌я┤п╦п╨п╟
 $RETURNS$
 	Returns current counter value.
 $LANG_RU$
-	Возвращает текущее значение счетчика.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ я┌п╣п╨я┐я┴п╣п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я│я┤п╣я┌я┤п╦п╨п╟.
 $DESCRIPTION$
 	Counter() returns <nCounter> the current value for counter with name
 	<sCounterName> into depository with number <nDep>.
 
 	If specified <nValue>, then counter <sCounterName> takes new value <nValue>.
 $LANG_RU$
-	Counter() возвращает <nCounter> текущее значение счетчика с именем
-	<sCounterName> для депозитария с номером <nDep>.
+	Counter() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <nCounter> я┌п╣п╨я┐я┴п╣п╣ п╥п╫п╟я┤п╣п╫п╦п╣ я│я┤п╣я┌я┤п╦п╨п╟ я│ п╦п╪п╣п╫п╣п╪
+	<sCounterName> п╢п╩я▐ п╢п╣п©п╬п╥п╦я┌п╟я─п╦я▐ я│ п╫п╬п╪п╣я─п╬п╪ <nDep>.
 
-	Если определено значение <nValue>, счетчик <sCounterName> устанавливается
-	в <nValue>.
+	п∙я│п╩п╦ п╬п©я─п╣п╢п╣п╩п╣п╫п╬ п╥п╫п╟я┤п╣п╫п╦п╣ <nValue>, я│я┤п╣я┌я┤п╦п╨ <sCounterName> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐
+	п╡ <nValue>.
 $ENDMETHOD$
 
 

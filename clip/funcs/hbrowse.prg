@@ -14,7 +14,7 @@
 #define COLOR_DIALOG	"0/7, 15/1"
 #define COLOR_TEXTAREA	"11/1,11/1,0/2,0/3,0/7,1/3"
 #define TAB_SIZE	8
-#define DELIMITER	"─"
+#define DELIMITER	"─" //utf-8: "Б■─"
 #define LISTDELTA	4
 #define LIST_TYPE	1
 #define LIST_DEEP	2
@@ -120,7 +120,7 @@ local obj
 	obj:getHcolor	:= @getHcolor()
 	obj:new_clr	:= @new_clr()
 	obj:rest_clr	:= @rest_clr()
-	obj:__colors 	:= {}      // палитры цветов
+	obj:__colors 	:= {}      // colors palettes
 	obj:__setColor 	:= @__setcolor()
 	obj:__setcolor()
 
@@ -303,7 +303,7 @@ local buf, timeout:=60
 			sleep(1)
 		endif
 	enddo
-	/*пропустить заголовок*/
+	/* skip header */
 	sleep(0.1)
 	while  !::url:fileeof()
 	    if upper(::url:protocol) == "FILE"
@@ -884,9 +884,9 @@ tbl - items array
 
 	width -= len(::tbl[::numTable]:TColumns)-1
 
-	// если указана ширина таблицы
+	// if table width is specified
 	if width>0
-		// фактич ширина
+		// real width
 		fact := 0
 		for i=1 to len(item:Tcolumns)
 			fact += item:Tcolumns[i]
@@ -1057,7 +1057,7 @@ static function add_Table( caption, border)
 local i, j, s, s1, w, t, k, arr, c_repl, e_str, c_str, cell, ctbl, celine
 local tcolor, wfact, rl, symb, x, y, dc, rc, rtbl, elem, hcls, ls, spos
 local cell_pos:={}
-local box:={"┌","─","┬","┐","│","├","┤","┼","└","┴","┘"}
+local box:={"┌","─","┬","┐","│","├","┤","┼","└","┴","┘"} //utf-8: {"Б■▄","Б■─","Б■╛","Б■░","Б■┌","Б■°","Б■╓","Б■╪","Б■■","Б■╢","Б■≤"}
       //     1   2   3   4   5   6   7   8   9   0   1
 	border := iif(border==NIL, .f., .t.)
 	caption := iif(caption==NIL, "", caption)
@@ -1084,34 +1084,34 @@ local box:={"┌","─","┬","┐","│","├","┤","┼","└","┴","┘"}
 			::doc:Text(padc(arr[i], j),,,,,::clr)
 		next
 	endif
-	tcolor := ::clr // цвет таблицы
+	tcolor := ::clr // table color
 	::doc:Text(s,,,,,tcolor)
 	::newLine(, .t.)
 	// write body
 	c_repl := .f.
 	for i=1 to len(ctbl)
-		// левый символ
+		// left symbol
 		ls := box[5]
 		::doc:Text(ls,,,,,tcolor)
-		// высота ячеек в строке
+		// height of cells in a row
 		hcls := 1
-		// начальная строка таблицы
+		// initial row of the table
 		rtbl := ::doc:n_Line
 		rc := ::doc:n_Pos
 		for j=1 to len(ctbl[i])
 			elem := ctbl[i][j]
-			w := elem:WIDTH //ширина ячейки
+			w := elem:WIDTH // cell width
 			if len(cell_pos) < j
 				aadd(cell_pos, rc)
 			else
 				cell_pos[j] := rc
 			endif
-			// нижняя граница ячеек
+			// bottom cell border
 			if j==1
 				s1 := symb_tbl(ctbl, i, j-1)
 			endif
 			s1 += replicate(iif(elem:ROW>1 .and. i!=len(ctbl), " ", box[2]), elem:WIDTH)
-			// ширина текущей ячейки/ячеек, если col > 1
+			// Current ceil(s) width, if col > 1
 			for k=2 to elem:COL
 				w += ctbl[i][j+k-1]:WIDTH
 				s1 += symb_tbl(ctbl, i, j+k-2)
@@ -1125,13 +1125,13 @@ local box:={"┌","─","┬","┐","│","├","┤","┼","└","┴","┘"}
 			j += elem:COL-1
 			w += elem:COL-1
 
-			// размещение текста в строке ячейки
+			// text placement in a cell line
 			if !"ALIGN"$elem
 				elem:ALIGN := ""
 			endif
 
-			// теперь весь текст ячейки
-			// если пустая ячейка
+			// now all cell text
+			// if cell is empty
 			if !("text"$elem) .or. len(elem:text)==0
 				::doc:Text(" ":replicate(w),rtbl,rc,,,tcolor)
 				::doc:refresh()
@@ -1155,12 +1155,12 @@ local box:={"┌","─","┬","┐","│","├","┤","┼","└","┴","┘"}
 				s1 += symb_tbl(ctbl, i, j)
 				loop
 			endif
-			// если не пустая ячейка
+			// id cell isn't empty
 			rl := 0
 
 			do while (len(elem:text) > 0)
-				// сколько элементов влезет в одну строку ячейки
-				wfact := 0 // фактическая ширина данных в таблице
+				// how many items fit in one row of the cell
+				wfact := 0 // actual width of the data in table
 				y := 0
 				for x=1 to len(elem:text)
 					if wfact +elem:text[x][2] <= w

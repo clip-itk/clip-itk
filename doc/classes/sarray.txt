@@ -3,11 +3,11 @@ $CLASSNAME$
 $SUMMARY$
 	Class are destined to control of sorted data.
 $LANG_RU$
-	Класс предназначен для управления сортированными данными.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫я▀п╪п╦ п╢п╟п╫п╫я▀п╪п╦.
 $ABOUT$
 	Class are destined to control of sorted data.
 $LANG_RU$
-	Класс предназначен для управления сортированными данными.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫я▀п╪п╦ п╢п╟п╫п╫я▀п╪п╦.
 $SYNTAX$
 	tSortedArrayNew() 	--> SortedArray object
 	tSortedArray() 		--> SortedArray object
@@ -16,16 +16,16 @@ $ATTRIBUTES$
 	<Error> String, when error arisen, <Error> contains error description
 	<Found> Logical, if TRUE, then item founded by seeking.
 $LANG_RU$
-	<Items> Array, массив
-	<Error> String, содержит описание ошибки, если она произошла.
-	<Found> Logical, если TRUE, то поиск был успешен.
+	<Items> Array, п╪п╟я│я│п╦п╡
+	<Error> String, я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦, п╣я│п╩п╦ п╬п╫п╟ п©я─п╬п╦п╥п╬я┬п╩п╟.
+	<Found> Logical, п╣я│п╩п╦ TRUE, я┌п╬ п©п╬п╦я│п╨ п╠я▀п╩ я┐я│п©п╣я┬п╣п╫.
 
 $METHODNAME$
 	tSortedArrayNew()
 $SUMMARY$
 	SORTEDARRAY constructor.
 $LANG_RU$
-	Конструктор класса SORTEDARRAY.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╨п╩п╟я│я│п╟ SORTEDARRAY.
 $SYNTAX$
 	tSortedArrayNew() 	--> SortedArray object
 	tSortedArray() 		--> SortedArray object
@@ -34,14 +34,14 @@ $ARGUMENTS$
 $RETURNS$
 	Returns new SORTEDARRAY object
 $LANG_RU$
-	Возвращает новый объект класса SORTEDARRAY
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ SORTEDARRAY
 $DESCRIPTION$
 	tSortedArrayNew() is constructs and returns new sorted array object.
 	That class can be used to storage, access, control sorted data.
 $LANG_RU$
-	tSortedArrayNew() создает и возвращает новый объект класса SORTEDARRAY.
-	Этот класс может быть использован для хранения, быстрого доступа, управления
-	сортированными данными.
+	tSortedArrayNew() я│п╬п╥п╢п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ SORTEDARRAY.
+	п╜я┌п╬я┌ п╨п╩п╟я│я│ п╪п╬п╤п╣я┌ п╠я▀я┌я▄ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐, п╠я▀я│я┌я─п╬пЁп╬ п╢п╬я│я┌я┐п©п╟, я┐п©я─п╟п╡п╩п╣п╫п╦я▐
+	я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫я▀п╪п╦ п╢п╟п╫п╫я▀п╪п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -49,19 +49,19 @@ $METHODNAME$
 $SUMMARY$
 	Add new element to sorted array.
 $LANG_RU$
-	Добавить новый элемент.
+	п■п╬п╠п╟п╡п╦я┌я▄ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌.
 $SYNTAX$
 	Add(<nKey>, <Value>) 	--> .T./.F.
 $ARGUMENTS$
 	<nKey> Numeric, a sorting key
 	<Value>	a value to be added in to <Items>.
 $LANG_RU$
-	<nKey> Numeric, ключ сортировки
-	<Value>	добавляемые данные
+	<nKey> Numeric, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦
+	<Value>	п╢п╬п╠п╟п╡п╩я▐п╣п╪я▀п╣ п╢п╟п╫п╫я▀п╣
 $RETURNS$
 	If adding is success then returns value is TRUE , else is FALSE
 $LANG_RU$
-	Если добавление прошло успешно возвращает TRUE, иначе FALSE.
+	п∙я│п╩п╦ п╢п╬п╠п╟п╡п╩п╣п╫п╦п╣ п©я─п╬я┬п╩п╬ я┐я│п©п╣я┬п╫п╬ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╦п╫п╟я┤п╣ FALSE.
 $DESCRIPTION$
 	Add() is added new item to class SortedArray with key
 	<nKey> and value <Value>. Every item
@@ -75,15 +75,15 @@ $DESCRIPTION$
 	You can add several items with identical keys. In this case class SortedArray
 	will contain all these items and item can be inserted at suitable place.
 $LANG_RU$
-	Add() добавляет в массив <::Item> новый элемент с ключом
-	<nKey> и значением <Value>. Элементы с наименьшим значением ключа
-	<nKey> будут вставлены в начало массива <::Item>.
-	Если <nKey> или <Value> не определены, атрибут <Error> будет содержать описание
-	ошибки и Add() вернет FALSE.
+	Add() п╢п╬п╠п╟п╡п╩я▐п╣я┌ п╡ п╪п╟я│я│п╦п╡ <::Item> п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ я│ п╨п╩я▌я┤п╬п╪
+	<nKey> п╦ п╥п╫п╟я┤п╣п╫п╦п╣п╪ <Value>. п╜п╩п╣п╪п╣п╫я┌я▀ я│ п╫п╟п╦п╪п╣п╫я▄я┬п╦п╪ п╥п╫п╟я┤п╣п╫п╦п╣п╪ п╨п╩я▌я┤п╟
+	<nKey> п╠я┐п╢я┐я┌ п╡я│я┌п╟п╡п╩п╣п╫я▀ п╡ п╫п╟я┤п╟п╩п╬ п╪п╟я│я│п╦п╡п╟ <::Item>.
+	п∙я│п╩п╦ <nKey> п╦п╩п╦ <Value> п╫п╣ п╬п©я─п╣п╢п╣п╩п╣п╫я▀, п╟я┌я─п╦п╠я┐я┌ <Error> п╠я┐п╢п╣я┌ я│п╬п╢п╣я─п╤п╟я┌я▄ п╬п©п╦я│п╟п╫п╦п╣
+	п╬я┬п╦п╠п╨п╦ п╦ Add() п╡п╣я─п╫п╣я┌ FALSE.
 
-	Вы можете добавить в массив <::Item> несколько элементов с одинаковым
-	ключом, при этом расположение элементов с одинаковым ключом трудно
-	предсказуемо.
+	п▓я▀ п╪п╬п╤п╣я┌п╣ п╢п╬п╠п╟п╡п╦я┌я▄ п╡ п╪п╟я│я│п╦п╡ <::Item> п╫п╣я│п╨п╬п╩я▄п╨п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ я│ п╬п╢п╦п╫п╟п╨п╬п╡я▀п╪
+	п╨п╩я▌я┤п╬п╪, п©я─п╦ я█я┌п╬п╪ я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╬п╡ я│ п╬п╢п╦п╫п╟п╨п╬п╡я▀п╪ п╨п╩я▌я┤п╬п╪ я┌я─я┐п╢п╫п╬
+	п©я─п╣п╢я│п╨п╟п╥я┐п╣п╪п╬.
 $ENDMETHOD$
 
 
@@ -92,23 +92,23 @@ $METHODNAME$
 $SUMMARY$
 	Returns count items into SORTEDARRAY.
 $LANG_RU$
-	Вернуть длину отсортированного массива.
+	п▓п╣я─п╫я┐я┌я▄ п╢п╩п╦п╫я┐ п╬я┌я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟.
 $SYNTAX$
 	Len() 	--> nCount
 $ARGUMENTS$
 $RETURNS$
 	Returns sorted array length.
 $LANG_RU$
-	Возвращает длину сортированного массива
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╢п╩п╦п╫я┐ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟
 $DESCRIPTION$
 	Len() is returned sorted array length what equal lenght of <Items>.
 
 	If sorted array is empty, then method returns zero.
 $LANG_RU$
-	Len() возвращает длину сортированного массива, равную количеству элементов
-	в <::Item>.
+	Len() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╢п╩п╦п╫я┐ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟, я─п╟п╡п╫я┐я▌ п╨п╬п╩п╦я┤п╣я│я┌п╡я┐ я█п╩п╣п╪п╣п╫я┌п╬п╡
+	п╡ <::Item>.
 
-	Если массив <::Item> пуст, Add() возвращает 0.
+	п∙я│п╩п╦ п╪п╟я│я│п╦п╡ <::Item> п©я┐я│я┌, Add() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ 0.
 $ENDMETHOD$
 
 
@@ -117,7 +117,7 @@ $METHODNAME$
 $SUMMARY$
 	Removes some data from SORTEDARRAY.
 $LANG_RU$
-	Удалить элемент из массива.
+	пёп╢п╟п╩п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌ п╦п╥ п╪п╟я│я│п╦п╡п╟.
 $SYNTAX$
 	Del(<nKey>, <Value>)    --> .T. || .F.
 	Delete(<nKey>, <Value>) --> .T. || .F.
@@ -126,12 +126,12 @@ $ARGUMENTS$
 	<nKey>  Numeric, a specified key value.
 	<Value> a data value to be delete from sorted array.
 $LANG_RU$
-	<nKey>  Numeric, ключ сортировки
-	<Value> значение, которое должно быть удалено по ключу.
+	<nKey>  Numeric, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦
+	<Value> п╥п╫п╟я┤п╣п╫п╦п╣, п╨п╬я┌п╬я─п╬п╣ п╢п╬п╩п╤п╫п╬ п╠я▀я┌я▄ я┐п╢п╟п╩п╣п╫п╬ п©п╬ п╨п╩я▌я┤я┐.
 $RETURNS$
 	In successfully returns value is TRUE else is FALSE.
 $LANG_RU$
-	В случае успеха возвращает TRUE, иначе FALSE.
+	п▓ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╦п╫п╟я┤п╣ FALSE.
 $DESCRIPTION$
 	Del(), Delete(), DelKey() is deleted item from
 	 sorted array by key and value.
@@ -143,12 +143,12 @@ $DESCRIPTION$
 	 When element with <nKey> and <Value> not
 	 found methods returns FALSE and write error description to attribute <Error>.
 $LANG_RU$
-	Del(), Delete(), DelKey() удаляют из массива <::Item> элемент с ключом
-	<nKey> и значением <Value>ю
+	Del(), Delete(), DelKey() я┐п╢п╟п╩я▐я▌я┌ п╦п╥ п╪п╟я│я│п╦п╡п╟ <::Item> я█п╩п╣п╪п╣п╫я┌ я│ п╨п╩я▌я┤п╬п╪
+	<nKey> п╦ п╥п╫п╟я┤п╣п╫п╦п╣п╪ <Value>я▌
 
-	Если параметры <nKey> или <Value> не определены или же в <::Item> отсутствует
-	элемент с ключом <nKey> и значением <Value>, Add() возвращает FALSE, а атрибут
-	<::Error> содержит описание ошибки.
+	п∙я│п╩п╦ п©п╟я─п╟п╪п╣я┌я─я▀ <nKey> п╦п╩п╦ <Value> п╫п╣ п╬п©я─п╣п╢п╣п╩п╣п╫я▀ п╦п╩п╦ п╤п╣ п╡ <::Item> п╬я┌я│я┐я┌я│я┌п╡я┐п╣я┌
+	я█п╩п╣п╪п╣п╫я┌ я│ п╨п╩я▌я┤п╬п╪ <nKey> п╦ п╥п╫п╟я┤п╣п╫п╦п╣п╪ <Value>, Add() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ FALSE, п╟ п╟я┌я─п╦п╠я┐я┌
+	<::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $ENDMETHOD$
 
 
@@ -157,17 +157,17 @@ $METHODNAME$
 $SUMMARY$
 	Delete element from sorted array by index.
 $LANG_RU$
-	Удалить элемент по индексу.
+	пёп╢п╟п╩п╦я┌я▄ я█п╩п╣п╪п╣п╫я┌ п©п╬ п╦п╫п╢п╣п╨я│я┐.
 $SYNTAX$
 	DelItem(<nPos>)    --> .T. || .F.
 $ARGUMENTS$
 	<nPos> Numeric, items index in sorted array.
 $LANG_RU$
-	<nPos> Numeric, индекс элемента в массиве
+	<nPos> Numeric, п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╪п╟я│я│п╦п╡п╣
 $RETURNS$
 	In successfully  returns value is TRUE else FALSE.
 $LANG_RU$
-	В случае успеха возвращает TRUE, иначе FALSE.
+	п▓ я│п╩я┐я┤п╟п╣ я┐я│п©п╣я┘п╟ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE, п╦п╫п╟я┤п╣ FALSE.
 $DESCRIPTION$
 	DelItem() is removed item from sorted array by index and returns TRUE.
 
@@ -175,9 +175,9 @@ $DESCRIPTION$
 	method return FALSE and write to attribute
 	<Error> error descriptions.
 $LANG_RU$
-	DelItem() удаляет из массива <::Item> элемент с индексом <nPos> и
-	возвращает TRUE. Все элементы ниже удаленного сдвигаются вверх на
-	одну позицию.
+	DelItem() я┐п╢п╟п╩я▐п╣я┌ п╦п╥ п╪п╟я│я│п╦п╡п╟ <::Item> я█п╩п╣п╪п╣п╫я┌ я│ п╦п╫п╢п╣п╨я│п╬п╪ <nPos> п╦
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE. п▓я│п╣ я█п╩п╣п╪п╣п╫я┌я▀ п╫п╦п╤п╣ я┐п╢п╟п╩п╣п╫п╫п╬пЁп╬ я│п╢п╡п╦пЁп╟я▌я┌я│я▐ п╡п╡п╣я─я┘ п╫п╟
+	п╬п╢п╫я┐ п©п╬п╥п╦я├п╦я▌.
 
 $ENDMETHOD$
 
@@ -186,7 +186,7 @@ $METHODNAME$
 $SUMMARY$
 	Seek element in sorted array.
 $LANG_RU$
-	Поиск элемента в массиве
+	п÷п╬п╦я│п╨ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╪п╟я│я│п╦п╡п╣
 $SYNTAX$
 	Seek(<nKey>[, <lSoft>])    --> nPos
 $ARGUMENTS$
@@ -198,17 +198,17 @@ $ARGUMENTS$
 
 		By default <lSoft> is .F.
 $LANG_RU$
-	<nKey> Numeric, ключ сортировки
+	<nKey> Numeric, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦
 
-	<lSoft>	Logical, если TRUE, параметр определяет режим мягкого поиска.
-		Этот ключ используется для реакции на ситуацию, когда элемент не
-		найден. По умолчанию <lSoft> - FALSE
+	<lSoft>	Logical, п╣я│п╩п╦ TRUE, п©п╟я─п╟п╪п╣я┌я─ п╬п©я─п╣п╢п╣п╩я▐п╣я┌ я─п╣п╤п╦п╪ п╪я▐пЁп╨п╬пЁп╬ п©п╬п╦я│п╨п╟.
+		п╜я┌п╬я┌ п╨п╩я▌я┤ п╦я│п©п╬п╩я▄п╥я┐п╣я┌я│я▐ п╢п╩я▐ я─п╣п╟п╨я├п╦п╦ п╫п╟ я│п╦я┌я┐п╟я├п╦я▌, п╨п╬пЁп╢п╟ я█п╩п╣п╪п╣п╫я┌ п╫п╣
+		п╫п╟п╧п╢п╣п╫. п÷п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ <lSoft> - FALSE
 $RETURNS$
 	Is returns item index whose key value is equal <nKey> if specified
 	key value was found, otherwise it returns Len()+1.
 $LANG_RU$
-	Возвращает индекс элемента, ключ сортировки которого равен <nKey>, иначе
-	возвращает <::Len()+1>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦ п╨п╬я┌п╬я─п╬пЁп╬ я─п╟п╡п╣п╫ <nKey>, п╦п╫п╟я┤п╣
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <::Len()+1>
 $DESCRIPTION$
 	Seek() moves to the first item whose key is
 	equal to <nKey>. If such a item is found, it becomes to current
@@ -222,17 +222,17 @@ $DESCRIPTION$
 	sorted array positioned to Len()+1 and returns Len() + 1 and
 	sets attribute <Found> sets to FALSE.
 $LANG_RU$
-	Seek() перемещает указатель на первый элемент, ключ которого равен
-	<nKey>. Если такой элемент найден, он становится текущим и Seek()
-	возвращает индекс(порядковый номер) этого элемента в массиве <::Item>,
-	атрибут <::Found> устанавливается в TRUE, иначе Seek() возвращает
-	Len() +1 позицию и атрибут <::Found> устанавливается в  FALSE.
+	Seek() п©п╣я─п╣п╪п╣я┴п╟п╣я┌ я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╫п╟ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌, п╨п╩я▌я┤ п╨п╬я┌п╬я─п╬пЁп╬ я─п╟п╡п╣п╫
+	<nKey>. п∙я│п╩п╦ я┌п╟п╨п╬п╧ я█п╩п╣п╪п╣п╫я┌ п╫п╟п╧п╢п╣п╫, п╬п╫ я│я┌п╟п╫п╬п╡п╦я┌я│я▐ я┌п╣п╨я┐я┴п╦п╪ п╦ Seek()
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│(п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─) я█я┌п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╪п╟я│я│п╦п╡п╣ <::Item>,
+	п╟я┌я─п╦п╠я┐я┌ <::Found> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╡ TRUE, п╦п╫п╟я┤п╣ Seek() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌
+	Len() +1 п©п╬п╥п╦я├п╦я▌ п╦ п╟я┌я─п╦п╠я┐я┌ <::Found> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╡  FALSE.
 
-	Позиционирование в сортированном массиве следующее: для нормальной
-	(жесткой) сортировки (<::lSoft> == FALSE), указатель в массиве позиционируется
-	на  Len() + 1; для мягкого поиска (<::lSoft> == TRUE), позиционируется на
-	первый элемент, чей ключ больше, чем <nKey>. Если такого элемента нет,
-	позиционируется на Len()+1 и возвращает Len() + 1, а атрибут <::Found> устанавливается в  FALSE.
+	п÷п╬п╥п╦я├п╦п╬п╫п╦я─п╬п╡п╟п╫п╦п╣ п╡ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬п╪ п╪п╟я│я│п╦п╡п╣ я│п╩п╣п╢я┐я▌я┴п╣п╣: п╢п╩я▐ п╫п╬я─п╪п╟п╩я▄п╫п╬п╧
+	(п╤п╣я│я┌п╨п╬п╧) я│п╬я─я┌п╦я─п╬п╡п╨п╦ (<::lSoft> == FALSE), я┐п╨п╟п╥п╟я┌п╣п╩я▄ п╡ п╪п╟я│я│п╦п╡п╣ п©п╬п╥п╦я├п╦п╬п╫п╦я─я┐п╣я┌я│я▐
+	п╫п╟  Len() + 1; п╢п╩я▐ п╪я▐пЁп╨п╬пЁп╬ п©п╬п╦я│п╨п╟ (<::lSoft> == TRUE), п©п╬п╥п╦я├п╦п╬п╫п╦я─я┐п╣я┌я│я▐ п╫п╟
+	п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌, я┤п╣п╧ п╨п╩я▌я┤ п╠п╬п╩я▄я┬п╣, я┤п╣п╪ <nKey>. п∙я│п╩п╦ я┌п╟п╨п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╫п╣я┌,
+	п©п╬п╥п╦я├п╦п╬п╫п╦я─я┐п╣я┌я│я▐ п╫п╟ Len()+1 п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ Len() + 1, п╟ п╟я┌я─п╦п╠я┐я┌ <::Found> я┐я│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п╡  FALSE.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -240,25 +240,25 @@ $METHODNAME$
 $SUMMARY$
 	Soft seek element in sorted array.
 $LANG_RU$
-	Мягкий поиск элемента.
+	п°я▐пЁп╨п╦п╧ п©п╬п╦я│п╨ я█п╩п╣п╪п╣п╫я┌п╟.
 $SYNTAX$
 	SoftSeek(<nKey>)    --> nPos
 $ARGUMENTS$
 	<nKey> Numeric, a specified key value that you search.
 $LANG_RU$
-	<nKey> Numeric, ключ сортировки
+	<nKey> Numeric, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦
 $RETURNS$
 	Is returns item index whose key value is equal <nKey> if specified
 	key value was found, otherwise it returns the first item whose key value is
 	greather than specified key <nKey>.
 $LANG_RU$
-	Возвращает индекс элемента, ключ сортировки которого равен <nKey>, иначе
-	возвращает индекс элемента, ключ сортировки которого больше <nKey>.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦ п╨п╬я┌п╬я─п╬пЁп╬ я─п╟п╡п╣п╫ <nKey>, п╦п╫п╟я┤п╣
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦ п╨п╬я┌п╬я─п╬пЁп╬ п╠п╬п╩я▄я┬п╣ <nKey>.
 $DESCRIPTION$
 	SoftSeek() calls method <link linkend="class-sortedarray-seek">Seek()</link> as
 	Seek(<nKey>, .T.)
 $LANG_RU$
-	SoftSeek() вызывает метод Seek() с параметрами:
+	SoftSeek() п╡я▀п╥я▀п╡п╟п╣я┌ п╪п╣я┌п╬п╢ Seek() я│ п©п╟я─п╟п╪п╣я┌я─п╟п╪п╦:
 	Seek(<nKey>, .T.)
 $ENDMETHOD$
 
@@ -268,24 +268,24 @@ $METHODNAME$
 $SUMMARY$
 	Hard seek element in sorted array.
 $LANG_RU$
-	Жесткий поиск.
+	п√п╣я│я┌п╨п╦п╧ п©п╬п╦я│п╨.
 $SYNTAX$
 	HardSeek(<nKey>)    --> nPos
 $ARGUMENTS$
 	<nKey> Numeric, a specified key value that you search.
 $LANG_RU$
-	<nKey> Numeric, ключ сортировки
+	<nKey> Numeric, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦
 $RETURNS$
 	Is returns item index whose key value is equal <nKey> if specified
 	key value was found, otherwise it returns Len()+1.
 $LANG_RU$
-	Возвращает индекс элемента, ключ сортировки которого равен <nKey>, иначе
-	возвращает <::Len()+1>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟, п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦ п╨п╬я┌п╬я─п╬пЁп╬ я─п╟п╡п╣п╫ <nKey>, п╦п╫п╟я┤п╣
+	п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ <::Len()+1>
 $DESCRIPTION$
 	HardSeek() calls method <link linkend="class-sortedarray-seek">Seek()</link> as
 	Seek(<nKey>, .F.)
 $LANG_RU$
-	HardSeek() вызывает метод Seek() с параметрами:
+	HardSeek() п╡я▀п╥я▀п╡п╟п╣я┌ п╪п╣я┌п╬п╢ Seek() я│ п©п╟я─п╟п╪п╣я┌я─п╟п╪п╦:
 	Seek(<nKey>, .F.)
 $ENDMETHOD$
 
@@ -295,27 +295,27 @@ $METHODNAME$
 $SUMMARY$
 	Get element keys by index in sorted array.
 $LANG_RU$
-	Получить ключ элемента по индексу.
+	п÷п╬п╩я┐я┤п╦я┌я▄ п╨п╩я▌я┤ я█п╩п╣п╪п╣п╫я┌п╟ п©п╬ п╦п╫п╢п╣п╨я│я┐.
 $SYNTAX$
 	GetKey(<nPos>)    --> nKeyValue
 $ARGUMENTS$
 	<nPos> Numeric, item index in sorted array
 $LANG_RU$
-	<nPos> Numeric, индекс элемента в массиве
+	<nPos> Numeric, п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╪п╟я│я│п╦п╡п╣
 $RETURNS$
 	Is returns key value by item index.
 $LANG_RU$
-	Возвращает ключевое выражение по индексу.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╩я▌я┤п╣п╡п╬п╣ п╡я▀я─п╟п╤п╣п╫п╦п╣ п©п╬ п╦п╫п╢п╣п╨я│я┐.
 $DESCRIPTION$
 	GetKey() gets key value by item index in sorted array and returns it if
 	found, otherwise it returns NIL. If index is without of
 	bound sorted array or is NIL then attribute <Error>
 	to be keep error description.
 $LANG_RU$
-	GetKey() возвращает ключ сортировки элемента с индексом <nPos> или,
-	если элемента с индексом <nPos> не существует возвращает NIL.
+	GetKey() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦ я█п╩п╣п╪п╣п╫я┌п╟ я│ п╦п╫п╢п╣п╨я│п╬п╪ <nPos> п╦п╩п╦,
+	п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌п╟ я│ п╦п╫п╢п╣п╨я│п╬п╪ <nPos> п╫п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 
-	В случае возникновения ошибки атрибут <::Error> содержит описание ошибки.
+	п▓ я│п╩я┐я┤п╟п╣ п╡п╬п╥п╫п╦п╨п╫п╬п╡п╣п╫п╦я▐ п╬я┬п╦п╠п╨п╦ п╟я┌я─п╦п╠я┐я┌ <::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $ENDMETHOD$
 
 
@@ -324,27 +324,27 @@ $METHODNAME$
 $SUMMARY$
 	Get element data by index in sorted array.
 $LANG_RU$
-	Вернуть по индексу значение.
+	п▓п╣я─п╫я┐я┌я▄ п©п╬ п╦п╫п╢п╣п╨я│я┐ п╥п╫п╟я┤п╣п╫п╦п╣.
 $SYNTAX$
 	GetData(<nPos>)    --> data
 $ARGUMENTS$
 	<nPos> Numeric, item index in sorted array
 $LANG_RU$
-	<nPos> Numeric, индекс элемента в массиве
+	<nPos> Numeric, п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╪п╟я│я│п╦п╡п╣
 $RETURNS$
 	Is returns data value by item index.
 $LANG_RU$
-	Возвращает по индексу значение.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬ п╦п╫п╢п╣п╨я│я┐ п╥п╫п╟я┤п╣п╫п╦п╣.
 $DESCRIPTION$
 	GetData() gets data value by item index in sorted array and returns it if
 	found, otherwise it returns NIL. If index is without of
 	bound sorted array or is NIL then attribute <Error>
 	to be keep error description.
 $LANG_RU$
-	GetData() возвращает значение элемента с индексом <nPos> или,
-	если элемента с индексом <nPos> не существует возвращает NIL.
+	GetData() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╟ я│ п╦п╫п╢п╣п╨я│п╬п╪ <nPos> п╦п╩п╦,
+	п╣я│п╩п╦ я█п╩п╣п╪п╣п╫я┌п╟ я│ п╦п╫п╢п╣п╨я│п╬п╪ <nPos> п╫п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 
-	В случае возникновения ошибки атрибут <::Error> содержит описание ошибки.
+	п▓ я│п╩я┐я┤п╟п╣ п╡п╬п╥п╫п╦п╨п╫п╬п╡п╣п╫п╦я▐ п╬я┬п╦п╠п╨п╦ п╟я┌я─п╦п╠я┐я┌ <::Error> я│п╬п╢п╣я─п╤п╦я┌ п╬п©п╦я│п╟п╫п╦п╣ п╬я┬п╦п╠п╨п╦.
 $ENDMETHOD$
 
 
@@ -353,17 +353,17 @@ $METHODNAME$
 $SUMMARY$
 	Get item are sorted array by index.
 $LANG_RU$
-	Вернуть элемент по индексу.
+	п▓п╣я─п╫я┐я┌я▄ я█п╩п╣п╪п╣п╫я┌ п©п╬ п╦п╫п╢п╣п╨я│я┐.
 $SYNTAX$
 	GetItem(<nPos>)    --> aItem
 $ARGUMENTS$
 	<nPos> Numeric, item index in sorted array
 $LANG_RU$
-	<nPos> Numeric, индекс элемента в массиве
+	<nPos> Numeric, п╦п╫п╢п╣п╨я│ я█п╩п╣п╪п╣п╫я┌п╟ п╡ п╪п╟я│я│п╦п╡п╣
 $RETURNS$
 	Is returns array that contain key value and data value.
 $LANG_RU$
-	Возвращает массив, содержащий ключ и значение элемента с индексом <nPos>
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╪п╟я│я│п╦п╡, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╨п╩я▌я┤ п╦ п╥п╫п╟я┤п╣п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╟ я│ п╦п╫п╢п╣п╨я│п╬п╪ <nPos>
 $DESCRIPTION$
 	GetItem() gets key value and data value by item index in sorted array
 	and returns array containes it.
@@ -371,8 +371,8 @@ $DESCRIPTION$
 	bound sorted array or is NIL then attribute <Error>
 	to be keep error description.
 $LANG_RU$
-	GetItem() возвращает массив, содержащий ключ сортировки и значение элемента
-	массива <::Item> по индексу <nPos>
+	GetItem() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╪п╟я│я│п╦п╡, я│п╬п╢п╣я─п╤п╟я┴п╦п╧ п╨п╩я▌я┤ я│п╬я─я┌п╦я─п╬п╡п╨п╦ п╦ п╥п╫п╟я┤п╣п╫п╦п╣ я█п╩п╣п╪п╣п╫я┌п╟
+	п╪п╟я│я│п╦п╡п╟ <::Item> п©п╬ п╦п╫п╢п╣п╨я│я┐ <nPos>
 $ENDMETHOD$
 
 
@@ -381,23 +381,23 @@ $METHODNAME$
 $SUMMARY$
 	Get first item data are sorted array.
 $LANG_RU$
-	Вернуть значение первого элемента сортированного массива
+	п▓п╣я─п╫я┐я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╡п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟
 $SYNTAX$
 	GetFirst()    --> data value
 $ARGUMENTS$
 $RETURNS$
 	Is returns data value of first item sorted array.
 $LANG_RU$
-	Возвращает значение первого элемента.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╡п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $DESCRIPTION$
 	GetFirst() gets data value first items sorted array
 	and returns it.
 
 	If no items in sorted array it returns NIL.
 $LANG_RU$
-	GetFirst() Возвращает значение первого элемента массива <::Item>.
+	GetFirst() п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╣я─п╡п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╪п╟я│я│п╦п╡п╟ <::Item>.
 
-	Если <::Item> пуст, GetFirst() возаращает NIL.
+	п∙я│п╩п╦ <::Item> п©я┐я│я┌, GetFirst() п╡п╬п╥п╟я─п╟я┴п╟п╣я┌ NIL.
 $ENDMETHOD$
 
 
@@ -406,22 +406,22 @@ $METHODNAME$
 $SUMMARY$
 	Get last item data are sorted array.
 $LANG_RU$
-	Вернуть значение последнего элемента сортированного массива
+	п▓п╣я─п╫я┐я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬я│п╩п╣п╢п╫п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ я│п╬я─я┌п╦я─п╬п╡п╟п╫п╫п╬пЁп╬ п╪п╟я│я│п╦п╡п╟
 $SYNTAX$
 	GetLast()    --> data value
 $ARGUMENTS$
 $RETURNS$
 	Is returns data value of last item sorted array.
 $LANG_RU$
-	Возвращает значение последнего элемента.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬я│п╩п╣п╢п╫п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $DESCRIPTION$
 	GetLast() gets data value last added items in to sorted array
 	and returns it.
 	If no items in sorted array it returns NIL.
 $LANG_RU$
-	GetLast() Возвращает значение последнего элемента массива <::Item>.
+	GetLast() п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╥п╫п╟я┤п╣п╫п╦п╣ п©п╬я│п╩п╣п╢п╫п╣пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟ п╪п╟я│я│п╦п╡п╟ <::Item>.
 
-	Если <::Item> пуст, GetFirst() возаращает NIL.
+	п∙я│п╩п╦ <::Item> п©я┐я│я┌, GetFirst() п╡п╬п╥п╟я─п╟я┴п╟п╣я┌ NIL.
 $ENDMETHOD$
 
 $EXAMPLES$

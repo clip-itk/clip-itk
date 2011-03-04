@@ -32,7 +32,7 @@ local window, buffer, view, layout, bins
         gtk_ItemFactoryCreateItems(ifactory, imenu, window)
 
 
-        /* * то же самое, но поэлементно добавляет
+        /* * the same, but adds the element-by-element
         gtk_ItemFactoryCreateItem(ifactory, ;
         	{ "/_File",    NIL,          0,                 0,"<Branch>" }, 1)
         gtk_ItemFactoryCreateItem(ifactory, ;
@@ -40,7 +40,7 @@ local window, buffer, view, layout, bins
         gtk_ItemFactoryCreateItem(ifactory, ;
 	  	{ "/File/New _View",   NIL, @do_new_view(), 0, NIL }, 1)
         */
-  	/* добавить accel_group в объект window */
+  	/* add accel_group to object window */
   	gtk_WindowAddAccelGroup (window, accel)
 
         vbox := gtk_vboxNew()

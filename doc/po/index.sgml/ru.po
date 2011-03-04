@@ -8,7 +8,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: template/./index.sgml:163 template/./index.sgml:196
@@ -17,12 +17,12 @@ msgstr "ru"
 
 #: template/./index.sgml:164
 msgid "xBase and Clipper language compatible compiler"
-msgstr "Компилятор, совместимый с языками семейства xBase и Clipper"
+msgstr "п п╬п╪п©п╦п╩я▐я┌п╬я─, я│п╬п╡п╪п╣я│я┌п╦п╪я▀п╧ я│ я▐п╥я▀п╨п╟п╪п╦ я│п╣п╪п╣п╧я│я┌п╡п╟ xBase п╦ Clipper"
 
 #: template/./index.sgml:168
 msgid "Object oriented, CA-Clipper compatible compiler"
-msgstr "Объектно-ориентированный, CA-Clipper совместимый компилятор"
+msgstr "п·п╠я┼п╣п╨я┌п╫п╬-п╬я─п╦п╣п╫я┌п╦я─п╬п╡п╟п╫п╫я▀п╧, CA-Clipper я│п╬п╡п╪п╣я│я┌п╦п╪я▀п╧ п╨п╬п╪п©п╦п╩я▐я┌п╬я─"
 
 #: template/./index.sgml:197
 msgid "COM-port access library"
-msgstr "Библиотека доступа к COM портам"
+msgstr "п▒п╦п╠п╩п╦п╬я┌п╣п╨п╟ п╢п╬я│я┌я┐п©п╟ п╨ COM п©п╬я─я┌п╟п╪"

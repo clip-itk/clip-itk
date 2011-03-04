@@ -3,11 +3,11 @@ $CLASSNAME$
 $SUMMARY$
 	Class  are destined to control queues make from arbitrary data.
 $LANG_RU$
-	Класс предназначен для управления разнотипными данными, организованными в очередь.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я─п╟п╥п╫п╬я┌п╦п©п╫я▀п╪п╦ п╢п╟п╫п╫я▀п╪п╦, п╬я─пЁп╟п╫п╦п╥п╬п╡п╟п╫п╫я▀п╪п╦ п╡ п╬я┤п╣я─п╣п╢я▄.
 $ABOUT$
 	Class  are destined to control queues make from arbitrary data.
 $LANG_RU$
-	Класс предназначен для управления разнотипными данными, организованными в очередь.
+	п п╩п╟я│я│ п©я─п╣п╢п╫п╟п╥п╫п╟я┤п╣п╫ п╢п╩я▐ я┐п©я─п╟п╡п╩п╣п╫п╦я▐ я─п╟п╥п╫п╬я┌п╦п©п╫я▀п╪п╦ п╢п╟п╫п╫я▀п╪п╦, п╬я─пЁп╟п╫п╦п╥п╬п╡п╟п╫п╫я▀п╪п╦ п╡ п╬я┤п╣я─п╣п╢я▄.
 $SYNTAX$
 	QueueNew() --> QUEUE object
 $ATTRIBUTES$
@@ -15,14 +15,14 @@ $ATTRIBUTES$
 	<Data>		Array, array of arbitrary data.
 $LANG_RU$
 	<ClassName> 	QUEUE
-	<Data>		Array, массив разнотипных данных.
+	<Data>		Array, п╪п╟я│я│п╦п╡ я─п╟п╥п╫п╬я┌п╦п©п╫я▀я┘ п╢п╟п╫п╫я▀я┘.
 
 $METHODNAME$
 	QueueNew()
 $SUMMARY$
 	QUEUE object constructor.
 $LANG_RU$
-	Конструктор объекта QUEUE.
+	п п╬п╫я│я┌я─я┐п╨я┌п╬я─ п╬п╠я┼п╣п╨я┌п╟ QUEUE.
 $SYNTAX$
 	QueueNew() --> QUEUE object
 $ARGUMENTS$
@@ -30,15 +30,15 @@ $ARGUMENTS$
 $RETURNS$
 	Method returns new QUEUE object.
 $LANG_RU$
-	Метод возвращает новый объект QUEUE.
+	п°п╣я┌п╬п╢ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ QUEUE.
 $DESCRIPTION$
 	QueueNew() is constructs and returns new QUEUE object.
 	That class can be use to manipulating( put, get, read) queues
 	made from arbitrary types data.
 $LANG_RU$
-	QueueNew() создает и возвращает новый объект класса QUEUE.
-	Этот объект может использоваться для манипуляций ( положить, достать,
-	прочитать) очередью, организованной из разнотипных данных.
+	QueueNew() я│п╬п╥п╢п╟п╣я┌ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╫п╬п╡я▀п╧ п╬п╠я┼п╣п╨я┌ п╨п╩п╟я│я│п╟ QUEUE.
+	п╜я┌п╬я┌ п╬п╠я┼п╣п╨я┌ п╪п╬п╤п╣я┌ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄я│я▐ п╢п╩я▐ п╪п╟п╫п╦п©я┐п╩я▐я├п╦п╧ ( п©п╬п╩п╬п╤п╦я┌я▄, п╢п╬я│я┌п╟я┌я▄,
+	п©я─п╬я┤п╦я┌п╟я┌я▄) п╬я┤п╣я─п╣п╢я▄я▌, п╬я─пЁп╟п╫п╦п╥п╬п╡п╟п╫п╫п╬п╧ п╦п╥ я─п╟п╥п╫п╬я┌п╦п©п╫я▀я┘ п╢п╟п╫п╫я▀я┘.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -46,23 +46,23 @@ $METHODNAME$
 $SUMMARY$
 	Put data to queue.
 $LANG_RU$
-	Положить данные в очередь.
+	п÷п╬п╩п╬п╤п╦я┌я▄ п╢п╟п╫п╫я▀п╣ п╡ п╬я┤п╣я─п╣п╢я▄.
 $SYNTAX$
 	Put(<vData>) --> <nItem>
 $ARGUMENTS$
 	<vData>  - data to putting
 $LANG_RU$
-	<vData>	 - данные, которые должны быть положены в очередь.
+	<vData>	 - п╢п╟п╫п╫я▀п╣, п╨п╬я┌п╬я─я▀п╣ п╢п╬п╩п╤п╫я▀ п╠я▀я┌я▄ п©п╬п╩п╬п╤п╣п╫я▀ п╡ п╬я┤п╣я─п╣п╢я▄.
 $RETURNS$
 	Returns the number newly element of <::Data>
 $LANG_RU$
-	Возвращает порядковый номер добавленного элемента.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ п╢п╬п╠п╟п╡п╩п╣п╫п╫п╬пЁп╬ я█п╩п╣п╪п╣п╫я┌п╟.
 $DESCRIPTION$
 	Put() is inserts new element into queue immediately after
 	to the last element and returns it number.
 $LANG_RU$
-	Put() вставляет в конец очереди новый элемент <vData> и возвращвет
-	его порядковый номер в очереди.
+	Put() п╡я│я┌п╟п╡п╩я▐п╣я┌ п╡ п╨п╬п╫п╣я├ п╬я┤п╣я─п╣п╢п╦ п╫п╬п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ <vData> п╦ п╡п╬п╥п╡я─п╟я┴п╡п╣я┌
+	п╣пЁп╬ п©п╬я─я▐п╢п╨п╬п╡я▀п╧ п╫п╬п╪п╣я─ п╡ п╬я┤п╣я─п╣п╢п╦.
 $ENDMETHOD$
 
 $METHODNAME$
@@ -70,22 +70,22 @@ $METHODNAME$
 $SUMMARY$
 	Get data from queue.
 $LANG_RU$
-	Извлечь данные из очереди.
+	п≤п╥п╡п╩п╣я┤я▄ п╢п╟п╫п╫я▀п╣ п╦п╥ п╬я┤п╣я─п╣п╢п╦.
 $SYNTAX$
 	Get() --> <vData>
 $ARGUMENTS$
 $RETURNS$
 	Returns the first element into queue.
 $LANG_RU$
-	Возвращает первый элемент в очереди.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╡ п╬я┤п╣я─п╣п╢п╦.
 $DESCRIPTION$
 	Get() is returns first queues element and removes it from queue.
 
 	If queue is empty Get() returns NIL.
 $LANG_RU$
-	Get() возвращает первый на очереди элемент и удаляет его из очереди.
+	Get() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╣я─п╡я▀п╧ п╫п╟ п╬я┤п╣я─п╣п╢п╦ я█п╩п╣п╪п╣п╫я┌ п╦ я┐п╢п╟п╩я▐п╣я┌ п╣пЁп╬ п╦п╥ п╬я┤п╣я─п╣п╢п╦.
 
-	Если очердь пуста, Get() возвращает NIL.
+	п∙я│п╩п╦ п╬я┤п╣я─п╢я▄ п©я┐я│я┌п╟, Get() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $ENDMETHOD$
 
 
@@ -94,22 +94,22 @@ $METHODNAME$
 $SUMMARY$
 	Get first data from queue.
 $LANG_RU$
-	Извлечь первый элемент из очереди.
+	п≤п╥п╡п╩п╣я┤я▄ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╦п╥ п╬я┤п╣я─п╣п╢п╦.
 $SYNTAX$
 	Head() --> <vData>
 $ARGUMENTS$
 $RETURNS$
 	Returns the first element into queue.
 $LANG_RU$
-	Возвращает первый элемент в очереди.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╣я─п╡я▀п╧ я█п╩п╣п╪п╣п╫я┌ п╡ п╬я┤п╣я─п╣п╢п╦.
 $DESCRIPTION$
 	Head() is returns first queues element but not removes it from queue.
 
 	If queue is empty Head() returns NIL.
 $LANG_RU$
-	Head() возвращает первый на очереди элемент не удаляя его из очереди.
+	Head() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╣я─п╡я▀п╧ п╫п╟ п╬я┤п╣я─п╣п╢п╦ я█п╩п╣п╪п╣п╫я┌ п╫п╣ я┐п╢п╟п╩я▐я▐ п╣пЁп╬ п╦п╥ п╬я┤п╣я─п╣п╢п╦.
 
-	Если очердь пуста, Head() возвращает NIL.
+	п∙я│п╩п╦ п╬я┤п╣я─п╢я▄ п©я┐я│я┌п╟, Head() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $ENDMETHOD$
 
 
@@ -118,22 +118,22 @@ $METHODNAME$
 $SUMMARY$
 	Get last data from queue.
 $LANG_RU$
-	Извлечь последний элемент из очереди.
+	п≤п╥п╡п╩п╣я┤я▄ п©п╬я│п╩п╣п╢п╫п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╦п╥ п╬я┤п╣я─п╣п╢п╦.
 $SYNTAX$
 	Tail() --> <vData>
 $ARGUMENTS$
 $RETURNS$
 	Returns the last element into queue.
 $LANG_RU$
-	Возвращает последний элемент в очереди.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬я│п╩п╣п╢п╫п╦п╧ я█п╩п╣п╪п╣п╫я┌ п╡ п╬я┤п╣я─п╣п╢п╦.
 $DESCRIPTION$
 	Tail() is returns last queues element but not removes it from queue.
 
 	If queue is empty Tail() returns NIL.
 $LANG_RU$
-	Tail() возвращает последний на очереди элемент не удаляя его из очереди.
+	Tail() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п©п╬я│п╩п╣п╢п╫п╦п╧ п╫п╟ п╬я┤п╣я─п╣п╢п╦ я█п╩п╣п╪п╣п╫я┌ п╫п╣ я┐п╢п╟п╩я▐я▐ п╣пЁп╬ п╦п╥ п╬я┤п╣я─п╣п╢п╦.
 
-	Если очердь пуста, Tail() возвращает NIL.
+	п∙я│п╩п╦ п╬я┤п╣я─п╢я▄ п©я┐я│я┌п╟, Tail() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ NIL.
 $ENDMETHOD$
 
 
@@ -142,22 +142,22 @@ $METHODNAME$
 $SUMMARY$
 	Get queue length.
 $LANG_RU$
-	Вернуть длину очереди.
+	п▓п╣я─п╫я┐я┌я▄ п╢п╩п╦п╫я┐ п╬я┤п╣я─п╣п╢п╦.
 $SYNTAX$
 	Len() --> <nLen>
 $ARGUMENTS$
 $RETURNS$
 	Returns the queue length.
 $LANG_RU$
-	Возвращает длину очереди.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ п╢п╩п╦п╫я┐ п╬я┤п╣я─п╣п╢п╦.
 $DESCRIPTION$
 	Len() is returns queue length - the count elements into queue.
 
 	If queue is empty Len() returns 0.
 $LANG_RU$
-	Len() возвращает длину очереди - количество элементов в ней.
+	Len() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ п╢п╩п╦п╫я┐ п╬я┤п╣я─п╣п╢п╦ - п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я█п╩п╣п╪п╣п╫я┌п╬п╡ п╡ п╫п╣п╧.
 
-	Если очердь пуста, Len() возвращает 0.
+	п∙я│п╩п╦ п╬я┤п╣я─п╢я▄ п©я┐я│я┌п╟, Len() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ 0.
 $ENDMETHOD$
 
 
@@ -166,18 +166,18 @@ $METHODNAME$
 $SUMMARY$
 	Free queue.
 $LANG_RU$
-	Очистить очередь.
+	п·я┤п╦я│я┌п╦я┌я▄ п╬я┤п╣я─п╣п╢я▄.
 $SYNTAX$
 	Free() --> TRUE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE.
 $LANG_RU$
-	Возвращает TRUE.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $DESCRIPTION$
 	Free() is removes all items from queue and returns TRUE.
 $LANG_RU$
-	Free() удаляет из очереди все элементы и возвращает TRUE.
+	Free() я┐п╢п╟п╩я▐п╣я┌ п╦п╥ п╬я┤п╣я─п╣п╢п╦ п╡я│п╣ я█п╩п╣п╪п╣п╫я┌я▀ п╦ п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE.
 $ENDMETHOD$
 
 
@@ -186,18 +186,18 @@ $METHODNAME$
 $SUMMARY$
 	Check queue.
 $LANG_RU$
-	Проверить очередь.
+	п÷я─п╬п╡п╣я─п╦я┌я▄ п╬я┤п╣я─п╣п╢я▄.
 $SYNTAX$
 	Empty() --> TRUE || FALSE
 $ARGUMENTS$
 $RETURNS$
 	Returns TRUE if queue is empty and FALSE if other.
 $LANG_RU$
-	Возвращает TRUE если очередь пуста и FALSE в противном случае.
+	п▓п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬я┤п╣я─п╣п╢я▄ п©я┐я│я┌п╟ п╦ FALSE п╡ п©я─п╬я┌п╦п╡п╫п╬п╪ я│п╩я┐я┤п╟п╣.
 $DESCRIPTION$
 	Empty() returns TRUE if queue is empty and FALSE if other.
 $LANG_RU$
-	Empty() возвращает TRUE если очередь пуста и FALSE в противном случае.
+	Empty() п╡п╬п╥п╡я─п╟я┴п╟п╣я┌ TRUE п╣я│п╩п╦ п╬я┤п╣я─п╣п╢я▄ п©я┐я│я┌п╟ п╦ FALSE п╡ п©я─п╬я┌п╦п╡п╫п╬п╪ я│п╩я┐я┤п╟п╣.
 $ENDMETHOD$
 
 $EXAMPLES$

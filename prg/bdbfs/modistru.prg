@@ -61,7 +61,7 @@ IF  _Was_Changes
 		IF 1->(DELETED()) THEN DELETE
 		SELE 1
 		IF !CheckEsc()
-			_Was_Changes:=.F.	//Отменить
+			_Was_Changes:=.F.	//Cancel
 			EXIT
 		ENDIF
 	ENDSCAN
@@ -88,7 +88,7 @@ ENDIF
 
 FERASE(_browBase)
 POP KEYS
-RETU 0	// чтобы восстановить индексы
+RETU 0	// for restore indexes
 **********
 FUNC MODIBROW(_ptr,_a)
 LOCAL	GetList:={},;
@@ -119,7 +119,7 @@ DO CASE
 							(Nfind(BAD_LEN),.F.));
 							} ) )
 			OTHER
-				__KeyBoard()	// от зацикливания
+				__KeyBoard()	// avoid looping
 		EndCASE
 		ReadModal(GetList)
 		GetList:={} ; SetColor(_im)
@@ -196,13 +196,13 @@ RETU 1
 **********
 STATIC FUNC MakeAim(arAim)
 /*
- Сделать массив выражений перевода для каждого поля
- и преобразовать в блок
+ Make an array of  translation expressions for
+ each field and converted into a block
 */
 LOCAL i,_a,aBlock:={},aStr:=m->_aDBSTRUCT
 *Nfind(ArAim)
 FOR i:=1 TO LEN(arAim)
-	IF (_a:=AMScan(aStr,1,arAim[i,1])) <>0 // было такое поле
+	IF (_a:=AMScan(aStr,1,arAim[i,1])) <>0 // was a field
 		GO i
 		IF (m->_dtype[_a]<>Field_type) .AND. !Field_Type $ 'VX'
 			arAim[i,1]:='XTOY('+TRIM(arAim[i,1])+',['+Field_Type+'])'
@@ -288,7 +288,7 @@ REPL field_Name WITH cFld
 RETU .T.
 **********
 STATIC FUNC  TrueLen
-//Сюда попадают CNVFX
+//Here hits CNVFX
 LOCAL _i:=.T., nS:=m->_tmp
 
 IF (nS < 1) .OR. (nS>65534) .OR.;

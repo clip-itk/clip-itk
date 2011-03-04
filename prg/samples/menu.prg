@@ -126,7 +126,7 @@ function MENU_Create()
       // Change the style of the GO popup menu.  The second character in
       // the string below represents the arrow that will be displayed next
       // to the word GO.  The default is a "", but I have changed it to
-      // a ">".  I have kept the check mark ("–") the same as the default.
+      // a ">".  I have kept the check mark ("âˆš") the same as the default.
       oItem :Style = "–>"
 
       // Add yet another separator

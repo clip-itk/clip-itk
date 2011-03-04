@@ -6,8 +6,8 @@
     class INIFILE
     control for Windows-like .ini files
 
-   :) написано на следующий после пашкиного дня рождения, надо бы
-   этот текст пометить красным цветом :)
+   :) written in next day after Pasha's birsday, need to
+   mark this text as red color :)
 */
 
 #include "fileio.ch"
