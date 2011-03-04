@@ -36,7 +36,7 @@ static function ab_ext_view_card(oDep,data,oBox,colorSpec)
 	x1++;y1++
 
 	@ x1++,y1 say padc([Extent parameters],y2-y1)
-	@ x1++,y1 say replicate("€",y2-y1)
+	@ x1++,y1 say replicate("€",y2-y1) // utf-8: "â”€"
 	if empty(data)
 		@ x1++,y1 say [Can`t display information]
 		dispend()
@@ -69,7 +69,7 @@ static function ab_ext_edit_card(oDep,data,oBox,colorSpec)
 	x1++;y1++
 
 	@ x1++,y1 say padc([Extent parameters],y2-y1)
-	@ x1++,y1 say replicate("€",y2-y1)
+	@ x1++,y1 say replicate("€",y2-y1) // utf-8: "â”€"
 	if empty(data)
 		@ x1++,y1 say [Can`t edit information]
 		dispend()

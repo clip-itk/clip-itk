@@ -51,7 +51,7 @@ static function r2d2_acc_chart_view_card(oDep,data,oBox,colorSpec)
 	odict := oDep:dictionary()
 
 	@ x1++,y1 say padc([Account information],y2-y1)
-	@ x1++,y1 say replicate("€",y2-y1)
+	@ x1++,y1 say replicate("€",y2-y1) // utf-8: "â”€"
 	if empty(data)
 		@ x1++,y1 say [Can`t display information]
 		dispend()
@@ -74,7 +74,7 @@ static function r2d2_acc_chart_view_card(oDep,data,oBox,colorSpec)
 	tmp:=oDep:getValue(data:account_para)
 	@ x1++,y1 say [Twice account...]+iif(empty(tmp),[(NONE)],tmp:code)+":("+data:account_para+")"
 
-	@ x1++,y1 say padc([List of analitics],y2-y1,"€")
+	@ x1++,y1 say padc([List of analitics],y2-y1,"€") // utf-8: "â”€"
 	for i=1 to 99
 		s := "AN_VALUE"+alltrim(str(i,2,0))
 		if ! (s $ data)
@@ -124,7 +124,7 @@ static function r2d2_acc_chart_edit_card(oDep,data,oBox,colorSpec)
 	acc_type := oDict:classBodyByName("acc_chart_type")
 
 	@ x1++,y1 say padc([Account information],y2-y1)
-	@ x1++,y1 say replicate("€",y2-y1)
+	@ x1++,y1 say replicate("€",y2-y1) // utf-8: "â”€"
 	if empty(data)
 		@ x1++,y1 say [Can`t display information]
 		dispend()
@@ -230,7 +230,7 @@ static function r2d2_acc_chart_edit_card(oDep,data,oBox,colorSpec)
 	next
 	while .t.
 		x1:=x
-		@ x1++,y1 say padc([List of analitics],y2-y1,"€")
+		@ x1++,y1 say padc([List of analitics],y2-y1,"€") // utf-8: "â”€"
 		setcolor(oldcol)
 		@ x1,y1 CLEAR TO oBox:nBottom-2,y2-1
 		n:=oBox:nBottom-x1-7
