@@ -3826,7 +3826,7 @@ find_cursor (GtkExText * text, gdouble x, gdouble y, gboolean select)
             text->timer =
                 gtk_timeout_add (SCROLL_TIME, gtk_extext_scroll_timeout, text);
         }
-    } else {
+    } else {
         y -= 2;
         lp = gtk_extext_get_line_by_offset (text, y, &dummy);
         if ((lp->line_number >
