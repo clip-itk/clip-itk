@@ -90,7 +90,7 @@ do
 		#rm -f Makefile.inc
 		[ -z "$CLIPROOT" ] && CLIPROOT=/usr/local/clip
 		[ -z "$BINDIR" ] && BINDIR=/usr/local/bin
-		OPTFLAGS=-O1
+		OPTFLAGS=-O2
 		DEBUGFLAGS=''
 		STD_LIBDIR='yes'
 		USE_WCHARS=''
