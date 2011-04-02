@@ -1650,6 +1650,7 @@ put_function(File * file, StrBuf * bp, Function * fp, long *loffs)
 		putShort_StrBuf(bp, vp->no);
 	}
 
+	/* eh? what is this for? -amery */
 	for (namelen = 1, j = 0; j < fp->locals->unsorted.count; j++)
 	{
 		VAR(Var, vp, fp->locals->unsorted.items[j]);
@@ -2095,8 +2096,8 @@ write_OFile(File * file, long *len)
 		for (i = 0; i < file->staticNo + 1; ++i)
 			fprintf(out, "\t{{0, 0}},\n");
 		fprintf(out, "\n};\n");
-		fprintf(out,"/*body1 of module %s*/\n",name);
-		fprintf(out, "\nstatic const char %s_body[]=\n{\n", name);
+		fprintf(out, "\n/*body1 of module %s*/",name);
+		fprintf(out, "\nstatic const unsigned char %s_body[]=\n{\n", name);
 
 		mp = bp->buf;
 		modlen = bp->ptr - bp->buf;
@@ -2106,8 +2107,8 @@ write_OFile(File * file, long *len)
 		while (j < modlen)
 		{
 			fprintf(out, "\t");
-			for (k = 0; k < 32 && j < modlen; ++j, ++k, ++size)
-				fprintf(out, "%ld,", (long)mp[j]);
+			for (k = 0; k < 16 && j < modlen; ++j, ++k, ++size)
+				fprintf(out, " %3u,"+(k==0?1:0), (unsigned char)mp[j]);
 			fprintf(out, "\n");
 		}
 
@@ -2140,8 +2141,8 @@ write_OFile(File * file, long *len)
 		fprintf(out, "\t&clip__PCODE_%s,\n", name);
 		fprintf(out, "\t0\n};\n");
 
-/*		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n ", name);*/
-		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n ", file->mname);
+/*		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n", name);*/
+		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n", file->mname);
 		fprintf(out, "\t\"%s\",\n", name);
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");
