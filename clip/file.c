@@ -2086,18 +2086,30 @@ write_OFile(File * file, long *len)
 	{
 		char *mp;
 		long j, k, modlen, size;
-		char *name = strdup(file->name);
-		char *s;
+		char *name, *upname, *s;
 
-		s = strchr(name, '.');
-		if (s)
-			*s = 0;
+		name = strdup(file->name);
+		for (s=name; *s; s++) {
+			if (*s == '.') {
+				*s = '\0';
+				break;
+			} else if (!isalnum(*s)) {
+				*s = '_'; /* sanitize */
+			}
+		}
+
+		upname = strdup(name);
+		for (s=upname; *s; s++) {
+			if (islower(*s))
+				*s = toupper(*s);
+		}
+
 		fprintf(out, "static ClipVar %s_statics[] =\n{\n", name);
 		for (i = 0; i < file->staticNo + 1; ++i)
 			fprintf(out, "\t{{0, 0}},\n");
 		fprintf(out, "\n};\n");
 		fprintf(out, "\n/*body1 of module %s*/",name);
-		fprintf(out, "\nstatic const unsigned char %s_body[]=\n{\n", name);
+		fprintf(out, "\nstatic const unsigned char %s_body[] =\n{\n", name);
 
 		mp = bp->buf;
 		modlen = bp->ptr - bp->buf;
@@ -2113,9 +2125,7 @@ write_OFile(File * file, long *len)
 		}
 
 		fprintf(out, "\n};\n");
-		fprintf(out, "\nstruct ClipFile clip__PCODE_");
-		for (i = 0; i < strlen(name); ++i)
-			fputc(toupper(name[i]), out);
+		fprintf(out, "\nstruct ClipFile clip__PCODE_%s", upname);
 		fprintf(out, " =\n{\n");
 		fprintf(out, "\t1,\n");
 		fprintf(out, "\t(char*)%s_body,\n", name);
@@ -2134,28 +2144,26 @@ write_OFile(File * file, long *len)
 		fprintf(out, "\t-1,\n");
 		fprintf(out, "};\n\n");
 
-		for (i = 0; i < strlen(name); ++i)
-			name[i] = toupper(name[i]);
-
-		fprintf(out, "static ClipFile *%s_cpfiles[]=\n{\n", name);
-		fprintf(out, "\t&clip__PCODE_%s,\n", name);
+		fprintf(out, "static ClipFile *%s_cpfiles[]=\n{\n", upname);
+		fprintf(out, "\t&clip__PCODE_%s,\n", upname);
 		fprintf(out, "\t0\n};\n");
 
-/*		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n", name);*/
+/*		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n", upname);*/
 		fprintf(out, "\nClipModule clip__MODULE_%s =\n{\n", file->mname);
-		fprintf(out, "\t\"%s\",\n", name);
+		fprintf(out, "\t\"%s\",\n", upname);
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");
-		/*fprintf(out, "\t&clip__PCODE_%s,\n", name); */
+		/*fprintf(out, "\t&clip__PCODE_%s,\n", upname); */
 
-		fprintf(out, "\t%s_cpfiles,\n", name);
+		fprintf(out, "\t%s_cpfiles,\n", upname);
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");
 		fprintf(out, "\t0,\n");
 		fprintf(out, "};\n\n");
 
 		free(name);
+		free(upname);
 	}
 	else
 	{
