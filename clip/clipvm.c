@@ -1546,7 +1546,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 #endif
 	int maxdeep = GETSHORT(F_OFFS(func, 3, 2, 1));
 	ClipVar *stack = (ClipVar *) alloca(sizeof(ClipVar) * maxdeep);
-	char *filename = F_OFFS(modbeg, 7, 4, 0);
+	char *filename = F_OFFS(modbeg, 6, 6, 0);
 	int nprivates = GETSHORT(F_OFFS(func, 3, 3, 1));
 
 	/*int nparams = GETSHORT( F_OFFS(func, 3, 4, 1)); */
