@@ -2086,22 +2086,28 @@ write_OFile(File * file, long *len)
 	{
 		char *mp;
 		long j, k, modlen, size;
-		char *name, *upname, *s;
+		char *name, *upname;
 
-		name = strdup(file->name);
-		for (s=name; *s; s++) {
-			if (*s == '.') {
-				*s = '\0';
-				break;
-			} else if (!isalnum(*s)) {
-				*s = '_'; /* sanitize */
+		{
+			char *s1, *s2, *s = file->name;
+			char *end = s;
+			size_t l;
+
+			for (l=0; *end && *end != '.'; l++, end++)
+				; /* strlen() + exception */
+
+			s1 = name = malloc(l+1);
+			s2 = upname = malloc(l+1);
+
+			s1[l] = s2[l] = '\0';
+			while (s != end) {
+				char c = *s++;
+				if (!isalnum(c))
+					c = '_'; /* sanitize */
+
+				*s1++ = c;
+				*s2++ = toupper(c);
 			}
-		}
-
-		upname = strdup(name);
-		for (s=upname; *s; s++) {
-			if (islower(*s))
-				*s = toupper(*s);
 		}
 
 		fprintf(out, "static ClipVar %s_statics[] =\n{\n", name);
