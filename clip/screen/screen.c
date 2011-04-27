@@ -422,7 +422,6 @@
 #include <errno.h>
 
 #include "screen.h"
-#include "tcaps.h"
 #include "charset.h"
 #include "scankey.h"
 

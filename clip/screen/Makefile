@@ -2,7 +2,7 @@
 CFLAGS=-Wall -Wextra -O -g -fPIC #-pg -DMEMDBG
 
 SCRLIB = ./libscr.a
-SCROBJS = tcaps.o termgoto.o screen.o scankey.o keymap.o
+SCROBJS = termgoto.o screen.o scankey.o keymap.o
 # charset.o
 
 PROGS = testscr kbd cmap
