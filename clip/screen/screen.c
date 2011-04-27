@@ -471,6 +471,7 @@ static int w32_readch(void);
 static Gpm_Connect conn;
 
 #endif
+#include <term.h>
 
 #define RAWMODE_ESC 117
 
@@ -495,18 +496,6 @@ static void init_mouse(ScreenBase * base, char **envp);
 #define Meta1_key 0x10000
 #define Meta2_key 0x20000
 #define National_key 0x30000
-
-static char *FNAMES[] = {
-	"/etc/terminfo",
-	"/usr/lib/terminfo",
-	"/usr/share/terminfo",
-	"/usr/share/lib/terminfo",
-	"/usr/share/misc/termcap",
-	"/etc/termcap",
-};
-
-#define FSTDNUM  4
-#define FNUM  6
 
 /* cursor goto handling with padding/delay checking */
 void scr_tgoto(char *CM, int destcol, int destline, char *buf, int buflen);
@@ -781,8 +770,6 @@ typedef struct
 	int utf8_mode;
 
 	Keytab keytab[KEYTAB_SIZE];
-
-	Terminfo terminfo;
 }
 ScreenData;
 
@@ -1200,9 +1187,6 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	int i, tfd;
 	int translateGraphMode = 0;
 	static int first = 1;
-	char *tcap;
-	int fnum;
-	char **fnames, *fbuf;
 	int col = 0, row = 0;
 	int ret = 0;
 
@@ -1225,11 +1209,6 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 
 	dp = (ScreenData *) calloc(sizeof(ScreenData), 1);
 	base->data = dp;
-
-
-	init_Terminfo(&dp->terminfo);
-
-	dp->terminfo.name = base->terminalName;
 
 #ifdef _WIN32
 #ifndef OS_MINGW
@@ -1270,91 +1249,13 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 
 #endif
 
-	tcap = get_env(envp, "TERMCAP");
-	if (!tcap)
-		tcap = get_env(envp, "TERMINFO");
-	fnum = FNUM + 2;
-	fnames = (char **) alloca(sizeof(char *) * fnum);
-
-	for (i = 0; i < FSTDNUM; i++)
-		fnames[i] = FNAMES[i];
-	fnames[FSTDNUM] = (char *) alloca(256);
-	snprintf(fnames[FSTDNUM], 256, "%s/etc/terminfo", CLIPROOT);
-	fnames[FSTDNUM + 1] = (char *) alloca(256);
-	snprintf(fnames[FSTDNUM + 1], 256, "%s/etc/termcap", CLIPROOT);
-	for (; i < FNUM; i++)
-		fnames[i + 2] = FNAMES[i];
-
-	if (tcap && *tcap)
-	{
-		char *slp = strchr(tcap, '/');
-		char *clp = strchr(tcap, ':');
-		char *vlp = strchr(tcap, '|');
-
-		if (slp && (!clp || clp > slp) && (!vlp || (vlp > clp && vlp > slp)))
-		{
-			/* tcap is a list of files */
-			char *s;
-			int l;
-
-			fnum = 0;
-			for (s = tcap; *s;)
-			{
-				l = strcspn(s, ":");
-				fnum++;
-				s += l;
-				if (!*s)
-					break;
-				s++;
-				l = strspn(s, ":");
-				s += l;
-			}
-
-			fnames = (char **) alloca(sizeof(char *) * fnum);
-
-			fbuf = (char *) alloca((l = (strlen(tcap) + 1)));
-			memcpy(fbuf, tcap, l);
-
-			fnum = 0;
-			for (s = fbuf; *s;)
-			{
-				fnames[fnum] = s;
-				l = strcspn(s, ":");
-				fnum++;
-				s += l;
-				if (!*s)
-					break;
-				*s++ = 0;
-				l = strspn(s, ":");
-				s += l;
-			}
-			if (read_term(fnum, fnames, 1, &dp->terminfo, errbuf, errbuflen))
+	if (setupterm(base->terminalName, fd, &ret) == -1)
 			{
 #ifdef _WIN32
 				if (!w32_console)
 #endif
 					return -1;
 			}
-		}
-		else
-		{
-			/* tcap is a termcap entry */
-			if (read_tcapbuf(tcap, &dp->terminfo, errbuf, errbuflen))
-			{
-#ifdef _WIN32
-				if (!w32_console)
-#endif
-					return -1;
-			}
-		}
-	}
-	else if (read_term(fnum, fnames, 1, &dp->terminfo, errbuf, errbuflen))
-	{
-#ifdef _WIN32
-		if (!w32_console)
-#endif
-			return -1;
-	}
 
 	p = get_env(envp, "LINS");
 	if (p && *p)
