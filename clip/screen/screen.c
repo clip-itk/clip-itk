@@ -1342,18 +1342,24 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	}
 
 	dp->termcap_Visuals = 0;
+#if 0 /* cyrillic extension */
 	if ((dp->termcap_NF > 0 && dp->termcap_NB > 0 && dp->termcap_CF && (dp->termcap_CB || dp->termcap_C2))
 		|| (dp->termcap_AF && dp->termcap_AB) || (dp->termcap_SETF && dp->termcap_SETB))
+#else
+	if ((dp->termcap_AF && dp->termcap_AB) || (dp->termcap_SETF && dp->termcap_SETB))
+#endif
 	{
 		if (!dp->termcap_NF)
 			dp->termcap_NF = 16;
 		if (!dp->termcap_NB)
 			dp->termcap_NB = 16;
 		dp->termcap_Visuals |= VisualColors;
+#if 0 /* cyrillic extension */
 		if (dp->termcap_CF /* && strstr(dp->termcap_CF,"%p1") */ )
 			squeesh_if_need(dp->termcap_CF);
 		if (dp->termcap_CB)
 			squeesh_if_need(dp->termcap_CB);
+#endif
 		if (dp->termcap_AB)
 			squeesh_if_need(dp->termcap_AB);
 		if (dp->termcap_AF)
@@ -1391,6 +1397,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	for (i = 0; i < 256; ++i)
 		dp->uniTable[i] = i /*+ 256 */ ;
 
+#if 0 /* cyrillic extension */
 	if (dp->termcap_Ct && (tfd = open(dp->termcap_Ct, O_RDONLY)) >= 0)
 	{
 		read(tfd, dp->outputTable + 128 + 64, 64);	/* koi8 alpha's out translation */
@@ -1401,6 +1408,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 
 		close(tfd);
 	}
+#endif
 
 	{
 		char *p1, *p2, *pp;
@@ -2427,6 +2435,7 @@ termcap_set_fgbg(ScreenData * dp, int fg, int bg)
 		scr_tgoto(dp->termcap_SETB, 0, bg, /*cga_to_ansi[bg], */ buf, sizeof(buf));
 		termcap_put_raw_str(dp, buf);
 	}
+#if 0 /* cyrillic extension */
 	else if (dp->termcap_C2 && dp->termcap_CF)
 	{
 		scr_tgoto(dp->termcap_CF, bg, fg, /*cga_to_ansi[bg], cga_to_ansi[fg], */ buf, sizeof(buf));
@@ -2439,6 +2448,7 @@ termcap_set_fgbg(ScreenData * dp, int fg, int bg)
 		scr_tgoto(dp->termcap_CB, 0, bg /* cga_to_ansi[bg] */ , buf, sizeof(buf));
 		termcap_put_raw_str(dp, buf);
 	}
+#endif
 }
 
 static void
