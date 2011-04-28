@@ -809,6 +809,23 @@ static void termcap_set_cursor_shape(ScreenData * dp, int cursor);
 
 /* termcap statics }[ termcap init  */
 
+static void Write(int fd, const void *buf, size_t count)
+{
+	while (count > 0) {
+		ssize_t wc = write(fd, buf, count);
+
+		if (wc == (ssize_t)count) {
+			break;
+		} else if (wc >= 0) {
+			count -= wc;
+			buf += wc;
+		} else if (errno != EINTR) {
+			_clip_logg(0, "write(%d): %s", fd, strerror(errno));
+			break;
+		}
+	}
+}
+
 static char *
 skipDelay(char *cp)
 {
@@ -1033,7 +1050,7 @@ exit_tty()
 	{
 		const char msg[] = "\033[?1000l\033[?1001r";
 
-		write(1, msg, sizeof(msg) - 1);
+		Write(1, msg, sizeof(msg) - 1);
 	}
 
 	/* enable cursor */
@@ -2230,7 +2247,7 @@ static void
 termcap_flush(ScreenData * dp)
 {
 	if (dp->outptr > dp->outbuf)
-		write(dp->fd, dp->outbuf, dp->outptr - dp->outbuf);
+		Write(dp->fd, dp->outbuf, dp->outptr - dp->outbuf);
 	dp->outptr = dp->outbuf;
 }
 
@@ -3880,7 +3897,7 @@ set_rawmode(int fd, int mode)
 
 	/*ioctl(fd, KDSKBMODE, cmd); */
 	ioctl(fd, 0x4B45, cmd);
-	write(1, "\033(K", 3);
+	Write(1, "\033(K", 3);
 #endif
 
 }
@@ -3894,7 +3911,7 @@ start_scan_mode(int fd)
 		break;
 	case ScanTerminal:
 		if (scan_start)
-			write(fd, scan_start, strlen(scan_start));
+			Write(fd, scan_start, strlen(scan_start));
 		break;
 	case ScanIoctl:
 		set_rawmode(fd, 1);
@@ -3911,7 +3928,7 @@ stop_scan_mode(int fd)
 		break;
 	case ScanTerminal:
 		if (scan_stop)
-			write(fd, scan_stop, strlen(scan_stop));
+			Write(fd, scan_stop, strlen(scan_stop));
 		break;
 	case ScanIoctl:
 		set_rawmode(fd, 0);
@@ -4180,7 +4197,7 @@ init_mouse(ScreenBase * base, char **envp)
 
 		/* turn xterm mouse on */
 
-		write(1, msg, sizeof(msg) - 1);
+		Write(1, msg, sizeof(msg) - 1);
 		base->mouse_present = 1;
 		base->mouse_driver = "xterm";
 
