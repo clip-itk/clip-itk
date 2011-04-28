@@ -3028,6 +3028,9 @@ gpm_get_event(Gpm_Event * event)
 	return r;
 }
 
+/* buttons is a term.h capability but now we want it for Gpm_Event */
+#undef buttons
+
 static unsigned long
 get_gpm_mouse(ScreenBase * base)
 {
