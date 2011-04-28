@@ -2124,7 +2124,7 @@ initKey(ScreenData * dp)
 	qsort(map, KEYTAB_SIZE, sizeof(Keytab), (int (*)(const void *, const void *)) compkeys);
 
 	dp->key_count = 0;
-	for (kp = map, i = 0; kp->val && i < KEYTAB_SIZE; kp++, i++)
+	for (kp = map, i = 0; kp->val && i < (int)KEYTAB_SIZE; kp++, i++)
 	{
 		dp->key_count++;
 		if (kp->str)
@@ -2743,7 +2743,7 @@ term_match_Key(ScreenBase * base, unsigned char b, unsigned long *keyp)
 
 	if (dp->national_mode && key >= 64 && key < 128)
 		key = dp->nationalTable[key];
-	else if (key >= 0 && key <= 255)
+	else if (/*key >= 0 && */key <= 255)
 		key = dp->inputTable[key];
 	dp->prev_has_meta1 = dp->has_meta1;
 	dp->prev_has_meta2 = dp->has_meta2;
